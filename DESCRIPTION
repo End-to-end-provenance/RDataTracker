@@ -1,0 +1,15 @@
+Package: RDataTracker
+Title: Provennce data collector
+Version: 0.4
+Date: 2014-04-28
+Author:  Emery Boose and Barbara Lerner
+Maintainer: Emery Boose <boose@fas.harvard.edu>
+Description: RDataTracker defines functions that can be used to collect 
+  provenance data as an R script executes.  The output is a text file
+  named ddg.txt, which can be read into a separate tool, DDG Explorer,
+  written in Java, that can be used to visualize and query the provenance.
+License: GPL-3
+SystemRequirements:  DDG Explorer
+URL: 
+BugReports:
+Imports: gtools
