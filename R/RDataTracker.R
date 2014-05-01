@@ -1,8 +1,6 @@
-############################ DDG LIBRARY FOR R ################################
+#################### DDG LIBRARY FOR R ####################
 
-# The functions in this library may be used to annotate an R script in order to
-# create a data derivation graph (DDG) as the script executes. The DDG is saved 
-# as a text file (ddg.txt) that may be viewed and queried using DDG-Explorer.
+# The functions in this library may be used to annotate an R script in order to collect provenance in the form of a data derivation graph (DDG) as the script executes. The DDG is saved as a text file (ddg.txt) that may be viewed and queried using DDG Explorer.
 
 # Copyright (C) 2014 Emery R. Boose & Barbara S. Lerner
 #   This program is free software: you can redistribute it and/or modify
@@ -17,17 +15,19 @@
 #
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
-# rev. 28-Apr-2014
+# rev. 29-Apr-2014
+
+# Create DDG environment variable.
 
 .ddg.env <- new.env(parent=emptyenv())
 
-# maximum number of checkpoints in DDG
+# Set maximum number of checkpoints in DDG.
+
 ddg.MAX_CHECKPOINTS <- 10
 
-#----------- FUNCTIONS TO MANAGE THE GLOBAL VARIABLES---------------------#
-# Global variables cannot be used directly in a library.  Instead, we
-# need to place the variables in our own environment.  These functions
-# make that environment easier to use.
+#-------- FUNCTIONS TO MANAGE THE GLOBAL VARIABLES--------#
+
+# Global variables cannot be used directly in a library.  Instead, we need to place the variables in our own environment.  These functions make that environment easier to use.
 
 .onLoad <- function(libname, pkgname) {
 	.ddg.init.tables()
@@ -38,11 +38,17 @@ ddg.MAX_CHECKPOINTS <- 10
 }
 
 .ddg.get <- function(var) {
-	if (!exists(var, envir=.ddg.env)) stop("No binding for ", var)
-	return(.ddg.env[[var]])
+	if (!exists(var, envir=.ddg.env)) {
+    	error.msg <- paste("No binding for", var, "! DDG may be incorrect.")
+    	.ddg.insert.error.message(error.msg)
+    	return(NULL)
+	}
+  	else {
+		return(.ddg.env[[var]])
+	}
 }
 
-#### Getters for specific variables
+##### Getters for specific variables
 
 .ddg.debug <- function() {
 	return (.ddg.get("ddg.debug"))
@@ -72,7 +78,7 @@ ddg.MAX_CHECKPOINTS <- 10
 	return (.ddg.get(".ddg.enable.console"))
 }
 
-###### Mutators for specific common actions
+##### Mutators for specific common actions
 
 .ddg.inc <- function(var) {
 	value <- .ddg.get(var)
@@ -89,44 +95,50 @@ ddg.MAX_CHECKPOINTS <- 10
 	.ddg.set(df, rbind(table, new.rows))
 }
 
+#-------------------BASIC FUNCTIONS-----------------------#
 
-#-----------------------------BASIC FUNCTIONS---------------------------------#
+# .ddg.init.tables creates data frames to store procedure nodes, data nodes, and checkpoints. It also initializes selected constants and variables.
 
-
-# .ddg.init.tables creates data frames to store procedure nodes, data nodes, and checkpoints.
-# It also initializes selected constants and variables.
 .ddg.init.tables <- function() {
-    # create tables for procedure and data nodes.  Initially, the tables have 100 rows each.
+    # Create tables for procedure and data nodes.  Initially, the tables have 100 rows each.
 	size <- 100
 	
-	.ddg.set("ddg.proc.nodes", data.frame(ddg.type = character(size),ddg.num = numeric(size),ddg.name = character(size),
+    .ddg.set("ddg.proc.nodes", data.frame(ddg.type = character(size),
+          ddg.num = numeric(size),
+          ddg.name = character(size),
 			ddg.value = character(size), stringsAsFactors=FALSE))
-	.ddg.set("ddg.data.nodes", data.frame(ddg.type = character(size),ddg.num = numeric(size), ddg.name = character(size),
-			ddg.value = character(size), ddg.time = character(size), ddg.loc = character(size),ddg.current = logical(size),
-			stringsAsFactors=FALSE))
 	
-	# create procedure and data node counters
+    .ddg.set("ddg.data.nodes", data.frame(ddg.type = character(size),
+          ddg.num = numeric(size),
+          ddg.name = character(size),
+          ddg.value = character(size),
+          ddg.time = character(size),
+          ddg.loc = character(size),
+          ddg.current = logical(size), stringsAsFactors=FALSE))
+	
+	# Create procedure and data node counters.
 	.ddg.set("ddg.pnum", 0)
 	.ddg.set("ddg.dnum", 0)
 	
-	# create ddg string.  When ddg.save gets called, this is what gets written to a file
-	# to define the DDG.
+	# Create DDG string. This string is written to file when ddg.save is called.
 	.ddg.set("ddg.text", "")
 	
-	# used to control debugging output.  If it is already defined, don't change its value.
+	# Used to control debugging output.  If already defined, don't change its value.
 	if (!exists("ddg.debug", envir=.ddg.env)) .ddg.set("ddg.debug", FALSE)
 
-	# current number of checkpoints
+	# Set current number of checkpoints.
 	.ddg.set("ddg.checkpoint.num", 0)
 
-    # create table for checkpoints
-	.ddg.set("ddg.checkpoints", data.frame(filename=character(ddg.MAX_CHECKPOINTS), checkpoint.name=character(ddg.MAX_CHECKPOINTS), stringsAsFactors=FALSE))
+    # Create table for checkpoints.
+	.ddg.set("ddg.checkpoints", data.frame(filename=character(ddg.MAX_CHECKPOINTS),
+          checkpoint.name=character(ddg.MAX_CHECKPOINTS), stringsAsFactors=FALSE))
 	
-	# Last command from the preceding console block
+	# Record last command from the preceding console block.
 	.ddg.set(".ddg.last.command", NULL)
 }
 
-# ddg.environ gets environment parameters for the DDG
+# ddg.environ gets environment parameters for the DDG.
+
 .ddg.environ <- function() {
 	architecture <- R.Version()$arch
 	operating.system <- .Platform$OS.type
@@ -147,20 +159,18 @@ ddg.MAX_CHECKPOINTS <- 10
 	return (environ)
 }
 
-# .ddg.timestamp gets the current date and time from the system
+# .ddg.timestamp gets the current date and time from the system.
+
 .ddg.timestamp <- function() {
 	ts <- Sys.time()
 	
-	# reformat to ISO standard (yyyy-mm-ddThh:mm:ss)
+	# Reformat to ISO standard (yyyy-mm-ddThh:mm:ss).
 	time <- paste(substr(ts,1,10),"T",substr(ts,12,19),sep="")
 	return (time)
 }
 
-# .ddg.write.timestamp.to.history writes the current timestamp to the R history. 
-# The timestamp function does not work properly on Windows from within RStudio.  It
-# ignores the arguments.  We create our own timestamp value and hope that the time does
-# not change between when we set .ddg.history.timestamp and the timestamp function
-# inserts the timestamp in the history.
+# .ddg.write.timestamp.to.history writes the current timestamp to the R history. The timestamp function does not work properly on Windows from within RStudio (the arguments are ignored).  In this case we create our own timestamp value and hope that the time does not change between when we set .ddg.history.timestamp and when the timestamp function inserts the timestamp in the history.
+
 .ddg.write.timestamp.to.history <- function() {
 	if (Sys.getenv("RSTUDIO") != "" && Sys.info()['sysname'] == "Windows") {
 		.ddg.set(".ddg.history.timestamp", paste("##------ ",date()," ------##",sep=""))
@@ -172,14 +182,17 @@ ddg.MAX_CHECKPOINTS <- 10
 }
 
 
-# .ddg.record.proc records a procedure node in the procedure node table
+# .ddg.record.proc records a procedure node in the procedure node table.
+
 .ddg.record.proc <- function(ptype,pname,pvalue) {
-	# If the table is full, make it bigger
+	# If the table is full, make it bigger.
 	ddg.pnum <- .ddg.pnum()
 	ddg.proc.nodes <- .ddg.proc.nodes()
 	if (nrow(ddg.proc.nodes) < ddg.pnum) {
 		size = 100
-		new.rows <- data.frame(ddg.type = character(size),ddg.num = numeric(size),ddg.name = character(size),
+		new.rows <- data.frame(ddg.type = character(size),
+          ddg.num = numeric(size),
+          ddg.name = character(size),
 				ddg.value = character(size), stringsAsFactors=FALSE)
 		.ddg.add.rows("ddg.proc.nodes", new.rows)
 	}
@@ -193,16 +206,21 @@ ddg.MAX_CHECKPOINTS <- 10
     if (.ddg.debug()) print (paste("Adding procedure node",ddg.pnum,"named",pname))
 }
 
-# .ddg.record.data records a data node in the data node table
+# .ddg.record.data records a data node in the data node table.
+
 .ddg.record.data <- function(dtype,dname,dvalue,dtime="",dloc="") {
-	# If the table is full, make it bigger
+	# If the table is full, make it bigger.
 	ddg.dnum <- .ddg.dnum()
 	ddg.data.nodes <- .ddg.data.nodes()
 	if (nrow(ddg.data.nodes) < ddg.dnum) {
 		size = 100
-		new.rows <- data.frame(ddg.type = character(size),ddg.num = numeric(size), ddg.name = character(size),
-				ddg.value = character(size), ddg.time = character(size), ddg.loc = character(size),ddg.current = logical(size),
-				stringsAsFactors=FALSE)
+		new.rows <- data.frame(ddg.type = character(size),
+          ddg.num = numeric(size),
+          ddg.name = character(size),
+          ddg.value = character(size),
+          ddg.time = character(size),
+          ddg.loc = character(size),
+          ddg.current = logical(size), stringsAsFactors=FALSE)
 		.ddg.add.rows("ddg.data.nodes", new.rows)
 	}
 	
@@ -221,8 +239,8 @@ ddg.MAX_CHECKPOINTS <- 10
 	if (.ddg.debug()) print(paste("Adding data node",ddg.dnum,"named",dname))
 }
 
-# .ddg.proc.number gets the number of the nearest preceding matching Operation, Checkpoint,
-# or Restore node. It returns zero if no match is found.
+# .ddg.proc.number gets the number of the nearest preceding matching Operation, Checkpoint, or Restore node. It returns zero if no match is found.
+
 .ddg.proc.number <- function(pname) {
 	ddg.proc.nodes <- .ddg.proc.nodes()
 	rows <- nrow(ddg.proc.nodes)
@@ -234,14 +252,13 @@ ddg.MAX_CHECKPOINTS <- 10
 	}
 
 	# Error message if no match is found.
-	warning(".ddg.proc.number: No procedure node found for ",pname)
-	.ddg.data.node("Exception",paste("No procedure node found for ",pname),"")
-	.ddg.lastproc2data(paste("No procedure node found for ",pname))
+    error.msg <- paste(".ddg.proc.number: No procedure node found for", pname)
+    .ddg.insert.error.message(error.msg)  
 	return(0)
 }
 
-# .ddg.data.node.exists searches for a current preceding matching data node. It returns
-# TRUE if a match is found and FALSE otherwise.
+# .ddg.data.node.exists searches for a preceding current matching data node. It returns TRUE if a match is found and FALSE otherwise.
+
 .ddg.data.node.exists <- function(dname) {
 	ddg.data.nodes <- .ddg.data.nodes()
 	rows <- nrow(ddg.data.nodes)
@@ -254,9 +271,8 @@ ddg.MAX_CHECKPOINTS <- 10
 	return(FALSE)
 }
 
+# .ddg.data.number retrieves the number of the nearest preceding current matching data node. It returns zero if no match is found.
 
-# .ddg.data.number retrieves the number of the nearest preceding matching Data node.
-# It returns zero if no match is found.
 .ddg.data.number <- function(dname) {
 	ddg.data.nodes <- .ddg.data.nodes()
 	rows <- nrow(ddg.data.nodes)
@@ -269,15 +285,17 @@ ddg.MAX_CHECKPOINTS <- 10
 	}
 	
 	# Error message if no match found.
-	warning("ddg.data.number: No data node found for ",dname)
+    error.msg <- paste("No data node found for", dname)
+    .ddg.insert.error.message(error.msg)
 	return(0)
 }
 
-# .ddg.proc.name returns the name of a procedure node. It returns a null string if
-# no match is found.
+# .ddg.proc.name returns the name of a procedure node. It returns a null string if no match is found.
+
 .ddg.proc.name <- function(pnum) {
 	if (pnum < 1 || pnum > .ddg.pnum()) {
-		warning(".ddg.proc.name: No name found for procedure number ",pnum)
+		error.msg <- paste(".ddg.proc.name: No name found for procedure number", pnum)
+        .ddg.insert.error.message(error.msg)
 		return ("")
 	}
 	
@@ -320,7 +338,7 @@ ddg.MAX_CHECKPOINTS <- 10
 	dn <- .ddg.data.number(dname)
 	pn <- .ddg.proc.number(pname)
 
-	# Create data flow edge from procedure node to data node
+	# Create data flow edge from procedure node to data node.
 	.ddg.append("DF p",pn," d",dn,"\n",sep="")
 
 	if (.ddg.debug()) {
@@ -329,7 +347,8 @@ ddg.MAX_CHECKPOINTS <- 10
 	}
 }
 
-# .ddg.lastproc2data creates a data flow edge from the last procedure to a data node.
+# .ddg.lastproc2data creates a data flow edge from the last procedure node to a data node.
+
 .ddg.lastproc2data <- function(dname) {
 	# Get data & procedure numbers.
 	dn <- .ddg.data.number(dname)
@@ -363,11 +382,8 @@ ddg.MAX_CHECKPOINTS <- 10
 	return (FALSE)
 }
 
-# .ddg.get.var returns the variable being referenced in an expression.
-# It should be passed an expression object that is either a variable,
-# a vector access (like a[1]), a list member (like a[[i]]) or a data
-# frame access (like a$foo[i]).  For all of these examples, it would 
-# return "a".  
+# .ddg.get.var returns the variable being referenced in an expression. It should be passed an expression object that is either a variable, a vector access (like a[1]), a list member (like a[[i]]) or a data frame access (like a$foo[i]).  For all of these examples, it would return "a".
+
 .ddg.get.var <- function(lvalue) {
 	if (is.symbol(lvalue)) deparse(lvalue)
 	else .ddg.get.var(lvalue[[2]])
@@ -379,21 +395,17 @@ ddg.MAX_CHECKPOINTS <- 10
 	return (expr[[1]] == "function")
 }
 
-# .ddg.find.assign returns a vector containing the names of all the variables assigned 
-# in an expression.  The parameter should be an expression object.
-# For example, if obj represents the expression "a <- (b <- 2) * 3", the vector
-# returned will contain both a and b.
+# .ddg.find.assign returns a vector containing the names of all the variables assigned in an expression.  The parameter should be an expression object. For example, if obj represents the expression "a <- (b <- 2) * 3", the vector returned will contain both a and b.
+
 .ddg.find.assign <- function(obj) {
 	# Base case.
 	if (!is.recursive(obj)) return(character())
 
-	# Assignment statement.  Add the variable being assigned to the
-	# vector and recurse on the expression being assigned.
+	# Assignment statement.  Add the variable being assigned to the vector and recurse on the expression being assigned.
 	if (.ddg.is.assign(obj)) {
 		var <- .ddg.get.var(obj[[2]])
 		
-		# Don't look for assignments in the body of a function as those won't happen
-		# until the function is called.
+		# Don't look for assignments in the body of a function as those won't happen until the function is called.
 		if (.ddg.is.functiondecl(obj[[3]])) var
 		else c(var, unlist(lapply(obj[[3]], .ddg.find.assign)))
 	} 
@@ -404,9 +416,8 @@ ddg.MAX_CHECKPOINTS <- 10
 	}
 }
 
-# .ddg.find.simple.assign returns the name of the variable assigned to if the object 
-# passed in is an expression representing an assignment statement.  Otherwise,
-# it returns NULL.
+# .ddg.find.simple.assign returns the name of the variable assigned to if the object passed in is an expression representing an assignment statement.  Otherwise, it returns NULL.
+
 .ddg.find.simple.assign <- function(obj) {
 	if (.ddg.is.assign(obj)) {
 		.ddg.get.var(obj[[2]])
@@ -416,8 +427,8 @@ ddg.MAX_CHECKPOINTS <- 10
 	}
 }
 
-# .ddg.find.var.uses returns a vector containing all the variables that are used
-# in an expression.
+# .ddg.find.var.uses returns a vector containing all the variables used in an expression.
+
 .ddg.find.var.uses <- function(obj) {
 	# Base cases.
 	if (is.name(obj)) return (deparse(obj))
@@ -425,11 +436,10 @@ ddg.MAX_CHECKPOINTS <- 10
 	
 	tryCatch(
 		if (.ddg.is.assign(obj)) {
-			# If assigning to a simple variable, recurse on the right hand side of the assignment
+			# If assigning to a simple variable, recurse on the right hand side of the assignment.
 			if (is.symbol(obj[[2]])) unique(unlist(.ddg.find.var.uses(obj[[3]])))
 			
-			# If assigning to an expression (like a[b]), recurse on the indexing part of the lvalue
-			# as well as on the expression
+			# If assigning to an expression (like a[b]), recurse on the indexing part of the lvalue as well as on the expression.
 			else unique(c (.ddg.find.var.uses(obj[[2]][[3]]), unlist(.ddg.find.var.uses(obj[[3]]))))
 		} 
 		
@@ -444,16 +454,16 @@ ddg.MAX_CHECKPOINTS <- 10
 	)
 }
 
-# .ddg.find.var.assignments creates a data frame containing information about
-# variable assignments:
-# - the variable name
-# - the position of the statement that wrote the variable first
-# - the position of the statement that the variable last
-# - the position of the first statement that may have assigned to a variable 
-# - the position of the last statement that may have assigned to a variable
-# The difference between first.writer and possible.first.writer is that first.writer
-# is for simple assignments (like a <- 1), while possible.first.writer is for
-# situations where the assignment might not have occurred, like "if (foo) a <- 1".
+# .ddg.find.var.assignments creates a data frame containing information about variable assignments:
+
+# - the variable name.
+# - the position of the statement that wrote the variable first.
+# - the position of the statement that the variable last.
+# - the position of the first statement that may have assigned to a variable .
+# - the position of the last statement that may have assigned to a variable.
+
+# The difference between first.writer and possible.first.writer is that first.writer is for simple assignments (like a <- 1), while possible.first.writer is for situations where the assignment might not have occurred, like "if (foo) a <- 1".
+
 .ddg.find.var.assignments <- function(parsed.commands) {
 	if (length(parsed.commands) == 0) return (data.frame())
 	
@@ -507,10 +517,8 @@ ddg.MAX_CHECKPOINTS <- 10
 	return (vars.set)
 }
 
-# .ddg.create.data.use.edges.for.console.cmd creates a data flow edge from the node for each variable
-# used in cmd.expr to the procedural node labeled cmd, as long as the value would either be one that
-# exists prior to starting the console block, or corresponds to the last setting of this variable
-# in the console block.
+# .ddg.create.data.use.edges.for.console.cmd creates a data flow edge from the node for each variable used in cmd.expr to the procedural node labeled cmd, as long as the value would either be one that exists prior to starting the console block, or corresponds to the last setting of this variable in the console block.
+
 .ddg.create.data.use.edges.for.console.cmd <- function (vars.set, cmd, cmd.expr, cmd.pos) {
 	# Find all the variables used in this command.
 	vars.used <- .ddg.find.var.uses (cmd.expr)
@@ -520,21 +528,18 @@ ddg.MAX_CHECKPOINTS <- 10
 		if (.ddg.data.node.exists(var)) {
 			nRow <- which(vars.set$variable == var)
 			
-			# Check if the node is written in the console block
+			# Check if the node is written in the console block.
 			if (length(nRow) > 0) {
 				first.writer <- min(vars.set$first.writer[nRow], vars.set$possible.first.writer[nRow])						
 				last.writer <- max(vars.set$last.writer[nRow], vars.set$possible.last.writer[nRow])
 				
-				# Draw the edge if we either will connect to a node that exists before the 
-				# console block, or to the last writer of this variable within the console
-				# block.
+				# Draw the edge if we will connect to a node that exists before the console block or to the last writer of this variable within the console block.
 				if (cmd.pos <= first.writer || cmd.pos > last.writer) {
 					.ddg.data2proc(var,cmd)
 				}
 			}
 			
-			# The variable is not set at all in this console block.  Connect to a pre-existing
-			# data node.
+			# The variable is not set at all in this console block.  Connect to a pre-existing data node.
 			else {
 				.ddg.data2proc(var,cmd)
 			}
@@ -542,19 +547,15 @@ ddg.MAX_CHECKPOINTS <- 10
 	}
 }
 
-# .ddg.create.data.set.edges.for.console.cmd creates the nodes and edges that
-# correspond to a console command assigning to a variable.  Only create a data node
-# for the last write of a variable and only if that occurs after the last possible writer.
-# Creates a snapshot node if the value is a data frame.  Otherwise, it creates a
-# data node.
+# .ddg.create.data.set.edges.for.console.cmd creates the nodes and edges that correspond to a console command assigning to a variable.  A data node is created for the last write of a variable if that occurs after the last possible writer. A snapshot node is created if the value is a data frame.  Otherwise, a data node is created.
+
 .ddg.create.data.set.edges.for.console.cmd <- function(vars.set, cmd, cmd.expr, cmd.pos) {
 	vars.assigned <- .ddg.find.assign (cmd.expr)
 	for (var in vars.assigned) {
 		
 		nRow <- which(vars.set$variable == var)
 		
-		# Only create a node edge for the last place that a variable is set 
-		# within a console block.
+		# Only create a node edge for the last place that a variable is set within a console block.
 		if (length(nRow) > 0 && vars.set$last.writer[nRow] == cmd.pos && vars.set$possible.last.writer[nRow] <= vars.set$last.writer[nRow]) {
 			val <- tryCatch(eval(parse(text=var), .GlobalEnv),
 					error = function(e) {NULL}
@@ -571,9 +572,8 @@ ddg.MAX_CHECKPOINTS <- 10
 	}
 }
 
-# .ddg.create.data.node.for.possible.writes creates a data node for each variable that 
-# might have been set in something other than a simple assignment, with an edge from 
-# the last node in the console block.
+# .ddg.create.data.node.for.possible.writes creates a data node for each variable that might have been set in something other than a simple assignment.  An edge is created from the last node in the console block.
+
 .ddg.create.data.node.for.possible.writes <- function (vars.set, quoted.commands) {
 	last.command <- quoted.commands[length(quoted.commands)]
 	for (i in 1:nrow(vars.set)) {
@@ -605,22 +605,16 @@ ddg.MAX_CHECKPOINTS <- 10
 	ddg.history.file <- .ddg.get("ddg.history.file")
 	savehistory(ddg.history.file)
 	
-	# Add a procedure node for each new command, data nodes for variables set and used
-	# and corresponding edges.
+	# Add a procedure node for each new command, data nodes for variables set and used, and the corresponding edges.
 	history <- readLines(ddg.history.file)
 	history.lines <- length(history)
 	
-	#  NOTE:  IF THIS TIMESTAMP IDEA WORKS FIGURE OUT WHAT VARIABLES I CAN GET RID OF THAT 
-	#  WERE TRACKING POSITION IN HISTORY BEFORE.
-	
-	# Find the last timestamp in the history so we know.  There may be more than one with the
-	# same timestamp, so pick the last of these.
+	# Find the last timestamp in the history so we know.  There may be more than one with the same timestamp, so pick the last of these.
 	history.timestamp.line <- tail(which(history==.ddg.get(".ddg.history.timestamp")),1)
 	
 	if (length(history.timestamp.line) == 0) {
-		warning("Part of history is missing.  DDG may be incomplete.")
-		.ddg.data.node("Exception","Part of history is missing.","Part of history is missing.  DDG may be incomplete.")
-		.ddg.lastproc2data("Part of history is missing.")
+		error.msg <- "Part of history is missing. DDG may be incomplete!"
+        .ddg.insert.error.message(error.msg)
 		history.timestamp.line = 0
 	}
 	
@@ -638,13 +632,10 @@ ddg.MAX_CHECKPOINTS <- 10
 	# Parse the new lines.
 	parsed.commands <- parse(text=new.lines)
 	
-	# It is possible that a command may extend over multiple lines.  new.commands will have 
-	# 1 entry for each parsed command, whereas new.lines, which is read from the file, will
-	# have one entry for each line, which is not very useful for us.
+	# It is possible that a command may extend over multiple lines. new.commands will have one entry for each parsed command, whereas new.lines, which is read from the file, will have one entry for each line, which is not very useful for us.
 	new.commands <- lapply(parsed.commands, function(cmd) {paste(deparse(cmd), collapse="")})
 	
-	# Create start and end nodes to allow collapsing of consecutive console nodes.  Don't bother
-	# doing this if there is only 1 new line in the history.
+	# Create start and end nodes to allow collapsing of consecutive console nodes. Don't bother doing this if there is only 1 new line in the history.
 	num.new.commands <- length(new.commands)
 	if (num.new.commands > 1) {
 		.ddg.proc.node("Start","Console","Console", console=TRUE)
@@ -652,7 +643,7 @@ ddg.MAX_CHECKPOINTS <- 10
 		.ddg.proc2proc()
 	}
 	
-	# Quote the " characters so that they will appear in ddg.txt.
+	# Quote the quotation (") characters so that they will appear in ddg.txt.
 	quoted.commands <- gsub("\\\"", "\\\\\"", new.commands)
 	
 	.ddg.last.command <- quoted.commands[[num.new.commands]]
@@ -665,11 +656,9 @@ ddg.MAX_CHECKPOINTS <- 10
 		parsed.commands <- parsed.commands[1:num.new.commands-1]
 	}
 	
-	# I tried to use a data frame that contained the new.commands, quoted.commands and parsed.commands,
-	# but it does not seem possible to put the parsed expressions in a data frame.
+	# We tried to use a data frame to contain new.commands, quoted.commands and parsed.commands, but it does not seem possible to put the parsed expressions in a data frame.
 	
-	# Create an operation node for each command.  We can't use lapply here because
-	# we need to process the commands in order and lapply does not guarantee an order.
+	# Create an operation node for each command.  We can't use lapply here because we need to process the commands in order and lapply does not guarantee an order.
 	for (cmd in quoted.commands) {
 		if (substr(cmd, 1, 4) != "ddg.") {
 			cmd.abbrev <- .ddg.abbrev.cmd(cmd)
@@ -695,11 +684,7 @@ ddg.MAX_CHECKPOINTS <- 10
 	# Find where all the variables are assigned to.
 	vars.set <- .ddg.find.var.assignments(parsed.commands)
 	
-	# Decide which data nodes and edges to create.  Only create a data node
-	# for the last write of a variable and only if that occurs after the last possible writer.
-	#
-	# For data uses, we create an edge as long as it happens before the first writer/possible writer
-	# or after the last writer/possible writer.
+	# Decide which data nodes and edges to create.  Only create a data node for the last write of a variable and only if that occurs after the last possible writer. Create an edge for a data use as long as the use happens before the first writer/possible writer or after the last writer/possible writer.
 	for (i in 1:length(parsed.commands)) {
 		cmd.expr <- parsed.commands[[i]]
 		cmd <- quoted.commands[i]
@@ -711,11 +696,11 @@ ddg.MAX_CHECKPOINTS <- 10
 		}
 	}
 	
-	# Create a data node for each variable that might have been set in something other than a simple 
-	# assignment, with an edge from the last node in the console block.
+	# Create a data node for each variable that might have been set in something other than a simple assignment, with an edge from the last node in the console block.
 	.ddg.create.data.node.for.possible.writes(vars.set, quoted.commands)
 	}
 	
+    # Write time stamp to history.
 	.ddg.write.timestamp.to.history()
 }
 
@@ -723,7 +708,7 @@ ddg.MAX_CHECKPOINTS <- 10
 .ddg.proc.node <- function(ptype,pname,pvalue="",console=FALSE) {
 	if (interactive() && !console && .ddg.enable.console()) .ddg.console.node()
 	
-	# increment procedure counter
+	# Increment procedure counter.
 	.ddg.inc("ddg.pnum")
 	
 	# Include value if available.
@@ -733,8 +718,12 @@ ddg.MAX_CHECKPOINTS <- 10
 
 	# Create procedure node.  
 	ddg.pnum <- .ddg.pnum()
-	if (proc.value!="") .ddg.append(ptype," p",ddg.pnum," \"",ddg.pnum,"-",pname,"\"",proc.value,";\n",sep="")
-	else                .ddg.append(ptype," p",ddg.pnum," \"",ddg.pnum,"-",pname,"\"\n",sep="")
+	if (proc.value != "") {
+        .ddg.append(ptype, " p", ddg.pnum, " \"", ddg.pnum, "-", pname, "\"", proc.value, ";\n", sep="")
+	}
+	else {
+        .ddg.append(ptype, " p", ddg.pnum, " \"", ddg.pnum, "-", pname, "\"\n", sep="")
+	}
 
 	# Record procedure node information.
 	.ddg.record.proc(ptype,pname,pvalue)
@@ -742,31 +731,33 @@ ddg.MAX_CHECKPOINTS <- 10
 	if (.ddg.debug()) print(paste("proc.node: ",ptype," ",pname))
 }
 
-# .ddg.replace.quotes quotation characters and replaces return, newline and tab
-# characters with spaces.
+# .ddg.replace.quotes quotes quotation characters. It also replaces return, newline and tab characters with spaces.
+
 .ddg.replace.quotes <- function(str) {
 	if (!is.character(str)) return (str)
 	
 	str <- paste("\"", str, "\"", sep="")
 	str <- gsub("\"","\\\\\"",str)
 	
-	# remove returns, new lines, and tabs
+	# Replace returns, new lines, and tabs with spaces.
 	str <- gsub("\r"," ",str)
 	str <- gsub("\n"," ",str)
 	str <- gsub("\t"," ",str)
 }
 	
+# .ddg.data.node creates a data node of type Data. Data nodes are used for single data values. The value (dvalue) is stored in the DDG.
 
-# .ddg.data.node creates a data node of type Data. Data nodes are used for single data values.
-# The value (dvalue) is stored in the DDG.
 .ddg.data.node <- function(dtype,dname,dvalue) {
+	# If object, try to create snapshot node.
 	if (is.object(dvalue)) {
 		tryCatch(
-			{.ddg.snapshot.node (dname,"txt",toString(dvalue))
-		return(NULL)
+			{
+                .ddg.snapshot.node (dname, "txt", toString(dvalue))
+				return(NULL)
 		    },
 			error = function(e) {
-				warning("Unable to create snapshot node for ", dname)
+				error.msg <- paste("Unable to create snapshot node for", dname)
+        		.ddg.insert.error.message(error.msg)
 				.ddg.set("ddg.dnum", .ddg.dnum() - 1)
 				return (.ddg.data.node (dtype, dname, "complex"))
 	}
@@ -784,10 +775,11 @@ ddg.MAX_CHECKPOINTS <- 10
 					paste("[[", positions, "]]", values, collapse="\n")
 				},				
 					error = function(e) {
-								warning(e)
-								warning("Unable to convert value of ", dname, " to a string.")
+						error.msg <- paste("Unable to convert value of", dname, "to a string.")
+          				.ddg.insert.error.message(error.msg)
 								"complex"
-							})
+					}
+      		)
 		}
 		else if (length(dvalue) > 1 || !is.atomic(dvalue)) {
 			tryCatch(paste(.ddg.replace.quotes(dvalue), collapse=","),
@@ -801,30 +793,31 @@ ddg.MAX_CHECKPOINTS <- 10
 		}
 
 	if (grepl("\n", val)) {
+		# Create snapshot node.
 		.ddg.snapshot.node (dname,"txt",val)
 		return
 	}
 
 	else {
+	    # Create data node.
 		data.value <- paste(" Value=\"",val,"\"",sep="")
 	
-			# increment data counter
+			# Increment data counter.
 			.ddg.inc("ddg.dnum")
 			
-		# Add node to DDG
+		# Add node to DDG.
 		ddg.dnum <- .ddg.dnum()
 		.ddg.append(dtype," d",ddg.dnum," \"",ddg.dnum,"-",dname,"\"",data.value,";\n",sep="")
 	
 		# Record data node information.
 		.ddg.record.data(dtype,dname,dvalue)
 	
-		if (.ddg.debug()) print(paste("data.node: ",dtype," ",dname))
+		if (.ddg.debug()) print(paste("data.node:", dtype, dname))
 	}
 }
 
-# .ddg.snapshot.node creates a data node of type Snapshot. Snapshots are used for complex data
-# values not written to file by the main script. The contents of data are written to a file 
-# in the DDG directory. The name of the file is dname.fext.
+# .ddg.snapshot.node creates a data node of type Snapshot. Snapshots are used for complex data values not written to file by the main script. The contents of data are written to the file dname.fext in the DDG directory.
+ 
 .ddg.snapshot.node <- function(dname,fext,data) {
 	# Increment data counter.
 	.ddg.inc("ddg.dnum")
@@ -849,7 +842,11 @@ ddg.MAX_CHECKPOINTS <- 10
 	    close(fileConn)
 	}
 	else if (fext == "RData") file.rename(paste(ddg.path,"/",dname,sep=""),dpfile)
-	else warning(".ddg.snapshot.node: file extension ", fext, " not recognized")
+	else {
+    	error.msg <- paste(".ddg.snapshot.node: file extension", fext, "not recognized")
+    	.ddg.insert.error.message(error.msg)
+    	return(NULL)
+	}
 
 	dtime <- .ddg.timestamp()
 
@@ -863,8 +860,8 @@ ddg.MAX_CHECKPOINTS <- 10
 	return(dpfile)
 }
 
-# .ddg.file.copy creates a data node of type File. File nodes are used for files written
-# by the main script. A copy of the file is written to the DDG directory.
+# .ddg.file.copy creates a data node of type File. File nodes are used for files written by the main script. A copy of the file is written to the DDG directory.
+ 
 .ddg.file.copy <- function(dtype,fname,dname) {
 	# Increment data counter.
 	.ddg.inc("ddg.dnum")
@@ -886,7 +883,11 @@ ddg.MAX_CHECKPOINTS <- 10
 	
 	# Copy file.
 	if (file.exists(file.loc)) file.copy(file.loc,dpfile.out,overwrite=TRUE)
-	else warning(".ddg.file.copy:  file to copy does not exist - ", file.loc)
+	else {
+    	error.msg <- paste(".ddg.file.copy: file to copy does not exist:", file.loc) 
+    	.ddg.insert.error.message(error.msg)
+    	return(NULL)
+	}
 
 	dtime <- .ddg.timestamp()
 
@@ -903,11 +904,16 @@ ddg.MAX_CHECKPOINTS <- 10
 	return (dpfile.out)
 }
 
-# .ddg.lookup.function.name gets the name of the function that called the 
-# ddg function and returns it as a string
-# pname - the name passed in to the ddg function.  It may be null, a string or a name.
-# Note that it is important that these be macros, not functions do to the use of
-# 	the substitute function in the body.
+# .ddg.insert.error.message issues a warning and inserts an exception node after the last procedure step. The name of the node is "error.msg" and the value is the error message passed to this function.
+
+.ddg.insert.error.message <- function(msg) {
+  	warning(msg)
+  	.ddg.data.node("Exception", "error.msg", msg)
+  	.ddg.lastproc2data("error.msg")
+}
+
+# .ddg.lookup.function.name gets the name of the calling function and returns it as a string. pname - the name passed in to the DDG function.  It may be NULL, a string, or a name. Note that it is important that these be macros, not functions, due to the use of the substitute function in the body.
+
 .ddg.lookup.function.name <- gtools::defmacro (pname,
 		expr = 
 				# If pname is not provided, get from function call.
@@ -915,28 +921,17 @@ ddg.MAX_CHECKPOINTS <- 10
 					# Look up function call.
 					call <- sys.call(-4)
 					
-					# Discard everything after ( to get function name
+					# Discard everything after left parenthesis to get function name.
 					#pname <- strsplit (as.character(call), "\\(")[[1]][1]
 					pname <- as.character(call[[1]])
 				}
 				
-				# If pname is not a string, convert the argument to a string.
+				# Convert pname to a string if necessary.
 				else if (!is.character(pname)) pname <- deparse(substitute(pname))
 )
 
-# .ddg.lookup.value is used to determine what value to use when 
-# creating data nodes.
-# expr - the expression that needs to be evaluted.  This can be a string
-#	or a name
-# value - the value that was passed in to the calling function.  If it has 
-#	a value, nothing happens.  If it is null, the expression is evaluated
-#	to determine the value
-# env - the environment in which evaluation is done
-# procname - the name of the calling procedure.  Used to produce an 
-#	error message
-# warn - if true warns user if the expression could not be evaluated
-# Note that it is important that these be macros, not functions do to the use of
-# 	the substitute function in the body.
+# .ddg.lookup.value is used to determine what value to use when creating data nodes. expr - the expression that needs to be evaluted.  This can be a string or a name. value - the value that was passed in to the calling function. If value already exists, nothing happens.  If value is NULL, the expression is evaluated to determine the value. env - the environment in which evaluation is done. procname - the name of the calling procedure, used to produce an error message if necessary. warn - if true, warns user that the expression could not be evaluated. Note that it is important that these be macros, not functions, due to the use of the substitute function in the body.
+
 .ddg.lookup.value <- gtools::defmacro(expr, value, env, procname, warn = TRUE,
 		expr = 	
 				if (is.null(value)) {
@@ -950,7 +945,10 @@ ddg.MAX_CHECKPOINTS <- 10
 							eval(arg, env),
 							error = function(e) {
 								#if (is.character(expr)) return (expr)
-								if (warn) warning ("Unable to evaluate ", expr, " in call to ", procname)
+								if (warn) {
+                  					error.msg <- paste("Unable to evaluate", expr, "in call to", procname)
+                  					.ddg.insert.error.message(error.msg)
+								}
 								return ("")
 							}
 					)
@@ -1002,30 +1000,23 @@ ddg.MAX_CHECKPOINTS <- 10
 	return (saved.file)
 }
 
-# .ddg.mark.stale.data updates the current attribute of the data nodes. The current 
-# attribute is used to determine which value in the data node table corresponds to 
-# the use of a data item. We want it to find the latest value before the checkpoint.
+# .ddg.mark.stale.data updates the "current" attribute of the data nodes. The current attribute is used to determine which value in the data node table corresponds to the use of a data item. We want the latest value before the checkpoint to be found.
 
-# For data that was in the table when the checkpoint was made, the current attribute
-# should be the same as in the checkpointed table. For data that was created after 
-# the checkpoint was made, the current attribute should be FALSE.
-#
-# The entries for files are examined to determine which was the current version of
-# each file at the time the checkpoint was taken.  If that file no longer exists, or has
-# been modified, the version of the file current at the time of the checkpoint is restored.
+# For data that was in the table when the checkpoint was made, the current attribute should be the same as in the checkpointed table. For data that was created after the checkpoint was made, the current attribute should be FALSE.
+
+# The entries for files are examined to determine which was the current version of each file at the time the checkpoint was taken.  If that file no longer exists, or has been modified, the version of the file current at the time of the checkpoint is restored.
+
 .ddg.mark.stale.data <- function(saved.env) {
 	ddg.files.to.restore <- matrix('', nrow=0, ncol=2, dimnames=list(NULL, c("filename", "original")))
 	
-	# Mark the data that was in the checkpointed table to be 
-	# consistent with the checkpoint
+	# Mark the data that was in the checkpointed table to be consistent with the checkpoint.
 	ddg.dnum <- .ddg.dnum()
 	ddg.data.nodes <- .ddg.data.nodes()
 	ddg.saved.data.nodes <- saved.env[["ddg.data.nodes"]]
 	for (i in 1:ddg.dnum) {
 		ddg.saved.data.nodes$ddg.current[i] <- ddg.data.nodes$ddg.current[i]
 		
-		# Determine what the most recent version of each file is at the time the 
-		# checkpoint was taken.
+		# Determine the most recent version of each file at the time the checkpoint was taken.
 		if (ddg.saved.data.nodes$ddg.type[i] == "File") {
 			nRow<-which(ddg.files.to.restore[,"original"] == ddg.saved.data.nodes$ddg.loc[i])
 			if (length(nRow) > 0) {
@@ -1062,8 +1053,7 @@ ddg.MAX_CHECKPOINTS <- 10
 			original <- ddg.files.to.restore[i,2]
 			saved <- paste(ddg.path, ddg.files.to.restore[i,1], sep="/")
 			
-			# Original file is newer than the one to be restored from the DDG.
-			# Save the original file in a special place before restoring the DDG file.
+			# Original file is newer than the one to be restored from the DDG. Save the original file in a special place before restoring the DDG file.
 			if (file.exists(original)) {
 				modTime.original <- file.info(original)$mtime[1]
 				modTime.saved <- file.info(saved)$mtime[1]
@@ -1085,8 +1075,8 @@ ddg.MAX_CHECKPOINTS <- 10
 	}
 }
 
-# .ddg.restore.ddg.state retores the saved DDG information to be the current 
-# information.
+# .ddg.restore.ddg.state replaces the current informatin with the saved DDG information.
+
 .ddg.restore.ddg.state <- function(saved.env) {	
 	
 	saved.names <- ls (saved.env, all.names = TRUE)
@@ -1112,29 +1102,16 @@ ddg.MAX_CHECKPOINTS <- 10
 	return(ddg.checkpoints$checkpoint.name[nRow])
 }
 
-#-------------------------------USER FUNCTIONS--------------------------------#
+#--------------------USER FUNCTIONS-----------------------#
 
-# ddg.procedure creates a procedure node of type Operation.
-# pname (Optional) - the label for the node.  If the label corresponds to the 
-#	name of an R function, the user will be able to right-click on the node and view
-# 	the definition of the R function.
-#
-#	May be passed in as a string or as a name.
-#
-#   If pname is missing, the node is labeled with the name of the function that called 
-#   ddg.procedure and data edges are created from the input arguments to the procedure node,
-#	if data nodes exist for the arguments.
-#
-# ins (Optional) - the names of data nodes that should be linked as inputs to this procedure
-#	node.  These MUST be passed as strings, not names.  If missing and the procedure name is 
-#	also missing, it looks up the arguments that were passed to the function when it was called.
-#
-# outs (Optional) - the names of data nodes that should be created and linked as 
-#   outputs from this procedure.  These MUST be passed as strings, not names.  If missing, no 
-#	output nodes are created.
-#
-# lookupIns (Optiona) - if true and ins is null, it will try to create the data in 
-#	edges automatically
+# ddg.procedure creates a procedure node of type Operation. pname (optional) - the label for the node.  If the label corresponds to the name of an R function, the user will be able to right-click on the node and view the definition of the R function. pname be passed in as a string or as a name. If pname is missing, the node is labeled with the name of the function that called ddg.procedure.
+
+# ins (optional) - the names of data nodes that should be linked as inputs to this procedure node. These MUST be passed as strings, not names, unless the value is a file name.
+
+# outs (optional) - the names of data nodes that should be created and linked as outputs from this procedure.  These MUST be passed as strings, not names, unless the value is a file name. Supported file extensions include: .csv, .jpg, .jpeg, .pdf, and .txt. If the value ends in .url, a URL node is created.
+
+# lookupIns (optional) - if true and ins is NULL, data edges will be created to the arguments of the function that called ddg.procedure, if the corresponding data nodes exist.
+
 ddg.procedure <- function(pname=NULL, ins=NULL, outs=NULL, lookup.ins = FALSE) {
 	.ddg.lookup.function.name(pname)
 	.ddg.proc.node("Operation",pname, pname)
@@ -1151,18 +1128,17 @@ ddg.procedure <- function(pname=NULL, ins=NULL, outs=NULL, lookup.ins = FALSE) {
 					if (.ddg.debug()) print(paste("param:", param))
 				}
 				else {
-					# Attempt to try to allow names, not strings.  This does not work as written
-					# because what we get when we call substitute is the parameter provided by
-					# lapply, not the one provided to ddg.procedure.  We will have the same
-					# problem dealing with outs.
+					# Attempt to allow names, not strings.  This does not work as written because what we get when we call substitute is the parameter provided by lapply, not the one provided to ddg.procedure.  We will have the same problem dealing with outs.
+          
 					# arg <- substitute(param)
 					# if (!is.character(arg) && .ddg.data.node.exists(arg)) {
 					#	.ddg.data2proc(deparse(arg), pname)
 					#	if (.ddg.debug()) print(paste("param:", deparse(arg)))
+					#   else {warning}
 					#}
-					#else {
-						warning("ddg.procedure:  No data node found for ", param)
-					#}
+          
+					error.msg <- paste("ddg.procedure: No data node found for", param)	
+          			.ddg.insert.error.message(error.msg)
 				}
 			})
 	}
@@ -1180,7 +1156,8 @@ ddg.procedure <- function(pname=NULL, ins=NULL, outs=NULL, lookup.ins = FALSE) {
 							if (.ddg.debug()) print(paste("param:", param))
 						}
 						else {
-							warning("ddg.procedure: Skipping parameter ", param)
+							error.msg <- paste("ddg.procedure: Skipping parameter", param)
+              				.ddg.insert.error.message(error.msg)
 						}
 					})
 		}
@@ -1201,21 +1178,25 @@ ddg.procedure <- function(pname=NULL, ins=NULL, outs=NULL, lookup.ins = FALSE) {
 					.ddg.snapshot.node(name,"csv",value)
 				}
 				else if (length(value) == 1 && is.object(value)) {
+					# Create snapshot node.
 					.ddg.snapshot.node(name,"txt", value)
 				} 
 				else if (length(value) == 1 && is.na(value)) {
+					# Create Data node with value NA.
 					.ddg.data.node("Data",name,NA)
 				}
 				else {
-					# See if the output is a file.
+					# Check if output is a file
 					#value2 <- as.character(value)
 					#x <- strsplit(value2,".",fixed=TRUE)[[1]]
 					if (length(value)==1 && value == "" && is.character(name)) {
 						x <- strsplit(name,".",fixed=TRUE)[[1]]
+            			fname <- name
 					}
 					else if (length(value) == 1 && is.character(value) && value != "") {
 						x <- strsplit(value,".",fixed=TRUE)[[1]]
 						#name <- value
+            			fname <- value
 					}
 				 	else {
 						x <- NULL						
@@ -1223,29 +1204,42 @@ ddg.procedure <- function(pname=NULL, ins=NULL, outs=NULL, lookup.ins = FALSE) {
 					if (!is.null(x)) {
 						fext <- x[length(x)]
 						if (fext=="csv" || fext == "jpeg" || fext == "jpg" || fext == "pdf" || fext == "txt") {
-							.ddg.file.copy("File",value,name)
+              				# Create File node.
+							#.ddg.file.copy("File",value,name)
+						#}
+              				.ddg.file.copy("File",fname,fname)
 						}
 						else {
-							.ddg.data.node("Data",name,value)
+					  		x <- strsplit(name,".",fixed=TRUE)[[1]]
+					  		if (x[length(x)]=="url") {
+              					# Create URL node.
+              					.ddg.data.node("URL",name,value)
+							}
+							else {
+              					# Create Data node.
+								.ddg.data.node("Data",name,value)
+							}
 						}
 					}
 					
 					else {
-						if (length(value) == 1 && value == "") warning ("Unable to evaluate ", deparse(substitute(name)), " in call to ddg.procedure")
+						if (length(value) == 1 && value == "") {
+            				error.msg <- paste("Unable to evaluate", deparse(substitute(name)), "in call to ddg.procedure")
+            				ddg.insert.error.message(error.msg)
+						}
 						# The output is a simple data value.
 						.ddg.data.node("Data",name,value)
 					}
 				}
 				
+     			# Create data flow edge.
 				.ddg.proc2data(pname, name)
 			})
 	}
 }
 
-# ddg.data creates a data node for a single data value.
-# dname - label for the node.  This can be passed as a string or as a name or expression.
-# dvalue (optional) - the value of the node.  If the value is omitted, the argument passed in 
-#    for dname is evaluated in the calling environment to determine the value.
+# ddg.data creates a data node for a single data value. dname - label for the node.  This can be passed as a string, name, or expression. dvalue (optional) - the value of the node.  If the value is omitted, the argument passed in for dname is evaluated in the calling environment to determine the value.
+
 ddg.data <- function(dname,dvalue=NULL) {
 	
 	# Look up the value if one was not provided.
@@ -1259,10 +1253,8 @@ ddg.data <- function(dname,dvalue=NULL) {
 	.ddg.data.node("Data",dname,dvalue)
 }
 
-# ddg.exception creates a data node for an exception
-# dname - label for the node.  This can be passed as a string or as a name or expression.
-# dvalue (optional) - the value of the node.  If the value is omitted, the argument passed in 
-#    for dname is evaluated in the calling environment to determine the value.
+# ddg.exception creates a data node for an exception. dname - label for the node.  This can be passed as a string, name, or expression. dvalue (optional) - the value of the node.  If the value is omitted, the argument passed in for dname is evaluated in the calling environment to determine the value.
+
 ddg.exception <- function(dname,dvalue=NULL) {
 	# Look up the value if one was not provided.
 	env <- parent.frame()
@@ -1275,11 +1267,9 @@ ddg.exception <- function(dname,dvalue=NULL) {
     .ddg.data.node("Exception",dname,dvalue)
 }
 
-# ddg.url creates a data node for a URL.
-# dname - the label to display on the node.  This should be a string.
-# dvalue (optional) - the full URL.  If the value is not provided, dname is used as the value. 
+# ddg.url creates a data node for a URL. dname - label for the node. dvalue (optional) - the full URL.  If a value is not provided, the argument passed in for dname is evaluated in the calling environment to determine the value.
+
 ddg.url <- function(dname,dvalue=NULL) {
-	# If no value was given, use the name as the value.
 	# Look up the value if one was not provided.
 	env <- parent.frame()
 	.ddg.lookup.value(dname, dvalue, env, "ddg.url")
@@ -1291,12 +1281,10 @@ ddg.url <- function(dname,dvalue=NULL) {
 	.ddg.data.node("URL",dname,dvalue)
 }
 
-# ddg.snapshot creates a data node of type Snapshot. The contents of data (or, if data
-# is missing, the contents of dname in the calling environment) are written to file on 
-# the DDG directory. The name of the file is dname.fext. If fext is missing, the file 
-# extension is assumed to be "csv".
+# ddg.snapshot creates a data node of type Snapshot. The contents of data (or, if data is missing, the contents of dname in the calling environment) are written to file on the DDG directory. The name of the file is dname.fext. If fext is missing, the file extension is assumed to be "csv".
+
 ddg.snapshot <- function(dname,fext="csv",data=NULL) {
-	# If data is not provided, get value of dname in calling environment.
+	# If data is not provided, get value of dname in the calling environment.
 	env <- parent.frame()
 	.ddg.lookup.value(dname, data, env, "ddg.snapshot")
 
@@ -1307,20 +1295,14 @@ ddg.snapshot <- function(dname,fext="csv",data=NULL) {
 	.ddg.snapshot.node(dname,fext,data)
 }
 
-# ddg.file creates a data node of type File by copying an existing file to the DDG directory.
-# filename - name of the file to copy, including path to the file if it is not
-# 	in the working directory 
-# dname (Optional) - label for the node.  If omitted the filename, minus directory path,
-# 	will be used as the label
+# ddg.file creates a data node of type File by copying an existing file to the DDG directory. filename - name of the file to copy, including path to the file if it is not in the working directory. dname (optional) - label for the node.  If omitted, the filename, minus the directory path, is used as the label
+
 ddg.file <- function(filename,dname=NULL) {
 	.ddg.file.copy("File",filename,dname)
 }
 
+# ddg.data.in creates a data flow edge from data node dname to procedure node pname. pname (optional) - the name of the procedure that created this data value.  This can be passed as a string or as a name.  If omitted, the name of the function that called ddg.data.in is used. dname - the label for the data node.  This can be passed as a string, name, or expression.
 
-# ddg.data.in creates a data flow edge from data node dname to procedure node pname.
-# pname (Optional) - The name of the procedure that created this data value.  This can be passed
-#	as a string or as a name.  If omitted, the name of the function that called ddg.data.in is used.
-# dname - The label for the data node.  This can be passed as a string or as an expression.
 ddg.data.in <- function(dname, pname=NULL) {
 	.ddg.lookup.function.name(pname)
 	
@@ -1331,14 +1313,8 @@ ddg.data.in <- function(dname, pname=NULL) {
 	.ddg.data2proc(dname,pname)
 }
 
-# ddg.data.out creates a data node of type "Data" called dname with value dvalue. 
-# It also creates a data flow edge from procedure node pname to data node dname. 
-# Use for simple data values.
-# dname - The label for the data node being created.  This can be passed as a string or as an expression.
-# dvalue (Optional) - The value to associate with the node.  If no value is given, the argument 
-# 	passed in for dname is evaluated in the calling environment.
-# pname (Optional) - The name of the procedure that created this data value.  This can be passed
-#	as a string or as a name.  If omitted, the name of the function that called ddg.data.out is used.
+# ddg.data.out creates a data node of type "Data" called dname with value dvalue. It also creates a data flow edge from procedure node pname to data node dname. Use for simple data values. dname - the label for the data node being created.  This can be passed as a string, name, or expression. dvalue (optional) - the value to associate with the node.  If no value is given, the argument passed in for dname is evaluated in the calling environment. pname (optional) - the name of the procedure that created this data value.  This can be passed as a string or as a name.  If omitted, the name of the function that called ddg.data.out is used.
+
 ddg.data.out <- function(dname,dvalue=NULL,pname=NULL) {
 	# If no value is provided, get value in calling environment.
 	env <- parent.frame()
@@ -1353,14 +1329,8 @@ ddg.data.out <- function(dname,dvalue=NULL,pname=NULL) {
 	.ddg.proc2data(pname,dname)
 }
 
-# Note:  we need to add this to the DDG user documentation
-# ddg.exeception.out creates a data node of type Exception.
-# It also creates a data flow edge from the procedural node pname to this node
-# dname - The label for the exception node being created.  This should be a string.
-# dvalue (Optional) - The value to associate with the node.  If no value is given, the argument 
-# 	passed in for dname is evaluated in the calling environment.
-# pname (Optional) - The name of the procedure that created this exception.  This can be passed
-#	as a string or as a name.  If omitted, the name of the function that called ddg.exception.out is used.
+# ddg.exeception.out creates a data node of type Exception. It also creates a data flow edge from the procedure node pname to this node. dname - the label for the exception node being created.  This should be a string. dvalue (optional) - the value to associate with the node.  If no value is given, the argument passed in for dname is evaluated in the calling environment. pname (optional) - The name of the procedure that created this exception.  This can be passed as a string or as a name.  If omitted, the name of the function that called ddg.exception.out is used.
+
 ddg.exception.out <- function(dname,dvalue=NULL, pname=NULL) {
 	# If no value is provided, get value in calling environment.
 	env <- parent.frame()
@@ -1375,13 +1345,8 @@ ddg.exception.out <- function(dname,dvalue=NULL, pname=NULL) {
 	.ddg.proc2data(pname,dname)
 }
 
-# ddg.url.out creates a data node of type URL called dname with address dvalue. 
-# It also creates a data flow edge from procedure node pname to data node dname. 
-# Use for URL addresses.
-# dname - The label for the data node being created.  This should be a string.
-# dvalue (Optional) - the full URL.  If the value is not provided, dname is used as the value.
-# pname (Optional) - The name of the procedure that created this URL.  This can be passed
-#	as a string or as a name.  If omitted, the name of the function that called ddg.url.out is used.
+# ddg.url.out creates a data node of type URL called dname with address dvalue. It also creates a data flow edge from procedure node pname to data node dname. Use for URL addresses. dname - the label for the data node being created. dvalue (optional) - the full URL. If a value is not provided, the argument passed in for dname is evaluated in the calling environment to determine the value. pname (optional) - the name of the procedure that created this URL node.  This can be passed as a string or as a name. If omitted, the name of the function that called ddg.url.out is used.
+
 ddg.url.out <- function(dname,dvalue=NULL, pname=NULL) {
 	# If no value is provided, get value in calling environment.
 	env <- parent.frame()
@@ -1396,18 +1361,8 @@ ddg.url.out <- function(dname,dvalue=NULL, pname=NULL) {
 	.ddg.proc2data(pname,dname)
 }
 
-# ddg.snapshot.out creates a data node of type Snapshot called dname. 
-# It also creates a data flow edge from procedure node pname to data node dname. 
-# It writes contents of data to file dname (with numerical prefix) on DDG directory. 
-# Use for complex data values stored in memory.
-# dname - The label for the data node being created.  
-# fext (Optional) - The file extension for the file that is created.  Its name will
-#   be dname followed by . and then fext.  csv is used of no value is provided.
-#   This should be a string.
-# data (Optional) - the data to write to the file.  If omitted, dname will be evaluated
-#   in the calling environment to get the data to save to the file.
-# pname (Optional) - The name of the procedure that created this URL.  This can be passed
-#	as a string or as a name.  If omitted, the name of the function that called ddg.snapshot.out is used.
+# ddg.snapshot.out creates a data node of type Snapshot called dname. It also creates a data flow edge from procedure node pname to data node dname. The contents of data are written to the file dname (with numerical prefix) on the DDG directory. Use for complex data values stored in memory. dname - the label for the data node being created. fext (optional) - the file extension for the file (dname.fext) that is created. fext should be a string. csv is used if no value is provided. data (optional) - the data to write to the file.  If omitted, dname will be evaluated in the calling environment to get the data to be saved to file. pname (optional) - the name of the procedure that created this node.  This can be passed as a string or as a name.  If omitted, the name of the function that called ddg.snapshot.out is used.
+
 ddg.snapshot.out <- function(dname,fext="csv",data=NULL,pname=NULL) {
     # If data is not provided, get value of dname in calling environment.
 	env <- parent.frame()
@@ -1425,22 +1380,14 @@ ddg.snapshot.out <- function(dname,fext="csv",data=NULL,pname=NULL) {
 	.ddg.proc2data(pname,dname)
 }
 
-# ddg.file.out creates a data node of type File called dname by copying an existing file to the DDG. 
-# Path to original file is optionally specified in dloc (otherwise current working directory is assumed). 
-# It also creates a data flow edge from procedure node pname to data node dname. 
-# Copies existing output file called dname to new file called dname (with numerical prefix) on DDG directory. 
-# Use for output file already created in the main script.
-# filename - name of the file.  The name should include the path to the file if it is not in the
-#	working directory.
-# dname (Optional) - label for the node.  If omitted the filename, minus directory path,
-# 	will be used as the label
-# pname (Optional) - The name of the procedure that created this URL.  This can be passed
-#	as a string or as a name.  If omitted, the name of the function that called ddg.file.out is used.
-# ddg.file.out returns the full path to the file that was saved.
+# ddg.file.out creates a data node of type File called dname by copying an existing file to the DDG directory. The path to the original file is optionally specified in dloc (otherwise the current working directory is assumed). A data flow edge is also created from procedure node pname to data node dname. The existing output file is copied to a new file called dname (with numerical prefix) on the DDG directory. Use for output files already created by the main script.
+
+# filename - name of the file.  The name should include the path to the file if it is not in the working directory. dname (optional) - the label for the node.  If omitted, the filename, minus the directory path, is used as the label. pname (optional) - the name of the procedure that created this node.  This can be passed as a string or as a name.  If omitted, the name of the function that called ddg.file.out is used. ddg.file.out returns the full path to the file that is saved.
+
 ddg.file.out <- function(filename,dname=NULL,pname=NULL) {
 	if (is.null(dname)) dname <- basename(filename)
 	
-	# Create output file node where name = filename. Copy file.
+	# Create output file node called filename and copy file.
 	saved.file <- .ddg.file.copy("File",filename,dname)
 	
 	.ddg.lookup.function.name(pname)
@@ -1451,9 +1398,8 @@ ddg.file.out <- function(filename,dname=NULL,pname=NULL) {
 	return (saved.file)
 }
 
-# ddg.start creates a procedure node of type Start called pname.
-# pname (Optional) - The label for the node.  This can be passed
-#	as a string or as a name.  If omitted, the name of the function that called ddg.start is used.
+# ddg.start creates a procedure node of type Start called pname. pname (optional) - the label for the node.  This can be passed as a string or as a name.  If omitted, the name of the function that called ddg.start is used. Users can right-click on a start node in DDG Explorer and see the code between start and finish nodes in the original script.
+
 ddg.start <- function(pname=NULL) {
 	.ddg.lookup.function.name(pname)
 	
@@ -1465,9 +1411,8 @@ ddg.start <- function(pname=NULL) {
 	
 }
 
-# ddg.finish creates a procedure node of type Finish called pname.
-# pname (Optional) - The label for the node.  This can be passed
-#	as a string or as a name.  If omitted, the name of the function that called ddg.finish is used.
+# ddg.finish creates a procedure node of type Finish called pname. pname (optional) - the label for the node.  This can be passed as a string or as a name.  If omitted, the name of the function that called ddg.finish is used. Users can right-click on a finish node in DDG Explorer and see the code between start and finish nodes in the original script.
+
 ddg.finish <- function(pname=NULL) {
 	.ddg.lookup.function.name(pname)
 	
@@ -1478,12 +1423,8 @@ ddg.finish <- function(pname=NULL) {
 	.ddg.proc2proc()
 }
 
-# ddg.checkpoint saves the current R state in a file and adds
-# a checkpoint node to the DDG.  
-# It creates a procedural node labeled with the checkpoint name and a snapshot node labeled
-# with the name of the checkpoint file created.
-# It returns the full path to the file that the checkpoint is saved in.
-# checkpoint.name (Optional) - the value associated with the checkpoint procedure node.
+# ddg.checkpoint saves the current R state in a file and adds a checkpoint node to the DDG. It creates a procedural node labeled with the checkpoint name and a snapshot node labeled with the name of the checkpoint file created. It returns the full path to the file that the checkpoint is saved in. checkpoint.name (optional) - the value associated with the checkpoint procedure node.
+
 ddg.checkpoint <- function(checkpoint.name=NULL) {
 	if (.ddg.debug()) print("Creating checkpoint")
 	ddg.checkpoint.num <- .ddg.get("ddg.checkpoint.num")
@@ -1500,14 +1441,8 @@ ddg.checkpoint <- function(checkpoint.name=NULL) {
 	return (checkpoint.file)
 }
 
-# ddg.restore restores the state saved in a checkpoint file.
-# It creates a procedure node in the ddg labeled ddg.restore
-# and a link from the file node representing the checkpointed file
-# to the restore node.  The DDG tables are updated
-# so the DDG will be extended to include the actions between the checkpoint and 
-# restore but the data flow edges will like to the data that existed when the 
-# checkpoint was made.
-# file.path - the name of the checkpoint file to restore
+# ddg.restore restores the state saved in a checkpoint file. It creates a procedure node in the DDG labeled ddg.restore and a link from the file node representing the checkpointed file to the restore node.  The DDG tables are updated so the DDG will be extended to include the actions between the checkpoint and restore but the data flow edges will link to the data that existed when the checkpoint was made. file.path - the name of the checkpoint file to restore.
+
 ddg.restore <- function(file.path) {
 	# Remove the directories.
 	file.name <- basename(file.path)
@@ -1525,9 +1460,7 @@ ddg.restore <- function(file.path) {
 	
 	if (.ddg.debug()) print(paste("Restoring from", file.path))
 	
-	# Update the ddg tables so that the ddg will get extended to
-	# include the actions between the chekcpoint and restore, but data edges
-	# will link to the data that existed at the time the checkpoint was made.
+	# Update the ddg tables so that the ddg will get extended to include the actions between the checkpoint and restore, but the data edges will link to the data that existed at the time the checkpoint was made.
 
 	saved.ddg.env <- .ddg.env
 	load (file.path, parent.env(environment()))
@@ -1535,12 +1468,8 @@ ddg.restore <- function(file.path) {
 	.ddg.restore.ddg.state(saved.ddg.env)
 }
 
-# ddg.init intializes a new ddg
-# r.script.path (Optional) - the full path to the R script file.  If provided,
-#	a copy of the script will be saved with the DDG.
-# ddgdir (Optional) - the directory where the DDG should be saved.  If not provided,
-#	the ddg will be saved in a directory called "ddg" within the current working
-#	directory.
+# ddg.init intializes a new ddg. r.script.path (optional) - the full path to the R script file.  If provided, a copy of the script will be saved with the DDG. ddgdir (optional) - the directory where the DDG should be saved. If not provided, the DDG will be saved in a subdirectory called "ddg" in the current working directory.
+
 ddg.init <- function(r.script.path = NULL, ddgdir = NULL, enable.console = FALSE) {
 	.ddg.init.tables()
 	
@@ -1555,7 +1484,8 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, enable.console = FALSE
 	if (interactive() && .ddg.enable.console()) {
 		ddg.history.file <- paste(.ddg.path(),".ddghistory",sep="/")
 		.ddg.set("ddg.history.file", ddg.history.file)
-		file.create(ddg.history.file)  # Empties the file if it already exists
+		# Empty file if it already exists.
+    	file.create(ddg.history.file)
 		
 		.ddg.write.timestamp.to.history()
 		savehistory(ddg.history.file)
@@ -1563,20 +1493,12 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, enable.console = FALSE
 	}
 }
 
-# ddg.run executes the function fname which contains the main program. 
-# If an R error is generated, it captures the error message and saves it in the DDG. 
-# Note: this function includes a call to ddg.init and ddg.save(), so it is not necessary
-# to call those functions from an instrumented script if ddg.run is used.
-# f - the function to run
-# r.script.path (Optional) - the full path to the R script file.  If provided,
-#	a copy of the script will be saved with the DDG.
-# ddgdir (Optional) - the directory where the ddg should be saved.  If not provided,
-#	the ddg will be saved in a directory called "ddg" within the current working
-#	directory.
+# ddg.run executes the function fname which contains the main program. If an R error is generated, the error message is captured and saved in the DDG. Note: this function includes calls to ddg.init() and ddg.save(), so it is not necessary to call those functions from an instrumented script if ddg.run is used. f - the function to run. r.script.path (optional) - the full path to the R script file.  If provided, a copy of the script will be saved with the DDG. ddgdir (optional) - the directory where the DDG should be saved.  If not provided, the DDG will be saved in a subdirectory called "ddg" in the current working directory.
+
 ddg.run <- function(f, r.script.path = NULL, ddgdir = NULL, enable.console = FALSE) {
     ddg.init(r.script.path, ddgdir, enable.console)
 	
-    # If an R error is generated, get error message and close ddg.
+    # If an R error is generated, get the error message and close the DDG.
     tryCatch(
 		f(),
 		error=function(e) {
@@ -1589,8 +1511,8 @@ ddg.run <- function(f, r.script.path = NULL, ddgdir = NULL, enable.console = FAL
 	)
 }
 
-# ddg.save inserts attribute information and the number of procedure steps at the top of the DDG. 
-# It writes the DDG and nodes tables to the DDG directory.
+# ddg.save inserts attribute information and the number of procedure steps at the top of the DDG. It writes the DDG, the procedure nodes table, and the data nodes table to the DDG directory.
+
 ddg.save <- function() {
 	if (interactive() && .ddg.enable.console()) {
 		.ddg.console.node()
@@ -1600,9 +1522,7 @@ ddg.save <- function() {
 	# Get environment parameters.
 	ddg.env <- .ddg.environ()
 	
-	# Insert environment parameters and number of procedures at top of ddg.
-	# Use a variable other than ddg.text so that ddg.save can be called
-	# more than once on the same ddg and only get one copy of the attributes.
+	# Insert the environment parameters and the number of procedures at the top of the DDG. Use a variable other than ddg.text so that ddg.save can be called more than once on the same DDG without generating more than one copy of the attributes.
 	output <- paste(ddg.env,.ddg.pnum(),"\n",.ddg.get("ddg.text"),sep="")
 	
 	# Save DDG to file.
@@ -1633,12 +1553,16 @@ ddg.debug.off <- function () {
 	.ddg.set("ddg.debug", FALSE)
 }
 
-# ddg.flush.ddg removes files from DDG directory.
+# ddg.flush.ddg removes selected files from the DDG directory.
 ddg.flush.ddg <- function () {
-    # Check to see that ddg.path exists and is different from working directory.
-  	ddg.path <- .ddg.path()
-    if (file.exists(ddg.path) && ddg.path != getwd()) {
-        unlink(paste(ddg.path,"/*.*",sep=""))
-    }
+	ddg.path <- .ddg.path()
+	# Do not remove files unless ddg.path exists and is different from the working directory.
+  	if (file.exists(ddg.path) && ddg.path != getwd()) {
+    	unlink(paste(ddg.path,"ddg.txt",sep="/"))
+    	unlink(paste(ddg.path,"dnodes.txt",sep="/"))
+    	unlink(paste(ddg.path,"pnodes.txt",sep="/"))
+    	unlink(paste(ddg.path,".ddghistory",sep="/"))
+    	unlink(paste(ddg.path,"[1-9][0-9]*-*.*",sep="/"))
+  	}
 }
 
