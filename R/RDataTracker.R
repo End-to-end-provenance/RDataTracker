@@ -39,7 +39,7 @@ ddg.MAX_CHECKPOINTS <- 10
 
 .ddg.get <- function(var) {
 	if (!exists(var, envir=.ddg.env)) {
-    	error.msg <- paste("No binding for", var, "! DDG may be incorrect.")
+    	error.msg <- paste("No binding for", var, ". DDG may be incorrect!")
     	.ddg.insert.error.message(error.msg)
     	return(NULL)
 	}
@@ -252,7 +252,7 @@ ddg.MAX_CHECKPOINTS <- 10
 	}
 
 	# Error message if no match is found.
-    error.msg <- paste(".ddg.proc.number: No procedure node found for", pname)
+    error.msg <- paste("No procedure node found for", pname)
     .ddg.insert.error.message(error.msg)  
 	return(0)
 }
@@ -294,7 +294,7 @@ ddg.MAX_CHECKPOINTS <- 10
 
 .ddg.proc.name <- function(pnum) {
 	if (pnum < 1 || pnum > .ddg.pnum()) {
-		error.msg <- paste(".ddg.proc.name: No name found for procedure number", pnum)
+		error.msg <- paste("No name found for procedure number", pnum)
         .ddg.insert.error.message(error.msg)
 		return ("")
 	}
@@ -843,7 +843,7 @@ ddg.MAX_CHECKPOINTS <- 10
 	}
 	else if (fext == "RData") file.rename(paste(ddg.path,"/",dname,sep=""),dpfile)
 	else {
-    	error.msg <- paste(".ddg.snapshot.node: file extension", fext, "not recognized")
+    	error.msg <- paste("File extension", fext, "not recognized")
     	.ddg.insert.error.message(error.msg)
     	return(NULL)
 	}
@@ -884,7 +884,7 @@ ddg.MAX_CHECKPOINTS <- 10
 	# Copy file.
 	if (file.exists(file.loc)) file.copy(file.loc,dpfile.out,overwrite=TRUE)
 	else {
-    	error.msg <- paste(".ddg.file.copy: file to copy does not exist:", file.loc) 
+    	error.msg <- paste("File to copy does not exist:", file.loc) 
     	.ddg.insert.error.message(error.msg)
     	return(NULL)
 	}
@@ -1137,7 +1137,7 @@ ddg.procedure <- function(pname=NULL, ins=NULL, outs=NULL, lookup.ins = FALSE) {
 					#   else {warning}
 					#}
           
-					error.msg <- paste("ddg.procedure: No data node found for", param)	
+					error.msg <- paste("No data node found for", param)	
           			.ddg.insert.error.message(error.msg)
 				}
 			})
@@ -1156,7 +1156,7 @@ ddg.procedure <- function(pname=NULL, ins=NULL, outs=NULL, lookup.ins = FALSE) {
 							if (.ddg.debug()) print(paste("param:", param))
 						}
 						else {
-							error.msg <- paste("ddg.procedure: Skipping parameter", param)
+							error.msg <- paste("Skipping parameter", param)
               				.ddg.insert.error.message(error.msg)
 						}
 					})
