@@ -2,15 +2,15 @@
 \alias{ddg.debug.on}
 \alias{ddg.debug.off}
 \title{RDataTracker Debugging}
-\description{These functions allow the user to turn debugging output on during the collection of 
-  provenance data by RDataTracker}
+\description{These functions turn debugging output on or off during the collection of data provenance 
+  by RDataTracker. }
 \usage{
 ddg.debug.on()
 ddg.debug.off()
 }
 \details{
-  With debugging on, RDataTracker displays output as the provenance graph is created, showing 
-  each node and edge that is created.
+  With debugging on, RDataTracker displays output in the console as the provenance graph is created, 
+  showing each node and edge that is created.  Debugging is off by default.
 }
 \author{Emery Boose and Barbara Lerner}
 \examples{
