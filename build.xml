@@ -1,0 +1,57 @@
+<project
+	xmlns:if="ant:if"
+    xmlns:unless="ant:unless">
+    
+    <property name="builddir" value="${user.home}/Documents/Process/DataProvenance/RDataTracker"/>
+
+    <target name="build-directory">
+    	<mkdir dir="${builddir}"/>
+    </target>
+
+    <target name="copy-to-directory" depends="build-directory">
+    	<copy todir="${builddir}/inst">
+    		<fileset dir="inst">
+      			<exclude name="\.*"/>
+    		</fileset>
+  		</copy>
+    	<copy todir="${builddir}/man">
+    		<fileset dir="man">
+      			<exclude name="\.*"/>
+    		</fileset>
+  		</copy>
+    	<copy todir="${builddir}/R">
+    		<fileset dir="R">
+      			<exclude name="\.*"/>
+    		</fileset>
+  		</copy>
+  		<copy file="DESCRIPTION" todir="${builddir}"/>
+  		<copy file="LICENSE" todir="${builddir}"/>
+  		<copy file="NAMESPACE" todir="${builddir}"/>
+  		<copy file="README.md" todir="${builddir}"/>
+    </target>
+    
+    <target name="check" depends="copy-to-directory">
+    	<exec dir="${builddir}/.." executable="R" >
+  			<arg line="CMD check ${builddir}"/>
+		</exec>
+    </target>
+
+    <target name="build" depends="copy-to-directory">
+    	<exec dir="${builddir}/.." executable="R" >
+  			<arg line="CMD build ${builddir}"/>
+		</exec>
+    </target>
+
+    <target name="install" depends="copy-to-directory">
+    	<exec dir="${builddir}/.." executable="R" >
+  			<arg line="CMD INSTALL ${builddir}"/>
+		</exec>
+    </target>
+    
+    <target name="cran-check" depends="build">
+    	<exec dir="${builddir}/.." executable="R" >
+  			<arg line="CMD check --as-cran ${builddir}"/>
+		</exec>
+    </target>
+
+</project>
