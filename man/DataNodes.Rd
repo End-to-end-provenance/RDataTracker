@@ -5,42 +5,38 @@
 \alias{ddg.url}
 \alias{ddg.exception}
 \title{RDataTracker Data Nodes}
-\description{The functions described here are used to create data nodes within a provenance graph
-  created by RDataTracker.}
+\description{These functions create data nodes within a provenance graph created by RDataTracker.}
 \usage{
-ddg.data(dname, dvalue=NULL)
-ddg.file(filename, dname=NULL)
-ddg.snapshot(dname, fext="csv", data=NULL)
-ddg.url(dname, dvalue=NULL)
-ddg.exception(dname, dvalue=NULL)
+ddg.data(dname, dvalue = NULL)
+ddg.file(filename, dname = NULL)
+ddg.snapshot(dname, fext = "csv", data = NULL)
+ddg.url(dname, dvalue = NULL)
+ddg.exception(dname, dvalue = NULL)
 }
 \arguments{
-  \item{dname}{ the label for the node }
-  \item{dvalue}{ data's value }
-  \item{filename}{ name of the file to copy }
-  \item{fext}{ the extension to use for the file name }
-  \item{data}{ the value to save in the file }
+  \item{dname}{ the label for the node. }
+  \item{dvalue}{ the value of the data. }
+  \item{filename}{ the name of the file to copy. }
+  \item{fext}{ the extension to use for the file name. }
+  \item{data}{ the value to save in the file. }
   
 }
-\details{ddg.data creates a data node for a single data value.
+\details{ddg.data creates a data node for a single data value. dname can either be a quoted string 
+  or an expression.  If an expression is passed in, the label on the node will be the unevaluated 
+  expression.  If dvalue is omitted, the argument passed in for dname will be evaluated and its value 
+  used in place of dvalue. 
 
-dname can either be a quoted string or an expression.  If an expression is passed in, 
-the label on the node will be the unevaluated expression. 
+  ddg.file creates a data node of type File and copies an existing file to the DDG directory.
+  If dname is omitted, the filename, minus the directory path, will be used as the label.
+  Use to save a copy of an input file.
 
-If dvalue is omitted, the argument passed in for dname will be evaluated and its value used in place
-of dvalue.
+  ddg.snapshot creates a data node of type Snapshot.  It saves data in a file named by 
+  dname.fext in the DDG directory.  Use to save complex values such as  data frames.
 
-ddg.file creates a data node of type File and copies an existing file to the DDG directory.
-If dname is omitted, the filename, minus directory path, will be used as the label
+  ddg.url creates a data node of type URL.  Use to save a URL that appears in the R script. 
+  dvalue should contain the full URL.  If dvalue is omitted, dname is used as the value.
 
-ddg.snapshot creates a data node of type Snapshot.  It saves data in a file named by 
-  dname.fext in the ddg directory.  This should be used to save complex values, like data frames,
-  in the DDG.
-
-ddg.url creates a data node of type URL.  Use this to remember a URL that is used in a script.  
-dvalue should contain the full URL.  If dvalue is omitted, dname is used as the value.
-
-ddg.exception creates a data node of type Exception.  Use this to record an error that
+  ddg.exception creates a data node of type Exception.  Use to record an error that
   occurs in the script.
 }
 

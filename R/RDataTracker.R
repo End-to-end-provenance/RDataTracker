@@ -849,7 +849,7 @@ ddg.MAX_CHECKPOINTS <- 10
         .ddg.insert.error.message(error.msg)
 				.ddg.set("ddg.dnum", .ddg.dnum() - 1)
 				return (.ddg.data.node (dtype, dname, "complex"))
-	}
+    	}
 		)
 
 	}
@@ -914,7 +914,7 @@ ddg.MAX_CHECKPOINTS <- 10
 	# Increment data counter.
 	.ddg.inc("ddg.dnum")
 	
-    # Get file name.
+  # Get file name.
 	ddg.dnum <- .ddg.dnum()
 	dfile <- 
 		if (fext == "" || is.null(fext)) paste(ddg.dnum, "-", dname, sep="")
@@ -1058,8 +1058,8 @@ ddg.MAX_CHECKPOINTS <- 10
 							error = function(e) {
 								# if (is.character(expr)) return (expr)
 								if (warn) {
-                  					error.msg <- paste("Unable to evaluate", expr, "in call to", procname)
-                  					.ddg.insert.error.message(error.msg)
+                  error.msg <- paste("Unable to evaluate", expr, "in call to", procname)
+                  .ddg.insert.error.message(error.msg)
 								}
 								return ("")
 							}
@@ -1253,14 +1253,14 @@ ddg.MAX_CHECKPOINTS <- 10
 # created to the arguments of the function that called ddg.procedure, 
 # if the corresponding data nodes exist.
 
-ddg.procedure <- function(pname=NULL, ins=NULL, outs=NULL, lookup.ins = FALSE) {
+ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.data=NULL, outs.exception=NULL, outs.url=NULL, outs.snapshot=NULL, outs.file=NULL) {
 	.ddg.lookup.function.name(pname)
 	.ddg.proc.node("Operation", pname, pname)
 	
 	# Create control flow edge from preceding procedure node.
 	.ddg.proc2proc()
 	
-	# Create the input edges for the parameters.
+	# Create the input edges if ins list provided.
 	if (!is.null(ins)) {
 		lapply(ins, 
 			function(param) {
@@ -1287,7 +1287,8 @@ ddg.procedure <- function(pname=NULL, ins=NULL, outs=NULL, lookup.ins = FALSE) {
 				}
 			})
 	}
-	else if (lookup.ins) {
+	# Look up input parameters from calling environment.
+  else if (lookup.ins) {
 		call <- sys.call(-1)
 		tokens <- unlist(strsplit (as.character(call), "[(,)]"))
 		
@@ -1308,78 +1309,122 @@ ddg.procedure <- function(pname=NULL, ins=NULL, outs=NULL, lookup.ins = FALSE) {
 		}
 	}
 	
-	# Create the output edges for the parameters.
-    if (!is.null(outs)) {
-    	lapply(outs, 
-			function(param) {
-				# Get value in calling environment.
-				name <- param
-				value <- NULL
-				env <- parent.frame(3)
-				.ddg.lookup.value(name, value, env, "ddg.procedure", warn=FALSE)
-				
-				if (is.data.frame(value)) {
-					# Create snapshot node.
-					.ddg.snapshot.node(name, "csv", value)
-				}
-				else if (length(value) == 1 && is.object(value)) {
-					# Create snapshot node.
-					.ddg.snapshot.node(name, "txt", value)
-				} 
-				else if (length(value) == 1 && is.na(value)) {
-					# Create Data node with value NA.
-					.ddg.data.node("Data", name, NA)
-				}
-				else {
-					# Check if output is a file.
-					# value2 <- as.character(value)
-					# x <- strsplit(value2, ".", fixed=TRUE)[[1]]
-					if (length(value) == 1 && value == "" && is.character(name)) {
-						x <- strsplit(name, ".", fixed=TRUE)[[1]]
-            			fname <- name
-					}
-					else if (length(value) == 1 && is.character(value) && value != "") {
-						x <- strsplit(value, ".", fixed=TRUE)[[1]]
-						# name <- value
-            fname <- value
-					}
-				 	else {
-						x <- NULL						
-					}
-					if (!is.null(x)) {
-						fext <- x[length(x)]
-						if (fext == "csv" || fext == "jpeg" || fext == "jpg" || fext == "pdf" || fext == "txt") {
-        		  # Create File node.
-						  # .ddg.file.copy("File", value, name)
-						  # }
-              .ddg.file.copy("File", fname, fname)
-						}
-						else {
-					  	x <- strsplit(name, ".", fixed=TRUE)[[1]]
-					  	if (x[length(x)] == "url") {
-                # Create URL node.
-              	.ddg.data.node("URL", name, value)
-							}
-							else {
-              	# Create Data node.
-								.ddg.data.node("Data", name, value)
-							}
-						}
-					}
-					
-					else {
-						if (length(value) == 1 && value == "") {
-            				error.msg <- paste("Unable to evaluate", deparse(substitute(name)), "in call to ddg.procedure")
-            				ddg.insert.error.message(error.msg)
-						}
-						# The output is a simple data value.
-						.ddg.data.node("Data", name, value)
-					}
-				}
-				
-     			# Create data flow edge.
-				.ddg.proc2data(pname, name)
-			})
+	# Create output nodes and edges if outs list provided.
+
+  # Data node.
+  if (!is.null(outs.data)) {
+    lapply(outs.data,
+      function(param) {
+        # Get value in calling environment.
+        name <- param
+        value <- NULL
+        env <- parent.frame(3)
+        .ddg.lookup.value(name, value, env, "ddg.procedure", warn=FALSE)
+
+        if (length(value) == 1 && is.na(value)) {
+          # Data node with value NA.
+          .ddg.data.node("Data", name, NA)            
+          .ddg.proc2data(pname, name)
+        }
+        else if (length(value) == 1) {
+          # Data node.
+          .ddg.data.node("Data", name, value)
+          .ddg.proc2data(pname, name)
+        }
+        else {
+          # Not a simple value.
+          error.msg = paste(name,"is not a simple value")
+          .ddg.insert.error.message(error.msg)
+        }
+      }
+    )  
+  }    
+  
+	# Exception node.
+	if (!is.null(outs.exception)) {
+	  lapply(outs.exception,
+	    function(param) {
+	      # Get value in calling environment.
+	      name <- param
+	      value <- NULL
+	      env <- parent.frame(3)
+	      .ddg.lookup.value(name, value, env, "ddg.procedure", warn=FALSE)
+ 
+        # Exception node.
+        .ddg.data.node("Exception", name, value)
+        .ddg.proc2data(pname, name)
+	    }
+	  )
+  }
+	
+	# URL node.
+	if (!is.null(outs.url)) {
+	  lapply(outs.url,
+      function(param) {
+	      # Get value in calling environment.
+	      name <- param
+	      value <- NULL
+	      env <- parent.frame(3)
+	      .ddg.lookup.value(name, value, env, "ddg.procedure", warn=FALSE)
+
+        # URL node.
+        .ddg.data.node("URL", name, value)
+	      .ddg.proc2data(pname, name)
+      }
+	  )
+	}
+	
+	# Snapshot node.
+	if (!is.null(outs.snapshot)) {
+	  lapply(outs.snapshot,
+	    function(param) {
+	      # Get value in calling environment.
+	      name <- param
+	      value <- NULL
+	      env <- parent.frame(3)
+	      .ddg.lookup.value(name, value, env, "ddg.procedure", warn=FALSE)
+ 
+	      if (is.vector(value) || is.matrix(value) || is.data.frame(value)) {
+	        # Vector, matrix, or data frame.
+	        .ddg.snapshot.node(name, "csv", value)
+	        .ddg.proc2data(pname, name)
+	      }
+	      else if (length(value) == 1 && is.object(value)) {
+	         # Class.
+	         .ddg.snapshot.node(name, "txt", value)
+	         .ddg.proc2data(pname, name)
+	      }
+	      else {
+          # Unable to create Snapshot node.
+          error.msg <- "Unable to create Snapshot node"
+          .ddg.insert.error.message(error.msg)
+	      }  
+	    }
+	  )
+	}
+	
+	# File node.
+	if (!is.null(outs.file)) {
+	  lapply(outs.file,
+	    function(param) {
+	      # Get value in calling environment.
+	      name <- param
+	      value <- NULL
+	      env <- parent.frame(3)
+	      .ddg.lookup.value(name, value, env, "ddg.procedure", warn=FALSE)
+
+        if (value == "") {
+          # Filename passed as value.          
+          .ddg.file.copy("File", name, name)
+          .ddg.proc2data(pname, name)
+        }
+        else {
+          # Filename passed as name.
+          .ddg.file.copy("File", value, name)
+          .ddg.proc2data(pname, name)
+        }
+	    }
+	  )
 	}
 }
 

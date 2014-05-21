@@ -1,32 +1,44 @@
-\name{ProcedureNodes}
+\name{ProcNodes}
 \alias{ddg.procedure}
 \alias{ddg.start}
 \alias{ddg.finish}
 \title{RDataTracker Procedural Nodes}
-\description{These functions are used to create procedural nodes and abstraction nodes 
-  in the provenance graph created by RDataTracker.}
+\description{These functions create procedural nodes and abstraction nodes within a provenance 
+  graph created by RDataTracker.}
 \usage{
-ddg.procedure(pname=NULL, ins=NULL, outs=NULL, 
-    lookup.ins = FALSE)
-ddg.start(pname=NULL)
-ddg.finish(pname=NULL)
+ddg.procedure(pname = NULL, lookup.ins = FALSE, ins = NULL, outs.data = NULL, 
+  outs.file = NULL, outs.snapshot = NULL, outs.url = NULL, outs.exception = NULL)
+ddg.start(pname = NULL)
+ddg.finish(pname = NULL)
 }
 \arguments{
-  \item{pname}{ the label for the node }
-  \item{ins}{ a list of names of data nodes that should be linked as inputs to the node being created.
-    These must be passed as quoted strings. }
-  \item{outs}{ a list of names of data nodes that should be created and linked as outputs to the node being created.
-    These must be passed as quoted strings. }
-  \item{lookup.ins}{ if true and ins is null, ddg.procedure will try to create the data in edges automatically }
+  \item{pname}{ the label for the node. }
+  \item{lookup.ins}{ if TRUE and ins is NULL, ddg.procedure will try to create the input data edges automatically. }
+  \item{ins}{ a list of names of data nodes to be linked as inputs to the node being created. }
+  \item{outs.data}{ a list of names of data nodes to be created and linked as outputs to the node being created. }
+  \item{outs.file}{ a list of names of file nodes to be created and linked as outputs to the node being created. }
+  \item{outs.snapshot}{ a list of names of snapshot nodes to be created and linked as outputs to the node being created. }
+  \item{outs.url}{ a list of names of url nodes to be created and linked as outputs to the node being created. }
+  \item{outs.exception}{ a list of names of exception nodes to be created and linked as outputs to the node being created. }
 }
 \details{
-  ddg.procedure creates a node of type Operation.  If pname is NULL, the name of the procedure
-  that called ddg.procedure() will be used as the label of the node.  If pname is the name of 
+  ddg.procedure creates a node of type Operation.  If pname is NULL, the name of the function
+  that called ddg.procedure() will be used as the name of the node.  If pname is the name of 
   a function, the user can right-click on it in DDG Explorer to see the corresponding function 
   definition.
   
-  If pname and ins are both NULL and lookup.ins is TRUE, ddg.procedure will create a data flow edge for each
+  If ins is NULL and lookup.ins is TRUE, ddg.procedure will create a data flow edge for each
   argument that was passed to the function that called ddg.procedure.
+  
+  If ins is not NULL, ddg.procedure will create a data flow edge from each data node in the list.  
+  Data nodes may be of type data, file, snapshot, url, or exception.  Node names must be passed 
+  as quoted strings.  For files, the node name may be the name of the file or the name of a variable that 
+  holds the name of the file.
+  
+  If outs.data, etc is not NULL, ddg.procedure will create a node of the specified type (data, file, snapshot,
+  url, or exception) for each name in the list along with a data flow edge to that node.  Node names must be 
+  passed as quoted strings.  For files, the node name may be the name of the file or the name of a variable 
+  that holds the name of the file.
   
   ddg.start() and ddg.finish() should come in matching pairs.  ddg.start() should precede ddg.finish().  
   For each call made to ddg.start() when the script is executed, there should be exactly one call made
@@ -36,8 +48,8 @@ ddg.finish(pname=NULL)
   ddg.start creates a Start node labeled with pname.  ddg.finish() creates a Finish node labeled with 
   the same name.  If pname is NULL, the name of the function that called ddg.start() or ddg.finish() 
   will be used for pname.  In DDG Explorer, ddg.start() ... ddg.finish() pairs can be collapsed 
-  into a single node to make the visualization smaller and easier to understand.  Also, in DDG Explorer, 
-  the user can right-click on a Start of Finish or collapsed Start/Finish node to see all of the R code 
+  into a single node to make the visualization smaller and easier to understand.  The user can also 
+  right-click in DDG Explorer on a Start or Finish or collapsed Start/Finish node to see all of the R code 
   between the start and finish.
 }
 \author{Emery Boose and Barbara Lerner}
@@ -47,7 +59,7 @@ ddg.init()
 a <- 0
 myfunc <- function() {
   b <<- a + 1
-  ddg.procedure(ins=list("a"), outs=list("b"))
+  ddg.procedure(ins=list("a"), outs.data=list("b"))
 }
 
 secondfunc <- function() {
