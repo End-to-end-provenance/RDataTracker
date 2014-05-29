@@ -1088,33 +1088,7 @@ ddg.MAX_CHECKPOINTS <- 10
 	if (.ddg.debug()) print(paste("Saving checkpoint in", dpfile.out))
 
 	# Create checkpoint.
-#   if (.ddg.debug()) {
-#     print("Parent.frame(1)")
-#     print(ls(envir=parent.frame(1)))
-#     print("\nParent.frame(2)")
-#     print(ls(envir=parent.frame(2)))
-#     print("\nParent.frame(3)")
-#     print(ls(envir=parent.frame(3)))
-#     print("Parent env of frame 3")
-#     print(ls(envir=parent.env(parent.frame(3))))
-#     print("\nParent.frame(4)")
-#     print(ls(envir=parent.frame(4)))
-#     print("\nParent.frame(5)")
-#     print(ls(envir=parent.frame(5)))
-#     print("\nGlobals")
-#     print(ls(envir=.GlobalEnv))
-#     print("\nsys.frame(0)")
-#     print(ls(envir=sys.frame()))
-#  }
-#  toSave <- ls(envir=parent.frame(3))
-#  toSave <- c(toSave, ls(envir=parent.env(parent.frame(3))))
-  toSave <- ls(envir=.GlobalEnv)
-  print("toSave:")  
-  print(toSave)
-
-	save(list = toSave, file = dpfile.out, envir = parent.frame(3))
-	#save(file = dpfile.out, envir=parent.frame(3))
-  #save.image(dpfile.out)
+	save.image(dpfile.out)
 	
 	# Create the node.
 	dtime <- .ddg.timestamp()
@@ -1781,15 +1755,10 @@ ddg.restore <- function(file.path) {
   # the actions between the checkpoint and restore, but the data edges 
   # will link to the data that existed at the time the checkpoint was 
   # made.
-  
-	if (.ddg.debug()) print(paste("Saving ddg state"))
+
 	saved.ddg.env <- .ddg.env
-	if (.ddg.debug()) print(paste("Loading file"))
-	#load (file.path, parent.env(environment()), verbose=TRUE)
-	load (file.path, .GlobalEnv, verbose=TRUE)
-  if (.ddg.debug()) print(paste("Marking stale data"))
+	load (file.path, parent.env(environment()))
 	.ddg.mark.stale.data(saved.ddg.env)
-	if (.ddg.debug()) print(paste("Restoring ddg state"))
 	.ddg.restore.ddg.state(saved.ddg.env)
 }
 
