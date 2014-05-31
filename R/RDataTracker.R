@@ -642,8 +642,8 @@ ddg.MAX_CHECKPOINTS <- 10
 # simple assignment.  An edge is created from the last node in the 
 # console block.
 
-.ddg.create.data.node.for.possible.writes <- function (vars.set, quoted.commands) {
-	last.command <- quoted.commands[length(quoted.commands)]
+.ddg.create.data.node.for.possible.writes <- function (vars.set, last.command) {
+
 	for (i in 1:nrow(vars.set)) {
 		if (vars.set$possible.last.writer[i] > vars.set$last.writer[i]) {
 			value <- tryCatch(eval(parse(text=vars.set$variable[i]), .GlobalEnv),
@@ -728,6 +728,7 @@ ddg.MAX_CHECKPOINTS <- 10
 	.ddg.set(".ddg.last.command", .ddg.last.command)
 	if (substr(.ddg.last.command, 1, 4) == "ddg.") {
 		.ddg.set(".ddg.last.command", NULL)
+		.ddg.last.command <- NULL
 	}
 	else {
 		quoted.commands <- quoted.commands[1:num.new.commands-1]
@@ -744,6 +745,7 @@ ddg.MAX_CHECKPOINTS <- 10
 	for (cmd in quoted.commands) {
 		if (substr(cmd, 1, 4) != "ddg.") {
 			cmd.abbrev <- .ddg.abbrev.cmd(cmd)
+			last.proc.node <- cmd.abbrev
 			# print(paste("Adding operation node for", cmd.abbrev))
 			.ddg.proc.node("Operation", cmd.abbrev, cmd, console=TRUE)
 			.ddg.proc2proc()
@@ -785,7 +787,7 @@ ddg.MAX_CHECKPOINTS <- 10
 	# Create a data node for each variable that might have been set in 
   # something other than a simple assignment, with an edge from the 
   # last node in the console block.
-	.ddg.create.data.node.for.possible.writes(vars.set, quoted.commands)
+	.ddg.create.data.node.for.possible.writes(vars.set, last.proc.node)
 	}
 	
     # Write time stamp to history.
@@ -1089,6 +1091,8 @@ ddg.MAX_CHECKPOINTS <- 10
 
 	# Create checkpoint.
 	save.image(dpfile.out)
+	# toSave <- ls(envir=.GlobalEnv)
+	# save (list = toSave, file = dpfile.out, envir = parent.frame(3))
 	
 	# Create the node.
 	dtime <- .ddg.timestamp()
@@ -1758,6 +1762,7 @@ ddg.restore <- function(file.path) {
 
 	saved.ddg.env <- .ddg.env
 	load (file.path, parent.env(environment()))
+	# load (file.path, .GlobalEnv, verbose=TRUE)
 	.ddg.mark.stale.data(saved.ddg.env)
 	.ddg.restore.ddg.state(saved.ddg.env)
 }
