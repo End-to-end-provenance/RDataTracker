@@ -10,19 +10,16 @@
 
     <target name="copy-to-directory" depends="build-directory">
     	<copy todir="${builddir}/inst">
-    		<fileset dir="inst">
-      			<exclude name="\.*"/>
-    		</fileset>
+    		<fileset dir="inst"
+      			excludes="\.* doc/*.pages doc/*.docx"/>
   		</copy>
     	<copy todir="${builddir}/man">
-    		<fileset dir="man">
-      			<exclude name="\.*"/>
-    		</fileset>
+    		<fileset dir="man"
+      			excludes="\.*"/>
   		</copy>
     	<copy todir="${builddir}/R">
-    		<fileset dir="R">
-      			<exclude name="\.*"/>
-    		</fileset>
+    		<fileset dir="R"
+      			excludes="\.*"/>
   		</copy>
   		<copy file="DESCRIPTION" todir="${builddir}"/>
   		<copy file="LICENSE" todir="${builddir}"/>
