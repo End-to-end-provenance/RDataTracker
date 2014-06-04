@@ -161,7 +161,7 @@ ddg.MAX_CHECKPOINTS <- 10
 	ddg.r.script.path <- .ddg.get("ddg.r.script.path")
 	if (!is.null(ddg.r.script.path)) {
 		environ <- paste(environ, "Script=\"", ddg.r.script.path, "\"\n", sep="")
-		environ <- paste(environ, "ProcessFileTimestamp=\"", file.info(ddg.r.script.path)$mtime, "\"\n", sep="")
+		environ <- paste(environ, "ProcessFileTimestamp=\"", .ddg.format.time(file.info(ddg.r.script.path)$mtime), "\"\n", sep="")
 	}
 	environ <- paste(environ, "WorkingDirectory=\"", getwd(), "\"\n", sep="")
 	environ <- paste(environ, "DDGDirectory=\"", .ddg.path(), "\"\n", sep="")
@@ -169,14 +169,18 @@ ddg.MAX_CHECKPOINTS <- 10
 	return (environ)
 }
 
+# Assumes input format is yyyy-mm-dd hh:mm:ss
+# Reformat to  (yyyy-mm-ddThh.mm.ss).
+.ddg.format.time <- function(time) {
+  time <- paste(substr(time, 1, 10), "T", substr(time, 12, 19), sep="")
+  return (gsub(":", ".", time))
+}
+
 # .ddg.timestamp gets the current date and time from the system.
 
 .ddg.timestamp <- function() {
 	ts <- Sys.time()
-	
-	# Reformat to ISO standard (yyyy-mm-ddThh:mm:ss).
-	time <- paste(substr(ts, 1, 10), "T", substr(ts, 12, 19), sep="")
-	return (time)
+	return (.ddg.format.time(ts))
 }
 
 # .ddg.write.timestamp.to.history writes the current timestamp to the 
