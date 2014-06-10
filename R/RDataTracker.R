@@ -150,10 +150,16 @@ ddg.MAX_HIST_LINES <- 16384
 	.ddg.set(".ddg.last.command", NULL)
 }
 
+# Wrrapper to easily change history lines during execution of script
+.ddg.set.history(lines = 16384){
+	Sys.set("R_HISTSIZE" = lines)
+}
+
 # .ddg.init.environ() sets up the filesystem and R environments for use
 .ddg.init.environ <- function() {
 	dir.create(.ddg.path(), showWarnings = FALSE)
-	Sys.setenv("R_HISTSIZE" = 16384)
+	ddg.set('ddg.orinal.hist.size', Sys.getenv('R_HISTSIZE'))
+	ddg.set.history()
 }
 
 # ddg.environ gets environment parameters for the DDG.
@@ -969,11 +975,11 @@ ddg.MAX_HIST_LINES <- 16384
 	return(dpfile)
 }
 
-# .ddg.file.copy creates a data node of type File. File nodes are 
-# used for files written by the main script. A copy of the file is 
-# written to the DDG directory.
- 
-.ddg.file.copy <- function(dtype, fname, dname) {
+# .ddg.file.node creates a node of tyoe File. File nodes are used for files
+# written out either by capturing output from the script or by copying a file
+# that is written by the script into the DDG directory. Returns the path 
+# where the file referenced by the node should be stored.
+.ddg.file.node <- function(dtype,fname,dname) {
 	# Increment data counter.
 	.ddg.inc("ddg.dnum")
 	
@@ -991,14 +997,6 @@ ddg.MAX_HIST_LINES <- 16384
 
 	# Get path plus file name.
 	dpfile.out <- paste(.ddg.path(), "/", dfile, sep="")
-	
-	# Copy file.
-	if (file.exists(file.loc)) file.copy(file.loc, dpfile.out, overwrite=TRUE)
-	else {
-    	error.msg <- paste("File to copy does not exist:", file.loc) 
-    	.ddg.insert.error.message(error.msg)
-    	return(NULL)
-	}
 
 	dtime <- .ddg.timestamp()
 
@@ -1010,6 +1008,28 @@ ddg.MAX_HIST_LINES <- 16384
 
 	# Record data node information.
 	.ddg.record.data(dtype, dname, dfile, dtime, file.loc)
+
+	return(dfile.out)
+}
+
+# .ddg.file.copy creates a data node of type File. File nodes are 
+# used for files written by the main script. A copy of the file is 
+# written to the DDG directory.
+ 
+.ddg.file.copy <- function(dtype, fname, dname) {
+	# Calculate location of original file
+	file.loc <- normalizePath(fname, winslash="/", mustWork = FALSE)
+
+	# Create file node in DDG
+	dpfile.out <- .ddg.file.node(dtype,fname,dname)
+
+	# Copy file.
+	if (file.exists(file.loc)) file.copy(file.loc, dpfile.out, overwrite=TRUE)
+	else {
+    	error.msg <- paste("File to copy does not exist:", file.loc) 
+    	.ddg.insert.error.message(error.msg)
+    	return(NULL)
+	}
 
 	if (.ddg.debug()) print(paste("file.copy: ", dtype, " ", fname))
 	return (dpfile.out)
@@ -1637,20 +1657,26 @@ ddg.url.out <- function(dname, dvalue=NULL, pname=NULL) {
 ddg.snapshot.out <- function(dname, fext="csv", data=NULL, pname=NULL) {
   # If data is not provided, get value of dname in calling 
   # environment.
-	env <- parent.frame()
-	.ddg.lookup.value(dname, data, env, "ddg.snapshot.out")
-	
-    # Convert dname to string if necessary.
-    if (!is.character(dname)) dname <- deparse(substitute(dname))  
+	if (fext = "jpg" || fext="jpeg" || fext="pdf"){
+		.ddg.snapshot.node(dname,fext,NULL)
+	}
+	else {
+		env <- parent.frame()
+		.ddg.lookup.value(dname, data, env, "ddg.snapshot.out")
+
+		 # Convert dname to string if necessary.
+  	if (!is.character(dname)) dname <- deparse(substitute(dname))  
     
-	# Create snapshot node.
-	.ddg.snapshot.node(dname, fext, data)
+		# Create snapshot node.
+		.ddg.snapshot.node(dname, fext, data)
+	}
 	
 	.ddg.lookup.function.name(pname)
 
 	# Create data flow edge from operation node to snapshot node.
 	.ddg.proc2data(pname, dname)
 }
+
 
 # ddg.file.out creates a data node of type File called dname by 
 # copying an existing file to the DDG directory. The path to the 
@@ -1846,7 +1872,7 @@ ddg.run <- function(f, r.script.path = NULL, ddgdir = NULL, enable.console = FAL
 ddg.save <- function() {
 	if (interactive() && .ddg.enable.console()) {
 		.ddg.console.node()
-		# Sys.setenv("R_HISTSIZE"=.ddg.original.hist.size)
+		Sys.setenv("R_HISTSIZE"=.ddg.get('ddg.orinal.hist.size'))
 	}
 	
 	# Get environment parameters.
