@@ -139,7 +139,7 @@ ddg.MAX_HIST_LINES <- 16384
   # change its value.
 	if (!exists("ddg.debug", envir=.ddg.env)) .ddg.set("ddg.debug", FALSE)
 
-	# Set current number of checkpoints.
+	# Set current number o
 	.ddg.set("ddg.checkpoint.num", 0)
 
   # Create table for checkpoints.
@@ -151,15 +151,15 @@ ddg.MAX_HIST_LINES <- 16384
 }
 
 # Wrrapper to easily change history lines during execution of script
-.ddg.set.history(lines = 16384){
-	Sys.set("R_HISTSIZE" = lines)
+.ddg.set.history <- function(lines = 16384){
+	Sys.setenv("R_HISTSIZE" = lines)
 }
 
 # .ddg.init.environ() sets up the filesystem and R environments for use
 .ddg.init.environ <- function() {
 	dir.create(.ddg.path(), showWarnings = FALSE)
-	ddg.set('ddg.orinal.hist.size', Sys.getenv('R_HISTSIZE'))
-	ddg.set.history()
+	.ddg.set('ddg.orinal.hist.size', Sys.getenv('R_HISTSIZE'))
+	if (interactive() && .ddg.enable.console()) .ddg.set.history()
 }
 
 # ddg.environ gets environment parameters for the DDG.
@@ -1009,7 +1009,7 @@ ddg.MAX_HIST_LINES <- 16384
 	# Record data node information.
 	.ddg.record.data(dtype, dname, dfile, dtime, file.loc)
 
-	return(dfile.out)
+	return(dpfile.out)
 }
 
 # .ddg.file.copy creates a data node of type File. File nodes are 
@@ -1423,7 +1423,7 @@ ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.data=NULL
 	      env <- parent.frame(3)
 	      .ddg.lookup.value(name, value, env, "ddg.procedure", warn=FALSE)
  
-	      if (is.vector(value) || is.list(value) || is.matrix(value) || is.data.frame(value)) {
+	      if (is.list(value) || is.vector(value) || is.list(value) || is.matrix(value) || is.data.frame(value)) {
 	        # Vector, matrix, or data frame.
 	        .ddg.snapshot.node(name, "csv", value)
 	        .ddg.proc2data(pname, name)
@@ -1657,7 +1657,7 @@ ddg.url.out <- function(dname, dvalue=NULL, pname=NULL) {
 ddg.snapshot.out <- function(dname, fext="csv", data=NULL, pname=NULL) {
   # If data is not provided, get value of dname in calling 
   # environment.
-	if (fext = "jpg" || fext="jpeg" || fext="pdf"){
+	if (fext == "jpg" || fext == "jpeg" || fext == "pdf"){
 		.ddg.snapshot.node(dname,fext,NULL)
 	}
 	else {
@@ -1821,10 +1821,10 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, enable.console = FALSE
 	.ddg.set("ddg.path", 
 		if (is.null(ddgdir)) paste(getwd(), "ddg", sep="/") 
 		else ddgdir)
-
-	.ddg.init.environ()
 	
+	# set environment constants
 	.ddg.set(".ddg.enable.console", enable.console)
+	.ddg.init.environ()
 	if (interactive() && .ddg.enable.console()) {
 		ddg.history.file <- paste(.ddg.path(), ".ddghistory", sep="/")
 		.ddg.set("ddg.history.file", ddg.history.file)
