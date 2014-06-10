@@ -1423,7 +1423,7 @@ ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.data=NULL
 	      env <- parent.frame(3)
 	      .ddg.lookup.value(name, value, env, "ddg.procedure", warn=FALSE)
  
-	      if (is.list(value) || is.vector(value) || is.list(value) || is.matrix(value) || is.data.frame(value)) {
+	      if ( is.vector(value) || is.list(value) || is.matrix(value) || is.data.frame(value)) {
 	        # Vector, matrix, or data frame.
 	        .ddg.snapshot.node(name, "csv", value)
 	        .ddg.proc2data(pname, name)
