@@ -28,6 +28,9 @@
 
 ddg.MAX_CHECKPOINTS <- 10
 
+# Set the lines the history file keeps (and therefore can be analyized)
+ddg.MAX_HIST_LINES <- 16384
+
 #-------- FUNCTIONS TO MANAGE THE GLOBAL VARIABLES--------#
 
 # Global variables cannot be used directly in a library.  Instead, we 
@@ -145,6 +148,12 @@ ddg.MAX_CHECKPOINTS <- 10
 	
 	# Record last command from the preceding console block.
 	.ddg.set(".ddg.last.command", NULL)
+}
+
+# .ddg.init.environ() sets up the filesystem and R environments for use
+.ddg.init.environ <- function() {
+	dir.create(.ddg.path(), showWarnings = FALSE)
+	Sys.setenv("R_HISTSIZE" = 16384)
 }
 
 # ddg.environ gets environment parameters for the DDG.
@@ -1779,13 +1788,15 @@ ddg.restore <- function(file.path) {
 
 ddg.init <- function(r.script.path = NULL, ddgdir = NULL, enable.console = FALSE) {
 	.ddg.init.tables()
-	
+
 	.ddg.set("ddg.r.script.path", 
 		if (is.null(r.script.path)) NULL
 		else normalizePath(r.script.path, winslash="/"))
 	.ddg.set("ddg.path", 
 		if (is.null(ddgdir)) paste(getwd(), "ddg", sep="/") 
 		else ddgdir)
+
+	.ddg.init.environ()
 	
 	.ddg.set(".ddg.enable.console", enable.console)
 	if (interactive() && .ddg.enable.console()) {
