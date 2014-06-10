@@ -957,6 +957,7 @@ ddg.MAX_HIST_LINES <- 16384
 	    close(fileConn)
 	}
 	else if (fext == "RData") file.rename(paste(ddg.path, "/", dname, sep=""), dpfile)
+	else if (fext == "OData") save(data, file = dpfile)
 	else {
     	error.msg <- paste("File extension", fext, "not recognized")
     	.ddg.insert.error.message(error.msg)
@@ -1424,8 +1425,17 @@ ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.data=NULL
 	      .ddg.lookup.value(name, value, env, "ddg.procedure", warn=FALSE)
  
 	      if ( is.vector(value) || is.list(value) || is.matrix(value) || is.data.frame(value)) {
-	        # Vector, matrix, or data frame.
-	        .ddg.snapshot.node(name, "csv", value)
+	        # Vector, list, matrix, or data frame.
+	        tryCatch({
+	        	.ddg.snapshot.node(name, "csv", value)
+	        }, error = function(e) {
+	        	warning(paste("Attempted to write", name, "as .csv snapshot but failed.
+	        	        out as RDataObject. Error:", e))
+	        	.ddg.snapshot.node(name, "OData", value)
+	        	.ddg.snapshot.node(name, "txt", value)
+	        })
+
+	        # create edge
 	        .ddg.proc2data(pname, name)
 	      }
 	      else if (length(value) == 1 && is.object(value)) {
