@@ -1429,8 +1429,7 @@ ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.data=NULL
 	        tryCatch({
 	        	.ddg.snapshot.node(name, "csv", value)
 	        }, error = function(e) {
-	        	warning(paste("Attempted to write", name, "as .csv snapshot but failed.
-	        	        out as RDataObject. Error:", e))
+	        	warning(paste("Attempted to write", name, "as .csv snapshot but failed. Out as RDataObject. Error:", e))
 	        	.ddg.snapshot.node(name, "OData", value)
 	        	.ddg.snapshot.node(name, "txt", value)
 	        })
