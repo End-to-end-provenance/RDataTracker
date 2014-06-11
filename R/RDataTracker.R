@@ -1437,7 +1437,7 @@ ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.data=NULL
 	        # create edge
 	        .ddg.proc2data(pname, name)
 	      }
-	      else if (length(value) == 1 && is.object(value)) {
+	      else if (is.object(value)) {
 	         # Class.
 	         .ddg.snapshot.node(name, "txt", value)
 	         .ddg.proc2data(pname, name)
