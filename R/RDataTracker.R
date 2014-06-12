@@ -215,6 +215,15 @@ ddg.MAX_HIST_LINES <- 16384
 	}
 }
 
+# .ddg.is.viewable tries to decipher if the value snapshot should be written as
+# as file directly from the data or if it is a graphic which can be captures 
+# from the image device
+.ddg.is.graphic <- function(value){
+	# matching any of these classes automatically classifies the object as a graphic
+	graph.classes <- list("gg", "ggplot")
+	return(is.object(value) && Reduce("||", Map(function(cls){Reduce("||", class(value) == cls)},graph.classes)))
+}
+
 
 # .ddg.record.proc records a procedure node in the procedure node 
 # table.
@@ -1413,7 +1422,7 @@ ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.data=NULL
       }
 	  )
 	}
-	
+
 	# Snapshot node.
 	if (!is.null(outs.snapshot)) {
 	  lapply(outs.snapshot,
@@ -1423,13 +1432,28 @@ ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.data=NULL
 	      value <- NULL
 	      env <- parent.frame(3)
 	      .ddg.lookup.value(name, value, env, "ddg.procedure", warn=FALSE)
- 
-	      if ( is.vector(value) || is.list(value) || is.matrix(value) || is.data.frame(value)) {
+ 				
+	      # try to figure out if this should be a plot, save it as a pdf/jpeg
+	      if (.ddg.is.graphic(value)){
+	      	tryCatch({
+	      		.ddg.snapshot.node(name, "pdf", NULL)
+	      	}, error = function(e) {
+	      		warning(paste("Attempted to write", name, "as .pdf snapshot. Trying jpeg.", e))
+	      		tryCatch({
+	      			.ddg.snapshot.node(name, "jpeg", NULL)
+	      		}, error = function(e) {
+	      			warning(paste("Attempted to write", name, "as .jpeg snapshot. Failed.", e))
+	      			.ddg.snapshot.node(name, "OData", value)
+	        		.ddg.snapshot.node(name, "txt", value)
+	        	})
+	      	})
+	      }
+	      else if (is.list(value) || is.vector(value) || is.matrix(value) || is.data.frame(value)) {
 	        # Vector, list, matrix, or data frame.
 	        tryCatch({
 	        	.ddg.snapshot.node(name, "csv", value)
 	        }, error = function(e) {
-	        	warning(paste("Attempted to write", name, "as .csv snapshot but failed. Out as RDataObject. Error:", e))
+	        	warning(paste("Attempted to write", name, "as .csv snapshot but failed. Out as RDataObject.", e))
 	        	.ddg.snapshot.node(name, "OData", value)
 	        	.ddg.snapshot.node(name, "txt", value)
 	        })
@@ -1438,7 +1462,7 @@ ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.data=NULL
 	        .ddg.proc2data(pname, name)
 	      }
 	      else if (is.object(value)) {
-	         # Class.
+	         # Class
 	         .ddg.snapshot.node(name, "txt", value)
 	         .ddg.proc2data(pname, name)
 	      }
