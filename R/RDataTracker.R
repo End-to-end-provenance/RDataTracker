@@ -184,6 +184,15 @@ ddg.MAX_HIST_LINES <- 16384
 	return (environ)
 }
 
+### .ddg.check.init is a function definition to be used at the beginnign of all 
+#		user accesible functions. It verifies that the DDG has been initialized.
+#   If it hasn't, it returns False. 
+###
+.ddg.check.init <- function() {
+		# || short circuits evaluation
+		return(exists(".ddg.initilized", envir=.ddg.env) && .ddg.get(".ddg.initilized"))
+}
+
 # Assumes input format is yyyy-mm-dd hh:mm:ss
 # Reformat to  (yyyy-mm-ddThh.mm.ss).
 .ddg.format.time <- function(time) {
@@ -1303,6 +1312,8 @@ ddg.MAX_HIST_LINES <- 16384
 # if the corresponding data nodes exist.
 
 ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.data=NULL, outs.exception=NULL, outs.url=NULL, outs.snapshot=NULL, outs.file=NULL) {
+	if (!.ddg.check.init()) return(NULL)
+
 	.ddg.lookup.function.name(pname)
 	.ddg.proc.node("Operation", pname, pname)
 	
@@ -1507,7 +1518,8 @@ ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.data=NULL
 # calling environment to determine the value.
 
 ddg.data <- function(dname, dvalue=NULL) {
-	
+	if (!.ddg.check.init()) return(NULL)
+
 	# Look up the value if one was not provided.
 	env <- parent.frame()
 	.ddg.lookup.value(dname, dvalue, env, "ddg.data")
@@ -1526,6 +1538,8 @@ ddg.data <- function(dname, dvalue=NULL) {
 # calling environment to determine the value.
 
 ddg.exception <- function(dname, dvalue=NULL) {
+	if (!.ddg.check.init()) return(NULL)
+
 	# Look up the value if one was not provided.
 	env <- parent.frame()
 	.ddg.lookup.value(dname, dvalue, env, "ddg.exception")
@@ -1543,6 +1557,8 @@ ddg.exception <- function(dname, dvalue=NULL) {
 # environment to determine the value.
 
 ddg.url <- function(dname, dvalue=NULL) {
+	if (!.ddg.check.init()) return(NULL)
+
 	# Look up the value if one was not provided.
 	env <- parent.frame()
 	.ddg.lookup.value(dname, dvalue, env, "ddg.url")
@@ -1561,6 +1577,8 @@ ddg.url <- function(dname, dvalue=NULL) {
 # extension is assumed to be "csv".
 
 ddg.snapshot <- function(dname, fext="csv", data=NULL) {
+	if (!.ddg.check.init()) return(NULL)
+
 	# If data is not provided, get value of dname in the calling 
   # environment.
 	env <- parent.frame()
@@ -1580,6 +1598,8 @@ ddg.snapshot <- function(dname, fext="csv", data=NULL) {
 # minus the directory path, is used as the label.
 
 ddg.file <- function(filename, dname=NULL) {
+	if (!.ddg.check.init()) return(NULL)
+
 	.ddg.file.copy("File", filename, dname)
 }
 
@@ -1591,6 +1611,8 @@ ddg.file <- function(filename, dname=NULL) {
 # can be passed as a string, name, or expression.
 
 ddg.data.in <- function(dname, pname=NULL) {
+	if (!.ddg.check.init()) return(NULL)
+
 	.ddg.lookup.function.name(pname)
 	
 	arg <- substitute(dname)
@@ -1612,6 +1634,8 @@ ddg.data.in <- function(dname, pname=NULL) {
 # the name of the function that called ddg.data.out is used.
 
 ddg.data.out <- function(dname, dvalue=NULL, pname=NULL) {
+	if (!.ddg.check.init()) return(NULL)
+
 	# If no value is provided, get value in calling environment.
 	env <- parent.frame()
 	.ddg.lookup.value(dname, dvalue, env, "ddg.data.out")
@@ -1636,6 +1660,8 @@ ddg.data.out <- function(dname, dvalue=NULL, pname=NULL) {
 # of the function that called ddg.exception.out is used.
 
 ddg.exception.out <- function(dname, dvalue=NULL, pname=NULL) {
+	if (!.ddg.check.init()) return(NULL)
+
 	# If no value is provided, get value in calling environment.
 	env <- parent.frame()
 	.ddg.lookup.value(dname, dvalue, env, "ddg.exception.out")
@@ -1660,6 +1686,8 @@ ddg.exception.out <- function(dname, dvalue=NULL, pname=NULL) {
 # omitted, the name of the function that called ddg.url.out is used.
 
 ddg.url.out <- function(dname, dvalue=NULL, pname=NULL) {
+	if (!.ddg.check.init()) return(NULL)
+
 	# If no value is provided, get value in calling environment.
 	env <- parent.frame()
 	.ddg.lookup.value(dname, dvalue, env, "ddg.url.out")
@@ -1688,6 +1716,8 @@ ddg.url.out <- function(dname, dvalue=NULL, pname=NULL) {
 # function that called ddg.snapshot.out is used.
 
 ddg.snapshot.out <- function(dname, fext="csv", data=NULL, pname=NULL) {
+	if (!.ddg.check.init()) return(NULL)
+
   # If data is not provided, get value of dname in calling 
   # environment.
 	if (fext == "jpg" || fext == "jpeg" || fext == "pdf"){
@@ -1730,6 +1760,8 @@ ddg.snapshot.out <- function(dname, fext="csv", data=NULL, pname=NULL) {
 # to the file that is saved.
 
 ddg.file.out <- function(filename, dname=NULL, pname=NULL) {
+	if (!.ddg.check.init()) return(NULL)
+
 	if (is.null(dname)) dname <- basename(filename)
 	
 	# Create output file node called filename and copy file.
@@ -1751,6 +1783,8 @@ ddg.file.out <- function(filename, dname=NULL, pname=NULL) {
 # in the original script.
 
 ddg.start <- function(pname=NULL) {
+	if (!.ddg.check.init()) return(NULL)
+
 	.ddg.lookup.function.name(pname)
 	
 	# Create start non-operational step.
@@ -1769,6 +1803,8 @@ ddg.start <- function(pname=NULL) {
 # in the original script.
 
 ddg.finish <- function(pname=NULL) {
+	if (!.ddg.check.init()) return(NULL)
+
 	.ddg.lookup.function.name(pname)
 	
 	# Create finish non-operational step.
@@ -1786,6 +1822,8 @@ ddg.finish <- function(pname=NULL) {
 # the value associated with the checkpoint procedure node.
 
 ddg.checkpoint <- function(checkpoint.name=NULL) {
+	if (!.ddg.check.init()) return(NULL)
+
 	if (.ddg.debug()) print("Creating checkpoint")
 	ddg.checkpoint.num <- .ddg.get("ddg.checkpoint.num")
 	file.name <- paste(ddg.checkpoint.num, ".RData", sep="")
@@ -1811,6 +1849,8 @@ ddg.checkpoint <- function(checkpoint.name=NULL) {
 # file to restore.
 
 ddg.restore <- function(file.path) {
+	if (!.ddg.check.init()) return(NULL)
+
 	# Remove the directories.
 	file.name <- basename(file.path)
 
@@ -1858,6 +1898,10 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, enable.console = FALSE
 	# set environment constants
 	.ddg.set(".ddg.enable.console", enable.console)
 	.ddg.init.environ()
+	
+	# mark graph as initilized
+	.ddg.set(".ddg.initilized", TRUE)
+	
 	if (interactive() && .ddg.enable.console()) {
 		ddg.history.file <- paste(.ddg.path(), ".ddghistory", sep="/")
 		.ddg.set("ddg.history.file", ddg.history.file)
@@ -1903,6 +1947,8 @@ ddg.run <- function(f, r.script.path = NULL, ddgdir = NULL, enable.console = FAL
 # table, and the data nodes table to the DDG directory.
 
 ddg.save <- function() {
+	if (!.ddg.check.init()) return(NULL)
+
 	if (interactive() && .ddg.enable.console()) {
 		.ddg.console.node()
 		Sys.setenv("R_HISTSIZE"=.ddg.get('ddg.orinal.hist.size'))
@@ -1937,16 +1983,22 @@ ddg.save <- function() {
 
 # ddg.debug.on turns on debugging of DDG construction.
 ddg.debug.on <- function () {
+	if (!.ddg.check.init()) return(NULL)
+
 	.ddg.set("ddg.debug", TRUE)
 }
 
 # ddg.debug.off turns off debugging of DDG construction.
 ddg.debug.off <- function () {
+	if (!.ddg.check.init()) return(NULL)
+
 	.ddg.set("ddg.debug", FALSE)
 }
 
 # ddg.flush.ddg removes selected files from the DDG directory.
 ddg.flush.ddg <- function () {
+	if (!.ddg.check.init()) return(NULL)
+
 	ddg.path <- .ddg.path()
 	# Do not remove files unless ddg.path exists and is different 
   # from the working directory.
