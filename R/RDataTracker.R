@@ -28,6 +28,9 @@
 
 ddg.MAX_CHECKPOINTS <- 10
 
+# Set the lines the history file keeps (and therefore can be analyized)
+ddg.MAX_HIST_LINES <- 16384
+
 #-------- FUNCTIONS TO MANAGE THE GLOBAL VARIABLES--------#
 
 # Global variables cannot be used directly in a library.  Instead, we 
@@ -136,7 +139,7 @@ ddg.MAX_CHECKPOINTS <- 10
   # change its value.
 	if (!exists("ddg.debug", envir=.ddg.env)) .ddg.set("ddg.debug", FALSE)
 
-	# Set current number of checkpoints.
+	# Set current number o
 	.ddg.set("ddg.checkpoint.num", 0)
 
   # Create table for checkpoints.
@@ -145,6 +148,18 @@ ddg.MAX_CHECKPOINTS <- 10
 	
 	# Record last command from the preceding console block.
 	.ddg.set(".ddg.last.command", NULL)
+}
+
+# Wrrapper to easily change history lines during execution of script
+.ddg.set.history <- function(lines = 16384){
+	Sys.setenv("R_HISTSIZE" = lines)
+}
+
+# .ddg.init.environ() sets up the filesystem and R environments for use
+.ddg.init.environ <- function() {
+	dir.create(.ddg.path(), showWarnings = FALSE)
+	.ddg.set('ddg.orinal.hist.size', Sys.getenv('R_HISTSIZE'))
+	if (interactive() && .ddg.enable.console()) .ddg.set.history()
 }
 
 # ddg.environ gets environment parameters for the DDG.
@@ -207,6 +222,15 @@ ddg.MAX_CHECKPOINTS <- 10
 	else {
 		.ddg.set(".ddg.history.timestamp", timestamp(prefix = "##-ddg-- ", quiet=TRUE))
 	}
+}
+
+# .ddg.is.viewable tries to decipher if the value snapshot should be written as
+# as file directly from the data or if it is a graphic which can be captures 
+# from the image device
+.ddg.is.graphic <- function(value){
+	# matching any of these classes automatically classifies the object as a graphic
+	graph.classes <- list("gg", "ggplot")
+	return(is.object(value) && any(Map(function(cls){any(class(value) == cls)},graph.classes)))
 }
 
 
@@ -702,6 +726,7 @@ ddg.MAX_CHECKPOINTS <- 10
 		history.timestamp.line <- 0
 	}
 	
+	# what is this FOR?
 	if (history.timestamp.line == length(history)) return (NULL)
 		
 	.ddg.last.command <- .ddg.get(".ddg.last.command")
@@ -950,6 +975,7 @@ ddg.MAX_CHECKPOINTS <- 10
 	    close(fileConn)
 	}
 	else if (fext == "RData") file.rename(paste(ddg.path, "/", dname, sep=""), dpfile)
+	else if (fext == "OData") save(data, file = dpfile)
 	else {
     	error.msg <- paste("File extension", fext, "not recognized")
     	.ddg.insert.error.message(error.msg)
@@ -968,11 +994,11 @@ ddg.MAX_CHECKPOINTS <- 10
 	return(dpfile)
 }
 
-# .ddg.file.copy creates a data node of type File. File nodes are 
-# used for files written by the main script. A copy of the file is 
-# written to the DDG directory.
- 
-.ddg.file.copy <- function(dtype, fname, dname) {
+# .ddg.file.node creates a node of tyoe File. File nodes are used for files
+# written out either by capturing output from the script or by copying a file
+# that is written by the script into the DDG directory. Returns the path 
+# where the file referenced by the node should be stored.
+.ddg.file.node <- function(dtype,fname,dname) {
 	# Increment data counter.
 	.ddg.inc("ddg.dnum")
 	
@@ -990,14 +1016,6 @@ ddg.MAX_CHECKPOINTS <- 10
 
 	# Get path plus file name.
 	dpfile.out <- paste(.ddg.path(), "/", dfile, sep="")
-	
-	# Copy file.
-	if (file.exists(file.loc)) file.copy(file.loc, dpfile.out, overwrite=TRUE)
-	else {
-    	error.msg <- paste("File to copy does not exist:", file.loc) 
-    	.ddg.insert.error.message(error.msg)
-    	return(NULL)
-	}
 
 	dtime <- .ddg.timestamp()
 
@@ -1009,6 +1027,28 @@ ddg.MAX_CHECKPOINTS <- 10
 
 	# Record data node information.
 	.ddg.record.data(dtype, dname, dfile, dtime, file.loc)
+
+	return(dpfile.out)
+}
+
+# .ddg.file.copy creates a data node of type File. File nodes are 
+# used for files written by the main script. A copy of the file is 
+# written to the DDG directory.
+ 
+.ddg.file.copy <- function(dtype, fname, dname) {
+	# Calculate location of original file
+	file.loc <- normalizePath(fname, winslash="/", mustWork = FALSE)
+
+	# Create file node in DDG
+	dpfile.out <- .ddg.file.node(dtype,fname,dname)
+
+	# Copy file.
+	if (file.exists(file.loc)) file.copy(file.loc, dpfile.out, overwrite=TRUE)
+	else {
+    	error.msg <- paste("File to copy does not exist:", file.loc) 
+    	.ddg.insert.error.message(error.msg)
+    	return(NULL)
+	}
 
 	if (.ddg.debug()) print(paste("file.copy: ", dtype, " ", fname))
 	return (dpfile.out)
@@ -1393,7 +1433,7 @@ ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.data=NULL
       }
 	  )
 	}
-	
+
 	# Snapshot node.
 	if (!is.null(outs.snapshot)) {
 	  lapply(outs.snapshot,
@@ -1403,14 +1443,37 @@ ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.data=NULL
 	      value <- NULL
 	      env <- parent.frame(3)
 	      .ddg.lookup.value(name, value, env, "ddg.procedure", warn=FALSE)
- 
-	      if (is.vector(value) || is.list(value) || is.matrix(value) || is.data.frame(value)) {
-	        # Vector, matrix, or data frame.
-	        .ddg.snapshot.node(name, "csv", value)
+ 				
+	      # try to figure out if this should be a plot, save it as a pdf/jpeg
+	      if (.ddg.is.graphic(value)){
+	      	tryCatch({
+	      		.ddg.snapshot.node(name, "pdf", NULL)
+	      	}, error = function(e) {
+	      		warning(paste("Attempted to write", name, "as .pdf snapshot. Trying jpeg.", e))
+	      		tryCatch({
+	      			.ddg.snapshot.node(name, "jpeg", NULL)
+	      		}, error = function(e) {
+	      			warning(paste("Attempted to write", name, "as .jpeg snapshot. Failed.", e))
+	      			.ddg.snapshot.node(name, "OData", value)
+	        		.ddg.snapshot.node(name, "txt", value)
+	        	})
+	      	})
+	      }
+	      else if (is.list(value) || is.vector(value) || is.matrix(value) || is.data.frame(value)) {
+	        # Vector, list, matrix, or data frame.
+	        tryCatch({
+	        	.ddg.snapshot.node(name, "csv", value)
+	        }, error = function(e) {
+	        	warning(paste("Attempted to write", name, "as .csv snapshot but failed. Out as RDataObject.", e))
+	        	.ddg.snapshot.node(name, "OData", value)
+	        	.ddg.snapshot.node(name, "txt", value)
+	        })
+
+	        # create edge
 	        .ddg.proc2data(pname, name)
 	      }
-	      else if (length(value) == 1 && is.object(value)) {
-	         # Class.
+	      else if (is.object(value)) {
+	         # Class
 	         .ddg.snapshot.node(name, "txt", value)
 	         .ddg.proc2data(pname, name)
 	      }
@@ -1657,20 +1720,26 @@ ddg.snapshot.out <- function(dname, fext="csv", data=NULL, pname=NULL) {
 
   # If data is not provided, get value of dname in calling 
   # environment.
-	env <- parent.frame()
-	.ddg.lookup.value(dname, data, env, "ddg.snapshot.out")
-	
-    # Convert dname to string if necessary.
-    if (!is.character(dname)) dname <- deparse(substitute(dname))  
+	if (fext == "jpg" || fext == "jpeg" || fext == "pdf"){
+		.ddg.snapshot.node(dname,fext,NULL)
+	}
+	else {
+		env <- parent.frame()
+		.ddg.lookup.value(dname, data, env, "ddg.snapshot.out")
+
+		 # Convert dname to string if necessary.
+  	if (!is.character(dname)) dname <- deparse(substitute(dname))  
     
-	# Create snapshot node.
-	.ddg.snapshot.node(dname, fext, data)
+		# Create snapshot node.
+		.ddg.snapshot.node(dname, fext, data)
+	}
 	
 	.ddg.lookup.function.name(pname)
 
 	# Create data flow edge from operation node to snapshot node.
 	.ddg.proc2data(pname, dname)
 }
+
 
 # ddg.file.out creates a data node of type File called dname by 
 # copying an existing file to the DDG directory. The path to the 
@@ -1839,7 +1908,9 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, enable.console = FALSE
 		if (is.null(ddgdir)) paste(getwd(), "ddg", sep="/") 
 		else ddgdir)
 	
+	# set environment constants
 	.ddg.set(".ddg.enable.console", enable.console)
+	.ddg.init.environ()
 	
 	# mark graph as initilized
 	.ddg.set(".ddg.initilized", TRUE)
@@ -1893,7 +1964,7 @@ ddg.save <- function() {
 
 	if (interactive() && .ddg.enable.console()) {
 		.ddg.console.node()
-		# Sys.setenv("R_HISTSIZE"=.ddg.original.hist.size)
+		Sys.setenv("R_HISTSIZE"=.ddg.get('ddg.orinal.hist.size'))
 	}
 	
 	# Get environment parameters.
