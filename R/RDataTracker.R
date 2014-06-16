@@ -29,7 +29,7 @@
 ddg.MAX_CHECKPOINTS <- 10
 
 # Set the lines the history file keeps (and therefore can be analyized)
-ddg.MAX_HIST_LINES <- 16384
+ddg.MAX_HIST_LINES <- 2^14
 
 #-------- FUNCTIONS TO MANAGE THE GLOBAL VARIABLES--------#
 
