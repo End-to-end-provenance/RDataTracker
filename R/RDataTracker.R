@@ -685,8 +685,7 @@ ddg.MAX_CHECKPOINTS <- 10
 .ddg.console.node <- function() {
 	# Find the new console commands since the last console node was 
   # created.
-	ddg.history.file <- .ddg.get("ddg.history.file")
-	savehistory(ddg.history.file)
+	ddg.history.file <- ddg.grabhistory()
 	
 	# Add a procedure node for each new command, data nodes for 
   # variables set and used, and the corresponding edges.
@@ -1744,6 +1743,19 @@ ddg.finish <- function(pname=NULL) {
 
 	# Create control flow edge from preceding procedure node.
 	.ddg.proc2proc()
+}
+
+# .ddg.grabhistory saves the current R Command history to a file specified in 
+# the ddg.env variable "ddg.history.file." This function should be called if
+# more than 512 lines of code need to be interpreted automatically (usually
+# because the script is being annoated with enable.console = TRUE). It should 
+# also be called if the error: "Part of history is missing. DDG may be incomplete!"
+# is raised. The return value is the name of the file where the history was stored.
+ddg.grabhistory <- function() {
+	ddg.history.file <- .ddg.get("ddg.history.file")
+	savehistory(ddg.history.file)
+
+	return(ddg.history.file)
 }
 
 # ddg.checkpoint saves the current R state in a file and adds a 
