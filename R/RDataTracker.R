@@ -230,7 +230,8 @@ ddg.MAX_HIST_LINES <- 16384
 .ddg.is.graphic <- function(value){
 	# matching any of these classes automatically classifies the object as a graphic
 	graph.classes <- list("gg", "ggplot")
-	return(is.object(value) && any(Map(function(cls){any(class(value) == cls)},graph.classes)))
+	return(is.object(value) && any(unlist(Map(function(cls){
+		any(class(value) == cls)},graph.classes))))
 }
 
 
