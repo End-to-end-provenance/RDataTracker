@@ -727,6 +727,7 @@ ddg.MAX_HIST_LINES <- 16384
 		history.timestamp.line <- 0
 	}
 	
+	# what is this FOR?
 	if (history.timestamp.line == length(history)) return (NULL)
 		
 	.ddg.last.command <- .ddg.get(".ddg.last.command")
