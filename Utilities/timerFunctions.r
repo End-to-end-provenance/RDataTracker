@@ -58,7 +58,7 @@ endMinInst <- function(){
 # @return - a modified string similar to line but which includes necessary
 #                 annotations for that line
 annotateLine <- function(line, lineNum) {
-  if (lineNum %% histLineLim == 0) return(paste("ddg.grabhistory()",line,sep="\n"))
+  if (lineNum %% histLineLim == 0 && lineNum != 1) return(paste("ddg.grabhistory()",line,sep="\n"))
   else return(line)
 }
 
@@ -161,7 +161,14 @@ calcResults <- function(fileName) {
   
   # create minimum instrumentation file to wd if non-existent annotated file
   if (!file.exists(names[3])) writeMinInstr(names[2],names[3])
+
+  # create data frame with 3 tested files as rows, columns are data returned by scriptInfo
+  dFrame <- data.frame(matrix(unlist(sapply(names, scriptInfo)), byrow=T, nrow=3))
   
-  # retuns results for each name in a list of (name time, name space)
-  return(as.data.frame(sapply(names, scriptInfo)))
+  # add file names and column names
+  dFrame$names <- names
+  colnames(dFrame) <- c("Execution Time (min)", "Size (kB)", "Script File")
+  
+  return(dFrame[c(3,1,2)])
+
 }
