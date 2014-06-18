@@ -7,8 +7,11 @@
 # or whatever is set below as the working directory by the setInitialVal function.
 
 ### Global Constants
-# species the number of lines between which a .grabhistory call is inserted
+# specified the number of lines between which a .grabhistory call is inserted
 histLineLim <- 500
+
+# specifies the number of lines that a single command can span
+cmdLineLim <- histLineLim / 10
 
 ### Function which initializes counter and working directory, as well as other
 #   global parameters
@@ -50,6 +53,16 @@ endMinInst <- function(){
   return("ddg.save()")
 }
 
+### Function which returns whether or not the current line in the history is one
+#   at which we should attempt to insert a .grabhistory command.
+# @param lineNum - the line number in the history that is being queried
+# $return - a boolean specifying viability of this line as insertion point
+atSaveLocation <- function(histLineNum){
+  # correction for last insertion
+  histLineNum <- histLineNum + corrLines
+  return(histLineNum %% histLineLim > (histLineLim - cmdLineLim))
+}
+
 ### Function which returns the correct line of code to be written out for minimal
 # instrucmentation.
 # @param line - a single line of code read from the input file
@@ -57,8 +70,28 @@ endMinInst <- function(){
 #                  of previous non-single new characters] + 1)
 # @return - a modified string similar to line but which includes necessary
 #                 annotations for that line
-annotateLine <- function(line, lineNum) {
-  if (lineNum %% histLineLim == 0 && lineNum != 1) return(paste("ddg.grabhistory()",line,sep="\n"))
+annotateLine <- function(line, histLineNum) {
+  # we are at a save section and non-empty command 
+  if (atSaveLocation(histLineNum) && line != ""){
+    # add lines only if NOT splitting a command (more info in OneNote Book)
+    tryCatch({
+      cmd = parse(text=line)
+
+      # we add corrLines to keep everything at within histLineLim even if we
+      # insert at locations onether than histLineNum
+      corrLines <<- histLineLim - histLineNum
+      return(paste("ddg.grabhistory()",line,sep="\n"))  
+    }, error = function(e){
+      # cannot parse line, so in middle of command
+      warning(line, e)
+      return(line)
+    }, warning = function(w){
+      warning(line,w)
+      return(line)
+    }) 
+  }
+
+  # empty command or don't want to save
   else return(line)
 }
 
@@ -72,6 +105,9 @@ timeForEval <- function(file) {
   endTime <- Sys.time()
   return(endTime - startTime)
 }
+
+### Function: Returns the size of the an arbitrary directory
+# @params dir - the name of the directory 
 
 ### Function: Returns in list format the information we wish to store for one script
 # @param file - and R file for which we need the required information
@@ -92,6 +128,7 @@ readInput <- function(fileName) {
   histLineNum <- 1 # keeps tack of line number in context of the history file (ignore blank lines)
   lineNum <- 1 # keeps track of the actual line number
   strFile <- "" # constructes the file as a string
+  corrLines <<- 0 # global correction lines
   
   # we need for loop because lapply (and others) don't guarantee order
   for (line in readLines(fileName)){

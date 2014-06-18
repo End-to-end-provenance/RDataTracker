@@ -22,7 +22,6 @@ setInitialVal(getFilePath())
 results <- calcResults(getFileName())
 
 # print results
-colnames(results) <- c("Execution Time (min)", "File Size (kB)")
 print("Timing Results:")
 print(results)
 
