@@ -27,3 +27,22 @@ INPUT <- function(message) {
   
   return(CHOICE)
 }
+
+
+### Function: Returns the size of the an arbitrary directory
+# @params dir - the name of the directory. The directory must be contained inside
+#               the working directory.
+# $return - the size, in mB of the directory (all files and folder insider, recursively)
+#           If the directory does not exists, it return NA
+dirSize <- function(dir){
+  fdir <- paste(getwd(),dir,sep="")
+  tryCatch({
+    dirFiles <- list.files(path=fdir, full.names = TRUE, recursive = TRUE)
+  }, warning = function(w) {
+    return(NA)
+  })
+  dirInfos <- file.info(dirFiles)
+  dirSizes <- dirInfos$size
+  dirSize <- sum(dirSizes)/2^10 # we want result in kB
+  return(dirSize)
+}

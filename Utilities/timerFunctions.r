@@ -6,12 +6,14 @@
 # are useful for timing scripts found in subdirectories of D:/Users/Luis/Dropbox/HarvardForest/RDataTracker Annotations
 # or whatever is set below as the working directory by the setInitialVal function.
 
-### Global Constants
-# specified the number of lines between which a .grabhistory call is inserted
-histLineLim <- 500
+### Global Constants (all of format time.name to avoid naming conflicts)
+# specifies the number of lines (maximum) between which a .grabhistory call is inserted
+time.histLineLim <- 500
 
 # specifies the number of lines that a single command can span
-cmdLineLim <- histLineLim / 10
+# time.histLineLim - time.cmdLineLim marks the start of a section from which a .grabhistory
+# command can be inserted.
+time.cmdLineLim <- 50
 
 ### Function which initializes counter and working directory, as well as other
 #   global parameters
@@ -42,12 +44,10 @@ startMinInst <- function(scriptPath,ddgDirPath){
   src <- 'source("D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/R/RDataTracker.R")'
   # lib <- "library(RDataTracker)"
   init <- paste("ddg.init('", scriptPath, "','",ddgDirPath, "',enable.console=TRUE)",sep="")
-  hist <- paste("loadhistory('", scriptPath, "')",sep="")
-  timestamp <- paste("##------ ", date(), " ------##", sep="")
-  return(paste(src,init,hist,timestamp,sep="\n"))
+  return(paste(src,init,.loadHistory(scriptPath),sep="\n"))
 }
 
-### Function which returns the string of R code necessart at the end of a file 
+### Function which returns the string of R code necessary at the end of a file 
 #   for minimal DDG instrumentation
 endMinInst <- function(){
   return("ddg.save()")
@@ -59,8 +59,8 @@ endMinInst <- function(){
 # $return - a boolean specifying viability of this line as insertion point
 atSaveLocation <- function(histLineNum){
   # correction for last insertion
-  histLineNum <- histLineNum + corrLines
-  return(histLineNum %% histLineLim > (histLineLim - cmdLineLim))
+  histLineNum <- histLineNum + time.corrLines
+  return(histLineNum %% time.histLineLim > (time.histLineLim - time.cmdLineLim))
 }
 
 ### Function which returns the correct line of code to be written out for minimal
@@ -77,9 +77,9 @@ annotateLine <- function(line, histLineNum) {
     tryCatch({
       cmd = parse(text=line)
 
-      # we add corrLines to keep everything at within histLineLim even if we
+      # we add time.corrLines to keep everything at within time.histLineLim even if we
       # insert at locations onether than histLineNum
-      corrLines <<- histLineLim - histLineNum
+      time.corrLines <<- time.histLineLim - histLineNum
       return(paste("ddg.grabhistory()",line,sep="\n"))  
     }, error = function(e){
       # cannot parse line, so in middle of command
@@ -106,17 +106,18 @@ timeForEval <- function(file) {
   return(endTime - startTime)
 }
 
-### Function: Returns the size of the an arbitrary directory
-# @params dir - the name of the directory 
-
 ### Function: Returns in list format the information we wish to store for one script
 # @param file - and R file for which we need the required information
 # $return info - a list of collected file data
 scriptInfo <- function(file) {
+  # calculate exectution time
   time <- timeForEval(file)
+
+  # calculate script file size
   fInfo <- file.info(file)
-  size <- fInfo[file,'size']/(2^10) # convert to megabytes
-  return(list(time,size))
+  fsize <- fInfo[file,'size']/(2^10) # convert to megabytes
+
+  return(list(time,fsize))
 }
 
 ### Function: Read input file specified by the user into a single string 
@@ -128,7 +129,7 @@ readInput <- function(fileName) {
   histLineNum <- 1 # keeps tack of line number in context of the history file (ignore blank lines)
   lineNum <- 1 # keeps track of the actual line number
   strFile <- "" # constructes the file as a string
-  corrLines <<- 0 # global correction lines
+  time.corrLines <<- 0 # global correction lines
   
   # we need for loop because lapply (and others) don't guarantee order
   for (line in readLines(fileName)){
@@ -148,7 +149,6 @@ getFileName <- function(){
   pattern <- ".r$" # matches .r at end of string
   replacement <- ""
   return(gsub(pattern,replacement,input,ignore.case=TRUE))
-  
 } 
 
 ### Function: Gets the location of the script files to be tested. The input should be
@@ -189,8 +189,9 @@ writeMinInstr <- function(inp,out){
 # $return - a list of the form [time of script, time of min annotations, time of annotated]
 calcResults <- function(fileName) {
   # get file name and file path
-  names = sapply(list("-min.r",".r", "-annotated.r"), function(x) {
-    return(paste(fileName, x, sep=""))
+  extns <- list("-min", "", "-annotated")
+  names <- sapply(extns, function(x) {
+    return(paste(fileName, x, ".r", sep=""))
   })
   
   # create minimum instrumentation file
@@ -202,10 +203,22 @@ calcResults <- function(fileName) {
   # create data frame with 3 tested files as rows, columns are data returned by scriptInfo
   dFrame <- data.frame(matrix(unlist(sapply(names, scriptInfo)), byrow=T, nrow=3))
   
-  # add file names and column names
+  # add DDG Dir location
+  dFrame$ddgDir <- sapply(extns, function(x) {
+    return(paste("/ddg", x, sep=""))
+  })
+
+  # add DDG dir sizes
+  dFrame$ddgDirSize <- sapply(dFrame$ddgDir, function(x) {
+    return(dirSize(x))
+  })
+
+  # add file names and column names, reorder
   dFrame$names <- names
-  colnames(dFrame) <- c("Execution Time (min)", "Size (kB)", "Script File")
+  dFrame <- dFrame[c(5,1,2,3,4)]
+  colnames(dFrame) <- c("Script File", "Execution Time (min)", "File Size (kB)",
+                        "DDG Dir Loc.", "DDG Dir Size (kB)")
   
-  return(dFrame[c(3,1,2)])
+  return(dFrame)
 
 }
