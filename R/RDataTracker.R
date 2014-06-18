@@ -214,13 +214,14 @@ ddg.MAX_HIST_LINES <- 16384
 # change between when we set .ddg.history.timestamp and when the 
 # timestamp function inserts the timestamp in the history.
 
-.ddg.write.timestamp.to.history <- function() {
+# @param var - the variable name under which the timestamp is saved
+.ddg.write.timestamp.to.history <- function(var = ".ddg.history.timestamp") {
 	if (Sys.getenv("RSTUDIO") != "" && Sys.info()['sysname'] == "Windows") {
-		.ddg.set(".ddg.history.timestamp", paste("##------ ", date(), " ------##", sep=""))
+		.ddg.set(var, paste("##-ddg-- ", date(), sep=""))
 		timestamp(quiet=TRUE)
 	}
 	else {
-		.ddg.set(".ddg.history.timestamp", timestamp(prefix = "##-ddg-- ", quiet=TRUE))
+		.ddg.set(var, timestamp(prefix = "##-ddg-- ", quiet=TRUE))
 	}
 }
 
@@ -230,8 +231,7 @@ ddg.MAX_HIST_LINES <- 16384
 .ddg.is.graphic <- function(value){
 	# matching any of these classes automatically classifies the object as a graphic
 	graph.classes <- list("gg", "ggplot")
-	return(is.object(value) && any(unlist(Map(function(cls){
-		any(class(value) == cls)},graph.classes))))
+	return(is.object(value) && any(class(value) %in% graph.classes))
 }
 
 
@@ -706,38 +706,52 @@ ddg.MAX_HIST_LINES <- 16384
 	else substr(cmd, 1, len-1)
 }
 
-# .ddg.console.node creates a console node.
-.ddg.console.node <- function() {
-	# Find the new console commands since the last console node was 
-  # created.
-	ddg.history.file <- ddg.grabhistory()
-	
-	# Add a procedure node for each new command, data nodes for 
-  # variables set and used, and the corresponding edges.
-	history <- readLines(ddg.history.file)
+# .ddg.loadhistory takes in the name of a file, open it, scans it for the last
+# occurrence of the string specified by timestamp, and returns the lines from 
+# that point forward. 
+.ddg.loadhistory <- function(hist.file, timestamp) {
+	# read from specified file
+	history <- readLines(hist.file)
 	history.lines <- length(history)
 	
-	# Find the last timestamp in the history so we know.  There may be 
+	# Find the timestamp specified in the history.  There may be 
   # more than one with the same timestamp, so pick the last of these.
-	history.timestamp.line <- tail(which(history == .ddg.get(".ddg.history.timestamp")), 1)
+	history.timestamp.line <- tail(which(history == timestamp), 1)
 	
 	if (length(history.timestamp.line) == 0) {
-		error.msg <- "Part of history is missing. DDG may be incomplete!"
+		error.msg <- paste("Part of history is missing. DDG may be incomplete! Tried reading from",
+		                   hist.file, "but could not find timestamp:", timestamp)
+
     .ddg.insert.error.message(error.msg)
 		history.timestamp.line <- 0
 	}
+
+	return(history[(history.timestamp.line + 1):history.lines])
+}
+
+# .ddg.console.node creates a console node.
+.ddg.console.node <- function() {
+	# grab any new commands that might still be in history
+	ddg.grabhistory()
+
+	# Load our extended history file and the last timestamp
+	ddg.history.file <- .ddg.get("ddg.history.file")
+	ddg.history.timestamp <- .ddg.get(".ddg.history.timestamp")
 	
-	# what is this FOR?
-	if (history.timestamp.line == length(history)) return (NULL)
-		
+	# load from extended history since last time we wrote out a console node
+	new.lines <- .ddg.loadhistory(ddg.history.file,ddg.history.timestamp)
+	
+	# no new history since last timestamp
+	if (length(newlines) == 0) return (NULL)	
+
+	# Add a procedure node for each new command, data nodes for 
+  # variables set and used, and the corresponding edges.
 	.ddg.last.command <- .ddg.get(".ddg.last.command")
 	if (!is.null(.ddg.last.command)) {
 		cmd.abbrev <- .ddg.abbrev.cmd(.ddg.last.command)
 		.ddg.proc.node("Finish", cmd.abbrev, .ddg.last.command, console=TRUE)
 		.ddg.proc2proc()
 	}
-
-	new.lines <- history[(history.timestamp.line + 1):history.lines]
 	
 	# Parse the new lines.
 	parsed.commands <- parse(text=new.lines)
@@ -1815,17 +1829,23 @@ ddg.finish <- function(pname=NULL) {
 	.ddg.proc2proc()
 }
 
-# .ddg.grabhistory saves the current R Command history to a file specified in 
-# the ddg.env variable "ddg.history.file." This function should be called if
+# .ddg.grabhistory saves the current and unsaved R Command history to a file 
+# specified in the the ddg.env variable "ddg.history.file." It appends the 
+# information to this file. This function should be called if
 # more than 512 lines of code need to be interpreted automatically (usually
 # because the script is being annoated with enable.console = TRUE). It should 
 # also be called if the error: "Part of history is missing. DDG may be incomplete!"
-# is raised. The return value is the name of the file where the history was stored.
+# is raised. 
 ddg.grabhistory <- function() {
+	# write history out to temporary file
 	ddg.history.file <- .ddg.get("ddg.history.file")
-	savehistory(ddg.history.file)
+	ddg.grab.timestamp <- .ddg.get(".ddg.grab.timestamp.history")
+	ddg.tmp.history.file <- paste("tmp-",ddg.history.file, sep="")
+	savehistory(ddg.tmp.history.file)
 
-	return(ddg.history.file)
+	# read in changes and writ eout to extended file
+	newlines <- .ddg.loadhistory(ddg.tmp.history.file,ddg.grab.timestamp)
+	write(newlines, file=ddg.history.file, append=TRUE)
 }
 
 # ddg.checkpoint saves the current R state in a file and adds a 
@@ -1922,9 +1942,11 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, enable.console = FALSE
 		# Empty file if it already exists.
     	file.create(ddg.history.file)
 		
-		.ddg.write.timestamp.to.history()
+		# one timestamp keeps track of last ddg.save (the default), while the other
+		# keeps track of last ddg.grabhistory (which needs to be called evert 512 lines)
+ 		.ddg.write.timestamp.to.history()
+		.ddg.write.timestamp.to.history(var = ".ddg.grab.timestamp.history")
 		savehistory(ddg.history.file)
-		history <- readLines(ddg.history.file)
 	}
 }
 
