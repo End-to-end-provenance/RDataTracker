@@ -83,10 +83,10 @@ annotateLine <- function(line, histLineNum) {
       return(paste("ddg.grabhistory()",line,sep="\n"))  
     }, error = function(e){
       # cannot parse line, so in middle of command
-      warning(line, e)
+      #warning(line, e)
       return(line)
     }, warning = function(w){
-      warning(line,w)
+      #warning(line,w)
       return(line)
     }) 
   }
