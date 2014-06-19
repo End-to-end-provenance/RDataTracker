@@ -217,7 +217,7 @@ ddg.MAX_HIST_LINES <- 16384
 # @param var - the variable name under which the timestamp is saved
 .ddg.write.timestamp.to.history <- function(var = ".ddg.history.timestamp") {
 	if (Sys.getenv("RSTUDIO") != "" && Sys.info()['sysname'] == "Windows") {
-		.ddg.set(var, paste("##-ddg-- ", date(), sep=""))
+		.ddg.set(var, paste("##------", date(), "------##"))
 		timestamp(quiet=TRUE)
 	}
 	else {
@@ -723,10 +723,10 @@ ddg.MAX_HIST_LINES <- 16384
 		                   hist.file, "but could not find timestamp:", timestamp)
 
     .ddg.insert.error.message(error.msg)
-		history.timestamp.line <- 0
+		history.timestamp.line <- 1
 	}
 
-	return(history[(history.timestamp.line + 1):history.lines])
+	return(history[history.timestamp.line:history.lines])
 }
 
 # .ddg.console.node creates a console node.
@@ -742,7 +742,7 @@ ddg.MAX_HIST_LINES <- 16384
 	new.lines <- .ddg.loadhistory(ddg.history.file,ddg.history.timestamp)
 	
 	# no new history since last timestamp
-	if (length(newlines) == 0) return (NULL)	
+	if (length(new.lines) == 0) return (NULL)	
 
 	# Add a procedure node for each new command, data nodes for 
   # variables set and used, and the corresponding edges.
@@ -1303,6 +1303,14 @@ ddg.MAX_HIST_LINES <- 16384
 	return(ddg.checkpoints$checkpoint.name[nRow])
 }
 
+# .ddg.delete.temp deletes any temporary files created during the processing 
+# of a script. These include:
+#	1. The temporary history file
+.ddg.delete.temp <- function() {
+	temp.hist <- paste(.ddg.get("ddg.history.file"), ".tmp", sep="")
+	unlink(temp.hist)
+}
+
 #--------------------USER FUNCTIONS-----------------------#
 
 # ddg.procedure creates a procedure node of type Operation. pname 
@@ -1840,12 +1848,15 @@ ddg.grabhistory <- function() {
 	# write history out to temporary file
 	ddg.history.file <- .ddg.get("ddg.history.file")
 	ddg.grab.timestamp <- .ddg.get(".ddg.grab.timestamp.history")
-	ddg.tmp.history.file <- paste("tmp-",ddg.history.file, sep="")
+	ddg.tmp.history.file <- paste(ddg.history.file,".tmp", sep="")
 	savehistory(ddg.tmp.history.file)
 
 	# read in changes and writ eout to extended file
 	newlines <- .ddg.loadhistory(ddg.tmp.history.file,ddg.grab.timestamp)
 	write(newlines, file=ddg.history.file, append=TRUE)
+
+	# insert timestamp to history 
+	.ddg.write.timestamp.to.history(var=".ddg.grab.timestamp.history")
 }
 
 # ddg.checkpoint saves the current R state in a file and adds a 
@@ -1939,14 +1950,21 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, enable.console = FALSE
 	if (interactive() && .ddg.enable.console()) {
 		ddg.history.file <- paste(.ddg.path(), ".ddghistory", sep="/")
 		.ddg.set("ddg.history.file", ddg.history.file)
-		# Empty file if it already exists.
+		# Empty file if it already exists, do the same with tmp file
     	file.create(ddg.history.file)
+    	file.create(paste(ddg.history.file,".tmp",sep=""))
 		
 		# one timestamp keeps track of last ddg.save (the default), while the other
 		# keeps track of last ddg.grabhistory (which needs to be called evert 512 lines)
  		.ddg.write.timestamp.to.history()
 		.ddg.write.timestamp.to.history(var = ".ddg.grab.timestamp.history")
+
+		# clear the history
+		rm(list = ls())
+
+		# save the history
 		savehistory(ddg.history.file)
+		history <- readLines(ddg.history.file)
 	}
 }
 
@@ -2014,7 +2032,8 @@ ddg.save <- function() {
 	ddg.data.nodes <- .ddg.data.nodes()
 	write.table(ddg.data.nodes[ddg.data.nodes$ddg.num > 0, ], fileout, quote=FALSE, na="", row.names=FALSE, col.names=FALSE)
 
-	
+	# delete temporary files
+	.ddg.delete.temp()
 }
 
 # ddg.debug.on turns on debugging of DDG construction.
