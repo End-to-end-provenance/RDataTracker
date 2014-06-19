@@ -158,7 +158,7 @@ ddg.MAX_HIST_LINES <- 16384
 # .ddg.init.environ() sets up the filesystem and R environments for use
 .ddg.init.environ <- function() {
 	dir.create(.ddg.path(), showWarnings = FALSE)
-	.ddg.set('ddg.orinal.hist.size', Sys.getenv('R_HISTSIZE'))
+	.ddg.set('ddg.original.hist.size', Sys.getenv('R_HISTSIZE'))
 	if (interactive() && .ddg.enable.console()) .ddg.set.history()
 }
 
@@ -730,17 +730,40 @@ ddg.MAX_HIST_LINES <- 16384
 		history.timestamp.line <- 1
 	}
 
-	return(history[history.timestamp.line:history.lines])
+	# NEED the paren around sum
+	return(history[(history.timestamp.line+1):history.lines])
+}
+
+# .ddg.savehistory saves the current and unsaved R Command history to a file 
+# specified as the parementer.
+# THE FOLLOWING APPLIES TO THE COMMENTED SECTION OF CODE
+# It appends the information to this file. 
+
+.ddg.savehistory <- function(hist.file) {
+
+	# USED TO STORE ENTIRE HISTORY IN SEP. FILE
+	# write history out to temporary file
+	#ddg.grab.timestamp <- .ddg.get(".ddg.grab.timestamp.history")
+	#ddg.tmp.history.file <- paste(hist.file,".tmp", sep="")
+
+	savehistory(hist.file)
+
+	# USED TO STORE ENTIRE HISTORY IN SEP. FILE
+	# read in changes and writ eout to extended file
+	#newlines <- .ddg.loadhistory(ddg.tmp.history.file,ddg.grab.timestamp)
+	#write(newlines, file=hist.file, append=TRUE)
+	# insert timestamp to history 
+	#.ddg.write.timestamp.to.history(var=".ddg.grab.timestamp.history")
 }
 
 # .ddg.console.node creates a console node.
 .ddg.console.node <- function() {
-	# grab any new commands that might still be in history
-	ddg.grabhistory()
-
 	# Load our extended history file and the last timestamp
 	ddg.history.file <- .ddg.get("ddg.history.file")
 	ddg.history.timestamp <- .ddg.get(".ddg.history.timestamp")
+
+	# grab any new commands that might still be in history
+	.ddg.savehistory(ddg.history.file)
 	
 	# load from extended history since last time we wrote out a console node
 	new.lines <- .ddg.loadhistory(ddg.history.file,ddg.history.timestamp)
@@ -760,7 +783,7 @@ ddg.MAX_HIST_LINES <- 16384
 	# Parse the new lines.
 	parsed.commands <- parse(text=new.lines)
 	
-	# It is possible that a command may extend over multiple lines. 
+	# It is possidle that a command may extend over multiple lines. 
   # new.commands will have one entry for each parsed command, whereas 
   # new.lines, which is read from the file, will have one entry for 
   # each line, which is not very useful for us.
@@ -821,29 +844,29 @@ ddg.MAX_HIST_LINES <- 16384
 	}
 	
 	if (length(parsed.commands) > 0) {
-	# Find where all the variables are assigned to.
-	vars.set <- .ddg.find.var.assignments(parsed.commands)
+		# Find where all the variables are assigned to.
+		vars.set <- .ddg.find.var.assignments(parsed.commands)
 	
-	# Decide which data nodes and edges to create.  Only create a data 
-  # node for the last write of a variable and only if that occurs 
-  # after the last possible writer. Create an edge for a data use as 
-  # long as the use happens before the first writer/possible writer 
-  # or after the last writer/possible writer.
-	for (i in 1:length(parsed.commands)) {
-		cmd.expr <- parsed.commands[[i]]
-		cmd <- quoted.commands[i]
+		# Decide which data nodes and edges to create.  Only create a data 
+  	# node for the last write of a variable and only if that occurs 
+  	# after the last possible writer. Create an edge for a data use as 
+  	# long as the use happens before the first writer/possible writer 
+  	# or after the last writer/possible writer.
+		for (i in 1:length(parsed.commands)) {
+			cmd.expr <- parsed.commands[[i]]
+			cmd <- quoted.commands[i]
 		
-		if (substr(cmd, 1, 4) != "ddg.") {
-			cmd.abbrev <- .ddg.abbrev.cmd(cmd)
-			.ddg.create.data.use.edges.for.console.cmd(vars.set, cmd.abbrev, cmd.expr, i)
-			.ddg.create.data.set.edges.for.console.cmd(vars.set, cmd.abbrev, cmd.expr, i)
+			if (substr(cmd, 1, 4) != "ddg.") {
+				cmd.abbrev <- .ddg.abbrev.cmd(cmd)
+				.ddg.create.data.use.edges.for.console.cmd(vars.set, cmd.abbrev, cmd.expr, i)
+				.ddg.create.data.set.edges.for.console.cmd(vars.set, cmd.abbrev, cmd.expr, i)
+			}
 		}
-	}
 	
-	# Create a data node for each variable that might have been set in 
-  # something other than a simple assignment, with an edge from the 
-  # last node in the console block.
-	.ddg.create.data.node.for.possible.writes(vars.set, last.proc.node)
+		# Create a data node for each variable that might have been set in 
+  	# something other than a simple assignment, with an edge from the 
+  	# last node in the console block.
+		.ddg.create.data.node.for.possible.writes(vars.set, last.proc.node)
 	}
 	
     # Write time stamp to history.
@@ -1311,8 +1334,7 @@ ddg.MAX_HIST_LINES <- 16384
 # of a script. These include:
 #	1. The temporary history file
 .ddg.delete.temp <- function() {
-	temp.hist <- paste(.ddg.get("ddg.history.file"), ".tmp", sep="")
-	unlink(temp.hist)
+	return(NULL)
 }
 
 #--------------------USER FUNCTIONS-----------------------#
@@ -1841,26 +1863,20 @@ ddg.finish <- function(pname=NULL) {
 	.ddg.proc2proc()
 }
 
-# .ddg.grabhistory saves the current and unsaved R Command history to a file 
-# specified in the the ddg.env variable "ddg.history.file." It appends the 
-# information to this file. This function should be called if
-# more than 512 lines of code need to be interpreted automatically (usually
-# because the script is being annoated with enable.console = TRUE). It should 
-# also be called if the error: "Part of history is missing. DDG may be incomplete!"
-# is raised. 
+# The function ddg.grabhistory grabs the current console history and creates
+# the partial DDG. It does not, however, write this to the file system.
+# The function should be called only if more than 512 lines of code need to be 
+# interpreted automatically (usually because the script is being annoated with 
+# enable.console = TRUE). It should also be called if the error: "Part of history
+# is missing. DDG may be incomplete!" is raised. 
+# Finally, it should be called periodically to assure no history is missing.
 ddg.grabhistory <- function() {
-	# write history out to temporary file
-	ddg.history.file <- .ddg.get("ddg.history.file")
-	ddg.grab.timestamp <- .ddg.get(".ddg.grab.timestamp.history")
-	ddg.tmp.history.file <- paste(ddg.history.file,".tmp", sep="")
-	savehistory(ddg.tmp.history.file)
+	if (!.ddg.check.init()) return(NULL)
 
-	# read in changes and writ eout to extended file
-	newlines <- .ddg.loadhistory(ddg.tmp.history.file,ddg.grab.timestamp)
-	write(newlines, file=ddg.history.file, append=TRUE)
-
-	# insert timestamp to history 
-	.ddg.write.timestamp.to.history(var=".ddg.grab.timestamp.history")
+	# only act if in intereactive mode and with enabled console
+	if (interactive() && .ddg.enable.console()) {
+		.ddg.console.node()
+	}
 }
 
 # ddg.checkpoint saves the current R state in a file and adds a 
@@ -1958,10 +1974,8 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, enable.console = FALSE
     	file.create(ddg.history.file)
     	file.create(paste(ddg.history.file,".tmp",sep=""))
 		
-		# one timestamp keeps track of last ddg.save (the default), while the other
-		# keeps track of last ddg.grabhistory (which needs to be called evert 512 lines)
+		# one timestamp keeps track of last ddg.save (the default)
  		.ddg.write.timestamp.to.history()
-		.ddg.write.timestamp.to.history(var = ".ddg.grab.timestamp.history")
 
 		# clear the history
 		rm(list = ls())
@@ -2007,10 +2021,13 @@ ddg.run <- function(f, r.script.path = NULL, ddgdir = NULL, enable.console = FAL
 ddg.save <- function() {
 	if (!.ddg.check.init()) return(NULL)
 
+	# restore history settings
 	if (interactive() && .ddg.enable.console()) {
-		.ddg.console.node()
-		Sys.setenv("R_HISTSIZE"=.ddg.get('ddg.orinal.hist.size'))
+		Sys.setenv("R_HISTSIZE"=.ddg.get('ddg.original.hist.size'))
 	}
+
+	# Get final commands
+	ddg.grabhistory()
 	
 	# Get environment parameters.
 	ddg.env <- .ddg.environ()
