@@ -460,7 +460,7 @@ ddg.MAX_HIST_LINES <- 16384
 # ddg.is.functiondecl tests to see if an expression is a function 
 # declaration.
 .ddg.is.functiondecl <- function(expr) {
-	if (is.symbol(expr)) return (FALSE)
+	if (is.symbol(expr) || !is.list(expr)) return (FALSE)
 	return (expr[[1]] == "function")
 }
 
@@ -481,7 +481,7 @@ ddg.MAX_HIST_LINES <- 16384
 		# Don't look for assignments in the body of a function as those 
     # won't happen until the function is called.
     # Don't recurse on NULL
-		if (!(is.null(obj[[3]]) || is.na(obj[[3]]))) {
+		if (!(is.null(obj[[3]]))) {
 			if (.ddg.is.functiondecl(obj[[3]])) var
 			else c(var, unlist(lapply(obj[[3]], .ddg.find.assign)))
 		}
