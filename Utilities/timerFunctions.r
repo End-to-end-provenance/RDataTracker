@@ -30,10 +30,18 @@ setInitialVal <- function(wd){
 
 ### Function which generates code to trick RStudio into loading source file into history so 
 #   minimual instrumentation of DDG works correctly.
-.loadHistory <- function(scriptPath){
-  hist <- paste("loadhistory('", scriptPath, "')",sep="")
-  timestamp <- paste("##------ ", date(), " ------##", sep="")
-  return(paste(hist,timestamp,sep="\n"))
+.startHistory <- function(scriptPath){
+  hist <- "" # paste("loadhistory('", scriptPath, "')",sep="")
+  myTimeStamp <<- paste("##------ ", date(), " ------##", sep="")
+  return(paste(hist,myTimeStamp,sep="\n"))
+}
+
+### Function which generates the chunk of code to truck our library into loading
+#   the current script file into history and into using the corrent myTimeStamp for
+#   that loading.
+.endHistory <- function(scriptPath){
+  cmd <- paste(".ddg.console.node('", scriptPath, "','", myTimeStamp, "')", sep="")
+  return(cmd)
 }
 
 ### Function which returns the string of R code necessary at the beginning of a 
@@ -43,14 +51,17 @@ setInitialVal <- function(wd){
 startMinInst <- function(scriptPath,ddgDirPath){
   src <- 'source("D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/R/RDataTracker.R")'
   # lib <- "library(RDataTracker)"
+  hist <- .startHistory(scriptPath)
   init <- paste("ddg.init('", scriptPath, "','",ddgDirPath, "',enable.console=TRUE)",sep="")
-  return(paste(src,init,.loadHistory(scriptPath),sep="\n"))
+  return(paste(src,init,hist,sep="\n"))
 }
 
 ### Function which returns the string of R code necessary at the end of a file 
 #   for minimal DDG instrumentation
-endMinInst <- function(){
-  return("ddg.save()")
+endMinInst <- function(scriptPath){
+  sourceSave <- .endHistory(scriptPath)
+  ddgSave <- "ddg.save()"
+  return(paste(sourceSave, "ddg.save()", sep="\n"))
 }
 
 ### Function which returns whether or not the current line in the history is one
@@ -80,7 +91,9 @@ annotateLine <- function(line, histLineNum) {
       # we add time.corrLines to keep everything at within time.histLineLim even if we
       # insert at locations onether than histLineNum
       time.corrLines <<- time.histLineLim - histLineNum
-      return(paste("ddg.grabhistory()",line,sep="\n"))  
+
+      grabHistory <- "ddg.grabhistory()"
+      return(paste(grabHistory, line,sep="\n"))  
     }, error = function(e){
       # cannot parse line, so in middle of command
       #warning(line, e)
@@ -173,7 +186,8 @@ writeMinInstr <- function(inp,out){
   ddgDirPath <- paste(getwd(),"/ddg-min",sep="")
   dir.create(ddgDirPath,showWarnings=FALSE)
   scriptPath <- paste(getwd(),"/",out,sep="")
-  minExpr <- paste(startMinInst(scriptPath,ddgDirPath),"\n",expr,"\n",endMinInst(),sep="")
+  minExpr <- paste(startMinInst(scriptPath,ddgDirPath),"\n",expr,"\n",
+                   endMinInst(scriptPath),sep="")
   
   # create minScript file
   sFile <- file(out)

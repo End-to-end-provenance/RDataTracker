@@ -23,7 +23,7 @@ timeScript <- function(filePath, fileName){
 
 ### Main script
 # list out scripts to test
-scr.zero <- list("/aaron script", "Simes dendrochronology master analysis file")
+scr.zero <- list("/aaron script", "")
 scr.one <- list("/calculate square root", "calculate-square-root")
 scr.two <- list("/daily solar radiation", "daily-solar-radiation")
 scripts <- list(scr.zero, scr.one, scr.two)

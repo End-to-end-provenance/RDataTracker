@@ -756,14 +756,16 @@ ddg.MAX_HIST_LINES <- 2^14
 	#.ddg.write.timestamp.to.history(var=".ddg.grab.timestamp.history")
 }
 
-# .ddg.console.node creates a console node.
-.ddg.console.node <- function() {
+# .ddg.console.node creates a console node. Uses file as the history file to read
+# for input and time as the timestamp to search for. Defaults to saved ddg values.
+# The parameters are mostly used for when source-ing a script
+.ddg.console.node <- function(file = "", time = "") {
 	# Load our extended history file and the last timestamp
-	ddg.history.file <- .ddg.get("ddg.history.file")
-	ddg.history.timestamp <- .ddg.get(".ddg.history.timestamp")
+	ddg.history.file <- ifelse(file == "",.ddg.get("ddg.history.file"),file)
+	ddg.history.timestamp <- ifelse(time == "", .ddg.get(".ddg.history.timestamp"), time)
 
-	# grab any new commands that might still be in history
-	.ddg.savehistory(ddg.history.file)
+	# grab any new commands that might still be in history if not reading from file
+	if (file == "") .ddg.savehistory(ddg.history.file)
 	
 	# load from extended history since last time we wrote out a console node
 	new.lines <- .ddg.loadhistory(ddg.history.file,ddg.history.timestamp)
@@ -1969,6 +1971,7 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, enable.console = FALSE
 	
 	if (interactive() && .ddg.enable.console()) {
 		ddg.history.file <- paste(.ddg.path(), ".ddghistory", sep="/")
+		print(ddg.history.file)
 		.ddg.set("ddg.history.file", ddg.history.file)
 		# Empty file if it already exists, do the same with tmp file
     	file.create(ddg.history.file)
@@ -1977,12 +1980,8 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, enable.console = FALSE
 		# one timestamp keeps track of last ddg.save (the default)
  		.ddg.write.timestamp.to.history()
 
-		# clear the history
-		rm(list = ls())
-
 		# save the history
 		savehistory(ddg.history.file)
-		history <- readLines(ddg.history.file)
 	}
 }
 
