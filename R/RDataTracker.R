@@ -1975,7 +1975,6 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, enable.console = FALSE
 		.ddg.set("ddg.history.file", ddg.history.file)
 		# Empty file if it already exists, do the same with tmp file
     	file.create(ddg.history.file)
-    	file.create(paste(ddg.history.file,".tmp",sep=""))
 		
 		# one timestamp keeps track of last ddg.save (the default)
  		.ddg.write.timestamp.to.history()

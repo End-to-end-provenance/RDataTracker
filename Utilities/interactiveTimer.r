@@ -24,5 +24,3 @@ results <- calcResults(getFileName())
 # print results
 print("Timing Results:")
 print(results)
-
-
