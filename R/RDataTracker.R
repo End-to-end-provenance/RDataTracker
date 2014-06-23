@@ -1336,7 +1336,7 @@ ddg.MAX_HIST_LINES <- 2^14
 # of a script. These include:
 #	1. The temporary history file
 .ddg.delete.temp <- function() {
-	unlink(.ddg.get('ddg.history.file'))
+	if (interactive() && .ddg.enable.console()) unlink(.ddg.get('ddg.history.file'))
 }
 
 #--------------------USER FUNCTIONS-----------------------#
@@ -1766,6 +1766,8 @@ ddg.url.out <- function(dname, dvalue=NULL, pname=NULL) {
 # passed as a string or as a name.  If omitted, the name of the 
 # function that called ddg.snapshot.out is used.
 
+### TODO - this function needs to be rewritten and abstracted so that ddg.procedeure
+#						relies on the same base code as ddg.snapshot.out
 ddg.snapshot.out <- function(dname, fext="csv", data=NULL, pname=NULL) {
 	if (!.ddg.check.init()) return(NULL)
 
@@ -1971,10 +1973,9 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, enable.console = FALSE
 	
 	if (interactive() && .ddg.enable.console()) {
 		ddg.history.file <- paste(.ddg.path(), ".ddghistory", sep="/")
-		print(ddg.history.file)
 		.ddg.set("ddg.history.file", ddg.history.file)
 		# Empty file if it already exists, do the same with tmp file
-    	file.create(ddg.history.file)
+    file.create(ddg.history.file)
 		
 		# one timestamp keeps track of last ddg.save (the default)
  		.ddg.write.timestamp.to.history()
@@ -2035,6 +2036,9 @@ ddg.save <- function() {
   # that ddg.save can be called more than once on the same DDG 
   # without generating more than one copy of the attributes.
 	output <- paste(ddg.env, .ddg.pnum(), "\n", .ddg.get("ddg.text"), sep="")
+
+	# delete temporary files
+	.ddg.delete.temp()
 	
 	# Save DDG to file.
 	ddg.path <- .ddg.path()
@@ -2047,12 +2051,9 @@ ddg.save <- function() {
 	write.table(ddg.proc.nodes[ddg.proc.nodes$ddg.num > 0, ], fileout, quote=FALSE, na="", row.names=FALSE, col.names=FALSE)
 	
 	# Save data nodes table to file.
-    fileout <- paste(ddg.path, "/dnodes.txt", sep="")
+  fileout <- paste(ddg.path, "/dnodes.txt", sep="")
 	ddg.data.nodes <- .ddg.data.nodes()
 	write.table(ddg.data.nodes[ddg.data.nodes$ddg.num > 0, ], fileout, quote=FALSE, na="", row.names=FALSE, col.names=FALSE)
-
-	# delete temporary files
-	.ddg.delete.temp()
 }
 
 # ddg.debug.on turns on debugging of DDG construction.
