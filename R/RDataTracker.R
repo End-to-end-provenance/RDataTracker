@@ -1427,7 +1427,7 @@ ddg.MAX_HIST_LINES <- 16384
 # created to the arguments of the function that called ddg.procedure, 
 # if the corresponding data nodes exist.
 
-ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.graphic=FALSE, outs.data=NULL, 
+ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.graphic=NULL, outs.data=NULL, 
                           outs.exception=NULL, outs.url=NULL, outs.file=NULL, graphic.fext="jpeg") {
 	if (!.ddg.check.init()) return(NULL)
 
@@ -1487,10 +1487,11 @@ ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.graphic=F
 	}
 
 	# Capture graphics device
-	if (outs.graphic) {
-		name <- paste("Graphic Output", sep="-")
+	if (is.character(outs.graphic) {
+		name <- outs.graphic
+		gfext <- as.character(graphic.fext)
 		value <- NULL
-		.ddg.write.graphic(name,value,fext=graphic.fext)
+		.ddg.write.graphic(name,value,fext=gfext)
 		.ddg.proc2data(pname,name)
 	}
 	
