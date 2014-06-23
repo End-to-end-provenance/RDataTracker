@@ -1070,7 +1070,9 @@ ddg.MAX_HIST_LINES <- 16384
 	
 	# Write to file .
 	if (fext == "csv") write.csv(data, dpfile, row.names=FALSE)
-	else if (fext == "jpeg" || fext == "jpg") jpeg(filename=dpfile, width=800, height=500, quality=100)
+	else if (fext == "jpeg" || fext == "jpg") {
+		dev.copy(which=jpeg(filename=dpfile, width=800, height=500, quality=100))
+	}
 	else if (fext == "pdf") dev.copy2pdf(file=dpfile)
     else if (fext == "txt" || fext == "") {
 	    fileConn <- file(dpfile)
