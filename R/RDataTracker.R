@@ -1487,7 +1487,7 @@ ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.graphic=N
 	}
 
 	# Capture graphics device
-	if (is.character(outs.graphic) {
+	if (is.character(outs.graphic)) {
 		name <- outs.graphic
 		gfext <- as.character(graphic.fext)
 		value <- NULL
