@@ -1417,7 +1417,8 @@ ddg.MAX_HIST_LINES <- 16384
 # created to the arguments of the function that called ddg.procedure, 
 # if the corresponding data nodes exist.
 
-ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.data=NULL, outs.exception=NULL, outs.url=NULL, outs.file=NULL) {
+ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.graphic=FALSE, outs.data=NULL, 
+                          outs.exception=NULL, outs.url=NULL, outs.file=NULL) {
 	if (!.ddg.check.init()) return(NULL)
 
 	.ddg.lookup.function.name(pname)
@@ -1473,6 +1474,14 @@ ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.data=NULL
 						}
 					})
 		}
+	}
+
+	# Capture graphics device
+	if (outs.graphic) {
+		name <- paste(pname,"Graphic", sep="-")
+		value <- NULL
+		.ddg.write.graphic(name,value)
+		.ddg.proc2data(pname,name)
 	}
 	
 	# Create output nodes and edges if outs list provided.
