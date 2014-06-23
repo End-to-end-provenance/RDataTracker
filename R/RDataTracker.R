@@ -1488,7 +1488,7 @@ ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.graphic=F
 
 	# Capture graphics device
 	if (outs.graphic) {
-		name <- paste(pname,"Graphic Output", sep="-")
+		name <- paste("Graphic Output", sep="-")
 		value <- NULL
 		.ddg.write.graphic(name,value,fext=graphic.fext)
 		.ddg.proc2data(pname,name)
