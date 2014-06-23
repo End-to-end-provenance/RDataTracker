@@ -262,16 +262,20 @@ ddg.MAX_HIST_LINES <- 16384
 # (the data) associated with it and attempts to write it out as a graphics file
 # If all else fails, it writes out the informaion as a text file and also writes
 # out an RData Object which can later be read back into the system 
-.ddg.write.graphic <- function(name, value){
+.ddg.write.graphic <- function(name, value, fext="pdf"){
+	# we try to write out as jpeg if type specified doesn't work
+	sfext <- ifelse(fext=="pdf","jpeg","pdf")
+
 	# try to output graphic value
 	tryCatch({
-		.ddg.snapshot.node(name, "pdf", NULL)
+		.ddg.snapshot.node(name, fext, NULL)
 	}, error = function(e) {
-		warning(paste("Attempted to write", name, "as .pdf snapshot. Trying jpeg.", e))
+		warning(paste("Attempted to write", name, "as", fext, "snapshot. Trying", sfext, ".", e))
 		tryCatch({
 			.ddg.snapshot.node(name, "jpeg", NULL)
 		}, error = function(e) {
-			warning(paste("Attempted to write", name, "as .jpeg snapshot. Failed.", e))
+			warning(paste("Attempted to write", name, "as", sfext, "snapshot. Failed.", e, 
+			        "Defaulting to saving RObject and .txt file."))
 			.ddg.snapshot.node(name, "OData", value)
   		.ddg.snapshot.node(name, "txt", value)
   	})
@@ -1418,7 +1422,7 @@ ddg.MAX_HIST_LINES <- 16384
 # if the corresponding data nodes exist.
 
 ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.graphic=FALSE, outs.data=NULL, 
-                          outs.exception=NULL, outs.url=NULL, outs.file=NULL) {
+                          outs.exception=NULL, outs.url=NULL, outs.file=NULL, graphic.fext="jpeg") {
 	if (!.ddg.check.init()) return(NULL)
 
 	.ddg.lookup.function.name(pname)
@@ -1478,9 +1482,9 @@ ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.graphic=F
 
 	# Capture graphics device
 	if (outs.graphic) {
-		name <- paste(pname,"Graphic", sep="-")
+		name <- paste(pname,"Graphic Output", sep="-")
 		value <- NULL
-		.ddg.write.graphic(name,value)
+		.ddg.write.graphic(name,value,fext=graphic.fext)
 		.ddg.proc2data(pname,name)
 	}
 	
