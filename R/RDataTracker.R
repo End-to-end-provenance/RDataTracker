@@ -1430,7 +1430,7 @@ ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.data=NULL
         env <- parent.frame(3)
         .ddg.lookup.value(name, value, env, "ddg.procedure", warn=FALSE)
 
-        if (length(value) == 1 && is.na(value)) {
+        if (length(value) == 1 && is.vector(value) && is.na(value)) {
           # Data node with value NA.
           .ddg.data.node("Data", name, NA)            
           .ddg.proc2data(pname, name)
@@ -1938,10 +1938,14 @@ ddg.restore <- function(file.path) {
   # made.
 
 	saved.ddg.env <- .ddg.env
+	print("Set saved.ddg.env")
 	load (file.path, parent.env(environment()))
+	print("Loaded checkpoint file")
 	# load (file.path, .GlobalEnv, verbose=TRUE)
 	.ddg.mark.stale.data(saved.ddg.env)
+	print("Marked stale data")
 	.ddg.restore.ddg.state(saved.ddg.env)
+	print("Restored ddg state")
 }
 
 # ddg.init intializes a new ddg. r.script.path (optional) - the full 
