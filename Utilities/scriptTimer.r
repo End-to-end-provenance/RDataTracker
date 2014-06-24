@@ -14,7 +14,6 @@ source("helpers.r")
 timeScript <- function(filePath, fileName){
   setInitialVal(filePath)
   results <- calcResults(fileName)
-  colnames(results) <- c("Execution Time (Min)","File Size (kB)")
   
   return(results)
 }
@@ -23,17 +22,20 @@ timeScript <- function(filePath, fileName){
 
 ### Main script
 # list out scripts to test
-scr.zero <- list("/aaron script", "Simes dendrochronology master analysis file")
-scr.one <- list("/calculate square root", "calculate-square-root")
-scr.two <- list("/daily solar radiation", "daily-solar-radiation")
-scr.three <- list("/seminar one", "R_REU_S1")
-scr.four <- list("/seminar two", "R_REU_S2")
-scripts <- list(scr.zero, scr.one, scr.two,src.three, src.four)
+src.zero <- list("/aaron script", "Simes dendrochronology master analysis file")
+src.one <- list("/calculate square root", "calculate-square-root")
+src.two <- list("/daily solar radiation", "daily-solar-radiation")
+src.three <- list("/seminar one", "R_REU_S1")
+src.four <- list("/seminar two", "R_REU_S2")
+scripts <- list(src.zero, src.one, src.two,src.three, src.four)
+
+# results
+results <- lapply(scripts,function(x){
+  return(timeScript(x[[1]],x[[2]])) 
+})
 
 # combine by row
-rowResults <- rbind(lapply(scripts,function(x){
-  return(timeScript(x[1],x[2])) 
-}))
+rowResults <- rbind(unlist(results))
 
 # set working directory to write out in the right location
 setwd("D:/Users/Luis/Dropbox/HarvardForest/RDataTracker Annotations")
