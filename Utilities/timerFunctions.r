@@ -49,11 +49,11 @@ setInitialVal <- function(wd){
 # @param scriptDir - a string for the directory of the script
 # @param ddgDirPath - a string for the path of the ddgDirectory
 startMinInst <- function(scriptPath,ddgDirPath){
-  src <- 'source("D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/R/RDataTracker.R")'
-  # lib <- "library(RDataTracker)"
+  # src <- 'source("D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/R/RDataTracker.R")'
+  lib <- "library(RDataTracker)"
   hist <- .startHistory(scriptPath)
   init <- paste("ddg.init('", scriptPath, "','",ddgDirPath, "',enable.console=TRUE)",sep="")
-  return(paste(src,init,hist,sep="\n"))
+  return(paste(lib,init,hist,sep="\n"))
 }
 
 ### Function which returns the string of R code necessary at the end of a file 
