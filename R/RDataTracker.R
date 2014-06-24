@@ -606,7 +606,7 @@ ddg.MAX_HIST_LINES <- 16384
 
 # - the variable name.
 # - the position of the statement that wrote the variable first.
-# - the position of the statement that the variable last.
+# - the position of the statement that wrote the variable last.
 # - the position of the first statement that may have assigned to a
 #   variable .
 # - the position of the last statement that may have assigned to a 
