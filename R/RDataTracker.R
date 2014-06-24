@@ -1515,7 +1515,7 @@ if (!is.null(outs.data)) {
       .ddg.write.graphic(name,value)
 
       # Create data flow edge from operation node to snapshot node.
-.ddg.proc2data(pname, name)
+			.ddg.proc2data(pname, name)
      }
      # figure out if its a simple data value we can store with the DDG
      else if (.ddg.is.simple(value)) {
