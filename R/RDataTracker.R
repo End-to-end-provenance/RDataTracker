@@ -2007,13 +2007,13 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, enable.console = FALSE
 	if (interactive() && .ddg.enable.console()) {
 		ddg.history.file <- paste(.ddg.path(), ".ddghistory", sep="/")
 		.ddg.set("ddg.history.file", ddg.history.file)
+		
 		# Empty file if it already exists, do the same with tmp file
-    	file.create(ddg.history.file)
-    	file.create(paste(ddg.history.file,".tmp",sep=""))
+    file.create(ddg.history.file)
 		
 		# one timestamp keeps track of last ddg.save (the default)
  		.ddg.write.timestamp.to.history()
- 		
+
 		# save the history
 		savehistory(ddg.history.file)
 		history <- readLines(ddg.history.file)
