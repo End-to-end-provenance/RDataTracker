@@ -566,7 +566,9 @@ ddg.MAX_HIST_LINES <- 16384
 			last.writer=numeric(var.table.size), 
 			possible.first.writer=numeric(var.table.size), 
 			possible.last.writer=numeric(var.table.size), stringsAsFactors=FALSE)
-	
+	vars.set$first.writer <- length(parsed.commands)+1
+	vars.set$possible.first.writer <- length(parsed.commands)+1
+  
 	# Build the table recording where variables are assigned to or may 
   # be assigned to.
 	var.num <- 1
@@ -631,7 +633,7 @@ ddg.MAX_HIST_LINES <- 16384
 			if (length(nRow) > 0) {
 				first.writer <- min(vars.set$first.writer[nRow], vars.set$possible.first.writer[nRow])						
 				last.writer <- max(vars.set$last.writer[nRow], vars.set$possible.last.writer[nRow])
-				
+        
 				# Draw the edge if we will connect to a node that exists 
         # before the console block or to the last writer of this 
         # variable within the console block.
