@@ -234,6 +234,67 @@ ddg.MAX_HIST_LINES <- 16384
 	return(is.object(value) && any(class(value) %in% graph.classes))
 }
 
+# .ddg.is.simple returns true if the value passed in is a simple data value which
+# should be saved locally as opposed to stored in a seperate file. The assumption
+# is that the value passed in has already been declared not to be a graphic.
+.ddg.is.simple <- function(value) {
+	return(is.vector(value) && length(value) == 1)
+}
+
+# .ddg.is.csv returns true if the value passed in should be written out as a csv
+# file. The assumption is that when the value is passed in, it has already been
+# declared to be neither a graphic nor a simple vector.
+.ddg.is.csv <- function(value) {
+	return(is.list(value) || is.vector(value) || is.matrix(value) || is.data.frame(value))
+}
+
+# .ddg.save.simple takes in a simple name, value pairing and saves it to the ddg.
+# It does not however create any edges.
+.ddg.save.simple <- function(name,value) {
+	# check whether value is NA
+	tValue <- ifelse(is.na(value), NA, value)
+	
+	# save the true value
+	.ddg.data.node("Data", name, tValue)
+}
+
+# .ddg.write.graphic takes as input the name of a variable as well as the value 
+# (the data) associated with it and attempts to write it out as a graphics file
+# If all else fails, it writes out the informaion as a text file and also writes
+# out an RData Object which can later be read back into the system 
+.ddg.write.graphic <- function(name, value, fext="pdf"){
+	# we try to write out as jpeg if type specified doesn't work
+	sfext <- ifelse(fext=="pdf","jpeg","pdf")
+
+	# try to output graphic value
+	tryCatch({
+		.ddg.snapshot.node(name, fext, NULL)
+	}, error = function(e) {
+		warning(paste("Attempted to write", name, "as", fext, "snapshot. Trying", sfext, ".", e))
+		tryCatch({
+			.ddg.snapshot.node(name, "jpeg", NULL)
+		}, error = function(e) {
+			warning(paste("Attempted to write", name, "as", sfext, "snapshot. Failed.", e, 
+			        "Defaulting to saving RObject and .txt file."))
+			.ddg.snapshot.node(name, "OData", value)
+  		.ddg.snapshot.node(name, "txt", value)
+  	})
+	})
+}
+
+# .ddg.write.csv takes as input the name, value pairing for a variable and attempts
+# to save the data as a csv. It does not create any edges but does add the node to
+# the DDG. Edge creation should occur from wherever this function is called.
+.ddg.write.csv <- function(name, value) {
+  tryCatch({
+		.ddg.snapshot.node(name, "csv", value)
+	}, error = function(e) {
+		warning(paste("Attempted to write", name, "as .csv snapshot but failed. Out as RDataObject.", e))
+		.ddg.snapshot.node(name, "OData", value)
+		.ddg.snapshot.node(name, "txt", value)
+	})
+}
+
 
 # .ddg.record.proc records a procedure node in the procedure node 
 # table.
@@ -1011,7 +1072,13 @@ ddg.MAX_HIST_LINES <- 16384
 	
 	# Write to file .
 	if (fext == "csv") write.csv(data, dpfile, row.names=FALSE)
-	else if (fext == "jpeg" || fext == "jpg") jpeg(filename=dpfile, width=800, height=500, quality=100)
+	else if (fext == "jpeg" || fext == "jpg") {
+		# create jpeg device and copy contents to it
+		dev.copy(function(){jpeg(filename=dpfile, width=800, height=500, quality=100)})
+		
+		# turn it off (this switches back to prev device)
+		dev.off()
+	}
 	else if (fext == "pdf") dev.copy2pdf(file=dpfile)
     else if (fext == "txt" || fext == "") {
 	    fileConn <- file(dpfile)
@@ -1362,7 +1429,8 @@ ddg.MAX_HIST_LINES <- 16384
 # created to the arguments of the function that called ddg.procedure, 
 # if the corresponding data nodes exist.
 
-ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.data=NULL, outs.exception=NULL, outs.url=NULL, outs.snapshot=NULL, outs.file=NULL) {
+ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.graphic=NULL, outs.data=NULL, 
+                          outs.exception=NULL, outs.url=NULL, outs.file=NULL, graphic.fext="jpeg") {
 	if (!.ddg.check.init()) return(NULL)
 
 	.ddg.lookup.function.name(pname)
@@ -1370,7 +1438,7 @@ ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.data=NULL
 	
 	# Create control flow edge from preceding procedure node.
 	.ddg.proc2proc()
-	
+
 	# Create the input edges if ins list provided.
 	if (!is.null(ins)) {
 		lapply(ins, 
@@ -1419,38 +1487,59 @@ ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.data=NULL
 					})
 		}
 	}
+
+	# Capture graphics device
+	if (is.character(outs.graphic)) {
+		name <- outs.graphic
+		gfext <- as.character(graphic.fext)
+		value <- NULL
+		.ddg.write.graphic(name,value,fext=gfext)
+		.ddg.proc2data(pname,name)
+	}
 	
 	# Create output nodes and edges if outs list provided.
 
   # Data node.
-  if (!is.null(outs.data)) {
-    lapply(outs.data,
-      function(param) {
-        # Get value in calling environment.
-        name <- param
-        value <- NULL
-        env <- parent.frame(3)
-        .ddg.lookup.value(name, value, env, "ddg.procedure", warn=FALSE)
+if (!is.null(outs.data)) {
+ lapply(outs.data,
+   function(param) {
+     # Get value in calling environment.
+     name <- param
+     value <- NULL
+     env <- parent.frame(3)
+     .ddg.lookup.value(name, value, env, "ddg.procedure", warn=FALSE)
+ 
+     # try to figure out if this should be a plot, save it as a pdf/jpeg
+     if (.ddg.is.graphic(value)) {
+      # Perform procedure to create correct data and node
+      .ddg.write.graphic(name,value)
 
-        if (length(value) == 1 && is.vector(value) && is.na(value)) {
-          # Data node with value NA.
-          .ddg.data.node("Data", name, NA)            
-          .ddg.proc2data(pname, name)
-        }
-        else if (length(value) == 1) {
-          # Data node.
-          .ddg.data.node("Data", name, value)
-          .ddg.proc2data(pname, name)
-        }
-        else {
-          # Not a simple value.
-          error.msg = paste(name,"is not a simple value")
+      # Create data flow edge from operation node to snapshot node.
+.ddg.proc2data(pname, name)
+     }
+     # figure out if its a simple data value we can store with the DDG
+     else if (.ddg.is.simple(value)) {
+      .ddg.save.simple(name,value)
+      .ddg.proc2data(pname, name)
+     }
+     # figure out if it might be writable as a CSV (for better presentation in DDG)
+     else if (.ddg.is.csv(value)) {
+      .ddg.write.csv(name,value)
+      .ddg.proc2data(pname, name)
+  }
+  # otherwise, it is an a class object so save as a .txt file directly
+     else if (is.object(value)) {
+      .ddg.snapshot.node(name, "txt", value)
+      .ddg.proc2data(pname, name)
+     }
+     # Unable to store the data
+     else {
+          error.msg <- "Unable to create data (snapshot) node"
           .ddg.insert.error.message(error.msg)
-        }
-      }
-    )  
-  }    
-  
+     }  
+   }
+ )
+}  
 	# Exception node.
 	if (!is.null(outs.exception)) {
 	  lapply(outs.exception,
@@ -1485,9 +1574,9 @@ ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.data=NULL
 	  )
 	}
 
-	# Snapshot node.
-	if (!is.null(outs.snapshot)) {
-	  lapply(outs.snapshot,
+	# Generalized data node (includes simple data values as well as snapshots)
+	if (!is.null(outs.data)) {
+	  lapply(outs.data,
 	    function(param) {
 	      # Get value in calling environment.
 	      name <- param
@@ -1496,41 +1585,31 @@ ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.data=NULL
 	      .ddg.lookup.value(name, value, env, "ddg.procedure", warn=FALSE)
  				
 	      # try to figure out if this should be a plot, save it as a pdf/jpeg
-	      if (.ddg.is.graphic(value)){
-	      	tryCatch({
-	      		.ddg.snapshot.node(name, "pdf", NULL)
-	      	}, error = function(e) {
-	      		warning(paste("Attempted to write", name, "as .pdf snapshot. Trying jpeg.", e))
-	      		tryCatch({
-	      			.ddg.snapshot.node(name, "jpeg", NULL)
-	      		}, error = function(e) {
-	      			warning(paste("Attempted to write", name, "as .jpeg snapshot. Failed.", e))
-	      			.ddg.snapshot.node(name, "OData", value)
-	        		.ddg.snapshot.node(name, "txt", value)
-	        	})
-	      	})
-	      }
-	      else if (is.list(value) || is.vector(value) || is.matrix(value) || is.data.frame(value)) {
-	        # Vector, list, matrix, or data frame.
-	        tryCatch({
-	        	.ddg.snapshot.node(name, "csv", value)
-	        }, error = function(e) {
-	        	warning(paste("Attempted to write", name, "as .csv snapshot but failed. Out as RDataObject.", e))
-	        	.ddg.snapshot.node(name, "OData", value)
-	        	.ddg.snapshot.node(name, "txt", value)
-	        })
+	      if (.ddg.is.graphic(value)) {
+	      	# Perform procedure to create correct data and node
+	      	.ddg.write.graphic(name,value)
 
-	        # create edge
-	        .ddg.proc2data(pname, name)
+	      	# Create data flow edge from operation node to snapshot node.
+					.ddg.proc2data(pname, name)
 	      }
+	      # figure out if its a simple data value we can store with the DDG
+	      else if (.ddg.is.simple(value)) {
+	      	.ddg.save.simple(name,value)
+	      	.ddg.proc2data(pname, name)
+	      }
+	      # figure out if it might be writable as a CSV (for better presentation in DDG)
+	      else if (.ddg.is.csv(value)) {
+	      	.ddg.write.csv(name,value)
+	      	.ddg.proc2data(pname, name)
+	   		}
+	   		# otherwise, it is an a class object so save as a .txt file directly
 	      else if (is.object(value)) {
-	         # Class
-	         .ddg.snapshot.node(name, "txt", value)
-	         .ddg.proc2data(pname, name)
+	      	.ddg.snapshot.node(name, "txt", value)
+	      	.ddg.proc2data(pname, name)
 	      }
+	      # Unable to store the data
 	      else {
-          # Unable to create Snapshot node.
-          error.msg <- "Unable to create Snapshot node"
+          error.msg <- "Unable to create data (snapshot) node"
           .ddg.insert.error.message(error.msg)
 	      }  
 	    }
@@ -1976,15 +2055,12 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, enable.console = FALSE
 	if (interactive() && .ddg.enable.console()) {
 		ddg.history.file <- paste(.ddg.path(), ".ddghistory", sep="/")
 		.ddg.set("ddg.history.file", ddg.history.file)
+		
 		# Empty file if it already exists, do the same with tmp file
-    	file.create(ddg.history.file)
-    	file.create(paste(ddg.history.file,".tmp",sep=""))
+    file.create(ddg.history.file)
 		
 		# one timestamp keeps track of last ddg.save (the default)
  		.ddg.write.timestamp.to.history()
-
-		# clear the history
-		rm(list = ls())
 
 		# save the history
 		savehistory(ddg.history.file)

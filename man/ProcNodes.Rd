@@ -6,8 +6,9 @@
 \description{These functions create procedural nodes and abstraction nodes within a provenance 
   graph created by RDataTracker.}
 \usage{
-ddg.procedure(pname = NULL, ins = NULL, lookup.ins = FALSE, outs.data = NULL, 
-  outs.exception = NULL, outs.url = NULL, outs.snapshot = NULL, outs.file = NULL)
+ddg.procedure(pname = NULL, ins = NULL, lookup.ins = FALSE, outs.graphic = NULL, 
+              outs.data = NULL, outs.exception = NULL, outs.url = NULL, outs.file =NULL,
+              graphic.fext = "jpeg")
 ddg.start(pname = NULL)
 ddg.finish(pname = NULL)
 }
@@ -17,9 +18,10 @@ ddg.finish(pname = NULL)
   \item{ins}{ a list of names of data nodes to be linked as inputs to the node being created. }
   \item{outs.data}{ a list of names of data nodes to be created and linked as outputs to the node being created. }
   \item{outs.file}{ a list of names of file nodes to be created and linked as outputs to the node being created. }
-  \item{outs.snapshot}{ a list of names of snapshot nodes to be created and linked as outputs to the node being created. }
   \item{outs.url}{ a list of names of url nodes to be created and linked as outputs to the node being created. }
   \item{outs.exception}{ a list of names of exception nodes to be created and linked as outputs to the node being created. }
+  \item{outs.graphic}{the name of the snapshot node to be created and linked as output to the procedural node being created}
+  \item{graphic.fext}{the file extension for the capturd graphics file}
 }
 \details{
   ddg.procedure creates a node of type Operation.  If pname is NULL, the name of the function
@@ -31,14 +33,19 @@ ddg.finish(pname = NULL)
   argument that was passed to the function that called ddg.procedure.
   
   If ins is not NULL, ddg.procedure will create a data flow edge from each data node in the list.  
-  Data nodes may be of type data, file, snapshot, url, or exception.  Node names must be passed 
+  Data nodes may be of type data, file, url, or exception.  Node names must be passed 
   as quoted strings.  For files, the node name may be the name of the file or the name of a variable that 
   holds the name of the file.
   
-  If outs.data, etc is not NULL, ddg.procedure will create a node of the specified type (data, file, snapshot,
+  If outs.data, outs.file, etc is not NULL, ddg.procedure will create a node of the specified type (data, file,
   url, or exception) for each name in the list along with a data flow edge to that node.  Node names must be 
   passed as quoted strings.  For files, the node name may be the name of the file or the name of a variable 
   that holds the name of the file.
+
+  If outs.graphic is not NULL, ddg.procedure will create a node of type snapshot (these nodes hold complex data types) with the value of outs.graphic as the name. The node will
+  store a snapshot of the current graphics device in the file (outs.graphic).(graphic.fext). The file will be linked to the DDG and will be viewable using DDG Explorer.
+
+  The parameter graphic.fext is ignored if outs.graphic is NULL. 
   
   ddg.start() and ddg.finish() should come in matching pairs.  ddg.start() should precede ddg.finish().  
   For each call made to ddg.start() when the script is executed, there should be exactly one call made
