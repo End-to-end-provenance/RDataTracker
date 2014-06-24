@@ -2011,6 +2011,7 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, enable.console = FALSE
 	if (interactive() && .ddg.enable.console()) {
 		ddg.history.file <- paste(.ddg.path(), ".ddghistory", sep="/")
 		.ddg.set("ddg.history.file", ddg.history.file)
+		
 		# Empty file if it already exists, do the same with tmp file
     file.create(ddg.history.file)
 		
