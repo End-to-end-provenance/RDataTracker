@@ -2013,10 +2013,7 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, enable.console = FALSE
 		
 		# one timestamp keeps track of last ddg.save (the default)
  		.ddg.write.timestamp.to.history()
-
-		# clear the history
-		rm(list = ls())
-
+ 		
 		# save the history
 		savehistory(ddg.history.file)
 		history <- readLines(ddg.history.file)
