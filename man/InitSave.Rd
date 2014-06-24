@@ -27,7 +27,7 @@ ddg.flush.ddg()
   When using ddg.init(), it is possible to call ddg.save() multiple times.  Each call will 
   save the current provenance graph in a file, overwriting the previous version that was saved. 
 
-  For longer scripts, it might be necessary to call ddg.grabhistory() instead of ddg.save(). This function call saves the current ddg to memory, analyzing variable names under the current environemnt (current meaning the environment when ddg.grabhistory() is called). It does not write out the information to disk. A final all to ddg.save() is still required to do this.
+  For longer scripts, it might be necessary to call ddg.grabhistory() instead of ddg.save(). This function call saves the current ddg to memory, analyzing variable names under the current environemnt (current meaning the environment when ddg.grabhistory() is called). It does not write out the information to disk. A final call to ddg.save() is still required to do this.
   
   ddg.init initializes the provenance graph.  If r.script.path is not NULL, the R script is copied
   into the DDG directory, becoming a permanent part of the provenance record.  If ddgdir is NULL,

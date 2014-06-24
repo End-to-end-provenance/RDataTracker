@@ -6,9 +6,9 @@
 \description{These functions create procedural nodes and abstraction nodes within a provenance 
   graph created by RDataTracker.}
 \usage{
-ddg.procedure(pname = NULL, ins = NULL, lookup.ins = FALSE, outs.data = NULL, 
-  outs.exception = NULL, outs.url = NULL, outs.graphic = NULL, outs.file = NULL,
-  graphic.fext = "jpeg")
+ddg.procedure(pname = NULL, ins = NULL, lookup.ins = FALSE, outs.graphic = NULL, 
+              outs.data = NULL, outs.exception = NULL, outs.url = NULL, outs.file =NULL,
+              graphic.fext = "jpeg")
 ddg.start(pname = NULL)
 ddg.finish(pname = NULL)
 }
@@ -20,8 +20,8 @@ ddg.finish(pname = NULL)
   \item{outs.file}{ a list of names of file nodes to be created and linked as outputs to the node being created. }
   \item{outs.url}{ a list of names of url nodes to be created and linked as outputs to the node being created. }
   \item{outs.exception}{ a list of names of exception nodes to be created and linked as outputs to the node being created. }
-  \item{outs.graphic}{the name of the data node to be created and linked as outputs to the procedural node being created}
-  \item{graphic.fext}{the file extension for the capture graphic file}
+  \item{outs.graphic}{the name of the snapshot node to be created and linked as output to the procedural node being created}
+  \item{graphic.fext}{the file extension for the capturd graphics file}
 }
 \details{
   ddg.procedure creates a node of type Operation.  If pname is NULL, the name of the function
@@ -44,6 +44,8 @@ ddg.finish(pname = NULL)
 
   If outs.graphic is not NULL, ddg.procedure will create a node of type snapshot (these nodes hold complex data types) with the value of outs.graphic as the name. The node will
   store a snapshot of the current graphics device in the file (outs.graphic).(graphic.fext). The file will be linked to the DDG and will be viewable using DDG Explorer.
+
+  The parameter graphic.fext is ignored if outs.graphic is NULL. 
   
   ddg.start() and ddg.finish() should come in matching pairs.  ddg.start() should precede ddg.finish().  
   For each call made to ddg.start() when the script is executed, there should be exactly one call made
