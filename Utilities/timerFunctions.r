@@ -116,7 +116,7 @@ timeForEval <- function(file) {
   startTime <- Sys.time()
   source(file, local = T, echo = F,verbose = F)
   endTime <- Sys.time()
-  return(endTime - startTime)
+  return(difftime(endTime, startTime,units="mins"))
 }
 
 ### Function: Returns in list format the information we wish to store for one script

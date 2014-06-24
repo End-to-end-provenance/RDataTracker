@@ -26,7 +26,9 @@ timeScript <- function(filePath, fileName){
 scr.zero <- list("/aaron script", "Simes dendrochronology master analysis file")
 scr.one <- list("/calculate square root", "calculate-square-root")
 scr.two <- list("/daily solar radiation", "daily-solar-radiation")
-scripts <- list(scr.zero, scr.one, scr.two)
+scr.three <- list("/seminar one", "R_REU_S1")
+scr.four <- list("/seminar two", "R_REU_S2")
+scripts <- list(scr.zero, scr.one, scr.two,src.three, src.four)
 
 # combine by row
 rowResults <- rbind(lapply(scripts,function(x){
