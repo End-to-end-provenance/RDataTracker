@@ -627,7 +627,9 @@ ddg.MAX_HIST_LINES <- 16384
 			last.writer=numeric(var.table.size), 
 			possible.first.writer=numeric(var.table.size), 
 			possible.last.writer=numeric(var.table.size), stringsAsFactors=FALSE)
-	
+	vars.set$first.writer <- length(parsed.commands)+1
+	vars.set$possible.first.writer <- length(parsed.commands)+1
+  
 	# Build the table recording where variables are assigned to or may 
   # be assigned to.
 	var.num <- 1
@@ -692,7 +694,7 @@ ddg.MAX_HIST_LINES <- 16384
 			if (length(nRow) > 0) {
 				first.writer <- min(vars.set$first.writer[nRow], vars.set$possible.first.writer[nRow])						
 				last.writer <- max(vars.set$last.writer[nRow], vars.set$possible.last.writer[nRow])
-				
+        
 				# Draw the edge if we will connect to a node that exists 
         # before the console block or to the last writer of this 
         # variable within the console block.
@@ -1496,6 +1498,48 @@ ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.graphic=N
 	}
 	
 	# Create output nodes and edges if outs list provided.
+
+  # Data node.
+if (!is.null(outs.data)) {
+ lapply(outs.data,
+   function(param) {
+     # Get value in calling environment.
+     name <- param
+     value <- NULL
+     env <- parent.frame(3)
+     .ddg.lookup.value(name, value, env, "ddg.procedure", warn=FALSE)
+ 
+     # try to figure out if this should be a plot, save it as a pdf/jpeg
+     if (.ddg.is.graphic(value)) {
+      # Perform procedure to create correct data and node
+      .ddg.write.graphic(name,value)
+
+      # Create data flow edge from operation node to snapshot node.
+.ddg.proc2data(pname, name)
+     }
+     # figure out if its a simple data value we can store with the DDG
+     else if (.ddg.is.simple(value)) {
+      .ddg.save.simple(name,value)
+      .ddg.proc2data(pname, name)
+     }
+     # figure out if it might be writable as a CSV (for better presentation in DDG)
+     else if (.ddg.is.csv(value)) {
+      .ddg.write.csv(name,value)
+      .ddg.proc2data(pname, name)
+  }
+  # otherwise, it is an a class object so save as a .txt file directly
+     else if (is.object(value)) {
+      .ddg.snapshot.node(name, "txt", value)
+      .ddg.proc2data(pname, name)
+     }
+     # Unable to store the data
+     else {
+          error.msg <- "Unable to create data (snapshot) node"
+          .ddg.insert.error.message(error.msg)
+     }  
+   }
+ )
+}  
 	# Exception node.
 	if (!is.null(outs.exception)) {
 	  lapply(outs.exception,
@@ -1975,10 +2019,14 @@ ddg.restore <- function(file.path) {
   # made.
 
 	saved.ddg.env <- .ddg.env
+	print("Set saved.ddg.env")
 	load (file.path, parent.env(environment()))
+	print("Loaded checkpoint file")
 	# load (file.path, .GlobalEnv, verbose=TRUE)
 	.ddg.mark.stale.data(saved.ddg.env)
+	print("Marked stale data")
 	.ddg.restore.ddg.state(saved.ddg.env)
+	print("Restored ddg state")
 }
 
 # ddg.init intializes a new ddg. r.script.path (optional) - the full 
