@@ -1498,48 +1498,6 @@ ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.graphic=N
 	}
 	
 	# Create output nodes and edges if outs list provided.
-
-  # Data node.
-if (!is.null(outs.data)) {
- lapply(outs.data,
-   function(param) {
-     # Get value in calling environment.
-     name <- param
-     value <- NULL
-     env <- parent.frame(3)
-     .ddg.lookup.value(name, value, env, "ddg.procedure", warn=FALSE)
- 
-     # try to figure out if this should be a plot, save it as a pdf/jpeg
-     if (.ddg.is.graphic(value)) {
-      # Perform procedure to create correct data and node
-      .ddg.write.graphic(name,value)
-
-      # Create data flow edge from operation node to snapshot node.
-			.ddg.proc2data(pname, name)
-     }
-     # figure out if its a simple data value we can store with the DDG
-     else if (.ddg.is.simple(value)) {
-      .ddg.save.simple(name,value)
-      .ddg.proc2data(pname, name)
-     }
-     # figure out if it might be writable as a CSV (for better presentation in DDG)
-     else if (.ddg.is.csv(value)) {
-      .ddg.write.csv(name,value)
-      .ddg.proc2data(pname, name)
-  }
-  # otherwise, it is an a class object so save as a .txt file directly
-     else if (is.object(value)) {
-      .ddg.snapshot.node(name, "txt", value)
-      .ddg.proc2data(pname, name)
-     }
-     # Unable to store the data
-     else {
-          error.msg <- "Unable to create data (snapshot) node"
-          .ddg.insert.error.message(error.msg)
-     }  
-   }
- )
-}  
 	# Exception node.
 	if (!is.null(outs.exception)) {
 	  lapply(outs.exception,
