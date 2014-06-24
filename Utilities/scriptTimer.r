@@ -27,6 +27,7 @@ src.one <- list("/calculate square root", "calculate-square-root")
 src.two <- list("/daily solar radiation", "daily-solar-radiation")
 src.three <- list("/seminar one", "R_REU_S1")
 src.four <- list("/seminar two", "R_REU_S2")
+src.six <- list("/seminar four", "RWorkshop-Session4")
 scripts <- list(src.zero, src.one, src.two,src.three, src.four)
 
 # results
