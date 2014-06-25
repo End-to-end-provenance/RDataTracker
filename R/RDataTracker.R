@@ -606,7 +606,7 @@ ddg.MAX_HIST_LINES <- 2^14
 
 # - the variable name.
 # - the position of the statement that wrote the variable first.
-# - the position of the statement that the variable last.
+# - the position of the statement that wrote the variable last.
 # - the position of the first statement that may have assigned to a
 #   variable .
 # - the position of the last statement that may have assigned to a 
@@ -627,7 +627,9 @@ ddg.MAX_HIST_LINES <- 2^14
 			last.writer=numeric(var.table.size), 
 			possible.first.writer=numeric(var.table.size), 
 			possible.last.writer=numeric(var.table.size), stringsAsFactors=FALSE)
-	
+	vars.set$first.writer <- length(parsed.commands)+1
+	vars.set$possible.first.writer <- length(parsed.commands)+1
+  
 	# Build the table recording where variables are assigned to or may 
   # be assigned to.
 	var.num <- 1
@@ -692,7 +694,7 @@ ddg.MAX_HIST_LINES <- 2^14
 			if (length(nRow) > 0) {
 				first.writer <- min(vars.set$first.writer[nRow], vars.set$possible.first.writer[nRow])						
 				last.writer <- max(vars.set$last.writer[nRow], vars.set$possible.last.writer[nRow])
-				
+        
 				# Draw the edge if we will connect to a node that exists 
         # before the console block or to the last writer of this 
         # variable within the console block.
@@ -1419,15 +1421,27 @@ ddg.MAX_HIST_LINES <- 2^14
 # inputs to this procedure node. These MUST be passed as strings, 
 # not names, unless the value is a file name.
 
-# outs (optional) - the names of data nodes that should be created 
-# and linked as outputs from this procedure.  These MUST be passed 
-# as strings, not names, unless the value is a file name. Supported 
-# file extensions include: .csv, .jpg, .jpeg, .pdf, and .txt. If 
-# the value ends in .url, a URL node is created.
-
 # lookupIns (optional) - if true and ins is NULL, data edges will be 
 # created to the arguments of the function that called ddg.procedure, 
 # if the corresponding data nodes exist.
+
+# outs.graphic - the name of the snapshot node that should be linked as
+# output to this procedure node. The names should be a string, and is used
+# as the file name of the saved snapshot. A graphical snapshot is simply a 
+# captured image of the graphic device active at the time of call to ddg.procedure.
+# outs.data - the name of the data nodes that should be created and linked
+# as outputs from this procudure. These MUST be passed as strings, not names.
+# outs.exception - the name of exception nodes that should be created and linked 
+# as outputs from this procedure. 
+# outs.url - the name of the url nodes that should be linked as output to
+# this procedure node
+# outs.file = the name of the file nodes that should be linked as output to 
+# this procedure node, unless the value is a file name. Supported 
+# file extensions include: .csv, .jpg, .jpeg, .pdf, and .txt. If 
+
+# graphic.fext - the file extention to be used when saving the captured graphics
+# Supported extensions are .jpg, .jpeg, .pdf
+
 
 ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.graphic=NULL, outs.data=NULL, 
                           outs.exception=NULL, outs.url=NULL, outs.file=NULL, graphic.fext="jpeg") {
@@ -1979,10 +1993,14 @@ ddg.restore <- function(file.path) {
   # made.
 
 	saved.ddg.env <- .ddg.env
+	print("Set saved.ddg.env")
 	load (file.path, parent.env(environment()))
+	print("Loaded checkpoint file")
 	# load (file.path, .GlobalEnv, verbose=TRUE)
 	.ddg.mark.stale.data(saved.ddg.env)
+	print("Marked stale data")
 	.ddg.restore.ddg.state(saved.ddg.env)
+	print("Restored ddg state")
 }
 
 # ddg.init intializes a new ddg. r.script.path (optional) - the full 
