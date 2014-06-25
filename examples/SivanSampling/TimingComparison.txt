@@ -1,0 +1,78 @@
+Procedure:
+
+In RStudio:
+- Clear environment
+- For instrumented version, delete contents of ddg directory
+- Copy and paste R file to execute it
+
+
+Uninstrumented version using classes
+Trial 1:  5.58973693847656
+Trial 2:  7.17042517662048
+Trial 3:  5.36916494369507
+Trial 4:  4.433748960495
+Trial 5:  3.8594958782196
+Average:  5.284
+
+
+Instrumented version using classes
+Trial 1:  32.1566231250763
+Trial 2:  30.8502130508423
+Trial 3:  32.7625629901886
+Trial 4:  29.8436958789825
+Trial 5:  33.6502149105072
+Average:  31.852
+
+DDG size:  
+Files copied:  2108 1-k blocks
+ddg.txt:  230 K
+Number of files created:  367 (not counting ddg.txt, pnodes and dnodes)
+Procedure nodes:  1163
+Data nodes:  944
+
+Size of spreadsheet output by script:  2.3 K
+
+----------------------------------------
+
+Uninstrumented version, no classes
+Trial 1:  1.31813502311707
+Trial 2:  0.850450992584229
+Trial 3:  0.743746995925903
+Trial 4:  0.838629007339478
+Trial 5:  0.79485011100769
+Average:  .909
+
+Minimal instrumentation, no classes
+Trial 1:  1.11996006965637
+Trial 2:  1.32166194915771
+Trial 3:  1.21061611175537
+Trial 4:  1.08201789855957
+Trial 5:  1.27466487884521
+Average:  1.218
+
+DDG size:  
+Files copied:  472 1-k blocks
+ddg.txt:  504 bytes
+Number of files created:  4 (not counting ddg.txt, pnodes and dnodes)
+Procedure nodes:  27
+Data nodes:  23
+
+Detailed instrumentation, no classes
+Trial 1:  34.4932131767273
+Trial 2:  33.5988259315491
+Trial 3:  30.8600339889526
+Trial 4:  33.6860039234161
+Trial 5:  33.2444460391998
+Average:  33.176
+
+DDG size
+Files copied:  2416 1-k blocks
+ddg.txt:  234K
+Number of files created:  412 (not counting ddg.txt, pnodes and dnodes)
+Procedure nodes:  1008
+Data nodes:  985
+
+
+
+
+

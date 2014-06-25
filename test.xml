@@ -1,0 +1,136 @@
+<project
+	xmlns:if="ant:if"
+    xmlns:unless="ant:unless">
+
+    <target name="run-test">
+    	<exec executable="Rscript" dir="${dir}" output="${out}" >
+    		<arg line="${script-file}" />
+    	</exec>
+    	<condition property="output-same">
+  			<filesmatch file1="${out}"
+              			file2="${expected_out}"/>
+		</condition>
+		<condition property="should-warn">
+			<or>
+				<equals arg1="${fail_out}" arg2="false"/>
+				<isset property="output-same" />
+			</or>
+		</condition>
+		<fail message="${script-file} failed with different output"
+      		  unless="should-warn"/>
+		<exec executable="diff" unless:true="${output-same}" >
+    		<arg line="${out} ${expected_out}" />
+    	</exec>
+		<exec executable="diff" >
+    		<arg line="${dir}/ddg/ddg.txt ${expected_ddg}" />
+    	</exec>
+    </target>
+
+    <target name="basic-test">
+    	<antcall target="run-test">
+    		<param name="dir" value="examples/ddgTest"/>
+    		<param name="out" value="examples/ddgTest/basicTest.out"/>
+    		<param name="script-file" value="basicTest.r"/>
+    		<param name="expected_out" value="examples/ddgTest/expected_basicTest.out"/>
+    		<param name="expected_ddg" value="examples/ddgTest/expected_basicTest_ddg.txt"/>
+    		<param name="fail_out" value="true" />
+    	</antcall>
+    </target>
+
+    <target name="S4-object-test">
+    	<antcall target="run-test">
+    		<param name="dir" value="examples/S4ObjectTest"/>
+    		<param name="out" value="examples/S4ObjectTest/S4ObjectTest.out"/>
+    		<param name="script-file" value="S4ObjectTest.R"/>
+    		<param name="expected_out" value="examples/S4ObjectTest/expected_S4ObjectTest.out"/>
+    		<param name="expected_ddg" value="examples/S4ObjectTest/expected_S4ObjectTest_ddg.txt"/>
+    		<param name="fail_out" value="true" />
+    	</antcall>
+    </target>
+
+    <target name="ddg-test">
+    	<antcall target="run-test">
+    		<param name="dir" value="examples/ddgTest"/>
+    		<param name="out" value="examples/ddgTest/ddgTest.out"/>
+    		<param name="script-file" value="ddgTest.r"/>
+    		<param name="expected_out" value="examples/ddgTest/expected_ddgTest.out"/>
+    		<param name="expected_ddg" value="examples/ddgTest/expected_ddg.txt"/>
+    		<param name="fail_out" value="true" />
+    	</antcall>
+    </target>
+
+    <target name="checkpoint-test">
+    	<antcall target="run-test">
+    		<param name="dir" value="examples/checkpointTest"/>
+    		<param name="out" value="examples/checkpointTest/checkpointTest.out"/>
+    		<param name="script-file" value="CheckpointTest.r"/>
+    		<param name="expected_out" value="examples/checkpointTest/expected_checkpointTest.out"/>
+    		<param name="expected_ddg" value="examples/checkpointTest/expected_CheckpointTest_ddg.txt"/>
+    		<param name="fail_out" value="true" />
+    	</antcall>
+    </target>
+    
+    <target name="checkpoint-file-test">
+    	<antcall target="run-test">
+    		<param name="dir" value="examples/checkpointTest"/>
+    		<param name="out" value="examples/checkpointTest/checkpointFileTest.out"/>
+    		<param name="script-file" value="CheckpointFileTest.r"/>
+    		<param name="expected_out" value="examples/checkpointTest/expected_checkpointFileTest.out"/>
+    		<param name="expected_ddg" value="examples/checkpointTest/expected_CheckpointFileTest_ddg.txt"/>
+    		<param name="fail_out" value="false" />
+    	</antcall>
+    </target>
+    
+    <target name="calculate-square-root-1-test">
+    	<antcall target="run-test">
+    		<param name="dir" value="examples/CalculateSquareRoot"/>
+    		<param name="out" value="examples/CalculateSquareRoot/calculate-square-root-1.out"/>
+    		<param name="script-file" value="calculate-square-root-1.r"/>
+    		<param name="expected_out" value="examples/CalculateSquareRoot/expected_calculate-square-root-1.out"/>
+    		<param name="expected_ddg" value="examples/CalculateSquareRoot/expected_calculate-square-root-1_ddg.txt"/>
+    		<param name="fail_out" value="false" />
+    	</antcall>
+    </target>
+    
+    <target name="calculate-square-root-2-test">
+    	<antcall target="run-test">
+    		<param name="dir" value="examples/CalculateSquareRoot"/>
+    		<param name="out" value="examples/CalculateSquareRoot/calculate-square-root-2.out"/>
+    		<param name="script-file" value="calculate-square-root-2.r"/>
+    		<param name="expected_out" value="examples/CalculateSquareRoot/expected_calculate-square-root-2.out"/>
+    		<param name="expected_ddg" value="examples/CalculateSquareRoot/expected_calculate-square-root-2_ddg.txt"/>
+    		<param name="fail_out" value="false" />
+    	</antcall>
+    </target>
+    
+    <target name="daily-solar-radiation-1-test">
+    	<antcall target="run-test">
+    		<param name="dir" value="examples/DailySolarRadiation"/>
+    		<param name="out" value="examples/DailySolarRadiation/daily-solar-radiation-1.out"/>
+    		<param name="script-file" value="daily-solar-radiation-1.r"/>
+    		<param name="expected_out" value="examples/DailySolarRadiation/expected_daily-solar-radiation-1.out"/>
+    		<param name="expected_ddg" value="examples/DailySolarRadiation/expected_daily-solar-radiation-1_ddg.txt"/>
+    		<param name="fail_out" value="true" />
+    	</antcall>
+    </target>
+    
+    <target name="daily-solar-radiation-2-test">
+    	<antcall target="run-test">
+    		<param name="dir" value="examples/DailySolarRadiation"/>
+    		<param name="out" value="examples/DailySolarRadiation/daily-solar-radiation-2.out"/>
+    		<param name="script-file" value="daily-solar-radiation-2.r"/>
+    		<param name="expected_out" value="examples/DailySolarRadiation/expected_daily-solar-radiation-2.out"/>
+    		<param name="expected_ddg" value="examples/DailySolarRadiation/expected_daily-solar-radiation-2_ddg.txt"/>
+    		<param name="fail_out" value="true" />
+    	</antcall>
+    </target>
+    
+    <target name="test-all" depends="basic-test, ddg-test, S4-object-test, checkpoint-test, checkpoint-file-test, calculate-square-root-1-test, calculate-square-root-2-test, daily-solar-radiation-1-test, daily-solar-radiation-2-test" />
+
+	<target name="interactive-test">
+    	<exec executable="Rscript" dir="examples" >
+    		<arg line="RscriptTest.r" />
+    	</exec>
+    </target>
+
+</project>

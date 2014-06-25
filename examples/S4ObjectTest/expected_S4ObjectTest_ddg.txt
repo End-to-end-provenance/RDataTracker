@@ -1,0 +1,111 @@
+Architecture="x86_64"
+OperatingSystem="unix"
+Language="R"
+LanguageVersion="R version 3.0.3 (2014-03-06)"
+Script="/Users/barbaralerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/S4ObjectTest/S4ObjectTest.R"
+ProcessFileTimestamp="2014-04-18 18:06:29"
+WorkingDirectory="/Users/barbaralerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/S4ObjectTest"
+DDGDirectory="/Users/barbaralerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/S4ObjectTest/ddg"
+DateTime="2014-04-25T14:05:22"
+29
+Start p1 "1-Console" Value="Console";
+Operation p2 "2-setClass(\"SampleObj\", slots = c(sampleCode = \"integer\", " Value="setClass(\"SampleObj\", slots = c(sampleCode = \"integer\", nIndividuals = \"integer\",     areaCode = \"integer\"))";
+CF p1 p2
+Operation p3 "3-as.character.SampleObj <- function(x) {    str <- paste(\"sa" Value="as.character.SampleObj <- function(x) {    str <- paste(\"sampleCode =\", x@sampleCode, \"\n\")    str <- paste(str, \"nIndividuals =\", x@nIndividuals, \"\n\")    str <- paste(str, \"areaCode =\", x@areaCode, \"\n\")    return(str)}";
+CF p2 p3
+Operation p4 "4-setMethod(\"as.character\", signature(x = \"SampleObj\"), as" Value="setMethod(\"as.character\", signature(x = \"SampleObj\"), as.character.SampleObj)";
+CF p3 p4
+Operation p5 "5-generateSamples <- function(n) {    ddg.start()    samplesAr" Value="generateSamples <- function(n) {    ddg.start()    samplesArr <- list()    ddg.procedure(\"new samples\", outs = list(\"samplesArr\"))    for (ix in 1:n) {        newSample <- new(\"SampleObj\", sampleCode = ix, nIndividuals = as.integer(ix *             10), areaCode = as.integer(ix * 100))        ddg.procedure(\"new sample\", outs = list(\"newSample\"))        ddg.procedure(\"add to samples\", ins = list(\"newSample\",             \"samplesArr\"))        samplesArr = c(samplesArr, newSample)        ddg.data.out(samplesArr, pname = \"add to samples\")    }    ddg.finish()    return(samplesArr)}";
+CF p4 p5
+Operation p6 "6-generate1Sample <- function() {    ddg.start()    newSample " Value="generate1Sample <- function() {    ddg.start()    newSample <- new(\"SampleObj\", sampleCode = as.integer(1),         nIndividuals = as.integer(10), areaCode = as.integer(100))    ddg.procedure(\"new sample\", outs = list(\"newSample\"))    ddg.finish()    return(newSample)}";
+CF p5 p6
+Operation p7 "7-totalNumOfSample <- 5" Value="totalNumOfSample <- 5";
+CF p6 p7
+Finish p8 "8-Console" Value="Console";
+CF p7 p8
+Start p9 "9-newSample <- generate1Sample()" Value="newSample <- generate1Sample()";
+CF p8 p9
+Data d1 "1-as.character.SampleObj" Value="complex";
+DF p3 d1
+DF d1 p4
+Data d2 "2-generateSamples" Value="complex";
+DF p5 d2
+Data d3 "3-generate1Sample" Value="complex";
+DF p6 d3
+Data d4 "4-totalNumOfSample" Value="5";
+DF p7 d4
+Start p10 "10-generate1Sample" Value="generate1Sample";
+CF p9 p10
+Operation p11 "11-new sample" Value="new sample";
+CF p10 p11
+Snapshot d5 "5-newSample" Value="/Users/barbaralerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/S4ObjectTest/ddg/5-newSample.txt" Time="2014-04-25T14:04:59";
+DF p11 d5
+Finish p12 "12-generate1Sample" Value="generate1Sample";
+CF p11 p12
+Finish p13 "13-newSample <- generate1Sample()" Value="newSample <- generate1Sample()";
+CF p12 p13
+Start p14 "14-samplesArr <- generateSamples(totalNumOfSample)" Value="samplesArr <- generateSamples(totalNumOfSample)";
+CF p13 p14
+Start p15 "15-generateSamples" Value="generateSamples";
+CF p14 p15
+Operation p16 "16-new samples" Value="new samples";
+CF p15 p16
+Snapshot d6 "6-samplesArr" Value="/Users/barbaralerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/S4ObjectTest/ddg/6-samplesArr.txt" Time="2014-04-25T14:05:12";
+DF p16 d6
+Operation p17 "17-new sample" Value="new sample";
+CF p16 p17
+Snapshot d7 "7-newSample" Value="/Users/barbaralerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/S4ObjectTest/ddg/7-newSample.txt" Time="2014-04-25T14:05:12";
+DF p17 d7
+Operation p18 "18-add to samples" Value="add to samples";
+CF p17 p18
+DF d7 p18
+DF d6 p18
+Snapshot d8 "8-samplesArr" Value="/Users/barbaralerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/S4ObjectTest/ddg/8-samplesArr.txt" Time="2014-04-25T14:05:13";
+DF p18 d8
+Operation p19 "19-new sample" Value="new sample";
+CF p18 p19
+Snapshot d9 "9-newSample" Value="/Users/barbaralerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/S4ObjectTest/ddg/9-newSample.txt" Time="2014-04-25T14:05:13";
+DF p19 d9
+Operation p20 "20-add to samples" Value="add to samples";
+CF p19 p20
+DF d9 p20
+DF d8 p20
+Snapshot d10 "10-samplesArr" Value="/Users/barbaralerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/S4ObjectTest/ddg/10-samplesArr.txt" Time="2014-04-25T14:05:13";
+DF p20 d10
+Operation p21 "21-new sample" Value="new sample";
+CF p20 p21
+Snapshot d11 "11-newSample" Value="/Users/barbaralerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/S4ObjectTest/ddg/11-newSample.txt" Time="2014-04-25T14:05:13";
+DF p21 d11
+Operation p22 "22-add to samples" Value="add to samples";
+CF p21 p22
+DF d11 p22
+DF d10 p22
+Snapshot d12 "12-samplesArr" Value="/Users/barbaralerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/S4ObjectTest/ddg/12-samplesArr.txt" Time="2014-04-25T14:05:13";
+DF p22 d12
+Operation p23 "23-new sample" Value="new sample";
+CF p22 p23
+Snapshot d13 "13-newSample" Value="/Users/barbaralerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/S4ObjectTest/ddg/13-newSample.txt" Time="2014-04-25T14:05:13";
+DF p23 d13
+Operation p24 "24-add to samples" Value="add to samples";
+CF p23 p24
+DF d13 p24
+DF d12 p24
+Snapshot d14 "14-samplesArr" Value="/Users/barbaralerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/S4ObjectTest/ddg/14-samplesArr.txt" Time="2014-04-25T14:05:13";
+DF p24 d14
+Operation p25 "25-new sample" Value="new sample";
+CF p24 p25
+Snapshot d15 "15-newSample" Value="/Users/barbaralerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/S4ObjectTest/ddg/15-newSample.txt" Time="2014-04-25T14:05:13";
+DF p25 d15
+Operation p26 "26-add to samples" Value="add to samples";
+CF p25 p26
+DF d15 p26
+DF d14 p26
+Snapshot d16 "16-samplesArr" Value="/Users/barbaralerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/S4ObjectTest/ddg/16-samplesArr.txt" Time="2014-04-25T14:05:13";
+DF p26 d16
+Finish p27 "27-generateSamples" Value="generateSamples";
+CF p26 p27
+Finish p28 "28-samplesArr <- generateSamples(totalNumOfSample)" Value="samplesArr <- generateSamples(totalNumOfSample)";
+CF p27 p28
+Start p29 "29-ddg.save()" Value="ddg.save()";
+CF p28 p29
+

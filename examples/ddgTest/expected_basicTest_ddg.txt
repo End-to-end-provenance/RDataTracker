@@ -1,0 +1,101 @@
+Architecture="x86_64"
+OperatingSystem="unix"
+Language="R"
+LanguageVersion="R version 3.1.0 (2014-04-10)"
+Script="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/ddgTest/ddgTest.r"
+ProcessFileTimestamp="2014-05-05 16:14:48"
+WorkingDirectory="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/ddgTest"
+DDGDirectory="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/ddgTest/ddg"
+DateTime="2014-05-21T16:00:57"
+17
+Start p1 "1-main" Value="main";
+Data d1 "1-x" Value="3";
+Data d2 "2-y" Value="\"a b c\"";
+Data d3 "3-x + 1" Value="4";
+Data d4 "4-z" Value="5";
+Data d5 "5-w" Value="6";
+Operation p2 "2-no.name.or.args.given" Value="no.name.or.args.given";
+CF p1 p2
+Operation p3 "3-lookup.args" Value="lookup.args";
+CF p2 p3
+DF d5 p3
+DF d1 p3
+DF d2 p3
+DF d4 p3
+DF d3 p3
+Operation p4 "4-only.args.given" Value="only.args.given";
+CF p3 p4
+DF d5 p4
+DF d1 p4
+DF d2 p4
+DF d4 p4
+DF d3 p4
+Operation p5 "5-only.name.given" Value="only.name.given";
+CF p4 p5
+Operation p6 "6-string.name.and.args.given" Value="string.name.and.args.given";
+CF p5 p6
+DF d5 p6
+DF d1 p6
+DF d2 p6
+DF d4 p6
+DF d3 p6
+Operation p7 "7-no.func" Value="no.func";
+CF p6 p7
+Operation p8 "8-g0" Value="g0";
+CF p7 p8
+Data d6 "6-simple.value" Value="10";
+DF p8 d6
+Operation p9 "9-g1" Value="g1";
+CF p8 p9
+Snapshot d7 "7-year" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/ddgTest/ddg/7-year.csv" Time="2014-05-21T16:00:57";
+DF p9 d7
+URL d8 "8-HF home page" Value="\"http://harvardforest.fas.harvard.edu/\"";
+Exception d9 "9-error" Value="\"test error\"";
+Exception d10 "10-error2" Value="\"Trivial error\"";
+Operation p10 "10-f" Value="f";
+CF p9 p10
+DF d8 p10
+DF d9 p10
+DF d10 p10
+Operation p11 "11-data.in.test" Value="data.in.test";
+CF p10 p11
+DF d1 p11
+Data d11 "11-out1" Value="\"a\"";
+DF p2 d11
+Data d12 "12-out2" Value="\"b\"";
+DF p2 d12
+Operation p12 "12-out.test.1" Value="out.test.1";
+CF p11 p12
+Data d13 "13-out3" Value="\"c\"";
+DF p12 d13
+Data d14 "14-out4" Value="\"d\"";
+DF p2 d14
+Data d15 "15-out5" Value="\"e\"";
+DF p2 d15
+URL d16 "16-Harvard home" Value="\"http://www.harvard.edu\"";
+DF p4 d16
+URL d17 "17-R home" Value="\"http://www.r-project.org/\"";
+DF p4 d17
+Operation p13 "13-url.out.test" Value="url.out.test";
+CF p12 p13
+URL d18 "18-MHC home" Value="\"https://www.mtholyoke.edu/\"";
+DF p13 d18
+Exception d19 "19-exc1" Value="\"a\"";
+DF p2 d19
+Exception d20 "20-exc2" Value="\"b\"";
+DF p2 d20
+Operation p14 "14-exc.test." Value="exc.test.";
+CF p13 p14
+Exception d21 "21-exc3" Value="\"c\"";
+DF p14 d21
+Exception d22 "22-exc4" Value="\"d\"";
+DF p2 d22
+Exception d23 "23-exc5" Value="\"e\"";
+DF p2 d23
+Start p15 "15-start.finish.test" Value="start.finish.test";
+CF p14 p15
+Finish p16 "16-start.finish.test" Value="start.finish.test";
+CF p15 p16
+Finish p17 "17-main" Value="main";
+CF p16 p17
+
