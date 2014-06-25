@@ -6,6 +6,21 @@
 
 # R data files from past sessions
 .Rdata
+.Rhistory
+
+# Output files from scripts
+*.pdf
+*.jpg
+*.jpeg
+
+# Other non-essential files
+*.pages
+*.html
+*.md
+*.Rmd
+
+# exclude ddg directories
+examples/*/ddg*/
 
 # Project Files
 .project
