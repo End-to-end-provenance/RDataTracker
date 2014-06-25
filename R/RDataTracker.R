@@ -1419,15 +1419,27 @@ ddg.MAX_HIST_LINES <- 16384
 # inputs to this procedure node. These MUST be passed as strings, 
 # not names, unless the value is a file name.
 
-# outs (optional) - the names of data nodes that should be created 
-# and linked as outputs from this procedure.  These MUST be passed 
-# as strings, not names, unless the value is a file name. Supported 
-# file extensions include: .csv, .jpg, .jpeg, .pdf, and .txt. If 
-# the value ends in .url, a URL node is created.
-
 # lookupIns (optional) - if true and ins is NULL, data edges will be 
 # created to the arguments of the function that called ddg.procedure, 
 # if the corresponding data nodes exist.
+
+# outs.graphic - the name of the snapshot node that should be linked as
+# output to this procedure node. The names should be a string, and is used
+# as the file name of the saved snapshot. A graphical snapshot is simply a 
+# captured image of the graphic device active at the time of call to ddg.procedure.
+# outs.data - the name of the data nodes that should be created and linked
+# as outputs from this procudure. These MUST be passed as strings, not names.
+# outs.exception - the name of exception nodes that should be created and linked 
+# as outputs from this procedure. 
+# outs.url - the name of the url nodes that should be linked as output to
+# this procedure node
+# outs.file = the name of the file nodes that should be linked as output to 
+# this procedure node, unless the value is a file name. Supported 
+# file extensions include: .csv, .jpg, .jpeg, .pdf, and .txt. If 
+
+# graphic.fext - the file extention to be used when saving the captured graphics
+# Supported extensions are .jpg, .jpeg, .pdf
+
 
 ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.graphic=NULL, outs.data=NULL, 
                           outs.exception=NULL, outs.url=NULL, outs.file=NULL, graphic.fext="jpeg") {
