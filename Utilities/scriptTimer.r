@@ -14,7 +14,6 @@ source("helpers.r")
 timeScript <- function(filePath, fileName){
   setInitialVal(filePath)
   results <- calcResults(fileName)
-  
   return(results)
 }
 
@@ -36,10 +35,10 @@ results <- lapply(scripts,function(x){
 })
 
 # combine by row
-rowResults <- rbind(unlist(results))
+rowResults <- Reduce(rbind, results, data.frame())
 
 # set working directory to write out in the right location
-setwd("D:/Users/Luis/Dropbox/HarvardForest/RDataTracker Annotations")
+setwd("D:/Users/Luis/Dropbox/HarvardForest/RDataTracker Annotations/TimingResults")
 
 dfile <- paste("timingData", "-", gsub(" ","T",gsub(":",".",Sys.time())), ".csv", sep="")
 write.csv(rowResults,dfile, row.names = FALSE)
