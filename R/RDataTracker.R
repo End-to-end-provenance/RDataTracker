@@ -1150,11 +1150,13 @@ ddg.MAX_HIST_LINES <- 16384
 	# Calculate location of original file
 	file.loc <- normalizePath(fname, winslash="/", mustWork = FALSE)
 
-	# Create file node in DDG
-	dpfile.out <- .ddg.file.node(dtype,fname,dname)
-
 	# Copy file.
-	if (file.exists(file.loc)) file.copy(file.loc, dpfile.out, overwrite=TRUE)
+	if (file.exists(file.loc)) {
+	   # Create file node in DDG
+	   dpfile.out <- .ddg.file.node(dtype,fname,dname)
+
+	   file.copy(file.loc, dpfile.out, overwrite=TRUE)
+	}
 	else {
     	error.msg <- paste("File to copy does not exist:", file.loc) 
     	.ddg.insert.error.message(error.msg)
