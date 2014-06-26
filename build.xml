@@ -54,9 +54,9 @@
     </target>
 
     <target name="dropbox" depends="build">
-	<loadproperties srcFile="${builddir}/DESCRIPTION" />
-  	<copy file="${builddir}/../RDataTracker_${Version}.tar.gz" todir="${dropbox}"/>
-	<chmod file="${dropbox}/RDataTracker_${Version}.tar.gz" perm="ugo-w"/>
+	   <loadproperties srcFile="${builddir}/DESCRIPTION" />
+  	 <copy file="${builddir}/../RDataTracker_${Version}.tar.gz" todir="${dropbox}"/>
+	   <chmod file="${dropbox}/RDataTracker_${Version}.tar.gz" perm="ugo-w"/>
     </target>
 
     <target name="clean">
