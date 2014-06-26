@@ -21,7 +21,11 @@
     		<fileset dir="R"
       			excludes="\.*"/>
   		</copy>
-  		<copy file="DESCRIPTION" todir="${builddir}"/>
+  		<copy todir="${builddir}/vignettes">
+        <fileset dir="vignettes"
+            excludes="\.*"/>
+      </copy>
+      <copy file="DESCRIPTION" todir="${builddir}"/>
   		<copy file="LICENSE" todir="${builddir}"/>
   		<copy file="NAMESPACE" todir="${builddir}"/>
   		<copy file="README.md" todir="${builddir}"/>
