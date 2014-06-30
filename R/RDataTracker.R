@@ -238,14 +238,14 @@ ddg.MAX_HIST_LINES <- 16384
 # should be saved locally as opposed to stored in a seperate file. The assumption
 # is that the value passed in has already been declared not to be a graphic.
 .ddg.is.simple <- function(value) {
-	return(is.vector(value) && length(value) == 1)
+	return(!.ddg.is.graphic(value) && is.vector(value) && length(value) == 1)
 }
 
 # .ddg.is.csv returns true if the value passed in should be written out as a csv
-# file. The assumption is that when the value is passed in, it has already been
-# declared to be neither a graphic nor a simple vector.
+# file. No assumptions are made about input.
 .ddg.is.csv <- function(value) {
-	return(is.list(value) || is.vector(value) || is.matrix(value) || is.data.frame(value))
+	return(!(.ddg.is.graphic(value) || .ddg.is.simple(value)) && (
+	       is.list(value) || is.vector(value) || is.matrix(value) || is.data.frame(value)))
 }
 
 # .ddg.save.simple takes in a simple name, value pairing and saves it to the ddg.
