@@ -1581,7 +1581,7 @@ ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.graphic=N
 	      }
 	      # Unable to store the data
 	      else {
-          error.msg <- "Unable to create data (snapshot) node"
+          error.msg <- "Unable to create data (snapshot) node. Non-object value input as outs.data."
           .ddg.insert.error.message(error.msg)
 	      }  
 	    }
@@ -1613,13 +1613,17 @@ ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.graphic=N
 	}
 }
 
-# ddg.data creates a data node for a single data value. dname - label 
-# for the node.  This can be passed as a string, name, or expression. 
-# dvalue (optional) - the value of the node.  If the value is 
-# omitted, the argument passed in for dname is evaluated in the 
-# calling environment to determine the value.
+# ddg.data creates a data node for a single or comple data value. 
+# dname - label for the node.  This can be passed as a string, name, or expression. 
+# dvalue (optional) - the value of the node.  
+# graphic.fext - the file extention to be used for saving the caputure variable 
+# if the variable is a graphical output. Otherwise ignored. Default is jpeg.
+# If the value is omitted, the argument passed in for dname is evaluated in the 
+# calling environment to determine the value. If the value is determined to be complex,
+# the output data is written out ot a csv if possible. Otherwise, the data are
+# written out as a .txt file if the variable is determined to be an object.
 
-ddg.data <- function(dname, dvalue=NULL) {
+ddg.data <- function(dname, dvalue=NULL, graphic.fext = "jpeg") {
 	if (!.ddg.check.init()) return(NULL)
 
 	# Look up the value if one was not provided.
@@ -1629,8 +1633,15 @@ ddg.data <- function(dname, dvalue=NULL) {
 	# If dname is not a string, use its name rather than its value.
 	if (!is.character(dname)) dname <- deparse(substitute(dname))
 
-	# Create input data node.
-	.ddg.data.node("Data", dname, dvalue)
+	# Determine type for value, and save accordingly
+	if (.ddg.is.graphic(dvalue)) .ddg.write.graphic(dname, dvalue)
+	else if (.ddg.is.simple(dvalue)) .ddg.save.sime(dname, dvalue)
+	else if (.ddg.is.csv(dvalue)) .ddg.write.csv(dname, dvalue)
+	else if (is.object(value)) ddg.snapshot.node(dname, "txt", dvalue)
+	else {
+		error.msg <- "Unable to create data (snapshot) node. Non-Object value input to ddg.data."
+		.ddg.insert.error.message(error.msg)
+	}
 }
 
 # ddg.exception creates a data node for an exception. dname - label 
@@ -1670,27 +1681,6 @@ ddg.url <- function(dname, dvalue=NULL) {
 	
 	# Create input URL node.
 	.ddg.data.node("URL", dname, dvalue)
-}
-
-# ddg.snapshot creates a data node of type Snapshot. The contents 
-# of data (or, if data is missing, the contents of dname in the 
-# calling environment) are written to file on the DDG directory. The 
-# name of the file is dname.fext. If fext is missing, the file 
-# extension is assumed to be "csv".
-
-ddg.snapshot <- function(dname, fext="csv", data=NULL) {
-	if (!.ddg.check.init()) return(NULL)
-
-	# If data is not provided, get value of dname in the calling 
-  # environment.
-	env <- parent.frame()
-	.ddg.lookup.value(dname, data, env, "ddg.snapshot")
-
-	# Convert dname to string if necessary.
-	if (!is.character(dname)) dname <- deparse(substitute(dname))  
-
-	# Create snapshot node.
-	.ddg.snapshot.node(dname, fext, data)
 }
 
 # ddg.file creates a data node of type File by copying an existing 
