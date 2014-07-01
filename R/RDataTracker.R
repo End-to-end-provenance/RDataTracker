@@ -1442,7 +1442,7 @@ ddg.MAX_HIST_LINES <- 16384
 # of a script. These include:
 #	1. The temporary history file
 .ddg.delete.temp <- function() {
-	return(NULL)
+	if (interactive() && .ddg.enable.console()) unlink(.ddg.get('ddg.history.file'))
 }
 
 #--------------------USER FUNCTIONS-----------------------#
