@@ -58,8 +58,9 @@ ddg.graphic.out(dname, pname = NULL, graphic.fext = "jpeg")
   filename will be used as the label for the node.
 
   ddg.graphic.out behaves similary to ddg.data.out with an input variable of type
-  graphic, but in this case, does not require a variable to exist in the namespace. Instead, it directly copies the active graphics devices and saves it
-  as specified by the input parameters.
+  graphic, but in this case, does not require a variable to exist in the namespace. Instead, it directly copies 
+  the active graphics devices and saves it as specified by the input parameters.
+  Available file extension are jpeg, jpg, tiff, png, and bmp.
 }
 \author{Emery Boose and Barbara Lerner}
 \examples{

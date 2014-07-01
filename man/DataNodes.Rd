@@ -20,12 +20,15 @@ ddg.exception(dname, dvalue = NULL)
   
 }
 \details{ddg.data creates a data node for single and complex data values. dname can either be a quoted string 
-  or an expression of the variable containing the data value.  If an expression is passed in, the label on the node will be the unevaluated 
-  expression.  If dvalue is omitted, the argument passed in for dname will be evaluated and its value used in place of dvalue. Complex data values (such as
-  data frames) will be save in a file named by 
-  dname. The file extentison will be an appropriate extension based on the data stored. For exmaple, data frames are stored as .csv files. 
+  or an expression of the variable containing the data value.  If an expression is passed in, the label on 
+  the node will be the unevaluated expression.  If dvalue is omitted, the argument passed in for dname will 
+  be evaluated and its value used in place of dvalue. Complex data values (such as data frames) will be save 
+  in a file named by dname. The file extentison will have an appropriate extension based on the data stored. 
+  For example, data frames are stored as .csv files. 
   If dvalue is a graphical object (type plot or ggplot, etc.), an imaged will be
-  captured of the active graphic device and saved as dname.{graphic.fext}. Otherwise, the paramenter is ignored.
+  captured of the active graphic device and saved as dname.{graphic.fext}. 
+  Otherwise, the paramenter is ignored.
+  Available file formats are jpeg, jpg, tiff, png, and bmp.
 
   ddg.file creates a data node of type File and copies an existing file to the DDG directory.
   If dname is omitted, the filename, minus the directory path, will be used as the label.

@@ -268,11 +268,11 @@ ddg.MAX_HIST_LINES <- 16384
 	tryCatch({
 		.ddg.snapshot.node(name, fext, NULL)
 	}, error = function(e) {
-		warning(paste("Attempted to write", name, "as", fext, "snapshot. Trying", sfext, ".", e))
+		warning(paste("Attempted to write", name, "as", fext, "snapshot. Trying jpeg", ".", e))
 		tryCatch({
 			.ddg.snapshot.node(name, "jpeg", NULL)
 		}, error = function(e) {
-			warning(paste("Attempted to write", name, "as", sfext, "snapshot. Failed.", e, 
+			warning(paste("Attempted to write", name, "as jpeg snapshot. Failed.", e, 
 			        "Defaulting to saving RObject and .txt file."))
 			.ddg.snapshot.node(name, "OData", value)
   		.ddg.snapshot.node(name, "txt", value)
@@ -1069,6 +1069,14 @@ ddg.MAX_HIST_LINES <- 16384
 	}
 }
 
+# .ddg.supported.graphic - the sole purpose of this function is to verify that 
+# the input file extension is a supported graphic type. So far, the list of
+# supported graphics inlude:
+# jpg, jpeg, bmp, png, tiff
+.ddg.supported.graphic <- function(ext){
+	return(ext %in% c("jpeg", "jpg", "tiff", "png", "bmp"))
+}
+
 # .ddg.snapshot.node creates a data node of type Snapshot. Snapshots 
 # are used for complex data values not written to file by the main 
 # script. The contents of data are written to the file dname.fext 
@@ -1091,14 +1099,24 @@ ddg.MAX_HIST_LINES <- 16384
 	
 	# Write to file .
 	if (fext == "csv") write.csv(data, dpfile, row.names=FALSE)
-	else if (fext == "jpeg" || fext == "jpg") {
-		# create jpeg device and copy contents to it
-		dev.copy(function(){jpeg(filename=dpfile, width=800, height=500, quality=100)})
-		
-		# turn it off (this switches back to prev device)
-		dev.off()
+	else if (.ddg.supported.graphic(fext)){
+		# pdfs require a seperate procedure
+		if (fext == "pdf") dev.copy2pdf(file=dpfile)
+
+		# at the moment, all other graphic types can be done by constructing a similar function
+		else {
+			# if jpg, we need to change it to jpeg for the function call
+			fext = ifelse(fext == "jpg", "jpeg", fext)
+
+			#First, we create a string, then convert it to an actual R expression and use that as the function.
+			strFun <- paste(fext, "(filename=dpfile, width=800, height=500)", sep="")
+			parseFun <- function(){eval(parse(text=strFun))}
+			dev.copy(parseFun)
+			
+			# turn it off (this switches back to prev device)
+			dev.off()
+		}
 	}
-	else if (fext == "pdf") dev.copy2pdf(file=dpfile)
   else if (fext == "txt" || fext == "") {
     fileConn <- file(dpfile)
     write(as.character(data), fileConn)
