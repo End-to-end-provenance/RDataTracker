@@ -3,6 +3,8 @@
     xmlns:unless="ant:unless">
     
     <property name="builddir" value="${user.home}/Documents/Process/DataProvenance/RDataTracker"/>
+    <property name="dropbox" value="${user.home}/Dropbox/HarvardForest/RDataTracker/" /> 
+
 
     <target name="build-directory">
     	<mkdir dir="${builddir}"/>
@@ -49,6 +51,12 @@
     	<exec dir="${builddir}/.." executable="R" >
   			<arg line="CMD check --as-cran ${builddir}"/>
 		</exec>
+    </target>
+
+    <target name="dropbox" depends="build">
+	   <loadproperties srcFile="${builddir}/DESCRIPTION" />
+  	 <copy file="${builddir}/../RDataTracker_${Version}.tar.gz" todir="${dropbox}"/>
+	   <chmod file="${dropbox}/RDataTracker_${Version}.tar.gz" perm="ugo-w"/>
     </target>
 
     <target name="clean">
