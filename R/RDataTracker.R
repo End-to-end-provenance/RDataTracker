@@ -227,7 +227,8 @@ ddg.MAX_HIST_LINES <- 16384
 
 # .ddg.is.viewable tries to decipher if the value snapshot should be written as
 # as file directly from the data or if it is a graphic which can be captures 
-# from the image device
+# from the image device. This function, as written, is basically a hack. There
+# must be a better way to implement it.
 .ddg.is.graphic <- function(value){
 	# matching any of these classes automatically classifies the object as a graphic
 	graph.classes <- list("gg", "ggplot")
@@ -262,10 +263,7 @@ ddg.MAX_HIST_LINES <- 16384
 # (the data) associated with it and attempts to write it out as a graphics file
 # If all else fails, it writes out the informaion as a text file and also writes
 # out an RData Object which can later be read back into the system 
-.ddg.write.graphic <- function(name, value, fext="pdf"){
-	# we try to write out as jpeg if type specified doesn't work
-	sfext <- ifelse(fext=="pdf","jpeg","pdf")
-
+.ddg.write.graphic <- function(name, value, fext="jpeg"){
 	# try to output graphic value
 	tryCatch({
 		.ddg.snapshot.node(name, fext, NULL)
@@ -1527,8 +1525,7 @@ ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.graphic=N
 	if (is.character(outs.graphic)) {
 		name <- outs.graphic
 		gfext <- as.character(graphic.fext)
-		value <- NULL
-		.ddg.write.graphic(name,value,fext=gfext)
+		.ddg.write.graphic(name,"Graphical Plot. Not saved in script.",fext=gfext) # value is ignored
 		.ddg.proc2data(pname,name)
 	}
 	
@@ -1823,6 +1820,33 @@ ddg.file.out <- function(filename, dname=NULL, pname=NULL) {
 	.ddg.proc2data(pname, dname)
 	
 	return (saved.file)
+}
+
+# ddg.graphic.out creates a data node of type Snapshot called dname by 
+# capturing the current image in the active graphics device and saving it in the
+# DDG directory. The file is named under the name filename with numeric prefix 
+# and with extention specified by the fext parameter (available extensions are 
+# bmp, jpeg, png, tiff).
+# A data flow edge is also created from procedure node pname to the data node dame.
+
+# dname - the label for this node. This is also used as the name for the file.
+# pname (optional) - the name of the procedure that created this node. This can be
+# passed as a string or as a name. If ommited, the name of the function that 
+# called ddg.graphic.out is used. This means that this parameter is NOT option
+# when using this library function at outside a user-written function
+# fext (optional) - the file extention to be used for the graphic device capture.
+# This value defaults to jpeg.
+
+ddg.graphic.out <- function(dname, pname=NULL, graphic.fext="jpeg") {
+	if(!.ddg.check.init()) return
+
+	# write out the graphic
+	.ddg.write.graphic(dname, 'Graphical Plot. Not saved in script.', graphic.fext)
+
+	.ddg.lookup.function.name(pname)
+
+	# Create the data flow edge from oepration node to the file node
+	.ddg.proc2data(pname,dname)
 }
 
 # ddg.start creates a procedure node of type Start called pname. 

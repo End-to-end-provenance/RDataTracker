@@ -4,6 +4,7 @@
 \alias{ddg.exception.out}
 \alias{ddg.url.out}
 \alias{ddg.file.out}
+\alias{ddg.graphic.out}
 \title{RDataTracker Data Flow Edges}
 \description{These functions create data flow edges within a provenance graph created by RDataTracker.}
 \usage{
@@ -11,7 +12,8 @@ ddg.data.in (dname, pname = NULL)
 ddg.data.out (dname, dvalue = NULL, pname = NULL, graphic.fext = 'jpeg')
 ddg.exception.out (dname, dvalue = NULL, pname = NULL)
 ddg.url.out (dname, dvalue = NULL, pname = NULL) 
-ddg.file.out (filename, dname = NULL, pname = NULL) 
+ddg.file.out (filename, dname = NULL, pname = NULL)
+ddg.graphic.out(dname, pname = NULL, graphic.fext = "jpeg")
 }
 \arguments{
   \item{dname}{ the label for the data node. }
@@ -54,6 +56,10 @@ ddg.file.out (filename, dname = NULL, pname = NULL)
   of the file in the provenance graph.  Files saved in this way can be restored by using the
   ddg.checkpoint and ddg.restore functions, described elsewhere.  If dname is NULL, the
   filename will be used as the label for the node.
+
+  ddg.graphic.out behaves similary to ddg.data.out with an input variable of type
+  graphic, but in this case, does not require a variable to exist in the namespace. Instead, it directly copies the active graphics devices and saves it
+  as specified by the input parameters.
 }
 \author{Emery Boose and Barbara Lerner}
 \examples{
