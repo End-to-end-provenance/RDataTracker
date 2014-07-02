@@ -1124,9 +1124,9 @@ ddg.MAX_HIST_LINES <- 16384
 			parseFun <- function(){eval(parse(text=strFun))}
 			dev.copy(parseFun)
 		
-		# turn it off (this switches back to prev device)
-		dev.off()
-	}
+			# turn it off (this switches back to prev device)
+			dev.off()
+		}
 	}
     else if (fext == "txt" || fext == "") {
 	    fileConn <- file(dpfile)
@@ -1596,22 +1596,22 @@ ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.graphic=N
 	# Generalized data node (includes simple data values as well as snapshots)
 	if (!is.null(outs.data)) {
 	  lapply(outs.data,
-	    function(param) {
-	      # Get value in calling environment.
-	      name <- param
-	      value <- NULL
-	      env <- parent.frame(3)
-	      .ddg.lookup.value(name, value, env, "ddg.procedure", warn=FALSE)
- 				
-	      tryCatch({
-	        if (!is.character(name)) name <- deparse(substitute(name))
-	        .ddg.save.data(name,value,".ddg.procedure", error=TRUE)
-					.ddg.proc2data(pname, name)
-	      	}, error = function(e) {
-	      		.ddg.insert.error.message(e)
-	      }
-	      )  
-	      }
+			  function(param) {
+				  # Get value in calling environment.
+				  name <- param
+				  value <- NULL
+				  env <- parent.frame(3)
+				  .ddg.lookup.value(name, value, env, "ddg.procedure", warn=FALSE)
+				  
+				  tryCatch({
+							  if (!is.character(name)) name <- deparse(substitute(name))
+							  .ddg.save.data(name,value,".ddg.procedure", error=TRUE)
+							  .ddg.proc2data(pname, name)
+						  }, error = function(e) {
+							  .ddg.insert.error.message(e)
+						  }
+				  )  
+			  }
 	  )
 	}
 	
@@ -1658,7 +1658,7 @@ ddg.data <- function(dname, dvalue=NULL, graphic.fext = "jpeg") {
 	.ddg.lookup.value(dname, dvalue, env, "ddg.data")
   
 	# save the value appropriately.  If the name is not a string,
-  # use the argument instead of the value
+  	# use the argument instead of the value
 	if (!is.character(dname)) dname <- deparse(substitute(dname))
 	.ddg.save.data(dname, dvalue, "ddg.data", graphic.fext)
 }
@@ -1755,7 +1755,7 @@ ddg.data.out <- function(dname, dvalue=NULL, pname=NULL, graphic.fext="jpeg") {
 	# If no value is provided, get value in calling environment.
 	env <- parent.frame()
 	.ddg.lookup.value(dname, dvalue, env, "ddg.data.out")
-	
+
 	# convert name to a string if necessary
 	if (!is.character(dname)) dname <- deparse(substitute(dname))
 
