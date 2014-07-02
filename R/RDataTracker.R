@@ -2124,6 +2124,32 @@ ddg.debug.off <- function () {
 	.ddg.set("ddg.debug", FALSE)
 }
 
+# ddg.console.off turns off the console mode of DDG construction
+ddg.console.off <- function() {
+	if (!.ddg.check.init()) return(NULL)
+
+	# capture history if console was on up to this point
+	if (interactive() && .ddg.enable.console()) {
+		.ddg.console.node()
+
+		# set the console to off
+		ddg.set(".ddg.enable.console", FALSE)
+	}
+}
+
+# ddg.console.on turns on the console mode of DDG construction
+ddg.console.on <- function() {
+	if (!.ddg.check.init()) return(NULL)
+
+	# write a new timestamp if we're turning on the console so we only capture
+	# history from this point forward
+	if (!.ddg.enable.console()) {
+		.ddg.write.timestamp.to.history()
+
+		ddg.set(".ddg.enable.console", TRUE)
+	}
+}
+ 
 # ddg.flush.ddg removes selected files from the DDG directory.
 ddg.flush.ddg <- function () {
 	if (!.ddg.check.init()) return(NULL)
