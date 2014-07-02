@@ -30,7 +30,7 @@
     </target>
     
     <target name="check" depends="copy-to-directory">
-    	<exec dir="${builddir}/.." executable="R" >
+	   	<exec dir="${builddir}/.." executable="R" >
   			<arg line="CMD check ${builddir}"/>
 		</exec>
     </target>
@@ -54,9 +54,9 @@
     </target>
 
     <target name="dropbox" depends="build">
-	<loadproperties srcFile="${builddir}/DESCRIPTION" />
-  	<copy file="${builddir}/../RDataTracker_${Version}.tar.gz" todir="${dropbox}"/>
-	<chmod file="${dropbox}/RDataTracker_${Version}.tar.gz" perm="ugo-w"/>
+	   <loadproperties srcFile="${builddir}/DESCRIPTION" />
+  	 <copy file="${builddir}/../RDataTracker_${Version}.tar.gz" todir="${dropbox}"/>
+	   <chmod file="${dropbox}/RDataTracker_${Version}.tar.gz" perm="ugo-w"/>
     </target>
 
     <target name="clean">
