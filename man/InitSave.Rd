@@ -11,6 +11,8 @@ ddg.init(r.script.path = NULL, ddgdir = NULL, enable.console = FALSE)
 ddg.grabhistory()
 ddg.save()
 ddg.run(f, r.script.path = NULL, ddgdir = NULL, enable.console = FALSE)
+ddg.console.on()
+ddg.console.off()
 ddg.flush.ddg()
 }
 \arguments{
@@ -45,6 +47,12 @@ ddg.flush.ddg()
   will contain just the provenance created by calls to the DDG functions.  If an R error occurs 
   during the execution of the function, the error will be captured in an Exception node in the 
   provenance graph.
+
+  ddg.console.on and ddg.console.off toggle the console parameter for DDG creation. When the console is enabled, all commands sent to the R
+  console are captured as provenance by the RDataTracker library. The functions allow for an intermix of automatic annotations
+  as well as manual, more detailed, annotations of a script. 
+  Note that a call to ddg.console.off will create a collapsible console node with data provenence of the previous console session,
+  while ddg.console.on will initiate a console session. No action is performed if the console is already in the desired state. 
   
   ddg.flush.ddg removes all files from the DDG directory unless the DDG directory is also the working 
   directory, in which case it does nothing.
