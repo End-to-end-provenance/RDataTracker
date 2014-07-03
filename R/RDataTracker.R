@@ -248,7 +248,7 @@ ddg.MAX_HIST_LINES <- 16384
 # .ddg.is.csv returns true if the value passed in should be written out as a csv
 # file. No assumptions are made about input.
 .ddg.is.csv <- function(value) {
-	return(!(.ddg.is.graphic(value) || .ddg.is.simple(value)) && (
+  return(!(.ddg.is.graphic(value) || .ddg.is.simple(value)) && (
 	       is.list(value) || is.vector(value) || is.matrix(value) || is.data.frame(value)))
 }
 
@@ -290,7 +290,7 @@ ddg.MAX_HIST_LINES <- 16384
   tryCatch({
 		.ddg.snapshot.node(name, "csv", value)
 	}, error = function(e) {
-		warning(paste("Attempted to write", name, "as .csv snapshot but failed. Out as RDataObject.", e))
+		#warning(paste("Attempted to write", name, "as .csv snapshot but failed. Out as RDataObject.", e))
 		.ddg.snapshot.node(name, "OData", value)
 		.ddg.snapshot.node(name, "txt", value)
 	})
@@ -540,7 +540,7 @@ ddg.MAX_HIST_LINES <- 16384
 # ddg.is.functiondecl tests to see if an expression is a function 
 # declaration.
 .ddg.is.functiondecl <- function(expr) {
-	if (is.symbol(expr) || !is.list(expr)) return (FALSE)
+	if (is.symbol(expr) || !is.language(expr)) return (FALSE)
 	return (expr[[1]] == "function")
 }
 
@@ -552,7 +552,7 @@ ddg.MAX_HIST_LINES <- 16384
 .ddg.find.assign <- function(obj) {
 	# Base case.
 	if (!is.recursive(obj)) return(character())
-
+  
 	# Assignment statement.  Add the variable being assigned to the 
   # vector and recurse on the expression being assigned.
 	if (.ddg.is.assign(obj)) {
@@ -1006,6 +1006,16 @@ ddg.MAX_HIST_LINES <- 16384
 	str <- gsub("\n", " ", str)
 	str <- gsub("\t", " ", str)
 }
+
+# .ddg.convert.list.to.string converts a list of values to a string
+# by calling as.character on each element in the list.
+# Assumes that dvalue is a list.
+
+.ddg.convert.list.to.string <- function (dvalue) {
+  values <- .ddg.replace.quotes(lapply(dvalue, as.character))
+  positions <- 1:length(values)
+  paste("[[", positions, "]]", values, collapse="\n")
+}
 	
 # .ddg.data.node creates a data node of type Data. Data nodes are 
 # used for single data values. The value (dvalue) is stored in the 
@@ -1016,8 +1026,8 @@ ddg.MAX_HIST_LINES <- 16384
 	if (is.object(dvalue)) {
 		tryCatch(
 			{
-        .ddg.snapshot.node (dname, "txt", toString(dvalue))
-				return(NULL)
+			  .ddg.snapshot.node (dname, "txt", as.character(dvalue))
+        return(NULL)
 		    },
 			error = function(e) {
 				error.msg <- paste("Unable to create snapshot node for", dname)
@@ -1034,9 +1044,7 @@ ddg.MAX_HIST_LINES <- 16384
 		if (is.list(dvalue)) {
 			tryCatch(
 				{
-					values <- .ddg.replace.quotes(lapply(dvalue, as.character))
-					positions <- 1:length(values)
-					paste("[[", positions, "]]", values, collapse="\n")
+          .ddg.convert.list.to.string(dvalue)
 				},				
 				error = function(e) {
 					error.msg <- paste("Unable to convert value of", dname, "to a string.")
@@ -1107,7 +1115,7 @@ ddg.MAX_HIST_LINES <- 16384
 	# Get path plus file name.
 	ddg.path <- .ddg.path()
 	dpfile <- paste(ddg.path, "/", dfile, sep="")
-	
+  	
 	# Write to file .
 	if (fext == "csv") write.csv(data, dpfile, row.names=FALSE)
 	else if (.ddg.supported.graphic(fext)){
@@ -1129,9 +1137,14 @@ ddg.MAX_HIST_LINES <- 16384
 		}
 	}
     else if (fext == "txt" || fext == "") {
-	    fileConn <- file(dpfile)
-	    write(as.character(data), fileConn)
-	    close(fileConn)
+      file.create(dpfile, showWarnings=FALSE)
+      if (is.list(data) && length(data) > 0) {
+        list.as.string <- .ddg.convert.list.to.string(data)
+        write(list.as.string, dpfile)
+      }
+      else {
+        write(as.character(data), dpfile)
+      }
 	}
 	else if (fext == "RData") file.rename(paste(ddg.path, "/", dname, sep=""), dpfile)
 	else if (fext == "OData") save(data, file = dpfile)
