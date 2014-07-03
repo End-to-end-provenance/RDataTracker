@@ -45,8 +45,12 @@ ddg.MAX_HIST_LINES <- 16384
 	.ddg.env[[var]] <- value
 }
 
+.ddg.is.set <- function(var) {
+	return(exists(var, envir=.ddg.env))
+}
+
 .ddg.get <- function(var) {
-	if (!exists(var, envir=.ddg.env)) {
+	if (!.ddg.is.set(var)) {
     	error.msg <- paste("No binding for", var, ". DDG may be incorrect!")
     	.ddg.insert.error.message(error.msg)
     	return(NULL)
@@ -1466,7 +1470,8 @@ ddg.MAX_HIST_LINES <- 16384
 # of a script. These include:
 #	1. The temporary history file
 .ddg.delete.temp <- function() {
-	if (interactive() && .ddg.enable.console()) unlink(.ddg.get('ddg.history.file'))
+	# delet the temporary history file if we made it
+	if (.ddg.is.set('ddg.history.file')) unlink(.ddg.get('ddg.history.file'))
 }
 
 #--------------------USER FUNCTIONS-----------------------#
@@ -2137,6 +2142,32 @@ ddg.debug.off <- function () {
 	.ddg.set("ddg.debug", FALSE)
 }
 
+# ddg.console.off turns off the console mode of DDG construction
+ddg.console.off <- function() {
+	if (!.ddg.check.init()) return(NULL)
+
+	# capture history if console was on up to this point
+	if (interactive() && .ddg.enable.console()) {
+		.ddg.console.node()
+
+		# set the console to off
+		.ddg.set(".ddg.enable.console", FALSE)
+	}
+}
+
+# ddg.console.on turns on the console mode of DDG construction
+ddg.console.on <- function() {
+	if (!.ddg.check.init()) return(NULL)
+
+	# write a new timestamp if we're turning on the console so we only capture
+	# history from this point forward
+	if (!.ddg.enable.console()) {
+		.ddg.write.timestamp.to.history()
+
+		.ddg.set(".ddg.enable.console", TRUE)
+	}
+}
+ 
 # ddg.flush.ddg removes selected files from the DDG directory.
 ddg.flush.ddg <- function () {
 	if (!.ddg.check.init()) return(NULL)
