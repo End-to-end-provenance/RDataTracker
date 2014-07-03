@@ -251,7 +251,7 @@ main <- function() {
 }
 
 ddg.run(main,		
-		"/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/DailySolarRadiation/daily-solar-radiation-2.r",
-		"/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/DailySolarRadiation/ddg")
+		"D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/DailySolarRadiation/daily-solar-radiation-2.r",
+		"D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/DailySolarRadiation/ddg")
 
 

@@ -44,7 +44,7 @@
     		<param name="script-file" value="S4ObjectTest.R"/>
     		<param name="expected_out" value="examples/S4ObjectTest/expected_S4ObjectTest.out"/>
     		<param name="expected_ddg" value="examples/S4ObjectTest/expected_S4ObjectTest_ddg.txt"/>
-    		<param name="fail_out" value="true" />
+    		<param name="fail_out" value="false" />
     	</antcall>
     </target>
 
@@ -66,7 +66,7 @@
     		<param name="script-file" value="CheckpointTest.r"/>
     		<param name="expected_out" value="examples/checkpointTest/expected_checkpointTest.out"/>
     		<param name="expected_ddg" value="examples/checkpointTest/expected_CheckpointTest_ddg.txt"/>
-    		<param name="fail_out" value="true" />
+    		<param name="fail_out" value="false" />
     	</antcall>
     </target>
     

@@ -9,8 +9,8 @@ ddg.debug.on()
 options(warn=2)
 
 # Initialize the provenance graph
-ddg.init("/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/S4ObjectTest/S4ObjectTest.R",
-		 "/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/S4ObjectTest/ddg",
+ddg.init("D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/S4ObjectTest/S4ObjectTest.R",
+		 "D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/S4ObjectTest/ddg",
 		enable.console = TRUE)
 
 #setGeneric("toString", function(object) {

@@ -36,6 +36,6 @@ main <- function() {
 	ddg.finish("iteration i")
 }
 
-ddg.r.script.path <- "/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/DDGHangBug/DDGHangBug.R"
-ddg.path <- "/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/DDGHangBug/ddg"
+ddg.r.script.path <- "D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/DDGHangBug/DDGHangBug.R"
+ddg.path <- "D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/DDGHangBug/ddg"
 ddg.run(main,ddg.r.script.path,ddg.path)

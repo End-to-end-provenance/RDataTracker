@@ -56,6 +56,6 @@ main <- function() {
 ### Run script
 
 ddg.run(main, 
-		"/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/checkpointTest/CheckpointTest.r",
-		"/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/checkpointTest/ddg")
+		"D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/checkpointTest/CheckpointTest.r",
+		"D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/checkpointTest/ddg")
 

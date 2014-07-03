@@ -15,8 +15,8 @@ options(warn=2)
 ddg.debug.off()
 
 # Initialize the provenance graph
-ddg.init("/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/MismatchedStartFinishBug/MismatchedStartFinishBug.R",
-		"/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/MismatchedStartFinishBug/ddg",
+ddg.init("D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/MismatchedStartFinishBug/MismatchedStartFinishBug.R",
+		"D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/MismatchedStartFinishBug/ddg",
 		enable.console = TRUE)
 
 f <- function () {

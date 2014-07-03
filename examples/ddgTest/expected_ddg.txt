@@ -2,10 +2,10 @@ Architecture="x86_64"
 OperatingSystem="unix"
 Language="R"
 LanguageVersion="R version 3.1.0 Patched (2014-05-20 r65701)"
-Script="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/ddgTest/ddgTest.r"
+Script="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/ddgTest/ddgTest.r"
 ProcessFileTimestamp="2014-06-26T13.13.31"
-WorkingDirectory="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/ddgTest"
-DDGDirectory="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/ddgTest/ddg"
+WorkingDirectory="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/ddgTest"
+DDGDirectory="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/ddgTest/ddg"
 DateTime="2014-06-26T13.45.27"
 22
 Start p1 "1-main" Value="main";
@@ -62,13 +62,13 @@ Data d14 "14-simple.value" Value="10";
 DF p9 d14
 Operation p10 "10-g1" Value="g1";
 CF p9 p10
-Snapshot d15 "15-kids.df" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/ddgTest/ddg/15-kids.df.csv" Time="2014-06-26T13.45.27";
+Snapshot d15 "15-kids.df" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/ddgTest/ddg/15-kids.df.csv" Time="2014-06-26T13.45.27";
 DF p10 d15
-Snapshot d16 "16-c(1992, 1995)" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/ddgTest/ddg/16-c(1992, 1995).csv" Time="2014-06-26T13.45.27";
+Snapshot d16 "16-c(1992, 1995)" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/ddgTest/ddg/16-c(1992, 1995).csv" Time="2014-06-26T13.45.27";
 DF p10 d16
-File d17 "17-/Users/blerner/tmp/testfile2.txt" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/ddgTest/ddg/17-testfile2.txt" Time="2014-06-26T13.45.27" Location="/Users/blerner/tmp/testfile2.txt";
+File d17 "17-/Users/blerner/tmp/testfile2.txt" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/ddgTest/ddg/17-testfile2.txt" Time="2014-06-26T13.45.27" Location="/Users/blerner/tmp/testfile2.txt";
 DF p10 d17
-File d18 "18-outfile2" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/ddgTest/ddg/18-testfile3.txt" Time="2014-06-26T13.45.27" Location="/Users/blerner/tmp/testfile3.txt";
+File d18 "18-outfile2" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/ddgTest/ddg/18-testfile3.txt" Time="2014-06-26T13.45.27" Location="/Users/blerner/tmp/testfile3.txt";
 DF p10 d18
 URL d19 "19-HF home page" Value="\"http://harvardforest.fas.harvard.edu/\"";
 Exception d20 "20-error" Value="\"test error\"";
@@ -81,11 +81,11 @@ DF d21 p11
 Operation p12 "12-data.in.test" Value="data.in.test";
 CF p11 p12
 DF d1 p12
-Snapshot d22 "22-pets" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/ddgTest/ddg/22-pets.csv" Time="2014-06-26T13.45.27";
-Snapshot d23 "23-pets.df" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/ddgTest/ddg/23-pets.df.csv" Time="2014-06-26T13.45.27";
-Snapshot d24 "24-pets2" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/ddgTest/ddg/24-pets2.csv" Time="2014-06-26T13.45.27";
-Snapshot d25 "25-pets3" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/ddgTest/ddg/25-pets3.csv" Time="2014-06-26T13.45.27";
-Snapshot d26 "26-pets4" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/ddgTest/ddg/26-pets4.csv" Time="2014-06-26T13.45.27";
+Snapshot d22 "22-pets" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/ddgTest/ddg/22-pets.csv" Time="2014-06-26T13.45.27";
+Snapshot d23 "23-pets.df" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/ddgTest/ddg/23-pets.df.csv" Time="2014-06-26T13.45.27";
+Snapshot d24 "24-pets2" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/ddgTest/ddg/24-pets2.csv" Time="2014-06-26T13.45.27";
+Snapshot d25 "25-pets3" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/ddgTest/ddg/25-pets3.csv" Time="2014-06-26T13.45.27";
+Snapshot d26 "26-pets4" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/ddgTest/ddg/26-pets4.csv" Time="2014-06-26T13.45.27";
 Operation p13 "13-f2" Value="f2";
 CF p12 p13
 DF d22 p13
@@ -93,8 +93,8 @@ DF d23 p13
 DF d24 p13
 DF d25 p13
 DF d26 p13
-File d27 "27-RCheckpointNode.java" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/ddgTest/ddg/27-RCheckpointNode.java" Time="2014-06-26T13.45.27" Location="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/src/laser/ddg/r/RCheckpointNode.java";
-File d28 "28-test" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/ddgTest/ddg/28-testfile.txt" Time="2014-06-26T13.45.27" Location="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/ddgTest/testfile.txt";
+File d27 "27-RCheckpointNode.java" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/ddgTest/ddg/27-RCheckpointNode.java" Time="2014-06-26T13.45.27" Location="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/src/laser/ddg/r/RCheckpointNode.java";
+File d28 "28-test" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/ddgTest/ddg/28-testfile.txt" Time="2014-06-26T13.45.27" Location="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/ddgTest/testfile.txt";
 Exception d29 "29-error.msg" Value="\"File to copy does not exist: missingfile.txt\"";
 DF p13 d29
 Exception d30 "30-error.msg" Value="\"File to copy does not exist: missingdir/abc.txt\"";
@@ -135,23 +135,23 @@ Operation p16 "16-url.out.test" Value="url.out.test";
 CF p15 p16
 URL d44 "44-MHC home" Value="\"https://www.mtholyoke.edu/\"";
 DF p16 d44
-Snapshot d45 "45-pets2" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/ddgTest/ddg/45-pets2.csv" Time="2014-06-26T13.45.27";
+Snapshot d45 "45-pets2" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/ddgTest/ddg/45-pets2.csv" Time="2014-06-26T13.45.27";
 DF p5 d45
-Snapshot d46 "46-pets3" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/ddgTest/ddg/46-pets3.csv" Time="2014-06-26T13.45.27";
+Snapshot d46 "46-pets3" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/ddgTest/ddg/46-pets3.csv" Time="2014-06-26T13.45.27";
 DF p5 d46
-Snapshot d47 "47-pets.df" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/ddgTest/ddg/47-pets.df.csv" Time="2014-06-26T13.45.27";
+Snapshot d47 "47-pets.df" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/ddgTest/ddg/47-pets.df.csv" Time="2014-06-26T13.45.27";
 DF p5 d47
-Snapshot d48 "48-pets6" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/ddgTest/ddg/48-pets6.csv" Time="2014-06-26T13.45.27";
+Snapshot d48 "48-pets6" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/ddgTest/ddg/48-pets6.csv" Time="2014-06-26T13.45.27";
 DF p5 d48
-Snapshot d49 "49-pets.text" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/ddgTest/ddg/49-pets.text" Time="2014-06-26T13.45.27";
+Snapshot d49 "49-pets.text" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/ddgTest/ddg/49-pets.text" Time="2014-06-26T13.45.27";
 DF p5 d49
 Operation p17 "17-snapshot.out.test" Value="snapshot.out.test";
 CF p16 p17
-Snapshot d50 "50-pets4" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/ddgTest/ddg/50-pets4.csv" Time="2014-06-26T13.45.27";
+Snapshot d50 "50-pets4" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/ddgTest/ddg/50-pets4.csv" Time="2014-06-26T13.45.27";
 DF p17 d50
-File d51 "51-RDataInstanceNode.java" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/ddgTest/ddg/51-RDataInstanceNode.java" Time="2014-06-26T13.45.27" Location="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/src/laser/ddg/r/RDataInstanceNode.java";
+File d51 "51-RDataInstanceNode.java" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/ddgTest/ddg/51-RDataInstanceNode.java" Time="2014-06-26T13.45.27" Location="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/src/laser/ddg/r/RDataInstanceNode.java";
 DF p6 d51
-File d52 "52-testfile2.txt" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/ddgTest/ddg/52-testfile2.txt" Time="2014-06-26T13.45.27" Location="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/ddgTest/testfile2.txt";
+File d52 "52-testfile2.txt" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/ddgTest/ddg/52-testfile2.txt" Time="2014-06-26T13.45.27" Location="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/ddgTest/testfile2.txt";
 DF p6 d52
 Exception d53 "53-error.msg" Value="\"File to copy does not exist: missingfile.txt\"";
 DF p17 d53
@@ -165,7 +165,7 @@ DF p17 d56
 DF p6 d0
 Operation p18 "18-file.out.test" Value="file.out.test";
 CF p17 p18
-File d57 "57-testfile3.txt" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/ddgTest/ddg/57-testfile3.txt" Time="2014-06-26T13.45.27" Location="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/ddgTest/testfile3.txt";
+File d57 "57-testfile3.txt" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/ddgTest/ddg/57-testfile3.txt" Time="2014-06-26T13.45.27" Location="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/ddgTest/testfile3.txt";
 DF p18 d57
 Exception d58 "58-exc1" Value="\"a\"";
 DF p2 d58

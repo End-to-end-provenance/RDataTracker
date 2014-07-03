@@ -112,8 +112,8 @@ main <- function() {
 }
 
 ddg.run(main,		
-		"/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/CalculateSquareRoot/calculate-square-root-2.r",
-		"/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/CalculateSquareRoot/ddg")
+		"D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/CalculateSquareRoot/calculate-square-root-2.r",
+		"D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/CalculateSquareRoot/ddg")
 
 ### Display values
 

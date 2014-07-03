@@ -173,7 +173,7 @@ main <- function() {
 	ddg.procedure("f2", list("pets", "pets.df", "pets2", "pets3", "pets4"))
 	
 	# Test ddg.file
-	ddg.file("/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/src/laser/ddg/r/RCheckpointNode.java")
+	ddg.file("D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/src/laser/ddg/r/RCheckpointNode.java")
 	ddg.file("testfile.txt", "test")  # Directory is optional
 	ddg.file("missingfile.txt")  # What happens if the file is not there?
 	ddg.file("missingdir/abc.txt")  # What happens if the directory does not exist?
@@ -206,7 +206,7 @@ main <- function() {
 	snapshot.out.test(pets.df)
 	
 	# Test ddg.file.out
-	ddg.file.out("/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/src/laser/ddg/r/RDataInstanceNode.java", pname="string.name.and.args.given")
+	ddg.file.out("D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/src/laser/ddg/r/RDataInstanceNode.java", pname="string.name.and.args.given")
 	ddg.file.out("testfile2.txt", pname=string.name.and.args.given)  # Directory is optional
 	ddg.file.out("missingfile.txt", pname=string.name.and.args.given)  # What happens if the file is not there?
 	ddg.file.out("missingdir/abc.txt", pname=string.name.and.args.given)  # What happens if the directory does not exist?
@@ -233,6 +233,6 @@ main <- function() {
 ### Run script
 
 ddg.run(main, 
-		"/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/ddgTest/ddgTest.r",
-		"/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/ddgTest/ddg")
+		"D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/ddgTest/ddgTest.r",
+		"D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/ddgTest/ddg")
 

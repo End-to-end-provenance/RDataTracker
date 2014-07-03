@@ -15,8 +15,8 @@ options(warn=2)
 ddg.debug.off()
 
 # Initialize the provenance graph
-ddg.init("/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/SivanSampling/Sampling-NoClasses.r",
-		"/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/SivanSampling/ddg",
+ddg.init("D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/Sampling-NoClasses.r",
+		"D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg",
 		enable.console = TRUE)
 
 ######################################################################################################

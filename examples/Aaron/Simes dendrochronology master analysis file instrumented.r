@@ -7,8 +7,8 @@ start.time <- Sys.time()
 #source(ddg.library)
 library(RDataTracker)
 
-ddg.init("/Users/barbaralerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/Simes dendrochronology master analysis file instrumented.r",
-		 "/Users/barbaralerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg")
+ddg.init("D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/Aaron/Simes dendrochronology master analysis file instrumented.r",
+		 "D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/Aaron/ddg")
 
 
 #Visualization and analysis for Simes dendrochronology ms.
@@ -4518,6 +4518,6 @@ print(paste("Execution time =", (end.time - start.time)))
 }
 ddg.save()
 #ddg.run(main, 
-#		"/Users/barbaralerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/Simes dendrochronology master analysis file instrumented.r",
-#		"/Users/barbaralerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg")
+#		"D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/Aaron/Simes dendrochronology master analysis file instrumented.r",
+#		"D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/Aaron/ddg")
 

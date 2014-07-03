@@ -256,6 +256,6 @@ main <- function() {
 }
 
 ddg.run(main,
-		"/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/RealTime15MinMET/real-time-15min-met.r",
-		"/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/RealTime15MinMET/ddg")
+		"D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/RealTime15MinMET/real-time-15min-met.r",
+		"D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/RealTime15MinMET/ddg")
 

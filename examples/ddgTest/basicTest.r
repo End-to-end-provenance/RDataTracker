@@ -132,6 +132,6 @@ main <- function() {
 ### Run script
 
 ddg.run(main, 
-		"/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/ddgTest/ddgTest.r",
-		"/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/ddgTest/ddg")
+		"D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/ddgTest/ddgTest.r",
+		"D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/ddgTest/ddg")
 
