@@ -30,7 +30,7 @@
     </target>
     
     <target name="check" depends="copy-to-directory">
-    	<exec dir="${builddir}/.." executable="R" >
+	   	<exec dir="${builddir}/.." executable="R" >
   			<arg line="CMD check ${builddir}"/>
 		</exec>
     </target>
