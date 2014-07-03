@@ -17,6 +17,8 @@
 #source(ddg.library)
 library(RDataTracker)
 
+options(warn=2)
+
 ### Functions
 
 read.data <- function() {
@@ -57,7 +59,7 @@ read.data <- function() {
   ddg.data(start.date)
   ddg.data(end.date)
   ddg.data(variable)
-  ddg.procedure(ins=list(data.file,cal.file,qc.file,gf.file,"start.date","end.date","variable"),outs.snapshot=list("raw.data","all.data","calibration.parameters","quality.control.parameters","gap.fill.parameters"))
+  ddg.procedure(ins=list(data.file,cal.file,qc.file,gf.file,"start.date","end.date","variable"),outs.data=list("raw.data","all.data","calibration.parameters","quality.control.parameters","gap.fill.parameters"))
   
   return(raw.data)
 }
@@ -78,7 +80,7 @@ calibrate <- function(raw.data) {
   }
   calibrated.data <- xx
   
-  ddg.procedure(ins=list("raw.data","calibration.parameters"),outs.snapshot=list("calibrated.data"))
+  ddg.procedure(ins=list("raw.data","calibration.parameters"),outs.data=list("calibrated.data"))
 
   return(calibrated.data)
 }
@@ -106,7 +108,7 @@ quality.control <- function(calibrated.data) {
   }
   quality.controlled.data <- xx
   
-  ddg.procedure(ins=list("calibrated.data","quality.control.parameters"),outs.snapshot=list("quality.controlled.data"))
+  ddg.procedure(ins=list("calibrated.data","quality.control.parameters"),outs.data=list("quality.controlled.data"))
 
   return(quality.controlled.data)
 }
@@ -124,7 +126,7 @@ gap.fill <- function(quality.controlled.data) {
   }
   gap.filled.data <- xx
   
-  ddg.procedure(ins=list("quality.controlled.data","gap.fill.parameters","all.data"),outs.snapshot=list("gap.filled.data"))
+  ddg.procedure(ins=list("quality.controlled.data","gap.fill.parameters","all.data"),outs.data=list("gap.filled.data"))
 
   return(gap.filled.data)
 }

@@ -14,18 +14,11 @@ options(guiToolkit="tcltk")
 
 ### Directories
 
-#setwd("c:/data/r/ddg/real-time-15min-met")
-#ddg.r.script.path <- paste(getwd(),"/real-time-15min-met.r",sep="")
-#ddg.path <- paste(getwd(),"/ddg",sep="")
-#source("c:/data/r/lib/ddg-library.r")
-
-# ddg.library <- Sys.getenv("DDG_LIBRARY")
-# if (ddg.library == "") {
-# 	ddg.library <- "c:/data/r/ddg/lib/ddg-library.r"
-# }
-# source(ddg.library)
-
-library(RDataTracker)
+#setwd("c:/data/r/examples/met-hydro/real-time-15min-met")
+ddg.r.script.path <- paste(getwd(),"/real-time-15min-met-2.r",sep="")
+ddg.path <- paste(getwd(),"/ddg",sep="")
+#source("c:/GitHub/RDataTracker/R/RDataTracker.R")
+source("/Users/blerner/tmp/ddg-library.R")
 
 ### Functions
 
@@ -35,9 +28,7 @@ set.initial.values <- function() {
   # current URL
   current.url <<- "http://harvardforest.fas.harvard.edu/sites/harvardforest.fas.harvard.edu/files/weather/metsta.dat"
   
-  ddg.procedure()
-  ddg.url.out(archive.url)
-  ddg.url.out(current.url)
+  ddg.procedure(outs.url=list("archive.url","current.url"))
 }
 
 get.archive.data <- function() {
@@ -48,9 +39,7 @@ get.archive.data <- function() {
   
   archive.data <- zz
   
-  ddg.procedure()
-  ddg.data.in(archive.url)
-  ddg.snapshot.out(archive.data)
+  ddg.procedure(ins=list("archive.url"),outs.snapshot=list("archive.data"))
   
   return(archive.data)
 }
@@ -63,9 +52,7 @@ get.current.data <- function() {
 
   current.data <- zz
   
-  ddg.procedure()
-  ddg.data.in(current.url)
-  ddg.snapshot.out(current.data)
+  ddg.procedure(ins=list("current.url"),outs.snapshot=list("current.data"))
 
   return(current.data)
 }
@@ -94,22 +81,17 @@ get.final.data <- function(archive.data,current.data) {
 
   final.data <- zz
   
-  ddg.procedure()
-  ddg.data.in(archive.data)
-  ddg.data.in(current.data)
-  ddg.snapshot.out(final.data)
+  ddg.procedure(ins=list("archive.data","current.data"),outs.snapshot=list("final.data"))
 
   return(final.data)
 }
 
 save.data <- function(final.data) {
-  file.name <- "final-data.csv"
-  file.out <- paste(getwd(),"/",file.name,sep="")
+  final.file <- "final-data.csv"
+  file.out <- paste(getwd(),"/",final.file,sep="")
   write.csv(final.data,file.out,row.names=FALSE)
 
-  ddg.procedure()
-  ddg.data.in(final.data)
-  ddg.file.out(file.name)
+  ddg.procedure(ins=list("final.data"),outs.file=list("final.file"))
 }
 
 INPUT <- function(message) {
@@ -131,8 +113,7 @@ get.input.var <- function() {
   variable <- as.character(x)
 
   if (variable != "q") {
-    ddg.procedure()
-    ddg.data.out(variable)
+    ddg.procedure(outs.data=list("variable"))
   }
   
   return(variable)
@@ -146,8 +127,7 @@ get.input.days <- function () {
   if (x > 30) x <- 30
   days <- x
 
-  ddg.procedure()
-  ddg.data.out(days)
+  ddg.procedure(outs.data=list("days"))
 
   return(days)
 }
@@ -195,67 +175,57 @@ plot.data <- function(final.data,variable,days,output) {
 
   # if gui, save to PDF file in DDG
   if (output=="gui") {
-    ddg.procedure()
-    ddg.data.in(final.data)
-    ddg.data.in(variable)
-    ddg.data.in(days)
+    ddg.procedure(ins=list("final.data","variable","days"))
     ddg.snapshot.out("plot",fext="pdf")
   }
   
   # if file, copy jpeg file to DDG directory
   if (output=="file") {
     dev.off()
-    ddg.procedure()
-    ddg.data.in(final.data)
-    ddg.data.in(variable)
-    ddg.data.in(days)
-    ddg.file.out("plot.jpeg")
+    ddg.procedure(ins=list("final.data","variable","days"),outs.file=list("plot.jpeg"))
   }
 }
 
 ### Main Program
 
 main <- function() {
-  
   ddg.start("main")
-
+  
   ddg.start("get.data")
 
   set.initial.values()
+  ddg.debug.on()
   archive.data <<- get.archive.data()
-  current.data <<- get.current.data()
   final.data <<- get.final.data(archive.data,current.data)
-  save.data(final.data)
+#  save.data(final.data)
                      
   ddg.finish("get.data")
 
-  ddg.start("create.plots")
-
-  input <- ""
-
-  while (input != "q") {
-    ddg.start("create.plot")
-
-    input <- get.input.var()
-    if (input != "q") {
-      variable <- input
-      days <- get.input.days()
-      plot.data(final.data,variable,days,"gui")
-    }
-
-    ddg.finish("create.plot")
-  }
-
-  ddg.finish("create.plots")
-
-  ddg.start("save.plot")
-  plot.data(final.data,variable,days,"file")
-  ddg.finish("save.plot")
-
+#   ddg.start("create.plots")
+# 
+#   input <- ""
+# 
+#   while (input != "q") {
+#     ddg.start("create.plot")
+# 
+#     input <- get.input.var()
+#     if (input != "q") {
+#       variable <- input
+#       days <- get.input.days()
+#       plot.data(final.data,variable,days,"gui")
+#     }
+# 
+#     ddg.finish("create.plot")
+#   }
+# 
+#   ddg.finish("create.plots")
+# 
+#   ddg.start("save.plot")
+#   plot.data(final.data,variable,days,"file")
+#   ddg.finish("save.plot")
+  
   ddg.finish("main")
 }
 
-ddg.run(main,
-		"/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/RealTime15MinMET/real-time-15min-met.r",
-		"/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/RealTime15MinMET/ddg")
+ddg.run(main,ddg.r.script.path,ddg.path)
 

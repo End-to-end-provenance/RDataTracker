@@ -65,11 +65,11 @@ read.data <- function() {
   ddg.data.in(start.date)
   ddg.data.in(end.date)
   ddg.data.in(variable)
-  ddg.snapshot.out(raw.data)
-  ddg.snapshot.out(all.data)
-  ddg.snapshot.out(calibration.parameters)
-  ddg.snapshot.out(quality.control.parameters)
-  ddg.snapshot.out(gap.fill.parameters)
+  ddg.data.out(raw.data)
+  ddg.data.out(all.data)
+  ddg.data.out(calibration.parameters)
+  ddg.data.out(quality.control.parameters)
+  ddg.data.out(gap.fill.parameters)
  
   return(raw.data)
 }
@@ -93,7 +93,7 @@ calibrate <- function(raw.data) {
   ddg.procedure()
   ddg.data.in(raw.data)
   ddg.data.in(calibration.parameters)
-  ddg.snapshot.out(calibrated.data)
+  ddg.data.out(calibrated.data)
 
   return(calibrated.data)
 }
@@ -124,7 +124,7 @@ quality.control <- function(calibrated.data) {
   ddg.procedure()
   ddg.data.in(calibrated.data)
   ddg.data.in(quality.control.parameters)
-  ddg.snapshot.out(quality.controlled.data)
+  ddg.data.out(quality.controlled.data)
 
   return(quality.controlled.data)
 }
@@ -146,7 +146,7 @@ gap.fill <- function(quality.controlled.data) {
   ddg.data.in(quality.controlled.data)
   ddg.data.in(gap.fill.parameters)
   ddg.data.in(all.data)
-  ddg.snapshot.out(gap.filled.data)
+  ddg.data.out(gap.filled.data)
 
   return(gap.filled.data)
 }

@@ -64,7 +64,7 @@ get.check.value <- function(difference,tolerance) {
 store.result <- function(number,estimate) {
   sqr.root <- data.frame(number,estimate)
 
-  ddg.procedure(ins=list("number","estimate"),outs.snapshot=list("sqr.root"))
+  ddg.procedure(ins=list("number","estimate"),outs.data=list("sqr.root"))
   
   return(sqr.root)
 }

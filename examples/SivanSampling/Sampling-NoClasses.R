@@ -9,16 +9,14 @@
 start.time <- Sys.time()
 force(start.time)
 
-ddg.library <- Sys.getenv("DDG_LIBRARY")
-if (ddg.library == "") {
-	ddg.library <- "c:/data/r/ddg/lib/ddg-library.r"
-}
-source(ddg.library)
+#source("/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/R/RDataTracker.R")
+library(RDataTracker)
+options(warn=2)
 ddg.debug.off()
 
 # Initialize the provenance graph
-ddg.init("/Users/barbaralerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/SivanSampling/Sampling-NoClasses.r",
-		"/Users/barbaralerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/SivanSampling/ddg",
+ddg.init("/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/SivanSampling/Sampling-NoClasses.r",
+		"/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/SivanSampling/ddg",
 		enable.console = TRUE)
 
 ######################################################################################################
@@ -31,9 +29,9 @@ defineAreasDistributions <- function(totalNumOfSpecies, area1str, area2str) {
 	ddg.start()
 	speciesDistribution <- list()
 	speciesDistribution[[1]] <- newSpeciesDistribution(1, totalNumOfSpecies, area1str)
-	ddg.procedure("Set species distribution", ins=list("areaDictionary"), outs=list("speciesDistribution"))
+	ddg.procedure("Set species distribution", ins=list("areaDictionary"), outs.data=list("speciesDistribution"))
 	speciesDistribution[[2]] <- newSpeciesDistribution(2, totalNumOfSpecies, area2str)
-	ddg.procedure("Set species distribution", ins=list("speciesDistribution", "areaDictionary"), outs=list("speciesDistribution"))
+	ddg.procedure("Set species distribution", ins=list("speciesDistribution", "areaDictionary"), outs.data=list("speciesDistribution"))
 	ddg.finish()
 	return (speciesDistribution)
 }
@@ -70,7 +68,7 @@ newSpeciesDistribution <- function(aCode, numOfSpecies, probabilityStr) {
 		
 		# Add the data to the dictionary.  
 		for (speciesStr in speciesStrArr) {
-			ddg.procedure("Extract species string", ins=list("probabilityStr"), outs=list("speciesStr"))
+			ddg.procedure("Extract species string", ins=list("probabilityStr"), outs.data=list("speciesStr"))
 			areaDictionary <- addToDictionary(areaDictionary, speciesStr)
 		}
 
@@ -260,7 +258,7 @@ assignSamplesToAreas <- function (samplesArr, samplesMapsStr, speciesDistributio
 	
 	# Assign sample for each area.
 	for (areaStr in splitAreasArr) {
-		ddg.procedure("Extract areaStr", ins=list("samplesMapsStr"), outs=list("areaStr"))
+		ddg.procedure("Extract areaStr", ins=list("samplesMapsStr"), outs.data=list("areaStr"))
 		samplesArr <- assignSamplesToArea(samplesArr, areaStr, speciesDistribution, sampleSizeDistributionMng)
 	}
 	ddg.finish()
@@ -286,7 +284,7 @@ assignSamplesToArea <- function(samplesArr, areaStr, speciesDistribution, sample
 		areaCode <- as.integer(substr(areaStr, 1, colonPosition - 1))
 		ddg.procedure(pname="extract areaCode", 
 				ins=list("areaStr"), 
-				outs=list("areaCode"))
+				outs.data=list("areaCode"))
 
 		closeBracket <- regexpr("]", areaStr, fixed=TRUE)
 		sampleListStr <- substr (areaStr, colonPosition + 1, closeBracket - 1)
@@ -299,7 +297,7 @@ assignSamplesToArea <- function(samplesArr, areaStr, speciesDistribution, sample
 			for (sampleInAreaStr in tmpSamplesInArea) {
 				ddg.procedure(pname="extract sampleInAreaStr", 
 						ins=list("areaStr"), 
-						outs=list("sampleInAreaStr"))
+						outs.data=list("sampleInAreaStr"))
 				samplesArr <- assignSampleData(samplesArr, sampleInAreaStr, areaCode, sampleSizeDistributionMng)
 			}
 			ddg.data.out("samplesArr", pname="assign each sample")
@@ -345,11 +343,11 @@ raffleSamples <- function (samplesArr, speciesDistributionAreas, totalNumOfSampl
 	for (i in 1:nrow(samplesArr)) {
 		ddg.data(i)
 		numInd <- samplesArr[i,"nIndividuals"]
-		ddg.procedure("Extract num indiv", ins=list("samplesArr", "i"), outs=list("numInd"))
+		ddg.procedure("Extract num indiv", ins=list("samplesArr", "i"), outs.data=list("numInd"))
 		if (numInd > 0) {
 			areaCode <- samplesArr[i,"areaCode"]
 			speciesDist <- speciesDistributionAreas[[areaCode]]
-			ddg.procedure("Look up species dist", ins=list("speciesDistributionAreas", "areaCode"), outs=list("speciesDist"))
+			ddg.procedure("Look up species dist", ins=list("speciesDistributionAreas", "areaCode"), outs.data=list("speciesDist"))
 			sampleRaffle <- raffleIndividualsPerSample(i, numInd, speciesDist, totalNumOfSpecies)
 			numEntries <- nrow(sampleRaffle)
 			

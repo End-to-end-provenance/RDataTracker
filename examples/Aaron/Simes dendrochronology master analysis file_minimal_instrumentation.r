@@ -1,14 +1,15 @@
 # Time the execution
 start.time <- Sys.time()
-ddg.library <- Sys.getenv("DDG_LIBRARY")
+#ddg.library <- Sys.getenv("DDG_LIBRARY")
 #ddg.library <- "~/Documents/Process/DataProvenance/workspace/ddg-r/ddg-library_0.2.r"
-if (ddg.library == "") {
-  ddg.library <- "c:/data/r/ddg/lib/ddg-library.r"
-}
-source(ddg.library)
+#if (ddg.library == "") {
+  #ddg.library <- "c:/data/r/ddg/lib/ddg-library.r"
+#}
+#source(ddg.library)
+library(RDataTracker)
 
-ddg.init("/Users/barbaralerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/Simes dendrochronology master analysis file instrumented.r",
-		 "/Users/barbaralerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg",
+ddg.init("/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/Simes dendrochronology master analysis file instrumented.r",
+		 "/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg",
 		 enable.console = TRUE)
                   
 #Visualization and analysis for Simes dendrochronology ms.

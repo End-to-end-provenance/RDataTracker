@@ -5,12 +5,9 @@
 
 ## Directories
 
-#ddg.library <- Sys.getenv("DDG_LIBRARY")
-#if (ddg.library == "") {
-#	ddg.library <- "c:/data/r/ddg/lib/ddg-library.r"
-#}
-#source(ddg.library)
+#source("/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/R/RDataTracker.R")
 library(RDataTracker)
+#options(warn=2)
 
 ### Functions
 no.name.or.args.given <- function (a, b, c, d, e) {
@@ -59,8 +56,6 @@ start.finish.test <- function() {
 }
 
 main <- function() {
-	options(warn=1)
-	
 	ddg.start("main")
 	# Test ddg.data
 	x <- 1+2
@@ -70,7 +65,8 @@ main <- function() {
 	ddg.data(x + 1)  # Expression for name, no value
 	z <- x + 2
 	ddg.data ("z")  # String name, no value
-	w <- x + 3
+  
+  	w <- x + 3
 	ddg.data(w, w)  # Name as name, explicit value
 	
 	# Test ddg.procedure
@@ -86,7 +82,7 @@ main <- function() {
 	name <- c("Ben", "Greg")
 	male <- c(TRUE, TRUE) 
 	kids.df <- data.frame(year, name, male)
-	ddg.procedure("g1", outs.snapshot=list("year"))
+	ddg.procedure("g1", outs.data=list("year"))
 	
 	# Test ddg.url
 	ddg.url("HF home page", "http://harvardforest.fas.harvard.edu/")

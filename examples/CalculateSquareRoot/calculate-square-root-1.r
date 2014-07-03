@@ -81,7 +81,7 @@ store.result <- function(number,estimate) {
   ddg.procedure()
   ddg.data.in(number)
   ddg.data.in(estimate)
-  ddg.snapshot.out(sqr.root)
+  ddg.data.out(sqr.root)
   
   return(sqr.root)
 }

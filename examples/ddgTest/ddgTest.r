@@ -87,7 +87,7 @@ url.out.test <- function() {
 
 snapshot.out.test <- function(df) {
 	ddg.procedure()
-	ddg.snapshot.out("pets4", "csv", df)
+	ddg.data.out("pets4", df)
 }
 
 file.out.test <- function() {
@@ -140,7 +140,7 @@ main <- function() {
 	outfile2 <- "/Users/blerner/tmp/testfile3.txt"
 	writeLines("All good dogs", outfile)
 	writeLines("To be or not to be", outfile2)
-	ddg.procedure("g1", outs.snapshot=list("kids.df", year), outs.file=list(outfile, "outfile2"))
+	ddg.procedure("g1", outs.data=list("kids.df", year), outs.file=list(outfile, "outfile2"))
 	
 	# Test ddg.url
 	ddg.url("HF home page", "http://harvardforest.fas.harvard.edu/")
@@ -162,14 +162,14 @@ main <- function() {
 	name <- c("Sterling", "Smuggles", "Snickers")
 	male <- c(FALSE, FALSE, FALSE) 
 	pets.df <- data.frame(year, name, male)
-	ddg.snapshot("pets", "csv", pets.df)
-	ddg.snapshot("pets.df", "csv")
+	ddg.data("pets", pets.df)
+	ddg.data("pets.df")
 	pets2 <- pets.df
-	ddg.snapshot(pets2, "csv")
+	ddg.data(pets2)
 	pets3 <- pets.df
-	ddg.snapshot(pets3, "csv", pets3)
+	ddg.data(pets3, pets3)
 	pets4 <- pets.df
-	ddg.snapshot(pets4)
+	ddg.data(pets4)
 	ddg.procedure("f2", list("pets", "pets.df", "pets2", "pets3", "pets4"))
 	
 	# Test ddg.file
@@ -196,13 +196,13 @@ main <- function() {
 	url.out.test()
 	
 	# Test ddg.snapshot.out
-	ddg.snapshot.out("pets2", "csv", pets.df, "only.name.given")
-	ddg.snapshot.out("pets3", "csv", pets.df, only.name.given)
-	ddg.snapshot.out("pets.df", "csv", pname="only.name.given")
+	ddg.data.out("pets2", pets.df, "only.name.given")
+	ddg.data.out("pets3", pets.df, only.name.given)
+	ddg.data.out("pets.df", pname="only.name.given")
 	pets6 <- pets.df
-	ddg.snapshot.out(pets6, "csv", pname="only.name.given")
+	ddg.data.out(pets6, pname="only.name.given")
 	pets.text <- "text about pets"
-	ddg.snapshot.out(pets.text, "", pname="only.name.given")
+	ddg.data.out(pets.text, pname="only.name.given")
 	snapshot.out.test(pets.df)
 	
 	# Test ddg.file.out

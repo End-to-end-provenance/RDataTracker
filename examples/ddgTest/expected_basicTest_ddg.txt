@@ -1,12 +1,12 @@
 Architecture="x86_64"
 OperatingSystem="unix"
 Language="R"
-LanguageVersion="R version 3.1.0 (2014-04-10)"
+LanguageVersion="R version 3.1.0 Patched (2014-05-20 r65701)"
 Script="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/ddgTest/ddgTest.r"
-ProcessFileTimestamp="2014-05-05 16:14:48"
+ProcessFileTimestamp="2014-06-26T13.13.31"
 WorkingDirectory="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/ddgTest"
 DDGDirectory="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/ddgTest/ddg"
-DateTime="2014-05-21T16:00:57"
+DateTime="2014-07-01T15.11.54"
 17
 Start p1 "1-main" Value="main";
 Data d1 "1-x" Value="3";
@@ -47,7 +47,7 @@ Data d6 "6-simple.value" Value="10";
 DF p8 d6
 Operation p9 "9-g1" Value="g1";
 CF p8 p9
-Snapshot d7 "7-year" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/ddgTest/ddg/7-year.csv" Time="2014-05-21T16:00:57";
+Snapshot d7 "7-year" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/ddgTest/ddg/7-year.csv" Time="2014-07-01T15.11.54";
 DF p9 d7
 URL d8 "8-HF home page" Value="\"http://harvardforest.fas.harvard.edu/\"";
 Exception d9 "9-error" Value="\"test error\"";
