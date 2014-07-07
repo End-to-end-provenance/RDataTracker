@@ -41,7 +41,7 @@
 #		Unable to evaluate exc6 in call to ddg.exception.out
 
 ## Directories
-testDir <- "D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/ddgTest/"
+testDir <- "[DIR_DEFAULT]/"
 setwd(testDir)
 
 #ddg.library <- Sys.getenv("DDG_LIBRARY")
