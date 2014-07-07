@@ -1249,7 +1249,7 @@ ddg.MAX_HIST_LINES <- 16384
     	return(NULL)
 	}
 
-	if (.ddg.debug()) print(paste("file.copy: ", dtype, " ", fname))
+	if (.ddg.debug()) print(paste("file.copy: ", dtype, " ", file.loc))
 	return (dpfile.out)
 }
 

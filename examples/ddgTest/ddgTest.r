@@ -41,6 +41,8 @@
 #		Unable to evaluate exc6 in call to ddg.exception.out
 
 ## Directories
+testDir <- "D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/ddgTest/"
+setwd(testDir)
 
 #ddg.library <- Sys.getenv("DDG_LIBRARY")
 #if (ddg.library == "") {
@@ -136,8 +138,8 @@ main <- function() {
 	name <- c("Ben", "Greg")
 	male <- c(TRUE, TRUE) 
 	kids.df <- data.frame(year, name, male)
-	outfile <- "/Users/blerner/tmp/testfile2.txt"
-	outfile2 <- "/Users/blerner/tmp/testfile3.txt"
+	outfile <- paste(testDir, "testfile2.txt", sep="")
+	outfile2 <-  paste(testDir,"testfile3.txt", sep="")
 	writeLines("All good dogs", outfile)
 	writeLines("To be or not to be", outfile2)
 	ddg.procedure("g1", outs.data=list("kids.df", year), outs.file=list(outfile, "outfile2"))
@@ -173,7 +175,7 @@ main <- function() {
 	ddg.procedure("f2", list("pets", "pets.df", "pets2", "pets3", "pets4"))
 	
 	# Test ddg.file
-	ddg.file("D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/src/laser/ddg/r/RCheckpointNode.java")
+	ddg.file(paste(testDir,"RCheckpointNode.java", sep=""))
 	ddg.file("testfile.txt", "test")  # Directory is optional
 	ddg.file("missingfile.txt")  # What happens if the file is not there?
 	ddg.file("missingdir/abc.txt")  # What happens if the directory does not exist?
@@ -206,7 +208,7 @@ main <- function() {
 	snapshot.out.test(pets.df)
 	
 	# Test ddg.file.out
-	ddg.file.out("D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/src/laser/ddg/r/RDataInstanceNode.java", pname="string.name.and.args.given")
+	ddg.file.out(paste(testDir, "RDataInstanceNode.java",sep=""), pname="string.name.and.args.given")
 	ddg.file.out("testfile2.txt", pname=string.name.and.args.given)  # Directory is optional
 	ddg.file.out("missingfile.txt", pname=string.name.and.args.given)  # What happens if the file is not there?
 	ddg.file.out("missingdir/abc.txt", pname=string.name.and.args.given)  # What happens if the directory does not exist?
@@ -233,6 +235,6 @@ main <- function() {
 ### Run script
 
 ddg.run(main, 
-		"D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/ddgTest/ddgTest.r",
-		"D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/ddgTest/ddg")
+		paste(testDir,"ddgTest.r", sep=""),
+		paste(testDir,"ddg", sep=""))
 

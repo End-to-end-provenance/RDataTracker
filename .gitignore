@@ -18,8 +18,12 @@
 *.md
 *.Rmd
 
-# exclude ddg directories
+# exclude local ddg directors
 examples/*/ddg*/
+examples/*/local/
+
+# exclude local versions of files
+*.local
 
 # Project Files
 .project
