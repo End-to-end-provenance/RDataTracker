@@ -1,0 +1,108 @@
+Architecture="x86_64"
+OperatingSystem="unix"
+Language="R"
+LanguageVersion="R version 3.1.0 Patched (2014-05-20 r65701)"
+Script="[DIR]/daily-solar-radiation-1.r"
+ProcessFileTimestamp="2014-05-21T16.47.56"
+WorkingDirectory="[DIR]"
+DDGDirectory="[DIR]/ddg"
+DateTime="2014-05-21T16.52.01"
+23
+Start p1 "1-main" Value="main";
+Start p2 "2-get.data" Value="get.data";
+CF p1 p2
+Operation p3 "3-read.data" Value="read.data";
+CF p2 p3
+File d1 "1-met-daily.csv" Value="[DIR]/ddg/1-met-daily.csv" Time="2014-05-21T16.52.00" Location="[DIR]/met-daily.csv";
+File d2 "2-par-cal.csv" Value="[DIR]/ddg/2-par-cal.csv" Time="2014-05-21T16.52.00" Location="[DIR]/par-cal.csv";
+File d3 "3-par-qc.csv" Value="[DIR]/ddg/3-par-qc.csv" Time="2014-05-21T16.52.00" Location="[DIR]/par-qc.csv";
+File d4 "4-par-gf.csv" Value="[DIR]/ddg/4-par-gf.csv" Time="2014-05-21T16.52.00" Location="[DIR]/par-gf.csv";
+Data d5 "5-start.date" Value="\"2012-01-01\"";
+Data d6 "6-end.date" Value="\"2012-03-31\"";
+Data d7 "7-variable" Value="\"slrt\"";
+DF d1 p3
+DF d2 p3
+DF d3 p3
+DF d4 p3
+DF d5 p3
+DF d6 p3
+DF d7 p3
+Snapshot d8 "8-raw.data" Value="[DIR]/ddg/8-raw.data.csv" Time="2014-05-21T16.52.00";
+DF p3 d8
+Snapshot d9 "9-all.data" Value="[DIR]/ddg/9-all.data.csv" Time="2014-05-21T16.52.00";
+DF p3 d9
+Snapshot d10 "10-calibration.parameters" Value="[DIR]/ddg/10-calibration.parameters.csv" Time="2014-05-21T16.52.00";
+DF p3 d10
+Snapshot d11 "11-quality.control.parameters" Value="[DIR]/ddg/11-quality.control.parameters.csv" Time="2014-05-21T16.52.00";
+DF p3 d11
+Snapshot d12 "12-gap.fill.parameters" Value="[DIR]/ddg/12-gap.fill.parameters.csv" Time="2014-05-21T16.52.00";
+DF p3 d12
+Operation p4 "4-plot.data" Value="plot.data";
+CF p3 p4
+DF d8 p4
+File d13 "13-raw-plot.jpeg" Value="[DIR]/ddg/13-raw-plot.jpeg" Time="2014-05-21T16.52.00" Location="[DIR]/raw-plot.jpeg";
+DF p4 d13
+Finish p5 "5-get.data" Value="get.data";
+CF p4 p5
+Start p6 "6-analyze.data" Value="analyze.data";
+CF p5 p6
+Start p7 "7-calibrate.data" Value="calibrate.data";
+CF p6 p7
+Operation p8 "8-calibrate" Value="calibrate";
+CF p7 p8
+DF d8 p8
+DF d10 p8
+Snapshot d14 "14-calibrated.data" Value="[DIR]/ddg/14-calibrated.data.csv" Time="2014-05-21T16.52.01";
+DF p8 d14
+Operation p9 "9-plot.data" Value="plot.data";
+CF p8 p9
+DF d14 p9
+File d15 "15-calibrated-plot.jpeg" Value="[DIR]/ddg/15-calibrated-plot.jpeg" Time="2014-05-21T16.52.01" Location="[DIR]/calibrated-plot.jpeg";
+DF p9 d15
+Finish p10 "10-calibrate.data" Value="calibrate.data";
+CF p9 p10
+Start p11 "11-quality.control.data" Value="quality.control.data";
+CF p10 p11
+Operation p12 "12-quality.control" Value="quality.control";
+CF p11 p12
+DF d14 p12
+DF d11 p12
+Snapshot d16 "16-quality.controlled.data" Value="[DIR]/ddg/16-quality.controlled.data.csv" Time="2014-05-21T16.52.01";
+DF p12 d16
+Operation p13 "13-plot.data" Value="plot.data";
+CF p12 p13
+DF d16 p13
+File d17 "17-quality-controlled-plot.jpeg" Value="[DIR]/ddg/17-quality-controlled-plot.jpeg" Time="2014-05-21T16.52.01" Location="[DIR]/quality-controlled-plot.jpeg";
+DF p13 d17
+Finish p14 "14-quality.control.data" Value="quality.control.data";
+CF p13 p14
+Start p15 "15-gap.fill.data" Value="gap.fill.data";
+CF p14 p15
+Operation p16 "16-gap.fill" Value="gap.fill";
+CF p15 p16
+DF d16 p16
+DF d12 p16
+DF d9 p16
+Snapshot d18 "18-gap.filled.data" Value="[DIR]/ddg/18-gap.filled.data.csv" Time="2014-05-21T16.52.01";
+DF p16 d18
+Operation p17 "17-plot.data" Value="plot.data";
+CF p16 p17
+DF d18 p17
+File d19 "19-gap-filled-plot.jpeg" Value="[DIR]/ddg/19-gap-filled-plot.jpeg" Time="2014-05-21T16.52.01" Location="[DIR]/gap-filled-plot.jpeg";
+DF p17 d19
+Finish p18 "18-gap.fill.data" Value="gap.fill.data";
+CF p17 p18
+Finish p19 "19-analyze.data" Value="analyze.data";
+CF p18 p19
+Start p20 "20-write.result" Value="write.result";
+CF p19 p20
+Operation p21 "21-write.result" Value="write.result";
+CF p20 p21
+DF d18 p21
+File d20 "20-processed-data.csv" Value="[DIR]/ddg/20-processed-data.csv" Time="2014-05-21T16.52.01" Location="[DIR]/processed-data.csv";
+DF p21 d20
+Finish p22 "22-write.result" Value="write.result";
+CF p21 p22
+Finish p23 "23-main" Value="main";
+CF p22 p23
+

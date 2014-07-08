@@ -1,0 +1,18 @@
+Architecture="i386"
+OperatingSystem="windows"
+Language="R"
+LanguageVersion="R version 3.1.0 (2014-04-10)"
+Script="[DIR]/simple.r"
+ProcessFileTimestamp="2014-07-08T09.36.30"
+WorkingDirectory="[DIR]"
+DDGDirectory="[DIR]/ddg"
+DateTime="2014-07-08T09.36.35"
+1
+Data d1 "1-a" Value="5";
+Data d2 "2-b" Value="5";
+Operation p1 "1-Add" Value="Add";
+DF d1 p1
+DF d2 p1
+Data d3 "3-c" Value="10";
+DF p1 d3
+
