@@ -1,7 +1,12 @@
+
 <project
     name="TESTS"
 	xmlns:if="ant:if"
     xmlns:unless="ant:unless">
+
+  <!--################################ Setup ################################-->
+  <!-- So we can build RDataTracker -->
+  <import file="build.xml" />
 
   <!-- Get the base directory -->
   <dirname 
@@ -20,7 +25,7 @@
       </filterchain>
   </loadresource>
 
-  <!-- Function to run tests on different scripts -->
+  <!--############################## FUNCTIONS ##############################-->
   <target name="run-test">
 
     <!-- Directory to store local files for comparison -->
@@ -105,6 +110,7 @@
   	</exec>
   </target>
 
+  <!--################################ TESTS ################################-->
   <target name="basic-test">
   	<antcall target="run-test">
   		<param name="dir" value="examples/ddgTest"/>
@@ -325,10 +331,18 @@
 		<echo message="Please run Aaron's test in the console and compare ddg.txt with expected_ddg.txt" />
 	</target>
 	
-  <target name="test-all" depends="basic-test, ddg-test, S4-object-test, checkpoint-test, checkpoint-file-test, calculate-square-root-tests, daily-solar-radiation-tests, console-tests, ddg-changes-behavior-test, ddg-hang-test, scoping-error-test, simple-test">
-    <echo>All tests makes calls to the RDataTracker Library. You might need to restart RStudio to correctly run the scripts with the updated library installed</echo>
+  <!--################################# MAIN #################################-->
+
+  <target name="test-all" depends="basic-test, ddg-test, S4-object-test, checkpoint-test, checkpoint-file-test, calculate-square-root-tests, daily-solar-radiation-tests, console-tests, ddg-changes-behavior-test, ddg-hang-test, scoping-error-test, simple-test, aaron-test">
+      <echo>All tests makes calls to the RDataTracker Library. You might need to restart RStudio to correctly run the scripts with the updated library installed. Output is saved in tests.log.</echo>
   </target>
-	
+
+  <target name="install-and-test" depends="install">
+    <record name="tests.log" action="start" />
+      <antcall target="test-all" />
+    <record name="tests.log" action="stop" />
+  </target>
+
   <target name="interactive-test">
   	<exec executable="Rscript" dir="examples" >
   		<arg line="RscriptTest.r" />
