@@ -11,13 +11,21 @@
 #source("/Users/blerner/Documents/Process/DataProvenance/RDataTracker_0.5.004/RDataTracker/R/RDataTracker.R_0.5.004.1.R")
 #source("/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/R/RDataTracker.R")
 library(RDataTracker)
+
+## Directories
+testDir <- "[DIR_DEFAULT]/"
+setwd(testDir)
+
+ddg.r.script.path = paste(testDir,"MismatchedStartFinishBug.r",sep="")
+ddg.path = paste(testDir,"ddg",sep="")
+
 options(warn=2)
 ddg.debug.off()
 
 # Initialize the provenance graph
-ddg.init("D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/MismatchedStartFinishBug/MismatchedStartFinishBug.R",
-		"D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/MismatchedStartFinishBug/ddg",
-		enable.console = TRUE)
+ddg.init(ddg.r.script.path,
+         ddg.path,
+		     enable.console = TRUE)
 
 f <- function () {
 	ddg.start()

@@ -2,10 +2,10 @@ Architecture="x86_64"
 OperatingSystem="unix"
 Language="R"
 LanguageVersion="R version 3.0.3 (2014-03-06)"
-Script="/Users/barbaralerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/checkpointTest/CheckpointTest.r"
-ProcessFileTimestamp="2014-02-26 14:02:08"
-WorkingDirectory="/Users/barbaralerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/checkpointTest"
-DDGDirectory="/Users/barbaralerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/checkpointTest/ddg"
+Script="[DIR]/CheckpointTest.r"
+ProcessFileTimestamp="2014-02-26T14.02.08"
+WorkingDirectory="[DIR]"
+DDGDirectory="[DIR]/ddg"
 DateTime="2014-04-25T14:47:50"
 13
 Start p1 "1-main" Value="main";
@@ -15,7 +15,7 @@ CF p1 p2
 DF d1 p2
 Checkpoint p3 "3-checkpoint1"
 CF p2 p3
-CheckpointFile d2 "2-0.RData" Value="/Users/barbaralerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/checkpointTest/ddg/2-0.RData" Time="2014-04-25T14:47:50";
+CheckpointFile d2 "2-0.RData" Value="[DIR]/ddg/2-0.RData" Time="2014-04-25T14:47:50";
 DF p3 d2
 Operation p4 "4-n <- 2" Value="n <- 2";
 CF p3 p4
@@ -27,7 +27,7 @@ CF p4 p5
 DF d3 p5
 Checkpoint p6 "6-1.RData"
 CF p5 p6
-CheckpointFile d4 "4-1.RData" Value="/Users/barbaralerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/checkpointTest/ddg/4-1.RData" Time="2014-04-25T14:47:50";
+CheckpointFile d4 "4-1.RData" Value="[DIR]/ddg/4-1.RData" Time="2014-04-25T14.47.50";
 DF p6 d4
 Restore p7 "7-checkpoint1"
 CF p6 p7

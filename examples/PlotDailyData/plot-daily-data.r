@@ -16,11 +16,24 @@ options(guiToolkit="tcltk")
 
 ### Directories
 
-ddg.library <- Sys.getenv("DDG_LIBRARY")
-if (ddg.library == "") {
-	ddg.library <- "c:/data/r/ddg/lib/ddg-library.r"
-}
-source(ddg.library)
+#ddg.library <- Sys.getenv("DDG_LIBRARY")
+#if (ddg.library == "") {
+#	ddg.library <- "c:/data/r/ddg/lib/ddg-library.r"
+#}
+#source(ddg.library)
+
+library(RDataTracker)
+
+## Directories
+testDir <- "[DIR_DEFAULT]/"
+setwd(testDir)
+
+ddg.r.script.path = paste(testDir,"plot-daily-data.r",sep="")
+ddg.path = paste(testDir,"ddg",sep="")
+
+ddg.init(ddg.r.script.path,
+         ddg.path,
+    enable.console=FALSE)
 
 ### Functions
 
@@ -67,7 +80,7 @@ read.data <- function(fn) {
   ddg.file(fn)
   ddg.data.in("read.data","file.name")
   ddg.data.in("read.data",fn)
-  ddg.snapshot.out("read.data","data.csv",xx)
+  ddg.data.out("read.data","data.csv",xx)
 
   return(xx)
 }

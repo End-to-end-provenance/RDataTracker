@@ -17,6 +17,17 @@
 #source(ddg.library)
 library(RDataTracker)
 
+## Directories
+testDir <- "[DIR_DEFAULT]/"
+setwd(testDir)
+
+ddg.r.script.path = paste(testDir,"daily-solar-radiation-1.r",sep="")
+ddg.path = paste(testDir,"ddg",sep="")
+
+ddg.init(ddg.r.script.path,
+         ddg.path,
+    enable.console=TRUE)
+
 ### Functions
 
 read.data <- function() {
@@ -275,6 +286,6 @@ main <- function() {
 }
 
 ddg.run(main,		
-		"D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/DailySolarRadiation/daily-solar-radiation-1.r",
-		"D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/DailySolarRadiation/ddg")
+		ddg.r.script.path,
+		ddg.path)
 

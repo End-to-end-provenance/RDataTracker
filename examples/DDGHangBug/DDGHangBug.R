@@ -1,7 +1,12 @@
 # Test R script
 # ERB rev. 3-Apr-2014
 
-### Directories
+## Directories
+testDir <- "[DIR_DEFAULT]/"
+setwd(testDir)
+
+ddg.r.script.path = paste(testDir,"DDGHangBug.r",sep="")
+ddg.path = paste(testDir,"ddg",sep="")
 
 library(RDataTracker)
 options(warn=2)
@@ -16,7 +21,7 @@ increment.value <- function(a) {
 
 main <- function() {
 	a <- 0
-	n <- 20
+	n <- 10
 	
 	ddg.data(a)
 	
@@ -36,6 +41,6 @@ main <- function() {
 	ddg.finish("iteration i")
 }
 
-ddg.r.script.path <- "D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/DDGHangBug/DDGHangBug.R"
-ddg.path <- "D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/DDGHangBug/ddg"
+#ddg.r.script.path <- "D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/DDGHangBug/DDGHangBug.R"
+#ddg.path <- "D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/DDGHangBug/ddg"
 ddg.run(main,ddg.r.script.path,ddg.path)

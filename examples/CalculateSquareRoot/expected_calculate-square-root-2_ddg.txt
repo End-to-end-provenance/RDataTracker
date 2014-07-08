@@ -2,11 +2,11 @@ Architecture="x86_64"
 OperatingSystem="unix"
 Language="R"
 LanguageVersion="R version 3.1.0 (2014-04-10)"
-Script="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/CalculateSquareRoot/calculate-square-root-2.r"
-ProcessFileTimestamp="2014-05-21 16:44:27"
-WorkingDirectory="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/CalculateSquareRoot"
-DDGDirectory="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/CalculateSquareRoot/ddg"
-DateTime="2014-05-21T16:44:33"
+Script="[DIR]/calculate-square-root-2.r"
+ProcessFileTimestamp="2014-05-21T16.44.27"
+WorkingDirectory="[DIR]"
+DDGDirectory="[DIR]/ddg"
+DateTime="2014-05-21T16.44.33"
 30
 Start p1 "1-main" Value="main";
 Operation p2 "2-get.initial.values" Value="get.initial.values";
@@ -118,12 +118,12 @@ Operation p27 "27-store.result" Value="store.result";
 CF p26 p27
 DF d1 p27
 DF d13 p27
-Snapshot d16 "16-sqr.root" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/CalculateSquareRoot/ddg/16-sqr.root.csv" Time="2014-05-21T16:44:33";
+Snapshot d16 "16-sqr.root" Value="[DIR]/ddg/16-sqr.root.csv" Time="2014-05-21T16.44.33";
 DF p27 d16
 Operation p28 "28-write.result" Value="write.result";
 CF p27 p28
 DF d16 p28
-File d17 "17-file.name" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/CalculateSquareRoot/ddg/17-results.csv" Time="2014-05-21T16:44:33" Location="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/CalculateSquareRoot/results.csv";
+File d17 "17-file.name" Value="[DIR]/ddg/17-results.csv" Time="2014-05-21T16.44.33" Location="[DIR]/results.csv";
 DF p28 d17
 Finish p29 "29-write.result" Value="write.result";
 CF p28 p29

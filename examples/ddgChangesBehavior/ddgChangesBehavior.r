@@ -1,10 +1,19 @@
 rm (list=ls())
 
-ddg.library <- Sys.getenv("DDG_LIBRARY")
-if (ddg.library == "") {
-	ddg.library <- "c:/data/r/ddg/lib/ddg-library.r"
-}
-source(ddg.library)
+#ddg.library <- Sys.getenv("DDG_LIBRARY")
+#if (ddg.library == "") {
+#	ddg.library <- "c:/data/r/ddg/lib/ddg-library.r"
+#}
+#source(ddg.library)
+
+library(RDataTracker)
+
+## Directories
+testDir <- "[DIR_DEFAULT]/"
+setwd(testDir)
+
+ddg.r.script.path = paste(testDir,"ddgChangesBehavior.r",sep="")
+ddg.path = paste(testDir,"ddg",sep="")
 
 f <- function(x) {
 	return(1)
@@ -54,6 +63,5 @@ main <- function() {
 ### Run script
 
 ddg.run(main, 
-		"/Users/barbaralerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/ddgChangesBehavior/ddgChangesBehavior.r",
-		"/Users/barbaralerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/ddgChangesBehavior/ddg")
-
+        ddg.r.script.path,
+        ddg.path)

@@ -11,12 +11,26 @@
 
 ### Directories
 
-ddg.library <- Sys.getenv("DDG_LIBRARY")
-if (ddg.library == "") {
-	ddg.library <- "c:/data/r/ddg/lib/ddg-library.r"
-}
-source(ddg.library)
-ddg.init("simplified-daily-solar-radiation.r", "ddg", TRUE)
+#ddg.library <- Sys.getenv("DDG_LIBRARY")
+#if (ddg.library == "") {
+#	ddg.library <- "c:/data/r/ddg/lib/ddg-library.r"
+#}
+#source(ddg.library)
+#ddg.init("simplified-daily-solar-radiation.r", "ddg", TRUE)
+
+library(RDataTracker)
+
+## Directories
+testDir <- "[DIR_DEFAULT]/"
+setwd(testDir)
+
+ddg.r.script.path = paste(testDir,"simple.r",sep="")
+ddg.path = paste(testDir,"ddg",sep="")
+
+# Initialize the provenance graph
+ddg.init(ddg.r.script.path,
+         ddg.path,
+    enable.console=FALSE)
 
 ### Functions
 

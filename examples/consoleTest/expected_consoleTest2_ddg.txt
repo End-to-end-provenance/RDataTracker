@@ -1,44 +1,18 @@
-Architecture="x86_64"
-OperatingSystem="unix"
+Architecture="i386"
+OperatingSystem="windows"
 Language="R"
-LanguageVersion="R version 3.1.0 Patched (2014-05-20 r65701)"
-Script="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/consoleTest/consoleTest2.R"
-ProcessFileTimestamp="2014-06-24T15.49.07"
+LanguageVersion="R version 3.1.0 (2014-04-10)"
+Script="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/consoleTest/consoleTest2.r"
+ProcessFileTimestamp="2014-07-07T22.27.09"
 WorkingDirectory="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/consoleTest"
 DDGDirectory="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/consoleTest/ddg"
-DateTime="2014-06-24T16.05.31"
-12
+DateTime="2014-07-07T22.46.56"
+4
 Start p1 "1-A" Value="A";
-Start p2 "2-Console" Value="Console";
+Finish p2 "2-A" Value="A";
 CF p1 p2
-Operation p3 "3-a <- 10" Value="a <- 10";
+Start p3 "3-B" Value="B";
 CF p2 p3
-Operation p4 "4-c <- 100" Value="c <- 100";
+Finish p4 "4-B" Value="B";
 CF p3 p4
-Finish p5 "5-Console" Value="Console";
-CF p4 p5
-Data d1 "1-a" Value="10";
-DF p3 d1
-Data d2 "2-c" Value="100";
-DF p4 d2
-Finish p6 "6-A" Value="A";
-CF p5 p6
-Start p7 "7-B" Value="B";
-CF p6 p7
-Start p8 "8-Console" Value="Console";
-CF p7 p8
-Operation p9 "9-b <- a + c" Value="b <- a + c";
-CF p8 p9
-Operation p10 "10-a <- 20" Value="a <- 20";
-CF p9 p10
-Finish p11 "11-Console" Value="Console";
-CF p10 p11
-DF d1 p9
-DF d2 p9
-Data d3 "3-b" Value="110";
-DF p9 d3
-Data d4 "4-a" Value="20";
-DF p10 d4
-Finish p12 "12-B" Value="B";
-CF p11 p12
 

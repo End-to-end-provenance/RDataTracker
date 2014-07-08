@@ -1,14 +1,20 @@
 rm (list=ls())
 
-ddg.library <- Sys.getenv("DDG_LIBRARY")
-if (ddg.library == "") {
-	ddg.library <- "c:/data/r/ddg/lib/ddg-library.r"
-}
-ddg.r.script.path = "/Users/barbaralerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/environmentTest/CheckpointTest.r"
-ddg.path = "/Users/barbaralerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/environmentTest/ddg"
-source(ddg.library)
+library(RDataTracjer)
+#ddg.library <- Sys.getenv("DDG_LIBRARY")
+#if (ddg.library == "") {
+#	ddg.library <- "c:/data/r/ddg/lib/ddg-library.r"
+#}
+## Directories
+testDir <- "[DIR_DEFAULT]/"
+setwd(testDir)
 
-source("checkpoint.r")
+ddg.r.script.path = paste(testDir,"CheckpointTest.r",sep="")
+ddg.path = paste(testDir,"ddg",sep="")
+
+#source(ddg.library)
+
+#source("checkpoint.r")
 
 f <- function() {
 	ddg.procedure()

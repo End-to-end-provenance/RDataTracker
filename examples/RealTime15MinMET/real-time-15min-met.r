@@ -15,14 +15,25 @@ options(guiToolkit="tcltk")
 
 ### Directories
 
-ddg.library <- Sys.getenv("DDG_LIBRARY")
-if (ddg.library == "") {
+#ddg.library <- Sys.getenv("DDG_LIBRARY")
+#if (ddg.library == "") {
 	ddg.library <- "c:/data/r/ddg/lib/ddg-library.r"
-}
-ddg.r.script.path = "/Users/barbaralerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/RealTime15MinMET/real-time-15min-met.r"
-ddg.path = "/Users/barbaralerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/RealTime15MinMET/ddg"
-source(ddg.library)
+#}
+#ddg.r.script.path = "/Users/barbaralerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/RealTime15MinMET/real-time-15min-met.r"
+#ddg.path = "/Users/barbaralerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/RealTime15MinMET/ddg"
+#source(ddg.library)
+library(RDataTracker)
 
+## Directories
+testDir <- "[DIR_DEFAULT]/"
+setwd(testDir)
+
+ddg.r.script.path = paste(testDir,"real-time-15min-met.r",sep="")
+ddg.path = paste(testDir,"ddg",sep="")
+
+ddg.init(ddg.r.script.path,
+         ddg.path,
+    enable.console=FALSE)
 
 ### Functions
 
@@ -195,7 +206,6 @@ plot.data <- function(zz,v,d,output) {
 
 ### Main Program
 
-ddg.init(ddg.r.script.path, ddg.path)
 ddg.start("main")
 
 ddg.start("get.data")

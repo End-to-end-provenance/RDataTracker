@@ -50,9 +50,10 @@
          outputs for diff. Append .local to all files -->
     <copy todir="${local_dir}" overwrite="true">
       <fileset file="${dir}/ddg/ddg.txt" />
+      <fileset dir="${dir}">
+        <include name="*.out" />
+      </fileset>
       <fileset file="${expected_ddg}" />
-      <fileset file="${expected_out}" />
-      <fileset file="${out}"/>
       <globmapper from="*" to="*.local"/>
     </copy>
 
@@ -61,7 +62,9 @@
       <regexp pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}.[0-9]{2}.[0-9]{2}" />
       <substitution expression=""/>
       <fileset dir="${local_dir}">
-        <include name="*.local" />
+        <patternset id="local_files">
+          <include name="*.local" />
+        </patternset>
       </fileset>
     </replaceregexp>
 
@@ -70,7 +73,7 @@
       <regexp pattern="\[DIR\]" />
       <substitution expression="${TESTS.dir}/${dir}"/>
       <fileset dir="${local_dir}">
-        <include name="*.local" />
+        <patternset refid="local_files" />
       </fileset>
     </replaceregexp>
 
@@ -156,6 +159,55 @@
   		<param name="fail_out" value="false" />
   	</antcall>
   </target>
+
+  <target name="console-test-1">
+    <antcall target="run-test">
+      <param name="dir" value="examples/consoleTest"/>
+      <param name="out" value="examples/consoleTest/consoleTest.out"/>
+      <param name="script-file" value="consoleTest.r"/>
+      <param name="expected_out" value="examples/consoleTest/expected_consoleTest.out"/>
+      <param name="expected_ddg" value="examples/consoleTest/expected_consoleTest_ddg.txt"/>
+      <param name="fail_out" value="true" />
+    </antcall>
+  </target>
+
+  <target name="console-test-2">
+    <antcall target="run-test">
+      <param name="dir" value="examples/consoleTest"/>
+      <param name="out" value="examples/consoleTest/consoleTest2.out"/>
+      <param name="script-file" value="consoleTest2.r"/>
+      <param name="expected_out" value="examples/consoleTest/expected_consoleTest2.out"/>
+      <param name="expected_ddg" value="examples/consoleTest/expected_consoleTest2_ddg.txt"/>
+      <param name="fail_out" value="true" />
+    </antcall>
+  </target>
+
+  <target name="MismatchedStartFinishBug-test">
+    <antcall target="run-test">
+      <param name="dir" value="examples/MismatchedStartFinishBug"/>
+      <param name="out" value="examples/MismatchedStartFinishBug/MismatchedStartFinishBug.out"/>
+      <param name="script-file" value="MismatchedStartFinishBug.r"/>
+      <param name="expected_out" value="examples/MismatchedStartFinishBug/expected_MismatchedStartFinishBug.out"/>
+      <param name="expected_ddg" value="examples/MismatchedStartFinishBug/expected_MismatchedStartFinishBug_ddg.txt"/>
+      <param name="fail_out" value="true" />
+    </antcall>
+  </target>
+
+  <target name="null-na-test">
+    <antcall target="run-test">
+      <param name="dir" value="examples/NULLandNA"/>
+      <param name="out" value="examples/NULLandNA/NULLandNA.out"/>
+      <param name="script-file" value="NULLandNA.r"/>
+      <param name="expected_out" value="examples/NULLandNA/expected_NULLandNA.out"/>
+      <param name="expected_ddg" value="examples/NULLandNA/expected_NULLandNA_ddg.txt"/>
+      <param name="fail_out" value="true" />
+    </antcall>
+    <echo message="Expect the following output when testing manually: [1] .ddg.find.var.uses:  Error analyzing storage.mode(z) - a" />
+  </target>
+
+  <target name="console-tests" depends="console-test-1, console-test-2, MismatchedStartFinishBug-test, null-na-test">
+    <echo>Remember to manually check the console tests. Automated tests are limited when in console mode.</echo>
+  </target>
   
   <target name="calculate-square-root-1-test">
   	<antcall target="run-test">
@@ -177,6 +229,10 @@
   		<param name="expected_ddg" value="examples/CalculateSquareRoot/expected_calculate-square-root-2_ddg.txt"/>
   		<param name="fail_out" value="false" />
   	</antcall>
+  </target>
+
+  <target name="calculate-square-root-tests" depends="calculate-square-root-1-test, calculate-square-root-2-test">
+    <echo>Differences in the values of the data nodes is normal for the above tests. They rely on randomness. The number of nodes created might also differ. Best to check results in visual diff.</echo>
   </target>
   
   <target name="daily-solar-radiation-1-test">
@@ -200,10 +256,74 @@
   		<param name="fail_out" value="true" />
   	</antcall>
   </target>
-  
-  <target name="test-all" depends="basic-test, ddg-test, S4-object-test, checkpoint-test, checkpoint-file-test, calculate-square-root-1-test, calculate-square-root-2-test, daily-solar-radiation-1-test, daily-solar-radiation-2-test" />
 
-	<target name="interactive-test">
+  <target name="daily-solar-radiation-tests" depends="daily-solar-radiation-1-test, daily-solar-radiation-2-test">
+    <echo>The daily solar radiation tests should only differ in system information</echo>
+  </target>
+
+  <target name="ddg-changes-behavior-test">
+    <antcall target="run-test">
+      <param name="dir" value="examples/ddgChangesBehavior"/>
+      <param name="out" value="examples/ddgChangesBehavior/ddgChangesBehavior.out"/>
+      <param name="script-file" value="ddgChangesBehavior.r"/>
+      <param name="expected_out" value="examples/ddgChangesBehavior/expected_ddgChangesBehavior.out"/>
+      <param name="expected_ddg" value="examples/ddgChangesBehavior/expected_ddgChangesBehavior_ddg.txt"/>
+      <param name="fail_out" value="true" />
+    </antcall>
+  </target>
+
+  <target name="ddg-hang-test">
+    <antcall target="run-test">
+      <param name="dir" value="examples/DDGHangBug"/>
+      <param name="out" value="examples/DDGHangBug/DDGHangBug.out"/>
+      <param name="script-file" value="DDGHangBug.r"/>
+      <param name="expected_out" value="examples/DDGHangBug/expected_DDGHangBug.out"/>
+      <param name="expected_ddg" value="examples/DDGHangBug/expected_DDGHangBug_ddg.txt"/>
+      <param name="fail_out" value="true" />
+    </antcall>
+    <echo>This DDG sometimes hangs DDG Explorer because of the large n value. For testing, we keep a relatively small n. If you change n, the .out file must also be changed.</echo>
+  </target>  
+
+  <target name="scoping-error-test">
+    <antcall target="run-test">
+      <param name="dir" value="examples/scopingTest"/>
+      <param name="out" value="examples/scopingTest/scoping_error.out"/>
+      <param name="script-file" value="scoping_error.r"/>
+      <param name="expected_out" value="examples/scopingTest/expected_scoping_error.out"/>
+      <param name="expected_ddg" value="examples/scopingTest/expected_scoping_error_ddg.txt"/>
+      <param name="fail_out" value="true" />
+    </antcall>
+    <echo>If this breaks, we have issues with scoping.</echo>
+  </target>  
+
+  <target name="simple-test">
+    <antcall target="run-test">
+      <param name="dir" value="examples/simpleTest"/>
+      <param name="out" value="examples/simpleTest/simple.out"/>
+      <param name="script-file" value="simple.r"/>
+      <param name="expected_out" value="examples/simpleTest/expected_simple.out"/>
+      <param name="expected_ddg" value="examples/simpleTest/expected_simple_ddg.txt"/>
+      <param name="fail_out" value="true" />
+    </antcall>
+  </target> 
+
+  <target name="SivenSampling-test">
+    <antcall target="run-test">
+      <param name="dir" value="examples/SivanSampling"/>
+      <param name="out" value="examples/SivanSampling/Sampling.out"/>
+      <param name="script-file" value="Sampling.r"/>
+      <param name="expected_out" value="examples/SivanSampling/expected_Sampling.out"/>
+      <param name="expected_ddg" value="examples/SivanSampling/expected_Sampling_ddg.txt"/>
+      <param name="fail_out" value="false" />
+    </antcall>
+    <echo>Note that time differences are expected</echo>
+  </target> 
+  
+  <target name="test-all" depends="basic-test, ddg-test, S4-object-test, checkpoint-test, checkpoint-file-test, calculate-square-root-tests, daily-solar-radiation-tests, console-tests, ddg-changes-behavior-test, ddg-hang-test, scoping-error-test, simple-test">
+    <echo>All tests makes calls to the RDataTracker Library. You might need to restart RStudio to correctly run the scripts with the updated library installed</echo>
+  </target>
+	
+  <target name="interactive-test">
   	<exec executable="Rscript" dir="examples" >
   		<arg line="RscriptTest.r" />
   	</exec>

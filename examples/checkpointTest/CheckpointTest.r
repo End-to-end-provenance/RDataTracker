@@ -6,6 +6,9 @@ rm (list=ls())
 #}
 #source(ddg.library)
 library(RDataTracker)
+## Directories
+testDir <- "[DIR_DEFAULT]/"
+setwd(testDir)
 
 f <- function() {
 	ddg.procedure()
@@ -56,6 +59,6 @@ main <- function() {
 ### Run script
 
 ddg.run(main, 
-		"D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/checkpointTest/CheckpointTest.r",
-		"D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/checkpointTest/ddg")
+		paste(testDir,"CheckpointTest.r",sep=""),
+		paste(testDir,"ddg", sep=""))
 

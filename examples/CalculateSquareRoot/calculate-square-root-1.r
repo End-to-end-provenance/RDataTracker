@@ -16,6 +16,10 @@ library(RDataTracker)
 
 # ddg.init(ddg.r.script.path,ddg.path)
 
+## Directories
+testDir <- "[DIR_DEFAULT]/"
+setwd(testDir)
+
 ### Functions
 
 get.initial.values <- function() {
@@ -132,8 +136,8 @@ main <- function() {
 }
 
 ddg.run(main,		
-		"D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/CalculateSquareRoot/calculate-square-root-1.r",
-		"D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/CalculateSquareRoot/ddg")
+		paste(testDir,"calculate-square-root-1.r",sep=""),
+		paste(testDir,"ddg",sep=""))
 
 # display values
 

@@ -18,12 +18,23 @@ options(guiToolkit="tcltk")
 
 ### Directories
 
-ddg.library <- Sys.getenv("DDG_LIBRARY")
-if (ddg.library == "") {
-	ddg.library <- "c:/data/r/ddg/lib/ddg-library.r"
-}
-source(ddg.library)
+#ddg.library <- Sys.getenv("DDG_LIBRARY")
+#if (ddg.library == "") {
+#	ddg.library <- "c:/data/r/ddg/lib/ddg-library.r"
+#}
+#source(ddg.library)
+library(RDataTracker)
 
+## Directories
+testDir <- "[DIR_DEFAULT]/"
+setwd(testDir)
+
+ddg.r.script.path = paste(testDir,"quality-control-15min.r",sep="")
+ddg.path = paste(testDir,"ddg",sep="")
+
+ddg.init(ddg.r.script.path,
+         ddg.path,
+    enable.console=FALSE)
 
 ### Functions
 

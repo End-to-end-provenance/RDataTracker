@@ -2,11 +2,11 @@ Architecture="x86_64"
 OperatingSystem="unix"
 Language="R"
 LanguageVersion="R version 3.0.2 (2013-09-25)"
-Script="/Users/barbaralerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/CalculateSquareRoot/calculate-square-root-1.r"
-ProcessFileTimestamp="2014-02-13 15:45:24"
-WorkingDirectory="/Users/barbaralerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/CalculateSquareRoot"
-DDGDirectory="/Users/barbaralerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/CalculateSquareRoot/ddg"
-DateTime="2014-02-13T15:45:30"
+Script="[DIR]/calculate-square-root-1.r"
+ProcessFileTimestamp="2014-02-13T15.45.24"
+WorkingDirectory="[DIR]"
+DDGDirectory="[DIR]/ddg"
+DateTime="2014-02-13T15.45.30"
 30
 Start p1 "1-main" Value="main";
 Operation p2 "2-get.initial.values" Value="get.initial.values";
@@ -118,12 +118,12 @@ Operation p27 "27-store.result" Value="store.result";
 CF p26 p27
 DF d1 p27
 DF d13 p27
-Snapshot d16 "16-sqr.root" Value="/Users/barbaralerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/CalculateSquareRoot/ddg/16-sqr.root.csv" Time="2014-02-13T15:45:30";
+Snapshot d16 "16-sqr.root" Value="[DIR]/ddg/16-sqr.root.csv" Time="2014-02-13T15.45.30";
 DF p27 d16
 Operation p28 "28-write.result" Value="write.result";
 CF p27 p28
 DF d16 p28
-File d17 "17-results.csv" Value="/Users/barbaralerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/CalculateSquareRoot/ddg/17-results.csv" Time="2014-02-13T15:45:30" Location="/Users/barbaralerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/CalculateSquareRoot/results.csv";
+File d17 "17-results.csv" Value="[DIR]/ddg/17-results.csv" Time="2014-02-13T15.45.30" Location="[DIR]/results.csv";
 DF p28 d17
 Finish p29 "29-write.result" Value="write.result";
 CF p28 p29

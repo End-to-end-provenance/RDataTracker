@@ -8,10 +8,18 @@ require(methods)
 ddg.debug.on()
 options(warn=2)
 
+## Directories
+testDir <- "[DIR_DEFAULT]/"
+setwd(testDir)
+
+ddg.r.script.path = paste(testDir,"S4ObjectTest.R",sep="")
+ddg.path = paste(testDir,"ddg",sep="")
+
 # Initialize the provenance graph
-ddg.init("D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/S4ObjectTest/S4ObjectTest.R",
-		 "D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/S4ObjectTest/ddg",
-		enable.console = TRUE)
+ddg.init(ddg.r.script.path,
+         ddg.path,
+    enable.console=TRUE)
+
 
 #setGeneric("toString", function(object) {
 #			standardGeneric("toString")

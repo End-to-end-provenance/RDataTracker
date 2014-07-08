@@ -3,17 +3,24 @@
 # files or snapshots so that ddg text files can be easily 
 # compared to be sure everything is working as expected.
 
+library(RDataTracker)
+
 ## Directories
+testDir <- "[DIR_DEFAULT]/"
+setwd(testDir)
 
-ddg.library <- Sys.getenv("DDG_LIBRARY")
-if (ddg.library == "") {
-	ddg.library <- "c:/data/r/ddg/lib/ddg-library.r"
-}
-source(ddg.library)
+ddg.r.script.path = paste(testDir,"consoleTest.r",sep="")
+ddg.path = paste(testDir,"ddg",sep="")
 
-ddg.init("/Users/barbaralerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/consoleTest/consoleTest.r",
-		"/Users/barbaralerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/consoleTest/ddg",
+ddg.init(ddg.r.script.path,
+         ddg.path,
 		enable.console=TRUE)
+
+#ddg.library <- Sys.getenv("DDG_LIBRARY")
+#if (ddg.library == "") {
+#	ddg.library <- "c:/data/r/ddg/lib/ddg-library.r"
+#}
+#source(ddg.library)
 
 f <- function(x) {
 	g(x)
