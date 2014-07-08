@@ -1,0 +1,161 @@
+Architecture="x86_64"
+OperatingSystem="unix"
+Language="R"
+LanguageVersion="R version 3.1.0 Patched (2014-05-20 r65701)"
+Script="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/Simes dendrochronology master analysis file instrumented.r"
+ProcessFileTimestamp="2014-07-07T10.47.18"
+WorkingDirectory="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron"
+DDGDirectory="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg"
+DateTime="2014-07-07T10.50.10"
+40
+File d1 "1-trees03.csv" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/1-trees03.csv" Time="2014-07-07T10.48.02" Location="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/trees03.csv";
+File d2 "2-hf086-01-dendro.csv" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/2-hf086-01-dendro.csv" Time="2014-07-07T10.48.02" Location="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/hf086-01-dendro.csv";
+Operation p1 "1-Read raw data files" Value="Read raw data files";
+DF d1 p1
+DF d2 p1
+Snapshot d3 "3-trees" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/3-trees.csv" Time="2014-07-07T10.48.02";
+DF p1 d3
+Snapshot d4 "4-dendro" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/4-dendro.csv" Time="2014-07-07T10.48.02";
+DF p1 d4
+Start p2 "2-Create contour plots of trees" Value="Create contour plots of trees";
+CF p1 p2
+Operation p3 "3-extract tree location" Value="extract tree location";
+CF p2 p3
+DF d3 p3
+Snapshot d5 "5-plot.1" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/5-plot.1.csv" Time="2014-07-07T10.48.02";
+DF p3 d5
+Snapshot d6 "6-plot.2" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/6-plot.2.csv" Time="2014-07-07T10.48.02";
+DF p3 d6
+Snapshot d7 "7-plot.3" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/7-plot.3.csv" Time="2014-07-07T10.48.02";
+DF p3 d7
+Snapshot d8 "8-plot.4" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/8-plot.4.csv" Time="2014-07-07T10.48.02";
+DF p3 d8
+Snapshot d9 "9-plot.5" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/9-plot.5.csv" Time="2014-07-07T10.48.02";
+DF p3 d9
+Snapshot d10 "10-plot.6" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/10-plot.6.csv" Time="2014-07-07T10.48.02";
+DF p3 d10
+Snapshot d11 "11-plot.7" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/11-plot.7.csv" Time="2014-07-07T10.48.02";
+DF p3 d11
+Snapshot d12 "12-plot.8" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/12-plot.8.csv" Time="2014-07-07T10.48.02";
+DF p3 d12
+Start p4 "4-Remove NAs" Value="Remove NAs";
+CF p3 p4
+Finish p5 "5-Remove NAs" Value="Remove NAs";
+CF p4 p5
+Start p6 "6-Set up contour plot grids" Value="Set up contour plot grids";
+CF p5 p6
+Finish p7 "7-Set up contour plot grids" Value="Set up contour plot grids";
+CF p6 p7
+Finish p8 "8-Create contour plots of trees" Value="Create contour plots of trees";
+CF p7 p8
+Start p9 "9-Compute Ripley's K" Value="Compute Ripley's K";
+CF p8 p9
+Operation p10 "10-Create spatial point patterns" Value="Create spatial point patterns";
+CF p9 p10
+DF d5 p10
+DF d6 p10
+DF d7 p10
+DF d8 p10
+DF d9 p10
+DF d10 p10
+DF d11 p10
+DF d12 p10
+Snapshot d13 "13-plot.1" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/13-plot.1.csv" Time="2014-07-07T10.48.03";
+DF p10 d13
+Snapshot d14 "14-plot.2" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/14-plot.2.csv" Time="2014-07-07T10.48.03";
+DF p10 d14
+Snapshot d15 "15-plot.3" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/15-plot.3.csv" Time="2014-07-07T10.48.03";
+DF p10 d15
+Snapshot d16 "16-plot.4" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/16-plot.4.csv" Time="2014-07-07T10.48.03";
+DF p10 d16
+Snapshot d17 "17-plot.5" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/17-plot.5.csv" Time="2014-07-07T10.48.03";
+DF p10 d17
+Snapshot d18 "18-plot.6" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/18-plot.6.csv" Time="2014-07-07T10.48.03";
+DF p10 d18
+Snapshot d19 "19-plot.7" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/19-plot.7.csv" Time="2014-07-07T10.48.03";
+DF p10 d19
+Snapshot d20 "20-plot.8" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/20-plot.8.csv" Time="2014-07-07T10.48.03";
+DF p10 d20
+Operation p11 "11-Plot, generate contours, and Kobs vs Ktheor" Value="Plot, generate contours, and Kobs vs Ktheor";
+CF p10 p11
+DF d13 p11
+DF d14 p11
+DF d15 p11
+DF d16 p11
+DF d17 p11
+DF d18 p11
+DF d19 p11
+DF d20 p11
+Finish p12 "12-Compute Ripley's K" Value="Compute Ripley's K";
+CF p11 p12
+Operation p13 "13-Run maximum absolute deviation tests of CSR on ppp data" Value="Run maximum absolute deviation tests of CSR on ppp data";
+CF p12 p13
+DF d13 p13
+DF d14 p13
+DF d15 p13
+DF d16 p13
+DF d17 p13
+DF d18 p13
+DF d19 p13
+DF d20 p13
+Start p14 "14-Plot age x dbh" Value="Plot age x dbh";
+CF p13 p14
+Operation p15 "15-Create plot" Value="Create plot";
+CF p14 p15
+Exception d21 "21-error.msg" Value="\"No data node found for tree.ages\"";
+DF p15 d21
+Snapshot d22 "22-tree.ages" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/22-tree.ages.csv" Time="2014-07-07T10.49.51";
+DF p15 d22
+File d23 "23-Figure 7 - age_dbh.pdf" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/23-Figure 7 - age_dbh.pdf" Time="2014-07-07T10.49.51" Location="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/Figure 7 - age_dbh.pdf";
+DF p15 d23
+Finish p16 "16-Plot age x dbh" Value="Plot age x dbh";
+CF p15 p16
+Start p17 "17-Read environmental data" Value="Read environmental data";
+CF p16 p17
+Start p18 "18-Harvard Forest climate data" Value="Harvard Forest climate data";
+CF p17 p18
+Operation p19 "19-Read Shaler data" Value="Read Shaler data";
+CF p18 p19
+Operation p20 "20-Read Fisher data" Value="Read Fisher data";
+CF p19 p20
+Operation p21 "21-Combine Fisher and Shaler data" Value="Combine Fisher and Shaler data";
+CF p20 p21
+Finish p22 "22-Harvard Forest climate data" Value="Harvard Forest climate data";
+CF p21 p22
+Operation p23 "23-Amherst climate data" Value="Amherst climate data";
+CF p22 p23
+Operation p24 "24-Leverett climate data" Value="Leverett climate data";
+CF p23 p24
+Finish p25 "25-Read environmental data" Value="Read environmental data";
+CF p24 p25
+Operation p26 "26-Population data" Value="Population data";
+CF p25 p26
+Operation p27 "27-Rework into time-series" Value="Rework into time-series";
+CF p26 p27
+Operation p28 "28-plot" Value="plot";
+CF p27 p28
+Start p29 "29-Analysis" Value="Analysis";
+CF p28 p29
+Finish p30 "30-Analysis" Value="Analysis";
+CF p29 p30
+Operation p31 "31-Add age, radius, and BAI to dendro" Value="Add age, radius, and BAI to dendro";
+CF p30 p31
+Operation p32 "32-Reduce to 5 species" Value="Reduce to 5 species";
+CF p31 p32
+Start p33 "33-Plots" Value="Plots";
+CF p32 p33
+Operation p34 "34-Individual traces of rBAI as a function of year" Value="Individual traces of rBAI as a function of year";
+CF p33 p34
+Operation p35 "35-Fit 1-d GAMs" Value="Fit 1-d GAMs";
+CF p34 p35
+Operation p36 "36-10-panel plot per Rhodora specs" Value="10-panel plot per Rhodora specs";
+CF p35 p36
+Operation p37 "37-Fit 2D-GAMS" Value="Fit 2D-GAMS";
+CF p36 p37
+Operation p38 "38-multiplot" Value="multiplot";
+CF p37 p38
+Finish p39 "39-Plots" Value="Plots";
+CF p38 p39
+Operation p40 "40-Compare 1-d and 2-d GAMs" Value="Compare 1-d and 2-d GAMs";
+CF p39 p40
+

@@ -1,0 +1,18 @@
+Architecture="i386"
+OperatingSystem="windows"
+Language="R"
+LanguageVersion="R version 3.1.0 (2014-04-10)"
+Script="[DIR]/scoping_error.r"
+ProcessFileTimestamp="2014-07-08T09.28.45"
+WorkingDirectory="[DIR]"
+DDGDirectory="[DIR]/ddg"
+DateTime="2014-07-08T09.28.51"
+1
+Data d1 "1-val1" Value="5";
+Data d2 "2-val2" Value="4";
+Operation p1 "1-sum" Value="sum";
+DF d1 p1
+DF d2 p1
+Data d3 "3-z" Value="9";
+DF p1 d3
+
