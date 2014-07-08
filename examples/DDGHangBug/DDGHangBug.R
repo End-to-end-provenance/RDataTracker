@@ -1,6 +1,8 @@
 # Test R script
 # ERB rev. 3-Apr-2014
 
+# Modified by Luis Perez 7-Jul-2014
+
 ## Directories
 testDir <- "[DIR_DEFAULT]/"
 setwd(testDir)

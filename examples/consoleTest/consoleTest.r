@@ -2,6 +2,10 @@
 # This test should not produce any errors and does not use 
 # files or snapshots so that ddg text files can be easily 
 # compared to be sure everything is working as expected.
+ 
+# Author @Barbara Lerner
+
+# Modified by Luis Perez 7-Jul-2014
 
 library(RDataTracker)
 

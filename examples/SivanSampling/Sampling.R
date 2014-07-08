@@ -3,6 +3,8 @@
 # R translator:  Barbara Lerner
 # April 2014
 
+# Modified by Luis Perez 7-Jul-2014
+
 # Load the library to create the provenance graphs.  All the function calls below that begin "ddg."
 # are calls to functions in this library.
 
@@ -572,7 +574,7 @@ writeToFile <- function(sample, smplx, fileConn, totalNumOfSample) {
 	ddg.start()
 	
 	smpCompositions <- raffleIndividualsPerSample(sample)
-	ddg.data.out(as.list(smpCompositions), pname="raffleIndividualsPerSample")
+	# ddg.data.out(as.list(smpCompositions), pname="raffleIndividualsPerSample")
 	sampleId <- vector("integer", totalNumOfSample)
 	speciesCodes <- vector("integer", totalNumOfSample)
 	speciesNumbers <- vector("integer", totalNumOfSample)
@@ -584,17 +586,17 @@ writeToFile <- function(sample, smplx, fileConn, totalNumOfSample) {
 		speciesNumbers[i] <- smpComp@speciesNumber
 		i <- i + 1
 	}
-	ddg.procedure("to.list")
-	ddg.data.in(as.list(smpCompositions))
-	ddg.data.in(smplx)
-	ddg.data.out(speciesCodes)
-	ddg.data.out(speciesNumbers)
-	ddg.data.out(sampleId)
+	#smpCompositions <- as.list(smpCompositions)
+	#ddg.procedure("to.list")
+	#ddg.data.in(smpCompositions)
+	#ddg.data.in(smplx)
+	#ddg.data.out(speciesCodes)
+	#ddg.data.out(speciesNumbers)
+	#ddg.data.out(sampleId)
 
 	if (i > 1) {
 		df <- data.frame(sampleId[1:i-1], speciesCodes[1:i-1], speciesNumbers[1:i-1])
 		write.table(df, fileConn, sep=",", row.names=FALSE, col.names=FALSE)
-		ddg.procedure("file.output", ins=list(sampleID[1:i-1],speciesCode[1:i-1],speciesNumbers[1:i-1]))
 	}
 
 	ddg.finish()

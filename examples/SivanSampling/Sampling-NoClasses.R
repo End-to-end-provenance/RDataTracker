@@ -9,16 +9,34 @@
 start.time <- Sys.time()
 force(start.time)
 
-#source("/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/R/RDataTracker.R")
-library(RDataTracker)
-options(warn=2)
-ddg.debug.off()
+#ddg.library <- Sys.getenv("DDG_LIBRARY")
+#if (ddg.library == "") {
+#	ddg.library <- "c:/data/r/ddg/lib/ddg-library.r"
+#}
+#source(ddg.library)
+#ddg.debug.off()
 
 # Initialize the provenance graph
-ddg.init("D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/Sampling-NoClasses.r",
-		"D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg",
-		enable.console = TRUE)
+#ddg.init("/Users/barbaralerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/SivanSampling/Sampling.r",
+#		"/Users/barbaralerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/SivanSampling/ddg",
+#		enable.console = TRUE)
 
+library(RDataTracker)
+
+# This needs to be specified if using RScript to execute (which our tests do)
+require(methods)
+
+## Directories
+testDir <- "[DIR_DEFAULT]/"
+setwd(testDir)
+
+ddg.r.script.path = paste(testDir,"Sampling.R",sep="")
+ddg.path = paste(testDir,"ddg",sep="")
+
+# Initialize the provenance graph
+ddg.init(ddg.r.script.path,
+         ddg.path,
+    enable.console=FALSE)
 ######################################################################################################
 
 # Initializes the arrays that describe the percentage of the population comes from each species in an area.

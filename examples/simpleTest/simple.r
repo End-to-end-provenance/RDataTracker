@@ -2,6 +2,7 @@
 # Very simple test script to assure us that ddg is still handling simple data as expected
 ###
 
+# Modified by Luis Perez 7-Jul-2014
 
 library(RDataTracker)
 

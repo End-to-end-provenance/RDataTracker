@@ -1,3 +1,9 @@
+###
+# Test Script for Checkpoint Functionality. 
+# Author @Barbara Lerner
+
+# Modified by Luis Perez 7-Jul-2014
+
 rm (list=ls())
 
 library(RDataTracjer)

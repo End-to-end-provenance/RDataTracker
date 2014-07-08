@@ -1,3 +1,7 @@
+# Author @Barbara Lerner
+
+# Modified by Luis Perez 7-Jul-2014
+
 library(RDataTracker)
 
 ## Directories

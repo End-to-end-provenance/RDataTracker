@@ -2,10 +2,10 @@ Architecture="i386"
 OperatingSystem="windows"
 Language="R"
 LanguageVersion="R version 3.1.0 (2014-04-10)"
-Script="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/Sampling.R"
+Script="[DIR]/Sampling.R"
 ProcessFileTimestamp="2014-07-08T10.37.12"
-WorkingDirectory="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling"
-DDGDirectory="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg"
+WorkingDirectory="[DIR]"
+DDGDirectory="[DIR]/ddg"
 DateTime="2014-07-08T10.37.37"
 1104
 Data d1 "1-area1str" Value="\"1(0.01) , 2(0.01), 3(0.01), 4(0.01), 5(0.01), 6(0.05), 7(0.05), 8(0.1), 9(0.15), 10(0.25), 11(0.35)\"";
@@ -23,7 +23,7 @@ DF p2 d7
 Operation p3 "3-add species to dictionary" Value="add species to dictionary";
 CF p2 p3
 DF d7 p3
-Snapshot d8 "8-speciesDistributionAreas" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/8-speciesDistributionAreas.txt" Time="2014-07-08T10.37.24";
+Snapshot d8 "8-speciesDistributionAreas" Value="[DIR]/ddg/8-speciesDistributionAreas.txt" Time="2014-07-08T10.37.24";
 DF p3 d8
 Finish p4 "4-newSpeciesDistribution" Value="newSpeciesDistribution";
 CF p3 p4
@@ -37,18 +37,18 @@ DF p6 d9
 Operation p7 "7-add species to dictionary" Value="add species to dictionary";
 CF p6 p7
 DF d9 p7
-Snapshot d10 "10-speciesDistributionAreas" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/10-speciesDistributionAreas.txt" Time="2014-07-08T10.37.24";
+Snapshot d10 "10-speciesDistributionAreas" Value="[DIR]/ddg/10-speciesDistributionAreas.txt" Time="2014-07-08T10.37.24";
 DF p7 d10
 Finish p8 "8-newSpeciesDistribution" Value="newSpeciesDistribution";
 CF p7 p8
 Operation p9 "9-defineSamplesSizeDistribution" Value="defineSamplesSizeDistribution";
 CF p8 p9
-Snapshot d11 "11-sampleSizeDistributionMng" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/11-sampleSizeDistributionMng.txt" Time="2014-07-08T10.37.24";
+Snapshot d11 "11-sampleSizeDistributionMng" Value="[DIR]/ddg/11-sampleSizeDistributionMng.txt" Time="2014-07-08T10.37.24";
 DF p9 d11
 Operation p10 "10-generateSamples" Value="generateSamples";
 CF p9 p10
 DF d5 p10
-Snapshot d12 "12-samplesArr" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/12-samplesArr.txt" Time="2014-07-08T10.37.24";
+Snapshot d12 "12-samplesArr" Value="[DIR]/ddg/12-samplesArr.txt" Time="2014-07-08T10.37.24";
 DF p10 d12
 Operation p11 "11-bind areaStr" Value="bind areaStr";
 CF p10 p11
@@ -70,7 +70,7 @@ DF p14 d15
 Operation p15 "15-extract tmpSamplesInArea" Value="extract tmpSamplesInArea";
 CF p14 p15
 DF d14 p15
-Snapshot d16 "16-tmpSamplesInArea" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/16-tmpSamplesInArea.csv" Time="2014-07-08T10.37.25";
+Snapshot d16 "16-tmpSamplesInArea" Value="[DIR]/ddg/16-tmpSamplesInArea.csv" Time="2014-07-08T10.37.25";
 DF p15 d16
 Operation p16 "16-assign each sample" Value="assign each sample";
 CF p15 p16
@@ -78,7 +78,7 @@ DF d12 p16
 Operation p17 "17-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p16 p17
 DF d11 p17
-Snapshot d17 "17-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/17-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
+Snapshot d17 "17-object@sampleSizeDistObj" Value="[DIR]/ddg/17-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
 DF p17 d17
 Data d18 "18-0" Value="0";
 Operation p18 "18-raffleSampleSize" Value="raffleSampleSize";
@@ -90,7 +90,7 @@ DF p18 d19
 Operation p19 "19-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p18 p19
 DF d11 p19
-Snapshot d20 "20-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/20-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
+Snapshot d20 "20-object@sampleSizeDistObj" Value="[DIR]/ddg/20-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
 DF p19 d20
 Data d21 "21-0" Value="0";
 Operation p20 "20-raffleSampleSize" Value="raffleSampleSize";
@@ -102,7 +102,7 @@ DF p20 d22
 Operation p21 "21-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p20 p21
 DF d11 p21
-Snapshot d23 "23-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/23-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
+Snapshot d23 "23-object@sampleSizeDistObj" Value="[DIR]/ddg/23-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
 DF p21 d23
 Data d24 "24-0" Value="0";
 Operation p22 "22-raffleSampleSize" Value="raffleSampleSize";
@@ -114,7 +114,7 @@ DF p22 d25
 Operation p23 "23-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p22 p23
 DF d11 p23
-Snapshot d26 "26-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/26-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
+Snapshot d26 "26-object@sampleSizeDistObj" Value="[DIR]/ddg/26-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
 DF p23 d26
 Data d27 "27-0" Value="0";
 Operation p24 "24-raffleSampleSize" Value="raffleSampleSize";
@@ -126,7 +126,7 @@ DF p24 d28
 Operation p25 "25-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p24 p25
 DF d11 p25
-Snapshot d29 "29-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/29-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
+Snapshot d29 "29-object@sampleSizeDistObj" Value="[DIR]/ddg/29-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
 DF p25 d29
 Data d30 "30-0" Value="0";
 Operation p26 "26-raffleSampleSize" Value="raffleSampleSize";
@@ -138,7 +138,7 @@ DF p26 d31
 Operation p27 "27-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p26 p27
 DF d11 p27
-Snapshot d32 "32-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/32-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
+Snapshot d32 "32-object@sampleSizeDistObj" Value="[DIR]/ddg/32-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
 DF p27 d32
 Data d33 "33-0" Value="0";
 Operation p28 "28-raffleSampleSize" Value="raffleSampleSize";
@@ -150,7 +150,7 @@ DF p28 d34
 Operation p29 "29-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p28 p29
 DF d11 p29
-Snapshot d35 "35-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/35-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
+Snapshot d35 "35-object@sampleSizeDistObj" Value="[DIR]/ddg/35-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
 DF p29 d35
 Data d36 "36-0" Value="0";
 Operation p30 "30-raffleSampleSize" Value="raffleSampleSize";
@@ -162,7 +162,7 @@ DF p30 d37
 Operation p31 "31-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p30 p31
 DF d11 p31
-Snapshot d38 "38-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/38-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
+Snapshot d38 "38-object@sampleSizeDistObj" Value="[DIR]/ddg/38-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
 DF p31 d38
 Data d39 "39-0" Value="0";
 Operation p32 "32-raffleSampleSize" Value="raffleSampleSize";
@@ -174,7 +174,7 @@ DF p32 d40
 Operation p33 "33-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p32 p33
 DF d11 p33
-Snapshot d41 "41-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/41-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
+Snapshot d41 "41-object@sampleSizeDistObj" Value="[DIR]/ddg/41-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
 DF p33 d41
 Data d42 "42-0" Value="0";
 Operation p34 "34-raffleSampleSize" Value="raffleSampleSize";
@@ -186,7 +186,7 @@ DF p34 d43
 Operation p35 "35-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p34 p35
 DF d11 p35
-Snapshot d44 "44-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/44-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
+Snapshot d44 "44-object@sampleSizeDistObj" Value="[DIR]/ddg/44-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
 DF p35 d44
 Data d45 "45-0" Value="0";
 Operation p36 "36-raffleSampleSize" Value="raffleSampleSize";
@@ -198,7 +198,7 @@ DF p36 d46
 Operation p37 "37-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p36 p37
 DF d11 p37
-Snapshot d47 "47-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/47-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
+Snapshot d47 "47-object@sampleSizeDistObj" Value="[DIR]/ddg/47-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
 DF p37 d47
 Data d48 "48-0" Value="0";
 Operation p38 "38-raffleSampleSize" Value="raffleSampleSize";
@@ -210,7 +210,7 @@ DF p38 d49
 Operation p39 "39-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p38 p39
 DF d11 p39
-Snapshot d50 "50-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/50-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
+Snapshot d50 "50-object@sampleSizeDistObj" Value="[DIR]/ddg/50-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
 DF p39 d50
 Data d51 "51-0" Value="0";
 Operation p40 "40-raffleSampleSize" Value="raffleSampleSize";
@@ -222,7 +222,7 @@ DF p40 d52
 Operation p41 "41-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p40 p41
 DF d11 p41
-Snapshot d53 "53-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/53-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
+Snapshot d53 "53-object@sampleSizeDistObj" Value="[DIR]/ddg/53-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
 DF p41 d53
 Data d54 "54-0" Value="0";
 Operation p42 "42-raffleSampleSize" Value="raffleSampleSize";
@@ -234,7 +234,7 @@ DF p42 d55
 Operation p43 "43-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p42 p43
 DF d11 p43
-Snapshot d56 "56-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/56-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
+Snapshot d56 "56-object@sampleSizeDistObj" Value="[DIR]/ddg/56-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
 DF p43 d56
 Data d57 "57-0" Value="0";
 Operation p44 "44-raffleSampleSize" Value="raffleSampleSize";
@@ -246,7 +246,7 @@ DF p44 d58
 Operation p45 "45-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p44 p45
 DF d11 p45
-Snapshot d59 "59-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/59-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
+Snapshot d59 "59-object@sampleSizeDistObj" Value="[DIR]/ddg/59-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
 DF p45 d59
 Data d60 "60-0" Value="0";
 Operation p46 "46-raffleSampleSize" Value="raffleSampleSize";
@@ -258,7 +258,7 @@ DF p46 d61
 Operation p47 "47-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p46 p47
 DF d11 p47
-Snapshot d62 "62-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/62-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
+Snapshot d62 "62-object@sampleSizeDistObj" Value="[DIR]/ddg/62-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
 DF p47 d62
 Data d63 "63-0" Value="0";
 Operation p48 "48-raffleSampleSize" Value="raffleSampleSize";
@@ -270,7 +270,7 @@ DF p48 d64
 Operation p49 "49-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p48 p49
 DF d11 p49
-Snapshot d65 "65-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/65-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
+Snapshot d65 "65-object@sampleSizeDistObj" Value="[DIR]/ddg/65-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
 DF p49 d65
 Data d66 "66-0" Value="0";
 Operation p50 "50-raffleSampleSize" Value="raffleSampleSize";
@@ -282,7 +282,7 @@ DF p50 d67
 Operation p51 "51-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p50 p51
 DF d11 p51
-Snapshot d68 "68-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/68-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
+Snapshot d68 "68-object@sampleSizeDistObj" Value="[DIR]/ddg/68-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
 DF p51 d68
 Data d69 "69-0" Value="0";
 Operation p52 "52-raffleSampleSize" Value="raffleSampleSize";
@@ -294,7 +294,7 @@ DF p52 d70
 Operation p53 "53-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p52 p53
 DF d11 p53
-Snapshot d71 "71-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/71-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
+Snapshot d71 "71-object@sampleSizeDistObj" Value="[DIR]/ddg/71-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
 DF p53 d71
 Data d72 "72-0" Value="0";
 Operation p54 "54-raffleSampleSize" Value="raffleSampleSize";
@@ -306,7 +306,7 @@ DF p54 d73
 Operation p55 "55-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p54 p55
 DF d11 p55
-Snapshot d74 "74-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/74-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
+Snapshot d74 "74-object@sampleSizeDistObj" Value="[DIR]/ddg/74-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
 DF p55 d74
 Data d75 "75-0" Value="0";
 Operation p56 "56-raffleSampleSize" Value="raffleSampleSize";
@@ -318,7 +318,7 @@ DF p56 d76
 Operation p57 "57-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p56 p57
 DF d11 p57
-Snapshot d77 "77-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/77-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
+Snapshot d77 "77-object@sampleSizeDistObj" Value="[DIR]/ddg/77-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
 DF p57 d77
 Data d78 "78-0" Value="0";
 Operation p58 "58-raffleSampleSize" Value="raffleSampleSize";
@@ -330,7 +330,7 @@ DF p58 d79
 Operation p59 "59-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p58 p59
 DF d11 p59
-Snapshot d80 "80-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/80-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
+Snapshot d80 "80-object@sampleSizeDistObj" Value="[DIR]/ddg/80-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
 DF p59 d80
 Data d81 "81-0" Value="0";
 Operation p60 "60-raffleSampleSize" Value="raffleSampleSize";
@@ -342,7 +342,7 @@ DF p60 d82
 Operation p61 "61-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p60 p61
 DF d11 p61
-Snapshot d83 "83-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/83-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
+Snapshot d83 "83-object@sampleSizeDistObj" Value="[DIR]/ddg/83-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
 DF p61 d83
 Data d84 "84-0" Value="0";
 Operation p62 "62-raffleSampleSize" Value="raffleSampleSize";
@@ -354,7 +354,7 @@ DF p62 d85
 Operation p63 "63-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p62 p63
 DF d11 p63
-Snapshot d86 "86-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/86-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
+Snapshot d86 "86-object@sampleSizeDistObj" Value="[DIR]/ddg/86-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
 DF p63 d86
 Data d87 "87-0" Value="0";
 Operation p64 "64-raffleSampleSize" Value="raffleSampleSize";
@@ -366,7 +366,7 @@ DF p64 d88
 Operation p65 "65-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p64 p65
 DF d11 p65
-Snapshot d89 "89-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/89-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
+Snapshot d89 "89-object@sampleSizeDistObj" Value="[DIR]/ddg/89-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
 DF p65 d89
 Data d90 "90-0" Value="0";
 Operation p66 "66-raffleSampleSize" Value="raffleSampleSize";
@@ -378,7 +378,7 @@ DF p66 d91
 Operation p67 "67-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p66 p67
 DF d11 p67
-Snapshot d92 "92-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/92-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
+Snapshot d92 "92-object@sampleSizeDistObj" Value="[DIR]/ddg/92-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
 DF p67 d92
 Data d93 "93-0" Value="0";
 Operation p68 "68-raffleSampleSize" Value="raffleSampleSize";
@@ -390,7 +390,7 @@ DF p68 d94
 Operation p69 "69-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p68 p69
 DF d11 p69
-Snapshot d95 "95-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/95-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
+Snapshot d95 "95-object@sampleSizeDistObj" Value="[DIR]/ddg/95-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
 DF p69 d95
 Data d96 "96-0" Value="0";
 Operation p70 "70-raffleSampleSize" Value="raffleSampleSize";
@@ -402,7 +402,7 @@ DF p70 d97
 Operation p71 "71-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p70 p71
 DF d11 p71
-Snapshot d98 "98-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/98-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
+Snapshot d98 "98-object@sampleSizeDistObj" Value="[DIR]/ddg/98-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
 DF p71 d98
 Data d99 "99-0" Value="0";
 Operation p72 "72-raffleSampleSize" Value="raffleSampleSize";
@@ -414,7 +414,7 @@ DF p72 d100
 Operation p73 "73-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p72 p73
 DF d11 p73
-Snapshot d101 "101-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/101-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
+Snapshot d101 "101-object@sampleSizeDistObj" Value="[DIR]/ddg/101-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
 DF p73 d101
 Data d102 "102-0" Value="0";
 Operation p74 "74-raffleSampleSize" Value="raffleSampleSize";
@@ -426,7 +426,7 @@ DF p74 d103
 Operation p75 "75-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p74 p75
 DF d11 p75
-Snapshot d104 "104-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/104-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
+Snapshot d104 "104-object@sampleSizeDistObj" Value="[DIR]/ddg/104-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
 DF p75 d104
 Data d105 "105-0" Value="0";
 Operation p76 "76-raffleSampleSize" Value="raffleSampleSize";
@@ -438,7 +438,7 @@ DF p76 d106
 Operation p77 "77-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p76 p77
 DF d11 p77
-Snapshot d107 "107-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/107-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
+Snapshot d107 "107-object@sampleSizeDistObj" Value="[DIR]/ddg/107-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
 DF p77 d107
 Data d108 "108-0" Value="0";
 Operation p78 "78-raffleSampleSize" Value="raffleSampleSize";
@@ -450,7 +450,7 @@ DF p78 d109
 Operation p79 "79-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p78 p79
 DF d11 p79
-Snapshot d110 "110-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/110-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
+Snapshot d110 "110-object@sampleSizeDistObj" Value="[DIR]/ddg/110-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
 DF p79 d110
 Data d111 "111-0" Value="0";
 Operation p80 "80-raffleSampleSize" Value="raffleSampleSize";
@@ -462,7 +462,7 @@ DF p80 d112
 Operation p81 "81-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p80 p81
 DF d11 p81
-Snapshot d113 "113-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/113-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
+Snapshot d113 "113-object@sampleSizeDistObj" Value="[DIR]/ddg/113-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
 DF p81 d113
 Data d114 "114-0" Value="0";
 Operation p82 "82-raffleSampleSize" Value="raffleSampleSize";
@@ -474,7 +474,7 @@ DF p82 d115
 Operation p83 "83-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p82 p83
 DF d11 p83
-Snapshot d116 "116-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/116-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
+Snapshot d116 "116-object@sampleSizeDistObj" Value="[DIR]/ddg/116-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
 DF p83 d116
 Data d117 "117-0" Value="0";
 Operation p84 "84-raffleSampleSize" Value="raffleSampleSize";
@@ -486,7 +486,7 @@ DF p84 d118
 Operation p85 "85-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p84 p85
 DF d11 p85
-Snapshot d119 "119-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/119-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
+Snapshot d119 "119-object@sampleSizeDistObj" Value="[DIR]/ddg/119-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
 DF p85 d119
 Data d120 "120-0" Value="0";
 Operation p86 "86-raffleSampleSize" Value="raffleSampleSize";
@@ -498,7 +498,7 @@ DF p86 d121
 Operation p87 "87-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p86 p87
 DF d11 p87
-Snapshot d122 "122-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/122-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
+Snapshot d122 "122-object@sampleSizeDistObj" Value="[DIR]/ddg/122-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
 DF p87 d122
 Data d123 "123-0" Value="0";
 Operation p88 "88-raffleSampleSize" Value="raffleSampleSize";
@@ -510,7 +510,7 @@ DF p88 d124
 Operation p89 "89-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p88 p89
 DF d11 p89
-Snapshot d125 "125-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/125-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
+Snapshot d125 "125-object@sampleSizeDistObj" Value="[DIR]/ddg/125-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
 DF p89 d125
 Data d126 "126-0" Value="0";
 Operation p90 "90-raffleSampleSize" Value="raffleSampleSize";
@@ -522,7 +522,7 @@ DF p90 d127
 Operation p91 "91-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p90 p91
 DF d11 p91
-Snapshot d128 "128-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/128-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
+Snapshot d128 "128-object@sampleSizeDistObj" Value="[DIR]/ddg/128-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
 DF p91 d128
 Data d129 "129-0" Value="0";
 Operation p92 "92-raffleSampleSize" Value="raffleSampleSize";
@@ -534,7 +534,7 @@ DF p92 d130
 Operation p93 "93-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p92 p93
 DF d11 p93
-Snapshot d131 "131-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/131-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
+Snapshot d131 "131-object@sampleSizeDistObj" Value="[DIR]/ddg/131-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
 DF p93 d131
 Data d132 "132-0" Value="0";
 Operation p94 "94-raffleSampleSize" Value="raffleSampleSize";
@@ -546,7 +546,7 @@ DF p94 d133
 Operation p95 "95-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p94 p95
 DF d11 p95
-Snapshot d134 "134-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/134-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
+Snapshot d134 "134-object@sampleSizeDistObj" Value="[DIR]/ddg/134-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
 DF p95 d134
 Data d135 "135-0" Value="0";
 Operation p96 "96-raffleSampleSize" Value="raffleSampleSize";
@@ -558,7 +558,7 @@ DF p96 d136
 Operation p97 "97-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p96 p97
 DF d11 p97
-Snapshot d137 "137-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/137-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
+Snapshot d137 "137-object@sampleSizeDistObj" Value="[DIR]/ddg/137-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
 DF p97 d137
 Data d138 "138-0" Value="0";
 Operation p98 "98-raffleSampleSize" Value="raffleSampleSize";
@@ -570,7 +570,7 @@ DF p98 d139
 Operation p99 "99-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p98 p99
 DF d11 p99
-Snapshot d140 "140-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/140-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
+Snapshot d140 "140-object@sampleSizeDistObj" Value="[DIR]/ddg/140-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
 DF p99 d140
 Data d141 "141-0" Value="0";
 Operation p100 "100-raffleSampleSize" Value="raffleSampleSize";
@@ -582,7 +582,7 @@ DF p100 d142
 Operation p101 "101-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p100 p101
 DF d11 p101
-Snapshot d143 "143-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/143-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
+Snapshot d143 "143-object@sampleSizeDistObj" Value="[DIR]/ddg/143-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
 DF p101 d143
 Data d144 "144-0" Value="0";
 Operation p102 "102-raffleSampleSize" Value="raffleSampleSize";
@@ -594,7 +594,7 @@ DF p102 d145
 Operation p103 "103-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p102 p103
 DF d11 p103
-Snapshot d146 "146-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/146-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
+Snapshot d146 "146-object@sampleSizeDistObj" Value="[DIR]/ddg/146-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
 DF p103 d146
 Data d147 "147-0" Value="0";
 Operation p104 "104-raffleSampleSize" Value="raffleSampleSize";
@@ -606,7 +606,7 @@ DF p104 d148
 Operation p105 "105-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p104 p105
 DF d11 p105
-Snapshot d149 "149-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/149-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
+Snapshot d149 "149-object@sampleSizeDistObj" Value="[DIR]/ddg/149-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.25";
 DF p105 d149
 Data d150 "150-0" Value="0";
 Operation p106 "106-raffleSampleSize" Value="raffleSampleSize";
@@ -618,7 +618,7 @@ DF p106 d151
 Operation p107 "107-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p106 p107
 DF d11 p107
-Snapshot d152 "152-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/152-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
+Snapshot d152 "152-object@sampleSizeDistObj" Value="[DIR]/ddg/152-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
 DF p107 d152
 Data d153 "153-0" Value="0";
 Operation p108 "108-raffleSampleSize" Value="raffleSampleSize";
@@ -630,7 +630,7 @@ DF p108 d154
 Operation p109 "109-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p108 p109
 DF d11 p109
-Snapshot d155 "155-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/155-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
+Snapshot d155 "155-object@sampleSizeDistObj" Value="[DIR]/ddg/155-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
 DF p109 d155
 Data d156 "156-0" Value="0";
 Operation p110 "110-raffleSampleSize" Value="raffleSampleSize";
@@ -642,7 +642,7 @@ DF p110 d157
 Operation p111 "111-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p110 p111
 DF d11 p111
-Snapshot d158 "158-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/158-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
+Snapshot d158 "158-object@sampleSizeDistObj" Value="[DIR]/ddg/158-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
 DF p111 d158
 Data d159 "159-0" Value="0";
 Operation p112 "112-raffleSampleSize" Value="raffleSampleSize";
@@ -654,7 +654,7 @@ DF p112 d160
 Operation p113 "113-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p112 p113
 DF d11 p113
-Snapshot d161 "161-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/161-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
+Snapshot d161 "161-object@sampleSizeDistObj" Value="[DIR]/ddg/161-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
 DF p113 d161
 Data d162 "162-0" Value="0";
 Operation p114 "114-raffleSampleSize" Value="raffleSampleSize";
@@ -666,7 +666,7 @@ DF p114 d163
 Operation p115 "115-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p114 p115
 DF d11 p115
-Snapshot d164 "164-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/164-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
+Snapshot d164 "164-object@sampleSizeDistObj" Value="[DIR]/ddg/164-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
 DF p115 d164
 Data d165 "165-0" Value="0";
 Operation p116 "116-raffleSampleSize" Value="raffleSampleSize";
@@ -678,7 +678,7 @@ DF p116 d166
 Operation p117 "117-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p116 p117
 DF d11 p117
-Snapshot d167 "167-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/167-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
+Snapshot d167 "167-object@sampleSizeDistObj" Value="[DIR]/ddg/167-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
 DF p117 d167
 Data d168 "168-0" Value="0";
 Operation p118 "118-raffleSampleSize" Value="raffleSampleSize";
@@ -690,7 +690,7 @@ DF p118 d169
 Operation p119 "119-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p118 p119
 DF d11 p119
-Snapshot d170 "170-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/170-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
+Snapshot d170 "170-object@sampleSizeDistObj" Value="[DIR]/ddg/170-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
 DF p119 d170
 Data d171 "171-0" Value="0";
 Operation p120 "120-raffleSampleSize" Value="raffleSampleSize";
@@ -702,7 +702,7 @@ DF p120 d172
 Operation p121 "121-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p120 p121
 DF d11 p121
-Snapshot d173 "173-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/173-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
+Snapshot d173 "173-object@sampleSizeDistObj" Value="[DIR]/ddg/173-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
 DF p121 d173
 Data d174 "174-0" Value="0";
 Operation p122 "122-raffleSampleSize" Value="raffleSampleSize";
@@ -714,7 +714,7 @@ DF p122 d175
 Operation p123 "123-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p122 p123
 DF d11 p123
-Snapshot d176 "176-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/176-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
+Snapshot d176 "176-object@sampleSizeDistObj" Value="[DIR]/ddg/176-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
 DF p123 d176
 Data d177 "177-0" Value="0";
 Operation p124 "124-raffleSampleSize" Value="raffleSampleSize";
@@ -726,7 +726,7 @@ DF p124 d178
 Operation p125 "125-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p124 p125
 DF d11 p125
-Snapshot d179 "179-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/179-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
+Snapshot d179 "179-object@sampleSizeDistObj" Value="[DIR]/ddg/179-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
 DF p125 d179
 Data d180 "180-0" Value="0";
 Operation p126 "126-raffleSampleSize" Value="raffleSampleSize";
@@ -738,7 +738,7 @@ DF p126 d181
 Operation p127 "127-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p126 p127
 DF d11 p127
-Snapshot d182 "182-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/182-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
+Snapshot d182 "182-object@sampleSizeDistObj" Value="[DIR]/ddg/182-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
 DF p127 d182
 Data d183 "183-0" Value="0";
 Operation p128 "128-raffleSampleSize" Value="raffleSampleSize";
@@ -750,7 +750,7 @@ DF p128 d184
 Operation p129 "129-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p128 p129
 DF d11 p129
-Snapshot d185 "185-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/185-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
+Snapshot d185 "185-object@sampleSizeDistObj" Value="[DIR]/ddg/185-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
 DF p129 d185
 Data d186 "186-0" Value="0";
 Operation p130 "130-raffleSampleSize" Value="raffleSampleSize";
@@ -762,7 +762,7 @@ DF p130 d187
 Operation p131 "131-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p130 p131
 DF d11 p131
-Snapshot d188 "188-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/188-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
+Snapshot d188 "188-object@sampleSizeDistObj" Value="[DIR]/ddg/188-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
 DF p131 d188
 Data d189 "189-0" Value="0";
 Operation p132 "132-raffleSampleSize" Value="raffleSampleSize";
@@ -774,7 +774,7 @@ DF p132 d190
 Operation p133 "133-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p132 p133
 DF d11 p133
-Snapshot d191 "191-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/191-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
+Snapshot d191 "191-object@sampleSizeDistObj" Value="[DIR]/ddg/191-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
 DF p133 d191
 Data d192 "192-0" Value="0";
 Operation p134 "134-raffleSampleSize" Value="raffleSampleSize";
@@ -786,7 +786,7 @@ DF p134 d193
 Operation p135 "135-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p134 p135
 DF d11 p135
-Snapshot d194 "194-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/194-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
+Snapshot d194 "194-object@sampleSizeDistObj" Value="[DIR]/ddg/194-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
 DF p135 d194
 Data d195 "195-0" Value="0";
 Operation p136 "136-raffleSampleSize" Value="raffleSampleSize";
@@ -798,7 +798,7 @@ DF p136 d196
 Operation p137 "137-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p136 p137
 DF d11 p137
-Snapshot d197 "197-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/197-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
+Snapshot d197 "197-object@sampleSizeDistObj" Value="[DIR]/ddg/197-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
 DF p137 d197
 Data d198 "198-0" Value="0";
 Operation p138 "138-raffleSampleSize" Value="raffleSampleSize";
@@ -810,7 +810,7 @@ DF p138 d199
 Operation p139 "139-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p138 p139
 DF d11 p139
-Snapshot d200 "200-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/200-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
+Snapshot d200 "200-object@sampleSizeDistObj" Value="[DIR]/ddg/200-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
 DF p139 d200
 Data d201 "201-0" Value="0";
 Operation p140 "140-raffleSampleSize" Value="raffleSampleSize";
@@ -822,7 +822,7 @@ DF p140 d202
 Operation p141 "141-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p140 p141
 DF d11 p141
-Snapshot d203 "203-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/203-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
+Snapshot d203 "203-object@sampleSizeDistObj" Value="[DIR]/ddg/203-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
 DF p141 d203
 Data d204 "204-0" Value="0";
 Operation p142 "142-raffleSampleSize" Value="raffleSampleSize";
@@ -834,7 +834,7 @@ DF p142 d205
 Operation p143 "143-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p142 p143
 DF d11 p143
-Snapshot d206 "206-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/206-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
+Snapshot d206 "206-object@sampleSizeDistObj" Value="[DIR]/ddg/206-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
 DF p143 d206
 Data d207 "207-0" Value="0";
 Operation p144 "144-raffleSampleSize" Value="raffleSampleSize";
@@ -846,7 +846,7 @@ DF p144 d208
 Operation p145 "145-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p144 p145
 DF d11 p145
-Snapshot d209 "209-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/209-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
+Snapshot d209 "209-object@sampleSizeDistObj" Value="[DIR]/ddg/209-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
 DF p145 d209
 Data d210 "210-0" Value="0";
 Operation p146 "146-raffleSampleSize" Value="raffleSampleSize";
@@ -858,7 +858,7 @@ DF p146 d211
 Operation p147 "147-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p146 p147
 DF d11 p147
-Snapshot d212 "212-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/212-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
+Snapshot d212 "212-object@sampleSizeDistObj" Value="[DIR]/ddg/212-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
 DF p147 d212
 Data d213 "213-0" Value="0";
 Operation p148 "148-raffleSampleSize" Value="raffleSampleSize";
@@ -870,7 +870,7 @@ DF p148 d214
 Operation p149 "149-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p148 p149
 DF d11 p149
-Snapshot d215 "215-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/215-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
+Snapshot d215 "215-object@sampleSizeDistObj" Value="[DIR]/ddg/215-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
 DF p149 d215
 Data d216 "216-0" Value="0";
 Operation p150 "150-raffleSampleSize" Value="raffleSampleSize";
@@ -882,7 +882,7 @@ DF p150 d217
 Operation p151 "151-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p150 p151
 DF d11 p151
-Snapshot d218 "218-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/218-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
+Snapshot d218 "218-object@sampleSizeDistObj" Value="[DIR]/ddg/218-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
 DF p151 d218
 Data d219 "219-0" Value="0";
 Operation p152 "152-raffleSampleSize" Value="raffleSampleSize";
@@ -894,7 +894,7 @@ DF p152 d220
 Operation p153 "153-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p152 p153
 DF d11 p153
-Snapshot d221 "221-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/221-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
+Snapshot d221 "221-object@sampleSizeDistObj" Value="[DIR]/ddg/221-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
 DF p153 d221
 Data d222 "222-0" Value="0";
 Operation p154 "154-raffleSampleSize" Value="raffleSampleSize";
@@ -906,7 +906,7 @@ DF p154 d223
 Operation p155 "155-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p154 p155
 DF d11 p155
-Snapshot d224 "224-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/224-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
+Snapshot d224 "224-object@sampleSizeDistObj" Value="[DIR]/ddg/224-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
 DF p155 d224
 Data d225 "225-0" Value="0";
 Operation p156 "156-raffleSampleSize" Value="raffleSampleSize";
@@ -918,7 +918,7 @@ DF p156 d226
 Operation p157 "157-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p156 p157
 DF d11 p157
-Snapshot d227 "227-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/227-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
+Snapshot d227 "227-object@sampleSizeDistObj" Value="[DIR]/ddg/227-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
 DF p157 d227
 Data d228 "228-0" Value="0";
 Operation p158 "158-raffleSampleSize" Value="raffleSampleSize";
@@ -930,7 +930,7 @@ DF p158 d229
 Operation p159 "159-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p158 p159
 DF d11 p159
-Snapshot d230 "230-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/230-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
+Snapshot d230 "230-object@sampleSizeDistObj" Value="[DIR]/ddg/230-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
 DF p159 d230
 Data d231 "231-0" Value="0";
 Operation p160 "160-raffleSampleSize" Value="raffleSampleSize";
@@ -942,7 +942,7 @@ DF p160 d232
 Operation p161 "161-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p160 p161
 DF d11 p161
-Snapshot d233 "233-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/233-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
+Snapshot d233 "233-object@sampleSizeDistObj" Value="[DIR]/ddg/233-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
 DF p161 d233
 Data d234 "234-0" Value="0";
 Operation p162 "162-raffleSampleSize" Value="raffleSampleSize";
@@ -954,7 +954,7 @@ DF p162 d235
 Operation p163 "163-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p162 p163
 DF d11 p163
-Snapshot d236 "236-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/236-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
+Snapshot d236 "236-object@sampleSizeDistObj" Value="[DIR]/ddg/236-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
 DF p163 d236
 Data d237 "237-0" Value="0";
 Operation p164 "164-raffleSampleSize" Value="raffleSampleSize";
@@ -966,7 +966,7 @@ DF p164 d238
 Operation p165 "165-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p164 p165
 DF d11 p165
-Snapshot d239 "239-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/239-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
+Snapshot d239 "239-object@sampleSizeDistObj" Value="[DIR]/ddg/239-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
 DF p165 d239
 Data d240 "240-0" Value="0";
 Operation p166 "166-raffleSampleSize" Value="raffleSampleSize";
@@ -978,7 +978,7 @@ DF p166 d241
 Operation p167 "167-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p166 p167
 DF d11 p167
-Snapshot d242 "242-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/242-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
+Snapshot d242 "242-object@sampleSizeDistObj" Value="[DIR]/ddg/242-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
 DF p167 d242
 Data d243 "243-0" Value="0";
 Operation p168 "168-raffleSampleSize" Value="raffleSampleSize";
@@ -990,7 +990,7 @@ DF p168 d244
 Operation p169 "169-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p168 p169
 DF d11 p169
-Snapshot d245 "245-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/245-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
+Snapshot d245 "245-object@sampleSizeDistObj" Value="[DIR]/ddg/245-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
 DF p169 d245
 Data d246 "246-0" Value="0";
 Operation p170 "170-raffleSampleSize" Value="raffleSampleSize";
@@ -1002,7 +1002,7 @@ DF p170 d247
 Operation p171 "171-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p170 p171
 DF d11 p171
-Snapshot d248 "248-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/248-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
+Snapshot d248 "248-object@sampleSizeDistObj" Value="[DIR]/ddg/248-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
 DF p171 d248
 Data d249 "249-0" Value="0";
 Operation p172 "172-raffleSampleSize" Value="raffleSampleSize";
@@ -1014,7 +1014,7 @@ DF p172 d250
 Operation p173 "173-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p172 p173
 DF d11 p173
-Snapshot d251 "251-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/251-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
+Snapshot d251 "251-object@sampleSizeDistObj" Value="[DIR]/ddg/251-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.26";
 DF p173 d251
 Data d252 "252-0" Value="0";
 Operation p174 "174-raffleSampleSize" Value="raffleSampleSize";
@@ -1026,7 +1026,7 @@ DF p174 d253
 Operation p175 "175-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p174 p175
 DF d11 p175
-Snapshot d254 "254-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/254-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.27";
+Snapshot d254 "254-object@sampleSizeDistObj" Value="[DIR]/ddg/254-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.27";
 DF p175 d254
 Data d255 "255-0" Value="0";
 Operation p176 "176-raffleSampleSize" Value="raffleSampleSize";
@@ -1038,7 +1038,7 @@ DF p176 d256
 Operation p177 "177-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p176 p177
 DF d11 p177
-Snapshot d257 "257-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/257-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.27";
+Snapshot d257 "257-object@sampleSizeDistObj" Value="[DIR]/ddg/257-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.27";
 DF p177 d257
 Data d258 "258-0" Value="0";
 Operation p178 "178-raffleSampleSize" Value="raffleSampleSize";
@@ -1050,7 +1050,7 @@ DF p178 d259
 Operation p179 "179-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p178 p179
 DF d11 p179
-Snapshot d260 "260-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/260-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.27";
+Snapshot d260 "260-object@sampleSizeDistObj" Value="[DIR]/ddg/260-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.27";
 DF p179 d260
 Data d261 "261-0" Value="0";
 Operation p180 "180-raffleSampleSize" Value="raffleSampleSize";
@@ -1062,7 +1062,7 @@ DF p180 d262
 Operation p181 "181-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p180 p181
 DF d11 p181
-Snapshot d263 "263-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/263-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.27";
+Snapshot d263 "263-object@sampleSizeDistObj" Value="[DIR]/ddg/263-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.27";
 DF p181 d263
 Data d264 "264-0" Value="0";
 Operation p182 "182-raffleSampleSize" Value="raffleSampleSize";
@@ -1074,7 +1074,7 @@ DF p182 d265
 Operation p183 "183-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p182 p183
 DF d11 p183
-Snapshot d266 "266-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/266-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.27";
+Snapshot d266 "266-object@sampleSizeDistObj" Value="[DIR]/ddg/266-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.27";
 DF p183 d266
 Data d267 "267-0" Value="0";
 Operation p184 "184-raffleSampleSize" Value="raffleSampleSize";
@@ -1086,7 +1086,7 @@ DF p184 d268
 Operation p185 "185-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p184 p185
 DF d11 p185
-Snapshot d269 "269-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/269-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.27";
+Snapshot d269 "269-object@sampleSizeDistObj" Value="[DIR]/ddg/269-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.27";
 DF p185 d269
 Data d270 "270-0" Value="0";
 Operation p186 "186-raffleSampleSize" Value="raffleSampleSize";
@@ -1098,7 +1098,7 @@ DF p186 d271
 Operation p187 "187-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p186 p187
 DF d11 p187
-Snapshot d272 "272-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/272-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.27";
+Snapshot d272 "272-object@sampleSizeDistObj" Value="[DIR]/ddg/272-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.27";
 DF p187 d272
 Data d273 "273-0" Value="0";
 Operation p188 "188-raffleSampleSize" Value="raffleSampleSize";
@@ -1110,7 +1110,7 @@ DF p188 d274
 Operation p189 "189-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p188 p189
 DF d11 p189
-Snapshot d275 "275-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/275-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.27";
+Snapshot d275 "275-object@sampleSizeDistObj" Value="[DIR]/ddg/275-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.27";
 DF p189 d275
 Data d276 "276-0" Value="0";
 Operation p190 "190-raffleSampleSize" Value="raffleSampleSize";
@@ -1122,7 +1122,7 @@ DF p190 d277
 Operation p191 "191-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p190 p191
 DF d11 p191
-Snapshot d278 "278-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/278-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.27";
+Snapshot d278 "278-object@sampleSizeDistObj" Value="[DIR]/ddg/278-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.27";
 DF p191 d278
 Data d279 "279-0" Value="0";
 Operation p192 "192-raffleSampleSize" Value="raffleSampleSize";
@@ -1134,7 +1134,7 @@ DF p192 d280
 Operation p193 "193-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p192 p193
 DF d11 p193
-Snapshot d281 "281-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/281-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.27";
+Snapshot d281 "281-object@sampleSizeDistObj" Value="[DIR]/ddg/281-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.27";
 DF p193 d281
 Data d282 "282-0" Value="0";
 Operation p194 "194-raffleSampleSize" Value="raffleSampleSize";
@@ -1146,7 +1146,7 @@ DF p194 d283
 Operation p195 "195-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p194 p195
 DF d11 p195
-Snapshot d284 "284-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/284-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.27";
+Snapshot d284 "284-object@sampleSizeDistObj" Value="[DIR]/ddg/284-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.27";
 DF p195 d284
 Data d285 "285-0" Value="0";
 Operation p196 "196-raffleSampleSize" Value="raffleSampleSize";
@@ -1158,7 +1158,7 @@ DF p196 d286
 Operation p197 "197-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p196 p197
 DF d11 p197
-Snapshot d287 "287-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/287-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.27";
+Snapshot d287 "287-object@sampleSizeDistObj" Value="[DIR]/ddg/287-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.27";
 DF p197 d287
 Data d288 "288-0" Value="0";
 Operation p198 "198-raffleSampleSize" Value="raffleSampleSize";
@@ -1170,7 +1170,7 @@ DF p198 d289
 Operation p199 "199-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p198 p199
 DF d11 p199
-Snapshot d290 "290-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/290-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.27";
+Snapshot d290 "290-object@sampleSizeDistObj" Value="[DIR]/ddg/290-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.27";
 DF p199 d290
 Data d291 "291-0" Value="0";
 Operation p200 "200-raffleSampleSize" Value="raffleSampleSize";
@@ -1182,7 +1182,7 @@ DF p200 d292
 Operation p201 "201-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p200 p201
 DF d11 p201
-Snapshot d293 "293-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/293-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.27";
+Snapshot d293 "293-object@sampleSizeDistObj" Value="[DIR]/ddg/293-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.27";
 DF p201 d293
 Data d294 "294-0" Value="0";
 Operation p202 "202-raffleSampleSize" Value="raffleSampleSize";
@@ -1194,7 +1194,7 @@ DF p202 d295
 Operation p203 "203-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p202 p203
 DF d11 p203
-Snapshot d296 "296-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/296-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.27";
+Snapshot d296 "296-object@sampleSizeDistObj" Value="[DIR]/ddg/296-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.27";
 DF p203 d296
 Data d297 "297-0" Value="0";
 Operation p204 "204-raffleSampleSize" Value="raffleSampleSize";
@@ -1206,7 +1206,7 @@ DF p204 d298
 Operation p205 "205-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p204 p205
 DF d11 p205
-Snapshot d299 "299-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/299-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.27";
+Snapshot d299 "299-object@sampleSizeDistObj" Value="[DIR]/ddg/299-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.27";
 DF p205 d299
 Data d300 "300-0" Value="0";
 Operation p206 "206-raffleSampleSize" Value="raffleSampleSize";
@@ -1218,7 +1218,7 @@ DF p206 d301
 Operation p207 "207-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p206 p207
 DF d11 p207
-Snapshot d302 "302-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/302-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.27";
+Snapshot d302 "302-object@sampleSizeDistObj" Value="[DIR]/ddg/302-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.27";
 DF p207 d302
 Data d303 "303-0" Value="0";
 Operation p208 "208-raffleSampleSize" Value="raffleSampleSize";
@@ -1230,7 +1230,7 @@ DF p208 d304
 Operation p209 "209-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p208 p209
 DF d11 p209
-Snapshot d305 "305-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/305-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.27";
+Snapshot d305 "305-object@sampleSizeDistObj" Value="[DIR]/ddg/305-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.27";
 DF p209 d305
 Data d306 "306-0" Value="0";
 Operation p210 "210-raffleSampleSize" Value="raffleSampleSize";
@@ -1242,7 +1242,7 @@ DF p210 d307
 Operation p211 "211-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p210 p211
 DF d11 p211
-Snapshot d308 "308-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/308-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.27";
+Snapshot d308 "308-object@sampleSizeDistObj" Value="[DIR]/ddg/308-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.27";
 DF p211 d308
 Data d309 "309-0" Value="0";
 Operation p212 "212-raffleSampleSize" Value="raffleSampleSize";
@@ -1254,7 +1254,7 @@ DF p212 d310
 Operation p213 "213-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p212 p213
 DF d11 p213
-Snapshot d311 "311-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/311-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.27";
+Snapshot d311 "311-object@sampleSizeDistObj" Value="[DIR]/ddg/311-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.27";
 DF p213 d311
 Data d312 "312-0" Value="0";
 Operation p214 "214-raffleSampleSize" Value="raffleSampleSize";
@@ -1266,7 +1266,7 @@ DF p214 d313
 Operation p215 "215-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p214 p215
 DF d11 p215
-Snapshot d314 "314-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/314-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.27";
+Snapshot d314 "314-object@sampleSizeDistObj" Value="[DIR]/ddg/314-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.27";
 DF p215 d314
 Data d315 "315-0" Value="0";
 Operation p216 "216-raffleSampleSize" Value="raffleSampleSize";
@@ -1278,7 +1278,7 @@ DF p216 d316
 Operation p217 "217-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p216 p217
 DF d11 p217
-Snapshot d317 "317-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/317-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.27";
+Snapshot d317 "317-object@sampleSizeDistObj" Value="[DIR]/ddg/317-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.27";
 DF p217 d317
 Data d318 "318-0" Value="0";
 Operation p218 "218-raffleSampleSize" Value="raffleSampleSize";
@@ -1290,7 +1290,7 @@ DF p218 d319
 Operation p219 "219-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p218 p219
 DF d11 p219
-Snapshot d320 "320-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/320-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.27";
+Snapshot d320 "320-object@sampleSizeDistObj" Value="[DIR]/ddg/320-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.27";
 DF p219 d320
 Data d321 "321-0" Value="0";
 Operation p220 "220-raffleSampleSize" Value="raffleSampleSize";
@@ -1302,7 +1302,7 @@ DF p220 d322
 Operation p221 "221-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p220 p221
 DF d11 p221
-Snapshot d323 "323-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/323-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.27";
+Snapshot d323 "323-object@sampleSizeDistObj" Value="[DIR]/ddg/323-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.27";
 DF p221 d323
 Data d324 "324-0" Value="0";
 Operation p222 "222-raffleSampleSize" Value="raffleSampleSize";
@@ -1314,7 +1314,7 @@ DF p222 d325
 Operation p223 "223-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p222 p223
 DF d11 p223
-Snapshot d326 "326-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/326-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.27";
+Snapshot d326 "326-object@sampleSizeDistObj" Value="[DIR]/ddg/326-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.27";
 DF p223 d326
 Data d327 "327-0" Value="0";
 Operation p224 "224-raffleSampleSize" Value="raffleSampleSize";
@@ -1326,7 +1326,7 @@ DF p224 d328
 Operation p225 "225-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p224 p225
 DF d11 p225
-Snapshot d329 "329-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/329-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.27";
+Snapshot d329 "329-object@sampleSizeDistObj" Value="[DIR]/ddg/329-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.27";
 DF p225 d329
 Data d330 "330-0" Value="0";
 Operation p226 "226-raffleSampleSize" Value="raffleSampleSize";
@@ -1338,7 +1338,7 @@ DF p226 d331
 Operation p227 "227-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p226 p227
 DF d11 p227
-Snapshot d332 "332-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/332-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.27";
+Snapshot d332 "332-object@sampleSizeDistObj" Value="[DIR]/ddg/332-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.27";
 DF p227 d332
 Data d333 "333-0" Value="0";
 Operation p228 "228-raffleSampleSize" Value="raffleSampleSize";
@@ -1350,7 +1350,7 @@ DF p228 d334
 Operation p229 "229-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p228 p229
 DF d11 p229
-Snapshot d335 "335-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/335-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.27";
+Snapshot d335 "335-object@sampleSizeDistObj" Value="[DIR]/ddg/335-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.27";
 DF p229 d335
 Data d336 "336-0" Value="0";
 Operation p230 "230-raffleSampleSize" Value="raffleSampleSize";
@@ -1362,7 +1362,7 @@ DF p230 d337
 Operation p231 "231-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p230 p231
 DF d11 p231
-Snapshot d338 "338-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/338-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.27";
+Snapshot d338 "338-object@sampleSizeDistObj" Value="[DIR]/ddg/338-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.27";
 DF p231 d338
 Data d339 "339-0" Value="0";
 Operation p232 "232-raffleSampleSize" Value="raffleSampleSize";
@@ -1374,7 +1374,7 @@ DF p232 d340
 Operation p233 "233-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p232 p233
 DF d11 p233
-Snapshot d341 "341-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/341-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.28";
+Snapshot d341 "341-object@sampleSizeDistObj" Value="[DIR]/ddg/341-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.28";
 DF p233 d341
 Data d342 "342-0" Value="0";
 Operation p234 "234-raffleSampleSize" Value="raffleSampleSize";
@@ -1386,7 +1386,7 @@ DF p234 d343
 Operation p235 "235-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p234 p235
 DF d11 p235
-Snapshot d344 "344-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/344-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.28";
+Snapshot d344 "344-object@sampleSizeDistObj" Value="[DIR]/ddg/344-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.28";
 DF p235 d344
 Data d345 "345-0" Value="0";
 Operation p236 "236-raffleSampleSize" Value="raffleSampleSize";
@@ -1398,7 +1398,7 @@ DF p236 d346
 Operation p237 "237-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p236 p237
 DF d11 p237
-Snapshot d347 "347-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/347-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.28";
+Snapshot d347 "347-object@sampleSizeDistObj" Value="[DIR]/ddg/347-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.28";
 DF p237 d347
 Data d348 "348-0" Value="0";
 Operation p238 "238-raffleSampleSize" Value="raffleSampleSize";
@@ -1410,7 +1410,7 @@ DF p238 d349
 Operation p239 "239-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p238 p239
 DF d11 p239
-Snapshot d350 "350-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/350-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.28";
+Snapshot d350 "350-object@sampleSizeDistObj" Value="[DIR]/ddg/350-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.28";
 DF p239 d350
 Data d351 "351-0" Value="0";
 Operation p240 "240-raffleSampleSize" Value="raffleSampleSize";
@@ -1422,7 +1422,7 @@ DF p240 d352
 Operation p241 "241-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p240 p241
 DF d11 p241
-Snapshot d353 "353-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/353-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.28";
+Snapshot d353 "353-object@sampleSizeDistObj" Value="[DIR]/ddg/353-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.28";
 DF p241 d353
 Data d354 "354-0" Value="0";
 Operation p242 "242-raffleSampleSize" Value="raffleSampleSize";
@@ -1434,7 +1434,7 @@ DF p242 d355
 Operation p243 "243-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p242 p243
 DF d11 p243
-Snapshot d356 "356-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/356-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.28";
+Snapshot d356 "356-object@sampleSizeDistObj" Value="[DIR]/ddg/356-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.28";
 DF p243 d356
 Data d357 "357-0" Value="0";
 Operation p244 "244-raffleSampleSize" Value="raffleSampleSize";
@@ -1446,7 +1446,7 @@ DF p244 d358
 Operation p245 "245-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p244 p245
 DF d11 p245
-Snapshot d359 "359-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/359-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.28";
+Snapshot d359 "359-object@sampleSizeDistObj" Value="[DIR]/ddg/359-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.28";
 DF p245 d359
 Data d360 "360-0" Value="0";
 Operation p246 "246-raffleSampleSize" Value="raffleSampleSize";
@@ -1458,7 +1458,7 @@ DF p246 d361
 Operation p247 "247-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p246 p247
 DF d11 p247
-Snapshot d362 "362-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/362-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.28";
+Snapshot d362 "362-object@sampleSizeDistObj" Value="[DIR]/ddg/362-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.28";
 DF p247 d362
 Data d363 "363-0" Value="0";
 Operation p248 "248-raffleSampleSize" Value="raffleSampleSize";
@@ -1470,7 +1470,7 @@ DF p248 d364
 Operation p249 "249-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p248 p249
 DF d11 p249
-Snapshot d365 "365-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/365-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.28";
+Snapshot d365 "365-object@sampleSizeDistObj" Value="[DIR]/ddg/365-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.28";
 DF p249 d365
 Data d366 "366-0" Value="0";
 Operation p250 "250-raffleSampleSize" Value="raffleSampleSize";
@@ -1482,7 +1482,7 @@ DF p250 d367
 Operation p251 "251-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p250 p251
 DF d11 p251
-Snapshot d368 "368-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/368-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.28";
+Snapshot d368 "368-object@sampleSizeDistObj" Value="[DIR]/ddg/368-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.28";
 DF p251 d368
 Data d369 "369-0" Value="0";
 Operation p252 "252-raffleSampleSize" Value="raffleSampleSize";
@@ -1494,7 +1494,7 @@ DF p252 d370
 Operation p253 "253-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p252 p253
 DF d11 p253
-Snapshot d371 "371-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/371-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.28";
+Snapshot d371 "371-object@sampleSizeDistObj" Value="[DIR]/ddg/371-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.28";
 DF p253 d371
 Data d372 "372-0" Value="0";
 Operation p254 "254-raffleSampleSize" Value="raffleSampleSize";
@@ -1506,7 +1506,7 @@ DF p254 d373
 Operation p255 "255-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p254 p255
 DF d11 p255
-Snapshot d374 "374-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/374-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.28";
+Snapshot d374 "374-object@sampleSizeDistObj" Value="[DIR]/ddg/374-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.28";
 DF p255 d374
 Data d375 "375-0" Value="0";
 Operation p256 "256-raffleSampleSize" Value="raffleSampleSize";
@@ -1518,7 +1518,7 @@ DF p256 d376
 Operation p257 "257-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p256 p257
 DF d11 p257
-Snapshot d377 "377-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/377-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.28";
+Snapshot d377 "377-object@sampleSizeDistObj" Value="[DIR]/ddg/377-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.28";
 DF p257 d377
 Data d378 "378-0" Value="0";
 Operation p258 "258-raffleSampleSize" Value="raffleSampleSize";
@@ -1530,7 +1530,7 @@ DF p258 d379
 Operation p259 "259-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p258 p259
 DF d11 p259
-Snapshot d380 "380-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/380-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.28";
+Snapshot d380 "380-object@sampleSizeDistObj" Value="[DIR]/ddg/380-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.28";
 DF p259 d380
 Data d381 "381-0" Value="0";
 Operation p260 "260-raffleSampleSize" Value="raffleSampleSize";
@@ -1542,7 +1542,7 @@ DF p260 d382
 Operation p261 "261-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p260 p261
 DF d11 p261
-Snapshot d383 "383-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/383-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.28";
+Snapshot d383 "383-object@sampleSizeDistObj" Value="[DIR]/ddg/383-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.28";
 DF p261 d383
 Data d384 "384-0" Value="0";
 Operation p262 "262-raffleSampleSize" Value="raffleSampleSize";
@@ -1554,7 +1554,7 @@ DF p262 d385
 Operation p263 "263-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p262 p263
 DF d11 p263
-Snapshot d386 "386-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/386-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.28";
+Snapshot d386 "386-object@sampleSizeDistObj" Value="[DIR]/ddg/386-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.28";
 DF p263 d386
 Data d387 "387-0" Value="0";
 Operation p264 "264-raffleSampleSize" Value="raffleSampleSize";
@@ -1566,7 +1566,7 @@ DF p264 d388
 Operation p265 "265-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p264 p265
 DF d11 p265
-Snapshot d389 "389-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/389-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.28";
+Snapshot d389 "389-object@sampleSizeDistObj" Value="[DIR]/ddg/389-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.28";
 DF p265 d389
 Data d390 "390-0" Value="0";
 Operation p266 "266-raffleSampleSize" Value="raffleSampleSize";
@@ -1578,7 +1578,7 @@ DF p266 d391
 Operation p267 "267-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p266 p267
 DF d11 p267
-Snapshot d392 "392-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/392-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.28";
+Snapshot d392 "392-object@sampleSizeDistObj" Value="[DIR]/ddg/392-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.28";
 DF p267 d392
 Data d393 "393-0" Value="0";
 Operation p268 "268-raffleSampleSize" Value="raffleSampleSize";
@@ -1590,7 +1590,7 @@ DF p268 d394
 Operation p269 "269-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p268 p269
 DF d11 p269
-Snapshot d395 "395-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/395-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.28";
+Snapshot d395 "395-object@sampleSizeDistObj" Value="[DIR]/ddg/395-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.28";
 DF p269 d395
 Data d396 "396-0" Value="0";
 Operation p270 "270-raffleSampleSize" Value="raffleSampleSize";
@@ -1602,7 +1602,7 @@ DF p270 d397
 Operation p271 "271-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p270 p271
 DF d11 p271
-Snapshot d398 "398-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/398-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.28";
+Snapshot d398 "398-object@sampleSizeDistObj" Value="[DIR]/ddg/398-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.28";
 DF p271 d398
 Data d399 "399-0" Value="0";
 Operation p272 "272-raffleSampleSize" Value="raffleSampleSize";
@@ -1614,7 +1614,7 @@ DF p272 d400
 Operation p273 "273-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p272 p273
 DF d11 p273
-Snapshot d401 "401-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/401-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.28";
+Snapshot d401 "401-object@sampleSizeDistObj" Value="[DIR]/ddg/401-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.28";
 DF p273 d401
 Data d402 "402-0" Value="0";
 Operation p274 "274-raffleSampleSize" Value="raffleSampleSize";
@@ -1626,7 +1626,7 @@ DF p274 d403
 Operation p275 "275-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p274 p275
 DF d11 p275
-Snapshot d404 "404-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/404-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.28";
+Snapshot d404 "404-object@sampleSizeDistObj" Value="[DIR]/ddg/404-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.28";
 DF p275 d404
 Data d405 "405-0" Value="0";
 Operation p276 "276-raffleSampleSize" Value="raffleSampleSize";
@@ -1638,7 +1638,7 @@ DF p276 d406
 Operation p277 "277-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p276 p277
 DF d11 p277
-Snapshot d407 "407-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/407-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.28";
+Snapshot d407 "407-object@sampleSizeDistObj" Value="[DIR]/ddg/407-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.28";
 DF p277 d407
 Data d408 "408-0" Value="0";
 Operation p278 "278-raffleSampleSize" Value="raffleSampleSize";
@@ -1650,7 +1650,7 @@ DF p278 d409
 Operation p279 "279-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p278 p279
 DF d11 p279
-Snapshot d410 "410-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/410-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.28";
+Snapshot d410 "410-object@sampleSizeDistObj" Value="[DIR]/ddg/410-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.28";
 DF p279 d410
 Data d411 "411-0" Value="0";
 Operation p280 "280-raffleSampleSize" Value="raffleSampleSize";
@@ -1662,7 +1662,7 @@ DF p280 d412
 Operation p281 "281-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p280 p281
 DF d11 p281
-Snapshot d413 "413-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/413-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.28";
+Snapshot d413 "413-object@sampleSizeDistObj" Value="[DIR]/ddg/413-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.28";
 DF p281 d413
 Data d414 "414-0" Value="0";
 Operation p282 "282-raffleSampleSize" Value="raffleSampleSize";
@@ -1674,7 +1674,7 @@ DF p282 d415
 Operation p283 "283-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p282 p283
 DF d11 p283
-Snapshot d416 "416-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/416-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.29";
+Snapshot d416 "416-object@sampleSizeDistObj" Value="[DIR]/ddg/416-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.29";
 DF p283 d416
 Data d417 "417-0" Value="0";
 Operation p284 "284-raffleSampleSize" Value="raffleSampleSize";
@@ -1686,7 +1686,7 @@ DF p284 d418
 Operation p285 "285-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p284 p285
 DF d11 p285
-Snapshot d419 "419-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/419-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.29";
+Snapshot d419 "419-object@sampleSizeDistObj" Value="[DIR]/ddg/419-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.29";
 DF p285 d419
 Data d420 "420-0" Value="0";
 Operation p286 "286-raffleSampleSize" Value="raffleSampleSize";
@@ -1698,7 +1698,7 @@ DF p286 d421
 Operation p287 "287-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p286 p287
 DF d11 p287
-Snapshot d422 "422-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/422-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.29";
+Snapshot d422 "422-object@sampleSizeDistObj" Value="[DIR]/ddg/422-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.29";
 DF p287 d422
 Data d423 "423-0" Value="0";
 Operation p288 "288-raffleSampleSize" Value="raffleSampleSize";
@@ -1710,7 +1710,7 @@ DF p288 d424
 Operation p289 "289-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p288 p289
 DF d11 p289
-Snapshot d425 "425-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/425-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.29";
+Snapshot d425 "425-object@sampleSizeDistObj" Value="[DIR]/ddg/425-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.29";
 DF p289 d425
 Data d426 "426-0" Value="0";
 Operation p290 "290-raffleSampleSize" Value="raffleSampleSize";
@@ -1722,7 +1722,7 @@ DF p290 d427
 Operation p291 "291-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p290 p291
 DF d11 p291
-Snapshot d428 "428-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/428-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.29";
+Snapshot d428 "428-object@sampleSizeDistObj" Value="[DIR]/ddg/428-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.29";
 DF p291 d428
 Data d429 "429-0" Value="0";
 Operation p292 "292-raffleSampleSize" Value="raffleSampleSize";
@@ -1734,7 +1734,7 @@ DF p292 d430
 Operation p293 "293-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p292 p293
 DF d11 p293
-Snapshot d431 "431-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/431-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.29";
+Snapshot d431 "431-object@sampleSizeDistObj" Value="[DIR]/ddg/431-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.29";
 DF p293 d431
 Data d432 "432-0" Value="0";
 Operation p294 "294-raffleSampleSize" Value="raffleSampleSize";
@@ -1746,7 +1746,7 @@ DF p294 d433
 Operation p295 "295-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p294 p295
 DF d11 p295
-Snapshot d434 "434-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/434-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.29";
+Snapshot d434 "434-object@sampleSizeDistObj" Value="[DIR]/ddg/434-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.29";
 DF p295 d434
 Data d435 "435-0" Value="0";
 Operation p296 "296-raffleSampleSize" Value="raffleSampleSize";
@@ -1758,7 +1758,7 @@ DF p296 d436
 Operation p297 "297-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p296 p297
 DF d11 p297
-Snapshot d437 "437-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/437-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.29";
+Snapshot d437 "437-object@sampleSizeDistObj" Value="[DIR]/ddg/437-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.29";
 DF p297 d437
 Data d438 "438-0" Value="0";
 Operation p298 "298-raffleSampleSize" Value="raffleSampleSize";
@@ -1770,7 +1770,7 @@ DF p298 d439
 Operation p299 "299-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p298 p299
 DF d11 p299
-Snapshot d440 "440-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/440-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.29";
+Snapshot d440 "440-object@sampleSizeDistObj" Value="[DIR]/ddg/440-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.29";
 DF p299 d440
 Data d441 "441-0" Value="0";
 Operation p300 "300-raffleSampleSize" Value="raffleSampleSize";
@@ -1782,7 +1782,7 @@ DF p300 d442
 Operation p301 "301-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p300 p301
 DF d11 p301
-Snapshot d443 "443-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/443-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.29";
+Snapshot d443 "443-object@sampleSizeDistObj" Value="[DIR]/ddg/443-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.29";
 DF p301 d443
 Data d444 "444-0" Value="0";
 Operation p302 "302-raffleSampleSize" Value="raffleSampleSize";
@@ -1794,7 +1794,7 @@ DF p302 d445
 Operation p303 "303-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p302 p303
 DF d11 p303
-Snapshot d446 "446-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/446-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.29";
+Snapshot d446 "446-object@sampleSizeDistObj" Value="[DIR]/ddg/446-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.29";
 DF p303 d446
 Data d447 "447-0" Value="0";
 Operation p304 "304-raffleSampleSize" Value="raffleSampleSize";
@@ -1806,7 +1806,7 @@ DF p304 d448
 Operation p305 "305-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p304 p305
 DF d11 p305
-Snapshot d449 "449-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/449-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.29";
+Snapshot d449 "449-object@sampleSizeDistObj" Value="[DIR]/ddg/449-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.29";
 DF p305 d449
 Data d450 "450-0" Value="0";
 Operation p306 "306-raffleSampleSize" Value="raffleSampleSize";
@@ -1818,7 +1818,7 @@ DF p306 d451
 Operation p307 "307-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p306 p307
 DF d11 p307
-Snapshot d452 "452-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/452-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.29";
+Snapshot d452 "452-object@sampleSizeDistObj" Value="[DIR]/ddg/452-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.29";
 DF p307 d452
 Data d453 "453-0" Value="0";
 Operation p308 "308-raffleSampleSize" Value="raffleSampleSize";
@@ -1830,7 +1830,7 @@ DF p308 d454
 Operation p309 "309-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p308 p309
 DF d11 p309
-Snapshot d455 "455-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/455-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.29";
+Snapshot d455 "455-object@sampleSizeDistObj" Value="[DIR]/ddg/455-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.29";
 DF p309 d455
 Data d456 "456-0" Value="0";
 Operation p310 "310-raffleSampleSize" Value="raffleSampleSize";
@@ -1842,7 +1842,7 @@ DF p310 d457
 Operation p311 "311-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p310 p311
 DF d11 p311
-Snapshot d458 "458-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/458-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.29";
+Snapshot d458 "458-object@sampleSizeDistObj" Value="[DIR]/ddg/458-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.29";
 DF p311 d458
 Data d459 "459-0" Value="0";
 Operation p312 "312-raffleSampleSize" Value="raffleSampleSize";
@@ -1851,7 +1851,7 @@ DF d458 p312
 DF d459 p312
 Data d460 "460-object@nIndividuals" Value="5";
 DF p312 d460
-Snapshot d461 "461-samplesArr" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/461-samplesArr.txt" Time="2014-07-08T10.37.29";
+Snapshot d461 "461-samplesArr" Value="[DIR]/ddg/461-samplesArr.txt" Time="2014-07-08T10.37.29";
 DF p16 d461
 Finish p313 "313-assignSamplesToArea" Value="assignSamplesToArea";
 CF p312 p313
@@ -1875,7 +1875,7 @@ DF p317 d464
 Operation p318 "318-extract tmpSamplesInArea" Value="extract tmpSamplesInArea";
 CF p317 p318
 DF d463 p318
-Snapshot d465 "465-tmpSamplesInArea" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/465-tmpSamplesInArea.csv" Time="2014-07-08T10.37.29";
+Snapshot d465 "465-tmpSamplesInArea" Value="[DIR]/ddg/465-tmpSamplesInArea.csv" Time="2014-07-08T10.37.29";
 DF p318 d465
 Operation p319 "319-assign each sample" Value="assign each sample";
 CF p318 p319
@@ -1883,7 +1883,7 @@ DF d461 p319
 Operation p320 "320-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p319 p320
 DF d11 p320
-Snapshot d466 "466-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/466-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.29";
+Snapshot d466 "466-object@sampleSizeDistObj" Value="[DIR]/ddg/466-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.29";
 DF p320 d466
 Data d467 "467-0" Value="0";
 Operation p321 "321-raffleSampleSize" Value="raffleSampleSize";
@@ -1895,7 +1895,7 @@ DF p321 d468
 Operation p322 "322-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p321 p322
 DF d11 p322
-Snapshot d469 "469-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/469-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.29";
+Snapshot d469 "469-object@sampleSizeDistObj" Value="[DIR]/ddg/469-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.29";
 DF p322 d469
 Data d470 "470-0" Value="0";
 Operation p323 "323-raffleSampleSize" Value="raffleSampleSize";
@@ -1907,7 +1907,7 @@ DF p323 d471
 Operation p324 "324-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p323 p324
 DF d11 p324
-Snapshot d472 "472-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/472-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.29";
+Snapshot d472 "472-object@sampleSizeDistObj" Value="[DIR]/ddg/472-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.29";
 DF p324 d472
 Data d473 "473-0" Value="0";
 Operation p325 "325-raffleSampleSize" Value="raffleSampleSize";
@@ -1919,7 +1919,7 @@ DF p325 d474
 Operation p326 "326-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p325 p326
 DF d11 p326
-Snapshot d475 "475-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/475-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.29";
+Snapshot d475 "475-object@sampleSizeDistObj" Value="[DIR]/ddg/475-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.29";
 DF p326 d475
 Data d476 "476-0" Value="0";
 Operation p327 "327-raffleSampleSize" Value="raffleSampleSize";
@@ -1931,7 +1931,7 @@ DF p327 d477
 Operation p328 "328-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p327 p328
 DF d11 p328
-Snapshot d478 "478-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/478-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.30";
+Snapshot d478 "478-object@sampleSizeDistObj" Value="[DIR]/ddg/478-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.30";
 DF p328 d478
 Data d479 "479-0" Value="0";
 Operation p329 "329-raffleSampleSize" Value="raffleSampleSize";
@@ -1943,7 +1943,7 @@ DF p329 d480
 Operation p330 "330-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p329 p330
 DF d11 p330
-Snapshot d481 "481-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/481-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.30";
+Snapshot d481 "481-object@sampleSizeDistObj" Value="[DIR]/ddg/481-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.30";
 DF p330 d481
 Data d482 "482-0" Value="0";
 Operation p331 "331-raffleSampleSize" Value="raffleSampleSize";
@@ -1955,7 +1955,7 @@ DF p331 d483
 Operation p332 "332-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p331 p332
 DF d11 p332
-Snapshot d484 "484-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/484-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.30";
+Snapshot d484 "484-object@sampleSizeDistObj" Value="[DIR]/ddg/484-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.30";
 DF p332 d484
 Data d485 "485-0" Value="0";
 Operation p333 "333-raffleSampleSize" Value="raffleSampleSize";
@@ -1967,7 +1967,7 @@ DF p333 d486
 Operation p334 "334-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p333 p334
 DF d11 p334
-Snapshot d487 "487-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/487-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.30";
+Snapshot d487 "487-object@sampleSizeDistObj" Value="[DIR]/ddg/487-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.30";
 DF p334 d487
 Data d488 "488-0" Value="0";
 Operation p335 "335-raffleSampleSize" Value="raffleSampleSize";
@@ -1979,7 +1979,7 @@ DF p335 d489
 Operation p336 "336-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p335 p336
 DF d11 p336
-Snapshot d490 "490-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/490-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.30";
+Snapshot d490 "490-object@sampleSizeDistObj" Value="[DIR]/ddg/490-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.30";
 DF p336 d490
 Data d491 "491-0" Value="0";
 Operation p337 "337-raffleSampleSize" Value="raffleSampleSize";
@@ -1991,7 +1991,7 @@ DF p337 d492
 Operation p338 "338-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p337 p338
 DF d11 p338
-Snapshot d493 "493-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/493-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.30";
+Snapshot d493 "493-object@sampleSizeDistObj" Value="[DIR]/ddg/493-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.30";
 DF p338 d493
 Data d494 "494-0" Value="0";
 Operation p339 "339-raffleSampleSize" Value="raffleSampleSize";
@@ -2003,7 +2003,7 @@ DF p339 d495
 Operation p340 "340-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p339 p340
 DF d11 p340
-Snapshot d496 "496-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/496-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.30";
+Snapshot d496 "496-object@sampleSizeDistObj" Value="[DIR]/ddg/496-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.30";
 DF p340 d496
 Data d497 "497-0" Value="0";
 Operation p341 "341-raffleSampleSize" Value="raffleSampleSize";
@@ -2015,7 +2015,7 @@ DF p341 d498
 Operation p342 "342-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p341 p342
 DF d11 p342
-Snapshot d499 "499-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/499-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.30";
+Snapshot d499 "499-object@sampleSizeDistObj" Value="[DIR]/ddg/499-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.30";
 DF p342 d499
 Data d500 "500-0" Value="0";
 Operation p343 "343-raffleSampleSize" Value="raffleSampleSize";
@@ -2027,7 +2027,7 @@ DF p343 d501
 Operation p344 "344-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p343 p344
 DF d11 p344
-Snapshot d502 "502-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/502-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.30";
+Snapshot d502 "502-object@sampleSizeDistObj" Value="[DIR]/ddg/502-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.30";
 DF p344 d502
 Data d503 "503-0" Value="0";
 Operation p345 "345-raffleSampleSize" Value="raffleSampleSize";
@@ -2039,7 +2039,7 @@ DF p345 d504
 Operation p346 "346-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p345 p346
 DF d11 p346
-Snapshot d505 "505-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/505-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.30";
+Snapshot d505 "505-object@sampleSizeDistObj" Value="[DIR]/ddg/505-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.30";
 DF p346 d505
 Data d506 "506-0" Value="0";
 Operation p347 "347-raffleSampleSize" Value="raffleSampleSize";
@@ -2051,7 +2051,7 @@ DF p347 d507
 Operation p348 "348-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p347 p348
 DF d11 p348
-Snapshot d508 "508-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/508-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.30";
+Snapshot d508 "508-object@sampleSizeDistObj" Value="[DIR]/ddg/508-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.30";
 DF p348 d508
 Data d509 "509-0" Value="0";
 Operation p349 "349-raffleSampleSize" Value="raffleSampleSize";
@@ -2063,7 +2063,7 @@ DF p349 d510
 Operation p350 "350-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p349 p350
 DF d11 p350
-Snapshot d511 "511-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/511-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.30";
+Snapshot d511 "511-object@sampleSizeDistObj" Value="[DIR]/ddg/511-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.30";
 DF p350 d511
 Data d512 "512-0" Value="0";
 Operation p351 "351-raffleSampleSize" Value="raffleSampleSize";
@@ -2075,7 +2075,7 @@ DF p351 d513
 Operation p352 "352-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p351 p352
 DF d11 p352
-Snapshot d514 "514-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/514-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.30";
+Snapshot d514 "514-object@sampleSizeDistObj" Value="[DIR]/ddg/514-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.30";
 DF p352 d514
 Data d515 "515-0" Value="0";
 Operation p353 "353-raffleSampleSize" Value="raffleSampleSize";
@@ -2087,7 +2087,7 @@ DF p353 d516
 Operation p354 "354-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p353 p354
 DF d11 p354
-Snapshot d517 "517-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/517-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.30";
+Snapshot d517 "517-object@sampleSizeDistObj" Value="[DIR]/ddg/517-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.30";
 DF p354 d517
 Data d518 "518-0" Value="0";
 Operation p355 "355-raffleSampleSize" Value="raffleSampleSize";
@@ -2099,7 +2099,7 @@ DF p355 d519
 Operation p356 "356-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p355 p356
 DF d11 p356
-Snapshot d520 "520-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/520-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.30";
+Snapshot d520 "520-object@sampleSizeDistObj" Value="[DIR]/ddg/520-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.30";
 DF p356 d520
 Data d521 "521-0" Value="0";
 Operation p357 "357-raffleSampleSize" Value="raffleSampleSize";
@@ -2111,7 +2111,7 @@ DF p357 d522
 Operation p358 "358-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p357 p358
 DF d11 p358
-Snapshot d523 "523-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/523-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.30";
+Snapshot d523 "523-object@sampleSizeDistObj" Value="[DIR]/ddg/523-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.30";
 DF p358 d523
 Data d524 "524-0" Value="0";
 Operation p359 "359-raffleSampleSize" Value="raffleSampleSize";
@@ -2123,7 +2123,7 @@ DF p359 d525
 Operation p360 "360-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p359 p360
 DF d11 p360
-Snapshot d526 "526-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/526-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.30";
+Snapshot d526 "526-object@sampleSizeDistObj" Value="[DIR]/ddg/526-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.30";
 DF p360 d526
 Data d527 "527-0" Value="0";
 Operation p361 "361-raffleSampleSize" Value="raffleSampleSize";
@@ -2135,7 +2135,7 @@ DF p361 d528
 Operation p362 "362-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p361 p362
 DF d11 p362
-Snapshot d529 "529-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/529-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.30";
+Snapshot d529 "529-object@sampleSizeDistObj" Value="[DIR]/ddg/529-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.30";
 DF p362 d529
 Data d530 "530-0" Value="0";
 Operation p363 "363-raffleSampleSize" Value="raffleSampleSize";
@@ -2147,7 +2147,7 @@ DF p363 d531
 Operation p364 "364-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p363 p364
 DF d11 p364
-Snapshot d532 "532-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/532-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.30";
+Snapshot d532 "532-object@sampleSizeDistObj" Value="[DIR]/ddg/532-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.30";
 DF p364 d532
 Data d533 "533-0" Value="0";
 Operation p365 "365-raffleSampleSize" Value="raffleSampleSize";
@@ -2159,7 +2159,7 @@ DF p365 d534
 Operation p366 "366-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p365 p366
 DF d11 p366
-Snapshot d535 "535-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/535-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.30";
+Snapshot d535 "535-object@sampleSizeDistObj" Value="[DIR]/ddg/535-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.30";
 DF p366 d535
 Data d536 "536-0" Value="0";
 Operation p367 "367-raffleSampleSize" Value="raffleSampleSize";
@@ -2171,7 +2171,7 @@ DF p367 d537
 Operation p368 "368-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p367 p368
 DF d11 p368
-Snapshot d538 "538-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/538-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.30";
+Snapshot d538 "538-object@sampleSizeDistObj" Value="[DIR]/ddg/538-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.30";
 DF p368 d538
 Data d539 "539-0" Value="0";
 Operation p369 "369-raffleSampleSize" Value="raffleSampleSize";
@@ -2183,7 +2183,7 @@ DF p369 d540
 Operation p370 "370-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p369 p370
 DF d11 p370
-Snapshot d541 "541-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/541-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.31";
+Snapshot d541 "541-object@sampleSizeDistObj" Value="[DIR]/ddg/541-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.31";
 DF p370 d541
 Data d542 "542-0" Value="0";
 Operation p371 "371-raffleSampleSize" Value="raffleSampleSize";
@@ -2195,7 +2195,7 @@ DF p371 d543
 Operation p372 "372-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p371 p372
 DF d11 p372
-Snapshot d544 "544-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/544-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.31";
+Snapshot d544 "544-object@sampleSizeDistObj" Value="[DIR]/ddg/544-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.31";
 DF p372 d544
 Data d545 "545-0" Value="0";
 Operation p373 "373-raffleSampleSize" Value="raffleSampleSize";
@@ -2207,7 +2207,7 @@ DF p373 d546
 Operation p374 "374-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p373 p374
 DF d11 p374
-Snapshot d547 "547-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/547-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.31";
+Snapshot d547 "547-object@sampleSizeDistObj" Value="[DIR]/ddg/547-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.31";
 DF p374 d547
 Data d548 "548-0" Value="0";
 Operation p375 "375-raffleSampleSize" Value="raffleSampleSize";
@@ -2219,7 +2219,7 @@ DF p375 d549
 Operation p376 "376-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p375 p376
 DF d11 p376
-Snapshot d550 "550-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/550-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.31";
+Snapshot d550 "550-object@sampleSizeDistObj" Value="[DIR]/ddg/550-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.31";
 DF p376 d550
 Data d551 "551-0" Value="0";
 Operation p377 "377-raffleSampleSize" Value="raffleSampleSize";
@@ -2231,7 +2231,7 @@ DF p377 d552
 Operation p378 "378-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p377 p378
 DF d11 p378
-Snapshot d553 "553-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/553-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.31";
+Snapshot d553 "553-object@sampleSizeDistObj" Value="[DIR]/ddg/553-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.31";
 DF p378 d553
 Data d554 "554-0" Value="0";
 Operation p379 "379-raffleSampleSize" Value="raffleSampleSize";
@@ -2243,7 +2243,7 @@ DF p379 d555
 Operation p380 "380-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p379 p380
 DF d11 p380
-Snapshot d556 "556-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/556-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.31";
+Snapshot d556 "556-object@sampleSizeDistObj" Value="[DIR]/ddg/556-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.31";
 DF p380 d556
 Data d557 "557-0" Value="0";
 Operation p381 "381-raffleSampleSize" Value="raffleSampleSize";
@@ -2255,7 +2255,7 @@ DF p381 d558
 Operation p382 "382-bind object@sampleSizeDistObj" Value="bind object@sampleSizeDistObj";
 CF p381 p382
 DF d11 p382
-Snapshot d559 "559-object@sampleSizeDistObj" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/559-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.31";
+Snapshot d559 "559-object@sampleSizeDistObj" Value="[DIR]/ddg/559-object@sampleSizeDistObj.txt" Time="2014-07-08T10.37.31";
 DF p382 d559
 Data d560 "560-0" Value="0";
 Operation p383 "383-raffleSampleSize" Value="raffleSampleSize";
@@ -2264,14 +2264,14 @@ DF d559 p383
 DF d560 p383
 Data d561 "561-object@nIndividuals" Value="7";
 DF p383 d561
-Snapshot d562 "562-samplesArr" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/562-samplesArr.txt" Time="2014-07-08T10.37.31";
+Snapshot d562 "562-samplesArr" Value="[DIR]/ddg/562-samplesArr.txt" Time="2014-07-08T10.37.31";
 DF p319 d562
 Finish p384 "384-assignSamplesToArea" Value="assignSamplesToArea";
 CF p383 p384
 Operation p385 "385-bind sample" Value="bind sample";
 CF p384 p385
 DF d562 p385
-Snapshot d563 "563-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/563-sample.txt" Time="2014-07-08T10.37.31";
+Snapshot d563 "563-sample" Value="[DIR]/ddg/563-sample.txt" Time="2014-07-08T10.37.31";
 DF p385 d563
 Start p386 "386-writeToFile" Value="writeToFile";
 CF p385 p386
@@ -2283,7 +2283,7 @@ CF p387 p388
 Operation p389 "389-bind sample" Value="bind sample";
 CF p388 p389
 DF d562 p389
-Snapshot d564 "564-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/564-sample.txt" Time="2014-07-08T10.37.31";
+Snapshot d564 "564-sample" Value="[DIR]/ddg/564-sample.txt" Time="2014-07-08T10.37.31";
 DF p389 d564
 Start p390 "390-writeToFile" Value="writeToFile";
 CF p389 p390
@@ -2295,7 +2295,7 @@ CF p391 p392
 Operation p393 "393-bind sample" Value="bind sample";
 CF p392 p393
 DF d562 p393
-Snapshot d565 "565-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/565-sample.txt" Time="2014-07-08T10.37.31";
+Snapshot d565 "565-sample" Value="[DIR]/ddg/565-sample.txt" Time="2014-07-08T10.37.31";
 DF p393 d565
 Start p394 "394-writeToFile" Value="writeToFile";
 CF p393 p394
@@ -2307,7 +2307,7 @@ CF p395 p396
 Operation p397 "397-bind sample" Value="bind sample";
 CF p396 p397
 DF d562 p397
-Snapshot d566 "566-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/566-sample.txt" Time="2014-07-08T10.37.31";
+Snapshot d566 "566-sample" Value="[DIR]/ddg/566-sample.txt" Time="2014-07-08T10.37.31";
 DF p397 d566
 Start p398 "398-writeToFile" Value="writeToFile";
 CF p397 p398
@@ -2319,7 +2319,7 @@ CF p399 p400
 Operation p401 "401-bind sample" Value="bind sample";
 CF p400 p401
 DF d562 p401
-Snapshot d567 "567-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/567-sample.txt" Time="2014-07-08T10.37.31";
+Snapshot d567 "567-sample" Value="[DIR]/ddg/567-sample.txt" Time="2014-07-08T10.37.31";
 DF p401 d567
 Start p402 "402-writeToFile" Value="writeToFile";
 CF p401 p402
@@ -2331,7 +2331,7 @@ CF p403 p404
 Operation p405 "405-bind sample" Value="bind sample";
 CF p404 p405
 DF d562 p405
-Snapshot d568 "568-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/568-sample.txt" Time="2014-07-08T10.37.31";
+Snapshot d568 "568-sample" Value="[DIR]/ddg/568-sample.txt" Time="2014-07-08T10.37.31";
 DF p405 d568
 Start p406 "406-writeToFile" Value="writeToFile";
 CF p405 p406
@@ -2343,7 +2343,7 @@ CF p407 p408
 Operation p409 "409-bind sample" Value="bind sample";
 CF p408 p409
 DF d562 p409
-Snapshot d569 "569-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/569-sample.txt" Time="2014-07-08T10.37.31";
+Snapshot d569 "569-sample" Value="[DIR]/ddg/569-sample.txt" Time="2014-07-08T10.37.31";
 DF p409 d569
 Start p410 "410-writeToFile" Value="writeToFile";
 CF p409 p410
@@ -2355,7 +2355,7 @@ CF p411 p412
 Operation p413 "413-bind sample" Value="bind sample";
 CF p412 p413
 DF d562 p413
-Snapshot d570 "570-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/570-sample.txt" Time="2014-07-08T10.37.31";
+Snapshot d570 "570-sample" Value="[DIR]/ddg/570-sample.txt" Time="2014-07-08T10.37.31";
 DF p413 d570
 Start p414 "414-writeToFile" Value="writeToFile";
 CF p413 p414
@@ -2367,7 +2367,7 @@ CF p415 p416
 Operation p417 "417-bind sample" Value="bind sample";
 CF p416 p417
 DF d562 p417
-Snapshot d571 "571-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/571-sample.txt" Time="2014-07-08T10.37.31";
+Snapshot d571 "571-sample" Value="[DIR]/ddg/571-sample.txt" Time="2014-07-08T10.37.31";
 DF p417 d571
 Start p418 "418-writeToFile" Value="writeToFile";
 CF p417 p418
@@ -2379,7 +2379,7 @@ CF p419 p420
 Operation p421 "421-bind sample" Value="bind sample";
 CF p420 p421
 DF d562 p421
-Snapshot d572 "572-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/572-sample.txt" Time="2014-07-08T10.37.31";
+Snapshot d572 "572-sample" Value="[DIR]/ddg/572-sample.txt" Time="2014-07-08T10.37.31";
 DF p421 d572
 Start p422 "422-writeToFile" Value="writeToFile";
 CF p421 p422
@@ -2391,7 +2391,7 @@ CF p423 p424
 Operation p425 "425-bind sample" Value="bind sample";
 CF p424 p425
 DF d562 p425
-Snapshot d573 "573-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/573-sample.txt" Time="2014-07-08T10.37.31";
+Snapshot d573 "573-sample" Value="[DIR]/ddg/573-sample.txt" Time="2014-07-08T10.37.31";
 DF p425 d573
 Start p426 "426-writeToFile" Value="writeToFile";
 CF p425 p426
@@ -2403,7 +2403,7 @@ CF p427 p428
 Operation p429 "429-bind sample" Value="bind sample";
 CF p428 p429
 DF d562 p429
-Snapshot d574 "574-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/574-sample.txt" Time="2014-07-08T10.37.31";
+Snapshot d574 "574-sample" Value="[DIR]/ddg/574-sample.txt" Time="2014-07-08T10.37.31";
 DF p429 d574
 Start p430 "430-writeToFile" Value="writeToFile";
 CF p429 p430
@@ -2415,7 +2415,7 @@ CF p431 p432
 Operation p433 "433-bind sample" Value="bind sample";
 CF p432 p433
 DF d562 p433
-Snapshot d575 "575-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/575-sample.txt" Time="2014-07-08T10.37.31";
+Snapshot d575 "575-sample" Value="[DIR]/ddg/575-sample.txt" Time="2014-07-08T10.37.31";
 DF p433 d575
 Start p434 "434-writeToFile" Value="writeToFile";
 CF p433 p434
@@ -2427,7 +2427,7 @@ CF p435 p436
 Operation p437 "437-bind sample" Value="bind sample";
 CF p436 p437
 DF d562 p437
-Snapshot d576 "576-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/576-sample.txt" Time="2014-07-08T10.37.31";
+Snapshot d576 "576-sample" Value="[DIR]/ddg/576-sample.txt" Time="2014-07-08T10.37.31";
 DF p437 d576
 Start p438 "438-writeToFile" Value="writeToFile";
 CF p437 p438
@@ -2439,7 +2439,7 @@ CF p439 p440
 Operation p441 "441-bind sample" Value="bind sample";
 CF p440 p441
 DF d562 p441
-Snapshot d577 "577-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/577-sample.txt" Time="2014-07-08T10.37.31";
+Snapshot d577 "577-sample" Value="[DIR]/ddg/577-sample.txt" Time="2014-07-08T10.37.31";
 DF p441 d577
 Start p442 "442-writeToFile" Value="writeToFile";
 CF p441 p442
@@ -2451,7 +2451,7 @@ CF p443 p444
 Operation p445 "445-bind sample" Value="bind sample";
 CF p444 p445
 DF d562 p445
-Snapshot d578 "578-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/578-sample.txt" Time="2014-07-08T10.37.31";
+Snapshot d578 "578-sample" Value="[DIR]/ddg/578-sample.txt" Time="2014-07-08T10.37.31";
 DF p445 d578
 Start p446 "446-writeToFile" Value="writeToFile";
 CF p445 p446
@@ -2463,7 +2463,7 @@ CF p447 p448
 Operation p449 "449-bind sample" Value="bind sample";
 CF p448 p449
 DF d562 p449
-Snapshot d579 "579-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/579-sample.txt" Time="2014-07-08T10.37.31";
+Snapshot d579 "579-sample" Value="[DIR]/ddg/579-sample.txt" Time="2014-07-08T10.37.31";
 DF p449 d579
 Start p450 "450-writeToFile" Value="writeToFile";
 CF p449 p450
@@ -2475,7 +2475,7 @@ CF p451 p452
 Operation p453 "453-bind sample" Value="bind sample";
 CF p452 p453
 DF d562 p453
-Snapshot d580 "580-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/580-sample.txt" Time="2014-07-08T10.37.31";
+Snapshot d580 "580-sample" Value="[DIR]/ddg/580-sample.txt" Time="2014-07-08T10.37.31";
 DF p453 d580
 Start p454 "454-writeToFile" Value="writeToFile";
 CF p453 p454
@@ -2487,7 +2487,7 @@ CF p455 p456
 Operation p457 "457-bind sample" Value="bind sample";
 CF p456 p457
 DF d562 p457
-Snapshot d581 "581-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/581-sample.txt" Time="2014-07-08T10.37.31";
+Snapshot d581 "581-sample" Value="[DIR]/ddg/581-sample.txt" Time="2014-07-08T10.37.31";
 DF p457 d581
 Start p458 "458-writeToFile" Value="writeToFile";
 CF p457 p458
@@ -2499,7 +2499,7 @@ CF p459 p460
 Operation p461 "461-bind sample" Value="bind sample";
 CF p460 p461
 DF d562 p461
-Snapshot d582 "582-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/582-sample.txt" Time="2014-07-08T10.37.31";
+Snapshot d582 "582-sample" Value="[DIR]/ddg/582-sample.txt" Time="2014-07-08T10.37.31";
 DF p461 d582
 Start p462 "462-writeToFile" Value="writeToFile";
 CF p461 p462
@@ -2511,7 +2511,7 @@ CF p463 p464
 Operation p465 "465-bind sample" Value="bind sample";
 CF p464 p465
 DF d562 p465
-Snapshot d583 "583-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/583-sample.txt" Time="2014-07-08T10.37.31";
+Snapshot d583 "583-sample" Value="[DIR]/ddg/583-sample.txt" Time="2014-07-08T10.37.31";
 DF p465 d583
 Start p466 "466-writeToFile" Value="writeToFile";
 CF p465 p466
@@ -2523,7 +2523,7 @@ CF p467 p468
 Operation p469 "469-bind sample" Value="bind sample";
 CF p468 p469
 DF d562 p469
-Snapshot d584 "584-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/584-sample.txt" Time="2014-07-08T10.37.31";
+Snapshot d584 "584-sample" Value="[DIR]/ddg/584-sample.txt" Time="2014-07-08T10.37.31";
 DF p469 d584
 Start p470 "470-writeToFile" Value="writeToFile";
 CF p469 p470
@@ -2535,7 +2535,7 @@ CF p471 p472
 Operation p473 "473-bind sample" Value="bind sample";
 CF p472 p473
 DF d562 p473
-Snapshot d585 "585-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/585-sample.txt" Time="2014-07-08T10.37.31";
+Snapshot d585 "585-sample" Value="[DIR]/ddg/585-sample.txt" Time="2014-07-08T10.37.31";
 DF p473 d585
 Start p474 "474-writeToFile" Value="writeToFile";
 CF p473 p474
@@ -2547,7 +2547,7 @@ CF p475 p476
 Operation p477 "477-bind sample" Value="bind sample";
 CF p476 p477
 DF d562 p477
-Snapshot d586 "586-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/586-sample.txt" Time="2014-07-08T10.37.31";
+Snapshot d586 "586-sample" Value="[DIR]/ddg/586-sample.txt" Time="2014-07-08T10.37.31";
 DF p477 d586
 Start p478 "478-writeToFile" Value="writeToFile";
 CF p477 p478
@@ -2559,7 +2559,7 @@ CF p479 p480
 Operation p481 "481-bind sample" Value="bind sample";
 CF p480 p481
 DF d562 p481
-Snapshot d587 "587-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/587-sample.txt" Time="2014-07-08T10.37.31";
+Snapshot d587 "587-sample" Value="[DIR]/ddg/587-sample.txt" Time="2014-07-08T10.37.31";
 DF p481 d587
 Start p482 "482-writeToFile" Value="writeToFile";
 CF p481 p482
@@ -2571,7 +2571,7 @@ CF p483 p484
 Operation p485 "485-bind sample" Value="bind sample";
 CF p484 p485
 DF d562 p485
-Snapshot d588 "588-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/588-sample.txt" Time="2014-07-08T10.37.31";
+Snapshot d588 "588-sample" Value="[DIR]/ddg/588-sample.txt" Time="2014-07-08T10.37.31";
 DF p485 d588
 Start p486 "486-writeToFile" Value="writeToFile";
 CF p485 p486
@@ -2583,7 +2583,7 @@ CF p487 p488
 Operation p489 "489-bind sample" Value="bind sample";
 CF p488 p489
 DF d562 p489
-Snapshot d589 "589-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/589-sample.txt" Time="2014-07-08T10.37.31";
+Snapshot d589 "589-sample" Value="[DIR]/ddg/589-sample.txt" Time="2014-07-08T10.37.31";
 DF p489 d589
 Start p490 "490-writeToFile" Value="writeToFile";
 CF p489 p490
@@ -2595,7 +2595,7 @@ CF p491 p492
 Operation p493 "493-bind sample" Value="bind sample";
 CF p492 p493
 DF d562 p493
-Snapshot d590 "590-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/590-sample.txt" Time="2014-07-08T10.37.32";
+Snapshot d590 "590-sample" Value="[DIR]/ddg/590-sample.txt" Time="2014-07-08T10.37.32";
 DF p493 d590
 Start p494 "494-writeToFile" Value="writeToFile";
 CF p493 p494
@@ -2607,7 +2607,7 @@ CF p495 p496
 Operation p497 "497-bind sample" Value="bind sample";
 CF p496 p497
 DF d562 p497
-Snapshot d591 "591-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/591-sample.txt" Time="2014-07-08T10.37.32";
+Snapshot d591 "591-sample" Value="[DIR]/ddg/591-sample.txt" Time="2014-07-08T10.37.32";
 DF p497 d591
 Start p498 "498-writeToFile" Value="writeToFile";
 CF p497 p498
@@ -2619,7 +2619,7 @@ CF p499 p500
 Operation p501 "501-bind sample" Value="bind sample";
 CF p500 p501
 DF d562 p501
-Snapshot d592 "592-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/592-sample.txt" Time="2014-07-08T10.37.32";
+Snapshot d592 "592-sample" Value="[DIR]/ddg/592-sample.txt" Time="2014-07-08T10.37.32";
 DF p501 d592
 Start p502 "502-writeToFile" Value="writeToFile";
 CF p501 p502
@@ -2631,7 +2631,7 @@ CF p503 p504
 Operation p505 "505-bind sample" Value="bind sample";
 CF p504 p505
 DF d562 p505
-Snapshot d593 "593-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/593-sample.txt" Time="2014-07-08T10.37.32";
+Snapshot d593 "593-sample" Value="[DIR]/ddg/593-sample.txt" Time="2014-07-08T10.37.32";
 DF p505 d593
 Start p506 "506-writeToFile" Value="writeToFile";
 CF p505 p506
@@ -2643,7 +2643,7 @@ CF p507 p508
 Operation p509 "509-bind sample" Value="bind sample";
 CF p508 p509
 DF d562 p509
-Snapshot d594 "594-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/594-sample.txt" Time="2014-07-08T10.37.32";
+Snapshot d594 "594-sample" Value="[DIR]/ddg/594-sample.txt" Time="2014-07-08T10.37.32";
 DF p509 d594
 Start p510 "510-writeToFile" Value="writeToFile";
 CF p509 p510
@@ -2655,7 +2655,7 @@ CF p511 p512
 Operation p513 "513-bind sample" Value="bind sample";
 CF p512 p513
 DF d562 p513
-Snapshot d595 "595-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/595-sample.txt" Time="2014-07-08T10.37.32";
+Snapshot d595 "595-sample" Value="[DIR]/ddg/595-sample.txt" Time="2014-07-08T10.37.32";
 DF p513 d595
 Start p514 "514-writeToFile" Value="writeToFile";
 CF p513 p514
@@ -2667,7 +2667,7 @@ CF p515 p516
 Operation p517 "517-bind sample" Value="bind sample";
 CF p516 p517
 DF d562 p517
-Snapshot d596 "596-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/596-sample.txt" Time="2014-07-08T10.37.32";
+Snapshot d596 "596-sample" Value="[DIR]/ddg/596-sample.txt" Time="2014-07-08T10.37.32";
 DF p517 d596
 Start p518 "518-writeToFile" Value="writeToFile";
 CF p517 p518
@@ -2679,7 +2679,7 @@ CF p519 p520
 Operation p521 "521-bind sample" Value="bind sample";
 CF p520 p521
 DF d562 p521
-Snapshot d597 "597-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/597-sample.txt" Time="2014-07-08T10.37.32";
+Snapshot d597 "597-sample" Value="[DIR]/ddg/597-sample.txt" Time="2014-07-08T10.37.32";
 DF p521 d597
 Start p522 "522-writeToFile" Value="writeToFile";
 CF p521 p522
@@ -2691,7 +2691,7 @@ CF p523 p524
 Operation p525 "525-bind sample" Value="bind sample";
 CF p524 p525
 DF d562 p525
-Snapshot d598 "598-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/598-sample.txt" Time="2014-07-08T10.37.32";
+Snapshot d598 "598-sample" Value="[DIR]/ddg/598-sample.txt" Time="2014-07-08T10.37.32";
 DF p525 d598
 Start p526 "526-writeToFile" Value="writeToFile";
 CF p525 p526
@@ -2703,7 +2703,7 @@ CF p527 p528
 Operation p529 "529-bind sample" Value="bind sample";
 CF p528 p529
 DF d562 p529
-Snapshot d599 "599-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/599-sample.txt" Time="2014-07-08T10.37.32";
+Snapshot d599 "599-sample" Value="[DIR]/ddg/599-sample.txt" Time="2014-07-08T10.37.32";
 DF p529 d599
 Start p530 "530-writeToFile" Value="writeToFile";
 CF p529 p530
@@ -2715,7 +2715,7 @@ CF p531 p532
 Operation p533 "533-bind sample" Value="bind sample";
 CF p532 p533
 DF d562 p533
-Snapshot d600 "600-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/600-sample.txt" Time="2014-07-08T10.37.32";
+Snapshot d600 "600-sample" Value="[DIR]/ddg/600-sample.txt" Time="2014-07-08T10.37.32";
 DF p533 d600
 Start p534 "534-writeToFile" Value="writeToFile";
 CF p533 p534
@@ -2727,7 +2727,7 @@ CF p535 p536
 Operation p537 "537-bind sample" Value="bind sample";
 CF p536 p537
 DF d562 p537
-Snapshot d601 "601-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/601-sample.txt" Time="2014-07-08T10.37.32";
+Snapshot d601 "601-sample" Value="[DIR]/ddg/601-sample.txt" Time="2014-07-08T10.37.32";
 DF p537 d601
 Start p538 "538-writeToFile" Value="writeToFile";
 CF p537 p538
@@ -2739,7 +2739,7 @@ CF p539 p540
 Operation p541 "541-bind sample" Value="bind sample";
 CF p540 p541
 DF d562 p541
-Snapshot d602 "602-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/602-sample.txt" Time="2014-07-08T10.37.32";
+Snapshot d602 "602-sample" Value="[DIR]/ddg/602-sample.txt" Time="2014-07-08T10.37.32";
 DF p541 d602
 Start p542 "542-writeToFile" Value="writeToFile";
 CF p541 p542
@@ -2751,7 +2751,7 @@ CF p543 p544
 Operation p545 "545-bind sample" Value="bind sample";
 CF p544 p545
 DF d562 p545
-Snapshot d603 "603-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/603-sample.txt" Time="2014-07-08T10.37.32";
+Snapshot d603 "603-sample" Value="[DIR]/ddg/603-sample.txt" Time="2014-07-08T10.37.32";
 DF p545 d603
 Start p546 "546-writeToFile" Value="writeToFile";
 CF p545 p546
@@ -2763,7 +2763,7 @@ CF p547 p548
 Operation p549 "549-bind sample" Value="bind sample";
 CF p548 p549
 DF d562 p549
-Snapshot d604 "604-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/604-sample.txt" Time="2014-07-08T10.37.32";
+Snapshot d604 "604-sample" Value="[DIR]/ddg/604-sample.txt" Time="2014-07-08T10.37.32";
 DF p549 d604
 Start p550 "550-writeToFile" Value="writeToFile";
 CF p549 p550
@@ -2775,7 +2775,7 @@ CF p551 p552
 Operation p553 "553-bind sample" Value="bind sample";
 CF p552 p553
 DF d562 p553
-Snapshot d605 "605-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/605-sample.txt" Time="2014-07-08T10.37.32";
+Snapshot d605 "605-sample" Value="[DIR]/ddg/605-sample.txt" Time="2014-07-08T10.37.32";
 DF p553 d605
 Start p554 "554-writeToFile" Value="writeToFile";
 CF p553 p554
@@ -2787,7 +2787,7 @@ CF p555 p556
 Operation p557 "557-bind sample" Value="bind sample";
 CF p556 p557
 DF d562 p557
-Snapshot d606 "606-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/606-sample.txt" Time="2014-07-08T10.37.32";
+Snapshot d606 "606-sample" Value="[DIR]/ddg/606-sample.txt" Time="2014-07-08T10.37.32";
 DF p557 d606
 Start p558 "558-writeToFile" Value="writeToFile";
 CF p557 p558
@@ -2799,7 +2799,7 @@ CF p559 p560
 Operation p561 "561-bind sample" Value="bind sample";
 CF p560 p561
 DF d562 p561
-Snapshot d607 "607-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/607-sample.txt" Time="2014-07-08T10.37.32";
+Snapshot d607 "607-sample" Value="[DIR]/ddg/607-sample.txt" Time="2014-07-08T10.37.32";
 DF p561 d607
 Start p562 "562-writeToFile" Value="writeToFile";
 CF p561 p562
@@ -2811,7 +2811,7 @@ CF p563 p564
 Operation p565 "565-bind sample" Value="bind sample";
 CF p564 p565
 DF d562 p565
-Snapshot d608 "608-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/608-sample.txt" Time="2014-07-08T10.37.32";
+Snapshot d608 "608-sample" Value="[DIR]/ddg/608-sample.txt" Time="2014-07-08T10.37.32";
 DF p565 d608
 Start p566 "566-writeToFile" Value="writeToFile";
 CF p565 p566
@@ -2823,7 +2823,7 @@ CF p567 p568
 Operation p569 "569-bind sample" Value="bind sample";
 CF p568 p569
 DF d562 p569
-Snapshot d609 "609-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/609-sample.txt" Time="2014-07-08T10.37.32";
+Snapshot d609 "609-sample" Value="[DIR]/ddg/609-sample.txt" Time="2014-07-08T10.37.32";
 DF p569 d609
 Start p570 "570-writeToFile" Value="writeToFile";
 CF p569 p570
@@ -2835,7 +2835,7 @@ CF p571 p572
 Operation p573 "573-bind sample" Value="bind sample";
 CF p572 p573
 DF d562 p573
-Snapshot d610 "610-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/610-sample.txt" Time="2014-07-08T10.37.32";
+Snapshot d610 "610-sample" Value="[DIR]/ddg/610-sample.txt" Time="2014-07-08T10.37.32";
 DF p573 d610
 Start p574 "574-writeToFile" Value="writeToFile";
 CF p573 p574
@@ -2847,7 +2847,7 @@ CF p575 p576
 Operation p577 "577-bind sample" Value="bind sample";
 CF p576 p577
 DF d562 p577
-Snapshot d611 "611-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/611-sample.txt" Time="2014-07-08T10.37.32";
+Snapshot d611 "611-sample" Value="[DIR]/ddg/611-sample.txt" Time="2014-07-08T10.37.32";
 DF p577 d611
 Start p578 "578-writeToFile" Value="writeToFile";
 CF p577 p578
@@ -2859,7 +2859,7 @@ CF p579 p580
 Operation p581 "581-bind sample" Value="bind sample";
 CF p580 p581
 DF d562 p581
-Snapshot d612 "612-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/612-sample.txt" Time="2014-07-08T10.37.32";
+Snapshot d612 "612-sample" Value="[DIR]/ddg/612-sample.txt" Time="2014-07-08T10.37.32";
 DF p581 d612
 Start p582 "582-writeToFile" Value="writeToFile";
 CF p581 p582
@@ -2871,7 +2871,7 @@ CF p583 p584
 Operation p585 "585-bind sample" Value="bind sample";
 CF p584 p585
 DF d562 p585
-Snapshot d613 "613-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/613-sample.txt" Time="2014-07-08T10.37.32";
+Snapshot d613 "613-sample" Value="[DIR]/ddg/613-sample.txt" Time="2014-07-08T10.37.32";
 DF p585 d613
 Start p586 "586-writeToFile" Value="writeToFile";
 CF p585 p586
@@ -2883,7 +2883,7 @@ CF p587 p588
 Operation p589 "589-bind sample" Value="bind sample";
 CF p588 p589
 DF d562 p589
-Snapshot d614 "614-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/614-sample.txt" Time="2014-07-08T10.37.32";
+Snapshot d614 "614-sample" Value="[DIR]/ddg/614-sample.txt" Time="2014-07-08T10.37.32";
 DF p589 d614
 Start p590 "590-writeToFile" Value="writeToFile";
 CF p589 p590
@@ -2895,7 +2895,7 @@ CF p591 p592
 Operation p593 "593-bind sample" Value="bind sample";
 CF p592 p593
 DF d562 p593
-Snapshot d615 "615-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/615-sample.txt" Time="2014-07-08T10.37.32";
+Snapshot d615 "615-sample" Value="[DIR]/ddg/615-sample.txt" Time="2014-07-08T10.37.32";
 DF p593 d615
 Start p594 "594-writeToFile" Value="writeToFile";
 CF p593 p594
@@ -2907,7 +2907,7 @@ CF p595 p596
 Operation p597 "597-bind sample" Value="bind sample";
 CF p596 p597
 DF d562 p597
-Snapshot d616 "616-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/616-sample.txt" Time="2014-07-08T10.37.32";
+Snapshot d616 "616-sample" Value="[DIR]/ddg/616-sample.txt" Time="2014-07-08T10.37.32";
 DF p597 d616
 Start p598 "598-writeToFile" Value="writeToFile";
 CF p597 p598
@@ -2919,7 +2919,7 @@ CF p599 p600
 Operation p601 "601-bind sample" Value="bind sample";
 CF p600 p601
 DF d562 p601
-Snapshot d617 "617-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/617-sample.txt" Time="2014-07-08T10.37.32";
+Snapshot d617 "617-sample" Value="[DIR]/ddg/617-sample.txt" Time="2014-07-08T10.37.32";
 DF p601 d617
 Start p602 "602-writeToFile" Value="writeToFile";
 CF p601 p602
@@ -2931,7 +2931,7 @@ CF p603 p604
 Operation p605 "605-bind sample" Value="bind sample";
 CF p604 p605
 DF d562 p605
-Snapshot d618 "618-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/618-sample.txt" Time="2014-07-08T10.37.32";
+Snapshot d618 "618-sample" Value="[DIR]/ddg/618-sample.txt" Time="2014-07-08T10.37.32";
 DF p605 d618
 Start p606 "606-writeToFile" Value="writeToFile";
 CF p605 p606
@@ -2943,7 +2943,7 @@ CF p607 p608
 Operation p609 "609-bind sample" Value="bind sample";
 CF p608 p609
 DF d562 p609
-Snapshot d619 "619-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/619-sample.txt" Time="2014-07-08T10.37.32";
+Snapshot d619 "619-sample" Value="[DIR]/ddg/619-sample.txt" Time="2014-07-08T10.37.32";
 DF p609 d619
 Start p610 "610-writeToFile" Value="writeToFile";
 CF p609 p610
@@ -2955,7 +2955,7 @@ CF p611 p612
 Operation p613 "613-bind sample" Value="bind sample";
 CF p612 p613
 DF d562 p613
-Snapshot d620 "620-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/620-sample.txt" Time="2014-07-08T10.37.32";
+Snapshot d620 "620-sample" Value="[DIR]/ddg/620-sample.txt" Time="2014-07-08T10.37.32";
 DF p613 d620
 Start p614 "614-writeToFile" Value="writeToFile";
 CF p613 p614
@@ -2967,7 +2967,7 @@ CF p615 p616
 Operation p617 "617-bind sample" Value="bind sample";
 CF p616 p617
 DF d562 p617
-Snapshot d621 "621-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/621-sample.txt" Time="2014-07-08T10.37.32";
+Snapshot d621 "621-sample" Value="[DIR]/ddg/621-sample.txt" Time="2014-07-08T10.37.32";
 DF p617 d621
 Start p618 "618-writeToFile" Value="writeToFile";
 CF p617 p618
@@ -2979,7 +2979,7 @@ CF p619 p620
 Operation p621 "621-bind sample" Value="bind sample";
 CF p620 p621
 DF d562 p621
-Snapshot d622 "622-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/622-sample.txt" Time="2014-07-08T10.37.32";
+Snapshot d622 "622-sample" Value="[DIR]/ddg/622-sample.txt" Time="2014-07-08T10.37.32";
 DF p621 d622
 Start p622 "622-writeToFile" Value="writeToFile";
 CF p621 p622
@@ -2991,7 +2991,7 @@ CF p623 p624
 Operation p625 "625-bind sample" Value="bind sample";
 CF p624 p625
 DF d562 p625
-Snapshot d623 "623-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/623-sample.txt" Time="2014-07-08T10.37.32";
+Snapshot d623 "623-sample" Value="[DIR]/ddg/623-sample.txt" Time="2014-07-08T10.37.32";
 DF p625 d623
 Start p626 "626-writeToFile" Value="writeToFile";
 CF p625 p626
@@ -3003,7 +3003,7 @@ CF p627 p628
 Operation p629 "629-bind sample" Value="bind sample";
 CF p628 p629
 DF d562 p629
-Snapshot d624 "624-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/624-sample.txt" Time="2014-07-08T10.37.32";
+Snapshot d624 "624-sample" Value="[DIR]/ddg/624-sample.txt" Time="2014-07-08T10.37.32";
 DF p629 d624
 Start p630 "630-writeToFile" Value="writeToFile";
 CF p629 p630
@@ -3015,7 +3015,7 @@ CF p631 p632
 Operation p633 "633-bind sample" Value="bind sample";
 CF p632 p633
 DF d562 p633
-Snapshot d625 "625-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/625-sample.txt" Time="2014-07-08T10.37.32";
+Snapshot d625 "625-sample" Value="[DIR]/ddg/625-sample.txt" Time="2014-07-08T10.37.32";
 DF p633 d625
 Start p634 "634-writeToFile" Value="writeToFile";
 CF p633 p634
@@ -3027,7 +3027,7 @@ CF p635 p636
 Operation p637 "637-bind sample" Value="bind sample";
 CF p636 p637
 DF d562 p637
-Snapshot d626 "626-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/626-sample.txt" Time="2014-07-08T10.37.32";
+Snapshot d626 "626-sample" Value="[DIR]/ddg/626-sample.txt" Time="2014-07-08T10.37.32";
 DF p637 d626
 Start p638 "638-writeToFile" Value="writeToFile";
 CF p637 p638
@@ -3039,7 +3039,7 @@ CF p639 p640
 Operation p641 "641-bind sample" Value="bind sample";
 CF p640 p641
 DF d562 p641
-Snapshot d627 "627-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/627-sample.txt" Time="2014-07-08T10.37.33";
+Snapshot d627 "627-sample" Value="[DIR]/ddg/627-sample.txt" Time="2014-07-08T10.37.33";
 DF p641 d627
 Start p642 "642-writeToFile" Value="writeToFile";
 CF p641 p642
@@ -3051,7 +3051,7 @@ CF p643 p644
 Operation p645 "645-bind sample" Value="bind sample";
 CF p644 p645
 DF d562 p645
-Snapshot d628 "628-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/628-sample.txt" Time="2014-07-08T10.37.33";
+Snapshot d628 "628-sample" Value="[DIR]/ddg/628-sample.txt" Time="2014-07-08T10.37.33";
 DF p645 d628
 Start p646 "646-writeToFile" Value="writeToFile";
 CF p645 p646
@@ -3063,7 +3063,7 @@ CF p647 p648
 Operation p649 "649-bind sample" Value="bind sample";
 CF p648 p649
 DF d562 p649
-Snapshot d629 "629-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/629-sample.txt" Time="2014-07-08T10.37.33";
+Snapshot d629 "629-sample" Value="[DIR]/ddg/629-sample.txt" Time="2014-07-08T10.37.33";
 DF p649 d629
 Start p650 "650-writeToFile" Value="writeToFile";
 CF p649 p650
@@ -3075,7 +3075,7 @@ CF p651 p652
 Operation p653 "653-bind sample" Value="bind sample";
 CF p652 p653
 DF d562 p653
-Snapshot d630 "630-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/630-sample.txt" Time="2014-07-08T10.37.33";
+Snapshot d630 "630-sample" Value="[DIR]/ddg/630-sample.txt" Time="2014-07-08T10.37.33";
 DF p653 d630
 Start p654 "654-writeToFile" Value="writeToFile";
 CF p653 p654
@@ -3087,7 +3087,7 @@ CF p655 p656
 Operation p657 "657-bind sample" Value="bind sample";
 CF p656 p657
 DF d562 p657
-Snapshot d631 "631-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/631-sample.txt" Time="2014-07-08T10.37.33";
+Snapshot d631 "631-sample" Value="[DIR]/ddg/631-sample.txt" Time="2014-07-08T10.37.33";
 DF p657 d631
 Start p658 "658-writeToFile" Value="writeToFile";
 CF p657 p658
@@ -3099,7 +3099,7 @@ CF p659 p660
 Operation p661 "661-bind sample" Value="bind sample";
 CF p660 p661
 DF d562 p661
-Snapshot d632 "632-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/632-sample.txt" Time="2014-07-08T10.37.33";
+Snapshot d632 "632-sample" Value="[DIR]/ddg/632-sample.txt" Time="2014-07-08T10.37.33";
 DF p661 d632
 Start p662 "662-writeToFile" Value="writeToFile";
 CF p661 p662
@@ -3111,7 +3111,7 @@ CF p663 p664
 Operation p665 "665-bind sample" Value="bind sample";
 CF p664 p665
 DF d562 p665
-Snapshot d633 "633-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/633-sample.txt" Time="2014-07-08T10.37.33";
+Snapshot d633 "633-sample" Value="[DIR]/ddg/633-sample.txt" Time="2014-07-08T10.37.33";
 DF p665 d633
 Start p666 "666-writeToFile" Value="writeToFile";
 CF p665 p666
@@ -3123,7 +3123,7 @@ CF p667 p668
 Operation p669 "669-bind sample" Value="bind sample";
 CF p668 p669
 DF d562 p669
-Snapshot d634 "634-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/634-sample.txt" Time="2014-07-08T10.37.33";
+Snapshot d634 "634-sample" Value="[DIR]/ddg/634-sample.txt" Time="2014-07-08T10.37.33";
 DF p669 d634
 Start p670 "670-writeToFile" Value="writeToFile";
 CF p669 p670
@@ -3135,7 +3135,7 @@ CF p671 p672
 Operation p673 "673-bind sample" Value="bind sample";
 CF p672 p673
 DF d562 p673
-Snapshot d635 "635-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/635-sample.txt" Time="2014-07-08T10.37.33";
+Snapshot d635 "635-sample" Value="[DIR]/ddg/635-sample.txt" Time="2014-07-08T10.37.33";
 DF p673 d635
 Start p674 "674-writeToFile" Value="writeToFile";
 CF p673 p674
@@ -3147,7 +3147,7 @@ CF p675 p676
 Operation p677 "677-bind sample" Value="bind sample";
 CF p676 p677
 DF d562 p677
-Snapshot d636 "636-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/636-sample.txt" Time="2014-07-08T10.37.33";
+Snapshot d636 "636-sample" Value="[DIR]/ddg/636-sample.txt" Time="2014-07-08T10.37.33";
 DF p677 d636
 Start p678 "678-writeToFile" Value="writeToFile";
 CF p677 p678
@@ -3159,7 +3159,7 @@ CF p679 p680
 Operation p681 "681-bind sample" Value="bind sample";
 CF p680 p681
 DF d562 p681
-Snapshot d637 "637-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/637-sample.txt" Time="2014-07-08T10.37.33";
+Snapshot d637 "637-sample" Value="[DIR]/ddg/637-sample.txt" Time="2014-07-08T10.37.33";
 DF p681 d637
 Start p682 "682-writeToFile" Value="writeToFile";
 CF p681 p682
@@ -3171,7 +3171,7 @@ CF p683 p684
 Operation p685 "685-bind sample" Value="bind sample";
 CF p684 p685
 DF d562 p685
-Snapshot d638 "638-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/638-sample.txt" Time="2014-07-08T10.37.33";
+Snapshot d638 "638-sample" Value="[DIR]/ddg/638-sample.txt" Time="2014-07-08T10.37.33";
 DF p685 d638
 Start p686 "686-writeToFile" Value="writeToFile";
 CF p685 p686
@@ -3183,7 +3183,7 @@ CF p687 p688
 Operation p689 "689-bind sample" Value="bind sample";
 CF p688 p689
 DF d562 p689
-Snapshot d639 "639-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/639-sample.txt" Time="2014-07-08T10.37.33";
+Snapshot d639 "639-sample" Value="[DIR]/ddg/639-sample.txt" Time="2014-07-08T10.37.33";
 DF p689 d639
 Start p690 "690-writeToFile" Value="writeToFile";
 CF p689 p690
@@ -3195,7 +3195,7 @@ CF p691 p692
 Operation p693 "693-bind sample" Value="bind sample";
 CF p692 p693
 DF d562 p693
-Snapshot d640 "640-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/640-sample.txt" Time="2014-07-08T10.37.33";
+Snapshot d640 "640-sample" Value="[DIR]/ddg/640-sample.txt" Time="2014-07-08T10.37.33";
 DF p693 d640
 Start p694 "694-writeToFile" Value="writeToFile";
 CF p693 p694
@@ -3207,7 +3207,7 @@ CF p695 p696
 Operation p697 "697-bind sample" Value="bind sample";
 CF p696 p697
 DF d562 p697
-Snapshot d641 "641-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/641-sample.txt" Time="2014-07-08T10.37.33";
+Snapshot d641 "641-sample" Value="[DIR]/ddg/641-sample.txt" Time="2014-07-08T10.37.33";
 DF p697 d641
 Start p698 "698-writeToFile" Value="writeToFile";
 CF p697 p698
@@ -3219,7 +3219,7 @@ CF p699 p700
 Operation p701 "701-bind sample" Value="bind sample";
 CF p700 p701
 DF d562 p701
-Snapshot d642 "642-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/642-sample.txt" Time="2014-07-08T10.37.33";
+Snapshot d642 "642-sample" Value="[DIR]/ddg/642-sample.txt" Time="2014-07-08T10.37.33";
 DF p701 d642
 Start p702 "702-writeToFile" Value="writeToFile";
 CF p701 p702
@@ -3231,7 +3231,7 @@ CF p703 p704
 Operation p705 "705-bind sample" Value="bind sample";
 CF p704 p705
 DF d562 p705
-Snapshot d643 "643-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/643-sample.txt" Time="2014-07-08T10.37.33";
+Snapshot d643 "643-sample" Value="[DIR]/ddg/643-sample.txt" Time="2014-07-08T10.37.33";
 DF p705 d643
 Start p706 "706-writeToFile" Value="writeToFile";
 CF p705 p706
@@ -3243,7 +3243,7 @@ CF p707 p708
 Operation p709 "709-bind sample" Value="bind sample";
 CF p708 p709
 DF d562 p709
-Snapshot d644 "644-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/644-sample.txt" Time="2014-07-08T10.37.33";
+Snapshot d644 "644-sample" Value="[DIR]/ddg/644-sample.txt" Time="2014-07-08T10.37.33";
 DF p709 d644
 Start p710 "710-writeToFile" Value="writeToFile";
 CF p709 p710
@@ -3255,7 +3255,7 @@ CF p711 p712
 Operation p713 "713-bind sample" Value="bind sample";
 CF p712 p713
 DF d562 p713
-Snapshot d645 "645-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/645-sample.txt" Time="2014-07-08T10.37.33";
+Snapshot d645 "645-sample" Value="[DIR]/ddg/645-sample.txt" Time="2014-07-08T10.37.33";
 DF p713 d645
 Start p714 "714-writeToFile" Value="writeToFile";
 CF p713 p714
@@ -3267,7 +3267,7 @@ CF p715 p716
 Operation p717 "717-bind sample" Value="bind sample";
 CF p716 p717
 DF d562 p717
-Snapshot d646 "646-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/646-sample.txt" Time="2014-07-08T10.37.33";
+Snapshot d646 "646-sample" Value="[DIR]/ddg/646-sample.txt" Time="2014-07-08T10.37.33";
 DF p717 d646
 Start p718 "718-writeToFile" Value="writeToFile";
 CF p717 p718
@@ -3279,7 +3279,7 @@ CF p719 p720
 Operation p721 "721-bind sample" Value="bind sample";
 CF p720 p721
 DF d562 p721
-Snapshot d647 "647-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/647-sample.txt" Time="2014-07-08T10.37.33";
+Snapshot d647 "647-sample" Value="[DIR]/ddg/647-sample.txt" Time="2014-07-08T10.37.33";
 DF p721 d647
 Start p722 "722-writeToFile" Value="writeToFile";
 CF p721 p722
@@ -3291,7 +3291,7 @@ CF p723 p724
 Operation p725 "725-bind sample" Value="bind sample";
 CF p724 p725
 DF d562 p725
-Snapshot d648 "648-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/648-sample.txt" Time="2014-07-08T10.37.33";
+Snapshot d648 "648-sample" Value="[DIR]/ddg/648-sample.txt" Time="2014-07-08T10.37.33";
 DF p725 d648
 Start p726 "726-writeToFile" Value="writeToFile";
 CF p725 p726
@@ -3303,7 +3303,7 @@ CF p727 p728
 Operation p729 "729-bind sample" Value="bind sample";
 CF p728 p729
 DF d562 p729
-Snapshot d649 "649-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/649-sample.txt" Time="2014-07-08T10.37.33";
+Snapshot d649 "649-sample" Value="[DIR]/ddg/649-sample.txt" Time="2014-07-08T10.37.33";
 DF p729 d649
 Start p730 "730-writeToFile" Value="writeToFile";
 CF p729 p730
@@ -3315,7 +3315,7 @@ CF p731 p732
 Operation p733 "733-bind sample" Value="bind sample";
 CF p732 p733
 DF d562 p733
-Snapshot d650 "650-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/650-sample.txt" Time="2014-07-08T10.37.33";
+Snapshot d650 "650-sample" Value="[DIR]/ddg/650-sample.txt" Time="2014-07-08T10.37.33";
 DF p733 d650
 Start p734 "734-writeToFile" Value="writeToFile";
 CF p733 p734
@@ -3327,7 +3327,7 @@ CF p735 p736
 Operation p737 "737-bind sample" Value="bind sample";
 CF p736 p737
 DF d562 p737
-Snapshot d651 "651-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/651-sample.txt" Time="2014-07-08T10.37.33";
+Snapshot d651 "651-sample" Value="[DIR]/ddg/651-sample.txt" Time="2014-07-08T10.37.33";
 DF p737 d651
 Start p738 "738-writeToFile" Value="writeToFile";
 CF p737 p738
@@ -3339,7 +3339,7 @@ CF p739 p740
 Operation p741 "741-bind sample" Value="bind sample";
 CF p740 p741
 DF d562 p741
-Snapshot d652 "652-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/652-sample.txt" Time="2014-07-08T10.37.33";
+Snapshot d652 "652-sample" Value="[DIR]/ddg/652-sample.txt" Time="2014-07-08T10.37.33";
 DF p741 d652
 Start p742 "742-writeToFile" Value="writeToFile";
 CF p741 p742
@@ -3351,7 +3351,7 @@ CF p743 p744
 Operation p745 "745-bind sample" Value="bind sample";
 CF p744 p745
 DF d562 p745
-Snapshot d653 "653-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/653-sample.txt" Time="2014-07-08T10.37.33";
+Snapshot d653 "653-sample" Value="[DIR]/ddg/653-sample.txt" Time="2014-07-08T10.37.33";
 DF p745 d653
 Start p746 "746-writeToFile" Value="writeToFile";
 CF p745 p746
@@ -3363,7 +3363,7 @@ CF p747 p748
 Operation p749 "749-bind sample" Value="bind sample";
 CF p748 p749
 DF d562 p749
-Snapshot d654 "654-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/654-sample.txt" Time="2014-07-08T10.37.33";
+Snapshot d654 "654-sample" Value="[DIR]/ddg/654-sample.txt" Time="2014-07-08T10.37.33";
 DF p749 d654
 Start p750 "750-writeToFile" Value="writeToFile";
 CF p749 p750
@@ -3375,7 +3375,7 @@ CF p751 p752
 Operation p753 "753-bind sample" Value="bind sample";
 CF p752 p753
 DF d562 p753
-Snapshot d655 "655-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/655-sample.txt" Time="2014-07-08T10.37.33";
+Snapshot d655 "655-sample" Value="[DIR]/ddg/655-sample.txt" Time="2014-07-08T10.37.33";
 DF p753 d655
 Start p754 "754-writeToFile" Value="writeToFile";
 CF p753 p754
@@ -3387,7 +3387,7 @@ CF p755 p756
 Operation p757 "757-bind sample" Value="bind sample";
 CF p756 p757
 DF d562 p757
-Snapshot d656 "656-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/656-sample.txt" Time="2014-07-08T10.37.33";
+Snapshot d656 "656-sample" Value="[DIR]/ddg/656-sample.txt" Time="2014-07-08T10.37.33";
 DF p757 d656
 Start p758 "758-writeToFile" Value="writeToFile";
 CF p757 p758
@@ -3399,7 +3399,7 @@ CF p759 p760
 Operation p761 "761-bind sample" Value="bind sample";
 CF p760 p761
 DF d562 p761
-Snapshot d657 "657-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/657-sample.txt" Time="2014-07-08T10.37.33";
+Snapshot d657 "657-sample" Value="[DIR]/ddg/657-sample.txt" Time="2014-07-08T10.37.33";
 DF p761 d657
 Start p762 "762-writeToFile" Value="writeToFile";
 CF p761 p762
@@ -3411,7 +3411,7 @@ CF p763 p764
 Operation p765 "765-bind sample" Value="bind sample";
 CF p764 p765
 DF d562 p765
-Snapshot d658 "658-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/658-sample.txt" Time="2014-07-08T10.37.33";
+Snapshot d658 "658-sample" Value="[DIR]/ddg/658-sample.txt" Time="2014-07-08T10.37.33";
 DF p765 d658
 Start p766 "766-writeToFile" Value="writeToFile";
 CF p765 p766
@@ -3423,7 +3423,7 @@ CF p767 p768
 Operation p769 "769-bind sample" Value="bind sample";
 CF p768 p769
 DF d562 p769
-Snapshot d659 "659-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/659-sample.txt" Time="2014-07-08T10.37.34";
+Snapshot d659 "659-sample" Value="[DIR]/ddg/659-sample.txt" Time="2014-07-08T10.37.34";
 DF p769 d659
 Start p770 "770-writeToFile" Value="writeToFile";
 CF p769 p770
@@ -3435,7 +3435,7 @@ CF p771 p772
 Operation p773 "773-bind sample" Value="bind sample";
 CF p772 p773
 DF d562 p773
-Snapshot d660 "660-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/660-sample.txt" Time="2014-07-08T10.37.34";
+Snapshot d660 "660-sample" Value="[DIR]/ddg/660-sample.txt" Time="2014-07-08T10.37.34";
 DF p773 d660
 Start p774 "774-writeToFile" Value="writeToFile";
 CF p773 p774
@@ -3447,7 +3447,7 @@ CF p775 p776
 Operation p777 "777-bind sample" Value="bind sample";
 CF p776 p777
 DF d562 p777
-Snapshot d661 "661-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/661-sample.txt" Time="2014-07-08T10.37.34";
+Snapshot d661 "661-sample" Value="[DIR]/ddg/661-sample.txt" Time="2014-07-08T10.37.34";
 DF p777 d661
 Start p778 "778-writeToFile" Value="writeToFile";
 CF p777 p778
@@ -3459,7 +3459,7 @@ CF p779 p780
 Operation p781 "781-bind sample" Value="bind sample";
 CF p780 p781
 DF d562 p781
-Snapshot d662 "662-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/662-sample.txt" Time="2014-07-08T10.37.34";
+Snapshot d662 "662-sample" Value="[DIR]/ddg/662-sample.txt" Time="2014-07-08T10.37.34";
 DF p781 d662
 Start p782 "782-writeToFile" Value="writeToFile";
 CF p781 p782
@@ -3471,7 +3471,7 @@ CF p783 p784
 Operation p785 "785-bind sample" Value="bind sample";
 CF p784 p785
 DF d562 p785
-Snapshot d663 "663-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/663-sample.txt" Time="2014-07-08T10.37.34";
+Snapshot d663 "663-sample" Value="[DIR]/ddg/663-sample.txt" Time="2014-07-08T10.37.34";
 DF p785 d663
 Start p786 "786-writeToFile" Value="writeToFile";
 CF p785 p786
@@ -3483,7 +3483,7 @@ CF p787 p788
 Operation p789 "789-bind sample" Value="bind sample";
 CF p788 p789
 DF d562 p789
-Snapshot d664 "664-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/664-sample.txt" Time="2014-07-08T10.37.34";
+Snapshot d664 "664-sample" Value="[DIR]/ddg/664-sample.txt" Time="2014-07-08T10.37.34";
 DF p789 d664
 Start p790 "790-writeToFile" Value="writeToFile";
 CF p789 p790
@@ -3495,7 +3495,7 @@ CF p791 p792
 Operation p793 "793-bind sample" Value="bind sample";
 CF p792 p793
 DF d562 p793
-Snapshot d665 "665-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/665-sample.txt" Time="2014-07-08T10.37.34";
+Snapshot d665 "665-sample" Value="[DIR]/ddg/665-sample.txt" Time="2014-07-08T10.37.34";
 DF p793 d665
 Start p794 "794-writeToFile" Value="writeToFile";
 CF p793 p794
@@ -3507,7 +3507,7 @@ CF p795 p796
 Operation p797 "797-bind sample" Value="bind sample";
 CF p796 p797
 DF d562 p797
-Snapshot d666 "666-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/666-sample.txt" Time="2014-07-08T10.37.34";
+Snapshot d666 "666-sample" Value="[DIR]/ddg/666-sample.txt" Time="2014-07-08T10.37.34";
 DF p797 d666
 Start p798 "798-writeToFile" Value="writeToFile";
 CF p797 p798
@@ -3519,7 +3519,7 @@ CF p799 p800
 Operation p801 "801-bind sample" Value="bind sample";
 CF p800 p801
 DF d562 p801
-Snapshot d667 "667-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/667-sample.txt" Time="2014-07-08T10.37.34";
+Snapshot d667 "667-sample" Value="[DIR]/ddg/667-sample.txt" Time="2014-07-08T10.37.34";
 DF p801 d667
 Start p802 "802-writeToFile" Value="writeToFile";
 CF p801 p802
@@ -3531,7 +3531,7 @@ CF p803 p804
 Operation p805 "805-bind sample" Value="bind sample";
 CF p804 p805
 DF d562 p805
-Snapshot d668 "668-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/668-sample.txt" Time="2014-07-08T10.37.34";
+Snapshot d668 "668-sample" Value="[DIR]/ddg/668-sample.txt" Time="2014-07-08T10.37.34";
 DF p805 d668
 Start p806 "806-writeToFile" Value="writeToFile";
 CF p805 p806
@@ -3543,7 +3543,7 @@ CF p807 p808
 Operation p809 "809-bind sample" Value="bind sample";
 CF p808 p809
 DF d562 p809
-Snapshot d669 "669-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/669-sample.txt" Time="2014-07-08T10.37.34";
+Snapshot d669 "669-sample" Value="[DIR]/ddg/669-sample.txt" Time="2014-07-08T10.37.34";
 DF p809 d669
 Start p810 "810-writeToFile" Value="writeToFile";
 CF p809 p810
@@ -3555,7 +3555,7 @@ CF p811 p812
 Operation p813 "813-bind sample" Value="bind sample";
 CF p812 p813
 DF d562 p813
-Snapshot d670 "670-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/670-sample.txt" Time="2014-07-08T10.37.34";
+Snapshot d670 "670-sample" Value="[DIR]/ddg/670-sample.txt" Time="2014-07-08T10.37.34";
 DF p813 d670
 Start p814 "814-writeToFile" Value="writeToFile";
 CF p813 p814
@@ -3567,7 +3567,7 @@ CF p815 p816
 Operation p817 "817-bind sample" Value="bind sample";
 CF p816 p817
 DF d562 p817
-Snapshot d671 "671-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/671-sample.txt" Time="2014-07-08T10.37.34";
+Snapshot d671 "671-sample" Value="[DIR]/ddg/671-sample.txt" Time="2014-07-08T10.37.34";
 DF p817 d671
 Start p818 "818-writeToFile" Value="writeToFile";
 CF p817 p818
@@ -3579,7 +3579,7 @@ CF p819 p820
 Operation p821 "821-bind sample" Value="bind sample";
 CF p820 p821
 DF d562 p821
-Snapshot d672 "672-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/672-sample.txt" Time="2014-07-08T10.37.34";
+Snapshot d672 "672-sample" Value="[DIR]/ddg/672-sample.txt" Time="2014-07-08T10.37.34";
 DF p821 d672
 Start p822 "822-writeToFile" Value="writeToFile";
 CF p821 p822
@@ -3591,7 +3591,7 @@ CF p823 p824
 Operation p825 "825-bind sample" Value="bind sample";
 CF p824 p825
 DF d562 p825
-Snapshot d673 "673-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/673-sample.txt" Time="2014-07-08T10.37.34";
+Snapshot d673 "673-sample" Value="[DIR]/ddg/673-sample.txt" Time="2014-07-08T10.37.34";
 DF p825 d673
 Start p826 "826-writeToFile" Value="writeToFile";
 CF p825 p826
@@ -3603,7 +3603,7 @@ CF p827 p828
 Operation p829 "829-bind sample" Value="bind sample";
 CF p828 p829
 DF d562 p829
-Snapshot d674 "674-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/674-sample.txt" Time="2014-07-08T10.37.34";
+Snapshot d674 "674-sample" Value="[DIR]/ddg/674-sample.txt" Time="2014-07-08T10.37.34";
 DF p829 d674
 Start p830 "830-writeToFile" Value="writeToFile";
 CF p829 p830
@@ -3615,7 +3615,7 @@ CF p831 p832
 Operation p833 "833-bind sample" Value="bind sample";
 CF p832 p833
 DF d562 p833
-Snapshot d675 "675-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/675-sample.txt" Time="2014-07-08T10.37.34";
+Snapshot d675 "675-sample" Value="[DIR]/ddg/675-sample.txt" Time="2014-07-08T10.37.34";
 DF p833 d675
 Start p834 "834-writeToFile" Value="writeToFile";
 CF p833 p834
@@ -3627,7 +3627,7 @@ CF p835 p836
 Operation p837 "837-bind sample" Value="bind sample";
 CF p836 p837
 DF d562 p837
-Snapshot d676 "676-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/676-sample.txt" Time="2014-07-08T10.37.34";
+Snapshot d676 "676-sample" Value="[DIR]/ddg/676-sample.txt" Time="2014-07-08T10.37.34";
 DF p837 d676
 Start p838 "838-writeToFile" Value="writeToFile";
 CF p837 p838
@@ -3639,7 +3639,7 @@ CF p839 p840
 Operation p841 "841-bind sample" Value="bind sample";
 CF p840 p841
 DF d562 p841
-Snapshot d677 "677-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/677-sample.txt" Time="2014-07-08T10.37.34";
+Snapshot d677 "677-sample" Value="[DIR]/ddg/677-sample.txt" Time="2014-07-08T10.37.34";
 DF p841 d677
 Start p842 "842-writeToFile" Value="writeToFile";
 CF p841 p842
@@ -3651,7 +3651,7 @@ CF p843 p844
 Operation p845 "845-bind sample" Value="bind sample";
 CF p844 p845
 DF d562 p845
-Snapshot d678 "678-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/678-sample.txt" Time="2014-07-08T10.37.34";
+Snapshot d678 "678-sample" Value="[DIR]/ddg/678-sample.txt" Time="2014-07-08T10.37.34";
 DF p845 d678
 Start p846 "846-writeToFile" Value="writeToFile";
 CF p845 p846
@@ -3663,7 +3663,7 @@ CF p847 p848
 Operation p849 "849-bind sample" Value="bind sample";
 CF p848 p849
 DF d562 p849
-Snapshot d679 "679-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/679-sample.txt" Time="2014-07-08T10.37.34";
+Snapshot d679 "679-sample" Value="[DIR]/ddg/679-sample.txt" Time="2014-07-08T10.37.34";
 DF p849 d679
 Start p850 "850-writeToFile" Value="writeToFile";
 CF p849 p850
@@ -3675,7 +3675,7 @@ CF p851 p852
 Operation p853 "853-bind sample" Value="bind sample";
 CF p852 p853
 DF d562 p853
-Snapshot d680 "680-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/680-sample.txt" Time="2014-07-08T10.37.34";
+Snapshot d680 "680-sample" Value="[DIR]/ddg/680-sample.txt" Time="2014-07-08T10.37.34";
 DF p853 d680
 Start p854 "854-writeToFile" Value="writeToFile";
 CF p853 p854
@@ -3687,7 +3687,7 @@ CF p855 p856
 Operation p857 "857-bind sample" Value="bind sample";
 CF p856 p857
 DF d562 p857
-Snapshot d681 "681-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/681-sample.txt" Time="2014-07-08T10.37.34";
+Snapshot d681 "681-sample" Value="[DIR]/ddg/681-sample.txt" Time="2014-07-08T10.37.34";
 DF p857 d681
 Start p858 "858-writeToFile" Value="writeToFile";
 CF p857 p858
@@ -3699,7 +3699,7 @@ CF p859 p860
 Operation p861 "861-bind sample" Value="bind sample";
 CF p860 p861
 DF d562 p861
-Snapshot d682 "682-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/682-sample.txt" Time="2014-07-08T10.37.34";
+Snapshot d682 "682-sample" Value="[DIR]/ddg/682-sample.txt" Time="2014-07-08T10.37.34";
 DF p861 d682
 Start p862 "862-writeToFile" Value="writeToFile";
 CF p861 p862
@@ -3711,7 +3711,7 @@ CF p863 p864
 Operation p865 "865-bind sample" Value="bind sample";
 CF p864 p865
 DF d562 p865
-Snapshot d683 "683-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/683-sample.txt" Time="2014-07-08T10.37.34";
+Snapshot d683 "683-sample" Value="[DIR]/ddg/683-sample.txt" Time="2014-07-08T10.37.34";
 DF p865 d683
 Start p866 "866-writeToFile" Value="writeToFile";
 CF p865 p866
@@ -3723,7 +3723,7 @@ CF p867 p868
 Operation p869 "869-bind sample" Value="bind sample";
 CF p868 p869
 DF d562 p869
-Snapshot d684 "684-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/684-sample.txt" Time="2014-07-08T10.37.34";
+Snapshot d684 "684-sample" Value="[DIR]/ddg/684-sample.txt" Time="2014-07-08T10.37.34";
 DF p869 d684
 Start p870 "870-writeToFile" Value="writeToFile";
 CF p869 p870
@@ -3735,7 +3735,7 @@ CF p871 p872
 Operation p873 "873-bind sample" Value="bind sample";
 CF p872 p873
 DF d562 p873
-Snapshot d685 "685-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/685-sample.txt" Time="2014-07-08T10.37.34";
+Snapshot d685 "685-sample" Value="[DIR]/ddg/685-sample.txt" Time="2014-07-08T10.37.34";
 DF p873 d685
 Start p874 "874-writeToFile" Value="writeToFile";
 CF p873 p874
@@ -3747,7 +3747,7 @@ CF p875 p876
 Operation p877 "877-bind sample" Value="bind sample";
 CF p876 p877
 DF d562 p877
-Snapshot d686 "686-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/686-sample.txt" Time="2014-07-08T10.37.34";
+Snapshot d686 "686-sample" Value="[DIR]/ddg/686-sample.txt" Time="2014-07-08T10.37.34";
 DF p877 d686
 Start p878 "878-writeToFile" Value="writeToFile";
 CF p877 p878
@@ -3759,7 +3759,7 @@ CF p879 p880
 Operation p881 "881-bind sample" Value="bind sample";
 CF p880 p881
 DF d562 p881
-Snapshot d687 "687-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/687-sample.txt" Time="2014-07-08T10.37.34";
+Snapshot d687 "687-sample" Value="[DIR]/ddg/687-sample.txt" Time="2014-07-08T10.37.34";
 DF p881 d687
 Start p882 "882-writeToFile" Value="writeToFile";
 CF p881 p882
@@ -3771,7 +3771,7 @@ CF p883 p884
 Operation p885 "885-bind sample" Value="bind sample";
 CF p884 p885
 DF d562 p885
-Snapshot d688 "688-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/688-sample.txt" Time="2014-07-08T10.37.35";
+Snapshot d688 "688-sample" Value="[DIR]/ddg/688-sample.txt" Time="2014-07-08T10.37.35";
 DF p885 d688
 Start p886 "886-writeToFile" Value="writeToFile";
 CF p885 p886
@@ -3783,7 +3783,7 @@ CF p887 p888
 Operation p889 "889-bind sample" Value="bind sample";
 CF p888 p889
 DF d562 p889
-Snapshot d689 "689-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/689-sample.txt" Time="2014-07-08T10.37.35";
+Snapshot d689 "689-sample" Value="[DIR]/ddg/689-sample.txt" Time="2014-07-08T10.37.35";
 DF p889 d689
 Start p890 "890-writeToFile" Value="writeToFile";
 CF p889 p890
@@ -3795,7 +3795,7 @@ CF p891 p892
 Operation p893 "893-bind sample" Value="bind sample";
 CF p892 p893
 DF d562 p893
-Snapshot d690 "690-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/690-sample.txt" Time="2014-07-08T10.37.35";
+Snapshot d690 "690-sample" Value="[DIR]/ddg/690-sample.txt" Time="2014-07-08T10.37.35";
 DF p893 d690
 Start p894 "894-writeToFile" Value="writeToFile";
 CF p893 p894
@@ -3807,7 +3807,7 @@ CF p895 p896
 Operation p897 "897-bind sample" Value="bind sample";
 CF p896 p897
 DF d562 p897
-Snapshot d691 "691-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/691-sample.txt" Time="2014-07-08T10.37.35";
+Snapshot d691 "691-sample" Value="[DIR]/ddg/691-sample.txt" Time="2014-07-08T10.37.35";
 DF p897 d691
 Start p898 "898-writeToFile" Value="writeToFile";
 CF p897 p898
@@ -3819,7 +3819,7 @@ CF p899 p900
 Operation p901 "901-bind sample" Value="bind sample";
 CF p900 p901
 DF d562 p901
-Snapshot d692 "692-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/692-sample.txt" Time="2014-07-08T10.37.35";
+Snapshot d692 "692-sample" Value="[DIR]/ddg/692-sample.txt" Time="2014-07-08T10.37.35";
 DF p901 d692
 Start p902 "902-writeToFile" Value="writeToFile";
 CF p901 p902
@@ -3831,7 +3831,7 @@ CF p903 p904
 Operation p905 "905-bind sample" Value="bind sample";
 CF p904 p905
 DF d562 p905
-Snapshot d693 "693-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/693-sample.txt" Time="2014-07-08T10.37.35";
+Snapshot d693 "693-sample" Value="[DIR]/ddg/693-sample.txt" Time="2014-07-08T10.37.35";
 DF p905 d693
 Start p906 "906-writeToFile" Value="writeToFile";
 CF p905 p906
@@ -3843,7 +3843,7 @@ CF p907 p908
 Operation p909 "909-bind sample" Value="bind sample";
 CF p908 p909
 DF d562 p909
-Snapshot d694 "694-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/694-sample.txt" Time="2014-07-08T10.37.35";
+Snapshot d694 "694-sample" Value="[DIR]/ddg/694-sample.txt" Time="2014-07-08T10.37.35";
 DF p909 d694
 Start p910 "910-writeToFile" Value="writeToFile";
 CF p909 p910
@@ -3855,7 +3855,7 @@ CF p911 p912
 Operation p913 "913-bind sample" Value="bind sample";
 CF p912 p913
 DF d562 p913
-Snapshot d695 "695-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/695-sample.txt" Time="2014-07-08T10.37.35";
+Snapshot d695 "695-sample" Value="[DIR]/ddg/695-sample.txt" Time="2014-07-08T10.37.35";
 DF p913 d695
 Start p914 "914-writeToFile" Value="writeToFile";
 CF p913 p914
@@ -3867,7 +3867,7 @@ CF p915 p916
 Operation p917 "917-bind sample" Value="bind sample";
 CF p916 p917
 DF d562 p917
-Snapshot d696 "696-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/696-sample.txt" Time="2014-07-08T10.37.35";
+Snapshot d696 "696-sample" Value="[DIR]/ddg/696-sample.txt" Time="2014-07-08T10.37.35";
 DF p917 d696
 Start p918 "918-writeToFile" Value="writeToFile";
 CF p917 p918
@@ -3879,7 +3879,7 @@ CF p919 p920
 Operation p921 "921-bind sample" Value="bind sample";
 CF p920 p921
 DF d562 p921
-Snapshot d697 "697-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/697-sample.txt" Time="2014-07-08T10.37.35";
+Snapshot d697 "697-sample" Value="[DIR]/ddg/697-sample.txt" Time="2014-07-08T10.37.35";
 DF p921 d697
 Start p922 "922-writeToFile" Value="writeToFile";
 CF p921 p922
@@ -3891,7 +3891,7 @@ CF p923 p924
 Operation p925 "925-bind sample" Value="bind sample";
 CF p924 p925
 DF d562 p925
-Snapshot d698 "698-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/698-sample.txt" Time="2014-07-08T10.37.35";
+Snapshot d698 "698-sample" Value="[DIR]/ddg/698-sample.txt" Time="2014-07-08T10.37.35";
 DF p925 d698
 Start p926 "926-writeToFile" Value="writeToFile";
 CF p925 p926
@@ -3903,7 +3903,7 @@ CF p927 p928
 Operation p929 "929-bind sample" Value="bind sample";
 CF p928 p929
 DF d562 p929
-Snapshot d699 "699-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/699-sample.txt" Time="2014-07-08T10.37.35";
+Snapshot d699 "699-sample" Value="[DIR]/ddg/699-sample.txt" Time="2014-07-08T10.37.35";
 DF p929 d699
 Start p930 "930-writeToFile" Value="writeToFile";
 CF p929 p930
@@ -3915,7 +3915,7 @@ CF p931 p932
 Operation p933 "933-bind sample" Value="bind sample";
 CF p932 p933
 DF d562 p933
-Snapshot d700 "700-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/700-sample.txt" Time="2014-07-08T10.37.35";
+Snapshot d700 "700-sample" Value="[DIR]/ddg/700-sample.txt" Time="2014-07-08T10.37.35";
 DF p933 d700
 Start p934 "934-writeToFile" Value="writeToFile";
 CF p933 p934
@@ -3927,7 +3927,7 @@ CF p935 p936
 Operation p937 "937-bind sample" Value="bind sample";
 CF p936 p937
 DF d562 p937
-Snapshot d701 "701-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/701-sample.txt" Time="2014-07-08T10.37.35";
+Snapshot d701 "701-sample" Value="[DIR]/ddg/701-sample.txt" Time="2014-07-08T10.37.35";
 DF p937 d701
 Start p938 "938-writeToFile" Value="writeToFile";
 CF p937 p938
@@ -3939,7 +3939,7 @@ CF p939 p940
 Operation p941 "941-bind sample" Value="bind sample";
 CF p940 p941
 DF d562 p941
-Snapshot d702 "702-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/702-sample.txt" Time="2014-07-08T10.37.35";
+Snapshot d702 "702-sample" Value="[DIR]/ddg/702-sample.txt" Time="2014-07-08T10.37.35";
 DF p941 d702
 Start p942 "942-writeToFile" Value="writeToFile";
 CF p941 p942
@@ -3951,7 +3951,7 @@ CF p943 p944
 Operation p945 "945-bind sample" Value="bind sample";
 CF p944 p945
 DF d562 p945
-Snapshot d703 "703-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/703-sample.txt" Time="2014-07-08T10.37.35";
+Snapshot d703 "703-sample" Value="[DIR]/ddg/703-sample.txt" Time="2014-07-08T10.37.35";
 DF p945 d703
 Start p946 "946-writeToFile" Value="writeToFile";
 CF p945 p946
@@ -3963,7 +3963,7 @@ CF p947 p948
 Operation p949 "949-bind sample" Value="bind sample";
 CF p948 p949
 DF d562 p949
-Snapshot d704 "704-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/704-sample.txt" Time="2014-07-08T10.37.35";
+Snapshot d704 "704-sample" Value="[DIR]/ddg/704-sample.txt" Time="2014-07-08T10.37.35";
 DF p949 d704
 Start p950 "950-writeToFile" Value="writeToFile";
 CF p949 p950
@@ -3975,7 +3975,7 @@ CF p951 p952
 Operation p953 "953-bind sample" Value="bind sample";
 CF p952 p953
 DF d562 p953
-Snapshot d705 "705-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/705-sample.txt" Time="2014-07-08T10.37.35";
+Snapshot d705 "705-sample" Value="[DIR]/ddg/705-sample.txt" Time="2014-07-08T10.37.35";
 DF p953 d705
 Start p954 "954-writeToFile" Value="writeToFile";
 CF p953 p954
@@ -3987,7 +3987,7 @@ CF p955 p956
 Operation p957 "957-bind sample" Value="bind sample";
 CF p956 p957
 DF d562 p957
-Snapshot d706 "706-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/706-sample.txt" Time="2014-07-08T10.37.35";
+Snapshot d706 "706-sample" Value="[DIR]/ddg/706-sample.txt" Time="2014-07-08T10.37.35";
 DF p957 d706
 Start p958 "958-writeToFile" Value="writeToFile";
 CF p957 p958
@@ -3999,7 +3999,7 @@ CF p959 p960
 Operation p961 "961-bind sample" Value="bind sample";
 CF p960 p961
 DF d562 p961
-Snapshot d707 "707-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/707-sample.txt" Time="2014-07-08T10.37.35";
+Snapshot d707 "707-sample" Value="[DIR]/ddg/707-sample.txt" Time="2014-07-08T10.37.35";
 DF p961 d707
 Start p962 "962-writeToFile" Value="writeToFile";
 CF p961 p962
@@ -4011,7 +4011,7 @@ CF p963 p964
 Operation p965 "965-bind sample" Value="bind sample";
 CF p964 p965
 DF d562 p965
-Snapshot d708 "708-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/708-sample.txt" Time="2014-07-08T10.37.35";
+Snapshot d708 "708-sample" Value="[DIR]/ddg/708-sample.txt" Time="2014-07-08T10.37.35";
 DF p965 d708
 Start p966 "966-writeToFile" Value="writeToFile";
 CF p965 p966
@@ -4023,7 +4023,7 @@ CF p967 p968
 Operation p969 "969-bind sample" Value="bind sample";
 CF p968 p969
 DF d562 p969
-Snapshot d709 "709-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/709-sample.txt" Time="2014-07-08T10.37.35";
+Snapshot d709 "709-sample" Value="[DIR]/ddg/709-sample.txt" Time="2014-07-08T10.37.35";
 DF p969 d709
 Start p970 "970-writeToFile" Value="writeToFile";
 CF p969 p970
@@ -4035,7 +4035,7 @@ CF p971 p972
 Operation p973 "973-bind sample" Value="bind sample";
 CF p972 p973
 DF d562 p973
-Snapshot d710 "710-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/710-sample.txt" Time="2014-07-08T10.37.35";
+Snapshot d710 "710-sample" Value="[DIR]/ddg/710-sample.txt" Time="2014-07-08T10.37.35";
 DF p973 d710
 Start p974 "974-writeToFile" Value="writeToFile";
 CF p973 p974
@@ -4047,7 +4047,7 @@ CF p975 p976
 Operation p977 "977-bind sample" Value="bind sample";
 CF p976 p977
 DF d562 p977
-Snapshot d711 "711-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/711-sample.txt" Time="2014-07-08T10.37.35";
+Snapshot d711 "711-sample" Value="[DIR]/ddg/711-sample.txt" Time="2014-07-08T10.37.35";
 DF p977 d711
 Start p978 "978-writeToFile" Value="writeToFile";
 CF p977 p978
@@ -4059,7 +4059,7 @@ CF p979 p980
 Operation p981 "981-bind sample" Value="bind sample";
 CF p980 p981
 DF d562 p981
-Snapshot d712 "712-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/712-sample.txt" Time="2014-07-08T10.37.35";
+Snapshot d712 "712-sample" Value="[DIR]/ddg/712-sample.txt" Time="2014-07-08T10.37.35";
 DF p981 d712
 Start p982 "982-writeToFile" Value="writeToFile";
 CF p981 p982
@@ -4071,7 +4071,7 @@ CF p983 p984
 Operation p985 "985-bind sample" Value="bind sample";
 CF p984 p985
 DF d562 p985
-Snapshot d713 "713-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/713-sample.txt" Time="2014-07-08T10.37.35";
+Snapshot d713 "713-sample" Value="[DIR]/ddg/713-sample.txt" Time="2014-07-08T10.37.35";
 DF p985 d713
 Start p986 "986-writeToFile" Value="writeToFile";
 CF p985 p986
@@ -4083,7 +4083,7 @@ CF p987 p988
 Operation p989 "989-bind sample" Value="bind sample";
 CF p988 p989
 DF d562 p989
-Snapshot d714 "714-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/714-sample.txt" Time="2014-07-08T10.37.36";
+Snapshot d714 "714-sample" Value="[DIR]/ddg/714-sample.txt" Time="2014-07-08T10.37.36";
 DF p989 d714
 Start p990 "990-writeToFile" Value="writeToFile";
 CF p989 p990
@@ -4095,7 +4095,7 @@ CF p991 p992
 Operation p993 "993-bind sample" Value="bind sample";
 CF p992 p993
 DF d562 p993
-Snapshot d715 "715-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/715-sample.txt" Time="2014-07-08T10.37.36";
+Snapshot d715 "715-sample" Value="[DIR]/ddg/715-sample.txt" Time="2014-07-08T10.37.36";
 DF p993 d715
 Start p994 "994-writeToFile" Value="writeToFile";
 CF p993 p994
@@ -4107,7 +4107,7 @@ CF p995 p996
 Operation p997 "997-bind sample" Value="bind sample";
 CF p996 p997
 DF d562 p997
-Snapshot d716 "716-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/716-sample.txt" Time="2014-07-08T10.37.36";
+Snapshot d716 "716-sample" Value="[DIR]/ddg/716-sample.txt" Time="2014-07-08T10.37.36";
 DF p997 d716
 Start p998 "998-writeToFile" Value="writeToFile";
 CF p997 p998
@@ -4119,7 +4119,7 @@ CF p999 p1000
 Operation p1001 "1001-bind sample" Value="bind sample";
 CF p1000 p1001
 DF d562 p1001
-Snapshot d717 "717-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/717-sample.txt" Time="2014-07-08T10.37.36";
+Snapshot d717 "717-sample" Value="[DIR]/ddg/717-sample.txt" Time="2014-07-08T10.37.36";
 DF p1001 d717
 Start p1002 "1002-writeToFile" Value="writeToFile";
 CF p1001 p1002
@@ -4131,7 +4131,7 @@ CF p1003 p1004
 Operation p1005 "1005-bind sample" Value="bind sample";
 CF p1004 p1005
 DF d562 p1005
-Snapshot d718 "718-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/718-sample.txt" Time="2014-07-08T10.37.36";
+Snapshot d718 "718-sample" Value="[DIR]/ddg/718-sample.txt" Time="2014-07-08T10.37.36";
 DF p1005 d718
 Start p1006 "1006-writeToFile" Value="writeToFile";
 CF p1005 p1006
@@ -4143,7 +4143,7 @@ CF p1007 p1008
 Operation p1009 "1009-bind sample" Value="bind sample";
 CF p1008 p1009
 DF d562 p1009
-Snapshot d719 "719-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/719-sample.txt" Time="2014-07-08T10.37.36";
+Snapshot d719 "719-sample" Value="[DIR]/ddg/719-sample.txt" Time="2014-07-08T10.37.36";
 DF p1009 d719
 Start p1010 "1010-writeToFile" Value="writeToFile";
 CF p1009 p1010
@@ -4155,7 +4155,7 @@ CF p1011 p1012
 Operation p1013 "1013-bind sample" Value="bind sample";
 CF p1012 p1013
 DF d562 p1013
-Snapshot d720 "720-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/720-sample.txt" Time="2014-07-08T10.37.36";
+Snapshot d720 "720-sample" Value="[DIR]/ddg/720-sample.txt" Time="2014-07-08T10.37.36";
 DF p1013 d720
 Start p1014 "1014-writeToFile" Value="writeToFile";
 CF p1013 p1014
@@ -4167,7 +4167,7 @@ CF p1015 p1016
 Operation p1017 "1017-bind sample" Value="bind sample";
 CF p1016 p1017
 DF d562 p1017
-Snapshot d721 "721-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/721-sample.txt" Time="2014-07-08T10.37.36";
+Snapshot d721 "721-sample" Value="[DIR]/ddg/721-sample.txt" Time="2014-07-08T10.37.36";
 DF p1017 d721
 Start p1018 "1018-writeToFile" Value="writeToFile";
 CF p1017 p1018
@@ -4179,7 +4179,7 @@ CF p1019 p1020
 Operation p1021 "1021-bind sample" Value="bind sample";
 CF p1020 p1021
 DF d562 p1021
-Snapshot d722 "722-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/722-sample.txt" Time="2014-07-08T10.37.36";
+Snapshot d722 "722-sample" Value="[DIR]/ddg/722-sample.txt" Time="2014-07-08T10.37.36";
 DF p1021 d722
 Start p1022 "1022-writeToFile" Value="writeToFile";
 CF p1021 p1022
@@ -4191,7 +4191,7 @@ CF p1023 p1024
 Operation p1025 "1025-bind sample" Value="bind sample";
 CF p1024 p1025
 DF d562 p1025
-Snapshot d723 "723-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/723-sample.txt" Time="2014-07-08T10.37.36";
+Snapshot d723 "723-sample" Value="[DIR]/ddg/723-sample.txt" Time="2014-07-08T10.37.36";
 DF p1025 d723
 Start p1026 "1026-writeToFile" Value="writeToFile";
 CF p1025 p1026
@@ -4203,7 +4203,7 @@ CF p1027 p1028
 Operation p1029 "1029-bind sample" Value="bind sample";
 CF p1028 p1029
 DF d562 p1029
-Snapshot d724 "724-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/724-sample.txt" Time="2014-07-08T10.37.36";
+Snapshot d724 "724-sample" Value="[DIR]/ddg/724-sample.txt" Time="2014-07-08T10.37.36";
 DF p1029 d724
 Start p1030 "1030-writeToFile" Value="writeToFile";
 CF p1029 p1030
@@ -4215,7 +4215,7 @@ CF p1031 p1032
 Operation p1033 "1033-bind sample" Value="bind sample";
 CF p1032 p1033
 DF d562 p1033
-Snapshot d725 "725-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/725-sample.txt" Time="2014-07-08T10.37.36";
+Snapshot d725 "725-sample" Value="[DIR]/ddg/725-sample.txt" Time="2014-07-08T10.37.36";
 DF p1033 d725
 Start p1034 "1034-writeToFile" Value="writeToFile";
 CF p1033 p1034
@@ -4227,7 +4227,7 @@ CF p1035 p1036
 Operation p1037 "1037-bind sample" Value="bind sample";
 CF p1036 p1037
 DF d562 p1037
-Snapshot d726 "726-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/726-sample.txt" Time="2014-07-08T10.37.36";
+Snapshot d726 "726-sample" Value="[DIR]/ddg/726-sample.txt" Time="2014-07-08T10.37.36";
 DF p1037 d726
 Start p1038 "1038-writeToFile" Value="writeToFile";
 CF p1037 p1038
@@ -4239,7 +4239,7 @@ CF p1039 p1040
 Operation p1041 "1041-bind sample" Value="bind sample";
 CF p1040 p1041
 DF d562 p1041
-Snapshot d727 "727-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/727-sample.txt" Time="2014-07-08T10.37.36";
+Snapshot d727 "727-sample" Value="[DIR]/ddg/727-sample.txt" Time="2014-07-08T10.37.36";
 DF p1041 d727
 Start p1042 "1042-writeToFile" Value="writeToFile";
 CF p1041 p1042
@@ -4251,7 +4251,7 @@ CF p1043 p1044
 Operation p1045 "1045-bind sample" Value="bind sample";
 CF p1044 p1045
 DF d562 p1045
-Snapshot d728 "728-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/728-sample.txt" Time="2014-07-08T10.37.36";
+Snapshot d728 "728-sample" Value="[DIR]/ddg/728-sample.txt" Time="2014-07-08T10.37.36";
 DF p1045 d728
 Start p1046 "1046-writeToFile" Value="writeToFile";
 CF p1045 p1046
@@ -4263,7 +4263,7 @@ CF p1047 p1048
 Operation p1049 "1049-bind sample" Value="bind sample";
 CF p1048 p1049
 DF d562 p1049
-Snapshot d729 "729-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/729-sample.txt" Time="2014-07-08T10.37.36";
+Snapshot d729 "729-sample" Value="[DIR]/ddg/729-sample.txt" Time="2014-07-08T10.37.36";
 DF p1049 d729
 Start p1050 "1050-writeToFile" Value="writeToFile";
 CF p1049 p1050
@@ -4275,7 +4275,7 @@ CF p1051 p1052
 Operation p1053 "1053-bind sample" Value="bind sample";
 CF p1052 p1053
 DF d562 p1053
-Snapshot d730 "730-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/730-sample.txt" Time="2014-07-08T10.37.36";
+Snapshot d730 "730-sample" Value="[DIR]/ddg/730-sample.txt" Time="2014-07-08T10.37.36";
 DF p1053 d730
 Start p1054 "1054-writeToFile" Value="writeToFile";
 CF p1053 p1054
@@ -4287,7 +4287,7 @@ CF p1055 p1056
 Operation p1057 "1057-bind sample" Value="bind sample";
 CF p1056 p1057
 DF d562 p1057
-Snapshot d731 "731-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/731-sample.txt" Time="2014-07-08T10.37.36";
+Snapshot d731 "731-sample" Value="[DIR]/ddg/731-sample.txt" Time="2014-07-08T10.37.36";
 DF p1057 d731
 Start p1058 "1058-writeToFile" Value="writeToFile";
 CF p1057 p1058
@@ -4299,7 +4299,7 @@ CF p1059 p1060
 Operation p1061 "1061-bind sample" Value="bind sample";
 CF p1060 p1061
 DF d562 p1061
-Snapshot d732 "732-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/732-sample.txt" Time="2014-07-08T10.37.36";
+Snapshot d732 "732-sample" Value="[DIR]/ddg/732-sample.txt" Time="2014-07-08T10.37.36";
 DF p1061 d732
 Start p1062 "1062-writeToFile" Value="writeToFile";
 CF p1061 p1062
@@ -4311,7 +4311,7 @@ CF p1063 p1064
 Operation p1065 "1065-bind sample" Value="bind sample";
 CF p1064 p1065
 DF d562 p1065
-Snapshot d733 "733-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/733-sample.txt" Time="2014-07-08T10.37.36";
+Snapshot d733 "733-sample" Value="[DIR]/ddg/733-sample.txt" Time="2014-07-08T10.37.36";
 DF p1065 d733
 Start p1066 "1066-writeToFile" Value="writeToFile";
 CF p1065 p1066
@@ -4323,7 +4323,7 @@ CF p1067 p1068
 Operation p1069 "1069-bind sample" Value="bind sample";
 CF p1068 p1069
 DF d562 p1069
-Snapshot d734 "734-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/734-sample.txt" Time="2014-07-08T10.37.36";
+Snapshot d734 "734-sample" Value="[DIR]/ddg/734-sample.txt" Time="2014-07-08T10.37.36";
 DF p1069 d734
 Start p1070 "1070-writeToFile" Value="writeToFile";
 CF p1069 p1070
@@ -4335,7 +4335,7 @@ CF p1071 p1072
 Operation p1073 "1073-bind sample" Value="bind sample";
 CF p1072 p1073
 DF d562 p1073
-Snapshot d735 "735-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/735-sample.txt" Time="2014-07-08T10.37.36";
+Snapshot d735 "735-sample" Value="[DIR]/ddg/735-sample.txt" Time="2014-07-08T10.37.36";
 DF p1073 d735
 Start p1074 "1074-writeToFile" Value="writeToFile";
 CF p1073 p1074
@@ -4347,7 +4347,7 @@ CF p1075 p1076
 Operation p1077 "1077-bind sample" Value="bind sample";
 CF p1076 p1077
 DF d562 p1077
-Snapshot d736 "736-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/736-sample.txt" Time="2014-07-08T10.37.36";
+Snapshot d736 "736-sample" Value="[DIR]/ddg/736-sample.txt" Time="2014-07-08T10.37.36";
 DF p1077 d736
 Start p1078 "1078-writeToFile" Value="writeToFile";
 CF p1077 p1078
@@ -4359,7 +4359,7 @@ CF p1079 p1080
 Operation p1081 "1081-bind sample" Value="bind sample";
 CF p1080 p1081
 DF d562 p1081
-Snapshot d737 "737-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/737-sample.txt" Time="2014-07-08T10.37.36";
+Snapshot d737 "737-sample" Value="[DIR]/ddg/737-sample.txt" Time="2014-07-08T10.37.36";
 DF p1081 d737
 Start p1082 "1082-writeToFile" Value="writeToFile";
 CF p1081 p1082
@@ -4371,7 +4371,7 @@ CF p1083 p1084
 Operation p1085 "1085-bind sample" Value="bind sample";
 CF p1084 p1085
 DF d562 p1085
-Snapshot d738 "738-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/738-sample.txt" Time="2014-07-08T10.37.36";
+Snapshot d738 "738-sample" Value="[DIR]/ddg/738-sample.txt" Time="2014-07-08T10.37.36";
 DF p1085 d738
 Start p1086 "1086-writeToFile" Value="writeToFile";
 CF p1085 p1086
@@ -4383,7 +4383,7 @@ CF p1087 p1088
 Operation p1089 "1089-bind sample" Value="bind sample";
 CF p1088 p1089
 DF d562 p1089
-Snapshot d739 "739-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/739-sample.txt" Time="2014-07-08T10.37.36";
+Snapshot d739 "739-sample" Value="[DIR]/ddg/739-sample.txt" Time="2014-07-08T10.37.36";
 DF p1089 d739
 Start p1090 "1090-writeToFile" Value="writeToFile";
 CF p1089 p1090
@@ -4395,7 +4395,7 @@ CF p1091 p1092
 Operation p1093 "1093-bind sample" Value="bind sample";
 CF p1092 p1093
 DF d562 p1093
-Snapshot d740 "740-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/740-sample.txt" Time="2014-07-08T10.37.37";
+Snapshot d740 "740-sample" Value="[DIR]/ddg/740-sample.txt" Time="2014-07-08T10.37.37";
 DF p1093 d740
 Start p1094 "1094-writeToFile" Value="writeToFile";
 CF p1093 p1094
@@ -4407,7 +4407,7 @@ CF p1095 p1096
 Operation p1097 "1097-bind sample" Value="bind sample";
 CF p1096 p1097
 DF d562 p1097
-Snapshot d741 "741-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/741-sample.txt" Time="2014-07-08T10.37.37";
+Snapshot d741 "741-sample" Value="[DIR]/ddg/741-sample.txt" Time="2014-07-08T10.37.37";
 DF p1097 d741
 Start p1098 "1098-writeToFile" Value="writeToFile";
 CF p1097 p1098
@@ -4419,7 +4419,7 @@ CF p1099 p1100
 Operation p1101 "1101-bind sample" Value="bind sample";
 CF p1100 p1101
 DF d562 p1101
-Snapshot d742 "742-sample" Value="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/SivanSampling/ddg/742-sample.txt" Time="2014-07-08T10.37.37";
+Snapshot d742 "742-sample" Value="[DIR]/ddg/742-sample.txt" Time="2014-07-08T10.37.37";
 DF p1101 d742
 Start p1102 "1102-writeToFile" Value="writeToFile";
 CF p1101 p1102

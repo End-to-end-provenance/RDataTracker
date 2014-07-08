@@ -29,7 +29,7 @@
     <mkdir dir="${local_dir}" />
 
     <!-- Copy the script file to this local directory, and replace with correct work directory -->
-    <copy file="${dir}/${script-file}" todir="${local_dir}" />
+    <copy file="${dir}/${script-file}" todir="${local_dir}" overwrite="true" />
     <replaceregexp  file="${local_dir}/${script-file}"
                     match="\[DIR_DEFAULT\]"
                     replace="${TESTS.dir}/${dir}"
@@ -175,7 +175,7 @@
     <antcall target="run-test">
       <param name="dir" value="examples/consoleTest"/>
       <param name="out" value="examples/consoleTest/consoleTest2.out"/>
-      <param name="script-file" value="consoleTest2.r"/>
+      <param name="script-file" value="consoleTest2.R"/>
       <param name="expected_out" value="examples/consoleTest/expected_consoleTest2.out"/>
       <param name="expected_ddg" value="examples/consoleTest/expected_consoleTest2_ddg.txt"/>
       <param name="fail_out" value="true" />
@@ -186,7 +186,7 @@
     <antcall target="run-test">
       <param name="dir" value="examples/MismatchedStartFinishBug"/>
       <param name="out" value="examples/MismatchedStartFinishBug/MismatchedStartFinishBug.out"/>
-      <param name="script-file" value="MismatchedStartFinishBug.r"/>
+      <param name="script-file" value="MismatchedStartFinishBug.R"/>
       <param name="expected_out" value="examples/MismatchedStartFinishBug/expected_MismatchedStartFinishBug.out"/>
       <param name="expected_ddg" value="examples/MismatchedStartFinishBug/expected_MismatchedStartFinishBug_ddg.txt"/>
       <param name="fail_out" value="true" />
@@ -307,16 +307,18 @@
     </antcall>
   </target> 
 
-  <target name="SivenSampling-test">
-    <antcall target="run-test">
-      <param name="dir" value="examples/SivanSampling"/>
-      <param name="out" value="examples/SivanSampling/Sampling.out"/>
-      <param name="script-file" value="Sampling.r"/>
-      <param name="expected_out" value="examples/SivanSampling/expected_Sampling.out"/>
-      <param name="expected_ddg" value="examples/SivanSampling/expected_Sampling_ddg.txt"/>
-      <param name="fail_out" value="false" />
-    </antcall>
-    <echo>Note that time differences are expected</echo>
+  <target name="SivanSampling-test">
+    <record name="examples/SivanSampling/SivanSampling-test.log.txt" action="start" />
+      <antcall target="run-test">
+        <param name="dir" value="examples/SivanSampling"/>
+        <param name="out" value="examples/SivanSampling/Sampling.out"/>
+        <param name="script-file" value="Sampling.R"/>
+        <param name="expected_out" value="examples/SivanSampling/expected_Sampling.out"/>
+        <param name="expected_ddg" value="examples/SivanSampling/expected_Sampling_ddg.txt"/>
+        <param name="fail_out" value="false" />
+      </antcall>
+      <echo>You shuould output this to either a text file, or run the diff manually. The nodes generated are done so through a random process, and therefore differ significantly.</echo>
+    <record name="SivanSampling-test.log.txt" action="stop" />
   </target> 
   
   <target name="test-all" depends="basic-test, ddg-test, S4-object-test, checkpoint-test, checkpoint-file-test, calculate-square-root-tests, daily-solar-radiation-tests, console-tests, ddg-changes-behavior-test, ddg-hang-test, scoping-error-test, simple-test">

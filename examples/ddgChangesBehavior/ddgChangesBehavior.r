@@ -1,3 +1,6 @@
+### Originally written by Barbara Lerner
+# Modified by Luis Perez 7-Jul-2014
+
 rm (list=ls())
 
 #ddg.library <- Sys.getenv("DDG_LIBRARY")

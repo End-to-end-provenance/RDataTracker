@@ -3,6 +3,8 @@
 # files or snapshots so that ddg text files can be easily 
 # compared to be sure everything is working as expected.
 
+# Modified by Luis Perez 7-Jul-2014
+
 ## Directories
 
 #source("/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/R/RDataTracker.R")

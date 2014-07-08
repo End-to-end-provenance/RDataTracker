@@ -1,3 +1,8 @@
+### Tests the S4 Object functionalities of RDataTracker
+# Originally created by Barbara Lerner
+
+# Modified by Luis Perez 7-Jul-2014
+
 #ddg.library <- Sys.getenv("DDG_LIBRARY")
 #if (ddg.library == "") {
 #	ddg.library <- "c:/data/r/ddg/lib/ddg-library.r"

@@ -5,6 +5,7 @@
 # Calculate square root iteratively
 # Record DDG in text format
 # ERB rev. 6-Feb-2014
+# Modified by Luis Perez 7-Jul-2014
 
 ### Directories
 

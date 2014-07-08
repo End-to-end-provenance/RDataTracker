@@ -4,6 +4,7 @@
 
 # Calculate square root iteratively
 # ERB rev.5-Feb-2014
+# Modified by Luis Perez 7-Jul-2014
 
 ### Directories
 
