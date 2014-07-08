@@ -320,7 +320,11 @@
       <echo>You shuould output this to either a text file, or run the diff manually. The nodes generated are done so through a random process, and therefore differ significantly.</echo>
     <record name="SivanSampling-test.log.txt" action="stop" />
   </target> 
-  
+	
+	<target name="aaron-test">
+		<echo message="Please run Aaron's test in the console and compare ddg.txt with expected_ddg.txt" />
+	</target>
+	
   <target name="test-all" depends="basic-test, ddg-test, S4-object-test, checkpoint-test, checkpoint-file-test, calculate-square-root-tests, daily-solar-radiation-tests, console-tests, ddg-changes-behavior-test, ddg-hang-test, scoping-error-test, simple-test">
     <echo>All tests makes calls to the RDataTracker Library. You might need to restart RStudio to correctly run the scripts with the updated library installed</echo>
   </target>

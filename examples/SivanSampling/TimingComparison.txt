@@ -73,6 +73,74 @@ Procedure nodes:  1008
 Data nodes:  985
 
 
+------------------------------------
 
+Updated results taken on new MacBook Pro (2.3 Ghz Intel Core i7 (4 cores), 
+16 GB memory, 256 K L2 cache per core, 6 MB L3 core, solid-state memory (no disk)
+
+RDataTracker 0.5.011
+
+Uninstrumented version, no classes
+Trial 1:  0.268095016479492
+Trial 2:  0.240369081497192
+Trial 3:  0.261731863021851
+Trial 4:  0.256811857223511
+Trial 5:  0.246742963790894
+Average:  0.254750156402588
+
+Minimally instrumented version, no classes
+Trial 1:  0.504931926727295
+Trial 2:  0.546945095062256
+Trial 3:  0.525171995162964
+Trial 4:  0.653916120529175
+Trial 5:  0.513239860534668
+Average:  0.548840999603271
+
+DDG size:  
+Files copied:  48 1-k blocks
+ddg.txt:  16 K
+Number of files created:  4 (not counting ddg.txt, pnodes and dnodes)
+Procedure nodes:  27
+Data nodes:  23
+
+------
+
+Fewer snapshots instrumented version, no classes:
+Does not save samplesArr output from assignSampleData.
+Does not create the "Look up species dist" node or speciesDist output node 
+in raffleSampleSize.
+Does create a binding node when calling raffleIndividualsPerSample.
+
+Trial 1:  21.0104389190674
+Trial 2:  20.8751571178436
+Trial 3:  20.230525970459
+Trial 4:  19.5525040626526
+Trial 5:  19.9643239974976
+Average:  20.326590013504040
+
+DDG size:  
+Files copied:  728 1-k blocks
+ddg.txt:  173 K
+Number of files created:  116 (not counting ddg.txt, pnodes and dnodes)
+Procedure nodes:  988
+Data nodes:  783
+
+-----
+
+Fully instrumented version, no classes:
+
+Trial 1:  25.6154010295868
+Trial 2:  25.6181890964508
+Trial 3:  25.6285109519958
+Trial 4:  26.0471160411835
+Trial 5:  25.6627988815308
+Average:  25.714403200149540
+
+DDG size:  
+Files copied:  1964 1-k blocks
+ddg.txt:  228 K
+Number of files created:  410 (not counting ddg.txt, pnodes and dnodes)
+Procedure nodes:  1000
+Data nodes:  975
 
 
