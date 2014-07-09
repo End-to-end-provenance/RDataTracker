@@ -733,6 +733,8 @@ ddg.MAX_HIST_LINES <- 16384
 				if (cmd.pos <= first.writer || cmd.pos > last.writer) {
 					.ddg.data2proc(var, cmd)
 				}
+
+				# TODO - add some sort of warning to the user that the node is not being created
 			}
 			
 			# The variable is not set at all in this console block.  Connect 
