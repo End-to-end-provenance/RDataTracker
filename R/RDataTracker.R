@@ -967,15 +967,25 @@ ddg.MAX_HIST_LINES <- 16384
   	# Find where all the variables are assigned to
   	vars.set <- .ddg.find.var.assignments(parsed.commands)
 
-		for (cmd in quoted.commands) {
-			if (substr(cmd, 1, 4) != "ddg.") {
-				cmd.abbrev <- .ddg.abbrev.cmd(cmd)
-				last.proc.node <- cmd.abbrev
-				if (.ddg.debug()) print(paste(".ddg.parse.console.node: Adding operation node for", cmd.abbrev))
+  	# loop over the commands as well as their string representations
+  	for (i in 1:length(parsed.commands)) {
+  		cmd.expr <- parsed.commands[[i]]
+  		cmd <- quoted.commands[[i]]
+
+  		# if the command is not a call to our library
+  		if (substr(cmd, 1, 4) != "ddg.") {
+  			cmd.abbrev <- .ddg.abrev.cmd(cmd)
+  			last.proc.node <- cmd.abbrev
+
+  			# we want to create a procedure node
 				.ddg.proc.node("Operation", cmd.abbrev, cmd, console=TRUE)
 				.ddg.proc2proc()
-			}
-		}
+
+				# we want to create the incoming data nodes
+
+  			if (.ddg.debug()) print(paste(".ddg.parse.console.node: Adding operation node for", cmd.abbrev))
+  		}
+  	}
 	}
 
 	# Close the console block
