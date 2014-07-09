@@ -884,7 +884,7 @@ ddg.MAX_HIST_LINES <- 16384
 		.ddg.proc.node("Start", cmd.abbrev, last.command, console=TRUE)
 		.ddg.proc2proc()
 
-		.ddg.set(".ddg.last.command", .last.command)
+		.ddg.set(".ddg.last.command", last.command)
 	}
 }
 
@@ -914,12 +914,80 @@ ddg.MAX_HIST_LINES <- 16384
 # specifies the name for the collapsible node under which this DDG should be stored.
 .ddg.parse.console.commands <- function(parsed.commands,sourced=FALSE,
                                         node.name="Console") {
+	# attempt to close the previous collapsible command node
+	.ddg.close.previous.command.node()
 
 	# It is possidle that a command may extend over multiple lines. 
   # new.commands will have one string entry for each parsed command.
 	new.commands <- lapply(parsed.commands, function(cmd) {paste(deparse(cmd), collapse="")})
 
+	# Create start and end nodes to allow collapsing of consecutive 
+  # console nodes. Don't bother doing this if there is only 1 new 
+  # command in the history.
+	num.new.commands <- length(new.commands)
+	if (num.new.commands > 1) {
+	  if (.ddg.debug()) print(paste(".ddg.parse.console.node:  Adding console start node"))
+	  .ddg.proc.node("Start", node.name, node.name, console=TRUE)
+		
+		.ddg.proc2proc()
+	}
 
+	# Quote the quotation (") characters so that they will appear in 
+  # ddg.txt.
+	quoted.commands <- gsub("\\\"", "\\\\\"", new.commands)
+	
+	# get the last command in the new commands and check to see if we need to create 
+	# a new .ddg.last.command node for future reference
+	.ddg.last.command <- quoted.commands[[num.new.commands]]
+	if (substr(.ddg.last.command, 1, 4) == "ddg.") {
+		.ddg.last.command <- NULL
+	}
+	else {
+		quoted.commands <- quoted.commands[1:num.new.commands-1]
+		parsed.commands <- parsed.commands[1:num.new.commands-1]
+	}
+	
+	# We tried to use a data frame to contain new.commands, 
+  # quoted.commands and parsed.commands, but it does not seem 
+  # possible to put the parsed expressions in a data frame.
+	
+	# Create an operation node for each command.  We can't use lapply 
+  # here because we need to process the commands in order and lapply 
+  # does not guarantee an order. 
+  # Also decide which data nodes and edges
+  # to create.  Only create a data node for the last write of a variable
+  # and only if that occurs after the last possible writer. Create an edge
+  # for a data use as long as the use happens before the first writer/possible
+  # writer or after the last writer/possible writer.
+  # Lastly, if sourced is set to true, then execute each command immediately
+  # before attempting to create the DDG nodes. 
+
+  #Only go through this if  we have at least one command to parse.
+  if (length(parsed.commands) > 0) {
+  	# Find where all the variables are assigned to
+  	vars.set <- .ddg.find.var.assignments(parsed.commands)
+
+		for (cmd in quoted.commands) {
+			if (substr(cmd, 1, 4) != "ddg.") {
+				cmd.abbrev <- .ddg.abbrev.cmd(cmd)
+				last.proc.node <- cmd.abbrev
+				if (.ddg.debug()) print(paste(".ddg.parse.console.node: Adding operation node for", cmd.abbrev))
+				.ddg.proc.node("Operation", cmd.abbrev, cmd, console=TRUE)
+				.ddg.proc2proc()
+			}
+		}
+	}
+
+	# Close the console block
+	if (num.new.commands > 1) {
+	  if (.ddg.debug()) print(paste(".ddg.parse.console.node:  Adding finish console node"))
+	  .ddg.proc.node("Finish", node.name, node.name, console=TRUE)
+		.ddg.proc2proc()
+	}
+
+
+	# Open up a new collapsible node in case we need to parse further later
+	.ddg.open.last.command.node(.ddg.last.command)
 }
 
 # .ddg.console.node creates a console node.
@@ -940,65 +1008,8 @@ ddg.MAX_HIST_LINES <- 16384
 	# no new commands since last timestamp
 	if (length(parsed.commands) == 0) return (NULL)	
 
-	# attempt to close the previous collapsible command node
-	.ddg.close.previous.command.node()
-
 	# Parse the commands into a console node
 	.ddg.parse.console.commands(parsed.commands)
-
-	# Add a procedure node for each new command, data nodes for 
-  # variables set and used, and the corresponding edges.
-	
-	# Create start and end nodes to allow collapsing of consecutive 
-  # console nodes. Don't bother doing this if there is only 1 new 
-  # line in the history.
-	num.new.commands <- length(new.commands)
-	if (num.new.commands > 1) {
-	  if (.ddg.debug()) print(paste(".ddg.console.node:  Adding console start node"))
-	  .ddg.proc.node("Start", "Console", "Console", console=TRUE)
-		
-		.ddg.proc2proc()
-	}
-	
-	# Quote the quotation (") characters so that they will appear in 
-  # ddg.txt.
-	quoted.commands <- gsub("\\\"", "\\\\\"", new.commands)
-	
-	.ddg.last.command <- quoted.commands[[num.new.commands]]
-	if (substr(.ddg.last.command, 1, 4) == "ddg.") {
-		.ddg.last.command <- NULL
-	}
-	else {
-		quoted.commands <- quoted.commands[1:num.new.commands-1]
-		parsed.commands <- parsed.commands[1:num.new.commands-1]
-	}
-	
-	# We tried to use a data frame to contain new.commands, 
-  # quoted.commands and parsed.commands, but it does not seem 
-  # possible to put the parsed expressions in a data frame.
-	
-	# Create an operation node for each command.  We can't use lapply 
-  # here because we need to process the commands in order and lapply 
-  # does not guarantee an order.
-	for (cmd in quoted.commands) {
-		if (substr(cmd, 1, 4) != "ddg.") {
-			cmd.abbrev <- .ddg.abbrev.cmd(cmd)
-			last.proc.node <- cmd.abbrev
-			if (.ddg.debug()) print(paste(".ddg.console.node: Adding operation node for", cmd.abbrev))
-			.ddg.proc.node("Operation", cmd.abbrev, cmd, console=TRUE)
-			.ddg.proc2proc()
-		}
-	}
-	
-	# Close the console block
-	if (num.new.commands > 1) {
-	  if (.ddg.debug()) print(paste(".ddg.console.node:  Adding finish console node"))
-	  .ddg.proc.node("Finish", "Console", "Console", console=TRUE)
-		.ddg.proc2proc()
-	}
-
-	# Open up a new collapsible node in case we need to parse further later
-	.ddg.open.last.command.node(.ddg.last.command)
 	
 	if (length(parsed.commands) > 0) {
 		# Find where all the variables are assigned to.
