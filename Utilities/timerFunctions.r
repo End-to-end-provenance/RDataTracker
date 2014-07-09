@@ -114,6 +114,7 @@ annotateLine <- function(line, histLineNum) {
 # $return diff - the difference between the time of initial execution and final
 timeForEval <- function(file) {
   startTime <- Sys.time()
+  force(startTime)
   source(file, local = T, echo = F,verbose = F)
   endTime <- Sys.time()
   return(difftime(endTime, startTime,units="mins"))
