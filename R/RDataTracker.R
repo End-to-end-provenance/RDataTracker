@@ -1478,14 +1478,16 @@ ddg.MAX_HIST_LINES <- 16384
 # .ddg.get.frame.number gets the frame number of the closest
 # non-library calling function.
 
-.ddg.get.frame.number <- function() {
-  nframe <- sys.nframe()
-  for (i in nframe:1) {
-    call.func <- as.character(sys.call(i)[[1]])    
-    # print(call.func)    
-    if (substr(call.func, 1, 4) != ".ddg" && substr(call.func, 1, 3) != "ddg") return(i)
-  }
-  return(0)
+.ddg.get.frame.number <- function(calls) {
+	if (is.null(calls)) calls <- sys.calls()
+	#nframe <- sys.nframe()
+	nframe <- length(calls)
+	for (i in nframe:1) {
+		call.func <- as.character(sys.call(i)[[1]])    
+		# print(call.func)    
+		if (substr(call.func, 1, 4) != ".ddg" && substr(call.func, 1, 3) != "ddg") return(i)
+	}
+	return(0)
 }
 
 # .ddg.where looks up the environment for the variable specified
@@ -1508,25 +1510,25 @@ ddg.MAX_HIST_LINES <- 16384
 # .ddg.get.scope gets the id of the closest non-library
 # environment.
 
-.ddg.get.scope <- function(name, for.caller=FALSE) {
+.ddg.get.scope <- function(name, for.caller=FALSE, calls=NULL) {
 #	if (!is.character(name)) name <- deparse(substitute(name))
 #  if (!is.character(name)) name <- deparse(name)
-  fnum <- .ddg.get.frame.number()
-  if (for.caller) fnum <- fnum - 1
+	fnum <- .ddg.get.frame.number(calls)
+	if (for.caller) fnum <- fnum - 1
 	stopifnot(!is.null(fnum))
-
-  
-  # I broke this statement up into 2 statements so that we
-  # can add print statements to .ddg.where or step through it
-  # with a debugger without breaking it.  If we don't do that
-  # the print output gets captured by capture.output and
-  # does not display to the user and also causes the subsequent
-  # grepl call in this function to fail.
-  
-  #	scope <- sub('<environment: (.*)>', '\\1', capture.output(.ddg.where(name, sys.frame(fnum))))
-  env <- .ddg.where(name, sys.frame(fnum))
-  scope <- sub('<environment: (.*)>', '\\1', capture.output(env))
-  if (grepl("undefined", scope)) scope <- "undefined"
+	
+	
+	# I broke this statement up into 2 statements so that we
+	# can add print statements to .ddg.where or step through it
+	# with a debugger without breaking it.  If we don't do that
+	# the print output gets captured by capture.output and
+	# does not display to the user and also causes the subsequent
+	# grepl call in this function to fail.
+	
+	#	scope <- sub('<environment: (.*)>', '\\1', capture.output(.ddg.where(name, sys.frame(fnum))))
+	env <- .ddg.where(name, sys.frame(fnum))
+	scope <- sub('<environment: (.*)>', '\\1', capture.output(env))
+	if (grepl("undefined", scope)) scope <- "undefined"
 	return(scope)
 }
 
@@ -1567,57 +1569,62 @@ ddg.MAX_HIST_LINES <- 16384
 
 
 ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.graphic=NULL, outs.data=NULL, 
-                          outs.exception=NULL, outs.url=NULL, outs.file=NULL, graphic.fext="jpeg") {
-  if (!.ddg.check.init()) return(NULL)
-
+		outs.exception=NULL, outs.url=NULL, outs.file=NULL, graphic.fext="jpeg") {
+	if (!.ddg.check.init()) return(NULL)
+	
 	.ddg.lookup.function.name(pname)
 	.ddg.proc.node("Operation", pname, pname)
 	
 	# Create control flow edge from preceding procedure node.
 	.ddg.proc2proc()
-
+	
 	# Create the input edges if ins list provided.
 	if (!is.null(ins)) {
-	  # Get scope.
-	  scope <- .ddg.get.scope(ins[[1]], for.caller = TRUE)
-	  
+		# Get scope.  Cannot use lapply because that results in the creation of a new 
+		# stack, while .ddg.get.scope assumes that it is called 
+		#scope <- .ddg.get.scope(ins[[1]], for.caller = TRUE)
+		stack <- sys.calls()
+		
 		lapply(ins, 
-			function(param) {
-				if (.ddg.data.node.exists(param, scope)) {
-					.ddg.data2proc(param, scope, pname)
-					if (.ddg.debug()) print(paste("param:", param))
-				}
-				else {
-					# Attempt to allow names, not strings.  This does not work 
-          # as written because what we get when we call substitute is 
-          # the parameter provided by lapply, not the one provided to 
-          # ddg.procedure.  We will have the same problem dealing 
-          # with outs.
-          
-					# arg <- substitute(param)
-					# if (!is.character(arg) && .ddg.data.node.exists(arg)) {
-					#	.ddg.data2proc(deparse(arg), pname)
-					#	if (.ddg.debug()) print(paste("param:", deparse(arg)))
-					#   else {warning}
-					# }
-          
-					error.msg <- paste("No data node found for", param)	
-          			.ddg.insert.error.message(error.msg)
-				}
-			})
+				function(param) {
+					scope <- .ddg.get.scope(param, for.caller = TRUE, calls=stack)
+					if (.ddg.data.node.exists(param, scope)) {
+						.ddg.data2proc(param, scope, pname)
+						if (.ddg.debug()) print(paste("param:", param))
+					}
+					else {
+						# Attempt to allow names, not strings.  This does not work 
+						# as written because what we get when we call substitute is 
+						# the parameter provided by lapply, not the one provided to 
+						# ddg.procedure.  We will have the same problem dealing 
+						# with outs.
+						
+						# arg <- substitute(param)
+						# if (!is.character(arg) && .ddg.data.node.exists(arg)) {
+						#	.ddg.data2proc(deparse(arg), pname)
+						#	if (.ddg.debug()) print(paste("param:", deparse(arg)))
+						#   else {warning}
+						# }
+						
+						error.msg <- paste("No data node found for", param)	
+						.ddg.insert.error.message(error.msg)
+					}
+				})
 	}
 	# Look up input parameters from calling environment.
-  else if (lookup.ins) {
+	else if (lookup.ins) {
 		call <- sys.call(-1)
 		tokens <- unlist(strsplit (as.character(call), "[(,)]"))
 		
 		# Get parameters and create edges.
 		if (length(tokens) > 1) {
 			args <- tokens[2:length(tokens)]
-			scope <- .ddg.get.scope(args[[1]], for.caller = TRUE)
+			stack <- sys.calls()
+			#scope <- .ddg.get.scope(args[[1]], for.caller = TRUE)
 			
-      lapply(args, 
+			lapply(args, 
 					function(param) {	
+						scope <- .ddg.get.scope(param, for.caller = TRUE, calls=stack)
 						if (.ddg.data.node.exists(param, scope)) {
 #							binding.node.name <- paste(pname, " binding of ", param)
 #							.ddg.proc.node("Binding", binding.node.name)
@@ -1627,12 +1634,12 @@ ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.graphic=N
 						}
 						else {
 							error.msg <- paste("Skipping parameter", param)
-              				.ddg.insert.error.message(error.msg)
+							.ddg.insert.error.message(error.msg)
 						}
 					})
 		}
 	}
-
+	
 	# Capture graphics device
 	if (is.character(outs.graphic)) {
 		name <- outs.graphic
@@ -1644,94 +1651,102 @@ ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.graphic=N
 	# Create output nodes and edges if outs list provided.
 	# Exception node.
 	if (!is.null(outs.exception)) {
-	  # Get scope.
-	  scope <- .ddg.get.scope(outs.exception[[1]])
-
-	  lapply(outs.exception,
-	    function(param) {
-	      # Get value in calling environment.
-	      name <- param
-	      value <- NULL
-	      env <- parent.frame(3)
-	      .ddg.lookup.value(name, value, env, "ddg.procedure", warn=FALSE)
- 
-        # Exception node.
-        .ddg.data.node("Exception", name, value, scope)
-        .ddg.proc2data(pname, name, scope)
-	    }
-	  )
-  }
+		stack <- sys.calls()
+		# Get scope.
+		#scope <- .ddg.get.scope(outs.exception[[1]])
+		
+		lapply(outs.exception,
+				function(param) {
+					# Get value in calling environment.
+					name <- param
+					value <- NULL
+					env <- parent.frame(3)
+					.ddg.lookup.value(name, value, env, "ddg.procedure", warn=FALSE)
+					
+					# Exception node.
+					scope <- .ddg.get.scope(param, callls = stack)
+					.ddg.data.node("Exception", name, value, scope)
+					.ddg.proc2data(pname, name, scope)
+				}
+		)
+	}
 	
 	# URL node.
 	if (!is.null(outs.url)) {
-	  # Get scope.
-	  scope <- .ddg.get.scope(outs.url[[1]])
-
-	  lapply(outs.url,
-      function(param) {
-	      # Get value in calling environment.
-	      name <- param
-	      value <- NULL
-	      env <- parent.frame(3)
-	      .ddg.lookup.value(name, value, env, "ddg.procedure", warn=FALSE)
-
-        # URL node.
-        .ddg.data.node("URL", name, value, scope)
-	      .ddg.proc2data(pname, name, scope)
-      }
-	  )
+		stack <- sys.calls()
+		# Get scope.
+		#scope <- .ddg.get.scope(outs.url[[1]])
+		
+		lapply(outs.url,
+				function(param) {
+					# Get value in calling environment.
+					name <- param
+					value <- NULL
+					env <- parent.frame(3)
+					.ddg.lookup.value(name, value, env, "ddg.procedure", warn=FALSE)
+					
+					# URL node.
+					scope <- .ddg.get.scope(param, calls=stack)
+					.ddg.data.node("URL", name, value, scope)
+					.ddg.proc2data(pname, name, scope)
+				}
+		)
 	}
-
+	
 	# Generalized data node (includes simple data values as well as snapshots)
 	if (!is.null(outs.data)) {
-        # Get scope.
-        scope <- .ddg.get.scope(outs.data[[1]])
+		# Get scope.
+		#scope <- .ddg.get.scope(outs.data[[1]])
+		stack <- sys.calls()
 		lapply(outs.data,
-			  function(param) {
-				  # Get value in calling environment.
-				  name <- param
-				  value <- NULL
-				  env <- parent.frame(3)
-				  .ddg.lookup.value(name, value, env, "ddg.procedure", warn=FALSE)
-				  
-				  tryCatch({
-							  if (!is.character(name)) name <- deparse(substitute(name))
-                envName <- environmentName(env)
-                .ddg.save.data(name,value,".ddg.procedure", error=TRUE, scope=scope)
-							  .ddg.proc2data(pname, name, scope)
-						  }, error = function(e) {
-							  .ddg.insert.error.message(e)
-						  }
-				  )  
-			  }
-	  )
+				function(param) {
+					# Get value in calling environment.
+					name <- param
+					value <- NULL
+					env <- parent.frame(3)
+					.ddg.lookup.value(name, value, env, "ddg.procedure", warn=FALSE)
+					
+					tryCatch({
+								if (!is.character(name)) name <- deparse(substitute(name))
+								envName <- environmentName(env)
+								scope <- .ddg.get.scope(param, calls=stack)
+								.ddg.save.data(name,value,".ddg.procedure", error=TRUE, scope=scope)
+								.ddg.proc2data(pname, name, scope)
+							}, error = function(e) {
+								.ddg.insert.error.message(e)
+							}
+					)  
+				}
+		)
 	}
 	
 	# File node.
 	if (!is.null(outs.file)) {
-	  # Get scope.
-	  scope <- .ddg.get.scope(outs.file[[1]])
-
-	  lapply(outs.file,
-	    function(param) {
-	      # Get value in calling environment.
-	      name <- param
-	      value <- NULL
-	      env <- parent.frame(3)
-	      .ddg.lookup.value(name, value, env, "ddg.procedure", warn=FALSE)
-
-        if (value == "") {
-          # Filename passed as value.          
-          .ddg.file.copy("File", name, name, scope)
-          .ddg.proc2data(pname, name, scope)
-        }
-        else {
-          # Filename passed as name.
-          .ddg.file.copy("File", value, name, scope)
-          .ddg.proc2data(pname, name, scope)
-        }
-	    }
-	  )
+		# Get scope.
+		#scope <- .ddg.get.scope(outs.file[[1]])
+		stack <- sys.calls()
+		
+		lapply(outs.file,
+				function(param) {
+					# Get value in calling environment.
+					name <- param
+					value <- NULL
+					env <- parent.frame(3)
+					.ddg.lookup.value(name, value, env, "ddg.procedure", warn=FALSE)
+					scope <- .ddg.get.scope(param, calls=stack)
+					
+					if (value == "") {
+						# Filename passed as value.          
+						.ddg.file.copy("File", name, name, scope)
+						.ddg.proc2data(pname, name, scope)
+					}
+					else {
+						# Filename passed as name.
+						.ddg.file.copy("File", value, name, scope)
+						.ddg.proc2data(pname, name, scope)
+					}
+				}
+		)
 	}
 }
 
