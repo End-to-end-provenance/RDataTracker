@@ -857,6 +857,71 @@ ddg.MAX_HIST_LINES <- 16384
 	#.ddg.write.timestamp.to.history(var=".ddg.grab.timestamp.history")
 }
 
+# .ddg.close.previous.command.node closes the last created collapsible node stored
+# in .ddg.last.command DDG property. The optional parameter called is used when 
+# debugging for printing the function which called .ddg.close.previous.command.
+.ddg.close.previous.command.node <- function(called=".ddg.console.node"){
+	.ddg.last.command <- .ddg.get(".ddg.last.command")
+	if (!is.null(.ddg.last.command)) {
+		cmd.abbrev <- .ddg.abbrev.cmd(.ddg.last.command)
+		if (.ddg.debug()) print(paste(called, ": Adding finish node for last command", cmd.abbrev))
+		.ddg.proc.node("Finish", cmd.abbrev, .ddg.last.command, console=TRUE)
+		.ddg.proc2proc()
+
+		# No previous command
+		.ddg.set(".ddg.last.command", NULL)
+	}
+}
+
+# .ddg.open.last.command.node opens a new collapsible command node and stores the
+# name of the node in the .ddg.last.command DDG Property. I
+# Parameters - last.command is the last command which is being parsed. Open a new
+# node only if this command is not NULL.
+.ddg.open.last.command.node <- function(last.command) {
+	if (!is.null(last.command)) {
+		cmd.abbrev <- .ddg.abbrev.cmd(last.command)
+		if (.ddg.debug()) print(paste(".ddg.console.node:  Adding start node for last command", cmd.abbrev))
+		.ddg.proc.node("Start", cmd.abbrev, last.command, console=TRUE)
+		.ddg.proc2proc()
+
+		.ddg.set(".ddg.last.command", .last.command)
+	}
+}
+
+# .ddg.parse.lines takes as input a set of lines corresponding to either the 
+# history of an RScript or an RScript itself. It parses and 
+# converts them to executable commands. It returns a list of commands. Each command
+# might span multiple lines. The function returns a named list. The contents of the list
+# are: 	text - each entry is the full text string of a single commands
+# 			commands - each entry is the parsed command 
+.ddg.parse.lines <- function(lines) {
+	# no new lines passed in, so return NULL
+	if (length(lines) == 0) return(NULL)
+
+	# Parse the new lines.
+	parsed.commands <- parse(text=lines)
+
+	return(parsed.commands)
+}
+
+# .ddg.parse.console.commands takes as input a set of RScript commands command format. 
+# It creates DDG nodes for each command. If sourced is set to true, it executes 
+# the commands immediately before creating the respective nodes for that command 
+# and then creates the data node based on the information available in the 
+# global environment. This is the parameter used by ddg.source to execute source files
+# which need to be automatically annotated. Additionally, if sourced is true, calls to 
+# ddg.* are not exectuted so only the clean script is processed. The paramenter node.name
+# specifies the name for the collapsible node under which this DDG should be stored.
+.ddg.parse.console.commands <- function(parsed.commands,sourced=FALSE,
+                                        node.name="Console") {
+
+	# It is possidle that a command may extend over multiple lines. 
+  # new.commands will have one string entry for each parsed command.
+	new.commands <- lapply(parsed.commands, function(cmd) {paste(deparse(cmd), collapse="")})
+
+
+}
+
 # .ddg.console.node creates a console node.
 .ddg.console.node <- function() {
 	# Load our extended history file and the last timestamp
@@ -868,28 +933,21 @@ ddg.MAX_HIST_LINES <- 16384
 	
 	# load from extended history since last time we wrote out a console node
 	new.lines <- .ddg.loadhistory(ddg.history.file,ddg.history.timestamp)
+
+	# Parse the lines into individual commands in both text and command format
+	parsed.commands <- .ddg.parse.lines(new.lines)
 	
-	# no new history since last timestamp
-	if (length(new.lines) == 0) return (NULL)	
+	# no new commands since last timestamp
+	if (length(parsed.commands) == 0) return (NULL)	
+
+	# attempt to close the previous collapsible command node
+	.ddg.close.previous.command.node()
+
+	# Parse the commands into a console node
+	.ddg.parse.console.commands(parsed.commands)
 
 	# Add a procedure node for each new command, data nodes for 
   # variables set and used, and the corresponding edges.
-	.ddg.last.command <- .ddg.get(".ddg.last.command")
-	if (!is.null(.ddg.last.command)) {
-		cmd.abbrev <- .ddg.abbrev.cmd(.ddg.last.command)
-		if (.ddg.debug()) print(paste(".ddg.console.node:  Adding finish node for last command", cmd.abbrev))
-		.ddg.proc.node("Finish", cmd.abbrev, .ddg.last.command, console=TRUE)
-		.ddg.proc2proc()
-	}
-	
-	# Parse the new lines.
-	parsed.commands <- parse(text=new.lines)
-	
-	# It is possidle that a command may extend over multiple lines. 
-  # new.commands will have one entry for each parsed command, whereas 
-  # new.lines, which is read from the file, will have one entry for 
-  # each line, which is not very useful for us.
-	new.commands <- lapply(parsed.commands, function(cmd) {paste(deparse(cmd), collapse="")})
 	
 	# Create start and end nodes to allow collapsing of consecutive 
   # console nodes. Don't bother doing this if there is only 1 new 
@@ -907,9 +965,7 @@ ddg.MAX_HIST_LINES <- 16384
 	quoted.commands <- gsub("\\\"", "\\\\\"", new.commands)
 	
 	.ddg.last.command <- quoted.commands[[num.new.commands]]
-	.ddg.set(".ddg.last.command", .ddg.last.command)
 	if (substr(.ddg.last.command, 1, 4) == "ddg.") {
-		.ddg.set(".ddg.last.command", NULL)
 		.ddg.last.command <- NULL
 	}
 	else {
@@ -940,13 +996,9 @@ ddg.MAX_HIST_LINES <- 16384
 	  .ddg.proc.node("Finish", "Console", "Console", console=TRUE)
 		.ddg.proc2proc()
 	}
-	
-	if (!is.null(.ddg.last.command)) {
-		cmd.abbrev <- .ddg.abbrev.cmd(.ddg.last.command)
-		if (.ddg.debug()) print(paste(".ddg.console.node:  Adding start node for last command", cmd.abbrev))
-		.ddg.proc.node("Start", cmd.abbrev, .ddg.last.command, console=TRUE)
-		.ddg.proc2proc()
-	}
+
+	# Open up a new collapsible node in case we need to parse further later
+	.ddg.open.last.command.node(.ddg.last.command)
 	
 	if (length(parsed.commands) > 0) {
 		# Find where all the variables are assigned to.
