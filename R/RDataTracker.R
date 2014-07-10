@@ -1062,7 +1062,7 @@ ddg.MAX_HIST_LINES <- 16384
   	# Create a data node for each variable that might have been set in 
   	# something other than a simple assignment, with an edge from the 
   	# last node in the console block.
-		if (!execute) .ddg.create.data.node.for.possible.writes(vars.set, last.proc.node)
+		.ddg.create.data.node.for.possible.writes(vars.set, last.proc.node)
 	}
 
 	# Close the console block
@@ -1074,7 +1074,7 @@ ddg.MAX_HIST_LINES <- 16384
 
 
 	# Open up a new collapsible node in case we need to parse further later
-	.ddg.open.last.command.node(.ddg.last.command)
+	if (!execute) .ddg.open.last.command.node(.ddg.last.command)
 }
 
 # .ddg.console.node creates a console node.
@@ -2274,6 +2274,9 @@ ddg.save <- function() {
 	# delete temporary files
 	.ddg.delete.temp()
 }
+
+# ddg.source reads in an r script and executes it in the provided enviroment, 
+ddg.source <- 
 
 # ddg.debug.on turns on debugging of DDG construction.
 ddg.debug.on <- function () {
