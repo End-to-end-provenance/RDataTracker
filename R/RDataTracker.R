@@ -604,34 +604,43 @@ ddg.MAX_HIST_LINES <- 16384
 }
 
 # .ddg.find.var.uses returns a vector containing all the variables 
-# used in an expression.
+# used in an expression. If unique is true, then it returns a vector of 
+# unique values. Otherwise, it returns all uses.
 
-.ddg.find.var.uses <- function(obj) {
-	# Base cases.
-	if (is.name(obj)) return (deparse(obj))
-	if (!is.recursive(obj)) return(character())
-	
-	tryCatch(
-		if (.ddg.is.assign(obj)) {
-			# If assigning to a simple variable, recurse on the right hand 
-      # side of the assignment.
-			if (is.symbol(obj[[2]])) unique(unlist(.ddg.find.var.uses(obj[[3]])))
-			
-			# If assigning to an expression (like a[b]), recurse on the 
-      # indexing part of the lvalue as well as on the expression.
-			else unique(c (.ddg.find.var.uses(obj[[2]][[3]]), unlist(.ddg.find.var.uses(obj[[3]]))))
-		} 
+.ddg.find.var.uses <- function(main.object, all=FALSE) {
+	# Find function to filter results
+	filter <- ifelse(all, identity, unique)
+
+	# Recursive helper function
+	.ddg.find.var.uses.rec <- function(obj) {
+		# Base cases.
+		if (is.name(obj)) return (deparse(obj))
+		if (!is.recursive(obj)) return(character())
 		
-		# Not an assignment.  Recurse on all parts of the expression 
-    # except the operator.
-		else {
-			unique(unlist(lapply(obj[2:length(obj)], .ddg.find.var.uses)))
-		},
-		error = function(e) {
-			print (paste(".ddg.find.var.uses:  Error analyzing", deparse(obj)))
-			character()
-		}
-	)
+		tryCatch(
+			if (.ddg.is.assign(obj)) {
+				# If assigning to a simple variable, recurse on the right hand 
+	      # side of the assignment.
+				if (is.symbol(obj[[2]])) filter(unlist(.ddg.find.var.uses.rec(obj[[3]])))
+				
+				# If assigning to an expression (like a[b]), recurse on the 
+	      # indexing part of the lvalue as well as on the expression.
+				else filter(c (.ddg.find.var.uses.rec(obj[[2]][[3]]), unlist(.ddg.find.var.uses.rec(obj[[3]]))))
+			} 
+			
+			# Not an assignment.  Recurse on all parts of the expression 
+	    # except the operator.
+			else {
+				filter(unlist(lapply(obj[2:length(obj)], .ddg.find.var.uses.rec)))
+			},
+			error = function(e) {
+				print (paste(".ddg.find.var.uses.rec:  Error analyzing", deparse(obj)))
+				character()
+			}
+		)
+	}
+
+	return(.ddg.find.var.uses.rec(main.object))
 }
 
 # .ddg.find.var.assignments creates a data frame containing 
@@ -708,6 +717,41 @@ ddg.MAX_HIST_LINES <- 16384
 	return (vars.set)
 }
 
+# .ddg.create.data.edges.for.cmd creates a data flow edge from the
+# node for each variable used in cmd.expr to the procedure node labeled cmd. 
+# This is determined by finding nodes referened in cmd which are already assigned.
+# ALl unassigned referenced are assumed to be creations (otherwise an error would
+# have occured whene executing the commands), therefore these are set as output 
+# edges and a data node is created. Additionally, to compensate for something like
+# the following a <- a, where a is both input and output, a double occurrence of 
+# a variable is automatically assumed to be both input and output.
+# The value must exist beforehand.
+.ddg.create.data.edges.for.cmd <- function(cmd,cmd.expr, environ=.GlobaEnv) {
+	all.vars.used <- .ddg.find.var.uses(cmd.expr,all=TRUE)
+	unique.vars.used <- unique(unlist(all.vars.used))
+
+	for (var in unique.vars.used) {
+		# count occurrences of variable  
+		num.var <- sum(all.vars.used == var)
+
+		# variable exists, so this is an unput
+		if (.ddg.data.node.exists(var)) .ddg.data2proc(var,cmd)
+
+		# variable does not exist or occurs more than once
+		if (!.ddg.data.node.exists(var) || num.var > 1) {
+			# find value of this variable
+			val <- tryCatch(eval(parse(text=var), environ),
+					error = function(e) {NULL}
+			)
+			tryCatch(.ddg.save.data(var,val,fname=".ddg.create.data.edges.for.cmd",error=TRUE),
+			         error = function(e){.ddg.data.node("Data", var, "complex")})
+
+
+			.ddg.proc2data(cmd,var)
+		}
+	}
+}
+
 # .ddg.create.data.use.edges.for.console.cmd creates a data flow edge 
 # from the node for each variable used in cmd.expr to the procedural 
 # node labeled cmd, as long as the value would either be one that 
@@ -743,6 +787,13 @@ ddg.MAX_HIST_LINES <- 16384
 			else {
 				.ddg.data2proc(var, cmd)
 			}
+		}
+		else {
+			# TODO - add some sort of warning that the data node was NOT found
+			#error.msg <- paste("Unable to find data node for",var, ". Command", parse(text=cmd.expr), "appears
+			#                  to use it for procedure node", cmd, ".")
+
+    	#.ddg.insert.error.message(error.msg)
 		}
 	}
 }
@@ -911,15 +962,18 @@ ddg.MAX_HIST_LINES <- 16384
 }
 
 # .ddg.parse.commands takes as input a set of RScript commands command format. 
-# It creates DDG nodes for each command. If sourced is set to true, it executes 
-# the commands immediately before creating the respective nodes for that command 
-# and then creates the data node based on the information available in the 
-# global environment. This is the parameter used by ddg.source to execute source files
-# which need to be automatically annotated. Additionally, if sourced is true, calls to 
+# It creates DDG nodes for each command. If environ is an environment, it executes 
+# the commands in that environment immediately before creating the respective nodes 
+# for that command and then creates the data node based on the information available in the 
+# environment. This is the parameter used by ddg.environ to execute environ files
+# which need to be automatically annotated. Additionally, if environ is not null, calls to 
 # ddg.* are not exectuted so only the clean script is processed. The paramenter node.name
 # specifies the name for the collapsible node under which this DDG should be stored.
-.ddg.parse.commands <- function(parsed.commands,sourced=FALSE,
+.ddg.parse.commands <- function(parsed.commands,environ=NULL,
                                         node.name="Console") {
+	# figure out if we will execute commands or not
+	execute = !is.null(environ) & is.environment(environ)
+
 	# attempt to close the previous collapsible command node
 	.ddg.close.previous.command.node()
 
@@ -965,13 +1019,13 @@ ddg.MAX_HIST_LINES <- 16384
   # and only if that occurs after the last possible writer. Create an edge
   # for a data use as long as the use happens before the first writer/possible
   # writer or after the last writer/possible writer.
-  # Lastly, if sourced is set to true, then execute each command immediately
+  # Lastly, if environ is set to true, then execute each command immediately
   # before attempting to create the DDG nodes. 
 
   #Only go through this if  we have at least one command to parse.
   if (length(parsed.commands) > 0) {
-  	# Find where all the variables are assigned to
-  	vars.set <- .ddg.find.var.assignments(parsed.commands)
+  	# Find where all the variables are assigned for non-environ files
+  	if (!execute) vars.set <- .ddg.find.var.assignments(parsed.commands)
 
   	# loop over the commands as well as their string representations
   	for (i in 1:length(parsed.commands)) {
@@ -983,24 +1037,32 @@ ddg.MAX_HIST_LINES <- 16384
   			cmd.abbrev <- .ddg.abrev.cmd(cmd)
   			last.proc.node <- cmd.abbrev
 
+  			# If sourcing, we want to execute the command
+  			if (execute) evalq(cmd.expr, environ, NULL) 
+
   			# we want to create a procedure node
 				.ddg.proc.node("Operation", cmd.abbrev, cmd, console=TRUE)
 				.ddg.proc2proc()
 				if (.ddg.debug()) print(paste(".ddg.parse.console.node: Adding operation node for", cmd.abbrev))
 
 				# we want to create the incoming data nodes (all of these data nodes already exist)
-				.ddg.create.data.use.edges.for.console.cmd(vars.set, cmd.abbrev, cmd.expr, i)
-				if (.ddg.debug()) print(paste(".ddg.parse.console.node: Adding input data nodes for", cmd.abbrev))
-				# we want to create output date nodes (these data nodes don't already exist)
-				.ddg.create.data.set.edges.for.console.cmd(vars.set, cmd.abbrev, cmd.expr, i)
-				if (.ddg.debug()) print(paste(".ddg.parse.console.node: Adding output data nodes for", cmd.abbrev))
+				if (execute) {
+					.ddg.create.data.edges.for.cmd(cmd.abbrev, cmd.expr, environ)
+					if (.ddg.debug()) print(paste(".ddg.parse.console.node: Adding input and output data nodes for", cmd.abbrev))
+				}
+				else {
+					.ddg.create.data.use.edges.for.console.cmd(vars.set, cmd.abbrev, cmd.expr, i)
+					if (.ddg.debug()) print(paste(".ddg.parse.console.node: Adding input data nodes for", cmd.abbrev))
+					ddg.create.data.set.edges.for.console.cmd(vars.set, cmd.abbrev, cmd.expr, i)
+					if (.ddg.debug()) print(paste(".ddg.parse.console.node: Adding output data nodes for", cmd.abbrev))
+  			}	
   		}
   	}
 
   	# Create a data node for each variable that might have been set in 
   	# something other than a simple assignment, with an edge from the 
   	# last node in the console block.
-		.ddg.create.data.node.for.possible.writes(vars.set, last.proc.node)
+		if (!execute) .ddg.create.data.node.for.possible.writes(vars.set, last.proc.node)
 	}
 
 	# Close the console block
