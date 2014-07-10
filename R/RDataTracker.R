@@ -250,8 +250,12 @@ ddg.MAX_HIST_LINES <- 16384
 .ddg.is.simple <- function(value) {
 	# Note that is.vector returns TRUE for lists, so we need to check lists
 	# separately.  Since every value in a list can have a different type,
-	# if it is a list, we will assume the value is complex.
-	return(!.ddg.is.graphic(value) && !is.list(value) && is.vector(value) && length(value) == 1)
+	# if it is a list, we will assume the value is complex. We consider NULL values to be simple.
+	return((!.ddg.is.graphic(value) && 
+	       !is.list(value) && 
+	       is.vector(value) && 
+	       length(value) == 1) ||
+				 is.null(value))
 }
 
 # .ddg.is.csv returns true if the value passed in should be written out as a csv
@@ -264,11 +268,8 @@ ddg.MAX_HIST_LINES <- 16384
 # .ddg.save.simple takes in a simple name, value pairing and saves it to the ddg.
 # It does not however create any edges.
 .ddg.save.simple <- function(name,value) {
-	# check whether value is NA
-	tValue <- ifelse(is.na(value), NA, value)
-	
 	# save the true value
-	.ddg.data.node("Data", name, tValue)
+	.ddg.data.node("Data", name, value)
 }
 
 # .ddg.write.graphic takes as input the name of a variable as well as the value 
@@ -762,13 +763,16 @@ ddg.MAX_HIST_LINES <- 16384
 			val <- tryCatch(eval(parse(text=var), .GlobalEnv),
 					error = function(e) {NULL}
 			)
-			if (!is.null(val)) {
-				if (is.data.frame(val)) .ddg.snapshot.node(var, "csv", val)
-				else .ddg.data.node("Data", var, val)
-			}
-			else {
-				.ddg.data.node("Data", var, "complex")
-			}
+			tryCatch(.ddg.save.data(var,val,fname=".ddg.create.data.set.edges.for.console.cmd",error=TRUE),
+			         error = function(e){.ddg.data.node("Data", var, "complex")})
+
+			#if (!is.null(val)) {
+			#	if (is.data.frame(val)) .ddg.snapshot.node(var, "csv", val)
+			#	else .ddg.data.node("Data", var, val)
+			#}
+			#else {
+			#	.ddg.data.node("Data", var, "complex")
+			#}
 			.ddg.proc2data(cmd, var)
 		}
 	}
@@ -1071,7 +1075,9 @@ ddg.MAX_HIST_LINES <- 16384
 			tryCatch(paste(.ddg.replace.quotes(dvalue), collapse=","),
 					error = function(e) {"complex"})
 		}
+		else if (is.null(dvalue)) "NULL"
 		else if (is.na(dvalue)) "NA"
+		else if (dvalue == "complex") "complex"
 		else if (is.character(dvalue) && dvalue == "") "NotRecorded"
 		else {
 			 # Replace double quotes with single quotes.
