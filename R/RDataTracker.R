@@ -910,7 +910,7 @@ ddg.MAX_HIST_LINES <- 16384
 	return(parsed.commands)
 }
 
-# .ddg.parse.console.commands takes as input a set of RScript commands command format. 
+# .ddg.parse.commands takes as input a set of RScript commands command format. 
 # It creates DDG nodes for each command. If sourced is set to true, it executes 
 # the commands immediately before creating the respective nodes for that command 
 # and then creates the data node based on the information available in the 
@@ -918,7 +918,7 @@ ddg.MAX_HIST_LINES <- 16384
 # which need to be automatically annotated. Additionally, if sourced is true, calls to 
 # ddg.* are not exectuted so only the clean script is processed. The paramenter node.name
 # specifies the name for the collapsible node under which this DDG should be stored.
-.ddg.parse.console.commands <- function(parsed.commands,sourced=FALSE,
+.ddg.parse.commands <- function(parsed.commands,sourced=FALSE,
                                         node.name="Console") {
 	# attempt to close the previous collapsible command node
 	.ddg.close.previous.command.node()
@@ -986,12 +986,21 @@ ddg.MAX_HIST_LINES <- 16384
   			# we want to create a procedure node
 				.ddg.proc.node("Operation", cmd.abbrev, cmd, console=TRUE)
 				.ddg.proc2proc()
+				if (.ddg.debug()) print(paste(".ddg.parse.console.node: Adding operation node for", cmd.abbrev))
 
-				# we want to create the incoming data nodes
-
-  			if (.ddg.debug()) print(paste(".ddg.parse.console.node: Adding operation node for", cmd.abbrev))
+				# we want to create the incoming data nodes (all of these data nodes already exist)
+				.ddg.create.data.use.edges.for.console.cmd(vars.set, cmd.abbrev, cmd.expr, i)
+				if (.ddg.debug()) print(paste(".ddg.parse.console.node: Adding input data nodes for", cmd.abbrev))
+				# we want to create output date nodes (these data nodes don't already exist)
+				.ddg.create.data.set.edges.for.console.cmd(vars.set, cmd.abbrev, cmd.expr, i)
+				if (.ddg.debug()) print(paste(".ddg.parse.console.node: Adding output data nodes for", cmd.abbrev))
   		}
   	}
+
+  	# Create a data node for each variable that might have been set in 
+  	# something other than a simple assignment, with an edge from the 
+  	# last node in the console block.
+		.ddg.create.data.node.for.possible.writes(vars.set, last.proc.node)
 	}
 
 	# Close the console block
@@ -1018,42 +1027,16 @@ ddg.MAX_HIST_LINES <- 16384
 	# load from extended history since last time we wrote out a console node
 	new.lines <- .ddg.loadhistory(ddg.history.file,ddg.history.timestamp)
 
-	# Parse the lines into individual commands in both text and command format
+	# Parse the lines into individual commands
 	parsed.commands <- .ddg.parse.lines(new.lines)
 	
 	# no new commands since last timestamp
-	if (length(parsed.commands) == 0) return (NULL)	
+	if (is.null(parsed.commands)) return (NULL)	
 
 	# Parse the commands into a console node
-	.ddg.parse.console.commands(parsed.commands)
+	.ddg.parse.commands(parsed.commands)
 	
-	if (length(parsed.commands) > 0) {
-		# Find where all the variables are assigned to.
-		vars.set <- .ddg.find.var.assignments(parsed.commands)
-	
-		# Decide which data nodes and edges to create.  Only create a data 
-  	# node for the last write of a variable and only if that occurs 
-  	# after the last possible writer. Create an edge for a data use as 
-  	# long as the use happens before the first writer/possible writer 
-  	# or after the last writer/possible writer.
-		for (i in 1:length(parsed.commands)) {
-			cmd.expr <- parsed.commands[[i]]
-			cmd <- quoted.commands[i]
-		
-			if (substr(cmd, 1, 4) != "ddg.") {
-				cmd.abbrev <- .ddg.abbrev.cmd(cmd)
-				.ddg.create.data.use.edges.for.console.cmd(vars.set, cmd.abbrev, cmd.expr, i)
-				.ddg.create.data.set.edges.for.console.cmd(vars.set, cmd.abbrev, cmd.expr, i)
-			}
-		}
-	
-		# Create a data node for each variable that might have been set in 
-  	# something other than a simple assignment, with an edge from the 
-  	# last node in the console block.
-		.ddg.create.data.node.for.possible.writes(vars.set, last.proc.node)
-	}
-	
-    # Write time stamp to history.
+   # Write time stamp to history.
 	.ddg.write.timestamp.to.history()
 }
 
