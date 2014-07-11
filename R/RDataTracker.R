@@ -969,8 +969,11 @@ ddg.MAX_HIST_LINES <- 16384
 # which need to be automatically annotated. Additionally, if environ is not null, calls to 
 # ddg.* are not exectuted so only the clean script is processed. The paramenter node.name
 # specifies the name for the collapsible node under which this DDG should be stored.
-.ddg.parse.commands <- function(parsed.commands,environ=NULL,
-                                        node.name="Console") {
+# ignore.patterns is a vector of regular expression patterns. Any commands which match
+# any of these regular expressions will not be parsed (ie, no nodes will be created for them.)
+.ddg.parse.commands <- function(parsed.commands,environ=NULL, ignore.pattern=c('^ddg.'),
+                                        node.name="Console", echo=FALSE, print.eval = echo,
+                                        max.deparse.length = 150) {
 	# figure out if we will execute commands or not
 	execute = !is.null(environ) & is.environment(environ)
 
@@ -1032,13 +1035,29 @@ ddg.MAX_HIST_LINES <- 16384
   		cmd.expr <- parsed.commands[[i]]
   		cmd <- quoted.commands[[i]]
 
-  		# if the command is not a call to our library
-  		if (substr(cmd, 1, 4) != "ddg.") {
+  		# if the command does not match one of the ignored patterns
+  		if (!any(sapply(ignore.patterns, function(pattern){grepl(pattern, cmd)}))) {
   			cmd.abbrev <- .ddg.abrev.cmd(cmd)
   			last.proc.node <- cmd.abbrev
 
   			# If sourcing, we want to execute the command
-  			if (execute) evalq(cmd.expr, environ, NULL) 
+  			if (execute) {
+  				# print command
+  				if (echo) {
+						do.trunc <- nd > max.deparse.length
+            cmd.show <- substr(cmd, 1L, if (do.trunc) 
+              max.deparse.length
+            else nd)
+		        cat(cmd.show)
+         	}
+
+         	# evaluate
+  				result <- evalq(cmd.expr, environ, NULL)
+
+  				# print evaluation
+  				if (print.eval) print(result)
+
+  			}
 
   			# we want to create a procedure node
 				.ddg.proc.node("Operation", cmd.abbrev, cmd, console=TRUE)
@@ -2275,8 +2294,166 @@ ddg.save <- function() {
 	.ddg.delete.temp()
 }
 
-# ddg.source reads in an r script and executes it in the provided enviroment, 
-ddg.source <- 
+# ddg.source reads in an r script and executes it in the provided enviroment.
+# ddg.source essentially mimics the behaviour of the source command, having similar
+# input parameters and results, but additionally contains the following parameters:
+# @param - ignore.ddg.calls
+# @param - ignore.init
+ddg.source <- function (file, local = FALSE, echo = verbose, print.eval = echo, 
+    verbose = getOption("verbose"), max.deparse.length = 150, chdir = FALSE, encoding = getOption("encoding"),
+    ignore.ddg.calls = TRUE, ignore.init = ignore.ddg.calls) {
+  
+	### CODE IN THIS SECTION IS BASICALLY REPLICATION OF source FUNCTION ###
+	# Get the environment under which the script should be executed
+  envir <- if (isTRUE(local)) {
+      parent.frame()
+  }
+  else if (identical(local, FALSE)) {
+      .GlobalEnv
+  }
+  else if (is.environment(local)) {
+      local
+  }
+  else stop("'local' must be TRUE, FALSE or an environment")
+
+  # parse encoding information
+  have_encoding <- !missing(encoding) && encoding != "unknown"
+  if (!missing(echo)) {
+      if (!is.logical(echo)) 
+          stop("'echo' must be logical")
+      if (!echo && verbose) {
+          warning("'verbose' is TRUE, 'echo' not; ... coercing 'echo <- TRUE'")
+          echo <- TRUE
+      }
+  }
+
+  # print extra information about environment
+  if (verbose) {
+      cat("'envir' chosen:")
+      print(envir)
+  }
+
+  # parse input file and figure out encoding
+  ofile <- file
+  from_file <- FALSE
+  srcfile <- NULL
+  if (is.character(file)) {
+    if (identical(encoding, "unknown")) {
+    enc <- utils::localeToCharset()
+    encoding <- enc[length(enc)]
+    }
+    else enc <- encoding
+    if (length(enc) > 1L) {
+      encoding <- NA
+      owarn <- options("warn")
+      options(warn = 2)
+      for (e in enc) {
+          if (is.na(e)) 
+            next
+          zz <- file(file, encoding = e)
+          res <- tryCatch(readLines(zz, warn = FALSE), 
+            error = identity)
+          close(zz)
+          if (!inherits(res, "error")) {
+            encoding <- e
+            break
+          }
+      }
+      options(owarn)
+    }
+    if (is.na(encoding)) 
+      stop("unable to find a plausible encoding")
+    if (verbose) 
+      cat(gettextf("encoding = \"%s\" chosen", encoding), 
+            "\n", sep = "")
+    if (file == "") {
+    	filename <- "stdin"
+      file <- stdin()
+      srcfile <- "<stdin>"
+    }
+    else {
+      filename <- file
+      file <- file(filename, "r", encoding = encoding)
+      on.exit(close(file))
+      lines <- readLines(file, warn = FALSE)
+      on.exit()
+      close(file)
+      srcfile <- srcfilecopy(filename, lines, file.info(filename)[1, 
+            "mtime"], isFile = TRUE)
+    }
+    loc <- utils::localeToCharset()[1L]
+    encoding <- if (have_encoding) 
+      switch(loc, `UTF-8` = "UTF-8", `ISO8859-1` = "latin1", 
+        "unknown")
+    else "unknown"
+  }
+  
+  else {
+  	filename <- "Connection"
+	  lines <- readLines(file, warn = FALSE)
+    srcfile <- srcfilecopy(deparse(substitute(file)), lines)
+  }
+
+  # parse the expressions from the file
+  exprs <- if (!from_file) {
+    if (length(lines)) 
+      .Internal(parse(stdin(), n = -1, lines, "?", srcfile, 
+          encoding))
+    else expression()
+  }
+  else .Internal(parse(file, n = -1, NULL, "?", srcfile, encoding))
+  
+  on.exit()
+  
+  # Set the working directory for the current script and expressions
+  if (from_file) 
+    close(file)
+
+  if (verbose) 
+    cat("--> parsed", Ne, "expressions; now eval(.)ing them:\n")
+  if (chdir) {
+    if (is.character(ofile)) {
+      isURL <- length(grep("^(ftp|http|file)://", ofile)) > 
+          0L
+      if (isURL) 
+        warning("'chdir = TRUE' makes no sense for a URL")
+      if (!isURL && (path <- dirname(ofile)) != ".") {
+        owd <- getwd()
+        if (is.null(owd)) {
+          stop("cannot 'chdir' as current directory is unknown")
+          on.exit(setwd(owd), add = TRUE)
+          setwd(path)
+        }
+    	}
+    }
+    else {
+        warning("'chdir = TRUE' makes no sense for a connection")
+    }
+  }
+
+  ### END OF MODIFIED source CODE SECTION ###
+
+  # Calculate the regular expressions for what should be ignored and what shouldn't
+	if (ignore.ddg.calls && !ignore.init) {
+		if(verbose) warning("'ignore.ddg.calls' is TRUE, 'ignore.int' not; ... coercion 'ignore.init <- TRUE'")
+		ignore.init <- TRUE
+	}
+
+	# ignores calculation
+	ignores <-
+		if(ignore.ddg.calls) c("^ddg.")
+		else if (ignore.init) c("^.ddg.init")
+		else vector()
+
+  # now we can parse the commands as we normally would for a DDG
+  if(length(exprs) > 0) {
+
+  	# parse the commands into a console node
+  	.ddg.parse.commands(exprs, environ=envir, ignore.patterns=ignores, node.name=filename,
+  	                    echo = echo, print.eval = print.eval, max.deparse.length = max.deparse.length)
+  }
+
+}
 
 # ddg.debug.on turns on debugging of DDG construction.
 ddg.debug.on <- function () {
