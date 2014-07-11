@@ -726,7 +726,7 @@ ddg.MAX_HIST_LINES <- 16384
 # the following a <- a, where a is both input and output, a double occurrence of 
 # a variable is automatically assumed to be both input and output.
 # The value must exist beforehand.
-.ddg.create.data.edges.for.cmd <- function(cmd,cmd.expr, environ=.GlobaEnv) {
+.ddg.create.data.edges.for.cmd <- function(cmd,cmd.expr, environ=.GlobalEnv) {
 	all.vars.used <- .ddg.find.var.uses(cmd.expr,all=TRUE)
 	unique.vars.used <- unique(unlist(all.vars.used))
 
@@ -971,7 +971,7 @@ ddg.MAX_HIST_LINES <- 16384
 # specifies the name for the collapsible node under which this DDG should be stored.
 # ignore.patterns is a vector of regular expression patterns. Any commands which match
 # any of these regular expressions will not be parsed (ie, no nodes will be created for them.)
-.ddg.parse.commands <- function(parsed.commands,environ=NULL, ignore.pattern=c('^ddg.'),
+.ddg.parse.commands <- function(parsed.commands,environ=NULL, ignore.patterns=c('^ddg.'),
                                         node.name="Console", echo=FALSE, print.eval = echo,
                                         max.deparse.length = 150) {
 	# figure out if we will execute commands or not
@@ -1037,13 +1037,14 @@ ddg.MAX_HIST_LINES <- 16384
 
   		# if the command does not match one of the ignored patterns
   		if (!any(sapply(ignore.patterns, function(pattern){grepl(pattern, cmd)}))) {
-  			cmd.abbrev <- .ddg.abrev.cmd(cmd)
+  			cmd.abbrev <- .ddg.abbrev.cmd(cmd)
   			last.proc.node <- cmd.abbrev
 
   			# If sourcing, we want to execute the command
   			if (execute) {
   				# print command
   				if (echo) {
+  					nd <- nchar(cmd)
 						do.trunc <- nd > max.deparse.length
             cmd.show <- substr(cmd, 1L, if (do.trunc) 
               max.deparse.length
@@ -1052,7 +1053,7 @@ ddg.MAX_HIST_LINES <- 16384
          	}
 
          	# evaluate
-  				result <- evalq(cmd.expr, environ, NULL)
+  				result <- eval(cmd.expr, environ, NULL)
 
   				# print evaluation
   				if (print.eval) print(result)
@@ -1072,7 +1073,7 @@ ddg.MAX_HIST_LINES <- 16384
 				else {
 					.ddg.create.data.use.edges.for.console.cmd(vars.set, cmd.abbrev, cmd.expr, i)
 					if (.ddg.debug()) print(paste(".ddg.parse.console.node: Adding input data nodes for", cmd.abbrev))
-					ddg.create.data.set.edges.for.console.cmd(vars.set, cmd.abbrev, cmd.expr, i)
+					.ddg.create.data.set.edges.for.console.cmd(vars.set, cmd.abbrev, cmd.expr, i)
 					if (.ddg.debug()) print(paste(".ddg.parse.console.node: Adding output data nodes for", cmd.abbrev))
   			}	
   		}
@@ -2228,19 +2229,24 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, enable.console = FALSE
 # and saved in the DDG. Note: this function includes calls to 
 # ddg.init() and ddg.save(), so it is not necessary to call those 
 # functions from an instrumented script if ddg.run is used. f - the 
-# function to run. r.script.path (optional) - the full path to the 
+# function to run (optional). r.script.path (optional) - the full path to the 
 # R script file.  If provided, a copy of the script will be saved 
 # with the DDG. ddgdir (optional) - the directory where the DDG 
 # should be saved.  If not provided, the DDG will be saved in a 
 # subdirectory called "ddg" in the current working directory.
+# Note that one of f and r.script.path must given. An error is raised if neither is
+# given. If f is given or both are given, then the function f is executed with calls 
+# to ddg.init and save so provenance for that function can be captured. If only 
+# r.script.path is given, then the r script is sourced as a function and a DDG is
+# created for it.
 
-ddg.run <- function(f, r.script.path = NULL, ddgdir = NULL, enable.console = FALSE) {
+ddg.run <- function(f = NULL, r.script.path = NULL, ddgdir = NULL, enable.console = FALSE) {
     ddg.init(r.script.path, ddgdir, enable.console)
 	
     # If an R error is generated, get the error message and close 
     # the DDG.
     tryCatch(
-		f(),
+		if (!is.null(f)) f() else ddg.source(r.script.path, ignore.ddg.calls = FALSE, ignore.init = TRUE),
 		error=function(e) {
 			e.str <- toString(e)
 			print(e.str)
@@ -2397,11 +2403,11 @@ ddg.source <- function (file, local = FALSE, echo = verbose, print.eval = echo,
   # parse the expressions from the file
   exprs <- if (!from_file) {
     if (length(lines)) 
-      .Internal(parse(stdin(), n = -1, lines, "?", srcfile, 
-          encoding))
+      parse(stdin(), n = -1, lines, "?", srcfile, 
+          encoding)
     else expression()
   }
-  else .Internal(parse(file, n = -1, NULL, "?", srcfile, encoding))
+  else parse(file, n = -1, NULL, "?", srcfile, encoding)
   
   on.exit()
   
@@ -2410,7 +2416,7 @@ ddg.source <- function (file, local = FALSE, echo = verbose, print.eval = echo,
     close(file)
 
   if (verbose) 
-    cat("--> parsed", Ne, "expressions; now eval(.)ing them:\n")
+    cat("--> parsed", "expressions; now eval(.)ing them:\n")
   if (chdir) {
     if (is.character(ofile)) {
       isURL <- length(grep("^(ftp|http|file)://", ofile)) > 

@@ -4,7 +4,7 @@
 	xmlns:if="ant:if"
     xmlns:unless="ant:unless">
 
-  <!--################################ Setup ################################-->
+  <!--############################# Start Setup #############################-->
   <!-- So we can build RDataTracker -->
   <import file="build.xml" />
 
@@ -24,8 +24,9 @@
         </tokenfilter>
       </filterchain>
   </loadresource>
+  <!--############################## End Setup ##############################-->
 
-  <!--############################## FUNCTIONS ##############################-->
+  <!--############################ Start FUNCTIONS ############################-->
   <target name="run-test">
 
     <!-- Directory to store local files for comparison -->
@@ -109,8 +110,9 @@
   		<arg line="${local_dir}/ddg.txt.local ${local_dir}/${ddg_name}.local" />
   	</exec>
   </target>
+  <!--############################ End FUNCTIONS ############################-->
 
-  <!--################################ TESTS ################################-->
+  <!--########################## Start Basic TESTS ##########################-->
   <target name="basic-test">
   	<antcall target="run-test">
   		<param name="dir" value="examples/ddgTest"/>
@@ -144,6 +146,13 @@
   	</antcall>
   </target>
 
+  <target name="normal-tests" depends="basic-test, S4-object-test, ddg-test">
+    <echo>Finished Execution of Normal Tests. Nothing should have malfunctioned</echo>
+  </target>
+  <!--########################## End Basic TESTS ##########################-->
+
+  <!--########################## Start Checkpoint TESTS ##########################-->
+
   <target name="checkpoint-test">
   	<antcall target="run-test">
   		<param name="dir" value="examples/checkpointTest"/>
@@ -166,6 +175,13 @@
   	</antcall>
   </target>
 
+  <target name="checkpoint-tests" depends="checkpoint-test, checkpoint-file-test">
+    <echo>Finished Execution of Checkpoint Tests. Nothing should have malfunctioned</echo>
+  </target>
+
+  <!--########################## End Checkpoint TESTS ##########################-->
+
+  <!--############################ Start Console Tests ############################-->
   <target name="console-test-1">
     <antcall target="run-test">
       <param name="dir" value="examples/consoleTest"/>
@@ -223,8 +239,29 @@
   </target>
 
   <target name="console-tests" depends="console-test-1, console-test-2, MismatchedStartFinishBug-test, null-na-test, consoleEdges-test">
-    <echo>Remember to manually check the console tests. Automated tests are limited when in console mode.</echo>
+    <echo>These automated tests are limited when in console mode. You can always manually check the ouput using diff and the provided expected output files for each script.</echo>
   </target>
+  <!--########################## End Console TESTS ##########################-->
+
+
+  <!--########################## Start Source Tests ##########################-->
+  <target name="console-source-1">
+    <antcall target="run-test">
+      <param name="dir" value="examples/consoleTest"/>
+      <param name="out" value="examples/consoleTest/consoleSourceTest.out"/>
+      <param name="script-file" value="consoleSourceTest.r"/>
+      <param name="expected_out" value="examples/consoleTest/expected_consoleSourceTest.out"/>
+      <param name="expected_ddg" value="examples/consoleTest/expected_consoleSourceTest_ddg.txt"/>
+      <param name="fail_out" value="true" />
+    </antcall>
+  </target>
+
+  <target name="source-tests" depends="console-source-1">
+    <echo>Finished Execution of Normal Tests. Nothing should have malfunctioned</echo>
+  </target>
+  <!--########################## End Source TESTS ##########################-->
+
+  <!--########################## Start Script Tests ##########################-->
   
   <target name="calculate-square-root-1-test">
   	<antcall target="run-test">
@@ -277,7 +314,12 @@
   <target name="daily-solar-radiation-tests" depends="daily-solar-radiation-1-test, daily-solar-radiation-2-test">
     <echo>The daily solar radiation tests should only differ in system information</echo>
   </target>
+  <target name="script-tests" depends="calculate-square-root-tests, daily-solar-radiation-tests">
+    <echo>Script tests for which out put should not differ </echo>
+  </target>
+  <!--########################## End Script Tests ##########################-->
 
+  <!--########################## Start Bug Tests ##########################-->
   <target name="ddg-changes-behavior-test">
     <antcall target="run-test">
       <param name="dir" value="examples/ddgChangesBehavior"/>
@@ -337,6 +379,12 @@
       <echo>You shuould output this to either a text file, or run the diff manually. The nodes generated are done so through a random process, and therefore differ significantly.</echo>
     <record name="SivanSampling-test.log.txt" action="stop" />
   </target> 
+
+  <target name="bug-tests" depends="ddg-changes-behavior-test, ddg-hang-test,scoping-error-test, simple-test,SivanSampling-test" >
+    <echo>Tests which were added to check for specific bug fixes </echo>
+  </target>
+
+  <!--########################## End Bug Tests ##########################-->
 	
 	<target name="aaron-test">
 		<echo message="Please run Aaron's test in the console and compare ddg.txt with expected_ddg.txt" />
@@ -344,7 +392,7 @@
 	
   <!--################################# MAIN #################################-->
 
-  <target name="test-all" depends="basic-test, ddg-test, S4-object-test, checkpoint-test, checkpoint-file-test, calculate-square-root-tests, daily-solar-radiation-tests, console-tests, ddg-changes-behavior-test, ddg-hang-test, scoping-error-test, simple-test, aaron-test">
+  <target name="test-all" depends="normal-tests, checkpoint-tests, script-tests, console-tests, bug-tests, aaron-test">
       <echo>All tests makes calls to the RDataTracker Library. You might need to restart RStudio to correctly run the scripts with the updated library installed. Output is saved in tests.log.</echo>
   </target>
 
