@@ -643,8 +643,12 @@ ddg.MAX_HIST_LINES <- 16384
 	return(.ddg.find.var.uses.rec(main.object))
 }
 
-# .ddg.find.var.assignments creates a data frame containing 
-# information about variable assignments:
+# .ddg.create.empty.vars.set creates an empty data frame initialized to contain
+# information about variable assignments. Parameter is the desired size of the
+# data frame; Negative values and 0 are coerced to 1. Return value is the 
+# intialized data frame. 
+
+# The data frame is structured as follows 
 
 # - the variable name.
 # - the position of the statement that wrote the variable first.
@@ -658,61 +662,104 @@ ddg.MAX_HIST_LINES <- 16384
 # that first.writer is for simple assignments (like a <- 1), while 
 # possible.first.writer is for situations where the assignment might 
 # not have occurred, like "if (foo) a <- 1".
+.ddg.create.empty.vars.set <- function(var.table.size = 1) {
+	if (var.table.size <= 0) var.table.size <- 1
 
-.ddg.find.var.assignments <- function(parsed.commands) {
-	if (length(parsed.commands) == 0) return (data.frame())
-	
-	# Make it big so we don't run out of space.
-	var.table.size <- length(parsed.commands) * 5  
 	vars.set <- data.frame(variable=character(var.table.size), 
 			first.writer=numeric(var.table.size), 
 			last.writer=numeric(var.table.size), 
 			possible.first.writer=numeric(var.table.size), 
 			possible.last.writer=numeric(var.table.size), stringsAsFactors=FALSE)
-	vars.set$first.writer <- length(parsed.commands)+1
-	vars.set$possible.first.writer <- length(parsed.commands)+1
+
+	# Initialize first writer
+	vars.set$first.writer <- var.table.size + 1
+	vars.set$possible.first.writer <- var.table.size + 1
+
+	return(vars.set)
+}
+
+#.ddg.increase.vars.set simply double the size of the passed in var set and returns
+# the new one
+.ddg.double.vars.set <- function(vars.set, size=nrow(vars.set)) {
+	# create the right size data frame from input frame
+	new.vars.set <- rbind(vars.set,.ddg.create.empty.vars.set(size))
+
+	# update first/last writer
+	new.vars.set$first.writer <- ifelse(new.vars.set$first.writer == size + 1, 
+	                                    size*2 + 1, new.vars.set$first.writer)
+	new.vars.set$possible.first.writer <- ifelse(new.vars.set$possible.first.writer == size + 1, 
+	                                             size*2 + 1, new.vars.set$possible.first.writer)
+
+	return(new.vars.set)
+}
+
+# .ddg.add.to.vars.set parses expr and adds the new variable information to the 
+# data frame. The current vars.set, the command, and the location of the command
+# all need to be input parameters. The return value is the new var set.
+# Note that var.num is a global variable! It should be intialized when vars.set 
+# is first created.
+.ddg.add.to.vars.set <- function(vars.set, cmd.expr, i) {
+	# Find out the variable being assigned to by a simple assignment 
+  # statement.
+	main.var.assigned <- .ddg.find.simple.assign(cmd.expr)
+	
+	# Find all the variables that may be assigned in the statement.
+	vars.assigned <- .ddg.find.assign(cmd.expr)
+	
+	for (var in vars.assigned) {
+		nRow <- which(vars.set$variable == var)
+		
+		# If the variable is already in the table, update its entry.
+		if (length(nRow) > 0) {
+			if (!is.null(main.var.assigned) && var == main.var.assigned) {
+				vars.set$last.writer[nRow] <- i
+			}
+			else {
+				vars.set$possible.last.writer[nRow] <- i
+			}
+		}
+		
+		# The variable was not in the table. Add a new line for this 
+    # variable.
+		else {
+			# check space
+			size <- nrow(vars.set)
+			vars.set <- ifelse(var.num <= size, vars.set, .ddg.double.vars.set(vars.set,size))
+
+			# set the variable
+			vars.set$variable[var.num] <- var
+			if (!is.null(main.var.assigned) && var == main.var.assigned) {
+				vars.set$first.writer[var.num] <- i
+				vars.set$last.writer[var.num] <- i
+			}
+			else {
+				vars.set$possible.first.writer[var.num] <- i
+				vars.set$possible.last.writer[var.num] <- i
+			}
+			var.num <<- var.num + 1
+		}
+	}
+
+	return(vars.set)
+}
+
+
+# finds the possible variable assignments for a fixed set of parsed commands
+# See .ddg.create.empty.vars.set for more information on the structure of the
+# returned data frame.
+.ddg.find.var.assignments <- function(parsed.commands) {
+	if (length(parsed.commands) == 0) return (data.frame())
+	
+	# Make it big so we don't run out of space.
+	var.table.size <- length(parsed.commands)
+	vars.set <- .ddg.create.empty.vars.set(var.table.size)
   
 	# Build the table recording where variables are assigned to or may 
   # be assigned to.
 	var.num <- 1
-	for (i in 1:length(parsed.commands)) {
+	for ( i in 1:length(parsed.commands)) {
 		cmd.expr <- parsed.commands[[i]]
-		
-		# Find out the variable being assigned to by a simple assignment 
-    # statement.
-		main.var.assigned <- .ddg.find.simple.assign(cmd.expr)
-		
-		# Find all the variables that may be assigned in the statement.
-		vars.assigned <- .ddg.find.assign(cmd.expr)
-		
-		for (var in vars.assigned) {
-			nRow <- which(vars.set$variable == var)
-			
-			# If the variable is already in the table, update its entry.
-			if (length(nRow) > 0) {
-				if (!is.null(main.var.assigned) && var == main.var.assigned) {
-					vars.set$last.writer[nRow] <- i
-				}
-				else {
-					vars.set$possible.last.writer[nRow] <- i
-				}
-			}
-			
-			# The variable was not in the table.  Add a new line for this 
-      # variable.
-			else {
-				vars.set$variable[var.num] <- var
-				if (!is.null(main.var.assigned) && var == main.var.assigned) {
-					vars.set$first.writer[var.num] <- i
-					vars.set$last.writer[var.num] <- i
-				}
-				else {
-					vars.set$possible.first.writer[var.num] <- i
-					vars.set$possible.last.writer[var.num] <- i
-				}
-				var.num <- var.num + 1
-			}
-		}
+		vars.set <- .ddg.add.to.vars.set(vars.set,cmd.expr, i)
 	}
 	return (vars.set)
 }
@@ -1082,7 +1129,7 @@ ddg.MAX_HIST_LINES <- 16384
   	# Create a data node for each variable that might have been set in 
   	# something other than a simple assignment, with an edge from the 
   	# last node in the console block.
-		.ddg.create.data.node.for.possible.writes(vars.set, last.proc.node)
+		if (!execute) .ddg.create.data.node.for.possible.writes(vars.set, last.proc.node)
 	}
 
 	# Close the console block
