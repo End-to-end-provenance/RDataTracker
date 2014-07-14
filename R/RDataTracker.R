@@ -733,6 +733,7 @@ ddg.MAX_HIST_LINES <- 16384
 		# The variable was not in the table. Add a new line for this 
     # variable.
 		else {
+			var.num <- .ddg.get("var.num")
 			# check space
 			size <- nrow(vars.set)
 			if (var.num > size) vars.set <- .ddg.double.vars.set(vars.set,size)
@@ -976,10 +977,10 @@ ddg.MAX_HIST_LINES <- 16384
 
 # This function is exclusively used in .ddg.parse.commands (so far) and simply 
 # serves to avoic repetition of code.
-.ddg.add.abstract.node <- function(type, cmd, console, called=".ddg.parse.commands") {
+.ddg.add.abstract.node <- function(type, cmd, called=".ddg.parse.commands") {
 	cmd.abbrev <- .ddg.abbrev.cmd(cmd)
 	if (.ddg.debug()) print(paste(called, ":  Adding", cmd.abbrev,  type, "node"))
-	  .ddg.proc.node(type, cmd.abbrev, cmd, console)
+	  .ddg.proc.node(type, cmd.abbrev, cmd, TRUE)
 		.ddg.proc2proc()
 }
 
@@ -989,7 +990,7 @@ ddg.MAX_HIST_LINES <- 16384
 .ddg.close.last.command.node <- function(called=".ddg.parse.commands"){
 	.ddg.last.command <- .ddg.get(".ddg.last.command")
 	if (!is.null(.ddg.last.command)) {
-		.ddg.add.abstract.node("Finish", .ddg.last.command, console=TRUE, paste(called, "-> .ddg.close.last.command.node"))
+		.ddg.add.abstract.node("Finish", .ddg.last.command, paste(called, "-> .ddg.close.last.command.node"))
 
 		# No previous command
 		.ddg.set(".ddg.last.command", NULL)
@@ -1001,11 +1002,11 @@ ddg.MAX_HIST_LINES <- 16384
 # Parameters - (optional) called is the calling function
 # new.command - the name of the new command which should be opened
 .ddg.open.new.command.node <- function(called=".ddg.parse.commands") {
-  new.command=.ddg.get(".ddg.new.command")
-	if (!is.null(last.command)) {
-		.ddg.add.abstract.node("Start", .ddg.last.command, console=TRUE, paste(called, "-> .ddg.open.new.command.node"))
+  new.command = .ddg.get(".ddg.new.command")
+	if (!is.null(new.command)) {
+		.ddg.add.abstract.node("Start", new.command, paste(called, "-> .ddg.open.new.command.node"))
 
-		# No last command
+		# Now the new command becomes the last command
 		.ddg.set(".ddg.last.command", new.command)
 	}
 }
@@ -1054,7 +1055,7 @@ ddg.MAX_HIST_LINES <- 16384
   # console nodes. Don't bother doing this if there is only 1 new 
   # command in the histpry or execution.
 	num.new.commands <- length(new.commands)
-	if (num.new.commands > 1 && .ddg.is.init()) .ddg.add.abstract.node("Start", node.name, console=TRUE)
+	if (num.new.commands > 1 && .ddg.is.init()) .ddg.add.abstract.node("Start", node.name)
 
 	# Quote the quotation (") characters so that they will appear in 
   # ddg.txt.
@@ -1064,7 +1065,7 @@ ddg.MAX_HIST_LINES <- 16384
 	# a new .ddg.last.command node for future reference
 	.ddg.last.command <- quoted.commands[[num.new.commands]]
 	if (substr(.ddg.last.command, 1, 4) == "ddg.") {
-		.ddg.new.command <- NULL
+		.ddg.last.command <- NULL
 	}
 	else {
 		quoted.commands <- quoted.commands[1:num.new.commands-1]
@@ -1103,7 +1104,9 @@ ddg.MAX_HIST_LINES <- 16384
   		cmd <- quoted.commands[[i]]
 
   		# specifies whether or not a procedure node should be created for this command
-  		create <- !grepl("^ddg.", cmd)
+  		# Basically, if a ddg exists and the command is not a ddg command, it should
+  		# be created.
+  		create <- !grepl("^ddg.", cmd) && .ddg.is.init()
 
   		# if the command does not match one of the ignored patterns
   		if (!any(sapply(ignore.patterns, function(pattern){grepl(pattern, cmd)}))) {
@@ -1134,13 +1137,13 @@ ddg.MAX_HIST_LINES <- 16384
 
   				# check if initialization call. If so, then create a new console node
   				if(grepl("^ddg.init", cmd)) { 
-  					.ddg.add.abstract.node("Start", node.name, console=TRUE)
+  					.ddg.add.abstract.node("Start", node.name)
   				}
   			}
 
   			# we want to create a procedure node for this command
   			if (create) {
-					.ddg.proc.node("Operation", cmd.abbrev, cmd, console=TRUE)
+					.ddg.proc.node("Operation", cmd.abbrev, cmd)
 					.ddg.proc2proc()
 					if (.ddg.debug()) print(paste(".ddg.parse.console.node: Adding operation node for", cmd.abbrev))
 
@@ -1166,7 +1169,7 @@ ddg.MAX_HIST_LINES <- 16384
 
 	# Close the console block if we processed anything and the ddg is initialized (also, save)
 	if (num.new.commands > 1 && .ddg.is.init()) { 
-		.ddg.add.abstract.node("Finish", node.name, console=TRUE)
+		.ddg.add.abstract.node("Finish", node.name)
 	}
 
 	# Open up a new collapsible node in case we need to parse further later
@@ -2534,14 +2537,14 @@ ddg.source <- function (file, local = FALSE, echo = verbose, print.eval = echo,
 		ignore.init <- TRUE
 	}
 
-	# Clear out the DDG Env if we are NOT ignoring and init call
+	# Clear out the DDG Env if we are NOT ignoring an init call
 	if (!ignore.init) .ddg.clear()
 
 	# ignores calculation of certain execution steps
-	ignores <-
-		if(ignore.ddg.calls) c("^ddg.", "^library[(]RDataTracker[)]$")
-		else if (ignore.init) c("^.ddg.init", "^library[(]RDataTracker[)]$")
-		else vector()
+	ignores <- c("^library[(]RDataTracker[)]$", 	
+		if(ignore.ddg.calls) "^ddg."
+		else if (ignore.init) "^.ddg.init"
+		else "a^")
 
   # now we can parse the commands as we normally would for a DDG
   if(length(exprs) > 0) {
@@ -2549,7 +2552,6 @@ ddg.source <- function (file, local = FALSE, echo = verbose, print.eval = echo,
   	# parse the commands into a console node
   	.ddg.parse.commands(exprs, environ=envir, ignore.patterns=ignores, node.name=filename,
   	                    echo = echo, print.eval = print.eval, max.deparse.length = max.deparse.length)
-  	
   	
   	# save the DDG
   	ddg.save()
