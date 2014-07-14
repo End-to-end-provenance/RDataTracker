@@ -20,7 +20,7 @@ ddg.source(file, local = FALSE, echo = verbose, print.eval = echo,
   \item{encoding}{see \code{\link{source}}}
   \item{ignore.ddg.calls}{specifies whether commands in the source script 
   pertaining to DDGs should be ignored.}
-  \item{ignore.init}{specified whether suppresion of source script DDG Initialization
+  \item{ignore.init}{specifies whether suppresion of source script DDG Initialization
   should occur.}
 } 
 \seealso{
@@ -31,7 +31,7 @@ ddg.source(file, local = FALSE, echo = verbose, print.eval = echo,
   collection for sourced files. For more information on source pertinant  
   parameters and functions, see the source help page.
 
-  Data Provenance is collected from the sourced file and a ddg created.
+  Data Provenance is collected from the sourced file and a DDG is created.
 
   If ignore.ddg.calls is set to TRUE, then all code statement beginning with 
   "ddg." are ignored. They are not executed nor incorporated into the created 
@@ -39,7 +39,7 @@ ddg.source(file, local = FALSE, echo = verbose, print.eval = echo,
   when sourcing, automatic console annotation are required. 
 
   This is also useful if automatic annotations of a sourced script should be 
-  included in a the DDG of the script sourcing file. Ignoring "ddg." statements 
+  included in the DDG of the script sourcing file. Ignoring "ddg." statements 
   leads to the automatically created DDG being incorporated into the current DDG
   (if one is already initialized).
 
@@ -48,12 +48,15 @@ ddg.source(file, local = FALSE, echo = verbose, print.eval = echo,
 
   The paramenter ignore.init is used when a sourced script is already annotated,
   but instead of creating a new DDG, the annotated DDG of the source script 
-  should be incorporated into the curretn DDG. When ignore.ddg.calls is set to 
+  should be incorporated into the current DDG. When ignore.ddg.calls is set to 
   FALSE and ignore.init is set to TRUE, all calls beginning with "ddg.init" will
-  be ignored. 
+  be ignored but others will be executed.
 
   This prevents the initialization of a new DDG. Therefore, the provenance is 
   stored in the currently initialized DDG (if one exists).
+
+  Further, note that all calls to "library(RDataTracker)" are ignored in the
+  sourced file.
 
 }
 \author{Luis Perez}
