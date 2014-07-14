@@ -977,10 +977,10 @@ ddg.MAX_HIST_LINES <- 16384
 
 # This function is exclusively used in .ddg.parse.commands (so far) and simply 
 # serves to avoic repetition of code.
-.ddg.add.abstract.node <- function(type, cmd, called=".ddg.parse.commands") {
+.ddg.add.abstract.node <- function(type, cmd, console=FALSE, called=".ddg.parse.commands") {
 	cmd.abbrev <- .ddg.abbrev.cmd(cmd)
 	if (.ddg.debug()) print(paste(called, ":  Adding", cmd.abbrev,  type, "node"))
-	  .ddg.proc.node(type, cmd.abbrev, cmd, TRUE)
+	  .ddg.proc.node(type, cmd.abbrev, cmd, console)
 		.ddg.proc2proc()
 }
 
@@ -990,7 +990,7 @@ ddg.MAX_HIST_LINES <- 16384
 .ddg.close.last.command.node <- function(called=".ddg.parse.commands"){
 	.ddg.last.command <- .ddg.get(".ddg.last.command")
 	if (!is.null(.ddg.last.command)) {
-		.ddg.add.abstract.node("Finish", .ddg.last.command, paste(called, "-> .ddg.close.last.command.node"))
+		.ddg.add.abstract.node("Finish", .ddg.last.command, console=TRUE,called=paste(called, "-> .ddg.close.last.command.node"))
 
 		# No previous command
 		.ddg.set(".ddg.last.command", NULL)
@@ -1002,9 +1002,9 @@ ddg.MAX_HIST_LINES <- 16384
 # Parameters - (optional) called is the calling function
 # new.command - the name of the new command which should be opened
 .ddg.open.new.command.node <- function(called=".ddg.parse.commands") {
-  new.command = .ddg.get(".ddg.new.command")
+  new.command <- .ddg.get(".ddg.new.command")
 	if (!is.null(new.command)) {
-		.ddg.add.abstract.node("Start", new.command, paste(called, "-> .ddg.open.new.command.node"))
+		.ddg.add.abstract.node("Start", new.command, console=TRUE,called=paste(called, "-> .ddg.open.new.command.node"))
 
 		# Now the new command becomes the last command
 		.ddg.set(".ddg.last.command", new.command)
@@ -1055,7 +1055,7 @@ ddg.MAX_HIST_LINES <- 16384
   # console nodes. Don't bother doing this if there is only 1 new 
   # command in the histpry or execution.
 	num.new.commands <- length(new.commands)
-	if (num.new.commands > 1 && .ddg.is.init()) .ddg.add.abstract.node("Start", node.name)
+	if (num.new.commands > 1 && .ddg.is.init()) .ddg.add.abstract.node("Start", node.name, console=TRUE)
 
 	# Quote the quotation (") characters so that they will appear in 
   # ddg.txt.
@@ -1112,6 +1112,7 @@ ddg.MAX_HIST_LINES <- 16384
   		if (!any(sapply(ignore.patterns, function(pattern){grepl(pattern, cmd)}))) {
   			cmd.abbrev <- .ddg.abbrev.cmd(cmd)
   			last.proc.node <- cmd.abbrev
+  			# browser()
 
   			# If sourcing, we want to execute the command
   			if (execute) {
@@ -1143,7 +1144,7 @@ ddg.MAX_HIST_LINES <- 16384
 
   			# we want to create a procedure node for this command
   			if (create) {
-					.ddg.proc.node("Operation", cmd.abbrev, cmd)
+					.ddg.proc.node("Operation", cmd.abbrev, console=TRUE)
 					.ddg.proc2proc()
 					if (.ddg.debug()) print(paste(".ddg.parse.console.node: Adding operation node for", cmd.abbrev))
 
@@ -1169,7 +1170,7 @@ ddg.MAX_HIST_LINES <- 16384
 
 	# Close the console block if we processed anything and the ddg is initialized (also, save)
 	if (num.new.commands > 1 && .ddg.is.init()) { 
-		.ddg.add.abstract.node("Finish", node.name)
+		.ddg.add.abstract.node("Finish", node.name, console= TRUE)
 	}
 
 	# Open up a new collapsible node in case we need to parse further later
@@ -1213,7 +1214,7 @@ ddg.MAX_HIST_LINES <- 16384
 
 	# probably running using ddg.source, so close previous node and open the new one
 	# without parsing the history
-	else if (console && .ddg.enable.console()) {
+	else if (!console && .ddg.enable.console()) {
 		.ddg.close.last.command.node(called=".ddg.proc.node")
 		.ddg.open.new.command.node(called=".ddg.proc.node")
 	}
