@@ -724,7 +724,7 @@ ddg.MAX_HIST_LINES <- 16384
 		else {
 			# check space
 			size <- nrow(vars.set)
-			vars.set <- ifelse(var.num <= size, vars.set, .ddg.double.vars.set(vars.set,size))
+			if (var.num > size) vars.set <- .ddg.double.vars.set(vars.set,size)
 
 			# set the variable
 			vars.set$variable[var.num] <- var
@@ -756,7 +756,7 @@ ddg.MAX_HIST_LINES <- 16384
   
 	# Build the table recording where variables are assigned to or may 
   # be assigned to.
-	var.num <- 1
+	var.num <<- 1
 	for ( i in 1:length(parsed.commands)) {
 		cmd.expr <- parsed.commands[[i]]
 		vars.set <- .ddg.add.to.vars.set(vars.set,cmd.expr, i)
@@ -773,6 +773,8 @@ ddg.MAX_HIST_LINES <- 16384
 # the following a <- a, where a is both input and output, a double occurrence of 
 # a variable is automatically assumed to be both input and output.
 # The value must exist beforehand.
+
+# THIS IS NOT USED ANYWHERE BECAUSE IT DID NOT WORK AS EXPECTED
 .ddg.create.data.edges.for.cmd <- function(cmd,cmd.expr, environ=.GlobalEnv) {
 	all.vars.used <- .ddg.find.var.uses(cmd.expr,all=TRUE)
 	unique.vars.used <- unique(unlist(all.vars.used))
@@ -1021,6 +1023,7 @@ ddg.MAX_HIST_LINES <- 16384
 .ddg.parse.commands <- function(parsed.commands,environ=NULL, ignore.patterns=c('^ddg.'),
                                         node.name="Console", echo=FALSE, print.eval = echo,
                                         max.deparse.length = 150) {
+	# browser()
 	# figure out if we will execute commands or not
 	execute = !is.null(environ) & is.environment(environ)
 
@@ -1075,7 +1078,13 @@ ddg.MAX_HIST_LINES <- 16384
   #Only go through this if  we have at least one command to parse.
   if (length(parsed.commands) > 0) {
   	# Find where all the variables are assigned for non-environ files
-  	if (!execute) vars.set <- .ddg.find.var.assignments(parsed.commands)
+  	if (!execute) {
+			vars.set <- .ddg.find.var.assignments(parsed.commands)
+  	} 
+  	else {
+  		var.num <<- 1
+  		vars.set <- .ddg.create.empty.vars.set()
+  	}
 
   	# loop over the commands as well as their string representations
   	for (i in 1:length(parsed.commands)) {
@@ -1103,7 +1112,7 @@ ddg.MAX_HIST_LINES <- 16384
   				result <- eval(cmd.expr, environ, NULL)
 
   				# print evaluation
-  				if (print.eval) print(result)
+  				if (print.eval) cat(result)
 
   			}
 
@@ -1114,22 +1123,22 @@ ddg.MAX_HIST_LINES <- 16384
 
 				# we want to create the incoming data nodes (all of these data nodes already exist)
 				if (execute) {
-					.ddg.create.data.edges.for.cmd(cmd.abbrev, cmd.expr, environ)
-					if (.ddg.debug()) print(paste(".ddg.parse.console.node: Adding input and output data nodes for", cmd.abbrev))
+					vars.set <- .ddg.add.to.vars.set(vars.set,cmd.expr,i)
+					if (.ddg.debug()) print(paste(".ddg.parse.console.node: Adding", cmd.abbrev, "information to vars.set"))
 				}
-				else {
-					.ddg.create.data.use.edges.for.console.cmd(vars.set, cmd.abbrev, cmd.expr, i)
-					if (.ddg.debug()) print(paste(".ddg.parse.console.node: Adding input data nodes for", cmd.abbrev))
-					.ddg.create.data.set.edges.for.console.cmd(vars.set, cmd.abbrev, cmd.expr, i)
-					if (.ddg.debug()) print(paste(".ddg.parse.console.node: Adding output data nodes for", cmd.abbrev))
-  			}	
+
+				.ddg.create.data.use.edges.for.console.cmd(vars.set, cmd.abbrev, cmd.expr, i)
+				if (.ddg.debug()) print(paste(".ddg.parse.console.node: Adding input data nodes for", cmd.abbrev))
+				.ddg.create.data.set.edges.for.console.cmd(vars.set, cmd.abbrev, cmd.expr, i)
+				if (.ddg.debug()) print(paste(".ddg.parse.console.node: Adding output data nodes for", cmd.abbrev))
+
   		}
   	}
 
   	# Create a data node for each variable that might have been set in 
   	# something other than a simple assignment, with an edge from the 
-  	# last node in the console block.
-		if (!execute) .ddg.create.data.node.for.possible.writes(vars.set, last.proc.node)
+  	# last node in the console block or source 
+		.ddg.create.data.node.for.possible.writes(vars.set, last.proc.node)
 	}
 
 	# Close the console block
@@ -2497,7 +2506,7 @@ ddg.source <- function (file, local = FALSE, echo = verbose, print.eval = echo,
 		if(ignore.ddg.calls) c("^ddg.")
 		else if (ignore.init) c("^.ddg.init")
 		else vector()
-
+	browse()
   # now we can parse the commands as we normally would for a DDG
   if(length(exprs) > 0) {
 
