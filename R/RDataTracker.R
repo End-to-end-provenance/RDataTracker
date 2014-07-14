@@ -977,10 +977,10 @@ ddg.MAX_HIST_LINES <- 16384
 
 # This function is exclusively used in .ddg.parse.commands (so far) and simply 
 # serves to avoic repetition of code.
-.ddg.add.abstract.node <- function(type, cmd, console=FALSE, called=".ddg.parse.commands") {
+.ddg.add.abstract.node <- function(type, cmd, called=".ddg.parse.commands") {
 	cmd.abbrev <- .ddg.abbrev.cmd(cmd)
 	if (.ddg.debug()) print(paste(called, ":  Adding", cmd.abbrev,  type, "node"))
-	  .ddg.proc.node(type, cmd.abbrev, cmd, console)
+	  .ddg.proc.node(type, cmd.abbrev, cmd, TRUE)
 		.ddg.proc2proc()
 }
 
@@ -990,7 +990,7 @@ ddg.MAX_HIST_LINES <- 16384
 .ddg.close.last.command.node <- function(called=".ddg.parse.commands"){
 	.ddg.last.command <- .ddg.get(".ddg.last.command")
 	if (!is.null(.ddg.last.command)) {
-		.ddg.add.abstract.node("Finish", .ddg.last.command, console=TRUE,called=paste(called, "-> .ddg.close.last.command.node"))
+		.ddg.add.abstract.node("Finish", .ddg.last.command,called=paste(called, "-> .ddg.close.last.command.node"))
 
 		# No previous command
 		.ddg.set(".ddg.last.command", NULL)
@@ -1004,7 +1004,7 @@ ddg.MAX_HIST_LINES <- 16384
 .ddg.open.new.command.node <- function(called=".ddg.parse.commands") {
   new.command <- .ddg.get(".ddg.new.command")
 	if (!is.null(new.command)) {
-		.ddg.add.abstract.node("Start", new.command, console=TRUE,called=paste(called, "-> .ddg.open.new.command.node"))
+		.ddg.add.abstract.node("Start", new.command,called=paste(called, "-> .ddg.open.new.command.node"))
 
 		# Now the new command becomes the last command
 		.ddg.set(".ddg.last.command", new.command)
@@ -1055,7 +1055,7 @@ ddg.MAX_HIST_LINES <- 16384
   # console nodes. Don't bother doing this if there is only 1 new 
   # command in the histpry or execution.
 	num.new.commands <- length(new.commands)
-	if (num.new.commands > 1 && .ddg.is.init()) .ddg.add.abstract.node("Start", node.name, console=TRUE)
+	if (num.new.commands > 1 && .ddg.is.init()) .ddg.add.abstract.node("Start", node.name)
 
 	# Quote the quotation (") characters so that they will appear in 
   # ddg.txt.
@@ -1106,7 +1106,7 @@ ddg.MAX_HIST_LINES <- 16384
   		# specifies whether or not a procedure node should be created for this command
   		# Basically, if a ddg exists and the command is not a ddg command, it should
   		# be created.
-  		create <- !grepl("^ddg.", cmd) && .ddg.is.init()
+  		create <- !grepl("^ddg.", cmd) && .ddg.is.init() && .ddg.enable.console()
 
   		# if the command does not match one of the ignored patterns
   		if (!any(sapply(ignore.patterns, function(pattern){grepl(pattern, cmd)}))) {
@@ -1170,7 +1170,7 @@ ddg.MAX_HIST_LINES <- 16384
 
 	# Close the console block if we processed anything and the ddg is initialized (also, save)
 	if (num.new.commands > 1 && .ddg.is.init()) { 
-		.ddg.add.abstract.node("Finish", node.name, console= TRUE)
+		.ddg.add.abstract.node("Finish", node.name)
 	}
 
 	# Open up a new collapsible node in case we need to parse further later
@@ -1209,16 +1209,16 @@ ddg.MAX_HIST_LINES <- 16384
 # .ddg.proc.node creates a procedure node.
 .ddg.proc.node <- function(ptype, pname, pvalue="", console=FALSE) {
 	# running interactively, so parse command history by making a console node
-	#browser()
-	if (interactive() && !console && .ddg.enable.console()) .ddg.console.node()
+	browser()
+	if (interactive() && !console && .ddg.enable.console()) 
+		# even here, we don't want a console node as this is already taken care of
+		if (.ddg.is.set("from.source") && .ddg.get("from.source")) {
+			.ddg.close.last.command.node(called=".ddg.proc.node")
+			.ddg.open.new.command.node(called=".ddg.proc.node")
+		}
 
-	# probably running using ddg.source, so close previous node and open the new one
-	# without parsing the history
-	else if (!console && .ddg.enable.console()) {
-		.ddg.close.last.command.node(called=".ddg.proc.node")
-		.ddg.open.new.command.node(called=".ddg.proc.node")
-	}
-
+		# we're not sourcing, so we legitimately need to parse the history
+		else .ddg.console.node()
   
 	# Increment procedure counter.
 	.ddg.inc("ddg.pnum")
@@ -2209,7 +2209,7 @@ ddg.grabhistory <- function() {
 	if (!.ddg.is.init()) return(NULL)
 
 	# only act if in intereactive mode and with enabled console
-	if (interactive() && .ddg.enable.console()) {
+	if (interactive() && .ddg.enable.console() && !(.ddg.is.set("from.source") && .ddg.get("from.source"))) {
 		.ddg.console.node()
 	}
 }
@@ -2551,27 +2551,27 @@ ddg.source <- function (file, local = FALSE, echo = verbose, print.eval = echo,
   # now we can parse the commands as we normally would for a DDG
   if(length(exprs) > 0) {
   	#browser()
+  	# Let library know that we are sourcing a file
+  	.ddg.set("from.source", TRUE)
+
   	# parse the commands into a console node
   	.ddg.parse.commands(exprs, environ=envir, ignore.patterns=ignores, node.name=filename,
   	                    echo = echo, print.eval = print.eval, max.deparse.length = max.deparse.length)
   	
   	# save the DDG
   	ddg.save()
+  	.ddg.set("from.source", FALSE)
   }
 
 }
 
 # ddg.debug.on turns on debugging of DDG construction.
 ddg.debug.on <- function () {
-	if (!.ddg.is.init()) return(NULL)
-
 	.ddg.set("ddg.debug", TRUE)
 }
 
 # ddg.debug.off turns off debugging of DDG construction.
 ddg.debug.off <- function () {
-	if (!.ddg.is.init()) return(NULL)
-
 	.ddg.set("ddg.debug", FALSE)
 }
 
