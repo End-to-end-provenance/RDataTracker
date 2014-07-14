@@ -161,6 +161,13 @@ ddg.MAX_HIST_LINES <- 16384
 	
 	# Record last command from the preceding console block.
 	.ddg.set(".ddg.last.command", NULL)
+
+	# Record the current command to be opened during console execution (used 
+	# when executing a script using ddg.source)
+	.ddg.set(".ddg.new.command", NULL)
+
+	# Used for keeping track of current execution command
+	.ddg.set("var.num", 1)
 }
 
 # Wrrapper to easily change history lines during execution of script
@@ -740,7 +747,7 @@ ddg.MAX_HIST_LINES <- 16384
 				vars.set$possible.first.writer[var.num] <- i
 				vars.set$possible.last.writer[var.num] <- i
 			}
-			var.num <<- var.num + 1
+			.ddg.inc("var.num")
 		}
 	}
 
@@ -760,7 +767,7 @@ ddg.MAX_HIST_LINES <- 16384
   
 	# Build the table recording where variables are assigned to or may 
   # be assigned to.
-	var.num <<- 1
+  .ddg.set("var.num", 1)
 	for ( i in 1:length(parsed.commands)) {
 		cmd.expr <- parsed.commands[[i]]
 		vars.set <- .ddg.add.to.vars.set(vars.set,cmd.expr, i)
@@ -976,29 +983,30 @@ ddg.MAX_HIST_LINES <- 16384
 		.ddg.proc2proc()
 }
 
-# .ddg.close.previous.command.node closes the last created collapsible node stored
+# .ddg.close.last.command.node closes the last created collapsible node stored
 # in .ddg.last.command DDG property. The optional parameter called is used when 
 # debugging for printing the function which called .ddg.close.previous.command.
-.ddg.close.previous.command.node <- function(called=".ddg.parse.commands"){
+.ddg.close.last.command.node <- function(called=".ddg.parse.commands"){
 	.ddg.last.command <- .ddg.get(".ddg.last.command")
 	if (!is.null(.ddg.last.command)) {
-		.ddg.add.abstract.node("Finish", .ddg.last.command, console=TRUE, paste(called, "-> .ddg.close.previous.command.node"))
+		.ddg.add.abstract.node("Finish", .ddg.last.command, console=TRUE, paste(called, "-> .ddg.close.last.command.node"))
 
 		# No previous command
 		.ddg.set(".ddg.last.command", NULL)
 	}
 }
 
-# .ddg.open.last.command.node opens a new collapsible command node depending on 
+# .ddg.open.new.command.node opens a new collapsible command node depending on 
 # the informationo stored in .ddg.last.command.
 # Parameters - (optional) called is the calling function
-.ddg.open.last.command.node <- function(called=".ddg.parse.commands") {
-	.ddg.last.command <- .ddg.get(".ddg.last.command")
+# new.command - the name of the new command which should be opened
+.ddg.open.new.command.node <- function(called=".ddg.parse.commands") {
+  new.command=.ddg.get(".ddg.new.command")
 	if (!is.null(last.command)) {
-		.ddg.add.abstract.node("Start", .ddg.last.command, console=TRUE, paste(called, "-> .ddg.close.previous.command.node"))
+		.ddg.add.abstract.node("Start", .ddg.last.command, console=TRUE, paste(called, "-> .ddg.open.new.command.node"))
 
 		# No last command
-		.ddg.set(".ddg.last.command", NULL)
+		.ddg.set(".ddg.last.command", new.command)
 	}
 }
 
@@ -1040,11 +1048,11 @@ ddg.MAX_HIST_LINES <- 16384
 	new.commands <- lapply(parsed.commands, function(cmd) {paste(deparse(cmd), collapse="")})
 
 	# attempt to close the previous collapsible command node
-	.ddg.close.previous.command.node()
+	.ddg.close.last.command.node()
 
 	# Create start and end nodes to allow collapsing of consecutive 
   # console nodes. Don't bother doing this if there is only 1 new 
-  # command in the history.
+  # command in the histpry or execution.
 	num.new.commands <- length(new.commands)
 	if (num.new.commands > 1 && .ddg.is.init()) .ddg.add.abstract.node("Start", node.name, console=TRUE)
 
@@ -1056,15 +1064,12 @@ ddg.MAX_HIST_LINES <- 16384
 	# a new .ddg.last.command node for future reference
 	.ddg.last.command <- quoted.commands[[num.new.commands]]
 	if (substr(.ddg.last.command, 1, 4) == "ddg.") {
-		.ddg.last.command <- NULL
+		.ddg.new.command <- NULL
 	}
 	else {
 		quoted.commands <- quoted.commands[1:num.new.commands-1]
 		parsed.commands <- parsed.commands[1:num.new.commands-1]
 	}
-
-	# store the information globally
-	.ddg.set(".ddg.last.command", .ddg.last.command)
 
 	# We tried to use a data frame to contain new.commands, 
   # quoted.commands and parsed.commands, but it does not seem 
@@ -1088,7 +1093,7 @@ ddg.MAX_HIST_LINES <- 16384
 			vars.set <- .ddg.find.var.assignments(parsed.commands)
   	} 
   	else {
-  		var.num <<- 1
+  		.ddg.set("var.num", 1)
   		vars.set <- .ddg.create.empty.vars.set()
   	}
 
@@ -1117,6 +1122,10 @@ ddg.MAX_HIST_LINES <- 16384
 		        cat(cmd.show)
          	}
 
+         	# if we will create a node, then before execution, set this command as
+         	# a possible abstraction node
+  				.ddg.set(".ddg.new.command", cmd)
+
          	# evaluate
   				result <- eval(cmd.expr, environ, NULL)
 
@@ -1127,9 +1136,6 @@ ddg.MAX_HIST_LINES <- 16384
   				if(grepl("^ddg.init", cmd)) { 
   					.ddg.add.abstract.node("Start", node.name, console=TRUE)
   				}
-
-  				# update the last command executured
-  				.ddg.set(".ddg.last.command", cmd)
   			}
 
   			# we want to create a procedure node for this command
@@ -1164,7 +1170,10 @@ ddg.MAX_HIST_LINES <- 16384
 	}
 
 	# Open up a new collapsible node in case we need to parse further later
-	if (!execute) .ddg.open.last.command.node()
+	if (!execute) {
+		.ddg.set(".ddg.new.command", .ddg.last.command)
+		.ddg.open.new.command.node()
+	}
 
 	 # Write time stamp to history.
 	.ddg.write.timestamp.to.history()
@@ -1198,7 +1207,12 @@ ddg.MAX_HIST_LINES <- 16384
 	# running interactively, so parse command history by making a console node
 	if (interactive() && !console && .ddg.enable.console()) .ddg.console.node()
 
-	# NOT running interactively, but the console is enabled
+	# probably running using ddg.source, so close previous node and open the new one
+	# without parsing the history
+	else if (!console && .ddg.enable.console()) {
+		.ddg.close.last.command.node(called=".ddg.proc.node")
+		.ddg.open.new.command.node(called=".ddg.proc.node")
+	}
 
   
 	# Increment procedure counter.
