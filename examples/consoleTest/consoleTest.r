@@ -14,7 +14,7 @@ testDir <- "[DIR_DEFAULT]/"
 setwd(testDir)
 
 ddg.r.script.path = paste(testDir,"consoleTest.r",sep="")
-ddg.path = paste(testDir,"ddg",sep="")
+ddg.path = paste(testDir,"[DDG-DIR]",sep="")
 
 ddg.init(ddg.r.script.path,
          ddg.path,
@@ -51,7 +51,7 @@ someVector <- function() {
 ### Run script
 
 x <- 10
-ddg.data(x)
+#ddg.data(x)
 f(x)
 f(x)
 

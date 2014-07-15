@@ -37,34 +37,35 @@
     <!-- Copy the script file to this local directory, and replace with ddg directory for execution -->
     <copy file="${dir}/${script-file}" todir="${local_dir}" overwrite="true" />
     <replaceregexp  file="${local_dir}/${script-file}"
-                    match="\[DDG_DIR\]"
+                    match="\[DDG-DIR\]"
                     replace="ddg"
                     flags="g"
     />
 
     <!-- Copy the script file to this local directory, and replace with correct ddg directory for sourcing -->
     <copy file="${dir}/${script-file}" tofile="${local_dir}/source_${script-file}" overwrite="true" />
-    <replaceregexp  file="${local_dir}/${script-file}"
-                    match="\[DDG_DIR\]"
+    <replaceregexp  file="${local_dir}/source_${script-file}"
+                    match="\[DDG-DIR\]"
                     replace="ddg-source"
                     flags="g"
     />
 
     <!-- Replace working directory with local working directory in both the sourced and the executable test files -->
     <replaceregexp match="\[DIR_DEFAULT\]" replace="${TESTS.dir}/${dir}" flags="g" >
-      <fileset dir="${local_dir}" includes="*.r|*.R" />
+      <fileset dir="${local_dir}" includes="*.r" />
+      <fileset dir="${local_dir}" includes="*.R" />
     </replaceregexp>
 
     <!-- Copy the source test file to this local directory, and replace with correct script name and directory -->
-    <copy file="${TESTS.dir}/sourceTest.r" todir="${local_dir}" overwrite="true" />
+    <copy file="${TESTS.dir}/examples/sourceTest.r" todir="${local_dir}" overwrite="true" />
     <replaceregexp  file="${local_dir}/sourceTest.r"
                     match="\[DIR_LOCAL\]"
-                    replace="${local_dir}"
+                    replace="${TESTS.dir}/${local_dir}"
                     flags="g"
     />
     <replaceregexp  file="${local_dir}/sourceTest.r"
                     match="\[SCRIPT\]"
-                    replace="${script-file}"
+                    replace="source_${script-file}"
                     flags="g"
     />
 
@@ -293,10 +294,10 @@
   <target name="console-source-1">
     <antcall target="run-test">
       <param name="dir" value="examples/consoleTest"/>
-      <param name="out" value="examples/consoleTest/consoleSourceTest.out"/>
-      <param name="script-file" value="consoleSourceTest.r"/>
-      <param name="expected_out" value="examples/consoleTest/expected_consoleSourceTest.out"/>
-      <param name="expected_ddg" value="examples/consoleTest/expected_consoleSourceTest_ddg.txt"/>
+      <param name="out" value="examples/consoleTest/consoleTest.out"/>
+      <param name="script-file" value="consoleTest.r"/>
+      <param name="expected_out" value="examples/consoleTest/expected_consoleTest.out"/>
+      <param name="expected_ddg" value="examples/consoleTest/expected_consoleTest_ddg.txt"/>
       <param name="fail_out" value="true" />
     </antcall>
   </target>

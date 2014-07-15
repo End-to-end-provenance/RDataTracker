@@ -1235,21 +1235,18 @@ ddg.MAX_HIST_LINES <- 16384
 
 # .ddg.proc.node creates a procedure node.
 .ddg.proc.node <- function(ptype, pname, pvalue="", console=FALSE) {
-	# running interactively, so parse command history by making a console node
-	
-	if (interactive() && !console && .ddg.enable.console()) 
 
-		# if sourcing, we don't actually want a procedure node
+	# the console is and we're in the middle of automatic processing
+	if (!console && .ddg.enable.console())
+		# we're sourcing, so regardless of interactivity, capcture commands
 		if (.ddg.is.set("from.source") && .ddg.get("from.source")) {
 			.ddg.close.last.command.node(called=".ddg.proc.node")
 			.ddg.open.new.command.node(called=".ddg.proc.node")
 		}
-
-		# we're not sourcing, so we legitimately need to parse the history
-		else {
-			
-			.ddg.console.node()
-		}
+		# running interactively, so parse command history by making a console node
+		else if (interactive()) .ddg.console.node() 
+		
+		# else (we probably should never hit this, but do nothing)
   
 	# Increment procedure counter.
 	.ddg.inc("ddg.pnum")
