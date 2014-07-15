@@ -987,13 +987,13 @@ ddg.MAX_HIST_LINES <- 16384
 # .ddg.close.last.command.node closes the last created collapsible node stored
 # in .ddg.last.command DDG property. The optional parameter called is used when 
 # debugging for printing the function which called .ddg.close.previous.command.
-.ddg.close.last.command.node <- function(called=".ddg.parse.commands"){
+.ddg.close.last.command.node <- function(called=".ddg.parse.commands", initial=FALSE){
 	# get both the last command and new commands
 	.ddg.last.command <- .ddg.get(".ddg.last.command")
 	.ddg.possible.new.command <- .ddg.get(".ddg.possible.new.command")
 
 	# only create a finish node if a new command exists (ie, we've parsed some lines of code)
-	if (!is.null(.ddg.last.command) && !is.nul(.ddg.possible.new.command)) {
+	if (!is.null(.ddg.last.command) && (!is.null(.ddg.possible.new.command) || initial)) {
 		.ddg.add.abstract.node("Finish", .ddg.last.command,called=paste(called, "-> .ddg.close.last.command.node"))
 
 		# No previous command
@@ -1045,7 +1045,7 @@ ddg.MAX_HIST_LINES <- 16384
 .ddg.parse.commands <- function(parsed.commands,environ=NULL, ignore.patterns=c('^ddg.'),
                                         node.name="Console", echo=FALSE, print.eval = echo,
                                         max.deparse.length = 150) {
-	# browser()
+	
 	# figure out if we will execute commands or not
 	execute = !is.null(environ) & is.environment(environ)
 
@@ -1054,13 +1054,17 @@ ddg.MAX_HIST_LINES <- 16384
 	new.commands <- lapply(parsed.commands, function(cmd) {paste(deparse(cmd), collapse="")})
 
 	# attempt to close the previous collapsible command node
-	.ddg.close.last.command.node()
+	.ddg.close.last.command.node(initial=TRUE)
 
 	# Create start and end nodes to allow collapsing of consecutive 
   # console nodes. Don't bother doing this if there is only 1 new 
   # command in the histpry or execution.
+  named.node.set <- FALSE
 	num.new.commands <- length(new.commands)
-	if (num.new.commands > 1 && .ddg.is.init()) .ddg.add.abstract.node("Start", node.name)
+	if (num.new.commands > 1 && .ddg.is.init()) {
+		.ddg.add.abstract.node("Start", node.name)
+		named.node.set <- TRUE
+	}
 
 	# Quote the quotation (") characters so that they will appear in 
   # ddg.txt.
@@ -1104,6 +1108,7 @@ ddg.MAX_HIST_LINES <- 16384
   	}
 
   	# loop over the commands as well as their string representations
+  	
   	for (i in 1:length(parsed.commands)) {
   		cmd.expr <- parsed.commands[[i]]
   		cmd <- quoted.commands[[i]]
@@ -1117,7 +1122,7 @@ ddg.MAX_HIST_LINES <- 16384
   		if (!any(sapply(ignore.patterns, function(pattern){grepl(pattern, cmd)}))) {
   			cmd.abbrev <- .ddg.abbrev.cmd(cmd)
   			last.proc.node <- cmd.abbrev
-  			# browser()
+  			
 
   			# If sourcing, we want to execute the command
   			if (execute) {
@@ -1142,13 +1147,22 @@ ddg.MAX_HIST_LINES <- 16384
   				if (print.eval) cat(result)
 
   				# check if initialization call. If so, then create a new console node
-  				if(grepl("^ddg.init", cmd)) { 
-  					.ddg.add.abstract.node("Start", node.name)
+  				if(grepl("^ddg.init", cmd) && .ddg.enable.console()) { 
+  					.ddg.add.abstract.node("Start", "Console")
+  					.ddg.set(".ddg.last.command", "Console")
   				}
   			}
 
+  			# figure out if we should create a procedure node for this command. 
+  			# We don't create it if it matches a last command (because that last
+  			# command has now become a collapsible node). Matching a last command means
+				# that the last command is set, is not null, and is equal to the current
+				
+  			create.procedure <- create && !(!is.null(.ddg.get(".ddg.last.command")) && 
+  			                                .ddg.get(".ddg.last.command") == cmd)
+
   			# we want to create a procedure node for this command
-  			if (create) {
+  			if (create.procedure) {
 					.ddg.proc.node("Operation", cmd.abbrev, console=TRUE)
 					.ddg.proc2proc()
 					if (.ddg.debug()) print(paste(".ddg.parse.console.node: Adding operation node for", cmd.abbrev))
@@ -1173,24 +1187,32 @@ ddg.MAX_HIST_LINES <- 16384
 		.ddg.create.data.node.for.possible.writes(vars.set, last.proc.node)
 	}
 
+	# close any node left open during execution
+	if (execute) .ddg.close.last.command.node()
+
 	# Close the console block if we processed anything and the ddg is initialized (also, save)
-	if (num.new.commands > 1 && .ddg.is.init()) { 
+	if (num.new.commands > 1 && .ddg.is.init() && named.node.set) { 
 		.ddg.add.abstract.node("Finish", node.name)
 	}
 
 	# Open up a new collapsible node in case we need to parse further later
 	if (!execute) {
+		
 		.ddg.set(".ddg.possible.new.command", .ddg.last.command)
+		.ddg.set(".ddg.last.command", .ddg.last.command)
 		.ddg.open.new.command.node()
 	}
 
 	 # Write time stamp to history.
 	.ddg.write.timestamp.to.history()
+	#print(paste("last.commad:",.ddg.get(".ddg.last.command")))
+	#print(paste("command:", .ddg.get(".ddg.possible.new.command")))
 
 }
 
 # .ddg.console.node creates a console node.
 .ddg.console.node <- function() {
+	# browser()
 	# Load our extended history file and the last timestamp
 	ddg.history.file <- .ddg.get("ddg.history.file")
 	ddg.history.timestamp <- .ddg.get(".ddg.history.timestamp")
@@ -1214,7 +1236,7 @@ ddg.MAX_HIST_LINES <- 16384
 # .ddg.proc.node creates a procedure node.
 .ddg.proc.node <- function(ptype, pname, pvalue="", console=FALSE) {
 	# running interactively, so parse command history by making a console node
-	# browser()
+	
 	if (interactive() && !console && .ddg.enable.console()) 
 
 		# if sourcing, we don't actually want a procedure node
@@ -1224,7 +1246,10 @@ ddg.MAX_HIST_LINES <- 16384
 		}
 
 		# we're not sourcing, so we legitimately need to parse the history
-		else .ddg.console.node()
+		else {
+			
+			.ddg.console.node()
+		}
   
 	# Increment procedure counter.
 	.ddg.inc("ddg.pnum")
@@ -2556,7 +2581,7 @@ ddg.source <- function (file, local = FALSE, echo = verbose, print.eval = echo,
 
   # now we can parse the commands as we normally would for a DDG
   if(length(exprs) > 0) {
-  	#browser()
+  
   	# Let library know that we are sourcing a file
   	.ddg.set("from.source", TRUE)
 
