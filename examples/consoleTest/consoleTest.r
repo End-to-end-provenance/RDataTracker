@@ -51,7 +51,7 @@ someVector <- function() {
 ### Run script
 
 x <- 10
-#ddg.data(x)
+ddg.data(x)
 f(x)
 f(x)
 
