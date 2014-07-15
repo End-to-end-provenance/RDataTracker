@@ -1209,12 +1209,14 @@ ddg.MAX_HIST_LINES <- 16384
 # .ddg.proc.node creates a procedure node.
 .ddg.proc.node <- function(ptype, pname, pvalue="", console=FALSE) {
 	# running interactively, so parse command history by making a console node
-	browser()
+	# browser()
 	if (interactive() && !console && .ddg.enable.console()) 
-		# even here, we don't want a console node as this is already taken care of
+
+		# if sourcing, we don't actually want a procedure node
 		if (.ddg.is.set("from.source") && .ddg.get("from.source")) {
 			.ddg.close.last.command.node(called=".ddg.proc.node")
 			.ddg.open.new.command.node(called=".ddg.proc.node")
+			return(NULL)
 		}
 
 		# we're not sourcing, so we legitimately need to parse the history
