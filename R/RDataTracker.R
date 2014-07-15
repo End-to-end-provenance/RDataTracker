@@ -1163,7 +1163,7 @@ ddg.MAX_HIST_LINES <- 16384
 
   			# we want to create a procedure node for this command
   			if (create.procedure) {
-					.ddg.proc.node("Operation", cmd.abbrev, console=TRUE)
+					.ddg.proc.node("Operation", cmd.abbrev, cmd, console=TRUE)
 					.ddg.proc2proc()
 					if (.ddg.debug()) print(paste(".ddg.parse.console.node: Adding operation node for", cmd.abbrev))
 
