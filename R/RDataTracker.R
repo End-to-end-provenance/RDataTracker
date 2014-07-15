@@ -164,7 +164,7 @@ ddg.MAX_HIST_LINES <- 16384
 
 	# Record the current command to be opened during console execution (used 
 	# when executing a script using ddg.source)
-	.ddg.set(".ddg.new.command", NULL)
+	.ddg.set(".ddg.possible.new.command", NULL)
 
 	# Used for keeping track of current execution command
 	.ddg.set("var.num", 1)
@@ -988,8 +988,12 @@ ddg.MAX_HIST_LINES <- 16384
 # in .ddg.last.command DDG property. The optional parameter called is used when 
 # debugging for printing the function which called .ddg.close.previous.command.
 .ddg.close.last.command.node <- function(called=".ddg.parse.commands"){
+	# get both the last command and new commands
 	.ddg.last.command <- .ddg.get(".ddg.last.command")
-	if (!is.null(.ddg.last.command)) {
+	.ddg.possible.new.command <- .ddg.get(".ddg.possible.new.command")
+
+	# only create a finish node if a new command exists (ie, we've parsed some lines of code)
+	if (!is.null(.ddg.last.command) && !is.nul(.ddg.possible.new.command)) {
 		.ddg.add.abstract.node("Finish", .ddg.last.command,called=paste(called, "-> .ddg.close.last.command.node"))
 
 		# No previous command
@@ -1002,12 +1006,13 @@ ddg.MAX_HIST_LINES <- 16384
 # Parameters - (optional) called is the calling function
 # new.command - the name of the new command which should be opened
 .ddg.open.new.command.node <- function(called=".ddg.parse.commands") {
-  new.command <- .ddg.get(".ddg.new.command")
+  new.command <- .ddg.get(".ddg.possible.new.command")
 	if (!is.null(new.command)) {
 		.ddg.add.abstract.node("Start", new.command,called=paste(called, "-> .ddg.open.new.command.node"))
 
-		# Now the new command becomes the last command
+		# Now the new command becomes the last command, and new command is null
 		.ddg.set(".ddg.last.command", new.command)
+		.ddg.set(".ddg.possible.new.command", NULL)
 	}
 }
 
@@ -1128,7 +1133,7 @@ ddg.MAX_HIST_LINES <- 16384
 
          	# if we will create a node, then before execution, set this command as
          	# a possible abstraction node
-  				.ddg.set(".ddg.new.command", cmd)
+  				.ddg.set(".ddg.possible.new.command", cmd)
 
          	# evaluate
   				result <- eval(cmd.expr, environ, NULL)
@@ -1175,7 +1180,7 @@ ddg.MAX_HIST_LINES <- 16384
 
 	# Open up a new collapsible node in case we need to parse further later
 	if (!execute) {
-		.ddg.set(".ddg.new.command", .ddg.last.command)
+		.ddg.set(".ddg.possible.new.command", .ddg.last.command)
 		.ddg.open.new.command.node()
 	}
 
@@ -1216,7 +1221,6 @@ ddg.MAX_HIST_LINES <- 16384
 		if (.ddg.is.set("from.source") && .ddg.get("from.source")) {
 			.ddg.close.last.command.node(called=".ddg.proc.node")
 			.ddg.open.new.command.node(called=".ddg.proc.node")
-			return(NULL)
 		}
 
 		# we're not sourcing, so we legitimately need to parse the history
