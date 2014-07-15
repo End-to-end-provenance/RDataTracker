@@ -34,11 +34,37 @@
     <delete dir="${local_dir}" quiet="true" /> 
     <mkdir dir="${local_dir}" />
 
-    <!-- Copy the script file to this local directory, and replace with correct work directory -->
+    <!-- Copy the script file to this local directory, and replace with ddg directory for execution -->
     <copy file="${dir}/${script-file}" todir="${local_dir}" overwrite="true" />
     <replaceregexp  file="${local_dir}/${script-file}"
-                    match="\[DIR_DEFAULT\]"
-                    replace="${TESTS.dir}/${dir}"
+                    match="\[DDG_DIR\]"
+                    replace="ddg"
+                    flags="g"
+    />
+
+    <!-- Copy the script file to this local directory, and replace with correct ddg directory for sourcing -->
+    <copy file="${dir}/${script-file}" tofile="${local_dir}/source_${script-file}" overwrite="true" />
+    <replaceregexp  file="${local_dir}/${script-file}"
+                    match="\[DDG_DIR\]"
+                    replace="ddg-source"
+                    flags="g"
+    />
+
+    <!-- Replace working directory with local working directory in both the sourced and the executable test files -->
+    <replaceregexp match="\[DIR_DEFAULT\]" replace="${TESTS.dir}/${dir}" flags="g" >
+      <fileset dir="${local_dir}" includes="*.r|*.R" />
+    </replaceregexp>
+
+    <!-- Copy the source test file to this local directory, and replace with correct script name and directory -->
+    <copy file="${TESTS.dir}/sourceTest.r" todir="${local_dir}" overwrite="true" />
+    <replaceregexp  file="${local_dir}/sourceTest.r"
+                    match="\[DIR_LOCAL\]"
+                    replace="${local_dir}"
+                    flags="g"
+    />
+    <replaceregexp  file="${local_dir}/sourceTest.r"
+                    match="\[SCRIPT\]"
+                    replace="${script-file}"
                     flags="g"
     />
 
@@ -52,16 +78,25 @@
     <basename property="expected_out_name" file="${expected_out}" />
     <basename property="out_name" file="${out}" />
 
+    <!-- Source the R Script -->
+    <exec executable="Rscript" dir="${local_dir}" output="${TESTS.dir}/${dir}/source_${out_name}" >
+      <arg line="sourceTest.r" />
+    </exec>
+
     <!-- Make copy of output files (.out and ddg.txt) as well as expected 
          outputs for diff. Append .local to all files -->
     <copy todir="${local_dir}" overwrite="true">
+      <!-- Executed ddg.txt file -->
       <fileset file="${dir}/ddg/ddg.txt" />
+      <!-- all .out files and files ending in _ddg.txt in the test directory -->
       <fileset dir="${dir}">
         <include name="*.out" />
+        <include name="*_ddg.txt" />
       </fileset>
-      <fileset file="${expected_ddg}" />
       <globmapper from="*" to="*.local"/>
     </copy>
+    <!-- Manual copy of source ddg.txt so it doesn't overwrite executable ddg.txt -->
+    <copy file="${dir}/ddg-source/ddg.txt" tofile="${local_dir}/ddg-source.txt.local" overwrite="true" />
 
     <!-- Delete all timestamp occurrences -->
     <replaceregexp flags="g"> 
@@ -85,8 +120,12 @@
 
     <!-- Condition checking .out files -->
   	<condition property="output-same">
-			<filesmatch file1="${local_dir}/${out_name}.local"
-            			file2="${local_dir}/${expected_out_name}.local"/>
+      <and>
+			 <filesmatch file1="${local_dir}/${out_name}.local"
+            			 file2="${local_dir}/${expected_out_name}.local"/>
+        <filesmatch file1="${local_dir}/source_${out_name}.local"
+                    file2="${local_dir}/source_${expected_out_name}" />
+      </and>
     </condition>
 
     <!-- Condition checking whether outputs need to match -->
@@ -104,11 +143,17 @@
     <exec executable="diff" unless:true="${output-same}" >
       <arg line="${local_dir}/${out_name}.local ${local_dir}/${expected_out_name}.local" />
     </exec>
+    <exec executable="diff" unless:true="${output-same}" >
+      <arg line="${local_dir}/$source_{out_name}.local ${local_dir}/source_${expected_out_name}.local" />
+    </exec>
 
       <!-- Exectute diff on .txt files -->
   	<exec executable="diff" >
   		<arg line="${local_dir}/ddg.txt.local ${local_dir}/${ddg_name}.local" />
   	</exec>
+    <exec executable="diff" >
+      <arg line="${local_dir}/ddg-source.txt.local ${local_dir}/source_${ddg_name}.local" />
+    </exec>
   </target>
   <!--############################ End FUNCTIONS ############################-->
 
