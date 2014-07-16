@@ -384,6 +384,24 @@ ddg.MAX_HIST_LINES <- 16384
 	if (.ddg.debug()) print(paste("Adding data node", ddg.dnum, "named", dname, "with scope", dscope))
 }
 
+.ddg.copy.data.node <- function(formal, formal.scope, arg, arg.scope) {
+    arg.number <- .ddg.data.number (arg, arg.scope) 
+    ddg.data.nodes <- .ddg.data.nodes()
+	# Increment data counter.
+	.ddg.inc("ddg.dnum")
+	
+	# Add node to DDG.
+	ddg.dnum <- .ddg.dnum()
+	dtype <- ddg.data.nodes$ddg.type[arg.number]
+	dvalue <- ddg.data.nodes$ddg.value[arg.number]
+	.ddg.append(dtype, " d", ddg.dnum, " \"", ddg.dnum, "-", formal, "\" Value=\"", dvalue, "\";\n", sep="")
+	.ddg.record.data (dtype, 
+                      formal, 
+                      dvalue, 
+                      formal.scope, 
+                      dloc=ddg.data.nodes$ddg.loc[arg.number]) 
+}
+
 # .ddg.proc.number gets the number of the nearest preceding matching 
 # Operation, Checkpoint, or Restore node. It returns zero if no match 
 # is found.
@@ -393,7 +411,7 @@ ddg.MAX_HIST_LINES <- 16384
 	rows <- nrow(ddg.proc.nodes)
 	for (i in rows:1) {
 		type <- ddg.proc.nodes$ddg.type[i]
-		if ((type == "Operation" | type == "Checkpoint" | type == "Restore") & ddg.proc.nodes$ddg.name[i] == pname) {
+		if ((type == "Operation" | type == "Binding" | type == "Checkpoint" | type == "Restore") & ddg.proc.nodes$ddg.name[i] == pname) {
 			return(ddg.proc.nodes$ddg.num[i])
 		}
 	}
@@ -500,11 +518,13 @@ ddg.MAX_HIST_LINES <- 16384
 	pn <- .ddg.proc.number(pname)
 
 	# Create data flow edge from procedure node to data node.
-	.ddg.append("DF p", pn, " d", dn, "\n", sep="")
-
-	if (.ddg.debug()) {
-		print(paste("proc2data: ", pname, " ", dname, sep=""))
-		print(paste("DF p", pn, " d", dn, sep=""))
+	if (dn != 0 && pn != 0) {
+		.ddg.append("DF p", pn, " d", dn, "\n", sep="")
+	
+		if (.ddg.debug()) {
+			print(paste("proc2data: ", pname, " ", dname, sep=""))
+			print(paste("DF p", pn, " d", dn, sep=""))
+		}
 	}
 }
 
@@ -1229,6 +1249,30 @@ ddg.MAX_HIST_LINES <- 16384
 	# Record data node information.
 	.ddg.record.data(dtype, dname, dfile, dscope, dtime, file.loc)
 
+	return(dpfile.out)
+}
+
+# .ddg.file.copy creates a data node of type File. File nodes are 
+# used for files written by the main script. A copy of the file is 
+# written to the DDG directory.
+ 
+.ddg.file.copy <- function(dtype, fname, dname, dscope) {
+	# Calculate location of original file
+	file.loc <- normalizePath(fname, winslash="/", mustWork = FALSE)
+
+	# Copy file.
+	if (file.exists(file.loc)) {
+	   # Create file node in DDG
+	   dpfile.out <- .ddg.file.node(dtype,fname,dname, dscope)
+
+	   file.copy(file.loc, dpfile.out, overwrite=TRUE)
+	}
+	else {
+    	error.msg <- paste("File to copy does not exist:", file.loc) 
+    	.ddg.insert.error.message(error.msg)
+    	return(NULL)
+	}
+
 	if (.ddg.debug()) print(paste("file.copy: ", dtype, " ", fname))
 	return (dpfile.out)
 }
@@ -1330,8 +1374,8 @@ ddg.MAX_HIST_LINES <- 16384
 	.ddg.append("CheckpointFile", " d", ddg.dnum, " \"", ddg.dnum, "-", file.name, "\" Value=\"", dpfile.out, "\" Time=\"", dtime, "\";\n", sep="")
 
 	# Record data node information.
-	.ddg.record.data("Checkpoint", file.name, dfile, dtime, file.loc)
-
+	.ddg.record.data("Checkpoint", file.name, dfile, "undefined", dtime, file.loc)
+		
 	if (.ddg.debug()) print(paste("file.copy: Checkpoint", fname))
 	return (dpfile.out)
 }
@@ -1485,7 +1529,15 @@ ddg.MAX_HIST_LINES <- 16384
 	for (i in nframe:1) {
 		call.func <- as.character(sys.call(i)[[1]])    
 		# print(call.func)    
-		if (substr(call.func, 1, 4) != ".ddg" && substr(call.func, 1, 3) != "ddg") return(i)
+		if (substr(call.func, 1, 4) != ".ddg" && substr(call.func, 1, 3) != "ddg") {
+      # prints source code
+      #print(sys.function(i))
+      # prints an environment id
+      #print(sys.frame(i))
+      # prints the call & arguments
+      #print(sys.call(i))
+      return(i)
+		}
 	}
 	return(0)
 }
@@ -1526,6 +1578,7 @@ ddg.MAX_HIST_LINES <- 16384
 	# grepl call in this function to fail.
 	
 	#	scope <- sub('<environment: (.*)>', '\\1', capture.output(.ddg.where(name, sys.frame(fnum))))
+  if(!exists(name, sys.frame(fnum), inherits=TRUE)) return("undefined")
 	env <- .ddg.where(name, sys.frame(fnum))
 	scope <- sub('<environment: (.*)>', '\\1', capture.output(env))
 	if (grepl("undefined", scope)) scope <- "undefined"
@@ -1573,10 +1626,14 @@ ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.graphic=N
 	if (!.ddg.check.init()) return(NULL)
 	
 	.ddg.lookup.function.name(pname)
-	.ddg.proc.node("Operation", pname, pname)
 	
-	# Create control flow edge from preceding procedure node.
-	.ddg.proc2proc()
+	if (!lookup.ins) {
+		.ddg.proc.node("Operation", pname, pname)
+		
+		# Create control flow edge from preceding procedure node.
+		.ddg.proc2proc()
+	}
+	else if (interactive() && .ddg.enable.console()) .ddg.console.node()
 	
 	# Create the input edges if ins list provided.
 	if (!is.null(ins)) {
@@ -1587,49 +1644,83 @@ ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.graphic=N
 		
 		lapply(ins, 
 				function(param) {
-					scope <- .ddg.get.scope(param, for.caller = TRUE, calls=stack)
-					if (.ddg.data.node.exists(param, scope)) {
+					# First see if param is defined in the function where ddg.procedure is called.
+					# If that does not find it, look in the scope of the function that calls the function
+					# that calls ddg.procedure.  The difference probably depends on whether ddg.procedure
+					# is used to annotate a chunk of code where param is really in the local scope
+					# but used in the annotated chunk (the first case) or to annotate an entire
+					# function and param is an actual funciton parameter (the second case).
+					scope <- .ddg.get.scope(param, calls=stack)
+					if (scope != "undefined" && .ddg.data.node.exists(param, scope)) {
 						.ddg.data2proc(param, scope, pname)
 						if (.ddg.debug()) print(paste("param:", param))
 					}
 					else {
-						# Attempt to allow names, not strings.  This does not work 
-						# as written because what we get when we call substitute is 
-						# the parameter provided by lapply, not the one provided to 
-						# ddg.procedure.  We will have the same problem dealing 
-						# with outs.
+						scope <- .ddg.get.scope(param, for.caller = TRUE, calls=stack)
+						if (scope != "undefined" && .ddg.data.node.exists(param, scope)) {
+							.ddg.data2proc(param, scope, pname)
+							if (.ddg.debug()) print(paste("param:", param))
+						}
 						
-						# arg <- substitute(param)
-						# if (!is.character(arg) && .ddg.data.node.exists(arg)) {
-						#	.ddg.data2proc(deparse(arg), pname)
-						#	if (.ddg.debug()) print(paste("param:", deparse(arg)))
-						#   else {warning}
-						# }
+						else if (.ddg.data.node.exists(param, "undefined")) {
+							# This could be the case if the parameter is the name of a file
+							# rather than a variable in the program
+							.ddg.data2proc(param, "undefined", pname)
+							if (.ddg.debug()) print(paste("param:", param))
+						}
 						
-						error.msg <- paste("No data node found for", param)	
-						.ddg.insert.error.message(error.msg)
+						else {
+							# Attempt to allow names, not strings.  This does not work 
+							# as written because what we get when we call substitute is 
+							# the parameter provided by lapply, not the one provided to 
+							# ddg.procedure.  We will have the same problem dealing 
+							# with outs.
+							
+							# arg <- substitute(param)
+							# if (!is.character(arg) && .ddg.data.node.exists(arg)) {
+							#	.ddg.data2proc(deparse(arg), pname)
+							#	if (.ddg.debug()) print(paste("param:", deparse(arg)))
+							#   else {warning}
+							# }
+							
+							error.msg <- paste("No data node found for", param)	
+							.ddg.insert.error.message(error.msg)
+						}
 					}
 				})
 	}
 	# Look up input parameters from calling environment.
 	else if (lookup.ins) {
 		call <- sys.call(-1)
-		tokens <- unlist(strsplit (as.character(call), "[(,)]"))
+		#tokens <- unlist(strsplit (as.character(call), "[(,)]"))
+		tokens <- as.character(match.call(sys.function(-1), call=call))
 		
 		# Get parameters and create edges.
 		if (length(tokens) > 1) {
 			args <- tokens[2:length(tokens)]
+			param.names <- names(formals(sys.function(-1)))
 			stack <- sys.calls()
 			#scope <- .ddg.get.scope(args[[1]], for.caller = TRUE)
+			bindings <- list()
+			for (i in 1:length(args)) bindings[[i]] <-c(args[[i]], param.names[[i]])
 			
-			lapply(args, 
-					function(param) {	
-						scope <- .ddg.get.scope(param, for.caller = TRUE, calls=stack)
-						if (.ddg.data.node.exists(param, scope)) {
-#							binding.node.name <- paste(pname, " binding of ", param)
-#							.ddg.proc.node("Binding", binding.node.name)
-#							.ddg.data2proc(as.character(param), binding.node.name)
-							.ddg.data2proc(as.character(param), scope, pname)
+			#lapply(args, 
+			lapply(bindings, 
+					function(binding) {	
+						param <- binding[1]
+						formal <- binding[2]
+						param.scope <- .ddg.get.scope(param, for.caller = TRUE, calls=stack)
+						if (.ddg.data.node.exists(param, param.scope)) {
+							binding.node.name <- paste(formal, " <- ", param)
+							.ddg.proc.node("Binding", binding.node.name)
+							.ddg.proc2proc()
+#              browser()
+							.ddg.data2proc(as.character(param), param.scope, binding.node.name)
+							formal.scope <- .ddg.get.scope(formal, calls=stack)
+							.ddg.copy.data.node(formal, formal.scope, as.character(param), param.scope)
+							.ddg.proc2data(binding.node.name, formal, formal.scope)
+#              .ddg.data2proc(formal, formal.scope, pname)
+#							.ddg.data2proc(as.character(param), scope, pname)
 							if (.ddg.debug()) print(paste("param:", param))
 						}
 						else {
@@ -1638,6 +1729,17 @@ ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.graphic=N
 						}
 					})
 		}
+		.ddg.proc.node("Operation", pname, pname)
+		lapply(bindings, function(binding) {
+					formal <- binding[2]
+					formal.scope <- .ddg.get.scope(formal, calls=stack)
+					if (.ddg.data.node.exists (formal, formal.scope)) {
+						.ddg.data2proc(formal, formal.scope, pname)
+					}
+				})
+		
+		# Create control flow edge from preceding procedure node.
+		.ddg.proc2proc()
 	}
 	
 	# Capture graphics device
@@ -1664,7 +1766,7 @@ ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.graphic=N
 					.ddg.lookup.value(name, value, env, "ddg.procedure", warn=FALSE)
 					
 					# Exception node.
-					scope <- .ddg.get.scope(param, callls = stack)
+					scope <- .ddg.get.scope(param, calls = stack)
 					.ddg.data.node("Exception", name, value, scope)
 					.ddg.proc2data(pname, name, scope)
 				}
@@ -1838,7 +1940,9 @@ ddg.url <- function(dname, dvalue=NULL) {
 ddg.file <- function(filename, dname=NULL) {
 	if (!.ddg.check.init()) return(NULL)
 
-	.ddg.file.copy("File", filename, dname)
+	scope <- if (!is.null(dname)) .ddg.get.scope(dname)
+			 else NULL
+	.ddg.file.copy("File", filename, dname, scope)
 }
 
 # ddg.data.in creates a data flow edge from data node dname to 
@@ -1850,27 +1954,30 @@ ddg.file <- function(filename, dname=NULL) {
 
 ddg.data.in <- function(dname, pname=NULL) {
 	if (!.ddg.check.init()) return(NULL)
-
+	
 	.ddg.lookup.function.name(pname)
 	
 	arg <- substitute(dname)
 	if (!is.character(arg)) {
-	  dname <- deparse(arg)
-    dscope <- .ddg.get.scope(dname)
-    if (!.ddg.data.node.exists(arg, dscope)) { 
-			error.msg <- paste("No data node found for", arg)
-			.ddg.insert.error.message(error.msg)
-			return
+		dname <- deparse(arg)
+		dscope <- .ddg.get.scope(dname)
+		if (!.ddg.data.node.exists(arg, dscope)) { 
+			dscope <- .ddg.get.scope(dname, for.caller=TRUE)
+			if (!.ddg.data.node.exists(arg, dscope)) { 
+				error.msg <- paste("No data node found for", arg)
+				.ddg.insert.error.message(error.msg)
+				return
+			}
 		}
 	}
-  else if (exists (arg, env=parent.frame(), inherits=TRUE)) {
-    dscope <- .ddg.get.scope(dname)
-  }
-	else if (exists (arg, env=parent.frame(2), inherits=TRUE)) {
-	  dscope <- .ddg.get.scope(dname, for.caller=TRUE)
+	else if (exists (arg, envir=parent.frame(), inherits=TRUE)) {
+		dscope <- .ddg.get.scope(dname)
+	}
+	else if (exists (arg, envir=parent.frame(2), inherits=TRUE)) {
+		dscope <- .ddg.get.scope(dname, for.caller=TRUE)
 	}
 	else {
-	  dscope <- environmentName(.GlobalEnv)
+		dscope <- environmentName(.GlobalEnv)
 	}
 	
 	# Create data flow edge from data node to operation node.
@@ -1994,15 +2101,21 @@ ddg.url.out <- function(dname, dvalue=NULL, pname=NULL) {
 ddg.file.out <- function(filename, dname=NULL, pname=NULL) {
 	if (!.ddg.check.init()) return(NULL)
 
-	if (is.null(dname)) dname <- basename(filename)
+	if (is.null(dname)) {
+		dname <- basename(filename)
+		scope <- NULL
+	}
+	else {
+ 		scope <- .ddg.get.scope (dname)
+	}
 	
 	# Create output file node called filename and copy file.
-	saved.file <- .ddg.file.copy("File", filename, dname)
+	saved.file <- .ddg.file.copy("File", filename, dname, scope)
 	
 	.ddg.lookup.function.name(pname)
 	
 	# Create data flow edge from operation node to file node.
-	.ddg.proc2data(pname, dname)
+	.ddg.proc2data(pname, dname, scope)
 	
 	return (saved.file)
 }
@@ -2137,7 +2250,7 @@ ddg.restore <- function(file.path) {
 
 	# Create control flow edge from preceding procedure node.
 	.ddg.proc2proc()
-	ddg.data.in(file.name, checkpoint.name)
+	.ddg.data2proc(file.name, "undefined", checkpoint.name)
 	
 	if (.ddg.debug()) print(paste("Restoring from", file.path))
 	
