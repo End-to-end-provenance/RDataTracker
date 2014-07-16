@@ -10,15 +10,15 @@
 #source("/Users/barbaralerner/Documents/Process/DataProvenance/github/RDataTracker/R/RDataTracker.R")
 library(RDataTracker)
 require(methods)
-ddg.debug.on()
-options(warn=2)
+# ddg.debug.on()
+# options(warn=2)
 
 ## Directories
 testDir <- "[DIR_DEFAULT]/"
 setwd(testDir)
 
 ddg.r.script.path = paste(testDir,"S4ObjectTest.R",sep="")
-ddg.path = paste(testDir,"ddg",sep="")
+ddg.path = paste(testDir,"[DDG-DIR]",sep="")
 
 # Initialize the provenance graph
 ddg.init(ddg.r.script.path,

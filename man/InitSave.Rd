@@ -12,7 +12,7 @@
 ddg.init(r.script.path = NULL, ddgdir = NULL, enable.console = FALSE) 
 ddg.grabhistory()
 ddg.save()
-ddg.run(f, r.script.path = NULL, ddgdir = NULL, enable.console = FALSE)
+ddg.run(f = NULL, r.script.path = NULL, ddgdir = NULL, enable.console = FALSE)
 ddg.console.on()
 ddg.console.off()
 ddg.flush.ddg()
@@ -49,6 +49,9 @@ ddg.flush.ddg()
   will contain just the provenance created by calls to the DDG functions.  If an R error occurs 
   during the execution of the function, the error will be captured in an Exception node in the 
   provenance graph.
+  If no function is provided but an r.script.path is indicated, ddg.run will call ddg.source
+  with r.script.path as the source script (see \code{\link{ddg.source}}). If neither is
+  provided, an error will be raised. 
 
   ddg.console.on and ddg.console.off toggle the console parameter for DDG creation. When the console is enabled, all commands sent to the R
   console are captured as provenance by the RDataTracker library. The functions allow for an intermix of automatic annotations

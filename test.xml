@@ -145,7 +145,7 @@
       <arg line="${local_dir}/${out_name}.local ${local_dir}/${expected_out_name}.local" />
     </exec>
     <exec executable="diff" unless:true="${output-same}" >
-      <arg line="${local_dir}/$source_{out_name}.local ${local_dir}/source_${expected_out_name}.local" />
+      <arg line="${local_dir}/source_${out_name}.local ${local_dir}/source_${expected_out_name}.local" />
     </exec>
 
       <!-- Exectute diff on .txt files -->
