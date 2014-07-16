@@ -125,7 +125,7 @@
 			 <filesmatch file1="${local_dir}/${out_name}.local"
             			 file2="${local_dir}/${expected_out_name}.local"/>
         <filesmatch file1="${local_dir}/source_${out_name}.local"
-                    file2="${local_dir}/source_${expected_out_name}" />
+                    file2="${local_dir}/source_${expected_out_name}.local" />
       </and>
     </condition>
 

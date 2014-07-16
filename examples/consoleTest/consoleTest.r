@@ -51,7 +51,10 @@ someVector <- function() {
 ### Run script
 
 x <- 10
+
+# THIS LEADS TO SOME STRANGE BEHAVIOUR
 ddg.data(x)
+
 f(x)
 f(x)
 
