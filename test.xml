@@ -28,6 +28,12 @@
 
   <!--############################ Start FUNCTIONS ############################-->
   <target name="run-test">
+    <!-- Checking to see if we also need to run a source test on this script -->
+    <condition property="no-source">
+      <equals arg1="${source_test}" arg2="false"/>
+    </condition>
+
+
 
     <!-- Directory to store local files for comparison -->
     <property name="local_dir" value="${dir}/local" />
@@ -43,11 +49,12 @@
     />
 
     <!-- Copy the script file to this local directory, and replace with correct ddg directory for sourcing -->
-    <copy file="${dir}/${script-file}" tofile="${local_dir}/source_${script-file}" overwrite="true" />
+    <copy file="${dir}/${script-file}" tofile="${local_dir}/source_${script-file}" overwrite="true" unless:true="${no-source}" />
     <replaceregexp  file="${local_dir}/source_${script-file}"
                     match="\[DDG-DIR\]"
                     replace="ddg-source"
                     flags="g"
+                    unless:true="${no-source}"
     />
 
     <!-- Replace working directory with local working directory in both the sourced and the executable test files -->
@@ -57,16 +64,18 @@
     </replaceregexp>
 
     <!-- Copy the source test file to this local directory, and replace with correct script name and directory -->
-    <copy file="${TESTS.dir}/examples/sourceTest.r" todir="${local_dir}" overwrite="true" />
+    <copy file="${TESTS.dir}/examples/sourceTest.r" todir="${local_dir}" overwrite="true" unless:true="${no-source}"/>
     <replaceregexp  file="${local_dir}/sourceTest.r"
                     match="\[DIR_LOCAL\]"
                     replace="${TESTS.dir}/${local_dir}"
                     flags="g"
+                    unless:true="${no-source}"
     />
     <replaceregexp  file="${local_dir}/sourceTest.r"
                     match="\[SCRIPT\]"
                     replace="source_${script-file}"
                     flags="g"
+                    unless:true="${no-source}"
     />
 
     <!-- Execute the R Script -->
@@ -80,7 +89,7 @@
     <basename property="out_name" file="${out}" />
 
     <!-- Source the R Script -->
-    <exec executable="Rscript" dir="${local_dir}" output="${TESTS.dir}/${dir}/source_${out_name}" >
+    <exec executable="Rscript" dir="${local_dir}" output="${TESTS.dir}/${dir}/source_${out_name}" unless:true="${no-source}">
       <arg line="sourceTest.r" />
     </exec>
 
@@ -97,7 +106,7 @@
       <globmapper from="*" to="*.local"/>
     </copy>
     <!-- Manual copy of source ddg.txt so it doesn't overwrite executable ddg.txt -->
-    <copy file="${dir}/ddg-source/ddg.txt" tofile="${local_dir}/ddg-source.txt.local" overwrite="true" />
+    <copy file="${dir}/ddg-source/ddg.txt" tofile="${local_dir}/ddg-source.txt.local" overwrite="true" unless:true="${no-source}"/>
 
     <!-- Delete all timestamp occurrences -->
     <replaceregexp flags="g"> 
@@ -125,7 +134,7 @@
 			 <filesmatch file1="${local_dir}/${out_name}.local"
             			 file2="${local_dir}/${expected_out_name}.local"/>
         <filesmatch file1="${local_dir}/source_${out_name}.local"
-                    file2="${local_dir}/source_${expected_out_name}.local" />
+                    file2="${local_dir}/source_${expected_out_name}.local" unless:true="${no-source}"/>
       </and>
     </condition>
 
@@ -144,7 +153,7 @@
     <exec executable="diff" unless:true="${output-same}" >
       <arg line="${local_dir}/${out_name}.local ${local_dir}/${expected_out_name}.local" />
     </exec>
-    <exec executable="diff" unless:true="${output-same}" >
+    <exec executable="diff" unless:true="${no-source}" >
       <arg line="${local_dir}/source_${out_name}.local ${local_dir}/source_${expected_out_name}.local" />
     </exec>
 
@@ -155,10 +164,10 @@
   	<exec executable="diff" >
   		<arg line="${local_dir}/ddg.txt.local ${local_dir}/${ddg_name}.local" />
   	</exec>
-    <echo>
+    <echo unless:true="${no-source}">
       Execution of diff on the sourced script ddg.txt files below: 
     </echo>
-    <exec executable="diff" >
+    <exec executable="diff" unless:true="${no-source}">
       <arg line="${local_dir}/ddg-source.txt.local ${local_dir}/source_${ddg_name}.local" />
     </exec>
   </target>
@@ -173,6 +182,7 @@
   		<param name="expected_out" value="examples/ddgTest/expected_basicTest.out"/>
   		<param name="expected_ddg" value="examples/ddgTest/expected_basicTest_ddg.txt"/>
   		<param name="fail_out" value="true" />
+      <param name="source_test" value="true" />
   	</antcall>
   </target>
 
@@ -184,6 +194,7 @@
   		<param name="expected_out" value="examples/S4ObjectTest/expected_S4ObjectTest.out"/>
   		<param name="expected_ddg" value="examples/S4ObjectTest/expected_S4ObjectTest_ddg.txt"/>
   		<param name="fail_out" value="false" />
+      <param name="source_test" value="true" />
   	</antcall>
   </target>
 
@@ -195,11 +206,14 @@
   		<param name="expected_out" value="examples/ddgTest/expected_ddgTest.out"/>
   		<param name="expected_ddg" value="examples/ddgTest/expected_ddgTest_ddg.txt"/>
   		<param name="fail_out" value="true" />
+      <param name="source_test" value="true" />
   	</antcall>
   </target>
 
   <target name="normal-tests" depends="basic-test, S4-object-test, ddg-test">
-    <echo>Finished Execution of Normal Tests. Nothing should have malfunctioned</echo>
+    <echo>##############################################
+      Finished Execution of Normal Tests. Nothing should have malfunctioned.
+      ##############################################</echo>
   </target>
   <!--########################## End Basic TESTS ##########################-->
 
@@ -213,6 +227,7 @@
   		<param name="expected_out" value="examples/checkpointTest/expected_checkpointTest.out"/>
   		<param name="expected_ddg" value="examples/checkpointTest/expected_CheckpointTest_ddg.txt"/>
   		<param name="fail_out" value="false" />
+      <param name="source_test" value="false" />
   	</antcall>
   </target>
   
@@ -224,11 +239,14 @@
   		<param name="expected_out" value="examples/checkpointTest/expected_checkpointFileTest.out"/>
   		<param name="expected_ddg" value="examples/checkpointTest/expected_CheckpointFileTest_ddg.txt"/>
   		<param name="fail_out" value="false" />
+      <param name="source_test" value="false" />
   	</antcall>
   </target>
 
   <target name="checkpoint-tests" depends="checkpoint-test, checkpoint-file-test">
-    <echo>Finished Execution of Checkpoint Tests. Nothing should have malfunctioned</echo>
+    <echo>##############################################
+      Finished Execution of Checkpoint Tests. Nothing should have malfunctioned.
+    ##############################################</echo>
   </target>
 
   <!--########################## End Checkpoint TESTS ##########################-->
@@ -242,6 +260,7 @@
       <param name="expected_out" value="examples/consoleTest/expected_consoleTest.out"/>
       <param name="expected_ddg" value="examples/consoleTest/expected_consoleTest_ddg.txt"/>
       <param name="fail_out" value="true" />
+      <param name="source_test" value="true" />
     </antcall>
   </target>
 
@@ -253,6 +272,7 @@
       <param name="expected_out" value="examples/consoleTest/expected_consoleTest2.out"/>
       <param name="expected_ddg" value="examples/consoleTest/expected_consoleTest2_ddg.txt"/>
       <param name="fail_out" value="true" />
+      <param name="source_test" value="true" />
     </antcall>
   </target>
 
@@ -264,6 +284,7 @@
       <param name="expected_out" value="examples/MismatchedStartFinishBug/expected_MismatchedStartFinishBug.out"/>
       <param name="expected_ddg" value="examples/MismatchedStartFinishBug/expected_MismatchedStartFinishBug_ddg.txt"/>
       <param name="fail_out" value="true" />
+      <param name="source_test" value="true" />
     </antcall>
   </target>
 
@@ -275,6 +296,7 @@
       <param name="expected_out" value="examples/NULLandNA/expected_NULLandNA.out"/>
       <param name="expected_ddg" value="examples/NULLandNA/expected_NULLandNA_ddg.txt"/>
       <param name="fail_out" value="true" />
+      <param name="source_test" value="true" />
     </antcall>
     <echo message="Expect the following output when testing manually: [1] .ddg.find.var.uses:  Error analyzing storage.mode(z) - a" />
   </target>
@@ -287,6 +309,7 @@
       <param name="expected_out" value="examples/consoleEdges/expected_consoleEdges.out"/>
       <param name="expected_ddg" value="examples/consoleEdges/expected_consoleEdges_ddg.txt"/>
       <param name="fail_out" value="true" />
+      <param name="source_test" value="true" />
     </antcall>
   </target>
 
