@@ -149,9 +149,13 @@
     </exec>
 
       <!-- Exectute diff on .txt files -->
+    <echo>Executing diff on executed script ddg.txt file:
+    </echo>
   	<exec executable="diff" >
   		<arg line="${local_dir}/ddg.txt.local ${local_dir}/${ddg_name}.local" />
   	</exec>
+    <echo>Executing diff on the sourced script ddg.txt file: 
+    </echo>
     <exec executable="diff" >
       <arg line="${local_dir}/ddg-source.txt.local ${local_dir}/source_${ddg_name}.local" />
     </exec>

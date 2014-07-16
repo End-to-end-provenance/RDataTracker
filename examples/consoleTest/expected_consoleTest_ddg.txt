@@ -3,21 +3,28 @@ OperatingSystem="windows"
 Language="R"
 LanguageVersion="R version 3.1.0 (2014-04-10)"
 Script="[DIR]/consoleTest.r"
-ProcessFileTimestamp="2014-07-16T09.42.34"
+ProcessFileTimestamp="2014-07-16T13.06.47"
 WorkingDirectory="[DIR]"
 DDGDirectory="[DIR]/ddg"
-DateTime="2014-07-16T09.42.44"
+DateTime="2014-07-16T13.06.57"
 4
-Data d1 "1-x" Value="10";
 Operation p1 "1-g" Value="g";
-DF d1 p1
+Exception d1 "1-error.msg" Value="\"No data node found for x\"";
+DF p1 d1
+DF d0 p1
 Operation p2 "2-h" Value="h";
 CF p1 p2
-DF d1 p2
+Exception d2 "2-error.msg" Value="\"No data node found for x\"";
+DF p2 d2
+DF d0 p2
 Operation p3 "3-g" Value="g";
 CF p2 p3
-DF d1 p3
+Exception d3 "3-error.msg" Value="\"No data node found for x\"";
+DF p3 d3
+DF d0 p3
 Operation p4 "4-h" Value="h";
 CF p3 p4
-DF d1 p4
+Exception d4 "4-error.msg" Value="\"No data node found for x\"";
+DF p4 d4
+DF d0 p4
 

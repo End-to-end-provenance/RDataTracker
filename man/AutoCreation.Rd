@@ -7,7 +7,7 @@ versios which automatically capture provenance data. }
 ddg.source(file, local = FALSE, echo = verbose, print.eval = echo, 
     verbose = getOption("verbose"), max.deparse.length = 150, chdir = FALSE, 
     encoding = getOption("encoding"), ignore.ddg.calls = TRUE, 
-    ignore.init = ignore.ddg.calls)
+    ignore.init = ignore.ddg.calls, force.console=ignore.init)
 }
 \arguments{
   \item{file}{see \code{\link{source}}}
@@ -22,6 +22,7 @@ ddg.source(file, local = FALSE, echo = verbose, print.eval = echo,
   pertaining to DDGs should be ignored.}
   \item{ignore.init}{specifies whether suppresion of source script DDG Initialization
   should occur.}
+  \item{force.console}{specifies whether console parsing should be forced on the source script}
 } 
 \seealso{
   \code{\link{source}}.
@@ -57,6 +58,17 @@ ddg.source(file, local = FALSE, echo = verbose, print.eval = echo,
 
   Further, note that all calls to "library(RDataTracker)" are ignored in the
   sourced file.
+
+  The final parameter of force.console turns on automatic node creation for the sourced
+  R Script. More precisely, a call to \code{\link{ddg.console.on}} is made before
+  any processing of the script. However, note that changes executed within the sourced
+  script to the console mode will make changes to the environment.
+  For example, if init.ignore is FALSE but force.console is set to TRUE, then 
+  the ddg.init call in the source script will overwrite the console mode. In a sense,
+  script changes prevail, but under ambiguous situations, force.console will determine
+  the state of command capturing.
+
+  In any case, the console is returned to the mode set before the call to ddg.source.
 
 }
 \author{Luis Perez}

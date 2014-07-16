@@ -1045,13 +1045,15 @@ ddg.MAX_HIST_LINES <- 16384
 .ddg.parse.commands <- function(parsed.commands,environ=NULL, ignore.patterns=c('^ddg.'),
                                         node.name="Console", echo=FALSE, print.eval = echo,
                                         max.deparse.length = 150) {
+	# browser()
 	
 	# figure out if we will execute commands or not
-	execute = !is.null(environ) & is.environment(environ)
+	execute <- !is.null(environ) & is.environment(environ)
 
 	# It is possidle that a command may extend over multiple lines. 
   # new.commands will have one string entry for each parsed command.
 	new.commands <- lapply(parsed.commands, function(cmd) {paste(deparse(cmd), collapse="")})
+	filtered.commands <- Filter(function(x){return(!grepl("^ddg.", x))}, new.commands)
 
 	# attempt to close the previous collapsible command node
 	.ddg.close.last.command.node(initial=TRUE)
@@ -1061,7 +1063,8 @@ ddg.MAX_HIST_LINES <- 16384
   # command in the histpry or execution.
   named.node.set <- FALSE
 	num.new.commands <- length(new.commands)
-	if (num.new.commands > 1 && .ddg.is.init()) {
+	num.actual.commands <- length(filtered.commands)
+	if (num.actual.commands > 1 && .ddg.is.init()) {
 		.ddg.add.abstract.node("Start", node.name)
 		named.node.set <- TRUE
 	}
@@ -1137,8 +1140,10 @@ ddg.MAX_HIST_LINES <- 16384
          	}
 
          	# if we will create a node, then before execution, set this command as
-         	# a possible abstraction node
-  				.ddg.set(".ddg.possible.new.command", cmd)
+         	# a possible abstraction node but only if it's not a call that itself creates
+         	# abstract nodes
+  				if (!grepl("^ddg.", cmd)) .ddg.set(".ddg.possible.new.command", cmd)
+  				else if (grepl("^ddg.start", cmd) || grepl("^ddg.finish", cmd)) .ddg.set(".ddg.possible.new.command", NULL)
 
          	# evaluate
   				result <- eval(cmd.expr, environ, NULL)
@@ -1146,11 +1151,12 @@ ddg.MAX_HIST_LINES <- 16384
   				# print evaluation
   				if (print.eval) cat(result)
 
-  				# check if initialization call. If so, then create a new console node
-  				if(grepl("^ddg.init", cmd) && .ddg.enable.console()) { 
-  					.ddg.add.abstract.node("Start", "Console")
-  					.ddg.set(".ddg.last.command", "Console")
-  				}
+  				# check if initialization call. If so, then create a new console node,
+  				# but only if the next command is NOT a ddg command
+  				#if(grepl("^ddg.init", cmd) && .ddg.enable.console()) { 
+  				#	.ddg.add.abstract.node("Start", "Console")
+  				#	.ddg.set(".ddg.last.command", "Console")
+  				#}
   			}
 
   			# figure out if we should create a procedure node for this command. 
@@ -1188,10 +1194,11 @@ ddg.MAX_HIST_LINES <- 16384
 	}
 
 	# close any node left open during execution
-	if (execute) .ddg.close.last.command.node()
+	if (execute) .ddg.close.last.command.node(initial=TRUE)
 
 	# Close the console block if we processed anything and the ddg is initialized (also, save)
-	if (num.new.commands > 1 && .ddg.is.init() && named.node.set) { 
+	# browser()
+	if (.ddg.is.init() && named.node.set) { 
 		.ddg.add.abstract.node("Finish", node.name)
 	}
 
@@ -2580,7 +2587,7 @@ ddg.source <- function (file, local = FALSE, echo = verbose, print.eval = echo,
   if(length(exprs) > 0) {
 
   	# Turn on the console if forced to
-  	prev.on <- .ddg.enable.console()
+  	prev.on <- .ddg.is.init() && .ddg.enable.console()
   	if (force.console) ddg.console.on()
   
   	# Let library know that we are sourcing a file
@@ -2595,8 +2602,8 @@ ddg.source <- function (file, local = FALSE, echo = verbose, print.eval = echo,
   	.ddg.set("from.source", FALSE)
 
   	# Turn return console to previous state
-  	if (!prev.on) .ddg.console.off()
-  	else .ddg.console.on()
+  	if (!prev.on) ddg.console.off()
+  	else ddg.console.on()
   }
 
 }
