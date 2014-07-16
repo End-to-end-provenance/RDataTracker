@@ -238,5 +238,5 @@ main <- function() {
 
 ddg.run(main, 
 		paste(testDir,"ddgTest.r", sep=""),
-		paste(testDir,"ddg", sep=""))
+		paste(testDir,"[DDG-DIR]", sep=""))
 
