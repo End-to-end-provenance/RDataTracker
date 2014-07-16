@@ -1,0 +1,55 @@
+Architecture="i386"
+OperatingSystem="windows"
+Language="R"
+LanguageVersion="R version 3.1.0 (2014-04-10)"
+Script="[DIR]/consoleTest.r"
+ProcessFileTimestamp="2014-07-16T09.42.34"
+WorkingDirectory="[DIR]"
+DDGDirectory="[DIR]/ddg-source"
+DateTime="2014-07-16T09.42.45"
+15
+Start p1 "1-Console" Value="Console";
+Operation p2 "2-f <- function(x) {    g(x)    h(x)    return(1)}" Value="f <- function(x) {    g(x)    h(x)    return(1)}";
+CF p1 p2
+Data d1 "1-f" Value="complex";
+DF p2 d1
+Operation p3 "3-g <- function(x) {    ddg.procedure()    ddg.data.in(substit" Value="g <- function(x) {    ddg.procedure()    ddg.data.in(substitute(x))    return(1)}";
+CF p2 p3
+Data d2 "2-g" Value="complex";
+DF p3 d2
+Operation p4 "4-h <- function(x) {    ddg.procedure()    ddg.data.in(substit" Value="h <- function(x) {    ddg.procedure()    ddg.data.in(substitute(x))    return(1)}";
+CF p3 p4
+Data d3 "3-h" Value="complex";
+DF p4 d3
+Operation p5 "5-someVector <- function() {    return(c(1, 3, 5))}" Value="someVector <- function() {    return(c(1, 3, 5))}";
+CF p4 p5
+Data d4 "4-someVector" Value="complex";
+DF p5 d4
+Operation p6 "6-x <- 10" Value="x <- 10";
+CF p5 p6
+Data d5 "5-x" Value="10";
+DF p6 d5
+Data d6 "6-x" Value="10";
+Finish p7 "7-Console" Value="Console";
+CF p6 p7
+Start p8 "8-f(x)" Value="f(x)";
+CF p7 p8
+Operation p9 "9-g" Value="g";
+CF p8 p9
+DF d6 p9
+Operation p10 "10-h" Value="h";
+CF p9 p10
+DF d6 p10
+Finish p11 "11-f(x)" Value="f(x)";
+CF p10 p11
+Start p12 "12-f(x)" Value="f(x)";
+CF p11 p12
+Operation p13 "13-g" Value="g";
+CF p12 p13
+DF d6 p13
+Operation p14 "14-h" Value="h";
+CF p13 p14
+DF d6 p14
+Finish p15 "15-f(x)" Value="f(x)";
+CF p14 p15
+

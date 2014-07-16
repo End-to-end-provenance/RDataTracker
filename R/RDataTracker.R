@@ -2429,7 +2429,7 @@ ddg.save <- function() {
 # @param - ignore.init
 ddg.source <- function (file, local = FALSE, echo = verbose, print.eval = echo, 
     verbose = getOption("verbose"), max.deparse.length = 150, chdir = FALSE, encoding = getOption("encoding"),
-    ignore.ddg.calls = TRUE, ignore.init = ignore.ddg.calls) {
+    ignore.ddg.calls = TRUE, ignore.init = ignore.ddg.calls, force.console=ignore.init) {
   
 	### CODE IN THIS SECTION IS BASICALLY REPLICATION OF source FUNCTION ###
 	# Get the environment under which the script should be executed
@@ -2578,6 +2578,10 @@ ddg.source <- function (file, local = FALSE, echo = verbose, print.eval = echo,
 
   # now we can parse the commands as we normally would for a DDG
   if(length(exprs) > 0) {
+
+  	# Turn on the console if forced to
+  	prev.on <- .ddg.enable.console()
+  	if (force.console) ddg.console.on()
   
   	# Let library know that we are sourcing a file
   	.ddg.set("from.source", TRUE)
@@ -2589,6 +2593,10 @@ ddg.source <- function (file, local = FALSE, echo = verbose, print.eval = echo,
   	# save the DDG
   	ddg.save()
   	.ddg.set("from.source", FALSE)
+
+  	# Turn return console to previous state
+  	if (!prev.on) .ddg.console.off()
+  	else .ddg.console.on()
   }
 
 }
