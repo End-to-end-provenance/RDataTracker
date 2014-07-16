@@ -153,6 +153,11 @@ ddg.MAX_HIST_LINES <- 16384
 	
 	# Record last command from the preceding console block.
 	.ddg.set(".ddg.last.command", NULL)
+	
+	.ddg.set(".ddg.return.values", data.frame(ddg.call=character(size), 
+											  ddg.value=character(size), 
+											  stringsAsFactors=FALSE))
+	.ddg.set(".ddg.num.returns", 0)
 }
 
 # Wrrapper to easily change history lines during execution of script
@@ -411,7 +416,7 @@ ddg.MAX_HIST_LINES <- 16384
 	rows <- nrow(ddg.proc.nodes)
 	for (i in rows:1) {
 		type <- ddg.proc.nodes$ddg.type[i]
-		if ((type == "Operation" | type == "Binding" | type == "Checkpoint" | type == "Restore") & ddg.proc.nodes$ddg.name[i] == pname) {
+		if ((type == "Operation" | type == "Binding" | type == "Checkpoint" | type == "Restore" | type == "Finish" ) & ddg.proc.nodes$ddg.name[i] == pname) {
 			return(ddg.proc.nodes$ddg.num[i])
 		}
 	}
@@ -776,18 +781,24 @@ ddg.MAX_HIST_LINES <- 16384
 # occurs after the last possible writer. A snapshot node is created 
 # if the value is a data frame.  Otherwise, a data node is created.
 
-.ddg.create.data.set.edges.for.console.cmd <- function(vars.set, cmd, cmd.expr, cmd.pos) {
+.ddg.create.data.set.edges.for.console.cmd <- function(vars.set, cmd, cmd.expr, cmd.pos, for.finish.node = FALSE) {
+	print("In .ddg.create.data.set.edges")
+	print(paste("cmd.expr =", cmd.expr))
 	vars.assigned <- .ddg.find.assign (cmd.expr)
+	print(paste("vars.assigned =", vars.assigned))
 	for (var in vars.assigned) {
+		print(paste("var =", var))
 		
 		nRow <- which(vars.set$variable == var)
+		print(paste("nRow =", nRow))
 		
 		# Only create a node edge for the last place that a variable is 
     # set within a console block.
-		if (length(nRow) > 0 && vars.set$last.writer[nRow] == cmd.pos && vars.set$possible.last.writer[nRow] <= vars.set$last.writer[nRow]) {
+		if ((length(nRow) > 0 && vars.set$last.writer[nRow] == cmd.pos && vars.set$possible.last.writer[nRow] <= vars.set$last.writer[nRow]) || for.finish.node) {
 			val <- tryCatch(eval(parse(text=var), .GlobalEnv),
 					error = function(e) {NULL}
 			)
+			print("Creating data node")
 			if (!is.null(val)) {
 				if (is.data.frame(val)) .ddg.snapshot.node(var, "csv", val, dscope=environmentName(.GlobalEnv))
 				else .ddg.data.node("Data", var, val, environmentName(.GlobalEnv))
@@ -795,7 +806,13 @@ ddg.MAX_HIST_LINES <- 16384
 			else {
 				.ddg.data.node("Data", var, "complex", environmentName(.GlobalEnv))
 			}
-			.ddg.proc2data(cmd, var, environmentName(.GlobalEnv))
+			print("Creating data flow edge")
+#			if (for.finish.node) {
+#				.ddg.proc2data(paste(cmd, "Finish"), var, environmentName(.GlobalEnv))
+#			}
+#			else {
+				.ddg.proc2data(cmd, var, environmentName(.GlobalEnv))
+#			}
 		}
 	}
 }
@@ -906,6 +923,8 @@ ddg.MAX_HIST_LINES <- 16384
 		if (.ddg.debug()) print(paste(".ddg.console.node:  Adding finish node for last command", cmd.abbrev))
 		.ddg.proc.node("Finish", cmd.abbrev, .ddg.last.command, console=TRUE)
 		.ddg.proc2proc()
+		vars.set <- .ddg.find.var.assignments(.ddg.last.command)
+		.ddg.create.data.set.edges.for.console.cmd(vars.set, cmd.abbrev, parse(text=.ddg.last.command), 0, for.finish.node = TRUE)
 	}
 	
 	# Parse the new lines.
@@ -1850,6 +1869,34 @@ ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.graphic=N
 				}
 		)
 	}
+}
+
+ddg.return <- function (expr) {
+	if (length(expr) == 0) return()
+	
+	# prints the call & arguments
+	if (.ddg.debug()) {
+		print(paste("ddg.return:", sys.call(-1), "returns", expr))
+	}
+	
+	ddg.return.values <- .ddg.get(".ddg.return.values")
+	ddg.num.returns <- .ddg.get(".ddg.num.returns")
+	if (nrow(ddg.return.values) == ddg.num.returns) {
+		size = 100
+		new.rows <- data.frame(ddg.call = character(size),
+				  			   ddg.value=character(size), 
+							   stringsAsFactors=FALSE)
+		.ddg.add.rows(".ddg.return.values", new.rows)
+		ddg.return.values <- .ddg.get(".ddg.return.values")
+	}
+	
+	ddg.num.returns <- ddg.num.returns + 1
+	ddg.return.values$ddg.call[ddg.num.returns] <- deparse(sys.call(-1))
+	ddg.return.values$ddg.value[ddg.num.returns] <- expr
+	.ddg.set(".ddg.return.values", ddg.return.values)
+	.ddg.set(".ddg.num.returns", ddg.num.returns)
+	
+	return(expr)
 }
 
 # ddg.data creates a data node for a single or comple data value. 
