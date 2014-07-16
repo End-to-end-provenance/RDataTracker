@@ -4,6 +4,8 @@
 \alias{ddg.grabhistory}
 \alias{ddg.save}
 \alias{ddg.flush.ddg}
+\alias{ddg.console.off}
+\alias{ddg.console.on}
 \title{Creating Provenance Graphs with RDataTracker}
 \description{These functions are needed to create provenance graphs.}
 \usage{
