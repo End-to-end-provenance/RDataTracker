@@ -11,7 +11,7 @@
 \usage{
 ddg.init(r.script.path = NULL, ddgdir = NULL, enable.console = FALSE) 
 ddg.grabhistory()
-ddg.save()
+ddg.save(quit=FALSE)
 ddg.run(f = NULL, r.script.path = NULL, ddgdir = NULL, enable.console = FALSE)
 ddg.console.on()
 ddg.console.off()
@@ -42,7 +42,10 @@ ddg.flush.ddg()
   ddg.txt.  The extra information includes the version of R being used, the operating system, and 
   a timestamp of the execution.  ddg.save() can be called multiple times for a single call to 
   ddg.init(), where each call will extend the previous provenance graph, overwriting the file
-  containing the previous version.
+  containing the previous version. When the final save procedure is wanted, the 
+  parameter "quit" can be set to true. This modified ddg.save() so that all temporary
+  files in mememory are cleared out. While not strictly necessary, this prevents issues
+  when creating multiple DDGs from the same script.
   
   ddg.run provides a short cut for ddg.init()...ddg.save().  It initializes the provenance graph,
   calls the function provided as a parameter, and then saves the provenance graph.  The graph

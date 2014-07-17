@@ -36,8 +36,10 @@ ddg.source(file, local = FALSE, echo = verbose, print.eval = echo,
 
   If ignore.ddg.calls is set to TRUE, then all code statement beginning with 
   "ddg." are ignored. They are not executed nor incorporated into the created 
-  DDG. This parameter is used if an existing RScript is partly annotated, but 
-  when sourcing, automatic console annotation are required. 
+  DDG. Note that this only holds true for "ddg." calls at the top level, as nested
+  calls within functions are executed with a call to the function.This parameter
+  is used if an existing RScript is partly annotated, but when sourcing, 
+  automatic console annotation are required. 
 
   This is also useful if automatic annotations of a sourced script should be 
   included in the DDG of the script sourcing file. Ignoring "ddg." statements 

@@ -424,6 +424,7 @@ ddg.MAX_HIST_LINES <- 16384
 # data node. It returns TRUE if a match is found and FALSE otherwise.
 
 .ddg.data.node.exists <- function(dname) {
+	# browser()
 	ddg.data.nodes <- .ddg.data.nodes()
 	rows <- nrow(ddg.data.nodes)
 	for (i in rows:1) {
@@ -1064,6 +1065,7 @@ ddg.MAX_HIST_LINES <- 16384
   named.node.set <- FALSE
 	num.new.commands <- length(new.commands)
 	num.actual.commands <- length(filtered.commands)
+	# browser()
 	if (num.actual.commands > 1 && .ddg.is.init()) {
 		.ddg.add.abstract.node("Start", node.name)
 		named.node.set <- TRUE
@@ -1079,7 +1081,7 @@ ddg.MAX_HIST_LINES <- 16384
 	if (substr(.ddg.last.command, 1, 4) == "ddg.") {
 		.ddg.last.command <- NULL
 	}
-	else {
+	else if (!execute) {
 		quoted.commands <- quoted.commands[1:num.new.commands-1]
 		parsed.commands <- parsed.commands[1:num.new.commands-1]
 	}
@@ -1111,22 +1113,21 @@ ddg.MAX_HIST_LINES <- 16384
   	}
 
   	# loop over the commands as well as their string representations
-  	
+  	# browser()
   	for (i in 1:length(parsed.commands)) {
   		cmd.expr <- parsed.commands[[i]]
   		cmd <- quoted.commands[[i]]
 
-  		# specifies whether or not a procedure node should be created for this command
+			# specifies whether or not a procedure node should be created for this command
   		# Basically, if a ddg exists and the command is not a ddg command, it should
   		# be created.
   		create <- !grepl("^ddg.", cmd) && .ddg.is.init() && .ddg.enable.console()
 
   		# if the command does not match one of the ignored patterns
   		if (!any(sapply(ignore.patterns, function(pattern){grepl(pattern, cmd)}))) {
-  			cmd.abbrev <- .ddg.abbrev.cmd(cmd)
-  			last.proc.node <- cmd.abbrev
-  			
 
+  			cmd.abbrev <- .ddg.abbrev.cmd(cmd)
+  	
   			# If sourcing, we want to execute the command
   			if (execute) {
   				# print command
@@ -1138,6 +1139,8 @@ ddg.MAX_HIST_LINES <- 16384
             else nd)
 		        cat(cmd.show)
          	}
+
+         	# browser()
 
          	# if we will create a node, then before execution, set this command as
          	# a possible abstraction node but only if it's not a call that itself creates
@@ -1169,9 +1172,13 @@ ddg.MAX_HIST_LINES <- 16384
 
   			# we want to create a procedure node for this command
   			if (create.procedure) {
+					# create the procedure node
 					.ddg.proc.node("Operation", cmd.abbrev, cmd, console=TRUE)
 					.ddg.proc2proc()
 					if (.ddg.debug()) print(paste(".ddg.parse.console.node: Adding operation node for", cmd.abbrev))
+
+					# store information on the last procedure node in this block
+					last.proc.node <- cmd.abbrev
 
 					# we want to create the incoming data nodes (by updating the vars.set)
 					if (execute) {
@@ -1184,6 +1191,8 @@ ddg.MAX_HIST_LINES <- 16384
 					.ddg.create.data.set.edges.for.console.cmd(vars.set, cmd.abbrev, cmd.expr, i)
 					if (.ddg.debug()) print(paste(".ddg.parse.console.node: Adding output data nodes for", cmd.abbrev))
 				}
+				# we wanted to create it but it matched a last command node
+				else if (create && execute) .ddg.close.last.command.node(initial=TRUE)
   		}
   	}
 
@@ -1768,6 +1777,9 @@ ddg.MAX_HIST_LINES <- 16384
 .ddg.delete.temp <- function() {
 	# delet the temporary history file if we made it
 	if (.ddg.is.set('ddg.history.file')) unlink(.ddg.get('ddg.history.file'))
+
+	# clear the environment
+	.ddg.env <- new.env(parent=emptyenv())
 }
 
 #--------------------USER FUNCTIONS-----------------------#
@@ -1808,9 +1820,10 @@ ddg.MAX_HIST_LINES <- 16384
 ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.graphic=NULL, outs.data=NULL, 
                           outs.exception=NULL, outs.url=NULL, outs.file=NULL, graphic.fext="jpeg") {
 	if (!.ddg.is.init()) return(NULL)
-
+	# browser()
 	.ddg.lookup.function.name(pname)
 	.ddg.proc.node("Operation", pname, pname)
+	# browser()
 	
 	# Create control flow edge from preceding procedure node.
 	.ddg.proc2proc()
@@ -2390,7 +2403,9 @@ ddg.run <- function(f = NULL, r.script.path = NULL, ddgdir = NULL, enable.consol
 # steps at the top of the DDG. It writes the DDG, the procedure nodes 
 # table, and the data nodes table to the DDG directory.
 
-ddg.save <- function() {
+# The quit parameter saves and then flushes out the DDG.
+
+ddg.save <- function(quit=FALSE) {
 	if (!.ddg.is.init()) return(NULL)
 
 	# restore history settings
@@ -2426,7 +2441,7 @@ ddg.save <- function() {
 	write.table(ddg.data.nodes[ddg.data.nodes$ddg.num > 0, ], fileout, quote=FALSE, na="", row.names=FALSE, col.names=FALSE)
 
 	# delete temporary files
-	.ddg.delete.temp()
+	if (quit) .ddg.delete.temp()
 }
 
 # ddg.source reads in an r script and executes it in the provided enviroment.
@@ -2580,17 +2595,20 @@ ddg.source <- function (file, local = FALSE, echo = verbose, print.eval = echo,
 	# ignores calculation of certain execution steps
 	ignores <- c("^library[(]RDataTracker[)]$", 	
 		if(ignore.ddg.calls) "^ddg."
-		else if (ignore.init) "^.ddg.init"
+		else if (ignore.init) "^ddg.init"
 		else "a^")
 
   # now we can parse the commands as we normally would for a DDG
   if(length(exprs) > 0) {
 
-  	# Turn on the console if forced to
+  	# Turn on the console if forced to, keep track of previous setting, parse 
+  	# previous commands if necessary
   	prev.on <- .ddg.is.init() && .ddg.enable.console()
+  	if (prev.on && interactive()) .ddg.console.node()
   	if (force.console) ddg.console.on()
   
   	# Let library know that we are sourcing a file
+  	prev.source <- .ddg.is.init() && .ddg.is.set("from.source") && .ddg.get("from.source")
   	.ddg.set("from.source", TRUE)
 
   	# parse the commands into a console node
@@ -2599,7 +2617,7 @@ ddg.source <- function (file, local = FALSE, echo = verbose, print.eval = echo,
   	
   	# save the DDG
   	ddg.save()
-  	.ddg.set("from.source", FALSE)
+  	.ddg.set("from.source", prev.source)
 
   	# Turn return console to previous state
   	if (!prev.on) ddg.console.off()
@@ -2651,17 +2669,16 @@ ddg.flush.ddg <- function () {
 	ddg.path <- .ddg.path()
 	# Do not remove files unless ddg.path exists and is different 
   # from the working directory.
-  	if (file.exists(ddg.path) && ddg.path != getwd()) {
-    	unlink(paste(ddg.path, "ddg.txt", sep="/"))
-    	unlink(paste(ddg.path, "dnodes.txt", sep="/"))
-    	unlink(paste(ddg.path, "pnodes.txt", sep="/"))
-    	unlink(paste(ddg.path, ".ddghistory", sep="/"))
-    	unlink(paste(ddg.path,"[1-9]-*.*", sep="/"))
-    	unlink(paste(ddg.path,"[1-9][0-9]-*.*", sep="/"))
-    	unlink(paste(ddg.path,"[1-9][0-9][0-9]-*.*", sep="/"))
-    	unlink(paste(ddg.path,"[1-9][0-9][0-9][0-9]-*.*", sep="/"))
-    	unlink(paste(ddg.path,"[1-9][0-9][0-9][0-9][0-9]-*.*", sep="/"))
-    	unlink(paste(ddg.path,"[1-9][0-9][0-9][0-9][0-9][0-9]-*.*", sep="/"))
-  	}
+	if (file.exists(ddg.path) && ddg.path != getwd()) {
+  	unlink(paste(ddg.path, "ddg.txt", sep="/"))
+  	unlink(paste(ddg.path, "dnodes.txt", sep="/"))
+  	unlink(paste(ddg.path, "pnodes.txt", sep="/"))
+  	unlink(paste(ddg.path,"[1-9]-*.*", sep="/"))
+  	unlink(paste(ddg.path,"[1-9][0-9]-*.*", sep="/"))
+  	unlink(paste(ddg.path,"[1-9][0-9][0-9]-*.*", sep="/"))
+  	unlink(paste(ddg.path,"[1-9][0-9][0-9][0-9]-*.*", sep="/"))
+  	unlink(paste(ddg.path,"[1-9][0-9][0-9][0-9][0-9]-*.*", sep="/"))
+  	unlink(paste(ddg.path,"[1-9][0-9][0-9][0-9][0-9][0-9]-*.*", sep="/"))
+	}
 }
 

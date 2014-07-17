@@ -19,7 +19,7 @@ testDir <- "[DIR_DEFAULT]/"
 setwd(testDir)
 
 ddg.r.script.path = paste(testDir,"MismatchedStartFinishBug.r",sep="")
-ddg.path = paste(testDir,"ddg",sep="")
+ddg.path = paste(testDir,"[DDG-DIR]",sep="")
 
 options(warn=2)
 ddg.debug.off()
