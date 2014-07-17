@@ -465,7 +465,7 @@
     <record name="SivanSampling-test.log.txt" action="stop" />
   </target> 
 
-  <target name="bug-tests" depends="ddg-changes-behavior-test, ddg-hang-test,scoping-error-test, simple-test,SivanSampling-test" >
+  <target name="bug-tests" depends="ddg-changes-behavior-test, ddg-hang-test,scoping-error-test, simple-test" >
     <echo>Tests which were added to check for specific bug fixes </echo>
   </target>
 
@@ -478,7 +478,9 @@
   <!--################################# MAIN #################################-->
 
   <target name="test-all" depends="normal-tests, checkpoint-tests, script-tests, console-tests, bug-tests, aaron-test">
-      <echo>All tests makes calls to the RDataTracker Library. You might need to restart RStudio to correctly run the scripts with the updated library installed. Output is saved in tests.log.</echo>
+      <echo>All tests makes calls to the RDataTracker Library. You might need to restart RStudio to correctly run the scripts with the updated library installed. Output is saved in tests.log.
+
+      There is one test which is not run here. The test is SivanSampling-test. Run it manually, though output is random.</echo>
   </target>
 
   <target name="install-and-test" depends="install">
