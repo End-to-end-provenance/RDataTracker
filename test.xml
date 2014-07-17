@@ -347,6 +347,7 @@
   		<param name="expected_out" value="examples/CalculateSquareRoot/expected_calculate-square-root-1.out"/>
   		<param name="expected_ddg" value="examples/CalculateSquareRoot/expected_calculate-square-root-1_ddg.txt"/>
   		<param name="fail_out" value="false" />
+      <param name="source_test" value="false" />
   	</antcall>
   </target>
   
@@ -358,6 +359,7 @@
   		<param name="expected_out" value="examples/CalculateSquareRoot/expected_calculate-square-root-2.out"/>
   		<param name="expected_ddg" value="examples/CalculateSquareRoot/expected_calculate-square-root-2_ddg.txt"/>
   		<param name="fail_out" value="false" />
+      <param name="source_test" value="false" />
   	</antcall>
   </target>
 
@@ -373,6 +375,7 @@
   		<param name="expected_out" value="examples/DailySolarRadiation/expected_daily-solar-radiation-1.out"/>
   		<param name="expected_ddg" value="examples/DailySolarRadiation/expected_daily-solar-radiation-1_ddg.txt"/>
   		<param name="fail_out" value="true" />
+      <param name="source_test" value="false" />
   	</antcall>
   </target>
   
@@ -384,6 +387,7 @@
   		<param name="expected_out" value="examples/DailySolarRadiation/expected_daily-solar-radiation-2.out"/>
   		<param name="expected_ddg" value="examples/DailySolarRadiation/expected_daily-solar-radiation-2_ddg.txt"/>
   		<param name="fail_out" value="true" />
+      <param name="source_test" value="false" />
   	</antcall>
   </target>
 
@@ -404,6 +408,7 @@
       <param name="expected_out" value="examples/ddgChangesBehavior/expected_ddgChangesBehavior.out"/>
       <param name="expected_ddg" value="examples/ddgChangesBehavior/expected_ddgChangesBehavior_ddg.txt"/>
       <param name="fail_out" value="true" />
+      <param name="source_test" value="false" />
     </antcall>
   </target>
 
@@ -415,6 +420,7 @@
       <param name="expected_out" value="examples/DDGHangBug/expected_DDGHangBug.out"/>
       <param name="expected_ddg" value="examples/DDGHangBug/expected_DDGHangBug_ddg.txt"/>
       <param name="fail_out" value="true" />
+      <param name="source_test" value="false" />
     </antcall>
     <echo>This DDG sometimes hangs DDG Explorer because of the large n value. For testing, we keep a relatively small n. If you change n, the .out file must also be changed.</echo>
   </target>  
@@ -427,6 +433,7 @@
       <param name="expected_out" value="examples/scopingTest/expected_scoping_error.out"/>
       <param name="expected_ddg" value="examples/scopingTest/expected_scoping_error_ddg.txt"/>
       <param name="fail_out" value="true" />
+      <param name="source_test" value="false" />
     </antcall>
     <echo>If this breaks, we have issues with scoping.</echo>
   </target>  
@@ -439,6 +446,7 @@
       <param name="expected_out" value="examples/simpleTest/expected_simple.out"/>
       <param name="expected_ddg" value="examples/simpleTest/expected_simple_ddg.txt"/>
       <param name="fail_out" value="true" />
+      <param name="source_test" value="false" />
     </antcall>
   </target> 
 
@@ -451,6 +459,7 @@
         <param name="expected_out" value="examples/SivanSampling/expected_Sampling.out"/>
         <param name="expected_ddg" value="examples/SivanSampling/expected_Sampling_ddg.txt"/>
         <param name="fail_out" value="false" />
+        <param name="source_test" value="false" />
       </antcall>
       <echo>You shuould output this to either a text file, or run the diff manually. The nodes generated are done so through a random process, and therefore differ significantly. Note that the output of this test is saved to examples/SivanSampling/SivanSampling-test.log.txt</echo>
     <record name="SivanSampling-test.log.txt" action="stop" />
