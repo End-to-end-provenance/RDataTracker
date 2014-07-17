@@ -2,6 +2,7 @@
 # Originally created by Barbara Lerner
 
 # Modified by Luis Perez 7-Jul-2014
+# Modified by Luis Perez 17-Jul-2014
 
 #ddg.library <- Sys.getenv("DDG_LIBRARY")
 #if (ddg.library == "") {
@@ -92,4 +93,4 @@ generate1Sample <- function () {
 totalNumOfSample <- 5
 newSample <- generate1Sample()
 samplesArr <- generateSamples(totalNumOfSample)
-ddg.save()
+ddg.save(quit=TRUE)

@@ -46,4 +46,4 @@ f(m)
 f(x)
 ddg.finish("Stuff")
 
-ddg.save()
+ddg.save(quit=TRUE)

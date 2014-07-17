@@ -72,4 +72,4 @@ f(x)
 
 # Then user should do things at console and end by calling ddg.save() from the console.
 
-ddg.save()
+ddg.save(quit=TRUE)

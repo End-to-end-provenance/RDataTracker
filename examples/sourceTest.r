@@ -18,6 +18,3 @@ setwd(testDir)
 
 # Source the script
 ddg.source("[SCRIPT]", ignore.ddg.calls = F)
-
-# FINAL CALL TO SAVE (this clear out the ddg.env and deletes temporary history file)
-ddg.save(quit=TRUE)

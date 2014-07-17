@@ -9,6 +9,7 @@
 # ERB rev. 5-Feb-2014
 
 # Modified by Luis Perez 7-Jul-2014
+# Modified by Luis Perez 17-Jul-2014
 
 ### Directories
 
@@ -291,3 +292,4 @@ ddg.run(main,
 		ddg.r.script.path,
 		ddg.path)
 
+ddg.save(quit=TRUE)

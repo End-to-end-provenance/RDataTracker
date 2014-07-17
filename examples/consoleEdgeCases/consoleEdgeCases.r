@@ -1,3 +1,9 @@
+# Create by Luis Perez. This script tests for bugs that popped up and were 
+# subsequently fixed. THis is to make sure that any future modifications don't
+# recreate bugs we've already repaired.
+
+# Modified by Luis Perez 17-Jul-2014
+
 library(RDataTracker)
 setwd("[DIR_DEFAULT]")
 r.script.path <- paste(getwd(),"/consoleEdgeCases.r",sep="")
@@ -21,4 +27,4 @@ a <- 10
 if(FALSE) b <- a else b <- 3
 
 # save the ddg.
-ddg.save()
+ddg.save(quit=TRUE)

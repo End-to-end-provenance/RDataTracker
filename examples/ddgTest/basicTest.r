@@ -4,6 +4,7 @@
 # compared to be sure everything is working as expected.
 
 # Modified by Luis Perez 7-Jul-2014
+# Modified by Luis PErez 17-Jul-2014
 
 ## Directories
 
@@ -137,3 +138,4 @@ ddg.run(main,
 		"D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/ddgTest/ddgTest.r",
 		"D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/ddgTest/[DDG-DIR]")
 
+ddg.save(quit=TRUE)

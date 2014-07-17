@@ -333,7 +333,7 @@
   </target>
 
   <target name="source-tests" depends="console-source-1">
-    <echo>Finished Execution of Source Tests. Nothing should have malfunctioned.</echo>
+    <echo>Finished Execution of Source Tests. A few warnings are raised, but this is expected. You can manually execute the consoleSource.r from the local directory to remove the errors, and then compare to the manual_expected_consoleSource_ddg.txt</echo>
   </target>
   <!--########################## End Source TESTS ##########################-->
 
@@ -452,7 +452,7 @@
         <param name="expected_ddg" value="examples/SivanSampling/expected_Sampling_ddg.txt"/>
         <param name="fail_out" value="false" />
       </antcall>
-      <echo>You shuould output this to either a text file, or run the diff manually. The nodes generated are done so through a random process, and therefore differ significantly.</echo>
+      <echo>You shuould output this to either a text file, or run the diff manually. The nodes generated are done so through a random process, and therefore differ significantly. Note that the output of this test is saved to examples/SivanSampling/SivanSampling-test.log.txt</echo>
     <record name="SivanSampling-test.log.txt" action="stop" />
   </target> 
 

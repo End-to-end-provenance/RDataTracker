@@ -3,6 +3,7 @@
 # Author @Barbara Lerner
 
 # Modified by Luis Perez 7-Jul-2014
+# Modified by Luis Perez 17-Jul-2014
 
 rm (list=ls())
 
@@ -50,3 +51,4 @@ ddg.run(main,
 		paste(testDir,"CheckpointFileTest.r",sep=""),
 		paste(testDir,"ddg",sep=""))
 
+ddg.save(quit=TRUE)
