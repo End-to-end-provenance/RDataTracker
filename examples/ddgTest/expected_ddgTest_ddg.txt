@@ -2,11 +2,11 @@ Architecture="x86_64"
 OperatingSystem="unix"
 Language="R"
 LanguageVersion="R version 3.1.0 Patched (2014-05-20 r65701)"
-Script="[DIR]/ddgTest.r"
-ProcessFileTimestamp=""
-WorkingDirectory="[DIR]"
-DDGDirectory="[DIR]/ddg"
-DateTime=""
+Script="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/ddgTest/ddgTest.r"
+ProcessFileTimestamp="2014-07-18T10.20.01"
+WorkingDirectory="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/ddgTest"
+DDGDirectory="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/ddgTest/ddg"
+DateTime="2014-07-18T10.36.26"
 22
 Start p1 "1-main" Value="main";
 Data d1 "1-x" Value="3";
@@ -62,13 +62,13 @@ Data d14 "14-simple.value" Value="10";
 DF p9 d14
 Operation p10 "10-g1" Value="g1";
 CF p9 p10
-Snapshot d15 "15-kids.df" Value="[DIR]/ddg/15-kids.df.csv" Time="";
+Snapshot d15 "15-kids.df" Value="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/ddgTest/ddg/15-kids.df.csv" Time="2014-07-18T10.36.26";
 DF p10 d15
-Snapshot d16 "16-c(1992, 1995)" Value="[DIR]/ddg/16-c(1992, 1995).csv" Time="";
+Snapshot d16 "16-c(1992, 1995)" Value="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/ddgTest/ddg/16-c(1992, 1995).csv" Time="2014-07-18T10.36.26";
 DF p10 d16
-File d17 "17-[DIR]/testfile2.txt" Value="[DIR]/ddg/17-testfile2.txt" Time="" Location="[DIR]/testfile2.txt";
+File d17 "17-/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/ddgTest/testfile2.txt" Value="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/ddgTest/ddg/17-testfile2.txt" Time="2014-07-18T10.36.26" Location="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/ddgTest/testfile2.txt";
 DF p10 d17
-File d18 "18-outfile2" Value="[DIR]/ddg/18-testfile3.txt" Time="" Location="[DIR]/testfile3.txt";
+File d18 "18-outfile2" Value="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/ddgTest/ddg/18-testfile3.txt" Time="2014-07-18T10.36.26" Location="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/ddgTest/testfile3.txt";
 DF p10 d18
 URL d19 "19-HF home page" Value="\"http://harvardforest.fas.harvard.edu/\"";
 Exception d20 "20-error" Value="\"test error\"";
@@ -81,11 +81,11 @@ DF d21 p11
 Operation p12 "12-data.in.test" Value="data.in.test";
 CF p11 p12
 DF d1 p12
-Snapshot d22 "22-pets" Value="[DIR]/ddg/22-pets.csv" Time="";
-Snapshot d23 "23-pets.df" Value="[DIR]/ddg/23-pets.df.csv" Time="";
-Snapshot d24 "24-pets2" Value="[DIR]/ddg/24-pets2.csv" Time="";
-Snapshot d25 "25-pets3" Value="[DIR]/ddg/25-pets3.csv" Time="";
-Snapshot d26 "26-pets4" Value="[DIR]/ddg/26-pets4.csv" Time="";
+Snapshot d22 "22-pets" Value="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/ddgTest/ddg/22-pets.csv" Time="2014-07-18T10.36.26";
+Snapshot d23 "23-pets.df" Value="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/ddgTest/ddg/23-pets.df.csv" Time="2014-07-18T10.36.26";
+Snapshot d24 "24-pets2" Value="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/ddgTest/ddg/24-pets2.csv" Time="2014-07-18T10.36.26";
+Snapshot d25 "25-pets3" Value="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/ddgTest/ddg/25-pets3.csv" Time="2014-07-18T10.36.26";
+Snapshot d26 "26-pets4" Value="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/ddgTest/ddg/26-pets4.csv" Time="2014-07-18T10.36.26";
 Operation p13 "13-f2" Value="f2";
 CF p12 p13
 DF d22 p13
@@ -93,11 +93,11 @@ DF d23 p13
 DF d24 p13
 DF d25 p13
 DF d26 p13
-File d27 "27-RCheckpointNode.java" Value="[DIR]/ddg/27-RCheckpointNode.java" Time="" Location="[DIR]/RCheckpointNode.java";
-File d28 "28-test" Value="[DIR]/ddg/28-testfile.txt" Time="" Location="[DIR]/testfile.txt";
-Exception d29 "29-error.msg" Value="\"File to copy does not exist: [DIR]/missingfile.txt\"";
+File d27 "27-RCheckpointNode.java" Value="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/ddgTest/ddg/27-RCheckpointNode.java" Time="2014-07-18T10.36.26" Location="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/ddgTest/RCheckpointNode.java";
+File d28 "28-test" Value="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/ddgTest/ddg/28-testfile.txt" Time="2014-07-18T10.36.26" Location="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/ddgTest/testfile.txt";
+Exception d29 "29-error.msg" Value="\"File to copy does not exist: missingfile.txt\"";
 DF p13 d29
-Exception d30 "30-error.msg" Value="\"File to copy does not exist: [DIR]/missingdir/abc.txt\"";
+Exception d30 "30-error.msg" Value="\"File to copy does not exist: missingdir/abc.txt\"";
 DF p13 d30
 Operation p14 "14-f3" Value="f3";
 CF p13 p14
@@ -135,37 +135,37 @@ Operation p16 "16-url.out.test" Value="url.out.test";
 CF p15 p16
 URL d44 "44-MHC home" Value="\"https://www.mtholyoke.edu/\"";
 DF p16 d44
-Snapshot d45 "45-pets2" Value="[DIR]/ddg/45-pets2.csv" Time="";
+Snapshot d45 "45-pets2" Value="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/ddgTest/ddg/45-pets2.csv" Time="2014-07-18T10.36.26";
 DF p5 d45
-Snapshot d46 "46-pets3" Value="[DIR]/ddg/46-pets3.csv" Time="";
+Snapshot d46 "46-pets3" Value="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/ddgTest/ddg/46-pets3.csv" Time="2014-07-18T10.36.26";
 DF p5 d46
-Snapshot d47 "47-pets.df" Value="[DIR]/ddg/47-pets.df.csv" Time="";
+Snapshot d47 "47-pets.df" Value="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/ddgTest/ddg/47-pets.df.csv" Time="2014-07-18T10.36.26";
 DF p5 d47
-Snapshot d48 "48-pets6" Value="[DIR]/ddg/48-pets6.csv" Time="";
+Snapshot d48 "48-pets6" Value="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/ddgTest/ddg/48-pets6.csv" Time="2014-07-18T10.36.26";
 DF p5 d48
 Data d49 "49-pets.text" Value="\"text about pets\"";
 DF p5 d49
 Operation p17 "17-snapshot.out.test" Value="snapshot.out.test";
 CF p16 p17
-Snapshot d50 "50-pets4" Value="[DIR]/ddg/50-pets4.csv" Time="";
+Snapshot d50 "50-pets4" Value="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/ddgTest/ddg/50-pets4.csv" Time="2014-07-18T10.36.26";
 DF p17 d50
-File d51 "51-RDataInstanceNode.java" Value="[DIR]/ddg/51-RDataInstanceNode.java" Time="" Location="[DIR]/RDataInstanceNode.java";
+File d51 "51-RDataInstanceNode.java" Value="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/ddgTest/ddg/51-RDataInstanceNode.java" Time="2014-07-18T10.36.26" Location="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/ddgTest/RDataInstanceNode.java";
 DF p6 d51
-File d52 "52-testfile2.txt" Value="[DIR]/ddg/52-testfile2.txt" Time="" Location="[DIR]/testfile2.txt";
+File d52 "52-testfile2.txt" Value="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/ddgTest/ddg/52-testfile2.txt" Time="2014-07-18T10.36.26" Location="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/ddgTest/testfile2.txt";
 DF p6 d52
-Exception d53 "53-error.msg" Value="\"File to copy does not exist: [DIR]/missingfile.txt\"";
+Exception d53 "53-error.msg" Value="\"File to copy does not exist: missingfile.txt\"";
 DF p17 d53
 Exception d54 "54-error.msg" Value="\"No data node found for missingfile.txt\"";
 DF p17 d54
 DF p6 d0
-Exception d55 "55-error.msg" Value="\"File to copy does not exist: [DIR]/missingdir/abc.txt\"";
+Exception d55 "55-error.msg" Value="\"File to copy does not exist: missingdir/abc.txt\"";
 DF p17 d55
 Exception d56 "56-error.msg" Value="\"No data node found for abc.txt\"";
 DF p17 d56
 DF p6 d0
 Operation p18 "18-file.out.test" Value="file.out.test";
 CF p17 p18
-File d57 "57-testfile3.txt" Value="[DIR]/ddg/57-testfile3.txt" Time="" Location="[DIR]/testfile3.txt";
+File d57 "57-testfile3.txt" Value="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/ddgTest/ddg/57-testfile3.txt" Time="2014-07-18T10.36.26" Location="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/ddgTest/testfile3.txt";
 DF p18 d57
 Exception d58 "58-exc1" Value="\"a\"";
 DF p2 d58
