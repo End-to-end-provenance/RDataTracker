@@ -1,0 +1,46 @@
+Architecture=x86_64
+OperatingSystem=unix
+Language=R
+LanguageVersion=R_version_3.0.1_(2013-05-16)
+Script=/Users/barbaralerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/CalculateSquareRoot/calculate-square-root.r
+DateTime=2013-09-03T15:37:54
+11
+Start p1 main
+Start p2 get.number
+CF p2 p1
+Leaf p3 3-set.global.var Value=set.global.var;
+CF p3 p2
+Data d1 1-number Value=10;
+DF d1 p3
+Finish p4 get.number
+CF p4 p3
+Start p5 get.square.root
+CF p5 p4
+Leaf p6 6-get.random Value=get.random;
+CF p6 p5
+DF p6 d1
+Data d2 2-sqr.root Value=4.00343129481189;
+DF d2 p6
+Leaf p7 7-calc.square.root Value=calc.square.root;
+CF p7 p6
+DF p7 d2
+DF p7 d1
+Data d3 3-sqr.root Value=3.25064428681574;
+DF d3 p7
+Leaf p8 8-calc.square.root Value=calc.square.root;
+CF p8 p7
+DF p8 d3
+DF p8 d1
+Data d4 4-sqr.root Value=3.16347875447708;
+DF d4 p8
+Leaf p9 9-calc.square.root Value=calc.square.root;
+CF p9 p8
+DF p9 d4
+DF p9 d1
+Data d5 5-sqr.root Value=3.16227788818122;
+DF d5 p9
+Finish p10 get.square.root
+CF p10 p9
+Finish p11 main
+CF p11 p10
+

@@ -1,0 +1,32 @@
+Architecture="x86_64"
+OperatingSystem="windows"
+Language="R"
+LanguageVersion="R version 3.1.0 (2014-04-10)"
+Script="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/NULLandNA/NULLandNA.r"
+ProcessFileTimestamp="2014-07-08T00.27.23"
+WorkingDirectory="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/NULLandNA"
+DDGDirectory="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/NULLandNA/ddg"
+DateTime="2014-07-08T00.29.19"
+7
+Start p1 "1-Console" Value="Console";
+Operation p2 "2-x <- NA" Value="x <- NA";
+CF p1 p2
+Operation p3 "3-y <- NULL" Value="y <- NULL";
+CF p2 p3
+Operation p4 "4-z <- 5" Value="z <- 5";
+CF p3 p4
+Operation p5 "5-a <- \"character\"" Value="a <- \"character\"";
+CF p4 p5
+Operation p6 "6-storage.mode(z) <- a" Value="storage.mode(z) <- a";
+CF p5 p6
+Finish p7 "7-Console" Value="Console";
+CF p6 p7
+Data d1 "1-x" Value="NA";
+DF p2 d1
+Data d2 "2-y" Value="NULL";
+DF p3 d2
+Data d3 "3-a" Value="\"character\"";
+DF p5 d3
+Data d4 "4-z" Value="\"5\"";
+DF p6 d4
+
