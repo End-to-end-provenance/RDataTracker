@@ -325,7 +325,7 @@
     </antcall>
   </target>
 
-  <target name="console-tests" depends="console-test-1, console-test-2, MismatchedStartFinishBug-test, null-na-test, consoleEdgeCases-test, scope-test">
+  <target name="console-tests" depends="console-test-1, console-test-2, MismatchedStartFinishBug-test, null-na-test, consoleEdgeCases-test">
     <echo>These automated tests are limited when in console mode. You can always manually check the ouput using diff and the provided expected output files for each script. Do note, however, that all of the tests have also been evaluated using ddg.source, which does in fact capture console commands.</echo>
   </target>
   <!--########################## End Console TESTS ##########################-->
