@@ -70,6 +70,6 @@ main <- function() {
 
 ddg.run(main, 
 		paste(testDir,"CheckpointTest.r",sep=""),
-		paste(testDir,"ddg", sep=""))
+		paste(testDir,"[DDG-DIR]", sep=""))
 
 ddg.save(quit=TRUE)

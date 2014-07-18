@@ -227,7 +227,7 @@
   		<param name="expected_out" value="examples/checkpointTest/expected_checkpointTest.out"/>
   		<param name="expected_ddg" value="examples/checkpointTest/expected_CheckpointTest_ddg.txt"/>
   		<param name="fail_out" value="false" />
-      <param name="source_test" value="false" />
+      <param name="source_test" value="true" />
   	</antcall>
   </target>
   
@@ -239,13 +239,13 @@
   		<param name="expected_out" value="examples/checkpointTest/expected_checkpointFileTest.out"/>
   		<param name="expected_ddg" value="examples/checkpointTest/expected_CheckpointFileTest_ddg.txt"/>
   		<param name="fail_out" value="false" />
-      <param name="source_test" value="false" />
+      <param name="source_test" value="true" />
   	</antcall>
   </target>
 
   <target name="checkpoint-tests" depends="checkpoint-test, checkpoint-file-test">
     <echo>##############################################
-      Finished Execution of Checkpoint Tests. Nothing should have malfunctioned.
+      Finished Execution of Checkpoint Tests. Expect differences in output for checkpoint-file-test due to directory creation in Windows (using : and spaces).
     ##############################################</echo>
   </target>
 
@@ -321,6 +321,7 @@
       <param name="expected_out" value="examples/ScopeTest/expected_ScopeTest.out"/>
       <param name="expected_ddg" value="examples/ScopeTest/expected_ScopeTest_ddg.txt"/>
       <param name="fail_out" value="true" />
+      <param name="source_test" value="true" />
     </antcall>
   </target>
 

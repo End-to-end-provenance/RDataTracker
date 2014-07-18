@@ -11,7 +11,7 @@ testDir <- "[DIR_DEFAULT]/"
 setwd(testDir)
 
 ddg.r.script.path = paste(testDir,"ScopeTest.R",sep="")
-ddg.path = paste(testDir,"ddg",sep="")
+ddg.path = paste(testDir,"[DDG-DIR]",sep="")
 
 ddg.init(ddg.r.script.path,
 		ddg.path,
