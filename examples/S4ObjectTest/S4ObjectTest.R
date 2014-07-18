@@ -2,6 +2,7 @@
 # Originally created by Barbara Lerner
 
 # Modified by Luis Perez 7-Jul-2014
+# Modified by Luis Perez 17-Jul-2014
 
 #ddg.library <- Sys.getenv("DDG_LIBRARY")
 #if (ddg.library == "") {
@@ -10,15 +11,15 @@
 #source("/Users/barbaralerner/Documents/Process/DataProvenance/github/RDataTracker/R/RDataTracker.R")
 library(RDataTracker)
 require(methods)
-ddg.debug.on()
-options(warn=2)
+# ddg.debug.on()
+# options(warn=2)
 
 ## Directories
 testDir <- "[DIR_DEFAULT]/"
 setwd(testDir)
 
 ddg.r.script.path = paste(testDir,"S4ObjectTest.R",sep="")
-ddg.path = paste(testDir,"ddg",sep="")
+ddg.path = paste(testDir,"[DDG-DIR]",sep="")
 
 # Initialize the provenance graph
 ddg.init(ddg.r.script.path,
@@ -92,4 +93,4 @@ generate1Sample <- function () {
 totalNumOfSample <- 5
 newSample <- generate1Sample()
 samplesArr <- generateSamples(totalNumOfSample)
-ddg.save()
+ddg.save(quit=TRUE)

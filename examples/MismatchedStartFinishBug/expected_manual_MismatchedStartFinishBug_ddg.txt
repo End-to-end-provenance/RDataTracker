@@ -2,29 +2,25 @@ Architecture="x86_64"
 OperatingSystem="windows"
 Language="R"
 LanguageVersion="R version 3.1.0 (2014-04-10)"
-Script="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/MismatchedStartFinishBug/MismatchedStartFinishBug.r"
+Script="[DIR]/MismatchedStartFinishBug.r"
 ProcessFileTimestamp="2014-07-08T00.08.19"
-WorkingDirectory="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/MismatchedStartFinishBug"
-DDGDirectory="D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/MismatchedStartFinishBug/ddg"
+WorkingDirectory="[DIR]"
+DDGDirectory="[DIR]/ddg"
 DateTime="2014-07-08T00.15.01"
-9
+7
 Start p1 "1-Console" Value="Console";
 Operation p2 "2-f <- function() {    ddg.start()    a <- 1    ddg.finish()}" Value="f <- function() {    ddg.start()    a <- 1    ddg.finish()}";
 CF p1 p2
+Data d1 "1-f" Value="complex";
+DF p2 d1
 Finish p3 "3-Console" Value="Console";
 CF p2 p3
 Start p4 "4-x <- f()" Value="x <- f()";
 CF p3 p4
-Data d1 "1-f" Value="complex";
-DF p2 d1
 Start p5 "5-f" Value="f";
 CF p4 p5
 Finish p6 "6-f" Value="f";
 CF p5 p6
 Finish p7 "7-x <- f()" Value="x <- f()";
 CF p6 p7
-Start p8 "8-Console" Value="Console";
-CF p7 p8
-Finish p9 "9-Console" Value="Console";
-CF p8 p9
 

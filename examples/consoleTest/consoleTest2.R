@@ -1,6 +1,7 @@
 # Author @Barbara Lerner
 
 # Modified by Luis Perez 7-Jul-2014
+# Modified by Luis Perez 17-Jul-2014
 
 library(RDataTracker)
 
@@ -9,7 +10,7 @@ testDir <- "[DIR_DEFAULT]/"
 setwd(testDir)
 
 ddg.r.script.path = paste(testDir,"consoleTest2.r",sep="")
-ddg.path = paste(testDir,"ddg",sep="")
+ddg.path = paste(testDir,"[DDG-DIR]",sep="")
 
 ddg.init(ddg.r.script.path,
          ddg.path,
@@ -28,4 +29,4 @@ ddg.start("B")
 b <- a + c
 a <- 20
 ddg.finish("B")
-ddg.save()
+ddg.save(quit=TRUE)

@@ -2,6 +2,7 @@
 # ERB rev. 3-Apr-2014
 
 # Modified by Luis Perez 7-Jul-2014
+# Modified by Luis Perez 17-Jul-2014
 
 ## Directories
 testDir <- "[DIR_DEFAULT]/"
@@ -46,3 +47,5 @@ main <- function() {
 #ddg.r.script.path <- "D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/DDGHangBug/DDGHangBug.R"
 #ddg.path <- "D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/DDGHangBug/ddg"
 ddg.run(main,ddg.r.script.path,ddg.path)
+
+ddg.save(quit=TRUE)

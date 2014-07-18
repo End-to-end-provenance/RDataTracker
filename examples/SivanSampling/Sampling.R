@@ -631,7 +631,7 @@ samplesArr <- generateSamples(totalNumOfSample)
 samplesArr <- assignSamplesToAreas(samplesMapsStr, speciesDistribution, sampleSizeDistributionMng)
 raffleSamplesToWorksheet("genSmpls1", "virtual sampling1 (Uniform distribution)", totalNumOfSpecies, totalNumOfSample, samplesArr)
 
-ddg.save()
+ddg.save(quit=TRUE)
 finish.time <- Sys.time()
 print(paste("Elapsed time =", (finish.time - start.time)))
 
