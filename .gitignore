@@ -12,14 +12,27 @@
 *.pdf
 *.jpg
 *.jpeg
+*.csv
 
 # Other non-essential files
 *.pages
 *.md
 *.Rmd
 
-# exclude ddg directories
+# exclude local ddg directors
 examples/*/ddg*/
+examples/*/local/
+examples/checkPointTest/testfile*.txt
+
+# ignore log files
+*.log.txt
+*.log
+
+# exclude local versions of files
+*.local
+
+# Exclude backups
+*.bak
 
 # Project Files
 .project
