@@ -143,7 +143,7 @@ ddg.MAX_HIST_LINES <- 16384
   # change its value.
 	if (!exists("ddg.debug", envir=.ddg.env)) .ddg.set("ddg.debug", FALSE)
 
-	# Set current number o
+	# Set current number of checkpoints.
 	.ddg.set("ddg.checkpoint.num", 0)
 
   # Create table for checkpoints.
@@ -387,7 +387,7 @@ ddg.MAX_HIST_LINES <- 16384
 	rows <- nrow(ddg.proc.nodes)
 	for (i in rows:1) {
 		type <- ddg.proc.nodes$ddg.type[i]
-		if ((type == "Operation" | type == "Checkpoint" | type == "Restore") & ddg.proc.nodes$ddg.name[i] == pname) {
+		if ((type == "Operation" | type == "Checkpoint" | type == "Restore" | type == "Finish" ) & ddg.proc.nodes$ddg.name[i] == pname) {
 			return(ddg.proc.nodes$ddg.num[i])
 		}
 	}
@@ -599,6 +599,7 @@ ddg.MAX_HIST_LINES <- 16384
 	# Base cases.
 	if (is.name(obj)) return (deparse(obj))
 	if (!is.recursive(obj)) return(character())
+	if (.ddg.is.functiondecl(obj)) return(character())
 	
 	tryCatch(
 		if (.ddg.is.assign(obj)) {
@@ -740,7 +741,7 @@ ddg.MAX_HIST_LINES <- 16384
 # occurs after the last possible writer. A snapshot node is created 
 # if the value is a data frame.  Otherwise, a data node is created.
 
-.ddg.create.data.set.edges.for.console.cmd <- function(vars.set, cmd, cmd.expr, cmd.pos) {
+.ddg.create.data.set.edges.for.console.cmd <- function(vars.set, cmd, cmd.expr, cmd.pos, for.finish.node = FALSE) {
 	vars.assigned <- .ddg.find.assign (cmd.expr)
 	for (var in vars.assigned) {
 		
@@ -748,7 +749,7 @@ ddg.MAX_HIST_LINES <- 16384
 		
 		# Only create a node edge for the last place that a variable is 
     # set within a console block.
-		if (length(nRow) > 0 && vars.set$last.writer[nRow] == cmd.pos && vars.set$possible.last.writer[nRow] <= vars.set$last.writer[nRow]) {
+		if ((length(nRow) > 0 && vars.set$last.writer[nRow] == cmd.pos && vars.set$possible.last.writer[nRow] <= vars.set$last.writer[nRow]) || for.finish.node) {
 			val <- tryCatch(eval(parse(text=var), .GlobalEnv),
 					error = function(e) {NULL}
 			)
@@ -870,12 +871,14 @@ ddg.MAX_HIST_LINES <- 16384
 		if (.ddg.debug()) print(paste(".ddg.console.node:  Adding finish node for last command", cmd.abbrev))
 		.ddg.proc.node("Finish", cmd.abbrev, .ddg.last.command, console=TRUE)
 		.ddg.proc2proc()
+		vars.set <- .ddg.find.var.assignments(.ddg.last.command)
+		.ddg.create.data.set.edges.for.console.cmd(vars.set, cmd.abbrev, parse(text=.ddg.last.command), 0, for.finish.node = TRUE)
 	}
 	
 	# Parse the new lines.
 	parsed.commands <- parse(text=new.lines)
 	
-	# It is possidle that a command may extend over multiple lines. 
+	# It is possible that a command may extend over multiple lines. 
   # new.commands will have one entry for each parsed command, whereas 
   # new.lines, which is read from the file, will have one entry for 
   # each line, which is not very useful for us.
