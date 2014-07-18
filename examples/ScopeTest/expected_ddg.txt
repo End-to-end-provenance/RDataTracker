@@ -1,0 +1,116 @@
+Architecture="x86_64"
+OperatingSystem="unix"
+Language="R"
+LanguageVersion="R version 3.1.0 Patched (2014-05-20 r65701)"
+Script="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/ScopeTest/ScopeTest.R"
+ProcessFileTimestamp="2014-07-14T15.37.39"
+WorkingDirectory="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/ScopeTest"
+DDGDirectory="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/ScopeTest/ddg"
+DateTime="2014-07-14T15.46.55"
+33
+Start p1 "1-Console" Value="Console";
+Operation p2 "2-f <- function() {    a <<- b * 10    ddg.procedure(ins = lis" Value="f <- function() {    a <<- b * 10    ddg.procedure(ins = list(\"b\"), outs.data = list(\"a\"))}";
+CF p1 p2
+Operation p3 "3-g <- function(a) {    c <- a + 10    d <- 1000    ddg.proced" Value="g <- function(a) {    c <- a + 10    d <- 1000    ddg.procedure(lookup.ins = TRUE, outs.data = list(\"c\", \"d\"))}";
+CF p2 p3
+Operation p4 "4-h <- function() {    d <- 333    ddg.procedure(\"foo\", ins " Value="h <- function() {    d <- 333    ddg.procedure(\"foo\", ins = list(\"d\"))}";
+CF p3 p4
+Operation p5 "5-i <- function(x) {    ddg.procedure(outs.data = list(\"x\"))" Value="i <- function(x) {    ddg.procedure(outs.data = list(\"x\"))    j(x)}";
+CF p4 p5
+Operation p6 "6-j <- function(xx) {    ddg.procedure(ins = list(\"x\", \"a\"" Value="j <- function(xx) {    ddg.procedure(ins = list(\"x\", \"a\"))}";
+CF p5 p6
+Operation p7 "7-a <- 1" Value="a <- 1";
+CF p6 p7
+Operation p8 "8-b <- a + 1" Value="b <- a + 1";
+CF p7 p8
+Finish p9 "9-Console" Value="Console";
+CF p8 p9
+Start p10 "10-f()" Value="f()";
+CF p9 p10
+Data d1 "1-f" Value="complex";
+DF p2 d1
+Data d2 "2-g" Value="complex";
+DF p3 d2
+Data d3 "3-h" Value="complex";
+DF p4 d3
+Data d4 "4-i" Value="complex";
+DF p5 d4
+Data d5 "5-j" Value="complex";
+DF p6 d5
+Data d6 "6-a" Value="20";
+DF p7 d6
+DF d6 p8
+Data d7 "7-b" Value="2";
+DF p8 d7
+Operation p11 "11-f" Value="f";
+CF p10 p11
+DF d7 p11
+Data d8 "8-a" Value="20";
+DF p11 d8
+Finish p12 "12-f()" Value="f()";
+CF p11 p12
+Start p13 "13-Console" Value="Console";
+CF p12 p13
+Operation p14 "14-c <- 100" Value="c <- 100";
+CF p13 p14
+Finish p15 "15-Console" Value="Console";
+CF p14 p15
+Start p16 "16-g(c)" Value="g(c)";
+CF p15 p16
+Data d9 "9-c" Value="100";
+DF p14 d9
+Binding p17 "17-a  <-  c"
+CF p16 p17
+DF d9 p17
+Data d10 "10-a" Value="100";
+DF p17 d10
+Operation p18 "18-g" Value="g";
+DF d10 p18
+CF p17 p18
+Data d11 "11-c" Value="110";
+DF p18 d11
+Data d12 "12-d" Value="1000";
+DF p18 d12
+Finish p19 "19-g(c)" Value="g(c)";
+CF p18 p19
+Start p20 "20-Console" Value="Console";
+CF p19 p20
+Operation p21 "21-d <- c + 10" Value="d <- c + 10";
+CF p20 p21
+Finish p22 "22-Console" Value="Console";
+CF p21 p22
+Start p23 "23-h()" Value="h()";
+CF p22 p23
+DF d9 p21
+Data d13 "13-d" Value="110";
+DF p21 d13
+Operation p24 "24-foo" Value="foo";
+CF p23 p24
+DF d13 p24
+Finish p25 "25-h()" Value="h()";
+CF p24 p25
+Start p26 "26-i()" Value="i()";
+CF p25 p26
+Operation p27 "27-i" Value="i";
+CF p26 p27
+Data d14 "14-x" Value="NotRecorded";
+DF p27 d14
+Operation p28 "28-j" Value="j";
+CF p27 p28
+DF d14 p28
+DF d8 p28
+File d15 "15-foobar.csv" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/ScopeTest/ddg/15-foobar.csv" Time="2014-07-14T15.46.55" Location="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/ScopeTest/foobar.csv";
+Finish p29 "29-i()" Value="i()";
+CF p28 p29
+Start p30 "30-Console" Value="Console";
+CF p29 p30
+Operation p31 "31-foobar <- read.csv(\"foobar.csv\")" Value="foobar <- read.csv(\"foobar.csv\")";
+CF p30 p31
+Finish p32 "32-Console" Value="Console";
+CF p31 p32
+Snapshot d16 "16-foobar" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/ScopeTest/ddg/16-foobar.csv" Time="2014-07-14T15.46.55";
+DF p31 d16
+Operation p33 "33-Read raw data files" Value="Read raw data files";
+CF p32 p33
+DF d15 p33
+

@@ -1,12 +1,12 @@
 Architecture="x86_64"
-OperatingSystem="windows"
+OperatingSystem="unix"
 Language="R"
-LanguageVersion="R version 3.1.0 (2014-04-10)"
-Script="[DIR]/consoleTest.r"
-ProcessFileTimestamp="2014-07-07T22.11.38"
-WorkingDirectory="[DIR]"
-DDGDirectory="[DIR]/ddg"
-DateTime="2014-07-07T22.21.46"
+LanguageVersion="R version 3.1.0 Patched (2014-05-20 r65701)"
+Script="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/consoleTest/consoleTest.r"
+ProcessFileTimestamp="2014-07-18T10.20.01"
+WorkingDirectory="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/consoleTest"
+DDGDirectory="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/consoleTest/ddg"
+DateTime="2014-07-18T10.48.46"
 15
 Data d1 "1-x" Value="10";
 Start p1 "1-Console" Value="Console";
@@ -24,13 +24,10 @@ Finish p7 "7-Console" Value="Console";
 CF p6 p7
 Start p8 "8-f(x)" Value="f(x)";
 CF p7 p8
-DF d1 p2
 Data d2 "2-f" Value="complex";
 DF p2 d2
-DF d1 p3
 Data d3 "3-g" Value="complex";
 DF p3 d3
-DF d1 p4
 Data d4 "4-h" Value="complex";
 DF p4 d4
 Data d5 "5-someVector" Value="complex";
