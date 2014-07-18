@@ -16,7 +16,7 @@ testDir <- "[DIR_DEFAULT]/"
 setwd(testDir)
 
 ddg.r.script.path = paste(testDir,"basicTest.r",sep="")
-ddg.path = paste(testDir,"ddg",sep="")
+ddg.path = paste(testDir,"[DDG-DIR]",sep="")
 
 ### Functions
 no.name.or.args.given <- function (a, b, c, d, e) {

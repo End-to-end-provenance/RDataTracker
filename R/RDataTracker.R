@@ -985,6 +985,8 @@ ddg.MAX_HIST_LINES <- 16384
 	if (.ddg.debug()) print(paste(called, ":  Adding", cmd.abbrev,  type, "node"))
 	  .ddg.proc.node(type, cmd.abbrev, cmd, TRUE)
 		.ddg.proc2proc()
+
+	return(cmd.abbrev)
 }
 
 # .ddg.close.last.command.node closes the last created collapsible node stored
@@ -997,7 +999,7 @@ ddg.MAX_HIST_LINES <- 16384
 
 	# only create a finish node if a new command exists (ie, we've parsed some lines of code)
 	if (!is.null(.ddg.last.command) && (!is.null(.ddg.possible.new.command) || initial)) {
-		.ddg.add.abstract.node("Finish", .ddg.last.command,called=paste(called, "-> .ddg.close.last.command.node"))
+		cmd.abbrev <- .ddg.add.abstract.node("Finish", .ddg.last.command,called=paste(called, "-> .ddg.close.last.command.node"))
 
 		# Create outflowing edges 
 		vars.set <- .ddg.find.var.assignments(.ddg.last.command)
