@@ -13,8 +13,12 @@
     <target name="copy-to-directory" depends="build-directory">
     	<copy todir="${builddir}/inst">
     		<fileset dir="inst"
-      			excludes="\.* doc/*.pages doc/*.docx "/>
+      			excludes="\.* doc/*.pages doc/*.docx doc/*.pdf"/>
   		</copy>
+      <copy todir="${builddir}/inst" unless:set="build-target">
+        <fileset dir="inst"
+          includes="doc/*.pdf" />
+        </copy>
     	<copy todir="${builddir}/man">
     		<fileset dir="man"
       			excludes="\.*"/>
@@ -39,7 +43,9 @@
 		</exec>
     </target>
 
-    <target name="build" depends="copy-to-directory">
+    <target name="build">
+      <property name="build-target" value="true" />
+      <antcall target="copy-to-directory" />
     	<exec dir="${builddir}/.." executable="R" >
   			<arg line="CMD build ${builddir}"/>
 		</exec>
