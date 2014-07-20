@@ -24,6 +24,7 @@ ddg.flush.ddg()
     pasting, or selecting and running, will result in a procedure node created in the provenance graph, with
     data nodes created for each variable assigned and data flow edges for variables used and set. }
   \item{f}{ A function to run.  Data provenance is collected within the function. }
+  \item{quit}{boolean specifying whether this is the last call to ddg.save for this DDG.}
 }
 \details{
   In order to use RDataTracker to collect data provenance, the user must either call ddg.init() 

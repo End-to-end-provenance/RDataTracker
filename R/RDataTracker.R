@@ -188,11 +188,13 @@ ddg.MAX_HIST_LINES <- 2^14
 	architecture <- R.Version()$arch
 	operating.system <- .Platform$OS.type
 	r.version <- R.Version()$version
+	lib.version <- packageVersion("RDataTracker")
 	time <- .ddg.timestamp()
 	environ <- paste("Architecture=\"", architecture, "\"\n", sep="")
 	environ <- paste(environ, "OperatingSystem=\"", operating.system, "\"\n", sep="")
 	environ <- paste(environ, "Language=\"R\"\n", sep="")
 	environ <- paste(environ, "LanguageVersion=\"", r.version, "\"\n", sep="")
+	environ <- paste(environ, "RDataTrackerVersion=\"", lib.version, "\"\n", sep="")
 	ddg.r.script.path <- .ddg.get("ddg.r.script.path")
 	if (!is.null(ddg.r.script.path)) {
 		environ <- paste(environ, "Script=\"", ddg.r.script.path, "\"\n", sep="")
