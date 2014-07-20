@@ -12,11 +12,14 @@ rm (list=ls())
 #	ddg.library <- "c:/data/r/ddg/lib/ddg-library.r"
 #}
 #source(ddg.library)
-library(RDataTracker)
+# library(RDataTracker)
 
 ## Directories
 testDir <- "[DIR_DEFAULT]/"
 setwd(testDir)
+
+# source the RDataTracker Library
+source("../../R/RDataTracker.r")
 
 main <- function() {
 	ddg.start("main")
@@ -49,6 +52,6 @@ main <- function() {
 
 ddg.run(main, 
 		paste(testDir,"CheckpointFileTest.r",sep=""),
-		paste(testDir,"ddg",sep=""))
+		paste(testDir,"[DDG-DIR]",sep=""))
 
 ddg.save(quit=TRUE)

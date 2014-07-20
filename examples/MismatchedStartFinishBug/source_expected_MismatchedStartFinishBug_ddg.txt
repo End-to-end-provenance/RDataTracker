@@ -19,4 +19,6 @@ Finish p4 "4-f" Value="f";
 CF p3 p4
 Finish p5 "5-x <- f()" Value="x <- f()";
 CF p4 p5
+Data d2 "2-x" Value="\"CF p3 p4\"";
+DF p5 d2
 

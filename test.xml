@@ -110,7 +110,7 @@
 
     <!-- Delete all timestamp occurrences -->
     <replaceregexp flags="g"> 
-      <regexp pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}.[0-9]{2}.[0-9]{2}" />
+      <regexp pattern="[0-9]{4}-[0-9]{2}-[0-9]{2}(T| )[0-9]{2}(.|:)[0-9]{2}(.|:)[0-9]{2}" />
       <substitution expression=""/>
       <fileset dir="${local_dir}">
         <patternset id="local_files">
@@ -227,7 +227,7 @@
   		<param name="expected_out" value="examples/checkpointTest/expected_checkpointTest.out"/>
   		<param name="expected_ddg" value="examples/checkpointTest/expected_CheckpointTest_ddg.txt"/>
   		<param name="fail_out" value="false" />
-      <param name="source_test" value="false" />
+      <param name="source_test" value="true" />
   	</antcall>
   </target>
   
@@ -239,13 +239,13 @@
   		<param name="expected_out" value="examples/checkpointTest/expected_checkpointFileTest.out"/>
   		<param name="expected_ddg" value="examples/checkpointTest/expected_CheckpointFileTest_ddg.txt"/>
   		<param name="fail_out" value="false" />
-      <param name="source_test" value="false" />
+      <param name="source_test" value="true" />
   	</antcall>
   </target>
 
   <target name="checkpoint-tests" depends="checkpoint-test, checkpoint-file-test">
     <echo>##############################################
-      Finished Execution of Checkpoint Tests. Nothing should have malfunctioned.
+      Finished Execution of Checkpoint Tests. Expect differences in output for checkpoint-file-test due to directory creation in Windows (using : and spaces).
     ##############################################</echo>
   </target>
 
@@ -308,6 +308,18 @@
       <param name="script-file" value="consoleEdgeCases.r"/>
       <param name="expected_out" value="examples/consoleEdgeCases/expected_consoleEdgeCases.out"/>
       <param name="expected_ddg" value="examples/consoleEdgeCases/expected_consoleEdgeCases_ddg.txt"/>
+      <param name="fail_out" value="true" />
+      <param name="source_test" value="true" />
+    </antcall>
+  </target>
+
+  <target name="scope-test">
+    <antcall target="run-test">
+      <param name="dir" value="examples/ScopeTest"/>
+      <param name="out" value="examples/ScopeTest/ScopeTest.out"/>
+      <param name="script-file" value="ScopeTest.R"/>
+      <param name="expected_out" value="examples/ScopeTest/expected_ScopeTest.out"/>
+      <param name="expected_ddg" value="examples/ScopeTest/expected_ScopeTest_ddg.txt"/>
       <param name="fail_out" value="true" />
       <param name="source_test" value="true" />
     </antcall>

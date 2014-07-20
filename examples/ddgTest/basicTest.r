@@ -12,6 +12,12 @@
 library(RDataTracker)
 #options(warn=2)
 
+testDir <- "[DIR_DEFAULT]/"
+setwd(testDir)
+
+ddg.r.script.path = paste(testDir,"basicTest.r",sep="")
+ddg.path = paste(testDir,"[DDG-DIR]",sep="")
+
 ### Functions
 no.name.or.args.given <- function (a, b, c, d, e) {
 	ddg.procedure()
@@ -135,7 +141,7 @@ main <- function() {
 ### Run script
 
 ddg.run(main, 
-		"D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/ddgTest/ddgTest.r",
-		"D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/ddgTest/[DDG-DIR]")
+		ddg.r.script.path,
+         ddg.path)
 
 ddg.save(quit=TRUE)
