@@ -1,5 +1,3 @@
-**Using RDataTracker**
-
 What is RDataTracker?
 =====================
 
@@ -186,9 +184,9 @@ Acknowledgements
 DDG Examples
 ============
 
-![image](UsingRDataTracker-img/UsingRDataTracker-img003.jpg)
+![image](vignettes/UsingRDataTracker-img/UsingRDataTracker-img003.jpg)
 
-![image](UsingRDataTracker-img/UsingRDataTracker-img004.jpg)
+![image](vignettes/UsingRDataTracker-img/UsingRDataTracker-img004.jpg)
 
 Technical Details
 =================
