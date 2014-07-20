@@ -134,7 +134,7 @@ For more details on DDGs and how to view, store, and query them, please see the 
 
 \section{Installation and Use}
 
-The following instructions assume you are using RStudio. Example scripts are shown in blue. See section 9 for DDG examples
+The following instructions assume you are using RStudio. Example scripts are shown in blue. See Section 6 for DDG examples.
 
 
 \bigskip
@@ -144,7 +144,7 @@ RDataTracker is distributed as an R package. Note that R packages must be \texti
 
 \bigskip
 
-To install RDataTracker, copy or download the package file to your computer, open RStudio, and use the Tools / Install Packages option to install from a Package Archive File (alternatively you can use the \textbf{install.packages} command at the R prompt). Once the library has been installed, select Packages / RDataTracker to see a list of help pages for the various functions. Note that all functions begin with \textbf{ddg.} to avoid confusion with function names in the main script.
+To install RDataTracker, copy or download the package file to your computer, open RStudio, and use the Tools / Install Packages option to install from a Package Archive File (alternatively you can use the \textbf{install.packages} command at the R prompt). The library depends on \textbf{gtools}, so make sure this is installed before attempting installation of RDataTracker. Once the library has been installed, select Packages / RDataTracker to see a list of help pages for the various functions. Note that all functions begin with \textbf{ddg.} to avoid confusion with function names in the main script.
 
 
 \bigskip
