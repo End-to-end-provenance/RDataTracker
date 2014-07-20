@@ -4,12 +4,19 @@
 # compared to be sure everything is working as expected.
 
 # Modified by Luis Perez 7-Jul-2014
+# Modified by Luis PErez 17-Jul-2014
 
 ## Directories
 
 #source("/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/R/RDataTracker.R")
 library(RDataTracker)
 #options(warn=2)
+
+testDir <- "[DIR_DEFAULT]/"
+setwd(testDir)
+
+ddg.r.script.path = paste(testDir,"basicTest.r",sep="")
+ddg.path = paste(testDir,"[DDG-DIR]",sep="")
 
 ### Functions
 no.name.or.args.given <- function (a, b, c, d, e) {
@@ -134,6 +141,7 @@ main <- function() {
 ### Run script
 
 ddg.run(main, 
-		"D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/ddgTest/ddgTest.r",
-		"D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/ddgTest/ddg")
+		ddg.r.script.path,
+         ddg.path)
 
+ddg.save(quit=TRUE)

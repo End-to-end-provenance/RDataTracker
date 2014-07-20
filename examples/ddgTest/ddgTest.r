@@ -4,6 +4,7 @@
 #   that are expected.
 
 # Modified by Luis Perez 7-Jul-2014
+# Modified by Luis Perez 17-Jul-2014
 
 #Warning messages:
 #Warning in .ddg.insert.error.message(error.msg) :
@@ -238,5 +239,7 @@ main <- function() {
 
 ddg.run(main, 
 		paste(testDir,"ddgTest.r", sep=""),
-		paste(testDir,"ddg", sep=""))
+		paste(testDir,"[DDG-DIR]", sep=""))
+
+ddg.save(quit=TRUE)
 

@@ -1,0 +1,1996 @@
+Architecture="x86_64"
+OperatingSystem="unix"
+Language="R"
+LanguageVersion="R version 3.1.0 Patched (2014-05-20 r65701)"
+Script="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/Simes dendrochronology master analysis file instrumented.r"
+ProcessFileTimestamp="2014-07-14T16.04.39"
+WorkingDirectory="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/Aaron"
+DDGDirectory="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg"
+DateTime="2014-07-18T11.28.42"
+541
+Start p1 "1-Console" Value="Console";
+Operation p2 "2-library(dplR)" Value="library(dplR)";
+CF p1 p2
+Operation p3 "3-library(zoo)" Value="library(zoo)";
+CF p2 p3
+Operation p4 "4-library(ggplot2)" Value="library(ggplot2)";
+CF p3 p4
+Operation p5 "5-library(gdata)" Value="library(gdata)";
+CF p4 p5
+Operation p6 "6-library(grid)" Value="library(grid)";
+CF p5 p6
+Operation p7 "7-library(mgcv)" Value="library(mgcv)";
+CF p6 p7
+Operation p8 "8-library(akima)" Value="library(akima)";
+CF p7 p8
+Operation p9 "9-library(spatstat)" Value="library(spatstat)";
+CF p8 p9
+Operation p10 "10-filled.contour3 <- function(x = seq(0, 1, length.out = nrow(" Value="filled.contour3 <- function(x = seq(0, 1, length.out = nrow(z)),     y = seq(0, 1, length.out = ncol(z)), z, xlim = range(x, finite = TRUE),     ylim = range(y, finite = TRUE), zlim = range(z, finite = TRUE),     levels = pretty(zlim, nlevels), nlevels = 20, color.palette = cm.colors,     col = color.palette(length(levels) - 1), plot.title, plot.axes,     key.title, key.axes, asp = NA, xaxs = \"i\", yaxs = \"i\", las = 1,     axes = TRUE, frame.plot = axes, mar, ...) {    if (missing(z)) {        if (!missing(x)) {            if (is.list(x)) {                z <- x$z                y <- x$y                x <- x$x            }            else {                z <- x                x <- seq.int(0, 1, length.out = nrow(z))            }        }        else stop(\"no 'z' matrix specified\")    }    else if (is.list(x)) {        y <- x$y        x <- x$x    }    if (any(diff(x) <= 0) || any(diff(y) <= 0))         stop(\"increasing 'x' and 'y' values expected\")    plot.new()    plot.window(xlim, ylim, \"\", xaxs = xaxs, yaxs = yaxs, asp = asp)    if (!is.matrix(z) || nrow(z) <= 1 || ncol(z) <= 1)         stop(\"no proper 'z' matrix specified\")    if (!is.double(z))         storage.mode(z) <- \"double\"    .filled.contour(as.double(x), as.double(y), z, as.double(levels),         col = col)    if (missing(plot.axes)) {        if (axes) {            title(main = \"\", xlab = \"\", ylab = \"\")            Axis(x, side = 1)            Axis(y, side = 2)        }    }    else plot.axes    if (frame.plot)         box()    if (missing(plot.title))         title(...)    else plot.title    invisible()}";
+CF p9 p10
+Operation p11 "11-multiplot <- function(..., plotlist = NULL, file, cols = 1, " Value="multiplot <- function(..., plotlist = NULL, file, cols = 1, layout = NULL) {    require(grid)    plots <- c(list(...), plotlist)    numPlots = length(plots)    if (is.null(layout)) {        layout <- matrix(seq(1, cols * ceiling(numPlots/cols)),             ncol = cols, nrow = ceiling(numPlots/cols))    }    if (numPlots == 1) {        print(plots[[1]])    }    else {        grid.newpage()        pushViewport(viewport(layout = grid.layout(nrow(layout),             ncol(layout))))        for (i in 1:numPlots) {            matchidx <- as.data.frame(which(layout == i, arr.ind = TRUE))            print(plots[[i]], vp = viewport(layout.pos.row = matchidx$row,                 layout.pos.col = matchidx$col))        }    }}";
+CF p10 p11
+Operation p12 "12-trees <- read.csv(\"trees03.csv\")" Value="trees <- read.csv(\"trees03.csv\")";
+CF p11 p12
+Operation p13 "13-dendro <- read.csv(\"hf086-01-dendro.csv\")" Value="dendro <- read.csv(\"hf086-01-dendro.csv\")";
+CF p12 p13
+Operation p14 "14-head(trees)" Value="head(trees)";
+CF p13 p14
+Operation p15 "15-head(dendro)" Value="head(dendro)";
+CF p14 p15
+Finish p16 "16-Console" Value="Console";
+CF p15 p16
+Data d1 "1-filled.contour3" Value="complex";
+DF p10 d1
+Data d2 "2-multiplot" Value="complex";
+DF p11 d2
+Snapshot d3 "3-trees" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/3-trees.csv" Time="2014-07-18T11.26.51";
+DF p12 d3
+Snapshot d4 "4-dendro" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/4-dendro.csv" Time="2014-07-18T11.26.51";
+DF p13 d4
+DF d3 p14
+DF d4 p15
+Operation p17 "17-Create contour plots of trees in each plot" Value="Create contour plots of trees in each plot";
+CF p16 p17
+Start p18 "18-Console" Value="Console";
+CF p17 p18
+Operation p19 "19-attach(trees)" Value="attach(trees)";
+CF p18 p19
+Operation p20 "20-plot.1 <- trees[plot == 1, ]" Value="plot.1 <- trees[plot == 1, ]";
+CF p19 p20
+Operation p21 "21-plot.2 <- trees[plot == 2, ]" Value="plot.2 <- trees[plot == 2, ]";
+CF p20 p21
+Operation p22 "22-plot.3 <- trees[plot == 3, ]" Value="plot.3 <- trees[plot == 3, ]";
+CF p21 p22
+Operation p23 "23-plot.4 <- trees[plot == 4, ]" Value="plot.4 <- trees[plot == 4, ]";
+CF p22 p23
+Operation p24 "24-plot.5 <- trees[plot == 5, ]" Value="plot.5 <- trees[plot == 5, ]";
+CF p23 p24
+Operation p25 "25-plot.6 <- trees[plot == 6, ]" Value="plot.6 <- trees[plot == 6, ]";
+CF p24 p25
+Operation p26 "26-plot.7 <- trees[plot == 7, ]" Value="plot.7 <- trees[plot == 7, ]";
+CF p25 p26
+Operation p27 "27-plot.8 <- trees[plot == 8, ]" Value="plot.8 <- trees[plot == 8, ]";
+CF p26 p27
+Operation p28 "28-genera <- levels(genus)" Value="genera <- levels(genus)";
+CF p27 p28
+Operation p29 "29-detach(trees)" Value="detach(trees)";
+CF p28 p29
+Operation p30 "30-p1 <- na.omit(plot.1)" Value="p1 <- na.omit(plot.1)";
+CF p29 p30
+Operation p31 "31-p2 <- na.omit(plot.2)" Value="p2 <- na.omit(plot.2)";
+CF p30 p31
+Operation p32 "32-p3 <- na.omit(plot.3)" Value="p3 <- na.omit(plot.3)";
+CF p31 p32
+Operation p33 "33-p4 <- na.omit(plot.4)" Value="p4 <- na.omit(plot.4)";
+CF p32 p33
+Operation p34 "34-p5 <- na.omit(plot.5)" Value="p5 <- na.omit(plot.5)";
+CF p33 p34
+Operation p35 "35-p6 <- na.omit(plot.6)" Value="p6 <- na.omit(plot.6)";
+CF p34 p35
+Operation p36 "36-p7 <- na.omit(plot.7)" Value="p7 <- na.omit(plot.7)";
+CF p35 p36
+Operation p37 "37-p8 <- na.omit(plot.8)" Value="p8 <- na.omit(plot.8)";
+CF p36 p37
+Operation p38 "38-p.1.i <- interp(p1$xcoord, p1$ycoord, scale(p1$zelev), xo = " Value="p.1.i <- interp(p1$xcoord, p1$ycoord, scale(p1$zelev), xo = seq(0,     90, length = 40), yo = seq(0, 90, length = 40), duplicate = \"strip\",     extrap = FALSE, linear = FALSE)";
+CF p37 p38
+Operation p39 "39-p.2.i <- interp(p2$xcoord, p2$ycoord, scale(p2$zelev), xo = " Value="p.2.i <- interp(p2$xcoord, p2$ycoord, scale(p2$zelev), xo = seq(0,     90, length = 40), yo = seq(0, 90, length = 40), duplicate = \"strip\",     extrap = FALSE, linear = FALSE)";
+CF p38 p39
+Operation p40 "40-p.3.i <- interp(p3$xcoord, p3$ycoord, scale(p3$zelev), xo = " Value="p.3.i <- interp(p3$xcoord, p3$ycoord, scale(p3$zelev), xo = seq(0,     90, length = 40), yo = seq(0, 90, length = 40), duplicate = \"strip\",     extrap = FALSE, linear = FALSE)";
+CF p39 p40
+Operation p41 "41-p.4.i <- interp(p4$xcoord, p4$ycoord, scale(p4$zelev), xo = " Value="p.4.i <- interp(p4$xcoord, p4$ycoord, scale(p4$zelev), xo = seq(0,     90, length = 40), yo = seq(0, 90, length = 40), duplicate = \"strip\",     extrap = FALSE, linear = FALSE)";
+CF p40 p41
+Operation p42 "42-p.5.i <- interp(p5$xcoord, p5$ycoord, scale(p5$zelev), xo = " Value="p.5.i <- interp(p5$xcoord, p5$ycoord, scale(p5$zelev), xo = seq(0,     90, length = 40), yo = seq(0, 90, length = 40), duplicate = \"strip\",     extrap = FALSE, linear = FALSE)";
+CF p41 p42
+Operation p43 "43-p.6.i <- interp(p6$xcoord, p6$ycoord, scale(p6$zelev), xo = " Value="p.6.i <- interp(p6$xcoord, p6$ycoord, scale(p6$zelev), xo = seq(0,     90, length = 40), yo = seq(0, 90, length = 40), duplicate = \"strip\",     extrap = FALSE, linear = FALSE)";
+CF p42 p43
+Operation p44 "44-p.7.i <- interp(p7$xcoord, p7$ycoord, scale(p7$zelev), xo = " Value="p.7.i <- interp(p7$xcoord, p7$ycoord, scale(p7$zelev), xo = seq(0,     90, length = 40), yo = seq(0, 90, length = 40), duplicate = \"strip\",     extrap = FALSE, linear = FALSE)";
+CF p43 p44
+Operation p45 "45-p.8.i <- interp(p8$xcoord, p8$ycoord, scale(p8$zelev), xo = " Value="p.8.i <- interp(p8$xcoord, p8$ycoord, scale(p8$zelev), xo = seq(0,     90, length = 40), yo = seq(0, 90, length = 40), duplicate = \"strip\",     extrap = FALSE, linear = FALSE)";
+CF p44 p45
+Operation p46 "46-genera.colors.1 <- c(\"firebrick4\", \"coral\", \"black\", " Value="genera.colors.1 <- c(\"firebrick4\", \"coral\", \"black\", \"black\",     \"black\", \"black\", \"black\", \"black\", \"black\", \"olivedrab3\",     \"black\", \"tan4\", \"black\", \"darkgreen\")";
+CF p45 p46
+Operation p47 "47-genera.rank <- c(14, 2, 1, 12, 10, 7, 9, 4, 11, 8, 3, 6, 5, " Value="genera.rank <- c(14, 2, 1, 12, 10, 7, 9, 4, 11, 8, 3, 6, 5, 13)";
+CF p46 p47
+Operation p48 "48-cex.I <- c(0.6, 0.6, rep(0.3, 7), 0.6, 0.3, 0.6, 0.3, 0.6)" Value="cex.I <- c(0.6, 0.6, rep(0.3, 7), 0.6, 0.3, 0.6, 0.3, 0.6)";
+CF p47 p48
+Operation p49 "49-pdf(file = \"hemlock_countors.pdf\", width = 4.75, height = " Value="pdf(file = \"hemlock_countors.pdf\", width = 4.75, height = 6,     colormodel = \"cmyk\", pointsize = 9)";
+CF p48 p49
+Operation p50 "50-layout(matrix(c(1, 6, 2, 5, 3, 4, 0, 0, 7, 7), 5, 2, byrow =" Value="layout(matrix(c(1, 6, 2, 5, 3, 4, 0, 0, 7, 7), 5, 2, byrow = TRUE),     widths = rep(lcm(4.08), 2), heights = c(rep(lcm(4.08), 3),         lcm(0.75), lcm(1.5)))";
+CF p49 p50
+Operation p51 "51-par(pin = c(1.75, 1.75), plt = c(0.0625, 0.9375, 0.0625, 0.9" Value="par(pin = c(1.75, 1.75), plt = c(0.0625, 0.9375, 0.0625, 0.9375))";
+CF p50 p51
+Operation p52 "52-filled.contour3(p.1.i, xlim = c(0, 90), ylim = c(0, 90), axe" Value="filled.contour3(p.1.i, xlim = c(0, 90), ylim = c(0, 90), axes = FALSE,     nlevels = 5)";
+CF p51 p52
+Operation p53 "53-for (i in 1:length(genera)) {    points(plot.1$xcoord[plot.1" Value="for (i in 1:length(genera)) {    points(plot.1$xcoord[plot.1$genus == genera[i]], plot.1$ycoord[plot.1$genus ==         genera[i]], col = genera.colors.1[i], pch = 19, cex = cex.I[i])}";
+CF p52 p53
+Operation p54 "54-axis(1, at = seq(0, 80, 20), labels = FALSE, tcl = -0.25, lw" Value="axis(1, at = seq(0, 80, 20), labels = FALSE, tcl = -0.25, lwd = 2)";
+CF p53 p54
+Operation p55 "55-axis(2, at = seq(0, 80, 20), labels = TRUE, tcl = -0.25, lwd" Value="axis(2, at = seq(0, 80, 20), labels = TRUE, tcl = -0.25, lwd = 2,     font.axis = 2)";
+CF p54 p55
+Operation p56 "56-axis(3, at = seq(0, 80, 20), labels = FALSE, tcl = -0.25, lw" Value="axis(3, at = seq(0, 80, 20), labels = FALSE, tcl = -0.25, lwd = 2)";
+CF p55 p56
+Operation p57 "57-axis(4, at = seq(0, 80, 20), labels = FALSE, tcl = -0.25, lw" Value="axis(4, at = seq(0, 80, 20), labels = FALSE, tcl = -0.25, lwd = 2)";
+CF p56 p57
+Operation p58 "58-box(lwd = 2)" Value="box(lwd = 2)";
+CF p57 p58
+Operation p59 "59-rect(30, 30, 60, 60, border = \"black\", lty = \"solid\", lw" Value="rect(30, 30, 60, 60, border = \"black\", lty = \"solid\", lwd = 1)";
+CF p58 p59
+Operation p60 "60-mtext(\"Valley\", side = 3, font = 2, padj = -1, cex = 1)" Value="mtext(\"Valley\", side = 3, font = 2, padj = -1, cex = 1)";
+CF p59 p60
+Operation p61 "61-filled.contour3(p.2.i, xlim = c(0, 90), ylim = c(0, 90), axe" Value="filled.contour3(p.2.i, xlim = c(0, 90), ylim = c(0, 90), axes = FALSE,     nlevels = 5)";
+CF p60 p61
+Operation p62 "62-for (i in 1:length(genera)) {    points(plot.2$xcoord[plot.2" Value="for (i in 1:length(genera)) {    points(plot.2$xcoord[plot.2$genus == genera[i]], plot.2$ycoord[plot.2$genus ==         genera[i]], col = genera.colors.1[i], pch = 19, cex = cex.I[i])}";
+CF p61 p62
+Operation p63 "63-axis(1, at = seq(0, 80, 20), labels = FALSE, tcl = -0.25, lw" Value="axis(1, at = seq(0, 80, 20), labels = FALSE, tcl = -0.25, lwd = 2)";
+CF p62 p63
+Operation p64 "64-axis(2, at = seq(0, 80, 20), labels = TRUE, tcl = -0.25, lwd" Value="axis(2, at = seq(0, 80, 20), labels = TRUE, tcl = -0.25, lwd = 2,     font.axis = 2)";
+CF p63 p64
+Operation p65 "65-axis(3, at = seq(0, 80, 20), labels = FALSE, tcl = -0.25, lw" Value="axis(3, at = seq(0, 80, 20), labels = FALSE, tcl = -0.25, lwd = 2)";
+CF p64 p65
+Operation p66 "66-axis(4, at = seq(0, 80, 20), labels = FALSE, tcl = -0.25, lw" Value="axis(4, at = seq(0, 80, 20), labels = FALSE, tcl = -0.25, lwd = 2)";
+CF p65 p66
+Operation p67 "67-box(lwd = 2)" Value="box(lwd = 2)";
+CF p66 p67
+Operation p68 "68-rect(30, 30, 60, 60, border = \"black\", lty = \"solid\", lw" Value="rect(30, 30, 60, 60, border = \"black\", lty = \"solid\", lwd = 1)";
+CF p67 p68
+Operation p69 "69-mtext(\"Meters\", side = 2, font = 2, padj = -3, cex = 0.85)" Value="mtext(\"Meters\", side = 2, font = 2, padj = -3, cex = 0.85)";
+CF p68 p69
+Operation p70 "70-filled.contour3(p.3.i, xlim = c(0, 90), ylim = c(0, 90), axe" Value="filled.contour3(p.3.i, xlim = c(0, 90), ylim = c(0, 90), axes = FALSE,     nlevels = 5)";
+CF p69 p70
+Operation p71 "71-for (i in 1:length(genera)) {    points(plot.3$xcoord[plot.3" Value="for (i in 1:length(genera)) {    points(plot.3$xcoord[plot.3$genus == genera[i]], plot.3$ycoord[plot.3$genus ==         genera[i]], col = genera.colors.1[i], pch = 19, cex = cex.I[i])}";
+CF p70 p71
+Operation p72 "72-axis(1, at = seq(0, 80, 20), labels = TRUE, tcl = -0.25, lwd" Value="axis(1, at = seq(0, 80, 20), labels = TRUE, tcl = -0.25, lwd = 2,     font.axis = 2)";
+CF p71 p72
+Operation p73 "73-axis(2, at = seq(0, 80, 20), labels = TRUE, tcl = -0.25, lwd" Value="axis(2, at = seq(0, 80, 20), labels = TRUE, tcl = -0.25, lwd = 2,     font.axis = 2)";
+CF p72 p73
+Operation p74 "74-axis(3, at = seq(0, 80, 20), labels = FALSE, tcl = -0.25, lw" Value="axis(3, at = seq(0, 80, 20), labels = FALSE, tcl = -0.25, lwd = 2)";
+CF p73 p74
+Operation p75 "75-axis(4, at = seq(0, 80, 20), labels = FALSE, tcl = -0.25, lw" Value="axis(4, at = seq(0, 80, 20), labels = FALSE, tcl = -0.25, lwd = 2)";
+CF p74 p75
+Operation p76 "76-box(lwd = 2)" Value="box(lwd = 2)";
+CF p75 p76
+Operation p77 "77-rect(30, 30, 60, 60, border = \"black\", lty = \"solid\", lw" Value="rect(30, 30, 60, 60, border = \"black\", lty = \"solid\", lwd = 1)";
+CF p76 p77
+Operation p78 "78-filled.contour3(p.4.i, xlim = c(0, 90), ylim = c(0, 90), axe" Value="filled.contour3(p.4.i, xlim = c(0, 90), ylim = c(0, 90), axes = FALSE,     nlevels = 5)";
+CF p77 p78
+Operation p79 "79-for (i in 1:length(genera)) {    points(plot.4$xcoord[plot.4" Value="for (i in 1:length(genera)) {    points(plot.4$xcoord[plot.4$genus == genera[i]], plot.4$ycoord[plot.4$genus ==         genera[i]], col = genera.colors.1[i], pch = 19, cex = cex.I[i])}";
+CF p78 p79
+Operation p80 "80-axis(1, at = seq(0, 80, 20), labels = TRUE, tcl = -0.25, lwd" Value="axis(1, at = seq(0, 80, 20), labels = TRUE, tcl = -0.25, lwd = 2,     font.axis = 2)";
+CF p79 p80
+Operation p81 "81-axis(2, at = seq(0, 80, 20), labels = FALSE, tcl = -0.25, lw" Value="axis(2, at = seq(0, 80, 20), labels = FALSE, tcl = -0.25, lwd = 2)";
+CF p80 p81
+Operation p82 "82-axis(3, at = seq(0, 80, 20), labels = FALSE, tcl = -0.25, lw" Value="axis(3, at = seq(0, 80, 20), labels = FALSE, tcl = -0.25, lwd = 2)";
+CF p81 p82
+Operation p83 "83-axis(4, at = seq(0, 80, 20), labels = FALSE, tcl = -0.25, lw" Value="axis(4, at = seq(0, 80, 20), labels = FALSE, tcl = -0.25, lwd = 2)";
+CF p82 p83
+Operation p84 "84-box(lwd = 2)" Value="box(lwd = 2)";
+CF p83 p84
+Operation p85 "85-rect(30, 30, 60, 60, border = \"black\", lty = \"solid\", lw" Value="rect(30, 30, 60, 60, border = \"black\", lty = \"solid\", lwd = 1)";
+CF p84 p85
+Operation p86 "86-mtext(\"Meters\", side = 1, font = 2, padj = 3, adj = -0.35," Value="mtext(\"Meters\", side = 1, font = 2, padj = 3, adj = -0.35, cex = 0.85)";
+CF p85 p86
+Operation p87 "87-filled.contour3(p.5.i, xlim = c(0, 90), ylim = c(0, 90), axe" Value="filled.contour3(p.5.i, xlim = c(0, 90), ylim = c(0, 90), axes = FALSE,     nlevels = 5)";
+CF p86 p87
+Operation p88 "88-for (i in 1:length(genera)) {    points(plot.5$xcoord[plot.5" Value="for (i in 1:length(genera)) {    points(plot.5$xcoord[plot.5$genus == genera[i]], plot.5$ycoord[plot.5$genus ==         genera[i]], col = genera.colors.1[i], pch = 19, cex = cex.I[i])}";
+CF p87 p88
+Operation p89 "89-axis(1, at = seq(0, 80, 20), labels = FALSE, tcl = -0.25, lw" Value="axis(1, at = seq(0, 80, 20), labels = FALSE, tcl = -0.25, lwd = 2)";
+CF p88 p89
+Operation p90 "90-axis(2, at = seq(0, 80, 20), labels = FALSE, tcl = -0.25, lw" Value="axis(2, at = seq(0, 80, 20), labels = FALSE, tcl = -0.25, lwd = 2)";
+CF p89 p90
+Operation p91 "91-axis(3, at = seq(0, 80, 20), labels = FALSE, tcl = -0.25, lw" Value="axis(3, at = seq(0, 80, 20), labels = FALSE, tcl = -0.25, lwd = 2)";
+CF p90 p91
+Operation p92 "92-axis(4, at = seq(0, 80, 20), labels = FALSE, tcl = -0.25, lw" Value="axis(4, at = seq(0, 80, 20), labels = FALSE, tcl = -0.25, lwd = 2)";
+CF p91 p92
+Operation p93 "93-box(lwd = 2)" Value="box(lwd = 2)";
+CF p92 p93
+Operation p94 "94-rect(30, 30, 60, 60, border = \"black\", lty = \"solid\", lw" Value="rect(30, 30, 60, 60, border = \"black\", lty = \"solid\", lwd = 1)";
+CF p93 p94
+Operation p95 "95-filled.contour3(p.6.i, xlim = c(0, 90), ylim = c(0, 90), axe" Value="filled.contour3(p.6.i, xlim = c(0, 90), ylim = c(0, 90), axes = FALSE,     nlevels = 5)";
+CF p94 p95
+Operation p96 "96-for (i in 1:length(genera)) {    points(plot.6$xcoord[plot.6" Value="for (i in 1:length(genera)) {    points(plot.6$xcoord[plot.6$genus == genera[i]], plot.6$ycoord[plot.6$genus ==         genera[i]], col = genera.colors.1[i], pch = 19, cex = cex.I[i])}";
+CF p95 p96
+Operation p97 "97-axis(1, at = seq(0, 80, 20), labels = FALSE, tcl = -0.25, lw" Value="axis(1, at = seq(0, 80, 20), labels = FALSE, tcl = -0.25, lwd = 2)";
+CF p96 p97
+Operation p98 "98-axis(2, at = seq(0, 80, 20), labels = FALSE, tcl = -0.25, lw" Value="axis(2, at = seq(0, 80, 20), labels = FALSE, tcl = -0.25, lwd = 2)";
+CF p97 p98
+Operation p99 "99-axis(3, at = seq(0, 80, 20), labels = FALSE, tcl = -0.25, lw" Value="axis(3, at = seq(0, 80, 20), labels = FALSE, tcl = -0.25, lwd = 2)";
+CF p98 p99
+Operation p100 "100-axis(4, at = seq(0, 80, 20), labels = FALSE, tcl = -0.25, lw" Value="axis(4, at = seq(0, 80, 20), labels = FALSE, tcl = -0.25, lwd = 2)";
+CF p99 p100
+Operation p101 "101-box(lwd = 2)" Value="box(lwd = 2)";
+CF p100 p101
+Operation p102 "102-rect(30, 30, 60, 60, border = \"black\", lty = \"solid\", lw" Value="rect(30, 30, 60, 60, border = \"black\", lty = \"solid\", lwd = 1)";
+CF p101 p102
+Operation p103 "103-mtext(\"Ridge\", side = 3, font = 2, padj = -1, cex = 1)" Value="mtext(\"Ridge\", side = 3, font = 2, padj = -1, cex = 1)";
+CF p102 p103
+Operation p104 "104-genera.colors.1 <- c(\"firebrick4\", \"coral\", \"black\", " Value="genera.colors.1 <- c(\"firebrick4\", \"coral\", \"black\", \"black\",     \"black\", \"black\", \"black\", \"black\", \"black\", \"olivedrab3\",     \"black\", \"tan4\", \"black\", \"darkgreen\")";
+CF p103 p104
+Operation p105 "105-genera.rank <- c(14, 2, 1, 12, 10, 7, 9, 4, 11, 8, 3, 6, 5, " Value="genera.rank <- c(14, 2, 1, 12, 10, 7, 9, 4, 11, 8, 3, 6, 5, 13)";
+CF p104 p105
+Operation p106 "106-image(1:6, 1, as.matrix(1:6), col = genera.colors.1[genera.r" Value="image(1:6, 1, as.matrix(1:6), col = genera.colors.1[genera.rank[1:6]],     xlab = \"\", ylab = \"\", xaxt = \"n\", yaxt = \"n\", bty = \"n\")";
+CF p105 p106
+Operation p107 "107-blacks <- c(2, 5)" Value="blacks <- c(2, 5)";
+CF p106 p107
+Operation p108 "108-whites <- c(1, 3, 4)" Value="whites <- c(1, 3, 4)";
+CF p107 p108
+Operation p109 "109-for (i in whites) text(i, 1, genera[genera.rank][i], font = " Value="for (i in whites) text(i, 1, genera[genera.rank][i], font = 4,     col = \"white\", srt = 90)";
+CF p108 p109
+Operation p110 "110-for (i in blacks) text(i, 1, genera[genera.rank][i], font = " Value="for (i in blacks) text(i, 1, genera[genera.rank][i], font = 4,     col = \"black\", srt = 90)";
+CF p109 p110
+Operation p111 "111-text(6, 1, \"Other\", font = 2, col = \"white\", srt = 90)" Value="text(6, 1, \"Other\", font = 2, col = \"white\", srt = 90)";
+CF p110 p111
+Operation p112 "112-dev.off()" Value="dev.off()";
+CF p111 p112
+Operation p113 "113-pdf(file = \"hardwood_countors.pdf\", width = 4.75, height =" Value="pdf(file = \"hardwood_countors.pdf\", width = 4.75, height = 6,     colormodel = \"cmyk\", pointsize = 9)";
+CF p112 p113
+Operation p114 "114-layout(matrix(c(2, 1, 0, 0, 3, 3), 3, 2, byrow = TRUE), widt" Value="layout(matrix(c(2, 1, 0, 0, 3, 3), 3, 2, byrow = TRUE), widths = rep(lcm(4.08),     2), heights = c(rep(lcm(4.08), 1), lcm(0.75), lcm(1.5)))";
+CF p113 p114
+Operation p115 "115-par(pin = c(1.75, 1.75), plt = c(0.0625, 0.9375, 0.0625, 0.9" Value="par(pin = c(1.75, 1.75), plt = c(0.0625, 0.9375, 0.0625, 0.9375))";
+CF p114 p115
+Operation p116 "116-filled.contour3(p.7.i, xlim = c(0, 90), ylim = c(0, 90), axe" Value="filled.contour3(p.7.i, xlim = c(0, 90), ylim = c(0, 90), axes = FALSE,     nlevels = 5)";
+CF p115 p116
+Operation p117 "117-for (i in 1:length(genera)) {    points(plot.7$xcoord[plot.7" Value="for (i in 1:length(genera)) {    points(plot.7$xcoord[plot.7$genus == genera[i]], plot.7$ycoord[plot.7$genus ==         genera[i]], col = genera.colors.1[i], pch = 19, cex = cex.I[i])}";
+CF p116 p117
+Operation p118 "118-axis(1, at = seq(0, 80, 20), labels = TRUE, tcl = -0.25, lwd" Value="axis(1, at = seq(0, 80, 20), labels = TRUE, tcl = -0.25, lwd = 2,     font.axis = 2)";
+CF p117 p118
+Operation p119 "119-axis(2, at = seq(0, 80, 20), labels = FALSE, tcl = -0.25, lw" Value="axis(2, at = seq(0, 80, 20), labels = FALSE, tcl = -0.25, lwd = 2,     font.axis = 2)";
+CF p118 p119
+Operation p120 "120-axis(3, at = seq(0, 80, 20), labels = FALSE, tcl = -0.25, lw" Value="axis(3, at = seq(0, 80, 20), labels = FALSE, tcl = -0.25, lwd = 2)";
+CF p119 p120
+Operation p121 "121-axis(4, at = seq(0, 80, 20), labels = FALSE, tcl = -0.25, lw" Value="axis(4, at = seq(0, 80, 20), labels = FALSE, tcl = -0.25, lwd = 2)";
+CF p120 p121
+Operation p122 "122-box(lwd = 2)" Value="box(lwd = 2)";
+CF p121 p122
+Operation p123 "123-rect(30, 30, 60, 60, border = \"black\", lty = \"solid\", lw" Value="rect(30, 30, 60, 60, border = \"black\", lty = \"solid\", lwd = 1)";
+CF p122 p123
+Operation p124 "124-mtext(\"Meters\", side = 1, font = 2, padj = 3, adj = -0.35," Value="mtext(\"Meters\", side = 1, font = 2, padj = 3, adj = -0.35, cex = 0.85)";
+CF p123 p124
+Operation p125 "125-mtext(\"Ridge\", side = 3, font = 2, padj = -1, cex = 1)" Value="mtext(\"Ridge\", side = 3, font = 2, padj = -1, cex = 1)";
+CF p124 p125
+Operation p126 "126-filled.contour3(p.8.i, xlim = c(0, 90), ylim = c(0, 90), axe" Value="filled.contour3(p.8.i, xlim = c(0, 90), ylim = c(0, 90), axes = FALSE,     nlevels = 5)";
+CF p125 p126
+Operation p127 "127-for (i in 1:length(genera)) {    points(plot.8$xcoord[plot.8" Value="for (i in 1:length(genera)) {    points(plot.8$xcoord[plot.8$genus == genera[i]], plot.8$ycoord[plot.8$genus ==         genera[i]], col = genera.colors.1[i], pch = 19, cex = cex.I[i])}";
+CF p126 p127
+Operation p128 "128-axis(1, at = seq(0, 80, 20), labels = TRUE, tcl = -0.25, lwd" Value="axis(1, at = seq(0, 80, 20), labels = TRUE, tcl = -0.25, lwd = 2,     font.axis = 2)";
+CF p127 p128
+Operation p129 "129-axis(2, at = seq(0, 80, 20), labels = TRUE, tcl = -0.25, lwd" Value="axis(2, at = seq(0, 80, 20), labels = TRUE, tcl = -0.25, lwd = 2,     font.axis = 2)";
+CF p128 p129
+Operation p130 "130-axis(3, at = seq(0, 80, 20), labels = FALSE, tcl = -0.25, lw" Value="axis(3, at = seq(0, 80, 20), labels = FALSE, tcl = -0.25, lwd = 2)";
+CF p129 p130
+Operation p131 "131-axis(4, at = seq(0, 80, 20), labels = FALSE, tcl = -0.25, lw" Value="axis(4, at = seq(0, 80, 20), labels = FALSE, tcl = -0.25, lwd = 2)";
+CF p130 p131
+Operation p132 "132-box(lwd = 2)" Value="box(lwd = 2)";
+CF p131 p132
+Operation p133 "133-rect(30, 30, 60, 60, border = \"black\", lty = \"solid\", lw" Value="rect(30, 30, 60, 60, border = \"black\", lty = \"solid\", lwd = 1)";
+CF p132 p133
+Operation p134 "134-mtext(\"Meters\", side = 2, font = 2, padj = -3, cex = 0.85)" Value="mtext(\"Meters\", side = 2, font = 2, padj = -3, cex = 0.85)";
+CF p133 p134
+Operation p135 "135-mtext(\"Valley\", side = 3, font = 2, padj = -1, cex = 1)" Value="mtext(\"Valley\", side = 3, font = 2, padj = -1, cex = 1)";
+CF p134 p135
+Operation p136 "136-genera.colors.1 <- c(\"firebrick4\", \"coral\", \"black\", " Value="genera.colors.1 <- c(\"firebrick4\", \"coral\", \"black\", \"black\",     \"black\", \"black\", \"black\", \"black\", \"black\", \"olivedrab3\",     \"black\", \"tan4\", \"black\", \"darkgreen\")";
+CF p135 p136
+Operation p137 "137-genera.rank <- c(14, 2, 1, 12, 10, 7, 9, 4, 11, 8, 3, 6, 5, " Value="genera.rank <- c(14, 2, 1, 12, 10, 7, 9, 4, 11, 8, 3, 6, 5, 13)";
+CF p136 p137
+Operation p138 "138-image(1:6, 1, as.matrix(1:6), col = genera.colors.1[genera.r" Value="image(1:6, 1, as.matrix(1:6), col = genera.colors.1[genera.rank[1:6]],     xlab = \"\", ylab = \"\", xaxt = \"n\", yaxt = \"n\", bty = \"n\")";
+CF p137 p138
+Operation p139 "139-blacks <- c(2, 5)" Value="blacks <- c(2, 5)";
+CF p138 p139
+Operation p140 "140-whites <- c(1, 3, 4)" Value="whites <- c(1, 3, 4)";
+CF p139 p140
+Operation p141 "141-for (i in whites) text(i, 1, genera[genera.rank][i], font = " Value="for (i in whites) text(i, 1, genera[genera.rank][i], font = 4,     col = \"white\", srt = 90)";
+CF p140 p141
+Operation p142 "142-for (i in blacks) text(i, 1, genera[genera.rank][i], font = " Value="for (i in blacks) text(i, 1, genera[genera.rank][i], font = 4,     col = \"black\", srt = 90)";
+CF p141 p142
+Operation p143 "143-text(6, 1, \"Other\", font = 2, col = \"white\", srt = 90)" Value="text(6, 1, \"Other\", font = 2, col = \"white\", srt = 90)";
+CF p142 p143
+Operation p144 "144-dev.off()" Value="dev.off()";
+CF p143 p144
+Finish p145 "145-Console" Value="Console";
+CF p144 p145
+DF d3 p19
+DF d3 p20
+Snapshot d5 "5-plot.1" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/5-plot.1.csv" Time="2014-07-18T11.26.51";
+DF p20 d5
+DF d3 p21
+Snapshot d6 "6-plot.2" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/6-plot.2.csv" Time="2014-07-18T11.26.51";
+DF p21 d6
+DF d3 p22
+Snapshot d7 "7-plot.3" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/7-plot.3.csv" Time="2014-07-18T11.26.51";
+DF p22 d7
+DF d3 p23
+Snapshot d8 "8-plot.4" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/8-plot.4.csv" Time="2014-07-18T11.26.51";
+DF p23 d8
+DF d3 p24
+Snapshot d9 "9-plot.5" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/9-plot.5.csv" Time="2014-07-18T11.26.51";
+DF p24 d9
+DF d3 p25
+Snapshot d10 "10-plot.6" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/10-plot.6.csv" Time="2014-07-18T11.26.51";
+DF p25 d10
+DF d3 p26
+Snapshot d11 "11-plot.7" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/11-plot.7.csv" Time="2014-07-18T11.26.51";
+DF p26 d11
+DF d3 p27
+Snapshot d12 "12-plot.8" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/12-plot.8.csv" Time="2014-07-18T11.26.51";
+DF p27 d12
+Snapshot d13 "13-genera" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/13-genera.csv" Time="2014-07-18T11.26.51";
+DF p28 d13
+DF d3 p29
+DF d5 p30
+Snapshot d14 "14-p1" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/14-p1.csv" Time="2014-07-18T11.26.51";
+DF p30 d14
+DF d6 p31
+Snapshot d15 "15-p2" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/15-p2.csv" Time="2014-07-18T11.26.51";
+DF p31 d15
+DF d7 p32
+Snapshot d16 "16-p3" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/16-p3.csv" Time="2014-07-18T11.26.51";
+DF p32 d16
+DF d8 p33
+Snapshot d17 "17-p4" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/17-p4.csv" Time="2014-07-18T11.26.51";
+DF p33 d17
+DF d9 p34
+Snapshot d18 "18-p5" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/18-p5.csv" Time="2014-07-18T11.26.51";
+DF p34 d18
+DF d10 p35
+Snapshot d19 "19-p6" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/19-p6.csv" Time="2014-07-18T11.26.52";
+DF p35 d19
+DF d11 p36
+Snapshot d20 "20-p7" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/20-p7.csv" Time="2014-07-18T11.26.52";
+DF p36 d20
+DF d12 p37
+Snapshot d21 "21-p8" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/21-p8.csv" Time="2014-07-18T11.26.52";
+DF p37 d21
+DF d14 p38
+Snapshot d22 "22-p.1.i" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/22-p.1.i.csv" Time="2014-07-18T11.26.52";
+DF p38 d22
+DF d15 p39
+Snapshot d23 "23-p.2.i" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/23-p.2.i.csv" Time="2014-07-18T11.26.52";
+DF p39 d23
+DF d16 p40
+Snapshot d24 "24-p.3.i" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/24-p.3.i.csv" Time="2014-07-18T11.26.52";
+DF p40 d24
+DF d17 p41
+Snapshot d25 "25-p.4.i" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/25-p.4.i.csv" Time="2014-07-18T11.26.52";
+DF p41 d25
+DF d18 p42
+Snapshot d26 "26-p.5.i" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/26-p.5.i.csv" Time="2014-07-18T11.26.52";
+DF p42 d26
+DF d19 p43
+Snapshot d27 "27-p.6.i" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/27-p.6.i.csv" Time="2014-07-18T11.26.52";
+DF p43 d27
+DF d20 p44
+Snapshot d28 "28-p.7.i" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/28-p.7.i.csv" Time="2014-07-18T11.26.52";
+DF p44 d28
+DF d21 p45
+Snapshot d29 "29-p.8.i" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/29-p.8.i.csv" Time="2014-07-18T11.26.52";
+DF p45 d29
+Snapshot d30 "30-cex.I" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/30-cex.I.csv" Time="2014-07-18T11.26.52";
+DF p48 d30
+DF d22 p52
+DF d13 p53
+DF d5 p53
+DF d30 p53
+DF d23 p61
+DF d13 p62
+DF d6 p62
+DF d30 p62
+DF d24 p70
+DF d13 p71
+DF d7 p71
+DF d30 p71
+DF d25 p78
+DF d13 p79
+DF d8 p79
+DF d30 p79
+DF d26 p87
+DF d13 p88
+DF d9 p88
+DF d30 p88
+DF d27 p95
+DF d13 p96
+DF d10 p96
+DF d30 p96
+DF d13 p141
+DF d13 p142
+DF d28 p116
+DF d13 p117
+DF d11 p117
+DF d30 p117
+DF d29 p126
+DF d13 p127
+DF d12 p127
+DF d30 p127
+Snapshot d31 "31-genera.colors.1" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/31-genera.colors.1.csv" Time="2014-07-18T11.26.52";
+DF p136 d31
+Snapshot d32 "32-genera.rank" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/32-genera.rank.csv" Time="2014-07-18T11.26.52";
+DF p137 d32
+DF d31 p138
+DF d32 p138
+Snapshot d33 "33-blacks" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/33-blacks.csv" Time="2014-07-18T11.26.52";
+DF p139 d33
+Snapshot d34 "34-whites" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/34-whites.csv" Time="2014-07-18T11.26.52";
+DF p140 d34
+DF d34 p141
+DF d13 p141
+DF d32 p141
+DF d33 p142
+DF d13 p142
+DF d32 p142
+Operation p146 "146-Compute Ripley's K for each species, each plot" Value="Compute Ripley's K for each species, each plot";
+CF p145 p146
+Start p147 "147-Console" Value="Console";
+CF p146 p147
+Operation p148 "148-plot.1 <- plot.1[plot.1[, 9] >= 0 & plot.1[, 9] <= 90, ]" Value="plot.1 <- plot.1[plot.1[, 9] >= 0 & plot.1[, 9] <= 90, ]";
+CF p147 p148
+Operation p149 "149-plot.1 <- plot.1[plot.1[, 10] >= 0 & plot.1[, 10] <= 90, ]" Value="plot.1 <- plot.1[plot.1[, 10] >= 0 & plot.1[, 10] <= 90, ]";
+CF p148 p149
+Operation p150 "150-plot.1.pp <- ppp(plot.1[, 9], plot.1[, 10], c(0, 90), c(0, 9" Value="plot.1.pp <- ppp(plot.1[, 9], plot.1[, 10], c(0, 90), c(0, 90))";
+CF p149 p150
+Operation p151 "151-plot.2 <- plot.2[plot.2[, 9] >= 0 & plot.2[, 9] <= 90, ]" Value="plot.2 <- plot.2[plot.2[, 9] >= 0 & plot.2[, 9] <= 90, ]";
+CF p150 p151
+Operation p152 "152-plot.2 <- plot.2[plot.2[, 10] >= 0 & plot.2[, 10] <= 90, ]" Value="plot.2 <- plot.2[plot.2[, 10] >= 0 & plot.2[, 10] <= 90, ]";
+CF p151 p152
+Operation p153 "153-plot.2.pp <- ppp(plot.2[, 9], plot.2[, 10], c(0, 90), c(0, 9" Value="plot.2.pp <- ppp(plot.2[, 9], plot.2[, 10], c(0, 90), c(0, 90))";
+CF p152 p153
+Operation p154 "154-plot.3 <- plot.3[plot.3[, 9] >= 0 & plot.3[, 9] <= 90, ]" Value="plot.3 <- plot.3[plot.3[, 9] >= 0 & plot.3[, 9] <= 90, ]";
+CF p153 p154
+Operation p155 "155-plot.3 <- plot.3[plot.3[, 10] >= 0 & plot.3[, 10] <= 90, ]" Value="plot.3 <- plot.3[plot.3[, 10] >= 0 & plot.3[, 10] <= 90, ]";
+CF p154 p155
+Operation p156 "156-plot.3.pp <- ppp(plot.3[, 9], plot.3[, 10], c(0, 90), c(0, 9" Value="plot.3.pp <- ppp(plot.3[, 9], plot.3[, 10], c(0, 90), c(0, 90))";
+CF p155 p156
+Operation p157 "157-plot.4 <- plot.4[plot.4[, 9] >= 0 & plot.4[, 9] <= 90, ]" Value="plot.4 <- plot.4[plot.4[, 9] >= 0 & plot.4[, 9] <= 90, ]";
+CF p156 p157
+Operation p158 "158-plot.4 <- plot.4[plot.4[, 10] >= 0 & plot.4[, 10] <= 90, ]" Value="plot.4 <- plot.4[plot.4[, 10] >= 0 & plot.4[, 10] <= 90, ]";
+CF p157 p158
+Operation p159 "159-plot.4.pp <- ppp(plot.4[, 9], plot.4[, 10], c(0, 90), c(0, 9" Value="plot.4.pp <- ppp(plot.4[, 9], plot.4[, 10], c(0, 90), c(0, 90))";
+CF p158 p159
+Operation p160 "160-plot.5 <- plot.5[plot.5[, 9] >= 0 & plot.5[, 9] <= 90, ]" Value="plot.5 <- plot.5[plot.5[, 9] >= 0 & plot.5[, 9] <= 90, ]";
+CF p159 p160
+Operation p161 "161-plot.5 <- plot.5[plot.5[, 10] >= 0 & plot.5[, 10] <= 90, ]" Value="plot.5 <- plot.5[plot.5[, 10] >= 0 & plot.5[, 10] <= 90, ]";
+CF p160 p161
+Operation p162 "162-plot.5.pp <- ppp(plot.5[, 9], plot.5[, 10], c(0, 90), c(0, 9" Value="plot.5.pp <- ppp(plot.5[, 9], plot.5[, 10], c(0, 90), c(0, 90))";
+CF p161 p162
+Operation p163 "163-plot.6 <- plot.6[plot.6[, 9] >= 0 & plot.6[, 9] <= 90, ]" Value="plot.6 <- plot.6[plot.6[, 9] >= 0 & plot.6[, 9] <= 90, ]";
+CF p162 p163
+Operation p164 "164-plot.6 <- plot.6[plot.6[, 10] >= 0 & plot.6[, 10] <= 90, ]" Value="plot.6 <- plot.6[plot.6[, 10] >= 0 & plot.6[, 10] <= 90, ]";
+CF p163 p164
+Operation p165 "165-plot.6.pp <- ppp(plot.6[, 9], plot.6[, 10], c(0, 90), c(0, 9" Value="plot.6.pp <- ppp(plot.6[, 9], plot.6[, 10], c(0, 90), c(0, 90))";
+CF p164 p165
+Operation p166 "166-plot.7 <- plot.7[plot.7[, 9] >= 0 & plot.7[, 9] <= 90, ]" Value="plot.7 <- plot.7[plot.7[, 9] >= 0 & plot.7[, 9] <= 90, ]";
+CF p165 p166
+Operation p167 "167-plot.7 <- plot.7[plot.7[, 10] >= 0 & plot.7[, 10] <= 90, ]" Value="plot.7 <- plot.7[plot.7[, 10] >= 0 & plot.7[, 10] <= 90, ]";
+CF p166 p167
+Operation p168 "168-plot.7.pp <- ppp(plot.7[, 9], plot.7[, 10], c(0, 90), c(0, 9" Value="plot.7.pp <- ppp(plot.7[, 9], plot.7[, 10], c(0, 90), c(0, 90))";
+CF p167 p168
+Operation p169 "169-plot.8 <- plot.8[plot.8[, 9] >= 0 & plot.8[, 9] <= 90, ]" Value="plot.8 <- plot.8[plot.8[, 9] >= 0 & plot.8[, 9] <= 90, ]";
+CF p168 p169
+Operation p170 "170-plot.8 <- plot.8[plot.8[, 10] >= 0 & plot.8[, 10] <= 90, ]" Value="plot.8 <- plot.8[plot.8[, 10] >= 0 & plot.8[, 10] <= 90, ]";
+CF p169 p170
+Operation p171 "171-plot.8.pp <- ppp(plot.8[, 9], plot.8[, 10], c(0, 90), c(0, 9" Value="plot.8.pp <- ppp(plot.8[, 9], plot.8[, 10], c(0, 90), c(0, 90))";
+CF p170 p171
+Operation p172 "172-par(mfrow = c(5, 3), pin = c(1.75, 1.75), plt = c(0.0625, 0." Value="par(mfrow = c(5, 3), pin = c(1.75, 1.75), plt = c(0.0625, 0.9375,     0.0625, 0.9375))";
+CF p171 p172
+Operation p173 "173-plot(plot.1.pp[plot.1$genus == \"Tsuga\"])" Value="plot(plot.1.pp[plot.1$genus == \"Tsuga\"])";
+CF p172 p173
+Operation p174 "174-plot(density(plot.1.pp[plot.1$genus == \"Tsuga\"]))" Value="plot(density(plot.1.pp[plot.1$genus == \"Tsuga\"]))";
+CF p173 p174
+Operation p175 "175-plot(envelope(plot.1.pp[plot.1$genus == \"Tsuga\"], Lest, gl" Value="plot(envelope(plot.1.pp[plot.1$genus == \"Tsuga\"], Lest, global = FALSE))";
+CF p174 p175
+Operation p176 "176-plot(plot.1.pp[plot.1$genus == \"Betula\"])" Value="plot(plot.1.pp[plot.1$genus == \"Betula\"])";
+CF p175 p176
+Operation p177 "177-plot(density(plot.1.pp[plot.1$genus == \"Betula\"]))" Value="plot(density(plot.1.pp[plot.1$genus == \"Betula\"]))";
+CF p176 p177
+Operation p178 "178-plot(envelope(plot.1.pp[plot.1$genus == \"Betula\"], Kest))" Value="plot(envelope(plot.1.pp[plot.1$genus == \"Betula\"], Kest))";
+CF p177 p178
+Operation p179 "179-plot(plot.1.pp[plot.1$genus == \"Quercus\"])" Value="plot(plot.1.pp[plot.1$genus == \"Quercus\"])";
+CF p178 p179
+Operation p180 "180-plot(density(plot.1.pp[plot.1$genus == \"Quercus\"]))" Value="plot(density(plot.1.pp[plot.1$genus == \"Quercus\"]))";
+CF p179 p180
+Operation p181 "181-plot(envelope(plot.1.pp[plot.1$genus == \"Quercus\"], Kest))" Value="plot(envelope(plot.1.pp[plot.1$genus == \"Quercus\"], Kest))";
+CF p180 p181
+Operation p182 "182-plot(plot.1.pp[plot.1$genus == \"Acer\"])" Value="plot(plot.1.pp[plot.1$genus == \"Acer\"])";
+CF p181 p182
+Operation p183 "183-plot(density(plot.1.pp[plot.1$genus == \"Acer\"]))" Value="plot(density(plot.1.pp[plot.1$genus == \"Acer\"]))";
+CF p182 p183
+Operation p184 "184-plot(envelope(plot.1.pp[plot.1$genus == \"Acer\"], Kest))" Value="plot(envelope(plot.1.pp[plot.1$genus == \"Acer\"], Kest))";
+CF p183 p184
+Operation p185 "185-plot(plot.1.pp[plot.1$genus == \"Pinus\"])" Value="plot(plot.1.pp[plot.1$genus == \"Pinus\"])";
+CF p184 p185
+Operation p186 "186-plot(density(plot.1.pp[plot.1$genus == \"Pinus\"]))" Value="plot(density(plot.1.pp[plot.1$genus == \"Pinus\"]))";
+CF p185 p186
+Operation p187 "187-plot(envelope(plot.1.pp[plot.1$genus == \"Pinus\"], Kest))" Value="plot(envelope(plot.1.pp[plot.1$genus == \"Pinus\"], Kest))";
+CF p186 p187
+Operation p188 "188-par(mfrow = c(5, 3), pin = c(1.75, 1.75), plt = c(0.0625, 0." Value="par(mfrow = c(5, 3), pin = c(1.75, 1.75), plt = c(0.0625, 0.9375,     0.0625, 0.9375))";
+CF p187 p188
+Operation p189 "189-plot(plot.2.pp[plot.2$genus == \"Tsuga\"])" Value="plot(plot.2.pp[plot.2$genus == \"Tsuga\"])";
+CF p188 p189
+Operation p190 "190-plot(density(plot.2.pp[plot.2$genus == \"Tsuga\"]))" Value="plot(density(plot.2.pp[plot.2$genus == \"Tsuga\"]))";
+CF p189 p190
+Operation p191 "191-plot(envelope(plot.2.pp[plot.2$genus == \"Tsuga\"], Kest))" Value="plot(envelope(plot.2.pp[plot.2$genus == \"Tsuga\"], Kest))";
+CF p190 p191
+Operation p192 "192-plot(plot.2.pp[plot.2$genus == \"Betula\"])" Value="plot(plot.2.pp[plot.2$genus == \"Betula\"])";
+CF p191 p192
+Operation p193 "193-plot(density(plot.2.pp[plot.2$genus == \"Betula\"]))" Value="plot(density(plot.2.pp[plot.2$genus == \"Betula\"]))";
+CF p192 p193
+Operation p194 "194-plot(envelope(plot.2.pp[plot.2$genus == \"Betula\"], Kest))" Value="plot(envelope(plot.2.pp[plot.2$genus == \"Betula\"], Kest))";
+CF p193 p194
+Operation p195 "195-plot(plot.2.pp[plot.2$genus == \"Quercus\"])" Value="plot(plot.2.pp[plot.2$genus == \"Quercus\"])";
+CF p194 p195
+Operation p196 "196-plot(density(plot.2.pp[plot.2$genus == \"Quercus\"]))" Value="plot(density(plot.2.pp[plot.2$genus == \"Quercus\"]))";
+CF p195 p196
+Operation p197 "197-plot(envelope(plot.2.pp[plot.2$genus == \"Quercus\"], Kest))" Value="plot(envelope(plot.2.pp[plot.2$genus == \"Quercus\"], Kest))";
+CF p196 p197
+Operation p198 "198-plot(plot.2.pp[plot.2$genus == \"Acer\"])" Value="plot(plot.2.pp[plot.2$genus == \"Acer\"])";
+CF p197 p198
+Operation p199 "199-plot(density(plot.2.pp[plot.2$genus == \"Acer\"]))" Value="plot(density(plot.2.pp[plot.2$genus == \"Acer\"]))";
+CF p198 p199
+Operation p200 "200-plot(envelope(plot.2.pp[plot.2$genus == \"Acer\"], Kest))" Value="plot(envelope(plot.2.pp[plot.2$genus == \"Acer\"], Kest))";
+CF p199 p200
+Finish p201 "201-Console" Value="Console";
+CF p200 p201
+DF d5 p148
+Snapshot d35 "35-plot.1" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/35-plot.1.csv" Time="2014-07-18T11.27.11";
+DF p149 d35
+DF d35 p150
+Snapshot d36 "36-plot.1.pp" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/36-plot.1.pp.csv" Time="2014-07-18T11.27.11";
+DF p150 d36
+DF d6 p151
+Snapshot d37 "37-plot.2" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/37-plot.2.csv" Time="2014-07-18T11.27.12";
+DF p152 d37
+DF d37 p153
+Snapshot d38 "38-plot.2.pp" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/38-plot.2.pp.csv" Time="2014-07-18T11.27.12";
+DF p153 d38
+DF d7 p154
+Snapshot d39 "39-plot.3" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/39-plot.3.csv" Time="2014-07-18T11.27.12";
+DF p155 d39
+DF d39 p156
+Snapshot d40 "40-plot.3.pp" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/40-plot.3.pp.csv" Time="2014-07-18T11.27.12";
+DF p156 d40
+DF d8 p157
+Snapshot d41 "41-plot.4" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/41-plot.4.csv" Time="2014-07-18T11.27.12";
+DF p158 d41
+DF d41 p159
+Snapshot d42 "42-plot.4.pp" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/42-plot.4.pp.csv" Time="2014-07-18T11.27.12";
+DF p159 d42
+DF d9 p160
+Snapshot d43 "43-plot.5" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/43-plot.5.csv" Time="2014-07-18T11.27.12";
+DF p161 d43
+DF d43 p162
+Snapshot d44 "44-plot.5.pp" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/44-plot.5.pp.csv" Time="2014-07-18T11.27.12";
+DF p162 d44
+DF d10 p163
+Snapshot d45 "45-plot.6" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/45-plot.6.csv" Time="2014-07-18T11.27.12";
+DF p164 d45
+DF d45 p165
+Snapshot d46 "46-plot.6.pp" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/46-plot.6.pp.csv" Time="2014-07-18T11.27.12";
+DF p165 d46
+DF d11 p166
+Snapshot d47 "47-plot.7" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/47-plot.7.csv" Time="2014-07-18T11.27.12";
+DF p167 d47
+DF d47 p168
+Snapshot d48 "48-plot.7.pp" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/48-plot.7.pp.csv" Time="2014-07-18T11.27.12";
+DF p168 d48
+DF d12 p169
+Snapshot d49 "49-plot.8" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/49-plot.8.csv" Time="2014-07-18T11.27.12";
+DF p170 d49
+DF d49 p171
+Snapshot d50 "50-plot.8.pp" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/50-plot.8.pp.csv" Time="2014-07-18T11.27.12";
+DF p171 d50
+DF d36 p173
+DF d35 p173
+DF d36 p174
+DF d35 p174
+DF d36 p175
+DF d35 p175
+DF d36 p176
+DF d35 p176
+DF d36 p177
+DF d35 p177
+DF d36 p178
+DF d35 p178
+DF d36 p179
+DF d35 p179
+DF d36 p180
+DF d35 p180
+DF d36 p181
+DF d35 p181
+DF d36 p182
+DF d35 p182
+DF d36 p183
+DF d35 p183
+DF d36 p184
+DF d35 p184
+DF d36 p185
+DF d35 p185
+DF d36 p186
+DF d35 p186
+DF d36 p187
+DF d35 p187
+DF d38 p189
+DF d37 p189
+DF d38 p190
+DF d37 p190
+DF d38 p191
+DF d37 p191
+DF d38 p192
+DF d37 p192
+DF d38 p193
+DF d37 p193
+DF d38 p194
+DF d37 p194
+DF d38 p195
+DF d37 p195
+DF d38 p196
+DF d37 p196
+DF d38 p197
+DF d37 p197
+DF d38 p198
+DF d37 p198
+DF d38 p199
+DF d37 p199
+DF d38 p200
+DF d37 p200
+Start p202 "202-Console" Value="Console";
+CF p201 p202
+Operation p203 "203-plot(plot.2.pp[plot.2$genus == \"Pinus\"])" Value="plot(plot.2.pp[plot.2$genus == \"Pinus\"])";
+CF p202 p203
+Operation p204 "204-plot(density(plot.2.pp[plot.2$genus == \"Pinus\"]))" Value="plot(density(plot.2.pp[plot.2$genus == \"Pinus\"]))";
+CF p203 p204
+Operation p205 "205-plot(envelope(plot.2.pp[plot.2$genus == \"Pinus\"], Kest))" Value="plot(envelope(plot.2.pp[plot.2$genus == \"Pinus\"], Kest))";
+CF p204 p205
+Operation p206 "206-par(mfrow = c(5, 3), pin = c(1.75, 1.75), plt = c(0.0625, 0." Value="par(mfrow = c(5, 3), pin = c(1.75, 1.75), plt = c(0.0625, 0.9375,     0.0625, 0.9375))";
+CF p205 p206
+Operation p207 "207-plot(plot.3.pp[plot.3$genus == \"Tsuga\"])" Value="plot(plot.3.pp[plot.3$genus == \"Tsuga\"])";
+CF p206 p207
+Operation p208 "208-plot(density(plot.3.pp[plot.3$genus == \"Tsuga\"]))" Value="plot(density(plot.3.pp[plot.3$genus == \"Tsuga\"]))";
+CF p207 p208
+Operation p209 "209-plot(envelope(plot.3.pp[plot.3$genus == \"Tsuga\"], Kest))" Value="plot(envelope(plot.3.pp[plot.3$genus == \"Tsuga\"], Kest))";
+CF p208 p209
+Operation p210 "210-plot(plot.3.pp[plot.3$genus == \"Betula\"])" Value="plot(plot.3.pp[plot.3$genus == \"Betula\"])";
+CF p209 p210
+Operation p211 "211-plot(density(plot.3.pp[plot.3$genus == \"Betula\"]))" Value="plot(density(plot.3.pp[plot.3$genus == \"Betula\"]))";
+CF p210 p211
+Operation p212 "212-plot(envelope(plot.3.pp[plot.3$genus == \"Betula\"], Kest))" Value="plot(envelope(plot.3.pp[plot.3$genus == \"Betula\"], Kest))";
+CF p211 p212
+Operation p213 "213-plot(plot.3.pp[plot.3$genus == \"Quercus\"])" Value="plot(plot.3.pp[plot.3$genus == \"Quercus\"])";
+CF p212 p213
+Operation p214 "214-plot(density(plot.3.pp[plot.3$genus == \"Quercus\"]))" Value="plot(density(plot.3.pp[plot.3$genus == \"Quercus\"]))";
+CF p213 p214
+Operation p215 "215-plot(envelope(plot.3.pp[plot.3$genus == \"Quercus\"], Kest))" Value="plot(envelope(plot.3.pp[plot.3$genus == \"Quercus\"], Kest))";
+CF p214 p215
+Operation p216 "216-plot(plot.3.pp[plot.3$genus == \"Acer\"])" Value="plot(plot.3.pp[plot.3$genus == \"Acer\"])";
+CF p215 p216
+Operation p217 "217-plot(density(plot.3.pp[plot.3$genus == \"Acer\"]))" Value="plot(density(plot.3.pp[plot.3$genus == \"Acer\"]))";
+CF p216 p217
+Operation p218 "218-plot(envelope(plot.3.pp[plot.3$genus == \"Acer\"], Kest))" Value="plot(envelope(plot.3.pp[plot.3$genus == \"Acer\"], Kest))";
+CF p217 p218
+Operation p219 "219-plot(plot.3.pp[plot.3$genus == \"Pinus\"])" Value="plot(plot.3.pp[plot.3$genus == \"Pinus\"])";
+CF p218 p219
+Operation p220 "220-plot(density(plot.3.pp[plot.3$genus == \"Pinus\"]))" Value="plot(density(plot.3.pp[plot.3$genus == \"Pinus\"]))";
+CF p219 p220
+Operation p221 "221-plot(envelope(plot.3.pp[plot.3$genus == \"Pinus\"], Kest))" Value="plot(envelope(plot.3.pp[plot.3$genus == \"Pinus\"], Kest))";
+CF p220 p221
+Operation p222 "222-par(mfrow = c(5, 3), pin = c(1.75, 1.75), plt = c(0.0625, 0." Value="par(mfrow = c(5, 3), pin = c(1.75, 1.75), plt = c(0.0625, 0.9375,     0.0625, 0.9375))";
+CF p221 p222
+Operation p223 "223-plot(plot.4.pp[plot.4$genus == \"Tsuga\"])" Value="plot(plot.4.pp[plot.4$genus == \"Tsuga\"])";
+CF p222 p223
+Operation p224 "224-plot(density(plot.4.pp[plot.4$genus == \"Tsuga\"]))" Value="plot(density(plot.4.pp[plot.4$genus == \"Tsuga\"]))";
+CF p223 p224
+Operation p225 "225-plot(envelope(plot.4.pp[plot.4$genus == \"Tsuga\"], Kest))" Value="plot(envelope(plot.4.pp[plot.4$genus == \"Tsuga\"], Kest))";
+CF p224 p225
+Operation p226 "226-plot(plot.4.pp[plot.4$genus == \"Betula\"])" Value="plot(plot.4.pp[plot.4$genus == \"Betula\"])";
+CF p225 p226
+Operation p227 "227-plot(density(plot.4.pp[plot.4$genus == \"Betula\"]))" Value="plot(density(plot.4.pp[plot.4$genus == \"Betula\"]))";
+CF p226 p227
+Operation p228 "228-plot(envelope(plot.4.pp[plot.4$genus == \"Betula\"], Kest))" Value="plot(envelope(plot.4.pp[plot.4$genus == \"Betula\"], Kest))";
+CF p227 p228
+Operation p229 "229-plot(plot.4.pp[plot.4$genus == \"Quercus\"])" Value="plot(plot.4.pp[plot.4$genus == \"Quercus\"])";
+CF p228 p229
+Operation p230 "230-plot(density(plot.4.pp[plot.4$genus == \"Quercus\"]))" Value="plot(density(plot.4.pp[plot.4$genus == \"Quercus\"]))";
+CF p229 p230
+Operation p231 "231-plot(envelope(plot.4.pp[plot.4$genus == \"Quercus\"], Kest))" Value="plot(envelope(plot.4.pp[plot.4$genus == \"Quercus\"], Kest))";
+CF p230 p231
+Operation p232 "232-plot(plot.4.pp[plot.4$genus == \"Acer\"])" Value="plot(plot.4.pp[plot.4$genus == \"Acer\"])";
+CF p231 p232
+Operation p233 "233-plot(density(plot.4.pp[plot.4$genus == \"Acer\"]))" Value="plot(density(plot.4.pp[plot.4$genus == \"Acer\"]))";
+CF p232 p233
+Operation p234 "234-plot(envelope(plot.4.pp[plot.4$genus == \"Acer\"], Kest))" Value="plot(envelope(plot.4.pp[plot.4$genus == \"Acer\"], Kest))";
+CF p233 p234
+Operation p235 "235-plot(plot.4.pp[plot.4$genus == \"Pinus\"])" Value="plot(plot.4.pp[plot.4$genus == \"Pinus\"])";
+CF p234 p235
+Operation p236 "236-plot(density(plot.4.pp[plot.4$genus == \"Pinus\"]))" Value="plot(density(plot.4.pp[plot.4$genus == \"Pinus\"]))";
+CF p235 p236
+Operation p237 "237-plot(envelope(plot.4.pp[plot.4$genus == \"Pinus\"], Kest))" Value="plot(envelope(plot.4.pp[plot.4$genus == \"Pinus\"], Kest))";
+CF p236 p237
+Operation p238 "238-plot(plot.5.pp[plot.5$genus == \"Tsuga\"])" Value="plot(plot.5.pp[plot.5$genus == \"Tsuga\"])";
+CF p237 p238
+Operation p239 "239-plot(density(plot.5.pp[plot.5$genus == \"Tsuga\"]))" Value="plot(density(plot.5.pp[plot.5$genus == \"Tsuga\"]))";
+CF p238 p239
+Operation p240 "240-plot(envelope(plot.5.pp[plot.5$genus == \"Tsuga\"], Kest))" Value="plot(envelope(plot.5.pp[plot.5$genus == \"Tsuga\"], Kest))";
+CF p239 p240
+Finish p241 "241-Console" Value="Console";
+CF p240 p241
+DF d38 p203
+DF d37 p203
+DF d38 p204
+DF d37 p204
+DF d38 p205
+DF d37 p205
+DF d40 p207
+DF d39 p207
+DF d40 p208
+DF d39 p208
+DF d40 p209
+DF d39 p209
+DF d40 p210
+DF d39 p210
+DF d40 p211
+DF d39 p211
+DF d40 p212
+DF d39 p212
+DF d40 p213
+DF d39 p213
+DF d40 p214
+DF d39 p214
+DF d40 p215
+DF d39 p215
+DF d40 p216
+DF d39 p216
+DF d40 p217
+DF d39 p217
+DF d40 p218
+DF d39 p218
+DF d40 p219
+DF d39 p219
+DF d40 p220
+DF d39 p220
+DF d40 p221
+DF d39 p221
+DF d42 p223
+DF d41 p223
+DF d42 p224
+DF d41 p224
+DF d42 p225
+DF d41 p225
+DF d42 p226
+DF d41 p226
+DF d42 p227
+DF d41 p227
+DF d42 p228
+DF d41 p228
+DF d42 p229
+DF d41 p229
+DF d42 p230
+DF d41 p230
+DF d42 p231
+DF d41 p231
+DF d42 p232
+DF d41 p232
+DF d42 p233
+DF d41 p233
+DF d42 p234
+DF d41 p234
+DF d42 p235
+DF d41 p235
+DF d42 p236
+DF d41 p236
+DF d42 p237
+DF d41 p237
+DF d44 p238
+DF d43 p238
+DF d44 p239
+DF d43 p239
+DF d44 p240
+DF d43 p240
+Start p242 "242-Console" Value="Console";
+CF p241 p242
+Operation p243 "243-plot(plot.5.pp[plot.5$genus == \"Betula\"])" Value="plot(plot.5.pp[plot.5$genus == \"Betula\"])";
+CF p242 p243
+Operation p244 "244-plot(density(plot.5.pp[plot.5$genus == \"Betula\"]))" Value="plot(density(plot.5.pp[plot.5$genus == \"Betula\"]))";
+CF p243 p244
+Operation p245 "245-plot(envelope(plot.5.pp[plot.5$genus == \"Betula\"], Kest))" Value="plot(envelope(plot.5.pp[plot.5$genus == \"Betula\"], Kest))";
+CF p244 p245
+Operation p246 "246-plot(plot.5.pp[plot.5$genus == \"Quercus\"])" Value="plot(plot.5.pp[plot.5$genus == \"Quercus\"])";
+CF p245 p246
+Operation p247 "247-plot(density(plot.5.pp[plot.5$genus == \"Quercus\"]))" Value="plot(density(plot.5.pp[plot.5$genus == \"Quercus\"]))";
+CF p246 p247
+Operation p248 "248-plot(envelope(plot.5.pp[plot.5$genus == \"Quercus\"], Kest))" Value="plot(envelope(plot.5.pp[plot.5$genus == \"Quercus\"], Kest))";
+CF p247 p248
+Operation p249 "249-plot(plot.5.pp[plot.5$genus == \"Acer\"])" Value="plot(plot.5.pp[plot.5$genus == \"Acer\"])";
+CF p248 p249
+Operation p250 "250-plot(density(plot.5.pp[plot.5$genus == \"Acer\"]))" Value="plot(density(plot.5.pp[plot.5$genus == \"Acer\"]))";
+CF p249 p250
+Operation p251 "251-plot(envelope(plot.5.pp[plot.5$genus == \"Acer\"], Kest))" Value="plot(envelope(plot.5.pp[plot.5$genus == \"Acer\"], Kest))";
+CF p250 p251
+Operation p252 "252-plot(plot.5.pp[plot.5$genus == \"Pinus\"])" Value="plot(plot.5.pp[plot.5$genus == \"Pinus\"])";
+CF p251 p252
+Operation p253 "253-plot(density(plot.5.pp[plot.5$genus == \"Pinus\"]))" Value="plot(density(plot.5.pp[plot.5$genus == \"Pinus\"]))";
+CF p252 p253
+Operation p254 "254-plot(envelope(plot.5.pp[plot.5$genus == \"Pinus\"], Kest))" Value="plot(envelope(plot.5.pp[plot.5$genus == \"Pinus\"], Kest))";
+CF p253 p254
+Operation p255 "255-plot(plot.6.pp[plot.6$genus == \"Tsuga\"])" Value="plot(plot.6.pp[plot.6$genus == \"Tsuga\"])";
+CF p254 p255
+Operation p256 "256-plot(density(plot.6.pp[plot.6$genus == \"Tsuga\"]))" Value="plot(density(plot.6.pp[plot.6$genus == \"Tsuga\"]))";
+CF p255 p256
+Operation p257 "257-plot(envelope(plot.6.pp[plot.6$genus == \"Tsuga\"], Kest))" Value="plot(envelope(plot.6.pp[plot.6$genus == \"Tsuga\"], Kest))";
+CF p256 p257
+Operation p258 "258-plot(plot.6.pp[plot.6$genus == \"Betula\"])" Value="plot(plot.6.pp[plot.6$genus == \"Betula\"])";
+CF p257 p258
+Operation p259 "259-plot(density(plot.6.pp[plot.6$genus == \"Betula\"]))" Value="plot(density(plot.6.pp[plot.6$genus == \"Betula\"]))";
+CF p258 p259
+Operation p260 "260-plot(envelope(plot.6.pp[plot.6$genus == \"Betula\"], Kest))" Value="plot(envelope(plot.6.pp[plot.6$genus == \"Betula\"], Kest))";
+CF p259 p260
+Operation p261 "261-plot(plot.6.pp[plot.6$genus == \"Quercus\"])" Value="plot(plot.6.pp[plot.6$genus == \"Quercus\"])";
+CF p260 p261
+Operation p262 "262-plot(density(plot.6.pp[plot.6$genus == \"Quercus\"]))" Value="plot(density(plot.6.pp[plot.6$genus == \"Quercus\"]))";
+CF p261 p262
+Operation p263 "263-plot(envelope(plot.6.pp[plot.6$genus == \"Quercus\"], Kest))" Value="plot(envelope(plot.6.pp[plot.6$genus == \"Quercus\"], Kest))";
+CF p262 p263
+Operation p264 "264-plot(plot.6.pp[plot.6$genus == \"Acer\"])" Value="plot(plot.6.pp[plot.6$genus == \"Acer\"])";
+CF p263 p264
+Operation p265 "265-plot(density(plot.6.pp[plot.6$genus == \"Acer\"]))" Value="plot(density(plot.6.pp[plot.6$genus == \"Acer\"]))";
+CF p264 p265
+Operation p266 "266-plot(envelope(plot.6.pp[plot.6$genus == \"Acer\"], Kest))" Value="plot(envelope(plot.6.pp[plot.6$genus == \"Acer\"], Kest))";
+CF p265 p266
+Operation p267 "267-plot(plot.6.pp[plot.6$genus == \"Pinus\"])" Value="plot(plot.6.pp[plot.6$genus == \"Pinus\"])";
+CF p266 p267
+Operation p268 "268-plot(density(plot.6.pp[plot.6$genus == \"Pinus\"]))" Value="plot(density(plot.6.pp[plot.6$genus == \"Pinus\"]))";
+CF p267 p268
+Operation p269 "269-plot(envelope(plot.6.pp[plot.6$genus == \"Pinus\"], Kest))" Value="plot(envelope(plot.6.pp[plot.6$genus == \"Pinus\"], Kest))";
+CF p268 p269
+Operation p270 "270-plot(plot.7.pp[plot.7$genus == \"Tsuga\"])" Value="plot(plot.7.pp[plot.7$genus == \"Tsuga\"])";
+CF p269 p270
+Operation p271 "271-plot(density(plot.7.pp[plot.7$genus == \"Tsuga\"]))" Value="plot(density(plot.7.pp[plot.7$genus == \"Tsuga\"]))";
+CF p270 p271
+Operation p272 "272-plot(envelope(plot.7.pp[plot.7$genus == \"Tsuga\"], Kest))" Value="plot(envelope(plot.7.pp[plot.7$genus == \"Tsuga\"], Kest))";
+CF p271 p272
+Operation p273 "273-plot(plot.7.pp[plot.7$genus == \"Betula\"])" Value="plot(plot.7.pp[plot.7$genus == \"Betula\"])";
+CF p272 p273
+Operation p274 "274-plot(density(plot.7.pp[plot.7$genus == \"Betula\"]))" Value="plot(density(plot.7.pp[plot.7$genus == \"Betula\"]))";
+CF p273 p274
+Operation p275 "275-plot(envelope(plot.7.pp[plot.7$genus == \"Betula\"], Kest))" Value="plot(envelope(plot.7.pp[plot.7$genus == \"Betula\"], Kest))";
+CF p274 p275
+Operation p276 "276-plot(plot.7.pp[plot.7$genus == \"Quercus\"])" Value="plot(plot.7.pp[plot.7$genus == \"Quercus\"])";
+CF p275 p276
+Operation p277 "277-plot(density(plot.7.pp[plot.7$genus == \"Quercus\"]))" Value="plot(density(plot.7.pp[plot.7$genus == \"Quercus\"]))";
+CF p276 p277
+Operation p278 "278-plot(envelope(plot.7.pp[plot.7$genus == \"Quercus\"], Kest))" Value="plot(envelope(plot.7.pp[plot.7$genus == \"Quercus\"], Kest))";
+CF p277 p278
+Finish p279 "279-Console" Value="Console";
+CF p278 p279
+DF d44 p243
+DF d43 p243
+DF d44 p244
+DF d43 p244
+DF d44 p245
+DF d43 p245
+DF d44 p246
+DF d43 p246
+DF d44 p247
+DF d43 p247
+DF d44 p248
+DF d43 p248
+DF d44 p249
+DF d43 p249
+DF d44 p250
+DF d43 p250
+DF d44 p251
+DF d43 p251
+DF d44 p252
+DF d43 p252
+DF d44 p253
+DF d43 p253
+DF d44 p254
+DF d43 p254
+DF d46 p255
+DF d45 p255
+DF d46 p256
+DF d45 p256
+DF d46 p257
+DF d45 p257
+DF d46 p258
+DF d45 p258
+DF d46 p259
+DF d45 p259
+DF d46 p260
+DF d45 p260
+DF d46 p261
+DF d45 p261
+DF d46 p262
+DF d45 p262
+DF d46 p263
+DF d45 p263
+DF d46 p264
+DF d45 p264
+DF d46 p265
+DF d45 p265
+DF d46 p266
+DF d45 p266
+DF d46 p267
+DF d45 p267
+DF d46 p268
+DF d45 p268
+DF d46 p269
+DF d45 p269
+DF d48 p270
+DF d47 p270
+DF d48 p271
+DF d47 p271
+DF d48 p272
+DF d47 p272
+DF d48 p273
+DF d47 p273
+DF d48 p274
+DF d47 p274
+DF d48 p275
+DF d47 p275
+DF d48 p276
+DF d47 p276
+DF d48 p277
+DF d47 p277
+DF d48 p278
+DF d47 p278
+Start p280 "280-Console" Value="Console";
+CF p279 p280
+Operation p281 "281-plot(plot.7.pp[plot.7$genus == \"Acer\"])" Value="plot(plot.7.pp[plot.7$genus == \"Acer\"])";
+CF p280 p281
+Operation p282 "282-plot(density(plot.7.pp[plot.7$genus == \"Acer\"]))" Value="plot(density(plot.7.pp[plot.7$genus == \"Acer\"]))";
+CF p281 p282
+Operation p283 "283-plot(envelope(plot.7.pp[plot.7$genus == \"Acer\"], Kest))" Value="plot(envelope(plot.7.pp[plot.7$genus == \"Acer\"], Kest))";
+CF p282 p283
+Operation p284 "284-plot(plot.7.pp[plot.7$genus == \"Pinus\"])" Value="plot(plot.7.pp[plot.7$genus == \"Pinus\"])";
+CF p283 p284
+Operation p285 "285-plot(density(plot.7.pp[plot.7$genus == \"Pinus\"]))" Value="plot(density(plot.7.pp[plot.7$genus == \"Pinus\"]))";
+CF p284 p285
+Operation p286 "286-plot(envelope(plot.7.pp[plot.7$genus == \"Pinus\"], Kest))" Value="plot(envelope(plot.7.pp[plot.7$genus == \"Pinus\"], Kest))";
+CF p285 p286
+Operation p287 "287-plot(plot.8.pp[plot.8$genus == \"Tsuga\"])" Value="plot(plot.8.pp[plot.8$genus == \"Tsuga\"])";
+CF p286 p287
+Operation p288 "288-plot(density(plot.8.pp[plot.8$genus == \"Tsuga\"]))" Value="plot(density(plot.8.pp[plot.8$genus == \"Tsuga\"]))";
+CF p287 p288
+Operation p289 "289-plot(envelope(plot.8.pp[plot.8$genus == \"Tsuga\"], Kest))" Value="plot(envelope(plot.8.pp[plot.8$genus == \"Tsuga\"], Kest))";
+CF p288 p289
+Operation p290 "290-plot(plot.8.pp[plot.8$genus == \"Betula\"])" Value="plot(plot.8.pp[plot.8$genus == \"Betula\"])";
+CF p289 p290
+Operation p291 "291-plot(density(plot.8.pp[plot.8$genus == \"Betula\"]))" Value="plot(density(plot.8.pp[plot.8$genus == \"Betula\"]))";
+CF p290 p291
+Operation p292 "292-plot(envelope(plot.8.pp[plot.8$genus == \"Betula\"], Kest))" Value="plot(envelope(plot.8.pp[plot.8$genus == \"Betula\"], Kest))";
+CF p291 p292
+Operation p293 "293-plot(plot.8.pp[plot.8$genus == \"Quercus\"])" Value="plot(plot.8.pp[plot.8$genus == \"Quercus\"])";
+CF p292 p293
+Operation p294 "294-plot(density(plot.8.pp[plot.8$genus == \"Quercus\"]))" Value="plot(density(plot.8.pp[plot.8$genus == \"Quercus\"]))";
+CF p293 p294
+Operation p295 "295-plot(envelope(plot.8.pp[plot.8$genus == \"Quercus\"], Kest))" Value="plot(envelope(plot.8.pp[plot.8$genus == \"Quercus\"], Kest))";
+CF p294 p295
+Operation p296 "296-plot(plot.8.pp[plot.8$genus == \"Acer\"])" Value="plot(plot.8.pp[plot.8$genus == \"Acer\"])";
+CF p295 p296
+Operation p297 "297-plot(density(plot.8.pp[plot.8$genus == \"Acer\"]))" Value="plot(density(plot.8.pp[plot.8$genus == \"Acer\"]))";
+CF p296 p297
+Operation p298 "298-plot(envelope(plot.8.pp[plot.8$genus == \"Acer\"], Kest))" Value="plot(envelope(plot.8.pp[plot.8$genus == \"Acer\"], Kest))";
+CF p297 p298
+Operation p299 "299-plot(plot.8.pp[plot.8$genus == \"Pinus\"])" Value="plot(plot.8.pp[plot.8$genus == \"Pinus\"])";
+CF p298 p299
+Operation p300 "300-plot(density(plot.8.pp[plot.8$genus == \"Pinus\"]))" Value="plot(density(plot.8.pp[plot.8$genus == \"Pinus\"]))";
+CF p299 p300
+Operation p301 "301-plot(envelope(plot.8.pp[plot.8$genus == \"Pinus\"], Kest))" Value="plot(envelope(plot.8.pp[plot.8$genus == \"Pinus\"], Kest))";
+CF p300 p301
+Finish p302 "302-Console" Value="Console";
+CF p301 p302
+DF d48 p281
+DF d47 p281
+DF d48 p282
+DF d47 p282
+DF d48 p283
+DF d47 p283
+DF d48 p284
+DF d47 p284
+DF d48 p285
+DF d47 p285
+DF d48 p286
+DF d47 p286
+DF d50 p287
+DF d49 p287
+DF d50 p288
+DF d49 p288
+DF d50 p289
+DF d49 p289
+DF d50 p290
+DF d49 p290
+DF d50 p291
+DF d49 p291
+DF d50 p292
+DF d49 p292
+DF d50 p293
+DF d49 p293
+DF d50 p294
+DF d49 p294
+DF d50 p295
+DF d49 p295
+DF d50 p296
+DF d49 p296
+DF d50 p297
+DF d49 p297
+DF d50 p298
+DF d49 p298
+DF d50 p299
+DF d49 p299
+DF d50 p300
+DF d49 p300
+DF d50 p301
+DF d49 p301
+Operation p303 "303-run maximum absolute deviation tests of CSR on ppp data" Value="run maximum absolute deviation tests of CSR on ppp data";
+CF p302 p303
+Start p304 "304-Console" Value="Console";
+CF p303 p304
+Operation p305 "305-mad.test(plot.1.pp[plot.1$genus == \"Tsuga\"], Lest, verbose" Value="mad.test(plot.1.pp[plot.1$genus == \"Tsuga\"], Lest, verbose = FALSE,     nsim = 99)";
+CF p304 p305
+Operation p306 "306-mad.test(plot.1.pp[plot.1$genus == \"Betula\"], Lest, verbos" Value="mad.test(plot.1.pp[plot.1$genus == \"Betula\"], Lest, verbose = FALSE,     nsim = 99)";
+CF p305 p306
+Operation p307 "307-mad.test(plot.1.pp[plot.1$genus == \"Quercus\"], Lest, verbo" Value="mad.test(plot.1.pp[plot.1$genus == \"Quercus\"], Lest, verbose = FALSE,     nsim = 99)";
+CF p306 p307
+Operation p308 "308-mad.test(plot.1.pp[plot.1$genus == \"Acer\"], Lest, verbose " Value="mad.test(plot.1.pp[plot.1$genus == \"Acer\"], Lest, verbose = FALSE,     nsim = 99)";
+CF p307 p308
+Operation p309 "309-mad.test(plot.1.pp[plot.1$genus == \"Pinus\"], Lest, verbose" Value="mad.test(plot.1.pp[plot.1$genus == \"Pinus\"], Lest, verbose = FALSE,     nsim = 99)";
+CF p308 p309
+Operation p310 "310-mad.test(plot.2.pp[plot.2$genus == \"Tsuga\"], Lest, verbose" Value="mad.test(plot.2.pp[plot.2$genus == \"Tsuga\"], Lest, verbose = FALSE,     nsim = 99)";
+CF p309 p310
+Operation p311 "311-mad.test(plot.2.pp[plot.2$genus == \"Betula\"], Lest, verbos" Value="mad.test(plot.2.pp[plot.2$genus == \"Betula\"], Lest, verbose = FALSE,     nsim = 99)";
+CF p310 p311
+Operation p312 "312-mad.test(plot.2.pp[plot.2$genus == \"Quercus\"], Lest, verbo" Value="mad.test(plot.2.pp[plot.2$genus == \"Quercus\"], Lest, verbose = FALSE,     nsim = 99)";
+CF p311 p312
+Operation p313 "313-mad.test(plot.2.pp[plot.2$genus == \"Acer\"], Lest, verbose " Value="mad.test(plot.2.pp[plot.2$genus == \"Acer\"], Lest, verbose = FALSE,     nsim = 99)";
+CF p312 p313
+Operation p314 "314-mad.test(plot.2.pp[plot.2$genus == \"Pinus\"], Lest, verbose" Value="mad.test(plot.2.pp[plot.2$genus == \"Pinus\"], Lest, verbose = FALSE,     nsim = 99)";
+CF p313 p314
+Operation p315 "315-mad.test(plot.3.pp[plot.3$genus == \"Tsuga\"], Lest, verbose" Value="mad.test(plot.3.pp[plot.3$genus == \"Tsuga\"], Lest, verbose = FALSE,     nsim = 99)";
+CF p314 p315
+Operation p316 "316-mad.test(plot.3.pp[plot.3$genus == \"Betula\"], Lest, verbos" Value="mad.test(plot.3.pp[plot.3$genus == \"Betula\"], Lest, verbose = FALSE,     nsim = 99)";
+CF p315 p316
+Operation p317 "317-mad.test(plot.3.pp[plot.3$genus == \"Quercus\"], Lest, verbo" Value="mad.test(plot.3.pp[plot.3$genus == \"Quercus\"], Lest, verbose = FALSE,     nsim = 99)";
+CF p316 p317
+Operation p318 "318-mad.test(plot.3.pp[plot.3$genus == \"Acer\"], Lest, verbose " Value="mad.test(plot.3.pp[plot.3$genus == \"Acer\"], Lest, verbose = FALSE,     nsim = 99)";
+CF p317 p318
+Operation p319 "319-mad.test(plot.3.pp[plot.3$genus == \"Pinus\"], Lest, verbose" Value="mad.test(plot.3.pp[plot.3$genus == \"Pinus\"], Lest, verbose = FALSE,     nsim = 99)";
+CF p318 p319
+Operation p320 "320-mad.test(plot.4.pp[plot.4$genus == \"Tsuga\"], Lest, verbose" Value="mad.test(plot.4.pp[plot.4$genus == \"Tsuga\"], Lest, verbose = FALSE,     nsim = 99)";
+CF p319 p320
+Operation p321 "321-mad.test(plot.4.pp[plot.4$genus == \"Betula\"], Lest, verbos" Value="mad.test(plot.4.pp[plot.4$genus == \"Betula\"], Lest, verbose = FALSE,     nsim = 99)";
+CF p320 p321
+Operation p322 "322-mad.test(plot.4.pp[plot.4$genus == \"Quercus\"], Lest, verbo" Value="mad.test(plot.4.pp[plot.4$genus == \"Quercus\"], Lest, verbose = FALSE,     nsim = 99)";
+CF p321 p322
+Operation p323 "323-mad.test(plot.4.pp[plot.4$genus == \"Acer\"], Lest, verbose " Value="mad.test(plot.4.pp[plot.4$genus == \"Acer\"], Lest, verbose = FALSE,     nsim = 99)";
+CF p322 p323
+Operation p324 "324-mad.test(plot.4.pp[plot.4$genus == \"Pinus\"], Lest, verbose" Value="mad.test(plot.4.pp[plot.4$genus == \"Pinus\"], Lest, verbose = FALSE,     nsim = 99)";
+CF p323 p324
+Operation p325 "325-mad.test(plot.5.pp[plot.5$genus == \"Tsuga\"], Lest, verbose" Value="mad.test(plot.5.pp[plot.5$genus == \"Tsuga\"], Lest, verbose = FALSE,     nsim = 99)";
+CF p324 p325
+Operation p326 "326-mad.test(plot.5.pp[plot.5$genus == \"Betula\"], Lest, verbos" Value="mad.test(plot.5.pp[plot.5$genus == \"Betula\"], Lest, verbose = FALSE,     nsim = 99)";
+CF p325 p326
+Operation p327 "327-mad.test(plot.5.pp[plot.5$genus == \"Quercus\"], Lest, verbo" Value="mad.test(plot.5.pp[plot.5$genus == \"Quercus\"], Lest, verbose = FALSE,     nsim = 99)";
+CF p326 p327
+Operation p328 "328-mad.test(plot.5.pp[plot.5$genus == \"Acer\"], Lest, verbose " Value="mad.test(plot.5.pp[plot.5$genus == \"Acer\"], Lest, verbose = FALSE,     nsim = 99)";
+CF p327 p328
+Operation p329 "329-mad.test(plot.5.pp[plot.5$genus == \"Pinus\"], Lest, verbose" Value="mad.test(plot.5.pp[plot.5$genus == \"Pinus\"], Lest, verbose = FALSE,     nsim = 99)";
+CF p328 p329
+Finish p330 "330-Console" Value="Console";
+CF p329 p330
+DF d36 p305
+DF d35 p305
+DF d36 p306
+DF d35 p306
+DF d36 p307
+DF d35 p307
+DF d36 p308
+DF d35 p308
+DF d36 p309
+DF d35 p309
+DF d38 p310
+DF d37 p310
+DF d38 p311
+DF d37 p311
+DF d38 p312
+DF d37 p312
+DF d38 p313
+DF d37 p313
+DF d38 p314
+DF d37 p314
+DF d40 p315
+DF d39 p315
+DF d40 p316
+DF d39 p316
+DF d40 p317
+DF d39 p317
+DF d40 p318
+DF d39 p318
+DF d40 p319
+DF d39 p319
+DF d42 p320
+DF d41 p320
+DF d42 p321
+DF d41 p321
+DF d42 p322
+DF d41 p322
+DF d42 p323
+DF d41 p323
+DF d42 p324
+DF d41 p324
+DF d44 p325
+DF d43 p325
+DF d44 p326
+DF d43 p326
+DF d44 p327
+DF d43 p327
+DF d44 p328
+DF d43 p328
+DF d44 p329
+DF d43 p329
+Start p331 "331-Console" Value="Console";
+CF p330 p331
+Operation p332 "332-mad.test(plot.6.pp[plot.6$genus == \"Tsuga\"], Lest, verbose" Value="mad.test(plot.6.pp[plot.6$genus == \"Tsuga\"], Lest, verbose = FALSE,     nsim = 99)";
+CF p331 p332
+Operation p333 "333-mad.test(plot.6.pp[plot.6$genus == \"Betula\"], Lest, verbos" Value="mad.test(plot.6.pp[plot.6$genus == \"Betula\"], Lest, verbose = FALSE,     nsim = 99)";
+CF p332 p333
+Operation p334 "334-mad.test(plot.6.pp[plot.6$genus == \"Quercus\"], Lest, verbo" Value="mad.test(plot.6.pp[plot.6$genus == \"Quercus\"], Lest, verbose = FALSE,     nsim = 99)";
+CF p333 p334
+Operation p335 "335-mad.test(plot.6.pp[plot.6$genus == \"Acer\"], Lest, verbose " Value="mad.test(plot.6.pp[plot.6$genus == \"Acer\"], Lest, verbose = FALSE,     nsim = 99)";
+CF p334 p335
+Operation p336 "336-mad.test(plot.6.pp[plot.6$genus == \"Pinus\"], Lest, verbose" Value="mad.test(plot.6.pp[plot.6$genus == \"Pinus\"], Lest, verbose = FALSE,     nsim = 99)";
+CF p335 p336
+Operation p337 "337-mad.test(plot.7.pp[plot.7$genus == \"Tsuga\"], Lest, verbose" Value="mad.test(plot.7.pp[plot.7$genus == \"Tsuga\"], Lest, verbose = FALSE,     nsim = 99)";
+CF p336 p337
+Operation p338 "338-mad.test(plot.7.pp[plot.7$genus == \"Betula\"], Lest, verbos" Value="mad.test(plot.7.pp[plot.7$genus == \"Betula\"], Lest, verbose = FALSE,     nsim = 99)";
+CF p337 p338
+Operation p339 "339-mad.test(plot.7.pp[plot.7$genus == \"Quercus\"], Lest, verbo" Value="mad.test(plot.7.pp[plot.7$genus == \"Quercus\"], Lest, verbose = FALSE,     nsim = 99)";
+CF p338 p339
+Operation p340 "340-mad.test(plot.7.pp[plot.7$genus == \"Acer\"], Lest, verbose " Value="mad.test(plot.7.pp[plot.7$genus == \"Acer\"], Lest, verbose = FALSE,     nsim = 99)";
+CF p339 p340
+Operation p341 "341-mad.test(plot.7.pp[plot.7$genus == \"Pinus\"], Lest, verbose" Value="mad.test(plot.7.pp[plot.7$genus == \"Pinus\"], Lest, verbose = FALSE,     nsim = 99)";
+CF p340 p341
+Operation p342 "342-mad.test(plot.8.pp[plot.8$genus == \"Tsuga\"], Lest, verbose" Value="mad.test(plot.8.pp[plot.8$genus == \"Tsuga\"], Lest, verbose = FALSE,     nsim = 99)";
+CF p341 p342
+Operation p343 "343-mad.test(plot.8.pp[plot.8$genus == \"Betula\"], Lest, verbos" Value="mad.test(plot.8.pp[plot.8$genus == \"Betula\"], Lest, verbose = FALSE,     nsim = 99)";
+CF p342 p343
+Operation p344 "344-mad.test(plot.8.pp[plot.8$genus == \"Quercus\"], Lest, verbo" Value="mad.test(plot.8.pp[plot.8$genus == \"Quercus\"], Lest, verbose = FALSE,     nsim = 99)";
+CF p343 p344
+Operation p345 "345-mad.test(plot.8.pp[plot.8$genus == \"Acer\"], Lest, verbose " Value="mad.test(plot.8.pp[plot.8$genus == \"Acer\"], Lest, verbose = FALSE,     nsim = 99)";
+CF p344 p345
+Operation p346 "346-mad.test(plot.8.pp[plot.8$genus == \"Pinus\"], Lest, verbose" Value="mad.test(plot.8.pp[plot.8$genus == \"Pinus\"], Lest, verbose = FALSE,     nsim = 99)";
+CF p345 p346
+Finish p347 "347-Console" Value="Console";
+CF p346 p347
+DF d46 p332
+DF d45 p332
+DF d46 p333
+DF d45 p333
+DF d46 p334
+DF d45 p334
+DF d46 p335
+DF d45 p335
+DF d46 p336
+DF d45 p336
+DF d48 p337
+DF d47 p337
+DF d48 p338
+DF d47 p338
+DF d48 p339
+DF d47 p339
+DF d48 p340
+DF d47 p340
+DF d48 p341
+DF d47 p341
+DF d50 p342
+DF d49 p342
+DF d50 p343
+DF d49 p343
+DF d50 p344
+DF d49 p344
+DF d50 p345
+DF d49 p345
+DF d50 p346
+DF d49 p346
+Operation p348 "348-Plot age x dbh, with smoother and marginal histograms" Value="Plot age x dbh, with smoother and marginal histograms";
+CF p347 p348
+Start p349 "349-Console" Value="Console";
+CF p348 p349
+Operation p350 "350-attach(dendro)" Value="attach(dendro)";
+CF p349 p350
+Operation p351 "351-tree.sprout <- by(dendro[, 6], INDICES = as.factor(dendro$Tr" Value="tree.sprout <- by(dendro[, 6], INDICES = as.factor(dendro$TreeNum),     min, simplify = FALSE)";
+CF p350 p351
+Operation p352 "352-tree.ids <- by(dendro[, 1], INDICES = as.factor(dendro$TreeN" Value="tree.ids <- by(dendro[, 1], INDICES = as.factor(dendro$TreeNum),     mean, simplify = FALSE)";
+CF p351 p352
+Operation p353 "353-sprout <- NULL" Value="sprout <- NULL";
+CF p352 p353
+Operation p354 "354-for (i in 1:length(tree.sprout)) sprout[i] <- tree.sprout[[i" Value="for (i in 1:length(tree.sprout)) sprout[i] <- tree.sprout[[i]]";
+CF p353 p354
+Operation p355 "355-plotnum <- NULL" Value="plotnum <- NULL";
+CF p354 p355
+Operation p356 "356-for (i in 1:length(tree.ids)) plotnum[i] <- tree.ids[[i]]" Value="for (i in 1:length(tree.ids)) plotnum[i] <- tree.ids[[i]]";
+CF p355 p356
+Operation p357 "357-tree.ids <- as.integer(names(tree.sprout))" Value="tree.ids <- as.integer(names(tree.sprout))";
+CF p356 p357
+Operation p358 "358-tree.ages <- cbind(tree.ids, sprout)" Value="tree.ages <- cbind(tree.ids, sprout)";
+CF p357 p358
+Operation p359 "359-tree.age <- 2003 - tree.ages[, 2]" Value="tree.age <- 2003 - tree.ages[, 2]";
+CF p358 p359
+Operation p360 "360-tree.ages <- cbind(tree.ages, tree.age)" Value="tree.ages <- cbind(tree.ages, tree.age)";
+CF p359 p360
+Operation p361 "361-tree.ages <- as.data.frame(tree.ages)" Value="tree.ages <- as.data.frame(tree.ages)";
+CF p360 p361
+Operation p362 "362-tree.ages[, 4] <- plotnum" Value="tree.ages[, 4] <- plotnum";
+CF p361 p362
+Operation p363 "363-names(tree.ages)[4] <- \"plot\"" Value="names(tree.ages)[4] <- \"plot\"";
+CF p362 p363
+Operation p364 "364-for (i in 1:26) {    tree.ages[i, 5] <- trees$species[trees$" Value="for (i in 1:26) {    tree.ages[i, 5] <- trees$species[trees$tree == tree.ages$tree.ids[i]]}";
+CF p363 p364
+Operation p365 "365-for (i in 28:117) {    tree.ages[i, 5] <- trees$species[tree" Value="for (i in 28:117) {    tree.ages[i, 5] <- trees$species[trees$tree == tree.ages$tree.ids[i]]}";
+CF p364 p365
+Operation p366 "366-for (i in 119:229) {    tree.ages[i, 5] <- trees$species[tre" Value="for (i in 119:229) {    tree.ages[i, 5] <- trees$species[trees$tree == tree.ages$tree.ids[i]]}";
+CF p365 p366
+Operation p367 "367-tree.ages[27, 5] <- \"TSCA\"" Value="tree.ages[27, 5] <- \"TSCA\"";
+CF p366 p367
+Operation p368 "368-tree.ages[118, 5] <- \"PIST\"" Value="tree.ages[118, 5] <- \"PIST\"";
+CF p367 p368
+Operation p369 "369-tree.ages[230, 5] <- \"TSCA\"" Value="tree.ages[230, 5] <- \"TSCA\"";
+CF p368 p369
+Operation p370 "370-for (i in 1:26) {    tree.ages[i, 6] <- trees$dbh[trees$tree" Value="for (i in 1:26) {    tree.ages[i, 6] <- trees$dbh[trees$tree == tree.ages$tree.ids[i]]}";
+CF p369 p370
+Operation p371 "371-for (i in 28:117) {    tree.ages[i, 6] <- trees$dbh[trees$tr" Value="for (i in 28:117) {    tree.ages[i, 6] <- trees$dbh[trees$tree == tree.ages$tree.ids[i]]}";
+CF p370 p371
+Operation p372 "372-for (i in 119:229) {    tree.ages[i, 6] <- trees$dbh[trees$t" Value="for (i in 119:229) {    tree.ages[i, 6] <- trees$dbh[trees$tree == tree.ages$tree.ids[i]]}";
+CF p371 p372
+Operation p373 "373-tree.ages[27, 6] <- 15" Value="tree.ages[27, 6] <- 15";
+CF p372 p373
+Operation p374 "374-tree.ages[118, 6] <- 62.5" Value="tree.ages[118, 6] <- 62.5";
+CF p373 p374
+Operation p375 "375-tree.ages[230, 6] <- 39.5" Value="tree.ages[230, 6] <- 39.5";
+CF p374 p375
+Operation p376 "376-for (i in 1:26) {    tree.ages[i, 7] <- trees$genus[trees$tr" Value="for (i in 1:26) {    tree.ages[i, 7] <- trees$genus[trees$tree == tree.ages$tree.ids[i]]}";
+CF p375 p376
+Operation p377 "377-for (i in 28:117) {    tree.ages[i, 7] <- trees$genus[trees$" Value="for (i in 28:117) {    tree.ages[i, 7] <- trees$genus[trees$tree == tree.ages$tree.ids[i]]}";
+CF p376 p377
+Operation p378 "378-for (i in 119:229) {    tree.ages[i, 7] <- trees$genus[trees" Value="for (i in 119:229) {    tree.ages[i, 7] <- trees$genus[trees$tree == tree.ages$tree.ids[i]]}";
+CF p377 p378
+Operation p379 "379-tree.ages[27, 7] <- \"Tsuga\"" Value="tree.ages[27, 7] <- \"Tsuga\"";
+CF p378 p379
+Operation p380 "380-tree.ages[118, 7] <- \"Pinus\"" Value="tree.ages[118, 7] <- \"Pinus\"";
+CF p379 p380
+Operation p381 "381-tree.ages[230, 7] <- \"Tsuga\"" Value="tree.ages[230, 7] <- \"Tsuga\"";
+CF p380 p381
+Operation p382 "382-tree.ages[, 8] <- NA" Value="tree.ages[, 8] <- NA";
+CF p381 p382
+Operation p383 "383-tree.ages[, 8] <- ifelse(tree.ages$plot < 7, tree.ages[, 8] " Value="tree.ages[, 8] <- ifelse(tree.ages$plot < 7, tree.ages[, 8] <- \"hemlock\",     tree.ages[, 8] <- \"hardwood\")";
+CF p382 p383
+Operation p384 "384-tree.ages[, 9] <- NA" Value="tree.ages[, 9] <- NA";
+CF p383 p384
+Operation p385 "385-tree.ages[, 9] <- ifelse(tree.ages$plot > 3 & tree.ages$plot" Value="tree.ages[, 9] <- ifelse(tree.ages$plot > 3 & tree.ages$plot <     8, tree.ages[, 9] <- \"Ridge\", tree.ages[, 9] <- \"Valley\")";
+CF p384 p385
+Operation p386 "386-detach(dendro)" Value="detach(dendro)";
+CF p385 p386
+Operation p387 "387-names(tree.ages)[5:9] <- c(\"species\", \"dbh\", \"genus\", " Value="names(tree.ages)[5:9] <- c(\"species\", \"dbh\", \"genus\", \"init.treat\",     \"block\")";
+CF p386 p387
+Operation p388 "388-head(tree.ages)" Value="head(tree.ages)";
+CF p387 p388
+Operation p389 "389-genera.colors <- c(\"firebrick4\", \"coral\", \"orange4\", " Value="genera.colors <- c(\"firebrick4\", \"coral\", \"orange4\", \"black\",     \"orange\", \"darkmagenta\", \"darkolivegreen1\", \"yellow\", \"orange3\",     \"olivedrab3\", \"red\", \"tan4\", \"maroon4\", \"darkgreen\")";
+CF p388 p389
+Operation p390 "390-age.cols <- genera.colors[c(1, 2, 7, 9, 10, 12, 14)]" Value="age.cols <- genera.colors[c(1, 2, 7, 9, 10, 12, 14)]";
+CF p389 p390
+Operation p391 "391-for (i in 1:length(genera)) tree.ages[tree.ages$genus == gen" Value="for (i in 1:length(genera)) tree.ages[tree.ages$genus == genera[i],     10] <- genera.colors[i]";
+CF p390 p391
+Operation p392 "392-names(tree.ages)[10] <- \"tree.color\"" Value="names(tree.ages)[10] <- \"tree.color\"";
+CF p391 p392
+Operation p393 "393-tree.ages <- drop.levels(tree.ages)" Value="tree.ages <- drop.levels(tree.ages)";
+CF p392 p393
+Operation p394 "394-tree.ages$init.treat <- as.factor(tree.ages$init.treat)" Value="tree.ages$init.treat <- as.factor(tree.ages$init.treat)";
+CF p393 p394
+Operation p395 "395-tree.ages$tree.color <- as.factor(tree.ages$tree.color)" Value="tree.ages$tree.color <- as.factor(tree.ages$tree.color)";
+CF p394 p395
+Operation p396 "396-tree.ages$block <- as.factor(tree.ages$block)" Value="tree.ages$block <- as.factor(tree.ages$block)";
+CF p395 p396
+Operation p397 "397-vh <- tree.ages[tree.ages$block == \"Valley\" & tree.ages$in" Value="vh <- tree.ages[tree.ages$block == \"Valley\" & tree.ages$init.treat ==     \"hemlock\", ]";
+CF p396 p397
+Operation p398 "398-vd <- tree.ages[tree.ages$block == \"Valley\" & tree.ages$in" Value="vd <- tree.ages[tree.ages$block == \"Valley\" & tree.ages$init.treat ==     \"hardwood\", ]";
+CF p397 p398
+Operation p399 "399-rh <- tree.ages[tree.ages$block == \"Ridge\" & tree.ages$ini" Value="rh <- tree.ages[tree.ages$block == \"Ridge\" & tree.ages$init.treat ==     \"hemlock\", ]";
+CF p398 p399
+Operation p400 "400-rd <- tree.ages[tree.ages$block == \"Ridge\" & tree.ages$ini" Value="rd <- tree.ages[tree.ages$block == \"Ridge\" & tree.ages$init.treat ==     \"hardwood\", ]";
+CF p399 p400
+Operation p401 "401-hist.vh.age <- hist(vh$tree.age[vh$genus == \"Tsuga\"], plot" Value="hist.vh.age <- hist(vh$tree.age[vh$genus == \"Tsuga\"], plot = FALSE,     breaks = seq(10, 150, 10))";
+CF p400 p401
+Operation p402 "402-hist.vh.bet.age <- hist(vh$tree.age[vh$genus == \"Betula\"]," Value="hist.vh.bet.age <- hist(vh$tree.age[vh$genus == \"Betula\"], plot = FALSE,     breaks = seq(10, 150, 10))";
+CF p401 p402
+Operation p403 "403-hist.vh.acer.age <- hist(vh$tree.age[vh$genus == \"Acer\"], " Value="hist.vh.acer.age <- hist(vh$tree.age[vh$genus == \"Acer\"], plot = FALSE,     breaks = seq(10, 150, 10))";
+CF p402 p403
+Operation p404 "404-hist.vh.quercus.age <- hist(vh$tree.age[vh$genus == \"Quercu" Value="hist.vh.quercus.age <- hist(vh$tree.age[vh$genus == \"Quercus\"],     plot = FALSE, breaks = seq(10, 150, 10))";
+CF p403 p404
+Operation p405 "405-hist.vh.pinus.age <- hist(vh$tree.age[vh$genus == \"Pinus\"]" Value="hist.vh.pinus.age <- hist(vh$tree.age[vh$genus == \"Pinus\"], plot = FALSE,     breaks = seq(10, 150, 10))";
+CF p404 p405
+Operation p406 "406-hist.rh.age <- hist(rh$tree.age[rh$genus == \"Tsuga\"], plot" Value="hist.rh.age <- hist(rh$tree.age[rh$genus == \"Tsuga\"], plot = FALSE,     breaks = seq(10, 150, 10))";
+CF p405 p406
+Operation p407 "407-hist.rh.bet.age <- hist(rh$tree.age[rh$genus == \"Betula\"]," Value="hist.rh.bet.age <- hist(rh$tree.age[rh$genus == \"Betula\"], plot = FALSE,     breaks = seq(10, 150, 10))";
+CF p406 p407
+Operation p408 "408-hist.rh.acer.age <- hist(rh$tree.age[rh$genus == \"Acer\"], " Value="hist.rh.acer.age <- hist(rh$tree.age[rh$genus == \"Acer\"], plot = FALSE,     breaks = seq(10, 150, 10))";
+CF p407 p408
+Operation p409 "409-hist.rh.quercus.age <- hist(rh$tree.age[rh$genus == \"Quercu" Value="hist.rh.quercus.age <- hist(rh$tree.age[rh$genus == \"Quercus\"],     plot = FALSE, breaks = seq(10, 150, 10))";
+CF p408 p409
+Operation p410 "410-hist.rh.pinus.age <- hist(rh$tree.age[rh$genus == \"Pinus\"]" Value="hist.rh.pinus.age <- hist(rh$tree.age[rh$genus == \"Pinus\"], plot = FALSE,     breaks = seq(10, 150, 10))";
+CF p409 p410
+Operation p411 "411-hist.vd.age <- hist(vd$tree.age[vd$genus == \"Tsuga\"], plot" Value="hist.vd.age <- hist(vd$tree.age[vd$genus == \"Tsuga\"], plot = FALSE,     breaks = seq(10, 150, 10))";
+CF p410 p411
+Operation p412 "412-hist.vd.bet.age <- hist(vd$tree.age[vd$genus == \"Betula\"]," Value="hist.vd.bet.age <- hist(vd$tree.age[vd$genus == \"Betula\"], plot = FALSE,     breaks = seq(10, 150, 10))";
+CF p411 p412
+Operation p413 "413-hist.vd.acer.age <- hist(vd$tree.age[vd$genus == \"Acer\"], " Value="hist.vd.acer.age <- hist(vd$tree.age[vd$genus == \"Acer\"], plot = FALSE,     breaks = seq(10, 150, 10))";
+CF p412 p413
+Operation p414 "414-hist.vd.quercus.age <- hist(vd$tree.age[vd$genus == \"Quercu" Value="hist.vd.quercus.age <- hist(vd$tree.age[vd$genus == \"Quercus\"],     plot = FALSE, breaks = seq(10, 150, 10))";
+CF p413 p414
+Operation p415 "415-hist.vd.pinus.age <- hist(vd$tree.age[vd$genus == \"Pinus\"]" Value="hist.vd.pinus.age <- hist(vd$tree.age[vd$genus == \"Pinus\"], plot = FALSE,     breaks = seq(10, 150, 10))";
+CF p414 p415
+Operation p416 "416-hist.rd.age <- hist(rd$tree.age[rd$genus == \"Tsuga\"], plot" Value="hist.rd.age <- hist(rd$tree.age[rd$genus == \"Tsuga\"], plot = FALSE,     breaks = seq(10, 150, 10))";
+CF p415 p416
+Operation p417 "417-hist.rd.bet.age <- hist(rd$tree.age[rd$genus == \"Betula\"]," Value="hist.rd.bet.age <- hist(rd$tree.age[rd$genus == \"Betula\"], plot = FALSE,     breaks = seq(10, 150, 10))";
+CF p416 p417
+Operation p418 "418-hist.rd.acer.age <- hist(rd$tree.age[rd$genus == \"Acer\"], " Value="hist.rd.acer.age <- hist(rd$tree.age[rd$genus == \"Acer\"], plot = FALSE,     breaks = seq(10, 150, 10))";
+CF p417 p418
+Operation p419 "419-hist.rd.quercus.age <- hist(rd$tree.age[rd$genus == \"Quercu" Value="hist.rd.quercus.age <- hist(rd$tree.age[rd$genus == \"Quercus\"],     plot = FALSE, breaks = seq(10, 150, 10))";
+CF p418 p419
+Operation p420 "420-hist.rd.pinus.age <- hist(rd$tree.age[rd$genus == \"Pinus\"]" Value="hist.rd.pinus.age <- hist(rd$tree.age[rd$genus == \"Pinus\"], plot = FALSE,     breaks = seq(10, 150, 10))";
+CF p419 p420
+Operation p421 "421-hist.vh.dbh <- hist(vh$dbh[vh$genus == \"Tsuga\"], plot = FA" Value="hist.vh.dbh <- hist(vh$dbh[vh$genus == \"Tsuga\"], plot = FALSE,     breaks = seq(0, 80, 10))";
+CF p420 p421
+Operation p422 "422-hist.vh.bet.dbh <- hist(vh$dbh[vh$genus == \"Betula\"], plot" Value="hist.vh.bet.dbh <- hist(vh$dbh[vh$genus == \"Betula\"], plot = FALSE,     breaks = seq(0, 80, 10))";
+CF p421 p422
+Operation p423 "423-hist.vh.acer.dbh <- hist(vh$dbh[vh$genus == \"Acer\"], plot " Value="hist.vh.acer.dbh <- hist(vh$dbh[vh$genus == \"Acer\"], plot = FALSE,     breaks = seq(0, 80, 10))";
+CF p422 p423
+Operation p424 "424-hist.vh.quercus.dbh <- hist(vh$dbh[vh$genus == \"Quercus\"]," Value="hist.vh.quercus.dbh <- hist(vh$dbh[vh$genus == \"Quercus\"], plot = FALSE,     breaks = seq(0, 80, 10))";
+CF p423 p424
+Operation p425 "425-hist.vh.pinus.dbh <- hist(vh$dbh[vh$genus == \"Pinus\"], plo" Value="hist.vh.pinus.dbh <- hist(vh$dbh[vh$genus == \"Pinus\"], plot = FALSE,     breaks = seq(0, 80, 10))";
+CF p424 p425
+Operation p426 "426-hist.rh.dbh <- hist(rh$dbh[rh$genus == \"Tsuga\"], plot = FA" Value="hist.rh.dbh <- hist(rh$dbh[rh$genus == \"Tsuga\"], plot = FALSE,     breaks = seq(0, 80, 10))";
+CF p425 p426
+Operation p427 "427-hist.rh.bet.dbh <- hist(rh$dbh[rh$genus == \"Betula\"], plot" Value="hist.rh.bet.dbh <- hist(rh$dbh[rh$genus == \"Betula\"], plot = FALSE,     breaks = seq(0, 80, 10))";
+CF p426 p427
+Operation p428 "428-hist.rh.acer.dbh <- hist(rh$dbh[rh$genus == \"Acer\"], plot " Value="hist.rh.acer.dbh <- hist(rh$dbh[rh$genus == \"Acer\"], plot = FALSE,     breaks = seq(0, 80, 10))";
+CF p427 p428
+Operation p429 "429-hist.rh.quercus.dbh <- hist(rh$dbh[rh$genus == \"Quercus\"]," Value="hist.rh.quercus.dbh <- hist(rh$dbh[rh$genus == \"Quercus\"], plot = FALSE,     breaks = seq(0, 80, 10))";
+CF p428 p429
+Operation p430 "430-hist.rh.pinus.dbh <- hist(rh$dbh[rh$genus == \"Pinus\"], plo" Value="hist.rh.pinus.dbh <- hist(rh$dbh[rh$genus == \"Pinus\"], plot = FALSE,     breaks = seq(0, 80, 10))";
+CF p429 p430
+Operation p431 "431-hist.vd.dbh <- hist(vd$dbh[vd$genus == \"Tsuga\"], plot = FA" Value="hist.vd.dbh <- hist(vd$dbh[vd$genus == \"Tsuga\"], plot = FALSE,     breaks = seq(0, 80, 10))";
+CF p430 p431
+Operation p432 "432-hist.vd.bet.dbh <- hist(vd$dbh[vd$genus == \"Betula\"], plot" Value="hist.vd.bet.dbh <- hist(vd$dbh[vd$genus == \"Betula\"], plot = FALSE,     breaks = seq(0, 80, 10))";
+CF p431 p432
+Operation p433 "433-hist.vd.acer.dbh <- hist(vd$dbh[vd$genus == \"Acer\"], plot " Value="hist.vd.acer.dbh <- hist(vd$dbh[vd$genus == \"Acer\"], plot = FALSE,     breaks = seq(0, 80, 10))";
+CF p432 p433
+Operation p434 "434-hist.vd.quercus.dbh <- hist(vd$dbh[vd$genus == \"Quercus\"]," Value="hist.vd.quercus.dbh <- hist(vd$dbh[vd$genus == \"Quercus\"], plot = FALSE,     breaks = seq(0, 80, 10))";
+CF p433 p434
+Operation p435 "435-hist.vd.pinus.dbh <- hist(vd$dbh[vd$genus == \"Pinus\"], plo" Value="hist.vd.pinus.dbh <- hist(vd$dbh[vd$genus == \"Pinus\"], plot = FALSE,     breaks = seq(0, 80, 10))";
+CF p434 p435
+Operation p436 "436-hist.rd.dbh <- hist(rd$dbh[rd$genus == \"Tsuga\"], plot = FA" Value="hist.rd.dbh <- hist(rd$dbh[rd$genus == \"Tsuga\"], plot = FALSE,     breaks = seq(0, 80, 10))";
+CF p435 p436
+Operation p437 "437-hist.rd.bet.dbh <- hist(rd$dbh[rd$genus == \"Betula\"], plot" Value="hist.rd.bet.dbh <- hist(rd$dbh[rd$genus == \"Betula\"], plot = FALSE,     breaks = seq(0, 80, 10))";
+CF p436 p437
+Operation p438 "438-hist.rd.acer.dbh <- hist(rd$dbh[rd$genus == \"Acer\"], plot " Value="hist.rd.acer.dbh <- hist(rd$dbh[rd$genus == \"Acer\"], plot = FALSE,     breaks = seq(0, 80, 10))";
+CF p437 p438
+Operation p439 "439-hist.rd.quercus.dbh <- hist(rd$dbh[rd$genus == \"Quercus\"]," Value="hist.rd.quercus.dbh <- hist(rd$dbh[rd$genus == \"Quercus\"], plot = FALSE,     breaks = seq(0, 80, 10))";
+CF p438 p439
+Operation p440 "440-hist.rd.pinus.dbh <- hist(rd$dbh[rd$genus == \"Pinus\"], plo" Value="hist.rd.pinus.dbh <- hist(rd$dbh[rd$genus == \"Pinus\"], plot = FALSE,     breaks = seq(0, 80, 10))";
+CF p439 p440
+Operation p441 "441-vh.ages <- rbind(hist.vh.age$counts, hist.vh.bet.age$counts," Value="vh.ages <- rbind(hist.vh.age$counts, hist.vh.bet.age$counts,     hist.vh.quercus.age$counts, hist.vh.acer.age$counts, hist.vh.pinus.age$counts)";
+CF p440 p441
+Operation p442 "442-rh.ages <- rbind(hist.rh.age$counts, hist.rh.bet.age$counts," Value="rh.ages <- rbind(hist.rh.age$counts, hist.rh.bet.age$counts,     hist.rh.quercus.age$counts, hist.rh.acer.age$counts, hist.rh.pinus.age$counts)";
+CF p441 p442
+Operation p443 "443-vd.ages <- rbind(hist.vd.age$counts, hist.vd.bet.age$counts," Value="vd.ages <- rbind(hist.vd.age$counts, hist.vd.bet.age$counts,     hist.vd.quercus.age$counts, hist.vd.acer.age$counts, hist.vd.pinus.age$counts)";
+CF p442 p443
+Operation p444 "444-rd.ages <- rbind(hist.rd.age$counts, hist.rd.bet.age$counts," Value="rd.ages <- rbind(hist.rd.age$counts, hist.rd.bet.age$counts,     hist.rd.quercus.age$counts, hist.rd.acer.age$counts, hist.rd.pinus.age$counts)";
+CF p443 p444
+Operation p445 "445-vh.dbh <- rbind(hist.vh.dbh$counts, hist.vh.bet.dbh$counts, " Value="vh.dbh <- rbind(hist.vh.dbh$counts, hist.vh.bet.dbh$counts, hist.vh.quercus.dbh$counts,     hist.vh.acer.dbh$counts, hist.vh.pinus.dbh$counts)";
+CF p444 p445
+Operation p446 "446-rh.dbh <- rbind(hist.rh.dbh$counts, hist.rh.bet.dbh$counts, " Value="rh.dbh <- rbind(hist.rh.dbh$counts, hist.rh.bet.dbh$counts, hist.rh.quercus.dbh$counts,     hist.rh.acer.dbh$counts, hist.rh.pinus.dbh$counts)";
+CF p445 p446
+Operation p447 "447-vd.dbh <- rbind(hist.vd.dbh$counts, hist.vd.bet.dbh$counts, " Value="vd.dbh <- rbind(hist.vd.dbh$counts, hist.vd.bet.dbh$counts, hist.vd.quercus.dbh$counts,     hist.vd.acer.dbh$counts, hist.vd.pinus.dbh$counts)";
+CF p446 p447
+Operation p448 "448-rd.dbh <- rbind(hist.rd.dbh$counts, hist.rd.bet.dbh$counts, " Value="rd.dbh <- rbind(hist.rd.dbh$counts, hist.rd.bet.dbh$counts, hist.rd.quercus.dbh$counts,     hist.rd.acer.dbh$counts, hist.rd.pinus.dbh$counts)";
+CF p447 p448
+Operation p449 "449-five.colors <- c(\"darkgreen\", \"coral\", \"tan4\", \"fireb" Value="five.colors <- c(\"darkgreen\", \"coral\", \"tan4\", \"firebrick4\",     \"olivedrab3\")";
+CF p448 p449
+Operation p450 "450-limits <- list(xlims = c(10, 150), ylims = c(0, 80))" Value="limits <- list(xlims = c(10, 150), ylims = c(0, 80))";
+CF p449 p450
+Operation p451 "451-xpreds <- seq(10, 150, 1)" Value="xpreds <- seq(10, 150, 1)";
+CF p450 p451
+Operation p452 "452-xpreds.rev <- sort(xpreds, decreasing = TRUE)" Value="xpreds.rev <- sort(xpreds, decreasing = TRUE)";
+CF p451 p452
+Operation p453 "453-maxcount.ages <- max(c(colSums(vh.ages), colSums(rh.ages), c" Value="maxcount.ages <- max(c(colSums(vh.ages), colSums(rh.ages), colSums(vd.ages),     colSums(rd.ages)))";
+CF p452 p453
+Operation p454 "454-maxcount.dbh <- max(c(colSums(vh.dbh), colSums(rh.dbh), colS" Value="maxcount.dbh <- max(c(colSums(vh.dbh), colSums(rh.dbh), colSums(vd.dbh),     colSums(rd.dbh)))";
+CF p453 p454
+Operation p455 "455-pdf(file = \"Figure 7 - age_dbh.pdf\", width = 6, height = 6" Value="pdf(file = \"Figure 7 - age_dbh.pdf\", width = 6, height = 6.5,     colormodel = \"cmyk\")";
+CF p454 p455
+Operation p456 "456-layout(matrix(c(0, 1, 2, 0, 3, 9, 10, 5, 4, 11, 12, 6, 0, 7," Value="layout(matrix(c(0, 1, 2, 0, 3, 9, 10, 5, 4, 11, 12, 6, 0, 7,     8, 0), nrow = 4, byrow = TRUE), heights = c(lcm(1.5), lcm(5.08),     lcm(5.08), lcm(1.5)), widths = c(lcm(1.5), lcm(5.08), lcm(5.08),     lcm(1.5)))";
+CF p455 p456
+Operation p457 "457-par(mar = c(0, 1, 0, 1))" Value="par(mar = c(0, 1, 0, 1))";
+CF p456 p457
+Operation p458 "458-barplot(vh.ages, axes = FALSE, ylim = c(0, maxcount.ages), s" Value="barplot(vh.ages, axes = FALSE, ylim = c(0, maxcount.ages), space = 0,     col = five.colors)";
+CF p457 p458
+Operation p459 "459-barplot(rh.ages, axes = FALSE, ylim = c(0, maxcount.ages), s" Value="barplot(rh.ages, axes = FALSE, ylim = c(0, maxcount.ages), space = 0,     col = five.colors)";
+CF p458 p459
+Operation p460 "460-par(mar = c(1, 0, 0.5, 0))" Value="par(mar = c(1, 0, 0.5, 0))";
+CF p459 p460
+Operation p461 "461-barplot(vh.dbh, axes = FALSE, xlim = c(maxcount.dbh, 0), spa" Value="barplot(vh.dbh, axes = FALSE, xlim = c(maxcount.dbh, 0), space = 0,     horiz = TRUE, col = five.colors)";
+CF p460 p461
+Operation p462 "462-mtext(\"DBH (cm)\", side = 2, line = 0.5, adj = -0.5, font =" Value="mtext(\"DBH (cm)\", side = 2, line = 0.5, adj = -0.5, font = 2)";
+CF p461 p462
+Operation p463 "463-par(mar = c(0.5, 0, 1, 0))" Value="par(mar = c(0.5, 0, 1, 0))";
+CF p462 p463
+Operation p464 "464-barplot(vd.dbh, axes = FALSE, xlim = c(maxcount.dbh, 0), spa" Value="barplot(vd.dbh, axes = FALSE, xlim = c(maxcount.dbh, 0), space = 0,     horiz = TRUE, col = five.colors)";
+CF p463 p464
+Operation p465 "465-par(mar = c(1, 0, 0.5, 0))" Value="par(mar = c(1, 0, 0.5, 0))";
+CF p464 p465
+Operation p466 "466-barplot(rh.dbh, axes = FALSE, xlim = c(0, maxcount.dbh), spa" Value="barplot(rh.dbh, axes = FALSE, xlim = c(0, maxcount.dbh), space = 0,     horiz = TRUE, col = five.colors)";
+CF p465 p466
+Operation p467 "467-par(mar = c(0.5, 0, 1, 0))" Value="par(mar = c(0.5, 0, 1, 0))";
+CF p466 p467
+Operation p468 "468-barplot(rd.dbh, axes = FALSE, xlim = c(0, maxcount.dbh), spa" Value="barplot(rd.dbh, axes = FALSE, xlim = c(0, maxcount.dbh), space = 0,     horiz = TRUE, col = five.colors)";
+CF p467 p468
+Operation p469 "469-par(mar = c(0, 1, 0, 1))" Value="par(mar = c(0, 1, 0, 1))";
+CF p468 p469
+Operation p470 "470-barplot(vd.ages, axes = FALSE, ylim = c(maxcount.ages, 0), s" Value="barplot(vd.ages, axes = FALSE, ylim = c(maxcount.ages, 0), space = 0,     col = five.colors)";
+CF p469 p470
+Operation p471 "471-barplot(rd.ages, axes = FALSE, ylim = c(maxcount.ages, 0), s" Value="barplot(rd.ages, axes = FALSE, ylim = c(maxcount.ages, 0), space = 0,     col = five.colors)";
+CF p470 p471
+Operation p472 "472-mtext(\"Age (years)\", side = 1, line = 0, adj = -0.5, font " Value="mtext(\"Age (years)\", side = 1, line = 0, adj = -0.5, font = 2)";
+CF p471 p472
+Operation p473 "473-par(mar = c(1, 1, 0.5, 1))" Value="par(mar = c(1, 1, 0.5, 1))";
+CF p472 p473
+Operation p474 "474-plot.vh <- plot(vh$dbh ~ vh$tree.age, data = vh, xlim = limi" Value="plot.vh <- plot(vh$dbh ~ vh$tree.age, data = vh, xlim = limits$xlims,     ylim = limits$ylims, xlab = \"\", ylab = \"\", axes = FALSE,     pch = 19, col = as.character(vh$tree.color))";
+CF p473 p474
+Operation p475 "475-axis(1, at = seq(15, 145, 10), labels = TRUE, tcl = -0.25, l" Value="axis(1, at = seq(15, 145, 10), labels = TRUE, tcl = -0.25, lwd = 2,     font.axis = 2, cex.axis = 0.8, padj = -1.1, hadj = 0.5)";
+CF p474 p475
+Operation p476 "476-axis(4, at = seq(5, 75, 10), labels = TRUE, tcl = -0.25, lwd" Value="axis(4, at = seq(5, 75, 10), labels = TRUE, tcl = -0.25, lwd = 2,     font.axis = 2, las = 1, cex.axis = 0.8, hadj = 0.5, padj = 0.25)";
+CF p475 p476
+Operation p477 "477-axis(3, at = seq(15, 145, 10), labels = FALSE, tcl = -0.25, " Value="axis(3, at = seq(15, 145, 10), labels = FALSE, tcl = -0.25, lwd = 2,     font.axis = 2)";
+CF p476 p477
+Operation p478 "478-axis(2, at = seq(5, 75, 10), labels = FALSE, tcl = -0.25, lw" Value="axis(2, at = seq(5, 75, 10), labels = FALSE, tcl = -0.25, lwd = 2,     font.axis = 2)";
+CF p477 p478
+Operation p479 "479-box(lwd = 2)" Value="box(lwd = 2)";
+CF p478 p479
+Operation p480 "480-vh.loess <- loess(vh$dbh ~ vh$tree.age, span = 1)" Value="vh.loess <- loess(vh$dbh ~ vh$tree.age, span = 1)";
+CF p479 p480
+Operation p481 "481-pred.vh <- predict(vh.loess, xpreds, se = TRUE)" Value="pred.vh <- predict(vh.loess, xpreds, se = TRUE)";
+CF p480 p481
+Operation p482 "482-lines(xpreds, pred.vh$fit, lty = \"solid\", lwd = 2, col = " Value="lines(xpreds, pred.vh$fit, lty = \"solid\", lwd = 2, col = \"blue\")";
+CF p481 p482
+Operation p483 "483-y.poly.vh <- c((pred.vh$fit + 1.96 * pred.vh$se.fit), (pred." Value="y.poly.vh <- c((pred.vh$fit + 1.96 * pred.vh$se.fit), (pred.vh$fit -     1.96 * pred.vh$se.fit)[order(xpreds, decreasing = TRUE)])";
+CF p482 p483
+Operation p484 "484-x.poly.vh <- c(xpreds, xpreds.rev)" Value="x.poly.vh <- c(xpreds, xpreds.rev)";
+CF p483 p484
+Operation p485 "485-polygon(x.poly.vh[!is.na(y.poly.vh)], y.poly.vh[!is.na(y.pol" Value="polygon(x.poly.vh[!is.na(y.poly.vh)], y.poly.vh[!is.na(y.poly.vh)],     col = \"#00009933\", border = NA)";
+CF p484 p485
+Operation p486 "486-text(20, 75, \"A\", cex = 1.5, font = 2)" Value="text(20, 75, \"A\", cex = 1.5, font = 2)";
+CF p485 p486
+Operation p487 "487-text(15, 2, \"1990\", cex = 0.8, font = 2)" Value="text(15, 2, \"1990\", cex = 0.8, font = 2)";
+CF p486 p487
+Operation p488 "488-text(145, 2, \"1860\", cex = 0.8, font = 2)" Value="text(145, 2, \"1860\", cex = 0.8, font = 2)";
+CF p487 p488
+Operation p489 "489-text(67, 2, \"1938\", cex = 0.8, font = 2)" Value="text(67, 2, \"1938\", cex = 0.8, font = 2)";
+CF p488 p489
+Operation p490 "490-plot.rh <- plot(rh$dbh ~ rh$tree.age, data = rh, xlim = limi" Value="plot.rh <- plot(rh$dbh ~ rh$tree.age, data = rh, xlim = limits$xlims,     ylim = limits$ylims, xlab = \"\", ylab = \"\", axes = FALSE,     pch = 19, col = as.character(rh$tree.color))";
+CF p489 p490
+Operation p491 "491-axis(1, at = seq(15, 145, 10), labels = TRUE, tcl = -0.25, l" Value="axis(1, at = seq(15, 145, 10), labels = TRUE, tcl = -0.25, lwd = 2,     font.axis = 2, cex.axis = 0.8, padj = -1.1, hadj = 0.5)";
+CF p490 p491
+Operation p492 "492-axis(2, at = seq(5, 75, 10), labels = FALSE, tcl = -0.25, lw" Value="axis(2, at = seq(5, 75, 10), labels = FALSE, tcl = -0.25, lwd = 2,     font.axis = 2)";
+CF p491 p492
+Operation p493 "493-axis(3, at = seq(15, 145, 10), labels = FALSE, tcl = -0.25, " Value="axis(3, at = seq(15, 145, 10), labels = FALSE, tcl = -0.25, lwd = 2,     font.axis = 2)";
+CF p492 p493
+Operation p494 "494-axis(4, at = seq(5, 75, 10), labels = FALSE, tcl = -0.25, lw" Value="axis(4, at = seq(5, 75, 10), labels = FALSE, tcl = -0.25, lwd = 2,     font.axis = 2)";
+CF p493 p494
+Operation p495 "495-box(lwd = 2)" Value="box(lwd = 2)";
+CF p494 p495
+Operation p496 "496-rh.loess <- loess(rh$dbh ~ rh$tree.age, span = 1)" Value="rh.loess <- loess(rh$dbh ~ rh$tree.age, span = 1)";
+CF p495 p496
+Operation p497 "497-pred.rh <- predict(rh.loess, xpreds, se = TRUE)" Value="pred.rh <- predict(rh.loess, xpreds, se = TRUE)";
+CF p496 p497
+Operation p498 "498-lines(xpreds, pred.rh$fit, lty = \"solid\", lwd = 2, col = " Value="lines(xpreds, pred.rh$fit, lty = \"solid\", lwd = 2, col = \"blue\")";
+CF p497 p498
+Operation p499 "499-y.poly.rh <- c((pred.rh$fit + 1.96 * pred.rh$se.fit), (pred." Value="y.poly.rh <- c((pred.rh$fit + 1.96 * pred.rh$se.fit), (pred.rh$fit -     1.96 * pred.rh$se.fit)[order(xpreds, decreasing = TRUE)])";
+CF p498 p499
+Operation p500 "500-x.poly.rh <- c(xpreds, xpreds.rev)" Value="x.poly.rh <- c(xpreds, xpreds.rev)";
+CF p499 p500
+Operation p501 "501-polygon(x.poly.rh[!is.na(y.poly.rh)], y.poly.rh[!is.na(y.pol" Value="polygon(x.poly.rh[!is.na(y.poly.rh)], y.poly.rh[!is.na(y.poly.rh)],     col = \"#00009933\", border = NA)";
+CF p500 p501
+Operation p502 "502-text(20, 75, \"B\", cex = 1.5, font = 2)" Value="text(20, 75, \"B\", cex = 1.5, font = 2)";
+CF p501 p502
+Operation p503 "503-text(15, 2, \"1990\", cex = 0.8, font = 2)" Value="text(15, 2, \"1990\", cex = 0.8, font = 2)";
+CF p502 p503
+Operation p504 "504-text(145, 2, \"1860\", cex = 0.8, font = 2)" Value="text(145, 2, \"1860\", cex = 0.8, font = 2)";
+CF p503 p504
+Operation p505 "505-text(67, 2, \"1938\", cex = 0.8, font = 2)" Value="text(67, 2, \"1938\", cex = 0.8, font = 2)";
+CF p504 p505
+Operation p506 "506-par(mar = c(0.5, 1, 1, 1))" Value="par(mar = c(0.5, 1, 1, 1))";
+CF p505 p506
+Operation p507 "507-plot.vd <- plot(vd$dbh ~ vd$tree.age, data = vd, xlim = limi" Value="plot.vd <- plot(vd$dbh ~ vd$tree.age, data = vd, xlim = limits$xlims,     ylim = limits$ylims, xlab = \"\", ylab = \"\", axes = FALSE,     pch = 19, col = as.character(vd$tree.color))";
+CF p506 p507
+Operation p508 "508-axis(1, at = seq(15, 145, 10), labels = FALSE, tcl = -0.25, " Value="axis(1, at = seq(15, 145, 10), labels = FALSE, tcl = -0.25, lwd = 2,     font.axis = 2)";
+CF p507 p508
+Operation p509 "509-axis(4, at = seq(5, 75, 10), labels = TRUE, tcl = -0.25, lwd" Value="axis(4, at = seq(5, 75, 10), labels = TRUE, tcl = -0.25, lwd = 2,     font.axis = 2, cex.axis = 0.8, las = 1, hadj = 0.5, padj = 0.25)";
+CF p508 p509
+Operation p510 "510-axis(3, at = seq(15, 145, 10), labels = FALSE, tcl = -0.25, " Value="axis(3, at = seq(15, 145, 10), labels = FALSE, tcl = -0.25, lwd = 2,     font.axis = 2)";
+CF p509 p510
+Operation p511 "511-axis(2, at = seq(5, 75, 10), labels = FALSE, tcl = -0.25, lw" Value="axis(2, at = seq(5, 75, 10), labels = FALSE, tcl = -0.25, lwd = 2,     font.axis = 2)";
+CF p510 p511
+Operation p512 "512-box(lwd = 2)" Value="box(lwd = 2)";
+CF p511 p512
+Operation p513 "513-vd.loess <- loess(vd$dbh ~ vd$tree.age, span = 1)" Value="vd.loess <- loess(vd$dbh ~ vd$tree.age, span = 1)";
+CF p512 p513
+Operation p514 "514-pred.vd <- predict(vd.loess, xpreds, se = TRUE)" Value="pred.vd <- predict(vd.loess, xpreds, se = TRUE)";
+CF p513 p514
+Operation p515 "515-lines(xpreds, pred.vd$fit, lty = \"solid\", lwd = 2, col = " Value="lines(xpreds, pred.vd$fit, lty = \"solid\", lwd = 2, col = \"blue\")";
+CF p514 p515
+Operation p516 "516-y.poly.vd <- c((pred.vd$fit + 1.96 * pred.vd$se.fit), (pred." Value="y.poly.vd <- c((pred.vd$fit + 1.96 * pred.vd$se.fit), (pred.vd$fit -     1.96 * pred.vd$se.fit)[order(xpreds, decreasing = TRUE)])";
+CF p515 p516
+Operation p517 "517-x.poly.vd <- c(xpreds, xpreds.rev)" Value="x.poly.vd <- c(xpreds, xpreds.rev)";
+CF p516 p517
+Operation p518 "518-polygon(x.poly.vd[!is.na(y.poly.vd)], y.poly.vd[!is.na(y.pol" Value="polygon(x.poly.vd[!is.na(y.poly.vd)], y.poly.vd[!is.na(y.poly.vd)],     col = \"#00009933\", border = NA)";
+CF p517 p518
+Operation p519 "519-text(20, 75, \"C\", cex = 1.5, font = 2)" Value="text(20, 75, \"C\", cex = 1.5, font = 2)";
+CF p518 p519
+Operation p520 "520-text(15, 2, \"1990\", cex = 0.8, font = 2)" Value="text(15, 2, \"1990\", cex = 0.8, font = 2)";
+CF p519 p520
+Operation p521 "521-text(145, 2, \"1860\", cex = 0.8, font = 2)" Value="text(145, 2, \"1860\", cex = 0.8, font = 2)";
+CF p520 p521
+Operation p522 "522-text(67, 2, \"1938\", cex = 0.8, font = 2)" Value="text(67, 2, \"1938\", cex = 0.8, font = 2)";
+CF p521 p522
+Operation p523 "523-plot.rd <- plot(rd$dbh ~ rd$tree.age, data = rd, xlim = limi" Value="plot.rd <- plot(rd$dbh ~ rd$tree.age, data = rd, xlim = limits$xlims,     ylim = limits$ylims, xlab = \"\", ylab = \"\", axes = FALSE,     pch = 19, col = as.character(rd$tree.color))";
+CF p522 p523
+Operation p524 "524-axis(1, at = seq(15, 145, 10), labels = FALSE, tcl = -0.25, " Value="axis(1, at = seq(15, 145, 10), labels = FALSE, tcl = -0.25, lwd = 2,     font.axis = 2)";
+CF p523 p524
+Operation p525 "525-axis(2, at = seq(5, 75, 10), labels = FALSE, tcl = -0.25, lw" Value="axis(2, at = seq(5, 75, 10), labels = FALSE, tcl = -0.25, lwd = 2,     font.axis = 2)";
+CF p524 p525
+Operation p526 "526-axis(3, at = seq(15, 145, 10), labels = FALSE, tcl = -0.25, " Value="axis(3, at = seq(15, 145, 10), labels = FALSE, tcl = -0.25, lwd = 2,     font.axis = 2)";
+CF p525 p526
+Operation p527 "527-axis(4, at = seq(5, 75, 10), labels = FALSE, tcl = -0.25, lw" Value="axis(4, at = seq(5, 75, 10), labels = FALSE, tcl = -0.25, lwd = 2,     font.axis = 2)";
+CF p526 p527
+Operation p528 "528-box(lwd = 2)" Value="box(lwd = 2)";
+CF p527 p528
+Operation p529 "529-rd.loess <- loess(rd$dbh ~ rd$tree.age, span = 1)" Value="rd.loess <- loess(rd$dbh ~ rd$tree.age, span = 1)";
+CF p528 p529
+Operation p530 "530-pred.rd <- predict(rd.loess, xpreds, se = TRUE)" Value="pred.rd <- predict(rd.loess, xpreds, se = TRUE)";
+CF p529 p530
+Operation p531 "531-lines(xpreds, pred.rd$fit, lty = \"solid\", lwd = 2, col = " Value="lines(xpreds, pred.rd$fit, lty = \"solid\", lwd = 2, col = \"blue\")";
+CF p530 p531
+Operation p532 "532-y.poly.rd <- c((pred.rd$fit + 1.96 * pred.rd$se.fit), (pred." Value="y.poly.rd <- c((pred.rd$fit + 1.96 * pred.rd$se.fit), (pred.rd$fit -     1.96 * pred.rd$se.fit)[order(xpreds, decreasing = TRUE)])";
+CF p531 p532
+Operation p533 "533-x.poly.rd <- c(xpreds, xpreds.rev)" Value="x.poly.rd <- c(xpreds, xpreds.rev)";
+CF p532 p533
+Operation p534 "534-polygon(x.poly.rd[!is.na(y.poly.rd)], y.poly.rd[!is.na(y.pol" Value="polygon(x.poly.rd[!is.na(y.poly.rd)], y.poly.rd[!is.na(y.poly.rd)],     col = \"#00009933\", border = NA)";
+CF p533 p534
+Operation p535 "535-text(20, 75, \"D\", cex = 1.5, font = 2)" Value="text(20, 75, \"D\", cex = 1.5, font = 2)";
+CF p534 p535
+Operation p536 "536-text(15, 2, \"1990\", cex = 0.8, font = 2)" Value="text(15, 2, \"1990\", cex = 0.8, font = 2)";
+CF p535 p536
+Operation p537 "537-text(145, 2, \"1860\", cex = 0.8, font = 2)" Value="text(145, 2, \"1860\", cex = 0.8, font = 2)";
+CF p536 p537
+Operation p538 "538-text(67, 2, \"1938\", cex = 0.8, font = 2)" Value="text(67, 2, \"1938\", cex = 0.8, font = 2)";
+CF p537 p538
+Operation p539 "539-dev.off()" Value="dev.off()";
+CF p538 p539
+Finish p540 "540-Console" Value="Console";
+CF p539 p540
+DF d4 p350
+DF d4 p351
+Snapshot d51 "51-tree.sprout" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/51-tree.sprout.txt" Time="2014-07-18T11.28.40";
+DF p351 d51
+DF d4 p352
+DF d51 p354
+DF d51 p357
+Snapshot d52 "52-tree.ids" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/52-tree.ids.csv" Time="2014-07-18T11.28.40";
+DF p357 d52
+DF d52 p358
+Snapshot d53 "53-tree.age" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/53-tree.age.csv" Time="2014-07-18T11.28.40";
+DF p359 d53
+DF d53 p360
+DF d3 p364
+DF d52 p364
+DF d3 p365
+DF d52 p365
+DF d3 p366
+DF d52 p366
+DF d3 p370
+DF d52 p370
+DF d3 p371
+DF d52 p371
+DF d3 p372
+DF d52 p372
+DF d3 p376
+DF d52 p376
+DF d3 p377
+DF d52 p377
+DF d3 p378
+DF d52 p378
+DF d4 p386
+Snapshot d54 "54-genera.colors" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/54-genera.colors.csv" Time="2014-07-18T11.28.40";
+DF p389 d54
+DF d54 p390
+Snapshot d55 "55-age.cols" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/55-age.cols.csv" Time="2014-07-18T11.28.40";
+DF p390 d55
+DF d13 p391
+DF d54 p391
+Snapshot d56 "56-tree.ages" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/56-tree.ages.csv" Time="2014-07-18T11.28.40";
+DF p396 d56
+DF d56 p397
+Snapshot d57 "57-vh" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/57-vh.csv" Time="2014-07-18T11.28.40";
+DF p397 d57
+DF d56 p398
+Snapshot d58 "58-vd" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/58-vd.csv" Time="2014-07-18T11.28.40";
+DF p398 d58
+DF d56 p399
+Snapshot d59 "59-rh" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/59-rh.csv" Time="2014-07-18T11.28.40";
+DF p399 d59
+DF d56 p400
+Snapshot d60 "60-rd" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/60-rd.csv" Time="2014-07-18T11.28.40";
+DF p400 d60
+DF d57 p401
+DF d53 p401
+Snapshot d61 "61-hist.vh.age" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/61-hist.vh.age.txt" Time="2014-07-18T11.28.40";
+DF p401 d61
+DF d57 p402
+DF d53 p402
+Snapshot d62 "62-hist.vh.bet.age" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/62-hist.vh.bet.age.txt" Time="2014-07-18T11.28.40";
+DF p402 d62
+DF d57 p403
+DF d53 p403
+Snapshot d63 "63-hist.vh.acer.age" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/63-hist.vh.acer.age.txt" Time="2014-07-18T11.28.40";
+DF p403 d63
+DF d57 p404
+DF d53 p404
+Snapshot d64 "64-hist.vh.quercus.age" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/64-hist.vh.quercus.age.txt" Time="2014-07-18T11.28.40";
+DF p404 d64
+DF d57 p405
+DF d53 p405
+Snapshot d65 "65-hist.vh.pinus.age" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/65-hist.vh.pinus.age.txt" Time="2014-07-18T11.28.40";
+DF p405 d65
+DF d59 p406
+DF d53 p406
+Snapshot d66 "66-hist.rh.age" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/66-hist.rh.age.txt" Time="2014-07-18T11.28.40";
+DF p406 d66
+DF d59 p407
+DF d53 p407
+Snapshot d67 "67-hist.rh.bet.age" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/67-hist.rh.bet.age.txt" Time="2014-07-18T11.28.40";
+DF p407 d67
+DF d59 p408
+DF d53 p408
+Snapshot d68 "68-hist.rh.acer.age" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/68-hist.rh.acer.age.txt" Time="2014-07-18T11.28.40";
+DF p408 d68
+DF d59 p409
+DF d53 p409
+Snapshot d69 "69-hist.rh.quercus.age" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/69-hist.rh.quercus.age.txt" Time="2014-07-18T11.28.40";
+DF p409 d69
+DF d59 p410
+DF d53 p410
+Snapshot d70 "70-hist.rh.pinus.age" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/70-hist.rh.pinus.age.txt" Time="2014-07-18T11.28.40";
+DF p410 d70
+DF d58 p411
+DF d53 p411
+Snapshot d71 "71-hist.vd.age" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/71-hist.vd.age.txt" Time="2014-07-18T11.28.40";
+DF p411 d71
+DF d58 p412
+DF d53 p412
+Snapshot d72 "72-hist.vd.bet.age" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/72-hist.vd.bet.age.txt" Time="2014-07-18T11.28.40";
+DF p412 d72
+DF d58 p413
+DF d53 p413
+Snapshot d73 "73-hist.vd.acer.age" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/73-hist.vd.acer.age.txt" Time="2014-07-18T11.28.40";
+DF p413 d73
+DF d58 p414
+DF d53 p414
+Snapshot d74 "74-hist.vd.quercus.age" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/74-hist.vd.quercus.age.txt" Time="2014-07-18T11.28.40";
+DF p414 d74
+DF d58 p415
+DF d53 p415
+Snapshot d75 "75-hist.vd.pinus.age" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/75-hist.vd.pinus.age.txt" Time="2014-07-18T11.28.41";
+DF p415 d75
+DF d60 p416
+DF d53 p416
+Snapshot d76 "76-hist.rd.age" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/76-hist.rd.age.txt" Time="2014-07-18T11.28.41";
+DF p416 d76
+DF d60 p417
+DF d53 p417
+Snapshot d77 "77-hist.rd.bet.age" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/77-hist.rd.bet.age.txt" Time="2014-07-18T11.28.41";
+DF p417 d77
+DF d60 p418
+DF d53 p418
+Snapshot d78 "78-hist.rd.acer.age" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/78-hist.rd.acer.age.txt" Time="2014-07-18T11.28.41";
+DF p418 d78
+DF d60 p419
+DF d53 p419
+Snapshot d79 "79-hist.rd.quercus.age" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/79-hist.rd.quercus.age.txt" Time="2014-07-18T11.28.41";
+DF p419 d79
+DF d60 p420
+DF d53 p420
+Snapshot d80 "80-hist.rd.pinus.age" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/80-hist.rd.pinus.age.txt" Time="2014-07-18T11.28.41";
+DF p420 d80
+DF d57 p421
+Snapshot d81 "81-hist.vh.dbh" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/81-hist.vh.dbh.txt" Time="2014-07-18T11.28.41";
+DF p421 d81
+DF d57 p422
+Snapshot d82 "82-hist.vh.bet.dbh" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/82-hist.vh.bet.dbh.txt" Time="2014-07-18T11.28.41";
+DF p422 d82
+DF d57 p423
+Snapshot d83 "83-hist.vh.acer.dbh" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/83-hist.vh.acer.dbh.txt" Time="2014-07-18T11.28.41";
+DF p423 d83
+DF d57 p424
+Snapshot d84 "84-hist.vh.quercus.dbh" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/84-hist.vh.quercus.dbh.txt" Time="2014-07-18T11.28.41";
+DF p424 d84
+DF d57 p425
+Snapshot d85 "85-hist.vh.pinus.dbh" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/85-hist.vh.pinus.dbh.txt" Time="2014-07-18T11.28.41";
+DF p425 d85
+DF d59 p426
+Snapshot d86 "86-hist.rh.dbh" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/86-hist.rh.dbh.txt" Time="2014-07-18T11.28.41";
+DF p426 d86
+DF d59 p427
+Snapshot d87 "87-hist.rh.bet.dbh" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/87-hist.rh.bet.dbh.txt" Time="2014-07-18T11.28.41";
+DF p427 d87
+DF d59 p428
+Snapshot d88 "88-hist.rh.acer.dbh" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/88-hist.rh.acer.dbh.txt" Time="2014-07-18T11.28.41";
+DF p428 d88
+DF d59 p429
+Snapshot d89 "89-hist.rh.quercus.dbh" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/89-hist.rh.quercus.dbh.txt" Time="2014-07-18T11.28.41";
+DF p429 d89
+DF d59 p430
+Snapshot d90 "90-hist.rh.pinus.dbh" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/90-hist.rh.pinus.dbh.txt" Time="2014-07-18T11.28.41";
+DF p430 d90
+DF d58 p431
+Snapshot d91 "91-hist.vd.dbh" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/91-hist.vd.dbh.txt" Time="2014-07-18T11.28.41";
+DF p431 d91
+DF d58 p432
+Snapshot d92 "92-hist.vd.bet.dbh" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/92-hist.vd.bet.dbh.txt" Time="2014-07-18T11.28.41";
+DF p432 d92
+DF d58 p433
+Snapshot d93 "93-hist.vd.acer.dbh" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/93-hist.vd.acer.dbh.txt" Time="2014-07-18T11.28.41";
+DF p433 d93
+DF d58 p434
+Snapshot d94 "94-hist.vd.quercus.dbh" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/94-hist.vd.quercus.dbh.txt" Time="2014-07-18T11.28.41";
+DF p434 d94
+DF d58 p435
+Snapshot d95 "95-hist.vd.pinus.dbh" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/95-hist.vd.pinus.dbh.txt" Time="2014-07-18T11.28.41";
+DF p435 d95
+DF d60 p436
+Snapshot d96 "96-hist.rd.dbh" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/96-hist.rd.dbh.txt" Time="2014-07-18T11.28.41";
+DF p436 d96
+DF d60 p437
+Snapshot d97 "97-hist.rd.bet.dbh" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/97-hist.rd.bet.dbh.txt" Time="2014-07-18T11.28.41";
+DF p437 d97
+DF d60 p438
+Snapshot d98 "98-hist.rd.acer.dbh" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/98-hist.rd.acer.dbh.txt" Time="2014-07-18T11.28.41";
+DF p438 d98
+DF d60 p439
+Snapshot d99 "99-hist.rd.quercus.dbh" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/99-hist.rd.quercus.dbh.txt" Time="2014-07-18T11.28.41";
+DF p439 d99
+DF d60 p440
+Snapshot d100 "100-hist.rd.pinus.dbh" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/100-hist.rd.pinus.dbh.txt" Time="2014-07-18T11.28.41";
+DF p440 d100
+DF d61 p441
+DF d62 p441
+DF d64 p441
+DF d63 p441
+DF d65 p441
+Snapshot d101 "101-vh.ages" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/101-vh.ages.csv" Time="2014-07-18T11.28.41";
+DF p441 d101
+DF d66 p442
+DF d67 p442
+DF d69 p442
+DF d68 p442
+DF d70 p442
+Snapshot d102 "102-rh.ages" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/102-rh.ages.csv" Time="2014-07-18T11.28.41";
+DF p442 d102
+DF d71 p443
+DF d72 p443
+DF d74 p443
+DF d73 p443
+DF d75 p443
+Snapshot d103 "103-vd.ages" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/103-vd.ages.csv" Time="2014-07-18T11.28.41";
+DF p443 d103
+DF d76 p444
+DF d77 p444
+DF d79 p444
+DF d78 p444
+DF d80 p444
+Snapshot d104 "104-rd.ages" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/104-rd.ages.csv" Time="2014-07-18T11.28.41";
+DF p444 d104
+DF d81 p445
+DF d82 p445
+DF d84 p445
+DF d83 p445
+DF d85 p445
+Snapshot d105 "105-vh.dbh" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/105-vh.dbh.csv" Time="2014-07-18T11.28.41";
+DF p445 d105
+DF d86 p446
+DF d87 p446
+DF d89 p446
+DF d88 p446
+DF d90 p446
+Snapshot d106 "106-rh.dbh" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/106-rh.dbh.csv" Time="2014-07-18T11.28.41";
+DF p446 d106
+DF d91 p447
+DF d92 p447
+DF d94 p447
+DF d93 p447
+DF d95 p447
+Snapshot d107 "107-vd.dbh" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/107-vd.dbh.csv" Time="2014-07-18T11.28.41";
+DF p447 d107
+DF d96 p448
+DF d97 p448
+DF d99 p448
+DF d98 p448
+DF d100 p448
+Snapshot d108 "108-rd.dbh" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/108-rd.dbh.csv" Time="2014-07-18T11.28.41";
+DF p448 d108
+Snapshot d109 "109-five.colors" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/109-five.colors.csv" Time="2014-07-18T11.28.41";
+DF p449 d109
+Snapshot d110 "110-limits" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/110-limits.csv" Time="2014-07-18T11.28.41";
+DF p450 d110
+Snapshot d111 "111-xpreds" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/111-xpreds.csv" Time="2014-07-18T11.28.41";
+DF p451 d111
+DF d111 p452
+Snapshot d112 "112-xpreds.rev" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/112-xpreds.rev.csv" Time="2014-07-18T11.28.41";
+DF p452 d112
+DF d101 p453
+DF d102 p453
+DF d103 p453
+DF d104 p453
+Data d113 "113-maxcount.ages" Value="15";
+DF p453 d113
+DF d105 p454
+DF d106 p454
+DF d107 p454
+DF d108 p454
+Data d114 "114-maxcount.dbh" Value="29";
+DF p454 d114
+DF d101 p458
+DF d113 p458
+DF d109 p458
+DF d102 p459
+DF d113 p459
+DF d109 p459
+DF d105 p461
+DF d114 p461
+DF d109 p461
+DF d107 p464
+DF d114 p464
+DF d109 p464
+DF d106 p466
+DF d114 p466
+DF d109 p466
+DF d108 p468
+DF d114 p468
+DF d109 p468
+DF d103 p470
+DF d113 p470
+DF d109 p470
+DF d104 p471
+DF d113 p471
+DF d109 p471
+DF d57 p474
+DF d53 p474
+DF d110 p474
+Data d115 "115-plot.vh" Value="NULL";
+DF p474 d115
+DF d57 p480
+DF d53 p480
+Snapshot d116 "116-vh.loess" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/116-vh.loess.txt" Time="2014-07-18T11.28.42";
+DF p480 d116
+DF d116 p481
+DF d111 p481
+Snapshot d117 "117-pred.vh" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/117-pred.vh.csv" Time="2014-07-18T11.28.42";
+DF p481 d117
+DF d111 p482
+DF d117 p482
+DF d117 p483
+DF d111 p483
+Snapshot d118 "118-y.poly.vh" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/118-y.poly.vh.csv" Time="2014-07-18T11.28.42";
+DF p483 d118
+DF d111 p484
+DF d112 p484
+Snapshot d119 "119-x.poly.vh" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/119-x.poly.vh.csv" Time="2014-07-18T11.28.42";
+DF p484 d119
+DF d119 p485
+DF d118 p485
+DF d59 p490
+DF d53 p490
+DF d110 p490
+Data d120 "120-plot.rh" Value="NULL";
+DF p490 d120
+DF d59 p496
+DF d53 p496
+Snapshot d121 "121-rh.loess" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/121-rh.loess.txt" Time="2014-07-18T11.28.42";
+DF p496 d121
+DF d121 p497
+DF d111 p497
+Snapshot d122 "122-pred.rh" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/122-pred.rh.csv" Time="2014-07-18T11.28.42";
+DF p497 d122
+DF d111 p498
+DF d122 p498
+DF d122 p499
+DF d111 p499
+Snapshot d123 "123-y.poly.rh" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/123-y.poly.rh.csv" Time="2014-07-18T11.28.42";
+DF p499 d123
+DF d111 p500
+DF d112 p500
+Snapshot d124 "124-x.poly.rh" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/124-x.poly.rh.csv" Time="2014-07-18T11.28.42";
+DF p500 d124
+DF d124 p501
+DF d123 p501
+DF d58 p507
+DF d53 p507
+DF d110 p507
+Data d125 "125-plot.vd" Value="NULL";
+DF p507 d125
+DF d58 p513
+DF d53 p513
+Snapshot d126 "126-vd.loess" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/126-vd.loess.txt" Time="2014-07-18T11.28.42";
+DF p513 d126
+DF d126 p514
+DF d111 p514
+Snapshot d127 "127-pred.vd" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/127-pred.vd.csv" Time="2014-07-18T11.28.42";
+DF p514 d127
+DF d111 p515
+DF d127 p515
+DF d127 p516
+DF d111 p516
+Snapshot d128 "128-y.poly.vd" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/128-y.poly.vd.csv" Time="2014-07-18T11.28.42";
+DF p516 d128
+DF d111 p517
+DF d112 p517
+Snapshot d129 "129-x.poly.vd" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/129-x.poly.vd.csv" Time="2014-07-18T11.28.42";
+DF p517 d129
+DF d129 p518
+DF d128 p518
+DF d60 p523
+DF d53 p523
+DF d110 p523
+Data d130 "130-plot.rd" Value="NULL";
+DF p523 d130
+DF d60 p529
+DF d53 p529
+Snapshot d131 "131-rd.loess" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/131-rd.loess.txt" Time="2014-07-18T11.28.42";
+DF p529 d131
+DF d131 p530
+DF d111 p530
+Snapshot d132 "132-pred.rd" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/132-pred.rd.csv" Time="2014-07-18T11.28.42";
+DF p530 d132
+DF d111 p531
+DF d132 p531
+DF d132 p532
+DF d111 p532
+Snapshot d133 "133-y.poly.rd" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/133-y.poly.rd.csv" Time="2014-07-18T11.28.42";
+DF p532 d133
+DF d111 p533
+DF d112 p533
+Snapshot d134 "134-x.poly.rd" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/134-x.poly.rd.csv" Time="2014-07-18T11.28.42";
+DF p533 d134
+DF d134 p534
+DF d133 p534
+Data d135 "135-sprout" Value="1961,1917,1953,1927,1946,1937,1883,1884,1880,1883,1933,1889,1887,1955,1936,1893,1890,1921,1938,1935,1933,1929,1942,1948,1930,1889,1894,1938,1930,1971,1940,1915,1946,1880,1924,1895,1903,1926,1868,1951,1937,1932,1927,1949,1897,1926,1891,1905,1887,1940,1872,1895,1951,1900,1899,1882,1948,1876,1908,1914,1880,1899,1928,1891,1953,1942,1923,1932,1896,1902,1898,1905,1921,1921,1946,1925,1948,1988,1930,1891,1890,1910,1939,1941,1903,1915,1913,1920,1963,1953,1937,1945,1970,1958,1954,1950,1946,1956,1975,1951,1947,1957,1945,1968,1957,1947,1940,1948,1945,1941,1947,1941,1946,1952,1968,1952,1943,1910,1949,1940,1962,1949,1940,1969,1944,1950,1940,1947,1940,1977,1966,1951,1950,1956,1969,1951,1938,1957,1953,1947,1946,1941,1961,1941,1951,1940,1947,1936,1905,1874,1891,1951,1923,1948,1952,1951,1893,1935,1900,1970,1925,1950,1948,1885,1890,1893,1907,1910,1892,1949,1956,1942,1955,1909,1902,1952,1973,1954,1887,1954,1958,1916,1926,1929,1905,1961,1904,1947,1923,1955,1916,1938,1944,1953,1942,1921,1902,1902,1902,1872,1959,1908,1929,1933,1862,1947,1963,1917,1950,1937,1935,1968,1911,1940,1914,1921,1872,1937,1958,1916,1907,1929,1942,1948,1908,1944,1962,1956,1943,1928";
+DF p539 d135
+Data d136 "136-plotnum" Value="4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,6,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3";
+DF p539 d136
+Operation p541 "541-Environmental data" Value="Environmental data";
+CF p540 p541
+

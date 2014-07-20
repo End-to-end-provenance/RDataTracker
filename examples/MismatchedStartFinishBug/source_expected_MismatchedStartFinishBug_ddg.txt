@@ -1,0 +1,24 @@
+Architecture="i386"
+OperatingSystem="windows"
+Language="R"
+LanguageVersion="R version 3.1.0 (2014-04-10)"
+Script="[DIR]/MismatchedStartFinishBug.r"
+ProcessFileTimestamp="2014-07-16T16.31.19"
+WorkingDirectory="[DIR]"
+DDGDirectory="[DIR]/ddg-source"
+DateTime="2014-07-16T16.41.09"
+5
+Operation p1 "1-f <- function() {    ddg.start()    a <- 1    ddg.finish()}" Value="f <- function() {    ddg.start()    a <- 1    ddg.finish()}";
+Data d1 "1-f" Value="complex";
+DF p1 d1
+Start p2 "2-x <- f()" Value="x <- f()";
+CF p1 p2
+Start p3 "3-f" Value="f";
+CF p2 p3
+Finish p4 "4-f" Value="f";
+CF p3 p4
+Finish p5 "5-x <- f()" Value="x <- f()";
+CF p4 p5
+Data d2 "2-x" Value="\"CF p3 p4\"";
+DF p5 d2
+

@@ -26,4 +26,4 @@ ddg.data("b")
 c <- a + b
 ddg.procedure("Add", ins=list("a","b"), outs.data=list("c"))
 
-ddg.save()
+ddg.save(quit=TRUE)
