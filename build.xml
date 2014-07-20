@@ -13,7 +13,7 @@
     <target name="copy-to-directory" depends="build-directory">
     	<copy todir="${builddir}/inst">
     		<fileset dir="inst"
-      			excludes="\.* doc/*.pages doc/*.docx doc/*.pdf"/>
+      			excludes="\.* doc/*.pages doc/*.docx "/>
   		</copy>
     	<copy todir="${builddir}/man">
     		<fileset dir="man"
