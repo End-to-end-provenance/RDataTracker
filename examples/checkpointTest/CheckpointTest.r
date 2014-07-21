@@ -18,7 +18,7 @@ testDir <- "[DIR_DEFAULT]/"
 setwd(testDir)
 
 # source the RDataTracker Library
-source("../../R/RDataTracker.r")
+source("../../R/RDataTracker.R")
 
 f <- function() {
 	ddg.procedure()

@@ -8,7 +8,7 @@
 testDir <- "[DIR_DEFAULT]/"
 setwd(testDir)
 
-ddg.r.script.path = paste(testDir,"DDGHangBug.r",sep="")
+ddg.r.script.path = paste(testDir,"DDGHangBug.R",sep="")
 ddg.path = paste(testDir,"ddg",sep="")
 
 library(RDataTracker)
