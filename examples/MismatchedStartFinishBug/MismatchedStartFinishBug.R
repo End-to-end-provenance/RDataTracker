@@ -19,7 +19,7 @@ library(RDataTracker)
 testDir <- "[DIR_DEFAULT]/"
 setwd(testDir)
 
-ddg.r.script.path = paste(testDir,"MismatchedStartFinishBug.r",sep="")
+ddg.r.script.path = paste(testDir,"MismatchedStartFinishBug.R",sep="")
 ddg.path = paste(testDir,"[DDG-DIR]",sep="")
 
 options(warn=2)
