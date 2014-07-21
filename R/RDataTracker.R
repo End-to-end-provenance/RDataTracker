@@ -278,6 +278,17 @@ ddg.MAX_HIST_LINES <- 16384
 	       is.list(value) || is.vector(value) || is.matrix(value) || is.data.frame(value)))
 }
 
+# .ddg.is.object returns true if the value is determined to be an object, by our standards
+.ddg.is.object <- function(value){
+	return(is.object(value))
+}
+
+# .ddg.is.function returns true if the value is determined to be a function or we
+# want to save it as a function
+.ddg.is.function <- function(value){
+	return(is.function(value))
+}
+
 # .ddg.save.simple takes in a simple name, value pairing and saves it to the ddg.
 # It does not however create any edges.
 .ddg.save.simple <- function(name,value) {
@@ -294,13 +305,12 @@ ddg.MAX_HIST_LINES <- 16384
 	tryCatch({
 		.ddg.snapshot.node(name, fext, NULL)
 	}, error = function(e) {
-		warning(paste("Attempted to write", name, "as", fext, "snapshot. Trying jpeg", ".", e))
+		# warning(paste("Attempted to write", name, "as", fext, "snapshot. Trying jpeg", ".", e))
 		tryCatch({
 			.ddg.dec("ddg.dnum")
 			.ddg.snapshot.node(name, "jpeg", NULL)
 		}, error = function(e) {
-			warning(paste("Attempted to write", name, "as jpeg snapshot. Failed.", e, 
-			        "Defaulting to saving RObject and .txt file."))
+			 #warning(paste("Attempted to write", name, "as jpeg snapshot. Failed.", e, "Defaulting to saving RObject and .txt file."))
 			.ddg.dec("ddg.dnum")
   		.ddg.snapshot.node(name, "txt", value, save.object = TRUE)
   	})
@@ -334,7 +344,8 @@ ddg.MAX_HIST_LINES <- 16384
 	if (.ddg.is.graphic(value)) .ddg.write.graphic(name, value, graphic.fext)
 	else if (.ddg.is.simple(value)) .ddg.save.simple(name, value)
 	else if (.ddg.is.csv(value)) .ddg.write.csv(name, value)
-	else if (is.object(value)) .ddg.snapshot.node(name, "txt", value)
+	else if (.ddg.is.object(value)) .ddg.snapshot.node(name, "txt", value)
+	else if (.ddg.is.function(value)) .ddg.save.simple(name, "#ddg.function")
 	else if (error) stop("Unable to create data (snapshot) node. Non-Object value to", fname, ".")
 	else {
 		error.msg <- paste("Unable to create data (snapshot) node. Non-Object value to", fname, ".")
@@ -1459,7 +1470,10 @@ ddg.MAX_HIST_LINES <- 16384
       write(list.as.string, dpfile)
     }
     else {
-      write(as.character(data), dpfile)
+      tryCatch(write(as.character(data), dpfile),
+               error = function(e){
+               	capture.output(data, file=dpfile)
+      })
     }
 	}
 
