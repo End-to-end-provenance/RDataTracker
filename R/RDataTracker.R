@@ -289,6 +289,29 @@ ddg.MAX_HIST_LINES <- 16384
 	return(is.function(value))
 }
 
+# .ddg.dev.change determined whether or not a new graphic device has become active
+# and whether or not we should capture the previous graphic device. It returns the
+# device number we should capture (0 means we shouldn't capture any devide)
+.ddg.dev.change <- function(){
+	prev.device <- .ddg.get("prev.device")
+	curr.device <- dev.curr()
+	device.list <- dev.list()
+
+	# we've switched devices and the previous device was NOT the null device
+	# and is still accessible
+	if (names(prev.device) != "null device" && 
+	    prev.device != curr.device && 
+	    prev.device %in% device.list) {
+		.ddg.set("prev.device", curr.device)
+		return(prev.device)
+	}
+
+	else {# no switching, or previous was null device, so don't capture anything
+		return(0)
+	}
+
+}
+
 # .ddg.save.simple takes in a simple name, value pairing and saves it to the ddg.
 # It does not however create any edges.
 .ddg.save.simple <- function(name,value) {
@@ -300,7 +323,7 @@ ddg.MAX_HIST_LINES <- 16384
 # (the data) associated with it and attempts to write it out as a graphics file
 # If all else fails, it writes out the informaion as a text file and also writes
 # out an RData Object which can later be read back into the system 
-.ddg.write.graphic <- function(name, value, fext="jpeg"){
+.ddg.write.graphic <- function(name, value = NULL, fext="jpeg"){
 	# try to output graphic value
 	tryCatch({
 		.ddg.snapshot.node(name, fext, NULL)
@@ -905,6 +928,24 @@ ddg.MAX_HIST_LINES <- 16384
 			#}
 			.ddg.proc2data(cmd, var)
 		}
+
+		# Figure out if a new graphics device has been created and take a snapshot of it, setthing it as
+		# the output of this command
+		dev.to.capture <- .ddg.dev.chage()
+		if (dev.to.capture) {
+			# make the capture device active (store info on previous device)
+			prev.device <- dev.cur()
+			dev.set(dev.to.capture)
+
+			# capture it as a jpeg
+			name <- "graphic"
+			.ddg.snapshot.node(name, "jpeg", NULL)
+
+			# make the previous device active again
+			dev.set(prev.device)
+
+			# we're done, so create the edge
+			.ddg.proc2data(cmd,name)
 	}
 }
 
@@ -1416,6 +1457,26 @@ ddg.MAX_HIST_LINES <- 16384
 	return(ext %in% c("jpeg", "jpg", "tiff", "png", "bmp"))
 }
 
+# Factoring of snapshot code.
+.ddg.graphic.snapshot <-function(fext, dpfile) {
+	# pdfs require a seperate procedure
+	if (fext == "pdf") dev.copy2pdf(file=dpfile)
+
+	# at the moment, all other graphic types can be done by constructing a similar function
+	else {
+		# if jpg, we need to change it to jpeg for the function call
+		fext = ifelse(fext == "jpg", "jpeg", fext)
+
+		#First, we create a string, then convert it to an actual R expression and use that as the function.
+		strFun <- paste(fext, "(filename=dpfile, width=800, height=500)", sep="")
+		parseFun <- function(){eval(parse(text=strFun))}
+		dev.copy(parseFun)
+	
+		# turn it off (this switches back to prev device)
+		dev.off()
+	}
+}
+
 # .ddg.snapshot.node creates a data node of type Snapshot. Snapshots 
 # are used for complex data values not written to file by the main 
 # script. The contents of data are written to the file dname.fext 
@@ -1440,24 +1501,9 @@ ddg.MAX_HIST_LINES <- 16384
   	
 	# Write to file .
 	if (fext == "csv") write.csv(data, dpfile, row.names=FALSE)
-	else if (.ddg.supported.graphic(fext)){
-		# pdfs require a seperate procedure
-		if (fext == "pdf") dev.copy2pdf(file=dpfile)
 
-		# at the moment, all other graphic types can be done by constructing a similar function
-		else {
-			# if jpg, we need to change it to jpeg for the function call
-			fext = ifelse(fext == "jpg", "jpeg", fext)
-
-			#First, we create a string, then convert it to an actual R expression and use that as the function.
-			strFun <- paste(fext, "(filename=dpfile, width=800, height=500)", sep="")
-			parseFun <- function(){eval(parse(text=strFun))}
-			dev.copy(parseFun)
-		
-			# turn it off (this switches back to prev device)
-			dev.off()
-		}
-	}
+	# Capture graphic
+	else if (.ddg.supported.graphic(fext)) .ddg.graphic.snapshot()
 
 	# write out RData (this is old code, not sure if we need it)
 	else if (fext == "RData") file.rename(paste(ddg.path, "/", dname, sep=""), dpfile)
