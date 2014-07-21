@@ -128,6 +128,15 @@
       </fileset>
     </replaceregexp>
 
+    <!-- Fix line endings on all local files so diff works well -->
+    <fixcrlf srcdir="${local_dir}" 
+      includes="*.local"
+      eol="lf" 
+      eof="remove"
+      tab="remove" 
+      tablength="2"
+    />
+
     <!-- Condition checking .out files -->
   	<condition property="output-same">
       <and>
@@ -151,10 +160,10 @@
       unless="should-warn"/>
       <!-- Execute diff on .out files unless output had to be the same -->
     <exec executable="diff" unless:true="${output-same}" >
-      <arg line="${local_dir}/${out_name}.local ${local_dir}/${expected_out_name}.local" />
+      <arg line="--strip-trailing-cr ${local_dir}/${out_name}.local ${local_dir}/${expected_out_name}.local" />
     </exec>
     <exec executable="diff" unless:true="${no-source}" >
-      <arg line="${local_dir}/source_${out_name}.local ${local_dir}/source_${expected_out_name}.local" />
+      <arg line="--strip-trailing-cr ${local_dir}/source_${out_name}.local ${local_dir}/source_${expected_out_name}.local" />
     </exec>
 
       <!-- Exectute diff on .txt files -->
@@ -162,13 +171,13 @@
       Execution of diff on executed script ddg.txt files below:
     </echo>
   	<exec executable="diff" >
-  		<arg line="${local_dir}/ddg.txt.local ${local_dir}/${ddg_name}.local" />
+  		<arg line="--strip-trailing-cr ${local_dir}/ddg.txt.local ${local_dir}/${ddg_name}.local" />
   	</exec>
     <echo unless:true="${no-source}">
       Execution of diff on the sourced script ddg.txt files below: 
     </echo>
     <exec executable="diff" unless:true="${no-source}">
-      <arg line="${local_dir}/ddg-source.txt.local ${local_dir}/source_${ddg_name}.local" />
+      <arg line="--strip-trailing-cr ${local_dir}/ddg-source.txt.local ${local_dir}/source_${ddg_name}.local" />
     </exec>
   </target>
   <!--############################ End FUNCTIONS ############################-->

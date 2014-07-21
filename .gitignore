@@ -13,6 +13,7 @@
 *.jpg
 *.jpeg
 *.png
+*.tiff
 
 # Other non-essential files
 *.pages
@@ -60,3 +61,7 @@ examples/checkpointTest/testfile3.txt
 
 # PUSH PDF in /inst/doc
 !inst/doc/*.pdf
+
+# Ignore out .out files except those with expected in the name
+examples/*/*.out
+!examples/*/*expected*.out

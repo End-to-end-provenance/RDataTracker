@@ -95,9 +95,9 @@ DF d25 p13
 DF d26 p13
 File d27 "27-RCheckpointNode.java" Value="[DIR]/ddg/27-RCheckpointNode.java" Time="2014-07-18T16.33.56" Location="[DIR]/RCheckpointNode.java";
 File d28 "28-test" Value="[DIR]/ddg/28-testfile.txt" Time="2014-07-18T16.33.56" Location="[DIR]/testfile.txt";
-Exception d29 "29-error.msg" Value="\"File to copy does not exist: [DIR]/missingfile.txt\"";
+Exception d29 "29-error.msg" Value="\"File to copy does not exist: missingfile.txt\"";
 DF p13 d29
-Exception d30 "30-error.msg" Value="\"File to copy does not exist: [DIR]/missingdir/abc.txt\"";
+Exception d30 "30-error.msg" Value="\"File to copy does not exist: missingdir/abc.txt\"";
 DF p13 d30
 Operation p14 "14-f3" Value="f3";
 CF p13 p14
@@ -153,12 +153,12 @@ File d51 "51-RDataInstanceNode.java" Value="[DIR]/ddg/51-RDataInstanceNode.java"
 DF p6 d51
 File d52 "52-testfile2.txt" Value="[DIR]/ddg/52-testfile2.txt" Time="2014-07-18T16.33.57" Location="[DIR]/testfile2.txt";
 DF p6 d52
-Exception d53 "53-error.msg" Value="\"File to copy does not exist: [DIR]/missingfile.txt\"";
+Exception d53 "53-error.msg" Value="\"File to copy does not exist: missingfile.txt\"";
 DF p17 d53
 Exception d54 "54-error.msg" Value="\"No data node found for missingfile.txt\"";
 DF p17 d54
 DF p6 d0
-Exception d55 "55-error.msg" Value="\"File to copy does not exist: [DIR]/missingdir/abc.txt\"";
+Exception d55 "55-error.msg" Value="\"File to copy does not exist: missingdir/abc.txt\"";
 DF p17 d55
 Exception d56 "56-error.msg" Value="\"No data node found for abc.txt\"";
 DF p17 d56
