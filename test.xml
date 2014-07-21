@@ -1,7 +1,7 @@
 
 <project
     name="TESTS"
-	xmlns:if="ant:if"
+  xmlns:if="ant:if"
     xmlns:unless="ant:unless">
 
   <!--############################# Start Setup #############################-->
@@ -79,9 +79,9 @@
     />
 
     <!-- Execute the R Script -->
-  	<exec executable="Rscript" dir="${local_dir}" output="${TESTS.dir}/${out}" >
-  		<arg line="${script-file}" />
-  	</exec>
+    <exec executable="Rscript" dir="${local_dir}" output="${TESTS.dir}/${out}" >
+      <arg line="${script-file}" />
+    </exec>
 
     <!-- Obtain name of expected ddg.txt, expected *.out, and actual *.out -->
     <basename property="ddg_name" file="${expected_ddg}" />
@@ -138,10 +138,10 @@
     />
 
     <!-- Condition checking .out files -->
-  	<condition property="output-same">
+    <condition property="output-same">
       <and>
-			 <filesmatch file1="${local_dir}/${out_name}.local"
-            			 file2="${local_dir}/${expected_out_name}.local"/>
+       <filesmatch file1="${local_dir}/${out_name}.local"
+                   file2="${local_dir}/${expected_out_name}.local"/>
         <filesmatch file1="${local_dir}/source_${out_name}.local"
                     file2="${local_dir}/source_${expected_out_name}.local" unless:true="${no-source}"/>
       </and>
@@ -149,10 +149,10 @@
 
     <!-- Condition checking whether outputs need to match -->
     <condition property="should-warn">
-    	<or>
-    		<equals arg1="${fail_out}" arg2="false"/>
-    		<isset property="output-same" />
-    	</or>
+      <or>
+        <equals arg1="${fail_out}" arg2="false"/>
+        <isset property="output-same" />
+      </or>
     </condition>
 
     <!-- Fail unless told not to -->
@@ -170,9 +170,9 @@
     <echo>
       Execution of diff on executed script ddg.txt files below:
     </echo>
-  	<exec executable="diff" >
-  		<arg line="--strip-trailing-cr ${local_dir}/ddg.txt.local ${local_dir}/${ddg_name}.local" />
-  	</exec>
+    <exec executable="diff" >
+      <arg line="--strip-trailing-cr ${local_dir}/ddg.txt.local ${local_dir}/${ddg_name}.local" />
+    </exec>
     <echo unless:true="${no-source}">
       Execution of diff on the sourced script ddg.txt files below: 
     </echo>
@@ -184,39 +184,39 @@
 
   <!--########################## Start Basic TESTS ##########################-->
   <target name="basic-test">
-  	<antcall target="run-test">
-  		<param name="dir" value="examples/ddgTest"/>
-  		<param name="out" value="examples/ddgTest/basicTest.out"/>
-  		<param name="script-file" value="basicTest.r"/>
-  		<param name="expected_out" value="examples/ddgTest/expected_basicTest.out"/>
-  		<param name="expected_ddg" value="examples/ddgTest/expected_basicTest_ddg.txt"/>
-  		<param name="fail_out" value="true" />
+    <antcall target="run-test">
+      <param name="dir" value="examples/ddgTest"/>
+      <param name="out" value="examples/ddgTest/basicTest.out"/>
+      <param name="script-file" value="basicTest.r"/>
+      <param name="expected_out" value="examples/ddgTest/expected_basicTest.out"/>
+      <param name="expected_ddg" value="examples/ddgTest/expected_basicTest_ddg.txt"/>
+      <param name="fail_out" value="true" />
       <param name="source_test" value="true" />
-  	</antcall>
+    </antcall>
   </target>
 
   <target name="S4-object-test">
-  	<antcall target="run-test">
-  		<param name="dir" value="examples/S4ObjectTest"/>
-  		<param name="out" value="examples/S4ObjectTest/S4ObjectTest.out"/>
-  		<param name="script-file" value="S4ObjectTest.R"/>
-  		<param name="expected_out" value="examples/S4ObjectTest/expected_S4ObjectTest.out"/>
-  		<param name="expected_ddg" value="examples/S4ObjectTest/expected_S4ObjectTest_ddg.txt"/>
-  		<param name="fail_out" value="false" />
+    <antcall target="run-test">
+      <param name="dir" value="examples/S4ObjectTest"/>
+      <param name="out" value="examples/S4ObjectTest/S4ObjectTest.out"/>
+      <param name="script-file" value="S4ObjectTest.R"/>
+      <param name="expected_out" value="examples/S4ObjectTest/expected_S4ObjectTest.out"/>
+      <param name="expected_ddg" value="examples/S4ObjectTest/expected_S4ObjectTest_ddg.txt"/>
+      <param name="fail_out" value="false" />
       <param name="source_test" value="true" />
-  	</antcall>
+    </antcall>
   </target>
 
   <target name="ddg-test">
-  	<antcall target="run-test">
-  		<param name="dir" value="examples/ddgTest"/>
-  		<param name="out" value="examples/ddgTest/ddgTest.out"/>
-  		<param name="script-file" value="ddgTest.r"/>
-  		<param name="expected_out" value="examples/ddgTest/expected_ddgTest.out"/>
-  		<param name="expected_ddg" value="examples/ddgTest/expected_ddgTest_ddg.txt"/>
-  		<param name="fail_out" value="true" />
+    <antcall target="run-test">
+      <param name="dir" value="examples/ddgTest"/>
+      <param name="out" value="examples/ddgTest/ddgTest.out"/>
+      <param name="script-file" value="ddgTest.r"/>
+      <param name="expected_out" value="examples/ddgTest/expected_ddgTest.out"/>
+      <param name="expected_ddg" value="examples/ddgTest/expected_ddgTest_ddg.txt"/>
+      <param name="fail_out" value="true" />
       <param name="source_test" value="true" />
-  	</antcall>
+    </antcall>
   </target>
 
   <target name="normal-tests" depends="basic-test, S4-object-test, ddg-test">
@@ -229,27 +229,27 @@
   <!--########################## Start Checkpoint TESTS ##########################-->
 
   <target name="checkpoint-test">
-  	<antcall target="run-test">
-  		<param name="dir" value="examples/checkpointTest"/>
-  		<param name="out" value="examples/checkpointTest/checkpointTest.out"/>
-  		<param name="script-file" value="CheckpointTest.r"/>
-  		<param name="expected_out" value="examples/checkpointTest/expected_checkpointTest.out"/>
-  		<param name="expected_ddg" value="examples/checkpointTest/expected_CheckpointTest_ddg.txt"/>
-  		<param name="fail_out" value="false" />
+    <antcall target="run-test">
+      <param name="dir" value="examples/checkpointTest"/>
+      <param name="out" value="examples/checkpointTest/checkpointTest.out"/>
+      <param name="script-file" value="CheckpointTest.r"/>
+      <param name="expected_out" value="examples/checkpointTest/expected_checkpointTest.out"/>
+      <param name="expected_ddg" value="examples/checkpointTest/expected_CheckpointTest_ddg.txt"/>
+      <param name="fail_out" value="false" />
       <param name="source_test" value="true" />
-  	</antcall>
+    </antcall>
   </target>
   
   <target name="checkpoint-file-test">
-  	<antcall target="run-test">
-  		<param name="dir" value="examples/checkpointTest"/>
-  		<param name="out" value="examples/checkpointTest/checkpointFileTest.out"/>
-  		<param name="script-file" value="CheckpointFileTest.r"/>
-  		<param name="expected_out" value="examples/checkpointTest/expected_checkpointFileTest.out"/>
-  		<param name="expected_ddg" value="examples/checkpointTest/expected_CheckpointFileTest_ddg.txt"/>
-  		<param name="fail_out" value="false" />
+    <antcall target="run-test">
+      <param name="dir" value="examples/checkpointTest"/>
+      <param name="out" value="examples/checkpointTest/checkpointFileTest.out"/>
+      <param name="script-file" value="CheckpointFileTest.r"/>
+      <param name="expected_out" value="examples/checkpointTest/expected_checkpointFileTest.out"/>
+      <param name="expected_ddg" value="examples/checkpointTest/expected_CheckpointFileTest_ddg.txt"/>
+      <param name="fail_out" value="false" />
       <param name="source_test" value="true" />
-  	</antcall>
+    </antcall>
   </target>
 
   <target name="checkpoint-tests" depends="checkpoint-test, checkpoint-file-test">
@@ -361,27 +361,27 @@
   <!--########################## Start Script Tests ##########################-->
   
   <target name="calculate-square-root-1-test">
-  	<antcall target="run-test">
-  		<param name="dir" value="examples/CalculateSquareRoot"/>
-  		<param name="out" value="examples/CalculateSquareRoot/calculate-square-root-1.out"/>
-  		<param name="script-file" value="calculate-square-root-1.r"/>
-  		<param name="expected_out" value="examples/CalculateSquareRoot/expected_calculate-square-root-1.out"/>
-  		<param name="expected_ddg" value="examples/CalculateSquareRoot/expected_calculate-square-root-1_ddg.txt"/>
-  		<param name="fail_out" value="false" />
+    <antcall target="run-test">
+      <param name="dir" value="examples/CalculateSquareRoot"/>
+      <param name="out" value="examples/CalculateSquareRoot/calculate-square-root-1.out"/>
+      <param name="script-file" value="calculate-square-root-1.r"/>
+      <param name="expected_out" value="examples/CalculateSquareRoot/expected_calculate-square-root-1.out"/>
+      <param name="expected_ddg" value="examples/CalculateSquareRoot/expected_calculate-square-root-1_ddg.txt"/>
+      <param name="fail_out" value="false" />
       <param name="source_test" value="false" />
-  	</antcall>
+    </antcall>
   </target>
   
   <target name="calculate-square-root-2-test">
-  	<antcall target="run-test">
-  		<param name="dir" value="examples/CalculateSquareRoot"/>
-  		<param name="out" value="examples/CalculateSquareRoot/calculate-square-root-2.out"/>
-  		<param name="script-file" value="calculate-square-root-2.r"/>
-  		<param name="expected_out" value="examples/CalculateSquareRoot/expected_calculate-square-root-2.out"/>
-  		<param name="expected_ddg" value="examples/CalculateSquareRoot/expected_calculate-square-root-2_ddg.txt"/>
-  		<param name="fail_out" value="false" />
+    <antcall target="run-test">
+      <param name="dir" value="examples/CalculateSquareRoot"/>
+      <param name="out" value="examples/CalculateSquareRoot/calculate-square-root-2.out"/>
+      <param name="script-file" value="calculate-square-root-2.r"/>
+      <param name="expected_out" value="examples/CalculateSquareRoot/expected_calculate-square-root-2.out"/>
+      <param name="expected_ddg" value="examples/CalculateSquareRoot/expected_calculate-square-root-2_ddg.txt"/>
+      <param name="fail_out" value="false" />
       <param name="source_test" value="false" />
-  	</antcall>
+    </antcall>
   </target>
 
   <target name="calculate-square-root-tests" depends="calculate-square-root-1-test, calculate-square-root-2-test">
@@ -389,27 +389,27 @@
   </target>
   
   <target name="daily-solar-radiation-1-test">
-  	<antcall target="run-test">
-  		<param name="dir" value="examples/DailySolarRadiation"/>
-  		<param name="out" value="examples/DailySolarRadiation/daily-solar-radiation-1.out"/>
-  		<param name="script-file" value="daily-solar-radiation-1.r"/>
-  		<param name="expected_out" value="examples/DailySolarRadiation/expected_daily-solar-radiation-1.out"/>
-  		<param name="expected_ddg" value="examples/DailySolarRadiation/expected_daily-solar-radiation-1_ddg.txt"/>
-  		<param name="fail_out" value="true" />
+    <antcall target="run-test">
+      <param name="dir" value="examples/DailySolarRadiation"/>
+      <param name="out" value="examples/DailySolarRadiation/daily-solar-radiation-1.out"/>
+      <param name="script-file" value="daily-solar-radiation-1.r"/>
+      <param name="expected_out" value="examples/DailySolarRadiation/expected_daily-solar-radiation-1.out"/>
+      <param name="expected_ddg" value="examples/DailySolarRadiation/expected_daily-solar-radiation-1_ddg.txt"/>
+      <param name="fail_out" value="true" />
       <param name="source_test" value="false" />
-  	</antcall>
+    </antcall>
   </target>
   
   <target name="daily-solar-radiation-2-test">
-  	<antcall target="run-test">
-  		<param name="dir" value="examples/DailySolarRadiation"/>
-  		<param name="out" value="examples/DailySolarRadiation/daily-solar-radiation-2.out"/>
-  		<param name="script-file" value="daily-solar-radiation-2.r"/>
-  		<param name="expected_out" value="examples/DailySolarRadiation/expected_daily-solar-radiation-2.out"/>
-  		<param name="expected_ddg" value="examples/DailySolarRadiation/expected_daily-solar-radiation-2_ddg.txt"/>
-  		<param name="fail_out" value="true" />
+    <antcall target="run-test">
+      <param name="dir" value="examples/DailySolarRadiation"/>
+      <param name="out" value="examples/DailySolarRadiation/daily-solar-radiation-2.out"/>
+      <param name="script-file" value="daily-solar-radiation-2.r"/>
+      <param name="expected_out" value="examples/DailySolarRadiation/expected_daily-solar-radiation-2.out"/>
+      <param name="expected_ddg" value="examples/DailySolarRadiation/expected_daily-solar-radiation-2_ddg.txt"/>
+      <param name="fail_out" value="true" />
       <param name="source_test" value="false" />
-  	</antcall>
+    </antcall>
   </target>
 
   <target name="daily-solar-radiation-tests" depends="daily-solar-radiation-1-test, daily-solar-radiation-2-test">
@@ -491,11 +491,11 @@
   </target>
 
   <!--########################## End Bug Tests ##########################-->
-	
-	<target name="aaron-test">
-		<echo message="Please run Aaron's test in the console and compare ddg.txt with expected_ddg.txt" />
-	</target>
-	
+  
+  <target name="aaron-test">
+    <echo message="Please run Aaron's test in the console and compare ddg.txt with expected_ddg.txt" />
+  </target>
+  
   <!--################################# MAIN #################################-->
 
   <target name="test-all" depends="normal-tests, checkpoint-tests, script-tests, console-tests, bug-tests, aaron-test">
@@ -511,9 +511,9 @@
   </target>
 
   <target name="interactive-test">
-  	<exec executable="Rscript" dir="examples" >
-  		<arg line="RscriptTest.r" />
-  	</exec>
+    <exec executable="Rscript" dir="examples" >
+      <arg line="RscriptTest.r" />
+    </exec>
   </target>
 
 </project>
