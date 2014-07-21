@@ -39,9 +39,9 @@ Operation p15 "15-head(dendro)" Value="head(dendro)";
 CF p14 p15
 Finish p16 "16-Console" Value="Console";
 CF p15 p16
-Data d1 "1-filled.contour3" Value="complex";
+Data d1 "1-filled.contour3" Value="#ddg.function";
 DF p10 d1
-Data d2 "2-multiplot" Value="complex";
+Data d2 "2-multiplot" Value="#ddg.function";
 DF p11 d2
 Snapshot d3 "3-trees" Value="/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/ddg/3-trees.csv" Time="2014-07-18T11.26.51";
 DF p12 d3

@@ -1377,7 +1377,7 @@ ddg.MAX_HIST_LINES <- 16384
 		}
 		else if (is.null(dvalue)) "NULL"
 		else if (is.na(dvalue)) "NA"
-		else if (dvalue == "complex") "complex"
+		else if (dvalue == "complex" || dvalue == "#ddg.function") dvalue
 		else if (is.character(dvalue) && dvalue == "") "NotRecorded"
 		else {
 			 # Replace double quotes with single quotes.
