@@ -437,7 +437,7 @@
     <antcall target="run-test">
       <param name="dir" value="examples/DDGHangBug"/>
       <param name="out" value="examples/DDGHangBug/DDGHangBug.out"/>
-      <param name="script-file" value="DDGHangBug.r"/>
+      <param name="script-file" value="DDGHangBug.R"/>
       <param name="expected_out" value="examples/DDGHangBug/expected_DDGHangBug.out"/>
       <param name="expected_ddg" value="examples/DDGHangBug/expected_DDGHangBug_ddg.txt"/>
       <param name="fail_out" value="true" />

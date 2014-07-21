@@ -9,7 +9,7 @@ library(RDataTracker)
 testDir <- "[DIR_DEFAULT]/"
 setwd(testDir)
 
-ddg.r.script.path = paste(testDir,"consoleTest2.r",sep="")
+ddg.r.script.path = paste(testDir,"consoleTest2.R",sep="")
 ddg.path = paste(testDir,"[DDG-DIR]",sep="")
 
 ddg.init(ddg.r.script.path,
