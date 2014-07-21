@@ -623,7 +623,7 @@ ddg.MAX_HIST_LINES <- 2^14
 
 .ddg.find.var.uses <- function(main.object, all=FALSE) {
 	# Find function to filter results
-	filter <- ifelse(all, identity, unique)
+	filter <- if (all) identity else unique
 
 	# Recursive helper function
 	.ddg.find.var.uses.rec <- function(obj) {
@@ -1540,7 +1540,7 @@ ddg.MAX_HIST_LINES <- 2^14
 	   file.copy(file.loc, dpfile.out, overwrite=TRUE)
 	}
 	else {
-    	error.msg <- paste("File to copy does not exist:", file.loc) 
+    	error.msg <- paste("File to copy does not exist:", fname) 
     	.ddg.insert.error.message(error.msg)
     	return(NULL)
 	}

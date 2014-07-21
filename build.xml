@@ -29,7 +29,7 @@
   		</copy>
   		<copy todir="${builddir}/vignettes">
         <fileset dir="vignettes"
-            excludes="\.*"/>
+            includes="*.Rnw *-img/"/>
       </copy>
       <copy file="DESCRIPTION" todir="${builddir}"/>
   		<copy file="LICENSE" todir="${builddir}"/>
@@ -57,7 +57,7 @@
 		</exec>
     </target>
     
-    <target name="cran-check" depends="build">
+    <target name="cran-check" depends="copy-to-directory">
     	<exec dir="${builddir}/.." executable="R" >
   			<arg line="CMD check --as-cran ${builddir}"/>
 		</exec>
