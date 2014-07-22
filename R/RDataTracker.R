@@ -1158,7 +1158,7 @@ ddg.MAX_HIST_LINES <- 16384
 	num.new.commands <- length(new.commands)
 	num.actual.commands <- length(filtered.commands)
 	# 
-	if (num.actual.commands > 1 && .ddg.is.init()) {
+	if (num.actual.commands > 0 && .ddg.is.init()) {
 		.ddg.add.abstract.node("Start", node.name)
 		named.node.set <- TRUE
 	}
@@ -2763,27 +2763,25 @@ ddg.debug.off <- function () {
 # ddg.console.off turns off the console mode of DDG construction
 ddg.console.off <- function() {
 	if (!.ddg.is.init()) return(NULL)
-	browser()
+	#browser()
 	# capture history if console was on up to this point
 	if (interactive() && .ddg.enable.console()) {
 		.ddg.console.node()
+	}
 
 		# set the console to off
-		.ddg.set(".ddg.enable.console", FALSE)
-	}
+	.ddg.set(".ddg.enable.console", FALSE)
 }
 
 # ddg.console.on turns on the console mode of DDG construction
 ddg.console.on <- function() {
 	if (!.ddg.is.init()) return(NULL)
-	browser()
+	#browser()
 	# write a new timestamp if we're turning on the console so we only capture
 	# history from this point forward
-	if (!.ddg.enable.console()) {
-		.ddg.write.timestamp.to.history()
+	if (!.ddg.enable.console()) .ddg.write.timestamp.to.history()
 
-		.ddg.set(".ddg.enable.console", TRUE)
-	}
+	.ddg.set(".ddg.enable.console", TRUE)
 }
  
 # ddg.flush.ddg removes selected files from the DDG directory.

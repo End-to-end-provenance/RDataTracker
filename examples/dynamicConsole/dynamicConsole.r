@@ -78,6 +78,8 @@ ddg.console.off()
 h()
 ddg.console.on()
 
+# a double console empty node is creared HERE if no commands are around :(
+x <- 5
 i()
 
 # Turn off for the rest of the script

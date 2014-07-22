@@ -1,0 +1,73 @@
+Architecture="x86_64"
+OperatingSystem="windows"
+Language="R"
+LanguageVersion="R version 3.1.1 (2014-07-10)"
+RDataTrackerVersion="0.5.19"
+Script="[DIR]/dynamicConsole.r"
+ProcessFileTimestamp="2014-07-22T14.35.57"
+WorkingDirectory="[DIR]"
+DDGDirectory="[DIR]/ddg-source"
+DateTime="2014-07-22T14.41.52"
+18
+Operation p1 "1-h <- function() {    d <- 333    ddg.procedure(\"foo\", ins " Value="h <- function() {    d <- 333    ddg.procedure(\"foo\", ins = list(\"d\"))    return(d)}";
+Data d1 "1-h" Value="#ddg.function";
+DF p1 d1
+Operation p2 "2-a <- 1" Value="a <- 1";
+CF p1 p2
+Data d2 "2-a" Value="1";
+DF p2 d2
+Operation p3 "3-b <- a + 1" Value="b <- a + 1";
+CF p2 p3
+DF d2 p3
+Data d3 "3-b" Value="2";
+DF p3 d3
+Start p4 "4-f()" Value="f()";
+CF p3 p4
+Operation p5 "5-f" Value="f";
+CF p4 p5
+DF d3 p5
+Data d4 "4-a" Value="20";
+DF p5 d4
+Finish p6 "6-f()" Value="f()";
+CF p5 p6
+Operation p7 "7-c <- 100" Value="c <- 100";
+CF p6 p7
+Data d5 "5-c" Value="100";
+DF p7 d5
+Operation p8 "8-g" Value="g";
+CF p7 p8
+DF d5 p8
+Start p9 "9-d <- g(c)" Value="d <- g(c)";
+CF p8 p9
+Operation p10 "10-g" Value="g";
+CF p9 p10
+DF d5 p10
+Finish p11 "11-d <- g(c)" Value="d <- g(c)";
+CF p10 p11
+Data d6 "6-d" Value="110";
+DF p11 d6
+Operation p12 "12-foo" Value="foo";
+CF p11 p12
+DF d6 p12
+Operation p13 "13-x <- 5" Value="x <- 5";
+CF p12 p13
+Data d7 "7-x" Value="5";
+DF p13 d7
+Start p14 "14-i()" Value="i()";
+CF p13 p14
+Operation p15 "15-i" Value="i";
+CF p14 p15
+Data d8 "8-x" Value="1000";
+DF p15 d8
+Data d9 "9-xx" Value="1000";
+Operation p16 "16-j" Value="j";
+CF p15 p16
+DF d9 p16
+DF d4 p16
+Finish p17 "17-i()" Value="i()";
+CF p16 p17
+File d10 "10-foobar.csv" Value="[DIR]/ddg-source/10-foobar.csv" Time="2014-07-22T14.41.52" Location="[DIR]/foobar.csv";
+Operation p18 "18-Read raw data files" Value="Read raw data files";
+CF p17 p18
+DF d10 p18
+
