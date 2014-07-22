@@ -20,7 +20,7 @@ testDir <- "D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker
 setwd(testDir)
 
 r.script.path <- paste(getwd(),"/real-time-15min-met-test.r",sep="")
-ddgdir <- paste(getwd(),"/ddg",sep="")
+ddgdir <- paste(getwd(),"/ddg-source",sep="")
 
 ddg.init(r.script.path, ddgdir, enable.console=TRUE)
 

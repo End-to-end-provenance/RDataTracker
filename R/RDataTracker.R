@@ -164,7 +164,7 @@ ddg.MAX_HIST_LINES <- 16384
 
 	# Record the current command to be opened during console execution (used 
 	# when executing a script using ddg.source)
-	.ddg.set(".ddg.possible.new.command", NULL)
+	.ddg.set(".ddg.possible.last.command", NULL)
 
 	# Used for keeping track of current execution command
 	.ddg.set("var.num", 1)
@@ -1057,10 +1057,10 @@ ddg.MAX_HIST_LINES <- 16384
 .ddg.close.last.command.node <- function(called=".ddg.parse.commands", initial=FALSE){
 	# get both the last command and new commands
 	.ddg.last.command <- .ddg.get(".ddg.last.command")
-	.ddg.possible.new.command <- .ddg.get(".ddg.possible.new.command")
+	.ddg.possible.last.command <- .ddg.get(".ddg.possible.last.command")
 
 	# only create a finish node if a new command exists (ie, we've parsed some lines of code)
-	if (!is.null(.ddg.last.command) && (!is.null(.ddg.possible.new.command) || initial)) {
+	if (!is.null(.ddg.last.command) && (!is.null(.ddg.possible.last.command) || initial)) {
 		cmd.abbrev <- .ddg.add.abstract.node("Finish", .ddg.last.command,called=paste(called, "-> .ddg.close.last.command.node"))
 
 		# Create outflowing edges 
@@ -1077,13 +1077,13 @@ ddg.MAX_HIST_LINES <- 16384
 # Parameters - (optional) called is the calling function
 # new.command - the name of the new command which should be opened
 .ddg.open.new.command.node <- function(called=".ddg.parse.commands") {
-  new.command <- .ddg.get(".ddg.possible.new.command")
+  new.command <- .ddg.get(".ddg.possible.last.command")
 	if (!is.null(new.command)) {
 		.ddg.add.abstract.node("Start", new.command,called=paste(called, "-> .ddg.open.new.command.node"))
 
 		# Now the new command becomes the last command, and new command is null
 		.ddg.set(".ddg.last.command", new.command)
-		.ddg.set(".ddg.possible.new.command", NULL)
+		.ddg.set(".ddg.possible.last.command", NULL)
 	}
 }
 
@@ -1148,7 +1148,7 @@ ddg.MAX_HIST_LINES <- 16384
 	
 	# get the last command in the new commands and check to see if we need to create 
 	# a new .ddg.last.command node for future reference
-	.ddg.last.command <- quoted.commands[[num.new.commands]]
+	.ddg.last.command <- new.commands[[num.new.commands]]
 	if (substr(.ddg.last.command, 1, 4) == "ddg.") {
 		.ddg.last.command <- NULL
 	}
@@ -1216,8 +1216,8 @@ ddg.MAX_HIST_LINES <- 16384
          	# if we will create a node, then before execution, set this command as
          	# a possible abstraction node but only if it's not a call that itself creates
          	# abstract nodes
-  				if (!grepl("^ddg.", cmd)) .ddg.set(".ddg.possible.new.command", cmd)
-  				else if (grepl("^ddg.start", cmd) || grepl("^ddg.finish", cmd)) .ddg.set(".ddg.possible.new.command", NULL)
+  				if (!grepl("^ddg.", cmd)) .ddg.set(".ddg.possible.last.command", cmd.expr)
+  				else if (grepl("^ddg.start", cmd) || grepl("^ddg.finish", cmd)) .ddg.set(".ddg.possible.last.command", NULL)
 
          	# evaluate
   				result <- eval(cmd.expr, environ, NULL)
@@ -1239,7 +1239,7 @@ ddg.MAX_HIST_LINES <- 16384
 				# that the last command is set, is not null, and is equal to the current
 				
   			create.procedure <- create && !(!is.null(.ddg.get(".ddg.last.command")) && 
-  			                                .ddg.get(".ddg.last.command") == cmd)
+  			                                .ddg.get(".ddg.last.command") == cmd.expr)
 
   			# we want to create a procedure node for this command
   			if (create.procedure) {
@@ -1289,7 +1289,7 @@ ddg.MAX_HIST_LINES <- 16384
 	# Open up a new collapsible node in case we need to parse further later
 	if (!execute) {
 		
-		.ddg.set(".ddg.possible.new.command", .ddg.last.command)
+		.ddg.set(".ddg.possible.last.command", .ddg.last.command)
 		.ddg.set(".ddg.last.command", .ddg.last.command)
 		.ddg.open.new.command.node()
 	}
@@ -1297,7 +1297,7 @@ ddg.MAX_HIST_LINES <- 16384
 	 # Write time stamp to history.
 	.ddg.write.timestamp.to.history()
 	#print(paste("last.commad:",.ddg.get(".ddg.last.command")))
-	#print(paste("command:", .ddg.get(".ddg.possible.new.command")))
+	#print(paste("command:", .ddg.get(".ddg.possible.last.command")))
 
 }
 
