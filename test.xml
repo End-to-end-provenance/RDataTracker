@@ -522,7 +522,7 @@
   
   <!--################################# MAIN #################################-->
 
-  <target name="test-all" depends="normal-tests, checkpoint-tests, script-tests, console-tests, bug-tests, aaron-test">
+  <target name="test-all" depends="normal-tests, checkpoint-tests, script-tests, console-tests, source-tests, bug-tests, aaron-test">
       <echo>All tests makes calls to the RDataTracker Library. You might need to restart RStudio to correctly run the scripts with the updated library installed. Output is saved in tests.log.
 
       There is one test which is not run here. The test is SivanSampling-test. Run it manually, though output is random.</echo>
