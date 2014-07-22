@@ -2271,6 +2271,7 @@ ddg.url.out <- function(dname, dvalue=NULL, pname=NULL) {
 
 ddg.file.out <- function(filename, dname=NULL, pname=NULL) {
 	if (!.ddg.is.init()) return(NULL)
+	# browser()
 
 	if (is.null(dname)) dname <- basename(filename)
 	

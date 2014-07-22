@@ -1,0 +1,126 @@
+Architecture="i386"
+OperatingSystem="windows"
+Language="R"
+LanguageVersion="R version 3.1.0 (2014-04-10)"
+RDataTrackerVersion="0.5.19"
+Script="[DIR]/quality-control-15min-test.r"
+ProcessFileTimestamp="2014-07-22T13.18.28"
+WorkingDirectory="[DIR]"
+DDGDirectory="[DIR]/ddg"
+DateTime="2014-07-22T13.18.43"
+28
+Start p1 "1-main" Value="main";
+Start p2 "2-get.data" Value="get.data";
+CF p1 p2
+Operation p3 "3-read.data" Value="read.data";
+CF p2 p3
+File d1 "1-met-15min.csv" Value="[DIR]/ddg/1-met-15min.csv" Time="2014-07-22T13.18.38" Location="[DIR]/met-15min.csv";
+Data d2 "2-variable" Value="\"airt\"";
+Data d3 "3-start.date" Value="\"2012-01-01\"";
+Data d4 "4-end.date" Value="\"2012-03-31\"";
+DF d1 p3
+DF d2 p3
+DF d3 p3
+DF d4 p3
+Snapshot d5 "5-all-data.csv" Value="[DIR]/ddg/5-all-data.csv.csv" Time="2014-07-22T13.18.39";
+DF p3 d5
+Operation p4 "4-select.data" Value="select.data";
+CF p3 p4
+DF d5 p4
+DF d2 p4
+DF d3 p4
+DF d4 p4
+Snapshot d6 "6-selected-data.csv" Value="[DIR]/ddg/6-selected-data.csv.csv" Time="2014-07-22T13.18.39";
+DF p4 d6
+Finish p5 "5-get.data" Value="get.data";
+CF p4 p5
+Start p6 "6-analyze.data" Value="analyze.data";
+CF p5 p6
+Data d7 "7-num" Value="10";
+Start p7 "7-apply.test" Value="apply.test";
+CF p6 p7
+Data d8 "8-test" Value="\"min\"";
+Operation p8 "8-apply.test" Value="apply.test";
+CF p7 p8
+DF d6 p8
+DF d8 p8
+DF d7 p8
+Snapshot d9 "9-flagged-data.csv" Value="[DIR]/ddg/9-flagged-data.csv.csv" Time="2014-07-22T13.18.40";
+DF p8 d9
+Operation p9 "9-plot.data" Value="plot.data";
+CF p8 p9
+DF d9 p9
+Finish p10 "10-apply.test" Value="apply.test";
+CF p9 p10
+Start p11 "11-apply.test" Value="apply.test";
+CF p10 p11
+Data d10 "10-test" Value="\"max\"";
+Operation p12 "12-apply.test" Value="apply.test";
+CF p11 p12
+DF d6 p12
+DF d10 p12
+DF d7 p12
+Snapshot d11 "11-flagged-data.csv" Value="[DIR]/ddg/11-flagged-data.csv.csv" Time="2014-07-22T13.18.40";
+DF p12 d11
+Snapshot d12 "12-graphic" Value="[DIR]/ddg/12-graphic.jpeg" Time="2014-07-22T13.18.41";
+DF p12 d12
+Operation p13 "13-plot.data" Value="plot.data";
+CF p12 p13
+DF d11 p13
+Finish p14 "14-apply.test" Value="apply.test";
+CF p13 p14
+Start p15 "15-apply.test" Value="apply.test";
+CF p14 p15
+Data d13 "13-test" Value="\"min\"";
+Operation p16 "16-apply.test" Value="apply.test";
+CF p15 p16
+DF d6 p16
+DF d13 p16
+DF d7 p16
+Snapshot d14 "14-flagged-data.csv" Value="[DIR]/ddg/14-flagged-data.csv.csv" Time="2014-07-22T13.18.41";
+DF p16 d14
+Snapshot d15 "15-graphic" Value="[DIR]/ddg/15-graphic.jpeg" Time="2014-07-22T13.18.41";
+DF p16 d15
+Operation p17 "17-plot.data" Value="plot.data";
+CF p16 p17
+DF d14 p17
+Finish p18 "18-apply.test" Value="apply.test";
+CF p17 p18
+Start p19 "19-apply.test" Value="apply.test";
+CF p18 p19
+Data d16 "16-test" Value="\"slope\"";
+Operation p20 "20-apply.test" Value="apply.test";
+CF p19 p20
+DF d6 p20
+DF d16 p20
+DF d7 p20
+Snapshot d17 "17-flagged-data.csv" Value="[DIR]/ddg/17-flagged-data.csv.csv" Time="2014-07-22T13.18.42";
+DF p20 d17
+Snapshot d18 "18-graphic" Value="[DIR]/ddg/18-graphic.jpeg" Time="2014-07-22T13.18.43";
+DF p20 d18
+Operation p21 "21-plot.data" Value="plot.data";
+CF p20 p21
+DF d17 p21
+Finish p22 "22-apply.test" Value="apply.test";
+CF p21 p22
+Start p23 "23-save.results" Value="save.results";
+CF p22 p23
+Operation p24 "24-save.data" Value="save.data";
+CF p23 p24
+DF d17 p24
+File d19 "19-flagged-data.csv" Value="[DIR]/ddg/19-flagged-data.csv" Time="2014-07-22T13.18.43" Location="[DIR]/flagged-data.csv";
+DF p24 d19
+Snapshot d20 "20-graphic" Value="[DIR]/ddg/20-graphic.jpeg" Time="2014-07-22T13.18.43";
+DF p24 d20
+Operation p25 "25-plot.data" Value="plot.data";
+CF p24 p25
+DF d19 p25
+File d21 "21-plot.jpeg" Value="[DIR]/ddg/21-plot.jpeg" Time="2014-07-22T13.18.43" Location="[DIR]/plot.jpeg";
+DF p25 d21
+Finish p26 "26-save.results" Value="save.results";
+CF p25 p26
+Finish p27 "27-analyze.data" Value="analyze.data";
+CF p26 p27
+Finish p28 "28-main" Value="main";
+CF p27 p28
+

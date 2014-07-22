@@ -7,7 +7,7 @@
 # Create plots in gui and save as jpeg files
 # Record DDG in text format
 # Datetime field = datetime, format = YYYY-MM-DDTHH:MM:SS
-# ERB rev. 18-Sep-2013
+# ERB rev. 22-Nov-2013
 
 ### R packages
 
@@ -16,30 +16,49 @@ require(tcltk)
 require(gWidgets)
 options(guiToolkit="tcltk")
 
+### Directories
+
+#ddg.library <- Sys.getenv("DDG_LIBRARY")
+#if (ddg.library == "") {
+# ddg.library <- "c:/data/r/ddg/lib/ddg-library.r"
+#}
+#source(ddg.library)
 library(RDataTracker)
 
 ## Directories
-testDir <- "D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/QualityControl15Min/"
+testDir <- "[DIR_DEFAULT]/"
 setwd(testDir)
 
-ddg.r.script <- paste(getwd(),"/quality-control-15min-test.r",sep="")
-ddg.path <- paste(getwd(),"/ddg",sep="")
+ddg.r.script.path = paste(testDir,"quality-control-15min-test.r",sep="")
+ddg.path = paste(testDir,"[DDG-DIR]",sep="")
 
-ddg.init(r.script.path, ddg.path, enable.consoel=TRUE)
+ddg.init(ddg.r.script.path,
+         ddg.path,
+    enable.console=TRUE)
 
 ### Functions
 
-get.initial.values <- function() {
+read.data <- function(x) {
+  # get initial values
   data.file <<- "met-15min.csv"
   variable <<- "airt"
   start.date <<- "2012-01-01"
   end.date <<- "2012-03-31"
-}
-
-read.data <- function(x) {
+  
   # read data file
   zz <- read.csv(x)
-
+  
+  ddg.procedure("read.data")
+  ddg.file(data.file)
+  ddg.data("variable",variable)
+  ddg.data("start.date",start.date)
+  ddg.data("end.date",end.date)
+  ddg.data.in(data.file)
+  ddg.data.in("variable")
+  ddg.data.in("start.date")
+  ddg.data.in("end.date")
+  ddg.data.out("all-data.csv",zz)
+  
   return(zz)
 }
 
@@ -57,37 +76,15 @@ select.data <- function(zz) {
   names(zz2)[names(zz2)==variable] <- "var"  
   
   zz3 <- subset(zz2,zz2$dt>=start.date & zz2$dt<=end.date)
-
-  return(zz3)
-}
-
-INPUT <- function(message) {
-  # open dialog box for user input
-  CHOICE <- NA
-  w <- gbasicdialog(title=message, handler = function(h,...) CHOICE <<- svalue(input))
-  input <- gedit("", initial.msg="", cont=w, width=20)
-  addHandlerChanged(input, handler=function (h,...) {
-    CHOICE <<- svalue(input)
-    dispose(w)
-  })
-  visible(w, set=TRUE)
-  return(CHOICE)
-}
-
-get.input.test <- function() {
-  # name of test
-  x <- INPUT("Enter test (q=quit)")
-  x <- as.character(x)
   
-  return(x)
-}
-
-get.input.num <- function () {
-  # get number
-  x <- INPUT("Enter number")
-  x <- as.numeric(x)
-
-  return(x)
+  ddg.procedure("select.data")
+  ddg.data.in("all-data.csv")
+  ddg.data.in("variable")
+  ddg.data.in("start.date")
+  ddg.data.in("end.date")
+  ddg.data.out("selected-data.csv",zz3)
+  
+  return(zz3)
 }
 
 apply.test <- function(xx,t,n) {
@@ -127,47 +124,61 @@ apply.test <- function(xx,t,n) {
       }
     }  
   }
-
+  
+  ddg.procedure("apply.test")
+  ddg.data.in("selected-data.csv")
+  ddg.data.in("test")
+  ddg.data.in("num")
+  ddg.data.out("flagged-data.csv",xx)
+  
   return(xx)
 }
 
-plot.data <- function(xx,t,n) {
-  # create plot in gui
+plot.data <- function(xx,t,n,output) {
+  # if file, save plot as jpeg
+  if (output=="file") {
+    dpfile <- paste(getwd(),"/plot.jpeg",sep="")
+    jpeg(file=dpfile,width=800,height=500,quality=100)
+  }
+  
   rows <- nrow(xx)
   xmin <- xx$dt[1]
   xmax <- xx$dt[rows]
   xlim <- c(xmin,xmax)
   xrange <- xmax-xmin
   daterange <- c(xmin,xmax)
-
+  
   ymin <- min(xx$var,na.rm=TRUE)
   ymax <- max(xx$var,na.rm=TRUE)
   ylim <- c(ymin,ymax)
   yrange <- ymax-ymin
-
+  
   title <- paste(variable," ",t," ",n,sep="")
-
-  if (Sys.info()['sysname'] == "Darwin") {
-	  X11(15,10)
+  
+  if (output=="gui") {
+    if (Sys.info()['sysname'] == "Darwin") {
+      X11(15,10)
+    }
+    else {
+      windows(15,10)
+    }
   }
-  else {
-	  windows(15,10)
-  }
+  
   par(mar=c(5.1,5.1,5.1,10.1))
-
+  
   plot(xaxt="n",xlim,ylim,cex.main=1.7,cex.axis=1.7,cex.lab=1.7,xlab="Date",ylab=variable,main=title)
-
+  
   if (xrange<=30)axis.Date(1,at=seq(daterange[1],daterange[2],by="day"),format="%d-%b-%Y")
   if (xrange>30 && xrange<100)axis.Date(1,at=seq(daterange[1],daterange[2],by="week"),format="%d-%b-%Y")
   if (xrange>=100 && xrange <=1000) axis.Date(1,at=seq(daterange[1],daterange[2],by="month"),format="%d-%b-%Y")
   if (xrange>1000) axis.Date(1,at=seq(daterange[1],daterange[2],by="year"),format="%b-%Y")
-
+  
   good <- subset(xx,xx$flag=="")
   ques <- subset(xx,xx$flag=="Q")
-
+  
   points(good$dt,good$var,lwd=2,col="blue")
   points(ques$dt,ques$var,lwd=2,col="red")
-
+  
   labs <- c("Good","Questionable")
   cols <- c("blue","red")
   par(xpd=TRUE)
@@ -177,159 +188,66 @@ plot.data <- function(xx,t,n) {
   xrange.date = xmax.date-xmin.date
   legend(xmax.date+xrange.date/15,ymax,labs,cols,cex=1.0)
   
-  rows <- nrow(xx)
-  xmin <- xx$dt[1]
-  xmax <- xx$dt[rows]
-  xlim <- c(xmin,xmax)
-  xrange <- xmax-xmin
-  daterange <- c(xmin,xmax)
-
-  ymin <- min(xx$var,na.rm=TRUE)
-  ymax <- max(xx$var,na.rm=TRUE)
-  ylim <- c(ymin,ymax)
-  yrange <- ymax-ymin
-
-  title <- paste(variable," ",t," ",n,sep="")
-
-  par(mar=c(5.1,5.1,5.1,10.1))
-
-  plot(xaxt="n",xlim,ylim,cex.main=1.7,cex.axis=1.7,cex.lab=1.7,xlab="Date",ylab=variable,main=title)
-
-  if (xrange<=30)axis.Date(1,at=seq(daterange[1],daterange[2],by="day"),format="%d-%b-%Y")
-  if (xrange>30 && xrange<100)axis.Date(1,at=seq(daterange[1],daterange[2],by="week"),format="%d-%b-%Y")
-  if (xrange>=100 && xrange <=1000) axis.Date(1,at=seq(daterange[1],daterange[2],by="month"),format="%d-%b-%Y")
-  if (xrange>1000) axis.Date(1,at=seq(daterange[1],daterange[2],by="year"),format="%b-%Y")
-
-  good <- subset(xx,xx$flag=="")
-  ques <- subset(xx,xx$flag=="Q")
-
-  points(good$dt,good$var,lwd=2,col="blue")
-  points(ques$dt,ques$var,lwd=2,col="red")
-
-  labs <- c("Good","Questionable")
-  cols <- c("blue","red")
-  par(xpd=TRUE)
+  # if gui, save to PDF file in DDG
+  if (output=="gui") {
+    ddg.procedure("plot.data")
+    ddg.data.in("flagged-data.csv")
+  }
   
-  xmin.date = as.Date(xx$date[1])
-  xmax.date = as.Date(xx$date[rows])
-  xrange.date = xmax.date-xmin.date
-  legend(xmax.date+xrange.date/15,ymax,labs,cols,cex=1.0)
-  
-  dev.off()
+  # if file, copy jpeg file to DDG directory
+  if (output=="file") {
+    dev.off()
+    ddg.procedure("plot.data")
+    ddg.data.in("flagged-data.csv")
+    ddg.file.out("plot.jpeg")
+  }
 }
 
-save.data <- function(file.name,x) {
-  file.out <- paste(getwd(),"/",file.name,sep="")
-  write.csv(x,file.out,row.names=FALSE)
-}
-
-save.plot <- function(xx,t,n) {
-  # save final plot to jpeg file   
-  dpfile <- paste(getwd(),"/plot.jpeg",sep="")
-  jpeg(file=dpfile,width=800,height=500,quality=100)
-
-  rows <- nrow(xx)
-  xmin <- xx$dt[1]
-  xmax <- xx$dt[rows]
-  xlim <- c(xmin,xmax)
-  xrange <- xmax-xmin
-  daterange <- c(xmin,xmax)
-
-  ymin <- min(xx$var,na.rm=TRUE)
-  ymax <- max(xx$var,na.rm=TRUE)
-  ylim <- c(ymin,ymax)
-  yrange <- ymax-ymin
-
-  title <- paste(variable," ",t," ",n,sep="")
-
-  par(mar=c(5.1,5.1,5.1,10.1))
-
-  plot(xaxt="n",xlim,ylim,cex.main=1.7,cex.axis=1.7,cex.lab=1.7,xlab="Date",ylab=variable,main=title)
-
-  if (xrange<=30)axis.Date(1,at=seq(daterange[1],daterange[2],by="day"),format="%d-%b-%Y")
-  if (xrange>30 && xrange<100)axis.Date(1,at=seq(daterange[1],daterange[2],by="week"),format="%d-%b-%Y")
-  if (xrange>=100 && xrange <=1000) axis.Date(1,at=seq(daterange[1],daterange[2],by="month"),format="%d-%b-%Y")
-  if (xrange>1000) axis.Date(1,at=seq(daterange[1],daterange[2],by="year"),format="%b-%Y")
-
-  good <- subset(xx,xx$flag=="")
-  ques <- subset(xx,xx$flag=="Q")
-
-  points(good$dt,good$var,lwd=2,col="blue")
-  points(ques$dt,ques$var,lwd=2,col="red")
-
-  labs <- c("Good","Questionable")
-  cols <- c("blue","red")
-  par(xpd=TRUE)
+save.data <- function(fn,xx) {
+  file.out <- paste(getwd(),"/",fn,sep="")
+  write.csv(xx,file.out,row.names=FALSE)
   
-  xmin.date = as.Date(xx$date[1])
-  xmax.date = as.Date(xx$date[rows])
-  xrange.date = xmax.date-xmin.date
-  legend(xmax.date+xrange.date/15,ymax,labs,cols,cex=1.0)
-  
-  dev.off()
-
-  rows <- nrow(xx)
-  xmin <- xx$dt[1]
-  xmax <- xx$dt[rows]
-  xlim <- c(xmin,xmax)
-  xrange <- xmax-xmin
-  daterange <- c(xmin,xmax)
-
-  ymin <- min(xx$var,na.rm=TRUE)
-  ymax <- max(xx$var,na.rm=TRUE)
-  ylim <- c(ymin,ymax)
-  yrange <- ymax-ymin
-
-  title <- paste(variable," ",t," ",n,sep="")
-
-  par(mar=c(5.1,5.1,5.1,10.1))
-
-  plot(xaxt="n",xlim,ylim,cex.main=1.7,cex.axis=1.7,cex.lab=1.7,xlab="Date",ylab=variable,main=title)
-
-  if (xrange<=30)axis.Date(1,at=seq(daterange[1],daterange[2],by="day"),format="%d-%b-%Y")
-  if (xrange>30 && xrange<100)axis.Date(1,at=seq(daterange[1],daterange[2],by="week"),format="%d-%b-%Y")
-  if (xrange>=100 && xrange <=1000) axis.Date(1,at=seq(daterange[1],daterange[2],by="month"),format="%d-%b-%Y")
-  if (xrange>1000) axis.Date(1,at=seq(daterange[1],daterange[2],by="year"),format="%b-%Y")
-
-  good <- subset(xx,xx$flag=="")
-  ques <- subset(xx,xx$flag=="Q")
-
-  points(good$dt,good$var,lwd=2,col="blue")
-  points(ques$dt,ques$var,lwd=2,col="red")
-
-  labs <- c("Good","Questionable")
-  cols <- c("blue","red")
-  par(xpd=TRUE)
-  
-  xmin.date = as.Date(xx$date[1])
-  xmax.date = as.Date(xx$date[rows])
-  xrange.date = xmax.date-xmin.date
-  legend(xmax.date+xrange.date/15,ymax,labs,cols,cex=1.0)
-  
-  dev.off()
+  ddg.procedure("save.data")
+  ddg.data.in("flagged-data.csv")
+  ddg.file.out(fn)
 }
 
 ### Main Program
 
-get.initial.values()
+ddg.start("main")
+
+ddg.start("get.data")
+
 all.data <- read.data(data.file)
 selected.data <- select.data(all.data)
 
-input <- ""
+ddg.finish("get.data")
 
-while (input != "q") {
+ddg.start("analyze.data")
 
-  input <- get.input.test()
-  if (input != "q") {
-    test <- input
-    num <- get.input.num()
-    flagged.data <- apply.test(selected.data,test,num)
-    plot.data(flagged.data,test,num)
-  } 
+inputs <- c("min","max","min", "slope")
+num <- 10
+ddg.data("num")
 
+for (test in inputs){
+  ddg.start("apply.test")
+  ddg.data("test")
+  flagged.data <- apply.test(selected.data, test,num)
+  plot.data(flagged.data, test,num,"gui")
+  ddg.finish("apply.test")
 }
 
+ddg.start("save.results")
 
 save.data("flagged-data.csv",flagged.data)
-save.plot(flagged.data,test,num)
+plot.data(flagged.data,test,num,"file")
 
+ddg.finish("save.results")
+
+ddg.finish("analyze.data")
+
+ddg.finish("main")
+
+for (i in length(inputs)) dev.off()
+
+ddg.save(quit=TRUE)
