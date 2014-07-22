@@ -872,7 +872,7 @@ ddg.MAX_HIST_LINES <- 16384
 
 		# we're done, so create the edge
 		if(is.null(cmd.abbrev)) .ddg.lastproc2data(name)
-		else .ddg.data2proc(name,cmd.abbrev)
+		else .ddg.proc2data(name,cmd.abbrev)
 	}
 }
 
@@ -1262,9 +1262,6 @@ ddg.MAX_HIST_LINES <- 16384
 					if (.ddg.debug()) print(paste(".ddg.parse.console.node: Adding input data nodes for", cmd.abbrev))
 					.ddg.create.data.set.edges.for.console.cmd(vars.set, cmd.abbrev, cmd.expr, i)
 					if (.ddg.debug()) print(paste(".ddg.parse.console.node: Adding output data nodes for", cmd.abbrev))
-
-					# add graphic output
-					if (execute) .ddg.auto.graphic.node(cmd.abbrev)
 				}
 				# we wanted to create it but it matched a last command node
 				else if (create && execute) .ddg.close.last.command.node(initial=TRUE)
@@ -1319,17 +1316,13 @@ ddg.MAX_HIST_LINES <- 16384
 	
 	# new commands since last timestamp
 	if (!is.null(parsed.commands)) .ddg.parse.commands(parsed.commands)
-
-	# create graphic nodes set in this console node
-	# browser()
-	.ddg.auto.graphic.node()
 }
 
 # .ddg.proc.node creates a procedure node.
 .ddg.proc.node <- function(ptype, pname, pvalue="", console=FALSE) {
 
-	# the console is and we're in the middle of automatic processing
-	if (!console && .ddg.enable.console())
+	# we're not in a console node but we're capturing data automatically
+	if (!console && .ddg.enable.console()) {
 		# we're sourcing, so regardless of interactivity, capcture commands
 		if (.ddg.is.set("from.source") && .ddg.get("from.source")) {
 			.ddg.close.last.command.node(called=".ddg.proc.node")
@@ -1337,9 +1330,11 @@ ddg.MAX_HIST_LINES <- 16384
 		}
 		# running interactively, so parse command history by making a console node
 		else if (interactive()) .ddg.console.node()
-		
-		# else (we probably should never hit this, but do nothing)
-  
+
+		# things we ALWAYS want to do
+		.ddg.auto.graphic.node(pname)
+  }
+
 	# Increment procedure counter.
 	.ddg.inc("ddg.pnum")
 

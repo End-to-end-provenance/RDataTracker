@@ -227,7 +227,7 @@ save.plot <- function(zz,v,d) {
 
   lines(zz[c("dt",v)],lwd=2,col="blue")
 
-  dev.off()
+  # dev.off()
 }
 
 ### Main Program
