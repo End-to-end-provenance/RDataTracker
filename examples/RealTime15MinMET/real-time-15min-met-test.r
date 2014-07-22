@@ -165,6 +165,7 @@ plot.data <- function(zz,v,d) {
   if (xrange>1000) axis.Date(1,at=seq(daterange[1],daterange[2],by="year"),format="%b-%Y")
 
   lines(zz[c("dt",v)],lwd=2,col="blue")
+  ddg.procedure(lookup.ins=T)
 
   # dev.off()
 }

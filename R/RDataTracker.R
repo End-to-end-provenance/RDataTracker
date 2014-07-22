@@ -160,11 +160,11 @@ ddg.MAX_HIST_LINES <- 16384
           checkpoint.name=character(ddg.MAX_CHECKPOINTS), stringsAsFactors=FALSE))
 	
 	# Record last command from the preceding console block.
-	.ddg.set(".ddg.last.command", NULL)
+	.ddg.set(".ddg.last.cmd", NULL)
 
 	# Record the current command to be opened during console execution (used 
 	# when executing a script using ddg.source)
-	.ddg.set(".ddg.possible.last.command", NULL)
+	.ddg.set(".ddg.possible.last.cmd", NULL)
 
 	# Used for keeping track of current execution command
 	.ddg.set("var.num", 1)
@@ -297,18 +297,17 @@ ddg.MAX_HIST_LINES <- 16384
 	curr.device <- dev.cur()
 	device.list <- dev.list()
 
-	# we've switched devices and the previous device was NOT the null device
-	# and is still accessible
-	if (names(prev.device) != "null device" && 
-	    prev.device != curr.device && 
-	    prev.device %in% device.list) {
+	# we've switched devices 
+	if (prev.device != curr.device) {
+		# update device
 		.ddg.set("prev.device", curr.device)
-		return(prev.device)
+
+		# previous device still accessible
+		if (prev.device %in% device.list) return(prev.device)
 	}
 
-	else {# no switching, or previous was null device, so don't capture anything
-		return(0)
-	}
+	# no switching, or previous is not accessible (null or removed)
+	return(0)
 
 }
 
@@ -451,6 +450,7 @@ ddg.MAX_HIST_LINES <- 16384
 	}
 
 	# Error message if no match is found.
+	# browser()
     error.msg <- paste("No procedure node found for", pname)
     .ddg.insert.error.message(error.msg)  
 	return(0)
@@ -826,7 +826,7 @@ ddg.MAX_HIST_LINES <- 16384
 # The value must exist beforehand.
 
 # THIS IS NOT USED ANYWHERE BECAUSE IT DID NOT WORK AS EXPECTED
-.ddg.create.data.edges.for.cmd <- function(cmd,cmd.expr, environ=.GlobalEnv) {
+.ddg.create.data.edges.for.cmd <- function(cmd.abbrev,cmd.expr, environ=.GlobalEnv) {
 	all.vars.used <- .ddg.find.var.uses(cmd.expr,all=TRUE)
 	unique.vars.used <- unique(unlist(all.vars.used))
 
@@ -835,7 +835,7 @@ ddg.MAX_HIST_LINES <- 16384
 		num.var <- sum(all.vars.used == var)
 
 		# variable exists, so this is an unput
-		if (.ddg.data.node.exists(var)) .ddg.data2proc(var,cmd)
+		if (.ddg.data.node.exists(var)) .ddg.data2proc(var,cmd.abbrev)
 
 		# variable does not exist or occurs more than once
 		if (!.ddg.data.node.exists(var) || num.var > 1) {
@@ -847,7 +847,7 @@ ddg.MAX_HIST_LINES <- 16384
 			         error = function(e){.ddg.data.node("Data", var, "complex")})
 
 
-			.ddg.proc2data(cmd,var)
+			.ddg.proc2data(cmd.abbrev,var)
 		}
 	}
 }
@@ -855,7 +855,7 @@ ddg.MAX_HIST_LINES <- 16384
 # .ddg.auto.graphic.node attempts to figure out if a new graphics device has been 
 # created and take a snapshot of previously active device, setthing the snapshot node 
 # as the output of the specified command
-.ddg.auto.graphic.node <- function(cmd) {
+.ddg.auto.graphic.node <- function(cmd.abbrev = NULL) {
 	
 	dev.to.capture <- .ddg.dev.change()
 	if (dev.to.capture) {
@@ -865,13 +865,14 @@ ddg.MAX_HIST_LINES <- 16384
 
 		# capture it as a jpeg
 		name <- "graphic"
-		.ddg.snapshot.node(name, "jpeg", NULL)
+		.ddg.snapshot.node(name, fext="jpeg", data=NULL)
 
 		# make the previous device active again
 		dev.set(prev.device)
 
 		# we're done, so create the edge
-		.ddg.proc2data(cmd,name)
+		if(is.null(cmd.abbrev)) .ddg.lastproc2data(name)
+		else .ddg.data2proc(name,cmd.abbrev)
 	}
 }
 
@@ -881,7 +882,7 @@ ddg.MAX_HIST_LINES <- 16384
 # exists prior to starting the console block, or corresponds to the 
 # last setting of this variable in the console block.
 
-.ddg.create.data.use.edges.for.console.cmd <- function (vars.set, cmd, cmd.expr, cmd.pos) {
+.ddg.create.data.use.edges.for.console.cmd <- function (vars.set, cmd.abbrev, cmd.expr, cmd.pos) {
 	# Find all the variables used in this command.
 	vars.used <- .ddg.find.var.uses(cmd.expr)
 	
@@ -899,7 +900,7 @@ ddg.MAX_HIST_LINES <- 16384
         # before the console block or to the last writer of this 
         # variable within the console block.
 				if (cmd.pos <= first.writer || cmd.pos > last.writer) {
-					.ddg.data2proc(var, cmd)
+					.ddg.data2proc(var, cmd.abbrev)
 				}
 
 				# TODO - add some sort of warning to the user that the node is not being created
@@ -908,7 +909,7 @@ ddg.MAX_HIST_LINES <- 16384
 			# The variable is not set at all in this console block.  Connect 
       # to a pre-existing data node.
 			else {
-				.ddg.data2proc(var, cmd)
+				.ddg.data2proc(var, cmd.abbrev)
 			}
 		}
 		else {
@@ -927,7 +928,7 @@ ddg.MAX_HIST_LINES <- 16384
 # occurs after the last possible writer. A snapshot node is created 
 # if the value is a data frame.  Otherwise, a data node is created.
 
-.ddg.create.data.set.edges.for.console.cmd <- function(vars.set, cmd, cmd.expr, cmd.pos, for.finish.node = FALSE) {
+.ddg.create.data.set.edges.for.console.cmd <- function(vars.set, cmd.abbrev, cmd.expr, cmd.pos, for.finish.node = FALSE) {
 	vars.assigned <- .ddg.find.assign (cmd.expr)
 	for (var in vars.assigned) {
 		
@@ -949,7 +950,7 @@ ddg.MAX_HIST_LINES <- 16384
 			#else {
 			#	.ddg.data.node("Data", var, "complex")
 			#}
-			.ddg.proc2data(cmd, var)
+			.ddg.proc2data(cmd.abbrev, var)
 		}
 	}
 }
@@ -975,9 +976,6 @@ ddg.MAX_HIST_LINES <- 16384
 			}
 		}
 	}
-
-	# capture any automatically generated graphics for this command
-	.ddg.auto.graphic.node(last.command)
 }
 
 # .ddg.abbrev.cmd abbreviates a command to the specified length.
@@ -1052,38 +1050,38 @@ ddg.MAX_HIST_LINES <- 16384
 }
 
 # .ddg.close.last.command.node closes the last created collapsible node stored
-# in .ddg.last.command DDG property. The optional parameter called is used when 
+# in .ddg.last.cmd DDG property. The optional parameter called is used when 
 # debugging for printing the function which called .ddg.close.previous.command.
 .ddg.close.last.command.node <- function(called=".ddg.parse.commands", initial=FALSE){
 	# get both the last command and new commands
-	.ddg.last.command <- .ddg.get(".ddg.last.command")
-	.ddg.possible.last.command <- .ddg.get(".ddg.possible.last.command")
+	.ddg.last.cmd <- .ddg.get(".ddg.last.cmd")
+	.ddg.possible.last.cmd <- .ddg.get(".ddg.possible.last.cmd")
 
 	# only create a finish node if a new command exists (ie, we've parsed some lines of code)
-	if (!is.null(.ddg.last.command) && (!is.null(.ddg.possible.last.command) || initial)) {
-		cmd.abbrev <- .ddg.add.abstract.node("Finish", .ddg.last.command,called=paste(called, "-> .ddg.close.last.command.node"))
+	if (!is.null(.ddg.last.cmd) && (!is.null(.ddg.possible.last.cmd) || initial)) {
+		cmd.abbrev <- .ddg.add.abstract.node("Finish", .ddg.last.cmd$abbrev,called=paste(called, "-> .ddg.close.last.command.node"))
 
 		# Create outflowing edges 
-		vars.set <- .ddg.find.var.assignments(.ddg.last.command)
-		.ddg.create.data.set.edges.for.console.cmd(vars.set, cmd.abbrev, parse(text=gsub("\\\\\"", "\\\"",.ddg.last.command)), 0, for.finish.node = TRUE)
+		vars.set <- .ddg.find.var.assignments(.ddg.last.cmd)
+		.ddg.create.data.set.edges.for.console.cmd(vars.set, .ddg.last.cmd$abbrev, .ddg.last.cmd$expr, 1, for.finish.node = TRUE)
 
 		# No previous command
-		.ddg.set(".ddg.last.command", NULL)
+		.ddg.set(".ddg.last.cmd", NULL)
 	}
 }
 
 # .ddg.open.new.command.node opens a new collapsible command node depending on 
-# the informationo stored in .ddg.last.command.
+# the informationo stored in .ddg.last.cmd.
 # Parameters - (optional) called is the calling function
 # new.command - the name of the new command which should be opened
 .ddg.open.new.command.node <- function(called=".ddg.parse.commands") {
-  new.command <- .ddg.get(".ddg.possible.last.command")
+  new.command <- .ddg.get(".ddg.possible.last.cmd")
 	if (!is.null(new.command)) {
-		.ddg.add.abstract.node("Start", new.command,called=paste(called, "-> .ddg.open.new.command.node"))
+		.ddg.add.abstract.node("Start", new.command$abbrev, called=paste(called, "-> .ddg.open.new.command.node"))
 
 		# Now the new command becomes the last command, and new command is null
-		.ddg.set(".ddg.last.command", new.command)
-		.ddg.set(".ddg.possible.last.command", NULL)
+		.ddg.set(".ddg.last.cmd", new.command)
+		.ddg.set(".ddg.possible.last.cmd", NULL)
 	}
 }
 
@@ -1147,10 +1145,11 @@ ddg.MAX_HIST_LINES <- 16384
 	quoted.commands <- gsub("\\\"", "\\\\\"", new.commands)
 	
 	# get the last command in the new commands and check to see if we need to create 
-	# a new .ddg.last.command node for future reference
-	.ddg.last.command <- quoted.commands[[num.new.commands]]
-	if (substr(.ddg.last.command, 1, 4) == "ddg.") {
-		.ddg.last.command <- NULL
+	# a new .ddg.last.cmd node for future reference
+	.ddg.last.cmd <- list("abbrev" = .ddg.abbrev.cmd(quoted.commands[[num.new.commands]]), 
+	                      "expr" = parsed.commands[[num.new.commands]])
+	if (substr(.ddg.last.cmd$abbrev, 1, 4) == "ddg.") {
+		.ddg.last.cmd <- NULL
 	}
 	else if (!execute) {
 		quoted.commands <- quoted.commands[1:num.new.commands-1]
@@ -1216,8 +1215,9 @@ ddg.MAX_HIST_LINES <- 16384
          	# if we will create a node, then before execution, set this command as
          	# a possible abstraction node but only if it's not a call that itself creates
          	# abstract nodes
-  				if (!grepl("^ddg.", cmd)) .ddg.set(".ddg.possible.last.command", cmd)
-  				else if (grepl("^ddg.start", cmd) || grepl("^ddg.finish", cmd)) .ddg.set(".ddg.possible.last.command", NULL)
+  				if (!grepl("^ddg.", cmd)) .ddg.set(".ddg.possible.last.cmd", list("abbrev"=cmd.abbrev,
+  				                                   "expr"=cmd.expr))
+  				else if (grepl("^ddg.start", cmd) || grepl("^ddg.finish", cmd)) .ddg.set(".ddg.possible.last.cmd", NULL)
 
          	# evaluate
   				result <- eval(cmd.expr, environ, NULL)
@@ -1229,7 +1229,7 @@ ddg.MAX_HIST_LINES <- 16384
   				# but only if the next command is NOT a ddg command
   				#if(grepl("^ddg.init", cmd) && .ddg.enable.console()) { 
   				#	.ddg.add.abstract.node("Start", "Console")
-  				#	.ddg.set(".ddg.last.command", "Console")
+  				#	.ddg.set(".ddg.last.cmd", list(text="Console",expr="Console"))
   				#}
   			}
 
@@ -1238,8 +1238,8 @@ ddg.MAX_HIST_LINES <- 16384
   			# command has now become a collapsible node). Matching a last command means
 				# that the last command is set, is not null, and is equal to the current
 				
-  			create.procedure <- create && !(!is.null(.ddg.get(".ddg.last.command")) && 
-  			                                .ddg.get(".ddg.last.command") == cmd)
+  			create.procedure <- create && !(!is.null(.ddg.get(".ddg.last.cmd")) && 
+  			                                .ddg.get(".ddg.last.cmd")$expr == cmd.expr)
 
   			# we want to create a procedure node for this command
   			if (create.procedure) {
@@ -1289,15 +1289,15 @@ ddg.MAX_HIST_LINES <- 16384
 	# Open up a new collapsible node in case we need to parse further later
 	if (!execute) {
 		
-		.ddg.set(".ddg.possible.last.command", .ddg.last.command)
-		.ddg.set(".ddg.last.command", .ddg.last.command)
+		.ddg.set(".ddg.possible.last.cmd", .ddg.last.cmd)
+		.ddg.set(".ddg.last.cmd", .ddg.last.cmd)
 		.ddg.open.new.command.node()
 	}
 
 	 # Write time stamp to history.
 	.ddg.write.timestamp.to.history()
-	#print(paste("last.commad:",.ddg.get(".ddg.last.command")))
-	#print(paste("command:", .ddg.get(".ddg.possible.last.command")))
+	#print(paste("last.commad:",.ddg.get(".ddg.last.cmd")))
+	#print(paste("command:", .ddg.get(".ddg.possible.last.cmd")))
 
 }
 
@@ -1317,11 +1317,12 @@ ddg.MAX_HIST_LINES <- 16384
 	# Parse the lines into individual commands
 	parsed.commands <- .ddg.parse.lines(new.lines)
 	
-	# no new commands since last timestamp
-	if (is.null(parsed.commands)) return (NULL)	
+	# new commands since last timestamp
+	if (!is.null(parsed.commands)) .ddg.parse.commands(parsed.commands)
 
-	# Parse the commands into a console node
-	.ddg.parse.commands(parsed.commands)
+	# create graphic nodes set in this console node
+	# browser()
+	.ddg.auto.graphic.node()
 }
 
 # .ddg.proc.node creates a procedure node.
@@ -1335,7 +1336,7 @@ ddg.MAX_HIST_LINES <- 16384
 			.ddg.open.new.command.node(called=".ddg.proc.node")
 		}
 		# running interactively, so parse command history by making a console node
-		else if (interactive()) .ddg.console.node() 
+		else if (interactive()) .ddg.console.node()
 		
 		# else (we probably should never hit this, but do nothing)
   
@@ -1515,7 +1516,7 @@ ddg.MAX_HIST_LINES <- 16384
 	if (fext == "csv") write.csv(data, dpfile, row.names=FALSE)
 
 	# Capture graphic
-	else if (.ddg.supported.graphic(fext)) .ddg.graphic.snapshot()
+	else if (.ddg.supported.graphic(fext)) .ddg.graphic.snapshot(fext, dpfile)
 
 	# write out RData (this is old code, not sure if we need it)
 	else if (fext == "RData") file.rename(paste(ddg.path, "/", dname, sep=""), dpfile)
