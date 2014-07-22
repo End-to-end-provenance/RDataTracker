@@ -1,0 +1,38 @@
+Architecture="x86_64"
+OperatingSystem="unix"
+Language="R"
+LanguageVersion="R version 3.1.0 Patched (2014-05-20 r65701)"
+Script="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/ScopeTest/ReturnTest.R"
+ProcessFileTimestamp="2014-07-21T16.14.18"
+WorkingDirectory="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/ScopeTest/local"
+DDGDirectory="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/ScopeTest/ddg"
+DateTime="2014-07-21T16.32.12"
+5
+Data d1 "1-a" Value="1";
+Data d2 "2-b" Value="2";
+Binding p1 "1-p_a  <-  a"
+DF d1 p1
+Data d3 "3-p_a" Value="1";
+DF p1 d3
+Operation p2 "2-f2" Value="f2";
+DF d3 p2
+CF p1 p2
+Data d4 "4-f2(a) return" Value="10";
+DF p2 d4
+Binding p3 "3-p_a  <-  b"
+CF p2 p3
+DF d2 p3
+Data d5 "5-p_a" Value="2";
+DF p3 d5
+Operation p4 "4-f2" Value="f2";
+DF d5 p4
+CF p3 p4
+Data d6 "6-f2(b) return" Value="10";
+DF p4 d6
+Operation p5 "5-f2" Value="f2";
+Exception d7 "7-error.msg" Value="\"Skipping parameter p_a\"";
+DF p5 d7
+CF p4 p5
+Data d8 "8-f2(p_a) return" Value="10";
+DF p5 d8
+
