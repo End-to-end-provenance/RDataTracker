@@ -16,11 +16,11 @@ options(guiToolkit="tcltk")
 library(RDataTracker)
 
 ## Directories
-testDir <- "D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/RealTime15MinMET/"
+testDir <- "[DIR_DEFAULT]/"
 setwd(testDir)
 
-r.script.path <- paste(getwd(),"/real-time-15min-met-test.r",sep="")
-ddgdir <- paste(getwd(),"/ddg-source",sep="")
+r.script.path <- paste(testDir,"real-time-15min-met-test.r",sep="")
+ddgdir <- paste(testDir,"[DDG-DIR]",sep="")
 
 ddg.init(r.script.path, ddgdir, enable.console=TRUE)
 
@@ -74,37 +74,6 @@ get.final.data <- function(archive.data,current.data) {
 save.data <- function(file.name,x) {
   file.out <- paste(getwd(),"/",file.name,sep="")
   write.csv(x,file.out,row.names=FALSE)
-}
-
-INPUT <- function(message) {
-  # open dialog box for user input
-  CHOICE <- NA
-  w <- gbasicdialog(title=message, handler = function(h,...) CHOICE <<- svalue(input))
-  input <- gedit("", initial.msg="", cont=w, width=20)
-  addHandlerChanged(input, handler=function (h,...) {
-    CHOICE <<- svalue(input)
-    dispose(w)
-  })
-  visible(w, set=TRUE)
-  return(CHOICE)
-}
-
-get.input.var <- function() {
-  # get variable name
-  x <- INPUT("Enter variable (q=quit)")
-  x <- as.character(x)
-
-  return(x)
-}
-
-get.input.days <- function () {
-  # get number of days
-  x <- INPUT("Enter no. of days")
-  x <- as.numeric(x)
-  # limit to one year
-  if (x > 365) x <- 365
-  
-  return(x)
 }
                                         
 plot.data <- function(zz,v,d) {
@@ -239,20 +208,23 @@ current.data <- get.current.data(current.url)
 final.data <- get.final.data(archive.data,current.data)
 save.data("final-data.csv",final.data)
                      
-input <- ""
+inputs <- c("airt", "dewp", "wspd")
+days <- 10
+ddg.data("days")
 
-while (input != "q") {
+for (input in inputs) {
   ddg.start("Loop")
-  input <- get.input.var()
-  if (input != "q") {
-    variable <- input
-    days <- get.input.days()
-	
-	plot.data(final.data,variable,days)
-  }
+  ddg.data("input")
+	plot.data(final.data,input,days)
   ddg.finish("Loop")
+  last <- input
 }
 
-save.plot(final.data,variable,days)
+save.plot(final.data,last,days)
+
+# close off the outputs
+for (i in 1:length(inputs)) {
+  dev.off()
+}
 
 ddg.save(quit=TRUE)

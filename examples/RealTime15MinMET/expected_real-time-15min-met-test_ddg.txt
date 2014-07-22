@@ -1,0 +1,49 @@
+Architecture="i386"
+OperatingSystem="windows"
+Language="R"
+LanguageVersion="R version 3.1.0 (2014-04-10)"
+RDataTrackerVersion="0.5.19"
+Script="[DIR]/real-time-15min-met-test.r"
+ProcessFileTimestamp="2014-07-22T01.18.38"
+WorkingDirectory="[DIR]"
+DDGDirectory="[DIR]/ddg"
+DateTime="2014-07-22T01.21.19"
+9
+Data d1 "1-days" Value="10";
+Start p1 "1-Loop" Value="Loop";
+Data d2 "2-input" Value="\"airt\"";
+Operation p2 "2-plot.data" Value="plot.data";
+CF p1 p2
+Exception d3 "3-error.msg" Value="\"Skipping parameter final.data\"";
+DF p2 d3
+DF d2 p2
+DF d1 p2
+Finish p3 "3-Loop" Value="Loop";
+CF p2 p3
+Start p4 "4-Loop" Value="Loop";
+CF p3 p4
+Data d4 "4-input" Value="\"dewp\"";
+Snapshot d5 "5-graphic" Value="[DIR]/ddg/5-graphic.jpeg" Time="2014-07-22T01.21.19";
+DF p3 d5
+Operation p5 "5-plot.data" Value="plot.data";
+CF p4 p5
+Exception d6 "6-error.msg" Value="\"Skipping parameter final.data\"";
+DF p5 d6
+DF d4 p5
+DF d1 p5
+Finish p6 "6-Loop" Value="Loop";
+CF p5 p6
+Start p7 "7-Loop" Value="Loop";
+CF p6 p7
+Data d7 "7-input" Value="\"wspd\"";
+Snapshot d8 "8-graphic" Value="[DIR]/ddg/8-graphic.jpeg" Time="2014-07-22T01.21.19";
+DF p6 d8
+Operation p8 "8-plot.data" Value="plot.data";
+CF p7 p8
+Exception d9 "9-error.msg" Value="\"Skipping parameter final.data\"";
+DF p8 d9
+DF d7 p8
+DF d1 p8
+Finish p9 "9-Loop" Value="Loop";
+CF p8 p9
+

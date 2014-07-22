@@ -435,6 +435,12 @@ ddg.MAX_HIST_LINES <- 16384
 	if (.ddg.debug()) print(paste("Adding data node", ddg.dnum, "named", dname))
 }
 
+# .ddg.is.proc.node returns true if type is one which is considered a procedure
+# node by use. That means, it can have input/output edges in the expanded DDG
+.ddg.is.proc.node <- function(type) {
+	return(type == "Operation" | type == "Checkpoint" | type == "Restore" | type == "Finish" )
+}
+
 # .ddg.proc.number gets the number of the nearest preceding matching 
 # Operation, Checkpoint, or Restore node. It returns zero if no match 
 # is found.
@@ -444,15 +450,28 @@ ddg.MAX_HIST_LINES <- 16384
 	rows <- nrow(ddg.proc.nodes)
 	for (i in rows:1) {
 		type <- ddg.proc.nodes$ddg.type[i]
-		if ((type == "Operation" | type == "Checkpoint" | type == "Restore" | type == "Finish" ) & ddg.proc.nodes$ddg.name[i] == pname) {
+		if (.ddg.is.proc.node(type) & ddg.proc.nodes$ddg.name[i] == pname) {
 			return(ddg.proc.nodes$ddg.num[i])
 		}
 	}
 
 	# Error message if no match is found.
 	# browser()
-    error.msg <- paste("No procedure node found for", pname)
-    .ddg.insert.error.message(error.msg)  
+  error.msg <- paste("No procedure node found for", pname)
+  .ddg.insert.error.message(error.msg)  
+	return(0)
+}
+
+.ddg.last.proc.number <- function() {
+	ddg.proc.nodes <- .ddg.proc.nodes()
+	rows <- nrow(ddg.proc.nodes)
+	for (i in rows:1) {
+		type <- ddg.proc.nodes$ddg.type[i]
+		if (.ddg.is.proc.node(type)) return(i)
+	}
+
+	error.msg <- paste("No final procedure nodes")
+  .ddg.insert.error.message(error.msg)  
 	return(0)
 }
 
@@ -556,10 +575,10 @@ ddg.MAX_HIST_LINES <- 16384
 # .ddg.lastproc2data creates a data flow edge from the last procedure 
 # node to a data node.
 
-.ddg.lastproc2data <- function(dname) {
+.ddg.lastproc2data <- function(dname, all=TRUE) {
 	# Get data & procedure numbers.
 	dn <- .ddg.data.number(dname)
-	pn <- .ddg.pnum()
+	pn <- if(all) .ddg.pnum() else .ddg.last.proc.number()
 	
 	# Create data flow edge from procedure node to data node.
 	.ddg.append("DF p", pn, " d", dn, "\n", sep="")
@@ -871,7 +890,7 @@ ddg.MAX_HIST_LINES <- 16384
 		dev.set(prev.device)
 
 		# we're done, so create the edge
-		if(is.null(cmd.abbrev)) .ddg.lastproc2data(name)
+		if(is.null(cmd.abbrev)) .ddg.lastproc2data(name, all=FALSE)
 		else .ddg.proc2data(name,cmd.abbrev)
 	}
 }
@@ -1322,17 +1341,20 @@ ddg.MAX_HIST_LINES <- 16384
 .ddg.proc.node <- function(ptype, pname, pvalue="", console=FALSE) {
 
 	# we're not in a console node but we're capturing data automatically
-	if (!console && .ddg.enable.console()) {
-		# we're sourcing, so regardless of interactivity, capcture commands
-		if (.ddg.is.set("from.source") && .ddg.get("from.source")) {
-			.ddg.close.last.command.node(called=".ddg.proc.node")
-			.ddg.open.new.command.node(called=".ddg.proc.node")
-		}
-		# running interactively, so parse command history by making a console node
-		else if (interactive()) .ddg.console.node()
+	if ( .ddg.enable.console()) {
 
-		# things we ALWAYS want to do
-		.ddg.auto.graphic.node(pname)
+		# capture graphic output of previous procedure node
+		.ddg.auto.graphic.node()
+
+		if(!console) {
+			# we're sourcing, so regardless of interactivity, capcture commands
+			if (.ddg.is.set("from.source") && .ddg.get("from.source")) {
+				.ddg.close.last.command.node(called=".ddg.proc.node")
+				.ddg.open.new.command.node(called=".ddg.proc.node")
+			}
+			# running interactively, so parse command history by making a console node
+			else if (interactive()) .ddg.console.node()
+		}
   }
 
 	# Increment procedure counter.
