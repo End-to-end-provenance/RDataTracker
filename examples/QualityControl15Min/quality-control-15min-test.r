@@ -9,6 +9,8 @@
 # Datetime field = datetime, format = YYYY-MM-DDTHH:MM:SS
 # ERB rev. 18-Sep-2013
 
+# Modified by Luis Perez 22-Jul-2014
+
 ### R packages
 
 library(chron)
