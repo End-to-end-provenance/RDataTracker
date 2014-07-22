@@ -16,9 +16,8 @@ options(warn=2)
 increment.value <- function(a) {
 	a <- a + 1
 	
-	ddg.procedure(ins=list("a"),outs.data=list("a"))
-	
-	return(a)  
+	ddg.procedure(lookup.ins=TRUE)	
+	ddg.return(a)  
 }
 
 main <- function() {

@@ -1,5 +1,6 @@
 \name{ProcNodes}
 \alias{ddg.procedure}
+\alias{ddg.return}
 \alias{ddg.start}
 \alias{ddg.finish}
 \title{RDataTracker Procedural Nodes}
@@ -9,6 +10,7 @@
 ddg.procedure(pname = NULL, ins = NULL, lookup.ins = FALSE, outs.graphic = NULL, 
               outs.data = NULL, outs.exception = NULL, outs.url = NULL, outs.file =NULL,
               graphic.fext = "jpeg")
+ddg.return(expr)
 ddg.start(pname = NULL)
 ddg.finish(pname = NULL)
 }
@@ -22,6 +24,7 @@ ddg.finish(pname = NULL)
   \item{outs.exception}{ a list of names of exception nodes to be created and linked as outputs to the node being created. }
   \item{outs.graphic}{the name of the snapshot node to be created and linked as output to the procedural node being created}
   \item{graphic.fext}{the file extension for the capturd graphics file}
+  \item{expr}{the value the function returns}
 }
 \details{
   ddg.procedure creates a node of type Operation.  If pname is NULL, the name of the function
@@ -47,6 +50,10 @@ ddg.finish(pname = NULL)
 
   The parameter graphic.fext is ignored if outs.graphic is NULL. 
   
+  ddg.return creates a data node for a function's return value.  If the function is called from a console
+  command and the console processing is enabled, the node will link to the console command
+  that uses the value.  ddg.return should be used in place of the function's normal return statement(s).
+  
   ddg.start() and ddg.finish() should come in matching pairs.  ddg.start() should precede ddg.finish().  
   For each call made to ddg.start() when the script is executed, there should be exactly one call made
   to ddg.finish() using the same pname.  For example, ddg.start() might be called at the beginning of
@@ -65,8 +72,9 @@ dir.create("ddg", showWarnings=FALSE)
 ddg.init()
 a <- 0
 myfunc <- function() {
-  b <<- a + 1
-  ddg.procedure(ins=list("a"), outs.data=list("b"))
+  b <- a + 1
+  ddg.procedure(ins=list("a"))
+  ddg.return(b)
 }
 
 secondfunc <- function() {

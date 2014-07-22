@@ -173,7 +173,7 @@
       <param name="script-file" value="consoleTest.r"/>
       <param name="expected_out" value="examples/consoleTest/expected_consoleTest.out"/>
       <param name="expected_ddg" value="examples/consoleTest/expected_consoleTest_ddg.txt"/>
-      <param name="fail_out" value="true" />
+      <param name="fail_out" value="false" />
     </antcall>
   </target>
 
@@ -216,13 +216,24 @@
 	      <param name="dir" value="examples/ScopeTest"/>
 	      <param name="out" value="examples/ScopeTest/ScopeTest.out"/>
 	      <param name="script-file" value="ScopeTest.R"/>
-	      <param name="expected_out" value="examples/ScopeTest/expected_ScopeTest.out"/>
-	      <param name="expected_ddg" value="examples/ScopeTest/expected_ScopeTest_ddg.txt"/>
+	      <param name="expected_out" value="examples/ScopeTest/expected_scopeTest.out"/>
+	      <param name="expected_ddg" value="examples/ScopeTest/expected_scopeTest_ddg.txt"/>
+	      <param name="fail_out" value="false" />
+	    </antcall>
+	  </target>
+
+	  <target name="return-test">
+	    <antcall target="run-test">
+	      <param name="dir" value="examples/ScopeTest"/>
+	      <param name="out" value="examples/ScopeTest/ReturnTest.out"/>
+	      <param name="script-file" value="ReturnTest.R"/>
+	      <param name="expected_out" value="examples/ScopeTest/expected_ReturnTest.out"/>
+	      <param name="expected_ddg" value="examples/ScopeTest/expected_ReturnTest_ddg.txt"/>
 	      <param name="fail_out" value="true" />
 	    </antcall>
 	  </target>
 
-  <target name="console-tests" depends="console-test-1, console-test-2, MismatchedStartFinishBug-test, null-na-test, scope-test">
+  <target name="console-tests" depends="console-test-1, console-test-2, MismatchedStartFinishBug-test, null-na-test, scope-test, return-test">
     <echo>Remember to manually check the console tests. Automated tests are limited when in console mode.</echo>
   </target>
   
@@ -285,7 +296,7 @@
       <param name="script-file" value="ddgChangesBehavior.r"/>
       <param name="expected_out" value="examples/ddgChangesBehavior/expected_ddgChangesBehavior.out"/>
       <param name="expected_ddg" value="examples/ddgChangesBehavior/expected_ddgChangesBehavior_ddg.txt"/>
-      <param name="fail_out" value="true" />
+      <param name="fail_out" value="false" />
     </antcall>
   </target>
 

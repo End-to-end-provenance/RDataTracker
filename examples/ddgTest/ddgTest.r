@@ -43,8 +43,12 @@
 #		Unable to evaluate exc6 in call to ddg.exception.out
 
 ## Directories
-testDir <- "[DIR_DEFAULT]/"
-setwd(testDir)
+if (interactive()) {
+  testDir <- getwd()
+} else {
+  testDir <- "[DIR_DEFAULT]/"
+  setwd(testDir)
+}
 
 #ddg.library <- Sys.getenv("DDG_LIBRARY")
 #if (ddg.library == "") {
@@ -144,7 +148,7 @@ main <- function() {
 	outfile2 <-  paste(testDir,"testfile3.txt", sep="")
 	writeLines("All good dogs", outfile)
 	writeLines("To be or not to be", outfile2)
-	ddg.procedure("g1", outs.data=list("kids.df", year), outs.file=list(outfile, "outfile2"))
+	ddg.procedure("g1", outs.data=list("kids.df", "year"), outs.file=list(outfile, "outfile2"))
 	
 	# Test ddg.url
 	ddg.url("HF home page", "http://harvardforest.fas.harvard.edu/")

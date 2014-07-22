@@ -7,11 +7,15 @@ start.time <- Sys.time()
 library(RDataTracker)
 #source("/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/R/RDataTracker.R")
 
-testDir <- "[DIR_DEFAULT]/"
-setwd(testDir)
+if (interactive()) {
+  testDir <- getwd()
+} else {
+  testDir <- "[DIR_DEFAULT]"
+  setwd(testDir)
+}
 
-ddg.r.script.path = paste(testDir,"ScopeTest.R",sep="")
-ddg.path = paste(testDir,"ddg",sep="")
+ddg.r.script.path = paste(testDir,"ScopeTest.R",sep="/")
+ddg.path = paste(testDir,"ddg",sep="/")
 
 ddg.init(ddg.r.script.path,
 		ddg.path,
@@ -35,7 +39,7 @@ g <- function(a) {
 
 h <- function() {
    d <- 333
-   ddg.procedure("foo", ins=list("d"))
+   ddg.procedure("h", ins=list("d"))
    ddg.return(d)
 }
 
@@ -55,6 +59,7 @@ j <- function(xx) {
 
    # This does not work.  It does not find a.  x & a have different scopes
    ddg.procedure(ins=list("xx", "a"))
+   return(3)
 }
 
 a <- 1
@@ -71,6 +76,7 @@ h()
 i()
 
 foobar <- read.csv("foobar.csv")
+
 ddg.file("foobar.csv")
 ddg.procedure("Read raw data files", ins=list("foobar.csv"))
 
