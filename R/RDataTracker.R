@@ -294,7 +294,7 @@ ddg.MAX_HIST_LINES <- 16384
 # device number we should capture (0 means we shouldn't capture any devide)
 .ddg.dev.change <- function(){
 	prev.device <- .ddg.get("prev.device")
-	curr.device <- dev.curr()
+	curr.device <- dev.cur()
 	device.list <- dev.list()
 
 	# we've switched devices and the previous device was NOT the null device
@@ -460,7 +460,7 @@ ddg.MAX_HIST_LINES <- 16384
 # data node. It returns TRUE if a match is found and FALSE otherwise.
 
 .ddg.data.node.exists <- function(dname) {
-	# browser()
+	# 
 	ddg.data.nodes <- .ddg.data.nodes()
 	rows <- nrow(ddg.data.nodes)
 	for (i in rows:1) {
@@ -852,6 +852,29 @@ ddg.MAX_HIST_LINES <- 16384
 	}
 }
 
+# .ddg.auto.graphic.node attempts to figure out if a new graphics device has been 
+# created and take a snapshot of previously active device, setthing the snapshot node 
+# as the output of the specified command
+.ddg.auto.graphic.node <- function(cmd) {
+	
+	dev.to.capture <- .ddg.dev.change()
+	if (dev.to.capture) {
+		# make the capture device active (store info on previous device)
+		prev.device <- dev.cur()
+		dev.set(dev.to.capture)
+
+		# capture it as a jpeg
+		name <- "graphic"
+		.ddg.snapshot.node(name, "jpeg", NULL)
+
+		# make the previous device active again
+		dev.set(prev.device)
+
+		# we're done, so create the edge
+		.ddg.proc2data(cmd,name)
+	}
+}
+
 # .ddg.create.data.use.edges.for.console.cmd creates a data flow edge 
 # from the node for each variable used in cmd.expr to the procedural 
 # node labeled cmd, as long as the value would either be one that 
@@ -928,24 +951,6 @@ ddg.MAX_HIST_LINES <- 16384
 			#}
 			.ddg.proc2data(cmd, var)
 		}
-
-		# Figure out if a new graphics device has been created and take a snapshot of it, setthing it as
-		# the output of this command
-		dev.to.capture <- .ddg.dev.chage()
-		if (dev.to.capture) {
-			# make the capture device active (store info on previous device)
-			prev.device <- dev.cur()
-			dev.set(dev.to.capture)
-
-			# capture it as a jpeg
-			name <- "graphic"
-			.ddg.snapshot.node(name, "jpeg", NULL)
-
-			# make the previous device active again
-			dev.set(prev.device)
-
-			# we're done, so create the edge
-			.ddg.proc2data(cmd,name)
 	}
 }
 
@@ -970,6 +975,9 @@ ddg.MAX_HIST_LINES <- 16384
 			}
 		}
 	}
+
+	# capture any automatically generated graphics for this command
+	.ddg.auto.graphic.node(last.command)
 }
 
 # .ddg.abbrev.cmd abbreviates a command to the specified length.
@@ -1108,7 +1116,7 @@ ddg.MAX_HIST_LINES <- 16384
 .ddg.parse.commands <- function(parsed.commands,environ=NULL, ignore.patterns=c('^ddg.'),
                                         node.name="Console", echo=FALSE, print.eval = echo,
                                         max.deparse.length = 150) {
-	# browser()
+	# 
 	
 	# figure out if we will execute commands or not
 	execute <- !is.null(environ) & is.environment(environ)
@@ -1128,7 +1136,7 @@ ddg.MAX_HIST_LINES <- 16384
   named.node.set <- FALSE
 	num.new.commands <- length(new.commands)
 	num.actual.commands <- length(filtered.commands)
-	# browser()
+	# 
 	if (num.actual.commands > 1 && .ddg.is.init()) {
 		.ddg.add.abstract.node("Start", node.name)
 		named.node.set <- TRUE
@@ -1176,7 +1184,7 @@ ddg.MAX_HIST_LINES <- 16384
   	}
 
   	# loop over the commands as well as their string representations
-  	# browser()
+  	# 
   	for (i in 1:length(parsed.commands)) {
   		cmd.expr <- parsed.commands[[i]]
   		cmd <- quoted.commands[[i]]
@@ -1203,7 +1211,7 @@ ddg.MAX_HIST_LINES <- 16384
 		        cat(cmd.show)
          	}
 
-         	# browser()
+         	# 
 
          	# if we will create a node, then before execution, set this command as
          	# a possible abstraction node but only if it's not a call that itself creates
@@ -1245,6 +1253,7 @@ ddg.MAX_HIST_LINES <- 16384
 
 					# we want to create the incoming data nodes (by updating the vars.set)
 					if (execute) {
+						# add variables to set
 						vars.set <- .ddg.add.to.vars.set(vars.set,cmd.expr,i)
 						if (.ddg.debug()) print(paste(".ddg.parse.console.node: Adding", cmd.abbrev, "information to vars.set"))
 					}
@@ -1253,6 +1262,9 @@ ddg.MAX_HIST_LINES <- 16384
 					if (.ddg.debug()) print(paste(".ddg.parse.console.node: Adding input data nodes for", cmd.abbrev))
 					.ddg.create.data.set.edges.for.console.cmd(vars.set, cmd.abbrev, cmd.expr, i)
 					if (.ddg.debug()) print(paste(".ddg.parse.console.node: Adding output data nodes for", cmd.abbrev))
+
+					# add graphic output
+					if (execute) .ddg.auto.graphic.node(cmd.abbrev)
 				}
 				# we wanted to create it but it matched a last command node
 				else if (create && execute) .ddg.close.last.command.node(initial=TRUE)
@@ -1269,7 +1281,7 @@ ddg.MAX_HIST_LINES <- 16384
 	if (execute) .ddg.close.last.command.node(initial=TRUE)
 
 	# Close the console block if we processed anything and the ddg is initialized (also, save)
-	# browser()
+	# 
 	if (.ddg.is.init() && named.node.set) { 
 		.ddg.add.abstract.node("Finish", node.name)
 	}
@@ -1291,7 +1303,7 @@ ddg.MAX_HIST_LINES <- 16384
 
 # .ddg.console.node creates a console node.
 .ddg.console.node <- function() {
-	# browser()
+	# 
 	# Load our extended history file and the last timestamp
 	ddg.history.file <- .ddg.get("ddg.history.file")
 	ddg.history.timestamp <- .ddg.get(".ddg.history.timestamp")
@@ -1329,7 +1341,7 @@ ddg.MAX_HIST_LINES <- 16384
   
 	# Increment procedure counter.
 	.ddg.inc("ddg.pnum")
-	
+
 	# Include value if available.
 	proc.value <- 
 		if (pvalue!="") paste(" Value=\"", pvalue, "\"", sep="")
@@ -1891,10 +1903,10 @@ ddg.MAX_HIST_LINES <- 16384
 ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.graphic=NULL, outs.data=NULL, 
                           outs.exception=NULL, outs.url=NULL, outs.file=NULL, graphic.fext="jpeg") {
 	if (!.ddg.is.init()) return(NULL)
-	# browser()
+	# 
 	.ddg.lookup.function.name(pname)
 	.ddg.proc.node("Operation", pname, pname)
-	# browser()
+	# 
 	
 	# Create control flow edge from preceding procedure node.
 	.ddg.proc2proc()
@@ -2290,7 +2302,13 @@ ddg.start <- function(pname=NULL) {
 	if (!.ddg.is.init()) return(NULL)
 
 	.ddg.lookup.function.name(pname)
-  
+
+	# Check null
+	if(is.null(pname)) {
+		msg <- "Cannot call ddg.start with NULL value from top-level."
+  	.ddg.insert.error.message(msg)
+  }
+
 	# Create start non-operational step.
 	.ddg.proc.node("Start", pname, pname)
 
@@ -2310,6 +2328,13 @@ ddg.finish <- function(pname=NULL) {
 	if (!.ddg.is.init()) return(NULL)
 
 	.ddg.lookup.function.name(pname)
+
+	# Check null
+	if(is.null(pname)) {
+		msg <- "Cannot call ddg.finish with NULL value from top-level."
+  	.ddg.insert.error.message(msg)
+  }
+
   # Create finish non-operational step.
 	.ddg.proc.node("Finish", pname, pname)
 
@@ -2420,6 +2445,9 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, enable.console = FALSE
 	
 	# mark graph as initilized
 	.ddg.set(".ddg.initilized", TRUE)
+
+	# store the starting graphics device
+	.ddg.set("prev.device", dev.cur())
 	
 	if (interactive() && .ddg.enable.console()) {
 		ddg.history.file <- paste(.ddg.path(), ".ddghistory", sep="/")
@@ -2478,7 +2506,7 @@ ddg.run <- function(f = NULL, r.script.path = NULL, ddgdir = NULL, enable.consol
 
 ddg.save <- function(quit=FALSE) {
 	if (!.ddg.is.init()) return(NULL)
-
+	
 	# restore history settings
 	if (interactive() && .ddg.enable.console()) {
 		Sys.setenv("R_HISTSIZE"=.ddg.get('ddg.original.hist.size'))
