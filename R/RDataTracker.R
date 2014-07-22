@@ -94,6 +94,10 @@ ddg.MAX_HIST_LINES <- 16384
 	return (.ddg.get(".ddg.enable.console"))
 }
 
+.ddg.enable.source <- function(){
+	return(.ddg.is.set("from.source") && .ddg.get("from.source"))
+}
+
 ##### Mutators for specific common actions
 
 .ddg.inc <- function(var) {
@@ -1156,7 +1160,7 @@ ddg.MAX_HIST_LINES <- 16384
 	num.new.commands <- length(new.commands)
 	num.actual.commands <- length(filtered.commands)
 	# 
-	if (num.actual.commands > 1 && .ddg.is.init()) {
+	if (num.actual.commands > 0 && .ddg.is.init()) {
 		.ddg.add.abstract.node("Start", node.name)
 		named.node.set <- TRUE
 	}
@@ -1321,7 +1325,10 @@ ddg.MAX_HIST_LINES <- 16384
 
 # .ddg.console.node creates a console node.
 .ddg.console.node <- function() {
-	# 
+	# Don't do anything if sourcing, because history isn't necessary in this case
+	if(.ddg.enable.source()) return(NULL)
+
+
 	# Load our extended history file and the last timestamp
 	ddg.history.file <- .ddg.get("ddg.history.file")
 	ddg.history.timestamp <- .ddg.get(".ddg.history.timestamp")
@@ -1343,7 +1350,7 @@ ddg.MAX_HIST_LINES <- 16384
 .ddg.proc.node <- function(ptype, pname, pvalue="", console=FALSE) {
 
 	# we're not in a console node but we're capturing data automatically
-	if ( .ddg.enable.console()) {
+	if (.ddg.enable.console()) {
 
 		# capture graphic output of previous procedure node
 		# browser()
@@ -1351,7 +1358,7 @@ ddg.MAX_HIST_LINES <- 16384
 
 		if(!console) {
 			# we're sourcing, so regardless of interactivity, capcture commands
-			if (.ddg.is.set("from.source") && .ddg.get("from.source")) {
+			if (.ddg.enable.source()) {
 				.ddg.close.last.command.node(called=".ddg.proc.node")
 				.ddg.open.new.command.node(called=".ddg.proc.node")
 			}
@@ -2375,7 +2382,7 @@ ddg.grabhistory <- function() {
 	if (!.ddg.is.init()) return(NULL)
 
 	# only act if in intereactive mode and with enabled console
-	if (interactive() && .ddg.enable.console() && !(.ddg.is.set("from.source") && .ddg.get("from.source"))) {
+	if (interactive() && .ddg.enable.console()) {
 		.ddg.console.node()
 	}
 }
@@ -2735,7 +2742,7 @@ ddg.source <- function (file, local = FALSE, echo = verbose, print.eval = echo,
   	if (force.console) ddg.console.on()
   
   	# Let library know that we are sourcing a file
-  	prev.source <- .ddg.is.init() && .ddg.is.set("from.source") && .ddg.get("from.source")
+  	prev.source <- .ddg.is.init() && .ddg.enable.source()
   	.ddg.set("from.source", TRUE)
 
   	# parse the commands into a console node
@@ -2766,27 +2773,25 @@ ddg.debug.off <- function () {
 # ddg.console.off turns off the console mode of DDG construction
 ddg.console.off <- function() {
 	if (!.ddg.is.init()) return(NULL)
-
+	#browser()
 	# capture history if console was on up to this point
 	if (interactive() && .ddg.enable.console()) {
 		.ddg.console.node()
+	}
 
 		# set the console to off
-		.ddg.set(".ddg.enable.console", FALSE)
-	}
+	.ddg.set(".ddg.enable.console", FALSE)
 }
 
 # ddg.console.on turns on the console mode of DDG construction
 ddg.console.on <- function() {
 	if (!.ddg.is.init()) return(NULL)
-
+	#browser()
 	# write a new timestamp if we're turning on the console so we only capture
 	# history from this point forward
-	if (!.ddg.enable.console()) {
-		.ddg.write.timestamp.to.history()
+	if (!.ddg.enable.console()) .ddg.write.timestamp.to.history()
 
-		.ddg.set(".ddg.enable.console", TRUE)
-	}
+	.ddg.set(".ddg.enable.console", TRUE)
 }
  
 # ddg.flush.ddg removes selected files from the DDG directory.

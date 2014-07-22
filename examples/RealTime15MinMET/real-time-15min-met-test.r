@@ -6,6 +6,8 @@
 # Record DDG in text format
 # ERB rev. 26-Sep-2013
 
+# Modified by Luis Perez 22-Jul-2014
+
 ### R Packages
 
 library(chron)

@@ -353,7 +353,19 @@
     </antcall>
   </target>
 
-  <target name="source-tests" depends="console-source-1">
+  <target name="dynamic-console-test-1">
+    <antcall target="run-test">
+      <param name="dir" value="examples/dynamicConsole"/>
+      <param name="out" value="examples/dynamicConsole/dynamicConsole.out"/>
+      <param name="script-file" value="dynamicConsole.r"/>
+      <param name="expected_out" value="examples/dynamicConsole/expected_dynamicConsole.out"/>
+      <param name="expected_ddg" value="examples/dynamicConsole/expected_dynamicConsole_ddg.txt"/>
+      <param name="fail_out" value="false" />
+      <param name="source_test" value="true" />
+    </antcall>
+  </target>
+
+  <target name="source-tests" depends="console-source-1, dynamic-console-test-1">
     <echo>Finished Execution of Source Tests. A few warnings are raised, but this is expected. You can manually execute the consoleSource.r from the local directory to remove the errors, and then compare to the manual_expected_consoleSource_ddg.txt</echo>
   </target>
   <!--########################## End Source TESTS ##########################-->
@@ -522,7 +534,7 @@
   
   <!--################################# MAIN #################################-->
 
-  <target name="test-all" depends="normal-tests, checkpoint-tests, script-tests, console-tests, bug-tests, aaron-test">
+  <target name="test-all" depends="normal-tests, checkpoint-tests, script-tests, console-tests, source-tests, bug-tests, aaron-test">
       <echo>All tests makes calls to the RDataTracker Library. You might need to restart RStudio to correctly run the scripts with the updated library installed. Output is saved in tests.log.
 
       There is one test which is not run here. The test is SivanSampling-test. Run it manually, though output is random.</echo>
