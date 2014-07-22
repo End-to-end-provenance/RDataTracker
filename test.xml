@@ -412,7 +412,7 @@
     </antcall>
   </target>
 
-  <target name="real-time-15-min-met-test">
+  <target name="real-time-15min-met-test">
     <antcall target="run-test">
       <param name="dir" value="examples/RealTime15MinMET"/>
       <param name="out" value="examples/RealTime15MinMET/real-time-15min-met-test.out"/>
@@ -424,7 +424,7 @@
     </antcall>
   </target>
 
-  <target name="daily-solar-radiation-tests" depends="daily-solar-radiation-1-test, daily-solar-radiation-2-test, real-time-15-min-met-test">
+  <target name="daily-solar-radiation-tests" depends="daily-solar-radiation-1-test, daily-solar-radiation-2-test, real-time-15min-met-test">
     <echo>The daily solar radiation tests should only differ in system information</echo>
   </target>
   <target name="script-tests" depends="calculate-square-root-tests, daily-solar-radiation-tests">

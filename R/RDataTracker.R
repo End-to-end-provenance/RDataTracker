@@ -873,14 +873,16 @@ ddg.MAX_HIST_LINES <- 16384
 
 # .ddg.auto.graphic.node attempts to figure out if a new graphics device has been 
 # created and take a snapshot of previously active device, setthing the snapshot node 
-# as the output of the specified command
-.ddg.auto.graphic.node <- function(cmd.abbrev = NULL) {
+# as the output of the specified command. Optionally, it can take as input 
+# a function specifying which device should be captured, where 0 values specify
+# no device, and negative values are ignored.
+.ddg.auto.graphic.node <- function(cmd.abbrev = NULL, dev.to.capture=.ddg.dev.change) {
 	
-	dev.to.capture <- .ddg.dev.change()
-	if (dev.to.capture) {
+	num.dev.to.capture <- dev.to.capture()
+	if (num.dev.to.capture > 1) {
 		# make the capture device active (store info on previous device)
 		prev.device <- dev.cur()
-		dev.set(dev.to.capture)
+		dev.set(num.dev.to.capture)
 
 		# capture it as a jpeg
 		name <- "graphic"
@@ -1344,6 +1346,7 @@ ddg.MAX_HIST_LINES <- 16384
 	if ( .ddg.enable.console()) {
 
 		# capture graphic output of previous procedure node
+		# browser()
 		.ddg.auto.graphic.node()
 
 		if(!console) {
@@ -2557,8 +2560,14 @@ ddg.save <- function(quit=FALSE) {
 	ddg.data.nodes <- .ddg.data.nodes()
 	write.table(ddg.data.nodes[ddg.data.nodes$ddg.num > 0, ], fileout, quote=FALSE, na="", row.names=FALSE, col.names=FALSE)
 
-	# delete temporary files
-	if (quit) .ddg.delete.temp()
+	# by convention, this is the final call to ddg.save
+	if (quit) {
+		# delete temporary files
+		.ddg.delete.temp()
+
+		# capture current graphics device
+		.ddg.auto.graphic.node(dev.to.capture=dev.cur)
+	}
 }
 
 # ddg.source reads in an r script and executes it in the provided enviroment.
