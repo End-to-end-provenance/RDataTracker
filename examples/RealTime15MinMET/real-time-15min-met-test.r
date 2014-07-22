@@ -254,4 +254,4 @@ while (input != "q") {
 
 save.plot(final.data,variable,days)
 
-ddg.save()
+ddg.save(quit=TRUE)

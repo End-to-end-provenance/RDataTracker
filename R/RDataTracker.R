@@ -1065,7 +1065,7 @@ ddg.MAX_HIST_LINES <- 16384
 
 		# Create outflowing edges 
 		vars.set <- .ddg.find.var.assignments(.ddg.last.command)
-		.ddg.create.data.set.edges.for.console.cmd(vars.set, cmd.abbrev, parse(text=.ddg.last.command), 0, for.finish.node = TRUE)
+		.ddg.create.data.set.edges.for.console.cmd(vars.set, cmd.abbrev, parse(text=gsub("\\\\\"", "\\\"",.ddg.last.command)), 0, for.finish.node = TRUE)
 
 		# No previous command
 		.ddg.set(".ddg.last.command", NULL)
@@ -1148,7 +1148,7 @@ ddg.MAX_HIST_LINES <- 16384
 	
 	# get the last command in the new commands and check to see if we need to create 
 	# a new .ddg.last.command node for future reference
-	.ddg.last.command <- new.commands[[num.new.commands]]
+	.ddg.last.command <- quoted.commands[[num.new.commands]]
 	if (substr(.ddg.last.command, 1, 4) == "ddg.") {
 		.ddg.last.command <- NULL
 	}
@@ -1216,7 +1216,7 @@ ddg.MAX_HIST_LINES <- 16384
          	# if we will create a node, then before execution, set this command as
          	# a possible abstraction node but only if it's not a call that itself creates
          	# abstract nodes
-  				if (!grepl("^ddg.", cmd)) .ddg.set(".ddg.possible.last.command", cmd.expr)
+  				if (!grepl("^ddg.", cmd)) .ddg.set(".ddg.possible.last.command", cmd)
   				else if (grepl("^ddg.start", cmd) || grepl("^ddg.finish", cmd)) .ddg.set(".ddg.possible.last.command", NULL)
 
          	# evaluate
@@ -1239,7 +1239,7 @@ ddg.MAX_HIST_LINES <- 16384
 				# that the last command is set, is not null, and is equal to the current
 				
   			create.procedure <- create && !(!is.null(.ddg.get(".ddg.last.command")) && 
-  			                                .ddg.get(".ddg.last.command") == cmd.expr)
+  			                                .ddg.get(".ddg.last.command") == cmd)
 
   			# we want to create a procedure node for this command
   			if (create.procedure) {
