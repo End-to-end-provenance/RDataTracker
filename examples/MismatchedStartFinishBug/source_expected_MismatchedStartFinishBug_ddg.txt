@@ -9,7 +9,7 @@ DDGDirectory="[DIR]/ddg-source"
 DateTime="2014-07-16T16.41.09"
 5
 Operation p1 "1-f <- function() {    ddg.start()    a <- 1    ddg.finish()}" Value="f <- function() {    ddg.start()    a <- 1    ddg.finish()}";
-Data d1 "1-f" Value="complex";
+Data d1 "1-f" Value="#ddg.function";
 DF p1 d1
 Start p2 "2-x <- f()" Value="x <- f()";
 CF p1 p2

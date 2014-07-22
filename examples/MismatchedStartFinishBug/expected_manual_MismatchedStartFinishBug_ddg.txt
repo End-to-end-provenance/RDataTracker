@@ -11,7 +11,7 @@ DateTime="2014-07-08T00.15.01"
 Start p1 "1-Console" Value="Console";
 Operation p2 "2-f <- function() {    ddg.start()    a <- 1    ddg.finish()}" Value="f <- function() {    ddg.start()    a <- 1    ddg.finish()}";
 CF p1 p2
-Data d1 "1-f" Value="complex";
+Data d1 "1-f" Value="#ddg.function";
 DF p2 d1
 Finish p3 "3-Console" Value="Console";
 CF p2 p3

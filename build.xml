@@ -11,30 +11,30 @@
     </target>
 
     <target name="copy-to-directory" depends="build-directory">
-    	<copy todir="${builddir}/inst">
+    	<copy overwrite="true" todir="${builddir}/inst">
     		<fileset dir="inst"
       			excludes="\.* doc/*.pages doc/*.docx doc/*.pdf"/>
   		</copy>
-      <copy todir="${builddir}/inst" unless:set="build-target">
+      <copy overwrite="true" todir="${builddir}/inst" unless:set="build-target">
         <fileset dir="inst"
           includes="doc/*.pdf" />
         </copy>
-    	<copy todir="${builddir}/man">
+    	<copy overwrite="true" todir="${builddir}/man">
     		<fileset dir="man"
       			excludes="\.*"/>
   		</copy>
-    	<copy todir="${builddir}/R">
+    	<copy overwrite="true" todir="${builddir}/R">
     		<fileset dir="R"
       			excludes="\.*"/>
   		</copy>
-  		<copy todir="${builddir}/vignettes">
+  		<copy overwrite="true" todir="${builddir}/vignettes">
         <fileset dir="vignettes"
             includes="*.Rnw *-img/"/>
       </copy>
-      <copy file="DESCRIPTION" todir="${builddir}"/>
-  		<copy file="LICENSE" todir="${builddir}"/>
-  		<copy file="NAMESPACE" todir="${builddir}"/>
-  		<copy file="README.md" todir="${builddir}"/>
+      <copy overwrite="true" file="DESCRIPTION" todir="${builddir}"/>
+  		<copy overwrite="true" file="LICENSE" todir="${builddir}"/>
+  		<copy overwrite="true" file="NAMESPACE" todir="${builddir}"/>
+  		<copy overwrite="true" file="README.md" todir="${builddir}"/>
     </target>
     
     <target name="check" depends="copy-to-directory">

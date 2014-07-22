@@ -2,11 +2,12 @@ Architecture="i386"
 OperatingSystem="windows"
 Language="R"
 LanguageVersion="R version 3.1.0 (2014-04-10)"
+RDataTrackerVersion="0.5.19"
 Script="[DIR]/ddgChangesBehavior.r"
-ProcessFileTimestamp="2014-07-07T23.24.41"
+ProcessFileTimestamp="2014-07-21T14.05.26"
 WorkingDirectory="[DIR]"
 DDGDirectory="[DIR]/ddg"
-DateTime="2014-07-07T23.35.48"
+DateTime="2014-07-21T14.45.09"
 7
 Start p1 "1-main" Value="main";
 Data d1 "1-a" Value="3";
@@ -17,28 +18,24 @@ Data d2 "2-b" Value="Inf";
 Operation p3 "3-f2" Value="f2";
 CF p2 p3
 DF d2 p3
-Exception d3 "3-error.msg" Value="\"Unable to create data (snapshot) node. Non-Object value to ddg.data .\"";
+Exception d3 "3-error.msg" Value="\"Unable to evaluate d in call to ddg.data\"";
 DF p3 d3
+Data d4 "4-d" Value="NotRecorded";
 Operation p4 "4-f2" Value="f2";
 CF p3 p4
-Exception d4 "4-error.msg" Value="\"No data node found for c\"";
-DF p4 d4
-DF d0 p4
+DF d4 p4
 Exception d5 "5-error.msg" Value="\"Unable to evaluate d[[2]] in call to ddg.data\"";
 DF p4 d5
 Data d6 "6-d[[2]]" Value="NotRecorded";
 Operation p5 "5-f2" Value="f2";
 CF p4 p5
 DF d6 p5
-Exception d7 "7-error.msg" Value="\"Unable to create data (snapshot) node. Non-Object value to ddg.data .\"";
-DF p5 d7
+Data d7 "7-f3" Value="#ddg.function";
 Operation p6 "6-f2" Value="f2";
 CF p5 p6
-Exception d8 "8-error.msg" Value="\"No data node found for f3\"";
-DF p6 d8
-DF d0 p6
+DF d7 p6
 Operation p7 "7-tryCatch" Value="tryCatch";
 CF p6 p7
-Exception d9 "9-error.msg" Value="\"Error in eval(expr, envir, enclos): object 'no.such.var' not found \"";
-DF p7 d9
+Exception d8 "8-error.msg" Value="\"Error in eval(expr, envir, enclos): object 'no.such.var' not found \"";
+DF p7 d8
 

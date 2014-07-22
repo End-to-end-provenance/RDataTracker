@@ -81,19 +81,19 @@ Start p22 "22-source3.r" Value="source3.r";
 CF p21 p22
 Operation p23 "23-f <- function(x) {    g(x)    h(x)    return(1)}" Value="f <- function(x) {    g(x)    h(x)    return(1)}";
 CF p22 p23
-Data d12 "12-f" Value="complex";
+Data d12 "12-f" Value="#ddg.function";
 DF p23 d12
 Operation p24 "24-g <- function(x) {    ddg.procedure()    ddg.data.in(substit" Value="g <- function(x) {    ddg.procedure()    ddg.data.in(substitute(x))    return(1)}";
 CF p23 p24
-Data d13 "13-g" Value="complex";
+Data d13 "13-g" Value="#ddg.function";
 DF p24 d13
 Operation p25 "25-h <- function(x) {    ddg.procedure()    ddg.data.in(substit" Value="h <- function(x) {    ddg.procedure()    ddg.data.in(substitute(x))    return(1)}";
 CF p24 p25
-Data d14 "14-h" Value="complex";
+Data d14 "14-h" Value="#ddg.function";
 DF p25 d14
 Operation p26 "26-someVector <- function() {    return(c(1, 3, 5))}" Value="someVector <- function() {    return(c(1, 3, 5))}";
 CF p25 p26
-Data d15 "15-someVector" Value="complex";
+Data d15 "15-someVector" Value="#ddg.function";
 DF p26 d15
 Operation p27 "27-x <- 10" Value="x <- 10";
 CF p26 p27
@@ -125,19 +125,19 @@ Start p37 "37-source3.r" Value="source3.r";
 CF p36 p37
 Operation p38 "38-f <- function(x) {    g(x)    h(x)    return(1)}" Value="f <- function(x) {    g(x)    h(x)    return(1)}";
 CF p37 p38
-Data d17 "17-f" Value="complex";
+Data d17 "17-f" Value="#ddg.function";
 DF p38 d17
 Operation p39 "39-g <- function(x) {    ddg.procedure()    ddg.data.in(substit" Value="g <- function(x) {    ddg.procedure()    ddg.data.in(substitute(x))    return(1)}";
 CF p38 p39
-Data d18 "18-g" Value="complex";
+Data d18 "18-g" Value="#ddg.function";
 DF p39 d18
 Operation p40 "40-h <- function(x) {    ddg.procedure()    ddg.data.in(substit" Value="h <- function(x) {    ddg.procedure()    ddg.data.in(substitute(x))    return(1)}";
 CF p39 p40
-Data d19 "19-h" Value="complex";
+Data d19 "19-h" Value="#ddg.function";
 DF p40 d19
 Operation p41 "41-someVector <- function() {    return(c(1, 3, 5))}" Value="someVector <- function() {    return(c(1, 3, 5))}";
 CF p40 p41
-Data d20 "20-someVector" Value="complex";
+Data d20 "20-someVector" Value="#ddg.function";
 DF p41 d20
 Operation p42 "42-x <- 10" Value="x <- 10";
 CF p41 p42

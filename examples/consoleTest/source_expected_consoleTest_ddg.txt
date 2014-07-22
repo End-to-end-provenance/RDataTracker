@@ -9,19 +9,19 @@ DDGDirectory="[DIR]/ddg-source"
 DateTime="2014-07-16T13.10.30"
 13
 Operation p1 "1-f <- function(x) {    g(x)    h(x)    return(1)}" Value="f <- function(x) {    g(x)    h(x)    return(1)}";
-Data d1 "1-f" Value="complex";
+Data d1 "1-f" Value="#ddg.function";
 DF p1 d1
 Operation p2 "2-g <- function(x) {    ddg.procedure()    ddg.data.in(substit" Value="g <- function(x) {    ddg.procedure()    ddg.data.in(substitute(x))    return(1)}";
 CF p1 p2
-Data d2 "2-g" Value="complex";
+Data d2 "2-g" Value="#ddg.function";
 DF p2 d2
 Operation p3 "3-h <- function(x) {    ddg.procedure()    ddg.data.in(substit" Value="h <- function(x) {    ddg.procedure()    ddg.data.in(substitute(x))    return(1)}";
 CF p2 p3
-Data d3 "3-h" Value="complex";
+Data d3 "3-h" Value="#ddg.function";
 DF p3 d3
 Operation p4 "4-someVector <- function() {    return(c(1, 3, 5))}" Value="someVector <- function() {    return(c(1, 3, 5))}";
 CF p3 p4
-Data d4 "4-someVector" Value="complex";
+Data d4 "4-someVector" Value="#ddg.function";
 DF p4 d4
 Operation p5 "5-x <- 10" Value="x <- 10";
 CF p4 p5

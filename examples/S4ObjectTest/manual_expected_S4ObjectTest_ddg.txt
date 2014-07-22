@@ -11,18 +11,18 @@ DateTime="2014-07-16T14.22.31"
 Operation p1 "1-setClass(\"SampleObj\", slots = c(sampleCode = \"integer\", " Value="setClass(\"SampleObj\", slots = c(sampleCode = \"integer\", nIndividuals = \"integer\",     areaCode = \"integer\"))";
 Operation p2 "2-as.character.SampleObj <- function(x) {    str <- paste(\"sa" Value="as.character.SampleObj <- function(x) {    str <- paste(\"sampleCode =\", x@sampleCode, \"\n\")    str <- paste(str, \"nIndividuals =\", x@nIndividuals, \"\n\")    str <- paste(str, \"areaCode =\", x@areaCode, \"\n\")    return(str)}";
 CF p1 p2
-Data d1 "1-as.character.SampleObj" Value="complex";
+Data d1 "1-as.character.SampleObj" Value="#ddg.function";
 DF p2 d1
 Operation p3 "3-setMethod(\"as.character\", signature(x = \"SampleObj\"), as" Value="setMethod(\"as.character\", signature(x = \"SampleObj\"), as.character.SampleObj)";
 CF p2 p3
 DF d1 p3
 Operation p4 "4-generateSamples <- function(n) {    ddg.start()    samplesAr" Value="generateSamples <- function(n) {    ddg.start()    samplesArr <- list()    ddg.procedure(\"new samples\", outs.data = list(\"samplesArr\"))    for (ix in 1:n) {        newSample <- new(\"SampleObj\", sampleCode = ix, nIndividuals = as.integer(ix *             10), areaCode = as.integer(ix * 100))        ddg.procedure(\"new sample\", outs.data = list(\"newSample\"))        ddg.procedure(\"add to samples\", ins = list(\"newSample\",             \"samplesArr\"))        samplesArr = c(samplesArr, newSample)        ddg.data.out(samplesArr, pname = \"add to samples\")    }    ddg.finish()    return(samplesArr)}";
 CF p3 p4
-Data d2 "2-generateSamples" Value="complex";
+Data d2 "2-generateSamples" Value="#ddg.function";
 DF p4 d2
 Operation p5 "5-generate1Sample <- function() {    ddg.start()    newSample " Value="generate1Sample <- function() {    ddg.start()    newSample <- new(\"SampleObj\", sampleCode = as.integer(1),         nIndividuals = as.integer(10), areaCode = as.integer(100))    ddg.procedure(\"new sample\", outs.data = list(\"newSample\"))    ddg.finish()    return(newSample)}";
 CF p4 p5
-Data d3 "3-generate1Sample" Value="complex";
+Data d3 "3-generate1Sample" Value="#ddg.function";
 DF p5 d3
 Operation p6 "6-totalNumOfSample <- 5" Value="totalNumOfSample <- 5";
 CF p5 p6
