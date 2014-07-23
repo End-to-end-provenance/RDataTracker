@@ -219,36 +219,45 @@ calcResults <- function(fileName) {
   # get file name and file path
   extns <- list("min" = "-min","source"= "-source", "original" = "-clean", "full" = "-annotated")
   names <- sapply(extns, function(x) {
-    return(paste0("timingScripts/", fileName, x, ".r"))
+    return(paste0(fileName, x, ".r"))
   }, simplify=FALSE)
+
+  # get script locations
+  scriptLoc <- sapply(names, function(x) {
+    return(paste0("localTimingScripts/", x))
+  }, simplify=FALSE)
+
+  # get ddg directories
   dirs <- sapply(extns, function(x) {
-    return(if (x != "-clean") paste0("/ddg", x) else NA)
+    return(if (x != "-clean") paste0("ddg", x) else NA)
   })
 
   # delete directories
-  sapply(dirs, function(dir){if (!is.na(dir)) unlink(paste0(getwd(),dir), recursive=T)})
+  sapply(dirs, function(dir){if (!is.na(dir)) unlink(paste0(dir), recursive=T)})
 
   # delete the scripts directory
-  unlink(paste0(getwd(), "/timingScripts", recursive=T))
+  unlink(paste0("localTimingScripts", recursive=T))
+  dir.create("localTimingScripts", showWarnings=F)
 
-  # create minimum and source instrumentation file
+  # copy the original file over to a new directory
+  file.copy(names$original, scriptLoc$original)
+
+  # create minimum and source instrumentation file inside localTimingScripts
   # browser()
-  writeMinInstr(names$original,names$min)
-  writeMinInstr(names$original,names$source,console = FALSE)
+  writeMinInstr(scriptLoc$original,scriptLoc$min)
+  writeMinInstr(scriptLoc$original,scriptLoc$source,console = FALSE)
   
   # create minimum instrumentation file to wd if non-existent annotated file
   template <- paste0("template_", names$full)
-  if (!file.exists(template)) writeMinInstr(names$original,names$full)
-  else writeMinInstr(template, names$full, console=NA)
+  if (!file.exists(template)) writeMinInstr(scriptLoc$original,scriptLoc$full)
+  else writeMinInstr(template, scriptLoc$full, console=NA)
 
 
   # create data frame with 4 tested files as rows, columns are data returned by scriptInfo
-  dFrame <- data.frame(matrix(unlist(sapply(names, scriptInfo)), byrow=T, nrow=4))
+  dFrame <- data.frame(matrix(unlist(sapply(scriptLoc, scriptInfo)), byrow=T, nrow=4))
   
   # add DDG Dir location
-  dFrame$ddgDir <- sapply(extns, function(x) {
-    return(paste0("/ddg", x))
-  })
+  dFrame$ddgDir <- dirs
 
   # add DDG dir sizes
   dFrame$ddgDirSize <- sapply(dFrame$ddgDir, function(x) {
@@ -258,12 +267,15 @@ calcResults <- function(fileName) {
   # add type of script information
   dFrame$type <- names(extns)
 
+  # add file localtion
+  dFrame$scriptLoc <- scriptLoc
+
   # add file names and column names, reorder
   dFrame$names <- names
 
   # reformat structure of data frame
-  dFrame <- dFrame[c(6,5,1,2,3,4)]
-  colnames(dFrame) <- c("Script.File", "Type", "Execution.Time.min", "File.Size.kB",
+  dFrame <- dFrame[c(7,6,5,1,2,3,4)]
+  colnames(dFrame) <- c("Script.File", "Script.Loc", "Type", "Execution.Time.min", "File.Size.kB",
                         "DDG.Dir.Loc.", "DDG.Dir.Size.kB")
   
   return(dFrame)

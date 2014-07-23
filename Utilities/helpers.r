@@ -35,7 +35,7 @@ INPUT <- function(message) {
 # $return - the size, in mB of the directory (all files and folder insider, recursively)
 #           If the directory does not exists, it return NA
 dirSize <- function(dir){
-  fdir <- paste(getwd(),dir,sep="")
+  fdir <- dir
   tryCatch({
     dirFiles <- list.files(path=fdir, full.names = TRUE, recursive = TRUE)
   }, warning = function(w) {
@@ -45,7 +45,7 @@ dirSize <- function(dir){
   })
   dirInfos <- file.info(dirFiles)
   dirSizes <- dirInfos$size
-  dirSize <- sum(dirSizes)/2^10 # we want result in kB
+  dirSize <- sum(dirSizes)/(2^10) # we want result in kB
   return(dirSize)
 }
 
