@@ -440,15 +440,19 @@ ddg.MAX_HIST_LINES <- 2^14
 }
 
 # .ddg.is.proc.node returns true if type is one which is considered a procedure
-# node by use. That means, it can have input/output edges in the expanded DDG
+# node by us. That means, it can have input/output edges in the expanded DDG.
+# Current types are: Everything except Start
 .ddg.is.proc.node <- function(type) {
-	return(type == "Operation" | type == "Checkpoint" | type == "Restore" | type == "Finish" )
+	return(type == "Operation" |
+	       type == "Checkpoint" | 
+	       type == "Restore" | 
+	       type == "Finish" | 
+	       type == "Binding")
 }
 
 # .ddg.proc.number gets the number of the nearest preceding matching 
 # Operation, Checkpoint, or Restore node. It returns zero if no match 
 # is found.
-
 .ddg.proc.number <- function(pname) {
 	ddg.proc.nodes <- .ddg.proc.nodes()
 	rows <- nrow(ddg.proc.nodes)
@@ -466,6 +470,9 @@ ddg.MAX_HIST_LINES <- 2^14
 	return(0)
 }
 
+# Function which returns the node number of the last procedure node in the 
+# ddg procedure node table. Procedure nodes are determined as defined in 
+# .ddg.is.proc.node above.
 .ddg.last.proc.number <- function() {
 	ddg.proc.nodes <- .ddg.proc.nodes()
 	rows <- nrow(ddg.proc.nodes)
@@ -577,7 +584,8 @@ ddg.MAX_HIST_LINES <- 2^14
 }
 
 # .ddg.lastproc2data creates a data flow edge from the last procedure 
-# node to a data node.
+# node to a data node. The all parameter indicated whether 
+# all nodes should be considered (TRUE) or only procedure nodes (FALSE)
 
 .ddg.lastproc2data <- function(dname, all=TRUE) {
 	# Get data & procedure numbers.
@@ -1835,9 +1843,13 @@ ddg.MAX_HIST_LINES <- 2^14
 				modTime.original <- file.info(original)$mtime[1]
 				modTime.saved <- file.info(saved)$mtime[1]
 				if (modTime.original >= modTime.saved) {
+
+					# windows does not allow colons in the names of directories
+					modTime.original.str <- gsub(" ","T", gsub(":",".",as.character(modTime.original)))
+					
 					rescue.dir <- paste(getwd(), "/ddg.rescued.files/", sep="")
 					dir.create(rescue.dir, showWarnings=FALSE)
-					rescue.filename <- paste(rescue.dir, modTime.original, "-", basename(original), sep="")
+					rescue.filename <- paste(rescue.dir, modTime.original.str, "-", basename(original), sep="")
 					warning("Saving ", original, " in ", rescue.filename)
 					file.copy(original, rescue.filename, overwrite=TRUE)
 					file.copy(saved, original, overwrite=TRUE)
