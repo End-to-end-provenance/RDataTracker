@@ -40,6 +40,8 @@ dirSize <- function(dir){
     dirFiles <- list.files(path=fdir, full.names = TRUE, recursive = TRUE)
   }, warning = function(w) {
     return(NA)
+  }, error = function(e) {
+    return(NA)
   })
   dirInfos <- file.info(dirFiles)
   dirSizes <- dirInfos$size

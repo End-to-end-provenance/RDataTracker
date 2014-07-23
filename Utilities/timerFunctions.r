@@ -15,11 +15,15 @@ time.histLineLim <- 500
 # command can be inserted.
 time.cmdLineLim <- 50
 
+# specified the directory where all of our test scripts are found
+if (!exists("base.dir")) base.dir <- "D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker"
+if (!exists("test.dir")) test.dir <- paste0(basedir,"/examples")
+
 ### Function which initializes counter and working directory, as well as other
 #   global parameters
 # @param wd : the working directory
-setInitialVal <- function(wd){
-  setwd(paste("D:/Users/Luis/Dropbox/HarvardForest/RDataTracker Annotations",wd,sep=""))
+setInitialVal <- function(wd, base=test.dir){
+  setwd(paste(test.dir,wd,sep=""))
   
   # clear history
   rm(list = ls())
@@ -36,7 +40,7 @@ setInitialVal <- function(wd){
   return(paste(hist,myTimeStamp,sep="\n"))
 }
 
-### Function which generates the chunk of code to truck our library into loading
+### Function which generates the chunk of code to trick our library into loading
 #   the current script file into history and into using the corrent myTimeStamp for
 #   that loading.
 .endHistory <- function(scriptPath){
@@ -48,20 +52,24 @@ setInitialVal <- function(wd){
 #   file for minimal DDG instrumentation
 # @param scriptDir - a string for the directory of the script
 # @param ddgDirPath - a string for the path of the ddgDirectory
-startMinInst <- function(scriptPath,ddgDirPath){
-  src <- 'source("D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/R/RDataTracker.R")'
+startMinInst <- function(scriptPath,ddgDirPath, console=TRUE){
+  src <- paste('source("', base.dir, '/R/RDataTracker.R")'
   lib <- "library(RDataTracker)"
-  hist <- .startHistory(scriptPath)
-  init <- paste("ddg.init('", scriptPath, "','",ddgDirPath, "',enable.console=TRUE)",sep="")
-  return(paste(src,init,hist,sep="\n"))
+  rdt <- if (!is.na(console) && console) src else lib
+  hist <- if (!is.na(console) && console) .startHistory(scriptPath) else ""
+  console.val <- as.character(!is.na(console))
+  init <- paste("ddg.init('", scriptPath, "','",ddgDirPath, "',enable.console=", console.val, ")",sep="")
+  wd <- paste0("setwd(", getwd(), ")")
+  return(paste(rdt,init,hist,sep="\n"))
 }
 
 ### Function which returns the string of R code necessary at the end of a file 
 #   for minimal DDG instrumentation
-endMinInst <- function(scriptPath){
-  sourceSave <- .endHistory(scriptPath)
-  ddgSave <- "ddg.save()"
-  return(paste(sourceSave, "ddg.save()", sep="\n"))
+# If path is null, then simply ddg.save() is added at the end
+endMinInst <- function(scriptPath = NULL){
+  sourceSave <- if (!is.null(scriptPath)) .endHistory(scriptPath) else ""
+  ddgSave <- "ddg.save(quit=TRUE)"
+  return(paste(sourceSave, ddgSave, sep="\n"))
 }
 
 ### Function which returns whether or not the current line in the history is one
@@ -112,9 +120,12 @@ annotateLine <- function(line, histLineNum) {
 ### Function: Time the execution time of a string of R code
 # @param file - an R file to be sourced, evaluated, and timed
 # $return diff - the difference between the time of initial execution and final
-timeForEval <- function(file) {
+timeForEval <- function(file, from.source=FALSE) {
   startTime <- Sys.time()
   force(startTime)
+  src.fun <-  if (from.source) function(...){ddg.source(..., ignore.ddg.calls=F)}
+              else source
+
   source(file, local = T, echo = F,verbose = F)
   endTime <- Sys.time()
   return(difftime(endTime, startTime,units="mins"))
@@ -179,22 +190,24 @@ getFilePath <- function(){
 
 ### Function: Takes in the script specified by inp and annotates it minimally, then
 #   writes out the result to the filename specified by out
-writeMinInstr <- function(inp,out){
+writeMinInstr <- function(inp,out, console=TRUE){
   # read input
-  expr <- readInput(inp)
+  expr <- if(!is.na(console) && console) readInput(inp) else paste(readLines(inp), collapse="\n") 
   
   # create minExpr
-  ddgDirPath <- paste(getwd(),"/ddg-min",sep="")
-  dir.create(ddgDirPath,showWarnings=FALSE)
+  ddgDirPath <- paste(getwd(),  if (is.na(console)) "/ddg-annotated" 
+                                else if (console) "/ddg-min" 
+                                else "/ddg-source",sep="")
   scriptPath <- paste(getwd(),"/",out,sep="")
   minExpr <- paste(startMinInst(scriptPath,ddgDirPath),"\n",expr,"\n",
-                   endMinInst(scriptPath),sep="")
+                   endMinInst(if (is.na(console) || !console) NULL else scriptPath),sep="")
   
   # create minScript file
   sFile <- file(out)
   write(minExpr,sFile)
   close(sFile)
 }
+
 
 ### Function: Calculate time of execution for script.R, minimal annotations, and
 #   script-annotated.R
@@ -204,19 +217,30 @@ writeMinInstr <- function(inp,out){
 # $return - a list of the form [time of script, time of min annotations, time of annotated]
 calcResults <- function(fileName) {
   # get file name and file path
-  extns <- list("-min", "", "-annotated")
+  extns <- list("min" = "-min","source"= "-source", "original" = "-clean", "full" = "-annotated")
   names <- sapply(extns, function(x) {
     return(paste(fileName, x, ".r", sep=""))
+  }, simplify=FALSE)
+  dirs <- sapply(extns, function(x) {
+    return(if (x != "-clean") paste("/ddg", x, sep="") else NA)
   })
-  
-  # create minimum instrumentation file
-  writeMinInstr(names[2],names[1])
+
+  # delete directories
+  sapply(dirs, function(dir){if (!is.na(dir)) unlink(paste0(getwd(),dir), recursive=T)})
+
+  # create minimum and source instrumentation file
+  # browser()
+  writeMinInstr(names$original,names$min)
+  writeMinInstr(names$original,names$source,console = FALSE)
   
   # create minimum instrumentation file to wd if non-existent annotated file
-  if (!file.exists(names[3])) writeMinInstr(names[2],names[3])
+  template <- paste0("template_", names$full)
+  if (!file.exists(template)) writeMinInstr(names$original,names$full)
+  else writeMinInstr(template, names$full, console=NA)
 
-  # create data frame with 3 tested files as rows, columns are data returned by scriptInfo
-  dFrame <- data.frame(matrix(unlist(sapply(names, scriptInfo)), byrow=T, nrow=3))
+
+  # create data frame with 4 tested files as rows, columns are data returned by scriptInfo
+  dFrame <- data.frame(matrix(unlist(sapply(names, scriptInfo)), byrow=T, nrow=4))
   
   # add DDG Dir location
   dFrame$ddgDir <- sapply(extns, function(x) {
@@ -228,11 +252,16 @@ calcResults <- function(fileName) {
     return(dirSize(x))
   })
 
+  # add type of script information
+  dFrame$type <- names(extns)
+
   # add file names and column names, reorder
   dFrame$names <- names
-  dFrame <- dFrame[c(5,1,2,3,4)]
-  colnames(dFrame) <- c("Script File", "Execution Time (min)", "File Size (kB)",
-                        "DDG Dir Loc.", "DDG Dir Size (kB)")
+
+  # reformat structure of data frame
+  dFrame <- dFrame[c(6,5,1,2,3,4)]
+  colnames(dFrame) <- c("Script.File", "Type", "Execution.Time.min", "File.Size.kB",
+                        "DDG.Dir.Loc.", "DDG.Dir.Size.kB")
   
   return(dFrame)
 

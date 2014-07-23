@@ -78,7 +78,8 @@
                     unless:true="${no-source}"
     />
 
-    <!-- Execute the R Script -->
+    <!-- Execute the R Script (delete ddg directory first) -->
+    <delete dir="${dir}/ddg" quiet="true" />
     <exec executable="Rscript" dir="${local_dir}" output="${TESTS.dir}/${out}" >
       <arg line="${script-file}" />
     </exec>
@@ -88,7 +89,8 @@
     <basename property="expected_out_name" file="${expected_out}" />
     <basename property="out_name" file="${out}" />
 
-    <!-- Source the R Script -->
+    <!-- Source the R Script (delete ddg-source directory first)-->
+    <delete dir="${dir}/ddg-source" quiet="true" unless:true="${no-source}"/>
     <exec executable="Rscript" dir="${local_dir}" output="${TESTS.dir}/${dir}/source_${out_name}" unless:true="${no-source}">
       <arg line="sourceTest.r" />
     </exec>
