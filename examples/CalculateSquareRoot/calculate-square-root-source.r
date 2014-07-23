@@ -1,8 +1,7 @@
 source("D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/R/RDataTracker.R")
 ddg.init('D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/CalculateSquareRoot/calculate-square-root-source.r','D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/CalculateSquareRoot/ddg-source',enable.console=TRUE)
 
-##------ Wed Jul 23 00:49:26 2014 ------##
-
+##------ Wed Jul 23 13:19:50 2014 ------##
 #############################
 ### CALCULATE SQUARE ROOT ###
 #############################

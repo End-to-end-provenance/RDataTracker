@@ -9,8 +9,10 @@
 # Note that this script will create a minimal instrumentation script-min.r and overwrite any file by
 # that name. It will also create the exact same script if script-annotated.r does not exists. Otherwise,
 # it will time the performance of script-annotated.r
- 
-setwd("D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/utilities")
+
+if (!exists("base.dir")) base.dir <- "D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker"
+util.dir <- paste0(base.dir, "/utilities")
+setwd(util.dir)
 source("timerFunctions.r")
 source("helpers.r")
 

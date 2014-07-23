@@ -17,13 +17,13 @@ time.cmdLineLim <- 50
 
 # specified the directory where all of our test scripts are found
 if (!exists("base.dir")) base.dir <- "D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker"
-if (!exists("test.dir")) test.dir <- paste0(basedir,"/examples")
+if (!exists("test.dir")) test.dir <- paste0(base.dir,"/examples")
 
 ### Function which initializes counter and working directory, as well as other
 #   global parameters
 # @param wd : the working directory
 setInitialVal <- function(wd, base=test.dir){
-  setwd(paste(test.dir,wd,sep=""))
+  setwd(paste0(test.dir,wd))
   
   # clear history
   rm(list = ls())
@@ -36,7 +36,7 @@ setInitialVal <- function(wd, base=test.dir){
 #   minimual instrumentation of DDG works correctly.
 .startHistory <- function(scriptPath){
   hist <- "" # paste("loadhistory('", scriptPath, "')",sep="")
-  myTimeStamp <<- paste("##------ ", date(), " ------##", sep="")
+  myTimeStamp <<- paste0("##------ ", date(), " ------##")
   return(paste(hist,myTimeStamp,sep="\n"))
 }
 
@@ -44,7 +44,7 @@ setInitialVal <- function(wd, base=test.dir){
 #   the current script file into history and into using the corrent myTimeStamp for
 #   that loading.
 .endHistory <- function(scriptPath){
-  cmd <- paste(".ddg.console.node('", scriptPath, "','", myTimeStamp, "')", sep="")
+  cmd <- paste0(".ddg.console.node('", scriptPath, "','", myTimeStamp, "')")
   return(cmd)
 }
 
@@ -53,12 +53,12 @@ setInitialVal <- function(wd, base=test.dir){
 # @param scriptDir - a string for the directory of the script
 # @param ddgDirPath - a string for the path of the ddgDirectory
 startMinInst <- function(scriptPath,ddgDirPath, console=TRUE){
-  src <- paste('source("', base.dir, '/R/RDataTracker.R")'
+  src <- paste0('source("', base.dir, '/R/RDataTracker.R")')
   lib <- "library(RDataTracker)"
   rdt <- if (!is.na(console) && console) src else lib
   hist <- if (!is.na(console) && console) .startHistory(scriptPath) else ""
   console.val <- as.character(!is.na(console))
-  init <- paste("ddg.init('", scriptPath, "','",ddgDirPath, "',enable.console=", console.val, ")",sep="")
+  init <- paste0("ddg.init('", scriptPath, "','",ddgDirPath, "',enable.console=", console.val, ")")
   wd <- paste0("setwd(", getwd(), ")")
   return(paste(rdt,init,hist,sep="\n"))
 }
@@ -181,7 +181,7 @@ getFileName <- function(){
 getFilePath <- function(){
   input <- INPUT("Please enter script path. Begins with / and create path relative to timer.R.")
   if (substr(input,1,1) != '/') {
-    input <- paste("/",input,sep="")
+    input <- paste0("/",input)
     warning("Adding / to beginning of input!. Input is now '", input, "'", sep="")
     return(input)
   }
@@ -195,12 +195,12 @@ writeMinInstr <- function(inp,out, console=TRUE){
   expr <- if(!is.na(console) && console) readInput(inp) else paste(readLines(inp), collapse="\n") 
   
   # create minExpr
-  ddgDirPath <- paste(getwd(),  if (is.na(console)) "/ddg-annotated" 
+  ddgDirPath <- paste0(getwd(),  if (is.na(console)) "/ddg-annotated" 
                                 else if (console) "/ddg-min" 
-                                else "/ddg-source",sep="")
-  scriptPath <- paste(getwd(),"/",out,sep="")
-  minExpr <- paste(startMinInst(scriptPath,ddgDirPath),"\n",expr,"\n",
-                   endMinInst(if (is.na(console) || !console) NULL else scriptPath),sep="")
+                                else "/ddg-source")
+  scriptPath <- paste0(getwd(),"/",out)
+  minExpr <- paste0(startMinInst(scriptPath,ddgDirPath),"\n",expr,"\n",
+                   endMinInst(if (is.na(console) || !console) NULL else scriptPath))
   
   # create minScript file
   sFile <- file(out)
@@ -219,14 +219,17 @@ calcResults <- function(fileName) {
   # get file name and file path
   extns <- list("min" = "-min","source"= "-source", "original" = "-clean", "full" = "-annotated")
   names <- sapply(extns, function(x) {
-    return(paste(fileName, x, ".r", sep=""))
+    return(paste0("timingScripts/", fileName, x, ".r"))
   }, simplify=FALSE)
   dirs <- sapply(extns, function(x) {
-    return(if (x != "-clean") paste("/ddg", x, sep="") else NA)
+    return(if (x != "-clean") paste0("/ddg", x) else NA)
   })
 
   # delete directories
   sapply(dirs, function(dir){if (!is.na(dir)) unlink(paste0(getwd(),dir), recursive=T)})
+
+  # delete the scripts directory
+  unlink(paste0(getwd(), "/timingScripts", recursive=T))
 
   # create minimum and source instrumentation file
   # browser()
@@ -244,7 +247,7 @@ calcResults <- function(fileName) {
   
   # add DDG Dir location
   dFrame$ddgDir <- sapply(extns, function(x) {
-    return(paste("/ddg", x, sep=""))
+    return(paste0("/ddg", x))
   })
 
   # add DDG dir sizes

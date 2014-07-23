@@ -5,7 +5,7 @@
 # For more information on behaviour, look at interactiveTimer.r. This script is simply a wrapper around that
 # which allows for multiple scripts to be processed sequentially and which saves the data to timingData.csv
 
-base.dir <- "D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker"
+if (!exists("base.dir")) base.dir <- "D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker"
 util.dir <- paste0(base.dir, "/utilities")
 test.dir <- paste0(base.dir, "/exaples")
 setwd(util.dir)
@@ -42,9 +42,9 @@ results <- lapply(scripts,function(x){
 rowResults <- Reduce(rbind, results, data.frame())
 
 # set working directory to write out in the right location
-setwd("D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/_timingResults")
+setwd(paste0(base.dir, "/examples/_timingResults")
 
-dfile <- paste("timingData", "-", gsub(" ","T",gsub(":",".",Sys.time())), ".csv", sep="")
+dfile <- paste0("timingData", "-", gsub(" ","T",gsub(":",".",Sys.time())), ".csv")
 write.csv(rowResults,dfile, row.names = FALSE)
 
 
