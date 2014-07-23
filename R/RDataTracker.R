@@ -1836,9 +1836,13 @@ ddg.MAX_HIST_LINES <- 16384
 				modTime.original <- file.info(original)$mtime[1]
 				modTime.saved <- file.info(saved)$mtime[1]
 				if (modTime.original >= modTime.saved) {
+
+					# windows does not allow colons in the names of directories
+					modTime.original.str <- gsub(" ","T", gsub(":",".",as.character(modTime.original)))
+					
 					rescue.dir <- paste(getwd(), "/ddg.rescued.files/", sep="")
 					dir.create(rescue.dir, showWarnings=FALSE)
-					rescue.filename <- paste(rescue.dir, modTime.original, "-", basename(original), sep="")
+					rescue.filename <- paste(rescue.dir, modTime.original.str, "-", basename(original), sep="")
 					warning("Saving ", original, " in ", rescue.filename)
 					file.copy(original, rescue.filename, overwrite=TRUE)
 					file.copy(saved, original, overwrite=TRUE)
