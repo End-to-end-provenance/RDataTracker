@@ -440,15 +440,19 @@ ddg.MAX_HIST_LINES <- 16384
 }
 
 # .ddg.is.proc.node returns true if type is one which is considered a procedure
-# node by use. That means, it can have input/output edges in the expanded DDG
+# node by us. That means, it can have input/output edges in the expanded DDG.
+# Current types are: Everything except Start
 .ddg.is.proc.node <- function(type) {
-	return(type == "Operation" | type == "Checkpoint" | type == "Restore" | type == "Finish" )
+	return(type == "Operation" |
+	       type == "Checkpoint" | 
+	       type == "Restore" | 
+	       type == "Finish" | 
+	       type == "Binding")
 }
 
 # .ddg.proc.number gets the number of the nearest preceding matching 
 # Operation, Checkpoint, or Restore node. It returns zero if no match 
 # is found.
-
 .ddg.proc.number <- function(pname) {
 	ddg.proc.nodes <- .ddg.proc.nodes()
 	rows <- nrow(ddg.proc.nodes)
@@ -466,6 +470,9 @@ ddg.MAX_HIST_LINES <- 16384
 	return(0)
 }
 
+# Function which returns the node number of the last procedure node in the 
+# ddg procedure node table. Procedure nodes are determined as defined in 
+# .ddg.is.proc.node above.
 .ddg.last.proc.number <- function() {
 	ddg.proc.nodes <- .ddg.proc.nodes()
 	rows <- nrow(ddg.proc.nodes)
@@ -577,7 +584,8 @@ ddg.MAX_HIST_LINES <- 16384
 }
 
 # .ddg.lastproc2data creates a data flow edge from the last procedure 
-# node to a data node.
+# node to a data node. The all parameter indicated whether 
+# all nodes should be considered (TRUE) or only procedure nodes (FALSE)
 
 .ddg.lastproc2data <- function(dname, all=TRUE) {
 	# Get data & procedure numbers.
