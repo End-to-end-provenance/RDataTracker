@@ -1,8 +1,17 @@
 library(RDataTracker)
 #source("/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/R/RDataTracker.R")
 
-ddg.init("/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/ScopeTest/ReturnTest.R",
-         "/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/ScopeTest/ddg",
+if (interactive()) {
+	testDir <- getwd()
+} else {
+	testDir <- "[DIR_DEFAULT]"
+	setwd(testDir)
+}
+
+ddg.r.script.path = paste(testDir,"ReturnTest.R",sep="/")
+ddg.path = paste(testDir,"[DDG-DIR]",sep="/")
+ddg.init(ddg.r.script.path,
+		 ddg.path,
          enable.console=TRUE)
 
 f <- function(p_a) {

@@ -8,6 +8,10 @@
 # Mixed format
 # ERB rev. 29-Sep-2013
 
+# Tests the automatic capturing of output plots. 
+
+# Test by @Luis Perez
+
 ### R packages
 
 library(chron)
@@ -16,10 +20,19 @@ options(guiToolkit="RGtk2")
 
 ### Directories
 
-setwd("c:/data/r/ddg/plot-daily-data")
+# setwd("c:/data/r/ddg/plot-daily-data")
+# ddg.r.script <- paste(getwd(),"/plot-daily-data-m.r",sep="")
+# ddg.path <- paste(getwd(),"/ddg",sep="")
+# source("c:/data/r/lib/ddg-library.r")
+
+library(RDataTracker)
+
+## Directories
+testDir <- "D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/PlotDailyData/"
+setwd(testDir)
+
 ddg.r.script <- paste(getwd(),"/plot-daily-data-m.r",sep="")
 ddg.path <- paste(getwd(),"/ddg",sep="")
-source("c:/data/r/lib/ddg-library.r")
 
 ### Functions
 

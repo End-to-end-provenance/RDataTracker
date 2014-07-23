@@ -1,0 +1,30 @@
+Architecture="i386"
+OperatingSystem="windows"
+Language="R"
+LanguageVersion="R version 3.1.0 (2014-04-10)"
+Script="[DIR]/NULLandNA.r"
+ProcessFileTimestamp="2014-07-16T17.00.56"
+WorkingDirectory="[DIR]"
+DDGDirectory="[DIR]/ddg-source"
+DateTime="2014-07-16T17.01.07"
+5
+Operation p1 "1-x <- NA" Value="x <- NA";
+Data d1 "1-x" Value="NA";
+DF p1 d1
+Operation p2 "2-y <- NULL" Value="y <- NULL";
+CF p1 p2
+Data d2 "2-y" Value="NULL";
+DF p2 d2
+Operation p3 "3-z <- 5" Value="z <- 5";
+CF p2 p3
+Data d3 "3-z" Value="5";
+DF p3 d3
+Operation p4 "4-a <- \"character\"" Value="a <- \"character\"";
+CF p3 p4
+Data d4 "4-a" Value="\"character\"";
+DF p4 d4
+Operation p5 "5-storage.mode(z) <- a" Value="storage.mode(z) <- a";
+CF p4 p5
+Data d5 "5-z" Value="\"5\"";
+DF p5 d5
+

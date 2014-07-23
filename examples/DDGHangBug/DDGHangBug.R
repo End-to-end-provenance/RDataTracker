@@ -2,12 +2,13 @@
 # ERB rev. 3-Apr-2014
 
 # Modified by Luis Perez 7-Jul-2014
+# Modified by Luis Perez 17-Jul-2014
 
 ## Directories
 testDir <- "[DIR_DEFAULT]/"
 setwd(testDir)
 
-ddg.r.script.path = paste(testDir,"DDGHangBug.r",sep="")
+ddg.r.script.path = paste(testDir,"DDGHangBug.R",sep="")
 ddg.path = paste(testDir,"ddg",sep="")
 
 library(RDataTracker)
@@ -45,3 +46,5 @@ main <- function() {
 #ddg.r.script.path <- "D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/DDGHangBug/DDGHangBug.R"
 #ddg.path <- "D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/DDGHangBug/ddg"
 ddg.run(main,ddg.r.script.path,ddg.path)
+
+ddg.save(quit=TRUE)

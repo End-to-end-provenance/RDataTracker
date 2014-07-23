@@ -11,8 +11,8 @@
 \usage{
 ddg.init(r.script.path = NULL, ddgdir = NULL, enable.console = FALSE) 
 ddg.grabhistory()
-ddg.save()
-ddg.run(f, r.script.path = NULL, ddgdir = NULL, enable.console = FALSE)
+ddg.save(quit=FALSE)
+ddg.run(f = NULL, r.script.path = NULL, ddgdir = NULL, enable.console = FALSE)
 ddg.console.on()
 ddg.console.off()
 ddg.flush.ddg()
@@ -24,6 +24,7 @@ ddg.flush.ddg()
     pasting, or selecting and running, will result in a procedure node created in the provenance graph, with
     data nodes created for each variable assigned and data flow edges for variables used and set. }
   \item{f}{ A function to run.  Data provenance is collected within the function. }
+  \item{quit}{boolean specifying whether this is the last call to ddg.save for this DDG.}
 }
 \details{
   In order to use RDataTracker to collect data provenance, the user must either call ddg.init() 
@@ -42,13 +43,19 @@ ddg.flush.ddg()
   ddg.txt.  The extra information includes the version of R being used, the operating system, and 
   a timestamp of the execution.  ddg.save() can be called multiple times for a single call to 
   ddg.init(), where each call will extend the previous provenance graph, overwriting the file
-  containing the previous version.
+  containing the previous version. When the final save procedure is wanted, the 
+  parameter "quit" can be set to true. This modified ddg.save() so that all temporary
+  files in mememory are cleared out. While not strictly necessary, this prevents issues
+  when creating multiple DDGs from the same script.
   
   ddg.run provides a short cut for ddg.init()...ddg.save().  It initializes the provenance graph,
   calls the function provided as a parameter, and then saves the provenance graph.  The graph
   will contain just the provenance created by calls to the DDG functions.  If an R error occurs 
   during the execution of the function, the error will be captured in an Exception node in the 
   provenance graph.
+  If no function is provided but an r.script.path is indicated, ddg.run will call ddg.source
+  with r.script.path as the source script (see \code{\link{ddg.source}}). If neither is
+  provided, an error will be raised. 
 
   ddg.console.on and ddg.console.off toggle the console parameter for DDG creation. When the console is enabled, all commands sent to the R
   console are captured as provenance by the RDataTracker library. The functions allow for an intermix of automatic annotations

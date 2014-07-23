@@ -12,12 +12,14 @@
 *.pdf
 *.jpg
 *.jpeg
-*.csv
+*.png
+*.tiff
 
 # Other non-essential files
 *.pages
-*.md
-*.Rmd
+*.docx
+examples/**/*.md
+examples/**/*.Rmd
 
 # exclude local ddg directors
 examples/*/ddg*/
@@ -37,3 +39,30 @@ examples/checkPointTest/testfile*.txt
 # Project Files
 .project
 /DESCRIPTION~
+
+# vignette and knitr files
+*.sty
+*.aux
+vignettes/*.out
+vignettes/*.tex
+vignettes/*synctex.gz
+*.toc
+
+# INCLUDE jpg file under vignettes
+!vignettes/*/*.jpg
+!vignettes/*/*.png
+
+# INCLUDE .txt files under checkpoint test
+!examples/checkpointTest/*.txt
+
+# IGNORE specific test files
+examples/CalculateSquareRoot/*.csv
+examples/checkpointTest/testfile3.txt
+examples/RealTime15MinMET/*.csv
+
+# PUSH PDF in /inst/doc
+!inst/doc/*.pdf
+
+# Ignore out .out files except those with expected in the name
+examples/*/*.out
+!examples/*/*expected*.out

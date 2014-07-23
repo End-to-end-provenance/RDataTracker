@@ -1,5 +1,6 @@
 ### Originally written by Barbara Lerner
 # Modified by Luis Perez 7-Jul-2014
+# Modified by Luis Perez 17-Jul-2014
 
 rm (list=ls())
 
@@ -45,9 +46,10 @@ main <- function() {
 	ddg.data(b)
 	f2(b)
 	
-	f(c)
-	ddg.data(c)
-	f2(c)
+	# d doesn't exist yet
+	f(d)
+	ddg.data(d)
+	f2(d)
 	
 	d <- 6
 	f(d[[2]])
@@ -68,3 +70,5 @@ main <- function() {
 ddg.run(main, 
         ddg.r.script.path,
         ddg.path)
+
+ddg.save(quit=TRUE)

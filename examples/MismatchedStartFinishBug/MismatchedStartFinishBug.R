@@ -4,6 +4,7 @@
 # April 2014
 
 # Modified by Luis Perez 7-Jul-2014
+# Modified by Luis Perez 17-Jul-2014
 
 # Load the library to create the provenance graphs.  All the function calls below that begin "ddg."
 # are calls to functions in this library.
@@ -18,11 +19,8 @@ library(RDataTracker)
 testDir <- "[DIR_DEFAULT]/"
 setwd(testDir)
 
-ddg.r.script.path = paste(testDir,"MismatchedStartFinishBug.r",sep="")
-ddg.path = paste(testDir,"ddg",sep="")
-
-options(warn=2)
-ddg.debug.off()
+ddg.r.script.path = paste(testDir,"MismatchedStartFinishBug.R",sep="")
+ddg.path = paste(testDir,"[DDG-DIR]",sep="")
 
 # Initialize the provenance graph
 ddg.init(ddg.r.script.path,
@@ -35,7 +33,5 @@ f <- function () {
 	ddg.finish()
 }
 
-ddg.debug.on()
 x <- f()
-ddg.debug.off()
-ddg.save()
+ddg.save(quit=TRUE)

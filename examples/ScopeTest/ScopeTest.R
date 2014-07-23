@@ -15,13 +15,13 @@ if (interactive()) {
 }
 
 ddg.r.script.path = paste(testDir,"ScopeTest.R",sep="/")
-ddg.path = paste(testDir,"ddg",sep="/")
+ddg.path = paste(testDir,"[DDG-DIR]",sep="/")
 
 ddg.init(ddg.r.script.path,
 		ddg.path,
      enable.console=TRUE)
 
-#options(warn=2)
+options(warn=1)
 
 f <- function() {
    a <<- b * 10
@@ -71,6 +71,8 @@ c <- 100
 if (g(c) != 110) print("g(c) returned the wrong value")
 
 d <- g(c)
+
+ddg.debug.on()
 h()
 
 i()

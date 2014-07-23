@@ -2,16 +2,17 @@ Architecture="x86_64"
 OperatingSystem="unix"
 Language="R"
 LanguageVersion="R version 3.1.0 Patched (2014-05-20 r65701)"
-Script="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/S4ObjectTest/S4ObjectTest.R"
-ProcessFileTimestamp="2014-07-18T11.35.25"
-WorkingDirectory="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/S4ObjectTest"
-DDGDirectory="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/S4ObjectTest/ddg"
-DateTime="2014-07-22T13.45.14"
+RDataTrackerVersion="0.5.19"
+Script="[DIR]/S4ObjectTest.R"
+ProcessFileTimestamp="2014-07-22T16.27.07"
+WorkingDirectory="[DIR]"
+DDGDirectory="[DIR]/ddg"
+DateTime="2014-07-23T10.48.45"
 16
 Start p1 "1-generate1Sample" Value="generate1Sample";
 Operation p2 "2-new sample" Value="new sample";
 CF p1 p2
-Snapshot d1 "1-newSample" Value="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/S4ObjectTest/ddg/1-newSample.txt" Time="2014-07-22T13.45.14";
+Snapshot d1 "1-newSample" Value="[DIR]/ddg/1-newSample.txt" Time="2014-07-23T10.48.45";
 DF p2 d1
 Finish p3 "3-generate1Sample" Value="generate1Sample";
 CF p2 p3
@@ -19,58 +20,58 @@ Start p4 "4-generateSamples" Value="generateSamples";
 CF p3 p4
 Operation p5 "5-new samples" Value="new samples";
 CF p4 p5
-Snapshot d2 "2-samplesArr" Value="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/S4ObjectTest/ddg/2-samplesArr.csv" Time="2014-07-22T13.45.14";
+Snapshot d2 "2-samplesArr" Value="[DIR]/ddg/2-samplesArr.csv" Time="2014-07-23T10.48.45";
 DF p5 d2
 Operation p6 "6-new sample" Value="new sample";
 CF p5 p6
-Snapshot d3 "3-newSample" Value="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/S4ObjectTest/ddg/3-newSample.txt" Time="2014-07-22T13.45.14";
+Snapshot d3 "3-newSample" Value="[DIR]/ddg/3-newSample.txt" Time="2014-07-23T10.48.45";
 DF p6 d3
 Operation p7 "7-add to samples" Value="add to samples";
 CF p6 p7
 DF d3 p7
 DF d2 p7
-Snapshot d5 "5-samplesArr" Value="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/S4ObjectTest/ddg/5-samplesArr.txt" Time="2014-07-22T13.45.14";
-DF p7 d5
+Snapshot d4 "4-samplesArr" Value="[DIR]/ddg/4-samplesArr.txt" Time="2014-07-23T10.48.45";
+DF p7 d4
 Operation p8 "8-new sample" Value="new sample";
 CF p7 p8
-Snapshot d6 "6-newSample" Value="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/S4ObjectTest/ddg/6-newSample.txt" Time="2014-07-22T13.45.14";
-DF p8 d6
+Snapshot d5 "5-newSample" Value="[DIR]/ddg/5-newSample.txt" Time="2014-07-23T10.48.45";
+DF p8 d5
 Operation p9 "9-add to samples" Value="add to samples";
 CF p8 p9
-DF d6 p9
 DF d5 p9
-Snapshot d8 "8-samplesArr" Value="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/S4ObjectTest/ddg/8-samplesArr.txt" Time="2014-07-22T13.45.14";
-DF p9 d8
+DF d4 p9
+Snapshot d6 "6-samplesArr" Value="[DIR]/ddg/6-samplesArr.txt" Time="2014-07-23T10.48.45";
+DF p9 d6
 Operation p10 "10-new sample" Value="new sample";
 CF p9 p10
-Snapshot d9 "9-newSample" Value="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/S4ObjectTest/ddg/9-newSample.txt" Time="2014-07-22T13.45.14";
-DF p10 d9
+Snapshot d7 "7-newSample" Value="[DIR]/ddg/7-newSample.txt" Time="2014-07-23T10.48.45";
+DF p10 d7
 Operation p11 "11-add to samples" Value="add to samples";
 CF p10 p11
-DF d9 p11
-DF d8 p11
-Snapshot d11 "11-samplesArr" Value="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/S4ObjectTest/ddg/11-samplesArr.txt" Time="2014-07-22T13.45.14";
-DF p11 d11
+DF d7 p11
+DF d6 p11
+Snapshot d8 "8-samplesArr" Value="[DIR]/ddg/8-samplesArr.txt" Time="2014-07-23T10.48.45";
+DF p11 d8
 Operation p12 "12-new sample" Value="new sample";
 CF p11 p12
-Snapshot d12 "12-newSample" Value="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/S4ObjectTest/ddg/12-newSample.txt" Time="2014-07-22T13.45.14";
-DF p12 d12
+Snapshot d9 "9-newSample" Value="[DIR]/ddg/9-newSample.txt" Time="2014-07-23T10.48.45";
+DF p12 d9
 Operation p13 "13-add to samples" Value="add to samples";
 CF p12 p13
-DF d12 p13
-DF d11 p13
-Snapshot d14 "14-samplesArr" Value="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/S4ObjectTest/ddg/14-samplesArr.txt" Time="2014-07-22T13.45.14";
-DF p13 d14
+DF d9 p13
+DF d8 p13
+Snapshot d10 "10-samplesArr" Value="[DIR]/ddg/10-samplesArr.txt" Time="2014-07-23T10.48.45";
+DF p13 d10
 Operation p14 "14-new sample" Value="new sample";
 CF p13 p14
-Snapshot d15 "15-newSample" Value="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/S4ObjectTest/ddg/15-newSample.txt" Time="2014-07-22T13.45.14";
-DF p14 d15
+Snapshot d11 "11-newSample" Value="[DIR]/ddg/11-newSample.txt" Time="2014-07-23T10.48.45";
+DF p14 d11
 Operation p15 "15-add to samples" Value="add to samples";
 CF p14 p15
-DF d15 p15
-DF d14 p15
-Snapshot d17 "17-samplesArr" Value="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/S4ObjectTest/ddg/17-samplesArr.txt" Time="2014-07-22T13.45.14";
-DF p15 d17
+DF d11 p15
+DF d10 p15
+Snapshot d12 "12-samplesArr" Value="[DIR]/ddg/12-samplesArr.txt" Time="2014-07-23T10.48.45";
+DF p15 d12
 Finish p16 "16-generateSamples" Value="generateSamples";
 CF p15 p16
 

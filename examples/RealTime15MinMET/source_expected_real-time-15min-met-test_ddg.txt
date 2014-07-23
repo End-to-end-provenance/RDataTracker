@@ -1,0 +1,163 @@
+Architecture="x86_64"
+OperatingSystem="unix"
+Language="R"
+LanguageVersion="R version 3.1.0 Patched (2014-05-20 r65701)"
+RDataTrackerVersion="0.5.19"
+Script="[DIR]/real-time-15min-met-test.r"
+ProcessFileTimestamp="2014-07-22T16.27.07"
+WorkingDirectory="[DIR]"
+DDGDirectory="[DIR]/ddg-source"
+DateTime="2014-07-23T11.27.49"
+36
+Operation p1 "1-get.initial.values <- function() {    archive.file <<- \"arc" Value="get.initial.values <- function() {    archive.file <<- \"archive-15min.csv\"    current.url <<- \"http://harvardforest.fas.harvard.edu/sites/harvardforest.fas.harvard.edu/files/weather/metsta.dat\"}";
+Data d1 "1-get.initial.values" Value="#ddg.function";
+DF p1 d1
+Operation p2 "2-get.archive.data <- function(x) {    zz <- read.csv(x)    zz" Value="get.archive.data <- function(x) {    zz <- read.csv(x)    zz.col <- c(\"type\", \"year\", \"jul\", \"hm\", \"airt\", \"rh\", \"dewp\",         \"prec\", \"slrr\", \"parr\", \"netr\", \"bar\", \"wspd\", \"wres\",         \"wdir\", \"wdev\", \"gspd\", \"s10t\")    zz <- read.csv(\"archive-15min.csv\", col.names = zz.col, header = FALSE)    return(zz)}";
+CF p1 p2
+Data d2 "2-get.archive.data" Value="#ddg.function";
+DF p2 d2
+Operation p3 "3-get.current.data <- function(x) {    file.in <- file(x)    z" Value="get.current.data <- function(x) {    file.in <- file(x)    zz.col <- c(\"type\", \"year\", \"jul\", \"hm\", \"airt\", \"rh\", \"dewp\",         \"prec\", \"slrr\", \"parr\", \"netr\", \"bar\", \"wspd\", \"wres\",         \"wdir\", \"wdev\", \"gspd\", \"s10t\")    zz <- read.csv(file.in, col.names = zz.col, header = FALSE)    return(zz)}";
+CF p2 p3
+Data d3 "3-get.current.data" Value="#ddg.function";
+DF p3 d3
+Operation p4 "4-get.final.data <- function(archive.data, current.data) {    " Value="get.final.data <- function(archive.data, current.data) {    xx <- rbind(archive.data, current.data)    i <- which(xx[, 1] == \"101\")    zz <- xx[i, ]    zz$date <- paste(zz$year, \"-\", format(strptime(zz$jul, format = \"%j\"),         format = \"%m-%d\"), sep = \"\")    hour <- zz$hm%/%100    min <- zz$hm%%100    zz$time <- paste(sprintf(\"%02d\", hour), \":\", sprintf(\"%02d\",         min), \":00\", sep = \"\")    i <- which(zz$time == \"24:00:00\")    zz$date[i] <- as.character(as.Date(zz$date[i]) + 1)    zz$time[i] <- \"00:00:00\"    zz$dt <- chron(dates = zz$date, times = zz$time, format = c(dates = \"y-m-d\",         times = \"h:m:s\"))    return(zz)}";
+CF p3 p4
+Data d4 "4-get.final.data" Value="#ddg.function";
+DF p4 d4
+Operation p5 "5-save.data <- function(file.name, x) {    file.out <- paste(g" Value="save.data <- function(file.name, x) {    file.out <- paste(getwd(), \"/\", file.name, sep = \"\")    write.csv(x, file.out, row.names = FALSE)}";
+CF p4 p5
+Data d5 "5-save.data" Value="#ddg.function";
+DF p5 d5
+Operation p6 "6-plot.data <- function(zz, v, d) {    rows <- nrow(zz)    xmi" Value="plot.data <- function(zz, v, d) {    rows <- nrow(zz)    xmin <- zz$dt[rows - 96 * d]    xmax <- zz$dt[rows]    xlim <- c(xmin, xmax)    xrange <- xmax - xmin    daterange <- c(xmin, xmax)    vv <- zz[, v]    ymin <- min(vv, na.rm = TRUE)    ymax <- max(vv, na.rm = TRUE)    ylim <- c(ymin, ymax)    yrange <- ymax - ymin    if (Sys.info()[\"sysname\"] == \"Darwin\") {        X11(15, 10)    }    else {        windows(15, 10)    }    par(mar = c(5.1, 5.1, 5.1, 10.1))    plot(xaxt = \"n\", xlim, ylim, cex.main = 1.7, cex.axis = 1.7,         cex.lab = 1.7, xlab = \"Date\", ylab = v, main = \"Harvard Forest\")    if (xrange <= 30)         axis.Date(1, at = seq(daterange[1], daterange[2], by = \"day\"),             format = \"%d-%b-%Y\")    if (xrange > 30 && xrange < 100)         axis.Date(1, at = seq(daterange[1], daterange[2], by = \"week\"),             format = \"%d-%b-%Y\")    if (xrange >= 100 && xrange <= 1000)         axis.Date(1, at = seq(daterange[1], daterange[2], by = \"month\"),             format = \"%d-%b-%Y\")    if (xrange > 1000)         axis.Date(1, at = seq(daterange[1], daterange[2], by = \"year\"),             format = \"%b-%Y\")    lines(zz[c(\"dt\", v)], lwd = 2, col = \"blue\")    rows <- nrow(zz)    xmin <- zz$dt[rows - 96 * d]    xmax <- zz$dt[rows]    xlim <- c(xmin, xmax)    xrange <- xmax - xmin    daterange <- c(xmin, xmax)    vv <- zz[, v]    ymin <- min(vv, na.rm = TRUE)    ymax <- max(vv, na.rm = TRUE)    ylim <- c(ymin, ymax)    yrange <- ymax - ymin    par(mar = c(5.1, 5.1, 5.1, 10.1))    plot(xaxt = \"n\", xlim, ylim, cex.main = 1.7, cex.axis = 1.7,         cex.lab = 1.7, xlab = \"Date\", ylab = v, main = \"Harvard Forest\")    if (xrange <= 30)         axis.Date(1, at = seq(daterange[1], daterange[2], by = \"day\"),             format = \"%d-%b-%Y\")    if (xrange > 30 && xrange < 100)         axis.Date(1, at = seq(daterange[1], daterange[2], by = \"week\"),             format = \"%d-%b-%Y\")    if (xrange >= 100 && xrange <= 1000)         axis.Date(1, at = seq(daterange[1], daterange[2], by = \"month\"),             format = \"%d-%b-%Y\")    if (xrange > 1000)         axis.Date(1, at = seq(daterange[1], daterange[2], by = \"year\"),             format = \"%b-%Y\")    lines(zz[c(\"dt\", v)], lwd = 2, col = \"blue\")    ddg.procedure(lookup.ins = T)}";
+CF p5 p6
+Data d6 "6-plot.data" Value="#ddg.function";
+DF p6 d6
+Operation p7 "7-save.plot <- function(zz, v, d) {    dpfile <- paste(getwd()" Value="save.plot <- function(zz, v, d) {    dpfile <- paste(getwd(), \"/plot.jpeg\", sep = \"\")    jpeg(file = dpfile, width = 800, height = 500, quality = 100)    rows <- nrow(zz)    xmin <- zz$dt[rows - 96 * d]    xmax <- zz$dt[rows]    xlim <- c(xmin, xmax)    xrange <- xmax - xmin    daterange <- c(xmin, xmax)    vv <- zz[, v]    ymin <- min(vv, na.rm = TRUE)    ymax <- max(vv, na.rm = TRUE)    ylim <- c(ymin, ymax)    yrange <- ymax - ymin    par(mar = c(5.1, 5.1, 5.1, 10.1))    plot(xaxt = \"n\", xlim, ylim, cex.main = 1.7, cex.axis = 1.7,         cex.lab = 1.7, xlab = \"Date\", ylab = v, main = \"Harvard Forest\")    if (xrange <= 30)         axis.Date(1, at = seq(daterange[1], daterange[2], by = \"day\"),             format = \"%d-%b-%Y\")    if (xrange > 30 && xrange < 100)         axis.Date(1, at = seq(daterange[1], daterange[2], by = \"week\"),             format = \"%d-%b-%Y\")    if (xrange >= 100 && xrange <= 1000)         axis.Date(1, at = seq(daterange[1], daterange[2], by = \"month\"),             format = \"%d-%b-%Y\")    if (xrange > 1000)         axis.Date(1, at = seq(daterange[1], daterange[2], by = \"year\"),             format = \"%b-%Y\")    lines(zz[c(\"dt\", v)], lwd = 2, col = \"blue\")    dev.off()    rows <- nrow(zz)    xmin <- zz$dt[rows - 96 * d]    xmax <- zz$dt[rows]    xlim <- c(xmin, xmax)    xrange <- xmax - xmin    daterange <- c(xmin, xmax)    vv <- zz[, v]    ymin <- min(vv, na.rm = TRUE)    ymax <- max(vv, na.rm = TRUE)    ylim <- c(ymin, ymax)    yrange <- ymax - ymin    par(mar = c(5.1, 5.1, 5.1, 10.1))    plot(xaxt = \"n\", xlim, ylim, cex.main = 1.7, cex.axis = 1.7,         cex.lab = 1.7, xlab = \"Date\", ylab = v, main = \"Harvard Forest\")    if (xrange <= 30)         axis.Date(1, at = seq(daterange[1], daterange[2], by = \"day\"),             format = \"%d-%b-%Y\")    if (xrange > 30 && xrange < 100)         axis.Date(1, at = seq(daterange[1], daterange[2], by = \"week\"),             format = \"%d-%b-%Y\")    if (xrange >= 100 && xrange <= 1000)         axis.Date(1, at = seq(daterange[1], daterange[2], by = \"month\"),             format = \"%d-%b-%Y\")    if (xrange > 1000)         axis.Date(1, at = seq(daterange[1], daterange[2], by = \"year\"),             format = \"%b-%Y\")    lines(zz[c(\"dt\", v)], lwd = 2, col = \"blue\")}";
+CF p6 p7
+Data d7 "7-save.plot" Value="#ddg.function";
+DF p7 d7
+Operation p8 "8-get.initial.values()" Value="get.initial.values()";
+CF p7 p8
+DF d1 p8
+Operation p9 "9-archive.data <- get.archive.data(archive.file)" Value="archive.data <- get.archive.data(archive.file)";
+CF p8 p9
+Snapshot d8 "8-archive.data" Value="[DIR]/ddg-source/8-archive.data.csv" Time="2014-07-23T11.27.45";
+DF p9 d8
+Operation p10 "10-current.data <- get.current.data(current.url)" Value="current.data <- get.current.data(current.url)";
+CF p9 p10
+Snapshot d9 "9-current.data" Value="[DIR]/ddg-source/9-current.data.csv" Time="2014-07-23T11.27.45";
+DF p10 d9
+Operation p11 "11-final.data <- get.final.data(archive.data, current.data)" Value="final.data <- get.final.data(archive.data, current.data)";
+CF p10 p11
+DF d8 p11
+DF d9 p11
+Snapshot d10 "10-final.data" Value="[DIR]/ddg-source/10-final.data.csv" Time="2014-07-23T11.27.47";
+DF p11 d10
+Operation p12 "12-save.data(\"final-data.csv\", final.data)" Value="save.data(\"final-data.csv\", final.data)";
+CF p11 p12
+DF d10 p12
+Operation p13 "13-inputs <- c(\"airt\", \"dewp\", \"wspd\")" Value="inputs <- c(\"airt\", \"dewp\", \"wspd\")";
+CF p12 p13
+Snapshot d11 "11-inputs" Value="[DIR]/ddg-source/11-inputs.csv" Time="2014-07-23T11.27.49";
+DF p13 d11
+Operation p14 "14-days <- 10" Value="days <- 10";
+CF p13 p14
+Data d12 "12-days" Value="10";
+DF p14 d12
+Data d13 "13-days" Value="10";
+Start p15 "15-for (input in inputs) {    ddg.start(\"Loop\")    ddg.data(" Value="for (input in inputs) {    ddg.start(\"Loop\")    ddg.data(";
+CF p14 p15
+Start p16 "16-Loop" Value="Loop";
+CF p15 p16
+Data d14 "14-input" Value="\"airt\"";
+Binding p17 "17-zz  <-  final.data"
+CF p16 p17
+DF d10 p17
+Snapshot d15 "15-zz" Value="10-final.data.csv";
+DF p17 d15
+Binding p18 "18-v  <-  input"
+CF p17 p18
+DF d14 p18
+Data d16 "16-v" Value="airt";
+DF p18 d16
+Binding p19 "19-d  <-  days"
+CF p18 p19
+DF d13 p19
+Data d17 "17-d" Value="10";
+DF p19 d17
+Operation p20 "20-plot.data" Value="plot.data";
+DF d15 p20
+DF d16 p20
+DF d17 p20
+CF p19 p20
+Finish p21 "21-Loop" Value="Loop";
+CF p20 p21
+Start p22 "22-Loop" Value="Loop";
+CF p21 p22
+Data d18 "18-input" Value="\"dewp\"";
+Snapshot d19 "19-graphic" Value="[DIR]/ddg-source/19-graphic.jpeg" Time="2014-07-23T11.27.49";
+DF p21 d19
+Binding p23 "23-zz  <-  final.data"
+CF p22 p23
+DF d10 p23
+Snapshot d20 "20-zz" Value="10-final.data.csv";
+DF p23 d20
+Binding p24 "24-v  <-  input"
+CF p23 p24
+DF d18 p24
+Data d21 "21-v" Value="dewp";
+DF p24 d21
+Binding p25 "25-d  <-  days"
+CF p24 p25
+DF d13 p25
+Data d22 "22-d" Value="10";
+DF p25 d22
+Operation p26 "26-plot.data" Value="plot.data";
+DF d20 p26
+DF d21 p26
+DF d22 p26
+CF p25 p26
+Finish p27 "27-Loop" Value="Loop";
+CF p26 p27
+Start p28 "28-Loop" Value="Loop";
+CF p27 p28
+Data d23 "23-input" Value="\"wspd\"";
+Snapshot d24 "24-graphic" Value="[DIR]/ddg-source/24-graphic.jpeg" Time="2014-07-23T11.27.49";
+DF p27 d24
+Binding p29 "29-zz  <-  final.data"
+CF p28 p29
+DF d10 p29
+Snapshot d25 "25-zz" Value="10-final.data.csv";
+DF p29 d25
+Binding p30 "30-v  <-  input"
+CF p29 p30
+DF d23 p30
+Data d26 "26-v" Value="wspd";
+DF p30 d26
+Binding p31 "31-d  <-  days"
+CF p30 p31
+DF d13 p31
+Data d27 "27-d" Value="10";
+DF p31 d27
+Operation p32 "32-plot.data" Value="plot.data";
+DF d25 p32
+DF d26 p32
+DF d27 p32
+CF p31 p32
+Finish p33 "33-Loop" Value="Loop";
+CF p32 p33
+Finish p34 "34-for (input in inputs) {    ddg.start(\"Loop\")    ddg.data(" Value="for (input in inputs) {    ddg.start(\"Loop\")    ddg.data(";
+CF p33 p34
+Data d28 "28-last" Value="\"wspd\"";
+DF p34 d28
+Snapshot d29 "29-graphic" Value="[DIR]/ddg-source/29-graphic.jpeg" Time="2014-07-23T11.27.49";
+DF p34 d29
+Operation p35 "35-save.plot(final.data, last, days)" Value="save.plot(final.data, last, days)";
+CF p34 p35
+DF d10 p35
+DF d28 p35
+DF d13 p35
+Operation p36 "36-for (i in 1:length(inputs)) {    dev.off()}" Value="for (i in 1:length(inputs)) {    dev.off()}";
+CF p35 p36
+DF d11 p36
+
