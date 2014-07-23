@@ -12,6 +12,10 @@
 library(RDataTracker)
 #options(warn=2)
 
+# get initial time
+initial <- Sys.time()
+invisible(force(initial))
+
 testDir <- "[DIR_DEFAULT]/"
 setwd(testDir)
 
@@ -145,3 +149,7 @@ ddg.run(main,
          ddg.path)
 
 ddg.save(quit=TRUE)
+
+# Calculate total time of execution
+final <- Sys.time()
+cat("Execution Time =", final-initial)

@@ -14,6 +14,10 @@ require(methods)
 # ddg.debug.on()
 # options(warn=2)
 
+# get initial time
+initial <- Sys.time()
+invisible(force(initial))
+
 ## Directories
 testDir <- "[DIR_DEFAULT]/"
 setwd(testDir)
@@ -94,3 +98,7 @@ totalNumOfSample <- 5
 newSample <- generate1Sample()
 samplesArr <- generateSamples(totalNumOfSample)
 ddg.save(quit=TRUE)
+
+# Calculate total time of execution
+final <- Sys.time()
+cat("Execution Time =", final-initial)

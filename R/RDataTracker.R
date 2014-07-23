@@ -60,8 +60,10 @@ ddg.MAX_HIST_LINES <- 16384
 	}
 }
 
+# .ddg.clear removes all objects from the .ddg.env environment 
 .ddg.clear <- function() {
-	rm(list=ls(),pos=.ddg.env)
+	# reinitialize tables
+	.ddg.init.tables()
 }
 
 ##### Getters for specific variables
@@ -172,6 +174,30 @@ ddg.MAX_HIST_LINES <- 16384
 
 	# Used for keeping track of current execution command
 	.ddg.set("var.num", 1)
+
+	# keept track of history
+	.ddg.set(".ddg.history.timestamp", NULL)
+	
+	# keep track of the last device seen (0 implies NULL)
+	.ddg.set("prev.device", 0)
+
+	# store path if current script
+	.ddg.set("ddg.r.script.path", NULL)
+
+	# store path of current ddg
+	.ddg.set("ddg.path", NULL)
+	
+	# console is disabled
+	.ddg.set(".ddg.enable.console", FALSE)
+
+	# no ddg initialized
+	.ddg.set(".ddg.initialized", FALSE)
+
+	# no history file
+	.ddg.set(".ddg.history.file", NULL)
+
+	# are we reading from source?
+	.ddg.set("from.source", FALSE)
 }
 
 # Wrrapper to easily change history lines during execution of script
@@ -182,8 +208,10 @@ ddg.MAX_HIST_LINES <- 16384
 # .ddg.init.environ() sets up the filesystem and R environments for use
 .ddg.init.environ <- function() {
 	dir.create(.ddg.path(), showWarnings = FALSE)
-	.ddg.set('ddg.original.hist.size', Sys.getenv('R_HISTSIZE'))
-	if (interactive() && .ddg.enable.console()) .ddg.set.history()
+	if (interactive() && .ddg.enable.console()) {
+		.ddg.set('ddg.original.hist.size', Sys.getenv('R_HISTSIZE'))
+		.ddg.set.history()
+	}
 }
 
 # ddg.environ gets environment parameters for the DDG.
@@ -216,7 +244,7 @@ ddg.MAX_HIST_LINES <- 16384
 ###
 .ddg.is.init <- function() {
 		# || short circuits evaluation
-		return(exists(".ddg.initilized", envir=.ddg.env) && .ddg.get(".ddg.initilized"))
+		return(.ddg.is.set(".ddg.initialized") && .ddg.get(".ddg.initialized"))
 }
 
 # Assumes input format is yyyy-mm-dd hh:mm:ss
@@ -464,7 +492,7 @@ ddg.MAX_HIST_LINES <- 16384
 	}
 
 	# Error message if no match is found.
-	# browser()
+	# 
   error.msg <- paste("No procedure node found for", pname)
   .ddg.insert.error.message(error.msg)  
 	return(0)
@@ -1158,8 +1186,8 @@ ddg.MAX_HIST_LINES <- 16384
 	new.commands <- lapply(parsed.commands, function(cmd) {paste(deparse(cmd), collapse="")})
 	filtered.commands <- Filter(function(x){return(!grepl("^ddg.", x))}, new.commands)
 
-	# attempt to close the previous collapsible command node
-	.ddg.close.last.command.node(initial=TRUE)
+	# attempt to close the previous collapsible command node if a ddg exists
+	if (.ddg.is.init()) .ddg.close.last.command.node(initial=TRUE)
 
 	# Create start and end nodes to allow collapsing of consecutive 
   # console nodes. Don't bother doing this if there is only 1 new 
@@ -1224,6 +1252,7 @@ ddg.MAX_HIST_LINES <- 16384
 			# specifies whether or not a procedure node should be created for this command
   		# Basically, if a ddg exists and the command is not a ddg command, it should
   		# be created.
+
   		create <- !grepl("^ddg.", cmd) && .ddg.is.init() && .ddg.enable.console()
 
   		# if the command does not match one of the ignored patterns
@@ -1341,17 +1370,19 @@ ddg.MAX_HIST_LINES <- 16384
 	ddg.history.file <- .ddg.get("ddg.history.file")
 	ddg.history.timestamp <- .ddg.get(".ddg.history.timestamp")
 
-	# grab any new commands that might still be in history
-	.ddg.savehistory(ddg.history.file)
-	
-	# load from extended history since last time we wrote out a console node
-	new.lines <- .ddg.loadhistory(ddg.history.file,ddg.history.timestamp)
+	# Only continue if these values exists
+	if (!(is.null(ddg.history.file) || is.null(ddg.history.timestamp)))
+		# grab any new commands that might still be in history
+		.ddg.savehistory(ddg.history.file)
 
-	# Parse the lines into individual commands
-	parsed.commands <- .ddg.parse.lines(new.lines)
-	
-	# new commands since last timestamp
-	if (!is.null(parsed.commands)) .ddg.parse.commands(parsed.commands)
+		# load from extended history since last time we wrote out a console node
+		new.lines <- .ddg.loadhistory(ddg.history.file,ddg.history.timestamp)
+
+		# Parse the lines into individual commands
+		parsed.commands <- .ddg.parse.lines(new.lines)
+
+		# new commands since last timestamp
+		if (!is.null(parsed.commands)) .ddg.parse.commands(parsed.commands)
 }
 
 # .ddg.proc.node creates a procedure node.
@@ -1361,7 +1392,7 @@ ddg.MAX_HIST_LINES <- 16384
 	if (.ddg.enable.console()) {
 
 		# capture graphic output of previous procedure node
-		# browser()
+		# 
 		.ddg.auto.graphic.node()
 
 		if(!console) {
@@ -2290,7 +2321,7 @@ ddg.url.out <- function(dname, dvalue=NULL, pname=NULL) {
 
 ddg.file.out <- function(filename, dname=NULL, pname=NULL) {
 	if (!.ddg.is.init()) return(NULL)
-	# browser()
+	# 
 
 	if (is.null(dname)) dname <- basename(filename)
 	
@@ -2485,7 +2516,7 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, enable.console = FALSE
 	.ddg.init.environ()
 	
 	# mark graph as initilized
-	.ddg.set(".ddg.initilized", TRUE)
+	.ddg.set(".ddg.initialized", TRUE)
 
 	# store the starting graphics device
 	.ddg.set("prev.device", dev.cur())
@@ -2582,11 +2613,15 @@ ddg.save <- function(quit=FALSE) {
 
 	# by convention, this is the final call to ddg.save
 	if (quit) {
+		# 
 		# delete temporary files
 		.ddg.delete.temp()
 
 		# capture current graphics device
 		.ddg.auto.graphic.node(dev.to.capture=dev.cur)
+
+		# shut down the ddg
+		.ddg.clear()
 	}
 }
 
@@ -2735,9 +2770,6 @@ ddg.source <- function (file, local = FALSE, echo = verbose, print.eval = echo,
 		ignore.init <- TRUE
 	}
 
-	# Clear out the DDG Env if we are NOT ignoring an init call
-	if (!ignore.init) .ddg.clear()
-
 	# ignores calculation of certain execution steps
 	ignores <- c("^library[(]RDataTracker[)]$", 	
 		if(ignore.ddg.calls) "^ddg."
@@ -2747,6 +2779,7 @@ ddg.source <- function (file, local = FALSE, echo = verbose, print.eval = echo,
   # now we can parse the commands as we normally would for a DDG
   if(length(exprs) > 0) {
 
+  	
   	# Turn on the console if forced to, keep track of previous setting, parse 
   	# previous commands if necessary
   	prev.on <- .ddg.is.init() && .ddg.enable.console()
@@ -2755,6 +2788,9 @@ ddg.source <- function (file, local = FALSE, echo = verbose, print.eval = echo,
   
   	# Let library know that we are sourcing a file
   	prev.source <- .ddg.is.init() && .ddg.enable.source()
+
+  	# Initialize the tables for ddg.capture (also, we don't like er)
+  	browser()
   	.ddg.set("from.source", TRUE)
 
   	# parse the commands into a console node
@@ -2785,7 +2821,7 @@ ddg.debug.off <- function () {
 # ddg.console.off turns off the console mode of DDG construction
 ddg.console.off <- function() {
 	if (!.ddg.is.init()) return(NULL)
-	#browser()
+	#
 	# capture history if console was on up to this point
 	if (interactive() && .ddg.enable.console()) {
 		.ddg.console.node()
@@ -2798,7 +2834,7 @@ ddg.console.off <- function() {
 # ddg.console.on turns on the console mode of DDG construction
 ddg.console.on <- function() {
 	if (!.ddg.is.init()) return(NULL)
-	#browser()
+	#
 	# write a new timestamp if we're turning on the console so we only capture
 	# history from this point forward
 	if (!.ddg.enable.console()) .ddg.write.timestamp.to.history()
