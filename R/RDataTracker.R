@@ -1170,6 +1170,9 @@ ddg.MAX_HIST_LINES <- 16384
 	if (!is.null(.ddg.last.cmd) && (!is.null(.ddg.possible.last.cmd) || initial)) {
 		cmd.abbrev <- .ddg.add.abstract.node("Finish", .ddg.last.cmd$abbrev,called=paste(called, "-> .ddg.close.last.command.node"))
 
+		# Add link from a function return node if there is one.
+		.ddg.link.function.returns(.ddg.last.cmd$text)
+		
 		# Create outflowing edges 
 		vars.set <- .ddg.find.var.assignments(.ddg.last.cmd)
 		.ddg.create.data.set.edges.for.console.cmd(vars.set, .ddg.last.cmd$abbrev, .ddg.last.cmd$expr, 1, for.finish.node = TRUE)
@@ -1256,7 +1259,8 @@ ddg.MAX_HIST_LINES <- 16384
 	# get the last command in the new commands and check to see if we need to create 
 	# a new .ddg.last.cmd node for future reference
 	.ddg.last.cmd <- list("abbrev" = .ddg.abbrev.cmd(quoted.commands[[num.new.commands]]), 
-	                      "expr" = parsed.commands[[num.new.commands]])
+	                      "expr" = parsed.commands[[num.new.commands]],
+                          "text" = new.commands[[num.new.commands]])
 	if (substr(.ddg.last.cmd$abbrev, 1, 4) == "ddg.") {
 		.ddg.last.cmd <- NULL
 	}
@@ -1295,6 +1299,7 @@ ddg.MAX_HIST_LINES <- 16384
   	# 
   	for (i in 1:length(parsed.commands)) {
   		cmd.expr <- parsed.commands[[i]]
+        cmd.text <- new.commands[[i]]
   		cmd <- quoted.commands[[i]]
 
 			# specifies whether or not a procedure node should be created for this command
@@ -1325,7 +1330,7 @@ ddg.MAX_HIST_LINES <- 16384
          	# a possible abstraction node but only if it's not a call that itself creates
          	# abstract nodes
   				if (!grepl("^ddg.", cmd)) .ddg.set(".ddg.possible.last.cmd", list("abbrev"=cmd.abbrev,
-  				                                   "expr"=cmd.expr))
+  				                                   "expr"=cmd.expr, "text"=cmd.text))
   				else if (grepl("^ddg.start", cmd) || grepl("^ddg.finish", cmd)) .ddg.set(".ddg.possible.last.cmd", NULL)
 
          	# evaluate
@@ -1425,16 +1430,17 @@ ddg.MAX_HIST_LINES <- 16384
 
 	# Add a procedure node for each new command, data nodes for 
   # variables set and used, and the corresponding edges.
-	.ddg.last.command <- .ddg.get(".ddg.last.command")
-	if (!is.null(.ddg.last.command)) {
-		cmd.abbrev <- .ddg.abbrev.cmd(.ddg.last.command)
-		if (.ddg.debug()) print(paste(".ddg.console.node:  Adding finish node for last command", cmd.abbrev))
-		.ddg.proc.node("Finish", cmd.abbrev, .ddg.last.command, console=TRUE)
-		.ddg.proc2proc()
-		.ddg.link.function.returns(.ddg.last.command)
-		vars.set <- .ddg.find.var.assignments(.ddg.last.command)
-		.ddg.create.data.set.edges.for.console.cmd(vars.set, cmd.abbrev, parse(text=.ddg.last.command), 0, for.finish.node = TRUE)
-	}
+# 	.ddg.last.command <- .ddg.get(".ddg.last.cmd")
+# 	if (!is.null(.ddg.last.command)) {
+#     print(paste(".ddg.console.node: .ddg.last.command =", .ddg.last.command$text))
+# 		cmd.abbrev <- .ddg.last.command$abbrev
+# 		if (.ddg.debug()) print(paste(".ddg.console.node:  Adding finish node for last command", cmd.abbrev))
+# 		.ddg.proc.node("Finish", cmd.abbrev, .ddg.last.command$text, console=TRUE)
+# 		.ddg.proc2proc()
+# 		.ddg.link.function.returns(.ddg.last.command$text)
+# 		vars.set <- .ddg.find.var.assignments(.ddg.last.command)
+# 		.ddg.create.data.set.edges.for.console.cmd(vars.set, cmd.abbrev, .ddg.last.command$expr, 0, for.finish.node = TRUE)
+# 	}
 	# Parse the lines into individual commands
 	parsed.commands <- .ddg.parse.lines(new.lines)
 	
@@ -2096,13 +2102,19 @@ ddg.MAX_HIST_LINES <- 16384
 # .ddg.get.frame.number gets the frame number of the closest
 # non-library calling function.
 
-.ddg.get.frame.number <- function(calls) {
+.ddg.get.frame.number <- function(calls, for.caller=FALSE) {
 	if (is.null(calls)) calls <- sys.calls()
+  script.func.found <- FALSE
 	nframe <- length(calls)
 	for (i in nframe:1) {
 		call.func <- as.character(sys.call(i)[[1]])    
 		if (substr(call.func, 1, 4) != ".ddg" && substr(call.func, 1, 3) != "ddg") {
-		  return(i)
+      if (for.caller && !script.func.found) {
+        script.func.found <- TRUE
+      }
+      else {
+		    return(i)
+      }
 		}
 	}
 	return(0)
@@ -2129,10 +2141,7 @@ ddg.MAX_HIST_LINES <- 16384
 # environment.
 
 .ddg.get.scope <- function(name, for.caller=FALSE, calls=NULL) {
-#	if (!is.character(name)) name <- deparse(substitute(name))
-#  if (!is.character(name)) name <- deparse(name)
-	fnum <- .ddg.get.frame.number(calls)
-	if (for.caller) fnum <- fnum - 1
+	fnum <- .ddg.get.frame.number(calls, for.caller)
 	stopifnot(!is.null(fnum))
 	
 	
