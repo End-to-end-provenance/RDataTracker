@@ -26,6 +26,9 @@ examples/*/ddg*/
 examples/*/local/
 examples/checkPointTest/testfile*.txt
 
+# exclude files beginning with '_'
+_*
+
 # ignore log files
 *.log.txt
 *.log
