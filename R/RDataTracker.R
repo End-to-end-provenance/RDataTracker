@@ -2642,8 +2642,7 @@ ddg.save <- function(quit=FALSE) {
 # @param - ignore.init
 ddg.source <- function (file, local = FALSE, echo = verbose, print.eval = echo, 
     verbose = getOption("verbose"), max.deparse.length = 150, chdir = FALSE, encoding = getOption("encoding"),
-    ignore.ddg.calls = TRUE, ignore.init = ignore.ddg.calls, force.console=ignore.init, save.ddg=FALSE) {
-  
+    ignore.ddg.calls = TRUE, ignore.init = ignore.ddg.calls, force.console=ignore.init){
 	### CODE IN THIS SECTION IS BASICALLY REPLICATION OF source FUNCTION ###
 	# Get the environment under which the script should be executed
   envir <- if (isTRUE(local)) {

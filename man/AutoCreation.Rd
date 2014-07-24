@@ -7,7 +7,7 @@ versios which automatically capture provenance data. }
 ddg.source(file, local = FALSE, echo = verbose, print.eval = echo, 
     verbose = getOption("verbose"), max.deparse.length = 150, chdir = FALSE, 
     encoding = getOption("encoding"), ignore.ddg.calls = TRUE, 
-    ignore.init = ignore.ddg.calls, force.console=ignore.init, ddg.save=FALSE)
+    ignore.init = ignore.ddg.calls, force.console=ignore.init)
 }
 \arguments{
   \item{file}{see \code{\link{source}}}
@@ -23,7 +23,6 @@ ddg.source(file, local = FALSE, echo = verbose, print.eval = echo,
   \item{ignore.init}{specifies whether suppresion of source script DDG Initialization
   should occur.}
   \item{force.console}{specifies whether console parsing should be forced on the source script}
-  \item{save.ddg}{specifies whether the ddg from the sourced script should be saved immediately}
 } 
 \seealso{
   \code{\link{source}}.
@@ -73,9 +72,7 @@ ddg.source(file, local = FALSE, echo = verbose, print.eval = echo,
 
   In any case, the console is returned to the mode set before the call to ddg.source.
 
-  The save.ddg parameter simply indicated whether or not a call to ddg.save() should be
-  made immediately following the sourcing of the script.
-
+  Note that a call to ddg.save is always made once the script has been sourced.
 }
 \author{Luis Perez}
 \keyword{provenance}
