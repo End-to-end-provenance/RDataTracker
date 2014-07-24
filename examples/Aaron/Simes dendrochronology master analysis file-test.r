@@ -1,19 +1,21 @@
-# Time the execution
-start.time <- Sys.time()
-ddg.library <- Sys.getenv("DDG_LIBRARY")
-#ddg.library <- "~/Documents/Process/DataProvenance/workspace/ddg-r/ddg-library_0.2.r"
-if (ddg.library == "") {
-  ddg.library <- "c:/data/r/ddg/lib/ddg-library.r"
-}
-source(ddg.library)
+######################################
+### Sime Dendrochronology Analysis ###
+######################################
 
-ddg.init("~/Documents/Process/DataProvenance/workspace/ddg-r/examples/Aaron/Simes dendrochronology master analysis file instrumented.r")
+# get initial time
+startTime <- Sys.time()
+invisible(force(startTime))
+
+### Data Provenance Graph 
+setwd("D:/Users/Luis/Dropbox/HarvardForest/RDataTracker Annotations/aaron script")
+
+# Intitialize DDG
+ddg.init(r.script.path,ddgdir,enable.console=TRUE)
                   
 #Visualization and analysis for Simes dendrochronology ms.
 #========================================================
 
 #Load required libraries
-
 
 #```r
 library(dplR)
@@ -490,6 +492,7 @@ plot.1 <- plot.1[plot.1[, 10] >= 0 & plot.1[, 10] <= 90, ]
 plot.1.pp <- ppp(plot.1[, 9], plot.1[, 10], c(0, 90), c(0, 90))
 #```
 
+ddg.save()
 #```
 ## Warning: data contain duplicated points
 #```
@@ -986,7 +989,7 @@ plot(plot.3.pp[plot.3$genus == "Quercus"])
 plot(density(plot.3.pp[plot.3$genus == "Quercus"]))
 plot(envelope(plot.3.pp[plot.3$genus == "Quercus"], Kest))
 #```
-
+ddg.save()
 #```
 ## Generating 99 simulations of CSR  ...
 ## 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
@@ -1489,7 +1492,7 @@ plot(plot.6.pp[plot.6$genus == "Quercus"])
 plot(density(plot.6.pp[plot.6$genus == "Quercus"]))
 plot(envelope(plot.6.pp[plot.6$genus == "Quercus"], Kest))
 #```
-
+ddg.save()
 #```
 ## Generating 99 simulations of CSR  ...
 ## 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
@@ -1590,7 +1593,7 @@ plot(plot.7.pp[plot.7$genus == "Tsuga"])
 plot(density(plot.7.pp[plot.7$genus == "Tsuga"]))
 plot(envelope(plot.7.pp[plot.7$genus == "Tsuga"], Kest))
 #```
-
+ddg.save()
 #```
 ## Generating 99 simulations of CSR  ...
 ## 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
@@ -1990,7 +1993,7 @@ mad.test(plot.1.pp[plot.1$genus == "Acer"], Lest, verbose = FALSE, nsim = 99)
 #```r
 mad.test(plot.1.pp[plot.1$genus == "Pinus"], Lest, verbose = FALSE, nsim = 99)
 #```
-
+ddg.save()
 #```
 ## 
 ## 	Maximum absolute deviation test of CSR
@@ -2298,7 +2301,7 @@ mad.test(plot.5.pp[plot.5$genus == "Quercus"], Lest, verbose = FALSE, nsim = 99)
 #```r
 mad.test(plot.5.pp[plot.5$genus == "Acer"], Lest, verbose = FALSE, nsim = 99)
 #```
-
+ddg.save()
 #```
 ## 
 ## 	Maximum absolute deviation test of CSR
@@ -2486,7 +2489,7 @@ mad.test(plot.7.pp[plot.7$genus == "Pinus"], Lest, verbose = FALSE, nsim = 99)
 
 mad.test(plot.8.pp[plot.8$genus == "Tsuga"], Lest, verbose = FALSE, nsim = 99)
 #```
-
+ddg.save()
 #```
 ## 
 ## 	Maximum absolute deviation test of CSR
@@ -2791,7 +2794,7 @@ layout(matrix(c(0, 1, 2, 0, 3, 9, 10, 5, 4, 11, 12, 6, 0, 7, 8, 0), nrow=4, byro
 
 
 #barcharts
-
+ddg.save()
 par(mar=c(0,1,0,1))
 barplot(vh.ages, axes=FALSE, ylim=c(0,maxcount.ages), space=0, col=five.colors)
 barplot(rh.ages, axes=FALSE, ylim=c(0,maxcount.ages), space=0, col=five.colors)
@@ -2883,7 +2886,7 @@ plot.vd <- plot(vd$dbh ~ vd$tree.age, data=vd,
 	x.poly.vd <- c(xpreds, xpreds.rev)
 	polygon(x.poly.vd[!is.na(y.poly.vd)], y.poly.vd[!is.na(y.poly.vd)], col="#00009933", border=NA)
 	text(20,75,"C", cex=1.5, font=2)
-
+ddg.save()
 	text(15,2,"1990", cex=0.8, font=2)
 	text(145, 2, "1860", cex=0.8, font=2)
 	text(67, 2, "1938", cex=0.8, font=2)
@@ -2936,8 +2939,8 @@ dev.off()
 #Harvard Forest climate data
 
 #```r
-hf.Shaler <- read.csv("C:/Users/aellison/Dropbox/Aaron's Briefcase/manuscript - Simes dendro and land use/env data/hf000-01-daily-m.csv", 
-    header = TRUE)
+hf.Shaler <- read.csv("hf000-01-daily-m.csv", header = TRUE)
+#hf.Shaler <- read.csv("C:/Users/aellison/Dropbox/Aaron's Briefcase/manuscript - Simes dendro and land use/env data/hf000-01-daily-m.csv", header = TRUE)
 
 head(hf.Shaler)
 #```
@@ -2987,7 +2990,6 @@ str(hf.Shaler)
 ##  $ AirTmin: int  -21 -14 -4 -2 -4 -12 -6 -12 -11 -9 ...
 ##  $ Prec   : num  0 6.4 0 0 0 0 0 0 10.2 0 ...
 #```
-
 #```r
 hf.Shaler$Date <- as.character(hf.Shaler$Date)
 
@@ -3023,9 +3025,8 @@ str(hf.Shaler)
 #```
 
 #```r
-
-hf.Fisher <- read.csv("C:/Users/aellison/Dropbox/Aaron's Briefcase/manuscript - Simes dendro and land use/env data/hf001-02-annual-m.csv", 
-    header = TRUE)
+hf.Fisher <- read.csv("hf001-02-annual-m.csv", header = TRUE)
+#hf.Fisher <- read.csv("C:/Users/aellison/Dropbox/Aaron's Briefcase/manuscript - Simes dendro and land use/env data/hf001-02-annual-m.csv", header = TRUE)
 
 Fisher.2002 <- hf.Fisher[1:2, c(2, 3, 4, 7)]
 #```
@@ -3099,8 +3100,8 @@ HF.annual
 
 
 #```r
-amherst <- read.csv("C:/Users/aellison/Dropbox/Aaron's Briefcase/manuscript - Simes dendro and land use/env data/Amherst_met_1893-2012-reduced.csv", 
-    header = TRUE)
+amherst <- read.csv("Amherst_met_1893-2012-reduced.csv", header = TRUE)
+#amherst <- read.csv("C:/Users/aellison/Dropbox/Aaron's Briefcase/manuscript - Simes dendro and land use/env data/Amherst_met_1893-2012-reduced.csv", header = TRUE)
 
 amherst$AirT <- apply(amherst[, 10:11], 1, mean)
 amherst.temps <- aggregate(amherst[, c(10, 11, 25)], by = list(year = amherst$YEAR), 
@@ -3117,7 +3118,7 @@ amherst.annual[, 2:5] <- amherst.annual[, 2:5]/10
 
 head(amherst.annual)
 #```
-
+ddg.save()
 #```
 ##   year AirTmax AirTmin  AirT Precip
 ## 1 1893   13.38   1.610 7.507 1038.4
@@ -3165,8 +3166,8 @@ dim(amherst.annual.fixed)
 #Palmer Drought Severity Index, station 267 (72.5 W, 42.5 N = near Leverett, MA. Data) from 
 
 #```r
-leverett.pdsi <- read.csv("C:/Users/aellison/Dropbox/Aaron's Briefcase/manuscript - Simes dendro and land use/env data/PDSO - 267.csv", 
-    header = TRUE)
+leverett.pdsi <- read.csv("PDSO - 267.csv", header = TRUE)
+#leverett.pdsi <- read.csv("C:/Users/aellison/Dropbox/Aaron's Briefcase/manuscript - Simes dendro and land use/env data/PDSO - 267.csv", header = TRUE)
 
 head(leverett.pdsi)
 #```
@@ -3180,7 +3181,7 @@ head(leverett.pdsi)
 ## 5  485    1    1 -1.770 -0.761 0.106 0.284 0.234 0.134 -100    -100
 ## 6  486    1    1 -0.708 -0.763 0.106 0.284 0.234 0.134 -100    -100
 #```
-
+ddg.save()
 #```r
 summary(leverett.pdsi)
 #```
@@ -3214,7 +3215,8 @@ summary(leverett.pdsi)
 
 
 #```r
-pop.data <- read.csv("C:/Users/aellison/Dropbox/Aaron's Briefcase/manuscript - Simes dendro and land use/env data/phampop.csv")
+pop.data <- read.csv("phampop.csv")
+#pop.data <- read.csv("C:/Users/aellison/Dropbox/Aaron's Briefcase/manuscript - Simes dendro and land use/env data/phampop.csv")
 #```
 
 
@@ -3462,7 +3464,7 @@ lm(as.vector(HF.ts[, 1]) ~ as.vector(window(Amherst.ts[, 3], start = 1964)))
 cor.test(as.vector(window(Amherst.ts[, 4], start = 1964)), as.vector(HF.ts[, 
     4]))
 #```
-
+ddg.save()
 #```
 ## 
 ## 	Pearson's product-moment correlation
@@ -3670,7 +3672,7 @@ str(dendro.5sp)
 #Plots
 
 #Figure 9: Individual traces of rBAI as a function of year, with smoothers. Overlay hemlock and hardwood plots.
-
+ddg.save()
 
 #```r
 # To create pdf, uncomment pdf and dev.off() lines.
@@ -3783,7 +3785,7 @@ gam.pinus1 <- gam(rBAI ~ as.factor(Year) + s(Age, fx = TRUE, k = 4, bs = "cs"),
     data = subset(dendro.5sp, Code == "Pinus"))
 gam.tsuga1 <- gam(rBAI ~ as.factor(Year) + s(Age, fx = TRUE, k = 4, bs = "cs"), 
     data = subset(dendro.5sp, Code == "Tsuga"))
-
+ddg.save()
 
 # get wiggly year effects
 
@@ -3945,6 +3947,8 @@ box()
 #```r
 
 dev.off()
+ddg.save()
+ddg.debug.on()
 #```
 
 
@@ -3991,7 +3995,6 @@ for (tr in species) {
 
 dendro.5sp$rBAI2 <- dendro.5sp$rBAI
 dendro.5sp$rBAI2[is.na(dendro.5sp$rBAI2)] <- 1
-
 head(dendro.5sp)
 #```
 
@@ -4393,7 +4396,8 @@ AIC(gam.betula1, gam.betula2)
 #```r
 1 - gam.quercus2$deviance/gam.quercus1$null.deviance
 #```
-
+ddg.debug.off()
+ddg.save()
 #```
 ## [1] 0.4169
 #```
@@ -4462,6 +4466,10 @@ AIC(gam.tsuga1, gam.tsuga2)
 ## gam.tsuga2  30.22 65107
 #```
 
-end.time <- Sys.time()
-print(paste("Execution time =", (end.time - start.time)))
-ddg.save()
+
+# Save DDG
+ddg.save(quit=TRUE)
+
+# Calculate total time of execution
+endTime <- Sys.time()
+cat("Execution Time =", difftime(endTime, startTime,units="secs"))
