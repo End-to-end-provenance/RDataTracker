@@ -8,9 +8,6 @@
 # Load the library to create the provenance graphs.  All the function calls below that begin "ddg."
 # are calls to functions in this library.
 
-start.time <- Sys.time()
-force(start.time)
-
 #ddg.library <- Sys.getenv("DDG_LIBRARY")
 #if (ddg.library == "") {
 #	ddg.library <- "c:/data/r/ddg/lib/ddg-library.r"
@@ -24,6 +21,11 @@ force(start.time)
 #		enable.console = TRUE)
 
 library(RDataTracker)
+
+# get initial time
+startTime <- Sys.time()
+invisible(force(startTime))
+
 
 # This needs to be specified if using RScript to execute (which our tests do)
 require(methods)
@@ -632,7 +634,7 @@ samplesArr <- assignSamplesToAreas(samplesMapsStr, speciesDistribution, sampleSi
 raffleSamplesToWorksheet("genSmpls1", "virtual sampling1 (Uniform distribution)", totalNumOfSpecies, totalNumOfSample, samplesArr)
 
 ddg.save(quit=TRUE)
-finish.time <- Sys.time()
-print(paste("Elapsed time =", (finish.time - start.time)))
 
-
+# Calculate total time of execution
+endTime <- Sys.time()
+cat("Execution Time =", difftime(endTime, startTime,units="secs"))

@@ -7,7 +7,7 @@ versios which automatically capture provenance data. }
 ddg.source(file, local = FALSE, echo = verbose, print.eval = echo, 
     verbose = getOption("verbose"), max.deparse.length = 150, chdir = FALSE, 
     encoding = getOption("encoding"), ignore.ddg.calls = TRUE, 
-    ignore.init = ignore.ddg.calls, force.console=ignore.init)
+    ignore.init = ignore.ddg.calls, force.console=ignore.init, ddg.save=FALSE)
 }
 \arguments{
   \item{file}{see \code{\link{source}}}
@@ -23,6 +23,7 @@ ddg.source(file, local = FALSE, echo = verbose, print.eval = echo,
   \item{ignore.init}{specifies whether suppresion of source script DDG Initialization
   should occur.}
   \item{force.console}{specifies whether console parsing should be forced on the source script}
+  \item{save.ddg}{specifies whether the ddg from the sourced script should be saved immediately}
 } 
 \seealso{
   \code{\link{source}}.
@@ -61,7 +62,7 @@ ddg.source(file, local = FALSE, echo = verbose, print.eval = echo,
   Further, note that all calls to "library(RDataTracker)" are ignored in the
   sourced file.
 
-  The final parameter of force.console turns on automatic node creation for the sourced
+  The parameter of force.console turns on automatic node creation for the sourced
   R Script. More precisely, a call to \code{\link{ddg.console.on}} is made before
   any processing of the script. However, note that changes executed within the sourced
   script to the console mode will make changes to the environment.
@@ -71,6 +72,9 @@ ddg.source(file, local = FALSE, echo = verbose, print.eval = echo,
   the state of command capturing.
 
   In any case, the console is returned to the mode set before the call to ddg.source.
+
+  The save.ddg parameter simply indicated whether or not a call to ddg.save() should be
+  made immediately following the sourcing of the script.
 
 }
 \author{Luis Perez}

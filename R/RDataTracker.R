@@ -156,7 +156,10 @@ ddg.MAX_HIST_LINES <- 16384
 	
 	# Used to control debugging output.  If already defined, don't 
   # change its value.
-	if (!exists("ddg.debug", envir=.ddg.env)) .ddg.set("ddg.debug", FALSE)
+	if (!.ddg.is.set("ddg.debug")) .ddg.set("ddg.debug", FALSE)
+
+	# Used to control sourcing. If already defined, don't change it's value
+	if (!.ddg.is.set("from.source")) .ddg.set("from.source", FALSE)
 
 	# Set current number of checkpoints.
 	.ddg.set("ddg.checkpoint.num", 0)
@@ -186,9 +189,6 @@ ddg.MAX_HIST_LINES <- 16384
 
 	# store path of current ddg
 	.ddg.set("ddg.path", NULL)
-	
-	# console is disabled
-	.ddg.set(".ddg.enable.console", FALSE)
 
 	# no ddg initialized
 	.ddg.set(".ddg.initialized", FALSE)
@@ -196,8 +196,8 @@ ddg.MAX_HIST_LINES <- 16384
 	# no history file
 	.ddg.set(".ddg.history.file", NULL)
 
-	# are we reading from source?
-	.ddg.set("from.source", FALSE)
+	# console is disabled
+	.ddg.set(".ddg.enable.console", FALSE)
 }
 
 # Wrrapper to easily change history lines during execution of script
@@ -1305,6 +1305,7 @@ ddg.MAX_HIST_LINES <- 16384
 
   			# we want to create a procedure node for this command
   			if (create.procedure) {
+  				
 					# create the procedure node
 					.ddg.proc.node("Operation", cmd.abbrev, cmd, console=TRUE)
 					.ddg.proc2proc()
@@ -1327,13 +1328,21 @@ ddg.MAX_HIST_LINES <- 16384
 				}
 				# we wanted to create it but it matched a last command node
 				else if (create && execute) .ddg.close.last.command.node(initial=TRUE)
+
+				###### TODO #######
+				if (execute) {
+					.ddg.create.data.node.for.possible.writes(vars.set, last.proc.node)
+
+					# update so we don't set these again
+					vars.set$possible.last.writer <- vars.set$last.writer
+				}
   		}
   	}
 
   	# Create a data node for each variable that might have been set in 
   	# something other than a simple assignment, with an edge from the 
   	# last node in the console block or source 
-		.ddg.create.data.node.for.possible.writes(vars.set, last.proc.node)
+		if (!execute) .ddg.create.data.node.for.possible.writes(vars.set, last.proc.node)
 	}
 
 	# close any node left open during execution
@@ -1973,7 +1982,7 @@ ddg.MAX_HIST_LINES <- 16384
 
 ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.graphic=NULL, outs.data=NULL, 
                           outs.exception=NULL, outs.url=NULL, outs.file=NULL, graphic.fext="jpeg") {
-	if (!.ddg.is.init()) return(NULL)
+	if (!.ddg.is.init()) return(invisible())
 	# 
 	.ddg.lookup.function.name(pname)
 	.ddg.proc.node("Operation", pname, pname)
@@ -2132,7 +2141,7 @@ ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.graphic=N
 # written out as a .txt file if the variable is determined to be an object.
 
 ddg.data <- function(dname, dvalue=NULL, graphic.fext = "jpeg") {
-	if (!.ddg.is.init()) return(NULL)
+	if (!.ddg.is.init()) return(invisible())
 
 	# Look up the value if one was not provided.
 	env <- parent.frame()
@@ -2151,7 +2160,7 @@ ddg.data <- function(dname, dvalue=NULL, graphic.fext = "jpeg") {
 # calling environment to determine the value.
 
 ddg.exception <- function(dname, dvalue=NULL) {
-	if (!.ddg.is.init()) return(NULL)
+	if (!.ddg.is.init()) return(invisible())
 
 	# Look up the value if one was not provided.
 	env <- parent.frame()
@@ -2170,7 +2179,7 @@ ddg.exception <- function(dname, dvalue=NULL) {
 # environment to determine the value.
 
 ddg.url <- function(dname, dvalue=NULL) {
-	if (!.ddg.is.init()) return(NULL)
+	if (!.ddg.is.init()) return(invisible())
 
 	# Look up the value if one was not provided.
 	env <- parent.frame()
@@ -2190,7 +2199,7 @@ ddg.url <- function(dname, dvalue=NULL) {
 # minus the directory path, is used as the label.
 
 ddg.file <- function(filename, dname=NULL) {
-	if (!.ddg.is.init()) return(NULL)
+	if (!.ddg.is.init()) return(invisible())
 
 	.ddg.file.copy("File", filename, dname)
 }
@@ -2203,7 +2212,7 @@ ddg.file <- function(filename, dname=NULL) {
 # can be passed as a string, name, or expression.
 
 ddg.data.in <- function(dname, pname=NULL) {
-	if (!.ddg.is.init()) return(NULL)
+	if (!.ddg.is.init()) return(invisible())
 
 	.ddg.lookup.function.name(pname)
 	
@@ -2231,7 +2240,7 @@ ddg.data.in <- function(dname, pname=NULL) {
 # a graphic, otherwise the parameter goes ignored.
 
 ddg.data.out <- function(dname, dvalue=NULL, pname=NULL, graphic.fext="jpeg") {
-	if (!.ddg.is.init()) return(NULL)
+	if (!.ddg.is.init()) return(invisible())
 
 	# If no value is provided, get value in calling environment.
 	env <- parent.frame()
@@ -2260,7 +2269,7 @@ ddg.data.out <- function(dname, dvalue=NULL, pname=NULL, graphic.fext="jpeg") {
 # of the function that called ddg.exception.out is used.
 
 ddg.exception.out <- function(dname, dvalue=NULL, pname=NULL) {
-	if (!.ddg.is.init()) return(NULL)
+	if (!.ddg.is.init()) return(invisible())
 
 	# If no value is provided, get value in calling environment.
 	env <- parent.frame()
@@ -2286,7 +2295,7 @@ ddg.exception.out <- function(dname, dvalue=NULL, pname=NULL) {
 # omitted, the name of the function that called ddg.url.out is used.
 
 ddg.url.out <- function(dname, dvalue=NULL, pname=NULL) {
-	if (!.ddg.is.init()) return(NULL)
+	if (!.ddg.is.init()) return(invisible())
 
 	# If no value is provided, get value in calling environment.
 	env <- parent.frame()
@@ -2320,7 +2329,7 @@ ddg.url.out <- function(dname, dvalue=NULL, pname=NULL) {
 # to the file that is saved.
 
 ddg.file.out <- function(filename, dname=NULL, pname=NULL) {
-	if (!.ddg.is.init()) return(NULL)
+	if (!.ddg.is.init()) return(invisible())
 	# 
 
 	if (is.null(dname)) dname <- basename(filename)
@@ -2371,7 +2380,7 @@ ddg.graphic.out <- function(dname, pname=NULL, graphic.fext="jpeg") {
 # in the original script.
 
 ddg.start <- function(pname=NULL) {
-	if (!.ddg.is.init()) return(NULL)
+	if (!.ddg.is.init()) return(invisible())
 
 	.ddg.lookup.function.name(pname)
 
@@ -2397,7 +2406,7 @@ ddg.start <- function(pname=NULL) {
 # in the original script.
 
 ddg.finish <- function(pname=NULL) {
-	if (!.ddg.is.init()) return(NULL)
+	if (!.ddg.is.init()) return(invisible())
 
 	.ddg.lookup.function.name(pname)
 
@@ -2422,7 +2431,7 @@ ddg.finish <- function(pname=NULL) {
 # is missing. DDG may be incomplete!" is raised. 
 # Finally, it should be called periodically to assure no history is missing.
 ddg.grabhistory <- function() {
-	if (!.ddg.is.init()) return(NULL)
+	if (!.ddg.is.init()) return(invisible())
 
 	# only act if in intereactive mode and with enabled console
 	if (interactive() && .ddg.enable.console()) {
@@ -2438,7 +2447,7 @@ ddg.grabhistory <- function() {
 # the value associated with the checkpoint procedure node.
 
 ddg.checkpoint <- function(checkpoint.name=NULL) {
-	if (!.ddg.is.init()) return(NULL)
+	if (!.ddg.is.init()) return(invisible())
 
 	if (.ddg.debug()) print("Creating checkpoint")
 	ddg.checkpoint.num <- .ddg.get("ddg.checkpoint.num")
@@ -2465,7 +2474,7 @@ ddg.checkpoint <- function(checkpoint.name=NULL) {
 # file to restore.
 
 ddg.restore <- function(file.path) {
-	if (!.ddg.is.init()) return(NULL)
+	if (!.ddg.is.init()) return(invisible())
 
 	# Remove the directories.
 	file.name <- basename(file.path)
@@ -2577,7 +2586,8 @@ ddg.run <- function(f = NULL, r.script.path = NULL, ddgdir = NULL, enable.consol
 # The quit parameter saves and then flushes out the DDG.
 
 ddg.save <- function(quit=FALSE) {
-	if (!.ddg.is.init()) return(NULL)
+
+	if (!.ddg.is.init()) return(invisible())
 	
 	# restore history settings
 	if (interactive() && .ddg.enable.console()) {
@@ -2632,7 +2642,7 @@ ddg.save <- function(quit=FALSE) {
 # @param - ignore.init
 ddg.source <- function (file, local = FALSE, echo = verbose, print.eval = echo, 
     verbose = getOption("verbose"), max.deparse.length = 150, chdir = FALSE, encoding = getOption("encoding"),
-    ignore.ddg.calls = TRUE, ignore.init = ignore.ddg.calls, force.console=ignore.init) {
+    ignore.ddg.calls = TRUE, ignore.init = ignore.ddg.calls, force.console=ignore.init, save.ddg=FALSE) {
   
 	### CODE IN THIS SECTION IS BASICALLY REPLICATION OF source FUNCTION ###
 	# Get the environment under which the script should be executed
@@ -2790,20 +2800,18 @@ ddg.source <- function (file, local = FALSE, echo = verbose, print.eval = echo,
   	prev.source <- .ddg.is.init() && .ddg.enable.source()
 
   	# Initialize the tables for ddg.capture (also, we don't like er)
-  	browser()
   	.ddg.set("from.source", TRUE)
 
   	# parse the commands into a console node
   	.ddg.parse.commands(exprs, environ=envir, ignore.patterns=ignores, node.name=filename,
   	                    echo = echo, print.eval = print.eval, max.deparse.length = max.deparse.length)
   	
-  	# save the DDG
+  	# save the DDG among other things, but don't return any values
   	ddg.save()
   	.ddg.set("from.source", prev.source)
 
   	# Turn return console to previous state
-  	if (!prev.on) ddg.console.off()
-  	else ddg.console.on()
+  	if (!prev.on) ddg.console.off() else ddg.console.on()
   }
 
 }
@@ -2820,7 +2828,7 @@ ddg.debug.off <- function () {
 
 # ddg.console.off turns off the console mode of DDG construction
 ddg.console.off <- function() {
-	if (!.ddg.is.init()) return(NULL)
+	if (!.ddg.is.init()) return(invisible())
 	#
 	# capture history if console was on up to this point
 	if (interactive() && .ddg.enable.console()) {
@@ -2833,7 +2841,7 @@ ddg.console.off <- function() {
 
 # ddg.console.on turns on the console mode of DDG construction
 ddg.console.on <- function() {
-	if (!.ddg.is.init()) return(NULL)
+	if (!.ddg.is.init()) return(invisible())
 	#
 	# write a new timestamp if we're turning on the console so we only capture
 	# history from this point forward
@@ -2843,8 +2851,11 @@ ddg.console.on <- function() {
 }
  
 # ddg.flush.ddg removes selected files from the DDG directory.
-ddg.flush.ddg <- function () {
-	if (!.ddg.is.init()) return(NULL)
+ddg.flush.ddg <- function (ddg.path = NULL) {
+	if (is.null(ddg.path)) {
+		if (.ddg.is.init()) ddg.path <- .ddg.path()
+		else return(invisible())
+	}
 
 	ddg.path <- .ddg.path()
 	# Do not remove files unless ddg.path exists and is different 

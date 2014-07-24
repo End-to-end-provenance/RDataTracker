@@ -13,8 +13,8 @@ library(RDataTracker)
 #options(warn=2)
 
 # get initial time
-initial <- Sys.time()
-invisible(force(initial))
+startTime <- Sys.time()
+invisible(force(startTime))
 
 testDir <- "[DIR_DEFAULT]/"
 setwd(testDir)
@@ -148,8 +148,6 @@ ddg.run(main,
 		ddg.r.script.path,
          ddg.path)
 
-ddg.save(quit=TRUE)
-
 # Calculate total time of execution
-final <- Sys.time()
-cat("Execution Time =", final-initial)
+endTime <- Sys.time()
+cat("Execution Time =", difftime(endTime, startTime,units="secs"))

@@ -15,8 +15,8 @@ require(methods)
 # options(warn=2)
 
 # get initial time
-initial <- Sys.time()
-invisible(force(initial))
+startTime <- Sys.time()
+invisible(force(startTime))
 
 ## Directories
 testDir <- "[DIR_DEFAULT]/"
@@ -100,5 +100,5 @@ samplesArr <- generateSamples(totalNumOfSample)
 ddg.save(quit=TRUE)
 
 # Calculate total time of execution
-final <- Sys.time()
-cat("Execution Time =", final-initial)
+endTime <- Sys.time()
+cat("Execution Time =", difftime(endTime,startTime,"secs"))

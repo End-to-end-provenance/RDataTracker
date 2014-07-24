@@ -5,6 +5,10 @@
 
 library(RDataTracker)
 
+# get initial time
+startTime <- Sys.time()
+invisible(force(startTime))
+
 testDir <- "[DIR_DEFAULT]/"
 setwd(testDir)
 
@@ -91,3 +95,7 @@ ddg.procedure("Read raw data files", ins=list("foobar.csv"))
 
 
 ddg.save(quit=TRUE)
+
+# Calculate total time of execution
+endTime <- Sys.time()
+cat("Execution Time =", difftime(endTime, startTime,units="secs"))

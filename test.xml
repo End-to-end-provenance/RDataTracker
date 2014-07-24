@@ -138,13 +138,13 @@
 
       <!-- Execute diff on .out files (always)-->
     <echo>
-      Diff of (1)${out_name}.local and (2)${expected_out_name}.local:
+      Diff of (1) ${out_name}.local and (2) ${expected_out_name}.local:
     </echo>
     <exec executable="diff">
       <arg line="--strip-trailing-cr ${local_dir}/${out_name}.local ${local_dir}/${expected_out_name}.local" />
     </exec>
     <echo unless:true="${no-source}">
-      Diff of (1)${out_name}.local and (2)${expected_out_name}.local:
+      Diff of (1) source_${out_name}.local and (2) source_${expected_out_name}.local:
     </echo>
     <exec executable="diff" unless:true="${no-source}" >
       <arg line="--strip-trailing-cr ${local_dir}/source_${out_name}.local ${local_dir}/source_${expected_out_name}.local" />
@@ -152,13 +152,13 @@
 
       <!-- Exectute diff on .txt files -->
     <echo>
-      Diff of (1)ddg.txt.local and (2)${ddg_name}.local:
+      Diff of (1) ddg.txt.local and (2) ${ddg_name}.local:
     </echo>
     <exec executable="diff" >
       <arg line="--strip-trailing-cr ${local_dir}/ddg.txt.local ${local_dir}/${ddg_name}.local" />
     </exec>
     <echo unless:true="${no-source}">
-      Diff of (1)ddg-source.txt.local and (2)source_${ddg_name}.local: 
+      Diff of (1) ddg-source.txt.local and (2) source_${ddg_name}.local: 
     </echo>
     <exec executable="diff" unless:true="${no-source}">
       <arg line="--strip-trailing-cr ${local_dir}/ddg-source.txt.local ${local_dir}/source_${ddg_name}.local" />
@@ -469,7 +469,7 @@
   </target> 
 
   <target name="SivanSampling-test">
-    <record name="examples/SivanSampling/SivanSampling-test.log.txt" action="start" />
+    <record name="examples/SivanSampling/SivanSampling-test.log" action="start" />
       <antcall target="run-test">
         <param name="dir" value="examples/SivanSampling"/>
         <param name="out" value="examples/SivanSampling/Sampling.out"/>
@@ -479,7 +479,7 @@
 
         <param name="source_test" value="false" />
       </antcall>
-      <echo>You shuould output this to either a text file, or run the diff manually. The nodes generated are done so through a random process, and therefore differ significantly. Note that the output of this test is saved to examples/SivanSampling/SivanSampling-test.log.txt</echo>
+      <echo>You shuould output this to either a text file, or run the diff manually. The nodes generated are done so through a random process, and therefore differ significantly. Note that the output of this test is saved to examples/SivanSampling/SivanSampling-test.log</echo>
     <record name="SivanSampling-test.log.txt" action="stop" />
   </target> 
 

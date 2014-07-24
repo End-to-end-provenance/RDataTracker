@@ -16,6 +16,10 @@
 #source(ddg.library)
 library(RDataTracker)
 
+# get initial time
+startTime <- Sys.time()
+invisible(force(startTime))
+
 # ddg.init(ddg.r.script.path,ddg.path)
 
 ## Directories
@@ -146,3 +150,7 @@ ddg.run(main,
 sqr.root
 
 ddg.save(quit=TRUE)
+
+# Calculate total time of execution
+endTime <- Sys.time()
+cat("Execution Time =", difftime(endTime, startTime,units="secs"))
