@@ -61,7 +61,7 @@ ddg.source(file, local = FALSE, echo = verbose, print.eval = echo,
   Further, note that all calls to "library(RDataTracker)" are ignored in the
   sourced file.
 
-  The final parameter of force.console turns on automatic node creation for the sourced
+  The parameter of force.console turns on automatic node creation for the sourced
   R Script. More precisely, a call to \code{\link{ddg.console.on}} is made before
   any processing of the script. However, note that changes executed within the sourced
   script to the console mode will make changes to the environment.
@@ -72,6 +72,7 @@ ddg.source(file, local = FALSE, echo = verbose, print.eval = echo,
 
   In any case, the console is returned to the mode set before the call to ddg.source.
 
+  Note that a call to ddg.save is always made once the script has been sourced.
 }
 \author{Luis Perez}
 \keyword{provenance}

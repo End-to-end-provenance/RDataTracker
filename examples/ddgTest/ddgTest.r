@@ -54,6 +54,10 @@ setwd(testDir)
 #source(ddg.library)
 library(RDataTracker)
 
+# get initial time
+startTime <- Sys.time()
+invisible(force(startTime))
+
 ### Functions
 no.name.or.args.given <- function (a, b, c, d, e, f) {
 	ddg.procedure()
@@ -241,5 +245,7 @@ ddg.run(main,
 		paste(testDir,"ddgTest.r", sep=""),
 		paste(testDir,"[DDG-DIR]", sep=""))
 
-ddg.save(quit=TRUE)
+# Calculate total time of execution
+endTime <- Sys.time()
+cat("Execution Time =", difftime(endTime, startTime,units="secs"))
 

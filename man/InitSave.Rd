@@ -15,7 +15,7 @@ ddg.save(quit=FALSE)
 ddg.run(f = NULL, r.script.path = NULL, ddgdir = NULL, enable.console = FALSE)
 ddg.console.on()
 ddg.console.off()
-ddg.flush.ddg()
+ddg.flush.ddg(ddg.path = NULL)
 }
 \arguments{
   \item{r.script.path}{ the full path to the file containing the R script that is being executed. }
@@ -25,6 +25,7 @@ ddg.flush.ddg()
     data nodes created for each variable assigned and data flow edges for variables used and set. }
   \item{f}{ A function to run.  Data provenance is collected within the function. }
   \item{quit}{boolean specifying whether this is the last call to ddg.save for this DDG.}
+  \item{ddg.path}{The path to the ddg directory which needs to be flushed}
 }
 \details{
   In order to use RDataTracker to collect data provenance, the user must either call ddg.init() 
@@ -63,8 +64,10 @@ ddg.flush.ddg()
   Note that a call to ddg.console.off will create a collapsible console node with data provenence of the previous console session,
   while ddg.console.on will initiate a console session. No action is performed if the console is already in the desired state. 
   
-  ddg.flush.ddg removes all files from the DDG directory unless the DDG directory is also the working 
-  directory, in which case it does nothing.
+  ddg.flush.ddg removes all files from the DDG directory specified unless the DDG directory is also the working 
+  directory, in which case it does nothing. If no DDG directory is specified (value of
+  NULL is passed in), the default parameter is the DDG directory of the current
+  DDG, if any exists. 
 }
 \author{Emery Boose and Barbara Lerner}
 \examples{

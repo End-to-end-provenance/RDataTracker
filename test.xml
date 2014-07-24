@@ -34,7 +34,6 @@
     </condition>
 
 
-
     <!-- Directory to store local files for comparison -->
     <property name="local_dir" value="${dir}/local" />
     <delete dir="${local_dir}" quiet="true" /> 
@@ -139,44 +138,29 @@
       tablength="2"
     />
 
-    <!-- Condition checking .out files -->
-    <condition property="output-same">
-      <and>
-       <filesmatch file1="${local_dir}/${out_name}.local"
-                   file2="${local_dir}/${expected_out_name}.local"/>
-        <filesmatch file1="${local_dir}/source_${out_name}.local"
-                    file2="${local_dir}/source_${expected_out_name}.local" unless:true="${no-source}"/>
-      </and>
-    </condition>
-
-    <!-- Condition checking whether outputs need to match -->
-    <condition property="should-warn">
-      <or>
-        <equals arg1="${fail_out}" arg2="false"/>
-        <isset property="output-same" />
-      </or>
-    </condition>
-
-    <!-- Fail unless told not to -->
-    <fail message="${script-file} failed with different output"
-      unless="should-warn"/>
-      <!-- Execute diff on .out files unless output had to be the same -->
-    <exec executable="diff" unless:true="${output-same}" >
+      <!-- Execute diff on .out files (always)-->
+    <echo>
+      Diff of (1) ${out_name}.local and (2) ${expected_out_name}.local:
+    </echo>
+    <exec executable="diff">
       <arg line="--strip-trailing-cr ${local_dir}/${out_name}.local ${local_dir}/${expected_out_name}.local" />
     </exec>
+    <echo unless:true="${no-source}">
+      Diff of (1) source_${out_name}.local and (2) source_${expected_out_name}.local:
+    </echo>
     <exec executable="diff" unless:true="${no-source}" >
       <arg line="--strip-trailing-cr ${local_dir}/source_${out_name}.local ${local_dir}/source_${expected_out_name}.local" />
     </exec>
 
       <!-- Exectute diff on .txt files -->
     <echo>
-      Execution of diff on executed script ddg.txt files below:
+      Diff of (1) ddg.txt.local and (2) ${ddg_name}.local:
     </echo>
     <exec executable="diff" >
       <arg line="--strip-trailing-cr ${local_dir}/ddg.txt.local ${local_dir}/${ddg_name}.local" />
     </exec>
     <echo unless:true="${no-source}">
-      Execution of diff on the sourced script ddg.txt files below: 
+      Diff of (1) ddg-source.txt.local and (2) source_${ddg_name}.local: 
     </echo>
     <exec executable="diff" unless:true="${no-source}">
       <arg line="--strip-trailing-cr ${local_dir}/ddg-source.txt.local ${local_dir}/source_${ddg_name}.local" />
@@ -192,7 +176,6 @@
       <param name="script-file" value="basicTest.r"/>
       <param name="expected_out" value="examples/ddgTest/expected_basicTest.out"/>
       <param name="expected_ddg" value="examples/ddgTest/expected_basicTest_ddg.txt"/>
-      <param name="fail_out" value="true" />
       <param name="source_test" value="true" />
     </antcall>
   </target>
@@ -204,7 +187,6 @@
       <param name="script-file" value="S4ObjectTest.R"/>
       <param name="expected_out" value="examples/S4ObjectTest/expected_S4ObjectTest.out"/>
       <param name="expected_ddg" value="examples/S4ObjectTest/expected_S4ObjectTest_ddg.txt"/>
-      <param name="fail_out" value="false" />
       <param name="source_test" value="true" />
     </antcall>
   </target>
@@ -216,7 +198,6 @@
       <param name="script-file" value="ddgTest.r"/>
       <param name="expected_out" value="examples/ddgTest/expected_ddgTest.out"/>
       <param name="expected_ddg" value="examples/ddgTest/expected_ddgTest_ddg.txt"/>
-      <param name="fail_out" value="true" />
       <param name="source_test" value="true" />
     </antcall>
   </target>
@@ -237,7 +218,6 @@
       <param name="script-file" value="CheckpointTest.r"/>
       <param name="expected_out" value="examples/checkpointTest/expected_checkpointTest.out"/>
       <param name="expected_ddg" value="examples/checkpointTest/expected_CheckpointTest_ddg.txt"/>
-      <param name="fail_out" value="false" />
       <param name="source_test" value="true" />
     </antcall>
   </target>
@@ -249,7 +229,6 @@
       <param name="script-file" value="CheckpointFileTest.r"/>
       <param name="expected_out" value="examples/checkpointTest/expected_checkpointFileTest.out"/>
       <param name="expected_ddg" value="examples/checkpointTest/expected_CheckpointFileTest_ddg.txt"/>
-      <param name="fail_out" value="false" />
       <param name="source_test" value="true" />
     </antcall>
   </target>
@@ -270,7 +249,6 @@
       <param name="script-file" value="consoleTest.r"/>
       <param name="expected_out" value="examples/consoleTest/expected_consoleTest.out"/>
       <param name="expected_ddg" value="examples/consoleTest/expected_consoleTest_ddg.txt"/>
-      <param name="fail_out" value="false" />
       <param name="source_test" value="true" />
     </antcall>
   </target>
@@ -282,7 +260,6 @@
       <param name="script-file" value="consoleTest2.R"/>
       <param name="expected_out" value="examples/consoleTest/expected_consoleTest2.out"/>
       <param name="expected_ddg" value="examples/consoleTest/expected_consoleTest2_ddg.txt"/>
-      <param name="fail_out" value="true" />
       <param name="source_test" value="true" />
     </antcall>
   </target>
@@ -294,7 +271,6 @@
       <param name="script-file" value="MismatchedStartFinishBug.R"/>
       <param name="expected_out" value="examples/MismatchedStartFinishBug/expected_MismatchedStartFinishBug.out"/>
       <param name="expected_ddg" value="examples/MismatchedStartFinishBug/expected_MismatchedStartFinishBug_ddg.txt"/>
-      <param name="fail_out" value="true" />
       <param name="source_test" value="true" />
     </antcall>
   </target>
@@ -306,7 +282,6 @@
       <param name="script-file" value="NULLandNA.r"/>
       <param name="expected_out" value="examples/NULLandNA/expected_NULLandNA.out"/>
       <param name="expected_ddg" value="examples/NULLandNA/expected_NULLandNA_ddg.txt"/>
-      <param name="fail_out" value="true" />
       <param name="source_test" value="true" />
     </antcall>
     <echo>Expect the following output when testing manually: [1] .ddg.find.var.uses:  Error analyzing storage.mode(z) - a </echo>
@@ -319,7 +294,6 @@
       <param name="script-file" value="consoleEdgeCases.r"/>
       <param name="expected_out" value="examples/consoleEdgeCases/expected_consoleEdgeCases.out"/>
       <param name="expected_ddg" value="examples/consoleEdgeCases/expected_consoleEdgeCases_ddg.txt"/>
-      <param name="fail_out" value="true" />
       <param name="source_test" value="true" />
     </antcall>
   </target>
@@ -331,7 +305,6 @@
       <param name="script-file" value="ScopeTest.R"/>
       <param name="expected_out" value="examples/ScopeTest/expected_ScopeTest.out"/>
       <param name="expected_ddg" value="examples/ScopeTest/expected_ScopeTest_ddg.txt"/>
-      <param name="fail_out" value="true" />
       <param name="source_test" value="true" />
     </antcall>
   </target>
@@ -350,7 +323,6 @@
       <param name="script-file" value="consoleSource.r"/>
       <param name="expected_out" value="examples/consoleSource/expected_consoleSource.out"/>
       <param name="expected_ddg" value="examples/consoleSource/expected_consoleSource_ddg.txt"/>
-      <param name="fail_out" value="true" />
       <param name="source_test" value="true" />
     </antcall>
   </target>
@@ -362,7 +334,6 @@
       <param name="script-file" value="dynamicConsole.r"/>
       <param name="expected_out" value="examples/dynamicConsole/expected_dynamicConsole.out"/>
       <param name="expected_ddg" value="examples/dynamicConsole/expected_dynamicConsole_ddg.txt"/>
-      <param name="fail_out" value="false" />
       <param name="source_test" value="true" />
     </antcall>
   </target>
@@ -381,7 +352,6 @@
       <param name="script-file" value="calculate-square-root-1.r"/>
       <param name="expected_out" value="examples/CalculateSquareRoot/expected_calculate-square-root-1.out"/>
       <param name="expected_ddg" value="examples/CalculateSquareRoot/expected_calculate-square-root-1_ddg.txt"/>
-      <param name="fail_out" value="false" />
       <param name="source_test" value="false" />
     </antcall>
   </target>
@@ -393,7 +363,6 @@
       <param name="script-file" value="calculate-square-root-2.r"/>
       <param name="expected_out" value="examples/CalculateSquareRoot/expected_calculate-square-root-2.out"/>
       <param name="expected_ddg" value="examples/CalculateSquareRoot/expected_calculate-square-root-2_ddg.txt"/>
-      <param name="fail_out" value="false" />
       <param name="source_test" value="false" />
     </antcall>
   </target>
@@ -409,7 +378,6 @@
       <param name="script-file" value="daily-solar-radiation-1.r"/>
       <param name="expected_out" value="examples/DailySolarRadiation/expected_daily-solar-radiation-1.out"/>
       <param name="expected_ddg" value="examples/DailySolarRadiation/expected_daily-solar-radiation-1_ddg.txt"/>
-      <param name="fail_out" value="true" />
       <param name="source_test" value="false" />
     </antcall>
   </target>
@@ -421,7 +389,6 @@
       <param name="script-file" value="daily-solar-radiation-2.r"/>
       <param name="expected_out" value="examples/DailySolarRadiation/expected_daily-solar-radiation-2.out"/>
       <param name="expected_ddg" value="examples/DailySolarRadiation/expected_daily-solar-radiation-2_ddg.txt"/>
-      <param name="fail_out" value="true" />
       <param name="source_test" value="false" />
     </antcall>
   </target>
@@ -433,7 +400,6 @@
       <param name="script-file" value="real-time-15min-met-test.r"/>
       <param name="expected_out" value="examples/RealTime15MinMET/expected_real-time-15min-met-test.out"/>
       <param name="expected_ddg" value="examples/RealTime15MinMET/expected_real-time-15min-met-test_ddg.txt"/>
-      <param name="fail_out" value="true" />
       <param name="source_test" value="true" />
     </antcall>
   </target>
@@ -445,7 +411,6 @@
       <param name="script-file" value="quality-control-15min-test.r"/>
       <param name="expected_out" value="examples/QualityControl15Min/expected_quality-control-15min-test.out"/>
       <param name="expected_ddg" value="examples/QualityControl15Min/expected_quality-control-15min-test_ddg.txt"/>
-      <param name="fail_out" value="true" />
       <param name="source_test" value="true" />
     </antcall>
   </target>
@@ -466,7 +431,6 @@
       <param name="script-file" value="ddgChangesBehavior.r"/>
       <param name="expected_out" value="examples/ddgChangesBehavior/expected_ddgChangesBehavior.out"/>
       <param name="expected_ddg" value="examples/ddgChangesBehavior/expected_ddgChangesBehavior_ddg.txt"/>
-      <param name="fail_out" value="true" />
       <param name="source_test" value="false" />
     </antcall>
   </target>
@@ -478,7 +442,6 @@
       <param name="script-file" value="DDGHangBug.R"/>
       <param name="expected_out" value="examples/DDGHangBug/expected_DDGHangBug.out"/>
       <param name="expected_ddg" value="examples/DDGHangBug/expected_DDGHangBug_ddg.txt"/>
-      <param name="fail_out" value="true" />
       <param name="source_test" value="false" />
     </antcall>
     <echo>This DDG sometimes hangs DDG Explorer because of the large n value. For testing, we keep a relatively small n. If you change n, the .out file must also be changed.</echo>
@@ -491,7 +454,6 @@
       <param name="script-file" value="scoping_error.r"/>
       <param name="expected_out" value="examples/scopingTest/expected_scoping_error.out"/>
       <param name="expected_ddg" value="examples/scopingTest/expected_scoping_error_ddg.txt"/>
-      <param name="fail_out" value="true" />
       <param name="source_test" value="false" />
     </antcall>
     <echo>If this breaks, we have issues with scoping.</echo>
@@ -504,23 +466,22 @@
       <param name="script-file" value="simple.r"/>
       <param name="expected_out" value="examples/simpleTest/expected_simple.out"/>
       <param name="expected_ddg" value="examples/simpleTest/expected_simple_ddg.txt"/>
-      <param name="fail_out" value="true" />
       <param name="source_test" value="false" />
     </antcall>
   </target> 
 
   <target name="SivanSampling-test">
-    <record name="examples/SivanSampling/SivanSampling-test.log.txt" action="start" />
+    <record name="examples/SivanSampling/SivanSampling-test.log" action="start" />
       <antcall target="run-test">
         <param name="dir" value="examples/SivanSampling"/>
         <param name="out" value="examples/SivanSampling/Sampling.out"/>
         <param name="script-file" value="Sampling.R"/>
         <param name="expected_out" value="examples/SivanSampling/expected_Sampling.out"/>
         <param name="expected_ddg" value="examples/SivanSampling/expected_Sampling_ddg.txt"/>
-        <param name="fail_out" value="false" />
+
         <param name="source_test" value="false" />
       </antcall>
-      <echo>You shuould output this to either a text file, or run the diff manually. The nodes generated are done so through a random process, and therefore differ significantly. Note that the output of this test is saved to examples/SivanSampling/SivanSampling-test.log.txt</echo>
+      <echo>You shuould output this to either a text file, or run the diff manually. The nodes generated are done so through a random process, and therefore differ significantly. Note that the output of this test is saved to examples/SivanSampling/SivanSampling-test.log</echo>
     <record name="SivanSampling-test.log.txt" action="stop" />
   </target> 
 
