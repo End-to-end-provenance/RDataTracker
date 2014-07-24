@@ -12,7 +12,7 @@ invisible(force(startTime))
 testDir <- "[DIR_DEFAULT]/"
 setwd(testDir)
 
-ddg.r.script.path = paste(testDir,"consoleSource.r",sep="")
+ddg.r.script.path = paste(testDir,"aaron-min-test.r",sep="")
 ddg.path = paste(testDir,"[DDG-DIR]",sep="")
 
 ddg.init(ddg.r.script.path,
@@ -139,7 +139,8 @@ filled.contour3 <- function(x = seq(0, 1, length.out = nrow(z)), y = seq(0,
     # mar.orig <- (par.orig <- par(c('mar', 'las', 'mfrow')))$mar
     # on.exit(par(par.orig)) w <- (3 + mar.orig[2]) * par('csi') * 2.54 par(las
     # = las) mar <- mar.orig
-    plot.new()
+    tryCatch(plot.new(),
+         error=function(e){e})
     # par(mar=mar)
     plot.window(xlim, ylim, "", xaxs = xaxs, yaxs = yaxs, asp = asp)
     if (!is.matrix(z) || nrow(z) <= 1 || ncol(z) <= 1) 

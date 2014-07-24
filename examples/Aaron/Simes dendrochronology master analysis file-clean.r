@@ -124,7 +124,9 @@ filled.contour3 <- function(x = seq(0, 1, length.out = nrow(z)), y = seq(0,
     # mar.orig <- (par.orig <- par(c('mar', 'las', 'mfrow')))$mar
     # on.exit(par(par.orig)) w <- (3 + mar.orig[2]) * par('csi') * 2.54 par(las
     # = las) mar <- mar.orig
-    plot.new()
+    tryCatch(plot.new(),
+             error=function(e){e})
+    # par(mar=mar)
     # par(mar=mar)
     plot.window(xlim, ylim, "", xaxs = xaxs, yaxs = yaxs, asp = asp)
     if (!is.matrix(z) || nrow(z) <= 1 || ncol(z) <= 1) 
@@ -3092,7 +3094,7 @@ HF.annual
 
 
 #```r
-amherts <- read.csv("Amherst_met_1893-2012-reduced.csv")
+amherst <- read.csv("Amherst_met_1893-2012-reduced.csv")
 #amherst <- read.csv("C:/Users/aellison/Dropbox/Aaron's Briefcase/manuscript - Simes dendro and land use/env data/Amherst_met_1893-2012-reduced.csv", 
 #    header = TRUE)
 
@@ -3216,7 +3218,7 @@ pop.data <- read.csv("phampop.csv")
 
 #rework these into time-series objects and plot to check
 
-
+par(las = 1, mar = c(0, 0, 0, 1) + 0.1, fin = c(3.5, 4.6), yaxs = "r")
 #```r
 HF.ts <- ts(data = HF.annual[, 2:5], start = 1964, frequency = 1)
 plot(HF.ts)
@@ -3249,7 +3251,6 @@ plot(pop.ts)
 #```
 
 #![plot of chunk unnamed-chunk-15](figure/unnamed-chunk-154.png) 
-
 
 #build a nice plot
 

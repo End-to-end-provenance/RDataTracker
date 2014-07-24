@@ -130,7 +130,8 @@ filled.contour3 <- function(x = seq(0, 1, length.out = nrow(z)), y = seq(0,
     # mar.orig <- (par.orig <- par(c('mar', 'las', 'mfrow')))$mar
     # on.exit(par(par.orig)) w <- (3 + mar.orig[2]) * par('csi') * 2.54 par(las
     # = las) mar <- mar.orig
-    plot.new()
+    tryCatch(plot.new(),
+             error=function(e){e})
     # par(mar=mar)
     plot.window(xlim, ylim, "", xaxs = xaxs, yaxs = yaxs, asp = asp)
     if (!is.matrix(z) || nrow(z) <= 1 || ncol(z) <= 1) 
@@ -653,7 +654,7 @@ plot(plot.1.pp[plot.1$genus == Tsuga])
 plot(density(plot.1.pp[plot.1$genus == Tsuga]))
 plot(envelope(plot.1.pp[plot.1$genus == Tsuga], Lest, global = FALSE))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.1.pp","Tsuga"))
-ddg.data.out(pname="Plot density and envelop",dname="plot1graph",fext="pdf")
+ddg.graphic.out("plot1graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -688,7 +689,7 @@ plot(plot.1.pp[plot.1$genus == Betula])
 plot(density(plot.1.pp[plot.1$genus == Betula]))
 plot(envelope(plot.1.pp[plot.1$genus == Betula], Kest))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.1.pp","Betula"))
-ddg.data.out(pname="Plot density and envelop",dname="plot1graph",fext="pdf")
+ddg.graphic.out("plot1graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -724,7 +725,7 @@ plot(plot.1.pp[plot.1$genus == Quercus])
 plot(density(plot.1.pp[plot.1$genus == Quercus]))
 plot(envelope(plot.1.pp[plot.1$genus == Quercus], Kest))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.1.pp","Quercus"))
-ddg.data.out(pname="Plot density and envelop",dname="plot1graph",fext="pdf")
+ddg.graphic.out("plot1graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -759,7 +760,7 @@ plot(plot.1.pp[plot.1$genus == Acer])
 plot(density(plot.1.pp[plot.1$genus == Acer]))
 plot(envelope(plot.1.pp[plot.1$genus == Acer], Kest))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.1.pp","Acer"))
-ddg.data.out(pname="Plot density and envelop",dname="plot1graph",fext="pdf")
+ddg.graphic.out("plot1graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -795,7 +796,7 @@ plot(plot.1.pp[plot.1$genus == Pinus])
 plot(density(plot.1.pp[plot.1$genus == Pinus]))
 plot(envelope(plot.1.pp[plot.1$genus == Pinus], Kest))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.1.pp","Pinus"))
-ddg.data.out(pname="Plot density and envelop",dname="plot1graph",fext="pdf")
+ddg.graphic.out("plot1graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -833,7 +834,7 @@ plot(plot.2.pp[plot.2$genus == Tsuga])
 plot(density(plot.2.pp[plot.2$genus == Tsuga]))
 plot(envelope(plot.2.pp[plot.2$genus == Tsuga], Kest))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.2.pp","Tsuga"))
-ddg.data.out(pname="Plot density and envelop",dname="plot2graph",fext="pdf")
+ddg.graphic.out("plot2graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -868,7 +869,7 @@ plot(plot.2.pp[plot.2$genus == Betula])
 plot(density(plot.2.pp[plot.2$genus == Betula]))
 plot(envelope(plot.2.pp[plot.2$genus == Betula], Kest))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.2.pp","Betula"))
-ddg.data.out(pname="Plot density and envelop",dname="plot2graph",fext="pdf")
+ddg.graphic.out("plot2graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -903,7 +904,7 @@ plot(plot.2.pp[plot.2$genus == Quercus])
 plot(density(plot.2.pp[plot.2$genus == Quercus]))
 plot(envelope(plot.2.pp[plot.2$genus == Quercus], Kest))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.2.pp","Quercus"))
-ddg.data.out(pname="Plot density and envelop",dname="plot2graph",fext="pdf")
+ddg.graphic.out("plot2graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -938,7 +939,7 @@ plot(plot.2.pp[plot.2$genus == Acer])
 plot(density(plot.2.pp[plot.2$genus == Acer]))
 plot(envelope(plot.2.pp[plot.2$genus == Acer], Kest))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.2.pp","Acer"))
-ddg.data.out(pname="Plot density and envelop",dname="plot2graph",fext="pdf")
+ddg.graphic.out("plot2graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -973,7 +974,7 @@ plot(plot.2.pp[plot.2$genus == Pinus])
 plot(density(plot.2.pp[plot.2$genus == Pinus]))
 plot(envelope(plot.2.pp[plot.2$genus == Pinus], Kest))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.2.pp","Pinus"))
-ddg.data.out(pname="Plot density and envelop",dname="plot2graph",fext="pdf")
+ddg.graphic.out("plot2graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -1011,7 +1012,7 @@ plot(plot.3.pp[plot.3$genus == Tsuga])
 plot(density(plot.3.pp[plot.3$genus == Tsuga]))
 plot(envelope(plot.3.pp[plot.3$genus == Tsuga], Kest))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.3.pp","Tsuga"))
-ddg.data.out(pname="Plot density and envelop",dname="plot3graph",fext="pdf")
+ddg.graphic.out("plot3graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -1046,7 +1047,7 @@ plot(plot.3.pp[plot.3$genus == Betula])
 plot(density(plot.3.pp[plot.3$genus == Betula]))
 plot(envelope(plot.3.pp[plot.3$genus == Betula], Kest))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.3.pp","Betula"))
-ddg.data.out(pname="Plot density and envelop",dname="plot3graph",fext="pdf")
+ddg.graphic.out("plot3graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -1082,7 +1083,7 @@ plot(density(plot.3.pp[plot.3$genus == Quercus]))
 plot(envelope(plot.3.pp[plot.3$genus == Quercus], Kest))
 #```
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.3.pp","Quercus"))
-ddg.data.out(pname="Plot density and envelop",dname="plot3graph",fext="pdf")
+ddg.graphic.out("plot3graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 ## Generating 99 simulations of CSR  ...
 ## 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
@@ -1115,7 +1116,7 @@ plot(plot.3.pp[plot.3$genus == Acer])
 plot(density(plot.3.pp[plot.3$genus == Acer]))
 plot(envelope(plot.3.pp[plot.3$genus == Acer], Kest))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.3.pp","Acer"))
-ddg.data.out(pname="Plot density and envelop",dname="plot3graph",fext="pdf")
+ddg.graphic.out("plot3graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -1150,7 +1151,7 @@ plot(plot.3.pp[plot.3$genus == Pinus])
 plot(density(plot.3.pp[plot.3$genus == Pinus]))
 plot(envelope(plot.3.pp[plot.3$genus == Pinus], Kest))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.3.pp","Pinus"))
-ddg.data.out(pname="Plot density and envelop",dname="plot3graph",fext="pdf")
+ddg.graphic.out("plot3graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -1188,7 +1189,7 @@ plot(plot.4.pp[plot.4$genus == Tsuga])
 plot(density(plot.4.pp[plot.4$genus == Tsuga]))
 plot(envelope(plot.4.pp[plot.4$genus == Tsuga], Kest))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.4.pp","Tsuga"))
-ddg.data.out(pname="Plot density and envelop",dname="plot4graph",fext="pdf")
+ddg.graphic.out("plot4graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -1223,7 +1224,7 @@ plot(plot.4.pp[plot.4$genus == Betula])
 plot(density(plot.4.pp[plot.4$genus == Betula]))
 plot(envelope(plot.4.pp[plot.4$genus == Betula], Kest))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.4.pp","Betula"))
-ddg.data.out(pname="Plot density and envelop",dname="plot4graph",fext="pdf")
+ddg.graphic.out("plot4graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -1258,7 +1259,7 @@ plot(plot.4.pp[plot.4$genus == Quercus])
 plot(density(plot.4.pp[plot.4$genus == Quercus]))
 plot(envelope(plot.4.pp[plot.4$genus == Quercus], Kest))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.4.pp","Quercus"))
-ddg.data.out(pname="Plot density and envelop",dname="plot4graph",fext="pdf")
+ddg.graphic.out("plot4graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -1293,7 +1294,7 @@ plot(plot.4.pp[plot.4$genus == Acer])
 plot(density(plot.4.pp[plot.4$genus == Acer]))
 plot(envelope(plot.4.pp[plot.4$genus == Acer], Kest))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.4.pp","Acer"))
-ddg.data.out(pname="Plot density and envelop",dname="plot4graph",fext="pdf")
+ddg.graphic.out("plot4graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -1328,7 +1329,7 @@ plot(plot.4.pp[plot.4$genus == Pinus])
 plot(density(plot.4.pp[plot.4$genus == Pinus]))
 plot(envelope(plot.4.pp[plot.4$genus == Pinus], Kest))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.4.pp","Pinus"))
-ddg.data.out(pname="Plot density and envelop",dname="plot4graph",fext="pdf")
+ddg.graphic.out("plot4graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -1365,7 +1366,7 @@ plot(plot.5.pp[plot.5$genus == Tsuga])
 plot(density(plot.5.pp[plot.5$genus == Tsuga]))
 plot(envelope(plot.5.pp[plot.5$genus == Tsuga], Kest))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.5.pp","Tsuga"))
-ddg.data.out(pname="Plot density and envelop",dname="plot5graph",fext="pdf")
+ddg.graphic.out("plot5graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -1401,7 +1402,7 @@ plot(density(plot.5.pp[plot.5$genus == Betula]))
 plot(envelope(plot.5.pp[plot.5$genus == Betula], Kest))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.5.pp","Betula"))
 #```
-ddg.data.out(pname="Plot density and envelop",dname="plot5graph",fext="pdf")
+ddg.graphic.out("plot5graph", pname="Plot density and envelop",graphic.fext="pdf")
 
 #```
 ## Generating 99 simulations of CSR  ...
@@ -1437,7 +1438,7 @@ plot(envelope(plot.5.pp[plot.5$genus == Quercus], Kest))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.5.pp","Quercus"))
 #```
 
-ddg.data.out(pname="Plot density and envelop",dname="plot5graph",fext="pdf")
+ddg.graphic.out("plot5graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 ## Generating 99 simulations of CSR  ...
 ## 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
@@ -1470,7 +1471,7 @@ plot(plot.5.pp[plot.5$genus == Acer])
 plot(density(plot.5.pp[plot.5$genus == Acer]))
 plot(envelope(plot.5.pp[plot.5$genus == Acer], Kest))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.5.pp","Acer"))
-ddg.data.out(pname="Plot density and envelop",dname="plot5graph",fext="pdf")
+ddg.graphic.out("plot5graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -1505,7 +1506,7 @@ plot(plot.5.pp[plot.5$genus == Pinus])
 plot(density(plot.5.pp[plot.5$genus == Pinus]))
 plot(envelope(plot.5.pp[plot.5$genus == Pinus], Kest))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.5.pp","Pinus"))
-ddg.data.out(pname="Plot density and envelop",dname="plot5graph",fext="pdf")
+ddg.graphic.out("plot5graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -1543,7 +1544,7 @@ plot(plot.6.pp[plot.6$genus == Tsuga])
 plot(density(plot.6.pp[plot.6$genus == Tsuga]))
 plot(envelope(plot.6.pp[plot.6$genus == Tsuga], Kest))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.6.pp","Tsuga"))
-ddg.data.out(pname="Plot density and envelop",dname="plot6graph",fext="pdf")
+ddg.graphic.out("plot7graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -1578,7 +1579,7 @@ plot(plot.6.pp[plot.6$genus == Betula])
 plot(density(plot.6.pp[plot.6$genus == Betula]))
 plot(envelope(plot.6.pp[plot.6$genus == Betula], Kest))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.6.pp","Betula"))
-ddg.data.out(pname="Plot density and envelop",dname="plot6graph",fext="pdf")
+ddg.graphic.out("plot7graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -1613,7 +1614,7 @@ plot(plot.6.pp[plot.6$genus == Quercus])
 plot(density(plot.6.pp[plot.6$genus == Quercus]))
 plot(envelope(plot.6.pp[plot.6$genus == Quercus], Kest))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.6.pp","Quercus"))
-ddg.data.out(pname="Plot density and envelop",dname="plot6graph",fext="pdf")
+ddg.graphic.out("plot7graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 #```
 ## Generating 99 simulations of CSR  ...
@@ -1647,7 +1648,7 @@ plot(plot.6.pp[plot.6$genus == Acer])
 plot(density(plot.6.pp[plot.6$genus == Acer]))
 plot(envelope(plot.6.pp[plot.6$genus == Acer], Kest))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.6.pp","Acer"))
-ddg.data.out(pname="Plot density and envelop",dname="plot6graph",fext="pdf")
+ddg.graphic.out("plot7graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -1682,7 +1683,7 @@ plot(plot.6.pp[plot.6$genus == Pinus])
 plot(density(plot.6.pp[plot.6$genus == Pinus]))
 plot(envelope(plot.6.pp[plot.6$genus == Pinus], Kest))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.6.pp","Pinus"))
-ddg.data.out(pname="Plot density and envelop",dname="plot6graph",fext="pdf")
+ddg.graphic.out("plot7graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -1719,7 +1720,7 @@ plot(plot.7.pp[plot.7$genus == Tsuga])
 plot(density(plot.7.pp[plot.7$genus == Tsuga]))
 plot(envelope(plot.7.pp[plot.7$genus == Tsuga], Kest))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.7.pp","Tsuga"))
-ddg.data.out(pname="Plot density and envelop",dname="plot7graph",fext="pdf")
+ddg.graphic.out("plot7graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 #```
 ## Generating 99 simulations of CSR  ...
@@ -1753,7 +1754,7 @@ plot(plot.7.pp[plot.7$genus == Betula])
 plot(density(plot.7.pp[plot.7$genus == Betula]))
 plot(envelope(plot.7.pp[plot.7$genus == Betula], Kest))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.7.pp","Betula"))
-ddg.data.out(pname="Plot density and envelop",dname="plot7graph",fext="pdf")
+ddg.graphic.out("plot7graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -1788,7 +1789,7 @@ plot(plot.7.pp[plot.7$genus == Quercus])
 plot(density(plot.7.pp[plot.7$genus == Quercus]))
 plot(envelope(plot.7.pp[plot.7$genus == Quercus], Kest))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.7.pp","Quercus"))
-ddg.data.out(pname="Plot density and envelop",dname="plot7graph",fext="pdf")
+ddg.graphic.out("plot7graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -1823,7 +1824,7 @@ plot(plot.7.pp[plot.7$genus == Acer])
 plot(density(plot.7.pp[plot.7$genus == Acer]))
 plot(envelope(plot.7.pp[plot.7$genus == Acer], Kest))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.7.pp","Acer"))
-ddg.data.out(pname="Plot density and envelop",dname="plot7graph",fext="pdf")
+ddg.graphic.out("plot7graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -1858,7 +1859,7 @@ plot(plot.7.pp[plot.7$genus == Pinus])
 plot(density(plot.7.pp[plot.7$genus == Pinus]))
 plot(envelope(plot.7.pp[plot.7$genus == Pinus], Kest))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.7.pp","Pinus"))
-ddg.data.out(pname="Plot density and envelop",dname="plot7graph",fext="pdf")
+ddg.graphic.out("plot7graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -1895,7 +1896,7 @@ plot(plot.8.pp[plot.8$genus == Tsuga])
 plot(density(plot.8.pp[plot.8$genus == Tsuga]))
 plot(envelope(plot.8.pp[plot.8$genus == Tsuga], Kest))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.8.pp","Tsuga"))
-ddg.data.out(pname="Plot density and envelop",dname="plot8graph",fext="pdf")
+ddg.graphic.out("plot8graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -1930,7 +1931,7 @@ plot(plot.8.pp[plot.8$genus == Betula])
 plot(density(plot.8.pp[plot.8$genus == Betula]))
 plot(envelope(plot.8.pp[plot.8$genus == Betula], Kest))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.8.pp","Betula"))
-ddg.data.out(pname="Plot density and envelop",dname="plot8graph",fext="pdf")
+ddg.graphic.out("plot8graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -1965,7 +1966,7 @@ plot(plot.8.pp[plot.8$genus == Quercus])
 plot(density(plot.8.pp[plot.8$genus == Quercus]))
 plot(envelope(plot.8.pp[plot.8$genus == Quercus], Kest))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.8.pp","Quercus"))
-ddg.data.out(pname="Plot density and envelop",dname="plot8graph",fext="pdf")
+ddg.graphic.out("plot8graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -2000,7 +2001,7 @@ plot(plot.8.pp[plot.8$genus == Acer])
 plot(density(plot.8.pp[plot.8$genus == Acer]))
 plot(envelope(plot.8.pp[plot.8$genus == Acer], Kest))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.8.pp","Acer"))
-ddg.data.out(pname="Plot density and envelop",dname="plot8graph",fext="pdf")
+ddg.graphic.out("plot8graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -2035,7 +2036,7 @@ plot(plot.8.pp[plot.8$genus == Pinus])
 plot(density(plot.8.pp[plot.8$genus == Pinus]))
 plot(envelope(plot.8.pp[plot.8$genus == Pinus], Kest))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.8.pp","Pinus"))
-ddg.data.out(pname="Plot density and envelop",dname="plot8graph",fext="pdf")
+ddg.graphic.out("plot8graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 ddg.finish("Plot Information, Contours, and K")
 ddg.finish("Compute Ripley's K")
@@ -3476,7 +3477,7 @@ plot(HF.ts)
 #```
 ddg.procedure(pname="timeseries", ins=list("HF.annual"), outs.data=list("HF.ts"))
 ddg.procedure(pname="plot", ins=list("HF.ts"))
-ddg.data.out(pname="plot",dname="HF.ts", fext="pdf")
+ddg.graphic.out("HF.ts", pname="plot",graphic.fext="pdf")
 
 #![plot of chunk unnamed-chunk-15](figure/unnamed-chunk-151.png) 
 
@@ -3487,7 +3488,7 @@ Amherst.ts <- ts(data = amherst.annual.fixed[-(1:4), 2:5], start = 1897, end = 2
 plot(Amherst.ts)
 ddg.procedure(pname="timeseries", ins=list("amherst.annual.fixed"), outs.data=list("Amherst.ts"))
 ddg.procedure(pname="plot", ins=list("Amherst.ts"))
-ddg.data.out(pname="plot",dname="Amherst.ts", fext="pdf")
+ddg.graphic.out("Amherst.ts", pname="plot",graphic.fext="pdf")
 #```
 
 #![plot of chunk unnamed-chunk-15](figure/unnamed-chunk-152.png) 
@@ -3499,7 +3500,7 @@ pdsi.ts <- ts(data = leverett.pdsi$RECON, start = 481, frequency = 1)
 plot(pdsi.ts, type = "b", xlim = c(1875, 2003))
 ddg.procedure(pname="timeseries", ins=list("leverett.pdsi"), outs.data=list("pdsi.ts"))
 ddg.procedure(pname="plot", ins=list("pdsi.ts"))
-ddg.data.out(pname="plot",dname="pdsi.ts", fext="pdf")
+ddg.graphic.out("pdsi.ts", pname="plot",graphic.fext="pdf")
 #```
 
 #![plot of chunk unnamed-chunk-15](figure/unnamed-chunk-153.png) 
@@ -3514,7 +3515,7 @@ ddg.data.out(pname="plot",dname="HF.ts", fext="pdf")
 #```
 ddg.procedure(pname="timeseries", ins=list("pop.data"), outs.data=list("pop.ts"))
 ddg.procedure(pname="plot", ins=list("pdsi.ts"))
-ddg.data.out(pname="plot", dname="pop.ts", fext="pdf")
+ddg.graphic.out("pop.ts", pname="plot",graphic.fext="pdf")
 ddg.finish("timeseries")
 #![plot of chunk unnamed-chunk-15](figure/unnamed-chunk-154.png) 
 
@@ -3671,7 +3672,7 @@ mean(window(pdsi.ts, 1897, 2003))
 # running means
 plot(rollapply(HF.ts, 10, mean))
 ddg.procedure(pname="plot.means",ins=list("HF.ts"))
-ddg.data.out(pname="plot.means",dname="HF.ts.mean", fext="pdf")
+ddg.graphic.out("HF.ts.mean", pname="plot.means",graphic.fext="pdf")
 #```
 
 #![plot of chunk unnamed-chunk-17](figure/unnamed-chunk-171.png) 
@@ -3679,7 +3680,7 @@ ddg.data.out(pname="plot.means",dname="HF.ts.mean", fext="pdf")
 #```r
 plot(rollapply(window(pdsi.ts, start = 1897, end = 2003), 10, mean))
 ddg.procedure(pname="plot.means",ins=list("pdsi.ts"))
-ddg.data.out(pname="plot.means",dname="pdsi.ts.means", fext="pdf")
+ddg.graphic.out("odsi.ts.means", pname="plot.means",graphic.fext="pdf")
 #```
 
 #![plot of chunk unnamed-chunk-17](figure/unnamed-chunk-172.png) 

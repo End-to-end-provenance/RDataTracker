@@ -128,15 +128,18 @@ timeForEval <- function(file, from.source=FALSE) {
 
   source(file, local = T, echo = F,verbose = F)
   endTime <- Sys.time()
-  return(difftime(endTime, startTime,units="mins"))
+  return(difftime(endTime, startTime,units="secs"))
 }
 
 ### Function: Returns in list format the information we wish to store for one script
 # @param file - and R file for which we need the required information
 # $return info - a list of collected file data
 scriptInfo <- function(file) {
+  # Printint out some information
+  cat(paste0("\n\n\n\nStart Evaluation of ", file, "\n\n\n\n"))
   # calculate exectution time
   time <- timeForEval(file)
+  cat(paste0("\n\n\n\nExecution Time: ", time, "\n\n\n\n"))
 
   # calculate script file size
   fInfo <- file.info(file)
