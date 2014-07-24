@@ -2773,7 +2773,7 @@ ddg.source <- function (file, local = FALSE, echo = verbose, print.eval = echo,
   }
 
   ### END OF MODIFIED source CODE SECTION ###
-  browser()
+
   # Calculate the regular expressions for what should be ignored and what shouldn't
 	if (ignore.ddg.calls && !ignore.init) {
 		if(verbose) warning("'ignore.ddg.calls' is TRUE, 'ignore.int' not; ... coercion 'ignore.init <- TRUE'")
