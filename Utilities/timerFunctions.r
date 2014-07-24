@@ -236,7 +236,7 @@ calcResults <- function(fileName) {
   sapply(dirs, function(dir){if (!is.na(dir)) unlink(paste0(dir), recursive=T)})
 
   # delete the scripts directory
-  unlink(paste0("localTimingScripts", recursive=T))
+  unlink("localTimingScripts", recursive=T)
   dir.create("localTimingScripts", showWarnings=F)
 
   # copy the original file over to a new directory
