@@ -490,7 +490,18 @@
   <!--########################## End Bug Tests ##########################-->
   
   <target name="aaron-test">
-    <echo message="Please run Aaron's test in the console and compare ddg.txt with expected_ddg.txt" />
+    <record name="examples/Aarton/Simes dendrochronology master analysis file-test.log" action="start" />
+      <antcall target="run-test">
+        <param name="dir" value="examples/Aaron"/>
+        <param name="out" value="examples/Aaron/Simes dendrochronology master analysis file-test.out"/>
+        <param name="script-file" value="Simes dendrochronology master analysis file-test.r"/>
+        <param name="expected_out" value="examples/Aaron/expected_Simes dendrochronology master analysis file-test.out"/>
+        <param name="expected_ddg" value="examples/Aaron/expected_Simes dendrochronology master analysis file-test_ddg.txt"/>
+
+        <param name="source_test" value="true" />
+      </antcall>
+      <echo message="Please run Aaron's test in the console and compare ddg.txt with expected_ddg.txt" />
+    <record name="Simes dendrochronology master analysis file-test-test.log.txt" action="stop" />
   </target>
   
   <!--################################# MAIN #################################-->
@@ -498,7 +509,7 @@
   <target name="test-all" depends="normal-tests, checkpoint-tests, script-tests, console-tests, source-tests, bug-tests, aaron-test">
       <echo>All tests makes calls to the RDataTracker Library. You might need to restart RStudio to correctly run the scripts with the updated library installed. Output is saved in tests.log.
 
-      There is one test which is not run here. The test is SivanSampling-test. Run it manually, though output is random.</echo>
+      There is one test which is not run here. The test is SivanSimes dendrochronology master analysis file-test-test. Run it manually, though output is random.</echo>
   </target>
 
   <target name="install-and-test" depends="install">
