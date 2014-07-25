@@ -43,6 +43,7 @@ ddg.MAX_HIST_LINES <- 2^14
 
 .ddg.set <- function(var, value) {
 	.ddg.env[[var]] <- value
+	return(invisible(.ddg.env[[var]]))
 }
 
 .ddg.is.set <- function(var) {
@@ -405,6 +406,7 @@ ddg.MAX_HIST_LINES <- 2^14
 		error.msg <- paste("Unable to create data (snapshot) node. Non-Object value to", fname, ".")
 		.ddg.insert.error.message(error.msg)
 	}
+	invisible()
 }
 
 # .ddg.record.proc records a procedure node in the procedure node 
@@ -576,7 +578,9 @@ ddg.MAX_HIST_LINES <- 2^14
 			print(paste("proc2proc: ", pname1, " ", pname2))
 			print(paste("CF p", ddg.pnum-1, " p", ddg.pnum, sep=""))
 		}
-	}  
+	} 
+
+	invisible() 
 }
 
 # .ddg.data2proc creates a data flow edge from a data node to a 
@@ -593,6 +597,7 @@ ddg.MAX_HIST_LINES <- 2^14
 		print(paste("data2proc: ", dname, " ", pname, sep=""))
 		print(paste("DF d", dn, " p", pn, sep=""))
 	}
+	invisible()
 }
 
 # .ddg.proc2data creates a data flow edge from a procedure node to 
@@ -609,6 +614,8 @@ ddg.MAX_HIST_LINES <- 2^14
 		print(paste("proc2data: ", pname, " ", dname, sep=""))
 		print(paste("DF p", pn, " d", dn, sep=""))
 	}
+
+	invisible()
 }
 
 # .ddg.lastproc2data creates a data flow edge from the last procedure 
@@ -1378,6 +1385,7 @@ ddg.MAX_HIST_LINES <- 2^14
 	# Don't do anything if sourcing, because history isn't necessary in this case
 	if(.ddg.enable.source()) return(NULL)
 
+	# Only continue if these values exists
 	if (!(is.null(ddg.history.file) || is.null(ddg.history.timestamp))) {
 		# grab any new commands that might still be in history
 		.ddg.savehistory(ddg.history.file)
@@ -1534,6 +1542,8 @@ ddg.MAX_HIST_LINES <- 2^14
 	
 		if (.ddg.debug()) print(paste("data.node:", dtype, dname))
 	}
+
+	invisible()
 }
 
 # .ddg.supported.graphic - the sole purpose of this function is to verify that 
@@ -1541,7 +1551,7 @@ ddg.MAX_HIST_LINES <- 2^14
 # supported graphics inlude:
 # jpg, jpeg, bmp, png, tiff
 .ddg.supported.graphic <- function(ext){
-	return(ext %in% c("jpeg", "jpg", "tiff", "png", "bmp"))
+	return(ext %in% c("jpeg", "jpg", "tiff", "png", "bmp", "pdf"))
 }
 
 # Factoring of snapshot code.
@@ -2127,6 +2137,8 @@ ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.graphic=N
 	    }
 	  )
 	}
+
+	invisible()
 }
 
 # ddg.data creates a data node for a single or comple data value. 
@@ -2169,7 +2181,7 @@ ddg.exception <- function(dname, dvalue=NULL) {
 	if (!is.character(dname)) dname <- deparse(substitute(dname))
 
 	# Create input exception node.
-    .ddg.data.node("Exception", dname, dvalue)
+   .ddg.data.node("Exception", dname, dvalue)
 }
 
 # ddg.url creates a data node for a URL. dname - label for the node. 
@@ -2200,7 +2212,7 @@ ddg.url <- function(dname, dvalue=NULL) {
 ddg.file <- function(filename, dname=NULL) {
 	if (!.ddg.is.init()) return(invisible())
 
-	.ddg.file.copy("File", filename, dname)
+	invisible(.ddg.file.copy("File", filename, dname))
 }
 
 # ddg.data.in creates a data flow edge from data node dname to 
@@ -2436,6 +2448,8 @@ ddg.grabhistory <- function() {
 	if (interactive() && .ddg.enable.console()) {
 		.ddg.console.node()
 	}
+
+	invisible()
 }
 
 # ddg.checkpoint saves the current R state in a file and adds a 
@@ -2501,6 +2515,8 @@ ddg.restore <- function(file.path) {
 	# load (file.path, .GlobalEnv, verbose=TRUE)
 	.ddg.mark.stale.data(saved.ddg.env)
 	.ddg.restore.ddg.state(saved.ddg.env)
+
+	invisible()
 }
 
 # ddg.init intializes a new ddg. r.script.path (optional) - the full 
@@ -2542,6 +2558,8 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, enable.console = FALSE
 		# save the history
 		savehistory(ddg.history.file)
 	}
+
+	invisible()
 }
 
 # ddg.run executes the function fname which contains the main 
@@ -2575,6 +2593,7 @@ ddg.run <- function(f = NULL, r.script.path = NULL, ddgdir = NULL, enable.consol
 		},
 		finally={ddg.save()}
 	)
+  invisible()
 }
 
 # ddg.save inserts attribute information and the number of procedure 
@@ -2634,6 +2653,8 @@ ddg.save <- function(quit=FALSE) {
 		# shut down the ddg
 		.ddg.clear()
 	}
+
+	invisible()
 }
 
 # ddg.source reads in an r script and executes it in the provided enviroment.
@@ -2813,6 +2834,8 @@ ddg.source <- function (file, local = FALSE, echo = verbose, print.eval = echo,
   	# Turn return console to previous state
   	if (!prev.on) ddg.console.off() else ddg.console.on()
   }
+
+  invisible()
 }
 
 # ddg.debug.on turns on debugging of DDG construction.
@@ -2870,5 +2893,7 @@ ddg.flush.ddg <- function (ddg.path = NULL) {
   	unlink(paste(ddg.path,"[1-9][0-9][0-9][0-9][0-9]-*.*", sep="/"))
   	unlink(paste(ddg.path,"[1-9][0-9][0-9][0-9][0-9][0-9]-*.*", sep="/"))
 	}
+
+	invisible()
 }
 

@@ -21,7 +21,7 @@ ddg.path = paste(testDir,"[DDG-DIR]",sep="")
 
 ddg.init(ddg.r.script.path,
          ddg.path,
-    enable.console=TRUE)
+    enable.console=FALSE)
 
 #```r
 library(dplR)
@@ -165,9 +165,9 @@ filled.contour3 <- function(x = seq(0, 1, length.out = nrow(z)), y = seq(0,
         box()
     if (missing(plot.title)) 
         title(...) else plot.title
-    invisible()
-    
+
     ddg.procedure(lookup.ins=TRUE)
+    invisible()
 }
 
 
@@ -227,7 +227,8 @@ ddg.file("hf086-01-dendro.csv")
 ddg.procedure(pname="read.data", ins=list("trees03.csv","hf086-01-dendro.csv"), outs.data=list("trees","dendro"))
 ddg.finish("Read in Data")
 
-head(trees)
+
+invisible(head(trees))
 #```
 
 #```
@@ -241,7 +242,8 @@ head(trees)
 #```
 
 #```r
-head(dendro)
+invisible(head(dendro))
+
 #```
 
 #```
@@ -274,7 +276,8 @@ plot.8 <- trees[plot == 8, ]
 
 # Annotating data seperation procedure
 plot.list <- list("plot.1","plot.2","plot.3","plot.4","plot.5","plot.6","plot.7","plot.8")
-Map(function(x){ddg.procedure(pname="Seperate Plots", outs.data=list(x), ins=list("trees"))},plot.list)
+
+invisible(Map(function(x){ddg.procedure(pname="Seperate Plots", outs.data=list(x), ins=list("trees"))},plot.list))
 
 genera <- levels(genus)
 ddg.data.out("genera",pname="Seperate Plots")
@@ -294,7 +297,9 @@ p8 <- na.omit(plot.8)
 
 # Annotating removal procedure
 p.list <- list("p1","p2","p3","p4","p5","p6","p7","p8")
-mapply(function(x,y){ddg.procedure(pname="Remove NAs", ins=list(x), outs.data=list(y))}, plot.list, p.list)
+
+invisible(mapply(function(x,y){ddg.procedure(pname="Remove NAs", ins=list(x), outs.data=list(y))}, plot.list, p.list))
+
 ddg.finish("Clean plot data")
 # set up contour plot grids
 ddg.start("Setup Contour plot grids")
@@ -330,7 +335,9 @@ p.7.i <- interp(p7$xcoord, p7$ycoord, scale(p7$zelev), xo = interp.xo,
 p.8.i <- interp(p8$xcoord, p8$ycoord, scale(p8$zelev), xo = interp.xo, 
     yo = interp.yo, duplicate = interp.duplicate, extrap = interp.extrap, linear = interp.linear)
 pinter.list <- list("p.1.i","p.2.i","p.3.i","p.4.i","p.5.i", "p.6.i","p.7.i","p.8.i")
-mapply(function(x,y){ddg.procedure(pname="interpolate", ins=list(x,"interp.xo","interp.yo","interp.duplicate","interp.extrap","interp.linear"),outs.data=list(y))},p.list,pinter.list)
+
+invisible(mapply(function(x,y){ddg.procedure(pname="interpolate", ins=list(x,"interp.xo","interp.yo","interp.duplicate","interp.extrap","interp.linear"),outs.data=list(y))},p.list,pinter.list))
+
 ddg.finish("Interpolate")
 
 # set color palette for genera
@@ -344,7 +351,9 @@ ddg.data("genera.rank")
 cex.I <- c(0.6, 0.6, rep(0.3, 7), 0.6, 0.3, 0.6, 0.3, 0.6)
 ddg.data("cex.I")
 
-# begin hemlock plot uncomment pdf and dev.off() lines to generate pdfs
+
+# begin hemlock plot uncomment pdf and invisible(invisible(dev.off())lines to generate pdfs)
+
 ddg.start("Hemlock Plot")
 
 pdf(file='hemlock_countors.pdf', width=4.75, height=6, colormodel='cmyk',
@@ -471,7 +480,9 @@ text(6, 1, "Other", font = 2, col = "white", srt = 90)
 
 #```r
 ddg.procedure("plot.generation",outs.file=list("hemlock_countors.pdf"))
-dev.off() 
+
+invisible(dev.off())
+
 
 ddg.finish("Hemlock Plot")
 #end hemlock
@@ -536,7 +547,9 @@ text(6, 1, "Other", font = 2, col = "white", srt = 90)
 
 ddg.procedure("plot.generation",outs.file=list("hardwood_countors.pdf"))
 
-dev.off()
+
+invisible(dev.off())
+
 ddg.finish("Hardwoods Plot")
 ddg.finish("Setup Contour plot grids")
 ddg.finish("Extract Tree Location Data")
@@ -662,12 +675,14 @@ Betula <- trees.genus[2]
 Quercus <- trees.genus[3]
 Acer <- trees.genus[4]
 Pinus <- trees.genus[5]
-Map(function(x){ddg.data(x,dvalue=eval(x))},trees.genus)
+
+invisible(Map(function(x){ddg.data(x,dvalue=eval(x))},trees.genus))
 
 
 plot(plot.1.pp[plot.1$genus == Tsuga])
-plot(density(plot.1.pp[plot.1$genus == Tsuga]))
-plot(envelope(plot.1.pp[plot.1$genus == Tsuga], Lest, global = FALSE))
+invisible(plot(invisible(density(plot.1.pp[plot.1$genus == Tsuga]))))
+invisible(plot(invisible(envelope(plot.1.pp[plot.1$genus == Tsuga], Lest, global = FALSE))))
+
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.1.pp","Tsuga"))
 ddg.graphic.out("plot1graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
@@ -701,8 +716,10 @@ ddg.graphic.out("plot1graph", pname="Plot density and envelop",graphic.fext="pdf
 #```r
 
 plot(plot.1.pp[plot.1$genus == Betula])
-plot(density(plot.1.pp[plot.1$genus == Betula]))
-plot(envelope(plot.1.pp[plot.1$genus == Betula], Kest))
+
+invisible(plot(invisible(density(plot.1.pp[plot.1$genus == Betula]))))
+invisible(plot(invisible(envelope(plot.1.pp[plot.1$genus == Betula], Kest))))
+
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.1.pp","Betula"))
 ddg.graphic.out("plot1graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
@@ -737,8 +754,8 @@ ddg.graphic.out("plot1graph", pname="Plot density and envelop",graphic.fext="pdf
 
 
 plot(plot.1.pp[plot.1$genus == Quercus])
-plot(density(plot.1.pp[plot.1$genus == Quercus]))
-plot(envelope(plot.1.pp[plot.1$genus == Quercus], Kest))
+invisible(plot(invisible(density(plot.1.pp[plot.1$genus == Quercus]))))
+invisible(plot(invisible(envelope(plot.1.pp[plot.1$genus == Quercus], Kest))))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.1.pp","Quercus"))
 ddg.graphic.out("plot1graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
@@ -772,8 +789,8 @@ ddg.graphic.out("plot1graph", pname="Plot density and envelop",graphic.fext="pdf
 #```r
 
 plot(plot.1.pp[plot.1$genus == Acer])
-plot(density(plot.1.pp[plot.1$genus == Acer]))
-plot(envelope(plot.1.pp[plot.1$genus == Acer], Kest))
+invisible(plot(invisible(density(plot.1.pp[plot.1$genus == Acer]))))
+invisible(plot(invisible(envelope(plot.1.pp[plot.1$genus == Acer], Kest))))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.1.pp","Acer"))
 ddg.graphic.out("plot1graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
@@ -808,8 +825,8 @@ ddg.graphic.out("plot1graph", pname="Plot density and envelop",graphic.fext="pdf
 
 
 plot(plot.1.pp[plot.1$genus == Pinus])
-plot(density(plot.1.pp[plot.1$genus == Pinus]))
-plot(envelope(plot.1.pp[plot.1$genus == Pinus], Kest))
+invisible(plot(invisible(density(plot.1.pp[plot.1$genus == Pinus]))))
+invisible(plot(invisible(envelope(plot.1.pp[plot.1$genus == Pinus], Kest))))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.1.pp","Pinus"))
 ddg.graphic.out("plot1graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
@@ -846,8 +863,8 @@ ddg.graphic.out("plot1graph", pname="Plot density and envelop",graphic.fext="pdf
 
 par(mfrow = c(5, 3), pin = c(1.75, 1.75), plt = c(0.0625, 0.9375, 0.0625, 0.9375))
 plot(plot.2.pp[plot.2$genus == Tsuga])
-plot(density(plot.2.pp[plot.2$genus == Tsuga]))
-plot(envelope(plot.2.pp[plot.2$genus == Tsuga], Kest))
+invisible(plot(invisible(density(plot.2.pp[plot.2$genus == Tsuga]))))
+invisible(plot(invisible(envelope(plot.2.pp[plot.2$genus == Tsuga], Kest))))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.2.pp","Tsuga"))
 ddg.graphic.out("plot2graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
@@ -881,8 +898,8 @@ ddg.graphic.out("plot2graph", pname="Plot density and envelop",graphic.fext="pdf
 #```r
 
 plot(plot.2.pp[plot.2$genus == Betula])
-plot(density(plot.2.pp[plot.2$genus == Betula]))
-plot(envelope(plot.2.pp[plot.2$genus == Betula], Kest))
+invisible(plot(invisible(density(plot.2.pp[plot.2$genus == Betula]))))
+invisible(plot(invisible(envelope(plot.2.pp[plot.2$genus == Betula], Kest))))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.2.pp","Betula"))
 ddg.graphic.out("plot2graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
@@ -916,8 +933,8 @@ ddg.graphic.out("plot2graph", pname="Plot density and envelop",graphic.fext="pdf
 #```r
 
 plot(plot.2.pp[plot.2$genus == Quercus])
-plot(density(plot.2.pp[plot.2$genus == Quercus]))
-plot(envelope(plot.2.pp[plot.2$genus == Quercus], Kest))
+invisible(plot(invisible(density(plot.2.pp[plot.2$genus == Quercus]))))
+invisible(plot(invisible(envelope(plot.2.pp[plot.2$genus == Quercus], Kest))))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.2.pp","Quercus"))
 ddg.graphic.out("plot2graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
@@ -951,8 +968,8 @@ ddg.graphic.out("plot2graph", pname="Plot density and envelop",graphic.fext="pdf
 #```r
 
 plot(plot.2.pp[plot.2$genus == Acer])
-plot(density(plot.2.pp[plot.2$genus == Acer]))
-plot(envelope(plot.2.pp[plot.2$genus == Acer], Kest))
+invisible(plot(invisible(density(plot.2.pp[plot.2$genus == Acer]))))
+invisible(plot(invisible(envelope(plot.2.pp[plot.2$genus == Acer], Kest))))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.2.pp","Acer"))
 ddg.graphic.out("plot2graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
@@ -986,8 +1003,8 @@ ddg.graphic.out("plot2graph", pname="Plot density and envelop",graphic.fext="pdf
 #```r
 
 plot(plot.2.pp[plot.2$genus == Pinus])
-plot(density(plot.2.pp[plot.2$genus == Pinus]))
-plot(envelope(plot.2.pp[plot.2$genus == Pinus], Kest))
+invisible(plot(invisible(density(plot.2.pp[plot.2$genus == Pinus]))))
+invisible(plot(invisible(envelope(plot.2.pp[plot.2$genus == Pinus], Kest))))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.2.pp","Pinus"))
 ddg.graphic.out("plot2graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
@@ -1024,8 +1041,8 @@ ddg.graphic.out("plot2graph", pname="Plot density and envelop",graphic.fext="pdf
 
 par(mfrow = c(5, 3), pin = c(1.75, 1.75), plt = c(0.0625, 0.9375, 0.0625, 0.9375))
 plot(plot.3.pp[plot.3$genus == Tsuga])
-plot(density(plot.3.pp[plot.3$genus == Tsuga]))
-plot(envelope(plot.3.pp[plot.3$genus == Tsuga], Kest))
+invisible(plot(invisible(density(plot.3.pp[plot.3$genus == Tsuga]))))
+invisible(plot(invisible(envelope(plot.3.pp[plot.3$genus == Tsuga], Kest))))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.3.pp","Tsuga"))
 ddg.graphic.out("plot3graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
@@ -1059,8 +1076,8 @@ ddg.graphic.out("plot3graph", pname="Plot density and envelop",graphic.fext="pdf
 #```r
 
 plot(plot.3.pp[plot.3$genus == Betula])
-plot(density(plot.3.pp[plot.3$genus == Betula]))
-plot(envelope(plot.3.pp[plot.3$genus == Betula], Kest))
+invisible(plot(invisible(density(plot.3.pp[plot.3$genus == Betula]))))
+invisible(plot(invisible(envelope(plot.3.pp[plot.3$genus == Betula], Kest))))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.3.pp","Betula"))
 ddg.graphic.out("plot3graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
@@ -1094,8 +1111,8 @@ ddg.graphic.out("plot3graph", pname="Plot density and envelop",graphic.fext="pdf
 #```r
 
 plot(plot.3.pp[plot.3$genus == Quercus])
-plot(density(plot.3.pp[plot.3$genus == Quercus]))
-plot(envelope(plot.3.pp[plot.3$genus == Quercus], Kest))
+invisible(plot(invisible(density(plot.3.pp[plot.3$genus == Quercus]))))
+invisible(plot(invisible(envelope(plot.3.pp[plot.3$genus == Quercus], Kest))))
 #```
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.3.pp","Quercus"))
 ddg.graphic.out("plot3graph", pname="Plot density and envelop",graphic.fext="pdf")
@@ -1128,8 +1145,8 @@ ddg.graphic.out("plot3graph", pname="Plot density and envelop",graphic.fext="pdf
 #```r
 
 plot(plot.3.pp[plot.3$genus == Acer])
-plot(density(plot.3.pp[plot.3$genus == Acer]))
-plot(envelope(plot.3.pp[plot.3$genus == Acer], Kest))
+invisible(plot(invisible(density(plot.3.pp[plot.3$genus == Acer]))))
+invisible(plot(invisible(envelope(plot.3.pp[plot.3$genus == Acer], Kest))))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.3.pp","Acer"))
 ddg.graphic.out("plot3graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
@@ -1163,8 +1180,8 @@ ddg.graphic.out("plot3graph", pname="Plot density and envelop",graphic.fext="pdf
 #```r
 
 plot(plot.3.pp[plot.3$genus == Pinus])
-plot(density(plot.3.pp[plot.3$genus == Pinus]))
-plot(envelope(plot.3.pp[plot.3$genus == Pinus], Kest))
+invisible(plot(invisible(density(plot.3.pp[plot.3$genus == Pinus]))))
+invisible(plot(invisible(envelope(plot.3.pp[plot.3$genus == Pinus], Kest))))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.3.pp","Pinus"))
 ddg.graphic.out("plot3graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
@@ -1201,8 +1218,8 @@ ddg.graphic.out("plot3graph", pname="Plot density and envelop",graphic.fext="pdf
 
 par(mfrow = c(5, 3), pin = c(1.75, 1.75), plt = c(0.0625, 0.9375, 0.0625, 0.9375))
 plot(plot.4.pp[plot.4$genus == Tsuga])
-plot(density(plot.4.pp[plot.4$genus == Tsuga]))
-plot(envelope(plot.4.pp[plot.4$genus == Tsuga], Kest))
+invisible(plot(invisible(density(plot.4.pp[plot.4$genus == Tsuga]))))
+invisible(plot(invisible(envelope(plot.4.pp[plot.4$genus == Tsuga], Kest))))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.4.pp","Tsuga"))
 ddg.graphic.out("plot4graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
@@ -1236,8 +1253,8 @@ ddg.graphic.out("plot4graph", pname="Plot density and envelop",graphic.fext="pdf
 #```r
 
 plot(plot.4.pp[plot.4$genus == Betula])
-plot(density(plot.4.pp[plot.4$genus == Betula]))
-plot(envelope(plot.4.pp[plot.4$genus == Betula], Kest))
+invisible(plot(invisible(density(plot.4.pp[plot.4$genus == Betula]))))
+invisible(plot(invisible(envelope(plot.4.pp[plot.4$genus == Betula], Kest))))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.4.pp","Betula"))
 ddg.graphic.out("plot4graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
@@ -1271,8 +1288,8 @@ ddg.graphic.out("plot4graph", pname="Plot density and envelop",graphic.fext="pdf
 #```r
 
 plot(plot.4.pp[plot.4$genus == Quercus])
-plot(density(plot.4.pp[plot.4$genus == Quercus]))
-plot(envelope(plot.4.pp[plot.4$genus == Quercus], Kest))
+invisible(plot(invisible(density(plot.4.pp[plot.4$genus == Quercus]))))
+invisible(plot(invisible(envelope(plot.4.pp[plot.4$genus == Quercus], Kest))))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.4.pp","Quercus"))
 ddg.graphic.out("plot4graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
@@ -1306,8 +1323,8 @@ ddg.graphic.out("plot4graph", pname="Plot density and envelop",graphic.fext="pdf
 #```r
 
 plot(plot.4.pp[plot.4$genus == Acer])
-plot(density(plot.4.pp[plot.4$genus == Acer]))
-plot(envelope(plot.4.pp[plot.4$genus == Acer], Kest))
+invisible(plot(invisible(density(plot.4.pp[plot.4$genus == Acer]))))
+invisible(plot(invisible(envelope(plot.4.pp[plot.4$genus == Acer], Kest))))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.4.pp","Acer"))
 ddg.graphic.out("plot4graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
@@ -1341,8 +1358,8 @@ ddg.graphic.out("plot4graph", pname="Plot density and envelop",graphic.fext="pdf
 #```r
 
 plot(plot.4.pp[plot.4$genus == Pinus])
-plot(density(plot.4.pp[plot.4$genus == Pinus]))
-plot(envelope(plot.4.pp[plot.4$genus == Pinus], Kest))
+invisible(plot(invisible(density(plot.4.pp[plot.4$genus == Pinus]))))
+invisible(plot(invisible(envelope(plot.4.pp[plot.4$genus == Pinus], Kest))))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.4.pp","Pinus"))
 ddg.graphic.out("plot4graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
@@ -1378,8 +1395,8 @@ ddg.graphic.out("plot4graph", pname="Plot density and envelop",graphic.fext="pdf
 #```r
 
 plot(plot.5.pp[plot.5$genus == Tsuga])
-plot(density(plot.5.pp[plot.5$genus == Tsuga]))
-plot(envelope(plot.5.pp[plot.5$genus == Tsuga], Kest))
+invisible(plot(invisible(density(plot.5.pp[plot.5$genus == Tsuga]))))
+invisible(plot(invisible(envelope(plot.5.pp[plot.5$genus == Tsuga], Kest))))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.5.pp","Tsuga"))
 ddg.graphic.out("plot5graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
@@ -1413,8 +1430,8 @@ ddg.graphic.out("plot5graph", pname="Plot density and envelop",graphic.fext="pdf
 #```r
 
 plot(plot.5.pp[plot.5$genus == Betula])
-plot(density(plot.5.pp[plot.5$genus == Betula]))
-plot(envelope(plot.5.pp[plot.5$genus == Betula], Kest))
+invisible(plot(invisible(density(plot.5.pp[plot.5$genus == Betula]))))
+invisible(plot(invisible(envelope(plot.5.pp[plot.5$genus == Betula], Kest))))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.5.pp","Betula"))
 #```
 ddg.graphic.out("plot5graph", pname="Plot density and envelop",graphic.fext="pdf")
@@ -1448,8 +1465,8 @@ ddg.graphic.out("plot5graph", pname="Plot density and envelop",graphic.fext="pdf
 #```r
 
 plot(plot.5.pp[plot.5$genus == Quercus])
-plot(density(plot.5.pp[plot.5$genus == Quercus]))
-plot(envelope(plot.5.pp[plot.5$genus == Quercus], Kest))
+invisible(plot(invisible(density(plot.5.pp[plot.5$genus == Quercus]))))
+invisible(plot(invisible(envelope(plot.5.pp[plot.5$genus == Quercus], Kest))))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.5.pp","Quercus"))
 #```
 
@@ -1483,8 +1500,8 @@ ddg.graphic.out("plot5graph", pname="Plot density and envelop",graphic.fext="pdf
 #```r
 
 plot(plot.5.pp[plot.5$genus == Acer])
-plot(density(plot.5.pp[plot.5$genus == Acer]))
-plot(envelope(plot.5.pp[plot.5$genus == Acer], Kest))
+invisible(plot(invisible(density(plot.5.pp[plot.5$genus == Acer]))))
+invisible(plot(invisible(envelope(plot.5.pp[plot.5$genus == Acer], Kest))))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.5.pp","Acer"))
 ddg.graphic.out("plot5graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
@@ -1518,8 +1535,8 @@ ddg.graphic.out("plot5graph", pname="Plot density and envelop",graphic.fext="pdf
 #```r
 
 plot(plot.5.pp[plot.5$genus == Pinus])
-plot(density(plot.5.pp[plot.5$genus == Pinus]))
-plot(envelope(plot.5.pp[plot.5$genus == Pinus], Kest))
+invisible(plot(invisible(density(plot.5.pp[plot.5$genus == Pinus]))))
+invisible(plot(invisible(envelope(plot.5.pp[plot.5$genus == Pinus], Kest))))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.5.pp","Pinus"))
 ddg.graphic.out("plot5graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
@@ -1556,8 +1573,8 @@ ddg.graphic.out("plot5graph", pname="Plot density and envelop",graphic.fext="pdf
 
 
 plot(plot.6.pp[plot.6$genus == Tsuga])
-plot(density(plot.6.pp[plot.6$genus == Tsuga]))
-plot(envelope(plot.6.pp[plot.6$genus == Tsuga], Kest))
+invisible(plot(invisible(density(plot.6.pp[plot.6$genus == Tsuga]))))
+invisible(plot(invisible(envelope(plot.6.pp[plot.6$genus == Tsuga], Kest))))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.6.pp","Tsuga"))
 ddg.graphic.out("plot7graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
@@ -1591,8 +1608,8 @@ ddg.graphic.out("plot7graph", pname="Plot density and envelop",graphic.fext="pdf
 #```r
 
 plot(plot.6.pp[plot.6$genus == Betula])
-plot(density(plot.6.pp[plot.6$genus == Betula]))
-plot(envelope(plot.6.pp[plot.6$genus == Betula], Kest))
+invisible(plot(invisible(density(plot.6.pp[plot.6$genus == Betula]))))
+invisible(plot(invisible(envelope(plot.6.pp[plot.6$genus == Betula], Kest))))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.6.pp","Betula"))
 ddg.graphic.out("plot7graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
@@ -1626,8 +1643,8 @@ ddg.graphic.out("plot7graph", pname="Plot density and envelop",graphic.fext="pdf
 #```r
 
 plot(plot.6.pp[plot.6$genus == Quercus])
-plot(density(plot.6.pp[plot.6$genus == Quercus]))
-plot(envelope(plot.6.pp[plot.6$genus == Quercus], Kest))
+invisible(plot(invisible(density(plot.6.pp[plot.6$genus == Quercus]))))
+invisible(plot(invisible(envelope(plot.6.pp[plot.6$genus == Quercus], Kest))))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.6.pp","Quercus"))
 ddg.graphic.out("plot7graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
@@ -1660,8 +1677,8 @@ ddg.graphic.out("plot7graph", pname="Plot density and envelop",graphic.fext="pdf
 #```r
 
 plot(plot.6.pp[plot.6$genus == Acer])
-plot(density(plot.6.pp[plot.6$genus == Acer]))
-plot(envelope(plot.6.pp[plot.6$genus == Acer], Kest))
+invisible(plot(invisible(density(plot.6.pp[plot.6$genus == Acer]))))
+invisible(plot(invisible(envelope(plot.6.pp[plot.6$genus == Acer], Kest))))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.6.pp","Acer"))
 ddg.graphic.out("plot7graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
@@ -1695,8 +1712,8 @@ ddg.graphic.out("plot7graph", pname="Plot density and envelop",graphic.fext="pdf
 #```r
 
 plot(plot.6.pp[plot.6$genus == Pinus])
-plot(density(plot.6.pp[plot.6$genus == Pinus]))
-plot(envelope(plot.6.pp[plot.6$genus == Pinus], Kest))
+invisible(plot(invisible(density(plot.6.pp[plot.6$genus == Pinus]))))
+invisible(plot(invisible(envelope(plot.6.pp[plot.6$genus == Pinus], Kest))))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.6.pp","Pinus"))
 ddg.graphic.out("plot7graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
@@ -1732,8 +1749,8 @@ ddg.graphic.out("plot7graph", pname="Plot density and envelop",graphic.fext="pdf
 #```r
 
 plot(plot.7.pp[plot.7$genus == Tsuga])
-plot(density(plot.7.pp[plot.7$genus == Tsuga]))
-plot(envelope(plot.7.pp[plot.7$genus == Tsuga], Kest))
+invisible(plot(invisible(density(plot.7.pp[plot.7$genus == Tsuga]))))
+invisible(plot(invisible(envelope(plot.7.pp[plot.7$genus == Tsuga], Kest))))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.7.pp","Tsuga"))
 ddg.graphic.out("plot7graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
@@ -1766,8 +1783,8 @@ ddg.graphic.out("plot7graph", pname="Plot density and envelop",graphic.fext="pdf
 #```r
 
 plot(plot.7.pp[plot.7$genus == Betula])
-plot(density(plot.7.pp[plot.7$genus == Betula]))
-plot(envelope(plot.7.pp[plot.7$genus == Betula], Kest))
+invisible(plot(invisible(density(plot.7.pp[plot.7$genus == Betula]))))
+invisible(plot(invisible(envelope(plot.7.pp[plot.7$genus == Betula], Kest))))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.7.pp","Betula"))
 ddg.graphic.out("plot7graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
@@ -1801,8 +1818,8 @@ ddg.graphic.out("plot7graph", pname="Plot density and envelop",graphic.fext="pdf
 #```r
 
 plot(plot.7.pp[plot.7$genus == Quercus])
-plot(density(plot.7.pp[plot.7$genus == Quercus]))
-plot(envelope(plot.7.pp[plot.7$genus == Quercus], Kest))
+invisible(plot(invisible(density(plot.7.pp[plot.7$genus == Quercus]))))
+invisible(plot(invisible(envelope(plot.7.pp[plot.7$genus == Quercus], Kest))))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.7.pp","Quercus"))
 ddg.graphic.out("plot7graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
@@ -1836,8 +1853,8 @@ ddg.graphic.out("plot7graph", pname="Plot density and envelop",graphic.fext="pdf
 #```r
 
 plot(plot.7.pp[plot.7$genus == Acer])
-plot(density(plot.7.pp[plot.7$genus == Acer]))
-plot(envelope(plot.7.pp[plot.7$genus == Acer], Kest))
+invisible(plot(invisible(density(plot.7.pp[plot.7$genus == Acer]))))
+invisible(plot(invisible(envelope(plot.7.pp[plot.7$genus == Acer], Kest))))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.7.pp","Acer"))
 ddg.graphic.out("plot7graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
@@ -1871,8 +1888,8 @@ ddg.graphic.out("plot7graph", pname="Plot density and envelop",graphic.fext="pdf
 #```r
 
 plot(plot.7.pp[plot.7$genus == Pinus])
-plot(density(plot.7.pp[plot.7$genus == Pinus]))
-plot(envelope(plot.7.pp[plot.7$genus == Pinus], Kest))
+invisible(plot(invisible(density(plot.7.pp[plot.7$genus == Pinus]))))
+invisible(plot(invisible(envelope(plot.7.pp[plot.7$genus == Pinus], Kest))))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.7.pp","Pinus"))
 ddg.graphic.out("plot7graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
@@ -1908,8 +1925,8 @@ ddg.graphic.out("plot7graph", pname="Plot density and envelop",graphic.fext="pdf
 #```r
 
 plot(plot.8.pp[plot.8$genus == Tsuga])
-plot(density(plot.8.pp[plot.8$genus == Tsuga]))
-plot(envelope(plot.8.pp[plot.8$genus == Tsuga], Kest))
+invisible(plot(invisible(density(plot.8.pp[plot.8$genus == Tsuga]))))
+invisible(plot(invisible(envelope(plot.8.pp[plot.8$genus == Tsuga], Kest))))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.8.pp","Tsuga"))
 ddg.graphic.out("plot8graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
@@ -1943,8 +1960,8 @@ ddg.graphic.out("plot8graph", pname="Plot density and envelop",graphic.fext="pdf
 #```r
 
 plot(plot.8.pp[plot.8$genus == Betula])
-plot(density(plot.8.pp[plot.8$genus == Betula]))
-plot(envelope(plot.8.pp[plot.8$genus == Betula], Kest))
+invisible(plot(invisible(density(plot.8.pp[plot.8$genus == Betula]))))
+invisible(plot(invisible(envelope(plot.8.pp[plot.8$genus == Betula], Kest))))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.8.pp","Betula"))
 ddg.graphic.out("plot8graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
@@ -1978,8 +1995,8 @@ ddg.graphic.out("plot8graph", pname="Plot density and envelop",graphic.fext="pdf
 #```r
 
 plot(plot.8.pp[plot.8$genus == Quercus])
-plot(density(plot.8.pp[plot.8$genus == Quercus]))
-plot(envelope(plot.8.pp[plot.8$genus == Quercus], Kest))
+invisible(plot(invisible(density(plot.8.pp[plot.8$genus == Quercus]))))
+invisible(plot(invisible(envelope(plot.8.pp[plot.8$genus == Quercus], Kest))))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.8.pp","Quercus"))
 ddg.graphic.out("plot8graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
@@ -2013,8 +2030,8 @@ ddg.graphic.out("plot8graph", pname="Plot density and envelop",graphic.fext="pdf
 #```r
 
 plot(plot.8.pp[plot.8$genus == Acer])
-plot(density(plot.8.pp[plot.8$genus == Acer]))
-plot(envelope(plot.8.pp[plot.8$genus == Acer], Kest))
+invisible(plot(invisible(density(plot.8.pp[plot.8$genus == Acer]))))
+invisible(plot(invisible(envelope(plot.8.pp[plot.8$genus == Acer], Kest))))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.8.pp","Acer"))
 ddg.graphic.out("plot8graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
@@ -2048,8 +2065,8 @@ ddg.graphic.out("plot8graph", pname="Plot density and envelop",graphic.fext="pdf
 #```r
 
 plot(plot.8.pp[plot.8$genus == Pinus])
-plot(density(plot.8.pp[plot.8$genus == Pinus]))
-plot(envelope(plot.8.pp[plot.8$genus == Pinus], Kest))
+invisible(plot(invisible(density(plot.8.pp[plot.8$genus == Pinus]))))
+invisible(plot(invisible(envelope(plot.8.pp[plot.8$genus == Pinus], Kest))))
 ddg.procedure(pname="Plot density and envelop", ins=list("plot.8.pp","Pinus"))
 ddg.graphic.out("plot8graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
@@ -2089,7 +2106,7 @@ ddg.finish("Compute Ripley's K")
 ddg.start("Run Tests on CSR")
 #```r
 
-mad.test(plot.1.pp[plot.1$genus == Tsuga], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.1.pp[plot.1$genus == Tsuga], Lest, verbose = FALSE, nsim = 99))
 ddg.procedure(pname="mad.test", ins=list("plot.1.pp", "Tsuga"))
 #```
 
@@ -2106,7 +2123,7 @@ ddg.procedure(pname="mad.test", ins=list("plot.1.pp", "Tsuga"))
 #```
 
 #```r
-mad.test(plot.1.pp[plot.1$genus == Betula], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.1.pp[plot.1$genus == Betula], Lest, verbose = FALSE, nsim = 99))
 ddg.procedure(pname="mad.test", ins=list("plot.1.pp", "Betula"))
 #```
 
@@ -2123,7 +2140,7 @@ ddg.procedure(pname="mad.test", ins=list("plot.1.pp", "Betula"))
 #```
 
 #```r
-mad.test(plot.1.pp[plot.1$genus == Quercus], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.1.pp[plot.1$genus == Quercus], Lest, verbose = FALSE, nsim = 99))
 ddg.procedure(pname="mad.test", ins=list("plot.1.pp", "Quercus"))
 #```
 
@@ -2140,7 +2157,7 @@ ddg.procedure(pname="mad.test", ins=list("plot.1.pp", "Quercus"))
 #```
 
 #```r
-mad.test(plot.1.pp[plot.1$genus == Acer], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.1.pp[plot.1$genus == Acer], Lest, verbose = FALSE, nsim = 99))
 ddg.procedure(pname="mad.test", ins=list("plot.1.pp", "Acer"))
 #```
 
@@ -2157,7 +2174,7 @@ ddg.procedure(pname="mad.test", ins=list("plot.1.pp", "Acer"))
 #```
 
 #```r
-mad.test(plot.1.pp[plot.1$genus == Pinus], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.1.pp[plot.1$genus == Pinus], Lest, verbose = FALSE, nsim = 99))
 ddg.procedure(pname="mad.test", ins=list("plot.1.pp", "Pinus"))
 #```
 #```
@@ -2174,7 +2191,7 @@ ddg.procedure(pname="mad.test", ins=list("plot.1.pp", "Pinus"))
 
 #```r
 
-mad.test(plot.2.pp[plot.2$genus == Tsuga], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.2.pp[plot.2$genus == Tsuga], Lest, verbose = FALSE, nsim = 99))
 ddg.procedure(pname="mad.test", ins=list("plot.2", "Tsuga"))
 #```
 
@@ -2191,7 +2208,7 @@ ddg.procedure(pname="mad.test", ins=list("plot.2", "Tsuga"))
 #```
 
 #```r
-mad.test(plot.2.pp[plot.2$genus == Betula], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.2.pp[plot.2$genus == Betula], Lest, verbose = FALSE, nsim = 99))
 ddg.procedure(pname="mad.test", ins=list("plot.2", "Betula"))
 #```
 
@@ -2208,7 +2225,7 @@ ddg.procedure(pname="mad.test", ins=list("plot.2", "Betula"))
 #```
 
 #```r
-mad.test(plot.2.pp[plot.2$genus == Quercus], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.2.pp[plot.2$genus == Quercus], Lest, verbose = FALSE, nsim = 99))
 ddg.procedure(pname="mad.test", ins=list("plot.2", "Quercus"))
 #```
 
@@ -2225,7 +2242,7 @@ ddg.procedure(pname="mad.test", ins=list("plot.2", "Quercus"))
 #```
 
 #```r
-mad.test(plot.2.pp[plot.2$genus == Acer], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.2.pp[plot.2$genus == Acer], Lest, verbose = FALSE, nsim = 99))
 ddg.procedure(pname="mad.test", ins=list("plot.2", "Acer"))
 #```
 
@@ -2242,7 +2259,7 @@ ddg.procedure(pname="mad.test", ins=list("plot.2", "Acer"))
 #```
 
 #```r
-mad.test(plot.2.pp[plot.2$genus == Pinus], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.2.pp[plot.2$genus == Pinus], Lest, verbose = FALSE, nsim = 99))
 ddg.procedure(pname="mad.test", ins=list("plot.2", "Pinus"))
 #```
 
@@ -2259,8 +2276,7 @@ ddg.procedure(pname="mad.test", ins=list("plot.2", "Pinus"))
 #```
 
 #```r
-
-mad.test(plot.3.pp[plot.3$genus == Tsuga], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.3.pp[plot.3$genus == Tsuga], Lest, verbose = FALSE, nsim = 99))
 ddg.procedure(pname="mad.test", ins=list("plot.3", "Tsuga"))
 #```
 
@@ -2277,7 +2293,7 @@ ddg.procedure(pname="mad.test", ins=list("plot.3", "Tsuga"))
 #```
 
 #```r
-mad.test(plot.3.pp[plot.3$genus == Betula], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.3.pp[plot.3$genus == Betula], Lest, verbose = FALSE, nsim = 99))
 ddg.procedure(pname="mad.test", ins=list("plot.3", "Betula"))
 #```
 
@@ -2294,7 +2310,7 @@ ddg.procedure(pname="mad.test", ins=list("plot.3", "Betula"))
 #```
 
 #```r
-mad.test(plot.3.pp[plot.3$genus == Quercus], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.3.pp[plot.3$genus == Quercus], Lest, verbose = FALSE, nsim = 99))
 ddg.procedure(pname="mad.test", ins=list("plot.3", "Quercus"))
 #```
 
@@ -2311,7 +2327,7 @@ ddg.procedure(pname="mad.test", ins=list("plot.3", "Quercus"))
 #```
 
 #```r
-mad.test(plot.3.pp[plot.3$genus == Acer], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.3.pp[plot.3$genus == Acer], Lest, verbose = FALSE, nsim = 99))
 ddg.procedure(pname="mad.test", ins=list("plot.3", "Acer"))
 #```
 
@@ -2328,7 +2344,7 @@ ddg.procedure(pname="mad.test", ins=list("plot.3", "Acer"))
 #```
 
 #```r
-mad.test(plot.3.pp[plot.3$genus == Pinus], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.3.pp[plot.3$genus == Pinus], Lest, verbose = FALSE, nsim = 99))
 ddg.procedure(pname="mad.test", ins=list("plot.3", "Pinus"))
 #```
 
@@ -2345,8 +2361,7 @@ ddg.procedure(pname="mad.test", ins=list("plot.3", "Pinus"))
 #```
 
 #```r
-
-mad.test(plot.4.pp[plot.4$genus == Tsuga], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.4.pp[plot.4$genus == Tsuga], Lest, verbose = FALSE, nsim = 99))
 ddg.procedure(pname="mad.test", ins=list("plot.4", "Tsuga"))
 #```
 
@@ -2363,7 +2378,7 @@ ddg.procedure(pname="mad.test", ins=list("plot.4", "Tsuga"))
 #```
 
 #```r
-mad.test(plot.4.pp[plot.4$genus == Betula], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.4.pp[plot.4$genus == Betula], Lest, verbose = FALSE, nsim = 99))
 ddg.procedure(pname="mad.test", ins=list("plot.4", "Betula"))
 #```
 
@@ -2380,7 +2395,7 @@ ddg.procedure(pname="mad.test", ins=list("plot.4", "Betula"))
 #```
 
 #```r
-mad.test(plot.4.pp[plot.4$genus == Quercus], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.4.pp[plot.4$genus == Quercus], Lest, verbose = FALSE, nsim = 99))
 ddg.procedure(pname="mad.test", ins=list("plot.4", "Quercus"))
 #```
 
@@ -2397,7 +2412,7 @@ ddg.procedure(pname="mad.test", ins=list("plot.4", "Quercus"))
 #```
 
 #```r
-mad.test(plot.4.pp[plot.4$genus == Acer], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.4.pp[plot.4$genus == Acer], Lest, verbose = FALSE, nsim = 99))
 ddg.procedure(pname="mad.test", ins=list("plot.4", "Acer"))
 #```
 
@@ -2414,7 +2429,7 @@ ddg.procedure(pname="mad.test", ins=list("plot.4", "Acer"))
 #```
 
 #```r
-mad.test(plot.4.pp[plot.4$genus == Pinus], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.4.pp[plot.4$genus == Pinus], Lest, verbose = FALSE, nsim = 99))
 ddg.procedure(pname="mad.test", ins=list("plot.4", "Pinus"))
 #```
 
@@ -2431,8 +2446,7 @@ ddg.procedure(pname="mad.test", ins=list("plot.4", "Pinus"))
 #```
 
 #```r
-
-mad.test(plot.5.pp[plot.5$genus == Tsuga], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.5.pp[plot.5$genus == Tsuga], Lest, verbose = FALSE, nsim = 99))
 ddg.procedure(pname="mad.test", ins=list("plot.5", "Tsuga"))
 #```
 
@@ -2449,7 +2463,7 @@ ddg.procedure(pname="mad.test", ins=list("plot.5", "Tsuga"))
 #```
 
 #```r
-mad.test(plot.5.pp[plot.5$genus == Betula], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.5.pp[plot.5$genus == Betula], Lest, verbose = FALSE, nsim = 99))
 ddg.procedure(pname="mad.test", ins=list("plot.5", "Betula"))
 #```
 
@@ -2466,7 +2480,7 @@ ddg.procedure(pname="mad.test", ins=list("plot.5", "Betula"))
 #```
 
 #```r
-mad.test(plot.5.pp[plot.5$genus == Quercus], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.5.pp[plot.5$genus == Quercus], Lest, verbose = FALSE, nsim = 99))
 ddg.procedure(pname="mad.test", ins=list("plot.5", "Quercus"))
 #```
 
@@ -2483,7 +2497,7 @@ ddg.procedure(pname="mad.test", ins=list("plot.5", "Quercus"))
 #```
 
 #```r
-mad.test(plot.5.pp[plot.5$genus == Acer], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.5.pp[plot.5$genus == Acer], Lest, verbose = FALSE, nsim = 99))
 ddg.procedure(pname="mad.test", ins=list("plot.5", "Acer"))
 #```
 #```
@@ -2499,9 +2513,8 @@ ddg.procedure(pname="mad.test", ins=list("plot.5", "Acer"))
 #```
 
 #```r
-tryCatch(
-    mad.test(plot.5.pp[plot.5$genus == "Pinus"], Lest, verbose = FALSE, nsim = 99),
-    error = function (e) {print(e)})
+tryCatch(invisible(mad.test(plot.5.pp[plot.5$genus == "Pinus"], Lest, verbose = FALSE, nsim = 99)),
+    error = function (e) {invisible()})
 ddg.procedure(pname="mad.test", ins=list("plot.5", "Pinus"))
 #```
 
@@ -2511,8 +2524,7 @@ ddg.procedure(pname="mad.test", ins=list("plot.5", "Pinus"))
 #```
 
 #```r
-
-mad.test(plot.6.pp[plot.6$genus == Tsuga], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.6.pp[plot.6$genus == Tsuga], Lest, verbose = FALSE, nsim = 99))
 ddg.procedure(pname="mad.test", ins=list("plot.6", "Tsuga"))
 #```
 
@@ -2529,7 +2541,7 @@ ddg.procedure(pname="mad.test", ins=list("plot.6", "Tsuga"))
 #```
 
 #```r
-mad.test(plot.6.pp[plot.6$genus == Betula], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.6.pp[plot.6$genus == Betula], Lest, verbose = FALSE, nsim = 99))
 ddg.procedure(pname="mad.test", ins=list("plot.6", "Betula"))
 #```
 
@@ -2546,7 +2558,7 @@ ddg.procedure(pname="mad.test", ins=list("plot.6", "Betula"))
 #```
 
 #```r
-mad.test(plot.6.pp[plot.6$genus == Quercus], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.6.pp[plot.6$genus == Quercus], Lest, verbose = FALSE, nsim = 99))
 ddg.procedure(pname="mad.test", ins=list("plot.6", "Quercus"))
 #```
 
@@ -2563,7 +2575,7 @@ ddg.procedure(pname="mad.test", ins=list("plot.6", "Quercus"))
 #```
 
 #```r
-mad.test(plot.6.pp[plot.6$genus == Acer], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.6.pp[plot.6$genus == Acer], Lest, verbose = FALSE, nsim = 99))
 ddg.procedure(pname="mad.test", ins=list("plot.6", "Acer"))
 #```
 
@@ -2580,7 +2592,7 @@ ddg.procedure(pname="mad.test", ins=list("plot.6", "Acer"))
 #```
 
 #```r
-mad.test(plot.6.pp[plot.6$genus == Pinus], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.6.pp[plot.6$genus == Pinus], Lest, verbose = FALSE, nsim = 99))
 ddg.procedure(pname="mad.test", ins=list("plot.6", "Pinus"))
 #```
 
@@ -2597,8 +2609,7 @@ ddg.procedure(pname="mad.test", ins=list("plot.6", "Pinus"))
 #```
 
 #```r
-
-mad.test(plot.7.pp[plot.7$genus == Tsuga], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.7.pp[plot.7$genus == Tsuga], Lest, verbose = FALSE, nsim = 99))
 ddg.procedure(pname="mad.test", ins=list("plot.7", "Tsuga"))
 #```
 
@@ -2615,7 +2626,7 @@ ddg.procedure(pname="mad.test", ins=list("plot.7", "Tsuga"))
 #```
 
 #```r
-mad.test(plot.7.pp[plot.7$genus == Betula], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.7.pp[plot.7$genus == Betula], Lest, verbose = FALSE, nsim = 99))
 ddg.procedure(pname="mad.test", ins=list("plot.7", "Betula"))
 #```
 
@@ -2632,7 +2643,7 @@ ddg.procedure(pname="mad.test", ins=list("plot.7", "Betula"))
 #```
 
 #```r
-mad.test(plot.7.pp[plot.7$genus == Quercus], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.7.pp[plot.7$genus == Quercus], Lest, verbose = FALSE, nsim = 99))
 ddg.procedure(pname="mad.test", ins=list("plot.7", "Quercus"))
 #```
 
@@ -2649,7 +2660,7 @@ ddg.procedure(pname="mad.test", ins=list("plot.7", "Quercus"))
 #```
 
 #```r
-mad.test(plot.7.pp[plot.7$genus == Acer], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.7.pp[plot.7$genus == Acer], Lest, verbose = FALSE, nsim = 99))
 ddg.procedure(pname="mad.test", ins=list("plot.7", "Acer"))
 #```
 
@@ -2666,7 +2677,7 @@ ddg.procedure(pname="mad.test", ins=list("plot.7", "Acer"))
 #```
 
 #```r
-mad.test(plot.7.pp[plot.7$genus == Pinus], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.7.pp[plot.7$genus == Pinus], Lest, verbose = FALSE, nsim = 99))
 ddg.procedure(pname="mad.test", ins=list("plot.7", "Pinus"))
 #```
 
@@ -2683,8 +2694,7 @@ ddg.procedure(pname="mad.test", ins=list("plot.7", "Pinus"))
 #```
 
 #```r
-
-mad.test(plot.8.pp[plot.8$genus == Tsuga], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.8.pp[plot.8$genus == Tsuga], Lest, verbose = FALSE, nsim = 99))
 ddg.procedure(pname="mad.test", ins=list("plot.8", "Tsuga"))
 #```
 #```
@@ -2700,7 +2710,7 @@ ddg.procedure(pname="mad.test", ins=list("plot.8", "Tsuga"))
 #```
 
 #```r
-mad.test(plot.8.pp[plot.8$genus == Betula], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.8.pp[plot.8$genus == Betula], Lest, verbose = FALSE, nsim = 99))
 ddg.procedure(pname="mad.test", ins=list("plot.8", "Betula"))
 #```
 
@@ -2717,7 +2727,7 @@ ddg.procedure(pname="mad.test", ins=list("plot.8", "Betula"))
 #```
 
 #```r
-mad.test(plot.8.pp[plot.8$genus == Quercus], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.8.pp[plot.8$genus == Quercus], Lest, verbose = FALSE, nsim = 99))
 ddg.procedure(pname="mad.test", ins=list("plot.8", "Quercus"))
 #```
 
@@ -2734,7 +2744,7 @@ ddg.procedure(pname="mad.test", ins=list("plot.8", "Quercus"))
 #```
 
 #```r
-mad.test(plot.8.pp[plot.8$genus == Acer], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.8.pp[plot.8$genus == Acer], Lest, verbose = FALSE, nsim = 99))
 ddg.procedure(pname="mad.test", ins=list("plot.8", "Acer"))
 #```
 
@@ -2751,7 +2761,7 @@ ddg.procedure(pname="mad.test", ins=list("plot.8", "Acer"))
 #```
 
 #```r
-mad.test(plot.8.pp[plot.8$genus == Pinus], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.8.pp[plot.8$genus == Pinus], Lest, verbose = FALSE, nsim = 99))
 ddg.procedure(pname="mad.test", ins=list("plot.8", "Pinus"))
 #```
 
@@ -2872,7 +2882,8 @@ names(tree.ages)[5:9] <- c("species", "dbh", "genus", "init.treat", "block")
 
 ddg.data.out(pname="Deal with duplicate genus", dname="tree.ages")
 
-head(tree.ages)
+
+invisible(head(tree.ages))
 #```
 
 #```
@@ -3163,7 +3174,8 @@ ddg.finish("Plot data")
 
 #```r
 
-dev.off()
+
+invisible(dev.off())
 #```
 
 
@@ -3188,7 +3200,7 @@ ddg.start("Harvard Forest Data")
 hf.Shaler <- read.csv("hf000-01-daily-m.csv", header = TRUE)
 #hf.Shaler <- read.csv("C:/Users/aellison/Dropbox/Aaron's Briefcase/manuscript - Simes dendro and land use/env data/hf000-01-daily-m.csv", header = TRUE)
 ddg.file("hf000-01-daily-m.csv")
-head(hf.Shaler)
+invisible(head(hf.Shaler))
 #```
 
 #```
@@ -3202,7 +3214,8 @@ head(hf.Shaler)
 #```
 
 #```r
-summary(hf.Shaler)
+
+invisible(summary(hf.Shaler))
 #```
 
 #```
@@ -3225,7 +3238,6 @@ summary(hf.Shaler)
 #```
 
 #```r
-str(hf.Shaler)
 #```
 
 #```
@@ -3243,8 +3255,8 @@ a <- as.Date(hf.Shaler$Date, "%m/%d/%Y")
 
 hf.Shaler <- cbind(a, hf.Shaler)
 names(hf.Shaler)[1] <- "date"
-head(hf.Shaler)
-#```
+
+invisible(head(hf.Shaler))
 
 #```
 ##         date     Date AirT AirTmax AirTmin Prec
@@ -3257,7 +3269,6 @@ head(hf.Shaler)
 #```
 
 #```r
-str(hf.Shaler)
 #```
 
 #```
@@ -3296,7 +3307,8 @@ HF.annual <- Shaler.annual
 HF.annual$year <- as.character(HF.annual$year)
 HF.annual[39:40, 2:5] <- Fisher.2002[, 1:4]
 HF.annual[40, 1] <- "2003-01-01"
-HF.annual
+
+invisible(HF.annual)
 
 ddg.procedure(pname="Combine into annual HF", ins=list("hf.Shaler", "Fisher.2002"), outs.data=list("HF.annual"))
 ddg.finish("Harvard Forest Data")
@@ -3371,7 +3383,8 @@ names(amherst.annual)[2:5] <- c("AirTmax", "AirTmin", "AirT", "Precip")
 amherst.annual[, 2:5] <- amherst.annual[, 2:5]/10
 ddg.procedure(pname="amherst.annual", ins=list("amherst"), outs.data=list("amherst.annual"))
 
-head(amherst.annual)
+
+invisible(head(amherst.annual))
 #```
 #```
 ##   year AirTmax AirTmin  AirT Precip
@@ -3390,7 +3403,8 @@ amherst.annual.fixed <- amherst.annual
 amherst.annual.fixed[5:121, ] <- amherst.annual[4:120, ]
 amherst.annual.fixed[4, ] <- c(1896, NA, NA, NA, NA)
 ddg.procedure(pname="Add year 1896", ins=list("amherst.annual"), outs.data=list("amherst.annual.fixed"))
-head(amherst.annual.fixed)
+
+invisible(head(amherst.annual.fixed))
 #```
 
 #```
@@ -3404,7 +3418,8 @@ head(amherst.annual.fixed)
 #```
 
 #```r
-dim(amherst.annual.fixed)
+
+invisible(dim(amherst.annual.fixed))
 #```
 ddg.finish("Augment data")
 ddg.finish("Amherst data")
@@ -3427,7 +3442,7 @@ ddg.file("PDSO - 267.csv")
 ddg.procedure(pname="parse", ins=list("PDSO - 267.csv"), outs.data=list("leverett.pdsi"))
 #leverett.pdsi <- read.csv("C:/Users/aellison/Dropbox/Aaron's Briefcase/manuscript - Simes dendro and land use/env data/PDSO - 267.csv", header = TRUE)
 
-head(leverett.pdsi)
+invisible(head(leverett.pdsi))
 #```
 
 #```
@@ -3440,7 +3455,7 @@ head(leverett.pdsi)
 ## 6  486    1    1 -0.708 -0.763 0.106 0.284 0.234 0.134 -100    -100
 #```
 #```r
-summary(leverett.pdsi)
+invisible(summary(leverett.pdsi))
 #```
 
 #```
@@ -3526,7 +3541,8 @@ pop.ts <- ts(data = pop.data$popn, start = 1900, frequency = 0.1)
 ddg.procedure(pname="timeseries", ins=list("pop.data"), outs.data=list("pop.ts"))
 plot(pop.ts)
 ddg.procedure(pname="plot", ins=list("pop.ts"))
-ddg.data.out(pname="plot",dname="HF.ts", fext="pdf")
+ddg.graphic.out("HF.ts", pname="plot",graphic.fext="pdf")
+
 #```
 ddg.procedure(pname="timeseries", ins=list("pop.data"), outs.data=list("pop.ts"))
 ddg.procedure(pname="plot", ins=list("pdsi.ts"))
@@ -3637,7 +3653,8 @@ text(1964, -8.875, "Drought", cex = 0.75)
 #![plot of chunk unnamed-chunk-16](figure/unnamed-chunk-16.png) 
 ddg.procedure(pname="out.file",ins=list("Amherst.ts"), outs.file=list("Simes_environment_v3.pdf"))
 #```r
-dev.off()
+
+invisible(dev.off())
 #```
 ddg.finish("Plot data 2")
 
@@ -3647,7 +3664,7 @@ ddg.start("Analysis")
 #```r
 # mean temps
 
-apply(Amherst.ts, 2, mean)
+invisible(apply(Amherst.ts, 2, mean))
 #```
 
 #```
@@ -3656,7 +3673,7 @@ apply(Amherst.ts, 2, mean)
 #```
 
 #```r
-apply(HF.ts, 2, mean)
+invisible(apply(HF.ts, 2, mean))
 #```
 
 #```
@@ -3667,15 +3684,16 @@ apply(HF.ts, 2, mean)
 #```r
 
 # average annual difference in temperatures
-mean(window(Amherst.ts[, 3], start = 1964) - HF.ts[, 1])
+invisible(mean(window(Amherst.ts[, 3], start = 1964) - HF.ts[, 1]))
 #```
 
 #```
 ## [1] 1.687
 #```
 
-#```r
-mean(window(pdsi.ts, 1897, 2003))
+
+invisible(mean(window(pdsi.ts, 1897, 2003)))
+
 #```
 
 #```
@@ -3705,8 +3723,10 @@ ddg.graphic.out("odsi.ts.means", pname="plot.means",graphic.fext="pdf")
 #```r
 # compare HF and Amherst data during period of overlap
 
-cor.test(as.vector(window(Amherst.ts[, 3], start = 1964)), as.vector(HF.ts[, 
-    1]))
+
+invisible(cor.test(as.vector(window(Amherst.ts[, 3], start = 1964)), as.vector(HF.ts[, 
+    1])))
+
 #```
 
 #```
@@ -3725,8 +3745,9 @@ cor.test(as.vector(window(Amherst.ts[, 3], start = 1964)), as.vector(HF.ts[,
 
 #```r
 
-lm(as.vector(HF.ts[, 1]) ~ as.vector(window(Amherst.ts[, 3], start = 1964)))
-#```
+
+invisible(lm(as.vector(HF.ts[, 1]) ~ as.vector(window(Amherst.ts[, 3], start = 1964))))
+
 
 #```
 ## 
@@ -3743,8 +3764,9 @@ lm(as.vector(HF.ts[, 1]) ~ as.vector(window(Amherst.ts[, 3], start = 1964)))
 
 #```r
 
-cor.test(as.vector(window(Amherst.ts[, 4], start = 1964)), as.vector(HF.ts[, 
-    4]))
+
+invisible(cor.test(as.vector(window(Amherst.ts[, 4], start = 1964)), as.vector(HF.ts[, 
+    4])))
 #```
 #```
 ## 
@@ -3762,7 +3784,7 @@ cor.test(as.vector(window(Amherst.ts[, 4], start = 1964)), as.vector(HF.ts[,
 
 #```r
 
-lm(as.vector(HF.ts[, 4]) ~ as.vector(window(Amherst.ts[, 4], start = 1964)))
+invisible(lm(as.vector(HF.ts[, 4]) ~ as.vector(window(Amherst.ts[, 4], start = 1964))))
 #```
 
 #```
@@ -3833,7 +3855,7 @@ dendro.raw$canopy <- relevel(dendro.raw$canopy, ref = "Hemlock")
 dendro.raw$TreeNum <- as.factor(dendro.raw$TreeNum)
 ddg.procedure(pname="add.age.radius.BAI", ins=list("dendro"), outs.data=list("dendro.raw"))
 
-head(dendro.raw)
+invisible(head(dendro.raw))
 #```
 
 #```
@@ -3854,7 +3876,8 @@ head(dendro.raw)
 #```
 
 #```r
-dim(dendro.raw)
+
+invisible(dim(dendro.raw))
 #```
 
 #```
@@ -3862,7 +3885,7 @@ dim(dendro.raw)
 #```
 
 #```r
-str(dendro.raw)
+
 #```
 
 #```
@@ -3910,7 +3933,9 @@ dendro.5sp$rBAI[dendro.5sp$rBAI == 0] <- 1e-04
 
 ddg.procedure(pname="Produce 5 species", ins=list("dendro.raw"), outs.data=list("dendro.5sp"))
 ddg.finish("Reduction")
-head(dendro.5sp)
+
+invisible(head(dendro.5sp))
+
 #```
 
 #```
@@ -3930,8 +3955,7 @@ head(dendro.5sp)
 ## 6  6.936 45.562 Valley Hemlock  7.860
 #```
 
-#```r
-str(dendro.5sp)
+
 #```
 
 #```
@@ -3958,7 +3982,8 @@ str(dendro.5sp)
 #Figure 9: Individual traces of rBAI as a function of year, with smoothers. Overlay hemlock and hardwood plots.
 ddg.start("Plot3")
 #```r
-# To create pdf, uncomment pdf and dev.off() lines.
+# To create pdf, uncomment pdf and invisible(invisible(dev.off())lines.)
+
 pdf('Figure-9-BAI-both-v2.pdf', width=4, height=6)
 
 ggplot(data = dendro.5sp[dendro.5sp$canopy == "Hemlock", ], aes(x = Year, y = rBAI, 
@@ -4050,7 +4075,9 @@ ylab(expression(paste("Relative change in basal area (", mm^2 %.% mm^-2 %.%
 
 #```r
 
-dev.off()
+
+invisible(dev.off())
+
 #```
 ddg.procedure(pname="output analysis pdf", outs.file="Figure-9-BAI-both-v2.pdf")
 ddg.finish("Plot3")
@@ -4112,7 +4139,7 @@ ddg.finish("Get wiggle years effects")
 
 #```r
 
-# gam plots in first column remove comments on pdf() and dev.off() to
+# gam plots in first column remove comments on pdf() and invisible(invisible(dev.off())to)
 # generate pdf
 ddg.start("Plot4")
 pdf('Figure_10-single-gams-v2.pdf', height=7, width=5, pointsize=9)
@@ -4251,7 +4278,8 @@ ddg.finish("wiggles")
 
 #```r
 
-dev.off()
+
+invisible(dev.off())
 #```
 ddg.finish("Plot4")
 ddg.finish("GAMs")
@@ -4302,7 +4330,9 @@ dendro.5sp$rBAI2 <- dendro.5sp$rBAI
 dendro.5sp$rBAI2[is.na(dendro.5sp$rBAI2)] <- 1
 
 ddg.procedure(pname="birthyr", ins=list("dendro.5sp"), outs.data=list("dendro.5sp"))
-head(dendro.5sp)
+
+invisible(head(dendro.5sp))
+
 #```
 
 #```
@@ -4645,12 +4675,15 @@ ddg.file.out("Figure-11-countours-v2.pdf", pname="multiplot")
 #![plot of chunk unnamed-chunk-25](figure/unnamed-chunk-25.png) 
 
 #```r
-dev.off()
+invisible(dev.off())
 #```
 ddg.finish("Fit 2D-GAMS")
 ddg.finish("Environmental data")
 #Extract deviance from and compare the 1-d and 2-d GAMs
 
+
+
+sink("NUL")
 
 #```r
 1 - gam.acer1$deviance/gam.acer1$null.deviance
@@ -4669,7 +4702,9 @@ ddg.finish("Environmental data")
 #```
 
 #```r
+
 AIC(gam.acer1, gam.acer2)
+
 #```
 
 #```
@@ -4696,7 +4731,9 @@ AIC(gam.acer1, gam.acer2)
 #```
 
 #```r
+
 AIC(gam.betula1, gam.betula2)
+
 #```
 
 #```
@@ -4723,7 +4760,9 @@ AIC(gam.betula1, gam.betula2)
 #```
 
 #```r
+
 AIC(gam.quercus1, gam.quercus2)
+
 #```
 
 #```
@@ -4750,6 +4789,7 @@ AIC(gam.quercus1, gam.quercus2)
 #```
 
 #```r
+
 AIC(gam.pinus1, gam.pinus2)
 #```
 
@@ -4785,6 +4825,9 @@ ddg.finish("Main Script")
 ## gam.tsuga1 146.00 65388
 ## gam.tsuga2  30.22 65107
 #```
+
+sink()
+
 
 ddg.save(quit=TRUE)
 
