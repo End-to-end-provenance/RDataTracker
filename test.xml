@@ -33,7 +33,6 @@
       <equals arg1="${source_test}" arg2="false"/>
     </condition>
 
-
     <!-- Directory to store local files for comparison -->
     <property name="local_dir" value="${dir}/local" />
     <delete dir="${local_dir}" quiet="true" /> 
@@ -77,7 +76,8 @@
                     unless:true="${no-source}"
     />
 
-    <!-- Execute the R Script -->
+    <!-- Execute the R Script (delete ddg directory first) -->
+    <delete dir="${dir}/ddg" quiet="true" />
     <exec executable="Rscript" dir="${local_dir}" output="${TESTS.dir}/${out}" >
       <arg line="${script-file}" />
     </exec>
@@ -87,7 +87,8 @@
     <basename property="expected_out_name" file="${expected_out}" />
     <basename property="out_name" file="${out}" />
 
-    <!-- Source the R Script -->
+    <!-- Source the R Script (delete ddg-source directory first)-->
+    <delete dir="${dir}/ddg-source" quiet="true" unless:true="${no-source}"/>
     <exec executable="Rscript" dir="${local_dir}" output="${TESTS.dir}/${dir}/source_${out_name}" unless:true="${no-source}">
       <arg line="sourceTest.r" />
     </exec>
@@ -489,24 +490,46 @@
 
   <!--########################## End Bug Tests ##########################-->
   
-  <target name="aaron-test">
-    <record name="examples/Aarton/Simes dendrochronology master analysis file-test.log" action="start" />
+  <target name="aaron-annotated-test">
+    <record name="examples/Aaron/aaron-annotated-test.log" action="start" />
       <antcall target="run-test">
         <param name="dir" value="examples/Aaron"/>
-        <param name="out" value="examples/Aaron/Simes dendrochronology master analysis file-test.out"/>
-        <param name="script-file" value="Simes dendrochronology master analysis file-test.r"/>
-        <param name="expected_out" value="examples/Aaron/expected_Simes dendrochronology master analysis file-test.out"/>
-        <param name="expected_ddg" value="examples/Aaron/expected_Simes dendrochronology master analysis file-test_ddg.txt"/>
+        <param name="out" value="examples/Aaron/aaron-annotated-test.out"/>
+        <param name="script-file" value="aaron-annotated-test.r"/>
+        <param name="expected_out" value="examples/Aaron/expected_aaron-annotated-test.out"/>
+        <param name="expected_ddg" value="examples/Aaron/expected_aaron-annotated-test_ddg.txt"/>
+
+        <param name="source_test" value="false" />
+      </antcall>
+      <echo message="Please run Aaron's test in the console and compare ddg.txt with expected_ddg.txt" />
+    <record name="aaron-annotated-test-test.log.txt" action="stop" />
+  </target>
+
+  <target name="aaron-min-test">
+    <record name="examples/Aaron/aaron-min-test.log" action="start" />
+      <antcall target="run-test">
+        <param name="dir" value="examples/Aaron"/>
+        <param name="out" value="examples/Aaron/aaron-min-test.out"/>
+        <param name="script-file" value="aaron-min-test.r"/>
+        <param name="expected_out" value="examples/Aaron/expected_aaron-min-test.out"/>
+        <param name="expected_ddg" value="examples/Aaron/expected_aaron-min-test_ddg.txt"/>
 
         <param name="source_test" value="true" />
       </antcall>
       <echo message="Please run Aaron's test in the console and compare ddg.txt with expected_ddg.txt" />
-    <record name="Simes dendrochronology master analysis file-test-test.log.txt" action="stop" />
+    <record name="aaron-min-test-test.log.txt" action="stop" />
   </target>
   
   <!--################################# MAIN #################################-->
+  <target name="quick-test" depends="install, normal-tests, checkpoint-tests, console-tests, source-tests, bug-tests">
+    <echo>This batch of tests is quick to execute, but not as extensive.</echo>
+  </target>
 
-  <target name="test-all" depends="normal-tests, checkpoint-tests, script-tests, console-tests, source-tests, bug-tests, aaron-test">
+  <target name="long-test" depends="install, script-tests, aaron-min-test, aaron-annotated-test, SivanSampling-test">
+    <echo>This batch of tests takes longer, but is a bit more real-world</echo>
+  </target>
+
+  <target name="test-all" depends="normal-tests, checkpoint-tests, script-tests, console-tests, source-tests, bug-tests">
       <echo>All tests makes calls to the RDataTracker Library. You might need to restart RStudio to correctly run the scripts with the updated library installed. Output is saved in tests.log.
 
       There is one test which is not run here. The test is SivanSimes dendrochronology master analysis file-test-test. Run it manually, though output is random.</echo>

@@ -1,25 +1,31 @@
 ######################################
 ### Sime Dendrochronology Analysis ###
 ######################################
-
-# get initial time
-startTime <- Sys.time()
-invisible(force(startTime))
-
-### Data Provenance Graph 
-setwd("D:/Users/Luis/Dropbox/HarvardForest/RDataTracker Annotations/aaron script")
-
-# Intitialize DDG
-ddg.init(r.script.path,ddgdir,enable.console=TRUE)
                   
 #Visualization and analysis for Simes dendrochronology ms.
 #========================================================
 
 #Load required libraries
+library(RDataTracker)
+
+# get initial time
+startTime <- Sys.time()
+invisible(force(startTime))
+
+## Directories
+testDir <- "[DIR_DEFAULT]/"
+setwd(testDir)
+
+ddg.r.script.path = paste(testDir,"aaron-annotated-test.r",sep="")
+ddg.path = paste(testDir,"[DDG-DIR]",sep="")
+
+ddg.init(ddg.r.script.path,
+         ddg.path,
+    enable.console=FALSE)
 
 #```r
 library(dplR)
-#```
+#``` 
 
 #```
 ## Warning: package 'dplR' was built under R version 3.0.2
@@ -97,7 +103,9 @@ library(spatstat)
 ##      'latest.news()' for news on latest version 
 ##      'licence.polygons()' for licence information on polygon calculations
 #```
-
+libraries <- list("dplR", "zoo", "ggplt2", "gdata", "grid", "mgcv", "akima", "spatstat")
+ddg.data("libraries")
+ddg.procedure(pname="input.libraries", ins=list("libraries"))
 
 #Generate required custom functions filled.contour3 and multiplot
 
@@ -137,7 +145,8 @@ filled.contour3 <- function(x = seq(0, 1, length.out = nrow(z)), y = seq(0,
     # mar.orig <- (par.orig <- par(c('mar', 'las', 'mfrow')))$mar
     # on.exit(par(par.orig)) w <- (3 + mar.orig[2]) * par('csi') * 2.54 par(las
     # = las) mar <- mar.orig
-    plot.new()
+    tryCatch(plot.new(),
+             error=function(e){e})
     # par(mar=mar)
     plot.window(xlim, ylim, "", xaxs = xaxs, yaxs = yaxs, asp = asp)
     if (!is.matrix(z) || nrow(z) <= 1 || ncol(z) <= 1) 
@@ -157,6 +166,8 @@ filled.contour3 <- function(x = seq(0, 1, length.out = nrow(z)), y = seq(0,
     if (missing(plot.title)) 
         title(...) else plot.title
     invisible()
+    
+    ddg.procedure(lookup.ins=TRUE)
 }
 
 
@@ -198,17 +209,23 @@ multiplot <- function(..., plotlist = NULL, file, cols = 1, layout = NULL) {
             print(plots[[i]], vp = viewport(layout.pos.row = matchidx$row, layout.pos.col = matchidx$col))
         }
     }
+    
+    ddg.procedure(lookup.ins=TRUE)
 }
 #```
 
-
+ddg.start("Main Script")
 #Read in raw data files
-
+ddg.start("Read in Data")
 #```r
 trees <- read.csv("trees03.csv")
+ddg.file("trees03.csv")
 #trees <- read.csv("C:/Users/aellison/Dropbox/Aaron's Briefcase/manuscript - Simes dendro and land use/analysis/trees03.csv")
 dendro <- read.csv("hf086-01-dendro.csv")
+ddg.file("hf086-01-dendro.csv")
 #dendro <- read.csv("C:/Users/aellison/Dropbox/Aaron's Briefcase/manuscript - Simes dendro and land use/analysis/hf086-01-dendro.csv")
+ddg.procedure(pname="read.data", ins=list("trees03.csv","hf086-01-dendro.csv"), outs.data=list("trees","dendro"))
+ddg.finish("Read in Data")
 
 head(trees)
 #```
@@ -242,9 +259,10 @@ head(dendro)
 
 
 #```r
-
+ddg.start("Extract Tree Location Data")
 # extract tree location data for each plot
 attach(trees)
+ddg.start("Seperate into Plots")
 plot.1 <- trees[plot == 1, ]
 plot.2 <- trees[plot == 2, ]
 plot.3 <- trees[plot == 3, ]
@@ -254,11 +272,17 @@ plot.6 <- trees[plot == 6, ]
 plot.7 <- trees[plot == 7, ]
 plot.8 <- trees[plot == 8, ]
 
-genera <- levels(genus)
+# Annotating data seperation procedure
+plot.list <- list("plot.1","plot.2","plot.3","plot.4","plot.5","plot.6","plot.7","plot.8")
+Map(function(x){ddg.procedure(pname="Seperate Plots", outs.data=list(x), ins=list("trees"))},plot.list)
 
+genera <- levels(genus)
+ddg.data.out("genera",pname="Seperate Plots")
+ddg.finish("Seperate into Plots")
 detach(trees)
 
 # remove NAs
+ddg.start("Clean plot data")
 p1 <- na.omit(plot.1)
 p2 <- na.omit(plot.2)
 p3 <- na.omit(plot.3)
@@ -268,36 +292,60 @@ p6 <- na.omit(plot.6)
 p7 <- na.omit(plot.7)
 p8 <- na.omit(plot.8)
 
+# Annotating removal procedure
+p.list <- list("p1","p2","p3","p4","p5","p6","p7","p8")
+mapply(function(x,y){ddg.procedure(pname="Remove NAs", ins=list(x), outs.data=list(y))}, plot.list, p.list)
+ddg.finish("Clean plot data")
 # set up contour plot grids
-p.1.i <- interp(p1$xcoord, p1$ycoord, scale(p1$zelev), xo = seq(0, 90, length = 40), 
-    yo = seq(0, 90, length = 40), duplicate = "strip", extrap = FALSE, linear = FALSE)
+ddg.start("Setup Contour plot grids")
 
-p.2.i <- interp(p2$xcoord, p2$ycoord, scale(p2$zelev), xo = seq(0, 90, length = 40), 
-    yo = seq(0, 90, length = 40), duplicate = "strip", extrap = FALSE, linear = FALSE)
-p.3.i <- interp(p3$xcoord, p3$ycoord, scale(p3$zelev), xo = seq(0, 90, length = 40), 
-    yo = seq(0, 90, length = 40), duplicate = "strip", extrap = FALSE, linear = FALSE)
-p.4.i <- interp(p4$xcoord, p4$ycoord, scale(p4$zelev), xo = seq(0, 90, length = 40), 
-    yo = seq(0, 90, length = 40), duplicate = "strip", extrap = FALSE, linear = FALSE)
-p.5.i <- interp(p5$xcoord, p5$ycoord, scale(p5$zelev), xo = seq(0, 90, length = 40), 
-    yo = seq(0, 90, length = 40), duplicate = "strip", extrap = FALSE, linear = FALSE)
-p.6.i <- interp(p6$xcoord, p6$ycoord, scale(p6$zelev), xo = seq(0, 90, length = 40), 
-    yo = seq(0, 90, length = 40), duplicate = "strip", extrap = FALSE, linear = FALSE)
-p.7.i <- interp(p7$xcoord, p7$ycoord, scale(p7$zelev), xo = seq(0, 90, length = 40), 
-    yo = seq(0, 90, length = 40), duplicate = "strip", extrap = FALSE, linear = FALSE)
-p.8.i <- interp(p8$xcoord, p8$ycoord, scale(p8$zelev), xo = seq(0, 90, length = 40), 
-    yo = seq(0, 90, length = 40), duplicate = "strip", extrap = FALSE, linear = FALSE)
+# create input nodes
+interp.xo <- seq(0,90,length=40)
+interp.yo <- seq(0,90,length=40)
+interp.duplicate <- "strip"
+interp.extrap <- F
+interp.linear <- F
+ddg.data("interp.xo")
+ddg.data("interp.yo")
+ddg.data("interp.duplicate")
+ddg.data("interp.extrap")
+ddg.data("interp.linear")
 
+# create procedure nodes
+ddg.start("Interpolate")
+p.1.i <- interp(p1$xcoord, p1$ycoord, scale(p1$zelev), xo = interp.xo, 
+    yo = interp.yo, duplicate = interp.duplicate, extrap = interp.extrap, linear = interp.linear)
+p.2.i <- interp(p2$xcoord, p2$ycoord, scale(p2$zelev), xo = interp.xo, 
+    yo = interp.yo, duplicate = interp.duplicate, extrap = interp.extrap, linear = interp.linear)
+p.3.i <- interp(p3$xcoord, p3$ycoord, scale(p3$zelev), xo = interp.xo, 
+    yo = interp.yo, duplicate = interp.duplicate, extrap = interp.extrap, linear = interp.linear)
+p.4.i <- interp(p4$xcoord, p4$ycoord, scale(p4$zelev), xo = interp.xo, 
+    yo = interp.yo, duplicate = interp.duplicate, extrap = interp.extrap, linear = interp.linear)
+p.5.i <- interp(p5$xcoord, p5$ycoord, scale(p5$zelev), xo = interp.xo, 
+    yo = interp.yo, duplicate = interp.duplicate, extrap = interp.extrap, linear = interp.linear)
+p.6.i <- interp(p6$xcoord, p6$ycoord, scale(p6$zelev), xo = interp.xo, 
+    yo = interp.yo, duplicate = interp.duplicate, extrap = interp.extrap, linear = interp.linear)
+p.7.i <- interp(p7$xcoord, p7$ycoord, scale(p7$zelev), xo = interp.xo, 
+    yo = interp.yo, duplicate = interp.duplicate, extrap = interp.extrap, linear = interp.linear)
+p.8.i <- interp(p8$xcoord, p8$ycoord, scale(p8$zelev), xo = interp.xo, 
+    yo = interp.yo, duplicate = interp.duplicate, extrap = interp.extrap, linear = interp.linear)
+pinter.list <- list("p.1.i","p.2.i","p.3.i","p.4.i","p.5.i", "p.6.i","p.7.i","p.8.i")
+mapply(function(x,y){ddg.procedure(pname="interpolate", ins=list(x,"interp.xo","interp.yo","interp.duplicate","interp.extrap","interp.linear"),outs.data=list(y))},p.list,pinter.list)
+ddg.finish("Interpolate")
 
 # set color palette for genera
-
 genera.colors.1 <- c("firebrick4", "coral", "black", "black", "black", "black", 
     "black", "black", "black", "olivedrab3", "black", "tan4", "black", "darkgreen")
+ddg.data("genera.colors.1")
 
 genera.rank <- c(14, 2, 1, 12, 10, 7, 9, 4, 11, 8, 3, 6, 5, 13)
+ddg.data("genera.rank")
 
 cex.I <- c(0.6, 0.6, rep(0.3, 7), 0.6, 0.3, 0.6, 0.3, 0.6)
+ddg.data("cex.I")
 
 # begin hemlock plot uncomment pdf and dev.off() lines to generate pdfs
+ddg.start("Hemlock Plot")
 
 pdf(file='hemlock_countors.pdf', width=4.75, height=6, colormodel='cmyk',
   pointsize=9)
@@ -307,8 +355,17 @@ layout(matrix(c(1, 6, 2, 5, 3, 4, 0, 0, 7, 7), 5, 2, byrow = TRUE), widths = rep
 # layout.show(7)
 par(pin = c(1.75, 1.75), plt = c(0.0625, 0.9375, 0.0625, 0.9375))
 
+# create data nodes for filled.counter3
+count.xlim = c(0,90)
+count.ylim = c(0,90)
+count.axes = FALSE
+count.nlevels = 5
+ddg.data('count.xlim')
+ddg.data('count.ylim')
+ddg.data('count.axes')
+ddg.data('count.nlevels')
 
-filled.contour3(p.1.i, xlim = c(0, 90), ylim = c(0, 90), axes = FALSE, nlevels = 5)
+filled.contour3(p.1.i, xlim = count.xlim, ylim = count.ylim, axes=count.axes, nlevels = count.nlevels)
 
 for (i in 1:length(genera)) {
     points(plot.1$xcoord[plot.1$genus == genera[i]], plot.1$ycoord[plot.1$genus == 
@@ -322,7 +379,7 @@ box(lwd = 2)
 rect(30, 30, 60, 60, border = "black", lty = "solid", lwd = 1)
 mtext("Valley", side = 3, font = 2, padj = -1, cex = 1)
 
-filled.contour3(p.2.i, xlim = c(0, 90), ylim = c(0, 90), axes = FALSE, nlevels = 5)
+filled.contour3(p.2.i, xlim = count.xlim, ylim = count.ylim, axes=count.axes, nlevels = count.nlevels)
 
 for (i in 1:length(genera)) {
     points(plot.2$xcoord[plot.2$genus == genera[i]], plot.2$ycoord[plot.2$genus == 
@@ -337,7 +394,7 @@ rect(30, 30, 60, 60, border = "black", lty = "solid", lwd = 1)
 
 mtext("Meters", side = 2, font = 2, padj = -3, cex = 0.85)
 
-filled.contour3(p.3.i, xlim = c(0, 90), ylim = c(0, 90), axes = FALSE, nlevels = 5)
+filled.contour3(p.3.i, xlim = count.xlim, ylim = count.ylim, axes=count.axes, nlevels = count.nlevels)
 
 for (i in 1:length(genera)) {
     points(plot.3$xcoord[plot.3$genus == genera[i]], plot.3$ycoord[plot.3$genus == 
@@ -350,7 +407,7 @@ axis(4, at = seq(0, 80, 20), labels = FALSE, tcl = -0.25, lwd = 2)
 box(lwd = 2)
 rect(30, 30, 60, 60, border = "black", lty = "solid", lwd = 1)
 
-filled.contour3(p.4.i, xlim = c(0, 90), ylim = c(0, 90), axes = FALSE, nlevels = 5)
+filled.contour3(p.4.i, xlim = count.xlim, ylim = count.ylim, axes=count.axes, nlevels = count.nlevels)
 
 for (i in 1:length(genera)) {
     points(plot.4$xcoord[plot.4$genus == genera[i]], plot.4$ycoord[plot.4$genus == 
@@ -365,7 +422,7 @@ rect(30, 30, 60, 60, border = "black", lty = "solid", lwd = 1)
 
 mtext("Meters", side = 1, font = 2, padj = 3, adj = -0.35, cex = 0.85)
 
-filled.contour3(p.5.i, xlim = c(0, 90), ylim = c(0, 90), axes = FALSE, nlevels = 5)
+filled.contour3(p.5.i, xlim = count.xlim, ylim = count.ylim, axes=count.axes, nlevels = count.nlevels)
 
 for (i in 1:length(genera)) {
     points(plot.5$xcoord[plot.5$genus == genera[i]], plot.5$ycoord[plot.5$genus == 
@@ -379,7 +436,7 @@ box(lwd = 2)
 rect(30, 30, 60, 60, border = "black", lty = "solid", lwd = 1)
 
 
-filled.contour3(p.6.i, xlim = c(0, 90), ylim = c(0, 90), axes = FALSE, nlevels = 5)
+filled.contour3(p.6.i, xlim = count.xlim, ylim = count.ylim, axes=count.axes, nlevels = count.nlevels)
 
 for (i in 1:length(genera)) {
     points(plot.6$xcoord[plot.6$genus == genera[i]], plot.6$ycoord[plot.6$genus == 
@@ -413,13 +470,16 @@ text(6, 1, "Other", font = 2, col = "white", srt = 90)
 #![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-41.png) 
 
 #```r
-
+ddg.procedure("plot.generation",outs.file=list("hemlock_countors.pdf"))
 dev.off() 
+
+ddg.finish("Hemlock Plot")
 #end hemlock
 
 
 
 # begin hardwoods
+ddg.start("Hardwoods Plot")
 
 pdf(file='hardwood_countors.pdf', width=4.75, height=6, colormodel='cmyk',
   pointsize=9)
@@ -430,7 +490,7 @@ layout(matrix(c(2, 1, 0, 0, 3, 3), 3, 2, byrow = TRUE), widths = rep(lcm(4.08),
 
 par(pin = c(1.75, 1.75), plt = c(0.0625, 0.9375, 0.0625, 0.9375))
 
-filled.contour3(p.7.i, xlim = c(0, 90), ylim = c(0, 90), axes = FALSE, nlevels = 5)
+filled.contour3(p.7.i, xlim = count.xlim, ylim = count.ylim, axes=count.axes, nlevels = count.nlevels)
 
 for (i in 1:length(genera)) {
     points(plot.7$xcoord[plot.7$genus == genera[i]], plot.7$ycoord[plot.7$genus == 
@@ -444,7 +504,7 @@ box(lwd = 2)
 rect(30, 30, 60, 60, border = "black", lty = "solid", lwd = 1)
 mtext("Meters", side = 1, font = 2, padj = 3, adj = -0.35, cex = 0.85)
 mtext("Ridge", side = 3, font = 2, padj = -1, cex = 1)
-filled.contour3(p.8.i, xlim = c(0, 90), ylim = c(0, 90), axes = FALSE, nlevels = 5)
+filled.contour3(p.8.i, xlim = count.xlim, ylim = count.ylim, axes=count.axes, nlevels = count.nlevels)
 
 for (i in 1:length(genera)) {
     points(plot.8$xcoord[plot.8$genus == genera[i]], plot.8$ycoord[plot.8$genus == 
@@ -474,25 +534,32 @@ for (i in blacks) text(i, 1, genera[genera.rank][i], font = 4, col = "black",
     srt = 90)
 text(6, 1, "Other", font = 2, col = "white", srt = 90)
 
+ddg.procedure("plot.generation",outs.file=list("hardwood_countors.pdf"))
+
 dev.off()
+ddg.finish("Hardwoods Plot")
+ddg.finish("Setup Contour plot grids")
+ddg.finish("Extract Tree Location Data")
+
 #```
 
 #![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-42.png) 
 
 
 #Compute Ripley's K for each species, each plot
-
+ddg.start("Data Analysis")
+ddg.start("Compute Ripley's K")
 #First, create sptaial point patterns; remove points with x or y outside of c(0,90)
-
+ddg.start("Create Spatial Point Patterns")
 
 #```r
 
 plot.1 <- plot.1[plot.1[, 9] >= 0 & plot.1[, 9] <= 90, ]
 plot.1 <- plot.1[plot.1[, 10] >= 0 & plot.1[, 10] <= 90, ]
 plot.1.pp <- ppp(plot.1[, 9], plot.1[, 10], c(0, 90), c(0, 90))
+ddg.procedure(pname="calc.spatial.points",ins=list("plot.1"),outs.data=list("plot.1.pp"))
 #```
 
-ddg.save()
 #```
 ## Warning: data contain duplicated points
 #```
@@ -502,6 +569,7 @@ ddg.save()
 plot.2 <- plot.2[plot.2[, 9] >= 0 & plot.2[, 9] <= 90, ]
 plot.2 <- plot.2[plot.2[, 10] >= 0 & plot.2[, 10] <= 90, ]
 plot.2.pp <- ppp(plot.2[, 9], plot.2[, 10], c(0, 90), c(0, 90))
+ddg.procedure(pname="calc.spatial.points",ins=list("plot.2"),outs.data=list("plot.2.pp"))
 #```
 
 #```
@@ -513,6 +581,7 @@ plot.2.pp <- ppp(plot.2[, 9], plot.2[, 10], c(0, 90), c(0, 90))
 plot.3 <- plot.3[plot.3[, 9] >= 0 & plot.3[, 9] <= 90, ]
 plot.3 <- plot.3[plot.3[, 10] >= 0 & plot.3[, 10] <= 90, ]
 plot.3.pp <- ppp(plot.3[, 9], plot.3[, 10], c(0, 90), c(0, 90))
+ddg.procedure(pname="calc.spatial.points",ins=list("plot.3"),outs.data=list("plot.3.pp"))
 #```
 
 #```
@@ -524,6 +593,7 @@ plot.3.pp <- ppp(plot.3[, 9], plot.3[, 10], c(0, 90), c(0, 90))
 plot.4 <- plot.4[plot.4[, 9] >= 0 & plot.4[, 9] <= 90, ]
 plot.4 <- plot.4[plot.4[, 10] >= 0 & plot.4[, 10] <= 90, ]
 plot.4.pp <- ppp(plot.4[, 9], plot.4[, 10], c(0, 90), c(0, 90))
+ddg.procedure(pname="calc.spatial.points",ins=list("plot.4"),outs.data=list("plot.4.pp"))
 #```
 
 #```
@@ -535,6 +605,7 @@ plot.4.pp <- ppp(plot.4[, 9], plot.4[, 10], c(0, 90), c(0, 90))
 plot.5 <- plot.5[plot.5[, 9] >= 0 & plot.5[, 9] <= 90, ]
 plot.5 <- plot.5[plot.5[, 10] >= 0 & plot.5[, 10] <= 90, ]
 plot.5.pp <- ppp(plot.5[, 9], plot.5[, 10], c(0, 90), c(0, 90))
+ddg.procedure(pname="calc.spatial.points",ins=list("plot.5"),outs.data=list("plot.5.pp"))
 #```
 
 #```
@@ -546,6 +617,7 @@ plot.5.pp <- ppp(plot.5[, 9], plot.5[, 10], c(0, 90), c(0, 90))
 plot.6 <- plot.6[plot.6[, 9] >= 0 & plot.6[, 9] <= 90, ]
 plot.6 <- plot.6[plot.6[, 10] >= 0 & plot.6[, 10] <= 90, ]
 plot.6.pp <- ppp(plot.6[, 9], plot.6[, 10], c(0, 90), c(0, 90))
+ddg.procedure(pname="calc.spatial.points",ins=list("plot.6"),outs.data=list("plot.6.pp"))
 #```
 
 #```
@@ -557,6 +629,7 @@ plot.6.pp <- ppp(plot.6[, 9], plot.6[, 10], c(0, 90), c(0, 90))
 plot.7 <- plot.7[plot.7[, 9] >= 0 & plot.7[, 9] <= 90, ]
 plot.7 <- plot.7[plot.7[, 10] >= 0 & plot.7[, 10] <= 90, ]
 plot.7.pp <- ppp(plot.7[, 9], plot.7[, 10], c(0, 90), c(0, 90))
+ddg.procedure(pname="calc.spatial.points",ins=list("plot.7"),outs.data=list("plot.7.pp"))
 #```
 
 #```
@@ -568,22 +641,35 @@ plot.7.pp <- ppp(plot.7[, 9], plot.7[, 10], c(0, 90), c(0, 90))
 plot.8 <- plot.8[plot.8[, 9] >= 0 & plot.8[, 9] <= 90, ]
 plot.8 <- plot.8[plot.8[, 10] >= 0 & plot.8[, 10] <= 90, ]
 plot.8.pp <- ppp(plot.8[, 9], plot.8[, 10], c(0, 90), c(0, 90))
+ddg.procedure(pname="calc.spatial.points",ins=list("plot.8"),outs.data=list("plot.8.pp"))
 #```
 
 #```
 ## Warning: data contain duplicated points
 #```
-
+ddg.finish("Create Spatial Point Patterns")
 #Now, plot, generate contours, and Kobs vs Ktheor
-
+ddg.start("Plot Information, Contours, and K")
 
 #```r
 par(mfrow = c(5, 3), pin = c(1.75, 1.75), plt = c(0.0625, 0.9375, 0.0625, 0.9375))
 
 
-plot(plot.1.pp[plot.1$genus == "Tsuga"])
-plot(density(plot.1.pp[plot.1$genus == "Tsuga"]))
-plot(envelope(plot.1.pp[plot.1$genus == "Tsuga"], Lest, global = FALSE))
+# create data nodes for genus parameters
+trees.genus <- list("Tsuga","Betula", "Quercus", "Acer", "Pinus")
+Tsuga <- trees.genus[1]
+Betula <- trees.genus[2]
+Quercus <- trees.genus[3]
+Acer <- trees.genus[4]
+Pinus <- trees.genus[5]
+Map(function(x){ddg.data(x,dvalue=eval(x))},trees.genus)
+
+
+plot(plot.1.pp[plot.1$genus == Tsuga])
+plot(density(plot.1.pp[plot.1$genus == Tsuga]))
+plot(envelope(plot.1.pp[plot.1$genus == Tsuga], Lest, global = FALSE))
+ddg.procedure(pname="Plot density and envelop", ins=list("plot.1.pp","Tsuga"))
+ddg.graphic.out("plot1graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -614,9 +700,11 @@ plot(envelope(plot.1.pp[plot.1$genus == "Tsuga"], Lest, global = FALSE))
 
 #```r
 
-plot(plot.1.pp[plot.1$genus == "Betula"])
-plot(density(plot.1.pp[plot.1$genus == "Betula"]))
-plot(envelope(plot.1.pp[plot.1$genus == "Betula"], Kest))
+plot(plot.1.pp[plot.1$genus == Betula])
+plot(density(plot.1.pp[plot.1$genus == Betula]))
+plot(envelope(plot.1.pp[plot.1$genus == Betula], Kest))
+ddg.procedure(pname="Plot density and envelop", ins=list("plot.1.pp","Betula"))
+ddg.graphic.out("plot1graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -648,9 +736,11 @@ plot(envelope(plot.1.pp[plot.1$genus == "Betula"], Kest))
 #```r
 
 
-plot(plot.1.pp[plot.1$genus == "Quercus"])
-plot(density(plot.1.pp[plot.1$genus == "Quercus"]))
-plot(envelope(plot.1.pp[plot.1$genus == "Quercus"], Kest))
+plot(plot.1.pp[plot.1$genus == Quercus])
+plot(density(plot.1.pp[plot.1$genus == Quercus]))
+plot(envelope(plot.1.pp[plot.1$genus == Quercus], Kest))
+ddg.procedure(pname="Plot density and envelop", ins=list("plot.1.pp","Quercus"))
+ddg.graphic.out("plot1graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -681,9 +771,11 @@ plot(envelope(plot.1.pp[plot.1$genus == "Quercus"], Kest))
 
 #```r
 
-plot(plot.1.pp[plot.1$genus == "Acer"])
-plot(density(plot.1.pp[plot.1$genus == "Acer"]))
-plot(envelope(plot.1.pp[plot.1$genus == "Acer"], Kest))
+plot(plot.1.pp[plot.1$genus == Acer])
+plot(density(plot.1.pp[plot.1$genus == Acer]))
+plot(envelope(plot.1.pp[plot.1$genus == Acer], Kest))
+ddg.procedure(pname="Plot density and envelop", ins=list("plot.1.pp","Acer"))
+ddg.graphic.out("plot1graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -715,9 +807,11 @@ plot(envelope(plot.1.pp[plot.1$genus == "Acer"], Kest))
 #```r
 
 
-plot(plot.1.pp[plot.1$genus == "Pinus"])
-plot(density(plot.1.pp[plot.1$genus == "Pinus"]))
-plot(envelope(plot.1.pp[plot.1$genus == "Pinus"], Kest))
+plot(plot.1.pp[plot.1$genus == Pinus])
+plot(density(plot.1.pp[plot.1$genus == Pinus]))
+plot(envelope(plot.1.pp[plot.1$genus == Pinus], Kest))
+ddg.procedure(pname="Plot density and envelop", ins=list("plot.1.pp","Pinus"))
+ddg.graphic.out("plot1graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -751,9 +845,11 @@ plot(envelope(plot.1.pp[plot.1$genus == "Pinus"], Kest))
 #```r
 
 par(mfrow = c(5, 3), pin = c(1.75, 1.75), plt = c(0.0625, 0.9375, 0.0625, 0.9375))
-plot(plot.2.pp[plot.2$genus == "Tsuga"])
-plot(density(plot.2.pp[plot.2$genus == "Tsuga"]))
-plot(envelope(plot.2.pp[plot.2$genus == "Tsuga"], Kest))
+plot(plot.2.pp[plot.2$genus == Tsuga])
+plot(density(plot.2.pp[plot.2$genus == Tsuga]))
+plot(envelope(plot.2.pp[plot.2$genus == Tsuga], Kest))
+ddg.procedure(pname="Plot density and envelop", ins=list("plot.2.pp","Tsuga"))
+ddg.graphic.out("plot2graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -784,9 +880,11 @@ plot(envelope(plot.2.pp[plot.2$genus == "Tsuga"], Kest))
 
 #```r
 
-plot(plot.2.pp[plot.2$genus == "Betula"])
-plot(density(plot.2.pp[plot.2$genus == "Betula"]))
-plot(envelope(plot.2.pp[plot.2$genus == "Betula"], Kest))
+plot(plot.2.pp[plot.2$genus == Betula])
+plot(density(plot.2.pp[plot.2$genus == Betula]))
+plot(envelope(plot.2.pp[plot.2$genus == Betula], Kest))
+ddg.procedure(pname="Plot density and envelop", ins=list("plot.2.pp","Betula"))
+ddg.graphic.out("plot2graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -817,9 +915,11 @@ plot(envelope(plot.2.pp[plot.2$genus == "Betula"], Kest))
 
 #```r
 
-plot(plot.2.pp[plot.2$genus == "Quercus"])
-plot(density(plot.2.pp[plot.2$genus == "Quercus"]))
-plot(envelope(plot.2.pp[plot.2$genus == "Quercus"], Kest))
+plot(plot.2.pp[plot.2$genus == Quercus])
+plot(density(plot.2.pp[plot.2$genus == Quercus]))
+plot(envelope(plot.2.pp[plot.2$genus == Quercus], Kest))
+ddg.procedure(pname="Plot density and envelop", ins=list("plot.2.pp","Quercus"))
+ddg.graphic.out("plot2graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -850,9 +950,11 @@ plot(envelope(plot.2.pp[plot.2$genus == "Quercus"], Kest))
 
 #```r
 
-plot(plot.2.pp[plot.2$genus == "Acer"])
-plot(density(plot.2.pp[plot.2$genus == "Acer"]))
-plot(envelope(plot.2.pp[plot.2$genus == "Acer"], Kest))
+plot(plot.2.pp[plot.2$genus == Acer])
+plot(density(plot.2.pp[plot.2$genus == Acer]))
+plot(envelope(plot.2.pp[plot.2$genus == Acer], Kest))
+ddg.procedure(pname="Plot density and envelop", ins=list("plot.2.pp","Acer"))
+ddg.graphic.out("plot2graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -883,9 +985,11 @@ plot(envelope(plot.2.pp[plot.2$genus == "Acer"], Kest))
 
 #```r
 
-plot(plot.2.pp[plot.2$genus == "Pinus"])
-plot(density(plot.2.pp[plot.2$genus == "Pinus"]))
-plot(envelope(plot.2.pp[plot.2$genus == "Pinus"], Kest))
+plot(plot.2.pp[plot.2$genus == Pinus])
+plot(density(plot.2.pp[plot.2$genus == Pinus]))
+plot(envelope(plot.2.pp[plot.2$genus == Pinus], Kest))
+ddg.procedure(pname="Plot density and envelop", ins=list("plot.2.pp","Pinus"))
+ddg.graphic.out("plot2graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -919,9 +1023,11 @@ plot(envelope(plot.2.pp[plot.2$genus == "Pinus"], Kest))
 #```r
 
 par(mfrow = c(5, 3), pin = c(1.75, 1.75), plt = c(0.0625, 0.9375, 0.0625, 0.9375))
-plot(plot.3.pp[plot.3$genus == "Tsuga"])
-plot(density(plot.3.pp[plot.3$genus == "Tsuga"]))
-plot(envelope(plot.3.pp[plot.3$genus == "Tsuga"], Kest))
+plot(plot.3.pp[plot.3$genus == Tsuga])
+plot(density(plot.3.pp[plot.3$genus == Tsuga]))
+plot(envelope(plot.3.pp[plot.3$genus == Tsuga], Kest))
+ddg.procedure(pname="Plot density and envelop", ins=list("plot.3.pp","Tsuga"))
+ddg.graphic.out("plot3graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -952,9 +1058,11 @@ plot(envelope(plot.3.pp[plot.3$genus == "Tsuga"], Kest))
 
 #```r
 
-plot(plot.3.pp[plot.3$genus == "Betula"])
-plot(density(plot.3.pp[plot.3$genus == "Betula"]))
-plot(envelope(plot.3.pp[plot.3$genus == "Betula"], Kest))
+plot(plot.3.pp[plot.3$genus == Betula])
+plot(density(plot.3.pp[plot.3$genus == Betula]))
+plot(envelope(plot.3.pp[plot.3$genus == Betula], Kest))
+ddg.procedure(pname="Plot density and envelop", ins=list("plot.3.pp","Betula"))
+ddg.graphic.out("plot3graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -985,44 +1093,12 @@ plot(envelope(plot.3.pp[plot.3$genus == "Betula"], Kest))
 
 #```r
 
-plot(plot.3.pp[plot.3$genus == "Quercus"])
-plot(density(plot.3.pp[plot.3$genus == "Quercus"]))
-plot(envelope(plot.3.pp[plot.3$genus == "Quercus"], Kest))
+plot(plot.3.pp[plot.3$genus == Quercus])
+plot(density(plot.3.pp[plot.3$genus == Quercus]))
+plot(envelope(plot.3.pp[plot.3$genus == Quercus], Kest))
 #```
-ddg.save()
-#```
-## Generating 99 simulations of CSR  ...
-## 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
-## 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30,
-## 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45,
-## 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60,
-## 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75,
-## 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90,
-## 91, 92, 93, 94, 95, 96, 97, 98,  99.
-## 
-## Done.
-#```
-
-#```
-##      lty col  key      label
-## obs    1   1  obs  K[obs](r)
-## theo   2   2 theo K[theo](r)
-## hi     1   8   hi   K[hi](r)
-## lo     1   8   lo   K[lo](r)
-##                                                meaning
-## obs            observed value of K(r) for data pattern
-## theo                 theoretical value of K(r) for CSR
-## hi   upper pointwise envelope of K(r) from simulations
-## lo   lower pointwise envelope of K(r) from simulations
-#```
-
-#```r
-
-plot(plot.3.pp[plot.3$genus == "Acer"])
-plot(density(plot.3.pp[plot.3$genus == "Acer"]))
-plot(envelope(plot.3.pp[plot.3$genus == "Acer"], Kest))
-#```
-
+ddg.procedure(pname="Plot density and envelop", ins=list("plot.3.pp","Quercus"))
+ddg.graphic.out("plot3graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 ## Generating 99 simulations of CSR  ...
 ## 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
@@ -1051,9 +1127,46 @@ plot(envelope(plot.3.pp[plot.3$genus == "Acer"], Kest))
 
 #```r
 
-plot(plot.3.pp[plot.3$genus == "Pinus"])
-plot(density(plot.3.pp[plot.3$genus == "Pinus"]))
-plot(envelope(plot.3.pp[plot.3$genus == "Pinus"], Kest))
+plot(plot.3.pp[plot.3$genus == Acer])
+plot(density(plot.3.pp[plot.3$genus == Acer]))
+plot(envelope(plot.3.pp[plot.3$genus == Acer], Kest))
+ddg.procedure(pname="Plot density and envelop", ins=list("plot.3.pp","Acer"))
+ddg.graphic.out("plot3graph", pname="Plot density and envelop",graphic.fext="pdf")
+#```
+
+#```
+## Generating 99 simulations of CSR  ...
+## 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
+## 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30,
+## 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45,
+## 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60,
+## 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75,
+## 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90,
+## 91, 92, 93, 94, 95, 96, 97, 98,  99.
+## 
+## Done.
+#```
+
+#```
+##      lty col  key      label
+## obs    1   1  obs  K[obs](r)
+## theo   2   2 theo K[theo](r)
+## hi     1   8   hi   K[hi](r)
+## lo     1   8   lo   K[lo](r)
+##                                                meaning
+## obs            observed value of K(r) for data pattern
+## theo                 theoretical value of K(r) for CSR
+## hi   upper pointwise envelope of K(r) from simulations
+## lo   lower pointwise envelope of K(r) from simulations
+#```
+
+#```r
+
+plot(plot.3.pp[plot.3$genus == Pinus])
+plot(density(plot.3.pp[plot.3$genus == Pinus]))
+plot(envelope(plot.3.pp[plot.3$genus == Pinus], Kest))
+ddg.procedure(pname="Plot density and envelop", ins=list("plot.3.pp","Pinus"))
+ddg.graphic.out("plot3graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -1087,9 +1200,11 @@ plot(envelope(plot.3.pp[plot.3$genus == "Pinus"], Kest))
 #```r
 
 par(mfrow = c(5, 3), pin = c(1.75, 1.75), plt = c(0.0625, 0.9375, 0.0625, 0.9375))
-plot(plot.4.pp[plot.4$genus == "Tsuga"])
-plot(density(plot.4.pp[plot.4$genus == "Tsuga"]))
-plot(envelope(plot.4.pp[plot.4$genus == "Tsuga"], Kest))
+plot(plot.4.pp[plot.4$genus == Tsuga])
+plot(density(plot.4.pp[plot.4$genus == Tsuga]))
+plot(envelope(plot.4.pp[plot.4$genus == Tsuga], Kest))
+ddg.procedure(pname="Plot density and envelop", ins=list("plot.4.pp","Tsuga"))
+ddg.graphic.out("plot4graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -1120,9 +1235,11 @@ plot(envelope(plot.4.pp[plot.4$genus == "Tsuga"], Kest))
 
 #```r
 
-plot(plot.4.pp[plot.4$genus == "Betula"])
-plot(density(plot.4.pp[plot.4$genus == "Betula"]))
-plot(envelope(plot.4.pp[plot.4$genus == "Betula"], Kest))
+plot(plot.4.pp[plot.4$genus == Betula])
+plot(density(plot.4.pp[plot.4$genus == Betula]))
+plot(envelope(plot.4.pp[plot.4$genus == Betula], Kest))
+ddg.procedure(pname="Plot density and envelop", ins=list("plot.4.pp","Betula"))
+ddg.graphic.out("plot4graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -1153,9 +1270,11 @@ plot(envelope(plot.4.pp[plot.4$genus == "Betula"], Kest))
 
 #```r
 
-plot(plot.4.pp[plot.4$genus == "Quercus"])
-plot(density(plot.4.pp[plot.4$genus == "Quercus"]))
-plot(envelope(plot.4.pp[plot.4$genus == "Quercus"], Kest))
+plot(plot.4.pp[plot.4$genus == Quercus])
+plot(density(plot.4.pp[plot.4$genus == Quercus]))
+plot(envelope(plot.4.pp[plot.4$genus == Quercus], Kest))
+ddg.procedure(pname="Plot density and envelop", ins=list("plot.4.pp","Quercus"))
+ddg.graphic.out("plot4graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -1186,9 +1305,11 @@ plot(envelope(plot.4.pp[plot.4$genus == "Quercus"], Kest))
 
 #```r
 
-plot(plot.4.pp[plot.4$genus == "Acer"])
-plot(density(plot.4.pp[plot.4$genus == "Acer"]))
-plot(envelope(plot.4.pp[plot.4$genus == "Acer"], Kest))
+plot(plot.4.pp[plot.4$genus == Acer])
+plot(density(plot.4.pp[plot.4$genus == Acer]))
+plot(envelope(plot.4.pp[plot.4$genus == Acer], Kest))
+ddg.procedure(pname="Plot density and envelop", ins=list("plot.4.pp","Acer"))
+ddg.graphic.out("plot4graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -1219,9 +1340,11 @@ plot(envelope(plot.4.pp[plot.4$genus == "Acer"], Kest))
 
 #```r
 
-plot(plot.4.pp[plot.4$genus == "Pinus"])
-plot(density(plot.4.pp[plot.4$genus == "Pinus"]))
-plot(envelope(plot.4.pp[plot.4$genus == "Pinus"], Kest))
+plot(plot.4.pp[plot.4$genus == Pinus])
+plot(density(plot.4.pp[plot.4$genus == Pinus]))
+plot(envelope(plot.4.pp[plot.4$genus == Pinus], Kest))
+ddg.procedure(pname="Plot density and envelop", ins=list("plot.4.pp","Pinus"))
+ddg.graphic.out("plot4graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -1254,9 +1377,11 @@ plot(envelope(plot.4.pp[plot.4$genus == "Pinus"], Kest))
 
 #```r
 
-plot(plot.5.pp[plot.5$genus == "Tsuga"])
-plot(density(plot.5.pp[plot.5$genus == "Tsuga"]))
-plot(envelope(plot.5.pp[plot.5$genus == "Tsuga"], Kest))
+plot(plot.5.pp[plot.5$genus == Tsuga])
+plot(density(plot.5.pp[plot.5$genus == Tsuga]))
+plot(envelope(plot.5.pp[plot.5$genus == Tsuga], Kest))
+ddg.procedure(pname="Plot density and envelop", ins=list("plot.5.pp","Tsuga"))
+ddg.graphic.out("plot5graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -1287,9 +1412,81 @@ plot(envelope(plot.5.pp[plot.5$genus == "Tsuga"], Kest))
 
 #```r
 
-plot(plot.5.pp[plot.5$genus == "Betula"])
-plot(density(plot.5.pp[plot.5$genus == "Betula"]))
-plot(envelope(plot.5.pp[plot.5$genus == "Betula"], Kest))
+plot(plot.5.pp[plot.5$genus == Betula])
+plot(density(plot.5.pp[plot.5$genus == Betula]))
+plot(envelope(plot.5.pp[plot.5$genus == Betula], Kest))
+ddg.procedure(pname="Plot density and envelop", ins=list("plot.5.pp","Betula"))
+#```
+ddg.graphic.out("plot5graph", pname="Plot density and envelop",graphic.fext="pdf")
+
+#```
+## Generating 99 simulations of CSR  ...
+## 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
+## 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30,
+## 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45,
+## 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60,
+## 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75,
+## 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90,
+## 91, 92, 93, 94, 95, 96, 97, 98,  99.
+## 
+## Done.
+#```
+
+#```
+##      lty col  key      label
+## obs    1   1  obs  K[obs](r)
+## theo   2   2 theo K[theo](r)
+## hi     1   8   hi   K[hi](r)
+## lo     1   8   lo   K[lo](r)
+##                                                meaning
+## obs            observed value of K(r) for data pattern
+## theo                 theoretical value of K(r) for CSR
+## hi   upper pointwise envelope of K(r) from simulations
+## lo   lower pointwise envelope of K(r) from simulations
+#```
+
+#```r
+
+plot(plot.5.pp[plot.5$genus == Quercus])
+plot(density(plot.5.pp[plot.5$genus == Quercus]))
+plot(envelope(plot.5.pp[plot.5$genus == Quercus], Kest))
+ddg.procedure(pname="Plot density and envelop", ins=list("plot.5.pp","Quercus"))
+#```
+
+ddg.graphic.out("plot5graph", pname="Plot density and envelop",graphic.fext="pdf")
+#```
+## Generating 99 simulations of CSR  ...
+## 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
+## 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30,
+## 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45,
+## 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60,
+## 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75,
+## 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90,
+## 91, 92, 93, 94, 95, 96, 97, 98,  99.
+## 
+## Done.
+#```
+
+#```
+##      lty col  key      label
+## obs    1   1  obs  K[obs](r)
+## theo   2   2 theo K[theo](r)
+## hi     1   8   hi   K[hi](r)
+## lo     1   8   lo   K[lo](r)
+##                                                meaning
+## obs            observed value of K(r) for data pattern
+## theo                 theoretical value of K(r) for CSR
+## hi   upper pointwise envelope of K(r) from simulations
+## lo   lower pointwise envelope of K(r) from simulations
+#```
+
+#```r
+
+plot(plot.5.pp[plot.5$genus == Acer])
+plot(density(plot.5.pp[plot.5$genus == Acer]))
+plot(envelope(plot.5.pp[plot.5$genus == Acer], Kest))
+ddg.procedure(pname="Plot density and envelop", ins=list("plot.5.pp","Acer"))
+ddg.graphic.out("plot5graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -1320,75 +1517,11 @@ plot(envelope(plot.5.pp[plot.5$genus == "Betula"], Kest))
 
 #```r
 
-plot(plot.5.pp[plot.5$genus == "Quercus"])
-plot(density(plot.5.pp[plot.5$genus == "Quercus"]))
-plot(envelope(plot.5.pp[plot.5$genus == "Quercus"], Kest))
-#```
-
-#```
-## Generating 99 simulations of CSR  ...
-## 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
-## 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30,
-## 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45,
-## 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60,
-## 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75,
-## 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90,
-## 91, 92, 93, 94, 95, 96, 97, 98,  99.
-## 
-## Done.
-#```
-
-#```
-##      lty col  key      label
-## obs    1   1  obs  K[obs](r)
-## theo   2   2 theo K[theo](r)
-## hi     1   8   hi   K[hi](r)
-## lo     1   8   lo   K[lo](r)
-##                                                meaning
-## obs            observed value of K(r) for data pattern
-## theo                 theoretical value of K(r) for CSR
-## hi   upper pointwise envelope of K(r) from simulations
-## lo   lower pointwise envelope of K(r) from simulations
-#```
-
-#```r
-
-plot(plot.5.pp[plot.5$genus == "Acer"])
-plot(density(plot.5.pp[plot.5$genus == "Acer"]))
-plot(envelope(plot.5.pp[plot.5$genus == "Acer"], Kest))
-#```
-
-#```
-## Generating 99 simulations of CSR  ...
-## 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
-## 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30,
-## 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45,
-## 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60,
-## 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75,
-## 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90,
-## 91, 92, 93, 94, 95, 96, 97, 98,  99.
-## 
-## Done.
-#```
-
-#```
-##      lty col  key      label
-## obs    1   1  obs  K[obs](r)
-## theo   2   2 theo K[theo](r)
-## hi     1   8   hi   K[hi](r)
-## lo     1   8   lo   K[lo](r)
-##                                                meaning
-## obs            observed value of K(r) for data pattern
-## theo                 theoretical value of K(r) for CSR
-## hi   upper pointwise envelope of K(r) from simulations
-## lo   lower pointwise envelope of K(r) from simulations
-#```
-
-#```r
-
-plot(plot.5.pp[plot.5$genus == "Pinus"])
-plot(density(plot.5.pp[plot.5$genus == "Pinus"]))
-plot(envelope(plot.5.pp[plot.5$genus == "Pinus"], Kest))
+plot(plot.5.pp[plot.5$genus == Pinus])
+plot(density(plot.5.pp[plot.5$genus == Pinus]))
+plot(envelope(plot.5.pp[plot.5$genus == Pinus], Kest))
+ddg.procedure(pname="Plot density and envelop", ins=list("plot.5.pp","Pinus"))
+ddg.graphic.out("plot5graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -1422,9 +1555,11 @@ plot(envelope(plot.5.pp[plot.5$genus == "Pinus"], Kest))
 #```r
 
 
-plot(plot.6.pp[plot.6$genus == "Tsuga"])
-plot(density(plot.6.pp[plot.6$genus == "Tsuga"]))
-plot(envelope(plot.6.pp[plot.6$genus == "Tsuga"], Kest))
+plot(plot.6.pp[plot.6$genus == Tsuga])
+plot(density(plot.6.pp[plot.6$genus == Tsuga]))
+plot(envelope(plot.6.pp[plot.6$genus == Tsuga], Kest))
+ddg.procedure(pname="Plot density and envelop", ins=list("plot.6.pp","Tsuga"))
+ddg.graphic.out("plot7graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -1455,9 +1590,11 @@ plot(envelope(plot.6.pp[plot.6$genus == "Tsuga"], Kest))
 
 #```r
 
-plot(plot.6.pp[plot.6$genus == "Betula"])
-plot(density(plot.6.pp[plot.6$genus == "Betula"]))
-plot(envelope(plot.6.pp[plot.6$genus == "Betula"], Kest))
+plot(plot.6.pp[plot.6$genus == Betula])
+plot(density(plot.6.pp[plot.6$genus == Betula]))
+plot(envelope(plot.6.pp[plot.6$genus == Betula], Kest))
+ddg.procedure(pname="Plot density and envelop", ins=list("plot.6.pp","Betula"))
+ddg.graphic.out("plot7graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -1488,44 +1625,12 @@ plot(envelope(plot.6.pp[plot.6$genus == "Betula"], Kest))
 
 #```r
 
-plot(plot.6.pp[plot.6$genus == "Quercus"])
-plot(density(plot.6.pp[plot.6$genus == "Quercus"]))
-plot(envelope(plot.6.pp[plot.6$genus == "Quercus"], Kest))
+plot(plot.6.pp[plot.6$genus == Quercus])
+plot(density(plot.6.pp[plot.6$genus == Quercus]))
+plot(envelope(plot.6.pp[plot.6$genus == Quercus], Kest))
+ddg.procedure(pname="Plot density and envelop", ins=list("plot.6.pp","Quercus"))
+ddg.graphic.out("plot7graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
-ddg.save()
-#```
-## Generating 99 simulations of CSR  ...
-## 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
-## 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30,
-## 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45,
-## 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60,
-## 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75,
-## 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90,
-## 91, 92, 93, 94, 95, 96, 97, 98,  99.
-## 
-## Done.
-#```
-
-#```
-##      lty col  key      label
-## obs    1   1  obs  K[obs](r)
-## theo   2   2 theo K[theo](r)
-## hi     1   8   hi   K[hi](r)
-## lo     1   8   lo   K[lo](r)
-##                                                meaning
-## obs            observed value of K(r) for data pattern
-## theo                 theoretical value of K(r) for CSR
-## hi   upper pointwise envelope of K(r) from simulations
-## lo   lower pointwise envelope of K(r) from simulations
-#```
-
-#```r
-
-plot(plot.6.pp[plot.6$genus == "Acer"])
-plot(density(plot.6.pp[plot.6$genus == "Acer"]))
-plot(envelope(plot.6.pp[plot.6$genus == "Acer"], Kest))
-#```
-
 #```
 ## Generating 99 simulations of CSR  ...
 ## 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
@@ -1554,9 +1659,46 @@ plot(envelope(plot.6.pp[plot.6$genus == "Acer"], Kest))
 
 #```r
 
-plot(plot.6.pp[plot.6$genus == "Pinus"])
-plot(density(plot.6.pp[plot.6$genus == "Pinus"]))
-plot(envelope(plot.6.pp[plot.6$genus == "Pinus"], Kest))
+plot(plot.6.pp[plot.6$genus == Acer])
+plot(density(plot.6.pp[plot.6$genus == Acer]))
+plot(envelope(plot.6.pp[plot.6$genus == Acer], Kest))
+ddg.procedure(pname="Plot density and envelop", ins=list("plot.6.pp","Acer"))
+ddg.graphic.out("plot7graph", pname="Plot density and envelop",graphic.fext="pdf")
+#```
+
+#```
+## Generating 99 simulations of CSR  ...
+## 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
+## 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30,
+## 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45,
+## 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60,
+## 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75,
+## 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90,
+## 91, 92, 93, 94, 95, 96, 97, 98,  99.
+## 
+## Done.
+#```
+
+#```
+##      lty col  key      label
+## obs    1   1  obs  K[obs](r)
+## theo   2   2 theo K[theo](r)
+## hi     1   8   hi   K[hi](r)
+## lo     1   8   lo   K[lo](r)
+##                                                meaning
+## obs            observed value of K(r) for data pattern
+## theo                 theoretical value of K(r) for CSR
+## hi   upper pointwise envelope of K(r) from simulations
+## lo   lower pointwise envelope of K(r) from simulations
+#```
+
+#```r
+
+plot(plot.6.pp[plot.6$genus == Pinus])
+plot(density(plot.6.pp[plot.6$genus == Pinus]))
+plot(envelope(plot.6.pp[plot.6$genus == Pinus], Kest))
+ddg.procedure(pname="Plot density and envelop", ins=list("plot.6.pp","Pinus"))
+ddg.graphic.out("plot7graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -1589,44 +1731,12 @@ plot(envelope(plot.6.pp[plot.6$genus == "Pinus"], Kest))
 
 #```r
 
-plot(plot.7.pp[plot.7$genus == "Tsuga"])
-plot(density(plot.7.pp[plot.7$genus == "Tsuga"]))
-plot(envelope(plot.7.pp[plot.7$genus == "Tsuga"], Kest))
+plot(plot.7.pp[plot.7$genus == Tsuga])
+plot(density(plot.7.pp[plot.7$genus == Tsuga]))
+plot(envelope(plot.7.pp[plot.7$genus == Tsuga], Kest))
+ddg.procedure(pname="Plot density and envelop", ins=list("plot.7.pp","Tsuga"))
+ddg.graphic.out("plot7graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
-ddg.save()
-#```
-## Generating 99 simulations of CSR  ...
-## 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
-## 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30,
-## 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45,
-## 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60,
-## 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75,
-## 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90,
-## 91, 92, 93, 94, 95, 96, 97, 98,  99.
-## 
-## Done.
-#```
-
-#```
-##      lty col  key      label
-## obs    1   1  obs  K[obs](r)
-## theo   2   2 theo K[theo](r)
-## hi     1   8   hi   K[hi](r)
-## lo     1   8   lo   K[lo](r)
-##                                                meaning
-## obs            observed value of K(r) for data pattern
-## theo                 theoretical value of K(r) for CSR
-## hi   upper pointwise envelope of K(r) from simulations
-## lo   lower pointwise envelope of K(r) from simulations
-#```
-
-#```r
-
-plot(plot.7.pp[plot.7$genus == "Betula"])
-plot(density(plot.7.pp[plot.7$genus == "Betula"]))
-plot(envelope(plot.7.pp[plot.7$genus == "Betula"], Kest))
-#```
-
 #```
 ## Generating 99 simulations of CSR  ...
 ## 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
@@ -1655,9 +1765,11 @@ plot(envelope(plot.7.pp[plot.7$genus == "Betula"], Kest))
 
 #```r
 
-plot(plot.7.pp[plot.7$genus == "Quercus"])
-plot(density(plot.7.pp[plot.7$genus == "Quercus"]))
-plot(envelope(plot.7.pp[plot.7$genus == "Quercus"], Kest))
+plot(plot.7.pp[plot.7$genus == Betula])
+plot(density(plot.7.pp[plot.7$genus == Betula]))
+plot(envelope(plot.7.pp[plot.7$genus == Betula], Kest))
+ddg.procedure(pname="Plot density and envelop", ins=list("plot.7.pp","Betula"))
+ddg.graphic.out("plot7graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -1688,9 +1800,11 @@ plot(envelope(plot.7.pp[plot.7$genus == "Quercus"], Kest))
 
 #```r
 
-plot(plot.7.pp[plot.7$genus == "Acer"])
-plot(density(plot.7.pp[plot.7$genus == "Acer"]))
-plot(envelope(plot.7.pp[plot.7$genus == "Acer"], Kest))
+plot(plot.7.pp[plot.7$genus == Quercus])
+plot(density(plot.7.pp[plot.7$genus == Quercus]))
+plot(envelope(plot.7.pp[plot.7$genus == Quercus], Kest))
+ddg.procedure(pname="Plot density and envelop", ins=list("plot.7.pp","Quercus"))
+ddg.graphic.out("plot7graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -1721,9 +1835,46 @@ plot(envelope(plot.7.pp[plot.7$genus == "Acer"], Kest))
 
 #```r
 
-plot(plot.7.pp[plot.7$genus == "Pinus"])
-plot(density(plot.7.pp[plot.7$genus == "Pinus"]))
-plot(envelope(plot.7.pp[plot.7$genus == "Pinus"], Kest))
+plot(plot.7.pp[plot.7$genus == Acer])
+plot(density(plot.7.pp[plot.7$genus == Acer]))
+plot(envelope(plot.7.pp[plot.7$genus == Acer], Kest))
+ddg.procedure(pname="Plot density and envelop", ins=list("plot.7.pp","Acer"))
+ddg.graphic.out("plot7graph", pname="Plot density and envelop",graphic.fext="pdf")
+#```
+
+#```
+## Generating 99 simulations of CSR  ...
+## 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
+## 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30,
+## 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45,
+## 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60,
+## 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75,
+## 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90,
+## 91, 92, 93, 94, 95, 96, 97, 98,  99.
+## 
+## Done.
+#```
+
+#```
+##      lty col  key      label
+## obs    1   1  obs  K[obs](r)
+## theo   2   2 theo K[theo](r)
+## hi     1   8   hi   K[hi](r)
+## lo     1   8   lo   K[lo](r)
+##                                                meaning
+## obs            observed value of K(r) for data pattern
+## theo                 theoretical value of K(r) for CSR
+## hi   upper pointwise envelope of K(r) from simulations
+## lo   lower pointwise envelope of K(r) from simulations
+#```
+
+#```r
+
+plot(plot.7.pp[plot.7$genus == Pinus])
+plot(density(plot.7.pp[plot.7$genus == Pinus]))
+plot(envelope(plot.7.pp[plot.7$genus == Pinus], Kest))
+ddg.procedure(pname="Plot density and envelop", ins=list("plot.7.pp","Pinus"))
+ddg.graphic.out("plot7graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -1756,9 +1907,11 @@ plot(envelope(plot.7.pp[plot.7$genus == "Pinus"], Kest))
 
 #```r
 
-plot(plot.8.pp[plot.8$genus == "Tsuga"])
-plot(density(plot.8.pp[plot.8$genus == "Tsuga"]))
-plot(envelope(plot.8.pp[plot.8$genus == "Tsuga"], Kest))
+plot(plot.8.pp[plot.8$genus == Tsuga])
+plot(density(plot.8.pp[plot.8$genus == Tsuga]))
+plot(envelope(plot.8.pp[plot.8$genus == Tsuga], Kest))
+ddg.procedure(pname="Plot density and envelop", ins=list("plot.8.pp","Tsuga"))
+ddg.graphic.out("plot8graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -1789,9 +1942,11 @@ plot(envelope(plot.8.pp[plot.8$genus == "Tsuga"], Kest))
 
 #```r
 
-plot(plot.8.pp[plot.8$genus == "Betula"])
-plot(density(plot.8.pp[plot.8$genus == "Betula"]))
-plot(envelope(plot.8.pp[plot.8$genus == "Betula"], Kest))
+plot(plot.8.pp[plot.8$genus == Betula])
+plot(density(plot.8.pp[plot.8$genus == Betula]))
+plot(envelope(plot.8.pp[plot.8$genus == Betula], Kest))
+ddg.procedure(pname="Plot density and envelop", ins=list("plot.8.pp","Betula"))
+ddg.graphic.out("plot8graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -1822,9 +1977,11 @@ plot(envelope(plot.8.pp[plot.8$genus == "Betula"], Kest))
 
 #```r
 
-plot(plot.8.pp[plot.8$genus == "Quercus"])
-plot(density(plot.8.pp[plot.8$genus == "Quercus"]))
-plot(envelope(plot.8.pp[plot.8$genus == "Quercus"], Kest))
+plot(plot.8.pp[plot.8$genus == Quercus])
+plot(density(plot.8.pp[plot.8$genus == Quercus]))
+plot(envelope(plot.8.pp[plot.8$genus == Quercus], Kest))
+ddg.procedure(pname="Plot density and envelop", ins=list("plot.8.pp","Quercus"))
+ddg.graphic.out("plot8graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -1855,9 +2012,11 @@ plot(envelope(plot.8.pp[plot.8$genus == "Quercus"], Kest))
 
 #```r
 
-plot(plot.8.pp[plot.8$genus == "Acer"])
-plot(density(plot.8.pp[plot.8$genus == "Acer"]))
-plot(envelope(plot.8.pp[plot.8$genus == "Acer"], Kest))
+plot(plot.8.pp[plot.8$genus == Acer])
+plot(density(plot.8.pp[plot.8$genus == Acer]))
+plot(envelope(plot.8.pp[plot.8$genus == Acer], Kest))
+ddg.procedure(pname="Plot density and envelop", ins=list("plot.8.pp","Acer"))
+ddg.graphic.out("plot8graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
 
 #```
@@ -1888,11 +2047,14 @@ plot(envelope(plot.8.pp[plot.8$genus == "Acer"], Kest))
 
 #```r
 
-plot(plot.8.pp[plot.8$genus == "Pinus"])
-plot(density(plot.8.pp[plot.8$genus == "Pinus"]))
-plot(envelope(plot.8.pp[plot.8$genus == "Pinus"], Kest))
+plot(plot.8.pp[plot.8$genus == Pinus])
+plot(density(plot.8.pp[plot.8$genus == Pinus]))
+plot(envelope(plot.8.pp[plot.8$genus == Pinus], Kest))
+ddg.procedure(pname="Plot density and envelop", ins=list("plot.8.pp","Pinus"))
+ddg.graphic.out("plot8graph", pname="Plot density and envelop",graphic.fext="pdf")
 #```
-
+ddg.finish("Plot Information, Contours, and K")
+ddg.finish("Compute Ripley's K")
 #```
 ## Generating 99 simulations of CSR  ...
 ## 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
@@ -1924,393 +2086,415 @@ plot(envelope(plot.8.pp[plot.8$genus == "Pinus"], Kest))
 
 #Next, run maximum absolute deviation tests of CSR on ppp data
 
-
+ddg.start("Run Tests on CSR")
 #```r
 
-mad.test(plot.1.pp[plot.1$genus == "Tsuga"], Lest, verbose = FALSE, nsim = 99)
+mad.test(plot.1.pp[plot.1$genus == Tsuga], Lest, verbose = FALSE, nsim = 99)
+ddg.procedure(pname="mad.test", ins=list("plot.1.pp", "Tsuga"))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
 ## data:  plot.1.pp[plot.1$genus == "Tsuga"]
 ## mad = 1.016, rank = 1, p-value = 0.01
 #```
 
 #```r
-mad.test(plot.1.pp[plot.1$genus == "Betula"], Lest, verbose = FALSE, nsim = 99)
+mad.test(plot.1.pp[plot.1$genus == Betula], Lest, verbose = FALSE, nsim = 99)
+ddg.procedure(pname="mad.test", ins=list("plot.1.pp", "Betula"))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
 ## data:  plot.1.pp[plot.1$genus == "Betula"]
 ## mad = 17, rank = 1, p-value = 0.01
 #```
 
 #```r
-mad.test(plot.1.pp[plot.1$genus == "Quercus"], Lest, verbose = FALSE, nsim = 99)
+mad.test(plot.1.pp[plot.1$genus == Quercus], Lest, verbose = FALSE, nsim = 99)
+ddg.procedure(pname="mad.test", ins=list("plot.1.pp", "Quercus"))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
-## data:  plot.1.pp[plot.1$genus == "Quercus"]
+## data:  plot.1.pp[plot.1$genus == Quercus]
 ## mad = 5.256, rank = 1, p-value = 0.01
 #```
 
 #```r
-mad.test(plot.1.pp[plot.1$genus == "Acer"], Lest, verbose = FALSE, nsim = 99)
+mad.test(plot.1.pp[plot.1$genus == Acer], Lest, verbose = FALSE, nsim = 99)
+ddg.procedure(pname="mad.test", ins=list("plot.1.pp", "Acer"))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
-## data:  plot.1.pp[plot.1$genus == "Acer"]
+## data:  plot.1.pp[plot.1$genus == Acer]
 ## mad = 6.744, rank = 1, p-value = 0.01
 #```
 
 #```r
-mad.test(plot.1.pp[plot.1$genus == "Pinus"], Lest, verbose = FALSE, nsim = 99)
+mad.test(plot.1.pp[plot.1$genus == Pinus], Lest, verbose = FALSE, nsim = 99)
+ddg.procedure(pname="mad.test", ins=list("plot.1.pp", "Pinus"))
 #```
-ddg.save()
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
-## data:  plot.1.pp[plot.1$genus == "Pinus"]
+## data:  plot.1.pp[plot.1$genus == Pinus]
 ## mad = 1.467, rank = 24, p-value = 0.24
 #```
 
 #```r
 
-mad.test(plot.2.pp[plot.2$genus == "Tsuga"], Lest, verbose = FALSE, nsim = 99)
+mad.test(plot.2.pp[plot.2$genus == Tsuga], Lest, verbose = FALSE, nsim = 99)
+ddg.procedure(pname="mad.test", ins=list("plot.2", "Tsuga"))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
-## data:  plot.2.pp[plot.2$genus == "Tsuga"]
+## data:  plot.2.pp[plot.2$genus == Tsuga]
 ## mad = 1.196, rank = 1, p-value = 0.01
 #```
 
 #```r
-mad.test(plot.2.pp[plot.2$genus == "Betula"], Lest, verbose = FALSE, nsim = 99)
+mad.test(plot.2.pp[plot.2$genus == Betula], Lest, verbose = FALSE, nsim = 99)
+ddg.procedure(pname="mad.test", ins=list("plot.2", "Betula"))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
-## data:  plot.2.pp[plot.2$genus == "Betula"]
+## data:  plot.2.pp[plot.2$genus == Betula]
 ## mad = 3.826, rank = 10, p-value = 0.1
 #```
 
 #```r
-mad.test(plot.2.pp[plot.2$genus == "Quercus"], Lest, verbose = FALSE, nsim = 99)
+mad.test(plot.2.pp[plot.2$genus == Quercus], Lest, verbose = FALSE, nsim = 99)
+ddg.procedure(pname="mad.test", ins=list("plot.2", "Quercus"))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
-## data:  plot.2.pp[plot.2$genus == "Quercus"]
+## data:  plot.2.pp[plot.2$genus == Quercus]
 ## mad = 2.451, rank = 1, p-value = 0.01
 #```
 
 #```r
-mad.test(plot.2.pp[plot.2$genus == "Acer"], Lest, verbose = FALSE, nsim = 99)
+mad.test(plot.2.pp[plot.2$genus == Acer], Lest, verbose = FALSE, nsim = 99)
+ddg.procedure(pname="mad.test", ins=list("plot.2", "Acer"))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
-## data:  plot.2.pp[plot.2$genus == "Acer"]
+## data:  plot.2.pp[plot.2$genus == Acer]
 ## mad = 1.653, rank = 5, p-value = 0.05
 #```
 
 #```r
-mad.test(plot.2.pp[plot.2$genus == "Pinus"], Lest, verbose = FALSE, nsim = 99)
+mad.test(plot.2.pp[plot.2$genus == Pinus], Lest, verbose = FALSE, nsim = 99)
+ddg.procedure(pname="mad.test", ins=list("plot.2", "Pinus"))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
-## data:  plot.2.pp[plot.2$genus == "Pinus"]
+## data:  plot.2.pp[plot.2$genus == Pinus]
 ## mad = 3.442, rank = 1, p-value = 0.01
 #```
 
 #```r
 
-mad.test(plot.3.pp[plot.3$genus == "Tsuga"], Lest, verbose = FALSE, nsim = 99)
+mad.test(plot.3.pp[plot.3$genus == Tsuga], Lest, verbose = FALSE, nsim = 99)
+ddg.procedure(pname="mad.test", ins=list("plot.3", "Tsuga"))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
-## data:  plot.3.pp[plot.3$genus == "Tsuga"]
+## data:  plot.3.pp[plot.3$genus == Tsuga]
 ## mad = 1.032, rank = 1, p-value = 0.01
 #```
 
 #```r
-mad.test(plot.3.pp[plot.3$genus == "Betula"], Lest, verbose = FALSE, nsim = 99)
+mad.test(plot.3.pp[plot.3$genus == Betula], Lest, verbose = FALSE, nsim = 99)
+ddg.procedure(pname="mad.test", ins=list("plot.3", "Betula"))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
-## data:  plot.3.pp[plot.3$genus == "Betula"]
+## data:  plot.3.pp[plot.3$genus == Betula]
 ## mad = 3.301, rank = 1, p-value = 0.01
 #```
 
 #```r
-mad.test(plot.3.pp[plot.3$genus == "Quercus"], Lest, verbose = FALSE, nsim = 99)
+mad.test(plot.3.pp[plot.3$genus == Quercus], Lest, verbose = FALSE, nsim = 99)
+ddg.procedure(pname="mad.test", ins=list("plot.3", "Quercus"))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
-## data:  plot.3.pp[plot.3$genus == "Quercus"]
+## data:  plot.3.pp[plot.3$genus == Quercus]
 ## mad = 3.272, rank = 1, p-value = 0.01
 #```
 
 #```r
-mad.test(plot.3.pp[plot.3$genus == "Acer"], Lest, verbose = FALSE, nsim = 99)
+mad.test(plot.3.pp[plot.3$genus == Acer], Lest, verbose = FALSE, nsim = 99)
+ddg.procedure(pname="mad.test", ins=list("plot.3", "Acer"))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
-## data:  plot.3.pp[plot.3$genus == "Acer"]
+## data:  plot.3.pp[plot.3$genus == Acer]
 ## mad = 3.35, rank = 2, p-value = 0.02
 #```
 
 #```r
-mad.test(plot.3.pp[plot.3$genus == "Pinus"], Lest, verbose = FALSE, nsim = 99)
+mad.test(plot.3.pp[plot.3$genus == Pinus], Lest, verbose = FALSE, nsim = 99)
+ddg.procedure(pname="mad.test", ins=list("plot.3", "Pinus"))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
-## data:  plot.3.pp[plot.3$genus == "Pinus"]
+## data:  plot.3.pp[plot.3$genus == Pinus]
 ## mad = 7.287, rank = 3, p-value = 0.03
 #```
 
 #```r
 
-mad.test(plot.4.pp[plot.4$genus == "Tsuga"], Lest, verbose = FALSE, nsim = 99)
+mad.test(plot.4.pp[plot.4$genus == Tsuga], Lest, verbose = FALSE, nsim = 99)
+ddg.procedure(pname="mad.test", ins=list("plot.4", "Tsuga"))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
-## data:  plot.4.pp[plot.4$genus == "Tsuga"]
+## data:  plot.4.pp[plot.4$genus == Tsuga]
 ## mad = 0.6014, rank = 1, p-value = 0.01
 #```
 
 #```r
-mad.test(plot.4.pp[plot.4$genus == "Betula"], Lest, verbose = FALSE, nsim = 99)
+mad.test(plot.4.pp[plot.4$genus == Betula], Lest, verbose = FALSE, nsim = 99)
+ddg.procedure(pname="mad.test", ins=list("plot.4", "Betula"))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
-## data:  plot.4.pp[plot.4$genus == "Betula"]
+## data:  plot.4.pp[plot.4$genus == Betula]
 ## mad = 2.95, rank = 1, p-value = 0.01
 #```
 
 #```r
-mad.test(plot.4.pp[plot.4$genus == "Quercus"], Lest, verbose = FALSE, nsim = 99)
+mad.test(plot.4.pp[plot.4$genus == Quercus], Lest, verbose = FALSE, nsim = 99)
+ddg.procedure(pname="mad.test", ins=list("plot.4", "Quercus"))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
-## data:  plot.4.pp[plot.4$genus == "Quercus"]
+## data:  plot.4.pp[plot.4$genus == Quercus]
 ## mad = 2.418, rank = 4, p-value = 0.04
 #```
 
 #```r
-mad.test(plot.4.pp[plot.4$genus == "Acer"], Lest, verbose = FALSE, nsim = 99)
+mad.test(plot.4.pp[plot.4$genus == Acer], Lest, verbose = FALSE, nsim = 99)
+ddg.procedure(pname="mad.test", ins=list("plot.4", "Acer"))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
-## data:  plot.4.pp[plot.4$genus == "Acer"]
+## data:  plot.4.pp[plot.4$genus == Acer]
 ## mad = 3.07, rank = 1, p-value = 0.01
 #```
 
 #```r
-mad.test(plot.4.pp[plot.4$genus == "Pinus"], Lest, verbose = FALSE, nsim = 99)
+mad.test(plot.4.pp[plot.4$genus == Pinus], Lest, verbose = FALSE, nsim = 99)
+ddg.procedure(pname="mad.test", ins=list("plot.4", "Pinus"))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
-## data:  plot.4.pp[plot.4$genus == "Pinus"]
+## data:  plot.4.pp[plot.4$genus == Pinus]
 ## mad = 10.7, rank = 17, p-value = 0.17
 #```
 
 #```r
 
-mad.test(plot.5.pp[plot.5$genus == "Tsuga"], Lest, verbose = FALSE, nsim = 99)
+mad.test(plot.5.pp[plot.5$genus == Tsuga], Lest, verbose = FALSE, nsim = 99)
+ddg.procedure(pname="mad.test", ins=list("plot.5", "Tsuga"))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
-## data:  plot.5.pp[plot.5$genus == "Tsuga"]
+## data:  plot.5.pp[plot.5$genus == Tsuga]
 ## mad = 0.7566, rank = 1, p-value = 0.01
 #```
 
 #```r
-mad.test(plot.5.pp[plot.5$genus == "Betula"], Lest, verbose = FALSE, nsim = 99)
+mad.test(plot.5.pp[plot.5$genus == Betula], Lest, verbose = FALSE, nsim = 99)
+ddg.procedure(pname="mad.test", ins=list("plot.5", "Betula"))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
-## data:  plot.5.pp[plot.5$genus == "Betula"]
+## data:  plot.5.pp[plot.5$genus == Betula]
 ## mad = 2.039, rank = 1, p-value = 0.01
 #```
 
 #```r
-mad.test(plot.5.pp[plot.5$genus == "Quercus"], Lest, verbose = FALSE, nsim = 99)
+mad.test(plot.5.pp[plot.5$genus == Quercus], Lest, verbose = FALSE, nsim = 99)
+ddg.procedure(pname="mad.test", ins=list("plot.5", "Quercus"))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
-## data:  plot.5.pp[plot.5$genus == "Quercus"]
+## data:  plot.5.pp[plot.5$genus == Quercus]
 ## mad = 2.853, rank = 12, p-value = 0.12
 #```
 
 #```r
-mad.test(plot.5.pp[plot.5$genus == "Acer"], Lest, verbose = FALSE, nsim = 99)
+mad.test(plot.5.pp[plot.5$genus == Acer], Lest, verbose = FALSE, nsim = 99)
+ddg.procedure(pname="mad.test", ins=list("plot.5", "Acer"))
 #```
-ddg.save()
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
-## data:  plot.5.pp[plot.5$genus == "Acer"]
+## data:  plot.5.pp[plot.5$genus == Acer]
 ## mad = 1.97, rank = 3, p-value = 0.03
 #```
 
@@ -2318,6 +2502,7 @@ ddg.save()
 tryCatch(
     mad.test(plot.5.pp[plot.5$genus == "Pinus"], Lest, verbose = FALSE, nsim = 99),
     error = function (e) {print(e)})
+ddg.procedure(pname="mad.test", ins=list("plot.5", "Pinus"))
 #```
 
 #```
@@ -2327,254 +2512,269 @@ tryCatch(
 
 #```r
 
-mad.test(plot.6.pp[plot.6$genus == "Tsuga"], Lest, verbose = FALSE, nsim = 99)
+mad.test(plot.6.pp[plot.6$genus == Tsuga], Lest, verbose = FALSE, nsim = 99)
+ddg.procedure(pname="mad.test", ins=list("plot.6", "Tsuga"))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
-## data:  plot.6.pp[plot.6$genus == "Tsuga"]
+## data:  plot.6.pp[plot.6$genus == Tsuga]
 ## mad = 1.098, rank = 1, p-value = 0.01
 #```
 
 #```r
-mad.test(plot.6.pp[plot.6$genus == "Betula"], Lest, verbose = FALSE, nsim = 99)
+mad.test(plot.6.pp[plot.6$genus == Betula], Lest, verbose = FALSE, nsim = 99)
+ddg.procedure(pname="mad.test", ins=list("plot.6", "Betula"))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
-## data:  plot.6.pp[plot.6$genus == "Betula"]
+## data:  plot.6.pp[plot.6$genus == Betula]
 ## mad = 3.468, rank = 1, p-value = 0.01
 #```
 
 #```r
-mad.test(plot.6.pp[plot.6$genus == "Quercus"], Lest, verbose = FALSE, nsim = 99)
+mad.test(plot.6.pp[plot.6$genus == Quercus], Lest, verbose = FALSE, nsim = 99)
+ddg.procedure(pname="mad.test", ins=list("plot.6", "Quercus"))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
-## data:  plot.6.pp[plot.6$genus == "Quercus"]
+## data:  plot.6.pp[plot.6$genus == Quercus]
 ## mad = 4.589, rank = 59, p-value = 0.59
 #```
 
 #```r
-mad.test(plot.6.pp[plot.6$genus == "Acer"], Lest, verbose = FALSE, nsim = 99)
+mad.test(plot.6.pp[plot.6$genus == Acer], Lest, verbose = FALSE, nsim = 99)
+ddg.procedure(pname="mad.test", ins=list("plot.6", "Acer"))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
-## data:  plot.6.pp[plot.6$genus == "Acer"]
+## data:  plot.6.pp[plot.6$genus == Acer]
 ## mad = 3.882, rank = 1, p-value = 0.01
 #```
 
 #```r
-mad.test(plot.6.pp[plot.6$genus == "Pinus"], Lest, verbose = FALSE, nsim = 99)
+mad.test(plot.6.pp[plot.6$genus == Pinus], Lest, verbose = FALSE, nsim = 99)
+ddg.procedure(pname="mad.test", ins=list("plot.6", "Pinus"))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
-## data:  plot.6.pp[plot.6$genus == "Pinus"]
+## data:  plot.6.pp[plot.6$genus == Pinus]
 ## mad = 11.43, rank = 1, p-value = 0.01
 #```
 
 #```r
 
-mad.test(plot.7.pp[plot.7$genus == "Tsuga"], Lest, verbose = FALSE, nsim = 99)
+mad.test(plot.7.pp[plot.7$genus == Tsuga], Lest, verbose = FALSE, nsim = 99)
+ddg.procedure(pname="mad.test", ins=list("plot.7", "Tsuga"))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
-## data:  plot.7.pp[plot.7$genus == "Tsuga"]
+## data:  plot.7.pp[plot.7$genus == Tsuga]
 ## mad = 10.23, rank = 1, p-value = 0.01
 #```
 
 #```r
-mad.test(plot.7.pp[plot.7$genus == "Betula"], Lest, verbose = FALSE, nsim = 99)
+mad.test(plot.7.pp[plot.7$genus == Betula], Lest, verbose = FALSE, nsim = 99)
+ddg.procedure(pname="mad.test", ins=list("plot.7", "Betula"))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
-## data:  plot.7.pp[plot.7$genus == "Betula"]
+## data:  plot.7.pp[plot.7$genus == Betula]
 ## mad = 4.043, rank = 1, p-value = 0.01
 #```
 
 #```r
-mad.test(plot.7.pp[plot.7$genus == "Quercus"], Lest, verbose = FALSE, nsim = 99)
+mad.test(plot.7.pp[plot.7$genus == Quercus], Lest, verbose = FALSE, nsim = 99)
+ddg.procedure(pname="mad.test", ins=list("plot.7", "Quercus"))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
-## data:  plot.7.pp[plot.7$genus == "Quercus"]
+## data:  plot.7.pp[plot.7$genus == Quercus]
 ## mad = 3.823, rank = 1, p-value = 0.01
 #```
 
 #```r
-mad.test(plot.7.pp[plot.7$genus == "Acer"], Lest, verbose = FALSE, nsim = 99)
+mad.test(plot.7.pp[plot.7$genus == Acer], Lest, verbose = FALSE, nsim = 99)
+ddg.procedure(pname="mad.test", ins=list("plot.7", "Acer"))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
-## data:  plot.7.pp[plot.7$genus == "Acer"]
+## data:  plot.7.pp[plot.7$genus == Acer]
 ## mad = 4.794, rank = 1, p-value = 0.01
 #```
 
 #```r
-mad.test(plot.7.pp[plot.7$genus == "Pinus"], Lest, verbose = FALSE, nsim = 99)
+mad.test(plot.7.pp[plot.7$genus == Pinus], Lest, verbose = FALSE, nsim = 99)
+ddg.procedure(pname="mad.test", ins=list("plot.7", "Pinus"))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
-## data:  plot.7.pp[plot.7$genus == "Pinus"]
+## data:  plot.7.pp[plot.7$genus == Pinus]
 ## mad = 2.411, rank = 1, p-value = 0.01
 #```
 
 #```r
 
-mad.test(plot.8.pp[plot.8$genus == "Tsuga"], Lest, verbose = FALSE, nsim = 99)
+mad.test(plot.8.pp[plot.8$genus == Tsuga], Lest, verbose = FALSE, nsim = 99)
+ddg.procedure(pname="mad.test", ins=list("plot.8", "Tsuga"))
 #```
-ddg.save()
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
-## data:  plot.8.pp[plot.8$genus == "Tsuga"]
+## data:  plot.8.pp[plot.8$genus == Tsuga]
 ## mad = 8.653, rank = 5, p-value = 0.05
 #```
 
 #```r
-mad.test(plot.8.pp[plot.8$genus == "Betula"], Lest, verbose = FALSE, nsim = 99)
+mad.test(plot.8.pp[plot.8$genus == Betula], Lest, verbose = FALSE, nsim = 99)
+ddg.procedure(pname="mad.test", ins=list("plot.8", "Betula"))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
-## data:  plot.8.pp[plot.8$genus == "Betula"]
+## data:  plot.8.pp[plot.8$genus == Betula]
 ## mad = 1.542, rank = 1, p-value = 0.01
 #```
 
 #```r
-mad.test(plot.8.pp[plot.8$genus == "Quercus"], Lest, verbose = FALSE, nsim = 99)
+mad.test(plot.8.pp[plot.8$genus == Quercus], Lest, verbose = FALSE, nsim = 99)
+ddg.procedure(pname="mad.test", ins=list("plot.8", "Quercus"))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
-## data:  plot.8.pp[plot.8$genus == "Quercus"]
+## data:  plot.8.pp[plot.8$genus == Quercus]
 ## mad = 1.787, rank = 1, p-value = 0.01
 #```
 
 #```r
-mad.test(plot.8.pp[plot.8$genus == "Acer"], Lest, verbose = FALSE, nsim = 99)
+mad.test(plot.8.pp[plot.8$genus == Acer], Lest, verbose = FALSE, nsim = 99)
+ddg.procedure(pname="mad.test", ins=list("plot.8", "Acer"))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
-## data:  plot.8.pp[plot.8$genus == "Acer"]
+## data:  plot.8.pp[plot.8$genus == Acer]
 ## mad = 1.194, rank = 1, p-value = 0.01
 #```
 
 #```r
-mad.test(plot.8.pp[plot.8$genus == "Pinus"], Lest, verbose = FALSE, nsim = 99)
+mad.test(plot.8.pp[plot.8$genus == Pinus], Lest, verbose = FALSE, nsim = 99)
+ddg.procedure(pname="mad.test", ins=list("plot.8", "Pinus"))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
-## data:  plot.8.pp[plot.8$genus == "Pinus"]
+## data:  plot.8.pp[plot.8$genus == Pinus]
 ## mad = 4.07, rank = 1, p-value = 0.01
 #```
-
-
+ddg.finish("Run Tests on CSR")
+ddg.finish("Data Analysis")
 
 #Plot age x dbh, with smoother and marginal histograms - ms. Figure 8
 
 #```r
 
 #### Extract tree ages, combine with species and dbh from trees
+ddg.start("Tree data combining")
 
 attach(dendro)
 
@@ -2582,8 +2782,11 @@ tree.sprout <- by(dendro[, 6], INDICES = as.factor(dendro$TreeNum), min, simplif
 
 tree.ids <- by(dendro[, 1], INDICES = as.factor(dendro$TreeNum), mean, simplify = FALSE)
 
+ddg.procedure(pname="Generate sprouts and ids", ins=list("dendro"), outs.data=list("tree.sprout", "tree.ids"))
+
 sprout <- NULL
 for (i in 1:length(tree.sprout)) sprout[i] <- tree.sprout[[i]]
+ddg.procedure("Copy")
 
 plotnum <- NULL
 for (i in 1:length(tree.ids)) plotnum[i] <- tree.ids[[i]]
@@ -2602,9 +2805,12 @@ tree.ages[, 4] <- plotnum
 
 names(tree.ages)[4] <- "plot"
 
+ddg.procedure(pname="Combine ages and ids", ins=list("tree.sprout", "tree.ids"), outs.data=list("tree.ages"))
+
 
 ## deal with crashes from duplicate records at 27, 119, 230
-
+ddg.start("Deal with duplicate records")
+ddg.procedure(pname="Deal with duplicate ids", ins=list("tree.ages", "trees"))
 for (i in 1:26) {
     tree.ages[i, 5] <- trees$species[trees$tree == tree.ages$tree.ids[i]]
 }
@@ -2618,7 +2824,9 @@ for (i in 119:229) {
 tree.ages[27, 5] <- "TSCA"
 tree.ages[118, 5] <- "PIST"
 tree.ages[230, 5] <- "TSCA"
+ddg.data.out(pname="Deal with duplicate ids", dname="tree.ages")
 
+ddg.procedure("Deal with duplicate dbh", ins=list("tree.ages", "trees"))
 for (i in 1:26) {
     tree.ages[i, 6] <- trees$dbh[trees$tree == tree.ages$tree.ids[i]]
 }
@@ -2632,7 +2840,9 @@ for (i in 119:229) {
 tree.ages[27, 6] <- 15
 tree.ages[118, 6] <- 62.5
 tree.ages[230, 6] <- 39.5
+ddg.data.out(pname="Deal with duplicate dbh", dname="tree.ages")
 
+ddg.procedure(pname="Deal with duplicate genus", ins=list("tree.ages", "trees"))
 for (i in 1:26) {
     tree.ages[i, 7] <- trees$genus[trees$tree == tree.ages$tree.ids[i]]
 }
@@ -2643,9 +2853,9 @@ for (i in 119:229) {
     tree.ages[i, 7] <- trees$genus[trees$tree == tree.ages$tree.ids[i]]
 }
 
-tree.ages[27, 7] <- "Tsuga"
-tree.ages[118, 7] <- "Pinus"
-tree.ages[230, 7] <- "Tsuga"
+tree.ages[27, 7] <- Tsuga
+tree.ages[118, 7] <- Pinus
+tree.ages[230, 7] <- Tsuga
 
 tree.ages[, 8] <- NA
 
@@ -2660,6 +2870,7 @@ detach(dendro)
 
 names(tree.ages)[5:9] <- c("species", "dbh", "genus", "init.treat", "block")
 
+ddg.data.out(pname="Deal with duplicate genus", dname="tree.ages")
 
 head(tree.ages)
 #```
@@ -2673,109 +2884,133 @@ head(tree.ages)
 ## 5       21   1946       57    4    TSCA  6.4  Tsuga    hemlock Ridge
 ## 6       28   1937       66    4    TSCA 18.0  Tsuga    hemlock Ridge
 #```
-
-
+ddg.finish("Deal with duplicate records")
+ddg.finish("Tree data combining")
 #Create the plot
 
 
 #```r
-
+ddg.start("Plot data")
 #original colors for all genera
-
+ddg.procedure(pname="Set color data", ins=list("tree.ages"))
 genera.colors <- c("firebrick4", "coral", "orange4", "black", "orange", 
-  		"darkmagenta", "darkolivegreen1", "yellow", "orange3", "olivedrab3", 
-			"red", "tan4", "maroon4", "darkgreen")
+        "darkmagenta", "darkolivegreen1", "yellow", "orange3", "olivedrab3", 
+            "red", "tan4", "maroon4", "darkgreen")
 
 age.cols <- genera.colors[c(1,2, 7,9, 10, 12, 14)]
 
 for (i in 1:length(genera)) tree.ages[tree.ages$genus == genera[i],10] <- genera.colors[i]
 names(tree.ages)[10] <- "tree.color"
 
+ddg.data.out(pname="Set color data",dname="tree.ages")
+
 tree.ages <- drop.levels(tree.ages)
 tree.ages$init.treat <- as.factor(tree.ages$init.treat)
 tree.ages$tree.color <- as.factor(tree.ages$tree.color)
 tree.ages$block <- as.factor(tree.ages$block)
-
+ddg.data.out(pname='Set color data', dname="tree.ages")
 
 vh <- tree.ages[tree.ages$block=="Valley" & tree.ages$init.treat=="hemlock",]
 vd <- tree.ages[tree.ages$block=="Valley" & tree.ages$init.treat=="hardwood",]
 rh <- tree.ages[tree.ages$block=="Ridge" & tree.ages$init.treat=="hemlock",]
 rd <- tree.ages[tree.ages$block=="Ridge" & tree.ages$init.treat=="hardwood",]
-
+ddg.procedure("tree.seperation", ins=list("tree.ages"), outs.data=list("vh","vd", "rh", "rd"))
 
 #histograms
+ddg.start("Create histograms")
 #age distributions
-hist.vh.age <- hist(vh$tree.age[vh$genus=="Tsuga"], plot=FALSE, breaks=seq(10,150,10))
-hist.vh.bet.age<- hist(vh$tree.age[vh$genus=="Betula"], plot=FALSE, breaks=seq(10,150,10))
-hist.vh.acer.age<- hist(vh$tree.age[vh$genus=="Acer"], plot=FALSE, breaks=seq(10,150,10))
-hist.vh.quercus.age<- hist(vh$tree.age[vh$genus=="Quercus"], plot=FALSE, breaks=seq(10,150,10))
-hist.vh.pinus.age<- hist(vh$tree.age[vh$genus=="Pinus"], plot=FALSE, breaks=seq(10,150,10))
+ddg.start("age distributions")
+hist.vh.age <- hist(vh$tree.age[vh$genus==Tsuga], plot=FALSE, breaks=seq(10,150,10))
+hist.vh.bet.age<- hist(vh$tree.age[vh$genus==Betula], plot=FALSE, breaks=seq(10,150,10))
+hist.vh.acer.age<- hist(vh$tree.age[vh$genus==Acer], plot=FALSE, breaks=seq(10,150,10))
+hist.vh.quercus.age<- hist(vh$tree.age[vh$genus==Quercus], plot=FALSE, breaks=seq(10,150,10))
+hist.vh.pinus.age<- hist(vh$tree.age[vh$genus==Pinus], plot=FALSE, breaks=seq(10,150,10))
+ddg.procedure(pname="histogram.creation", ins=list("vh"), outs.data=list("hist.vh.age", "hist.vh.bet.age", "hist.vh.acer.age", "hist.vh.quercus.age", "hist.vh.pinus.age"))
 
-hist.rh.age <- hist(rh$tree.age[rh$genus=="Tsuga"], plot=FALSE, breaks=seq(10,150,10))
-hist.rh.bet.age<- hist(rh$tree.age[rh$genus=="Betula"], plot=FALSE, breaks=seq(10,150,10))
-hist.rh.acer.age<- hist(rh$tree.age[rh$genus=="Acer"], plot=FALSE, breaks=seq(10,150,10))
-hist.rh.quercus.age<- hist(rh$tree.age[rh$genus=="Quercus"], plot=FALSE, breaks=seq(10,150,10))
-hist.rh.pinus.age<- hist(rh$tree.age[rh$genus=="Pinus"], plot=FALSE, breaks=seq(10,150,10))
+hist.rh.age <- hist(rh$tree.age[rh$genus==Tsuga], plot=FALSE, breaks=seq(10,150,10))
+hist.rh.bet.age<- hist(rh$tree.age[rh$genus==Betula], plot=FALSE, breaks=seq(10,150,10))
+hist.rh.acer.age<- hist(rh$tree.age[rh$genus==Acer], plot=FALSE, breaks=seq(10,150,10))
+hist.rh.quercus.age<- hist(rh$tree.age[rh$genus==Quercus], plot=FALSE, breaks=seq(10,150,10))
+hist.rh.pinus.age<- hist(rh$tree.age[rh$genus==Pinus], plot=FALSE, breaks=seq(10,150,10))
+ddg.procedure(pname="histogram.creation", ins=list("rh"), outs.data=list("hist.rh.age", "hist.rh.bet.age", "hist.rh.acer.age", "hist.rh.quercus.age", "hist.rh.pinus.age"))
 
-hist.vd.age <- hist(vd$tree.age[vd$genus=="Tsuga"], plot=FALSE, breaks=seq(10,150,10))
-hist.vd.bet.age<- hist(vd$tree.age[vd$genus=="Betula"], plot=FALSE, breaks=seq(10,150,10))
-hist.vd.acer.age<- hist(vd$tree.age[vd$genus=="Acer"], plot=FALSE, breaks=seq(10,150,10))
-hist.vd.quercus.age<- hist(vd$tree.age[vd$genus=="Quercus"], plot=FALSE, breaks=seq(10,150,10))
-hist.vd.pinus.age<- hist(vd$tree.age[vd$genus=="Pinus"], plot=FALSE, breaks=seq(10,150,10))
+hist.vd.age <- hist(vd$tree.age[vd$genus==Tsuga], plot=FALSE, breaks=seq(10,150,10))
+hist.vd.bet.age<- hist(vd$tree.age[vd$genus==Betula], plot=FALSE, breaks=seq(10,150,10))
+hist.vd.acer.age<- hist(vd$tree.age[vd$genus==Acer], plot=FALSE, breaks=seq(10,150,10))
+hist.vd.quercus.age<- hist(vd$tree.age[vd$genus==Quercus], plot=FALSE, breaks=seq(10,150,10))
+hist.vd.pinus.age<- hist(vd$tree.age[vd$genus==Pinus], plot=FALSE, breaks=seq(10,150,10))
+ddg.procedure(pname="histogram.creation", ins=list("vd"), outs.data=list("hist.vd.age", "hist.vd.bet.age", "hist.vd.acer.age", "hist.vd.quercus.age", "hist.vd.pinus.age"))
 
-hist.rd.age <- hist(rd$tree.age[rd$genus=="Tsuga"], plot=FALSE, breaks=seq(10,150,10))
-hist.rd.bet.age <- hist(rd$tree.age[rd$genus=="Betula"], plot=FALSE, breaks=seq(10,150,10))
-hist.rd.acer.age <- hist(rd$tree.age[rd$genus=="Acer"], plot=FALSE, breaks=seq(10,150,10))
-hist.rd.quercus.age<- hist(rd$tree.age[rd$genus=="Quercus"], plot=FALSE, breaks=seq(10,150,10))
-hist.rd.pinus.age<- hist(rd$tree.age[rd$genus=="Pinus"], plot=FALSE, breaks=seq(10,150,10))
+hist.rd.age <- hist(rd$tree.age[rd$genus==Tsuga], plot=FALSE, breaks=seq(10,150,10))
+hist.rd.bet.age <- hist(rd$tree.age[rd$genus==Betula], plot=FALSE, breaks=seq(10,150,10))
+hist.rd.acer.age <- hist(rd$tree.age[rd$genus==Acer], plot=FALSE, breaks=seq(10,150,10))
+hist.rd.quercus.age<- hist(rd$tree.age[rd$genus==Quercus], plot=FALSE, breaks=seq(10,150,10))
+hist.rd.pinus.age<- hist(rd$tree.age[rd$genus==Pinus], plot=FALSE, breaks=seq(10,150,10))
+ddg.procedure(pname="histogram.creation", ins=list("rd"), outs.data=list("hist.rd.age", "hist.rd.bet.age", "hist.rd.acer.age", "hist.rd.quercus.age", "hist.rd.pinus.age"))
+ddg.finish("age distributions")
 
 #dbh distributions
+ddg.start("dbh distributions")
+hist.vh.dbh <- hist(vh$dbh[vh$genus==Tsuga], plot=FALSE, breaks=seq(0,80,10))
+hist.vh.bet.dbh <- hist(vh$dbh[vh$genus==Betula], plot=FALSE, breaks=seq(0,80,10))
+hist.vh.acer.dbh <- hist(vh$dbh[vh$genus==Acer], plot=FALSE, breaks=seq(0,80,10))
+hist.vh.quercus.dbh <- hist(vh$dbh[vh$genus==Quercus], plot=FALSE, breaks=seq(0,80,10))
+hist.vh.pinus.dbh <- hist(vh$dbh[vh$genus==Pinus], plot=FALSE, breaks=seq(0,80,10))
+ddg.procedure(pname="histogram.creation", ins=list("vh"), outs.data=list("hist.vh.dbh","hist.vh.bet.dbh", "hist.vh.acer.dbh", "hist.vh.quercus.dbh", "hist.vh.pinus.dbh"))
 
-hist.vh.dbh <- hist(vh$dbh[vh$genus=="Tsuga"], plot=FALSE, breaks=seq(0,80,10))
-hist.vh.bet.dbh <- hist(vh$dbh[vh$genus=="Betula"], plot=FALSE, breaks=seq(0,80,10))
-hist.vh.acer.dbh <- hist(vh$dbh[vh$genus=="Acer"], plot=FALSE, breaks=seq(0,80,10))
-hist.vh.quercus.dbh <- hist(vh$dbh[vh$genus=="Quercus"], plot=FALSE, breaks=seq(0,80,10))
-hist.vh.pinus.dbh <- hist(vh$dbh[vh$genus=="Pinus"], plot=FALSE, breaks=seq(0,80,10))
-
-hist.rh.dbh <- hist(rh$dbh[rh$genus=="Tsuga"], plot=FALSE, breaks=seq(0,80,10))
-hist.rh.bet.dbh <- hist(rh$dbh[rh$genus=="Betula"], plot=FALSE, breaks=seq(0,80,10))
-hist.rh.acer.dbh <- hist(rh$dbh[rh$genus=="Acer"], plot=FALSE, breaks=seq(0,80,10))
-hist.rh.quercus.dbh <- hist(rh$dbh[rh$genus=="Quercus"], plot=FALSE, breaks=seq(0,80,10))
-hist.rh.pinus.dbh <- hist(rh$dbh[rh$genus=="Pinus"], plot=FALSE, breaks=seq(0,80,10))
-
-
-hist.vd.dbh <- hist(vd$dbh[vd$genus=="Tsuga"], plot=FALSE, breaks=seq(0,80,10))
-hist.vd.bet.dbh <- hist(vd$dbh[vd$genus=="Betula"], plot=FALSE, breaks=seq(0,80,10))
-hist.vd.acer.dbh <- hist(vd$dbh[vd$genus=="Acer"], plot=FALSE, breaks=seq(0,80,10))
-hist.vd.quercus.dbh <- hist(vd$dbh[vd$genus=="Quercus"], plot=FALSE, breaks=seq(0,80,10))
-hist.vd.pinus.dbh <- hist(vd$dbh[vd$genus=="Pinus"], plot=FALSE, breaks=seq(0,80,10))
-
-hist.rd.dbh <- hist(rd$dbh[rd$genus=="Tsuga"], plot=FALSE, breaks=seq(0,80,10))
-hist.rd.bet.dbh <- hist(rd$dbh[rd$genus=="Betula"], plot=FALSE, breaks=seq(0,80,10))
-hist.rd.acer.dbh <- hist(rd$dbh[rd$genus=="Acer"], plot=FALSE, breaks=seq(0,80,10))
-hist.rd.quercus.dbh <- hist(rd$dbh[rd$genus=="Quercus"], plot=FALSE, breaks=seq(0,80,10))
-hist.rd.pinus.dbh <- hist(rd$dbh[rd$genus=="Pinus"], plot=FALSE, breaks=seq(0,80,10))
+hist.rh.dbh <- hist(rh$dbh[rh$genus==Tsuga], plot=FALSE, breaks=seq(0,80,10))
+hist.rh.bet.dbh <- hist(rh$dbh[rh$genus==Betula], plot=FALSE, breaks=seq(0,80,10))
+hist.rh.acer.dbh <- hist(rh$dbh[rh$genus==Acer], plot=FALSE, breaks=seq(0,80,10))
+hist.rh.quercus.dbh <- hist(rh$dbh[rh$genus==Quercus], plot=FALSE, breaks=seq(0,80,10))
+hist.rh.pinus.dbh <- hist(rh$dbh[rh$genus==Pinus], plot=FALSE, breaks=seq(0,80,10))
+ddg.procedure(pname="histogram.creation", ins=list("rh"), outs.data=list("hist.rh.dbh","hist.rh.bet.dbh", "hist.rh.acer.dbh", "hist.rh.quercus.dbh", "hist.rh.pinus.dbh"))
 
 
+hist.vd.dbh <- hist(vd$dbh[vd$genus==Tsuga], plot=FALSE, breaks=seq(0,80,10))
+hist.vd.bet.dbh <- hist(vd$dbh[vd$genus==Betula], plot=FALSE, breaks=seq(0,80,10))
+hist.vd.acer.dbh <- hist(vd$dbh[vd$genus==Acer], plot=FALSE, breaks=seq(0,80,10))
+hist.vd.quercus.dbh <- hist(vd$dbh[vd$genus==Quercus], plot=FALSE, breaks=seq(0,80,10))
+hist.vd.pinus.dbh <- hist(vd$dbh[vd$genus==Pinus], plot=FALSE, breaks=seq(0,80,10))
+ddg.procedure(pname="histogram.creation", ins=list("vd"), outs.data=list("hist.vd.dbh","hist.vd.bet.dbh", "hist.vd.acer.dbh", "hist.vd.quercus.dbh", "hist.vd.pinus.dbh"))
+
+hist.rd.dbh <- hist(rd$dbh[rd$genus==Tsuga], plot=FALSE, breaks=seq(0,80,10))
+hist.rd.bet.dbh <- hist(rd$dbh[rd$genus==Betula], plot=FALSE, breaks=seq(0,80,10))
+hist.rd.acer.dbh <- hist(rd$dbh[rd$genus==Acer], plot=FALSE, breaks=seq(0,80,10))
+hist.rd.quercus.dbh <- hist(rd$dbh[rd$genus==Quercus], plot=FALSE, breaks=seq(0,80,10))
+hist.rd.pinus.dbh <- hist(rd$dbh[rd$genus==Pinus], plot=FALSE, breaks=seq(0,80,10))
+ddg.procedure(pname="histogram.creation", ins=list("rd"), outs.data=list("hist.rd.dbh","hist.rd.bet.dbh", "hist.rd.acer.dbh", "hist.rd.quercus.dbh", "hist.rd.pinus.dbh"))
+ddg.finish("dbh distributions")
+
+ddg.start("bind ages")
 vh.ages <- rbind(hist.vh.age$counts, hist.vh.bet.age$counts, hist.vh.quercus.age$counts, 
-  		hist.vh.acer.age$counts, hist.vh.pinus.age$counts)
+        hist.vh.acer.age$counts, hist.vh.pinus.age$counts)
+ddg.procedure(pname='bind.elements', ins=list("hist.vh.age", "hist.vh.bet.age", "hist.vh.quercus.age", "hist.vh.acer.age", "hist.vh.pinus.age"), outs.data=list("vh.ages"))
 rh.ages <- rbind(hist.rh.age$counts, hist.rh.bet.age$counts, hist.rh.quercus.age$counts, 
-			hist.rh.acer.age$counts, hist.rh.pinus.age$counts)
+            hist.rh.acer.age$counts, hist.rh.pinus.age$counts)
+ddg.procedure(pname='bind.elements', ins=list("hist.rh.age", "hist.rh.bet.age", "hist.rh.quercus.age", "hist.rh.acer.age", "hist.rh.pinus.age"), outs.data=list("rh.ages"))
 vd.ages <- rbind(hist.vd.age$counts, hist.vd.bet.age$counts, hist.vd.quercus.age$counts, 
-			hist.vd.acer.age$counts, hist.vd.pinus.age$counts)
+            hist.vd.acer.age$counts, hist.vd.pinus.age$counts)
+ddg.procedure(pname='bind.elements', ins=list("hist.vd.age", "hist.vd.bet.age", "hist.vd.quercus.age", "hist.vd.acer.age", "hist.vd.pinus.age"), outs.data=list("vd.ages"))
 rd.ages <- rbind(hist.rd.age$counts, hist.rd.bet.age$counts, hist.rd.quercus.age$counts, 
-			hist.rd.acer.age$counts, hist.rd.pinus.age$counts)
+            hist.rd.acer.age$counts, hist.rd.pinus.age$counts)
+ddg.procedure(pname='bind.elements', ins=list("hist.rd.age", "hist.rd.bet.age", "hist.rd.quercus.age", "hist.rd.acer.age", "hist.rd.pinus.age"), outs.data=list("rd.ages"))
+ddg.finish("bind ages")
 
-
+ddg.start("bind dbh")
 vh.dbh <- rbind(hist.vh.dbh$counts, hist.vh.bet.dbh$counts, hist.vh.quercus.dbh$counts, 
-			hist.vh.acer.dbh$counts, hist.vh.pinus.dbh$counts)
+            hist.vh.acer.dbh$counts, hist.vh.pinus.dbh$counts)
+ddg.procedure(pname='bind.elements', ins=list("hist.vh.dbh", "hist.vh.bet.dbh", "hist.vh.quercus.dbh", "hist.vh.acer.dbh", "hist.vh.pinus.dbh"), outs.data=list("vh.dbh"))
 rh.dbh <- rbind(hist.rh.dbh$counts, hist.rh.bet.dbh$counts, hist.rh.quercus.dbh$counts, 
-			hist.rh.acer.dbh$counts, hist.rh.pinus.dbh$counts)
+            hist.rh.acer.dbh$counts, hist.rh.pinus.dbh$counts)
+ddg.procedure(pname='bind.elements', ins=list("hist.rh.dbh", "hist.rh.bet.dbh", "hist.rh.quercus.dbh", "hist.rh.acer.dbh", "hist.rh.pinus.dbh"), outs.data=list("rh.dbh"))
 vd.dbh <- rbind(hist.vd.dbh$counts, hist.vd.bet.dbh$counts, hist.vd.quercus.dbh$counts, 
-			hist.vd.acer.dbh$counts, hist.vd.pinus.dbh$counts)
+            hist.vd.acer.dbh$counts, hist.vd.pinus.dbh$counts)
+ddg.procedure(pname='bind.elements', ins=list("hist.vd.dbh", "hist.vd.bet.dbh", "hist.vd.quercus.dbh", "hist.vd.acer.dbh", "hist.vd.pinus.dbh"), outs.data=list("vd.dbh"))
 rd.dbh <- rbind(hist.rd.dbh$counts, hist.rd.bet.dbh$counts, hist.rd.quercus.dbh$counts, 
-			hist.rd.acer.dbh$counts, hist.rd.pinus.dbh$counts)
-
+            hist.rd.acer.dbh$counts, hist.rd.pinus.dbh$counts)
+ddg.procedure(pname='bind.elements', ins=list("hist.rd.dbh", "hist.rd.bet.dbh", "hist.rd.quercus.dbh", "hist.rd.acer.dbh", "hist.rd.pinus.dbh"), outs.data=list("rd.dbh"))
+ddg.finish("bind dbh")
+ddg.finish("Create histograms")
 
 #some plotting setup
 
@@ -2796,10 +3031,12 @@ layout(matrix(c(0, 1, 2, 0, 3, 9, 10, 5, 4, 11, 12, 6, 0, 7, 8, 0), nrow=4, byro
 
 
 #barcharts
-ddg.save()
+ddg.start("Plot barcharts")
 par(mar=c(0,1,0,1))
 barplot(vh.ages, axes=FALSE, ylim=c(0,maxcount.ages), space=0, col=five.colors)
+
 barplot(rh.ages, axes=FALSE, ylim=c(0,maxcount.ages), space=0, col=five.colors)
+
 par(mar=c(1,0,.5,0))
 barplot(vh.dbh, axes=FALSE, xlim=c(maxcount.dbh,0),  space=0, horiz=TRUE, col=five.colors)
 
@@ -2807,114 +3044,119 @@ mtext("DBH (cm)", side=2, line=.5, adj=-.5, font=2)
 
 par(mar=c(.5,0,1,0))
 barplot(vd.dbh, axes=FALSE, xlim=c(maxcount.dbh,0), space=0, horiz=TRUE, col=five.colors)
+
 par(mar=c(1,0,.5,0))
 barplot(rh.dbh, axes=FALSE, xlim=c(0,maxcount.dbh), space=0, horiz=TRUE, col=five.colors)
+
 par(mar=c(.5,0,1,0))
 barplot(rd.dbh, axes=FALSE, xlim=c(0,maxcount.dbh), space=0, horiz=TRUE, col=five.colors)
+
 par(mar=c(0,1,0,1))
 barplot(vd.ages, axes=FALSE, ylim=c(maxcount.ages,0), space=0, col=five.colors)
 barplot(rd.ages, axes=FALSE, ylim=c(maxcount.ages,0), space=0, col=five.colors)
-
 mtext("Age (years)", side=1, line=0, adj=-.5, font=2)
 
+ddg.procedure(pname="create.pdf", ins=list("vh.ages", "rh.ages", "vh.dbh", "vd.dbh", "rh.dbh", "rd.dbh", "vd.ages", "rd.ages"), outs.file=list("Figure 7 - age_dbh.pdf"))
+ddg.finish("Plot barcharts")
 
 #scatterplots
-
-
+ddg.start("Plot scatterplots")
 
 par(mar=c(1,1,.5,1))
-plot.vh <- plot(vh$dbh ~ vh$tree.age, data=vh,
-			xlim=limits$xlims, ylim=limits$ylims,									#axis ranges
-			xlab= "", ylab="", axes=FALSE, pch=19, 									#misc
-			col=as.character(vh$tree.color)										#colors		
-	)
-	axis(1, at=seq(15,145,10), labels=TRUE, tcl=-.25, lwd=2, font.axis=2, cex.axis=0.8, padj=-1.1, hadj=.5)
-	axis(4, at=seq(5,75,10), labels=TRUE, tcl=-.25, lwd=2, font.axis=2, las=1, cex.axis=0.8, hadj= .5, padj=.25)
-	axis(3, at=seq(15,145,10), labels=FALSE, tcl=-.25, lwd=2, font.axis=2)
-	axis(2, at=seq(5,75,10), labels=FALSE, tcl=-.25, lwd=2, font.axis=2)
-	box(lwd=2)
+plot(vh$dbh ~ vh$tree.age, data=vh,
+            xlim=limits$xlims, ylim=limits$ylims,                                   #axis ranges
+            xlab= "", ylab="", axes=FALSE, pch=19,                                  #misc
+            col=as.character(vh$tree.color)                                     #colors     
+    )
+    axis(1, at=seq(15,145,10), labels=TRUE, tcl=-.25, lwd=2, font.axis=2, cex.axis=0.8, padj=-1.1, hadj=.5)
+    axis(4, at=seq(5,75,10), labels=TRUE, tcl=-.25, lwd=2, font.axis=2, las=1, cex.axis=0.8, hadj= .5, padj=.25)
+    axis(3, at=seq(15,145,10), labels=FALSE, tcl=-.25, lwd=2, font.axis=2)
+    axis(2, at=seq(5,75,10), labels=FALSE, tcl=-.25, lwd=2, font.axis=2)
+    box(lwd=2)
 
-	vh.loess <- loess(vh$dbh ~ vh$tree.age, span=1)											#add loess smooth + cis
-	pred.vh <- predict(vh.loess, xpreds, se=TRUE)
-	lines(xpreds, pred.vh$fit, lty="solid", lwd=2, col="blue")
-	y.poly.vh <- c((pred.vh$fit+1.96*pred.vh$se.fit), (pred.vh$fit-1.96*pred.vh$se.fit)[order(xpreds, decreasing=TRUE)])
-	x.poly.vh <- c(xpreds, xpreds.rev)
-	polygon(x.poly.vh[!is.na(y.poly.vh)], y.poly.vh[!is.na(y.poly.vh)], col="#00009933", border=NA)
-	text(20,75,"A", cex=1.5, font=2)
-	
-	text(15,2,"1990", cex=0.8, font=2)
-	text(145, 2, "1860", cex=0.8, font=2)
-	text(67, 2, "1938", cex=0.8, font=2)
+    vh.loess <- loess(vh$dbh ~ vh$tree.age, span=1)                                         #add loess smooth + cis
+    pred.vh <- predict(vh.loess, xpreds, se=TRUE)
+    lines(xpreds, pred.vh$fit, lty="solid", lwd=2, col="blue")
+    y.poly.vh <- c((pred.vh$fit+1.96*pred.vh$se.fit), (pred.vh$fit-1.96*pred.vh$se.fit)[order(xpreds, decreasing=TRUE)])
+    x.poly.vh <- c(xpreds, xpreds.rev)
+    polygon(x.poly.vh[!is.na(y.poly.vh)], y.poly.vh[!is.na(y.poly.vh)], col="#00009933", border=NA)
+    text(20,75,"A", cex=1.5, font=2)
+    
+    text(15,2,"1990", cex=0.8, font=2)
+    text(145, 2, "1860", cex=0.8, font=2)
+    text(67, 2, "1938", cex=0.8, font=2)
 
 plot.rh <- plot(rh$dbh ~ rh$tree.age, data=rh,
-			xlim=limits$xlims, ylim=limits$ylims,									#axis ranges
-			xlab= "", ylab="", axes=FALSE, pch=19, 									#misc
-			col=as.character(rh$tree.color)										#colors		
-	)
-	axis(1, at=seq(15,145,10), labels=TRUE, tcl=-.25, lwd=2, font.axis=2, cex.axis=0.8, padj=-1.1, hadj=.5)
-	axis(2, at=seq(5,75,10), labels=FALSE, tcl=-.25, lwd=2, font.axis=2)
-	axis(3, at=seq(15,145,10), labels=FALSE, tcl=-.25, lwd=2, font.axis=2)
-	axis(4, at=seq(5,75,10), labels=FALSE, tcl=-.25, lwd=2, font.axis=2)
-	box(lwd=2)
+            xlim=limits$xlims, ylim=limits$ylims,                                   #axis ranges
+            xlab= "", ylab="", axes=FALSE, pch=19,                                  #misc
+            col=as.character(rh$tree.color)                                     #colors     
+    )
+    axis(1, at=seq(15,145,10), labels=TRUE, tcl=-.25, lwd=2, font.axis=2, cex.axis=0.8, padj=-1.1, hadj=.5)
+    axis(2, at=seq(5,75,10), labels=FALSE, tcl=-.25, lwd=2, font.axis=2)
+    axis(3, at=seq(15,145,10), labels=FALSE, tcl=-.25, lwd=2, font.axis=2)
+    axis(4, at=seq(5,75,10), labels=FALSE, tcl=-.25, lwd=2, font.axis=2)
+    box(lwd=2)
 
-	rh.loess <- loess(rh$dbh ~ rh$tree.age, span=1)										#add loess smooth + cis
-	pred.rh <- predict(rh.loess, xpreds, se=TRUE)
-	lines(xpreds, pred.rh$fit, lty="solid", lwd=2, col="blue")
-	y.poly.rh <- c((pred.rh$fit+1.96*pred.rh$se.fit), (pred.rh$fit-1.96*pred.rh$se.fit)[order(xpreds, decreasing=TRUE)])
-	x.poly.rh <- c(xpreds, xpreds.rev)
-	polygon(x.poly.rh[!is.na(y.poly.rh)], y.poly.rh[!is.na(y.poly.rh)], col="#00009933", border=NA)
-	text(20,75,"B", cex=1.5, font=2)
+    rh.loess <- loess(rh$dbh ~ rh$tree.age, span=1)                                     #add loess smooth + cis
+    pred.rh <- predict(rh.loess, xpreds, se=TRUE)
+    lines(xpreds, pred.rh$fit, lty="solid", lwd=2, col="blue")
+    y.poly.rh <- c((pred.rh$fit+1.96*pred.rh$se.fit), (pred.rh$fit-1.96*pred.rh$se.fit)[order(xpreds, decreasing=TRUE)])
+    x.poly.rh <- c(xpreds, xpreds.rev)
+    polygon(x.poly.rh[!is.na(y.poly.rh)], y.poly.rh[!is.na(y.poly.rh)], col="#00009933", border=NA)
+    text(20,75,"B", cex=1.5, font=2)
 
-	text(15,2,"1990", cex=0.8, font=2)
-	text(145, 2, "1860", cex=0.8, font=2)
-	text(67, 2, "1938", cex=0.8, font=2)
+    text(15,2,"1990", cex=0.8, font=2)
+    text(145, 2, "1860", cex=0.8, font=2)
+    text(67, 2, "1938", cex=0.8, font=2)
 
 par(mar=c(.5,1,1,1))
 plot.vd <- plot(vd$dbh ~ vd$tree.age, data=vd,
-			xlim=limits$xlims, ylim=limits$ylims,									#axis ranges
-			xlab= "", ylab="", axes=FALSE, pch=19, 									#misc
-			col=as.character(vd$tree.color)										#colors		
-	)
-	axis(1, at=seq(15,145,10), labels=FALSE, tcl=-.25, lwd=2, font.axis=2)
-	axis(4, at=seq(5,75,10), labels=TRUE, tcl=-.25, lwd=2, font.axis=2, cex.axis=0.8, las=1, hadj= .5, padj=.25)
-	axis(3, at=seq(15,145,10), labels=FALSE, tcl=-.25, lwd=2, font.axis=2)
-	axis(2, at=seq(5,75,10), labels=FALSE, tcl=-.25, lwd=2, font.axis=2)
-	box(lwd=2)
+            xlim=limits$xlims, ylim=limits$ylims,                                   #axis ranges
+            xlab= "", ylab="", axes=FALSE, pch=19,                                  #misc
+            col=as.character(vd$tree.color)                                     #colors     
+    )
+    axis(1, at=seq(15,145,10), labels=FALSE, tcl=-.25, lwd=2, font.axis=2)
+    axis(4, at=seq(5,75,10), labels=TRUE, tcl=-.25, lwd=2, font.axis=2, cex.axis=0.8, las=1, hadj= .5, padj=.25)
+    axis(3, at=seq(15,145,10), labels=FALSE, tcl=-.25, lwd=2, font.axis=2)
+    axis(2, at=seq(5,75,10), labels=FALSE, tcl=-.25, lwd=2, font.axis=2)
+    box(lwd=2)
 
-	vd.loess <- loess(vd$dbh ~ vd$tree.age, span=1)											#add loess smooth + cis
-	pred.vd <- predict(vd.loess, xpreds, se=TRUE)
-	lines(xpreds, pred.vd$fit, lty="solid", lwd=2, col="blue")
-	y.poly.vd <- c((pred.vd$fit+1.96*pred.vd$se.fit), (pred.vd$fit-1.96*pred.vd$se.fit)[order(xpreds, decreasing=TRUE)])
-	x.poly.vd <- c(xpreds, xpreds.rev)
-	polygon(x.poly.vd[!is.na(y.poly.vd)], y.poly.vd[!is.na(y.poly.vd)], col="#00009933", border=NA)
-	text(20,75,"C", cex=1.5, font=2)
-ddg.save()
-	text(15,2,"1990", cex=0.8, font=2)
-	text(145, 2, "1860", cex=0.8, font=2)
-	text(67, 2, "1938", cex=0.8, font=2)
-	
+    vd.loess <- loess(vd$dbh ~ vd$tree.age, span=1)                                         #add loess smooth + cis
+    pred.vd <- predict(vd.loess, xpreds, se=TRUE)
+    lines(xpreds, pred.vd$fit, lty="solid", lwd=2, col="blue")
+    y.poly.vd <- c((pred.vd$fit+1.96*pred.vd$se.fit), (pred.vd$fit-1.96*pred.vd$se.fit)[order(xpreds, decreasing=TRUE)])
+    x.poly.vd <- c(xpreds, xpreds.rev)
+    polygon(x.poly.vd[!is.na(y.poly.vd)], y.poly.vd[!is.na(y.poly.vd)], col="#00009933", border=NA)
+    text(20,75,"C", cex=1.5, font=2)
+    text(15,2,"1990", cex=0.8, font=2)
+    text(145, 2, "1860", cex=0.8, font=2)
+    text(67, 2, "1938", cex=0.8, font=2)
+    
 plot.rd <- plot(rd$dbh ~ rd$tree.age, data=rd,
-			xlim=limits$xlims, ylim=limits$ylims,									#axis ranges
-			xlab= "", ylab="", axes=FALSE, pch=19, 									#misc
-			col=as.character(rd$tree.color)										#colors		
-	)
-	axis(1, at=seq(15,145,10), labels=FALSE, tcl=-.25, lwd=2, font.axis=2)
-	axis(2, at=seq(5,75,10), labels=FALSE, tcl=-.25, lwd=2, font.axis=2)
-	axis(3, at=seq(15,145,10), labels=FALSE, tcl=-.25, lwd=2, font.axis=2)
-	axis(4, at=seq(5,75,10), labels=FALSE, tcl=-.25, lwd=2, font.axis=2)
-	box(lwd=2)
+            xlim=limits$xlims, ylim=limits$ylims,                                   #axis ranges
+            xlab= "", ylab="", axes=FALSE, pch=19,                                  #misc
+            col=as.character(rd$tree.color)                                     #colors     
+    )
+    axis(1, at=seq(15,145,10), labels=FALSE, tcl=-.25, lwd=2, font.axis=2)
+    axis(2, at=seq(5,75,10), labels=FALSE, tcl=-.25, lwd=2, font.axis=2)
+    axis(3, at=seq(15,145,10), labels=FALSE, tcl=-.25, lwd=2, font.axis=2)
+    axis(4, at=seq(5,75,10), labels=FALSE, tcl=-.25, lwd=2, font.axis=2)
+    box(lwd=2)
 
-	rd.loess <- loess(rd$dbh ~ rd$tree.age, span=1)										#add loess smooth + cis
-	pred.rd <- predict(rd.loess, xpreds, se=TRUE)
-	lines(xpreds, pred.rd$fit, lty="solid", lwd=2, col="blue")
-	y.poly.rd <- c((pred.rd$fit+1.96*pred.rd$se.fit), (pred.rd$fit-1.96*pred.rd$se.fit)[order(xpreds, decreasing=TRUE)])
-	x.poly.rd <- c(xpreds, xpreds.rev)
-	polygon(x.poly.rd[!is.na(y.poly.rd)], y.poly.rd[!is.na(y.poly.rd)], col="#00009933", border=NA)
-	text(20,75,"D", cex=1.5, font=2)
+    rd.loess <- loess(rd$dbh ~ rd$tree.age, span=1)                                     #add loess smooth + cis
+    pred.rd <- predict(rd.loess, xpreds, se=TRUE)
+    lines(xpreds, pred.rd$fit, lty="solid", lwd=2, col="blue")
+    y.poly.rd <- c((pred.rd$fit+1.96*pred.rd$se.fit), (pred.rd$fit-1.96*pred.rd$se.fit)[order(xpreds, decreasing=TRUE)])
+    x.poly.rd <- c(xpreds, xpreds.rev)
+    polygon(x.poly.rd[!is.na(y.poly.rd)], y.poly.rd[!is.na(y.poly.rd)], col="#00009933", border=NA)
+    text(20,75,"D", cex=1.5, font=2)
 
-	text(15,2,"1990", cex=0.8, font=2)
-	text(145, 2, "1860", cex=0.8, font=2)
-	text(67, 2, "1938", cex=0.8, font=2)
+    text(15,2,"1990", cex=0.8, font=2)
+    text(145, 2, "1860", cex=0.8, font=2)
+    text(67, 2, "1938", cex=0.8, font=2)
+ddg.procedure(pname="create.pdf", ins=list("vh", "rh", "vd", "rd"), outs.file=list("Figure 7 - age_dbh.pdf"))
+ddg.finish("Plot scatterplots")
+ddg.finish("Plot data")
 #```
 
 #![plot of chunk unnamed-chunk-9](figure/unnamed-chunk-9.png) 
@@ -2926,7 +3168,7 @@ dev.off()
 
 
 #Enviromental data - ms. Figure 7 now Figure 4
-
+ddg.start("Environmental data")
 #Read in data from a variety of sources:
 
 #Climate data: 
@@ -2941,9 +3183,11 @@ dev.off()
 #Harvard Forest climate data
 
 #```r
+ddg.start("Read data")
+ddg.start("Harvard Forest Data")
 hf.Shaler <- read.csv("hf000-01-daily-m.csv", header = TRUE)
 #hf.Shaler <- read.csv("C:/Users/aellison/Dropbox/Aaron's Briefcase/manuscript - Simes dendro and land use/env data/hf000-01-daily-m.csv", header = TRUE)
-
+ddg.file("hf000-01-daily-m.csv")
 head(hf.Shaler)
 #```
 
@@ -2985,7 +3229,7 @@ str(hf.Shaler)
 #```
 
 #```
-## 'data.frame':	14061 obs. of  5 variables:
+## 'data.frame':    14061 obs. of  5 variables:
 ##  $ Date   : Factor w/ 14061 levels "1/1/1964","1/1/1965",..: 1 430 859 976 1015 1054 1093 1132 1171 40 ...
 ##  $ AirT   : int  -14 -7 -2 2 0 -6 -1 -5 -6 -4 ...
 ##  $ AirTmax: int  -6 0 1 6 4 1 4 3 -1 1 ...
@@ -3017,7 +3261,7 @@ str(hf.Shaler)
 #```
 
 #```
-## 'data.frame':	14061 obs. of  6 variables:
+## 'data.frame':    14061 obs. of  6 variables:
 ##  $ date   : Date, format: "1964-01-01" "1964-01-02" ...
 ##  $ Date   : chr  "1/1/1964" "1/2/1964" "1/3/1964" "1/4/1964" ...
 ##  $ AirT   : int  -14 -7 -2 2 0 -6 -1 -5 -6 -4 ...
@@ -3025,12 +3269,13 @@ str(hf.Shaler)
 ##  $ AirTmin: int  -21 -14 -4 -2 -4 -12 -6 -12 -11 -9 ...
 ##  $ Prec   : num  0 6.4 0 0 0 0 0 0 10.2 0 ...
 #```
-
+ddg.procedure(pname="Add new data", ins=list("hf000-01-daily-m.csv"), outs.data=list("hf.Shaler"))
 #```r
 hf.Fisher <- read.csv("hf001-02-annual-m.csv", header = TRUE)
 #hf.Fisher <- read.csv("C:/Users/aellison/Dropbox/Aaron's Briefcase/manuscript - Simes dendro and land use/env data/hf001-02-annual-m.csv", header = TRUE)
-
+ddg.file("hf001-02-annual-m.csv")
 Fisher.2002 <- hf.Fisher[1:2, c(2, 3, 4, 7)]
+ddg.procedure(pname="subset", ins=list("hf001-02-annual-m.csv"), outs.data=list("Fisher.2002"))
 #```
 
 
@@ -3052,6 +3297,9 @@ HF.annual$year <- as.character(HF.annual$year)
 HF.annual[39:40, 2:5] <- Fisher.2002[, 1:4]
 HF.annual[40, 1] <- "2003-01-01"
 HF.annual
+
+ddg.procedure(pname="Combine into annual HF", ins=list("hf.Shaler", "Fisher.2002"), outs.data=list("HF.annual"))
+ddg.finish("Harvard Forest Data")
 #```
 
 #```
@@ -3102,10 +3350,14 @@ HF.annual
 
 
 #```r
+ddg.start("Amherst data")
 amherst <- read.csv("Amherst_met_1893-2012-reduced.csv", header = TRUE)
+ddg.file("Amherst_met_1893-2012-reduced.csv")
 #amherst <- read.csv("C:/Users/aellison/Dropbox/Aaron's Briefcase/manuscript - Simes dendro and land use/env data/Amherst_met_1893-2012-reduced.csv", header = TRUE)
 
 amherst$AirT <- apply(amherst[, 10:11], 1, mean)
+ddg.start("Augment data")
+ddg.procedure(pname="calculate.air.T", ins=list("Amherst_met_1893-2012-reduced.csv"), outs.data=list("amherst"))
 amherst.temps <- aggregate(amherst[, c(10, 11, 25)], by = list(year = amherst$YEAR), 
     mean, na.rm = TRUE)
 
@@ -3117,10 +3369,10 @@ names(amherst.annual)[2:5] <- c("AirTmax", "AirTmin", "AirT", "Precip")
 
 # rescale to deg C and mm as ncdc data are in tenths
 amherst.annual[, 2:5] <- amherst.annual[, 2:5]/10
+ddg.procedure(pname="amherst.annual", ins=list("amherst"), outs.data=list("amherst.annual"))
 
 head(amherst.annual)
 #```
-ddg.save()
 #```
 ##   year AirTmax AirTmin  AirT Precip
 ## 1 1893   13.38   1.610 7.507 1038.4
@@ -3137,6 +3389,7 @@ ddg.save()
 amherst.annual.fixed <- amherst.annual
 amherst.annual.fixed[5:121, ] <- amherst.annual[4:120, ]
 amherst.annual.fixed[4, ] <- c(1896, NA, NA, NA, NA)
+ddg.procedure(pname="Add year 1896", ins=list("amherst.annual"), outs.data=list("amherst.annual.fixed"))
 head(amherst.annual.fixed)
 #```
 
@@ -3153,7 +3406,8 @@ head(amherst.annual.fixed)
 #```r
 dim(amherst.annual.fixed)
 #```
-
+ddg.finish("Augment data")
+ddg.finish("Amherst data")
 #```
 ## [1] 121   5
 #```
@@ -3166,9 +3420,11 @@ dim(amherst.annual.fixed)
 
 
 #Palmer Drought Severity Index, station 267 (72.5 W, 42.5 N = near Leverett, MA. Data) from 
-
+ddg.start("Leverett data")
 #```r
 leverett.pdsi <- read.csv("PDSO - 267.csv", header = TRUE)
+ddg.file("PDSO - 267.csv")
+ddg.procedure(pname="parse", ins=list("PDSO - 267.csv"), outs.data=list("leverett.pdsi"))
 #leverett.pdsi <- read.csv("C:/Users/aellison/Dropbox/Aaron's Briefcase/manuscript - Simes dendro and land use/env data/PDSO - 267.csv", header = TRUE)
 
 head(leverett.pdsi)
@@ -3183,7 +3439,6 @@ head(leverett.pdsi)
 ## 5  485    1    1 -1.770 -0.761 0.106 0.284 0.234 0.134 -100    -100
 ## 6  486    1    1 -0.708 -0.763 0.106 0.284 0.234 0.134 -100    -100
 #```
-ddg.save()
 #```r
 summary(leverett.pdsi)
 #```
@@ -3211,24 +3466,33 @@ summary(leverett.pdsi)
 ##  3rd Qu.:   0.40   3rd Qu.:-100.00   3rd Qu.:-100.00  
 ##  Max.   :   0.42   Max.   :   3.25   Max.   :   0.97
 #```
-
+ddg.finish("Leverett data")
 
 #population data
 
 
 #```r
+ddg.start("Population data")
 pop.data <- read.csv("phampop.csv")
+ddg.file("phampop.csv")
+ddg.procedure(pname="read.data", ins=list("phampop.csv"), outs.data=list("pop.data"))
+ddg.finish("Population data")
+ddg.finish("Read data")
 #pop.data <- read.csv("C:/Users/aellison/Dropbox/Aaron's Briefcase/manuscript - Simes dendro and land use/env data/phampop.csv")
 #```
 
 
 #rework these into time-series objects and plot to check
 
-
+ddg.start("timeseries")
+par(las = 1, mar = c(0, 0, 0, 1) + 0.1, fin = c(3.5, 4.6), yaxs = "r")
 #```r
 HF.ts <- ts(data = HF.annual[, 2:5], start = 1964, frequency = 1)
 plot(HF.ts)
 #```
+ddg.procedure(pname="timeseries", ins=list("HF.annual"), outs.data=list("HF.ts"))
+ddg.procedure(pname="plot", ins=list("HF.ts"))
+ddg.graphic.out("HF.ts", pname="plot",graphic.fext="pdf")
 
 #![plot of chunk unnamed-chunk-15](figure/unnamed-chunk-151.png) 
 
@@ -3237,6 +3501,9 @@ plot(HF.ts)
 Amherst.ts <- ts(data = amherst.annual.fixed[-(1:4), 2:5], start = 1897, end = 2003, 
     frequency = 1)
 plot(Amherst.ts)
+ddg.procedure(pname="timeseries", ins=list("amherst.annual.fixed"), outs.data=list("Amherst.ts"))
+ddg.procedure(pname="plot", ins=list("Amherst.ts"))
+ddg.graphic.out("Amherst.ts", pname="plot",graphic.fext="pdf")
 #```
 
 #![plot of chunk unnamed-chunk-15](figure/unnamed-chunk-152.png) 
@@ -3246,6 +3513,9 @@ plot(Amherst.ts)
 
 pdsi.ts <- ts(data = leverett.pdsi$RECON, start = 481, frequency = 1)
 plot(pdsi.ts, type = "b", xlim = c(1875, 2003))
+ddg.procedure(pname="timeseries", ins=list("leverett.pdsi"), outs.data=list("pdsi.ts"))
+ddg.procedure(pname="plot", ins=list("pdsi.ts"))
+ddg.graphic.out("pdsi.ts", pname="plot",graphic.fext="pdf")
 #```
 
 #![plot of chunk unnamed-chunk-15](figure/unnamed-chunk-153.png) 
@@ -3253,22 +3523,29 @@ plot(pdsi.ts, type = "b", xlim = c(1875, 2003))
 #```r
 
 pop.ts <- ts(data = pop.data$popn, start = 1900, frequency = 0.1)
+ddg.procedure(pname="timeseries", ins=list("pop.data"), outs.data=list("pop.ts"))
 plot(pop.ts)
-#```
+ddg.procedure(pname="plot", ins=list("pop.ts"))
+ddg.graphic.out("HF.ts", pname="plot",graphic.fext="pdf")
 
+#```
+ddg.procedure(pname="timeseries", ins=list("pop.data"), outs.data=list("pop.ts"))
+ddg.procedure(pname="plot", ins=list("pdsi.ts"))
+ddg.graphic.out("pop.ts", pname="plot",graphic.fext="pdf")
+ddg.finish("timeseries")
 #![plot of chunk unnamed-chunk-15](figure/unnamed-chunk-154.png) 
 
 
 #build a nice plot
 
-
+ddg.start("Plot data 2")
 #```r
 pdf('Simes_environment_v3.pdf', width=4, height=6, pointsize=8)
 par(las = 1, mar = c(0, 0, 0, 1) + 0.1, fin = c(3.5, 4.6), yaxs = "r")
 ylimits <- c(min(pdsi.ts) - 4.75, max(Amherst.ts[, 1]) + 22)
 out.limits <- ylimits * 1.04
 
-plot(Amherst.ts[, 3], ylim = out.limits, xlim = c(1895, 2003), type = "n", axes = FALSE, 
+plot(Amherst.ts[, 3], ylim = out.limits, xlim = c(1895, 2003), type = "n", axes=count.axes, 
     xlab = "", ylab = "")
 
 abline(h = -2, lty = 1, lwd = 1, col = "gray")
@@ -3359,15 +3636,15 @@ text(1964, -8.875, "Drought", cex = 0.75)
 #```
 
 #![plot of chunk unnamed-chunk-16](figure/unnamed-chunk-16.png) 
-
+ddg.procedure(pname="out.file",ins=list("Amherst.ts"), outs.file=list("Simes_environment_v3.pdf"))
 #```r
 dev.off()
 #```
-
+ddg.finish("Plot data 2")
 
 #Some analysis
 
-
+ddg.start("Analysis")
 #```r
 # mean temps
 
@@ -3410,12 +3687,16 @@ mean(window(pdsi.ts, 1897, 2003))
 
 # running means
 plot(rollapply(HF.ts, 10, mean))
+ddg.procedure(pname="plot.means",ins=list("HF.ts"))
+ddg.graphic.out("HF.ts.mean", pname="plot.means",graphic.fext="pdf")
 #```
 
 #![plot of chunk unnamed-chunk-17](figure/unnamed-chunk-171.png) 
 
 #```r
 plot(rollapply(window(pdsi.ts, start = 1897, end = 2003), 10, mean))
+ddg.procedure(pname="plot.means",ins=list("pdsi.ts"))
+ddg.graphic.out("odsi.ts.means", pname="plot.means",graphic.fext="pdf")
 #```
 
 #![plot of chunk unnamed-chunk-17](figure/unnamed-chunk-172.png) 
@@ -3431,7 +3712,7 @@ cor.test(as.vector(window(Amherst.ts[, 3], start = 1964)), as.vector(HF.ts[,
 
 #```
 ## 
-## 	Pearson's product-moment correlation
+##  Pearson's product-moment correlation
 ## 
 ## data:  as.vector(window(Amherst.ts[, 3], start = 1964)) and as.vector(HF.ts[, 1])
 ## t = 5.502, df = 38, p-value = 2.746e-06
@@ -3466,10 +3747,9 @@ lm(as.vector(HF.ts[, 1]) ~ as.vector(window(Amherst.ts[, 3], start = 1964)))
 cor.test(as.vector(window(Amherst.ts[, 4], start = 1964)), as.vector(HF.ts[, 
     4]))
 #```
-ddg.save()
 #```
 ## 
-## 	Pearson's product-moment correlation
+##  Pearson's product-moment correlation
 ## 
 ## data:  as.vector(window(Amherst.ts[, 4], start = 1964)) and as.vector(HF.ts[, 4])
 ## t = 8.8, df = 38, p-value = 1.052e-10
@@ -3498,11 +3778,11 @@ lm(as.vector(HF.ts[, 4]) ~ as.vector(window(Amherst.ts[, 4], start = 1964)))
 ## as.vector(window(Amherst.ts[, 4], start = 1964))  
 ##                                            0.824
 #```
+ddg.finish("Analysis")
 
 
 
-
-
+ddg.start("Modifications")
 #Add age, radius, and BAI to dendro
 
 
@@ -3552,6 +3832,7 @@ dendro.raw$block <- relevel(dendro.raw$block, ref = "Valley")
 dendro.raw$canopy <- relevel(dendro.raw$canopy, ref = "Hemlock")
 
 dendro.raw$TreeNum <- as.factor(dendro.raw$TreeNum)
+ddg.procedure(pname="add.age.radius.BAI", ins=list("dendro"), outs.data=list("dendro.raw"))
 
 head(dendro.raw)
 #```
@@ -3586,9 +3867,9 @@ str(dendro.raw)
 #```
 
 #```
-## 'data.frame':	17199 obs. of  14 variables:
+## 'data.frame':    17199 obs. of  14 variables:
 ##  $ Plot     : int  1 1 1 1 1 1 1 1 1 1 ...
-##  $ Genus    : Factor w/ 7 levels "Acer","Betula",..: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ Genus    : Factor w/ 7 levels Acer,"Betula",..: 1 1 1 1 1 1 1 1 1 1 ...
 ##  $ Species  : Factor w/ 13 levels "alba","allegheniensis",..: 9 9 9 9 9 9 9 9 9 9 ...
 ##  $ Code     : Factor w/ 12 levels "ACRU","ACSA",..: 1 1 1 1 1 1 1 1 1 1 ...
 ##  $ TreeNum  : Factor w/ 230 levels "3","5","9","11",..: 158 158 158 158 158 158 158 158 158 158 ...
@@ -3603,10 +3884,10 @@ str(dendro.raw)
 ##  $ canopy   : Factor w/ 2 levels "Hemlock","Hardwood": 1 1 1 1 1 1 1 1 1 1 ...
 #```
 
-
+ddg.finish("Modifications")
 #Reduce to 5 key species; reorder factors:
 
-
+ddg.start("Reduction")
 #```r
 dendro.5sp <- dendro.raw[dendro.raw$Code == "TSCA" | dendro.raw$Code == "ACRU" | 
     dendro.raw$Code == "BELE" | dendro.raw$Code == "QURU" | dendro.raw$Code == 
@@ -3614,8 +3895,8 @@ dendro.5sp <- dendro.raw[dendro.raw$Code == "TSCA" | dendro.raw$Code == "ACRU" |
 
 dendro.5sp <- droplevels(dendro.5sp)
 dendro.5sp$Code <- reorder(dendro.5sp$Code, new.order = c(5, 2, 4, 1, 3))
-dendro.5sp$Code <- factor(dendro.5sp$Code, labels = c("Tsuga", "Betula", "Quercus", 
-    "Acer", "Pinus"))
+dendro.5sp$Code <- factor(dendro.5sp$Code, labels = c("Tsuga", "Betula", Quercus, 
+    "Acer", Pinus))
 
 # relative BAI
 
@@ -3628,6 +3909,8 @@ dendro.5sp$rBAI[dendro.5sp$rBAI == Inf] <- NA
 
 dendro.5sp$rBAI[dendro.5sp$rBAI == 0] <- 1e-04
 
+ddg.procedure(pname="Produce 5 species", ins=list("dendro.raw"), outs.data=list("dendro.5sp"))
+ddg.finish("Reduction")
 head(dendro.5sp)
 #```
 
@@ -3653,7 +3936,7 @@ str(dendro.5sp)
 #```
 
 #```
-## 'data.frame':	15919 obs. of  15 variables:
+## 'data.frame':    15919 obs. of  15 variables:
 ##  $ Plot     : int  1 1 1 1 1 1 1 1 1 1 ...
 ##  $ Genus    : Factor w/ 5 levels "Acer","Betula",..: 1 1 1 1 1 1 1 1 1 1 ...
 ##  $ Species  : Factor w/ 6 levels "canadensis","candensis",..: 5 5 5 5 5 5 5 5 5 5 ...
@@ -3674,8 +3957,7 @@ str(dendro.5sp)
 #Plots
 
 #Figure 9: Individual traces of rBAI as a function of year, with smoothers. Overlay hemlock and hardwood plots.
-ddg.save()
-
+ddg.start("Plot3")
 #```r
 # To create pdf, uncomment pdf and dev.off() lines.
 pdf('Figure-9-BAI-both-v2.pdf', width=4, height=6)
@@ -3771,12 +4053,13 @@ ylab(expression(paste("Relative change in basal area (", mm^2 %.% mm^-2 %.%
 
 dev.off()
 #```
-
+ddg.procedure(pname="output analysis pdf", outs.file="Figure-9-BAI-both-v2.pdf")
+ddg.finish("Plot3")
 #Fit 1-d GAMs
 
 
 #```r
-
+ddg.start("GAMs")
 gam.acer1 <- gam(rBAI ~ as.factor(Year) + s(Age, fx = TRUE, k = 4, bs = "cs"), 
     data = subset(dendro.5sp, Code == "Acer"))
 gam.betula1 <- gam(rBAI ~ as.factor(Year) + s(Age, fx = TRUE, k = 4, bs = "cs"), 
@@ -3787,36 +4070,41 @@ gam.pinus1 <- gam(rBAI ~ as.factor(Year) + s(Age, fx = TRUE, k = 4, bs = "cs"),
     data = subset(dendro.5sp, Code == "Pinus"))
 gam.tsuga1 <- gam(rBAI ~ as.factor(Year) + s(Age, fx = TRUE, k = 4, bs = "cs"), 
     data = subset(dendro.5sp, Code == "Tsuga"))
-ddg.save()
+ddg.procedure(pname="Git 1-d GAMS", ins=list("dendro.5sp"), outs.data=list("gam.acer1","gam.betula1", "gam.quercus1", "gam.pinus1", "gam.tsuga1"))
 
 # get wiggly year effects
 
-
-years.a <- c(min(dendro.5sp$Year[dendro.5sp$Code == "Acer"]):2004)
+ddg.start("Get wiggle years effects")
+years.a <- c(min(dendro.5sp$Year[dendro.5sp$Code == Acer]):2004)
 lastyr.a <- 2005 - min(dendro.5sp$Year[dendro.5sp$Code == "Acer" & dendro.5sp$Age == 
     0])
 fixed.year.a <- c(gam.acer1$coef[1], gam.acer1$coef[1] + gam.acer1$coef[2:lastyr.a])
-
+ddg.procedure(pname="wiggle.years", ins=list("dendro.5sp", "Acer"), outs.data=list("years.a","lastyr.a","fixed.year.a"))
 
 years.b <- c(min(dendro.5sp$Year[dendro.5sp$Code == "Betula"]):2004)
 lastyr.b <- 2005 - min(dendro.5sp$Year[dendro.5sp$Code == "Betula" & dendro.5sp$Age == 
     0])
 fixed.year.b <- c(gam.betula1$coef[1], gam.betula1$coef[1] + gam.betula1$coef[2:lastyr.b])
+ddg.procedure(pname="wiggle.years", ins=list("dendro.5sp", "Betula"), outs.data=list("years.b","lastyr.b","fixed.year.b"))
 
 years.q <- c(min(dendro.5sp$Year[dendro.5sp$Code == "Quercus"]):2004)
 lastyr.q <- 2005 - min(dendro.5sp$Year[dendro.5sp$Code == "Quercus" & dendro.5sp$Age == 
     0])
 fixed.year.q <- c(gam.quercus1$coef[1], gam.quercus1$coef[1] + gam.quercus1$coef[2:lastyr.q])
+ddg.procedure(pname="wiggle.years", ins=list("dendro.5sp", "Quercus"), outs.data=list("years.q","lastyr.q","fixed.year.q"))
 
 years.p <- c(min(dendro.5sp$Year[dendro.5sp$Code == "Pinus"]):2004)
 lastyr.p <- 2005 - min(dendro.5sp$Year[dendro.5sp$Code == "Pinus" & dendro.5sp$Age == 
     0])
 fixed.year.p <- c(gam.pinus1$coef[1], gam.pinus1$coef[1] + gam.pinus1$coef[2:lastyr.p])
+ddg.procedure(pname="wiggle.years", ins=list("dendro.5sp", "Pinus"), outs.data=list("years.p","lastyr.p","fixed.year.p"))
 
 years.t <- c(min(dendro.5sp$Year[dendro.5sp$Code == "Tsuga"]):2004)
 lastyr.t <- 2005 - min(dendro.5sp$Year[dendro.5sp$Code == "Tsuga" & dendro.5sp$Age == 
     0])
 fixed.year.t <- c(gam.tsuga1$coef[1], gam.tsuga1$coef[1] + gam.tsuga1$coef[2:lastyr.t])
+ddg.procedure(pname="wiggle.years", ins=list("dendro.5sp", "Tsuga"), outs.data=list("years.t","lastyr.t","fixed.year.t"))
+ddg.finish("Get wiggle years effects")
 
 #```
 
@@ -3827,9 +4115,10 @@ fixed.year.t <- c(gam.tsuga1$coef[1], gam.tsuga1$coef[1] + gam.tsuga1$coef[2:las
 
 # gam plots in first column remove comments on pdf() and dev.off() to
 # generate pdf
-
+ddg.start("Plot4")
 pdf('Figure_10-single-gams-v2.pdf', height=7, width=5, pointsize=9)
 
+ddg.start("gam.plots")
 layout(matrix(c(1:10), 5, 2, byrow = FALSE), widths = rep(lcm(5), 2), heights = rep(lcm(3), 
     5))
 # layout.show(10)
@@ -3839,33 +4128,44 @@ plot(gam.tsuga1, se = TRUE, xlab = "", ylab = "", xlim = c(0, 140), rug = FALSE,
 axis(2, las = 1, tcl = -0.25, at = c(-2, 0, 2))
 text(0, -2, "Tsuga", font = 3, pos = 4)
 mtext(side = 3, "s(Age)", adj = 0, line = 0.5, cex = 1)
+ddg.procedure(pname="plot", ins=list("gam.tsuga1"))
+ddg.file.out(pname="plot","Figure_10-single-gams-v2.pdf")
 
 
 plot(gam.betula1, se = TRUE, xlab = "", ylab = "", xlim = c(0, 140), rug = FALSE, 
     tcl = -0.25, col.axis = "white")
 axis(2, las = 1, tcl = -0.25, at = seq(-10, 5, 5))
 text(0, -10, "Betula", font = 3, pos = 4)
+ddg.procedure(pname="plot", ins=list("gam.betula1"))
+ddg.file.out(pname="plot", "Figure_10-single-gams-v2.pdf")
 
 plot(gam.quercus1, se = TRUE, xlab = "", ylab = "", xlim = c(0, 140), rug = FALSE, 
     tcl = -0.25, col.axis = "white")
 axis(2, las = 1, tcl = -0.25, at = seq(-20, 10, 10))
 text(0, -20, "Quercus", font = 3, pos = 4)
+ddg.procedure(pname="plot", ins=list("gam.quercus1"))
+ddg.file.out(pname="plot","Figure_10-single-gams-v2.pdf")
+
 
 plot(gam.acer1, se = TRUE, xlab = "", ylab = "", xlim = c(0, 140), rug = FALSE, 
     tcl = -0.25, col.axis = "white")
 axis(2, las = 1, tcl = -0.25, at = seq(-10, 5, 5))
 text(0, -10, "Acer", font = 3, pos = 4)
-
+ddg.procedure(pname="plot", ins=list("gam.acer1"))
+ddg.file.out(pname="plot","Figure_10-single-gams-v2.pdf")
 plot(gam.pinus1, se = TRUE, xlab = "Age", ylab = "", xlim = c(0, 140), rug = FALSE, 
     tcl = -0.25, col.axis = "white")
 axis(2, las = 1, tcl = -0.25, at = seq(-25, 5, 15))
 axis(1, tcl = -0.25, padj = -0.5)
 text(0, -23, "Pinus", font = 3, pos = 4)
 mtext(side = 1, "Age", , line = 2.25, cex = 1)
+ddg.procedure(pname="plot", ins=list("gam.pinus1"))
+ddg.file.out(pname="plot","Figure_10-single-gams-v2.pdf")
+ddg.finish("gam.plots")
 
 
 # age wiggles in 2nd column
-
+ddg.start("wiggles")
 par(mar = c(1, 0.5, 0, 2))
 plot(years.t, fixed.year.t, type = "n", xlab = "", ylab = "", xlim = c(1860, 
     2005), col.axis = "white", tcl = 0)
@@ -3881,8 +4181,8 @@ axis(1, tcl = -0.25, at = seq(1860, 2000, 20), labels = FALSE)
 axis(4, tcl = -0.25, at = seq(0, 20, 10), las = 1)
 mtext(side = 3, "f(Year)", adj = 1, line = 0.5, cex = 1)
 box()
-
-
+ddg.procedure(pname="plot", ins=list("years.t", "fixed.year.t"))
+ddg.file.out(pname="plot","Figure_10-single-gams-v2.pdf")
 plot(years.b, fixed.year.b, type = "n", xlab = "", ylab = "", xlim = c(1860, 
     2005), col.axis = "white", tcl = 0)
 abline(v = c(1938, 1981), lty = 2, col = "grey")
@@ -3896,8 +4196,8 @@ lines(years.b, fixed.year.b)
 axis(1, tcl = -0.25, at = seq(1860, 2000, 20), labels = FALSE)
 axis(4, tcl = -0.25, at = seq(0, 20, 10), las = 1)
 box()
-
-
+ddg.procedure(pname="plot", ins=list("years.b", "fixed.year.b"))
+ddg.file.out(pname="plot","Figure_10-single-gams-v2.pdf")
 plot(years.q, fixed.year.q, type = "n", xlab = "", ylab = "", xlim = c(1860, 
     2005), col.axis = "white", tcl = 0)
 abline(v = c(1938, 1981), lty = 2, col = "grey")
@@ -3911,7 +4211,8 @@ lines(years.q, fixed.year.q)
 axis(1, tcl = -0.25, at = seq(1860, 2000, 20), labels = FALSE)
 axis(4, tcl = -0.25, at = seq(5, 15, 5), las = 1)
 box()
-
+ddg.procedure(pname="plot", ins=list("years.q", "fixed.year.q"))
+ddg.file.out(pname="plot","Figure_10-single-gams-v2.pdf")
 plot(years.a, fixed.year.a, type = "n", xlab = "", ylab = "", xlim = c(1860, 
     2005), col.axis = "white", tcl = 0)
 abline(v = c(1938, 1981), lty = 2, col = "grey")
@@ -3925,8 +4226,8 @@ lines(years.a, fixed.year.a)
 axis(1, tcl = -0.25, at = seq(1860, 2000, 20), labels = FALSE)
 axis(4, tcl = -0.25, at = seq(0, 20, 10), las = 1)
 box()
-
-
+ddg.procedure(pname="plot", ins=list("years.a", "fixed.year.a"))
+ddg.file.out(pname="plot","Figure_10-single-gams-v2.pdf")
 plot(years.p, fixed.year.p, type = "n", xlab = "", ylab = "", xlim = c(1860, 
     2005), col.axis = "white", tcl = 0)
 abline(v = c(1938, 1981), lty = 2, col = "grey")
@@ -3942,6 +4243,9 @@ axis(1, tcl = 0, at = seq(1880, 2000, 40), padj = -0.5)
 axis(4, tcl = -0.25, at = seq(10, 30, 10), las = 1)
 mtext(side = 1, "Year", line = 2.25, cex = 1)
 box()
+ddg.procedure(pname="plot", ins=list("years.p", "fixed.year.p"))
+ddg.file.out(pname="plot","Figure_10-single-gams-v2.pdf")
+ddg.finish("wiggles")
 #```
 
 #![plot of chunk unnamed-chunk-23](figure/unnamed-chunk-23.png) 
@@ -3949,19 +4253,19 @@ box()
 #```r
 
 dev.off()
-ddg.save()
-ddg.debug.on()
 #```
-
+ddg.finish("Plot4")
+ddg.finish("GAMs")
 
 #Fit 2D-GAMS
 
-
+ddg.start("Fit 2D-GAMS")
 #```r
 
 # pad the few 0s for log plotting
 
 dendro.5sp$rBAI[dendro.5sp$rBAI == 0] <- 1e-04
+ddg.procedure(pname="Fix 0s", ins=list("dendro.5sp"), outs.data=list("deondro.5sp"))
 # add birth year (Byear) to dendro.5sp
 
 birthyr.table <- tapply(dendro.5sp$Year, list(dendro.5sp$TreeNum), min)
@@ -3997,6 +4301,8 @@ for (tr in species) {
 
 dendro.5sp$rBAI2 <- dendro.5sp$rBAI
 dendro.5sp$rBAI2[is.na(dendro.5sp$rBAI2)] <- 1
+
+ddg.procedure(pname="birthyr", ins=list("dendro.5sp"), outs.data=list("dendro.5sp"))
 head(dendro.5sp)
 #```
 
@@ -4026,10 +4332,11 @@ gam.betula2 <- gam(rBAI ~ s(Year, Age), data = subset(dendro.5sp, Code == "Betul
 gam.quercus2 <- gam(rBAI ~ s(Year, Age), data = subset(dendro.5sp, Code == "Quercus"))
 gam.pinus2 <- gam(rBAI ~ s(Year, Age), data = subset(dendro.5sp, Code == "Pinus"))
 gam.tsuga2 <- gam(rBAI ~ s(Year, Age), data = subset(dendro.5sp, Code == "Tsuga"))
+ddg.procedure("calc.gam", ins=list("dendro.5sp"), outs.data=list("gam.acer2", "gam.betula2", "gam.quercus2", "gam.pinus2", "gam.tsuga2"))
 
 
 ## build contour plots of the predictions of the 2d gams
-
+ddg.start("Build contour plots")
 ## Acer rubrum
 
 minYr <- min(dendro.5sp$Year[dendro.5sp$Code == "Acer"])
@@ -4044,6 +4351,8 @@ pred <- predict(gam.acer2, newdata = XY)
 XY$rBAI <- pred
 newXY.acer <- XY[XY$Year - minYr >= XY$Age & XY$Year - maxBirthYr <= XY$Age, 
     ]
+
+ddg.procedure(pname="filter.predictions", ins=list("dendro.5sp"), outs.data=list("newXY.acer"))
 
 ## Betula lenta
 
@@ -4060,6 +4369,8 @@ XY$rBAI <- pred
 newXY.betula <- XY[XY$Year - minYr >= XY$Age & XY$Year - maxBirthYr <= XY$Age, 
     ]
 
+ddg.procedure(pname="filter.predictions", ins=list("dendro.5sp"), outs.data=list("newXY.betula"))
+
 ## Quercus rubra
 
 minYr <- min(dendro.5sp$Year[dendro.5sp$Code == "Quercus"])
@@ -4074,7 +4385,7 @@ pred <- predict(gam.quercus2, newdata = XY)
 XY$rBAI <- pred
 newXY.quercus <- XY[XY$Year - minYr >= XY$Age & XY$Year - maxBirthYr <= XY$Age, 
     ]
-
+ddg.procedure(pname="filter.predictions", ins=list("dendro.5sp"), outs.data=list("newXY.quercus"))
 ## Pinus strobus
 
 minYr <- min(dendro.5sp$Year[dendro.5sp$Code == "Pinus"])
@@ -4089,7 +4400,7 @@ pred <- predict(gam.pinus2, newdata = XY)
 XY$rBAI <- pred
 newXY.pinus <- XY[XY$Year - minYr >= XY$Age & XY$Year - maxBirthYr <= XY$Age, 
     ]
-
+ddg.procedure(pname="filter.predictions", ins=list("dendro.5sp"), outs.data=list("newXY.pinus"))
 ## Tsuga canadensis
 
 minYr <- min(dendro.5sp$Year[dendro.5sp$Code == "Tsuga"])
@@ -4104,11 +4415,12 @@ pred <- predict(gam.tsuga2, newdata = XY)
 XY$rBAI <- pred
 newXY.tsuga <- XY[XY$Year - minYr >= XY$Age & XY$Year - maxBirthYr <= XY$Age, 
     ]
-
+ddg.procedure(pname="filter.predictions", ins=list("dendro.5sp"), outs.data=list("newXY.tsuga"))
+ddg.finish("Build contour plots")
 # Contour plots
 
 # Acer
-
+ddg.start("Plot contours")
 a.cont <- ggplot(data = newXY.acer, aes(Year, Age, z = rBAI, xmin = 1860, ymax = 120)) + 
     
 # add environmental markers
@@ -4128,7 +4440,7 @@ geom_tile(aes(fill = rBAI)) + geom_contour(colour = "black", linetype = 0) +
     axis.ticks.length = unit(1, "mm"), axis.ticks = element_line(size = 0.25)) + 
     scale_x_continuous(breaks = seq(1880, 2000, 40)) + scale_y_continuous(breaks = seq(0, 
     120, 20))
-
+ddg.procedure("create.ggplot", ins=list("newXY.acer"), outs.data=list("a.cont"))
 # Betula
 
 b.cont <- ggplot(data = newXY.betula, aes(Year, Age, z = rBAI, xmin = 1860, 
@@ -4149,7 +4461,7 @@ geom_tile(aes(fill = rBAI)) + geom_contour(colour = "black", linetype = 0) +
     axis.ticks.length = unit(1, "mm"), axis.ticks = element_line(size = 0.25)) + 
     scale_x_continuous(breaks = seq(1880, 2000, 40)) + scale_y_continuous(breaks = seq(0, 
     120, 20))
-
+ddg.procedure("create.ggplot", ins=list("newXY.betula"), outs.data=list("b.cont"))
 # Quercus
 
 q.cont <- ggplot(data = newXY.quercus, aes(Year, Age, z = rBAI, xmin = 1860, 
@@ -4170,7 +4482,7 @@ geom_tile(aes(fill = rBAI)) + geom_contour(colour = "black", linetype = 0) +
     axis.ticks.length = unit(1, "mm"), axis.ticks = element_line(size = 0.25)) + 
     scale_x_continuous(breaks = seq(1880, 2000, 40)) + scale_y_continuous(breaks = seq(0, 
     100, 20))
-
+ddg.procedure("create.ggplot", ins=list("newXY.quercus"), outs.data=list("q.cont"))
 # Pinus
 
 p.cont <- ggplot(data = newXY.pinus, aes(Year, Age, z = rBAI, xmin = 1860, ymax = 100)) + 
@@ -4191,7 +4503,7 @@ geom_tile(aes(fill = rBAI)) + geom_contour(colour = "black", linetype = 0) +
     axis.text.y = element_text(size = 6), axis.ticks.length = unit(1, "mm"), 
     axis.ticks = element_line(size = 0.25)) + scale_x_continuous(breaks = seq(1880, 
     2000, 40)) + scale_y_continuous(breaks = seq(0, 120, 20))
-
+ddg.procedure("create.ggplot", ins=list("newXY.pinus"), outs.data=list("p.cont"))
 # Tsuga
 
 t.cont <- ggplot(data = newXY.tsuga, aes(Year, Age, z = rBAI, xmin = 1860, ymax = 140)) + 
@@ -4213,9 +4525,11 @@ geom_tile(aes(fill = rBAI)) + geom_contour(colour = "black", linetype = 0) +
     scale_x_continuous(breaks = seq(1880, 2000, 40)) + scale_y_continuous(breaks = seq(0, 
     140, 20))
 
+ddg.procedure("create.ggplot", ins=list("newXY.tsuga"), outs.data=list("t.cont"))
+ddg.finish("Plot contours")
 
 # line plots
-
+ddg.start("line plots")
 t.lines <- ggplot(data = dendro.5sp[dendro.5sp$Code == "Tsuga", ], aes(x = Year, 
     y = Age, group = TreeNum, geom = "line", xmin = 1860, ymax = 140, color = rBAI2, 
     xlab = "", ylab = "Age")) + 
@@ -4236,6 +4550,8 @@ geom_line(size = 1) + scale_colour_gradientn(colours = c("yellow", "orange",
     2000, 40)) + scale_y_continuous(breaks = seq(0, 140, 20)) + annotate("text", 
     label = "Tsuga", x = 1870, y = 122, size = 2, colour = "black", fontface = 3)
 
+ddg.procedure(pname="ggplot2.lines", ins=list("dendro.5sp"), outs.data=list("t.lines"))
+
 b.lines <- ggplot(data = dendro.5sp[dendro.5sp$Code == "Betula", ], aes(x = Year, 
     y = Age, group = TreeNum, geom = "line", xmin = 1860, ymax = 120, color = rBAI2, 
     xlab = "", ylab = "Age")) + 
@@ -4255,7 +4571,7 @@ geom_line(size = 1) + scale_colour_gradientn(colours = c("yellow", "orange",
     axis.ticks = element_line(size = 0.25)) + scale_x_continuous(breaks = seq(1880, 
     2000, 40)) + scale_y_continuous(breaks = seq(0, 120, 20)) + annotate("text", 
     label = "Betula", x = 1870, y = 102, size = 2, colour = "black", fontface = 3)
-
+ddg.procedure(pname="ggplot2.lines", ins=list("dendro.5sp"), outs.data=list("b.lines"))
 q.lines <- ggplot(data = dendro.5sp[dendro.5sp$Code == "Quercus", ], aes(x = Year, 
     y = Age, group = TreeNum, geom = "line", xmin = 1860, ymax = 100, color = rBAI2, 
     xlab = "", ylab = "Age")) + 
@@ -4275,7 +4591,7 @@ geom_line(size = 1) + scale_colour_gradientn(colours = c("yellow", "orange",
     axis.ticks = element_line(size = 0.25)) + scale_x_continuous(breaks = seq(1880, 
     2000, 40)) + scale_y_continuous(breaks = seq(0, 100, 20)) + annotate("text", 
     label = "Quercus", x = 1875, y = 82, size = 2, colour = "black", fontface = 3)
-
+ddg.procedure(pname="ggplot2.lines", ins=list("dendro.5sp"), outs.data=list("q.lines"))
 a.lines <- ggplot(data = dendro.5sp[dendro.5sp$Code == "Acer", ], aes(x = Year, 
     y = Age, group = TreeNum, geom = "line", xmin = 1860, ymax = 120, color = rBAI2, 
     xlab = "", ylab = "Age")) + 
@@ -4295,7 +4611,7 @@ geom_line(size = 1) + scale_colour_gradientn(colours = c("yellow", "orange",
     axis.ticks = element_line(size = 0.25)) + scale_x_continuous(breaks = seq(1880, 
     2000, 40)) + scale_y_continuous(breaks = seq(0, 120, 20)) + annotate("text", 
     label = "Acer", x = 1870, y = 102, size = 2, colour = "black", fontface = 3)
-
+ddg.procedure(pname="ggplot2.lines", ins=list("dendro.5sp"), outs.data=list("a.lines"))
 p.lines <- ggplot(data = dendro.5sp[dendro.5sp$Code == "Pinus", ], aes(x = Year, 
     y = Age, group = TreeNum, geom = "line", xmin = 1860, ymax = 100, color = rBAI2, 
     xlab = "Year", ylab = "Age")) + 
@@ -4316,12 +4632,15 @@ geom_line(size = 1) + scale_colour_gradientn(colours = c("yellow", "orange",
     scale_x_continuous(breaks = seq(1880, 2000, 40)) + scale_y_continuous(breaks = seq(0, 
     100, 20)) + annotate("text", label = "Pinus", x = 1870, y = 82, size = 2, 
     colour = "black", fontface = 3)
-
-
+ddg.procedure(pname="ggplot2.lines", ins=list("dendro.5sp"), outs.data=list("p.lines"))
+ddg.finish("line plots")
 
 pdf('Figure-11-countours-v2.pdf', height=6, width=4)
+mcols <- 2
+ddg.data('mcols')
 multiplot(t.lines, b.lines, q.lines, a.lines, p.lines, t.cont, b.cont, q.cont, 
-    a.cont, p.cont, cols = 2)
+    a.cont, p.cont, cols = mcols)
+ddg.file.out("Figure-11-countours-v2.pdf", pname="multiplot")
 #```
 
 #![plot of chunk unnamed-chunk-25](figure/unnamed-chunk-25.png) 
@@ -4329,7 +4648,8 @@ multiplot(t.lines, b.lines, q.lines, a.lines, p.lines, t.cont, b.cont, q.cont,
 #```r
 dev.off()
 #```
-
+ddg.finish("Fit 2D-GAMS")
+ddg.finish("Environmental data")
 #Extract deviance from and compare the 1-d and 2-d GAMs
 
 
@@ -4398,8 +4718,7 @@ AIC(gam.betula1, gam.betula2)
 #```r
 1 - gam.quercus2$deviance/gam.quercus1$null.deviance
 #```
-ddg.debug.off()
-ddg.save()
+
 #```
 ## [1] 0.4169
 #```
@@ -4461,15 +4780,13 @@ AIC(gam.pinus1, gam.pinus2)
 #```r
 AIC(gam.tsuga1, gam.tsuga2)
 #```
-
+ddg.finish("Main Script")
 #```
 ##                df   AIC
 ## gam.tsuga1 146.00 65388
 ## gam.tsuga2  30.22 65107
 #```
 
-
-# Save DDG
 ddg.save(quit=TRUE)
 
 # Calculate total time of execution
