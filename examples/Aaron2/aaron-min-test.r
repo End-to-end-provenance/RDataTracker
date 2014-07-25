@@ -213,7 +213,7 @@ trees <- read.csv("trees03.csv")
 dendro <- read.csv("hf086-01-dendro.csv")
 #dendro <- read.csv("C:/Users/aellison/Dropbox/Aaron's Briefcase/manuscript - Simes dendro and land use/analysis/hf086-01-dendro.csv")
 
-head(trees)
+invisible(head(trees))
 #```
 
 #```
@@ -227,7 +227,7 @@ head(trees)
 #```
 
 #```r
-head(dendro)
+invisible(head(dendro))
 #```
 
 #```
@@ -242,7 +242,7 @@ head(dendro)
 
 
 #Create contour plots of trees in each plot (ms. Figures 5, 6)
-
+ddg.procedure("Create contour plots of trees in each plot")
 
 #```r
 
@@ -300,7 +300,7 @@ genera.rank <- c(14, 2, 1, 12, 10, 7, 9, 4, 11, 8, 3, 6, 5, 13)
 
 cex.I <- c(0.6, 0.6, rep(0.3, 7), 0.6, 0.3, 0.6, 0.3, 0.6)
 
-# begin hemlock plot uncomment pdf and dev.off() lines to generate pdfs
+# begin hemlock plot uncomment pdf and invisible(dev.off() lines to generate pdfs)
 
 pdf(file='hemlock_countors.pdf', width=4.75, height=6, colormodel='cmyk',
   pointsize=9)
@@ -417,7 +417,7 @@ text(6, 1, "Other", font = 2, col = "white", srt = 90)
 
 #```r
 
-dev.off() 
+invisible(dev.off())
 #end hemlock
 
 
@@ -477,14 +477,14 @@ for (i in blacks) text(i, 1, genera[genera.rank][i], font = 4, col = "black",
     srt = 90)
 text(6, 1, "Other", font = 2, col = "white", srt = 90)
 
-dev.off()
+invisible(dev.off())
 #```
 
 #![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-42.png) 
 
 
 #Compute Ripley's K for each species, each plot
-
+ddg.procedure("Compute Ripley's K for each species, each plot")
 #First, create sptaial point patterns; remove points with x or y outside of c(0,90)
 
 
@@ -585,8 +585,8 @@ par(mfrow = c(5, 3), pin = c(1.75, 1.75), plt = c(0.0625, 0.9375, 0.0625, 0.9375
 
 
 plot(plot.1.pp[plot.1$genus == "Tsuga"])
-plot(density(plot.1.pp[plot.1$genus == "Tsuga"]))
-plot(envelope(plot.1.pp[plot.1$genus == "Tsuga"], Lest, global = FALSE))
+invisible(plot(invisible(density(plot.1.pp[plot.1$genus == "Tsuga"]))))
+invisible(plot(invisible(envelope(plot.1.pp[plot.1$genus == "Tsuga"], Lest, global = FALSE))))
 #```
 
 #```
@@ -618,8 +618,8 @@ plot(envelope(plot.1.pp[plot.1$genus == "Tsuga"], Lest, global = FALSE))
 #```r
 
 plot(plot.1.pp[plot.1$genus == "Betula"])
-plot(density(plot.1.pp[plot.1$genus == "Betula"]))
-plot(envelope(plot.1.pp[plot.1$genus == "Betula"], Kest))
+invisible(plot(invisible(density(plot.1.pp[plot.1$genus == "Betula"]))))
+invisible(plot(invisible(envelope(plot.1.pp[plot.1$genus == "Betula"], Kest))))
 #```
 
 #```
@@ -652,8 +652,8 @@ plot(envelope(plot.1.pp[plot.1$genus == "Betula"], Kest))
 
 
 plot(plot.1.pp[plot.1$genus == "Quercus"])
-plot(density(plot.1.pp[plot.1$genus == "Quercus"]))
-plot(envelope(plot.1.pp[plot.1$genus == "Quercus"], Kest))
+invisible(plot(invisible(density(plot.1.pp[plot.1$genus == "Quercus"]))))
+invisible(plot(invisible(envelope(plot.1.pp[plot.1$genus == "Quercus"], Kest))))
 #```
 
 #```
@@ -685,8 +685,8 @@ plot(envelope(plot.1.pp[plot.1$genus == "Quercus"], Kest))
 #```r
 
 plot(plot.1.pp[plot.1$genus == "Acer"])
-plot(density(plot.1.pp[plot.1$genus == "Acer"]))
-plot(envelope(plot.1.pp[plot.1$genus == "Acer"], Kest))
+invisible(plot(invisible(density(plot.1.pp[plot.1$genus == "Acer"]))))
+invisible(plot(invisible(envelope(plot.1.pp[plot.1$genus == "Acer"], Kest))))
 #```
 
 #```
@@ -719,8 +719,8 @@ plot(envelope(plot.1.pp[plot.1$genus == "Acer"], Kest))
 
 
 plot(plot.1.pp[plot.1$genus == "Pinus"])
-plot(density(plot.1.pp[plot.1$genus == "Pinus"]))
-plot(envelope(plot.1.pp[plot.1$genus == "Pinus"], Kest))
+invisible(plot(invisible(density(plot.1.pp[plot.1$genus == "Pinus"]))))
+invisible(plot(invisible(envelope(plot.1.pp[plot.1$genus == "Pinus"], Kest))))
 #```
 
 #```
@@ -755,8 +755,8 @@ plot(envelope(plot.1.pp[plot.1$genus == "Pinus"], Kest))
 
 par(mfrow = c(5, 3), pin = c(1.75, 1.75), plt = c(0.0625, 0.9375, 0.0625, 0.9375))
 plot(plot.2.pp[plot.2$genus == "Tsuga"])
-plot(density(plot.2.pp[plot.2$genus == "Tsuga"]))
-plot(envelope(plot.2.pp[plot.2$genus == "Tsuga"], Kest))
+invisible(plot(invisible(density(plot.2.pp[plot.2$genus == "Tsuga"]))))
+invisible(plot(invisible(envelope(plot.2.pp[plot.2$genus == "Tsuga"], Kest))))
 #```
 
 #```
@@ -788,8 +788,8 @@ plot(envelope(plot.2.pp[plot.2$genus == "Tsuga"], Kest))
 #```r
 
 plot(plot.2.pp[plot.2$genus == "Betula"])
-plot(density(plot.2.pp[plot.2$genus == "Betula"]))
-plot(envelope(plot.2.pp[plot.2$genus == "Betula"], Kest))
+invisible(plot(invisible(density(plot.2.pp[plot.2$genus == "Betula"]))))
+invisible(plot(invisible(envelope(plot.2.pp[plot.2$genus == "Betula"], Kest))))
 #```
 
 #```
@@ -821,8 +821,8 @@ plot(envelope(plot.2.pp[plot.2$genus == "Betula"], Kest))
 #```r
 
 plot(plot.2.pp[plot.2$genus == "Quercus"])
-plot(density(plot.2.pp[plot.2$genus == "Quercus"]))
-plot(envelope(plot.2.pp[plot.2$genus == "Quercus"], Kest))
+invisible(plot(invisible(density(plot.2.pp[plot.2$genus == "Quercus"]))))
+invisible(plot(invisible(envelope(plot.2.pp[plot.2$genus == "Quercus"], Kest))))
 #```
 
 #```
@@ -854,8 +854,8 @@ plot(envelope(plot.2.pp[plot.2$genus == "Quercus"], Kest))
 #```r
 
 plot(plot.2.pp[plot.2$genus == "Acer"])
-plot(density(plot.2.pp[plot.2$genus == "Acer"]))
-plot(envelope(plot.2.pp[plot.2$genus == "Acer"], Kest))
+invisible(plot(invisible(density(plot.2.pp[plot.2$genus == "Acer"]))))
+invisible(plot(invisible(envelope(plot.2.pp[plot.2$genus == "Acer"], Kest))))
 #```
 
 #```
@@ -887,8 +887,8 @@ plot(envelope(plot.2.pp[plot.2$genus == "Acer"], Kest))
 #```r
 
 plot(plot.2.pp[plot.2$genus == "Pinus"])
-plot(density(plot.2.pp[plot.2$genus == "Pinus"]))
-plot(envelope(plot.2.pp[plot.2$genus == "Pinus"], Kest))
+invisible(plot(invisible(density(plot.2.pp[plot.2$genus == "Pinus"]))))
+invisible(plot(invisible(envelope(plot.2.pp[plot.2$genus == "Pinus"], Kest))))
 #```
 
 #```
@@ -923,8 +923,8 @@ plot(envelope(plot.2.pp[plot.2$genus == "Pinus"], Kest))
 
 par(mfrow = c(5, 3), pin = c(1.75, 1.75), plt = c(0.0625, 0.9375, 0.0625, 0.9375))
 plot(plot.3.pp[plot.3$genus == "Tsuga"])
-plot(density(plot.3.pp[plot.3$genus == "Tsuga"]))
-plot(envelope(plot.3.pp[plot.3$genus == "Tsuga"], Kest))
+invisible(plot(invisible(density(plot.3.pp[plot.3$genus == "Tsuga"]))))
+invisible(plot(invisible(envelope(plot.3.pp[plot.3$genus == "Tsuga"], Kest))))
 #```
 
 #```
@@ -956,8 +956,8 @@ plot(envelope(plot.3.pp[plot.3$genus == "Tsuga"], Kest))
 #```r
 
 plot(plot.3.pp[plot.3$genus == "Betula"])
-plot(density(plot.3.pp[plot.3$genus == "Betula"]))
-plot(envelope(plot.3.pp[plot.3$genus == "Betula"], Kest))
+invisible(plot(invisible(density(plot.3.pp[plot.3$genus == "Betula"]))))
+invisible(plot(invisible(envelope(plot.3.pp[plot.3$genus == "Betula"], Kest))))
 #```
 
 #```
@@ -989,8 +989,8 @@ plot(envelope(plot.3.pp[plot.3$genus == "Betula"], Kest))
 #```r
 
 plot(plot.3.pp[plot.3$genus == "Quercus"])
-plot(density(plot.3.pp[plot.3$genus == "Quercus"]))
-plot(envelope(plot.3.pp[plot.3$genus == "Quercus"], Kest))
+invisible(plot(invisible(density(plot.3.pp[plot.3$genus == "Quercus"]))))
+invisible(plot(invisible(envelope(plot.3.pp[plot.3$genus == "Quercus"], Kest))))
 #```
 
 #```
@@ -1022,8 +1022,8 @@ plot(envelope(plot.3.pp[plot.3$genus == "Quercus"], Kest))
 #```r
 
 plot(plot.3.pp[plot.3$genus == "Acer"])
-plot(density(plot.3.pp[plot.3$genus == "Acer"]))
-plot(envelope(plot.3.pp[plot.3$genus == "Acer"], Kest))
+invisible(plot(invisible(density(plot.3.pp[plot.3$genus == "Acer"]))))
+invisible(plot(invisible(envelope(plot.3.pp[plot.3$genus == "Acer"], Kest))))
 #```
 
 #```
@@ -1055,8 +1055,8 @@ plot(envelope(plot.3.pp[plot.3$genus == "Acer"], Kest))
 #```r
 
 plot(plot.3.pp[plot.3$genus == "Pinus"])
-plot(density(plot.3.pp[plot.3$genus == "Pinus"]))
-plot(envelope(plot.3.pp[plot.3$genus == "Pinus"], Kest))
+invisible(plot(invisible(density(plot.3.pp[plot.3$genus == "Pinus"]))))
+invisible(plot(invisible(envelope(plot.3.pp[plot.3$genus == "Pinus"], Kest))))
 #```
 
 #```
@@ -1091,8 +1091,8 @@ plot(envelope(plot.3.pp[plot.3$genus == "Pinus"], Kest))
 
 par(mfrow = c(5, 3), pin = c(1.75, 1.75), plt = c(0.0625, 0.9375, 0.0625, 0.9375))
 plot(plot.4.pp[plot.4$genus == "Tsuga"])
-plot(density(plot.4.pp[plot.4$genus == "Tsuga"]))
-plot(envelope(plot.4.pp[plot.4$genus == "Tsuga"], Kest))
+invisible(plot(invisible(density(plot.4.pp[plot.4$genus == "Tsuga"]))))
+invisible(plot(invisible(envelope(plot.4.pp[plot.4$genus == "Tsuga"], Kest))))
 #```
 
 #```
@@ -1125,8 +1125,8 @@ ddg.grabhistory()
 #```r
 
 plot(plot.4.pp[plot.4$genus == "Betula"])
-plot(density(plot.4.pp[plot.4$genus == "Betula"]))
-plot(envelope(plot.4.pp[plot.4$genus == "Betula"], Kest))
+invisible(plot(invisible(density(plot.4.pp[plot.4$genus == "Betula"]))))
+invisible(plot(invisible(envelope(plot.4.pp[plot.4$genus == "Betula"], Kest))))
 #```
 
 #```
@@ -1158,8 +1158,8 @@ plot(envelope(plot.4.pp[plot.4$genus == "Betula"], Kest))
 #```r
 
 plot(plot.4.pp[plot.4$genus == "Quercus"])
-plot(density(plot.4.pp[plot.4$genus == "Quercus"]))
-plot(envelope(plot.4.pp[plot.4$genus == "Quercus"], Kest))
+invisible(plot(invisible(density(plot.4.pp[plot.4$genus == "Quercus"]))))
+invisible(plot(invisible(envelope(plot.4.pp[plot.4$genus == "Quercus"], Kest))))
 #```
 
 #```
@@ -1191,8 +1191,8 @@ plot(envelope(plot.4.pp[plot.4$genus == "Quercus"], Kest))
 #```r
 
 plot(plot.4.pp[plot.4$genus == "Acer"])
-plot(density(plot.4.pp[plot.4$genus == "Acer"]))
-plot(envelope(plot.4.pp[plot.4$genus == "Acer"], Kest))
+invisible(plot(invisible(density(plot.4.pp[plot.4$genus == "Acer"]))))
+invisible(plot(invisible(envelope(plot.4.pp[plot.4$genus == "Acer"], Kest))))
 #```
 
 #```
@@ -1224,8 +1224,8 @@ plot(envelope(plot.4.pp[plot.4$genus == "Acer"], Kest))
 #```r
 
 plot(plot.4.pp[plot.4$genus == "Pinus"])
-plot(density(plot.4.pp[plot.4$genus == "Pinus"]))
-plot(envelope(plot.4.pp[plot.4$genus == "Pinus"], Kest))
+invisible(plot(invisible(density(plot.4.pp[plot.4$genus == "Pinus"]))))
+invisible(plot(invisible(envelope(plot.4.pp[plot.4$genus == "Pinus"], Kest))))
 #```
 
 #```
@@ -1259,8 +1259,8 @@ plot(envelope(plot.4.pp[plot.4$genus == "Pinus"], Kest))
 #```r
 
 plot(plot.5.pp[plot.5$genus == "Tsuga"])
-plot(density(plot.5.pp[plot.5$genus == "Tsuga"]))
-plot(envelope(plot.5.pp[plot.5$genus == "Tsuga"], Kest))
+invisible(plot(invisible(density(plot.5.pp[plot.5$genus == "Tsuga"]))))
+invisible(plot(invisible(envelope(plot.5.pp[plot.5$genus == "Tsuga"], Kest))))
 #```
 
 #```
@@ -1292,8 +1292,8 @@ plot(envelope(plot.5.pp[plot.5$genus == "Tsuga"], Kest))
 #```r
 
 plot(plot.5.pp[plot.5$genus == "Betula"])
-plot(density(plot.5.pp[plot.5$genus == "Betula"]))
-plot(envelope(plot.5.pp[plot.5$genus == "Betula"], Kest))
+invisible(plot(invisible(density(plot.5.pp[plot.5$genus == "Betula"]))))
+invisible(plot(invisible(envelope(plot.5.pp[plot.5$genus == "Betula"], Kest))))
 #```
 
 #```
@@ -1325,8 +1325,8 @@ plot(envelope(plot.5.pp[plot.5$genus == "Betula"], Kest))
 #```r
 
 plot(plot.5.pp[plot.5$genus == "Quercus"])
-plot(density(plot.5.pp[plot.5$genus == "Quercus"]))
-plot(envelope(plot.5.pp[plot.5$genus == "Quercus"], Kest))
+invisible(plot(invisible(density(plot.5.pp[plot.5$genus == "Quercus"]))))
+invisible(plot(invisible(envelope(plot.5.pp[plot.5$genus == "Quercus"], Kest))))
 #```
 
 #```
@@ -1358,8 +1358,8 @@ plot(envelope(plot.5.pp[plot.5$genus == "Quercus"], Kest))
 #```r
 
 plot(plot.5.pp[plot.5$genus == "Acer"])
-plot(density(plot.5.pp[plot.5$genus == "Acer"]))
-plot(envelope(plot.5.pp[plot.5$genus == "Acer"], Kest))
+invisible(plot(invisible(density(plot.5.pp[plot.5$genus == "Acer"]))))
+invisible(plot(invisible(envelope(plot.5.pp[plot.5$genus == "Acer"], Kest))))
 #```
 
 #```
@@ -1391,8 +1391,8 @@ plot(envelope(plot.5.pp[plot.5$genus == "Acer"], Kest))
 #```r
 
 plot(plot.5.pp[plot.5$genus == "Pinus"])
-plot(density(plot.5.pp[plot.5$genus == "Pinus"]))
-plot(envelope(plot.5.pp[plot.5$genus == "Pinus"], Kest))
+invisible(plot(invisible(density(plot.5.pp[plot.5$genus == "Pinus"]))))
+invisible(plot(invisible(envelope(plot.5.pp[plot.5$genus == "Pinus"], Kest))))
 #```
 
 #```
@@ -1427,8 +1427,8 @@ plot(envelope(plot.5.pp[plot.5$genus == "Pinus"], Kest))
 
 
 plot(plot.6.pp[plot.6$genus == "Tsuga"])
-plot(density(plot.6.pp[plot.6$genus == "Tsuga"]))
-plot(envelope(plot.6.pp[plot.6$genus == "Tsuga"], Kest))
+invisible(plot(invisible(density(plot.6.pp[plot.6$genus == "Tsuga"]))))
+invisible(plot(invisible(envelope(plot.6.pp[plot.6$genus == "Tsuga"], Kest))))
 #```
 
 #```
@@ -1460,8 +1460,8 @@ plot(envelope(plot.6.pp[plot.6$genus == "Tsuga"], Kest))
 #```r
 
 plot(plot.6.pp[plot.6$genus == "Betula"])
-plot(density(plot.6.pp[plot.6$genus == "Betula"]))
-plot(envelope(plot.6.pp[plot.6$genus == "Betula"], Kest))
+invisible(plot(invisible(density(plot.6.pp[plot.6$genus == "Betula"]))))
+invisible(plot(invisible(envelope(plot.6.pp[plot.6$genus == "Betula"], Kest))))
 #```
 
 #```
@@ -1493,8 +1493,8 @@ plot(envelope(plot.6.pp[plot.6$genus == "Betula"], Kest))
 #```r
 
 plot(plot.6.pp[plot.6$genus == "Quercus"])
-plot(density(plot.6.pp[plot.6$genus == "Quercus"]))
-plot(envelope(plot.6.pp[plot.6$genus == "Quercus"], Kest))
+invisible(plot(invisible(density(plot.6.pp[plot.6$genus == "Quercus"]))))
+invisible(plot(invisible(envelope(plot.6.pp[plot.6$genus == "Quercus"], Kest))))
 #```
 
 #```
@@ -1526,8 +1526,8 @@ plot(envelope(plot.6.pp[plot.6$genus == "Quercus"], Kest))
 #```r
 
 plot(plot.6.pp[plot.6$genus == "Acer"])
-plot(density(plot.6.pp[plot.6$genus == "Acer"]))
-plot(envelope(plot.6.pp[plot.6$genus == "Acer"], Kest))
+invisible(plot(invisible(density(plot.6.pp[plot.6$genus == "Acer"]))))
+invisible(plot(invisible(envelope(plot.6.pp[plot.6$genus == "Acer"], Kest))))
 #```
 
 #```
@@ -1559,8 +1559,8 @@ plot(envelope(plot.6.pp[plot.6$genus == "Acer"], Kest))
 #```r
 
 plot(plot.6.pp[plot.6$genus == "Pinus"])
-plot(density(plot.6.pp[plot.6$genus == "Pinus"]))
-plot(envelope(plot.6.pp[plot.6$genus == "Pinus"], Kest))
+invisible(plot(invisible(density(plot.6.pp[plot.6$genus == "Pinus"]))))
+invisible(plot(invisible(envelope(plot.6.pp[plot.6$genus == "Pinus"], Kest))))
 #```
 
 #```
@@ -1594,8 +1594,8 @@ plot(envelope(plot.6.pp[plot.6$genus == "Pinus"], Kest))
 #```r
 
 plot(plot.7.pp[plot.7$genus == "Tsuga"])
-plot(density(plot.7.pp[plot.7$genus == "Tsuga"]))
-plot(envelope(plot.7.pp[plot.7$genus == "Tsuga"], Kest))
+invisible(plot(invisible(density(plot.7.pp[plot.7$genus == "Tsuga"]))))
+invisible(plot(invisible(envelope(plot.7.pp[plot.7$genus == "Tsuga"], Kest))))
 #```
 
 #```
@@ -1628,8 +1628,8 @@ ddg.grabhistory()
 #```r
 
 plot(plot.7.pp[plot.7$genus == "Betula"])
-plot(density(plot.7.pp[plot.7$genus == "Betula"]))
-plot(envelope(plot.7.pp[plot.7$genus == "Betula"], Kest))
+invisible(plot(invisible(density(plot.7.pp[plot.7$genus == "Betula"]))))
+invisible(plot(invisible(envelope(plot.7.pp[plot.7$genus == "Betula"], Kest))))
 #```
 
 #```
@@ -1661,8 +1661,8 @@ plot(envelope(plot.7.pp[plot.7$genus == "Betula"], Kest))
 #```r
 
 plot(plot.7.pp[plot.7$genus == "Quercus"])
-plot(density(plot.7.pp[plot.7$genus == "Quercus"]))
-plot(envelope(plot.7.pp[plot.7$genus == "Quercus"], Kest))
+invisible(plot(invisible(density(plot.7.pp[plot.7$genus == "Quercus"]))))
+invisible(plot(invisible(envelope(plot.7.pp[plot.7$genus == "Quercus"], Kest))))
 #```
 
 #```
@@ -1694,8 +1694,8 @@ plot(envelope(plot.7.pp[plot.7$genus == "Quercus"], Kest))
 #```r
 
 plot(plot.7.pp[plot.7$genus == "Acer"])
-plot(density(plot.7.pp[plot.7$genus == "Acer"]))
-plot(envelope(plot.7.pp[plot.7$genus == "Acer"], Kest))
+invisible(plot(invisible(density(plot.7.pp[plot.7$genus == "Acer"]))))
+invisible(plot(invisible(envelope(plot.7.pp[plot.7$genus == "Acer"], Kest))))
 #```
 
 #```
@@ -1727,8 +1727,8 @@ plot(envelope(plot.7.pp[plot.7$genus == "Acer"], Kest))
 #```r
 
 plot(plot.7.pp[plot.7$genus == "Pinus"])
-plot(density(plot.7.pp[plot.7$genus == "Pinus"]))
-plot(envelope(plot.7.pp[plot.7$genus == "Pinus"], Kest))
+invisible(plot(invisible(density(plot.7.pp[plot.7$genus == "Pinus"]))))
+invisible(plot(invisible(envelope(plot.7.pp[plot.7$genus == "Pinus"], Kest))))
 #```
 
 #```
@@ -1762,8 +1762,8 @@ plot(envelope(plot.7.pp[plot.7$genus == "Pinus"], Kest))
 #```r
 
 plot(plot.8.pp[plot.8$genus == "Tsuga"])
-plot(density(plot.8.pp[plot.8$genus == "Tsuga"]))
-plot(envelope(plot.8.pp[plot.8$genus == "Tsuga"], Kest))
+invisible(plot(invisible(density(plot.8.pp[plot.8$genus == "Tsuga"]))))
+invisible(plot(invisible(envelope(plot.8.pp[plot.8$genus == "Tsuga"], Kest))))
 #```
 
 #```
@@ -1795,8 +1795,8 @@ plot(envelope(plot.8.pp[plot.8$genus == "Tsuga"], Kest))
 #```r
 
 plot(plot.8.pp[plot.8$genus == "Betula"])
-plot(density(plot.8.pp[plot.8$genus == "Betula"]))
-plot(envelope(plot.8.pp[plot.8$genus == "Betula"], Kest))
+invisible(plot(invisible(density(plot.8.pp[plot.8$genus == "Betula"]))))
+invisible(plot(invisible(envelope(plot.8.pp[plot.8$genus == "Betula"], Kest))))
 #```
 
 #```
@@ -1828,8 +1828,8 @@ plot(envelope(plot.8.pp[plot.8$genus == "Betula"], Kest))
 #```r
 
 plot(plot.8.pp[plot.8$genus == "Quercus"])
-plot(density(plot.8.pp[plot.8$genus == "Quercus"]))
-plot(envelope(plot.8.pp[plot.8$genus == "Quercus"], Kest))
+invisible(plot(invisible(density(plot.8.pp[plot.8$genus == "Quercus"]))))
+invisible(plot(invisible(envelope(plot.8.pp[plot.8$genus == "Quercus"], Kest))))
 #```
 
 #```
@@ -1861,8 +1861,8 @@ plot(envelope(plot.8.pp[plot.8$genus == "Quercus"], Kest))
 #```r
 
 plot(plot.8.pp[plot.8$genus == "Acer"])
-plot(density(plot.8.pp[plot.8$genus == "Acer"]))
-plot(envelope(plot.8.pp[plot.8$genus == "Acer"], Kest))
+invisible(plot(invisible(density(plot.8.pp[plot.8$genus == "Acer"]))))
+invisible(plot(invisible(envelope(plot.8.pp[plot.8$genus == "Acer"], Kest))))
 #```
 
 #```
@@ -1894,8 +1894,8 @@ plot(envelope(plot.8.pp[plot.8$genus == "Acer"], Kest))
 #```r
 
 plot(plot.8.pp[plot.8$genus == "Pinus"])
-plot(density(plot.8.pp[plot.8$genus == "Pinus"]))
-plot(envelope(plot.8.pp[plot.8$genus == "Pinus"], Kest))
+invisible(plot(invisible(density(plot.8.pp[plot.8$genus == "Pinus"]))))
+invisible(plot(invisible(envelope(plot.8.pp[plot.8$genus == "Pinus"], Kest))))
 #```
 
 #```
@@ -1932,7 +1932,7 @@ plot(envelope(plot.8.pp[plot.8$genus == "Pinus"], Kest))
 
 #```r
 
-mad.test(plot.1.pp[plot.1$genus == "Tsuga"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.1.pp[plot.1$genus == "Tsuga"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
@@ -1948,7 +1948,7 @@ mad.test(plot.1.pp[plot.1$genus == "Tsuga"], Lest, verbose = FALSE, nsim = 99)
 #```
 
 #```r
-mad.test(plot.1.pp[plot.1$genus == "Betula"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.1.pp[plot.1$genus == "Betula"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
@@ -1964,7 +1964,7 @@ mad.test(plot.1.pp[plot.1$genus == "Betula"], Lest, verbose = FALSE, nsim = 99)
 #```
 
 #```r
-mad.test(plot.1.pp[plot.1$genus == "Quercus"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.1.pp[plot.1$genus == "Quercus"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
@@ -1980,7 +1980,7 @@ mad.test(plot.1.pp[plot.1$genus == "Quercus"], Lest, verbose = FALSE, nsim = 99)
 #```
 
 #```r
-mad.test(plot.1.pp[plot.1$genus == "Acer"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.1.pp[plot.1$genus == "Acer"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
@@ -1996,7 +1996,7 @@ mad.test(plot.1.pp[plot.1$genus == "Acer"], Lest, verbose = FALSE, nsim = 99)
 #```
 
 #```r
-mad.test(plot.1.pp[plot.1$genus == "Pinus"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.1.pp[plot.1$genus == "Pinus"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
@@ -2013,7 +2013,7 @@ mad.test(plot.1.pp[plot.1$genus == "Pinus"], Lest, verbose = FALSE, nsim = 99)
 
 #```r
 
-mad.test(plot.2.pp[plot.2$genus == "Tsuga"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.2.pp[plot.2$genus == "Tsuga"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
@@ -2029,7 +2029,7 @@ mad.test(plot.2.pp[plot.2$genus == "Tsuga"], Lest, verbose = FALSE, nsim = 99)
 #```
 
 #```r
-mad.test(plot.2.pp[plot.2$genus == "Betula"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.2.pp[plot.2$genus == "Betula"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
@@ -2045,7 +2045,7 @@ mad.test(plot.2.pp[plot.2$genus == "Betula"], Lest, verbose = FALSE, nsim = 99)
 #```
 
 #```r
-mad.test(plot.2.pp[plot.2$genus == "Quercus"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.2.pp[plot.2$genus == "Quercus"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
@@ -2061,7 +2061,7 @@ mad.test(plot.2.pp[plot.2$genus == "Quercus"], Lest, verbose = FALSE, nsim = 99)
 #```
 
 #```r
-mad.test(plot.2.pp[plot.2$genus == "Acer"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.2.pp[plot.2$genus == "Acer"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
@@ -2077,7 +2077,7 @@ mad.test(plot.2.pp[plot.2$genus == "Acer"], Lest, verbose = FALSE, nsim = 99)
 #```
 
 #```r
-mad.test(plot.2.pp[plot.2$genus == "Pinus"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.2.pp[plot.2$genus == "Pinus"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
@@ -2094,7 +2094,7 @@ mad.test(plot.2.pp[plot.2$genus == "Pinus"], Lest, verbose = FALSE, nsim = 99)
 
 #```r
 
-mad.test(plot.3.pp[plot.3$genus == "Tsuga"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.3.pp[plot.3$genus == "Tsuga"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
@@ -2110,7 +2110,7 @@ mad.test(plot.3.pp[plot.3$genus == "Tsuga"], Lest, verbose = FALSE, nsim = 99)
 #```
 
 #```r
-mad.test(plot.3.pp[plot.3$genus == "Betula"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.3.pp[plot.3$genus == "Betula"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
@@ -2126,7 +2126,7 @@ mad.test(plot.3.pp[plot.3$genus == "Betula"], Lest, verbose = FALSE, nsim = 99)
 #```
 
 #```r
-mad.test(plot.3.pp[plot.3$genus == "Quercus"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.3.pp[plot.3$genus == "Quercus"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
@@ -2143,7 +2143,7 @@ ddg.grabhistory()
 #```
 
 #```r
-mad.test(plot.3.pp[plot.3$genus == "Acer"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.3.pp[plot.3$genus == "Acer"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
@@ -2159,7 +2159,7 @@ mad.test(plot.3.pp[plot.3$genus == "Acer"], Lest, verbose = FALSE, nsim = 99)
 #```
 
 #```r
-mad.test(plot.3.pp[plot.3$genus == "Pinus"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.3.pp[plot.3$genus == "Pinus"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
@@ -2176,7 +2176,7 @@ mad.test(plot.3.pp[plot.3$genus == "Pinus"], Lest, verbose = FALSE, nsim = 99)
 
 #```r
 
-mad.test(plot.4.pp[plot.4$genus == "Tsuga"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.4.pp[plot.4$genus == "Tsuga"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
@@ -2192,7 +2192,7 @@ mad.test(plot.4.pp[plot.4$genus == "Tsuga"], Lest, verbose = FALSE, nsim = 99)
 #```
 
 #```r
-mad.test(plot.4.pp[plot.4$genus == "Betula"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.4.pp[plot.4$genus == "Betula"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
@@ -2208,7 +2208,7 @@ mad.test(plot.4.pp[plot.4$genus == "Betula"], Lest, verbose = FALSE, nsim = 99)
 #```
 
 #```r
-mad.test(plot.4.pp[plot.4$genus == "Quercus"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.4.pp[plot.4$genus == "Quercus"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
@@ -2224,7 +2224,7 @@ mad.test(plot.4.pp[plot.4$genus == "Quercus"], Lest, verbose = FALSE, nsim = 99)
 #```
 
 #```r
-mad.test(plot.4.pp[plot.4$genus == "Acer"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.4.pp[plot.4$genus == "Acer"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
@@ -2240,7 +2240,7 @@ mad.test(plot.4.pp[plot.4$genus == "Acer"], Lest, verbose = FALSE, nsim = 99)
 #```
 
 #```r
-mad.test(plot.4.pp[plot.4$genus == "Pinus"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.4.pp[plot.4$genus == "Pinus"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
@@ -2257,7 +2257,7 @@ mad.test(plot.4.pp[plot.4$genus == "Pinus"], Lest, verbose = FALSE, nsim = 99)
 
 #```r
 
-mad.test(plot.5.pp[plot.5$genus == "Tsuga"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.5.pp[plot.5$genus == "Tsuga"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
@@ -2273,7 +2273,7 @@ mad.test(plot.5.pp[plot.5$genus == "Tsuga"], Lest, verbose = FALSE, nsim = 99)
 #```
 
 #```r
-mad.test(plot.5.pp[plot.5$genus == "Betula"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.5.pp[plot.5$genus == "Betula"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
@@ -2289,7 +2289,7 @@ mad.test(plot.5.pp[plot.5$genus == "Betula"], Lest, verbose = FALSE, nsim = 99)
 #```
 
 #```r
-mad.test(plot.5.pp[plot.5$genus == "Quercus"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.5.pp[plot.5$genus == "Quercus"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
@@ -2305,7 +2305,7 @@ mad.test(plot.5.pp[plot.5$genus == "Quercus"], Lest, verbose = FALSE, nsim = 99)
 #```
 
 #```r
-mad.test(plot.5.pp[plot.5$genus == "Acer"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.5.pp[plot.5$genus == "Acer"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
@@ -2322,8 +2322,8 @@ mad.test(plot.5.pp[plot.5$genus == "Acer"], Lest, verbose = FALSE, nsim = 99)
 
 #```r
 tryCatch(
-    mad.test(plot.5.pp[plot.5$genus == "Pinus"], Lest, verbose = FALSE, nsim = 99),
-    error = function (e) {print(e)})
+    invisible(mad.test(plot.5.pp[plot.5$genus == "Pinus"], Lest, verbose = FALSE, nsim = 99)),
+    error = function (e) {invisible()})
 #```
 
 #```
@@ -2333,7 +2333,7 @@ tryCatch(
 
 #```r
 
-mad.test(plot.6.pp[plot.6$genus == "Tsuga"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.6.pp[plot.6$genus == "Tsuga"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
@@ -2349,7 +2349,7 @@ mad.test(plot.6.pp[plot.6$genus == "Tsuga"], Lest, verbose = FALSE, nsim = 99)
 #```
 
 #```r
-mad.test(plot.6.pp[plot.6$genus == "Betula"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.6.pp[plot.6$genus == "Betula"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
@@ -2365,7 +2365,7 @@ mad.test(plot.6.pp[plot.6$genus == "Betula"], Lest, verbose = FALSE, nsim = 99)
 #```
 
 #```r
-mad.test(plot.6.pp[plot.6$genus == "Quercus"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.6.pp[plot.6$genus == "Quercus"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
@@ -2381,7 +2381,7 @@ mad.test(plot.6.pp[plot.6$genus == "Quercus"], Lest, verbose = FALSE, nsim = 99)
 #```
 
 #```r
-mad.test(plot.6.pp[plot.6$genus == "Acer"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.6.pp[plot.6$genus == "Acer"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
@@ -2397,7 +2397,7 @@ mad.test(plot.6.pp[plot.6$genus == "Acer"], Lest, verbose = FALSE, nsim = 99)
 #```
 
 #```r
-mad.test(plot.6.pp[plot.6$genus == "Pinus"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.6.pp[plot.6$genus == "Pinus"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
@@ -2414,7 +2414,7 @@ mad.test(plot.6.pp[plot.6$genus == "Pinus"], Lest, verbose = FALSE, nsim = 99)
 
 #```r
 
-mad.test(plot.7.pp[plot.7$genus == "Tsuga"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.7.pp[plot.7$genus == "Tsuga"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
@@ -2430,7 +2430,7 @@ mad.test(plot.7.pp[plot.7$genus == "Tsuga"], Lest, verbose = FALSE, nsim = 99)
 #```
 
 #```r
-mad.test(plot.7.pp[plot.7$genus == "Betula"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.7.pp[plot.7$genus == "Betula"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
@@ -2446,7 +2446,7 @@ mad.test(plot.7.pp[plot.7$genus == "Betula"], Lest, verbose = FALSE, nsim = 99)
 #```
 
 #```r
-mad.test(plot.7.pp[plot.7$genus == "Quercus"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.7.pp[plot.7$genus == "Quercus"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
@@ -2462,7 +2462,7 @@ mad.test(plot.7.pp[plot.7$genus == "Quercus"], Lest, verbose = FALSE, nsim = 99)
 #```
 
 #```r
-mad.test(plot.7.pp[plot.7$genus == "Acer"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.7.pp[plot.7$genus == "Acer"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
@@ -2478,7 +2478,7 @@ mad.test(plot.7.pp[plot.7$genus == "Acer"], Lest, verbose = FALSE, nsim = 99)
 #```
 
 #```r
-mad.test(plot.7.pp[plot.7$genus == "Pinus"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.7.pp[plot.7$genus == "Pinus"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
@@ -2495,7 +2495,7 @@ mad.test(plot.7.pp[plot.7$genus == "Pinus"], Lest, verbose = FALSE, nsim = 99)
 
 #```r
 
-mad.test(plot.8.pp[plot.8$genus == "Tsuga"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.8.pp[plot.8$genus == "Tsuga"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
@@ -2511,7 +2511,7 @@ mad.test(plot.8.pp[plot.8$genus == "Tsuga"], Lest, verbose = FALSE, nsim = 99)
 #```
 
 #```r
-mad.test(plot.8.pp[plot.8$genus == "Betula"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.8.pp[plot.8$genus == "Betula"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
@@ -2527,7 +2527,7 @@ mad.test(plot.8.pp[plot.8$genus == "Betula"], Lest, verbose = FALSE, nsim = 99)
 #```
 
 #```r
-mad.test(plot.8.pp[plot.8$genus == "Quercus"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.8.pp[plot.8$genus == "Quercus"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
@@ -2543,7 +2543,7 @@ mad.test(plot.8.pp[plot.8$genus == "Quercus"], Lest, verbose = FALSE, nsim = 99)
 #```
 
 #```r
-mad.test(plot.8.pp[plot.8$genus == "Acer"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.8.pp[plot.8$genus == "Acer"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
@@ -2559,7 +2559,7 @@ mad.test(plot.8.pp[plot.8$genus == "Acer"], Lest, verbose = FALSE, nsim = 99)
 #```
 
 #```r
-mad.test(plot.8.pp[plot.8$genus == "Pinus"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.8.pp[plot.8$genus == "Pinus"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
@@ -2577,6 +2577,7 @@ mad.test(plot.8.pp[plot.8$genus == "Pinus"], Lest, verbose = FALSE, nsim = 99)
 
 
 #Plot age x dbh, with smoother and marginal histograms - ms. Figure 8
+ddg.procedure("Plot age x dbh, with smoother and marginal histograms")
 
 #```r
 
@@ -2667,7 +2668,7 @@ detach(dendro)
 names(tree.ages)[5:9] <- c("species", "dbh", "genus", "init.treat", "block")
 
 
-head(tree.ages)
+invisible(head(tree.ages))
 #```
 
 #```
@@ -2928,11 +2929,13 @@ plot.rd <- plot(rd$dbh ~ rd$tree.age, data=rd,
 
 #```r
 
-dev.off()
+invisible(dev.off())
 #```
 
 
 #Enviromental data - ms. Figure 7 now Figure 4
+ddg.procedure("Environmental data")
+ddg.save()
 
 #Read in data from a variety of sources:
 
@@ -2952,7 +2955,7 @@ hf.Shaler <- read.csv("hf000-01-daily-m.csv")
 #hf.Shaler <- read.csv("C:/Users/aellison/Dropbox/Aaron's Briefcase/manuscript - Simes dendro and land use/env data/hf000-01-daily-m.csv", 
 #    header = TRUE)
 
-head(hf.Shaler)
+invisible(head(hf.Shaler))
 #```
 
 #```
@@ -2966,7 +2969,7 @@ head(hf.Shaler)
 #```
 
 #```r
-summary(hf.Shaler)
+invisible(summary(hf.Shaler))
 #```
 
 #```
@@ -2989,7 +2992,7 @@ summary(hf.Shaler)
 #```
 
 #```r
-str(hf.Shaler)
+
 #```
 
 #```
@@ -3008,7 +3011,7 @@ a <- as.Date(hf.Shaler$Date, "%m/%d/%Y")
 
 hf.Shaler <- cbind(a, hf.Shaler)
 names(hf.Shaler)[1] <- "date"
-head(hf.Shaler)
+invisible(head(hf.Shaler))
 #```
 
 #```
@@ -3022,7 +3025,7 @@ head(hf.Shaler)
 #```
 
 #```r
-str(hf.Shaler)
+
 #```
 
 #```
@@ -3062,7 +3065,7 @@ HF.annual <- Shaler.annual
 HF.annual$year <- as.character(HF.annual$year)
 HF.annual[39:40, 2:5] <- Fisher.2002[, 1:4]
 HF.annual[40, 1] <- "2003-01-01"
-HF.annual
+invisible(HF.annual)
 #```
 
 #```
@@ -3113,7 +3116,7 @@ HF.annual
 
 
 #```r
-amherts <- read.csv("Amherst_met_1893-2012-reduced.csv")
+amherst <- read.csv("Amherst_met_1893-2012-reduced.csv")
 #amherst <- read.csv("C:/Users/aellison/Dropbox/Aaron's Briefcase/manuscript - Simes dendro and land use/env data/Amherst_met_1893-2012-reduced.csv", 
 #    header = TRUE)
 
@@ -3130,7 +3133,7 @@ names(amherst.annual)[2:5] <- c("AirTmax", "AirTmin", "AirT", "Precip")
 # rescale to deg C and mm as ncdc data are in tenths
 amherst.annual[, 2:5] <- amherst.annual[, 2:5]/10
 
-head(amherst.annual)
+invisible(head(amherst.annual))
 #```
 
 #```
@@ -3149,7 +3152,7 @@ head(amherst.annual)
 amherst.annual.fixed <- amherst.annual
 amherst.annual.fixed[5:121, ] <- amherst.annual[4:120, ]
 amherst.annual.fixed[4, ] <- c(1896, NA, NA, NA, NA)
-head(amherst.annual.fixed)
+invisible(head(amherst.annual.fixed))
 #```
 
 #```
@@ -3163,7 +3166,7 @@ head(amherst.annual.fixed)
 #```
 
 #```r
-dim(amherst.annual.fixed)
+invisible(dim(amherst.annual.fixed))
 #```
 
 #```
@@ -3184,7 +3187,7 @@ leverett.pdsi <- read.csv("PDSO - 267.csv")
 #leverett.pdsi <- read.csv("C:/Users/aellison/Dropbox/Aaron's Briefcase/manuscript - Simes dendro and land use/env data/PDSO - 267.csv", 
 #    header = TRUE)
 
-head(leverett.pdsi)
+invisible(head(leverett.pdsi))
 #```
 
 #```
@@ -3198,7 +3201,7 @@ head(leverett.pdsi)
 #```
 
 #```r
-summary(leverett.pdsi)
+invisible(summary(leverett.pdsi))
 #```
 
 #```
@@ -3375,7 +3378,7 @@ text(1964, -8.875, "Drought", cex = 0.75)
 #![plot of chunk unnamed-chunk-16](figure/unnamed-chunk-16.png) 
 
 #```r
-dev.off()
+invisible(dev.off())
 #```
 
 
@@ -3385,7 +3388,7 @@ dev.off()
 #```r
 # mean temps
 
-apply(Amherst.ts, 2, mean)
+invisible(apply(Amherst.ts, 2, mean))
 #```
 
 #```
@@ -3394,7 +3397,7 @@ apply(Amherst.ts, 2, mean)
 #```
 
 #```r
-apply(HF.ts, 2, mean)
+invisible(apply(HF.ts, 2, mean))
 #```
 
 #```
@@ -3405,7 +3408,7 @@ apply(HF.ts, 2, mean)
 #```r
 
 # average annual difference in temperatures
-mean(window(Amherst.ts[, 3], start = 1964) - HF.ts[, 1])
+invisible(mean(window(Amherst.ts[, 3], start = 1964) - HF.ts[, 1]))
 #```
 
 #```
@@ -3413,7 +3416,7 @@ mean(window(Amherst.ts[, 3], start = 1964) - HF.ts[, 1])
 #```
 
 #```r
-mean(window(pdsi.ts, 1897, 2003))
+invisible(mean(window(pdsi.ts, 1897, 2003)))
 #```
 
 #```
@@ -3439,8 +3442,8 @@ plot(rollapply(window(pdsi.ts, start = 1897, end = 2003), 10, mean))
 #```r
 # compare HF and Amherst data during period of overlap
 
-cor.test(as.vector(window(Amherst.ts[, 3], start = 1964)), as.vector(HF.ts[, 
-    1]))
+invisible(cor.test(as.vector(window(Amherst.ts[, 3], start = 1964)), as.vector(HF.ts[, 
+    1])))
 #```
 
 #```
@@ -3459,13 +3462,13 @@ cor.test(as.vector(window(Amherst.ts[, 3], start = 1964)), as.vector(HF.ts[,
 
 #```r
 
-lm(as.vector(HF.ts[, 1]) ~ as.vector(window(Amherst.ts[, 3], start = 1964)))
+invisible(lm(as.vector(HF.ts[, 1]) ~ as.vector(window(Amherst.ts[, 3], start = 1964))))
 #```
 
 #```
 ## 
 ## Call:
-## lm(formula = as.vector(HF.ts[, 1]) ~ as.vector(window(Amherst.ts[, 
+## invisible(lm(formula = as.vector(HF.ts[, 1]) ~ as.vector(window(Amherst.ts[, )
 ##     3], start = 1964)))
 ## 
 ## Coefficients:
@@ -3477,8 +3480,8 @@ lm(as.vector(HF.ts[, 1]) ~ as.vector(window(Amherst.ts[, 3], start = 1964)))
 
 #```r
 
-cor.test(as.vector(window(Amherst.ts[, 4], start = 1964)), as.vector(HF.ts[, 
-    4]))
+invisible(cor.test(as.vector(window(Amherst.ts[, 4], start = 1964)), as.vector(HF.ts[, 
+    4])))
 #```
 
 #```
@@ -3497,13 +3500,13 @@ cor.test(as.vector(window(Amherst.ts[, 4], start = 1964)), as.vector(HF.ts[,
 
 #```r
 
-lm(as.vector(HF.ts[, 4]) ~ as.vector(window(Amherst.ts[, 4], start = 1964)))
+invisible(lm(as.vector(HF.ts[, 4]) ~ as.vector(window(Amherst.ts[, 4], start = 1964))))
 #```
 
 #```
 ## 
 ## Call:
-## lm(formula = as.vector(HF.ts[, 4]) ~ as.vector(window(Amherst.ts[, 
+## invisible(lm(formula = as.vector(HF.ts[, 4]) ~ as.vector(window(Amherst.ts[, )
 ##     4], start = 1964)))
 ## 
 ## Coefficients:
@@ -3567,7 +3570,7 @@ dendro.raw$canopy <- relevel(dendro.raw$canopy, ref = "Hemlock")
 
 dendro.raw$TreeNum <- as.factor(dendro.raw$TreeNum)
 
-head(dendro.raw)
+invisible(head(dendro.raw))
 #```
 
 #```
@@ -3588,15 +3591,15 @@ head(dendro.raw)
 #```
 
 #```r
-dim(dendro.raw)
+invisible(dim(dendro.raw))
 #```
 
-#```
+#``)`
 ## [1] 17199    14
 #```
 
 #```r
-str(dendro.raw)
+
 #```
 
 #```
@@ -3642,7 +3645,7 @@ dendro.5sp$rBAI[dendro.5sp$rBAI == Inf] <- NA
 
 dendro.5sp$rBAI[dendro.5sp$rBAI == 0] <- 1e-04
 
-head(dendro.5sp)
+invisible(head(dendro.5sp))
 #```
 
 #```
@@ -3663,7 +3666,7 @@ head(dendro.5sp)
 #```
 
 #```r
-str(dendro.5sp)
+
 #```
 
 #```
@@ -3691,7 +3694,7 @@ str(dendro.5sp)
 
 
 #```r
-# To create pdf, uncomment pdf and dev.off() lines.
+# To create pdf, uncomment pdf and invisible(dev.off() lines.)
 pdf('Figure-9-BAI-both-v2.pdf', width=4, height=6)
 
 ggplot(data = dendro.5sp[dendro.5sp$canopy == "Hemlock", ], aes(x = Year, y = rBAI, 
@@ -3783,7 +3786,7 @@ ylab(expression(paste("Relative change in basal area (", mm^2 %.% mm^-2 %.%
 
 #```r
 
-dev.off()
+invisible(dev.off())
 #```
 
 #Fit 1-d GAMs
@@ -3839,7 +3842,7 @@ fixed.year.t <- c(gam.tsuga1$coef[1], gam.tsuga1$coef[1] + gam.tsuga1$coef[2:las
 
 #```r
 
-# gam plots in first column remove comments on pdf() and dev.off() to
+# gam plots in first column remove comments on pdf() and invisible(dev.off() to)
 # generate pdf
 
 pdf('Figure_10-single-gams-v2.pdf', height=7, width=5, pointsize=9)
@@ -3963,7 +3966,7 @@ box()
 
 #```r
 
-dev.off()
+invisible(dev.off())
 #```
 
 
@@ -4011,7 +4014,7 @@ for (tr in species) {
 dendro.5sp$rBAI2 <- dendro.5sp$rBAI
 dendro.5sp$rBAI2[is.na(dendro.5sp$rBAI2)] <- 1
 
-head(dendro.5sp)
+invisible(head(dendro.5sp))
 #```
 
 #```
@@ -4341,12 +4344,12 @@ multiplot(t.lines, b.lines, q.lines, a.lines, p.lines, t.cont, b.cont, q.cont,
 #![plot of chunk unnamed-chunk-25](figure/unnamed-chunk-25.png) 
 
 #```r
-dev.off()
+invisible(dev.off())
 #```
 
 #Extract deviance from and compare the 1-d and 2-d GAMs
 
-
+sink("NUL")
 #```r
 1 - gam.acer1$deviance/gam.acer1$null.deviance
 #```
@@ -4481,6 +4484,7 @@ AIC(gam.tsuga1, gam.tsuga2)
 ## gam.tsuga1 146.00 65388
 ## gam.tsuga2  30.22 65107
 #```
+sink()
 
 ddg.save(quit=TRUE)
 

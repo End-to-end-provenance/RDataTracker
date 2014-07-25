@@ -506,13 +506,13 @@
   </target>
 
   <target name="aaron-min-test">
-    <record name="examples/Aaron/aaron-min-test.log" action="start" />
+    <record name="examples/Aaron2/aaron-min-test.log" action="start" />
       <antcall target="run-test">
-        <param name="dir" value="examples/Aaron"/>
-        <param name="out" value="examples/Aaron/aaron-min-test.out"/>
+        <param name="dir" value="examples/Aaron2"/>
+        <param name="out" value="examples/Aaron2/aaron-min-test.out"/>
         <param name="script-file" value="aaron-min-test.r"/>
-        <param name="expected_out" value="examples/Aaron/expected_aaron-min-test.out"/>
-        <param name="expected_ddg" value="examples/Aaron/expected_aaron-min-test_ddg.txt"/>
+        <param name="expected_out" value="examples/Aaron2/expected_aaron-min-test.out"/>
+        <param name="expected_ddg" value="examples/Aaron2/expected_aaron-min-test_ddg.txt"/>
 
         <param name="source_test" value="true" />
       </antcall>
@@ -525,11 +525,11 @@
     <echo>This batch of tests is quick to execute, but not as extensive.</echo>
   </target>
 
-  <target name="long-test" depends="install, script-tests, aaron-min-test, aaron-annotated-test, SivanSampling-test">
+  <target name="long-test" depends="install, script-tests, aaron-min-test, aaron-annotated-test">
     <echo>This batch of tests takes longer, but is a bit more real-world</echo>
   </target>
 
-  <target name="test-all" depends="normal-tests, checkpoint-tests, script-tests, console-tests, source-tests, bug-tests">
+  <target name="test-all" depends="quick-test, long-test">
       <echo>All tests makes calls to the RDataTracker Library. You might need to restart RStudio to correctly run the scripts with the updated library installed. Output is saved in tests.log.
 
       There is one test which is not run here. The test is SivanSimes dendrochronology master analysis file-test-test. Run it manually, though output is random.</echo>

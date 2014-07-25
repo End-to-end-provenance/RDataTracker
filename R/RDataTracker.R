@@ -29,7 +29,7 @@
 ddg.MAX_CHECKPOINTS <- 10
 
 # Set the lines the history file keeps (and therefore can be analyized)
-ddg.MAX_HIST_LINES <- 16384
+ddg.MAX_HIST_LINES <- 2^14
 
 #-------- FUNCTIONS TO MANAGE THE GLOBAL VARIABLES--------#
 
@@ -43,6 +43,7 @@ ddg.MAX_HIST_LINES <- 16384
 
 .ddg.set <- function(var, value) {
 	.ddg.env[[var]] <- value
+	return(invisible(.ddg.env[[var]]))
 }
 
 .ddg.is.set <- function(var) {
@@ -405,6 +406,7 @@ ddg.MAX_HIST_LINES <- 16384
 		error.msg <- paste("Unable to create data (snapshot) node. Non-Object value to", fname, ".")
 		.ddg.insert.error.message(error.msg)
 	}
+	invisible()
 }
 
 # .ddg.record.proc records a procedure node in the procedure node 
@@ -576,7 +578,9 @@ ddg.MAX_HIST_LINES <- 16384
 			print(paste("proc2proc: ", pname1, " ", pname2))
 			print(paste("CF p", ddg.pnum-1, " p", ddg.pnum, sep=""))
 		}
-	}  
+	} 
+
+	invisible() 
 }
 
 # .ddg.data2proc creates a data flow edge from a data node to a 
@@ -593,6 +597,7 @@ ddg.MAX_HIST_LINES <- 16384
 		print(paste("data2proc: ", dname, " ", pname, sep=""))
 		print(paste("DF d", dn, " p", pn, sep=""))
 	}
+	invisible()
 }
 
 # .ddg.proc2data creates a data flow edge from a procedure node to 
@@ -609,6 +614,8 @@ ddg.MAX_HIST_LINES <- 16384
 		print(paste("proc2data: ", pname, " ", dname, sep=""))
 		print(paste("DF p", pn, " d", dn, sep=""))
 	}
+
+	invisible()
 }
 
 # .ddg.lastproc2data creates a data flow edge from the last procedure 
@@ -1078,7 +1085,9 @@ ddg.MAX_HIST_LINES <- 16384
 }
 
 # .ddg.savehistory saves the current and unsaved R Command history to a file 
-# specified as the parementer.
+# specified as the parementer only if that file matches up with the DDGs history
+# file.
+
 # THE FOLLOWING APPLIES TO THE COMMENTED SECTION OF CODE
 # It appends the information to this file. 
 
@@ -1089,7 +1098,7 @@ ddg.MAX_HIST_LINES <- 16384
 	#ddg.grab.timestamp <- .ddg.get(".ddg.grab.timestamp.history")
 	#ddg.tmp.history.file <- paste(hist.file,".tmp", sep="")
 
-	savehistory(hist.file)
+	if (.ddg.get(".ddg.history.file") == hist.file) savehistory(hist.file)
 
 	# USED TO STORE ENTIRE HISTORY IN SEP. FILE
 	# read in changes and writ eout to extended file
@@ -1098,6 +1107,7 @@ ddg.MAX_HIST_LINES <- 16384
 	# insert timestamp to history 
 	#.ddg.write.timestamp.to.history(var=".ddg.grab.timestamp.history")
 }
+
 
 # This function is exclusively used in .ddg.parse.commands (so far) and simply 
 # serves to avoic repetition of code.
@@ -1370,14 +1380,10 @@ ddg.MAX_HIST_LINES <- 16384
 }
 
 # .ddg.console.node creates a console node.
-.ddg.console.node <- function() {
+.ddg.console.node <- function(ddg.history.file=.ddg.get(".ddg.history.file"),
+                              ddg.history.timestamp=.ddg.get(".ddg.history.timestamp")) {
 	# Don't do anything if sourcing, because history isn't necessary in this case
 	if(.ddg.enable.source()) return(NULL)
-
-
-	# Load our extended history file and the last timestamp
-	ddg.history.file <- .ddg.get("ddg.history.file")
-	ddg.history.timestamp <- .ddg.get(".ddg.history.timestamp")
 
 	# Only continue if these values exists
 	if (!(is.null(ddg.history.file) || is.null(ddg.history.timestamp)))
@@ -1535,6 +1541,8 @@ ddg.MAX_HIST_LINES <- 16384
 	
 		if (.ddg.debug()) print(paste("data.node:", dtype, dname))
 	}
+
+	invisible()
 }
 
 # .ddg.supported.graphic - the sole purpose of this function is to verify that 
@@ -1542,7 +1550,7 @@ ddg.MAX_HIST_LINES <- 16384
 # supported graphics inlude:
 # jpg, jpeg, bmp, png, tiff
 .ddg.supported.graphic <- function(ext){
-	return(ext %in% c("jpeg", "jpg", "tiff", "png", "bmp"))
+	return(ext %in% c("jpeg", "jpg", "tiff", "png", "bmp", "pdf"))
 }
 
 # Factoring of snapshot code.
@@ -2128,6 +2136,8 @@ ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.graphic=N
 	    }
 	  )
 	}
+
+	invisible()
 }
 
 # ddg.data creates a data node for a single or comple data value. 
@@ -2170,7 +2180,7 @@ ddg.exception <- function(dname, dvalue=NULL) {
 	if (!is.character(dname)) dname <- deparse(substitute(dname))
 
 	# Create input exception node.
-    .ddg.data.node("Exception", dname, dvalue)
+   .ddg.data.node("Exception", dname, dvalue)
 }
 
 # ddg.url creates a data node for a URL. dname - label for the node. 
@@ -2201,7 +2211,7 @@ ddg.url <- function(dname, dvalue=NULL) {
 ddg.file <- function(filename, dname=NULL) {
 	if (!.ddg.is.init()) return(invisible())
 
-	.ddg.file.copy("File", filename, dname)
+	invisible(.ddg.file.copy("File", filename, dname))
 }
 
 # ddg.data.in creates a data flow edge from data node dname to 
@@ -2437,6 +2447,8 @@ ddg.grabhistory <- function() {
 	if (interactive() && .ddg.enable.console()) {
 		.ddg.console.node()
 	}
+
+	invisible()
 }
 
 # ddg.checkpoint saves the current R state in a file and adds a 
@@ -2502,6 +2514,8 @@ ddg.restore <- function(file.path) {
 	# load (file.path, .GlobalEnv, verbose=TRUE)
 	.ddg.mark.stale.data(saved.ddg.env)
 	.ddg.restore.ddg.state(saved.ddg.env)
+
+	invisible()
 }
 
 # ddg.init intializes a new ddg. r.script.path (optional) - the full 
@@ -2532,7 +2546,7 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, enable.console = FALSE
 	
 	if (interactive() && .ddg.enable.console()) {
 		ddg.history.file <- paste(.ddg.path(), ".ddghistory", sep="/")
-		.ddg.set("ddg.history.file", ddg.history.file)
+		.ddg.set(".ddg.history.file", ddg.history.file)
 		
 		# Empty file if it already exists, do the same with tmp file
     file.create(ddg.history.file)
@@ -2542,8 +2556,9 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, enable.console = FALSE
 
 		# save the history
 		savehistory(ddg.history.file)
-		history <- readLines(ddg.history.file)
 	}
+
+	invisible()
 }
 
 # ddg.run executes the function fname which contains the main 
@@ -2577,6 +2592,7 @@ ddg.run <- function(f = NULL, r.script.path = NULL, ddgdir = NULL, enable.consol
 		},
 		finally={ddg.save()}
 	)
+  invisible()
 }
 
 # ddg.save inserts attribute information and the number of procedure 
@@ -2605,6 +2621,9 @@ ddg.save <- function(quit=FALSE) {
   # that ddg.save can be called more than once on the same DDG 
   # without generating more than one copy of the attributes.
 	output <- paste(ddg.env, .ddg.pnum(), "\n", .ddg.get("ddg.text"), sep="")
+
+	# delete temporary files
+	.ddg.delete.temp()
 	
 	# Save DDG to file.
 	ddg.path <- .ddg.path()
@@ -2617,7 +2636,7 @@ ddg.save <- function(quit=FALSE) {
 	write.table(ddg.proc.nodes[ddg.proc.nodes$ddg.num > 0, ], fileout, quote=FALSE, na="", row.names=FALSE, col.names=FALSE)
 	
 	# Save data nodes table to file.
-    fileout <- paste(ddg.path, "/dnodes.txt", sep="")
+  fileout <- paste(ddg.path, "/dnodes.txt", sep="")
 	ddg.data.nodes <- .ddg.data.nodes()
 	write.table(ddg.data.nodes[ddg.data.nodes$ddg.num > 0, ], fileout, quote=FALSE, na="", row.names=FALSE, col.names=FALSE)
 
@@ -2633,6 +2652,8 @@ ddg.save <- function(quit=FALSE) {
 		# shut down the ddg
 		.ddg.clear()
 	}
+
+	invisible()
 }
 
 # ddg.source reads in an r script and executes it in the provided enviroment.
@@ -2813,6 +2834,7 @@ ddg.source <- function (file, local = FALSE, echo = verbose, print.eval = echo,
   	if (!prev.on) ddg.console.off() else ddg.console.on()
   }
 
+  invisible()
 }
 
 # ddg.debug.on turns on debugging of DDG construction.
@@ -2870,5 +2892,7 @@ ddg.flush.ddg <- function (ddg.path = NULL) {
   	unlink(paste(ddg.path,"[1-9][0-9][0-9][0-9][0-9]-*.*", sep="/"))
   	unlink(paste(ddg.path,"[1-9][0-9][0-9][0-9][0-9][0-9]-*.*", sep="/"))
 	}
+
+	invisible()
 }
 
