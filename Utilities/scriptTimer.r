@@ -12,7 +12,6 @@ setwd(util.dir)
 source("timerFunctions.r")
 source("helpers.r")
 
-
 ### Function: wrapper function to mimic the interactive script by resetting the environment on each call
 scriptTimer.timeScript <- function(filePath, fileName){
   # test.dir is defined in timerFunctions.r

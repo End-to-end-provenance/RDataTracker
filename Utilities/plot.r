@@ -27,6 +27,7 @@ removeEnd <- function(name){
 
 # add columns specifying type of annotation (no longer needed)
 # rowResults$annotType <- as.factor(sapply(rowResults$script.file, findType))
+rowResults <- scriptTimer.main()
 
 # add columns specifying script source (still needed)
 rowResults$source <- as.factor(sapply(rowResults$script.file, removeEnd))
