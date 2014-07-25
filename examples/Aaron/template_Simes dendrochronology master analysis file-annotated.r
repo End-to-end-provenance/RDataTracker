@@ -3511,7 +3511,8 @@ pop.ts <- ts(data = pop.data$popn, start = 1900, frequency = 0.1)
 ddg.procedure(pname="timeseries", ins=list("pop.data"), outs.data=list("pop.ts"))
 plot(pop.ts)
 ddg.procedure(pname="plot", ins=list("pop.ts"))
-ddg.data.out(pname="plot",dname="HF.ts", fext="pdf")
+ddg.graphic.out("HF.ts", pname="plot",graphic.fext="pdf")
+
 #```
 ddg.procedure(pname="timeseries", ins=list("pop.data"), outs.data=list("pop.ts"))
 ddg.procedure(pname="plot", ins=list("pdsi.ts"))

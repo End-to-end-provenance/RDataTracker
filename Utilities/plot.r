@@ -5,36 +5,36 @@ library(gridExtra)
 # set the working directory to source script
 setwd("D:/Users/Luis/Dropbox/HarvardForest/RDataTracker Annotations/Utilities")
 source("scriptTimer.r")
-setwd("D:/Users/Luis/Dropbox/HarvardForest/RDataTracker Annotations/Utilities")
 source("helpers.r")
 
-# I want to rename the columns for our collected data
-colnames(rowResults) <- c("script.file", "exec.time", "file.size", "ddg.dir", "ddg.dir.size")
+# The column names (rowResults comes from scriptTimer.r)
+old.colnames <- colnames(rowResults)
+colnames(rowResults) <- c("script.file", "script.loc", "type", "exec.time", "file.size", "ddg.dir", "ddg.dir.size")
 
 # change to the actual direcotry
 setwd("D:/Users/Luis/Dropbox/HarvardForest/RDataTracker Annotations/elevatorSpeech")
 
 # function mapping *-min.r to minimal, *-annotated.r to annotated, and everything else to original
 findType <- function(name){
-  if (substr(name, nchar(name)-4,nchar(name)-2) == "min") return("minimal")
-  else if (substr(name,nchar(name)-10, nchar(name)-2) == "annotated") return("annotated")
-  else return("original")
+  return(gsub("^(.*)-", "", gsub(".r$", "", name)))
+  }
 }
 
 # function removing -min.r and -annotated.r
 removeEnd <- function(name){
-  return(gsub("-annotated.r$", ".r", gsub("-min.r$", ".r", name)))
+  return(sub("-*.r$", ".r", name))
 }
 
-# add columns specifying type of annotation 
-rowResults$annotType <- as.factor(sapply(rowResults$script.file, findType))
+# add columns specifying type of annotation (no longer needed)
+# rowResults$annotType <- as.factor(sapply(rowResults$script.file, findType))
 
-# add columns specifying script source
-rowResults$Source <- as.factor(sapply(rowResults$script.file, removeEnd))
+# add columns specifying script source (still needed)
+rowResults$source <- as.factor(sapply(rowResults$script.file, removeEnd))
 
 # remove over 1 min execution
-underOneMin <- rowResults[rowResults$exec.time < 1, ]
-underOneMin$exec.time = underOneMin$exec.time * 60 # convert to seconds from minutes
+underOneMin <- subset(rowResults, exec.time <= 60)
+overOneMin <- subset(rowResults, exec.time > 60)
+overOneMin$exec.time = overOneMin$exec.time / 60 # convert to seconds from minutes
 
 # Start PLOTTING
 
@@ -49,17 +49,25 @@ plotByType <- function(data, xaxis, yaxis, title, xlabel = xaxis, ylabel = yaxis
 }
 
 # for small and large, create time vs script grouped by source colored by instrumentation type
-p1 <- plotByType(underOneMin, "Source", "exec.time", "Execution Time Results (modederate scripts)", xlabel="Source Script File", ylabel="Total Execution Time (sec)")
-p2 <- plotByType(rowResults, "Source", "exec.time", "Execution Time Results (all scripts)", xlabel="Source Script File", ylabel="Total Execution Time (min)")
+p1 <- plotByType(underOneMin, "source", "exec.time", "Execution Time Results (modederate scripts)", 
+                 xlabel="source Script File", ylabel="Total Execution Time (sec)")
+p2 <- plotByType(rowResults, "source", "exec.time", "Execution Time Results (all scripts)", 
+                 xlabel="source Script File", ylabel="Total Execution Time (min)")
 
 # for small and large, create script size vs script grouped by source colored by instrumentation type
-p3 <- plotByType(underOneMin, "Source", "file.size", "Library Complexity (modederate scripts)", xlabel="Source Script File", ylabel="File Size (kB)")
-p4 <- plotByType(rowResults, "Source", "file.size", "Library Complexity (all scripts)", xlabel="Source Script File", ylabel="File Size (kB)")
+p3 <- plotByType(underOneMin, "source", "file.size", "Library Complexity (modederate scripts)",
+                 xlabel="source Script File", ylabel="File Size (kB)")
+p4 <- plotByType(rowResults, "source", "file.size", "Library Complexity (all scripts)",
+                 xlabel="source Script File", ylabel="File Size (kB)")
 
 # for small and large, create ddg.dir.size vs script grouped by source colored by instrumentation type
 # for small and large, create script size vs script grouped by source colored by instrumentation type
-p5 <- plotByType(underOneMin[underOneMin$annotType != "original", ], "Source", "ddg.dir.size", "Data Collected (modederate scripts)", xlabel="Source Script File", ylabel="Amount of Data Collected (kB)")
-p6 <- plotByType(rowResults[rowResults$annotType != "original", ], "Source", "ddg.dir.size", "Data Collected (all scripts)", xlabel="Source Script File", ylabel="Amount of Data Collected (kB)")
+p5 <- plotByType(underOneMin[underOneMin$annotType != "original", ], "source",
+                 "ddg.dir.size", "Data Collected (modederate scripts)", 
+                 xlabel="source Script File", ylabel="Amount of Data Collected (kB)")
+p6 <- plotByType(rowResults[rowResults$annotType != "original", ], "source",
+                 "ddg.dir.size", "Data Collected (all scripts)",
+                  xlabel="source Script File", ylabel="Amount of Data Collected (kB)")
 
 # creates a double line plot of yaxes vs xaxis grouped where each line represents minimal and manual annotations
 plotDoubleLine <- function(data, xaxis, yaxis, title, xlabel=xaxis, ylabel=yaxis) {

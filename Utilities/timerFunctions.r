@@ -139,7 +139,7 @@ scriptInfo <- function(file) {
   cat(paste0("\n\n\n\nStart Evaluation of ", file, "\n\n\n\n"))
   # calculate exectution time
   time <- timeForEval(file)
-  cat(paste0("\n\n\n\nExecution Time: ", time, "\n\n\n\n"))
+  cat(paste0("\n\n\n\nExecution Time for ", file, " : ", time, "\n\n\n\n"))
 
   # calculate script file size
   fInfo <- file.info(file)
