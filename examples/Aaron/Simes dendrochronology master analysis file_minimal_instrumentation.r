@@ -2315,7 +2315,9 @@ mad.test(plot.5.pp[plot.5$genus == "Acer"], Lest, verbose = FALSE, nsim = 99)
 #```
 
 #```r
-mad.test(plot.5.pp[plot.5$genus == "Pinus"], Lest, verbose = FALSE, nsim = 99)
+tryCatch(
+    mad.test(plot.5.pp[plot.5$genus == "Pinus"], Lest, verbose = FALSE, nsim = 99),
+    error = function (e) {print(e)})
 #```
 
 #```

@@ -27,6 +27,10 @@ options(guiToolkit="tcltk")
 #source(ddg.library)
 library(RDataTracker)
 
+# get initial time
+startTime <- Sys.time()
+invisible(force(startTime))
+
 ## Directories
 testDir <- "[DIR_DEFAULT]/"
 setwd(testDir)
@@ -164,7 +168,7 @@ plot.data <- function(xx,t,n,output) {
       X11(15,10)
     }
     else {
-      windows(15,10)
+      x11(15,10)
     }
   }
   
@@ -261,3 +265,7 @@ ddg.finish("main")
 for (i in length(inputs)) dev.off()
 
 ddg.save(quit=TRUE)
+
+# Calculate total time of execution
+endTime <- Sys.time()
+cat("Execution Time =", difftime(endTime, startTime,units="secs"))

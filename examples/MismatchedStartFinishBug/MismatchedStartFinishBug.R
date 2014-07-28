@@ -15,6 +15,10 @@
 #source("/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/R/RDataTracker.R")
 library(RDataTracker)
 
+# get initial time
+startTime <- Sys.time()
+invisible(force(startTime))
+
 ## Directories
 testDir <- "[DIR_DEFAULT]/"
 setwd(testDir)
@@ -35,3 +39,7 @@ f <- function () {
 
 x <- f()
 ddg.save(quit=TRUE)
+
+# Calculate total time of execution
+endTime <- Sys.time()
+cat("Execution Time =", difftime(endTime, startTime,units="secs"))

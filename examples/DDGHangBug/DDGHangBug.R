@@ -12,6 +12,11 @@ ddg.r.script.path = paste(testDir,"DDGHangBug.R",sep="")
 ddg.path = paste(testDir,"ddg",sep="")
 
 library(RDataTracker)
+
+# get initial time
+startTime <- Sys.time()
+invisible(force(startTime))
+
 options(warn=2)
 
 increment.value <- function(a) {
@@ -34,7 +39,7 @@ main <- function() {
 			ddg.start("iteration k")
 			for (k in 1:n) {
 				a <- increment.value(a)
-				print(a)
+				invisible(a)
 			}
 			ddg.finish("iteration k")         
 		}
@@ -48,3 +53,7 @@ main <- function() {
 ddg.run(main,ddg.r.script.path,ddg.path)
 
 ddg.save(quit=TRUE)
+
+# Calculate total time of execution
+endTime <- Sys.time()
+cat("Execution Time =", difftime(endTime, startTime,units="secs"))

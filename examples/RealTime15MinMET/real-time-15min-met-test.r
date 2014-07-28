@@ -17,6 +17,10 @@ options(guiToolkit="tcltk")
 
 library(RDataTracker)
 
+# get initial time
+startTime <- Sys.time()
+invisible(force(startTime))
+
 ## Directories
 testDir <- "[DIR_DEFAULT]/"
 setwd(testDir)
@@ -94,7 +98,7 @@ plot.data <- function(zz,v,d) {
   ylim <- c(ymin,ymax)
   yrange <- ymax-ymin
 
-  if (Sys.info()['sysname'] == "Darwin") {
+  if (Sys.info()['sysname'] == "Darwin" || Sys.info()['sysname'] == "Linux") {
 	  X11(15,10)
   }
   else {
@@ -230,3 +234,7 @@ for (i in 1:length(inputs)) {
 }
 
 ddg.save(quit=TRUE)
+
+# Calculate total time of execution
+endTime <- Sys.time()
+cat("Execution Time =", difftime(endTime, startTime,units="secs"))

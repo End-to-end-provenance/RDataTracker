@@ -1,13 +1,14 @@
-Architecture="i386"
-OperatingSystem="windows"
+Architecture="i686"
+OperatingSystem="unix"
 Language="R"
-LanguageVersion="R version 3.1.0 (2014-04-10)"
+LanguageVersion="R version 3.0.2 (2013-09-25)"
+RDataTrackerVersion="0.5.21"
 Script="[DIR]/consoleSource.r"
-ProcessFileTimestamp="2014-07-18T00.12.55"
+ProcessFileTimestamp="2014-07-27T16.50.27"
 WorkingDirectory="[DIR]"
 DDGDirectory="[DIR]/ddg-source"
-DateTime="2014-07-18T18.15.34"
-69
+DateTime="2014-07-27T16.58.27"
+68
 Operation p1 "1-fun <- function(a, b) {    ddg.procedure(lookup.ins = TRUE) " Value="fun <- function(a, b) {    ddg.procedure(lookup.ins = TRUE)    return(a + b)}";
 Data d1 "1-fun" Value="#ddg.function";
 DF p1 d1
@@ -65,155 +66,150 @@ Data d8 "8-v" Value="32";
 DF p16 d8
 Start p17 "17-source2.r" Value="source2.r";
 CF p16 p17
-Operation p18 "18-testDir <- \"D:/Users/Luis/Documents/Harvard School Work/Sum" Value="testDir <- \"[DIR]/\"";
+Operation p18 "18-setwd(testDir)" Value="setwd(testDir)";
 CF p17 p18
-Data d9 "9-testDir" Value="\"[DIR]/\"";
-DF p18 d9
-Operation p19 "19-setwd(testDir)" Value="setwd(testDir)";
+Start p19 "19-A" Value="A";
 CF p18 p19
-DF d9 p19
-Start p20 "20-A" Value="A";
+Operation p20 "20-a <- 10" Value="a <- 10";
 CF p19 p20
-Operation p21 "21-a <- 10" Value="a <- 10";
+Data d9 "9-a" Value="10";
+DF p20 d9
+Operation p21 "21-c <- 100" Value="c <- 100";
 CF p20 p21
-Data d10 "10-a" Value="10";
+Data d10 "10-c" Value="100";
 DF p21 d10
-Operation p22 "22-c <- 100" Value="c <- 100";
+Finish p22 "22-A" Value="A";
 CF p21 p22
-Data d11 "11-c" Value="100";
-DF p22 d11
-Finish p23 "23-A" Value="A";
+Start p23 "23-B" Value="B";
 CF p22 p23
-Start p24 "24-B" Value="B";
+Operation p24 "24-b <- a + c" Value="b <- a + c";
 CF p23 p24
-Operation p25 "25-b <- a + c" Value="b <- a + c";
+DF d9 p24
+DF d10 p24
+Data d11 "11-b" Value="110";
+DF p24 d11
+Operation p25 "25-a <- 20" Value="a <- 20";
 CF p24 p25
-DF d10 p25
-DF d11 p25
-Data d12 "12-b" Value="110";
+Data d12 "12-a" Value="20";
 DF p25 d12
-Operation p26 "26-a <- 20" Value="a <- 20";
+Finish p26 "26-B" Value="B";
 CF p25 p26
-Data d13 "13-a" Value="20";
-DF p26 d13
-Finish p27 "27-B" Value="B";
+Finish p27 "27-source2.r" Value="source2.r";
 CF p26 p27
-Finish p28 "28-source2.r" Value="source2.r";
+Start p28 "28-source3.r" Value="source3.r";
 CF p27 p28
-Start p29 "29-source3.r" Value="source3.r";
+Operation p29 "29-f <- function(x) {    g(x)    h(x)    return(1)}" Value="f <- function(x) {    g(x)    h(x)    return(1)}";
 CF p28 p29
-Operation p30 "30-f <- function(x) {    g(x)    h(x)    return(1)}" Value="f <- function(x) {    g(x)    h(x)    return(1)}";
+Data d13 "13-f" Value="#ddg.function";
+DF p29 d13
+Operation p30 "30-g <- function(x) {    ddg.procedure()    ddg.data.in(substit" Value="g <- function(x) {    ddg.procedure()    ddg.data.in(substitute(x))    return(1)}";
 CF p29 p30
-Data d14 "14-f" Value="#ddg.function";
+Data d14 "14-g" Value="#ddg.function";
 DF p30 d14
-Operation p31 "31-g <- function(x) {    ddg.procedure()    ddg.data.in(substit" Value="g <- function(x) {    ddg.procedure()    ddg.data.in(substitute(x))    return(1)}";
+Operation p31 "31-h <- function(x) {    ddg.procedure()    ddg.data.in(substit" Value="h <- function(x) {    ddg.procedure()    ddg.data.in(substitute(x))    return(1)}";
 CF p30 p31
-Data d15 "15-g" Value="#ddg.function";
+Data d15 "15-h" Value="#ddg.function";
 DF p31 d15
-Operation p32 "32-h <- function(x) {    ddg.procedure()    ddg.data.in(substit" Value="h <- function(x) {    ddg.procedure()    ddg.data.in(substitute(x))    return(1)}";
+Operation p32 "32-someVector <- function() {    return(c(1, 3, 5))}" Value="someVector <- function() {    return(c(1, 3, 5))}";
 CF p31 p32
-Data d16 "16-h" Value="#ddg.function";
+Data d16 "16-someVector" Value="#ddg.function";
 DF p32 d16
-Operation p33 "33-someVector <- function() {    return(c(1, 3, 5))}" Value="someVector <- function() {    return(c(1, 3, 5))}";
+Operation p33 "33-x <- 10" Value="x <- 10";
 CF p32 p33
-Data d17 "17-someVector" Value="#ddg.function";
+Data d17 "17-x" Value="10";
 DF p33 d17
-Operation p34 "34-x <- 10" Value="x <- 10";
+Start p34 "34-f(x)" Value="f(x)";
 CF p33 p34
-Data d18 "18-x" Value="10";
-DF p34 d18
-Start p35 "35-f(x)" Value="f(x)";
+Operation p35 "35-g" Value="g";
 CF p34 p35
-Operation p36 "36-g" Value="g";
+DF d17 p35
+Operation p36 "36-h" Value="h";
 CF p35 p36
-DF d18 p36
-Operation p37 "37-h" Value="h";
+DF d17 p36
+Finish p37 "37-f(x)" Value="f(x)";
 CF p36 p37
-DF d18 p37
-Finish p38 "38-f(x)" Value="f(x)";
+Start p38 "38-f(x)" Value="f(x)";
 CF p37 p38
-Start p39 "39-f(x)" Value="f(x)";
+Operation p39 "39-g" Value="g";
 CF p38 p39
-Operation p40 "40-g" Value="g";
+DF d17 p39
+Operation p40 "40-h" Value="h";
 CF p39 p40
-DF d18 p40
-Operation p41 "41-h" Value="h";
+DF d17 p40
+Finish p41 "41-f(x)" Value="f(x)";
 CF p40 p41
-DF d18 p41
-Finish p42 "42-f(x)" Value="f(x)";
+Finish p42 "42-source3.r" Value="source3.r";
 CF p41 p42
-Finish p43 "43-source3.r" Value="source3.r";
+Start p43 "43-source3.r" Value="source3.r";
 CF p42 p43
-Start p44 "44-source3.r" Value="source3.r";
+Operation p44 "44-f <- function(x) {    g(x)    h(x)    return(1)}" Value="f <- function(x) {    g(x)    h(x)    return(1)}";
 CF p43 p44
-Operation p45 "45-f <- function(x) {    g(x)    h(x)    return(1)}" Value="f <- function(x) {    g(x)    h(x)    return(1)}";
+Data d18 "18-f" Value="#ddg.function";
+DF p44 d18
+Operation p45 "45-g <- function(x) {    ddg.procedure()    ddg.data.in(substit" Value="g <- function(x) {    ddg.procedure()    ddg.data.in(substitute(x))    return(1)}";
 CF p44 p45
-Data d19 "19-f" Value="#ddg.function";
+Data d19 "19-g" Value="#ddg.function";
 DF p45 d19
-Operation p46 "46-g <- function(x) {    ddg.procedure()    ddg.data.in(substit" Value="g <- function(x) {    ddg.procedure()    ddg.data.in(substitute(x))    return(1)}";
+Operation p46 "46-h <- function(x) {    ddg.procedure()    ddg.data.in(substit" Value="h <- function(x) {    ddg.procedure()    ddg.data.in(substitute(x))    return(1)}";
 CF p45 p46
-Data d20 "20-g" Value="#ddg.function";
+Data d20 "20-h" Value="#ddg.function";
 DF p46 d20
-Operation p47 "47-h <- function(x) {    ddg.procedure()    ddg.data.in(substit" Value="h <- function(x) {    ddg.procedure()    ddg.data.in(substitute(x))    return(1)}";
+Operation p47 "47-someVector <- function() {    return(c(1, 3, 5))}" Value="someVector <- function() {    return(c(1, 3, 5))}";
 CF p46 p47
-Data d21 "21-h" Value="#ddg.function";
+Data d21 "21-someVector" Value="#ddg.function";
 DF p47 d21
-Operation p48 "48-someVector <- function() {    return(c(1, 3, 5))}" Value="someVector <- function() {    return(c(1, 3, 5))}";
+Operation p48 "48-x <- 10" Value="x <- 10";
 CF p47 p48
-Data d22 "22-someVector" Value="#ddg.function";
+Data d22 "22-x" Value="10";
 DF p48 d22
-Operation p49 "49-x <- 10" Value="x <- 10";
+Start p49 "49-f(x)" Value="f(x)";
 CF p48 p49
-Data d23 "23-x" Value="10";
-DF p49 d23
-Start p50 "50-f(x)" Value="f(x)";
+Operation p50 "50-g" Value="g";
 CF p49 p50
-Operation p51 "51-g" Value="g";
+DF d22 p50
+Operation p51 "51-h" Value="h";
 CF p50 p51
-DF d23 p51
-Operation p52 "52-h" Value="h";
+DF d22 p51
+Finish p52 "52-f(x)" Value="f(x)";
 CF p51 p52
-DF d23 p52
-Finish p53 "53-f(x)" Value="f(x)";
+Start p53 "53-f(x)" Value="f(x)";
 CF p52 p53
-Start p54 "54-f(x)" Value="f(x)";
+Operation p54 "54-g" Value="g";
 CF p53 p54
-Operation p55 "55-g" Value="g";
+DF d22 p54
+Operation p55 "55-h" Value="h";
 CF p54 p55
-DF d23 p55
-Operation p56 "56-h" Value="h";
+DF d22 p55
+Finish p56 "56-f(x)" Value="f(x)";
 CF p55 p56
-DF d23 p56
-Finish p57 "57-f(x)" Value="f(x)";
+Finish p57 "57-source3.r" Value="source3.r";
 CF p56 p57
-Finish p58 "58-source3.r" Value="source3.r";
+Start p58 "58-Stuff" Value="Stuff";
 CF p57 p58
-Start p59 "59-Stuff" Value="Stuff";
+Operation p59 "59-m <- 10" Value="m <- 10";
 CF p58 p59
-Operation p60 "60-m <- 10" Value="m <- 10";
+Data d23 "23-m" Value="10";
+DF p59 d23
+Start p60 "60-f(m)" Value="f(m)";
 CF p59 p60
-Data d24 "24-m" Value="10";
-DF p60 d24
-Start p61 "61-f(m)" Value="f(m)";
+Operation p61 "61-g" Value="g";
 CF p60 p61
-Operation p62 "62-g" Value="g";
+DF d22 p61
+Operation p62 "62-h" Value="h";
 CF p61 p62
-DF d23 p62
-Operation p63 "63-h" Value="h";
+DF d22 p62
+Finish p63 "63-f(m)" Value="f(m)";
 CF p62 p63
-DF d23 p63
-Finish p64 "64-f(m)" Value="f(m)";
+Start p64 "64-f(x)" Value="f(x)";
 CF p63 p64
-Start p65 "65-f(x)" Value="f(x)";
+Operation p65 "65-g" Value="g";
 CF p64 p65
-Operation p66 "66-g" Value="g";
+DF d22 p65
+Operation p66 "66-h" Value="h";
 CF p65 p66
-DF d23 p66
-Operation p67 "67-h" Value="h";
+DF d22 p66
+Finish p67 "67-f(x)" Value="f(x)";
 CF p66 p67
-DF d23 p67
-Finish p68 "68-f(x)" Value="f(x)";
+Finish p68 "68-Stuff" Value="Stuff";
 CF p67 p68
-Finish p69 "69-Stuff" Value="Stuff";
-CF p68 p69
 

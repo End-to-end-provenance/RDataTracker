@@ -20,6 +20,11 @@
 library(RDataTracker)
 #source("/Users/blerner/Documents/Process/DataProvenance/Github/RDataTracker/R/RDataTracker.R")
 
+# get initial time
+startTime <- Sys.time()
+invisible(force(startTime))
+
+
 ## Directories
 if (interactive()) {
   testDir <- getwd()
@@ -296,3 +301,7 @@ ddg.run(main,
 		ddg.path)
 
 ddg.save(quit=TRUE)
+
+# Calculate total time of execution
+endTime <- Sys.time()
+cat("Execution Time =", difftime(endTime, startTime,units="secs"))

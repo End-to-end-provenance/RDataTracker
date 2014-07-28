@@ -6,6 +6,10 @@
 
 library(RDataTracker)
 
+# get initial time
+startTime <- Sys.time()
+invisible(force(startTime))
+
 ## Directories
 testDir <- "[DIR_DEFAULT]/"
 setwd(testDir)
@@ -33,3 +37,7 @@ ddg.data('val2')
 sum(val1,val2)
 
 ddg.save(quit=TRUE)
+
+# Calculate total time of execution
+endTime <- Sys.time()
+cat("Execution Time =", difftime(endTime, startTime,units="secs"))

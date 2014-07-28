@@ -3,9 +3,13 @@
 # Author: blerner
 ###############################################################################
 
-start.time <- Sys.time()
+
 library(RDataTracker)
 #source("/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/R/RDataTracker.R")
+
+# get initial time
+startTime <- Sys.time()
+invisible(force(startTime))
 
 if (interactive()) {
   testDir <- getwd()
@@ -88,3 +92,6 @@ ddg.save()
 end.time <- Sys.time()
 print(paste("Execution time =", (end.time - start.time)))
 
+# Calculate total time of execution
+endTime <- Sys.time()
+cat("Execution Time =", difftime(endTime, startTime,units="secs"))
