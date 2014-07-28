@@ -126,7 +126,7 @@ timeForEval <- function(file, from.source=FALSE) {
   src.fun <-  if (from.source) function(...){ddg.source(..., ignore.ddg.calls=F)}
               else source
 
-  source(file, local = T, echo = F,verbose = F)
+  src.fun(file, local = T, echo = F,verbose = F)
   endTime <- Sys.time()
   return(difftime(endTime, startTime,units="secs"))
 }
@@ -134,11 +134,11 @@ timeForEval <- function(file, from.source=FALSE) {
 ### Function: Returns in list format the information we wish to store for one script
 # @param file - and R file for which we need the required information
 # $return info - a list of collected file data
-scriptInfo <- function(file) {
+scriptInfo <- function(file, from.source=FALSE) {
   # Printint out some information
   cat(paste0("\n\n\n\nStart Evaluation of ", file, "\n\n\n\n"))
   # calculate exectution time
-  time <- timeForEval(file)
+  time <- timeForEval(file, from.source)
   cat(paste0("\n\n\n\nExecution Time for ", file, " : ", time, "\n\n\n\n"))
 
   # calculate script file size
@@ -202,7 +202,7 @@ writeMinInstr <- function(inp,out, console=TRUE){
                                 else if (console) "/ddg-min" 
                                 else "/ddg-source")
   scriptPath <- paste0(getwd(),"/",out)
-  minExpr <- paste0(startMinInst(scriptPath,ddgDirPath),"\n",expr,"\n",
+  minExpr <- paste0(startMinInst(scriptPath,ddgDirPath, console),"\n",expr,"\n",
                    endMinInst(if (is.na(console) || !console) NULL else scriptPath))
   
   # create minScript file
@@ -235,6 +235,9 @@ calcResults <- function(fileName) {
     return(if (x != "-clean") paste0("ddg", x) else NA)
   })
 
+  # get types
+  types <- names(extns) 
+
   # delete directories
   sapply(dirs, function(dir){if (!is.na(dir)) unlink(paste0(dir), recursive=T)})
 
@@ -257,7 +260,7 @@ calcResults <- function(fileName) {
 
 
   # create data frame with 4 tested files as rows, columns are data returned by scriptInfo
-  dFrame <- data.frame(matrix(unlist(sapply(scriptLoc, scriptInfo)), byrow=T, nrow=4))
+  dFrame <- data.frame(matrix(unlist(Map(scriptInfo, scriptLoc, types == "source")), byrow=T, nrow=4))
   
   # add DDG Dir location
   dFrame$ddgDir <- dirs
@@ -268,7 +271,7 @@ calcResults <- function(fileName) {
   })
 
   # add type of script information
-  dFrame$type <- names(extns)
+  dFrame$type <- types
 
   # add file localtion
   dFrame$scriptLoc <- scriptLoc

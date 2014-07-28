@@ -22,10 +22,15 @@ NUL
 examples/**/*.md
 examples/**/*.Rmd
 
-# exclude local ddg directors
-examples/*/ddg*/
-examples/*/local*/
+# exclude local ddg directories 
+examples/**/ddg*/
+examples/**/local*/
 examples/checkPointTest/testfile*.txt
+
+# except for a few tests
+!examples/DDGHangBug
+!examples/ddgChangesBehavior
+!examples/ddgTest
 
 # exclude files beginning with '_'
 _*
