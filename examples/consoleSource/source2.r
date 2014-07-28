@@ -6,7 +6,6 @@
 library(RDataTracker)
 
 ## Directories
-testDir <- "D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/consoleSource/"
 setwd(testDir)
 
 ddg.r.script.path <- paste(testDir,"source2.r",sep="")

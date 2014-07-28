@@ -98,7 +98,7 @@ plot.data <- function(zz,v,d) {
   ylim <- c(ymin,ymax)
   yrange <- ymax-ymin
 
-  if (Sys.info()['sysname'] == "Darwin") {
+  if (Sys.info()['sysname'] == "Darwin" || Sys.info()['sysname'] == "Linux") {
 	  X11(15,10)
   }
   else {
