@@ -2,71 +2,55 @@ Architecture="x86_64"
 OperatingSystem="unix"
 Language="R"
 LanguageVersion="R version 3.1.0 Patched (2014-05-20 r65701)"
+RDataTrackerVersion="0.5.19"
 Script="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/ScopeTest/ReturnTest.R"
-ProcessFileTimestamp="2014-07-21T16.14.18"
+ProcessFileTimestamp="2014-07-25T15.19.01"
 WorkingDirectory="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/ScopeTest"
 DDGDirectory="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/ScopeTest/ddg"
-DateTime="2014-07-21T16.38.00"
-15
+DateTime="2014-07-25T16.35.33"
+9
 Data d1 "1-a" Value="1";
 Data d2 "2-b" Value="2";
-Start p1 "1-Console" Value="Console";
-Operation p2 "2-f <- function(p_a) {    return(f2(p_a))}" Value="f <- function(p_a) {    return(f2(p_a))}";
+Start p1 "1-d <- f(a, b)" Value="d <- f(a, b)";
+Binding p2 "2-aa  <-  a"
 CF p1 p2
-Operation p3 "3-f2 <- function(p_a) {    ddg.procedure(lookup.ins = TRUE)   " Value="f2 <- function(p_a) {    ddg.procedure(lookup.ins = TRUE)    ddg.return(10)    return(10)}";
-CF p2 p3
-Operation p4 "4-a <- 1" Value="a <- 1";
-CF p3 p4
-Operation p5 "5-b <- 2" Value="b <- 2";
-CF p4 p5
-Finish p6 "6-Console" Value="Console";
-CF p5 p6
-Start p7 "7-d <- f2(a) + f2(b)" Value="d <- f2(a) + f2(b)";
-CF p6 p7
-Data d3 "3-f" Value="complex";
+DF d1 p2
+Data d3 "3-aa" Value="1";
 DF p2 d3
-Data d4 "4-f2" Value="complex";
+Binding p3 "3-bb  <-  b"
+CF p2 p3
+DF d2 p3
+Data d4 "4-bb" Value="2";
 DF p3 d4
-Data d5 "5-a" Value="1";
-DF p4 d5
-Data d6 "6-b" Value="2";
-DF p5 d6
-Binding p8 "8-p_a  <-  a"
+Operation p4 "4-f" Value="f";
+DF d3 p4
+DF d4 p4
+CF p3 p4
+Binding p5 "5-p_a  <-  aa"
+CF p4 p5
+DF d3 p5
+Data d5 "5-p_a" Value="1";
+DF p5 d5
+Operation p6 "6-f2" Value="f2";
+DF d5 p6
+CF p5 p6
+Data d6 "6-f2(aa) return" Value="10";
+DF p6 d6
+Binding p7 "7-p_a  <-  bb"
+CF p6 p7
+DF d4 p7
+Data d7 "7-p_a" Value="2";
+DF p7 d7
+Operation p8 "8-f2" Value="f2";
+DF d7 p8
 CF p7 p8
-DF d5 p8
-Data d7 "7-p_a" Value="1";
-DF p8 d7
-Operation p9 "9-f2" Value="f2";
-DF d7 p9
+Data d8 "8-f2(bb) return" Value="10";
+DF p8 d8
+Data d9 "9-f(a, b) return" Value="20";
+DF p4 d9
+Finish p9 "9-d <- f(a, b)" Value="d <- f(a, b)";
 CF p8 p9
-Data d8 "8-f2(a) return" Value="10";
-DF p9 d8
-Binding p10 "10-p_a  <-  b"
-CF p9 p10
-DF d6 p10
-Data d9 "9-p_a" Value="2";
-DF p10 d9
-Operation p11 "11-f2" Value="f2";
-DF d9 p11
-CF p10 p11
-Data d10 "10-f2(b) return" Value="10";
-DF p11 d10
-Finish p12 "12-d <- f2(a) + f2(b)" Value="d <- f2(a) + f2(b)";
-CF p11 p12
-DF d8 p12
-DF d10 p12
-Data d11 "11-d" Value="20";
-DF p12 d11
-Start p13 "13-e <- f(3)" Value="e <- f(3)";
-CF p12 p13
-Operation p14 "14-f2" Value="f2";
-Exception d12 "12-error.msg" Value="\"Skipping parameter p_a\"";
-DF p14 d12
-CF p13 p14
-Data d13 "13-f2(p_a) return" Value="10";
-DF p14 d13
-Finish p15 "15-e <- f(3)" Value="e <- f(3)";
-CF p14 p15
-Data d14 "14-e" Value="10";
-DF p15 d14
+DF d9 p9
+Data d10 "10-d" Value="20";
+DF p9 d10
 

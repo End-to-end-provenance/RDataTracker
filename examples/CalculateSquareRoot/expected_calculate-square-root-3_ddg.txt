@@ -1,0 +1,384 @@
+Architecture="x86_64"
+OperatingSystem="unix"
+Language="R"
+LanguageVersion="R version 3.1.0 Patched (2014-05-20 r65701)"
+RDataTrackerVersion="0.5.19"
+Script="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/CalculateSquareRoot/calculate-square-root-3.r"
+ProcessFileTimestamp="2014-07-28T12.52.15"
+WorkingDirectory="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/CalculateSquareRoot"
+DDGDirectory="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/CalculateSquareRoot/ddg"
+DateTime="2014-07-28T14.01.10"
+85
+Start p1 "1-main" Value="main";
+Operation p2 "2-get.initial.values" Value="get.initial.values";
+CF p1 p2
+Data d1 "1-number" Value="10";
+DF p2 d1
+Data d2 "2-tolerance" Value="1e-05";
+DF p2 d2
+Start p3 "3-estimate <- get.random(number)" Value="estimate <- get.random(number)";
+CF p2 p3
+Operation p4 "4-get.random" Value="get.random";
+CF p3 p4
+DF d1 p4
+Data d3 "3-get.random(number) return" Value="6.69053736748174";
+DF p4 d3
+Finish p5 "5-estimate <- get.random(number)" Value="estimate <- get.random(number)";
+CF p4 p5
+DF d3 p5
+Data d4 "4-estimate" Value="6.69053736748174";
+DF p5 d4
+Start p6 "6-get.square.root" Value="get.square.root";
+CF p5 p6
+Start p7 "7-get.next.estimate" Value="get.next.estimate";
+CF p6 p7
+Start p8 "8-estimate <- calc.square.root(number,estimate)" Value="estimate <- calc.square.root(number,estimate)";
+CF p7 p8
+Binding p9 "9-number  <-  number"
+CF p8 p9
+DF d1 p9
+Data d5 "5-number" Value="10";
+DF p9 d5
+Binding p10 "10-estimate  <-  estimate"
+CF p9 p10
+DF d4 p10
+Data d6 "6-estimate" Value="6.69053736748174";
+DF p10 d6
+Operation p11 "11-calc.square.root" Value="calc.square.root";
+DF d5 p11
+DF d6 p11
+CF p10 p11
+Data d7 "7-calc.square.root(number, estimate) return" Value="4.09259281114231";
+DF p11 d7
+Finish p12 "12-estimate <- calc.square.root(number,estimate)" Value="estimate <- calc.square.root(number,estimate)";
+CF p11 p12
+DF d7 p12
+Data d8 "8-estimate" Value="4.09259281114231";
+DF p12 d8
+Start p13 "13-difference <- get.difference(number,estimate)" Value="difference <- get.difference(number,estimate)";
+CF p12 p13
+Binding p14 "14-number  <-  number"
+CF p13 p14
+DF d1 p14
+Data d9 "9-number" Value="10";
+DF p14 d9
+Binding p15 "15-estimate  <-  estimate"
+CF p14 p15
+DF d8 p15
+Data d10 "10-estimate" Value="4.09259281114231";
+DF p15 d10
+Operation p16 "16-get.difference" Value="get.difference";
+DF d9 p16
+DF d10 p16
+CF p15 p16
+Data d11 "11-get.difference(number, estimate) return" Value="6.74931591781369";
+DF p16 d11
+Finish p17 "17-difference <- get.difference(number,estimate)" Value="difference <- get.difference(number,estimate)";
+CF p16 p17
+DF d11 p17
+Data d12 "12-difference" Value="6.74931591781369";
+DF p17 d12
+Start p18 "18-check <- get.check.value(difference,tolerance)" Value="check <- get.check.value(difference,tolerance)";
+CF p17 p18
+Binding p19 "19-difference  <-  difference"
+CF p18 p19
+DF d12 p19
+Data d13 "13-difference" Value="6.74931591781369";
+DF p19 d13
+Binding p20 "20-tolerance  <-  tolerance"
+CF p19 p20
+DF d2 p20
+Data d14 "14-tolerance" Value="1e-05";
+DF p20 d14
+Operation p21 "21-get.check.value" Value="get.check.value";
+DF d13 p21
+DF d14 p21
+CF p20 p21
+Data d15 "15-get.check.value(difference, tolerance) return" Value="6.74930591781369";
+DF p21 d15
+Finish p22 "22-check <- get.check.value(difference,tolerance)" Value="check <- get.check.value(difference,tolerance)";
+CF p21 p22
+DF d15 p22
+Data d16 "16-check" Value="6.74930591781369";
+DF p22 d16
+Finish p23 "23-get.next.estimate" Value="get.next.estimate";
+CF p22 p23
+Start p24 "24-get.next.estimate" Value="get.next.estimate";
+CF p23 p24
+Start p25 "25-estimate <- calc.square.root(number,estimate)" Value="estimate <- calc.square.root(number,estimate)";
+CF p24 p25
+Binding p26 "26-number  <-  number"
+CF p25 p26
+DF d1 p26
+Data d17 "17-number" Value="10";
+DF p26 d17
+Binding p27 "27-estimate  <-  estimate"
+CF p26 p27
+DF d8 p27
+Data d18 "18-estimate" Value="4.09259281114231";
+DF p27 d18
+Operation p28 "28-calc.square.root" Value="calc.square.root";
+DF d17 p28
+DF d18 p28
+CF p27 p28
+Data d19 "19-calc.square.root(number, estimate) return" Value="3.26801579734334";
+DF p28 d19
+Finish p29 "29-estimate <- calc.square.root(number,estimate)" Value="estimate <- calc.square.root(number,estimate)";
+CF p28 p29
+DF d7 p29
+DF d19 p29
+Data d20 "20-estimate" Value="3.26801579734334";
+DF p29 d20
+Start p30 "30-difference <- get.difference(number,estimate)" Value="difference <- get.difference(number,estimate)";
+CF p29 p30
+Binding p31 "31-number  <-  number"
+CF p30 p31
+DF d1 p31
+Data d21 "21-number" Value="10";
+DF p31 d21
+Binding p32 "32-estimate  <-  estimate"
+CF p31 p32
+DF d20 p32
+Data d22 "22-estimate" Value="3.26801579734334";
+DF p32 d22
+Operation p33 "33-get.difference" Value="get.difference";
+DF d21 p33
+DF d22 p33
+CF p32 p33
+Data d23 "23-get.difference(number, estimate) return" Value="0.679927251685623";
+DF p33 d23
+Finish p34 "34-difference <- get.difference(number,estimate)" Value="difference <- get.difference(number,estimate)";
+CF p33 p34
+DF d11 p34
+DF d23 p34
+Data d24 "24-difference" Value="0.679927251685623";
+DF p34 d24
+Start p35 "35-check <- get.check.value(difference,tolerance)" Value="check <- get.check.value(difference,tolerance)";
+CF p34 p35
+Binding p36 "36-difference  <-  difference"
+CF p35 p36
+DF d24 p36
+Data d25 "25-difference" Value="0.679927251685623";
+DF p36 d25
+Binding p37 "37-tolerance  <-  tolerance"
+CF p36 p37
+DF d2 p37
+Data d26 "26-tolerance" Value="1e-05";
+DF p37 d26
+Operation p38 "38-get.check.value" Value="get.check.value";
+DF d25 p38
+DF d26 p38
+CF p37 p38
+Data d27 "27-get.check.value(difference, tolerance) return" Value="0.679917251685623";
+DF p38 d27
+Finish p39 "39-check <- get.check.value(difference,tolerance)" Value="check <- get.check.value(difference,tolerance)";
+CF p38 p39
+DF d15 p39
+DF d27 p39
+Data d28 "28-check" Value="0.679917251685623";
+DF p39 d28
+Finish p40 "40-get.next.estimate" Value="get.next.estimate";
+CF p39 p40
+Start p41 "41-get.next.estimate" Value="get.next.estimate";
+CF p40 p41
+Start p42 "42-estimate <- calc.square.root(number,estimate)" Value="estimate <- calc.square.root(number,estimate)";
+CF p41 p42
+Binding p43 "43-number  <-  number"
+CF p42 p43
+DF d1 p43
+Data d29 "29-number" Value="10";
+DF p43 d29
+Binding p44 "44-estimate  <-  estimate"
+CF p43 p44
+DF d20 p44
+Data d30 "30-estimate" Value="3.26801579734334";
+DF p44 d30
+Operation p45 "45-calc.square.root" Value="calc.square.root";
+DF d29 p45
+DF d30 p45
+CF p44 p45
+Data d31 "31-calc.square.root(number, estimate) return" Value="3.16398826292347";
+DF p45 d31
+Finish p46 "46-estimate <- calc.square.root(number,estimate)" Value="estimate <- calc.square.root(number,estimate)";
+CF p45 p46
+DF d7 p46
+DF d19 p46
+DF d31 p46
+Data d32 "32-estimate" Value="3.16398826292347";
+DF p46 d32
+Start p47 "47-difference <- get.difference(number,estimate)" Value="difference <- get.difference(number,estimate)";
+CF p46 p47
+Binding p48 "48-number  <-  number"
+CF p47 p48
+DF d1 p48
+Data d33 "33-number" Value="10";
+DF p48 d33
+Binding p49 "49-estimate  <-  estimate"
+CF p48 p49
+DF d32 p49
+Data d34 "34-estimate" Value="3.16398826292347";
+DF p49 d34
+Operation p50 "50-get.difference" Value="get.difference";
+DF d33 p50
+DF d34 p50
+CF p49 p50
+Data d35 "35-get.difference(number, estimate) return" Value="0.0108217279174774";
+DF p50 d35
+Finish p51 "51-difference <- get.difference(number,estimate)" Value="difference <- get.difference(number,estimate)";
+CF p50 p51
+DF d11 p51
+DF d23 p51
+DF d35 p51
+Data d36 "36-difference" Value="0.0108217279174774";
+DF p51 d36
+Start p52 "52-check <- get.check.value(difference,tolerance)" Value="check <- get.check.value(difference,tolerance)";
+CF p51 p52
+Binding p53 "53-difference  <-  difference"
+CF p52 p53
+DF d36 p53
+Data d37 "37-difference" Value="0.0108217279174774";
+DF p53 d37
+Binding p54 "54-tolerance  <-  tolerance"
+CF p53 p54
+DF d2 p54
+Data d38 "38-tolerance" Value="1e-05";
+DF p54 d38
+Operation p55 "55-get.check.value" Value="get.check.value";
+DF d37 p55
+DF d38 p55
+CF p54 p55
+Data d39 "39-get.check.value(difference, tolerance) return" Value="0.0108117279174774";
+DF p55 d39
+Finish p56 "56-check <- get.check.value(difference,tolerance)" Value="check <- get.check.value(difference,tolerance)";
+CF p55 p56
+DF d15 p56
+DF d27 p56
+DF d39 p56
+Data d40 "40-check" Value="0.0108117279174774";
+DF p56 d40
+Finish p57 "57-get.next.estimate" Value="get.next.estimate";
+CF p56 p57
+Start p58 "58-get.next.estimate" Value="get.next.estimate";
+CF p57 p58
+Start p59 "59-estimate <- calc.square.root(number,estimate)" Value="estimate <- calc.square.root(number,estimate)";
+CF p58 p59
+Binding p60 "60-number  <-  number"
+CF p59 p60
+DF d1 p60
+Data d41 "41-number" Value="10";
+DF p60 d41
+Binding p61 "61-estimate  <-  estimate"
+CF p60 p61
+DF d32 p61
+Data d42 "42-estimate" Value="3.16398826292347";
+DF p61 d42
+Operation p62 "62-calc.square.root" Value="calc.square.root";
+DF d41 p62
+DF d42 p62
+CF p61 p62
+Data d43 "43-calc.square.root(number, estimate) return" Value="3.16227812258504";
+DF p62 d43
+Finish p63 "63-estimate <- calc.square.root(number,estimate)" Value="estimate <- calc.square.root(number,estimate)";
+CF p62 p63
+DF d7 p63
+DF d19 p63
+DF d31 p63
+DF d43 p63
+Data d44 "44-estimate" Value="3.16227812258504";
+DF p63 d44
+Start p64 "64-difference <- get.difference(number,estimate)" Value="difference <- get.difference(number,estimate)";
+CF p63 p64
+Binding p65 "65-number  <-  number"
+CF p64 p65
+DF d1 p65
+Data d45 "45-number" Value="10";
+DF p65 d45
+Binding p66 "66-estimate  <-  estimate"
+CF p65 p66
+DF d44 p66
+Data d46 "46-estimate" Value="3.16227812258504";
+DF p66 d46
+Operation p67 "67-get.difference" Value="get.difference";
+DF d45 p67
+DF d46 p67
+CF p66 p67
+Data d47 "47-get.difference(number, estimate) return" Value="2.92457997730367e-06";
+DF p67 d47
+Finish p68 "68-difference <- get.difference(number,estimate)" Value="difference <- get.difference(number,estimate)";
+CF p67 p68
+DF d11 p68
+DF d23 p68
+DF d35 p68
+DF d47 p68
+Data d48 "48-difference" Value="2.92457997730367e-06";
+DF p68 d48
+Start p69 "69-check <- get.check.value(difference,tolerance)" Value="check <- get.check.value(difference,tolerance)";
+CF p68 p69
+Binding p70 "70-difference  <-  difference"
+CF p69 p70
+DF d48 p70
+Data d49 "49-difference" Value="2.92457997730367e-06";
+DF p70 d49
+Binding p71 "71-tolerance  <-  tolerance"
+CF p70 p71
+DF d2 p71
+Data d50 "50-tolerance" Value="1e-05";
+DF p71 d50
+Operation p72 "72-get.check.value" Value="get.check.value";
+DF d49 p72
+DF d50 p72
+CF p71 p72
+Data d51 "51-get.check.value(difference, tolerance) return" Value="-7.07542002269634e-06";
+DF p72 d51
+Finish p73 "73-check <- get.check.value(difference,tolerance)" Value="check <- get.check.value(difference,tolerance)";
+CF p72 p73
+DF d15 p73
+DF d27 p73
+DF d39 p73
+DF d51 p73
+Data d52 "52-check" Value="-7.07542002269634e-06";
+DF p73 d52
+Finish p74 "74-get.next.estimate" Value="get.next.estimate";
+CF p73 p74
+Finish p75 "75-get.square.root" Value="get.square.root";
+CF p74 p75
+Start p76 "76-write.result" Value="write.result";
+CF p75 p76
+Start p77 "77-sqr.root <<- store.result(number,estimate)" Value="sqr.root <<- store.result(number,estimate)";
+CF p76 p77
+Binding p78 "78-number  <-  number"
+CF p77 p78
+DF d1 p78
+Data d53 "53-number" Value="10";
+DF p78 d53
+Binding p79 "79-estimate  <-  estimate"
+CF p78 p79
+DF d44 p79
+Data d54 "54-estimate" Value="3.16227812258504";
+DF p79 d54
+Operation p80 "80-store.result" Value="store.result";
+DF d53 p80
+DF d54 p80
+CF p79 p80
+Snapshot d55 "55-store.result(number, estimate) return" Value="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/CalculateSquareRoot/ddg/55-store.result(number, estimate) return.csv" Time="2014-07-28T14.01.10";
+DF p80 d55
+Finish p81 "81-sqr.root <<- store.result(number,estimate)" Value="sqr.root <<- store.result(number,estimate)";
+CF p80 p81
+DF d55 p81
+Snapshot d56 "56-sqr.root" Value="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/CalculateSquareRoot/ddg/56-sqr.root.csv" Time="2014-07-28T14.01.10";
+DF p81 d56
+Binding p82 "82-sqr.root  <-  sqr.root"
+CF p81 p82
+DF d56 p82
+Snapshot d57 "57-sqr.root" Value="56-sqr.root.csv";
+DF p82 d57
+Operation p83 "83-write.result" Value="write.result";
+DF d57 p83
+CF p82 p83
+File d58 "58-results.csv" Value="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/CalculateSquareRoot/ddg/58-results.csv" Time="2014-07-28T14.01.10" Location="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/CalculateSquareRoot/results.csv";
+DF p83 d58
+Finish p84 "84-write.result" Value="write.result";
+CF p83 p84
+Finish p85 "85-main" Value="main";
+CF p84 p85
+

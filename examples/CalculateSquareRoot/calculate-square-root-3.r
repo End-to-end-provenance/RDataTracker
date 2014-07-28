@@ -27,7 +27,7 @@ if (interactive()) {
 get.initial.values <- function() {
   number <<- 10
   tolerance <<- 0.00001
-
+  
   ddg.procedure()
   ddg.data.out(number)
   ddg.data.out(tolerance)
@@ -36,10 +36,10 @@ get.initial.values <- function() {
 get.random <- function(number) {
   # get random seed value
   estimate <- runif(1,1,number)
-
+  
   ddg.procedure()
   ddg.data.in(number)
-
+  
   ddg.return(estimate)
 }
 
@@ -47,42 +47,31 @@ calc.square.root <- function(number,estimate) {
   # calculate square root
   x <- number/estimate
   estimate <- (estimate+x)/2
-
-  ddg.procedure()
-  ddg.data.in(number)
-  ddg.data.in(estimate)
+  
+  ddg.procedure(lookup.ins=TRUE)
   ddg.return(estimate)
 }
 
 get.difference <- function(number,estimate) {
   # test result
   difference <- abs(number-estimate^2)
-
-  ddg.procedure()
-  ddg.data.in(number)
-  ddg.data.in(estimate)
-
+  
+  ddg.procedure(lookup.ins=TRUE)
   ddg.return(difference)
 }
 
 get.check.value <- function(difference,tolerance) {
   #compare difference to tolerance
   check <- difference - tolerance
-    
-  ddg.procedure()
-  ddg.data.in(difference)
-  ddg.data.in(tolerance)
   
+  ddg.procedure(lookup.ins=TRUE)
   ddg.return(check)
 }
 
 store.result <- function(number,estimate) {
   sqr.root <- data.frame(number,estimate)
-
-  ddg.procedure()
-  ddg.data.in(number)
-  ddg.data.in(estimate)
   
+  ddg.procedure(lookup.ins=TRUE)
   ddg.return(sqr.root)
 }
 
@@ -90,9 +79,8 @@ write.result <- function(sqr.root) {
   file.name <- "results.csv"
   file.out <- paste(getwd(),"/",file.name,sep="")
   write.csv(sqr.root,file.out,row.names=FALSE)
-
-  ddg.procedure()
-  ddg.data.in(sqr.root)
+  
+  ddg.procedure(lookup.ins=TRUE)
   ddg.file.out(file.name)
 }
 
@@ -110,7 +98,7 @@ main <- function() {
   
   while (check > 0) {
     ddg.start("get.next.estimate")
-  
+    
     # repeat calculation until tests OK
     ddg.eval("estimate <- calc.square.root(number,estimate)")
     ddg.eval("difference <- get.difference(number,estimate)")
@@ -118,9 +106,9 @@ main <- function() {
     
     ddg.finish("get.next.estimate")
   }
-
+  
   ddg.finish("get.square.root")
-
+  
   ddg.start("write.result")
   
   ddg.eval("sqr.root <<- store.result(number,estimate)")
@@ -131,9 +119,9 @@ main <- function() {
   ddg.finish("main")
 }
 
-ddg.run(main,		
-		paste(testDir,"calculate-square-root-1.r",sep="/"),
-		paste(testDir,"ddg",sep="/"))
+ddg.run(main,  	
+        paste(testDir,"calculate-square-root-3.r",sep="/"),
+        paste(testDir,"ddg",sep="/"))
 
 # display values
 

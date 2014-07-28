@@ -371,9 +371,9 @@ ddg.MAX_HIST_LINES <- 16384
 # The name of the created node is name, its value is value. fname is the name of the
 # calling function and is used to generate helpful error messages if something goes wrong.
 # error indicates whether the function should raise an R Error as opposed to a ddg error.
-.ddg.save.data <- function(name, value, fname=".ddg.save.data", graphic.fext = 'jpeg', error=FALSE, scope=NULL){
+.ddg.save.data <- function(name, value, fname=".ddg.save.data", graphic.fext = 'jpeg', error=FALSE, scope=NULL, stack=NULL){
   if (is.null(scope)) {
-    scope <- .ddg.get.scope(name)
+    scope <- .ddg.get.scope(name, calls=stack)
   }
 	# Determine type for value, and save accordingly
 	if (.ddg.is.graphic(value)) .ddg.write.graphic(name, value, graphic.fext, scope=scope)
@@ -489,7 +489,6 @@ ddg.MAX_HIST_LINES <- 16384
 	}
 
 	# Error message if no match is found.
-	# browser()
   error.msg <- paste("No procedure node found for", pname)
   .ddg.insert.error.message(error.msg)  
 	return(0)
@@ -984,7 +983,6 @@ ddg.MAX_HIST_LINES <- 16384
 		}
 	}
 }
-
 # .ddg.create.data.set.edges.for.console.cmd creates the nodes and 
 # edges that correspond to a console command assigning to a variable. 
 # A data node is created for the last write of a variable if that 
@@ -992,6 +990,12 @@ ddg.MAX_HIST_LINES <- 16384
 # if the value is a data frame.  Otherwise, a data node is created.
 
 .ddg.create.data.set.edges.for.console.cmd <- function(vars.set, cmd.abbrev, cmd.expr, cmd.pos, for.finish.node = FALSE) {
+	.ddg.create.data.set.edges.for.cmd(vars.set, cmd.abbrev, cmd.expr, cmd.pos, for.finish.node, scope=environmentName(.GlobalEnv), env=.GlobalEnv)
+}
+	
+
+
+.ddg.create.data.set.edges.for.cmd <- function(vars.set, cmd.abbrev, cmd.expr, cmd.pos, for.finish.node = FALSE, scope=NULL, env=NULL, stack=NULL) {
 	vars.assigned <- .ddg.find.assign (cmd.expr)
 	for (var in vars.assigned) {
 		
@@ -1000,10 +1004,14 @@ ddg.MAX_HIST_LINES <- 16384
 		# Only create a node edge for the last place that a variable is 
     # set within a console block.
 		if ((length(nRow) > 0 && vars.set$last.writer[nRow] == cmd.pos && vars.set$possible.last.writer[nRow] <= vars.set$last.writer[nRow]) || for.finish.node) {
-			val <- tryCatch(eval(parse(text=var), .GlobalEnv),
+		    if (is.null(env)) {
+		      env <- .ddg.get.env(var, calls=stack)
+		      scope <- .ddg.get.scope(var, calls=stack)
+		    }
+		    val <- tryCatch(eval(parse(text=var), env),
 					error = function(e) {NULL}
 			)
-			tryCatch(.ddg.save.data(var,val,fname=".ddg.create.data.set.edges.for.console.cmd",error=TRUE, scope=environmentName(.GlobalEnv)),
+			tryCatch(.ddg.save.data(var,val,fname=".ddg.create.data.set.edges.for.console.cmd",error=TRUE, scope=scope, stack=stack),
 			         error = function(e){.ddg.data.node("Data", var, "complex")})
 
 #			if (!is.null(val)) {
@@ -1013,7 +1021,7 @@ ddg.MAX_HIST_LINES <- 16384
 #			else {
 #				.ddg.data.node("Data", var, "complex", environmentName(.GlobalEnv))
 #			}
-			.ddg.proc2data(cmd.abbrev, var, environmentName(.GlobalEnv))
+			.ddg.proc2data(cmd.abbrev, var, scope)
 		}
 	}
 }
@@ -1550,7 +1558,6 @@ ddg.MAX_HIST_LINES <- 16384
 	if (.ddg.enable.console()) {
 
 		# capture graphic output of previous procedure node
-		# browser()
 		.ddg.auto.graphic.node()
 
 		if(!console) {
@@ -2137,24 +2144,34 @@ ddg.MAX_HIST_LINES <- 16384
   }
 }
 
+#.ddg.get.env gets the environment in which name is declared
+
+.ddg.get.env <- function(name, for.caller=FALSE, calls=NULL) {
+  if (is.null(calls)) calls <- sys.calls()
+  fnum <- .ddg.get.frame.number(calls, for.caller)
+  stopifnot(!is.null(fnum))
+  
+  
+  # I broke this statement up into 2 statements so that we
+  # can add print statements to .ddg.where or step through it
+  # with a debugger without breaking it.  If we don't do that
+  # the print output gets captured by capture.output and
+  # does not display to the user and also causes the subsequent
+  # grepl call in this function to fail.
+  
+  #	scope <- sub('<environment: (.*)>', '\\1', capture.output(.ddg.where(name, sys.frame(fnum))))
+  if(!exists(name, sys.frame(fnum), inherits=TRUE)) return(NULL)
+  env <- .ddg.where(name, sys.frame(fnum))
+  return(env)
+}
+
+
 # .ddg.get.scope gets the id of the closest non-library
 # environment.
 
 .ddg.get.scope <- function(name, for.caller=FALSE, calls=NULL) {
-	fnum <- .ddg.get.frame.number(calls, for.caller)
-	stopifnot(!is.null(fnum))
-	
-	
-	# I broke this statement up into 2 statements so that we
-	# can add print statements to .ddg.where or step through it
-	# with a debugger without breaking it.  If we don't do that
-	# the print output gets captured by capture.output and
-	# does not display to the user and also causes the subsequent
-	# grepl call in this function to fail.
-	
-	#	scope <- sub('<environment: (.*)>', '\\1', capture.output(.ddg.where(name, sys.frame(fnum))))
-  if(!exists(name, sys.frame(fnum), inherits=TRUE)) return("undefined")
-	env <- .ddg.where(name, sys.frame(fnum))
+	env <- .ddg.get.env(name, for.caller, calls)
+  if (is.null(env)) return ("undefined")
 	scope <- sub('<environment: (.*)>', '\\1', capture.output(env))
 	if (grepl("undefined", scope)) scope <- "undefined"
 	return(scope)
@@ -2303,7 +2320,7 @@ ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.graphic=N
 						param.scope <- .ddg.get.scope(param, for.caller = TRUE, calls=stack)
 						if (.ddg.data.node.exists(param, param.scope)) {
 							binding.node.name <- paste(formal, " <- ", param)
-							.ddg.proc.node("Binding", binding.node.name)
+		.ddg.proc.node("Binding", binding.node.name)
 							.ddg.proc2proc()
 							.ddg.data2proc(as.character(param), param.scope, binding.node.name)
 							formal.scope <- .ddg.get.scope(formal, calls=stack)
@@ -2447,6 +2464,10 @@ ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.graphic=N
 	}
 }
 
+# ddg.return creates a data node to hold the return value of a function call.
+# It also creates an incoming edge from the function node that is returning.
+# It adds information about the call and the node created to a table so
+# that it can be linked to later where the return is used.
 ddg.return <- function (expr) {
 	if (!.ddg.is.init()) return(expr)
 	pname <- NULL
@@ -2482,6 +2503,7 @@ ddg.return <- function (expr) {
 	# Create an edge from the function to its return value
 	.ddg.proc2data(pname, return.node.name, return.node.scope)
 	
+	# Update the table
 	ddg.num.returns <- ddg.num.returns + 1
 	ddg.return.values$ddg.call[ddg.num.returns] <- call
 	ddg.return.values$return.used[ddg.num.returns] <- FALSE
@@ -2490,6 +2512,27 @@ ddg.return <- function (expr) {
 	.ddg.set(".ddg.num.returns", ddg.num.returns)
 	
 	return(expr)
+}
+
+ddg.eval <- function(statement) {
+	parsed.statement <- parse(text=statement)
+	frame.num <- .ddg.get.frame.number(sys.calls())
+	env <- sys.frame(frame.num)
+	if (!.ddg.is.init()) {
+		eval(parsed.statement, env)
+		return()
+	}
+	
+	.ddg.parse.commands(parsed.statement, environ=env, node.name=statement)
+    .ddg.link.function.returns(parsed.statement)
+
+	# Create outflowing edges 
+	.ddg.statement <- list("abbrev" = .ddg.abbrev.cmd(gsub("\\\"", "\\\\\"", statement)), 
+					"expr" = parsed.statement,
+					"text" = statement)
+	
+	vars.set <- .ddg.find.var.assignments(.ddg.statement$expr)
+	.ddg.create.data.set.edges.for.cmd(vars.set, .ddg.statement$abbrev, .ddg.statement$expr, 1, stack=sys.calls())
 }
 
 # ddg.data creates a data node for a single or comple data value. 
@@ -2751,7 +2794,6 @@ ddg.url.out <- function(dname, dvalue=NULL, pname=NULL) {
 
 ddg.file.out <- function(filename, dname=NULL, pname=NULL) {
 	if (!.ddg.is.init()) return(NULL)
-	# browser()
 
 	if (is.null(dname)) {
 		dname <- basename(filename)
@@ -3252,7 +3294,6 @@ ddg.debug.off <- function () {
 # ddg.console.off turns off the console mode of DDG construction
 ddg.console.off <- function() {
 	if (!.ddg.is.init()) return(NULL)
-	#browser()
 	# capture history if console was on up to this point
 	if (interactive() && .ddg.enable.console()) {
 		.ddg.console.node()
@@ -3265,7 +3306,6 @@ ddg.console.off <- function() {
 # ddg.console.on turns on the console mode of DDG construction
 ddg.console.on <- function() {
 	if (!.ddg.is.init()) return(NULL)
-	#browser()
 	# write a new timestamp if we're turning on the console so we only capture
 	# history from this point forward
 	if (!.ddg.enable.console()) .ddg.write.timestamp.to.history()

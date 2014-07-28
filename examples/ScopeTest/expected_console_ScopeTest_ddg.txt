@@ -2,134 +2,149 @@ Architecture="x86_64"
 OperatingSystem="unix"
 Language="R"
 LanguageVersion="R version 3.1.0 Patched (2014-05-20 r65701)"
+RDataTrackerVersion="0.5.19"
 Script="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/ScopeTest/ScopeTest.R"
-ProcessFileTimestamp="2014-07-22T11.53.57"
+ProcessFileTimestamp="2014-07-25T13.49.13"
 WorkingDirectory="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/ScopeTest"
 DDGDirectory="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/ScopeTest/ddg"
-DateTime="2014-07-22T11.56.43"
-34
+DateTime="2014-07-25T13.49.17"
+41
 Start p1 "1-Console" Value="Console";
-Operation p2 "2-f <- function() {    a <<- b * 10    ddg.procedure(ins = lis" Value="f <- function() {    a <<- b * 10    ddg.procedure(ins = list(\"b\"), outs.data = list(\"a\"))    ddg.return(a)}";
+Operation p2 "2-options(warn = 1)" Value="options(warn = 1)";
 CF p1 p2
-Operation p3 "3-g <- function(a) {    c <- a + 10    d <- 1000    ddg.proced" Value="g <- function(a) {    c <- a + 10    d <- 1000    ddg.procedure(lookup.ins = TRUE)    ddg.return(c)}";
+Operation p3 "3-f <- function() {    a <<- b * 10    ddg.procedure(ins = lis" Value="f <- function() {    a <<- b * 10    ddg.procedure(ins = list(\"b\"), outs.data = list(\"a\"))    ddg.return(a)}";
 CF p2 p3
-Operation p4 "4-h <- function() {    d <- 333    ddg.procedure(\"h\", ins = " Value="h <- function() {    d <- 333    ddg.procedure(\"h\", ins = list(\"d\"))    ddg.return(d)}";
+Data d1 "1-f" Value="#ddg.function";
+DF p3 d1
+Operation p4 "4-g <- function(a) {    c <- a + 10    d <- 1000    ddg.proced" Value="g <- function(a) {    c <- a + 10    d <- 1000    ddg.procedure(lookup.ins = TRUE)    ddg.return(c)}";
 CF p3 p4
-Operation p5 "5-i <- function() {    x <<- 1000    ddg.procedure(outs.data =" Value="i <- function() {    x <<- 1000    ddg.procedure(outs.data = list(\"x\"))    ddg.return(j(x))}";
+Data d2 "2-g" Value="#ddg.function";
+DF p4 d2
+Operation p5 "5-h <- function() {    d <- 333    ddg.procedure(\"h\", ins = " Value="h <- function() {    d <- 333    ddg.procedure(\"h\", ins = list(\"d\"))    ddg.return(d)}";
 CF p4 p5
-Operation p6 "6-j <- function(xx) {    ddg.data(xx)    ddg.procedure(ins = l" Value="j <- function(xx) {    ddg.data(xx)    ddg.procedure(ins = list(\"xx\", \"a\"))    return(3)}";
+Data d3 "3-h" Value="#ddg.function";
+DF p5 d3
+Operation p6 "6-i <- function() {    x <<- 1000    ddg.procedure(outs.data =" Value="i <- function() {    x <<- 1000    ddg.procedure(outs.data = list(\"x\"))    ddg.return(j(x))}";
 CF p5 p6
-Operation p7 "7-a <- 1" Value="a <- 1";
+Data d4 "4-i" Value="#ddg.function";
+DF p6 d4
+Operation p7 "7-j <- function(xx) {    ddg.data(xx)    ddg.procedure(ins = l" Value="j <- function(xx) {    ddg.data(xx)    ddg.procedure(ins = list(\"xx\", \"a\"))    return(3)}";
 CF p6 p7
-Operation p8 "8-b <- a + 1" Value="b <- a + 1";
+Data d5 "5-j" Value="#ddg.function";
+DF p7 d5
+Operation p8 "8-a <- 1" Value="a <- 1";
 CF p7 p8
-Finish p9 "9-Console" Value="Console";
-CF p8 p9
-Start p10 "10-f()" Value="f()";
-CF p9 p10
-Data d1 "1-f" Value="complex";
-DF p2 d1
-Data d2 "2-g" Value="complex";
-DF p3 d2
-Data d3 "3-h" Value="complex";
-DF p4 d3
-Data d4 "4-i" Value="complex";
-DF p5 d4
-Data d5 "5-j" Value="complex";
-DF p6 d5
 Data d6 "6-a" Value="20";
-DF p7 d6
-DF d6 p8
+DF p8 d6
+Operation p9 "9-b <- a + 1" Value="b <- a + 1";
+CF p8 p9
+DF d6 p9
 Data d7 "7-b" Value="2";
-DF p8 d7
-Operation p11 "11-f" Value="f";
+DF p9 d7
+Finish p10 "10-Console" Value="Console";
+CF p9 p10
+Start p11 "11-f()" Value="f()";
 CF p10 p11
-DF d7 p11
-Data d8 "8-a" Value="20";
-DF p11 d8
-Data d9 "9-f() return" Value="20";
-DF p11 d9
-Finish p12 "12-f()" Value="f()";
+Operation p12 "12-f" Value="f";
 CF p11 p12
-DF d9 p12
-Start p13 "13-Console" Value="Console";
+DF d7 p12
+Data d8 "8-a" Value="20";
+DF p12 d8
+Data d9 "9-f() return" Value="20";
+DF p12 d9
+Finish p13 "13-f()" Value="f()";
 CF p12 p13
-Operation p14 "14-c <- 100" Value="c <- 100";
+DF d9 p13
+Start p14 "14-Console" Value="Console";
 CF p13 p14
-Finish p15 "15-Console" Value="Console";
+Operation p15 "15-c <- 100" Value="c <- 100";
 CF p14 p15
-Start p16 "16-if (g(c) != 110) print("g(c) returned the wrong value")" Value="if (g(c) != 110) print("g(c) returned the wrong value")";
-CF p15 p16
 Data d10 "10-c" Value="100";
-DF p14 d10
-Binding p17 "17-a  <-  c"
+DF p15 d10
+Finish p16 "16-Console" Value="Console";
+CF p15 p16
+Start p17 "17-if (g(c) != 110) print(\"g(c) returned the wrong value\")" Value="if (g(c) != 110) print(\"g(c) returned the wrong value\")";
 CF p16 p17
-DF d10 p17
-Data d11 "11-a" Value="100";
-DF p17 d11
-Operation p18 "18-g" Value="g";
-DF d11 p18
+Binding p18 "18-a  <-  c"
 CF p17 p18
-Data d12 "12-g(c) return" Value="110";
-DF p18 d12
-Finish p19 "19-if (g(c) != 110) print("g(c) returned the wrong value")" Value="if (g(c) != 110) print("g(c) returned the wrong value")";
+DF d10 p18
+Data d11 "11-a" Value="100";
+DF p18 d11
+Operation p19 "19-g" Value="g";
+DF d11 p19
 CF p18 p19
-DF d12 p19
-Start p20 "20-d <- g(c)" Value="d <- g(c)";
+Data d12 "12-g(c) return" Value="110";
+DF p19 d12
+Finish p20 "20-if (g(c) != 110) print(\"g(c) returned the wrong value\")" Value="if (g(c) != 110) print(\"g(c) returned the wrong value\")";
 CF p19 p20
-Binding p21 "21-a  <-  c"
+DF d12 p20
+Start p21 "21-Console" Value="Console";
 CF p20 p21
-DF d10 p21
-Data d13 "13-a" Value="100";
-DF p21 d13
-Operation p22 "22-g" Value="g";
-DF d13 p22
+Finish p22 "22-Console" Value="Console";
 CF p21 p22
-Data d14 "14-g(c) return" Value="110";
-DF p22 d14
-Finish p23 "23-d <- g(c)" Value="d <- g(c)";
+Start p23 "23-d <- g(c)" Value="d <- g(c)";
 CF p22 p23
-DF d12 p23
-DF d14 p23
-Data d15 "15-d" Value="110";
-DF p23 d15
-Start p24 "24-h()" Value="h()";
+Binding p24 "24-a  <-  c"
 CF p23 p24
-Operation p25 "25-h" Value="h";
+DF d10 p24
+Data d13 "13-a" Value="100";
+DF p24 d13
+Operation p25 "25-g" Value="g";
+DF d13 p25
 CF p24 p25
-Exception d16 "16-error.msg" Value="\"No data node found for local d\"";
-DF p25 d16
-Data d17 "17-h() return" Value="333";
-DF p25 d17
-Finish p26 "26-h()" Value="h()";
+Data d14 "14-g(c) return" Value="110";
+DF p25 d14
+Finish p26 "26-d <- g(c)" Value="d <- g(c)";
 CF p25 p26
-DF d17 p26
-Start p27 "27-i()" Value="i()";
+DF d12 p26
+DF d14 p26
+Data d15 "15-d" Value="110";
+DF p26 d15
+Start p27 "27-Console" Value="Console";
 CF p26 p27
-Operation p28 "28-i" Value="i";
+Finish p28 "28-Console" Value="Console";
 CF p27 p28
-Data d18 "18-x" Value="1000";
-DF p28 d18
-Data d19 "19-xx" Value="1000";
-Operation p29 "29-j" Value="j";
+Start p29 "29-h()" Value="h()";
 CF p28 p29
-DF d19 p29
-DF d8 p29
-Data d20 "20-i() return" Value="3";
-DF p28 d20
-File d21 "21-foobar.csv" Value="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/ScopeTest/ddg/21-foobar.csv" Time="2014-07-22T11.56.43" Location="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/ScopeTest/foobar.csv";
-Finish p30 "30-i()" Value="i()";
+Operation p30 "30-h" Value="h";
 CF p29 p30
-DF d20 p30
-Start p31 "31-Console" Value="Console";
+Exception d16 "16-error.msg" Value="\"No data node found for local d\"";
+DF p30 d16
+Data d17 "17-h() return" Value="333";
+DF p30 d17
+Finish p31 "31-h()" Value="h()";
 CF p30 p31
-Operation p32 "32-foobar <- read.csv(\"foobar.csv\")" Value="foobar <- read.csv(\"foobar.csv\")";
+DF d17 p31
+Start p32 "32-Console" Value="Console";
 CF p31 p32
 Finish p33 "33-Console" Value="Console";
 CF p32 p33
-Snapshot d22 "22-foobar" Value="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/ScopeTest/ddg/22-foobar.csv" Time="2014-07-22T11.56.43";
-DF p32 d22
-Operation p34 "34-Read raw data files" Value="Read raw data files";
+Start p34 "34-i()" Value="i()";
 CF p33 p34
-DF d21 p34
+Operation p35 "35-i" Value="i";
+CF p34 p35
+Data d18 "18-x" Value="1000";
+DF p35 d18
+Data d19 "19-xx" Value="1000";
+Operation p36 "36-j" Value="j";
+CF p35 p36
+DF d19 p36
+DF d8 p36
+Data d20 "20-i() return" Value="3";
+DF p35 d20
+File d21 "21-foobar.csv" Value="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/ScopeTest/ddg/21-foobar.csv" Time="2014-07-25T13.49.17" Location="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/ScopeTest/foobar.csv";
+Finish p37 "37-i()" Value="i()";
+CF p36 p37
+DF d20 p37
+Start p38 "38-Console" Value="Console";
+CF p37 p38
+Operation p39 "39-foobar <- read.csv(\"foobar.csv\")" Value="foobar <- read.csv(\"foobar.csv\")";
+CF p38 p39
+Snapshot d22 "22-foobar" Value="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/ScopeTest/ddg/22-foobar.csv" Time="2014-07-25T13.49.17";
+DF p39 d22
+Finish p40 "40-Console" Value="Console";
+CF p39 p40
+Operation p41 "41-Read raw data files" Value="Read raw data files";
+CF p40 p41
+DF d21 p41
 

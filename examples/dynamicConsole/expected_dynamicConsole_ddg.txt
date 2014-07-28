@@ -1,13 +1,13 @@
-Architecture="i386"
-OperatingSystem="windows"
+Architecture="x86_64"
+OperatingSystem="unix"
 Language="R"
-LanguageVersion="R version 3.1.0 (2014-04-10)"
+LanguageVersion="R version 3.1.0 Patched (2014-05-20 r65701)"
 RDataTrackerVersion="0.5.19"
 Script="[DIR]/dynamicConsole.r"
-ProcessFileTimestamp="2014-07-22T14.35.57"
+ProcessFileTimestamp="2014-07-22T16.27.07"
 WorkingDirectory="[DIR]"
 DDGDirectory="[DIR]/ddg"
-DateTime="2014-07-22T14.37.28"
+DateTime="2014-07-28T14.59.35"
 7
 Operation p1 "1-f" Value="f";
 Exception d1 "1-error.msg" Value="\"No data node found for b\"";
@@ -15,16 +15,16 @@ DF p1 d1
 Data d2 "2-a" Value="20";
 DF p1 d2
 Operation p2 "2-g" Value="g";
-CF p1 p2
-Exception d3 "3-error.msg" Value="\"Skipping parameter c\"";
+Exception d3 "3-error.msg" Value="\"Skipping parameter a\"";
 DF p2 d3
+CF p1 p2
 Operation p3 "3-g" Value="g";
-CF p2 p3
-Exception d4 "4-error.msg" Value="\"Skipping parameter c\"";
+Exception d4 "4-error.msg" Value="\"Skipping parameter a\"";
 DF p3 d4
+CF p2 p3
 Operation p4 "4-foo" Value="foo";
 CF p3 p4
-Exception d5 "5-error.msg" Value="\"No data node found for d\"";
+Exception d5 "5-error.msg" Value="\"No data node found for local d\"";
 DF p4 d5
 Operation p5 "5-i" Value="i";
 CF p4 p5
@@ -35,7 +35,7 @@ Operation p6 "6-j" Value="j";
 CF p5 p6
 DF d7 p6
 DF d2 p6
-File d8 "8-foobar.csv" Value="[DIR]/ddg/8-foobar.csv" Time="2014-07-22T14.37.28" Location="[DIR]/foobar.csv";
+File d8 "8-foobar.csv" Value="[DIR]/ddg/8-foobar.csv" Time="2014-07-28T14.59.35" Location="[DIR]/foobar.csv";
 Operation p7 "7-Read raw data files" Value="Read raw data files";
 CF p6 p7
 DF d8 p7

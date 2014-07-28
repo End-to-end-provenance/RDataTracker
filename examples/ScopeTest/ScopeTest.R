@@ -9,13 +9,15 @@ library(RDataTracker)
 
 if (interactive()) {
   testDir <- getwd()
+  ddgDir <- "ddg"
 } else {
   testDir <- "[DIR_DEFAULT]"
+  ddgDir <- "[DDG-DIR]"
   setwd(testDir)
 }
 
 ddg.r.script.path = paste(testDir,"ScopeTest.R",sep="/")
-ddg.path = paste(testDir,"[DDG-DIR]",sep="/")
+ddg.path = paste(testDir,ddgDir,sep="/")
 
 ddg.init(ddg.r.script.path,
 		ddg.path,
@@ -72,7 +74,6 @@ if (g(c) != 110) print("g(c) returned the wrong value")
 
 d <- g(c)
 
-ddg.debug.on()
 h()
 
 i()
