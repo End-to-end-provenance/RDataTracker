@@ -20,19 +20,30 @@ scriptTimer.timeScript <- function(filePath, fileName){
   return(results)
 }
 
+
 ### Function: returns the filesize of a script
 
 ### Main script
 scriptTimer.main <- function(){
   # NOTE THAT THE CODE IS WRITTEN SO THAT IT LOOKS FOR script-clean.r and template_script-annnotated.r
+  
+  ### WE HAVE AUTOMATED THE BELOW
+  setwd(test.dir)
+  test.paths <- list.files()
+
+  # remove all temporary localTimingScripts folders (so no duplicates show up later)
+  unlink(list.files(pattern="^localTimingScripts$", full.names=T, recursive=T, include.dirs=T), recursive=T)
+  
   # list out scripts to test
-  src.zero <- list("path" = "/Aaron", "script" = "Simes dendrochronology master analysis file")
-  src.one <- list("path" = "/CalculateSquareRoot", "script" = "calculate-square-root")
-  src.two <- list("path" = "/daily solar radiation", "script" = "daily-solar-radiation")
-  src.three <- list("path" = "/seminar one", "script" = "R_REU_S1")
-  src.four <- list("path" = "/seminar two", "script" = "R_REU_S2")
-  src.six <- list("path" = "/seminar four", "script" = "RWorkshop-Session4")
-  scripts <- list(src.zero, src.one, src.two,src.three, src.four, src.six)
+  test.dirs <- list.files(pattern="-clean.r$", full.names=T, recursive=T, ignore.case=T)
+
+  # create script testing input
+  scripts = Map(function(x,y){
+    list("path"=sub("^.", "",x), "script"=sub("-clean.r$", "", y))
+    }, 
+    dirname(test.paths),
+    basename(test.paths)
+  )
 
   # results
   results <- lapply(scripts,function(x){

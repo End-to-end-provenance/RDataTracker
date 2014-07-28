@@ -28,6 +28,7 @@ removeEnd <- function(name){
 # add columns specifying type of annotation (no longer needed)
 # rowResults$annotType <- as.factor(sapply(rowResults$script.file, findType))
 rowResults <- scriptTimer.main()
+rowResults$r.data.version <- as.character(packageVersion("RDataTracker"))
 
 # add columns specifying script source (still needed)
 rowResults$source <- as.factor(sapply(rowResults$script.file, removeEnd))
