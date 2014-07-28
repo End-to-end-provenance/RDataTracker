@@ -2,13 +2,13 @@ Architecture="x86_64"
 OperatingSystem="unix"
 Language="R"
 LanguageVersion="R version 3.1.0 Patched (2014-05-20 r65701)"
-RDataTrackerVersion="0.5.19"
+RDataTrackerVersion="0.5.21"
 Script="[DIR]/real-time-15min-met-test.r"
-ProcessFileTimestamp="2014-07-22T01.18.38"
+ProcessFileTimestamp="2014-07-28T16.28.38"
 WorkingDirectory="[DIR]"
 DDGDirectory="[DIR]/ddg-source"
-DateTime="2014-07-22T01.21.37"
-27
+DateTime="2014-07-28T16.57.15"
+36
 Operation p1 "1-get.initial.values <- function() {    archive.file <<- \"arc" Value="get.initial.values <- function() {    archive.file <<- \"archive-15min.csv\"    current.url <<- \"http://harvardforest.fas.harvard.edu/sites/harvardforest.fas.harvard.edu/files/weather/metsta.dat\"}";
 Data d1 "1-get.initial.values" Value="#ddg.function";
 DF p1 d1
@@ -41,24 +41,24 @@ CF p7 p8
 DF d1 p8
 Operation p9 "9-archive.data <- get.archive.data(archive.file)" Value="archive.data <- get.archive.data(archive.file)";
 CF p8 p9
-Snapshot d8 "8-archive.data" Value="[DIR]/ddg-source/8-archive.data.csv" Time="2014-07-22T01.21.26";
+Snapshot d8 "8-archive.data" Value="[DIR]/ddg-source/8-archive.data.csv" Time="2014-07-28T16.57.10";
 DF p9 d8
 Operation p10 "10-current.data <- get.current.data(current.url)" Value="current.data <- get.current.data(current.url)";
 CF p9 p10
-Snapshot d9 "9-current.data" Value="[DIR]/ddg-source/9-current.data.csv" Time="2014-07-22T01.21.26";
+Snapshot d9 "9-current.data" Value="[DIR]/ddg-source/9-current.data.csv" Time="2014-07-28T16.57.10";
 DF p10 d9
 Operation p11 "11-final.data <- get.final.data(archive.data, current.data)" Value="final.data <- get.final.data(archive.data, current.data)";
 CF p10 p11
 DF d8 p11
 DF d9 p11
-Snapshot d10 "10-final.data" Value="[DIR]/ddg-source/10-final.data.csv" Time="2014-07-22T01.21.32";
+Snapshot d10 "10-final.data" Value="[DIR]/ddg-source/10-final.data.csv" Time="2014-07-28T16.57.13";
 DF p11 d10
 Operation p12 "12-save.data(\"final-data.csv\", final.data)" Value="save.data(\"final-data.csv\", final.data)";
 CF p11 p12
 DF d10 p12
 Operation p13 "13-inputs <- c(\"airt\", \"dewp\", \"wspd\")" Value="inputs <- c(\"airt\", \"dewp\", \"wspd\")";
 CF p12 p13
-Snapshot d11 "11-inputs" Value="[DIR]/ddg-source/11-inputs.csv" Time="2014-07-22T01.21.36";
+Snapshot d11 "11-inputs" Value="[DIR]/ddg-source/11-inputs.csv" Time="2014-07-28T16.57.14";
 DF p13 d11
 Operation p14 "14-days <- 10" Value="days <- 10";
 CF p13 p14
@@ -77,10 +77,8 @@ Snapshot d15 "15-zz" Value="10-final.data.csv";
 DF p17 d15
 Binding p18 "18-v  <-  input"
 CF p17 p18
-Start p19 "19-Loop" Value="Loop";
-CF p18 p19
-Data d15 "15-input" Value="\"dewp\"";
-Snapshot d16 "16-graphic" Value="[DIR]/ddg-source/16-graphic.jpeg" Time="2014-07-22T01.21.37";
+DF d14 p18
+Data d16 "16-v" Value="airt";
 DF p18 d16
 Binding p19 "19-d  <-  days"
 CF p18 p19
@@ -96,10 +94,10 @@ Finish p21 "21-Loop" Value="Loop";
 CF p20 p21
 Start p22 "22-Loop" Value="Loop";
 CF p21 p22
-Data d17 "17-input" Value="\"wspd\"";
-Snapshot d18 "18-graphic" Value="[DIR]/ddg-source/18-graphic.jpeg" Time="2014-07-22T01.21.37";
-DF p21 d18
-Operation p23 "23-plot.data" Value="plot.data";
+Data d18 "18-input" Value="\"dewp\"";
+Snapshot d19 "19-graphic" Value="[DIR]/ddg-source/19-graphic.jpeg" Time="2014-07-28T16.57.15";
+DF p21 d19
+Binding p23 "23-zz  <-  final.data"
 CF p22 p23
 DF d10 p23
 Snapshot d20 "20-zz" Value="10-final.data.csv";
@@ -111,18 +109,20 @@ Data d21 "21-v" Value="dewp";
 DF p24 d21
 Binding p25 "25-d  <-  days"
 CF p24 p25
-Data d19 "19-last" Value="\"wspd\"";
-DF p25 d19
-Snapshot d20 "20-graphic" Value="[DIR]/ddg-source/20-graphic.jpeg" Time="2014-07-22T01.21.37";
-DF p25 d20
-Operation p26 "26-save.plot(final.data, last, days)" Value="save.plot(final.data, last, days)";
+DF d13 p25
+Data d22 "22-d" Value="10";
+DF p25 d22
+Operation p26 "26-plot.data" Value="plot.data";
+DF d20 p26
+DF d21 p26
+DF d22 p26
 CF p25 p26
 Finish p27 "27-Loop" Value="Loop";
 CF p26 p27
 Start p28 "28-Loop" Value="Loop";
 CF p27 p28
 Data d23 "23-input" Value="\"wspd\"";
-Snapshot d24 "24-graphic" Value="[DIR]/ddg-source/24-graphic.jpeg" Time="2014-07-23T11.27.49";
+Snapshot d24 "24-graphic" Value="[DIR]/ddg-source/24-graphic.jpeg" Time="2014-07-28T16.57.15";
 DF p27 d24
 Binding p29 "29-zz  <-  final.data"
 CF p28 p29
@@ -150,7 +150,7 @@ Finish p34 "34-for (input in inputs) {    ddg.start(\"Loop\")    ddg.data(" Valu
 CF p33 p34
 Data d28 "28-last" Value="\"wspd\"";
 DF p34 d28
-Snapshot d29 "29-graphic" Value="[DIR]/ddg-source/29-graphic.jpeg" Time="2014-07-23T11.27.49";
+Snapshot d29 "29-graphic" Value="[DIR]/ddg-source/29-graphic.jpeg" Time="2014-07-28T16.57.15";
 DF p34 d29
 Operation p35 "35-save.plot(final.data, last, days)" Value="save.plot(final.data, last, days)";
 CF p34 p35

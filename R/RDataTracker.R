@@ -1055,7 +1055,7 @@ ddg.MAX_HIST_LINES <- 2^14
 					error = function(e) {NULL}
 			)
 			tryCatch(.ddg.save.data(var,val,fname=".ddg.create.data.set.edges.for.console.cmd",error=TRUE, scope=scope, stack=stack),
-			         error = function(e){.ddg.data.node("Data", var, "complex")})
+			         error = function(e){.ddg.data.node("Data", var, "complex", scope)})
 
 #			if (!is.null(val)) {
 #				if (is.data.frame(val)) .ddg.snapshot.node(var, "csv", val, dscope=environmentName(.GlobalEnv))
