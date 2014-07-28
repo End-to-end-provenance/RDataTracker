@@ -166,7 +166,7 @@ plot.data <- function(xx,t,n,output) {
       X11(15,10)
     }
     else {
-      windows(15,10)
+      x11(15,10)
     }
   }
   
