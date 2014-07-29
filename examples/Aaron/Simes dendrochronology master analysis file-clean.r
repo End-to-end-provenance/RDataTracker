@@ -1,9 +1,3 @@
-#Visualization and analysis for Simes dendrochronology ms.
-#========================================================
-
-#Load required libraries
-
-
 #```r
 library(dplR)
 #```
@@ -125,8 +119,7 @@ filled.contour3 <- function(x = seq(0, 1, length.out = nrow(z)), y = seq(0,
     # on.exit(par(par.orig)) w <- (3 + mar.orig[2]) * par('csi') * 2.54 par(las
     # = las) mar <- mar.orig
     tryCatch(plot.new(),
-             error=function(e){e})
-    # par(mar=mar)
+         error=function(e){e})
     # par(mar=mar)
     plot.window(xlim, ylim, "", xaxs = xaxs, yaxs = yaxs, asp = asp)
     if (!is.matrix(z) || nrow(z) <= 1 || ncol(z) <= 1) 
@@ -199,7 +192,7 @@ trees <- read.csv("trees03.csv")
 dendro <- read.csv("hf086-01-dendro.csv")
 #dendro <- read.csv("C:/Users/aellison/Dropbox/Aaron's Briefcase/manuscript - Simes dendro and land use/analysis/hf086-01-dendro.csv")
 
-head(trees)
+invisible(head(trees))
 #```
 
 #```
@@ -213,7 +206,7 @@ head(trees)
 #```
 
 #```r
-head(dendro)
+invisible(head(dendro))
 #```
 
 #```
@@ -228,7 +221,6 @@ head(dendro)
 
 
 #Create contour plots of trees in each plot (ms. Figures 5, 6)
-
 
 #```r
 
@@ -286,7 +278,7 @@ genera.rank <- c(14, 2, 1, 12, 10, 7, 9, 4, 11, 8, 3, 6, 5, 13)
 
 cex.I <- c(0.6, 0.6, rep(0.3, 7), 0.6, 0.3, 0.6, 0.3, 0.6)
 
-# begin hemlock plot uncomment pdf and dev.off() lines to generate pdfs
+# begin hemlock plot uncomment pdf and invisible(dev.off() lines to generate pdfs)
 
 pdf(file='hemlock_countors.pdf', width=4.75, height=6, colormodel='cmyk',
   pointsize=9)
@@ -403,7 +395,7 @@ text(6, 1, "Other", font = 2, col = "white", srt = 90)
 
 #```r
 
-dev.off() 
+invisible(dev.off())
 #end hemlock
 
 
@@ -463,14 +455,13 @@ for (i in blacks) text(i, 1, genera[genera.rank][i], font = 4, col = "black",
     srt = 90)
 text(6, 1, "Other", font = 2, col = "white", srt = 90)
 
-dev.off()
+invisible(dev.off())
 #```
 
 #![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-42.png) 
 
 
 #Compute Ripley's K for each species, each plot
-
 #First, create sptaial point patterns; remove points with x or y outside of c(0,90)
 
 
@@ -570,8 +561,8 @@ par(mfrow = c(5, 3), pin = c(1.75, 1.75), plt = c(0.0625, 0.9375, 0.0625, 0.9375
 
 
 plot(plot.1.pp[plot.1$genus == "Tsuga"])
-plot(density(plot.1.pp[plot.1$genus == "Tsuga"]))
-plot(envelope(plot.1.pp[plot.1$genus == "Tsuga"], Lest, global = FALSE))
+invisible(plot(invisible(density(plot.1.pp[plot.1$genus == "Tsuga"]))))
+invisible(plot(invisible(envelope(plot.1.pp[plot.1$genus == "Tsuga"], Lest, global = FALSE))))
 #```
 
 #```
@@ -603,8 +594,8 @@ plot(envelope(plot.1.pp[plot.1$genus == "Tsuga"], Lest, global = FALSE))
 #```r
 
 plot(plot.1.pp[plot.1$genus == "Betula"])
-plot(density(plot.1.pp[plot.1$genus == "Betula"]))
-plot(envelope(plot.1.pp[plot.1$genus == "Betula"], Kest))
+invisible(plot(invisible(density(plot.1.pp[plot.1$genus == "Betula"]))))
+invisible(plot(invisible(envelope(plot.1.pp[plot.1$genus == "Betula"], Kest))))
 #```
 
 #```
@@ -637,8 +628,8 @@ plot(envelope(plot.1.pp[plot.1$genus == "Betula"], Kest))
 
 
 plot(plot.1.pp[plot.1$genus == "Quercus"])
-plot(density(plot.1.pp[plot.1$genus == "Quercus"]))
-plot(envelope(plot.1.pp[plot.1$genus == "Quercus"], Kest))
+invisible(plot(invisible(density(plot.1.pp[plot.1$genus == "Quercus"]))))
+invisible(plot(invisible(envelope(plot.1.pp[plot.1$genus == "Quercus"], Kest))))
 #```
 
 #```
@@ -670,8 +661,8 @@ plot(envelope(plot.1.pp[plot.1$genus == "Quercus"], Kest))
 #```r
 
 plot(plot.1.pp[plot.1$genus == "Acer"])
-plot(density(plot.1.pp[plot.1$genus == "Acer"]))
-plot(envelope(plot.1.pp[plot.1$genus == "Acer"], Kest))
+invisible(plot(invisible(density(plot.1.pp[plot.1$genus == "Acer"]))))
+invisible(plot(invisible(envelope(plot.1.pp[plot.1$genus == "Acer"], Kest))))
 #```
 
 #```
@@ -704,8 +695,8 @@ plot(envelope(plot.1.pp[plot.1$genus == "Acer"], Kest))
 
 
 plot(plot.1.pp[plot.1$genus == "Pinus"])
-plot(density(plot.1.pp[plot.1$genus == "Pinus"]))
-plot(envelope(plot.1.pp[plot.1$genus == "Pinus"], Kest))
+invisible(plot(invisible(density(plot.1.pp[plot.1$genus == "Pinus"]))))
+invisible(plot(invisible(envelope(plot.1.pp[plot.1$genus == "Pinus"], Kest))))
 #```
 
 #```
@@ -740,8 +731,8 @@ plot(envelope(plot.1.pp[plot.1$genus == "Pinus"], Kest))
 
 par(mfrow = c(5, 3), pin = c(1.75, 1.75), plt = c(0.0625, 0.9375, 0.0625, 0.9375))
 plot(plot.2.pp[plot.2$genus == "Tsuga"])
-plot(density(plot.2.pp[plot.2$genus == "Tsuga"]))
-plot(envelope(plot.2.pp[plot.2$genus == "Tsuga"], Kest))
+invisible(plot(invisible(density(plot.2.pp[plot.2$genus == "Tsuga"]))))
+invisible(plot(invisible(envelope(plot.2.pp[plot.2$genus == "Tsuga"], Kest))))
 #```
 
 #```
@@ -773,8 +764,8 @@ plot(envelope(plot.2.pp[plot.2$genus == "Tsuga"], Kest))
 #```r
 
 plot(plot.2.pp[plot.2$genus == "Betula"])
-plot(density(plot.2.pp[plot.2$genus == "Betula"]))
-plot(envelope(plot.2.pp[plot.2$genus == "Betula"], Kest))
+invisible(plot(invisible(density(plot.2.pp[plot.2$genus == "Betula"]))))
+invisible(plot(invisible(envelope(plot.2.pp[plot.2$genus == "Betula"], Kest))))
 #```
 
 #```
@@ -806,8 +797,8 @@ plot(envelope(plot.2.pp[plot.2$genus == "Betula"], Kest))
 #```r
 
 plot(plot.2.pp[plot.2$genus == "Quercus"])
-plot(density(plot.2.pp[plot.2$genus == "Quercus"]))
-plot(envelope(plot.2.pp[plot.2$genus == "Quercus"], Kest))
+invisible(plot(invisible(density(plot.2.pp[plot.2$genus == "Quercus"]))))
+invisible(plot(invisible(envelope(plot.2.pp[plot.2$genus == "Quercus"], Kest))))
 #```
 
 #```
@@ -839,8 +830,8 @@ plot(envelope(plot.2.pp[plot.2$genus == "Quercus"], Kest))
 #```r
 
 plot(plot.2.pp[plot.2$genus == "Acer"])
-plot(density(plot.2.pp[plot.2$genus == "Acer"]))
-plot(envelope(plot.2.pp[plot.2$genus == "Acer"], Kest))
+invisible(plot(invisible(density(plot.2.pp[plot.2$genus == "Acer"]))))
+invisible(plot(invisible(envelope(plot.2.pp[plot.2$genus == "Acer"], Kest))))
 #```
 
 #```
@@ -872,8 +863,8 @@ plot(envelope(plot.2.pp[plot.2$genus == "Acer"], Kest))
 #```r
 
 plot(plot.2.pp[plot.2$genus == "Pinus"])
-plot(density(plot.2.pp[plot.2$genus == "Pinus"]))
-plot(envelope(plot.2.pp[plot.2$genus == "Pinus"], Kest))
+invisible(plot(invisible(density(plot.2.pp[plot.2$genus == "Pinus"]))))
+invisible(plot(invisible(envelope(plot.2.pp[plot.2$genus == "Pinus"], Kest))))
 #```
 
 #```
@@ -908,8 +899,8 @@ plot(envelope(plot.2.pp[plot.2$genus == "Pinus"], Kest))
 
 par(mfrow = c(5, 3), pin = c(1.75, 1.75), plt = c(0.0625, 0.9375, 0.0625, 0.9375))
 plot(plot.3.pp[plot.3$genus == "Tsuga"])
-plot(density(plot.3.pp[plot.3$genus == "Tsuga"]))
-plot(envelope(plot.3.pp[plot.3$genus == "Tsuga"], Kest))
+invisible(plot(invisible(density(plot.3.pp[plot.3$genus == "Tsuga"]))))
+invisible(plot(invisible(envelope(plot.3.pp[plot.3$genus == "Tsuga"], Kest))))
 #```
 
 #```
@@ -941,8 +932,8 @@ plot(envelope(plot.3.pp[plot.3$genus == "Tsuga"], Kest))
 #```r
 
 plot(plot.3.pp[plot.3$genus == "Betula"])
-plot(density(plot.3.pp[plot.3$genus == "Betula"]))
-plot(envelope(plot.3.pp[plot.3$genus == "Betula"], Kest))
+invisible(plot(invisible(density(plot.3.pp[plot.3$genus == "Betula"]))))
+invisible(plot(invisible(envelope(plot.3.pp[plot.3$genus == "Betula"], Kest))))
 #```
 
 #```
@@ -974,8 +965,8 @@ plot(envelope(plot.3.pp[plot.3$genus == "Betula"], Kest))
 #```r
 
 plot(plot.3.pp[plot.3$genus == "Quercus"])
-plot(density(plot.3.pp[plot.3$genus == "Quercus"]))
-plot(envelope(plot.3.pp[plot.3$genus == "Quercus"], Kest))
+invisible(plot(invisible(density(plot.3.pp[plot.3$genus == "Quercus"]))))
+invisible(plot(invisible(envelope(plot.3.pp[plot.3$genus == "Quercus"], Kest))))
 #```
 
 #```
@@ -1007,8 +998,8 @@ plot(envelope(plot.3.pp[plot.3$genus == "Quercus"], Kest))
 #```r
 
 plot(plot.3.pp[plot.3$genus == "Acer"])
-plot(density(plot.3.pp[plot.3$genus == "Acer"]))
-plot(envelope(plot.3.pp[plot.3$genus == "Acer"], Kest))
+invisible(plot(invisible(density(plot.3.pp[plot.3$genus == "Acer"]))))
+invisible(plot(invisible(envelope(plot.3.pp[plot.3$genus == "Acer"], Kest))))
 #```
 
 #```
@@ -1040,8 +1031,8 @@ plot(envelope(plot.3.pp[plot.3$genus == "Acer"], Kest))
 #```r
 
 plot(plot.3.pp[plot.3$genus == "Pinus"])
-plot(density(plot.3.pp[plot.3$genus == "Pinus"]))
-plot(envelope(plot.3.pp[plot.3$genus == "Pinus"], Kest))
+invisible(plot(invisible(density(plot.3.pp[plot.3$genus == "Pinus"]))))
+invisible(plot(invisible(envelope(plot.3.pp[plot.3$genus == "Pinus"], Kest))))
 #```
 
 #```
@@ -1076,8 +1067,8 @@ plot(envelope(plot.3.pp[plot.3$genus == "Pinus"], Kest))
 
 par(mfrow = c(5, 3), pin = c(1.75, 1.75), plt = c(0.0625, 0.9375, 0.0625, 0.9375))
 plot(plot.4.pp[plot.4$genus == "Tsuga"])
-plot(density(plot.4.pp[plot.4$genus == "Tsuga"]))
-plot(envelope(plot.4.pp[plot.4$genus == "Tsuga"], Kest))
+invisible(plot(invisible(density(plot.4.pp[plot.4$genus == "Tsuga"]))))
+invisible(plot(invisible(envelope(plot.4.pp[plot.4$genus == "Tsuga"], Kest))))
 #```
 
 #```
@@ -1109,8 +1100,8 @@ plot(envelope(plot.4.pp[plot.4$genus == "Tsuga"], Kest))
 #```r
 
 plot(plot.4.pp[plot.4$genus == "Betula"])
-plot(density(plot.4.pp[plot.4$genus == "Betula"]))
-plot(envelope(plot.4.pp[plot.4$genus == "Betula"], Kest))
+invisible(plot(invisible(density(plot.4.pp[plot.4$genus == "Betula"]))))
+invisible(plot(invisible(envelope(plot.4.pp[plot.4$genus == "Betula"], Kest))))
 #```
 
 #```
@@ -1142,8 +1133,8 @@ plot(envelope(plot.4.pp[plot.4$genus == "Betula"], Kest))
 #```r
 
 plot(plot.4.pp[plot.4$genus == "Quercus"])
-plot(density(plot.4.pp[plot.4$genus == "Quercus"]))
-plot(envelope(plot.4.pp[plot.4$genus == "Quercus"], Kest))
+invisible(plot(invisible(density(plot.4.pp[plot.4$genus == "Quercus"]))))
+invisible(plot(invisible(envelope(plot.4.pp[plot.4$genus == "Quercus"], Kest))))
 #```
 
 #```
@@ -1175,8 +1166,8 @@ plot(envelope(plot.4.pp[plot.4$genus == "Quercus"], Kest))
 #```r
 
 plot(plot.4.pp[plot.4$genus == "Acer"])
-plot(density(plot.4.pp[plot.4$genus == "Acer"]))
-plot(envelope(plot.4.pp[plot.4$genus == "Acer"], Kest))
+invisible(plot(invisible(density(plot.4.pp[plot.4$genus == "Acer"]))))
+invisible(plot(invisible(envelope(plot.4.pp[plot.4$genus == "Acer"], Kest))))
 #```
 
 #```
@@ -1208,8 +1199,8 @@ plot(envelope(plot.4.pp[plot.4$genus == "Acer"], Kest))
 #```r
 
 plot(plot.4.pp[plot.4$genus == "Pinus"])
-plot(density(plot.4.pp[plot.4$genus == "Pinus"]))
-plot(envelope(plot.4.pp[plot.4$genus == "Pinus"], Kest))
+invisible(plot(invisible(density(plot.4.pp[plot.4$genus == "Pinus"]))))
+invisible(plot(invisible(envelope(plot.4.pp[plot.4$genus == "Pinus"], Kest))))
 #```
 
 #```
@@ -1243,8 +1234,8 @@ plot(envelope(plot.4.pp[plot.4$genus == "Pinus"], Kest))
 #```r
 
 plot(plot.5.pp[plot.5$genus == "Tsuga"])
-plot(density(plot.5.pp[plot.5$genus == "Tsuga"]))
-plot(envelope(plot.5.pp[plot.5$genus == "Tsuga"], Kest))
+invisible(plot(invisible(density(plot.5.pp[plot.5$genus == "Tsuga"]))))
+invisible(plot(invisible(envelope(plot.5.pp[plot.5$genus == "Tsuga"], Kest))))
 #```
 
 #```
@@ -1276,8 +1267,8 @@ plot(envelope(plot.5.pp[plot.5$genus == "Tsuga"], Kest))
 #```r
 
 plot(plot.5.pp[plot.5$genus == "Betula"])
-plot(density(plot.5.pp[plot.5$genus == "Betula"]))
-plot(envelope(plot.5.pp[plot.5$genus == "Betula"], Kest))
+invisible(plot(invisible(density(plot.5.pp[plot.5$genus == "Betula"]))))
+invisible(plot(invisible(envelope(plot.5.pp[plot.5$genus == "Betula"], Kest))))
 #```
 
 #```
@@ -1309,8 +1300,8 @@ plot(envelope(plot.5.pp[plot.5$genus == "Betula"], Kest))
 #```r
 
 plot(plot.5.pp[plot.5$genus == "Quercus"])
-plot(density(plot.5.pp[plot.5$genus == "Quercus"]))
-plot(envelope(plot.5.pp[plot.5$genus == "Quercus"], Kest))
+invisible(plot(invisible(density(plot.5.pp[plot.5$genus == "Quercus"]))))
+invisible(plot(invisible(envelope(plot.5.pp[plot.5$genus == "Quercus"], Kest))))
 #```
 
 #```
@@ -1342,8 +1333,8 @@ plot(envelope(plot.5.pp[plot.5$genus == "Quercus"], Kest))
 #```r
 
 plot(plot.5.pp[plot.5$genus == "Acer"])
-plot(density(plot.5.pp[plot.5$genus == "Acer"]))
-plot(envelope(plot.5.pp[plot.5$genus == "Acer"], Kest))
+invisible(plot(invisible(density(plot.5.pp[plot.5$genus == "Acer"]))))
+invisible(plot(invisible(envelope(plot.5.pp[plot.5$genus == "Acer"], Kest))))
 #```
 
 #```
@@ -1375,8 +1366,8 @@ plot(envelope(plot.5.pp[plot.5$genus == "Acer"], Kest))
 #```r
 
 plot(plot.5.pp[plot.5$genus == "Pinus"])
-plot(density(plot.5.pp[plot.5$genus == "Pinus"]))
-plot(envelope(plot.5.pp[plot.5$genus == "Pinus"], Kest))
+invisible(plot(invisible(density(plot.5.pp[plot.5$genus == "Pinus"]))))
+invisible(plot(invisible(envelope(plot.5.pp[plot.5$genus == "Pinus"], Kest))))
 #```
 
 #```
@@ -1411,8 +1402,8 @@ plot(envelope(plot.5.pp[plot.5$genus == "Pinus"], Kest))
 
 
 plot(plot.6.pp[plot.6$genus == "Tsuga"])
-plot(density(plot.6.pp[plot.6$genus == "Tsuga"]))
-plot(envelope(plot.6.pp[plot.6$genus == "Tsuga"], Kest))
+invisible(plot(invisible(density(plot.6.pp[plot.6$genus == "Tsuga"]))))
+invisible(plot(invisible(envelope(plot.6.pp[plot.6$genus == "Tsuga"], Kest))))
 #```
 
 #```
@@ -1444,8 +1435,8 @@ plot(envelope(plot.6.pp[plot.6$genus == "Tsuga"], Kest))
 #```r
 
 plot(plot.6.pp[plot.6$genus == "Betula"])
-plot(density(plot.6.pp[plot.6$genus == "Betula"]))
-plot(envelope(plot.6.pp[plot.6$genus == "Betula"], Kest))
+invisible(plot(invisible(density(plot.6.pp[plot.6$genus == "Betula"]))))
+invisible(plot(invisible(envelope(plot.6.pp[plot.6$genus == "Betula"], Kest))))
 #```
 
 #```
@@ -1477,8 +1468,8 @@ plot(envelope(plot.6.pp[plot.6$genus == "Betula"], Kest))
 #```r
 
 plot(plot.6.pp[plot.6$genus == "Quercus"])
-plot(density(plot.6.pp[plot.6$genus == "Quercus"]))
-plot(envelope(plot.6.pp[plot.6$genus == "Quercus"], Kest))
+invisible(plot(invisible(density(plot.6.pp[plot.6$genus == "Quercus"]))))
+invisible(plot(invisible(envelope(plot.6.pp[plot.6$genus == "Quercus"], Kest))))
 #```
 
 #```
@@ -1510,8 +1501,8 @@ plot(envelope(plot.6.pp[plot.6$genus == "Quercus"], Kest))
 #```r
 
 plot(plot.6.pp[plot.6$genus == "Acer"])
-plot(density(plot.6.pp[plot.6$genus == "Acer"]))
-plot(envelope(plot.6.pp[plot.6$genus == "Acer"], Kest))
+invisible(plot(invisible(density(plot.6.pp[plot.6$genus == "Acer"]))))
+invisible(plot(invisible(envelope(plot.6.pp[plot.6$genus == "Acer"], Kest))))
 #```
 
 #```
@@ -1543,8 +1534,8 @@ plot(envelope(plot.6.pp[plot.6$genus == "Acer"], Kest))
 #```r
 
 plot(plot.6.pp[plot.6$genus == "Pinus"])
-plot(density(plot.6.pp[plot.6$genus == "Pinus"]))
-plot(envelope(plot.6.pp[plot.6$genus == "Pinus"], Kest))
+invisible(plot(invisible(density(plot.6.pp[plot.6$genus == "Pinus"]))))
+invisible(plot(invisible(envelope(plot.6.pp[plot.6$genus == "Pinus"], Kest))))
 #```
 
 #```
@@ -1578,8 +1569,8 @@ plot(envelope(plot.6.pp[plot.6$genus == "Pinus"], Kest))
 #```r
 
 plot(plot.7.pp[plot.7$genus == "Tsuga"])
-plot(density(plot.7.pp[plot.7$genus == "Tsuga"]))
-plot(envelope(plot.7.pp[plot.7$genus == "Tsuga"], Kest))
+invisible(plot(invisible(density(plot.7.pp[plot.7$genus == "Tsuga"]))))
+invisible(plot(invisible(envelope(plot.7.pp[plot.7$genus == "Tsuga"], Kest))))
 #```
 
 #```
@@ -1611,8 +1602,8 @@ plot(envelope(plot.7.pp[plot.7$genus == "Tsuga"], Kest))
 #```r
 
 plot(plot.7.pp[plot.7$genus == "Betula"])
-plot(density(plot.7.pp[plot.7$genus == "Betula"]))
-plot(envelope(plot.7.pp[plot.7$genus == "Betula"], Kest))
+invisible(plot(invisible(density(plot.7.pp[plot.7$genus == "Betula"]))))
+invisible(plot(invisible(envelope(plot.7.pp[plot.7$genus == "Betula"], Kest))))
 #```
 
 #```
@@ -1644,8 +1635,8 @@ plot(envelope(plot.7.pp[plot.7$genus == "Betula"], Kest))
 #```r
 
 plot(plot.7.pp[plot.7$genus == "Quercus"])
-plot(density(plot.7.pp[plot.7$genus == "Quercus"]))
-plot(envelope(plot.7.pp[plot.7$genus == "Quercus"], Kest))
+invisible(plot(invisible(density(plot.7.pp[plot.7$genus == "Quercus"]))))
+invisible(plot(invisible(envelope(plot.7.pp[plot.7$genus == "Quercus"], Kest))))
 #```
 
 #```
@@ -1677,8 +1668,8 @@ plot(envelope(plot.7.pp[plot.7$genus == "Quercus"], Kest))
 #```r
 
 plot(plot.7.pp[plot.7$genus == "Acer"])
-plot(density(plot.7.pp[plot.7$genus == "Acer"]))
-plot(envelope(plot.7.pp[plot.7$genus == "Acer"], Kest))
+invisible(plot(invisible(density(plot.7.pp[plot.7$genus == "Acer"]))))
+invisible(plot(invisible(envelope(plot.7.pp[plot.7$genus == "Acer"], Kest))))
 #```
 
 #```
@@ -1710,8 +1701,8 @@ plot(envelope(plot.7.pp[plot.7$genus == "Acer"], Kest))
 #```r
 
 plot(plot.7.pp[plot.7$genus == "Pinus"])
-plot(density(plot.7.pp[plot.7$genus == "Pinus"]))
-plot(envelope(plot.7.pp[plot.7$genus == "Pinus"], Kest))
+invisible(plot(invisible(density(plot.7.pp[plot.7$genus == "Pinus"]))))
+invisible(plot(invisible(envelope(plot.7.pp[plot.7$genus == "Pinus"], Kest))))
 #```
 
 #```
@@ -1745,8 +1736,8 @@ plot(envelope(plot.7.pp[plot.7$genus == "Pinus"], Kest))
 #```r
 
 plot(plot.8.pp[plot.8$genus == "Tsuga"])
-plot(density(plot.8.pp[plot.8$genus == "Tsuga"]))
-plot(envelope(plot.8.pp[plot.8$genus == "Tsuga"], Kest))
+invisible(plot(invisible(density(plot.8.pp[plot.8$genus == "Tsuga"]))))
+invisible(plot(invisible(envelope(plot.8.pp[plot.8$genus == "Tsuga"], Kest))))
 #```
 
 #```
@@ -1778,8 +1769,8 @@ plot(envelope(plot.8.pp[plot.8$genus == "Tsuga"], Kest))
 #```r
 
 plot(plot.8.pp[plot.8$genus == "Betula"])
-plot(density(plot.8.pp[plot.8$genus == "Betula"]))
-plot(envelope(plot.8.pp[plot.8$genus == "Betula"], Kest))
+invisible(plot(invisible(density(plot.8.pp[plot.8$genus == "Betula"]))))
+invisible(plot(invisible(envelope(plot.8.pp[plot.8$genus == "Betula"], Kest))))
 #```
 
 #```
@@ -1811,8 +1802,8 @@ plot(envelope(plot.8.pp[plot.8$genus == "Betula"], Kest))
 #```r
 
 plot(plot.8.pp[plot.8$genus == "Quercus"])
-plot(density(plot.8.pp[plot.8$genus == "Quercus"]))
-plot(envelope(plot.8.pp[plot.8$genus == "Quercus"], Kest))
+invisible(plot(invisible(density(plot.8.pp[plot.8$genus == "Quercus"]))))
+invisible(plot(invisible(envelope(plot.8.pp[plot.8$genus == "Quercus"], Kest))))
 #```
 
 #```
@@ -1844,8 +1835,8 @@ plot(envelope(plot.8.pp[plot.8$genus == "Quercus"], Kest))
 #```r
 
 plot(plot.8.pp[plot.8$genus == "Acer"])
-plot(density(plot.8.pp[plot.8$genus == "Acer"]))
-plot(envelope(plot.8.pp[plot.8$genus == "Acer"], Kest))
+invisible(plot(invisible(density(plot.8.pp[plot.8$genus == "Acer"]))))
+invisible(plot(invisible(envelope(plot.8.pp[plot.8$genus == "Acer"], Kest))))
 #```
 
 #```
@@ -1877,8 +1868,8 @@ plot(envelope(plot.8.pp[plot.8$genus == "Acer"], Kest))
 #```r
 
 plot(plot.8.pp[plot.8$genus == "Pinus"])
-plot(density(plot.8.pp[plot.8$genus == "Pinus"]))
-plot(envelope(plot.8.pp[plot.8$genus == "Pinus"], Kest))
+invisible(plot(invisible(density(plot.8.pp[plot.8$genus == "Pinus"]))))
+invisible(plot(invisible(envelope(plot.8.pp[plot.8$genus == "Pinus"], Kest))))
 #```
 
 #```
@@ -1915,80 +1906,80 @@ plot(envelope(plot.8.pp[plot.8$genus == "Pinus"], Kest))
 
 #```r
 
-mad.test(plot.1.pp[plot.1$genus == "Tsuga"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.1.pp[plot.1$genus == "Tsuga"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
 ## data:  plot.1.pp[plot.1$genus == "Tsuga"]
 ## mad = 1.016, rank = 1, p-value = 0.01
 #```
 
 #```r
-mad.test(plot.1.pp[plot.1$genus == "Betula"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.1.pp[plot.1$genus == "Betula"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
 ## data:  plot.1.pp[plot.1$genus == "Betula"]
 ## mad = 17, rank = 1, p-value = 0.01
 #```
 
 #```r
-mad.test(plot.1.pp[plot.1$genus == "Quercus"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.1.pp[plot.1$genus == "Quercus"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
 ## data:  plot.1.pp[plot.1$genus == "Quercus"]
 ## mad = 5.256, rank = 1, p-value = 0.01
 #```
 
 #```r
-mad.test(plot.1.pp[plot.1$genus == "Acer"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.1.pp[plot.1$genus == "Acer"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
 ## data:  plot.1.pp[plot.1$genus == "Acer"]
 ## mad = 6.744, rank = 1, p-value = 0.01
 #```
 
 #```r
-mad.test(plot.1.pp[plot.1$genus == "Pinus"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.1.pp[plot.1$genus == "Pinus"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
 ## data:  plot.1.pp[plot.1$genus == "Pinus"]
 ## mad = 1.467, rank = 24, p-value = 0.24
@@ -1996,80 +1987,80 @@ mad.test(plot.1.pp[plot.1$genus == "Pinus"], Lest, verbose = FALSE, nsim = 99)
 
 #```r
 
-mad.test(plot.2.pp[plot.2$genus == "Tsuga"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.2.pp[plot.2$genus == "Tsuga"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
 ## data:  plot.2.pp[plot.2$genus == "Tsuga"]
 ## mad = 1.196, rank = 1, p-value = 0.01
 #```
 
 #```r
-mad.test(plot.2.pp[plot.2$genus == "Betula"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.2.pp[plot.2$genus == "Betula"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
 ## data:  plot.2.pp[plot.2$genus == "Betula"]
 ## mad = 3.826, rank = 10, p-value = 0.1
 #```
 
 #```r
-mad.test(plot.2.pp[plot.2$genus == "Quercus"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.2.pp[plot.2$genus == "Quercus"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
 ## data:  plot.2.pp[plot.2$genus == "Quercus"]
 ## mad = 2.451, rank = 1, p-value = 0.01
 #```
 
 #```r
-mad.test(plot.2.pp[plot.2$genus == "Acer"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.2.pp[plot.2$genus == "Acer"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
 ## data:  plot.2.pp[plot.2$genus == "Acer"]
 ## mad = 1.653, rank = 5, p-value = 0.05
 #```
 
 #```r
-mad.test(plot.2.pp[plot.2$genus == "Pinus"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.2.pp[plot.2$genus == "Pinus"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
 ## data:  plot.2.pp[plot.2$genus == "Pinus"]
 ## mad = 3.442, rank = 1, p-value = 0.01
@@ -2077,80 +2068,80 @@ mad.test(plot.2.pp[plot.2$genus == "Pinus"], Lest, verbose = FALSE, nsim = 99)
 
 #```r
 
-mad.test(plot.3.pp[plot.3$genus == "Tsuga"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.3.pp[plot.3$genus == "Tsuga"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
 ## data:  plot.3.pp[plot.3$genus == "Tsuga"]
 ## mad = 1.032, rank = 1, p-value = 0.01
 #```
 
 #```r
-mad.test(plot.3.pp[plot.3$genus == "Betula"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.3.pp[plot.3$genus == "Betula"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
 ## data:  plot.3.pp[plot.3$genus == "Betula"]
 ## mad = 3.301, rank = 1, p-value = 0.01
 #```
 
 #```r
-mad.test(plot.3.pp[plot.3$genus == "Quercus"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.3.pp[plot.3$genus == "Quercus"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
 ## data:  plot.3.pp[plot.3$genus == "Quercus"]
 ## mad = 3.272, rank = 1, p-value = 0.01
 #```
 
 #```r
-mad.test(plot.3.pp[plot.3$genus == "Acer"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.3.pp[plot.3$genus == "Acer"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
 ## data:  plot.3.pp[plot.3$genus == "Acer"]
 ## mad = 3.35, rank = 2, p-value = 0.02
 #```
 
 #```r
-mad.test(plot.3.pp[plot.3$genus == "Pinus"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.3.pp[plot.3$genus == "Pinus"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
 ## data:  plot.3.pp[plot.3$genus == "Pinus"]
 ## mad = 7.287, rank = 3, p-value = 0.03
@@ -2158,80 +2149,80 @@ mad.test(plot.3.pp[plot.3$genus == "Pinus"], Lest, verbose = FALSE, nsim = 99)
 
 #```r
 
-mad.test(plot.4.pp[plot.4$genus == "Tsuga"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.4.pp[plot.4$genus == "Tsuga"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
 ## data:  plot.4.pp[plot.4$genus == "Tsuga"]
 ## mad = 0.6014, rank = 1, p-value = 0.01
 #```
 
 #```r
-mad.test(plot.4.pp[plot.4$genus == "Betula"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.4.pp[plot.4$genus == "Betula"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
 ## data:  plot.4.pp[plot.4$genus == "Betula"]
 ## mad = 2.95, rank = 1, p-value = 0.01
 #```
 
 #```r
-mad.test(plot.4.pp[plot.4$genus == "Quercus"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.4.pp[plot.4$genus == "Quercus"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
 ## data:  plot.4.pp[plot.4$genus == "Quercus"]
 ## mad = 2.418, rank = 4, p-value = 0.04
 #```
 
 #```r
-mad.test(plot.4.pp[plot.4$genus == "Acer"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.4.pp[plot.4$genus == "Acer"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
 ## data:  plot.4.pp[plot.4$genus == "Acer"]
 ## mad = 3.07, rank = 1, p-value = 0.01
 #```
 
 #```r
-mad.test(plot.4.pp[plot.4$genus == "Pinus"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.4.pp[plot.4$genus == "Pinus"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
 ## data:  plot.4.pp[plot.4$genus == "Pinus"]
 ## mad = 10.7, rank = 17, p-value = 0.17
@@ -2239,64 +2230,64 @@ mad.test(plot.4.pp[plot.4$genus == "Pinus"], Lest, verbose = FALSE, nsim = 99)
 
 #```r
 
-mad.test(plot.5.pp[plot.5$genus == "Tsuga"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.5.pp[plot.5$genus == "Tsuga"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
 ## data:  plot.5.pp[plot.5$genus == "Tsuga"]
 ## mad = 0.7566, rank = 1, p-value = 0.01
 #```
 
 #```r
-mad.test(plot.5.pp[plot.5$genus == "Betula"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.5.pp[plot.5$genus == "Betula"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
 ## data:  plot.5.pp[plot.5$genus == "Betula"]
 ## mad = 2.039, rank = 1, p-value = 0.01
 #```
 
 #```r
-mad.test(plot.5.pp[plot.5$genus == "Quercus"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.5.pp[plot.5$genus == "Quercus"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
 ## data:  plot.5.pp[plot.5$genus == "Quercus"]
 ## mad = 2.853, rank = 12, p-value = 0.12
 #```
 
 #```r
-mad.test(plot.5.pp[plot.5$genus == "Acer"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.5.pp[plot.5$genus == "Acer"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
 ## data:  plot.5.pp[plot.5$genus == "Acer"]
 ## mad = 1.97, rank = 3, p-value = 0.03
@@ -2304,8 +2295,8 @@ mad.test(plot.5.pp[plot.5$genus == "Acer"], Lest, verbose = FALSE, nsim = 99)
 
 #```r
 tryCatch(
-    mad.test(plot.5.pp[plot.5$genus == "Pinus"], Lest, verbose = FALSE, nsim = 99),
-    error = function (e) {print(e)})
+    invisible(mad.test(plot.5.pp[plot.5$genus == "Pinus"], Lest, verbose = FALSE, nsim = 99)),
+    error = function (e) {invisible()})
 #```
 
 #```
@@ -2315,80 +2306,80 @@ tryCatch(
 
 #```r
 
-mad.test(plot.6.pp[plot.6$genus == "Tsuga"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.6.pp[plot.6$genus == "Tsuga"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
 ## data:  plot.6.pp[plot.6$genus == "Tsuga"]
 ## mad = 1.098, rank = 1, p-value = 0.01
 #```
 
 #```r
-mad.test(plot.6.pp[plot.6$genus == "Betula"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.6.pp[plot.6$genus == "Betula"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
 ## data:  plot.6.pp[plot.6$genus == "Betula"]
 ## mad = 3.468, rank = 1, p-value = 0.01
 #```
 
 #```r
-mad.test(plot.6.pp[plot.6$genus == "Quercus"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.6.pp[plot.6$genus == "Quercus"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
 ## data:  plot.6.pp[plot.6$genus == "Quercus"]
 ## mad = 4.589, rank = 59, p-value = 0.59
 #```
 
 #```r
-mad.test(plot.6.pp[plot.6$genus == "Acer"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.6.pp[plot.6$genus == "Acer"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
 ## data:  plot.6.pp[plot.6$genus == "Acer"]
 ## mad = 3.882, rank = 1, p-value = 0.01
 #```
 
 #```r
-mad.test(plot.6.pp[plot.6$genus == "Pinus"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.6.pp[plot.6$genus == "Pinus"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
 ## data:  plot.6.pp[plot.6$genus == "Pinus"]
 ## mad = 11.43, rank = 1, p-value = 0.01
@@ -2396,80 +2387,80 @@ mad.test(plot.6.pp[plot.6$genus == "Pinus"], Lest, verbose = FALSE, nsim = 99)
 
 #```r
 
-mad.test(plot.7.pp[plot.7$genus == "Tsuga"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.7.pp[plot.7$genus == "Tsuga"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
 ## data:  plot.7.pp[plot.7$genus == "Tsuga"]
 ## mad = 10.23, rank = 1, p-value = 0.01
 #```
 
 #```r
-mad.test(plot.7.pp[plot.7$genus == "Betula"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.7.pp[plot.7$genus == "Betula"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
 ## data:  plot.7.pp[plot.7$genus == "Betula"]
 ## mad = 4.043, rank = 1, p-value = 0.01
 #```
 
 #```r
-mad.test(plot.7.pp[plot.7$genus == "Quercus"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.7.pp[plot.7$genus == "Quercus"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
 ## data:  plot.7.pp[plot.7$genus == "Quercus"]
 ## mad = 3.823, rank = 1, p-value = 0.01
 #```
 
 #```r
-mad.test(plot.7.pp[plot.7$genus == "Acer"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.7.pp[plot.7$genus == "Acer"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
 ## data:  plot.7.pp[plot.7$genus == "Acer"]
 ## mad = 4.794, rank = 1, p-value = 0.01
 #```
 
 #```r
-mad.test(plot.7.pp[plot.7$genus == "Pinus"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.7.pp[plot.7$genus == "Pinus"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
 ## data:  plot.7.pp[plot.7$genus == "Pinus"]
 ## mad = 2.411, rank = 1, p-value = 0.01
@@ -2477,80 +2468,80 @@ mad.test(plot.7.pp[plot.7$genus == "Pinus"], Lest, verbose = FALSE, nsim = 99)
 
 #```r
 
-mad.test(plot.8.pp[plot.8$genus == "Tsuga"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.8.pp[plot.8$genus == "Tsuga"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
 ## data:  plot.8.pp[plot.8$genus == "Tsuga"]
 ## mad = 8.653, rank = 5, p-value = 0.05
 #```
 
 #```r
-mad.test(plot.8.pp[plot.8$genus == "Betula"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.8.pp[plot.8$genus == "Betula"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
 ## data:  plot.8.pp[plot.8$genus == "Betula"]
 ## mad = 1.542, rank = 1, p-value = 0.01
 #```
 
 #```r
-mad.test(plot.8.pp[plot.8$genus == "Quercus"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.8.pp[plot.8$genus == "Quercus"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
 ## data:  plot.8.pp[plot.8$genus == "Quercus"]
 ## mad = 1.787, rank = 1, p-value = 0.01
 #```
 
 #```r
-mad.test(plot.8.pp[plot.8$genus == "Acer"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.8.pp[plot.8$genus == "Acer"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
 ## data:  plot.8.pp[plot.8$genus == "Acer"]
 ## mad = 1.194, rank = 1, p-value = 0.01
 #```
 
 #```r
-mad.test(plot.8.pp[plot.8$genus == "Pinus"], Lest, verbose = FALSE, nsim = 99)
+invisible(mad.test(plot.8.pp[plot.8$genus == "Pinus"], Lest, verbose = FALSE, nsim = 99))
 #```
 
 #```
 ## 
-## 	Maximum absolute deviation test of CSR
-## 	Monte Carlo test based on 99 simulations
-## 	Summary function: L(r)
-## 	Reference function: sample mean
-## 	Interval of distance values: [0, 22.5]
+##  Maximum absolute deviation test of CSR
+##  Monte Carlo test based on 99 simulations
+##  Summary function: L(r)
+##  Reference function: sample mean
+##  Interval of distance values: [0, 22.5]
 ## 
 ## data:  plot.8.pp[plot.8$genus == "Pinus"]
 ## mad = 4.07, rank = 1, p-value = 0.01
@@ -2649,7 +2640,7 @@ detach(dendro)
 names(tree.ages)[5:9] <- c("species", "dbh", "genus", "init.treat", "block")
 
 
-head(tree.ages)
+invisible(head(tree.ages))
 #```
 
 #```
@@ -2671,8 +2662,8 @@ head(tree.ages)
 #original colors for all genera
 
 genera.colors <- c("firebrick4", "coral", "orange4", "black", "orange", 
-  		"darkmagenta", "darkolivegreen1", "yellow", "orange3", "olivedrab3", 
-			"red", "tan4", "maroon4", "darkgreen")
+        "darkmagenta", "darkolivegreen1", "yellow", "orange3", "olivedrab3", 
+            "red", "tan4", "maroon4", "darkgreen")
 
 age.cols <- genera.colors[c(1,2, 7,9, 10, 12, 14)]
 
@@ -2746,23 +2737,23 @@ hist.rd.pinus.dbh <- hist(rd$dbh[rd$genus=="Pinus"], plot=FALSE, breaks=seq(0,80
 
 
 vh.ages <- rbind(hist.vh.age$counts, hist.vh.bet.age$counts, hist.vh.quercus.age$counts, 
-  		hist.vh.acer.age$counts, hist.vh.pinus.age$counts)
+        hist.vh.acer.age$counts, hist.vh.pinus.age$counts)
 rh.ages <- rbind(hist.rh.age$counts, hist.rh.bet.age$counts, hist.rh.quercus.age$counts, 
-			hist.rh.acer.age$counts, hist.rh.pinus.age$counts)
+            hist.rh.acer.age$counts, hist.rh.pinus.age$counts)
 vd.ages <- rbind(hist.vd.age$counts, hist.vd.bet.age$counts, hist.vd.quercus.age$counts, 
-			hist.vd.acer.age$counts, hist.vd.pinus.age$counts)
+            hist.vd.acer.age$counts, hist.vd.pinus.age$counts)
 rd.ages <- rbind(hist.rd.age$counts, hist.rd.bet.age$counts, hist.rd.quercus.age$counts, 
-			hist.rd.acer.age$counts, hist.rd.pinus.age$counts)
+            hist.rd.acer.age$counts, hist.rd.pinus.age$counts)
 
 
 vh.dbh <- rbind(hist.vh.dbh$counts, hist.vh.bet.dbh$counts, hist.vh.quercus.dbh$counts, 
-			hist.vh.acer.dbh$counts, hist.vh.pinus.dbh$counts)
+            hist.vh.acer.dbh$counts, hist.vh.pinus.dbh$counts)
 rh.dbh <- rbind(hist.rh.dbh$counts, hist.rh.bet.dbh$counts, hist.rh.quercus.dbh$counts, 
-			hist.rh.acer.dbh$counts, hist.rh.pinus.dbh$counts)
+            hist.rh.acer.dbh$counts, hist.rh.pinus.dbh$counts)
 vd.dbh <- rbind(hist.vd.dbh$counts, hist.vd.bet.dbh$counts, hist.vd.quercus.dbh$counts, 
-			hist.vd.acer.dbh$counts, hist.vd.pinus.dbh$counts)
+            hist.vd.acer.dbh$counts, hist.vd.pinus.dbh$counts)
 rd.dbh <- rbind(hist.rd.dbh$counts, hist.rd.bet.dbh$counts, hist.rd.quercus.dbh$counts, 
-			hist.rd.acer.dbh$counts, hist.rd.pinus.dbh$counts)
+            hist.rd.acer.dbh$counts, hist.rd.pinus.dbh$counts)
 
 
 #some plotting setup
@@ -2812,104 +2803,104 @@ mtext("Age (years)", side=1, line=0, adj=-.5, font=2)
 
 par(mar=c(1,1,.5,1))
 plot.vh <- plot(vh$dbh ~ vh$tree.age, data=vh,
-			xlim=limits$xlims, ylim=limits$ylims,									#axis ranges
-			xlab= "", ylab="", axes=FALSE, pch=19, 									#misc
-			col=as.character(vh$tree.color)										#colors		
-	)
-	axis(1, at=seq(15,145,10), labels=TRUE, tcl=-.25, lwd=2, font.axis=2, cex.axis=0.8, padj=-1.1, hadj=.5)
-	axis(4, at=seq(5,75,10), labels=TRUE, tcl=-.25, lwd=2, font.axis=2, las=1, cex.axis=0.8, hadj= .5, padj=.25)
-	axis(3, at=seq(15,145,10), labels=FALSE, tcl=-.25, lwd=2, font.axis=2)
-	axis(2, at=seq(5,75,10), labels=FALSE, tcl=-.25, lwd=2, font.axis=2)
-	box(lwd=2)
+            xlim=limits$xlims, ylim=limits$ylims,                                   #axis ranges
+            xlab= "", ylab="", axes=FALSE, pch=19,                                  #misc
+            col=as.character(vh$tree.color)                                     #colors     
+    )
+    axis(1, at=seq(15,145,10), labels=TRUE, tcl=-.25, lwd=2, font.axis=2, cex.axis=0.8, padj=-1.1, hadj=.5)
+    axis(4, at=seq(5,75,10), labels=TRUE, tcl=-.25, lwd=2, font.axis=2, las=1, cex.axis=0.8, hadj= .5, padj=.25)
+    axis(3, at=seq(15,145,10), labels=FALSE, tcl=-.25, lwd=2, font.axis=2)
+    axis(2, at=seq(5,75,10), labels=FALSE, tcl=-.25, lwd=2, font.axis=2)
+    box(lwd=2)
 
-	vh.loess <- loess(vh$dbh ~ vh$tree.age, span=1)											#add loess smooth + cis
-	pred.vh <- predict(vh.loess, xpreds, se=TRUE)
-	lines(xpreds, pred.vh$fit, lty="solid", lwd=2, col="blue")
-	y.poly.vh <- c((pred.vh$fit+1.96*pred.vh$se.fit), (pred.vh$fit-1.96*pred.vh$se.fit)[order(xpreds, decreasing=TRUE)])
-	x.poly.vh <- c(xpreds, xpreds.rev)
-	polygon(x.poly.vh[!is.na(y.poly.vh)], y.poly.vh[!is.na(y.poly.vh)], col="#00009933", border=NA)
-	text(20,75,"A", cex=1.5, font=2)
-	
-	text(15,2,"1990", cex=0.8, font=2)
-	text(145, 2, "1860", cex=0.8, font=2)
-	text(67, 2, "1938", cex=0.8, font=2)
+    vh.loess <- loess(vh$dbh ~ vh$tree.age, span=1)                                         #add loess smooth + cis
+    pred.vh <- predict(vh.loess, xpreds, se=TRUE)
+    lines(xpreds, pred.vh$fit, lty="solid", lwd=2, col="blue")
+    y.poly.vh <- c((pred.vh$fit+1.96*pred.vh$se.fit), (pred.vh$fit-1.96*pred.vh$se.fit)[order(xpreds, decreasing=TRUE)])
+    x.poly.vh <- c(xpreds, xpreds.rev)
+    polygon(x.poly.vh[!is.na(y.poly.vh)], y.poly.vh[!is.na(y.poly.vh)], col="#00009933", border=NA)
+    text(20,75,"A", cex=1.5, font=2)
+    
+    text(15,2,"1990", cex=0.8, font=2)
+    text(145, 2, "1860", cex=0.8, font=2)
+    text(67, 2, "1938", cex=0.8, font=2)
 
 plot.rh <- plot(rh$dbh ~ rh$tree.age, data=rh,
-			xlim=limits$xlims, ylim=limits$ylims,									#axis ranges
-			xlab= "", ylab="", axes=FALSE, pch=19, 									#misc
-			col=as.character(rh$tree.color)										#colors		
-	)
-	axis(1, at=seq(15,145,10), labels=TRUE, tcl=-.25, lwd=2, font.axis=2, cex.axis=0.8, padj=-1.1, hadj=.5)
-	axis(2, at=seq(5,75,10), labels=FALSE, tcl=-.25, lwd=2, font.axis=2)
-	axis(3, at=seq(15,145,10), labels=FALSE, tcl=-.25, lwd=2, font.axis=2)
-	axis(4, at=seq(5,75,10), labels=FALSE, tcl=-.25, lwd=2, font.axis=2)
-	box(lwd=2)
+            xlim=limits$xlims, ylim=limits$ylims,                                   #axis ranges
+            xlab= "", ylab="", axes=FALSE, pch=19,                                  #misc
+            col=as.character(rh$tree.color)                                     #colors     
+    )
+    axis(1, at=seq(15,145,10), labels=TRUE, tcl=-.25, lwd=2, font.axis=2, cex.axis=0.8, padj=-1.1, hadj=.5)
+    axis(2, at=seq(5,75,10), labels=FALSE, tcl=-.25, lwd=2, font.axis=2)
+    axis(3, at=seq(15,145,10), labels=FALSE, tcl=-.25, lwd=2, font.axis=2)
+    axis(4, at=seq(5,75,10), labels=FALSE, tcl=-.25, lwd=2, font.axis=2)
+    box(lwd=2)
 
-	rh.loess <- loess(rh$dbh ~ rh$tree.age, span=1)										#add loess smooth + cis
-	pred.rh <- predict(rh.loess, xpreds, se=TRUE)
-	lines(xpreds, pred.rh$fit, lty="solid", lwd=2, col="blue")
-	y.poly.rh <- c((pred.rh$fit+1.96*pred.rh$se.fit), (pred.rh$fit-1.96*pred.rh$se.fit)[order(xpreds, decreasing=TRUE)])
-	x.poly.rh <- c(xpreds, xpreds.rev)
-	polygon(x.poly.rh[!is.na(y.poly.rh)], y.poly.rh[!is.na(y.poly.rh)], col="#00009933", border=NA)
-	text(20,75,"B", cex=1.5, font=2)
+    rh.loess <- loess(rh$dbh ~ rh$tree.age, span=1)                                     #add loess smooth + cis
+    pred.rh <- predict(rh.loess, xpreds, se=TRUE)
+    lines(xpreds, pred.rh$fit, lty="solid", lwd=2, col="blue")
+    y.poly.rh <- c((pred.rh$fit+1.96*pred.rh$se.fit), (pred.rh$fit-1.96*pred.rh$se.fit)[order(xpreds, decreasing=TRUE)])
+    x.poly.rh <- c(xpreds, xpreds.rev)
+    polygon(x.poly.rh[!is.na(y.poly.rh)], y.poly.rh[!is.na(y.poly.rh)], col="#00009933", border=NA)
+    text(20,75,"B", cex=1.5, font=2)
 
-	text(15,2,"1990", cex=0.8, font=2)
-	text(145, 2, "1860", cex=0.8, font=2)
-	text(67, 2, "1938", cex=0.8, font=2)
+    text(15,2,"1990", cex=0.8, font=2)
+    text(145, 2, "1860", cex=0.8, font=2)
+    text(67, 2, "1938", cex=0.8, font=2)
 
 par(mar=c(.5,1,1,1))
 plot.vd <- plot(vd$dbh ~ vd$tree.age, data=vd,
-			xlim=limits$xlims, ylim=limits$ylims,									#axis ranges
-			xlab= "", ylab="", axes=FALSE, pch=19, 									#misc
-			col=as.character(vd$tree.color)										#colors		
-	)
-	axis(1, at=seq(15,145,10), labels=FALSE, tcl=-.25, lwd=2, font.axis=2)
-	axis(4, at=seq(5,75,10), labels=TRUE, tcl=-.25, lwd=2, font.axis=2, cex.axis=0.8, las=1, hadj= .5, padj=.25)
-	axis(3, at=seq(15,145,10), labels=FALSE, tcl=-.25, lwd=2, font.axis=2)
-	axis(2, at=seq(5,75,10), labels=FALSE, tcl=-.25, lwd=2, font.axis=2)
-	box(lwd=2)
+            xlim=limits$xlims, ylim=limits$ylims,                                   #axis ranges
+            xlab= "", ylab="", axes=FALSE, pch=19,                                  #misc
+            col=as.character(vd$tree.color)                                     #colors     
+    )
+    axis(1, at=seq(15,145,10), labels=FALSE, tcl=-.25, lwd=2, font.axis=2)
+    axis(4, at=seq(5,75,10), labels=TRUE, tcl=-.25, lwd=2, font.axis=2, cex.axis=0.8, las=1, hadj= .5, padj=.25)
+    axis(3, at=seq(15,145,10), labels=FALSE, tcl=-.25, lwd=2, font.axis=2)
+    axis(2, at=seq(5,75,10), labels=FALSE, tcl=-.25, lwd=2, font.axis=2)
+    box(lwd=2)
 
-	vd.loess <- loess(vd$dbh ~ vd$tree.age, span=1)											#add loess smooth + cis
-	pred.vd <- predict(vd.loess, xpreds, se=TRUE)
-	lines(xpreds, pred.vd$fit, lty="solid", lwd=2, col="blue")
-	y.poly.vd <- c((pred.vd$fit+1.96*pred.vd$se.fit), (pred.vd$fit-1.96*pred.vd$se.fit)[order(xpreds, decreasing=TRUE)])
-	x.poly.vd <- c(xpreds, xpreds.rev)
-	polygon(x.poly.vd[!is.na(y.poly.vd)], y.poly.vd[!is.na(y.poly.vd)], col="#00009933", border=NA)
-	text(20,75,"C", cex=1.5, font=2)
+    vd.loess <- loess(vd$dbh ~ vd$tree.age, span=1)                                         #add loess smooth + cis
+    pred.vd <- predict(vd.loess, xpreds, se=TRUE)
+    lines(xpreds, pred.vd$fit, lty="solid", lwd=2, col="blue")
+    y.poly.vd <- c((pred.vd$fit+1.96*pred.vd$se.fit), (pred.vd$fit-1.96*pred.vd$se.fit)[order(xpreds, decreasing=TRUE)])
+    x.poly.vd <- c(xpreds, xpreds.rev)
+    polygon(x.poly.vd[!is.na(y.poly.vd)], y.poly.vd[!is.na(y.poly.vd)], col="#00009933", border=NA)
+    text(20,75,"C", cex=1.5, font=2)
 
-	text(15,2,"1990", cex=0.8, font=2)
-	text(145, 2, "1860", cex=0.8, font=2)
-	text(67, 2, "1938", cex=0.8, font=2)
-	
+    text(15,2,"1990", cex=0.8, font=2)
+    text(145, 2, "1860", cex=0.8, font=2)
+    text(67, 2, "1938", cex=0.8, font=2)
+    
 plot.rd <- plot(rd$dbh ~ rd$tree.age, data=rd,
-			xlim=limits$xlims, ylim=limits$ylims,									#axis ranges
-			xlab= "", ylab="", axes=FALSE, pch=19, 									#misc
-			col=as.character(rd$tree.color)										#colors		
-	)
-	axis(1, at=seq(15,145,10), labels=FALSE, tcl=-.25, lwd=2, font.axis=2)
-	axis(2, at=seq(5,75,10), labels=FALSE, tcl=-.25, lwd=2, font.axis=2)
-	axis(3, at=seq(15,145,10), labels=FALSE, tcl=-.25, lwd=2, font.axis=2)
-	axis(4, at=seq(5,75,10), labels=FALSE, tcl=-.25, lwd=2, font.axis=2)
-	box(lwd=2)
+            xlim=limits$xlims, ylim=limits$ylims,                                   #axis ranges
+            xlab= "", ylab="", axes=FALSE, pch=19,                                  #misc
+            col=as.character(rd$tree.color)                                     #colors     
+    )
+    axis(1, at=seq(15,145,10), labels=FALSE, tcl=-.25, lwd=2, font.axis=2)
+    axis(2, at=seq(5,75,10), labels=FALSE, tcl=-.25, lwd=2, font.axis=2)
+    axis(3, at=seq(15,145,10), labels=FALSE, tcl=-.25, lwd=2, font.axis=2)
+    axis(4, at=seq(5,75,10), labels=FALSE, tcl=-.25, lwd=2, font.axis=2)
+    box(lwd=2)
 
-	rd.loess <- loess(rd$dbh ~ rd$tree.age, span=1)										#add loess smooth + cis
-	pred.rd <- predict(rd.loess, xpreds, se=TRUE)
-	lines(xpreds, pred.rd$fit, lty="solid", lwd=2, col="blue")
-	y.poly.rd <- c((pred.rd$fit+1.96*pred.rd$se.fit), (pred.rd$fit-1.96*pred.rd$se.fit)[order(xpreds, decreasing=TRUE)])
-	x.poly.rd <- c(xpreds, xpreds.rev)
-	polygon(x.poly.rd[!is.na(y.poly.rd)], y.poly.rd[!is.na(y.poly.rd)], col="#00009933", border=NA)
-	text(20,75,"D", cex=1.5, font=2)
+    rd.loess <- loess(rd$dbh ~ rd$tree.age, span=1)                                     #add loess smooth + cis
+    pred.rd <- predict(rd.loess, xpreds, se=TRUE)
+    lines(xpreds, pred.rd$fit, lty="solid", lwd=2, col="blue")
+    y.poly.rd <- c((pred.rd$fit+1.96*pred.rd$se.fit), (pred.rd$fit-1.96*pred.rd$se.fit)[order(xpreds, decreasing=TRUE)])
+    x.poly.rd <- c(xpreds, xpreds.rev)
+    polygon(x.poly.rd[!is.na(y.poly.rd)], y.poly.rd[!is.na(y.poly.rd)], col="#00009933", border=NA)
+    text(20,75,"D", cex=1.5, font=2)
 
-	text(15,2,"1990", cex=0.8, font=2)
-	text(145, 2, "1860", cex=0.8, font=2)
-	text(67, 2, "1938", cex=0.8, font=2)
+    text(15,2,"1990", cex=0.8, font=2)
+    text(145, 2, "1860", cex=0.8, font=2)
+    text(67, 2, "1938", cex=0.8, font=2)
 #```
 
 #![plot of chunk unnamed-chunk-9](figure/unnamed-chunk-9.png) 
 
 #```r
 
-dev.off()
+invisible(dev.off())
 #```
 
 
@@ -2933,7 +2924,7 @@ hf.Shaler <- read.csv("hf000-01-daily-m.csv")
 #hf.Shaler <- read.csv("C:/Users/aellison/Dropbox/Aaron's Briefcase/manuscript - Simes dendro and land use/env data/hf000-01-daily-m.csv", 
 #    header = TRUE)
 
-head(hf.Shaler)
+invisible(head(hf.Shaler))
 #```
 
 #```
@@ -2947,7 +2938,7 @@ head(hf.Shaler)
 #```
 
 #```r
-summary(hf.Shaler)
+invisible(summary(hf.Shaler))
 #```
 
 #```
@@ -2970,11 +2961,11 @@ summary(hf.Shaler)
 #```
 
 #```r
-str(hf.Shaler)
+
 #```
 
 #```
-## 'data.frame':	14061 obs. of  5 variables:
+## 'data.frame':    14061 obs. of  5 variables:
 ##  $ Date   : Factor w/ 14061 levels "1/1/1964","1/1/1965",..: 1 430 859 976 1015 1054 1093 1132 1171 40 ...
 ##  $ AirT   : int  -14 -7 -2 2 0 -6 -1 -5 -6 -4 ...
 ##  $ AirTmax: int  -6 0 1 6 4 1 4 3 -1 1 ...
@@ -2989,7 +2980,7 @@ a <- as.Date(hf.Shaler$Date, "%m/%d/%Y")
 
 hf.Shaler <- cbind(a, hf.Shaler)
 names(hf.Shaler)[1] <- "date"
-head(hf.Shaler)
+invisible(head(hf.Shaler))
 #```
 
 #```
@@ -3003,11 +2994,11 @@ head(hf.Shaler)
 #```
 
 #```r
-str(hf.Shaler)
+
 #```
 
 #```
-## 'data.frame':	14061 obs. of  6 variables:
+## 'data.frame':    14061 obs. of  6 variables:
 ##  $ date   : Date, format: "1964-01-01" "1964-01-02" ...
 ##  $ Date   : chr  "1/1/1964" "1/2/1964" "1/3/1964" "1/4/1964" ...
 ##  $ AirT   : int  -14 -7 -2 2 0 -6 -1 -5 -6 -4 ...
@@ -3043,7 +3034,7 @@ HF.annual <- Shaler.annual
 HF.annual$year <- as.character(HF.annual$year)
 HF.annual[39:40, 2:5] <- Fisher.2002[, 1:4]
 HF.annual[40, 1] <- "2003-01-01"
-HF.annual
+invisible(HF.annual)
 #```
 
 #```
@@ -3111,7 +3102,7 @@ names(amherst.annual)[2:5] <- c("AirTmax", "AirTmin", "AirT", "Precip")
 # rescale to deg C and mm as ncdc data are in tenths
 amherst.annual[, 2:5] <- amherst.annual[, 2:5]/10
 
-head(amherst.annual)
+invisible(head(amherst.annual))
 #```
 
 #```
@@ -3130,7 +3121,7 @@ head(amherst.annual)
 amherst.annual.fixed <- amherst.annual
 amherst.annual.fixed[5:121, ] <- amherst.annual[4:120, ]
 amherst.annual.fixed[4, ] <- c(1896, NA, NA, NA, NA)
-head(amherst.annual.fixed)
+invisible(head(amherst.annual.fixed))
 #```
 
 #```
@@ -3144,7 +3135,7 @@ head(amherst.annual.fixed)
 #```
 
 #```r
-dim(amherst.annual.fixed)
+invisible(dim(amherst.annual.fixed))
 #```
 
 #```
@@ -3165,7 +3156,7 @@ leverett.pdsi <- read.csv("PDSO - 267.csv")
 #leverett.pdsi <- read.csv("C:/Users/aellison/Dropbox/Aaron's Briefcase/manuscript - Simes dendro and land use/env data/PDSO - 267.csv", 
 #    header = TRUE)
 
-head(leverett.pdsi)
+invisible(head(leverett.pdsi))
 #```
 
 #```
@@ -3179,7 +3170,7 @@ head(leverett.pdsi)
 #```
 
 #```r
-summary(leverett.pdsi)
+invisible(summary(leverett.pdsi))
 #```
 
 #```
@@ -3218,7 +3209,7 @@ pop.data <- read.csv("phampop.csv")
 
 #rework these into time-series objects and plot to check
 
-par(las = 1, mar = c(0, 0, 0, 1) + 0.1, fin = c(3.5, 4.6), yaxs = "r")
+
 #```r
 HF.ts <- ts(data = HF.annual[, 2:5], start = 1964, frequency = 1)
 plot(HF.ts)
@@ -3251,6 +3242,7 @@ plot(pop.ts)
 #```
 
 #![plot of chunk unnamed-chunk-15](figure/unnamed-chunk-154.png) 
+
 
 #build a nice plot
 
@@ -3354,7 +3346,7 @@ text(1964, -8.875, "Drought", cex = 0.75)
 #![plot of chunk unnamed-chunk-16](figure/unnamed-chunk-16.png) 
 
 #```r
-dev.off()
+invisible(dev.off())
 #```
 
 
@@ -3364,7 +3356,7 @@ dev.off()
 #```r
 # mean temps
 
-apply(Amherst.ts, 2, mean)
+invisible(apply(Amherst.ts, 2, mean))
 #```
 
 #```
@@ -3373,7 +3365,7 @@ apply(Amherst.ts, 2, mean)
 #```
 
 #```r
-apply(HF.ts, 2, mean)
+invisible(apply(HF.ts, 2, mean))
 #```
 
 #```
@@ -3384,7 +3376,7 @@ apply(HF.ts, 2, mean)
 #```r
 
 # average annual difference in temperatures
-mean(window(Amherst.ts[, 3], start = 1964) - HF.ts[, 1])
+invisible(mean(window(Amherst.ts[, 3], start = 1964) - HF.ts[, 1]))
 #```
 
 #```
@@ -3392,7 +3384,7 @@ mean(window(Amherst.ts[, 3], start = 1964) - HF.ts[, 1])
 #```
 
 #```r
-mean(window(pdsi.ts, 1897, 2003))
+invisible(mean(window(pdsi.ts, 1897, 2003)))
 #```
 
 #```
@@ -3418,13 +3410,13 @@ plot(rollapply(window(pdsi.ts, start = 1897, end = 2003), 10, mean))
 #```r
 # compare HF and Amherst data during period of overlap
 
-cor.test(as.vector(window(Amherst.ts[, 3], start = 1964)), as.vector(HF.ts[, 
-    1]))
+invisible(cor.test(as.vector(window(Amherst.ts[, 3], start = 1964)), as.vector(HF.ts[, 
+    1])))
 #```
 
 #```
 ## 
-## 	Pearson's product-moment correlation
+##  Pearson's product-moment correlation
 ## 
 ## data:  as.vector(window(Amherst.ts[, 3], start = 1964)) and as.vector(HF.ts[, 1])
 ## t = 5.502, df = 38, p-value = 2.746e-06
@@ -3438,13 +3430,13 @@ cor.test(as.vector(window(Amherst.ts[, 3], start = 1964)), as.vector(HF.ts[,
 
 #```r
 
-lm(as.vector(HF.ts[, 1]) ~ as.vector(window(Amherst.ts[, 3], start = 1964)))
+invisible(lm(as.vector(HF.ts[, 1]) ~ as.vector(window(Amherst.ts[, 3], start = 1964))))
 #```
 
 #```
 ## 
 ## Call:
-## lm(formula = as.vector(HF.ts[, 1]) ~ as.vector(window(Amherst.ts[, 
+## invisible(lm(formula = as.vector(HF.ts[, 1]) ~ as.vector(window(Amherst.ts[, )
 ##     3], start = 1964)))
 ## 
 ## Coefficients:
@@ -3456,13 +3448,13 @@ lm(as.vector(HF.ts[, 1]) ~ as.vector(window(Amherst.ts[, 3], start = 1964)))
 
 #```r
 
-cor.test(as.vector(window(Amherst.ts[, 4], start = 1964)), as.vector(HF.ts[, 
-    4]))
+invisible(cor.test(as.vector(window(Amherst.ts[, 4], start = 1964)), as.vector(HF.ts[, 
+    4])))
 #```
 
 #```
 ## 
-## 	Pearson's product-moment correlation
+##  Pearson's product-moment correlation
 ## 
 ## data:  as.vector(window(Amherst.ts[, 4], start = 1964)) and as.vector(HF.ts[, 4])
 ## t = 8.8, df = 38, p-value = 1.052e-10
@@ -3476,13 +3468,13 @@ cor.test(as.vector(window(Amherst.ts[, 4], start = 1964)), as.vector(HF.ts[,
 
 #```r
 
-lm(as.vector(HF.ts[, 4]) ~ as.vector(window(Amherst.ts[, 4], start = 1964)))
+invisible(lm(as.vector(HF.ts[, 4]) ~ as.vector(window(Amherst.ts[, 4], start = 1964))))
 #```
 
 #```
 ## 
 ## Call:
-## lm(formula = as.vector(HF.ts[, 4]) ~ as.vector(window(Amherst.ts[, 
+## invisible(lm(formula = as.vector(HF.ts[, 4]) ~ as.vector(window(Amherst.ts[, )
 ##     4], start = 1964)))
 ## 
 ## Coefficients:
@@ -3546,7 +3538,7 @@ dendro.raw$canopy <- relevel(dendro.raw$canopy, ref = "Hemlock")
 
 dendro.raw$TreeNum <- as.factor(dendro.raw$TreeNum)
 
-head(dendro.raw)
+invisible(head(dendro.raw))
 #```
 
 #```
@@ -3567,19 +3559,19 @@ head(dendro.raw)
 #```
 
 #```r
-dim(dendro.raw)
+invisible(dim(dendro.raw))
 #```
 
-#```
+#``)`
 ## [1] 17199    14
 #```
 
 #```r
-str(dendro.raw)
+
 #```
 
 #```
-## 'data.frame':	17199 obs. of  14 variables:
+## 'data.frame':    17199 obs. of  14 variables:
 ##  $ Plot     : int  1 1 1 1 1 1 1 1 1 1 ...
 ##  $ Genus    : Factor w/ 7 levels "Acer","Betula",..: 1 1 1 1 1 1 1 1 1 1 ...
 ##  $ Species  : Factor w/ 13 levels "alba","allegheniensis",..: 9 9 9 9 9 9 9 9 9 9 ...
@@ -3621,7 +3613,7 @@ dendro.5sp$rBAI[dendro.5sp$rBAI == Inf] <- NA
 
 dendro.5sp$rBAI[dendro.5sp$rBAI == 0] <- 1e-04
 
-head(dendro.5sp)
+invisible(head(dendro.5sp))
 #```
 
 #```
@@ -3642,11 +3634,11 @@ head(dendro.5sp)
 #```
 
 #```r
-str(dendro.5sp)
+
 #```
 
 #```
-## 'data.frame':	15919 obs. of  15 variables:
+## 'data.frame':    15919 obs. of  15 variables:
 ##  $ Plot     : int  1 1 1 1 1 1 1 1 1 1 ...
 ##  $ Genus    : Factor w/ 5 levels "Acer","Betula",..: 1 1 1 1 1 1 1 1 1 1 ...
 ##  $ Species  : Factor w/ 6 levels "canadensis","candensis",..: 5 5 5 5 5 5 5 5 5 5 ...
@@ -3670,7 +3662,7 @@ str(dendro.5sp)
 
 
 #```r
-# To create pdf, uncomment pdf and dev.off() lines.
+# To create pdf, uncomment pdf and invisible(dev.off() lines.)
 pdf('Figure-9-BAI-both-v2.pdf', width=4, height=6)
 
 ggplot(data = dendro.5sp[dendro.5sp$canopy == "Hemlock", ], aes(x = Year, y = rBAI, 
@@ -3762,7 +3754,7 @@ ylab(expression(paste("Relative change in basal area (", mm^2 %.% mm^-2 %.%
 
 #```r
 
-dev.off()
+invisible(dev.off())
 #```
 
 #Fit 1-d GAMs
@@ -3818,7 +3810,7 @@ fixed.year.t <- c(gam.tsuga1$coef[1], gam.tsuga1$coef[1] + gam.tsuga1$coef[2:las
 
 #```r
 
-# gam plots in first column remove comments on pdf() and dev.off() to
+# gam plots in first column remove comments on pdf() and invisible(dev.off() to)
 # generate pdf
 
 pdf('Figure_10-single-gams-v2.pdf', height=7, width=5, pointsize=9)
@@ -3941,7 +3933,7 @@ box()
 
 #```r
 
-dev.off()
+invisible(dev.off())
 #```
 
 
@@ -3989,7 +3981,7 @@ for (tr in species) {
 dendro.5sp$rBAI2 <- dendro.5sp$rBAI
 dendro.5sp$rBAI2[is.na(dendro.5sp$rBAI2)] <- 1
 
-head(dendro.5sp)
+invisible(head(dendro.5sp))
 #```
 
 #```
@@ -4319,12 +4311,12 @@ multiplot(t.lines, b.lines, q.lines, a.lines, p.lines, t.cont, b.cont, q.cont,
 #![plot of chunk unnamed-chunk-25](figure/unnamed-chunk-25.png) 
 
 #```r
-dev.off()
+invisible(dev.off())
 #```
 
 #Extract deviance from and compare the 1-d and 2-d GAMs
 
-
+sink("NUL")
 #```r
 1 - gam.acer1$deviance/gam.acer1$null.deviance
 #```
@@ -4458,3 +4450,4 @@ AIC(gam.tsuga1, gam.tsuga2)
 ## gam.tsuga1 146.00 65388
 ## gam.tsuga2  30.22 65107
 #```
+sink()

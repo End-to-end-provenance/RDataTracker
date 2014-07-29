@@ -34,6 +34,26 @@
     </exec>
   </target>
 
+  <!-- Run a specified tests. Parameters needed are :
+    @param dir : specified the directory where the test files are contained. This 
+                  directory should contain all files required by the test scripts
+                  as this is the working directory
+    @param out : specified the relative location and name of the output file where
+                output from the script should be saved. If sourcing, a file is saved
+                in the same location with the prefix "source_" added to the name.
+    @param script-file : the name of the script file to be executed, relative to dir
+    @param expected_out : the location and name of the expected output for this test.
+                          If sourcing, the expected source output is in the same location
+                          with the prefix "source_" attached
+    @param expected_ddg : the location and name of the expected ddg.txt for this test.
+                          If sourcing, the expected source ddg.txt is in the same directory
+                          with the prefix "source_" attached
+    @param source_test: a boolean which, when true, causes the test file to be sourced
+                        using ddg.source(script-file, ignore.ddg.calls=F). This leads to the
+                        creation of ddg-source directory, as well to the execution of 
+                        diff with the output of the sourcing with the expected output files
+                        which should have the "source_" prefix
+  -->
   <target name="run-test">
     <!-- Checking to see if we also need to run a source test on this script -->
     <condition property="no-source">
@@ -546,11 +566,31 @@
       <antcall target="test-all" />
     <record name="tests.log" action="stop" />
   </target>
+   <!--################################# END MAIN #################################-->
 
+  <!--################################# UTILIES #################################-->
+  <!-- Test interactive() function when calling from command line -->
   <target name="interactive-test">
     <exec executable="Rscript" dir="examples" >
       <arg line="RscriptTest.r" />
     </exec>
   </target>
+
+  <!-- Execute the script timer, which looks in the examples/ directory for all
+    files with a (-clear.r) suffix and a (template_)*(-annotated.r) pattern and
+    combined matching pairs to create a timing test. It executes a clean version of
+    the script, then minimally annotated the clean version and executes a console
+    and source version, and finally executes the annotated version. 
+
+    This data is saved in the examples/_timingResults/ directory under the data/time 
+    of execution.
+  -->
+  <target name="script-timer">
+    <exec executable="Rscript" dir="utilities" output="utilities/script-timer.out">
+      <arg line="scriptTimer.r options.R execute" />
+    </exec>
+  </target>
+
+   <!--################################# END UTILIES #################################-->
 
 </project>

@@ -33,7 +33,7 @@ setInitialVal <- function(wd, base=test.dir){
 }
 
 ### Function which generates code to trick RStudio into loading source file into history so 
-#   minimual instrumentation of DDG works correctly.
+#   minimal instrumentation of DDG works correctly.
 .startHistory <- function(scriptPath){
   hist <- "" # paste("loadhistory('", scriptPath, "')",sep="")
   myTimeStamp <<- paste0("##------ ", date(), " ------##")
@@ -158,6 +158,8 @@ readInput <- function(fileName) {
   lineNum <- 1 # keeps track of the actual line number
   strFile <- "" # constructes the file as a string
   time.corrLines <<- 0 # global correction lines
+
+  print(paste("Reading in file", fileName))
   
   # we need for loop because lapply (and others) don't guarantee order
   for (line in readLines(fileName)){
@@ -261,9 +263,9 @@ calcResults <- function(fileName) {
 
   # create data frame with 4 tested files as rows, columns are data returned by scriptInfo
   dFrame <- data.frame(matrix(unlist(Map(scriptInfo, scriptLoc, types == "source")), byrow=T, nrow=4))
-  
+  # browser()
   # add DDG Dir location
-  dFrame$ddgDir <- dirs
+  dFrame$ddgDir <- unlist(dirs, use.names=FALSE)
 
   # add DDG dir sizes
   dFrame$ddgDirSize <- sapply(dFrame$ddgDir, function(x) {
@@ -271,17 +273,20 @@ calcResults <- function(fileName) {
   })
 
   # add type of script information
-  dFrame$type <- types
+  dFrame$type <- as.factor(types)
 
   # add file localtion
-  dFrame$scriptLoc <- scriptLoc
+  dFrame$scriptLoc <- unlist(scriptLoc, use.names=FALSE)
+
+  # add file group
+  dFrame$script.group <- as.factor(fileName)
 
   # add file names and column names, reorder
-  dFrame$names <- names
+  dFrame$names <- unlist(names, use.names=FALSE)
 
   # reformat structure of data frame
-  dFrame <- dFrame[c(7,6,5,1,2,3,4)]
-  colnames(dFrame) <- c("Script.File", "Script.Loc", "Type", "Execution.Time.min", "File.Size.kB",
+  dFrame <- dFrame[c(8:5,1:4)]
+  colnames(dFrame) <- c("Script.File", "Script.Group", "Script.Loc", "Type", "Execution.Time.min", "File.Size.kB",
                         "DDG.Dir.Loc.", "DDG.Dir.Size.kB")
   
   return(dFrame)

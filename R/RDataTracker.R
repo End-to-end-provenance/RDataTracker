@@ -1098,7 +1098,11 @@ ddg.MAX_HIST_LINES <- 2^14
 	#ddg.grab.timestamp <- .ddg.get(".ddg.grab.timestamp.history")
 	#ddg.tmp.history.file <- paste(hist.file,".tmp", sep="")
 
-	if (.ddg.get(".ddg.history.file") == hist.file) savehistory(hist.file)
+	if (.ddg.is.set(".ddg.history.file") && 
+	    is.character(.ddg.get(".ddg.history.file")) &&
+	    .ddg.get(".ddg.history.file") == hist.file) {
+		savehistory(hist.file)
+	}
 
 	# USED TO STORE ENTIRE HISTORY IN SEP. FILE
 	# read in changes and writ eout to extended file

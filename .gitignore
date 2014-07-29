@@ -1,14 +1,14 @@
 # History files
 .Rhistory
 
-# Example code in package build process
+# IGNORE example code in package build process
 *-Ex.R
 
-# R data files from past sessions
+# IGNORE R data files from past sessions
 .Rdata
 .Rhistory
 
-# Output files from scripts
+# IGNORE output files from scripts
 *.pdf
 *.jpg
 *.jpeg
@@ -16,40 +16,40 @@
 *.tiff
 NUL
 
-# Other non-essential files
+# IGNORE other non-essential files
 *.pages
 *.docx
 examples/**/*.md
 examples/**/*.Rmd
 
-# exclude local ddg directories 
+# IGNORE local ddg directories 
 examples/**/ddg*/
 examples/**/local*/
 examples/checkPointTest/testfile*.txt
 
-# except for a few tests
+# INCLUDE a few tests we named impropertly
 !examples/DDGHangBug
 !examples/ddgChangesBehavior
 !examples/ddgTest
 
-# exclude files beginning with '_'
+# IGNORE files beginning with '_'
 _*
 
-# ignore log files
+# IGNORE log files
 *.log.txt
 *.log
 
-# exclude local versions of files
+# IGNORE local versions of files
 *.local
 
-# Exclude backups
+# IGNORE backups
 *.bak
 
-# Project Files
+# IGNORE Project Files
 .project
 /DESCRIPTION~
 
-# vignette and knitr files
+# IGNORE vignette and knitr files
 *.sty
 *.aux
 vignettes/*.out
@@ -70,9 +70,10 @@ examples/checkpointTest/testfile3.txt
 examples/RealTime15MinMET/*.csv
 examples/SivanSampling/*.csv
 
-# PUSH PDF in /inst/doc
+# INCLUDE PDF in /inst/doc
 !inst/doc/*.pdf
 
-# Ignore out .out files except those with expected in the name
-examples/*/*.out
-!examples/*/*expected*.out
+# IGNORE out .out files but INCLUDE those with expected in the name
+*.out
+!*expected*.out
+
