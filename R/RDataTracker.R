@@ -2259,12 +2259,20 @@ ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.graphic=N
 	else if (lookup.ins) {
 		call <- sys.call(-1)
 		#tokens <- unlist(strsplit (as.character(call), "[(,)]"))
-		tokens <- as.character(match.call(sys.function(-1), call=call))
-		
+    
+    # match.call expands any argument names to be the 
+    # full parameter name
+    full.call <- match.call(sys.function(-1), call=call)
+    
+    # tokens will contain the function name and the argument
+    # expressions
+		tokens <- as.character(full.call)
+    
 		# Get parameters and create edges.
 		if (length(tokens) > 1) {
 			args <- tokens[2:length(tokens)]
-			param.names <- names(formals(sys.function(-1)))
+	        param.names <- names(full.call)
+	        param.names <- param.names[2:length(param.names)]
 			stack <- sys.calls()
 			#scope <- .ddg.get.scope(args[[1]], for.caller = TRUE)
 			bindings <- list()
@@ -2295,19 +2303,20 @@ ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.graphic=N
 					})
 		}
 		.ddg.proc.node("Operation", pname, pname)
-		lapply(bindings, function(binding) {
-					formal <- binding[2]
-					formal.scope <- .ddg.get.scope(formal, calls=stack)
-					if (.ddg.data.node.exists (formal, formal.scope)) {
-						.ddg.data2proc(formal, formal.scope, pname)
-					}
-				})
-		
-		lapply(missing.params, 
-			   function(missing.param) {
-					error.msg <- paste("Skipping parameter", missing.param)
-					.ddg.insert.error.message(error.msg)
-				})
+    if (length(tokens) > 1) {
+      lapply(bindings, function(binding) {
+    					formal <- binding[2]
+    					formal.scope <- .ddg.get.scope(formal, calls=stack)
+    					if (.ddg.data.node.exists (formal, formal.scope)) {
+    						.ddg.data2proc(formal, formal.scope, pname)
+    					}
+    				})
+  		lapply(missing.params, 
+  			   function(missing.param) {
+  					error.msg <- paste("Skipping parameter", missing.param)
+  					.ddg.insert.error.message(error.msg)
+  				})
+    }
 		
 		# Create control flow edge from preceding procedure node.
 		.ddg.proc2proc()
