@@ -68,6 +68,11 @@ j <- function(xx) {
    return(3)
 }
 
+k <- function (xx = 0, yy = 1) {
+  ddg.procedure(lookup.ins=TRUE)
+	ddg.return (xx + yy)
+}
+
 a <- 1
 b <- a + 1
 
@@ -81,6 +86,11 @@ d <- g(c)
 h()
 
 i()
+
+k(a, b)
+k(a)
+k(yy = b)
+k()
 
 foobar <- read.csv("foobar.csv")
 
