@@ -1,12 +1,13 @@
-Architecture="i386"
-OperatingSystem="windows"
+Architecture="x86_64"
+OperatingSystem="unix"
 Language="R"
-LanguageVersion="R version 3.1.0 (2014-04-10)"
+LanguageVersion="R version 3.1.0 Patched (2014-05-20 r65701)"
+RDataTrackerVersion="0.5.19"
 Script="[DIR]/MismatchedStartFinishBug.R"
-ProcessFileTimestamp="2014-07-16T16.31.19"
+ProcessFileTimestamp="2014-07-23T13.01.35"
 WorkingDirectory="[DIR]"
 DDGDirectory="[DIR]/ddg-source"
-DateTime="2014-07-16T16.41.09"
+DateTime="2014-07-23T13.05.35"
 5
 Operation p1 "1-f <- function() {    ddg.start()    a <- 1    ddg.finish()}" Value="f <- function() {    ddg.start()    a <- 1    ddg.finish()}";
 Data d1 "1-f" Value="#ddg.function";

@@ -31,7 +31,7 @@ lookup.args <- function (a, b, c, d, e) {
 	ddg.procedure(lookup.ins = TRUE)
 }
 
-only.args.given <- function (a, b, y, d, e, f) {
+only.args.given <- function (a, b, yy, d, e, f) {
 	ddg.procedure(ins=list("w", "x", "y", "z", "x + 1"))
 }
 

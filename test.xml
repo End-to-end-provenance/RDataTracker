@@ -1,8 +1,9 @@
 
 <project
     name="TESTS"
-  xmlns:if="ant:if"
-    xmlns:unless="ant:unless">
+    xmlns:if="ant:if"
+    xmlns:unless="ant:unless"
+	default="test-all">
 
   <!--############################# Start Setup #############################-->
   <!-- So we can build RDataTracker -->
@@ -54,6 +55,7 @@
     />
 
     <!-- Copy the script file to this local directory, and replace with correct ddg directory for sourcing -->
+  	<echo message="${no-source}" />
     <copy file="${dir}/${script-file}" tofile="${local_dir}/source_${script-file}" overwrite="true" unless:true="${no-source}" />
     <replaceregexp  file="${local_dir}/source_${script-file}"
                     match="\[DDG-DIR\]"
@@ -293,6 +295,30 @@
     <echo>Expect the following output when testing manually: [1] .ddg.find.var.uses:  Error analyzing storage.mode(z) - a </echo>
   </target>
 
+	  <target name="scope-test">
+	    <antcall target="run-test">
+	      <param name="dir" value="examples/ScopeTest"/>
+	      <param name="out" value="examples/ScopeTest/ScopeTest.out"/>
+	      <param name="script-file" value="ScopeTest.R"/>
+	      <param name="expected_out" value="examples/ScopeTest/expected_scopeTest.out"/>
+	      <param name="expected_ddg" value="examples/ScopeTest/expected_scopeTest_ddg.txt"/>
+	      <param name="fail_out" value="false" />
+	      <param name="source_test" value="true" />
+	    </antcall>
+	  </target>
+
+	  <target name="return-test">
+	    <antcall target="run-test">
+	      <param name="dir" value="examples/ScopeTest"/>
+	      <param name="out" value="examples/ScopeTest/ReturnTest.out"/>
+	      <param name="script-file" value="ReturnTest.R"/>
+	      <param name="expected_out" value="examples/ScopeTest/expected_ReturnTest.out"/>
+	      <param name="expected_ddg" value="examples/ScopeTest/expected_ReturnTest_ddg.txt"/>
+	      <param name="fail_out" value="true" />
+		  <param name="source_test" value="true" />
+	    </antcall>
+	  </target>
+
   <target name="consoleEdgeCases-test">
     <antcall target="run-test">
       <param name="dir" value="examples/consoleEdgeCases"/>
@@ -304,18 +330,7 @@
     </antcall>
   </target>
 
-  <target name="scope-test">
-    <antcall target="run-test">
-      <param name="dir" value="examples/ScopeTest"/>
-      <param name="out" value="examples/ScopeTest/ScopeTest.out"/>
-      <param name="script-file" value="ScopeTest.R"/>
-      <param name="expected_out" value="examples/ScopeTest/expected_ScopeTest.out"/>
-      <param name="expected_ddg" value="examples/ScopeTest/expected_ScopeTest_ddg.txt"/>
-      <param name="source_test" value="true" />
-    </antcall>
-  </target>
-
-  <target name="console-tests" depends="console-test-1, console-test-2, MismatchedStartFinishBug-test, null-na-test, consoleEdgeCases-test">
+  <target name="console-tests" depends="console-test-1, console-test-2, MismatchedStartFinishBug-test, null-na-test, consoleEdgeCases-test, scope-test, return-test">
     <echo>These automated tests are limited when in console mode. You can always manually check the ouput using diff and the provided expected output files for each script. Do note, however, that all of the tests have also been evaluated using ddg.source, which does in fact capture console commands.</echo>
   </target>
   <!--########################## End Console TESTS ##########################-->
@@ -329,6 +344,7 @@
       <param name="script-file" value="consoleSource.r"/>
       <param name="expected_out" value="examples/consoleSource/expected_consoleSource.out"/>
       <param name="expected_ddg" value="examples/consoleSource/expected_consoleSource_ddg.txt"/>
+      <param name="fail_out" value="false" />
       <param name="source_test" value="true" />
     </antcall>
   </target>
@@ -351,29 +367,20 @@
 
   <!--########################## Start Script Tests ##########################-->
   
-  <target name="calculate-square-root-1-test">
-    <antcall target="run-test">
-      <param name="dir" value="examples/CalculateSquareRoot"/>
-      <param name="out" value="examples/CalculateSquareRoot/calculate-square-root-1.out"/>
-      <param name="script-file" value="calculate-square-root-1.r"/>
-      <param name="expected_out" value="examples/CalculateSquareRoot/expected_calculate-square-root-1.out"/>
-      <param name="expected_ddg" value="examples/CalculateSquareRoot/expected_calculate-square-root-1_ddg.txt"/>
-      <param name="source_test" value="false" />
-    </antcall>
-  </target>
-  
-  <target name="calculate-square-root-2-test">
-    <antcall target="run-test">
-      <param name="dir" value="examples/CalculateSquareRoot"/>
-      <param name="out" value="examples/CalculateSquareRoot/calculate-square-root-2.out"/>
-      <param name="script-file" value="calculate-square-root-2.r"/>
-      <param name="expected_out" value="examples/CalculateSquareRoot/expected_calculate-square-root-2.out"/>
-      <param name="expected_ddg" value="examples/CalculateSquareRoot/expected_calculate-square-root-2_ddg.txt"/>
-      <param name="source_test" value="false" />
-    </antcall>
-  </target>
+	  <target name="calculate-square-root-3-test">
+	    <antcall target="run-test">
+	      <param name="dir" value="examples/CalculateSquareRoot"/>
+	      <param name="out" value="examples/CalculateSquareRoot/calculate-square-root-3.out"/>
+	      <param name="script-file" value="calculate-square-root-3.r"/>
+	      <param name="expected_out" value="examples/CalculateSquareRoot/expected_calculate-square-root-3.out"/>
+	      <param name="expected_ddg" value="examples/CalculateSquareRoot/expected_calculate-square-root-3_ddg.txt"/>
+	      <param name="fail_out" value="false" />
+	      <param name="source_test" value="false" />
+	    </antcall>
+	  </target>
 
-  <target name="calculate-square-root-tests" depends="calculate-square-root-1-test, calculate-square-root-2-test">
+  <!-- Earlier calculate-square-root tests do not work with scoping code  -->
+  <target name="calculate-square-root-tests" depends="calculate-square-root-3-test">
     <echo>Differences in the values of the data nodes is normal for the above tests. They rely on randomness. The number of nodes created might also differ. Best to check results in visual diff.</echo>
   </target>
   
@@ -406,6 +413,7 @@
       <param name="script-file" value="real-time-15min-met-test.r"/>
       <param name="expected_out" value="examples/RealTime15MinMET/expected_real-time-15min-met-test.out"/>
       <param name="expected_ddg" value="examples/RealTime15MinMET/expected_real-time-15min-met-test_ddg.txt"/>
+      <param name="fail_out" value="false" />
       <param name="source_test" value="true" />
     </antcall>
   </target>
@@ -417,6 +425,7 @@
       <param name="script-file" value="quality-control-15min-test.r"/>
       <param name="expected_out" value="examples/QualityControl15Min/expected_quality-control-15min-test.out"/>
       <param name="expected_ddg" value="examples/QualityControl15Min/expected_quality-control-15min-test_ddg.txt"/>
+      <param name="fail_out" value="false" />
       <param name="source_test" value="true" />
     </antcall>
   </target>
@@ -437,6 +446,7 @@
       <param name="script-file" value="ddgChangesBehavior.r"/>
       <param name="expected_out" value="examples/ddgChangesBehavior/expected_ddgChangesBehavior.out"/>
       <param name="expected_ddg" value="examples/ddgChangesBehavior/expected_ddgChangesBehavior_ddg.txt"/>
+      <param name="fail_out" value="false" />
       <param name="source_test" value="false" />
     </antcall>
   </target>

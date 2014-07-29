@@ -11,17 +11,23 @@ library(RDataTracker)
 startTime <- Sys.time()
 invisible(force(startTime))
 
-testDir <- "[DIR_DEFAULT]/"
-setwd(testDir)
+if (interactive()) {
+  testDir <- getwd()
+  ddgDir <- "ddg"
+} else {
+  testDir <- "[DIR_DEFAULT]"
+  ddgDir <- "[DDG-DIR]"
+  setwd(testDir)
+}
 
-ddg.r.script.path = paste(testDir,"ScopeTest.R",sep="")
-ddg.path = paste(testDir,"[DDG-DIR]",sep="")
+ddg.r.script.path = paste(testDir,"ScopeTest.R",sep="/")
+ddg.path = paste(testDir,ddgDir,sep="/")
 
 ddg.init(ddg.r.script.path,
 		ddg.path,
      enable.console=TRUE)
 
-#options(warn=2)
+options(warn=1)
 
 f <- function() {
    a <<- b * 10
@@ -39,7 +45,7 @@ g <- function(a) {
 
 h <- function() {
    d <- 333
-   ddg.procedure("foo", ins=list("d"))
+   ddg.procedure("h", ins=list("d"))
    ddg.return(d)
 }
 
@@ -59,6 +65,7 @@ j <- function(xx) {
 
    # This does not work.  It does not find a.  x & a have different scopes
    ddg.procedure(ins=list("xx", "a"))
+   return(3)
 }
 
 a <- 1
@@ -70,18 +77,18 @@ c <- 100
 if (g(c) != 110) print("g(c) returned the wrong value")
 
 d <- g(c)
+
 h()
 
 i()
 
 foobar <- read.csv("foobar.csv")
+
 ddg.file("foobar.csv")
 ddg.procedure("Read raw data files", ins=list("foobar.csv"))
 
 
 ddg.save()
-end.time <- Sys.time()
-print(paste("Execution time =", (end.time - start.time)))
 
 # Calculate total time of execution
 endTime <- Sys.time()

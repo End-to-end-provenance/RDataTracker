@@ -63,9 +63,9 @@ read.data <- function(x) {
   ddg.data.in("variable")
   ddg.data.in("start.date")
   ddg.data.in("end.date")
-  ddg.data.out("all-data.csv",zz)
+  #ddg.data.out("all-data.csv",zz)
   
-  return(zz)
+  ddg.return(zz)
 }
 
 select.data <- function(zz) {  
@@ -83,14 +83,15 @@ select.data <- function(zz) {
   
   zz3 <- subset(zz2,zz2$dt>=start.date & zz2$dt<=end.date)
   
-  ddg.procedure("select.data")
-  ddg.data.in("all-data.csv")
+  #ddg.procedure("select.data")
+  ddg.procedure(lookup.ins=TRUE)
+  #ddg.data.in("all-data.csv")
   ddg.data.in("variable")
   ddg.data.in("start.date")
   ddg.data.in("end.date")
-  ddg.data.out("selected-data.csv",zz3)
+  #ddg.data.out("selected-data.csv",zz3)
   
-  return(zz3)
+  ddg.return(zz3)
 }
 
 apply.test <- function(xx,t,n) {
@@ -132,12 +133,13 @@ apply.test <- function(xx,t,n) {
   }
   
   ddg.procedure("apply.test")
-  ddg.data.in("selected-data.csv")
+  #ddg.data.in("selected-data.csv")
+  ddg.data.in("selected.data")
   ddg.data.in("test")
   ddg.data.in("num")
-  ddg.data.out("flagged-data.csv",xx)
+  #ddg.data.out("flagged-data.csv",xx)
   
-  return(xx)
+  ddg.return(xx)
 }
 
 plot.data <- function(xx,t,n,output) {
@@ -197,14 +199,16 @@ plot.data <- function(xx,t,n,output) {
   # if gui, save to PDF file in DDG
   if (output=="gui") {
     ddg.procedure("plot.data")
-    ddg.data.in("flagged-data.csv")
+    #ddg.data.in("flagged-data.csv")
+	ddg.data.in(flagged.data)
   }
   
   # if file, copy jpeg file to DDG directory
   if (output=="file") {
     dev.off()
     ddg.procedure("plot.data")
-    ddg.data.in("flagged-data.csv")
+    #ddg.data.in("flagged-data.csv")
+	ddg.data.in(flagged.data)
     ddg.file.out("plot.jpeg")
   }
 }
@@ -214,7 +218,8 @@ save.data <- function(fn,xx) {
   write.csv(xx,file.out,row.names=FALSE)
   
   ddg.procedure("save.data")
-  ddg.data.in("flagged-data.csv")
+  #ddg.data.in("flagged-data.csv")
+  ddg.data.in("flagged.data")
   ddg.file.out(fn)
 }
 
@@ -225,7 +230,9 @@ ddg.start("main")
 ddg.start("get.data")
 
 all.data <- read.data(data.file)
+ddg.data(all.data)
 selected.data <- select.data(all.data)
+ddg.data(selected.data)
 
 ddg.finish("get.data")
 
@@ -239,6 +246,7 @@ for (test in inputs){
   ddg.start("apply.test")
   ddg.data("test")
   flagged.data <- apply.test(selected.data, test,num)
+  ddg.data(flagged.data)
   plot.data(flagged.data, test,num,"gui")
   ddg.finish("apply.test")
 }

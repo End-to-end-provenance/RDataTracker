@@ -1,0 +1,52 @@
+Architecture="x86_64"
+OperatingSystem="unix"
+Language="R"
+LanguageVersion="R version 3.1.0 Patched (2014-05-20 r65701)"
+RDataTrackerVersion="0.5.19"
+Script="[DIR]/ScopeTest.R"
+ProcessFileTimestamp="2014-07-23T13.30.50"
+WorkingDirectory="[DIR]"
+DDGDirectory="[DIR]/ddg"
+DateTime="2014-07-23T13.30.57"
+7
+Operation p1 "1-f" Value="f";
+Exception d1 "1-error.msg" Value="\"No data node found for b\"";
+DF p1 d1
+Data d2 "2-a" Value="20";
+DF p1 d2
+Data d3 "3-f() return" Value="20";
+DF p1 d3
+Operation p2 "2-g" Value="g";
+Exception d4 "4-error.msg" Value="\"Skipping parameter a\"";
+DF p2 d4
+CF p1 p2
+Data d5 "5-g(c) return" Value="110";
+DF p2 d5
+Operation p3 "3-g" Value="g";
+Exception d6 "6-error.msg" Value="\"Skipping parameter a\"";
+DF p3 d6
+CF p2 p3
+Data d7 "7-g(c) return" Value="110";
+DF p3 d7
+Operation p4 "4-h" Value="h";
+CF p3 p4
+Exception d8 "8-error.msg" Value="\"No data node found for local d\"";
+DF p4 d8
+Data d9 "9-h() return" Value="333";
+DF p4 d9
+Operation p5 "5-i" Value="i";
+CF p4 p5
+Data d10 "10-x" Value="1000";
+DF p5 d10
+Data d11 "11-xx" Value="1000";
+Operation p6 "6-j" Value="j";
+CF p5 p6
+DF d11 p6
+DF d2 p6
+Data d12 "12-i() return" Value="3";
+DF p5 d12
+File d13 "13-foobar.csv" Value="[DIR]/ddg/13-foobar.csv" Time="2014-07-23T13.30.57" Location="[DIR]/foobar.csv";
+Operation p7 "7-Read raw data files" Value="Read raw data files";
+CF p6 p7
+DF d13 p7
+
