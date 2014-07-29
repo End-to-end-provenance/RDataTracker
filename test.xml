@@ -28,6 +28,13 @@
   <!--############################## End Setup ##############################-->
 
   <!--############################ Start FUNCTIONS ############################-->
+  <!-- Check for libraries needed by the tests -->
+  <target name="dependencies">
+    <exec executable="Rscript" dir="examples/" >
+      <arg line="depends.r" />
+    </exec>
+  </target>
+
   <target name="run-test">
     <!-- Checking to see if we also need to run a source test on this script -->
     <condition property="no-source">
@@ -399,7 +406,7 @@
     </antcall>
   </target>
 
-  <target name="real-time-15min-met-test">
+  <target name="real-time-15min-met-test" depends="dependencies">
     <antcall target="run-test">
       <param name="dir" value="examples/RealTime15MinMET"/>
       <param name="out" value="examples/RealTime15MinMET/real-time-15min-met-test.out"/>
@@ -411,7 +418,7 @@
     </antcall>
   </target>
 
-  <target name="quality-control-15min-test">
+  <target name="quality-control-15min-test" depends="dependencies">
     <antcall target="run-test">
       <param name="dir" value="examples/QualityControl15Min"/>
       <param name="out" value="examples/QualityControl15Min/quality-control-15min-test.out"/>
@@ -500,7 +507,7 @@
 
   <!--########################## End Bug Tests ##########################-->
   
-  <target name="aaron-annotated-test">
+  <target name="aaron-annotated-test" depends="dependencies">
     <record name="examples/Aaron/aaron-annotated-test.log" action="start" />
       <antcall target="run-test">
         <param name="dir" value="examples/Aaron"/>
@@ -515,7 +522,7 @@
     <record name="aaron-annotated-test-test.log.txt" action="stop" />
   </target>
 
-  <target name="aaron-min-test">
+  <target name="aaron-min-test" depends="dependencies">
     <record name="examples/Aaron2/aaron-min-test.log" action="start" />
       <antcall target="run-test">
         <param name="dir" value="examples/Aaron2"/>
