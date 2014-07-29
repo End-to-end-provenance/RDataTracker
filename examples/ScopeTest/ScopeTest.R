@@ -88,7 +88,7 @@ ddg.file("foobar.csv")
 ddg.procedure("Read raw data files", ins=list("foobar.csv"))
 
 
-ddg.save()
+ddg.save(quit=TRUE)
 
 # Calculate total time of execution
 endTime <- Sys.time()

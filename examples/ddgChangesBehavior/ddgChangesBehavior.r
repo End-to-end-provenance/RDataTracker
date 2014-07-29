@@ -28,8 +28,7 @@ f <- function(x) {
 }
 
 f2 <- function(x) {
-	ddg.procedure("f2")
-	ddg.data.in(deparse(substitute(x)), "f2")
+	ddg.procedure(lookup.ins=TRUE)
 	return(1)
 }
 

@@ -2,10 +2,10 @@ Architecture="x86_64"
 OperatingSystem="unix"
 Language="R"
 LanguageVersion="R version 3.1.0 Patched (2014-05-20 r65701)"
-Script="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/ddgTest/basicTest.r"
+Script="[DIR]/basicTest.r"
 ProcessFileTimestamp="2014-07-18T11.35.25"
-WorkingDirectory="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/ddgTest"
-DDGDirectory="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/ddgTest/ddg"
+WorkingDirectory="[DIR]"
+DDGDirectory="[DIR]/ddg"
 DateTime="2014-07-22T13.18.15"
 22
 Start p1 "1-main" Value="main";
@@ -72,7 +72,7 @@ Data d11 "11-simple.value" Value="10";
 DF p13 d11
 Operation p14 "14-g1" Value="g1";
 CF p13 p14
-Snapshot d12 "12-year" Value="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/ddgTest/ddg/12-year.csv" Time="2014-07-22T13.18.15";
+Snapshot d12 "12-year" Value="[DIR]/ddg/12-year.csv" Time="2014-07-22T13.18.15";
 DF p14 d12
 URL d13 "13-HF home page" Value="\"http://harvardforest.fas.harvard.edu/\"";
 Exception d14 "14-error" Value="\"test error\"";

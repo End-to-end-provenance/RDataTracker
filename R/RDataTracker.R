@@ -1251,6 +1251,12 @@ ddg.MAX_HIST_LINES <- 2^14
 	}
 }
 
+# Returns true if the command passed in (as a string) will create a procedure node
+# and therefore initiate the creation of a collapsible console node
+.ddg.is.procedure.cmd <- function(cmd.str) {
+	return(grepl("^ddg.(procedure|start|finish|restore|checkpoint)", cmd.str))
+}
+
 # .ddg.parse.lines takes as input a set of lines corresponding to either the 
 # history of an RScript or an RScript itself. It parses and 
 # converts them to executable commands. It returns a list of commands. Each command
@@ -1386,7 +1392,7 @@ ddg.MAX_HIST_LINES <- 2^14
          	# abstract nodes
   				if (!grepl("^ddg.", cmd)) .ddg.set(".ddg.possible.last.cmd", list("abbrev"=cmd.abbrev,
   				                                   "expr"=cmd.expr, "text"=cmd.text))
-  				else if (grepl("^ddg.start", cmd) || grepl("^ddg.finish", cmd)) .ddg.set(".ddg.possible.last.cmd", NULL)
+  				else if (.ddg.is.procedure.cmd(cmd)) .ddg.set(".ddg.possible.last.cmd", NULL)
 
          	# evaluate
   				result <- eval(cmd.expr, environ, NULL)
@@ -2591,6 +2597,7 @@ ddg.file <- function(filename, dname=NULL) {
 
 ddg.data.in <- function(dname, pname=NULL) {
 	if (!.ddg.is.init()) return(invisible())
+	# browser()
 
 	.ddg.lookup.function.name(pname)
 	

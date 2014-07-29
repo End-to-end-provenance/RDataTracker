@@ -3,10 +3,10 @@ OperatingSystem="unix"
 Language="R"
 LanguageVersion="R version 3.1.0 Patched (2014-05-20 r65701)"
 RDataTrackerVersion="0.5.19"
-Script="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/CalculateSquareRoot/calculate-square-root-3.r"
+Script="[DIR]/calculate-square-root-3.r"
 ProcessFileTimestamp="2014-07-28T12.52.15"
-WorkingDirectory="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/CalculateSquareRoot"
-DDGDirectory="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/CalculateSquareRoot/ddg"
+WorkingDirectory="[DIR]"
+DDGDirectory="[DIR]/ddg"
 DateTime="2014-07-28T14.01.10"
 85
 Start p1 "1-main" Value="main";
@@ -360,12 +360,12 @@ Operation p80 "80-store.result" Value="store.result";
 DF d53 p80
 DF d54 p80
 CF p79 p80
-Snapshot d55 "55-store.result(number, estimate) return" Value="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/CalculateSquareRoot/ddg/55-store.result(number, estimate) return.csv" Time="2014-07-28T14.01.10";
+Snapshot d55 "55-store.result(number, estimate) return" Value="[DIR]/ddg/55-store.result(number, estimate) return.csv" Time="2014-07-28T14.01.10";
 DF p80 d55
 Finish p81 "81-sqr.root <<- store.result(number,estimate)" Value="sqr.root <<- store.result(number,estimate)";
 CF p80 p81
 DF d55 p81
-Snapshot d56 "56-sqr.root" Value="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/CalculateSquareRoot/ddg/56-sqr.root.csv" Time="2014-07-28T14.01.10";
+Snapshot d56 "56-sqr.root" Value="[DIR]/ddg/56-sqr.root.csv" Time="2014-07-28T14.01.10";
 DF p81 d56
 Binding p82 "82-sqr.root  <-  sqr.root"
 CF p81 p82
@@ -375,7 +375,7 @@ DF p82 d57
 Operation p83 "83-write.result" Value="write.result";
 DF d57 p83
 CF p82 p83
-File d58 "58-results.csv" Value="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/CalculateSquareRoot/ddg/58-results.csv" Time="2014-07-28T14.01.10" Location="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/CalculateSquareRoot/results.csv";
+File d58 "58-results.csv" Value="[DIR]/ddg/58-results.csv" Time="2014-07-28T14.01.10" Location="[DIR]/results.csv";
 DF p83 d58
 Finish p84 "84-write.result" Value="write.result";
 CF p83 p84
