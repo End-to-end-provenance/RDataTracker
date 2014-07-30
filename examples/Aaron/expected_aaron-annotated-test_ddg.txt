@@ -2,29 +2,29 @@ Architecture="i386"
 OperatingSystem="windows"
 Language="R"
 LanguageVersion="R version 3.1.0 (2014-04-10)"
-RDataTrackerVersion="0.5.23"
+RDataTrackerVersion="0.5.24"
 Script="[DIR]/aaron-annotated-test.r"
 ProcessFileTimestamp="2014-07-29T12.51.32"
 WorkingDirectory="[DIR]"
 DDGDirectory="[DIR]/ddg"
-DateTime="2014-07-29T13.08.43"
+DateTime="2014-07-29T16.39.02"
 341
-Snapshot d1 "1-libraries" Value="[DIR]/ddg/1-libraries.csv" Time="2014-07-29T13.06.36";
+Snapshot d1 "1-libraries" Value="[DIR]/ddg/1-libraries.csv" Time="2014-07-29T16.36.48";
 Operation p1 "1-input.libraries" Value="input.libraries";
 DF d1 p1
 Start p2 "2-Main Script" Value="Main Script";
 CF p1 p2
 Start p3 "3-Read in Data" Value="Read in Data";
 CF p2 p3
-File d2 "2-trees03.csv" Value="[DIR]/ddg/2-trees03.csv" Time="2014-07-29T13.06.36" Location="[DIR]/trees03.csv";
-File d3 "3-hf086-01-dendro.csv" Value="[DIR]/ddg/3-hf086-01-dendro.csv" Time="2014-07-29T13.06.36" Location="[DIR]/hf086-01-dendro.csv";
+File d2 "2-trees03.csv" Value="[DIR]/ddg/2-trees03.csv" Time="2014-07-29T16.36.48" Location="[DIR]/trees03.csv";
+File d3 "3-hf086-01-dendro.csv" Value="[DIR]/ddg/3-hf086-01-dendro.csv" Time="2014-07-29T16.36.48" Location="[DIR]/hf086-01-dendro.csv";
 Operation p4 "4-read.data" Value="read.data";
 CF p3 p4
 DF d2 p4
 DF d3 p4
-Snapshot d4 "4-trees" Value="[DIR]/ddg/4-trees.csv" Time="2014-07-29T13.06.36";
+Snapshot d4 "4-trees" Value="[DIR]/ddg/4-trees.csv" Time="2014-07-29T16.36.48";
 DF p4 d4
-Snapshot d5 "5-dendro" Value="[DIR]/ddg/5-dendro.csv" Time="2014-07-29T13.06.36";
+Snapshot d5 "5-dendro" Value="[DIR]/ddg/5-dendro.csv" Time="2014-07-29T16.36.49";
 DF p4 d5
 Finish p5 "5-Read in Data" Value="Read in Data";
 CF p4 p5
@@ -35,44 +35,44 @@ CF p6 p7
 Operation p8 "8-Seperate Plots" Value="Seperate Plots";
 CF p7 p8
 DF d4 p8
-Snapshot d6 "6-plot.1" Value="[DIR]/ddg/6-plot.1.csv" Time="2014-07-29T13.06.36";
+Snapshot d6 "6-plot.1" Value="[DIR]/ddg/6-plot.1.csv" Time="2014-07-29T16.36.49";
 DF p8 d6
 Operation p9 "9-Seperate Plots" Value="Seperate Plots";
 CF p8 p9
 DF d4 p9
-Snapshot d7 "7-plot.2" Value="[DIR]/ddg/7-plot.2.csv" Time="2014-07-29T13.06.36";
+Snapshot d7 "7-plot.2" Value="[DIR]/ddg/7-plot.2.csv" Time="2014-07-29T16.36.49";
 DF p9 d7
 Operation p10 "10-Seperate Plots" Value="Seperate Plots";
 CF p9 p10
 DF d4 p10
-Snapshot d8 "8-plot.3" Value="[DIR]/ddg/8-plot.3.csv" Time="2014-07-29T13.06.36";
+Snapshot d8 "8-plot.3" Value="[DIR]/ddg/8-plot.3.csv" Time="2014-07-29T16.36.49";
 DF p10 d8
 Operation p11 "11-Seperate Plots" Value="Seperate Plots";
 CF p10 p11
 DF d4 p11
-Snapshot d9 "9-plot.4" Value="[DIR]/ddg/9-plot.4.csv" Time="2014-07-29T13.06.36";
+Snapshot d9 "9-plot.4" Value="[DIR]/ddg/9-plot.4.csv" Time="2014-07-29T16.36.49";
 DF p11 d9
 Operation p12 "12-Seperate Plots" Value="Seperate Plots";
 CF p11 p12
 DF d4 p12
-Snapshot d10 "10-plot.5" Value="[DIR]/ddg/10-plot.5.csv" Time="2014-07-29T13.06.37";
+Snapshot d10 "10-plot.5" Value="[DIR]/ddg/10-plot.5.csv" Time="2014-07-29T16.36.49";
 DF p12 d10
 Operation p13 "13-Seperate Plots" Value="Seperate Plots";
 CF p12 p13
 DF d4 p13
-Snapshot d11 "11-plot.6" Value="[DIR]/ddg/11-plot.6.csv" Time="2014-07-29T13.06.37";
+Snapshot d11 "11-plot.6" Value="[DIR]/ddg/11-plot.6.csv" Time="2014-07-29T16.36.49";
 DF p13 d11
 Operation p14 "14-Seperate Plots" Value="Seperate Plots";
 CF p13 p14
 DF d4 p14
-Snapshot d12 "12-plot.7" Value="[DIR]/ddg/12-plot.7.csv" Time="2014-07-29T13.06.37";
+Snapshot d12 "12-plot.7" Value="[DIR]/ddg/12-plot.7.csv" Time="2014-07-29T16.36.49";
 DF p14 d12
 Operation p15 "15-Seperate Plots" Value="Seperate Plots";
 CF p14 p15
 DF d4 p15
-Snapshot d13 "13-plot.8" Value="[DIR]/ddg/13-plot.8.csv" Time="2014-07-29T13.06.37";
+Snapshot d13 "13-plot.8" Value="[DIR]/ddg/13-plot.8.csv" Time="2014-07-29T16.36.49";
 DF p15 d13
-Snapshot d14 "14-genera" Value="[DIR]/ddg/14-genera.csv" Time="2014-07-29T13.06.37";
+Snapshot d14 "14-genera" Value="[DIR]/ddg/14-genera.csv" Time="2014-07-29T16.36.49";
 DF p15 d14
 Finish p16 "16-Seperate into Plots" Value="Seperate into Plots";
 CF p15 p16
@@ -81,49 +81,49 @@ CF p16 p17
 Operation p18 "18-Remove NAs" Value="Remove NAs";
 CF p17 p18
 DF d6 p18
-Snapshot d15 "15-p1" Value="[DIR]/ddg/15-p1.csv" Time="2014-07-29T13.06.37";
+Snapshot d15 "15-p1" Value="[DIR]/ddg/15-p1.csv" Time="2014-07-29T16.36.49";
 DF p18 d15
 Operation p19 "19-Remove NAs" Value="Remove NAs";
 CF p18 p19
 DF d7 p19
-Snapshot d16 "16-p2" Value="[DIR]/ddg/16-p2.csv" Time="2014-07-29T13.06.37";
+Snapshot d16 "16-p2" Value="[DIR]/ddg/16-p2.csv" Time="2014-07-29T16.36.49";
 DF p19 d16
 Operation p20 "20-Remove NAs" Value="Remove NAs";
 CF p19 p20
 DF d8 p20
-Snapshot d17 "17-p3" Value="[DIR]/ddg/17-p3.csv" Time="2014-07-29T13.06.37";
+Snapshot d17 "17-p3" Value="[DIR]/ddg/17-p3.csv" Time="2014-07-29T16.36.49";
 DF p20 d17
 Operation p21 "21-Remove NAs" Value="Remove NAs";
 CF p20 p21
 DF d9 p21
-Snapshot d18 "18-p4" Value="[DIR]/ddg/18-p4.csv" Time="2014-07-29T13.06.37";
+Snapshot d18 "18-p4" Value="[DIR]/ddg/18-p4.csv" Time="2014-07-29T16.36.49";
 DF p21 d18
 Operation p22 "22-Remove NAs" Value="Remove NAs";
 CF p21 p22
 DF d10 p22
-Snapshot d19 "19-p5" Value="[DIR]/ddg/19-p5.csv" Time="2014-07-29T13.06.37";
+Snapshot d19 "19-p5" Value="[DIR]/ddg/19-p5.csv" Time="2014-07-29T16.36.49";
 DF p22 d19
 Operation p23 "23-Remove NAs" Value="Remove NAs";
 CF p22 p23
 DF d11 p23
-Snapshot d20 "20-p6" Value="[DIR]/ddg/20-p6.csv" Time="2014-07-29T13.06.37";
+Snapshot d20 "20-p6" Value="[DIR]/ddg/20-p6.csv" Time="2014-07-29T16.36.49";
 DF p23 d20
 Operation p24 "24-Remove NAs" Value="Remove NAs";
 CF p23 p24
 DF d12 p24
-Snapshot d21 "21-p7" Value="[DIR]/ddg/21-p7.csv" Time="2014-07-29T13.06.37";
+Snapshot d21 "21-p7" Value="[DIR]/ddg/21-p7.csv" Time="2014-07-29T16.36.49";
 DF p24 d21
 Operation p25 "25-Remove NAs" Value="Remove NAs";
 CF p24 p25
 DF d13 p25
-Snapshot d22 "22-p8" Value="[DIR]/ddg/22-p8.csv" Time="2014-07-29T13.06.37";
+Snapshot d22 "22-p8" Value="[DIR]/ddg/22-p8.csv" Time="2014-07-29T16.36.49";
 DF p25 d22
 Finish p26 "26-Clean plot data" Value="Clean plot data";
 CF p25 p26
 Start p27 "27-Setup Contour plot grids" Value="Setup Contour plot grids";
 CF p26 p27
-Snapshot d23 "23-interp.xo" Value="[DIR]/ddg/23-interp.xo.csv" Time="2014-07-29T13.06.37";
-Snapshot d24 "24-interp.yo" Value="[DIR]/ddg/24-interp.yo.csv" Time="2014-07-29T13.06.37";
+Snapshot d23 "23-interp.xo" Value="[DIR]/ddg/23-interp.xo.csv" Time="2014-07-29T16.36.49";
+Snapshot d24 "24-interp.yo" Value="[DIR]/ddg/24-interp.yo.csv" Time="2014-07-29T16.36.49";
 Data d25 "25-interp.duplicate" Value="\"strip\"";
 Data d26 "26-interp.extrap" Value="FALSE";
 Data d27 "27-interp.linear" Value="FALSE";
@@ -137,7 +137,7 @@ DF d24 p29
 DF d25 p29
 DF d26 p29
 DF d27 p29
-Snapshot d28 "28-p.1.i" Value="[DIR]/ddg/28-p.1.i.csv" Time="2014-07-29T13.06.37";
+Snapshot d28 "28-p.1.i" Value="[DIR]/ddg/28-p.1.i.csv" Time="2014-07-29T16.36.49";
 DF p29 d28
 Operation p30 "30-interpolate" Value="interpolate";
 CF p29 p30
@@ -147,7 +147,7 @@ DF d24 p30
 DF d25 p30
 DF d26 p30
 DF d27 p30
-Snapshot d29 "29-p.2.i" Value="[DIR]/ddg/29-p.2.i.csv" Time="2014-07-29T13.06.37";
+Snapshot d29 "29-p.2.i" Value="[DIR]/ddg/29-p.2.i.csv" Time="2014-07-29T16.36.49";
 DF p30 d29
 Operation p31 "31-interpolate" Value="interpolate";
 CF p30 p31
@@ -157,7 +157,7 @@ DF d24 p31
 DF d25 p31
 DF d26 p31
 DF d27 p31
-Snapshot d30 "30-p.3.i" Value="[DIR]/ddg/30-p.3.i.csv" Time="2014-07-29T13.06.37";
+Snapshot d30 "30-p.3.i" Value="[DIR]/ddg/30-p.3.i.csv" Time="2014-07-29T16.36.50";
 DF p31 d30
 Operation p32 "32-interpolate" Value="interpolate";
 CF p31 p32
@@ -167,7 +167,7 @@ DF d24 p32
 DF d25 p32
 DF d26 p32
 DF d27 p32
-Snapshot d31 "31-p.4.i" Value="[DIR]/ddg/31-p.4.i.csv" Time="2014-07-29T13.06.37";
+Snapshot d31 "31-p.4.i" Value="[DIR]/ddg/31-p.4.i.csv" Time="2014-07-29T16.36.50";
 DF p32 d31
 Operation p33 "33-interpolate" Value="interpolate";
 CF p32 p33
@@ -177,7 +177,7 @@ DF d24 p33
 DF d25 p33
 DF d26 p33
 DF d27 p33
-Snapshot d32 "32-p.5.i" Value="[DIR]/ddg/32-p.5.i.csv" Time="2014-07-29T13.06.38";
+Snapshot d32 "32-p.5.i" Value="[DIR]/ddg/32-p.5.i.csv" Time="2014-07-29T16.36.50";
 DF p33 d32
 Operation p34 "34-interpolate" Value="interpolate";
 CF p33 p34
@@ -187,7 +187,7 @@ DF d24 p34
 DF d25 p34
 DF d26 p34
 DF d27 p34
-Snapshot d33 "33-p.6.i" Value="[DIR]/ddg/33-p.6.i.csv" Time="2014-07-29T13.06.38";
+Snapshot d33 "33-p.6.i" Value="[DIR]/ddg/33-p.6.i.csv" Time="2014-07-29T16.36.50";
 DF p34 d33
 Operation p35 "35-interpolate" Value="interpolate";
 CF p34 p35
@@ -197,7 +197,7 @@ DF d24 p35
 DF d25 p35
 DF d26 p35
 DF d27 p35
-Snapshot d34 "34-p.7.i" Value="[DIR]/ddg/34-p.7.i.csv" Time="2014-07-29T13.06.38";
+Snapshot d34 "34-p.7.i" Value="[DIR]/ddg/34-p.7.i.csv" Time="2014-07-29T16.36.50";
 DF p35 d34
 Operation p36 "36-interpolate" Value="interpolate";
 CF p35 p36
@@ -207,17 +207,17 @@ DF d24 p36
 DF d25 p36
 DF d26 p36
 DF d27 p36
-Snapshot d35 "35-p.8.i" Value="[DIR]/ddg/35-p.8.i.csv" Time="2014-07-29T13.06.38";
+Snapshot d35 "35-p.8.i" Value="[DIR]/ddg/35-p.8.i.csv" Time="2014-07-29T16.36.50";
 DF p36 d35
 Finish p37 "37-Interpolate" Value="Interpolate";
 CF p36 p37
-Snapshot d36 "36-genera.colors.1" Value="[DIR]/ddg/36-genera.colors.1.csv" Time="2014-07-29T13.06.38";
-Snapshot d37 "37-genera.rank" Value="[DIR]/ddg/37-genera.rank.csv" Time="2014-07-29T13.06.38";
-Snapshot d38 "38-cex.I" Value="[DIR]/ddg/38-cex.I.csv" Time="2014-07-29T13.06.38";
+Snapshot d36 "36-genera.colors.1" Value="[DIR]/ddg/36-genera.colors.1.csv" Time="2014-07-29T16.36.50";
+Snapshot d37 "37-genera.rank" Value="[DIR]/ddg/37-genera.rank.csv" Time="2014-07-29T16.36.50";
+Snapshot d38 "38-cex.I" Value="[DIR]/ddg/38-cex.I.csv" Time="2014-07-29T16.36.50";
 Start p38 "38-Hemlock Plot" Value="Hemlock Plot";
 CF p37 p38
-Snapshot d39 "39-count.xlim" Value="[DIR]/ddg/39-count.xlim.csv" Time="2014-07-29T13.06.38";
-Snapshot d40 "40-count.ylim" Value="[DIR]/ddg/40-count.ylim.csv" Time="2014-07-29T13.06.38";
+Snapshot d39 "39-count.xlim" Value="[DIR]/ddg/39-count.xlim.csv" Time="2014-07-29T16.36.50";
+Snapshot d40 "40-count.ylim" Value="[DIR]/ddg/40-count.ylim.csv" Time="2014-07-29T16.36.50";
 Data d41 "41-count.axes" Value="FALSE";
 Data d42 "42-count.nlevels" Value="5";
 Binding p39 "39-x  <-  p.1.i"
@@ -225,25 +225,25 @@ CF p38 p39
 DF d28 p39
 Snapshot d43 "43-x" Value="28-p.1.i.csv";
 DF p39 d43
-Binding p40 "40-y  <-  count.xlim"
+Binding p40 "40-xlim  <-  count.xlim"
 CF p39 p40
 DF d39 p40
-Snapshot d44 "44-y" Value="39-count.xlim.csv";
+Snapshot d44 "44-xlim" Value="39-count.xlim.csv";
 DF p40 d44
-Binding p41 "41-z  <-  count.ylim"
+Binding p41 "41-ylim  <-  count.ylim"
 CF p40 p41
 DF d40 p41
-Snapshot d45 "45-z" Value="40-count.ylim.csv";
+Snapshot d45 "45-ylim" Value="40-count.ylim.csv";
 DF p41 d45
-Binding p42 "42-xlim  <-  count.nlevels"
+Binding p42 "42-nlevels  <-  count.nlevels"
 CF p41 p42
 DF d42 p42
-Data d46 "46-xlim" Value="5";
+Data d46 "46-nlevels" Value="5";
 DF p42 d46
-Binding p43 "43-ylim  <-  count.axes"
+Binding p43 "43-axes  <-  count.axes"
 CF p42 p43
 DF d41 p43
-Data d47 "47-ylim" Value="FALSE";
+Data d47 "47-axes" Value="FALSE";
 DF p43 d47
 Operation p44 "44-filled.contour3" Value="filled.contour3";
 DF d43 p44
@@ -257,25 +257,25 @@ CF p44 p45
 DF d29 p45
 Snapshot d48 "48-x" Value="29-p.2.i.csv";
 DF p45 d48
-Binding p46 "46-y  <-  count.xlim"
+Binding p46 "46-xlim  <-  count.xlim"
 CF p45 p46
 DF d39 p46
-Snapshot d49 "49-y" Value="39-count.xlim.csv";
+Snapshot d49 "49-xlim" Value="39-count.xlim.csv";
 DF p46 d49
-Binding p47 "47-z  <-  count.ylim"
+Binding p47 "47-ylim  <-  count.ylim"
 CF p46 p47
 DF d40 p47
-Snapshot d50 "50-z" Value="40-count.ylim.csv";
+Snapshot d50 "50-ylim" Value="40-count.ylim.csv";
 DF p47 d50
-Binding p48 "48-xlim  <-  count.nlevels"
+Binding p48 "48-nlevels  <-  count.nlevels"
 CF p47 p48
 DF d42 p48
-Data d51 "51-xlim" Value="5";
+Data d51 "51-nlevels" Value="5";
 DF p48 d51
-Binding p49 "49-ylim  <-  count.axes"
+Binding p49 "49-axes  <-  count.axes"
 CF p48 p49
 DF d41 p49
-Data d52 "52-ylim" Value="FALSE";
+Data d52 "52-axes" Value="FALSE";
 DF p49 d52
 Operation p50 "50-filled.contour3" Value="filled.contour3";
 DF d48 p50
@@ -289,25 +289,25 @@ CF p50 p51
 DF d30 p51
 Snapshot d53 "53-x" Value="30-p.3.i.csv";
 DF p51 d53
-Binding p52 "52-y  <-  count.xlim"
+Binding p52 "52-xlim  <-  count.xlim"
 CF p51 p52
 DF d39 p52
-Snapshot d54 "54-y" Value="39-count.xlim.csv";
+Snapshot d54 "54-xlim" Value="39-count.xlim.csv";
 DF p52 d54
-Binding p53 "53-z  <-  count.ylim"
+Binding p53 "53-ylim  <-  count.ylim"
 CF p52 p53
 DF d40 p53
-Snapshot d55 "55-z" Value="40-count.ylim.csv";
+Snapshot d55 "55-ylim" Value="40-count.ylim.csv";
 DF p53 d55
-Binding p54 "54-xlim  <-  count.nlevels"
+Binding p54 "54-nlevels  <-  count.nlevels"
 CF p53 p54
 DF d42 p54
-Data d56 "56-xlim" Value="5";
+Data d56 "56-nlevels" Value="5";
 DF p54 d56
-Binding p55 "55-ylim  <-  count.axes"
+Binding p55 "55-axes  <-  count.axes"
 CF p54 p55
 DF d41 p55
-Data d57 "57-ylim" Value="FALSE";
+Data d57 "57-axes" Value="FALSE";
 DF p55 d57
 Operation p56 "56-filled.contour3" Value="filled.contour3";
 DF d53 p56
@@ -321,25 +321,25 @@ CF p56 p57
 DF d31 p57
 Snapshot d58 "58-x" Value="31-p.4.i.csv";
 DF p57 d58
-Binding p58 "58-y  <-  count.xlim"
+Binding p58 "58-xlim  <-  count.xlim"
 CF p57 p58
 DF d39 p58
-Snapshot d59 "59-y" Value="39-count.xlim.csv";
+Snapshot d59 "59-xlim" Value="39-count.xlim.csv";
 DF p58 d59
-Binding p59 "59-z  <-  count.ylim"
+Binding p59 "59-ylim  <-  count.ylim"
 CF p58 p59
 DF d40 p59
-Snapshot d60 "60-z" Value="40-count.ylim.csv";
+Snapshot d60 "60-ylim" Value="40-count.ylim.csv";
 DF p59 d60
-Binding p60 "60-xlim  <-  count.nlevels"
+Binding p60 "60-nlevels  <-  count.nlevels"
 CF p59 p60
 DF d42 p60
-Data d61 "61-xlim" Value="5";
+Data d61 "61-nlevels" Value="5";
 DF p60 d61
-Binding p61 "61-ylim  <-  count.axes"
+Binding p61 "61-axes  <-  count.axes"
 CF p60 p61
 DF d41 p61
-Data d62 "62-ylim" Value="FALSE";
+Data d62 "62-axes" Value="FALSE";
 DF p61 d62
 Operation p62 "62-filled.contour3" Value="filled.contour3";
 DF d58 p62
@@ -353,25 +353,25 @@ CF p62 p63
 DF d32 p63
 Snapshot d63 "63-x" Value="32-p.5.i.csv";
 DF p63 d63
-Binding p64 "64-y  <-  count.xlim"
+Binding p64 "64-xlim  <-  count.xlim"
 CF p63 p64
 DF d39 p64
-Snapshot d64 "64-y" Value="39-count.xlim.csv";
+Snapshot d64 "64-xlim" Value="39-count.xlim.csv";
 DF p64 d64
-Binding p65 "65-z  <-  count.ylim"
+Binding p65 "65-ylim  <-  count.ylim"
 CF p64 p65
 DF d40 p65
-Snapshot d65 "65-z" Value="40-count.ylim.csv";
+Snapshot d65 "65-ylim" Value="40-count.ylim.csv";
 DF p65 d65
-Binding p66 "66-xlim  <-  count.nlevels"
+Binding p66 "66-nlevels  <-  count.nlevels"
 CF p65 p66
 DF d42 p66
-Data d66 "66-xlim" Value="5";
+Data d66 "66-nlevels" Value="5";
 DF p66 d66
-Binding p67 "67-ylim  <-  count.axes"
+Binding p67 "67-axes  <-  count.axes"
 CF p66 p67
 DF d41 p67
-Data d67 "67-ylim" Value="FALSE";
+Data d67 "67-axes" Value="FALSE";
 DF p67 d67
 Operation p68 "68-filled.contour3" Value="filled.contour3";
 DF d63 p68
@@ -385,25 +385,25 @@ CF p68 p69
 DF d33 p69
 Snapshot d68 "68-x" Value="33-p.6.i.csv";
 DF p69 d68
-Binding p70 "70-y  <-  count.xlim"
+Binding p70 "70-xlim  <-  count.xlim"
 CF p69 p70
 DF d39 p70
-Snapshot d69 "69-y" Value="39-count.xlim.csv";
+Snapshot d69 "69-xlim" Value="39-count.xlim.csv";
 DF p70 d69
-Binding p71 "71-z  <-  count.ylim"
+Binding p71 "71-ylim  <-  count.ylim"
 CF p70 p71
 DF d40 p71
-Snapshot d70 "70-z" Value="40-count.ylim.csv";
+Snapshot d70 "70-ylim" Value="40-count.ylim.csv";
 DF p71 d70
-Binding p72 "72-xlim  <-  count.nlevels"
+Binding p72 "72-nlevels  <-  count.nlevels"
 CF p71 p72
 DF d42 p72
-Data d71 "71-xlim" Value="5";
+Data d71 "71-nlevels" Value="5";
 DF p72 d71
-Binding p73 "73-ylim  <-  count.axes"
+Binding p73 "73-axes  <-  count.axes"
 CF p72 p73
 DF d41 p73
-Data d72 "72-ylim" Value="FALSE";
+Data d72 "72-axes" Value="FALSE";
 DF p73 d72
 Operation p74 "74-filled.contour3" Value="filled.contour3";
 DF d68 p74
@@ -414,7 +414,7 @@ DF d72 p74
 CF p73 p74
 Operation p75 "75-plot.generation" Value="plot.generation";
 CF p74 p75
-File d73 "73-hemlock_countors.pdf" Value="[DIR]/ddg/73-hemlock_countors.pdf" Time="2014-07-29T13.06.38" Location="[DIR]/hemlock_countors.pdf";
+File d73 "73-hemlock_countors.pdf" Value="[DIR]/ddg/73-hemlock_countors.pdf" Time="2014-07-29T16.36.50" Location="[DIR]/hemlock_countors.pdf";
 DF p75 d73
 Finish p76 "76-Hemlock Plot" Value="Hemlock Plot";
 CF p75 p76
@@ -425,25 +425,25 @@ CF p77 p78
 DF d34 p78
 Snapshot d74 "74-x" Value="34-p.7.i.csv";
 DF p78 d74
-Binding p79 "79-y  <-  count.xlim"
+Binding p79 "79-xlim  <-  count.xlim"
 CF p78 p79
 DF d39 p79
-Snapshot d75 "75-y" Value="39-count.xlim.csv";
+Snapshot d75 "75-xlim" Value="39-count.xlim.csv";
 DF p79 d75
-Binding p80 "80-z  <-  count.ylim"
+Binding p80 "80-ylim  <-  count.ylim"
 CF p79 p80
 DF d40 p80
-Snapshot d76 "76-z" Value="40-count.ylim.csv";
+Snapshot d76 "76-ylim" Value="40-count.ylim.csv";
 DF p80 d76
-Binding p81 "81-xlim  <-  count.nlevels"
+Binding p81 "81-nlevels  <-  count.nlevels"
 CF p80 p81
 DF d42 p81
-Data d77 "77-xlim" Value="5";
+Data d77 "77-nlevels" Value="5";
 DF p81 d77
-Binding p82 "82-ylim  <-  count.axes"
+Binding p82 "82-axes  <-  count.axes"
 CF p81 p82
 DF d41 p82
-Data d78 "78-ylim" Value="FALSE";
+Data d78 "78-axes" Value="FALSE";
 DF p82 d78
 Operation p83 "83-filled.contour3" Value="filled.contour3";
 DF d74 p83
@@ -457,25 +457,25 @@ CF p83 p84
 DF d35 p84
 Snapshot d79 "79-x" Value="35-p.8.i.csv";
 DF p84 d79
-Binding p85 "85-y  <-  count.xlim"
+Binding p85 "85-xlim  <-  count.xlim"
 CF p84 p85
 DF d39 p85
-Snapshot d80 "80-y" Value="39-count.xlim.csv";
+Snapshot d80 "80-xlim" Value="39-count.xlim.csv";
 DF p85 d80
-Binding p86 "86-z  <-  count.ylim"
+Binding p86 "86-ylim  <-  count.ylim"
 CF p85 p86
 DF d40 p86
-Snapshot d81 "81-z" Value="40-count.ylim.csv";
+Snapshot d81 "81-ylim" Value="40-count.ylim.csv";
 DF p86 d81
-Binding p87 "87-xlim  <-  count.nlevels"
+Binding p87 "87-nlevels  <-  count.nlevels"
 CF p86 p87
 DF d42 p87
-Data d82 "82-xlim" Value="5";
+Data d82 "82-nlevels" Value="5";
 DF p87 d82
-Binding p88 "88-ylim  <-  count.axes"
+Binding p88 "88-axes  <-  count.axes"
 CF p87 p88
 DF d41 p88
-Data d83 "83-ylim" Value="FALSE";
+Data d83 "83-axes" Value="FALSE";
 DF p88 d83
 Operation p89 "89-filled.contour3" Value="filled.contour3";
 DF d79 p89
@@ -486,7 +486,7 @@ DF d83 p89
 CF p88 p89
 Operation p90 "90-plot.generation" Value="plot.generation";
 CF p89 p90
-File d84 "84-hardwood_countors.pdf" Value="[DIR]/ddg/84-hardwood_countors.pdf" Time="2014-07-29T13.06.38" Location="[DIR]/hardwood_countors.pdf";
+File d84 "84-hardwood_countors.pdf" Value="[DIR]/ddg/84-hardwood_countors.pdf" Time="2014-07-29T16.36.51" Location="[DIR]/hardwood_countors.pdf";
 DF p90 d84
 Finish p91 "91-Hardwoods Plot" Value="Hardwoods Plot";
 CF p90 p91
@@ -503,42 +503,42 @@ CF p95 p96
 Operation p97 "97-calc.spatial.points" Value="calc.spatial.points";
 CF p96 p97
 DF d6 p97
-Snapshot d85 "85-plot.1.pp" Value="[DIR]/ddg/85-plot.1.pp.csv" Time="2014-07-29T13.06.39";
+Snapshot d85 "85-plot.1.pp" Value="[DIR]/ddg/85-plot.1.pp.csv" Time="2014-07-29T16.36.51";
 DF p97 d85
 Operation p98 "98-calc.spatial.points" Value="calc.spatial.points";
 CF p97 p98
 DF d7 p98
-Snapshot d86 "86-plot.2.pp" Value="[DIR]/ddg/86-plot.2.pp.csv" Time="2014-07-29T13.06.39";
+Snapshot d86 "86-plot.2.pp" Value="[DIR]/ddg/86-plot.2.pp.csv" Time="2014-07-29T16.36.51";
 DF p98 d86
 Operation p99 "99-calc.spatial.points" Value="calc.spatial.points";
 CF p98 p99
 DF d8 p99
-Snapshot d87 "87-plot.3.pp" Value="[DIR]/ddg/87-plot.3.pp.csv" Time="2014-07-29T13.06.39";
+Snapshot d87 "87-plot.3.pp" Value="[DIR]/ddg/87-plot.3.pp.csv" Time="2014-07-29T16.36.51";
 DF p99 d87
 Operation p100 "100-calc.spatial.points" Value="calc.spatial.points";
 CF p99 p100
 DF d9 p100
-Snapshot d88 "88-plot.4.pp" Value="[DIR]/ddg/88-plot.4.pp.csv" Time="2014-07-29T13.06.39";
+Snapshot d88 "88-plot.4.pp" Value="[DIR]/ddg/88-plot.4.pp.csv" Time="2014-07-29T16.36.51";
 DF p100 d88
 Operation p101 "101-calc.spatial.points" Value="calc.spatial.points";
 CF p100 p101
 DF d10 p101
-Snapshot d89 "89-plot.5.pp" Value="[DIR]/ddg/89-plot.5.pp.csv" Time="2014-07-29T13.06.39";
+Snapshot d89 "89-plot.5.pp" Value="[DIR]/ddg/89-plot.5.pp.csv" Time="2014-07-29T16.36.51";
 DF p101 d89
 Operation p102 "102-calc.spatial.points" Value="calc.spatial.points";
 CF p101 p102
 DF d11 p102
-Snapshot d90 "90-plot.6.pp" Value="[DIR]/ddg/90-plot.6.pp.csv" Time="2014-07-29T13.06.39";
+Snapshot d90 "90-plot.6.pp" Value="[DIR]/ddg/90-plot.6.pp.csv" Time="2014-07-29T16.36.51";
 DF p102 d90
 Operation p103 "103-calc.spatial.points" Value="calc.spatial.points";
 CF p102 p103
 DF d12 p103
-Snapshot d91 "91-plot.7.pp" Value="[DIR]/ddg/91-plot.7.pp.csv" Time="2014-07-29T13.06.39";
+Snapshot d91 "91-plot.7.pp" Value="[DIR]/ddg/91-plot.7.pp.csv" Time="2014-07-29T16.36.51";
 DF p103 d91
 Operation p104 "104-calc.spatial.points" Value="calc.spatial.points";
 CF p103 p104
 DF d13 p104
-Snapshot d92 "92-plot.8.pp" Value="[DIR]/ddg/92-plot.8.pp.csv" Time="2014-07-29T13.06.39";
+Snapshot d92 "92-plot.8.pp" Value="[DIR]/ddg/92-plot.8.pp.csv" Time="2014-07-29T16.36.51";
 DF p104 d92
 Finish p105 "105-Create Spatial Point Patterns" Value="Create Spatial Point Patterns";
 CF p104 p105
@@ -553,241 +553,241 @@ Operation p107 "107-Plot density and envelop" Value="Plot density and envelop";
 CF p106 p107
 DF d85 p107
 DF d93 p107
-Snapshot d98 "98-plot1graph" Value="[DIR]/ddg/98-plot1graph.jpeg" Time="2014-07-29T13.06.42";
+Snapshot d98 "98-plot1graph" Value="[DIR]/ddg/98-plot1graph.jpeg" Time="2014-07-29T16.36.54";
 DF p107 d98
 Operation p108 "108-Plot density and envelop" Value="Plot density and envelop";
 CF p107 p108
 DF d85 p108
 DF d94 p108
-Snapshot d99 "99-plot1graph" Value="[DIR]/ddg/99-plot1graph.jpeg" Time="2014-07-29T13.06.42";
+Snapshot d99 "99-plot1graph" Value="[DIR]/ddg/99-plot1graph.jpeg" Time="2014-07-29T16.36.55";
 DF p108 d99
 Operation p109 "109-Plot density and envelop" Value="Plot density and envelop";
 CF p108 p109
 DF d85 p109
 DF d95 p109
-Snapshot d100 "100-plot1graph" Value="[DIR]/ddg/100-plot1graph.jpeg" Time="2014-07-29T13.06.43";
+Snapshot d100 "100-plot1graph" Value="[DIR]/ddg/100-plot1graph.jpeg" Time="2014-07-29T16.36.56";
 DF p109 d100
 Operation p110 "110-Plot density and envelop" Value="Plot density and envelop";
 CF p109 p110
 DF d85 p110
 DF d96 p110
-Snapshot d101 "101-plot1graph" Value="[DIR]/ddg/101-plot1graph.jpeg" Time="2014-07-29T13.06.44";
+Snapshot d101 "101-plot1graph" Value="[DIR]/ddg/101-plot1graph.jpeg" Time="2014-07-29T16.36.57";
 DF p110 d101
 Operation p111 "111-Plot density and envelop" Value="Plot density and envelop";
 CF p110 p111
 DF d85 p111
 DF d97 p111
-Snapshot d102 "102-plot1graph" Value="[DIR]/ddg/102-plot1graph.jpeg" Time="2014-07-29T13.06.45";
+Snapshot d102 "102-plot1graph" Value="[DIR]/ddg/102-plot1graph.jpeg" Time="2014-07-29T16.36.57";
 DF p111 d102
 Operation p112 "112-Plot density and envelop" Value="Plot density and envelop";
 CF p111 p112
 DF d86 p112
 DF d93 p112
-Snapshot d103 "103-plot2graph" Value="[DIR]/ddg/103-plot2graph.jpeg" Time="2014-07-29T13.06.46";
+Snapshot d103 "103-plot2graph" Value="[DIR]/ddg/103-plot2graph.jpeg" Time="2014-07-29T16.36.59";
 DF p112 d103
 Operation p113 "113-Plot density and envelop" Value="Plot density and envelop";
 CF p112 p113
 DF d86 p113
 DF d94 p113
-Snapshot d104 "104-plot2graph" Value="[DIR]/ddg/104-plot2graph.jpeg" Time="2014-07-29T13.06.47";
+Snapshot d104 "104-plot2graph" Value="[DIR]/ddg/104-plot2graph.jpeg" Time="2014-07-29T16.37.00";
 DF p113 d104
 Operation p114 "114-Plot density and envelop" Value="Plot density and envelop";
 CF p113 p114
 DF d86 p114
 DF d95 p114
-Snapshot d105 "105-plot2graph" Value="[DIR]/ddg/105-plot2graph.jpeg" Time="2014-07-29T13.06.48";
+Snapshot d105 "105-plot2graph" Value="[DIR]/ddg/105-plot2graph.jpeg" Time="2014-07-29T16.37.00";
 DF p114 d105
 Operation p115 "115-Plot density and envelop" Value="Plot density and envelop";
 CF p114 p115
 DF d86 p115
 DF d96 p115
-Snapshot d106 "106-plot2graph" Value="[DIR]/ddg/106-plot2graph.jpeg" Time="2014-07-29T13.06.49";
+Snapshot d106 "106-plot2graph" Value="[DIR]/ddg/106-plot2graph.jpeg" Time="2014-07-29T16.37.01";
 DF p115 d106
 Operation p116 "116-Plot density and envelop" Value="Plot density and envelop";
 CF p115 p116
 DF d86 p116
 DF d97 p116
-Snapshot d107 "107-plot2graph" Value="[DIR]/ddg/107-plot2graph.jpeg" Time="2014-07-29T13.06.50";
+Snapshot d107 "107-plot2graph" Value="[DIR]/ddg/107-plot2graph.jpeg" Time="2014-07-29T16.37.02";
 DF p116 d107
 Operation p117 "117-Plot density and envelop" Value="Plot density and envelop";
 CF p116 p117
 DF d87 p117
 DF d93 p117
-Snapshot d108 "108-plot3graph" Value="[DIR]/ddg/108-plot3graph.jpeg" Time="2014-07-29T13.06.51";
+Snapshot d108 "108-plot3graph" Value="[DIR]/ddg/108-plot3graph.jpeg" Time="2014-07-29T16.37.04";
 DF p117 d108
 Operation p118 "118-Plot density and envelop" Value="Plot density and envelop";
 CF p117 p118
 DF d87 p118
 DF d94 p118
-Snapshot d109 "109-plot3graph" Value="[DIR]/ddg/109-plot3graph.jpeg" Time="2014-07-29T13.06.52";
+Snapshot d109 "109-plot3graph" Value="[DIR]/ddg/109-plot3graph.jpeg" Time="2014-07-29T16.37.04";
 DF p118 d109
 Operation p119 "119-Plot density and envelop" Value="Plot density and envelop";
 CF p118 p119
 DF d87 p119
 DF d95 p119
-Snapshot d110 "110-plot3graph" Value="[DIR]/ddg/110-plot3graph.jpeg" Time="2014-07-29T13.06.53";
+Snapshot d110 "110-plot3graph" Value="[DIR]/ddg/110-plot3graph.jpeg" Time="2014-07-29T16.37.05";
 DF p119 d110
 Operation p120 "120-Plot density and envelop" Value="Plot density and envelop";
 CF p119 p120
 DF d87 p120
 DF d96 p120
-Snapshot d111 "111-plot3graph" Value="[DIR]/ddg/111-plot3graph.jpeg" Time="2014-07-29T13.06.54";
+Snapshot d111 "111-plot3graph" Value="[DIR]/ddg/111-plot3graph.jpeg" Time="2014-07-29T16.37.06";
 DF p120 d111
 Operation p121 "121-Plot density and envelop" Value="Plot density and envelop";
 CF p120 p121
 DF d87 p121
 DF d97 p121
-Snapshot d112 "112-plot3graph" Value="[DIR]/ddg/112-plot3graph.jpeg" Time="2014-07-29T13.06.55";
+Snapshot d112 "112-plot3graph" Value="[DIR]/ddg/112-plot3graph.jpeg" Time="2014-07-29T16.37.07";
 DF p121 d112
 Operation p122 "122-Plot density and envelop" Value="Plot density and envelop";
 CF p121 p122
 DF d88 p122
 DF d93 p122
-Snapshot d113 "113-plot4graph" Value="[DIR]/ddg/113-plot4graph.jpeg" Time="2014-07-29T13.06.56";
+Snapshot d113 "113-plot4graph" Value="[DIR]/ddg/113-plot4graph.jpeg" Time="2014-07-29T16.37.09";
 DF p122 d113
 Operation p123 "123-Plot density and envelop" Value="Plot density and envelop";
 CF p122 p123
 DF d88 p123
 DF d94 p123
-Snapshot d114 "114-plot4graph" Value="[DIR]/ddg/114-plot4graph.jpeg" Time="2014-07-29T13.06.57";
+Snapshot d114 "114-plot4graph" Value="[DIR]/ddg/114-plot4graph.jpeg" Time="2014-07-29T16.37.10";
 DF p123 d114
 Operation p124 "124-Plot density and envelop" Value="Plot density and envelop";
 CF p123 p124
 DF d88 p124
 DF d95 p124
-Snapshot d115 "115-plot4graph" Value="[DIR]/ddg/115-plot4graph.jpeg" Time="2014-07-29T13.06.58";
+Snapshot d115 "115-plot4graph" Value="[DIR]/ddg/115-plot4graph.jpeg" Time="2014-07-29T16.37.11";
 DF p124 d115
 Operation p125 "125-Plot density and envelop" Value="Plot density and envelop";
 CF p124 p125
 DF d88 p125
 DF d96 p125
-Snapshot d116 "116-plot4graph" Value="[DIR]/ddg/116-plot4graph.jpeg" Time="2014-07-29T13.06.59";
+Snapshot d116 "116-plot4graph" Value="[DIR]/ddg/116-plot4graph.jpeg" Time="2014-07-29T16.37.11";
 DF p125 d116
 Operation p126 "126-Plot density and envelop" Value="Plot density and envelop";
 CF p125 p126
 DF d88 p126
 DF d97 p126
-Snapshot d117 "117-plot4graph" Value="[DIR]/ddg/117-plot4graph.jpeg" Time="2014-07-29T13.06.59";
+Snapshot d117 "117-plot4graph" Value="[DIR]/ddg/117-plot4graph.jpeg" Time="2014-07-29T16.37.12";
 DF p126 d117
 Operation p127 "127-Plot density and envelop" Value="Plot density and envelop";
 CF p126 p127
 DF d89 p127
 DF d93 p127
-Snapshot d118 "118-plot5graph" Value="[DIR]/ddg/118-plot5graph.jpeg" Time="2014-07-29T13.07.01";
+Snapshot d118 "118-plot5graph" Value="[DIR]/ddg/118-plot5graph.jpeg" Time="2014-07-29T16.37.14";
 DF p127 d118
 Operation p128 "128-Plot density and envelop" Value="Plot density and envelop";
 CF p127 p128
 DF d89 p128
 DF d94 p128
-Snapshot d119 "119-plot5graph" Value="[DIR]/ddg/119-plot5graph.jpeg" Time="2014-07-29T13.07.02";
+Snapshot d119 "119-plot5graph" Value="[DIR]/ddg/119-plot5graph.jpeg" Time="2014-07-29T16.37.15";
 DF p128 d119
 Operation p129 "129-Plot density and envelop" Value="Plot density and envelop";
 CF p128 p129
 DF d89 p129
 DF d95 p129
-Snapshot d120 "120-plot5graph" Value="[DIR]/ddg/120-plot5graph.jpeg" Time="2014-07-29T13.07.02";
+Snapshot d120 "120-plot5graph" Value="[DIR]/ddg/120-plot5graph.jpeg" Time="2014-07-29T16.37.16";
 DF p129 d120
 Operation p130 "130-Plot density and envelop" Value="Plot density and envelop";
 CF p129 p130
 DF d89 p130
 DF d96 p130
-Snapshot d121 "121-plot5graph" Value="[DIR]/ddg/121-plot5graph.jpeg" Time="2014-07-29T13.07.03";
+Snapshot d121 "121-plot5graph" Value="[DIR]/ddg/121-plot5graph.jpeg" Time="2014-07-29T16.37.17";
 DF p130 d121
 Operation p131 "131-Plot density and envelop" Value="Plot density and envelop";
 CF p130 p131
 DF d89 p131
 DF d97 p131
-Snapshot d122 "122-plot5graph" Value="[DIR]/ddg/122-plot5graph.jpeg" Time="2014-07-29T13.07.04";
+Snapshot d122 "122-plot5graph" Value="[DIR]/ddg/122-plot5graph.jpeg" Time="2014-07-29T16.37.18";
 DF p131 d122
 Operation p132 "132-Plot density and envelop" Value="Plot density and envelop";
 CF p131 p132
 DF d90 p132
 DF d93 p132
-Snapshot d123 "123-plot7graph" Value="[DIR]/ddg/123-plot7graph.jpeg" Time="2014-07-29T13.07.05";
+Snapshot d123 "123-plot7graph" Value="[DIR]/ddg/123-plot7graph.jpeg" Time="2014-07-29T16.37.19";
 DF p132 d123
 Operation p133 "133-Plot density and envelop" Value="Plot density and envelop";
 CF p132 p133
 DF d90 p133
 DF d94 p133
-Snapshot d124 "124-plot7graph" Value="[DIR]/ddg/124-plot7graph.jpeg" Time="2014-07-29T13.07.06";
+Snapshot d124 "124-plot7graph" Value="[DIR]/ddg/124-plot7graph.jpeg" Time="2014-07-29T16.37.19";
 DF p133 d124
 Operation p134 "134-Plot density and envelop" Value="Plot density and envelop";
 CF p133 p134
 DF d90 p134
 DF d95 p134
-Snapshot d125 "125-plot7graph" Value="[DIR]/ddg/125-plot7graph.jpeg" Time="2014-07-29T13.07.06";
+Snapshot d125 "125-plot7graph" Value="[DIR]/ddg/125-plot7graph.jpeg" Time="2014-07-29T16.37.20";
 DF p134 d125
 Operation p135 "135-Plot density and envelop" Value="Plot density and envelop";
 CF p134 p135
 DF d90 p135
 DF d96 p135
-Snapshot d126 "126-plot7graph" Value="[DIR]/ddg/126-plot7graph.jpeg" Time="2014-07-29T13.07.07";
+Snapshot d126 "126-plot7graph" Value="[DIR]/ddg/126-plot7graph.jpeg" Time="2014-07-29T16.37.21";
 DF p135 d126
 Operation p136 "136-Plot density and envelop" Value="Plot density and envelop";
 CF p135 p136
 DF d90 p136
 DF d97 p136
-Snapshot d127 "127-plot7graph" Value="[DIR]/ddg/127-plot7graph.jpeg" Time="2014-07-29T13.07.08";
+Snapshot d127 "127-plot7graph" Value="[DIR]/ddg/127-plot7graph.jpeg" Time="2014-07-29T16.37.22";
 DF p136 d127
 Operation p137 "137-Plot density and envelop" Value="Plot density and envelop";
 CF p136 p137
 DF d91 p137
 DF d93 p137
-Snapshot d128 "128-plot7graph" Value="[DIR]/ddg/128-plot7graph.jpeg" Time="2014-07-29T13.07.09";
+Snapshot d128 "128-plot7graph" Value="[DIR]/ddg/128-plot7graph.jpeg" Time="2014-07-29T16.37.22";
 DF p137 d128
 Operation p138 "138-Plot density and envelop" Value="Plot density and envelop";
 CF p137 p138
 DF d91 p138
 DF d94 p138
-Snapshot d129 "129-plot7graph" Value="[DIR]/ddg/129-plot7graph.jpeg" Time="2014-07-29T13.07.10";
+Snapshot d129 "129-plot7graph" Value="[DIR]/ddg/129-plot7graph.jpeg" Time="2014-07-29T16.37.23";
 DF p138 d129
 Operation p139 "139-Plot density and envelop" Value="Plot density and envelop";
 CF p138 p139
 DF d91 p139
 DF d95 p139
-Snapshot d130 "130-plot7graph" Value="[DIR]/ddg/130-plot7graph.jpeg" Time="2014-07-29T13.07.10";
+Snapshot d130 "130-plot7graph" Value="[DIR]/ddg/130-plot7graph.jpeg" Time="2014-07-29T16.37.24";
 DF p139 d130
 Operation p140 "140-Plot density and envelop" Value="Plot density and envelop";
 CF p139 p140
 DF d91 p140
 DF d96 p140
-Snapshot d131 "131-plot7graph" Value="[DIR]/ddg/131-plot7graph.jpeg" Time="2014-07-29T13.07.11";
+Snapshot d131 "131-plot7graph" Value="[DIR]/ddg/131-plot7graph.jpeg" Time="2014-07-29T16.37.25";
 DF p140 d131
 Operation p141 "141-Plot density and envelop" Value="Plot density and envelop";
 CF p140 p141
 DF d91 p141
 DF d97 p141
-Snapshot d132 "132-plot7graph" Value="[DIR]/ddg/132-plot7graph.jpeg" Time="2014-07-29T13.07.12";
+Snapshot d132 "132-plot7graph" Value="[DIR]/ddg/132-plot7graph.jpeg" Time="2014-07-29T16.37.26";
 DF p141 d132
 Operation p142 "142-Plot density and envelop" Value="Plot density and envelop";
 CF p141 p142
 DF d92 p142
 DF d93 p142
-Snapshot d133 "133-plot8graph" Value="[DIR]/ddg/133-plot8graph.jpeg" Time="2014-07-29T13.07.13";
+Snapshot d133 "133-plot8graph" Value="[DIR]/ddg/133-plot8graph.jpeg" Time="2014-07-29T16.37.26";
 DF p142 d133
 Operation p143 "143-Plot density and envelop" Value="Plot density and envelop";
 CF p142 p143
 DF d92 p143
 DF d94 p143
-Snapshot d134 "134-plot8graph" Value="[DIR]/ddg/134-plot8graph.jpeg" Time="2014-07-29T13.07.14";
+Snapshot d134 "134-plot8graph" Value="[DIR]/ddg/134-plot8graph.jpeg" Time="2014-07-29T16.37.27";
 DF p143 d134
 Operation p144 "144-Plot density and envelop" Value="Plot density and envelop";
 CF p143 p144
 DF d92 p144
 DF d95 p144
-Snapshot d135 "135-plot8graph" Value="[DIR]/ddg/135-plot8graph.jpeg" Time="2014-07-29T13.07.15";
+Snapshot d135 "135-plot8graph" Value="[DIR]/ddg/135-plot8graph.jpeg" Time="2014-07-29T16.37.28";
 DF p144 d135
 Operation p145 "145-Plot density and envelop" Value="Plot density and envelop";
 CF p144 p145
 DF d92 p145
 DF d96 p145
-Snapshot d136 "136-plot8graph" Value="[DIR]/ddg/136-plot8graph.jpeg" Time="2014-07-29T13.07.16";
+Snapshot d136 "136-plot8graph" Value="[DIR]/ddg/136-plot8graph.jpeg" Time="2014-07-29T16.37.29";
 DF p145 d136
 Operation p146 "146-Plot density and envelop" Value="Plot density and envelop";
 CF p145 p146
 DF d92 p146
 DF d97 p146
-Snapshot d137 "137-plot8graph" Value="[DIR]/ddg/137-plot8graph.jpeg" Time="2014-07-29T13.07.16";
+Snapshot d137 "137-plot8graph" Value="[DIR]/ddg/137-plot8graph.jpeg" Time="2014-07-29T16.37.30";
 DF p146 d137
 Finish p147 "147-Plot Information, Contours, and K" Value="Plot Information, Contours, and K";
 CF p146 p147
@@ -964,9 +964,9 @@ CF p191 p192
 Operation p193 "193-Generate sprouts and ids" Value="Generate sprouts and ids";
 CF p192 p193
 DF d5 p193
-Snapshot d138 "138-tree.sprout" Value="[DIR]/ddg/138-tree.sprout.txt" Time="2014-07-29T13.07.50";
+Snapshot d138 "138-tree.sprout" Value="[DIR]/ddg/138-tree.sprout.txt" Time="2014-07-29T16.38.05";
 DF p193 d138
-Snapshot d139 "139-tree.ids" Value="[DIR]/ddg/139-tree.ids.txt" Time="2014-07-29T13.07.50";
+Snapshot d139 "139-tree.ids" Value="[DIR]/ddg/139-tree.ids.txt" Time="2014-07-29T16.38.05";
 DF p193 d139
 Operation p194 "194-Copy" Value="Copy";
 CF p193 p194
@@ -974,7 +974,7 @@ Operation p195 "195-Combine ages and ids" Value="Combine ages and ids";
 CF p194 p195
 DF d138 p195
 DF d139 p195
-Snapshot d140 "140-tree.ages" Value="[DIR]/ddg/140-tree.ages.csv" Time="2014-07-29T13.07.50";
+Snapshot d140 "140-tree.ages" Value="[DIR]/ddg/140-tree.ages.csv" Time="2014-07-29T16.38.05";
 DF p195 d140
 Start p196 "196-Deal with duplicate records" Value="Deal with duplicate records";
 CF p195 p196
@@ -982,19 +982,19 @@ Operation p197 "197-Deal with duplicate ids" Value="Deal with duplicate ids";
 CF p196 p197
 DF d140 p197
 DF d4 p197
-Snapshot d141 "141-tree.ages" Value="[DIR]/ddg/141-tree.ages.csv" Time="2014-07-29T13.07.50";
+Snapshot d141 "141-tree.ages" Value="[DIR]/ddg/141-tree.ages.csv" Time="2014-07-29T16.38.05";
 DF p197 d141
 Operation p198 "198-Deal with duplicate dbh" Value="Deal with duplicate dbh";
 CF p197 p198
 DF d141 p198
 DF d4 p198
-Snapshot d142 "142-tree.ages" Value="[DIR]/ddg/142-tree.ages.csv" Time="2014-07-29T13.07.50";
+Snapshot d142 "142-tree.ages" Value="[DIR]/ddg/142-tree.ages.csv" Time="2014-07-29T16.38.05";
 DF p198 d142
 Operation p199 "199-Deal with duplicate genus" Value="Deal with duplicate genus";
 CF p198 p199
 DF d142 p199
 DF d4 p199
-Snapshot d143 "143-tree.ages" Value="[DIR]/ddg/143-tree.ages.csv" Time="2014-07-29T13.07.50";
+Snapshot d143 "143-tree.ages" Value="[DIR]/ddg/143-tree.ages.csv" Time="2014-07-29T16.38.05";
 DF p199 d143
 Finish p200 "200-Deal with duplicate records" Value="Deal with duplicate records";
 CF p199 p200
@@ -1005,20 +1005,20 @@ CF p201 p202
 Operation p203 "203-Set color data" Value="Set color data";
 CF p202 p203
 DF d143 p203
-Snapshot d144 "144-tree.ages" Value="[DIR]/ddg/144-tree.ages.csv" Time="2014-07-29T13.07.50";
+Snapshot d144 "144-tree.ages" Value="[DIR]/ddg/144-tree.ages.csv" Time="2014-07-29T16.38.05";
 DF p203 d144
-Snapshot d145 "145-tree.ages" Value="[DIR]/ddg/145-tree.ages.csv" Time="2014-07-29T13.07.50";
+Snapshot d145 "145-tree.ages" Value="[DIR]/ddg/145-tree.ages.csv" Time="2014-07-29T16.38.05";
 DF p203 d145
 Operation p204 "204-tree.seperation" Value="tree.seperation";
 CF p203 p204
 DF d145 p204
-Snapshot d146 "146-vh" Value="[DIR]/ddg/146-vh.csv" Time="2014-07-29T13.07.50";
+Snapshot d146 "146-vh" Value="[DIR]/ddg/146-vh.csv" Time="2014-07-29T16.38.05";
 DF p204 d146
-Snapshot d147 "147-vd" Value="[DIR]/ddg/147-vd.csv" Time="2014-07-29T13.07.50";
+Snapshot d147 "147-vd" Value="[DIR]/ddg/147-vd.csv" Time="2014-07-29T16.38.05";
 DF p204 d147
-Snapshot d148 "148-rh" Value="[DIR]/ddg/148-rh.csv" Time="2014-07-29T13.07.50";
+Snapshot d148 "148-rh" Value="[DIR]/ddg/148-rh.csv" Time="2014-07-29T16.38.06";
 DF p204 d148
-Snapshot d149 "149-rd" Value="[DIR]/ddg/149-rd.csv" Time="2014-07-29T13.07.50";
+Snapshot d149 "149-rd" Value="[DIR]/ddg/149-rd.csv" Time="2014-07-29T16.38.06";
 DF p204 d149
 Start p205 "205-Create histograms" Value="Create histograms";
 CF p204 p205
@@ -1027,54 +1027,54 @@ CF p205 p206
 Operation p207 "207-histogram.creation" Value="histogram.creation";
 CF p206 p207
 DF d146 p207
-Snapshot d150 "150-hist.vh.age" Value="[DIR]/ddg/150-hist.vh.age.txt" Time="2014-07-29T13.07.50";
+Snapshot d150 "150-hist.vh.age" Value="[DIR]/ddg/150-hist.vh.age.txt" Time="2014-07-29T16.38.06";
 DF p207 d150
-Snapshot d151 "151-hist.vh.bet.age" Value="[DIR]/ddg/151-hist.vh.bet.age.txt" Time="2014-07-29T13.07.50";
+Snapshot d151 "151-hist.vh.bet.age" Value="[DIR]/ddg/151-hist.vh.bet.age.txt" Time="2014-07-29T16.38.06";
 DF p207 d151
-Snapshot d152 "152-hist.vh.acer.age" Value="[DIR]/ddg/152-hist.vh.acer.age.txt" Time="2014-07-29T13.07.50";
+Snapshot d152 "152-hist.vh.acer.age" Value="[DIR]/ddg/152-hist.vh.acer.age.txt" Time="2014-07-29T16.38.06";
 DF p207 d152
-Snapshot d153 "153-hist.vh.quercus.age" Value="[DIR]/ddg/153-hist.vh.quercus.age.txt" Time="2014-07-29T13.07.50";
+Snapshot d153 "153-hist.vh.quercus.age" Value="[DIR]/ddg/153-hist.vh.quercus.age.txt" Time="2014-07-29T16.38.06";
 DF p207 d153
-Snapshot d154 "154-hist.vh.pinus.age" Value="[DIR]/ddg/154-hist.vh.pinus.age.txt" Time="2014-07-29T13.07.50";
+Snapshot d154 "154-hist.vh.pinus.age" Value="[DIR]/ddg/154-hist.vh.pinus.age.txt" Time="2014-07-29T16.38.06";
 DF p207 d154
 Operation p208 "208-histogram.creation" Value="histogram.creation";
 CF p207 p208
 DF d148 p208
-Snapshot d155 "155-hist.rh.age" Value="[DIR]/ddg/155-hist.rh.age.txt" Time="2014-07-29T13.07.50";
+Snapshot d155 "155-hist.rh.age" Value="[DIR]/ddg/155-hist.rh.age.txt" Time="2014-07-29T16.38.06";
 DF p208 d155
-Snapshot d156 "156-hist.rh.bet.age" Value="[DIR]/ddg/156-hist.rh.bet.age.txt" Time="2014-07-29T13.07.50";
+Snapshot d156 "156-hist.rh.bet.age" Value="[DIR]/ddg/156-hist.rh.bet.age.txt" Time="2014-07-29T16.38.06";
 DF p208 d156
-Snapshot d157 "157-hist.rh.acer.age" Value="[DIR]/ddg/157-hist.rh.acer.age.txt" Time="2014-07-29T13.07.50";
+Snapshot d157 "157-hist.rh.acer.age" Value="[DIR]/ddg/157-hist.rh.acer.age.txt" Time="2014-07-29T16.38.06";
 DF p208 d157
-Snapshot d158 "158-hist.rh.quercus.age" Value="[DIR]/ddg/158-hist.rh.quercus.age.txt" Time="2014-07-29T13.07.50";
+Snapshot d158 "158-hist.rh.quercus.age" Value="[DIR]/ddg/158-hist.rh.quercus.age.txt" Time="2014-07-29T16.38.06";
 DF p208 d158
-Snapshot d159 "159-hist.rh.pinus.age" Value="[DIR]/ddg/159-hist.rh.pinus.age.txt" Time="2014-07-29T13.07.50";
+Snapshot d159 "159-hist.rh.pinus.age" Value="[DIR]/ddg/159-hist.rh.pinus.age.txt" Time="2014-07-29T16.38.06";
 DF p208 d159
 Operation p209 "209-histogram.creation" Value="histogram.creation";
 CF p208 p209
 DF d147 p209
-Snapshot d160 "160-hist.vd.age" Value="[DIR]/ddg/160-hist.vd.age.txt" Time="2014-07-29T13.07.50";
+Snapshot d160 "160-hist.vd.age" Value="[DIR]/ddg/160-hist.vd.age.txt" Time="2014-07-29T16.38.06";
 DF p209 d160
-Snapshot d161 "161-hist.vd.bet.age" Value="[DIR]/ddg/161-hist.vd.bet.age.txt" Time="2014-07-29T13.07.50";
+Snapshot d161 "161-hist.vd.bet.age" Value="[DIR]/ddg/161-hist.vd.bet.age.txt" Time="2014-07-29T16.38.06";
 DF p209 d161
-Snapshot d162 "162-hist.vd.acer.age" Value="[DIR]/ddg/162-hist.vd.acer.age.txt" Time="2014-07-29T13.07.50";
+Snapshot d162 "162-hist.vd.acer.age" Value="[DIR]/ddg/162-hist.vd.acer.age.txt" Time="2014-07-29T16.38.06";
 DF p209 d162
-Snapshot d163 "163-hist.vd.quercus.age" Value="[DIR]/ddg/163-hist.vd.quercus.age.txt" Time="2014-07-29T13.07.50";
+Snapshot d163 "163-hist.vd.quercus.age" Value="[DIR]/ddg/163-hist.vd.quercus.age.txt" Time="2014-07-29T16.38.06";
 DF p209 d163
-Snapshot d164 "164-hist.vd.pinus.age" Value="[DIR]/ddg/164-hist.vd.pinus.age.txt" Time="2014-07-29T13.07.50";
+Snapshot d164 "164-hist.vd.pinus.age" Value="[DIR]/ddg/164-hist.vd.pinus.age.txt" Time="2014-07-29T16.38.06";
 DF p209 d164
 Operation p210 "210-histogram.creation" Value="histogram.creation";
 CF p209 p210
 DF d149 p210
-Snapshot d165 "165-hist.rd.age" Value="[DIR]/ddg/165-hist.rd.age.txt" Time="2014-07-29T13.07.50";
+Snapshot d165 "165-hist.rd.age" Value="[DIR]/ddg/165-hist.rd.age.txt" Time="2014-07-29T16.38.06";
 DF p210 d165
-Snapshot d166 "166-hist.rd.bet.age" Value="[DIR]/ddg/166-hist.rd.bet.age.txt" Time="2014-07-29T13.07.50";
+Snapshot d166 "166-hist.rd.bet.age" Value="[DIR]/ddg/166-hist.rd.bet.age.txt" Time="2014-07-29T16.38.06";
 DF p210 d166
-Snapshot d167 "167-hist.rd.acer.age" Value="[DIR]/ddg/167-hist.rd.acer.age.txt" Time="2014-07-29T13.07.50";
+Snapshot d167 "167-hist.rd.acer.age" Value="[DIR]/ddg/167-hist.rd.acer.age.txt" Time="2014-07-29T16.38.06";
 DF p210 d167
-Snapshot d168 "168-hist.rd.quercus.age" Value="[DIR]/ddg/168-hist.rd.quercus.age.txt" Time="2014-07-29T13.07.50";
+Snapshot d168 "168-hist.rd.quercus.age" Value="[DIR]/ddg/168-hist.rd.quercus.age.txt" Time="2014-07-29T16.38.06";
 DF p210 d168
-Snapshot d169 "169-hist.rd.pinus.age" Value="[DIR]/ddg/169-hist.rd.pinus.age.txt" Time="2014-07-29T13.07.50";
+Snapshot d169 "169-hist.rd.pinus.age" Value="[DIR]/ddg/169-hist.rd.pinus.age.txt" Time="2014-07-29T16.38.06";
 DF p210 d169
 Finish p211 "211-age distributions" Value="age distributions";
 CF p210 p211
@@ -1083,54 +1083,54 @@ CF p211 p212
 Operation p213 "213-histogram.creation" Value="histogram.creation";
 CF p212 p213
 DF d146 p213
-Snapshot d170 "170-hist.vh.dbh" Value="[DIR]/ddg/170-hist.vh.dbh.txt" Time="2014-07-29T13.07.50";
+Snapshot d170 "170-hist.vh.dbh" Value="[DIR]/ddg/170-hist.vh.dbh.txt" Time="2014-07-29T16.38.06";
 DF p213 d170
-Snapshot d171 "171-hist.vh.bet.dbh" Value="[DIR]/ddg/171-hist.vh.bet.dbh.txt" Time="2014-07-29T13.07.50";
+Snapshot d171 "171-hist.vh.bet.dbh" Value="[DIR]/ddg/171-hist.vh.bet.dbh.txt" Time="2014-07-29T16.38.06";
 DF p213 d171
-Snapshot d172 "172-hist.vh.acer.dbh" Value="[DIR]/ddg/172-hist.vh.acer.dbh.txt" Time="2014-07-29T13.07.50";
+Snapshot d172 "172-hist.vh.acer.dbh" Value="[DIR]/ddg/172-hist.vh.acer.dbh.txt" Time="2014-07-29T16.38.06";
 DF p213 d172
-Snapshot d173 "173-hist.vh.quercus.dbh" Value="[DIR]/ddg/173-hist.vh.quercus.dbh.txt" Time="2014-07-29T13.07.50";
+Snapshot d173 "173-hist.vh.quercus.dbh" Value="[DIR]/ddg/173-hist.vh.quercus.dbh.txt" Time="2014-07-29T16.38.06";
 DF p213 d173
-Snapshot d174 "174-hist.vh.pinus.dbh" Value="[DIR]/ddg/174-hist.vh.pinus.dbh.txt" Time="2014-07-29T13.07.50";
+Snapshot d174 "174-hist.vh.pinus.dbh" Value="[DIR]/ddg/174-hist.vh.pinus.dbh.txt" Time="2014-07-29T16.38.06";
 DF p213 d174
 Operation p214 "214-histogram.creation" Value="histogram.creation";
 CF p213 p214
 DF d148 p214
-Snapshot d175 "175-hist.rh.dbh" Value="[DIR]/ddg/175-hist.rh.dbh.txt" Time="2014-07-29T13.07.50";
+Snapshot d175 "175-hist.rh.dbh" Value="[DIR]/ddg/175-hist.rh.dbh.txt" Time="2014-07-29T16.38.06";
 DF p214 d175
-Snapshot d176 "176-hist.rh.bet.dbh" Value="[DIR]/ddg/176-hist.rh.bet.dbh.txt" Time="2014-07-29T13.07.50";
+Snapshot d176 "176-hist.rh.bet.dbh" Value="[DIR]/ddg/176-hist.rh.bet.dbh.txt" Time="2014-07-29T16.38.06";
 DF p214 d176
-Snapshot d177 "177-hist.rh.acer.dbh" Value="[DIR]/ddg/177-hist.rh.acer.dbh.txt" Time="2014-07-29T13.07.50";
+Snapshot d177 "177-hist.rh.acer.dbh" Value="[DIR]/ddg/177-hist.rh.acer.dbh.txt" Time="2014-07-29T16.38.06";
 DF p214 d177
-Snapshot d178 "178-hist.rh.quercus.dbh" Value="[DIR]/ddg/178-hist.rh.quercus.dbh.txt" Time="2014-07-29T13.07.50";
+Snapshot d178 "178-hist.rh.quercus.dbh" Value="[DIR]/ddg/178-hist.rh.quercus.dbh.txt" Time="2014-07-29T16.38.06";
 DF p214 d178
-Snapshot d179 "179-hist.rh.pinus.dbh" Value="[DIR]/ddg/179-hist.rh.pinus.dbh.txt" Time="2014-07-29T13.07.50";
+Snapshot d179 "179-hist.rh.pinus.dbh" Value="[DIR]/ddg/179-hist.rh.pinus.dbh.txt" Time="2014-07-29T16.38.06";
 DF p214 d179
 Operation p215 "215-histogram.creation" Value="histogram.creation";
 CF p214 p215
 DF d147 p215
-Snapshot d180 "180-hist.vd.dbh" Value="[DIR]/ddg/180-hist.vd.dbh.txt" Time="2014-07-29T13.07.50";
+Snapshot d180 "180-hist.vd.dbh" Value="[DIR]/ddg/180-hist.vd.dbh.txt" Time="2014-07-29T16.38.06";
 DF p215 d180
-Snapshot d181 "181-hist.vd.bet.dbh" Value="[DIR]/ddg/181-hist.vd.bet.dbh.txt" Time="2014-07-29T13.07.50";
+Snapshot d181 "181-hist.vd.bet.dbh" Value="[DIR]/ddg/181-hist.vd.bet.dbh.txt" Time="2014-07-29T16.38.06";
 DF p215 d181
-Snapshot d182 "182-hist.vd.acer.dbh" Value="[DIR]/ddg/182-hist.vd.acer.dbh.txt" Time="2014-07-29T13.07.50";
+Snapshot d182 "182-hist.vd.acer.dbh" Value="[DIR]/ddg/182-hist.vd.acer.dbh.txt" Time="2014-07-29T16.38.06";
 DF p215 d182
-Snapshot d183 "183-hist.vd.quercus.dbh" Value="[DIR]/ddg/183-hist.vd.quercus.dbh.txt" Time="2014-07-29T13.07.50";
+Snapshot d183 "183-hist.vd.quercus.dbh" Value="[DIR]/ddg/183-hist.vd.quercus.dbh.txt" Time="2014-07-29T16.38.06";
 DF p215 d183
-Snapshot d184 "184-hist.vd.pinus.dbh" Value="[DIR]/ddg/184-hist.vd.pinus.dbh.txt" Time="2014-07-29T13.07.50";
+Snapshot d184 "184-hist.vd.pinus.dbh" Value="[DIR]/ddg/184-hist.vd.pinus.dbh.txt" Time="2014-07-29T16.38.06";
 DF p215 d184
 Operation p216 "216-histogram.creation" Value="histogram.creation";
 CF p215 p216
 DF d149 p216
-Snapshot d185 "185-hist.rd.dbh" Value="[DIR]/ddg/185-hist.rd.dbh.txt" Time="2014-07-29T13.07.50";
+Snapshot d185 "185-hist.rd.dbh" Value="[DIR]/ddg/185-hist.rd.dbh.txt" Time="2014-07-29T16.38.06";
 DF p216 d185
-Snapshot d186 "186-hist.rd.bet.dbh" Value="[DIR]/ddg/186-hist.rd.bet.dbh.txt" Time="2014-07-29T13.07.50";
+Snapshot d186 "186-hist.rd.bet.dbh" Value="[DIR]/ddg/186-hist.rd.bet.dbh.txt" Time="2014-07-29T16.38.06";
 DF p216 d186
-Snapshot d187 "187-hist.rd.acer.dbh" Value="[DIR]/ddg/187-hist.rd.acer.dbh.txt" Time="2014-07-29T13.07.50";
+Snapshot d187 "187-hist.rd.acer.dbh" Value="[DIR]/ddg/187-hist.rd.acer.dbh.txt" Time="2014-07-29T16.38.06";
 DF p216 d187
-Snapshot d188 "188-hist.rd.quercus.dbh" Value="[DIR]/ddg/188-hist.rd.quercus.dbh.txt" Time="2014-07-29T13.07.51";
+Snapshot d188 "188-hist.rd.quercus.dbh" Value="[DIR]/ddg/188-hist.rd.quercus.dbh.txt" Time="2014-07-29T16.38.06";
 DF p216 d188
-Snapshot d189 "189-hist.rd.pinus.dbh" Value="[DIR]/ddg/189-hist.rd.pinus.dbh.txt" Time="2014-07-29T13.07.51";
+Snapshot d189 "189-hist.rd.pinus.dbh" Value="[DIR]/ddg/189-hist.rd.pinus.dbh.txt" Time="2014-07-29T16.38.06";
 DF p216 d189
 Finish p217 "217-dbh distributions" Value="dbh distributions";
 CF p216 p217
@@ -1143,7 +1143,7 @@ DF d151 p219
 DF d153 p219
 DF d152 p219
 DF d154 p219
-Snapshot d190 "190-vh.ages" Value="[DIR]/ddg/190-vh.ages.csv" Time="2014-07-29T13.07.51";
+Snapshot d190 "190-vh.ages" Value="[DIR]/ddg/190-vh.ages.csv" Time="2014-07-29T16.38.06";
 DF p219 d190
 Operation p220 "220-bind.elements" Value="bind.elements";
 CF p219 p220
@@ -1152,7 +1152,7 @@ DF d156 p220
 DF d158 p220
 DF d157 p220
 DF d159 p220
-Snapshot d191 "191-rh.ages" Value="[DIR]/ddg/191-rh.ages.csv" Time="2014-07-29T13.07.51";
+Snapshot d191 "191-rh.ages" Value="[DIR]/ddg/191-rh.ages.csv" Time="2014-07-29T16.38.06";
 DF p220 d191
 Operation p221 "221-bind.elements" Value="bind.elements";
 CF p220 p221
@@ -1161,7 +1161,7 @@ DF d161 p221
 DF d163 p221
 DF d162 p221
 DF d164 p221
-Snapshot d192 "192-vd.ages" Value="[DIR]/ddg/192-vd.ages.csv" Time="2014-07-29T13.07.51";
+Snapshot d192 "192-vd.ages" Value="[DIR]/ddg/192-vd.ages.csv" Time="2014-07-29T16.38.06";
 DF p221 d192
 Operation p222 "222-bind.elements" Value="bind.elements";
 CF p221 p222
@@ -1170,7 +1170,7 @@ DF d166 p222
 DF d168 p222
 DF d167 p222
 DF d169 p222
-Snapshot d193 "193-rd.ages" Value="[DIR]/ddg/193-rd.ages.csv" Time="2014-07-29T13.07.51";
+Snapshot d193 "193-rd.ages" Value="[DIR]/ddg/193-rd.ages.csv" Time="2014-07-29T16.38.06";
 DF p222 d193
 Finish p223 "223-bind ages" Value="bind ages";
 CF p222 p223
@@ -1183,7 +1183,7 @@ DF d171 p225
 DF d173 p225
 DF d172 p225
 DF d174 p225
-Snapshot d194 "194-vh.dbh" Value="[DIR]/ddg/194-vh.dbh.csv" Time="2014-07-29T13.07.51";
+Snapshot d194 "194-vh.dbh" Value="[DIR]/ddg/194-vh.dbh.csv" Time="2014-07-29T16.38.06";
 DF p225 d194
 Operation p226 "226-bind.elements" Value="bind.elements";
 CF p225 p226
@@ -1192,7 +1192,7 @@ DF d176 p226
 DF d178 p226
 DF d177 p226
 DF d179 p226
-Snapshot d195 "195-rh.dbh" Value="[DIR]/ddg/195-rh.dbh.csv" Time="2014-07-29T13.07.51";
+Snapshot d195 "195-rh.dbh" Value="[DIR]/ddg/195-rh.dbh.csv" Time="2014-07-29T16.38.06";
 DF p226 d195
 Operation p227 "227-bind.elements" Value="bind.elements";
 CF p226 p227
@@ -1201,7 +1201,7 @@ DF d181 p227
 DF d183 p227
 DF d182 p227
 DF d184 p227
-Snapshot d196 "196-vd.dbh" Value="[DIR]/ddg/196-vd.dbh.csv" Time="2014-07-29T13.07.51";
+Snapshot d196 "196-vd.dbh" Value="[DIR]/ddg/196-vd.dbh.csv" Time="2014-07-29T16.38.06";
 DF p227 d196
 Operation p228 "228-bind.elements" Value="bind.elements";
 CF p227 p228
@@ -1210,7 +1210,7 @@ DF d186 p228
 DF d188 p228
 DF d187 p228
 DF d189 p228
-Snapshot d197 "197-rd.dbh" Value="[DIR]/ddg/197-rd.dbh.csv" Time="2014-07-29T13.07.51";
+Snapshot d197 "197-rd.dbh" Value="[DIR]/ddg/197-rd.dbh.csv" Time="2014-07-29T16.38.07";
 DF p228 d197
 Finish p229 "229-bind dbh" Value="bind dbh";
 CF p228 p229
@@ -1228,7 +1228,7 @@ DF d195 p232
 DF d197 p232
 DF d192 p232
 DF d193 p232
-File d198 "198-Figure 7 - age_dbh.pdf" Value="[DIR]/ddg/198-Figure 7 - age_dbh.pdf" Time="2014-07-29T13.07.51" Location="[DIR]/Figure 7 - age_dbh.pdf";
+File d198 "198-Figure 7 - age_dbh.pdf" Value="[DIR]/ddg/198-Figure 7 - age_dbh.pdf" Time="2014-07-29T16.38.07" Location="[DIR]/Figure 7 - age_dbh.pdf";
 DF p232 d198
 Finish p233 "233-Plot barcharts" Value="Plot barcharts";
 CF p232 p233
@@ -1240,7 +1240,7 @@ DF d146 p235
 DF d148 p235
 DF d147 p235
 DF d149 p235
-File d199 "199-Figure 7 - age_dbh.pdf" Value="[DIR]/ddg/199-Figure 7 - age_dbh.pdf" Time="2014-07-29T13.07.51" Location="[DIR]/Figure 7 - age_dbh.pdf";
+File d199 "199-Figure 7 - age_dbh.pdf" Value="[DIR]/ddg/199-Figure 7 - age_dbh.pdf" Time="2014-07-29T16.38.07" Location="[DIR]/Figure 7 - age_dbh.pdf";
 DF p235 d199
 Finish p236 "236-Plot scatterplots" Value="Plot scatterplots";
 CF p235 p236
@@ -1252,45 +1252,45 @@ Start p239 "239-Read data" Value="Read data";
 CF p238 p239
 Start p240 "240-Harvard Forest Data" Value="Harvard Forest Data";
 CF p239 p240
-File d200 "200-hf000-01-daily-m.csv" Value="[DIR]/ddg/200-hf000-01-daily-m.csv" Time="2014-07-29T13.07.51" Location="[DIR]/hf000-01-daily-m.csv";
+File d200 "200-hf000-01-daily-m.csv" Value="[DIR]/ddg/200-hf000-01-daily-m.csv" Time="2014-07-29T16.38.07" Location="[DIR]/hf000-01-daily-m.csv";
 Operation p241 "241-Add new data" Value="Add new data";
 CF p240 p241
 DF d200 p241
-Snapshot d201 "201-hf.Shaler" Value="[DIR]/ddg/201-hf.Shaler.csv" Time="2014-07-29T13.07.51";
+Snapshot d201 "201-hf.Shaler" Value="[DIR]/ddg/201-hf.Shaler.csv" Time="2014-07-29T16.38.07";
 DF p241 d201
-File d202 "202-hf001-02-annual-m.csv" Value="[DIR]/ddg/202-hf001-02-annual-m.csv" Time="2014-07-29T13.07.51" Location="[DIR]/hf001-02-annual-m.csv";
+File d202 "202-hf001-02-annual-m.csv" Value="[DIR]/ddg/202-hf001-02-annual-m.csv" Time="2014-07-29T16.38.07" Location="[DIR]/hf001-02-annual-m.csv";
 Operation p242 "242-subset" Value="subset";
 CF p241 p242
 DF d202 p242
-Snapshot d203 "203-Fisher.2002" Value="[DIR]/ddg/203-Fisher.2002.csv" Time="2014-07-29T13.07.51";
+Snapshot d203 "203-Fisher.2002" Value="[DIR]/ddg/203-Fisher.2002.csv" Time="2014-07-29T16.38.07";
 DF p242 d203
 Operation p243 "243-Combine into annual HF" Value="Combine into annual HF";
 CF p242 p243
 DF d201 p243
 DF d203 p243
-Snapshot d204 "204-HF.annual" Value="[DIR]/ddg/204-HF.annual.csv" Time="2014-07-29T13.07.52";
+Snapshot d204 "204-HF.annual" Value="[DIR]/ddg/204-HF.annual.csv" Time="2014-07-29T16.38.07";
 DF p243 d204
 Finish p244 "244-Harvard Forest Data" Value="Harvard Forest Data";
 CF p243 p244
 Start p245 "245-Amherst data" Value="Amherst data";
 CF p244 p245
-File d205 "205-Amherst_met_1893-2012-reduced.csv" Value="[DIR]/ddg/205-Amherst_met_1893-2012-reduced.csv" Time="2014-07-29T13.07.52" Location="[DIR]/Amherst_met_1893-2012-reduced.csv";
+File d205 "205-Amherst_met_1893-2012-reduced.csv" Value="[DIR]/ddg/205-Amherst_met_1893-2012-reduced.csv" Time="2014-07-29T16.38.08" Location="[DIR]/Amherst_met_1893-2012-reduced.csv";
 Start p246 "246-Augment data" Value="Augment data";
 CF p245 p246
 Operation p247 "247-calculate.air.T" Value="calculate.air.T";
 CF p246 p247
 DF d205 p247
-Snapshot d206 "206-amherst" Value="[DIR]/ddg/206-amherst.csv" Time="2014-07-29T13.07.53";
+Snapshot d206 "206-amherst" Value="[DIR]/ddg/206-amherst.csv" Time="2014-07-29T16.38.10";
 DF p247 d206
 Operation p248 "248-amherst.annual" Value="amherst.annual";
 CF p247 p248
 DF d206 p248
-Snapshot d207 "207-amherst.annual" Value="[DIR]/ddg/207-amherst.annual.csv" Time="2014-07-29T13.07.54";
+Snapshot d207 "207-amherst.annual" Value="[DIR]/ddg/207-amherst.annual.csv" Time="2014-07-29T16.38.10";
 DF p248 d207
 Operation p249 "249-Add year 1896" Value="Add year 1896";
 CF p248 p249
 DF d207 p249
-Snapshot d208 "208-amherst.annual.fixed" Value="[DIR]/ddg/208-amherst.annual.fixed.csv" Time="2014-07-29T13.07.54";
+Snapshot d208 "208-amherst.annual.fixed" Value="[DIR]/ddg/208-amherst.annual.fixed.csv" Time="2014-07-29T16.38.10";
 DF p249 d208
 Finish p250 "250-Augment data" Value="Augment data";
 CF p249 p250
@@ -1298,21 +1298,21 @@ Finish p251 "251-Amherst data" Value="Amherst data";
 CF p250 p251
 Start p252 "252-Leverett data" Value="Leverett data";
 CF p251 p252
-File d209 "209-PDSO - 267.csv" Value="[DIR]/ddg/209-PDSO - 267.csv" Time="2014-07-29T13.07.54" Location="[DIR]/PDSO - 267.csv";
+File d209 "209-PDSO - 267.csv" Value="[DIR]/ddg/209-PDSO - 267.csv" Time="2014-07-29T16.38.10" Location="[DIR]/PDSO - 267.csv";
 Operation p253 "253-parse" Value="parse";
 CF p252 p253
 DF d209 p253
-Snapshot d210 "210-leverett.pdsi" Value="[DIR]/ddg/210-leverett.pdsi.csv" Time="2014-07-29T13.07.54";
+Snapshot d210 "210-leverett.pdsi" Value="[DIR]/ddg/210-leverett.pdsi.csv" Time="2014-07-29T16.38.10";
 DF p253 d210
 Finish p254 "254-Leverett data" Value="Leverett data";
 CF p253 p254
 Start p255 "255-Population data" Value="Population data";
 CF p254 p255
-File d211 "211-phampop.csv" Value="[DIR]/ddg/211-phampop.csv" Time="2014-07-29T13.07.54" Location="[DIR]/phampop.csv";
+File d211 "211-phampop.csv" Value="[DIR]/ddg/211-phampop.csv" Time="2014-07-29T16.38.10" Location="[DIR]/phampop.csv";
 Operation p256 "256-read.data" Value="read.data";
 CF p255 p256
 DF d211 p256
-Snapshot d212 "212-pop.data" Value="[DIR]/ddg/212-pop.data.csv" Time="2014-07-29T13.07.54";
+Snapshot d212 "212-pop.data" Value="[DIR]/ddg/212-pop.data.csv" Time="2014-07-29T16.38.10";
 DF p256 d212
 Finish p257 "257-Population data" Value="Population data";
 CF p256 p257
@@ -1323,52 +1323,52 @@ CF p258 p259
 Operation p260 "260-timeseries" Value="timeseries";
 CF p259 p260
 DF d204 p260
-Snapshot d213 "213-HF.ts" Value="[DIR]/ddg/213-HF.ts.csv" Time="2014-07-29T13.07.54";
+Snapshot d213 "213-HF.ts" Value="[DIR]/ddg/213-HF.ts.csv" Time="2014-07-29T16.38.11";
 DF p260 d213
 Operation p261 "261-plot" Value="plot";
 CF p260 p261
 DF d213 p261
-Snapshot d214 "214-HF.ts" Value="[DIR]/ddg/214-HF.ts.jpeg" Time="2014-07-29T13.07.54";
+Snapshot d214 "214-HF.ts" Value="[DIR]/ddg/214-HF.ts.jpeg" Time="2014-07-29T16.38.11";
 DF p261 d214
 Operation p262 "262-timeseries" Value="timeseries";
 CF p261 p262
 DF d208 p262
-Snapshot d215 "215-Amherst.ts" Value="[DIR]/ddg/215-Amherst.ts.csv" Time="2014-07-29T13.07.54";
+Snapshot d215 "215-Amherst.ts" Value="[DIR]/ddg/215-Amherst.ts.csv" Time="2014-07-29T16.38.11";
 DF p262 d215
 Operation p263 "263-plot" Value="plot";
 CF p262 p263
 DF d215 p263
-Snapshot d216 "216-Amherst.ts" Value="[DIR]/ddg/216-Amherst.ts.jpeg" Time="2014-07-29T13.07.54";
+Snapshot d216 "216-Amherst.ts" Value="[DIR]/ddg/216-Amherst.ts.jpeg" Time="2014-07-29T16.38.11";
 DF p263 d216
 Operation p264 "264-timeseries" Value="timeseries";
 CF p263 p264
 DF d210 p264
-Snapshot d217 "217-pdsi.ts" Value="[DIR]/ddg/217-pdsi.ts.txt" Time="2014-07-29T13.07.54";
+Snapshot d217 "217-pdsi.ts" Value="[DIR]/ddg/217-pdsi.ts.txt" Time="2014-07-29T16.38.11";
 DF p264 d217
 Operation p265 "265-plot" Value="plot";
 CF p264 p265
 DF d217 p265
-Snapshot d218 "218-pdsi.ts" Value="[DIR]/ddg/218-pdsi.ts.jpeg" Time="2014-07-29T13.07.54";
+Snapshot d218 "218-pdsi.ts" Value="[DIR]/ddg/218-pdsi.ts.jpeg" Time="2014-07-29T16.38.11";
 DF p265 d218
 Operation p266 "266-timeseries" Value="timeseries";
 CF p265 p266
 DF d212 p266
-Snapshot d219 "219-pop.ts" Value="[DIR]/ddg/219-pop.ts.txt" Time="2014-07-29T13.07.54";
+Snapshot d219 "219-pop.ts" Value="[DIR]/ddg/219-pop.ts.txt" Time="2014-07-29T16.38.11";
 DF p266 d219
 Operation p267 "267-plot" Value="plot";
 CF p266 p267
 DF d219 p267
-Snapshot d220 "220-HF.ts" Value="[DIR]/ddg/220-HF.ts.jpeg" Time="2014-07-29T13.07.54";
+Snapshot d220 "220-HF.ts" Value="[DIR]/ddg/220-HF.ts.jpeg" Time="2014-07-29T16.38.11";
 DF p267 d220
 Operation p268 "268-timeseries" Value="timeseries";
 CF p267 p268
 DF d212 p268
-Snapshot d221 "221-pop.ts" Value="[DIR]/ddg/221-pop.ts.txt" Time="2014-07-29T13.07.54";
+Snapshot d221 "221-pop.ts" Value="[DIR]/ddg/221-pop.ts.txt" Time="2014-07-29T16.38.11";
 DF p268 d221
 Operation p269 "269-plot" Value="plot";
 CF p268 p269
 DF d218 p269
-Snapshot d222 "222-pop.ts" Value="[DIR]/ddg/222-pop.ts.jpeg" Time="2014-07-29T13.07.54";
+Snapshot d222 "222-pop.ts" Value="[DIR]/ddg/222-pop.ts.jpeg" Time="2014-07-29T16.38.11";
 DF p269 d222
 Finish p270 "270-timeseries" Value="timeseries";
 CF p269 p270
@@ -1377,7 +1377,7 @@ CF p270 p271
 Operation p272 "272-out.file" Value="out.file";
 CF p271 p272
 DF d216 p272
-File d223 "223-Simes_environment_v3.pdf" Value="[DIR]/ddg/223-Simes_environment_v3.pdf" Time="2014-07-29T13.07.54" Location="[DIR]/Simes_environment_v3.pdf";
+File d223 "223-Simes_environment_v3.pdf" Value="[DIR]/ddg/223-Simes_environment_v3.pdf" Time="2014-07-29T16.38.11" Location="[DIR]/Simes_environment_v3.pdf";
 DF p272 d223
 Finish p273 "273-Plot data 2" Value="Plot data 2";
 CF p272 p273
@@ -1386,12 +1386,12 @@ CF p273 p274
 Operation p275 "275-plot.means" Value="plot.means";
 CF p274 p275
 DF d220 p275
-Snapshot d224 "224-HF.ts.mean" Value="[DIR]/ddg/224-HF.ts.mean.jpeg" Time="2014-07-29T13.07.54";
+Snapshot d224 "224-HF.ts.mean" Value="[DIR]/ddg/224-HF.ts.mean.jpeg" Time="2014-07-29T16.38.11";
 DF p275 d224
 Operation p276 "276-plot.means" Value="plot.means";
 CF p275 p276
 DF d218 p276
-Snapshot d225 "225-odsi.ts.means" Value="[DIR]/ddg/225-odsi.ts.means.jpeg" Time="2014-07-29T13.07.54";
+Snapshot d225 "225-odsi.ts.means" Value="[DIR]/ddg/225-odsi.ts.means.jpeg" Time="2014-07-29T16.38.11";
 DF p276 d225
 Finish p277 "277-Analysis" Value="Analysis";
 CF p276 p277
@@ -1400,7 +1400,7 @@ CF p277 p278
 Operation p279 "279-add.age.radius.BAI" Value="add.age.radius.BAI";
 CF p278 p279
 DF d5 p279
-Snapshot d226 "226-dendro.raw" Value="[DIR]/ddg/226-dendro.raw.csv" Time="2014-07-29T13.07.55";
+Snapshot d226 "226-dendro.raw" Value="[DIR]/ddg/226-dendro.raw.csv" Time="2014-07-29T16.38.12";
 DF p279 d226
 Finish p280 "280-Modifications" Value="Modifications";
 CF p279 p280
@@ -1409,7 +1409,7 @@ CF p280 p281
 Operation p282 "282-Produce 5 species" Value="Produce 5 species";
 CF p281 p282
 DF d226 p282
-Snapshot d227 "227-dendro.5sp" Value="[DIR]/ddg/227-dendro.5sp.csv" Time="2014-07-29T13.07.56";
+Snapshot d227 "227-dendro.5sp" Value="[DIR]/ddg/227-dendro.5sp.csv" Time="2014-07-29T16.38.13";
 DF p282 d227
 Finish p283 "283-Reduction" Value="Reduction";
 CF p282 p283
@@ -1417,7 +1417,7 @@ Start p284 "284-Plot3" Value="Plot3";
 CF p283 p284
 Operation p285 "285-output analysis pdf" Value="output analysis pdf";
 CF p284 p285
-File d228 "228-Figure-9-BAI-both-v2.pdf" Value="[DIR]/ddg/228-Figure-9-BAI-both-v2.pdf" Time="2014-07-29T13.08.01" Location="[DIR]/Figure-9-BAI-both-v2.pdf";
+File d228 "228-Figure-9-BAI-both-v2.pdf" Value="[DIR]/ddg/228-Figure-9-BAI-both-v2.pdf" Time="2014-07-29T16.38.18" Location="[DIR]/Figure-9-BAI-both-v2.pdf";
 DF p285 d228
 Finish p286 "286-Plot3" Value="Plot3";
 CF p285 p286
@@ -1426,15 +1426,15 @@ CF p286 p287
 Operation p288 "288-Git 1-d GAMS" Value="Git 1-d GAMS";
 CF p287 p288
 DF d227 p288
-Snapshot d229 "229-gam.acer1" Value="[DIR]/ddg/229-gam.acer1.txt" Time="2014-07-29T13.08.04";
+Snapshot d229 "229-gam.acer1" Value="[DIR]/ddg/229-gam.acer1.txt" Time="2014-07-29T16.38.22";
 DF p288 d229
-Snapshot d230 "230-gam.betula1" Value="[DIR]/ddg/230-gam.betula1.txt" Time="2014-07-29T13.08.06";
+Snapshot d230 "230-gam.betula1" Value="[DIR]/ddg/230-gam.betula1.txt" Time="2014-07-29T16.38.24";
 DF p288 d230
-Snapshot d231 "231-gam.quercus1" Value="[DIR]/ddg/231-gam.quercus1.txt" Time="2014-07-29T13.08.07";
+Snapshot d231 "231-gam.quercus1" Value="[DIR]/ddg/231-gam.quercus1.txt" Time="2014-07-29T16.38.25";
 DF p288 d231
-Snapshot d232 "232-gam.pinus1" Value="[DIR]/ddg/232-gam.pinus1.txt" Time="2014-07-29T13.08.07";
+Snapshot d232 "232-gam.pinus1" Value="[DIR]/ddg/232-gam.pinus1.txt" Time="2014-07-29T16.38.26";
 DF p288 d232
-Snapshot d233 "233-gam.tsuga1" Value="[DIR]/ddg/233-gam.tsuga1.txt" Time="2014-07-29T13.08.11";
+Snapshot d233 "233-gam.tsuga1" Value="[DIR]/ddg/233-gam.tsuga1.txt" Time="2014-07-29T16.38.29";
 DF p288 d233
 Start p289 "289-Get wiggle years effects" Value="Get wiggle years effects";
 CF p288 p289
@@ -1442,51 +1442,51 @@ Operation p290 "290-wiggle.years" Value="wiggle.years";
 CF p289 p290
 DF d227 p290
 DF d96 p290
-Snapshot d234 "234-years.a" Value="[DIR]/ddg/234-years.a.csv" Time="2014-07-29T13.08.11";
+Snapshot d234 "234-years.a" Value="[DIR]/ddg/234-years.a.csv" Time="2014-07-29T16.38.29";
 DF p290 d234
 Data d235 "235-lastyr.a" Value="115";
 DF p290 d235
-Snapshot d236 "236-fixed.year.a" Value="[DIR]/ddg/236-fixed.year.a.csv" Time="2014-07-29T13.08.11";
+Snapshot d236 "236-fixed.year.a" Value="[DIR]/ddg/236-fixed.year.a.csv" Time="2014-07-29T16.38.29";
 DF p290 d236
 Operation p291 "291-wiggle.years" Value="wiggle.years";
 CF p290 p291
 DF d227 p291
 DF d94 p291
-Snapshot d237 "237-years.b" Value="[DIR]/ddg/237-years.b.csv" Time="2014-07-29T13.08.11";
+Snapshot d237 "237-years.b" Value="[DIR]/ddg/237-years.b.csv" Time="2014-07-29T16.38.29";
 DF p291 d237
 Data d238 "238-lastyr.b" Value="122";
 DF p291 d238
-Snapshot d239 "239-fixed.year.b" Value="[DIR]/ddg/239-fixed.year.b.csv" Time="2014-07-29T13.08.11";
+Snapshot d239 "239-fixed.year.b" Value="[DIR]/ddg/239-fixed.year.b.csv" Time="2014-07-29T16.38.29";
 DF p291 d239
 Operation p292 "292-wiggle.years" Value="wiggle.years";
 CF p291 p292
 DF d227 p292
 DF d95 p292
-Snapshot d240 "240-years.q" Value="[DIR]/ddg/240-years.q.csv" Time="2014-07-29T13.08.11";
+Snapshot d240 "240-years.q" Value="[DIR]/ddg/240-years.q.csv" Time="2014-07-29T16.38.29";
 DF p292 d240
 Data d241 "241-lastyr.q" Value="103";
 DF p292 d241
-Snapshot d242 "242-fixed.year.q" Value="[DIR]/ddg/242-fixed.year.q.csv" Time="2014-07-29T13.08.11";
+Snapshot d242 "242-fixed.year.q" Value="[DIR]/ddg/242-fixed.year.q.csv" Time="2014-07-29T16.38.29";
 DF p292 d242
 Operation p293 "293-wiggle.years" Value="wiggle.years";
 CF p292 p293
 DF d227 p293
 DF d97 p293
-Snapshot d243 "243-years.p" Value="[DIR]/ddg/243-years.p.csv" Time="2014-07-29T13.08.11";
+Snapshot d243 "243-years.p" Value="[DIR]/ddg/243-years.p.csv" Time="2014-07-29T16.38.29";
 DF p293 d243
 Data d244 "244-lastyr.p" Value="105";
 DF p293 d244
-Snapshot d245 "245-fixed.year.p" Value="[DIR]/ddg/245-fixed.year.p.csv" Time="2014-07-29T13.08.11";
+Snapshot d245 "245-fixed.year.p" Value="[DIR]/ddg/245-fixed.year.p.csv" Time="2014-07-29T16.38.29";
 DF p293 d245
 Operation p294 "294-wiggle.years" Value="wiggle.years";
 CF p293 p294
 DF d227 p294
 DF d93 p294
-Snapshot d246 "246-years.t" Value="[DIR]/ddg/246-years.t.csv" Time="2014-07-29T13.08.11";
+Snapshot d246 "246-years.t" Value="[DIR]/ddg/246-years.t.csv" Time="2014-07-29T16.38.29";
 DF p294 d246
 Data d247 "247-lastyr.t" Value="143";
 DF p294 d247
-Snapshot d248 "248-fixed.year.t" Value="[DIR]/ddg/248-fixed.year.t.csv" Time="2014-07-29T13.08.11";
+Snapshot d248 "248-fixed.year.t" Value="[DIR]/ddg/248-fixed.year.t.csv" Time="2014-07-29T16.38.29";
 DF p294 d248
 Finish p295 "295-Get wiggle years effects" Value="Get wiggle years effects";
 CF p294 p295
@@ -1497,27 +1497,27 @@ CF p296 p297
 Operation p298 "298-plot" Value="plot";
 CF p297 p298
 DF d233 p298
-File d249 "249-Figure_10-single-gams-v2.pdf" Value="[DIR]/ddg/249-Figure_10-single-gams-v2.pdf" Time="2014-07-29T13.08.11" Location="[DIR]/Figure_10-single-gams-v2.pdf";
+File d249 "249-Figure_10-single-gams-v2.pdf" Value="[DIR]/ddg/249-Figure_10-single-gams-v2.pdf" Time="2014-07-29T16.38.29" Location="[DIR]/Figure_10-single-gams-v2.pdf";
 DF p298 d249
 Operation p299 "299-plot" Value="plot";
 CF p298 p299
 DF d230 p299
-File d250 "250-Figure_10-single-gams-v2.pdf" Value="[DIR]/ddg/250-Figure_10-single-gams-v2.pdf" Time="2014-07-29T13.08.11" Location="[DIR]/Figure_10-single-gams-v2.pdf";
+File d250 "250-Figure_10-single-gams-v2.pdf" Value="[DIR]/ddg/250-Figure_10-single-gams-v2.pdf" Time="2014-07-29T16.38.29" Location="[DIR]/Figure_10-single-gams-v2.pdf";
 DF p299 d250
 Operation p300 "300-plot" Value="plot";
 CF p299 p300
 DF d231 p300
-File d251 "251-Figure_10-single-gams-v2.pdf" Value="[DIR]/ddg/251-Figure_10-single-gams-v2.pdf" Time="2014-07-29T13.08.11" Location="[DIR]/Figure_10-single-gams-v2.pdf";
+File d251 "251-Figure_10-single-gams-v2.pdf" Value="[DIR]/ddg/251-Figure_10-single-gams-v2.pdf" Time="2014-07-29T16.38.29" Location="[DIR]/Figure_10-single-gams-v2.pdf";
 DF p300 d251
 Operation p301 "301-plot" Value="plot";
 CF p300 p301
 DF d229 p301
-File d252 "252-Figure_10-single-gams-v2.pdf" Value="[DIR]/ddg/252-Figure_10-single-gams-v2.pdf" Time="2014-07-29T13.08.11" Location="[DIR]/Figure_10-single-gams-v2.pdf";
+File d252 "252-Figure_10-single-gams-v2.pdf" Value="[DIR]/ddg/252-Figure_10-single-gams-v2.pdf" Time="2014-07-29T16.38.29" Location="[DIR]/Figure_10-single-gams-v2.pdf";
 DF p301 d252
 Operation p302 "302-plot" Value="plot";
 CF p301 p302
 DF d232 p302
-File d253 "253-Figure_10-single-gams-v2.pdf" Value="[DIR]/ddg/253-Figure_10-single-gams-v2.pdf" Time="2014-07-29T13.08.11" Location="[DIR]/Figure_10-single-gams-v2.pdf";
+File d253 "253-Figure_10-single-gams-v2.pdf" Value="[DIR]/ddg/253-Figure_10-single-gams-v2.pdf" Time="2014-07-29T16.38.29" Location="[DIR]/Figure_10-single-gams-v2.pdf";
 DF p302 d253
 Finish p303 "303-gam.plots" Value="gam.plots";
 CF p302 p303
@@ -1527,31 +1527,31 @@ Operation p305 "305-plot" Value="plot";
 CF p304 p305
 DF d246 p305
 DF d248 p305
-File d254 "254-Figure_10-single-gams-v2.pdf" Value="[DIR]/ddg/254-Figure_10-single-gams-v2.pdf" Time="2014-07-29T13.08.11" Location="[DIR]/Figure_10-single-gams-v2.pdf";
+File d254 "254-Figure_10-single-gams-v2.pdf" Value="[DIR]/ddg/254-Figure_10-single-gams-v2.pdf" Time="2014-07-29T16.38.29" Location="[DIR]/Figure_10-single-gams-v2.pdf";
 DF p305 d254
 Operation p306 "306-plot" Value="plot";
 CF p305 p306
 DF d237 p306
 DF d239 p306
-File d255 "255-Figure_10-single-gams-v2.pdf" Value="[DIR]/ddg/255-Figure_10-single-gams-v2.pdf" Time="2014-07-29T13.08.11" Location="[DIR]/Figure_10-single-gams-v2.pdf";
+File d255 "255-Figure_10-single-gams-v2.pdf" Value="[DIR]/ddg/255-Figure_10-single-gams-v2.pdf" Time="2014-07-29T16.38.29" Location="[DIR]/Figure_10-single-gams-v2.pdf";
 DF p306 d255
 Operation p307 "307-plot" Value="plot";
 CF p306 p307
 DF d240 p307
 DF d242 p307
-File d256 "256-Figure_10-single-gams-v2.pdf" Value="[DIR]/ddg/256-Figure_10-single-gams-v2.pdf" Time="2014-07-29T13.08.11" Location="[DIR]/Figure_10-single-gams-v2.pdf";
+File d256 "256-Figure_10-single-gams-v2.pdf" Value="[DIR]/ddg/256-Figure_10-single-gams-v2.pdf" Time="2014-07-29T16.38.29" Location="[DIR]/Figure_10-single-gams-v2.pdf";
 DF p307 d256
 Operation p308 "308-plot" Value="plot";
 CF p307 p308
 DF d234 p308
 DF d236 p308
-File d257 "257-Figure_10-single-gams-v2.pdf" Value="[DIR]/ddg/257-Figure_10-single-gams-v2.pdf" Time="2014-07-29T13.08.11" Location="[DIR]/Figure_10-single-gams-v2.pdf";
+File d257 "257-Figure_10-single-gams-v2.pdf" Value="[DIR]/ddg/257-Figure_10-single-gams-v2.pdf" Time="2014-07-29T16.38.29" Location="[DIR]/Figure_10-single-gams-v2.pdf";
 DF p308 d257
 Operation p309 "309-plot" Value="plot";
 CF p308 p309
 DF d243 p309
 DF d245 p309
-File d258 "258-Figure_10-single-gams-v2.pdf" Value="[DIR]/ddg/258-Figure_10-single-gams-v2.pdf" Time="2014-07-29T13.08.11" Location="[DIR]/Figure_10-single-gams-v2.pdf";
+File d258 "258-Figure_10-single-gams-v2.pdf" Value="[DIR]/ddg/258-Figure_10-single-gams-v2.pdf" Time="2014-07-29T16.38.29" Location="[DIR]/Figure_10-single-gams-v2.pdf";
 DF p309 d258
 Finish p310 "310-wiggles" Value="wiggles";
 CF p309 p310
@@ -1569,47 +1569,47 @@ DF p314 d259
 Operation p315 "315-birthyr" Value="birthyr";
 CF p314 p315
 DF d227 p315
-Snapshot d260 "260-dendro.5sp" Value="[DIR]/ddg/260-dendro.5sp.csv" Time="2014-07-29T13.08.14";
+Snapshot d260 "260-dendro.5sp" Value="[DIR]/ddg/260-dendro.5sp.csv" Time="2014-07-29T16.38.32";
 DF p315 d260
 Operation p316 "316-calc.gam" Value="calc.gam";
 CF p315 p316
 DF d260 p316
-Snapshot d261 "261-gam.acer2" Value="[DIR]/ddg/261-gam.acer2.txt" Time="2014-07-29T13.08.18";
+Snapshot d261 "261-gam.acer2" Value="[DIR]/ddg/261-gam.acer2.txt" Time="2014-07-29T16.38.36";
 DF p316 d261
-Snapshot d262 "262-gam.betula2" Value="[DIR]/ddg/262-gam.betula2.txt" Time="2014-07-29T13.08.20";
+Snapshot d262 "262-gam.betula2" Value="[DIR]/ddg/262-gam.betula2.txt" Time="2014-07-29T16.38.38";
 DF p316 d262
-Snapshot d263 "263-gam.quercus2" Value="[DIR]/ddg/263-gam.quercus2.txt" Time="2014-07-29T13.08.20";
+Snapshot d263 "263-gam.quercus2" Value="[DIR]/ddg/263-gam.quercus2.txt" Time="2014-07-29T16.38.38";
 DF p316 d263
-Snapshot d264 "264-gam.pinus2" Value="[DIR]/ddg/264-gam.pinus2.txt" Time="2014-07-29T13.08.21";
+Snapshot d264 "264-gam.pinus2" Value="[DIR]/ddg/264-gam.pinus2.txt" Time="2014-07-29T16.38.39";
 DF p316 d264
-Snapshot d265 "265-gam.tsuga2" Value="[DIR]/ddg/265-gam.tsuga2.txt" Time="2014-07-29T13.08.23";
+Snapshot d265 "265-gam.tsuga2" Value="[DIR]/ddg/265-gam.tsuga2.txt" Time="2014-07-29T16.38.42";
 DF p316 d265
 Start p317 "317-Build contour plots" Value="Build contour plots";
 CF p316 p317
 Operation p318 "318-filter.predictions" Value="filter.predictions";
 CF p317 p318
 DF d260 p318
-Snapshot d266 "266-newXY.acer" Value="[DIR]/ddg/266-newXY.acer.csv" Time="2014-07-29T13.08.25";
+Snapshot d266 "266-newXY.acer" Value="[DIR]/ddg/266-newXY.acer.csv" Time="2014-07-29T16.38.44";
 DF p318 d266
 Operation p319 "319-filter.predictions" Value="filter.predictions";
 CF p318 p319
 DF d260 p319
-Snapshot d267 "267-newXY.betula" Value="[DIR]/ddg/267-newXY.betula.csv" Time="2014-07-29T13.08.27";
+Snapshot d267 "267-newXY.betula" Value="[DIR]/ddg/267-newXY.betula.csv" Time="2014-07-29T16.38.46";
 DF p319 d267
 Operation p320 "320-filter.predictions" Value="filter.predictions";
 CF p319 p320
 DF d260 p320
-Snapshot d268 "268-newXY.quercus" Value="[DIR]/ddg/268-newXY.quercus.csv" Time="2014-07-29T13.08.28";
+Snapshot d268 "268-newXY.quercus" Value="[DIR]/ddg/268-newXY.quercus.csv" Time="2014-07-29T16.38.47";
 DF p320 d268
 Operation p321 "321-filter.predictions" Value="filter.predictions";
 CF p320 p321
 DF d260 p321
-Snapshot d269 "269-newXY.pinus" Value="[DIR]/ddg/269-newXY.pinus.csv" Time="2014-07-29T13.08.29";
+Snapshot d269 "269-newXY.pinus" Value="[DIR]/ddg/269-newXY.pinus.csv" Time="2014-07-29T16.38.47";
 DF p321 d269
 Operation p322 "322-filter.predictions" Value="filter.predictions";
 CF p321 p322
 DF d260 p322
-Snapshot d270 "270-newXY.tsuga" Value="[DIR]/ddg/270-newXY.tsuga.csv" Time="2014-07-29T13.08.32";
+Snapshot d270 "270-newXY.tsuga" Value="[DIR]/ddg/270-newXY.tsuga.csv" Time="2014-07-29T16.38.51";
 DF p322 d270
 Finish p323 "323-Build contour plots" Value="Build contour plots";
 CF p322 p323
@@ -1618,27 +1618,27 @@ CF p323 p324
 Operation p325 "325-create.ggplot" Value="create.ggplot";
 CF p324 p325
 DF d266 p325
-Snapshot d271 "271-a.cont" Value="[DIR]/ddg/271-a.cont.jpeg" Time="2014-07-29T13.08.32";
+Snapshot d271 "271-a.cont" Value="[DIR]/ddg/271-a.cont.jpeg" Time="2014-07-29T16.38.51";
 DF p325 d271
 Operation p326 "326-create.ggplot" Value="create.ggplot";
 CF p325 p326
 DF d267 p326
-Snapshot d272 "272-b.cont" Value="[DIR]/ddg/272-b.cont.jpeg" Time="2014-07-29T13.08.32";
+Snapshot d272 "272-b.cont" Value="[DIR]/ddg/272-b.cont.jpeg" Time="2014-07-29T16.38.51";
 DF p326 d272
 Operation p327 "327-create.ggplot" Value="create.ggplot";
 CF p326 p327
 DF d268 p327
-Snapshot d273 "273-q.cont" Value="[DIR]/ddg/273-q.cont.jpeg" Time="2014-07-29T13.08.32";
+Snapshot d273 "273-q.cont" Value="[DIR]/ddg/273-q.cont.jpeg" Time="2014-07-29T16.38.51";
 DF p327 d273
 Operation p328 "328-create.ggplot" Value="create.ggplot";
 CF p327 p328
 DF d269 p328
-Snapshot d274 "274-p.cont" Value="[DIR]/ddg/274-p.cont.jpeg" Time="2014-07-29T13.08.33";
+Snapshot d274 "274-p.cont" Value="[DIR]/ddg/274-p.cont.jpeg" Time="2014-07-29T16.38.51";
 DF p328 d274
 Operation p329 "329-create.ggplot" Value="create.ggplot";
 CF p328 p329
 DF d270 p329
-Snapshot d275 "275-t.cont" Value="[DIR]/ddg/275-t.cont.jpeg" Time="2014-07-29T13.08.33";
+Snapshot d275 "275-t.cont" Value="[DIR]/ddg/275-t.cont.jpeg" Time="2014-07-29T16.38.51";
 DF p329 d275
 Finish p330 "330-Plot contours" Value="Plot contours";
 CF p329 p330
@@ -1647,34 +1647,34 @@ CF p330 p331
 Operation p332 "332-ggplot2.lines" Value="ggplot2.lines";
 CF p331 p332
 DF d260 p332
-Snapshot d276 "276-t.lines" Value="[DIR]/ddg/276-t.lines.jpeg" Time="2014-07-29T13.08.33";
+Snapshot d276 "276-t.lines" Value="[DIR]/ddg/276-t.lines.jpeg" Time="2014-07-29T16.38.51";
 DF p332 d276
 Operation p333 "333-ggplot2.lines" Value="ggplot2.lines";
 CF p332 p333
 DF d260 p333
-Snapshot d277 "277-b.lines" Value="[DIR]/ddg/277-b.lines.jpeg" Time="2014-07-29T13.08.33";
+Snapshot d277 "277-b.lines" Value="[DIR]/ddg/277-b.lines.jpeg" Time="2014-07-29T16.38.52";
 DF p333 d277
 Operation p334 "334-ggplot2.lines" Value="ggplot2.lines";
 CF p333 p334
 DF d260 p334
-Snapshot d278 "278-q.lines" Value="[DIR]/ddg/278-q.lines.jpeg" Time="2014-07-29T13.08.33";
+Snapshot d278 "278-q.lines" Value="[DIR]/ddg/278-q.lines.jpeg" Time="2014-07-29T16.38.52";
 DF p334 d278
 Operation p335 "335-ggplot2.lines" Value="ggplot2.lines";
 CF p334 p335
 DF d260 p335
-Snapshot d279 "279-a.lines" Value="[DIR]/ddg/279-a.lines.jpeg" Time="2014-07-29T13.08.33";
+Snapshot d279 "279-a.lines" Value="[DIR]/ddg/279-a.lines.jpeg" Time="2014-07-29T16.38.52";
 DF p335 d279
 Operation p336 "336-ggplot2.lines" Value="ggplot2.lines";
 CF p335 p336
 DF d260 p336
-Snapshot d280 "280-p.lines" Value="[DIR]/ddg/280-p.lines.jpeg" Time="2014-07-29T13.08.33";
+Snapshot d280 "280-p.lines" Value="[DIR]/ddg/280-p.lines.jpeg" Time="2014-07-29T16.38.52";
 DF p336 d280
 Finish p337 "337-line plots" Value="line plots";
 CF p336 p337
 Data d281 "281-mcols" Value="2";
 Operation p338 "338-multiplot" Value="multiplot";
 CF p337 p338
-File d282 "282-Figure-11-countours-v2.pdf" Value="[DIR]/ddg/282-Figure-11-countours-v2.pdf" Time="2014-07-29T13.08.42" Location="[DIR]/Figure-11-countours-v2.pdf";
+File d282 "282-Figure-11-countours-v2.pdf" Value="[DIR]/ddg/282-Figure-11-countours-v2.pdf" Time="2014-07-29T16.39.02" Location="[DIR]/Figure-11-countours-v2.pdf";
 DF p338 d282
 Finish p339 "339-Fit 2D-GAMS" Value="Fit 2D-GAMS";
 CF p338 p339

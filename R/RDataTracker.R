@@ -2270,7 +2270,9 @@ ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.graphic=N
     
 		# Get parameters and create edges.
 		if (length(tokens) > 1) {
+			# args contains the names of the variable that was passed into the function
 			args <- tokens[2:length(tokens)]
+			# param,names contains the names of the parameters (this is what the variable is known as inside the function)
 	        param.names <- names(full.call)
 	        param.names <- param.names[2:length(param.names)]
 			stack <- sys.calls()
@@ -2282,7 +2284,9 @@ ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.graphic=N
 			#lapply(args, 
 			lapply(bindings, 
 					function(binding) {	
+						# here, param is now the arguments passed IN
 						param <- binding[1]
+						# formal is the paramenter name of the function (what is the variable known as inside?)
 						formal <- binding[2]
 						param.scope <- .ddg.get.scope(param, for.caller = TRUE, calls=stack)
 						if (.ddg.data.node.exists(param, param.scope)) {
@@ -2489,7 +2493,7 @@ ddg.eval <- function(statement) {
 	env <- sys.frame(frame.num)
 	if (!.ddg.is.init()) {
 		eval(parsed.statement, env)
-		return()
+		return(invisible())
 	}
 	
 	.ddg.parse.commands(parsed.statement, environ=env, node.name=statement)
