@@ -2,55 +2,101 @@ Architecture="x86_64"
 OperatingSystem="unix"
 Language="R"
 LanguageVersion="R version 3.1.0 Patched (2014-05-20 r65701)"
-RDataTrackerVersion="0.5.23"
-Script="[DIR]/ReturnTest.R"
-ProcessFileTimestamp="2014-07-28T19.28.14"
+RDataTrackerVersion="0.5.24"
+Script="[DIR]/ScopeTest.R"
+ProcessFileTimestamp="2014-07-29T17.33.32"
 WorkingDirectory="[DIR]"
 DDGDirectory="[DIR]/ddg"
-DateTime="2014-07-29T18.00.18"
-9
-Data d1 "1-a" Value="1";
-Data d2 "2-b" Value="2";
-Start p1 "1-d <- f(a, b)" Value="d <- f(a, b)";
-Binding p2 "2-aa  <-  a"
+DateTime="2014-07-30T14.07.19"
+16
+Operation p1 "1-f" Value="f";
+Exception d1 "1-error.msg" Value="\"No data node found for b\"";
+DF p1 d1
+Data d2 "2-a" Value="20";
+DF p1 d2
+Data d3 "3-f() return" Value="20";
+DF p1 d3
+Operation p2 "2-g" Value="g";
+Exception d4 "4-error.msg" Value="\"Skipping parameter a\"";
+DF p2 d4
 CF p1 p2
-DF d1 p2
-Data d3 "3-aa" Value="1";
-DF p2 d3
-Binding p3 "3-bb  <-  b"
+Data d5 "5-g(c) return" Value="110";
+DF p2 d5
+Operation p3 "3-g" Value="g";
+Exception d6 "6-error.msg" Value="\"Skipping parameter a\"";
+DF p3 d6
 CF p2 p3
-DF d2 p3
-Data d4 "4-bb" Value="2";
-DF p3 d4
-Operation p4 "4-f" Value="f";
-DF d3 p4
-DF d4 p4
+Data d7 "7-g(c) return" Value="110";
+DF p3 d7
+Operation p4 "4-h" Value="h";
 CF p3 p4
-Binding p5 "5-p_a  <-  aa"
-CF p4 p5
-DF d3 p5
-Data d5 "5-p_a" Value="1";
-DF p5 d5
-Operation p6 "6-f2" Value="f2";
-DF d5 p6
-CF p5 p6
-Data d6 "6-f2(aa) return" Value="10";
-DF p6 d6
-Binding p7 "7-p_a  <-  bb"
-CF p6 p7
-DF d4 p7
-Data d7 "7-p_a" Value="2";
-DF p7 d7
-Operation p8 "8-f2" Value="f2";
-DF d7 p8
-CF p7 p8
-Data d8 "8-f2(bb) return" Value="10";
-DF p8 d8
-Data d9 "9-f(a, b) return" Value="20";
+Exception d8 "8-error.msg" Value="\"No data node found for local d\"";
+DF p4 d8
+Data d9 "9-h() return" Value="333";
 DF p4 d9
-Finish p9 "9-d <- f(a, b)" Value="d <- f(a, b)";
+Operation p5 "5-i" Value="i";
+CF p4 p5
+Data d10 "10-x" Value="1000";
+DF p5 d10
+Data d11 "11-xx" Value="1000";
+Operation p6 "6-j" Value="j";
+CF p5 p6
+DF d11 p6
+DF d2 p6
+Data d12 "12-i() return" Value="3";
+DF p5 d12
+Binding p7 "7-xx  <-  a"
+CF p6 p7
+DF d2 p7
+Data d13 "13-xx" Value="20";
+DF p7 d13
+Operation p8 "8-k" Value="k";
+DF d13 p8
+Exception d14 "14-error.msg" Value="\"Skipping parameter yy\"";
+DF p8 d14
+CF p7 p8
+Data d15 "15-k(a, b) return" Value="22";
+DF p8 d15
+Binding p9 "9-xx  <-  a"
 CF p8 p9
-DF d9 p9
-Data d10 "10-d" Value="20";
-DF p9 d10
+DF d2 p9
+Data d16 "16-xx" Value="20";
+DF p9 d16
+Operation p10 "10-k" Value="k";
+DF d16 p10
+CF p9 p10
+Data d17 "17-k(a) return" Value="21";
+DF p10 d17
+Operation p11 "11-k" Value="k";
+Exception d18 "18-error.msg" Value="\"Skipping parameter yy\"";
+DF p11 d18
+CF p10 p11
+Data d19 "19-k(yy = b) return" Value="2";
+DF p11 d19
+Operation p12 "12-k" Value="k";
+CF p11 p12
+Data d20 "20-k() return" Value="1";
+DF p12 d20
+Operation p13 "13-k" Value="k";
+Exception d21 "21-error.msg" Value="\"Skipping parameter xx\"";
+DF p13 d21
+CF p12 p13
+Data d22 "22-k(b + 1) return" Value="4";
+DF p13 d22
+Binding p14 "14-xx  <-  a + b + 1"
+CF p13 p14
+DF d2 p14
+Data d23 "23-xx" Value="23";
+DF p14 d23
+Operation p15 "15-k" Value="k";
+DF d23 p15
+Exception d24 "24-error.msg" Value="\"Skipping parameter xx\"";
+DF p15 d24
+CF p14 p15
+Data d25 "25-k(a + b + 1) return" Value="24";
+DF p15 d25
+File d26 "26-foobar.csv" Value="[DIR]/ddg/26-foobar.csv" Time="2014-07-30T14.07.19" Location="[DIR]/foobar.csv";
+Operation p16 "16-Read raw data files" Value="Read raw data files";
+CF p15 p16
+DF d26 p16
 

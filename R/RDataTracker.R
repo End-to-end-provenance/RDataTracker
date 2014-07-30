@@ -1166,7 +1166,7 @@ ddg.MAX_HIST_LINES <- 2^14
 	# been used yet.
 	returns <- .ddg.get(".ddg.return.values")
 	unused.returns <- returns[!returns$return.used & returns$return.node.id > 0, ]
-  if (nrow(unused.returns) == 0) return()
+    if (nrow(unused.returns) == 0) return()
 	
 	# See which of these are called from the command we are processing now
 	unused.calls <- unused.returns$ddg.call
@@ -1196,9 +1196,9 @@ ddg.MAX_HIST_LINES <- 2^14
 				
 				# Set the return value as being used
 				returns$return.used[returns$return.node.id == data.num] <- TRUE
+				.ddg.set(".ddg.return.values", returns)
 			})
 
-	.ddg.set(".ddg.return.values", returns)
 }
 
 # This function is exclusively used in .ddg.parse.commands (so far) and simply 

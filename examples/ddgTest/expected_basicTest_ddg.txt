@@ -6,7 +6,7 @@ RDataTrackerVersion="0.5.23"
 Script="[DIR]/basicTest.r"
 ProcessFileTimestamp="2014-07-29T17.52.26"
 WorkingDirectory="[DIR]"
-DDGDirectory="[DIR]/ddg-source"
+DDGDirectory="[DIR]/ddg"
 DateTime="2014-07-29T17.53.50"
 22
 Start p1 "1-main" Value="main";
@@ -70,7 +70,7 @@ Data d10 "10-simple.value" Value="10";
 DF p13 d10
 Operation p14 "14-g1" Value="g1";
 CF p13 p14
-Snapshot d11 "11-year" Value="[DIR]/ddg-source/11-year.csv" Time="2014-07-29T17.53.50";
+Snapshot d11 "11-year" Value="[DIR]/ddg/11-year.csv" Time="2014-07-29T17.53.50";
 DF p14 d11
 URL d12 "12-HF home page" Value="\"http://harvardforest.fas.harvard.edu/\"";
 Exception d13 "13-error" Value="\"test error\"";
