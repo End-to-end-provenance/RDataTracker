@@ -2,12 +2,12 @@ Architecture="x86_64"
 OperatingSystem="unix"
 Language="R"
 LanguageVersion="R version 3.1.0 Patched (2014-05-20 r65701)"
-RDataTrackerVersion="0.5.19"
+RDataTrackerVersion="0.5.23"
 Script="[DIR]/ddgTest.r"
-ProcessFileTimestamp="2014-07-22T16.27.07"
+ProcessFileTimestamp="2014-07-28T19.28.14"
 WorkingDirectory="[DIR]"
 DDGDirectory="[DIR]/ddg-source"
-DateTime="2014-07-28T14.09.43"
+DateTime="2014-07-29T17.57.36"
 27
 Start p1 "1-main" Value="main";
 Data d1 "1-x" Value="3";
@@ -36,7 +36,7 @@ DF p4 d11
 Binding p5 "5-c  <-  y"
 CF p4 p5
 DF d2 p5
-Data d12 "12-c" Value="a b c";
+Data d12 "12-c" Value="\"a b c\"";
 DF p5 d12
 Binding p6 "6-d  <-  z"
 CF p5 p6
@@ -45,7 +45,7 @@ Data d13 "13-d" Value="5";
 DF p6 d13
 Binding p7 "7-e  <-  x + 1"
 CF p6 p7
-DF d3 p7
+DF d1 p7
 Data d14 "14-e" Value="4";
 DF p7 d14
 Operation p8 "8-lookup.args" Value="lookup.args";
@@ -86,13 +86,13 @@ Data d18 "18-simple.value" Value="10";
 DF p14 d18
 Operation p15 "15-g1" Value="g1";
 CF p14 p15
-Snapshot d19 "19-kids.df" Value="[DIR]/ddg-source/19-kids.df.csv" Time="2014-07-28T14.09.43";
+Snapshot d19 "19-kids.df" Value="[DIR]/ddg-source/19-kids.df.csv" Time="2014-07-29T17.57.36";
 DF p15 d19
-Snapshot d20 "20-year" Value="[DIR]/ddg-source/20-year.csv" Time="2014-07-28T14.09.43";
+Snapshot d20 "20-year" Value="[DIR]/ddg-source/20-year.csv" Time="2014-07-29T17.57.36";
 DF p15 d20
-File d21 "21-[DIR]/testfile2.txt" Value="[DIR]/ddg-source/21-testfile2.txt" Time="2014-07-28T14.09.43" Location="[DIR]/testfile2.txt";
+File d21 "21-[DIR]/testfile2.txt" Value="[DIR]/ddg-source/21-testfile2.txt" Time="2014-07-29T17.57.36" Location="[DIR]/testfile2.txt";
 DF p15 d21
-File d22 "22-outfile2" Value="[DIR]/ddg-source/22-testfile3.txt" Time="2014-07-28T14.09.43" Location="[DIR]/testfile3.txt";
+File d22 "22-outfile2" Value="[DIR]/ddg-source/22-testfile3.txt" Time="2014-07-29T17.57.36" Location="[DIR]/testfile3.txt";
 DF p15 d22
 URL d23 "23-HF home page" Value="\"http://harvardforest.fas.harvard.edu/\"";
 Exception d24 "24-error" Value="\"test error\"";
@@ -105,11 +105,11 @@ DF d25 p16
 Operation p17 "17-data.in.test" Value="data.in.test";
 CF p16 p17
 DF d1 p17
-Snapshot d26 "26-pets" Value="[DIR]/ddg-source/26-pets.csv" Time="2014-07-28T14.09.43";
-Snapshot d27 "27-pets.df" Value="[DIR]/ddg-source/27-pets.df.csv" Time="2014-07-28T14.09.43";
-Snapshot d28 "28-pets2" Value="[DIR]/ddg-source/28-pets2.csv" Time="2014-07-28T14.09.43";
-Snapshot d29 "29-pets3" Value="[DIR]/ddg-source/29-pets3.csv" Time="2014-07-28T14.09.43";
-Snapshot d30 "30-pets4" Value="[DIR]/ddg-source/30-pets4.csv" Time="2014-07-28T14.09.43";
+Snapshot d26 "26-pets" Value="[DIR]/ddg-source/26-pets.csv" Time="2014-07-29T17.57.36";
+Snapshot d27 "27-pets.df" Value="[DIR]/ddg-source/27-pets.df.csv" Time="2014-07-29T17.57.36";
+Snapshot d28 "28-pets2" Value="[DIR]/ddg-source/28-pets2.csv" Time="2014-07-29T17.57.36";
+Snapshot d29 "29-pets3" Value="[DIR]/ddg-source/29-pets3.csv" Time="2014-07-29T17.57.36";
+Snapshot d30 "30-pets4" Value="[DIR]/ddg-source/30-pets4.csv" Time="2014-07-29T17.57.36";
 Operation p18 "18-f2" Value="f2";
 CF p17 p18
 DF d26 p18
@@ -117,8 +117,8 @@ DF d27 p18
 DF d28 p18
 DF d29 p18
 DF d30 p18
-File d31 "31-RCheckpointNode.java" Value="[DIR]/ddg-source/31-RCheckpointNode.java" Time="2014-07-28T14.09.43" Location="[DIR]/RCheckpointNode.java";
-File d32 "32-test" Value="[DIR]/ddg-source/32-testfile.txt" Time="2014-07-28T14.09.43" Location="[DIR]/testfile.txt";
+File d31 "31-RCheckpointNode.java" Value="[DIR]/ddg-source/31-RCheckpointNode.java" Time="2014-07-29T17.57.36" Location="[DIR]/RCheckpointNode.java";
+File d32 "32-test" Value="[DIR]/ddg-source/32-testfile.txt" Time="2014-07-29T17.57.36" Location="[DIR]/testfile.txt";
 Exception d33 "33-error.msg" Value="\"File to copy does not exist: missingfile.txt\"";
 DF p18 d33
 Exception d34 "34-error.msg" Value="\"File to copy does not exist: missingdir/abc.txt\"";
@@ -158,23 +158,23 @@ Operation p21 "21-url.out.test" Value="url.out.test";
 CF p20 p21
 URL d48 "48-MHC home" Value="\"https://www.mtholyoke.edu/\"";
 DF p21 d48
-Snapshot d49 "49-pets2" Value="[DIR]/ddg-source/49-pets2.csv" Time="2014-07-28T14.09.43";
+Snapshot d49 "49-pets2" Value="[DIR]/ddg-source/49-pets2.csv" Time="2014-07-29T17.57.36";
 DF p10 d49
-Snapshot d50 "50-pets3" Value="[DIR]/ddg-source/50-pets3.csv" Time="2014-07-28T14.09.43";
+Snapshot d50 "50-pets3" Value="[DIR]/ddg-source/50-pets3.csv" Time="2014-07-29T17.57.36";
 DF p10 d50
-Snapshot d51 "51-pets.df" Value="[DIR]/ddg-source/51-pets.df.csv" Time="2014-07-28T14.09.43";
+Snapshot d51 "51-pets.df" Value="[DIR]/ddg-source/51-pets.df.csv" Time="2014-07-29T17.57.36";
 DF p10 d51
-Snapshot d52 "52-pets6" Value="[DIR]/ddg-source/52-pets6.csv" Time="2014-07-28T14.09.43";
+Snapshot d52 "52-pets6" Value="[DIR]/ddg-source/52-pets6.csv" Time="2014-07-29T17.57.36";
 DF p10 d52
 Data d53 "53-pets.text" Value="\"text about pets\"";
 DF p10 d53
 Operation p22 "22-snapshot.out.test" Value="snapshot.out.test";
 CF p21 p22
-Snapshot d54 "54-pets4" Value="[DIR]/ddg-source/54-pets4.csv" Time="2014-07-28T14.09.43";
+Snapshot d54 "54-pets4" Value="[DIR]/ddg-source/54-pets4.csv" Time="2014-07-29T17.57.36";
 DF p22 d54
-File d55 "55-RDataInstanceNode.java" Value="[DIR]/ddg-source/55-RDataInstanceNode.java" Time="2014-07-28T14.09.43" Location="[DIR]/RDataInstanceNode.java";
+File d55 "55-RDataInstanceNode.java" Value="[DIR]/ddg-source/55-RDataInstanceNode.java" Time="2014-07-29T17.57.36" Location="[DIR]/RDataInstanceNode.java";
 DF p11 d55
-File d56 "56-testfile2.txt" Value="[DIR]/ddg-source/56-testfile2.txt" Time="2014-07-28T14.09.43" Location="[DIR]/testfile2.txt";
+File d56 "56-testfile2.txt" Value="[DIR]/ddg-source/56-testfile2.txt" Time="2014-07-29T17.57.36" Location="[DIR]/testfile2.txt";
 DF p11 d56
 Exception d57 "57-error.msg" Value="\"File to copy does not exist: missingfile.txt\"";
 DF p22 d57
@@ -186,7 +186,7 @@ Exception d60 "60-error.msg" Value="\"No data node found for abc.txt\"";
 DF p22 d60
 Operation p23 "23-file.out.test" Value="file.out.test";
 CF p22 p23
-File d61 "61-testfile3.txt" Value="[DIR]/ddg-source/61-testfile3.txt" Time="2014-07-28T14.09.43" Location="[DIR]/testfile3.txt";
+File d61 "61-testfile3.txt" Value="[DIR]/ddg-source/61-testfile3.txt" Time="2014-07-29T17.57.36" Location="[DIR]/testfile3.txt";
 DF p23 d61
 Exception d62 "62-exc1" Value="\"a\"";
 DF p2 d62

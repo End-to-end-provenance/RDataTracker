@@ -2,12 +2,12 @@ Architecture="x86_64"
 OperatingSystem="unix"
 Language="R"
 LanguageVersion="R version 3.1.0 Patched (2014-05-20 r65701)"
-RDataTrackerVersion="0.5.19"
+RDataTrackerVersion="0.5.23"
 Script="[DIR]/real-time-15min-met-test.r"
-ProcessFileTimestamp="2014-07-22T16.27.07"
+ProcessFileTimestamp="2014-07-28T16.28.38"
 WorkingDirectory="[DIR]"
 DDGDirectory="[DIR]/ddg"
-DateTime="2014-07-23T11.27.42"
+DateTime="2014-07-29T20.14.55"
 15
 Data d1 "1-days" Value="10";
 Start p1 "1-Loop" Value="Loop";
@@ -15,7 +15,7 @@ Data d2 "2-input" Value="\"airt\"";
 Binding p2 "2-v  <-  input"
 CF p1 p2
 DF d2 p2
-Data d3 "3-v" Value="airt";
+Data d3 "3-v" Value="\"airt\"";
 DF p2 d3
 Binding p3 "3-d  <-  days"
 CF p2 p3
@@ -33,12 +33,12 @@ CF p4 p5
 Start p6 "6-Loop" Value="Loop";
 CF p5 p6
 Data d6 "6-input" Value="\"dewp\"";
-Snapshot d7 "7-graphic" Value="[DIR]/ddg/7-graphic.jpeg" Time="2014-07-23T11.27.41";
+Snapshot d7 "7-graphic" Value="[DIR]/ddg/7-graphic.jpeg" Time="2014-07-29T20.14.55";
 DF p5 d7
 Binding p7 "7-v  <-  input"
 CF p6 p7
 DF d6 p7
-Data d8 "8-v" Value="dewp";
+Data d8 "8-v" Value="\"dewp\"";
 DF p7 d8
 Binding p8 "8-d  <-  days"
 CF p7 p8
@@ -56,12 +56,12 @@ CF p9 p10
 Start p11 "11-Loop" Value="Loop";
 CF p10 p11
 Data d11 "11-input" Value="\"wspd\"";
-Snapshot d12 "12-graphic" Value="[DIR]/ddg/12-graphic.jpeg" Time="2014-07-23T11.27.41";
+Snapshot d12 "12-graphic" Value="[DIR]/ddg/12-graphic.jpeg" Time="2014-07-29T20.14.55";
 DF p10 d12
 Binding p12 "12-v  <-  input"
 CF p11 p12
 DF d11 p12
-Data d13 "13-v" Value="wspd";
+Data d13 "13-v" Value="\"wspd\"";
 DF p12 d13
 Binding p13 "13-d  <-  days"
 CF p12 p13

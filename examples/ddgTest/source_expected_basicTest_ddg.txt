@@ -2,122 +2,119 @@ Architecture="x86_64"
 OperatingSystem="unix"
 Language="R"
 LanguageVersion="R version 3.1.0 Patched (2014-05-20 r65701)"
-RDataTrackerVersion="0.5.19"
+RDataTrackerVersion="0.5.23"
 Script="[DIR]/basicTest.r"
-ProcessFileTimestamp="2014-07-22T16.27.07"
+ProcessFileTimestamp="2014-07-29T17.52.26"
 WorkingDirectory="[DIR]"
 DDGDirectory="[DIR]/ddg-source"
-DateTime="2014-07-23T10.23.37"
+DateTime="2014-07-29T17.53.50"
 22
 Start p1 "1-main" Value="main";
 Data d1 "1-x" Value="3";
 Data d2 "2-y" Value="\"a b c\"";
-Data d3 "3-x + 1" Value="4";
-Data d4 "4-z" Value="5";
-Data d5 "5-w" Value="6";
+Data d3 "3-z" Value="5";
+Data d4 "4-w" Value="6";
 Operation p2 "2-no.name.or.args.given" Value="no.name.or.args.given";
 CF p1 p2
 Binding p3 "3-a  <-  w"
 CF p2 p3
-DF d5 p3
-Data d6 "6-a" Value="6";
-DF p3 d6
+DF d4 p3
+Data d5 "5-a" Value="6";
+DF p3 d5
 Binding p4 "4-b  <-  x"
 CF p3 p4
 DF d1 p4
-Data d7 "7-b" Value="3";
-DF p4 d7
+Data d6 "6-b" Value="3";
+DF p4 d6
 Binding p5 "5-c  <-  y"
 CF p4 p5
 DF d2 p5
-Data d8 "8-c" Value="a b c";
-DF p5 d8
+Data d7 "7-c" Value="\"a b c\"";
+DF p5 d7
 Binding p6 "6-d  <-  z"
 CF p5 p6
-DF d4 p6
-Data d9 "9-d" Value="5";
-DF p6 d9
+DF d3 p6
+Data d8 "8-d" Value="5";
+DF p6 d8
 Binding p7 "7-e  <-  x + 1"
 CF p6 p7
-DF d3 p7
-Data d10 "10-e" Value="4";
-DF p7 d10
+DF d1 p7
+Data d9 "9-e" Value="4";
+DF p7 d9
 Operation p8 "8-lookup.args" Value="lookup.args";
+DF d5 p8
 DF d6 p8
 DF d7 p8
 DF d8 p8
 DF d9 p8
-DF d10 p8
 CF p7 p8
 Operation p9 "9-only.args.given" Value="only.args.given";
 CF p8 p9
-DF d5 p9
+DF d4 p9
 DF d1 p9
 DF d2 p9
-DF d4 p9
 DF d3 p9
 Operation p10 "10-only.name.given" Value="only.name.given";
 CF p9 p10
 Operation p11 "11-string.name.and.args.given" Value="string.name.and.args.given";
 CF p10 p11
-DF d5 p11
+DF d4 p11
 DF d1 p11
 DF d2 p11
-DF d4 p11
 DF d3 p11
 Operation p12 "12-no.func" Value="no.func";
 CF p11 p12
 Operation p13 "13-g0" Value="g0";
 CF p12 p13
-Data d11 "11-simple.value" Value="10";
-DF p13 d11
+Data d10 "10-simple.value" Value="10";
+DF p13 d10
 Operation p14 "14-g1" Value="g1";
 CF p13 p14
-Snapshot d12 "12-year" Value="[DIR]/ddg-source/12-year.csv" Time="2014-07-23T10.23.37";
-DF p14 d12
-URL d13 "13-HF home page" Value="\"http://harvardforest.fas.harvard.edu/\"";
-Exception d14 "14-error" Value="\"test error\"";
-Exception d15 "15-error2" Value="\"Trivial error\"";
+Snapshot d11 "11-year" Value="[DIR]/ddg-source/11-year.csv" Time="2014-07-29T17.53.50";
+DF p14 d11
+URL d12 "12-HF home page" Value="\"http://harvardforest.fas.harvard.edu/\"";
+Exception d13 "13-error" Value="\"test error\"";
+Exception d14 "14-error2" Value="\"Trivial error\"";
 Operation p15 "15-f" Value="f";
 CF p14 p15
+DF d12 p15
 DF d13 p15
 DF d14 p15
-DF d15 p15
 Operation p16 "16-data.in.test" Value="data.in.test";
 CF p15 p16
 DF d1 p16
-Data d16 "16-out1" Value="\"a\"";
+Data d15 "15-out1" Value="\"a\"";
+DF p2 d15
+Data d16 "16-out2" Value="\"b\"";
 DF p2 d16
-Data d17 "17-out2" Value="\"b\"";
-DF p2 d17
 Operation p17 "17-out.test.1" Value="out.test.1";
 CF p16 p17
-Data d18 "18-out3" Value="\"c\"";
-DF p17 d18
-Data d19 "19-out4" Value="\"d\"";
+Data d17 "17-out3" Value="\"c\"";
+DF p17 d17
+Data d18 "18-out4" Value="\"d\"";
+DF p2 d18
+Data d19 "19-out5" Value="\"e\"";
 DF p2 d19
-Data d20 "20-out5" Value="\"e\"";
-DF p2 d20
-URL d21 "21-Harvard home" Value="\"http://www.harvard.edu\"";
+URL d20 "20-Harvard home" Value="\"http://www.harvard.edu\"";
+DF p9 d20
+URL d21 "21-R home" Value="\"http://www.r-project.org/\"";
 DF p9 d21
-URL d22 "22-R home" Value="\"http://www.r-project.org/\"";
-DF p9 d22
 Operation p18 "18-url.out.test" Value="url.out.test";
 CF p17 p18
-URL d23 "23-MHC home" Value="\"https://www.mtholyoke.edu/\"";
-DF p18 d23
-Exception d24 "24-exc1" Value="\"a\"";
+URL d22 "22-MHC home" Value="\"https://www.mtholyoke.edu/\"";
+DF p18 d22
+Exception d23 "23-exc1" Value="\"a\"";
+DF p2 d23
+Exception d24 "24-exc2" Value="\"b\"";
 DF p2 d24
-Exception d25 "25-exc2" Value="\"b\"";
-DF p2 d25
 Operation p19 "19-exc.test." Value="exc.test.";
 CF p18 p19
-Exception d26 "26-exc3" Value="\"c\"";
-DF p19 d26
-Exception d27 "27-exc4" Value="\"d\"";
+Exception d25 "25-exc3" Value="\"c\"";
+DF p19 d25
+Exception d26 "26-exc4" Value="\"d\"";
+DF p2 d26
+Exception d27 "27-exc5" Value="\"e\"";
 DF p2 d27
-Exception d28 "28-exc5" Value="\"e\"";
-DF p2 d28
 Start p20 "20-start.finish.test" Value="start.finish.test";
 CF p19 p20
 Finish p21 "21-start.finish.test" Value="start.finish.test";

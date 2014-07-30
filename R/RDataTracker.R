@@ -2288,21 +2288,33 @@ ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.graphic=N
 						param <- binding[1]
 						# formal is the paramenter name of the function (what is the variable known as inside?)
 						formal <- binding[2]
-						param.scope <- .ddg.get.scope(param, for.caller = TRUE, calls=stack)
-						if (.ddg.data.node.exists(param, param.scope)) {
-							binding.node.name <- paste(formal, " <- ", param)
-		.ddg.proc.node("Binding", binding.node.name)
-							.ddg.proc2proc()
-							.ddg.data2proc(as.character(param), param.scope, binding.node.name)
-							formal.scope <- .ddg.get.scope(formal, calls=stack)
-							.ddg.copy.data.node(formal, formal.scope, as.character(param), param.scope)
-							.ddg.proc2data(binding.node.name, formal, formal.scope)
-#              .ddg.data2proc(formal, formal.scope, pname)
-#							.ddg.data2proc(as.character(param), scope, pname)
-							if (.ddg.debug()) print(paste("param:", param))
+
+						# Find all the variables used in this parameter.
+						vars.used <- .ddg.find.var.uses(parse(text=param))
+
+            			binding.node.created <- FALSE
+						for (var in vars.used) {
+							param.scope <- .ddg.get.scope(var, for.caller = TRUE, calls=stack)
+							if (.ddg.data.node.exists(var, param.scope)) {
+								if (!binding.node.created) {
+									binding.node.name <- paste(formal, " <- ", param)
+									.ddg.proc.node("Binding", binding.node.name)
+									.ddg.proc2proc()
+									binding.node.created <- TRUE									
+								}
+
+								.ddg.data2proc(as.character(var), param.scope, binding.node.name)
+								if (.ddg.debug()) print(paste("param:", var))
+							}
+							else {
+								missing.params <<- c(missing.params, formal)
+							}
 						}
-						else {
-							missing.params <<- c(missing.params, formal)
+						if (binding.node.created) {
+							formal.scope <- .ddg.get.scope(formal, calls=stack)
+							formal.env <- .ddg.get.env(formal, calls=stack)
+							.ddg.save.data(formal, eval(parse(text=formal), formal.env), fname=".ddg.save.data", scope=formal.scope, stack=stack)
+							.ddg.proc2data(binding.node.name, formal, formal.scope)
 						}
 					})
 		}

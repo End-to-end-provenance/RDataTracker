@@ -91,6 +91,8 @@ k(a, b)
 k(a)
 k(yy = b)
 k()
+k(b+1)
+k(a+b+1)
 
 foobar <- read.csv("foobar.csv")
 
