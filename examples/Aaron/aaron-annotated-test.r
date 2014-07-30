@@ -13,11 +13,17 @@ startTime <- Sys.time()
 invisible(force(startTime))
 
 ## Directories
-testDir <- "[DIR_DEFAULT]/"
-setwd(testDir)
+if (interactive()) {
+  testDir <- getwd()
+  ddgDir <- "ddg"
+} else {
+  testDir <- "[DIR_DEFAULT]"
+  setwd(testDir)
+  ddgDir <- "[DDG-DIR]"
+}
 
-ddg.r.script.path = paste(testDir,"aaron-annotated-test.r",sep="")
-ddg.path = paste(testDir,"[DDG-DIR]",sep="")
+ddg.r.script.path = paste(testDir,"aaron-annotated-test.r",sep="/")
+ddg.path = paste(testDir,ddgDir,sep="/")
 
 ddg.init(ddg.r.script.path,
          ddg.path,
@@ -210,7 +216,7 @@ multiplot <- function(..., plotlist = NULL, file, cols = 1, layout = NULL) {
         }
     }
     
-    ddg.procedure(lookup.ins=TRUE)
+    ddg.procedure()
 }
 #```
 
@@ -276,8 +282,8 @@ plot.8 <- trees[plot == 8, ]
 
 # Annotating data seperation procedure
 plot.list <- list("plot.1","plot.2","plot.3","plot.4","plot.5","plot.6","plot.7","plot.8")
-
-invisible(Map(function(x){ddg.procedure(pname="Seperate Plots", outs.data=list(x), ins=list("trees"))},plot.list))
+for (x in plot.list) 
+     ddg.procedure(pname="Seperate Plots", outs.data=list(x), ins=list("trees"))
 
 genera <- levels(genus)
 ddg.data.out("genera",pname="Seperate Plots")
@@ -297,8 +303,8 @@ p8 <- na.omit(plot.8)
 
 # Annotating removal procedure
 p.list <- list("p1","p2","p3","p4","p5","p6","p7","p8")
-
-invisible(mapply(function(x,y){ddg.procedure(pname="Remove NAs", ins=list(x), outs.data=list(y))}, plot.list, p.list))
+for (i in 1:length(p.list)) 
+ ddg.procedure(pname="Remove NAs", ins=list(plot.list[[i]]), outs.data=list(p.list[[i]]))
 
 ddg.finish("Clean plot data")
 # set up contour plot grids
@@ -336,7 +342,8 @@ p.8.i <- interp(p8$xcoord, p8$ycoord, scale(p8$zelev), xo = interp.xo,
     yo = interp.yo, duplicate = interp.duplicate, extrap = interp.extrap, linear = interp.linear)
 pinter.list <- list("p.1.i","p.2.i","p.3.i","p.4.i","p.5.i", "p.6.i","p.7.i","p.8.i")
 
-invisible(mapply(function(x,y){ddg.procedure(pname="interpolate", ins=list(x,"interp.xo","interp.yo","interp.duplicate","interp.extrap","interp.linear"),outs.data=list(y))},p.list,pinter.list))
+for (i in 1:length(pinter.list)) 
+     ddg.procedure(pname="interpolate", ins=list(p.list[[i]],"interp.xo","interp.yo","interp.duplicate","interp.extrap","interp.linear"),outs.data=list(pinter.list[[i]]))
 
 ddg.finish("Interpolate")
 
@@ -675,8 +682,7 @@ Betula <- trees.genus[2]
 Quercus <- trees.genus[3]
 Acer <- trees.genus[4]
 Pinus <- trees.genus[5]
-
-invisible(Map(function(x){ddg.data(x,dvalue=eval(x))},trees.genus))
+for (x in trees.genus) invisible(ddg.data(x,dvalue=eval(x)))
 
 
 plot(plot.1.pp[plot.1$genus == Tsuga])

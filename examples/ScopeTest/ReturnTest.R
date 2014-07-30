@@ -1,24 +1,40 @@
-source("/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/R/RDataTracker.R")
+library(RDataTracker)
+#source("/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/R/RDataTracker.R")
 
-ddg.init("/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/ScopeTest/ReturnTest.R",
-         "/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/ScopeTest/ddg",
-         enable.console=TRUE)
+if (interactive()) {
+	testDir <- getwd()
+	ddgDir <- "ddg"
+} else {
+	testDir <- "[DIR_DEFAULT]"
+  ddgDir <- "[DDG-DIR]"
+	setwd(testDir)
+}
 
-f <- function(p_a) {
-#  return(10)
-   return(p_a)
+ddg.r.script.path = paste(testDir,"ReturnTest.R",sep="/")
+ddg.path = paste(testDir, ddgDir, sep="/")
+ddg.init(ddg.r.script.path,
+		 ddg.path,
+         enable.console=FALSE)
+
+f <- function (aa, bb) {
+  ddg.procedure(lookup.ins=TRUE)
+#  ddg.eval("retValue <- f2(aa) + f2(bb)")
+  retValue <- f2(aa) + f2(bb)
+  ddg.return(retValue)
 }
 
 f2 <- function(p_a) {
    ddg.procedure(lookup.ins=TRUE)
-   return(10)
+   ddg.return(10)
 }
 
 a <- 1
-b <- f(a)
-#d <- f2(a)
-#d <- f2(f(a))
-d <- f(f2(a))
-e <- d
-
-ddg.save()
+ddg.data(a)
+b <- 2
+ddg.data(b)
+#d <- f2(a) + f2(b)
+ddg.grabhistory()
+#d <- f(a, b)
+ddg.eval("d <- f(a, b)")
+stopifnot(d == 20)
+ddg.save(quit=TRUE)

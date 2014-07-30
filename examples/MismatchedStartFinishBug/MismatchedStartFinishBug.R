@@ -26,9 +26,6 @@ setwd(testDir)
 ddg.r.script.path = paste(testDir,"MismatchedStartFinishBug.R",sep="")
 ddg.path = paste(testDir,"[DDG-DIR]",sep="")
 
-options(warn=2)
-ddg.debug.off()
-
 # Initialize the provenance graph
 ddg.init(ddg.r.script.path,
          ddg.path,
@@ -40,9 +37,7 @@ f <- function () {
 	ddg.finish()
 }
 
-ddg.debug.on()
 x <- f()
-ddg.debug.off()
 ddg.save(quit=TRUE)
 
 # Calculate total time of execution

@@ -28,8 +28,7 @@ f <- function(x) {
 }
 
 f2 <- function(x) {
-	ddg.procedure("f2")
-	ddg.data.in(deparse(substitute(x)), "f2")
+	ddg.procedure(lookup.ins=TRUE)
 	return(1)
 }
 
@@ -53,6 +52,7 @@ main <- function() {
 	# d doesn't exist yet
 	f(d)
 	ddg.data(d)
+	d <- 1
 	f2(d)
 	
 	d <- 6

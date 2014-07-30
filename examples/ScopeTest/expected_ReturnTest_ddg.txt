@@ -1,0 +1,56 @@
+Architecture="x86_64"
+OperatingSystem="unix"
+Language="R"
+LanguageVersion="R version 3.1.0 Patched (2014-05-20 r65701)"
+RDataTrackerVersion="0.5.19"
+Script="[DIR]/ReturnTest.R"
+ProcessFileTimestamp="2014-07-28T14.41.24"
+WorkingDirectory="[DIR]"
+DDGDirectory="[DIR]/ddg"
+DateTime="2014-07-28T14.42.58"
+9
+Data d1 "1-a" Value="1";
+Data d2 "2-b" Value="2";
+Start p1 "1-d <- f(a, b)" Value="d <- f(a, b)";
+Binding p2 "2-aa  <-  a"
+CF p1 p2
+DF d1 p2
+Data d3 "3-aa" Value="1";
+DF p2 d3
+Binding p3 "3-bb  <-  b"
+CF p2 p3
+DF d2 p3
+Data d4 "4-bb" Value="2";
+DF p3 d4
+Operation p4 "4-f" Value="f";
+DF d3 p4
+DF d4 p4
+CF p3 p4
+Binding p5 "5-p_a  <-  aa"
+CF p4 p5
+DF d3 p5
+Data d5 "5-p_a" Value="1";
+DF p5 d5
+Operation p6 "6-f2" Value="f2";
+DF d5 p6
+CF p5 p6
+Data d6 "6-f2(aa) return" Value="10";
+DF p6 d6
+Binding p7 "7-p_a  <-  bb"
+CF p6 p7
+DF d4 p7
+Data d7 "7-p_a" Value="2";
+DF p7 d7
+Operation p8 "8-f2" Value="f2";
+DF d7 p8
+CF p7 p8
+Data d8 "8-f2(bb) return" Value="10";
+DF p8 d8
+Data d9 "9-f(a, b) return" Value="20";
+DF p4 d9
+Finish p9 "9-d <- f(a, b)" Value="d <- f(a, b)";
+CF p8 p9
+DF d9 p9
+Data d10 "10-d" Value="20";
+DF p9 d10
+

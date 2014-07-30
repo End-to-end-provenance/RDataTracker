@@ -31,8 +31,8 @@ lookup.args <- function (a, b, c, d, e) {
 	ddg.procedure(lookup.ins = TRUE)
 }
 
-only.args.given <- function (a, b, y, d, e, f) {
-	ddg.procedure(ins=list("w", "x", "y", "z", "x + 1"))
+only.args.given <- function (a, b, yy, d, e, f) {
+	ddg.procedure(ins=list("w", "x", "y", "z"))
 }
 
 only.name.given <- function (a, b, c, d, e, f) {
@@ -40,7 +40,7 @@ only.name.given <- function (a, b, c, d, e, f) {
 }
 
 string.name.and.args.given <- function (a, b, c, d, e, f) {
-	ddg.procedure("string.name.and.args.given", list("w", "x", "y", "z", "x + 1"))
+	ddg.procedure("string.name.and.args.given", list("w", "x", "y", "z"))
 }
 
 data.in.test <- function(arg1) {
@@ -75,7 +75,6 @@ main <- function() {
 	ddg.data("x", x)  # String name, explicit value
 	y <- paste("a", "b", "c")
 	ddg.data(y)  # Name as name, no value
-	ddg.data(x + 1)  # Expression for name, no value
 	z <- x + 2
 	ddg.data ("z")  # String name, no value
   

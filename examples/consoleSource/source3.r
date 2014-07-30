@@ -13,14 +13,12 @@ f <- function(x) {
 }
 
 g <- function(x) {
-  ddg.procedure()
-  ddg.data.in(substitute(x))
+  ddg.procedure(lookup.ins=TRUE)
   return(1)
 }
 
 h <- function(x) {
-  ddg.procedure()
-  ddg.data.in(substitute(x))
+  ddg.procedure(lookup.ins=TRUE)
   return(1)
 }
 

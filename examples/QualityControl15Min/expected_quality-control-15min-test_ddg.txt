@@ -2,19 +2,19 @@ Architecture="i386"
 OperatingSystem="windows"
 Language="R"
 LanguageVersion="R version 3.1.0 (2014-04-10)"
-RDataTrackerVersion="0.5.19"
+RDataTrackerVersion="0.5.25"
 Script="[DIR]/quality-control-15min-test.r"
-ProcessFileTimestamp="2014-07-22T13.18.28"
+ProcessFileTimestamp="2014-07-28T21.49.53"
 WorkingDirectory="[DIR]"
 DDGDirectory="[DIR]/ddg"
-DateTime="2014-07-22T13.18.43"
-28
+DateTime="2014-07-29T23.24.40"
+29
 Start p1 "1-main" Value="main";
 Start p2 "2-get.data" Value="get.data";
 CF p1 p2
 Operation p3 "3-read.data" Value="read.data";
 CF p2 p3
-File d1 "1-met-15min.csv" Value="[DIR]/ddg/1-met-15min.csv" Time="2014-07-22T13.18.38" Location="[DIR]/met-15min.csv";
+File d1 "1-met-15min.csv" Value="[DIR]/ddg/1-met-15min.csv" Time="2014-07-29T23.24.30" Location="[DIR]/met-15min.csv";
 Data d2 "2-variable" Value="\"airt\"";
 Data d3 "3-start.date" Value="\"2012-01-01\"";
 Data d4 "4-end.date" Value="\"2012-03-31\"";
@@ -22,105 +22,116 @@ DF d1 p3
 DF d2 p3
 DF d3 p3
 DF d4 p3
-Snapshot d5 "5-all-data.csv" Value="[DIR]/ddg/5-all-data.csv.csv" Time="2014-07-22T13.18.39";
+Snapshot d5 "5-read.data(data.file) return" Value="[DIR]/ddg/5-read.data(data.file) return.csv" Time="2014-07-29T23.24.31";
 DF p3 d5
-Operation p4 "4-select.data" Value="select.data";
+Snapshot d6 "6-all.data" Value="[DIR]/ddg/6-all.data.csv" Time="2014-07-29T23.24.32";
+Binding p4 "4-zz  <-  all.data"
 CF p3 p4
-DF d5 p4
-DF d2 p4
-DF d3 p4
-DF d4 p4
-Snapshot d6 "6-selected-data.csv" Value="[DIR]/ddg/6-selected-data.csv.csv" Time="2014-07-22T13.18.39";
-DF p4 d6
-Finish p5 "5-get.data" Value="get.data";
+DF d6 p4
+Snapshot d7 "7-zz" Value="[DIR]/ddg/7-zz.csv" Time="2014-07-29T23.24.34";
+DF p4 d7
+Operation p5 "5-select.data" Value="select.data";
+DF d7 p5
 CF p4 p5
-Start p6 "6-analyze.data" Value="analyze.data";
+DF d2 p5
+DF d3 p5
+DF d4 p5
+Snapshot d8 "8-select.data(all.data) return" Value="[DIR]/ddg/8-select.data(all.data) return.csv" Time="2014-07-29T23.24.35";
+DF p5 d8
+Snapshot d9 "9-selected.data" Value="[DIR]/ddg/9-selected.data.csv" Time="2014-07-29T23.24.35";
+Finish p6 "6-get.data" Value="get.data";
 CF p5 p6
-Data d7 "7-num" Value="10";
-Start p7 "7-apply.test" Value="apply.test";
+Start p7 "7-analyze.data" Value="analyze.data";
 CF p6 p7
-Data d8 "8-test" Value="\"min\"";
-Operation p8 "8-apply.test" Value="apply.test";
+Data d10 "10-num" Value="10";
+Start p8 "8-apply.test" Value="apply.test";
 CF p7 p8
-DF d6 p8
-DF d8 p8
-DF d7 p8
-Snapshot d9 "9-flagged-data.csv" Value="[DIR]/ddg/9-flagged-data.csv.csv" Time="2014-07-22T13.18.40";
-DF p8 d9
-Operation p9 "9-plot.data" Value="plot.data";
+Data d11 "11-test" Value="\"min\"";
+Operation p9 "9-apply.test" Value="apply.test";
 CF p8 p9
 DF d9 p9
-Finish p10 "10-apply.test" Value="apply.test";
+DF d11 p9
+DF d10 p9
+Snapshot d12 "12-apply.test(selected.data, test, num) return" Value="[DIR]/ddg/12-apply.test(selected.data, test, num) return.csv" Time="2014-07-29T23.24.35";
+DF p9 d12
+Snapshot d13 "13-flagged.data" Value="[DIR]/ddg/13-flagged.data.csv" Time="2014-07-29T23.24.35";
+Operation p10 "10-plot.data" Value="plot.data";
 CF p9 p10
-Start p11 "11-apply.test" Value="apply.test";
+DF d13 p10
+Finish p11 "11-apply.test" Value="apply.test";
 CF p10 p11
-Data d10 "10-test" Value="\"max\"";
-Operation p12 "12-apply.test" Value="apply.test";
+Start p12 "12-apply.test" Value="apply.test";
 CF p11 p12
-DF d6 p12
-DF d10 p12
-DF d7 p12
-Snapshot d11 "11-flagged-data.csv" Value="[DIR]/ddg/11-flagged-data.csv.csv" Time="2014-07-22T13.18.40";
-DF p12 d11
-Snapshot d12 "12-graphic" Value="[DIR]/ddg/12-graphic.jpeg" Time="2014-07-22T13.18.41";
-DF p12 d12
-Operation p13 "13-plot.data" Value="plot.data";
+Data d14 "14-test" Value="\"max\"";
+Operation p13 "13-apply.test" Value="apply.test";
 CF p12 p13
-DF d11 p13
-Finish p14 "14-apply.test" Value="apply.test";
+DF d9 p13
+DF d14 p13
+DF d10 p13
+Snapshot d15 "15-apply.test(selected.data, test, num) return" Value="[DIR]/ddg/15-apply.test(selected.data, test, num) return.csv" Time="2014-07-29T23.24.36";
+DF p13 d15
+Snapshot d16 "16-flagged.data" Value="[DIR]/ddg/16-flagged.data.csv" Time="2014-07-29T23.24.36";
+Snapshot d17 "17-graphic" Value="[DIR]/ddg/17-graphic.jpeg" Time="2014-07-29T23.24.37";
+DF p13 d17
+Operation p14 "14-plot.data" Value="plot.data";
 CF p13 p14
-Start p15 "15-apply.test" Value="apply.test";
+DF d16 p14
+Finish p15 "15-apply.test" Value="apply.test";
 CF p14 p15
-Data d13 "13-test" Value="\"min\"";
-Operation p16 "16-apply.test" Value="apply.test";
+Start p16 "16-apply.test" Value="apply.test";
 CF p15 p16
-DF d6 p16
-DF d13 p16
-DF d7 p16
-Snapshot d14 "14-flagged-data.csv" Value="[DIR]/ddg/14-flagged-data.csv.csv" Time="2014-07-22T13.18.41";
-DF p16 d14
-Snapshot d15 "15-graphic" Value="[DIR]/ddg/15-graphic.jpeg" Time="2014-07-22T13.18.41";
-DF p16 d15
-Operation p17 "17-plot.data" Value="plot.data";
+Data d18 "18-test" Value="\"min\"";
+Operation p17 "17-apply.test" Value="apply.test";
 CF p16 p17
-DF d14 p17
-Finish p18 "18-apply.test" Value="apply.test";
+DF d9 p17
+DF d18 p17
+DF d10 p17
+Snapshot d19 "19-apply.test(selected.data, test, num) return" Value="[DIR]/ddg/19-apply.test(selected.data, test, num) return.csv" Time="2014-07-29T23.24.37";
+DF p17 d19
+Snapshot d20 "20-flagged.data" Value="[DIR]/ddg/20-flagged.data.csv" Time="2014-07-29T23.24.38";
+Snapshot d21 "21-graphic" Value="[DIR]/ddg/21-graphic.jpeg" Time="2014-07-29T23.24.38";
+DF p17 d21
+Operation p18 "18-plot.data" Value="plot.data";
 CF p17 p18
-Start p19 "19-apply.test" Value="apply.test";
+DF d20 p18
+Finish p19 "19-apply.test" Value="apply.test";
 CF p18 p19
-Data d16 "16-test" Value="\"slope\"";
-Operation p20 "20-apply.test" Value="apply.test";
+Start p20 "20-apply.test" Value="apply.test";
 CF p19 p20
-DF d6 p20
-DF d16 p20
-DF d7 p20
-Snapshot d17 "17-flagged-data.csv" Value="[DIR]/ddg/17-flagged-data.csv.csv" Time="2014-07-22T13.18.42";
-DF p20 d17
-Snapshot d18 "18-graphic" Value="[DIR]/ddg/18-graphic.jpeg" Time="2014-07-22T13.18.43";
-DF p20 d18
-Operation p21 "21-plot.data" Value="plot.data";
+Data d22 "22-test" Value="\"slope\"";
+Operation p21 "21-apply.test" Value="apply.test";
 CF p20 p21
-DF d17 p21
-Finish p22 "22-apply.test" Value="apply.test";
+DF d9 p21
+DF d22 p21
+DF d10 p21
+Snapshot d23 "23-apply.test(selected.data, test, num) return" Value="[DIR]/ddg/23-apply.test(selected.data, test, num) return.csv" Time="2014-07-29T23.24.39";
+DF p21 d23
+Snapshot d24 "24-flagged.data" Value="[DIR]/ddg/24-flagged.data.csv" Time="2014-07-29T23.24.39";
+Snapshot d25 "25-graphic" Value="[DIR]/ddg/25-graphic.jpeg" Time="2014-07-29T23.24.40";
+DF p21 d25
+Operation p22 "22-plot.data" Value="plot.data";
 CF p21 p22
-Start p23 "23-save.results" Value="save.results";
+DF d24 p22
+Finish p23 "23-apply.test" Value="apply.test";
 CF p22 p23
-Operation p24 "24-save.data" Value="save.data";
+Start p24 "24-save.results" Value="save.results";
 CF p23 p24
-DF d17 p24
-File d19 "19-flagged-data.csv" Value="[DIR]/ddg/19-flagged-data.csv" Time="2014-07-22T13.18.43" Location="[DIR]/flagged-data.csv";
-DF p24 d19
-Snapshot d20 "20-graphic" Value="[DIR]/ddg/20-graphic.jpeg" Time="2014-07-22T13.18.43";
-DF p24 d20
-Operation p25 "25-plot.data" Value="plot.data";
+Operation p25 "25-save.data" Value="save.data";
 CF p24 p25
-DF d19 p25
-File d21 "21-plot.jpeg" Value="[DIR]/ddg/21-plot.jpeg" Time="2014-07-22T13.18.43" Location="[DIR]/plot.jpeg";
-DF p25 d21
-Finish p26 "26-save.results" Value="save.results";
+DF d24 p25
+File d26 "26-flagged-data.csv" Value="[DIR]/ddg/26-flagged-data.csv" Time="2014-07-29T23.24.40" Location="[DIR]/flagged-data.csv";
+DF p25 d26
+Snapshot d27 "27-graphic" Value="[DIR]/ddg/27-graphic.jpeg" Time="2014-07-29T23.24.40";
+DF p25 d27
+Operation p26 "26-plot.data" Value="plot.data";
 CF p25 p26
-Finish p27 "27-analyze.data" Value="analyze.data";
+DF d24 p26
+File d28 "28-plot.jpeg" Value="[DIR]/ddg/28-plot.jpeg" Time="2014-07-29T23.24.40" Location="[DIR]/plot.jpeg";
+DF p26 d28
+Finish p27 "27-save.results" Value="save.results";
 CF p26 p27
-Finish p28 "28-main" Value="main";
+Finish p28 "28-analyze.data" Value="analyze.data";
 CF p27 p28
+Finish p29 "29-main" Value="main";
+CF p28 p29
 

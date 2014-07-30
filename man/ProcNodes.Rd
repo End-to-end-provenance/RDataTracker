@@ -1,7 +1,9 @@
 \name{ProcNodes}
 \alias{ddg.procedure}
+\alias{ddg.return}
 \alias{ddg.start}
 \alias{ddg.finish}
+\alias{ddg.eval}
 \title{RDataTracker Procedural Nodes}
 \description{These functions create procedural nodes and abstraction nodes within a provenance 
   graph created by RDataTracker.}
@@ -9,8 +11,10 @@
 ddg.procedure(pname = NULL, ins = NULL, lookup.ins = FALSE, outs.graphic = NULL, 
               outs.data = NULL, outs.exception = NULL, outs.url = NULL, outs.file =NULL,
               graphic.fext = "jpeg")
+ddg.return(expr)
 ddg.start(pname = NULL)
 ddg.finish(pname = NULL)
+ddg.eval(statement)
 }
 \arguments{
   \item{pname}{ the label for the node. }
@@ -22,6 +26,8 @@ ddg.finish(pname = NULL)
   \item{outs.exception}{ a list of names of exception nodes to be created and linked as outputs to the node being created. }
   \item{outs.graphic}{the name of the snapshot node to be created and linked as output to the procedural node being created}
   \item{graphic.fext}{the file extension for the capturd graphics file}
+  \item{expr}{the value the function returns}
+  \item{statement}{the statement to evaluate}
 }
 \details{
   ddg.procedure creates a node of type Operation.  If pname is NULL, the name of the function
@@ -47,6 +53,10 @@ ddg.finish(pname = NULL)
 
   The parameter graphic.fext is ignored if outs.graphic is NULL. 
   
+  ddg.return creates a data node for a function's return value.  If the function is called from a console
+  command and the console processing is enabled, the node will link to the console command
+  that uses the value.  ddg.return should be used in place of the function's normal return statement(s).
+  
   ddg.start() and ddg.finish() should come in matching pairs.  ddg.start() should precede ddg.finish().  
   For each call made to ddg.start() when the script is executed, there should be exactly one call made
   to ddg.finish() using the same pname.  For example, ddg.start() might be called at the beginning of
@@ -58,6 +68,10 @@ ddg.finish(pname = NULL)
   into a single node to make the visualization smaller and easier to understand.  The user can also 
   right-click in DDG Explorer on a Start or Finish or collapsed Start/Finish node to see all of the R code 
   between the start and finish.
+  
+  ddg.eval evaluates a statement and creates data flow edges from variables and function return nodes
+  that are used in the statement.  If the statement is an assignment statement, it also creates a 
+  data node for the variable assigned and a data flow edge to that node.
 }
 \author{Emery Boose and Barbara Lerner}
 \examples{
@@ -65,8 +79,9 @@ dir.create("ddg", showWarnings=FALSE)
 ddg.init()
 a <- 0
 myfunc <- function() {
-  b <<- a + 1
-  ddg.procedure(ins=list("a"), outs.data=list("b"))
+  b <- a + 1
+  ddg.procedure(ins=list("a"))
+  ddg.return(b)
 }
 
 secondfunc <- function() {
@@ -82,7 +97,7 @@ secondfunc <- function() {
   }
 }
 secondfunc()
-ddg.procedure("myfunc") 
+ddg.eval("a <- myfunc()")
 ddg.save()
 }
 \keyword{provenance}

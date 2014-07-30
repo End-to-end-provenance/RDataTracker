@@ -17,8 +17,8 @@
 #if (ddg.library == "") {
 #	ddg.library <- "c:/data/r/ddg/lib/ddg-library.r"
 #}
-#source(ddg.library)
 library(RDataTracker)
+#source("/Users/blerner/Documents/Process/DataProvenance/Github/RDataTracker/R/RDataTracker.R")
 
 # get initial time
 startTime <- Sys.time()
@@ -26,18 +26,21 @@ invisible(force(startTime))
 
 
 ## Directories
-testDir <- "[DIR_DEFAULT]/"
-setwd(testDir)
+if (interactive()) {
+  testDir <- getwd()
+} else {
+  testDir <- "[DIR_DEFAULT]"
+  setwd(testDir)
+}
 
-ddg.r.script.path = paste(testDir,"daily-solar-radiation-1.r",sep="")
-ddg.path = paste(testDir,"ddg",sep="")
+ddg.r.script.path = paste(testDir,"daily-solar-radiation-1.r",sep="/")
+ddg.path = paste(testDir,"ddg",sep="/")
 
 ddg.init(ddg.r.script.path,
          ddg.path,
     enable.console=TRUE)
 
 ### Functions
-
 read.data <- function() {
   # get initial values
   data.file <<- "met-daily.csv"
@@ -140,8 +143,7 @@ quality.control <- function(calibrated.data) {
   }
   quality.controlled.data <- xx
   
-  ddg.procedure()
-  ddg.data.in(calibrated.data)
+  ddg.procedure(lookup.ins=TRUE)
   ddg.data.in(quality.control.parameters)
   ddg.data.out(quality.controlled.data)
 
@@ -161,8 +163,7 @@ gap.fill <- function(quality.controlled.data) {
   }
   gap.filled.data <- xx
   
-  ddg.procedure()
-  ddg.data.in(quality.controlled.data)
+  ddg.procedure(lookup.ins=TRUE)
   ddg.data.in(gap.fill.parameters)
   ddg.data.in(all.data)
   ddg.data.out(gap.filled.data)
@@ -175,8 +176,7 @@ write.result <- function(gap.filled.data) {
   file.out <- paste(getwd(),"/",file.name,sep="")
   write.csv(gap.filled.data,file.out,row.names=FALSE)
 
-  ddg.procedure()
-  ddg.data.in(gap.filled.data)
+  ddg.procedure(lookup.ins=TRUE)
   ddg.file.out(file.name)
 }
 
@@ -250,6 +250,7 @@ plot.data <- function(xx,v) {
   # copy jpeg file to DDG directory
   
   ddg.procedure()
+  ddg.data(dname)
   ddg.data.in(dname)
   ddg.file.out(jname)
 }
@@ -257,11 +258,10 @@ plot.data <- function(xx,v) {
 ### Main Program
 
 main <- function() {
-
+  
   ddg.start("main")
 
   ddg.start("get.data")
-
   raw.data <<- read.data()
   plot.data(raw.data,"R")
 
@@ -271,16 +271,19 @@ main <- function() {
 
   ddg.start("calibrate.data")
   calibrated.data <<- calibrate(raw.data)
+  ddg.data(calibrated.data)
   plot.data(calibrated.data,"C")
   ddg.finish("calibrate.data")
 
   ddg.start("quality.control.data")
   quality.controlled.data <<- quality.control(calibrated.data)
+  ddg.data(quality.controlled.data)
   plot.data(quality.controlled.data,"Q")
   ddg.finish("quality.control.data")
 
   ddg.start("gap.fill.data")
   gap.filled.data <<- gap.fill(quality.controlled.data)
+  ddg.data(gap.filled.data)
   plot.data(gap.filled.data,"G")
   ddg.finish("gap.fill.data")
 

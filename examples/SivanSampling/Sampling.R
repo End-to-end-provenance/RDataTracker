@@ -96,7 +96,7 @@ setGeneric("getDistributionOfSpecies", function(object, index) {
 newSpeciesDistribution <- function(aCode, numOfSpecies, probabilityStr) {
 	ddg.start()
 	ddg.procedure(pname="bind probabilityStr", 
-			ins=list(substitute(probabilityStr)), 
+			ins=list("probabilityStr"), 
 			outs.data=list("probabilityStr"))
 	
 	# <- is the syntax for an assignment statement in R.
@@ -475,7 +475,7 @@ assignSampleData <- function(sampleInAreaStr, areaCode, speciesDistribution, sam
 assignSamplesToArea <- function(areaStr, speciesDistribution, sampleSizeDistributionMng) {
 	ddg.start()
 	ddg.procedure(pname="bind areaStr", 
-			ins=list(substitute(areaStr)), 
+			ins=list("areaStr"), 
 			outs.data=list("areaStr"))
 	
 

@@ -1,13 +1,14 @@
-Architecture="i386"
-OperatingSystem="windows"
+Architecture="x86_64"
+OperatingSystem="unix"
 Language="R"
-LanguageVersion="R version 3.1.0 (2014-04-10)"
+LanguageVersion="R version 3.1.0 Patched (2014-05-20 r65701)"
+RDataTrackerVersion="0.5.23"
 Script="[DIR]/ddgTest.r"
-ProcessFileTimestamp="2014-07-16T14.45.32"
+ProcessFileTimestamp="2014-07-28T19.28.14"
 WorkingDirectory="[DIR]"
 DDGDirectory="[DIR]/ddg-source"
-DateTime="2014-07-16T14.45.39"
-22
+DateTime="2014-07-29T17.57.36"
+27
 Start p1 "1-main" Value="main";
 Data d1 "1-x" Value="3";
 Data d2 "2-y" Value="\"a b c\"";
@@ -22,175 +23,194 @@ DF p1 d8
 Data d9 "9-xx" Value="NotRecorded";
 Operation p2 "2-no.name.or.args.given" Value="no.name.or.args.given";
 CF p1 p2
-Operation p3 "3-lookup.args" Value="lookup.args";
+Binding p3 "3-a  <-  w"
 CF p2 p3
 DF d5 p3
-DF d1 p3
-DF d2 p3
-DF d4 p3
-DF d3 p3
-Exception d10 "10-error.msg" Value="\"Skipping parameter vector\"";
+Data d10 "10-a" Value="6";
 DF p3 d10
-Exception d11 "11-error.msg" Value="\"Skipping parameter \"";
-DF p3 d11
-Operation p4 "4-only.args.given" Value="only.args.given";
+Binding p4 "4-b  <-  x"
 CF p3 p4
-DF d5 p4
 DF d1 p4
-Exception d12 "12-error.msg" Value="\"No data node found for a b c\"";
-DF p4 d12
-DF d4 p4
-DF d3 p4
-Operation p5 "5-only.name.given" Value="only.name.given";
+Data d11 "11-b" Value="3";
+DF p4 d11
+Binding p5 "5-c  <-  y"
 CF p4 p5
-Operation p6 "6-string.name.and.args.given" Value="string.name.and.args.given";
+DF d2 p5
+Data d12 "12-c" Value="\"a b c\"";
+DF p5 d12
+Binding p6 "6-d  <-  z"
 CF p5 p6
-DF d5 p6
-DF d1 p6
-DF d2 p6
 DF d4 p6
-DF d3 p6
-Operation p7 "7-no.func" Value="no.func";
+Data d13 "13-d" Value="5";
+DF p6 d13
+Binding p7 "7-e  <-  x + 1"
 CF p6 p7
-Operation p8 "8-f0" Value="f0";
+DF d1 p7
+Data d14 "14-e" Value="4";
+DF p7 d14
+Operation p8 "8-lookup.args" Value="lookup.args";
+DF d10 p8
+DF d11 p8
+DF d12 p8
+DF d13 p8
+DF d14 p8
+Exception d15 "15-error.msg" Value="\"Skipping parameter f\"";
+DF p8 d15
 CF p7 p8
-Exception d13 "13-error.msg" Value="\"No data node found for no.such.data.node\"";
-DF p8 d13
-Operation p9 "9-g0" Value="g0";
+Operation p9 "9-only.args.given" Value="only.args.given";
 CF p8 p9
-Data d14 "14-simple.value" Value="10";
-DF p9 d14
-Operation p10 "10-g1" Value="g1";
+DF d5 p9
+DF d1 p9
+Exception d16 "16-error.msg" Value="\"No data node found for a b c\"";
+DF p9 d16
+DF d4 p9
+DF d3 p9
+Operation p10 "10-only.name.given" Value="only.name.given";
 CF p9 p10
-Snapshot d15 "15-kids.df" Value="[DIR]/ddg-source/15-kids.df.csv" Time="2014-07-16T14.45.38";
-DF p10 d15
-Snapshot d16 "16-c(1992, 1995)" Value="[DIR]/ddg-source/16-c(1992, 1995).csv" Time="2014-07-16T14.45.38";
-DF p10 d16
-File d17 "17-[DIR]/testfile2.txt" Value="[DIR]/ddg-source/17-testfile2.txt" Time="2014-07-16T14.45.38" Location="[DIR]/testfile2.txt";
-DF p10 d17
-File d18 "18-outfile2" Value="[DIR]/ddg-source/18-testfile3.txt" Time="2014-07-16T14.45.38" Location="[DIR]/testfile3.txt";
-DF p10 d18
-URL d19 "19-HF home page" Value="\"http://harvardforest.fas.harvard.edu/\"";
-Exception d20 "20-error" Value="\"test error\"";
-Exception d21 "21-error2" Value="\"Trivial error\"";
-Operation p11 "11-f" Value="f";
+Operation p11 "11-string.name.and.args.given" Value="string.name.and.args.given";
 CF p10 p11
-DF d19 p11
-DF d20 p11
-DF d21 p11
-Operation p12 "12-data.in.test" Value="data.in.test";
+DF d5 p11
+DF d1 p11
+DF d2 p11
+DF d4 p11
+DF d3 p11
+Operation p12 "12-no.func" Value="no.func";
 CF p11 p12
-DF d1 p12
-Snapshot d22 "22-pets" Value="[DIR]/ddg-source/22-pets.csv" Time="2014-07-16T14.45.38";
-Snapshot d23 "23-pets.df" Value="[DIR]/ddg-source/23-pets.df.csv" Time="2014-07-16T14.45.38";
-Snapshot d24 "24-pets2" Value="[DIR]/ddg-source/24-pets2.csv" Time="2014-07-16T14.45.38";
-Snapshot d25 "25-pets3" Value="[DIR]/ddg-source/25-pets3.csv" Time="2014-07-16T14.45.38";
-Snapshot d26 "26-pets4" Value="[DIR]/ddg-source/26-pets4.csv" Time="2014-07-16T14.45.38";
-Operation p13 "13-f2" Value="f2";
+Operation p13 "13-f0" Value="f0";
 CF p12 p13
-DF d22 p13
-DF d23 p13
-DF d24 p13
-DF d25 p13
-DF d26 p13
-File d27 "27-RCheckpointNode.java" Value="[DIR]/ddg-source/27-RCheckpointNode.java" Time="2014-07-16T14.45.38" Location="[DIR]/RCheckpointNode.java";
-File d28 "28-test" Value="[DIR]/ddg-source/28-testfile.txt" Time="2014-07-16T14.45.38" Location="[DIR]/testfile.txt";
-Exception d29 "29-error.msg" Value="\"File to copy does not exist: missingfile.txt\"";
-DF p13 d29
-Exception d30 "30-error.msg" Value="\"File to copy does not exist: missingdir/abc.txt\"";
-DF p13 d30
-Operation p14 "14-f3" Value="f3";
+Exception d17 "17-error.msg" Value="\"No data node found for no.such.data.node\"";
+DF p13 d17
+Operation p14 "14-g0" Value="g0";
 CF p13 p14
-DF d27 p14
-DF d28 p14
-Exception d31 "31-error.msg" Value="\"No data node found for missingfile.txt\"";
-DF p14 d31
-Exception d32 "32-error.msg" Value="\"No data node found for abc.txt\"";
-DF p14 d32
-Data d33 "33-out1" Value="\"a\"";
-DF p2 d33
-Data d34 "34-out2" Value="\"b\"";
-DF p2 d34
-Operation p15 "15-out.test.1" Value="out.test.1";
+Data d18 "18-simple.value" Value="10";
+DF p14 d18
+Operation p15 "15-g1" Value="g1";
 CF p14 p15
-Data d35 "35-out3" Value="\"c\"";
-DF p15 d35
-Data d36 "36-out4" Value="\"d\"";
-DF p2 d36
-Data d37 "37-out5" Value="\"e\"";
-DF p2 d37
-Data d38 "38-out5" Value="\"e\"";
-Exception d39 "39-error.msg" Value="\"No procedure node found for no.such.function\"";
-DF p15 d39
-DF p0 d38
-Exception d40 "40-error.msg" Value="\"Unable to evaluate out6 in call to ddg.data.out\"";
-DF p15 d40
-Data d41 "41-out6" Value="NotRecorded";
-DF p2 d41
-URL d42 "42-Harvard home" Value="\"http://www.harvard.edu\"";
-DF p4 d42
-URL d43 "43-R home" Value="\"http://www.r-project.org/\"";
-DF p4 d43
-Operation p16 "16-url.out.test" Value="url.out.test";
+Snapshot d19 "19-kids.df" Value="[DIR]/ddg-source/19-kids.df.csv" Time="2014-07-29T17.57.36";
+DF p15 d19
+Snapshot d20 "20-year" Value="[DIR]/ddg-source/20-year.csv" Time="2014-07-29T17.57.36";
+DF p15 d20
+File d21 "21-[DIR]/testfile2.txt" Value="[DIR]/ddg-source/21-testfile2.txt" Time="2014-07-29T17.57.36" Location="[DIR]/testfile2.txt";
+DF p15 d21
+File d22 "22-outfile2" Value="[DIR]/ddg-source/22-testfile3.txt" Time="2014-07-29T17.57.36" Location="[DIR]/testfile3.txt";
+DF p15 d22
+URL d23 "23-HF home page" Value="\"http://harvardforest.fas.harvard.edu/\"";
+Exception d24 "24-error" Value="\"test error\"";
+Exception d25 "25-error2" Value="\"Trivial error\"";
+Operation p16 "16-f" Value="f";
 CF p15 p16
-URL d44 "44-MHC home" Value="\"https://www.mtholyoke.edu/\"";
-DF p16 d44
-Snapshot d45 "45-pets2" Value="[DIR]/ddg-source/45-pets2.csv" Time="2014-07-16T14.45.38";
-DF p5 d45
-Snapshot d46 "46-pets3" Value="[DIR]/ddg-source/46-pets3.csv" Time="2014-07-16T14.45.38";
-DF p5 d46
-Snapshot d47 "47-pets.df" Value="[DIR]/ddg-source/47-pets.df.csv" Time="2014-07-16T14.45.38";
-DF p5 d47
-Snapshot d48 "48-pets6" Value="[DIR]/ddg-source/48-pets6.csv" Time="2014-07-16T14.45.38";
-DF p5 d48
-Data d49 "49-pets.text" Value="\"text about pets\"";
-DF p5 d49
-Operation p17 "17-snapshot.out.test" Value="snapshot.out.test";
+DF d23 p16
+DF d24 p16
+DF d25 p16
+Operation p17 "17-data.in.test" Value="data.in.test";
 CF p16 p17
-Snapshot d50 "50-pets4" Value="[DIR]/ddg-source/50-pets4.csv" Time="2014-07-16T14.45.38";
-DF p17 d50
-File d51 "51-RDataInstanceNode.java" Value="[DIR]/ddg-source/51-RDataInstanceNode.java" Time="2014-07-16T14.45.38" Location="[DIR]/RDataInstanceNode.java";
-DF p6 d51
-File d52 "52-testfile2.txt" Value="[DIR]/ddg-source/52-testfile2.txt" Time="2014-07-16T14.45.38" Location="[DIR]/testfile2.txt";
-DF p6 d52
-Exception d53 "53-error.msg" Value="\"File to copy does not exist: missingfile.txt\"";
-DF p17 d53
-Exception d54 "54-error.msg" Value="\"No data node found for missingfile.txt\"";
-DF p17 d54
-DF p6 d0
-Exception d55 "55-error.msg" Value="\"File to copy does not exist: missingdir/abc.txt\"";
-DF p17 d55
-Exception d56 "56-error.msg" Value="\"No data node found for abc.txt\"";
-DF p17 d56
-DF p6 d0
-Operation p18 "18-file.out.test" Value="file.out.test";
+DF d1 p17
+Snapshot d26 "26-pets" Value="[DIR]/ddg-source/26-pets.csv" Time="2014-07-29T17.57.36";
+Snapshot d27 "27-pets.df" Value="[DIR]/ddg-source/27-pets.df.csv" Time="2014-07-29T17.57.36";
+Snapshot d28 "28-pets2" Value="[DIR]/ddg-source/28-pets2.csv" Time="2014-07-29T17.57.36";
+Snapshot d29 "29-pets3" Value="[DIR]/ddg-source/29-pets3.csv" Time="2014-07-29T17.57.36";
+Snapshot d30 "30-pets4" Value="[DIR]/ddg-source/30-pets4.csv" Time="2014-07-29T17.57.36";
+Operation p18 "18-f2" Value="f2";
 CF p17 p18
-File d57 "57-testfile3.txt" Value="[DIR]/ddg-source/57-testfile3.txt" Time="2014-07-16T14.45.38" Location="[DIR]/testfile3.txt";
-DF p18 d57
-Exception d58 "58-exc1" Value="\"a\"";
-DF p2 d58
-Exception d59 "59-exc2" Value="\"b\"";
-DF p2 d59
-Operation p19 "19-exc.test." Value="exc.test.";
+DF d26 p18
+DF d27 p18
+DF d28 p18
+DF d29 p18
+DF d30 p18
+File d31 "31-RCheckpointNode.java" Value="[DIR]/ddg-source/31-RCheckpointNode.java" Time="2014-07-29T17.57.36" Location="[DIR]/RCheckpointNode.java";
+File d32 "32-test" Value="[DIR]/ddg-source/32-testfile.txt" Time="2014-07-29T17.57.36" Location="[DIR]/testfile.txt";
+Exception d33 "33-error.msg" Value="\"File to copy does not exist: missingfile.txt\"";
+DF p18 d33
+Exception d34 "34-error.msg" Value="\"File to copy does not exist: missingdir/abc.txt\"";
+DF p18 d34
+Operation p19 "19-f3" Value="f3";
 CF p18 p19
-Exception d60 "60-exc3" Value="\"c\"";
-DF p19 d60
-Exception d61 "61-exc4" Value="\"d\"";
-DF p2 d61
-Exception d62 "62-exc5" Value="\"e\"";
-DF p2 d62
-Exception d63 "63-exc5" Value="\"e\"";
-Exception d64 "64-error.msg" Value="\"No procedure node found for no.such.function\"";
-DF p19 d64
-DF p0 d63
-Exception d65 "65-error.msg" Value="\"Unable to evaluate exc6 in call to ddg.exception.out\"";
-DF p19 d65
-Exception d66 "66-exc6" Value="NotRecorded";
-DF p2 d66
-Start p20 "20-start.finish.test" Value="start.finish.test";
+DF d31 p19
+DF d32 p19
+Exception d35 "35-error.msg" Value="\"No data node found for missingfile.txt\"";
+DF p19 d35
+Exception d36 "36-error.msg" Value="\"No data node found for abc.txt\"";
+DF p19 d36
+Data d37 "37-out1" Value="\"a\"";
+DF p2 d37
+Data d38 "38-out2" Value="\"b\"";
+DF p2 d38
+Operation p20 "20-out.test.1" Value="out.test.1";
 CF p19 p20
-Finish p21 "21-start.finish.test" Value="start.finish.test";
+Data d39 "39-out3" Value="\"c\"";
+DF p20 d39
+Data d40 "40-out4" Value="\"d\"";
+DF p2 d40
+Data d41 "41-out5" Value="\"e\"";
+DF p2 d41
+Data d42 "42-out5" Value="\"e\"";
+Exception d43 "43-error.msg" Value="\"No procedure node found for no.such.function\"";
+DF p20 d43
+Exception d44 "44-error.msg" Value="\"Unable to evaluate out6 in call to ddg.data.out\"";
+DF p20 d44
+Data d45 "45-out6" Value="NotRecorded";
+DF p2 d45
+URL d46 "46-Harvard home" Value="\"http://www.harvard.edu\"";
+DF p9 d46
+URL d47 "47-R home" Value="\"http://www.r-project.org/\"";
+DF p9 d47
+Operation p21 "21-url.out.test" Value="url.out.test";
 CF p20 p21
-Finish p22 "22-main" Value="main";
+URL d48 "48-MHC home" Value="\"https://www.mtholyoke.edu/\"";
+DF p21 d48
+Snapshot d49 "49-pets2" Value="[DIR]/ddg-source/49-pets2.csv" Time="2014-07-29T17.57.36";
+DF p10 d49
+Snapshot d50 "50-pets3" Value="[DIR]/ddg-source/50-pets3.csv" Time="2014-07-29T17.57.36";
+DF p10 d50
+Snapshot d51 "51-pets.df" Value="[DIR]/ddg-source/51-pets.df.csv" Time="2014-07-29T17.57.36";
+DF p10 d51
+Snapshot d52 "52-pets6" Value="[DIR]/ddg-source/52-pets6.csv" Time="2014-07-29T17.57.36";
+DF p10 d52
+Data d53 "53-pets.text" Value="\"text about pets\"";
+DF p10 d53
+Operation p22 "22-snapshot.out.test" Value="snapshot.out.test";
 CF p21 p22
+Snapshot d54 "54-pets4" Value="[DIR]/ddg-source/54-pets4.csv" Time="2014-07-29T17.57.36";
+DF p22 d54
+File d55 "55-RDataInstanceNode.java" Value="[DIR]/ddg-source/55-RDataInstanceNode.java" Time="2014-07-29T17.57.36" Location="[DIR]/RDataInstanceNode.java";
+DF p11 d55
+File d56 "56-testfile2.txt" Value="[DIR]/ddg-source/56-testfile2.txt" Time="2014-07-29T17.57.36" Location="[DIR]/testfile2.txt";
+DF p11 d56
+Exception d57 "57-error.msg" Value="\"File to copy does not exist: missingfile.txt\"";
+DF p22 d57
+Exception d58 "58-error.msg" Value="\"No data node found for missingfile.txt\"";
+DF p22 d58
+Exception d59 "59-error.msg" Value="\"File to copy does not exist: missingdir/abc.txt\"";
+DF p22 d59
+Exception d60 "60-error.msg" Value="\"No data node found for abc.txt\"";
+DF p22 d60
+Operation p23 "23-file.out.test" Value="file.out.test";
+CF p22 p23
+File d61 "61-testfile3.txt" Value="[DIR]/ddg-source/61-testfile3.txt" Time="2014-07-29T17.57.36" Location="[DIR]/testfile3.txt";
+DF p23 d61
+Exception d62 "62-exc1" Value="\"a\"";
+DF p2 d62
+Exception d63 "63-exc2" Value="\"b\"";
+DF p2 d63
+Operation p24 "24-exc.test." Value="exc.test.";
+CF p23 p24
+Exception d64 "64-exc3" Value="\"c\"";
+DF p24 d64
+Exception d65 "65-exc4" Value="\"d\"";
+DF p2 d65
+Exception d66 "66-exc5" Value="\"e\"";
+DF p2 d66
+Exception d67 "67-exc5" Value="\"e\"";
+Exception d68 "68-error.msg" Value="\"No procedure node found for no.such.function\"";
+DF p24 d68
+Exception d69 "69-error.msg" Value="\"Unable to evaluate exc6 in call to ddg.exception.out\"";
+DF p24 d69
+Exception d70 "70-exc6" Value="NotRecorded";
+DF p2 d70
+Start p25 "25-start.finish.test" Value="start.finish.test";
+CF p24 p25
+Finish p26 "26-start.finish.test" Value="start.finish.test";
+CF p25 p26
+Finish p27 "27-main" Value="main";
+CF p26 p27
 

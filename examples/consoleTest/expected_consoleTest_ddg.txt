@@ -1,30 +1,27 @@
-Architecture="i386"
-OperatingSystem="windows"
+Architecture="x86_64"
+OperatingSystem="unix"
 Language="R"
-LanguageVersion="R version 3.1.0 (2014-04-10)"
+LanguageVersion="R version 3.1.0 Patched (2014-05-20 r65701)"
 Script="[DIR]/consoleTest.r"
-ProcessFileTimestamp="2014-07-16T13.06.47"
+ProcessFileTimestamp="2014-07-18T11.35.25"
 WorkingDirectory="[DIR]"
 DDGDirectory="[DIR]/ddg"
-DateTime="2014-07-16T13.06.57"
+DateTime="2014-07-22T15.57.12"
 4
 Operation p1 "1-g" Value="g";
-Exception d1 "1-error.msg" Value="\"No data node found for x\"";
+Exception d1 "1-error.msg" Value="\"Skipping parameter x\"";
 DF p1 d1
-DF d0 p1
 Operation p2 "2-h" Value="h";
-CF p1 p2
-Exception d2 "2-error.msg" Value="\"No data node found for x\"";
+Exception d2 "2-error.msg" Value="\"Skipping parameter x\"";
 DF p2 d2
-DF d0 p2
+CF p1 p2
 Operation p3 "3-g" Value="g";
-CF p2 p3
-Exception d3 "3-error.msg" Value="\"No data node found for x\"";
+Exception d3 "3-error.msg" Value="\"Skipping parameter x\"";
 DF p3 d3
-DF d0 p3
+CF p2 p3
 Operation p4 "4-h" Value="h";
-CF p3 p4
-Exception d4 "4-error.msg" Value="\"No data node found for x\"";
+Exception d4 "4-error.msg" Value="\"Skipping parameter x\"";
 DF p4 d4
-DF d0 p4
+CF p3 p4
+
 

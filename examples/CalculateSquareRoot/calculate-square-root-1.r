@@ -9,11 +9,7 @@
 
 ### Directories
 
-#ddg.library <- Sys.getenv("DDG_LIBRARY")
-#if (ddg.library == "") {
-#	ddg.library <- "c:/data/r/ddg/lib/ddg-library.r"
-#}
-#source(ddg.library)
+#source("/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/R/RDataTracker.R")
 library(RDataTracker)
 
 # get initial time
@@ -23,8 +19,12 @@ invisible(force(startTime))
 # ddg.init(ddg.r.script.path,ddg.path)
 
 ## Directories
-testDir <- "[DIR_DEFAULT]/"
-setwd(testDir)
+if (interactive()) {
+  testDir <- getwd()
+} else {
+  testDir <- "[DIR_DEFAULT]"
+  setwd(testDir)
+}
 
 ### Functions
 
@@ -43,9 +43,8 @@ get.random <- function(number) {
 
   ddg.procedure()
   ddg.data.in(number)
-  ddg.data.out(estimate)
 
-  return(estimate)
+  ddg.return(estimate)
 }
 
 calc.square.root <- function(number,estimate) {
@@ -56,9 +55,7 @@ calc.square.root <- function(number,estimate) {
   ddg.procedure()
   ddg.data.in(number)
   ddg.data.in(estimate)
-  ddg.data.out(estimate)
-
-  return(estimate)
+  ddg.return(estimate)
 }
 
 get.difference <- function(number,estimate) {
@@ -68,9 +65,8 @@ get.difference <- function(number,estimate) {
   ddg.procedure()
   ddg.data.in(number)
   ddg.data.in(estimate)
-  ddg.data.out(difference)
 
-  return(difference)
+  ddg.return(difference)
 }
 
 get.check.value <- function(difference,tolerance) {
@@ -80,9 +76,8 @@ get.check.value <- function(difference,tolerance) {
   ddg.procedure()
   ddg.data.in(difference)
   ddg.data.in(tolerance)
-  ddg.data.out(check)
   
-  return(check)
+  ddg.return(check)
 }
 
 store.result <- function(number,estimate) {
@@ -91,9 +86,8 @@ store.result <- function(number,estimate) {
   ddg.procedure()
   ddg.data.in(number)
   ddg.data.in(estimate)
-  ddg.data.out(sqr.root)
   
-  return(sqr.root)
+  ddg.return(sqr.root)
 }
 
 write.result <- function(sqr.root) {
@@ -112,7 +106,7 @@ main <- function() {
   ddg.start("main")
   
   get.initial.values()
-  estimate <- get.random(number)
+  ddg.eval("estimate <- get.random(number)")
   
   ddg.start("get.square.root")
   
@@ -122,9 +116,9 @@ main <- function() {
     ddg.start("get.next.estimate")
   
     # repeat calculation until tests OK
-    estimate <- calc.square.root(number,estimate)
-    difference <- get.difference(number,estimate)
-    check <- get.check.value(difference,tolerance)
+    ddg.eval("estimate <- calc.square.root(number,estimate)")
+    ddg.eval("difference <- get.difference(number,estimate)")
+    ddg.eval("check <- get.check.value(difference,tolerance)")
     
     ddg.finish("get.next.estimate")
   }
@@ -133,7 +127,7 @@ main <- function() {
 
   ddg.start("write.result")
   
-  sqr.root <<- store.result(number,estimate)
+  ddg.eval("sqr.root <<- store.result(number,estimate)")
   write.result(sqr.root)
   
   ddg.finish("write.result")
@@ -142,8 +136,8 @@ main <- function() {
 }
 
 ddg.run(main,		
-		paste(testDir,"calculate-square-root-1.r",sep=""),
-		paste(testDir,"ddg",sep=""))
+		paste(testDir,"calculate-square-root-1.r",sep="/"),
+		paste(testDir,"ddg",sep="/"))
 
 # display values
 

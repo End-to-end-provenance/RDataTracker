@@ -98,10 +98,10 @@ calibrate <- function(raw.data) {
     }
   }
   calibrated.data <- xx
-  
-  ddg.procedure(ins=list("raw.data","calibration.parameters"),outs.data=list("calibrated.data"))
 
-  return(calibrated.data)
+  ddg.procedure(lookup.ins=TRUE)
+  ddg.data.in(calibration.parameters)
+  ddg.return(calibrated.data)
 }
 
 quality.control <- function(calibrated.data) {
@@ -127,9 +127,9 @@ quality.control <- function(calibrated.data) {
   }
   quality.controlled.data <- xx
   
-  ddg.procedure(ins=list("calibrated.data","quality.control.parameters"),outs.data=list("quality.controlled.data"))
-
-  return(quality.controlled.data)
+  ddg.procedure(lookup.ins=TRUE)
+  ddg.data.in(quality.control.parameters)
+  ddg.return(quality.controlled.data)
 }
 
 gap.fill <- function(quality.controlled.data) {
@@ -145,9 +145,10 @@ gap.fill <- function(quality.controlled.data) {
   }
   gap.filled.data <- xx
   
-  ddg.procedure(ins=list("quality.controlled.data","gap.fill.parameters","all.data"),outs.data=list("gap.filled.data"))
-
-  return(gap.filled.data)
+  ddg.procedure(lookup.ins=TRUE)
+  ddg.data.in(gap.fill.parameters)
+  ddg.data.in(all.data)
+  ddg.return(gap.filled.data)
 }
 
 write.result <- function(gap.filled.data) {
@@ -155,7 +156,7 @@ write.result <- function(gap.filled.data) {
   file.out <- paste(getwd(),"/",file.name,sep="")
   write.csv(gap.filled.data,file.out,row.names=FALSE)
 
-  ddg.procedure(ins=list("gap.filled.data"),outs.file=list("file.name"))
+  ddg.procedure(lookup.ins=TRUE,outs.file=list("file.name"))
 }
 
 plot.data <- function(xx,v) {
@@ -247,16 +248,19 @@ main <- function() {
 
   ddg.start("calibrate.data")
   calibrated.data <<- calibrate(raw.data)
+  ddg.data(calibrated.data)
   plot.data(calibrated.data,"C")
   ddg.finish("calibrate.data")
 
   ddg.start("quality.control.data")
   quality.controlled.data <<- quality.control(calibrated.data)
+  ddg.data(quality.controlled.data)
   plot.data(quality.controlled.data,"Q")
   ddg.finish("quality.control.data")
 
   ddg.start("gap.fill.data")
   gap.filled.data <<- gap.fill(quality.controlled.data)
+  ddg.data(gap.filled.data)
   plot.data(gap.filled.data,"G")
   ddg.finish("gap.fill.data")
 
