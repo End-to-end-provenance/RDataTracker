@@ -60,7 +60,7 @@ write.result <- function(sqr.root) {
 ### Main Program
 ddg.start("Calculate Square Root")
 ddg.start("Initial estimate")
-set.initial.values()
+get.initial.values()
   
 ddg.eval("estimate <- get.random(number)")
 check <- number
@@ -81,7 +81,7 @@ while (check > 0) {
 ddg.finish("Approximations")
 
 ddg.start("Export to file")
-ddg.eval(sqr.root <- store.result(number,estimate))
+ddg.eval("sqr.root <- store.result(number,estimate)")
 write.result(sqr.root)
 ddg.finish("Export to file")
 

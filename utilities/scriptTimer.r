@@ -41,6 +41,7 @@ scriptTimer.main <- function(){
   
   ### WE HAVE AUTOMATED THE BELOW
   setwd(test.dir)
+  cat(test.dir)
   
   # remove all temporary localTimingScripts folders (so no duplicates show up later)
   unlink(list.files(pattern="^localTimingScripts$", full.names=T, recursive=T, include.dirs=T), recursive=T)

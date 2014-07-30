@@ -16,7 +16,7 @@
   />
 
   <!-- For windows, we need to replace \ (backslashes) with / (forwardslashes) -->
-  <loadresource property="TESTS.dir"> 
+  <loadresource property="FILE.basedir"> 
     <propertyresource name="TESTS.basedir"/>
       <filterchain>
         <tokenfilter>
@@ -84,16 +84,16 @@
     />
 
     <!-- Replace working directory with local working directory in both the sourced and the executable test files -->
-    <replaceregexp match="\[DIR_DEFAULT\]" replace="${TESTS.dir}/${dir}" flags="g" >
+    <replaceregexp match="\[DIR_DEFAULT\]" replace="${FILE.basedir}/${dir}" flags="g" >
       <fileset dir="${local_dir}" includes="*.r" />
       <fileset dir="${local_dir}" includes="*.R" />
     </replaceregexp>
 
     <!-- Copy the source test file to this local directory, and replace with correct script name and directory -->
-    <copy file="${TESTS.dir}/examples/sourceTest.r" todir="${local_dir}" overwrite="true" unless:true="${no-source}"/>
+    <copy file="${FILE.basedir}/examples/sourceTest.r" todir="${local_dir}" overwrite="true" unless:true="${no-source}"/>
     <replaceregexp  file="${local_dir}/sourceTest.r"
                     match="\[DIR_LOCAL\]"
-                    replace="${TESTS.dir}/${local_dir}"
+                    replace="${FILE.basedir}/${local_dir}"
                     flags="g"
                     unless:true="${no-source}"
     />
@@ -106,7 +106,7 @@
 
     <!-- Execute the R Script (delete ddg directory first) -->
     <delete dir="${dir}/ddg" quiet="true" />
-    <exec executable="Rscript" dir="${local_dir}" output="${TESTS.dir}/${out}" >
+    <exec executable="Rscript" dir="${local_dir}" output="${FILE.basedir}/${out}" >
       <arg line="${script-file}" />
     </exec>
 
@@ -117,7 +117,7 @@
 
     <!-- Source the R Script (delete ddg-source directory first)-->
     <delete dir="${dir}/ddg-source" quiet="true" unless:true="${no-source}"/>
-    <exec executable="Rscript" dir="${local_dir}" output="${TESTS.dir}/${dir}/source_${out_name}" unless:true="${no-source}">
+    <exec executable="Rscript" dir="${local_dir}" output="${FILE.basedir}/${dir}/source_${out_name}" unless:true="${no-source}">
       <arg line="sourceTest.r" />
     </exec>
 
@@ -150,7 +150,7 @@
     <!-- Replace local version with correct directories (string to match is [DIR]-->
     <replaceregexp flags="g"> 
       <regexp pattern="\[DIR\]" />
-      <substitution expression="${TESTS.dir}/${dir}"/>
+      <substitution expression="${FILE.basedir}/${dir}"/>
       <fileset dir="${local_dir}">
         <patternset refid="local_files" />
       </fileset>
@@ -588,8 +588,27 @@
     of execution.
   -->
   <target name="script-timer">
+    <!-- Replace base.dir with the base directory of the project -->
+    <replaceregexp  file="utilities/scriptTimer.r"
+                    match="base.dir &lt;- (.*)"
+                    replace='base.dir &lt;- "${FILE.basedir}"'
+    />
     <exec executable="Rscript" dir="utilities" output="utilities/script-timer.out">
       <arg line="scriptTimer.r options.R execute" />
+    </exec>
+  </target>
+
+  <!-- Executes utilities/plot.r. Within this file, scriptTimer.r is executed (making the above
+    and unnecessary dependence). 
+  -->
+  <target name="plot-performance">
+    <!-- Replace base.dir with the base directory of the project -->
+    <replaceregexp  file="utilities/plot.r"
+                    match="base.dir &lt;- (.*)"
+                    replace='base.dir &lt;- "${FILE.basedir}"'
+    />
+    <exec executable="Rscript" dir="utilities" output="utilities/plot-performance.out">
+      <arg line="plot.r options.R execute" />
     </exec>
   </target>
 
