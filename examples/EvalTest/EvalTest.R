@@ -26,14 +26,14 @@ ddg.init(ddg.r.script.path,
 
 ### Functions
 
-f <- function() {
-  ddg.procedure()
+f <- function(x) {
+  ddg.procedure(lookup.ins=TRUE)
   ddg.return(10)
 }
 
 ddg.eval("a <- 1")
-ddg.eval("b <- f()")
-ddg.eval("d <- f()")
+ddg.eval("b <- f(a)")
+ddg.eval("d <- f(2)")
 
 ddg.save()
 end.time <- Sys.time()

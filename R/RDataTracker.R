@@ -1435,6 +1435,8 @@ ddg.MAX_HIST_LINES <- 2^14
 					}
 
 					.ddg.create.data.use.edges.for.console.cmd(vars.set, cmd.abbrev, cmd.expr, i)
+					.ddg.link.function.returns(cmd.expr)
+					
 					if (.ddg.debug()) print(paste(".ddg.parse.console.node: Adding input data nodes for", cmd.abbrev))
 					.ddg.create.data.set.edges.for.console.cmd(vars.set, cmd.abbrev, cmd.expr, i)
 					if (.ddg.debug()) print(paste(".ddg.parse.console.node: Adding output data nodes for", cmd.abbrev))
@@ -3084,6 +3086,11 @@ ddg.save <- function(quit=FALSE) {
   fileout <- paste(ddg.path, "/dnodes.txt", sep="")
 	ddg.data.nodes <- .ddg.data.nodes()
 	write.table(ddg.data.nodes[ddg.data.nodes$ddg.num > 0, ], fileout, quote=FALSE, na="", row.names=FALSE, col.names=FALSE)
+	
+	# Save the function return table to file
+	fileout <- paste(ddg.path, "/returns.txt", sep="")
+	ddg.returns <- .ddg.get(".ddg.return.values")
+	write.table(ddg.returns[ddg.returns$return.node.id > 0, ], fileout, quote=FALSE, na="", row.names=FALSE, col.names=TRUE)
 
 	# by convention, this is the final call to ddg.save
 	if (quit) {
