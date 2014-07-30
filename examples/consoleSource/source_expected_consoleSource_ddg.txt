@@ -1,15 +1,15 @@
-Architecture="i686"
-OperatingSystem="unix"
+Architecture="i386"
+OperatingSystem="windows"
 Language="R"
-LanguageVersion="R version 3.0.2 (2013-09-25)"
-RDataTrackerVersion="0.5.21"
+LanguageVersion="R version 3.1.0 (2014-04-10)"
+RDataTrackerVersion="0.5.23"
 Script="[DIR]/consoleSource.r"
-ProcessFileTimestamp="2014-07-27T16.50.27"
+ProcessFileTimestamp="2014-07-29T02.01.10"
 WorkingDirectory="[DIR]"
 DDGDirectory="[DIR]/ddg-source"
-DateTime="2014-07-27T16.58.27"
-68
-Operation p1 "1-fun <- function(a, b) {    ddg.procedure(lookup.ins = TRUE) " Value="fun <- function(a, b) {    ddg.procedure(lookup.ins = TRUE)    return(a + b)}";
+DateTime="2014-07-29T09.19.42"
+74
+Operation p1 "1-fun <- function(a, b) {    ddg.procedure(lookup.ins = TRUE) " Value="fun <- function(a, b) {    ddg.procedure(lookup.ins = TRUE)    ddg.return(a + b)}";
 Data d1 "1-fun" Value="#ddg.function";
 DF p1 d1
 Operation p2 "2-x <- 6" Value="x <- 6";
@@ -22,194 +22,245 @@ Data d3 "3-y" Value="10";
 DF p3 d3
 Start p4 "4-z <- fun(x, y)" Value="z <- fun(x, y)";
 CF p3 p4
-Operation p5 "5-fun" Value="fun";
+Binding p5 "5-a  <-  x"
 CF p4 p5
 DF d2 p5
-DF d3 p5
-Finish p6 "6-z <- fun(x, y)" Value="z <- fun(x, y)";
+Data d4 "4-a" Value="6";
+DF p5 d4
+Binding p6 "6-b  <-  y"
 CF p5 p6
-Data d4 "4-z" Value="16";
-DF p6 d4
-Start p7 "7-source1.r" Value="source1.r";
+DF d3 p6
+Data d5 "5-b" Value="10";
+DF p6 d5
+Operation p7 "7-fun" Value="fun";
+DF d4 p7
+DF d5 p7
 CF p6 p7
-Operation p8 "8-w <- z + x" Value="w <- z + x";
+Data d6 "6-fun(x, y) return" Value="16";
+DF p7 d6
+Finish p8 "8-z <- fun(x, y)" Value="z <- fun(x, y)";
 CF p7 p8
-DF d4 p8
-DF d2 p8
-Data d5 "5-w" Value="22";
-DF p8 d5
-Start p9 "9-w <- fun(w, y)" Value="w <- fun(w, y)";
+DF d6 p8
+Data d7 "7-z" Value="16";
+DF p8 d7
+Start p9 "9-source1.r" Value="source1.r";
 CF p8 p9
-Operation p10 "10-fun" Value="fun";
+Operation p10 "10-w <- z + x" Value="w <- z + x";
 CF p9 p10
-DF d5 p10
-DF d3 p10
-Finish p11 "11-w <- fun(w, y)" Value="w <- fun(w, y)";
+DF d7 p10
+DF d2 p10
+Data d8 "8-w" Value="22";
+DF p10 d8
+Start p11 "11-w <- fun(w, y)" Value="w <- fun(w, y)";
 CF p10 p11
-Data d6 "6-w" Value="32";
-DF p11 d6
-Operation p12 "12-z <- 0" Value="z <- 0";
+Binding p12 "12-a  <-  w"
 CF p11 p12
-Data d7 "7-z" Value="0";
-DF p12 d7
-Finish p13 "13-source1.r" Value="source1.r";
+DF d8 p12
+Data d9 "9-a" Value="22";
+DF p12 d9
+Binding p13 "13-b  <-  y"
 CF p12 p13
-Start p14 "14-v <- fun(w, z)" Value="v <- fun(w, z)";
+DF d3 p13
+Data d10 "10-b" Value="10";
+DF p13 d10
+Operation p14 "14-fun" Value="fun";
+DF d9 p14
+DF d10 p14
 CF p13 p14
-Operation p15 "15-fun" Value="fun";
+Data d11 "11-fun(w, y) return" Value="32";
+DF p14 d11
+Finish p15 "15-w <- fun(w, y)" Value="w <- fun(w, y)";
 CF p14 p15
-DF d6 p15
-DF d7 p15
-Finish p16 "16-v <- fun(w, z)" Value="v <- fun(w, z)";
+DF d11 p15
+Data d12 "12-w" Value="32";
+DF p15 d12
+Operation p16 "16-z <- 0" Value="z <- 0";
 CF p15 p16
-Data d8 "8-v" Value="32";
-DF p16 d8
-Start p17 "17-source2.r" Value="source2.r";
+Data d13 "13-z" Value="0";
+DF p16 d13
+Finish p17 "17-source1.r" Value="source1.r";
 CF p16 p17
-Operation p18 "18-setwd(testDir)" Value="setwd(testDir)";
+Start p18 "18-v <- fun(w, z)" Value="v <- fun(w, z)";
 CF p17 p18
-Start p19 "19-A" Value="A";
+Binding p19 "19-a  <-  w"
 CF p18 p19
-Operation p20 "20-a <- 10" Value="a <- 10";
+DF d12 p19
+Data d14 "14-a" Value="32";
+DF p19 d14
+Binding p20 "20-b  <-  z"
 CF p19 p20
-Data d9 "9-a" Value="10";
-DF p20 d9
-Operation p21 "21-c <- 100" Value="c <- 100";
+DF d13 p20
+Data d15 "15-b" Value="0";
+DF p20 d15
+Operation p21 "21-fun" Value="fun";
+DF d14 p21
+DF d15 p21
 CF p20 p21
-Data d10 "10-c" Value="100";
-DF p21 d10
-Finish p22 "22-A" Value="A";
+Data d16 "16-fun(w, z) return" Value="32";
+DF p21 d16
+Finish p22 "22-v <- fun(w, z)" Value="v <- fun(w, z)";
 CF p21 p22
-Start p23 "23-B" Value="B";
+DF d16 p22
+Data d17 "17-v" Value="32";
+DF p22 d17
+Start p23 "23-source2.r" Value="source2.r";
 CF p22 p23
-Operation p24 "24-b <- a + c" Value="b <- a + c";
+Operation p24 "24-setwd(testDir)" Value="setwd(testDir)";
 CF p23 p24
-DF d9 p24
-DF d10 p24
-Data d11 "11-b" Value="110";
-DF p24 d11
-Operation p25 "25-a <- 20" Value="a <- 20";
+Start p25 "25-A" Value="A";
 CF p24 p25
-Data d12 "12-a" Value="20";
-DF p25 d12
-Finish p26 "26-B" Value="B";
+Operation p26 "26-a <- 10" Value="a <- 10";
 CF p25 p26
-Finish p27 "27-source2.r" Value="source2.r";
+Data d18 "18-a" Value="10";
+DF p26 d18
+Operation p27 "27-c <- 100" Value="c <- 100";
 CF p26 p27
-Start p28 "28-source3.r" Value="source3.r";
+Data d19 "19-c" Value="100";
+DF p27 d19
+Finish p28 "28-A" Value="A";
 CF p27 p28
-Operation p29 "29-f <- function(x) {    g(x)    h(x)    return(1)}" Value="f <- function(x) {    g(x)    h(x)    return(1)}";
+Start p29 "29-B" Value="B";
 CF p28 p29
-Data d13 "13-f" Value="#ddg.function";
-DF p29 d13
-Operation p30 "30-g <- function(x) {    ddg.procedure()    ddg.data.in(substit" Value="g <- function(x) {    ddg.procedure()    ddg.data.in(substitute(x))    return(1)}";
+Operation p30 "30-b <- a + c" Value="b <- a + c";
 CF p29 p30
-Data d14 "14-g" Value="#ddg.function";
-DF p30 d14
-Operation p31 "31-h <- function(x) {    ddg.procedure()    ddg.data.in(substit" Value="h <- function(x) {    ddg.procedure()    ddg.data.in(substitute(x))    return(1)}";
+DF d18 p30
+DF d19 p30
+Data d20 "20-b" Value="110";
+DF p30 d20
+Operation p31 "31-a <- 20" Value="a <- 20";
 CF p30 p31
-Data d15 "15-h" Value="#ddg.function";
-DF p31 d15
-Operation p32 "32-someVector <- function() {    return(c(1, 3, 5))}" Value="someVector <- function() {    return(c(1, 3, 5))}";
+Data d21 "21-a" Value="20";
+DF p31 d21
+Finish p32 "32-B" Value="B";
 CF p31 p32
-Data d16 "16-someVector" Value="#ddg.function";
-DF p32 d16
-Operation p33 "33-x <- 10" Value="x <- 10";
+Finish p33 "33-source2.r" Value="source2.r";
 CF p32 p33
-Data d17 "17-x" Value="10";
-DF p33 d17
-Start p34 "34-f(x)" Value="f(x)";
+Start p34 "34-source3.r" Value="source3.r";
 CF p33 p34
-Operation p35 "35-g" Value="g";
+Operation p35 "35-f <- function(x) {    g(x)    h(x)    return(1)}" Value="f <- function(x) {    g(x)    h(x)    return(1)}";
 CF p34 p35
-DF d17 p35
-Operation p36 "36-h" Value="h";
+Data d22 "22-f" Value="#ddg.function";
+DF p35 d22
+Operation p36 "36-g <- function(x) {    ddg.procedure(lookup.ins = TRUE)    re" Value="g <- function(x) {    ddg.procedure(lookup.ins = TRUE)    return(1)}";
 CF p35 p36
-DF d17 p36
-Finish p37 "37-f(x)" Value="f(x)";
+Data d23 "23-g" Value="#ddg.function";
+DF p36 d23
+Operation p37 "37-h <- function(x) {    ddg.procedure(lookup.ins = TRUE)    re" Value="h <- function(x) {    ddg.procedure(lookup.ins = TRUE)    return(1)}";
 CF p36 p37
-Start p38 "38-f(x)" Value="f(x)";
+Data d24 "24-h" Value="#ddg.function";
+DF p37 d24
+Operation p38 "38-someVector <- function() {    return(c(1, 3, 5))}" Value="someVector <- function() {    return(c(1, 3, 5))}";
 CF p37 p38
-Operation p39 "39-g" Value="g";
+Data d25 "25-someVector" Value="#ddg.function";
+DF p38 d25
+Operation p39 "39-x <- 10" Value="x <- 10";
 CF p38 p39
-DF d17 p39
-Operation p40 "40-h" Value="h";
+Data d26 "26-x" Value="10";
+DF p39 d26
+Start p40 "40-f(x)" Value="f(x)";
 CF p39 p40
-DF d17 p40
-Finish p41 "41-f(x)" Value="f(x)";
+Operation p41 "41-g" Value="g";
+Exception d27 "27-error.msg" Value="\"Skipping parameter x\"";
+DF p41 d27
 CF p40 p41
-Finish p42 "42-source3.r" Value="source3.r";
+Operation p42 "42-h" Value="h";
+Exception d28 "28-error.msg" Value="\"Skipping parameter x\"";
+DF p42 d28
 CF p41 p42
-Start p43 "43-source3.r" Value="source3.r";
+Finish p43 "43-f(x)" Value="f(x)";
 CF p42 p43
-Operation p44 "44-f <- function(x) {    g(x)    h(x)    return(1)}" Value="f <- function(x) {    g(x)    h(x)    return(1)}";
+Start p44 "44-f(x)" Value="f(x)";
 CF p43 p44
-Data d18 "18-f" Value="#ddg.function";
-DF p44 d18
-Operation p45 "45-g <- function(x) {    ddg.procedure()    ddg.data.in(substit" Value="g <- function(x) {    ddg.procedure()    ddg.data.in(substitute(x))    return(1)}";
+Operation p45 "45-g" Value="g";
+Exception d29 "29-error.msg" Value="\"Skipping parameter x\"";
+DF p45 d29
 CF p44 p45
-Data d19 "19-g" Value="#ddg.function";
-DF p45 d19
-Operation p46 "46-h <- function(x) {    ddg.procedure()    ddg.data.in(substit" Value="h <- function(x) {    ddg.procedure()    ddg.data.in(substitute(x))    return(1)}";
+Operation p46 "46-h" Value="h";
+Exception d30 "30-error.msg" Value="\"Skipping parameter x\"";
+DF p46 d30
 CF p45 p46
-Data d20 "20-h" Value="#ddg.function";
-DF p46 d20
-Operation p47 "47-someVector <- function() {    return(c(1, 3, 5))}" Value="someVector <- function() {    return(c(1, 3, 5))}";
+Finish p47 "47-f(x)" Value="f(x)";
 CF p46 p47
-Data d21 "21-someVector" Value="#ddg.function";
-DF p47 d21
-Operation p48 "48-x <- 10" Value="x <- 10";
+Finish p48 "48-source3.r" Value="source3.r";
 CF p47 p48
-Data d22 "22-x" Value="10";
-DF p48 d22
-Start p49 "49-f(x)" Value="f(x)";
+Start p49 "49-source3.r" Value="source3.r";
 CF p48 p49
-Operation p50 "50-g" Value="g";
+Operation p50 "50-f <- function(x) {    g(x)    h(x)    return(1)}" Value="f <- function(x) {    g(x)    h(x)    return(1)}";
 CF p49 p50
-DF d22 p50
-Operation p51 "51-h" Value="h";
+Data d31 "31-f" Value="#ddg.function";
+DF p50 d31
+Operation p51 "51-g <- function(x) {    ddg.procedure(lookup.ins = TRUE)    re" Value="g <- function(x) {    ddg.procedure(lookup.ins = TRUE)    return(1)}";
 CF p50 p51
-DF d22 p51
-Finish p52 "52-f(x)" Value="f(x)";
+Data d32 "32-g" Value="#ddg.function";
+DF p51 d32
+Operation p52 "52-h <- function(x) {    ddg.procedure(lookup.ins = TRUE)    re" Value="h <- function(x) {    ddg.procedure(lookup.ins = TRUE)    return(1)}";
 CF p51 p52
-Start p53 "53-f(x)" Value="f(x)";
+Data d33 "33-h" Value="#ddg.function";
+DF p52 d33
+Operation p53 "53-someVector <- function() {    return(c(1, 3, 5))}" Value="someVector <- function() {    return(c(1, 3, 5))}";
 CF p52 p53
-Operation p54 "54-g" Value="g";
+Data d34 "34-someVector" Value="#ddg.function";
+DF p53 d34
+Operation p54 "54-x <- 10" Value="x <- 10";
 CF p53 p54
-DF d22 p54
-Operation p55 "55-h" Value="h";
+Data d35 "35-x" Value="10";
+DF p54 d35
+Start p55 "55-f(x)" Value="f(x)";
 CF p54 p55
-DF d22 p55
-Finish p56 "56-f(x)" Value="f(x)";
+Operation p56 "56-g" Value="g";
+Exception d36 "36-error.msg" Value="\"Skipping parameter x\"";
+DF p56 d36
 CF p55 p56
-Finish p57 "57-source3.r" Value="source3.r";
+Operation p57 "57-h" Value="h";
+Exception d37 "37-error.msg" Value="\"Skipping parameter x\"";
+DF p57 d37
 CF p56 p57
-Start p58 "58-Stuff" Value="Stuff";
+Finish p58 "58-f(x)" Value="f(x)";
 CF p57 p58
-Operation p59 "59-m <- 10" Value="m <- 10";
+Start p59 "59-f(x)" Value="f(x)";
 CF p58 p59
-Data d23 "23-m" Value="10";
-DF p59 d23
-Start p60 "60-f(m)" Value="f(m)";
+Operation p60 "60-g" Value="g";
+Exception d38 "38-error.msg" Value="\"Skipping parameter x\"";
+DF p60 d38
 CF p59 p60
-Operation p61 "61-g" Value="g";
+Operation p61 "61-h" Value="h";
+Exception d39 "39-error.msg" Value="\"Skipping parameter x\"";
+DF p61 d39
 CF p60 p61
-DF d22 p61
-Operation p62 "62-h" Value="h";
+Finish p62 "62-f(x)" Value="f(x)";
 CF p61 p62
-DF d22 p62
-Finish p63 "63-f(m)" Value="f(m)";
+Finish p63 "63-source3.r" Value="source3.r";
 CF p62 p63
-Start p64 "64-f(x)" Value="f(x)";
+Start p64 "64-Stuff" Value="Stuff";
 CF p63 p64
-Operation p65 "65-g" Value="g";
+Operation p65 "65-m <- 10" Value="m <- 10";
 CF p64 p65
-DF d22 p65
-Operation p66 "66-h" Value="h";
+Data d40 "40-m" Value="10";
+DF p65 d40
+Start p66 "66-f(m)" Value="f(m)";
 CF p65 p66
-DF d22 p66
-Finish p67 "67-f(x)" Value="f(x)";
+Operation p67 "67-g" Value="g";
+Exception d41 "41-error.msg" Value="\"Skipping parameter x\"";
+DF p67 d41
 CF p66 p67
-Finish p68 "68-Stuff" Value="Stuff";
+Operation p68 "68-h" Value="h";
+Exception d42 "42-error.msg" Value="\"Skipping parameter x\"";
+DF p68 d42
 CF p67 p68
+Finish p69 "69-f(m)" Value="f(m)";
+CF p68 p69
+Start p70 "70-f(x)" Value="f(x)";
+CF p69 p70
+Operation p71 "71-g" Value="g";
+Exception d43 "43-error.msg" Value="\"Skipping parameter x\"";
+DF p71 d43
+CF p70 p71
+Operation p72 "72-h" Value="h";
+Exception d44 "44-error.msg" Value="\"Skipping parameter x\"";
+DF p72 d44
+CF p71 p72
+Finish p73 "73-f(x)" Value="f(x)";
+CF p72 p73
+Finish p74 "74-Stuff" Value="Stuff";
+CF p73 p74
 

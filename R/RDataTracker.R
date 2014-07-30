@@ -1251,6 +1251,12 @@ ddg.MAX_HIST_LINES <- 2^14
 	}
 }
 
+# Returns true if the command passed in (as a string) will create a procedure node
+# and therefore initiate the creation of a collapsible console node
+.ddg.is.procedure.cmd <- function(cmd.str) {
+	return(grepl("^ddg.(procedure|start|finish|restore|checkpoint)", cmd.str))
+}
+
 # .ddg.parse.lines takes as input a set of lines corresponding to either the 
 # history of an RScript or an RScript itself. It parses and 
 # converts them to executable commands. It returns a list of commands. Each command
@@ -1386,7 +1392,7 @@ ddg.MAX_HIST_LINES <- 2^14
          	# abstract nodes
   				if (!grepl("^ddg.", cmd)) .ddg.set(".ddg.possible.last.cmd", list("abbrev"=cmd.abbrev,
   				                                   "expr"=cmd.expr, "text"=cmd.text))
-  				else if (grepl("^ddg.start", cmd) || grepl("^ddg.finish", cmd)) .ddg.set(".ddg.possible.last.cmd", NULL)
+  				else if (.ddg.is.procedure.cmd(cmd)) .ddg.set(".ddg.possible.last.cmd", NULL)
 
          	# evaluate
   				result <- eval(cmd.expr, environ, NULL)
@@ -2264,7 +2270,9 @@ ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.graphic=N
     
 		# Get parameters and create edges.
 		if (length(tokens) > 1) {
+			# args contains the names of the variable that was passed into the function
 			args <- tokens[2:length(tokens)]
+			# param,names contains the names of the parameters (this is what the variable is known as inside the function)
 	        param.names <- names(full.call)
 	        param.names <- param.names[2:length(param.names)]
 			stack <- sys.calls()
@@ -2276,7 +2284,9 @@ ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.graphic=N
 			#lapply(args, 
 			lapply(bindings, 
 					function(binding) {	
+						# here, param is now the arguments passed IN
 						param <- binding[1]
+						# formal is the paramenter name of the function (what is the variable known as inside?)
 						formal <- binding[2]
 
 						# Find all the variables used in this parameter.
@@ -2495,7 +2505,7 @@ ddg.eval <- function(statement) {
 	env <- sys.frame(frame.num)
 	if (!.ddg.is.init()) {
 		eval(parsed.statement, env)
-		return()
+		return(invisible())
 	}
 	
 	.ddg.parse.commands(parsed.statement, environ=env, node.name=statement)
@@ -2612,6 +2622,7 @@ ddg.file <- function(filename, dname=NULL) {
 
 ddg.data.in <- function(dname, pname=NULL) {
 	if (!.ddg.is.init()) return(invisible())
+	# browser()
 
 	.ddg.lookup.function.name(pname)
 	

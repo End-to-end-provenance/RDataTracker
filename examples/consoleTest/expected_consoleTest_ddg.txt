@@ -2,25 +2,26 @@ Architecture="x86_64"
 OperatingSystem="unix"
 Language="R"
 LanguageVersion="R version 3.1.0 Patched (2014-05-20 r65701)"
-Script="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/consoleTest/consoleTest.r"
+Script="[DIR]/consoleTest.r"
 ProcessFileTimestamp="2014-07-18T11.35.25"
-WorkingDirectory="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/consoleTest"
-DDGDirectory="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/consoleTest/ddg"
+WorkingDirectory="[DIR]"
+DDGDirectory="[DIR]/ddg"
 DateTime="2014-07-22T15.57.12"
 4
 Operation p1 "1-g" Value="g";
-Exception d2 "2-error.msg" Value="\"No data node found for substitute\",\"No data node found for x\"";
-DF p1 d2
+Exception d1 "1-error.msg" Value="\"Skipping parameter x\"";
+DF p1 d1
 Operation p2 "2-h" Value="h";
+Exception d2 "2-error.msg" Value="\"Skipping parameter x\"";
+DF p2 d2
 CF p1 p2
-Exception d3 "3-error.msg" Value="\"No data node found for substitute\",\"No data node found for x\"";
-DF p2 d3
 Operation p3 "3-g" Value="g";
+Exception d3 "3-error.msg" Value="\"Skipping parameter x\"";
+DF p3 d3
 CF p2 p3
-Exception d4 "4-error.msg" Value="\"No data node found for substitute\",\"No data node found for x\"";
-DF p3 d4
 Operation p4 "4-h" Value="h";
+Exception d4 "4-error.msg" Value="\"Skipping parameter x\"";
+DF p4 d4
 CF p3 p4
-Exception d5 "5-error.msg" Value="\"No data node found for substitute\",\"No data node found for x\"";
-DF p4 d5
+
 

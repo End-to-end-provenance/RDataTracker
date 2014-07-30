@@ -55,7 +55,6 @@
     />
 
     <!-- Copy the script file to this local directory, and replace with correct ddg directory for sourcing -->
-  	<echo message="${no-source}" />
     <copy file="${dir}/${script-file}" tofile="${local_dir}/source_${script-file}" overwrite="true" unless:true="${no-source}" />
     <replaceregexp  file="${local_dir}/source_${script-file}"
                     match="\[DDG-DIR\]"
@@ -300,9 +299,8 @@
 	      <param name="dir" value="examples/ScopeTest"/>
 	      <param name="out" value="examples/ScopeTest/ScopeTest.out"/>
 	      <param name="script-file" value="ScopeTest.R"/>
-	      <param name="expected_out" value="examples/ScopeTest/expected_scopeTest.out"/>
-	      <param name="expected_ddg" value="examples/ScopeTest/expected_scopeTest_ddg.txt"/>
-	      <param name="fail_out" value="false" />
+	      <param name="expected_out" value="examples/ScopeTest/expected_ScopeTest.out"/>
+	      <param name="expected_ddg" value="examples/ScopeTest/expected_ScopeTest_ddg.txt"/>
 	      <param name="source_test" value="true" />
 	    </antcall>
 	  </target>
@@ -314,7 +312,6 @@
 	      <param name="script-file" value="ReturnTest.R"/>
 	      <param name="expected_out" value="examples/ScopeTest/expected_ReturnTest.out"/>
 	      <param name="expected_ddg" value="examples/ScopeTest/expected_ReturnTest_ddg.txt"/>
-	      <param name="fail_out" value="true" />
 		  <param name="source_test" value="true" />
 	    </antcall>
 	  </target>
@@ -356,7 +353,6 @@
       <param name="script-file" value="consoleSource.r"/>
       <param name="expected_out" value="examples/consoleSource/expected_consoleSource.out"/>
       <param name="expected_ddg" value="examples/consoleSource/expected_consoleSource_ddg.txt"/>
-      <param name="fail_out" value="false" />
       <param name="source_test" value="true" />
     </antcall>
   </target>
@@ -386,7 +382,6 @@
 	      <param name="script-file" value="calculate-square-root-3.r"/>
 	      <param name="expected_out" value="examples/CalculateSquareRoot/expected_calculate-square-root-3.out"/>
 	      <param name="expected_ddg" value="examples/CalculateSquareRoot/expected_calculate-square-root-3_ddg.txt"/>
-	      <param name="fail_out" value="false" />
 	      <param name="source_test" value="false" />
 	    </antcall>
 	  </target>
@@ -425,7 +420,6 @@
       <param name="script-file" value="real-time-15min-met-test.r"/>
       <param name="expected_out" value="examples/RealTime15MinMET/expected_real-time-15min-met-test.out"/>
       <param name="expected_ddg" value="examples/RealTime15MinMET/expected_real-time-15min-met-test_ddg.txt"/>
-      <param name="fail_out" value="false" />
       <param name="source_test" value="true" />
     </antcall>
   </target>
@@ -437,7 +431,6 @@
       <param name="script-file" value="quality-control-15min-test.r"/>
       <param name="expected_out" value="examples/QualityControl15Min/expected_quality-control-15min-test.out"/>
       <param name="expected_ddg" value="examples/QualityControl15Min/expected_quality-control-15min-test_ddg.txt"/>
-      <param name="fail_out" value="false" />
       <param name="source_test" value="true" />
     </antcall>
   </target>
@@ -458,7 +451,6 @@
       <param name="script-file" value="ddgChangesBehavior.r"/>
       <param name="expected_out" value="examples/ddgChangesBehavior/expected_ddgChangesBehavior.out"/>
       <param name="expected_ddg" value="examples/ddgChangesBehavior/expected_ddgChangesBehavior_ddg.txt"/>
-      <param name="fail_out" value="false" />
       <param name="source_test" value="false" />
     </antcall>
   </target>

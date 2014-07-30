@@ -1,13 +1,13 @@
-Architecture="x86_64"
-OperatingSystem="unix"
+Architecture="i386"
+OperatingSystem="windows"
 Language="R"
-LanguageVersion="R version 3.1.0 Patched (2014-05-20 r65701)"
-RDataTrackerVersion="0.5.19"
+LanguageVersion="R version 3.1.0 (2014-04-10)"
+RDataTrackerVersion="0.5.25"
 Script="[DIR]/quality-control-15min-test.r"
-ProcessFileTimestamp="2014-07-23T11.49.51"
+ProcessFileTimestamp="2014-07-28T21.49.53"
 WorkingDirectory="[DIR]"
 DDGDirectory="[DIR]/ddg-source"
-DateTime="2014-07-28T14.10.20"
+DateTime="2014-07-29T23.24.53"
 47
 Operation p1 "1-read.data <- function(x) {    data.file <<- \"met-15min.csv" Value="read.data <- function(x) {    data.file <<- \"met-15min.csv\"    variable <<- \"airt\"    start.date <<- \"2012-01-01\"    end.date <<- \"2012-03-31\"    zz <- read.csv(x)    ddg.procedure(\"read.data\")    ddg.file(data.file)    ddg.data(\"variable\", variable)    ddg.data(\"start.date\", start.date)    ddg.data(\"end.date\", end.date)    ddg.data.in(data.file)    ddg.data.in(\"variable\")    ddg.data.in(\"start.date\")    ddg.data.in(\"end.date\")    ddg.return(zz)}";
 Data d1 "1-read.data" Value="#ddg.function";
@@ -20,7 +20,7 @@ Operation p3 "3-apply.test <- function(xx, t, n) {    xx$flag <- \"\"    if " Va
 CF p2 p3
 Data d3 "3-apply.test" Value="#ddg.function";
 DF p3 d3
-Operation p4 "4-plot.data <- function(xx, t, n, output) {    if (output == " Value="plot.data <- function(xx, t, n, output) {    if (output == \"file\") {        dpfile <- paste(getwd(), \"/plot.jpeg\", sep = \"\")        jpeg(file = dpfile, width = 800, height = 500, quality = 100)    }    rows <- nrow(xx)    xmin <- xx$dt[1]    xmax <- xx$dt[rows]    xlim <- c(xmin, xmax)    xrange <- xmax - xmin    daterange <- c(xmin, xmax)    ymin <- min(xx$var, na.rm = TRUE)    ymax <- max(xx$var, na.rm = TRUE)    ylim <- c(ymin, ymax)    yrange <- ymax - ymin    title <- paste(variable, \" \", t, \" \", n, sep = \"\")    if (output == \"gui\") {        if (Sys.info()[\"sysname\"] == \"Darwin\") {            X11(15, 10)        }        else {            x11(15, 10)        }    }    par(mar = c(5.1, 5.1, 5.1, 10.1))    plot(xaxt = \"n\", xlim, ylim, cex.main = 1.7, cex.axis = 1.7,         cex.lab = 1.7, xlab = \"Date\", ylab = variable, main = title)    if (xrange <= 30)         axis.Date(1, at = seq(daterange[1], daterange[2], by = \"day\"),             format = \"%d-%b-%Y\")    if (xrange > 30 && xrange < 100)         axis.Date(1, at = seq(daterange[1], daterange[2], by = \"week\"),             format = \"%d-%b-%Y\")    if (xrange >= 100 && xrange <= 1000)         axis.Date(1, at = seq(daterange[1], daterange[2], by = \"month\"),             format = \"%d-%b-%Y\")    if (xrange > 1000)         axis.Date(1, at = seq(daterange[1], daterange[2], by = \"year\"),             format = \"%b-%Y\")    good <- subset(xx, xx$flag == \"\")    ques <- subset(xx, xx$flag == \"Q\")    points(good$dt, good$var, lwd = 2, col = \"blue\")    points(ques$dt, ques$var, lwd = 2, col = \"red\")    labs <- c(\"Good\", \"Questionable\")    cols <- c(\"blue\", \"red\")    par(xpd = TRUE)    xmin.date = as.Date(xx$date[1])    xmax.date = as.Date(xx$date[rows])    xrange.date = xmax.date - xmin.date    legend(xmax.date + xrange.date/15, ymax, labs, cols, cex = 1)    if (output == \"gui\") {        ddg.procedure(\"plot.data\")        ddg.data.in(\"flagged-data.csv\")    }    if (output == \"file\") {        dev.off()        ddg.procedure(\"plot.data\")        ddg.data.in(\"flagged-data.csv\")        ddg.file.out(\"plot.jpeg\")    }}";
+Operation p4 "4-plot.data <- function(xx, t, n, output) {    if (output == " Value="plot.data <- function(xx, t, n, output) {    if (output == \"file\") {        dpfile <- paste(getwd(), \"/plot.jpeg\", sep = \"\")        jpeg(file = dpfile, width = 800, height = 500, quality = 100)    }    rows <- nrow(xx)    xmin <- xx$dt[1]    xmax <- xx$dt[rows]    xlim <- c(xmin, xmax)    xrange <- xmax - xmin    daterange <- c(xmin, xmax)    ymin <- min(xx$var, na.rm = TRUE)    ymax <- max(xx$var, na.rm = TRUE)    ylim <- c(ymin, ymax)    yrange <- ymax - ymin    title <- paste(variable, \" \", t, \" \", n, sep = \"\")    if (output == \"gui\") {        if (Sys.info()[\"sysname\"] == \"Darwin\") {            X11(15, 10)        }        else {            x11(15, 10)        }    }    par(mar = c(5.1, 5.1, 5.1, 10.1))    plot(xaxt = \"n\", xlim, ylim, cex.main = 1.7, cex.axis = 1.7,         cex.lab = 1.7, xlab = \"Date\", ylab = variable, main = title)    if (xrange <= 30)         axis.Date(1, at = seq(daterange[1], daterange[2], by = \"day\"),             format = \"%d-%b-%Y\")    if (xrange > 30 && xrange < 100)         axis.Date(1, at = seq(daterange[1], daterange[2], by = \"week\"),             format = \"%d-%b-%Y\")    if (xrange >= 100 && xrange <= 1000)         axis.Date(1, at = seq(daterange[1], daterange[2], by = \"month\"),             format = \"%d-%b-%Y\")    if (xrange > 1000)         axis.Date(1, at = seq(daterange[1], daterange[2], by = \"year\"),             format = \"%b-%Y\")    good <- subset(xx, xx$flag == \"\")    ques <- subset(xx, xx$flag == \"Q\")    points(good$dt, good$var, lwd = 2, col = \"blue\")    points(ques$dt, ques$var, lwd = 2, col = \"red\")    labs <- c(\"Good\", \"Questionable\")    cols <- c(\"blue\", \"red\")    par(xpd = TRUE)    xmin.date = as.Date(xx$date[1])    xmax.date = as.Date(xx$date[rows])    xrange.date = xmax.date - xmin.date    legend(xmax.date + xrange.date/15, ymax, labs, cols, cex = 1)    if (output == \"gui\") {        ddg.procedure(\"plot.data\")        ddg.data.in(flagged.data)    }    if (output == \"file\") {        dev.off()        ddg.procedure(\"plot.data\")        ddg.data.in(flagged.data)        ddg.file.out(\"plot.jpeg\")    }}";
 CF p3 p4
 Data d4 "4-plot.data" Value="#ddg.function";
 DF p4 d4
@@ -36,7 +36,7 @@ Start p8 "8-all.data <- read.data(data.file)" Value="all.data <- read.data(data.
 CF p7 p8
 Operation p9 "9-read.data" Value="read.data";
 CF p8 p9
-File d6 "6-met-15min.csv" Value="[DIR]/ddg-source/6-met-15min.csv" Time="2014-07-28T14.10.16" Location="[DIR]/met-15min.csv";
+File d6 "6-met-15min.csv" Value="[DIR]/ddg-source/6-met-15min.csv" Time="2014-07-29T23.24.42" Location="[DIR]/met-15min.csv";
 Data d7 "7-variable" Value="\"airt\"";
 Data d8 "8-start.date" Value="\"2012-01-01\"";
 Data d9 "9-end.date" Value="\"2012-03-31\"";
@@ -44,20 +44,20 @@ DF d6 p9
 DF d7 p9
 DF d8 p9
 DF d9 p9
-Snapshot d10 "10-read.data(data.file) return" Value="[DIR]/ddg-source/10-read.data(data.file) return.csv" Time="2014-07-28T14.10.16";
+Snapshot d10 "10-read.data(data.file) return" Value="[DIR]/ddg-source/10-read.data(data.file) return.csv" Time="2014-07-29T23.24.43";
 DF p9 d10
 Finish p10 "10-all.data <- read.data(data.file)" Value="all.data <- read.data(data.file)";
 CF p9 p10
 DF d10 p10
-Snapshot d11 "11-all.data" Value="[DIR]/ddg-source/11-all.data.csv" Time="2014-07-28T14.10.16";
+Snapshot d11 "11-all.data" Value="[DIR]/ddg-source/11-all.data.csv" Time="2014-07-29T23.24.44";
 DF p10 d11
-Snapshot d12 "12-all.data" Value="[DIR]/ddg-source/12-all.data.csv" Time="2014-07-28T14.10.17";
+Snapshot d12 "12-all.data" Value="[DIR]/ddg-source/12-all.data.csv" Time="2014-07-29T23.24.45";
 Start p11 "11-selected.data <- select.data(all.data)" Value="selected.data <- select.data(all.data)";
 CF p10 p11
 Binding p12 "12-zz  <-  all.data"
 CF p11 p12
 DF d12 p12
-Snapshot d13 "13-zz" Value="12-all.data.csv";
+Snapshot d13 "13-zz" Value="[DIR]/ddg-source/13-zz.csv" Time="2014-07-29T23.24.47";
 DF p12 d13
 Operation p13 "13-select.data" Value="select.data";
 DF d13 p13
@@ -65,21 +65,21 @@ CF p12 p13
 DF d7 p13
 DF d8 p13
 DF d9 p13
-Snapshot d14 "14-select.data(all.data) return" Value="[DIR]/ddg-source/14-select.data(all.data) return.csv" Time="2014-07-28T14.10.17";
+Snapshot d14 "14-select.data(all.data) return" Value="[DIR]/ddg-source/14-select.data(all.data) return.csv" Time="2014-07-29T23.24.47";
 DF p13 d14
 Finish p14 "14-selected.data <- select.data(all.data)" Value="selected.data <- select.data(all.data)";
 CF p13 p14
 DF d14 p14
-Snapshot d15 "15-selected.data" Value="[DIR]/ddg-source/15-selected.data.csv" Time="2014-07-28T14.10.17";
+Snapshot d15 "15-selected.data" Value="[DIR]/ddg-source/15-selected.data.csv" Time="2014-07-29T23.24.48";
 DF p14 d15
-Snapshot d16 "16-selected.data" Value="[DIR]/ddg-source/16-selected.data.csv" Time="2014-07-28T14.10.17";
+Snapshot d16 "16-selected.data" Value="[DIR]/ddg-source/16-selected.data.csv" Time="2014-07-29T23.24.48";
 Finish p15 "15-get.data" Value="get.data";
 CF p14 p15
 Start p16 "16-analyze.data" Value="analyze.data";
 CF p15 p16
 Operation p17 "17-inputs <- c(\"min\", \"max\", \"min\", \"slope\")" Value="inputs <- c(\"min\", \"max\", \"min\", \"slope\")";
 CF p16 p17
-Snapshot d17 "17-inputs" Value="[DIR]/ddg-source/17-inputs.csv" Time="2014-07-28T14.10.17";
+Snapshot d17 "17-inputs" Value="[DIR]/ddg-source/17-inputs.csv" Time="2014-07-29T23.24.48";
 DF p17 d17
 Operation p18 "18-num <- 10" Value="num <- 10";
 CF p17 p18
@@ -96,9 +96,9 @@ CF p20 p21
 DF d16 p21
 DF d20 p21
 DF d19 p21
-Snapshot d21 "21-apply.test(selected.data, test, num) return" Value="[DIR]/ddg-source/21-apply.test(selected.data, test, num) return.csv" Time="2014-07-28T14.10.17";
+Snapshot d21 "21-apply.test(selected.data, test, num) return" Value="[DIR]/ddg-source/21-apply.test(selected.data, test, num) return.csv" Time="2014-07-29T23.24.48";
 DF p21 d21
-Snapshot d22 "22-flagged.data" Value="[DIR]/ddg-source/22-flagged.data.csv" Time="2014-07-28T14.10.18";
+Snapshot d22 "22-flagged.data" Value="[DIR]/ddg-source/22-flagged.data.csv" Time="2014-07-29T23.24.48";
 Operation p22 "22-plot.data" Value="plot.data";
 CF p21 p22
 DF d22 p22
@@ -112,10 +112,10 @@ CF p24 p25
 DF d16 p25
 DF d23 p25
 DF d19 p25
-Snapshot d24 "24-apply.test(selected.data, test, num) return" Value="[DIR]/ddg-source/24-apply.test(selected.data, test, num) return.csv" Time="2014-07-28T14.10.18";
+Snapshot d24 "24-apply.test(selected.data, test, num) return" Value="[DIR]/ddg-source/24-apply.test(selected.data, test, num) return.csv" Time="2014-07-29T23.24.49";
 DF p25 d24
-Snapshot d25 "25-flagged.data" Value="[DIR]/ddg-source/25-flagged.data.csv" Time="2014-07-28T14.10.18";
-Snapshot d26 "26-graphic" Value="[DIR]/ddg-source/26-graphic.jpeg" Time="2014-07-28T14.10.18";
+Snapshot d25 "25-flagged.data" Value="[DIR]/ddg-source/25-flagged.data.csv" Time="2014-07-29T23.24.49";
+Snapshot d26 "26-graphic" Value="[DIR]/ddg-source/26-graphic.jpeg" Time="2014-07-29T23.24.50";
 DF p25 d26
 Operation p26 "26-plot.data" Value="plot.data";
 CF p25 p26
@@ -130,10 +130,10 @@ CF p28 p29
 DF d16 p29
 DF d27 p29
 DF d19 p29
-Snapshot d28 "28-apply.test(selected.data, test, num) return" Value="[DIR]/ddg-source/28-apply.test(selected.data, test, num) return.csv" Time="2014-07-28T14.10.18";
+Snapshot d28 "28-apply.test(selected.data, test, num) return" Value="[DIR]/ddg-source/28-apply.test(selected.data, test, num) return.csv" Time="2014-07-29T23.24.50";
 DF p29 d28
-Snapshot d29 "29-flagged.data" Value="[DIR]/ddg-source/29-flagged.data.csv" Time="2014-07-28T14.10.18";
-Snapshot d30 "30-graphic" Value="[DIR]/ddg-source/30-graphic.jpeg" Time="2014-07-28T14.10.19";
+Snapshot d29 "29-flagged.data" Value="[DIR]/ddg-source/29-flagged.data.csv" Time="2014-07-29T23.24.50";
+Snapshot d30 "30-graphic" Value="[DIR]/ddg-source/30-graphic.jpeg" Time="2014-07-29T23.24.51";
 DF p29 d30
 Operation p30 "30-plot.data" Value="plot.data";
 CF p29 p30
@@ -148,10 +148,10 @@ CF p32 p33
 DF d16 p33
 DF d31 p33
 DF d19 p33
-Snapshot d32 "32-apply.test(selected.data, test, num) return" Value="[DIR]/ddg-source/32-apply.test(selected.data, test, num) return.csv" Time="2014-07-28T14.10.19";
+Snapshot d32 "32-apply.test(selected.data, test, num) return" Value="[DIR]/ddg-source/32-apply.test(selected.data, test, num) return.csv" Time="2014-07-29T23.24.52";
 DF p33 d32
-Snapshot d33 "33-flagged.data" Value="[DIR]/ddg-source/33-flagged.data.csv" Time="2014-07-28T14.10.19";
-Snapshot d34 "34-graphic" Value="[DIR]/ddg-source/34-graphic.jpeg" Time="2014-07-28T14.10.19";
+Snapshot d33 "33-flagged.data" Value="[DIR]/ddg-source/33-flagged.data.csv" Time="2014-07-29T23.24.52";
+Snapshot d34 "34-graphic" Value="[DIR]/ddg-source/34-graphic.jpeg" Time="2014-07-29T23.24.52";
 DF p33 d34
 Operation p34 "34-plot.data" Value="plot.data";
 CF p33 p34
@@ -164,7 +164,7 @@ DF d21 p36
 DF d24 p36
 DF d28 p36
 DF d32 p36
-Snapshot d35 "35-flagged.data" Value="[DIR]/ddg-source/35-flagged.data.csv" Time="2014-07-28T14.10.20";
+Snapshot d35 "35-flagged.data" Value="[DIR]/ddg-source/35-flagged.data.csv" Time="2014-07-29T23.24.52";
 DF p36 d35
 Start p37 "37-save.results" Value="save.results";
 CF p36 p37
@@ -173,18 +173,18 @@ CF p37 p38
 Operation p39 "39-save.data" Value="save.data";
 CF p38 p39
 DF d35 p39
-File d36 "36-flagged-data.csv" Value="[DIR]/ddg-source/36-flagged-data.csv" Time="2014-07-28T14.10.20" Location="[DIR]/flagged-data.csv";
+File d36 "36-flagged-data.csv" Value="[DIR]/ddg-source/36-flagged-data.csv" Time="2014-07-29T23.24.53" Location="[DIR]/flagged-data.csv";
 DF p39 d36
 Finish p40 "40-save.data(\"flagged-data.csv\", flagged.data)" Value="save.data(\"flagged-data.csv\", flagged.data)";
 CF p39 p40
-Snapshot d37 "37-graphic" Value="[DIR]/ddg-source/37-graphic.jpeg" Time="2014-07-28T14.10.20";
+Snapshot d37 "37-graphic" Value="[DIR]/ddg-source/37-graphic.jpeg" Time="2014-07-29T23.24.53";
 DF p40 d37
 Start p41 "41-plot.data(flagged.data, test, num, \"file\")" Value="plot.data(flagged.data, test, num, \"file\")";
 CF p40 p41
 Operation p42 "42-plot.data" Value="plot.data";
 CF p41 p42
 DF d35 p42
-File d38 "38-plot.jpeg" Value="[DIR]/ddg-source/38-plot.jpeg" Time="2014-07-28T14.10.20" Location="[DIR]/plot.jpeg";
+File d38 "38-plot.jpeg" Value="[DIR]/ddg-source/38-plot.jpeg" Time="2014-07-29T23.24.53" Location="[DIR]/plot.jpeg";
 DF p42 d38
 Finish p43 "43-plot.data(flagged.data, test, num, \"file\")" Value="plot.data(flagged.data, test, num, \"file\")";
 CF p42 p43
@@ -197,6 +197,4 @@ CF p45 p46
 Operation p47 "47-for (i in length(inputs)) dev.off()" Value="for (i in length(inputs)) dev.off()";
 CF p46 p47
 DF d17 p47
-Snapshot d39 "39-graphic" Value="[DIR]/ddg-source/39-graphic.jpeg" Time="2014-07-28T14.10.20";
-DF p47 d39
 

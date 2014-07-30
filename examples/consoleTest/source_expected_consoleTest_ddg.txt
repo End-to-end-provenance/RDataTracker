@@ -2,20 +2,21 @@ Architecture="i386"
 OperatingSystem="windows"
 Language="R"
 LanguageVersion="R version 3.1.0 (2014-04-10)"
+RDataTrackerVersion="0.5.24"
 Script="[DIR]/consoleTest.r"
-ProcessFileTimestamp="2014-07-16T13.08.42"
+ProcessFileTimestamp="2014-07-29T01.15.42"
 WorkingDirectory="[DIR]"
 DDGDirectory="[DIR]/ddg-source"
-DateTime="2014-07-16T13.10.30"
+DateTime="2014-07-29T19.22.55"
 13
 Operation p1 "1-f <- function(x) {    g(x)    h(x)    return(1)}" Value="f <- function(x) {    g(x)    h(x)    return(1)}";
 Data d1 "1-f" Value="#ddg.function";
 DF p1 d1
-Operation p2 "2-g <- function(x) {    ddg.procedure()    ddg.data.in(substit" Value="g <- function(x) {    ddg.procedure()    ddg.data.in(substitute(x))    return(1)}";
+Operation p2 "2-g <- function(x) {    ddg.procedure(lookup.ins = TRUE)    re" Value="g <- function(x) {    ddg.procedure(lookup.ins = TRUE)    return(1)}";
 CF p1 p2
 Data d2 "2-g" Value="#ddg.function";
 DF p2 d2
-Operation p3 "3-h <- function(x) {    ddg.procedure()    ddg.data.in(substit" Value="h <- function(x) {    ddg.procedure()    ddg.data.in(substitute(x))    return(1)}";
+Operation p3 "3-h <- function(x) {    ddg.procedure(lookup.ins = TRUE)    re" Value="h <- function(x) {    ddg.procedure(lookup.ins = TRUE)    return(1)}";
 CF p2 p3
 Data d3 "3-h" Value="#ddg.function";
 DF p3 d3
@@ -30,21 +31,25 @@ DF p5 d5
 Start p6 "6-f(x)" Value="f(x)";
 CF p5 p6
 Operation p7 "7-g" Value="g";
+Exception d6 "6-error.msg" Value="\"Skipping parameter x\"";
+DF p7 d6
 CF p6 p7
-DF d5 p7
 Operation p8 "8-h" Value="h";
+Exception d7 "7-error.msg" Value="\"Skipping parameter x\"";
+DF p8 d7
 CF p7 p8
-DF d5 p8
 Finish p9 "9-f(x)" Value="f(x)";
 CF p8 p9
 Start p10 "10-f(x)" Value="f(x)";
 CF p9 p10
 Operation p11 "11-g" Value="g";
+Exception d8 "8-error.msg" Value="\"Skipping parameter x\"";
+DF p11 d8
 CF p10 p11
-DF d5 p11
 Operation p12 "12-h" Value="h";
+Exception d9 "9-error.msg" Value="\"Skipping parameter x\"";
+DF p12 d9
 CF p11 p12
-DF d5 p12
 Finish p13 "13-f(x)" Value="f(x)";
 CF p12 p13
 

@@ -2,13 +2,13 @@ Architecture="x86_64"
 OperatingSystem="unix"
 Language="R"
 LanguageVersion="R version 3.1.0 Patched (2014-05-20 r65701)"
-RDataTrackerVersion="0.5.24"
+RDataTrackerVersion="0.5.25"
 Script="[DIR]/ScopeTest.R"
-ProcessFileTimestamp="2014-07-29T17.33.32"
+ProcessFileTimestamp="2014-07-30T14.37.30"
 WorkingDirectory="[DIR]"
 DDGDirectory="[DIR]/ddg-source"
-DateTime="2014-07-30T14.10.19"
-58
+DateTime="2014-07-30T14.52.35"
+54
 Operation p1 "1-options(warn = 1)" Value="options(warn = 1)";
 Operation p2 "2-f <- function() {    a <<- b * 10    ddg.procedure(ins = lis" Value="f <- function() {    a <<- b * 10    ddg.procedure(ins = list(\"b\"), outs.data = list(\"a\"))    ddg.return(a)}";
 CF p1 p2
@@ -211,23 +211,10 @@ CF p51 p52
 DF d33 p52
 Operation p53 "53-foobar <- read.csv(\"foobar.csv\")" Value="foobar <- read.csv(\"foobar.csv\")";
 CF p52 p53
-Snapshot d34 "34-foobar" Value="[DIR]/ddg-source/34-foobar.csv" Time="2014-07-30T14.10.19";
+Snapshot d34 "34-foobar" Value="[DIR]/ddg-source/34-foobar.csv" Time="2014-07-30T14.52.35";
 DF p53 d34
-File d35 "35-foobar.csv" Value="[DIR]/ddg-source/35-foobar.csv" Time="2014-07-30T14.10.19" Location="[DIR]/foobar.csv";
-Start p54 "54-foobar <- read.csv(\"foobar.csv\")" Value="foobar <- read.csv(\"foobar.csv\")";
+File d35 "35-foobar.csv" Value="[DIR]/ddg-source/35-foobar.csv" Time="2014-07-30T14.52.35" Location="[DIR]/foobar.csv";
+Operation p54 "54-Read raw data files" Value="Read raw data files";
 CF p53 p54
-Operation p55 "55-Read raw data files" Value="Read raw data files";
-CF p54 p55
-DF d35 p55
-Operation p56 "56-endTime <- Sys.time()" Value="endTime <- Sys.time()";
-CF p55 p56
-Snapshot d36 "36-endTime" Value="[DIR]/ddg-source/36-endTime.txt" Time="2014-07-30T14.10.19";
-DF p56 d36
-Operation p57 "57-cat(\"Execution Time =\", difftime(endTime, startTime, units" Value="cat(\"Execution Time =\", difftime(endTime, startTime, units = \"secs\"))";
-CF p56 p57
-DF d36 p57
-Finish p58 "58-foobar <- read.csv(\"foobar.csv\")" Value="foobar <- read.csv(\"foobar.csv\")";
-CF p57 p58
-Snapshot d37 "37-foobar" Value="[DIR]/ddg-source/37-foobar.csv" Time="2014-07-30T14.10.19";
-DF p58 d37
+DF d35 p54
 
