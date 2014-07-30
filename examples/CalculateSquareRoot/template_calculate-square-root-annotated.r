@@ -9,9 +9,8 @@
 
 ### Functions
 
-set.initial.values <- function() {
+get.initial.values <- function() {
   number <<- 10
-  ddg.data("number")
   tolerance <<- 0.00001
   ddg.procedure(lookup.ins = TRUE, outs.data=list("tolerance", "number"))
 }
@@ -19,36 +18,36 @@ set.initial.values <- function() {
 get.random <- function(number) {
   # get random seed value
   estimate <- runif(1,1,number)
-  ddg.procedure(lookup.ins = TRUE,outs.data=list("estimate"))
-  return(estimate)
+  ddg.procedure(lookup.ins = TRUE)
+  ddg.return(estimate)
 }
 
 calc.square.root <- function(number,estimate) {
   # calculate square root
   x <- number/estimate
   estimate <- (estimate+x)/2
-  ddg.procedure(lookup.ins = TRUE,outs.data=list("estimate"))
-  return(estimate)
+  ddg.procedure(lookup.ins = TRUE)
+  ddg.return(estimate)
 }
 
 get.difference <- function(number,estimate) {
   # test result
   difference <- abs(number-estimate^2)
-  ddg.procedure(lookup.ins = TRUE, outs.data=list("difference"))
-  return(difference)
+  ddg.procedure(lookup.ins = TRUE)
+  ddg.return(difference)
 }
 
 get.check.value <- function(difference,tolerance) {
   # compare difference to tolerance
   check <- difference - tolerance
-  ddg.procedure(lookup.ins = TRUE, outs.data=list("check"))
-  return(check)
+  ddg.procedure(lookup.ins = TRUE)
+  ddg.return(check)
 }
 
 store.result <- function(number,estimate) {
   sqr.root <- data.frame(number,estimate)
-  ddg.procedure(lookup.ins = TRUE, outs.data=list("sqr.root"))
-  return(sqr.root)
+  ddg.procedure(lookup.ins = TRUE)
+  ddg.return(sqr.root)
 }
 
 write.result <- function(sqr.root) {
@@ -63,7 +62,7 @@ ddg.start("Calculate Square Root")
 ddg.start("Initial estimate")
 set.initial.values()
   
-estimate <- get.random(number)
+ddg.eval("estimate <- get.random(number)")
 check <- number
 
 ddg.finish("Initial estimate")
@@ -74,15 +73,15 @@ while (check > 0) {
   # repeat calculation until tests OK
   i <- i + 1
   ddg.start(paste("Iteration",i))
-  estimate <- calc.square.root(number,estimate)
-  difference <- get.difference(number,estimate)  
-  check <- get.check.value(difference,tolerance)
+  ddg.eval("estimate <- calc.square.root(number,estimate)")
+  ddg.eval("difference <- get.difference(number,estimate)")
+  ddg.eval("check <- get.check.value(difference,tolerance)")
   ddg.finish(paste("Iteration", i))
 }
 ddg.finish("Approximations")
 
 ddg.start("Export to file")
-sqr.root <- store.result(number,estimate)
+ddg.eval(sqr.root <- store.result(number,estimate))
 write.result(sqr.root)
 ddg.finish("Export to file")
 

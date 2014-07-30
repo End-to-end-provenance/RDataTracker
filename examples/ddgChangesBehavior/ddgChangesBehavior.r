@@ -52,6 +52,7 @@ main <- function() {
 	# d doesn't exist yet
 	f(d)
 	ddg.data(d)
+	d <- 1
 	f2(d)
 	
 	d <- 6
