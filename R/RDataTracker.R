@@ -775,7 +775,7 @@ ddg.MAX_HIST_LINES <- 2^14
 				# If assigning to a simple variable, recurse on the right hand 
 	      # side of the assignment.
 				if (is.symbol(obj[[2]])) filter(unlist(.ddg.find.var.uses.rec(obj[[3]])))
-				
+				else if (is.call(obj[[2]])) filter(c (.ddg.find.var.uses.rec(obj[[2]][[2]]), unlist(.ddg.find.var.uses.rec(obj[[3]]))))
 				# If assigning to an expression (like a[b]), recurse on the 
 	      # indexing part of the lvalue as well as on the expression.
 				else filter(c (.ddg.find.var.uses.rec(obj[[2]][[3]]), unlist(.ddg.find.var.uses.rec(obj[[3]]))))
