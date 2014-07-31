@@ -1,36 +1,36 @@
-Architecture="i386"
-OperatingSystem="windows"
+Architecture="x86_64"
+OperatingSystem="unix"
 Language="R"
-LanguageVersion="R version 3.1.0 (2014-04-10)"
+LanguageVersion="R version 3.1.0 Patched (2014-05-20 r65701)"
 RDataTrackerVersion="0.5.25"
 Script="[DIR]/ScopeTest.R"
-ProcessFileTimestamp="2014-07-29T20.36.08"
+ProcessFileTimestamp="2014-07-30T14.37.30"
 WorkingDirectory="[DIR]"
 DDGDirectory="[DIR]/ddg-source"
-DateTime="2014-07-29T21.08.05"
+DateTime="2014-07-30T14.52.35"
 54
-Operation p1 "1-options(warn = 1)" Value="options(warn = 1)";
-Operation p2 "2-f <- function() {    a <<- b * 10    ddg.procedure(ins = lis" Value="f <- function() {    a <<- b * 10    ddg.procedure(ins = list(\"b\"), outs.data = list(\"a\"))    ddg.return(a)}";
+Operation p1 "1-options(warn = 1)" Value="options(warn = 1)" Time="2014-07-30T16.32.37";
+Operation p2 "2-f <- function() {    a <<- b * 10    ddg.procedure(ins = lis" Value="f <- function() {    a <<- b * 10    ddg.procedure(ins = lis" Time="2014-07-30T16.32.37";
 CF p1 p2
 Data d1 "1-f" Value="#ddg.function";
 DF p2 d1
-Operation p3 "3-g <- function(a) {    c <- a + 10    d <- 1000    ddg.proced" Value="g <- function(a) {    c <- a + 10    d <- 1000    ddg.procedure(lookup.ins = TRUE)    ddg.return(c)}";
+Operation p3 "3-g <- function(a) {    c <- a + 10    d <- 1000    ddg.proced" Value="g <- function(a) {    c <- a + 10    d <- 1000    ddg.proced" Time="2014-07-30T16.32.37";
 CF p2 p3
 Data d2 "2-g" Value="#ddg.function";
 DF p3 d2
-Operation p4 "4-h <- function() {    d <- 333    ddg.procedure(\"h\", ins = " Value="h <- function() {    d <- 333    ddg.procedure(\"h\", ins = list(\"d\"))    ddg.return(d)}";
+Operation p4 "4-h <- function() {    d <- 333    ddg.procedure(\"h\", ins = " Value="h <- function() {    d <- 333    ddg.procedure(\"h\", ins = " Time="2014-07-30T16.32.37";
 CF p3 p4
 Data d3 "3-h" Value="#ddg.function";
 DF p4 d3
-Operation p5 "5-i <- function() {    x <<- 1000    ddg.procedure(outs.data =" Value="i <- function() {    x <<- 1000    ddg.procedure(outs.data = list(\"x\"))    ddg.return(j(x))}";
+Operation p5 "5-i <- function() {    x <<- 1000    ddg.procedure(outs.data =" Value="i <- function() {    x <<- 1000    ddg.procedure(outs.data =" Time="2014-07-30T16.32.37";
 CF p4 p5
 Data d4 "4-i" Value="#ddg.function";
 DF p5 d4
-Operation p6 "6-j <- function(xx) {    ddg.data(xx)    ddg.procedure(ins = l" Value="j <- function(xx) {    ddg.data(xx)    ddg.procedure(ins = list(\"xx\", \"a\"))    return(3)}";
+Operation p6 "6-j <- function(xx) {    ddg.data(xx)    ddg.procedure(ins = l" Value="j <- function(xx) {    ddg.data(xx)    ddg.procedure(ins = l" Time="2014-07-30T16.32.37";
 CF p5 p6
 Data d5 "5-j" Value="#ddg.function";
 DF p6 d5
-Operation p7 "7-k <- function(xx = 0, yy = 1) {    ddg.procedure(lookup.ins " Value="k <- function(xx = 0, yy = 1) {    ddg.procedure(lookup.ins = TRUE)    ddg.return(xx + yy)}";
+Operation p7 "7-k <- function(xx = 0, yy = 1) {    ddg.procedure(lookup.ins " Value="k <- function(xx = 0, yy = 1) {    ddg.procedure(lookup.ins " Time="2014-07-30T16.32.37";
 CF p6 p7
 Data d6 "6-k" Value="#ddg.function";
 DF p7 d6
@@ -88,7 +88,6 @@ Data d15 "15-g(c) return" Value="110";
 DF p20 d15
 Finish p21 "21-d <- g(c)" Value="d <- g(c)";
 CF p20 p21
-DF d13 p21
 DF d15 p21
 Data d16 "16-d" Value="110";
 DF p21 d16
@@ -212,9 +211,9 @@ CF p51 p52
 DF d33 p52
 Operation p53 "53-foobar <- read.csv(\"foobar.csv\")" Value="foobar <- read.csv(\"foobar.csv\")";
 CF p52 p53
-Snapshot d34 "34-foobar" Value="[DIR]/ddg-source/34-foobar.csv" Time="2014-07-29T21.08.05";
+Snapshot d34 "34-foobar" Value="[DIR]/ddg-source/34-foobar.csv" Time="2014-07-30T14.52.35";
 DF p53 d34
-File d35 "35-foobar.csv" Value="[DIR]/ddg-source/35-foobar.csv" Time="2014-07-29T21.08.05" Location="[DIR]/foobar.csv";
+File d35 "35-foobar.csv" Value="[DIR]/ddg-source/35-foobar.csv" Time="2014-07-30T14.52.35" Location="[DIR]/foobar.csv";
 Operation p54 "54-Read raw data files" Value="Read raw data files";
 CF p53 p54
 DF d35 p54
