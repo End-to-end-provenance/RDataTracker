@@ -2294,30 +2294,20 @@ ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.graphic=N
 						# Find all the variables used in this parameter.
 						vars.used <- .ddg.find.var.uses(parse(text=param))
 
-            			binding.node.created <- FALSE
+						binding.node.name <- paste(formal, " <- ", param)
+						.ddg.proc.node("Binding", binding.node.name)
+						.ddg.proc2proc()
 						for (var in vars.used) {
 							param.scope <- .ddg.get.scope(var, for.caller = TRUE, calls=stack)
 							if (.ddg.data.node.exists(var, param.scope)) {
-								if (!binding.node.created) {
-									binding.node.name <- paste(formal, " <- ", param)
-									.ddg.proc.node("Binding", binding.node.name)
-									.ddg.proc2proc()
-									binding.node.created <- TRUE									
-								}
-
 								.ddg.data2proc(as.character(var), param.scope, binding.node.name)
 								if (.ddg.debug()) print(paste("param:", var))
 							}
-							else {
-								missing.params <<- c(missing.params, formal)
-							}
 						}
-						if (binding.node.created) {
-							formal.scope <- .ddg.get.scope(formal, calls=stack)
-							formal.env <- .ddg.get.env(formal, calls=stack)
-							.ddg.save.data(formal, eval(parse(text=formal), formal.env), fname=".ddg.save.data", scope=formal.scope, stack=stack)
-							.ddg.proc2data(binding.node.name, formal, formal.scope)
-						}
+						formal.scope <- .ddg.get.scope(formal, calls=stack)
+						formal.env <- .ddg.get.env(formal, calls=stack)
+						.ddg.save.data(formal, eval(parse(text=formal), formal.env), fname=".ddg.save.data", scope=formal.scope, stack=stack)
+						.ddg.proc2data(binding.node.name, formal, formal.scope)
 					})
 		}
 		.ddg.proc.node("Operation", pname, pname)
@@ -2329,11 +2319,6 @@ ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.graphic=N
     						.ddg.data2proc(formal, formal.scope, pname)
     					}
     				})
-  		lapply(missing.params, 
-  			   function(missing.param) {
-  					error.msg <- paste("Skipping parameter", missing.param)
-  					.ddg.insert.error.message(error.msg)
-  				})
     }
 		
 		# Create control flow edge from preceding procedure node.

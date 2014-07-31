@@ -324,6 +324,18 @@
 	      <param name="expected_out" value="examples/EvalTest/expected_evalTest.out"/>
 	      <param name="expected_ddg" value="examples/EvalTest/expected_evalTest_ddg.txt"/>
 	      <param name="fail_out" value="false" />
+	      <param name="source_test" value="false" />
+	    </antcall>
+	  </target>
+
+	  <target name="eval-source-test">
+	    <antcall target="run-test">
+	      <param name="dir" value="examples/EvalTest"/>
+	      <param name="out" value="examples/EvalTest/EvalTest-Source.out"/>
+	      <param name="script-file" value="EvalTest-Source.R"/>
+	      <param name="expected_out" value="examples/EvalTest/expected_evalTest-Source.out"/>
+	      <param name="expected_ddg" value="examples/EvalTest/expected_evalTest-Source_ddg.txt"/>
+	      <param name="fail_out" value="false" />
 	      <param name="source_test" value="true" />
 	    </antcall>
 	  </target>

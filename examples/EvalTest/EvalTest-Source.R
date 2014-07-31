@@ -17,12 +17,28 @@ if (interactive()) {
   setwd(testDir)
 }
 
-ddg.r.script.path = paste(testDir,"EvalTest.R",sep="/")
+ddg.r.script.path = paste(testDir,"EvalTest-Source.R",sep="/")
 ddg.path = paste(testDir,ddgDir,sep="/")
 
-ddg.init(ddg.r.script.path,
-		ddg.path,
-     enable.console=FALSE)
+# ddg.init(ddg.r.script.path,
+# 		ddg.path,
+#      enable.console=FALSE)
+
+# Run by doing this at the console:
+# if (interactive()) {
+#   testDir <- getwd()
+#   ddgDir <- "ddg"
+# } else {
+#   testDir <- "[DIR_DEFAULT]"
+#   ddgDir <- "[DDG-DIR]"
+#   setwd(testDir)
+# }
+# 
+# ddg.r.script.path = paste(testDir,"EvalTest-Source.R",sep="/")
+# ddg.path = paste(testDir,ddgDir,sep="/")
+# ddg.run(r.script.path = ddg.r.script.path, 
+#         ddgdir = ddg.path, 
+#         enable.console=TRUE)
 
 ### Functions
 
@@ -35,13 +51,13 @@ g <- function() {
   return (3)
 }
 
-ddg.eval("a <- 1")
-ddg.eval("b <- f(a)")
-ddg.eval("d <- f(2)")
-ddg.eval("d2 <- f(a+2)")
-ddg.eval("e <- f(a)")
-ddg.eval("h <- g()")
-ddg.eval("i <- f(a+b)")
+a <- 1
+b <- f(a)
+d <- f(2)
+d2 <- f(a+2)
+e <- f(a)
+h <- g()
+i <- f(a+b)
 
 ddg.save()
 end.time <- Sys.time()
