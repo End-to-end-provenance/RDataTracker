@@ -9,28 +9,28 @@ WorkingDirectory="[DIR]"
 DDGDirectory="[DIR]/ddg-source"
 DateTime="2014-07-29T21.08.05"
 54
-Operation p1 "1-options(warn = 1)" Value="options(warn = 1)";
-Operation p2 "2-f <- function() {    a <<- b * 10    ddg.procedure(ins = lis" Value="f <- function() {    a <<- b * 10    ddg.procedure(ins = list(\"b\"), outs.data = list(\"a\"))    ddg.return(a)}";
+Operation p1 "1-options(warn = 1)" Value="options(warn = 1)" Time="2014-07-30T16.32.37";
+Operation p2 "2-f <- function() {    a <<- b * 10    ddg.procedure(ins = lis" Value="f <- function() {    a <<- b * 10    ddg.procedure(ins = lis" Time="2014-07-30T16.32.37";
 CF p1 p2
 Data d1 "1-f" Value="#ddg.function";
 DF p2 d1
-Operation p3 "3-g <- function(a) {    c <- a + 10    d <- 1000    ddg.proced" Value="g <- function(a) {    c <- a + 10    d <- 1000    ddg.procedure(lookup.ins = TRUE)    ddg.return(c)}";
+Operation p3 "3-g <- function(a) {    c <- a + 10    d <- 1000    ddg.proced" Value="g <- function(a) {    c <- a + 10    d <- 1000    ddg.proced" Time="2014-07-30T16.32.37";
 CF p2 p3
 Data d2 "2-g" Value="#ddg.function";
 DF p3 d2
-Operation p4 "4-h <- function() {    d <- 333    ddg.procedure(\"h\", ins = " Value="h <- function() {    d <- 333    ddg.procedure(\"h\", ins = list(\"d\"))    ddg.return(d)}";
+Operation p4 "4-h <- function() {    d <- 333    ddg.procedure(\"h\", ins = " Value="h <- function() {    d <- 333    ddg.procedure(\"h\", ins = " Time="2014-07-30T16.32.37";
 CF p3 p4
 Data d3 "3-h" Value="#ddg.function";
 DF p4 d3
-Operation p5 "5-i <- function() {    x <<- 1000    ddg.procedure(outs.data =" Value="i <- function() {    x <<- 1000    ddg.procedure(outs.data = list(\"x\"))    ddg.return(j(x))}";
+Operation p5 "5-i <- function() {    x <<- 1000    ddg.procedure(outs.data =" Value="i <- function() {    x <<- 1000    ddg.procedure(outs.data =" Time="2014-07-30T16.32.37";
 CF p4 p5
 Data d4 "4-i" Value="#ddg.function";
 DF p5 d4
-Operation p6 "6-j <- function(xx) {    ddg.data(xx)    ddg.procedure(ins = l" Value="j <- function(xx) {    ddg.data(xx)    ddg.procedure(ins = list(\"xx\", \"a\"))    return(3)}";
+Operation p6 "6-j <- function(xx) {    ddg.data(xx)    ddg.procedure(ins = l" Value="j <- function(xx) {    ddg.data(xx)    ddg.procedure(ins = l" Time="2014-07-30T16.32.37";
 CF p5 p6
 Data d5 "5-j" Value="#ddg.function";
 DF p6 d5
-Operation p7 "7-k <- function(xx = 0, yy = 1) {    ddg.procedure(lookup.ins " Value="k <- function(xx = 0, yy = 1) {    ddg.procedure(lookup.ins = TRUE)    ddg.return(xx + yy)}";
+Operation p7 "7-k <- function(xx = 0, yy = 1) {    ddg.procedure(lookup.ins " Value="k <- function(xx = 0, yy = 1) {    ddg.procedure(lookup.ins " Time="2014-07-30T16.32.37";
 CF p6 p7
 Data d6 "6-k" Value="#ddg.function";
 DF p7 d6

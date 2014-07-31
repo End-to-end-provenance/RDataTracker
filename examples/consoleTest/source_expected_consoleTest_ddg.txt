@@ -12,11 +12,11 @@ DateTime="2014-07-29T19.22.55"
 Operation p1 "1-f <- function(x) {    g(x)    h(x)    return(1)}" Value="f <- function(x) {    g(x)    h(x)    return(1)}";
 Data d1 "1-f" Value="#ddg.function";
 DF p1 d1
-Operation p2 "2-g <- function(x) {    ddg.procedure(lookup.ins = TRUE)    re" Value="g <- function(x) {    ddg.procedure(lookup.ins = TRUE)    return(1)}";
+Operation p2 "2-g <- function(x) {    ddg.procedure(lookup.ins = TRUE)    re" Value="g <- function(x) {    ddg.procedure(lookup.ins = TRUE)    re";
 CF p1 p2
 Data d2 "2-g" Value="#ddg.function";
 DF p2 d2
-Operation p3 "3-h <- function(x) {    ddg.procedure(lookup.ins = TRUE)    re" Value="h <- function(x) {    ddg.procedure(lookup.ins = TRUE)    return(1)}";
+Operation p3 "3-h <- function(x) {    ddg.procedure(lookup.ins = TRUE)    re" Value="h <- function(x) {    ddg.procedure(lookup.ins = TRUE)    re";
 CF p2 p3
 Data d3 "3-h" Value="#ddg.function";
 DF p3 d3

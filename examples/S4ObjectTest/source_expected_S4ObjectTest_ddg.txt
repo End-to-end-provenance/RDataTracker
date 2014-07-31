@@ -2,108 +2,109 @@ Architecture="i386"
 OperatingSystem="windows"
 Language="R"
 LanguageVersion="R version 3.1.0 (2014-04-10)"
+RDataTrackerVersion="0.5.25"
 Script="[DIR]/S4ObjectTest.R"
-ProcessFileTimestamp="2014-07-18T00.12.55"
+ProcessFileTimestamp="2014-07-24T21.48.33"
 WorkingDirectory="[DIR]"
 DDGDirectory="[DIR]/ddg-source"
-DateTime="2014-07-18T16.08.33"
+DateTime="2014-07-30T15.33.15"
 26
-Operation p1 "1-setClass(\"SampleObj\", slots = c(sampleCode = \"integer\", " Value="setClass(\"SampleObj\", slots = c(sampleCode = \"integer\", nIndividuals = \"integer\",     areaCode = \"integer\"))";
-Operation p2 "2-as.character.SampleObj <- function(x) {    str <- paste(\"sa" Value="as.character.SampleObj <- function(x) {    str <- paste(\"sampleCode =\", x@sampleCode, \"\n\")    str <- paste(str, \"nIndividuals =\", x@nIndividuals, \"\n\")    str <- paste(str, \"areaCode =\", x@areaCode, \"\n\")    return(str)}";
+Operation p1 "1-setClass(\"SampleObj\", slots = c(sampleCode = \"integer\", " Value="setClass(\"SampleObj\", slots = c(sampleCode = \"integer\", " Time="2014-07-30T15.33.15";
+Operation p2 "2-as.character.SampleObj <- function(x) {    str <- paste(\"sa" Value="as.character.SampleObj <- function(x) {    str <- paste(\"sa" Time="2014-07-30T15.33.15";
 CF p1 p2
 Data d1 "1-as.character.SampleObj" Value="#ddg.function";
 DF p2 d1
-Operation p3 "3-setMethod(\"as.character\", signature(x = \"SampleObj\"), as" Value="setMethod(\"as.character\", signature(x = \"SampleObj\"), as.character.SampleObj)";
+Operation p3 "3-setMethod(\"as.character\", signature(x = \"SampleObj\"), as" Value="setMethod(\"as.character\", signature(x = \"SampleObj\"), as" Time="2014-07-30T15.33.15";
 CF p2 p3
 DF d1 p3
-Operation p4 "4-generateSamples <- function(n) {    ddg.start()    samplesAr" Value="generateSamples <- function(n) {    ddg.start()    samplesArr <- list()    ddg.procedure(\"new samples\", outs.data = list(\"samplesArr\"))    for (ix in 1:n) {        newSample <- new(\"SampleObj\", sampleCode = ix, nIndividuals = as.integer(ix *             10), areaCode = as.integer(ix * 100))        ddg.procedure(\"new sample\", outs.data = list(\"newSample\"))        ddg.procedure(\"add to samples\", ins = list(\"newSample\",             \"samplesArr\"))        samplesArr = c(samplesArr, newSample)        ddg.data.out(samplesArr, pname = \"add to samples\")    }    ddg.finish()    return(samplesArr)}";
+Operation p4 "4-generateSamples <- function(n) {    ddg.start()    samplesAr" Value="generateSamples <- function(n) {    ddg.start()    samplesAr" Time="2014-07-30T15.33.15";
 CF p3 p4
 Data d2 "2-generateSamples" Value="#ddg.function";
 DF p4 d2
-Operation p5 "5-generate1Sample <- function() {    ddg.start()    newSample " Value="generate1Sample <- function() {    ddg.start()    newSample <- new(\"SampleObj\", sampleCode = as.integer(1),         nIndividuals = as.integer(10), areaCode = as.integer(100))    ddg.procedure(\"new sample\", outs.data = list(\"newSample\"))    ddg.finish()    return(newSample)}";
+Operation p5 "5-generate1Sample <- function() {    ddg.start()    newSample " Value="generate1Sample <- function() {    ddg.start()    newSample " Time="2014-07-30T15.33.15";
 CF p4 p5
 Data d3 "3-generate1Sample" Value="#ddg.function";
 DF p5 d3
-Operation p6 "6-totalNumOfSample <- 5" Value="totalNumOfSample <- 5";
+Operation p6 "6-totalNumOfSample <- 5" Value="totalNumOfSample <- 5" Time="2014-07-30T15.33.15";
 CF p5 p6
 Data d4 "4-totalNumOfSample" Value="5";
 DF p6 d4
-Start p7 "7-newSample <- generate1Sample()" Value="newSample <- generate1Sample()";
+Start p7 "7-newSample <- generate1Sample()" Value="newSample <- generate1Sample()" Time="2014-07-30T15.33.15";
 CF p6 p7
-Start p8 "8-generate1Sample" Value="generate1Sample";
+Start p8 "8-generate1Sample" Value="generate1Sample" Time="2014-07-30T15.33.15";
 CF p7 p8
-Operation p9 "9-new sample" Value="new sample";
+Operation p9 "9-new sample" Value="new sample" Time="2014-07-30T15.33.15";
 CF p8 p9
-Snapshot d5 "5-newSample" Value="[DIR]/ddg-source/5-newSample.txt" Time="2014-07-18T16.08.33";
+Snapshot d5 "5-newSample" Value="[DIR]/ddg-source/5-newSample.txt" Time="2014-07-30T15.33.15";
 DF p9 d5
-Finish p10 "10-generate1Sample" Value="generate1Sample";
+Finish p10 "10-generate1Sample" Value="generate1Sample" Time="2014-07-30T15.33.15";
 CF p9 p10
-Finish p11 "11-newSample <- generate1Sample()" Value="newSample <- generate1Sample()";
+Finish p11 "11-newSample <- generate1Sample()" Value="newSample <- generate1Sample()" Time="2014-07-30T15.33.15";
 CF p10 p11
-Snapshot d6 "6-newSample" Value="[DIR]/ddg-source/6-newSample.txt" Time="2014-07-18T16.08.33";
+Snapshot d6 "6-newSample" Value="[DIR]/ddg-source/6-newSample.txt" Time="2014-07-30T15.33.15";
 DF p11 d6
-Start p12 "12-samplesArr <- generateSamples(totalNumOfSample)" Value="samplesArr <- generateSamples(totalNumOfSample)";
+Start p12 "12-samplesArr <- generateSamples(totalNumOfSample)" Value="samplesArr <- generateSamples(totalNumOfSample)" Time="2014-07-30T15.33.15";
 CF p11 p12
-Start p13 "13-generateSamples" Value="generateSamples";
+Start p13 "13-generateSamples" Value="generateSamples" Time="2014-07-30T15.33.15";
 CF p12 p13
-Operation p14 "14-new samples" Value="new samples";
+Operation p14 "14-new samples" Value="new samples" Time="2014-07-30T15.33.15";
 CF p13 p14
-Snapshot d7 "7-samplesArr" Value="[DIR]/ddg-source/7-samplesArr.csv" Time="2014-07-18T16.08.33";
+Snapshot d7 "7-samplesArr" Value="[DIR]/ddg-source/7-samplesArr.csv" Time="2014-07-30T15.33.15";
 DF p14 d7
-Operation p15 "15-new sample" Value="new sample";
+Operation p15 "15-new sample" Value="new sample" Time="2014-07-30T15.33.15";
 CF p14 p15
-Snapshot d8 "8-newSample" Value="[DIR]/ddg-source/8-newSample.txt" Time="2014-07-18T16.08.33";
+Snapshot d8 "8-newSample" Value="[DIR]/ddg-source/8-newSample.txt" Time="2014-07-30T15.33.15";
 DF p15 d8
-Operation p16 "16-add to samples" Value="add to samples";
+Operation p16 "16-add to samples" Value="add to samples" Time="2014-07-30T15.33.15";
 CF p15 p16
 DF d8 p16
 DF d7 p16
-Snapshot d9 "9-samplesArr" Value="[DIR]/ddg-source/9-samplesArr.txt" Time="2014-07-18T16.08.33";
+Snapshot d9 "9-samplesArr" Value="[DIR]/ddg-source/9-samplesArr.txt" Time="2014-07-30T15.33.15";
 DF p16 d9
-Operation p17 "17-new sample" Value="new sample";
+Operation p17 "17-new sample" Value="new sample" Time="2014-07-30T15.33.15";
 CF p16 p17
-Snapshot d10 "10-newSample" Value="[DIR]/ddg-source/10-newSample.txt" Time="2014-07-18T16.08.33";
+Snapshot d10 "10-newSample" Value="[DIR]/ddg-source/10-newSample.txt" Time="2014-07-30T15.33.15";
 DF p17 d10
-Operation p18 "18-add to samples" Value="add to samples";
+Operation p18 "18-add to samples" Value="add to samples" Time="2014-07-30T15.33.15";
 CF p17 p18
 DF d10 p18
 DF d9 p18
-Snapshot d11 "11-samplesArr" Value="[DIR]/ddg-source/11-samplesArr.txt" Time="2014-07-18T16.08.33";
+Snapshot d11 "11-samplesArr" Value="[DIR]/ddg-source/11-samplesArr.txt" Time="2014-07-30T15.33.15";
 DF p18 d11
-Operation p19 "19-new sample" Value="new sample";
+Operation p19 "19-new sample" Value="new sample" Time="2014-07-30T15.33.15";
 CF p18 p19
-Snapshot d12 "12-newSample" Value="[DIR]/ddg-source/12-newSample.txt" Time="2014-07-18T16.08.33";
+Snapshot d12 "12-newSample" Value="[DIR]/ddg-source/12-newSample.txt" Time="2014-07-30T15.33.15";
 DF p19 d12
-Operation p20 "20-add to samples" Value="add to samples";
+Operation p20 "20-add to samples" Value="add to samples" Time="2014-07-30T15.33.15";
 CF p19 p20
 DF d12 p20
 DF d11 p20
-Snapshot d13 "13-samplesArr" Value="[DIR]/ddg-source/13-samplesArr.txt" Time="2014-07-18T16.08.33";
+Snapshot d13 "13-samplesArr" Value="[DIR]/ddg-source/13-samplesArr.txt" Time="2014-07-30T15.33.15";
 DF p20 d13
-Operation p21 "21-new sample" Value="new sample";
+Operation p21 "21-new sample" Value="new sample" Time="2014-07-30T15.33.15";
 CF p20 p21
-Snapshot d14 "14-newSample" Value="[DIR]/ddg-source/14-newSample.txt" Time="2014-07-18T16.08.33";
+Snapshot d14 "14-newSample" Value="[DIR]/ddg-source/14-newSample.txt" Time="2014-07-30T15.33.15";
 DF p21 d14
-Operation p22 "22-add to samples" Value="add to samples";
+Operation p22 "22-add to samples" Value="add to samples" Time="2014-07-30T15.33.15";
 CF p21 p22
 DF d14 p22
 DF d13 p22
-Snapshot d15 "15-samplesArr" Value="[DIR]/ddg-source/15-samplesArr.txt" Time="2014-07-18T16.08.33";
+Snapshot d15 "15-samplesArr" Value="[DIR]/ddg-source/15-samplesArr.txt" Time="2014-07-30T15.33.15";
 DF p22 d15
-Operation p23 "23-new sample" Value="new sample";
+Operation p23 "23-new sample" Value="new sample" Time="2014-07-30T15.33.15";
 CF p22 p23
-Snapshot d16 "16-newSample" Value="[DIR]/ddg-source/16-newSample.txt" Time="2014-07-18T16.08.33";
+Snapshot d16 "16-newSample" Value="[DIR]/ddg-source/16-newSample.txt" Time="2014-07-30T15.33.15";
 DF p23 d16
-Operation p24 "24-add to samples" Value="add to samples";
+Operation p24 "24-add to samples" Value="add to samples" Time="2014-07-30T15.33.15";
 CF p23 p24
 DF d16 p24
 DF d15 p24
-Snapshot d17 "17-samplesArr" Value="[DIR]/ddg-source/17-samplesArr.txt" Time="2014-07-18T16.08.33";
+Snapshot d17 "17-samplesArr" Value="[DIR]/ddg-source/17-samplesArr.txt" Time="2014-07-30T15.33.15";
 DF p24 d17
-Finish p25 "25-generateSamples" Value="generateSamples";
+Finish p25 "25-generateSamples" Value="generateSamples" Time="2014-07-30T15.33.15";
 CF p24 p25
-Finish p26 "26-samplesArr <- generateSamples(totalNumOfSample)" Value="samplesArr <- generateSamples(totalNumOfSample)";
+Finish p26 "26-samplesArr <- generateSamples(totalNumOfSample)" Value="samplesArr <- generateSamples(totalNumOfSample)" Time="2014-07-30T15.33.15";
 CF p25 p26
-Snapshot d18 "18-samplesArr" Value="[DIR]/ddg-source/18-samplesArr.txt" Time="2014-07-18T16.08.33";
+Snapshot d18 "18-samplesArr" Value="[DIR]/ddg-source/18-samplesArr.txt" Time="2014-07-30T15.33.15";
 DF p26 d18
 
