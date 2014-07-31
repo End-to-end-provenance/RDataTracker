@@ -23,17 +23,24 @@
 
 
 library(RDataTracker)
+#source("/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/R/RDataTracker.R")
 
 # get initial time
 startTime <- Sys.time()
 invisible(force(startTime))
 
 ## Directories
-testDir <- "[DIR_DEFAULT]/"
-setwd(testDir)
+if (interactive()) {
+  testDir <- getwd()
+  ddgDir <- "ddg"
+} else {
+  testDir <- "[DIR_DEFAULT]"
+  ddgDir <- "[DDG-DIR]"
+  setwd(testDir)
+}
 
-ddg.r.script.path = paste(testDir,"consoleTest.r",sep="")
-ddg.path = paste(testDir,"[DDG-DIR]",sep="")
+ddg.r.script.path = paste(testDir,"consoleTest.r",sep="/")
+ddg.path = paste(testDir,ddgDir,sep="/")
 
 ddg.init(ddg.r.script.path,
          ddg.path,
@@ -71,6 +78,9 @@ x <- 10
 
 f(x)
 f(x)
+
+z <- list(1, "c", 1:3)
+names(z) <- list("a", "b", "c")
 
 # Then user should do things at console and end by calling ddg.save() from the console.
 

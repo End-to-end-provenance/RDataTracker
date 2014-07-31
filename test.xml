@@ -291,7 +291,6 @@
       <param name="expected_ddg" value="examples/NULLandNA/expected_NULLandNA_ddg.txt"/>
       <param name="source_test" value="true" />
     </antcall>
-    <echo>Expect the following output when testing manually: [1] .ddg.find.var.uses:  Error analyzing storage.mode(z) - a </echo>
   </target>
 
 	  <target name="scope-test">
