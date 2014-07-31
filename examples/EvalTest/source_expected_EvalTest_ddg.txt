@@ -1,0 +1,45 @@
+Architecture="x86_64"
+OperatingSystem="unix"
+Language="R"
+LanguageVersion="R version 3.1.0 Patched (2014-05-20 r65701)"
+RDataTrackerVersion="0.5.26"
+Script="[DIR]/EvalTest.R"
+ProcessFileTimestamp="2014-07-30T16.10.31"
+WorkingDirectory="[DIR]"
+DDGDirectory="[DIR]/ddg-source"
+DateTime="2014-07-30T16.10.57"
+9
+Start p1 "1-a <- 1" Value="a <- 1";
+Finish p2 "2-a <- 1" Value="a <- 1";
+CF p1 p2
+Data d1 "1-a" Value="1";
+DF p2 d1
+Start p3 "3-b <- f(a)" Value="b <- f(a)";
+CF p2 p3
+Binding p4 "4-x  <-  a"
+CF p3 p4
+DF d1 p4
+Data d2 "2-x" Value="1";
+DF p4 d2
+Operation p5 "5-f" Value="f";
+DF d2 p5
+CF p4 p5
+Data d3 "3-f(a) return" Value="10";
+DF p5 d3
+Finish p6 "6-b <- f(a)" Value="b <- f(a)";
+CF p5 p6
+DF d3 p6
+Data d4 "4-b" Value="10";
+DF p6 d4
+Start p7 "7-d <- f(2)" Value="d <- f(2)";
+CF p6 p7
+Operation p8 "8-f" Value="f";
+CF p7 p8
+Data d5 "5-f(2) return" Value="10";
+DF p8 d5
+Finish p9 "9-d <- f(2)" Value="d <- f(2)";
+CF p8 p9
+DF d5 p9
+Data d6 "6-d" Value="10";
+DF p9 d6
+
