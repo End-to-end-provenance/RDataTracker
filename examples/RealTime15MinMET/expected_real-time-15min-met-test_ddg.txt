@@ -2,78 +2,87 @@ Architecture="x86_64"
 OperatingSystem="unix"
 Language="R"
 LanguageVersion="R version 3.1.0 Patched (2014-05-20 r65701)"
-RDataTrackerVersion="0.5.23"
+RDataTrackerVersion="0.5.27"
 Script="[DIR]/real-time-15min-met-test.r"
 ProcessFileTimestamp="2014-07-28T16.28.38"
 WorkingDirectory="[DIR]"
 DDGDirectory="[DIR]/ddg"
-DateTime="2014-07-29T20.14.55"
-15
+DateTime="2014-07-31T14.15.29"
+18
 Data d1 "1-days" Value="10";
 Start p1 "1-Loop" Value="Loop";
 Data d2 "2-input" Value="\"airt\"";
-Binding p2 "2-v  <-  input"
+Binding p2 "2-zz  <-  final.data"
 CF p1 p2
-DF d2 p2
-Data d3 "3-v" Value="\"airt\"";
+Snapshot d3 "3-zz" Value="[DIR]/ddg/3-zz.csv" Time="2014-07-31T14.15.25";
 DF p2 d3
-Binding p3 "3-d  <-  days"
+Binding p3 "3-v  <-  input"
 CF p2 p3
-DF d1 p3
-Data d4 "4-d" Value="10";
+DF d2 p3
+Data d4 "4-v" Value="\"airt\"";
 DF p3 d4
-Operation p4 "4-plot.data" Value="plot.data";
-DF d3 p4
-DF d4 p4
-Exception d5 "5-error.msg" Value="\"Skipping parameter zz\"";
-DF p4 d5
+Binding p4 "4-d  <-  days"
 CF p3 p4
-Finish p5 "5-Loop" Value="Loop";
+DF d1 p4
+Data d5 "5-d" Value="10";
+DF p4 d5
+Operation p5 "5-plot.data" Value="plot.data";
+DF d3 p5
+DF d4 p5
+DF d5 p5
 CF p4 p5
-Start p6 "6-Loop" Value="Loop";
+Finish p6 "6-Loop" Value="Loop";
 CF p5 p6
-Data d6 "6-input" Value="\"dewp\"";
-Snapshot d7 "7-graphic" Value="[DIR]/ddg/7-graphic.jpeg" Time="2014-07-29T20.14.55";
-DF p5 d7
-Binding p7 "7-v  <-  input"
+Start p7 "7-Loop" Value="Loop";
 CF p6 p7
-DF d6 p7
-Data d8 "8-v" Value="\"dewp\"";
-DF p7 d8
-Binding p8 "8-d  <-  days"
+Data d6 "6-input" Value="\"dewp\"";
+Snapshot d7 "7-graphic" Value="[DIR]/ddg/7-graphic.jpeg" Time="2014-07-31T14.15.26";
+DF p6 d7
+Binding p8 "8-zz  <-  final.data"
 CF p7 p8
-DF d1 p8
-Data d9 "9-d" Value="10";
-DF p8 d9
-Operation p9 "9-plot.data" Value="plot.data";
-DF d8 p9
-DF d9 p9
-Exception d10 "10-error.msg" Value="\"Skipping parameter zz\"";
-DF p9 d10
+Snapshot d8 "8-zz" Value="[DIR]/ddg/8-zz.csv" Time="2014-07-31T14.15.27";
+DF p8 d8
+Binding p9 "9-v  <-  input"
 CF p8 p9
-Finish p10 "10-Loop" Value="Loop";
+DF d6 p9
+Data d9 "9-v" Value="\"dewp\"";
+DF p9 d9
+Binding p10 "10-d  <-  days"
 CF p9 p10
-Start p11 "11-Loop" Value="Loop";
+DF d1 p10
+Data d10 "10-d" Value="10";
+DF p10 d10
+Operation p11 "11-plot.data" Value="plot.data";
+DF d8 p11
+DF d9 p11
+DF d10 p11
 CF p10 p11
-Data d11 "11-input" Value="\"wspd\"";
-Snapshot d12 "12-graphic" Value="[DIR]/ddg/12-graphic.jpeg" Time="2014-07-29T20.14.55";
-DF p10 d12
-Binding p12 "12-v  <-  input"
+Finish p12 "12-Loop" Value="Loop";
 CF p11 p12
-DF d11 p12
-Data d13 "13-v" Value="\"wspd\"";
-DF p12 d13
-Binding p13 "13-d  <-  days"
+Start p13 "13-Loop" Value="Loop";
 CF p12 p13
-DF d1 p13
-Data d14 "14-d" Value="10";
-DF p13 d14
-Operation p14 "14-plot.data" Value="plot.data";
-DF d13 p14
-DF d14 p14
-Exception d15 "15-error.msg" Value="\"Skipping parameter zz\"";
-DF p14 d15
+Data d11 "11-input" Value="\"wspd\"";
+Snapshot d12 "12-graphic" Value="[DIR]/ddg/12-graphic.jpeg" Time="2014-07-31T14.15.27";
+DF p12 d12
+Binding p14 "14-zz  <-  final.data"
 CF p13 p14
-Finish p15 "15-Loop" Value="Loop";
+Snapshot d13 "13-zz" Value="[DIR]/ddg/13-zz.csv" Time="2014-07-31T14.15.29";
+DF p14 d13
+Binding p15 "15-v  <-  input"
 CF p14 p15
+DF d11 p15
+Data d14 "14-v" Value="\"wspd\"";
+DF p15 d14
+Binding p16 "16-d  <-  days"
+CF p15 p16
+DF d1 p16
+Data d15 "15-d" Value="10";
+DF p16 d15
+Operation p17 "17-plot.data" Value="plot.data";
+DF d13 p17
+DF d14 p17
+DF d15 p17
+CF p16 p17
+Finish p18 "18-Loop" Value="Loop";
+CF p17 p18
 

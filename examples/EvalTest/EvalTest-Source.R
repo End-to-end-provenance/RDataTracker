@@ -40,6 +40,10 @@ ddg.path = paste(testDir,ddgDir,sep="/")
 #         ddgdir = ddg.path, 
 #         enable.console=TRUE)
 
+ ddg.init(r.script.path = ddg.r.script.path, 
+         ddgdir = ddg.path, 
+         enable.console=TRUE)
+
 ### Functions
 
 f <- function(x) {
