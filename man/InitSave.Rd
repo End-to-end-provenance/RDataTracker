@@ -9,10 +9,10 @@
 \title{Creating Provenance Graphs with RDataTracker}
 \description{These functions are needed to create provenance graphs.}
 \usage{
-ddg.init(r.script.path = NULL, ddgdir = NULL, enable.console = FALSE) 
+ddg.init(r.script.path = NULL, ddgdir = NULL, enable.console = TRUE) 
 ddg.grabhistory()
 ddg.save(quit=FALSE)
-ddg.run(f = NULL, r.script.path = NULL, ddgdir = NULL, enable.console = FALSE)
+ddg.run(r.script.path = NULL, ddgdir = NULL, f = NULL, enable.console = TRUE)
 ddg.console.on()
 ddg.console.off()
 ddg.flush.ddg(ddg.path = NULL)
@@ -33,7 +33,10 @@ ddg.flush.ddg(ddg.path = NULL)
   When using ddg.init(), it is possible to call ddg.save() multiple times.  Each call will 
   save the current provenance graph in a file, overwriting the previous version that was saved. 
 
-  For longer scripts, it might be necessary to call ddg.grabhistory() instead of ddg.save(). This function call saves the current ddg to memory, analyzing variable names under the current environemnt (current meaning the environment when ddg.grabhistory() is called). It does not write out the information to disk. A final call to ddg.save() is still required to do this.
+  For longer scripts, it might be necessary to call ddg.grabhistory() instead of ddg.save(). 
+  This function call saves the current ddg to memory, analyzing variable names under the 
+  current environemnt (current meaning the environment when ddg.grabhistory() is called). 
+  It does not write out the information to disk. A final call to ddg.save() is still required to do this.
   
   ddg.init initializes the provenance graph.  If r.script.path is not NULL, the R script is copied
   into the DDG directory, becoming a permanent part of the provenance record.  If ddgdir is NULL,
@@ -58,12 +61,14 @@ ddg.flush.ddg(ddg.path = NULL)
   with r.script.path as the source script (see \code{\link{ddg.source}}). If neither is
   provided, an error will be raised. 
 
-  ddg.console.on and ddg.console.off toggle the console parameter for DDG creation. When the console is enabled, all commands sent to the R
-  console are captured as provenance by the RDataTracker library. The functions allow for an intermix of automatic annotations
+  ddg.console.on and ddg.console.off toggle the console parameter for DDG creation. 
+  When the console is enabled, all commands sent to the R console are captured as provenance 
+  by the RDataTracker library. The functions allow for an intermix of automatic annotations
   as well as manual, more detailed, annotations of a script. 
-  Note that a call to ddg.console.off will create a collapsible console node with data provenence of the previous console session,
-  while ddg.console.on will initiate a console session. No action is performed if the console is already in the desired state. 
-  
+  Note that a call to ddg.console.off will create a collapsible console node with 
+  data provenence of the previous console session, while ddg.console.on will initiate
+  a console session. No action is performed if the console is already in the desired state. 
+
   ddg.flush.ddg removes all files from the DDG directory specified unless the DDG directory is also the working 
   directory, in which case it does nothing. If no DDG directory is specified (value of
   NULL is passed in), the default parameter is the DDG directory of the current
@@ -78,6 +83,6 @@ myfunc <- function() {
   a <- 1
 }
 ddg.grabhistory()
-ddg.run(myfunc)
+ddg.run(f = myfunc)
 }
 \keyword{provenance}

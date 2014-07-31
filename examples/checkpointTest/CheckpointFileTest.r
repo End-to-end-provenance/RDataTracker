@@ -54,9 +54,11 @@ main <- function() {
 
 ### Run script
 
-ddg.run(main, 
+ddg.run(
 		paste(testDir,"CheckpointFileTest.r",sep=""),
-		paste(testDir,"[DDG-DIR]",sep=""))
+		paste(testDir,"[DDG-DIR]",sep=""),
+		main,
+		enable.console=FALSE)
 
 ddg.save(quit=TRUE)
 

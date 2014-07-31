@@ -58,7 +58,7 @@ main <- function() {
 	d <- 6
 	f(d[[2]])
 	ddg.data(d[[2]])
-	f2(d[[2]])
+	f2(d)
 	
 	f(f3)
 	ddg.data(f3)
@@ -71,9 +71,10 @@ main <- function() {
 
 ### Run script
 
-ddg.run(main, 
-        ddg.r.script.path,
-        ddg.path)
+ddg.run(ddg.r.script.path,
+        ddg.path,
+        main,
+        enable.console=FALSE)
 
 ddg.save(quit=TRUE)
 
