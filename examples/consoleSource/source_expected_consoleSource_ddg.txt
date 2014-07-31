@@ -2,301 +2,301 @@ Architecture="x86_64"
 OperatingSystem="unix"
 Language="R"
 LanguageVersion="R version 3.1.0 Patched (2014-05-20 r65701)"
-RDataTrackerVersion="0.5.27"
+RDataTrackerVersion="0.5.28"
 Script="[DIR]/consoleSource.r"
 ProcessFileTimestamp="2014-07-30T14.37.30"
 WorkingDirectory="[DIR]"
 DDGDirectory="[DIR]/ddg-source"
-DateTime="2014-07-31T14.14.09"
+DateTime="2014-07-31T14.34.40"
 86
-Operation p1 "1-fun <- function(a, b) {    ddg.procedure(lookup.ins = TRUE) " Value="fun <- function(a, b) {    ddg.procedure(lookup.ins = TRUE)    ddg.return(a + b)}";
+Operation p1 "1-fun <- function(a, b) {    ddg.procedure(lookup.ins = TRUE) " Value="fun <- function(a, b) {    ddg.procedure(lookup.ins = TRUE) " Time="2014-07-31T14.34.40";
 Data d1 "1-fun" Value="#ddg.function";
 DF p1 d1
-Operation p2 "2-x <- 6" Value="x <- 6" Time="2014-07-30T16.34.34";
+Operation p2 "2-x <- 6" Value="x <- 6" Time="2014-07-31T14.34.40";
 CF p1 p2
 Data d2 "2-x" Value="6";
 DF p2 d2
-Operation p3 "3-y <- 10" Value="y <- 10" Time="2014-07-30T16.34.34";
+Operation p3 "3-y <- 10" Value="y <- 10" Time="2014-07-31T14.34.40";
 CF p2 p3
 Data d3 "3-y" Value="10";
 DF p3 d3
-Start p4 "4-z <- fun(x, y)" Value="z <- fun(x, y)" Time="2014-07-30T16.34.34";
+Start p4 "4-z <- fun(x, y)" Value="z <- fun(x, y)" Time="2014-07-31T14.34.40";
 CF p3 p4
-Binding p5 "5-a  <-  x" Time="2014-07-30T16.34.34"
+Binding p5 "5-a  <-  x" Time="2014-07-31T14.34.40"
 CF p4 p5
 DF d2 p5
 Data d4 "4-a" Value="6";
 DF p5 d4
-Binding p6 "6-b  <-  y" Time="2014-07-30T16.34.34"
+Binding p6 "6-b  <-  y" Time="2014-07-31T14.34.40"
 CF p5 p6
 DF d3 p6
 Data d5 "5-b" Value="10";
 DF p6 d5
-Operation p7 "7-fun" Value="fun" Time="2014-07-30T16.34.34";
+Operation p7 "7-fun" Value="fun" Time="2014-07-31T14.34.40";
 DF d4 p7
 DF d5 p7
 CF p6 p7
 Data d6 "6-fun(x, y) return" Value="16";
 DF p7 d6
-Finish p8 "8-z <- fun(x, y)" Value="z <- fun(x, y)" Time="2014-07-30T16.34.34";
+Finish p8 "8-z <- fun(x, y)" Value="z <- fun(x, y)" Time="2014-07-31T14.34.40";
 CF p7 p8
 DF d6 p8
 Data d7 "7-z" Value="16";
 DF p8 d7
-Start p9 "9-source1.r" Value="source1.r" Time="2014-07-30T16.34.34";
+Start p9 "9-source1.r" Value="source1.r" Time="2014-07-31T14.34.40";
 CF p8 p9
-Operation p10 "10-w <- z + x" Value="w <- z + x" Time="2014-07-30T16.34.34";
+Operation p10 "10-w <- z + x" Value="w <- z + x" Time="2014-07-31T14.34.40";
 CF p9 p10
 DF d7 p10
 DF d2 p10
 Data d8 "8-w" Value="22";
 DF p10 d8
-Start p11 "11-w <- fun(w, y)" Value="w <- fun(w, y)" Time="2014-07-30T16.34.34";
+Start p11 "11-w <- fun(w, y)" Value="w <- fun(w, y)" Time="2014-07-31T14.34.40";
 CF p10 p11
-Binding p12 "12-a  <-  w" Time="2014-07-30T16.34.34"
+Binding p12 "12-a  <-  w" Time="2014-07-31T14.34.40"
 CF p11 p12
 DF d8 p12
 Data d9 "9-a" Value="22";
 DF p12 d9
-Binding p13 "13-b  <-  y" Time="2014-07-30T16.34.34"
+Binding p13 "13-b  <-  y" Time="2014-07-31T14.34.40"
 CF p12 p13
 DF d3 p13
 Data d10 "10-b" Value="10";
 DF p13 d10
-Operation p14 "14-fun" Value="fun" Time="2014-07-30T16.34.34";
+Operation p14 "14-fun" Value="fun" Time="2014-07-31T14.34.40";
 DF d9 p14
 DF d10 p14
 CF p13 p14
 Data d11 "11-fun(w, y) return" Value="32";
 DF p14 d11
-Finish p15 "15-w <- fun(w, y)" Value="w <- fun(w, y)" Time="2014-07-30T16.34.34";
+Finish p15 "15-w <- fun(w, y)" Value="w <- fun(w, y)" Time="2014-07-31T14.34.40";
 CF p14 p15
 DF d11 p15
 Data d12 "12-w" Value="32";
 DF p15 d12
-Operation p16 "16-z <- 0" Value="z <- 0" Time="2014-07-30T16.34.34";
+Operation p16 "16-z <- 0" Value="z <- 0" Time="2014-07-31T14.34.40";
 CF p15 p16
 Data d13 "13-z" Value="0";
 DF p16 d13
-Finish p17 "17-source1.r" Value="source1.r" Time="2014-07-30T16.34.34";
+Finish p17 "17-source1.r" Value="source1.r" Time="2014-07-31T14.34.40";
 CF p16 p17
-Start p18 "18-v <- fun(w, z)" Value="v <- fun(w, z)" Time="2014-07-30T16.34.34";
+Start p18 "18-v <- fun(w, z)" Value="v <- fun(w, z)" Time="2014-07-31T14.34.40";
 CF p17 p18
-Binding p19 "19-a  <-  w" Time="2014-07-30T16.34.34"
+Binding p19 "19-a  <-  w" Time="2014-07-31T14.34.40"
 CF p18 p19
 DF d12 p19
 Data d14 "14-a" Value="32";
 DF p19 d14
-Binding p20 "20-b  <-  z" Time="2014-07-30T16.34.34"
+Binding p20 "20-b  <-  z" Time="2014-07-31T14.34.40"
 CF p19 p20
 DF d13 p20
 Data d15 "15-b" Value="0";
 DF p20 d15
-Operation p21 "21-fun" Value="fun" Time="2014-07-30T16.34.34";
+Operation p21 "21-fun" Value="fun" Time="2014-07-31T14.34.40";
 DF d14 p21
 DF d15 p21
 CF p20 p21
 Data d16 "16-fun(w, z) return" Value="32";
 DF p21 d16
-Finish p22 "22-v <- fun(w, z)" Value="v <- fun(w, z)" Time="2014-07-30T16.34.34";
+Finish p22 "22-v <- fun(w, z)" Value="v <- fun(w, z)" Time="2014-07-31T14.34.40";
 CF p21 p22
 DF d16 p22
 Data d17 "17-v" Value="32";
 DF p22 d17
-Start p23 "23-source2.r" Value="source2.r" Time="2014-07-30T16.34.34";
+Start p23 "23-source2.r" Value="source2.r" Time="2014-07-31T14.34.40";
 CF p22 p23
-Operation p24 "24-setwd(testDir)" Value="setwd(testDir)" Time="2014-07-30T16.34.34";
+Operation p24 "24-setwd(testDir)" Value="setwd(testDir)" Time="2014-07-31T14.34.40";
 CF p23 p24
-Start p25 "25-A" Value="A" Time="2014-07-30T16.34.34";
+Start p25 "25-A" Value="A" Time="2014-07-31T14.34.40";
 CF p24 p25
-Operation p26 "26-a <- 10" Value="a <- 10" Time="2014-07-30T16.34.34";
+Operation p26 "26-a <- 10" Value="a <- 10" Time="2014-07-31T14.34.40";
 CF p25 p26
 Data d18 "18-a" Value="10";
 DF p26 d18
-Operation p27 "27-c <- 100" Value="c <- 100" Time="2014-07-30T16.34.34";
+Operation p27 "27-c <- 100" Value="c <- 100" Time="2014-07-31T14.34.40";
 CF p26 p27
 Data d19 "19-c" Value="100";
 DF p27 d19
-Finish p28 "28-A" Value="A" Time="2014-07-30T16.34.34";
+Finish p28 "28-A" Value="A" Time="2014-07-31T14.34.40";
 CF p27 p28
-Start p29 "29-B" Value="B" Time="2014-07-30T16.34.34";
+Start p29 "29-B" Value="B" Time="2014-07-31T14.34.40";
 CF p28 p29
-Operation p30 "30-b <- a + c" Value="b <- a + c" Time="2014-07-30T16.34.34";
+Operation p30 "30-b <- a + c" Value="b <- a + c" Time="2014-07-31T14.34.40";
 CF p29 p30
 DF d18 p30
 DF d19 p30
 Data d20 "20-b" Value="110";
 DF p30 d20
-Operation p31 "31-a <- 20" Value="a <- 20" Time="2014-07-30T16.34.34";
+Operation p31 "31-a <- 20" Value="a <- 20" Time="2014-07-31T14.34.40";
 CF p30 p31
 Data d21 "21-a" Value="20";
 DF p31 d21
-Finish p32 "32-B" Value="B" Time="2014-07-30T16.34.34";
+Finish p32 "32-B" Value="B" Time="2014-07-31T14.34.40";
 CF p31 p32
-Finish p33 "33-source2.r" Value="source2.r" Time="2014-07-30T16.34.34";
+Finish p33 "33-source2.r" Value="source2.r" Time="2014-07-31T14.34.40";
 CF p32 p33
-Start p34 "34-source3.r" Value="source3.r" Time="2014-07-30T16.34.34";
+Start p34 "34-source3.r" Value="source3.r" Time="2014-07-31T14.34.40";
 CF p33 p34
-Operation p35 "35-f <- function(x) {    g(x)    h(x)    return(1)}" Value="f <- function(x) {    g(x)    h(x)    return(1)}" Time="2014-07-30T16.34.34";
+Operation p35 "35-f <- function(x) {    g(x)    h(x)    return(1)}" Value="f <- function(x) {    g(x)    h(x)    return(1)}" Time="2014-07-31T14.34.40";
 CF p34 p35
 Data d22 "22-f" Value="#ddg.function";
 DF p35 d22
-Operation p36 "36-g <- function(x) {    ddg.procedure(lookup.ins = TRUE)    re" Value="g <- function(x) {    ddg.procedure(lookup.ins = TRUE)    re" Time="2014-07-30T16.34.34";
+Operation p36 "36-g <- function(x) {    ddg.procedure(lookup.ins = TRUE)    re" Value="g <- function(x) {    ddg.procedure(lookup.ins = TRUE)    re" Time="2014-07-31T14.34.40";
 CF p35 p36
 Data d23 "23-g" Value="#ddg.function";
 DF p36 d23
-Operation p37 "37-h <- function(x) {    ddg.procedure(lookup.ins = TRUE)    re" Value="h <- function(x) {    ddg.procedure(lookup.ins = TRUE)    re" Time="2014-07-30T16.34.34";
+Operation p37 "37-h <- function(x) {    ddg.procedure(lookup.ins = TRUE)    re" Value="h <- function(x) {    ddg.procedure(lookup.ins = TRUE)    re" Time="2014-07-31T14.34.40";
 CF p36 p37
 Data d24 "24-h" Value="#ddg.function";
 DF p37 d24
-Operation p38 "38-someVector <- function() {    return(c(1, 3, 5))}" Value="someVector <- function() {    return(c(1, 3, 5))}" Time="2014-07-30T16.34.34";
+Operation p38 "38-someVector <- function() {    return(c(1, 3, 5))}" Value="someVector <- function() {    return(c(1, 3, 5))}" Time="2014-07-31T14.34.40";
 CF p37 p38
 Data d25 "25-someVector" Value="#ddg.function";
 DF p38 d25
-Operation p39 "39-x <- 10" Value="x <- 10" Time="2014-07-30T16.34.34";
+Operation p39 "39-x <- 10" Value="x <- 10" Time="2014-07-31T14.34.40";
 CF p38 p39
 Data d26 "26-x" Value="10";
 DF p39 d26
-Start p40 "40-f(x)" Value="f(x)" Time="2014-07-30T16.34.34";
+Start p40 "40-f(x)" Value="f(x)" Time="2014-07-31T14.34.40";
 CF p39 p40
-Binding p41 "41-x  <-  x"
+Binding p41 "41-x  <-  x" Time="2014-07-31T14.34.40"
 CF p40 p41
 Data d27 "27-x" Value="10";
 DF p41 d27
-Operation p42 "42-g" Value="g";
+Operation p42 "42-g" Value="g" Time="2014-07-31T14.34.40";
 DF d27 p42
 CF p41 p42
-Binding p43 "43-x  <-  x"
+Binding p43 "43-x  <-  x" Time="2014-07-31T14.34.40"
 CF p42 p43
 Data d28 "28-x" Value="10";
 DF p43 d28
-Operation p44 "44-h" Value="h";
+Operation p44 "44-h" Value="h" Time="2014-07-31T14.34.40";
 DF d28 p44
 CF p43 p44
-Finish p45 "45-f(x)" Value="f(x)";
+Finish p45 "45-f(x)" Value="f(x)" Time="2014-07-31T14.34.40";
 CF p44 p45
-Start p46 "46-f(x)" Value="f(x)";
+Start p46 "46-f(x)" Value="f(x)" Time="2014-07-31T14.34.40";
 CF p45 p46
-Binding p47 "47-x  <-  x"
+Binding p47 "47-x  <-  x" Time="2014-07-31T14.34.40"
 CF p46 p47
 Data d29 "29-x" Value="10";
 DF p47 d29
-Operation p48 "48-g" Value="g";
+Operation p48 "48-g" Value="g" Time="2014-07-31T14.34.40";
 DF d29 p48
 CF p47 p48
-Binding p49 "49-x  <-  x"
+Binding p49 "49-x  <-  x" Time="2014-07-31T14.34.40"
 CF p48 p49
 Data d30 "30-x" Value="10";
 DF p49 d30
-Operation p50 "50-h" Value="h";
+Operation p50 "50-h" Value="h" Time="2014-07-31T14.34.40";
 DF d30 p50
 CF p49 p50
-Finish p51 "51-f(x)" Value="f(x)";
+Finish p51 "51-f(x)" Value="f(x)" Time="2014-07-31T14.34.40";
 CF p50 p51
-Finish p52 "52-source3.r" Value="source3.r";
+Finish p52 "52-source3.r" Value="source3.r" Time="2014-07-31T14.34.40";
 CF p51 p52
-Start p53 "53-source3.r" Value="source3.r";
+Start p53 "53-source3.r" Value="source3.r" Time="2014-07-31T14.34.40";
 CF p52 p53
-Operation p54 "54-f <- function(x) {    g(x)    h(x)    return(1)}" Value="f <- function(x) {    g(x)    h(x)    return(1)}";
+Operation p54 "54-f <- function(x) {    g(x)    h(x)    return(1)}" Value="f <- function(x) {    g(x)    h(x)    return(1)}" Time="2014-07-31T14.34.40";
 CF p53 p54
 Data d31 "31-f" Value="#ddg.function";
 DF p54 d31
-Operation p55 "55-g <- function(x) {    ddg.procedure(lookup.ins = TRUE)    re" Value="g <- function(x) {    ddg.procedure(lookup.ins = TRUE)    return(1)}";
+Operation p55 "55-g <- function(x) {    ddg.procedure(lookup.ins = TRUE)    re" Value="g <- function(x) {    ddg.procedure(lookup.ins = TRUE)    re" Time="2014-07-31T14.34.40";
 CF p54 p55
 Data d32 "32-g" Value="#ddg.function";
 DF p55 d32
-Operation p56 "56-h <- function(x) {    ddg.procedure(lookup.ins = TRUE)    re" Value="h <- function(x) {    ddg.procedure(lookup.ins = TRUE)    return(1)}";
+Operation p56 "56-h <- function(x) {    ddg.procedure(lookup.ins = TRUE)    re" Value="h <- function(x) {    ddg.procedure(lookup.ins = TRUE)    re" Time="2014-07-31T14.34.40";
 CF p55 p56
 Data d33 "33-h" Value="#ddg.function";
 DF p56 d33
-Operation p57 "57-someVector <- function() {    return(c(1, 3, 5))}" Value="someVector <- function() {    return(c(1, 3, 5))}";
+Operation p57 "57-someVector <- function() {    return(c(1, 3, 5))}" Value="someVector <- function() {    return(c(1, 3, 5))}" Time="2014-07-31T14.34.40";
 CF p56 p57
 Data d34 "34-someVector" Value="#ddg.function";
 DF p57 d34
-Operation p58 "58-x <- 10" Value="x <- 10";
+Operation p58 "58-x <- 10" Value="x <- 10" Time="2014-07-31T14.34.40";
 CF p57 p58
 Data d35 "35-x" Value="10";
 DF p58 d35
-Start p59 "59-f(x)" Value="f(x)";
+Start p59 "59-f(x)" Value="f(x)" Time="2014-07-31T14.34.40";
 CF p58 p59
-Binding p60 "60-x  <-  x"
+Binding p60 "60-x  <-  x" Time="2014-07-31T14.34.40"
 CF p59 p60
 Data d36 "36-x" Value="10";
 DF p60 d36
-Operation p61 "61-g" Value="g";
+Operation p61 "61-g" Value="g" Time="2014-07-31T14.34.40";
 DF d36 p61
 CF p60 p61
-Binding p62 "62-x  <-  x"
+Binding p62 "62-x  <-  x" Time="2014-07-31T14.34.40"
 CF p61 p62
 Data d37 "37-x" Value="10";
 DF p62 d37
-Operation p63 "63-h" Value="h";
+Operation p63 "63-h" Value="h" Time="2014-07-31T14.34.40";
 DF d37 p63
 CF p62 p63
-Finish p64 "64-f(x)" Value="f(x)";
+Finish p64 "64-f(x)" Value="f(x)" Time="2014-07-31T14.34.40";
 CF p63 p64
-Start p65 "65-f(x)" Value="f(x)";
+Start p65 "65-f(x)" Value="f(x)" Time="2014-07-31T14.34.40";
 CF p64 p65
-Binding p66 "66-x  <-  x"
+Binding p66 "66-x  <-  x" Time="2014-07-31T14.34.40"
 CF p65 p66
 Data d38 "38-x" Value="10";
 DF p66 d38
-Operation p67 "67-g" Value="g";
+Operation p67 "67-g" Value="g" Time="2014-07-31T14.34.40";
 DF d38 p67
 CF p66 p67
-Binding p68 "68-x  <-  x"
+Binding p68 "68-x  <-  x" Time="2014-07-31T14.34.40"
 CF p67 p68
 Data d39 "39-x" Value="10";
 DF p68 d39
-Operation p69 "69-h" Value="h";
+Operation p69 "69-h" Value="h" Time="2014-07-31T14.34.40";
 DF d39 p69
 CF p68 p69
-Finish p70 "70-f(x)" Value="f(x)";
+Finish p70 "70-f(x)" Value="f(x)" Time="2014-07-31T14.34.40";
 CF p69 p70
-Finish p71 "71-source3.r" Value="source3.r";
+Finish p71 "71-source3.r" Value="source3.r" Time="2014-07-31T14.34.40";
 CF p70 p71
-Start p72 "72-Stuff" Value="Stuff";
+Start p72 "72-Stuff" Value="Stuff" Time="2014-07-31T14.34.40";
 CF p71 p72
-Operation p73 "73-m <- 10" Value="m <- 10";
+Operation p73 "73-m <- 10" Value="m <- 10" Time="2014-07-31T14.34.40";
 CF p72 p73
 Data d40 "40-m" Value="10";
 DF p73 d40
-Start p74 "74-f(m)" Value="f(m)";
+Start p74 "74-f(m)" Value="f(m)" Time="2014-07-31T14.34.40";
 CF p73 p74
-Binding p75 "75-x  <-  x"
+Binding p75 "75-x  <-  x" Time="2014-07-31T14.34.40"
 CF p74 p75
 Data d41 "41-x" Value="10";
 DF p75 d41
-Operation p76 "76-g" Value="g";
+Operation p76 "76-g" Value="g" Time="2014-07-31T14.34.40";
 DF d41 p76
 CF p75 p76
-Binding p77 "77-x  <-  x"
+Binding p77 "77-x  <-  x" Time="2014-07-31T14.34.40"
 CF p76 p77
 Data d42 "42-x" Value="10";
 DF p77 d42
-Operation p78 "78-h" Value="h";
+Operation p78 "78-h" Value="h" Time="2014-07-31T14.34.40";
 DF d42 p78
 CF p77 p78
-Finish p79 "79-f(m)" Value="f(m)";
+Finish p79 "79-f(m)" Value="f(m)" Time="2014-07-31T14.34.40";
 CF p78 p79
-Start p80 "80-f(x)" Value="f(x)";
+Start p80 "80-f(x)" Value="f(x)" Time="2014-07-31T14.34.40";
 CF p79 p80
-Binding p81 "81-x  <-  x"
+Binding p81 "81-x  <-  x" Time="2014-07-31T14.34.40"
 CF p80 p81
 Data d43 "43-x" Value="10";
 DF p81 d43
-Operation p82 "82-g" Value="g";
+Operation p82 "82-g" Value="g" Time="2014-07-31T14.34.40";
 DF d43 p82
 CF p81 p82
-Binding p83 "83-x  <-  x"
+Binding p83 "83-x  <-  x" Time="2014-07-31T14.34.40"
 CF p82 p83
 Data d44 "44-x" Value="10";
 DF p83 d44
-Operation p84 "84-h" Value="h";
+Operation p84 "84-h" Value="h" Time="2014-07-31T14.34.40";
 DF d44 p84
 CF p83 p84
-Finish p85 "85-f(x)" Value="f(x)";
+Finish p85 "85-f(x)" Value="f(x)" Time="2014-07-31T14.34.40";
 CF p84 p85
-Finish p86 "86-Stuff" Value="Stuff";
+Finish p86 "86-Stuff" Value="Stuff" Time="2014-07-31T14.34.40";
 CF p85 p86
 
