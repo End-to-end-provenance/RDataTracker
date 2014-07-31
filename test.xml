@@ -316,6 +316,18 @@
 	    </antcall>
 	  </target>
 
+	  <target name="eval-test">
+	    <antcall target="run-test">
+	      <param name="dir" value="examples/EvalTest"/>
+	      <param name="out" value="examples/EvalTest/EvalTest.out"/>
+	      <param name="script-file" value="EvalTest.R"/>
+	      <param name="expected_out" value="examples/EvalTest/expected_evalTest.out"/>
+	      <param name="expected_ddg" value="examples/EvalTest/expected_evalTest_ddg.txt"/>
+	      <param name="fail_out" value="false" />
+	      <param name="source_test" value="true" />
+	    </antcall>
+	  </target>
+
   <target name="consoleEdgeCases-test">
     <antcall target="run-test">
       <param name="dir" value="examples/consoleEdgeCases"/>
@@ -327,7 +339,7 @@
     </antcall>
   </target>
 
-  <target name="console-tests" depends="console-test-1, console-test-2, MismatchedStartFinishBug-test, null-na-test, consoleEdgeCases-test, scope-test, return-test">
+  <target name="console-tests" depends="console-test-1, console-test-2, MismatchedStartFinishBug-test, null-na-test, consoleEdgeCases-test, scope-test, return-test, eval-test">
     <echo>These automated tests are limited when in console mode. You can always manually check the ouput using diff and the provided expected output files for each script. Do note, however, that all of the tests have also been evaluated using ddg.source, which does in fact capture console commands.</echo>
   </target>
   <!--########################## End Console TESTS ##########################-->
