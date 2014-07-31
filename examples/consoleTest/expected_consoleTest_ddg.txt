@@ -2,25 +2,38 @@ Architecture="x86_64"
 OperatingSystem="unix"
 Language="R"
 LanguageVersion="R version 3.1.0 Patched (2014-05-20 r65701)"
+RDataTrackerVersion="0.5.27"
 Script="[DIR]/consoleTest.r"
-ProcessFileTimestamp="2014-07-18T11.35.25"
+ProcessFileTimestamp="2014-07-30T14.37.30"
 WorkingDirectory="[DIR]"
 DDGDirectory="[DIR]/ddg"
-DateTime="2014-07-22T15.57.12"
-4
-Operation p1 "1-g" Value="g";
-Exception d1 "1-error.msg" Value="\"Skipping parameter x\"";
+DateTime="2014-07-31T13.36.30"
+8
+Binding p1 "1-x  <-  x"
+Data d1 "1-x" Value="10";
 DF p1 d1
-Operation p2 "2-h" Value="h";
-Exception d2 "2-error.msg" Value="\"Skipping parameter x\"";
-DF p2 d2
+Operation p2 "2-g" Value="g";
+DF d1 p2
 CF p1 p2
-Operation p3 "3-g" Value="g";
-Exception d3 "3-error.msg" Value="\"Skipping parameter x\"";
-DF p3 d3
+Binding p3 "3-x  <-  x"
 CF p2 p3
+Data d2 "2-x" Value="10";
+DF p3 d2
 Operation p4 "4-h" Value="h";
-Exception d4 "4-error.msg" Value="\"Skipping parameter x\"";
-DF p4 d4
+DF d2 p4
 CF p3 p4
+Binding p5 "5-x  <-  x"
+CF p4 p5
+Data d3 "3-x" Value="10";
+DF p5 d3
+Operation p6 "6-g" Value="g";
+DF d3 p6
+CF p5 p6
+Binding p7 "7-x  <-  x"
+CF p6 p7
+Data d4 "4-x" Value="10";
+DF p7 d4
+Operation p8 "8-h" Value="h";
+DF d4 p8
+CF p7 p8
 

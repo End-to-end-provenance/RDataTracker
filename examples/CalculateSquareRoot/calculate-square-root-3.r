@@ -119,9 +119,11 @@ main <- function() {
   ddg.finish("main")
 }
 
-ddg.run(main,  	
+ddg.run( 	
         paste(testDir,"calculate-square-root-3.r",sep="/"),
-        paste(testDir,"ddg",sep="/"))
+        paste(testDir,"ddg",sep="/"),
+        main,
+        enable.console=FALSE)
 
 # display values
 

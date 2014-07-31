@@ -143,9 +143,10 @@ main <- function() {
 
 ### Run script
 
-ddg.run(main, 
-		ddg.r.script.path,
-         ddg.path)
+ddg.run(ddg.r.script.path,
+        ddg.path,
+        main,
+        enable.console=FALSE)
 
 # Calculate total time of execution
 endTime <- Sys.time()

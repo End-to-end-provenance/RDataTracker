@@ -775,7 +775,7 @@ ddg.MAX_HIST_LINES <- 2^14
 				# If assigning to a simple variable, recurse on the right hand 
 	      # side of the assignment.
 				if (is.symbol(obj[[2]])) filter(unlist(.ddg.find.var.uses.rec(obj[[3]])))
-				
+				else if (is.call(obj[[2]])) filter(c (.ddg.find.var.uses.rec(obj[[2]][[2]]), unlist(.ddg.find.var.uses.rec(obj[[3]]))))
 				# If assigning to an expression (like a[b]), recurse on the 
 	      # indexing part of the lvalue as well as on the expression.
 				else filter(c (.ddg.find.var.uses.rec(obj[[2]][[3]]), unlist(.ddg.find.var.uses.rec(obj[[3]]))))
@@ -2302,30 +2302,20 @@ ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.graphic=N
 						# Find all the variables used in this parameter.
 						vars.used <- .ddg.find.var.uses(parse(text=param))
 
-            			binding.node.created <- FALSE
+						binding.node.name <- paste(formal, " <- ", param)
+						.ddg.proc.node("Binding", binding.node.name)
+						.ddg.proc2proc()
 						for (var in vars.used) {
 							param.scope <- .ddg.get.scope(var, for.caller = TRUE, calls=stack)
 							if (.ddg.data.node.exists(var, param.scope)) {
-								if (!binding.node.created) {
-									binding.node.name <- paste(formal, " <- ", param)
-									.ddg.proc.node("Binding", binding.node.name)
-									.ddg.proc2proc()
-									binding.node.created <- TRUE									
-								}
-
 								.ddg.data2proc(as.character(var), param.scope, binding.node.name)
 								if (.ddg.debug()) print(paste("param:", var))
 							}
-							else {
-								missing.params <<- c(missing.params, formal)
-							}
 						}
-						if (binding.node.created) {
-							formal.scope <- .ddg.get.scope(formal, calls=stack)
-							formal.env <- .ddg.get.env(formal, calls=stack)
-							.ddg.save.data(formal, eval(parse(text=formal), formal.env), fname=".ddg.save.data", scope=formal.scope, stack=stack)
-							.ddg.proc2data(binding.node.name, formal, formal.scope)
-						}
+						formal.scope <- .ddg.get.scope(formal, calls=stack)
+						formal.env <- .ddg.get.env(formal, calls=stack)
+						.ddg.save.data(formal, eval(parse(text=formal), formal.env), fname=".ddg.save.data", scope=formal.scope, stack=stack)
+						.ddg.proc2data(binding.node.name, formal, formal.scope)
 					})
 		}
 		.ddg.proc.node("Operation", pname, pname)
@@ -2337,11 +2327,6 @@ ddg.procedure <- function(pname=NULL, ins=NULL, lookup.ins=FALSE, outs.graphic=N
     						.ddg.data2proc(formal, formal.scope, pname)
     					}
     				})
-  		lapply(missing.params, 
-  			   function(missing.param) {
-  					error.msg <- paste("Skipping parameter", missing.param)
-  					.ddg.insert.error.message(error.msg)
-  				})
     }
 		
 		# Create control flow edge from preceding procedure node.
@@ -2979,7 +2964,7 @@ ddg.restore <- function(file.path) {
 # DDG should be saved. If not provided, the DDG will be saved in a 
 # subdirectory called "ddg" in the current working directory.
 
-ddg.init <- function(r.script.path = NULL, ddgdir = NULL, enable.console = FALSE) {
+ddg.init <- function(r.script.path = NULL, ddgdir = NULL, enable.console = TRUE) {
 	.ddg.init.tables()
 
 	.ddg.set("ddg.r.script.path", 
@@ -3032,16 +3017,18 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, enable.console = FALSE
 # r.script.path is given, then the r script is sourced as a function and a DDG is
 # created for it.
 
-ddg.run <- function(f = NULL, r.script.path = NULL, ddgdir = NULL, enable.console = FALSE) {
+ddg.run <- function(r.script.path = NULL, ddgdir = NULL, f = NULL, enable.console = TRUE) {
     ddg.init(r.script.path, ddgdir, enable.console)
 	
     # If an R error is generated, get the error message and close 
     # the DDG.
     tryCatch(
-		if (!is.null(f)) f() else ddg.source(r.script.path, 
-		                                     ignore.ddg.calls = FALSE,
-		                                     ignore.init = TRUE,
-		                                     force.console = FALSE),
+		if (!is.null(f)) f() 
+		else if (!is.null(r.script.path)) ddg.source(r.script.path, 
+						                                     ignore.ddg.calls = FALSE,
+						                                     ignore.init = TRUE,
+						                                     force.console = FALSE)
+		else stop("r.script.path and f cannot both be NULL"),
 		error=function(e) {
 			e.str <- toString(e)
 			print(e.str)

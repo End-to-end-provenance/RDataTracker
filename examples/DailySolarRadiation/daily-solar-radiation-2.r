@@ -273,9 +273,11 @@ main <- function() {
   ddg.finish("main")
 }
 
-ddg.run(main,   
+ddg.run(   
     ddg.r.script.path,
-    ddg.path)
+    ddg.path,
+    main,
+    enable.console = FALSE)
 
 ddg.save(quit=TRUE)
 

@@ -1,55 +1,75 @@
-Architecture="i386"
-OperatingSystem="windows"
+Architecture="x86_64"
+OperatingSystem="unix"
 Language="R"
-LanguageVersion="R version 3.1.0 (2014-04-10)"
-RDataTrackerVersion="0.5.24"
+LanguageVersion="R version 3.1.0 Patched (2014-05-20 r65701)"
+RDataTrackerVersion="0.5.29"
 Script="[DIR]/consoleTest.r"
-ProcessFileTimestamp="2014-07-29T01.15.42"
+ProcessFileTimestamp="2014-07-31T16.22.34"
 WorkingDirectory="[DIR]"
 DDGDirectory="[DIR]/ddg-source"
-DateTime="2014-07-29T19.22.55"
-13
-Operation p1 "1-f <- function(x) {    g(x)    h(x)    return(1)}" Value="f <- function(x) {    g(x)    h(x)    return(1)}";
+DateTime="2014-07-31T16.36.41"
+19
+Operation p1 "1-f <- function(x) {    g(x)    h(x)    return(1)}" Value="f <- function(x) {    g(x)    h(x)    return(1)}" Time="2014-07-31T16.36.40";
 Data d1 "1-f" Value="#ddg.function";
 DF p1 d1
-Operation p2 "2-g <- function(x) {    ddg.procedure(lookup.ins = TRUE)    re" Value="g <- function(x) {    ddg.procedure(lookup.ins = TRUE)    re";
+Operation p2 "2-g <- function(x) {    ddg.procedure(lookup.ins = TRUE)    re" Value="g <- function(x) {    ddg.procedure(lookup.ins = TRUE)    re" Time="2014-07-31T16.36.40";
 CF p1 p2
 Data d2 "2-g" Value="#ddg.function";
 DF p2 d2
-Operation p3 "3-h <- function(x) {    ddg.procedure(lookup.ins = TRUE)    re" Value="h <- function(x) {    ddg.procedure(lookup.ins = TRUE)    re";
+Operation p3 "3-h <- function(x) {    ddg.procedure(lookup.ins = TRUE)    re" Value="h <- function(x) {    ddg.procedure(lookup.ins = TRUE)    re" Time="2014-07-31T16.36.40";
 CF p2 p3
 Data d3 "3-h" Value="#ddg.function";
 DF p3 d3
-Operation p4 "4-someVector <- function() {    return(c(1, 3, 5))}" Value="someVector <- function() {    return(c(1, 3, 5))}";
+Operation p4 "4-someVector <- function() {    return(c(1, 3, 5))}" Value="someVector <- function() {    return(c(1, 3, 5))}" Time="2014-07-31T16.36.41";
 CF p3 p4
 Data d4 "4-someVector" Value="#ddg.function";
 DF p4 d4
-Operation p5 "5-x <- 10" Value="x <- 10";
+Operation p5 "5-x <- 10" Value="x <- 10" Time="2014-07-31T16.36.41";
 CF p4 p5
 Data d5 "5-x" Value="10";
 DF p5 d5
-Start p6 "6-f(x)" Value="f(x)";
+Start p6 "6-f(x)" Value="f(x)" Time="2014-07-31T16.36.41";
 CF p5 p6
-Operation p7 "7-g" Value="g";
-Exception d6 "6-error.msg" Value="\"Skipping parameter x\"";
-DF p7 d6
+Binding p7 "7-x  <-  x" Time="2014-07-31T16.36.41"
 CF p6 p7
-Operation p8 "8-h" Value="h";
-Exception d7 "7-error.msg" Value="\"Skipping parameter x\"";
-DF p8 d7
+Data d6 "6-x" Value="10";
+DF p7 d6
+Operation p8 "8-g" Value="g" Time="2014-07-31T16.36.41";
+DF d6 p8
 CF p7 p8
-Finish p9 "9-f(x)" Value="f(x)";
+Binding p9 "9-x  <-  x" Time="2014-07-31T16.36.41"
 CF p8 p9
-Start p10 "10-f(x)" Value="f(x)";
+Data d7 "7-x" Value="10";
+DF p9 d7
+Operation p10 "10-h" Value="h" Time="2014-07-31T16.36.41";
+DF d7 p10
 CF p9 p10
-Operation p11 "11-g" Value="g";
-Exception d8 "8-error.msg" Value="\"Skipping parameter x\"";
-DF p11 d8
+Finish p11 "11-f(x)" Value="f(x)" Time="2014-07-31T16.36.41";
 CF p10 p11
-Operation p12 "12-h" Value="h";
-Exception d9 "9-error.msg" Value="\"Skipping parameter x\"";
-DF p12 d9
+Start p12 "12-f(x)" Value="f(x)" Time="2014-07-31T16.36.41";
 CF p11 p12
-Finish p13 "13-f(x)" Value="f(x)";
+Binding p13 "13-x  <-  x" Time="2014-07-31T16.36.41"
 CF p12 p13
+Data d8 "8-x" Value="10";
+DF p13 d8
+Operation p14 "14-g" Value="g" Time="2014-07-31T16.36.41";
+DF d8 p14
+CF p13 p14
+Binding p15 "15-x  <-  x" Time="2014-07-31T16.36.41"
+CF p14 p15
+Data d9 "9-x" Value="10";
+DF p15 d9
+Operation p16 "16-h" Value="h" Time="2014-07-31T16.36.41";
+DF d9 p16
+CF p15 p16
+Finish p17 "17-f(x)" Value="f(x)" Time="2014-07-31T16.36.41";
+CF p16 p17
+Operation p18 "18-z <- list(1, \"c\", 1:3)" Value="z <- list(1, \"c\", 1:3)" Time="2014-07-31T16.36.41";
+CF p17 p18
+Snapshot d10 "10-z" Value="[DIR]/ddg-source/10-z.csv" Time="2014-07-31T16.36.41";
+DF p18 d10
+Operation p19 "19-names(z) <- list(\"a\", \"b\", \"c\")" Value="names(z) <- list(\"a\", \"b\", \"c\")" Time="2014-07-31T16.36.41";
+CF p18 p19
+Snapshot d11 "11-z" Value="[DIR]/ddg-source/11-z.csv" Time="2014-07-31T16.36.41";
+DF p19 d11
 
