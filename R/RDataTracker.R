@@ -1206,7 +1206,7 @@ ddg.MAX_HIST_LINES <- 2^14
 .ddg.add.abstract.node <- function(type, cmd, called=".ddg.parse.commands") {
 	cmd.abbrev <- .ddg.abbrev.cmd(cmd)
 	if (.ddg.debug()) print(paste(called, ":  Adding", cmd.abbrev,  type, "node"))
-	  .ddg.proc.node(type, cmd.abbrev, cmd, TRUE)
+	  .ddg.proc.node(type, cmd.abbrev, cmd.abbrev, TRUE)
 		.ddg.proc2proc()
 
 	return(cmd.abbrev)
@@ -1420,7 +1420,7 @@ ddg.MAX_HIST_LINES <- 2^14
   			if (create.procedure) {
   				
 					# create the procedure node
-					.ddg.proc.node("Operation", cmd.abbrev, cmd, console=TRUE)
+					.ddg.proc.node("Operation", cmd.abbrev, cmd.abbrev, console=TRUE)
 					.ddg.proc2proc()
 					if (.ddg.debug()) print(paste(".ddg.parse.console.node: Adding operation node for", cmd.abbrev))
 
@@ -1533,14 +1533,17 @@ ddg.MAX_HIST_LINES <- 2^14
 		if (pvalue!="") paste(" Value=\"", pvalue, "\"", sep="")
 		else ""
 
+	# obtain the timestamp to  use this procedure node
+	proc.time <- paste0(" Time=\"", .ddg.timestamp(), "\"")
+
 	# Create procedure node.  
 	ddg.pnum <- .ddg.pnum()
   
 	if (proc.value != "") {
-        .ddg.append(ptype, " p", ddg.pnum, " \"", ddg.pnum, "-", pname, "\"", proc.value, ";\n", sep="")
+        .ddg.append(ptype, " p", ddg.pnum, " \"", ddg.pnum, "-", pname, "\"", proc.value, proc.time, ";\n", sep="")
 	}
 	else {
-        .ddg.append(ptype, " p", ddg.pnum, " \"", ddg.pnum, "-", pname, "\"\n", sep="")
+        .ddg.append(ptype, " p", ddg.pnum, " \"", ddg.pnum, "-", pname, "\"", proc.time, "\n", sep="")
 	}
 
 	# Record procedure node information.
@@ -3015,7 +3018,10 @@ ddg.run <- function(f = NULL, r.script.path = NULL, ddgdir = NULL, enable.consol
     # If an R error is generated, get the error message and close 
     # the DDG.
     tryCatch(
-		if (!is.null(f)) f() else ddg.source(r.script.path, ignore.ddg.calls = FALSE, ignore.init = TRUE),
+		if (!is.null(f)) f() else ddg.source(r.script.path, 
+		                                     ignore.ddg.calls = FALSE,
+		                                     ignore.init = TRUE,
+		                                     force.console = FALSE),
 		error=function(e) {
 			e.str <- toString(e)
 			print(e.str)
@@ -3240,7 +3246,7 @@ ddg.source <- function (file, local = FALSE, echo = verbose, print.eval = echo,
 	# ignores calculation of certain execution steps
 	ignores <- c("^library[(]RDataTracker[)]$", 	
 		if(ignore.ddg.calls) "^ddg."
-		else if (ignore.init) "^ddg.init"
+		else if (ignore.init) c("^ddg.init", "^ddg.run")
 		else "a^")
 
   # now we can parse the commands as we normally would for a DDG
