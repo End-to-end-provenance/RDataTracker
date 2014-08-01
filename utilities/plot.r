@@ -57,7 +57,7 @@ findType <- function(name){
 #                  the pattern used as the output file for scriptTimer (or the basename of the inFile).
 plot.main <- function(outPath = "plots", inFile = NULL, fileNamePattern = NULL) {
   # we want to work from within the base directory
-  browser()
+  # browser()
   setwd(base.dir)
 
   # execute scriptTimer to capture results (this writes out the results in examples/_timingResults)

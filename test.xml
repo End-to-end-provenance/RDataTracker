@@ -587,6 +587,7 @@
   </target>
 
   <target name="install-and-test" depends="install">
+    <splash displaytext="Installing and Testing" />
     <record name="tests.log" action="start" />
       <antcall target="test-all" />
     <record name="tests.log" action="stop" />
@@ -611,6 +612,7 @@
     of execution.
   -->
   <target name="script-timer">
+    <splash displaytext="Running Performance Tests" />
     <!-- Replace base.dir with the base directory of the project -->
     <replaceregexp  file="utilities/scriptTimer.r"
                     match="base.dir &lt;- (.*)"
@@ -625,13 +627,14 @@
     and unnecessary dependence). 
   -->
   <target name="plot-performance">
+    <splash displaytext="Creating Performance Report."/>
     <!-- Replace base.dir with the base directory of the project -->
     <replaceregexp  file="utilities/plot.r"
                     match="base.dir &lt;- (.*)"
                     replace='base.dir &lt;- "${FILE.basedir}"'
     />
     <exec executable="Rscript" dir="utilities" output="utilities/plot-performance.out">
-      <arg line="plot.r plot plots" />
+      <arg line="plot.r plot _plots" />
     </exec>
   </target>
 
