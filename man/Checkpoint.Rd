@@ -4,7 +4,9 @@
 \title{RDataTracker Checkpoint and Restore}
 \description{These functions work with RDataTracker to save and restore the R state and the file 
   system state.  They also record in the provenance graph where the checkpoints and restore 
-  occur and their effect on the data used.}
+  occur and their effect on the data used.  Note that these functions are not included
+  in the library since they change the user's global environment when you do a restore.
+  To use these functions, you must download and source DDGCheckpoint.R.}
 \usage{
 ddg.checkpoint(checkpoint.name = NULL)
 ddg.restore(file.path)
@@ -29,9 +31,10 @@ ddg.restore(file.path)
 }
 \author{Emery Boose and Barbara Lerner}
 \examples{
+\dontrun{source("DDGCheckpoint.R")}
 dir.create("ddg", showWarnings=FALSE)
 ddg.init()
-checkpoint <- ddg.checkpoint()
+\dontrun{checkpoint <- ddg.checkpoint()}
 \dontshow{# Following results in a "cannot add bindings to a locked environment" error}
 \dontrun{ddg.restore(checkpoint)}
 ddg.save()
