@@ -118,7 +118,7 @@
 
     <!-- Delete all timestamp occurrences and local OS/R/Version information -->
     <replaceregexp flags="g"> 
-      <regexp pattern='(( Time=)?("?[0-9]{4}-[0-9]{2}-[0-9]{2}(T| )[0-9]{2}(.|:)[0-9]{2}(.|:)[0-9]{2}"?))|((Architecture|OperatingSystem|Language|LanguageVersion|RDataTrackerVersion)=(.*)\n)' />
+      <regexp pattern='(( Time=)?("?[0-9]{4}-[0-9]{2}-[0-9]{2}(T| )[0-9]{2}(.|:)[0-9]{2}(.|:)[0-9]{2}[A-Z]{0,3}"?))|((Architecture|OperatingSystem|Language|LanguageVersion|RDataTrackerVersion)=(.*)\n)' />
       <substitution expression=""/>
       <fileset dir="${local_dir}">
         <patternset id="local_files">
