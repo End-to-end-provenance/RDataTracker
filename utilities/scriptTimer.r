@@ -32,6 +32,7 @@ writeOutput <- function(results){
   # browser()
   dfile <- paste0("timingData", "-", gsub(" ","T",gsub(":",".",Sys.time())), ".csv")
   write.csv(results,dfile, row.names = FALSE)
+  return(dfile)
 }
 
 ### Main script
@@ -75,7 +76,10 @@ scriptTimer.main <- function(){
 
   # write output 
   setwd(paste0(base.dir, "/examples/_timingResults"))
-  writeOutput(rowResults)
+  outputFile <- writeOutput(rowResults)
+
+  # return data frame and data location
+  return(list("data"=rowResults, "file.name"=outputFile))
 }
 
 options <- commandArgs(trailingOnly = TRUE)

@@ -617,7 +617,7 @@
                     replace='base.dir &lt;- "${FILE.basedir}"'
     />
     <exec executable="Rscript" dir="utilities" output="utilities/script-timer.out">
-      <arg line="scriptTimer.r options.R execute" />
+      <arg line="scriptTimer.r execute" />
     </exec>
   </target>
 
@@ -631,7 +631,7 @@
                     replace='base.dir &lt;- "${FILE.basedir}"'
     />
     <exec executable="Rscript" dir="utilities" output="utilities/plot-performance.out">
-      <arg line="plot.r options.R execute" />
+      <arg line="plot.r plot plots" />
     </exec>
   </target>
 

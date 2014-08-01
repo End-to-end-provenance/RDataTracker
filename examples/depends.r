@@ -13,6 +13,6 @@ usePackage <- function(p) {
 }
 
 pkgs <- c("RDataTracker", "chron", "gWidgets", "dplR", "zoo", "ggplot2",
-		"gdata", "grid", "mgcv", "akima", "spatstat", "reshape2", "RCurl", "plyr")
+		"gdata", "grid", "gridExtra", "mgcv", "akima", "spatstat", "reshape2", "RCurl", "plyr")
 
 if (all(unlist(Map(usePackage, pkgs))))  print("All required packages installed.")
