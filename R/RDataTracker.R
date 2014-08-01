@@ -261,8 +261,11 @@ ddg.MAX_HIST_LINES <- 2^14
 # Assumes input format is yyyy-mm-dd hh:mm:ss
 # Reformat to  (yyyy-mm-ddThh.mm.ss).
 .ddg.format.time <- function(time) {
-  time <- paste(substr(time, 1, 10), "T", substr(time, 12, 19), sep="")
-  return (gsub(":", ".", time))
+  formatted.time <- strftime(time, format="%Y-%m-%dT%H.%M.%S",usetz=TRUE)
+  
+  # The strftime call leaves a space between the time and the time zone.
+  # We remove that here.
+  return (sub(" ", "", formatted.time))
 }
 
 # .ddg.timestamp gets the current date and time from the system.
