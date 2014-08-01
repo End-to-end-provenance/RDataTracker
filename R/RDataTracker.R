@@ -969,7 +969,7 @@ ddg.MAX_HIST_LINES <- 2^14
 		dev.set(num.dev.to.capture)
 
 		# capture it as a jpeg
-		name <- "graphic"
+		name <- paste("graphic", substr(cmd.abbrev,1,10))
 		.ddg.snapshot.node(name, fext="jpeg", data=NULL)
 
 		# make the previous device active again
@@ -1293,6 +1293,7 @@ ddg.MAX_HIST_LINES <- 2^14
 	# 
 	
 	# figure out if we will execute commands or not
+	#browser()
 	execute <- !is.null(environ) & is.environment(environ)
 
 	# It is possidle that a command may extend over multiple lines. 
@@ -1748,7 +1749,7 @@ ddg.MAX_HIST_LINES <- 2^14
 	dtime <- .ddg.timestamp()
 
 	# Get scope if necessary.
-    if (is.null(dscope)) dscope <- .ddg.get.scope(dname)
+  if (is.null(dscope)) dscope <- .ddg.get.scope(dname)
   
 	# Create file node.
 	.ddg.append("Snapshot", " d", ddg.dnum, " \"", ddg.dnum, "-", dname, "\" Value=\"", dpfile, "\" Time=\"", dtime, "\";\n", sep="")
@@ -2138,9 +2139,14 @@ ddg.MAX_HIST_LINES <- 2^14
 # environment.
 
 .ddg.get.scope <- function(name, for.caller=FALSE, calls=NULL) {
+	# get the environment for the variable call
 	env <- .ddg.get.env(name, for.caller, calls)
+
+	# if no environment found, name does not exist, so scope is undefined
   if (is.null(env)) return ("undefined")
-	scope <- sub('<environment: (.*)>', '\\1', capture.output(env))
+
+  # 
+	scope <- sub('^<environment: (.*)>$', '\\1', capture.output(env)[1])
 	if (grepl("undefined", scope)) scope <- "undefined"
 	return(scope)
 }
@@ -2812,7 +2818,7 @@ ddg.file.out <- function(filename, dname=NULL, pname=NULL) {
 
 ddg.graphic.out <- function(dname, pname=NULL, graphic.fext="jpeg") {
 	if(!.ddg.is.init()) return
-
+	browser()
 	# write out the graphic
 	.ddg.write.graphic(dname, 'Graphical Plot. Not saved in script.', graphic.fext)
 

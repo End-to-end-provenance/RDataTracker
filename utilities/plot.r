@@ -123,8 +123,16 @@ plot.main <- function(outPath = "plots", inFile = NULL, fileNamePattern = NULL) 
     dev.off()
   }
 
-  # arrange and into single device and save to pdf
-  pdf(paste0("full_", fileNamePattern, ".pdf"))
+  # arrange and into single device and save to pdf (this is the report, so make a title)
+  pdf(paste0("report_", fileNamePattern, ".pdf"), onefile=TRUE)
+  
+  # make a title page
+  plot(0:10, type = "n", xaxt="n", yaxt="n", bty="n", xlab = "", ylab = "")
+  text(5, 8, "RDataTracker Performance Overview")
+  text(5, 7, paste("Input data from", results$file.name))
+  text(5, 6, paste("version(s):", levels((results$data)$lib.version)))
+  
+  # Print all the graphs to the device
   Map(function(one.type){
     Map(function(x){
       print(x)
