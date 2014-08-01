@@ -50,7 +50,10 @@ main <- function() {
 
 #ddg.r.script.path <- "D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/DDGHangBug/DDGHangBug.R"
 #ddg.path <- "D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker/examples/DDGHangBug/ddg"
-ddg.run(main,ddg.r.script.path,ddg.path)
+ddg.run(ddg.r.script.path,
+        ddg.path, 
+        main,
+        enable.console=FALSE)
 
 ddg.save(quit=TRUE)
 

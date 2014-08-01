@@ -245,9 +245,10 @@ main <- function() {
 
 ### Run script
 
-ddg.run(main, 
+ddg.run(
 		paste(testDir,"ddgTest.r", sep=""),
-		paste(testDir,"[DDG-DIR]", sep=""))
+		paste(testDir,"[DDG-DIR]", sep=""),
+		main, enable.console=FALSE)
 
 # Calculate total time of execution
 endTime <- Sys.time()
