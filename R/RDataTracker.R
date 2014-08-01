@@ -969,7 +969,7 @@ ddg.MAX_HIST_LINES <- 2^14
 		dev.set(num.dev.to.capture)
 
 		# capture it as a jpeg
-		name <- paste("graphic", substr(cmd.abbrev,1,10))
+		name <- if (!is.null(cmd.abbrev) && cmd.abbrev != "") paste0("graphic", substr(cmd.abbrev,1,10)) else "graphic"
 		.ddg.snapshot.node(name, fext="jpeg", data=NULL)
 
 		# make the previous device active again
@@ -2818,7 +2818,7 @@ ddg.file.out <- function(filename, dname=NULL, pname=NULL) {
 
 ddg.graphic.out <- function(dname, pname=NULL, graphic.fext="jpeg") {
 	if(!.ddg.is.init()) return
-	browser()
+	# browser()
 	# write out the graphic
 	.ddg.write.graphic(dname, 'Graphical Plot. Not saved in script.', graphic.fext)
 
