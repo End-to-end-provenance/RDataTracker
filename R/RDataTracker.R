@@ -1979,7 +1979,8 @@ ddg.MAX_HIST_LINES <- 2^14
 	# if no environment found, name does not exist, so scope is undefined
   if (is.null(env)) return ("undefined")
 
-  # 
+  # Evaluation env, capture the output, and look at the first result (this is
+  # the result that gives you )
 	scope <- sub('^<environment: (.*)>$', '\\1', capture.output(env)[1])
 	if (grepl("undefined", scope)) scope <- "undefined"
 	return(scope)
