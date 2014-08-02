@@ -25,7 +25,7 @@
   		</copy>
     	<copy overwrite="true" todir="${builddir}/R">
     		<fileset dir="R"
-      			excludes="\.*"/>
+      			excludes="\.* DDGCheckpoint.R"/>
   		</copy>
   		<copy overwrite="true" todir="${builddir}/vignettes">
         <fileset dir="vignettes"
@@ -67,6 +67,8 @@
 	   <loadproperties srcFile="${builddir}/DESCRIPTION" />
   	 <copy file="${builddir}/../RDataTracker_${Version}.tar.gz" todir="${dropbox}"/>
 	   <chmod file="${dropbox}/RDataTracker_${Version}.tar.gz" perm="ugo-w"/>
+     <copy file="R/DDGCheckpoint.R" todir="${dropbox}"/>
+   	   <chmod file="${dropbox}/DDGCheckpoint_${CheckpointVersion}.R" perm="ugo-w"/>
     </target>
 
     <target name="clean">
