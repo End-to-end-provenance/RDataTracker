@@ -45,6 +45,9 @@
 \setlength{\skip\footins}{0.0469in}
 \renewcommand\footnoterule{\vspace*{-0.0071in}\setlength\leftskip{0pt}\setlength\rightskip{0pt plus 1fil}\noindent\textcolor{black}{\rule{0.25\columnwidth}{0.0071in}}\vspace*{0.0398in}}
 
+% Set the font
+\renewcommand{\rmdefault}{ptm}
+
 % Setting up the title
 \title{Using RDataTracker}
 \author{

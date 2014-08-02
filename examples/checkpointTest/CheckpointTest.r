@@ -18,7 +18,7 @@ testDir <- "[DIR_DEFAULT]/"
 setwd(testDir)
 
 # source the RDataTracker Library
-source("../../R/RDataTracker.R")
+source("../../R/DDGCheckpoint.R")
 
 # get initial time
 startTime <- Sys.time()
