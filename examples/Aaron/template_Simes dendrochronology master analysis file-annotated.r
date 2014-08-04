@@ -3048,7 +3048,6 @@ barplot(vd.ages, axes=FALSE, ylim=c(maxcount.ages,0), space=0, col=five.colors)
 barplot(rd.ages, axes=FALSE, ylim=c(maxcount.ages,0), space=0, col=five.colors)
 mtext("Age (years)", side=1, line=0, adj=-.5, font=2)
 
-ddg.procedure(pname="create.pdf", ins=list("vh.ages", "rh.ages", "vh.dbh", "vd.dbh", "rh.dbh", "rd.dbh", "vd.ages", "rd.ages"), outs.file=list("Figure 7 - age_dbh.pdf"))
 ddg.finish("Plot barcharts")
 
 #scatterplots
@@ -3149,7 +3148,9 @@ plot.rd <- plot(rd$dbh ~ rd$tree.age, data=rd,
 
 invisible(dev.off())
 
-ddg.procedure(pname="create.pdf", ins=list("vh", "rh", "vd", "rd"), outs.file=list("Figure 7 - age_dbh.pdf"))
+ddg.procedure(pname="create.pdf", ins=list("vh", "rh", "vd", "rd", "vh.ages", 
+              "rh.ages", "vh.dbh", "vd.dbh", "rh.dbh", "rd.dbh", "vd.ages", "rd.ages"),
+    outs.file=list("Figure 7 - age_dbh.pdf"))
 ddg.finish("Plot scatterplots")
 ddg.finish("Plot data")
 #```

@@ -626,7 +626,7 @@
   <!-- Executes utilities/plot.r. Within this file, scriptTimer.r is executed (making the above
     and unnecessary dependence). 
   -->
-  <target name="plot-performance">
+  <target name="performance-report">
     <splash displaytext="Creating Performance Report."/>
     <!-- Replace base.dir with the base directory of the project -->
     <replaceregexp  file="utilities/plot.r"

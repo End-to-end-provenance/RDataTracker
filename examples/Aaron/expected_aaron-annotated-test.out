@@ -6,6 +6,12 @@ The following objects are masked from 'package:base':
     as.Date, as.Date.numeric
 
 Loading required package: methods
+cygwin warning:
+  MS-DOS style path detected: D:/Users/Luis/Documents/R/win-library/3.1/gdata/perl/supportedFormats.pl
+  Preferred POSIX equivalent is: /cygdrive/d/Users/Luis/Documents/R/win-library/3.1/gdata/perl/supportedFormats.pl
+  CYGWIN environment variable option "nodosfilewarning" turns off this warning.
+  Consult the user's guide for more details about POSIX paths:
+    http://cygwin.com/cygwin-ug-net/using.html#using-pathnames
 gdata: read.xls support for 'XLS' (Excel 97-2004) files ENABLED.
 
 gdata: read.xls support for 'XLSX' (Excel 2007+) files ENABLED.
@@ -450,7 +456,6 @@ Generating 99 simulations of CSR  ...
 
 Done.
 There were 36 warnings (use warnings() to see them)
-[1] "[DIR]/ddg/203-Figure_10-single-gams-v2.pdf"
-[1] "[DIR]/ddg/217-Figure-11-countours-v2.pdf"
-Execution Time = 140.2548
-
+[1] "[DIR]/ddg/202-Figure_10-single-gams-v2.pdf"
+[1] "[DIR]/ddg/216-Figure-11-countours-v2.pdf"
+Execution Time = 132.4004
