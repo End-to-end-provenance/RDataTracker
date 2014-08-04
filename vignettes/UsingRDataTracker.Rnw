@@ -322,6 +322,17 @@ ddg.console.off()
 \end{lstlisting}
 From the above, a single collapsible console node is created including the captured R code.
 
+bigskip
+
+\item Aside from console mode, single commands can be parsed an automatically added to the ddg through the
+use of the \textbf{ddg.eval} function.
+\begin{lstlisting}
+# capture an evalue a statement
+ddg.eval("x <- 3")
+\end{lstlisting}
+From the above, the expression will be evaluated as well as parsed and included in the current DDG. In this
+case, a procedure node for the assignment will be created and a new data node, x, will be its ouput.
+
 \bigskip
 
 \item DDGs generated from sourced files can be nested within the larger DDG of the script or console commands if any calls to \textbf{source} are replaced by calls to \textbf{ddg.source}. Both commands take similar optional parameters. 
