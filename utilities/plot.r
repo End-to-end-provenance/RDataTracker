@@ -3,6 +3,11 @@ library(ggplot2)
 library(gridExtra)
 library(plyr)
 
+# DEFINE GLOBAL PARAMETERS
+
+# specified maximum length of x lables
+max.label.length = 18
+
 # set the working directory to source script if not already set as such
 # NOTE: If running from Ant, this does not need to be changed as Ant 
 #       automatically replaces it with the right location (ie, the path to the 
@@ -20,34 +25,51 @@ source("helpers.r")
 # create barplot of yaxis vs xaxis grouped by source with colors representing cType
 # based on subset of observations passed in. Adjusts the labels to be turned by 45 degrees
 plotByType <- function(data, xaxis, yaxis, title, xlabel = xaxis, ylabel = yaxis, cType = "type"){
-  pl <- ggplot(data, aes_string(x = xaxis, y = yaxis, fill = cType)) +
+  # plot data by specified grouping
+  p1 <- ggplot(data, aes_string(x = xaxis, y = yaxis, fill = cType)) +
+          # create the bar plots \
           geom_bar(stat="identity", width = 0.5, position = "dodge") +
+          # try scales
+          scale_x_discrete(labels=unique(substr(data$source,0,max.label.length))) +
+          # add axis labels
           xlab(xlabel) + ylab(ylabel) +
+          # add title
           ggtitle(title) +
+          # change them to black/white for aesthetics
           theme_bw()
     
     # this turns the x axis labels by 45 degrees if multiple scripts are being plot
   if (length(levels(data$source)) > 1) 
-    return(p1 + theme(axis.text.x = element_text(angle = 45, hjust = 1)))
+    return(p1 + theme(axis.text.x = element_text(angle = 15, hjust = 1)))
   else 
     return(p1)
 }
 
 # creates a double line plot of yaxes vs xaxis grouped where each line represents a different
 # type of annotation
-plotDoubleLine <- function(data, xaxis, yaxis, title, xlabel=xaxis, ylabel=yaxis) {
+plotLine <- function(data, xaxis, yaxis, title, xlabel=xaxis, ylabel=yaxis) {
+  # get the data by and color/arrange by type
   ggplot(data, aes_string(y=yaxis, x = xaxis, group="type", shape="type", color="type")) +
+    # plot the lines
     geom_line(aes(linetype=type), size=1) +
+    # add points
     geom_point(size=3, fill="white") +
+    # color based on type
     scale_colour_hue(name="type",
                      l=30) +
+    # make scale
     scale_shape_manual(name="type",
                        values=c(22,21,20)) +
     scale_linetype_discrete(name="type") +
+    # add labels to axes
     xlab(xlabel) + ylab(ylabel) + 
+    # add labels to points
+    # geom_text(aes_string(label="source", colour="source"), hjust=0, vjust=0, angle=15) +
+    # add title
     ggtitle(title) +
+    # black/white theme, but move legend
     theme_bw() +
-    theme(legend.position=c(.7, .4))
+    theme(legend.position=c(.7, .3))
 }
 
 # function mapping *-min.r to minimal, *-annotated.r to annotated, and everything
@@ -135,6 +157,7 @@ plot.main <- function(outPath = "plots", inFile = NULL, fileNamePattern = NULL) 
   old.colnames <- colnames(results)
   colnames(results) <- c("script.file", "source", "script.loc", "type", "exec.time",
                          "file.size", "ddg.dir", "ddg.dir.size", "lib.version")
+
   
   # calculate the maximum for each script source so we can subset based on time 
   # and ddg dir size
@@ -152,10 +175,12 @@ plot.main <- function(outPath = "plots", inFile = NULL, fileNamePattern = NULL) 
   # create list containinig all these different data sets, but only if they're not empty
   sectioned.data <- Filter(function(x){nrow(x) > 0}, list("Fast" = fastScripts,
                            "Moderate" = mediumScripts, "Slow" = slowScripts,
+                           "Under One Minute" = rbind(fastScripts, mediumScripts),
                            "All" = results))
-  time.units <- list("Fast" =  "sec", "Moderate" = "sec", "Slow"="min")
-  time.units <- time.units[unlist(Map(function(x,y){x == y}, names(time.units),
-                                  names(sectioned.data)))]
+  
+  time.units <- list("Fast" =  "sec", "Moderate" = "sec", "Slow"="min", 
+                     "Under One Minute" = "sec", "All" = "min")
+  time.units <- time.units[names(time.units) %in% names(sectioned.data)]
 
   # Start PLOTTING
   # for sectioned data, create time vs script grouped by source colored by instrumentation type
@@ -181,14 +206,17 @@ plot.main <- function(outPath = "plots", inFile = NULL, fileNamePattern = NULL) 
                   xlabel="Source Script File", ylabel="Amount of Data Collected (kB)")
     }, sectioned.data, names(sectioned.data))
 
+  # prepare list which contains some of the faster scripts
+  line.plot.data <- sectioned.data[names(sectioned.data) %in% c("All", "Under One Minute", "Fast")]
+  line.plot.units <- time.units[names(time.units) %in% names(line.plot.data)]
   # for sectioned data, execition time vs ddg.dir.size by source colored by instrumentation type
   time.vs.dir <- Map(function(data, subset.type, time.unit){
-      plotDoubleLine(subset(data, type != "original"), "ddg.dir.size", "exec.time",
+      plotLine(subset(data, type != "original"), "ddg.dir.size", "exec.time",
                      paste0("Execution Time Dependency on Stored Data (",
                             subset.type, " scripts)"),
                   xlabel="Size of DDG Directory (kB)", 
                   ylabel=paste0("Execution Time of Script (", time.unit, ")"))
-    }, sectioned.data, names(sectioned.data), time.units)
+    }, line.plot.data, names(line.plot.data), line.plot.units)
   
   # arrange each sectioned data into single device and save to pdf 
   # (can only fit 3 plots) - this is an overview of the results 
@@ -199,9 +227,14 @@ plot.main <- function(outPath = "plots", inFile = NULL, fileNamePattern = NULL) 
   # in a subdirectory with fileNamePattern as the name of the directory and as
   # the name of the file, with suffix derived from the section of data plotted
   dir.create(presentables.dir, showWarnings=FALSE)
+  change.theme <- theme_update(axis.title.x = element_text(face="bold", size=10),
+                               axis.text.x = element_text(angle=10, size=10))
   for (i in 1:length(sectioned.data)) {
     pdf(paste0(presentables.dir, suffixes[[i]], fileNamePattern, ".pdf"))
-    grid.arrange(time.vs.script[[i]], script.vs.script[[i]], dir.vs.script[[i]], ncol=1)
+    grid.arrange(time.vs.script[[i]] + change.theme, 
+                 script.vs.script[[i]] + change.theme, 
+                 dir.vs.script[[i]] + change.theme,
+                 ncol=1)
     dev.off()
   }
 
@@ -218,6 +251,6 @@ plot.main <- function(outPath = "plots", inFile = NULL, fileNamePattern = NULL) 
 # get the parametners
 options <- commandArgs(trailingOnly = TRUE)
 
-# if 'plot' is one of them and their are two parameters, call plot.main with the 
+# if 'plot' is one of them and there are two parameters, call plot.main with the 
 # second (which which sould be the directory under which to store the results)
 if ("plot" %in% options && length(options) == 2) plot.main(options[[2]])
