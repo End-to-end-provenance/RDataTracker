@@ -1927,8 +1927,7 @@ ddg.MAX_HIST_LINES <- 2^14
 		                      	                    This is likely caused by a call to an
 		                      	                    annonymous or unnamed function.")
 		                      	.ddg.insert.error.message(error.msg)
-		                      	"function"
-		                      } 
+		                      	return("function")}) 
 		if (substr(call.func, 1, 4) != ".ddg" && substr(call.func, 1, 3) != "ddg") {
       if (for.caller && !script.func.found) {
         script.func.found <- TRUE
