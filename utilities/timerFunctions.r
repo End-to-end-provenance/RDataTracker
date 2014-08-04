@@ -60,7 +60,7 @@ startMinInst <- function(scriptPath,ddgDirPath, console=TRUE){
   console.val <- as.character(!is.na(console))
   init <- paste0("ddg.init('", scriptPath, "','",ddgDirPath, "',enable.console=", console.val, ")")
   wd <- paste0("setwd(", getwd(), ")")
-  return(paste(rdt,init,hist,sep="\n"))
+  return(paste(rdt,init,hist,wd,sep="\n"))
 }
 
 ### Function which returns the string of R code necessary at the end of a file 
