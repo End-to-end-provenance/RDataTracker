@@ -528,7 +528,7 @@ ddg.MAX_HIST_LINES <- 2^14
 	# Error message if no match is found.
 	msg <- paste0(if (.ddg.enable.source() && pname == "eval") 
 		". eval is called by ddg.source." else "")
-  error.msg <- paste("No procedure node found for", pname, msg)
+  error.msg <- paste0("No procedure node found for ", pname, msg)
   .ddg.insert.error.message(error.msg)  
 	return(0)
 }

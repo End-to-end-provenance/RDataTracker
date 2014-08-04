@@ -69,6 +69,7 @@ scriptTimer.main <- function(){
   # add columns specifying type of annotation (no longer needed)
   # rowResults$annotType <- as.factor(sapply(rowResults$script.file, findType))
   rowResults$r.data.version <- as.character(packageVersion("RDataTracker"))
+  rowResults$r.data.version <- as.factor(rowResults$r.data.version)
   
   # print output
   print(rowResults)
