@@ -3697,7 +3697,7 @@ plot(rollapply(window(pdsi.ts, start = 1897, end = 2003), 10, mean))
 ddg.procedure(pname="plot.means",ins=list("pdsi.ts"))
 
 #```
-dev.off()
+invisible(dev.off())
 ddg.procedure("Temporary Plots", outs.file=list("Rplots.pdf"))
 #![plot of chunk unnamed-chunk-17](figure/unnamed-chunk-172.png) 
 
@@ -4137,7 +4137,7 @@ plot(gam.tsuga1, se = TRUE, xlab = "", ylab = "", xlim = c(0, 140), rug = FALSE,
 axis(2, las = 1, tcl = -0.25, at = c(-2, 0, 2))
 text(0, -2, "Tsuga", font = 3, pos = 4)
 mtext(side = 3, "s(Age)", adj = 0, line = 0.5, cex = 1)
-ddg.procedure(pname="plot", ins=list("gam.tsuga1")
+ddg.procedure(pname="plot", ins=list("gam.tsuga1"))
 
 
 plot(gam.betula1, se = TRUE, xlab = "", ylab = "", xlim = c(0, 140), rug = FALSE, 
@@ -4443,7 +4443,7 @@ geom_tile(aes(fill = rBAI)) + geom_contour(colour = "black", linetype = 0) +
     axis.ticks.length = unit(1, "mm"), axis.ticks = element_line(size = 0.25)) + 
     scale_x_continuous(breaks = seq(1880, 2000, 40)) + scale_y_continuous(breaks = seq(0, 
     120, 20))
-ddg.procedure("create.ggplot", ins=list("newXY.acer"), outs.data=list("a.cont"))
+ddg.procedure("create.ggplot", ins=list("newXY.acer"))
 # Betula
 
 b.cont <- ggplot(data = newXY.betula, aes(Year, Age, z = rBAI, xmin = 1860, 
@@ -4464,7 +4464,7 @@ geom_tile(aes(fill = rBAI)) + geom_contour(colour = "black", linetype = 0) +
     axis.ticks.length = unit(1, "mm"), axis.ticks = element_line(size = 0.25)) + 
     scale_x_continuous(breaks = seq(1880, 2000, 40)) + scale_y_continuous(breaks = seq(0, 
     120, 20))
-ddg.procedure("create.ggplot", ins=list("newXY.betula"), outs.data=list("b.cont"))
+ddg.procedure("create.ggplot", ins=list("newXY.betula"))
 # Quercus
 
 q.cont <- ggplot(data = newXY.quercus, aes(Year, Age, z = rBAI, xmin = 1860, 
@@ -4485,7 +4485,7 @@ geom_tile(aes(fill = rBAI)) + geom_contour(colour = "black", linetype = 0) +
     axis.ticks.length = unit(1, "mm"), axis.ticks = element_line(size = 0.25)) + 
     scale_x_continuous(breaks = seq(1880, 2000, 40)) + scale_y_continuous(breaks = seq(0, 
     100, 20))
-ddg.procedure("create.ggplot", ins=list("newXY.quercus"), outs.data=list("q.cont"))
+ddg.procedure("create.ggplot", ins=list("newXY.quercus"))
 # Pinus
 
 p.cont <- ggplot(data = newXY.pinus, aes(Year, Age, z = rBAI, xmin = 1860, ymax = 100)) + 
@@ -4506,7 +4506,7 @@ geom_tile(aes(fill = rBAI)) + geom_contour(colour = "black", linetype = 0) +
     axis.text.y = element_text(size = 6), axis.ticks.length = unit(1, "mm"), 
     axis.ticks = element_line(size = 0.25)) + scale_x_continuous(breaks = seq(1880, 
     2000, 40)) + scale_y_continuous(breaks = seq(0, 120, 20))
-ddg.procedure("create.ggplot", ins=list("newXY.pinus"), outs.data=list("p.cont"))
+ddg.procedure("create.ggplot", ins=list("newXY.pinus"))
 # Tsuga
 
 t.cont <- ggplot(data = newXY.tsuga, aes(Year, Age, z = rBAI, xmin = 1860, ymax = 140)) + 
@@ -4528,7 +4528,7 @@ geom_tile(aes(fill = rBAI)) + geom_contour(colour = "black", linetype = 0) +
     scale_x_continuous(breaks = seq(1880, 2000, 40)) + scale_y_continuous(breaks = seq(0, 
     140, 20))
 
-ddg.procedure("create.ggplot", ins=list("newXY.tsuga"), outs.data=list("t.cont"))
+ddg.procedure("create.ggplot", ins=list("newXY.tsuga"))
 ddg.finish("Plot contours")
 
 # line plots
@@ -4553,7 +4553,7 @@ geom_line(size = 1) + scale_colour_gradientn(colours = c("yellow", "orange",
     2000, 40)) + scale_y_continuous(breaks = seq(0, 140, 20)) + annotate("text", 
     label = "Tsuga", x = 1870, y = 122, size = 2, colour = "black", fontface = 3)
 
-ddg.procedure(pname="ggplot2.lines", ins=list("dendro.5sp"), outs.data=list("t.lines"))
+ddg.procedure(pname="ggplot2.lines", ins=list("dendro.5sp"))
 
 b.lines <- ggplot(data = dendro.5sp[dendro.5sp$Code == "Betula", ], aes(x = Year, 
     y = Age, group = TreeNum, geom = "line", xmin = 1860, ymax = 120, color = rBAI2, 
@@ -4574,7 +4574,7 @@ geom_line(size = 1) + scale_colour_gradientn(colours = c("yellow", "orange",
     axis.ticks = element_line(size = 0.25)) + scale_x_continuous(breaks = seq(1880, 
     2000, 40)) + scale_y_continuous(breaks = seq(0, 120, 20)) + annotate("text", 
     label = "Betula", x = 1870, y = 102, size = 2, colour = "black", fontface = 3)
-ddg.procedure(pname="ggplot2.lines", ins=list("dendro.5sp"), outs.data=list("b.lines"))
+ddg.procedure(pname="ggplot2.lines", ins=list("dendro.5sp"))
 q.lines <- ggplot(data = dendro.5sp[dendro.5sp$Code == "Quercus", ], aes(x = Year, 
     y = Age, group = TreeNum, geom = "line", xmin = 1860, ymax = 100, color = rBAI2, 
     xlab = "", ylab = "Age")) + 
@@ -4594,7 +4594,7 @@ geom_line(size = 1) + scale_colour_gradientn(colours = c("yellow", "orange",
     axis.ticks = element_line(size = 0.25)) + scale_x_continuous(breaks = seq(1880, 
     2000, 40)) + scale_y_continuous(breaks = seq(0, 100, 20)) + annotate("text", 
     label = "Quercus", x = 1875, y = 82, size = 2, colour = "black", fontface = 3)
-ddg.procedure(pname="ggplot2.lines", ins=list("dendro.5sp"), outs.data=list("q.lines"))
+ddg.procedure(pname="ggplot2.lines", ins=list("dendro.5sp"))
 a.lines <- ggplot(data = dendro.5sp[dendro.5sp$Code == "Acer", ], aes(x = Year, 
     y = Age, group = TreeNum, geom = "line", xmin = 1860, ymax = 120, color = rBAI2, 
     xlab = "", ylab = "Age")) + 
@@ -4614,7 +4614,7 @@ geom_line(size = 1) + scale_colour_gradientn(colours = c("yellow", "orange",
     axis.ticks = element_line(size = 0.25)) + scale_x_continuous(breaks = seq(1880, 
     2000, 40)) + scale_y_continuous(breaks = seq(0, 120, 20)) + annotate("text", 
     label = "Acer", x = 1870, y = 102, size = 2, colour = "black", fontface = 3)
-ddg.procedure(pname="ggplot2.lines", ins=list("dendro.5sp"), outs.data=list("a.lines"))
+ddg.procedure(pname="ggplot2.lines", ins=list("dendro.5sp"))
 p.lines <- ggplot(data = dendro.5sp[dendro.5sp$Code == "Pinus", ], aes(x = Year, 
     y = Age, group = TreeNum, geom = "line", xmin = 1860, ymax = 100, color = rBAI2, 
     xlab = "Year", ylab = "Age")) + 
@@ -4635,7 +4635,7 @@ geom_line(size = 1) + scale_colour_gradientn(colours = c("yellow", "orange",
     scale_x_continuous(breaks = seq(1880, 2000, 40)) + scale_y_continuous(breaks = seq(0, 
     100, 20)) + annotate("text", label = "Pinus", x = 1870, y = 82, size = 2, 
     colour = "black", fontface = 3)
-ddg.procedure(pname="ggplot2.lines", ins=list("dendro.5sp"), outs.data=list("p.lines"))
+ddg.procedure(pname="ggplot2.lines", ins=list("dendro.5sp"))
 ddg.finish("line plots")
 
 pdf('Figure-11-countours-v2.pdf', height=6, width=4)
