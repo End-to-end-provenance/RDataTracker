@@ -240,7 +240,7 @@ calcResults <- function(fileName) {
   # get types
   types <- names(extns) 
 
-  # delete directories
+  # delete ddg directories
   sapply(dirs, function(dir){if (!is.na(dir)) unlink(paste0(dir), recursive=T)})
 
   # delete the scripts directory

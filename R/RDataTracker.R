@@ -526,8 +526,11 @@ ddg.MAX_HIST_LINES <- 2^14
 	}
 
 	# Error message if no match is found.
-    error.msg <- paste("No procedure node found for", pname)
-    .ddg.insert.error.message(error.msg)  
+	msg <- paste(if (.ddg.enable.source() && pname == "eval") 
+		". eval is called by ddg.source." else ".", "Check  
+		ddg.* functions from the top level are called with the pname parameter.")
+  error.msg <- paste("No procedure node found for", pname, msg)
+  .ddg.insert.error.message(error.msg)  
 	return(0)
 }
 
@@ -972,7 +975,7 @@ ddg.MAX_HIST_LINES <- 2^14
 		dev.set(num.dev.to.capture)
 
 		# capture it as a jpeg
-		name <- if (!is.null(cmd.abbrev) && cmd.abbrev != "") paste0("graphic", substr(cmd.abbrev,1,10)) else "graphic"
+		name <- if (!is.null(cmd.abbrev) && cmd.abbrev != "") paste0("graphic", cmd.abbrev) else "graphic"
 		.ddg.snapshot.node(name, fext="jpeg", data=NULL)
 
 		# make the previous device active again
@@ -1296,7 +1299,6 @@ ddg.MAX_HIST_LINES <- 2^14
 	# 
 	
 	# figure out if we will execute commands or not
-	#browser()
 	execute <- !is.null(environ) & is.environment(environ)
 
 	# It is possidle that a command may extend over multiple lines. 
@@ -1367,7 +1369,7 @@ ddg.MAX_HIST_LINES <- 2^14
   	# 
   	for (i in 1:length(parsed.commands)) {
   		cmd.expr <- parsed.commands[[i]]
-        cmd.text <- new.commands[[i]]
+      cmd.text <- new.commands[[i]]
   		cmd <- quoted.commands[[i]]
 
 			# specifies whether or not a procedure node should be created for this command
@@ -2458,7 +2460,6 @@ ddg.file <- function(filename, dname=NULL) {
 
 ddg.data.in <- function(dname, pname=NULL) {
 	if (!.ddg.is.init()) return(invisible())
-	# browser()
 
 	.ddg.lookup.function.name(pname)
 	
@@ -3029,6 +3030,8 @@ ddg.source <- function (file, local = FALSE, echo = verbose, print.eval = echo,
 		else if (ignore.init) c("^ddg.init", "^ddg.run")
 		else "a^")
 
+	# TODO add extra code to exprs, in case it's needed?
+
   # now we can parse the commands as we normally would for a DDG
   if(length(exprs) > 0) {
 
@@ -3101,7 +3104,6 @@ ddg.flush.ddg <- function (ddg.path = NULL) {
 		else return(invisible())
 	}
 
-	ddg.path <- .ddg.path()
 	# Do not remove files unless ddg.path exists and is different 
   # from the working directory.
 	if (file.exists(ddg.path) && ddg.path != getwd()) {
