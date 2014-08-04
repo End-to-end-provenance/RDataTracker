@@ -1919,12 +1919,12 @@ ddg.MAX_HIST_LINES <- 2^14
   script.func.found <- FALSE
 	nframe <- length(calls)
 	for (i in nframe:1) {
-		# if you can't get the name of the function, it's likely annonymous, but it's 
+		# if you can't get the name of the function, it's likely anonymous, but it's 
 		# definitely not a ddg call.
 		call.func <- tryCatch(as.character(calls[[i]][[1]]), 
 		                      error = function(e){
 		                      	error.msg <- paste0("The error ", e , " was raised. 
-		                      	                    This is likely caused to a call to an
+		                      	                    This is likely caused by a call to an
 		                      	                    annonymous or unnamed function.")
 		                      	.ddg.insert.error.message(error.msg)
 		                      	"function"
