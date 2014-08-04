@@ -2,9 +2,10 @@
 	xmlns:if="ant:if"
     xmlns:unless="ant:unless">
     
-    <property name="builddir" value="${user.home}/Documents/Process/DataProvenance/RDataTracker"/>
+	<property name="builddir" value="${user.home}/Documents/Process/DataProvenance/RDataTracker"/>
     <property name="dropbox" value="${user.home}/Dropbox/HarvardForest/RDataTracker/" /> 
-
+	<loadproperties srcFile="DESCRIPTION" />
+	<property name="tarfile" value="RDataTracker_${Version}.tar.gz" />
 
     <target name="build-directory">
     	<mkdir dir="${builddir}"/>
@@ -15,9 +16,9 @@
     		<fileset dir="inst"
       			excludes="\.* doc/*.pages doc/*.docx doc/*.pdf"/>
   		</copy>
-      <copy overwrite="true" todir="${builddir}/inst" unless:set="build-target">
+      <copy overwrite="true" todir="${builddir}/inst" >
         <fileset dir="inst"
-          includes="doc/*.pdf" />
+          excludes="doc/*.pdf" />
         </copy>
     	<copy overwrite="true" todir="${builddir}/man">
     		<fileset dir="man"
@@ -37,37 +38,35 @@
   		<copy overwrite="true" file="README.md" todir="${builddir}"/>
     </target>
     
-    <target name="check" depends="copy-to-directory">
-	   	<exec dir="${builddir}/.." executable="R" >
-  			<arg line="CMD check ${builddir}"/>
-		</exec>
-    </target>
-
-    <target name="build">
-      <property name="build-target" value="true" />
-      <antcall target="copy-to-directory" />
+    <target name="build" depends="copy-to-directory">
     	<exec dir="${builddir}/.." executable="R" >
   			<arg line="CMD build ${builddir}"/>
 		</exec>
     </target>
 
-    <target name="install" depends="copy-to-directory">
+    <target name="check" depends="build">
+	   	<exec dir="${builddir}/.." executable="R" >
+  			<arg line="CMD check ${tarfile}"/>
+		</exec>
+    </target>
+
+    <target name="install" depends="check">
     	<exec dir="${builddir}/.." executable="R" >
-  			<arg line="CMD INSTALL ${builddir}"/>
+  			<arg line="CMD INSTALL ${tarfile}"/>
 		</exec>
     </target>
     
-    <target name="cran-check" depends="copy-to-directory">
+    <target name="cran-check" depends="build">
     	<exec dir="${builddir}/.." executable="R" >
-  			<arg line="CMD check --as-cran ${builddir}"/>
+  			<arg line="CMD check --as-cran ${tarfile}"/>
 		</exec>
     </target>
 
     <target name="dropbox" depends="build">
 	   <loadproperties srcFile="${builddir}/DESCRIPTION" />
-  	 <copy file="${builddir}/../RDataTracker_${Version}.tar.gz" todir="${dropbox}"/>
-	   <chmod file="${dropbox}/RDataTracker_${Version}.tar.gz" perm="ugo-w"/>
-     <copy file="R/DDGCheckpoint.R" todir="${dropbox}"/>
+  	   <copy file="${builddir}/../${tarfile}" todir="${dropbox}"/>
+	   <chmod file="${dropbox}/${tarfile}" perm="ugo-w"/>
+       <copy file="R/DDGCheckpoint.R" tofile="${dropbox}/DDGCheckpoint_${CheckpointVersion}.R" />
    	   <chmod file="${dropbox}/DDGCheckpoint_${CheckpointVersion}.R" perm="ugo-w"/>
     </target>
 
