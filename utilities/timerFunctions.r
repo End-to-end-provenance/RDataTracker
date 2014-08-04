@@ -59,7 +59,7 @@ startMinInst <- function(scriptPath,ddgDirPath, console=TRUE){
   hist <- if (!is.na(console) && console) .startHistory(scriptPath) else ""
   console.val <- as.character(!is.na(console))
   init <- paste0("ddg.init('", scriptPath, "','",ddgDirPath, "',enable.console=", console.val, ")")
-  wd <- paste0("setwd(", getwd(), ")")
+  wd <- paste0("setwd('", getwd(), "')")
   return(paste(rdt,init,hist,wd,sep="\n"))
 }
 

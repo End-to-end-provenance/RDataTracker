@@ -992,9 +992,10 @@ ddg.MAX_HIST_LINES <- 2^14
 # exists prior to starting the console block, or corresponds to the 
 # last setting of this variable in the console block.
 
-.ddg.create.data.use.edges.for.console.cmd <- function (vars.set, cmd, cmd.expr, cmd.pos) {
+.ddg.create.data.use.edges.for.console.cmd <- function (vars.set, cmd, cmd.expr, cmd.pos, env = NULL) {
   # Find all the variables used in this command.
 	vars.used <- .ddg.find.var.uses(cmd.expr)
+	environment <- if (is.environment(env)) env else .GlobalEnv
 	
 	for (var in vars.used) {
 		# Make sure there is a node we could connect to.
@@ -1010,7 +1011,7 @@ ddg.MAX_HIST_LINES <- 2^14
         # before the console block or to the last writer of this 
         # variable within the console block.
 				if (cmd.pos <= first.writer || cmd.pos > last.writer) {
-					.ddg.data2proc(var, environmentName(.GlobalEnv), cmd)
+					.ddg.data2proc(var, environmentName(environment), cmd)
 				}
 
 				# TODO - add some sort of warning to the user that the node is not being created
@@ -1019,7 +1020,7 @@ ddg.MAX_HIST_LINES <- 2^14
 			# The variable is not set at all in this console block.  Connect 
       # to a pre-existing data node.
 			else {
-				.ddg.data2proc(var, environmentName(.GlobalEnv), cmd)
+				.ddg.data2proc(var, environmentName(environment), cmd)
 			}
 		}
 		else {
@@ -1037,10 +1038,14 @@ ddg.MAX_HIST_LINES <- 2^14
 # occurs after the last possible writer. A snapshot node is created 
 # if the value is a data frame.  Otherwise, a data node is created.
 
-.ddg.create.data.set.edges.for.console.cmd <- function(vars.set, cmd.abbrev, cmd.expr, cmd.pos, for.finish.node = FALSE) {
-	.ddg.create.data.set.edges.for.cmd(vars.set, cmd.abbrev, cmd.expr, cmd.pos, for.finish.node, scope=environmentName(.GlobalEnv), env=.GlobalEnv)
+.ddg.create.data.set.edges.for.console.cmd <- function(vars.set, cmd.abbrev, cmd.expr, 
+                                                       cmd.pos, for.finish.node = FALSE, 
+                                                       env = NULL) {
+	environment <- if (is.environment(env)) env else .GlobalEnv
+	.ddg.create.data.set.edges.for.cmd(vars.set, cmd.abbrev, cmd.expr, cmd.pos, for.finish.node, 
+	                                   scope=environmentName(environment),
+	                                   env=environment)
 }
-	
 
 
 .ddg.create.data.set.edges.for.cmd <- function(vars.set, cmd.abbrev, cmd.expr, cmd.pos, for.finish.node = FALSE, scope=NULL, env=NULL, stack=NULL) {
@@ -1052,10 +1057,8 @@ ddg.MAX_HIST_LINES <- 2^14
 		# Only create a node edge for the last place that a variable is 
     # set within a console block.
 		if ((length(nRow) > 0 && vars.set$last.writer[nRow] == cmd.pos && vars.set$possible.last.writer[nRow] <= vars.set$last.writer[nRow]) || for.finish.node) {
-		    if (is.null(env)) {
-		      env <- .ddg.get.env(var, calls=stack)
-		      scope <- .ddg.get.scope(var, calls=stack)
-		    }
+		    if (is.null(env)) env <- .ddg.get.env(var, calls=stack)
+		    if (is.null(scope)) scope <- .ddg.get.scope(var, calls=stack)
 		    val <- tryCatch(eval(parse(text=var), env),
 					error = function(e) {NULL}
 			)
@@ -1079,19 +1082,19 @@ ddg.MAX_HIST_LINES <- 2^14
 # simple assignment.  An edge is created from the last node in the 
 # console block.
 
-.ddg.create.data.node.for.possible.writes <- function (vars.set, last.command) {
-
+.ddg.create.data.node.for.possible.writes <- function (vars.set, last.command, env= NULL) {
+	environment <- if (is.environment(env)) env else .GlobalEnv
 	for (i in 1:nrow(vars.set)) {
 		if (vars.set$possible.last.writer[i] > vars.set$last.writer[i]) {
-			value <- tryCatch(eval(parse(text=vars.set$variable[i]), .GlobalEnv),
+			value <- tryCatch(eval(parse(text=vars.set$variable[i]), environment),
 					error = function(e) {NULL}
 			)
 			
 			# Only create the node and edge if we were successful in 
       # looking up the value.
 			if (!is.null(value)) {
-				.ddg.data.node("Data", vars.set$variable[i], value, environmentName(.GlobalEnv))
-				.ddg.proc2data(last.command, vars.set$variable[i], environmentName(.GlobalEnv))
+				.ddg.data.node("Data", vars.set$variable[i], value, environmentName(environment))
+				.ddg.proc2data(last.command, vars.set$variable[i], environmentName(environment))
 			}
 		}
 	}
@@ -1443,11 +1446,11 @@ ddg.MAX_HIST_LINES <- 2^14
 						if (.ddg.debug()) print(paste(".ddg.parse.console.node: Adding", cmd.abbrev, "information to vars.set"))
 					}
 
-					.ddg.create.data.use.edges.for.console.cmd(vars.set, cmd.abbrev, cmd.expr, i)
+					.ddg.create.data.use.edges.for.console.cmd(vars.set, cmd.abbrev, cmd.expr, i, env=environ)
 					.ddg.link.function.returns(cmd.expr)
 					
 					if (.ddg.debug()) print(paste(".ddg.parse.console.node: Adding input data nodes for", cmd.abbrev))
-					.ddg.create.data.set.edges.for.console.cmd(vars.set, cmd.abbrev, cmd.expr, i)
+					.ddg.create.data.set.edges.for.console.cmd(vars.set, cmd.abbrev, cmd.expr, i, env=environ)
 					if (.ddg.debug()) print(paste(".ddg.parse.console.node: Adding output data nodes for", cmd.abbrev))
 				}
 				# we wanted to create it but it matched a last command node
@@ -1455,7 +1458,7 @@ ddg.MAX_HIST_LINES <- 2^14
 
 				###### TODO #######
 				if (execute) {
-					.ddg.create.data.node.for.possible.writes(vars.set, last.proc.node)
+					.ddg.create.data.node.for.possible.writes(vars.set, last.proc.node, env=environ)
 
 					# update so we don't set these again
 					vars.set$possible.last.writer <- vars.set$last.writer
