@@ -139,7 +139,7 @@ getting a quick view of a data analysis and is therefore the default.
 However, the above approach to annotations is limited to short scripts
 (usually below 512 lines, as specified by *R\_HISTSIZE*).
 
-### Longer Scripts and Console Sessions {#section:minimal-annotations}
+### Longer Scripts and Console Sessions 
 
 A similar approach can be used to capture longer console sessions or
 scripts in R.
@@ -399,7 +399,7 @@ functions.
         # Run the main function and collect data
         ddg.run(r.script.path, ddgdir,main, enable.console=FALSE)
 
-Data Provenance from Scripts {#section:script_provenance}
+Data Provenance from Scripts 
 ----------------------------
 
 If a clean, stand-alone script already exists for the process from which
@@ -502,9 +502,9 @@ Hoffler (2014 REU).
 DDG Examples
 ============
 
-![image](UsingRDataTracker-img/UsingRDataTracker-img003.jpg)
+![ScreenShot](/vignettes/UsingRDataTracker-img/UsingRDataTracker-img003.jpg?raw=true)
 
-![image](UsingRDataTracker-img/UsingRDataTracker-img004.jpg)
+![ScreenShot](/vignettes/UsingRDataTracker-img/UsingRDataTracker-img004.jpg?raw=true)
 
 Technical Details
 =================
