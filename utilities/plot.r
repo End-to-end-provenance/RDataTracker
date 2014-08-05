@@ -10,7 +10,7 @@ library(extrafont)
 max.label.length = 18
 
 # load in the fonts we need
-loadfonts(device = "postscript", quiet=TRUE)
+# loadfonts(device = "postscript", quiet=TRUE)
 
 # set the working directory to source script if not already set as such
 # NOTE: If running from Ant, this does not need to be changed as Ant 
