@@ -44,7 +44,7 @@ setInitialVal <- function(wd, base=test.dir){
 #   the current script file into history and into using the corrent myTimeStamp for
 #   that loading.
 .endHistory <- function(scriptPath){
-  cmd <- paste0(".ddg.console.node('", scriptPath, "','", myTimeStamp, "')")
+  cmd <- paste0("RDataTracker:::.ddg.console.node('", scriptPath, "','", myTimeStamp, "')")
   return(cmd)
 }
 
@@ -53,14 +53,13 @@ setInitialVal <- function(wd, base=test.dir){
 # @param scriptDir - a string for the directory of the script
 # @param ddgDirPath - a string for the path of the ddgDirectory
 startMinInst <- function(scriptPath,ddgDirPath, console=TRUE){
-  src <- paste0('source("', base.dir, '/R/RDataTracker.R")')
   lib <- "library(RDataTracker)"
   rdt <- if (!is.na(console) && console) src else lib
   hist <- if (!is.na(console) && console) .startHistory(scriptPath) else ""
   console.val <- as.character(!is.na(console))
   init <- paste0("ddg.init('", scriptPath, "','",ddgDirPath, "',enable.console=", console.val, ")")
   wd <- paste0("setwd('", getwd(), "')")
-  return(paste(rdt,init,hist,wd,sep="\n"))
+  return(paste(lib,init,hist,wd,sep="\n"))
 }
 
 ### Function which returns the string of R code necessary at the end of a file 

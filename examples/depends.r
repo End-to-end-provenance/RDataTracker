@@ -34,6 +34,6 @@ pkgs <- c("RDataTracker", "chron", "gWidgets", "dplR", "zoo", "ggplot2",
 if (all(unlist(Map(usePackage, pkgs))))  print("All required packages installed.")
 
 # Once installed, we want to require the sysfonts package to check for the xckd font
-require(sysfonts)
-require(extrafont)
-if (!("xkcd.ttf" %in% font.files())) installFonts()
+# require(sysfonts)
+# require(extrafont)
+# if (!("xkcd.ttf" %in% font.files())) installFonts()
