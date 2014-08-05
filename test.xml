@@ -586,7 +586,7 @@
       There is one test which is not run here. The test is SivanSimes dendrochronology master analysis file-test-test. Run it manually, though output is random.</echo>
   </target>
 
-  <target name="install-and-test" depends="install">
+  <target name="install-and-test">
     <splash displaytext="Installing and Testing" />
     <record name="tests.log" action="start" />
       <antcall target="test-all" />
