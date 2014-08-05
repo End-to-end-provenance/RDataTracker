@@ -611,7 +611,7 @@
     This data is saved in the examples/_timingResults/ directory under the data/time 
     of execution.
   -->
-  <target name="script-timer">
+  <target name="script-timer" depends="dependencies">
     <splash displaytext="Running Performance Tests" />
     <!-- Replace base.dir with the base directory of the project -->
     <replaceregexp  file="utilities/scriptTimer.r"
@@ -626,7 +626,7 @@
   <!-- Executes utilities/plot.r. Within this file, scriptTimer.r is executed (making the above
     and unnecessary dependence). 
   -->
-  <target name="performance-report">
+  <target name="performance-report" depends="dependencies">
     <splash displaytext="Creating Performance Report."/>
     <!-- Replace base.dir with the base directory of the project -->
     <replaceregexp  file="utilities/plot.r"

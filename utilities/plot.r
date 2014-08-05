@@ -1,12 +1,16 @@
 # import libraries
-library(ggplot2)
+library(xkcd)
 library(gridExtra)
 library(plyr)
+library(extrafont)
 
 # DEFINE GLOBAL PARAMETERS
 
 # specified maximum length of x lables
 max.label.length = 18
+
+# load in the fonts we need
+loadfonts(device = "postscript", quiet=TRUE)
 
 # set the working directory to source script if not already set as such
 # NOTE: If running from Ant, this does not need to be changed as Ant 
@@ -68,7 +72,7 @@ plotLine <- function(data, xaxis, yaxis, title, xlabel=xaxis, ylabel=yaxis) {
     # add title
     ggtitle(title) +
     # black/white theme, but move legend
-    theme_bw() +
+    theme_xkcd() +
     theme(legend.position=c(.7, .3))
 }
 
