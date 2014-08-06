@@ -618,9 +618,25 @@
                     match="base.dir &lt;- (.*)"
                     replace='base.dir &lt;- "${FILE.basedir}"'
     />
-    <exec executable="Rscript" dir="utilities" output="utilities/script-timer.out">
-      <arg line="scriptTimer.r execute" />
-    </exec>
+    <record name="script-timer.log" action="start" />
+      <exec executable="Rscript" dir="utilities">
+        <arg line="scriptTimer.r execute" /> 
+      </exec>
+    <record name="script-timer.log" action="stop" />
+  </target>
+
+  <!-- Executes the same as above, but logs a lot more information on each 
+   script -->
+  <target name="script-timer-debug" depends="dependencies">
+    <replaceregexp  file="utilities/scriptTimer.r"
+                    match="base.dir &lt;- (.*)"
+                    replace='base.dir &lt;- "${FILE.basedir}"'
+    />
+    <record name="script-timer-debug.log" action="start" />
+      <exec executable="Rscript" dir="utilities">
+        <arg line="scriptTimer.r execute debug" /> 
+      </exec>
+    <record name="script-timer-debug.log" action="stop" />
   </target>
 
   <!-- Executes utilities/plot.r. Within this file, scriptTimer.r is executed (making the above
@@ -633,9 +649,11 @@
                     match="base.dir &lt;- (.*)"
                     replace='base.dir &lt;- "${FILE.basedir}"'
     />
-    <exec executable="Rscript" dir="utilities" output="utilities/plot-performance.out">
-      <arg line="plot.r plot _plots" />
-    </exec>
+    <record name="plot-performance.log" action="start" />
+      <exec executable="Rscript" dir="utilities">
+        <arg line="plot.r plot _plots" />
+      </exec>
+    <record name="plot-performance.log" action="stop" />
   </target>
 
    <!--################################# END UTILIES #################################-->

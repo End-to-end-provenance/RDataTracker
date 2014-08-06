@@ -84,5 +84,8 @@ scriptTimer.main <- function(){
 }
 
 options <- commandArgs(trailingOnly = TRUE)
-if ("execute" %in% options) scriptTimer.main()
+if ("execute" %in% options) {
+  scriptTimer.main()
+  if ("debug" %in% options) do.echo <<- TRUE
+}
 
