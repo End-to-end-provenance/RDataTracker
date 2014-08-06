@@ -1709,10 +1709,22 @@ ddg.MAX_HIST_LINES <- 2^14
   # Get file name.
 	ddg.dnum <- .ddg.dnum()
 
+	# Determine if we should save the entire data
+	max.snapshot.size <- .ddg.get(".ddg.max.snapshot.size") 
+	if (max.snapshot.size > 0 && object.size(data) > max.snapshot.size) {
+		data <- head(data)
+		partial <- TRUE
+		snapname <- paste(dname, "-PARTIAL", sep="")
+	}
+	else {
+		partial <- FALSE
+		snapname <- dname
+	}
+	
 	# default file extensions
 	dfile <- 
-		if (fext == "" || is.null(fext)) paste(ddg.dnum, "-", dname, sep="")
-		else                             paste(ddg.dnum, "-", dname, ".", fext, sep="")
+		if (fext == "" || is.null(fext)) paste(ddg.dnum, "-", snapname, sep="")
+		else                             paste(ddg.dnum, "-", snapname, ".", fext, sep="")
 
 	# Get path plus file name.
 	ddg.path <- .ddg.path()
@@ -1751,8 +1763,8 @@ ddg.MAX_HIST_LINES <- 2^14
 	}
 
 	# check to see if we want to save the object
-  if (save.object) save(data, file = paste(dpfile, ".RObject"), ascii = TRUE)
-	
+	  if (save.object && !partial) save(data, file = paste(dpfile, ".RObject"), ascii = TRUE)
+  
 	dtime <- .ddg.timestamp()
 
 	# Get scope if necessary.
@@ -2748,7 +2760,7 @@ ddg.grabhistory <- function() {
 # DDG should be saved. If not provided, the DDG will be saved in a 
 # subdirectory called "ddg" in the current working directory.
 
-ddg.init <- function(r.script.path = NULL, ddgdir = NULL, enable.console = TRUE) {
+ddg.init <- function(r.script.path = NULL, ddgdir = NULL, enable.console = TRUE, max.snapshot.size = -1) {
 	.ddg.init.tables()
 
 	.ddg.set("ddg.r.script.path", 
@@ -2760,6 +2772,7 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, enable.console = TRUE)
 	
 	# set environment constants
 	.ddg.set(".ddg.enable.console", enable.console)
+	.ddg.set(".ddg.max.snapshot.size", max.snapshot.size)
 	.ddg.init.environ()
 	
 	# mark graph as initilized
@@ -2801,8 +2814,8 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, enable.console = TRUE)
 # r.script.path is given, then the r script is sourced as a function and a DDG is
 # created for it.
 
-ddg.run <- function(r.script.path = NULL, ddgdir = NULL, f = NULL, enable.console = TRUE) {
-    ddg.init(r.script.path, ddgdir, enable.console)
+ddg.run <- function(r.script.path = NULL, ddgdir = NULL, f = NULL, enable.console = TRUE, max.snapshot.size = -1) {
+    ddg.init(r.script.path, ddgdir, enable.console, max.snapshot.size)
 	
     # If an R error is generated, get the error message and close 
     # the DDG.

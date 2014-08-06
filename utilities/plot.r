@@ -12,7 +12,7 @@ max.label.length = 18
 # NOTE: If running from Ant, this does not need to be changed as Ant 
 #       automatically replaces it with the right location (ie, the path to the 
 #       RDataTracker directory)
-if (!exists("base.dir")) base.dir <- "D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker"
+if (!exists("base.dir")) base.dir <- "/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker"
 util.dir <- paste0(base.dir, "/utilities")
 test.dir <- paste0(base.dir, "/examples")
 setwd(util.dir)

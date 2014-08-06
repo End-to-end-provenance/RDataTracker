@@ -17,7 +17,7 @@
 #if (ddg.library == "") {
 #	ddg.library <- "c:/data/r/ddg/lib/ddg-library.r"
 #}
-#source(ddg.library)
+#source("/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/R/RDataTracker.R")
 library(RDataTracker)
 
 # get initial time
@@ -26,11 +26,17 @@ invisible(force(startTime))
 
 
 ## Directories
-testDir <- "[DIR_DEFAULT]/"
-setwd(testDir)
+if (interactive()) {
+  testDir <- getwd()
+  ddgDir <- "ddg"
+} else {
+  testDir <- "[DIR_DEFAULT]"
+  ddgDir <- "[DDG-DIR]"
+  setwd(testDir)
+}
 
-ddg.r.script.path = paste(testDir,"daily-solar-radiation-2.r",sep="")
-ddg.path = paste(testDir,"ddg",sep="")
+ddg.r.script.path = paste(testDir,"daily-solar-radiation-2.r",sep="/")
+ddg.path = paste(testDir,ddgDir,sep="/")
 
 ddg.init(ddg.r.script.path,
          ddg.path,
