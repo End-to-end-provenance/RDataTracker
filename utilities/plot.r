@@ -72,7 +72,7 @@ plotLine <- function(data, xaxis, yaxis, title, xlabel=xaxis, ylabel=yaxis) {
     # add title
     ggtitle(title) +
     # black/white theme, but move legend
-    theme_xkcd() +
+    theme_bw() +
     theme(legend.position=c(.7, .3))
 }
 
@@ -183,7 +183,7 @@ plot.main <- function(outPath = "plots", inFile = NULL, fileNamePattern = NULL) 
                            "All" = results))
   
   time.units <- list("Fast" =  "sec", "Moderate" = "sec", "Slow"="min", 
-                     "Under One Minute" = "sec", "All" = "min")
+                     "Under One Minute" = "sec", "All" = "sec")
   time.units <- time.units[names(time.units) %in% names(sectioned.data)]
 
   # Start PLOTTING
@@ -231,8 +231,7 @@ plot.main <- function(outPath = "plots", inFile = NULL, fileNamePattern = NULL) 
   # in a subdirectory with fileNamePattern as the name of the directory and as
   # the name of the file, with suffix derived from the section of data plotted
   dir.create(presentables.dir, showWarnings=FALSE)
-  change.theme <- theme_update(axis.title.x = element_text(face="bold", size=10),
-                               axis.text.x = element_text(angle=10, size=10))
+  change.theme <- theme_update(axis.text.x = element_text(angle=12))
   for (i in 1:length(sectioned.data)) {
     pdf(paste0(presentables.dir, suffixes[[i]], fileNamePattern, ".pdf"))
     grid.arrange(time.vs.script[[i]] + change.theme, 

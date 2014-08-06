@@ -44,6 +44,7 @@ setInitialVal <- function(wd, base=test.dir){
 #   the current script file into history and into using the corrent myTimeStamp for
 #   that loading.
 .endHistory <- function(scriptPath){
+  getEnv <- paste0("env <- parent.frame()")
   cmd <- paste0("RDataTracker:::.ddg.console.node('", scriptPath, "','", myTimeStamp, "')")
   return(cmd)
 }
@@ -125,7 +126,7 @@ timeForEval <- function(file, from.source=FALSE) {
   src.fun <-  if (from.source) function(...){ddg.source(..., ignore.ddg.calls=F)}
               else source
 
-  src.fun(file, local = T, echo = F,verbose = F)
+  src.fun(file, local = T, echo = T,verbose = T, print.eval=F)
   endTime <- Sys.time()
   return(difftime(endTime, startTime,units="secs"))
 }
@@ -287,6 +288,9 @@ calcResults <- function(fileName) {
   dFrame <- dFrame[c(8:5,1:4)]
   colnames(dFrame) <- c("Script.File", "Script.Group", "Script.Loc", "Type", "Execution.Time.min", "File.Size.kB",
                         "DDG.Dir.Loc.", "DDG.Dir.Size.kB")
+
+  # print the warnings each script might have raised
+  print(warnings())
   
   return(dFrame)
 
