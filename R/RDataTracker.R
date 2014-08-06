@@ -1471,7 +1471,7 @@ ddg.MAX_HIST_LINES <- 2^14
   	# Create a data node for each variable that might have been set in 
   	# something other than a simple assignment, with an edge from the 
   	# last node in the console block or source 
-		if (!execute) .ddg.create.data.node.for.possible.writes(vars.set, last.proc.node)
+		if (!execute) .ddg.create.data.node.for.possible.writes(vars.set, last.proc.node, env=environ)
 	}
 
 	# close any node left open during execution
@@ -1492,7 +1492,7 @@ ddg.MAX_HIST_LINES <- 2^14
 	}
 
 	 # Write time stamp to history.
-	.ddg.write.timestamp.to.history()
+	if (.ddg.is.init()) .ddg.write.timestamp.to.history()
 	#print(paste("last.commad:",.ddg.get(".ddg.last.cmd")))
 	#print(paste("command:", .ddg.get(".ddg.possible.last.cmd")))
 

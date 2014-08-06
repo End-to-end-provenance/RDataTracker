@@ -2,7 +2,7 @@
 library(xkcd)
 library(gridExtra)
 library(plyr)
-library(extrafont)
+# library(extrafont)
 
 # DEFINE GLOBAL PARAMETERS
 
@@ -234,9 +234,9 @@ plot.main <- function(outPath = "plots", inFile = NULL, fileNamePattern = NULL) 
   change.theme <- theme_update(axis.text.x = element_text(angle=12))
   for (i in 1:length(sectioned.data)) {
     pdf(paste0(presentables.dir, suffixes[[i]], fileNamePattern, ".pdf"))
-    grid.arrange(time.vs.script[[i]] + change.theme, 
-                 script.vs.script[[i]] + change.theme, 
-                 dir.vs.script[[i]] + change.theme,
+    grid.arrange(time.vs.script[[i]], 
+                 script.vs.script[[i]], 
+                 dir.vs.script[[i]],
                  ncol=1)
     dev.off()
   }
