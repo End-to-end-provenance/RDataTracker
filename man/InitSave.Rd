@@ -9,10 +9,10 @@
 \title{Creating Provenance Graphs with RDataTracker}
 \description{These functions are needed to create provenance graphs.}
 \usage{
-ddg.init(r.script.path = NULL, ddgdir = NULL, enable.console = TRUE) 
+ddg.init(r.script.path = NULL, ddgdir = NULL, enable.console = TRUE, max.snapshot.size = -1) 
 ddg.grabhistory()
 ddg.save(quit=FALSE)
-ddg.run(r.script.path = NULL, ddgdir = NULL, f = NULL, enable.console = TRUE)
+ddg.run(r.script.path = NULL, ddgdir = NULL, f = NULL, enable.console = TRUE, max.snapshot.size = -1)
 ddg.console.on()
 ddg.console.off()
 ddg.flush.ddg(ddg.path = NULL)
@@ -23,6 +23,8 @@ ddg.flush.ddg(ddg.path = NULL)
   \item{enable.console}{ If TRUE, any commands executed in the console, either by typing, copying and 
     pasting, or selecting and running, will result in a procedure node created in the provenance graph, with
     data nodes created for each variable assigned and data flow edges for variables used and set. }
+  \item{max.snapshot.size}{ The maximum size for objects that should be output in snapshot
+    files.  If max.snapshot.size is -1, there is no limit. }
   \item{f}{ A function to run.  Data provenance is collected within the function. }
   \item{quit}{boolean specifying whether this is the last call to ddg.save for this DDG.}
   \item{ddg.path}{The path to the ddg directory which needs to be flushed}
