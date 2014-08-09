@@ -64,52 +64,63 @@ invisible(force(startTime))
 
 ### Functions
 no.name.or.args.given <- function (a, b, c, d, e, f) {
-	ddg.procedure()
+	# ddg.procedure()
+  ddg.function()
 }
 
 lookup.args <- function (a, b, c, d, e, f) {
-	ddg.procedure(lookup.ins = TRUE)
+	# ddg.procedure(lookup.ins = TRUE)
+  ddg.function()
 }
 
 only.args.given <- function (a, b, y, d, e, f) {
-	ddg.procedure(ins=list("w", "x", y, "z", "x + 1"))
+	# ddg.procedure(ins=list("w", "x", y, "z", "x + 1"))
+  ddg.function()
 }
 
 only.name.given <- function (a, b, c, d, e, f) {
-	ddg.procedure(only.name.given)
+	# ddg.procedure(only.name.given)
+  ddg.function()
 }
 
 string.name.and.args.given <- function (a, b, c, d, e, f) {
-	ddg.procedure("string.name.and.args.given", list("w", "x", "y", "z", "x + 1"))
+	# ddg.procedure("string.name.and.args.given", list("w", "x", "y", "z", "x + 1"))
+  ddg.function()
 }
 
 data.in.test <- function(arg1) {
-	ddg.procedure("data.in.test")
+	# ddg.procedure("data.in.test")
+  ddg.function()
 	ddg.data.in(dname="x")
 }
 
 out.test.1 <- function() {
-	ddg.procedure()
+	# ddg.procedure()
+  ddg.function()
 	ddg.data.out(dname="out3", dvalue="c")
 }
 
 url.out.test <- function() {
-	ddg.procedure()
+	# ddg.procedure()
+  ddg.function()
 	ddg.url.out(dname="MHC home", dvalue="https://www.mtholyoke.edu/")
 }
 
 snapshot.out.test <- function(df) {
-	ddg.procedure()
+	# ddg.procedure()
+  ddg.function()
 	ddg.data.out("pets4", df)
 }
 
 file.out.test <- function() {
-	ddg.procedure()
+	# ddg.procedure()
+  ddg.function()
 	ddg.file.out(filename="testfile3.txt")
 }
 
 exc.test. <- function() {
-	ddg.procedure()
+	# ddg.procedure()
+  ddg.function()
 	ddg.exception.out(dname="exc3", dvalue="c")
 }
 

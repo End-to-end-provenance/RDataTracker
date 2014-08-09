@@ -1,131 +1,196 @@
 Architecture="i386"
 OperatingSystem="windows"
 Language="R"
-LanguageVersion="R version 3.1.0 (2014-04-10)"
-RDataTrackerVersion="0.5.25"
-Script="[DIR]/daily-solar-radiation-1.r"
-ProcessFileTimestamp="2014-07-28T21.49.53"
-WorkingDirectory="[DIR]"
-DDGDirectory="[DIR]/ddg"
-DateTime="2014-07-29T23.22.02"
-26
-Start p1 "1-main" Value="main";
-Start p2 "2-get.data" Value="get.data";
+LanguageVersion="R version 3.1.1 (2014-07-10)"
+RDataTrackerVersion="0.5.36"
+Script="C:/GitHub/RDataTracker/examples/DailySolarRadiation/daily-solar-radiation-1.r"
+ProcessFileTimestamp="2014-08-08T11.33.15EDT"
+WorkingDirectory="C:/GitHub/RDataTracker/examples/DailySolarRadiation"
+DDGDirectory="C:/GitHub/RDataTracker/examples/DailySolarRadiation/ddg"
+DateTime="2014-08-09T09.46.16EDT"
+43
+Start p1 "1-main" Value="main" Time="2014-08-09T09.46.15EDT";
+Start p2 "2-get.data" Value="get.data" Time="2014-08-09T09.46.15EDT";
 CF p1 p2
-Operation p3 "3-read.data" Value="read.data";
+Start p3 "3-raw.data <- read.data()" Value="raw.data <- read.data()" Time="2014-08-09T09.46.15EDT";
 CF p2 p3
-File d1 "1-met-daily.csv" Value="[DIR]/ddg/1-met-daily.csv" Time="2014-07-29T23.22.01" Location="[DIR]/met-daily.csv";
-File d2 "2-par-cal.csv" Value="[DIR]/ddg/2-par-cal.csv" Time="2014-07-29T23.22.01" Location="[DIR]/par-cal.csv";
-File d3 "3-par-qc.csv" Value="[DIR]/ddg/3-par-qc.csv" Time="2014-07-29T23.22.01" Location="[DIR]/par-qc.csv";
-File d4 "4-par-gf.csv" Value="[DIR]/ddg/4-par-gf.csv" Time="2014-07-29T23.22.01" Location="[DIR]/par-gf.csv";
+Operation p4 "4-read.data" Value="read.data" Time="2014-08-09T09.46.16EDT";
+CF p3 p4
+File d1 "1-met-daily.csv" Value="C:/GitHub/RDataTracker/examples/DailySolarRadiation/ddg/1-met-daily.csv" Time="2014-08-09T09.46.16EDT" Location="C:/GitHub/RDataTracker/examples/DailySolarRadiation/met-daily.csv";
+File d2 "2-par-cal.csv" Value="C:/GitHub/RDataTracker/examples/DailySolarRadiation/ddg/2-par-cal.csv" Time="2014-08-09T09.46.16EDT" Location="C:/GitHub/RDataTracker/examples/DailySolarRadiation/par-cal.csv";
+File d3 "3-par-qc.csv" Value="C:/GitHub/RDataTracker/examples/DailySolarRadiation/ddg/3-par-qc.csv" Time="2014-08-09T09.46.16EDT" Location="C:/GitHub/RDataTracker/examples/DailySolarRadiation/par-qc.csv";
+File d4 "4-par-gf.csv" Value="C:/GitHub/RDataTracker/examples/DailySolarRadiation/ddg/4-par-gf.csv" Time="2014-08-09T09.46.16EDT" Location="C:/GitHub/RDataTracker/examples/DailySolarRadiation/par-gf.csv";
 Data d5 "5-start.date" Value="\"2012-01-01\"";
 Data d6 "6-end.date" Value="\"2012-03-31\"";
 Data d7 "7-variable" Value="\"slrt\"";
-DF d1 p3
-DF d2 p3
-DF d3 p3
-DF d4 p3
-DF d5 p3
-DF d6 p3
-DF d7 p3
-Snapshot d8 "8-raw.data" Value="[DIR]/ddg/8-raw.data.csv" Time="2014-07-29T23.22.01";
-DF p3 d8
-Snapshot d9 "9-all.data" Value="[DIR]/ddg/9-all.data.csv" Time="2014-07-29T23.22.01";
-DF p3 d9
-Snapshot d10 "10-calibration.parameters" Value="[DIR]/ddg/10-calibration.parameters.csv" Time="2014-07-29T23.22.01";
-DF p3 d10
-Snapshot d11 "11-quality.control.parameters" Value="[DIR]/ddg/11-quality.control.parameters.csv" Time="2014-07-29T23.22.01";
-DF p3 d11
-Snapshot d12 "12-gap.fill.parameters" Value="[DIR]/ddg/12-gap.fill.parameters.csv" Time="2014-07-29T23.22.01";
-DF p3 d12
-Operation p4 "4-plot.data" Value="plot.data";
-CF p3 p4
-Data d13 "13-dname" Value="\"raw.data\"";
-DF d13 p4
-File d14 "14-raw-plot.jpeg" Value="[DIR]/ddg/14-raw-plot.jpeg" Time="2014-07-29T23.22.02" Location="[DIR]/raw-plot.jpeg";
-DF p4 d14
-Finish p5 "5-get.data" Value="get.data";
+DF d1 p4
+DF d2 p4
+DF d3 p4
+DF d4 p4
+DF d5 p4
+DF d6 p4
+DF d7 p4
+Snapshot d8 "8-all.data" Value="C:/GitHub/RDataTracker/examples/DailySolarRadiation/ddg/8-all.data.csv" Time="2014-08-09T09.46.16EDT";
+DF p4 d8
+Snapshot d9 "9-calibration.parameters" Value="C:/GitHub/RDataTracker/examples/DailySolarRadiation/ddg/9-calibration.parameters.csv" Time="2014-08-09T09.46.16EDT";
+DF p4 d9
+Snapshot d10 "10-quality.control.parameters" Value="C:/GitHub/RDataTracker/examples/DailySolarRadiation/ddg/10-quality.control.parameters.csv" Time="2014-08-09T09.46.16EDT";
+DF p4 d10
+Snapshot d11 "11-gap.fill.parameters" Value="C:/GitHub/RDataTracker/examples/DailySolarRadiation/ddg/11-gap.fill.parameters.csv" Time="2014-08-09T09.46.16EDT";
+DF p4 d11
+Snapshot d12 "12-read.data() return" Value="C:/GitHub/RDataTracker/examples/DailySolarRadiation/ddg/12-read.data() return.csv" Time="2014-08-09T09.46.16EDT";
+DF p4 d12
+Finish p5 "5-raw.data <- read.data()" Value="raw.data <- read.data()" Time="2014-08-09T09.46.16EDT";
 CF p4 p5
-Start p6 "6-analyze.data" Value="analyze.data";
+DF d12 p5
+Snapshot d13 "13-raw.data" Value="C:/GitHub/RDataTracker/examples/DailySolarRadiation/ddg/13-raw.data.csv" Time="2014-08-09T09.46.16EDT";
+DF p5 d13
+Binding p6 "6-xx  <-  raw.data" Time="2014-08-09T09.46.16EDT"
 CF p5 p6
-Start p7 "7-calibrate.data" Value="calibrate.data";
+DF d13 p6
+Snapshot d14 "14-xx" Value="C:/GitHub/RDataTracker/examples/DailySolarRadiation/ddg/14-xx.csv" Time="2014-08-09T09.46.16EDT";
+DF p6 d14
+Binding p7 "7-v  <-  R" Time="2014-08-09T09.46.16EDT"
 CF p6 p7
-Operation p8 "8-calibrate" Value="calibrate";
+Data d15 "15-v" Value="\"R\"";
+DF p7 d15
+Operation p8 "8-plot.data" Value="plot.data" Time="2014-08-09T09.46.16EDT";
+DF d14 p8
+DF d15 p8
 CF p7 p8
-DF d8 p8
-DF d10 p8
-Snapshot d15 "15-calibrated.data" Value="[DIR]/ddg/15-calibrated.data.csv" Time="2014-07-29T23.22.02";
-DF p8 d15
-Snapshot d16 "16-calibrated.data" Value="[DIR]/ddg/16-calibrated.data.csv" Time="2014-07-29T23.22.02";
-Operation p9 "9-plot.data" Value="plot.data";
+File d16 "16-raw-plot.jpeg" Value="C:/GitHub/RDataTracker/examples/DailySolarRadiation/ddg/16-raw-plot.jpeg" Time="2014-08-09T09.46.16EDT" Location="C:/GitHub/RDataTracker/examples/DailySolarRadiation/raw-plot.jpeg";
+DF p8 d16
+Finish p9 "9-get.data" Value="get.data" Time="2014-08-09T09.46.16EDT";
 CF p8 p9
-Data d17 "17-dname" Value="\"calibrated.data\"";
-DF d17 p9
-File d18 "18-calibrated-plot.jpeg" Value="[DIR]/ddg/18-calibrated-plot.jpeg" Time="2014-07-29T23.22.02" Location="[DIR]/calibrated-plot.jpeg";
-DF p9 d18
-Finish p10 "10-calibrate.data" Value="calibrate.data";
+Start p10 "10-analyze.data" Value="analyze.data" Time="2014-08-09T09.46.16EDT";
 CF p9 p10
-Start p11 "11-quality.control.data" Value="quality.control.data";
+Start p11 "11-calibrate.data" Value="calibrate.data" Time="2014-08-09T09.46.16EDT";
 CF p10 p11
-Binding p12 "12-calibrated.data  <-  calibrated.data"
+Start p12 "12-calibrated.data <<- calibrate(raw.data)" Value="calibrated.data <<- calibrate(raw.data)" Time="2014-08-09T09.46.16EDT";
 CF p11 p12
-DF d16 p12
-Snapshot d19 "19-calibrated.data" Value="[DIR]/ddg/19-calibrated.data.csv" Time="2014-07-29T23.22.02";
-DF p12 d19
-Operation p13 "13-quality.control" Value="quality.control";
-DF d19 p13
+Binding p13 "13-xx  <-  raw.data" Time="2014-08-09T09.46.16EDT"
 CF p12 p13
-DF d11 p13
-Snapshot d20 "20-quality.controlled.data" Value="[DIR]/ddg/20-quality.controlled.data.csv" Time="2014-07-29T23.22.02";
-DF p13 d20
-Snapshot d21 "21-quality.controlled.data" Value="[DIR]/ddg/21-quality.controlled.data.csv" Time="2014-07-29T23.22.02";
-Operation p14 "14-plot.data" Value="plot.data";
+DF d13 p13
+Snapshot d17 "17-xx" Value="C:/GitHub/RDataTracker/examples/DailySolarRadiation/ddg/17-xx.csv" Time="2014-08-09T09.46.16EDT";
+DF p13 d17
+Operation p14 "14-calibrate" Value="calibrate" Time="2014-08-09T09.46.16EDT";
+DF d17 p14
 CF p13 p14
-Data d22 "22-dname" Value="\"quality.controlled.data\"";
-DF d22 p14
-File d23 "23-quality-controlled-plot.jpeg" Value="[DIR]/ddg/23-quality-controlled-plot.jpeg" Time="2014-07-29T23.22.02" Location="[DIR]/quality-controlled-plot.jpeg";
-DF p14 d23
-Finish p15 "15-quality.control.data" Value="quality.control.data";
+DF d9 p14
+Snapshot d18 "18-calibrate(raw.data) return" Value="C:/GitHub/RDataTracker/examples/DailySolarRadiation/ddg/18-calibrate(raw.data) return.csv" Time="2014-08-09T09.46.16EDT";
+DF p14 d18
+Finish p15 "15-calibrated.data <<- calibrate(raw.data)" Value="calibrated.data <<- calibrate(raw.data)" Time="2014-08-09T09.46.16EDT";
 CF p14 p15
-Start p16 "16-gap.fill.data" Value="gap.fill.data";
+DF d18 p15
+Snapshot d19 "19-calibrated.data" Value="C:/GitHub/RDataTracker/examples/DailySolarRadiation/ddg/19-calibrated.data.csv" Time="2014-08-09T09.46.16EDT";
+DF p15 d19
+Binding p16 "16-xx  <-  calibrated.data" Time="2014-08-09T09.46.16EDT"
 CF p15 p16
-Binding p17 "17-quality.controlled.data  <-  quality.controlled.data"
+DF d19 p16
+Snapshot d20 "20-xx" Value="C:/GitHub/RDataTracker/examples/DailySolarRadiation/ddg/20-xx.csv" Time="2014-08-09T09.46.16EDT";
+DF p16 d20
+Binding p17 "17-v  <-  C" Time="2014-08-09T09.46.16EDT"
 CF p16 p17
-DF d21 p17
-Snapshot d24 "24-quality.controlled.data" Value="[DIR]/ddg/24-quality.controlled.data.csv" Time="2014-07-29T23.22.02";
-DF p17 d24
-Operation p18 "18-gap.fill" Value="gap.fill";
-DF d24 p18
+Data d21 "21-v" Value="\"C\"";
+DF p17 d21
+Operation p18 "18-plot.data" Value="plot.data" Time="2014-08-09T09.46.16EDT";
+DF d20 p18
+DF d21 p18
 CF p17 p18
-DF d12 p18
-DF d9 p18
-Snapshot d25 "25-gap.filled.data" Value="[DIR]/ddg/25-gap.filled.data.csv" Time="2014-07-29T23.22.02";
-DF p18 d25
-Snapshot d26 "26-gap.filled.data" Value="[DIR]/ddg/26-gap.filled.data.csv" Time="2014-07-29T23.22.02";
-Operation p19 "19-plot.data" Value="plot.data";
+File d22 "22-calibrated-plot.jpeg" Value="C:/GitHub/RDataTracker/examples/DailySolarRadiation/ddg/22-calibrated-plot.jpeg" Time="2014-08-09T09.46.16EDT" Location="C:/GitHub/RDataTracker/examples/DailySolarRadiation/calibrated-plot.jpeg";
+DF p18 d22
+Finish p19 "19-calibrate.data" Value="calibrate.data" Time="2014-08-09T09.46.16EDT";
 CF p18 p19
-Data d27 "27-dname" Value="\"gap.filled.data\"";
-DF d27 p19
-File d28 "28-gap-filled-plot.jpeg" Value="[DIR]/ddg/28-gap-filled-plot.jpeg" Time="2014-07-29T23.22.02" Location="[DIR]/gap-filled-plot.jpeg";
-DF p19 d28
-Finish p20 "20-gap.fill.data" Value="gap.fill.data";
+Start p20 "20-quality.control.data" Value="quality.control.data" Time="2014-08-09T09.46.16EDT";
 CF p19 p20
-Finish p21 "21-analyze.data" Value="analyze.data";
+Start p21 "21-quality.controlled.data <<- quality.control(calibrated.data)" Value="quality.controlled.data <<- quality.control(calibrated.data)" Time="2014-08-09T09.46.16EDT";
 CF p20 p21
-Start p22 "22-write.result" Value="write.result";
+Binding p22 "22-xx  <-  calibrated.data" Time="2014-08-09T09.46.16EDT"
 CF p21 p22
-Binding p23 "23-gap.filled.data  <-  gap.filled.data"
+DF d19 p22
+Snapshot d23 "23-xx" Value="C:/GitHub/RDataTracker/examples/DailySolarRadiation/ddg/23-xx.csv" Time="2014-08-09T09.46.16EDT";
+DF p22 d23
+Operation p23 "23-quality.control" Value="quality.control" Time="2014-08-09T09.46.16EDT";
+DF d23 p23
 CF p22 p23
-DF d26 p23
-Snapshot d29 "29-gap.filled.data" Value="[DIR]/ddg/29-gap.filled.data.csv" Time="2014-07-29T23.22.02";
-DF p23 d29
-Operation p24 "24-write.result" Value="write.result";
-DF d29 p24
+DF d10 p23
+Snapshot d24 "24-quality.control(calibrated.data) return" Value="C:/GitHub/RDataTracker/examples/DailySolarRadiation/ddg/24-quality.control(calibrated.data) return.csv" Time="2014-08-09T09.46.16EDT";
+DF p23 d24
+Finish p24 "24-quality.controlled.data <<- quality.control(calibrated.data)" Value="quality.controlled.data <<- quality.control(calibrated.data)" Time="2014-08-09T09.46.16EDT";
 CF p23 p24
-File d30 "30-processed-data.csv" Value="[DIR]/ddg/30-processed-data.csv" Time="2014-07-29T23.22.02" Location="[DIR]/processed-data.csv";
-DF p24 d30
-Finish p25 "25-write.result" Value="write.result";
+DF d24 p24
+Snapshot d25 "25-quality.controlled.data" Value="C:/GitHub/RDataTracker/examples/DailySolarRadiation/ddg/25-quality.controlled.data.csv" Time="2014-08-09T09.46.16EDT";
+DF p24 d25
+Binding p25 "25-xx  <-  quality.controlled.data" Time="2014-08-09T09.46.16EDT"
 CF p24 p25
-Finish p26 "26-main" Value="main";
+DF d25 p25
+Snapshot d26 "26-xx" Value="C:/GitHub/RDataTracker/examples/DailySolarRadiation/ddg/26-xx.csv" Time="2014-08-09T09.46.16EDT";
+DF p25 d26
+Binding p26 "26-v  <-  Q" Time="2014-08-09T09.46.16EDT"
 CF p25 p26
+Data d27 "27-v" Value="\"Q\"";
+DF p26 d27
+Operation p27 "27-plot.data" Value="plot.data" Time="2014-08-09T09.46.16EDT";
+DF d26 p27
+DF d27 p27
+CF p26 p27
+File d28 "28-quality-controlled-plot.jpeg" Value="C:/GitHub/RDataTracker/examples/DailySolarRadiation/ddg/28-quality-controlled-plot.jpeg" Time="2014-08-09T09.46.16EDT" Location="C:/GitHub/RDataTracker/examples/DailySolarRadiation/quality-controlled-plot.jpeg";
+DF p27 d28
+Finish p28 "28-quality.control.data" Value="quality.control.data" Time="2014-08-09T09.46.16EDT";
+CF p27 p28
+Start p29 "29-gap.fill.data" Value="gap.fill.data" Time="2014-08-09T09.46.16EDT";
+CF p28 p29
+Start p30 "30-gap.filled.data <<- gap.fill(quality.controlled.data)" Value="gap.filled.data <<- gap.fill(quality.controlled.data)" Time="2014-08-09T09.46.16EDT";
+CF p29 p30
+Binding p31 "31-xx  <-  quality.controlled.data" Time="2014-08-09T09.46.16EDT"
+CF p30 p31
+DF d25 p31
+Snapshot d29 "29-xx" Value="C:/GitHub/RDataTracker/examples/DailySolarRadiation/ddg/29-xx.csv" Time="2014-08-09T09.46.16EDT";
+DF p31 d29
+Operation p32 "32-gap.fill" Value="gap.fill" Time="2014-08-09T09.46.16EDT";
+DF d29 p32
+CF p31 p32
+DF d11 p32
+Snapshot d30 "30-gap.fill(quality.controlled.data) return" Value="C:/GitHub/RDataTracker/examples/DailySolarRadiation/ddg/30-gap.fill(quality.controlled.data) return.csv" Time="2014-08-09T09.46.16EDT";
+DF p32 d30
+Finish p33 "33-gap.filled.data <<- gap.fill(quality.controlled.data)" Value="gap.filled.data <<- gap.fill(quality.controlled.data)" Time="2014-08-09T09.46.16EDT";
+CF p32 p33
+DF d30 p33
+Snapshot d31 "31-gap.filled.data" Value="C:/GitHub/RDataTracker/examples/DailySolarRadiation/ddg/31-gap.filled.data.csv" Time="2014-08-09T09.46.16EDT";
+DF p33 d31
+Binding p34 "34-xx  <-  gap.filled.data" Time="2014-08-09T09.46.16EDT"
+CF p33 p34
+DF d31 p34
+Snapshot d32 "32-xx" Value="C:/GitHub/RDataTracker/examples/DailySolarRadiation/ddg/32-xx.csv" Time="2014-08-09T09.46.16EDT";
+DF p34 d32
+Binding p35 "35-v  <-  G" Time="2014-08-09T09.46.16EDT"
+CF p34 p35
+Data d33 "33-v" Value="\"G\"";
+DF p35 d33
+Operation p36 "36-plot.data" Value="plot.data" Time="2014-08-09T09.46.16EDT";
+DF d32 p36
+DF d33 p36
+CF p35 p36
+File d34 "34-gap-filled-plot.jpeg" Value="C:/GitHub/RDataTracker/examples/DailySolarRadiation/ddg/34-gap-filled-plot.jpeg" Time="2014-08-09T09.46.16EDT" Location="C:/GitHub/RDataTracker/examples/DailySolarRadiation/gap-filled-plot.jpeg";
+DF p36 d34
+Finish p37 "37-gap.fill.data" Value="gap.fill.data" Time="2014-08-09T09.46.16EDT";
+CF p36 p37
+Finish p38 "38-analyze.data" Value="analyze.data" Time="2014-08-09T09.46.16EDT";
+CF p37 p38
+Start p39 "39-write.result" Value="write.result" Time="2014-08-09T09.46.16EDT";
+CF p38 p39
+Binding p40 "40-gd  <-  gap.filled.data" Time="2014-08-09T09.46.16EDT"
+CF p39 p40
+DF d31 p40
+Snapshot d35 "35-gd" Value="C:/GitHub/RDataTracker/examples/DailySolarRadiation/ddg/35-gd.csv" Time="2014-08-09T09.46.16EDT";
+DF p40 d35
+Operation p41 "41-write.result" Value="write.result" Time="2014-08-09T09.46.16EDT";
+DF d35 p41
+CF p40 p41
+File d36 "36-processed-data.csv" Value="C:/GitHub/RDataTracker/examples/DailySolarRadiation/ddg/36-processed-data.csv" Time="2014-08-09T09.46.16EDT" Location="C:/GitHub/RDataTracker/examples/DailySolarRadiation/processed-data.csv";
+DF p41 d36
+Finish p42 "42-write.result" Value="write.result" Time="2014-08-09T09.46.16EDT";
+CF p41 p42
+Finish p43 "43-main" Value="main" Time="2014-08-09T09.46.16EDT";
+CF p42 p43
 

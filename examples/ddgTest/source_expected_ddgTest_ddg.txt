@@ -1,15 +1,15 @@
-Architecture="x86_64"
-OperatingSystem="unix"
+Architecture="i386"
+OperatingSystem="windows"
 Language="R"
-LanguageVersion="R version 3.1.0 Patched (2014-05-20 r65701)"
-RDataTrackerVersion="0.5.27"
-Script="[DIR]/ddgTest.r"
-ProcessFileTimestamp="2014-07-28T19.28.14"
-WorkingDirectory="[DIR]"
-DDGDirectory="[DIR]/ddg-source"
-DateTime="2014-07-31T13.27.46"
-28
-Start p1 "1-main" Value="main";
+LanguageVersion="R version 3.0.1 (2013-05-16)"
+RDataTrackerVersion="0.5.36"
+Script="C:/GitHub/RDataTracker/examples/ddgTest/ddgTest.r"
+ProcessFileTimestamp="2014-08-06T20.39.41EDT"
+WorkingDirectory="C:/GitHub/RDataTracker/examples/ddgTest"
+DDGDirectory="C:/GitHub/RDataTracker/examples/ddgTest/ddg-source"
+DateTime="2014-08-08T19.21.20EDT"
+54
+Start p1 "1-main" Value="main" Time="2014-08-08T19.21.19EDT";
 Data d1 "1-x" Value="3";
 Data d2 "2-y" Value="\"a b c\"";
 Data d3 "3-x + 1" Value="4";
@@ -21,199 +21,340 @@ Data d7 "7-ww" Value="NotRecorded";
 Exception d8 "8-error.msg" Value="\"Unable to evaluate xx in call to ddg.data\"";
 DF p1 d8
 Data d9 "9-xx" Value="NotRecorded";
-Operation p2 "2-no.name.or.args.given" Value="no.name.or.args.given";
+Binding p2 "2-a  <-  w" Time="2014-08-08T19.21.19EDT"
 CF p1 p2
-Binding p3 "3-a  <-  w"
-CF p2 p3
-DF d5 p3
+DF d5 p2
 Data d10 "10-a" Value="6";
-DF p3 d10
-Binding p4 "4-b  <-  x"
-CF p3 p4
-DF d1 p4
+DF p2 d10
+Binding p3 "3-b  <-  x" Time="2014-08-08T19.21.19EDT"
+CF p2 p3
+DF d1 p3
 Data d11 "11-b" Value="3";
-DF p4 d11
-Binding p5 "5-c  <-  y"
-CF p4 p5
-DF d2 p5
+DF p3 d11
+Binding p4 "4-c  <-  y" Time="2014-08-08T19.21.19EDT"
+CF p3 p4
+DF d2 p4
 Data d12 "12-c" Value="\"a b c\"";
-DF p5 d12
-Binding p6 "6-d  <-  z"
-CF p5 p6
-DF d4 p6
+DF p4 d12
+Binding p5 "5-d  <-  z" Time="2014-08-08T19.21.19EDT"
+CF p4 p5
+DF d4 p5
 Data d13 "13-d" Value="5";
-DF p6 d13
-Binding p7 "7-e  <-  x + 1"
-CF p6 p7
-DF d1 p7
+DF p5 d13
+Binding p6 "6-e  <-  x + 1" Time="2014-08-08T19.21.19EDT"
+CF p5 p6
+DF d1 p6
 Data d14 "14-e" Value="4";
-DF p7 d14
-Binding p8 "8-f  <-  vector()"
+DF p6 d14
+Binding p7 "7-f  <-  vector()" Time="2014-08-08T19.21.19EDT"
+CF p6 p7
+Snapshot d15 "15-f" Value="C:/GitHub/RDataTracker/examples/ddgTest/ddg-source/15-f.csv" Time="2014-08-08T19.21.19EDT";
+DF p7 d15
+Operation p8 "8-no.name.or.args.given" Value="no.name.or.args.given" Time="2014-08-08T19.21.19EDT";
+DF d10 p8
+DF d11 p8
+DF d12 p8
+DF d13 p8
+DF d14 p8
+DF d15 p8
 CF p7 p8
-Snapshot d15 "15-f" Value="[DIR]/ddg-source/15-f.csv" Time="2014-07-31T13.27.45";
-DF p8 d15
-Operation p9 "9-lookup.args" Value="lookup.args";
-DF d10 p9
-DF d11 p9
-DF d12 p9
-DF d13 p9
-DF d14 p9
-DF d15 p9
+Binding p9 "9-a  <-  w" Time="2014-08-08T19.21.19EDT"
 CF p8 p9
-Operation p10 "10-only.args.given" Value="only.args.given";
+DF d5 p9
+Data d16 "16-a" Value="6";
+DF p9 d16
+Binding p10 "10-b  <-  x" Time="2014-08-08T19.21.19EDT"
 CF p9 p10
-DF d5 p10
 DF d1 p10
-Exception d16 "16-error.msg" Value="\"No data node found for a b c\"";
-DF p10 d16
-DF d4 p10
-DF d3 p10
-Operation p11 "11-only.name.given" Value="only.name.given";
+Data d17 "17-b" Value="3";
+DF p10 d17
+Binding p11 "11-c  <-  y" Time="2014-08-08T19.21.19EDT"
 CF p10 p11
-Operation p12 "12-string.name.and.args.given" Value="string.name.and.args.given";
+DF d2 p11
+Data d18 "18-c" Value="\"a b c\"";
+DF p11 d18
+Binding p12 "12-d  <-  z" Time="2014-08-08T19.21.19EDT"
 CF p11 p12
-DF d5 p12
-DF d1 p12
-DF d2 p12
 DF d4 p12
-DF d3 p12
-Operation p13 "13-no.func" Value="no.func";
+Data d19 "19-d" Value="5";
+DF p12 d19
+Binding p13 "13-e  <-  x + 1" Time="2014-08-08T19.21.19EDT"
 CF p12 p13
-Operation p14 "14-f0" Value="f0";
+DF d1 p13
+Data d20 "20-e" Value="4";
+DF p13 d20
+Binding p14 "14-f  <-  vector()" Time="2014-08-08T19.21.19EDT"
 CF p13 p14
-Exception d17 "17-error.msg" Value="\"No data node found for no.such.data.node\"";
-DF p14 d17
-Operation p15 "15-g0" Value="g0";
+Snapshot d21 "21-f" Value="C:/GitHub/RDataTracker/examples/ddgTest/ddg-source/21-f.csv" Time="2014-08-08T19.21.19EDT";
+DF p14 d21
+Operation p15 "15-lookup.args" Value="lookup.args" Time="2014-08-08T19.21.19EDT";
+DF d16 p15
+DF d17 p15
+DF d18 p15
+DF d19 p15
+DF d20 p15
+DF d21 p15
 CF p14 p15
-Data d18 "18-simple.value" Value="10";
-DF p15 d18
-Operation p16 "16-g1" Value="g1";
+Binding p16 "16-a  <-  w" Time="2014-08-08T19.21.19EDT"
 CF p15 p16
-Snapshot d19 "19-kids.df" Value="[DIR]/ddg-source/19-kids.df.csv" Time="2014-07-31T13.27.45";
-DF p16 d19
-Snapshot d20 "20-year" Value="[DIR]/ddg-source/20-year.csv" Time="2014-07-31T13.27.45";
-DF p16 d20
-File d21 "21-[DIR]/testfile2.txt" Value="[DIR]/ddg-source/21-testfile2.txt" Time="2014-07-31T13.27.45" Location="[DIR]/testfile2.txt";
-DF p16 d21
-File d22 "22-outfile2" Value="[DIR]/ddg-source/22-testfile3.txt" Time="2014-07-31T13.27.45" Location="[DIR]/testfile3.txt";
+DF d5 p16
+Data d22 "22-a" Value="6";
 DF p16 d22
-URL d23 "23-HF home page" Value="\"http://harvardforest.fas.harvard.edu/\"";
-Exception d24 "24-error" Value="\"test error\"";
-Exception d25 "25-error2" Value="\"Trivial error\"";
-Operation p17 "17-f" Value="f";
+Binding p17 "17-b  <-  x" Time="2014-08-08T19.21.19EDT"
 CF p16 p17
-DF d23 p17
-DF d24 p17
-DF d25 p17
-Operation p18 "18-data.in.test" Value="data.in.test";
+DF d1 p17
+Data d23 "23-b" Value="3";
+DF p17 d23
+Binding p18 "18-y  <-  y" Time="2014-08-08T19.21.19EDT"
 CF p17 p18
-DF d1 p18
-Snapshot d26 "26-pets" Value="[DIR]/ddg-source/26-pets.csv" Time="2014-07-31T13.27.45";
-Snapshot d27 "27-pets.df" Value="[DIR]/ddg-source/27-pets.df.csv" Time="2014-07-31T13.27.45";
-Snapshot d28 "28-pets2" Value="[DIR]/ddg-source/28-pets2.csv" Time="2014-07-31T13.27.45";
-Snapshot d29 "29-pets3" Value="[DIR]/ddg-source/29-pets3.csv" Time="2014-07-31T13.27.45";
-Snapshot d30 "30-pets4" Value="[DIR]/ddg-source/30-pets4.csv" Time="2014-07-31T13.27.45";
-Operation p19 "19-f2" Value="f2";
+DF d2 p18
+Data d24 "24-y" Value="\"a b c\"";
+DF p18 d24
+Binding p19 "19-d  <-  z" Time="2014-08-08T19.21.19EDT"
 CF p18 p19
-DF d26 p19
-DF d27 p19
-DF d28 p19
-DF d29 p19
-DF d30 p19
-File d31 "31-RCheckpointNode.java" Value="[DIR]/ddg-source/31-RCheckpointNode.java" Time="2014-07-31T13.27.45" Location="[DIR]/RCheckpointNode.java";
-File d32 "32-test" Value="[DIR]/ddg-source/32-testfile.txt" Time="2014-07-31T13.27.45" Location="[DIR]/testfile.txt";
-Exception d33 "33-error.msg" Value="\"File to copy does not exist: missingfile.txt\"";
-DF p19 d33
-Exception d34 "34-error.msg" Value="\"File to copy does not exist: missingdir/abc.txt\"";
-DF p19 d34
-Operation p20 "20-f3" Value="f3";
+DF d4 p19
+Data d25 "25-d" Value="5";
+DF p19 d25
+Binding p20 "20-e  <-  x + 1" Time="2014-08-08T19.21.19EDT"
 CF p19 p20
-DF d31 p20
-DF d32 p20
-Exception d35 "35-error.msg" Value="\"No data node found for missingfile.txt\"";
-DF p20 d35
-Exception d36 "36-error.msg" Value="\"No data node found for abc.txt\"";
-DF p20 d36
-Data d37 "37-out1" Value="\"a\"";
-DF p2 d37
-Data d38 "38-out2" Value="\"b\"";
-DF p2 d38
-Operation p21 "21-out.test.1" Value="out.test.1";
+DF d1 p20
+Data d26 "26-e" Value="4";
+DF p20 d26
+Binding p21 "21-f  <-  vector()" Time="2014-08-08T19.21.19EDT"
 CF p20 p21
-Data d39 "39-out3" Value="\"c\"";
-DF p21 d39
-Data d40 "40-out4" Value="\"d\"";
-DF p2 d40
-Data d41 "41-out5" Value="\"e\"";
-DF p2 d41
-Data d42 "42-out5" Value="\"e\"";
-Exception d43 "43-error.msg" Value="\"No procedure node found for no.such.function\"";
-DF p21 d43
-Exception d44 "44-error.msg" Value="\"Unable to evaluate out6 in call to ddg.data.out\"";
-DF p21 d44
-Data d45 "45-out6" Value="NotRecorded";
-DF p2 d45
-URL d46 "46-Harvard home" Value="\"http://www.harvard.edu\"";
-DF p10 d46
-URL d47 "47-R home" Value="\"http://www.r-project.org/\"";
-DF p10 d47
-Operation p22 "22-url.out.test" Value="url.out.test";
+Snapshot d27 "27-f" Value="C:/GitHub/RDataTracker/examples/ddgTest/ddg-source/27-f.csv" Time="2014-08-08T19.21.19EDT";
+DF p21 d27
+Operation p22 "22-only.args.given" Value="only.args.given" Time="2014-08-08T19.21.19EDT";
+DF d22 p22
+DF d23 p22
+DF d24 p22
+DF d25 p22
+DF d26 p22
+DF d27 p22
 CF p21 p22
-URL d48 "48-MHC home" Value="\"https://www.mtholyoke.edu/\"";
-DF p22 d48
-Snapshot d49 "49-pets2" Value="[DIR]/ddg-source/49-pets2.csv" Time="2014-07-31T13.27.46";
-DF p11 d49
-Snapshot d50 "50-pets3" Value="[DIR]/ddg-source/50-pets3.csv" Time="2014-07-31T13.27.46";
-DF p11 d50
-Snapshot d51 "51-pets.df" Value="[DIR]/ddg-source/51-pets.df.csv" Time="2014-07-31T13.27.46";
-DF p11 d51
-Snapshot d52 "52-pets6" Value="[DIR]/ddg-source/52-pets6.csv" Time="2014-07-31T13.27.46";
-DF p11 d52
-Data d53 "53-pets.text" Value="\"text about pets\"";
-DF p11 d53
-Operation p23 "23-snapshot.out.test" Value="snapshot.out.test";
+Binding p23 "23-a  <-  w" Time="2014-08-08T19.21.19EDT"
 CF p22 p23
-Snapshot d54 "54-pets4" Value="[DIR]/ddg-source/54-pets4.csv" Time="2014-07-31T13.27.46";
-DF p23 d54
-File d55 "55-RDataInstanceNode.java" Value="[DIR]/ddg-source/55-RDataInstanceNode.java" Time="2014-07-31T13.27.46" Location="[DIR]/RDataInstanceNode.java";
-DF p12 d55
-File d56 "56-testfile2.txt" Value="[DIR]/ddg-source/56-testfile2.txt" Time="2014-07-31T13.27.46" Location="[DIR]/testfile2.txt";
-DF p12 d56
-Exception d57 "57-error.msg" Value="\"File to copy does not exist: missingfile.txt\"";
-DF p23 d57
-Exception d58 "58-error.msg" Value="\"No data node found for missingfile.txt\"";
-DF p23 d58
-Exception d59 "59-error.msg" Value="\"File to copy does not exist: missingdir/abc.txt\"";
-DF p23 d59
-Exception d60 "60-error.msg" Value="\"No data node found for abc.txt\"";
-DF p23 d60
-Operation p24 "24-file.out.test" Value="file.out.test";
+DF d5 p23
+Data d28 "28-a" Value="6";
+DF p23 d28
+Binding p24 "24-b  <-  x" Time="2014-08-08T19.21.19EDT"
 CF p23 p24
-File d61 "61-testfile3.txt" Value="[DIR]/ddg-source/61-testfile3.txt" Time="2014-07-31T13.27.46" Location="[DIR]/testfile3.txt";
-DF p24 d61
-Exception d62 "62-exc1" Value="\"a\"";
-DF p2 d62
-Exception d63 "63-exc2" Value="\"b\"";
-DF p2 d63
-Operation p25 "25-exc.test." Value="exc.test.";
+DF d1 p24
+Data d29 "29-b" Value="3";
+DF p24 d29
+Binding p25 "25-c  <-  y" Time="2014-08-08T19.21.19EDT"
 CF p24 p25
-Exception d64 "64-exc3" Value="\"c\"";
-DF p25 d64
-Exception d65 "65-exc4" Value="\"d\"";
-DF p2 d65
-Exception d66 "66-exc5" Value="\"e\"";
-DF p2 d66
-Exception d67 "67-exc5" Value="\"e\"";
-Exception d68 "68-error.msg" Value="\"No procedure node found for no.such.function\"";
-DF p25 d68
-Exception d69 "69-error.msg" Value="\"Unable to evaluate exc6 in call to ddg.exception.out\"";
-DF p25 d69
-Exception d70 "70-exc6" Value="NotRecorded";
-DF p2 d70
-Start p26 "26-start.finish.test" Value="start.finish.test";
+DF d2 p25
+Data d30 "30-c" Value="\"a b c\"";
+DF p25 d30
+Binding p26 "26-d  <-  z" Time="2014-08-08T19.21.19EDT"
 CF p25 p26
-Finish p27 "27-start.finish.test" Value="start.finish.test";
+DF d4 p26
+Data d31 "31-d" Value="5";
+DF p26 d31
+Binding p27 "27-e  <-  x + 1" Time="2014-08-08T19.21.19EDT"
 CF p26 p27
-Finish p28 "28-main" Value="main";
+DF d1 p27
+Data d32 "32-e" Value="4";
+DF p27 d32
+Binding p28 "28-f  <-  vector()" Time="2014-08-08T19.21.19EDT"
 CF p27 p28
+Snapshot d33 "33-f" Value="C:/GitHub/RDataTracker/examples/ddgTest/ddg-source/33-f.csv" Time="2014-08-08T19.21.19EDT";
+DF p28 d33
+Operation p29 "29-only.name.given" Value="only.name.given" Time="2014-08-08T19.21.19EDT";
+DF d28 p29
+DF d29 p29
+DF d30 p29
+DF d31 p29
+DF d32 p29
+DF d33 p29
+CF p28 p29
+Binding p30 "30-a  <-  w" Time="2014-08-08T19.21.20EDT"
+CF p29 p30
+DF d5 p30
+Data d34 "34-a" Value="6";
+DF p30 d34
+Binding p31 "31-b  <-  x" Time="2014-08-08T19.21.20EDT"
+CF p30 p31
+DF d1 p31
+Data d35 "35-b" Value="3";
+DF p31 d35
+Binding p32 "32-c  <-  y" Time="2014-08-08T19.21.20EDT"
+CF p31 p32
+DF d2 p32
+Data d36 "36-c" Value="\"a b c\"";
+DF p32 d36
+Binding p33 "33-d  <-  z" Time="2014-08-08T19.21.20EDT"
+CF p32 p33
+DF d4 p33
+Data d37 "37-d" Value="5";
+DF p33 d37
+Binding p34 "34-e  <-  x + 1" Time="2014-08-08T19.21.20EDT"
+CF p33 p34
+DF d1 p34
+Data d38 "38-e" Value="4";
+DF p34 d38
+Binding p35 "35-f  <-  vector()" Time="2014-08-08T19.21.20EDT"
+CF p34 p35
+Snapshot d39 "39-f" Value="C:/GitHub/RDataTracker/examples/ddgTest/ddg-source/39-f.csv" Time="2014-08-08T19.21.20EDT";
+DF p35 d39
+Operation p36 "36-string.name.and.args.given" Value="string.name.and.args.given" Time="2014-08-08T19.21.20EDT";
+DF d34 p36
+DF d35 p36
+DF d36 p36
+DF d37 p36
+DF d38 p36
+DF d39 p36
+CF p35 p36
+Operation p37 "37-no.func" Value="no.func" Time="2014-08-08T19.21.20EDT";
+CF p36 p37
+Operation p38 "38-f0" Value="f0" Time="2014-08-08T19.21.20EDT";
+CF p37 p38
+Exception d40 "40-error.msg" Value="\"No data node found for no.such.data.node\"";
+DF p38 d40
+Operation p39 "39-g0" Value="g0" Time="2014-08-08T19.21.20EDT";
+CF p38 p39
+Data d41 "41-simple.value" Value="10";
+DF p39 d41
+Operation p40 "40-g1" Value="g1" Time="2014-08-08T19.21.20EDT";
+CF p39 p40
+Snapshot d42 "42-kids.df" Value="C:/GitHub/RDataTracker/examples/ddgTest/ddg-source/42-kids.df.csv" Time="2014-08-08T19.21.20EDT";
+DF p40 d42
+Snapshot d43 "43-year" Value="C:/GitHub/RDataTracker/examples/ddgTest/ddg-source/43-year.csv" Time="2014-08-08T19.21.20EDT";
+DF p40 d43
+File d44 "44-C:/GitHub/RDataTracker/examples/ddgTest/testfile2.txt" Value="C:/GitHub/RDataTracker/examples/ddgTest/ddg-source/44-testfile2.txt" Time="2014-08-08T19.21.20EDT" Location="C:/GitHub/RDataTracker/examples/ddgTest/testfile2.txt";
+DF p40 d44
+File d45 "45-outfile2" Value="C:/GitHub/RDataTracker/examples/ddgTest/ddg-source/45-testfile3.txt" Time="2014-08-08T19.21.20EDT" Location="C:/GitHub/RDataTracker/examples/ddgTest/testfile3.txt";
+DF p40 d45
+URL d46 "46-HF home page" Value="\"http://harvardforest.fas.harvard.edu/\"";
+Exception d47 "47-error" Value="\"test error\"";
+Exception d48 "48-error2" Value="\"Trivial error\"";
+Operation p41 "41-f" Value="f" Time="2014-08-08T19.21.20EDT";
+CF p40 p41
+DF d46 p41
+DF d47 p41
+DF d48 p41
+Binding p42 "42-arg1  <-  x" Time="2014-08-08T19.21.20EDT"
+CF p41 p42
+DF d1 p42
+Data d49 "49-arg1" Value="3";
+DF p42 d49
+Operation p43 "43-data.in.test" Value="data.in.test" Time="2014-08-08T19.21.20EDT";
+DF d49 p43
+CF p42 p43
+DF d1 p43
+Snapshot d50 "50-pets" Value="C:/GitHub/RDataTracker/examples/ddgTest/ddg-source/50-pets.csv" Time="2014-08-08T19.21.20EDT";
+Snapshot d51 "51-pets.df" Value="C:/GitHub/RDataTracker/examples/ddgTest/ddg-source/51-pets.df.csv" Time="2014-08-08T19.21.20EDT";
+Snapshot d52 "52-pets2" Value="C:/GitHub/RDataTracker/examples/ddgTest/ddg-source/52-pets2.csv" Time="2014-08-08T19.21.20EDT";
+Snapshot d53 "53-pets3" Value="C:/GitHub/RDataTracker/examples/ddgTest/ddg-source/53-pets3.csv" Time="2014-08-08T19.21.20EDT";
+Snapshot d54 "54-pets4" Value="C:/GitHub/RDataTracker/examples/ddgTest/ddg-source/54-pets4.csv" Time="2014-08-08T19.21.20EDT";
+Operation p44 "44-f2" Value="f2" Time="2014-08-08T19.21.20EDT";
+CF p43 p44
+DF d50 p44
+DF d51 p44
+DF d52 p44
+DF d53 p44
+DF d54 p44
+File d55 "55-RCheckpointNode.java" Value="C:/GitHub/RDataTracker/examples/ddgTest/ddg-source/55-RCheckpointNode.java" Time="2014-08-08T19.21.20EDT" Location="C:/GitHub/RDataTracker/examples/ddgTest/RCheckpointNode.java";
+File d56 "56-test" Value="C:/GitHub/RDataTracker/examples/ddgTest/ddg-source/56-testfile.txt" Time="2014-08-08T19.21.20EDT" Location="C:/GitHub/RDataTracker/examples/ddgTest/testfile.txt";
+Exception d57 "57-error.msg" Value="\"File to copy does not exist: missingfile.txt\"";
+DF p44 d57
+Exception d58 "58-error.msg" Value="\"File to copy does not exist: missingdir/abc.txt\"";
+DF p44 d58
+Operation p45 "45-f3" Value="f3" Time="2014-08-08T19.21.20EDT";
+CF p44 p45
+DF d55 p45
+DF d56 p45
+Exception d59 "59-error.msg" Value="\"No data node found for missingfile.txt\"";
+DF p45 d59
+Exception d60 "60-error.msg" Value="\"No data node found for abc.txt\"";
+DF p45 d60
+Data d61 "61-out1" Value="\"a\"";
+DF p8 d61
+Data d62 "62-out2" Value="\"b\"";
+DF p8 d62
+Operation p46 "46-out.test.1" Value="out.test.1" Time="2014-08-08T19.21.20EDT";
+CF p45 p46
+Data d63 "63-out3" Value="\"c\"";
+DF p46 d63
+Data d64 "64-out4" Value="\"d\"";
+DF p8 d64
+Data d65 "65-out5" Value="\"e\"";
+DF p8 d65
+Data d66 "66-out5" Value="\"e\"";
+Exception d67 "67-error.msg" Value="\"No procedure node found for no.such.function\"";
+DF p46 d67
+Exception d68 "68-error.msg" Value="\"Unable to evaluate out6 in call to ddg.data.out\"";
+DF p46 d68
+Data d69 "69-out6" Value="NotRecorded";
+DF p8 d69
+URL d70 "70-Harvard home" Value="\"http://www.harvard.edu\"";
+DF p22 d70
+URL d71 "71-R home" Value="\"http://www.r-project.org/\"";
+DF p22 d71
+Operation p47 "47-url.out.test" Value="url.out.test" Time="2014-08-08T19.21.20EDT";
+CF p46 p47
+URL d72 "72-MHC home" Value="\"https://www.mtholyoke.edu/\"";
+DF p47 d72
+Snapshot d73 "73-pets2" Value="C:/GitHub/RDataTracker/examples/ddgTest/ddg-source/73-pets2.csv" Time="2014-08-08T19.21.20EDT";
+DF p29 d73
+Snapshot d74 "74-pets3" Value="C:/GitHub/RDataTracker/examples/ddgTest/ddg-source/74-pets3.csv" Time="2014-08-08T19.21.20EDT";
+DF p29 d74
+Snapshot d75 "75-pets.df" Value="C:/GitHub/RDataTracker/examples/ddgTest/ddg-source/75-pets.df.csv" Time="2014-08-08T19.21.20EDT";
+DF p29 d75
+Snapshot d76 "76-pets6" Value="C:/GitHub/RDataTracker/examples/ddgTest/ddg-source/76-pets6.csv" Time="2014-08-08T19.21.20EDT";
+DF p29 d76
+Data d77 "77-pets.text" Value="\"text about pets\"";
+DF p29 d77
+Binding p48 "48-df  <-  pets.df" Time="2014-08-08T19.21.20EDT"
+CF p47 p48
+DF d75 p48
+Snapshot d78 "78-df" Value="C:/GitHub/RDataTracker/examples/ddgTest/ddg-source/78-df.csv" Time="2014-08-08T19.21.20EDT";
+DF p48 d78
+Operation p49 "49-snapshot.out.test" Value="snapshot.out.test" Time="2014-08-08T19.21.20EDT";
+DF d78 p49
+CF p48 p49
+Snapshot d79 "79-pets4" Value="C:/GitHub/RDataTracker/examples/ddgTest/ddg-source/79-pets4.csv" Time="2014-08-08T19.21.20EDT";
+DF p49 d79
+File d80 "80-RDataInstanceNode.java" Value="C:/GitHub/RDataTracker/examples/ddgTest/ddg-source/80-RDataInstanceNode.java" Time="2014-08-08T19.21.20EDT" Location="C:/GitHub/RDataTracker/examples/ddgTest/RDataInstanceNode.java";
+DF p36 d80
+File d81 "81-testfile2.txt" Value="C:/GitHub/RDataTracker/examples/ddgTest/ddg-source/81-testfile2.txt" Time="2014-08-08T19.21.20EDT" Location="C:/GitHub/RDataTracker/examples/ddgTest/testfile2.txt";
+DF p36 d81
+Exception d82 "82-error.msg" Value="\"File to copy does not exist: missingfile.txt\"";
+DF p49 d82
+Exception d83 "83-error.msg" Value="\"No data node found for missingfile.txt\"";
+DF p49 d83
+Exception d84 "84-error.msg" Value="\"File to copy does not exist: missingdir/abc.txt\"";
+DF p49 d84
+Exception d85 "85-error.msg" Value="\"No data node found for abc.txt\"";
+DF p49 d85
+Operation p50 "50-file.out.test" Value="file.out.test" Time="2014-08-08T19.21.20EDT";
+CF p49 p50
+File d86 "86-testfile3.txt" Value="C:/GitHub/RDataTracker/examples/ddgTest/ddg-source/86-testfile3.txt" Time="2014-08-08T19.21.20EDT" Location="C:/GitHub/RDataTracker/examples/ddgTest/testfile3.txt";
+DF p50 d86
+Exception d87 "87-exc1" Value="\"a\"";
+DF p8 d87
+Exception d88 "88-exc2" Value="\"b\"";
+DF p8 d88
+Operation p51 "51-exc.test." Value="exc.test." Time="2014-08-08T19.21.20EDT";
+CF p50 p51
+Exception d89 "89-exc3" Value="\"c\"";
+DF p51 d89
+Exception d90 "90-exc4" Value="\"d\"";
+DF p8 d90
+Exception d91 "91-exc5" Value="\"e\"";
+DF p8 d91
+Exception d92 "92-exc5" Value="\"e\"";
+Exception d93 "93-error.msg" Value="\"No procedure node found for no.such.function\"";
+DF p51 d93
+Exception d94 "94-error.msg" Value="\"Unable to evaluate exc6 in call to ddg.exception.out\"";
+DF p51 d94
+Exception d95 "95-exc6" Value="NotRecorded";
+DF p8 d95
+Start p52 "52-start.finish.test" Value="start.finish.test" Time="2014-08-08T19.21.20EDT";
+CF p51 p52
+Finish p53 "53-start.finish.test" Value="start.finish.test" Time="2014-08-08T19.21.20EDT";
+CF p52 p53
+Finish p54 "54-main" Value="main" Time="2014-08-08T19.21.20EDT";
+CF p53 p54
 

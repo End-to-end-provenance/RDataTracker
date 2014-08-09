@@ -24,7 +24,7 @@ ddg.console.off()
 
 f <- function() {
    a <<- b * 10
-   ddg.procedure(ins=list("b"), outs.data=list("a"))
+   ddg.function(outs.data=list("a"))
    return(a)
 }
 
@@ -32,7 +32,7 @@ g <- function(a) {
     c <- a + 10
     d <- 1000
     #ddg.procedure(lookup.ins=TRUE, outs.data=list("c", "d"))
-    ddg.procedure(lookup.ins=TRUE)
+    ddg.function(outs.data=list("c", "d"))
     return(c)
 }
 
@@ -40,14 +40,14 @@ g <- function(a) {
 ddg.console.on()
 h <- function() {
    d <- 333
-   ddg.procedure("foo", ins=list("d"))
+   ddg.function()
    return(d)
 }
 ddg.console.off()
 
 i <- function() {
    x <<- 1000
-   ddg.procedure(outs.data=list("x"))
+   ddg.function(outs.data=list("x"))
    return(j(x))
 }
 
@@ -60,7 +60,7 @@ j <- function(xx) {
    #ddg.procedure(ins=list("a"))
 
    # This does not work.  It does not find a.  x & a have different scopes
-   ddg.procedure(ins=list("xx", "a"))
+   ddg.function()
 }
 
 # Turn on the console to capture some good information

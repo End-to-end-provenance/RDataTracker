@@ -17,19 +17,19 @@ ddg.init(ddg.r.script.path,
          enable.console=FALSE)
 
 f <- function (aa, bb) {
-  ddg.procedure(lookup.ins=TRUE)
+  ddg.function()
 #  ddg.eval("retValue <- f2(aa) + f2(bb)")
   retValue <- f2(aa) + f2(bb)
   ddg.return(retValue)
 }
 
 f2 <- function(p_a) {
-   ddg.procedure(lookup.ins=TRUE)
+   ddg.function()
    ddg.return(10)
 }
 
 f3 <- function(aa, bb) {
-   ddg.procedure(lookup.ins=TRUE) 
+   ddg.function()
    ddg.return (aa + bb)
 }
 

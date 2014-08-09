@@ -28,60 +28,58 @@ get.initial.values <- function() {
   number <<- 10
   tolerance <<- 0.00001
   
-  ddg.procedure()
+  ddg.function()
   ddg.data.out(number)
   ddg.data.out(tolerance)
 }
 
-get.random <- function(number) {
+get.random <- function(n) {
   # get random seed value
-  estimate <- runif(1,1,number)
+  e <- runif(1,1,n)
   
-  ddg.procedure()
-  ddg.data.in(number)
-  
-  ddg.return(estimate)
+  ddg.function()
+  ddg.return(e)
 }
 
-calc.square.root <- function(number,estimate) {
+calc.square.root <- function(n,e) {
   # calculate square root
-  x <- number/estimate
-  estimate <- (estimate+x)/2
+  x <- n/e
+  e <- (e+x)/2
   
-  ddg.procedure(lookup.ins=TRUE)
-  ddg.return(estimate)
+  ddg.function()
+  ddg.return(e)
 }
 
-get.difference <- function(number,estimate) {
+get.difference <- function(n,e) {
   # test result
-  difference <- abs(number-estimate^2)
+  d <- abs(n-e^2)
   
-  ddg.procedure(lookup.ins=TRUE)
-  ddg.return(difference)
+  ddg.function()
+  ddg.return(d)
 }
 
-get.check.value <- function(difference,tolerance) {
+get.check.value <- function(d,t) {
   #compare difference to tolerance
-  check <- difference - tolerance
+  c <- d - t
   
-  ddg.procedure(lookup.ins=TRUE)
-  ddg.return(check)
+  ddg.function()
+  ddg.return(c)
 }
 
-store.result <- function(number,estimate) {
-  sqr.root <- data.frame(number,estimate)
+store.result <- function(n,e) {
+  sr <- data.frame(n,e)
   
-  ddg.procedure(lookup.ins=TRUE)
-  ddg.return(sqr.root)
+  ddg.function()
+  ddg.return(sr)
 }
 
-write.result <- function(sqr.root) {
-  file.name <- "results.csv"
-  file.out <- paste(getwd(),"/",file.name,sep="")
-  write.csv(sqr.root,file.out,row.names=FALSE)
+write.result <- function(sr) {
+  fn <- "results.csv"
+  file.out <- paste(getwd(),"/",fn,sep="")
+  write.csv(sr,file.out,row.names=FALSE)
   
-  ddg.procedure(lookup.ins=TRUE)
-  ddg.file.out(file.name)
+  ddg.function()
+  ddg.file.out(fn)
 }
 
 ### Main Program
@@ -111,7 +109,7 @@ main <- function() {
   
   ddg.start("write.result")
   
-  ddg.eval("sqr.root <<- store.result(number,estimate)")
+  ddg.eval("sqr.root <- store.result(number,estimate)")
   write.result(sqr.root)
   
   ddg.finish("write.result")
@@ -124,9 +122,5 @@ ddg.run(
         paste(testDir,"ddg",sep="/"),
         main,
         enable.console=FALSE)
-
-# display values
-
-sqr.root
 
 ddg.save(quit=TRUE)

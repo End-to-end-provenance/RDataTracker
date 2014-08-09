@@ -1,115 +1,115 @@
-Architecture="x86_64"
-OperatingSystem="unix"
+Architecture="i386"
+OperatingSystem="windows"
 Language="R"
-LanguageVersion="R version 3.1.0 Patched (2014-05-20 r65701)"
-RDataTrackerVersion="0.5.27"
-Script="[DIR]/ScopeTest.R"
-ProcessFileTimestamp="2014-07-30T14.37.30"
-WorkingDirectory="[DIR]"
-DDGDirectory="[DIR]/ddg"
-DateTime="2014-07-31T13.44.13"
-21
-Operation p1 "1-f" Value="f";
-Exception d1 "1-error.msg" Value="\"No data node found for b\"";
+LanguageVersion="R version 3.0.1 (2013-05-16)"
+RDataTrackerVersion="0.5.36"
+Script="C:/GitHub/RDataTracker/examples/ScopeTest/ScopeTest.R"
+ProcessFileTimestamp="2014-08-05T11.14.38EDT"
+WorkingDirectory="C:/GitHub/RDataTracker/examples/ScopeTest"
+DDGDirectory="C:/GitHub/RDataTracker/examples/ScopeTest/ddg"
+DateTime="2014-08-08T19.30.25EDT"
+22
+Operation p1 "1-f" Value="f" Time="2014-08-08T19.30.25EDT";
+Data d1 "1-a" Value="20";
 DF p1 d1
-Data d2 "2-a" Value="20";
+Data d2 "2-f() return" Value="20";
 DF p1 d2
-Data d3 "3-f() return" Value="20";
-DF p1 d3
-Binding p2 "2-a  <-  c"
+Binding p2 "2-a  <-  c" Time="2014-08-08T19.30.25EDT"
 CF p1 p2
-Data d4 "4-a" Value="100";
-DF p2 d4
-Operation p3 "3-g" Value="g";
-DF d4 p3
+Data d3 "3-a" Value="100";
+DF p2 d3
+Operation p3 "3-g" Value="g" Time="2014-08-08T19.30.25EDT";
+DF d3 p3
 CF p2 p3
-Data d5 "5-g(c) return" Value="110";
-DF p3 d5
-Binding p4 "4-a  <-  c"
+Data d4 "4-g(c) return" Value="110";
+DF p3 d4
+Binding p4 "4-a  <-  c" Time="2014-08-08T19.30.25EDT"
 CF p3 p4
-Data d6 "6-a" Value="100";
-DF p4 d6
-Operation p5 "5-g" Value="g";
-DF d6 p5
+Data d5 "5-a" Value="100";
+DF p4 d5
+Operation p5 "5-g" Value="g" Time="2014-08-08T19.30.25EDT";
+DF d5 p5
 CF p4 p5
-Data d7 "7-g(c) return" Value="110";
-DF p5 d7
-Operation p6 "6-h" Value="h";
+Data d6 "6-g(c) return" Value="110";
+DF p5 d6
+Operation p6 "6-h" Value="h" Time="2014-08-08T19.30.25EDT";
 CF p5 p6
-Exception d8 "8-error.msg" Value="\"No data node found for local d\"";
-DF p6 d8
-Data d9 "9-h() return" Value="333";
-DF p6 d9
-Operation p7 "7-i" Value="i";
+Data d7 "7-h() return" Value="333";
+DF p6 d7
+Operation p7 "7-i" Value="i" Time="2014-08-08T19.30.25EDT";
 CF p6 p7
-Data d10 "10-x" Value="1000";
-DF p7 d10
-Data d11 "11-xx" Value="1000";
-Operation p8 "8-j" Value="j";
+Data d8 "8-x" Value="1000";
+DF p7 d8
+Data d9 "9-xx" Value="1000";
+Binding p8 "8-xx  <-  x" Time="2014-08-08T19.30.25EDT"
 CF p7 p8
-DF d11 p8
-DF d2 p8
-Data d12 "12-i() return" Value="3";
-DF p7 d12
-Binding p9 "9-xx  <-  a"
+DF d8 p8
+Data d10 "10-xx" Value="1000";
+DF p8 d10
+Operation p9 "9-j" Value="j" Time="2014-08-08T19.30.25EDT";
+DF d10 p9
 CF p8 p9
-DF d2 p9
-Data d13 "13-xx" Value="20";
-DF p9 d13
-Binding p10 "10-yy  <-  b"
+Data d11 "11-i() return" Value="3";
+DF p7 d11
+Binding p10 "10-xx  <-  a" Time="2014-08-08T19.30.25EDT"
 CF p9 p10
-Data d14 "14-yy" Value="2";
-DF p10 d14
-Operation p11 "11-k" Value="k";
-DF d13 p11
-DF d14 p11
+DF d1 p10
+Data d12 "12-xx" Value="20";
+DF p10 d12
+Binding p11 "11-yy  <-  b" Time="2014-08-08T19.30.25EDT"
 CF p10 p11
-Data d15 "15-k(a, b) return" Value="22";
-DF p11 d15
-Binding p12 "12-xx  <-  a"
+Data d13 "13-yy" Value="2";
+DF p11 d13
+Operation p12 "12-k" Value="k" Time="2014-08-08T19.30.25EDT";
+DF d12 p12
+DF d13 p12
 CF p11 p12
-DF d2 p12
-Data d16 "16-xx" Value="20";
-DF p12 d16
-Operation p13 "13-k" Value="k";
-DF d16 p13
+Data d14 "14-k(a, b) return" Value="22";
+DF p12 d14
+Binding p13 "13-xx  <-  a" Time="2014-08-08T19.30.25EDT"
 CF p12 p13
-Data d17 "17-k(a) return" Value="21";
-DF p13 d17
-Binding p14 "14-yy  <-  b"
+DF d1 p13
+Data d15 "15-xx" Value="20";
+DF p13 d15
+Operation p14 "14-k" Value="k" Time="2014-08-08T19.30.25EDT";
+DF d15 p14
 CF p13 p14
-Data d18 "18-yy" Value="2";
-DF p14 d18
-Operation p15 "15-k" Value="k";
-DF d18 p15
+Data d16 "16-k(a) return" Value="21";
+DF p14 d16
+Binding p15 "15-yy  <-  b" Time="2014-08-08T19.30.25EDT"
 CF p14 p15
-Data d19 "19-k(yy = b) return" Value="2";
-DF p15 d19
-Operation p16 "16-k" Value="k";
+Data d17 "17-yy" Value="2";
+DF p15 d17
+Operation p16 "16-k" Value="k" Time="2014-08-08T19.30.25EDT";
+DF d17 p16
 CF p15 p16
-Data d20 "20-k() return" Value="1";
-DF p16 d20
-Binding p17 "17-xx  <-  b + 1"
+Data d18 "18-k(yy = b) return" Value="2";
+DF p16 d18
+Operation p17 "17-k" Value="k" Time="2014-08-08T19.30.25EDT";
 CF p16 p17
-Data d21 "21-xx" Value="3";
-DF p17 d21
-Operation p18 "18-k" Value="k";
-DF d21 p18
+Data d19 "19-k() return" Value="1";
+DF p17 d19
+Binding p18 "18-xx  <-  b + 1" Time="2014-08-08T19.30.25EDT"
 CF p17 p18
-Data d22 "22-k(b + 1) return" Value="4";
-DF p18 d22
-Binding p19 "19-xx  <-  a + b + 1"
+Data d20 "20-xx" Value="3";
+DF p18 d20
+Operation p19 "19-k" Value="k" Time="2014-08-08T19.30.25EDT";
+DF d20 p19
 CF p18 p19
-DF d2 p19
-Data d23 "23-xx" Value="23";
-DF p19 d23
-Operation p20 "20-k" Value="k";
-DF d23 p20
+Data d21 "21-k(b + 1) return" Value="4";
+DF p19 d21
+Binding p20 "20-xx  <-  a + b + 1" Time="2014-08-08T19.30.25EDT"
 CF p19 p20
-Data d24 "24-k(a + b + 1) return" Value="24";
-DF p20 d24
-File d25 "25-foobar.csv" Value="[DIR]/ddg/25-foobar.csv" Time="2014-07-31T13.44.13" Location="[DIR]/foobar.csv";
-Operation p21 "21-Read raw data files" Value="Read raw data files";
+DF d1 p20
+Data d22 "22-xx" Value="23";
+DF p20 d22
+Operation p21 "21-k" Value="k" Time="2014-08-08T19.30.25EDT";
+DF d22 p21
 CF p20 p21
-DF d25 p21
+Data d23 "23-k(a + b + 1) return" Value="24";
+DF p21 d23
+File d24 "24-foobar.csv" Value="C:/GitHub/RDataTracker/examples/ScopeTest/ddg/24-foobar.csv" Time="2014-08-08T19.30.25EDT" Location="C:/GitHub/RDataTracker/examples/ScopeTest/foobar.csv";
+Operation p22 "22-Read raw data files" Value="Read raw data files" Time="2014-08-08T19.30.25EDT";
+CF p21 p22
+DF d24 p22
 

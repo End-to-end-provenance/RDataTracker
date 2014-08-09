@@ -26,7 +26,7 @@ invisible(force(startTime))
 
 
 f <- function() {
-	ddg.procedure()
+	ddg.procedure("f")
 	ddg.data.in("n", "f")
 	n
 }

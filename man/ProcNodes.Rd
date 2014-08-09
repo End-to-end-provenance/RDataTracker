@@ -1,4 +1,5 @@
 \name{ProcNodes}
+\alias{ddg.function}
 \alias{ddg.procedure}
 \alias{ddg.return}
 \alias{ddg.start}
@@ -8,9 +9,8 @@
 \description{These functions create procedural nodes and abstraction nodes within a provenance 
   graph created by RDataTracker.}
 \usage{
-ddg.procedure(pname = NULL, ins = NULL, lookup.ins = FALSE, outs.graphic = NULL, 
-              outs.data = NULL, outs.exception = NULL, outs.url = NULL, outs.file =NULL,
-              graphic.fext = "jpeg")
+ddg.function(outs.graphic=NULL, outs.data=NULL, outs.exception=NULL, outs.url=NULL, outs.file=NULL, graphic.fext="jpeg")
+ddg.procedure(pname, ins = NULL, outs.graphic = NULL, outs.data = NULL, outs.exception = NULL, outs.url = NULL, outs.file =NULL, graphic.fext = "jpeg")
 ddg.return(expr)
 ddg.start(pname = NULL)
 ddg.finish(pname = NULL)
@@ -18,7 +18,6 @@ ddg.eval(statement)
 }
 \arguments{
   \item{pname}{ the label for the node. }
-  \item{lookup.ins}{ if TRUE and ins is NULL, ddg.procedure will try to create the input data edges automatically. }
   \item{ins}{ a list of names of data nodes to be linked as inputs to the node being created. }
   \item{outs.data}{ a list of names of data nodes to be created and linked as outputs to the node being created. }
   \item{outs.file}{ a list of names of file nodes to be created and linked as outputs to the node being created. }
@@ -30,28 +29,25 @@ ddg.eval(statement)
   \item{statement}{the statement to evaluate}
 }
 \details{
-  ddg.procedure creates a node of type Operation.  If pname is NULL, the name of the function
-  that called ddg.procedure() will be used as the name of the node.  If pname is the name of 
-  a function, the user can right-click on it in DDG Explorer to see the corresponding function 
-  definition.
+  ddg.function creates a node of type Operation for R functions.  The function name and input parameters
+  (if any) are looked up from the calling environment.  A data flow edge is created for each argument passed 
+  to the function that called ddg.procedure, if the corresponding data node exists.  Outputs are optionally
+  supplied with the outs parameter.  In DDG Explorere, the user can right click on the node to see the corresponding function definition.
   
-  If ins is NULL and lookup.ins is TRUE, ddg.procedure will create a data flow edge for each
-  argument that was passed to the function that called ddg.procedure.
-  
-  If ins is not NULL, ddg.procedure will create a data flow edge from each data node in the list.  
-  Data nodes may be of type data, file, url, or exception.  Node names must be passed 
-  as quoted strings.  For files, the node name may be the name of the file or the name of a variable that 
+  ddg.procedure creates a node of type Operation for steps not implemented as R functions.  The node name must be
+  supplied.  Inputs and outputs are optionally supplied with the ins and outs parameters.  If ins is not NULL, ddg.procedure 
+  will create a data flow edge from each data node in the list.  Data nodes may be of type data, file, url, or exception.  
+  Node names must be passed as quoted strings.  For files, the node name may be the name of the file or the name of a variable that 
   holds the name of the file.
   
-  If outs.data, outs.file, etc is not NULL, ddg.procedure will create a node of the specified type (data, file,
+  If outs.data, outs.file, etc is not NULL, ddg.function and ddg.procedure will create a node of the specified type (data, file,
   url, or exception) for each name in the list along with a data flow edge to that node.  Node names must be 
   passed as quoted strings.  For files, the node name may be the name of the file or the name of a variable 
   that holds the name of the file.
 
-  If outs.graphic is not NULL, ddg.procedure will create a node of type snapshot (these nodes hold complex data types) with the value of outs.graphic as the name. The node will
-  store a snapshot of the current graphics device in the file (outs.graphic).(graphic.fext). The file will be linked to the DDG and will be viewable using DDG Explorer.
-
-  The parameter graphic.fext is ignored if outs.graphic is NULL. 
+  If outs.graphic is not NULL, ddg.function and ddg.procedure will create a node of type snapshot (these nodes hold complex data types) 
+  with the value of outs.graphic as the name. The node will store a snapshot of the current graphics device in the file (outs.graphic).(graphic.fext). 
+  The file will be linked to the DDG and will be viewable using DDG Explorer. The parameter graphic.fext is ignored if outs.graphic is NULL. 
   
   ddg.return creates a data node for a function's return value.  If the function is called from a console
   command and the console processing is enabled, the node will link to the console command
@@ -80,7 +76,7 @@ ddg.init()
 a <- 0
 myfunc <- function() {
   b <- a + 1
-  ddg.procedure(ins=list("a"))
+  ddg.function()
   ddg.return(b)
 }
 
@@ -97,7 +93,7 @@ secondfunc <- function() {
   }
 }
 secondfunc()
-ddg.eval("a <- myfunc()")
+a <- myfunc()
 ddg.save()
 }
 \keyword{provenance}

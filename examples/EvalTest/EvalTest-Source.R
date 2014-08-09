@@ -47,7 +47,7 @@ ddg.path = paste(testDir,ddgDir,sep="/")
 ### Functions
 
 f <- function(x) {
-  ddg.procedure(lookup.ins=TRUE)
+  ddg.function()
   ddg.return(10)
 }
 

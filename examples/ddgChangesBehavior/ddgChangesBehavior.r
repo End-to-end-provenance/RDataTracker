@@ -28,7 +28,7 @@ f <- function(x) {
 }
 
 f2 <- function(x) {
-	ddg.procedure(lookup.ins=TRUE)
+	ddg.function()
 	return(1)
 }
 

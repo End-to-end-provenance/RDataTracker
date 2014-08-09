@@ -33,15 +33,16 @@ ddg.init(r.script.path, ddgdir, enable.console=TRUE)
 ### Functions
 
 get.initial.values <- function() {
-  archive.file <<- "archive-15min.csv"
+  # archive.file <<- "archive-15min.csv"
+  archive.file <<- "http://harvardforest.fas.harvard.edu/sites/harvardforest.fas.harvard.edu/files/weather/archive.dat"
   current.url <<- "http://harvardforest.fas.harvard.edu/sites/harvardforest.fas.harvard.edu/files/weather/metsta.dat"
 }
 
 get.archive.data <- function(x) {
-  # read archive data from file
-  zz <- read.csv(x)
+  # read archive data from HF web server
+  file.in <- file(x)
   zz.col <- c("type","year","jul","hm","airt","rh","dewp","prec","slrr","parr","netr","bar","wspd","wres","wdir","wdev","gspd","s10t")
-  zz <- read.csv("archive-15min.csv",col.names=zz.col,header=FALSE)
+  zz <- read.csv(file.in,col.names=zz.col,header=FALSE)
 
   return(zz)
 }
@@ -140,7 +141,7 @@ plot.data <- function(zz,v,d) {
   if (xrange>1000) axis.Date(1,at=seq(daterange[1],daterange[2],by="year"),format="%b-%Y")
 
   lines(zz[c("dt",v)],lwd=2,col="blue")
-  ddg.procedure(lookup.ins=T)
+  ddg.function()
 
   # dev.off()
 }

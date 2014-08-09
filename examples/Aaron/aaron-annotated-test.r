@@ -172,7 +172,8 @@ filled.contour3 <- function(x = seq(0, 1, length.out = nrow(z)), y = seq(0,
     if (missing(plot.title)) 
         title(...) else plot.title
 
-    ddg.procedure(lookup.ins=TRUE)
+    # ddg.procedure(lookup.ins=TRUE)
+    ddg.function()
     invisible()
 }
 
@@ -216,7 +217,7 @@ multiplot <- function(..., plotlist = NULL, file, cols = 1, layout = NULL) {
         }
     }
     
-    ddg.procedure()
+    ddg.procedure(pname="multiplot")
 }
 #```
 

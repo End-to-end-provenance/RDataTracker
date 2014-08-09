@@ -31,6 +31,7 @@ invisible(force(startTime))
 require(methods)
 
 ## Directories
+# testDir <- "C:/GitHub/RDataTracker/examples/SivanSampling/"
 testDir <- "[DIR_DEFAULT]/"
 setwd(testDir)
 
@@ -95,10 +96,11 @@ setGeneric("getDistributionOfSpecies", function(object, index) {
 # name "newSpeciesDistribution".
 newSpeciesDistribution <- function(aCode, numOfSpecies, probabilityStr) {
 	ddg.start()
-	ddg.procedure(pname="bind probabilityStr", 
-			ins=list("probabilityStr"), 
-			outs.data=list("probabilityStr"))
-	
+	ddg.data(probabilityStr)
+  ddg.procedure(pname="bind probabilityStr",
+     ins=list("probabilityStr"),
+     outs.data=list("probabilityStr"))
+  
 	# <- is the syntax for an assignment statement in R.
 	newDist <- new("SpeciesDistributionAreas")
 	
@@ -222,7 +224,8 @@ addConstraintFun <- function (object, inP, inMin, inMax) {
 # If 0 is passed in for maxSampleSize, the default limit is used instead.
 # Returns a random integer to be used as the sample size
 raffleSampleSizeFun <- function(object, maxSampleSize) {
-	ddg.procedure(lookup.ins=TRUE)
+	# ddg.procedure(lookup.ins=TRUE)
+  ddg.function()
 	
 	# Use default maximum if none provided in the call.
 	if (maxSampleSize == 0) {
@@ -315,12 +318,13 @@ assignAreaFun <- function(object, inAreaCode, speciesDistributionAreas) {
 # Return updated SampleObj with sampeSizeDistObj set and nIndividuals set to a random size
 assignSizeDistPropertyFun <- function(object, inSampleSizeDist) {
 	object@sampleSizeDistObj <- inSampleSizeDist
+  ddg.data(sampleSizeDistributionMng)
 	ddg.procedure(pname="bind object@sampleSizeDistObj", 
 			# This is terrible.  Could be called with different arguments.
 			# How do we get the argument name through the method dispatch?
-			ins=list("sampleSizeDistributionMng"),  
-			outs.data=list("object@sampleSizeDistObj"))
-	
+	 	ins=list("sampleSizeDistributionMng"),  
+	 	outs.data=list("object@sampleSizeDistObj"))
+  
 	ddg.data("0", 0)
 	object@nIndividuals <- raffleSampleSize(object@sampleSizeDistObj, 0)
 	ddg.data.out(object@nIndividuals, pname="raffleSampleSize")
@@ -332,7 +336,8 @@ assignSizeDistPropertyFun <- function(object, inSampleSizeDist) {
 #	sample.  The total number of individuals is set earlier.  This function distributes those individuals
 #   across species.
 raffleIndividualsPerSampleFun <- function(object) {
-	ddg.procedure(lookup.ins=TRUE)
+	# ddg.procedure(lookup.ins=TRUE)
+  ddg.function()
 	if (getNumSpecies(object@speciesDistributionDef) == 0) return
 
 	speciesComposition <- new.env()
@@ -438,7 +443,8 @@ defineSamplesSizeDistribution <- function() {
 	sampleSizeDistributionMng <- addConstraint(sampleSizeDistributionMng, 0.045, 7, 9)
 	sampleSizeDistributionMng <- addConstraint(sampleSizeDistributionMng, 0.025, 10, 12)
 	sampleSizeDistributionMng <- addConstraint(sampleSizeDistributionMng, 0.007, 13, 20)
-	ddg.procedure(outs.data=list("sampleSizeDistributionMng"))
+	# ddg.procedure(outs.data=list("sampleSizeDistributionMng"))
+  ddg.function(outs.data=list("sampleSizeDistributionMng"))
 	
 	return(sampleSizeDistributionMng)
 }
@@ -447,7 +453,8 @@ defineSamplesSizeDistribution <- function() {
 # n - number of samples
 # Return the initalized samples.
 generateSamples <- function (n) {
-	ddg.procedure(lookup.ins=TRUE)
+	# ddg.procedure(lookup.ins=TRUE)
+  ddg.function()
 	samplesArr <- list()
 	for (ix in 1:n) {
 		samplesArr = c(samplesArr, new ("SampleObj", sampleCode = ix))
@@ -474,17 +481,17 @@ assignSampleData <- function(sampleInAreaStr, areaCode, speciesDistribution, sam
 # sampleSizeDistributionMng - SampleSizeDistribution defining probability of finding population of each size
 assignSamplesToArea <- function(areaStr, speciesDistribution, sampleSizeDistributionMng) {
 	ddg.start()
-	ddg.procedure(pname="bind areaStr", 
+	ddg.data(areaStr)
+  ddg.procedure(pname="bind areaStr", 
 			ins=list("areaStr"), 
 			outs.data=list("areaStr"))
-	
 
 	if (length(areaStr > 0)) {
 		# Parse the string:  <areaCode>:<sampleListStr>], where <sampleListStr> are comma-separated 
 		# sample information
 		colonPosition <- regexpr(":", areaStr, fixed=TRUE)
 		areaCode <- as.integer(substr(areaStr, 1, colonPosition - 1))
-		ddg.procedure(pname="extract areaCode", 
+    ddg.procedure(pname="extract areaCode", 
 				ins=list("areaStr"), 
 				outs.data=list("areaCode"))
 
@@ -497,8 +504,9 @@ assignSamplesToArea <- function(areaStr, speciesDistribution, sampleSizeDistribu
 		
 		if (!is.na(areaCode) && areaCode <= length(speciesDistribution)) {
 			# Assign sample information for each sample found in the string
-			ddg.procedure(pname="assign each sample", ins=list("samplesArr"))
-			lapply(tmpSamplesInArea, 
+      ddg.data(samplesArr)
+      ddg.procedure(pname="assign each sample", ins=list("samplesArr"))
+      lapply(tmpSamplesInArea, 
 					function(sampleInAreaStr) {
 #						ddg.procedure(pname="bind sampleInAreaStr", 
 #								ins=list("tmpSamplesInArea"), 
@@ -554,7 +562,8 @@ raffleSamplesToWorksheet <- function (wsName, title, totalNumOfSpecies, totalNum
 	# Write data
 	smplx <- 1
 	for (sample in samplesArr) {
-		ddg.procedure(pname="bind sample", 
+		ddg.data(samplesArr)
+    ddg.procedure(pname="bind sample", 
 				ins=list("samplesArr"), 
 				outs.data=list("sample"))
 		writeToFile(sample, smplx, fileConn, totalNumOfSample)

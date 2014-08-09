@@ -72,7 +72,7 @@ read.data <- function() {
   raw.data$gf <<- 0
   raw.data$gf.f <<- ""
 
-  ddg.procedure()
+  ddg.function()
   ddg.file(data.file)
   ddg.file(cal.file)
   ddg.file(qc.file)
@@ -87,18 +87,16 @@ read.data <- function() {
   ddg.data.in(start.date)
   ddg.data.in(end.date)
   ddg.data.in(variable)
-  ddg.data.out(raw.data)
   ddg.data.out(all.data)
   ddg.data.out(calibration.parameters)
   ddg.data.out(quality.control.parameters)
   ddg.data.out(gap.fill.parameters)
  
-  return(raw.data)
+  ddg.return(raw.data)
 }
 
-calibrate <- function(raw.data) {
+calibrate <- function(xx) {
   # correct for sensor drift using linear interpolation
-  xx <- raw.data
   date.start <- as.Date(calibration.parameters$start)
   date.finish <- as.Date(calibration.parameters$finish)
   days <- as.numeric(date.finish - date.start)
@@ -110,19 +108,15 @@ calibrate <- function(raw.data) {
       xx$cal.f[i] <- "C"
     }
   }
-  calibrated.data <- xx
   
-  ddg.procedure()
-  ddg.data.in(raw.data)
+  ddg.function()
   ddg.data.in(calibration.parameters)
-  ddg.data.out(calibrated.data)
 
-  return(calibrated.data)
+  ddg.return(xx)
 }
 
-quality.control <- function(calibrated.data) {
+quality.control <- function(xx) {
   # check for repeated values
-  xx <- calibrated.data
   repeats <- quality.control.parameters$repeats
   for (i in 1:data.rows) {
     if (is.na(xx$cal[i])) {
@@ -141,18 +135,15 @@ quality.control <- function(calibrated.data) {
       }
     }
   }
-  quality.controlled.data <- xx
   
-  ddg.procedure(lookup.ins=TRUE)
+  ddg.function()
   ddg.data.in(quality.control.parameters)
-  ddg.data.out(quality.controlled.data)
 
-  return(quality.controlled.data)
+  ddg.return(xx)
 }
 
-gap.fill <- function(quality.controlled.data) {
+gap.fill <- function(xx) {
   # estimate missing values from PAR values
-  xx <- quality.controlled.data
   slope <- gap.fill.parameters$slope
   for (i in 1:data.rows) {
     if (xx$qc.f[i]=="M" | xx$qc.f[i]=="Q") {
@@ -161,22 +152,19 @@ gap.fill <- function(quality.controlled.data) {
     }
     else {xx$gf[i] <- xx$qc[i]}
   }
-  gap.filled.data <- xx
   
-  ddg.procedure(lookup.ins=TRUE)
+  ddg.function()
   ddg.data.in(gap.fill.parameters)
-  ddg.data.in(all.data)
-  ddg.data.out(gap.filled.data)
 
-  return(gap.filled.data)
+  ddg.return(xx)
 }
 
-write.result <- function(gap.filled.data) {
+write.result <- function(gd) {
   file.name <- "processed-data.csv"
   file.out <- paste(getwd(),"/",file.name,sep="")
-  write.csv(gap.filled.data,file.out,row.names=FALSE)
+  write.csv(gd,file.out,row.names=FALSE)
 
-  ddg.procedure(lookup.ins=TRUE)
+  ddg.function()
   ddg.file.out(file.name)
 }
 
@@ -249,9 +237,7 @@ plot.data <- function(xx,v) {
 
   # copy jpeg file to DDG directory
   
-  ddg.procedure()
-  ddg.data(dname)
-  ddg.data.in(dname)
+  ddg.function()
   ddg.file.out(jname)
 }
 
@@ -262,28 +248,24 @@ main <- function() {
   ddg.start("main")
 
   ddg.start("get.data")
-  raw.data <<- read.data()
+  ddg.eval("raw.data <- read.data()")
   plot.data(raw.data,"R")
-
   ddg.finish("get.data")
 
   ddg.start("analyze.data")
 
   ddg.start("calibrate.data")
-  calibrated.data <<- calibrate(raw.data)
-  ddg.data(calibrated.data)
+  ddg.eval("calibrated.data <<- calibrate(raw.data)")
   plot.data(calibrated.data,"C")
   ddg.finish("calibrate.data")
 
   ddg.start("quality.control.data")
-  quality.controlled.data <<- quality.control(calibrated.data)
-  ddg.data(quality.controlled.data)
+  ddg.eval("quality.controlled.data <<- quality.control(calibrated.data)")
   plot.data(quality.controlled.data,"Q")
   ddg.finish("quality.control.data")
 
   ddg.start("gap.fill.data")
-  gap.filled.data <<- gap.fill(quality.controlled.data)
-  ddg.data(gap.filled.data)
+  ddg.eval("gap.filled.data <<- gap.fill(quality.controlled.data)")
   plot.data(gap.filled.data,"G")
   ddg.finish("gap.fill.data")
 

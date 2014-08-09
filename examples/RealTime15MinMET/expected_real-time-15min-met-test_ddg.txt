@@ -1,88 +1,88 @@
-Architecture="x86_64"
-OperatingSystem="unix"
+Architecture="i386"
+OperatingSystem="windows"
 Language="R"
-LanguageVersion="R version 3.1.0 Patched (2014-05-20 r65701)"
-RDataTrackerVersion="0.5.27"
-Script="[DIR]/real-time-15min-met-test.r"
-ProcessFileTimestamp="2014-07-28T16.28.38"
-WorkingDirectory="[DIR]"
-DDGDirectory="[DIR]/ddg"
-DateTime="2014-07-31T14.15.29"
+LanguageVersion="R version 3.1.1 (2014-07-10)"
+RDataTrackerVersion="0.5.36"
+Script="C:/GitHub/RDataTracker/examples/RealTime15MinMET/real-time-15min-met-test.r"
+ProcessFileTimestamp="2014-08-09T10.14.32EDT"
+WorkingDirectory="C:/GitHub/RDataTracker/examples/RealTime15MinMET"
+DDGDirectory="C:/GitHub/RDataTracker/examples/RealTime15MinMET/ddg"
+DateTime="2014-08-09T10.14.45EDT"
 18
 Data d1 "1-days" Value="10";
-Start p1 "1-Loop" Value="Loop";
+Start p1 "1-Loop" Value="Loop" Time="2014-08-09T10.14.44EDT";
 Data d2 "2-input" Value="\"airt\"";
-Binding p2 "2-zz  <-  final.data"
+Binding p2 "2-zz  <-  final.data" Time="2014-08-09T10.14.44EDT"
 CF p1 p2
-Snapshot d3 "3-zz" Value="[DIR]/ddg/3-zz.csv" Time="2014-07-31T14.15.25";
+Snapshot d3 "3-zz" Value="C:/GitHub/RDataTracker/examples/RealTime15MinMET/ddg/3-zz.csv" Time="2014-08-09T10.14.44EDT";
 DF p2 d3
-Binding p3 "3-v  <-  input"
+Binding p3 "3-v  <-  input" Time="2014-08-09T10.14.44EDT"
 CF p2 p3
 DF d2 p3
 Data d4 "4-v" Value="\"airt\"";
 DF p3 d4
-Binding p4 "4-d  <-  days"
+Binding p4 "4-d  <-  days" Time="2014-08-09T10.14.44EDT"
 CF p3 p4
 DF d1 p4
 Data d5 "5-d" Value="10";
 DF p4 d5
-Operation p5 "5-plot.data" Value="plot.data";
+Operation p5 "5-plot.data" Value="plot.data" Time="2014-08-09T10.14.44EDT";
 DF d3 p5
 DF d4 p5
 DF d5 p5
 CF p4 p5
-Finish p6 "6-Loop" Value="Loop";
+Finish p6 "6-Loop" Value="Loop" Time="2014-08-09T10.14.44EDT";
 CF p5 p6
-Start p7 "7-Loop" Value="Loop";
+Start p7 "7-Loop" Value="Loop" Time="2014-08-09T10.14.44EDT";
 CF p6 p7
 Data d6 "6-input" Value="\"dewp\"";
-Snapshot d7 "7-graphic" Value="[DIR]/ddg/7-graphic.jpeg" Time="2014-07-31T14.15.26";
+Snapshot d7 "7-graphic" Value="C:/GitHub/RDataTracker/examples/RealTime15MinMET/ddg/7-graphic.jpeg" Time="2014-08-09T10.14.45EDT";
 DF p6 d7
-Binding p8 "8-zz  <-  final.data"
+Binding p8 "8-zz  <-  final.data" Time="2014-08-09T10.14.45EDT"
 CF p7 p8
-Snapshot d8 "8-zz" Value="[DIR]/ddg/8-zz.csv" Time="2014-07-31T14.15.27";
+Snapshot d8 "8-zz" Value="C:/GitHub/RDataTracker/examples/RealTime15MinMET/ddg/8-zz.csv" Time="2014-08-09T10.14.45EDT";
 DF p8 d8
-Binding p9 "9-v  <-  input"
+Binding p9 "9-v  <-  input" Time="2014-08-09T10.14.45EDT"
 CF p8 p9
 DF d6 p9
 Data d9 "9-v" Value="\"dewp\"";
 DF p9 d9
-Binding p10 "10-d  <-  days"
+Binding p10 "10-d  <-  days" Time="2014-08-09T10.14.45EDT"
 CF p9 p10
 DF d1 p10
 Data d10 "10-d" Value="10";
 DF p10 d10
-Operation p11 "11-plot.data" Value="plot.data";
+Operation p11 "11-plot.data" Value="plot.data" Time="2014-08-09T10.14.45EDT";
 DF d8 p11
 DF d9 p11
 DF d10 p11
 CF p10 p11
-Finish p12 "12-Loop" Value="Loop";
+Finish p12 "12-Loop" Value="Loop" Time="2014-08-09T10.14.45EDT";
 CF p11 p12
-Start p13 "13-Loop" Value="Loop";
+Start p13 "13-Loop" Value="Loop" Time="2014-08-09T10.14.45EDT";
 CF p12 p13
 Data d11 "11-input" Value="\"wspd\"";
-Snapshot d12 "12-graphic" Value="[DIR]/ddg/12-graphic.jpeg" Time="2014-07-31T14.15.27";
+Snapshot d12 "12-graphic" Value="C:/GitHub/RDataTracker/examples/RealTime15MinMET/ddg/12-graphic.jpeg" Time="2014-08-09T10.14.45EDT";
 DF p12 d12
-Binding p14 "14-zz  <-  final.data"
+Binding p14 "14-zz  <-  final.data" Time="2014-08-09T10.14.45EDT"
 CF p13 p14
-Snapshot d13 "13-zz" Value="[DIR]/ddg/13-zz.csv" Time="2014-07-31T14.15.29";
+Snapshot d13 "13-zz" Value="C:/GitHub/RDataTracker/examples/RealTime15MinMET/ddg/13-zz.csv" Time="2014-08-09T10.14.45EDT";
 DF p14 d13
-Binding p15 "15-v  <-  input"
+Binding p15 "15-v  <-  input" Time="2014-08-09T10.14.45EDT"
 CF p14 p15
 DF d11 p15
 Data d14 "14-v" Value="\"wspd\"";
 DF p15 d14
-Binding p16 "16-d  <-  days"
+Binding p16 "16-d  <-  days" Time="2014-08-09T10.14.45EDT"
 CF p15 p16
 DF d1 p16
 Data d15 "15-d" Value="10";
 DF p16 d15
-Operation p17 "17-plot.data" Value="plot.data";
+Operation p17 "17-plot.data" Value="plot.data" Time="2014-08-09T10.14.45EDT";
 DF d13 p17
 DF d14 p17
 DF d15 p17
 CF p16 p17
-Finish p18 "18-Loop" Value="Loop";
+Finish p18 "18-Loop" Value="Loop" Time="2014-08-09T10.14.45EDT";
 CF p17 p18
 

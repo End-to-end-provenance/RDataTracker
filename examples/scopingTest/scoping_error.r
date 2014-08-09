@@ -26,7 +26,7 @@ ddg.init(ddg.r.script.path,
 
 sum <- function(x,y){
   z <- x + y
-  ddg.procedure(lookup.ins=TRUE,outs.data=list("z"))
+  ddg.function(outs.data=list("z"))
   return(z)
 }
 
