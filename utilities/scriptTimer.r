@@ -72,8 +72,7 @@ scriptTimer.main <- function(){
   rowResults$r.data.version <- as.factor(rowResults$r.data.version)
   
   # print output
-  print(rowResults)
-  str(rowResults)
+  print(warnings())
 
   # write output 
   setwd(paste0(base.dir, "/examples/_timingResults"))
@@ -84,5 +83,8 @@ scriptTimer.main <- function(){
 }
 
 options <- commandArgs(trailingOnly = TRUE)
-if ("execute" %in% options) scriptTimer.main()
+if ("execute" %in% options) {
+  scriptTimer.main()
+  if ("debug" %in% options) do.echo <<- TRUE
+}
 

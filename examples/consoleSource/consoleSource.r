@@ -38,8 +38,13 @@ ddg.source("source2.r", ignore.ddg.calls=FALSE, ignore.init=TRUE)
 # then script without them, where we ignore ddg.calls
 ddg.source("source3.r")
 
-# same script, but we DON'T ignore ddg.calls
-ddg.source("source3.r", ignore.ddg.calls=TRUE, ignore.init=TRUE)
+# same script, but we DON'T ignore ddg.calls (or init, but there's no init in the script)
+ddg.source("source3.r", ignore.ddg.calls=FALSE)
+
+# a script which we call with a local environment
+ddg.source("source4.r", local=T)
+
+# source which tets the local aspect of this thing!
 
 # another script, we ignore everything but do it all on a new environment
 # ddg.source("source4.r", local=baseenv())

@@ -1,18 +1,22 @@
 # import libraries
-library(ggplot2)
+library(xkcd)
 library(gridExtra)
 library(plyr)
+# library(extrafont)
 
 # DEFINE GLOBAL PARAMETERS
 
 # specified maximum length of x lables
 max.label.length = 18
 
+# load in the fonts we need
+# loadfonts(device = "postscript", quiet=TRUE)
+
 # set the working directory to source script if not already set as such
 # NOTE: If running from Ant, this does not need to be changed as Ant 
 #       automatically replaces it with the right location (ie, the path to the 
 #       RDataTracker directory)
-if (!exists("base.dir")) base.dir <- "D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker"
+if (!exists("base.dir")) base.dir <- "/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker"
 util.dir <- paste0(base.dir, "/utilities")
 test.dir <- paste0(base.dir, "/examples")
 setwd(util.dir)
@@ -179,7 +183,7 @@ plot.main <- function(outPath = "plots", inFile = NULL, fileNamePattern = NULL) 
                            "All" = results))
   
   time.units <- list("Fast" =  "sec", "Moderate" = "sec", "Slow"="min", 
-                     "Under One Minute" = "sec", "All" = "min")
+                     "Under One Minute" = "sec", "All" = "sec")
   time.units <- time.units[names(time.units) %in% names(sectioned.data)]
 
   # Start PLOTTING
@@ -227,13 +231,12 @@ plot.main <- function(outPath = "plots", inFile = NULL, fileNamePattern = NULL) 
   # in a subdirectory with fileNamePattern as the name of the directory and as
   # the name of the file, with suffix derived from the section of data plotted
   dir.create(presentables.dir, showWarnings=FALSE)
-  change.theme <- theme_update(axis.title.x = element_text(face="bold", size=10),
-                               axis.text.x = element_text(angle=10, size=10))
+  change.theme <- theme_update(axis.text.x = element_text(angle=12))
   for (i in 1:length(sectioned.data)) {
     pdf(paste0(presentables.dir, suffixes[[i]], fileNamePattern, ".pdf"))
-    grid.arrange(time.vs.script[[i]] + change.theme, 
-                 script.vs.script[[i]] + change.theme, 
-                 dir.vs.script[[i]] + change.theme,
+    grid.arrange(time.vs.script[[i]], 
+                 script.vs.script[[i]], 
+                 dir.vs.script[[i]],
                  ncol=1)
     dev.off()
   }

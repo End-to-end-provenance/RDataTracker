@@ -1290,14 +1290,16 @@ ddg.MAX_HIST_LINES <- 2^14
 # specifies the name for the collapsible node under which this DDG should be stored.
 # ignore.patterns is a vector of regular expression patterns. Any commands which match
 # any of these regular expressions will not be parsed (ie, no nodes will be created for them.)
+# Note that commands are only executed when both the environ variable is an environment and
+# when the run.commands is set to TRUE
 .ddg.parse.commands <- function(parsed.commands,environ=NULL, ignore.patterns=c('^ddg.'),
-                                        node.name="Console", echo=FALSE, print.eval = echo,
-                                        max.deparse.length = 150) {
+                                        node.name="Console", run.commands = FALSE, 
+                                        echo=FALSE, print.eval = echo, max.deparse.length = 150) {
 	# 
 	
 	# figure out if we will execute commands or not
-	#browser()
-	execute <- !is.null(environ) & is.environment(environ)
+
+  execute <- run.commands & !is.null(environ) & is.environment(environ)
 
 	# It is possidle that a command may extend over multiple lines. 
   # new.commands will have one string entry for each parsed command.
@@ -1387,9 +1389,9 @@ ddg.MAX_HIST_LINES <- 2^14
   				if (echo) {
   					nd <- nchar(cmd)
 						do.trunc <- nd > max.deparse.length
-            cmd.show <- substr(cmd, 1L, if (do.trunc) 
+            cmd.show <- paste0(substr(cmd, 1L, if (do.trunc) 
               max.deparse.length
-            else nd)
+            else nd), "\n")
 		        cat(cmd.show)
          	}
 
@@ -1406,7 +1408,7 @@ ddg.MAX_HIST_LINES <- 2^14
   				result <- eval(cmd.expr, environ, NULL)
 
   				# print evaluation
-  				if (print.eval) cat(result)
+  				if (print.eval) print(result)
 
   				# check if initialization call. If so, then create a new console node,
   				# but only if the next command is NOT a ddg command
@@ -1465,7 +1467,7 @@ ddg.MAX_HIST_LINES <- 2^14
   	# Create a data node for each variable that might have been set in 
   	# something other than a simple assignment, with an edge from the 
   	# last node in the console block or source 
-		if (!execute) .ddg.create.data.node.for.possible.writes(vars.set, last.proc.node)
+		if (!execute) .ddg.create.data.node.for.possible.writes(vars.set, last.proc.node, env=environ)
 	}
 
 	# close any node left open during execution
@@ -1486,15 +1488,21 @@ ddg.MAX_HIST_LINES <- 2^14
 	}
 
 	 # Write time stamp to history.
-	.ddg.write.timestamp.to.history()
+	if (.ddg.is.init()) .ddg.write.timestamp.to.history()
 	#print(paste("last.commad:",.ddg.get(".ddg.last.cmd")))
 	#print(paste("command:", .ddg.get(".ddg.possible.last.cmd")))
 
 }
 
 # .ddg.console.node creates a console node.
+# params: @ddg.history.file - the path to the history file which should be loaded
+#				: @ddg.history.timestamp - the timestamp from which history should be 
+#																	parsed (parsing begins at the next line)
+#				:@env - the environment under which the console commands were evaluated
+#								this is typically the global environment
 .ddg.console.node <- function(ddg.history.file=.ddg.get(".ddg.history.file"),
-                              ddg.history.timestamp=.ddg.get(".ddg.history.timestamp")) {
+                              ddg.history.timestamp=.ddg.get(".ddg.history.timestamp"),
+                              env = NULL) {
 	# Don't do anything if sourcing, because history isn't necessary in this case
 	if(.ddg.enable.source()) return(NULL)
 
@@ -1510,7 +1518,9 @@ ddg.MAX_HIST_LINES <- 2^14
 		parsed.commands <- .ddg.parse.lines(new.lines)
 
 		# new commands since last timestamp
-		if (!is.null(parsed.commands)) .ddg.parse.commands(parsed.commands)
+		if (!is.null(parsed.commands)) .ddg.parse.commands(parsed.commands, 
+		                                                   environ = env,
+		                                                   run.commands=FALSE)
 	}
 }
 
@@ -1705,10 +1715,22 @@ ddg.MAX_HIST_LINES <- 2^14
   # Get file name.
 	ddg.dnum <- .ddg.dnum()
 
+	# Determine if we should save the entire data
+	max.snapshot.size <- .ddg.get(".ddg.max.snapshot.size") 
+	if (max.snapshot.size > 0 && object.size(data) > max.snapshot.size) {
+		data <- head(data)
+		partial <- TRUE
+		snapname <- paste(dname, "-PARTIAL", sep="")
+	}
+	else {
+		partial <- FALSE
+		snapname <- dname
+	}
+	
 	# default file extensions
 	dfile <- 
-		if (fext == "" || is.null(fext)) paste(ddg.dnum, "-", dname, sep="")
-		else                             paste(ddg.dnum, "-", dname, ".", fext, sep="")
+		if (fext == "" || is.null(fext)) paste(ddg.dnum, "-", snapname, sep="")
+		else                             paste(ddg.dnum, "-", snapname, ".", fext, sep="")
 
 	# Get path plus file name.
 	ddg.path <- .ddg.path()
@@ -1747,8 +1769,8 @@ ddg.MAX_HIST_LINES <- 2^14
 	}
 
 	# check to see if we want to save the object
-  if (save.object) save(data, file = paste(dpfile, ".RObject"), ascii = TRUE)
-	
+	  if (save.object && !partial) save(data, file = paste(dpfile, ".RObject"), ascii = TRUE)
+  
 	dtime <- .ddg.timestamp()
 
 	# Get scope if necessary.
@@ -2373,7 +2395,7 @@ ddg.eval <- function(statement) {
 		return(invisible())
 	}
 	
-	.ddg.parse.commands(parsed.statement, environ=env, node.name=statement)
+	.ddg.parse.commands(parsed.statement, environ=env, run.commands = TRUE, node.name=statement)
     .ddg.link.function.returns(parsed.statement)
 
 	# Create outflowing edges 
@@ -2767,7 +2789,7 @@ ddg.grabhistory <- function() {
 # DDG should be saved. If not provided, the DDG will be saved in a 
 # subdirectory called "ddg" in the current working directory.
 
-ddg.init <- function(r.script.path = NULL, ddgdir = NULL, enable.console = TRUE) {
+ddg.init <- function(r.script.path = NULL, ddgdir = NULL, enable.console = TRUE, max.snapshot.size = -1) {
 	.ddg.init.tables()
 
 	.ddg.set("ddg.r.script.path", 
@@ -2779,6 +2801,7 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, enable.console = TRUE)
 	
 	# set environment constants
 	.ddg.set(".ddg.enable.console", enable.console)
+	.ddg.set(".ddg.max.snapshot.size", max.snapshot.size)
 	.ddg.init.environ()
 	
 	# mark graph as initilized
@@ -2820,8 +2843,8 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, enable.console = TRUE)
 # r.script.path is given, then the r script is sourced as a function and a DDG is
 # created for it.
 
-ddg.run <- function(r.script.path = NULL, ddgdir = NULL, f = NULL, enable.console = TRUE) {
-    ddg.init(r.script.path, ddgdir, enable.console)
+ddg.run <- function(r.script.path = NULL, ddgdir = NULL, f = NULL, enable.console = TRUE, max.snapshot.size = -1) {
+    ddg.init(r.script.path, ddgdir, enable.console, max.snapshot.size)
 	
     # If an R error is generated, get the error message and close 
     # the DDG.
@@ -2936,7 +2959,7 @@ ddg.source <- function (file, local = FALSE, echo = verbose, print.eval = echo,
       if (!is.logical(echo)) 
           stop("'echo' must be logical")
       if (!echo && verbose) {
-          warning("'verbose' is TRUE, 'echo' not; ... coercing 'echo <- TRUE'")
+          warning("'verbose' is TRUE, 'echo' not; ... coercing 'echo <- TRUE'\n")
           echo <- TRUE
       }
   }
@@ -3049,7 +3072,7 @@ ddg.source <- function (file, local = FALSE, echo = verbose, print.eval = echo,
 
   # Calculate the regular expressions for what should be ignored and what shouldn't
 	if (ignore.ddg.calls && !ignore.init) {
-		if(verbose) warning("'ignore.ddg.calls' is TRUE, 'ignore.int' not; ... coercion 'ignore.init <- TRUE'")
+		if(verbose) warning("'ignore.ddg.calls' is TRUE, 'ignore.int' not; ... coercion 'ignore.init <- TRUE'\n")
 		ignore.init <- TRUE
 	}
 
@@ -3077,9 +3100,10 @@ ddg.source <- function (file, local = FALSE, echo = verbose, print.eval = echo,
 
   	# parse the commands into a console node
   	.ddg.parse.commands(exprs, environ=envir, ignore.patterns=ignores, node.name=filename,
-  	                    echo = echo, print.eval = print.eval, max.deparse.length = max.deparse.length)
+  	                    echo = echo, print.eval = print.eval, max.deparse.length = max.deparse.length,
+  	                    run.commands = TRUE)
   	
-  	# save the DDG among other things, but don't return any values
+  	# save the DDG among other things, but don't return any values (TODO) should we do this?
   	ddg.save()
   	.ddg.set("from.source", prev.source)
 

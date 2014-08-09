@@ -15,9 +15,15 @@ time.histLineLim <- 500
 # command can be inserted.
 time.cmdLineLim <- 50
 
+## Keeps track of the number of timestamps we've printed (so we can differentiate)
+num.timeStamps <<- 0
+
 # specified the directory where all of our test scripts are found
 if (!exists("base.dir")) base.dir <- "D:/Users/Luis/Documents/Harvard School Work/Summer 2014/RDataTracker"
 if (!exists("test.dir")) test.dir <- paste0(base.dir,"/examples")
+
+# default value for echo is false
+do.echo <<- FALSE
 
 ### Function which initializes counter and working directory, as well as other
 #   global parameters
@@ -36,7 +42,8 @@ setInitialVal <- function(wd, base=test.dir){
 #   minimal instrumentation of DDG works correctly.
 .startHistory <- function(scriptPath){
   hist <- "" # paste("loadhistory('", scriptPath, "')",sep="")
-  myTimeStamp <<- paste0("##------ ", date(), " ------##")
+  myTimeStamp <<- paste0("##------ ", date(), " ------##", num.timeStamps)
+  num.timeStamps <<- num.timeStamps + 1
   return(paste(hist,myTimeStamp,sep="\n"))
 }
 
@@ -44,8 +51,21 @@ setInitialVal <- function(wd, base=test.dir){
 #   the current script file into history and into using the corrent myTimeStamp for
 #   that loading.
 .endHistory <- function(scriptPath){
-  cmd <- paste0(".ddg.console.node('", scriptPath, "','", myTimeStamp, "')")
-  return(cmd)
+  # get the environment
+  getEnv <- "env <- force(parent.frame(4))"
+
+  # create command to get history
+  cmd <- paste0("RDataTracker:::.ddg.console.node('", scriptPath, "','", myTimeStamp, "', env)")
+
+  # return the three commands
+  return(paste(getEnv, cmd, sep="\n"))
+}
+
+### Function which returns the appropriate set of commands to get the history from
+# this point until the last point it was obtained
+.grabHistory <- function(scriptPath = NULL){
+  if (is.null(scriptPath)) return("ddg.grabhistory()")
+  else return(paste(.endHistory(scriptPath), .startHistory(scriptPath), sep="\n"))
 }
 
 ### Function which returns the string of R code necessary at the beginning of a 
@@ -53,23 +73,19 @@ setInitialVal <- function(wd, base=test.dir){
 # @param scriptDir - a string for the directory of the script
 # @param ddgDirPath - a string for the path of the ddgDirectory
 startMinInst <- function(scriptPath,ddgDirPath, console=TRUE){
-  src <- paste0('source("', base.dir, '/R/RDataTracker.R")')
   lib <- "library(RDataTracker)"
-  rdt <- if (!is.na(console) && console) src else lib
-  hist <- if (!is.na(console) && console) .startHistory(scriptPath) else ""
   console.val <- as.character(!is.na(console))
   init <- paste0("ddg.init('", scriptPath, "','",ddgDirPath, "',enable.console=", console.val, ")")
   wd <- paste0("setwd('", getwd(), "')")
-  return(paste(rdt,init,hist,wd,sep="\n"))
+  return(paste(lib,init,wd,sep="\n"))
 }
 
 ### Function which returns the string of R code necessary at the end of a file 
 #   for minimal DDG instrumentation
 # If path is null, then simply ddg.save() is added at the end
 endMinInst <- function(scriptPath = NULL){
-  sourceSave <- if (!is.null(scriptPath)) .endHistory(scriptPath) else ""
   ddgSave <- "ddg.save(quit=TRUE)"
-  return(paste(sourceSave, ddgSave, sep="\n"))
+  return(paste(ddgSave, sep="\n"))
 }
 
 ### Function which returns whether or not the current line in the history is one
@@ -89,27 +105,25 @@ atSaveLocation <- function(histLineNum){
 #                  of previous non-single new characters] + 1)
 # @return - a modified string similar to line but which includes necessary
 #                 annotations for that line
-annotateLine <- function(line, histLineNum) {
+annotateLine <- function(line, histLineNum, scriptPath = NULL) {
   # we are at a save section and non-empty command 
   if (atSaveLocation(histLineNum) && line != ""){
     # add lines only if NOT splitting a command (more info in OneNote Book)
     tryCatch({
-      cmd = parse(text=line)
+      cmd <- parse(text=line)
 
       # we add time.corrLines to keep everything at within time.histLineLim even if we
       # insert at locations onether than histLineNum
       time.corrLines <<- time.histLineLim - histLineNum
-
-      grabHistory <- "ddg.grabhistory()"
-      return(paste(grabHistory, line,sep="\n"))  
+      grabHistory <- .grabHistory(scriptPath)
+      line <- paste(grabHistory, line,sep="\n")
     }, error = function(e){
-      # cannot parse line, so in middle of command
-      #warning(line, e)
       return(line)
-    }, warning = function(w){
-      #warning(line,w)
+    }, warning = function(e) {
       return(line)
-    }) 
+    }, finally = {
+      return(line)
+    })
   }
 
   # empty command or don't want to save
@@ -126,7 +140,7 @@ timeForEval <- function(file, from.source=FALSE) {
   src.fun <-  if (from.source) function(...){ddg.source(..., ignore.ddg.calls=F)}
               else source
 
-  src.fun(file, local = T, echo = F,verbose = F)
+  src.fun(file, local = T, echo = do.echo, verbose= do.echo, print.eval=F)
   endTime <- Sys.time()
   return(difftime(endTime, startTime,units="secs"))
 }
@@ -149,27 +163,34 @@ scriptInfo <- function(file, from.source=FALSE) {
 }
 
 ### Function: Read input file specified by the user into a single string 
-# @param
+# @param fileName - the name of the input file (really is the path)
+# @scriptPath - the path to the output file that will eventually be written
+#             we need to know this for the console trickery
 # $return - a string of the file specified by the user. The string is already
 #           annoted line by line, but nothing has been added before or after. 
 #           that is done by endMinInst and startMinInst. 
-readInput <- function(fileName) {
+readInput <- function(fileName, scriptPath) {
   histLineNum <- 1 # keeps tack of line number in context of the history file (ignore blank lines)
   lineNum <- 1 # keeps track of the actual line number
   strFile <- "" # constructes the file as a string
   time.corrLines <<- 0 # global correction lines
 
-  print(paste("Reading in file", fileName))
+  consoleStart <- if (!is.null(scriptPath)) .startHistory(scriptPath) else ""
   
   # we need for loop because lapply (and others) don't guarantee order
   for (line in readLines(fileName)){
-    strFile <- paste(strFile,annotateLine(line,histLineNum),sep="\n")
+    append <- as.character(annotateLine(line,histLineNum, scriptPath))
+    strFile <- paste(strFile,append,sep="\n")
 
     # updates
     histLineNum <- ifelse(line != "", histLineNum + 1, histLineNum)
     lineNum <- lineNum + 1
   }
-  return(strFile)
+
+  # add ending call to history
+  consoleSave <- if (!is.null(scriptPath)) .endHistory(scriptPath) else ""
+
+  return(paste(consoleStart, strFile, consoleSave, sep="\n"))
 }
 
 ### Function: Gets file name from the user and returns it as script. Accepts
@@ -194,16 +215,19 @@ getFilePath <- function(){
 }
 
 ### Function: Takes in the script specified by inp and annotates it minimally, then
-#   writes out the result to the filename specified by out
+#   writes out the result to the filename specified by out. If console=TRUE,
+#   the annotations also include special code to mimic console annotations
 writeMinInstr <- function(inp,out, console=TRUE){
-  # read input
-  expr <- if(!is.na(console) && console) readInput(inp) else paste(readLines(inp), collapse="\n") 
+  # read inpup
+  scriptPath <- paste0(getwd(),"/",out)
+
+  print(paste("Reading in file", inp))
+  expr <- if(!is.na(console) && console) readInput(inp, scriptPath) else paste(readLines(inp), collapse="\n") 
   
   # create minExpr
   ddgDirPath <- paste0(getwd(),  if (is.na(console)) "/ddg-annotated" 
                                 else if (console) "/ddg-min" 
                                 else "/ddg-source")
-  scriptPath <- paste0(getwd(),"/",out)
   minExpr <- paste0(startMinInst(scriptPath,ddgDirPath, console),"\n",expr,"\n",
                    endMinInst(if (is.na(console) || !console) NULL else scriptPath))
   
@@ -236,7 +260,6 @@ calcResults <- function(fileName) {
   dirs <- sapply(extns, function(x) {
     return(if (x != "-clean") paste0("ddg", x) else NA)
   })
-
   # get types
   types <- names(extns) 
 
@@ -288,6 +311,9 @@ calcResults <- function(fileName) {
   dFrame <- dFrame[c(8:5,1:4)]
   colnames(dFrame) <- c("Script.File", "Script.Group", "Script.Loc", "Type", "Execution.Time.min", "File.Size.kB",
                         "DDG.Dir.Loc.", "DDG.Dir.Size.kB")
+
+  # print the warnings each script might have raised
+  print(warnings())
   
   return(dFrame)
 
