@@ -1311,12 +1311,12 @@ ddg.MAX_HIST_LINES <- 2^14
 
 	# Create start and end nodes to allow collapsing of consecutive 
   # console nodes. Don't bother doing this if there is only 1 new 
-  # command in the histpry or execution.
+  # command in the history or execution.
   named.node.set <- FALSE
 	num.new.commands <- length(new.commands)
 	num.actual.commands <- length(filtered.commands)
 	# 
-	if (num.actual.commands > 0 && .ddg.is.init()) {
+	if (num.actual.commands > 0 && .ddg.is.init() && !.ddg.enable.source()) {
 		.ddg.add.abstract.node("Start", node.name)
 		named.node.set <- TRUE
 	}
@@ -2401,9 +2401,12 @@ ddg.eval <- function(statement) {
 	.ddg.statement <- list("abbrev" = .ddg.abbrev.cmd(gsub("\\\"", "\\\\\"", statement)), 
 					"expr" = parsed.statement,
 					"text" = statement)
-	
-	vars.set <- .ddg.find.var.assignments(.ddg.statement$expr)
-	.ddg.create.data.set.edges.for.cmd(vars.set, .ddg.statement$abbrev, .ddg.statement$expr, 1, stack=sys.calls())
+
+	# ddg.source does this, too, so don't do it here.
+	if (!.ddg.enable.source()) {
+		vars.set <- .ddg.find.var.assignments(.ddg.statement$expr)
+		.ddg.create.data.set.edges.for.cmd(vars.set, .ddg.statement$abbrev, .ddg.statement$expr, 1, stack=sys.calls())
+	}
 }
 
 # ddg.data creates a data node for a single or comple data value. 

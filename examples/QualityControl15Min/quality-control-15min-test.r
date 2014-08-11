@@ -221,7 +221,6 @@ save.data <- function(fn,xx) {
 ddg.start("main")
 
 ddg.start("get.data")
-
 #all.data <- read.data()
 ddg.eval("all.data <- read.data()")
 

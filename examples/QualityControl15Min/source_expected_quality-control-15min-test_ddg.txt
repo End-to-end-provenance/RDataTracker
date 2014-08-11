@@ -3,10 +3,10 @@ OperatingSystem="windows"
 Language="R"
 LanguageVersion="R version 3.0.1 (2013-05-16)"
 RDataTrackerVersion="0.5.36"
-Script="C:/GitHub/RDataTracker/examples/QualityControl15Min/quality-control-15min-test.r"
+Script="[DIR]/quality-control-15min-test.r"
 ProcessFileTimestamp="2014-08-08T16.26.40EDT"
-WorkingDirectory="C:/GitHub/RDataTracker/examples/QualityControl15Min"
-DDGDirectory="C:/GitHub/RDataTracker/examples/QualityControl15Min/ddg-source"
+WorkingDirectory="[DIR]"
+DDGDirectory="[DIR]/ddg-source"
 DateTime="2014-08-08T16.27.10EDT"
 84
 Operation p1 "1-read.data <- function() {    data.file <<- \"met-15min.csv\"" Value="read.data <- function() {    data.file <<- \"met-15min.csv\"" Time="2014-08-08T16.26.59EDT";
@@ -36,19 +36,19 @@ Start p8 "8-all.data <- read.data()" Value="all.data <- read.data()" Time="2014-
 CF p7 p8
 Operation p9 "9-read.data" Value="read.data" Time="2014-08-08T16.27.00EDT";
 CF p8 p9
-Snapshot d6 "6-read.data() return" Value="C:/GitHub/RDataTracker/examples/QualityControl15Min/ddg-source/6-read.data() return.csv" Time="2014-08-08T16.27.00EDT";
+Snapshot d6 "6-read.data() return" Value="[DIR]/ddg-source/6-read.data() return.csv" Time="2014-08-08T16.27.00EDT";
 DF p9 d6
 Finish p10 "10-all.data <- read.data()" Value="all.data <- read.data()" Time="2014-08-08T16.27.00EDT";
 CF p9 p10
 DF d6 p10
-Snapshot d7 "7-all.data" Value="C:/GitHub/RDataTracker/examples/QualityControl15Min/ddg-source/7-all.data.csv" Time="2014-08-08T16.27.01EDT";
+Snapshot d7 "7-all.data" Value="[DIR]/ddg-source/7-all.data.csv" Time="2014-08-08T16.27.01EDT";
 DF p10 d7
 Start p11 "11-selected.data <- select.data(all.data, variable, start.date," Value="selected.data <- select.data(all.data, variable, start.date," Time="2014-08-08T16.27.02EDT";
 CF p10 p11
 Binding p12 "12-zz  <-  all.data" Time="2014-08-08T16.27.02EDT"
 CF p11 p12
 DF d7 p12
-Snapshot d8 "8-zz" Value="C:/GitHub/RDataTracker/examples/QualityControl15Min/ddg-source/8-zz.csv" Time="2014-08-08T16.27.03EDT";
+Snapshot d8 "8-zz" Value="[DIR]/ddg-source/8-zz.csv" Time="2014-08-08T16.27.03EDT";
 DF p12 d8
 Binding p13 "13-v  <-  variable" Time="2014-08-08T16.27.03EDT"
 CF p12 p13
@@ -68,11 +68,11 @@ DF d9 p16
 DF d10 p16
 DF d11 p16
 CF p15 p16
-Snapshot d12 "12-select.data(all.data, variable, start.date, end.date) return" Value="C:/GitHub/RDataTracker/examples/QualityControl15Min/ddg-source/12-select.data(all.data, variable, start.date, end.date) return.csv" Time="2014-08-08T16.27.04EDT";
+Snapshot d12 "12-select.data(all.data, variable, start.date, end.date) return" Value="[DIR]/ddg-source/12-select.data(all.data, variable, start.date, end.date) return.csv" Time="2014-08-08T16.27.04EDT";
 DF p16 d12
 Finish p17 "17-selected.data <- select.data(all.data, variable, start.date," Value="selected.data <- select.data(all.data, variable, start.date," Time="2014-08-08T16.27.04EDT";
 CF p16 p17
-Snapshot d13 "13-selected.data" Value="C:/GitHub/RDataTracker/examples/QualityControl15Min/ddg-source/13-selected.data.csv" Time="2014-08-08T16.27.04EDT";
+Snapshot d13 "13-selected.data" Value="[DIR]/ddg-source/13-selected.data.csv" Time="2014-08-08T16.27.04EDT";
 DF p17 d13
 Finish p18 "18-get.data" Value="get.data" Time="2014-08-08T16.27.04EDT";
 CF p17 p18
@@ -80,7 +80,7 @@ Start p19 "19-analyze.data" Value="analyze.data" Time="2014-08-08T16.27.04EDT";
 CF p18 p19
 Operation p20 "20-inputs <- c(\"min\", \"max\", \"min\", \"slope\")" Value="inputs <- c(\"min\", \"max\", \"min\", \"slope\")" Time="2014-08-08T16.27.04EDT";
 CF p19 p20
-Snapshot d14 "14-inputs" Value="C:/GitHub/RDataTracker/examples/QualityControl15Min/ddg-source/14-inputs.csv" Time="2014-08-08T16.27.04EDT";
+Snapshot d14 "14-inputs" Value="[DIR]/ddg-source/14-inputs.csv" Time="2014-08-08T16.27.04EDT";
 DF p20 d14
 Operation p21 "21-num <- 10" Value="num <- 10" Time="2014-08-08T16.27.04EDT";
 CF p20 p21
@@ -94,7 +94,7 @@ Data d16 "16-test" Value="\"min\"";
 Binding p24 "24-xx  <-  selected.data" Time="2014-08-08T16.27.04EDT"
 CF p23 p24
 DF d13 p24
-Snapshot d17 "17-xx" Value="C:/GitHub/RDataTracker/examples/QualityControl15Min/ddg-source/17-xx.csv" Time="2014-08-08T16.27.04EDT";
+Snapshot d17 "17-xx" Value="[DIR]/ddg-source/17-xx.csv" Time="2014-08-08T16.27.04EDT";
 DF p24 d17
 Binding p25 "25-t  <-  test" Time="2014-08-08T16.27.04EDT"
 CF p24 p25
@@ -111,11 +111,11 @@ DF d17 p27
 DF d18 p27
 DF d19 p27
 CF p26 p27
-Snapshot d20 "20-apply.test(selected.data, test, num) return" Value="C:/GitHub/RDataTracker/examples/QualityControl15Min/ddg-source/20-apply.test(selected.data, test, num) return.csv" Time="2014-08-08T16.27.05EDT";
+Snapshot d20 "20-apply.test(selected.data, test, num) return" Value="[DIR]/ddg-source/20-apply.test(selected.data, test, num) return.csv" Time="2014-08-08T16.27.05EDT";
 DF p27 d20
 Binding p28 "28-xx  <-  flagged.data" Time="2014-08-08T16.27.05EDT"
 CF p27 p28
-Snapshot d21 "21-xx" Value="C:/GitHub/RDataTracker/examples/QualityControl15Min/ddg-source/21-xx.csv" Time="2014-08-08T16.27.05EDT";
+Snapshot d21 "21-xx" Value="[DIR]/ddg-source/21-xx.csv" Time="2014-08-08T16.27.05EDT";
 DF p28 d21
 Binding p29 "29-t  <-  test" Time="2014-08-08T16.27.05EDT"
 CF p28 p29
@@ -145,7 +145,7 @@ Data d25 "25-test" Value="\"max\"";
 Binding p35 "35-xx  <-  selected.data" Time="2014-08-08T16.27.05EDT"
 CF p34 p35
 DF d13 p35
-Snapshot d26 "26-xx" Value="C:/GitHub/RDataTracker/examples/QualityControl15Min/ddg-source/26-xx.csv" Time="2014-08-08T16.27.05EDT";
+Snapshot d26 "26-xx" Value="[DIR]/ddg-source/26-xx.csv" Time="2014-08-08T16.27.05EDT";
 DF p35 d26
 Binding p36 "36-t  <-  test" Time="2014-08-08T16.27.05EDT"
 CF p35 p36
@@ -162,13 +162,13 @@ DF d26 p38
 DF d27 p38
 DF d28 p38
 CF p37 p38
-Snapshot d29 "29-apply.test(selected.data, test, num) return" Value="C:/GitHub/RDataTracker/examples/QualityControl15Min/ddg-source/29-apply.test(selected.data, test, num) return.csv" Time="2014-08-08T16.27.06EDT";
+Snapshot d29 "29-apply.test(selected.data, test, num) return" Value="[DIR]/ddg-source/29-apply.test(selected.data, test, num) return.csv" Time="2014-08-08T16.27.06EDT";
 DF p38 d29
-Snapshot d30 "30-graphic" Value="C:/GitHub/RDataTracker/examples/QualityControl15Min/ddg-source/30-graphic.jpeg" Time="2014-08-08T16.27.06EDT";
+Snapshot d30 "30-graphic" Value="[DIR]/ddg-source/30-graphic.jpeg" Time="2014-08-08T16.27.06EDT";
 DF p38 d30
 Binding p39 "39-xx  <-  flagged.data" Time="2014-08-08T16.27.06EDT"
 CF p38 p39
-Snapshot d31 "31-xx" Value="C:/GitHub/RDataTracker/examples/QualityControl15Min/ddg-source/31-xx.csv" Time="2014-08-08T16.27.06EDT";
+Snapshot d31 "31-xx" Value="[DIR]/ddg-source/31-xx.csv" Time="2014-08-08T16.27.06EDT";
 DF p39 d31
 Binding p40 "40-t  <-  test" Time="2014-08-08T16.27.06EDT"
 CF p39 p40
@@ -198,7 +198,7 @@ Data d35 "35-test" Value="\"min\"";
 Binding p46 "46-xx  <-  selected.data" Time="2014-08-08T16.27.06EDT"
 CF p45 p46
 DF d13 p46
-Snapshot d36 "36-xx" Value="C:/GitHub/RDataTracker/examples/QualityControl15Min/ddg-source/36-xx.csv" Time="2014-08-08T16.27.06EDT";
+Snapshot d36 "36-xx" Value="[DIR]/ddg-source/36-xx.csv" Time="2014-08-08T16.27.06EDT";
 DF p46 d36
 Binding p47 "47-t  <-  test" Time="2014-08-08T16.27.06EDT"
 CF p46 p47
@@ -215,13 +215,13 @@ DF d36 p49
 DF d37 p49
 DF d38 p49
 CF p48 p49
-Snapshot d39 "39-apply.test(selected.data, test, num) return" Value="C:/GitHub/RDataTracker/examples/QualityControl15Min/ddg-source/39-apply.test(selected.data, test, num) return.csv" Time="2014-08-08T16.27.07EDT";
+Snapshot d39 "39-apply.test(selected.data, test, num) return" Value="[DIR]/ddg-source/39-apply.test(selected.data, test, num) return.csv" Time="2014-08-08T16.27.07EDT";
 DF p49 d39
-Snapshot d40 "40-graphic" Value="C:/GitHub/RDataTracker/examples/QualityControl15Min/ddg-source/40-graphic.jpeg" Time="2014-08-08T16.27.07EDT";
+Snapshot d40 "40-graphic" Value="[DIR]/ddg-source/40-graphic.jpeg" Time="2014-08-08T16.27.07EDT";
 DF p49 d40
 Binding p50 "50-xx  <-  flagged.data" Time="2014-08-08T16.27.07EDT"
 CF p49 p50
-Snapshot d41 "41-xx" Value="C:/GitHub/RDataTracker/examples/QualityControl15Min/ddg-source/41-xx.csv" Time="2014-08-08T16.27.07EDT";
+Snapshot d41 "41-xx" Value="[DIR]/ddg-source/41-xx.csv" Time="2014-08-08T16.27.07EDT";
 DF p50 d41
 Binding p51 "51-t  <-  test" Time="2014-08-08T16.27.07EDT"
 CF p50 p51
@@ -251,7 +251,7 @@ Data d45 "45-test" Value="\"slope\"";
 Binding p57 "57-xx  <-  selected.data" Time="2014-08-08T16.27.07EDT"
 CF p56 p57
 DF d13 p57
-Snapshot d46 "46-xx" Value="C:/GitHub/RDataTracker/examples/QualityControl15Min/ddg-source/46-xx.csv" Time="2014-08-08T16.27.08EDT";
+Snapshot d46 "46-xx" Value="[DIR]/ddg-source/46-xx.csv" Time="2014-08-08T16.27.08EDT";
 DF p57 d46
 Binding p58 "58-t  <-  test" Time="2014-08-08T16.27.08EDT"
 CF p57 p58
@@ -268,13 +268,13 @@ DF d46 p60
 DF d47 p60
 DF d48 p60
 CF p59 p60
-Snapshot d49 "49-apply.test(selected.data, test, num) return" Value="C:/GitHub/RDataTracker/examples/QualityControl15Min/ddg-source/49-apply.test(selected.data, test, num) return.csv" Time="2014-08-08T16.27.08EDT";
+Snapshot d49 "49-apply.test(selected.data, test, num) return" Value="[DIR]/ddg-source/49-apply.test(selected.data, test, num) return.csv" Time="2014-08-08T16.27.08EDT";
 DF p60 d49
-Snapshot d50 "50-graphic" Value="C:/GitHub/RDataTracker/examples/QualityControl15Min/ddg-source/50-graphic.jpeg" Time="2014-08-08T16.27.08EDT";
+Snapshot d50 "50-graphic" Value="[DIR]/ddg-source/50-graphic.jpeg" Time="2014-08-08T16.27.08EDT";
 DF p60 d50
 Binding p61 "61-xx  <-  flagged.data" Time="2014-08-08T16.27.08EDT"
 CF p60 p61
-Snapshot d51 "51-xx" Value="C:/GitHub/RDataTracker/examples/QualityControl15Min/ddg-source/51-xx.csv" Time="2014-08-08T16.27.09EDT";
+Snapshot d51 "51-xx" Value="[DIR]/ddg-source/51-xx.csv" Time="2014-08-08T16.27.09EDT";
 DF p61 d51
 Binding p62 "62-t  <-  test" Time="2014-08-08T16.27.09EDT"
 CF p61 p62
@@ -304,7 +304,7 @@ DF d20 p67
 DF d29 p67
 DF d39 p67
 DF d49 p67
-Snapshot d55 "55-flagged.data" Value="C:/GitHub/RDataTracker/examples/QualityControl15Min/ddg-source/55-flagged.data.csv" Time="2014-08-08T16.27.09EDT";
+Snapshot d55 "55-flagged.data" Value="[DIR]/ddg-source/55-flagged.data.csv" Time="2014-08-08T16.27.09EDT";
 DF p67 d55
 Start p68 "68-save.results" Value="save.results" Time="2014-08-08T16.27.09EDT";
 CF p67 p68
@@ -317,24 +317,24 @@ DF p70 d56
 Binding p71 "71-xx  <-  flagged.data" Time="2014-08-08T16.27.09EDT"
 CF p70 p71
 DF d55 p71
-Snapshot d57 "57-xx" Value="C:/GitHub/RDataTracker/examples/QualityControl15Min/ddg-source/57-xx.csv" Time="2014-08-08T16.27.09EDT";
+Snapshot d57 "57-xx" Value="[DIR]/ddg-source/57-xx.csv" Time="2014-08-08T16.27.09EDT";
 DF p71 d57
 Operation p72 "72-save.data" Value="save.data" Time="2014-08-08T16.27.09EDT";
 DF d56 p72
 DF d57 p72
 CF p71 p72
-File d58 "58-flagged-data.csv" Value="C:/GitHub/RDataTracker/examples/QualityControl15Min/ddg-source/58-flagged-data.csv" Time="2014-08-08T16.27.09EDT" Location="C:/GitHub/RDataTracker/examples/QualityControl15Min/flagged-data.csv";
+File d58 "58-flagged-data.csv" Value="[DIR]/ddg-source/58-flagged-data.csv" Time="2014-08-08T16.27.09EDT" Location="[DIR]/flagged-data.csv";
 DF p72 d58
 Finish p73 "73-save.data(\"flagged-data.csv\", flagged.data)" Value="save.data(\"flagged-data.csv\", flagged.data)" Time="2014-08-08T16.27.09EDT";
 CF p72 p73
-Snapshot d59 "59-graphic" Value="C:/GitHub/RDataTracker/examples/QualityControl15Min/ddg-source/59-graphic.jpeg" Time="2014-08-08T16.27.10EDT";
+Snapshot d59 "59-graphic" Value="[DIR]/ddg-source/59-graphic.jpeg" Time="2014-08-08T16.27.10EDT";
 DF p73 d59
 Start p74 "74-plot.data(flagged.data, test, num, \"file\")" Value="plot.data(flagged.data, test, num, \"file\")" Time="2014-08-08T16.27.10EDT";
 CF p73 p74
 Binding p75 "75-xx  <-  flagged.data" Time="2014-08-08T16.27.10EDT"
 CF p74 p75
 DF d55 p75
-Snapshot d60 "60-xx" Value="C:/GitHub/RDataTracker/examples/QualityControl15Min/ddg-source/60-xx.csv" Time="2014-08-08T16.27.10EDT";
+Snapshot d60 "60-xx" Value="[DIR]/ddg-source/60-xx.csv" Time="2014-08-08T16.27.10EDT";
 DF p75 d60
 Binding p76 "76-t  <-  test" Time="2014-08-08T16.27.10EDT"
 CF p75 p76
@@ -356,7 +356,7 @@ DF d61 p79
 DF d62 p79
 DF d63 p79
 CF p78 p79
-File d64 "64-graph.jpeg" Value="C:/GitHub/RDataTracker/examples/QualityControl15Min/ddg-source/64-graph.jpeg" Time="2014-08-08T16.27.10EDT" Location="C:/GitHub/RDataTracker/examples/QualityControl15Min/graph.jpeg";
+File d64 "64-graph.jpeg" Value="[DIR]/ddg-source/64-graph.jpeg" Time="2014-08-08T16.27.10EDT" Location="[DIR]/graph.jpeg";
 DF p79 d64
 Finish p80 "80-plot.data(flagged.data, test, num, \"file\")" Value="plot.data(flagged.data, test, num, \"file\")" Time="2014-08-08T16.27.10EDT";
 CF p79 p80
