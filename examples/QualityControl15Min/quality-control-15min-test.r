@@ -32,11 +32,17 @@ startTime <- Sys.time()
 invisible(force(startTime))
 
 ## Directories
-testDir <- "[DIR_DEFAULT]/"
-setwd(testDir)
+if (interactive()) {
+  testDir <- getwd()
+  ddgDir <- "ddg"
+} else {
+  testDir <- "[DIR_DEFAULT]"
+  setwd(testDir)
+  ddgDir <- "[DDG-DIR]"
+}
 
-ddg.r.script.path = paste(testDir,"quality-control-15min-test.r",sep="")
-ddg.path = paste(testDir,"[DDG-DIR]",sep="")
+ddg.r.script.path = paste(testDir,"quality-control-15min-test.r",sep="/")
+ddg.path = paste(testDir,ddgDir,sep="/")
 
 ddg.init(ddg.r.script.path,
          ddg.path,
@@ -216,7 +222,8 @@ ddg.start("main")
 
 ddg.start("get.data")
 
-all.data <- read.data()
+#all.data <- read.data()
+ddg.eval("all.data <- read.data()")
 
 selected.data <- select.data(all.data,variable,start.date,end.date)
 

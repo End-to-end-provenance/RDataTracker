@@ -1077,19 +1077,18 @@ ddg.MAX_HIST_LINES <- 2^14
 # simple assignment.  An edge is created from the last node in the 
 # console block.
 
-.ddg.create.data.node.for.possible.writes <- function (vars.set, last.command) {
-
+.ddg.create.data.node.for.possible.writes <- function (vars.set, last.command, env= NULL) {
+	environment <- if (is.environment(env)) env else .GlobalEnv
 	for (i in 1:nrow(vars.set)) {
 		if (vars.set$possible.last.writer[i] > vars.set$last.writer[i]) {
-			value <- tryCatch(eval(parse(text=vars.set$variable[i]), .GlobalEnv),
+			value <- tryCatch(eval(parse(text=vars.set$variable[i]), environment),
 					error = function(e) {NULL}
 			)
-			
-			# Only create the node and edge if we were successful in 
-      # looking up the value.
+# Only create the node and edge if we were successful in
+# looking up the value.
 			if (!is.null(value)) {
-				.ddg.data.node("Data", vars.set$variable[i], value, environmentName(.GlobalEnv))
-				.ddg.proc2data(last.command, vars.set$variable[i], environmentName(.GlobalEnv))
+				.ddg.data.node("Data", vars.set$variable[i], value, environmentName(environment))
+				.ddg.proc2data(last.command, vars.set$variable[i], environmentName(environment))
 			}
 		}
 	}
@@ -1173,7 +1172,7 @@ ddg.MAX_HIST_LINES <- 2^14
 	# been used yet.
 	returns <- .ddg.get(".ddg.return.values")
 	unused.returns <- returns[!returns$return.used & returns$return.node.id > 0, ]
-    if (nrow(unused.returns) == 0) return()
+	if (nrow(unused.returns) == 0) return()
 	
 	# See which of these are called from the command we are processing now
 	unused.calls <- unused.returns$ddg.call
@@ -1296,7 +1295,7 @@ ddg.MAX_HIST_LINES <- 2^14
                                         node.name="Console", run.commands = FALSE, 
                                         echo=FALSE, print.eval = echo, max.deparse.length = 150) {
 	# 
-	
+  
 	# figure out if we will execute commands or not
 
   execute <- run.commands & !is.null(environ) & is.environment(environ)
@@ -1445,7 +1444,7 @@ ddg.MAX_HIST_LINES <- 2^14
 					}
 
 					.ddg.create.data.use.edges.for.console.cmd(vars.set, cmd.abbrev, cmd.expr, i)
-					.ddg.link.function.returns(cmd.expr)
+					.ddg.link.function.returns(cmd.text)
 					
 					if (.ddg.debug()) print(paste(".ddg.parse.console.node: Adding input data nodes for", cmd.abbrev))
 					.ddg.create.data.set.edges.for.console.cmd(vars.set, cmd.abbrev, cmd.expr, i)
@@ -1456,7 +1455,7 @@ ddg.MAX_HIST_LINES <- 2^14
 
 				###### TODO #######
 				if (execute) {
-					.ddg.create.data.node.for.possible.writes(vars.set, last.proc.node)
+					.ddg.create.data.node.for.possible.writes(vars.set, last.proc.node, env=environ)
 
 					# update so we don't set these again
 					vars.set$possible.last.writer <- vars.set$last.writer
@@ -2396,7 +2395,7 @@ ddg.eval <- function(statement) {
 	}
 	
 	.ddg.parse.commands(parsed.statement, environ=env, run.commands = TRUE, node.name=statement)
-    .ddg.link.function.returns(parsed.statement)
+	.ddg.link.function.returns(statement)
 
 	# Create outflowing edges 
 	.ddg.statement <- list("abbrev" = .ddg.abbrev.cmd(gsub("\\\"", "\\\\\"", statement)), 
