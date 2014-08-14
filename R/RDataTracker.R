@@ -209,9 +209,6 @@ ddg.MAX_HIST_LINES <- 2^14
   
   # console is disabled
   .ddg.set(".ddg.enable.console", TRUE)
-  
-  # not currently inside a call to ddg.eval
-  #.ddg.set(".ddg.in.ddg.eval", FALSE)
 }
 
 # Wrrapper to easily change history lines during execution of script
@@ -1253,7 +1250,6 @@ ddg.MAX_HIST_LINES <- 2^14
 .ddg.open.new.command.node <- function(called=".ddg.parse.commands") {
   new.command <- .ddg.get(".ddg.possible.last.cmd")
   if (!is.null(new.command)) {
-    #print(sys.calls())
     .ddg.add.abstract.node("Start", new.command$abbrev, called=paste(called, "-> .ddg.open.new.command.node"))
     
     # Now the new command becomes the last command, and new command is null
@@ -1302,47 +1298,11 @@ ddg.MAX_HIST_LINES <- 2^14
   # 
   # figure out if we will execute commands or not
   execute <- run.commands & !is.null(environ) & is.environment(environ)
-  #print(paste(".ddg.parse.commands: execute = ", execute))
 
   # It is possidle that a command may extend over multiple lines. 
   # new.commands will have one string entry for each parsed command.
   
-#  parsed.commands <- lapply(parsed.commands, 
-#      function(cmd) {
-#        if (.ddg.enable.source() && grepl("^ddg.eval", cmd)) {
-#          # Turn the ddg.eval call into a string
-#          deparsed.cmd <- deparse(cmd)
-#          #print(paste("deparsed cmd = ", deparsed.cmd))
-#          
-#          # Extract the argument passed to ddg.eval
-#          deparsed.cmd <- sub("ddg.eval[:space:]*\\([:space:]*\"", "", deparsed.cmd)
-#          #print(paste("deparsed cmd after removing ddg.eval from front = ", deparsed.cmd))
-#          deparsed.cmd <- sub("\"[:space:]*)", "", deparsed.cmd)
-#          #print(paste("deparsed cmd after removing end = ", deparsed.cmd))
-#          
-#          # Parse the expression to ve evaluated
-#          cmd <- parse(text=deparsed.cmd)
-#          
-#          # Parse gives us an expression.  We need to extract the first element
-#          # to return
-#          cmd <- cmd[[1]]
-#          #print(paste("modified cmd =", cmd))
-#          #print(paste("str(modified cmd) ="), str(cmd))
-#          #print(paste("is.call(modified cmd) =", is.call(cmd)))
-#        }
-##        else {
-##          print(paste("non eval cmd =", cmd))
-##          print(paste("str(non eval cmd =", str(cmd)))
-##          print(paste("is.call(non eval cmd) =", is.call(cmd)))
-##        }
-#        return(cmd)
-#      })
-  new.commands <- lapply(parsed.commands, 
-      function(cmd) {
-        new.command <- paste(deparse(cmd), collapse="")
-        #print(paste("new.command =", new.command))
-        return(new.command)
-      })
+	new.commands <- lapply(parsed.commands, function(cmd) {paste(deparse(cmd), collapse="")})
   filtered.commands <- Filter(function(x){return(!grepl("^ddg.", x))}, new.commands)
   
   # attempt to close the previous collapsible command node if a ddg exists
@@ -1354,12 +1314,8 @@ ddg.MAX_HIST_LINES <- 2^14
   named.node.set <- FALSE
   num.new.commands <- length(new.commands)
   num.actual.commands <- length(filtered.commands)
-  #print(sys.calls())
-  #print(paste(".ddg.parse.commands: new.commands =", new.commands))
-  #print(paste(".ddg.parse.commands: filtered.commands =", filtered.commands))
   # 
   if (num.actual.commands > 0 && .ddg.is.init()) {
-    #print(".ddg.parse.commands calling .ddg.add.abstract.node")
     .ddg.add.abstract.node("Start", node.name)
     named.node.set <- TRUE
   }
@@ -1420,28 +1376,16 @@ ddg.MAX_HIST_LINES <- 2^14
       
       if (.ddg.enable.source() && grepl("^ddg.eval", cmd.expr) && .ddg.enable.console()) {
         # Turn the ddg.eval call into a string
-        #deparsed.cmd <- deparse(cmd)
         deparsed.cmd <- cmd.text
-        #print(paste("deparsed cmd = ", deparsed.cmd))
         
         # Extract the argument passed to ddg.eval
         deparsed.cmd <- sub("ddg.eval[:space:]*\\([:space:]*\"", "", deparsed.cmd)
-        #print(paste("deparsed cmd after removing ddg.eval from front = ", deparsed.cmd))
         deparsed.cmd <- sub("\"[:space:]*)", "", deparsed.cmd)
-        #print(paste("deparsed cmd after removing end = ", deparsed.cmd))
         
         # Parse the expression to ve evaluated
         cmd.expr <- parse(text=deparsed.cmd)[[1]]
         cmd.text <- deparsed.cmd
         cmd <- gsub("\\\"", "\\\\\"", cmd.text)
-        
-        
-        # Parse gives us an expression.  We need to extract the first element
-        # to return
-        #cmd <- cmd[[1]]
-        #print(paste("modified cmd =", cmd))
-        #print(paste("str(modified cmd) ="), str(cmd))
-        #print(paste("is.call(modified cmd) =", is.call(cmd)))
       }
       
       
@@ -1450,8 +1394,6 @@ ddg.MAX_HIST_LINES <- 2^14
       # be created.
       
       create <- !grepl("^ddg.", cmd) && .ddg.is.init() && .ddg.enable.console()
-      #print(paste("ddg.parse.commands: cmd =", cmd.text))
-      #print(paste("create =", create))
       
       # if the command does not match one of the ignored patterns
       if (!any(sapply(ignore.patterns, function(pattern){grepl(pattern, cmd)}))) {
@@ -1480,14 +1422,8 @@ ddg.MAX_HIST_LINES <- 2^14
                     "expr"=cmd.expr, "text"=cmd.text))
           }
           else if (.ddg.is.procedure.cmd(cmd)) .ddg.set(".ddg.possible.last.cmd", NULL)
-#           if (.ddg.is.procedure.cmd(cmd)) .ddg.set(".ddg.possible.last.cmd", NULL)
-#           else if (!grepl("^ddg.", cmd)) {
-#             .ddg.set(".ddg.possible.last.cmd", list("abbrev"=cmd.abbrev,
-#                    "expr"=cmd.expr, "text"=cmd.text))
-#           }
           
           # evaluate
-          # print(paste("Executing ", cmd.text))
           result <- eval(cmd.expr, environ, NULL)
           
           # print evaluation
@@ -1507,28 +1443,7 @@ ddg.MAX_HIST_LINES <- 2^14
         # that the last command is set, is not null, and is equal to the current
         
         create.procedure <- create && !(!is.null(.ddg.get(".ddg.last.cmd")) && 
-#              .ddg.get(".ddg.last.cmd")$expr == cmd.expr)
                .ddg.get(".ddg.last.cmd")$text == cmd.text)
-         #print(paste("create.procedure =", create.procedure))
-#        create.procedure <- create && !(!is.null(.ddg.last.cmd) && 
-#              .ddg.last.cmd$expr == cmd.expr)
-#        print(paste(".ddg.last.cmd$expr =", .ddg.get(".ddg.last.cmd")$expr))
-#        print(paste("cmd.expr =", cmd.expr))
-#        print(paste(".ddg.last.cmd$text =", .ddg.get(".ddg.last.cmd")$text))
-#        print(paste("cmd.text =", cmd.text))
-#        if (!is.null(.ddg.get(".ddg.last.cmd"))) {
-#          print(paste("expr Equal?", .ddg.get(".ddg.last.cmd")$expr == cmd.expr))
-#          print(paste("text Equal?", .ddg.get(".ddg.last.cmd")$text == cmd.text))
-#          print(paste("is.null(.ddg.get(\".ddg.last.cmd\")) =", is.null(.ddg.get(".ddg.last.cmd")), "   expecting FALSE"))
-#          print(paste("!is.null(.ddg.get(\".ddg.last.cmd\")) =", !is.null(.ddg.get(".ddg.last.cmd")), "   expecting TRUE"))
-#          print(paste(".ddg.get(\".ddg.last.cmd\")$expr == cmd.expr", .ddg.get(".ddg.last.cmd")$expr == cmd.expr, "   expecting TRUE"))
-#          print(paste("(!is.null(.ddg.get(\".ddg.last.cmd\")) && .ddg.get(\".ddg.last.cmd\")$expr == cmd.expr)", (!is.null(.ddg.get(".ddg.last.cmd")) && 
-#                .ddg.get(".ddg.last.cmd")$expr == cmd.expr), "   expecting TRUE"))
-#          print(paste("!(!is.null(.ddg.get(\".ddg.last.cmd\")) && .ddg.get(\".ddg.last.cmd\")$expr == cmd.expr)", !(!is.null(.ddg.get(".ddg.last.cmd")) && 
-#                .ddg.get(".ddg.last.cmd")$expr == cmd.expr), "   expecting FALSE"))
-#          print(paste("create.procedure =", create.procedure, "   expecting FALSE"))
-#  
-#        }
         
         # we want to create a procedure node for this command
         if (create.procedure) {
@@ -1584,9 +1499,8 @@ ddg.MAX_HIST_LINES <- 2^14
   }
   
   # Open up a new collapsible node in case we need to parse further later
-  if (!execute && !named.node.set) {
-    #print(sys.calls())
-    #print(".ddg.parse.commands calling .ddg.open.new.command.node")
+  if (!execute) {
+		
     .ddg.set(".ddg.possible.last.cmd", .ddg.last.cmd)
     .ddg.set(".ddg.last.cmd", .ddg.last.cmd)
     .ddg.open.new.command.node()
@@ -1640,7 +1554,6 @@ ddg.MAX_HIST_LINES <- 2^14
 
     if(!console) {
       # we're sourcing, so regardless of interactivity, capcture commands
-      #if (.ddg.enable.source() && !.ddg.get(".ddg.in.ddg.eval")) {
       if (.ddg.enable.source()) {
         .ddg.close.last.command.node(called=".ddg.proc.node")
         .ddg.open.new.command.node(called=".ddg.proc.node")
@@ -1675,7 +1588,6 @@ ddg.MAX_HIST_LINES <- 2^14
   .ddg.record.proc(ptype, pname, pvalue)
   
   if (.ddg.debug()) print(paste("proc.node:", ptype, pname))
-  #print(sys.calls())
 }
 
 # .ddg.replace.quotes quotes quotation characters. It also replaces 
@@ -2502,10 +2414,7 @@ ddg.eval <- function(statement) {
     return(invisible())
   }
   
-  #.ddg.set(".ddg.in.ddg.eval", TRUE)
   .ddg.parse.commands(parsed.statement, environ=env, run.commands = TRUE, node.name=statement)
-  # Tried the following.  Also tried passing FALSE.  Return Test fails in these cases.
-  #.ddg.parse.commands(parsed.statement, environ=env, run.commands = !.ddg.enable.source(), node.name=statement)
   .ddg.link.function.returns(statement)
   
   # Create outflowing edges 
@@ -2513,12 +2422,9 @@ ddg.eval <- function(statement) {
       "expr" = parsed.statement,
       "text" = statement)
   
-   # if (!.ddg.enable.source()) {
-      vars.set <- .ddg.find.var.assignments(.ddg.statement$expr)
-      .ddg.create.data.set.edges.for.cmd(vars.set, .ddg.statement$abbrev, .ddg.statement$expr, 1, stack=sys.calls())
-    #}
-    #.ddg.set(".ddg.in.ddg.eval", FALSE)
-  }
+  vars.set <- .ddg.find.var.assignments(.ddg.statement$expr)
+  .ddg.create.data.set.edges.for.cmd(vars.set, .ddg.statement$abbrev, .ddg.statement$expr, 1, stack=sys.calls())
+}
 
 # ddg.data creates a data node for a single or comple data value. 
 # dname - label for the node.  This can be passed as a string, name, or expression. 
@@ -3041,7 +2947,6 @@ ddg.save <- function(quit=FALSE) {
     # shut down the ddg
     .ddg.clear()
   }
-  #print("Ran Barb's latest version")
   
   invisible()
 }
@@ -3153,9 +3058,7 @@ ddg.source <- function (file, local = FALSE, echo = verbose, print.eval = echo,
         else expression()
       }
       else parse(file, n = -1, NULL, "?", srcfile, encoding)
-  #print("In ddg.source, parsed expressions:")
-  #print(exprs)
-  #print(str(exprs))
+  
   on.exit()
   
   # Set the working directory for the current script and expressions

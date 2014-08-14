@@ -359,6 +359,17 @@
 	    </antcall>
 	  </target>
 
+	  <target name="eval2-test" depends="dependencies">
+	    <antcall target="run-test">
+	      <param name="dir" value="examples/EvalTest"/>
+	      <param name="out" value="examples/EvalTest/Eval2Test.out"/>
+	      <param name="script-file" value="Eval2Test.R"/>
+	      <param name="expected_out" value="examples/EvalTest/expected_eval2-test.out"/>
+	      <param name="expected_ddg" value="examples/EvalTest/expected_eval2-test_ddg.txt"/>
+	      <param name="source_test" value="true" />
+	    </antcall>
+	  </target>
+
   <target name="consoleEdgeCases-test">
     <antcall target="run-test">
       <param name="dir" value="examples/consoleEdgeCases"/>
@@ -370,7 +381,7 @@
     </antcall>
   </target>
 
-  <target name="console-tests" depends="console-test-1, console-test-2, MismatchedStartFinishBug-test, null-na-test, consoleEdgeCases-test, scope-test, return-test, eval-test, eval-source-test">
+  <target name="console-tests" depends="console-test-1, console-test-2, MismatchedStartFinishBug-test, null-na-test, consoleEdgeCases-test, scope-test, return-test, eval-test, eval-source-test, eval2-test">
     <echo>These automated tests are limited when in console mode. You can always manually check the ouput using diff and the provided expected output files for each script. Do note, however, that all of the tests have also been evaluated using ddg.source, which does in fact capture console commands.</echo>
   </target>
   <!--########################## End Console TESTS ##########################-->
@@ -465,17 +476,6 @@
       <param name="source_test" value="true" />
     </antcall>
   </target>
-
-	  <target name="eval-bug" depends="dependencies">
-	    <antcall target="run-test">
-	      <param name="dir" value="examples/QualityControl15Min"/>
-	      <param name="out" value="examples/QualityControl15Min/eval-bug.out"/>
-	      <param name="script-file" value="EvalBug.R"/>
-	      <param name="expected_out" value="examples/QualityControl15Min/expected_quality-control-15min-test.out"/>
-	      <param name="expected_ddg" value="examples/QualityControl15Min/expected_quality-control-15min-test_ddg.txt"/>
-	      <param name="source_test" value="true" />
-	    </antcall>
-	  </target>
 
   <target name="daily-solar-radiation-tests" depends="daily-solar-radiation-1-test, daily-solar-radiation-2-test">
     <echo>The daily solar radiation tests should only differ in system information</echo>
