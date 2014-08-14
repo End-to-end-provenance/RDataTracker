@@ -3,10 +3,10 @@ OperatingSystem="windows"
 Language="R"
 LanguageVersion="R version 3.0.1 (2013-05-16)"
 RDataTrackerVersion="0.5.36"
-Script="C:/GitHub/RDataTracker/examples/dynamicConsole/dynamicConsole.r"
+Script="[DIR]/dynamicConsole.r"
 ProcessFileTimestamp="2014-08-07T20.43.40EDT"
-WorkingDirectory="C:/GitHub/RDataTracker/examples/dynamicConsole"
-DDGDirectory="C:/GitHub/RDataTracker/examples/dynamicConsole/ddg-source"
+WorkingDirectory="[DIR]"
+DDGDirectory="[DIR]/ddg-source"
 DateTime="2014-08-08T19.39.06EDT"
 21
 Operation p1 "1-h <- function() {    d <- 333    ddg.function()    return(d)" Value="h <- function() {    d <- 333    ddg.function()    return(d)" Time="2014-08-08T19.39.06EDT";
@@ -86,7 +86,7 @@ DF d16 p19
 CF p18 p19
 Finish p20 "20-i()" Value="i()" Time="2014-08-08T19.39.06EDT";
 CF p19 p20
-File d17 "17-foobar.csv" Value="C:/GitHub/RDataTracker/examples/dynamicConsole/ddg-source/17-foobar.csv" Time="2014-08-08T19.39.06EDT" Location="C:/GitHub/RDataTracker/examples/dynamicConsole/foobar.csv";
+File d17 "17-foobar.csv" Value="[DIR]/ddg-source/17-foobar.csv" Time="2014-08-08T19.39.06EDT" Location="[DIR]/foobar.csv";
 Operation p21 "21-Read raw data files" Value="Read raw data files" Time="2014-08-08T19.39.06EDT";
 CF p20 p21
 DF d17 p21

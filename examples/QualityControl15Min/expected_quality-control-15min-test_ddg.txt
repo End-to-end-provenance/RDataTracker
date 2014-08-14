@@ -4,303 +4,303 @@ Language="R"
 LanguageVersion="R version 3.1.0 Patched (2014-05-20 r65701)"
 RDataTrackerVersion="0.5.39"
 Script="[DIR]/quality-control-15min-test.r"
-ProcessFileTimestamp="2014-08-11T16.29.12EDT"
+ProcessFileTimestamp="2014-08-12T13.41.32EDT"
 WorkingDirectory="[DIR]"
 DDGDirectory="[DIR]/ddg"
-DateTime="2014-08-11T16.31.31EDT"
+DateTime="2014-08-12T15.06.03EDT"
 69
-Start p1 "1-main" Value="main" Time="2014-08-11T16.31.24EDT";
-Start p2 "2-get.data" Value="get.data" Time="2014-08-11T16.31.24EDT";
+Start p1 "1-main" Value="main" Time="2014-08-12T15.05.57EDT";
+Start p2 "2-get.data" Value="get.data" Time="2014-08-12T15.05.57EDT";
 CF p1 p2
-Start p3 "3-all.data <- read.data()" Value="all.data <- read.data()" Time="2014-08-11T16.31.24EDT";
+Start p3 "3-all.data <- read.data()" Value="all.data <- read.data()" Time="2014-08-12T15.05.57EDT";
 CF p2 p3
-Operation p4 "4-read.data" Value="read.data" Time="2014-08-11T16.31.25EDT";
+Operation p4 "4-read.data" Value="read.data" Time="2014-08-12T15.05.57EDT";
 CF p3 p4
-Snapshot d1 "1-read.data() return" Value="[DIR]/ddg/1-read.data() return.csv" Time="2014-08-11T16.31.25EDT";
+Snapshot d1 "1-read.data() return" Value="[DIR]/ddg/1-read.data() return.csv" Time="2014-08-12T15.05.58EDT";
 DF p4 d1
-Operation p5 "5-all.data <- read.data()" Value="all.data <- read.data()" Time="2014-08-11T16.31.25EDT";
+Operation p5 "5-all.data <- read.data()" Value="all.data <- read.data()" Time="2014-08-12T15.05.58EDT";
 CF p4 p5
 DF d1 p5
-Snapshot d2 "2-all.data" Value="[DIR]/ddg/2-all.data.csv" Time="2014-08-11T16.31.25EDT";
+Snapshot d2 "2-all.data" Value="[DIR]/ddg/2-all.data.csv" Time="2014-08-12T15.05.58EDT";
 DF p5 d2
-Finish p6 "6-all.data <- read.data()" Value="all.data <- read.data()" Time="2014-08-11T16.31.25EDT";
+Finish p6 "6-all.data <- read.data()" Value="all.data <- read.data()" Time="2014-08-12T15.05.58EDT";
 CF p5 p6
-Snapshot d3 "3-all.data" Value="[DIR]/ddg/3-all.data.csv" Time="2014-08-11T16.31.26EDT";
+Snapshot d3 "3-all.data" Value="[DIR]/ddg/3-all.data.csv" Time="2014-08-12T15.05.58EDT";
 DF p6 d3
-Binding p7 "7-zz  <-  all.data" Time="2014-08-11T16.31.26EDT"
+Binding p7 "7-zz  <-  all.data" Time="2014-08-12T15.05.59EDT"
 CF p6 p7
 DF d3 p7
-Snapshot d4 "4-zz" Value="[DIR]/ddg/4-zz.csv" Time="2014-08-11T16.31.27EDT";
+Snapshot d4 "4-zz" Value="[DIR]/ddg/4-zz.csv" Time="2014-08-12T15.05.59EDT";
 DF p7 d4
-Binding p8 "8-v  <-  variable" Time="2014-08-11T16.31.27EDT"
+Binding p8 "8-v  <-  variable" Time="2014-08-12T15.05.59EDT"
 CF p7 p8
 Data d5 "5-v" Value="\"airt\"";
 DF p8 d5
-Binding p9 "9-sd  <-  start.date" Time="2014-08-11T16.31.27EDT"
+Binding p9 "9-sd  <-  start.date" Time="2014-08-12T15.05.59EDT"
 CF p8 p9
 Data d6 "6-sd" Value="\"2012-01-01\"";
 DF p9 d6
-Binding p10 "10-ed  <-  end.date" Time="2014-08-11T16.31.27EDT"
+Binding p10 "10-ed  <-  end.date" Time="2014-08-12T15.05.59EDT"
 CF p9 p10
 Data d7 "7-ed" Value="\"2012-03-31\"";
 DF p10 d7
-Operation p11 "11-select.data" Value="select.data" Time="2014-08-11T16.31.27EDT";
+Operation p11 "11-select.data" Value="select.data" Time="2014-08-12T15.05.59EDT";
 DF d4 p11
 DF d5 p11
 DF d6 p11
 DF d7 p11
 CF p10 p11
-Snapshot d8 "8-select.data(all.data, variable, start.date, end.date) return" Value="[DIR]/ddg/8-select.data(all.data, variable, start.date, end.date) return.csv" Time="2014-08-11T16.31.27EDT";
+Snapshot d8 "8-select.data(all.data,variable,start.date,end.date) return" Value="[DIR]/ddg/8-select.data(all.data,variable,start.date,end.date) return.csv" Time="2014-08-12T15.06.00EDT";
 DF p11 d8
-Finish p12 "12-get.data" Value="get.data" Time="2014-08-11T16.31.27EDT";
+Finish p12 "12-get.data" Value="get.data" Time="2014-08-12T15.06.00EDT";
 CF p11 p12
-Start p13 "13-analyze.data" Value="analyze.data" Time="2014-08-11T16.31.27EDT";
+Start p13 "13-analyze.data" Value="analyze.data" Time="2014-08-12T15.06.00EDT";
 CF p12 p13
-Start p14 "14-apply.test" Value="apply.test" Time="2014-08-11T16.31.27EDT";
+Start p14 "14-apply.test" Value="apply.test" Time="2014-08-12T15.06.00EDT";
 CF p13 p14
 Data d9 "9-test" Value="\"min\"";
-Binding p15 "15-xx  <-  selected.data" Time="2014-08-11T16.31.27EDT"
+Binding p15 "15-xx  <-  selected.data" Time="2014-08-12T15.06.00EDT"
 CF p14 p15
-Snapshot d10 "10-xx" Value="[DIR]/ddg/10-xx.csv" Time="2014-08-11T16.31.27EDT";
+Snapshot d10 "10-xx" Value="[DIR]/ddg/10-xx.csv" Time="2014-08-12T15.06.00EDT";
 DF p15 d10
-Binding p16 "16-t  <-  test" Time="2014-08-11T16.31.27EDT"
+Binding p16 "16-t  <-  test" Time="2014-08-12T15.06.00EDT"
 CF p15 p16
 DF d9 p16
 Data d11 "11-t" Value="\"min\"";
 DF p16 d11
-Binding p17 "17-n  <-  num" Time="2014-08-11T16.31.27EDT"
+Binding p17 "17-n  <-  num" Time="2014-08-12T15.06.00EDT"
 CF p16 p17
 Data d12 "12-n" Value="10";
 DF p17 d12
-Operation p18 "18-apply.test" Value="apply.test" Time="2014-08-11T16.31.27EDT";
+Operation p18 "18-apply.test" Value="apply.test" Time="2014-08-12T15.06.00EDT";
 DF d10 p18
 DF d11 p18
 DF d12 p18
 CF p17 p18
-Snapshot d13 "13-apply.test(selected.data, test, num) return" Value="[DIR]/ddg/13-apply.test(selected.data, test, num) return.csv" Time="2014-08-11T16.31.27EDT";
+Snapshot d13 "13-apply.test(selected.data,test,num) return" Value="[DIR]/ddg/13-apply.test(selected.data,test,num) return.csv" Time="2014-08-12T15.06.00EDT";
 DF p18 d13
-Binding p19 "19-xx  <-  flagged.data" Time="2014-08-11T16.31.28EDT"
+Binding p19 "19-xx  <-  flagged.data" Time="2014-08-12T15.06.00EDT"
 CF p18 p19
-Snapshot d14 "14-xx" Value="[DIR]/ddg/14-xx.csv" Time="2014-08-11T16.31.28EDT";
+Snapshot d14 "14-xx" Value="[DIR]/ddg/14-xx.csv" Time="2014-08-12T15.06.00EDT";
 DF p19 d14
-Binding p20 "20-t  <-  test" Time="2014-08-11T16.31.28EDT"
+Binding p20 "20-t  <-  test" Time="2014-08-12T15.06.00EDT"
 CF p19 p20
 DF d9 p20
 Data d15 "15-t" Value="\"min\"";
 DF p20 d15
-Binding p21 "21-n  <-  num" Time="2014-08-11T16.31.28EDT"
+Binding p21 "21-n  <-  num" Time="2014-08-12T15.06.00EDT"
 CF p20 p21
 Data d16 "16-n" Value="10";
 DF p21 d16
-Binding p22 "22-output  <-  gui" Time="2014-08-11T16.31.28EDT"
+Binding p22 "22-output  <-  gui" Time="2014-08-12T15.06.00EDT"
 CF p21 p22
 Data d17 "17-output" Value="\"gui\"";
 DF p22 d17
-Operation p23 "23-plot.data" Value="plot.data" Time="2014-08-11T16.31.28EDT";
+Operation p23 "23-plot.data" Value="plot.data" Time="2014-08-12T15.06.00EDT";
 DF d14 p23
 DF d15 p23
 DF d16 p23
 DF d17 p23
 CF p22 p23
-Finish p24 "24-apply.test" Value="apply.test" Time="2014-08-11T16.31.28EDT";
+Finish p24 "24-apply.test" Value="apply.test" Time="2014-08-12T15.06.00EDT";
 CF p23 p24
-Start p25 "25-apply.test" Value="apply.test" Time="2014-08-11T16.31.28EDT";
+Start p25 "25-apply.test" Value="apply.test" Time="2014-08-12T15.06.00EDT";
 CF p24 p25
 Data d18 "18-test" Value="\"max\"";
-Binding p26 "26-xx  <-  selected.data" Time="2014-08-11T16.31.28EDT"
+Binding p26 "26-xx  <-  selected.data" Time="2014-08-12T15.06.00EDT"
 CF p25 p26
-Snapshot d19 "19-xx" Value="[DIR]/ddg/19-xx.csv" Time="2014-08-11T16.31.28EDT";
+Snapshot d19 "19-xx" Value="[DIR]/ddg/19-xx.csv" Time="2014-08-12T15.06.00EDT";
 DF p26 d19
-Binding p27 "27-t  <-  test" Time="2014-08-11T16.31.28EDT"
+Binding p27 "27-t  <-  test" Time="2014-08-12T15.06.00EDT"
 CF p26 p27
 DF d18 p27
 Data d20 "20-t" Value="\"max\"";
 DF p27 d20
-Binding p28 "28-n  <-  num" Time="2014-08-11T16.31.28EDT"
+Binding p28 "28-n  <-  num" Time="2014-08-12T15.06.00EDT"
 CF p27 p28
 Data d21 "21-n" Value="10";
 DF p28 d21
-Operation p29 "29-apply.test" Value="apply.test" Time="2014-08-11T16.31.28EDT";
+Operation p29 "29-apply.test" Value="apply.test" Time="2014-08-12T15.06.00EDT";
 DF d19 p29
 DF d20 p29
 DF d21 p29
 CF p28 p29
-Snapshot d22 "22-apply.test(selected.data, test, num) return" Value="[DIR]/ddg/22-apply.test(selected.data, test, num) return.csv" Time="2014-08-11T16.31.28EDT";
+Snapshot d22 "22-apply.test(selected.data,test,num) return" Value="[DIR]/ddg/22-apply.test(selected.data,test,num) return.csv" Time="2014-08-12T15.06.00EDT";
 DF p29 d22
-Snapshot d23 "23-graphic" Value="[DIR]/ddg/23-graphic.jpeg" Time="2014-08-11T16.31.28EDT";
+Snapshot d23 "23-graphic" Value="[DIR]/ddg/23-graphic.jpeg" Time="2014-08-12T15.06.01EDT";
 DF p29 d23
-Binding p30 "30-xx  <-  flagged.data" Time="2014-08-11T16.31.28EDT"
+Binding p30 "30-xx  <-  flagged.data" Time="2014-08-12T15.06.01EDT"
 CF p29 p30
-Snapshot d24 "24-xx" Value="[DIR]/ddg/24-xx.csv" Time="2014-08-11T16.31.28EDT";
+Snapshot d24 "24-xx" Value="[DIR]/ddg/24-xx.csv" Time="2014-08-12T15.06.01EDT";
 DF p30 d24
-Binding p31 "31-t  <-  test" Time="2014-08-11T16.31.28EDT"
+Binding p31 "31-t  <-  test" Time="2014-08-12T15.06.01EDT"
 CF p30 p31
 DF d18 p31
 Data d25 "25-t" Value="\"max\"";
 DF p31 d25
-Binding p32 "32-n  <-  num" Time="2014-08-11T16.31.28EDT"
+Binding p32 "32-n  <-  num" Time="2014-08-12T15.06.01EDT"
 CF p31 p32
 Data d26 "26-n" Value="10";
 DF p32 d26
-Binding p33 "33-output  <-  gui" Time="2014-08-11T16.31.28EDT"
+Binding p33 "33-output  <-  gui" Time="2014-08-12T15.06.01EDT"
 CF p32 p33
 Data d27 "27-output" Value="\"gui\"";
 DF p33 d27
-Operation p34 "34-plot.data" Value="plot.data" Time="2014-08-11T16.31.28EDT";
+Operation p34 "34-plot.data" Value="plot.data" Time="2014-08-12T15.06.01EDT";
 DF d24 p34
 DF d25 p34
 DF d26 p34
 DF d27 p34
 CF p33 p34
-Finish p35 "35-apply.test" Value="apply.test" Time="2014-08-11T16.31.28EDT";
+Finish p35 "35-apply.test" Value="apply.test" Time="2014-08-12T15.06.01EDT";
 CF p34 p35
-Start p36 "36-apply.test" Value="apply.test" Time="2014-08-11T16.31.28EDT";
+Start p36 "36-apply.test" Value="apply.test" Time="2014-08-12T15.06.01EDT";
 CF p35 p36
 Data d28 "28-test" Value="\"min\"";
-Binding p37 "37-xx  <-  selected.data" Time="2014-08-11T16.31.28EDT"
+Binding p37 "37-xx  <-  selected.data" Time="2014-08-12T15.06.01EDT"
 CF p36 p37
-Snapshot d29 "29-xx" Value="[DIR]/ddg/29-xx.csv" Time="2014-08-11T16.31.28EDT";
+Snapshot d29 "29-xx" Value="[DIR]/ddg/29-xx.csv" Time="2014-08-12T15.06.01EDT";
 DF p37 d29
-Binding p38 "38-t  <-  test" Time="2014-08-11T16.31.28EDT"
+Binding p38 "38-t  <-  test" Time="2014-08-12T15.06.01EDT"
 CF p37 p38
 DF d28 p38
 Data d30 "30-t" Value="\"min\"";
 DF p38 d30
-Binding p39 "39-n  <-  num" Time="2014-08-11T16.31.29EDT"
+Binding p39 "39-n  <-  num" Time="2014-08-12T15.06.01EDT"
 CF p38 p39
 Data d31 "31-n" Value="10";
 DF p39 d31
-Operation p40 "40-apply.test" Value="apply.test" Time="2014-08-11T16.31.29EDT";
+Operation p40 "40-apply.test" Value="apply.test" Time="2014-08-12T15.06.01EDT";
 DF d29 p40
 DF d30 p40
 DF d31 p40
 CF p39 p40
-Snapshot d32 "32-apply.test(selected.data, test, num) return" Value="[DIR]/ddg/32-apply.test(selected.data, test, num) return.csv" Time="2014-08-11T16.31.29EDT";
+Snapshot d32 "32-apply.test(selected.data,test,num) return" Value="[DIR]/ddg/32-apply.test(selected.data,test,num) return.csv" Time="2014-08-12T15.06.01EDT";
 DF p40 d32
-Snapshot d33 "33-graphic" Value="[DIR]/ddg/33-graphic.jpeg" Time="2014-08-11T16.31.29EDT";
+Snapshot d33 "33-graphic" Value="[DIR]/ddg/33-graphic.jpeg" Time="2014-08-12T15.06.01EDT";
 DF p40 d33
-Binding p41 "41-xx  <-  flagged.data" Time="2014-08-11T16.31.29EDT"
+Binding p41 "41-xx  <-  flagged.data" Time="2014-08-12T15.06.01EDT"
 CF p40 p41
-Snapshot d34 "34-xx" Value="[DIR]/ddg/34-xx.csv" Time="2014-08-11T16.31.29EDT";
+Snapshot d34 "34-xx" Value="[DIR]/ddg/34-xx.csv" Time="2014-08-12T15.06.01EDT";
 DF p41 d34
-Binding p42 "42-t  <-  test" Time="2014-08-11T16.31.29EDT"
+Binding p42 "42-t  <-  test" Time="2014-08-12T15.06.01EDT"
 CF p41 p42
 DF d28 p42
 Data d35 "35-t" Value="\"min\"";
 DF p42 d35
-Binding p43 "43-n  <-  num" Time="2014-08-11T16.31.29EDT"
+Binding p43 "43-n  <-  num" Time="2014-08-12T15.06.01EDT"
 CF p42 p43
 Data d36 "36-n" Value="10";
 DF p43 d36
-Binding p44 "44-output  <-  gui" Time="2014-08-11T16.31.29EDT"
+Binding p44 "44-output  <-  gui" Time="2014-08-12T15.06.01EDT"
 CF p43 p44
 Data d37 "37-output" Value="\"gui\"";
 DF p44 d37
-Operation p45 "45-plot.data" Value="plot.data" Time="2014-08-11T16.31.29EDT";
+Operation p45 "45-plot.data" Value="plot.data" Time="2014-08-12T15.06.01EDT";
 DF d34 p45
 DF d35 p45
 DF d36 p45
 DF d37 p45
 CF p44 p45
-Finish p46 "46-apply.test" Value="apply.test" Time="2014-08-11T16.31.29EDT";
+Finish p46 "46-apply.test" Value="apply.test" Time="2014-08-12T15.06.01EDT";
 CF p45 p46
-Start p47 "47-apply.test" Value="apply.test" Time="2014-08-11T16.31.29EDT";
+Start p47 "47-apply.test" Value="apply.test" Time="2014-08-12T15.06.01EDT";
 CF p46 p47
 Data d38 "38-test" Value="\"slope\"";
-Binding p48 "48-xx  <-  selected.data" Time="2014-08-11T16.31.29EDT"
+Binding p48 "48-xx  <-  selected.data" Time="2014-08-12T15.06.02EDT"
 CF p47 p48
-Snapshot d39 "39-xx" Value="[DIR]/ddg/39-xx.csv" Time="2014-08-11T16.31.29EDT";
+Snapshot d39 "39-xx" Value="[DIR]/ddg/39-xx.csv" Time="2014-08-12T15.06.02EDT";
 DF p48 d39
-Binding p49 "49-t  <-  test" Time="2014-08-11T16.31.30EDT"
+Binding p49 "49-t  <-  test" Time="2014-08-12T15.06.02EDT"
 CF p48 p49
 DF d38 p49
 Data d40 "40-t" Value="\"slope\"";
 DF p49 d40
-Binding p50 "50-n  <-  num" Time="2014-08-11T16.31.30EDT"
+Binding p50 "50-n  <-  num" Time="2014-08-12T15.06.02EDT"
 CF p49 p50
 Data d41 "41-n" Value="10";
 DF p50 d41
-Operation p51 "51-apply.test" Value="apply.test" Time="2014-08-11T16.31.30EDT";
+Operation p51 "51-apply.test" Value="apply.test" Time="2014-08-12T15.06.02EDT";
 DF d39 p51
 DF d40 p51
 DF d41 p51
 CF p50 p51
-Snapshot d42 "42-apply.test(selected.data, test, num) return" Value="[DIR]/ddg/42-apply.test(selected.data, test, num) return.csv" Time="2014-08-11T16.31.30EDT";
+Snapshot d42 "42-apply.test(selected.data,test,num) return" Value="[DIR]/ddg/42-apply.test(selected.data,test,num) return.csv" Time="2014-08-12T15.06.02EDT";
 DF p51 d42
-Snapshot d43 "43-graphic" Value="[DIR]/ddg/43-graphic.jpeg" Time="2014-08-11T16.31.30EDT";
+Snapshot d43 "43-graphic" Value="[DIR]/ddg/43-graphic.jpeg" Time="2014-08-12T15.06.02EDT";
 DF p51 d43
-Binding p52 "52-xx  <-  flagged.data" Time="2014-08-11T16.31.30EDT"
+Binding p52 "52-xx  <-  flagged.data" Time="2014-08-12T15.06.02EDT"
 CF p51 p52
-Snapshot d44 "44-xx" Value="[DIR]/ddg/44-xx.csv" Time="2014-08-11T16.31.30EDT";
+Snapshot d44 "44-xx" Value="[DIR]/ddg/44-xx.csv" Time="2014-08-12T15.06.02EDT";
 DF p52 d44
-Binding p53 "53-t  <-  test" Time="2014-08-11T16.31.30EDT"
+Binding p53 "53-t  <-  test" Time="2014-08-12T15.06.02EDT"
 CF p52 p53
 DF d38 p53
 Data d45 "45-t" Value="\"slope\"";
 DF p53 d45
-Binding p54 "54-n  <-  num" Time="2014-08-11T16.31.30EDT"
+Binding p54 "54-n  <-  num" Time="2014-08-12T15.06.02EDT"
 CF p53 p54
 Data d46 "46-n" Value="10";
 DF p54 d46
-Binding p55 "55-output  <-  gui" Time="2014-08-11T16.31.30EDT"
+Binding p55 "55-output  <-  gui" Time="2014-08-12T15.06.02EDT"
 CF p54 p55
 Data d47 "47-output" Value="\"gui\"";
 DF p55 d47
-Operation p56 "56-plot.data" Value="plot.data" Time="2014-08-11T16.31.30EDT";
+Operation p56 "56-plot.data" Value="plot.data" Time="2014-08-12T15.06.02EDT";
 DF d44 p56
 DF d45 p56
 DF d46 p56
 DF d47 p56
 CF p55 p56
-Finish p57 "57-apply.test" Value="apply.test" Time="2014-08-11T16.31.30EDT";
+Finish p57 "57-apply.test" Value="apply.test" Time="2014-08-12T15.06.02EDT";
 CF p56 p57
-Start p58 "58-save.results" Value="save.results" Time="2014-08-11T16.31.30EDT";
+Start p58 "58-save.results" Value="save.results" Time="2014-08-12T15.06.02EDT";
 CF p57 p58
-Binding p59 "59-fn  <-  flagged-data.csv" Time="2014-08-11T16.31.30EDT"
+Binding p59 "59-fn  <-  flagged-data.csv" Time="2014-08-12T15.06.02EDT"
 CF p58 p59
 Data d48 "48-fn" Value="\"flagged-data.csv\"";
 DF p59 d48
-Binding p60 "60-xx  <-  flagged.data" Time="2014-08-11T16.31.30EDT"
+Binding p60 "60-xx  <-  flagged.data" Time="2014-08-12T15.06.02EDT"
 CF p59 p60
-Snapshot d49 "49-xx" Value="[DIR]/ddg/49-xx.csv" Time="2014-08-11T16.31.30EDT";
+Snapshot d49 "49-xx" Value="[DIR]/ddg/49-xx.csv" Time="2014-08-12T15.06.03EDT";
 DF p60 d49
-Operation p61 "61-save.data" Value="save.data" Time="2014-08-11T16.31.30EDT";
+Operation p61 "61-save.data" Value="save.data" Time="2014-08-12T15.06.03EDT";
 DF d48 p61
 DF d49 p61
 CF p60 p61
-File d50 "50-flagged-data.csv" Value="[DIR]/ddg/50-flagged-data.csv" Time="2014-08-11T16.31.30EDT" Location="[DIR]/flagged-data.csv";
+File d50 "50-flagged-data.csv" Value="[DIR]/ddg/50-flagged-data.csv" Time="2014-08-12T15.06.03EDT" Location="[DIR]/flagged-data.csv";
 DF p61 d50
-Snapshot d51 "51-graphic" Value="[DIR]/ddg/51-graphic.jpeg" Time="2014-08-11T16.31.31EDT";
+Snapshot d51 "51-graphic" Value="[DIR]/ddg/51-graphic.jpeg" Time="2014-08-12T15.06.03EDT";
 DF p61 d51
-Binding p62 "62-xx  <-  flagged.data" Time="2014-08-11T16.31.31EDT"
+Binding p62 "62-xx  <-  flagged.data" Time="2014-08-12T15.06.03EDT"
 CF p61 p62
-Snapshot d52 "52-xx" Value="[DIR]/ddg/52-xx.csv" Time="2014-08-11T16.31.31EDT";
+Snapshot d52 "52-xx" Value="[DIR]/ddg/52-xx.csv" Time="2014-08-12T15.06.03EDT";
 DF p62 d52
-Binding p63 "63-t  <-  test" Time="2014-08-11T16.31.31EDT"
+Binding p63 "63-t  <-  test" Time="2014-08-12T15.06.03EDT"
 CF p62 p63
 DF d38 p63
 Data d53 "53-t" Value="\"slope\"";
 DF p63 d53
-Binding p64 "64-n  <-  num" Time="2014-08-11T16.31.31EDT"
+Binding p64 "64-n  <-  num" Time="2014-08-12T15.06.03EDT"
 CF p63 p64
 Data d54 "54-n" Value="10";
 DF p64 d54
-Binding p65 "65-output  <-  file" Time="2014-08-11T16.31.31EDT"
+Binding p65 "65-output  <-  file" Time="2014-08-12T15.06.03EDT"
 CF p64 p65
 Data d55 "55-output" Value="\"file\"";
 DF p65 d55
-Operation p66 "66-plot.data" Value="plot.data" Time="2014-08-11T16.31.31EDT";
+Operation p66 "66-plot.data" Value="plot.data" Time="2014-08-12T15.06.03EDT";
 DF d52 p66
 DF d53 p66
 DF d54 p66
 DF d55 p66
 CF p65 p66
-File d56 "56-graph.jpeg" Value="[DIR]/ddg/56-graph.jpeg" Time="2014-08-11T16.31.31EDT" Location="[DIR]/graph.jpeg";
+File d56 "56-graph.jpeg" Value="[DIR]/ddg/56-graph.jpeg" Time="2014-08-12T15.06.03EDT" Location="[DIR]/graph.jpeg";
 DF p66 d56
-Finish p67 "67-save.results" Value="save.results" Time="2014-08-11T16.31.31EDT";
+Finish p67 "67-save.results" Value="save.results" Time="2014-08-12T15.06.03EDT";
 CF p66 p67
-Finish p68 "68-analyze.data" Value="analyze.data" Time="2014-08-11T16.31.31EDT";
+Finish p68 "68-analyze.data" Value="analyze.data" Time="2014-08-12T15.06.03EDT";
 CF p67 p68
-Finish p69 "69-main" Value="main" Time="2014-08-11T16.31.31EDT";
+Finish p69 "69-main" Value="main" Time="2014-08-12T15.06.03EDT";
 CF p68 p69
 

@@ -3,10 +3,10 @@ OperatingSystem="windows"
 Language="R"
 LanguageVersion="R version 3.0.1 (2013-05-16)"
 RDataTrackerVersion="0.5.36"
-Script="C:/GitHub/RDataTracker/examples/consoleTest/consoleTest.r"
+Script="[DIR]/consoleTest.r"
 ProcessFileTimestamp="2014-08-07T19.46.17EDT"
-WorkingDirectory="C:/GitHub/RDataTracker/examples/consoleTest"
-DDGDirectory="C:/GitHub/RDataTracker/examples/consoleTest/ddg-source"
+WorkingDirectory="[DIR]"
+DDGDirectory="[DIR]/ddg-source"
 DateTime="2014-08-08T19.27.27EDT"
 19
 Operation p1 "1-f <- function(x) {    g(x)    h(x)    return(1)}" Value="f <- function(x) {    g(x)    h(x)    return(1)}" Time="2014-08-08T19.27.27EDT";
@@ -66,10 +66,10 @@ Finish p17 "17-f(x)" Value="f(x)" Time="2014-08-08T19.27.27EDT";
 CF p16 p17
 Operation p18 "18-z <- list(1, \"c\", 1:3)" Value="z <- list(1, \"c\", 1:3)" Time="2014-08-08T19.27.27EDT";
 CF p17 p18
-Snapshot d10 "10-z" Value="C:/GitHub/RDataTracker/examples/consoleTest/ddg-source/10-z.csv" Time="2014-08-08T19.27.27EDT";
+Snapshot d10 "10-z" Value="[DIR]/ddg-source/10-z.csv" Time="2014-08-08T19.27.27EDT";
 DF p18 d10
 Operation p19 "19-names(z) <- list(\"a\", \"b\", \"c\")" Value="names(z) <- list(\"a\", \"b\", \"c\")" Time="2014-08-08T19.27.27EDT";
 CF p18 p19
-Snapshot d11 "11-z" Value="C:/GitHub/RDataTracker/examples/consoleTest/ddg-source/11-z.csv" Time="2014-08-08T19.27.27EDT";
+Snapshot d11 "11-z" Value="[DIR]/ddg-source/11-z.csv" Time="2014-08-08T19.27.27EDT";
 DF p19 d11
 

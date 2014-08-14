@@ -3,10 +3,10 @@ OperatingSystem="windows"
 Language="R"
 LanguageVersion="R version 3.0.1 (2013-05-16)"
 RDataTrackerVersion="0.5.36"
-Script="C:/GitHub/RDataTracker/examples/ddgTest/basicTest.r"
+Script="[DIR]/basicTest.r"
 ProcessFileTimestamp="2014-08-06T11.41.47EDT"
-WorkingDirectory="C:/GitHub/RDataTracker/examples/ddgTest"
-DDGDirectory="C:/GitHub/RDataTracker/examples/ddgTest/ddg"
+WorkingDirectory="[DIR]"
+DDGDirectory="[DIR]/ddg"
 DateTime="2014-08-08T19.14.28EDT"
 46
 Start p1 "1-main" Value="main" Time="2014-08-08T19.14.27EDT";
@@ -105,7 +105,7 @@ Data d19 "19-e" Value="4";
 DF p18 d19
 Binding p19 "19-f  <-  vector()" Time="2014-08-08T19.14.27EDT"
 CF p18 p19
-Snapshot d20 "20-f" Value="C:/GitHub/RDataTracker/examples/ddgTest/ddg/20-f.csv" Time="2014-08-08T19.14.27EDT";
+Snapshot d20 "20-f" Value="[DIR]/ddg/20-f.csv" Time="2014-08-08T19.14.27EDT";
 DF p19 d20
 Operation p20 "20-only.args.given" Value="only.args.given" Time="2014-08-08T19.14.27EDT";
 DF d15 p20
@@ -142,7 +142,7 @@ Data d25 "25-e" Value="4";
 DF p25 d25
 Binding p26 "26-f  <-  vector()" Time="2014-08-08T19.14.28EDT"
 CF p25 p26
-Snapshot d26 "26-f" Value="C:/GitHub/RDataTracker/examples/ddgTest/ddg/26-f.csv" Time="2014-08-08T19.14.28EDT";
+Snapshot d26 "26-f" Value="[DIR]/ddg/26-f.csv" Time="2014-08-08T19.14.28EDT";
 DF p26 d26
 Operation p27 "27-only.name.given" Value="only.name.given" Time="2014-08-08T19.14.28EDT";
 DF d21 p27
@@ -179,7 +179,7 @@ Data d31 "31-e" Value="4";
 DF p32 d31
 Binding p33 "33-f  <-  vector()" Time="2014-08-08T19.14.28EDT"
 CF p32 p33
-Snapshot d32 "32-f" Value="C:/GitHub/RDataTracker/examples/ddgTest/ddg/32-f.csv" Time="2014-08-08T19.14.28EDT";
+Snapshot d32 "32-f" Value="[DIR]/ddg/32-f.csv" Time="2014-08-08T19.14.28EDT";
 DF p33 d32
 Operation p34 "34-string.name.and.args.given" Value="string.name.and.args.given" Time="2014-08-08T19.14.28EDT";
 DF d27 p34
@@ -197,7 +197,7 @@ Data d33 "33-simple.value" Value="10";
 DF p36 d33
 Operation p37 "37-g1" Value="g1" Time="2014-08-08T19.14.28EDT";
 CF p36 p37
-Snapshot d34 "34-year" Value="C:/GitHub/RDataTracker/examples/ddgTest/ddg/34-year.csv" Time="2014-08-08T19.14.28EDT";
+Snapshot d34 "34-year" Value="[DIR]/ddg/34-year.csv" Time="2014-08-08T19.14.28EDT";
 DF p37 d34
 URL d35 "35-HF home page" Value="\"http://harvardforest.fas.harvard.edu/\"";
 Exception d36 "36-error" Value="\"test error\"";

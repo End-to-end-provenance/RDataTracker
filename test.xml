@@ -466,6 +466,17 @@
     </antcall>
   </target>
 
+	  <target name="eval-bug" depends="dependencies">
+	    <antcall target="run-test">
+	      <param name="dir" value="examples/QualityControl15Min"/>
+	      <param name="out" value="examples/QualityControl15Min/eval-bug.out"/>
+	      <param name="script-file" value="EvalBug.R"/>
+	      <param name="expected_out" value="examples/QualityControl15Min/expected_quality-control-15min-test.out"/>
+	      <param name="expected_ddg" value="examples/QualityControl15Min/expected_quality-control-15min-test_ddg.txt"/>
+	      <param name="source_test" value="true" />
+	    </antcall>
+	  </target>
+
   <target name="daily-solar-radiation-tests" depends="daily-solar-radiation-1-test, daily-solar-radiation-2-test">
     <echo>The daily solar radiation tests should only differ in system information</echo>
   </target>

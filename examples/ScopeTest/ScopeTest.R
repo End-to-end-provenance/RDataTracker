@@ -4,10 +4,10 @@
 ###############################################################################
 
 
-# library(RDataTracker)
+library(RDataTracker)
 #source("/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/R/RDataTracker.R")
-source("c:/data/r/rdatatracker/r/rdatatracker.r")
-setwd("c:/github/rdatatracker/examples/scopetest")
+#source("c:/data/r/rdatatracker/r/rdatatracker.r")
+#setwd("c:/github/rdatatracker/examples/scopetest")
 
 
 # get initial time
