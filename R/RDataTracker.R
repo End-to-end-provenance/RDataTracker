@@ -211,7 +211,7 @@ ddg.MAX_HIST_LINES <- 2^14
   .ddg.set(".ddg.enable.console", TRUE)
   
   # not currently inside a call to ddg.eval
-  .ddg.set(".ddg.in.ddg.eval", FALSE)
+  #.ddg.set(".ddg.in.ddg.eval", FALSE)
 }
 
 # Wrrapper to easily change history lines during execution of script
@@ -1640,7 +1640,8 @@ ddg.MAX_HIST_LINES <- 2^14
 
     if(!console) {
       # we're sourcing, so regardless of interactivity, capcture commands
-      if (.ddg.enable.source() && !.ddg.get(".ddg.in.ddg.eval")) {
+      #if (.ddg.enable.source() && !.ddg.get(".ddg.in.ddg.eval")) {
+      if (.ddg.enable.source()) {
         .ddg.close.last.command.node(called=".ddg.proc.node")
         .ddg.open.new.command.node(called=".ddg.proc.node")
       }
@@ -2501,7 +2502,7 @@ ddg.eval <- function(statement) {
     return(invisible())
   }
   
-  .ddg.set(".ddg.in.ddg.eval", TRUE)
+  #.ddg.set(".ddg.in.ddg.eval", TRUE)
   .ddg.parse.commands(parsed.statement, environ=env, run.commands = TRUE, node.name=statement)
   # Tried the following.  Also tried passing FALSE.  Return Test fails in these cases.
   #.ddg.parse.commands(parsed.statement, environ=env, run.commands = !.ddg.enable.source(), node.name=statement)
@@ -2516,7 +2517,7 @@ ddg.eval <- function(statement) {
       vars.set <- .ddg.find.var.assignments(.ddg.statement$expr)
       .ddg.create.data.set.edges.for.cmd(vars.set, .ddg.statement$abbrev, .ddg.statement$expr, 1, stack=sys.calls())
     #}
-    .ddg.set(".ddg.in.ddg.eval", FALSE)
+    #.ddg.set(".ddg.in.ddg.eval", FALSE)
   }
 
 # ddg.data creates a data node for a single or comple data value. 
