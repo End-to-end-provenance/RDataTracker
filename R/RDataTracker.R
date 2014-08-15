@@ -512,6 +512,22 @@ ddg.MAX_HIST_LINES <- 2^14
           type == "Binding")
 }
 
+# .ddg.proc.node.exists returns true if there is a 
+# procedure node with the given name
+
+.ddg.proc.node.exists <- function(pname) {
+  ddg.proc.nodes <- .ddg.proc.nodes()
+  rows <- nrow(ddg.proc.nodes)
+  for (i in rows:1) {
+    type <- ddg.proc.nodes$ddg.type[i]
+    if (.ddg.is.proc.node(type) & ddg.proc.nodes$ddg.name[i] == pname) {
+      return(TRUE)
+    }
+  }
+  
+  return(FALSE)
+}
+
 # .ddg.proc.number gets the number of the nearest preceding matching 
 # Operation, Checkpoint, or Restore node. It returns zero if no match 
 # is found.
@@ -2004,7 +2020,7 @@ ddg.MAX_HIST_LINES <- 2^14
 # .ddg.create.output.nodes creates output nodes for ddg.function
 # and ddg.procedure.
 
-.ddg.create.output.nodes<- function(fname, pname, outs.graphic, outs.data, outs.exception, outs.url, outs.file, graphic.fext) {
+.ddg.create.output.nodes<- function(fname, pname, outs.graphic, outs.data, outs.exception, outs.url, outs.file, graphic.fext, env) {
   
   # Capture graphics device
   if (is.character(outs.graphic)) {
@@ -2026,7 +2042,6 @@ ddg.MAX_HIST_LINES <- 2^14
           # Get value in calling environment.
           name <- param
           value <- NULL
-          env <- parent.frame(4)
           .ddg.lookup.value(name, value, env, fname, warn=FALSE)
           
           # Exception node.
@@ -2048,7 +2063,6 @@ ddg.MAX_HIST_LINES <- 2^14
           # Get value in calling environment.
           name <- param
           value <- NULL
-          env <- parent.frame(4)
           .ddg.lookup.value(name, value, env, fname, warn=FALSE)
           
           # URL node.
@@ -2070,7 +2084,6 @@ ddg.MAX_HIST_LINES <- 2^14
           # Get value in calling environment.
           name <- param
           value <- NULL
-          env <- parent.frame(4)
           .ddg.lookup.value(name, value, env, fname, warn=FALSE)
           
           tryCatch({
@@ -2098,7 +2111,6 @@ ddg.MAX_HIST_LINES <- 2^14
           # Get value in calling environment.
           name <- param
           value <- NULL
-          env <- parent.frame(4)
           .ddg.lookup.value(name, value, env, fname, warn=FALSE)
           scope <- .ddg.get.scope(param, calls=stack)
           
@@ -2177,30 +2189,11 @@ ddg.MAX_HIST_LINES <- 2^14
   return(exists(name, scope, inherits=FALSE))
 }
 
+# .ddg.create.function.nodes creates the procedure node, input binding nodes,
+# and output nodes for the function
 
-#--------------------USER FUNCTIONS-----------------------#
-
-# ddg.function creates a procedure node of type Operation for R
-# functions. The function name and input parameters are obtained
-# automatically from the calling environment. The outs parameters
-# may be used optionally to create output data nodes.
-
-ddg.function <- function(outs.graphic=NULL, outs.data=NULL, outs.exception=NULL, outs.url=NULL, outs.file=NULL, graphic.fext="jpeg") {
-  if (!.ddg.is.init()) return(invisible())
-  
-  pname <- NULL
-  .ddg.lookup.function.name(pname)
-  
-  if (interactive() && .ddg.enable.console()) .ddg.console.node()
-  
-  # Look up input parameters from calling environment.
-  call <- sys.call(-1)
-  
-  #tokens <- unlist(strsplit (as.character(call), "[(,)]"))
-  # match.call expands any argument names to be the 
-  # full parameter name
-  full.call <- match.call(sys.function(-1), call=call)
-  
+.ddg.create.function.nodes <- function(pname, full.call, 
+    outs.graphic=NULL, outs.data=NULL, outs.exception=NULL, outs.url=NULL, outs.file=NULL, graphic.fext="jpeg") {
   # tokens will contain the function name and the argument
   # expressions
   tokens <- as.character(full.call)
@@ -2261,8 +2254,36 @@ ddg.function <- function(outs.graphic=NULL, outs.data=NULL, outs.exception=NULL,
   
   # create output nodes
   
-  .ddg.create.output.nodes(fname="ddg.function", pname, outs.graphic, outs.data, outs.exception, outs.url, outs.file, graphic.fext)
+  .ddg.create.output.nodes(fname="ddg.function", pname, outs.graphic, outs.data, outs.exception, outs.url, outs.file, graphic.fext, parent.frame(2))
   
+}
+
+
+#--------------------USER FUNCTIONS-----------------------#
+
+# ddg.function creates a procedure node of type Operation for R
+# functions. The function name and input parameters are obtained
+# automatically from the calling environment. The outs parameters
+# may be used optionally to create output data nodes.
+
+ddg.function <- function(outs.graphic=NULL, outs.data=NULL, outs.exception=NULL, outs.url=NULL, outs.file=NULL, graphic.fext="jpeg") {
+  if (!.ddg.is.init()) return(invisible())
+  
+  pname <- NULL
+  .ddg.lookup.function.name(pname)
+  
+  if (interactive() && .ddg.enable.console()) .ddg.console.node()
+  
+  # Look up input parameters from calling environment.
+  call <- sys.call(-1)
+  
+  #tokens <- unlist(strsplit (as.character(call), "[(,)]"))
+  # match.call expands any argument names to be the 
+  # full parameter name
+  full.call <- match.call(sys.function(-1), call=call)
+  
+  .ddg.create.function.nodes(pname, full.call, outs.graphic, outs.data, outs.exception, outs.url, outs.file, graphic.fext)
+ 
   invisible()
 }
 
@@ -2380,7 +2401,7 @@ ddg.procedure <- function(pname, ins=NULL, outs.graphic=NULL, outs.data=NULL, ou
   
   # create output nodes
   
-  .ddg.create.output.nodes(fname="ddg.procedure", pname, outs.graphic, outs.data, outs.exception, outs.url, outs.file, graphic.fext)
+  .ddg.create.output.nodes(fname="ddg.procedure", pname, outs.graphic, outs.data, outs.exception, outs.url, outs.file, graphic.fext, parent.frame())
   
   invisible()
 }
@@ -2414,19 +2435,25 @@ ddg.return <- function (expr) {
   
   # Create a data node for the return value
   # Want the scope of the function that called the function that called ddg.return
-  call <- gsub(" ", "", deparse(sys.call(-1)))
-  return.node.name <- paste(call, "return")
+  call <- sys.call(-1)
+  call.text <- gsub(" ", "", deparse(call))
+  return.node.name <- paste(call.text, "return")
   return.node.scope <- 
       environmentName (if (sys.nframe() == 2) .GlobalEnv
               else parent.env(sys.frame(-1)))
   .ddg.save.data(return.node.name, expr, fname="ddg.return", scope=return.node.scope)
   
   # Create an edge from the function to its return value
+  if (!.ddg.proc.node.exists(pname)) {
+    full.call <- match.call(sys.function(-1), call=call)
+    
+    .ddg.create.function.nodes(pname, full.call)
+  }
   .ddg.proc2data(pname, return.node.name, return.node.scope)
   
   # Update the table
   ddg.num.returns <- ddg.num.returns + 1
-  ddg.return.values$ddg.call[ddg.num.returns] <- call
+  ddg.return.values$ddg.call[ddg.num.returns] <- call.text
   ddg.return.values$return.used[ddg.num.returns] <- FALSE
   ddg.return.values$return.node.id[ddg.num.returns] <- .ddg.dnum()
   .ddg.set(".ddg.return.values", ddg.return.values)
