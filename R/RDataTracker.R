@@ -5,7 +5,7 @@
 # graph (DDG) as the script executes. The DDG is saved as a text file 
 # (ddg.txt) that may be viewed and queried using DDG Explorer.
 
-# Copyright (C) 2014 Emery R. Boose & Barbara S. Lerner
+# Copyright (C) 2014 Emery R. Boose & Barbara S. Lerner & Luis Perez
 # This program is free software: you can redistribute it and/or 
 # modify it under the terms of the GNU General Public License as 
 # published by the Free Software Foundation, either version 3 of the 
@@ -1249,11 +1249,13 @@ ddg.MAX_HIST_LINES <- 2^14
 # new.command - the name of the new command which should be opened
 .ddg.open.new.command.node <- function(called=".ddg.parse.commands") {
   new.command <- .ddg.get(".ddg.possible.last.cmd")
+  #print(paste(".ddg.open.new.command.node: new.command =", new.command))
   if (!is.null(new.command)) {
     .ddg.add.abstract.node("Start", new.command$abbrev, called=paste(called, "-> .ddg.open.new.command.node"))
     
     # Now the new command becomes the last command, and new command is null
     .ddg.set(".ddg.last.cmd", new.command)
+    #print(paste(".ddg.open.new.command.node setting .ddg.last.cmd to ", new.command))
     .ddg.set(".ddg.possible.last.cmd", NULL)
   }
 }
@@ -1277,7 +1279,34 @@ ddg.MAX_HIST_LINES <- 2^14
   # Parse the new lines.
   parsed.commands <- parse(text=lines)
   
+#  parsed.command <- lapply(parsed.commands, 
+#      function (cmd) {
+#        if (is.call(cmd) && grepl("^ddg.eval", cmd[[1]])) {
+#          updated.cmd <- .ddg.extract.param.from.ddg.eval(deparse(cmd))
+#          cmd <- updated.cmd$expr
+#        }
+#        return(cmd)
+#      })
+  
+  # Just removing the ddg.eval calls results in a really corrupted ddg.  Don't do this!
+  parsed.commands <- Filter(function(cmd) {return (!is.call(cmd) || !grepl("^ddg.eval", cmd[[1]]))}, parsed.commands)
   return(parsed.commands)
+}
+
+.ddg.extract.param.from.ddg.eval <- function (cmd.text) {
+  # Turn the ddg.eval call into a string
+  deparsed.cmd <- cmd.text
+  
+  # Extract the argument passed to ddg.eval
+  deparsed.cmd <- sub("ddg.eval[:space:]*\\([:space:]*\"", "", deparsed.cmd)
+  deparsed.cmd <- sub("\"[:space:]*)", "", deparsed.cmd)
+  
+  # Parse the expression to be evaluated
+  updated.cmd <- list("expr" = parse(text=deparsed.cmd)[[1]],
+      "abbrev" = .ddg.abbrev.cmd(gsub("\\\"", "\\\\\"", deparsed.cmd)), 
+      "text" = deparsed.cmd)
+  
+  return(updated.cmd)
 }
 
 # .ddg.parse.commands takes as input a set of RScript commands command format. 
@@ -1297,13 +1326,19 @@ ddg.MAX_HIST_LINES <- 2^14
     echo=FALSE, print.eval = echo, max.deparse.length = 150) {
   # 
   # figure out if we will execute commands or not
+  #print(paste("parsed.commands =", parsed.commands))
   execute <- run.commands & !is.null(environ) & is.environment(environ)
 
+  # If we are running in console mode, remove calls to ddg.eval.
+  # The expressions themselves will already have been evaluated
+  # when ddg.eval was called from the console.
+  #parsed.commands <- Filter(function(cmd) {return (!grepl("^ddg.eval", cmd))}, parsed.commands)
+  
   # It is possidle that a command may extend over multiple lines. 
   # new.commands will have one string entry for each parsed command.
-  
 	new.commands <- lapply(parsed.commands, function(cmd) {paste(deparse(cmd), collapse="")})
-  filtered.commands <- Filter(function(x){return(!grepl("^ddg.", x))}, new.commands)
+  filtered.commands <- Filter(function(x){
+        return(!grepl("^ddg.", x) || grepl("^ddg.eval", x))}, new.commands)
   
   # attempt to close the previous collapsible command node if a ddg exists
   if (.ddg.is.init()) .ddg.close.last.command.node(initial=TRUE)
@@ -1312,12 +1347,15 @@ ddg.MAX_HIST_LINES <- 2^14
   # console nodes. Don't bother doing this if there is only 1 new 
   # command in the history or execution.
   named.node.set <- FALSE
+  start.node.created <- ""
   num.new.commands <- length(new.commands)
   num.actual.commands <- length(filtered.commands)
   # 
   if (num.actual.commands > 0 && .ddg.is.init()) {
+    #print(paste("Creating Start node when num.actual.commands > 0 for ", node.name))
     .ddg.add.abstract.node("Start", node.name)
     named.node.set <- TRUE
+    start.node.created <- node.name
   }
   
   # Quote the quotation (") characters so that they will appear in 
@@ -1329,12 +1367,26 @@ ddg.MAX_HIST_LINES <- 2^14
   .ddg.last.cmd <- list("abbrev" = .ddg.abbrev.cmd(quoted.commands[[num.new.commands]]), 
       "expr" = parsed.commands[[num.new.commands]],
       "text" = new.commands[[num.new.commands]])
+  .ddg.last.eval.cmd <- NULL
+  unwrapped.ddg.eval <- FALSE
+#  if (substr(.ddg.last.cmd$abbrev, 1, 8) == "ddg.eval" && !.ddg.enable.source() && .ddg.enable.console()) {
+#    # We won't execute this, so don't change .ddg.last.cmd
+#    print(paste(".ddg.last.cmd =", .ddg.last.cmd, "   Extracting arg to .ddg.last.cmd."))
+#    #.ddg.last.eval.cmd <- .ddg.last.cmd
+#    .ddg.last.cmd <- .ddg.extract.param.from.ddg.eval(.ddg.last.cmd$text)
+#    #.ddg.set(".ddg.possible.last.cmd", NULL)
+#    unwrapped.ddg.eval <- TRUE
+#  }
+#  else if (substr(.ddg.last.cmd$abbrev, 1, 4) == "ddg.") {
   if (substr(.ddg.last.cmd$abbrev, 1, 4) == "ddg.") {
+    #print(paste(".ddg.last.cmd =", .ddg.last.cmd, "   Setting it to NULL."))
     .ddg.last.cmd <- NULL
   }
-  else if (!execute) {
-    quoted.commands <- quoted.commands[1:num.new.commands-1]
-    parsed.commands <- parsed.commands[1:num.new.commands-1]
+  else {
+    if (!execute) {
+      quoted.commands <- quoted.commands[1:num.new.commands-1]
+      parsed.commands <- parsed.commands[1:num.new.commands-1]
+    }
   }
   
   # Dont' set .ddg.last.cmd.  We want it to have the value from the last call.
@@ -1373,27 +1425,40 @@ ddg.MAX_HIST_LINES <- 2^14
       cmd.expr <- parsed.commands[[i]]
       cmd.text <- new.commands[[i]]
       cmd <- quoted.commands[[i]]
+      cmd.abbrev <- .ddg.abbrev.cmd(cmd)
+      #print(paste("Processing ", cmd.text))
       
       if (.ddg.enable.source() && grepl("^ddg.eval", cmd.expr) && .ddg.enable.console()) {
-        # Turn the ddg.eval call into a string
-        deparsed.cmd <- cmd.text
+      #if (grepl("^ddg.eval", cmd.expr) && .ddg.enable.console()) {
+      
+        update.last.cmd <- (is.null(.ddg.last.cmd) && .ddg.last.eval.cmd$text == cmd.text)
+        #print(paste("update.last.cmd ?   ", update.last.cmd))
         
-        # Extract the argument passed to ddg.eval
-        deparsed.cmd <- sub("ddg.eval[:space:]*\\([:space:]*\"", "", deparsed.cmd)
-        deparsed.cmd <- sub("\"[:space:]*)", "", deparsed.cmd)
+        updated.cmd <- .ddg.extract.param.from.ddg.eval(cmd.text)
         
-        # Parse the expression to ve evaluated
-        cmd.expr <- parse(text=deparsed.cmd)[[1]]
-        cmd.text <- deparsed.cmd
-        cmd <- gsub("\\\"", "\\\\\"", cmd.text)
+        cmd <- updated.cmd$abbrev
+        cmd.expr <- updated.cmd$expr
+        cmd.text <- updated.cmd$text
+        
+        if (update.last.cmd) {
+          .ddg.last.cmd <- list("abbrev" = cmd.abbrev, "expr" = cmd.expr, "text" = cmd)
+        }
       }
       
+      # If we encounter ddg.eval when in non-source console mode, we will have
+      # already executed the statement from within ddg.eval itself.
+#      else if (grepl("^ddg.eval", cmd.expr) && .ddg.enable.console()) {
+#        next
+#      }
       
       # specifies whether or not a procedure node should be created for this command
       # Basically, if a ddg exists and the command is not a ddg command, it should
       # be created.
       
       create <- !grepl("^ddg.", cmd) && .ddg.is.init() && .ddg.enable.console()
+      #print(paste("create =", create))
+      #print(paste("cmd =", cmd))
+      #print(sys.calls())
       
       # if the command does not match one of the ignored patterns
       if (!any(sapply(ignore.patterns, function(pattern){grepl(pattern, cmd)}))) {
@@ -1420,10 +1485,13 @@ ddg.MAX_HIST_LINES <- 2^14
           if (!grepl("^ddg.", cmd)) {
             .ddg.set(".ddg.possible.last.cmd", list("abbrev"=cmd.abbrev,
                     "expr"=cmd.expr, "text"=cmd.text))
+            #print(paste(".ddg.parse.commands setting .ddg.possible.last.cmd when finding a non-ddg cmd", .ddg.get(".ddg.possible.last.cmd")))
+            
           }
           else if (.ddg.is.procedure.cmd(cmd)) .ddg.set(".ddg.possible.last.cmd", NULL)
           
           # evaluate
+          #print(paste("Evaluating ", cmd.expr))
           result <- eval(cmd.expr, environ, NULL)
           
           # print evaluation
@@ -1443,15 +1511,22 @@ ddg.MAX_HIST_LINES <- 2^14
         # that the last command is set, is not null, and is equal to the current
         
         create.procedure <- create && !(!is.null(.ddg.get(".ddg.last.cmd")) && 
-               .ddg.get(".ddg.last.cmd")$text == cmd.text)
+               .ddg.get(".ddg.last.cmd")$text == cmd.text) && 
+               (!named.node.set || start.node.created != cmd.text)
+         #print(paste("create.procedure = ", create.procedure))
+         #print(paste(".ddg.last.cmd =", .ddg.get(".ddg.last.cmd")$text))
+         #print(paste("cmd.text =", cmd.text))
+         #print(paste("create =", create))
+         #print(sys.calls())
         
         # we want to create a procedure node for this command
         if (create.procedure) {
+          #print(sys.calls())
           
           # create the procedure node
           .ddg.proc.node("Operation", cmd.abbrev, cmd.abbrev, console=TRUE)
           .ddg.proc2proc()
-          if (.ddg.debug()) print(paste(".ddg.parse.console.node: Adding operation node for", cmd.abbrev))
+          if (.ddg.debug()) print(paste(".ddg.parse.commandse: Adding operation node for", cmd.abbrev))
           
           # store information on the last procedure node in this block
           last.proc.node <- cmd.abbrev
@@ -1460,15 +1535,15 @@ ddg.MAX_HIST_LINES <- 2^14
           if (execute) {
             # add variables to set
             vars.set <- .ddg.add.to.vars.set(vars.set,cmd.expr,i)
-            if (.ddg.debug()) print(paste(".ddg.parse.console.node: Adding", cmd.abbrev, "information to vars.set"))
+            if (.ddg.debug()) print(paste(".ddg.parse.commands: Adding", cmd.abbrev, "information to vars.set"))
           }
           
           .ddg.create.data.use.edges.for.console.cmd(vars.set, cmd.abbrev, cmd.expr, i)
           .ddg.link.function.returns(cmd.text)
           
-          if (.ddg.debug()) print(paste(".ddg.parse.console.node: Adding input data nodes for", cmd.abbrev))
+          if (.ddg.debug()) print(paste(".ddg.parse.commands: Adding input data nodes for", cmd.abbrev))
           .ddg.create.data.set.edges.for.console.cmd(vars.set, cmd.abbrev, cmd.expr, i)
-          if (.ddg.debug()) print(paste(".ddg.parse.console.node: Adding output data nodes for", cmd.abbrev))
+          if (.ddg.debug()) print(paste(".ddg.parse.commands: Adding output data nodes for", cmd.abbrev))
         }
         # we wanted to create it but it matched a last command node
         else if (create && execute) .ddg.close.last.command.node(initial=TRUE)
@@ -1499,10 +1574,14 @@ ddg.MAX_HIST_LINES <- 2^14
   }
   
   # Open up a new collapsible node in case we need to parse further later
+  #if (!execute && !unwrapped.ddg.eval) {
   if (!execute) {
 		
     .ddg.set(".ddg.possible.last.cmd", .ddg.last.cmd)
+    #print(paste(".ddg.parse.commands setting .ddg.possible.last.cmd when !execute to", .ddg.last.cmd))
     .ddg.set(".ddg.last.cmd", .ddg.last.cmd)
+    #print(paste(".ddg.parse.commands setting .ddg.last.cmd when !execute to", .ddg.last.cmd))
+    #print(paste("Creating start node when !execute for", .ddg.last.cmd))
     .ddg.open.new.command.node()
   }
   
@@ -1537,9 +1616,11 @@ ddg.MAX_HIST_LINES <- 2^14
     parsed.commands <- .ddg.parse.lines(new.lines)
     
     # new commands since last timestamp
-    if (!is.null(parsed.commands)) .ddg.parse.commands(parsed.commands, 
+    if (!is.null(parsed.commands) && length(parsed.commands) > 0) {
+      .ddg.parse.commands(parsed.commands, 
           environ = env,
           run.commands=FALSE)
+    }
   }
 }
 
@@ -2414,6 +2495,17 @@ ddg.eval <- function(statement) {
     return(invisible())
   }
   
+  if (interactive() && .ddg.enable.console() && !.ddg.enable.source()) {
+    .ddg.console.node()
+  }
+  
+  # The history mechanism will take care of this
+#  if (.ddg.enable.console() && !.ddg.enable.source()) {
+#    eval(parsed.statement, env)
+#    return(invisible())
+#  }
+
+  #print(paste("ddg.eval: parsed.statement =", parsed.statement))
   .ddg.parse.commands(parsed.statement, environ=env, run.commands = TRUE, node.name=statement)
   .ddg.link.function.returns(statement)
   
@@ -2424,6 +2516,7 @@ ddg.eval <- function(statement) {
   
   vars.set <- .ddg.find.var.assignments(.ddg.statement$expr)
   .ddg.create.data.set.edges.for.cmd(vars.set, .ddg.statement$abbrev, .ddg.statement$expr, 1, stack=sys.calls())
+
 }
 
 # ddg.data creates a data node for a single or comple data value. 
