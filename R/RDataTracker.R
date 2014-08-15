@@ -1337,8 +1337,9 @@ ddg.MAX_HIST_LINES <- 2^14
   # It is possidle that a command may extend over multiple lines. 
   # new.commands will have one string entry for each parsed command.
 	new.commands <- lapply(parsed.commands, function(cmd) {paste(deparse(cmd), collapse="")})
-  filtered.commands <- Filter(function(x){
-        return(!grepl("^ddg.", x) || grepl("^ddg.eval", x))}, new.commands)
+#  filtered.commands <- Filter(function(x){
+##        return(!grepl("^ddg.", x) || grepl("^ddg.eval", x))}, new.commands)
+#        return(!grepl("^ddg.", x))}, new.commands)
   
   # attempt to close the previous collapsible command node if a ddg exists
   if (.ddg.is.init()) .ddg.close.last.command.node(initial=TRUE)
@@ -1346,17 +1347,18 @@ ddg.MAX_HIST_LINES <- 2^14
   # Create start and end nodes to allow collapsing of consecutive 
   # console nodes. Don't bother doing this if there is only 1 new 
   # command in the history or execution.
-  named.node.set <- FALSE
-  start.node.created <- ""
+#  named.node.set <- FALSE
+#  start.node.created <- ""
   num.new.commands <- length(new.commands)
-  num.actual.commands <- length(filtered.commands)
-  # 
-  if (num.actual.commands > 0 && .ddg.is.init()) {
-    #print(paste("Creating Start node when num.actual.commands > 0 for ", node.name))
-    .ddg.add.abstract.node("Start", node.name)
-    named.node.set <- TRUE
-    start.node.created <- node.name
-  }
+#  num.actual.commands <- length(filtered.commands)
+#  # 
+#  if (num.actual.commands > 0 && .ddg.is.init()) {
+#    print(paste("Creating Start node when num.actual.commands > 0 for ", node.name))
+#    print(paste("filtered.commands =", filtered.commands))
+#    .ddg.add.abstract.node("Start", node.name)
+#    named.node.set <- TRUE
+#    start.node.created <- node.name
+#  }
   
   # Quote the quotation (") characters so that they will appear in 
   # ddg.txt.
@@ -1386,9 +1388,29 @@ ddg.MAX_HIST_LINES <- 2^14
     if (!execute) {
       quoted.commands <- quoted.commands[1:num.new.commands-1]
       parsed.commands <- parsed.commands[1:num.new.commands-1]
+      new.commands <- new.commands[1:num.new.commands-1]
     }
   }
   
+  filtered.commands <- Filter(function(x){
+#        return(!grepl("^ddg.", x) || grepl("^ddg.eval", x))}, new.commands)
+        return(!grepl("^ddg.", x))}, new.commands)
+  
+  # Create start and end nodes to allow collapsing of consecutive 
+  # console nodes. Don't bother doing this if there is only 1 new 
+  # command in the history or execution.
+  named.node.set <- FALSE
+  start.node.created <- ""
+  num.actual.commands <- length(filtered.commands)
+  # 
+  if (num.actual.commands > 0 && .ddg.is.init()) {
+    #print(paste("Creating Start node when num.actual.commands > 0 for ", node.name))
+    #print(paste("filtered.commands =", filtered.commands))
+    .ddg.add.abstract.node("Start", node.name)
+    named.node.set <- TRUE
+    start.node.created <- node.name
+  }
+
   # Dont' set .ddg.last.cmd.  We want it to have the value from the last call.
   # We set it at the end of this function.
   #.ddg.set(".ddg.last.cmd", .ddg.last.cmd)
