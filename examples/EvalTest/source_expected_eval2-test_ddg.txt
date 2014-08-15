@@ -1,0 +1,75 @@
+Architecture="x86_64"
+OperatingSystem="unix"
+Language="R"
+LanguageVersion="R version 3.1.0 Patched (2014-05-20 r65701)"
+RDataTrackerVersion="0.5.40"
+Script="[DIR]/Eval2Test.R"
+ProcessFileTimestamp="2014-08-14T19.33.44EDT"
+WorkingDirectory="[DIR]"
+DDGDirectory="[DIR]/ddg-source"
+DateTime="2014-08-14T19.38.53EDT"
+19
+Operation p1 "1-read.data <- function() {    v1 <- c(1, 2, 3)    v2 <- c(2, " Value="read.data <- function() {    v1 <- c(1, 2, 3)    v2 <- c(2, " Time="2014-08-14T19.38.52EDT";
+Data d1 "1-read.data" Value="#ddg.function";
+DF p1 d1
+Operation p2 "2-f <- function() {    return(10)}" Value="f <- function() {    return(10)}" Time="2014-08-14T19.38.52EDT";
+CF p1 p2
+Data d2 "2-f" Value="#ddg.function";
+DF p2 d2
+Operation p3 "3-f2 <- function() {    ddg.return(20)}" Value="f2 <- function() {    ddg.return(20)}" Time="2014-08-14T19.38.52EDT";
+CF p2 p3
+Data d3 "3-f2" Value="#ddg.function";
+DF p3 d3
+Start p4 "4-Source + eval + function" Value="Source + eval + function" Time="2014-08-14T19.38.52EDT";
+CF p3 p4
+Start p5 "5-all.data <- read.data()" Value="all.data <- read.data()" Time="2014-08-14T19.38.52EDT";
+CF p4 p5
+Operation p6 "6-read.data" Value="read.data" Time="2014-08-14T19.38.52EDT";
+CF p5 p6
+Snapshot d4 "4-read.data() return" Value="[DIR]/ddg-source/4-read.data() return.csv" Time="2014-08-14T19.38.52EDT";
+DF p6 d4
+Finish p7 "7-all.data <- read.data()" Value="all.data <- read.data()" Time="2014-08-14T19.38.52EDT";
+CF p6 p7
+DF d4 p7
+Snapshot d5 "5-all.data" Value="[DIR]/ddg-source/5-all.data.csv" Time="2014-08-14T19.38.52EDT";
+DF p7 d5
+Finish p8 "8-Source + eval + function" Value="Source + eval + function" Time="2014-08-14T19.38.52EDT";
+CF p7 p8
+Start p9 "9-Source + function" Value="Source + function" Time="2014-08-14T19.38.52EDT";
+CF p8 p9
+Start p10 "10-all.data <- read.data()" Value="all.data <- read.data()" Time="2014-08-14T19.38.52EDT";
+CF p9 p10
+Operation p11 "11-read.data" Value="read.data" Time="2014-08-14T19.38.52EDT";
+CF p10 p11
+Snapshot d6 "6-read.data() return" Value="[DIR]/ddg-source/6-read.data() return.csv" Time="2014-08-14T19.38.52EDT";
+DF p11 d6
+Finish p12 "12-all.data <- read.data()" Value="all.data <- read.data()" Time="2014-08-14T19.38.52EDT";
+CF p11 p12
+DF d6 p12
+Snapshot d7 "7-all.data" Value="[DIR]/ddg-source/7-all.data.csv" Time="2014-08-14T19.38.52EDT";
+DF p12 d7
+Finish p13 "13-Source + function" Value="Source + function" Time="2014-08-14T19.38.52EDT";
+CF p12 p13
+Start p14 "14-Source + eval" Value="Source + eval" Time="2014-08-14T19.38.52EDT";
+CF p13 p14
+Operation p15 "15-x <- f()" Value="x <- f()" Time="2014-08-14T19.38.52EDT";
+CF p14 p15
+DF d2 p15
+Data d8 "8-x" Value="10";
+DF p15 d8
+Finish p16 "16-Source + eval" Value="Source + eval" Time="2014-08-14T19.38.53EDT";
+CF p15 p16
+Start p17 "17-Source + eval + ddg.return - ddg.function" Value="Source + eval + ddg.return - ddg.function" Time="2014-08-14T19.38.53EDT";
+CF p16 p17
+Data d9 "9-f2() return" Value="20";
+Exception d10 "10-error.msg" Value="\"No procedure node found for f2\"";
+DF p17 d10
+Operation p18 "18-y <- f2()" Value="y <- f2()" Time="2014-08-14T19.38.53EDT";
+CF p17 p18
+DF d3 p18
+DF d10 p18
+Data d11 "11-y" Value="20";
+DF p18 d11
+Finish p19 "19-Source + eval + ddg.return - ddg.function" Value="Source + eval + ddg.return - ddg.function" Time="2014-08-14T19.38.53EDT";
+CF p18 p19
+
