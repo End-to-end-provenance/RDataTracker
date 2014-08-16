@@ -33,17 +33,13 @@ ddg.graphic.out(dname, pname = NULL, graphic.fext = "jpeg")
   as the value for the node.
 
   ddg.data.in creates a data flow edge from an existing data node (created by an earlier call
-  to ddg.data, ddg.data.out, etc) and an existing procedure node (created by an earlier call 
-  to ddg.procedure).
+  to ddg.data, ddg.data.out, etc) to an existing procedure node (created by an earlier call 
+  to ddg.function or ddg.procedure).
   
-  ddg.data.out creates a Data or Snapshot node (depending on the input) and a control flow edge from an existing procedure node 
-  (created by an earlier call to ddg.procedure).  It should be used when the value 
-  for all types of values, but care should be taken when used with a graphical
-  value. 
-  The function simply takes a snapshot of the current graphics devices when
-  this is the case, and therefore may not save the intended data if the value passed in is not currently an output.
-  Complex data values are written out to the file system and saved in the DDG Directory.
-  
+  ddg.data.out creates a Data or Snapshot node (depending on the input) and a data flow edge from an 
+  existing procedure node (created by an earlier call to ddg.function or ddg.procedure).  Complex data 
+  values are written to the file system in the DDG directory.
+     
   ddg.exception.out behaves similarly to ddg.data.out, except that the node created is an
   Exception node.  This function should be used to record where an error message is created.
   
@@ -54,13 +50,13 @@ ddg.graphic.out(dname, pname = NULL, graphic.fext = "jpeg")
   ddg.file.out behaves similarly to ddg.data.out, except that the node created is a File node.
   This should be used when the script writes a file and the user wants to save this version
   of the file in the provenance graph.  Files saved in this way can be restored by using the
-  ddg.checkpoint and ddg.restore functions, described elsewhere.  If dname is NULL, the
-  filename will be used as the label for the node.
+  ddg.checkpoint and ddg.restore functions, described elsewhere.  If dname is omitted, the
+  filename (minus the directory path) will be used as the label for the node.
 
   ddg.graphic.out behaves similary to ddg.data.out with an input variable of type
-  graphic, but in this case, does not require a variable to exist in the namespace. Instead, it directly copies 
+  graphic, but does not require a variable to exist in the namespace. Instead, it directly copies 
   the active graphics devices and saves it as specified by the input parameters.
-  Available file extension are jpeg, jpg, tiff, png, and bmp.
+  Available file extensions are jpeg, jpg, tiff, png, and bmp.
 }
 \author{Emery Boose and Barbara Lerner}
 \examples{

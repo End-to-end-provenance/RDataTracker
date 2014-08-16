@@ -1,4 +1,4 @@
-#################### Checkpoint/Restore functions for DDGs ####################
+########### Checkpoint/Restore functions for DDGs #############
 
 # The functions in this file can be used to save the state of
 # an R environment to a file and restore it at a later time.
@@ -22,14 +22,15 @@
 #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 #   GNU General Public License for more details.
 #
-#   You should have received a copy of the GNU General Public License 
-#   along with this program.  If not, see 
+#   You should have received a copy of the GNU General Public 
+#   License along with this program.  If not, see 
 #   <http://www.gnu.org/licenses/>.
 
 
 library(RDataTracker)
 
 # .ddg.checkpoint.file.node creates a checkpoint file node.
+
 .ddg.checkpoint.file.node <- function(fname, dname, checkpoint.name) {
 	# Increment data counter.
 	RDataTracker:::.ddg.inc("ddg.dnum")
@@ -52,7 +53,7 @@ library(RDataTracker)
 	if (RDataTracker:::.ddg.debug()) { print("Saving"); print(toSave) }
 
 	# toSave <- ls(envir=.GlobalEnv)
-	#save (list = toSave, file = dpfile.out, envir = parent.frame(3))			
+	# save (list = toSave, file = dpfile.out, envir = parent.frame(3))			
 	save (list = toSave, file = dpfile.out)		
 	ddg.dpfile.out <- paste(dpfile.out, "ddg", sep=".")
 	if (RDataTracker:::.ddg.debug()) { print("Saving"); print(ls(RDataTracker:::.ddg.env, all.names=TRUE)) }
@@ -70,6 +71,7 @@ library(RDataTracker)
 }
 
 # .ddg.checkpoint.out creates a checkpoint node and data flow edge.
+
 .ddg.checkpoint.out <- function(checkpoint.name, filename) {
 	dname <- basename(filename)
 	
@@ -84,6 +86,7 @@ library(RDataTracker)
 
 # .ddg.record.checkpoint records the procedure node information for 
 # a checkpoint.
+
 .ddg.record.checkpoint <- function(filename, checkpoint.name) {
 	ddg.checkpoint.num <- RDataTracker:::.ddg.get("ddg.checkpoint.num")
 	ddg.checkpoints <- RDataTracker:::.ddg.get("ddg.checkpoints")
@@ -96,8 +99,9 @@ library(RDataTracker)
 # checkpoint node to the DDG. It creates a procedural node labeled 
 # with the checkpoint name and a snapshot node labeled with the name 
 # of the checkpoint file created. It returns the full path to the 
-# file that the checkpoint is saved in. checkpoint.name (optional) - 
-# the value associated with the checkpoint procedure node.
+# file that the checkpoint is saved in.
+# checkpoint.name (optional) - the value associated with the 
+#   checkpoint procedure node.
 
 ddg.checkpoint <- function(checkpoint.name=NULL) {
 	if (!RDataTracker:::.ddg.is.init()) return(invisible())
@@ -117,8 +121,8 @@ ddg.checkpoint <- function(checkpoint.name=NULL) {
 	return (checkpoint.file)
 }
 
-
 # .ddg.lookup.checkpoint.name looks up the name of a checkpoint.
+
 .ddg.lookup.checkpoint.name <- function(filename) {
 	ddg.checkpoints <- RDataTracker:::.ddg.get("ddg.checkpoints")
 	nRow<-which(ddg.checkpoints$filename == filename)
@@ -169,7 +173,7 @@ ddg.checkpoint <- function(checkpoint.name=NULL) {
 		}
 	}
 	
-	# Mark the data entries made after the checkpoint to be not current.
+	# Mark the data entries made after the checkpoint to be not current
 	ddg.saved.dnum <- saved.env[["ddg.dnum"]]
 	if (ddg.dnum < ddg.saved.dnum) {
 		for (i in (ddg.dnum+1):ddg.saved.dnum) {
@@ -198,7 +202,7 @@ ddg.checkpoint <- function(checkpoint.name=NULL) {
 				modTime.saved <- file.info(saved)$mtime[1]
 				if (modTime.original >= modTime.saved) {
 					
-					# windows does not allow colons in the names of directories
+					# Windows does not allow colons in the names of directories
 					modTime.original.str <- gsub(" ","T", gsub(":",".",as.character(modTime.original)))
 					
 					rescue.dir <- paste(getwd(), "/ddg.rescued.files/", sep="")
@@ -259,10 +263,10 @@ ddg.restore <- function(file.path) {
 	
 	if (RDataTracker:::.ddg.debug()) print(paste("Restoring from", file.path))
 	
-	# Update the ddg tables so that the ddg will get extended to include 
-	# the actions between the checkpoint and restore, but the data edges 
-	# will link to the data that existed at the time the checkpoint was 
-	# made.
+	# Update the ddg tables so that the ddg will get extended to 
+  # include the actions between the checkpoint and restore, but 
+  # the data edges will link to the data that existed at the time 
+  # the checkpoint was made.
 	
 	saved.ddg.env <- RDataTracker:::.ddg.env
 	if (RDataTracker:::.ddg.debug()) load (file.path, .GlobalEnv, verbose=TRUE)
