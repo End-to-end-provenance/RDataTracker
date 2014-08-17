@@ -23,7 +23,8 @@ ddg.path = paste(testDir,ddgDir,sep="/")
 
 ddg.init(ddg.r.script.path,
          ddg.path,
-    enable.console=TRUE)
+    enable.console=TRUE,
+    max.snapshot.size = 0)
 
 #```r
 library(dplR)

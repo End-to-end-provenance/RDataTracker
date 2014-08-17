@@ -17,7 +17,8 @@ ddg.path = paste(testDir,"[DDG-DIR]",sep="")
 
 ddg.init(ddg.r.script.path,
          ddg.path,
-    enable.console=TRUE)
+    enable.console=TRUE,
+    max.console.size = 0)
 
 #```r
 library(dplR)
