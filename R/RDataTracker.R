@@ -1386,8 +1386,8 @@ ddg.MAX_HIST_LINES <- 2^14
   # not been used yet.
 	returns <- .ddg.get(".ddg.return.values")
 	unused.returns <- returns[!returns$return.used & returns$return.node.id > 0, ]
-    if (nrow(unused.returns) == 0) return()
-	
+  if (nrow(unused.returns) == 0) return()
+  
 	# See which of these are called from the command we are 
   # processing now.
 	unused.calls <- unused.returns$ddg.call
@@ -1402,7 +1402,7 @@ ddg.MAX_HIST_LINES <- 2^14
 	
 	# Extracts for the return value nodes.
 	new.uses <- subset(unused.returns, uses, return.node.id)
-	
+  
 	# Create an edge from each of these to the last procedure node.
 	lapply (new.uses$return.node.id, 
 			function(data.num) {
@@ -2771,6 +2771,14 @@ ddg.return <- function (expr) {
     ddg.return.values <- .ddg.get(".ddg.return.values")
   }
   
+  # If ddg.function was not called, create the function
+  # nodes that it would have created.
+  if (!.ddg.proc.node.exists(pname)) {
+    full.call <- match.call(sys.function(-1), call=call)
+    
+    .ddg.create.function.nodes(pname, full.call)
+  }
+  
   # Create a data node for the return value. We want the scope of 
   # the function that called the function that called ddg.return.
   call <- sys.call(-1)
@@ -2782,11 +2790,6 @@ ddg.return <- function (expr) {
   .ddg.save.data(return.node.name, expr, fname="ddg.return", scope=return.node.scope)
   
   # Create an edge from the function to its return value.
-  if (!.ddg.proc.node.exists(pname)) {
-    full.call <- match.call(sys.function(-1), call=call)
-    
-    .ddg.create.function.nodes(pname, full.call)
-  }
   .ddg.proc2data(pname, return.node.name, return.node.scope)
   
   # Update the table.
