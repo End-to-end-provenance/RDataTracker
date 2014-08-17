@@ -3,10 +3,10 @@ OperatingSystem="windows"
 Language="R"
 LanguageVersion="R version 3.0.1 (2013-05-16)"
 RDataTrackerVersion="0.5.36"
-Script="C:/GitHub/RDataTracker/examples/dynamicConsole/dynamicConsole.r"
+Script="[DIR]/dynamicConsole.r"
 ProcessFileTimestamp="2014-08-07T20.43.40EDT"
-WorkingDirectory="C:/GitHub/RDataTracker/examples/dynamicConsole"
-DDGDirectory="C:/GitHub/RDataTracker/examples/dynamicConsole/ddg"
+WorkingDirectory="[DIR]"
+DDGDirectory="[DIR]/ddg"
 DateTime="2014-08-08T19.40.00EDT"
 10
 Operation p1 "1-f" Value="f" Time="2014-08-08T19.40.00EDT";
@@ -49,7 +49,7 @@ DF p8 d10
 Operation p9 "9-j" Value="j" Time="2014-08-08T19.40.00EDT";
 DF d10 p9
 CF p8 p9
-File d11 "11-foobar.csv" Value="C:/GitHub/RDataTracker/examples/dynamicConsole/ddg/11-foobar.csv" Time="2014-08-08T19.40.00EDT" Location="C:/GitHub/RDataTracker/examples/dynamicConsole/foobar.csv";
+File d11 "11-foobar.csv" Value="[DIR]/ddg/11-foobar.csv" Time="2014-08-08T19.40.00EDT" Location="[DIR]/foobar.csv";
 Operation p10 "10-Read raw data files" Value="Read raw data files" Time="2014-08-08T19.40.00EDT";
 CF p9 p10
 DF d11 p10

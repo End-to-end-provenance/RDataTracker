@@ -3,10 +3,10 @@ OperatingSystem="windows"
 Language="R"
 LanguageVersion="R version 3.0.1 (2013-05-16)"
 RDataTrackerVersion="0.5.36"
-Script="C:/GitHub/RDataTracker/examples/ddgTest/ddgTest.r"
+Script="[DIR]/ddgTest.r"
 ProcessFileTimestamp="2014-08-06T20.39.41EDT"
-WorkingDirectory="C:/GitHub/RDataTracker/examples/ddgTest"
-DDGDirectory="C:/GitHub/RDataTracker/examples/ddgTest/ddg"
+WorkingDirectory="[DIR]"
+DDGDirectory="[DIR]/ddg"
 DateTime="2014-08-08T19.21.19EDT"
 54
 Start p1 "1-main" Value="main" Time="2014-08-08T19.21.18EDT";
@@ -48,7 +48,7 @@ Data d14 "14-e" Value="4";
 DF p6 d14
 Binding p7 "7-f  <-  vector()" Time="2014-08-08T19.21.18EDT"
 CF p6 p7
-Snapshot d15 "15-f" Value="C:/GitHub/RDataTracker/examples/ddgTest/ddg/15-f.csv" Time="2014-08-08T19.21.18EDT";
+Snapshot d15 "15-f" Value="[DIR]/ddg/15-f.csv" Time="2014-08-08T19.21.18EDT";
 DF p7 d15
 Operation p8 "8-no.name.or.args.given" Value="no.name.or.args.given" Time="2014-08-08T19.21.18EDT";
 DF d10 p8
@@ -85,7 +85,7 @@ Data d20 "20-e" Value="4";
 DF p13 d20
 Binding p14 "14-f  <-  vector()" Time="2014-08-08T19.21.18EDT"
 CF p13 p14
-Snapshot d21 "21-f" Value="C:/GitHub/RDataTracker/examples/ddgTest/ddg/21-f.csv" Time="2014-08-08T19.21.18EDT";
+Snapshot d21 "21-f" Value="[DIR]/ddg/21-f.csv" Time="2014-08-08T19.21.18EDT";
 DF p14 d21
 Operation p15 "15-lookup.args" Value="lookup.args" Time="2014-08-08T19.21.18EDT";
 DF d16 p15
@@ -122,7 +122,7 @@ Data d26 "26-e" Value="4";
 DF p20 d26
 Binding p21 "21-f  <-  vector()" Time="2014-08-08T19.21.18EDT"
 CF p20 p21
-Snapshot d27 "27-f" Value="C:/GitHub/RDataTracker/examples/ddgTest/ddg/27-f.csv" Time="2014-08-08T19.21.18EDT";
+Snapshot d27 "27-f" Value="[DIR]/ddg/27-f.csv" Time="2014-08-08T19.21.18EDT";
 DF p21 d27
 Operation p22 "22-only.args.given" Value="only.args.given" Time="2014-08-08T19.21.18EDT";
 DF d22 p22
@@ -159,7 +159,7 @@ Data d32 "32-e" Value="4";
 DF p27 d32
 Binding p28 "28-f  <-  vector()" Time="2014-08-08T19.21.18EDT"
 CF p27 p28
-Snapshot d33 "33-f" Value="C:/GitHub/RDataTracker/examples/ddgTest/ddg/33-f.csv" Time="2014-08-08T19.21.18EDT";
+Snapshot d33 "33-f" Value="[DIR]/ddg/33-f.csv" Time="2014-08-08T19.21.18EDT";
 DF p28 d33
 Operation p29 "29-only.name.given" Value="only.name.given" Time="2014-08-08T19.21.18EDT";
 DF d28 p29
@@ -196,7 +196,7 @@ Data d38 "38-e" Value="4";
 DF p34 d38
 Binding p35 "35-f  <-  vector()" Time="2014-08-08T19.21.18EDT"
 CF p34 p35
-Snapshot d39 "39-f" Value="C:/GitHub/RDataTracker/examples/ddgTest/ddg/39-f.csv" Time="2014-08-08T19.21.18EDT";
+Snapshot d39 "39-f" Value="[DIR]/ddg/39-f.csv" Time="2014-08-08T19.21.18EDT";
 DF p35 d39
 Operation p36 "36-string.name.and.args.given" Value="string.name.and.args.given" Time="2014-08-08T19.21.18EDT";
 DF d34 p36
@@ -218,13 +218,13 @@ Data d41 "41-simple.value" Value="10";
 DF p39 d41
 Operation p40 "40-g1" Value="g1" Time="2014-08-08T19.21.18EDT";
 CF p39 p40
-Snapshot d42 "42-kids.df" Value="C:/GitHub/RDataTracker/examples/ddgTest/ddg/42-kids.df.csv" Time="2014-08-08T19.21.18EDT";
+Snapshot d42 "42-kids.df" Value="[DIR]/ddg/42-kids.df.csv" Time="2014-08-08T19.21.18EDT";
 DF p40 d42
-Snapshot d43 "43-year" Value="C:/GitHub/RDataTracker/examples/ddgTest/ddg/43-year.csv" Time="2014-08-08T19.21.18EDT";
+Snapshot d43 "43-year" Value="[DIR]/ddg/43-year.csv" Time="2014-08-08T19.21.18EDT";
 DF p40 d43
-File d44 "44-C:/GitHub/RDataTracker/examples/ddgTest/testfile2.txt" Value="C:/GitHub/RDataTracker/examples/ddgTest/ddg/44-testfile2.txt" Time="2014-08-08T19.21.18EDT" Location="C:/GitHub/RDataTracker/examples/ddgTest/testfile2.txt";
+File d44 "44-[DIR]/testfile2.txt" Value="[DIR]/ddg/44-testfile2.txt" Time="2014-08-08T19.21.18EDT" Location="[DIR]/testfile2.txt";
 DF p40 d44
-File d45 "45-outfile2" Value="C:/GitHub/RDataTracker/examples/ddgTest/ddg/45-testfile3.txt" Time="2014-08-08T19.21.19EDT" Location="C:/GitHub/RDataTracker/examples/ddgTest/testfile3.txt";
+File d45 "45-outfile2" Value="[DIR]/ddg/45-testfile3.txt" Time="2014-08-08T19.21.19EDT" Location="[DIR]/testfile3.txt";
 DF p40 d45
 URL d46 "46-HF home page" Value="\"http://harvardforest.fas.harvard.edu/\"";
 Exception d47 "47-error" Value="\"test error\"";
@@ -243,11 +243,11 @@ Operation p43 "43-data.in.test" Value="data.in.test" Time="2014-08-08T19.21.19ED
 DF d49 p43
 CF p42 p43
 DF d1 p43
-Snapshot d50 "50-pets" Value="C:/GitHub/RDataTracker/examples/ddgTest/ddg/50-pets.csv" Time="2014-08-08T19.21.19EDT";
-Snapshot d51 "51-pets.df" Value="C:/GitHub/RDataTracker/examples/ddgTest/ddg/51-pets.df.csv" Time="2014-08-08T19.21.19EDT";
-Snapshot d52 "52-pets2" Value="C:/GitHub/RDataTracker/examples/ddgTest/ddg/52-pets2.csv" Time="2014-08-08T19.21.19EDT";
-Snapshot d53 "53-pets3" Value="C:/GitHub/RDataTracker/examples/ddgTest/ddg/53-pets3.csv" Time="2014-08-08T19.21.19EDT";
-Snapshot d54 "54-pets4" Value="C:/GitHub/RDataTracker/examples/ddgTest/ddg/54-pets4.csv" Time="2014-08-08T19.21.19EDT";
+Snapshot d50 "50-pets" Value="[DIR]/ddg/50-pets.csv" Time="2014-08-08T19.21.19EDT";
+Snapshot d51 "51-pets.df" Value="[DIR]/ddg/51-pets.df.csv" Time="2014-08-08T19.21.19EDT";
+Snapshot d52 "52-pets2" Value="[DIR]/ddg/52-pets2.csv" Time="2014-08-08T19.21.19EDT";
+Snapshot d53 "53-pets3" Value="[DIR]/ddg/53-pets3.csv" Time="2014-08-08T19.21.19EDT";
+Snapshot d54 "54-pets4" Value="[DIR]/ddg/54-pets4.csv" Time="2014-08-08T19.21.19EDT";
 Operation p44 "44-f2" Value="f2" Time="2014-08-08T19.21.19EDT";
 CF p43 p44
 DF d50 p44
@@ -255,8 +255,8 @@ DF d51 p44
 DF d52 p44
 DF d53 p44
 DF d54 p44
-File d55 "55-RCheckpointNode.java" Value="C:/GitHub/RDataTracker/examples/ddgTest/ddg/55-RCheckpointNode.java" Time="2014-08-08T19.21.19EDT" Location="C:/GitHub/RDataTracker/examples/ddgTest/RCheckpointNode.java";
-File d56 "56-test" Value="C:/GitHub/RDataTracker/examples/ddgTest/ddg/56-testfile.txt" Time="2014-08-08T19.21.19EDT" Location="C:/GitHub/RDataTracker/examples/ddgTest/testfile.txt";
+File d55 "55-RCheckpointNode.java" Value="[DIR]/ddg/55-RCheckpointNode.java" Time="2014-08-08T19.21.19EDT" Location="[DIR]/RCheckpointNode.java";
+File d56 "56-test" Value="[DIR]/ddg/56-testfile.txt" Time="2014-08-08T19.21.19EDT" Location="[DIR]/testfile.txt";
 Exception d57 "57-error.msg" Value="\"File to copy does not exist: missingfile.txt\"";
 DF p44 d57
 Exception d58 "58-error.msg" Value="\"File to copy does not exist: missingdir/abc.txt\"";
@@ -296,29 +296,29 @@ Operation p47 "47-url.out.test" Value="url.out.test" Time="2014-08-08T19.21.19ED
 CF p46 p47
 URL d72 "72-MHC home" Value="\"https://www.mtholyoke.edu/\"";
 DF p47 d72
-Snapshot d73 "73-pets2" Value="C:/GitHub/RDataTracker/examples/ddgTest/ddg/73-pets2.csv" Time="2014-08-08T19.21.19EDT";
+Snapshot d73 "73-pets2" Value="[DIR]/ddg/73-pets2.csv" Time="2014-08-08T19.21.19EDT";
 DF p29 d73
-Snapshot d74 "74-pets3" Value="C:/GitHub/RDataTracker/examples/ddgTest/ddg/74-pets3.csv" Time="2014-08-08T19.21.19EDT";
+Snapshot d74 "74-pets3" Value="[DIR]/ddg/74-pets3.csv" Time="2014-08-08T19.21.19EDT";
 DF p29 d74
-Snapshot d75 "75-pets.df" Value="C:/GitHub/RDataTracker/examples/ddgTest/ddg/75-pets.df.csv" Time="2014-08-08T19.21.19EDT";
+Snapshot d75 "75-pets.df" Value="[DIR]/ddg/75-pets.df.csv" Time="2014-08-08T19.21.19EDT";
 DF p29 d75
-Snapshot d76 "76-pets6" Value="C:/GitHub/RDataTracker/examples/ddgTest/ddg/76-pets6.csv" Time="2014-08-08T19.21.19EDT";
+Snapshot d76 "76-pets6" Value="[DIR]/ddg/76-pets6.csv" Time="2014-08-08T19.21.19EDT";
 DF p29 d76
 Data d77 "77-pets.text" Value="\"text about pets\"";
 DF p29 d77
 Binding p48 "48-df  <-  pets.df" Time="2014-08-08T19.21.19EDT"
 CF p47 p48
 DF d75 p48
-Snapshot d78 "78-df" Value="C:/GitHub/RDataTracker/examples/ddgTest/ddg/78-df.csv" Time="2014-08-08T19.21.19EDT";
+Snapshot d78 "78-df" Value="[DIR]/ddg/78-df.csv" Time="2014-08-08T19.21.19EDT";
 DF p48 d78
 Operation p49 "49-snapshot.out.test" Value="snapshot.out.test" Time="2014-08-08T19.21.19EDT";
 DF d78 p49
 CF p48 p49
-Snapshot d79 "79-pets4" Value="C:/GitHub/RDataTracker/examples/ddgTest/ddg/79-pets4.csv" Time="2014-08-08T19.21.19EDT";
+Snapshot d79 "79-pets4" Value="[DIR]/ddg/79-pets4.csv" Time="2014-08-08T19.21.19EDT";
 DF p49 d79
-File d80 "80-RDataInstanceNode.java" Value="C:/GitHub/RDataTracker/examples/ddgTest/ddg/80-RDataInstanceNode.java" Time="2014-08-08T19.21.19EDT" Location="C:/GitHub/RDataTracker/examples/ddgTest/RDataInstanceNode.java";
+File d80 "80-RDataInstanceNode.java" Value="[DIR]/ddg/80-RDataInstanceNode.java" Time="2014-08-08T19.21.19EDT" Location="[DIR]/RDataInstanceNode.java";
 DF p36 d80
-File d81 "81-testfile2.txt" Value="C:/GitHub/RDataTracker/examples/ddgTest/ddg/81-testfile2.txt" Time="2014-08-08T19.21.19EDT" Location="C:/GitHub/RDataTracker/examples/ddgTest/testfile2.txt";
+File d81 "81-testfile2.txt" Value="[DIR]/ddg/81-testfile2.txt" Time="2014-08-08T19.21.19EDT" Location="[DIR]/testfile2.txt";
 DF p36 d81
 Exception d82 "82-error.msg" Value="\"File to copy does not exist: missingfile.txt\"";
 DF p49 d82
@@ -330,7 +330,7 @@ Exception d85 "85-error.msg" Value="\"No data node found for abc.txt\"";
 DF p49 d85
 Operation p50 "50-file.out.test" Value="file.out.test" Time="2014-08-08T19.21.19EDT";
 CF p49 p50
-File d86 "86-testfile3.txt" Value="C:/GitHub/RDataTracker/examples/ddgTest/ddg/86-testfile3.txt" Time="2014-08-08T19.21.19EDT" Location="C:/GitHub/RDataTracker/examples/ddgTest/testfile3.txt";
+File d86 "86-testfile3.txt" Value="[DIR]/ddg/86-testfile3.txt" Time="2014-08-08T19.21.19EDT" Location="[DIR]/testfile3.txt";
 DF p50 d86
 Exception d87 "87-exc1" Value="\"a\"";
 DF p8 d87

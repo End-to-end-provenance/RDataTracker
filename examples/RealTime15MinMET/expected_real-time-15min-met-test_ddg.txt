@@ -3,10 +3,10 @@ OperatingSystem="windows"
 Language="R"
 LanguageVersion="R version 3.1.1 (2014-07-10)"
 RDataTrackerVersion="0.5.36"
-Script="C:/GitHub/RDataTracker/examples/RealTime15MinMET/real-time-15min-met-test.r"
+Script="[DIR]/real-time-15min-met-test.r"
 ProcessFileTimestamp="2014-08-09T10.14.32EDT"
-WorkingDirectory="C:/GitHub/RDataTracker/examples/RealTime15MinMET"
-DDGDirectory="C:/GitHub/RDataTracker/examples/RealTime15MinMET/ddg"
+WorkingDirectory="[DIR]"
+DDGDirectory="[DIR]/ddg"
 DateTime="2014-08-09T10.14.45EDT"
 18
 Data d1 "1-days" Value="10";
@@ -14,7 +14,7 @@ Start p1 "1-Loop" Value="Loop" Time="2014-08-09T10.14.44EDT";
 Data d2 "2-input" Value="\"airt\"";
 Binding p2 "2-zz  <-  final.data" Time="2014-08-09T10.14.44EDT"
 CF p1 p2
-Snapshot d3 "3-zz" Value="C:/GitHub/RDataTracker/examples/RealTime15MinMET/ddg/3-zz.csv" Time="2014-08-09T10.14.44EDT";
+Snapshot d3 "3-zz" Value="[DIR]/ddg/3-zz.csv" Time="2014-08-09T10.14.44EDT";
 DF p2 d3
 Binding p3 "3-v  <-  input" Time="2014-08-09T10.14.44EDT"
 CF p2 p3
@@ -36,11 +36,11 @@ CF p5 p6
 Start p7 "7-Loop" Value="Loop" Time="2014-08-09T10.14.44EDT";
 CF p6 p7
 Data d6 "6-input" Value="\"dewp\"";
-Snapshot d7 "7-graphic" Value="C:/GitHub/RDataTracker/examples/RealTime15MinMET/ddg/7-graphic.jpeg" Time="2014-08-09T10.14.45EDT";
+Snapshot d7 "7-graphic" Value="[DIR]/ddg/7-graphic.jpeg" Time="2014-08-09T10.14.45EDT";
 DF p6 d7
 Binding p8 "8-zz  <-  final.data" Time="2014-08-09T10.14.45EDT"
 CF p7 p8
-Snapshot d8 "8-zz" Value="C:/GitHub/RDataTracker/examples/RealTime15MinMET/ddg/8-zz.csv" Time="2014-08-09T10.14.45EDT";
+Snapshot d8 "8-zz" Value="[DIR]/ddg/8-zz.csv" Time="2014-08-09T10.14.45EDT";
 DF p8 d8
 Binding p9 "9-v  <-  input" Time="2014-08-09T10.14.45EDT"
 CF p8 p9
@@ -62,11 +62,11 @@ CF p11 p12
 Start p13 "13-Loop" Value="Loop" Time="2014-08-09T10.14.45EDT";
 CF p12 p13
 Data d11 "11-input" Value="\"wspd\"";
-Snapshot d12 "12-graphic" Value="C:/GitHub/RDataTracker/examples/RealTime15MinMET/ddg/12-graphic.jpeg" Time="2014-08-09T10.14.45EDT";
+Snapshot d12 "12-graphic" Value="[DIR]/ddg/12-graphic.jpeg" Time="2014-08-09T10.14.45EDT";
 DF p12 d12
 Binding p14 "14-zz  <-  final.data" Time="2014-08-09T10.14.45EDT"
 CF p13 p14
-Snapshot d13 "13-zz" Value="C:/GitHub/RDataTracker/examples/RealTime15MinMET/ddg/13-zz.csv" Time="2014-08-09T10.14.45EDT";
+Snapshot d13 "13-zz" Value="[DIR]/ddg/13-zz.csv" Time="2014-08-09T10.14.45EDT";
 DF p14 d13
 Binding p15 "15-v  <-  input" Time="2014-08-09T10.14.45EDT"
 CF p14 p15

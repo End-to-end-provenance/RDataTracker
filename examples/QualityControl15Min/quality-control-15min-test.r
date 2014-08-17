@@ -25,6 +25,7 @@ options(guiToolkit="tcltk")
 # ddg.library <- "c:/data/r/ddg/lib/ddg-library.r"
 #}
 #source(ddg.library)
+#source("/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/R/RDataTracker.R")
 library(RDataTracker)
 
 # get initial time
@@ -32,11 +33,17 @@ startTime <- Sys.time()
 invisible(force(startTime))
 
 ## Directories
-testDir <- "[DIR_DEFAULT]/"
-setwd(testDir)
+if (interactive()) {
+  testDir <- getwd()
+  ddgDir <- "ddg"
+} else {
+  testDir <- "[DIR_DEFAULT]"
+  setwd(testDir)
+  ddgDir <- "[DDG-DIR]"
+}
 
-ddg.r.script.path = paste(testDir,"quality-control-15min-test.r",sep="")
-ddg.path = paste(testDir,"[DDG-DIR]",sep="")
+ddg.r.script.path = paste(testDir,"quality-control-15min-test.r",sep="/")
+ddg.path = paste(testDir,ddgDir,sep="/")
 
 ddg.init(ddg.r.script.path,
          ddg.path,
@@ -215,8 +222,8 @@ save.data <- function(fn,xx) {
 ddg.start("main")
 
 ddg.start("get.data")
-
-all.data <- read.data()
+#all.data <- read.data()
+ddg.eval("all.data <- read.data()")
 
 selected.data <- select.data(all.data,variable,start.date,end.date)
 
