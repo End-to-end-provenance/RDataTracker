@@ -29,45 +29,47 @@ ddg.eval(statement)
   \item{statement}{the statement to evaluate}
 }
 \details{
-  ddg.function creates a node of type Operation for R functions.  The function name and input parameters
-  (if any) are looked up from the calling environment.  A data flow edge is created for each argument passed 
-  to the function that called ddg.procedure, if the corresponding data node exists.  Outputs are optionally
-  supplied with the outs parameter.  In DDG Explorere, the user can right click on the node to see the corresponding function definition.
+  ddg.function creates a procedural node of type Operation for procedures implemented as functions in the 
+  original R script.  The function name and input parameters (if any) are looked up from the calling environment.  
+  A data flow edge is created for each argument passed to the function that called ddg.function, if the 
+  corresponding data node exists.  Outputs are optionally supplied with the outs parameter.  In DDG Explorer, 
+  the user can right click on the node to see the corresponding function definition.
   
-  ddg.procedure creates a node of type Operation for steps not implemented as R functions.  The node name must be
-  supplied.  Inputs and outputs are optionally supplied with the ins and outs parameters.  If ins is not NULL, ddg.procedure 
-  will create a data flow edge from each data node in the list.  Data nodes may be of type data, file, url, or exception.  
-  Node names must be passed as quoted strings.  For files, the node name may be the name of the file or the name of a variable that 
-  holds the name of the file.
-  
-  If outs.data, outs.file, etc is not NULL, ddg.function and ddg.procedure will create a node of the specified type (data, file,
-  url, or exception) for each name in the list along with a data flow edge to that node.  Node names must be 
-  passed as quoted strings.  For files, the node name may be the name of the file or the name of a variable 
+  ddg.procedure creates a procedural node of type Operation for procedures not implemented as functions in 
+  the original R script. The node name must be supplied.  Inputs and outputs are optionally supplied with the ins 
+  and outs parameters. If ins is not NULL, ddg.procedure will create a data flow edge from each data node in the list,
+  if the corresponding data node exists.  Data nodes may be of type data, file, url, or exception. Node names must be 
+  passed as quoted strings, except for files, where the node name may be the name of the file or the name of a variable 
   that holds the name of the file.
+  
+  If outs.data, outs.file, etc is not NULL, ddg.function and ddg.procedure will create a node of the specified 
+  type (data, file, url, or exception) for each name in the list along with a data flow edge to that node.
 
-  If outs.graphic is not NULL, ddg.function and ddg.procedure will create a node of type snapshot (these nodes hold complex data types) 
-  with the value of outs.graphic as the name. The node will store a snapshot of the current graphics device in the file (outs.graphic).(graphic.fext). 
-  The file will be linked to the DDG and will be viewable using DDG Explorer. The parameter graphic.fext is ignored if outs.graphic is NULL. 
+  If outs.graphic is not NULL, ddg.function and ddg.procedure will create a node of type Snapshot (these 
+  nodes hold complex data types) with the value of outs.graphic as the name. The node will store a snapshot 
+  of the current graphics device in the file (outs.graphic).(graphic.fext). The file will be linked to the DDG and 
+  will be viewable using DDG Explorer. The parameter graphic.fext is ignored if outs.graphic is NULL. 
   
   ddg.return creates a data node for a function's return value.  If the function is called from a console
-  command and the console processing is enabled, the node will link to the console command
-  that uses the value.  ddg.return should be used in place of the function's normal return statement(s).
+  command and console mode is enabled, a data flow edge will be created linking this node to the console 
+  command that uses the value. ddg.return returns the same value as the function and can be used in 
+  place of the function's normal return statement(s).
   
-  ddg.start() and ddg.finish() should come in matching pairs.  ddg.start() should precede ddg.finish().  
-  For each call made to ddg.start() when the script is executed, there should be exactly one call made
-  to ddg.finish() using the same pname.  For example, ddg.start() might be called at the beginning of
-  a function with ddg.finish() called at each place where the function might return.
+  ddg.start and ddg.finish should come in matching pairs, where each ddg.start precedes the corresponding 
+  ddg.finish.  For each call made to ddg.start when the script is executed, there should be exactly one call made
+  to ddg.finish using the same pname.  For example, ddg.start might be called at the beginning of
+  a function with ddg.finish called at each place where the function might return.
   
-  ddg.start creates a Start node labeled with pname.  ddg.finish() creates a Finish node labeled with 
-  the same name.  If pname is NULL, the name of the function that called ddg.start() or ddg.finish() 
-  will be used for pname.  In DDG Explorer, ddg.start() ... ddg.finish() pairs can be collapsed 
+  ddg.start creates a Start node labeled with pname, while ddg.finish() creates a Finish node labeled with 
+  the same name. If ddg.start and ddg.finish are called by a function, pname may be omitted and the
+  name of the function will be used as pname.  In DDG Explorer, ddg.start() ... ddg.finish() pairs can be collapsed 
   into a single node to make the visualization smaller and easier to understand.  The user can also 
   right-click in DDG Explorer on a Start or Finish or collapsed Start/Finish node to see all of the R code 
-  between the start and finish.
+  between ddg.start and ddg.finish.
   
   ddg.eval evaluates a statement and creates data flow edges from variables and function return nodes
   that are used in the statement.  If the statement is an assignment statement, it also creates a 
-  data node for the variable assigned and a data flow edge to that node.
+  data node for the variable assigned and a corresponding data flow edge.
 }
 \author{Emery Boose and Barbara Lerner}
 \examples{

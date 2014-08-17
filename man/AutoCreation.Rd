@@ -29,37 +29,34 @@ ddg.source(file, local = FALSE, echo = verbose, print.eval = echo,
 }
 \details{
   This is a rewriting of the \code{\link{source}} function to support provenance
-  collection for sourced files. For more information on source pertinant  
+  collection for sourced files. For more information on the relevant  
   parameters and functions, see the source help page.
 
   Data Provenance is collected from the sourced file and a DDG is created.
 
   If ignore.ddg.calls is set to TRUE, then all code statement beginning with 
-  "ddg." are ignored. They are not executed nor incorporated into the created 
+  "ddg." are ignored, i.e. they are not executed and are not incorporated into the 
   DDG. Note that this only holds true for "ddg." calls at the top level, as nested
-  calls within functions are executed with a call to the function.This parameter
-  is used if an existing RScript is partly annotated, but when sourcing, 
-  automatic console annotation are required. 
+  calls within functions are executed with a call to the relevant function.This parameter
+  may be used if an existing RScript is partly annotated and automatic console annotation 
+  is desired.
 
-  This is also useful if automatic annotations of a sourced script should be 
-  included in the DDG of the script sourcing file. Ignoring "ddg." statements 
-  leads to the automatically created DDG being incorporated into the current DDG
+  It may also be used if automatic annotations of a sourced script should be 
+  included in the DDG of the script sourcing the file. Ignoring "ddg." statements 
+  causes the automatically created DDG to be incorporated into the current DDG
   (if one is already initialized).
 
-  Note that ignore.ddg.calls set to TRUE implies ignore.init must also be true. 
+  Note that if ignore.ddg.calls is set to TRUE, then ignore.init must also be TRUE. 
   If this is not the case, then ignore.init will be coerced to TRUE.
 
-  The paramenter ignore.init is used when a sourced script is already annotated,
-  but instead of creating a new DDG, the annotated DDG of the source script 
+  The parameter ignore.init is used when a sourced script is already annotated 
+  and (rather than create a new DDG), the annotated DDG of the source script 
   should be incorporated into the current DDG. When ignore.ddg.calls is set to 
-  FALSE and ignore.init is set to TRUE, all calls beginning with "ddg.init" will
-  be ignored but others will be executed.
+  FALSE and ignore.init is set to TRUE, all calls beginning with "ddg.init" or "ddg.run" 
+  will be ignored but others will be executed. This prevents the initialization of a new DDG 
+  and the provenance will be stored in the currently initialized DDG (if one exists).
 
-  This prevents the initialization of a new DDG. Therefore, the provenance is 
-  stored in the currently initialized DDG (if one exists).
-
-  Further, note that all calls to "library(RDataTracker)" are ignored in the
-  sourced file.
+  Note that all calls to "library(RDataTracker)" are ignored in the sourced file.
 
   The parameter of force.console turns on automatic node creation for the sourced
   R Script. More precisely, a call to \code{\link{ddg.console.on}} is made before
