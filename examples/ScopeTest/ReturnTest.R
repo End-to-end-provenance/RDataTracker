@@ -33,6 +33,25 @@ f3 <- function(aa, bb) {
    ddg.return (aa + bb)
 }
 
+f4 <- function(n) {
+  ddg.function()
+  if (n == 0) {
+    ddg.return(0)
+  }
+  else {
+    ddg.return(f4(n-1))
+  }
+}
+
+f5 <- function(n) {
+  if (n == 0) {
+    ddg.return(0)
+  }
+  else {
+    ddg.return(f5(n-1))
+  }
+}
+
 a <- 1
 ddg.data(a)
 b <- 2
@@ -46,4 +65,9 @@ stopifnot(d == 20)
 ddg.eval("e <- f3(a, b)")
 
 ddg.eval("g <- f2(a) + f2(b)")
+
+print ("The following tests recursion.  The DDGs are not correct.")
+print("Seeing a difference here may be a good thing!")
+f4(3)
+f5(3)
 ddg.save(quit=TRUE)

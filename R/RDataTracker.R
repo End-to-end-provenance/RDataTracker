@@ -565,24 +565,6 @@ ddg.MAX_HIST_LINES <- 2^14
   if (.ddg.debug()) print(paste("Adding data node", ddg.dnum, "named", dname, "with scope", dscope))
 }
 
-.ddg.copy.data.node <- function(formal, formal.scope, arg, arg.scope) {
-  arg.number <- .ddg.data.number (arg, arg.scope) 
-  ddg.data.nodes <- .ddg.data.nodes()
-  # Increment data counter.
-  .ddg.inc("ddg.dnum")
-  
-  # Add node to DDG.
-  ddg.dnum <- .ddg.dnum()
-  dtype <- ddg.data.nodes$ddg.type[arg.number]
-  dvalue <- ddg.data.nodes$ddg.value[arg.number]
-  .ddg.append(dtype, " d", ddg.dnum, " \"", ddg.dnum, "-", formal, "\" Value=\"", dvalue, "\";\n", sep="")
-  .ddg.record.data (dtype, 
-      formal, 
-      dvalue, 
-      formal.scope, 
-      dloc=ddg.data.nodes$ddg.loc[arg.number]) 
-}
-
 # .ddg.is.proc.node returns TRUE if the specified type supports 
 # input and output edges in an expanded DDG. Currently this 
 # includes all procedure node types except Start.
@@ -1076,49 +1058,6 @@ ddg.MAX_HIST_LINES <- 2^14
   return (vars.set)
 }
 
-# .ddg.create.data.edges.for.cmd creates a data flow edge from the
-# node for each variable used in cmd.expr to the procedure node 
-# labeled cmd.abbrev. This is determined by finding nodes referenced 
-# in cmd.expr which are already assigned. All unassigned referenced 
-# are assumed to be creations (otherwise an error would have occured 
-# when executing the commands), therefore these are set as output 
-# edges and a data node is created. Additionally, to compensate for 
-# something like the following a <- a, where a is both input and 
-# output, a double occurrence of a variable is automatically assumed
-# to be both input and output. The value must exist beforehand.
-
-# cmd.abbrev - name of procedure node.
-# cmd.expr - command expression.
-# environ (optional) - environment in which to evaluate variable.
-
-# THIS IS NOT USED ANYWHERE BECAUSE IT DID NOT WORK AS EXPECTED
-
-.ddg.create.data.edges.for.cmd <- function(cmd.abbrev, cmd.expr, environ=.GlobalEnv) {
-	all.vars.used <- .ddg.find.var.uses(cmd.expr,all=TRUE)
-	unique.vars.used <- unique(unlist(all.vars.used))
-
-	for (var in unique.vars.used) {
-		# Count occurrences of variable.
-		num.var <- sum(all.vars.used == var)
-
-		# Variable exists, so this is an unput.
-		if (.ddg.data.node.exists(var)) .ddg.data2proc(var,cmd.abbrev)
-
-		# Variable does not exist or occurs more than once.
-		if (!.ddg.data.node.exists(var) || num.var > 1) {
-			# Find value of this variable.
-			val <- tryCatch(eval(parse(text=var), environ),
-					error = function(e) {NULL}
-			)
-			tryCatch(.ddg.save.data(var,val,fname=".ddg.create.data.edges.for.cmd",error=TRUE),
-			         error = function(e){.ddg.data.node("Data", var, "complex")})
-
-
-			.ddg.proc2data(cmd.abbrev, var)
-		}
-	}
-}
-
 # .ddg.auto.graphic.node attempts to figure out if a new graphics 
 # device has been created and take a snapshot of a previously active 
 # device, setting the snapshot node to be the output of the 
@@ -1147,7 +1086,7 @@ ddg.MAX_HIST_LINES <- 2^14
 
 		# We're done, so create the edge.
 		if(is.null(cmd.abbrev)) .ddg.lastproc2data(name, all=FALSE)
-		else .ddg.proc2data(name, cmd.abbrev)
+		else .ddg.proc2data(cmd.abbrev, name)
 	}
 }
 
@@ -1786,7 +1725,237 @@ ddg.MAX_HIST_LINES <- 2^14
   
 }
 
-
+.ddg.parse.source.commands <- function(parsed.commands, environ=NULL, ignore.patterns=c('^ddg.'), node.name="Console", run.commands = FALSE, echo=FALSE, print.eval=echo, max.deparse.length=150) {
+  
+  # Figure out if we will execute commands or not.
+  
+  execute <- run.commands & !is.null(environ) & is.environment(environ)
+  
+  # It is possible that a command may extend over multiple lines. 
+  # new.commands will have one string entry for each parsed command.
+  new.commands <- lapply(parsed.commands, function(cmd) {paste(deparse(cmd), collapse="")})
+  filtered.commands <- Filter(function(x){return(!grepl("^ddg.", x))}, new.commands)
+  
+  # Attempt to close the previous collapsible command node if a ddg 
+  # exists
+  if (.ddg.is.init()) .ddg.close.last.command.node(initial=TRUE)
+  
+  # Create start and end nodes to allow collapsing of consecutive 
+  # console nodes. Don't bother doing this if there is only 1 new 
+  # command in the history or execution.
+  num.new.commands <- length(new.commands)
+  
+  # Quote the quotation (") characters so that they will appear in 
+  # ddg.txt.
+  quoted.commands <- gsub("\\\"", "\\\\\"", new.commands)
+  
+  # Get the last command in the new commands and check to see if 
+  # we need to create a new .ddg.last.cmd node for future reference.
+  .ddg.last.cmd <- list("abbrev" = .ddg.abbrev.cmd(quoted.commands[[num.new.commands]]), 
+      "expr" = parsed.commands[[num.new.commands]],
+      "text" = new.commands[[num.new.commands]])
+  
+  if (substr(.ddg.last.cmd$abbrev, 1, 4) == "ddg.") {
+    .ddg.last.cmd <- NULL
+  }
+  else if (!execute) {
+    quoted.commands <- quoted.commands[1:num.new.commands-1]
+    parsed.commands <- parsed.commands[1:num.new.commands-1]
+    new.commands <- new.commands[1:num.new.commands-1]
+  }
+  
+  filtered.commands <- Filter(function(x){
+        return(!grepl("^ddg.", x))}, new.commands)
+  
+  # Create start and end nodes to allow collapsing of consecutive 
+  # console nodes. Don't bother doing this if there is only 1 new 
+  # command in the history or execution.
+  named.node.set <- FALSE
+  start.node.created <- ""
+  num.actual.commands <- length(filtered.commands)
+  # 
+  if (num.actual.commands > 0 && .ddg.is.init()) {
+    .ddg.add.abstract.node("Start", node.name)
+    named.node.set <- TRUE
+    start.node.created <- node.name
+  }
+  
+  # Don't set .ddg.last.cmd.  We want it to have the value from 
+  # the last call. We set it at the end of this function:
+  # .ddg.set(".ddg.last.cmd", .ddg.last.cmd)
+  
+  # We tried to use a data frame to contain new.commands, 
+  # quoted.commands and parsed.commands, but it does not seem 
+  # possible to put the parsed expressions in a data frame.
+  
+  # Create an operation node for each command.  We can't use lapply 
+  # here because we need to process the commands in order and 
+  # lapply does not guarantee an order. Also decide which data nodes 
+  # and edges to create. Only create a data node for the last 
+  # write of a variable and only if that occurs after the last 
+  # possible writer. Create an edge for a data use as long as the 
+  # use happens before the first writer/possible writer or after 
+  # the last writer/possible writer. Lastly, if environ is set to 
+  # true, then execute each command immediately before attempting 
+  # to create the DDG nodes. 
+  
+  # Only go through this if  we have at least one command to parse.
+  if (length(parsed.commands) > 0) {
+    # Find where all the variables are assigned for non-environ 
+    # files.
+    if (!execute) {
+      vars.set <- .ddg.find.var.assignments(parsed.commands)
+    } 
+    else {
+      .ddg.set("var.num", 1)
+      vars.set <- .ddg.create.empty.vars.set()
+    }
+    
+    # Loop over the commands as well as their string representations.
+    for (i in 1:length(parsed.commands)) {
+      cmd.expr <- parsed.commands[[i]]
+      cmd.text <- new.commands[[i]]
+      cmd <- quoted.commands[[i]]
+      cmd.abbrev <- .ddg.abbrev.cmd(cmd)
+      
+      if (.ddg.enable.source() && grepl("^ddg.eval", cmd.expr) && .ddg.enable.console()) {    
+        update.last.cmd <- is.null(.ddg.last.cmd)
+        updated.cmd <- .ddg.extract.param.from.ddg.eval(cmd.text)
+        
+        cmd <- updated.cmd$abbrev
+        cmd.expr <- updated.cmd$expr
+        cmd.text <- updated.cmd$text
+        
+        if (update.last.cmd) {
+          .ddg.last.cmd <- list("abbrev"=cmd.abbrev, "expr"=cmd.expr, "text"=cmd)
+        }
+      }
+      
+      # Specifies whether or not a procedure node should be created 
+      # for this command. Basically, if a ddg exists and the 
+      # command is not a DDG command, it should be created.
+      
+      create <- !grepl("^ddg.", cmd) && .ddg.is.init() && .ddg.enable.console()
+      
+      # If the command does not match one of the ignored patterns.
+      if (!any(sapply(ignore.patterns, function(pattern){grepl(pattern, cmd)}))) {        
+        cmd.abbrev <- .ddg.abbrev.cmd(cmd)
+        
+        # If sourcing, we want to execute the command.
+        if (execute) {
+          # Print command.
+          if (echo) {
+            nd <- nchar(cmd)
+            do.trunc <- nd > max.deparse.length
+            cmd.show <- paste0(substr(cmd, 1L, if (do.trunc) 
+                          max.deparse.length
+                        else nd), "\n")
+            cat(cmd.show)
+          }
+          
+          # If we will create a node, then before execution, set 
+          # this command as a possible abstraction node but only 
+          # if it's not a call that itself creates abstract nodes.
+          if (!grepl("^ddg.", cmd)) {
+            .ddg.set(".ddg.possible.last.cmd", list("abbrev"=cmd.abbrev, "expr"=cmd.expr, "text"=cmd.text))
+          }
+          else if (.ddg.is.procedure.cmd(cmd)) .ddg.set(".ddg.possible.last.cmd", NULL)
+          
+          # Evaluate.
+          result <- eval(cmd.expr, environ, NULL)
+          
+          # Print evaluation.
+          if (print.eval) print(result)
+          
+          # Check if initialization call. If so, then create a 
+          # new console node, but only if the next command is NOT 
+          # a DDG command.
+          
+          # if(grepl("^ddg.init", cmd) && .ddg.enable.console()) { 
+          #	.ddg.add.abstract.node("Start", "Console")
+          #	.ddg.set(".ddg.last.cmd", list(text="Console",expr="Console"))
+          # }
+        }
+        
+        # Figure out if we should create a procedure node for this 
+        # command. We don't create it if it matches a last command 
+        # (because that last command has now become a collapsible 
+        # node). Matching a last command means that the last command 
+        # is set, is not NULL, and is equal to the current command.
+        
+        create.procedure <- create && !(!is.null(.ddg.get(".ddg.last.cmd")) && .ddg.get(".ddg.last.cmd")$text == cmd.text) && (!named.node.set || start.node.created != cmd.text)
+        
+        # We want to create a procedure node for this command.
+        if (create.procedure) {
+          
+          # Create the procedure node.
+          .ddg.proc.node("Operation", cmd.abbrev, cmd.abbrev, console=TRUE)
+          .ddg.proc2proc()
+          if (.ddg.debug()) print(paste(".ddg.parse.commands: Adding operation node for", cmd.abbrev))
+          
+          # Store information on the last procedure node in this 
+          # block.
+          last.proc.node <- cmd.abbrev
+          
+          # We want to create the incoming data nodes (by updating 
+          # the vars.set).
+          if (execute) {
+            # Add variables to set.
+            vars.set <- .ddg.add.to.vars.set(vars.set,cmd.expr,i)
+            if (.ddg.debug()) print(paste(".ddg.parse.commands: Adding", cmd.abbrev, "information to vars.set"))
+          }
+          
+          .ddg.create.data.use.edges.for.console.cmd(vars.set, cmd.abbrev, cmd.expr, i)
+          .ddg.link.function.returns(cmd.text)
+          
+          if (.ddg.debug()) print(paste(".ddg.parse.commands: Adding input data nodes for", cmd.abbrev))
+          .ddg.create.data.set.edges.for.console.cmd(vars.set, cmd.abbrev, cmd.expr, i)
+          if (.ddg.debug()) print(paste(".ddg.parse.commands: Adding output data nodes for", cmd.abbrev))
+        }
+        # We wanted to create it but it matched a last command node.
+        else if (create && execute) .ddg.close.last.command.node(initial=TRUE)
+        
+        ###### TODO #######
+        if (execute) {
+          .ddg.create.data.node.for.possible.writes(vars.set, last.proc.node, env=environ)
+          
+          # Update so we don't set these again.
+          vars.set$possible.last.writer <- vars.set$last.writer
+        }
+      }
+    }
+    
+    # Create a data node for each variable that might have been set in 
+    # something other than a simple assignment, with an edge from the 
+    # last node in the console block or source .
+    if (!execute) .ddg.create.data.node.for.possible.writes(vars.set, last.proc.node, env=environ)
+  }
+  
+  # Close any node left open during execution.
+  if (execute) .ddg.close.last.command.node(initial=TRUE)
+  
+  # Close the console block if we processed anything and the DDG 
+  # is initialized (also, save).
+  # 
+  if (.ddg.is.init() && named.node.set) { 
+    .ddg.add.abstract.node("Finish", node.name)
+  }
+  
+  # Open up a new collapsible node in case we need to parse 
+  # further later.
+  if (!execute) {
+    
+    .ddg.set(".ddg.possible.last.cmd", .ddg.last.cmd)
+    .ddg.set(".ddg.last.cmd", .ddg.last.cmd)
+    .ddg.open.new.command.node()
+  }
+  
+  # Write time stamp to history.
+  if (.ddg.is.init()) .ddg.write.timestamp.to.history()
+  # print(paste("last.commad:",.ddg.get(".ddg.last.cmd")))
+  # print(paste("command:", .ddg.get(".ddg.possible.last.cmd")))
+  
+}
 
 # .ddg.console.node creates a console node.
 
@@ -2062,7 +2231,8 @@ ddg.MAX_HIST_LINES <- 2^14
   # Get file name.
   ddg.dnum <- .ddg.dnum()
   
-  if (max.snapshot.size == -1 || object.size(data) < max.snapshot.size) {
+  # object.size returns bytes, but max.snapshot.size is in kilobytes
+  if (max.snapshot.size == -1 || object.size(data) < max.snapshot.size * 1024) {
     full.snapshot <- TRUE
     snapname <- dname
   }
@@ -3251,7 +3421,10 @@ ddg.grabhistory <- function() {
 #   "ddg" in the current working directory.
 # enable.console (optional) - if TRUE, console mode is turned on.
 # max.snapshot.size (optional) - the maximum size for objects that 
-#   should be output to snapshot files. If 0, no snapshot files are saved. If -1, all snapshot files are saved. Size in bytes.
+#   should be output to snapshot files. If 0, no snapshot files are saved. 
+#   If -1, all snapshot files are saved. Size in kilobytes.  Note that
+#   this tests the size of the object that will be turned into a 
+#   snapshot, not the size of the resulting snapshot.
 
 ddg.init <- function(r.script.path = NULL, ddgdir = NULL, enable.console = TRUE, max.snapshot.size = -1) {
   .ddg.init.tables()
@@ -3311,7 +3484,9 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, enable.console = TRUE,
 # enable.console (optional) - if TRUE, console mode is turned on.
 # max.snapshot.size (optional) - the maximum size for objects that 
 #   should be output to snapshot files. If 0, no snapshot files are 
-#   saved. If -1, all snapshot files are saved. Size in bytes.
+#   saved. If -1, all snapshot files are saved.  Size in kilobytes.  Note that
+#   this tests the size of the object that will be turned into a 
+#   snapshot, not the size of the resulting snapshot.
 
 ddg.run <- function(r.script.path = NULL, ddgdir = NULL, f = NULL, enable.console = TRUE, max.snapshot.size = -1) {
   ddg.init(r.script.path, ddgdir, enable.console, max.snapshot.size)
