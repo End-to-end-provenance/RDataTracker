@@ -3391,25 +3391,6 @@ ddg.finish <- function(pname=NULL) {
   .ddg.proc2proc()
 }
 
-# ddg.grabhistory grabs the current console history and creates 
-# the partial DDG. It does not, however, write this to the file 
-# system. The function should be called only if more than 512 
-# lines of code need to be interpreted automatically (usually 
-# because the script is being annoated with enable.console = TRUE). 
-# It should also be called if the error "Part of history is 
-# missing. DDG may be incomplete!" is occurs. Finally, it should 
-# be called periodically to assure no history is missing.
-
-ddg.grabhistory <- function() {
-	if (!.ddg.is.init()) return(invisible())
-
-	# Only act if in intereactive mode and with enabled console.
-	if (interactive() && .ddg.enable.console()) {
-		.ddg.console.node()
-	}
-
-	invisible()
-}
 
 # ddg.init intializes a new DDG.
 
@@ -3522,13 +3503,10 @@ ddg.save <- function(quit=FALSE) {
   
   if (!.ddg.is.init()) return(invisible())
   
-  # Restore history settings.
   if (interactive() && .ddg.enable.console()) {
-    Sys.setenv("R_HISTSIZE"=.ddg.get('ddg.original.hist.size'))
+    # Get the final commands
+    .ddg.console.node()
   }
-  
-  # Get final commands.
-  ddg.grabhistory()
   
   # Get environment parameters.
   ddg.env <- .ddg.environ()
@@ -3545,6 +3523,7 @@ ddg.save <- function(quit=FALSE) {
   # Save DDG to file.
   ddg.path <- .ddg.path()
   fileout <- paste(ddg.path, "/ddg.txt", sep="")
+  if (interactive()) print(paste("Saving DDG in ", fileout))
   write(output, fileout)
   
   # Save procedure nodes table to file.
@@ -3564,6 +3543,9 @@ ddg.save <- function(quit=FALSE) {
   
   # By convention, this is the final call to ddg.save.
   if (quit) {
+    # Restore history settings.
+    if (.ddg.is.set('ddg.original.hist.size')) Sys.setenv("R_HISTSIZE"=.ddg.get('ddg.original.hist.size'))
+
     # Delete temporary files.
     .ddg.delete.temp()
     

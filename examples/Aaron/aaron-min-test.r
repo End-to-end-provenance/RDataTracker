@@ -9,16 +9,22 @@ startTime <- Sys.time()
 invisible(force(startTime))
 
 ## Directories
-testDir <- "[DIR_DEFAULT]/"
-setwd(testDir)
+if (interactive()) {
+  testDir <- getwd()
+  ddgDir <- "ddg-min"
+} else {
+  testDir <- "[DIR_DEFAULT]"
+  setwd(testDir)
+  ddgDir <- "[DDG-DIR]"
+}
 
-ddg.r.script.path = paste(testDir,"aaron-min-test.r",sep="")
-ddg.path = paste(testDir,"[DDG-DIR]",sep="")
+ddg.r.script.path = paste(testDir,"aaron-min-test.r",sep="/")
+ddg.path = paste(testDir,ddgDir,sep="/")
 
 ddg.init(ddg.r.script.path,
          ddg.path,
     enable.console=TRUE,
-    max.console.size = 0)
+    max.snapshot.size = 0)
 
 #```r
 library(dplR)
@@ -488,7 +494,7 @@ dev.off()
 
 #First, create sptaial point patterns; remove points with x or y outside of c(0,90)
 
-
+ddg.save()
 #```r
 
 plot.1 <- plot.1[plot.1[, 9] >= 0 & plot.1[, 9] <= 90, ]
@@ -987,6 +993,7 @@ plot(envelope(plot.3.pp[plot.3$genus == "Betula"], Kest))
 ## lo   lower pointwise envelope of K(r) from simulations
 #```
 
+ddg.save()
 #```r
 
 plot(plot.3.pp[plot.3$genus == "Quercus"])
@@ -1478,6 +1485,7 @@ plot(envelope(plot.6.pp[plot.6$genus == "Betula"], Kest))
 ## Done.
 #```
 
+ddg.save()
 #```
 ##      lty col  key      label
 ## obs    1   1  obs  K[obs](r)
@@ -1968,6 +1976,7 @@ mad.test(plot.1.pp[plot.1$genus == "Betula"], Lest, verbose = FALSE, nsim = 99)
 mad.test(plot.1.pp[plot.1$genus == "Quercus"], Lest, verbose = FALSE, nsim = 99)
 #```
 
+ddg.save()
 #```
 ## 
 ## 	Maximum absolute deviation test of CSR
@@ -2466,6 +2475,7 @@ mad.test(plot.7.pp[plot.7$genus == "Quercus"], Lest, verbose = FALSE, nsim = 99)
 mad.test(plot.7.pp[plot.7$genus == "Acer"], Lest, verbose = FALSE, nsim = 99)
 #```
 
+ddg.save()
 #```
 ## 
 ## 	Maximum absolute deviation test of CSR
@@ -2966,6 +2976,7 @@ head(hf.Shaler)
 ## 6 1/6/1964   -6       1     -12  0.0
 #```
 
+ddg.save()
 #```r
 summary(hf.Shaler)
 #```
@@ -3463,6 +3474,7 @@ cor.test(as.vector(window(Amherst.ts[, 3], start = 1964)), as.vector(HF.ts[,
 lm(as.vector(HF.ts[, 1]) ~ as.vector(window(Amherst.ts[, 3], start = 1964)))
 #```
 
+ddg.save()
 #```
 ## 
 ## Call:
@@ -3962,6 +3974,7 @@ box()
 
 #![plot of chunk unnamed-chunk-23](figure/unnamed-chunk-23.png) 
 
+ddg.save()
 #```r
 
 dev.off()
@@ -4461,6 +4474,7 @@ AIC(gam.pinus1, gam.pinus2)
 1 - gam.tsuga1$deviance/gam.tsuga1$null.deviance
 #```
 
+ddg.save()
 #```
 ## [1] 0.2453
 #```

@@ -583,7 +583,7 @@ plot.8.pp <- ppp(plot.8[, 9], plot.8[, 10], c(0, 90), c(0, 90))
 ## Warning: data contain duplicated points
 #```
 
-ddg.grabhistory()
+ddg.save()
 #Now, plot, generate contours, and Kobs vs Ktheor
 
 
@@ -1105,7 +1105,7 @@ invisible(plot(invisible(envelope(plot.4.pp[plot.4$genus == "Tsuga"], Kest))))
 #```
 ## Generating 99 simulations of CSR  ...
 ## 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
-ddg.grabhistory()
+ddg.save()
 ## 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30,
 ## 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45,
 ## 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60,
@@ -1622,7 +1622,7 @@ invisible(plot(invisible(envelope(plot.7.pp[plot.7$genus == "Tsuga"], Kest))))
 ##      lty col  key      label
 ## obs    1   1  obs  K[obs](r)
 ## theo   2   2 theo K[theo](r)
-ddg.grabhistory()
+ddg.save()
 ## hi     1   8   hi   K[hi](r)
 ## lo     1   8   lo   K[lo](r)
 ##                                                meaning
@@ -2144,7 +2144,7 @@ invisible(mad.test(plot.3.pp[plot.3$genus == "Quercus"], Lest, verbose = FALSE, 
 ## 	Reference function: sample mean
 ## 	Interval of distance values: [0, 22.5]
 ## 
-ddg.grabhistory()
+ddg.save()
 ## data:  plot.3.pp[plot.3$genus == "Quercus"]
 ## mad = 3.272, rank = 1, p-value = 0.01
 #```
@@ -2694,7 +2694,7 @@ invisible(head(tree.ages))
 
 #```r
 
-ddg.grabhistory()
+ddg.save()
 #original colors for all genera
 
 genera.colors <- c("firebrick4", "coral", "orange4", "black", "orange", 
@@ -3269,7 +3269,7 @@ plot(Amherst.ts)
 
 pdsi.ts <- ts(data = leverett.pdsi$RECON, start = 481, frequency = 1)
 plot(pdsi.ts, type = "b", xlim = c(1875, 2003))
-ddg.grabhistory()
+ddg.save()
 #```
 
 #![plot of chunk unnamed-chunk-15](figure/unnamed-chunk-153.png) 
@@ -3867,7 +3867,7 @@ mtext(side = 3, "s(Age)", adj = 0, line = 0.5, cex = 1)
 
 plot(gam.betula1, se = TRUE, xlab = "", ylab = "", xlim = c(0, 140), rug = FALSE, 
     tcl = -0.25, col.axis = "white")
-ddg.grabhistory()
+ddg.save()
 axis(2, las = 1, tcl = -0.25, at = seq(-10, 5, 5))
 text(0, -10, "Betula", font = 3, pos = 4)
 
@@ -4424,7 +4424,7 @@ AIC(gam.betula1, gam.betula2)
 #```
 
 #```
-ddg.grabhistory()
+ddg.save()
 ## [1] 0.4169
 #```
 

@@ -9,8 +9,11 @@
 \description{These functions create procedural nodes and abstraction nodes within a provenance 
   graph created by RDataTracker.}
 \usage{
-ddg.function(outs.graphic=NULL, outs.data=NULL, outs.exception=NULL, outs.url=NULL, outs.file=NULL, graphic.fext="jpeg")
-ddg.procedure(pname, ins = NULL, outs.graphic = NULL, outs.data = NULL, outs.exception = NULL, outs.url = NULL, outs.file =NULL, graphic.fext = "jpeg")
+ddg.function(outs.graphic=NULL, outs.data=NULL, outs.exception=NULL, 
+    outs.url=NULL, outs.file=NULL, graphic.fext="jpeg")
+ddg.procedure(pname, ins = NULL, outs.graphic = NULL, outs.data = NULL, 
+    outs.exception = NULL, outs.url = NULL, outs.file =NULL, 
+    graphic.fext = "jpeg")
 ddg.return(expr)
 ddg.start(pname = NULL)
 ddg.finish(pname = NULL)

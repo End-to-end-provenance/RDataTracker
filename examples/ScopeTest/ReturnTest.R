@@ -57,7 +57,7 @@ ddg.data(a)
 b <- 2
 ddg.data(b)
 #d <- f2(a) + f2(b)
-ddg.grabhistory()
+ddg.save()
 #d <- f(a, b)
 ddg.eval("d <- f(a, b)")
 stopifnot(d == 20)
