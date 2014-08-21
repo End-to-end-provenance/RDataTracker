@@ -72,12 +72,14 @@ morekeywords={}
 }
 
 \begin{document}
-\SweaveOpts{concordance=TRUE}
 \maketitle
 
 \newpage
 \tableofcontents
 \newpage
+\listoffigures
+\newpage
+
 \section{What is the DDG Explorer?}
 
 The DDG Explorer is a tool that allows the user to view and query the Data Derivation Graphs (DDGs) that are created by running programs that collect this data derivation information as they execute. The focus of this document is on its use with DDGs created from execution of instrumented R scripts. Currently, DDGs can also be created through execution of Little-JIL processes. The DDG notation is general enough to support many languages, but there are currently no other implementations.
@@ -117,10 +119,13 @@ After downloading DDGExplorer.jar, you should be able to start it by double-clic
 
 \subsection{Loading a DDG from a File}
 
-When DDG Explorer starts, you should see a window that looks like this:
+When DDG Explorer starts, you should see a window that looks like that in Figure \ref{figure:selector}:
 
-\includegraphics[width=6.5in,height=2.889in]{UsingDDGExplorer-img/UsingDDGExplorer-img001.png} 
-
+\begin{figure}
+\caption{DDG Selector}
+\label{figure:selector}
+\includegraphics[width=6.5in,height=2.889in]{UsingDDGExplorer-img/UsingDDGExplorer-img001.png}
+\end{figure}
 
 Across the top of this window, you should see 4 buttons:
 
@@ -147,8 +152,11 @@ When you click on Load from File, you will be presented with a standard file bro
 
 After opening a ddg.txt file, you will see a window that looks like this:
 
- \includegraphics[width=3.472in,height=4.4866in]{UsingDDGExplorer-img/UsingDDGExplorer-img002.png} 
-
+\begin{figure}
+\label{figure:}
+\caption{DDG Explorer Main Window}
+\includegraphics[width=3.472in,height=4.4866in]{UsingDDGExplorer-img/UsingDDGExplorer-img002.png} 
+\end{figure}
 
 Along the top of the window are 3 menus: File, Preferences and Help. On the left side is a legend that explains the colors used in the DDG. On the right is the initial view of the DDG in a collapsed state.
 
@@ -348,24 +356,30 @@ Initially, DDGs are stored in files. If you run an R script using the same DDG d
 
 Returning to the DDG Chooser (the main window of the DDG Explorer), we will now describe the functionality available for DDGs stored in the database. When you click on the ``Load from database'' button, you will see a new window that looks like this:
 
+\begin{figure}[!ht]
+ \caption{Load from Database Window}
  \includegraphics[width=6.5in,height=3.25in]{UsingDDGExplorer-img/UsingDDGExplorer-img005.png} 
-
+\end{figure}
 
 \bigskip
 
 
 The left column lists the names of scripts that have DDGs associated with them in the database. If you select one of these, the window will change to look like this:
-
- \includegraphics[width=6.5in,height=3.25in]{UsingDDGExplorer-img/UsingDDGExplorer-img006.png} 
-
+\begin{figure}[!ht]
+  \caption{Select Script Screen}
+  \includegraphics[width=6.5in,height=3.25in]{UsingDDGExplorer-img/UsingDDGExplorer-img006.png} 
+\end{figure}
 
 Now the second column shows the timestamps for all of the DDGs created from that script. In the rightmost column, the ``Delete all'' button is now enabled. If you click this button, it will delete all of the DDGs associated with that script from your database. You will be prompted to confirm that you want to delete them, but once deleted, they cannot be recovered, so be careful!
 
 
 If you select one execution timestamp, you will now see more buttons enabled:
 
+\begin{figure}[!ht]
+ \caption{Select TimeStampt Screen}
  \includegraphics[width=6.5in,height=3.25in]{UsingDDGExplorer-img/UsingDDGExplorer-img007.png} 
 
+\end{figure}
 
 Here is what each of these buttons does.
 
@@ -376,15 +390,22 @@ Delete DDG - This will delete the one DDG that corresponds to the selected scrip
 Load - This will read the entire DDG from the database and create a window displaying the DDG, just as what happens when you read it from a file.
 \item 
 Show value derivation - This query allows you to view just the portion of a DDG that explains how a particular output value was calculated. After clicking this button, a window will appear asking you to select a variable to display. For example, if the user asks to see the variable 14-estimate, the (partial) DDG shown is at the right. Here, we can see that get.input operation outputs a number, which is input to get.random that produces the first estimate value. This estimate is input to calc.square.root, which produces another estimate. This cycle repeats until we get to the desired estimate. \newline \newline
+
+\begin{figure}[!ht]
+  \caption{Calculate Square Root DDG}
   \includegraphics[width=2.2654in,height=7.8472in]{UsingDDGExplorer-img/UsingDDGExplorer-img008.png}
+\end{figure}
 We can get more insight by right-clicking on the data nodes to see what values they have. Here, we see that the 3-number has the value 3636363. 4-estimate has the value 3016450.69879702. Showing subsequent estimate values demonstrates how the algorithm narrows in on the square root value that is within the desired tolerance.
 \end{itemize}
 
 \begin{itemize}
 \item 
 Show values computed from: This query allows you to view the portion of the DDG that follows from a particular data value. After clicking this button, you will see a window like the one for the previous query where you can select a data value. This time, however, you will see the values that are computed from this data value as shown below.\
-Here, we start with 44-estimate and can see that it is input to two operations. One operation determines if it is close enough to the actual square root (which it is not), while the other uses it to refine the estimate, producing 47-estimate. 47-estimate is within the desired tolerance, so that value is saved in the sqr-roots.csv output file. \includegraphics[width=5.8335in,height=4.4909in]{UsingDDGExplorer-img/UsingDDGExplorer-img009.png} 
-\end{itemize}
+Here, we start with 44-estimate and can see that it is input to two operations. One operation determines if it is close enough to the actual square root (which it is not), while the other uses it to refine the estimate, producing 47-estimate. 47-estimate is within the desired tolerance, so that value is saved in the sqr-roots.csv output file.
+\begin{figure}[!ht]
+  \caption{Checkpoint DDG}
+  \includegraphics[width=5.8335in,height=4.4909in]{UsingDDGExplorer-img/UsingDDGExplorer-img009.png} 
+\end{figure} \end{itemize}
 \subsection{Comparing R Scripts}
 
 You will likely find that you change your R script over time. The R scripts are saved in the database along with the DDG, so the DDG Explorer can always show you the R script that corresponds to a DDG.
@@ -392,7 +413,10 @@ You will likely find that you change your R script over time. The R scripts are 
 
 In addition, you may wonder how a script has changed over time, or how the script that generated one DDG differs from another script. To help you understand that history of your scripts, the main window of the DDG Explorer contains a button labeled ``Compare R scripts''. When you click that, you will see this window:
 
+\begin{figure}[!ht]
+ \caption{File Comparison Windows}
  \includegraphics[width=6.5in,height=4.8752in]{UsingDDGExplorer-img/UsingDDGExplorer-img010.png} 
+\end{figure}
 
 
 In this window, you can select two R scripts to compare. One will be displayed on the left side of the window. The other will be displayed on the right side of the window. These scripts can either come from the file system or from the database. 
@@ -400,7 +424,10 @@ In this window, you can select two R scripts to compare. One will be displayed o
 
 Here is what the window will look like after selecting two related but different scripts:
 
+\begin{figure}[!ht]
+ \caption{Active File Comparison}
  \includegraphics[width=6.5in,height=4.8752in]{UsingDDGExplorer-img/UsingDDGExplorer-img011.png} 
+\end{figure}
 
 
 The brown color identifies lines that are similar but modified between the two versions. Green identifies lines that have no corresponding lines in the other file. Red identifies places where the comparison tool has inserted blank lines just to help align the files better. Lines with a white background are identical between the two files.
@@ -409,8 +436,10 @@ The brown color identifies lines that are similar but modified between the two v
 
 Another useful feature is to allow the user to find where a particular data file has been used as input or produced as output. To do that, go to the main window and click on the ``Find Data Files'' button. This will bring up the following window where you can limit the types of files searched for:
 
- \includegraphics[width=6.5in,height=1.9283in]{UsingDDGExplorer-img/UsingDDGExplorer-img012.png} 
-
+\begin{figure}
+\caption{Find Data File Dialog}
+\includegraphics[width=6.5in,height=1.9283in]{UsingDDGExplorer-img/UsingDDGExplorer-img012.png} 
+\end{figure}
 
 Here, you can limit to the search to just input files, just output files, or both. You can select one or more file extensions. If you select all, it will include files with any extension, including extensions not appearing in the list. The files are searched for in the database. You can either select for files appearing anywhere in the database or limit the search to a particular script or a particular ddg. After making your selections, another window will appear listing the matching files as follows.
 
