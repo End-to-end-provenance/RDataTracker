@@ -437,6 +437,13 @@ The ddg.txt file contains a textual definition of the DDG. It is not necessary t
 
 The DDG database is stored in a directory called .ddg in your home directory. For example, on Windows 7, this would be something like C:{\textbackslash}Users{\textbackslash}emeryboose{\textbackslash}.ddg. On the Mac, this would be something like /Users/barbaralerner/.ddg. You should not interact with the database through the file system, but only through the DDG Explorer.
 
+\section{Known Issues}
+\textbf{Layout Problems:} The DDG layout sometimes does not work well if the top node in the DDG is collapsed.  Try expanding it; the rest of the layout may improve.
+
+Query results sometimes do not layout nicely.  The only solution is to manually move the nodes around.
+
+\textbf{Missing edges: }  If a finish step has a data output, that data output no longer appears when the step is collapsed, even if it is used later in a visible step.  Expanding the node will draw the appropriate nodes and edges.
+
 \section[Acknowledgements]{Acknowledgements}
 
 This material is based upon work supported by the National Science Foundation under Awards No. CCR-0205575, CCR-0427071, and IIS-0705772, the National Science Foundation REU grants DBI-0452254 and DBI-1003938, the Mount Holyoke Center for the Environment Summer Leadership Fellowships, and the Charles Bullard Fellowship in Forest Research at the Harvard Forest. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the authors and do not necessarily reflect the views of the National Science Foundation, Mount Holyoke College or Harvard University.
