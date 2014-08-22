@@ -52,6 +52,12 @@ f5 <- function(n) {
   }
 }
 
+f6 <- function(s1, s2, s3, s4) {
+  ddg.function()
+  ddg.return(3)
+}
+
+
 a <- 1
 ddg.data(a)
 b <- 2
@@ -65,6 +71,12 @@ stopifnot(d == 20)
 ddg.eval("e <- f3(a, b)")
 
 ddg.eval("g <- f2(a) + f2(b)")
+
+# Tests different ways that parameters can get bound.
+abc <- "abc"
+x <- 0
+f6(abc, 5, "a b", x + 1)
+
 
 print ("The following tests recursion.  The DDGs are not correct.")
 print("Seeing a difference here may be a good thing!")

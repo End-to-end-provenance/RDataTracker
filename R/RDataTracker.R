@@ -2250,6 +2250,7 @@ ddg.MAX_HIST_LINES <- 2^14
   # Get path plus file name.
   ddg.path <- .ddg.path()
   dpfile <- paste(ddg.path, "/", dfile, sep="")
+  print(paste("Saving snapshot in ", dpfile))
   
   # Write to file .
   if (fext == "csv") write.csv(data, dpfile, row.names=FALSE)
@@ -2603,13 +2604,13 @@ ddg.MAX_HIST_LINES <- 2^14
 .ddg.create.function.nodes <- function(pname, full.call, outs.graphic=NULL, outs.data=NULL, outs.exception=NULL, outs.url=NULL, outs.file=NULL, graphic.fext="jpeg") {
   # Tokens will contain the function name and the argument
   # expressions.
-  tokens <- as.character(full.call)
   
   # Get parameters and create edges.
-  if (length(tokens) > 1) {
+  if (length(full.call) > 1) {
     # args contains the names of the variable that was passed into 
     # the function.
-    args <- tokens[2:length(tokens)]
+    args <- full.call[2:length(full.call)]
+
     # param,names contains the names of the parameters (this is 
     # what the variable is known as inside the function).
     param.names <- names(full.call)
@@ -2617,22 +2618,31 @@ ddg.MAX_HIST_LINES <- 2^14
     stack <- sys.calls()
     # scope <- .ddg.get.scope(args[[1]], for.caller = TRUE)
     bindings <- list()
-    for (i in 1:length(args)) bindings[[i]] <-c(args[[i]], param.names[[i]])
+    for (i in 1:length(args)) bindings[[i]] <-list(args[[i]], param.names[[i]])
     missing.params <- character()
     
-    # lapply(args, 
-    lapply(bindings, 
+    lapply(bindings,
            function(binding) {  
-             # Here, param is now the arguments passed IN.
-             param <- binding[1]
+             # Here, arg is the arguments passed IN.
+             arg <- binding[[1]]
+
              # formal is the paramenter name of the function (what 
              # is the variable known as inside?).
-             formal <- binding[2]
+             formal <- binding[[2]][[1]]
              
              # Find all the variables used in this parameter.
-             vars.used <- .ddg.find.var.uses(parse(text=param))
+						 # If the argument is a string constant, don't bother
+						 # looking for variables.  Also add quotes around it 
+						 # in the node name.             
+             if (is.character(arg)) {
+               vars.used <- character()
+               binding.node.name <- paste(formal, " <- \\\"", arg, "\\\"", sep="")
+             }
+             else {
+               vars.used <- .ddg.find.var.uses(arg)
+               binding.node.name <- paste(formal, " <- ", deparse(arg))
+             }
              
-             binding.node.name <- paste(formal, " <- ", param)
              .ddg.proc.node("Binding", binding.node.name)
              .ddg.proc2proc()
              for (var in vars.used) {
@@ -2649,9 +2659,9 @@ ddg.MAX_HIST_LINES <- 2^14
            })
   }
   .ddg.proc.node("Operation", pname, pname)
-  if (length(tokens) > 1) {
+  if (length(full.call) > 1) {
     lapply(bindings, function(binding) {
-      formal <- binding[2]
+      formal <- binding[[2]][[1]]
       formal.scope <- .ddg.get.scope(formal, calls=stack)
       if (.ddg.data.node.exists (formal, formal.scope)) {
         .ddg.data2proc(formal, formal.scope, pname)
@@ -2952,8 +2962,10 @@ ddg.return <- function (expr) {
   # Create a data node for the return value. We want the scope of 
   # the function that called the function that called ddg.return.
   call <- sys.call(-1)
-  call.text <- gsub(" ", "", deparse(call))
+  call.text <- gsub(" ", "", deparse(call, nlines=1))
   return.node.name <- paste(call.text, "return")
+  return.node.name <- gsub("\"", "\\\\\"", return.node.name)
+  
   return.node.scope <- 
       environmentName (if (sys.nframe() == 2) .GlobalEnv
               else parent.env(sys.frame(-1)))
@@ -3123,7 +3135,6 @@ ddg.file <- function(filename, dname=NULL) {
 
 ddg.data.in <- function(dname, pname=NULL) {
   if (!.ddg.is.init()) return(invisible())
-  # browser()
   
   .ddg.lookup.function.name(pname)
   
@@ -3326,7 +3337,6 @@ ddg.file.out <- function(filename, dname=NULL, pname=NULL) {
 
 ddg.graphic.out <- function(dname, pname=NULL, graphic.fext="jpeg") {
   if(!.ddg.is.init()) return
-	# Browser()
 	# Write out the graphic.
 	.ddg.write.graphic(dname, 'Graphical Plot. Not saved in script.', graphic.fext)
 

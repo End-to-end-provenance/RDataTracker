@@ -56,7 +56,9 @@ ddg.eval(statement)
   ddg.return creates a data node for a function's return value.  If the function is called from a console
   command and console mode is enabled, a data flow edge will be created linking this node to the console 
   command that uses the value. ddg.return returns the same value as the function and can be used in 
-  place of the function's normal return statement(s).
+  place of the function's normal return statement(s) if it is the last statement in the function.  If not,
+  it should be argument to the return call, like return(ddg.return(10)).
+
   
   ddg.start and ddg.finish should come in matching pairs, where each ddg.start precedes the corresponding 
   ddg.finish.  For each call made to ddg.start when the script is executed, there should be exactly one call made

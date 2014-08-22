@@ -10,12 +10,10 @@ start.time <- Sys.time()
 force(start.time)
 
 library(RDataTracker)
-ddg.debug.off()
 
 # Initialize the provenance graph
-ddg.init("/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/SivanSampling/Sampling-NoClasses-MinimalInstrumentation.r",
-		"/Users/blerner/Documents/Process/DataProvenance/workspace/ddg-r/examples/SivanSampling/ddg",
-		enable.console = TRUE)
+ddg.init("/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/SivanSampling/Sampling-NoClasses-MinimalInstrumentation.r",
+		"/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/SivanSampling/ddg-min")
 
 ######################################################################################################
 
@@ -302,7 +300,10 @@ raffleSamples <- function (samplesArr, speciesDistributionAreas, totalNumOfSampl
 			areaCode <- samplesArr[i,"areaCode"]
 			sampleRaffle <- raffleIndividualsPerSample(i, numInd, speciesDistributionAreas[[areaCode]], totalNumOfSpecies)
 			numEntries <- nrow(sampleRaffle)
-			
+      print(paste("smplx =", smplx))
+      print(paste("numEntries =", numEntries))
+      print(paste("index =", index))
+      
 			smpCompositions$sampleId[index:(index+numEntries-1)] <- smplx
 			smpCompositions$speciesCode[index:(index+numEntries-1)] <- sampleRaffle$speciesCode
 			smpCompositions$speciesNumber[index:(index+numEntries-1)] <- sampleRaffle$speciesNumber
