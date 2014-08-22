@@ -3426,7 +3426,7 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, enable.console = TRUE,
           else normalizePath(r.script.path, winslash="/"))
   .ddg.set("ddg.path", 
       if (is.null(ddgdir)) paste(getwd(), "ddg", sep="/") 
-          else normalizePath(ddgdir, winslash="/"))
+          else normalizePath(ddgdir, winslash="/", mustWork=FALSE))
   
   # Set environment constants.
   .ddg.set(".ddg.enable.console", enable.console)
