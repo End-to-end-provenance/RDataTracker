@@ -6,15 +6,27 @@
 # Load the library to create the provenance graphs.  All the function calls below that begin "ddg."
 # are calls to functions in this library.
 
-start.time <- Sys.time()
-force(start.time)
+#source("/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/R/RDataTracker.R")
+library(RDataTracker)
 
-source("/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/R/RDataTracker.R")
-#library(RDataTracker)
+# get initial time
+startTime <- Sys.time()
+invisible(force(startTime))
+
+
+
+if (interactive()) {
+  testDir <- getwd()
+  ddgDir <- "ddg-full"
+} else {
+  testDir <- "[DIR_DEFAULT]"
+  ddgDir <- "[DDG-DIR]"
+  setwd(testDir)
+}
 
 # Initialize the provenance graph
-ddg.init("/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/SivanSampling/Sampling-NoClasses-FewerSnapshots.r",
-		"/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/SivanSampling/ddg-fewer-snapshots")
+ddg.init(paste(testDir, "Sampling-NoClasses-Full.r", sep="/"),
+		ddgDir)
 
 ######################################################################################################
 
@@ -28,7 +40,7 @@ defineAreasDistributions <- function(totalNumOfSpecies, area1str, area2str) {
 	speciesDistribution <- list()
 	speciesDistribution[[1]] <- newSpeciesDistribution(1, totalNumOfSpecies, area1str)
 	speciesDistribution[[2]] <- newSpeciesDistribution(2, totalNumOfSpecies, area2str)
-	ddg.return (speciesDistribution)
+	ddg.return.value (speciesDistribution)
   #return (speciesDistribution)
 }
 
@@ -79,7 +91,7 @@ newSpeciesDistribution <- function(aCode, numOfSpecies, probabilityStr) {
 			areaDictionary <- calculateAccP(areaDictionary, numOfSpecies)
 		}
 	}
-	ddg.return (areaDictionary)
+	ddg.return.value (areaDictionary)
   #return (areaDictionary)
 }
 
@@ -92,7 +104,7 @@ calculateAccP <- function(areaDictionary, numOfSpecies) {
 		areaDictionary[i, "accP"] <- areaDictionary[i, "p"] + areaDictionary[i-1, "accP"]
 	}
 	
-	ddg.return (areaDictionary)
+	ddg.return.value (areaDictionary)
   return (areaDictionary)
 }
 
@@ -122,7 +134,7 @@ addToDictionary <- function (areaDictionary, speciesStr) {
 	areaDictionary[speciesCode, "speciesCode"] <- speciesCode
 	areaDictionary[speciesCode, "p"] <- speciesP
 	
-	ddg.return (areaDictionary)
+	ddg.return.value (areaDictionary)
   #return (areaDictionary)
 }
 
@@ -154,7 +166,7 @@ defineSamplesSizeDistribution <- function() {
 	}
 	if (sampleSizeDistributionMng$accP[7] > 1) stop("defineSampleSizeDistribution:  accumulated probability > 1")
 	
-	ddg.return(sampleSizeDistributionMng)
+	ddg.return.value(sampleSizeDistributionMng)
   #return(sampleSizeDistributionMng)
 }
 
@@ -170,9 +182,9 @@ raffleSampleSize <- function(sampleSizeDistributionMng, maxSampleSize = 25) {
 	# minimum and maximum sizes for that entry.
 	matches <- sampleSizeDistributionMng[randNo1 <= sampleSizeDistributionMng$accP, ]
 	if (nrow(matches) >= 1){
-		#ddg.return (sample(matches$minSize[1]:matches$maxSize[1], 1))
+		#ddg.return.value (sample(matches$minSize[1]:matches$maxSize[1], 1))
     retValue <- sample(matches$minSize[1]:matches$maxSize[1], 1)
-    return(ddg.return (retValue))
+    return(ddg.return.value (retValue))
     #return (retValue)
 	}
 	
@@ -184,7 +196,7 @@ raffleSampleSize <- function(sampleSizeDistributionMng, maxSampleSize = 25) {
 	}
 	
 	retValue <- sample(lastMaxSampleSize:maxSampleSize, 1)
-	ddg.return(retValue)
+	ddg.return.value(retValue)
   #return(retValue)
 }
 
@@ -223,9 +235,9 @@ raffleIndividualsPerSample <- function(sampleCode, numInd, speciesDist, numOfSpe
 	}
 	
 	# Return just the entries for species that were randomly selected.
-	# ddg.return(subset(speciesComposition, speciesNumber > 0))
+	# ddg.return.value(subset(speciesComposition, speciesNumber > 0))
   retValue <- subset(speciesComposition, speciesNumber > 0)
-  ddg.return(retValue)
+  ddg.return.value(retValue)
   #return(retValue)
   #return(subset(speciesComposition, speciesNumber > 0))
   
@@ -238,9 +250,9 @@ raffleIndividualsPerSample <- function(sampleCode, numInd, speciesDist, numOfSpe
 # Return the initalized samples.  This is a data frame with a column for the number of 
 #	individuals, and a column for the area in which they are found
 generateSamples <- function (n) {
-	ddg.return (data.frame(nIndividuals = rep(NA, n), areaCode = rep(NA, n)))
+	ddg.return.value (data.frame(nIndividuals = rep(NA, n), areaCode = rep(NA, n)))
   #retValue <- data.frame(nIndividuals = rep(NA, n), areaCode = rep(NA, n))
-  #ddg.return (retValue)
+  #ddg.return.value (retValue)
   #return (retValue)
 }
 
@@ -260,7 +272,7 @@ assignSamplesToAreas <- function (samplesArr, samplesMapsStr, speciesDistributio
 	for (areaStr in splitAreasArr) {
 		samplesArr <- assignSamplesToArea(samplesArr, areaStr, speciesDistribution, sampleSizeDistributionMng)
 	}
-	ddg.return(samplesArr)
+	ddg.return.value(samplesArr)
   #return(samplesArr)
 }
 
@@ -292,7 +304,7 @@ assignSamplesToArea <- function(samplesArr, areaStr, speciesDistribution, sample
 		}
 	}
 
-	ddg.return(samplesArr)
+	ddg.return.value(samplesArr)
   #return(samplesArr)
 }
 
@@ -306,7 +318,7 @@ assignSampleData <- function(samplesArr, sampleInAreaStr, areaCode, sampleSizeDi
 	sampleCode <- as.integer(sampleInAreaStr)
 	num <- raffleSampleSize(sampleSizeDistributionMng)
 	samplesArr[sampleCode, ] <- c(num, areaCode)
-	ddg.return(samplesArr)
+	ddg.return.value(samplesArr)
   #return(samplesArr)
 }
 
@@ -344,7 +356,7 @@ raffleSamples <- function (samplesArr, speciesDistributionAreas, totalNumOfSampl
 		}
 	}
 	
-	ddg.return(smpCompositions)
+	ddg.return.value(smpCompositions)
   #return(smpCompositions)
 }
 
@@ -358,7 +370,8 @@ writeToFile<- function (wsName, title, totalNumOfSpecies, totalNumOfSample, samp
   ddg.function()
   
 	# Open the file
-	fileConn <- file(paste(wsName, ".csv", sep=""), open="w")
+  filename <- paste(wsName, ".csv", sep="")
+	fileConn <- file(filename, open="w")
 	
 	# Write header information
 	writeLines(title, fileConn)
@@ -369,8 +382,9 @@ writeToFile<- function (wsName, title, totalNumOfSpecies, totalNumOfSample, samp
 	
 	# Write end of data marker
 	writeLines("-1,-1,-1", fileConn)
-
-  ddg.return(close(fileConn))
+  close(fileConn)
+  ddg.file.out(filename)
+  ddg.return.value()
 }
 ddg.finish("Declare functions")
 
@@ -402,7 +416,8 @@ samplingResult <- raffleSamples(samplesArr, speciesDistribution, totalNumOfSampl
 writeToFile("genSmpls1", "virtual sampling1 (Uniform distribution)", totalNumOfSpecies, totalNumOfSample, samplingResult)
 
 ddg.save()
-finish.time <- Sys.time()
-print(paste("Elapsed time =", (finish.time - start.time)))
 
+# Calculate total time of execution
+endTime <- Sys.time()
+cat("Execution Time =", difftime(endTime, startTime,units="secs"))
 

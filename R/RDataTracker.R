@@ -2919,20 +2919,21 @@ ddg.procedure <- function(pname, ins=NULL, outs.graphic=NULL, outs.data=NULL, ou
   invisible()
 }
 
-# ddg.return creates a data node for a function's return value. If 
+# ddg.return.value creates a data node for a function's return value. If 
 # the function is called from a console command and console mode is
 # enabled, a data flow edge will be created linking this node to 
-# the console command that uses the value. ddg.return returns the 
+# the console command that uses the value. ddg.return.value returns the 
 # same value as the function (expr) and can be used in place of the 
-# function's normal return statement(s).
+# function's normal return statement(s) if it is the last statement
+# in the function.  Otherwise, it should be a parameter to return, 
+# like return(ddg.return.value(expr)).
 
 # expr - the value returned by the function.
 
-ddg.return.value <- function (expr) {
+ddg.return.value <- function (expr=NULL) {
   if (!.ddg.is.init()) return(expr)
   pname <- NULL
   .ddg.lookup.function.name(pname)
-  if (length(expr) == 0) return()
   
   # Prints the call & arguments.
   if (.ddg.debug()) {
@@ -3425,7 +3426,7 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, enable.console = TRUE,
           else normalizePath(r.script.path, winslash="/"))
   .ddg.set("ddg.path", 
       if (is.null(ddgdir)) paste(getwd(), "ddg", sep="/") 
-          else ddgdir)
+          else normalizePath(ddgdir, winslash="/"))
   
   # Set environment constants.
   .ddg.set(".ddg.enable.console", enable.console)

@@ -6,15 +6,17 @@
 # Load the library to create the provenance graphs.  All the function calls below that begin "ddg."
 # are calls to functions in this library.
 
+#source("/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/R/RDataTracker.R")
 library(RDataTracker)
 
 # get initial time
 startTime <- Sys.time()
 invisible(force(startTime))
 
+
 if (interactive()) {
   testDir <- getwd()
-  ddgDir <- "ddg-min"
+  ddgDir <- "ddg-medium"
 } else {
   testDir <- "[DIR_DEFAULT]"
   ddgDir <- "[DDG-DIR]"
@@ -22,9 +24,8 @@ if (interactive()) {
 }
 
 # Initialize the provenance graph
-ddg.init(paste(testDir, "Sampling-NoClasses-MinimalInstrumentation.r", sep="/"),
-		ddgDir,
-    max.snapshot.size=0)
+ddg.init(paste(testDir, "Sampling-NoClasses-Medium.r", sep="/"),
+		ddgDir, max.snapshot.size=1)
 
 ######################################################################################################
 
@@ -32,11 +33,14 @@ ddg.init(paste(testDir, "Sampling-NoClasses-MinimalInstrumentation.r", sep="/"),
 
 # This is what a function declaration looks like.  It is defining a function and giving it the
 # name "newSpeciesDistribution".
+ddg.start("Declare functions")
 defineAreasDistributions <- function(totalNumOfSpecies, area1str, area2str) {
+	ddg.function()
 	speciesDistribution <- list()
 	speciesDistribution[[1]] <- newSpeciesDistribution(1, totalNumOfSpecies, area1str)
 	speciesDistribution[[2]] <- newSpeciesDistribution(2, totalNumOfSpecies, area2str)
-	return (speciesDistribution)
+	ddg.return.value (speciesDistribution)
+  #return (speciesDistribution)
 }
 
 # This function essentially behaves as a constructor.  It creates the SpeciesDistibutionAreas object
@@ -51,7 +55,8 @@ defineAreasDistributions <- function(totalNumOfSpecies, area1str, area2str) {
 #	and storing this, we can avoid the search later.
 # The data frame contains one row for each species.
 newSpeciesDistribution <- function(aCode, numOfSpecies, probabilityStr) {
-
+	ddg.function()
+	
 	if (numOfSpecies > 0) {
 		# A data frame is a table where we can access each column by name.  Each column must have 
 		# the same length.
@@ -64,7 +69,7 @@ newSpeciesDistribution <- function(aCode, numOfSpecies, probabilityStr) {
 		# Add the data to the dictionary.  
 		for (speciesStr in speciesStrArr) {
 			areaDictionary <- addToDictionary(areaDictionary, speciesStr)
-		}
+    }
 
 		# Count the number of species with probability greater than 0
 		countSpecies <- sum(areaDictionary$p > 0)
@@ -85,19 +90,21 @@ newSpeciesDistribution <- function(aCode, numOfSpecies, probabilityStr) {
 			areaDictionary <- calculateAccP(areaDictionary, numOfSpecies)
 		}
 	}
-
-	return (areaDictionary)
+	ddg.return.value (areaDictionary)
+  #return (areaDictionary)
 }
 
 # Calculate the accumulated probability of the species and update the area dictionary
 # with that information.
 calculateAccP <- function(areaDictionary, numOfSpecies) {
+	ddg.function()
 	areaDictionary[1, "accP"] <- areaDictionary[1, "p"]
 	for (i in 2:numOfSpecies) {
 		areaDictionary[i, "accP"] <- areaDictionary[i, "p"] + areaDictionary[i-1, "accP"]
 	}
 	
-	return (areaDictionary)
+	ddg.return.value (areaDictionary)
+  return (areaDictionary)
 }
 
 # This function essentially replaces the first for-loop in the VisualBasic definition of 
@@ -108,6 +115,8 @@ calculateAccP <- function(areaDictionary, numOfSpecies) {
 # Species code should be an integer
 # Species probability should be a numeric value
 addToDictionary <- function (areaDictionary, speciesStr) {
+	#ddg.function()
+	
 	# Parse the species string  "code(probability)"
 	leftParenPos <- regexpr("(", speciesStr, fixed=TRUE)
 	rightParenPos <- regexpr(")", speciesStr, fixed=TRUE)
@@ -123,8 +132,9 @@ addToDictionary <- function (areaDictionary, speciesStr) {
 	}
 	areaDictionary[speciesCode, "speciesCode"] <- speciesCode
 	areaDictionary[speciesCode, "p"] <- speciesP
-
-	return (areaDictionary)
+	
+	#ddg.return.value (areaDictionary)
+  return (areaDictionary)
 }
 
 
@@ -137,6 +147,7 @@ addToDictionary <- function (areaDictionary, speciesStr) {
 # the minimum size, the maximum size, and the accumulated probability for that
 # size and smaller.
 defineSamplesSizeDistribution <- function() {
+  ddg.function()
 	# for now we have only one size distribution pattern
 	n <- 7
 	sampleSizeDistributionMng <- data.frame(p=rep(NA, n), minSize=rep(NA, n), maxSize=rep(NA, n), accP=rep(NA, n))
@@ -154,12 +165,14 @@ defineSamplesSizeDistribution <- function() {
 	}
 	if (sampleSizeDistributionMng$accP[7] > 1) stop("defineSampleSizeDistribution:  accumulated probability > 1")
 	
-	return(sampleSizeDistributionMng)
+	ddg.return.value(sampleSizeDistributionMng)
+  #return(sampleSizeDistributionMng)
 }
 
 # Signature:  sampleSizeDistributionMng: data frame, maxSampleSize: integer
 # Returns a random integer to be used as the sample size
 raffleSampleSize <- function(sampleSizeDistributionMng, maxSampleSize = 25) {
+	#ddg.function()
 	
 	randNo1 <- runif(1)
 	
@@ -168,7 +181,10 @@ raffleSampleSize <- function(sampleSizeDistributionMng, maxSampleSize = 25) {
 	# minimum and maximum sizes for that entry.
 	matches <- sampleSizeDistributionMng[randNo1 <= sampleSizeDistributionMng$accP, ]
 	if (nrow(matches) >= 1){
-		return (sample(matches$minSize[1]:matches$maxSize[1], 1))
+		#ddg.return.value (sample(matches$minSize[1]:matches$maxSize[1], 1))
+    retValue <- sample(matches$minSize[1]:matches$maxSize[1], 1)
+    #return(ddg.return.value (retValue))
+    return (retValue)
 	}
 	
 	# The random number exceeded the total probability associated with all constraints.
@@ -178,7 +194,9 @@ raffleSampleSize <- function(sampleSizeDistributionMng, maxSampleSize = 25) {
 		maxSampleSize <- lastMaxSampleSize + 1
 	}
 	
-	return(sample(lastMaxSampleSize:maxSampleSize, 1))
+	retValue <- sample(lastMaxSampleSize:maxSampleSize, 1)
+	#ddg.return.value(retValue)
+  return(retValue)
 }
 
 ############################################################################
@@ -188,6 +206,8 @@ raffleSampleSize <- function(sampleSizeDistributionMng, maxSampleSize = 25) {
 # Signature:  sampleCode: integer, numInd: integer, speciesDist: data frame, numOfSpecies: integer
 # Return: a data frame with columns for the sample code, species code, and species number 
 raffleIndividualsPerSample <- function(sampleCode, numInd, speciesDist, numOfSpecies) {
+  #ddg.function()
+
 	if (numOfSpecies == 0) return
 
 	speciesComposition <- data.frame(sampleCode = rep(NA, numOfSpecies), speciesCode = rep(NA, numOfSpecies), speciesNumber = rep(0, numOfSpecies))
@@ -214,7 +234,12 @@ raffleIndividualsPerSample <- function(sampleCode, numInd, speciesDist, numOfSpe
 	}
 	
 	# Return just the entries for species that were randomly selected.
-	return(subset(speciesComposition, speciesNumber > 0))
+	# ddg.return.value(subset(speciesComposition, speciesNumber > 0))
+  retValue <- subset(speciesComposition, speciesNumber > 0)
+  #ddg.return.value(retValue)
+  return(retValue)
+  #return(subset(speciesComposition, speciesNumber > 0))
+  
 }
 
 ############################################################################
@@ -224,9 +249,10 @@ raffleIndividualsPerSample <- function(sampleCode, numInd, speciesDist, numOfSpe
 # Return the initalized samples.  This is a data frame with a column for the number of 
 #	individuals, and a column for the area in which they are found
 generateSamples <- function (n) {
-	
-	samplesArr <- data.frame(nIndividuals = rep(NA, n), areaCode = rep(NA, n))
-	return (samplesArr)
+	ddg.return.value (data.frame(nIndividuals = rep(NA, n), areaCode = rep(NA, n)))
+  #retValue <- data.frame(nIndividuals = rep(NA, n), areaCode = rep(NA, n))
+  #ddg.return.value (retValue)
+  #return (retValue)
 }
 
 # samplesArr - data frame describing the samples
@@ -234,7 +260,7 @@ generateSamples <- function (n) {
 # speciesDistribution - data frame describing probability of a species
 # sampleSizeDistributionMng - SampleSizeDistribution defining probability of finding population of each size
 assignSamplesToAreas <- function (samplesArr, samplesMapsStr, speciesDistribution, sampleSizeDistributionMng) {
-
+	ddg.function()
 	# Divide map into its areas
 	splitAreasArr <- strsplit(samplesMapsStr, "[", fixed=TRUE)[[1]]
 	
@@ -245,8 +271,8 @@ assignSamplesToAreas <- function (samplesArr, samplesMapsStr, speciesDistributio
 	for (areaStr in splitAreasArr) {
 		samplesArr <- assignSamplesToArea(samplesArr, areaStr, speciesDistribution, sampleSizeDistributionMng)
 	}
-	
-	return(samplesArr)
+	ddg.return.value(samplesArr)
+  #return(samplesArr)
 }
 
 # Assigns sample data for an area.
@@ -256,7 +282,8 @@ assignSamplesToAreas <- function (samplesArr, samplesMapsStr, speciesDistributio
 # sampleSizeDistributionMng - data frame defining probability of finding population of each size
 # Returns updated samplesArr with values as given in areaStr
 assignSamplesToArea <- function(samplesArr, areaStr, speciesDistribution, sampleSizeDistributionMng) {
-	
+	#ddg.function()
+
 	if (length(areaStr > 0)) {
 		# Parse the string:  <areaCode>:<sampleListStr>], where <sampleListStr> are comma-separated 
 		# sample information
@@ -269,13 +296,15 @@ assignSamplesToArea <- function(samplesArr, areaStr, speciesDistribution, sample
 		
 		if (!is.na(areaCode) && areaCode <= length(speciesDistribution)) {
 			# Assign sample information for each sample found in the string
+			
 			for (sampleInAreaStr in tmpSamplesInArea) {
 				samplesArr <- assignSampleData(samplesArr, sampleInAreaStr, areaCode, sampleSizeDistributionMng)
 			}
 		}
 	}
 
-	return(samplesArr)
+	#ddg.return.value(samplesArr)
+  return(samplesArr)
 }
 
 # samplesArr - data frame of samples
@@ -284,11 +313,12 @@ assignSamplesToArea <- function(samplesArr, areaStr, speciesDistribution, sample
 # sampleSizeDistributionMng - population distribution 
 # speciesDistribution - distribution of species
 assignSampleData <- function(samplesArr, sampleInAreaStr, areaCode, sampleSizeDistributionMng) {
-	
+	#ddg.function()
 	sampleCode <- as.integer(sampleInAreaStr)
 	num <- raffleSampleSize(sampleSizeDistributionMng)
 	samplesArr[sampleCode, ] <- c(num, areaCode)
-	return(samplesArr)
+	#ddg.return.value(samplesArr)
+  return(samplesArr)
 }
 
 #######################################################################################
@@ -300,6 +330,7 @@ assignSampleData <- function(samplesArr, sampleInAreaStr, areaCode, sampleSizeDi
 #	selecting the species.  The data frame has columns for sample id, species code and
 #	the number of individuals in that species in the sample
 raffleSamples <- function (samplesArr, speciesDistributionAreas, totalNumOfSample ) {
+	ddg.function()
 	smpCompositions <- data.frame(sampleId = rep(NA, totalNumOfSample * 2), speciesCode = rep(NA, totalNumOfSample * 2), speciesNumber = rep(NA, totalNumOfSample * 2))
 	
 	# Do the random sampling
@@ -311,10 +342,10 @@ raffleSamples <- function (samplesArr, speciesDistributionAreas, totalNumOfSampl
 			areaCode <- samplesArr[i,"areaCode"]
 			sampleRaffle <- raffleIndividualsPerSample(i, numInd, speciesDistributionAreas[[areaCode]], totalNumOfSpecies)
 			numEntries <- nrow(sampleRaffle)
-      print(paste("smplx =", smplx))
-      print(paste("numEntries =", numEntries))
-      print(paste("index =", index))
-      
+      #print(paste("smplx =", smplx))
+      #print(paste("numEntries =", numEntries))
+      #print(paste("index =", index))
+			
 			smpCompositions$sampleId[index:(index+numEntries-1)] <- smplx
 			smpCompositions$speciesCode[index:(index+numEntries-1)] <- sampleRaffle$speciesCode
 			smpCompositions$speciesNumber[index:(index+numEntries-1)] <- sampleRaffle$speciesNumber
@@ -324,7 +355,8 @@ raffleSamples <- function (samplesArr, speciesDistributionAreas, totalNumOfSampl
 		}
 	}
 	
-	return(smpCompositions)
+	ddg.return.value(smpCompositions)
+  #return(smpCompositions)
 }
 
 # Writes random sample output to a csv file
@@ -334,9 +366,11 @@ raffleSamples <- function (samplesArr, speciesDistributionAreas, totalNumOfSampl
 # totalNumOfSample
 # samplingResult - data frame describing the generated samples
 writeToFile<- function (wsName, title, totalNumOfSpecies, totalNumOfSample, samplingResult) {
-
+  ddg.function()
+  
 	# Open the file
-	fileConn <- file(paste(wsName, ".csv", sep=""), open="w")
+  filename <- paste(wsName, ".csv", sep="")
+	fileConn <- file(filename, open="w")
 	
 	# Write header information
 	writeLines(title, fileConn)
@@ -347,15 +381,17 @@ writeToFile<- function (wsName, title, totalNumOfSpecies, totalNumOfSample, samp
 	
 	# Write end of data marker
 	writeLines("-1,-1,-1", fileConn)
-	
-	close(fileConn)
+  close(fileConn)
+  ddg.file.out(filename)
+  ddg.return.value()
 }
+ddg.finish("Declare functions")
 
 #############################################################################################
 
-
 # Set species distribution pattern
 # speciesCode(speciesProbability)
+ddg.start("Initialize variables")
 area1str <- "1(0.01) , 2(0.01), 3(0.01), 4(0.01), 5(0.01), 6(0.05), 7(0.05), 8(0.1), 9(0.15), 10(0.25), 11(0.35)"
 area2str <- "12(0.3), 13(0.3), 14(0.3), 15(0.1)"
 area3str <- ""
@@ -368,12 +404,12 @@ samplesMapsStr <- paste("[1:  1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17
 
 totalNumOfSpecies <- 33
 totalNumOfSample <- 180
+ddg.finish("Initialize variables")
 
 speciesDistribution <- defineAreasDistributions(totalNumOfSpecies, area1str, area2str)
 sampleSizeDistributionMng <- defineSamplesSizeDistribution()
 samplesArr <- generateSamples(totalNumOfSample)
 samplesArr <- assignSamplesToAreas(samplesArr, samplesMapsStr, speciesDistribution, sampleSizeDistributionMng)
-
 samplingResult <- raffleSamples(samplesArr, speciesDistribution, totalNumOfSample)
 
 writeToFile("genSmpls1", "virtual sampling1 (Uniform distribution)", totalNumOfSpecies, totalNumOfSample, samplingResult)
@@ -383,5 +419,4 @@ ddg.save()
 # Calculate total time of execution
 endTime <- Sys.time()
 cat("Execution Time =", difftime(endTime, startTime,units="secs"))
-
 
