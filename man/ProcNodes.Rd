@@ -1,7 +1,7 @@
 \name{ProcNodes}
 \alias{ddg.function}
 \alias{ddg.procedure}
-\alias{ddg.return}
+\alias{ddg.return.value}
 \alias{ddg.start}
 \alias{ddg.finish}
 \alias{ddg.eval}
@@ -14,7 +14,7 @@ ddg.function(outs.graphic=NULL, outs.data=NULL, outs.exception=NULL,
 ddg.procedure(pname, ins = NULL, outs.graphic = NULL, outs.data = NULL, 
     outs.exception = NULL, outs.url = NULL, outs.file =NULL, 
     graphic.fext = "jpeg")
-ddg.return(expr)
+ddg.return.value(expr)
 ddg.start(pname = NULL)
 ddg.finish(pname = NULL)
 ddg.eval(statement)
@@ -53,12 +53,10 @@ ddg.eval(statement)
   of the current graphics device in the file (outs.graphic).(graphic.fext). The file will be linked to the DDG and 
   will be viewable using DDG Explorer. The parameter graphic.fext is ignored if outs.graphic is NULL. 
   
-  ddg.return creates a data node for a function's return value.  If the function is called from a console
+  ddg.return.value creates a data node for a function's return value.  If the function is called from a console
   command and console mode is enabled, a data flow edge will be created linking this node to the console 
-  command that uses the value. ddg.return returns the same value as the function and can be used in 
-  place of the function's normal return statement(s) if it is the last statement in the function.  If not,
-  it should be argument to the return call, like return(ddg.return(10)).
-
+  command that uses the value. ddg.return.value should be an argument to the return call, like 
+  return(ddg.return.value(10)).
   
   ddg.start and ddg.finish should come in matching pairs, where each ddg.start precedes the corresponding 
   ddg.finish.  For each call made to ddg.start when the script is executed, there should be exactly one call made
@@ -84,7 +82,7 @@ a <- 0
 myfunc <- function() {
   b <- a + 1
   ddg.function()
-  ddg.return(b)
+  return(ddg.return.value(b))
 }
 
 secondfunc <- function() {

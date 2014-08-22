@@ -20,41 +20,41 @@ f <- function (aa, bb) {
   ddg.function()
 #  ddg.eval("retValue <- f2(aa) + f2(bb)")
   retValue <- f2(aa) + f2(bb)
-  ddg.return(retValue)
+  ddg.return.value(retValue)
 }
 
 f2 <- function(p_a) {
    ddg.function()
-   ddg.return(10)
+   ddg.return.value(10)
 }
 
 f3 <- function(aa, bb) {
    ddg.function()
-   ddg.return (aa + bb)
+   ddg.return.value (aa + bb)
 }
 
 f4 <- function(n) {
   ddg.function()
   if (n == 0) {
-    ddg.return(0)
+    ddg.return.value(0)
   }
   else {
-    ddg.return(f4(n-1))
+    ddg.return.value(f4(n-1))
   }
 }
 
 f5 <- function(n) {
   if (n == 0) {
-    ddg.return(0)
+    ddg.return.value(0)
   }
   else {
-    ddg.return(f5(n-1))
+    ddg.return.value(f5(n-1))
   }
 }
 
 f6 <- function(s1, s2, s3, s4) {
   ddg.function()
-  ddg.return(3)
+  ddg.return.value(3)
 }
 
 

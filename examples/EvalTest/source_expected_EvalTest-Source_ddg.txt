@@ -9,7 +9,7 @@ WorkingDirectory="[DIR]"
 DDGDirectory="[DIR]/ddg-source"
 DateTime="2014-08-12T14.55.11EDT"
 26
-Operation p1 "1-f <- function(x) {    ddg.function()    ddg.return(10)}" Value="f <- function(x) {    ddg.function()    ddg.return(10)}" Time="2014-08-12T14.55.10EDT";
+Operation p1 "1-f <- function(x) {    ddg.function()    ddg.return.value(10)" Value="f <- function(x) {    ddg.function()    ddg.return.value(10)" Time="2014-08-22T11.13.33EDT";
 Data d1 "1-f" Value="#ddg.function";
 DF p1 d1
 Operation p2 "2-g <- function() {    return(3)}" Value="g <- function() {    return(3)}" Time="2014-08-12T14.55.10EDT";

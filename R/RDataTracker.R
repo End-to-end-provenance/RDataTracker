@@ -2250,7 +2250,7 @@ ddg.MAX_HIST_LINES <- 2^14
   # Get path plus file name.
   ddg.path <- .ddg.path()
   dpfile <- paste(ddg.path, "/", dfile, sep="")
-  print(paste("Saving snapshot in ", dpfile))
+  if (.ddg.debug()) print(paste("Saving snapshot in ", dpfile))
   
   # Write to file .
   if (fext == "csv") write.csv(data, dpfile, row.names=FALSE)
@@ -2928,7 +2928,7 @@ ddg.procedure <- function(pname, ins=NULL, outs.graphic=NULL, outs.data=NULL, ou
 
 # expr - the value returned by the function.
 
-ddg.return <- function (expr) {
+ddg.return.value <- function (expr) {
   if (!.ddg.is.init()) return(expr)
   pname <- NULL
   .ddg.lookup.function.name(pname)
