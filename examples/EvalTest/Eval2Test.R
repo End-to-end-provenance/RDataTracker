@@ -58,7 +58,7 @@ read.data <- function() {
   
   ddg.function()
   #ddg.procedure(lookup.ins=TRUE)
-  ddg.return(zz)
+  ddg.return.value(zz)
 }
 
 f <- function() {
@@ -66,7 +66,7 @@ f <- function() {
 }
 
 f2 <- function() {
-  ddg.return(20)
+  ddg.return.value(20)
 }
 
 ddg.start("Source + eval + function")
@@ -82,9 +82,9 @@ ddg.start("Source + eval")
 ddg.eval("x <- f()")
 ddg.finish("Source + eval")
 
-ddg.start("Source + eval + ddg.return - ddg.function")
+ddg.start("Source + eval + ddg.return.value - ddg.function")
 ddg.eval("y <- f2()")
-ddg.finish("Source + eval + ddg.return - ddg.function")
+ddg.finish("Source + eval + ddg.return.value - ddg.function")
 
 ddg.save(quit=TRUE)
 

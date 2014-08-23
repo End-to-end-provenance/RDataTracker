@@ -2,58 +2,58 @@ Architecture="x86_64"
 OperatingSystem="unix"
 Language="R"
 LanguageVersion="R version 3.1.0 Patched (2014-05-20 r65701)"
-RDataTrackerVersion="0.5.41"
+RDataTrackerVersion="0.5.47"
 Script="[DIR]/Eval2Test.R"
-ProcessFileTimestamp="2014-08-14T20.42.50EDT"
+ProcessFileTimestamp="2014-08-22T11.08.37EDT"
 WorkingDirectory="[DIR]"
 DDGDirectory="[DIR]/ddg"
-DateTime="2014-08-14T21.58.18EDT"
+DateTime="2014-08-22T11.15.23EDT"
 17
-Start p1 "1-Source + eval + function" Value="Source + eval + function" Time="2014-08-14T21.58.18EDT";
-Start p2 "2-all.data <- read.data()" Value="all.data <- read.data()" Time="2014-08-14T21.58.18EDT";
+Start p1 "1-Source + eval + function" Value="Source + eval + function" Time="2014-08-22T11.15.23EDT";
+Start p2 "2-all.data <- read.data()" Value="all.data <- read.data()" Time="2014-08-22T11.15.23EDT";
 CF p1 p2
-Operation p3 "3-read.data" Value="read.data" Time="2014-08-14T21.58.18EDT";
+Operation p3 "3-read.data" Value="read.data" Time="2014-08-22T11.15.23EDT";
 CF p2 p3
-Snapshot d1 "1-read.data() return" Value="[DIR]/ddg/1-read.data() return.csv" Time="2014-08-14T21.58.18EDT";
+Snapshot d1 "1-read.data() return" Value="[DIR]/ddg/1-read.data() return.csv" Time="2014-08-22T11.15.23EDT";
 DF p3 d1
-Finish p4 "4-all.data <- read.data()" Value="all.data <- read.data()" Time="2014-08-14T21.58.18EDT";
+Finish p4 "4-all.data <- read.data()" Value="all.data <- read.data()" Time="2014-08-22T11.15.23EDT";
 CF p3 p4
 DF d1 p4
-Snapshot d2 "2-all.data" Value="[DIR]/ddg/2-all.data.csv" Time="2014-08-14T21.58.18EDT";
+Snapshot d2 "2-all.data" Value="[DIR]/ddg/2-all.data.csv" Time="2014-08-22T11.15.23EDT";
 DF p4 d2
-Finish p5 "5-Source + eval + function" Value="Source + eval + function" Time="2014-08-14T21.58.18EDT";
+Finish p5 "5-Source + eval + function" Value="Source + eval + function" Time="2014-08-22T11.15.23EDT";
 CF p4 p5
-Start p6 "6-Source + function" Value="Source + function" Time="2014-08-14T21.58.18EDT";
+Start p6 "6-Source + function" Value="Source + function" Time="2014-08-22T11.15.23EDT";
 CF p5 p6
-Operation p7 "7-read.data" Value="read.data" Time="2014-08-14T21.58.18EDT";
+Operation p7 "7-read.data" Value="read.data" Time="2014-08-22T11.15.23EDT";
 CF p6 p7
-Snapshot d3 "3-read.data() return" Value="[DIR]/ddg/3-read.data() return.csv" Time="2014-08-14T21.58.18EDT";
+Snapshot d3 "3-read.data() return" Value="[DIR]/ddg/3-read.data() return.csv" Time="2014-08-22T11.15.23EDT";
 DF p7 d3
-Finish p8 "8-Source + function" Value="Source + function" Time="2014-08-14T21.58.18EDT";
+Finish p8 "8-Source + function" Value="Source + function" Time="2014-08-22T11.15.23EDT";
 CF p7 p8
-Start p9 "9-Source + eval" Value="Source + eval" Time="2014-08-14T21.58.18EDT";
+Start p9 "9-Source + eval" Value="Source + eval" Time="2014-08-22T11.15.23EDT";
 CF p8 p9
-Start p10 "10-x <- f()" Value="x <- f()" Time="2014-08-14T21.58.18EDT";
+Start p10 "10-x <- f()" Value="x <- f()" Time="2014-08-22T11.15.23EDT";
 CF p9 p10
-Finish p11 "11-x <- f()" Value="x <- f()" Time="2014-08-14T21.58.18EDT";
+Finish p11 "11-x <- f()" Value="x <- f()" Time="2014-08-22T11.15.23EDT";
 CF p10 p11
 Data d4 "4-x" Value="10";
 DF p11 d4
-Finish p12 "12-Source + eval" Value="Source + eval" Time="2014-08-14T21.58.18EDT";
+Finish p12 "12-Source + eval" Value="Source + eval" Time="2014-08-22T11.15.23EDT";
 CF p11 p12
-Start p13 "13-Source + eval + ddg.return - ddg.function" Value="Source + eval + ddg.return - ddg.function" Time="2014-08-14T21.58.18EDT";
+Start p13 "13-Source + eval + ddg.return.value - ddg.function" Value="Source + eval + ddg.return.value - ddg.function" Time="2014-08-22T11.15.23EDT";
 CF p12 p13
-Start p14 "14-y <- f2()" Value="y <- f2()" Time="2014-08-14T21.58.18EDT";
+Start p14 "14-y <- f2()" Value="y <- f2()" Time="2014-08-22T11.15.23EDT";
 CF p13 p14
-Operation p15 "15-f2" Value="f2" Time="2014-08-17T16.42.36EDT";
+Operation p15 "15-f2" Value="f2" Time="2014-08-22T11.15.23EDT";
 CF p14 p15
 Data d5 "5-f2() return" Value="20";
 DF p15 d5
-Finish p16 "16-y <- f2()" Value="y <- f2()" Time="2014-08-14T21.58.18EDT";
+Finish p16 "16-y <- f2()" Value="y <- f2()" Time="2014-08-22T11.15.23EDT";
 CF p15 p16
 DF d5 p16
 Data d6 "6-y" Value="20";
 DF p16 d6
-Finish p17 "17-Source + eval + ddg.return - ddg.function" Value="Source + eval + ddg.return - ddg.function" Time="2014-08-14T21.58.18EDT";
+Finish p17 "17-Source + eval + ddg.return.value - ddg.function" Value="Source + eval + ddg.return.value - ddg.function" Time="2014-08-22T11.15.23EDT";
 CF p16 p17
 

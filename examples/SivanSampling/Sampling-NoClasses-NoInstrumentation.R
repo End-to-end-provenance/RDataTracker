@@ -6,8 +6,9 @@
 # Load the library to create the provenance graphs.  All the function calls below that begin "ddg."
 # are calls to functions in this library.
 
-start.time <- Sys.time()
-force(start.time)
+# get initial time
+startTime <- Sys.time()
+invisible(force(startTime))
 
 ######################################################################################################
 
@@ -357,7 +358,8 @@ samplingResult <- raffleSamples(samplesArr, speciesDistribution, totalNumOfSampl
 
 writeToFile("genSmpls1", "virtual sampling1 (Uniform distribution)", totalNumOfSpecies, totalNumOfSample, samplingResult)
 
-finish.time <- Sys.time()
-print(paste("Elapsed time =", (finish.time - start.time)))
+# Calculate total time of execution
+endTime <- Sys.time()
+cat("Execution Time =", difftime(endTime, startTime,units="secs"))
 
 

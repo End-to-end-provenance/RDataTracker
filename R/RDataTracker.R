@@ -2250,6 +2250,7 @@ ddg.MAX_HIST_LINES <- 2^14
   # Get path plus file name.
   ddg.path <- .ddg.path()
   dpfile <- paste(ddg.path, "/", dfile, sep="")
+  if (.ddg.debug()) print(paste("Saving snapshot in ", dpfile))
   
   # Write to file .
   if (fext == "csv") write.csv(data, dpfile, row.names=FALSE)
@@ -2603,13 +2604,13 @@ ddg.MAX_HIST_LINES <- 2^14
 .ddg.create.function.nodes <- function(pname, full.call, outs.graphic=NULL, outs.data=NULL, outs.exception=NULL, outs.url=NULL, outs.file=NULL, graphic.fext="jpeg") {
   # Tokens will contain the function name and the argument
   # expressions.
-  tokens <- as.character(full.call)
   
   # Get parameters and create edges.
-  if (length(tokens) > 1) {
+  if (length(full.call) > 1) {
     # args contains the names of the variable that was passed into 
     # the function.
-    args <- tokens[2:length(tokens)]
+    args <- full.call[2:length(full.call)]
+
     # param,names contains the names of the parameters (this is 
     # what the variable is known as inside the function).
     param.names <- names(full.call)
@@ -2617,22 +2618,31 @@ ddg.MAX_HIST_LINES <- 2^14
     stack <- sys.calls()
     # scope <- .ddg.get.scope(args[[1]], for.caller = TRUE)
     bindings <- list()
-    for (i in 1:length(args)) bindings[[i]] <-c(args[[i]], param.names[[i]])
+    for (i in 1:length(args)) bindings[[i]] <-list(args[[i]], param.names[[i]])
     missing.params <- character()
     
-    # lapply(args, 
-    lapply(bindings, 
+    lapply(bindings,
            function(binding) {  
-             # Here, param is now the arguments passed IN.
-             param <- binding[1]
+             # Here, arg is the arguments passed IN.
+             arg <- binding[[1]]
+
              # formal is the paramenter name of the function (what 
              # is the variable known as inside?).
-             formal <- binding[2]
+             formal <- binding[[2]][[1]]
              
              # Find all the variables used in this parameter.
-             vars.used <- .ddg.find.var.uses(parse(text=param))
+						 # If the argument is a string constant, don't bother
+						 # looking for variables.  Also add quotes around it 
+						 # in the node name.             
+             if (is.character(arg)) {
+               vars.used <- character()
+               binding.node.name <- paste(formal, " <- \\\"", arg, "\\\"", sep="")
+             }
+             else {
+               vars.used <- .ddg.find.var.uses(arg)
+               binding.node.name <- paste(formal, " <- ", deparse(arg))
+             }
              
-             binding.node.name <- paste(formal, " <- ", param)
              .ddg.proc.node("Binding", binding.node.name)
              .ddg.proc2proc()
              for (var in vars.used) {
@@ -2649,9 +2659,9 @@ ddg.MAX_HIST_LINES <- 2^14
            })
   }
   .ddg.proc.node("Operation", pname, pname)
-  if (length(tokens) > 1) {
+  if (length(full.call) > 1) {
     lapply(bindings, function(binding) {
-      formal <- binding[2]
+      formal <- binding[[2]][[1]]
       formal.scope <- .ddg.get.scope(formal, calls=stack)
       if (.ddg.data.node.exists (formal, formal.scope)) {
         .ddg.data2proc(formal, formal.scope, pname)
@@ -2909,20 +2919,21 @@ ddg.procedure <- function(pname, ins=NULL, outs.graphic=NULL, outs.data=NULL, ou
   invisible()
 }
 
-# ddg.return creates a data node for a function's return value. If 
+# ddg.return.value creates a data node for a function's return value. If 
 # the function is called from a console command and console mode is
 # enabled, a data flow edge will be created linking this node to 
-# the console command that uses the value. ddg.return returns the 
+# the console command that uses the value. ddg.return.value returns the 
 # same value as the function (expr) and can be used in place of the 
-# function's normal return statement(s).
+# function's normal return statement(s) if it is the last statement
+# in the function.  Otherwise, it should be a parameter to return, 
+# like return(ddg.return.value(expr)).
 
 # expr - the value returned by the function.
 
-ddg.return <- function (expr) {
+ddg.return.value <- function (expr=NULL) {
   if (!.ddg.is.init()) return(expr)
   pname <- NULL
   .ddg.lookup.function.name(pname)
-  if (length(expr) == 0) return()
   
   # Prints the call & arguments.
   if (.ddg.debug()) {
@@ -2952,8 +2963,10 @@ ddg.return <- function (expr) {
   # Create a data node for the return value. We want the scope of 
   # the function that called the function that called ddg.return.
   call <- sys.call(-1)
-  call.text <- gsub(" ", "", deparse(call))
+  call.text <- gsub(" ", "", deparse(call, nlines=1))
   return.node.name <- paste(call.text, "return")
+  return.node.name <- gsub("\"", "\\\\\"", return.node.name)
+  
   return.node.scope <- 
       environmentName (if (sys.nframe() == 2) .GlobalEnv
               else parent.env(sys.frame(-1)))
@@ -3123,7 +3136,6 @@ ddg.file <- function(filename, dname=NULL) {
 
 ddg.data.in <- function(dname, pname=NULL) {
   if (!.ddg.is.init()) return(invisible())
-  # browser()
   
   .ddg.lookup.function.name(pname)
   
@@ -3326,7 +3338,6 @@ ddg.file.out <- function(filename, dname=NULL, pname=NULL) {
 
 ddg.graphic.out <- function(dname, pname=NULL, graphic.fext="jpeg") {
   if(!.ddg.is.init()) return
-	# Browser()
 	# Write out the graphic.
 	.ddg.write.graphic(dname, 'Graphical Plot. Not saved in script.', graphic.fext)
 
@@ -3391,25 +3402,6 @@ ddg.finish <- function(pname=NULL) {
   .ddg.proc2proc()
 }
 
-# ddg.grabhistory grabs the current console history and creates 
-# the partial DDG. It does not, however, write this to the file 
-# system. The function should be called only if more than 512 
-# lines of code need to be interpreted automatically (usually 
-# because the script is being annoated with enable.console = TRUE). 
-# It should also be called if the error "Part of history is 
-# missing. DDG may be incomplete!" is occurs. Finally, it should 
-# be called periodically to assure no history is missing.
-
-ddg.grabhistory <- function() {
-	if (!.ddg.is.init()) return(invisible())
-
-	# Only act if in intereactive mode and with enabled console.
-	if (interactive() && .ddg.enable.console()) {
-		.ddg.console.node()
-	}
-
-	invisible()
-}
 
 # ddg.init intializes a new DDG.
 
@@ -3434,7 +3426,7 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, enable.console = TRUE,
           else normalizePath(r.script.path, winslash="/"))
   .ddg.set("ddg.path", 
       if (is.null(ddgdir)) paste(getwd(), "ddg", sep="/") 
-          else ddgdir)
+          else normalizePath(ddgdir, winslash="/", mustWork=FALSE))
   
   # Set environment constants.
   .ddg.set(".ddg.enable.console", enable.console)
@@ -3522,13 +3514,10 @@ ddg.save <- function(quit=FALSE) {
   
   if (!.ddg.is.init()) return(invisible())
   
-  # Restore history settings.
   if (interactive() && .ddg.enable.console()) {
-    Sys.setenv("R_HISTSIZE"=.ddg.get('ddg.original.hist.size'))
+    # Get the final commands
+    .ddg.console.node()
   }
-  
-  # Get final commands.
-  ddg.grabhistory()
   
   # Get environment parameters.
   ddg.env <- .ddg.environ()
@@ -3545,6 +3534,7 @@ ddg.save <- function(quit=FALSE) {
   # Save DDG to file.
   ddg.path <- .ddg.path()
   fileout <- paste(ddg.path, "/ddg.txt", sep="")
+  if (interactive()) print(paste("Saving DDG in ", fileout))
   write(output, fileout)
   
   # Save procedure nodes table to file.
@@ -3564,6 +3554,9 @@ ddg.save <- function(quit=FALSE) {
   
   # By convention, this is the final call to ddg.save.
   if (quit) {
+    # Restore history settings.
+    if (.ddg.is.set('ddg.original.hist.size')) Sys.setenv("R_HISTSIZE"=.ddg.get('ddg.original.hist.size'))
+
     # Delete temporary files.
     .ddg.delete.temp()
     

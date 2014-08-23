@@ -1,7 +1,6 @@
 \name{InitSave}
 \alias{ddg.init}
 \alias{ddg.run}
-\alias{ddg.grabhistory}
 \alias{ddg.save}
 \alias{ddg.flush.ddg}
 \alias{ddg.console.off}
@@ -9,10 +8,11 @@
 \title{Creating Provenance Graphs with RDataTracker}
 \description{These functions are needed to create provenance graphs.}
 \usage{
-ddg.init(r.script.path = NULL, ddgdir = NULL, enable.console = TRUE, max.snapshot.size = -1) 
-ddg.grabhistory()
+ddg.init(r.script.path = NULL, ddgdir = NULL, enable.console = TRUE, 
+    max.snapshot.size = -1) 
 ddg.save(quit=FALSE)
-ddg.run(r.script.path = NULL, ddgdir = NULL, f = NULL, enable.console = TRUE, max.snapshot.size = -1)
+ddg.run(r.script.path = NULL, ddgdir = NULL, f = NULL, enable.console = TRUE, 
+    max.snapshot.size = -1)
 ddg.console.on()
 ddg.console.off()
 ddg.flush.ddg(ddg.path = NULL)
@@ -36,10 +36,6 @@ ddg.flush.ddg(ddg.path = NULL)
   When using ddg.init, it is possible to call ddg.save multiple times.  Each call will 
   save the current provenance graph in a file, overwriting the previous version that was saved. 
 
-  ddg.grabhistory can be used in long console sessions to save the current DDG to memory
-  and analyze variables in the current environment (from which ddg.grabhistory is called). 
-  It does not write information to disk. A final call to ddg.save is required to do this.
-  
   ddg.init initializes the provenance graph.  If r.script.path is not NULL, the R script is copied
   into the DDG directory, becoming a permanent part of the provenance record.  If ddgdir is NULL,
   the provenance graph will be saved in a subdirectory called "ddg" within the current working directory.
@@ -79,7 +75,6 @@ ddg.save()
 myfunc <- function() {
   a <- 1
 }
-ddg.grabhistory()
 ddg.run(f = myfunc)
 }
 \keyword{provenance}

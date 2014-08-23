@@ -382,9 +382,7 @@ The left column lists the names of scripts that have DDGs associated with them i
   \end{center}
 \end{figure}
 
-
 Now the second column shows the timestamps for all of the DDGs created from that script. In the rightmost column, the ``Delete all'' button is now enabled. If you click this button, it will delete all of the DDGs associated with that script from your database. You will be prompted to confirm that you want to delete them, but once deleted, they cannot be recovered, so be careful!
-
 
 If you select one execution timestamp, you will now see more buttons enabled (Figure \ref{fig:manage_databases_3}:
 
@@ -414,13 +412,13 @@ Show value derivation - This query allows you to view just the portion of a DDG 
   \includegraphics{UsingDDGExplorer-img/ShowDerivation.png}
   \end{center}
 \end{figure}
-  
 
 We can get more insight by right-clicking on the data nodes to see what values they have. Here, we see that the 2-variable is airt (meaning air temperature), 3-start.date is 2012-01-01 and 4-end.date is 2012-03-01.  The user could then examine selected.data to see if it, in fact, only contains data with those properties.
 \end{itemize}
 
 \begin{itemize}
 \item 
+
 Show values computed from: This query allows you to view the portion of the DDG that follows from a particular data value. After clicking this button, you will see a window like the one for the previous query where you can select a data value. This time, however, you will see the values that are computed from this data value as shown in Figure \ref{figure:from} \
 
 Here, we start with 7-selected.data and can see that it is input to two calls to apply.test. One of these calls ends in a call to plot.data, but the resulting plot is not saved.  The second call creates a plot and saved it along with saving the flagged data in a csv file. 
@@ -440,7 +438,6 @@ Here, we start with 7-selected.data and can see that it is input to two calls to
 
 You will likely find that you change your R script over time. The R scripts are saved in the database along with the DDG, so the DDG Explorer can always show you the R script that corresponds to a DDG.
 
-
 In addition, you may wonder how a script has changed over time, or how the script that generated one DDG differs from another script. To help you understand that history of your scripts, the File menu contains the command ``Compare R scripts''. When you select it, you will see the windows in Figure \ref{figure:file_comparison}:
 
 \begin{figure}[!ht]
@@ -450,7 +447,6 @@ In addition, you may wonder how a script has changed over time, or how the scrip
  \includegraphics{UsingDDGExplorer-img/UsingDDGExplorer-img010.png} 
  \end{center}
 \end{figure}
-
 
 In this window, you can select two R scripts to compare. One will be displayed on the left side of the window. The other will be displayed on the right side of the window. These scripts can either come from the file system or from the database. 
 
@@ -490,7 +486,6 @@ Here, you can limit the search to just input files, just output files, or both. 
  \end{center}
 \end{figure}
 
-
 The first column identifies the file name. The second column identifies the script that used or created it. The third column shows the execution time of the DDG that references it. The last column shows the name of the node within the DDG. You can sort the list by clicking on the header of the column you want to sort by.  Clicking twice in a row on the same column header reverses the list order.
 
 
@@ -524,6 +519,13 @@ The ddg.txt file contains a textual definition of the DDG. It is not necessary t
 
 
 The DDG database is stored in a directory called .ddg in your home directory. For example, on Windows 7, this would be something like C:{\textbackslash}Users{\textbackslash}emeryboose{\textbackslash}.ddg. On the Mac, this would be something like /Users/barbaralerner/.ddg. You should not interact with the database through the file system, but only through the DDG Explorer.
+
+\section{Known Issues}
+\textbf{Layout Problems:} The DDG layout sometimes does not work well if the top node in the DDG is collapsed.  Try expanding it; the rest of the layout may improve.
+
+Query results sometimes do not layout nicely.  The only solution is to manually move the nodes around.
+
+\textbf{Missing edges: }  If a finish step has a data output, that data output no longer appears when the step is collapsed, even if it is used later in a visible step.  Expanding the node will draw the appropriate nodes and edges.
 
 \section[Acknowledgements]{Acknowledgements}
 

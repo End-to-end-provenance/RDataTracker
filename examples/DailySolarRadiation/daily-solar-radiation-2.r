@@ -93,7 +93,7 @@ read.data <- function() {
   ddg.data.in(end.date)
   ddg.data.in(variable)
   
-  ddg.return(raw.data)
+  ddg.return.value(raw.data)
 }
 
 calibrate <- function(xx) {
@@ -112,7 +112,7 @@ calibrate <- function(xx) {
 
   ddg.function()
   ddg.data.in(calibration.parameters)
-  ddg.return(xx)
+  ddg.return.value(xx)
 }
 
 quality.control <- function(xx) {
@@ -139,7 +139,7 @@ quality.control <- function(xx) {
   ddg.function()
   ddg.data.in(quality.control.parameters)
   
-  ddg.return(xx)
+  ddg.return.value(xx)
 }
 
 gap.fill <- function(xx) {
@@ -155,7 +155,7 @@ gap.fill <- function(xx) {
   
   ddg.function()
   ddg.data.in(gap.fill.parameters)
-  ddg.return(xx)
+  ddg.return.value(xx)
 }
 
 write.result <- function(gd) {

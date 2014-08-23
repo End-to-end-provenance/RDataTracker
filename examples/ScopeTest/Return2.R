@@ -17,9 +17,8 @@ ddg.init(ddg.r.script.path,
          enable.console=TRUE)
 
 f <- function (aa, bb) {
-  ddg.procedure(lookup.ins=TRUE)
+  ddg.function()
   retValue <- 3
-  ddg.data(retValue)
   ddg.return(retValue)
 }
 
@@ -27,4 +26,5 @@ f <- function (aa, bb) {
 a <- 1
 b <- 2
 d <- f(a, b)
+e <- f(5, 10)
 ddg.save()

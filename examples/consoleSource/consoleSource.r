@@ -18,7 +18,7 @@ ddg.init(ddg.r.script.path,
 # Do some simple variable assignments here
 fun <- function(a,b){
   ddg.function()
-  ddg.return(a+b)
+  ddg.return.value(a+b)
 }
 
 # add stuff
