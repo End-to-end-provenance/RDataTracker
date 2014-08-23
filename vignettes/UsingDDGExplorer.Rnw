@@ -5,6 +5,7 @@
 
 % Conversion and modifications by Luis Perez 17-Jul-2014
 \documentclass[12pt]{article}
+\usepackage{Sweave}
 \usepackage{xcolor}
 \usepackage{array}
 \usepackage{supertabular}
@@ -72,6 +73,7 @@ morekeywords={}
 }
 
 \begin{document}
+\SweaveOpts{concordance=TRUE}
 \maketitle
 
 \newpage
@@ -82,14 +84,14 @@ morekeywords={}
 
 \section{What is the DDG Explorer?}
 
-The DDG Explorer is a tool that allows the user to view and query the Data Derivation Graphs (DDGs) that are created by running programs that collect this data derivation information as they execute. The focus of this document is on its use with DDGs created from execution of instrumented R scripts. Currently, DDGs can also be created through execution of Little-JIL processes. The DDG notation is general enough to support many languages, but there are currently no other implementations.
+The DDG Explorer is a tool that allows the user to view and query the Data Derivation Graphs (DDGs) that are created by running programs that collect this data derivation information as they execute. The focus of this document is on its use with DDGs created from execution of R scripts that have been instrumented using calls to the RDataTracker library to collect data provenance. Currently, DDGs can also be created through execution of Little-JIL processes. The DDG notation is general enough to support many languages, but there are currently no other implementations.
 
 
 DDG Explorer has the following functionality:
 
 \begin{itemize}
 \item 
-Visualization of DDGs, with the ability to zoom in and out to selectively show or hide details.
+Visualization of DDGs, with the ability to expand or contract portions of the graph to selectively show or hide details.
 \item 
 Ability to view the data or R functions referenced by pieces of the DDG
 \item 
@@ -104,7 +106,7 @@ An overview of the project that DDG Explorer was developed in is available \href
 
 \section{Downloading DDG Explorer}
 
-The DDG Explorer software can be downloaded from \href{http://www.mtholyoke.edu/\~blerner/DataProvenance/code/ddg-explorer.jar}{here}.
+The DDG Explorer software can be downloaded from \href{http://harvardforest.fas.harvard.edu:8080/exist/xquery/data.xq?id=hf091}{here}.
 
 \subsection{Required software}
 
@@ -121,135 +123,99 @@ After downloading DDGExplorer.jar, you should be able to start it by double-clic
 
 When DDG Explorer starts, you should see a window that looks like that in Figure \ref{figure:selector}:
 
-\begin{figure}
+\begin{figure}[!ht]
 \caption{DDG Selector}
 \label{figure:selector}
-\includegraphics[width=6.5in,height=2.889in]{UsingDDGExplorer-img/UsingDDGExplorer-img001.png}
+\begin{center}
+\includegraphics{UsingDDGExplorer-img/StartScreen.png} 
+\end{center}
 \end{figure}
 
 Across the top of this window, you should see 4 buttons:
 
 \begin{itemize}
 \item 
-Load from file
+Open from file
 \item 
-Load from database
+Open from database
 \item 
 Compare R scripts
 \item 
 Find Data Files
 \end{itemize}
 
-The large empty area is used to display error messages or other informational messages as necessary.
+When you click on Open from File, you will be presented with a standard file browser. Exactly how this file browser looks will depend on the operating system that you are using. Using the file browser, you should navigate to a ddg.txt file, select that and click Open. The ddg.txt is located in the DDG directory used by the R script. The location of the directory is defined by the ddg.path variable defined at the top of the R script.
 
-
-The DDG Explorer stores its data in a database (details in the Behind the scenes section below if you are interested). The Load from Database, Compare R Scripts, and Find Data Files buttons only do useful things once there are DDGs in the database. To get data into the database, you must first load it from a file and then save it to the database.
-
-
-When you click on Load from File, you will be presented with a standard file browser. Exactly how this file browser looks will depend on the operating system that you are using. Using the file browser, you should navigate to a ddg.txt file, select that and click Open. The ddg.txt is located in the DDG directory used by the R script. The location of the directory is defined by the ddg.path variable defined at the top of the R script.
+The DDG Explorer stores its data in a database (details in the Behind the scenes section below if you are interested). The Open from Database, Compare R Scripts, and Find Data Files buttons only do useful things once there are DDGs in the database. To get data into the database, you must first load it from a file and then save it to the database.
 
 \subsection{The DDG window}
 
-After opening a ddg.txt file, you will see a window that looks like this:
+After opening a ddg.txt file, you will see a window that looks like Figure \ref{figure:main}:
 
-\begin{figure}
-\label{figure:}
+\begin{figure}[!ht]
 \caption{DDG Explorer Main Window}
-\includegraphics[width=3.472in,height=4.4866in]{UsingDDGExplorer-img/UsingDDGExplorer-img002.png} 
+\begin{center}
+ \includegraphics{UsingDDGExplorer-img/LoadDDG.png} 
+ \end{center}
+ \label{figure:main}
 \end{figure}
 
-Along the top of the window are 3 menus: File, Preferences and Help. On the left side is a legend that explains the colors used in the DDG. On the right is the initial view of the DDG in a collapsed state.
+Along the top of the window are 3 menus: File, DDG and Help. On the left side is a legend that explains the colors used in the DDG. In the center is a high-level view of the DDG.  On the right is the overview, which is used to scroll through large DDGs.
 
 
 A DDG is drawn as a number of nodes (the oval shapes) connected with edges (the arrows). The nodes represent either data or processing steps, while the edges show how execution goes from one processing step to the next, or how data is used or produced by a processing step.
 
+Green nodes come in pairs, that can be collapsed into a single node hiding all nodes in between to provide a more abstract view of the DDG.  In this example, the top node is labeled "Loop Start" with the next green node labeled "Loop Finish".  By clicking on either of these nodes a more abstract view of the graph is displayed (Figure \ref{figure:abstract}).
 
-For example, the DDG as drawn above corresponds to the following pieces of R code:
+\begin{figure}
+ \caption{Collapsed Abstract Node}
+ \label{figure:abtract}
+\begin{center}
+ \includegraphics{UsingDDGExplorer-img/AbstractedNode.png} 
+ \end{center}
+\end{figure}
+ 
+Notice how the green nodes and everything in between collapses to a single blue node.  By clicking on a blue node, it is replaced with an expanded graph.  Here is the graph with the second blue node expanded (Figure \ref{figure:expanded}).
 
-\begin{lstlisting}
-get.initial.values()
-
-estimate <- get.random(number)
-
-# Begin get.square.root
-check <- number
-while (check > 0) {
-	#repeat calculation untle tests OK
-	estimate <- calc.square.root(number,estimate)
-	difference <- get.difference(number,estimate)
-	check <- get.check.value(difference,tolerance)
-}
-sqr.root <- store.results(number, estimate)
-
-# End get.square.root
-
-write.result("sqr-root.csv",sqr.root)
-\end{lstlisting}
-
-\bigskip
-
-
-The exact nodes that are drawn are based on the instrumentation that was placed in the code. (See the Using the R DDG Library document to learn how to do this best.) Here is the same code with the instrumentation added.
-
-\begin{lstlisting}
-ddg.start(main)
-
-ddg.start(get.initial.values)
-get.initial.values()
-ddg.finish(get.initial.values)
-
-ddg.start(get.random)
-estimate <- get.random(number)
-ddg.finish(get.random)
-
-ddg.start(get.square.root)
-
-check <- number
-
-while (check {\textgreater} 0) {
-  ddg.start(get.next.estimate)
-
-  # repeat calculation until tests OK
-  estimate <- calc.square.root(number,estimate)
-  difference <- get.difference(number,estimate)
-  check <- get.check.value(difference,tolerance)
-  ddg.finish(get.next.estimate)
-}
-
-ddg.finish(get.square.root)
-ddg.start(write.result)
-
-sqr.root <- store.result(number,estimate)
-write.result(sqr-root.csv,sqr.root)
-
-ddg.finish(write.result)
-
-ddg.finish(main)
-
-\end{lstlisting}
-
-
-Each ddg.start()...ddg.finish() pair identifies a number of nodes that can be collapsed into a single node. This allows the user to zoom in and out on the detail. In the initial drawing, the ``main'' node is expanded (resulting in a pair of green nodes labeled ``main Start'' and ``main Finish''), while the remaining nodes are ``collapsed'' (drawn in blue). The user can single-click on a blue node to expand it. For example, if the user clicks on the get.square.root node, the DDG is redrawn as:
-\begin{figure}[h!]
-\centering
-  \caption{Entire DDG.}
- \includegraphics[width=2.8083in,height=5.0835in]{UsingDDGExplorer-img/UsingDDGExplorer-img003.png} 
+\begin{figure}
+ \caption{Expanded Abstract Node}
+ \label{figure:expanded}
+\begin{center}
+ \includegraphics{UsingDDGExplorer-img/ExpandedNode.png} 
+ \end{center}
 \end{figure}
 
-Single-clicking on either the get.square.root Start node or the get.square.root Finish node would return to the original view of the DDG. To see the entire DDG, click on the top Start node to collapse the DDG to a single node. Then right-click and select ``Expand All''.
+A Simple Operation (drawn as a yellow node) represents a processing step that the user cannot zoom in on. It represents the lowest level of processing captured by the DDG.  The plot.data node is such a node and represents the execution of the plot.data function with no details internal to its execution captured in the DDG.
 
+Lilac-colored nodes represent data. In this case, the plot.data function has 3 input parameters:  zz, v and d.  We can tell they are inputs because the arrows point from the data node to the operation node.  The cream-colored nodes represent the bindings of arguments to parameters.  In this case, plot.data is defined as:
 
-A Simple Operation (drawn as a yellow node) represents a processing step that the user cannot zoom in on. It represents the lowest level of processing captured by the DDG. Below is a view of the DDG where we have expanded the get.initial.values step. Here you can see a simple operation, named ``3-get.initial.values''. We also see 2 lilac-colored nodes. These nodes represent data. In this case, the get.initial.values operation is setting a variable named ``number'' and another variable named ``tolerance''. We can tell that get.initial.values is setting these values since the arrow points from the Operation node to the Data nodes. The number variable is used in the operations get.random, get.square.root and write.result. Similarly, tolerance is used by get.square.root. Here, we can tell that these operations are using the data because the arrows point from the data to the operations, signifying that the data are inputs to those operations.
-\begin{figure}[h!]
-\centering
-  \caption{Expanded node.}
- \includegraphics[width=4.9654in,height=5.2917in]{UsingDDGExplorer-img/UsingDDGExplorer-img004.png} 
+\begin{lstlisting}
+plot.data <- function(zz, v, d)
+\end{lstlisting}
+
+plot.data is called as:
+
+\begin{lstlisting}
+plot.data(final.data, input, days)
+\end{lstlisting}
+
+The arrow from the data node labeled ``6-input" to the binding node \mbox{``9-v <- input"} to the data node labeled ``9-v" represent the binding that occurs as the value of input is passed to the plot.data function and known by the parameter name v from within plot.data.
+
+Conversely, the edge from the Loop Finish node to the graphic node indicates that "graphic" is an output of the loop.  By right-clicking on a data node, the user can see the value of that variable at that point in execution or the plot created at that point.  For example, right-clicking on "12-graphic" will pop up a window with the corresponding plot (Figure \ref{figure:plot}).
+
+\begin{figure}
+\caption{Plot Window}
+\begin{center}
+ \includegraphics{UsingDDGExplorer-img/Plot.png} 
+ \end{center}
+ \label{figure:plot}
 \end{figure}
 
-There are two additional types of operation nodes: Checkpoint Operation and Restore Operation. A Checkpoint Operation node is created when the user calls the ddg.checkpoint function. It will have an output that is a node representing the RData file that holds the R workspace objects at that point in time. A Restore Operation node is created when the user calls ddg.restore. It will have an input which is the RData file being restored. These node types are not used in this example.
+There are two additional types of operation nodes: Checkpoint Operation and Restore Operation. 
+These correspond to functions provided in DDGCheckpoint.R, a separate file not incorporated into the RDataTracker library.\footnote{The ddg.restore function modifies the user's environment, which is an action that library functions are prohibited from doing.}  A Checkpoint Operation node is created when the user calls the ddg.checkpoint function. It will have an output that is a node representing the RData file that holds the R workspace objects at that point in time. A Restore Operation node is created when the user calls ddg.restore. It will have an input which is the RData file being restored. These node types are not used in this example.
 
+There are three additional data node types: File, URL and Error. The lilac color indicates a data value stored in memory, like a number or character string. A File node signifies that the data are stored in a file, while a URL node indicates that the data came from a website. An Error node (in red) represents an error during execution of the R script that caused the script to fail.
 
-There are three additional data node types: File, URL and Error. The lilac color indicates a data value stored in memory, either a simple value like a number or character, or a more complex value like a vector or data frame. A File node signifies that the data are stored in a file, while a URL node indicates that the data came from a website. An Error node (in red) represents an error during execution of the R script that caused the script to fail.
 \subsection{Scrolling, magnifying, clicking, right-clicking}
 
 
@@ -262,34 +228,64 @@ As mentioned above, the user can click on green nodes to collapse them and on bl
 \tablelasttail{}
 \begin{supertabular}{|m{2.0in}|m{4.3in}|}
 \hline
-Left mouse click &
-On a green or bright blue (restore) node, collapse.
+To collapse a section of the graph &
+Left click on a green start or finish node.
 
-On a blue node, expand.\\
+\\ \hline
+To expand a collapsed node &
+Left click on a light blue node.
+
+\\ \hline
+To move a node &
+Drag the node
+
+\\ \hline
+To scroll to a different portion of the DDG &
+Drag the overview box OR \\
+ & Drag on the background
+
+\\ \hline
+To re-center the DDG &
+Click the Refocus button
+
+\\ \hline
+To change the magnification &
+Use the slider at the top of the window
+
+\\ \hline
+\end{supertabular}
+\end{flushleft}
+
+In addition, right-clicking on Windows or control-clicking on a Mac pulls up a context menu depending on the type of node clicked on.
+\begin{flushleft}
+\tablefirsthead{}
+\tablehead{}
+\tabletail{}
+\tablelasttail{}
+\begin{supertabular}{|m{2.0in}|m{4.3in}|}
 \hline
-Left mouse down and Drag &
-Drag a node to move it.
+On a collapsed node &
+The user can expand the current node (same as a click), expand that node to complete detail,  view the R code that corresponds to this portion of the graph.
 
-Drag on the background to pan.\\
-\hline
-Control + Right mouse down + drag (Windows)
+\\ \hline
 
-Command-Drag (Mac) &
-Magnify or shrink the entire DDG\\
-\hline
-Right-click (Windows)
+On a start/finish node &
+The user can collapse (same as a click), expand to complete detail or see the corresponding R code.
+\\ \hline
 
-Control-click (Mac) &
-Pulls up a menu whose contents depend on the type of node.
-i
-\begin{itemize}
-\item On a blue node, the user can expand the current node (same as a click), expand that node to complete detail, or view the R function if this node corresponds to a function.
-\item On a green node, the user can collapse (same as a click) or see the corresponding R function if the node maps to a function.
-\item On a bright blue (restore) node, the user can collapse (same as a click).
-\item On a yellow node, the user can see the function definition if the node corresponds to an R function.
-\item On a lilac, beige or pink node, the user can see the data value, file contents or URL contents.
-\item On a red node, the user can see the error message.
-\end{itemize}
+On a restore node &
+The user can collapse (same as a click).
+
+\\ \hline
+
+On an operation node &
+The user can see the function definition if the node corresponds to an R function defined within the script.
+
+\\ \hline
+
+On a data, error, file or URL node &
+The user can see the data value, error message, file contents or URL contents.
+
 \\ \hline
 \end{supertabular}
 \end{flushleft}
@@ -297,14 +293,22 @@ i
 The Help menu contains a Command Overview command that provides the same information as the table above.
 
 
-After gaining a little familiarity with DDGs, you may find it convenient to remove the Legend, which you can do by clicking on the X in its upper-right corner. You can display the legend again, if you like, by using the ``Show Legend'' command in the Preferences menu.
+After gaining a little familiarity with DDGs, you may find it convenient to remove the Legend, which you can do by clicking on the X in its upper-right corner. You can display the legend again, if you like, by using the ``Show Legend'' command in the Preferences submenu of the DDG menu.
 
 \subsection{Menu commands}
 
 \subsubsection{File menu}
 
 
-The File menu contains 3 commands:
+The File menu contains 6 commands.  4 of these have the same names and behavior as the buttons displayed on the start screen.  The additional commands are:
+
+\begin{itemize}
+\item Save to database:  This will save a DDG that was loaded from a file to a database managed by DDG Explorer so that it can be viewed and queried at a later time.
+
+\item Manage database:  This will open a window with more functionality that allows the user to load saved DDGs, query them or delete them.  There are more details in Section \ref{sect:db}.
+\end{itemize}
+
+The DDG menu contains the following commands:
 
 \begin{itemize}
 \item 
@@ -317,6 +321,7 @@ Architecture - this identifies the type of processor that the script was execute
 Operating System - the operating system that the script was executed on. Note that this will report ``Unix'' when run on a Mac.
 \item 
 Language - the language that the script was written in. Currently, DDG Explorer supports R and Little-JIL.
+\item Language Version - the specific version of the R interpreter that was used
 \item 
 Script - the full path to the file containing the script
 \item 
@@ -327,16 +332,17 @@ Working Directory - the directory in which the script was executed
 DDG Directory - the directory in which the ddg was stored
 \item 
 DDG Timestamp - the time at which the script was executed to create the current DDG.
+\item RDataTrackerVersion - the version of the RDataTracker library used to collect the data provenance
 \end{itemize}
 \item 
 Show R script - this will bring up a window that will display the entire R script that was executed
-\item 
-Save to database - this will save the current DDG along with the datafiles cached in the ddg directory to a database. Saving to the database allows other features, like searching. Please see the section below titled ``Using the DDG database'' for more details of this functionality.
 \end{itemize}
+
+
 \subsubsection{Preferences menu}
 
 
-The Preferences menu has two options:
+The Preferences menu is inside the DDG menu and has two options:
 
 \begin{itemize}
 \item 
@@ -350,35 +356,44 @@ Show legend - Initially, the legend is drawn. The user can remove the legend eit
 The help menu contains a single command: Command Overview. This gives a brief description of the commands involving use of the mouse and trackpad to control the display of the DDG.
 
 \section[Using the DDG database]{Using the DDG database}
+\label{sect:db}
 
 Initially, DDGs are stored in files. If you run an R script using the same DDG directory as a previous execution, the DDG will be overwritten. To save the DDG permanently and to enable querying functionality provided by the database, you must save the DDG to the database after loading it into DDG Explorer as a file. You can do this by selecting the ``Save to database'' command in the File menu when a DDG is being displayed. Alternatively, when you close a window displaying a DDG, it will prompt you as to whether you would like to save the DDG to the database. 
 
-
-Returning to the DDG Chooser (the main window of the DDG Explorer), we will now describe the functionality available for DDGs stored in the database. When you click on the ``Load from database'' button, you will see a new window that looks like this:
+When you select the ``Manage database'' command from the File menu, you will see a new window that looks like Figure \ref{figure:manage_databases}
 
 \begin{figure}[!ht]
  \caption{Load from Database Window}
- \includegraphics[width=6.5in,height=3.25in]{UsingDDGExplorer-img/UsingDDGExplorer-img005.png} 
+ \label{fig:manage_databases}
+\begin{center}
+ \includegraphics{UsingDDGExplorer-img/ManageDatabase.png} 
+ \end{center}
 \end{figure}
 
 \bigskip
 
 
-The left column lists the names of scripts that have DDGs associated with them in the database. If you select one of these, the window will change to look like this:
+The left column lists the names of scripts that have DDGs associated with them in the database. If you select one of these, the window will change to look like Figuere \ref{fig:manage_databases_2}:
 \begin{figure}[!ht]
   \caption{Select Script Screen}
-  \includegraphics[width=6.5in,height=3.25in]{UsingDDGExplorer-img/UsingDDGExplorer-img006.png} 
+  \label{fig:manage_databases_2}
+\begin{center}
+  \includegraphics{UsingDDGExplorer-img/ManageDatabase2.png}  
+  \end{center}
 \end{figure}
+
 
 Now the second column shows the timestamps for all of the DDGs created from that script. In the rightmost column, the ``Delete all'' button is now enabled. If you click this button, it will delete all of the DDGs associated with that script from your database. You will be prompted to confirm that you want to delete them, but once deleted, they cannot be recovered, so be careful!
 
 
-If you select one execution timestamp, you will now see more buttons enabled:
+If you select one execution timestamp, you will now see more buttons enabled (Figure \ref{fig:manage_databases_3}:
 
 \begin{figure}[!ht]
- \caption{Select TimeStampt Screen}
- \includegraphics[width=6.5in,height=3.25in]{UsingDDGExplorer-img/UsingDDGExplorer-img007.png} 
-
+ \caption{Select TimeStamp Screen}
+ \label{fig:manage_databases_3}
+\begin{center}
+ \includegraphics{UsingDDGExplorer-img/ManageDatabase3.png} 
+ \end{center}
 \end{figure}
 
 Here is what each of these buttons does.
@@ -387,46 +402,67 @@ Here is what each of these buttons does.
 \item 
 Delete DDG - This will delete the one DDG that corresponds to the selected script and execution timestamp after confirming that you really want to delete it.
 \item 
-Load - This will read the entire DDG from the database and create a window displaying the DDG, just as what happens when you read it from a file.
+Open DDG - This will read the entire DDG from the database and create a window displaying the DDG, just as what happens when you read it from a file.
 \item 
-Show value derivation - This query allows you to view just the portion of a DDG that explains how a particular output value was calculated. After clicking this button, a window will appear asking you to select a variable to display. For example, if the user asks to see the variable 14-estimate, the (partial) DDG shown is at the right. Here, we can see that get.input operation outputs a number, which is input to get.random that produces the first estimate value. This estimate is input to calc.square.root, which produces another estimate. This cycle repeats until we get to the desired estimate. \newline \newline
+
+Show value derivation - This query allows you to view just the portion of a DDG that explains how a particular output value was calculated. After clicking this button, a window will appear asking you to select a variable to display. For example, if the user asks to see the variable 7-selected.data, the (partial) DDG is shown in Figure \ref{figure:derivation}. Here, we can see that get.initial.value initializes the file name to read, the variable to plot, and the start and end dates.  The file name is input to read.data, which reads in the file named ``met-15min.csv" and then returns all.data.  The select.data operation takes all.data, the variable to plot and the start and end dates and returns the selected data. 
 
 \begin{figure}[!ht]
-  \caption{Calculate Square Root DDG}
-  \includegraphics[width=2.2654in,height=7.8472in]{UsingDDGExplorer-img/UsingDDGExplorer-img008.png}
+  \label{figure:derivation}
+  \caption{Show Derivation}
+\begin{center}
+  \includegraphics{UsingDDGExplorer-img/ShowDerivation.png}
+  \end{center}
 \end{figure}
-We can get more insight by right-clicking on the data nodes to see what values they have. Here, we see that the 3-number has the value 3636363. 4-estimate has the value 3016450.69879702. Showing subsequent estimate values demonstrates how the algorithm narrows in on the square root value that is within the desired tolerance.
+  
+
+We can get more insight by right-clicking on the data nodes to see what values they have. Here, we see that the 2-variable is airt (meaning air temperature), 3-start.date is 2012-01-01 and 4-end.date is 2012-03-01.  The user could then examine selected.data to see if it, in fact, only contains data with those properties.
 \end{itemize}
 
 \begin{itemize}
 \item 
-Show values computed from: This query allows you to view the portion of the DDG that follows from a particular data value. After clicking this button, you will see a window like the one for the previous query where you can select a data value. This time, however, you will see the values that are computed from this data value as shown below.\
-Here, we start with 44-estimate and can see that it is input to two operations. One operation determines if it is close enough to the actual square root (which it is not), while the other uses it to refine the estimate, producing 47-estimate. 47-estimate is within the desired tolerance, so that value is saved in the sqr-roots.csv output file.
+Show values computed from: This query allows you to view the portion of the DDG that follows from a particular data value. After clicking this button, you will see a window like the one for the previous query where you can select a data value. This time, however, you will see the values that are computed from this data value as shown in Figure \ref{figure:from} \
+
+Here, we start with 7-selected.data and can see that it is input to two calls to apply.test. One of these calls ends in a call to plot.data, but the resulting plot is not saved.  The second call creates a plot and saved it along with saving the flagged data in a csv file. 
+
 \begin{figure}[!ht]
-  \caption{Checkpoint DDG}
-  \includegraphics[width=5.8335in,height=4.4909in]{UsingDDGExplorer-img/UsingDDGExplorer-img009.png} 
-\end{figure} \end{itemize}
+  \label{figure:from}
+  \caption{Computed From DDG}
+\begin{center}
+\includegraphics{UsingDDGExplorer-img/ComputedFrom.png} 
+\end{center}
+\end{figure}
+
+\end{itemize}
+\newpage
+
 \subsection{Comparing R Scripts}
 
 You will likely find that you change your R script over time. The R scripts are saved in the database along with the DDG, so the DDG Explorer can always show you the R script that corresponds to a DDG.
 
 
-In addition, you may wonder how a script has changed over time, or how the script that generated one DDG differs from another script. To help you understand that history of your scripts, the main window of the DDG Explorer contains a button labeled ``Compare R scripts''. When you click that, you will see this window:
+In addition, you may wonder how a script has changed over time, or how the script that generated one DDG differs from another script. To help you understand that history of your scripts, the File menu contains the command ``Compare R scripts''. When you select it, you will see the windows in Figure \ref{figure:file_comparison}:
 
 \begin{figure}[!ht]
+ \label{figure:file_comparison}
  \caption{File Comparison Windows}
- \includegraphics[width=6.5in,height=4.8752in]{UsingDDGExplorer-img/UsingDDGExplorer-img010.png} 
+\begin{center}
+ \includegraphics{UsingDDGExplorer-img/UsingDDGExplorer-img010.png} 
+ \end{center}
 \end{figure}
 
 
 In this window, you can select two R scripts to compare. One will be displayed on the left side of the window. The other will be displayed on the right side of the window. These scripts can either come from the file system or from the database. 
 
 
-Here is what the window will look like after selecting two related but different scripts:
+Figure \ref{figure:active_file_comparison} shows what the window will look like after selecting two related but different scripts:
 
 \begin{figure}[!ht]
+ \label{figure:active_file_comparison}
  \caption{Active File Comparison}
- \includegraphics[width=6.5in,height=4.8752in]{UsingDDGExplorer-img/UsingDDGExplorer-img011.png} 
+\begin{center}
+\includegraphics{UsingDDGExplorer-img/UsingDDGExplorer-img011.png} 
+\end{center}
 \end{figure}
 
 
@@ -434,19 +470,28 @@ The brown color identifies lines that are similar but modified between the two v
 
 \subsection{Finding where Data Files are Used}
 
-Another useful feature is to allow the user to find where a particular data file has been used as input or produced as output. To do that, go to the main window and click on the ``Find Data Files'' button. This will bring up the following window where you can limit the types of files searched for:
+Another useful feature is to allow the user to find where a particular data file has been used as input or produced as output. To do that, select the ``Find Data Files'' item from the File menu. This will bring up the window in Figure \ref{fig:find_data_files} where you can limit the types of files searched for:
 
-\begin{figure}
-\caption{Find Data File Dialog}
-\includegraphics[width=6.5in,height=1.9283in]{UsingDDGExplorer-img/UsingDDGExplorer-img012.png} 
+\begin{figure}[!ht]
+ \caption{Find Data Files Dialog}
+ \label{fig:find_data_files}
+\begin{center}
+ \includegraphics{UsingDDGExplorer-img/FindDataFiles.png} 
+ \end{center}
 \end{figure}
 
-Here, you can limit to the search to just input files, just output files, or both. You can select one or more file extensions. If you select all, it will include files with any extension, including extensions not appearing in the list. The files are searched for in the database. You can either select for files appearing anywhere in the database or limit the search to a particular script or a particular ddg. After making your selections, another window will appear listing the matching files as follows.
+Here, you can limit the search to just input files, just output files, or both. You can select one or more file extensions. If you select all, it will include files with any extension, including extensions not appearing in the list. The files are searched for in the database. You can either select for files appearing anywhere in the database or limit the search to a particular script or a particular ddg. After making your selections, the list of matching files will be displayed (Figure \ref{fig:data_list}).
 
- \includegraphics[width=6.5in,height=3.25in]{UsingDDGExplorer-img/UsingDDGExplorer-img013.png} 
+\begin{figure}[!ht]
+ \caption{Find Data Files LIst}
+ \label{fig:data_list}
+\begin{center}
+ \includegraphics{UsingDDGExplorer-img/FindDataFilesList.png}
+ \end{center}
+\end{figure}
 
 
-The first column identifies the file name. The second column identifies the script that used or created it. The third column shows the execution time of the DDG that references it. The last column shows the name of the node within the DDG. You can sort the list by clicking on the header of the column you want to sort by.
+The first column identifies the file name. The second column identifies the script that used or created it. The third column shows the execution time of the DDG that references it. The last column shows the name of the node within the DDG. You can sort the list by clicking on the header of the column you want to sort by.  Clicking twice in a row on the same column header reverses the list order.
 
 
 You can now select one or more files from the list. After selecting files, the buttons work as follows:
@@ -457,8 +502,6 @@ You can now select one or more files from the list. After selecting files, the b
 Show Files will display the files themselves, each in a separate window.
 \item 
 Show DDGs will display the DDGS, scrolling to the position in the DDG where the file is used.
-\item 
-Compare Files will load the files using the text comparison tool. This will only work if exactly two files are selected. Currently, this button does not do anything. 
 \end{itemize}
 \section[Behind the scenes]{Behind the scenes}
 
@@ -470,48 +513,17 @@ This section provides some additional details on the DDG files and database.
 All of the information that is collected during execution of your R scripts is saved in a directory. It is important that you know where this directory is in order to find your DDG files and load them into the DDG Explorer.
 
 
-The directory used is the one identified by the ddg.path variable in R. This directory will contain a text file named ddg.txt along with files that are created by calling the instrumentation functions ddg.file, ddg.file.out, ddg.file.copy.out, ddg.snapshot, and ddg.snapshot.out. For details on these functions, please see the documentation on how to instrument your R code.
+The directory used is the one passed as the value of the ddgdir parameter to ddg.init or ddg.run, functions from RDataTracker.  If the script that called ddg.init or ddg.run did not pass in a value for this parameter, the DDG can be found in a directory called "ddg" which will be a subdirectory of the working directory when the script ran. This directory will contain a text file named ddg.txt along with files that are created to save input files and large intermediate values, like data frames and plots.
 
 \subsubsection{ddg.txt}
 
 
-The ddg.txt file contains a textual definition of the DDG. It is not necessary to understand the contents of this file, but the interested reader can learn more by reading the Using the R DDG Library document.
+The ddg.txt file contains a textual definition of the DDG. It is not necessary to understand the contents of this file, but the interested reader can learn more by reading the Using the RDataTracker document.
 
 \subsection{DDG database}
 
 
 The DDG database is stored in a directory called .ddg in your home directory. For example, on Windows 7, this would be something like C:{\textbackslash}Users{\textbackslash}emeryboose{\textbackslash}.ddg. On the Mac, this would be something like /Users/barbaralerner/.ddg. You should not interact with the database through the file system, but only through the DDG Explorer.
-
-\subsection{.RProfile - outdated}
-
-
-The instrumentation needs to know where to find the R library. You can do this as follows:
-
-\begin{lstlisting}
-ddg.library <- c:/data/r/ddg/lib/ddg-library.r
-source(ddg.library)
-\end{lstlisting}
-
-
-Alternatively, you could use an environment variable to define where your library is stored. Doing this will make it easier to share your script with others. In that case, you would put this at the top of your R script.
-
-\begin{lstlisting}
-ddg.library <- Sys.getenv({DDG_LIBRARY})
-source(ddg.library)
-\end{lstlisting}
-
-
-To set an environment variable, create a file called .RProfile in your home directory. This file should contain the following, again using the location you have chosen:
-
-\begin{lstlisting}
-# Tells R where to find the DDG library.
-.First <- function() {
-Sys.setenv(DDG_LIBRARY = c:/data/r/ddg/lib/ddg-library.r)
-}
-\end{lstlisting}
-
-
-This function will be automatically executed whenever you start R. You may also find it convenient to put other commands inside the .First function that you find yourself using whenever you start R, such as a setwd call to get to your favorite working directory. 
 
 \section[Acknowledgements]{Acknowledgements}
 
@@ -535,7 +547,7 @@ Jena, the database technology
 \item 
 Prefuse, the library used to help draw the DDGs
 \item 
-jdiff, the library that allows the comparison of R scripts. This is licensed by QArks.com under an LGPL license. The license description is available at http://www.gnu.org/licenses/lgpl.html.
+jdiff, the library that allows the comparison of R scripts. This is licensed by QArks.com under an LGPL license described at http://www.gnu.org/licenses/lgpl.html.
 \end{itemize}
 
 Below is the detailed licensing information that allows us to use and distribute the DDG Explorer software.
