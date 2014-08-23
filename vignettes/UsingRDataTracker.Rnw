@@ -67,12 +67,12 @@ mathescape
 }
 
 \begin{document}
+\SweaveOpts{concordance=TRUE}
 
 \maketitle
 
 \newpage
 \tableofcontents
-\newpage
 \listoffigures
 \newpage
 
@@ -245,12 +245,6 @@ ddg.procedure()
 ddg.procedure(ins=list("x1", "x2))
 \end{lstlisting}
 
-
-If \textbf{ddg.procedure} is called from inside an R function and if \textbf{lookup.ins} is set to TRUE, the library will create a data flow edge to each argument passed to the function, if a corresponding data node exists.
-\begin{lstlisting}
-ddg.procedure(lookup.ins=TRUE)
-\end{lstlisting}
-
 A data flow edge to an existing data node may also be created using \textbf{ddg.data.in}. The name of operational node may be omitted if \textbf{ddg.data.in }is called from within an R function.
 
 \begin{lstlisting}
@@ -272,7 +266,17 @@ ddg.procedure()
 ddg.data.out(x)
 \end{lstlisting}
 
-\item Return values from functions can also be captured, and appropriate binding nodes created, using \textbf{ddg.return}. 
+\item Functions can be annotated using \textbf{ddg.function}. The library will create a data flow edge to each argument passed to the function, if a corresponding data node exists.
+\begin{lstlisting}
+f <- function(...) {
+  ddg.function(lookup.ins=TRUE)
+  ...
+}
+
+f()
+\end{lstlisting}
+
+\item Return values from functions can also be captured, and appropriate binding nodes created, using \textbf{ddg.return.val}. 
 \begin{lstlisting}
 # function definition, replace return with ddg.return
 f <- function() {
@@ -458,10 +462,19 @@ Numerous students have been involved in the research and tool development throug
 
 \section{DDG Examples}
 
-{\centering  \includegraphics[width=5.4in,height=3.7547in]{UsingRDataTracker-img/UsingRDataTracker-img003.jpg} \par}
+\begin{figure}[!ht]
+\caption{Example DDGs 1}
+\begin{center}
+\includegraphics[width=5.4in,height=3.3547in]{UsingRDataTracker-img/UsingRDataTracker-img003.jpg}
+\end{center}
+\end{figure}
 
-{\centering  \includegraphics[width=4.4252in,height=3.5744in]{UsingRDataTracker-img/UsingRDataTracker-img004.jpg} \par}
-
+\begin{figure}[!ht]
+\caption{Example DDGs 2}
+\begin{center}
+\includegraphics[width=4.4252in,height=3.344in]{UsingRDataTracker-img/UsingRDataTracker-img004.jpg}
+\end{center}
+\end{figure}
 
 \newpage
 
