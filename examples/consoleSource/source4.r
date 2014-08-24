@@ -3,7 +3,7 @@
 x <- 5
 f <- function(w){
   ddg.function()
-  ddg.return(w+1)
+  ddg.return.value(w+1)
 }
 
 # just random testing

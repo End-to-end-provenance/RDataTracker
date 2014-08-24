@@ -23,7 +23,7 @@ increment.value <- function(a) {
 	a <- a + 1
 	
 	ddg.function()
-	ddg.return(a)  
+	ddg.return.value(a)  
 }
 
 main <- function() {

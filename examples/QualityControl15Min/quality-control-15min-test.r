@@ -64,7 +64,7 @@ read.data <- function() {
   ddg.function()
   #ddg.data.out("all-data.csv",zz)
   
-  ddg.return(zz)
+  ddg.return.value(zz)
 }
 
 select.data <- function(zz,v,sd,ed) {  
@@ -87,7 +87,7 @@ select.data <- function(zz,v,sd,ed) {
   #ddg.data.in("all-data.csv")
   #ddg.data.out("selected-data.csv",zz3)
   
-  ddg.return(zz3)
+  ddg.return.value(zz3)
 }
 
 apply.test <- function(xx,t,n) {
@@ -135,7 +135,7 @@ apply.test <- function(xx,t,n) {
   # ddg.data.in("num")
   #ddg.data.out("flagged-data.csv",xx)
   
-  ddg.return(xx)
+  ddg.return.value(xx)
 }
 
 plot.data <- function(xx,t,n,output) {

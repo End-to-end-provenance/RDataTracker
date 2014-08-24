@@ -15,7 +15,7 @@ invisible(force(startTime))
 ## Directories
 if (interactive()) {
   testDir <- getwd()
-  ddgDir <- "ddg"
+  ddgDir <- "ddg-annotated"
 } else {
   testDir <- "[DIR_DEFAULT]"
   setwd(testDir)

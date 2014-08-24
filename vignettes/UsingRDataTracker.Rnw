@@ -82,6 +82,8 @@ mathescape
 \newpage
 \tableofcontents
 \newpage
+\listoffigures
+\newpage
 
 \section{What is RDataTracker?}
 
@@ -184,9 +186,12 @@ RDataTracker can be used to collect data provenance during R console sessions. C
 > ddg.save()
 \end{lstlisting}
 
-Here is the resulting DDG as displayed in DDG Explorer:
-
-{\centering\includegraphics[height=8.0cm,keepaspectratio=true]{UsingRDataTracker-img/UsingRDataTracker-console}\par}
+\begin{figure}
+\caption{Console Session}
+\begin{center}
+\includegraphics[height=8.0cm, keepaspectratio=true]{UsingRDataTracker-img/UsingRDataTracker-console}
+\end{center}
+\end{figure}
 
 Here line 4 loads the RDataTracker package. Line 7 sets the working directory. Line 10 initiates a DDG. Lines 13-15 are user commands entered at the console. Line 18 saves the DDG to file.
 
@@ -238,9 +243,12 @@ The following commands at the console can be used to execute this script and col
 > ddg.run("test.r")
 \end{lstlisting}
 
-Here is the resulting DDG as displayed in DDG Explorer:
-
-{\centering\includegraphics[height=8.0cm,keepaspectratio=true]{UsingRDataTracker-img/UsingRDataTracker-source1}\par}
+\begin{figure}
+\caption{Sourcing a Script with \textbf{ddg.run}}
+\begin{center}
+\includegraphics[height=8.0cm, keepaspectratio=true]{UsingRDataTracker-img/UsingRDataTracker-source1}
+\end{center}
+\end{figure}
 
 Here line 4 loads the RDataTracker package. Line 7 sets the working directory. Line 10 uses the \textbf{ddg.run} function to execute the script and create a DDG. Since a path for the R script is not provided in \textbf{ddg.run}, the script is assumed to be in the working directory. Since a DDG directory is not specified, the DDG is saved by default in a directory called "ddg" in the working directory.
 
@@ -278,7 +286,12 @@ b <- f(a)
 
 Running this script in the console using \textbf{ddg.run} (as above) yields the following DDG:
 
-{\centering\includegraphics[height=14.0cm,keepaspectratio=true]{UsingRDataTracker-img/UsingRDataTracker-source2}\par}
+\begin{figure}
+\caption{Sourcing a Script with Function Annotations}
+\begin{center}
+\includegraphics[height=14.0cm, keepaspectratio=true]{UsingRDataTracker-img/UsingRDataTracker-source2}
+\end{center}
+\end{figure}
 
 Here \textbf{ddg.function} in line 5 causes RDataTracker to create a data node for formal parameter \textbf{x} in function \textbf{f} and to show the binding of actual parameter \textbf{a} to \textbf{x}; while \textbf{ddg.return.value} in line 6 creates a data node for the return value of \textbf{f} which is then assigned to variable \textbf{b}.
 
@@ -311,7 +324,12 @@ ddg.save()
 
 Here is the resulting DDG as displayed in DDG Explorer:
 
-{\centering\includegraphics[height=16.0cm,keepaspectratio=true]{UsingRDataTracker-img/UsingRDataTracker-selectrun1}\par}
+\begin{figure}
+\caption{Select and Run in Console Mode}
+\begin{center}
+\includegraphics[height=16.0cm, keepaspectratio=true]{UsingRDataTracker-img/UsingRDataTracker-selectrun1}
+\end{center}
+\end{figure}
 
 This script is identical to the preceding one except for lines 3-4, which load the library and set the working directory, and the calls to \textbf{ddg.init} and \textbf{ddg.save} in lines 6 and 17. When this script is copied and pasted into the console, it produces a DDG that is identical to the one above except for the start and finish nodes.
 
@@ -346,7 +364,12 @@ ddg.eval("b <- f(a)")
 ddg.save()
 \end{lstlisting}
 
-{\centering\includegraphics[height=8.0cm,keepaspectratio=true]{UsingRDataTracker-img/UsingRDataTracker-selectrun2}\par}
+\begin{figure}
+\caption{Select and Run Not in Console Mode}
+\begin{center}
+\includegraphics[height=8.0cm, keepaspectratio=true]{UsingRDataTracker-img/UsingRDataTracker-selectrun2}
+\end{center}
+\end{figure}
 
 Here \textbf{enable.console} in \textbf{ddg.init} is set to FALSE. Because the assignment statements in lines 8, 9, and 11 are not annotated, they are not captured in the DDG.
 
@@ -369,7 +392,12 @@ z <- data.frame(x, y)
 ddg.finish("create.data.frame")
 \end{lstlisting}
 
-{\centering\includegraphics[height=12.0cm,keepaspectratio=true]{UsingRDataTracker-img/UsingRDataTracker-abstract}\par}
+\begin{figure}
+\caption{Abstraction Levels}
+\begin{center}
+\includegraphics[height=12.0cm, keepaspectratio=true]{UsingRDataTracker-img/UsingRDataTracker-abstract}
+\end{center}
+\end{figure}
 
 When this script is executed with \textbf{ddg.run}, data nodes are created for vectors \textbf{x} and \textbf{y} and data frame \textbf{z}. These data nodes are enclosed within collapsible start and finish nodes called \textbf{create.data.frame}, which in turn are enclosed within start and finish nodes for the script itself (\textbf{test.r}).
 
@@ -402,7 +430,12 @@ a <- 10
 b <- f(a)
 \end{lstlisting}
 
-{\centering\includegraphics[height=14.0cm,keepaspectratio=true]{UsingRDataTracker-img/UsingRDataTracker-function}\par}
+\begin{figure}
+\caption{Operational Node with \textbf{ddg.function}}
+\begin{center}
+\includegraphics[height=14.0cm, keepaspectratio=true]{UsingRDataTracker-img/UsingRDataTracker-function}
+\end{center}
+\end{figure}
 
 This example creates a data node called \textbf{a} with value 10, a procedural node for the function \textbf{f}, a binding node indicating that actual parameter \textbf{a} is bound to formal parameter \textbf{x}, a data node called \textbf{d} with value 20, and data nodes \textbf{f(a) return} and \textbf{b} with value 100, with corresponding data flow edges.
 
@@ -440,7 +473,12 @@ for (i in 1:3) {
 }
 \end{lstlisting}
 
-{\centering\includegraphics[height=14.0cm,keepaspectratio=true]{UsingRDataTracker-img/UsingRDataTracker-procedure}\par}
+\begin{figure}
+\caption{Operational Node with \textbf{ddg.procedure}}
+\begin{center}
+\includegraphics[height=14.0cm, keepaspectratio=true]{UsingRDataTracker-img/UsingRDataTracker-procedure}
+\end{center}
+\end{figure}
 
 This example creates a procedural node called \textbf{sum.squares} with input data node \textbf{i} and output data node \textbf{x} for each iteration of the \textbf{while} loop.
 
@@ -462,8 +500,12 @@ for (i in 1:2) {
 }
 \end{lstlisting}
 
-{\centering\includegraphics[height=6.0cm,keepaspectratio=true]{UsingRDataTracker-img/UsingRDataTracker-eval1}\par}
-
+\begin{figure}
+\caption{Loop without \textbf{ddg.eval}}
+\begin{center}
+\includegraphics[height=6.0cm, keepaspectratio=true]{UsingRDataTracker-img/UsingRDataTracker-eval1}
+\end{center}
+\end{figure}
 
 Here data nodes are created for \textbf{x} before and after the \textbf{while} loop is executed.
 
@@ -477,7 +519,12 @@ for (i in 1:2) {
 }
 \end{lstlisting}
 
-{\centering\includegraphics[height=14.0cm,keepaspectratio=true]{UsingRDataTracker-img/UsingRDataTracker-eval2}\par}
+\begin{figure}
+\caption{Loop with \textbf{ddg.eval}}
+\begin{center}
+\includegraphics[height=14.0cm, keepaspectratio=true]{UsingRDataTracker-img/UsingRDataTracker-eval2}
+\end{center}
+\end{figure}
 
 Here \textbf{start} and \textbf{finish} nodes for the assignment statement and a data node for \textbf{x} are created for each iteration of the \textbf{while} loop as a result of the \textbf{ddg.eval} function.
 
@@ -491,7 +538,12 @@ ddg.console.off()
 b <- 20
 \end{lstlisting}
 
-{\centering\includegraphics[height=4.0cm,keepaspectratio=true]{UsingRDataTracker-img/UsingRDataTracker-consoleoff}\par}
+\begin{figure}
+\caption{Turning Console Mode On and Off}
+\begin{center}
+\includegraphics[height=4.0cm,keepaspectratio=true]{UsingRDataTracker-img/UsingRDataTracker-consoleoff}
+\end{center}
+\end{figure}
 
 This example creates a data node called \textbf{a} with value 10 enclosed by Console start and finish nodes. A data node for \textbf{b} is not created.
 
@@ -515,7 +567,12 @@ ddg.source("script-1.r")
 d <- a + b
 \end{lstlisting}
 
-{\centering\includegraphics[height=12.0cm,keepaspectratio=true]{UsingRDataTracker-img/UsingRDataTracker-source}\par}
+\begin{figure}
+\caption{Inserting the DDG for a Sourced Script}
+\begin{center}
+\includegraphics[height=12.0cm, keepaspectratio=true]{UsingRDataTracker-img/UsingRDataTracker-source}
+\end{center}
+\end{figure}
 
 This example inserts the DDG for \textbf{script-1.r} into the DDG for \textbf{test.r}. A data flow edge connects data node \textbf{b} created in the sourced script to the assignment statement for \textbf{d} in the main script.
 
@@ -550,7 +607,12 @@ while (abs(number - estimate^2) > tolerance) {
 
 \bigskip
 
-{\centering\includegraphics[height=10.0cm,keepaspectratio=true]{UsingRDataTracker-img/UsingRDataTracker-sqrroot1}\par}
+\begin{figure}
+\caption{Example Script with \textbf{ddg.run}}
+\begin{center}
+\includegraphics[height=10.0cm, keepaspectratio=true]{UsingRDataTracker-img/UsingRDataTracker-sqrroot1}
+\end{center}
+\end{figure}
 
 \bigskip
 
@@ -584,7 +646,12 @@ while (abs(number - estimate^2) > tolerance) {
 ddg.save()
 \end{lstlisting}
 
-{\centering\includegraphics[height=16.0cm,keepaspectratio=true]{UsingRDataTracker-img/UsingRDataTracker-sqrroot2}\par}
+\begin{figure}
+\caption{Example Script with Annotations}
+\begin{center}
+\includegraphics[height=16.0cm, keepaspectratio=true]{UsingRDataTracker-img/UsingRDataTracker-sqrroot2}
+\end{center}
+\end{figure}
 
 The first DDG captures the essentials of the process, including the assignment statements and the final value of \textbf{estimate}. The second DDG captures additional details, including the results of each iteration within collapsible \textbf{start} and \textbf{finish} nodes for the procedure \textbf{calc.sqr.root}.
 
@@ -624,8 +691,12 @@ Here a checkpoint called \textbf{checkpoint1} is created in line 12 and restored
 
 Note that the DDGCheckpoint.R file is not included in RDataTracker and must be separately sourced.
 
-
-{\centering\includegraphics[height=24.0cm,keepaspectratio=true]{UsingRDataTracker-img/UsingRDataTracker-checkpoint}\par}
+\begin{figure}
+\caption{Checkpoint and Restore}
+\begin{center}
+\includegraphics[height=23.0cm, keepaspectratio=true]{UsingRDataTracker-img/UsingRDataTracker-checkpoint}
+\end{center}
+\end{figure}
 
 \subsection{Troubleshooting}
 \label{sec:troubleshoot}
@@ -657,7 +728,13 @@ ddg.data(b)
 b <- 20
 \end{lstlisting}
 
-{\centering\includegraphics[height=6.0cm,keepaspectratio=true]{UsingRDataTracker-img/UsingRDataTracker-error1}\par}
+\begin{figure}
+\caption{DDG Error}
+\begin{center}
+\includegraphics[height=6.0cm, keepaspectratio=true]{UsingRDataTracker-img/UsingRDataTracker-error1}
+\end{center}
+\end{figure}
+
 
 Here a DDG error is generated ("In .ddg.insert.error.message(error.msg): Unable to evaluate b in call to ddg.data") but the R script continues to execute.
 
@@ -670,7 +747,12 @@ a <- 10
 c <- a * b
 \end{lstlisting}
 
-{\centering\includegraphics[height=8.0cm,keepaspectratio=true]{UsingRDataTracker-img/UsingRDataTracker-error2}\par}
+\begin{figure}
+\caption{R Error}
+\begin{center}
+\includegraphics[height=8.0cm, keepaspectratio=true]{UsingRDataTracker-img/UsingRDataTracker-error2}
+\end{center}
+\end{figure}
 
 Here an R error ("Error in eval(expr, envir, enclos): object 'b' not found") terminates execution of the R script.
 

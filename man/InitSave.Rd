@@ -10,7 +10,8 @@
 \usage{
 ddg.init(r.script.path = NULL, ddgdir = NULL, enable.console = TRUE, max.snapshot.size = -1) 
 ddg.save(quit=FALSE)
-ddg.run(r.script.path = NULL, ddgdir = NULL, f = NULL, enable.console = TRUE, max.snapshot.size = -1)
+ddg.run(r.script.path = NULL, ddgdir = NULL, f = NULL, enable.console = TRUE, 
+    max.snapshot.size = -1)
 ddg.console.on()
 ddg.console.off()
 ddg.flush.ddg(ddg.path = NULL)
@@ -33,7 +34,7 @@ ddg.flush.ddg(ddg.path = NULL)
   at the beginning of execution and ddg.save at the end, or the user must call ddg.run.  
   When using ddg.init, it is possible to call ddg.save multiple times.  Each call will 
   save the current provenance graph in a file, overwriting the previous version that was saved. 
- 
+
   ddg.init initializes the provenance graph.  If r.script.path is not NULL, the R script is copied
   into the DDG directory, becoming a permanent part of the provenance record.  If ddgdir is NULL,
   the provenance graph will be saved in a subdirectory called "ddg" within the current working directory.

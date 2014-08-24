@@ -38,7 +38,7 @@ get.random <- function(n) {
   e <- runif(1,1,n)
   
   ddg.function()
-  ddg.return(e)
+  ddg.return.value(e)
 }
 
 calc.square.root <- function(n,e) {
@@ -47,7 +47,7 @@ calc.square.root <- function(n,e) {
   e <- (e+x)/2
   
   ddg.function()
-  ddg.return(e)
+  ddg.return.value(e)
 }
 
 get.difference <- function(n,e) {
@@ -55,7 +55,7 @@ get.difference <- function(n,e) {
   d <- abs(n-e^2)
   
   ddg.function()
-  ddg.return(d)
+  ddg.return.value(d)
 }
 
 get.check.value <- function(d,t) {
@@ -63,14 +63,14 @@ get.check.value <- function(d,t) {
   c <- d - t
   
   ddg.function()
-  ddg.return(c)
+  ddg.return.value(c)
 }
 
 store.result <- function(n,e) {
   sr <- data.frame(n,e)
   
   ddg.function()
-  ddg.return(sr)
+  ddg.return.value(sr)
 }
 
 write.result <- function(sr) {
