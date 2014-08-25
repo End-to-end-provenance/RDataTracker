@@ -76,12 +76,12 @@ mathescape
 % (*@\textcolor{blue}{ddgdir <- paste(getwd(), "/ddg", sep="")}@*)
 
 \begin{document}
+\SweaveOpts{concordance=TRUE}
 
 \maketitle
 
 \newpage
 \tableofcontents
-\newpage
 \listoffigures
 \newpage
 
@@ -768,7 +768,6 @@ b <- 20
 \end{figure}
 
 Here a DDG error is generated ("In .ddg.insert.error.message(error.msg): Unable to evaluate b in call to ddg.data") but the R script continues to execute.
-
 \bigskip
 
 \begin{lstlisting}
