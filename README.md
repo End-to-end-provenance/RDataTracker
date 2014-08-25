@@ -103,7 +103,7 @@ Troubleshooting.
 **Please note:** Example scripts are shown in code boxes followed by the
 DDG as it is displayed in DDG Explorer.
 
-Console Sessions {#sec:console}
+Console Sessions 
 ----------------
 
 RDataTracker can be used to collect data provenance during R console
@@ -159,7 +159,7 @@ variables when calls are made to library functions. If the value of a
 variable is changed and you would like to record the earlier value, call
 **ddg.save** before the value is changed.
 
-Sourcing R Scripts {#sec:source}
+Sourcing R Scripts 
 ------------------
 
 RDataTracker can be used to collect data provenance while sourcing an R
@@ -240,7 +240,7 @@ binding of actual parameter **a** to **x**; while **ddg.return.value**
 in line 6 creates a data node for the return value of **f** which is
 then assigned to variable **b**.
 
-Select and Run {#sec:selectrun}
+Select and Run 
 --------------
 
 RDataTracker can be used to collect data provenance by annotating an R
@@ -316,7 +316,7 @@ Here **enable.console** in **ddg.init** is set to FALSE. Because the
 assignment statements in lines 8, 9, and 11 are not annotated, they are
 not captured in the DDG.
 
-Abstraction {#sec:abstraction}
+Abstraction 
 -----------
 
 Expandable and collapsible nodes, implemented through calls to
@@ -347,7 +347,7 @@ enclosed within collapsible start and finish nodes called
 **create.data.frame**, which in turn are enclosed within start and
 finish nodes for the script itself (**test.r**).
 
-Detailed Annotations {#sec:details}
+Detailed Annotations 
 --------------------
 
 The functions described in this section provide additional flexibility
@@ -583,7 +583,7 @@ DDG captures additional details, including the results of each iteration
 within collapsible **start** and **finish** nodes for the procedure
 **calc.sqr.root**.
 
-Checkpoint and Restore {#sec:checkpoint}
+Checkpoint and Restore 
 ----------------------
 
 A separate R script called **DDGCheckpoint.R** contains functions that
@@ -629,7 +629,7 @@ must be separately sourced.
 ![Checkpoint and
 Restore](vignettes/UsingRDataTracker-img/UsingRDataTracker-checkpoint.jpg?raw=TRUE)
 
-Troubleshooting {#sec:troubleshoot}
+Troubleshooting 
 ---------------
 
 Annotation errors are generally captured by RDataTracker and stored as
