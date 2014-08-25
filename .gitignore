@@ -55,13 +55,15 @@ _*
 *.lof
 vignettes/*.out
 vignettes/*.tex
-vignettes/*synctex.gz
+*synctex.gz
 vignettes/*.dvi
 *.toc
 
-# INCLUDE jpg file under vignettes
+# INCLUDE jpg file under vignettes and testDocs
 !vignettes/*/*.jpg
 !vignettes/*/*.png
+!testDocs/*/*.jpg
+!testDocs/*/*.png
 
 # INCLUDE .txt files under checkpoint test
 !examples/checkpointTest/*.txt
