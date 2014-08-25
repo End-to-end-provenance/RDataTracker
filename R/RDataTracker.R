@@ -364,7 +364,7 @@ ddg.MAX_HIST_LINES <- 2^14
 # value - input value.
 
 .ddg.is.object <- function(value){
-  return(is.object(value))
+  return(is.object(value) || is.environment(value))
 }
 
 # .ddg.is.function returns TRUE if the value is determined to be a
