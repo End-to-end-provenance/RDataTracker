@@ -73,7 +73,6 @@ mathescape
 
 \newpage
 \tableofcontents
-\newpage
 \listoffigures
 \newpage
 
@@ -93,7 +92,7 @@ In order to access the automatic testing system, the following steps need to be 
 \item Install the latest version of Apache Ant, or at least a version greater that 1.9.1. A working version can usually be found \href{http://ant.apache.org/bindownload.cgi}{here}.
 \item If on Windows, it is suggested that you add the Ant bin directory to the PATH variable. Instructions on how to do so can be found \href{http://www.computerhope.com/issues/ch000549.htm}{here}. Otherwise, the commands in the rest of the documentation will need to be modified to account for the fact that the \textbf{ant} command is not directly available at the command prompt.
 \end{enumerate}
-After the above steps, everything should be set-up to begin using the testing suite. Note that any R dependencies needed by the library will be automatically taken care of by the testing system. More information can be found in Section \ref{section:details}.
+After the above steps, everything should be set-up to begin using the testing suite. Note that any R dependencies needed by the library will be automatically taken care of by the testing system. More information can be found in Section \ref{sec:add_tests}.
 
 \section{Using the Testing System}
 Once the system has been set-up, the process of testing is relatively simple. In this section, we begin with small test cases and move on to the larger automatic test groups. However, it is likely only the largest automatic test groups will ever be executed as they are supersets of the smaller tests. 
@@ -165,7 +164,7 @@ The automatic regression testing system makes it possible to execute one single 
 </target>
 \end{lstlisting}
 
-The code above is explained in further detail in Section \ref{section:details}. However, all that needs to be noted here is the \textbf{target} \textit{name}, from now on referred to as NAME. With NAME known, this single test can be executed using the command:
+The code above is explained in further detail in Section \ref{sec:add_tests}. However, all that needs to be noted here is the \textbf{target} \textit{name}, from now on referred to as NAME. With NAME known, this single test can be executed using the command:
 
 \begin{lstlisting}
 ant -file test.xml NAME
@@ -201,7 +200,7 @@ The above code has two main components: (1) the target name and (2) the dependen
 As of the time of writing, the testing library is divided into a few main groups:
 \begin{enumerate}
 \item \textbf{console-tests} : tests which in some fashion or another heavily depend on the ability to automatically annotate scripts or which work under the assumption of running in an interactive console session. Most of these tests, when run, will normally produce non-informative results, except for when executed using the \textbf{source-test} attribute set as TRUE. For more information on doing this, see Section \ref{section:source_tests}.
-\item \textbf{source-tests} : tests which are dedicated to testing the important functionality of \textit{ddg.source}. For more information, see Section \ref{section:details}.
+\item \textbf{source-tests} : tests which are dedicated to testing the important functionality of \textit{ddg.source}. For more information, see Section \ref{sec:add_tests}.
 \item \textbf{script-tests} : test derived from real-world R scripts.
 \item \textbf{bug-tests} : tests created to test specific bugs previously encountered with the library and later fixed.
 \item \textbf{long-script-tests} : long tests derived from real-world scripts.
@@ -218,6 +217,7 @@ The main and most useful targets for testing are now explained. The testing syst
 \end{enumerate} 
 Again, all of the above targets can be executed with a command similar to that in Section \ref{section:single_test}.
 \subsection{Utilities}
+\label{sec:utilities}
 In addition to tests in the testing suite, two other tools are included to simplify the measurement of performance of the current version of the RDataTracker Library. 
 \begin{enumerate}
 \item \textbf{\textit{script-timer}} : this utility executes a set of scripts which have been set up to be timed as part of performance review for the currently installed version of the library.  The code used for this utility is entirely contained in the \textit{utilities} folder, with the command code located inside of \textit{script-timer.r}. For more detail, see Section \ref{section:utilities-detail}.\\\\
@@ -297,7 +297,21 @@ Some tests (such as the calculate square roots tests) use random numbers and so 
 Additionally, some tests, particularly those that create plots, may produce different 
 .out files depending on whether they are run on Mac or PC.
 
-\subsection{Evaluating Results}
+Since the source output is not exactly the same as what you get when running in 
+RStudio, it is good to manually test in RStudio at least occasionally.  Two longer
+tests that have saved expected results are in the Aaron directory.  There will be
+differences due to timestamps so a careful comparison is not possible, but you can at 
+least see that there are not large chunks missing or added and that it runs
+to completion.  Also, load the ddgs into DDG Explorer and check the error log
+at the bottom of the window to make sure there were no problems load the file.  
+  
+Run in RStudio by loading the file, selecting all and clicking Run:
+- Aaron/aaron-min-test.r - compare the ddg written to ddg-min/ddg.txt 
+  with expected\_minimal\_console\_ddg.tst
+- Aaron/aaron-annotated-test.r - compare the ddg written to ddg-min/ddg.txt 
+  with expected\_annotated\_console\_ddg.tst
+
+\subsection{Evaluating Test Results}
 \label{section:evaluate_results}
 The output of tests results is broken into two major categories:
 \begin{itemize}
@@ -356,7 +370,7 @@ ddg.txt file and the expected .out file.
 
 
 \subsection{Adding New Tests}
-\label{section:details}
+\label{sec:add_tests}
 
 Adding a new test case to the suite is a relatively simple process. 
 \begin{enumerate}
@@ -396,10 +410,53 @@ to
 
 \subsubsection{Sourcing Tests}
 \label{section:source_tests}
-TODO
+A major feature of RDataTracker is the ability to automatically created DDGs from current scripts. This feature relies on what is known as \textbf{ddg.source}. For this reason, the testing suite is capable of testing scripts by sourcing them with ddg.source. The code for this lies inside of the examples/sourceTest.r file, which is copied to the local directory of each test, with the tokens replaced, each time a source test is executed.\\
+
+The steps to update source tests are the same as those outlined in Section \ref{sec:update_tests}. The only difference is the file names. 
+
+\bigskip
+
+When a test script is set up to execute using ddg.source, it contains additional expected output files as well as ddg.txt files which \textbf{must} be named in the exact same way as the normal expected files but with the prefix of ``\textbf{source\_}'' (without the quotes). For example, for a non-source test we might have the files 
+\begin{lstlisting}
+expected_TEST.out
+expected_TEST_ddg.txt
+\end{lstlisting}
+If the test is modified to be run with \textbf{ddg.source}, we will also need the files
+\begin{lstlisting}
+source_expected_TEST.out
+source_expected_TEST_ddg.txt
+\end{lstlisting}
+Then, we simply need to modify the target for the test so that the "source\_test" parameter is true.
+\begin{lstlisting}
+<param name="source_test" value="true" />
+\end{lstlisting}
 
 \subsection{Adding Scripts to Utilities}
 \label{section:utilities-detail}
-TODO
+In addition to testing, as described in Section \ref{sec:utilities}, the testing suite is also capable of collecting data and generating a report on the performance of the current version of RDataTracker. However, this feature was added on later to the testing suite, and therefore, does not automatically test all current tests. Instead, one must add a test.
+
+\bigskip
+To add a test to the performance review section of the testing suite, only two files need to be created. It is recommended that these two files are created inside the folder of a current test script, or a new folder be created to hold the results.
+\begin{enumerate}
+\item A file with the pattern SCRIPTNAME-clean.r which contains a completely clean, unmodified version of the script to be timed.
+\item A file with the pattern template\_SCRIPTNAME-annotated.r which contains a fully instrumented version of the script to be timed. However, this script should contain no information about the initialization of the DDG or the saving of the DDG. All of this is added automatically later.
+\item Add any dependent libraries to examples/depends.r as instructed in Section \ref{sec:add_tests}.
+\end{enumerate}
+
+Once the two files above have been added, the target mentioned in Section \ref{sec:utilities} can be executed and successfully run. The added file will be automatically included in the results.
+
+\subsubsection{More Details}
+The timing system relies on the two files mentioned in Section \ref{section:utilities-detail}. It only requires two files because the minimal instrumentations are done automatically. The files which are executed and timed can be found in the localTimingScripts directory created within the folder containing the two aforementioned files.
+
+NOTE: The system looks for files with the ``-clean'' suffix to find scripts which need to be timed. If no file with the ``template\_'' prefix and ``-annotated''  suffix is found, then the results for the ``Annotated'' version of the script will be incorrect as a clean version of the script is executed instead. 
+
+\newpage
+
+\section{Future Work}
+\begin{itemize}
+\item Tie the correctness and performance functionalities of the testing system together. It should be the case that scripts are only timed after they have been checked for correctness.
+\item Additionally, it should be possible to time all current tests cases.
+\item Modify the graph group PDFs (see Figure \ref{fig:group_report}) so that the formatting is always correct, no matter the number of scripts or the length of the script names.
+\end{itemize}
 
 \end{document}
