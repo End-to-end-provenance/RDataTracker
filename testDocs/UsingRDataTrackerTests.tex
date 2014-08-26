@@ -457,6 +457,7 @@ NOTE: The system looks for files with the ``-clean'' suffix to find scripts whic
 \item Tie the correctness and performance functionalities of the testing system together. It should be the case that scripts are only timed after they have been checked for correctness.
 \item Additionally, it should be possible to time all current tests cases.
 \item Modify the graph group PDFs (see Figure \ref{fig:group_report}) so that the formatting is always correct, no matter the number of scripts or the length of the script names.
+\item Fix the issue with console mode tests. Long scripts generate the correct ddg, but all data values are set to NULL. I believe this is an issue relating to the environment in which the script is executed.
 \end{itemize}
 
 \end{document}
