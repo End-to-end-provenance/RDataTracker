@@ -76,12 +76,12 @@ mathescape
 % (*@\textcolor{blue}{ddgdir <- paste(getwd(), "/ddg", sep="")}@*)
 
 \begin{document}
+\SweaveOpts{concordance=TRUE}
 
 \maketitle
 
 \newpage
 \tableofcontents
-\newpage
 \listoffigures
 \newpage
 
@@ -148,7 +148,8 @@ If you like to select and run R scripts, see \ref{sec:selectrun} Select and Run.
 
 For information on how to create abstraction levels, see \ref{sec:abstraction} Abstraction.\\
 For information on individual functions, see \ref{sec:details} Detailed Annotations.\\
-For information on checkpoint and restore, see \ref{sec:checkpoint} Checkpoint and Restore.
+For information on checkpoint and restore, see \ref{sec:checkpoint} Checkpoint and Restore.\\
+For information on snapshots for S4 classes, see \ref{sec:classes} S4 Classes.
 
 \bigskip
 
@@ -259,8 +260,8 @@ Note that many library commands can accept as input either a name or a value. So
 \bigskip
 
 \begin{lstlisting}
-r.script.path <- "test.r"
-ddg.run(r.script.path)
+> r.script.path <- "test.r"
+> ddg.run(r.script.path)
 \end{lstlisting}
 
 \textbf{ddg.run} initializes and saves the DDG so there is no need for the user to do this. Because console mode is enabled, RDataTracker creates procedure nodes for each top-level assignment statement along with the corresponding data nodes. Since \textbf{ddg.run} does not rely on the R history file, intermediate data values are saved in the DDG.
@@ -321,8 +322,6 @@ b <- f(a)
 
 ddg.save()
 \end{lstlisting}
-
-Here is the resulting DDG as displayed in DDG Explorer:
 
 \begin{figure}
 \caption{Select and Run in Console Mode}
@@ -698,17 +697,50 @@ Note that the DDGCheckpoint.R file is not included in RDataTracker and must be s
 \end{center}
 \end{figure}
 
-\subsection{Troubleshooting}
-\label{sec:troubleshoot}
+\subsection{S4 Classes}
+\label{sec:classes}
+
+To save S4 objects in snapshot files, create an as.character generic for the object. For example, if the object is defined as:
 
 \bigskip
+
+\begin{lstlisting}
+setClass("SampleObj",
+slots = c(
+sampleCode = "integer", 
+nIndividuals = "integer", 
+areaCode = "integer"))
+\end{lstlisting}    
+
+The as.character generic might be defined as:
+
+\bigskip
+
+\begin{lstlisting}
+as.character.SampleObj <- function(x) {
+str <- paste("sampleCode =", x@sampleCode, "\n")
+str <- paste(str, "nIndividuals =", x@nIndividuals, "\n")
+str <- paste(str, "areaCode =", x@areaCode, "\n")
+return(str)
+}
+\end{lstlisting}    
+
+To limit the size of snapshots (i.e. to set \textbf{max.snapshot.size} to a value other than 0 or -1 in \textbf{ddg.run} or \textbf{ddg.init}), define a function for the head generic:
+
+\bigskip
+
+\begin{lstlisting}
+head.SampleObj <- function(x) {...}
+\end{lstlisting}    
+
+\subsection{Troubleshooting}
+\label{sec:troubleshoot}
 
 Annotation errors are generally captured by RDataTracker and stored as error nodes in the DDG. The same is true for error messages from the R interpreter if an R script is executed with \textbf{ddg.run}. These features may be useful for troubleshooting the original script and the associated annotations.
 
 \bigskip
 
 The \textbf{ddg.debug.on} and \textbf{ddd.debug.off} functions may be used in an R script or at the console to turn debugging on and off. Debugging is off by default. When debugging is turned on, details related to creation of the DDG are displayed in the console as the script executes.
-
 
 \bigskip
 
@@ -735,9 +767,7 @@ b <- 20
 \end{center}
 \end{figure}
 
-
 Here a DDG error is generated ("In .ddg.insert.error.message(error.msg): Unable to evaluate b in call to ddg.data") but the R script continues to execute.
-
 \bigskip
 
 \begin{lstlisting}
@@ -779,8 +809,6 @@ RDataTracker maintains internal tables of data nodes, procedural nodes, and func
 \bigskip
 
 \textbf{S3 objects and reference classes}. RDataTracker has not been tested with S3 objects or reference classes.
-
-\newpage
 
 \section{Acknowledgements}
 

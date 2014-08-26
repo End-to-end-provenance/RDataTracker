@@ -64,7 +64,7 @@ setInitialVal <- function(wd, base=test.dir){
 ### Function which returns the appropriate set of commands to get the history from
 # this point until the last point it was obtained
 .grabHistory <- function(scriptPath = NULL){
-  if (is.null(scriptPath)) return("ddg.grabhistory()")
+  if (is.null(scriptPath)) return("ddg.save()")
   else return(paste(.endHistory(scriptPath), .startHistory(scriptPath), sep="\n"))
 }
 
