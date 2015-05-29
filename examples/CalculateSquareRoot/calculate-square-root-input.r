@@ -56,6 +56,7 @@ INPUT <- function(message) {
     dispose(w)
   })
   visible(w, set=TRUE)
+  if (is.na(CHOICE)) return("q")
   return(CHOICE)
 }
 
