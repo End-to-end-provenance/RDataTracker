@@ -22,6 +22,7 @@
 \title{Using RDataTracker}
 
 \author{
+<<<<<<< HEAD
         Emery R. Boose\\
         Harvard Forest\\
         Harvard University\\
@@ -33,6 +34,19 @@
         Mount Holyoke College\\
 	    50 College St, South Hadley, MA 01075\\
         blerner@mtholyoke.edu\\
+=======
+	Emery R. Boose\\
+	Harvard Forest\\
+	Harvard University\\
+	324 North Main St, Petersham, MA 01366\\
+	boose@fas.harvard.edu\\
+	\and
+	Barbara S. Lerner\\
+	Department of Computer Science\\
+	Mount Holyoke College\\
+	50 College St, South Hadley, MA 01075\\
+	blerner@mtholyoke.edu\\
+>>>>>>> 72ed330f48a5cb331dcfce30a30aabdb2061edac
 	\and
 	Luis Antonio Perez, Harvard College\\
 }
@@ -80,7 +94,6 @@ mathescape
 % (*@\textcolor{blue}{ddgdir <- paste(getwd(), "/ddg", sep="")}@*)
 
 \begin{document}
-\SweaveOpts{concordance=TRUE}
 
 \maketitle
 
@@ -773,6 +786,7 @@ b <- 20
 \end{figure}
 
 Here a DDG error is generated ("In .ddg.insert.error.message(error.msg): Unable to evaluate b in call to ddg.data") but the R script continues to execute.
+
 \bigskip
 
 \begin{lstlisting}
