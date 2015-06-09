@@ -141,7 +141,9 @@ ddg.MAX_HIST_LINES <- 2^14
   .ddg.set("ddg.proc.nodes", data.frame(ddg.type = character(size),
           ddg.num = numeric(size),
           ddg.name = character(size),
-          ddg.value = character(size), stringsAsFactors=FALSE))
+          ddg.value = character(size), 
+          ddg.return.linked = logical(size),
+          stringsAsFactors=FALSE))
   
   .ddg.set("ddg.data.nodes", data.frame(ddg.type = character(size),
           ddg.num = numeric(size),
@@ -508,7 +510,9 @@ ddg.MAX_HIST_LINES <- 2^14
     new.rows <- data.frame(ddg.type = character(size),
         ddg.num = numeric(size),
         ddg.name = character(size),
-        ddg.value = character(size), stringsAsFactors=FALSE)
+        ddg.value = character(size), 
+        ddg.return.linked = logical(size),
+        stringsAsFactors=FALSE)
     .ddg.add.rows("ddg.proc.nodes", new.rows)
     ddg.proc.nodes <- .ddg.proc.nodes()
   }
@@ -600,14 +604,22 @@ ddg.MAX_HIST_LINES <- 2^14
 # zero if no match is found.
 
 # pname - name of procedure node.
+# find.unreturned.function - if true, only return the number if the
+#    procedure has not previously been linked to a return value
 
-.ddg.proc.number <- function(pname) {
+.ddg.proc.number <- function(pname, find.unreturned.function=FALSE) {
   ddg.proc.nodes <- .ddg.proc.nodes()
   rows <- nrow(ddg.proc.nodes)
   for (i in rows:1) {
     type <- ddg.proc.nodes$ddg.type[i]
     if (.ddg.is.proc.node(type) & ddg.proc.nodes$ddg.name[i] == pname) {
-      return(ddg.proc.nodes$ddg.num[i])
+      if (!find.unreturned.function) {
+        return(ddg.proc.nodes$ddg.num[i])
+      }
+      
+      if (find.unreturned.function & !ddg.proc.nodes$ddg.return.linked[i]) {
+        return(ddg.proc.nodes$ddg.num[i])
+      }
     }
   }
   
@@ -746,15 +758,25 @@ ddg.MAX_HIST_LINES <- 2^14
 # pname - procedure node name.
 # dname - data node name.
 # dscope (optional) - data node scope.
+# return.value (optiona) - if true it means we are linking to a return value.
+#    In this case, we need to be sure that there is not already a return value
+#    linked.  This is necessary to manage recursive functions correctly.
 
-.ddg.proc2data <- function(pname, dname, dscope=NULL) {
+.ddg.proc2data <- function(pname, dname, dscope=NULL, return.value=FALSE) {
   # Get data & procedure numbers.
   dn <- .ddg.data.number(dname, dscope)
-  pn <- .ddg.proc.number(pname)
+  pn <- .ddg.proc.number(pname, find.unreturned.function=TRUE)
   
   # Create data flow edge from procedure node to data node.
   if (dn != 0 && pn != 0) {
     .ddg.append("DF p", pn, " d", dn, "\n", sep="")
+    
+    # Record that the function is linked to a return value.  This
+    # is necessary for recursive functions to get linked to their
+    # return values correctly.
+    ddg.proc.nodes <- .ddg.proc.nodes()
+    ddg.proc.nodes$ddg.return.linked[pn] <- TRUE
+    .ddg.set("ddg.proc.nodes", ddg.proc.nodes)
     
     if (.ddg.debug()) {
       print(paste("proc2data: ", pname, " ", dname, sep=""))
@@ -2973,7 +2995,7 @@ ddg.return.value <- function (expr=NULL) {
   .ddg.save.data(return.node.name, expr, fname="ddg.return", scope=return.node.scope)
   
   # Create an edge from the function to its return value.
-  .ddg.proc2data(pname, return.node.name, return.node.scope)
+  .ddg.proc2data(pname, return.node.name, return.node.scope, return.value=TRUE)
   
   # Update the table.
   ddg.num.returns <- ddg.num.returns + 1

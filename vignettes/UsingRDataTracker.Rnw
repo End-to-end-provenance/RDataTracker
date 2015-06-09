@@ -25,15 +25,19 @@
         Emery R. Boose\\
         Harvard Forest\\
         Harvard University\\
+	    324 North Main St, Petersham, MA 01366\\
         boose@fas.harvard.edu\\
 			\and
         Barbara S. Lerner\\
         Computer Science Department\\
         Mount Holyoke College\\
+	    50 College St, South Hadley, MA 01075\\
         blerner@mtholyoke.edu\\
+	\and
+	Luis Antonio Perez, Harvard College\\
 }
 
-\date{\today}
+\date{\today\\Version 1}
 
 % Pagestyle
 \setlength{\headheight}{15pt}
@@ -82,6 +86,7 @@ mathescape
 
 \newpage
 \tableofcontents
+\newpage
 \listoffigures
 \newpage
 
@@ -700,32 +705,32 @@ Note that the DDGCheckpoint.R file is not included in RDataTracker and must be s
 \subsection{S4 Classes}
 \label{sec:classes}
 
-To save S4 objects in snapshot files, create an as.character generic for the object. For example, if the object is defined as:
+To save S4 objects in snapshot files, create a method implementing the as.character generic for the class. For example, if the object is defined as:
 
 \bigskip
 
 \begin{lstlisting}
 setClass("SampleObj",
-slots = c(
-sampleCode = "integer", 
-nIndividuals = "integer", 
-areaCode = "integer"))
+    slots = c(
+        sampleCode = "integer", 
+        nIndividuals = "integer", 
+        areaCode = "integer"))
 \end{lstlisting}    
 
-The as.character generic might be defined as:
+The as.character method might be defined as:
 
 \bigskip
 
 \begin{lstlisting}
 as.character.SampleObj <- function(x) {
-str <- paste("sampleCode =", x@sampleCode, "\n")
-str <- paste(str, "nIndividuals =", x@nIndividuals, "\n")
-str <- paste(str, "areaCode =", x@areaCode, "\n")
-return(str)
+    str <- paste("sampleCode =", x@sampleCode, "\n")
+    str <- paste(str, "nIndividuals =", x@nIndividuals, "\n")
+    str <- paste(str, "areaCode =", x@areaCode, "\n")
+    return(str)
 }
 \end{lstlisting}    
 
-To limit the size of snapshots (i.e. to set \textbf{max.snapshot.size} to a value other than 0 or -1 in \textbf{ddg.run} or \textbf{ddg.init}), define a function for the head generic:
+To limit the size of snapshots (i.e. to set \textbf{max.snapshot.size} to a value other than 0 or -1 in \textbf{ddg.run} or \textbf{ddg.init}), define a method for the head generic:
 
 \bigskip
 

@@ -713,8 +713,9 @@ Known Issues
 Windows does not work correctly. A workaround was devised to create our
 own timestamps in such cases.
 
-**Return nodes in recursive functions**. Return nodes may link to the
-wrong function node within recursive functions.
+**Return nodes in recursive functions**. If the recursive function does not 
+explicitly call ddg.function, values recorded with ddg.return.value will not
+get linked in correctly.
 
 **S3 objects and reference classes**. RDataTracker has not been tested
 with S3 objects or reference classes.

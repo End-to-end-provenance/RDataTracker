@@ -51,6 +51,7 @@ INPUT <- function(message) {
   })
   visible(w, set=TRUE)
   
+  if (is.na(CHOICE)) return("q")
   return(CHOICE)
 }
 
