@@ -531,7 +531,18 @@
     </antcall>
   </target> 
 
-  <target name="bug-tests" depends="ddg-changes-behavior-test, ddg-hang-test,scoping-error-test, simple-test" >
+  <target name="env-test">
+	<antcall target="run-test">
+	  <param name="dir" value="examples/EnvTest"/>
+	  <param name="out" value="examples/EnvTest/EnvTest.out"/>
+	  <param name="script-file" value="EnvTest.R"/>
+	  <param name="expected_out" value="examples/EnvTest/expected.out"/>
+	  <param name="expected_ddg" value="examples/EnvTest/expected_ddg.txt"/>
+	  <param name="source_test" value="false" />
+	</antcall>
+  </target> 
+
+  <target name="bug-tests" depends="ddg-changes-behavior-test, ddg-hang-test,scoping-error-test, simple-test, env-test" >
     <echo>Tests which were added to check for specific bug fixes </echo>
   </target>
 

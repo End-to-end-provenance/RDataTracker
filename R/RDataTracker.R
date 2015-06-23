@@ -608,24 +608,33 @@ ddg.MAX_HIST_LINES <- 2^14
 #    procedure has not previously been linked to a return value
 
 .ddg.proc.number <- function(pname, find.unreturned.function=FALSE) {
+  #print (paste0("Looking for function ", pname))
   ddg.proc.nodes <- .ddg.proc.nodes()
   rows <- nrow(ddg.proc.nodes)
   for (i in rows:1) {
     type <- ddg.proc.nodes$ddg.type[i]
     if (.ddg.is.proc.node(type) & ddg.proc.nodes$ddg.name[i] == pname) {
+      #print (paste0("Found a matching function for ", pname))
       if (!find.unreturned.function) {
+        #print (paste0("Returning ", ddg.proc.nodes$ddg.num[i]))
+        #print (sys.calls())
         return(ddg.proc.nodes$ddg.num[i])
       }
       
       if (find.unreturned.function & !ddg.proc.nodes$ddg.return.linked[i]) {
+        #print (paste0("Returning ", ddg.proc.nodes$ddg.num[i]))
+        #print (sys.calls())
         return(ddg.proc.nodes$ddg.num[i])
       }
     }
   }
   
   # Error message if no match is found.
+  #print ("Returning error!")
+  #print (sys.calls())
   error.msg <- paste("No procedure node found for", pname)
   .ddg.insert.error.message(error.msg)  
+  #stop()
   return(0)
 }
 
@@ -765,7 +774,8 @@ ddg.MAX_HIST_LINES <- 2^14
 .ddg.proc2data <- function(pname, dname, dscope=NULL, return.value=FALSE) {
   # Get data & procedure numbers.
   dn <- .ddg.data.number(dname, dscope)
-  pn <- .ddg.proc.number(pname, find.unreturned.function=TRUE)
+  #pn <- .ddg.proc.number(pname, find.unreturned.function=TRUE)
+  pn <- .ddg.proc.number(pname, return.value)
   
   # Create data flow edge from procedure node to data node.
   if (dn != 0 && pn != 0) {
@@ -774,9 +784,11 @@ ddg.MAX_HIST_LINES <- 2^14
     # Record that the function is linked to a return value.  This
     # is necessary for recursive functions to get linked to their
     # return values correctly.
-    ddg.proc.nodes <- .ddg.proc.nodes()
-    ddg.proc.nodes$ddg.return.linked[pn] <- TRUE
-    .ddg.set("ddg.proc.nodes", ddg.proc.nodes)
+    if (return.value) {
+      ddg.proc.nodes <- .ddg.proc.nodes()
+      ddg.proc.nodes$ddg.return.linked[pn] <- TRUE
+      .ddg.set("ddg.proc.nodes", ddg.proc.nodes)
+    }
     
     if (.ddg.debug()) {
       print(paste("proc2data: ", pname, " ", dname, sep=""))
@@ -2252,6 +2264,13 @@ ddg.MAX_HIST_LINES <- 2^14
   
   # Get file name.
   ddg.dnum <- .ddg.dnum()
+  
+  # If the object is an environment, update the data to be the environment's name
+  # followed by a list of the variables bound in the environment
+  if (is.environment (data)) {
+    envHeader <- paste0 ("<environemnt: ", environmentName (data), ">")
+    data <- c (envHeader, ls(data), recursive=TRUE)
+  }
   
   # object.size returns bytes, but max.snapshot.size is in kilobytes
   if (max.snapshot.size == -1 || object.size(data) < max.snapshot.size * 1024) {
