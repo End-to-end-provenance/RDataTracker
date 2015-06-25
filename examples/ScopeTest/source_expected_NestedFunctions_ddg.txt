@@ -1,0 +1,94 @@
+Architecture="x86_64"
+OperatingSystem="unix"
+Language="R"
+LanguageVersion="R version 3.1.2 (2014-10-31)"
+RDataTrackerVersion="1.2"
+Script="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/ScopeTest/NestedFunctions.R"
+ProcessFileTimestamp="2015-06-25T14.46.19EDT"
+WorkingDirectory="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/ScopeTest"
+DDGDirectory="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/ScopeTest/ddg-source"
+DateTime="2015-06-25T14.46.29EDT"
+18
+Operation p1 "1-f <- function(aa, bb) {    ddg.function()    retValue <- f2(" Value="f <- function(aa, bb) {    ddg.function()    retValue <- f2(" Time="2015-06-25T14.46.29EDT";
+Data d1 "1-f" Value="#ddg.function";
+DF p1 d1
+Operation p2 "2-f2 <- function(p_a) {    ddg.function()    retValue <- f3(p_" Value="f2 <- function(p_a) {    ddg.function()    retValue <- f3(p_" Time="2015-06-25T14.46.29EDT";
+CF p1 p2
+Data d2 "2-f2" Value="#ddg.function";
+DF p2 d2
+Operation p3 "3-f3 <- function(x) {    return(ddg.return.value(x + 1))}" Value="f3 <- function(x) {    return(ddg.return.value(x + 1))}" Time="2015-06-25T14.46.29EDT";
+CF p2 p3
+Data d3 "3-f3" Value="#ddg.function";
+DF p3 d3
+Operation p4 "4-a <- 1" Value="a <- 1" Time="2015-06-25T14.46.29EDT";
+CF p3 p4
+Data d4 "4-a" Value="1";
+DF p4 d4
+Operation p5 "5-b <- 2" Value="b <- 2" Time="2015-06-25T14.46.29EDT";
+CF p4 p5
+Data d5 "5-b" Value="2";
+DF p5 d5
+Start p6 "6-d <- f(a, b)" Value="d <- f(a, b)" Time="2015-06-25T14.46.29EDT";
+CF p5 p6
+Binding p7 "7-aa  <-  a" Time="2015-06-25T14.46.29EDT"
+CF p6 p7
+DF d4 p7
+Data d6 "6-aa" Value="1";
+DF p7 d6
+Binding p8 "8-bb  <-  b" Time="2015-06-25T14.46.29EDT"
+CF p7 p8
+DF d5 p8
+Data d7 "7-bb" Value="2";
+DF p8 d7
+Operation p9 "9-f" Value="f" Time="2015-06-25T14.46.29EDT";
+DF d6 p9
+DF d7 p9
+CF p8 p9
+Binding p10 "10-p_a  <-  aa" Time="2015-06-25T14.46.29EDT"
+CF p9 p10
+DF d6 p10
+Data d8 "8-p_a" Value="1";
+DF p10 d8
+Operation p11 "11-f2" Value="f2" Time="2015-06-25T14.46.29EDT";
+DF d8 p11
+CF p10 p11
+Binding p12 "12-x  <-  p_a" Time="2015-06-25T14.46.29EDT"
+CF p11 p12
+DF d8 p12
+Data d9 "9-x" Value="1";
+DF p12 d9
+Operation p13 "13-f3" Value="f3" Time="2015-06-25T14.46.29EDT";
+DF d9 p13
+CF p12 p13
+Data d10 "10-f3(p_a) return" Value="2";
+DF p13 d10
+Data d11 "11-f2(aa) return" Value="2";
+DF p11 d11
+Binding p14 "14-p_a  <-  bb" Time="2015-06-25T14.46.29EDT"
+CF p13 p14
+DF d7 p14
+Data d12 "12-p_a" Value="2";
+DF p14 d12
+Operation p15 "15-f2" Value="f2" Time="2015-06-25T14.46.29EDT";
+DF d12 p15
+CF p14 p15
+Binding p16 "16-x  <-  p_a" Time="2015-06-25T14.46.29EDT"
+CF p15 p16
+DF d12 p16
+Data d13 "13-x" Value="2";
+DF p16 d13
+Operation p17 "17-f3" Value="f3" Time="2015-06-25T14.46.29EDT";
+DF d13 p17
+CF p16 p17
+Data d14 "14-f3(p_a) return" Value="3";
+DF p17 d14
+Data d15 "15-f2(bb) return" Value="3";
+DF p15 d15
+Data d16 "16-f(a,b) return" Value="5";
+DF p9 d16
+Finish p18 "18-d <- f(a, b)" Value="d <- f(a, b)" Time="2015-06-25T14.46.29EDT";
+CF p17 p18
+DF d16 p18
+Data d17 "17-d" Value="5";
+DF p18 d17
+

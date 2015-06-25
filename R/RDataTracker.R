@@ -591,7 +591,7 @@ ddg.MAX_HIST_LINES <- 2^14
   rows <- nrow(ddg.proc.nodes)
   for (i in rows:1) {
     type <- ddg.proc.nodes$ddg.type[i]
-    if (.ddg.is.proc.node(type) & ddg.proc.nodes$ddg.name[i] == pname) {
+    if (.ddg.is.proc.node(type) & ddg.proc.nodes$ddg.name[i] == pname & !ddg.proc.nodes$ddg.return.linked[i]) {
       return(TRUE)
     }
   }
@@ -613,6 +613,7 @@ ddg.MAX_HIST_LINES <- 2^14
   rows <- nrow(ddg.proc.nodes)
   for (i in rows:1) {
     type <- ddg.proc.nodes$ddg.type[i]
+    #print (paste("Found proc node: ", ddg.proc.nodes$ddg.name[i]))
     if (.ddg.is.proc.node(type) & ddg.proc.nodes$ddg.name[i] == pname) {
       #print (paste0("Found a matching function for ", pname))
       if (!find.unreturned.function) {
@@ -786,6 +787,8 @@ ddg.MAX_HIST_LINES <- 2^14
     # return values correctly.
     if (return.value) {
       ddg.proc.nodes <- .ddg.proc.nodes()
+      #print ("Marking return value as being used")
+      #sys.calls()
       ddg.proc.nodes$ddg.return.linked[pn] <- TRUE
       .ddg.set("ddg.proc.nodes", ddg.proc.nodes)
     }

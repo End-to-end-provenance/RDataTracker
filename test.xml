@@ -336,6 +336,17 @@
 	    </antcall>
 	  </target>
 
+	  <target name="nested-func-test">
+	    <antcall target="run-test">
+	      <param name="dir" value="examples/ScopeTest"/>
+	      <param name="out" value="examples/ScopeTest/NestedFunctions.out"/>
+	      <param name="script-file" value="NestedFunctions.R"/>
+	      <param name="expected_out" value="examples/ScopeTest/expected_NestedFunctions.out"/>
+	      <param name="expected_ddg" value="examples/ScopeTest/expected_NestedFunctions_ddg.txt"/>
+		  <param name="source_test" value="true" />
+	    </antcall>
+	  </target>
+
 	  <target name="eval-test">
 	    <antcall target="run-test">
 	      <param name="dir" value="examples/EvalTest"/>
@@ -380,7 +391,7 @@
     </antcall>
   </target>
 
-  <target name="console-tests" depends="console-test-1, console-test-2, MismatchedStartFinishBug-test, null-na-test, consoleEdgeCases-test, scope-test, return-test, eval-test, eval-source-test, eval2-test">
+  <target name="console-tests" depends="console-test-1, console-test-2, MismatchedStartFinishBug-test, null-na-test, consoleEdgeCases-test, scope-test, return-test, nested-func-test, eval-test, eval-source-test, eval2-test">
     <echo>These automated tests are limited when in console mode. You can always manually check the ouput using diff and the provided expected output files for each script. Do note, however, that all of the tests have also been evaluated using ddg.source, which does in fact capture console commands.</echo>
   </target>
   <!--########################## End Console TESTS ##########################-->

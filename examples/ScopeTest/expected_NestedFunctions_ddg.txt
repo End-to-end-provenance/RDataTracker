@@ -1,0 +1,65 @@
+Architecture="x86_64"
+OperatingSystem="unix"
+Language="R"
+LanguageVersion="R version 3.1.2 (2014-10-31)"
+RDataTrackerVersion="1.2"
+Script="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/ScopeTest/NestedFunctions.R"
+ProcessFileTimestamp="2015-06-25T13.53.33EDT"
+WorkingDirectory="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/ScopeTest"
+DDGDirectory="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples/ScopeTest/ddg"
+DateTime="2015-06-25T14.25.48EDT"
+11
+Binding p1 "1-aa  <-  a" Time="2015-06-25T14.25.48EDT"
+Data d1 "1-aa" Value="1";
+DF p1 d1
+Binding p2 "2-bb  <-  b" Time="2015-06-25T14.25.48EDT"
+CF p1 p2
+Data d2 "2-bb" Value="2";
+DF p2 d2
+Operation p3 "3-f" Value="f" Time="2015-06-25T14.25.48EDT";
+DF d1 p3
+DF d2 p3
+CF p2 p3
+Binding p4 "4-p_a  <-  aa" Time="2015-06-25T14.25.48EDT"
+CF p3 p4
+DF d1 p4
+Data d3 "3-p_a" Value="1";
+DF p4 d3
+Operation p5 "5-f2" Value="f2" Time="2015-06-25T14.25.48EDT";
+DF d3 p5
+CF p4 p5
+Binding p6 "6-x  <-  p_a" Time="2015-06-25T14.25.48EDT"
+CF p5 p6
+DF d3 p6
+Data d4 "4-x" Value="1";
+DF p6 d4
+Operation p7 "7-f3" Value="f3" Time="2015-06-25T14.25.48EDT";
+DF d4 p7
+CF p6 p7
+Data d5 "5-f3(p_a) return" Value="2";
+DF p7 d5
+Data d6 "6-f2(aa) return" Value="2";
+DF p5 d6
+Binding p8 "8-p_a  <-  bb" Time="2015-06-25T14.25.48EDT"
+CF p7 p8
+DF d2 p8
+Data d7 "7-p_a" Value="2";
+DF p8 d7
+Operation p9 "9-f2" Value="f2" Time="2015-06-25T14.25.48EDT";
+DF d7 p9
+CF p8 p9
+Binding p10 "10-x  <-  p_a" Time="2015-06-25T14.25.48EDT"
+CF p9 p10
+DF d7 p10
+Data d8 "8-x" Value="2";
+DF p10 d8
+Operation p11 "11-f3" Value="f3" Time="2015-06-25T14.25.48EDT";
+DF d8 p11
+CF p10 p11
+Data d9 "9-f3(p_a) return" Value="3";
+DF p11 d9
+Data d10 "10-f2(bb) return" Value="3";
+DF p9 d10
+Data d11 "11-f(a,b) return" Value="5";
+DF p3 d11
+
