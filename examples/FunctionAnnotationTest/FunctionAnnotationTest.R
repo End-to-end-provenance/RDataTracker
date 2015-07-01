@@ -1,9 +1,11 @@
 # It assumes the caller has already found the function text.  When integrated into RDataTracker, it is much more likely that we would have the parsed function.
 # It does not add the ddg.return.value calls yet.
 
-source (("/Users/blerner/Documents/Process/DataProvenance/RDataTracker-7.R"))
-ddg.run("FunctionAnnotationTest.R")
+#library("RDataTracker")
+#source (("/Users/blerner/Documents/Process/DataProvenance/RDataTracker-9.R"))
+#ddg.run("FunctionAnnotationTest.R")
 
+options(warn=2)
 f1 <- function () { 
   a <-1
   b <- 2 
@@ -41,8 +43,12 @@ f9 <- function(x) {
   return(2*return(x^2)) 
 }
 
+f10 <- function(x) {
+  if (x > 0) return (x + 1)
+}
+
 x <- 2:6
-lapply (x, function(num) num+1)
+lapply (x, function(num) {ddg.function(); ddg.return.value(num+1)})
 
 insert.ddg.function <- function (function.text) {
   print ("Original function")
@@ -202,6 +208,63 @@ replace.return.statement <- function (func.def, return.stmts) {
   return (func.text)
 }
 
+# Find the last statement of a function.  
+# function.parsed should be a parse tree for a function definition.
+find.last.statement <- function (function.parsed) {
+  # Get the expression that corresponds to the body of the function
+  function.body <- function.parsed[[3]]
+  
+  # Check to see if the function body is a block
+  if (function.body[[1]] == "{") {
+    # Return the last statement in the block.
+    pos <- length (function.body)
+    return (function.body[[pos]])
+  }
+  
+  # Not a block.  Return the single statement that is the body.
+  else {
+    return (function.body)
+  }
+}
+
+wrap.last.statement <- function (function.parsed) {
+  # Get the parameters
+  params <- function.parsed[[2]]
+  
+  # Get the expression that corresponds to the body of the function
+  function.body <- function.parsed[[3]]
+  
+  # Check to see if the function body is a block
+  if (function.body[[1]] == "{") {
+    pos <- length (function.body)
+    
+    # If the function body contains a single statement, wrap that statement
+    # and reconstruct the function.
+    if (pos == 2) {
+      last.statement <- function.body[[pos]]
+      wrapped.statement <- call ("ddg.return.value", last.statement)
+      new.function.body <- call ("{", wrapped.statement)
+      return (call ("function", params, new.function.body))
+    }
+    
+    # If the function body contains more than one statement, find the
+    # last statement, wrap that and reconstruct the call.
+    else {
+      last.statement <- function.body[[pos]]
+      wrapped.statement <- call ("ddg.return.value", last.statement)
+      new.statements <- c(as.list(function.body[2:pos-1]), wrapped.statement)
+      return (call ("function", params, as.call(new.statements)))
+    }
+  }
+  
+  # Not a block.  Wrap the single statement that is the body and
+  # reconstruct the call.
+  else {
+    wrapped.statement <- call ("ddg.return.value", function.body)
+    return (call ("function", params, wrapped.statement))
+  }
+}
+
 #replace.return.statements <- function (obj) {
   # Base case.
 #  if (!is.recursive(obj)) return(obj)
@@ -264,6 +327,17 @@ find.function.definitions(parse (text="x <- 1"))
 find.function.definitions(parse (text="lapply (x, function(num) num+1)"))
 find.function.definitions(parse (text="lapply (x, function(num) num+1)"))
 
+wrap.last.statement(parse (text=deparse(f1))[[1]])
+wrap.last.statement(parse (text=deparse(f2))[[1]])
+wrap.last.statement(parse (text=deparse(f3))[[1]])
+wrap.last.statement(parse (text=deparse(f4))[[1]])
+wrap.last.statement(parse (text=deparse(f5))[[1]])
+wrap.last.statement(parse (text=deparse(f6))[[1]])
+wrap.last.statement(parse (text=deparse(f7))[[1]])
+wrap.last.statement(parse (text=deparse(f8))[[1]])
+wrap.last.statement(parse (text=deparse(f9))[[1]])
+wrap.last.statement(parse (text=deparse(f10))[[1]])
+
 # Works
 # Find all the functions defined in a file
 defs <- find.function.definitions(parse ("FunctionAnnotationTest.R"))
@@ -274,4 +348,5 @@ returns <- lapply (defs, find.return.calls)
 # Sample call that updates all the return calls of one function.
 replace.return.statement (defs[[9]], returns[[9]])
 
-
+# Find last statement of each function
+lapply (defs, find.last.statement)

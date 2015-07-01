@@ -613,7 +613,9 @@ ddg.MAX_HIST_LINES <- 2^14
   rows <- nrow(ddg.proc.nodes)
   for (i in rows:1) {
     type <- ddg.proc.nodes$ddg.type[i]
-    #print (paste("Found proc node: ", ddg.proc.nodes$ddg.name[i]))
+    #if (ddg.proc.nodes$ddg.name[i] != "") {
+    #  print (paste("Found proc node: ", ddg.proc.nodes$ddg.name[i]))
+    #}
     if (.ddg.is.proc.node(type) & ddg.proc.nodes$ddg.name[i] == pname) {
       #print (paste0("Found a matching function for ", pname))
       if (!find.unreturned.function) {
@@ -2981,7 +2983,10 @@ ddg.return.value <- function (expr=NULL) {
   
   # Prints the call & arguments.
   if (.ddg.debug()) {
-    print(paste("ddg.return:", sys.call(-1), "returns", expr))
+    # expr forces evaluation of the function early.  I think that causes some 
+    # examples to work with debugging on but not off.  Checking.  (6/26/2015 - Barb)
+    # Yes, ReturnTest.R fails on the recursive f5 function 
+    print(paste("ddg.return:", sys.call(-1))) #, "returns", expr))
   }
   
   ddg.return.values <- .ddg.get(".ddg.return.values")
@@ -2998,9 +3003,11 @@ ddg.return.value <- function (expr=NULL) {
   
   # If ddg.function was not called, create the function
   # nodes that it would have created.
+  #print (paste0("ddg.return.value looking for function node for ", pname))
+  
   if (!.ddg.proc.node.exists(pname)) {
     full.call <- match.call(sys.function(-1), call=call)
-    
+    #print (paste0("ddg.return.value creating function node for ", pname))
     .ddg.create.function.nodes(pname, full.call)
   }
   
@@ -3027,6 +3034,7 @@ ddg.return.value <- function (expr=NULL) {
   .ddg.set(".ddg.return.values", ddg.return.values)
   .ddg.set(".ddg.num.returns", ddg.num.returns)
   
+  #print ("Returning from ddg.return.value")
   return(expr)
 }
 

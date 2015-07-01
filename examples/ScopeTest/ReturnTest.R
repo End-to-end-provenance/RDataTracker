@@ -1,5 +1,5 @@
-#library(RDataTracker)
-source("/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/R/RDataTracker.R")
+library(RDataTracker)
+#source("/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/R/RDataTracker.R")
 
 if (interactive()) {
 	testDir <- getwd()
@@ -57,6 +57,16 @@ f6 <- function(s1, s2, s3, s4) {
   ddg.return.value(3)
 }
 
+f7 <- function(n) {
+  if (n == 0) {
+    ddg.return.value(0)
+  }
+  else {
+    retValue <- f7(n-1)
+    ddg.return.value(retValue)
+  }
+}
+
 
 a <- 1
 ddg.data(a)
@@ -81,5 +91,6 @@ f6(abc, 5, "a b", x + 1)
 print ("The following tests recursion.  The DDGs are not correct.")
 print("Seeing a difference here may be a good thing!")
 x <- f4(3)
+f7(3)
 f5(3)
 ddg.save(quit=TRUE)
