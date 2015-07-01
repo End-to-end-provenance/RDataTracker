@@ -63,7 +63,7 @@ f7 <- function(n) {
   }
   else {
     retValue <- f7(n-1)
-    ddg.return.value(retValue)
+    ddg.return.value(retValue+1)
   }
 }
 
@@ -91,6 +91,6 @@ f6(abc, 5, "a b", x + 1)
 print ("The following tests recursion.  The DDGs are not correct.")
 print("Seeing a difference here may be a good thing!")
 x <- f4(3)
-f7(3)
+x <- f7(3)
 f5(3)
 ddg.save(quit=TRUE)
