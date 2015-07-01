@@ -1,5 +1,4 @@
 #################### DDG LIBRARY FOR R ####################
-
 # The functions in this library may be used to annotate an R script 
 # in order to collect provenance in the form of a data derivation 
 # graph (DDG) as the script executes. The DDG is saved as a text file 
@@ -143,6 +142,7 @@ ddg.MAX_HIST_LINES <- 2^14
           ddg.name = character(size),
           ddg.value = character(size), 
           ddg.return.linked = logical(size),
+          ddg.auto.created = logical(size),
           stringsAsFactors=FALSE))
   
   .ddg.set("ddg.data.nodes", data.frame(ddg.type = character(size),
@@ -500,8 +500,9 @@ ddg.MAX_HIST_LINES <- 2^14
 # ptype - procedure node type.
 # pname - procedure node name.
 # pvalue - procedure node value.
+# auto.created - TRUE means the node is being created automatically when a return is found
 
-.ddg.record.proc <- function(ptype, pname, pvalue) {
+.ddg.record.proc <- function(ptype, pname, pvalue, auto.created=FALSE) {
   # If the table is full, make it bigger.
   ddg.pnum <- .ddg.pnum()
   ddg.proc.nodes <- .ddg.proc.nodes()
@@ -512,6 +513,7 @@ ddg.MAX_HIST_LINES <- 2^14
         ddg.name = character(size),
         ddg.value = character(size), 
         ddg.return.linked = logical(size),
+        ddg.auto.created = logical(size),
         stringsAsFactors=FALSE)
     .ddg.add.rows("ddg.proc.nodes", new.rows)
     ddg.proc.nodes <- .ddg.proc.nodes()
@@ -521,6 +523,7 @@ ddg.MAX_HIST_LINES <- 2^14
   ddg.proc.nodes$ddg.num[ddg.pnum] <- ddg.pnum
   ddg.proc.nodes$ddg.name[ddg.pnum] <- pname
   ddg.proc.nodes$ddg.value[ddg.pnum] <- pvalue
+  ddg.proc.nodes$ddg.auto.created[ddg.pnum] <- auto.created
   .ddg.set("ddg.proc.nodes", ddg.proc.nodes)
   
   if (.ddg.debug()) print (paste("Adding procedure node", ddg.pnum, "named", pname))
@@ -591,7 +594,7 @@ ddg.MAX_HIST_LINES <- 2^14
   rows <- nrow(ddg.proc.nodes)
   for (i in rows:1) {
     type <- ddg.proc.nodes$ddg.type[i]
-    if (.ddg.is.proc.node(type) & ddg.proc.nodes$ddg.name[i] == pname & !ddg.proc.nodes$ddg.return.linked[i]) {
+    if (.ddg.is.proc.node(type) & ddg.proc.nodes$ddg.name[i] == pname & !ddg.proc.nodes$ddg.return.linked[i] & !ddg.proc.nodes$ddg.auto.created[i]) {
       return(TRUE)
     }
   }
@@ -2039,8 +2042,9 @@ ddg.MAX_HIST_LINES <- 2^14
 # pname - name of procedure node.
 # pvalue (optional) - value of procedure node.
 # console (optional) - if TRUE, console mode is enabled.
+# auto.created - TRUE means that the node is being automatically created when a return call is found
 
-.ddg.proc.node <- function(ptype, pname, pvalue="", console=FALSE) {
+.ddg.proc.node <- function(ptype, pname, pvalue="", console=FALSE, auto.created=FALSE) {
   
   # We're not in a console node but we're capturing data 
   # automatically.
@@ -2084,7 +2088,7 @@ ddg.MAX_HIST_LINES <- 2^14
   }
   
   # Record procedure node information.
-  .ddg.record.proc(ptype, pname, pvalue)
+  .ddg.record.proc(ptype, pname, pvalue, auto.created)
   
   if (.ddg.debug()) print(paste("proc.node:", ptype, pname))
 }
@@ -2646,8 +2650,9 @@ ddg.MAX_HIST_LINES <- 2^14
 # pname - name of procedure node.
 # full.call - full function call.
 # outs.data, etc (optional) - output nodes.
+# auto.created - TRUE if the function node is begin created automatically when a return is found
 
-.ddg.create.function.nodes <- function(pname, full.call, outs.graphic=NULL, outs.data=NULL, outs.exception=NULL, outs.url=NULL, outs.file=NULL, graphic.fext="jpeg") {
+.ddg.create.function.nodes <- function(pname, full.call, outs.graphic=NULL, outs.data=NULL, outs.exception=NULL, outs.url=NULL, outs.file=NULL, graphic.fext="jpeg", auto.created=FALSE) {
   # Tokens will contain the function name and the argument
   # expressions.
   
@@ -2704,7 +2709,7 @@ ddg.MAX_HIST_LINES <- 2^14
              .ddg.proc2data(binding.node.name, formal, formal.scope)
            })
   }
-  .ddg.proc.node("Operation", pname, pname)
+  .ddg.proc.node("Operation", pname, pname, auto.created = auto.created)
   if (length(full.call) > 1) {
     lapply(bindings, function(binding) {
       formal <- binding[[2]][[1]]
@@ -3008,7 +3013,8 @@ ddg.return.value <- function (expr=NULL) {
   if (!.ddg.proc.node.exists(pname)) {
     full.call <- match.call(sys.function(-1), call=call)
     #print (paste0("ddg.return.value creating function node for ", pname))
-    .ddg.create.function.nodes(pname, full.call)
+    .ddg.create.function.nodes(pname, full.call, auto.created = TRUE)
+    #print (paste0("ddg.return.value done creating function node for ", pname))
   }
   
   # Create a data node for the return value. We want the scope of 
