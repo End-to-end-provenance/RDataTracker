@@ -553,6 +553,17 @@
 	</antcall>
   </target> 
 
+  <target name="preview-test">
+	<antcall target="run-test">
+	  <param name="dir" value="examples/Preview"/>
+	  <param name="out" value="examples/Preview/hf-dataset-preview-annotated.out"/>
+	  <param name="script-file" value="hf-dataset-preview-annotated.R"/>
+	  <param name="expected_out" value="examples/Preview/expected_hf-dataset-preview-annotated.out"/>
+	  <param name="expected_ddg" value="examples/Preview/expected_hf-dataset-preview-annotated_ddg.txt"/>
+	  <param name="source_test" value="true" />
+	</antcall>
+  </target> 
+
   <target name="bug-tests" depends="ddg-changes-behavior-test, ddg-hang-test,scoping-error-test, simple-test, env-test" >
     <echo>Tests which were added to check for specific bug fixes </echo>
   </target>

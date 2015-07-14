@@ -2116,9 +2116,17 @@ ddg.MAX_HIST_LINES <- 2^14
 # dvalue - a list of values.
 
 .ddg.convert.list.to.string <- function (dvalue) {
-  values <- .ddg.replace.quotes(lapply(dvalue, as.character))
+  values <- .ddg.replace.quotes(lapply(dvalue, .ddg.as.character))
   positions <- 1:length(values)
   paste("[[", positions, "]]", values, collapse="\n")
+}
+
+# .ddg.as.character wraps an exception handler around as.character
+# The exception handler captures the print output for the value and
+# returns that instead.
+.ddg.as.character <- function (value) {
+  tryCatch (as.character(value),
+      error=function(e) {capture.output(print(value))})
 }
 
 # .ddg.data.node creates a data node of type Data. Data nodes are 
