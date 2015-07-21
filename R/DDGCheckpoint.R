@@ -27,8 +27,6 @@
 #   <http://www.gnu.org/licenses/>.
 
 
-library(RDataTracker)
-
 # .ddg.checkpoint.file.node creates a checkpoint file node.
 
 .ddg.checkpoint.file.node <- function(fname, dname, checkpoint.name) {
