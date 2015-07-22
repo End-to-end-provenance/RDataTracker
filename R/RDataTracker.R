@@ -1100,6 +1100,7 @@ ddg.MAX_HIST_LINES <- 2^14
   return (vars.set)
 }
 
+
 # .ddg.auto.graphic.node attempts to figure out if a new graphics 
 # device has been created and take a snapshot of a previously active 
 # device, setting the snapshot node to be the output of the 
@@ -1271,6 +1272,125 @@ ddg.MAX_HIST_LINES <- 2^14
         .ddg.proc2data(last.command, vars.set$variable[i], environmentName(environment))
       }
     }
+  }
+}
+
+# Initialize the information about functions that read from files
+.ddg.create.file.read.functions.df <- function () {
+  # Functions that read files
+  function.names <-
+    c ("source", "read.csv", "read.csv2", "read.delim", "read.delim2", "read.table", "read.xls")
+  
+  # The argument that represents the file name
+  param.names <-
+    c ("file", "file", "file", "file", "file", "file", "xls")
+  
+  # Position of the file parameter if it is passed by position
+  param.pos <- 
+    c (1, 1, 1, 1, 1, 1, 1)
+  
+  return (data.frame (function.names, param.names, param.pos, stringsAsFactors=FALSE))
+}
+
+.ddg.file.read.functions.df <- .ddg.create.file.read.functions.df ()
+
+# Given a parse tree, this function returns a list containing
+# the expressions that correspond to the filename argument
+# of the calls to functions that read from files.  If there are
+# none, it returns NULL.
+.ddg.find.files.read <- function(main.object) {
+  # Recursive helper function.
+  find.files.read.rec <- function(obj) {
+    #print (obj)
+    # Base cases.
+    if (!is.recursive(obj)) {
+      return(NULL)
+    }
+    
+    if (length(obj) == 0) {
+      return(NULL)
+    }
+    ## It might be useful to record somehow that this function
+    # reads a file, but we wouldn't actually do the reading
+    # until the function is called, not here where it is
+    # being declared.
+    if (.ddg.is.functiondecl(obj)) return(NULL)
+    
+    if (is.call(obj)) {
+      #print("Found call")
+      
+      # Call has no arguments, so it can't be reading a function.  Recurse
+      # on the first part, in case it is more than just a symbol.
+      if (length (obj) == 1) return (find.files.read.rec (obj[[1]]))
+      
+      # Call with arguments
+      else if (is.symbol (obj[[1]])) {
+        # Is this is file reading function?
+        read.func.pos <- match (as.character(obj[[1]]), .ddg.file.read.functions.df$function.names)
+        if (!is.na (read.func.pos)) {
+          # Find the file argument.
+          arg.name <- .ddg.file.read.functions.df$param.names[read.func.pos]
+          
+          # Find a matching parameter passed by name
+          file.name.arg.matches <- unlist(lapply (names(obj), function (arg) {return (pmatch (arg, "file"))}))
+          match.pos <- match (1, file.name.arg.matches)
+          
+          # If no argument qualified by the file parameter name, use the argument in the 
+          # expected position
+          if (is.na (match.pos)) {
+            file.name <- obj[[.ddg.file.read.functions.df$param.pos[read.func.pos]+1]]
+          }
+          else {
+            file.name <- obj[[match.pos]]
+          }
+          
+          # Recurse over the arguments to the function.  We can't just skip over the 2nd
+          # element since the filename parameter is not necessarily there if it was passed
+          # by name.
+          funcs <- find.files.read.rec (obj[2:length(obj)])
+          
+          # Add this file name to the list of files being read.
+          unique (c (file.name, funcs))
+        }
+        
+        # Not a file reading function.  Recurse over the arguments.
+        else {
+          find.files.read.rec (obj[2:length(obj)])
+        }
+      }
+      
+      # Function call, but the first list element is not simply a function name.  Recurse
+      # over all the list elements.
+      else {
+        unique (append (find.files.read.rec (obj[[1]]), find.files.read.rec (obj[2:length(obj)])))
+      }
+    } 
+    
+    # A recursive structure that is not a call.  Not sure if there are any, but just in case...
+    else if (length(obj) == 1) {
+      unique (find.files.read.rec (obj[[1]]))
+    }
+    else {
+      unique (append (find.files.read.rec (obj[[1]]), find.files.read.rec (obj[2:length(obj)])))      
+    }
+  }
+  
+  return(find.files.read.rec(main.object))
+}
+
+# Creates file nodes and data in edges for any files that are read in this cmd
+# cmd - text command
+# cmd.expr - parsed command
+.ddg.create.file.read.nodes.and.edges <- function (cmd, cmd.expr) {
+  # Find all the files read in this command.
+  files.read <- .ddg.find.files.read(cmd.expr)
+  #print ("Files read:")
+  #print (files.read)
+  
+  for (file in files.read) {  
+    # Create the file node
+    ddg.file (file)
+    ddg.data.in (basename(file), pname=cmd)
   }
 }
 
@@ -1716,6 +1836,7 @@ ddg.MAX_HIST_LINES <- 2^14
           }
           
           .ddg.create.data.use.edges.for.console.cmd(vars.set, cmd.abbrev, cmd.expr, i)
+          .ddg.create.file.read.nodes.and.edges(cmd.abbrev, cmd.expr)          
           .ddg.link.function.returns(cmd.text)
           
           if (.ddg.debug()) print(paste(".ddg.parse.commands: Adding input data nodes for", cmd.abbrev))
@@ -1768,7 +1889,7 @@ ddg.MAX_HIST_LINES <- 2^14
 }
 
 .ddg.parse.source.commands <- function(parsed.commands, environ=NULL, ignore.patterns=c('^ddg.'), node.name="Console", run.commands = FALSE, echo=FALSE, print.eval=echo, max.deparse.length=150) {
-  
+  print ("In .ddg.parse.source.commands")
   # Figure out if we will execute commands or not.
   
   execute <- run.commands & !is.null(environ) & is.environment(environ)
@@ -1948,6 +2069,7 @@ ddg.MAX_HIST_LINES <- 2^14
           }
           
           .ddg.create.data.use.edges.for.console.cmd(vars.set, cmd.abbrev, cmd.expr, i)
+          .ddg.create.file.read.nodes.and.edges(cmd.abbrev, cmd.expr)
           .ddg.link.function.returns(cmd.text)
           
           if (.ddg.debug()) print(paste(".ddg.parse.commands: Adding input data nodes for", cmd.abbrev))
