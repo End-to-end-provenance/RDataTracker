@@ -870,6 +870,7 @@ ddg.MAX_HIST_LINES <- 2^14
 
 .ddg.is.functiondecl <- function(expr) {
   if (is.symbol(expr) || !is.language(expr)) return (FALSE)
+  if (is.null(expr[[1]]) || !is.language(expr[[1]])) return (FALSE)
   return (expr[[1]] == "function")
 }
 
@@ -1275,6 +1276,92 @@ ddg.MAX_HIST_LINES <- 2^14
   }
 }
 
+# Given a parse tree, this function returns a list containing
+# the expressions that correspond to the filename argument
+# of the calls to functions that read or write the files.  If there are
+# none, it returns NULL.
+#
+# main.object - the parsed expression to search through
+# func.df - the data frame describing the functions with file arguments
+.ddg.find.files <- function(main.object, func.df) {
+  # Recursive helper function.
+  find.files.rec <- function(obj) {
+    #print (obj)
+    # Base cases.
+    if (!is.recursive(obj)) {
+      return(NULL)
+    }
+    
+    if (length(obj) == 0) {
+      return(NULL)
+    }
+    ## It might be useful to record somehow that this function
+    # reads a file, but we wouldn't actually do the reading
+    # until the function is called, not here where it is
+    # being declared.
+    if (.ddg.is.functiondecl(obj)) return(NULL)
+    
+    if (is.call(obj)) {
+      
+      # Call has no arguments, so it can't be reading a function.  Recurse
+      # on the first part, in case it is more than just a symbol.
+      if (length (obj) == 1) return (find.files.rec (obj[[1]]))
+      
+      # Call with arguments
+      else if (is.symbol (obj[[1]])) {
+        # Is this is file reading function?
+        read.func.pos <- match (as.character(obj[[1]]), func.df$function.names)
+        if (!is.na (read.func.pos)) {
+          # Find the file argument.
+          arg.name <- func.df$param.names[read.func.pos]
+          
+          # Find a matching parameter passed by name
+          file.name.arg.matches <- unlist(lapply (names(obj), function (arg) {return (pmatch (arg, arg.name))}))
+          match.pos <- match (1, file.name.arg.matches)
+          
+          # If no argument qualified by the file parameter name, use the argument in the 
+          # expected position
+          if (is.na (match.pos)) {
+            file.name <- eval(obj[[func.df$param.pos[read.func.pos]+1]])
+          }
+          else {
+            file.name <- eval(obj[[match.pos]])
+          }
+          
+          # Recurse over the arguments to the function.  We can't just skip over the 2nd
+          # element since the filename parameter is not necessarily there if it was passed
+          # by name.
+          funcs <- find.files.rec (obj[2:length(obj)])
+          
+          # Add this file name to the list of files being read.
+          unique (c (file.name, funcs))
+        }
+        
+        # Not a file reading function.  Recurse over the arguments.
+        else {
+          find.files.rec (obj[2:length(obj)])
+        }
+      }
+      
+      # Function call, but the first list element is not simply a function name.  Recurse
+      # over all the list elements.
+      else {
+        unique (append (find.files.rec (obj[[1]]), find.files.rec (obj[2:length(obj)])))
+      }
+    } 
+    
+    # A recursive structure that is not a call.  Not sure if there are any, but just in case...
+    else if (length(obj) == 1) {
+      unique (find.files.rec (obj[[1]]))
+    }
+    else {
+      unique (append (find.files.rec (obj[[1]]), find.files.rec (obj[2:length(obj)])))      
+    }
+  }
+  
+  return(find.files.rec(main.object))
+}
+
 # Initialize the information about functions that read from files
 .ddg.create.file.read.functions.df <- function () {
   # Functions that read files
@@ -1292,106 +1379,184 @@ ddg.MAX_HIST_LINES <- 2^14
   return (data.frame (function.names, param.names, param.pos, stringsAsFactors=FALSE))
 }
 
-.ddg.file.read.functions.df <- .ddg.create.file.read.functions.df ()
+.ddg.set (".ddg.file.read.functions.df", .ddg.create.file.read.functions.df ())
 
 # Given a parse tree, this function returns a list containing
 # the expressions that correspond to the filename argument
 # of the calls to functions that read from files.  If there are
 # none, it returns NULL.
 .ddg.find.files.read <- function(main.object) {
+  return (.ddg.find.files (main.object, .ddg.get(".ddg.file.read.functions.df")))
+}
+  
+# Creates file nodes and data in edges for any files that are read in this cmd
+# cmd - text command
+# cmd.expr - parsed command
+.ddg.create.file.read.nodes.and.edges <- function (cmd, cmd.expr) {
+  # Find all the files potentially read in this command.
+  # This may include files that are not actually read if the 
+  # read are within an if-statement, for example.
+  files.read <- .ddg.find.files.read(cmd.expr)
+  #print ("Files read:")
+  #print (files.read)
+  
+  for (file in files.read) { 
+    # Only create the node and edge if there actually is a file
+    # Even if the file exists, it is possible that it was not read here
+    if (file.exists(file)) {
+      # Create the file node and edge      
+      ddg.file (file)
+      ddg.data.in (basename(file), pname=cmd)
+    }
+    else if (grepl ("^http", file) || grepl ("^ftp", file)) {
+      scope <- environmentName(.GlobalEnv)
+      .ddg.data.node("URL", file, file, scope)
+      .ddg.data2proc(file, scope, cmd)
+    }
+  }
+}
+
+# Initialize the information about functions that read from files
+.ddg.create.file.write.functions.df <- function () {
+  # Functions that read files
+  function.names <-
+    c ("write.csv", "write.csv2", "write.table")
+  
+  # The argument that represents the file name
+  param.names <-
+    c ("file", "file", "file")
+  
+  # Position of the file parameter if it is passed by position
+  param.pos <- 
+    c (2, 2, 2)
+  
+  return (data.frame (function.names, param.names, param.pos, stringsAsFactors=FALSE))
+}
+
+.ddg.set (".ddg.file.write.functions.df", .ddg.create.file.write.functions.df ())
+
+# Given a parse tree, this function returns a list containing
+# the expressions that correspond to the filename argument
+# of the calls to functions that write files.  If there are
+# none, it returns NULL.
+.ddg.find.files.written <- function(main.object) {
+  return (.ddg.find.files (main.object, .ddg.get(".ddg.file.write.functions.df")))
+}
+
+# Creates file nodes and data in edges for any files that are written in this cmd
+# cmd - text command
+# cmd.expr - parsed command
+.ddg.create.file.write.nodes.and.edges <- function (cmd, cmd.expr) {
+  # Find all the files potentially written in this command.
+  # This may include files that are not actually written if the 
+  # write calls are within an if-statement, for example.
+  files.written <- .ddg.find.files.written(cmd.expr)
+  #print ("Files written:")
+  #print (files.written)
+  
+  for (file in files.written) {
+    # Check that the file exists.  If it does, we will assume that 
+    # it was created by the write call that we just found.
+    if (file.exists (file)) {
+      # Create the file node and edge
+      ddg.file.out (file, pname=cmd)
+    }
+  }
+}
+
+# Initialize the information about functions that initialize graphics devices
+.ddg.create.graphics.functions.df <- function () {
+  # Functions that read files
+  function.names <-
+    c ("pdf", "postscript", "bmp", "jpeg", "png", "tiff")
+  
+  # The argument that represents the file name
+  param.names <-
+    c ("file", "file", "filename", "filename", "filename", "filename")
+  
+  # Position of the file parameter if it is passed by position
+  param.pos <- 
+    c (1, 1, 1, 1, 1, 1)
+  
+  return (data.frame (function.names, param.names, param.pos, stringsAsFactors=FALSE))
+}
+
+.ddg.set (".ddg.graphics.functions.df", .ddg.create.graphics.functions.df ())
+
+# Given a parse tree, this function returns a list containing
+# the expressions that correspond to the filename argument
+# of the calls to functions that create graphics devices.  If there are
+# none, it returns NULL.
+.ddg.set.graphics.files <- function(main.object) {
+  # Find all the graphics files that have potentially been opened.
+  # Remember these file names until we find the dev.off call and then
+  # determine which was written.
+  new.possible.graphics.files.open <- .ddg.find.files (main.object, .ddg.get(".ddg.graphics.functions.df"))
+  if (!is.null(new.possible.graphics.files.open)) {
+    if (.ddg.is.set ("possible.graphics.files.open")) {
+      possible.graphics.files.open <- .ddg.get ("possible.graphics.files.open")
+      .ddg.set ("possible.graphics.files.open", 
+                c (new.possible.graphics.files.open, possible.graphics.files.open))      
+    }
+  
+    else {
+      .ddg.set ("possible.graphics.files.open", new.possible.graphics.files.open)
+    }
+  
+  }
+}
+
+.ddg.has.dev.off.call <- function(main.object) {
   # Recursive helper function.
-  find.files.read.rec <- function(obj) {
+  has.dev.off.call.rec <- function(obj) {
     #print (obj)
     # Base cases.
     if (!is.recursive(obj)) {
-      return(NULL)
+      return(FALSE)
     }
     
     if (length(obj) == 0) {
-      return(NULL)
+      return(FALSE)
     }
     ## It might be useful to record somehow that this function
     # reads a file, but we wouldn't actually do the reading
     # until the function is called, not here where it is
     # being declared.
-    if (.ddg.is.functiondecl(obj)) return(NULL)
+    if (.ddg.is.functiondecl(obj)) return(FALSE)
     
     if (is.call(obj)) {
       #print("Found call")
       
-      # Call has no arguments, so it can't be reading a function.  Recurse
-      # on the first part, in case it is more than just a symbol.
-      if (length (obj) == 1) return (find.files.read.rec (obj[[1]]))
-      
-      # Call with arguments
-      else if (is.symbol (obj[[1]])) {
-        # Is this is file reading function?
-        read.func.pos <- match (as.character(obj[[1]]), .ddg.file.read.functions.df$function.names)
-        if (!is.na (read.func.pos)) {
-          # Find the file argument.
-          arg.name <- .ddg.file.read.functions.df$param.names[read.func.pos]
-          
-          # Find a matching parameter passed by name
-          file.name.arg.matches <- unlist(lapply (names(obj), function (arg) {return (pmatch (arg, "file"))}))
-          match.pos <- match (1, file.name.arg.matches)
-          
-          # If no argument qualified by the file parameter name, use the argument in the 
-          # expected position
-          if (is.na (match.pos)) {
-            file.name <- obj[[.ddg.file.read.functions.df$param.pos[read.func.pos]+1]]
-          }
-          else {
-            file.name <- obj[[match.pos]]
-          }
-          
-          # Recurse over the arguments to the function.  We can't just skip over the 2nd
-          # element since the filename parameter is not necessarily there if it was passed
-          # by name.
-          funcs <- find.files.read.rec (obj[2:length(obj)])
-          
-          # Add this file name to the list of files being read.
-          unique (c (file.name, funcs))
+      if (is.symbol (obj[[1]])) {
+        # Is this a call to dev.off?
+        if (as.character(obj[[1]]) == "dev.off") return (TRUE)
+        
+        else if (length (obj) == 1) return (FALSE)
+        
+        else return (has.dev.off.call.rec (2:length(obj)))
         }
         
-        # Not a file reading function.  Recurse over the arguments.
-        else {
-          find.files.read.rec (obj[2:length(obj)])
+      else return (has.dev.off.call.rec (obj[[1]]) || has.dev.off.call.rec (2:length(obj)))
         }
+    
+    else return (has.dev.off.call.rec (obj[[1]]) || has.dev.off.call.rec (2:length(obj)))
       }
       
-      # Function call, but the first list element is not simply a function name.  Recurse
-      # over all the list elements.
-      else {
-        unique (append (find.files.read.rec (obj[[1]]), find.files.read.rec (obj[2:length(obj)])))
-      }
+  return(has.dev.off.call.rec(main.object))
     } 
     
-    # A recursive structure that is not a call.  Not sure if there are any, but just in case...
-    else if (length(obj) == 1) {
-      unique (find.files.read.rec (obj[[1]]))
-    }
-    else {
-      unique (append (find.files.read.rec (obj[[1]]), find.files.read.rec (obj[2:length(obj)])))      
-    }
-  }
+.ddg.capture.graphics <- function(cmd) {
+  if (!.ddg.is.set ("possible.graphics.files.open")) return
+  possible.graphics.files.open <- .ddg.get ("possible.graphics.files.open")
   
-  return(find.files.read.rec(main.object))
-}
+  # Find the most recent file
+  if (is.null(possible.graphics.files.open)) return
 
-# Creates file nodes and data in edges for any files that are read in this cmd
-# cmd - text command
-# cmd.expr - parsed command
-.ddg.create.file.read.nodes.and.edges <- function (cmd, cmd.expr) {
-  # Find all the files read in this command.
-  files.read <- .ddg.find.files.read(cmd.expr)
-  #print ("Files read:")
-  #print (files.read)
+  graphics.file.info <- file.info(possible.graphics.files.open)
+  latest.file.date.row <- which.max (graphics.file.info$mtime)
   
-  for (file in files.read) {  
-    # Create the file node
-    ddg.file (file)
-    ddg.data.in (basename(file), pname=cmd)
-  }
+  ddg.file.out (possible.graphics.files.open[latest.file.date.row], pname=cmd)
+  .ddg.set ("possible.graphics.files.open", NULL)
 }
 
 # .ddg.abbrev.cmd abbreviates a command to the specified length.
@@ -1842,6 +2007,11 @@ ddg.MAX_HIST_LINES <- 2^14
           if (.ddg.debug()) print(paste(".ddg.parse.commands: Adding input data nodes for", cmd.abbrev))
           .ddg.create.data.set.edges.for.console.cmd(vars.set, cmd.abbrev, cmd.expr, i)
           if (.ddg.debug()) print(paste(".ddg.parse.commands: Adding output data nodes for", cmd.abbrev))
+          .ddg.create.file.write.nodes.and.edges (cmd.abbrev, cmd.expr)
+          .ddg.set.graphics.files (cmd.expr)  
+          if (.ddg.has.dev.off.call(cmd.expr)) {
+            .ddg.capture.graphics(cmd.abbrev)
+          }
         }
         # We wanted to create it but it matched a last command node.
         else if (create && execute) .ddg.close.last.command.node(initial=TRUE)
@@ -2075,6 +2245,12 @@ ddg.MAX_HIST_LINES <- 2^14
           if (.ddg.debug()) print(paste(".ddg.parse.commands: Adding input data nodes for", cmd.abbrev))
           .ddg.create.data.set.edges.for.console.cmd(vars.set, cmd.abbrev, cmd.expr, i)
           if (.ddg.debug()) print(paste(".ddg.parse.commands: Adding output data nodes for", cmd.abbrev))
+          .ddg.create.file.write.nodes.and.edges (cmd.abbrev, cmd.expr)          
+          .ddg.set.graphics.files (cmd.expr)          
+          if (.ddg.has.dev.off.call(cmd.expr)) {
+            print ("Found dev.off")
+          }
+          
         }
         # We wanted to create it but it matched a last command node.
         else if (create && execute) .ddg.close.last.command.node(initial=TRUE)
@@ -2810,6 +2986,7 @@ ddg.MAX_HIST_LINES <- 2^14
              # formal is the paramenter name of the function (what 
              # is the variable known as inside?).
              formal <- binding[[2]][[1]]
+             if (is.null(formal) || formal == "") formal <- "..."
              
              # Find all the variables used in this parameter.
 						 # If the argument is a string constant, don't bother
@@ -2833,19 +3010,25 @@ ddg.MAX_HIST_LINES <- 2^14
                  if (.ddg.debug()) print(paste("param:", var))
                }
              }
+             if (formal != "...") {
              formal.scope <- .ddg.get.scope(formal, calls=stack)
              formal.env <- .ddg.get.env(formal, calls=stack)
              .ddg.save.data(formal, eval(parse(text=formal), formal.env), fname=".ddg.save.data", scope=formal.scope, stack=stack)
              .ddg.proc2data(binding.node.name, formal, formal.scope)
+             }
            })
   }
   .ddg.proc.node("Operation", pname, pname, auto.created = auto.created)
   if (length(full.call) > 1) {
     lapply(bindings, function(binding) {
       formal <- binding[[2]][[1]]
+      
+      # Formal will be NULL if declared as ...  Don't create the data node in that case.
+      if (!is.null(formal) && formal != "") {        
       formal.scope <- .ddg.get.scope(formal, calls=stack)
       if (.ddg.data.node.exists (formal, formal.scope)) {
         .ddg.data2proc(formal, formal.scope, pname)
+      }
       }
     })
   }
