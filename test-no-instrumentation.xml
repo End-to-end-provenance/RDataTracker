@@ -57,84 +57,45 @@
                         which should have the "source_" prefix
   -->
   <target name="run-test">
-    <!-- Checking to see if we also need to run a source test on this script -->
-    <condition property="no-source">
-      <equals arg1="${source_test}" arg2="false"/>
-    </condition>
-
     <!-- Directory to store local files for comparison -->
     <property name="local_dir" value="${dir}/local" />
     <delete dir="${local_dir}" quiet="true" /> 
     <mkdir dir="${local_dir}" />
 
-    <!-- Copy the script file to this local directory, and replace with ddg directory for execution -->
-    <copy file="${dir}/${script-file}" todir="${local_dir}" overwrite="true" />
-    <replaceregexp  file="${local_dir}/${script-file}"
-                    match="\[DDG-DIR\]"
-                    replace="ddg"
-                    flags="g"
-    />
-
-    <!-- Copy the script file to this local directory, and replace with correct ddg directory for sourcing -->
-    <copy file="${dir}/${script-file}" tofile="${local_dir}/source_${script-file}" overwrite="true" unless:true="${no-source}" />
-    <replaceregexp  file="${local_dir}/source_${script-file}"
-                    match="\[DDG-DIR\]"
-                    replace="ddg-source"
-                    flags="g"
-                    unless:true="${no-source}"
-    />
-
-    <!-- Replace working directory with local working directory in both the sourced and the executable test files -->
-    <replaceregexp match="\[DIR_DEFAULT\]" replace="${FILE.basedir}/${dir}" flags="g" >
-      <fileset dir="${local_dir}" includes="*.r" />
-      <fileset dir="${local_dir}" includes="*.R" />
-    </replaceregexp>
-
-    <!-- Copy the source test file to this local directory, and replace with correct script name and directory -->
-    <copy file="${FILE.basedir}/examples/sourceTest.r" todir="${local_dir}" overwrite="true" unless:true="${no-source}"/>
-    <replaceregexp  file="${local_dir}/sourceTest.r"
+    <!-- Copy the source test file to this directory, and replace with correct script name and directory -->
+  	<copy file="${FILE.basedir}/examples-no-instrumentation/sourceTest.r" todir="${dir}" overwrite="true"/>
+  	<replaceregexp  file="${dir}/sourceTest.r"
                     match="\[DIR_LOCAL\]"
-                    replace="${FILE.basedir}/${local_dir}"
+                    replace="${FILE.basedir}/${dir}"
                     flags="g"
-                    unless:true="${no-source}"
     />
-    <replaceregexp  file="${local_dir}/sourceTest.r"
+  	<replaceregexp  file="${dir}/sourceTest.r"
                     match="\[SCRIPT\]"
-                    replace="source_${script-file}"
+                    replace="${script-file}"
                     flags="g"
-                    unless:true="${no-source}"
     />
-  	<replaceregexp  file="${local_dir}/sourceTest.r"
+  	<replaceregexp  file="${dir}/sourceTest.r"
   	                    match="\[DIR_DDG\]"
-  	                    replace="${FILE.basedir}/${dir}/ddg-source"
+  	                    replace="${FILE.basedir}/${dir}/ddg"
   	                    flags="g"
-  	                    unless:true="${no-source}"
   	/>
 
   	<!-- Execute the R Script (delete ddg directory first) -->
     <delete dir="${dir}/ddg" quiet="true" />
-    <!--<exec executable="Rscript" dir="${local_dir}" output="${FILE.basedir}/${out}" >
-      <arg line="${script-file}" />
-    </exec>-->
+  	<exec executable="Rscript" dir="${dir}" output="${FILE.basedir}/${out}" >
+      <arg line="sourceTest.r" />
+    </exec>
 
     <!-- Obtain name of expected ddg.txt, expected *.out, and actual *.out -->
     <basename property="ddg_name" file="${expected_ddg}" />
     <basename property="expected_out_name" file="${expected_out}" />
     <basename property="out_name" file="${out}" />
 
-    <!-- Source the R Script (delete ddg-source directory first)-->
-    <delete dir="${dir}/ddg-source" quiet="true" unless:true="${no-source}"/>
-    <exec executable="Rscript" dir="${local_dir}" output="${FILE.basedir}/${dir}/source_${out_name}" unless:true="${no-source}">
-      <arg line="sourceTest.r" />
-      <!--<arg value="-e" />
-      <arg value="library(RDataTracker); ddg.run(${script-file}, ${dir}/ddg-source)" />-->
-    </exec>
-
     <!-- Make copy of output files (.out and ddg.txt) as well as expected 
          outputs for diff. Append .local to all files -->
     <copy todir="${local_dir}" overwrite="true">
       <!-- Executed ddg.txt file -->
-     <!-- <fileset file="${dir}/ddg/ddg.txt" />-->
+      <fileset file="${dir}/ddg/ddg.txt" />
       <!-- all .out files and files ending in _ddg.txt in the test directory -->
       <fileset dir="${dir}">
         <include name="*.out" />
@@ -142,8 +103,6 @@
       </fileset>
       <globmapper from="*" to="*.local"/>
     </copy>
-    <!-- Manual copy of source ddg.txt so it doesn't overwrite executable ddg.txt -->
-    <copy file="${dir}/ddg-source/ddg.txt" tofile="${local_dir}/ddg-source.txt.local" overwrite="true" unless:true="${no-source}"/>
 
     <!-- Delete all timestamp occurrences and local OS/R/Version information -->
     <replaceregexp flags="g"> 
@@ -156,10 +115,10 @@
       </fileset>
     </replaceregexp>
 
-    <!-- Replace local version with correct directories (string to match is [DIR]-->
+    <!-- Replace local file paths with [DIR] -->
     <replaceregexp flags="g"> 
-      <regexp pattern="\[DIR\]" />
-      <substitution expression="${FILE.basedir}/${dir}"/>
+      <regexp pattern="${FILE.basedir}/${dir}" />
+      <substitution expression="\[DIR\]"/>
       <fileset dir="${local_dir}">
         <patternset refid="local_files" />
       </fileset>
@@ -175,35 +134,53 @@
     />
 
       <!-- Execute diff on .out files (always)-->
-   <!-- <echo>
+   <echo>
       Diff of (1) ${out_name}.local and (2) ${expected_out_name}.local:
     </echo>
     <exec executable="diff">
-      <arg line="--><!--strip-trailing-cr ${local_dir}/${out_name}.local ${local_dir}/${expected_out_name}.local" />
-    </exec>-->
-    <echo unless:true="${no-source}">
-      Diff of (1) source_${out_name}.local and (2) source_${expected_out_name}.local:
-    </echo>
-    <exec executable="diff" unless:true="${no-source}" >
-      <arg line="--strip-trailing-cr ${local_dir}/source_${out_name}.local ${local_dir}/source_${expected_out_name}.local" />
+      <arg line="--strip-trailing-cr ${local_dir}/${out_name}.local ${local_dir}/${expected_out_name}.local" />
     </exec>
 
       <!-- Exectute diff on .txt files -->
-  <!--  <echo>
+    <echo>
       Diff of (1) ddg.txt.local and (2) ${ddg_name}.local:
     </echo>
     <exec executable="diff" >
-      <arg line="--><!--strip-trailing-cr ${local_dir}/ddg.txt.local ${local_dir}/${ddg_name}.local" />
-    </exec>-->
-    <echo unless:true="${no-source}">
-      Diff of (1) ddg-source.txt.local and (2) source_${ddg_name}.local: 
-    </echo>
-    <exec executable="diff" unless:true="${no-source}">
-      <arg line="--strip-trailing-cr ${local_dir}/ddg-source.txt.local ${local_dir}/source_${ddg_name}.local" />
+      <arg line="--strip-trailing-cr ${local_dir}/ddg.txt.local ${local_dir}/${ddg_name}.local" />
     </exec>
   </target>
+	
+	
+	<target name="update-expected">
+	    <!-- Directory to store expected results while editing -->
+	    <property name="expected_dir" value="${dir}/expected" />
+	    <delete dir="${expected_dir}" quiet="true" /> 
+	    <mkdir dir="${expected_dir}" />
+
+	    <!-- Make copy of ddg.txt and the .out file into the expected folder -->
+	    <copy todir="${expected_dir}" overwrite="true">
+	      <!-- Executed ddg.txt file -->
+	      <fileset file="${dir}/ddg/ddg.txt" />
+		  <fileset file="${FILE.basedir}/${out}" />
+	    </copy>
+		
+	    <!-- Replace local file paths with [DIR] -->
+	    <replaceregexp flags="g"> 
+	      <regexp pattern="${FILE.basedir}/${dir}" />
+	      <substitution expression="\[DIR\]"/>
+	      <fileset dir="${expected_dir}" />
+	    </replaceregexp>
+		
+		<!-- Move the edited files up to become the new expected results -->
+	  	<copy file="${expected_dir}/ddg.txt" tofile="${expected_ddg}" overwrite="true" />
+	    <basename property="out_name" file="${out}" />
+		<copy file="${expected_dir}/${out_name}" tofile="${expected_out}" overwrite="true" />
+	</target>
+		
+	
 	  <!--############################ End FUNCTIONS ############################-->
 
+	
   <!--########################## Start Basic TESTS ##########################-->
   <target name="basic-test">
     <antcall target="run-test">
@@ -212,9 +189,17 @@
       <param name="script-file" value="basicTest.r"/>
       <param name="expected_out" value="examples-no-instrumentation/basicTest/expected_basicTest.out"/>
       <param name="expected_ddg" value="examples-no-instrumentation/basicTest/expected_basicTest_ddg.txt"/>
-      <param name="source_test" value="true" />
     </antcall>
   </target>
+
+	  <target name="update-basic-test">
+	    <antcall target="update-expected">
+	      <param name="dir" value="examples-no-instrumentation/basicTest"/>
+	      <param name="out" value="examples-no-instrumentation/basicTest/basicTest.out"/>
+	      <param name="expected_out" value="examples-no-instrumentation/basicTest/expected_basicTest.out"/>
+	      <param name="expected_ddg" value="examples-no-instrumentation/basicTest/expected_basicTest_ddg.txt"/>
+	    </antcall>
+	  </target>
 
   <target name="S4-object-test">
     <antcall target="run-test">
@@ -227,7 +212,29 @@
     </antcall>
   </target>
 
-  <target name="normal-tests" depends="basic-test, S4-object-test">
+	  <target name="scope-test">
+	    <antcall target="run-test">
+	      <param name="dir" value="examples-no-instrumentation/ScopeTest"/>
+	      <param name="out" value="examples-no-instrumentation/ScopeTest/ScopeTest.out"/>
+	      <param name="script-file" value="ScopeTest.R"/>
+	      <param name="expected_out" value="examples-no-instrumentation/ScopeTest/expected_ScopeTest.out"/>
+	      <param name="expected_ddg" value="examples-no-instrumentation/ScopeTest/expected_ScopeTest_ddg.txt"/>
+	      <param name="source_test" value="true" />
+	    </antcall>
+	  </target>
+
+	  <target name="return-test">
+	    <antcall target="run-test">
+	      <param name="dir" value="examples-no-instrumentation/ReturnTest"/>
+	      <param name="out" value="examples-no-instrumentation/ReturnTest/ReturnTest.out"/>
+	      <param name="script-file" value="ReturnTest.R"/>
+	      <param name="expected_out" value="examples-no-instrumentation/ReturnTest/expected_ReturnTest.out"/>
+	      <param name="expected_ddg" value="examples-no-instrumentation/ReturnTest/expected_ReturnTest_ddg.txt"/>
+		  <param name="source_test" value="true" />
+	    </antcall>
+	  </target>
+
+	<target name="normal-tests" depends="basic-test, S4-object-test, scope-test, return-test">
     <echo>##############################################
       Finished Execution of Normal Tests. Nothing should have malfunctioned.
       ##############################################</echo>
@@ -266,98 +273,14 @@
 
   <!--########################## End Checkpoint TESTS ##########################-->
 
-  <!--############################ Start Console Tests ############################-->
-	  <target name="scope-test">
-	    <antcall target="run-test">
-	      <param name="dir" value="examples-no-instrumentation/ScopeTest"/>
-	      <param name="out" value="examples-no-instrumentation/ScopeTest/ScopeTest.out"/>
-	      <param name="script-file" value="ScopeTest.R"/>
-	      <param name="expected_out" value="examples-no-instrumentation/ScopeTest/expected_ScopeTest.out"/>
-	      <param name="expected_ddg" value="examples-no-instrumentation/ScopeTest/expected_ScopeTest_ddg.txt"/>
-	      <param name="source_test" value="true" />
-	    </antcall>
-	  </target>
-
-	  <target name="return-test">
-	    <antcall target="run-test">
-	      <param name="dir" value="examples/ScopeTest"/>
-	      <param name="out" value="examples/ScopeTest/ReturnTest.out"/>
-	      <param name="script-file" value="ReturnTest.R"/>
-	      <param name="expected_out" value="examples/ScopeTest/expected_ReturnTest.out"/>
-	      <param name="expected_ddg" value="examples/ScopeTest/expected_ReturnTest_ddg.txt"/>
-		  <param name="source_test" value="true" />
-	    </antcall>
-	  </target>
-
-	  <target name="nested-func-test">
-	    <antcall target="run-test">
-	      <param name="dir" value="examples/ScopeTest"/>
-	      <param name="out" value="examples/ScopeTest/NestedFunctions.out"/>
-	      <param name="script-file" value="NestedFunctions.R"/>
-	      <param name="expected_out" value="examples/ScopeTest/expected_NestedFunctions.out"/>
-	      <param name="expected_ddg" value="examples/ScopeTest/expected_NestedFunctions_ddg.txt"/>
-		  <param name="source_test" value="true" />
-	    </antcall>
-	  </target>
-
-	  <target name="eval-test">
-	    <antcall target="run-test">
-	      <param name="dir" value="examples/EvalTest"/>
-	      <param name="out" value="examples/EvalTest/EvalTest.out"/>
-	      <param name="script-file" value="EvalTest.R"/>
-	      <param name="expected_out" value="examples/EvalTest/expected_evalTest.out"/>
-	      <param name="expected_ddg" value="examples/EvalTest/expected_evalTest_ddg.txt"/>
-	      <param name="source_test" value="false" />
-	    </antcall>
-	  </target>
-
-	  <target name="eval-source-test">
-	    <antcall target="run-test">
-	      <param name="dir" value="examples/EvalTest"/>
-	      <param name="out" value="examples/EvalTest/EvalTest-Source.out"/>
-	      <param name="script-file" value="EvalTest-Source.R"/>
-	      <param name="expected_out" value="examples/EvalTest/expected_evalTest-Source.out"/>
-	      <param name="expected_ddg" value="examples/EvalTest/expected_evalTest-Source_ddg.txt"/>
-	      <param name="source_test" value="true" />
-	    </antcall>
-	  </target>
-
-	  <target name="eval2-test" depends="dependencies">
-	    <antcall target="run-test">
-	      <param name="dir" value="examples/EvalTest"/>
-	      <param name="out" value="examples/EvalTest/Eval2Test.out"/>
-	      <param name="script-file" value="Eval2Test.R"/>
-	      <param name="expected_out" value="examples/EvalTest/expected_eval2-test.out"/>
-	      <param name="expected_ddg" value="examples/EvalTest/expected_eval2-test_ddg.txt"/>
-	      <param name="source_test" value="true" />
-	    </antcall>
-	  </target>
-
-  <target name="consoleEdgeCases-test">
-    <antcall target="run-test">
-      <param name="dir" value="examples/consoleEdgeCases"/>
-      <param name="out" value="examples/consoleEdgeCases/consoleEdgeCases.out"/>
-      <param name="script-file" value="consoleEdgeCases.r"/>
-      <param name="expected_out" value="examples/consoleEdgeCases/expected_consoleEdgeCases.out"/>
-      <param name="expected_ddg" value="examples/consoleEdgeCases/expected_consoleEdgeCases_ddg.txt"/>
-      <param name="source_test" value="true" />
-    </antcall>
-  </target>
-
-  <target name="console-tests" depends="consoleEdgeCases-test, scope-test, return-test, nested-func-test, eval-test, eval-source-test, eval2-test">
-    <echo>These automated tests are limited when in console mode. You can always manually check the ouput using diff and the provided expected output files for each script. Do note, however, that all of the tests have also been evaluated using ddg.source, which does in fact capture console commands.</echo>
-  </target>
-  <!--########################## End Console TESTS ##########################-->
-
-
   <!--########################## Start Source Tests ##########################-->
   <target name="console-source-1">
     <antcall target="run-test">
-      <param name="dir" value="examples/consoleSource"/>
-      <param name="out" value="examples/consoleSource/consoleSource.out"/>
+      <param name="dir" value="examples-no-instrumentation/SourceTest"/>
+      <param name="out" value="examples-no-instrumentation/SourceTest/SourceTest.out"/>
       <param name="script-file" value="consoleSource.r"/>
-      <param name="expected_out" value="examples/consoleSource/expected_consoleSource.out"/>
-      <param name="expected_ddg" value="examples/consoleSource/expected_consoleSource_ddg.txt"/>
+      <param name="expected_out" value="examples-no-instrumentation/SourceTest/expected_SourceTest.out"/>
+      <param name="expected_ddg" value="examples-no-instrumentation/SourceTest/expected_SourceTest_ddg.txt"/>
       <param name="source_test" value="true" />
     </antcall>
   </target>
@@ -576,7 +499,7 @@
   </target>
   
   <!--################################# MAIN #################################-->
-  <target name="quick-test" depends="normal-tests, checkpoint-tests, console-tests, source-tests, bug-tests" description="Run quick regressions tests for the currently installed RDataTracker Package.">
+  <target name="quick-test" depends="normal-tests, checkpoint-tests, source-tests, bug-tests" description="Run quick regressions tests for the currently installed RDataTracker Package.">
     <echo>This batch of tests is quick to execute, but not as extensive.</echo>
   </target>
 

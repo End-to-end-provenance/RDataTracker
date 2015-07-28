@@ -8,22 +8,6 @@
 
 ## Directories
 
-#source("/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/R/RDataTracker.R")
-#library(RDataTracker)
-#options(warn=2)
-
-#ddg.debug.on()
-
-# get initial time
-#startTime <- Sys.time()
-#invisible(force(startTime))
-
-#testDir <- "[DIR_DEFAULT]/"
-#setwd(testDir)
-
-#ddg.r.script.path = paste(testDir,"basicTest.r",sep="")
-#ddg.r.script.path = "/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples-no-instrumentation/basicTest/basicTest.r"
-#ddg.path = paste(testDir,"[DDG-DIR]",sep="")
 
 ### Functions
 f <- function (a, b, yy, d, e, f) {
@@ -32,7 +16,6 @@ f <- function (a, b, yy, d, e, f) {
 
 
 
-#ddg.start("main")
 # Test basic assignments
 x <- 1+2
 y <- paste("a", "b", "c")
@@ -73,9 +56,3 @@ ddg.finish("File tests")
 # Test error
 error <- 1 / 0
 
-
-
-# Calculate total time of execution
-#endTime <- Sys.time()
-#cat("Execution Time =", difftime(endTime, startTime,units="secs"))
-#ddg.debug.off()
