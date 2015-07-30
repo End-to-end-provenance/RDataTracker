@@ -52,7 +52,13 @@ plot (shortdata.df$airt, shortdata.df$prec)
 dev.off()
 ddg.finish("File tests")
 
+# Test try-catch
+tryCatch (
+  foo_val <- foo(),
+  error = function(e) {}
+)
 
 # Test error
-error <- 1 / 0
+error <- foo()
+
 

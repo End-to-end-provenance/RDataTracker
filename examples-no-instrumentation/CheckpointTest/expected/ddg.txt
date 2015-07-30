@@ -1,0 +1,89 @@
+Architecture="x86_64"
+OperatingSystem="unix"
+Language="R"
+LanguageVersion="R version 3.1.2 (2014-10-31)"
+RDataTrackerVersion="1.4"
+Script="[DIR]/CheckpointTest.r"
+ProcessFileTimestamp="2015-07-29T13.10.26EDT"
+WorkingDirectory="[DIR]"
+DDGDirectory="[DIR]/ddg"
+DateTime="2015-07-29T13.10.43EDT"
+26
+Start p1 "1-CheckpointTest.R" Value="CheckpointTest.R" Time="2015-07-29T13.10.42EDT";
+Operation p2 "2-rm(list = ls())" Value="rm(list = ls())" Time="2015-07-29T13.10.42EDT";
+CF p1 p2
+Operation p3 "3-source(\"/Users/blerner/Documents/Process/DataProvenance/git" Value="source(\"/Users/blerner/Documents/Process/DataProvenance/git" Time="2015-07-29T13.10.42EDT";
+CF p2 p3
+Operation p4 "4-f <- function() {    n}" Value="f <- function() {    n}" Time="2015-07-29T13.10.42EDT";
+CF p3 p4
+Data d1 "1-f" Value="#ddg.function";
+DF p4 d1
+Operation p5 "5-n <<- 1" Value="n <<- 1" Time="2015-07-29T13.10.42EDT";
+CF p4 p5
+Data d2 "2-n" Value="1";
+DF p5 d2
+Operation p6 "6-print(paste(\"n before checkpoint 1 =\", f()))" Value="print(paste(\"n before checkpoint 1 =\", f()))" Time="2015-07-29T13.10.42EDT";
+CF p5 p6
+DF d1 p6
+Start p7 "7-checkpoint.file.1 <- ddg.checkpoint(\"checkpoint1\")" Value="checkpoint.file.1 <- ddg.checkpoint(\"checkpoint1\")" Time="2015-07-29T13.10.42EDT";
+CF p6 p7
+Checkpoint p8 "8-checkpoint1" Time="2015-07-29T13.10.42EDT"
+CF p7 p8
+CheckpointFile d3 "3-0.RData" Value="[DIR]/ddg/3-0.RData" Time="2015-07-29T13.10.42EDT";
+DF p8 d3
+Finish p9 "9-checkpoint.file.1 <- ddg.checkpoint(\"checkpoint1\")" Value="checkpoint.file.1 <- ddg.checkpoint(\"checkpoint1\")" Time="2015-07-29T13.10.42EDT";
+CF p8 p9
+Data d4 "4-checkpoint.file.1" Value="\"[DIR]/ddg/3-0.RData\"";
+DF p9 d4
+Operation p10 "10-n <<- 2" Value="n <<- 2" Time="2015-07-29T13.10.42EDT";
+CF p9 p10
+Data d5 "5-n" Value="2";
+DF p10 d5
+Operation p11 "11-print(paste(\"n before checkpoint 2 =\", f()))" Value="print(paste(\"n before checkpoint 2 =\", f()))" Time="2015-07-29T13.10.42EDT";
+CF p10 p11
+DF d1 p11
+Start p12 "12-checkpoint.file.2 <- ddg.checkpoint()" Value="checkpoint.file.2 <- ddg.checkpoint()" Time="2015-07-29T13.10.42EDT";
+CF p11 p12
+Checkpoint p13 "13-1.RData" Time="2015-07-29T13.10.42EDT"
+CF p12 p13
+CheckpointFile d6 "6-1.RData" Value="[DIR]/ddg/6-1.RData" Time="2015-07-29T13.10.42EDT";
+DF p13 d6
+Finish p14 "14-checkpoint.file.2 <- ddg.checkpoint()" Value="checkpoint.file.2 <- ddg.checkpoint()" Time="2015-07-29T13.10.42EDT";
+CF p13 p14
+Data d7 "7-checkpoint.file.2" Value="\"[DIR]/ddg/6-1.RData\"";
+DF p14 d7
+Operation p15 "15-print(\"Returned from checkpoint function\")" Value="print(\"Returned from checkpoint function\")" Time="2015-07-29T13.10.42EDT";
+CF p14 p15
+Operation p16 "16-print(paste(\"Restoring \", checkpoint.file.1))" Value="print(paste(\"Restoring \", checkpoint.file.1))" Time="2015-07-29T13.10.42EDT";
+CF p15 p16
+DF d4 p16
+Restore p17 "17-checkpoint1" Time="2015-07-29T13.10.42EDT"
+CF p16 p17
+DF d3 p17
+Operation p18 "18-print(paste(\"n after restore from checkpoint 1 =\", f()))" Value="print(paste(\"n after restore from checkpoint 1 =\", f()))" Time="2015-07-29T13.10.42EDT";
+CF p17 p18
+DF d1 p18
+Operation p19 "19-if (n != 1) {    stop(\"restore of checkpoint 1 failed!\")}" Value="if (n != 1) {    stop(\"restore of checkpoint 1 failed!\")}" Time="2015-07-29T13.10.42EDT";
+CF p18 p19
+DF d2 p19
+Operation p20 "20-n <<- 3" Value="n <<- 3" Time="2015-07-29T13.10.42EDT";
+CF p19 p20
+Data d8 "8-n" Value="3";
+DF p20 d8
+Operation p21 "21-f()" Value="f()" Time="2015-07-29T13.10.42EDT";
+CF p20 p21
+DF d1 p21
+Operation p22 "22-print(paste(\"Restoring \", checkpoint.file.2))" Value="print(paste(\"Restoring \", checkpoint.file.2))" Time="2015-07-29T13.10.43EDT";
+CF p21 p22
+Restore p23 "23-1.RData" Time="2015-07-29T13.10.43EDT"
+CF p22 p23
+DF d6 p23
+Operation p24 "24-if (n != 2) {    stop(\"restore of checkpoint 2 failed!\")}" Value="if (n != 2) {    stop(\"restore of checkpoint 2 failed!\")}" Time="2015-07-29T13.10.43EDT";
+CF p23 p24
+DF d5 p24
+Operation p25 "25-print(paste(\"n after restore from checkpoint 2 =\", f()))" Value="print(paste(\"n after restore from checkpoint 2 =\", f()))" Time="2015-07-29T13.10.43EDT";
+CF p24 p25
+DF d1 p25
+Finish p26 "26-CheckpointTest.R" Value="CheckpointTest.R" Time="2015-07-29T13.10.43EDT";
+CF p25 p26
+

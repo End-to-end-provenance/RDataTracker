@@ -1,0 +1,118 @@
+Architecture="x86_64"
+OperatingSystem="unix"
+Language="R"
+LanguageVersion="R version 3.1.2 (2014-10-31)"
+RDataTrackerVersion="1.4"
+Script="[DIR]/QualityControl15Min.R"
+ProcessFileTimestamp="2015-07-29T14.42.03EDT"
+WorkingDirectory="[DIR]"
+DDGDirectory="[DIR]/ddg"
+DateTime="2015-07-29T14.50.39EDT"
+34
+Start p1 "1-QualityControl15Min.R" Value="QualityControl15Min.R" Time="2015-07-29T14.50.15EDT";
+Operation p2 "2-library(chron)" Value="library(chron)" Time="2015-07-29T14.50.15EDT";
+CF p1 p2
+Operation p3 "3-require(tcltk)" Value="require(tcltk)" Time="2015-07-29T14.50.15EDT";
+CF p2 p3
+Operation p4 "4-require(gWidgets)" Value="require(gWidgets)" Time="2015-07-29T14.50.16EDT";
+CF p3 p4
+Operation p5 "5-options(guiToolkit = \"tcltk\")" Value="options(guiToolkit = \"tcltk\")" Time="2015-07-29T14.50.16EDT";
+CF p4 p5
+Operation p6 "6-read.data <- function(x) {    data.file <<- \"met-15min.csv" Value="read.data <- function(x) {    data.file <<- \"met-15min.csv" Time="2015-07-29T14.50.16EDT";
+CF p5 p6
+Data d1 "1-read.data" Value="#ddg.function";
+DF p6 d1
+Operation p7 "7-select.data <- function(zz) {    zz$datetime <- as.character" Value="select.data <- function(zz) {    zz$datetime <- as.character" Time="2015-07-29T14.50.16EDT";
+CF p6 p7
+Data d2 "2-select.data" Value="#ddg.function";
+DF p7 d2
+Operation p8 "8-INPUT <- function(message) {    CHOICE <- NA    w <- gbasicd" Value="INPUT <- function(message) {    CHOICE <- NA    w <- gbasicd" Time="2015-07-29T14.50.16EDT";
+CF p7 p8
+Data d3 "3-INPUT" Value="#ddg.function";
+DF p8 d3
+Operation p9 "9-get.input.test <- function() {    x <- INPUT(\"Enter test (q" Value="get.input.test <- function() {    x <- INPUT(\"Enter test (q" Time="2015-07-29T14.50.16EDT";
+CF p8 p9
+Data d4 "4-get.input.test" Value="#ddg.function";
+DF p9 d4
+Operation p10 "10-get.input.num <- function() {    x <- INPUT(\"Enter number\"" Value="get.input.num <- function() {    x <- INPUT(\"Enter number\"" Time="2015-07-29T14.50.16EDT";
+CF p9 p10
+Data d5 "5-get.input.num" Value="#ddg.function";
+DF p10 d5
+Operation p11 "11-apply.test <- function(xx, t, n) {    xx$flag <- \"\"    if " Value="apply.test <- function(xx, t, n) {    xx$flag <- \"\"    if " Time="2015-07-29T14.50.16EDT";
+CF p10 p11
+Data d6 "6-apply.test" Value="#ddg.function";
+DF p11 d6
+Operation p12 "12-plot.data <- function(xx, t, n, output) {    if (output == " Value="plot.data <- function(xx, t, n, output) {    if (output == " Time="2015-07-29T14.50.16EDT";
+CF p11 p12
+Data d7 "7-plot.data" Value="#ddg.function";
+DF p12 d7
+Operation p13 "13-save.data <- function(fn, xx) {    file.out <- paste(getwd()" Value="save.data <- function(fn, xx) {    file.out <- paste(getwd()" Time="2015-07-29T14.50.16EDT";
+CF p12 p13
+Data d8 "8-save.data" Value="#ddg.function";
+DF p13 d8
+Start p14 "14-main" Value="main" Time="2015-07-29T14.50.16EDT";
+CF p13 p14
+Start p15 "15-get.data" Value="get.data" Time="2015-07-29T14.50.16EDT";
+CF p14 p15
+Operation p16 "16-all.data <- read.data(data.file)" Value="all.data <- read.data(data.file)" Time="2015-07-29T14.50.16EDT";
+CF p15 p16
+Snapshot d9 "9-all.data" Value="[DIR]/ddg/9-all.data.csv" Time="2015-07-29T14.50.17EDT";
+DF p16 d9
+Operation p17 "17-selected.data <- select.data(all.data)" Value="selected.data <- select.data(all.data)" Time="2015-07-29T14.50.17EDT";
+CF p16 p17
+DF d9 p17
+Snapshot d10 "10-selected.data" Value="[DIR]/ddg/10-selected.data.csv" Time="2015-07-29T14.50.17EDT";
+DF p17 d10
+Finish p18 "18-get.data" Value="get.data" Time="2015-07-29T14.50.17EDT";
+CF p17 p18
+Start p19 "19-analyze.data" Value="analyze.data" Time="2015-07-29T14.50.17EDT";
+CF p18 p19
+Operation p20 "20-input <- \"\"" Value="input <- \"\"" Time="2015-07-29T14.50.17EDT";
+CF p19 p20
+Data d11 "11-input" Value="NotRecorded";
+DF p20 d11
+Start p21 "21-while (input != \"q\") {    ddg.start(\"apply.test\")    inp" Value="while (input != \"q\") {    ddg.start(\"apply.test\")    inp" Time="2015-07-29T14.50.17EDT";
+CF p20 p21
+Start p22 "22-apply.test" Value="apply.test" Time="2015-07-29T14.50.17EDT";
+CF p21 p22
+Finish p23 "23-apply.test" Value="apply.test" Time="2015-07-29T14.50.28EDT";
+CF p22 p23
+Start p24 "24-apply.test" Value="apply.test" Time="2015-07-29T14.50.28EDT";
+CF p23 p24
+Snapshot d12 "12-graphic" Value="[DIR]/ddg/12-graphic.jpeg" Time="2015-07-29T14.50.36EDT";
+DF p23 d12
+Finish p25 "25-apply.test" Value="apply.test" Time="2015-07-29T14.50.36EDT";
+CF p24 p25
+Start p26 "26-apply.test" Value="apply.test" Time="2015-07-29T14.50.36EDT";
+CF p25 p26
+Finish p27 "27-apply.test" Value="apply.test" Time="2015-07-29T14.50.39EDT";
+CF p26 p27
+Finish p28 "28-while (input != \"q\") {    ddg.start(\"apply.test\")    inp" Value="while (input != \"q\") {    ddg.start(\"apply.test\")    inp" Time="2015-07-29T14.50.39EDT";
+CF p27 p28
+Data d13 "13-input" Value="\"q\"";
+DF p28 d13
+Data d14 "14-test" Value="\"min\"";
+DF p28 d14
+Data d15 "15-num" Value="-10";
+DF p28 d15
+Snapshot d16 "16-flagged.data" Value="[DIR]/ddg/16-flagged.data.csv" Time="2015-07-29T14.50.39EDT";
+DF p28 d16
+Start p29 "29-save.results" Value="save.results" Time="2015-07-29T14.50.39EDT";
+CF p28 p29
+Operation p30 "30-save.data(\"flagged-data.csv\", flagged.data)" Value="save.data(\"flagged-data.csv\", flagged.data)" Time="2015-07-29T14.50.39EDT";
+CF p29 p30
+DF d16 p30
+Snapshot d17 "17-graphic" Value="[DIR]/ddg/17-graphic.jpeg" Time="2015-07-29T14.50.39EDT";
+DF p30 d17
+Operation p31 "31-plot.data(flagged.data, test, num, \"file\")" Value="plot.data(flagged.data, test, num, \"file\")" Time="2015-07-29T14.50.39EDT";
+CF p30 p31
+DF d16 p31
+DF d14 p31
+DF d15 p31
+Finish p32 "32-save.results" Value="save.results" Time="2015-07-29T14.50.39EDT";
+CF p31 p32
+Finish p33 "33-analyze.data" Value="analyze.data" Time="2015-07-29T14.50.39EDT";
+CF p32 p33
+Finish p34 "34-QualityControl15Min.R" Value="QualityControl15Min.R" Time="2015-07-29T14.50.39EDT";
+CF p33 p34
+

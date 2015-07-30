@@ -252,7 +252,31 @@
 	 	</antcall>
 	</target>
 
-	<target name="normal-tests" depends="basicTest, S4ObjectTest, ScopeTest, ReturnTest">
+  	<target name="OddParameterTest">
+  		<antcall target="run-no-instrumentation-test">
+  			<param name="test-name" value="OddParameterTest" />
+  		</antcall>
+  	</target>
+
+	<target name="update-OddParameterTest">
+	  	<antcall target="update-no-instrumentation-expected">
+	  		<param name="test-name" value="OddParameterTest" />
+	 	</antcall>
+	</target>
+
+  	<target name="FunctionAnnotationTest">
+  		<antcall target="run-no-instrumentation-test">
+  			<param name="test-name" value="FunctionAnnotationTest" />
+  		</antcall>
+  	</target>
+
+	<target name="update-FunctionAnnotationTest">
+	  	<antcall target="update-no-instrumentation-expected">
+	  		<param name="test-name" value="FunctionAnnotationTest" />
+	 	</antcall>
+	</target>
+
+	<target name="normal-tests" depends="basicTest, S4ObjectTest, ScopeTest, ReturnTest, OddParameterTest, FunctionAnnotationTest">
 		<echo>##############################################
 	      Finished Execution of Normal Tests. Nothing should have malfunctioned.
     	  ##############################################</echo>
@@ -262,47 +286,49 @@
 
   <!--########################## Start Checkpoint TESTS ##########################-->
 
-  <target name="checkpoint-test">
-    <antcall target="run-test">
-      <param name="dir" value="examples/checkpointTest"/>
-      <param name="out" value="examples/checkpointTest/checkpointTest.out"/>
-      <param name="script-file" value="CheckpointTest.r"/>
-      <param name="expected_out" value="examples/checkpointTest/expected_checkpointTest.out"/>
-      <param name="expected_ddg" value="examples/checkpointTest/expected_CheckpointTest_ddg.txt"/>
-      <param name="source_test" value="true" />
-    </antcall>
-  </target>
-  
-  <target name="checkpoint-file-test">
-    <antcall target="run-test">
-      <param name="dir" value="examples/checkpointTest"/>
-      <param name="out" value="examples/checkpointTest/checkpointFileTest.out"/>
-      <param name="script-file" value="CheckpointFileTest.r"/>
-      <param name="expected_out" value="examples/checkpointTest/expected_checkpointFileTest.out"/>
-      <param name="expected_ddg" value="examples/checkpointTest/expected_CheckpointFileTest_ddg.txt"/>
-      <param name="source_test" value="true" />
-    </antcall>
-  </target>
+  	<target name="CheckpointTest">
+  		<antcall target="run-no-instrumentation-test">
+  			<param name="test-name" value="CheckpointTest" />
+  		</antcall>
+  	</target>
 
-  <target name="checkpoint-tests" depends="checkpoint-test, checkpoint-file-test">
-    <echo>##############################################
-      Finished Execution of Checkpoint Tests. Expect differences in output for checkpoint-file-test due to directory creation in Windows (using : and spaces).
-    ##############################################</echo>
-  </target>
+	<target name="update-CheckpointTest">
+	  	<antcall target="update-no-instrumentation-expected">
+	  		<param name="test-name" value="CheckpointTest" />
+	 	</antcall>
+	</target>
+
+  	<target name="CheckpointFileTest">
+  		<antcall target="run-no-instrumentation-test">
+  			<param name="test-name" value="CheckpointFileTest" />
+  		</antcall>
+  	</target>
+
+	<target name="update-CheckpointFileTest">
+	  	<antcall target="update-no-instrumentation-expected">
+	  		<param name="test-name" value="CheckpointFileTest" />
+	 	</antcall>
+	</target>
+
+	<target name="checkpoint-tests" depends="CheckpointTest, CheckpointFileTest">
+    	<echo>##############################################
+      		Finished Execution of Checkpoint Tests. Expect differences in output for checkpoint-file-test due to directory creation in Windows (using : and spaces).
+    		##############################################</echo>
+  	</target>
 
   <!--########################## End Checkpoint TESTS ##########################-->
 
   <!--########################## Start Source Tests ##########################-->
 
-  	<target name="SourceTest">
+  	<target name="SourceFuncTest">
   		<antcall target="run-no-instrumentation-test">
-  			<param name="test-name" value="SourceTest" />
+  			<param name="test-name" value="SourceFuncTest" />
   		</antcall>
   	</target>
 
-	<target name="update-SourceTest">
+	<target name="update-SourceFuncTest">
 	  	<antcall target="update-no-instrumentation-expected">
-	  		<param name="test-name" value="SourceTest" />
+	  		<param name="test-name" value="SourceFuncTest" />
 	 	</antcall>
 	</target>
 
@@ -318,222 +344,153 @@
 	 	</antcall>
 	</target>
 
-  	<target name="source-tests" depends="SourceTest, OnOffTest">
+  	<target name="source-tests" depends="SourceFuncTest, OnOffTest">
     	<echo>Finished Execution of Source Tests. A few warnings are raised, but this is expected. You can manually execute the consoleSource.r from the local directory to remove the errors, and then compare to the manual_expected_consoleSource_ddg.txt</echo>
   	</target>
 
 	<!--########################## End Source TESTS ##########################-->
 
-  <!--########################## Start Script Tests ##########################-->
+    <!--########################## Start Script Tests ##########################-->
   
-	  <target name="calculate-square-root-3-test">
-	    <antcall target="run-test">
-	      <param name="dir" value="examples/CalculateSquareRoot"/>
-	      <param name="out" value="examples/CalculateSquareRoot/calculate-square-root-3.out"/>
-	      <param name="script-file" value="calculate-square-root-3.r"/>
-	      <param name="expected_out" value="examples/CalculateSquareRoot/expected_calculate-square-root-3.out"/>
-	      <param name="expected_ddg" value="examples/CalculateSquareRoot/expected_calculate-square-root-3_ddg.txt"/>
-	      <param name="source_test" value="false" />
-	    </antcall>
-	  </target>
+  	<target name="CalculateSquareRoot">
+  		<antcall target="run-no-instrumentation-test">
+  			<param name="test-name" value="CalculateSquareRoot" />
+  		</antcall>
+  	    <echo>Differences in the values of the data nodes is normal for the above test. They rely on randomness. The number of nodes created might also differ. Best to check results in visual diff.</echo>
+  	</target>
 
-  <!-- Earlier calculate-square-root tests do not work with scoping code  -->
-  <target name="calculate-square-root-tests" depends="calculate-square-root-3-test">
-    <echo>Differences in the values of the data nodes is normal for the above tests. They rely on randomness. The number of nodes created might also differ. Best to check results in visual diff.</echo>
-  </target>
+	<target name="update-CalculateSquareRoot">
+	  	<antcall target="update-no-instrumentation-expected">
+	  		<param name="test-name" value="CalculateSquareRoot" />
+	 	</antcall>
+	</target>
+
+  	<target name="DailySolarRadiation">
+  		<antcall target="run-no-instrumentation-test">
+  			<param name="test-name" value="DailySolarRadiation" />
+  		</antcall>
+  	</target>
+
+	<target name="update-DailySolarRadiation">
+	  	<antcall target="update-no-instrumentation-expected">
+	  		<param name="test-name" value="DailySolarRadiation" />
+	 	</antcall>
+	</target>
+
+  	<target name="HFDatasetPreview">
+  		<antcall target="run-no-instrumentation-test">
+  			<param name="test-name" value="HFDatasetPreview" />
+  		</antcall>
+  	</target>
+
+	<target name="update-HFDatasetPreview">
+	  	<antcall target="update-no-instrumentation-expected">
+	  		<param name="test-name" value="HFDatasetPreview" />
+	 	</antcall>
+	</target>
+
+  	<target name="SivanSampling">
+  		<antcall target="run-no-instrumentation-test">
+  			<param name="test-name" value="SivanSampling" />
+  		</antcall>
+	    <echo>This script uses randomization.</echo>
+  	</target>
+
+	<target name="update-SivanSampling">
+	  	<antcall target="update-no-instrumentation-expected">
+	  		<param name="test-name" value="SivanSampling" />
+	 	</antcall>
+	</target>
+
+    <target name="script-tests" depends="CalculateSquareRoot, DailySolarRadiation, HFDatasetPreview, SivanSampling">
+	    <echo>Script tests for which out put should not differ </echo>
+	</target>
+	<!--########################## End Script Tests ##########################-->
+
+    <!--########################## Start Interactive Tests ##########################-->
   
-  <target name="daily-solar-radiation-1-test">
-    <antcall target="run-test">
-      <param name="dir" value="examples/DailySolarRadiation"/>
-      <param name="out" value="examples/DailySolarRadiation/daily-solar-radiation-1.out"/>
-      <param name="script-file" value="daily-solar-radiation-1.r"/>
-      <param name="expected_out" value="examples/DailySolarRadiation/expected_daily-solar-radiation-1.out"/>
-      <param name="expected_ddg" value="examples/DailySolarRadiation/expected_daily-solar-radiation-1_ddg.txt"/>
-      <param name="source_test" value="false" />
-    </antcall>
-  </target>
-  
-  <target name="daily-solar-radiation-2-test">
-    <antcall target="run-test">
-      <param name="dir" value="examples/DailySolarRadiation"/>
-      <param name="out" value="examples/DailySolarRadiation/daily-solar-radiation-2.out"/>
-      <param name="script-file" value="daily-solar-radiation-2.r"/>
-      <param name="expected_out" value="examples/DailySolarRadiation/expected_daily-solar-radiation-2.out"/>
-      <param name="expected_ddg" value="examples/DailySolarRadiation/expected_daily-solar-radiation-2_ddg.txt"/>
-      <param name="source_test" value="false" />
-    </antcall>
-  </target>
+  	<target name="RealTime15MinMET">
+  		<antcall target="run-no-instrumentation-test">
+  			<param name="test-name" value="RealTime15MinMET" />
+  		</antcall>
+  	</target>
 
-  <target name="real-time-15min-met-test" depends="dependencies">
-    <antcall target="run-test">
-      <param name="dir" value="examples/RealTime15MinMET"/>
-      <param name="out" value="examples/RealTime15MinMET/real-time-15min-met-test.out"/>
-      <param name="script-file" value="real-time-15min-met-test.r"/>
-      <param name="expected_out" value="examples/RealTime15MinMET/expected_real-time-15min-met-test.out"/>
-      <param name="expected_ddg" value="examples/RealTime15MinMET/expected_real-time-15min-met-test_ddg.txt"/>
-      <param name="source_test" value="true" />
-    </antcall>
-  </target>
+	<target name="update-RealTime15MinMET">
+	  	<antcall target="update-no-instrumentation-expected">
+	  		<param name="test-name" value="RealTime15MinMET" />
+	 	</antcall>
+	</target>
 
-  <target name="quality-control-15min-test" depends="dependencies">
-    <antcall target="run-test">
-      <param name="dir" value="examples/QualityControl15Min"/>
-      <param name="out" value="examples/QualityControl15Min/quality-control-15min-test.out"/>
-      <param name="script-file" value="quality-control-15min-test.r"/>
-      <param name="expected_out" value="examples/QualityControl15Min/expected_quality-control-15min-test.out"/>
-      <param name="expected_ddg" value="examples/QualityControl15Min/expected_quality-control-15min-test_ddg.txt"/>
-      <param name="source_test" value="true" />
-    </antcall>
-  </target>
+  	<target name="QualityControl15Min">
+  		<antcall target="run-no-instrumentation-test">
+  			<param name="test-name" value="QualityControl15Min" />
+  		</antcall>
+  	</target>
 
-  <target name="daily-solar-radiation-tests" depends="daily-solar-radiation-1-test, daily-solar-radiation-2-test">
-    <echo>The daily solar radiation tests should only differ in system information</echo>
-  </target>
-  <target name="script-tests" depends="calculate-square-root-tests, daily-solar-radiation-tests, real-time-15min-met-test, quality-control-15min-test">
-    <echo>Script tests for which out put should not differ </echo>
-  </target>
-  <!--########################## End Script Tests ##########################-->
+	<target name="update-QualityControl15Min">
+	  	<antcall target="update-no-instrumentation-expected">
+	  		<param name="test-name" value="QualityControl15Min" />
+	 	</antcall>
+	</target>
+
+    <target name="interactive-tests" depends="RealTime15MinMET, QualityControl15Min">
+	    <echo>Script tests for which the user needs to provide input </echo>
+	</target>
+	
+  	<target name="AaronSimesDendrochronology">
+  		<antcall target="run-no-instrumentation-test">
+  			<param name="test-name" value="AaronSimesDendrochronology" />
+  		</antcall>
+  	</target>
+
+	<target name="update-AaronSimesDendrochronology">
+	  	<antcall target="update-no-instrumentation-expected">
+	  		<param name="test-name" value="AaronSimesDendrochronology" />
+	 	</antcall>
+	</target>
+
+	<target name="long-script-tests" depends="AaronSimesDendrochronology" >
+	    <echo>Long tests derived from real-world scripts. </echo>
+	</target>
+	  
+
 
   <!--########################## Start Bug Tests ##########################-->
-  <target name="ddg-changes-behavior-test">
-    <antcall target="run-test">
-      <param name="dir" value="examples/ddgChangesBehavior"/>
-      <param name="out" value="examples/ddgChangesBehavior/ddgChangesBehavior.out"/>
-      <param name="script-file" value="ddgChangesBehavior.r"/>
-      <param name="expected_out" value="examples/ddgChangesBehavior/expected_ddgChangesBehavior.out"/>
-      <param name="expected_ddg" value="examples/ddgChangesBehavior/expected_ddgChangesBehavior_ddg.txt"/>
-      <param name="source_test" value="false" />
-    </antcall>
-  </target>
 
-  <target name="ddg-hang-test">
-    <antcall target="run-test">
-      <param name="dir" value="examples/DDGHangBug"/>
-      <param name="out" value="examples/DDGHangBug/DDGHangBug.out"/>
-      <param name="script-file" value="DDGHangBug.R"/>
-      <param name="expected_out" value="examples/DDGHangBug/expected_DDGHangBug.out"/>
-      <param name="expected_ddg" value="examples/DDGHangBug/expected_DDGHangBug_ddg.txt"/>
-      <param name="source_test" value="false" />
-    </antcall>
-    <echo>This DDG sometimes hangs DDG Explorer because of the large n value. For testing, we keep a relatively small n. If you change n, the .out file must also be changed.</echo>
-  </target>  
+  	<target name="ddgDeepNesting">
+  		<antcall target="run-no-instrumentation-test">
+  			<param name="test-name" value="ddgDeepNesting" />
+  		</antcall>
+  	    <echo>This DDG takes over 3 minutes to create.</echo>
+  	    <echo>It takes about 3 seconds to run if not building a DDG.</echo>
+  	    <echo>It hangs DDG Explorer because of the large n value, StackOverflow inside prefuse code.</echo>
+  	</target>
 
-  <target name="scoping-error-test">
-    <antcall target="run-test">
-      <param name="dir" value="examples/scopingTest"/>
-      <param name="out" value="examples/scopingTest/scoping_error.out"/>
-      <param name="script-file" value="scoping_error.r"/>
-      <param name="expected_out" value="examples/scopingTest/expected_scoping_error.out"/>
-      <param name="expected_ddg" value="examples/scopingTest/expected_scoping_error_ddg.txt"/>
-      <param name="source_test" value="false" />
-    </antcall>
-    <echo>If this breaks, we have issues with scoping.</echo>
-  </target>  
+	<target name="update-ddgDeepNesting">
+	  	<antcall target="update-no-instrumentation-expected">
+	  		<param name="test-name" value="ddgDeepNesting" />
+	 	</antcall>
+	</target>
 
-  <target name="simple-test">
-    <antcall target="run-test">
-      <param name="dir" value="examples/simpleTest"/>
-      <param name="out" value="examples/simpleTest/simple.out"/>
-      <param name="script-file" value="simple.r"/>
-      <param name="expected_out" value="examples/simpleTest/expected_simple.out"/>
-      <param name="expected_ddg" value="examples/simpleTest/expected_simple_ddg.txt"/>
-      <param name="source_test" value="false" />
-    </antcall>
-  </target> 
-
-  <target name="env-test">
-	<antcall target="run-test">
-	  <param name="dir" value="examples/EnvTest"/>
-	  <param name="out" value="examples/EnvTest/EnvTest.out"/>
-	  <param name="script-file" value="EnvTest.R"/>
-	  <param name="expected_out" value="examples/EnvTest/expected.out"/>
-	  <param name="expected_ddg" value="examples/EnvTest/expected_ddg.txt"/>
-	  <param name="source_test" value="false" />
-	</antcall>
-  </target> 
-
-  <target name="preview-test">
-	<antcall target="run-test">
-	  <param name="dir" value="examples/Preview"/>
-	  <param name="out" value="examples/Preview/hf-dataset-preview-annotated.out"/>
-	  <param name="script-file" value="hf-dataset-preview-annotated.R"/>
-	  <param name="expected_out" value="examples/Preview/expected_hf-dataset-preview-annotated.out"/>
-	  <param name="expected_ddg" value="examples/Preview/expected_hf-dataset-preview-annotated_ddg.txt"/>
-	  <param name="source_test" value="true" />
-	</antcall>
-  </target> 
-
-  <target name="bug-tests" depends="ddg-changes-behavior-test, ddg-hang-test,scoping-error-test, simple-test, env-test" >
+  <target name="bug-tests" depends="ddgDeepNesting" >
     <echo>Tests which were added to check for specific bug fixes </echo>
-  </target>
-
-  <target name="SivanSampling-test">
-    <record name="examples/SivanSampling/SivanSampling-test.log" action="start" />
-      <antcall target="run-test">
-        <param name="dir" value="examples/SivanSampling"/>
-        <param name="out" value="examples/SivanSampling/Sampling.out"/>
-        <param name="script-file" value="Sampling.R"/>
-        <param name="expected_out" value="examples/SivanSampling/expected_Sampling.out"/>
-        <param name="expected_ddg" value="examples/SivanSampling/expected_Sampling_ddg.txt"/>
-
-        <param name="source_test" value="false" />
-      </antcall>
-      <echo>You shuould output this to either a text file, or run the diff manually. The nodes generated are done so through a random process, and therefore differ significantly. Note that the output of this test is saved to examples/SivanSampling/SivanSampling-test.log</echo>
-    <record name="SivanSampling-test.log.txt" action="stop" />
-  </target> 
-
-  <target name="untested-tests" depends="SivanSampling-test" >
-    <echo>Tests which are normally not automatically testsed.</echo>
   </target>
 
   <!--########################## End Bug Tests ##########################-->
   
-  <target name="aaron-annotated-test" depends="dependencies">
-    <record name="examples/Aaron/aaron-annotated-test.log" action="start" />
-      <antcall target="run-test">
-        <param name="dir" value="examples/Aaron"/>
-        <param name="out" value="examples/Aaron/aaron-annotated-test.out"/>
-        <param name="script-file" value="aaron-annotated-test.r"/>
-        <param name="expected_out" value="examples/Aaron/expected_aaron-annotated-test.out"/>
-        <param name="expected_ddg" value="examples/Aaron/expected_aaron-annotated-test_ddg.txt"/>
 
-        <param name="source_test" value="false" />
-      </antcall>
-      <echo message="Please run Aaron's test in the console and compare ddg.txt with expected_ddg.txt" />
-    <record name="aaron-annotated-test-test.log.txt" action="stop" />
-  </target>
-
-  <target name="aaron-min-test" depends="dependencies">
-    <record name="examples/Aaron2/aaron-min-test.log" action="start" />
-      <antcall target="run-test">
-        <param name="dir" value="examples/Aaron2"/>
-        <param name="out" value="examples/Aaron2/aaron-min-test.out"/>
-        <param name="script-file" value="aaron-min-test.r"/>
-        <param name="expected_out" value="examples/Aaron2/expected_aaron-min-test.out"/>
-        <param name="expected_ddg" value="examples/Aaron2/expected_aaron-min-test_ddg.txt"/>
-        <param name="source_test" value="true" />
-      </antcall>
-      <echo message="Please run Aaron's test in the console and compare ddg.txt with expected_ddg.txt" />
-    <record name="aaron-min-test-test.log.txt" action="stop" />
-  </target>
-
-  <target name="long-script-tests" depends="aaron-annotated-test, aaron-min-test" >
-    <echo>Long tests derived from real-world scripts. </echo>
-  </target>
-  
   <!--################################# MAIN #################################-->
   <target name="quick-test" depends="normal-tests, checkpoint-tests, source-tests, bug-tests" description="Run quick regressions tests for the currently installed RDataTracker Package.">
     <echo>This batch of tests is quick to execute, but not as extensive.</echo>
   </target>
 
-  <target name="long-test" depends="script-tests, aaron-min-test, aaron-annotated-test" description="Run long regression tests for the currently installed RDataTracker Package.">
+  <target name="long-test" depends="script-tests, long-script-tests" description="Run long regression tests for the currently installed RDataTracker Package.">
     <echo>This batch of tests takes longer, but is a bit more real-world</echo>
   </target>
 
   <target name="test-all" depends="quick-test, long-test" description="Run all regression tests for the currently installed RDataTracker Package.">
       <echo>All tests makes calls to the RDataTracker Library. You might need to restart RStudio to correctly run the scripts with the updated library installed. Output is saved in tests.log.
-
-      There is one test which is not run here. The test is SivanSimes dendrochronology master analysis file-test-test. Run it manually, though output is random.</echo>
+	  </echo>
   </target>
 
   <target name="install-and-test" description="Install the RDataTracker Package and perform all normal regression tests.">

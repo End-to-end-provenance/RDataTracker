@@ -1,0 +1,26 @@
+Start 1 CheckpointTest.R CheckpointTest.R FALSE FALSE
+Operation 2 rm(list = ls()) rm(list = ls()) FALSE FALSE
+Operation 3 source(\"/Users/blerner/Documents/Process/DataProvenance/git source(\"/Users/blerner/Documents/Process/DataProvenance/git FALSE FALSE
+Operation 4 f <- function() {    n} f <- function() {    n} FALSE FALSE
+Operation 5 n <<- 1 n <<- 1 FALSE FALSE
+Operation 6 print(paste(\"n before checkpoint 1 =\", f())) print(paste(\"n before checkpoint 1 =\", f())) FALSE FALSE
+Start 7 checkpoint.file.1 <- ddg.checkpoint(\"checkpoint1\") checkpoint.file.1 <- ddg.checkpoint(\"checkpoint1\") FALSE FALSE
+Checkpoint 8 checkpoint1  FALSE FALSE
+Finish 9 checkpoint.file.1 <- ddg.checkpoint(\"checkpoint1\") checkpoint.file.1 <- ddg.checkpoint(\"checkpoint1\") FALSE FALSE
+Operation 10 n <<- 2 n <<- 2 FALSE FALSE
+Operation 11 print(paste(\"n before checkpoint 2 =\", f())) print(paste(\"n before checkpoint 2 =\", f())) FALSE FALSE
+Start 12 checkpoint.file.2 <- ddg.checkpoint() checkpoint.file.2 <- ddg.checkpoint() FALSE FALSE
+Checkpoint 13 1.RData  FALSE FALSE
+Finish 14 checkpoint.file.2 <- ddg.checkpoint() checkpoint.file.2 <- ddg.checkpoint() FALSE FALSE
+Operation 15 print(\"Returned from checkpoint function\") print(\"Returned from checkpoint function\") FALSE FALSE
+Operation 16 print(paste(\"Restoring \", checkpoint.file.1)) print(paste(\"Restoring \", checkpoint.file.1)) FALSE FALSE
+Restore 17 checkpoint1  FALSE FALSE
+Operation 18 print(paste(\"n after restore from checkpoint 1 =\", f())) print(paste(\"n after restore from checkpoint 1 =\", f())) FALSE FALSE
+Operation 19 if (n != 1) {    stop(\"restore of checkpoint 1 failed!\")} if (n != 1) {    stop(\"restore of checkpoint 1 failed!\")} FALSE FALSE
+Operation 20 n <<- 3 n <<- 3 FALSE FALSE
+Operation 21 f() f() FALSE FALSE
+Operation 22 print(paste(\"Restoring \", checkpoint.file.2)) print(paste(\"Restoring \", checkpoint.file.2)) FALSE FALSE
+Restore 23 1.RData  FALSE FALSE
+Operation 24 if (n != 2) {    stop(\"restore of checkpoint 2 failed!\")} if (n != 2) {    stop(\"restore of checkpoint 2 failed!\")} FALSE FALSE
+Operation 25 print(paste(\"n after restore from checkpoint 2 =\", f())) print(paste(\"n after restore from checkpoint 2 =\", f())) FALSE FALSE
+Finish 26 CheckpointTest.R CheckpointTest.R FALSE FALSE

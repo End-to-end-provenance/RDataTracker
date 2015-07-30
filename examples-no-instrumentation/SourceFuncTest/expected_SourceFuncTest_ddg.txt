@@ -1,0 +1,148 @@
+Architecture="x86_64"
+OperatingSystem="unix"
+Language="R"
+LanguageVersion="R version 3.1.2 (2014-10-31)"
+RDataTrackerVersion="1.4"
+Script="[DIR]/SourceFuncTest.R"
+ProcessFileTimestamp="2015-07-28T15.38.43EDT"
+WorkingDirectory="[DIR]"
+DDGDirectory="[DIR]/ddg"
+DateTime="2015-07-29T12.04.46EDT"
+41
+Start p1 "1-SourceFuncTest.R" Value="SourceFuncTest.R" Time="2015-07-29T12.04.46EDT";
+Operation p2 "2-fun <- function(a, b) {    return(a + b)}" Value="fun <- function(a, b) {    return(a + b)}" Time="2015-07-29T12.04.46EDT";
+CF p1 p2
+Data d1 "1-fun" Value="#ddg.function";
+DF p2 d1
+Operation p3 "3-x <- 6" Value="x <- 6" Time="2015-07-29T12.04.46EDT";
+CF p2 p3
+Data d2 "2-x" Value="6";
+DF p3 d2
+Operation p4 "4-y <- 10" Value="y <- 10" Time="2015-07-29T12.04.46EDT";
+CF p3 p4
+Data d3 "3-y" Value="10";
+DF p4 d3
+Operation p5 "5-z <- fun(x, y)" Value="z <- fun(x, y)" Time="2015-07-29T12.04.46EDT";
+CF p4 p5
+DF d2 p5
+DF d3 p5
+Data d4 "4-z" Value="16";
+DF p5 d4
+Operation p6 "6-source(\"source1.r\")" Value="source(\"source1.r\")" Time="2015-07-29T12.04.46EDT";
+CF p5 p6
+Operation p7 "7-v <- fun(w, z)" Value="v <- fun(w, z)" Time="2015-07-29T12.04.46EDT";
+CF p6 p7
+DF d4 p7
+Data d5 "5-v" Value="32";
+DF p7 d5
+Start p8 "8-source(\"source2.r\")" Value="source(\"source2.r\")" Time="2015-07-29T12.04.46EDT";
+CF p7 p8
+Start p9 "9-A" Value="A" Time="2015-07-29T12.04.46EDT";
+CF p8 p9
+Finish p10 "10-A" Value="A" Time="2015-07-29T12.04.46EDT";
+CF p9 p10
+Start p11 "11-B" Value="B" Time="2015-07-29T12.04.46EDT";
+CF p10 p11
+Finish p12 "12-B" Value="B" Time="2015-07-29T12.04.46EDT";
+CF p11 p12
+Finish p13 "13-source(\"source2.r\")" Value="source(\"source2.r\")" Time="2015-07-29T12.04.46EDT";
+CF p12 p13
+Start p14 "14-source(\"source3.r\")" Value="source(\"source3.r\")" Time="2015-07-29T12.04.46EDT";
+CF p13 p14
+Binding p15 "15-x  <-  x" Time="2015-07-29T12.04.46EDT"
+CF p14 p15
+Data d6 "6-x" Value="10";
+DF p15 d6
+Operation p16 "16-g" Value="g" Time="2015-07-29T12.04.46EDT";
+DF d6 p16
+CF p15 p16
+Binding p17 "17-x  <-  x" Time="2015-07-29T12.04.46EDT"
+CF p16 p17
+Data d7 "7-x" Value="10";
+DF p17 d7
+Operation p18 "18-h" Value="h" Time="2015-07-29T12.04.46EDT";
+DF d7 p18
+CF p17 p18
+Binding p19 "19-x  <-  x" Time="2015-07-29T12.04.46EDT"
+CF p18 p19
+Data d8 "8-x" Value="10";
+DF p19 d8
+Operation p20 "20-g" Value="g" Time="2015-07-29T12.04.46EDT";
+DF d8 p20
+CF p19 p20
+Binding p21 "21-x  <-  x" Time="2015-07-29T12.04.46EDT"
+CF p20 p21
+Data d9 "9-x" Value="10";
+DF p21 d9
+Operation p22 "22-h" Value="h" Time="2015-07-29T12.04.46EDT";
+DF d9 p22
+CF p21 p22
+Finish p23 "23-source(\"source3.r\")" Value="source(\"source3.r\")" Time="2015-07-29T12.04.46EDT";
+CF p22 p23
+Start p24 "24-source(\"source4.r\", local = T)" Value="source(\"source4.r\", local = T)" Time="2015-07-29T12.04.46EDT";
+CF p23 p24
+Binding p25 "25-w  <-  x" Time="2015-07-29T12.04.46EDT"
+CF p24 p25
+DF d2 p25
+Data d10 "10-w" Value="5";
+DF p25 d10
+Operation p26 "26-f" Value="f" Time="2015-07-29T12.04.46EDT";
+DF d10 p26
+CF p25 p26
+Data d11 "11-f(x) return" Value="6";
+DF p26 d11
+Binding p27 "27-w  <-  x" Time="2015-07-29T12.04.46EDT"
+CF p26 p27
+DF d2 p27
+Data d12 "12-w" Value="5";
+DF p27 d12
+Operation p28 "28-f" Value="f" Time="2015-07-29T12.04.46EDT";
+DF d12 p28
+CF p27 p28
+Data d13 "13-f(x) return" Value="6";
+DF p28 d13
+Finish p29 "29-source(\"source4.r\", local = T)" Value="source(\"source4.r\", local = T)" Time="2015-07-29T12.04.46EDT";
+CF p28 p29
+Start p30 "30-Stuff" Value="Stuff" Time="2015-07-29T12.04.46EDT";
+CF p29 p30
+Operation p31 "31-m <- 10" Value="m <- 10" Time="2015-07-29T12.04.46EDT";
+CF p30 p31
+Data d14 "14-m" Value="10";
+DF p31 d14
+Start p32 "32-f(m)" Value="f(m)" Time="2015-07-29T12.04.46EDT";
+CF p31 p32
+Binding p33 "33-w  <-  m" Time="2015-07-29T12.04.46EDT"
+CF p32 p33
+DF d14 p33
+Data d15 "15-w" Value="10";
+DF p33 d15
+Operation p34 "34-f" Value="f" Time="2015-07-29T12.04.46EDT";
+DF d15 p34
+CF p33 p34
+Data d16 "16-f(m) return" Value="11";
+DF p34 d16
+Finish p35 "35-f(m)" Value="f(m)" Time="2015-07-29T12.04.46EDT";
+CF p34 p35
+DF d16 p35
+Start p36 "36-f(x)" Value="f(x)" Time="2015-07-29T12.04.46EDT";
+CF p35 p36
+Binding p37 "37-w  <-  x" Time="2015-07-29T12.04.46EDT"
+CF p36 p37
+DF d2 p37
+Data d17 "17-w" Value="5";
+DF p37 d17
+Operation p38 "38-f" Value="f" Time="2015-07-29T12.04.46EDT";
+DF d17 p38
+CF p37 p38
+Data d18 "18-f(x) return" Value="6";
+DF p38 d18
+Finish p39 "39-f(x)" Value="f(x)" Time="2015-07-29T12.04.46EDT";
+CF p38 p39
+DF d11 p39
+DF d13 p39
+DF d18 p39
+Finish p40 "40-Stuff" Value="Stuff" Time="2015-07-29T12.04.46EDT";
+CF p39 p40
+Finish p41 "41-SourceFuncTest.R" Value="SourceFuncTest.R" Time="2015-07-29T12.04.46EDT";
+CF p40 p41
+

@@ -1,0 +1,143 @@
+Architecture="x86_64"
+OperatingSystem="unix"
+Language="R"
+LanguageVersion="R version 3.1.2 (2014-10-31)"
+RDataTrackerVersion="1.4"
+Script="[DIR]/HFDatasetPreview.R"
+ProcessFileTimestamp="2015-07-29T15.30.21EDT"
+WorkingDirectory="[DIR]"
+DDGDirectory="[DIR]/ddg"
+DateTime="2015-07-29T15.30.27EDT"
+34
+Start p1 "1-HFDatasetPreview.R" Value="HFDatasetPreview.R" Time="2015-07-29T15.30.25EDT";
+Operation p2 "2-library(RCurl)" Value="library(RCurl)" Time="2015-07-29T15.30.25EDT";
+CF p1 p2
+Operation p3 "3-library(XML)" Value="library(XML)" Time="2015-07-29T15.30.25EDT";
+CF p2 p3
+Operation p4 "4-library(gplots)" Value="library(gplots)" Time="2015-07-29T15.30.25EDT";
+CF p3 p4
+Operation p5 "5-hf.eml.dir <- \"http://harvardforest.fas.harvard.edu/sites/h" Value="hf.eml.dir <- \"http://harvardforest.fas.harvard.edu/sites/h" Time="2015-07-29T15.30.25EDT";
+CF p4 p5
+Data d1 "1-hf.eml.dir" Value="\"http://harvardforest.fas.harvard.edu/sites/harvardforest.fas.harvard.edu/files/data/eml/\"";
+DF p5 d1
+Operation p6 "6-hf.data.dir <- \"http://harvardforest.fas.harvard.edu/sites/" Value="hf.data.dir <- \"http://harvardforest.fas.harvard.edu/sites/" Time="2015-07-29T15.30.25EDT";
+CF p5 p6
+Data d2 "2-hf.data.dir" Value="\"http://harvardforest.fas.harvard.edu/sites/harvardforest.fas.harvard.edu/files/data/\"";
+DF p6 d2
+Operation p7 "7-get.parsed.eml <- function(dataset.id) {    eml.url <<- past" Value="get.parsed.eml <- function(dataset.id) {    eml.url <<- past" Time="2015-07-29T15.30.25EDT";
+CF p6 p7
+Data d3 "3-get.parsed.eml" Value="#ddg.function";
+DF p7 d3
+Operation p8 "8-parse.time.series.string <- function(st) {    stp <- strspli" Value="parse.time.series.string <- function(st) {    stp <- strspli" Time="2015-07-29T15.30.25EDT";
+CF p7 p8
+Data d4 "4-parse.time.series.string" Value="#ddg.function";
+DF p8 d4
+Operation p9 "9-get.time.series.ids <- function(dataset.id) {    xpath <- pa" Value="get.time.series.ids <- function(dataset.id) {    xpath <- pa" Time="2015-07-29T15.30.25EDT";
+CF p8 p9
+Data d5 "5-get.time.series.ids" Value="#ddg.function";
+DF p9 d5
+Operation p10 "10-get.datafile.id <- function(dataset.id, datafile.num) {    i" Value="get.datafile.id <- function(dataset.id, datafile.num) {    i" Time="2015-07-29T15.30.25EDT";
+CF p9 p10
+Data d6 "6-get.datafile.id" Value="#ddg.function";
+DF p10 d6
+Operation p11 "11-get.all.datafile.ids <- function(ns) {    datafile.ids <- NU" Value="get.all.datafile.ids <- function(ns) {    datafile.ids <- NU" Time="2015-07-29T15.30.25EDT";
+CF p10 p11
+Data d7 "7-get.all.datafile.ids" Value="#ddg.function";
+DF p11 d7
+Operation p12 "12-get.datafile.ids <- function(dataset.id) {    xpath <- paste" Value="get.datafile.ids <- function(dataset.id) {    xpath <- paste" Time="2015-07-29T15.30.25EDT";
+CF p11 p12
+Data d8 "8-get.datafile.ids" Value="#ddg.function";
+DF p12 d8
+Operation p13 "13-get.datafile.name <- function(eml, datafile.id) {    xpath1 " Value="get.datafile.name <- function(eml, datafile.id) {    xpath1 " Time="2015-07-29T15.30.25EDT";
+CF p12 p13
+Data d9 "9-get.datafile.name" Value="#ddg.function";
+DF p13 d9
+Operation p14 "14-get.data.url <- function(eml, datafile.id) {    xpath1 <- pa" Value="get.data.url <- function(eml, datafile.id) {    xpath1 <- pa" Time="2015-07-29T15.30.25EDT";
+CF p13 p14
+Data d10 "10-get.data.url" Value="#ddg.function";
+DF p14 d10
+Operation p15 "15-get.data.table.node.set <- function(eml, datafile.id) {    x" Value="get.data.table.node.set <- function(eml, datafile.id) {    x" Time="2015-07-29T15.30.25EDT";
+CF p14 p15
+Data d11 "11-get.data.table.node.set" Value="#ddg.function";
+DF p15 d11
+Operation p16 "16-get.variable.type <- function(ns) {    x1 <- xpathApply(ns, " Value="get.variable.type <- function(ns) {    x1 <- xpathApply(ns, " Time="2015-07-29T15.30.25EDT";
+CF p15 p16
+Data d12 "12-get.variable.type" Value="#ddg.function";
+DF p16 d12
+Operation p17 "17-get.all.variable.types <- function(ns) {    num <- xmlSize(n" Value="get.all.variable.types <- function(ns) {    num <- xmlSize(n" Time="2015-07-29T15.30.25EDT";
+CF p16 p17
+Data d13 "13-get.all.variable.types" Value="#ddg.function";
+DF p17 d13
+Operation p18 "18-get.variable.format.string <- function(ns) {    x <- xpathAp" Value="get.variable.format.string <- function(ns) {    x <- xpathAp" Time="2015-07-29T15.30.25EDT";
+CF p17 p18
+Data d14 "14-get.variable.format.string" Value="#ddg.function";
+DF p18 d14
+Operation p19 "19-get.all.variable.format.strings <- function(ns) {    num <- " Value="get.all.variable.format.strings <- function(ns) {    num <- " Time="2015-07-29T15.30.25EDT";
+CF p18 p19
+Data d15 "15-get.all.variable.format.strings" Value="#ddg.function";
+DF p19 d15
+Operation p20 "20-get.data.file <- function(data.url, var.types) {    con <- f" Value="get.data.file <- function(data.url, var.types) {    con <- f" Time="2015-07-29T15.30.25EDT";
+CF p19 p20
+Data d16 "16-get.data.file" Value="#ddg.function";
+DF p20 d16
+Operation p21 "21-get.hf.datafile <- function(datafile.id) {    datafile.name " Value="get.hf.datafile <- function(datafile.id) {    datafile.name " Time="2015-07-29T15.30.25EDT";
+CF p20 p21
+Data d17 "17-get.hf.datafile" Value="#ddg.function";
+DF p21 d17
+Operation p22 "22-get.summary.stats.data.frame <- function(xx) {    sum.types " Value="get.summary.stats.data.frame <- function(xx) {    sum.types " Time="2015-07-29T15.30.25EDT";
+CF p21 p22
+Data d18 "18-get.summary.stats.data.frame" Value="#ddg.function";
+DF p22 d18
+Operation p23 "23-get.plot.dataframe <- function(xx, max.rows) {    plt.types " Value="get.plot.dataframe <- function(xx, max.rows) {    plt.types " Time="2015-07-29T15.30.25EDT";
+CF p22 p23
+Data d19 "19-get.plot.dataframe" Value="#ddg.function";
+DF p23 d19
+Operation p24 "24-create.summary.stats.table <- function(xx) {    xx.sum <- ge" Value="create.summary.stats.table <- function(xx) {    xx.sum <- ge" Time="2015-07-29T15.30.25EDT";
+CF p23 p24
+Data d20 "20-create.summary.stats.table" Value="#ddg.function";
+DF p24 d20
+Operation p25 "25-create.time.series.plot <- function(xx) {    xx.plt <- get.p" Value="create.time.series.plot <- function(xx) {    xx.plt <- get.p" Time="2015-07-29T15.30.25EDT";
+CF p24 p25
+Data d21 "21-create.time.series.plot" Value="#ddg.function";
+DF p25 d21
+Operation p26 "26-create.scatterplot.matrix <- function(xx) {    xx.plt <- get" Value="create.scatterplot.matrix <- function(xx) {    xx.plt <- get" Time="2015-07-29T15.30.25EDT";
+CF p25 p26
+Data d22 "22-create.scatterplot.matrix" Value="#ddg.function";
+DF p26 d22
+Operation p27 "27-get.plot.type <- function(datafile.id) {    num <- as.intege" Value="get.plot.type <- function(datafile.id) {    num <- as.intege" Time="2015-07-29T15.30.25EDT";
+CF p26 p27
+Data d23 "23-get.plot.type" Value="#ddg.function";
+DF p27 d23
+Operation p28 "28-create.datafile.preview <- function(datafile.id) {    dd <<-" Value="create.datafile.preview <- function(datafile.id) {    dd <<-" Time="2015-07-29T15.30.25EDT";
+CF p27 p28
+Data d24 "24-create.datafile.preview" Value="#ddg.function";
+DF p28 d24
+Operation p29 "29-dataset.id <- \"hf000\"" Value="dataset.id <- \"hf000\"" Time="2015-07-29T15.30.25EDT";
+CF p28 p29
+Data d25 "25-dataset.id" Value="\"hf000\"";
+DF p29 d25
+Operation p30 "30-datafile.num <- 0" Value="datafile.num <- 0" Time="2015-07-29T15.30.25EDT";
+CF p29 p30
+Data d26 "26-datafile.num" Value="0";
+DF p30 d26
+Operation p31 "31-eml <- get.parsed.eml(dataset.id)" Value="eml <- get.parsed.eml(dataset.id)" Time="2015-07-29T15.30.25EDT";
+CF p30 p31
+DF d25 p31
+Snapshot d27 "27-eml" Value="[DIR]/ddg/27-eml.txt" Time="2015-07-29T15.30.25EDT";
+DF p31 d27
+Operation p32 "32-time.series.ids <- get.time.series.ids(dataset.id)" Value="time.series.ids <- get.time.series.ids(dataset.id)" Time="2015-07-29T15.30.25EDT";
+CF p31 p32
+DF d25 p32
+Snapshot d28 "28-time.series.ids" Value="[DIR]/ddg/28-time.series.ids.csv" Time="2015-07-29T15.30.25EDT";
+DF p32 d28
+Operation p33 "33-if (datafile.num != 0) {    datafile.id <- get.datafile.id(d" Value="if (datafile.num != 0) {    datafile.id <- get.datafile.id(d" Time="2015-07-29T15.30.27EDT";
+CF p32 p33
+DF d26 p33
+DF d25 p33
+Data d29 "29-datafile.id" Value="\"hf000-02\"";
+DF p33 d29
+Data d30 "30-datafile.ids" Value="\"hf000-01\",\"hf000-02\"";
+DF p33 d30
+Finish p34 "34-HFDatasetPreview.R" Value="HFDatasetPreview.R" Time="2015-07-29T15.30.27EDT";
+CF p33 p34
+
