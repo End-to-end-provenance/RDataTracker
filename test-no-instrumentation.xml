@@ -1,3 +1,80 @@
+<!--
+  This file supports testing of RDataTracker.  Each test case runs 
+  RDataTracker and compares both its standard output and the created 
+  ddg.txt file to an expected result.  The comparison ignores differences 
+  related to file paths, platform executed on and timestamps.  For each 
+  test case, there is also a separate update task that can be used to 
+  update the expected results.  
+
+  To run it, use:
+
+> ant -file test-no-instrumentation.xml
+
+  Start with basicTest
+
+> ant -file test-no-instrumentation.xml basicTest
+
+  When you run a test, it will create several files names something like:
+
+  <target>.out - standard output from executing the test
+  ddg/ddg.txt - ddg from executing the test
+
+  After a test is run, the .out files and the ddg.txt files are compared
+  to expected_ files with the same names.  The differences are displayed 
+  on standard output.  If the tests work as before, the only differences 
+  you should see are in the execution time.  
+
+  If the tests stop with Build failed, see what the last test was that was 
+  attempted.  Look in its .out file(s).  Most likely, there is something 
+  that caused it to not work.  Perhaps a library function has changed and 
+  the test needs to be updated.  Perhaps the test needs a network connection 
+  and you are not online.  It is usually easy to understand the problem by 
+  looking at the .out files.
+
+  If the test results differ from the expected results as reported by the
+  diff output at the end of the test case run, examine the results.  If the
+  new version is incorrect, you should fix the problem and try again.  If 
+  the new version is correct, then you have either fixed a bug or added
+  an enhancement and should update the expected results.  To do that, you 
+  run an update task.  Update tasks are only provided for individual tests 
+  to reduce the likelihood that somebody would inadvertently update the 
+  expected results.  The task is always named "update-<test>" where "<test>" 
+  would be replaced with the name of the test, like "update-basicTest".
+
+  When basicTest works, move on to normal-tests which will run the following 
+  test cases:
+
+- basicTest
+- S4ObjectTest
+- ScopeTest
+- ReturnTest
+- OddParameterTest
+- FunctionAnnotationTest
+
+  The target "script-tests" will run all the short-running scripts:
+
+- CalculateSquareRoot
+- DailySolarRadiation
+- HFDatasetPreview
+- SivanSampling
+
+  The target "test-all" will do all of the normal & script tests above and 
+  also Aaron's Simes script, which takes longer to run.
+  
+  To add a new test case, duplicate one of the existing test and update tasks,
+  modify the name of the task and the value passed to run-no-instrumentation-test
+  and update-no-instrumentation-expected.  It is important that each test 
+  script live in its own directory.  The value passed to run-no-instrumentation-test
+  and update-no-instrumentation-expected should be the directory name.  The 
+  script inside that directory should have the same name, with .R appended to it.  
+  When you add a new test case, you should also add it to one of the tasks that
+  group together test cases: 
+  - normal-tests is used for basic R tests.
+  - script-tests is used for real R scripts that are short-running
+  - long-script-tests are used for real R scripts that are long-running
+  - bug-tests are tests that trigger a bug either in DDG Explorer or RDataTracker
+
+-->
 
 <project
     name="TESTS"
@@ -164,7 +241,20 @@
 	<!-- Updates the expected result files for a test case.  This should only be used when the
 		 expected results have changed for the better!  -->
 	<target name="update-expected">
-	    <!-- Directory to store expected results while editing -->
+		<!-- Confirm that the user wants to update the expected results.  -->
+		<input
+		    message="Do you want to update the expected results for ${dir}?"
+		    validargs="y,n"
+		    addproperty="do.update"
+		/>
+		<condition property="do.abort">
+			<not>
+				<equals arg1="y" arg2="${do.update}"/>
+			</not>
+		</condition>
+		<fail if="do.abort">Update aborted by user.</fail>
+		
+		<!-- Directory to store expected results while editing -->
 	    <property name="expected_dir" value="${dir}/expected" />
 	    <delete dir="${expected_dir}" quiet="true" /> 
 	    <mkdir dir="${expected_dir}" />
