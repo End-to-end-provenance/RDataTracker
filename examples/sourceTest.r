@@ -16,5 +16,14 @@ library(RDataTracker)
 testDir <- "[DIR_LOCAL]/"
 setwd(testDir)
 
-# Source the script
-ddg.source("[SCRIPT]", ignore.ddg.calls = F)
+# get initial time
+startTime <- Sys.time()
+invisible(force(startTime))
+
+# Run the script
+#ddg.run("[SCRIPT]", "[DIR_DDG]", ignore.ddg.calls = F)
+ddg.run("[SCRIPT]", "[DIR_DDG]")
+
+# Calculate total time of execution
+endTime <- Sys.time()
+cat("Execution Time =", difftime(endTime, startTime,units="secs"))

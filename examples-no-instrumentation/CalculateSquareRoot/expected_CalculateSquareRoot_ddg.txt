@@ -1,0 +1,71 @@
+Architecture="x86_64"
+OperatingSystem="unix"
+Language="R"
+LanguageVersion="R version 3.1.2 (2014-10-31)"
+RDataTrackerVersion="1.4"
+Script="[DIR]/CalculateSquareRoot.R"
+ProcessFileTimestamp="2015-07-29T13.55.39EDT"
+WorkingDirectory="[DIR]"
+DDGDirectory="[DIR]/ddg"
+DateTime="2015-07-29T13.58.30EDT"
+15
+Start p1 "1-CalculateSquareRoot.R" Value="CalculateSquareRoot.R" Time="2015-07-29T13.58.29EDT";
+Operation p2 "2-get.initial.values <- function() {    number <<- 10    toler" Value="get.initial.values <- function() {    number <<- 10    toler" Time="2015-07-29T13.58.29EDT";
+CF p1 p2
+Data d1 "1-get.initial.values" Value="#ddg.function";
+DF p2 d1
+Operation p3 "3-get.random <- function(x) {    z <- runif(1, 1, x)    return" Value="get.random <- function(x) {    z <- runif(1, 1, x)    return" Time="2015-07-29T13.58.29EDT";
+CF p2 p3
+Data d2 "2-get.random" Value="#ddg.function";
+DF p3 d2
+Operation p4 "4-calc.square.root <- function(n, x) {    y <- n/x    z <- (x " Value="calc.square.root <- function(n, x) {    y <- n/x    z <- (x " Time="2015-07-29T13.58.29EDT";
+CF p3 p4
+Data d3 "3-calc.square.root" Value="#ddg.function";
+DF p4 d3
+Operation p5 "5-get.difference <- function(n, x) {    z <- abs(n - x^2)    r" Value="get.difference <- function(n, x) {    z <- abs(n - x^2)    r" Time="2015-07-29T13.58.29EDT";
+CF p4 p5
+Data d4 "4-get.difference" Value="#ddg.function";
+DF p5 d4
+Operation p6 "6-get.check.value <- function(d, t) {    z <- d - t    return(" Value="get.check.value <- function(d, t) {    z <- d - t    return(" Time="2015-07-29T13.58.29EDT";
+CF p5 p6
+Data d5 "5-get.check.value" Value="#ddg.function";
+DF p6 d5
+Operation p7 "7-store.result <- function(n, x) {    num <- n    sqrt <- x   " Value="store.result <- function(n, x) {    num <- n    sqrt <- x   " Time="2015-07-29T13.58.29EDT";
+CF p6 p7
+Data d6 "6-store.result" Value="#ddg.function";
+DF p7 d6
+Operation p8 "8-write.result <- function(fn, zz) {    file.out <- paste(getw" Value="write.result <- function(fn, zz) {    file.out <- paste(getw" Time="2015-07-29T13.58.29EDT";
+CF p7 p8
+Data d7 "7-write.result" Value="#ddg.function";
+DF p8 d7
+Operation p9 "9-get.initial.values()" Value="get.initial.values()" Time="2015-07-29T13.58.29EDT";
+CF p8 p9
+DF d1 p9
+Operation p10 "10-estimate <- get.random(number)" Value="estimate <- get.random(number)" Time="2015-07-29T13.58.29EDT";
+CF p9 p10
+Data d8 "8-estimate" Value="5.06126490235329";
+DF p10 d8
+Operation p11 "11-check <- number" Value="check <- number" Time="2015-07-29T13.58.29EDT";
+CF p10 p11
+Data d9 "9-check" Value="10";
+DF p11 d9
+Operation p12 "12-while (check > 0) {    estimate <- calc.square.root(number, " Value="while (check > 0) {    estimate <- calc.square.root(number, " Time="2015-07-29T13.58.29EDT";
+CF p11 p12
+DF d8 p12
+Data d10 "10-estimate" Value="3.16227766058185";
+DF p12 d10
+Data d11 "11-check" Value="-9.99738501266222e-06";
+DF p12 d11
+Data d12 "12-difference" Value="2.61498733777898e-09";
+DF p12 d12
+Operation p13 "13-sqr.root <- store.result(number, estimate)" Value="sqr.root <- store.result(number, estimate)" Time="2015-07-29T13.58.30EDT";
+CF p12 p13
+DF d10 p13
+Snapshot d13 "13-sqr.root" Value="[DIR]/ddg/13-sqr.root.csv" Time="2015-07-29T13.58.30EDT";
+DF p13 d13
+Operation p14 "14-write.result(\"sqr-root.csv\", sqr.root)" Value="write.result(\"sqr-root.csv\", sqr.root)" Time="2015-07-29T13.58.30EDT";
+CF p13 p14
+DF d13 p14
+Finish p15 "15-CalculateSquareRoot.R" Value="CalculateSquareRoot.R" Time="2015-07-29T13.58.30EDT";
+CF p14 p15
+

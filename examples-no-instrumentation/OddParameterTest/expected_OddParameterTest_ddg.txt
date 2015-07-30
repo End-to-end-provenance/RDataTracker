@@ -1,0 +1,58 @@
+Architecture="x86_64"
+OperatingSystem="unix"
+Language="R"
+LanguageVersion="R version 3.1.2 (2014-10-31)"
+RDataTrackerVersion="1.4"
+Script="[DIR]/OddParameterTest.R"
+ProcessFileTimestamp="2015-07-29T15.23.37EDT"
+WorkingDirectory="[DIR]"
+DDGDirectory="[DIR]/ddg"
+DateTime="2015-07-29T15.24.07EDT"
+15
+Start p1 "1-OddParameterTest.R" Value="OddParameterTest.R" Time="2015-07-29T15.24.06EDT";
+Operation p2 "2-f <- function(x) {    return(1)}" Value="f <- function(x) {    return(1)}" Time="2015-07-29T15.24.06EDT";
+CF p1 p2
+Data d1 "1-f" Value="#ddg.function";
+DF p2 d1
+Operation p3 "3-f3 <- function() {    stop(\"f3 stopped execution\")}" Value="f3 <- function() {    stop(\"f3 stopped execution\")}" Time="2015-07-29T15.24.06EDT";
+CF p2 p3
+Data d2 "2-f3" Value="#ddg.function";
+DF p3 d2
+Operation p4 "4-a <- 3" Value="a <- 3" Time="2015-07-29T15.24.06EDT";
+CF p3 p4
+Data d3 "3-a" Value="3";
+DF p4 d3
+Operation p5 "5-f(a)" Value="f(a)" Time="2015-07-29T15.24.06EDT";
+CF p4 p5
+DF d3 p5
+Operation p6 "6-b <- 1/0" Value="b <- 1/0" Time="2015-07-29T15.24.06EDT";
+CF p5 p6
+Data d4 "4-b" Value="Inf";
+DF p6 d4
+Operation p7 "7-f(b)" Value="f(b)" Time="2015-07-29T15.24.06EDT";
+CF p6 p7
+DF d4 p7
+Operation p8 "8-f(d)" Value="f(d)" Time="2015-07-29T15.24.06EDT";
+CF p7 p8
+Operation p9 "9-d <- 1" Value="d <- 1" Time="2015-07-29T15.24.06EDT";
+CF p8 p9
+Data d5 "5-d" Value="1";
+DF p9 d5
+Operation p10 "10-f(d)" Value="f(d)" Time="2015-07-29T15.24.06EDT";
+CF p9 p10
+DF d5 p10
+Operation p11 "11-d <- 6" Value="d <- 6" Time="2015-07-29T15.24.06EDT";
+CF p10 p11
+Data d6 "6-d" Value="6";
+DF p11 d6
+Operation p12 "12-f(d[[2]])" Value="f(d[[2]])" Time="2015-07-29T15.24.07EDT";
+CF p11 p12
+DF d6 p12
+Operation p13 "13-f(f3)" Value="f(f3)" Time="2015-07-29T15.24.07EDT";
+CF p12 p13
+DF d2 p13
+Operation p14 "14-f(.GlobalEnv)" Value="f(.GlobalEnv)" Time="2015-07-29T15.24.07EDT";
+CF p13 p14
+Finish p15 "15-OddParameterTest.R" Value="OddParameterTest.R" Time="2015-07-29T15.24.07EDT";
+CF p14 p15
+

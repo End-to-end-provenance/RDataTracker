@@ -104,12 +104,18 @@
                     flags="g"
                     unless:true="${no-source}"
     />
+  	<replaceregexp  file="${local_dir}/sourceTest.r"
+  	                    match="\[DIR_DDG\]"
+  	                    replace="${FILE.basedir}/${dir}/ddg-source"
+  	                    flags="g"
+  	                    unless:true="${no-source}"
+  	/>
 
-    <!-- Execute the R Script (delete ddg directory first) -->
+  	<!-- Execute the R Script (delete ddg directory first) -->
     <delete dir="${dir}/ddg" quiet="true" />
-    <exec executable="Rscript" dir="${local_dir}" output="${FILE.basedir}/${out}" >
+    <!--<exec executable="Rscript" dir="${local_dir}" output="${FILE.basedir}/${out}" >
       <arg line="${script-file}" />
-    </exec>
+    </exec>-->
 
     <!-- Obtain name of expected ddg.txt, expected *.out, and actual *.out -->
     <basename property="ddg_name" file="${expected_ddg}" />
@@ -120,13 +126,15 @@
     <delete dir="${dir}/ddg-source" quiet="true" unless:true="${no-source}"/>
     <exec executable="Rscript" dir="${local_dir}" output="${FILE.basedir}/${dir}/source_${out_name}" unless:true="${no-source}">
       <arg line="sourceTest.r" />
+      <!--<arg value="-e" />
+      <arg value="library(RDataTracker); ddg.run(${script-file}, ${dir}/ddg-source)" />-->
     </exec>
 
     <!-- Make copy of output files (.out and ddg.txt) as well as expected 
          outputs for diff. Append .local to all files -->
     <copy todir="${local_dir}" overwrite="true">
       <!-- Executed ddg.txt file -->
-      <fileset file="${dir}/ddg/ddg.txt" />
+     <!-- <fileset file="${dir}/ddg/ddg.txt" />-->
       <!-- all .out files and files ending in _ddg.txt in the test directory -->
       <fileset dir="${dir}">
         <include name="*.out" />
@@ -199,6 +207,17 @@
   <!--########################## Start Basic TESTS ##########################-->
   <target name="basic-test">
     <antcall target="run-test">
+      <param name="dir" value="examples-no-instrumentation/basicTest"/>
+      <param name="out" value="examples-no-instrumentation/basicTest/basicTest.out"/>
+      <param name="script-file" value="basicTest.r"/>
+      <param name="expected_out" value="examples-no-instrumentation/basicTest/expected_basicTest.out"/>
+      <param name="expected_ddg" value="examples-no-instrumentation/basicTest/expected_basicTest_ddg.txt"/>
+      <param name="source_test" value="true" />
+    </antcall>
+  </target>
+
+<!--	<target name="basic-test">
+    <antcall target="run-test">
       <param name="dir" value="examples/ddgTest"/>
       <param name="out" value="examples/ddgTest/basicTest.out"/>
       <param name="script-file" value="basicTest.r"/>
@@ -206,7 +225,7 @@
       <param name="expected_ddg" value="examples/ddgTest/expected_basicTest_ddg.txt"/>
       <param name="source_test" value="true" />
     </antcall>
-  </target>
+  </target>-->
 
   <target name="S4-object-test">
     <antcall target="run-test">

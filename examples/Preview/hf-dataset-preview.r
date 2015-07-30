@@ -35,8 +35,6 @@
 
 # revised 2-May-2015
 
-ddg.debug.off()
-
 # libraries
 library(RCurl)
 library(XML)
@@ -115,13 +113,9 @@ get.datafile.id <- function(dataset.id, datafile.num) {
 # get all data table ids from node set
 get.all.datafile.ids <- function(ns) {
   datafile.ids <- NULL
-  print ("xml size")
   num <- xmlSize(ns)
-  print ("done xml size")
   if (num > 0) {
-    print ("xmlSApply")
     ns2 <- xmlSApply(ns, xmlGetAttr, "id")
-    print ("Done xmlSApply")
     for (i in 1:num) {
       datafile.id <- tolower(ns2[[i]])
       if (i==1) {
@@ -138,13 +132,8 @@ get.all.datafile.ids <- function(ns) {
 get.datafile.ids <- function (dataset.id) {
   # get node set
   xpath <- paste("//dataTable", sep="")
-  print ("Getting node set")
   ns <- getNodeSet(eml, xpath)
   # get datafile ids
-  ddg.debug.on()
-  print ("Getting all datafile ids")
-  print (str(ns))
-  print (typeof(ns[[1]]))
   datafile.ids <- get.all.datafile.ids(ns)
   return(datafile.ids)
 }
@@ -628,9 +617,7 @@ if (datafile.num != 0) {
     create.datafile.preview(datafile.id)
   }
 } else {
-  print ("Getting datafile ids")
   datafile.ids <- get.datafile.ids(dataset.id)  
-  print ("Done getting datafile ids")
   if (is.null(datafile.ids)) {
     msg <- paste(dataset.id, ": no data tables in this dataset", sep="")
     warning(msg)
