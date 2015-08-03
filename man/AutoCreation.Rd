@@ -4,13 +4,14 @@
 \description{These functions replace commonly used R functions which retooled 
 versios which automatically capture provenance data. }
 \usage{
-ddg.source(file, local = FALSE, echo = verbose, print.eval = echo, 
+ddg.source(file, ddgdir = NULL, local = FALSE, echo = verbose, print.eval = echo, 
     verbose = getOption("verbose"), max.deparse.length = 150, chdir = FALSE, 
     encoding = getOption("encoding"), ignore.ddg.calls = TRUE, 
-    ignore.init = ignore.ddg.calls, force.console=ignore.init)
+    ignore.init = ignore.ddg.calls, force.console=ignore.init, annotate.functions = TRUE)
 }
 \arguments{
   \item{file}{see \code{\link{source}}}
+  \item{ddgdir}{the directory where the DDG should be saved. }
   \item{local}{see \code{\link{source}}}
   \item{echo}{see \code{\link{source}}}
   \item{print.eval}{see \code{\link{source}}}
@@ -22,7 +23,8 @@ ddg.source(file, local = FALSE, echo = verbose, print.eval = echo,
   pertaining to DDGs should be ignored.}
   \item{ignore.init}{specifies whether suppresion of source script DDG Initialization
   should occur.}
-  \item{force.console}{specifies whether console parsing should be forced on the source script}
+  \item{force.console}{specifies whether console parsing should be forced on the source script. }
+  \item{annotate.functions}{specifies whether automatic annotation of functions should be enabled. }
 } 
 \seealso{
   \code{\link{source}}.
@@ -65,9 +67,11 @@ ddg.source(file, local = FALSE, echo = verbose, print.eval = echo,
   For example, if init.ignore is FALSE but force.console is set to TRUE, then 
   the ddg.init call in the source script will overwrite the console mode. In a sense,
   script changes prevail, but under ambiguous situations, force.console will determine
-  the state of command capturing.
+  the state of command capturing. In any case, the console is returned to the mode set 
+  before the call to ddg.source.
 
-  In any case, the console is returned to the mode set before the call to ddg.source.
+  If annotate.functions is set to TRUE, ddg.function and ddg.return.value are added to 
+  each function definition before the script is executed.
 
   Note that a call to ddg.save is always made once the script has been sourced.
 }

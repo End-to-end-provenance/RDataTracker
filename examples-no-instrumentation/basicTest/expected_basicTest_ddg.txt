@@ -1,116 +1,154 @@
-Architecture="x86_64"
-OperatingSystem="unix"
+Architecture="i386"
+OperatingSystem="windows"
 Language="R"
-LanguageVersion="R version 3.1.2 (2014-10-31)"
-RDataTrackerVersion="1.4"
+LanguageVersion="R version 3.1.1 (2014-07-10)"
+RDataTrackerVersion="1.5"
 Script="[DIR]/basicTest.R"
-ProcessFileTimestamp="2015-07-30T11.44.49EDT"
+ProcessFileTimestamp="2015-07-30T18.31.34EDT"
 WorkingDirectory="[DIR]"
 DDGDirectory="[DIR]/ddg"
-DateTime="2015-07-30T11.44.56EDT"
-28
-Start p1 "1-basicTest.R" Value="basicTest.R" Time="2015-07-30T11.44.56EDT";
-Operation p2 "2-f <- function(a, b, yy, d, e, f) {    return(a + 1)}" Value="f <- function(a, b, yy, d, e, f) {    return(a + 1)}" Time="2015-07-30T11.44.56EDT";
+DateTime="2015-08-03T14.16.51EDT"
+36
+Start p1 "1-basicTest.R" Value="basicTest.R" Time="2015-08-03T14.16.51EDT";
+Operation p2 "2-f <- function(a, b, yy, d, e, f) {    ddg.function()    retu" Value="f <- function(a, b, yy, d, e, f) {    ddg.function()    retu" Time="2015-08-03T14.16.51EDT";
 CF p1 p2
 Data d1 "1-f" Value="#ddg.function";
 DF p2 d1
-Operation p3 "3-x <- 1 + 2" Value="x <- 1 + 2" Time="2015-07-30T11.44.56EDT";
+Operation p3 "3-x <- 1 + 2" Value="x <- 1 + 2" Time="2015-08-03T14.16.51EDT";
 CF p2 p3
 Data d2 "2-x" Value="3";
 DF p3 d2
-Operation p4 "4-y <- paste(\"a\", \"b\", \"c\")" Value="y <- paste(\"a\", \"b\", \"c\")" Time="2015-07-30T11.44.56EDT";
+Operation p4 "4-y <- paste(\"a\", \"b\", \"c\")" Value="y <- paste(\"a\", \"b\", \"c\")" Time="2015-08-03T14.16.51EDT";
 CF p3 p4
 Data d3 "3-y" Value="\"a b c\"";
 DF p4 d3
-Operation p5 "5-z <- x + 2" Value="z <- x + 2" Time="2015-07-30T11.44.56EDT";
+Operation p5 "5-z <- x + 2" Value="z <- x + 2" Time="2015-08-03T14.16.51EDT";
 CF p4 p5
 DF d2 p5
 Data d4 "4-z" Value="5";
 DF p5 d4
-Operation p6 "6-w <- x + 3" Value="w <- x + 3" Time="2015-07-30T11.44.56EDT";
+Operation p6 "6-w <- x + 3" Value="w <- x + 3" Time="2015-08-03T14.16.51EDT";
 CF p5 p6
 DF d2 p6
 Data d5 "5-w" Value="6";
 DF p6 d5
-Operation p7 "7-year <- c(1992, 1995)" Value="year <- c(1992, 1995)" Time="2015-07-30T11.44.56EDT";
+Operation p7 "7-year <- c(1992, 1995)" Value="year <- c(1992, 1995)" Time="2015-08-03T14.16.51EDT";
 CF p6 p7
-Snapshot d6 "6-year" Value="[DIR]/ddg/6-year.csv" Time="2015-07-30T11.44.56EDT";
+Snapshot d6 "6-year" Value="[DIR]/ddg/6-year.csv" Time="2015-08-03T14.16.51EDT";
 DF p7 d6
-Operation p8 "8-name <- c(\"Ben\", \"Greg\")" Value="name <- c(\"Ben\", \"Greg\")" Time="2015-07-30T11.44.56EDT";
+Operation p8 "8-name <- c(\"Ben\", \"Greg\")" Value="name <- c(\"Ben\", \"Greg\")" Time="2015-08-03T14.16.51EDT";
 CF p7 p8
-Snapshot d7 "7-name" Value="[DIR]/ddg/7-name.csv" Time="2015-07-30T11.44.56EDT";
+Snapshot d7 "7-name" Value="[DIR]/ddg/7-name.csv" Time="2015-08-03T14.16.51EDT";
 DF p8 d7
-Operation p9 "9-male <- c(TRUE, TRUE)" Value="male <- c(TRUE, TRUE)" Time="2015-07-30T11.44.56EDT";
+Operation p9 "9-male <- c(TRUE, TRUE)" Value="male <- c(TRUE, TRUE)" Time="2015-08-03T14.16.51EDT";
 CF p8 p9
-Snapshot d8 "8-male" Value="[DIR]/ddg/8-male.csv" Time="2015-07-30T11.44.56EDT";
+Snapshot d8 "8-male" Value="[DIR]/ddg/8-male.csv" Time="2015-08-03T14.16.51EDT";
 DF p9 d8
-Operation p10 "10-kids.df <- data.frame(year, name, male)" Value="kids.df <- data.frame(year, name, male)" Time="2015-07-30T11.44.56EDT";
+Operation p10 "10-kids.df <- data.frame(year, name, male)" Value="kids.df <- data.frame(year, name, male)" Time="2015-08-03T14.16.51EDT";
 CF p9 p10
 DF d6 p10
 DF d7 p10
 DF d8 p10
-Snapshot d9 "9-kids.df" Value="[DIR]/ddg/9-kids.df.csv" Time="2015-07-30T11.44.56EDT";
+Snapshot d9 "9-kids.df" Value="[DIR]/ddg/9-kids.df.csv" Time="2015-08-03T14.16.51EDT";
 DF p10 d9
-Operation p11 "11-x <- NA" Value="x <- NA" Time="2015-07-30T11.44.56EDT";
+Operation p11 "11-x <- NA" Value="x <- NA" Time="2015-08-03T14.16.51EDT";
 CF p10 p11
 Data d10 "10-x" Value="NA";
 DF p11 d10
-Operation p12 "12-y <- NULL" Value="y <- NULL" Time="2015-07-30T11.44.56EDT";
+Operation p12 "12-y <- NULL" Value="y <- NULL" Time="2015-08-03T14.16.51EDT";
 CF p11 p12
 Data d11 "11-y" Value="NULL";
 DF p12 d11
-Operation p13 "13-val <- f(w, x, y, z, x + 1, vector())" Value="val <- f(w, x, y, z, x + 1, vector())" Time="2015-07-30T11.44.56EDT";
+Start p13 "13-val <- f(w, x, y, z, x + 1, vector())" Value="val <- f(w, x, y, z, x + 1, vector())" Time="2015-08-03T14.16.51EDT";
 CF p12 p13
-DF d5 p13
-DF d10 p13
-DF d11 p13
-DF d4 p13
-Data d12 "12-val" Value="7";
-DF p13 d12
-Operation p14 "14-z <- 5" Value="z <- 5" Time="2015-07-30T11.44.56EDT";
+Binding p14 "14-a  <-  w" Time="2015-08-03T14.16.51EDT"
 CF p13 p14
-Data d13 "13-z" Value="5";
-DF p14 d13
-Operation p15 "15-a <- \"character\"" Value="a <- \"character\"" Time="2015-07-30T11.44.56EDT";
+DF d5 p14
+Data d12 "12-a" Value="6";
+DF p14 d12
+Binding p15 "15-b  <-  x" Time="2015-08-03T14.16.51EDT"
 CF p14 p15
-Data d14 "14-a" Value="\"character\"";
-DF p15 d14
-Operation p16 "16-storage.mode(z) <- a" Value="storage.mode(z) <- a" Time="2015-07-30T11.44.56EDT";
+DF d10 p15
+Data d13 "13-b" Value="NA";
+DF p15 d13
+Binding p16 "16-yy  <-  y" Time="2015-08-03T14.16.51EDT"
 CF p15 p16
-DF d14 p16
-Data d15 "15-z" Value="\"5\"";
-DF p16 d15
-Start p17 "17-File tests" Value="File tests" Time="2015-07-30T11.44.56EDT";
+DF d11 p16
+Data d14 "14-yy" Value="NULL";
+DF p16 d14
+Binding p17 "17-d  <-  z" Time="2015-08-03T14.16.51EDT"
 CF p16 p17
-Operation p18 "18-data.df <- read.csv(\"http://harvardforest.fas.harvard.edu/d" Value="data.df <- read.csv(\"http://harvardforest.fas.harvard.edu/d" Time="2015-07-30T11.44.56EDT";
+DF d4 p17
+Data d15 "15-d" Value="5";
+DF p17 d15
+Binding p18 "18-e  <-  x + 1" Time="2015-08-03T14.16.51EDT"
 CF p17 p18
-Snapshot d16 "16-data.df" Value="[DIR]/ddg/16-data.df.csv" Time="2015-07-30T11.44.56EDT";
+DF d10 p18
+Data d16 "16-e" Value="NA";
 DF p18 d16
-Operation p19 "19-if (FALSE) read.csv(\"foo.csv\")" Value="if (FALSE) read.csv(\"foo.csv\")" Time="2015-07-30T11.44.56EDT";
+Binding p19 "19-f  <-  vector()" Time="2015-08-03T14.16.51EDT"
 CF p18 p19
-Operation p20 "20-shortdata.df <- data.df[1:100, ]" Value="shortdata.df <- data.df[1:100, ]" Time="2015-07-30T11.44.56EDT";
-CF p19 p20
+Snapshot d17 "17-f" Value="[DIR]/ddg/17-f.csv" Time="2015-08-03T14.16.51EDT";
+DF p19 d17
+Operation p20 "20-f" Value="f" Time="2015-08-03T14.16.51EDT";
+DF d12 p20
+DF d13 p20
+DF d14 p20
+DF d15 p20
 DF d16 p20
-Snapshot d17 "17-shortdata.df" Value="[DIR]/ddg/17-shortdata.df.csv" Time="2015-07-30T11.44.56EDT";
-DF p20 d17
-Operation p21 "21-write.csv(shortdata.df, \"shortdata.csv\")" Value="write.csv(shortdata.df, \"shortdata.csv\")" Time="2015-07-30T11.44.56EDT";
+DF d17 p20
+CF p19 p20
+Data d18 "18-f(w,x,y,z,x+1,vector()) return" Value="7";
+DF p20 d18
+Finish p21 "21-val <- f(w, x, y, z, x + 1, vector())" Value="val <- f(w, x, y, z, x + 1, vector())" Time="2015-08-03T14.16.51EDT";
 CF p20 p21
-DF d17 p21
-Operation p22 "22-pdf(\"airt-vs-prec.pdf\")" Value="pdf(\"airt-vs-prec.pdf\")" Time="2015-07-30T11.44.56EDT";
+DF d18 p21
+Data d19 "19-val" Value="7";
+DF p21 d19
+Operation p22 "22-z <- 5" Value="z <- 5" Time="2015-08-03T14.16.51EDT";
 CF p21 p22
-Operation p23 "23-plot(shortdata.df$airt, shortdata.df$prec)" Value="plot(shortdata.df$airt, shortdata.df$prec)" Time="2015-07-30T11.44.56EDT";
+Data d20 "20-z" Value="5";
+DF p22 d20
+Operation p23 "23-a <- \"character\"" Value="a <- \"character\"" Time="2015-08-03T14.16.51EDT";
 CF p22 p23
-DF d17 p23
-Operation p24 "24-dev.off()" Value="dev.off()" Time="2015-07-30T11.44.56EDT";
+Data d21 "21-a" Value="\"character\"";
+DF p23 d21
+Operation p24 "24-storage.mode(z) <- a" Value="storage.mode(z) <- a" Time="2015-08-03T14.16.51EDT";
 CF p23 p24
-Finish p25 "25-File tests" Value="File tests" Time="2015-07-30T11.44.56EDT";
+DF d21 p24
+Data d22 "22-z" Value="\"5\"";
+DF p24 d22
+Start p25 "25-File tests" Value="File tests" Time="2015-08-03T14.16.51EDT";
 CF p24 p25
-Operation p26 "26-tryCatch(foo_val <- foo(), error = function(e) {})" Value="tryCatch(foo_val <- foo(), error = function(e) {})" Time="2015-07-30T11.44.56EDT";
+Operation p26 "26-data.df <- read.csv(\"http://harvardforest.fas.harvard.edu/d" Value="data.df <- read.csv(\"http://harvardforest.fas.harvard.edu/d" Time="2015-08-03T14.16.51EDT";
 CF p25 p26
-Start p27 "27-error <- foo()" Value="error <- foo()" Time="2015-07-30T11.44.56EDT";
+Snapshot d23 "23-data.df" Value="[DIR]/ddg/23-data.df.csv" Time="2015-08-03T14.16.51EDT";
+DF p26 d23
+Operation p27 "27-if (FALSE) read.csv(\"foo.csv\")" Value="if (FALSE) read.csv(\"foo.csv\")" Time="2015-08-03T14.16.51EDT";
 CF p26 p27
-Operation p28 "28-tryCatch" Value="tryCatch" Time="2015-07-30T11.44.56EDT";
+Operation p28 "28-shortdata.df <- data.df[1:100, ]" Value="shortdata.df <- data.df[1:100, ]" Time="2015-08-03T14.16.51EDT";
 CF p27 p28
-Exception d18 "18-error.msg" Value="\"Error in eval(expr, envir, enclos): could not find function \"foo\" \"";
-DF p28 d18
+DF d23 p28
+Snapshot d24 "24-shortdata.df" Value="[DIR]/ddg/24-shortdata.df.csv" Time="2015-08-03T14.16.51EDT";
+DF p28 d24
+Operation p29 "29-write.csv(shortdata.df, \"shortdata.csv\")" Value="write.csv(shortdata.df, \"shortdata.csv\")" Time="2015-08-03T14.16.51EDT";
+CF p28 p29
+DF d24 p29
+Operation p30 "30-pdf(\"airt-vs-prec.pdf\")" Value="pdf(\"airt-vs-prec.pdf\")" Time="2015-08-03T14.16.51EDT";
+CF p29 p30
+Operation p31 "31-plot(shortdata.df$airt, shortdata.df$prec)" Value="plot(shortdata.df$airt, shortdata.df$prec)" Time="2015-08-03T14.16.51EDT";
+CF p30 p31
+DF d24 p31
+Operation p32 "32-dev.off()" Value="dev.off()" Time="2015-08-03T14.16.51EDT";
+CF p31 p32
+Finish p33 "33-File tests" Value="File tests" Time="2015-08-03T14.16.51EDT";
+CF p32 p33
+Operation p34 "34-tryCatch(foo_val <- foo(), error = function(e) {})" Value="tryCatch(foo_val <- foo(), error = function(e) {})" Time="2015-08-03T14.16.51EDT";
+CF p33 p34
+Start p35 "35-error <- foo()" Value="error <- foo()" Time="2015-08-03T14.16.51EDT";
+CF p34 p35
+Operation p36 "36-tryCatch" Value="tryCatch" Time="2015-08-03T14.16.51EDT";
+CF p35 p36
+Exception d25 "25-error.msg" Value="\"Error in eval(expr, envir, enclos): could not find function \"foo\" \"";
+DF p36 d25
 

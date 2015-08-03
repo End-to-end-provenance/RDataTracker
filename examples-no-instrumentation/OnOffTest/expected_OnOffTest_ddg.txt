@@ -1,44 +1,72 @@
-Architecture="x86_64"
-OperatingSystem="unix"
+Architecture="i386"
+OperatingSystem="windows"
 Language="R"
-LanguageVersion="R version 3.1.2 (2014-10-31)"
-RDataTrackerVersion="1.4"
-Script="[DIR]/OnOffTest.r"
-ProcessFileTimestamp="2015-07-29T11.09.44EDT"
+LanguageVersion="R version 3.1.1 (2014-07-10)"
+RDataTrackerVersion="1.5"
+Script="[DIR]/OnOffTest.R"
+ProcessFileTimestamp="2015-07-30T18.31.34EDT"
 WorkingDirectory="[DIR]"
 DDGDirectory="[DIR]/ddg"
-DateTime="2015-07-29T11.57.30EDT"
-9
-Start p1 "1-OnOffTest.R" Value="OnOffTest.R" Time="2015-07-29T11.57.30EDT";
-Operation p2 "2-h <- function() {    d <- 333    return(d)}" Value="h <- function() {    d <- 333    return(d)}" Time="2015-07-29T11.57.30EDT";
+DateTime="2015-08-03T14.27.05EDT"
+16
+Start p1 "1-OnOffTest.R" Value="OnOffTest.R" Time="2015-08-03T14.27.05EDT";
+Operation p2 "2-h <- function() {    ddg.function()    d <- 333    return(dd" Value="h <- function() {    ddg.function()    d <- 333    return(dd" Time="2015-08-03T14.27.05EDT";
 CF p1 p2
 Data d1 "1-h" Value="#ddg.function";
 DF p2 d1
-Operation p3 "3-a <- 1" Value="a <- 1" Time="2015-07-29T11.57.30EDT";
+Operation p3 "3-a <- 1" Value="a <- 1" Time="2015-08-03T14.27.05EDT";
 CF p2 p3
 Data d2 "2-a" Value="1";
 DF p3 d2
-Operation p4 "4-b <- a + 1" Value="b <- a + 1" Time="2015-07-29T11.57.30EDT";
+Operation p4 "4-b <- a + 1" Value="b <- a + 1" Time="2015-08-03T14.27.05EDT";
 CF p3 p4
 DF d2 p4
 Data d3 "3-b" Value="2";
 DF p4 d3
-Operation p5 "5-f_val <- f()" Value="f_val <- f()" Time="2015-07-29T11.57.30EDT";
+Start p5 "5-f_val <- f()" Value="f_val <- f()" Time="2015-08-03T14.27.05EDT";
 CF p4 p5
-Data d4 "4-f_val" Value="10";
-DF p5 d4
-Operation p6 "6-c <- 100" Value="c <- 100" Time="2015-07-29T11.57.30EDT";
+Operation p6 "6-f" Value="f" Time="2015-08-03T14.27.05EDT";
 CF p5 p6
-Data d5 "5-c" Value="100";
-DF p6 d5
-Operation p7 "7-x <- 5" Value="x <- 5" Time="2015-07-29T11.57.30EDT";
+Data d4 "4-f() return" Value="10";
+DF p6 d4
+Finish p7 "7-f_val <- f()" Value="f_val <- f()" Time="2015-08-03T14.27.05EDT";
 CF p6 p7
-Data d6 "6-x" Value="5";
-DF p7 d6
-Operation p8 "8-i_val <- i()" Value="i_val <- i()" Time="2015-07-29T11.57.30EDT";
+DF d4 p7
+Data d5 "5-f_val" Value="10";
+DF p7 d5
+Operation p8 "8-c <- 100" Value="c <- 100" Time="2015-08-03T14.27.05EDT";
 CF p7 p8
-Data d7 "7-i_val" Value="1000";
-DF p8 d7
-Finish p9 "9-OnOffTest.R" Value="OnOffTest.R" Time="2015-07-29T11.57.30EDT";
+Data d6 "6-c" Value="100";
+DF p8 d6
+Binding p9 "9-a  <-  c" Time="2015-08-03T14.27.05EDT"
 CF p8 p9
+DF d6 p9
+Data d7 "7-a" Value="100";
+DF p9 d7
+Operation p10 "10-g" Value="g" Time="2015-08-03T14.27.05EDT";
+DF d7 p10
+CF p9 p10
+Data d8 "8-g(c) return" Value="110";
+DF p10 d8
+Operation p11 "11-h" Value="h" Time="2015-08-03T14.27.05EDT";
+CF p10 p11
+Data d9 "9-h() return" Value="333";
+DF p11 d9
+Operation p12 "12-x <- 5" Value="x <- 5" Time="2015-08-03T14.27.05EDT";
+CF p11 p12
+Data d10 "10-x" Value="5";
+DF p12 d10
+Start p13 "13-i_val <- i()" Value="i_val <- i()" Time="2015-08-03T14.27.05EDT";
+CF p12 p13
+Operation p14 "14-i" Value="i" Time="2015-08-03T14.27.05EDT";
+CF p13 p14
+Data d11 "11-i() return" Value="1000";
+DF p14 d11
+Finish p15 "15-i_val <- i()" Value="i_val <- i()" Time="2015-08-03T14.27.05EDT";
+CF p14 p15
+DF d11 p15
+Data d12 "12-i_val" Value="1000";
+DF p15 d12
+Finish p16 "16-OnOffTest.R" Value="OnOffTest.R" Time="2015-08-03T14.27.05EDT";
+CF p15 p16
 

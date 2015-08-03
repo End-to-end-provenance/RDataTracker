@@ -1,71 +1,265 @@
-Architecture="x86_64"
-OperatingSystem="unix"
+Architecture="i386"
+OperatingSystem="windows"
 Language="R"
-LanguageVersion="R version 3.1.2 (2014-10-31)"
-RDataTrackerVersion="1.4"
+LanguageVersion="R version 3.1.1 (2014-07-10)"
+RDataTrackerVersion="1.5"
 Script="[DIR]/CalculateSquareRoot.R"
-ProcessFileTimestamp="2015-07-29T13.55.39EDT"
+ProcessFileTimestamp="2015-07-30T18.31.34EDT"
 WorkingDirectory="[DIR]"
 DDGDirectory="[DIR]/ddg"
-DateTime="2015-07-29T13.58.30EDT"
-15
-Start p1 "1-CalculateSquareRoot.R" Value="CalculateSquareRoot.R" Time="2015-07-29T13.58.29EDT";
-Operation p2 "2-get.initial.values <- function() {    number <<- 10    toler" Value="get.initial.values <- function() {    number <<- 10    toler" Time="2015-07-29T13.58.29EDT";
+DateTime="2015-08-03T14.28.59EDT"
+56
+Start p1 "1-CalculateSquareRoot.R" Value="CalculateSquareRoot.R" Time="2015-08-03T14.28.58EDT";
+Operation p2 "2-get.initial.values <- function() {    ddg.function()    numb" Value="get.initial.values <- function() {    ddg.function()    numb" Time="2015-08-03T14.28.58EDT";
 CF p1 p2
 Data d1 "1-get.initial.values" Value="#ddg.function";
 DF p2 d1
-Operation p3 "3-get.random <- function(x) {    z <- runif(1, 1, x)    return" Value="get.random <- function(x) {    z <- runif(1, 1, x)    return" Time="2015-07-29T13.58.29EDT";
+Operation p3 "3-get.random <- function(x) {    ddg.function()    z <- runif(" Value="get.random <- function(x) {    ddg.function()    z <- runif(" Time="2015-08-03T14.28.58EDT";
 CF p2 p3
 Data d2 "2-get.random" Value="#ddg.function";
 DF p3 d2
-Operation p4 "4-calc.square.root <- function(n, x) {    y <- n/x    z <- (x " Value="calc.square.root <- function(n, x) {    y <- n/x    z <- (x " Time="2015-07-29T13.58.29EDT";
+Operation p4 "4-calc.square.root <- function(n, x) {    ddg.function()    y " Value="calc.square.root <- function(n, x) {    ddg.function()    y " Time="2015-08-03T14.28.58EDT";
 CF p3 p4
 Data d3 "3-calc.square.root" Value="#ddg.function";
 DF p4 d3
-Operation p5 "5-get.difference <- function(n, x) {    z <- abs(n - x^2)    r" Value="get.difference <- function(n, x) {    z <- abs(n - x^2)    r" Time="2015-07-29T13.58.29EDT";
+Operation p5 "5-get.difference <- function(n, x) {    ddg.function()    z <-" Value="get.difference <- function(n, x) {    ddg.function()    z <-" Time="2015-08-03T14.28.58EDT";
 CF p4 p5
 Data d4 "4-get.difference" Value="#ddg.function";
 DF p5 d4
-Operation p6 "6-get.check.value <- function(d, t) {    z <- d - t    return(" Value="get.check.value <- function(d, t) {    z <- d - t    return(" Time="2015-07-29T13.58.29EDT";
+Operation p6 "6-get.check.value <- function(d, t) {    ddg.function()    z <" Value="get.check.value <- function(d, t) {    ddg.function()    z <" Time="2015-08-03T14.28.58EDT";
 CF p5 p6
 Data d5 "5-get.check.value" Value="#ddg.function";
 DF p6 d5
-Operation p7 "7-store.result <- function(n, x) {    num <- n    sqrt <- x   " Value="store.result <- function(n, x) {    num <- n    sqrt <- x   " Time="2015-07-29T13.58.29EDT";
+Operation p7 "7-store.result <- function(n, x) {    ddg.function()    num <-" Value="store.result <- function(n, x) {    ddg.function()    num <-" Time="2015-08-03T14.28.58EDT";
 CF p6 p7
 Data d6 "6-store.result" Value="#ddg.function";
 DF p7 d6
-Operation p8 "8-write.result <- function(fn, zz) {    file.out <- paste(getw" Value="write.result <- function(fn, zz) {    file.out <- paste(getw" Time="2015-07-29T13.58.29EDT";
+Operation p8 "8-write.result <- function(fn, zz) {    ddg.function()    file" Value="write.result <- function(fn, zz) {    ddg.function()    file" Time="2015-08-03T14.28.59EDT";
 CF p7 p8
 Data d7 "7-write.result" Value="#ddg.function";
 DF p8 d7
-Operation p9 "9-get.initial.values()" Value="get.initial.values()" Time="2015-07-29T13.58.29EDT";
+Start p9 "9-get.initial.values()" Value="get.initial.values()" Time="2015-08-03T14.28.59EDT";
 CF p8 p9
-DF d1 p9
-Operation p10 "10-estimate <- get.random(number)" Value="estimate <- get.random(number)" Time="2015-07-29T13.58.29EDT";
+Operation p10 "10-get.initial.values" Value="get.initial.values" Time="2015-08-03T14.28.59EDT";
 CF p9 p10
-Data d8 "8-estimate" Value="5.06126490235329";
+Data d8 "8-get.initial.values() return" Value="1e-05";
 DF p10 d8
-Operation p11 "11-check <- number" Value="check <- number" Time="2015-07-29T13.58.29EDT";
+Finish p11 "11-get.initial.values()" Value="get.initial.values()" Time="2015-08-03T14.28.59EDT";
 CF p10 p11
-Data d9 "9-check" Value="10";
-DF p11 d9
-Operation p12 "12-while (check > 0) {    estimate <- calc.square.root(number, " Value="while (check > 0) {    estimate <- calc.square.root(number, " Time="2015-07-29T13.58.29EDT";
+DF d8 p11
+Start p12 "12-estimate <- get.random(number)" Value="estimate <- get.random(number)" Time="2015-08-03T14.28.59EDT";
 CF p11 p12
-DF d8 p12
-Data d10 "10-estimate" Value="3.16227766058185";
-DF p12 d10
-Data d11 "11-check" Value="-9.99738501266222e-06";
-DF p12 d11
-Data d12 "12-difference" Value="2.61498733777898e-09";
-DF p12 d12
-Operation p13 "13-sqr.root <- store.result(number, estimate)" Value="sqr.root <- store.result(number, estimate)" Time="2015-07-29T13.58.30EDT";
+Binding p13 "13-x  <-  number" Time="2015-08-03T14.28.59EDT"
 CF p12 p13
-DF d10 p13
-Snapshot d13 "13-sqr.root" Value="[DIR]/ddg/13-sqr.root.csv" Time="2015-07-29T13.58.30EDT";
-DF p13 d13
-Operation p14 "14-write.result(\"sqr-root.csv\", sqr.root)" Value="write.result(\"sqr-root.csv\", sqr.root)" Time="2015-07-29T13.58.30EDT";
+Data d9 "9-x" Value="10";
+DF p13 d9
+Operation p14 "14-get.random" Value="get.random" Time="2015-08-03T14.28.59EDT";
+DF d9 p14
 CF p13 p14
-DF d13 p14
-Finish p15 "15-CalculateSquareRoot.R" Value="CalculateSquareRoot.R" Time="2015-07-29T13.58.30EDT";
+Data d10 "10-get.random(number) return" Value="4.06695915549062";
+DF p14 d10
+Finish p15 "15-estimate <- get.random(number)" Value="estimate <- get.random(number)" Time="2015-08-03T14.28.59EDT";
 CF p14 p15
+DF d10 p15
+Data d11 "11-estimate" Value="4.06695915549062";
+DF p15 d11
+Operation p16 "16-check <- number" Value="check <- number" Time="2015-08-03T14.28.59EDT";
+CF p15 p16
+Data d12 "12-check" Value="10";
+DF p16 d12
+Start p17 "17-while (check > 0) {    estimate <- calc.square.root(number, " Value="while (check > 0) {    estimate <- calc.square.root(number, " Time="2015-08-03T14.28.59EDT";
+CF p16 p17
+Binding p18 "18-n  <-  number" Time="2015-08-03T14.28.59EDT"
+CF p17 p18
+Data d13 "13-n" Value="10";
+DF p18 d13
+Binding p19 "19-x  <-  estimate" Time="2015-08-03T14.28.59EDT"
+CF p18 p19
+DF d11 p19
+Data d14 "14-x" Value="4.06695915549062";
+DF p19 d14
+Operation p20 "20-calc.square.root" Value="calc.square.root" Time="2015-08-03T14.28.59EDT";
+DF d13 p20
+DF d14 p20
+CF p19 p20
+Data d15 "15-calc.square.root(number,estimate) return" Value="3.2628993503166";
+DF p20 d15
+Binding p21 "21-n  <-  number" Time="2015-08-03T14.28.59EDT"
+CF p20 p21
+Data d16 "16-n" Value="10";
+DF p21 d16
+Binding p22 "22-x  <-  estimate" Time="2015-08-03T14.28.59EDT"
+CF p21 p22
+DF d11 p22
+Data d17 "17-x" Value="3.2628993503166";
+DF p22 d17
+Operation p23 "23-get.difference" Value="get.difference" Time="2015-08-03T14.28.59EDT";
+DF d16 p23
+DF d17 p23
+CF p22 p23
+Data d18 "18-get.difference(number,estimate) return" Value="0.646512170296489";
+DF p23 d18
+Binding p24 "24-d  <-  difference" Time="2015-08-03T14.28.59EDT"
+CF p23 p24
+Data d19 "19-d" Value="0.646512170296489";
+DF p24 d19
+Binding p25 "25-t  <-  tolerance" Time="2015-08-03T14.28.59EDT"
+CF p24 p25
+Data d20 "20-t" Value="1e-05";
+DF p25 d20
+Operation p26 "26-get.check.value" Value="get.check.value" Time="2015-08-03T14.28.59EDT";
+DF d19 p26
+DF d20 p26
+CF p25 p26
+Data d21 "21-get.check.value(difference,tolerance) return" Value="0.646502170296489";
+DF p26 d21
+Binding p27 "27-n  <-  number" Time="2015-08-03T14.28.59EDT"
+CF p26 p27
+Data d22 "22-n" Value="10";
+DF p27 d22
+Binding p28 "28-x  <-  estimate" Time="2015-08-03T14.28.59EDT"
+CF p27 p28
+DF d11 p28
+Data d23 "23-x" Value="3.2628993503166";
+DF p28 d23
+Operation p29 "29-calc.square.root" Value="calc.square.root" Time="2015-08-03T14.28.59EDT";
+DF d22 p29
+DF d23 p29
+CF p28 p29
+Data d24 "24-calc.square.root(number,estimate) return" Value="3.16382915217614";
+DF p29 d24
+Binding p30 "30-n  <-  number" Time="2015-08-03T14.28.59EDT"
+CF p29 p30
+Data d25 "25-n" Value="10";
+DF p30 d25
+Binding p31 "31-x  <-  estimate" Time="2015-08-03T14.28.59EDT"
+CF p30 p31
+DF d11 p31
+Data d26 "26-x" Value="3.16382915217614";
+DF p31 d26
+Operation p32 "32-get.difference" Value="get.difference" Time="2015-08-03T14.28.59EDT";
+DF d25 p32
+DF d26 p32
+CF p31 p32
+Data d27 "27-get.difference(number,estimate) return" Value="0.0098149041595903";
+DF p32 d27
+Binding p33 "33-d  <-  difference" Time="2015-08-03T14.28.59EDT"
+CF p32 p33
+Data d28 "28-d" Value="0.0098149041595903";
+DF p33 d28
+Binding p34 "34-t  <-  tolerance" Time="2015-08-03T14.28.59EDT"
+CF p33 p34
+Data d29 "29-t" Value="1e-05";
+DF p34 d29
+Operation p35 "35-get.check.value" Value="get.check.value" Time="2015-08-03T14.28.59EDT";
+DF d28 p35
+DF d29 p35
+CF p34 p35
+Data d30 "30-get.check.value(difference,tolerance) return" Value="0.0098049041595903";
+DF p35 d30
+Binding p36 "36-n  <-  number" Time="2015-08-03T14.28.59EDT"
+CF p35 p36
+Data d31 "31-n" Value="10";
+DF p36 d31
+Binding p37 "37-x  <-  estimate" Time="2015-08-03T14.28.59EDT"
+CF p36 p37
+DF d11 p37
+Data d32 "32-x" Value="3.16382915217614";
+DF p37 d32
+Operation p38 "38-calc.square.root" Value="calc.square.root" Time="2015-08-03T14.28.59EDT";
+DF d31 p38
+DF d32 p38
+CF p37 p38
+Data d33 "33-calc.square.root(number,estimate) return" Value="3.16227804058201";
+DF p38 d33
+Binding p39 "39-n  <-  number" Time="2015-08-03T14.28.59EDT"
+CF p38 p39
+Data d34 "34-n" Value="10";
+DF p39 d34
+Binding p40 "40-x  <-  estimate" Time="2015-08-03T14.28.59EDT"
+CF p39 p40
+DF d11 p40
+Data d35 "35-x" Value="3.16227804058201";
+DF p40 d35
+Operation p41 "41-get.difference" Value="get.difference" Time="2015-08-03T14.28.59EDT";
+DF d34 p41
+DF d35 p41
+CF p40 p41
+Data d36 "36-get.difference(number,estimate) return" Value="2.40594717659803e-06";
+DF p41 d36
+Binding p42 "42-d  <-  difference" Time="2015-08-03T14.28.59EDT"
+CF p41 p42
+Data d37 "37-d" Value="2.40594717659803e-06";
+DF p42 d37
+Binding p43 "43-t  <-  tolerance" Time="2015-08-03T14.28.59EDT"
+CF p42 p43
+Data d38 "38-t" Value="1e-05";
+DF p43 d38
+Operation p44 "44-get.check.value" Value="get.check.value" Time="2015-08-03T14.28.59EDT";
+DF d37 p44
+DF d38 p44
+CF p43 p44
+Data d39 "39-get.check.value(difference,tolerance) return" Value="-7.59405282340197e-06";
+DF p44 d39
+Finish p45 "45-while (check > 0) {    estimate <- calc.square.root(number, " Value="while (check > 0) {    estimate <- calc.square.root(number, " Time="2015-08-03T14.28.59EDT";
+CF p44 p45
+DF d15 p45
+DF d18 p45
+DF d21 p45
+DF d24 p45
+DF d27 p45
+DF d30 p45
+DF d33 p45
+DF d36 p45
+DF d39 p45
+Data d40 "40-estimate" Value="3.16227804058201";
+DF p45 d40
+Data d41 "41-difference" Value="2.40594717659803e-06";
+DF p45 d41
+Data d42 "42-check" Value="-7.59405282340197e-06";
+DF p45 d42
+Start p46 "46-sqr.root <- store.result(number, estimate)" Value="sqr.root <- store.result(number, estimate)" Time="2015-08-03T14.28.59EDT";
+CF p45 p46
+Binding p47 "47-n  <-  number" Time="2015-08-03T14.28.59EDT"
+CF p46 p47
+Data d43 "43-n" Value="10";
+DF p47 d43
+Binding p48 "48-x  <-  estimate" Time="2015-08-03T14.28.59EDT"
+CF p47 p48
+DF d40 p48
+Data d44 "44-x" Value="3.16227804058201";
+DF p48 d44
+Operation p49 "49-store.result" Value="store.result" Time="2015-08-03T14.28.59EDT";
+DF d43 p49
+DF d44 p49
+CF p48 p49
+Snapshot d45 "45-store.result(number,estimate) return" Value="[DIR]/ddg/45-store.result(number,estimate) return.csv" Time="2015-08-03T14.28.59EDT";
+DF p49 d45
+Finish p50 "50-sqr.root <- store.result(number, estimate)" Value="sqr.root <- store.result(number, estimate)" Time="2015-08-03T14.28.59EDT";
+CF p49 p50
+DF d45 p50
+Snapshot d46 "46-sqr.root" Value="[DIR]/ddg/46-sqr.root.csv" Time="2015-08-03T14.28.59EDT";
+DF p50 d46
+Start p51 "51-write.result(\"sqr-root.csv\", sqr.root)" Value="write.result(\"sqr-root.csv\", sqr.root)" Time="2015-08-03T14.28.59EDT";
+CF p50 p51
+Binding p52 "52-fn <- \"sqr-root.csv\"" Time="2015-08-03T14.28.59EDT"
+CF p51 p52
+Data d47 "47-fn" Value="\"sqr-root.csv\"";
+DF p52 d47
+Binding p53 "53-zz  <-  sqr.root" Time="2015-08-03T14.28.59EDT"
+CF p52 p53
+DF d46 p53
+Snapshot d48 "48-zz" Value="[DIR]/ddg/48-zz.csv" Time="2015-08-03T14.28.59EDT";
+DF p53 d48
+Operation p54 "54-write.result" Value="write.result" Time="2015-08-03T14.28.59EDT";
+DF d47 p54
+DF d48 p54
+CF p53 p54
+Data d49 "49-write.result(\"sqr-root.csv\",sqr.root) return" Value="NULL";
+DF p54 d49
+Finish p55 "55-write.result(\"sqr-root.csv\", sqr.root)" Value="write.result(\"sqr-root.csv\", sqr.root)" Time="2015-08-03T14.28.59EDT";
+CF p54 p55
+DF d49 p55
+Finish p56 "56-CalculateSquareRoot.R" Value="CalculateSquareRoot.R" Time="2015-08-03T14.28.59EDT";
+CF p55 p56
 
