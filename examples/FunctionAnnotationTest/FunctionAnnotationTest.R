@@ -350,3 +350,200 @@ replace.return.statement (defs[[9]], returns[[9]])
 
 # Find last statement of each function
 lapply (defs, find.last.statement)
+
+.ddg.is.functiondecl <- function(expr) {
+  if (is.symbol(expr) || !is.language(expr)) return (FALSE)
+  if (is.null(expr[[1]]) || !is.language(expr[[1]])) return (FALSE)
+  return (expr[[1]] == "function")
+}
+
+# I don't need this one.
+find.funcs.called <- function(main.object) {
+  # Recursive helper function.
+  find.funcs.called.rec <- function(obj) {
+    #print (obj)
+    # Base cases.
+    if (!is.recursive(obj)) {
+      return(character())
+    }
+    ##
+    if (.ddg.is.functiondecl(obj)) return(character())
+    
+    if (is.call(obj)) {
+      #print("Found call")
+      if (is.symbol (obj[[1]])) {
+        if (length(obj) == 1) {
+          #print ("Call with no parameters")
+          #print (obj[[1]])
+          as.character(obj[[1]])
+        }
+        else {
+          #print ("Call with parameters")
+          #print (obj[[1]])
+          funcs <- find.funcs.called.rec (obj[2:length(obj)])
+          #print (str(funcs))
+          unique (c (as.character(obj[[1]]), funcs))
+        }
+      }
+      else if (length(obj) == 1) {
+        #print ("Call with no function name or parameters")
+        #print (obj[[1]])
+        files <- find.funcs.called.rec (obj[[1]])
+        #print (str(files))
+        unique (files)
+      }
+      else {
+        #print ("Call with no function name but with parameters")
+        #print (obj[[1]])
+        unique (append (find.funcs.called.rec (obj[[1]]), find.funcs.called.rec (obj[2:length(obj)])))
+      }
+    } 
+  }
+  
+  return(find.funcs.called.rec(main.object))
+}
+
+create.file.read.functions.df <- function () {
+  # Functions that read files
+  function.names <-
+    c ("source", "read.csv", "read.csv2", "read.delim", "read.delim2", "read.table", "read.xls")
+  
+  # The shortest name for the argument that represents the file name
+  param.names <-
+    c ("file", "file", "file", "file", "file", "file", "xls")
+  
+  # Position of the file parameter if it is passed by position
+  param.pos <- 
+    c (1, 1, 1, 1, 1, 1, 1)
+
+  return (data.frame (function.names, param.names, param.pos, stringsAsFactors=FALSE))
+}
+
+file.read.functions.df <- create.file.read.functions.df ()
+
+# Increases the allowed limit on number of nested expressions to evaluate.  We need to do this
+# for the recursive function that finds calls to file-reading functions to work
+options(expressions=10000)
+
+# Returns true if the string passed in is the name of a function that
+# reads files.  NOT NEEDED
+is.file.read <- function (func)
+  return (func %in% file.read.functions.df$function.names)
+
+# NOT NEEDED
+find.file.reads <- function (obj) {
+  funcs.called <- unlist(find.funcs.called (obj))
+  #str(funcs.called)
+  #print (funcs.called)
+  Filter (is.file.read, funcs.called)
+}
+
+# Given a parse tree, this function returns a list containing
+# the expressions that correspond to the filename argument
+# of the calls to functions that read from files.  If there are
+# none, it returns NULL.
+find.files.read <- function(main.object) {
+  # Recursive helper function.
+  find.files.read.rec <- function(obj) {
+    #print (obj)
+    # Base cases.
+    if (!is.recursive(obj)) {
+      return(NULL)
+    }
+    
+    if (length(obj) == 0) {
+      return(NULL)
+    }
+    ## It might be useful to record somehow that this function
+    # reads a file, but we wouldn't actually do the reading
+    # until the function is called, not here where it is
+    # being declared.
+    if (.ddg.is.functiondecl(obj)) return(NULL)
+    
+    if (is.call(obj)) {
+      #print("Found call")
+      
+      # Call has no arguments, so it can't be reading a function.  Recurse
+      # on the first part, in case it is more than just a symbol.
+      if (length (obj) == 1) return (find.files.read.rec (obj[[1]]))
+      
+      # Call with arguments
+      else if (is.symbol (obj[[1]])) {
+        # Is this is file reading function?
+        read.func.pos <- match (as.character(obj[[1]]), file.read.functions.df$function.names)
+        if (!is.na (read.func.pos)) {
+          print ("Found a file reading function call")
+          print (obj[[1]])
+          
+          # Find the file argument.
+          arg.name <- file.read.functions.df$param.names[read.func.pos]
+          print ("Looking up parameter")
+          print (arg.name)
+          print ("Arg names")
+          print (names(obj))
+          
+          # Find a matching parameter passed by name
+          file.name.arg.matches <- unlist(lapply (names(obj), function (arg) {return (pmatch (arg, "file"))}))
+          match.pos <- match (1, file.name.arg.matches)
+          print ("match.pos")
+          print (match.pos)
+          
+          # If no argument qualified by the file parameter name, use the argument in the 
+          # expected position
+          if (is.na (match.pos)) {
+            file.name <- obj[[file.read.functions.df$param.pos[read.func.pos]+1]]
+            print ("Found file name argument by position")
+            print (file.name)                        
+          }
+          else {
+            file.name <- obj[[match.pos]]
+            print ("Found file name argument by name")
+            print (file.name)                        
+          }
+          
+          # Recurse over the arguments to the function.  We can't just skip over the 2nd
+          # element since the filename parameter is not necessarily there if it was passed
+          # by name.
+          #("Recurse 1")
+          #print(obj)
+          funcs <- find.files.read.rec (obj[2:length(obj)])
+          
+          # Add this file name to the list of files being read.
+          unique (c (file.name, funcs))
+        }
+        
+        # Not a file reading function.  Recurse over the arguments.
+        else {
+          #print("Recurse 2")
+          #print(obj)
+          #print (obj[2:length(obj)])
+          #print (str(obj[2:length(obj)]))
+          #print (is.null(obj[2:length(obj)]))
+          #print (length(obj[2:length(obj)]))
+          #print (obj[2:length(obj)][[1]])
+          
+          
+          
+          find.files.read.rec (obj[2:length(obj)])
+        }
+      }
+      
+      # Function call, but the first list element is not simply a function name.  Recurse
+      # over all the list elements.
+      else {
+        unique (append (find.files.read.rec (obj[[1]]), find.files.read.rec (obj[2:length(obj)])))
+      }
+    } 
+    
+    # A recursive structure that is not a call.  Not sure if there are any, but just in case...
+    else if (length(obj) == 1) {
+      unique (find.files.read.rec (obj[[1]]))
+    }
+    else {
+      unique (append (find.files.read.rec (obj[[1]]), find.files.read.rec (obj[2:length(obj)])))      
+    }
+  }
+  
+  return(find.files.read.rec(main.object))
+}
+

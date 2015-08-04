@@ -479,6 +479,7 @@
 	 	</antcall>
 	</target>
 
+	<!-- SivanSampling is not currently included in the test suites because it collects too much data -->
   	<target name="SivanSampling">
   		<antcall target="run-no-instrumentation-test">
   			<param name="test-name" value="SivanSampling" />
@@ -492,7 +493,7 @@
 	 	</antcall>
 	</target>
 
-    <target name="script-tests" depends="CalculateSquareRoot, DailySolarRadiation, HFDatasetPreview, SivanSampling">
+    <target name="script-tests" depends="CalculateSquareRoot, DailySolarRadiation, HFDatasetPreview">
 	    <echo>Script tests for which out put should not differ </echo>
 	</target>
 	<!--########################## End Script Tests ##########################-->
