@@ -955,7 +955,7 @@ ddg.MAX_HIST_LINES <- 2^14
 			# Not an assignment.  Recurse on all parts of the expression 
 	    # except the operator.
 			else {
-				filter(unlist(lapply(obj[2:length(obj)], .ddg.find.var.uses.rec)))
+				filter(unlist(lapply(obj[1:length(obj)], .ddg.find.var.uses.rec)))
 			},
 			error = function(e) {
 				print (paste(".ddg.find.var.uses.rec:  Error analyzing", deparse(obj)))
