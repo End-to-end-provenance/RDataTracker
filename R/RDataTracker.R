@@ -942,22 +942,28 @@ ddg.MAX_HIST_LINES <- 2^14
 		if (!is.recursive(obj)) return(character())
 		##
 		if (.ddg.is.functiondecl(obj)) return(character())
-		
+    
 		tryCatch(
 			if (.ddg.is.assign(obj)) {
 				# If assigning to a simple variable, recurse on the right 
         # hand side of the assignment.
-				if (is.symbol(obj[[2]])) filter(unlist(.ddg.find.var.uses.rec(obj[[3]])))
-				else if (is.call(obj[[2]])) filter(c (.ddg.find.var.uses.rec(obj[[2]][[2]]), unlist(.ddg.find.var.uses.rec(obj[[3]]))))
+				if (is.symbol(obj[[2]])) {
+          filter(unlist(.ddg.find.var.uses.rec(obj[[3]])))
+        }
+				else if (is.call(obj[[2]])) {
+          filter(c (.ddg.find.var.uses.rec(obj[[2]][[2]]), unlist(.ddg.find.var.uses.rec(obj[[3]]))))
+        }
 				# If assigning to an expression (like a[b]), recurse on the 
 	      # indexing part of the lvalue as well as on the expression.
-				else filter(c (.ddg.find.var.uses.rec(obj[[2]][[3]]), unlist(.ddg.find.var.uses.rec(obj[[3]]))))
+				else {
+          filter(c (.ddg.find.var.uses.rec(obj[[2]][[3]]), unlist(.ddg.find.var.uses.rec(obj[[3]]))))
+        }
 			} 
 			
 			# Not an assignment.  Recurse on all parts of the expression 
 	    # except the operator.
 			else {
-				filter(unlist(lapply(obj[2:length(obj)], .ddg.find.var.uses.rec)))
+				filter(unlist(lapply(obj[1:length(obj)], .ddg.find.var.uses.rec)))
 			},
 			error = function(e) {
 				print (paste(".ddg.find.var.uses.rec:  Error analyzing", deparse(obj)))
@@ -1149,6 +1155,7 @@ ddg.MAX_HIST_LINES <- 2^14
 
 .ddg.create.data.use.edges.for.console.cmd <- function (vars.set, cmd, cmd.expr, cmd.pos) {
   # Find all the variables used in this command.
+  # print (paste(".ddg.create.data.use.edges.for.console.cmd: cmd.expr = ", cmd.expr))
   vars.used <- .ddg.find.var.uses(cmd.expr)
   
   for (var in vars.used) {
@@ -3059,6 +3066,12 @@ ddg.MAX_HIST_LINES <- 2^14
   }
   
   .ddg.proc.node("Operation", pname, pname, auto.created = auto.created)
+  
+  # Link to the definition of the function if the function is defined in this script.
+  if (.ddg.data.node.exists(pname, environmentName(.GlobalEnv))) {
+    .ddg.data2proc(pname, environmentName(.GlobalEnv), pname)
+  }
+
   if (length(full.call) > 1) {
     lapply(bindings, function(binding) {
           formal <- binding[[2]][[1]]

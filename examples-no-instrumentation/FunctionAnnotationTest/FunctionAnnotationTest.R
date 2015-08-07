@@ -59,7 +59,9 @@ f10 <- function(x) {
 x <- 2:6
 lapply (x, function(num) {return(num+1)})
 
-f1_val <- f1(); stopifnot(f1_val == 2)
+f1_val <- f1()
+stopifnot(f1_val == 2)
+
 f2_val <- f2(3); stopifnot(f2_val == 4)
 f3_val_pos <- f3(3); stopifnot (f3_val_pos == 4)
 f3_val_neg <- f3(-3); stopifnot (f3_val_neg == -4)
