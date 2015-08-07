@@ -7,43 +7,43 @@ Script="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/exam
 ProcessFileTimestamp="2015-08-03T14.14.14EDT"
 WorkingDirectory="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples-no-instrumentation/CheckpointFileTest"
 DDGDirectory="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples-no-instrumentation/CheckpointFileTest/ddg"
-DateTime="2015-08-04T18.16.24EDT"
+DateTime="2015-08-07T14.54.13EDT"
 15
-Start p1 "1-CheckpointFileTest.R" Value="CheckpointFileTest.R" Time="2015-08-04T18.16.24EDT";
-Operation p2 "2-rm(list = ls())" Value="rm(list = ls())" Time="2015-08-04T18.16.24EDT";
+Start p1 "1-CheckpointFileTest.R" Value="CheckpointFileTest.R" Time="2015-08-07T14.54.13EDT";
+Operation p2 "2-rm(list = ls())" Value="rm(list = ls())" Time="2015-08-07T14.54.13EDT";
 CF p1 p2
-Operation p3 "3-source(\"/Users/blerner/Documents/Process/DataProvenance/git" Value="source(\"/Users/blerner/Documents/Process/DataProvenance/git" Time="2015-08-04T18.16.24EDT";
+Operation p3 "3-source(\"/Users/blerner/Documents/Process/DataProvenance/git" Value="source(\"/Users/blerner/Documents/Process/DataProvenance/git" Time="2015-08-07T14.54.13EDT";
 CF p2 p3
-File d1 "1-DDGCheckpoint.R" Value="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples-no-instrumentation/CheckpointFileTest/ddg/1-DDGCheckpoint.R" Time="2015-08-04T18.16.24EDT" Location="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/R/DDGCheckpoint.R";
+File d1 "1-DDGCheckpoint.R" Value="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples-no-instrumentation/CheckpointFileTest/ddg/1-DDGCheckpoint.R" Time="2015-08-07T14.54.13EDT" Location="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/R/DDGCheckpoint.R";
 DF d1 p3
-Operation p4 "4-write(\"This file will be deleted\", \"testfile3.txt\")" Value="write(\"This file will be deleted\", \"testfile3.txt\")" Time="2015-08-04T18.16.24EDT";
+Operation p4 "4-write(\"This file will be deleted\", \"testfile3.txt\")" Value="write(\"This file will be deleted\", \"testfile3.txt\")" Time="2015-08-07T14.54.13EDT";
 CF p3 p4
-Operation p5 "5-if (!file.exists(\"testfile3.txt\")) {    print(\"testfile3." Value="if (!file.exists(\"testfile3.txt\")) {    print(\"testfile3." Time="2015-08-04T18.16.24EDT";
+Operation p5 "5-if (!file.exists(\"testfile3.txt\")) {    print(\"testfile3." Value="if (!file.exists(\"testfile3.txt\")) {    print(\"testfile3." Time="2015-08-07T14.54.13EDT";
 CF p4 p5
-Start p6 "6-checkpoint <- ddg.checkpoint(\"my checkpoint\")" Value="checkpoint <- ddg.checkpoint(\"my checkpoint\")" Time="2015-08-04T18.16.24EDT";
+Start p6 "6-checkpoint <- ddg.checkpoint(\"my checkpoint\")" Value="checkpoint <- ddg.checkpoint(\"my checkpoint\")" Time="2015-08-07T14.54.13EDT";
 CF p5 p6
-Checkpoint p7 "7-my checkpoint" Time="2015-08-04T18.16.24EDT"
+Checkpoint p7 "7-my checkpoint" Time="2015-08-07T14.54.13EDT"
 CF p6 p7
-CheckpointFile d2 "2-0.RData" Value="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples-no-instrumentation/CheckpointFileTest/ddg/2-0.RData" Time="2015-08-04T18.16.24EDT";
+CheckpointFile d2 "2-0.RData" Value="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples-no-instrumentation/CheckpointFileTest/ddg/2-0.RData" Time="2015-08-07T14.54.13EDT";
 DF p7 d2
-Finish p8 "8-checkpoint <- ddg.checkpoint(\"my checkpoint\")" Value="checkpoint <- ddg.checkpoint(\"my checkpoint\")" Time="2015-08-04T18.16.24EDT";
+Finish p8 "8-checkpoint <- ddg.checkpoint(\"my checkpoint\")" Value="checkpoint <- ddg.checkpoint(\"my checkpoint\")" Time="2015-08-07T14.54.13EDT";
 CF p7 p8
 Data d3 "3-checkpoint" Value="\"/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples-no-instrumentation/CheckpointFileTest/ddg/2-0.RData\"";
 DF p8 d3
-Operation p9 "9-write(\"abc\", file = \"testfile2.txt\", append = TRUE)" Value="write(\"abc\", file = \"testfile2.txt\", append = TRUE)" Time="2015-08-04T18.16.24EDT";
+Operation p9 "9-write(\"abc\", file = \"testfile2.txt\", append = TRUE)" Value="write(\"abc\", file = \"testfile2.txt\", append = TRUE)" Time="2015-08-07T14.54.13EDT";
 CF p8 p9
-Operation p10 "10-if (!file.exists(\"testfile2.txt\")) {    print(\"testfile2." Value="if (!file.exists(\"testfile2.txt\")) {    print(\"testfile2." Time="2015-08-04T18.16.24EDT";
+Operation p10 "10-if (!file.exists(\"testfile2.txt\")) {    print(\"testfile2." Value="if (!file.exists(\"testfile2.txt\")) {    print(\"testfile2." Time="2015-08-07T14.54.13EDT";
 CF p9 p10
-Operation p11 "11-unlink(\"testfile3.txt\")" Value="unlink(\"testfile3.txt\")" Time="2015-08-04T18.16.24EDT";
+Operation p11 "11-unlink(\"testfile3.txt\")" Value="unlink(\"testfile3.txt\")" Time="2015-08-07T14.54.13EDT";
 CF p10 p11
-Operation p12 "12-if (file.exists(\"testfile3.txt\")) {    print(\"testfile3.t" Value="if (file.exists(\"testfile3.txt\")) {    print(\"testfile3.t" Time="2015-08-04T18.16.24EDT";
+Operation p12 "12-if (file.exists(\"testfile3.txt\")) {    print(\"testfile3.t" Value="if (file.exists(\"testfile3.txt\")) {    print(\"testfile3.t" Time="2015-08-07T14.54.13EDT";
 CF p11 p12
-Restore p13 "13-my checkpoint" Time="2015-08-04T18.16.24EDT"
+Restore p13 "13-my checkpoint" Time="2015-08-07T14.54.13EDT"
 CF p12 p13
 DF d2 p13
-Start p14 "14-if (!file.exists(\"testfile3.txt\")) {    print(\"testfile3." Value="if (!file.exists(\"testfile3.txt\")) {    print(\"testfile3." Time="2015-08-04T18.16.24EDT";
+Start p14 "14-if (!file.exists(\"testfile3.txt\")) {    print(\"testfile3." Value="if (!file.exists(\"testfile3.txt\")) {    print(\"testfile3." Time="2015-08-07T14.54.13EDT";
 CF p13 p14
-Operation p15 "15-tryCatch" Value="tryCatch" Time="2015-08-04T18.16.24EDT";
+Operation p15 "15-tryCatch" Value="tryCatch" Time="2015-08-07T14.54.13EDT";
 CF p14 p15
 Exception d4 "4-error.msg" Value="\"Error in eval(expr, envir, enclos):  \"";
 DF p15 d4

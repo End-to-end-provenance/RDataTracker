@@ -1,66 +1,68 @@
-Architecture="i386"
-OperatingSystem="windows"
+Architecture="x86_64"
+OperatingSystem="unix"
 Language="R"
-LanguageVersion="R version 3.1.1 (2014-07-10)"
-RDataTrackerVersion="1.5"
+LanguageVersion="R version 3.1.2 (2014-10-31)"
+RDataTrackerVersion="1.6"
 Script="[DIR]/S4ObjectTest.R"
-ProcessFileTimestamp="2015-07-30T18.18.38EDT"
+ProcessFileTimestamp="2015-08-03T14.14.14EDT"
 WorkingDirectory="[DIR]"
 DDGDirectory="[DIR]/ddg"
-DateTime="2015-08-03T14.21.21EDT"
+DateTime="2015-08-07T14.54.02EDT"
 16
-Start p1 "1-S4ObjectTest.R" Value="S4ObjectTest.R" Time="2015-08-03T14.21.20EDT";
-Operation p2 "2-require(methods)" Value="require(methods)" Time="2015-08-03T14.21.20EDT";
+Start p1 "1-S4ObjectTest.R" Value="S4ObjectTest.R" Time="2015-08-07T14.54.02EDT";
+Operation p2 "2-require(methods)" Value="require(methods)" Time="2015-08-07T14.54.02EDT";
 CF p1 p2
-Operation p3 "3-setClass(\"SampleObj\", slots = c(sampleCode = \"integer\", " Value="setClass(\"SampleObj\", slots = c(sampleCode = \"integer\", " Time="2015-08-03T14.21.20EDT";
+Operation p3 "3-setClass(\"SampleObj\", slots = c(sampleCode = \"integer\", " Value="setClass(\"SampleObj\", slots = c(sampleCode = \"integer\", " Time="2015-08-07T14.54.02EDT";
 CF p2 p3
-Operation p4 "4-as.character.SampleObj <- function(x) {    ddg.function()   " Value="as.character.SampleObj <- function(x) {    ddg.function()   " Time="2015-08-03T14.21.20EDT";
+Operation p4 "4-as.character.SampleObj <- function(x) {    ddg.function()   " Value="as.character.SampleObj <- function(x) {    ddg.function()   " Time="2015-08-07T14.54.02EDT";
 CF p3 p4
 Data d1 "1-as.character.SampleObj" Value="#ddg.function";
 DF p4 d1
-Operation p5 "5-setMethod(\"as.character\", signature(x = \"SampleObj\"), as" Value="setMethod(\"as.character\", signature(x = \"SampleObj\"), as" Time="2015-08-03T14.21.20EDT";
+Operation p5 "5-setMethod(\"as.character\", signature(x = \"SampleObj\"), as" Value="setMethod(\"as.character\", signature(x = \"SampleObj\"), as" Time="2015-08-07T14.54.02EDT";
 CF p4 p5
 DF d1 p5
-Operation p6 "6-generateSamples <- function(n) {    ddg.function()    sample" Value="generateSamples <- function(n) {    ddg.function()    sample" Time="2015-08-03T14.21.20EDT";
+Operation p6 "6-generateSamples <- function(n) {    ddg.function()    sample" Value="generateSamples <- function(n) {    ddg.function()    sample" Time="2015-08-07T14.54.02EDT";
 CF p5 p6
 Data d2 "2-generateSamples" Value="#ddg.function";
 DF p6 d2
-Operation p7 "7-generate1Sample <- function() {    ddg.function()    newSamp" Value="generate1Sample <- function() {    ddg.function()    newSamp" Time="2015-08-03T14.21.20EDT";
+Operation p7 "7-generate1Sample <- function() {    ddg.function()    newSamp" Value="generate1Sample <- function() {    ddg.function()    newSamp" Time="2015-08-07T14.54.02EDT";
 CF p6 p7
 Data d3 "3-generate1Sample" Value="#ddg.function";
 DF p7 d3
-Operation p8 "8-totalNumOfSample <- 5" Value="totalNumOfSample <- 5" Time="2015-08-03T14.21.20EDT";
+Operation p8 "8-totalNumOfSample <- 5" Value="totalNumOfSample <- 5" Time="2015-08-07T14.54.02EDT";
 CF p7 p8
 Data d4 "4-totalNumOfSample" Value="5";
 DF p8 d4
-Start p9 "9-newSample <- generate1Sample()" Value="newSample <- generate1Sample()" Time="2015-08-03T14.21.20EDT";
+Start p9 "9-newSample <- generate1Sample()" Value="newSample <- generate1Sample()" Time="2015-08-07T14.54.02EDT";
 CF p8 p9
-Operation p10 "10-generate1Sample" Value="generate1Sample" Time="2015-08-03T14.21.20EDT";
+Operation p10 "10-generate1Sample" Value="generate1Sample" Time="2015-08-07T14.54.02EDT";
+DF d3 p10
 CF p9 p10
-Snapshot d5 "5-generate1Sample() return" Value="[DIR]/ddg/5-generate1Sample() return.txt" Time="2015-08-03T14.21.20EDT";
+Snapshot d5 "5-generate1Sample() return" Value="[DIR]/ddg/5-generate1Sample() return.txt" Time="2015-08-07T14.54.02EDT";
 DF p10 d5
-Finish p11 "11-newSample <- generate1Sample()" Value="newSample <- generate1Sample()" Time="2015-08-03T14.21.20EDT";
+Finish p11 "11-newSample <- generate1Sample()" Value="newSample <- generate1Sample()" Time="2015-08-07T14.54.02EDT";
 CF p10 p11
 DF d5 p11
-Snapshot d6 "6-newSample" Value="[DIR]/ddg/6-newSample.txt" Time="2015-08-03T14.21.20EDT";
+Snapshot d6 "6-newSample" Value="[DIR]/ddg/6-newSample.txt" Time="2015-08-07T14.54.02EDT";
 DF p11 d6
-Start p12 "12-samplesArr <- generateSamples(totalNumOfSample)" Value="samplesArr <- generateSamples(totalNumOfSample)" Time="2015-08-03T14.21.20EDT";
+Start p12 "12-samplesArr <- generateSamples(totalNumOfSample)" Value="samplesArr <- generateSamples(totalNumOfSample)" Time="2015-08-07T14.54.02EDT";
 CF p11 p12
-Binding p13 "13-n  <-  totalNumOfSample" Time="2015-08-03T14.21.20EDT"
+Binding p13 "13-n  <-  totalNumOfSample" Time="2015-08-07T14.54.02EDT"
 CF p12 p13
 DF d4 p13
 Data d7 "7-n" Value="5";
 DF p13 d7
-Operation p14 "14-generateSamples" Value="generateSamples" Time="2015-08-03T14.21.20EDT";
+Operation p14 "14-generateSamples" Value="generateSamples" Time="2015-08-07T14.54.02EDT";
+DF d2 p14
 DF d7 p14
 CF p13 p14
-Snapshot d8 "8-generateSamples(totalNumOfSample) return" Value="[DIR]/ddg/8-generateSamples(totalNumOfSample) return.txt" Time="2015-08-03T14.21.20EDT";
+Snapshot d8 "8-generateSamples(totalNumOfSample) return" Value="[DIR]/ddg/8-generateSamples(totalNumOfSample) return.txt" Time="2015-08-07T14.54.02EDT";
 DF p14 d8
-Finish p15 "15-samplesArr <- generateSamples(totalNumOfSample)" Value="samplesArr <- generateSamples(totalNumOfSample)" Time="2015-08-03T14.21.21EDT";
+Finish p15 "15-samplesArr <- generateSamples(totalNumOfSample)" Value="samplesArr <- generateSamples(totalNumOfSample)" Time="2015-08-07T14.54.02EDT";
 CF p14 p15
 DF d8 p15
-Snapshot d9 "9-samplesArr" Value="[DIR]/ddg/9-samplesArr.txt" Time="2015-08-03T14.21.21EDT";
+Snapshot d9 "9-samplesArr" Value="[DIR]/ddg/9-samplesArr.txt" Time="2015-08-07T14.54.02EDT";
 DF p15 d9
-Finish p16 "16-S4ObjectTest.R" Value="S4ObjectTest.R" Time="2015-08-03T14.21.21EDT";
+Finish p16 "16-S4ObjectTest.R" Value="S4ObjectTest.R" Time="2015-08-07T14.54.02EDT";
 CF p15 p16
 

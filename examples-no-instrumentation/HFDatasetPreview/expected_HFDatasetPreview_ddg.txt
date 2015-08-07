@@ -1,854 +1,921 @@
-Architecture="i386"
-OperatingSystem="windows"
+Architecture="x86_64"
+OperatingSystem="unix"
 Language="R"
-LanguageVersion="R version 3.1.1 (2014-07-10)"
-RDataTrackerVersion="1.5"
+LanguageVersion="R version 3.1.2 (2014-10-31)"
+RDataTrackerVersion="1.6"
 Script="[DIR]/HFDatasetPreview.R"
-ProcessFileTimestamp="2015-07-30T18.31.34EDT"
+ProcessFileTimestamp="2015-08-03T14.14.14EDT"
 WorkingDirectory="[DIR]"
 DDGDirectory="[DIR]/ddg"
-DateTime="2015-08-03T14.29.57EDT"
+DateTime="2015-08-07T14.56.13EDT"
 181
-Start p1 "1-HFDatasetPreview.R" Value="HFDatasetPreview.R" Time="2015-08-03T14.29.48EDT";
-Operation p2 "2-library(RCurl)" Value="library(RCurl)" Time="2015-08-03T14.29.49EDT";
+Start p1 "1-HFDatasetPreview.R" Value="HFDatasetPreview.R" Time="2015-08-07T14.56.06EDT";
+Operation p2 "2-library(RCurl)" Value="library(RCurl)" Time="2015-08-07T14.56.06EDT";
 CF p1 p2
-Operation p3 "3-library(XML)" Value="library(XML)" Time="2015-08-03T14.29.49EDT";
+Operation p3 "3-library(XML)" Value="library(XML)" Time="2015-08-07T14.56.07EDT";
 CF p2 p3
-Operation p4 "4-library(gplots)" Value="library(gplots)" Time="2015-08-03T14.29.50EDT";
+Operation p4 "4-library(gplots)" Value="library(gplots)" Time="2015-08-07T14.56.07EDT";
 CF p3 p4
-Operation p5 "5-hf.eml.dir <- \"http://harvardforest.fas.harvard.edu/sites/h" Value="hf.eml.dir <- \"http://harvardforest.fas.harvard.edu/sites/h" Time="2015-08-03T14.29.50EDT";
+Operation p5 "5-hf.eml.dir <- \"http://harvardforest.fas.harvard.edu/sites/h" Value="hf.eml.dir <- \"http://harvardforest.fas.harvard.edu/sites/h" Time="2015-08-07T14.56.07EDT";
 CF p4 p5
 Data d1 "1-hf.eml.dir" Value="\"http://harvardforest.fas.harvard.edu/sites/harvardforest.fas.harvard.edu/files/data/eml/\"";
 DF p5 d1
-Operation p6 "6-hf.data.dir <- \"http://harvardforest.fas.harvard.edu/sites/" Value="hf.data.dir <- \"http://harvardforest.fas.harvard.edu/sites/" Time="2015-08-03T14.29.50EDT";
+Operation p6 "6-hf.data.dir <- \"http://harvardforest.fas.harvard.edu/sites/" Value="hf.data.dir <- \"http://harvardforest.fas.harvard.edu/sites/" Time="2015-08-07T14.56.07EDT";
 CF p5 p6
 Data d2 "2-hf.data.dir" Value="\"http://harvardforest.fas.harvard.edu/sites/harvardforest.fas.harvard.edu/files/data/\"";
 DF p6 d2
-Operation p7 "7-get.parsed.eml <- function(dataset.id) {    ddg.function()  " Value="get.parsed.eml <- function(dataset.id) {    ddg.function()  " Time="2015-08-03T14.29.50EDT";
+Operation p7 "7-get.parsed.eml <- function(dataset.id) {    ddg.function()  " Value="get.parsed.eml <- function(dataset.id) {    ddg.function()  " Time="2015-08-07T14.56.07EDT";
 CF p6 p7
 Data d3 "3-get.parsed.eml" Value="#ddg.function";
 DF p7 d3
-Operation p8 "8-parse.time.series.string <- function(st) {    ddg.function()" Value="parse.time.series.string <- function(st) {    ddg.function()" Time="2015-08-03T14.29.50EDT";
+Operation p8 "8-parse.time.series.string <- function(st) {    ddg.function()" Value="parse.time.series.string <- function(st) {    ddg.function()" Time="2015-08-07T14.56.07EDT";
 CF p7 p8
 Data d4 "4-parse.time.series.string" Value="#ddg.function";
 DF p8 d4
-Operation p9 "9-get.time.series.ids <- function(dataset.id) {    ddg.functio" Value="get.time.series.ids <- function(dataset.id) {    ddg.functio" Time="2015-08-03T14.29.50EDT";
+Operation p9 "9-get.time.series.ids <- function(dataset.id) {    ddg.functio" Value="get.time.series.ids <- function(dataset.id) {    ddg.functio" Time="2015-08-07T14.56.07EDT";
 CF p8 p9
 Data d5 "5-get.time.series.ids" Value="#ddg.function";
 DF p9 d5
-Operation p10 "10-get.datafile.id <- function(dataset.id, datafile.num) {    d" Value="get.datafile.id <- function(dataset.id, datafile.num) {    d" Time="2015-08-03T14.29.50EDT";
+Operation p10 "10-get.datafile.id <- function(dataset.id, datafile.num) {    d" Value="get.datafile.id <- function(dataset.id, datafile.num) {    d" Time="2015-08-07T14.56.07EDT";
 CF p9 p10
 Data d6 "6-get.datafile.id" Value="#ddg.function";
 DF p10 d6
-Operation p11 "11-get.all.datafile.ids <- function(ns) {    ddg.function()    " Value="get.all.datafile.ids <- function(ns) {    ddg.function()    " Time="2015-08-03T14.29.50EDT";
+Operation p11 "11-get.all.datafile.ids <- function(ns) {    ddg.function()    " Value="get.all.datafile.ids <- function(ns) {    ddg.function()    " Time="2015-08-07T14.56.07EDT";
 CF p10 p11
 Data d7 "7-get.all.datafile.ids" Value="#ddg.function";
 DF p11 d7
-Operation p12 "12-get.datafile.ids <- function(dataset.id) {    ddg.function()" Value="get.datafile.ids <- function(dataset.id) {    ddg.function()" Time="2015-08-03T14.29.50EDT";
+Operation p12 "12-get.datafile.ids <- function(dataset.id) {    ddg.function()" Value="get.datafile.ids <- function(dataset.id) {    ddg.function()" Time="2015-08-07T14.56.07EDT";
 CF p11 p12
 Data d8 "8-get.datafile.ids" Value="#ddg.function";
 DF p12 d8
-Operation p13 "13-get.datafile.name <- function(eml, datafile.id) {    ddg.fun" Value="get.datafile.name <- function(eml, datafile.id) {    ddg.fun" Time="2015-08-03T14.29.50EDT";
+Operation p13 "13-get.datafile.name <- function(eml, datafile.id) {    ddg.fun" Value="get.datafile.name <- function(eml, datafile.id) {    ddg.fun" Time="2015-08-07T14.56.07EDT";
 CF p12 p13
 Data d9 "9-get.datafile.name" Value="#ddg.function";
 DF p13 d9
-Operation p14 "14-get.data.url <- function(eml, datafile.id) {    ddg.function" Value="get.data.url <- function(eml, datafile.id) {    ddg.function" Time="2015-08-03T14.29.50EDT";
+Operation p14 "14-get.data.url <- function(eml, datafile.id) {    ddg.function" Value="get.data.url <- function(eml, datafile.id) {    ddg.function" Time="2015-08-07T14.56.07EDT";
 CF p13 p14
 Data d10 "10-get.data.url" Value="#ddg.function";
 DF p14 d10
-Operation p15 "15-get.data.table.node.set <- function(eml, datafile.id) {    d" Value="get.data.table.node.set <- function(eml, datafile.id) {    d" Time="2015-08-03T14.29.50EDT";
+Operation p15 "15-get.data.table.node.set <- function(eml, datafile.id) {    d" Value="get.data.table.node.set <- function(eml, datafile.id) {    d" Time="2015-08-07T14.56.07EDT";
 CF p14 p15
 Data d11 "11-get.data.table.node.set" Value="#ddg.function";
 DF p15 d11
-Operation p16 "16-get.variable.type <- function(ns) {    ddg.function()    x1 " Value="get.variable.type <- function(ns) {    ddg.function()    x1 " Time="2015-08-03T14.29.50EDT";
+Operation p16 "16-get.variable.type <- function(ns) {    ddg.function()    x1 " Value="get.variable.type <- function(ns) {    ddg.function()    x1 " Time="2015-08-07T14.56.07EDT";
 CF p15 p16
 Data d12 "12-get.variable.type" Value="#ddg.function";
 DF p16 d12
-Operation p17 "17-get.all.variable.types <- function(ns) {    ddg.function()  " Value="get.all.variable.types <- function(ns) {    ddg.function()  " Time="2015-08-03T14.29.50EDT";
+Operation p17 "17-get.all.variable.types <- function(ns) {    ddg.function()  " Value="get.all.variable.types <- function(ns) {    ddg.function()  " Time="2015-08-07T14.56.07EDT";
 CF p16 p17
 Data d13 "13-get.all.variable.types" Value="#ddg.function";
 DF p17 d13
-Operation p18 "18-get.variable.format.string <- function(ns) {    ddg.function" Value="get.variable.format.string <- function(ns) {    ddg.function" Time="2015-08-03T14.29.50EDT";
+Operation p18 "18-get.variable.format.string <- function(ns) {    ddg.function" Value="get.variable.format.string <- function(ns) {    ddg.function" Time="2015-08-07T14.56.07EDT";
 CF p17 p18
 Data d14 "14-get.variable.format.string" Value="#ddg.function";
 DF p18 d14
-Operation p19 "19-get.all.variable.format.strings <- function(ns) {    ddg.fun" Value="get.all.variable.format.strings <- function(ns) {    ddg.fun" Time="2015-08-03T14.29.50EDT";
+Operation p19 "19-get.all.variable.format.strings <- function(ns) {    ddg.fun" Value="get.all.variable.format.strings <- function(ns) {    ddg.fun" Time="2015-08-07T14.56.07EDT";
 CF p18 p19
 Data d15 "15-get.all.variable.format.strings" Value="#ddg.function";
 DF p19 d15
-Operation p20 "20-get.data.file <- function(data.url, var.types) {    ddg.func" Value="get.data.file <- function(data.url, var.types) {    ddg.func" Time="2015-08-03T14.29.50EDT";
+Operation p20 "20-get.data.file <- function(data.url, var.types) {    ddg.func" Value="get.data.file <- function(data.url, var.types) {    ddg.func" Time="2015-08-07T14.56.07EDT";
 CF p19 p20
 Data d16 "16-get.data.file" Value="#ddg.function";
 DF p20 d16
-Operation p21 "21-get.hf.datafile <- function(datafile.id) {    ddg.function()" Value="get.hf.datafile <- function(datafile.id) {    ddg.function()" Time="2015-08-03T14.29.50EDT";
+Operation p21 "21-get.hf.datafile <- function(datafile.id) {    ddg.function()" Value="get.hf.datafile <- function(datafile.id) {    ddg.function()" Time="2015-08-07T14.56.07EDT";
 CF p20 p21
 Data d17 "17-get.hf.datafile" Value="#ddg.function";
 DF p21 d17
-Operation p22 "22-get.summary.stats.data.frame <- function(xx) {    ddg.functi" Value="get.summary.stats.data.frame <- function(xx) {    ddg.functi" Time="2015-08-03T14.29.50EDT";
+Operation p22 "22-get.summary.stats.data.frame <- function(xx) {    ddg.functi" Value="get.summary.stats.data.frame <- function(xx) {    ddg.functi" Time="2015-08-07T14.56.07EDT";
 CF p21 p22
 Data d18 "18-get.summary.stats.data.frame" Value="#ddg.function";
 DF p22 d18
-Operation p23 "23-get.plot.dataframe <- function(xx, max.rows) {    ddg.functi" Value="get.plot.dataframe <- function(xx, max.rows) {    ddg.functi" Time="2015-08-03T14.29.50EDT";
+Operation p23 "23-get.plot.dataframe <- function(xx, max.rows) {    ddg.functi" Value="get.plot.dataframe <- function(xx, max.rows) {    ddg.functi" Time="2015-08-07T14.56.07EDT";
 CF p22 p23
 Data d19 "19-get.plot.dataframe" Value="#ddg.function";
 DF p23 d19
-Operation p24 "24-create.summary.stats.table <- function(xx) {    ddg.function" Value="create.summary.stats.table <- function(xx) {    ddg.function" Time="2015-08-03T14.29.50EDT";
+Operation p24 "24-create.summary.stats.table <- function(xx) {    ddg.function" Value="create.summary.stats.table <- function(xx) {    ddg.function" Time="2015-08-07T14.56.07EDT";
 CF p23 p24
 Data d20 "20-create.summary.stats.table" Value="#ddg.function";
 DF p24 d20
-Operation p25 "25-create.time.series.plot <- function(xx) {    ddg.function() " Value="create.time.series.plot <- function(xx) {    ddg.function() " Time="2015-08-03T14.29.50EDT";
+Operation p25 "25-create.time.series.plot <- function(xx) {    ddg.function() " Value="create.time.series.plot <- function(xx) {    ddg.function() " Time="2015-08-07T14.56.07EDT";
 CF p24 p25
 Data d21 "21-create.time.series.plot" Value="#ddg.function";
 DF p25 d21
-Operation p26 "26-create.scatterplot.matrix <- function(xx) {    ddg.function(" Value="create.scatterplot.matrix <- function(xx) {    ddg.function(" Time="2015-08-03T14.29.50EDT";
+Operation p26 "26-create.scatterplot.matrix <- function(xx) {    ddg.function(" Value="create.scatterplot.matrix <- function(xx) {    ddg.function(" Time="2015-08-07T14.56.07EDT";
 CF p25 p26
 Data d22 "22-create.scatterplot.matrix" Value="#ddg.function";
 DF p26 d22
-Operation p27 "27-get.plot.type <- function(datafile.id) {    ddg.function()  " Value="get.plot.type <- function(datafile.id) {    ddg.function()  " Time="2015-08-03T14.29.50EDT";
+Operation p27 "27-get.plot.type <- function(datafile.id) {    ddg.function()  " Value="get.plot.type <- function(datafile.id) {    ddg.function()  " Time="2015-08-07T14.56.07EDT";
 CF p26 p27
 Data d23 "23-get.plot.type" Value="#ddg.function";
 DF p27 d23
-Operation p28 "28-create.datafile.preview <- function(datafile.id) {    ddg.fu" Value="create.datafile.preview <- function(datafile.id) {    ddg.fu" Time="2015-08-03T14.29.50EDT";
+Operation p28 "28-create.datafile.preview <- function(datafile.id) {    ddg.fu" Value="create.datafile.preview <- function(datafile.id) {    ddg.fu" Time="2015-08-07T14.56.07EDT";
 CF p27 p28
 Data d24 "24-create.datafile.preview" Value="#ddg.function";
 DF p28 d24
-Operation p29 "29-dataset.id <- \"hf000\"" Value="dataset.id <- \"hf000\"" Time="2015-08-03T14.29.50EDT";
+Operation p29 "29-dataset.id <- \"hf000\"" Value="dataset.id <- \"hf000\"" Time="2015-08-07T14.56.07EDT";
 CF p28 p29
 Data d25 "25-dataset.id" Value="\"hf000\"";
 DF p29 d25
-Operation p30 "30-datafile.num <- 0" Value="datafile.num <- 0" Time="2015-08-03T14.29.50EDT";
+Operation p30 "30-datafile.num <- 0" Value="datafile.num <- 0" Time="2015-08-07T14.56.07EDT";
 CF p29 p30
 Data d26 "26-datafile.num" Value="0";
 DF p30 d26
-Start p31 "31-eml <- get.parsed.eml(dataset.id)" Value="eml <- get.parsed.eml(dataset.id)" Time="2015-08-03T14.29.50EDT";
+Start p31 "31-eml <- get.parsed.eml(dataset.id)" Value="eml <- get.parsed.eml(dataset.id)" Time="2015-08-07T14.56.07EDT";
 CF p30 p31
-Binding p32 "32-dataset.id  <-  dataset.id" Time="2015-08-03T14.29.50EDT"
+Binding p32 "32-dataset.id  <-  dataset.id" Time="2015-08-07T14.56.07EDT"
 CF p31 p32
 DF d25 p32
 Data d27 "27-dataset.id" Value="\"hf000\"";
 DF p32 d27
-Operation p33 "33-get.parsed.eml" Value="get.parsed.eml" Time="2015-08-03T14.29.50EDT";
+Operation p33 "33-get.parsed.eml" Value="get.parsed.eml" Time="2015-08-07T14.56.07EDT";
+DF d3 p33
 DF d27 p33
 CF p32 p33
-Snapshot d28 "28-get.parsed.eml(dataset.id) return" Value="[DIR]/ddg/28-get.parsed.eml(dataset.id) return.txt" Time="2015-08-03T14.29.50EDT";
+Snapshot d28 "28-get.parsed.eml(dataset.id) return" Value="[DIR]/ddg/28-get.parsed.eml(dataset.id) return.txt" Time="2015-08-07T14.56.07EDT";
 DF p33 d28
-Finish p34 "34-eml <- get.parsed.eml(dataset.id)" Value="eml <- get.parsed.eml(dataset.id)" Time="2015-08-03T14.29.50EDT";
+Finish p34 "34-eml <- get.parsed.eml(dataset.id)" Value="eml <- get.parsed.eml(dataset.id)" Time="2015-08-07T14.56.07EDT";
 CF p33 p34
 DF d28 p34
-Snapshot d29 "29-eml" Value="[DIR]/ddg/29-eml.txt" Time="2015-08-03T14.29.50EDT";
+Snapshot d29 "29-eml" Value="[DIR]/ddg/29-eml.txt" Time="2015-08-07T14.56.07EDT";
 DF p34 d29
-Start p35 "35-time.series.ids <- get.time.series.ids(dataset.id)" Value="time.series.ids <- get.time.series.ids(dataset.id)" Time="2015-08-03T14.29.50EDT";
+Start p35 "35-time.series.ids <- get.time.series.ids(dataset.id)" Value="time.series.ids <- get.time.series.ids(dataset.id)" Time="2015-08-07T14.56.07EDT";
 CF p34 p35
-Binding p36 "36-dataset.id  <-  dataset.id" Time="2015-08-03T14.29.50EDT"
+Binding p36 "36-dataset.id  <-  dataset.id" Time="2015-08-07T14.56.07EDT"
 CF p35 p36
 DF d25 p36
 Data d30 "30-dataset.id" Value="\"hf000\"";
 DF p36 d30
-Operation p37 "37-get.time.series.ids" Value="get.time.series.ids" Time="2015-08-03T14.29.50EDT";
+Operation p37 "37-get.time.series.ids" Value="get.time.series.ids" Time="2015-08-07T14.56.07EDT";
+DF d5 p37
 DF d30 p37
 CF p36 p37
-Binding p38 "38-st  <-  st" Time="2015-08-03T14.29.50EDT"
+Binding p38 "38-st  <-  st" Time="2015-08-07T14.56.07EDT"
 CF p37 p38
 Data d31 "31-st" Value="\"1,2\"";
 DF p38 d31
-Operation p39 "39-parse.time.series.string" Value="parse.time.series.string" Time="2015-08-03T14.29.50EDT";
+Operation p39 "39-parse.time.series.string" Value="parse.time.series.string" Time="2015-08-07T14.56.07EDT";
+DF d4 p39
 DF d31 p39
 CF p38 p39
-Snapshot d32 "32-parse.time.series.string(st) return" Value="[DIR]/ddg/32-parse.time.series.string(st) return.csv" Time="2015-08-03T14.29.50EDT";
+Snapshot d32 "32-parse.time.series.string(st) return" Value="[DIR]/ddg/32-parse.time.series.string(st) return.csv" Time="2015-08-07T14.56.07EDT";
 DF p39 d32
-Snapshot d33 "33-get.time.series.ids(dataset.id) return" Value="[DIR]/ddg/33-get.time.series.ids(dataset.id) return.csv" Time="2015-08-03T14.29.50EDT";
+Snapshot d33 "33-get.time.series.ids(dataset.id) return" Value="[DIR]/ddg/33-get.time.series.ids(dataset.id) return.csv" Time="2015-08-07T14.56.07EDT";
 DF p37 d33
-Finish p40 "40-time.series.ids <- get.time.series.ids(dataset.id)" Value="time.series.ids <- get.time.series.ids(dataset.id)" Time="2015-08-03T14.29.50EDT";
+Finish p40 "40-time.series.ids <- get.time.series.ids(dataset.id)" Value="time.series.ids <- get.time.series.ids(dataset.id)" Time="2015-08-07T14.56.07EDT";
 CF p39 p40
 DF d33 p40
-Snapshot d34 "34-time.series.ids" Value="[DIR]/ddg/34-time.series.ids.csv" Time="2015-08-03T14.29.50EDT";
+Snapshot d34 "34-time.series.ids" Value="[DIR]/ddg/34-time.series.ids.csv" Time="2015-08-07T14.56.07EDT";
 DF p40 d34
-Start p41 "41-if (datafile.num != 0) {    datafile.id <- get.datafile.id(d" Value="if (datafile.num != 0) {    datafile.id <- get.datafile.id(d" Time="2015-08-03T14.29.50EDT";
+Start p41 "41-if (datafile.num != 0) {    datafile.id <- get.datafile.id(d" Value="if (datafile.num != 0) {    datafile.id <- get.datafile.id(d" Time="2015-08-07T14.56.07EDT";
 CF p40 p41
-Binding p42 "42-dataset.id  <-  dataset.id" Time="2015-08-03T14.29.50EDT"
+Binding p42 "42-dataset.id  <-  dataset.id" Time="2015-08-07T14.56.07EDT"
 CF p41 p42
 DF d25 p42
 Data d35 "35-dataset.id" Value="\"hf000\"";
 DF p42 d35
-Operation p43 "43-get.datafile.ids" Value="get.datafile.ids" Time="2015-08-03T14.29.50EDT";
+Operation p43 "43-get.datafile.ids" Value="get.datafile.ids" Time="2015-08-07T14.56.07EDT";
+DF d8 p43
 DF d35 p43
 CF p42 p43
-Binding p44 "44-ns  <-  ns" Time="2015-08-03T14.29.50EDT"
+Binding p44 "44-ns  <-  ns" Time="2015-08-07T14.56.07EDT"
 CF p43 p44
-Snapshot d36 "36-ns" Value="[DIR]/ddg/36-ns.txt" Time="2015-08-03T14.29.50EDT";
+Snapshot d36 "36-ns" Value="[DIR]/ddg/36-ns.txt" Time="2015-08-07T14.56.07EDT";
 DF p44 d36
-Operation p45 "45-get.all.datafile.ids" Value="get.all.datafile.ids" Time="2015-08-03T14.29.50EDT";
+Operation p45 "45-get.all.datafile.ids" Value="get.all.datafile.ids" Time="2015-08-07T14.56.07EDT";
+DF d7 p45
 DF d36 p45
 CF p44 p45
-Snapshot d37 "37-get.all.datafile.ids(ns) return" Value="[DIR]/ddg/37-get.all.datafile.ids(ns) return.csv" Time="2015-08-03T14.29.50EDT";
+Snapshot d37 "37-get.all.datafile.ids(ns) return" Value="[DIR]/ddg/37-get.all.datafile.ids(ns) return.csv" Time="2015-08-07T14.56.07EDT";
 DF p45 d37
-Snapshot d38 "38-get.datafile.ids(dataset.id) return" Value="[DIR]/ddg/38-get.datafile.ids(dataset.id) return.csv" Time="2015-08-03T14.29.50EDT";
+Snapshot d38 "38-get.datafile.ids(dataset.id) return" Value="[DIR]/ddg/38-get.datafile.ids(dataset.id) return.csv" Time="2015-08-07T14.56.07EDT";
 DF p43 d38
-Binding p46 "46-datafile.id  <-  datafile.id" Time="2015-08-03T14.29.50EDT"
+Binding p46 "46-datafile.id  <-  datafile.id" Time="2015-08-07T14.56.07EDT"
 CF p45 p46
 Data d39 "39-datafile.id" Value="\"hf000-01\"";
 DF p46 d39
-Operation p47 "47-create.datafile.preview" Value="create.datafile.preview" Time="2015-08-03T14.29.50EDT";
+Operation p47 "47-create.datafile.preview" Value="create.datafile.preview" Time="2015-08-07T14.56.07EDT";
+DF d24 p47
 DF d39 p47
 CF p46 p47
-Binding p48 "48-datafile.id  <-  datafile.id" Time="2015-08-03T14.29.50EDT"
+Binding p48 "48-datafile.id  <-  datafile.id" Time="2015-08-07T14.56.07EDT"
 CF p47 p48
 DF d39 p48
 Data d40 "40-datafile.id" Value="\"hf000-01\"";
 DF p48 d40
-Operation p49 "49-get.hf.datafile" Value="get.hf.datafile" Time="2015-08-03T14.29.50EDT";
+Operation p49 "49-get.hf.datafile" Value="get.hf.datafile" Time="2015-08-07T14.56.07EDT";
+DF d17 p49
 DF d40 p49
 CF p48 p49
-Binding p50 "50-eml  <-  eml" Time="2015-08-03T14.29.50EDT"
+Binding p50 "50-eml  <-  eml" Time="2015-08-07T14.56.07EDT"
 CF p49 p50
 DF d29 p50
-Snapshot d41 "41-eml" Value="[DIR]/ddg/41-eml.txt" Time="2015-08-03T14.29.50EDT";
+Snapshot d41 "41-eml" Value="[DIR]/ddg/41-eml.txt" Time="2015-08-07T14.56.07EDT";
 DF p50 d41
-Binding p51 "51-datafile.id  <-  datafile.id" Time="2015-08-03T14.29.50EDT"
+Binding p51 "51-datafile.id  <-  datafile.id" Time="2015-08-07T14.56.07EDT"
 CF p50 p51
 DF d40 p51
 Data d42 "42-datafile.id" Value="\"hf000-01\"";
 DF p51 d42
-Operation p52 "52-get.datafile.name" Value="get.datafile.name" Time="2015-08-03T14.29.50EDT";
+Operation p52 "52-get.datafile.name" Value="get.datafile.name" Time="2015-08-07T14.56.07EDT";
+DF d9 p52
 DF d41 p52
 DF d42 p52
 CF p51 p52
 Data d43 "43-get.datafile.name(eml,datafile.id) return" Value="\"hf000-01-daily-m.csv\"";
 DF p52 d43
-Binding p53 "53-eml  <-  eml" Time="2015-08-03T14.29.50EDT"
+Binding p53 "53-eml  <-  eml" Time="2015-08-07T14.56.08EDT"
 CF p52 p53
 DF d29 p53
-Snapshot d44 "44-eml" Value="[DIR]/ddg/44-eml.txt" Time="2015-08-03T14.29.50EDT";
+Snapshot d44 "44-eml" Value="[DIR]/ddg/44-eml.txt" Time="2015-08-07T14.56.08EDT";
 DF p53 d44
-Binding p54 "54-datafile.id  <-  datafile.id" Time="2015-08-03T14.29.50EDT"
+Binding p54 "54-datafile.id  <-  datafile.id" Time="2015-08-07T14.56.08EDT"
 CF p53 p54
 DF d40 p54
 Data d45 "45-datafile.id" Value="\"hf000-01\"";
 DF p54 d45
-Operation p55 "55-get.data.url" Value="get.data.url" Time="2015-08-03T14.29.50EDT";
+Operation p55 "55-get.data.url" Value="get.data.url" Time="2015-08-07T14.56.08EDT";
+DF d10 p55
 DF d44 p55
 DF d45 p55
 CF p54 p55
 Data d46 "46-get.data.url(eml,datafile.id) return" Value="\"http://harvardforest.fas.harvard.edu/data/p00/hf000/hf000-01-daily-m.csv\"";
 DF p55 d46
-Binding p56 "56-eml  <-  eml" Time="2015-08-03T14.29.50EDT"
+Binding p56 "56-eml  <-  eml" Time="2015-08-07T14.56.08EDT"
 CF p55 p56
 DF d29 p56
-Snapshot d47 "47-eml" Value="[DIR]/ddg/47-eml.txt" Time="2015-08-03T14.29.50EDT";
+Snapshot d47 "47-eml" Value="[DIR]/ddg/47-eml.txt" Time="2015-08-07T14.56.08EDT";
 DF p56 d47
-Binding p57 "57-datafile.id  <-  datafile.id" Time="2015-08-03T14.29.50EDT"
+Binding p57 "57-datafile.id  <-  datafile.id" Time="2015-08-07T14.56.08EDT"
 CF p56 p57
 DF d40 p57
 Data d48 "48-datafile.id" Value="\"hf000-01\"";
 DF p57 d48
-Operation p58 "58-get.data.table.node.set" Value="get.data.table.node.set" Time="2015-08-03T14.29.50EDT";
+Operation p58 "58-get.data.table.node.set" Value="get.data.table.node.set" Time="2015-08-07T14.56.08EDT";
+DF d11 p58
 DF d47 p58
 DF d48 p58
 CF p57 p58
-Snapshot d49 "49-get.data.table.node.set(eml,datafile.id) return" Value="[DIR]/ddg/49-get.data.table.node.set(eml,datafile.id) return.txt" Time="2015-08-03T14.29.50EDT";
+Snapshot d49 "49-get.data.table.node.set(eml,datafile.id) return" Value="[DIR]/ddg/49-get.data.table.node.set(eml,datafile.id) return.txt" Time="2015-08-07T14.56.08EDT";
 DF p58 d49
-Binding p59 "59-ns  <-  ns" Time="2015-08-03T14.29.50EDT"
+Binding p59 "59-ns  <-  ns" Time="2015-08-07T14.56.08EDT"
 CF p58 p59
-Snapshot d50 "50-ns" Value="[DIR]/ddg/50-ns.txt" Time="2015-08-03T14.29.50EDT";
+Snapshot d50 "50-ns" Value="[DIR]/ddg/50-ns.txt" Time="2015-08-07T14.56.08EDT";
 DF p59 d50
-Operation p60 "60-get.all.variable.types" Value="get.all.variable.types" Time="2015-08-03T14.29.50EDT";
+Operation p60 "60-get.all.variable.types" Value="get.all.variable.types" Time="2015-08-07T14.56.08EDT";
+DF d13 p60
 DF d50 p60
 CF p59 p60
-Binding p61 "61-ns  <-  ns[[i]]" Time="2015-08-03T14.29.50EDT"
+Binding p61 "61-ns  <-  ns[[i]]" Time="2015-08-07T14.56.08EDT"
 CF p60 p61
 DF d50 p61
-Snapshot d51 "51-ns" Value="[DIR]/ddg/51-ns.txt" Time="2015-08-03T14.29.50EDT";
+Snapshot d51 "51-ns" Value="[DIR]/ddg/51-ns.txt" Time="2015-08-07T14.56.08EDT";
 DF p61 d51
-Operation p62 "62-get.variable.type" Value="get.variable.type" Time="2015-08-03T14.29.50EDT";
+Operation p62 "62-get.variable.type" Value="get.variable.type" Time="2015-08-07T14.56.08EDT";
+DF d12 p62
 DF d51 p62
 CF p61 p62
 Data d52 "52-get.variable.type(ns[[i]]) return" Value="\"Date\"";
 DF p62 d52
-Binding p63 "63-ns  <-  ns[[i]]" Time="2015-08-03T14.29.50EDT"
+Binding p63 "63-ns  <-  ns[[i]]" Time="2015-08-07T14.56.08EDT"
 CF p62 p63
 DF d50 p63
-Snapshot d53 "53-ns" Value="[DIR]/ddg/53-ns.txt" Time="2015-08-03T14.29.50EDT";
+Snapshot d53 "53-ns" Value="[DIR]/ddg/53-ns.txt" Time="2015-08-07T14.56.08EDT";
 DF p63 d53
-Operation p64 "64-get.variable.type" Value="get.variable.type" Time="2015-08-03T14.29.50EDT";
+Operation p64 "64-get.variable.type" Value="get.variable.type" Time="2015-08-07T14.56.08EDT";
+DF d12 p64
 DF d53 p64
 CF p63 p64
 Data d54 "54-get.variable.type(ns[[i]]) return" Value="\"numeric\"";
 DF p64 d54
-Binding p65 "65-ns  <-  ns[[i]]" Time="2015-08-03T14.29.50EDT"
+Binding p65 "65-ns  <-  ns[[i]]" Time="2015-08-07T14.56.08EDT"
 CF p64 p65
 DF d50 p65
-Snapshot d55 "55-ns" Value="[DIR]/ddg/55-ns.txt" Time="2015-08-03T14.29.50EDT";
+Snapshot d55 "55-ns" Value="[DIR]/ddg/55-ns.txt" Time="2015-08-07T14.56.08EDT";
 DF p65 d55
-Operation p66 "66-get.variable.type" Value="get.variable.type" Time="2015-08-03T14.29.50EDT";
+Operation p66 "66-get.variable.type" Value="get.variable.type" Time="2015-08-07T14.56.08EDT";
+DF d12 p66
 DF d55 p66
 CF p65 p66
 Data d56 "56-get.variable.type(ns[[i]]) return" Value="\"character\"";
 DF p66 d56
-Binding p67 "67-ns  <-  ns[[i]]" Time="2015-08-03T14.29.50EDT"
+Binding p67 "67-ns  <-  ns[[i]]" Time="2015-08-07T14.56.08EDT"
 CF p66 p67
 DF d50 p67
-Snapshot d57 "57-ns" Value="[DIR]/ddg/57-ns.txt" Time="2015-08-03T14.29.50EDT";
+Snapshot d57 "57-ns" Value="[DIR]/ddg/57-ns.txt" Time="2015-08-07T14.56.08EDT";
 DF p67 d57
-Operation p68 "68-get.variable.type" Value="get.variable.type" Time="2015-08-03T14.29.50EDT";
+Operation p68 "68-get.variable.type" Value="get.variable.type" Time="2015-08-07T14.56.08EDT";
+DF d12 p68
 DF d57 p68
 CF p67 p68
 Data d58 "58-get.variable.type(ns[[i]]) return" Value="\"numeric\"";
 DF p68 d58
-Binding p69 "69-ns  <-  ns[[i]]" Time="2015-08-03T14.29.50EDT"
+Binding p69 "69-ns  <-  ns[[i]]" Time="2015-08-07T14.56.08EDT"
 CF p68 p69
 DF d50 p69
-Snapshot d59 "59-ns" Value="[DIR]/ddg/59-ns.txt" Time="2015-08-03T14.29.50EDT";
+Snapshot d59 "59-ns" Value="[DIR]/ddg/59-ns.txt" Time="2015-08-07T14.56.08EDT";
 DF p69 d59
-Operation p70 "70-get.variable.type" Value="get.variable.type" Time="2015-08-03T14.29.50EDT";
+Operation p70 "70-get.variable.type" Value="get.variable.type" Time="2015-08-07T14.56.08EDT";
+DF d12 p70
 DF d59 p70
 CF p69 p70
 Data d60 "60-get.variable.type(ns[[i]]) return" Value="\"character\"";
 DF p70 d60
-Binding p71 "71-ns  <-  ns[[i]]" Time="2015-08-03T14.29.50EDT"
+Binding p71 "71-ns  <-  ns[[i]]" Time="2015-08-07T14.56.08EDT"
 CF p70 p71
 DF d50 p71
-Snapshot d61 "61-ns" Value="[DIR]/ddg/61-ns.txt" Time="2015-08-03T14.29.50EDT";
+Snapshot d61 "61-ns" Value="[DIR]/ddg/61-ns.txt" Time="2015-08-07T14.56.08EDT";
 DF p71 d61
-Operation p72 "72-get.variable.type" Value="get.variable.type" Time="2015-08-03T14.29.50EDT";
+Operation p72 "72-get.variable.type" Value="get.variable.type" Time="2015-08-07T14.56.08EDT";
+DF d12 p72
 DF d61 p72
 CF p71 p72
 Data d62 "62-get.variable.type(ns[[i]]) return" Value="\"numeric\"";
 DF p72 d62
-Binding p73 "73-ns  <-  ns[[i]]" Time="2015-08-03T14.29.50EDT"
+Binding p73 "73-ns  <-  ns[[i]]" Time="2015-08-07T14.56.08EDT"
 CF p72 p73
 DF d50 p73
-Snapshot d63 "63-ns" Value="[DIR]/ddg/63-ns.txt" Time="2015-08-03T14.29.50EDT";
+Snapshot d63 "63-ns" Value="[DIR]/ddg/63-ns.txt" Time="2015-08-07T14.56.08EDT";
 DF p73 d63
-Operation p74 "74-get.variable.type" Value="get.variable.type" Time="2015-08-03T14.29.50EDT";
+Operation p74 "74-get.variable.type" Value="get.variable.type" Time="2015-08-07T14.56.08EDT";
+DF d12 p74
 DF d63 p74
 CF p73 p74
 Data d64 "64-get.variable.type(ns[[i]]) return" Value="\"character\"";
 DF p74 d64
-Binding p75 "75-ns  <-  ns[[i]]" Time="2015-08-03T14.29.50EDT"
+Binding p75 "75-ns  <-  ns[[i]]" Time="2015-08-07T14.56.08EDT"
 CF p74 p75
 DF d50 p75
-Snapshot d65 "65-ns" Value="[DIR]/ddg/65-ns.txt" Time="2015-08-03T14.29.51EDT";
+Snapshot d65 "65-ns" Value="[DIR]/ddg/65-ns.txt" Time="2015-08-07T14.56.08EDT";
 DF p75 d65
-Operation p76 "76-get.variable.type" Value="get.variable.type" Time="2015-08-03T14.29.51EDT";
+Operation p76 "76-get.variable.type" Value="get.variable.type" Time="2015-08-07T14.56.08EDT";
+DF d12 p76
 DF d65 p76
 CF p75 p76
 Data d66 "66-get.variable.type(ns[[i]]) return" Value="\"numeric\"";
 DF p76 d66
-Binding p77 "77-ns  <-  ns[[i]]" Time="2015-08-03T14.29.51EDT"
+Binding p77 "77-ns  <-  ns[[i]]" Time="2015-08-07T14.56.08EDT"
 CF p76 p77
 DF d50 p77
-Snapshot d67 "67-ns" Value="[DIR]/ddg/67-ns.txt" Time="2015-08-03T14.29.51EDT";
+Snapshot d67 "67-ns" Value="[DIR]/ddg/67-ns.txt" Time="2015-08-07T14.56.08EDT";
 DF p77 d67
-Operation p78 "78-get.variable.type" Value="get.variable.type" Time="2015-08-03T14.29.51EDT";
+Operation p78 "78-get.variable.type" Value="get.variable.type" Time="2015-08-07T14.56.08EDT";
+DF d12 p78
 DF d67 p78
 CF p77 p78
 Data d68 "68-get.variable.type(ns[[i]]) return" Value="\"character\"";
 DF p78 d68
-Snapshot d69 "69-get.all.variable.types(ns) return" Value="[DIR]/ddg/69-get.all.variable.types(ns) return.csv" Time="2015-08-03T14.29.51EDT";
+Snapshot d69 "69-get.all.variable.types(ns) return" Value="[DIR]/ddg/69-get.all.variable.types(ns) return.csv" Time="2015-08-07T14.56.08EDT";
 DF p60 d69
-Binding p79 "79-ns  <-  ns" Time="2015-08-03T14.29.51EDT"
+Binding p79 "79-ns  <-  ns" Time="2015-08-07T14.56.08EDT"
 CF p78 p79
-Snapshot d70 "70-ns" Value="[DIR]/ddg/70-ns.txt" Time="2015-08-03T14.29.51EDT";
+Snapshot d70 "70-ns" Value="[DIR]/ddg/70-ns.txt" Time="2015-08-07T14.56.08EDT";
 DF p79 d70
-Operation p80 "80-get.all.variable.format.strings" Value="get.all.variable.format.strings" Time="2015-08-03T14.29.51EDT";
+Operation p80 "80-get.all.variable.format.strings" Value="get.all.variable.format.strings" Time="2015-08-07T14.56.08EDT";
+DF d15 p80
 DF d70 p80
 CF p79 p80
-Binding p81 "81-ns  <-  ns[[i]]" Time="2015-08-03T14.29.51EDT"
+Binding p81 "81-ns  <-  ns[[i]]" Time="2015-08-07T14.56.08EDT"
 CF p80 p81
 DF d70 p81
-Snapshot d71 "71-ns" Value="[DIR]/ddg/71-ns.txt" Time="2015-08-03T14.29.51EDT";
+Snapshot d71 "71-ns" Value="[DIR]/ddg/71-ns.txt" Time="2015-08-07T14.56.08EDT";
 DF p81 d71
-Operation p82 "82-get.variable.format.string" Value="get.variable.format.string" Time="2015-08-03T14.29.51EDT";
+Operation p82 "82-get.variable.format.string" Value="get.variable.format.string" Time="2015-08-07T14.56.08EDT";
+DF d14 p82
 DF d71 p82
 CF p81 p82
 Data d72 "72-get.variable.format.string(ns[[i]]) return" Value="\"YYYY-MM-DD\"";
 DF p82 d72
-Binding p83 "83-ns  <-  ns[[i]]" Time="2015-08-03T14.29.51EDT"
+Binding p83 "83-ns  <-  ns[[i]]" Time="2015-08-07T14.56.08EDT"
 CF p82 p83
 DF d70 p83
-Snapshot d73 "73-ns" Value="[DIR]/ddg/73-ns.txt" Time="2015-08-03T14.29.51EDT";
+Snapshot d73 "73-ns" Value="[DIR]/ddg/73-ns.txt" Time="2015-08-07T14.56.08EDT";
 DF p83 d73
-Operation p84 "84-get.variable.format.string" Value="get.variable.format.string" Time="2015-08-03T14.29.51EDT";
+Operation p84 "84-get.variable.format.string" Value="get.variable.format.string" Time="2015-08-07T14.56.08EDT";
+DF d14 p84
 DF d73 p84
 CF p83 p84
 Data d74 "74-get.variable.format.string(ns[[i]]) return" Value="NotRecorded";
 DF p84 d74
-Binding p85 "85-ns  <-  ns[[i]]" Time="2015-08-03T14.29.51EDT"
+Binding p85 "85-ns  <-  ns[[i]]" Time="2015-08-07T14.56.08EDT"
 CF p84 p85
 DF d70 p85
-Snapshot d75 "75-ns" Value="[DIR]/ddg/75-ns.txt" Time="2015-08-03T14.29.51EDT";
+Snapshot d75 "75-ns" Value="[DIR]/ddg/75-ns.txt" Time="2015-08-07T14.56.08EDT";
 DF p85 d75
-Operation p86 "86-get.variable.format.string" Value="get.variable.format.string" Time="2015-08-03T14.29.51EDT";
+Operation p86 "86-get.variable.format.string" Value="get.variable.format.string" Time="2015-08-07T14.56.08EDT";
+DF d14 p86
 DF d75 p86
 CF p85 p86
 Data d76 "76-get.variable.format.string(ns[[i]]) return" Value="NotRecorded";
 DF p86 d76
-Binding p87 "87-ns  <-  ns[[i]]" Time="2015-08-03T14.29.51EDT"
+Binding p87 "87-ns  <-  ns[[i]]" Time="2015-08-07T14.56.08EDT"
 CF p86 p87
 DF d70 p87
-Snapshot d77 "77-ns" Value="[DIR]/ddg/77-ns.txt" Time="2015-08-03T14.29.51EDT";
+Snapshot d77 "77-ns" Value="[DIR]/ddg/77-ns.txt" Time="2015-08-07T14.56.08EDT";
 DF p87 d77
-Operation p88 "88-get.variable.format.string" Value="get.variable.format.string" Time="2015-08-03T14.29.51EDT";
+Operation p88 "88-get.variable.format.string" Value="get.variable.format.string" Time="2015-08-07T14.56.08EDT";
+DF d14 p88
 DF d77 p88
 CF p87 p88
 Data d78 "78-get.variable.format.string(ns[[i]]) return" Value="NotRecorded";
 DF p88 d78
-Binding p89 "89-ns  <-  ns[[i]]" Time="2015-08-03T14.29.51EDT"
+Binding p89 "89-ns  <-  ns[[i]]" Time="2015-08-07T14.56.08EDT"
 CF p88 p89
 DF d70 p89
-Snapshot d79 "79-ns" Value="[DIR]/ddg/79-ns.txt" Time="2015-08-03T14.29.51EDT";
+Snapshot d79 "79-ns" Value="[DIR]/ddg/79-ns.txt" Time="2015-08-07T14.56.08EDT";
 DF p89 d79
-Operation p90 "90-get.variable.format.string" Value="get.variable.format.string" Time="2015-08-03T14.29.51EDT";
+Operation p90 "90-get.variable.format.string" Value="get.variable.format.string" Time="2015-08-07T14.56.08EDT";
+DF d14 p90
 DF d79 p90
 CF p89 p90
 Data d80 "80-get.variable.format.string(ns[[i]]) return" Value="NotRecorded";
 DF p90 d80
-Binding p91 "91-ns  <-  ns[[i]]" Time="2015-08-03T14.29.51EDT"
+Binding p91 "91-ns  <-  ns[[i]]" Time="2015-08-07T14.56.08EDT"
 CF p90 p91
 DF d70 p91
-Snapshot d81 "81-ns" Value="[DIR]/ddg/81-ns.txt" Time="2015-08-03T14.29.51EDT";
+Snapshot d81 "81-ns" Value="[DIR]/ddg/81-ns.txt" Time="2015-08-07T14.56.08EDT";
 DF p91 d81
-Operation p92 "92-get.variable.format.string" Value="get.variable.format.string" Time="2015-08-03T14.29.51EDT";
+Operation p92 "92-get.variable.format.string" Value="get.variable.format.string" Time="2015-08-07T14.56.08EDT";
+DF d14 p92
 DF d81 p92
 CF p91 p92
 Data d82 "82-get.variable.format.string(ns[[i]]) return" Value="NotRecorded";
 DF p92 d82
-Binding p93 "93-ns  <-  ns[[i]]" Time="2015-08-03T14.29.51EDT"
+Binding p93 "93-ns  <-  ns[[i]]" Time="2015-08-07T14.56.08EDT"
 CF p92 p93
 DF d70 p93
-Snapshot d83 "83-ns" Value="[DIR]/ddg/83-ns.txt" Time="2015-08-03T14.29.51EDT";
+Snapshot d83 "83-ns" Value="[DIR]/ddg/83-ns.txt" Time="2015-08-07T14.56.08EDT";
 DF p93 d83
-Operation p94 "94-get.variable.format.string" Value="get.variable.format.string" Time="2015-08-03T14.29.51EDT";
+Operation p94 "94-get.variable.format.string" Value="get.variable.format.string" Time="2015-08-07T14.56.08EDT";
+DF d14 p94
 DF d83 p94
 CF p93 p94
 Data d84 "84-get.variable.format.string(ns[[i]]) return" Value="NotRecorded";
 DF p94 d84
-Binding p95 "95-ns  <-  ns[[i]]" Time="2015-08-03T14.29.51EDT"
+Binding p95 "95-ns  <-  ns[[i]]" Time="2015-08-07T14.56.08EDT"
 CF p94 p95
 DF d70 p95
-Snapshot d85 "85-ns" Value="[DIR]/ddg/85-ns.txt" Time="2015-08-03T14.29.51EDT";
+Snapshot d85 "85-ns" Value="[DIR]/ddg/85-ns.txt" Time="2015-08-07T14.56.08EDT";
 DF p95 d85
-Operation p96 "96-get.variable.format.string" Value="get.variable.format.string" Time="2015-08-03T14.29.51EDT";
+Operation p96 "96-get.variable.format.string" Value="get.variable.format.string" Time="2015-08-07T14.56.08EDT";
+DF d14 p96
 DF d85 p96
 CF p95 p96
 Data d86 "86-get.variable.format.string(ns[[i]]) return" Value="NotRecorded";
 DF p96 d86
-Binding p97 "97-ns  <-  ns[[i]]" Time="2015-08-03T14.29.51EDT"
+Binding p97 "97-ns  <-  ns[[i]]" Time="2015-08-07T14.56.08EDT"
 CF p96 p97
 DF d70 p97
-Snapshot d87 "87-ns" Value="[DIR]/ddg/87-ns.txt" Time="2015-08-03T14.29.51EDT";
+Snapshot d87 "87-ns" Value="[DIR]/ddg/87-ns.txt" Time="2015-08-07T14.56.08EDT";
 DF p97 d87
-Operation p98 "98-get.variable.format.string" Value="get.variable.format.string" Time="2015-08-03T14.29.51EDT";
+Operation p98 "98-get.variable.format.string" Value="get.variable.format.string" Time="2015-08-07T14.56.08EDT";
+DF d14 p98
 DF d87 p98
 CF p97 p98
 Data d88 "88-get.variable.format.string(ns[[i]]) return" Value="NotRecorded";
 DF p98 d88
-Snapshot d89 "89-get.all.variable.format.strings(ns) return" Value="[DIR]/ddg/89-get.all.variable.format.strings(ns) return.csv" Time="2015-08-03T14.29.51EDT";
+Snapshot d89 "89-get.all.variable.format.strings(ns) return" Value="[DIR]/ddg/89-get.all.variable.format.strings(ns) return.csv" Time="2015-08-07T14.56.08EDT";
 DF p80 d89
-Binding p99 "99-data.url  <-  data.url" Time="2015-08-03T14.29.51EDT"
+Binding p99 "99-data.url  <-  data.url" Time="2015-08-07T14.56.08EDT"
 CF p98 p99
 Data d90 "90-data.url" Value="\"http://harvardforest.fas.harvard.edu/data/p00/hf000/hf000-01-daily-m.csv\"";
 DF p99 d90
-Binding p100 "100-var.types  <-  var.types" Time="2015-08-03T14.29.51EDT"
+Binding p100 "100-var.types  <-  var.types" Time="2015-08-07T14.56.08EDT"
 CF p99 p100
-Snapshot d91 "91-var.types" Value="[DIR]/ddg/91-var.types.csv" Time="2015-08-03T14.29.51EDT";
+Snapshot d91 "91-var.types" Value="[DIR]/ddg/91-var.types.csv" Time="2015-08-07T14.56.08EDT";
 DF p100 d91
-Operation p101 "101-get.data.file" Value="get.data.file" Time="2015-08-03T14.29.51EDT";
+Operation p101 "101-get.data.file" Value="get.data.file" Time="2015-08-07T14.56.08EDT";
+DF d16 p101
 DF d90 p101
 DF d91 p101
 CF p100 p101
-Snapshot d92 "92-get.data.file(data.url,var.types) return" Value="[DIR]/ddg/92-get.data.file(data.url,var.types) return.csv" Time="2015-08-03T14.29.51EDT";
+Snapshot d92 "92-get.data.file(data.url,var.types) return" Value="[DIR]/ddg/92-get.data.file(data.url,var.types) return.csv" Time="2015-08-07T14.56.09EDT";
 DF p101 d92
-Snapshot d93 "93-get.hf.datafile(datafile.id) return" Value="[DIR]/ddg/93-get.hf.datafile(datafile.id) return.csv" Time="2015-08-03T14.29.52EDT";
+Snapshot d93 "93-get.hf.datafile(datafile.id) return" Value="[DIR]/ddg/93-get.hf.datafile(datafile.id) return.csv" Time="2015-08-07T14.56.09EDT";
 DF p49 d93
-Binding p102 "102-xx  <-  dd" Time="2015-08-03T14.29.52EDT"
+Binding p102 "102-xx  <-  dd" Time="2015-08-07T14.56.09EDT"
 CF p101 p102
-Snapshot d94 "94-xx" Value="[DIR]/ddg/94-xx.csv" Time="2015-08-03T14.29.52EDT";
+Snapshot d94 "94-xx" Value="[DIR]/ddg/94-xx.csv" Time="2015-08-07T14.56.09EDT";
 DF p102 d94
-Operation p103 "103-create.summary.stats.table" Value="create.summary.stats.table" Time="2015-08-03T14.29.52EDT";
+Operation p103 "103-create.summary.stats.table" Value="create.summary.stats.table" Time="2015-08-07T14.56.09EDT";
+DF d20 p103
 DF d94 p103
 CF p102 p103
-Binding p104 "104-xx  <-  xx" Time="2015-08-03T14.29.52EDT"
+Binding p104 "104-xx  <-  xx" Time="2015-08-07T14.56.09EDT"
 CF p103 p104
 DF d94 p104
-Snapshot d95 "95-xx" Value="[DIR]/ddg/95-xx.csv" Time="2015-08-03T14.29.52EDT";
+Snapshot d95 "95-xx" Value="[DIR]/ddg/95-xx.csv" Time="2015-08-07T14.56.09EDT";
 DF p104 d95
-Operation p105 "105-get.summary.stats.data.frame" Value="get.summary.stats.data.frame" Time="2015-08-03T14.29.52EDT";
+Operation p105 "105-get.summary.stats.data.frame" Value="get.summary.stats.data.frame" Time="2015-08-07T14.56.09EDT";
+DF d18 p105
 DF d95 p105
 CF p104 p105
-Snapshot d96 "96-get.summary.stats.data.frame(xx) return" Value="[DIR]/ddg/96-get.summary.stats.data.frame(xx) return.csv" Time="2015-08-03T14.29.52EDT";
+Snapshot d96 "96-get.summary.stats.data.frame(xx) return" Value="[DIR]/ddg/96-get.summary.stats.data.frame(xx) return.csv" Time="2015-08-07T14.56.09EDT";
 DF p105 d96
-Data d97 "97-create.summary.stats.table(dd) return" Value="0.916232803403842";
+Data d97 "97-create.summary.stats.table(dd) return" Value="0.916232803403836";
 DF p103 d97
-Binding p106 "106-datafile.id  <-  datafile.id" Time="2015-08-03T14.29.53EDT"
+Binding p106 "106-datafile.id  <-  datafile.id" Time="2015-08-07T14.56.09EDT"
 CF p105 p106
 DF d39 p106
 Data d98 "98-datafile.id" Value="\"hf000-01\"";
 DF p106 d98
-Operation p107 "107-get.plot.type" Value="get.plot.type" Time="2015-08-03T14.29.53EDT";
+Operation p107 "107-get.plot.type" Value="get.plot.type" Time="2015-08-07T14.56.09EDT";
+DF d23 p107
 DF d98 p107
 CF p106 p107
 Data d99 "99-get.plot.type(datafile.id) return" Value="\"time-series\"";
 DF p107 d99
-Binding p108 "108-xx  <-  dd" Time="2015-08-03T14.29.53EDT"
+Binding p108 "108-xx  <-  dd" Time="2015-08-07T14.56.10EDT"
 CF p107 p108
-Snapshot d100 "100-xx" Value="[DIR]/ddg/100-xx.csv" Time="2015-08-03T14.29.53EDT";
+Snapshot d100 "100-xx" Value="[DIR]/ddg/100-xx.csv" Time="2015-08-07T14.56.10EDT";
 DF p108 d100
-Operation p109 "109-create.time.series.plot" Value="create.time.series.plot" Time="2015-08-03T14.29.53EDT";
+Operation p109 "109-create.time.series.plot" Value="create.time.series.plot" Time="2015-08-07T14.56.10EDT";
+DF d21 p109
 DF d100 p109
 CF p108 p109
-Binding p110 "110-xx  <-  xx" Time="2015-08-03T14.29.53EDT"
+Binding p110 "110-xx  <-  xx" Time="2015-08-07T14.56.10EDT"
 CF p109 p110
 DF d100 p110
-Snapshot d101 "101-xx" Value="[DIR]/ddg/101-xx.csv" Time="2015-08-03T14.29.53EDT";
+Snapshot d101 "101-xx" Value="[DIR]/ddg/101-xx.csv" Time="2015-08-07T14.56.10EDT";
 DF p110 d101
-Binding p111 "111-max.rows  <-  10000" Time="2015-08-03T14.29.53EDT"
+Binding p111 "111-max.rows  <-  10000" Time="2015-08-07T14.56.10EDT"
 CF p110 p111
 Data d102 "102-max.rows" Value="10000";
 DF p111 d102
-Operation p112 "112-get.plot.dataframe" Value="get.plot.dataframe" Time="2015-08-03T14.29.53EDT";
+Operation p112 "112-get.plot.dataframe" Value="get.plot.dataframe" Time="2015-08-07T14.56.10EDT";
+DF d19 p112
 DF d101 p112
 DF d102 p112
 CF p111 p112
-Snapshot d103 "103-get.plot.dataframe(xx,max.rows=10000) return" Value="[DIR]/ddg/103-get.plot.dataframe(xx,max.rows=10000) return.csv" Time="2015-08-03T14.29.53EDT";
+Snapshot d103 "103-get.plot.dataframe(xx,max.rows=10000) return" Value="[DIR]/ddg/103-get.plot.dataframe(xx,max.rows=10000) return.csv" Time="2015-08-07T14.56.10EDT";
 DF p112 d103
 Data d104 "104-create.time.series.plot(dd) return" Value="NULL";
 DF p109 d104
 Data d105 "105-create.datafile.preview(datafile.id) return" Value="NULL";
 DF p47 d105
-Binding p113 "113-datafile.id  <-  datafile.id" Time="2015-08-03T14.29.54EDT"
+Binding p113 "113-datafile.id  <-  datafile.id" Time="2015-08-07T14.56.10EDT"
 CF p112 p113
 Data d106 "106-datafile.id" Value="\"hf000-02\"";
 DF p113 d106
-Operation p114 "114-create.datafile.preview" Value="create.datafile.preview" Time="2015-08-03T14.29.54EDT";
+Operation p114 "114-create.datafile.preview" Value="create.datafile.preview" Time="2015-08-07T14.56.10EDT";
+DF d24 p114
 DF d106 p114
 CF p113 p114
-Binding p115 "115-datafile.id  <-  datafile.id" Time="2015-08-03T14.29.54EDT"
+Binding p115 "115-datafile.id  <-  datafile.id" Time="2015-08-07T14.56.10EDT"
 CF p114 p115
 DF d106 p115
 Data d107 "107-datafile.id" Value="\"hf000-02\"";
 DF p115 d107
-Operation p116 "116-get.hf.datafile" Value="get.hf.datafile" Time="2015-08-03T14.29.54EDT";
+Operation p116 "116-get.hf.datafile" Value="get.hf.datafile" Time="2015-08-07T14.56.10EDT";
+DF d17 p116
 DF d107 p116
 CF p115 p116
-Binding p117 "117-eml  <-  eml" Time="2015-08-03T14.29.54EDT"
+Binding p117 "117-eml  <-  eml" Time="2015-08-07T14.56.10EDT"
 CF p116 p117
 DF d29 p117
-Snapshot d108 "108-eml" Value="[DIR]/ddg/108-eml.txt" Time="2015-08-03T14.29.54EDT";
+Snapshot d108 "108-eml" Value="[DIR]/ddg/108-eml.txt" Time="2015-08-07T14.56.10EDT";
 DF p117 d108
-Binding p118 "118-datafile.id  <-  datafile.id" Time="2015-08-03T14.29.54EDT"
+Binding p118 "118-datafile.id  <-  datafile.id" Time="2015-08-07T14.56.10EDT"
 CF p117 p118
 DF d107 p118
 Data d109 "109-datafile.id" Value="\"hf000-02\"";
 DF p118 d109
-Operation p119 "119-get.datafile.name" Value="get.datafile.name" Time="2015-08-03T14.29.54EDT";
+Operation p119 "119-get.datafile.name" Value="get.datafile.name" Time="2015-08-07T14.56.10EDT";
+DF d9 p119
 DF d108 p119
 DF d109 p119
 CF p118 p119
 Data d110 "110-get.datafile.name(eml,datafile.id) return" Value="\"hf000-02-daily-e.csv\"";
 DF p119 d110
-Binding p120 "120-eml  <-  eml" Time="2015-08-03T14.29.54EDT"
+Binding p120 "120-eml  <-  eml" Time="2015-08-07T14.56.10EDT"
 CF p119 p120
 DF d29 p120
-Snapshot d111 "111-eml" Value="[DIR]/ddg/111-eml.txt" Time="2015-08-03T14.29.54EDT";
+Snapshot d111 "111-eml" Value="[DIR]/ddg/111-eml.txt" Time="2015-08-07T14.56.10EDT";
 DF p120 d111
-Binding p121 "121-datafile.id  <-  datafile.id" Time="2015-08-03T14.29.54EDT"
+Binding p121 "121-datafile.id  <-  datafile.id" Time="2015-08-07T14.56.10EDT"
 CF p120 p121
 DF d107 p121
 Data d112 "112-datafile.id" Value="\"hf000-02\"";
 DF p121 d112
-Operation p122 "122-get.data.url" Value="get.data.url" Time="2015-08-03T14.29.54EDT";
+Operation p122 "122-get.data.url" Value="get.data.url" Time="2015-08-07T14.56.10EDT";
+DF d10 p122
 DF d111 p122
 DF d112 p122
 CF p121 p122
 Data d113 "113-get.data.url(eml,datafile.id) return" Value="\"http://harvardforest.fas.harvard.edu/data/p00/hf000/hf000-02-daily-e.csv\"";
 DF p122 d113
-Binding p123 "123-eml  <-  eml" Time="2015-08-03T14.29.54EDT"
+Binding p123 "123-eml  <-  eml" Time="2015-08-07T14.56.10EDT"
 CF p122 p123
 DF d29 p123
-Snapshot d114 "114-eml" Value="[DIR]/ddg/114-eml.txt" Time="2015-08-03T14.29.54EDT";
+Snapshot d114 "114-eml" Value="[DIR]/ddg/114-eml.txt" Time="2015-08-07T14.56.10EDT";
 DF p123 d114
-Binding p124 "124-datafile.id  <-  datafile.id" Time="2015-08-03T14.29.54EDT"
+Binding p124 "124-datafile.id  <-  datafile.id" Time="2015-08-07T14.56.10EDT"
 CF p123 p124
 DF d107 p124
 Data d115 "115-datafile.id" Value="\"hf000-02\"";
 DF p124 d115
-Operation p125 "125-get.data.table.node.set" Value="get.data.table.node.set" Time="2015-08-03T14.29.54EDT";
+Operation p125 "125-get.data.table.node.set" Value="get.data.table.node.set" Time="2015-08-07T14.56.10EDT";
+DF d11 p125
 DF d114 p125
 DF d115 p125
 CF p124 p125
-Snapshot d116 "116-get.data.table.node.set(eml,datafile.id) return" Value="[DIR]/ddg/116-get.data.table.node.set(eml,datafile.id) return.txt" Time="2015-08-03T14.29.54EDT";
+Snapshot d116 "116-get.data.table.node.set(eml,datafile.id) return" Value="[DIR]/ddg/116-get.data.table.node.set(eml,datafile.id) return.txt" Time="2015-08-07T14.56.10EDT";
 DF p125 d116
-Binding p126 "126-ns  <-  ns" Time="2015-08-03T14.29.54EDT"
+Binding p126 "126-ns  <-  ns" Time="2015-08-07T14.56.10EDT"
 CF p125 p126
-Snapshot d117 "117-ns" Value="[DIR]/ddg/117-ns.txt" Time="2015-08-03T14.29.54EDT";
+Snapshot d117 "117-ns" Value="[DIR]/ddg/117-ns.txt" Time="2015-08-07T14.56.10EDT";
 DF p126 d117
-Operation p127 "127-get.all.variable.types" Value="get.all.variable.types" Time="2015-08-03T14.29.54EDT";
+Operation p127 "127-get.all.variable.types" Value="get.all.variable.types" Time="2015-08-07T14.56.10EDT";
+DF d13 p127
 DF d117 p127
 CF p126 p127
-Binding p128 "128-ns  <-  ns[[i]]" Time="2015-08-03T14.29.54EDT"
+Binding p128 "128-ns  <-  ns[[i]]" Time="2015-08-07T14.56.10EDT"
 CF p127 p128
 DF d117 p128
-Snapshot d118 "118-ns" Value="[DIR]/ddg/118-ns.txt" Time="2015-08-03T14.29.54EDT";
+Snapshot d118 "118-ns" Value="[DIR]/ddg/118-ns.txt" Time="2015-08-07T14.56.10EDT";
 DF p128 d118
-Operation p129 "129-get.variable.type" Value="get.variable.type" Time="2015-08-03T14.29.54EDT";
+Operation p129 "129-get.variable.type" Value="get.variable.type" Time="2015-08-07T14.56.10EDT";
+DF d12 p129
 DF d118 p129
 CF p128 p129
 Data d119 "119-get.variable.type(ns[[i]]) return" Value="\"Date\"";
 DF p129 d119
-Binding p130 "130-ns  <-  ns[[i]]" Time="2015-08-03T14.29.54EDT"
+Binding p130 "130-ns  <-  ns[[i]]" Time="2015-08-07T14.56.10EDT"
 CF p129 p130
 DF d117 p130
-Snapshot d120 "120-ns" Value="[DIR]/ddg/120-ns.txt" Time="2015-08-03T14.29.54EDT";
+Snapshot d120 "120-ns" Value="[DIR]/ddg/120-ns.txt" Time="2015-08-07T14.56.10EDT";
 DF p130 d120
-Operation p131 "131-get.variable.type" Value="get.variable.type" Time="2015-08-03T14.29.54EDT";
+Operation p131 "131-get.variable.type" Value="get.variable.type" Time="2015-08-07T14.56.10EDT";
+DF d12 p131
 DF d120 p131
 CF p130 p131
 Data d121 "121-get.variable.type(ns[[i]]) return" Value="\"numeric\"";
 DF p131 d121
-Binding p132 "132-ns  <-  ns[[i]]" Time="2015-08-03T14.29.54EDT"
+Binding p132 "132-ns  <-  ns[[i]]" Time="2015-08-07T14.56.10EDT"
 CF p131 p132
 DF d117 p132
-Snapshot d122 "122-ns" Value="[DIR]/ddg/122-ns.txt" Time="2015-08-03T14.29.54EDT";
+Snapshot d122 "122-ns" Value="[DIR]/ddg/122-ns.txt" Time="2015-08-07T14.56.10EDT";
 DF p132 d122
-Operation p133 "133-get.variable.type" Value="get.variable.type" Time="2015-08-03T14.29.54EDT";
+Operation p133 "133-get.variable.type" Value="get.variable.type" Time="2015-08-07T14.56.10EDT";
+DF d12 p133
 DF d122 p133
 CF p132 p133
 Data d123 "123-get.variable.type(ns[[i]]) return" Value="\"character\"";
 DF p133 d123
-Binding p134 "134-ns  <-  ns[[i]]" Time="2015-08-03T14.29.54EDT"
+Binding p134 "134-ns  <-  ns[[i]]" Time="2015-08-07T14.56.10EDT"
 CF p133 p134
 DF d117 p134
-Snapshot d124 "124-ns" Value="[DIR]/ddg/124-ns.txt" Time="2015-08-03T14.29.54EDT";
+Snapshot d124 "124-ns" Value="[DIR]/ddg/124-ns.txt" Time="2015-08-07T14.56.10EDT";
 DF p134 d124
-Operation p135 "135-get.variable.type" Value="get.variable.type" Time="2015-08-03T14.29.54EDT";
+Operation p135 "135-get.variable.type" Value="get.variable.type" Time="2015-08-07T14.56.10EDT";
+DF d12 p135
 DF d124 p135
 CF p134 p135
 Data d125 "125-get.variable.type(ns[[i]]) return" Value="\"numeric\"";
 DF p135 d125
-Binding p136 "136-ns  <-  ns[[i]]" Time="2015-08-03T14.29.54EDT"
+Binding p136 "136-ns  <-  ns[[i]]" Time="2015-08-07T14.56.10EDT"
 CF p135 p136
 DF d117 p136
-Snapshot d126 "126-ns" Value="[DIR]/ddg/126-ns.txt" Time="2015-08-03T14.29.54EDT";
+Snapshot d126 "126-ns" Value="[DIR]/ddg/126-ns.txt" Time="2015-08-07T14.56.10EDT";
 DF p136 d126
-Operation p137 "137-get.variable.type" Value="get.variable.type" Time="2015-08-03T14.29.54EDT";
+Operation p137 "137-get.variable.type" Value="get.variable.type" Time="2015-08-07T14.56.10EDT";
+DF d12 p137
 DF d126 p137
 CF p136 p137
 Data d127 "127-get.variable.type(ns[[i]]) return" Value="\"character\"";
 DF p137 d127
-Binding p138 "138-ns  <-  ns[[i]]" Time="2015-08-03T14.29.54EDT"
+Binding p138 "138-ns  <-  ns[[i]]" Time="2015-08-07T14.56.10EDT"
 CF p137 p138
 DF d117 p138
-Snapshot d128 "128-ns" Value="[DIR]/ddg/128-ns.txt" Time="2015-08-03T14.29.54EDT";
+Snapshot d128 "128-ns" Value="[DIR]/ddg/128-ns.txt" Time="2015-08-07T14.56.11EDT";
 DF p138 d128
-Operation p139 "139-get.variable.type" Value="get.variable.type" Time="2015-08-03T14.29.54EDT";
+Operation p139 "139-get.variable.type" Value="get.variable.type" Time="2015-08-07T14.56.11EDT";
+DF d12 p139
 DF d128 p139
 CF p138 p139
 Data d129 "129-get.variable.type(ns[[i]]) return" Value="\"numeric\"";
 DF p139 d129
-Binding p140 "140-ns  <-  ns[[i]]" Time="2015-08-03T14.29.54EDT"
+Binding p140 "140-ns  <-  ns[[i]]" Time="2015-08-07T14.56.11EDT"
 CF p139 p140
 DF d117 p140
-Snapshot d130 "130-ns" Value="[DIR]/ddg/130-ns.txt" Time="2015-08-03T14.29.54EDT";
+Snapshot d130 "130-ns" Value="[DIR]/ddg/130-ns.txt" Time="2015-08-07T14.56.11EDT";
 DF p140 d130
-Operation p141 "141-get.variable.type" Value="get.variable.type" Time="2015-08-03T14.29.54EDT";
+Operation p141 "141-get.variable.type" Value="get.variable.type" Time="2015-08-07T14.56.11EDT";
+DF d12 p141
 DF d130 p141
 CF p140 p141
 Data d131 "131-get.variable.type(ns[[i]]) return" Value="\"character\"";
 DF p141 d131
-Binding p142 "142-ns  <-  ns[[i]]" Time="2015-08-03T14.29.54EDT"
+Binding p142 "142-ns  <-  ns[[i]]" Time="2015-08-07T14.56.11EDT"
 CF p141 p142
 DF d117 p142
-Snapshot d132 "132-ns" Value="[DIR]/ddg/132-ns.txt" Time="2015-08-03T14.29.54EDT";
+Snapshot d132 "132-ns" Value="[DIR]/ddg/132-ns.txt" Time="2015-08-07T14.56.11EDT";
 DF p142 d132
-Operation p143 "143-get.variable.type" Value="get.variable.type" Time="2015-08-03T14.29.54EDT";
+Operation p143 "143-get.variable.type" Value="get.variable.type" Time="2015-08-07T14.56.11EDT";
+DF d12 p143
 DF d132 p143
 CF p142 p143
 Data d133 "133-get.variable.type(ns[[i]]) return" Value="\"numeric\"";
 DF p143 d133
-Binding p144 "144-ns  <-  ns[[i]]" Time="2015-08-03T14.29.54EDT"
+Binding p144 "144-ns  <-  ns[[i]]" Time="2015-08-07T14.56.11EDT"
 CF p143 p144
 DF d117 p144
-Snapshot d134 "134-ns" Value="[DIR]/ddg/134-ns.txt" Time="2015-08-03T14.29.54EDT";
+Snapshot d134 "134-ns" Value="[DIR]/ddg/134-ns.txt" Time="2015-08-07T14.56.11EDT";
 DF p144 d134
-Operation p145 "145-get.variable.type" Value="get.variable.type" Time="2015-08-03T14.29.54EDT";
+Operation p145 "145-get.variable.type" Value="get.variable.type" Time="2015-08-07T14.56.11EDT";
+DF d12 p145
 DF d134 p145
 CF p144 p145
 Data d135 "135-get.variable.type(ns[[i]]) return" Value="\"character\"";
 DF p145 d135
-Snapshot d136 "136-get.all.variable.types(ns) return" Value="[DIR]/ddg/136-get.all.variable.types(ns) return.csv" Time="2015-08-03T14.29.54EDT";
+Snapshot d136 "136-get.all.variable.types(ns) return" Value="[DIR]/ddg/136-get.all.variable.types(ns) return.csv" Time="2015-08-07T14.56.11EDT";
 DF p127 d136
-Binding p146 "146-ns  <-  ns" Time="2015-08-03T14.29.54EDT"
+Binding p146 "146-ns  <-  ns" Time="2015-08-07T14.56.11EDT"
 CF p145 p146
-Snapshot d137 "137-ns" Value="[DIR]/ddg/137-ns.txt" Time="2015-08-03T14.29.54EDT";
+Snapshot d137 "137-ns" Value="[DIR]/ddg/137-ns.txt" Time="2015-08-07T14.56.11EDT";
 DF p146 d137
-Operation p147 "147-get.all.variable.format.strings" Value="get.all.variable.format.strings" Time="2015-08-03T14.29.54EDT";
+Operation p147 "147-get.all.variable.format.strings" Value="get.all.variable.format.strings" Time="2015-08-07T14.56.11EDT";
+DF d15 p147
 DF d137 p147
 CF p146 p147
-Binding p148 "148-ns  <-  ns[[i]]" Time="2015-08-03T14.29.54EDT"
+Binding p148 "148-ns  <-  ns[[i]]" Time="2015-08-07T14.56.11EDT"
 CF p147 p148
 DF d137 p148
-Snapshot d138 "138-ns" Value="[DIR]/ddg/138-ns.txt" Time="2015-08-03T14.29.54EDT";
+Snapshot d138 "138-ns" Value="[DIR]/ddg/138-ns.txt" Time="2015-08-07T14.56.11EDT";
 DF p148 d138
-Operation p149 "149-get.variable.format.string" Value="get.variable.format.string" Time="2015-08-03T14.29.54EDT";
+Operation p149 "149-get.variable.format.string" Value="get.variable.format.string" Time="2015-08-07T14.56.11EDT";
+DF d14 p149
 DF d138 p149
 CF p148 p149
 Data d139 "139-get.variable.format.string(ns[[i]]) return" Value="\"YYYY-MM-DD\"";
 DF p149 d139
-Binding p150 "150-ns  <-  ns[[i]]" Time="2015-08-03T14.29.54EDT"
+Binding p150 "150-ns  <-  ns[[i]]" Time="2015-08-07T14.56.11EDT"
 CF p149 p150
 DF d137 p150
-Snapshot d140 "140-ns" Value="[DIR]/ddg/140-ns.txt" Time="2015-08-03T14.29.54EDT";
+Snapshot d140 "140-ns" Value="[DIR]/ddg/140-ns.txt" Time="2015-08-07T14.56.11EDT";
 DF p150 d140
-Operation p151 "151-get.variable.format.string" Value="get.variable.format.string" Time="2015-08-03T14.29.54EDT";
+Operation p151 "151-get.variable.format.string" Value="get.variable.format.string" Time="2015-08-07T14.56.11EDT";
+DF d14 p151
 DF d140 p151
 CF p150 p151
 Data d141 "141-get.variable.format.string(ns[[i]]) return" Value="NotRecorded";
 DF p151 d141
-Binding p152 "152-ns  <-  ns[[i]]" Time="2015-08-03T14.29.54EDT"
+Binding p152 "152-ns  <-  ns[[i]]" Time="2015-08-07T14.56.11EDT"
 CF p151 p152
 DF d137 p152
-Snapshot d142 "142-ns" Value="[DIR]/ddg/142-ns.txt" Time="2015-08-03T14.29.54EDT";
+Snapshot d142 "142-ns" Value="[DIR]/ddg/142-ns.txt" Time="2015-08-07T14.56.11EDT";
 DF p152 d142
-Operation p153 "153-get.variable.format.string" Value="get.variable.format.string" Time="2015-08-03T14.29.54EDT";
+Operation p153 "153-get.variable.format.string" Value="get.variable.format.string" Time="2015-08-07T14.56.11EDT";
+DF d14 p153
 DF d142 p153
 CF p152 p153
 Data d143 "143-get.variable.format.string(ns[[i]]) return" Value="NotRecorded";
 DF p153 d143
-Binding p154 "154-ns  <-  ns[[i]]" Time="2015-08-03T14.29.54EDT"
+Binding p154 "154-ns  <-  ns[[i]]" Time="2015-08-07T14.56.11EDT"
 CF p153 p154
 DF d137 p154
-Snapshot d144 "144-ns" Value="[DIR]/ddg/144-ns.txt" Time="2015-08-03T14.29.54EDT";
+Snapshot d144 "144-ns" Value="[DIR]/ddg/144-ns.txt" Time="2015-08-07T14.56.11EDT";
 DF p154 d144
-Operation p155 "155-get.variable.format.string" Value="get.variable.format.string" Time="2015-08-03T14.29.54EDT";
+Operation p155 "155-get.variable.format.string" Value="get.variable.format.string" Time="2015-08-07T14.56.11EDT";
+DF d14 p155
 DF d144 p155
 CF p154 p155
 Data d145 "145-get.variable.format.string(ns[[i]]) return" Value="NotRecorded";
 DF p155 d145
-Binding p156 "156-ns  <-  ns[[i]]" Time="2015-08-03T14.29.54EDT"
+Binding p156 "156-ns  <-  ns[[i]]" Time="2015-08-07T14.56.11EDT"
 CF p155 p156
 DF d137 p156
-Snapshot d146 "146-ns" Value="[DIR]/ddg/146-ns.txt" Time="2015-08-03T14.29.54EDT";
+Snapshot d146 "146-ns" Value="[DIR]/ddg/146-ns.txt" Time="2015-08-07T14.56.11EDT";
 DF p156 d146
-Operation p157 "157-get.variable.format.string" Value="get.variable.format.string" Time="2015-08-03T14.29.54EDT";
+Operation p157 "157-get.variable.format.string" Value="get.variable.format.string" Time="2015-08-07T14.56.11EDT";
+DF d14 p157
 DF d146 p157
 CF p156 p157
 Data d147 "147-get.variable.format.string(ns[[i]]) return" Value="NotRecorded";
 DF p157 d147
-Binding p158 "158-ns  <-  ns[[i]]" Time="2015-08-03T14.29.54EDT"
+Binding p158 "158-ns  <-  ns[[i]]" Time="2015-08-07T14.56.11EDT"
 CF p157 p158
 DF d137 p158
-Snapshot d148 "148-ns" Value="[DIR]/ddg/148-ns.txt" Time="2015-08-03T14.29.54EDT";
+Snapshot d148 "148-ns" Value="[DIR]/ddg/148-ns.txt" Time="2015-08-07T14.56.11EDT";
 DF p158 d148
-Operation p159 "159-get.variable.format.string" Value="get.variable.format.string" Time="2015-08-03T14.29.54EDT";
+Operation p159 "159-get.variable.format.string" Value="get.variable.format.string" Time="2015-08-07T14.56.11EDT";
+DF d14 p159
 DF d148 p159
 CF p158 p159
 Data d149 "149-get.variable.format.string(ns[[i]]) return" Value="NotRecorded";
 DF p159 d149
-Binding p160 "160-ns  <-  ns[[i]]" Time="2015-08-03T14.29.54EDT"
+Binding p160 "160-ns  <-  ns[[i]]" Time="2015-08-07T14.56.11EDT"
 CF p159 p160
 DF d137 p160
-Snapshot d150 "150-ns" Value="[DIR]/ddg/150-ns.txt" Time="2015-08-03T14.29.54EDT";
+Snapshot d150 "150-ns" Value="[DIR]/ddg/150-ns.txt" Time="2015-08-07T14.56.11EDT";
 DF p160 d150
-Operation p161 "161-get.variable.format.string" Value="get.variable.format.string" Time="2015-08-03T14.29.54EDT";
+Operation p161 "161-get.variable.format.string" Value="get.variable.format.string" Time="2015-08-07T14.56.11EDT";
+DF d14 p161
 DF d150 p161
 CF p160 p161
 Data d151 "151-get.variable.format.string(ns[[i]]) return" Value="NotRecorded";
 DF p161 d151
-Binding p162 "162-ns  <-  ns[[i]]" Time="2015-08-03T14.29.54EDT"
+Binding p162 "162-ns  <-  ns[[i]]" Time="2015-08-07T14.56.11EDT"
 CF p161 p162
 DF d137 p162
-Snapshot d152 "152-ns" Value="[DIR]/ddg/152-ns.txt" Time="2015-08-03T14.29.54EDT";
+Snapshot d152 "152-ns" Value="[DIR]/ddg/152-ns.txt" Time="2015-08-07T14.56.11EDT";
 DF p162 d152
-Operation p163 "163-get.variable.format.string" Value="get.variable.format.string" Time="2015-08-03T14.29.54EDT";
+Operation p163 "163-get.variable.format.string" Value="get.variable.format.string" Time="2015-08-07T14.56.11EDT";
+DF d14 p163
 DF d152 p163
 CF p162 p163
 Data d153 "153-get.variable.format.string(ns[[i]]) return" Value="NotRecorded";
 DF p163 d153
-Binding p164 "164-ns  <-  ns[[i]]" Time="2015-08-03T14.29.54EDT"
+Binding p164 "164-ns  <-  ns[[i]]" Time="2015-08-07T14.56.11EDT"
 CF p163 p164
 DF d137 p164
-Snapshot d154 "154-ns" Value="[DIR]/ddg/154-ns.txt" Time="2015-08-03T14.29.54EDT";
+Snapshot d154 "154-ns" Value="[DIR]/ddg/154-ns.txt" Time="2015-08-07T14.56.11EDT";
 DF p164 d154
-Operation p165 "165-get.variable.format.string" Value="get.variable.format.string" Time="2015-08-03T14.29.54EDT";
+Operation p165 "165-get.variable.format.string" Value="get.variable.format.string" Time="2015-08-07T14.56.11EDT";
+DF d14 p165
 DF d154 p165
 CF p164 p165
 Data d155 "155-get.variable.format.string(ns[[i]]) return" Value="NotRecorded";
 DF p165 d155
-Snapshot d156 "156-get.all.variable.format.strings(ns) return" Value="[DIR]/ddg/156-get.all.variable.format.strings(ns) return.csv" Time="2015-08-03T14.29.54EDT";
+Snapshot d156 "156-get.all.variable.format.strings(ns) return" Value="[DIR]/ddg/156-get.all.variable.format.strings(ns) return.csv" Time="2015-08-07T14.56.11EDT";
 DF p147 d156
-Binding p166 "166-data.url  <-  data.url" Time="2015-08-03T14.29.55EDT"
+Binding p166 "166-data.url  <-  data.url" Time="2015-08-07T14.56.11EDT"
 CF p165 p166
 Data d157 "157-data.url" Value="\"http://harvardforest.fas.harvard.edu/data/p00/hf000/hf000-02-daily-e.csv\"";
 DF p166 d157
-Binding p167 "167-var.types  <-  var.types" Time="2015-08-03T14.29.55EDT"
+Binding p167 "167-var.types  <-  var.types" Time="2015-08-07T14.56.11EDT"
 CF p166 p167
-Snapshot d158 "158-var.types" Value="[DIR]/ddg/158-var.types.csv" Time="2015-08-03T14.29.55EDT";
+Snapshot d158 "158-var.types" Value="[DIR]/ddg/158-var.types.csv" Time="2015-08-07T14.56.11EDT";
 DF p167 d158
-Operation p168 "168-get.data.file" Value="get.data.file" Time="2015-08-03T14.29.55EDT";
+Operation p168 "168-get.data.file" Value="get.data.file" Time="2015-08-07T14.56.11EDT";
+DF d16 p168
 DF d157 p168
 DF d158 p168
 CF p167 p168
-Snapshot d159 "159-get.data.file(data.url,var.types) return" Value="[DIR]/ddg/159-get.data.file(data.url,var.types) return.csv" Time="2015-08-03T14.29.55EDT";
+Snapshot d159 "159-get.data.file(data.url,var.types) return" Value="[DIR]/ddg/159-get.data.file(data.url,var.types) return.csv" Time="2015-08-07T14.56.12EDT";
 DF p168 d159
-Snapshot d160 "160-get.hf.datafile(datafile.id) return" Value="[DIR]/ddg/160-get.hf.datafile(datafile.id) return.csv" Time="2015-08-03T14.29.55EDT";
+Snapshot d160 "160-get.hf.datafile(datafile.id) return" Value="[DIR]/ddg/160-get.hf.datafile(datafile.id) return.csv" Time="2015-08-07T14.56.12EDT";
 DF p116 d160
-Binding p169 "169-xx  <-  dd" Time="2015-08-03T14.29.55EDT"
+Binding p169 "169-xx  <-  dd" Time="2015-08-07T14.56.12EDT"
 CF p168 p169
-Snapshot d161 "161-xx" Value="[DIR]/ddg/161-xx.csv" Time="2015-08-03T14.29.56EDT";
+Snapshot d161 "161-xx" Value="[DIR]/ddg/161-xx.csv" Time="2015-08-07T14.56.12EDT";
 DF p169 d161
-Operation p170 "170-create.summary.stats.table" Value="create.summary.stats.table" Time="2015-08-03T14.29.56EDT";
+Operation p170 "170-create.summary.stats.table" Value="create.summary.stats.table" Time="2015-08-07T14.56.12EDT";
+DF d20 p170
 DF d161 p170
 CF p169 p170
-Binding p171 "171-xx  <-  xx" Time="2015-08-03T14.29.56EDT"
+Binding p171 "171-xx  <-  xx" Time="2015-08-07T14.56.12EDT"
 CF p170 p171
 DF d161 p171
-Snapshot d162 "162-xx" Value="[DIR]/ddg/162-xx.csv" Time="2015-08-03T14.29.56EDT";
+Snapshot d162 "162-xx" Value="[DIR]/ddg/162-xx.csv" Time="2015-08-07T14.56.12EDT";
 DF p171 d162
-Operation p172 "172-get.summary.stats.data.frame" Value="get.summary.stats.data.frame" Time="2015-08-03T14.29.56EDT";
+Operation p172 "172-get.summary.stats.data.frame" Value="get.summary.stats.data.frame" Time="2015-08-07T14.56.12EDT";
+DF d18 p172
 DF d162 p172
 CF p171 p172
-Snapshot d163 "163-get.summary.stats.data.frame(xx) return" Value="[DIR]/ddg/163-get.summary.stats.data.frame(xx) return.csv" Time="2015-08-03T14.29.56EDT";
+Snapshot d163 "163-get.summary.stats.data.frame(xx) return" Value="[DIR]/ddg/163-get.summary.stats.data.frame(xx) return.csv" Time="2015-08-07T14.56.12EDT";
 DF p172 d163
-Data d164 "164-create.summary.stats.table(dd) return" Value="0.916232803403842";
+Data d164 "164-create.summary.stats.table(dd) return" Value="0.916232803403836";
 DF p170 d164
-Binding p173 "173-datafile.id  <-  datafile.id" Time="2015-08-03T14.29.56EDT"
+Binding p173 "173-datafile.id  <-  datafile.id" Time="2015-08-07T14.56.12EDT"
 CF p172 p173
 DF d106 p173
 Data d165 "165-datafile.id" Value="\"hf000-02\"";
 DF p173 d165
-Operation p174 "174-get.plot.type" Value="get.plot.type" Time="2015-08-03T14.29.56EDT";
+Operation p174 "174-get.plot.type" Value="get.plot.type" Time="2015-08-07T14.56.12EDT";
+DF d23 p174
 DF d165 p174
 CF p173 p174
 Data d166 "166-get.plot.type(datafile.id) return" Value="\"time-series\"";
 DF p174 d166
-Binding p175 "175-xx  <-  dd" Time="2015-08-03T14.29.56EDT"
+Binding p175 "175-xx  <-  dd" Time="2015-08-07T14.56.12EDT"
 CF p174 p175
-Snapshot d167 "167-xx" Value="[DIR]/ddg/167-xx.csv" Time="2015-08-03T14.29.57EDT";
+Snapshot d167 "167-xx" Value="[DIR]/ddg/167-xx.csv" Time="2015-08-07T14.56.12EDT";
 DF p175 d167
-Operation p176 "176-create.time.series.plot" Value="create.time.series.plot" Time="2015-08-03T14.29.57EDT";
+Operation p176 "176-create.time.series.plot" Value="create.time.series.plot" Time="2015-08-07T14.56.12EDT";
+DF d21 p176
 DF d167 p176
 CF p175 p176
-Binding p177 "177-xx  <-  xx" Time="2015-08-03T14.29.57EDT"
+Binding p177 "177-xx  <-  xx" Time="2015-08-07T14.56.12EDT"
 CF p176 p177
 DF d167 p177
-Snapshot d168 "168-xx" Value="[DIR]/ddg/168-xx.csv" Time="2015-08-03T14.29.57EDT";
+Snapshot d168 "168-xx" Value="[DIR]/ddg/168-xx.csv" Time="2015-08-07T14.56.12EDT";
 DF p177 d168
-Binding p178 "178-max.rows  <-  10000" Time="2015-08-03T14.29.57EDT"
+Binding p178 "178-max.rows  <-  10000" Time="2015-08-07T14.56.12EDT"
 CF p177 p178
 Data d169 "169-max.rows" Value="10000";
 DF p178 d169
-Operation p179 "179-get.plot.dataframe" Value="get.plot.dataframe" Time="2015-08-03T14.29.57EDT";
+Operation p179 "179-get.plot.dataframe" Value="get.plot.dataframe" Time="2015-08-07T14.56.13EDT";
+DF d19 p179
 DF d168 p179
 DF d169 p179
 CF p178 p179
-Snapshot d170 "170-get.plot.dataframe(xx,max.rows=10000) return" Value="[DIR]/ddg/170-get.plot.dataframe(xx,max.rows=10000) return.csv" Time="2015-08-03T14.29.57EDT";
+Snapshot d170 "170-get.plot.dataframe(xx,max.rows=10000) return" Value="[DIR]/ddg/170-get.plot.dataframe(xx,max.rows=10000) return.csv" Time="2015-08-07T14.56.13EDT";
 DF p179 d170
 Data d171 "171-create.time.series.plot(dd) return" Value="NULL";
 DF p176 d171
 Data d172 "172-create.datafile.preview(datafile.id) return" Value="NULL";
 DF p114 d172
-Finish p180 "180-if (datafile.num != 0) {    datafile.id <- get.datafile.id(d" Value="if (datafile.num != 0) {    datafile.id <- get.datafile.id(d" Time="2015-08-03T14.29.57EDT";
+Finish p180 "180-if (datafile.num != 0) {    datafile.id <- get.datafile.id(d" Value="if (datafile.num != 0) {    datafile.id <- get.datafile.id(d" Time="2015-08-07T14.56.13EDT";
 CF p179 p180
 DF d38 p180
 DF d105 p180
@@ -857,8 +924,8 @@ Data d173 "173-datafile.id" Value="\"hf000-02\"";
 DF p180 d173
 Data d174 "174-msg" Value="NULL";
 DF p180 d174
-Snapshot d175 "175-datafile.ids" Value="[DIR]/ddg/175-datafile.ids.csv" Time="2015-08-03T14.29.57EDT";
+Snapshot d175 "175-datafile.ids" Value="[DIR]/ddg/175-datafile.ids.csv" Time="2015-08-07T14.56.13EDT";
 DF p180 d175
-Finish p181 "181-HFDatasetPreview.R" Value="HFDatasetPreview.R" Time="2015-08-03T14.29.57EDT";
+Finish p181 "181-HFDatasetPreview.R" Value="HFDatasetPreview.R" Time="2015-08-07T14.56.13EDT";
 CF p180 p181
 
