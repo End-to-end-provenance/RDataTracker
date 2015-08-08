@@ -3195,7 +3195,7 @@ ddg.MAX_HIST_LINES <- 2^14
   return(exists(name, scope, inherits=FALSE))
 }
 
-# .ddg.is.call.to returns TRUE if the  parsed expression passed 
+# .ddg.is.call.to returns TRUE if the parsed expression passed 
 # in is a call to the specified function.
 
 .ddg.is.call.to <- function(parsed.expr, func.name) {
@@ -3243,8 +3243,22 @@ ddg.MAX_HIST_LINES <- 2^14
   }
 }
 
+# .ddg.create.function.block creates a function block.
+
+.ddg.create.function.block <- function(func.definition) {
+  # Get the function parameters.
+  func.params <- func.definition[[2]]
+  
+  # Get the body of the function.
+  func.body <- func.definition[[3]]
+  
+  # Add block and reconstruct the call.
+  new.func.body <- call("{", func.body)
+  return(call("function", func.params, as.call(new.func.body)))
+}
+
 # .ddg.insert.ddg.function inserts ddg.function before the first line
-# in a function body.
+# in a function body
 
 .ddg.insert.ddg.function <- function(func.definition) {
   # Get the function parameters.
@@ -3253,33 +3267,21 @@ ddg.MAX_HIST_LINES <- 2^14
   # Get the body of the function.
   func.body <- func.definition[[3]]
   
-  # Check to see if the function body is a block.
-  if (func.body[[1]] == "{") {
-    pos <- length (func.body)
+  pos <- length (func.body)
     
-    # If the function body contains a single statement, insert
-    # ddg.function and reconstruct the call.
-    if (pos == 2) {
-      inserted.statement <- call("ddg.function")
-      new.statements <- c(as.list(func.body[1]), inserted.statement, as.list(func.body[2]))
-      return(call("function", func.params, as.call(new.statements)))
-    }
-    
-    # If the function body contains more than one statement, insert
-    # ddg.function and reconstruct the call.
-    else {
-      inserted.statement <- call("ddg.function")
-      new.statements <- c(as.list(func.body[1]), inserted.statement, as.list(func.body[2:pos]))
-      return(call("function", func.params, as.call(new.statements)))
-    }
-  }
-  
-  # Not a block. Insert braces and ddg.function and reconstruct
-  # the call.
-  else {
-    new.func.body <- call("{", func.body)
+  # If the function body contains a single statement, insert
+  # ddg.function and reconstruct the call.
+  if (pos == 2) {
     inserted.statement <- call("ddg.function")
-    new.statements <- c(as.list(new.func.body[1]), inserted.statement, as.list(new.func.body[2]))
+    new.statements <- c(as.list(func.body[1]), inserted.statement, as.list(func.body[2]))
+    return(call("function", func.params, as.call(new.statements)))
+  }
+    
+  # If the function body contains more than one statement, insert
+  # ddg.function and reconstruct the call.
+  else {
+    inserted.statement <- call("ddg.function")
+    new.statements <- c(as.list(func.body[1]), inserted.statement, as.list(func.body[2:pos]))
     return(call("function", func.params, as.call(new.statements)))
   }
 }
@@ -3344,57 +3346,58 @@ ddg.MAX_HIST_LINES <- 2^14
   func.body <- func.definition[[3]]
   
   # Check to see if the function body is a block.
-  if (func.body[[1]] == "{") {
-    pos <- length (func.body)
+  pos <- length (func.body)
     
-    # If the function body contains a single statement, wrap that
-    # statement and reconstruct the call.
-    if (pos == 2) {
-      last.statement <- func.body[[pos]]
-      wrapped.statement <- call ("ddg.return.value", last.statement)
-      new.func.body <- call("{", wrapped.statement)
-      return(call("function", func.params, new.func.body))
-    }
-    
-    # If the function body contains more than one statement, find the
-    # last statement, wrap it, and reconstruct the call.
-    else {
-      last.statement <- func.body[[pos]]
-      wrapped.statement <- call ("ddg.return.value", last.statement)
-      new.statements <- c(as.list(func.body[2:pos-1]), wrapped.statement)
-      return(call("function", func.params, as.call(new.statements)))
-    }
+  # If the function body contains a single statement, wrap that
+  # statement and reconstruct the call.
+  if (pos == 2) {
+    last.statement <- func.body[[pos]]
+    wrapped.statement <- call ("ddg.return.value", last.statement)
+    new.func.body <- call("{", wrapped.statement)
+    return(call("function", func.params, new.func.body))
   }
-  
-  # Not a block.  Wrap the single statement that is the body and
-  # reconstruct the call.
+    
+  # If the function body contains more than one statement, find the
+  # last statement, wrap it, and reconstruct the call.
   else {
-    wrapped.statement <- call("ddg.return.value", func.body)
-    return(call("function", func.params, wrapped.statement))
+    last.statement <- func.body[[pos]]
+    wrapped.statement <- call ("ddg.return.value", last.statement)
+    new.statements <- c(as.list(func.body[2:pos-1]), wrapped.statement)
+    return(call("function", func.params, as.call(new.statements)))
   }
 }
-
+  
 # .ddg.add.function.annotations accepts and returns a parsed command.
 # If the command is a function declaration, calls to ddg.function and
 # ddg.return.value are added, if not already present. Otherwise the 
 # command is returned unchanged.
 
 .ddg.add.function.annotations <- function(parsed.command) {
+  # Functions for which annotations are not currently implemented.
+  skip.functions <- c("tryCatch", "lapply", "sapply", "vapply")
+  
   # Test for function declaration.
   if (length(parsed.command) == 0) return(parsed.command)
   else if (length(parsed.command[[1]]) < 3) return(parsed.command)
   else if (length(parsed.command[[1]][[3]]) < 4) return(parsed.command)
   else if (parsed.command[[1]][[3]][[1]] != "function") return(parsed.command)
-  # Ignore tryCatch for now
-  else if (parsed.command[[1]][[1]] == "tryCatch") return(parsed.command)
-  else {
 
+  # Skip these functions for now.
+  else if (toString(parsed.command[[1]][[1]]) %in% skip.functions) return(parsed.command)
+  
+  # Add function annotations.
+  else {
     # Get function name.
     func.name <- parsed.command[[1]][[2]]
     
     # Get function definition.
     func.definition <- parsed.command[[1]][[3]]
-     
+
+    # Create block if necessary.
+    if (func.definition[[3]][[1]] != "{") {
+      func.definition <- .ddg.create.function.block(func.definition)
+    }
+    
     # Insert call to ddg.function() if not already added.
     if (!.ddg.has.call.to(func.definition, "ddg.function")) {
       func.definition <- .ddg.insert.ddg.function(func.definition)
@@ -3405,7 +3408,7 @@ ddg.MAX_HIST_LINES <- 2^14
       func.definition <- .ddg.wrap.all.return.parameters(func.definition)
     }
     
-    # Wrap last statement with ddg.return.value if not already added
+    # Wrap last statement with ddg.return.value() if not already added
     # and if last statement is not a simple return or a ddg function.
     last.statement <- .ddg.find.last.statement(func.definition)
     if (!.ddg.is.call.to(last.statement, "ddg.return.value") & !.ddg.is.call.to(last.statement, "return") & !grepl("^ddg.", last.statement[1])) {
