@@ -56,10 +56,14 @@
 - CalculateSquareRoot
 - DailySolarRadiation
 - HFDatasetPreview
-- SivanSampling
+- SivanSamplingSmaller
 
   The target "test-all" will do all of the normal & script tests above and 
   also Aaron's Simes script, which takes longer to run.
+  
+  Currently SivanSampling is not included in the tests because it produces a DDG
+  that is too big.  We need to exclude collecting data on the simple getter functions
+  at least.
   
   To add a new test case, duplicate one of the existing test and update tasks,
   modify the name of the task and the value passed to run-no-instrumentation-test
@@ -479,6 +483,19 @@
 	 	</antcall>
 	</target>
 
+  	<target name="SivanSamplingSmaller">
+  		<antcall target="run-no-instrumentation-test">
+  			<param name="test-name" value="SivanSamplingSmaller" />
+  		</antcall>
+	    <echo>This script uses randomization.</echo>
+  	</target>
+
+	<target name="update-SivanSamplingSmaller">
+	  	<antcall target="update-no-instrumentation-expected">
+	  		<param name="test-name" value="SivanSamplingSmaller" />
+	 	</antcall>
+	</target>
+
 	<!-- SivanSampling is not currently included in the test suites because it collects too much data -->
   	<target name="SivanSampling">
   		<antcall target="run-no-instrumentation-test">
@@ -493,7 +510,7 @@
 	 	</antcall>
 	</target>
 
-    <target name="script-tests" depends="CalculateSquareRoot, DailySolarRadiation, HFDatasetPreview">
+    <target name="script-tests" depends="CalculateSquareRoot, DailySolarRadiation, HFDatasetPreview, SivanSamplingSmaller">
 	    <echo>Script tests for which out put should not differ </echo>
 	</target>
 	<!--########################## End Script Tests ##########################-->
