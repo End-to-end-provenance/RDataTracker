@@ -481,6 +481,8 @@ ddg.MAX_HIST_LINES <- 2^14
   if (is.null(scope)) {
     scope <- .ddg.get.scope(name, calls=stack)
   }
+  
+  print (paste (".ddg.save.data: saving", name, "in scope", scope))
 	# Determine type for value, and save accordingly.
 	if (.ddg.is.graphic(value)) .ddg.write.graphic(name, value, graphic.fext, scope=scope)
 	else if (.ddg.is.simple(value)) .ddg.save.simple(name, value, scope=scope)
@@ -669,8 +671,10 @@ ddg.MAX_HIST_LINES <- 2^14
 # dname - data node name.
 # dscope - data node scope.
 
-.ddg.data.node.exists <- function(dname, dscope) {
+.ddg.data.node.exists <- function(dname, dscope=NULL) {
   if (is.null(dscope)) dscope <- .ddg.get.scope(dname)
+  
+  print (paste (".ddg.data.node.exists: Looking for", dname, "in scope", dscope))
   ddg.data.nodes <- .ddg.data.nodes()
   rows <- nrow(ddg.data.nodes)
   for (i in rows:1) {
@@ -1160,7 +1164,9 @@ ddg.MAX_HIST_LINES <- 2^14
   
   for (var in vars.used) {
     # Make sure there is a node we could connect to.
-    if (.ddg.data.node.exists(var, environmentName(.GlobalEnv))) {
+    scope <- .ddg.get.scope(var)
+    if (.ddg.data.node.exists(var, scope)) {
+#    if (.ddg.data.node.exists(var, environmentName(.GlobalEnv))) {
       nRow <- which(vars.set$variable == var)
       
       # Check if the node is written in the console block.
@@ -1172,7 +1178,8 @@ ddg.MAX_HIST_LINES <- 2^14
         # before the console block or to the last writer of this 
         # variable within the console block.
 				if (cmd.pos <= first.writer || cmd.pos > last.writer) {
-					.ddg.data2proc(var, environmentName(.GlobalEnv), cmd)
+					#.ddg.data2proc(var, environmentName(.GlobalEnv), cmd)
+          .ddg.data2proc(var, scope, cmd)
 				}
 
 				# TODO - add some sort of warning to the user that the node 
@@ -1182,7 +1189,8 @@ ddg.MAX_HIST_LINES <- 2^14
 			# The variable is not set at all in this console block. 
       # Connect to a pre-existing data node.
 			else {
-				.ddg.data2proc(var, environmentName(.GlobalEnv), cmd)
+				#.ddg.data2proc(var, environmentName(.GlobalEnv), cmd)
+        .ddg.data2proc(var, scope, cmd)
 			}
 		}
 		else {
@@ -1212,7 +1220,8 @@ ddg.MAX_HIST_LINES <- 2^14
 
 .ddg.create.data.set.edges.for.console.cmd <- function(vars.set, cmd.abbrev, cmd.expr, cmd.pos, for.finish.node=FALSE) {
 
-  .ddg.create.data.set.edges.for.cmd(vars.set, cmd.abbrev, cmd.expr, cmd.pos, for.finish.node, scope=environmentName(.GlobalEnv), env=.GlobalEnv)
+  #.ddg.create.data.set.edges.for.cmd(vars.set, cmd.abbrev, cmd.expr, cmd.pos, for.finish.node, scope=environmentName(.GlobalEnv), env=.GlobalEnv)
+  .ddg.create.data.set.edges.for.cmd(vars.set, cmd.abbrev, cmd.expr, cmd.pos, for.finish.node)
 }
 
 # .ddg.create.data.set.edges.for.cmd creates edgesthat correspond
@@ -1819,7 +1828,7 @@ ddg.MAX_HIST_LINES <- 2^14
   return(updated.cmd)
 }
 
-# .ddg.parse.commands takes as input a set of R script commands 
+# .ddg.parse.commands takes as input a list of R script commands 
 # and creates DDG nodes for each command. If environ is an 
 # environment, it executes the commands in that environment
 # immediately before creating the respective nodes for that 
@@ -2044,7 +2053,12 @@ ddg.MAX_HIST_LINES <- 2^14
             if (.ddg.is.set (".ddg.last.proc.node.created")).ddg.get(".ddg.last.proc.node.created")
             else ""
         cur.cmd.closed <- (last.proc.node.created == paste ("Finish", cmd.abbrev))
-        create.procedure <- create && !cur.cmd.closed && !named.node.set
+        create.procedure <- create && (!cur.cmd.closed || !named.node.set)
+        print (paste (".ddg.parse.commands: last.proc.node.created =", last.proc.node.created))
+        print (paste (".ddg.parse.commands: cmd.abrev =", cmd.abbrev))
+        print (paste (".ddg.parse.commands: create =", create))
+        print (paste (".ddg.parse.commands: create.procedure =", create.procedure))
+        
         
         # We want to create a procedure node for this command.
         if (create.procedure) {
@@ -2100,12 +2114,12 @@ ddg.MAX_HIST_LINES <- 2^14
   }
   
   # Close any node left open during execution.
-  if (execute) .ddg.close.last.command.node(initial=TRUE)
+  if (execute && !inside.func) .ddg.close.last.command.node(initial=TRUE)
   
   # Close the console block if we processed anything and the DDG 
   # is initialized (also, save).
   # 
-  if (.ddg.is.init() && named.node.set) { 
+  if (.ddg.is.init() && named.node.set && !inside.func) { 
     .ddg.add.abstract.node("Finish", node.name)
   }
   
@@ -3477,12 +3491,27 @@ ddg.return.value <- function (expr=NULL) {
   .ddg.save.data(return.node.name, expr, fname="ddg.return", scope=return.node.scope)
   
   # Create a retun proc node
-  return.stmt <- paste0("return (", expr, ")")
-  .ddg.proc.node("Operation", return.stmt, return.stmt)
+  return.expr <- substitute(expr)
+  return.expr.text <- deparse(return.expr)
+  return.stmt <- paste0("return (", return.expr.text, ")")
+  #return.stmt <- paste0("return (", expr, ")")
+  .ddg.proc.node("Operation", return.stmt, return.stmt, console = TRUE)
 
   # Create control flow edge from preceding procedure node.
   .ddg.proc2proc()
 
+  # Create edges from variables used in the return statement
+  vars.used <- .ddg.find.var.uses(return.expr)
+  print (paste( "ddg.return.value:  Looking for variables in", return.expr))
+  print (paste( "ddg.return.value: vars.used =", vars.used))
+  print (paste ("Contents of environment", ls(sys.frame(caller.frame))))
+  for (var in vars.used) {
+    # Make sure there is a node we could connect to.
+    scope <- .ddg.get.scope(var)
+    if (.ddg.data.node.exists(var, scope)) {
+      .ddg.data2proc(var, scope, return.stmt)
+    }
+  }
   
   # Create an edge from the return statement to its return value.
   .ddg.proc2data(return.stmt, return.node.name, return.node.scope, return.value=TRUE)
@@ -3494,6 +3523,12 @@ ddg.return.value <- function (expr=NULL) {
   ddg.return.values$return.node.id[ddg.num.returns] <- .ddg.dnum()
   .ddg.set(".ddg.return.values", ddg.return.values)
   .ddg.set(".ddg.num.returns", ddg.num.returns)
+  
+  # Create the finish node for the function
+  .ddg.close.last.command.node(called="ddg.return.value")
+  
+  # Create the edge from the return value to the finish node
+  .ddg.link.function.returns(call.text) 
   
   #print ("Returning from ddg.return.value")
   return(expr)
