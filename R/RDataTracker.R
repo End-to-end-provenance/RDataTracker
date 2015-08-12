@@ -1749,6 +1749,7 @@ ddg.MAX_HIST_LINES <- 2^14
 		.ddg.create.data.set.edges.for.console.cmd(vars.set, .ddg.last.cmd$abbrev, .ddg.last.cmd$expr, 1, for.finish.node = TRUE)
 
 		# No previous command.
+    print (".ddg.close.last.command.node: created finish node; saving .ddg.last.cmd as null")
 		.ddg.set(".ddg.last.cmd", NULL)
 	}
 }
@@ -1765,6 +1766,7 @@ ddg.MAX_HIST_LINES <- 2^14
 
 		# Now the new command becomes the last command, and new command 
     # is null.
+    print (paste (".ddg.open.new.command.node: saving .ddg.last.cmd as", new.command))
 		.ddg.set(".ddg.last.cmd", new.command)
 		.ddg.set(".ddg.possible.last.cmd", NULL)
 	}
@@ -1870,14 +1872,18 @@ ddg.MAX_HIST_LINES <- 2^14
   
   filtered.commands <- Filter(function(x){return(!grepl("^ddg.", x))}, new.commands)
   
-  # Attempt to close the previous collapsible command node if a ddg 
-  # exists
-  if (.ddg.is.init()) .ddg.close.last.command.node(initial=TRUE)
-  
   # Create start and end nodes to allow collapsing of consecutive 
   # console nodes. Don't bother doing this if there is only 1 new 
   # command in the history or execution.
   num.new.commands <- length(new.commands)
+  
+  print (paste("ddg.parse.commands: .ddg.func.depth =", .ddg.get(".ddg.func.depth")))
+  inside.func <- (.ddg.get(".ddg.func.depth") > 0)
+  
+  # Attempt to close the previous collapsible command node if a ddg 
+  # exists
+  #if (.ddg.is.init() && num.new.commands > 1) .ddg.close.last.command.node(initial=TRUE)
+  if (.ddg.is.init() && !inside.func) .ddg.close.last.command.node(initial=TRUE)
   
   # Quote the quotation (") characters so that they will appear in 
   # ddg.txt.
@@ -1885,17 +1891,21 @@ ddg.MAX_HIST_LINES <- 2^14
 
   # Get the last command in the new commands and check to see if 
   # we need to create a new .ddg.last.cmd node for future reference.
-  .ddg.last.cmd <- list("abbrev" = .ddg.abbrev.cmd(quoted.commands[[num.new.commands]]), 
+  if (!inside.func) {
+    .ddg.last.cmd <- list("abbrev" = .ddg.abbrev.cmd(quoted.commands[[num.new.commands]]), 
       "expr" = parsed.commands[[num.new.commands]],
       "text" = new.commands[[num.new.commands]])
+    print(paste(".ddg.parse.commands: setting .ddg.last.cmd to", .ddg.last.cmd$text))
+    if (substr(.ddg.last.cmd$abbrev, 1, 4) == "ddg.") {
+      .ddg.last.cmd <- NULL
+      print(".ddg.parse.commands: setting .ddg.last.cmd to null")
+    }
 
-  if (substr(.ddg.last.cmd$abbrev, 1, 4) == "ddg.") {
-    .ddg.last.cmd <- NULL
-  }
-  else if (!execute) {
-    quoted.commands <- quoted.commands[1:num.new.commands-1]
-    parsed.commands <- parsed.commands[1:num.new.commands-1]
-    new.commands <- new.commands[1:num.new.commands-1]
+    else if (!execute) {
+      quoted.commands <- quoted.commands[1:num.new.commands-1]
+      parsed.commands <- parsed.commands[1:num.new.commands-1]
+      new.commands <- new.commands[1:num.new.commands-1]
+    }
   }
   
   filtered.commands <- Filter(function(x){
@@ -1908,7 +1918,8 @@ ddg.MAX_HIST_LINES <- 2^14
   start.node.created <- ""
   num.actual.commands <- length(filtered.commands)
   # 
-  if (num.actual.commands > 0 && .ddg.is.init()) {
+  #if (.ddg.is.init() && (!execute && length(new.commands) > 0) || (execute && length(new.commands) > 1)) {
+	if (num.actual.commands > 0 && .ddg.is.init() && !inside.func) {
     .ddg.add.abstract.node("Start", node.name)
     named.node.set <- TRUE
     start.node.created <- node.name
@@ -1953,6 +1964,8 @@ ddg.MAX_HIST_LINES <- 2^14
       cmd <- quoted.commands[[i]]
       cmd.abbrev <- .ddg.abbrev.cmd(cmd)
       
+      print (paste (".ddg.parse.commands: cmd.text =", cmd.text))
+      
       if (.ddg.enable.source() && grepl("^ddg.eval", cmd.expr) && .ddg.enable.console()) {    
         update.last.cmd <- is.null(.ddg.last.cmd)
         updated.cmd <- .ddg.extract.param.from.ddg.eval(cmd.text)
@@ -1963,6 +1976,7 @@ ddg.MAX_HIST_LINES <- 2^14
         
         if (update.last.cmd) {
           .ddg.last.cmd <- list("abbrev"=cmd.abbrev, "expr"=cmd.expr, "text"=cmd)
+          print(paste(".ddg.parse.commands: setting ddg.last.cmd to", cmd))
         }
       }
       
@@ -2018,12 +2032,25 @@ ddg.MAX_HIST_LINES <- 2^14
         # node). Matching a last command means that the last command 
         # is set, is not NULL, and is equal to the current command.
         
-        create.procedure <- create && .ddg.is.set(".ddg.last.cmd") && !(!is.null(.ddg.get(".ddg.last.cmd")) && .ddg.get(".ddg.last.cmd")$text == cmd.text) && (!named.node.set || start.node.created != cmd.text)
-
+        #create.procedure <- create && .ddg.is.set(".ddg.last.cmd") && !(!is.null(.ddg.get(".ddg.last.cmd")$text) && .ddg.get(".ddg.last.cmd")$text == cmd.text) && (!named.node.set || start.node.created != cmd.text)
+        #if (.ddg.is.set(".ddg.last.cmd")) {
+         # print (paste (".ddg.parse.commands: .ddg.last.cmd =", .ddg.get(".ddg.last.cmd")$text))
+          #print (paste (".ddg.parse.commands: named.node.set =", named.node.set))
+          #print (paste (".ddg.parse.commands: start.node.created =", start.node.created))
+          #print (paste (".ddg.parse.commands: cmd.text =", cmd.text))
+        #}
+        
+        last.proc.node.created <- 
+            if (.ddg.is.set (".ddg.last.proc.node.created")).ddg.get(".ddg.last.proc.node.created")
+            else ""
+        cur.cmd.closed <- (last.proc.node.created == paste ("Finish", cmd.abbrev))
+        create.procedure <- create && !cur.cmd.closed && !named.node.set
+        
         # We want to create a procedure node for this command.
         if (create.procedure) {
           
           # Create the procedure node.
+          print (".ddg.parse.commands creating Operation node")
           .ddg.proc.node("Operation", cmd.abbrev, cmd.abbrev, console=TRUE)
           .ddg.proc2proc()
           if (.ddg.debug()) print(paste(".ddg.parse.commands: Adding operation node for", cmd.abbrev))
@@ -2088,6 +2115,7 @@ ddg.MAX_HIST_LINES <- 2^14
 		
     .ddg.set(".ddg.possible.last.cmd", .ddg.last.cmd)
     .ddg.set(".ddg.last.cmd", .ddg.last.cmd)
+    print(".ddg.parse.commands saving .ddg.last.cmd")
     .ddg.open.new.command.node()
   }
   
@@ -2423,8 +2451,35 @@ ddg.MAX_HIST_LINES <- 2^14
   }
   
   # Record procedure node information.
+  if (ptype == "Start") {
+    .ddg.starts.open <- .ddg.get (".ddg.starts.open")
+    .ddg.starts.open <- c(.ddg.starts.open, pname)
+    .ddg.set (".ddg.starts.open", .ddg.starts.open)
+  }
+  else if (ptype == "Finish") {
+    .ddg.starts.open <- .ddg.get (".ddg.starts.open")
+    num.starts.open <- length(.ddg.starts.open)
+    if (num.starts.open > 0) {
+      last.start.open <- .ddg.starts.open[num.starts.open]
+      if (num.starts.open > 1) {
+        .ddg.starts.open <- .ddg.starts.open[1:num.starts.open-1]
+      }
+      else {
+        .ddg.starts.open <- vector()
+      }
+      .ddg.set (".ddg.starts.open", .ddg.starts.open)
+      if (last.start.open != pname) {
+        .ddg.insert.error.message("Start and finish nodes do not match")  
+      }
+    }
+    else {
+      .ddg.insert.error.message("Attempting to create a finish node when there are no open blocks")  
+    }
+  }
+  .ddg.set(".ddg.last.proc.node.created", paste(ptype, pname))
   .ddg.record.proc(ptype, pname, pvalue, auto.created)
   
+  if (ptype == "Finish") print(sys.calls())
   if (.ddg.debug()) print(paste("proc.node:", ptype, pname))
 }
 
@@ -3064,7 +3119,7 @@ ddg.MAX_HIST_LINES <- 2^14
           }
         })
   }
-  
+  print (".ddg.create.function.nodes creating Operation node")
   .ddg.proc.node("Operation", pname, pname, auto.created = auto.created)
   
   # Link to the definition of the function if the function is defined in this script.
@@ -3258,7 +3313,7 @@ ddg.MAX_HIST_LINES <- 2^14
 }
 
 # .ddg.insert.ddg.function inserts ddg.function before the first line
-# in a function body
+# in a function body.
 
 .ddg.insert.ddg.function <- function(func.definition) {
   # Get the function parameters.
@@ -3445,6 +3500,7 @@ ddg.MAX_HIST_LINES <- 2^14
 ddg.function <- function(outs.graphic=NULL, outs.data=NULL, outs.exception=NULL, outs.url=NULL, outs.file=NULL, graphic.fext="jpeg") {
   if (!.ddg.is.init()) return(invisible())
   
+  .ddg.inc(".ddg.func.depth")
   pname <- NULL
   .ddg.lookup.function.name(pname)
   
@@ -3639,6 +3695,9 @@ ddg.return.value <- function (expr=NULL) {
     .ddg.create.function.nodes(pname, full.call, auto.created = TRUE)
     #print (paste0("ddg.return.value done creating function node for ", pname))
   }
+  else {
+    .ddg.dec (".ddg.func.depth")
+  }
   
   # Create a data node for the return value. We want the scope of
   # the function that called the function that called ddg.return.
@@ -3676,28 +3735,38 @@ ddg.return.value <- function (expr=NULL) {
 # statement - the statement to evaluate.
 
 ddg.eval <- function(statement) {
+  if (.ddg.debug()) print (paste("ddg.eval: statement =", statement))
   parsed.statement <- parse(text=statement)
   frame.num <- .ddg.get.frame.number(sys.calls())
+  print (paste("ddg.eval:  frame.num =", frame.num))
   env <- sys.frame(frame.num)
   if (!.ddg.is.init()) {
+    print ("ddg.eval:  no ddg!")
     eval(parsed.statement, env)
     return(invisible())
   }
   
   if (interactive() && .ddg.enable.console() && !.ddg.enable.source()) {
+    print("ddg.eval:  Creating console node")
     .ddg.console.node()
   }
   
+  print ("ddg.eval:  calling .ddg.parse.commands")
   .ddg.parse.commands(parsed.statement, environ=env, run.commands = TRUE, node.name=statement)
-  .ddg.link.function.returns(statement)
-  
-  # Create outflowing edges .
-  .ddg.statement <- list("abbrev" = .ddg.abbrev.cmd(gsub("\\\"", "\\\\\"", statement)), 
-      "expr" = parsed.statement,
-      "text" = statement)
-  
-  vars.set <- .ddg.find.var.assignments(.ddg.statement$expr)
-  .ddg.create.data.set.edges.for.cmd(vars.set, .ddg.statement$abbrev, .ddg.statement$expr, 1, stack=sys.calls())
+  if (.ddg.get(".ddg.func.depth") == 0) {
+    print ("ddg.eval:  calling .ddg.link.function.returns")
+    .ddg.link.function.returns(statement)
+    
+    # Create outflowing edges .
+    .ddg.statement <- list("abbrev" = .ddg.abbrev.cmd(gsub("\\\"", "\\\\\"", statement)), 
+        "expr" = parsed.statement,
+        "text" = statement)
+    
+    vars.set <- .ddg.find.var.assignments(.ddg.statement$expr)
+    print ("ddg.eval: creating data set edges")
+    .ddg.create.data.set.edges.for.cmd(vars.set, .ddg.statement$abbrev, .ddg.statement$expr, 1, stack=sys.calls())
+    print ("ddg.eval done")
+  }
 }
 
 # ddg.data creates a data node for a single or complex data value. 
@@ -4112,7 +4181,11 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, enable.console = TRUE,
   # Set environment constants.
   .ddg.set(".ddg.enable.console", enable.console)
   .ddg.set(".ddg.max.snapshot.size", max.snapshot.size)
+  .ddg.set(".ddg.func.depth", 0)
   .ddg.init.environ()
+  
+  # Initialize the information about the open start-finish blocks
+  .ddg.set (".ddg.starts.open", vector())
   
   # Mark graph as initilized.
   .ddg.set(".ddg.initialized", TRUE)
