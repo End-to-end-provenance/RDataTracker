@@ -5,11 +5,12 @@ Operation 4 write(\"This file will be deleted\", \"testfile3.txt\") write(\"This
 Operation 5 if (!file.exists(\"testfile3.txt\")) {    print(\"testfile3. if (!file.exists(\"testfile3.txt\")) {    print(\"testfile3. FALSE FALSE
 Start 6 checkpoint <- ddg.checkpoint(\"my checkpoint\") checkpoint <- ddg.checkpoint(\"my checkpoint\") FALSE FALSE
 Checkpoint 7 my checkpoint  FALSE FALSE
-Finish 8 checkpoint <- ddg.checkpoint(\"my checkpoint\") checkpoint <- ddg.checkpoint(\"my checkpoint\") FALSE FALSE
+Operation 8 checkpoint <- ddg.checkpoint(\"my checkpoint\") checkpoint <- ddg.checkpoint(\"my checkpoint\") FALSE FALSE
 Operation 9 write(\"abc\", file = \"testfile2.txt\", append = TRUE) write(\"abc\", file = \"testfile2.txt\", append = TRUE) FALSE FALSE
 Operation 10 if (!file.exists(\"testfile2.txt\")) {    print(\"testfile2. if (!file.exists(\"testfile2.txt\")) {    print(\"testfile2. FALSE FALSE
 Operation 11 unlink(\"testfile3.txt\") unlink(\"testfile3.txt\") FALSE FALSE
 Operation 12 if (file.exists(\"testfile3.txt\")) {    print(\"testfile3.t if (file.exists(\"testfile3.txt\")) {    print(\"testfile3.t FALSE FALSE
 Restore 13 my checkpoint  FALSE FALSE
-Start 14 if (!file.exists(\"testfile3.txt\")) {    print(\"testfile3. if (!file.exists(\"testfile3.txt\")) {    print(\"testfile3. FALSE FALSE
-Operation 15 tryCatch tryCatch FALSE FALSE
+Finish 14 checkpoint <- ddg.checkpoint(\"my checkpoint\") checkpoint <- ddg.checkpoint(\"my checkpoint\") FALSE FALSE
+Start 15 if (!file.exists(\"testfile3.txt\")) {    print(\"testfile3. if (!file.exists(\"testfile3.txt\")) {    print(\"testfile3. FALSE FALSE
+Operation 16 tryCatch tryCatch FALSE FALSE
