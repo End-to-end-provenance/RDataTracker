@@ -101,6 +101,14 @@ ddg.MAX_HIST_LINES <- 2^14
   return (.ddg.get(".ddg.enable.console"))
 }
 
+.ddg.annotate.on <- function() {
+  return(.ddg.get("ddg.annotate.on"))
+}
+
+.ddg.annotate.off <- function() {
+  return(.ddg.get("ddg.annotate.off"))
+}
+
 .ddg.enable.source <- function(){
   return(.ddg.is.set("from.source") && .ddg.get("from.source"))
 }
@@ -224,6 +232,12 @@ ddg.MAX_HIST_LINES <- 2^14
 
 	# Console is disabled.
 	.ddg.set(".ddg.enable.console", FALSE)
+  
+  # Functions to be annotated.
+  .ddg.set("ddg.annotate.on", NULL)
+    
+  # Functions not to be annotated.
+  .ddg.set("ddg.annotate.off", NULL)
 }
 
 # .ddg.set.history provides a wrapper to change the number of 
@@ -1848,6 +1862,11 @@ ddg.MAX_HIST_LINES <- 2^14
     # Write annotated source code to ddg directory.
     file.out <- file(paste(.ddg.path(), "annotated-script.r", sep="/"))
 
+    # Check for list of functions to annotate or not to annotate
+    for (i in 1:(length(parsed.commands))) {
+      .ddg.get.annotation.list(parsed.commands[i])
+    }
+    
     for (i in 1:(length(parsed.commands))) {
       # Get annotations.
       parsed.commands[i] <- .ddg.add.function.annotations(parsed.commands[i]) 
@@ -3297,7 +3316,7 @@ ddg.MAX_HIST_LINES <- 2^14
     statement <- func.body[[i]]
     if (.ddg.has.call.to(statement, "return")) {
       
-      # If it is a return, wrap parameters with ddg.return.value.
+      # If statement is a return, wrap parameters with ddg.return.value.
       if (.ddg.is.call.to(statement, "return")) {
         # Need to handle empty parameter separately.
         if (length(statement) == 1) {
@@ -3305,11 +3324,17 @@ ddg.MAX_HIST_LINES <- 2^14
         } else {
           ret.params <- statement[[2]]
         }
+        
+        # If parameters contain a return, recurse on parameters.
+        if (.ddg.has.call.to(ret.params, "return")) {
+          ret.params <- .ddg.wrap.return.parameters(ret.params)
+        }
+        
         new.ret.params <- call("ddg.return.value", ret.params)
         new.statement <- call("return", new.ret.params)
         func.body[[i]] <- new.statement
 
-      # If it contains a return, recurse on statement.
+      # If statement contains a return, recurse on statement.
       } else {
         func.body[[i]] <- .ddg.wrap.return.parameters(statement)
       }
@@ -3366,24 +3391,29 @@ ddg.MAX_HIST_LINES <- 2^14
     return(call("function", func.params, as.call(new.statements)))
   }
 }
-  
+
 # .ddg.add.function.annotations accepts and returns a parsed command.
-# If the command is a function declaration, calls to ddg.function and
+# If the command is a function declaration, calls to ddg.function and 
 # ddg.return.value are added, if not already present. Otherwise the 
-# command is returned unchanged.
+# command is returned unchanged. The functions ddg.annotate.on and 
+# ddg.annotate.off may be used to provide a list of functions to annotate 
+# or not to annotate, respectively.
 
 .ddg.add.function.annotations <- function(parsed.command) {
-  # Functions for which annotations are not currently implemented.
-  skip.functions <- c("tryCatch", "lapply", "sapply", "vapply")
-  
-  # Test for function declaration.
+  # Return if statement is empty.
   if (length(parsed.command) == 0) return(parsed.command)
-  else if (length(parsed.command[[1]]) < 3) return(parsed.command)
-  else if (length(parsed.command[[1]][[3]]) < 4) return(parsed.command)
-  else if (parsed.command[[1]][[3]][[1]] != "function") return(parsed.command)
+  # Return if not an assignment statement.
+  else if (!.ddg.is.assign(parsed.command[[1]])) return(parsed.command)
+  # Return if not a function declaration.
+  else if (!.ddg.is.functiondecl(parsed.command[[1]][[3]])) return(parsed.command)
 
-  # Skip these functions for now.
-  else if (toString(parsed.command[[1]][[1]]) %in% skip.functions) return(parsed.command)
+  # Return if a list of functions to annotate is provided and this
+  # function is not on the list.
+  else if (!is.null(.ddg.annotate.on()) & !(toString(parsed.command[[1]][[2]]) %in% .ddg.annotate.on())) return(parsed.command)
+  
+  # Return if a list of functions not to annotate is provided and this
+  # function is on the list.
+  else if (!is.null(.ddg.annotate.off()) & toString(parsed.command[[1]][[2]]) %in% .ddg.annotate.off()) return(parsed.command)
   
   # Add function annotations.
   else {
@@ -3393,28 +3423,28 @@ ddg.MAX_HIST_LINES <- 2^14
     # Get function definition.
     func.definition <- parsed.command[[1]][[3]]
 
-    # Create block if necessary.
+    # Create function block if necessary.
     if (func.definition[[3]][[1]] != "{") {
       func.definition <- .ddg.create.function.block(func.definition)
     }
-    
-    # Insert call to ddg.function() if not already added.
+
+    # Insert call to ddg.function if not already added.
     if (!.ddg.has.call.to(func.definition, "ddg.function")) {
       func.definition <- .ddg.insert.ddg.function(func.definition)
     }
 
-    # Insert calls to ddg.return.value() if not already added.
+    # Insert calls to ddg.return.value if not already added.
     if (!.ddg.has.call.to(func.definition, "ddg.return.value")) {
       func.definition <- .ddg.wrap.all.return.parameters(func.definition)
     }
     
-    # Wrap last statement with ddg.return.value() if not already added
+    # Wrap last statement with ddg.return.value if not already added
     # and if last statement is not a simple return or a ddg function.
     last.statement <- .ddg.find.last.statement(func.definition)
     if (!.ddg.is.call.to(last.statement, "ddg.return.value") & !.ddg.is.call.to(last.statement, "return") & !grepl("^ddg.", last.statement[1])) {
       func.definition <- .ddg.wrap.last.line(func.definition)
     }  
-          
+    
     # Reassemble parsed.command.
     func.name.txt <- toString(func.name)
     func.definition.txt <- deparse(func.definition)
@@ -3423,6 +3453,17 @@ ddg.MAX_HIST_LINES <- 2^14
     # Return modified parsed command
     return(parsed.command)
   }
+}
+
+# .ddg.get.annotation.list checks to see if the script contains calls to
+# ddg.annotate.on or ddg.annotate.off. If it does, these calls are executed.
+
+.ddg.get.annotation.list <- function(parsed.command) {
+  if (length(parsed.command) > 0) {
+    if (toString(parsed.command[[1]][[1]]) == "ddg.annotate.on" | toString(parsed.command[[1]][[1]]) == "ddg.annotate.off") {
+      eval(parsed.command)
+    }
+  }  
 }
 
 #--------------------USER FUNCTIONS-----------------------#
@@ -4506,7 +4547,25 @@ ddg.console.on <- function() {
 	if (!.ddg.enable.console()) .ddg.write.timestamp.to.history()
 	.ddg.set(".ddg.enable.console", TRUE)
 }
- 
+
+# ddg.annotate.on enables annotation for the specified functions. Functions
+# not on this list are not annotated.
+
+# fnames - a list of one or more function names passed in as strings.
+
+ddg.annotate.on <- function (fnames=NULL) {
+  .ddg.set("ddg.annotate.on", fnames)
+}
+
+# ddg.annotate.off disables annotation for the specified functions.
+# Functions not on this list are annotated.
+
+# fnames - a list of one or more function names passed in as strings.
+
+ddg.annotate.off <- function (fnames=NULL) {
+  .ddg.set("ddg.annotate.off", fnames)
+}
+
 # ddg.flush.ddg removes all files from the DDG directory unless the 
 #   DDG directory is the working directory. If no DDG directory is 
 #   specified, the current DDG directory is assumed.
