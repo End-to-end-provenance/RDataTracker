@@ -1,0 +1,1119 @@
+Architecture="x86_64"
+OperatingSystem="unix"
+Language="R"
+LanguageVersion="R version 3.1.2 (2014-10-31)"
+RDataTrackerVersion="1.6"
+Script="[DIR]/SivanSamplingSmaller.R"
+ProcessFileTimestamp="2015-08-10T15.32.32EDT"
+WorkingDirectory="[DIR]"
+DDGDirectory="[DIR]/ddg"
+DateTime="2015-08-10T15.34.58EDT"
+233
+Start p1 "1-SivanSamplingSmaller.R" Value="SivanSamplingSmaller.R" Time="2015-08-10T15.34.56EDT";
+Operation p2 "2-library(methods)" Value="library(methods)" Time="2015-08-10T15.34.56EDT";
+CF p1 p2
+Operation p3 "3-setClass(\"SpeciesInSampleObj\", slots = c(sampleCode = \"in" Value="setClass(\"SpeciesInSampleObj\", slots = c(sampleCode = \"in" Time="2015-08-10T15.34.56EDT";
+CF p2 p3
+Operation p4 "4-setClass(\"DistributionConstraintObj\", slots = c(p = \"nume" Value="setClass(\"DistributionConstraintObj\", slots = c(p = \"nume" Time="2015-08-10T15.34.56EDT";
+CF p3 p4
+Operation p5 "5-setClass(\"SpeciesDistributionAreas\", slots = c(areaDiction" Value="setClass(\"SpeciesDistributionAreas\", slots = c(areaDiction" Time="2015-08-10T15.34.56EDT";
+CF p4 p5
+Operation p6 "6-getNumSpecies <- function(object) {    ddg.function()    ddg" Value="getNumSpecies <- function(object) {    ddg.function()    ddg" Time="2015-08-10T15.34.56EDT";
+CF p5 p6
+Data d1 "1-getNumSpecies" Value="#ddg.function";
+DF p6 d1
+Operation p7 "7-getDistributionOfSpecies <- function(object, index) {    ddg" Value="getDistributionOfSpecies <- function(object, index) {    ddg" Time="2015-08-10T15.34.56EDT";
+CF p6 p7
+Data d2 "2-getDistributionOfSpecies" Value="#ddg.function";
+DF p7 d2
+Operation p8 "8-newSpeciesDistribution <- function(aCode, numOfSpecies, prob" Value="newSpeciesDistribution <- function(aCode, numOfSpecies, prob" Time="2015-08-10T15.34.56EDT";
+CF p7 p8
+Data d3 "3-newSpeciesDistribution" Value="#ddg.function";
+DF p8 d3
+Operation p9 "9-addToDictionary <- function(speciesDistributionAreas, specie" Value="addToDictionary <- function(speciesDistributionAreas, specie" Time="2015-08-10T15.34.56EDT";
+CF p8 p9
+Data d4 "4-addToDictionary" Value="#ddg.function";
+DF p9 d4
+Operation p10 "10-getNumSpeciesFun <- function(object) {    ddg.function()    " Value="getNumSpeciesFun <- function(object) {    ddg.function()    " Time="2015-08-10T15.34.56EDT";
+CF p9 p10
+Data d5 "5-getNumSpeciesFun" Value="#ddg.function";
+DF p10 d5
+Operation p11 "11-getDistributionOfSpeciesFun <- function(object, index) {    " Value="getDistributionOfSpeciesFun <- function(object, index) {    " Time="2015-08-10T15.34.56EDT";
+CF p10 p11
+Data d6 "6-getDistributionOfSpeciesFun" Value="#ddg.function";
+DF p11 d6
+Operation p12 "12-setMethod(\"getNumSpecies\", signature(object = \"SpeciesDis" Value="setMethod(\"getNumSpecies\", signature(object = \"SpeciesDis" Time="2015-08-10T15.34.56EDT";
+CF p11 p12
+DF d5 p12
+Operation p13 "13-setMethod(\"getDistributionOfSpecies\", signature(object = " Value="setMethod(\"getDistributionOfSpecies\", signature(object = " Time="2015-08-10T15.34.56EDT";
+CF p12 p13
+DF d6 p13
+Operation p14 "14-setClass(\"SampleSizeDistribution\", slots = c(sampleSizeDis" Value="setClass(\"SampleSizeDistribution\", slots = c(sampleSizeDis" Time="2015-08-10T15.34.56EDT";
+CF p13 p14
+Operation p15 "15-addConstraint <- function(object, inP, inMin, inMax) {    dd" Value="addConstraint <- function(object, inP, inMin, inMax) {    dd" Time="2015-08-10T15.34.56EDT";
+CF p14 p15
+Data d7 "7-addConstraint" Value="#ddg.function";
+DF p15 d7
+Operation p16 "16-raffleSampleSize <- function(object, maxSampleSize) {    ddg" Value="raffleSampleSize <- function(object, maxSampleSize) {    ddg" Time="2015-08-10T15.34.56EDT";
+CF p15 p16
+Data d8 "8-raffleSampleSize" Value="#ddg.function";
+DF p16 d8
+Operation p17 "17-addConstraintFun <- function(object, inP, inMin, inMax) {   " Value="addConstraintFun <- function(object, inP, inMin, inMax) {   " Time="2015-08-10T15.34.56EDT";
+CF p16 p17
+Data d9 "9-addConstraintFun" Value="#ddg.function";
+DF p17 d9
+Operation p18 "18-raffleSampleSizeFun <- function(object, maxSampleSize) {    " Value="raffleSampleSizeFun <- function(object, maxSampleSize) {    " Time="2015-08-10T15.34.56EDT";
+CF p17 p18
+Data d10 "10-raffleSampleSizeFun" Value="#ddg.function";
+DF p18 d10
+Operation p19 "19-setMethod(\"addConstraint\", signature(object = \"SampleSize" Value="setMethod(\"addConstraint\", signature(object = \"SampleSize" Time="2015-08-10T15.34.56EDT";
+CF p18 p19
+DF d9 p19
+Operation p20 "20-setMethod(\"raffleSampleSize\", signature(object = \"SampleS" Value="setMethod(\"raffleSampleSize\", signature(object = \"SampleS" Time="2015-08-10T15.34.56EDT";
+CF p19 p20
+DF d10 p20
+Operation p21 "21-setClass(\"SampleObj\", slots = c(sampleCode = \"integer\", " Value="setClass(\"SampleObj\", slots = c(sampleCode = \"integer\", " Time="2015-08-10T15.34.56EDT";
+CF p20 p21
+Operation p22 "22-assignArea <- function(object, inAreaCode, speciesDistributi" Value="assignArea <- function(object, inAreaCode, speciesDistributi" Time="2015-08-10T15.34.56EDT";
+CF p21 p22
+Data d11 "11-assignArea" Value="#ddg.function";
+DF p22 d11
+Operation p23 "23-assignSizeDistProperty <- function(object, inSampleSizeDist," Value="assignSizeDistProperty <- function(object, inSampleSizeDist," Time="2015-08-10T15.34.56EDT";
+CF p22 p23
+Data d12 "12-assignSizeDistProperty" Value="#ddg.function";
+DF p23 d12
+Operation p24 "24-raffleIndividualsPerSample <- function(object) {    ddg.func" Value="raffleIndividualsPerSample <- function(object) {    ddg.func" Time="2015-08-10T15.34.56EDT";
+CF p23 p24
+Data d13 "13-raffleIndividualsPerSample" Value="#ddg.function";
+DF p24 d13
+Operation p25 "25-assignAreaFun <- function(object, inAreaCode, speciesDistrib" Value="assignAreaFun <- function(object, inAreaCode, speciesDistrib" Time="2015-08-10T15.34.56EDT";
+CF p24 p25
+Data d14 "14-assignAreaFun" Value="#ddg.function";
+DF p25 d14
+Operation p26 "26-assignSizeDistPropertyFun <- function(object, inSampleSizeDi" Value="assignSizeDistPropertyFun <- function(object, inSampleSizeDi" Time="2015-08-10T15.34.56EDT";
+CF p25 p26
+Data d15 "15-assignSizeDistPropertyFun" Value="#ddg.function";
+DF p26 d15
+Operation p27 "27-raffleIndividualsPerSampleFun <- function(object) {    ddg.f" Value="raffleIndividualsPerSampleFun <- function(object) {    ddg.f" Time="2015-08-10T15.34.56EDT";
+CF p26 p27
+Data d16 "16-raffleIndividualsPerSampleFun" Value="#ddg.function";
+DF p27 d16
+Operation p28 "28-setMethod(\"assignArea\", signature(object = \"SampleObj\", " Value="setMethod(\"assignArea\", signature(object = \"SampleObj\", " Time="2015-08-10T15.34.56EDT";
+CF p27 p28
+DF d14 p28
+Operation p29 "29-setMethod(\"assignSizeDistProperty\", signature(object = \"S" Value="setMethod(\"assignSizeDistProperty\", signature(object = \"S" Time="2015-08-10T15.34.56EDT";
+CF p28 p29
+DF d15 p29
+Operation p30 "30-setMethod(\"raffleIndividualsPerSample\", signature(object =" Value="setMethod(\"raffleIndividualsPerSample\", signature(object =" Time="2015-08-10T15.34.56EDT";
+CF p29 p30
+DF d16 p30
+Operation p31 "31-defineAreasDistributions <- function(totalNumOfSpecies, area" Value="defineAreasDistributions <- function(totalNumOfSpecies, area" Time="2015-08-10T15.34.56EDT";
+CF p30 p31
+Data d17 "17-defineAreasDistributions" Value="#ddg.function";
+DF p31 d17
+Operation p32 "32-defineSamplesSizeDistribution <- function() {    ddg.functio" Value="defineSamplesSizeDistribution <- function() {    ddg.functio" Time="2015-08-10T15.34.56EDT";
+CF p31 p32
+Data d18 "18-defineSamplesSizeDistribution" Value="#ddg.function";
+DF p32 d18
+Operation p33 "33-generateSamples <- function(n) {    ddg.function()    sample" Value="generateSamples <- function(n) {    ddg.function()    sample" Time="2015-08-10T15.34.56EDT";
+CF p32 p33
+Data d19 "19-generateSamples" Value="#ddg.function";
+DF p33 d19
+Operation p34 "34-assignSampleData <- function(sampleInAreaStr, areaCode, spec" Value="assignSampleData <- function(sampleInAreaStr, areaCode, spec" Time="2015-08-10T15.34.56EDT";
+CF p33 p34
+Data d20 "20-assignSampleData" Value="#ddg.function";
+DF p34 d20
+Operation p35 "35-assignSamplesToArea <- function(areaStr, speciesDistribution" Value="assignSamplesToArea <- function(areaStr, speciesDistribution" Time="2015-08-10T15.34.56EDT";
+CF p34 p35
+Data d21 "21-assignSamplesToArea" Value="#ddg.function";
+DF p35 d21
+Operation p36 "36-assignSamplesToAreas <- function(samplesMapStr, speciesDistr" Value="assignSamplesToAreas <- function(samplesMapStr, speciesDistr" Time="2015-08-10T15.34.56EDT";
+CF p35 p36
+Data d22 "22-assignSamplesToAreas" Value="#ddg.function";
+DF p36 d22
+Operation p37 "37-raffleSamplesToWorksheet <- function(wsName, title, totalNum" Value="raffleSamplesToWorksheet <- function(wsName, title, totalNum" Time="2015-08-10T15.34.56EDT";
+CF p36 p37
+Data d23 "23-raffleSamplesToWorksheet" Value="#ddg.function";
+DF p37 d23
+Operation p38 "38-writeToFile <- function(sample, smplx, fileConn, totalNumOfS" Value="writeToFile <- function(sample, smplx, fileConn, totalNumOfS" Time="2015-08-10T15.34.56EDT";
+CF p37 p38
+Data d24 "24-writeToFile" Value="#ddg.function";
+DF p38 d24
+Operation p39 "39-area1str <- \"1(0.9) , 2(0.1)\"" Value="area1str <- \"1(0.9) , 2(0.1)\"" Time="2015-08-10T15.34.56EDT";
+CF p38 p39
+Data d25 "25-area1str" Value="\"1(0.9) , 2(0.1)\"";
+DF p39 d25
+Operation p40 "40-area2str <- \"1(0.3), 2(0.7)\"" Value="area2str <- \"1(0.3), 2(0.7)\"" Time="2015-08-10T15.34.56EDT";
+CF p39 p40
+Data d26 "26-area2str" Value="\"1(0.3), 2(0.7)\"";
+DF p40 d26
+Operation p41 "41-area3str <- \"\"" Value="area3str <- \"\"" Time="2015-08-10T15.34.56EDT";
+CF p40 p41
+Data d27 "27-area3str" Value="NotRecorded";
+DF p41 d27
+Operation p42 "42-samplesMapsStr <- paste(\"[1:  1, 2],\", \"[2: 1, 2]\")" Value="samplesMapsStr <- paste(\"[1:  1, 2],\", \"[2: 1, 2]\")" Time="2015-08-10T15.34.56EDT";
+CF p41 p42
+Data d28 "28-samplesMapsStr" Value="\"[1:  1, 2], [2: 1, 2]\"";
+DF p42 d28
+Operation p43 "43-totalNumOfSpecies <- 2" Value="totalNumOfSpecies <- 2" Time="2015-08-10T15.34.56EDT";
+CF p42 p43
+Data d29 "29-totalNumOfSpecies" Value="2";
+DF p43 d29
+Operation p44 "44-totalNumOfSample <- 2" Value="totalNumOfSample <- 2" Time="2015-08-10T15.34.56EDT";
+CF p43 p44
+Data d30 "30-totalNumOfSample" Value="2";
+DF p44 d30
+Start p45 "45-speciesDistribution <- defineAreasDistributions(totalNumOfSp" Value="speciesDistribution <- defineAreasDistributions(totalNumOfSp" Time="2015-08-10T15.34.56EDT";
+CF p44 p45
+Binding p46 "46-totalNumOfSpecies  <-  totalNumOfSpecies" Time="2015-08-10T15.34.56EDT"
+CF p45 p46
+DF d29 p46
+Data d31 "31-totalNumOfSpecies" Value="2";
+DF p46 d31
+Binding p47 "47-area1str  <-  area1str" Time="2015-08-10T15.34.56EDT"
+CF p46 p47
+DF d25 p47
+Data d32 "32-area1str" Value="\"1(0.9) , 2(0.1)\"";
+DF p47 d32
+Binding p48 "48-area2str  <-  area2str" Time="2015-08-10T15.34.56EDT"
+CF p47 p48
+DF d26 p48
+Data d33 "33-area2str" Value="\"1(0.3), 2(0.7)\"";
+DF p48 d33
+Operation p49 "49-defineAreasDistributions" Value="defineAreasDistributions" Time="2015-08-10T15.34.56EDT";
+DF d17 p49
+DF d31 p49
+DF d32 p49
+DF d33 p49
+CF p48 p49
+Binding p50 "50-aCode  <-  1" Time="2015-08-10T15.34.56EDT"
+CF p49 p50
+Data d34 "34-aCode" Value="1";
+DF p50 d34
+Binding p51 "51-numOfSpecies  <-  totalNumOfSpecies" Time="2015-08-10T15.34.56EDT"
+CF p50 p51
+DF d31 p51
+Data d35 "35-numOfSpecies" Value="2";
+DF p51 d35
+Binding p52 "52-probabilityStr  <-  area1str" Time="2015-08-10T15.34.56EDT"
+CF p51 p52
+DF d32 p52
+Data d36 "36-probabilityStr" Value="\"1(0.9) , 2(0.1)\"";
+DF p52 d36
+Operation p53 "53-newSpeciesDistribution" Value="newSpeciesDistribution" Time="2015-08-10T15.34.56EDT";
+DF d3 p53
+DF d34 p53
+DF d35 p53
+DF d36 p53
+CF p52 p53
+Binding p54 "54-speciesDistributionAreas  <-  newDist" Time="2015-08-10T15.34.56EDT"
+CF p53 p54
+Snapshot d37 "37-speciesDistributionAreas" Value="[DIR]/ddg/37-speciesDistributionAreas.txt" Time="2015-08-10T15.34.56EDT";
+DF p54 d37
+Binding p55 "55-speciesStr  <-  speciesStr" Time="2015-08-10T15.34.56EDT"
+CF p54 p55
+Snapshot d38 "38-speciesStr" Value="[DIR]/ddg/38-speciesStr.csv" Time="2015-08-10T15.34.56EDT";
+DF p55 d38
+Operation p56 "56-addToDictionary" Value="addToDictionary" Time="2015-08-10T15.34.56EDT";
+DF d4 p56
+DF d37 p56
+DF d38 p56
+CF p55 p56
+Snapshot d39 "39-addToDictionary(newDist,speciesStr) return" Value="[DIR]/ddg/39-addToDictionary(newDist,speciesStr) return.txt" Time="2015-08-10T15.34.56EDT";
+DF p56 d39
+Snapshot d40 "40-newSpeciesDistribution(1,totalNumOfSpecies,area1str) return" Value="[DIR]/ddg/40-newSpeciesDistribution(1,totalNumOfSpecies,area1str) return.txt" Time="2015-08-10T15.34.56EDT";
+DF p53 d40
+Binding p57 "57-aCode  <-  2" Time="2015-08-10T15.34.56EDT"
+CF p56 p57
+Data d41 "41-aCode" Value="2";
+DF p57 d41
+Binding p58 "58-numOfSpecies  <-  totalNumOfSpecies" Time="2015-08-10T15.34.56EDT"
+CF p57 p58
+DF d31 p58
+Data d42 "42-numOfSpecies" Value="2";
+DF p58 d42
+Binding p59 "59-probabilityStr  <-  area2str" Time="2015-08-10T15.34.56EDT"
+CF p58 p59
+DF d33 p59
+Data d43 "43-probabilityStr" Value="\"1(0.3), 2(0.7)\"";
+DF p59 d43
+Operation p60 "60-newSpeciesDistribution" Value="newSpeciesDistribution" Time="2015-08-10T15.34.56EDT";
+DF d3 p60
+DF d41 p60
+DF d42 p60
+DF d43 p60
+CF p59 p60
+Binding p61 "61-speciesDistributionAreas  <-  newDist" Time="2015-08-10T15.34.56EDT"
+CF p60 p61
+Snapshot d44 "44-speciesDistributionAreas" Value="[DIR]/ddg/44-speciesDistributionAreas.txt" Time="2015-08-10T15.34.56EDT";
+DF p61 d44
+Binding p62 "62-speciesStr  <-  speciesStr" Time="2015-08-10T15.34.56EDT"
+CF p61 p62
+Snapshot d45 "45-speciesStr" Value="[DIR]/ddg/45-speciesStr.csv" Time="2015-08-10T15.34.56EDT";
+DF p62 d45
+Operation p63 "63-addToDictionary" Value="addToDictionary" Time="2015-08-10T15.34.56EDT";
+DF d4 p63
+DF d44 p63
+DF d45 p63
+CF p62 p63
+Snapshot d46 "46-addToDictionary(newDist,speciesStr) return" Value="[DIR]/ddg/46-addToDictionary(newDist,speciesStr) return.txt" Time="2015-08-10T15.34.56EDT";
+DF p63 d46
+Snapshot d47 "47-newSpeciesDistribution(2,totalNumOfSpecies,area2str) return" Value="[DIR]/ddg/47-newSpeciesDistribution(2,totalNumOfSpecies,area2str) return.txt" Time="2015-08-10T15.34.56EDT";
+DF p60 d47
+Snapshot d48 "48-defineAreasDistributions(totalNumOfSpecies,area1str,area2str) return" Value="[DIR]/ddg/48-defineAreasDistributions(totalNumOfSpecies,area1str,area2str) return.txt" Time="2015-08-10T15.34.56EDT";
+DF p49 d48
+Finish p64 "64-speciesDistribution <- defineAreasDistributions(totalNumOfSp" Value="speciesDistribution <- defineAreasDistributions(totalNumOfSp" Time="2015-08-10T15.34.56EDT";
+CF p63 p64
+DF d48 p64
+Snapshot d49 "49-speciesDistribution" Value="[DIR]/ddg/49-speciesDistribution.txt" Time="2015-08-10T15.34.56EDT";
+DF p64 d49
+Start p65 "65-sampleSizeDistributionMng <- defineSamplesSizeDistribution()" Value="sampleSizeDistributionMng <- defineSamplesSizeDistribution()" Time="2015-08-10T15.34.56EDT";
+CF p64 p65
+Operation p66 "66-defineSamplesSizeDistribution" Value="defineSamplesSizeDistribution" Time="2015-08-10T15.34.56EDT";
+DF d18 p66
+CF p65 p66
+Binding p67 "67-object  <-  sampleSizeDistributionMng" Time="2015-08-10T15.34.56EDT"
+CF p66 p67
+Snapshot d50 "50-object" Value="[DIR]/ddg/50-object.txt" Time="2015-08-10T15.34.56EDT";
+DF p67 d50
+Binding p68 "68-inP  <-  0.42" Time="2015-08-10T15.34.56EDT"
+CF p67 p68
+Data d51 "51-inP" Value="0.42";
+DF p68 d51
+Binding p69 "69-inMin  <-  0" Time="2015-08-10T15.34.56EDT"
+CF p68 p69
+Data d52 "52-inMin" Value="0";
+DF p69 d52
+Binding p70 "70-inMax  <-  0" Time="2015-08-10T15.34.56EDT"
+CF p69 p70
+Data d53 "53-inMax" Value="0";
+DF p70 d53
+Operation p71 "71-addConstraint" Value="addConstraint" Time="2015-08-10T15.34.56EDT";
+DF d7 p71
+DF d50 p71
+DF d51 p71
+DF d52 p71
+DF d53 p71
+CF p70 p71
+Snapshot d54 "54-addConstraint(sampleSizeDistributionMng,0.42,0,0) return" Value="[DIR]/ddg/54-addConstraint(sampleSizeDistributionMng,0.42,0,0) return.txt" Time="2015-08-10T15.34.56EDT";
+DF p71 d54
+Binding p72 "72-object  <-  sampleSizeDistributionMng" Time="2015-08-10T15.34.56EDT"
+CF p71 p72
+Snapshot d55 "55-object" Value="[DIR]/ddg/55-object.txt" Time="2015-08-10T15.34.56EDT";
+DF p72 d55
+Binding p73 "73-inP  <-  0.26" Time="2015-08-10T15.34.56EDT"
+CF p72 p73
+Data d56 "56-inP" Value="0.26";
+DF p73 d56
+Binding p74 "74-inMin  <-  1" Time="2015-08-10T15.34.56EDT"
+CF p73 p74
+Data d57 "57-inMin" Value="1";
+DF p74 d57
+Binding p75 "75-inMax  <-  2" Time="2015-08-10T15.34.56EDT"
+CF p74 p75
+Data d58 "58-inMax" Value="2";
+DF p75 d58
+Operation p76 "76-addConstraint" Value="addConstraint" Time="2015-08-10T15.34.56EDT";
+DF d7 p76
+DF d55 p76
+DF d56 p76
+DF d57 p76
+DF d58 p76
+CF p75 p76
+Snapshot d59 "59-addConstraint(sampleSizeDistributionMng,0.26,1,2) return" Value="[DIR]/ddg/59-addConstraint(sampleSizeDistributionMng,0.26,1,2) return.txt" Time="2015-08-10T15.34.56EDT";
+DF p76 d59
+Binding p77 "77-object  <-  sampleSizeDistributionMng" Time="2015-08-10T15.34.56EDT"
+CF p76 p77
+Snapshot d60 "60-object" Value="[DIR]/ddg/60-object.txt" Time="2015-08-10T15.34.56EDT";
+DF p77 d60
+Binding p78 "78-inP  <-  0.165" Time="2015-08-10T15.34.56EDT"
+CF p77 p78
+Data d61 "61-inP" Value="0.165";
+DF p78 d61
+Binding p79 "79-inMin  <-  3" Time="2015-08-10T15.34.56EDT"
+CF p78 p79
+Data d62 "62-inMin" Value="3";
+DF p79 d62
+Binding p80 "80-inMax  <-  4" Time="2015-08-10T15.34.56EDT"
+CF p79 p80
+Data d63 "63-inMax" Value="4";
+DF p80 d63
+Operation p81 "81-addConstraint" Value="addConstraint" Time="2015-08-10T15.34.56EDT";
+DF d7 p81
+DF d60 p81
+DF d61 p81
+DF d62 p81
+DF d63 p81
+CF p80 p81
+Snapshot d64 "64-addConstraint(sampleSizeDistributionMng,0.165,3,4) return" Value="[DIR]/ddg/64-addConstraint(sampleSizeDistributionMng,0.165,3,4) return.txt" Time="2015-08-10T15.34.56EDT";
+DF p81 d64
+Binding p82 "82-object  <-  sampleSizeDistributionMng" Time="2015-08-10T15.34.56EDT"
+CF p81 p82
+Snapshot d65 "65-object" Value="[DIR]/ddg/65-object.txt" Time="2015-08-10T15.34.56EDT";
+DF p82 d65
+Binding p83 "83-inP  <-  0.075" Time="2015-08-10T15.34.56EDT"
+CF p82 p83
+Data d66 "66-inP" Value="0.075";
+DF p83 d66
+Binding p84 "84-inMin  <-  5" Time="2015-08-10T15.34.56EDT"
+CF p83 p84
+Data d67 "67-inMin" Value="5";
+DF p84 d67
+Binding p85 "85-inMax  <-  6" Time="2015-08-10T15.34.56EDT"
+CF p84 p85
+Data d68 "68-inMax" Value="6";
+DF p85 d68
+Operation p86 "86-addConstraint" Value="addConstraint" Time="2015-08-10T15.34.56EDT";
+DF d7 p86
+DF d65 p86
+DF d66 p86
+DF d67 p86
+DF d68 p86
+CF p85 p86
+Snapshot d69 "69-addConstraint(sampleSizeDistributionMng,0.075,5,6) return" Value="[DIR]/ddg/69-addConstraint(sampleSizeDistributionMng,0.075,5,6) return.txt" Time="2015-08-10T15.34.56EDT";
+DF p86 d69
+Binding p87 "87-object  <-  sampleSizeDistributionMng" Time="2015-08-10T15.34.56EDT"
+CF p86 p87
+Snapshot d70 "70-object" Value="[DIR]/ddg/70-object.txt" Time="2015-08-10T15.34.56EDT";
+DF p87 d70
+Binding p88 "88-inP  <-  0.045" Time="2015-08-10T15.34.56EDT"
+CF p87 p88
+Data d71 "71-inP" Value="0.045";
+DF p88 d71
+Binding p89 "89-inMin  <-  7" Time="2015-08-10T15.34.56EDT"
+CF p88 p89
+Data d72 "72-inMin" Value="7";
+DF p89 d72
+Binding p90 "90-inMax  <-  9" Time="2015-08-10T15.34.56EDT"
+CF p89 p90
+Data d73 "73-inMax" Value="9";
+DF p90 d73
+Operation p91 "91-addConstraint" Value="addConstraint" Time="2015-08-10T15.34.56EDT";
+DF d7 p91
+DF d70 p91
+DF d71 p91
+DF d72 p91
+DF d73 p91
+CF p90 p91
+Snapshot d74 "74-addConstraint(sampleSizeDistributionMng,0.045,7,9) return" Value="[DIR]/ddg/74-addConstraint(sampleSizeDistributionMng,0.045,7,9) return.txt" Time="2015-08-10T15.34.56EDT";
+DF p91 d74
+Binding p92 "92-object  <-  sampleSizeDistributionMng" Time="2015-08-10T15.34.56EDT"
+CF p91 p92
+Snapshot d75 "75-object" Value="[DIR]/ddg/75-object.txt" Time="2015-08-10T15.34.56EDT";
+DF p92 d75
+Binding p93 "93-inP  <-  0.025" Time="2015-08-10T15.34.56EDT"
+CF p92 p93
+Data d76 "76-inP" Value="0.025";
+DF p93 d76
+Binding p94 "94-inMin  <-  10" Time="2015-08-10T15.34.56EDT"
+CF p93 p94
+Data d77 "77-inMin" Value="10";
+DF p94 d77
+Binding p95 "95-inMax  <-  12" Time="2015-08-10T15.34.56EDT"
+CF p94 p95
+Data d78 "78-inMax" Value="12";
+DF p95 d78
+Operation p96 "96-addConstraint" Value="addConstraint" Time="2015-08-10T15.34.56EDT";
+DF d7 p96
+DF d75 p96
+DF d76 p96
+DF d77 p96
+DF d78 p96
+CF p95 p96
+Snapshot d79 "79-addConstraint(sampleSizeDistributionMng,0.025,10,12) return" Value="[DIR]/ddg/79-addConstraint(sampleSizeDistributionMng,0.025,10,12) return.txt" Time="2015-08-10T15.34.56EDT";
+DF p96 d79
+Binding p97 "97-object  <-  sampleSizeDistributionMng" Time="2015-08-10T15.34.56EDT"
+CF p96 p97
+Snapshot d80 "80-object" Value="[DIR]/ddg/80-object.txt" Time="2015-08-10T15.34.56EDT";
+DF p97 d80
+Binding p98 "98-inP  <-  0.007" Time="2015-08-10T15.34.56EDT"
+CF p97 p98
+Data d81 "81-inP" Value="0.007";
+DF p98 d81
+Binding p99 "99-inMin  <-  13" Time="2015-08-10T15.34.56EDT"
+CF p98 p99
+Data d82 "82-inMin" Value="13";
+DF p99 d82
+Binding p100 "100-inMax  <-  20" Time="2015-08-10T15.34.56EDT"
+CF p99 p100
+Data d83 "83-inMax" Value="20";
+DF p100 d83
+Operation p101 "101-addConstraint" Value="addConstraint" Time="2015-08-10T15.34.56EDT";
+DF d7 p101
+DF d80 p101
+DF d81 p101
+DF d82 p101
+DF d83 p101
+CF p100 p101
+Snapshot d84 "84-addConstraint(sampleSizeDistributionMng,0.007,13,20) return" Value="[DIR]/ddg/84-addConstraint(sampleSizeDistributionMng,0.007,13,20) return.txt" Time="2015-08-10T15.34.56EDT";
+DF p101 d84
+Snapshot d85 "85-defineSamplesSizeDistribution() return" Value="[DIR]/ddg/85-defineSamplesSizeDistribution() return.txt" Time="2015-08-10T15.34.56EDT";
+DF p66 d85
+Finish p102 "102-sampleSizeDistributionMng <- defineSamplesSizeDistribution()" Value="sampleSizeDistributionMng <- defineSamplesSizeDistribution()" Time="2015-08-10T15.34.56EDT";
+CF p101 p102
+DF d85 p102
+Snapshot d86 "86-sampleSizeDistributionMng" Value="[DIR]/ddg/86-sampleSizeDistributionMng.txt" Time="2015-08-10T15.34.56EDT";
+DF p102 d86
+Start p103 "103-samplesArr <- generateSamples(totalNumOfSample)" Value="samplesArr <- generateSamples(totalNumOfSample)" Time="2015-08-10T15.34.56EDT";
+CF p102 p103
+Binding p104 "104-n  <-  totalNumOfSample" Time="2015-08-10T15.34.56EDT"
+CF p103 p104
+DF d30 p104
+Data d87 "87-n" Value="2";
+DF p104 d87
+Operation p105 "105-generateSamples" Value="generateSamples" Time="2015-08-10T15.34.56EDT";
+DF d19 p105
+DF d87 p105
+CF p104 p105
+Snapshot d88 "88-generateSamples(totalNumOfSample) return" Value="[DIR]/ddg/88-generateSamples(totalNumOfSample) return.txt" Time="2015-08-10T15.34.56EDT";
+DF p105 d88
+Finish p106 "106-samplesArr <- generateSamples(totalNumOfSample)" Value="samplesArr <- generateSamples(totalNumOfSample)" Time="2015-08-10T15.34.56EDT";
+CF p105 p106
+DF d88 p106
+Snapshot d89 "89-samplesArr" Value="[DIR]/ddg/89-samplesArr.txt" Time="2015-08-10T15.34.56EDT";
+DF p106 d89
+Start p107 "107-samplesArr <- assignSamplesToAreas(samplesMapStr, speciesDis" Value="samplesArr <- assignSamplesToAreas(samplesMapStr, speciesDis" Time="2015-08-10T15.34.56EDT";
+CF p106 p107
+Binding p108 "108-samplesMapStr  <-  samplesMapStr" Time="2015-08-10T15.34.56EDT"
+CF p107 p108
+Binding p109 "109-speciesDistribution  <-  speciesDistribution" Time="2015-08-10T15.34.56EDT"
+CF p108 p109
+DF d49 p109
+Snapshot d90 "90-speciesDistribution" Value="[DIR]/ddg/90-speciesDistribution.txt" Time="2015-08-10T15.34.56EDT";
+DF p109 d90
+Binding p110 "110-sampleSizeDistributionMng  <-  sampleSizeDistributionMng" Time="2015-08-10T15.34.56EDT"
+CF p109 p110
+DF d86 p110
+Snapshot d91 "91-sampleSizeDistributionMng" Value="[DIR]/ddg/91-sampleSizeDistributionMng.txt" Time="2015-08-10T15.34.56EDT";
+DF p110 d91
+Operation p111 "111-assignSamplesToAreas" Value="assignSamplesToAreas" Time="2015-08-10T15.34.56EDT";
+DF d22 p111
+DF d90 p111
+DF d91 p111
+CF p110 p111
+Binding p112 "112-areaStr  <-  areaStr" Time="2015-08-10T15.34.56EDT"
+CF p111 p112
+Data d92 "92-areaStr" Value="\"1:  1, 2], \"";
+DF p112 d92
+Binding p113 "113-speciesDistribution  <-  speciesDistribution" Time="2015-08-10T15.34.56EDT"
+CF p112 p113
+DF d90 p113
+Snapshot d93 "93-speciesDistribution" Value="[DIR]/ddg/93-speciesDistribution.txt" Time="2015-08-10T15.34.56EDT";
+DF p113 d93
+Binding p114 "114-sampleSizeDistributionMng  <-  sampleSizeDistributionMng" Time="2015-08-10T15.34.56EDT"
+CF p113 p114
+DF d91 p114
+Snapshot d94 "94-sampleSizeDistributionMng" Value="[DIR]/ddg/94-sampleSizeDistributionMng.txt" Time="2015-08-10T15.34.56EDT";
+DF p114 d94
+Operation p115 "115-assignSamplesToArea" Value="assignSamplesToArea" Time="2015-08-10T15.34.56EDT";
+DF d21 p115
+DF d92 p115
+DF d93 p115
+DF d94 p115
+CF p114 p115
+Binding p116 "116-sampleInAreaStr  <-  sampleInAreaStr" Time="2015-08-10T15.34.57EDT"
+CF p115 p116
+Data d95 "95-sampleInAreaStr" Value="\"  1\"";
+DF p116 d95
+Binding p117 "117-areaCode  <-  areaCode" Time="2015-08-10T15.34.57EDT"
+CF p116 p117
+Data d96 "96-areaCode" Value="1";
+DF p117 d96
+Binding p118 "118-speciesDistribution  <-  speciesDistribution" Time="2015-08-10T15.34.57EDT"
+CF p117 p118
+DF d93 p118
+Snapshot d97 "97-speciesDistribution" Value="[DIR]/ddg/97-speciesDistribution.txt" Time="2015-08-10T15.34.57EDT";
+DF p118 d97
+Binding p119 "119-sampleSizeDistributionMng  <-  sampleSizeDistributionMng" Time="2015-08-10T15.34.57EDT"
+CF p118 p119
+DF d94 p119
+Snapshot d98 "98-sampleSizeDistributionMng" Value="[DIR]/ddg/98-sampleSizeDistributionMng.txt" Time="2015-08-10T15.34.57EDT";
+DF p119 d98
+Operation p120 "120-assignSampleData" Value="assignSampleData" Time="2015-08-10T15.34.57EDT";
+DF d20 p120
+DF d95 p120
+DF d96 p120
+DF d97 p120
+DF d98 p120
+CF p119 p120
+Binding p121 "121-object  <-  object" Time="2015-08-10T15.34.57EDT"
+CF p120 p121
+Snapshot d99 "99-object" Value="[DIR]/ddg/99-object.txt" Time="2015-08-10T15.34.57EDT";
+DF p121 d99
+Binding p122 "122-inSampleSizeDist  <-  inSampleSizeDist" Time="2015-08-10T15.34.57EDT"
+CF p121 p122
+Snapshot d100 "100-inSampleSizeDist" Value="[DIR]/ddg/100-inSampleSizeDist.txt" Time="2015-08-10T15.34.57EDT";
+DF p122 d100
+Operation p123 "123-.local" Value=".local" Time="2015-08-10T15.34.57EDT";
+DF d99 p123
+DF d100 p123
+CF p122 p123
+Binding p124 "124-object  <-  object@sampleSizeDistObj" Time="2015-08-10T15.34.57EDT"
+CF p123 p124
+Snapshot d101 "101-object" Value="[DIR]/ddg/101-object.txt" Time="2015-08-10T15.34.57EDT";
+DF p124 d101
+Binding p125 "125-maxSampleSize  <-  0" Time="2015-08-10T15.34.57EDT"
+CF p124 p125
+Data d102 "102-maxSampleSize" Value="0";
+DF p125 d102
+Operation p126 "126-raffleSampleSize" Value="raffleSampleSize" Time="2015-08-10T15.34.57EDT";
+DF d8 p126
+DF d101 p126
+DF d102 p126
+CF p125 p126
+Data d103 "103-raffleSampleSize(object@sampleSizeDistObj,0) return" Value="6";
+DF p126 d103
+Snapshot d104 "104-.local(object,inSampleSizeDist) return" Value="[DIR]/ddg/104-.local(object,inSampleSizeDist) return.txt" Time="2015-08-10T15.34.57EDT";
+DF p123 d104
+Binding p127 "127-object  <-  samplesArr[sampleCode][[1]]" Time="2015-08-10T15.34.57EDT"
+CF p126 p127
+DF d89 p127
+Snapshot d105 "105-object" Value="[DIR]/ddg/105-object.txt" Time="2015-08-10T15.34.57EDT";
+DF p127 d105
+Binding p128 "128-inAreaCode  <-  areaCode" Time="2015-08-10T15.34.57EDT"
+CF p127 p128
+Data d106 "106-inAreaCode" Value="1";
+DF p128 d106
+Binding p129 "129-speciesDistributionAreas  <-  speciesDistribution" Time="2015-08-10T15.34.57EDT"
+CF p128 p129
+DF d49 p129
+Snapshot d107 "107-speciesDistributionAreas" Value="[DIR]/ddg/107-speciesDistributionAreas.txt" Time="2015-08-10T15.34.57EDT";
+DF p129 d107
+Operation p130 "130-assignArea" Value="assignArea" Time="2015-08-10T15.34.57EDT";
+DF d11 p130
+DF d105 p130
+DF d106 p130
+DF d107 p130
+CF p129 p130
+Snapshot d108 "108-assignArea(samplesArr[sampleCode][[1]],areaCode,speciesDistribution) return" Value="[DIR]/ddg/108-assignArea(samplesArr[sampleCode][[1]],areaCode,speciesDistribution) return.txt" Time="2015-08-10T15.34.57EDT";
+DF p130 d108
+Snapshot d109 "109-assignSampleData(sampleInAreaStr,areaCode,speciesDistribution, return" Value="[DIR]/ddg/109-assignSampleData(sampleInAreaStr,areaCode,speciesDistribution, return.txt" Time="2015-08-10T15.34.57EDT";
+DF p120 d109
+Binding p131 "131-sampleInAreaStr  <-  sampleInAreaStr" Time="2015-08-10T15.34.57EDT"
+CF p130 p131
+Data d110 "110-sampleInAreaStr" Value="\" 2\"";
+DF p131 d110
+Binding p132 "132-areaCode  <-  areaCode" Time="2015-08-10T15.34.57EDT"
+CF p131 p132
+Data d111 "111-areaCode" Value="1";
+DF p132 d111
+Binding p133 "133-speciesDistribution  <-  speciesDistribution" Time="2015-08-10T15.34.57EDT"
+CF p132 p133
+DF d93 p133
+Snapshot d112 "112-speciesDistribution" Value="[DIR]/ddg/112-speciesDistribution.txt" Time="2015-08-10T15.34.57EDT";
+DF p133 d112
+Binding p134 "134-sampleSizeDistributionMng  <-  sampleSizeDistributionMng" Time="2015-08-10T15.34.57EDT"
+CF p133 p134
+DF d94 p134
+Snapshot d113 "113-sampleSizeDistributionMng" Value="[DIR]/ddg/113-sampleSizeDistributionMng.txt" Time="2015-08-10T15.34.57EDT";
+DF p134 d113
+Operation p135 "135-assignSampleData" Value="assignSampleData" Time="2015-08-10T15.34.57EDT";
+DF d20 p135
+DF d110 p135
+DF d111 p135
+DF d112 p135
+DF d113 p135
+CF p134 p135
+Binding p136 "136-object  <-  object" Time="2015-08-10T15.34.57EDT"
+CF p135 p136
+Snapshot d114 "114-object" Value="[DIR]/ddg/114-object.txt" Time="2015-08-10T15.34.57EDT";
+DF p136 d114
+Binding p137 "137-inSampleSizeDist  <-  inSampleSizeDist" Time="2015-08-10T15.34.57EDT"
+CF p136 p137
+Snapshot d115 "115-inSampleSizeDist" Value="[DIR]/ddg/115-inSampleSizeDist.txt" Time="2015-08-10T15.34.57EDT";
+DF p137 d115
+Operation p138 "138-.local" Value=".local" Time="2015-08-10T15.34.57EDT";
+DF d114 p138
+DF d115 p138
+CF p137 p138
+Binding p139 "139-object  <-  object@sampleSizeDistObj" Time="2015-08-10T15.34.57EDT"
+CF p138 p139
+Snapshot d116 "116-object" Value="[DIR]/ddg/116-object.txt" Time="2015-08-10T15.34.57EDT";
+DF p139 d116
+Binding p140 "140-maxSampleSize  <-  0" Time="2015-08-10T15.34.57EDT"
+CF p139 p140
+Data d117 "117-maxSampleSize" Value="0";
+DF p140 d117
+Operation p141 "141-raffleSampleSize" Value="raffleSampleSize" Time="2015-08-10T15.34.57EDT";
+DF d8 p141
+DF d116 p141
+DF d117 p141
+CF p140 p141
+Data d118 "118-raffleSampleSize(object@sampleSizeDistObj,0) return" Value="5";
+DF p141 d118
+Snapshot d119 "119-.local(object,inSampleSizeDist) return" Value="[DIR]/ddg/119-.local(object,inSampleSizeDist) return.txt" Time="2015-08-10T15.34.57EDT";
+DF p138 d119
+Binding p142 "142-object  <-  samplesArr[sampleCode][[1]]" Time="2015-08-10T15.34.57EDT"
+CF p141 p142
+DF d89 p142
+Snapshot d120 "120-object" Value="[DIR]/ddg/120-object.txt" Time="2015-08-10T15.34.57EDT";
+DF p142 d120
+Binding p143 "143-inAreaCode  <-  areaCode" Time="2015-08-10T15.34.57EDT"
+CF p142 p143
+Data d121 "121-inAreaCode" Value="1";
+DF p143 d121
+Binding p144 "144-speciesDistributionAreas  <-  speciesDistribution" Time="2015-08-10T15.34.57EDT"
+CF p143 p144
+DF d49 p144
+Snapshot d122 "122-speciesDistributionAreas" Value="[DIR]/ddg/122-speciesDistributionAreas.txt" Time="2015-08-10T15.34.57EDT";
+DF p144 d122
+Operation p145 "145-assignArea" Value="assignArea" Time="2015-08-10T15.34.57EDT";
+DF d11 p145
+DF d120 p145
+DF d121 p145
+DF d122 p145
+CF p144 p145
+Snapshot d123 "123-assignArea(samplesArr[sampleCode][[1]],areaCode,speciesDistribution) return" Value="[DIR]/ddg/123-assignArea(samplesArr[sampleCode][[1]],areaCode,speciesDistribution) return.txt" Time="2015-08-10T15.34.57EDT";
+DF p145 d123
+Snapshot d124 "124-assignSampleData(sampleInAreaStr,areaCode,speciesDistribution, return" Value="[DIR]/ddg/124-assignSampleData(sampleInAreaStr,areaCode,speciesDistribution, return.txt" Time="2015-08-10T15.34.57EDT";
+DF p135 d124
+Snapshot d125 "125-assignSamplesToArea(areaStr,speciesDistribution,sampleSizeDistributionMng) return" Value="[DIR]/ddg/125-assignSamplesToArea(areaStr,speciesDistribution,sampleSizeDistributionMng) return.txt" Time="2015-08-10T15.34.57EDT";
+DF p115 d125
+Binding p146 "146-areaStr  <-  areaStr" Time="2015-08-10T15.34.57EDT"
+CF p145 p146
+Data d126 "126-areaStr" Value="\"2: 1, 2]\"";
+DF p146 d126
+Binding p147 "147-speciesDistribution  <-  speciesDistribution" Time="2015-08-10T15.34.57EDT"
+CF p146 p147
+DF d90 p147
+Snapshot d127 "127-speciesDistribution" Value="[DIR]/ddg/127-speciesDistribution.txt" Time="2015-08-10T15.34.57EDT";
+DF p147 d127
+Binding p148 "148-sampleSizeDistributionMng  <-  sampleSizeDistributionMng" Time="2015-08-10T15.34.57EDT"
+CF p147 p148
+DF d91 p148
+Snapshot d128 "128-sampleSizeDistributionMng" Value="[DIR]/ddg/128-sampleSizeDistributionMng.txt" Time="2015-08-10T15.34.57EDT";
+DF p148 d128
+Operation p149 "149-assignSamplesToArea" Value="assignSamplesToArea" Time="2015-08-10T15.34.57EDT";
+DF d21 p149
+DF d126 p149
+DF d127 p149
+DF d128 p149
+CF p148 p149
+Binding p150 "150-sampleInAreaStr  <-  sampleInAreaStr" Time="2015-08-10T15.34.57EDT"
+CF p149 p150
+Data d129 "129-sampleInAreaStr" Value="\" 1\"";
+DF p150 d129
+Binding p151 "151-areaCode  <-  areaCode" Time="2015-08-10T15.34.57EDT"
+CF p150 p151
+Data d130 "130-areaCode" Value="2";
+DF p151 d130
+Binding p152 "152-speciesDistribution  <-  speciesDistribution" Time="2015-08-10T15.34.57EDT"
+CF p151 p152
+DF d127 p152
+Snapshot d131 "131-speciesDistribution" Value="[DIR]/ddg/131-speciesDistribution.txt" Time="2015-08-10T15.34.57EDT";
+DF p152 d131
+Binding p153 "153-sampleSizeDistributionMng  <-  sampleSizeDistributionMng" Time="2015-08-10T15.34.57EDT"
+CF p152 p153
+DF d128 p153
+Snapshot d132 "132-sampleSizeDistributionMng" Value="[DIR]/ddg/132-sampleSizeDistributionMng.txt" Time="2015-08-10T15.34.57EDT";
+DF p153 d132
+Operation p154 "154-assignSampleData" Value="assignSampleData" Time="2015-08-10T15.34.57EDT";
+DF d20 p154
+DF d129 p154
+DF d130 p154
+DF d131 p154
+DF d132 p154
+CF p153 p154
+Binding p155 "155-object  <-  object" Time="2015-08-10T15.34.57EDT"
+CF p154 p155
+Snapshot d133 "133-object" Value="[DIR]/ddg/133-object.txt" Time="2015-08-10T15.34.57EDT";
+DF p155 d133
+Binding p156 "156-inSampleSizeDist  <-  inSampleSizeDist" Time="2015-08-10T15.34.57EDT"
+CF p155 p156
+Snapshot d134 "134-inSampleSizeDist" Value="[DIR]/ddg/134-inSampleSizeDist.txt" Time="2015-08-10T15.34.57EDT";
+DF p156 d134
+Operation p157 "157-.local" Value=".local" Time="2015-08-10T15.34.57EDT";
+DF d133 p157
+DF d134 p157
+CF p156 p157
+Binding p158 "158-object  <-  object@sampleSizeDistObj" Time="2015-08-10T15.34.57EDT"
+CF p157 p158
+Snapshot d135 "135-object" Value="[DIR]/ddg/135-object.txt" Time="2015-08-10T15.34.57EDT";
+DF p158 d135
+Binding p159 "159-maxSampleSize  <-  0" Time="2015-08-10T15.34.57EDT"
+CF p158 p159
+Data d136 "136-maxSampleSize" Value="0";
+DF p159 d136
+Operation p160 "160-raffleSampleSize" Value="raffleSampleSize" Time="2015-08-10T15.34.57EDT";
+DF d8 p160
+DF d135 p160
+DF d136 p160
+CF p159 p160
+Data d137 "137-raffleSampleSize(object@sampleSizeDistObj,0) return" Value="0";
+DF p160 d137
+Snapshot d138 "138-.local(object,inSampleSizeDist) return" Value="[DIR]/ddg/138-.local(object,inSampleSizeDist) return.txt" Time="2015-08-10T15.34.57EDT";
+DF p157 d138
+Binding p161 "161-object  <-  samplesArr[sampleCode][[1]]" Time="2015-08-10T15.34.57EDT"
+CF p160 p161
+DF d89 p161
+Snapshot d139 "139-object" Value="[DIR]/ddg/139-object.txt" Time="2015-08-10T15.34.57EDT";
+DF p161 d139
+Binding p162 "162-inAreaCode  <-  areaCode" Time="2015-08-10T15.34.57EDT"
+CF p161 p162
+Data d140 "140-inAreaCode" Value="2";
+DF p162 d140
+Binding p163 "163-speciesDistributionAreas  <-  speciesDistribution" Time="2015-08-10T15.34.57EDT"
+CF p162 p163
+DF d49 p163
+Snapshot d141 "141-speciesDistributionAreas" Value="[DIR]/ddg/141-speciesDistributionAreas.txt" Time="2015-08-10T15.34.57EDT";
+DF p163 d141
+Operation p164 "164-assignArea" Value="assignArea" Time="2015-08-10T15.34.57EDT";
+DF d11 p164
+DF d139 p164
+DF d140 p164
+DF d141 p164
+CF p163 p164
+Snapshot d142 "142-assignArea(samplesArr[sampleCode][[1]],areaCode,speciesDistribution) return" Value="[DIR]/ddg/142-assignArea(samplesArr[sampleCode][[1]],areaCode,speciesDistribution) return.txt" Time="2015-08-10T15.34.57EDT";
+DF p164 d142
+Snapshot d143 "143-assignSampleData(sampleInAreaStr,areaCode,speciesDistribution, return" Value="[DIR]/ddg/143-assignSampleData(sampleInAreaStr,areaCode,speciesDistribution, return.txt" Time="2015-08-10T15.34.57EDT";
+DF p154 d143
+Binding p165 "165-sampleInAreaStr  <-  sampleInAreaStr" Time="2015-08-10T15.34.57EDT"
+CF p164 p165
+Data d144 "144-sampleInAreaStr" Value="\" 2\"";
+DF p165 d144
+Binding p166 "166-areaCode  <-  areaCode" Time="2015-08-10T15.34.57EDT"
+CF p165 p166
+Data d145 "145-areaCode" Value="2";
+DF p166 d145
+Binding p167 "167-speciesDistribution  <-  speciesDistribution" Time="2015-08-10T15.34.57EDT"
+CF p166 p167
+DF d127 p167
+Snapshot d146 "146-speciesDistribution" Value="[DIR]/ddg/146-speciesDistribution.txt" Time="2015-08-10T15.34.57EDT";
+DF p167 d146
+Binding p168 "168-sampleSizeDistributionMng  <-  sampleSizeDistributionMng" Time="2015-08-10T15.34.57EDT"
+CF p167 p168
+DF d128 p168
+Snapshot d147 "147-sampleSizeDistributionMng" Value="[DIR]/ddg/147-sampleSizeDistributionMng.txt" Time="2015-08-10T15.34.57EDT";
+DF p168 d147
+Operation p169 "169-assignSampleData" Value="assignSampleData" Time="2015-08-10T15.34.57EDT";
+DF d20 p169
+DF d144 p169
+DF d145 p169
+DF d146 p169
+DF d147 p169
+CF p168 p169
+Binding p170 "170-object  <-  object" Time="2015-08-10T15.34.57EDT"
+CF p169 p170
+Snapshot d148 "148-object" Value="[DIR]/ddg/148-object.txt" Time="2015-08-10T15.34.57EDT";
+DF p170 d148
+Binding p171 "171-inSampleSizeDist  <-  inSampleSizeDist" Time="2015-08-10T15.34.57EDT"
+CF p170 p171
+Snapshot d149 "149-inSampleSizeDist" Value="[DIR]/ddg/149-inSampleSizeDist.txt" Time="2015-08-10T15.34.57EDT";
+DF p171 d149
+Operation p172 "172-.local" Value=".local" Time="2015-08-10T15.34.57EDT";
+DF d148 p172
+DF d149 p172
+CF p171 p172
+Binding p173 "173-object  <-  object@sampleSizeDistObj" Time="2015-08-10T15.34.57EDT"
+CF p172 p173
+Snapshot d150 "150-object" Value="[DIR]/ddg/150-object.txt" Time="2015-08-10T15.34.57EDT";
+DF p173 d150
+Binding p174 "174-maxSampleSize  <-  0" Time="2015-08-10T15.34.57EDT"
+CF p173 p174
+Data d151 "151-maxSampleSize" Value="0";
+DF p174 d151
+Operation p175 "175-raffleSampleSize" Value="raffleSampleSize" Time="2015-08-10T15.34.57EDT";
+DF d8 p175
+DF d150 p175
+DF d151 p175
+CF p174 p175
+Data d152 "152-raffleSampleSize(object@sampleSizeDistObj,0) return" Value="4";
+DF p175 d152
+Snapshot d153 "153-.local(object,inSampleSizeDist) return" Value="[DIR]/ddg/153-.local(object,inSampleSizeDist) return.txt" Time="2015-08-10T15.34.57EDT";
+DF p172 d153
+Binding p176 "176-object  <-  samplesArr[sampleCode][[1]]" Time="2015-08-10T15.34.57EDT"
+CF p175 p176
+DF d89 p176
+Snapshot d154 "154-object" Value="[DIR]/ddg/154-object.txt" Time="2015-08-10T15.34.58EDT";
+DF p176 d154
+Binding p177 "177-inAreaCode  <-  areaCode" Time="2015-08-10T15.34.58EDT"
+CF p176 p177
+Data d155 "155-inAreaCode" Value="2";
+DF p177 d155
+Binding p178 "178-speciesDistributionAreas  <-  speciesDistribution" Time="2015-08-10T15.34.58EDT"
+CF p177 p178
+DF d49 p178
+Snapshot d156 "156-speciesDistributionAreas" Value="[DIR]/ddg/156-speciesDistributionAreas.txt" Time="2015-08-10T15.34.58EDT";
+DF p178 d156
+Operation p179 "179-assignArea" Value="assignArea" Time="2015-08-10T15.34.58EDT";
+DF d11 p179
+DF d154 p179
+DF d155 p179
+DF d156 p179
+CF p178 p179
+Snapshot d157 "157-assignArea(samplesArr[sampleCode][[1]],areaCode,speciesDistribution) return" Value="[DIR]/ddg/157-assignArea(samplesArr[sampleCode][[1]],areaCode,speciesDistribution) return.txt" Time="2015-08-10T15.34.58EDT";
+DF p179 d157
+Snapshot d158 "158-assignSampleData(sampleInAreaStr,areaCode,speciesDistribution, return" Value="[DIR]/ddg/158-assignSampleData(sampleInAreaStr,areaCode,speciesDistribution, return.txt" Time="2015-08-10T15.34.58EDT";
+DF p169 d158
+Snapshot d159 "159-assignSamplesToArea(areaStr,speciesDistribution,sampleSizeDistributionMng) return" Value="[DIR]/ddg/159-assignSamplesToArea(areaStr,speciesDistribution,sampleSizeDistributionMng) return.txt" Time="2015-08-10T15.34.58EDT";
+DF p149 d159
+Snapshot d160 "160-assignSamplesToAreas(samplesMapStr,speciesDistribution,sampleSizeDistributionMng) return" Value="[DIR]/ddg/160-assignSamplesToAreas(samplesMapStr,speciesDistribution,sampleSizeDistributionMng) return.txt" Time="2015-08-10T15.34.58EDT";
+DF p111 d160
+Finish p180 "180-samplesArr <- assignSamplesToAreas(samplesMapStr, speciesDis" Value="samplesArr <- assignSamplesToAreas(samplesMapStr, speciesDis" Time="2015-08-10T15.34.58EDT";
+CF p179 p180
+DF d160 p180
+Snapshot d161 "161-samplesArr" Value="[DIR]/ddg/161-samplesArr.txt" Time="2015-08-10T15.34.58EDT";
+DF p180 d161
+Start p181 "181-raffleSamplesToWorksheet(\"genSmpls1\", \"virtual sampling1 " Value="raffleSamplesToWorksheet(\"genSmpls1\", \"virtual sampling1 " Time="2015-08-10T15.34.58EDT";
+CF p180 p181
+Binding p182 "182-wsName <- \"genSmpls1\"" Time="2015-08-10T15.34.58EDT"
+CF p181 p182
+Data d162 "162-wsName" Value="\"genSmpls1\"";
+DF p182 d162
+Binding p183 "183-title <- \"virtual sampling1 (Uniform distribution)\"" Time="2015-08-10T15.34.58EDT"
+CF p182 p183
+Data d163 "163-title" Value="\"virtual sampling1 (Uniform distribution)\"";
+DF p183 d163
+Binding p184 "184-totalNumOfSpecies  <-  totalNumOfSpecies" Time="2015-08-10T15.34.58EDT"
+CF p183 p184
+DF d29 p184
+Data d164 "164-totalNumOfSpecies" Value="2";
+DF p184 d164
+Binding p185 "185-totalNumOfSample  <-  totalNumOfSample" Time="2015-08-10T15.34.58EDT"
+CF p184 p185
+DF d30 p185
+Data d165 "165-totalNumOfSample" Value="2";
+DF p185 d165
+Binding p186 "186-samplesArr  <-  samplesArr" Time="2015-08-10T15.34.58EDT"
+CF p185 p186
+DF d161 p186
+Snapshot d166 "166-samplesArr" Value="[DIR]/ddg/166-samplesArr.txt" Time="2015-08-10T15.34.58EDT";
+DF p186 d166
+Operation p187 "187-raffleSamplesToWorksheet" Value="raffleSamplesToWorksheet" Time="2015-08-10T15.34.58EDT";
+DF d23 p187
+DF d162 p187
+DF d163 p187
+DF d164 p187
+DF d165 p187
+DF d166 p187
+CF p186 p187
+Binding p188 "188-sample  <-  sample" Time="2015-08-10T15.34.58EDT"
+CF p187 p188
+Snapshot d167 "167-sample" Value="[DIR]/ddg/167-sample.txt" Time="2015-08-10T15.34.58EDT";
+DF p188 d167
+Binding p189 "189-smplx  <-  smplx" Time="2015-08-10T15.34.58EDT"
+CF p188 p189
+Data d168 "168-smplx" Value="1";
+DF p189 d168
+Binding p190 "190-fileConn  <-  fileConn" Time="2015-08-10T15.34.58EDT"
+CF p189 p190
+Snapshot d169 "169-fileConn" Value="[DIR]/ddg/169-fileConn.txt" Time="2015-08-10T15.34.58EDT";
+DF p190 d169
+Binding p191 "191-totalNumOfSample  <-  totalNumOfSample" Time="2015-08-10T15.34.58EDT"
+CF p190 p191
+DF d165 p191
+Data d170 "170-totalNumOfSample" Value="2";
+DF p191 d170
+Operation p192 "192-writeToFile" Value="writeToFile" Time="2015-08-10T15.34.58EDT";
+DF d24 p192
+DF d167 p192
+DF d168 p192
+DF d169 p192
+DF d170 p192
+CF p191 p192
+Binding p193 "193-object  <-  sample" Time="2015-08-10T15.34.58EDT"
+CF p192 p193
+Snapshot d171 "171-object" Value="[DIR]/ddg/171-object.txt" Time="2015-08-10T15.34.58EDT";
+DF p193 d171
+Operation p194 "194-raffleIndividualsPerSample" Value="raffleIndividualsPerSample" Time="2015-08-10T15.34.58EDT";
+DF d13 p194
+DF d171 p194
+CF p193 p194
+Binding p195 "195-object  <-  object@speciesDistributionDef" Time="2015-08-10T15.34.58EDT"
+CF p194 p195
+Snapshot d172 "172-object" Value="[DIR]/ddg/172-object.txt" Time="2015-08-10T15.34.58EDT";
+DF p195 d172
+Operation p196 "196-getNumSpecies" Value="getNumSpecies" Time="2015-08-10T15.34.58EDT";
+DF d1 p196
+DF d172 p196
+CF p195 p196
+Data d173 "173-getNumSpecies(object@speciesDistributionDef) return" Value="2";
+DF p196 d173
+Snapshot d174 "174-raffleIndividualsPerSample(sample) return" Value="[DIR]/ddg/174-raffleIndividualsPerSample(sample) return.txt" Time="2015-08-10T15.34.58EDT";
+DF p194 d174
+Data d175 "175-writeToFile(sample,smplx,fileConn,totalNumOfSample) return" Value="NULL";
+DF p192 d175
+Binding p197 "197-sample  <-  sample" Time="2015-08-10T15.34.58EDT"
+CF p196 p197
+Snapshot d176 "176-sample" Value="[DIR]/ddg/176-sample.txt" Time="2015-08-10T15.34.58EDT";
+DF p197 d176
+Binding p198 "198-smplx  <-  smplx" Time="2015-08-10T15.34.58EDT"
+CF p197 p198
+Data d177 "177-smplx" Value="2";
+DF p198 d177
+Binding p199 "199-fileConn  <-  fileConn" Time="2015-08-10T15.34.58EDT"
+CF p198 p199
+Snapshot d178 "178-fileConn" Value="[DIR]/ddg/178-fileConn.txt" Time="2015-08-10T15.34.58EDT";
+DF p199 d178
+Binding p200 "200-totalNumOfSample  <-  totalNumOfSample" Time="2015-08-10T15.34.58EDT"
+CF p199 p200
+DF d165 p200
+Data d179 "179-totalNumOfSample" Value="2";
+DF p200 d179
+Operation p201 "201-writeToFile" Value="writeToFile" Time="2015-08-10T15.34.58EDT";
+DF d24 p201
+DF d176 p201
+DF d177 p201
+DF d178 p201
+DF d179 p201
+CF p200 p201
+Binding p202 "202-object  <-  sample" Time="2015-08-10T15.34.58EDT"
+CF p201 p202
+Snapshot d180 "180-object" Value="[DIR]/ddg/180-object.txt" Time="2015-08-10T15.34.58EDT";
+DF p202 d180
+Operation p203 "203-raffleIndividualsPerSample" Value="raffleIndividualsPerSample" Time="2015-08-10T15.34.58EDT";
+DF d13 p203
+DF d180 p203
+CF p202 p203
+Binding p204 "204-object  <-  object@speciesDistributionDef" Time="2015-08-10T15.34.58EDT"
+CF p203 p204
+Snapshot d181 "181-object" Value="[DIR]/ddg/181-object.txt" Time="2015-08-10T15.34.58EDT";
+DF p204 d181
+Operation p205 "205-getNumSpecies" Value="getNumSpecies" Time="2015-08-10T15.34.58EDT";
+DF d1 p205
+DF d181 p205
+CF p204 p205
+Data d182 "182-getNumSpecies(object@speciesDistributionDef) return" Value="2";
+DF p205 d182
+Binding p206 "206-object  <-  object@speciesDistributionDef" Time="2015-08-10T15.34.58EDT"
+CF p205 p206
+Snapshot d183 "183-object" Value="[DIR]/ddg/183-object.txt" Time="2015-08-10T15.34.58EDT";
+DF p206 d183
+Operation p207 "207-getNumSpecies" Value="getNumSpecies" Time="2015-08-10T15.34.58EDT";
+DF d1 p207
+DF d183 p207
+CF p206 p207
+Data d184 "184-getNumSpecies(object@speciesDistributionDef) return" Value="2";
+DF p207 d184
+Binding p208 "208-object  <-  object@speciesDistributionDef" Time="2015-08-10T15.34.58EDT"
+CF p207 p208
+Snapshot d185 "185-object" Value="[DIR]/ddg/185-object.txt" Time="2015-08-10T15.34.58EDT";
+DF p208 d185
+Binding p209 "209-index  <-  k" Time="2015-08-10T15.34.58EDT"
+CF p208 p209
+Data d186 "186-index" Value="1";
+DF p209 d186
+Operation p210 "210-getDistributionOfSpecies" Value="getDistributionOfSpecies" Time="2015-08-10T15.34.58EDT";
+DF d2 p210
+DF d185 p210
+DF d186 p210
+CF p209 p210
+Data d187 "187-getDistributionOfSpecies(object@speciesDistributionDef,k) return" Value="0.3";
+DF p210 d187
+Binding p211 "211-object  <-  object@speciesDistributionDef" Time="2015-08-10T15.34.58EDT"
+CF p210 p211
+Snapshot d188 "188-object" Value="[DIR]/ddg/188-object.txt" Time="2015-08-10T15.34.58EDT";
+DF p211 d188
+Operation p212 "212-getNumSpecies" Value="getNumSpecies" Time="2015-08-10T15.34.58EDT";
+DF d1 p212
+DF d188 p212
+CF p211 p212
+Data d189 "189-getNumSpecies(object@speciesDistributionDef) return" Value="2";
+DF p212 d189
+Binding p213 "213-object  <-  object@speciesDistributionDef" Time="2015-08-10T15.34.58EDT"
+CF p212 p213
+Snapshot d190 "190-object" Value="[DIR]/ddg/190-object.txt" Time="2015-08-10T15.34.58EDT";
+DF p213 d190
+Binding p214 "214-index  <-  k" Time="2015-08-10T15.34.58EDT"
+CF p213 p214
+Data d191 "191-index" Value="1";
+DF p214 d191
+Operation p215 "215-getDistributionOfSpecies" Value="getDistributionOfSpecies" Time="2015-08-10T15.34.58EDT";
+DF d2 p215
+DF d190 p215
+DF d191 p215
+CF p214 p215
+Data d192 "192-getDistributionOfSpecies(object@speciesDistributionDef,k) return" Value="0.3";
+DF p215 d192
+Binding p216 "216-object  <-  object@speciesDistributionDef" Time="2015-08-10T15.34.58EDT"
+CF p215 p216
+Snapshot d193 "193-object" Value="[DIR]/ddg/193-object.txt" Time="2015-08-10T15.34.58EDT";
+DF p216 d193
+Binding p217 "217-index  <-  k" Time="2015-08-10T15.34.58EDT"
+CF p216 p217
+Data d194 "194-index" Value="2";
+DF p217 d194
+Operation p218 "218-getDistributionOfSpecies" Value="getDistributionOfSpecies" Time="2015-08-10T15.34.58EDT";
+DF d2 p218
+DF d193 p218
+DF d194 p218
+CF p217 p218
+Data d195 "195-getDistributionOfSpecies(object@speciesDistributionDef,k) return" Value="0.7";
+DF p218 d195
+Binding p219 "219-object  <-  object@speciesDistributionDef" Time="2015-08-10T15.34.58EDT"
+CF p218 p219
+Snapshot d196 "196-object" Value="[DIR]/ddg/196-object.txt" Time="2015-08-10T15.34.58EDT";
+DF p219 d196
+Operation p220 "220-getNumSpecies" Value="getNumSpecies" Time="2015-08-10T15.34.58EDT";
+DF d1 p220
+DF d196 p220
+CF p219 p220
+Data d197 "197-getNumSpecies(object@speciesDistributionDef) return" Value="2";
+DF p220 d197
+Binding p221 "221-object  <-  object@speciesDistributionDef" Time="2015-08-10T15.34.58EDT"
+CF p220 p221
+Snapshot d198 "198-object" Value="[DIR]/ddg/198-object.txt" Time="2015-08-10T15.34.58EDT";
+DF p221 d198
+Binding p222 "222-index  <-  k" Time="2015-08-10T15.34.58EDT"
+CF p221 p222
+Data d199 "199-index" Value="1";
+DF p222 d199
+Operation p223 "223-getDistributionOfSpecies" Value="getDistributionOfSpecies" Time="2015-08-10T15.34.58EDT";
+DF d2 p223
+DF d198 p223
+DF d199 p223
+CF p222 p223
+Data d200 "200-getDistributionOfSpecies(object@speciesDistributionDef,k) return" Value="0.3";
+DF p223 d200
+Binding p224 "224-object  <-  object@speciesDistributionDef" Time="2015-08-10T15.34.58EDT"
+CF p223 p224
+Snapshot d201 "201-object" Value="[DIR]/ddg/201-object.txt" Time="2015-08-10T15.34.58EDT";
+DF p224 d201
+Operation p225 "225-getNumSpecies" Value="getNumSpecies" Time="2015-08-10T15.34.58EDT";
+DF d1 p225
+DF d201 p225
+CF p224 p225
+Data d202 "202-getNumSpecies(object@speciesDistributionDef) return" Value="2";
+DF p225 d202
+Binding p226 "226-object  <-  object@speciesDistributionDef" Time="2015-08-10T15.34.58EDT"
+CF p225 p226
+Snapshot d203 "203-object" Value="[DIR]/ddg/203-object.txt" Time="2015-08-10T15.34.58EDT";
+DF p226 d203
+Binding p227 "227-index  <-  k" Time="2015-08-10T15.34.58EDT"
+CF p226 p227
+Data d204 "204-index" Value="1";
+DF p227 d204
+Operation p228 "228-getDistributionOfSpecies" Value="getDistributionOfSpecies" Time="2015-08-10T15.34.58EDT";
+DF d2 p228
+DF d203 p228
+DF d204 p228
+CF p227 p228
+Data d205 "205-getDistributionOfSpecies(object@speciesDistributionDef,k) return" Value="0.3";
+DF p228 d205
+Binding p229 "229-object  <-  object@speciesDistributionDef" Time="2015-08-10T15.34.58EDT"
+CF p228 p229
+Snapshot d206 "206-object" Value="[DIR]/ddg/206-object.txt" Time="2015-08-10T15.34.58EDT";
+DF p229 d206
+Binding p230 "230-index  <-  k" Time="2015-08-10T15.34.58EDT"
+CF p229 p230
+Data d207 "207-index" Value="2";
+DF p230 d207
+Operation p231 "231-getDistributionOfSpecies" Value="getDistributionOfSpecies" Time="2015-08-10T15.34.58EDT";
+DF d2 p231
+DF d206 p231
+DF d207 p231
+CF p230 p231
+Data d208 "208-getDistributionOfSpecies(object@speciesDistributionDef,k) return" Value="0.7";
+DF p231 d208
+Snapshot d209 "209-raffleIndividualsPerSample(sample) return" Value="[DIR]/ddg/209-raffleIndividualsPerSample(sample) return.txt" Time="2015-08-10T15.34.58EDT";
+DF p203 d209
+Data d210 "210-writeToFile(sample,smplx,fileConn,totalNumOfSample) return" Value="NULL";
+DF p201 d210
+Data d211 "211-raffleSamplesToWorksheet(\"genSmpls1\",\"virtualsampling1(Uniformdistribution)\", return" Value="NULL";
+DF p187 d211
+Finish p232 "232-raffleSamplesToWorksheet(\"genSmpls1\", \"virtual sampling1 " Value="raffleSamplesToWorksheet(\"genSmpls1\", \"virtual sampling1 " Time="2015-08-10T15.34.58EDT";
+CF p231 p232
+DF d211 p232
+Finish p233 "233-SivanSamplingSmaller.R" Value="SivanSamplingSmaller.R" Time="2015-08-10T15.34.58EDT";
+CF p232 p233
+
