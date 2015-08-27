@@ -447,51 +447,51 @@ create.time.series.plot <- function(xx) {
   if (is.null(xx.plt)) {
     msg <- paste(datafile.id, ": no variables to plot", sep="")
     warning(msg)
-  } else {
-    # max number of variables per plot
-    max.var <- 4
-    
-    # get number of plots
-    var.num <- length(xx.plt)
-    if (var.num <= max.var) {
-      plot.num <- 1
-      plot.last <- 0
-    } else {
-      plot.num <- var.num %/% max.var
-      plot.last <- var.num %% max.var
-      if (plot.last > 0) plot.num <- plot.num + 1
-    }  
+   } else {
+     # max number of variables per plot
+     max.var <- 4
+     
+     # get number of plots
+     var.num <- length(xx.plt)
+     if (var.num <= max.var) {
+       plot.num <- 1
+       plot.last <- 0
+     } else {
+       plot.num <- var.num %/% max.var
+       plot.last <- var.num %% max.var
+       if (plot.last > 0) plot.num <- plot.num + 1
+     }  
     
     # create each plot
-    for (i in 1:plot.num) {
-      first.col <- (i-1)*max.var + 1
-      if (plot.num == 1) {
-        last.col <- first.col + var.num - 1
-      } else if (i < plot.num | plot.last == 0) {
-        last.col <- first.col + max.var - 1
-      } else {
-        last.col <- first.col + plot.last - 1
-      }
-      
-      # subset for variables to plot and create time series
-      if (first.col == last.col ) {
-        zz <- as.data.frame(xx.plt[ , c(first.col:last.col)])
-        colnames(zz) <- names(xx.plt[first.col])
-      } else {
-        zz <- xx.plt[ , c(first.col:last.col)]
-      }    
-      
-      # create time series
-      xx.ts <- ts(zz)
-      
-      # create plot
-      plot.title <- paste(toupper(datafile.id), " Plot ", i, sep="")     
-      plot(xx.ts, main=plot.title, col="blue")
-    }
-    
-    # display number of plots
-    xstr <- paste("\nTime-series plots = ", plot.num, "\n", sep="")
-    writeLines(xstr)
+     for (i in 1:plot.num) {
+       first.col <- (i-1)*max.var + 1
+       if (plot.num == 1) {
+         last.col <- first.col + var.num - 1
+       } else if (i < plot.num | plot.last == 0) {
+         last.col <- first.col + max.var - 1
+       } else {
+         last.col <- first.col + plot.last - 1
+       }
+       
+       # subset for variables to plot and create time series
+       if (first.col == last.col ) {
+         zz <- as.data.frame(xx.plt[ , c(first.col:last.col)])
+         colnames(zz) <- names(xx.plt[first.col])
+       } else {
+         zz <- xx.plt[ , c(first.col:last.col)]
+       }    
+       
+       # create time series
+       xx.ts <- ts(zz)
+       
+       # create plot
+       plot.title <- paste(toupper(datafile.id), " Plot ", i, sep="")     
+       plot(xx.ts, main=plot.title, col="blue")
+     }
+     
+     # display number of plots
+     xstr <- paste("\nTime-series plots = ", plot.num, "\n", sep="")
+     writeLines(xstr)
   }
 }
 
