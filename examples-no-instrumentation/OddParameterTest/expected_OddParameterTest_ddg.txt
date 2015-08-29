@@ -2,142 +2,149 @@ Architecture="x86_64"
 OperatingSystem="unix"
 Language="R"
 LanguageVersion="R version 3.1.2 (2014-10-31)"
-RDataTrackerVersion="1.6"
+RDataTrackerVersion="1.7"
 Script="[DIR]/OddParameterTest.R"
 ProcessFileTimestamp="2015-08-03T14.14.14EDT"
 WorkingDirectory="[DIR]"
 DDGDirectory="[DIR]/ddg"
-DateTime="2015-08-07T14.54.08EDT"
-36
-Start p1 "1-OddParameterTest.R" Value="OddParameterTest.R" Time="2015-08-07T14.54.08EDT";
-Operation p2 "2-f <- function(x) {    ddg.function()    return(ddg.return.va" Value="f <- function(x) {    ddg.function()    return(ddg.return.va" Time="2015-08-07T14.54.08EDT";
+DateTime="2015-08-24T15.04.28EDT"
+43
+Start p1 "1-OddParameterTest.R" Value="OddParameterTest.R" Time="2015-08-24T15.04.28EDT";
+Operation p2 "2-f <- function(x) {    ddg.function()    return(ddg.return.va" Value="f <- function(x) {    ddg.function()    return(ddg.return.va" Time="2015-08-24T15.04.28EDT";
 CF p1 p2
 Data d1 "1-f" Value="#ddg.function";
 DF p2 d1
-Operation p3 "3-f3 <- function() {    ddg.function()    ddg.return.value(sto" Value="f3 <- function() {    ddg.function()    ddg.return.value(sto" Time="2015-08-07T14.54.08EDT";
+Operation p3 "3-f3 <- function() {    ddg.function()    ddg.return.value(sto" Value="f3 <- function() {    ddg.function()    ddg.return.value(sto" Time="2015-08-24T15.04.28EDT";
 CF p2 p3
 Data d2 "2-f3" Value="#ddg.function";
 DF p3 d2
-Operation p4 "4-a <- 3" Value="a <- 3" Time="2015-08-07T14.54.08EDT";
+Operation p4 "4-a <- 3" Value="a <- 3" Time="2015-08-24T15.04.28EDT";
 CF p3 p4
 Data d3 "3-a" Value="3";
 DF p4 d3
-Start p5 "5-f(a)" Value="f(a)" Time="2015-08-07T14.54.08EDT";
+Start p5 "5-f(a)" Value="f(a)" Time="2015-08-24T15.04.28EDT";
 CF p4 p5
-Binding p6 "6-x  <-  a" Time="2015-08-07T14.54.08EDT"
+Binding p6 "6-x  <-  a" Time="2015-08-24T15.04.28EDT"
 CF p5 p6
 DF d3 p6
 Data d4 "4-x" Value="3";
 DF p6 d4
-Operation p7 "7-f" Value="f" Time="2015-08-07T14.54.08EDT";
+Operation p7 "7-f" Value="f" Time="2015-08-24T15.04.28EDT";
 DF d1 p7
 DF d4 p7
 CF p6 p7
 Data d5 "5-f(a) return" Value="1";
-DF p7 d5
-Finish p8 "8-f(a)" Value="f(a)" Time="2015-08-07T14.54.08EDT";
+Operation p8 "8-return (1)" Value="return (1)" Time="2015-08-24T15.04.28EDT";
 CF p7 p8
-DF d5 p8
-Operation p9 "9-b <- 1/0" Value="b <- 1/0" Time="2015-08-07T14.54.08EDT";
+DF p8 d5
+Finish p9 "9-f(a)" Value="f(a)" Time="2015-08-24T15.04.28EDT";
 CF p8 p9
-Data d6 "6-b" Value="Inf";
-DF p9 d6
-Start p10 "10-f(b)" Value="f(b)" Time="2015-08-07T14.54.08EDT";
+Operation p10 "10-b <- 1/0" Value="b <- 1/0" Time="2015-08-24T15.04.28EDT";
 CF p9 p10
-Binding p11 "11-x  <-  b" Time="2015-08-07T14.54.08EDT"
+Data d6 "6-b" Value="Inf";
+DF p10 d6
+Start p11 "11-f(b)" Value="f(b)" Time="2015-08-24T15.04.28EDT";
 CF p10 p11
-DF d6 p11
-Data d7 "7-x" Value="Inf";
-DF p11 d7
-Operation p12 "12-f" Value="f" Time="2015-08-07T14.54.08EDT";
-DF d1 p12
-DF d7 p12
+Binding p12 "12-x  <-  b" Time="2015-08-24T15.04.28EDT"
 CF p11 p12
-Data d8 "8-f(b) return" Value="1";
-DF p12 d8
-Finish p13 "13-f(b)" Value="f(b)" Time="2015-08-07T14.54.08EDT";
+DF d6 p12
+Data d7 "7-x" Value="Inf";
+DF p12 d7
+Operation p13 "13-f" Value="f" Time="2015-08-24T15.04.28EDT";
+DF d1 p13
+DF d7 p13
 CF p12 p13
-DF d8 p13
-Start p14 "14-f(d)" Value="f(d)" Time="2015-08-07T14.54.08EDT";
+Data d8 "8-f(b) return" Value="1";
+Operation p14 "14-return (1)" Value="return (1)" Time="2015-08-24T15.04.28EDT";
 CF p13 p14
-Binding p15 "15-x  <-  d" Time="2015-08-07T14.54.08EDT"
+DF p14 d8
+Finish p15 "15-f(b)" Value="f(b)" Time="2015-08-24T15.04.28EDT";
 CF p14 p15
-Operation p16 "16-f" Value="f" Time="2015-08-07T14.54.08EDT";
-DF d1 p16
+Start p16 "16-f(d)" Value="f(d)" Time="2015-08-24T15.04.28EDT";
 CF p15 p16
-Data d9 "9-f(d) return" Value="1";
-DF p16 d9
-Finish p17 "17-f(d)" Value="f(d)" Time="2015-08-07T14.54.08EDT";
+Binding p17 "17-x  <-  d" Time="2015-08-24T15.04.28EDT"
 CF p16 p17
-DF d9 p17
-Operation p18 "18-d <- 1" Value="d <- 1" Time="2015-08-07T14.54.08EDT";
+Operation p18 "18-f" Value="f" Time="2015-08-24T15.04.28EDT";
+DF d1 p18
 CF p17 p18
-Data d10 "10-d" Value="1";
-DF p18 d10
-Start p19 "19-f(d)" Value="f(d)" Time="2015-08-07T14.54.08EDT";
+Data d9 "9-f(d) return" Value="1";
+Operation p19 "19-return (1)" Value="return (1)" Time="2015-08-24T15.04.28EDT";
 CF p18 p19
-Binding p20 "20-x  <-  d" Time="2015-08-07T14.54.08EDT"
+DF p19 d9
+Finish p20 "20-f(d)" Value="f(d)" Time="2015-08-24T15.04.28EDT";
 CF p19 p20
-DF d10 p20
-Data d11 "11-x" Value="1";
-DF p20 d11
-Operation p21 "21-f" Value="f" Time="2015-08-07T14.54.08EDT";
-DF d1 p21
-DF d11 p21
+Operation p21 "21-d <- 1" Value="d <- 1" Time="2015-08-24T15.04.28EDT";
 CF p20 p21
-Data d12 "12-f(d) return" Value="1";
-DF p21 d12
-Finish p22 "22-f(d)" Value="f(d)" Time="2015-08-07T14.54.08EDT";
+Data d10 "10-d" Value="1";
+DF p21 d10
+Start p22 "22-f(d)" Value="f(d)" Time="2015-08-24T15.04.28EDT";
 CF p21 p22
-DF d12 p22
-Operation p23 "23-d <- 6" Value="d <- 6" Time="2015-08-07T14.54.08EDT";
+Binding p23 "23-x  <-  d" Time="2015-08-24T15.04.28EDT"
 CF p22 p23
-Data d13 "13-d" Value="6";
-DF p23 d13
-Start p24 "24-f(d[[2]])" Value="f(d[[2]])" Time="2015-08-07T14.54.08EDT";
+DF d10 p23
+Data d11 "11-x" Value="1";
+DF p23 d11
+Operation p24 "24-f" Value="f" Time="2015-08-24T15.04.28EDT";
+DF d1 p24
+DF d11 p24
 CF p23 p24
-Binding p25 "25-x  <-  d[[2]]" Time="2015-08-07T14.54.08EDT"
+Data d12 "12-f(d) return" Value="1";
+Operation p25 "25-return (1)" Value="return (1)" Time="2015-08-24T15.04.28EDT";
 CF p24 p25
-DF d13 p25
-Operation p26 "26-f" Value="f" Time="2015-08-07T14.54.08EDT";
-DF d1 p26
+DF p25 d12
+Finish p26 "26-f(d)" Value="f(d)" Time="2015-08-24T15.04.28EDT";
 CF p25 p26
-Data d14 "14-f(d[[2]]) return" Value="1";
-DF p26 d14
-Finish p27 "27-f(d[[2]])" Value="f(d[[2]])" Time="2015-08-07T14.54.08EDT";
+Operation p27 "27-d <- 6" Value="d <- 6" Time="2015-08-24T15.04.28EDT";
 CF p26 p27
-DF d14 p27
-Start p28 "28-f(f3)" Value="f(f3)" Time="2015-08-07T14.54.08EDT";
+Data d13 "13-d" Value="6";
+DF p27 d13
+Start p28 "28-f(d[[2]])" Value="f(d[[2]])" Time="2015-08-24T15.04.28EDT";
 CF p27 p28
-Binding p29 "29-x  <-  f3" Time="2015-08-07T14.54.08EDT"
+Binding p29 "29-x  <-  d[[2]]" Time="2015-08-24T15.04.28EDT"
 CF p28 p29
-DF d2 p29
-Data d15 "15-x" Value="#ddg.function";
-DF p29 d15
-Operation p30 "30-f" Value="f" Time="2015-08-07T14.54.08EDT";
+DF d13 p29
+Operation p30 "30-f" Value="f" Time="2015-08-24T15.04.28EDT";
 DF d1 p30
-DF d15 p30
 CF p29 p30
-Data d16 "16-f(f3) return" Value="1";
-DF p30 d16
-Finish p31 "31-f(f3)" Value="f(f3)" Time="2015-08-07T14.54.08EDT";
+Data d14 "14-f(d[[2]]) return" Value="1";
+Operation p31 "31-return (1)" Value="return (1)" Time="2015-08-24T15.04.28EDT";
 CF p30 p31
-DF d16 p31
-Start p32 "32-f(.GlobalEnv)" Value="f(.GlobalEnv)" Time="2015-08-07T14.54.08EDT";
+DF p31 d14
+Finish p32 "32-f(d[[2]])" Value="f(d[[2]])" Time="2015-08-24T15.04.28EDT";
 CF p31 p32
-Binding p33 "33-x  <-  .GlobalEnv" Time="2015-08-07T14.54.08EDT"
+Start p33 "33-f(f3)" Value="f(f3)" Time="2015-08-24T15.04.28EDT";
 CF p32 p33
-Snapshot d17 "17-x" Value="[DIR]/ddg/17-x.txt" Time="2015-08-07T14.54.08EDT";
-DF p33 d17
-Operation p34 "34-f" Value="f" Time="2015-08-07T14.54.08EDT";
-DF d1 p34
-DF d17 p34
+Binding p34 "34-x  <-  f3" Time="2015-08-24T15.04.28EDT"
 CF p33 p34
-Data d18 "18-f(.GlobalEnv) return" Value="1";
-DF p34 d18
-Finish p35 "35-f(.GlobalEnv)" Value="f(.GlobalEnv)" Time="2015-08-07T14.54.08EDT";
+DF d2 p34
+Data d15 "15-x" Value="#ddg.function";
+DF p34 d15
+Operation p35 "35-f" Value="f" Time="2015-08-24T15.04.28EDT";
+DF d1 p35
+DF d15 p35
 CF p34 p35
-DF d18 p35
-Finish p36 "36-OddParameterTest.R" Value="OddParameterTest.R" Time="2015-08-07T14.54.08EDT";
+Data d16 "16-f(f3) return" Value="1";
+Operation p36 "36-return (1)" Value="return (1)" Time="2015-08-24T15.04.28EDT";
 CF p35 p36
+DF p36 d16
+Finish p37 "37-f(f3)" Value="f(f3)" Time="2015-08-24T15.04.28EDT";
+CF p36 p37
+Start p38 "38-f(.GlobalEnv)" Value="f(.GlobalEnv)" Time="2015-08-24T15.04.28EDT";
+CF p37 p38
+Binding p39 "39-x  <-  .GlobalEnv" Time="2015-08-24T15.04.28EDT"
+CF p38 p39
+Snapshot d17 "17-x" Value="[DIR]/ddg/17-x.txt" Time="2015-08-24T15.04.28EDT";
+DF p39 d17
+Operation p40 "40-f" Value="f" Time="2015-08-24T15.04.28EDT";
+DF d1 p40
+DF d17 p40
+CF p39 p40
+Data d18 "18-f(.GlobalEnv) return" Value="1";
+Operation p41 "41-return (1)" Value="return (1)" Time="2015-08-24T15.04.28EDT";
+CF p40 p41
+DF p41 d18
+Finish p42 "42-f(.GlobalEnv)" Value="f(.GlobalEnv)" Time="2015-08-24T15.04.28EDT";
+CF p41 p42
+Finish p43 "43-OddParameterTest.R" Value="OddParameterTest.R" Time="2015-08-24T15.04.28EDT";
+CF p42 p43
 

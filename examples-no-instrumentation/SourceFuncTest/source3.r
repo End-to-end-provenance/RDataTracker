@@ -6,12 +6,12 @@ f <- function(x) {
 
 g <- function(x) {
   ddg.function()
-  return(1)
+  return(ddg.return.value(1))
 }
 
 h <- function(x) {
   ddg.function()
-  return(1)
+  return(ddg.return.value(1))
 }
 
 someVector <- function() {

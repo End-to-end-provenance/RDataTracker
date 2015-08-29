@@ -2,229 +2,262 @@ Architecture="x86_64"
 OperatingSystem="unix"
 Language="R"
 LanguageVersion="R version 3.1.2 (2014-10-31)"
-RDataTrackerVersion="1.6"
+RDataTrackerVersion="1.7"
 Script="[DIR]/DailySolarRadiation.R"
 ProcessFileTimestamp="2015-08-03T14.14.14EDT"
 WorkingDirectory="[DIR]"
 DDGDirectory="[DIR]/ddg"
-DateTime="2015-08-07T14.56.04EDT"
-58
-Start p1 "1-DailySolarRadiation.R" Value="DailySolarRadiation.R" Time="2015-08-07T14.56.04EDT";
-Operation p2 "2-read.data <- function() {    ddg.function()    data.file <<-" Value="read.data <- function() {    ddg.function()    data.file <<-" Time="2015-08-07T14.56.04EDT";
+DateTime="2015-08-25T17.26.40EDT"
+75
+Start p1 "1-DailySolarRadiation.R" Value="DailySolarRadiation.R" Time="2015-08-25T17.26.39EDT";
+Operation p2 "2-read.data <- function() {    ddg.function()    data.file <<-" Value="read.data <- function() {    ddg.function()    data.file <<-" Time="2015-08-25T17.26.39EDT";
 CF p1 p2
 Data d1 "1-read.data" Value="#ddg.function";
 DF p2 d1
-Operation p3 "3-calibrate <- function(xx) {    ddg.function()    date.start " Value="calibrate <- function(xx) {    ddg.function()    date.start " Time="2015-08-07T14.56.04EDT";
+Operation p3 "3-calibrate <- function(xx) {    ddg.function()    date.start " Value="calibrate <- function(xx) {    ddg.function()    date.start " Time="2015-08-25T17.26.39EDT";
 CF p2 p3
 Data d2 "2-calibrate" Value="#ddg.function";
 DF p3 d2
-Operation p4 "4-quality.control <- function(xx) {    ddg.function()    repea" Value="quality.control <- function(xx) {    ddg.function()    repea" Time="2015-08-07T14.56.04EDT";
+Operation p4 "4-quality.control <- function(xx) {    ddg.function()    repea" Value="quality.control <- function(xx) {    ddg.function()    repea" Time="2015-08-25T17.26.39EDT";
 CF p3 p4
 Data d3 "3-quality.control" Value="#ddg.function";
 DF p4 d3
-Operation p5 "5-gap.fill <- function(xx) {    ddg.function()    slope <- gap" Value="gap.fill <- function(xx) {    ddg.function()    slope <- gap" Time="2015-08-07T14.56.04EDT";
+Operation p5 "5-gap.fill <- function(xx) {    ddg.function()    slope <- gap" Value="gap.fill <- function(xx) {    ddg.function()    slope <- gap" Time="2015-08-25T17.26.39EDT";
 CF p4 p5
 Data d4 "4-gap.fill" Value="#ddg.function";
 DF p5 d4
-Operation p6 "6-write.result <- function(fn, xx) {    ddg.function()    file" Value="write.result <- function(fn, xx) {    ddg.function()    file" Time="2015-08-07T14.56.04EDT";
+Operation p6 "6-write.result <- function(fn, xx) {    ddg.function()    file" Value="write.result <- function(fn, xx) {    ddg.function()    file" Time="2015-08-25T17.26.39EDT";
 CF p5 p6
 Data d5 "5-write.result" Value="#ddg.function";
 DF p6 d5
-Operation p7 "7-plot.data <- function(xx, v) {    ddg.function()    if (v ==" Value="plot.data <- function(xx, v) {    ddg.function()    if (v ==" Time="2015-08-07T14.56.04EDT";
+Operation p7 "7-plot.data <- function(xx, v) {    ddg.function()    if (v ==" Value="plot.data <- function(xx, v) {    ddg.function()    if (v ==" Time="2015-08-25T17.26.39EDT";
 CF p6 p7
 Data d6 "6-plot.data" Value="#ddg.function";
 DF p7 d6
-Start p8 "8-get.data" Value="get.data" Time="2015-08-07T14.56.04EDT";
+Start p8 "8-get.data" Value="get.data" Time="2015-08-25T17.26.39EDT";
 CF p7 p8
-Start p9 "9-raw.data <- read.data()" Value="raw.data <- read.data()" Time="2015-08-07T14.56.04EDT";
+Start p9 "9-raw.data <- read.data()" Value="raw.data <- read.data()" Time="2015-08-25T17.26.39EDT";
 CF p8 p9
-Operation p10 "10-read.data" Value="read.data" Time="2015-08-07T14.56.04EDT";
-DF d1 p10
+Start p10 "10-read.data()" Value="read.data()" Time="2015-08-25T17.26.39EDT";
 CF p9 p10
-Snapshot d7 "7-read.data() return" Value="[DIR]/ddg/7-read.data() return.csv" Time="2015-08-07T14.56.04EDT";
-DF p10 d7
-Finish p11 "11-raw.data <- read.data()" Value="raw.data <- read.data()" Time="2015-08-07T14.56.04EDT";
+Operation p11 "11-read.data" Value="read.data" Time="2015-08-25T17.26.39EDT";
+DF d1 p11
 CF p10 p11
-DF d7 p11
-Snapshot d8 "8-raw.data" Value="[DIR]/ddg/8-raw.data.csv" Time="2015-08-07T14.56.04EDT";
-DF p11 d8
-Start p12 "12-plot.data(raw.data, \"R\")" Value="plot.data(raw.data, \"R\")" Time="2015-08-07T14.56.04EDT";
+Snapshot d7 "7-read.data() return" Value="[DIR]/ddg/7-read.data() return.csv" Time="2015-08-25T17.26.39EDT";
+Operation p12 "12-return (raw.data)" Value="return (raw.data)" Time="2015-08-25T17.26.39EDT";
 CF p11 p12
-Binding p13 "13-xx  <-  raw.data" Time="2015-08-07T14.56.04EDT"
+DF p12 d7
+Finish p13 "13-read.data()" Value="read.data()" Time="2015-08-25T17.26.39EDT";
 CF p12 p13
-DF d8 p13
-Snapshot d9 "9-xx" Value="[DIR]/ddg/9-xx.csv" Time="2015-08-07T14.56.04EDT";
-DF p13 d9
-Binding p14 "14-v <- \"R\"" Time="2015-08-07T14.56.04EDT"
+Finish p14 "14-raw.data <- read.data()" Value="raw.data <- read.data()" Time="2015-08-25T17.26.39EDT";
 CF p13 p14
-Data d10 "10-v" Value="\"R\"";
-DF p14 d10
-Operation p15 "15-plot.data" Value="plot.data" Time="2015-08-07T14.56.04EDT";
-DF d6 p15
-DF d9 p15
-DF d10 p15
+DF d7 p14
+Snapshot d8 "8-raw.data" Value="[DIR]/ddg/8-raw.data.csv" Time="2015-08-25T17.26.40EDT";
+DF p14 d8
+Start p15 "15-plot.data(raw.data, \"R\")" Value="plot.data(raw.data, \"R\")" Time="2015-08-25T17.26.40EDT";
 CF p14 p15
-Data d11 "11-plot.data(raw.data,\"R\") return" Value="1";
-DF p15 d11
-Finish p16 "16-plot.data(raw.data, \"R\")" Value="plot.data(raw.data, \"R\")" Time="2015-08-07T14.56.04EDT";
+Binding p16 "16-xx  <-  raw.data" Time="2015-08-25T17.26.40EDT"
 CF p15 p16
-DF d11 p16
-Finish p17 "17-get.data" Value="get.data" Time="2015-08-07T14.56.04EDT";
+DF d8 p16
+Snapshot d9 "9-xx" Value="[DIR]/ddg/9-xx.csv" Time="2015-08-25T17.26.40EDT";
+DF p16 d9
+Binding p17 "17-v <- \"R\"" Time="2015-08-25T17.26.40EDT"
 CF p16 p17
-Start p18 "18-analyze.data" Value="analyze.data" Time="2015-08-07T14.56.04EDT";
+Data d10 "10-v" Value="\"R\"";
+DF p17 d10
+Operation p18 "18-plot.data" Value="plot.data" Time="2015-08-25T17.26.40EDT";
+DF d6 p18
+DF d9 p18
+DF d10 p18
 CF p17 p18
-Start p19 "19-calibrate.data" Value="calibrate.data" Time="2015-08-07T14.56.04EDT";
+Data d11 "11-plot.data(raw.data,\"R\") return" Value="1";
+Operation p19 "19-return (dev.off())" Value="return (dev.off())" Time="2015-08-25T17.26.40EDT";
 CF p18 p19
-Start p20 "20-calibrated.data <- calibrate(raw.data)" Value="calibrated.data <- calibrate(raw.data)" Time="2015-08-07T14.56.04EDT";
+DF p19 d11
+Finish p20 "20-plot.data(raw.data, \"R\")" Value="plot.data(raw.data, \"R\")" Time="2015-08-25T17.26.40EDT";
 CF p19 p20
-Binding p21 "21-xx  <-  raw.data" Time="2015-08-07T14.56.04EDT"
+Finish p21 "21-get.data" Value="get.data" Time="2015-08-25T17.26.40EDT";
 CF p20 p21
-DF d8 p21
-Snapshot d12 "12-xx" Value="[DIR]/ddg/12-xx.csv" Time="2015-08-07T14.56.04EDT";
-DF p21 d12
-Operation p22 "22-calibrate" Value="calibrate" Time="2015-08-07T14.56.04EDT";
-DF d2 p22
-DF d12 p22
+Start p22 "22-analyze.data" Value="analyze.data" Time="2015-08-25T17.26.40EDT";
 CF p21 p22
-Snapshot d13 "13-calibrate(raw.data) return" Value="[DIR]/ddg/13-calibrate(raw.data) return.csv" Time="2015-08-07T14.56.04EDT";
-DF p22 d13
-Finish p23 "23-calibrated.data <- calibrate(raw.data)" Value="calibrated.data <- calibrate(raw.data)" Time="2015-08-07T14.56.04EDT";
+Start p23 "23-calibrate.data" Value="calibrate.data" Time="2015-08-25T17.26.40EDT";
 CF p22 p23
-DF d13 p23
-Snapshot d14 "14-calibrated.data" Value="[DIR]/ddg/14-calibrated.data.csv" Time="2015-08-07T14.56.04EDT";
-DF p23 d14
-Start p24 "24-plot.data(calibrated.data, \"C\")" Value="plot.data(calibrated.data, \"C\")" Time="2015-08-07T14.56.04EDT";
+Start p24 "24-calibrated.data <- calibrate(raw.data)" Value="calibrated.data <- calibrate(raw.data)" Time="2015-08-25T17.26.40EDT";
 CF p23 p24
-Binding p25 "25-xx  <-  calibrated.data" Time="2015-08-07T14.56.04EDT"
+Start p25 "25-calibrate(raw.data)" Value="calibrate(raw.data)" Time="2015-08-25T17.26.40EDT";
 CF p24 p25
-DF d14 p25
-Snapshot d15 "15-xx" Value="[DIR]/ddg/15-xx.csv" Time="2015-08-07T14.56.04EDT";
-DF p25 d15
-Binding p26 "26-v <- \"C\"" Time="2015-08-07T14.56.04EDT"
+Binding p26 "26-xx  <-  raw.data" Time="2015-08-25T17.26.40EDT"
 CF p25 p26
-Data d16 "16-v" Value="\"C\"";
-DF p26 d16
-Operation p27 "27-plot.data" Value="plot.data" Time="2015-08-07T14.56.04EDT";
-DF d6 p27
-DF d15 p27
-DF d16 p27
+DF d8 p26
+Snapshot d12 "12-xx" Value="[DIR]/ddg/12-xx.csv" Time="2015-08-25T17.26.40EDT";
+DF p26 d12
+Operation p27 "27-calibrate" Value="calibrate" Time="2015-08-25T17.26.40EDT";
+DF d2 p27
+DF d12 p27
 CF p26 p27
-Data d17 "17-plot.data(calibrated.data,\"C\") return" Value="1";
-DF p27 d17
-Finish p28 "28-plot.data(calibrated.data, \"C\")" Value="plot.data(calibrated.data, \"C\")" Time="2015-08-07T14.56.04EDT";
+Snapshot d13 "13-calibrate(raw.data) return" Value="[DIR]/ddg/13-calibrate(raw.data) return.csv" Time="2015-08-25T17.26.40EDT";
+Operation p28 "28-return (xx)" Value="return (xx)" Time="2015-08-25T17.26.40EDT";
 CF p27 p28
-DF d17 p28
-Finish p29 "29-calibrate.data" Value="calibrate.data" Time="2015-08-07T14.56.04EDT";
+DF d12 p28
+DF p28 d13
+Finish p29 "29-calibrate(raw.data)" Value="calibrate(raw.data)" Time="2015-08-25T17.26.40EDT";
 CF p28 p29
-Start p30 "30-quality.control.data" Value="quality.control.data" Time="2015-08-07T14.56.04EDT";
+Finish p30 "30-calibrated.data <- calibrate(raw.data)" Value="calibrated.data <- calibrate(raw.data)" Time="2015-08-25T17.26.40EDT";
 CF p29 p30
-Start p31 "31-quality.controlled.data <- quality.control(calibrated.data)" Value="quality.controlled.data <- quality.control(calibrated.data)" Time="2015-08-07T14.56.04EDT";
+DF d13 p30
+Snapshot d14 "14-calibrated.data" Value="[DIR]/ddg/14-calibrated.data.csv" Time="2015-08-25T17.26.40EDT";
+DF p30 d14
+Start p31 "31-plot.data(calibrated.data, \"C\")" Value="plot.data(calibrated.data, \"C\")" Time="2015-08-25T17.26.40EDT";
 CF p30 p31
-Binding p32 "32-xx  <-  calibrated.data" Time="2015-08-07T14.56.04EDT"
+Binding p32 "32-xx  <-  calibrated.data" Time="2015-08-25T17.26.40EDT"
 CF p31 p32
 DF d14 p32
-Snapshot d18 "18-xx" Value="[DIR]/ddg/18-xx.csv" Time="2015-08-07T14.56.04EDT";
-DF p32 d18
-Operation p33 "33-quality.control" Value="quality.control" Time="2015-08-07T14.56.04EDT";
-DF d3 p33
-DF d18 p33
+Snapshot d15 "15-xx" Value="[DIR]/ddg/15-xx.csv" Time="2015-08-25T17.26.40EDT";
+DF p32 d15
+Binding p33 "33-v <- \"C\"" Time="2015-08-25T17.26.40EDT"
 CF p32 p33
-Snapshot d19 "19-quality.control(calibrated.data) return" Value="[DIR]/ddg/19-quality.control(calibrated.data) return.csv" Time="2015-08-07T14.56.04EDT";
-DF p33 d19
-Finish p34 "34-quality.controlled.data <- quality.control(calibrated.data)" Value="quality.controlled.data <- quality.control(calibrated.data)" Time="2015-08-07T14.56.04EDT";
+Data d16 "16-v" Value="\"C\"";
+DF p33 d16
+Operation p34 "34-plot.data" Value="plot.data" Time="2015-08-25T17.26.40EDT";
+DF d6 p34
+DF d15 p34
+DF d16 p34
 CF p33 p34
-DF d19 p34
-Snapshot d20 "20-quality.controlled.data" Value="[DIR]/ddg/20-quality.controlled.data.csv" Time="2015-08-07T14.56.04EDT";
-DF p34 d20
-Start p35 "35-plot.data(quality.controlled.data, \"Q\")" Value="plot.data(quality.controlled.data, \"Q\")" Time="2015-08-07T14.56.04EDT";
+Data d17 "17-plot.data(calibrated.data,\"C\") return" Value="1";
+Operation p35 "35-return (dev.off())" Value="return (dev.off())" Time="2015-08-25T17.26.40EDT";
 CF p34 p35
-Binding p36 "36-xx  <-  quality.controlled.data" Time="2015-08-07T14.56.04EDT"
+DF p35 d17
+Finish p36 "36-plot.data(calibrated.data, \"C\")" Value="plot.data(calibrated.data, \"C\")" Time="2015-08-25T17.26.40EDT";
 CF p35 p36
-DF d20 p36
-Snapshot d21 "21-xx" Value="[DIR]/ddg/21-xx.csv" Time="2015-08-07T14.56.04EDT";
-DF p36 d21
-Binding p37 "37-v <- \"Q\"" Time="2015-08-07T14.56.04EDT"
+Finish p37 "37-calibrate.data" Value="calibrate.data" Time="2015-08-25T17.26.40EDT";
 CF p36 p37
-Data d22 "22-v" Value="\"Q\"";
-DF p37 d22
-Operation p38 "38-plot.data" Value="plot.data" Time="2015-08-07T14.56.04EDT";
-DF d6 p38
-DF d21 p38
-DF d22 p38
+Start p38 "38-quality.control.data" Value="quality.control.data" Time="2015-08-25T17.26.40EDT";
 CF p37 p38
-Data d23 "23-plot.data(quality.controlled.data,\"Q\") return" Value="1";
-DF p38 d23
-Finish p39 "39-plot.data(quality.controlled.data, \"Q\")" Value="plot.data(quality.controlled.data, \"Q\")" Time="2015-08-07T14.56.04EDT";
+Start p39 "39-quality.controlled.data <- quality.control(calibrated.data)" Value="quality.controlled.data <- quality.control(calibrated.data)" Time="2015-08-25T17.26.40EDT";
 CF p38 p39
-DF d23 p39
-Finish p40 "40-quality.control.data" Value="quality.control.data" Time="2015-08-07T14.56.04EDT";
+Start p40 "40-quality.control(calibrated.data)" Value="quality.control(calibrated.data)" Time="2015-08-25T17.26.40EDT";
 CF p39 p40
-Start p41 "41-gap.fill.data" Value="gap.fill.data" Time="2015-08-07T14.56.04EDT";
+Binding p41 "41-xx  <-  calibrated.data" Time="2015-08-25T17.26.40EDT"
 CF p40 p41
-Start p42 "42-gap.filled.data <- gap.fill(quality.controlled.data)" Value="gap.filled.data <- gap.fill(quality.controlled.data)" Time="2015-08-07T14.56.04EDT";
+DF d14 p41
+Snapshot d18 "18-xx" Value="[DIR]/ddg/18-xx.csv" Time="2015-08-25T17.26.40EDT";
+DF p41 d18
+Operation p42 "42-quality.control" Value="quality.control" Time="2015-08-25T17.26.40EDT";
+DF d3 p42
+DF d18 p42
 CF p41 p42
-Binding p43 "43-xx  <-  quality.controlled.data" Time="2015-08-07T14.56.04EDT"
+Snapshot d19 "19-quality.control(calibrated.data) return" Value="[DIR]/ddg/19-quality.control(calibrated.data) return.csv" Time="2015-08-25T17.26.40EDT";
+Operation p43 "43-return (xx)" Value="return (xx)" Time="2015-08-25T17.26.40EDT";
 CF p42 p43
-DF d20 p43
-Snapshot d24 "24-xx" Value="[DIR]/ddg/24-xx.csv" Time="2015-08-07T14.56.04EDT";
-DF p43 d24
-Operation p44 "44-gap.fill" Value="gap.fill" Time="2015-08-07T14.56.04EDT";
-DF d4 p44
-DF d24 p44
+DF d18 p43
+DF p43 d19
+Finish p44 "44-quality.control(calibrated.data)" Value="quality.control(calibrated.data)" Time="2015-08-25T17.26.40EDT";
 CF p43 p44
-Snapshot d25 "25-gap.fill(quality.controlled.data) return" Value="[DIR]/ddg/25-gap.fill(quality.controlled.data) return.csv" Time="2015-08-07T14.56.04EDT";
-DF p44 d25
-Finish p45 "45-gap.filled.data <- gap.fill(quality.controlled.data)" Value="gap.filled.data <- gap.fill(quality.controlled.data)" Time="2015-08-07T14.56.04EDT";
+Finish p45 "45-quality.controlled.data <- quality.control(calibrated.data)" Value="quality.controlled.data <- quality.control(calibrated.data)" Time="2015-08-25T17.26.40EDT";
 CF p44 p45
-DF d25 p45
-Snapshot d26 "26-gap.filled.data" Value="[DIR]/ddg/26-gap.filled.data.csv" Time="2015-08-07T14.56.04EDT";
-DF p45 d26
-Start p46 "46-plot.data(gap.filled.data, \"G\")" Value="plot.data(gap.filled.data, \"G\")" Time="2015-08-07T14.56.04EDT";
+DF d19 p45
+Snapshot d20 "20-quality.controlled.data" Value="[DIR]/ddg/20-quality.controlled.data.csv" Time="2015-08-25T17.26.40EDT";
+DF p45 d20
+Start p46 "46-plot.data(quality.controlled.data, \"Q\")" Value="plot.data(quality.controlled.data, \"Q\")" Time="2015-08-25T17.26.40EDT";
 CF p45 p46
-Binding p47 "47-xx  <-  gap.filled.data" Time="2015-08-07T14.56.04EDT"
+Binding p47 "47-xx  <-  quality.controlled.data" Time="2015-08-25T17.26.40EDT"
 CF p46 p47
-DF d26 p47
-Snapshot d27 "27-xx" Value="[DIR]/ddg/27-xx.csv" Time="2015-08-07T14.56.04EDT";
-DF p47 d27
-Binding p48 "48-v <- \"G\"" Time="2015-08-07T14.56.04EDT"
+DF d20 p47
+Snapshot d21 "21-xx" Value="[DIR]/ddg/21-xx.csv" Time="2015-08-25T17.26.40EDT";
+DF p47 d21
+Binding p48 "48-v <- \"Q\"" Time="2015-08-25T17.26.40EDT"
 CF p47 p48
-Data d28 "28-v" Value="\"G\"";
-DF p48 d28
-Operation p49 "49-plot.data" Value="plot.data" Time="2015-08-07T14.56.04EDT";
+Data d22 "22-v" Value="\"Q\"";
+DF p48 d22
+Operation p49 "49-plot.data" Value="plot.data" Time="2015-08-25T17.26.40EDT";
 DF d6 p49
-DF d27 p49
-DF d28 p49
+DF d21 p49
+DF d22 p49
 CF p48 p49
-Data d29 "29-plot.data(gap.filled.data,\"G\") return" Value="1";
-DF p49 d29
-Finish p50 "50-plot.data(gap.filled.data, \"G\")" Value="plot.data(gap.filled.data, \"G\")" Time="2015-08-07T14.56.04EDT";
+Data d23 "23-plot.data(quality.controlled.data,\"Q\") return" Value="1";
+Operation p50 "50-return (dev.off())" Value="return (dev.off())" Time="2015-08-25T17.26.40EDT";
 CF p49 p50
-DF d29 p50
-Finish p51 "51-gap.fill.data" Value="gap.fill.data" Time="2015-08-07T14.56.04EDT";
+DF p50 d23
+Finish p51 "51-plot.data(quality.controlled.data, \"Q\")" Value="plot.data(quality.controlled.data, \"Q\")" Time="2015-08-25T17.26.40EDT";
 CF p50 p51
-Finish p52 "52-analyze.data" Value="analyze.data" Time="2015-08-07T14.56.04EDT";
+Finish p52 "52-quality.control.data" Value="quality.control.data" Time="2015-08-25T17.26.40EDT";
 CF p51 p52
-Start p53 "53-write.result(\"processed-data.csv\", gap.filled.data)" Value="write.result(\"processed-data.csv\", gap.filled.data)" Time="2015-08-07T14.56.04EDT";
+Start p53 "53-gap.fill.data" Value="gap.fill.data" Time="2015-08-25T17.26.40EDT";
 CF p52 p53
-Binding p54 "54-fn <- \"processed-data.csv\"" Time="2015-08-07T14.56.04EDT"
+Start p54 "54-gap.filled.data <- gap.fill(quality.controlled.data)" Value="gap.filled.data <- gap.fill(quality.controlled.data)" Time="2015-08-25T17.26.40EDT";
 CF p53 p54
-Data d30 "30-fn" Value="\"processed-data.csv\"";
-DF p54 d30
-Binding p55 "55-xx  <-  gap.filled.data" Time="2015-08-07T14.56.04EDT"
+Start p55 "55-gap.fill(quality.controlled.data)" Value="gap.fill(quality.controlled.data)" Time="2015-08-25T17.26.40EDT";
 CF p54 p55
-DF d26 p55
-Snapshot d31 "31-xx" Value="[DIR]/ddg/31-xx.csv" Time="2015-08-07T14.56.04EDT";
-DF p55 d31
-Operation p56 "56-write.result" Value="write.result" Time="2015-08-07T14.56.04EDT";
-DF d5 p56
-DF d30 p56
-DF d31 p56
+Binding p56 "56-xx  <-  quality.controlled.data" Time="2015-08-25T17.26.40EDT"
 CF p55 p56
-Data d32 "32-write.result(\"processed-data.csv\",gap.filled.data) return" Value="NULL";
-DF p56 d32
-Finish p57 "57-write.result(\"processed-data.csv\", gap.filled.data)" Value="write.result(\"processed-data.csv\", gap.filled.data)" Time="2015-08-07T14.56.04EDT";
+DF d20 p56
+Snapshot d24 "24-xx" Value="[DIR]/ddg/24-xx.csv" Time="2015-08-25T17.26.40EDT";
+DF p56 d24
+Operation p57 "57-gap.fill" Value="gap.fill" Time="2015-08-25T17.26.40EDT";
+DF d4 p57
+DF d24 p57
 CF p56 p57
-DF d32 p57
-Finish p58 "58-DailySolarRadiation.R" Value="DailySolarRadiation.R" Time="2015-08-07T14.56.04EDT";
+Snapshot d25 "25-gap.fill(quality.controlled.data) return" Value="[DIR]/ddg/25-gap.fill(quality.controlled.data) return.csv" Time="2015-08-25T17.26.40EDT";
+Operation p58 "58-return (xx)" Value="return (xx)" Time="2015-08-25T17.26.40EDT";
 CF p57 p58
+DF d24 p58
+DF p58 d25
+Finish p59 "59-gap.fill(quality.controlled.data)" Value="gap.fill(quality.controlled.data)" Time="2015-08-25T17.26.40EDT";
+CF p58 p59
+Finish p60 "60-gap.filled.data <- gap.fill(quality.controlled.data)" Value="gap.filled.data <- gap.fill(quality.controlled.data)" Time="2015-08-25T17.26.40EDT";
+CF p59 p60
+DF d25 p60
+Snapshot d26 "26-gap.filled.data" Value="[DIR]/ddg/26-gap.filled.data.csv" Time="2015-08-25T17.26.40EDT";
+DF p60 d26
+Start p61 "61-plot.data(gap.filled.data, \"G\")" Value="plot.data(gap.filled.data, \"G\")" Time="2015-08-25T17.26.40EDT";
+CF p60 p61
+Binding p62 "62-xx  <-  gap.filled.data" Time="2015-08-25T17.26.40EDT"
+CF p61 p62
+DF d26 p62
+Snapshot d27 "27-xx" Value="[DIR]/ddg/27-xx.csv" Time="2015-08-25T17.26.40EDT";
+DF p62 d27
+Binding p63 "63-v <- \"G\"" Time="2015-08-25T17.26.40EDT"
+CF p62 p63
+Data d28 "28-v" Value="\"G\"";
+DF p63 d28
+Operation p64 "64-plot.data" Value="plot.data" Time="2015-08-25T17.26.40EDT";
+DF d6 p64
+DF d27 p64
+DF d28 p64
+CF p63 p64
+Data d29 "29-plot.data(gap.filled.data,\"G\") return" Value="1";
+Operation p65 "65-return (dev.off())" Value="return (dev.off())" Time="2015-08-25T17.26.40EDT";
+CF p64 p65
+DF p65 d29
+Finish p66 "66-plot.data(gap.filled.data, \"G\")" Value="plot.data(gap.filled.data, \"G\")" Time="2015-08-25T17.26.40EDT";
+CF p65 p66
+Finish p67 "67-gap.fill.data" Value="gap.fill.data" Time="2015-08-25T17.26.40EDT";
+CF p66 p67
+Finish p68 "68-analyze.data" Value="analyze.data" Time="2015-08-25T17.26.40EDT";
+CF p67 p68
+Start p69 "69-write.result(\"processed-data.csv\", gap.filled.data)" Value="write.result(\"processed-data.csv\", gap.filled.data)" Time="2015-08-25T17.26.40EDT";
+CF p68 p69
+Binding p70 "70-fn <- \"processed-data.csv\"" Time="2015-08-25T17.26.40EDT"
+CF p69 p70
+Data d30 "30-fn" Value="\"processed-data.csv\"";
+DF p70 d30
+Binding p71 "71-xx  <-  gap.filled.data" Time="2015-08-25T17.26.40EDT"
+CF p70 p71
+DF d26 p71
+Snapshot d31 "31-xx" Value="[DIR]/ddg/31-xx.csv" Time="2015-08-25T17.26.40EDT";
+DF p71 d31
+Operation p72 "72-write.result" Value="write.result" Time="2015-08-25T17.26.40EDT";
+DF d5 p72
+DF d30 p72
+DF d31 p72
+CF p71 p72
+Data d32 "32-write.result(\"processed-data.csv\",gap.filled.data) return" Value="NULL";
+Operation p73 "73-return (write.csv(xx, file.out, row.names = FALSE))" Value="return (write.csv(xx, file.out, row.names = FALSE))" Time="2015-08-25T17.26.40EDT";
+CF p72 p73
+DF d31 p73
+DF p73 d32
+Finish p74 "74-write.result(\"processed-data.csv\", gap.filled.data)" Value="write.result(\"processed-data.csv\", gap.filled.data)" Time="2015-08-25T17.26.40EDT";
+CF p73 p74
+Finish p75 "75-DailySolarRadiation.R" Value="DailySolarRadiation.R" Time="2015-08-25T17.26.40EDT";
+CF p74 p75
 

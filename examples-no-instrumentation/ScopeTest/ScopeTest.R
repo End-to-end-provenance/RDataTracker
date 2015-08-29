@@ -18,6 +18,7 @@ f <- function() {
 f2 <- function() {
   a <<- b * 10
   ddg.function(outs.data=list("a"))
+  ddg.return.value(a)
 }
 
 g <- function(a) {
