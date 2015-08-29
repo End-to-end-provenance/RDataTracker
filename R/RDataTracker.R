@@ -646,6 +646,7 @@ ddg.MAX_HIST_LINES <- 2^14
   # Error message if no match is found.
   #print ("Returning error!")
   error.msg <- paste("No procedure node found for", pname)
+  if (.ddg.debug()) print (sys.calls())
   .ddg.insert.error.message(error.msg)  
   return(0)
 }
@@ -1578,6 +1579,9 @@ ddg.MAX_HIST_LINES <- 2^14
 # len (optional) - number of characters.
 
 .ddg.abbrev.cmd <- function(cmd, len=60) {
+  if (length(cmd) > 1) {
+    cmd <- paste (cmd, collapse = " ")
+  }
   if (nchar(cmd) <= len) cmd
   else if (substr(cmd, len, len) != "\\") substr(cmd, 1, len)
   else if (substr(cmd, len-1, len) == "\\\\") substr(cmd, 1, len)
@@ -2152,8 +2156,8 @@ ddg.MAX_HIST_LINES <- 2^14
             # Add variables to set.
             vars.set <- .ddg.add.to.vars.set(vars.set,cmd.expr,i)
             if (.ddg.debug()) print(paste(".ddg.parse.commands: Adding", cmd.abbrev, "information to vars.set"))
-            #.ddg.create.data.set.edges.for.cmd(vars.set, cmd.abbrev, cmd.expr, i, environ)
-            .ddg.create.data.set.edges.for.cmd(vars.set, cmd.text, cmd.expr, i, environ)
+            .ddg.create.data.set.edges.for.cmd(vars.set, cmd.abbrev, cmd.expr, i, environ)
+            #.ddg.create.data.set.edges.for.cmd(vars.set, cmd.text, cmd.expr, i, environ)
           }
         }
         
@@ -3367,7 +3371,7 @@ ddg.MAX_HIST_LINES <- 2^14
       # Only create a start node for the current command if we have not already
       # created one and the command is more than just the call to this function
       if (last.created[[1]] == "FALSE") {
-        if (.ddg.cur.cmd != deparse(call)) {
+        if (.ddg.cur.cmd != paste(deparse(call), collapse="")) {
           .ddg.add.abstract.node ("Start", .ddg.cur.cmd, caller.env)
           
           # Mark the start node as created on the stack.  Mark it even if we did not
