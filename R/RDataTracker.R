@@ -531,7 +531,6 @@ ddg.MAX_HIST_LINES <- 2^14
   .ddg.set("ddg.proc.nodes", ddg.proc.nodes)
   
   if (.ddg.debug()) {
-    print (sys.calls())
     print (paste("Adding procedure node", ddg.pnum, "named", pname))
   }
 }
@@ -952,6 +951,9 @@ ddg.MAX_HIST_LINES <- 2^14
     if (is.atomic(obj)) return(character())  # A name is not atomic!
 		if (is.name(obj)) {
       if (nchar(obj) == 0) return (character())
+      
+      # Operators also pass the is.name test.  Make sure that if it is a
+      # single character, then it is alpha-numeric.
       if (nchar(obj) == 1 && !grepl("[[:alpha:]]", obj)) return (character())
       #print(paste(".ddg.find.var.uses found", deparse(obj)))
       return (deparse(obj))
@@ -1179,7 +1181,6 @@ ddg.MAX_HIST_LINES <- 2^14
     # Make sure there is a node we could connect to.
     scope <- .ddg.get.scope(var, env=env)
     if (.ddg.data.node.exists(var, scope)) {
-#    if (.ddg.data.node.exists(var, environmentName(.GlobalEnv))) {
       nRow <- which(vars.set$variable == var)
       
       # Check if the node is written in the console block.
@@ -1191,7 +1192,6 @@ ddg.MAX_HIST_LINES <- 2^14
         # before the console block or to the last writer of this 
         # variable within the console block.
 				if (cmd.pos <= first.writer || cmd.pos > last.writer) {
-					#.ddg.data2proc(var, environmentName(.GlobalEnv), cmd)
           .ddg.data2proc(var, scope, cmd)
 				}
 
@@ -1202,7 +1202,6 @@ ddg.MAX_HIST_LINES <- 2^14
 			# The variable is not set at all in this console block. 
       # Connect to a pre-existing data node.
 			else {
-				#.ddg.data2proc(var, environmentName(.GlobalEnv), cmd)
         .ddg.data2proc(var, scope, cmd)
 			}
 		}
@@ -1216,7 +1215,7 @@ ddg.MAX_HIST_LINES <- 2^14
 	}
 }
 
-# .ddg.create.data.set.edges.for.cmd creates edgesthat correspond
+# .ddg.create.data.set.edges.for.cmd creates edges that correspond
 # to a console command assigning to a variable.
 
 # vars.set - variable assignment data frame.
@@ -2012,7 +2011,6 @@ ddg.MAX_HIST_LINES <- 2^14
       
       # If the command does not match one of the ignored patterns.
       if (!any(sapply(ignore.patterns, function(pattern){grepl(pattern, cmd)}))) {        
-        #cmd.abbrev <- .ddg.abbrev.cmd(cmd)
         cmd.abbrev <- .ddg.abbrev.cmd(cmd.text)
         
         # If sourcing, we want to execute the command.
@@ -2095,24 +2093,11 @@ ddg.MAX_HIST_LINES <- 2^14
         # node). Matching a last command means that the last command 
         # is set, is not NULL, and is equal to the current command.
         
-        #create.procedure <- create && .ddg.is.set(".ddg.last.cmd") && !(!is.null(.ddg.get(".ddg.last.cmd")$text) && .ddg.get(".ddg.last.cmd")$text == cmd.text) && (!named.node.set || start.node.created != cmd.text)
-        #if (.ddg.is.set(".ddg.last.cmd")) {
-         # print (paste (".ddg.parse.commands: .ddg.last.cmd =", .ddg.get(".ddg.last.cmd")$text))
-          #print (paste (".ddg.parse.commands: named.node.set =", named.node.set))
-          #print (paste (".ddg.parse.commands: start.node.created =", start.node.created))
-          #print (paste (".ddg.parse.commands: cmd.text =", cmd.text))
-        #}
-        
         last.proc.node.created <- 
             if (.ddg.is.set (".ddg.last.proc.node.created")).ddg.get(".ddg.last.proc.node.created")
             else ""
         cur.cmd.closed <- (last.proc.node.created == paste ("Finish", deparse(cmd.expr)))
         create.procedure <- create && (!cur.cmd.closed || !named.node.set) && !start.finish.created
-        #print (paste (".ddg.parse.commands: last.proc.node.created =", last.proc.node.created))
-        #print (paste (".ddg.parse.commands: deparse(cmd.expr) =", deparse(cmd.expr)))
-        #print (paste (".ddg.parse.commands: cmd.abrev =", cmd.abbrev))
-        #print (paste (".ddg.parse.commands: create =", create))
-        #print (paste (".ddg.parse.commands: create.procedure =", create.procedure))
         
         
         # We want to create a procedure node for this command.
@@ -2941,7 +2926,6 @@ ddg.MAX_HIST_LINES <- 2^14
           # in the node name.             
           if (is.character(arg)) {
             vars.used <- character()
-            #binding.node.name <- paste(formal, " <- \\\"", arg, "\\\"", sep="")
             binding.node.name <- paste(formal, " <- \"", arg, "\"", sep="")
           }
           else {
@@ -3019,11 +3003,6 @@ ddg.MAX_HIST_LINES <- 2^14
   for (i in nframe:1) {
     call.func <- as.character(sys.call(i)[[1]])    
     if (substr(call.func, 1, 4) != ".ddg" && substr(call.func, 1, 3) != "ddg" && substr(call.func, 1, 8) != "tryCatch") {
-      #print (sys.calls())
-      #print (".ddg.get.frame.number: str(for.caller) =", str(for.caller))
-      #print (".ddg.get.frame.number: is.na(for.caller) =", is.na(for.caller))
-      #print (".ddg.get.frame.number: is.null(for.caller) =", is.null(for.caller))
-      #print (".ddg.get.frame.number: typeof(for.caller) =", typeof(for.caller))
       if (for.caller && !script.func.found) {
         script.func.found <- TRUE
       }
@@ -3065,18 +3044,8 @@ ddg.MAX_HIST_LINES <- 2^14
 .ddg.get.env <- function(name, for.caller=FALSE, calls=NULL) {
   #print (paste(".ddg.get.env: for.caller =", for.caller))
   if (is.null(calls)) calls <- sys.calls()
-  
-  # Remove the entries that are to ddg functions  
-  #print (paste (".ddg.get.env: calls before filter = ", calls))
-  #str(calls)
-  #calls <- Filter (function (call) {return (grepl("(^ddg|.ddg)", call), unlist(calls))})
-  #print (paste (".ddg.get.env: calls after filter = ", calls))
-  
   fnum <- .ddg.get.frame.number(calls, for.caller)
   stopifnot(!is.null(fnum))
-  
-  #print (sys.calls())
-  #print(paste(".ddg.get.env: fnum =", fnum))
   
   # This statement was broken into two statements so that we
   # can add print statements to .ddg.where or step through it
@@ -3677,9 +3646,6 @@ ddg.return.value <- function (expr=NULL) {
   # Create the finish node for the function
   #.ddg.close.last.command.node(sys.frame(caller.frame-1), called="ddg.return.value", initial=TRUE)
   .ddg.add.abstract.node ("Finish", deparse(call), caller.env)
-  
-  # Create the edge from the return value to the finish node
-  #.ddg.link.function.returns(call.text) 
   
   #print ("Returning from ddg.return.value")
   return(expr)
