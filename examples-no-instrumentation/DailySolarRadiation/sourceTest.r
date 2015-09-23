@@ -13,7 +13,7 @@
 library(RDataTracker)
 
 ## Directories
-testDir <- "/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples-no-instrumentation/DailySolarRadiation/"
+testDir <- "C:/GitHub/RDataTracker/examples-no-instrumentation/DailySolarRadiation/"
 setwd(testDir)
 
 # get initial time
@@ -21,8 +21,8 @@ startTime <- Sys.time()
 invisible(force(startTime))
 
 # Run the script
-#ddg.run("DailySolarRadiation.R", "/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples-no-instrumentation/DailySolarRadiation/ddg", ignore.ddg.calls = F)
-ddg.run("DailySolarRadiation.R", "/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples-no-instrumentation/DailySolarRadiation/ddg")
+#ddg.run("DailySolarRadiation.R", "C:/GitHub/RDataTracker/examples-no-instrumentation/DailySolarRadiation/ddg", ignore.ddg.calls = F)
+ddg.run("DailySolarRadiation.R", "C:/GitHub/RDataTracker/examples-no-instrumentation/DailySolarRadiation/ddg")
 
 # Calculate total time of execution
 endTime <- Sys.time()

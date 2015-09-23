@@ -1860,6 +1860,10 @@ ddg.MAX_HIST_LINES <- 2^14
 # command, and then creates the data nodes based on the information 
 # available in the environment. If environ is not NULL, calls to 
 # ddg.* are not executed so only the clean script is processed. 
+# If annotate.functions is TRUE, ddg.function and ddg.return.value
+# are added to each function definition before commands are processed.
+# ddg.annotate.on and ddg.annotate.off may be used to limit the 
+# functions that are annotated or not annotated, respectively.
 
 # parsed.commands - set of R script commands.
 # environ - environment in which commands should be
@@ -1879,11 +1883,14 @@ ddg.MAX_HIST_LINES <- 2^14
 
 .ddg.parse.commands <- function(parsed.commands, environ, ignore.patterns=c('^ddg.'), node.name="Console", run.commands = FALSE, echo=FALSE, print.eval=echo, max.deparse.length=150, annotate.functions = FALSE) {
   
-  # Add function annotations.
+  # Save copy of original commands for procedural node labels
+  original.parsed.commands <- parsed.commands
+  
+  # Add function annotations.  
   if (annotate.functions == TRUE) {
     # Write annotated source code to ddg directory.
     file.out <- file(paste(.ddg.path(), "annotated-script.r", sep="/"))
-
+    
     # Check for list of functions to annotate or not to annotate
     for (i in 1:(length(parsed.commands))) {
       .ddg.get.annotation.list(parsed.commands[i])
@@ -1896,8 +1903,9 @@ ddg.MAX_HIST_LINES <- 2^14
       line <- deparse(parsed.commands[i][[1]])
       if (i == 1) lines <- line
       else lines <- append(lines, line)
-      writeLines(lines, file.out)
     }
+    # Write annotated source code.
+    writeLines(lines, file.out)
     close(file.out)
   }
   
@@ -1910,6 +1918,11 @@ ddg.MAX_HIST_LINES <- 2^14
 	new.commands <- lapply(parsed.commands, function(cmd) {paste(deparse(cmd), collapse="")})
   
   filtered.commands <- Filter(function(x){return(!grepl("^ddg.", x))}, new.commands)
+  
+  # Create versions from original commands for procedural node labels.
+  original.new.commands <- lapply(original.parsed.commands, function(cmd) {paste(deparse(cmd), collapse="")})
+
+  original.filtered.commands <- Filter(function(x){return(!grepl("^ddg.", x))}, original.new.commands)
   
   # Create start and end nodes to allow collapsing of consecutive 
   # console nodes. Don't bother doing this if there is only 1 new 
@@ -1928,6 +1941,9 @@ ddg.MAX_HIST_LINES <- 2^14
   # ddg.txt.
   quoted.commands <- gsub("\\\"", "\\\\\"", new.commands)
 
+  # Create version from original commands for procedural node labels.
+  original.quoted.commands <- gsub("\\\"", "\\\\\"", original.new.commands)
+  
   # Get the last command in the new commands and check to see if 
   # we need to create a new .ddg.last.cmd node for future reference.
   if (!inside.func) {
@@ -2002,7 +2018,9 @@ ddg.MAX_HIST_LINES <- 2^14
       cmd.text <- new.commands[[i]]
       cmd <- quoted.commands[[i]]
       #cmd <- new.commands[[i]]
-      cmd.abbrev <- .ddg.abbrev.cmd(cmd)
+      original.cmd.text <- original.new.commands[[i]]
+      original.cmd <- original.quoted.commands[[i]]
+      cmd.abbrev <- .ddg.abbrev.cmd(original.cmd)
       #cmd.abbrev <- .ddg.abbrev.cmd (cmd.text)
       
       #print (paste (".ddg.parse.commands: cmd.text =", cmd.text))
@@ -2030,7 +2048,7 @@ ddg.MAX_HIST_LINES <- 2^14
       
       # If the command does not match one of the ignored patterns.
       if (!any(sapply(ignore.patterns, function(pattern){grepl(pattern, cmd)}))) {        
-        cmd.abbrev <- .ddg.abbrev.cmd(cmd.text)
+        cmd.abbrev <- .ddg.abbrev.cmd(original.cmd.text)
         
         # If sourcing, we want to execute the command.
         if (execute) {
@@ -2123,7 +2141,7 @@ ddg.MAX_HIST_LINES <- 2^14
         if (create.procedure) {
           
           # Create the procedure node.
-          #print (paste(".ddg.parse.commands creating Operation node: ", cmd.abbrev))
+          #print (paste(".ddg.parse.commands creating Operation node: ", cmd.abbrev))        
           .ddg.proc.node("Operation", cmd.abbrev, cmd.abbrev, env=environ, console=TRUE)
           .ddg.proc2proc()
           if (.ddg.debug()) print(paste(".ddg.parse.commands: Adding operation node for", cmd.abbrev))
@@ -3362,7 +3380,7 @@ ddg.MAX_HIST_LINES <- 2^14
 # ddg.annotate.on or ddg.annotate.off. If it does, these calls are executed.
 
 .ddg.get.annotation.list <- function(parsed.command) {
-  if (length(parsed.command) > 0) {
+  if (length(parsed.command[[1]]) > 1) {
     if (toString(parsed.command[[1]][[1]]) == "ddg.annotate.on" | toString(parsed.command[[1]][[1]]) == "ddg.annotate.off") {
       eval(parsed.command)
     }

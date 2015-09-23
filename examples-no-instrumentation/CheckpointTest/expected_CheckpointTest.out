@@ -1,10 +1,2 @@
-[1] "n before checkpoint 1 = 1"
-[1] "n before checkpoint 2 = 2"
-[1] "Returned from checkpoint function"
-[1] "Restoring  [DIR]/ddg/3-0.RData"
-[1] "n after restore from checkpoint 1 = 1"
-[1] "Restoring  [DIR]/ddg/6-1.RData"
-[1] "n after restore from checkpoint 2 = 2"
-Error in as.POSIXct(time2) : object 'startTime' not found
-Calls: cat -> difftime -> as.POSIXct
-Execution halted
+[1] "Error in last.statement[1]: object of type 'symbol' is not subsettable\n"
+Execution Time = 0.05000019
