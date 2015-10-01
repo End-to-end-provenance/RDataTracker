@@ -8,13 +8,16 @@
 
 ## Directories
 
+ddg.annotate.on("f")
 
 ### Functions
 f <- function (a, b, yy, d, e, f) {
   return (a+1)
 }
 
-
+g <- function(x) {
+  return(x^2)
+}
 
 # Test basic assignments
 x <- 1+2
@@ -34,6 +37,7 @@ y <- NULL
 
 # Test function call
 val <- f(w, x, y, z,  x + 1, vector())
+x <- g(10)
 
 # Use a function call on left side of assignment
 z <- 5

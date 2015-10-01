@@ -1,46 +1,19 @@
-Architecture="x86_64"
-OperatingSystem="unix"
+Architecture="i386"
+OperatingSystem="windows"
 Language="R"
-LanguageVersion="R version 3.1.2 (2014-10-31)"
-RDataTrackerVersion="1.8"
-Script="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples-no-instrumentation/CheckpointFileTest/CheckpointFileTest.R"
-ProcessFileTimestamp="2015-08-03T14.14.14EDT"
-WorkingDirectory="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples-no-instrumentation/CheckpointFileTest"
-DDGDirectory="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples-no-instrumentation/CheckpointFileTest/ddg"
-DateTime="2015-08-29T18.34.16EDT"
-13
-Start p1 "1-CheckpointFileTest.R" Value="CheckpointFileTest.R" Time="2015-08-29T18.34.16EDT";
-Operation p2 "2-rm(list = ls())" Value="rm(list = ls())" Time="2015-08-29T18.34.16EDT";
+LanguageVersion="R version 3.1.1 (2014-07-10)"
+RDataTrackerVersion="1.9"
+Script="C:/GitHub/RDataTracker/examples-no-instrumentation/CheckpointFileTest/CheckpointFileTest.R"
+ProcessFileTimestamp="2015-07-30T18.31.34EDT"
+WorkingDirectory="C:/GitHub/RDataTracker/examples-no-instrumentation/CheckpointFileTest"
+DDGDirectory="C:/GitHub/RDataTracker/examples-no-instrumentation/CheckpointFileTest/ddg"
+DateTime="2015-10-01T09.13.05EDT"
+3
+Start p1 "1-CheckpointFileTest.R" Value="CheckpointFileTest.R" Time="2015-10-01T09.13.05EDT";
+Operation p2 "2-rm(list = ls())" Value="rm(list = ls())" Time="2015-10-01T09.13.05EDT";
 CF p1 p2
-Operation p3 "3-source(\"/Users/blerner/Documents/Process/DataProvenance/gith" Value="source(\"/Users/blerner/Documents/Process/DataProvenance/gith" Time="2015-08-29T18.34.16EDT";
+Operation p3 "3-tryCatch" Value="tryCatch" Time="2015-10-01T09.13.05EDT";
 CF p2 p3
-File d1 "1-DDGCheckpoint.R" Value="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples-no-instrumentation/CheckpointFileTest/ddg/1-DDGCheckpoint.R" Time="2015-08-29T18.34.16EDT" Location="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/R/DDGCheckpoint.R";
-DF d1 p3
-Operation p4 "4-write(\"This file will be deleted\", \"testfile3.txt\")" Value="write(\"This file will be deleted\", \"testfile3.txt\")" Time="2015-08-29T18.34.16EDT";
-CF p3 p4
-Operation p5 "5-if (!file.exists(\"testfile3.txt\")) {    print(\"testfile3.txt" Value="if (!file.exists(\"testfile3.txt\")) {    print(\"testfile3.txt" Time="2015-08-29T18.34.16EDT";
-CF p4 p5
-Checkpoint p6 "6-my checkpoint" Time="2015-08-29T18.34.16EDT"
-CF p5 p6
-CheckpointFile d2 "2-0.RData" Value="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples-no-instrumentation/CheckpointFileTest/ddg/2-0.RData" Time="2015-08-29T18.34.16EDT";
-DF p6 d2
-Operation p7 "7-checkpoint <- ddg.checkpoint(\"my checkpoint\")" Value="checkpoint <- ddg.checkpoint(\"my checkpoint\")" Time="2015-08-29T18.34.16EDT";
-CF p6 p7
-Data d3 "3-checkpoint" Value="\"/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples-no-instrumentation/CheckpointFileTest/ddg/2-0.RData\"";
-DF p7 d3
-Operation p8 "8-write(\"abc\", file = \"testfile2.txt\", append = TRUE)" Value="write(\"abc\", file = \"testfile2.txt\", append = TRUE)" Time="2015-08-29T18.34.16EDT";
-CF p7 p8
-Operation p9 "9-if (!file.exists(\"testfile2.txt\")) {    print(\"testfile2.txt" Value="if (!file.exists(\"testfile2.txt\")) {    print(\"testfile2.txt" Time="2015-08-29T18.34.16EDT";
-CF p8 p9
-Operation p10 "10-unlink(\"testfile3.txt\")" Value="unlink(\"testfile3.txt\")" Time="2015-08-29T18.34.16EDT";
-CF p9 p10
-Operation p11 "11-if (file.exists(\"testfile3.txt\")) {    print(\"testfile3.txt " Value="if (file.exists(\"testfile3.txt\")) {    print(\"testfile3.txt " Time="2015-08-29T18.34.16EDT";
-CF p10 p11
-Restore p12 "12-my checkpoint" Time="2015-08-29T18.34.16EDT"
-CF p11 p12
-DF d2 p12
-Operation p13 "13-tryCatch" Value="tryCatch" Time="2015-08-29T18.34.16EDT";
-CF p12 p13
-Exception d4 "4-error.msg" Value="\"Error in eval(expr, envir, enclos):  \"";
-DF p13 d4
+Exception d1 "1-error.msg" Value="\"Error in file(filename, \"r\", encoding = encoding): cannot open the connection \"";
+DF p3 d1
 

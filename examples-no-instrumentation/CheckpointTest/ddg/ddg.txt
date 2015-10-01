@@ -1,15 +1,15 @@
-Architecture="x86_64"
-OperatingSystem="unix"
+Architecture="i386"
+OperatingSystem="windows"
 Language="R"
-LanguageVersion="R version 3.1.2 (2014-10-31)"
-RDataTrackerVersion="1.8"
-Script="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples-no-instrumentation/CheckpointTest/CheckpointTest.R"
-ProcessFileTimestamp="2015-08-03T14.14.14EDT"
-WorkingDirectory="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples-no-instrumentation/CheckpointTest"
-DDGDirectory="/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples-no-instrumentation/CheckpointTest/ddg"
-DateTime="2015-08-29T18.34.15EDT"
+LanguageVersion="R version 3.1.1 (2014-07-10)"
+RDataTrackerVersion="1.9"
+Script="C:/GitHub/RDataTracker/examples-no-instrumentation/CheckpointTest/CheckpointTest.R"
+ProcessFileTimestamp="2015-07-30T18.31.34EDT"
+WorkingDirectory="C:/GitHub/RDataTracker/examples-no-instrumentation/CheckpointTest"
+DDGDirectory="C:/GitHub/RDataTracker/examples-no-instrumentation/CheckpointTest/ddg"
+DateTime="2015-10-01T09.13.04EDT"
 1
-Operation p1 "1-tryCatch" Value="tryCatch" Time="2015-08-29T18.34.15EDT";
+Operation p1 "1-tryCatch" Value="tryCatch" Time="2015-10-01T09.13.04EDT";
 Exception d1 "1-error.msg" Value="\"Error in last.statement[1]: object of type 'symbol' is not subsettable \"";
 DF p1 d1
 
