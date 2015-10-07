@@ -22,19 +22,6 @@
 \title{Using RDataTracker}
 
 \author{
-<<<<<<< HEAD
-        Emery R. Boose\\
-        Harvard Forest\\
-        Harvard University\\
-	    324 North Main St, Petersham, MA 01366\\
-        boose@fas.harvard.edu\\
-			\and
-        Barbara S. Lerner\\
-        Computer Science Department\\
-        Mount Holyoke College\\
-	    50 College St, South Hadley, MA 01075\\
-        blerner@mtholyoke.edu\\
-=======
 	Emery R. Boose\\
 	Harvard Forest\\
 	Harvard University\\
@@ -46,12 +33,11 @@
 	Mount Holyoke College\\
 	50 College St, South Hadley, MA 01075\\
 	blerner@mtholyoke.edu\\
->>>>>>> 72ed330f48a5cb331dcfce30a30aabdb2061edac
 	\and
 	Luis Antonio Perez, Harvard College\\
 }
 
-\date{\today\\Version 1}
+\date{\today\\Version 2}
 
 % Pagestyle
 \setlength{\headheight}{15pt}
@@ -98,41 +84,48 @@ mathescape
 \maketitle
 
 \newpage
+
 \tableofcontents
-\newpage
+
+\bigskip
+\bigskip
+
 \listoffigures
+
 \newpage
 
 \section{What is RDataTracker?}
 
-RDataTracker is a library of R functions that can be used to collect data provenance in the form of a Data Derivation Graph (DDG) during R console sessions or when executing an R script. The level of detail in the DDG can be increased by annotating the session or script with additional calls to the library. The DDG is saved as a text file (ddg.txt) in a special DDG directory, where it can be viewed, stored, and queried using a separate tool, DDG Explorer.
+\textit{Data provenance} is the information required to accurately document the history of an item of data, including how it was created and how it was transformed.
+
+\bigskip
+
+RDataTracker is a library of R functions that collects data provenance in the form of a \textit{Data Derivation Graph} (DDG) when executing an R script or working in the R console. The DDG is saved as a text file (\textbf{ddg.txt}) in a special DDG directory, where it can be viewed, stored, and queried using a separate tool, DDG Explorer.
 
 \section{What is a DDG?}
 
-A Data Derivation Graph (DDG) is a mathematical graph that captures the history of a data analysis. The DDG consists of nodes and edges. In DDG Explorer, nodes are shown as ovals and edges are shown as arrows (see below for examples). Different colors (explained in the legend for DDG Explorer) are used to indicate different types of nodes and edges.
+A Data Derivation Graph (DDG) captures the history of a data analysis by recording the steps or operations that were performed and the items of data that were created or transformed. Technically it takes the form of a mathematical graph consisting of nodes and edges, where the nodes represent operations (procedural nodes) or items of data (data nodes), and the edges represent how control passes from procedural node to procedural node (control flow) or how data passes between procedural nodes and data nodes (data flow).
 
 \bigskip
 
-There are two major types of nodes---procedural nodes and data nodes---and two major types of edges---control flow edges and data flow edges. Control flow edges indicate how control passes from one procedural node to the next procedural node as the script executes. Data flow edges indicate how input data pass from a data node to a procedural node or how output data pass from a procedural node to a data node.
+In DDG Explorer, nodes are shown as ovals and edges are shown as arrows (see below for examples). Different colors (explained in the legend for DDG Explorer) are used to indicate different types of nodes and edges.
 
 \bigskip
 
-Procedural nodes include Operational, Binding, Collapsible, Expandable, Checkpoint, and Restore nodes. Operational nodes perform an operation. Binding nodes indicate how actual parameters are bound to formal parameters in R functions. Collapsible nodes and expandable nodes provide a level of abstraction by allowing a section of the DDG to be expanded or collapsed. Checkpoint nodes indicate creation of a checkpoint. Restore nodes indicate that a previous checkpoint was restored.
+Procedural nodes include Simple Operation, Parameter Binding, Collapsible, Expandable, Checkpoint, and Restore nodes. Simple Operation nodes represent a single R command (often an assignment statement). Parameter Binding nodes indicate how actual parameters are bound to formal parameters in user-defined R functions. Collapsible and Expandable nodes provide a level of abstraction by allowing a section of the DDG to be expanded or collapsed. Checkpoint nodes indicate creation of a checkpoint. Restore nodes indicate that a previous checkpoint was restored.
 
 \bigskip
 
-Data nodes include Data, File, Snapshot, URL, and Exception nodes. Data nodes are used for simple values. File nodes are used for files that are inputs to the R script or created by the R script. Snapshot nodes are used for complex data values such as vectors, arrays, and data frames, as well as graphical outputs. URL nodes are used for URL addresses. Exception nodes are used for error messages. The values of Data, URL, and Exception nodes are stored in the DDG text file. The values of File and Snapshot nodes are stored as files in the DDG directory.
+Data nodes include Data, File, URL, and Error nodes. Data nodes may represent simple values (numbers, strings, etc) or complex values (vectors, arrays, data frames, graphics, etc). File nodes are used for files that are inputs to the R script or created by the R script. URL nodes are used for URL addresses. Error nodes are used for error messages. The values of URL, Error, and simple Data nodes are stored in the DDG text file. The values of File and complex Data nodes are stored as files in the DDG directory.
 
 
 \bigskip
 
-Note that the DDG always records a \textit{particular} execution. A new DDG is created every time a console session is completed or an R script is run.
+Note that the DDG always records a \textit{particular} execution. A new DDG is created every time an R script is run or a new console session is completed.
 
 \bigskip
 
 For more details on DDGs and how to view, store, and query them, please see \textit{Using DDG Explorer}.
-
-\newpage
 
 \section{Installing RDataTracker}
 
@@ -156,80 +149,10 @@ Because they may alter the user's environment, the checkpoint and restore featur
 
 \section{Using RDataTracker}
 
-\subsection{Getting Started}
+\subsection{A Simple Example}
+\label{sec:started}
 
-If you like to work in the R console, see \ref{sec:console} Console Sessions.\\
-If you like to source your R scripts, see \ref{sec:source} Sourcing R Scripts.\\
-If you like to select and run R scripts, see \ref{sec:selectrun} Select and Run.
-
-\bigskip
-
-For information on how to create abstraction levels, see \ref{sec:abstraction} Abstraction.\\
-For information on individual functions, see \ref{sec:details} Detailed Annotations.\\
-For information on checkpoint and restore, see \ref{sec:checkpoint} Checkpoint and Restore.\\
-For information on snapshots for S4 classes, see \ref{sec:classes} S4 Classes.
-
-\bigskip
-
-For help with troubleshooting problems, see \ref{sec:troubleshoot} Troubleshooting.
-
-\bigskip
-
-\textbf{Please note:} Example scripts are shown in code boxes followed by the DDG as it is displayed in DDG Explorer.
-
-\subsection{Console Sessions}
-\label{sec:console}
-
-RDataTracker can be used to collect data provenance during R console sessions. Consider the following session:
-
-\bigskip
-
-\begin{lstlisting}
-# CONSOLE SESSION
-
-# Load the library.
-> library(RDataTracker)
-
-# Set the working directory.
-> setwd("c:/data/r/test")
-
-# Initialize DDG collection.
-> ddg.init()
-
-# Console session.
-> x <- 3
-> y <- 7
-> z <- x + y
-
-# Save the DDG.
-> ddg.save()
-\end{lstlisting}
-
-\begin{figure}
-\caption{Console Session}
-\begin{center}
-\includegraphics[height=8.0cm, keepaspectratio=true]{UsingRDataTracker-img/UsingRDataTracker-console}
-\end{center}
-\end{figure}
-
-Here line 4 loads the RDataTracker package. Line 7 sets the working directory. Line 10 initiates a DDG. Lines 13-15 are user commands entered at the console. Line 18 saves the DDG to file.
-
-\bigskip
-
-Because no DDG directory is specified, the DDG is saved by default to a directory called "ddg" in the working directory. In the DDG, the user's commands are enclosed within start and finish Console nodes, which can be expanded or collapsed in DDG Explorer. If the user entered more commands followed by another \textbf{ddg.save}, the DDG would be expanded to include the new commands enclosed within a second set of Console nodes. To quit and clear the DDG from memory, the user could enter \textbf{ddg.save(quit=TRUE)} Note that calling \textbf{ddg.init} again would start a new DDG, overwriting the current DDG if the same DDG directory were used.
-
-\bigskip
-
-In console sessions RDataTracker creates procedure nodes for each top-level assignment statement along with the corresponding data nodes. More details can be captured by adding calls to library functions as described below.
-
-\bigskip
-
-There are two limitations to collecting data provenance in console sessions. First, the DDG is built from the R history file, which on most system is limited to 512 lines. For long R console sessions, the \textbf{ddg.save} function must be called every 500 lines or so to avoid loss of provenance information. Second, RDataTracker can only evaluate variables when calls are made to library functions. If the value of a variable is changed and you would like to record the earlier value, call \textbf{ddg.save} before the value is changed.
-
-\subsection{Sourcing R Scripts}
-\label{sec:source}
-
-RDataTracker can be used to collect data provenance while sourcing an R script. Consider the following simple script:
+The following simple example will allow you to create and view a DDG and make sure that the software is installed and working correctly on your computer. Start by entering and saving the following R script:
 
 \bigskip
 
@@ -245,155 +168,165 @@ a <- 10
 b <- f(a)
 \end{lstlisting}
 
-The following commands at the console can be used to execute this script and collect data provenance without having to add any annotations to the script itself:
+Enter the following commands in the R console to run the script and collect data provenance. Substitute your working directory and script name; if your script does not reside on the working directory, supply the full path and name of the script in \textbf{ddg.run}.
 
 \bigskip
 
 \begin{lstlisting}
-# CONSOLE SESSION
+# R CONSOLE
 
-# Load the library.
 > library(RDataTracker)
-
-# Set the working directory.
 > setwd("c:/data/r/test")
-
-# Execute the script.
 > ddg.run("test.r")
 \end{lstlisting}
 
-\begin{figure}
-\caption{Sourcing a Script with \textbf{ddg.run}}
-\begin{center}
-\includegraphics[height=8.0cm, keepaspectratio=true]{UsingRDataTracker-img/UsingRDataTracker-source1}
-\end{center}
-\end{figure}
-
-Here line 4 loads the RDataTracker package. Line 7 sets the working directory. Line 10 uses the \textbf{ddg.run} function to execute the script and create a DDG. Since a path for the R script is not provided in \textbf{ddg.run}, the script is assumed to be in the working directory. Since a DDG directory is not specified, the DDG is saved by default in a directory called "ddg" in the working directory.
-
-\bigskip
-
-Note that many library commands can accept as input either a name or a value. So in this case we could define a variable to hold the name of the script and use that variable to execute the script:
+Here line 3 loads the RDataTracker package, line 4 sets the working directory, and line 5 executes the script using the \textbf{ddg.run} function. Note that the library needs to be loaded only once in a given R session and the working directory may not need to be set if the current working directory is correct. When execution is completed, you should see the following lines (or similar lines) in the R console:
 
 \bigskip
 
 \begin{lstlisting}
-> r.script.path <- "test.r"
-> ddg.run(r.script.path)
+# R CONSOLE
+
+##------ Mon Sep 28 10:53:36 2015 ------##
+##------ Mon Sep 28 10:53:36 2015 ------##
+[1] "Saving DDG in  c:/data/r/test/ddg/ddg.txt"
+[1] "Saving DDG in  c:/data/r/test/ddg/ddg.txt"
 \end{lstlisting}
 
-\textbf{ddg.run} initializes and saves the DDG so there is no need for the user to do this. Because console mode is enabled, RDataTracker creates procedure nodes for each top-level assignment statement along with the corresponding data nodes. Since \textbf{ddg.run} does not rely on the R history file, intermediate data values are saved in the DDG.
+The DDG consists of a text file called \textbf{ddg.txt} plus some associated files. By default these are stored on a subdirectory called \textbf{ddg} of the working directory. This directory is created if it does not already exist and is overwritten by new DDG files if the script is run again.
 
 \bigskip
 
-More information may be collected by adding function calls to the script. For example, the above script might be annotated to show function parameter bindings:
+To view and query the DDG, start DDG Explorer and select \textit{Open From File} to open the file \textbf{ddg.txt}. When fully expanded, the DDG should resemble the DDG shown in Figure \ref{fig:SimpleExample}. Note that it is possible to expand or collapse portions of the DDG by clicking on light-blue or green nodes, respectively. The value of a particular data node may be viewed by right clicking on the node. Please see \textit{Using DDG Explorer} for more details on how to use DDG Explorer.
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=16.0cm, keepaspectratio=true]{UsingRDataTracker-img/SimpleExample.png}
+		\caption{A Simple Example}
+		\label{fig:SimpleExample}
+	\end{center}
+\end{figure}
+
+\bigskip
+
+Note that many RDataTracker functions accept either names or values as arguments. So the same script might be executed as follows:
 
 \bigskip
 
 \begin{lstlisting}
-# R SCRIPT
+# R CONSOLE
 
-f <- function(x) {
-  x <- x^2
-  ddg.function()
-  return(ddg.return.value(x))
-}
-
-a <- 10
-b <- f(a)
+> library(RDataTracker)
+> setwd("c:/data/r/test")
+> r.script <- "test.r"
+> ddg.run(r.script)
 \end{lstlisting}
 
-Running this script in the console using \textbf{ddg.run} (as above) yields the following DDG:
+\subsection{Using ddg.run}
+\label{sec:ddg.run}
 
-\begin{figure}
-\caption{Sourcing a Script with Function Annotations}
-\begin{center}
-\includegraphics[height=14.0cm, keepaspectratio=true]{UsingRDataTracker-img/UsingRDataTracker-source2}
-\end{center}
-\end{figure}
+The \textbf{ddg.run} function provides the easiest way to collect data provenance from an executing R script. \textbf{ddg.run} initializes the DDG, sources the script, and saves the DDG after execution is completed. Data provenance is automatically collected at a fine scale without the need to annotate the script manually (Figure \ref{fig:SimpleExample}).
 
-Here \textbf{ddg.function} in line 5 causes RDataTracker to create a data node for formal parameter \textbf{x} in function \textbf{f} and to show the binding of actual parameter \textbf{a} to \textbf{x}; while \textbf{ddg.return.value} in line 6 creates a data node for the return value of \textbf{f} which is then assigned to variable \textbf{b}.
+\bigskip
 
-\subsection{Select and Run}
-\label{sec:selectrun}
+The \textbf{ddg.run} function collects the following information by default: Each top-level assignment statement is represented by a simple Operation node (or a pair of collapsible Start / Finish nodes), together with a Data node for the value assigned and Data node(s) for input and intermediate values (if any).  Each call to a user-defined function is represented by Simple Operation nodes for the function and the function return and collapsible Start and Finish nodes for the function call. Data nodes are created for the function itself and for the formal parameters (if any), Parameter Binding nodes are created to show the bindings of formal to actual parameters (if any), and a Data node is created for the return value of the function. Collection of data provenance for assignment statements within functions is planned for a future version of RDataTracker.
 
-RDataTracker can be used to collect data provenance by annotating an R script and then selecting and running the script (or a portion of it). For example:
+\bigskip
+
+The operation of \textbf{ddg.run} may be altered by changing the values of its input parameters. Some examples are given below. For more details, please see the help message for \textbf{ddg.run}.
+
+\bigskip
+
+\textit{Function annotation}. The collection of detailed provenance for functions may be turned off by setting the parameter \textbf{annotate.functions} to FALSE:
 
 \bigskip
 
 \begin{lstlisting}
-# R SCRIPT
+# R CONSOLE
 
-library(RDataTracker)
-setwd("c:/data/r/test")
-
-ddg.init("test.r")
-
-f <- function(x) {
-  x <- x^2
-  ddg.function()
-  return(ddg.return.value(x))
-}
-
-a <- 10
-b <- f(a)
-
-ddg.save()
+> ddg.run("test.r", annotate.functions=FALSE)
 \end{lstlisting}
 
-\begin{figure}
-\caption{Select and Run in Console Mode}
-\begin{center}
-\includegraphics[height=16.0cm, keepaspectratio=true]{UsingRDataTracker-img/UsingRDataTracker-selectrun1}
-\end{center}
-\end{figure}
-
-This script is identical to the preceding one except for lines 3-4, which load the library and set the working directory, and the calls to \textbf{ddg.init} and \textbf{ddg.save} in lines 6 and 17. When this script is copied and pasted into the console, it produces a DDG that is identical to the one above except for the start and finish nodes.
+This results in a more compact DDG with minimal provenance for functions (Figure \ref{fig:NoFunctionAnnotation}).
 
 \bigskip
 
-To ensure completeness of the DDG we generally recommend that the \textbf{enable.console} parameter in \textbf{ddg.run} or \textbf{ddg.init} retain its default value (TRUE). However setting this parameter to FALSE may be useful if you wish to specify exactly what provenance is collected or wish to collect provenance for only a portion of a script. For example:
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=16.0cm, keepaspectratio=true]{UsingRDataTracker-img/NoFunctionAnnotation.png}
+		\caption{Minimal Function Annotation}
+		\label{fig:NoFunctionAnnotation}
+	\end{center}
+\end{figure}
+
+Alternatively, the functions \textbf{ddg.annotate.on} or \textbf{ddg.annotate.off} may be used at the top of the script to provide a list of functions to annotate or not to annotate, respectively. For example, including the following statement at the top of the script would result in detailed annotation of the functions \textbf{f} and \textbf{g} only:
 
 \bigskip
 
 \begin{lstlisting}
-# R SCRIPT
+# R CONSOLE
 
-library(RDataTracker)
-setwd("c:/data/r/test")
-
-ddg.init("test.r", enable.console=FALSE)
-
-i <- 10
-j <- 2*i
-
-f <- function(x) {
-  x <- x^2
-  ddg.function()
-  return(ddg.return.value(x))
-}
-
-a <- 10
-ddg.data(a)
-
-ddg.eval("b <- f(a)")
-
-ddg.save()
+ddg.annotate.on("f", "g")
 \end{lstlisting}
 
-\begin{figure}
-\caption{Select and Run Not in Console Mode}
-\begin{center}
-\includegraphics[height=8.0cm, keepaspectratio=true]{UsingRDataTracker-img/UsingRDataTracker-selectrun2}
-\end{center}
-\end{figure}
+\textit{Console mode}. The collection of provenance for top-level assignment statements (console mode) may be turned off by setting the parameter \textbf{enable-console} to FALSE:
 
-Here \textbf{enable.console} in \textbf{ddg.init} is set to FALSE. Because the assignment statements in lines 8, 9, and 11 are not annotated, they are not captured in the DDG.
+\bigskip
 
-\subsection{Abstraction}
+\begin{lstlisting}
+# R CONSOLE
+
+> ddg.run("test.r", enable.console=FALSE)
+\end{lstlisting}
+
+Note that console mode may also be turned on and off by using the functions \textbf{ddg.console.on} and \textbf{ddg.console.off} in the script itself. So these functions, plus the initial setting of \textbf{enable.console}, may be used to annotate selected portions of a long script.
+
+\bigskip
+
+\textit{DDG directory}. By default the DDG is saved to a subdirectory called \textbf{ddg} of the working directory . A different location may be specified using the \textbf{ddgdir} parameter:
+
+\bigskip
+
+\begin{lstlisting}
+# R CONSOLE
+
+ddg.run("test.r", ddgdir="c:/data/r/test/ddg1")
+\end{lstlisting}
+
+\textit{Maximum file size}. By default RDataTracker stores complex data values (vectors, arrays, data frames, lists, graphics, etc) as separate files (snapshots) in the DDG directory. If storage space or computational speed is a concern, the parameter \textbf{max.snapshot.size} may be used to limit the size of such snapshot files. Use a positive integer value to set the maximum file size in kilobytes:
+
+\bigskip
+
+\begin{lstlisting}
+# R CONSOLE
+
+ddg.run("test.r", max.snapshot.size=1000)
+\end{lstlisting}
+
+To suppress the creation of snapshot files, set the value of \textbf{max.snapshot.size} to zero:
+
+\bigskip
+
+\begin{lstlisting}
+# R CONSOLE
+
+ddg.run("test.r", max.snapshot.size=0)
+\end{lstlisting}
+
+Here data nodes will be created for complex data objects but the actual values will not be saved in the DDG. This option may be useful if you wish to create a DDG as rapidly as possible.
+
+\subsection{Abstraction Levels}
 \label{sec:abstraction}
 
-Expandable and collapsible nodes, implemented through calls to \textbf{ddg.start} and \textbf{ddg.finish}, may be used to create levels of abstraction in the DDG. These functions must be correctly nested with matching arguments. The node name may be omitted if \textbf{ddg.start} and \textbf{ddg.finish} are called within an R function, in which case the function name will be used to label the nodes. Clicking on the start or finish node in DDG Explorer will collapse the intervening nodes to a single node, while clicking on a collapsed node will expand to reveal the intervening nodes.
+RDataTracker and DDG Explorer support hierarchically-nested pairs of Start and Finish nodes that may be expanded or collapsed to reveal or hide portions of the DDG. This feature is particularly helpful for exploring and interpreting large DDGs.
+
+\bigskip
+
+Examples of Start and Finish node pairs that are created automatically by RDataTracker may be seen in Figures \ref{fig:SimpleExample} and \ref{fig:NoFunctionAnnotation}, where they are used for function calls and for the script as a whole.
+
+\bigskip
+
+Users may also add \textbf{ddg.start} and \textbf{ddg.finish} manually to their scripts to mark logical sections and to make larger DDGs easier to view and understand. Note that these functions must be correctly nested with matching arguments:
 
 \bigskip
 
@@ -409,268 +342,138 @@ z <- data.frame(x, y)
 ddg.finish("create.data.frame")
 \end{lstlisting}
 
+When this script is executed with \textbf{ddg.run}, data nodes are created for vectors \textbf{x} and \textbf{y} and data frame \textbf{z}. These data nodes are enclosed within collapsible Start and Finish nodes (\textbf{create.data.frame}) created by the user, and these in turn are enclosed within Start and Finish nodes for the script itself (\textbf{test.r}) created automatically by RDataTracker. When the DDG is first opened in DDG Explorer, the section of the DDG enclosed by the user Start and Finish nodes is collapsed into a single node. (Figure \ref{fig:CollapsedSection}). When this node is clicked on, the hidden section is expanded to reveal the intervening nodes (Figure \ref{fig:ExpandedSection})
+
 \begin{figure}
-\caption{Abstraction Levels}
-\begin{center}
-\includegraphics[height=12.0cm, keepaspectratio=true]{UsingRDataTracker-img/UsingRDataTracker-abstract}
-\end{center}
+	\begin{center}
+		\includegraphics[width=16.0cm, keepaspectratio=true]{UsingRDataTracker-img/CollapsedSection.png}
+		\caption{Collapsed Start and Finish Nodes}
+		\label{fig:CollapsedSection}
+	\end{center}
 \end{figure}
 
-When this script is executed with \textbf{ddg.run}, data nodes are created for vectors \textbf{x} and \textbf{y} and data frame \textbf{z}. These data nodes are enclosed within collapsible start and finish nodes called \textbf{create.data.frame}, which in turn are enclosed within start and finish nodes for the script itself (\textbf{test.r}).
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=16.0cm, keepaspectratio=true]{UsingRDataTracker-img/ExpandedSection.png}
+		\caption{Expanded Start and Finish Nodes}
+		\label{fig:ExpandedSection}
+	\end{center}
+\end{figure}
 
-\subsection{Detailed Annotations}
-\label{sec:details}
+\subsection{Troubleshooting Scripts}
+\label{sec:troubleshoot}
 
-The functions described in this section provide additional flexibility and control in deciding what data provenance to capture in the DDG. For more details and a complete list of DDG functions, please see the help pages for RDataTracker in RStudio. The examples below were executed using \textbf{ddg.run} with console mode enabled. The resulting DDGs are shown as displayed in DDG Explorer.
+The DDG can be a useful tool for troubleshooting scripts during script development. By providing an audit trail of what actually happened during execution, the DDG can help the developer to better understand what a script is doing. The DDG also captures and stores error messages from the R interpreter when the script is run with \textbf{ddg.run}. Such messages, which are displayed in the R console but may be missed during execution of a long script, can be located in the DDG using the search feature of DDG Explorer and interpreted in light of the specific events that preceded them.
 
 \bigskip
 
-\begin{enumerate}
-
-\item To create an Operational node for an R function in the original script, use \textbf{ddg.function}. Input data nodes (if any) are assumed to exist when this function is called. The R function name and input parameters are looked up in the calling environment and a binding node is created for each pair of actual and formal parameters. The \textbf{outs} parameters may be used with lists of values to create output data nodes for global variables assigned in the function.
-
-\bigskip
-
-To create a data node for the function return value, use \textbf{ddg.return.value} in each function \textbf{return} statement as illustrated below. If there is no \textbf{return} statement, use \textbf{ddg.return.value} with the last function statement.
+In the following simple example the variable \textbf{y} is undefined; however \textbf{y} may or may not be evaluated depending on the conditional statement in line 5:
 
 \bigskip
 
 \begin{lstlisting}
-f <- function(x) {
-  d <<- 20
-  x <- x^2
-  ddg.function(outs.data=list("d"))
-  return(ddg.return.value(x))
-}
+# R SCRIPT
 
-a <- 10
-b <- f(a)
+x <- sample(1:10, 1)
+
+if (x >= 5) x <- x + y else x <- 2*x
+\end{lstlisting}
+
+This script has an even chance of executing successfully. If the value of \textbf{x} is 5 or greater, the R interpreter returns the following error message to the console when the script is executed with \textbf{ddg.run}:
+
+\bigskip
+
+\begin{lstlisting}
+# R CONSOLE
+
+Error in eval(expr, envir, enclos) : object 'y' not found
+\end{lstlisting}
+
+In this case the error message is stored in an error node in the DDG, where it may be retrieved by right-clicking on the node (Figure \ref{fig:ErrorMessage}). The position of the error node in the DDG indicates that the error occurred after the successful execution of line 3.
+
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=16.0cm, keepaspectratio=true]{UsingRDataTracker-img/ErrorMessage.png}
+		\caption{Error Messages}
+		\label{fig:ErrorMessage}
+	\end{center}
+\end{figure}
+
+\subsection{Console Sessions}
+\label{sec:console}
+
+RDataTracker can also be used to collect data provenance during R console sessions, in which commands are entered at the R console or selected and run from the R editor. Consider the following session:
+
+\bigskip
+
+\begin{lstlisting}
+# R CONSOLE
+
+> library(RDataTracker)
+> setwd("c:/data/r/test")
+> ddg.init()
+
+> x <- 3
+> y <- 7
+> z <- x + y
+
+> ddg.save()
 \end{lstlisting}
 
 \begin{figure}
-\caption{Operational Node with \textbf{ddg.function}}
-\begin{center}
-\includegraphics[height=14.0cm, keepaspectratio=true]{UsingRDataTracker-img/UsingRDataTracker-function}
-\end{center}
+	\begin{center}
+		\includegraphics[width=16.0cm, keepaspectratio=true]{UsingRDataTracker-img/ConsoleSession.png}
+		\caption{Console Sessions}
+		\label{fig:ConsoleSession}
+	\end{center}
 \end{figure}
 
-This example creates a data node called \textbf{a} with value 10, a procedural node for the function \textbf{f}, a binding node indicating that actual parameter \textbf{a} is bound to formal parameter \textbf{x}, a data node called \textbf{d} with value 20, and data nodes \textbf{f(a) return} and \textbf{b} with value 100, with corresponding data flow edges.
+Here line 3 loads the RDataTracker package, line 4 sets the working directory, line 5 initializes the DDG, lines 7-9 are user commands entered at the console, and line 11 saves the DDG to file. Note that line 3 is not required if RDataTracker is already loaded and line 4 is not required if the working directory is already set correctly.
 
-\item To create an Operational node for a procedure not implemented as an R function in the original script, use \textbf{ddg.procedure}. Input data nodes (if any) are assumed to exist when this function is called. The procedure name must be supplied. The \textbf{ins} parameter may be used with a list of values to create input data flow edges. The \textbf{outs} parameters may be used with lists of values to create output data nodes and corresponding data flow edges.
+\bigskip
+
+Because no DDG directory is specified in \textbf{ddg.init}, the DDG is saved by default to a directory called \textbf{ddg} in the working directory. In the DDG (Figure \ref{fig:ConsoleSession}), the user's commands are enclosed within Start and Finish Console nodes, which can be expanded or collapsed in DDG Explorer. If the user entered more commands followed by another \textbf{ddg.save}, the DDG would be expanded to include the new commands enclosed within a second set of Console nodes. To quit and clear the DDG from memory, the user could enter \textbf{ddg.save(quit=TRUE)} Note that calling \textbf{ddg.init} again would start a new DDG, overwriting the current DDG if the same DDG directory were used.
+
+\bigskip
+
+In console sessions, as in \textbf{ddg.run}, console mode is enabled by default and RDataTracker creates procedural nodes for each top-level assignment statement along with the corresponding data nodes. This feature can be turned on and off by using the functions \textbf{ddg.console.on} and \textbf{ddg.console.off}. More details can be captured by adding calls to other RDataTracker functions as described below.
+
+\bigskip
+
+There are two limitations to collecting data provenance in console sessions. First, the DDG is built from the R history file, which on most system is limited to 512 lines. For long R console sessions, the \textbf{ddg.save} function must be called every 500 lines or so to avoid loss of provenance information. Second, RDataTracker can only evaluate variables when calls are made to library functions. If the value of a variable is changed and you would like to record the earlier value, call \textbf{ddg.save} before the value is changed.
+
+\section{Advanced Features}
+
+\subsection{Detailed Annotations}
+\label{sec:details}
+
+We expect that running R scripts with \textbf{ddg.run} will be the preferred method for collecting data provenance for most users and in most cases. However RDataTracker includes other functions that offer additional flexibility and control in deciding what data provenance to capture in the DDG. Some of these functions are listed below. For more details and a complete list of functions, please see the help pages for RDataTracker.
+
+\begin{enumerate}
+
+\item To collect detailed provenance for a user-defined function, add \textbf{ddg.function} to the beginning of the function body. Input data nodes (if any) are assumed to exist when this function is called. The function name and input parameters are looked up in the calling environment and a binding node is created for each pair of formal and actual parameters. The \textbf{outs} parameters may be used with lists of values to create output data nodes for global variables assigned in the function. To create a data node for the function return value, wrap the argument of each \textbf{return} statement with the \textbf{ddg.return.value} function. If there is no \textbf{return} statement, wrap the final statement with \textbf{ddg.return.value}. Note that \textbf{ddg.function} and \textbf{ddg.return.value} are added automatically in \textbf{ddg.run} unless \textbf{annotate.functions} is set to FALSE.
+
+\item To create a procedural node for a procedure not implemented as a user-defined function, use \textbf{ddg.procedure}. Input data nodes (if any) are assumed to exist when this function is called. The procedure name must be supplied. The \textbf{ins} parameter may be used with a list of values to create input data flow edges. The \textbf{outs} parameters may be used with lists of values to create output data nodes and corresponding data flow edges.
 
 \bigskip
 
 The separate function \textbf{ddg.data.in} may be used in place of \textbf{ins}; while the separate functions \textbf{ddg.data.out}, \textbf{ddg.file.out}, \textbf{ddg.url.out}, \textbf{ddg.exception.out}, and \textbf{ddg.graphic.out}, depending on the data type, may be used in place of \textbf{outs}. Note that, unlike \textbf{ddg.data.in} and \textbf{ddg.data.out}, the \textbf{ins} and \textbf{outs} parameters require quoted strings unless the name is the name of a file.
 
-\bigskip
+\item To create an input data node not created by a procedural node, use \textbf{ddg.data}, \textbf{ddg.file}, \textbf{ddg.url}, or \textbf{ddg.exception}, depending on the data type. If only the variable name is supplied, RDataTracker will look up its value in the current environment. Note that these functions are generally not required for top-level statements if console mode is enabled.
 
-The following two scripts produce identical DDGs:
+\item To evaluate a statement and create associated nodes and edges, use \textbf{ddg.eval}. If the statement is an assignment, a procedural node for the assignment, a data node for the variable assigned, and the corresponding data flow edge are created. Note that this function is not required for top-level statements in \textbf{ddg.run} or in console mode unless \textbf{enable.console} is set to FALSE.
 
-\bigskip
-
-\begin{lstlisting}
-x <- 0
-
-for (i in 1:3) {
-  ddg.data(i)
-  x <- x + i^2
-  ddg.procedure("sum.squares", ins=list("i"), outs.data=list("x"))
-}
-\end{lstlisting}
-
-\begin{lstlisting}
-x <- 0
-
-for (i in 1:3) {
-  ddg.data(i)
-  x <- x + i^2
-  ddg.procedure("sum.squares")
-  ddg.data.in(i, pname="sum.squares")
-  ddg.data.out(x, pname="sum.squares")
-}
-\end{lstlisting}
-
-\begin{figure}
-\caption{Operational Node with \textbf{ddg.procedure}}
-\begin{center}
-\includegraphics[height=14.0cm, keepaspectratio=true]{UsingRDataTracker-img/UsingRDataTracker-procedure}
-\end{center}
-\end{figure}
-
-This example creates a procedural node called \textbf{sum.squares} with input data node \textbf{i} and output data node \textbf{x} for each iteration of the \textbf{while} loop.
-
-\item To create an input data node not created by a procedural node, use \textbf{ddg.data}, \textbf{ddg.file}, \textbf{ddg.url}, or \textbf{ddg.exception}, depending on the data type. If only the variable name is supplied, the library will look up its value in the current environment. Note that these functions are generally not required for top-level statements if console mode is enabled. See preceding example.
-
-\item To evaluate a statement and create associated data nodes and edges, use \textbf{ddg.eval}. If the statement is an assignment, a data node for the variable assigned and a corresponding data flow edge are created. Note that this function is not required for top-level statements if console mode is enabled.
-
-\bigskip
-
-Compare the DDGs created by the following two scripts:
-
-\bigskip
-
-\begin{lstlisting}
-x <- 0
-
-for (i in 1:2) {
-  x <- x + i^2
-}
-\end{lstlisting}
-
-\begin{figure}
-\caption{Loop without \textbf{ddg.eval}}
-\begin{center}
-\includegraphics[height=6.0cm, keepaspectratio=true]{UsingRDataTracker-img/UsingRDataTracker-eval1}
-\end{center}
-\end{figure}
-
-Here data nodes are created for \textbf{x} before and after the \textbf{while} loop is executed.
-
-\bigskip
-
-\begin{lstlisting}
-x <- 0
-
-for (i in 1:2) {
-  ddg.eval("x <- x + i^2")
-}
-\end{lstlisting}
-
-\begin{figure}
-\caption{Loop with \textbf{ddg.eval}}
-\begin{center}
-\includegraphics[height=14.0cm, keepaspectratio=true]{UsingRDataTracker-img/UsingRDataTracker-eval2}
-\end{center}
-\end{figure}
-
-Here \textbf{start} and \textbf{finish} nodes for the assignment statement and a data node for \textbf{x} are created for each iteration of the \textbf{while} loop as a result of the \textbf{ddg.eval} function.
-
-\item To turn on and off automatic capture of data provenance in console mode use  \textbf{ddg.console.on} and \textbf{ddg.console.off}. Commands captured while console mode is enabled are enclosed in start and finish Console nodes. Note that console mode is enabled by default in \textbf{ddg.run} and \textbf{ddg.init}.
-
-\bigskip
-
-\begin{lstlisting}
-a <- 10
-ddg.console.off()
-b <- 20
-\end{lstlisting}
-
-\begin{figure}
-\caption{Turning Console Mode On and Off}
-\begin{center}
-\includegraphics[height=4.0cm,keepaspectratio=true]{UsingRDataTracker-img/UsingRDataTracker-consoleoff}
-\end{center}
-\end{figure}
-
-This example creates a data node called \textbf{a} with value 10 enclosed by Console start and finish nodes. A data node for \textbf{b} is not created.
+\item To turn automatic capture of data provenance on and off in console mode or in \textbf{ddg.run}, use \textbf{ddg.console.on} and \textbf{ddg.console.off}. Commands captured while console mode is enabled are enclosed in start and finish Console nodes. Note that console mode is enabled by default in \textbf{ddg.run} and \textbf{ddg.init}.
 
 \item To insert the DDG from a sourced script into the larger DDG of the main script, use \textbf{ddg.source} in place of \textbf{source}. The DDG from the sourced script is encompassed within start and finish nodes named after the sourced script.
 
-\bigskip
+\item To initiate a DDG, use \textbf{ddg.init}. To save a DDG, use \textbf{ddg.save}. The parameter \textbf{max.snapshot.size} in \textbf{ddg.init} may be used to limit the size of snapshot files in order to improve performance or to save file space. Note that \textbf{ddg.save} may be called multiple times in the same console session or script, while \textbf{ddg.init} creates a new DDG each time it is called. Both functions are called by \textbf{ddg.run}.
 
-\begin{lstlisting}
-# SCRIPT-1.R
+\item To turn debugging on and off, use \textbf{ddg.debug.on} and \textbf{ddg.debug.off} at the R console or in an R script. Debugging is off by default. When debugging is turned on, details related to creation of the DDG are displayed in the console as the script executes. This feature may be useful for tracking down annotation errors.
 
-b <- 20
-\end{lstlisting}
-
-\bigskip
-
-\begin{lstlisting}
-# TEST.R
-
-a <- 10
-ddg.source("script-1.r")
-d <- a + b
-\end{lstlisting}
-
-\begin{figure}
-\caption{Inserting the DDG for a Sourced Script}
-\begin{center}
-\includegraphics[height=12.0cm, keepaspectratio=true]{UsingRDataTracker-img/UsingRDataTracker-source}
-\end{center}
-\end{figure}
-
-This example inserts the DDG for \textbf{script-1.r} into the DDG for \textbf{test.r}. A data flow edge connects data node \textbf{b} created in the sourced script to the assignment statement for \textbf{d} in the main script.
-
-\item To initiate a DDG, use \textbf{ddg.init}; to save a DDG, use \textbf{ddg.save}. The parameter \textbf{max.snapshot.size} in \textbf{ddg.init} may be used to limit the size of snapshot files in order to improve performance or to save file space. Note that \textbf{ddg.save} may be called multiple times in the same console session or script, while \textbf{ddg.init} creates a new DDG each time it is called. Both functions are called by \textbf{ddg.run}.
-
-\bigskip
-
-\begin{lstlisting}
-ddg.init(max.snapshot.size=0)
-ddg.save(quit=TRUE)
-\end{lstlisting}
-
-In this example the first line initiates creation of a DDG.  Snapshot nodes are created but snapshot values are not saved in the DDG. The second line saves the DDG and removes DDG objects from memory.
+\item To delete the contents of the current DDG directory (if different from the working directory), use \textbf{ddg.flush.ddg} at the R console.
 
 \end{enumerate}
-
-The following examples illustrate the use of some of these functions. Both use an iterative process to estimate the square root of 10 to six decimal places. The first script is not annotated and is run with \textbf{ddg.run}. The second script is annotated and is run by copying and pasting to the console with console mode turned off.
-
-\bigskip
-
-\begin{lstlisting}
-# R SCRIPT
-
-number <- 10
-estimate <- 3
-tolerance <- 0.000001
-
-while (abs(number - estimate^2) > tolerance) {
-  estimate <- (number/estimate + estimate)/2
-}
-\end{lstlisting}
-
-\bigskip
-
-\begin{figure}
-\caption{Example Script with \textbf{ddg.run}}
-\begin{center}
-\includegraphics[height=10.0cm, keepaspectratio=true]{UsingRDataTracker-img/UsingRDataTracker-sqrroot1}
-\end{center}
-\end{figure}
-
-\bigskip
-
-\begin{lstlisting}
-# R SCRIPT
-
-library(RDataTracker)
-setwd("c:/data/r/test")
-
-ddg.init("test.r", enable.console=FALSE)
-
-number <- 10
-ddg.data(number)
-
-estimate <- 3
-ddg.data(estimate)
-
-tolerance <- 0.000001
-ddg.data(tolerance)
-
-while (abs(number - estimate^2) > tolerance) {
-  ddg.start("iteration")
-
-  estimate <- (number/estimate + estimate)/2
-
-  ddg.procedure("calc.sqr.root", ins=list("number", "estimate", "tolerance"), outs.data=list("estimate"))
-
-  ddg.finish("iteration")
-}
-
-ddg.save()
-\end{lstlisting}
-
-\begin{figure}
-\caption{Example Script with Annotations}
-\begin{center}
-\includegraphics[height=16.0cm, keepaspectratio=true]{UsingRDataTracker-img/UsingRDataTracker-sqrroot2}
-\end{center}
-\end{figure}
-
-The first DDG captures the essentials of the process, including the assignment statements and the final value of \textbf{estimate}. The second DDG captures additional details, including the results of each iteration within collapsible \textbf{start} and \textbf{finish} nodes for the procedure \textbf{calc.sqr.root}.
 
 \subsection{Checkpoint and Restore}
 \label{sec:checkpoint}
@@ -682,38 +485,28 @@ A separate R script called \textbf{DDGCheckpoint.R} contains functions that may 
 \begin{lstlisting}
 # R SCRIPT
 
-library(RDataTracker)
-source("c:/data/r/DDGCheckpoint.R")
-
-setwd("c:/data/r/test")
-
-ddg.init("test.r")
-
+source("c:/data/r/test/DDGCheckpoint.R")
 a <- 10
-
 checkpoint1 <- ddg.checkpoint()
 
 a <- 20
-
 ddg.restore(checkpoint1)
-
 b <- a
-
-ddg.save()
 \end{lstlisting}
 
-Here a checkpoint called \textbf{checkpoint1} is created in line 12 and restored in line 16. In line 18, \textbf{b} is assigned the original value of \textbf{a} (10). The checkpoint information is stored in and retrieved from the file \textbf{0.RData}.
+\begin{figure}
+	\begin{center}
+		\includegraphics[width=16.0cm, keepaspectratio=true]{UsingRDataTracker-img/CheckpointRestore.png}
+		\caption{Checkpoint and Restore}
+		\label{fig:CheckpointRestore}
+	\end{center}
+\end{figure}
+
+Here a checkpoint called \textbf{checkpoint1} is created in line 5 and restored in line 8. In line 9, after the restore, \textbf{b} is assigned the original value of \textbf{a} (10). The checkpoint information is stored in and retrieved from the file \textbf{0.RData} (Figure \ref{fig:CheckpointRestore}).
 
 \bigskip
 
 Note that the DDGCheckpoint.R file is not included in RDataTracker and must be separately sourced.
-
-\begin{figure}
-\caption{Checkpoint and Restore}
-\begin{center}
-\includegraphics[height=23.0cm, keepaspectratio=true]{UsingRDataTracker-img/UsingRDataTracker-checkpoint}
-\end{center}
-\end{figure}
 
 \subsection{S4 Classes}
 \label{sec:classes}
@@ -723,6 +516,8 @@ To save S4 objects in snapshot files, create a method implementing the as.charac
 \bigskip
 
 \begin{lstlisting}
+# R SCRIPT
+
 setClass("SampleObj",
     slots = c(
         sampleCode = "integer", 
@@ -735,6 +530,8 @@ The as.character method might be defined as:
 \bigskip
 
 \begin{lstlisting}
+# R SCRIPT
+
 as.character.SampleObj <- function(x) {
     str <- paste("sampleCode =", x@sampleCode, "\n")
     str <- paste(str, "nIndividuals =", x@nIndividuals, "\n")
@@ -748,74 +545,24 @@ To limit the size of snapshots (i.e. to set \textbf{max.snapshot.size} to a valu
 \bigskip
 
 \begin{lstlisting}
+# R SCRIPT
+
 head.SampleObj <- function(x) {...}
 \end{lstlisting}    
-
-\subsection{Troubleshooting}
-\label{sec:troubleshoot}
-
-Annotation errors are generally captured by RDataTracker and stored as error nodes in the DDG. The same is true for error messages from the R interpreter if an R script is executed with \textbf{ddg.run}. These features may be useful for troubleshooting the original script and the associated annotations.
-
-\bigskip
-
-The \textbf{ddg.debug.on} and \textbf{ddd.debug.off} functions may be used in an R script or at the console to turn debugging on and off. Debugging is off by default. When debugging is turned on, details related to creation of the DDG are displayed in the console as the script executes.
-
-\bigskip
-
-The contents of the current DDG directory (if different from the working directory) may be deleted by calling the \textbf{ddg.flush.ddg} function at the R prompt.
-
-\bigskip
-
-Trapping of DDG and R error messages is illustrated below. These scripts were run in console mode using \textbf{ddg.run}. In both cases the error message is stored in the DDG as the value of the error node \textbf{error.msg} and may be viewed by right clicking on that node in DDG Explorer.
-
-\bigskip
-
-\begin{lstlisting}
-# R SCRIPT
-
-a <- 10
-ddg.data(b)
-b <- 20
-\end{lstlisting}
-
-\begin{figure}
-\caption{DDG Error}
-\begin{center}
-\includegraphics[height=6.0cm, keepaspectratio=true]{UsingRDataTracker-img/UsingRDataTracker-error1}
-\end{center}
-\end{figure}
-
-Here a DDG error is generated ("In .ddg.insert.error.message(error.msg): Unable to evaluate b in call to ddg.data") but the R script continues to execute.
-
-\bigskip
-
-\begin{lstlisting}
-# R SCRIPT
-
-a <- 10
-c <- a * b
-\end{lstlisting}
-
-\begin{figure}
-\caption{R Error}
-\begin{center}
-\includegraphics[height=8.0cm, keepaspectratio=true]{UsingRDataTracker-img/UsingRDataTracker-error2}
-\end{center}
-\end{figure}
-
-Here an R error ("Error in eval(expr, envir, enclos): object 'b' not found") terminates execution of the R script.
-
-\newpage
 
 \section{Technical Details}
 
 \subsection{How RDataTracker Works}
 
-RDataTracker collects data provenance and stores it in memory during a console session or while an R script is executing. This information is written to the DDG file (\textbf{ddg.txt}) in the DDG directory whenever the function \textbf{ddg.save} is called. The DDG file contains information about the computing environment, the number of procedural steps, and the specifications for individual nodes and edges of the DDG. Procedural nodes and data nodes are each numbered in sequence beginning with one. Simple data values (e.g. numbers and strings) are stored in the DDG itself. More complex data values (e.g. vectors, arrays, data frames, and graphics) are stored as pointers to files created in the DDG directory. Input and output files of the main script are stored as pointers to copies of those files created in the DDG directory. While the DDG file can be viewed using a text editor, its primary purpose is to support exchange of information and it should normally be viewed and queried using DDG Explorer.
+RDataTracker collects data provenance and stores it in memory while a script is executing or during a console session. This information is written to the DDG file (\textbf{ddg.txt}) in the DDG directory whenever the function \textbf{ddg.save} is called. The DDG file contains information about the computing environment, the number of procedural steps, and the specifications for individual nodes and edges of the DDG. Procedural nodes and data nodes are each numbered in sequence beginning with one. Simple data values (e.g. numbers and strings) are stored in the DDG file. More complex data values (e.g. vectors, arrays, data frames, and graphics) are stored as pointers to files created in the DDG directory. Input and output files of the main script are stored as pointers to copies of those files created in the DDG directory. While the DDG file can be viewed using a text editor, its primary purpose is to support exchange of information and it should normally be viewed and queried using DDG Explorer.
 
 \bigskip
 
-RDataTracker maintains internal tables of data nodes, procedural nodes, and function return values as a console session proceeds or a script executes.  These tables are used to look up nodes when creating control flow edges and data flow edges.  RDataTracker keeps track of variable scope and a data node of the same name is not considered a match unless it also has the same scope. Selected values from these tables are written to the DDG directory in the files \textbf{dnodes.txt}, \textbf{pnodes.txt}, and \textbf{returns.txt} whenever \textbf{ddg.save} is called.
+RDataTracker maintains internal tables of data nodes, procedural nodes, and function return values as a script executes or a console session proceeds.  These tables are used to look up nodes when creating control flow edges and data flow edges.  RDataTracker keeps track of variable scope and a data node of the same name is not considered a match unless it also has the same scope. Selected values from these tables are written to the DDG directory in the files \textbf{dnodes.txt}, \textbf{pnodes.txt}, and \textbf{returns.txt} whenever \textbf{ddg.save} is called.
+
+\bigskip
+
+In \textbf{ddg.run}, user-defined functions are automatically annotated (unless \textbf{annotate.functions} is set to FALSE) by adding calls to \textbf{ddg.function} and \textbf{ddg.return.value} to the set of parsed commands before the script is executed. A copy of the script annotated in this way is saved to the file \textbf{annotated.script} on the \textbf{ddg} directory.
 
 \subsection{Known Issues}
 
@@ -823,20 +570,15 @@ RDataTracker maintains internal tables of data nodes, procedural nodes, and func
 
 \bigskip
 
-\textbf{Return nodes in recursive functions}. Return nodes may link to the wrong function node within recursive functions.
-
-\bigskip
-
 \textbf{S3 objects and reference classes}. RDataTracker has not been tested with S3 objects or reference classes.
 
 \section{Acknowledgements}
 
-The authors acknowledge intellectual contributions from collaborators Leon Osterweil (University of Massachusetts Amherst), Aaron Ellison (Harvard University), and Harvard Forest REU students listed below. The work was supported by NSF grants DEB-0620443, DEB-1237491, and DBI-1003938, the Charles Bullard Fellowship at
-Harvard University, and a faculty fellowship from Mount Holyoke College and is a contribution from the Harvard Forest Long-Term Ecological Research (LTER) program. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the authors and do not necessarily reflect the views of the National Science Foundation, Harvard University, or Mount Holyoke College.
+The authors acknowledge intellectual contributions from collaborators Leon Osterweil (University of Massachusetts Amherst), Aaron Ellison (Harvard University), and Harvard Forest REU students listed below. The work was supported by NSF grants DEB-0620443, DEB-1237491, DBI-1003938, and SSI-1450277, the Charles Bullard Fellowship at Harvard University, and a faculty fellowship from Mount Holyoke College and is a contribution from the Harvard Forest Long-Term Ecological Research (LTER) program. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the authors and do not necessarily reflect the views of the National Science Foundation, Harvard University, or Mount Holyoke College.
 
 \bigskip
 
-Numerous students have been involved in related research and tool development through the Harvard Forest Summer Research (REU) program, including Shaylyn Adams (2013), Vasco Carinhas (2013), Andrew Galdunski (2011), Nicole Hoffler (2014), Antonia Miruna Oprescu (2012), Luis Antonio Perez (2014), Garrett Rosenblatt (2011), Cory Teshera-Sterne (2009), Sofiya Toskova (2010-2011), Morgan Vigil (2010), and Yujia Zhou (2012).
+Numerous students have been involved in related research and tool development through the Harvard Forest Summer Research (REU) program, including Shaylyn Adams (2013), Vasco Carinhas (2013), Marios Dardas (2015), Andrew Galdunski (2011), Nicole Hoffler (2014), Antonia Miruna Oprescu (2012), Luis Antonio Perez (2014), Katerina Poulos (2015), Garrett Rosenblatt (2011), Cory Teshera-Sterne (2009), Sofiya Toskova (2010-2011), Morgan Vigil (2010), and Yujia Zhou (2012).
 
 
 \end{document}
