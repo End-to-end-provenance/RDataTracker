@@ -313,6 +313,12 @@ ddg.MAX_HIST_LINES <- 2^14
   return (.ddg.format.time(ts))
 }
 
+.ddg.elapsed.time <- function(){
+  time <- proc.time()
+  elapsed <- time[1] +time[2] +time[4] +time[5]
+  return(elapsed)
+}
+
 # .ddg.write.timestamp.to.history writes the current timestamp to 
 # the R history. The timestamp function does not work properly in 
 # Windows from within RStudio (the arguments are ignored).  In this 
@@ -2307,7 +2313,7 @@ ddg.MAX_HIST_LINES <- 2^14
       else ""
   
   # Obtain the timestamp to  use this procedure node.
-  proc.time <- paste0(" Time=\"", .ddg.timestamp(), "\"")
+proc.time <- paste0(" Time=\"", .ddg.elapsed.time() , "\”")
   
   # Create procedure node.  
   ddg.pnum <- .ddg.pnum()
