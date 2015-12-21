@@ -3370,8 +3370,8 @@ ddg.MAX_HIST_LINES <- 2^14
 }
 
 # .ddg.add.function.annotations accepts and returns a parsed command.
-# If the command is a function declaration, calls to ddg.function and 
-# ddg.return.value are added, if not already present. Otherwise the 
+# If the command is a function declaration, calls to ddg.function, ddg.eval
+# and ddg.return.value are added, if not already present. Otherwise the 
 # command is returned unchanged. The functions ddg.annotate.on and 
 # ddg.annotate.off may be used to provide a list of functions to annotate 
 # or not to annotate, respectively.
@@ -3652,7 +3652,8 @@ ddg.procedure <- function(pname, ins=NULL, outs.graphic=NULL, outs.data=NULL, ou
 # same value as the function (expr) and can be used in place of the
 # function's normal return statement(s) if it is the last statement
 # in the function.  Otherwise, it should be a parameter to return,
-# like return(ddg.return.value(expr)).
+# as in return(ddg.return.value(expr)). If expr is an assignment, nodes
+# and edges are created for the assignment.
 
 # expr - the value returned by the function.
 
@@ -3661,7 +3662,7 @@ ddg.return.value <- function (expr=NULL) {
   if (!.ddg.is.init()) return(expr)
   
   # If expr is an assignment, create nodes and edges for the assignment.
-  orig.expr <<- substitute(expr)
+  orig.expr <- substitute(expr)
   
   if (.ddg.is.assign(orig.expr)) {
     frame.num <- .ddg.get.frame.number(sys.calls())
