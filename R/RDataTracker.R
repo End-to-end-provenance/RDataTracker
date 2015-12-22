@@ -2313,7 +2313,7 @@ ddg.MAX_HIST_LINES <- 2^14
       else ""
   
   # Obtain the timestamp to  use this procedure node.
-proc.time <- paste0(" Time=\"", .ddg.elapsed.time() , "\”")
+proc.time <- paste0(" Time=\"", .ddg.elapsed.time() , "\"")
   
   # Create procedure node.  
   ddg.pnum <- .ddg.pnum()

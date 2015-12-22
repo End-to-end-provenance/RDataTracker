@@ -196,6 +196,17 @@
       </fileset>
     </replaceregexp>
 
+    <!-- Delete all elapsed time occurrences  -->
+    <replaceregexp flags="g"> 
+      <regexp pattern='(( Time=)?("?[0-9]*\.?[0-9]+"))' />
+      <substitution expression=""/>
+      <fileset dir="${local_dir}">
+        <patternset id="local_files">
+          <include name="*.local" />
+        </patternset>
+      </fileset>
+    </replaceregexp>
+
     <!-- Replace local file paths with [DIR] -->
     <replaceregexp flags="g"> 
       <regexp pattern="${FILE.basedir}/${dir}" />

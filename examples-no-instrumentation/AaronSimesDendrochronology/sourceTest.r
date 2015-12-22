@@ -13,7 +13,7 @@
 library(RDataTracker)
 
 ## Directories
-testDir <- "C:/GitHub/RDataTracker/examples-no-instrumentation/AaronSimesDendrochronology/"
+testDir <- "/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples-no-instrumentation/AaronSimesDendrochronology/"
 setwd(testDir)
 
 # get initial time
@@ -21,8 +21,8 @@ startTime <- Sys.time()
 invisible(force(startTime))
 
 # Run the script
-#ddg.run("AaronSimesDendrochronology.R", "C:/GitHub/RDataTracker/examples-no-instrumentation/AaronSimesDendrochronology/ddg", ignore.ddg.calls = F)
-ddg.run("AaronSimesDendrochronology.R", "C:/GitHub/RDataTracker/examples-no-instrumentation/AaronSimesDendrochronology/ddg")
+#ddg.run("AaronSimesDendrochronology.R", "/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples-no-instrumentation/AaronSimesDendrochronology/ddg", ignore.ddg.calls = F)
+ddg.run("AaronSimesDendrochronology.R", "/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples-no-instrumentation/AaronSimesDendrochronology/ddg")
 
 # Calculate total time of execution
 endTime <- Sys.time()
