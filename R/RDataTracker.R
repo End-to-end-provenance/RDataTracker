@@ -1418,15 +1418,15 @@ ddg.MAX_HIST_LINES <- 2^14
 .ddg.create.file.read.functions.df <- function () {
   # Functions that read files
   function.names <-
-    c ("source", "read.csv", "read.csv2", "read.delim", "read.delim2", "read.table", "read.xls")
+    c ("source", "read.csv", "read.csv2", "read.delim", "read.delim2", "read.table", "read.xls", "file")
   
   # The argument that represents the file name
   param.names <-
-    c ("file", "file", "file", "file", "file", "file", "xls")
+    c ("file", "file", "file", "file", "file", "file", "xls", "description")
   
   # Position of the file parameter if it is passed by position
   param.pos <- 
-    c (1, 1, 1, 1, 1, 1, 1)
+    c (1, 1, 1, 1, 1, 1, 1, 1)
   
   return (data.frame (function.names, param.names, param.pos, stringsAsFactors=FALSE))
 }
