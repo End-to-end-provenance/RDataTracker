@@ -1323,7 +1323,9 @@ ddg.MAX_HIST_LINES <- 2^14
 #
 # main.object - the parsed expression to search through
 # func.df - the data frame describing the functions with file arguments
-.ddg.find.files <- function(main.object, func.df) {
+.ddg.find.files <- function(main.object, func.df, env=NULL) {
+  environment <- if (is.environment(env)) env else .GlobalEnv
+
   # Recursive helper function.
   find.files.rec <- function(obj) {
     #print (obj)
@@ -1354,18 +1356,22 @@ ddg.MAX_HIST_LINES <- 2^14
         if (!is.na (read.func.pos)) {
           # Find the file argument.
           arg.name <- func.df$param.names[read.func.pos]
+          # print (paste(".ddg.find.files: arg.name = ", arg.name))
           
           # Find a matching parameter passed by name
           file.name.arg.matches <- unlist(lapply (names(obj), function (arg) {return (pmatch (arg, arg.name))}))
           match.pos <- match (1, file.name.arg.matches)
+          #print (paste(".ddg.find.files: match.pos = ", match.pos))
+          
           
           # If no argument qualified by the file parameter name, use the argument in the 
           # expected position
           if (is.na (match.pos)) {
-            file.name <- eval(obj[[func.df$param.pos[read.func.pos]+1]])
+            file.name <- eval(obj[[func.df$param.pos[read.func.pos]+1]], environment)
           }
           else {
-            file.name <- eval(obj[[match.pos]])
+            #print (paste(".ddg.find.files: obj[[match.pos]] = ", obj[[match.pos]]))
+            file.name <- eval(obj[[match.pos]], environment)
           }
           
           # Recurse over the arguments to the function.  We can't just skip over the 2nd
@@ -1425,18 +1431,18 @@ ddg.MAX_HIST_LINES <- 2^14
 # the expressions that correspond to the filename argument
 # of the calls to functions that read from files.  If there are
 # none, it returns NULL.
-.ddg.find.files.read <- function(main.object) {
-  return (.ddg.find.files (main.object, .ddg.get(".ddg.file.read.functions.df")))
+.ddg.find.files.read <- function(main.object, env) {
+  return (.ddg.find.files (main.object, .ddg.get(".ddg.file.read.functions.df"), env))
 }
   
 # Creates file nodes and data in edges for any files that are read in this cmd
 # cmd - text command
 # cmd.expr - parsed command
-.ddg.create.file.read.nodes.and.edges <- function (cmd, cmd.expr) {
+.ddg.create.file.read.nodes.and.edges <- function (cmd, cmd.expr, env) {
   # Find all the files potentially read in this command.
   # This may include files that are not actually read if the 
   # read are within an if-statement, for example.
-  files.read <- .ddg.find.files.read(cmd.expr)
+  files.read <- .ddg.find.files.read(cmd.expr, env)
   #print ("Files read:")
   #print (files.read)
   
@@ -1479,18 +1485,18 @@ ddg.MAX_HIST_LINES <- 2^14
 # the expressions that correspond to the filename argument
 # of the calls to functions that write files.  If there are
 # none, it returns NULL.
-.ddg.find.files.written <- function(main.object) {
-  return (.ddg.find.files (main.object, .ddg.get(".ddg.file.write.functions.df")))
+.ddg.find.files.written <- function(main.object, env) {
+  return (.ddg.find.files (main.object, .ddg.get(".ddg.file.write.functions.df"), env))
 }
 
 # Creates file nodes and data in edges for any files that are written in this cmd
 # cmd - text command
 # cmd.expr - parsed command
-.ddg.create.file.write.nodes.and.edges <- function (cmd, cmd.expr) {
+.ddg.create.file.write.nodes.and.edges <- function (cmd, cmd.expr, env) {
   # Find all the files potentially written in this command.
   # This may include files that are not actually written if the 
   # write calls are within an if-statement, for example.
-  files.written <- .ddg.find.files.written(cmd.expr)
+  files.written <- .ddg.find.files.written(cmd.expr, env)
   #print ("Files written:")
   #print (files.written)
   
@@ -1527,11 +1533,12 @@ ddg.MAX_HIST_LINES <- 2^14
 # the expressions that correspond to the filename argument
 # of the calls to functions that create graphics devices.  If there are
 # none, it returns NULL.
-.ddg.set.graphics.files <- function(main.object) {
+.ddg.set.graphics.files <- function(main.object, env) {
+  
   # Find all the graphics files that have potentially been opened.
   # Remember these file names until we find the dev.off call and then
   # determine which was written.
-  new.possible.graphics.files.open <- .ddg.find.files (main.object, .ddg.get(".ddg.graphics.functions.df"))
+  new.possible.graphics.files.open <- .ddg.find.files (main.object, .ddg.get(".ddg.graphics.functions.df"), env)
   if (!is.null(new.possible.graphics.files.open)) {
     if (.ddg.is.set ("possible.graphics.files.open")) {
       possible.graphics.files.open <- .ddg.get ("possible.graphics.files.open")
@@ -1542,11 +1549,14 @@ ddg.MAX_HIST_LINES <- 2^14
     else {
       .ddg.set ("possible.graphics.files.open", new.possible.graphics.files.open)
     }
+    #print (paste (".ddg.set.graphics.files: Found ", new.possible.graphics.files.open))
   
   }
 }
 
 .ddg.has.dev.off.call <- function(main.object) {
+  #print ("In .ddg.has.dev.off.call")
+  #print (main.object)
   # Recursive helper function.
   has.dev.off.call.rec <- function(obj) {
     #print (obj)
@@ -1569,7 +1579,10 @@ ddg.MAX_HIST_LINES <- 2^14
       
       if (is.symbol (obj[[1]])) {
         # Is this a call to dev.off?
-        if (as.character(obj[[1]]) == "dev.off") return (TRUE)
+        if (as.character(obj[[1]]) == "dev.off") {
+          #print (".ddg.has.dev.off.call: Found dev.off")
+          return (TRUE)
+        }
         
         else if (length (obj) == 1) return (FALSE)
         
@@ -2183,15 +2196,15 @@ ddg.MAX_HIST_LINES <- 2^14
           }
           
           .ddg.create.data.use.edges.for.console.cmd(vars.set, cmd.abbrev, cmd.expr, i, env=environ)
-          .ddg.create.file.read.nodes.and.edges(cmd.abbrev, cmd.expr)          
+          .ddg.create.file.read.nodes.and.edges(cmd.abbrev, cmd.expr, environ)          
           .ddg.link.function.returns(cmd.text)
           
           if (.ddg.debug()) print(paste(".ddg.parse.commands: Adding input data nodes for", cmd.abbrev))
           .ddg.create.data.set.edges.for.cmd(vars.set, cmd.abbrev, cmd.expr, i, d.environ)
           if (.ddg.debug()) print(paste(".ddg.parse.commands: Adding output data nodes for", cmd.abbrev))
           
-          .ddg.create.file.write.nodes.and.edges (cmd.abbrev, cmd.expr)
-          .ddg.set.graphics.files (cmd.expr)  
+          .ddg.create.file.write.nodes.and.edges (cmd.abbrev, cmd.expr, d.environ)
+          .ddg.set.graphics.files (cmd.expr, d.environ)  
           if (.ddg.has.dev.off.call(cmd.expr)) {
             .ddg.capture.graphics(cmd.abbrev)
           }
@@ -3664,26 +3677,26 @@ ddg.return.value <- function (expr=NULL) {
   # If expr is an assignment, create nodes and edges for the assignment.
   orig.expr <- substitute(expr)
   
-  if (.ddg.is.assign(orig.expr)) {
-    frame.num <- .ddg.get.frame.number(sys.calls())
-    env <- sys.frame(frame.num)
-    
-    # Create procedure node.
-    pname <- deparse(orig.expr)
-    .ddg.proc.node("Operation", pname, pname, console=TRUE)
+  frame.num <- .ddg.get.frame.number(sys.calls())
+  env <- sys.frame(frame.num)
+  
+  # Create procedure node.
+  pname <- deparse(orig.expr)
+  .ddg.proc.node("Operation", pname, pname, console=TRUE)
 
-    # Create control flow edge from preceding procedure node.
-    .ddg.proc2proc()
-    
-    # Create data flow edges from input data nodes, if any.
-    vars.used <- .ddg.find.var.uses(orig.expr)
-    for (var in vars.used) {
-      scope <- .ddg.get.scope(var)
-      if (.ddg.data.node.exists(var, scope)) {
-        .ddg.data2proc(var, scope, pname)
-      }
+  # Create control flow edge from preceding procedure node.
+  .ddg.proc2proc()
+  
+  # Create data flow edges from input data nodes, if any.
+  vars.used <- .ddg.find.var.uses(orig.expr)
+  for (var in vars.used) {
+    scope <- .ddg.get.scope(var)
+    if (.ddg.data.node.exists(var, scope)) {
+      .ddg.data2proc(var, scope, pname)
     }
-    
+  }
+
+  if (.ddg.is.assign(orig.expr)) {
     # Create output data node.
     var <- orig.expr[[2]]
     dname <- deparse(var)
@@ -3791,6 +3804,16 @@ ddg.return.value <- function (expr=NULL) {
     }
   }
   #print ("ddg.return.value: done looking for nodes")
+
+  # Create nodes and edges dealing with reading and writing files
+  return.abbrev <- .ddg.abbrev.cmd(return.expr.text.toprint)
+  .ddg.create.file.read.nodes.and.edges(return.abbrev, return.expr, env)          
+  .ddg.create.file.write.nodes.and.edges (return.abbrev, return.expr, env)
+  .ddg.set.graphics.files (return.expr, env)  
+  if (.ddg.has.dev.off.call(return.expr)) {
+    .ddg.capture.graphics(return.abbrev)
+  }
+
   
   # Create an edge from the return statement to its return value.
   .ddg.proc2data(return.stmt, return.node.name, return.node.scope, return.value=TRUE)
