@@ -1367,11 +1367,13 @@ ddg.MAX_HIST_LINES <- 2^14
           # If no argument qualified by the file parameter name, use the argument in the 
           # expected position
           if (is.na (match.pos)) {
-            file.name <- eval(obj[[func.df$param.pos[read.func.pos]+1]], environment)
+            file.name <- tryCatch (eval(obj[[func.df$param.pos[read.func.pos]+1]], environment), 
+                error = function (e) NULL)
           }
           else {
             #print (paste(".ddg.find.files: obj[[match.pos]] = ", obj[[match.pos]]))
-            file.name <- eval(obj[[match.pos]], environment)
+            file.name <- tryCatch (eval(obj[[match.pos]], environment),
+                error = function (e) NULL)
           }
           
           # Recurse over the arguments to the function.  We can't just skip over the 2nd
@@ -1380,7 +1382,9 @@ ddg.MAX_HIST_LINES <- 2^14
           funcs <- find.files.rec (obj[2:length(obj)])
           
           # Add this file name to the list of files being read.
-          unique (c (file.name, funcs))
+          if (!is.null(file.name)) {
+            unique (c (file.name, funcs))
+          }
         }
         
         # Not a file reading function.  Recurse over the arguments.
@@ -2203,8 +2207,8 @@ ddg.MAX_HIST_LINES <- 2^14
           .ddg.create.data.set.edges.for.cmd(vars.set, cmd.abbrev, cmd.expr, i, d.environ)
           if (.ddg.debug()) print(paste(".ddg.parse.commands: Adding output data nodes for", cmd.abbrev))
           
-          .ddg.create.file.write.nodes.and.edges (cmd.abbrev, cmd.expr, d.environ)
-          .ddg.set.graphics.files (cmd.expr, d.environ)  
+          .ddg.create.file.write.nodes.and.edges (cmd.abbrev, cmd.expr, environ)
+          .ddg.set.graphics.files (cmd.expr, environ)  
           if (.ddg.has.dev.off.call(cmd.expr)) {
             .ddg.capture.graphics(cmd.abbrev)
           }
