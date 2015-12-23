@@ -2337,6 +2337,8 @@ ddg.MAX_HIST_LINES <- 2^14
   .ddg.inc("ddg.pnum")
   
   # Include value if available.
+  #print ("In .ddg.proc.node: pvalue = ")
+  #print (pvalue)
   proc.value <- 
       if (pvalue!="") {
         quoted.value <- gsub("\\\"", "\\\\\"", pvalue)
@@ -3681,7 +3683,11 @@ ddg.return.value <- function (expr=NULL) {
   env <- sys.frame(frame.num)
   
   # Create procedure node.
-  pname <- deparse(orig.expr)
+  #print ("ddg.return.value: orig.expr =")
+  #print (orig.expr)
+  pname <- paste(deparse(orig.expr), collapse="")
+  #print ("ddg.return.value: pname =")
+  #print (pname)
   .ddg.proc.node("Operation", pname, pname, console=TRUE)
 
   # Create control flow edge from preceding procedure node.

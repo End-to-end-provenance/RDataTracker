@@ -13,7 +13,7 @@
 library(RDataTracker)
 
 ## Directories
-testDir <- "C:/GitHub/RDataTracker/examples-no-instrumentation/CheckpointTest/"
+testDir <- "/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples-no-instrumentation/CheckpointTest/"
 setwd(testDir)
 
 # get initial time
@@ -21,8 +21,8 @@ startTime <- Sys.time()
 invisible(force(startTime))
 
 # Run the script
-#ddg.run("CheckpointTest.R", "C:/GitHub/RDataTracker/examples-no-instrumentation/CheckpointTest/ddg", ignore.ddg.calls = F)
-ddg.run("CheckpointTest.R", "C:/GitHub/RDataTracker/examples-no-instrumentation/CheckpointTest/ddg")
+#ddg.run("CheckpointTest.R", "/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples-no-instrumentation/CheckpointTest/ddg", ignore.ddg.calls = F)
+ddg.run("CheckpointTest.R", "/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples-no-instrumentation/CheckpointTest/ddg")
 
 # Calculate total time of execution
 endTime <- Sys.time()
