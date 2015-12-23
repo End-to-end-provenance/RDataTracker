@@ -2189,6 +2189,7 @@ ddg.MAX_HIST_LINES <- 2^14
           
           # Store information on the last procedure node in this 
           # block.
+          #print (paste (".ddg.parse.commands: last.proc.node being set to ", cmd.abbrev))
           last.proc.node <- cmd.abbrev
           
           # We want to create the incoming data nodes (by updating 
@@ -2226,7 +2227,9 @@ ddg.MAX_HIST_LINES <- 2^14
         }
         
         ###### TODO #######
-        if (execute) {
+        #if (execute) {
+        if (create.procedure && execute) {
+          #print (paste (".ddg.parse.commands, 1st if: last.proc.node =", last.proc.node))
           .ddg.create.data.node.for.possible.writes(vars.set, last.proc.node, env=environ)
           
           # Update so we don't set these again.
@@ -2238,7 +2241,10 @@ ddg.MAX_HIST_LINES <- 2^14
     # Create a data node for each variable that might have been set in 
     # something other than a simple assignment, with an edge from the 
     # last node in the console block or source .
-    if (!execute) .ddg.create.data.node.for.possible.writes(vars.set, last.proc.node, env=environ)
+    if (!execute) {
+      #print (paste (".ddg.parse.commands, 2nd if: last.proc.node =", last.proc.node))
+      .ddg.create.data.node.for.possible.writes(vars.set, last.proc.node, env=environ)
+    }
   }
   
   # Close any node left open during execution.
@@ -3689,10 +3695,10 @@ ddg.return.value <- function (expr=NULL) {
   # Create procedure node.
   #print ("ddg.return.value: orig.expr =")
   #print (orig.expr)
-  pname <- paste(deparse(orig.expr), collapse="")
-  #print ("ddg.return.value: pname =")
-  #print (pname)
-  .ddg.proc.node("Operation", pname, pname, console=TRUE)
+  orig.pname <- paste(deparse(orig.expr), collapse="")
+  #print ("ddg.return.value: orig.pname =")
+  #print (orig.pname)
+  .ddg.proc.node("Operation", orig.pname, orig.pname, console=TRUE)
 
   # Create control flow edge from preceding procedure node.
   .ddg.proc2proc()
@@ -3702,7 +3708,7 @@ ddg.return.value <- function (expr=NULL) {
   for (var in vars.used) {
     scope <- .ddg.get.scope(var)
     if (.ddg.data.node.exists(var, scope)) {
-      .ddg.data2proc(var, scope, pname)
+      .ddg.data2proc(var, scope, orig.pname)
     }
   }
 
@@ -3717,7 +3723,7 @@ ddg.return.value <- function (expr=NULL) {
     dscope <- .ddg.get.scope(var, env=env)
     .ddg.save.data(dname, dvalue, scope=dscope)
     # Create an edge from procedure node to data node.
-    .ddg.proc2data(pname, dname, dscope=dscope, return.value=FALSE)
+    .ddg.proc2data(orig.pname, dname, dscope=dscope, return.value=FALSE)
   }
 
   pname <- NULL
@@ -3816,7 +3822,7 @@ ddg.return.value <- function (expr=NULL) {
   #print ("ddg.return.value: done looking for nodes")
 
   # Create nodes and edges dealing with reading and writing files
-  return.abbrev <- .ddg.abbrev.cmd(return.expr.text.toprint)
+  return.abbrev <- orig.pname
   .ddg.create.file.read.nodes.and.edges(return.abbrev, return.expr, env)          
   .ddg.create.file.write.nodes.and.edges (return.abbrev, return.expr, env)
   .ddg.set.graphics.files (return.expr, env)  
