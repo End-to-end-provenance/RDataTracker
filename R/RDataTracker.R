@@ -1382,7 +1382,9 @@ ddg.MAX_HIST_LINES <- 2^14
           funcs <- find.files.rec (obj[2:length(obj)])
           
           # Add this file name to the list of files being read.
-          if (!is.null(file.name)) {
+          # Make sure the file name could be evaluated and that it results in
+          # a name, not a connection.
+          if (!is.null(file.name) && is.character(file.name)) {
             unique (c (file.name, funcs))
           }
         }
