@@ -102,11 +102,15 @@ ddg.MAX_HIST_LINES <- 2^14
 }
 
 .ddg.annotate.on <- function() {
-  return(.ddg.get("ddg.annotate.on"))
+  return (.ddg.get("ddg.annotate.on"))
 }
 
 .ddg.annotate.off <- function() {
-  return(.ddg.get("ddg.annotate.off"))
+  return (.ddg.get("ddg.annotate.off"))
+}
+
+.ddg.is.sourced <- function() {
+  return (.ddg.get(".ddg.is.sourced"))
 }
 
 .ddg.enable.source <- function(){
@@ -238,6 +242,9 @@ ddg.MAX_HIST_LINES <- 2^14
     
   # Functions not to be annotated.
   .ddg.set("ddg.annotate.off", NULL)
+  
+  # Script sourced with ddg.source
+  .ddg.set(".ddg.is.sourced", FALSE)
 }
 
 # .ddg.set.history provides a wrapper to change the number of 
@@ -1893,8 +1900,9 @@ ddg.MAX_HIST_LINES <- 2^14
 # command, and then creates the data nodes based on the information 
 # available in the environment. If environ is not NULL, calls to 
 # ddg.* are not executed so only the clean script is processed. 
-# If annotate.functions is TRUE, ddg.function and ddg.return.value
-# are added to each function definition before commands are processed.
+# If annotate.functions is TRUE, ddg.function, ddg.eval and ddg.return.value
+# are added to each function definition before commands are processed and
+# the changes are saved to the file annotated-script.r in the ddg directory.
 # ddg.annotate.on and ddg.annotate.off may be used to limit the 
 # functions that are annotated or not annotated, respectively.
 
@@ -2270,7 +2278,8 @@ ddg.MAX_HIST_LINES <- 2^14
   }
   
   # Write time stamp to history.
-  if (.ddg.is.init()) .ddg.write.timestamp.to.history()
+  if (.ddg.is.init() && !.ddg.is.sourced()) .ddg.write.timestamp.to.history()
+
   # print(paste("last.commad:",.ddg.get(".ddg.last.cmd")))
   # print(paste("command:", .ddg.get(".ddg.possible.last.cmd")))
   
@@ -4504,6 +4513,9 @@ ddg.source <- function (file,  ddgdir = NULL, local = FALSE, echo = verbose, pri
   
   # Remove existing files if ddg directory different from working directory
   ddg.flush.ddg()
+  
+  # Set .ddg.is.sourced to TRUE
+  .ddg.set(".ddg.is.sourced", TRUE)
   
   ### CODE IN THIS SECTION IS BASICALLY REPLICATION OF source FUNCTION ###
   
