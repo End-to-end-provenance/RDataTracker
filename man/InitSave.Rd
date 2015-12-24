@@ -60,8 +60,9 @@ ddg.flush.ddg(ddg.path = NULL)
   is provided, the function is executed with calls to ddg.init and ddg.save so that provenance 
   for the function is captured. In either case, if an R error occurs during execution, the error will be
   captured in an Exception node in the provenance graph. If annotate.functions is set to TRUE, 
-  ddg.function and ddg.return.value are added to each function definition before the
-  script is executed. ddg.annotate.on and ddg.annotate.off may be used to limit the functions 
+  ddg.function, ddg.eval, and ddg.return.value are added to each function definition before the
+  script is executed and these changes are saved to the file annotated-script.r in the ddg directory. 
+  ddg.annotate.on and ddg.annotate.off may be used to limit the functions 
   that will be annotated or not annotated, respectively.
   
   ddg.console.on and ddg.console.off toggle the console parameter for DDG creation. 
