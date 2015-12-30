@@ -4451,17 +4451,17 @@ ddg.save <- function(quit=FALSE) {
   # Save procedure nodes table to file.
   fileout <- paste(ddg.path, "/pnodes.txt", sep="")
   ddg.proc.nodes <- .ddg.proc.nodes()
-  write.table(ddg.proc.nodes[ddg.proc.nodes$ddg.num > 0, ], fileout, quote=FALSE, na="", row.names=FALSE, col.names=FALSE)
+  write.table(ddg.proc.nodes[ddg.proc.nodes$ddg.num > 0, ], fileout, quote=FALSE, sep="\t", na="", row.names=FALSE, col.names=TRUE)
   
   # Save data nodes table to file.
   fileout <- paste(ddg.path, "/dnodes.txt", sep="")
   ddg.data.nodes <- .ddg.data.nodes()
-  write.table(ddg.data.nodes[ddg.data.nodes$ddg.num > 0, ], fileout, quote=FALSE, na="", row.names=FALSE, col.names=FALSE)
+  write.table(ddg.data.nodes[ddg.data.nodes$ddg.num > 0, ], fileout, quote=FALSE, sep="\t", na="", row.names=FALSE, col.names=TRUE)
   
   # Save the function return table to file.
   fileout <- paste(ddg.path, "/returns.txt", sep="")
   ddg.returns <- .ddg.get(".ddg.return.values")
-  write.table(ddg.returns[ddg.returns$return.node.id > 0, ], fileout, quote=FALSE, na="", row.names=FALSE, col.names=TRUE)
+  write.table(ddg.returns[ddg.returns$return.node.id > 0, ], fileout, quote=FALSE, sep="\t", na="", row.names=FALSE, col.names=TRUE)
   
   # By convention, this is the final call to ddg.save.
   if (quit) {
