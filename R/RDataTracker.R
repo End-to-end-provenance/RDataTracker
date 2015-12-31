@@ -156,13 +156,14 @@ ddg.MAX_HIST_LINES <- 2^14
           ddg.value = character(size),
           ddg.return.linked = logical(size),
           ddg.auto.created = logical(size),
+          ddg.time = numeric(size),
           stringsAsFactors=FALSE))
   
   .ddg.set("ddg.data.nodes", data.frame(ddg.type = character(size),
           ddg.num = numeric(size),
           ddg.name = character(size),
           ddg.value = character(size),
-          ddg.scope = character(size),                                          
+          ddg.scope = character(size),                                   
           ddg.time = character(size),
           ddg.loc = character(size),
           ddg.current = logical(size), stringsAsFactors=FALSE))
@@ -322,7 +323,9 @@ ddg.MAX_HIST_LINES <- 2^14
 
 .ddg.elapsed.time <- function(){
   time <- proc.time()
-  elapsed <- time[1] +time[2] +time[4] +time[5]
+  elapsed <- time[1] +time[2]
+  # time[4] and time[5] are NA under Windows
+  # elapsed <- time[1] +time[2] +time[4] +time[5]
   return(elapsed)
 }
 
@@ -531,9 +534,11 @@ ddg.MAX_HIST_LINES <- 2^14
 # ptype - procedure node type.
 # pname - procedure node name.
 # pvalue - procedure node value.
-# auto.created - TRUE means the node is being created automatically when a return is found
+# auto.created - TRUE means the node is being created automatically 
+#   when a return is found
+# ptime - elapsed time
 
-.ddg.record.proc <- function(ptype, pname, pvalue, auto.created=FALSE) {
+.ddg.record.proc <- function(ptype, pname, pvalue, auto.created=FALSE, ptime) {
   # If the table is full, make it bigger.
   ddg.pnum <- .ddg.pnum()
   ddg.proc.nodes <- .ddg.proc.nodes()
@@ -545,6 +550,7 @@ ddg.MAX_HIST_LINES <- 2^14
         ddg.value = character(size), 
         ddg.return.linked = logical(size),
         ddg.auto.created = logical(size),
+        ddg.time = numeric(size),
         stringsAsFactors=FALSE)
     .ddg.add.rows("ddg.proc.nodes", new.rows)
     ddg.proc.nodes <- .ddg.proc.nodes()
@@ -555,6 +561,7 @@ ddg.MAX_HIST_LINES <- 2^14
   ddg.proc.nodes$ddg.name[ddg.pnum] <- pname
   ddg.proc.nodes$ddg.value[ddg.pnum] <- pvalue
   ddg.proc.nodes$ddg.auto.created[ddg.pnum] <- auto.created
+  ddg.proc.nodes$ddg.time[ddg.pnum] <- ptime
   .ddg.set("ddg.proc.nodes", ddg.proc.nodes)
   
   if (.ddg.debug()) {
@@ -2329,7 +2336,9 @@ ddg.MAX_HIST_LINES <- 2^14
 # pname - name of procedure node.
 # pvalue (optional) - value of procedure node.
 # console (optional) - if TRUE, console mode is enabled.
-# auto.created - TRUE means that the node is being automatically created when a return call is found
+# auto.created - TRUE means that the node is being automatically 
+#   created when a return call is found
+# ptime - elapsed time
 # env - the environment in which the procedure occurs
 
 # CHECK!  Looks like env parameter is not needed!
@@ -2373,8 +2382,9 @@ ddg.MAX_HIST_LINES <- 2^14
       }
       else ""
   
-  # Obtain the timestamp to  use this procedure node.
-proc.time <- paste0(" Time=\"", .ddg.elapsed.time() , "\"")
+  # Obtain the elapsed time for this procedure node.
+  ptime <- .ddg.elapsed.time()
+  proc.time <- paste0(" Time=\"", ptime , "\"")
   
   # Create procedure node.  
   ddg.pnum <- .ddg.pnum()
@@ -2416,7 +2426,7 @@ proc.time <- paste0(" Time=\"", .ddg.elapsed.time() , "\"")
     }
   }
   .ddg.set(".ddg.last.proc.node.created", paste(ptype, pname))
-  .ddg.record.proc(ptype, pname, pvalue, auto.created)
+  .ddg.record.proc(ptype, pname, pvalue, auto.created, ptime)
   
   #if (ptype == "Finish") print(sys.calls())
   if (.ddg.debug()) print(paste("proc.node:", ptype, pname))
