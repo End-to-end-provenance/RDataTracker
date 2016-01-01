@@ -30,8 +30,9 @@ get.archive.data <- function() {
 get.current.data <- function() {
   # get URL
   current.url <<- "http://harvardforest.fas.harvard.edu/sites/harvardforest.fas.harvard.edu/files/weather/metsta.dat"
+  
   # read current data from HF web server
-  file.in <- file(current.url)
+  file.in <- file(current.url)  
   zz.col <- c("type","year","jul","hm","airt","rh","dewp","prec","slrr","parr","netr","bar","wspd","wres","wdir","wdev","gspd","s10t")
   zz <- read.csv(file.in,col.names=zz.col,header=FALSE)
 
