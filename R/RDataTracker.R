@@ -1647,6 +1647,9 @@ ddg.MAX_HIST_LINES <- 2^14
 # Note: the commented section of code appends the information to 
 # this file.
 
+# savehistory is not supported on all R platforms.  If it is not supported,
+# this will fail silently.
+
 # hist.file - name of history file.
 
 .ddg.savehistory <- function(hist.file) {
@@ -1660,7 +1663,9 @@ ddg.MAX_HIST_LINES <- 2^14
 	if (.ddg.is.set(".ddg.history.file") && 
 	    is.character(.ddg.get(".ddg.history.file")) &&
 	    .ddg.get(".ddg.history.file") == hist.file) {
-		savehistory(hist.file)
+    tryCatch (
+        savehistory(hist.file), 
+        error = function(e) {.ddg.set(".ddg.history.file", NULL)})
 	}
 
 	# USED TO STORE ENTIRE HISTORY IN SEP. FILE.
@@ -2241,6 +2246,7 @@ ddg.MAX_HIST_LINES <- 2^14
   if(.ddg.enable.source()) return(NULL)
   
   ddg.history.file=.ddg.get(".ddg.history.file")
+  print (paste(".ddg.console.node: .ddg.history.file =", ddg.history.file))
   ddg.history.timestamp=.ddg.get(".ddg.history.timestamp")
   
   # Only continue if these values exists.
@@ -4203,8 +4209,9 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, enable.console = TRUE,
     # One timestamp keeps track of last ddg.save (the default).
     .ddg.write.timestamp.to.history()
     
-    # Save the history.
-    savehistory(ddg.history.file)
+    # Save the history if the platform supports it.
+    tryCatch (savehistory(ddg.history.file), 
+        error = function(e) {})
   }
   
   invisible()
