@@ -1710,12 +1710,7 @@ ddg.MAX_HIST_LINES <- 2^14
 	if (.ddg.is.set(".ddg.history.file") && 
 	    is.character(.ddg.get(".ddg.history.file")) &&
 	    .ddg.get(".ddg.history.file") == hist.file) {
-    tryCatch (
-        savehistory(hist.file), 
-        error = 
-            function(e) {	
-              .ddg.set("ddg.history.file", FALSE)
-            })
+      savehistory(hist.file)
 	}
 
 	# USED TO STORE ENTIRE HISTORY IN SEP. FILE.
@@ -2321,21 +2316,29 @@ ddg.MAX_HIST_LINES <- 2^14
   # Only continue if these values exists.
   if (!(is.null(ddg.history.file) || is.null(ddg.history.timestamp))) {
     # Grab any new commands that might still be in history.
-    .ddg.savehistory(ddg.history.file)
+    tryCatch (
+        {
+          # Saving history is not supported on all platforms.
+          .ddg.savehistory(ddg.history.file)
     
-    # Load from extended history since last time we wrote out
-    # a console node.
-    new.lines <- .ddg.loadhistory(ddg.history.file,ddg.history.timestamp)
-
-    # Parse the lines into individual commands.
-    parsed.commands <- .ddg.parse.lines(new.lines)
+          # Load from extended history since last time we wrote out
+          # a console node.
+          new.lines <- .ddg.loadhistory(ddg.history.file,ddg.history.timestamp)
     
-    # New commands since last timestamp.
-    if (!is.null(parsed.commands) && length(parsed.commands) > 0) {
-      .ddg.parse.commands(parsed.commands, 
-          environ = .GlobalEnv,
-          run.commands=FALSE)
-    }
+          # Parse the lines into individual commands.
+          parsed.commands <- .ddg.parse.lines(new.lines)
+    
+          # New commands since last timestamp.
+          if (!is.null(parsed.commands) && length(parsed.commands) > 0) {
+           .ddg.parse.commands(parsed.commands, 
+                environ = .GlobalEnv,
+                run.commands=FALSE)
+          }
+        }, 
+        error = 
+            function(e) {	
+            })
+    
   }
 }
 
@@ -4408,8 +4411,7 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, enable.console = TRUE,
 #   Note that this tests the size of the object that will be turned
 #   into a snapshot, not the size of the resulting snapshot.
 
-#ddg.run <- function(r.script.path = NULL, ddgdir = NULL, f = NULL, enable.console = TRUE, annotate.functions = TRUE, max.snapshot.size = -1) {
-ddg.run <- function(r.script.path = NULL, ddgdir = NULL, f = NULL, enable.console = FALSE, annotate.functions = TRUE, max.snapshot.size = -1) {
+ddg.run <- function(r.script.path = NULL, ddgdir = NULL, f = NULL, enable.console = TRUE, annotate.functions = TRUE, max.snapshot.size = -1) {
   
   ddg.init(r.script.path, ddgdir, enable.console, max.snapshot.size)
   
