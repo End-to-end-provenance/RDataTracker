@@ -2310,7 +2310,6 @@ ddg.MAX_HIST_LINES <- 2^14
   if(.ddg.enable.source()) return(NULL)
   
   ddg.history.file=.ddg.get(".ddg.history.file")
-  print (paste(".ddg.console.node: .ddg.history.file =", ddg.history.file))
   ddg.history.timestamp=.ddg.get(".ddg.history.timestamp")
   
   # Only continue if these values exists.
