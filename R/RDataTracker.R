@@ -1492,15 +1492,15 @@ ddg.MAX_HIST_LINES <- 2^14
 .ddg.create.file.write.functions.df <- function () {
   # Functions that read files
   function.names <-
-    c ("write.csv", "write.csv2", "write.table")
+    c ("write.csv", "write.csv2", "write.table", "ggsave")
   
   # The argument that represents the file name
   param.names <-
-    c ("file", "file", "file")
+    c ("file", "file", "file", "filename")
   
   # Position of the file parameter if it is passed by position
   param.pos <- 
-    c (2, 2, 2)
+    c (2, 2, 2, 1)
   
   return (data.frame (function.names, param.names, param.pos, stringsAsFactors=FALSE))
 }
