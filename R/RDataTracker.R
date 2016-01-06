@@ -117,6 +117,11 @@ ddg.MAX_HIST_LINES <- 2^14
   return(.ddg.is.set("from.source") && .ddg.get("from.source"))
 }
 
+.ddg.start.proc.time <- function() {
+  if (.ddg.is.set(".ddg.proc.start.time")) return (.ddg.get(".ddg.proc.start.time"))
+  else return (0)
+}
+
 ##### Mutators for specific common actions
 
 .ddg.inc <- function(var) {
@@ -323,7 +328,7 @@ ddg.MAX_HIST_LINES <- 2^14
 
 .ddg.elapsed.time <- function(){
   time <- proc.time()
-  elapsed <- time[1] +time[2]
+  elapsed <- time[1] +time[2] - .ddg.start.proc.time()
   # time[4] and time[5] are NA under Windows
   # elapsed <- time[1] +time[2] +time[4] +time[5]
   return(elapsed)
@@ -4381,6 +4386,8 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, enable.console = TRUE,
     tryCatch (savehistory(ddg.history.file), 
         error = function(e) {})
   }
+
+  .ddg.set(".ddg.proc.start.time", .ddg.elapsed.time())
   
   invisible()
 }
