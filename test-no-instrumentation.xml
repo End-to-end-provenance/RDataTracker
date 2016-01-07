@@ -50,6 +50,7 @@
 - ReturnTest
 - OddParameterTest
 - FunctionAnnotationTest
+- WarningTest
 
   The target "script-tests" will run all the short-running scripts:
 
@@ -381,7 +382,19 @@
 	 	</antcall>
 	</target>
 
-	<target name="normal-tests" depends="basicTest, S4ObjectTest, ScopeTest, ReturnTest, OddParameterTest, FunctionAnnotationTest">
+  	<target name="WarningTest">
+  		<antcall target="run-no-instrumentation-test">
+  			<param name="test-name" value="WarningTest" />
+  		</antcall>
+  	</target>
+
+	<target name="update-WarningTest">
+	  	<antcall target="update-no-instrumentation-expected">
+	  		<param name="test-name" value="WarningTest" />
+	 	</antcall>
+	</target>
+
+	<target name="normal-tests" depends="basicTest, S4ObjectTest, ScopeTest, ReturnTest, OddParameterTest, FunctionAnnotationTest, WarningTest">
 		<echo>##############################################
 	      Finished Execution of Normal Tests. Nothing should have malfunctioned.
     	  ##############################################</echo>

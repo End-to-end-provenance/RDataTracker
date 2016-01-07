@@ -122,6 +122,33 @@ ddg.MAX_HIST_LINES <- 2^14
   else return (0)
 }
 
+# Functions that allow us to save warnings when they occur
+# so that we can create the warning node after the node
+# that caused the warning is created.
+
+# .ddg.set.warning is attached as a handler when we evaluate
+# expressions.  It saves the warning so that a warning
+# node can be created after the procedural node that
+# corresponds to the expression that caused the warning
+#
+# w - the simplewarning object created by R
+
+.ddg.set.warning <- function(w) {
+  .ddg.set(".ddg.warning", w)
+}
+
+.ddg.clear.warning <- function() {
+  .ddg.set(".ddg.warning", NA)
+}
+
+.ddg.get.warning <- function () {
+  return (.ddg.get(".ddg.warning"))
+}
+
+.ddg.warning.occurred <- function() {
+  return (.ddg.is.set(".ddg.warning") && !is.na(.ddg.get(".ddg.warning")))
+}
+
 ##### Mutators for specific common actions
 
 .ddg.inc <- function(var) {
@@ -863,10 +890,11 @@ ddg.MAX_HIST_LINES <- 2^14
 # dname - data node name.
 # all (optional) - whether all nodes should be considered (TRUE) 
 #   or only procedure nodes (FALSE).
+# dscope - the scope in which dname should be looked up
 
-.ddg.lastproc2data <- function(dname, all=TRUE) {
+.ddg.lastproc2data <- function(dname, all=TRUE, dscope=NULL) {
   # Get data & procedure numbers.
-  dn <- .ddg.data.number(dname)
+  dn <- .ddg.data.number(dname, dscope)
   pn <- if(all) .ddg.pnum() else .ddg.last.proc.number()
   
   # Create data flow edge from procedure node to data node.
@@ -1914,6 +1942,27 @@ ddg.MAX_HIST_LINES <- 2^14
   return(updated.cmd)
 }
 
+
+# Create the warning node for the saved warning and attach it to the node
+# that created the warning
+
+.ddg.record.warning <- function () {
+  # Get the saved warning
+  w <- .ddg.get.warning()
+  
+  # Create a message that looks like the one R creates
+  callStr <-
+      if (is.null (w$call)) ""
+      else paste ("In ", head (deparse(w$call)), ": ")
+  warningMessage <- paste (callStr, w$message)
+  
+  # Create the warning node
+  .ddg.insert.error.message(warningMessage, "warning.msg", doWarn = FALSE)
+
+	# Clear the saved warning
+  .ddg.clear.warning()
+}
+
 # .ddg.parse.commands takes as input a list of R script commands 
 # and creates DDG nodes for each command. If environ is an 
 # environment, it executes the commands in that environment
@@ -2153,7 +2202,10 @@ ddg.MAX_HIST_LINES <- 2^14
           # Evaluate.
           if (.ddg.debug()) print (paste (".ddg.parse.commands evaluating ", deparse(cmd.expr)))
           
-          result <- eval(cmd.expr, environ, NULL)
+          # Capture any warnings that occur when an expression is evaluated.
+          # Note that we cannot just use a tryCatch here because it behaves slightly differently 
+          # and we would lose the value that eval returns.  withCallingHandlers returns the value.
+          result <- withCallingHandlers (eval(cmd.expr, environ, NULL), warning = .ddg.set.warning)
           
           if (.ddg.debug()) print (paste (".ddg.parse.commands done evaluating ", deparse(cmd.expr)))
           
@@ -2213,11 +2265,15 @@ ddg.MAX_HIST_LINES <- 2^14
         if (create.procedure) {
           
           # Create the procedure node.
-          #print (paste(".ddg.parse.commands creating Operation node: ", cmd.abbrev))        
+          if (.ddg.debug()) print(paste(".ddg.parse.commands: Adding operation node for", cmd.abbrev))
           .ddg.proc.node("Operation", cmd.abbrev, cmd.abbrev, env=environ, console=TRUE)
           .ddg.proc2proc()
-          if (.ddg.debug()) print(paste(".ddg.parse.commands: Adding operation node for", cmd.abbrev))
           
+          # If a warning occurred when cmd was evaluated,
+          # attach a warning node
+          if (.ddg.warning.occurred()) {
+            .ddg.record.warning()
+          }
           # Store information on the last procedure node in this 
           # block.
           #print (paste (".ddg.parse.commands: last.proc.node being set to ", cmd.abbrev))
@@ -2795,11 +2851,16 @@ ddg.MAX_HIST_LINES <- 2^14
 # function.
 
 # msg - error message.
+# msg.type - error or warning
+# scope - scope for evaluating any data
+# doWarn - if true, this function displays a warning
 
-.ddg.insert.error.message <- function(msg) {
-  warning(msg)
-  .ddg.data.node("Exception", "error.msg", msg, "ddg.library")
-  .ddg.lastproc2data("error.msg")
+.ddg.insert.error.message <- function(msg, msg.type="error.msg", scope="ddg.library", doWarn = TRUE) {
+  if (doWarn) {
+    warning(msg)
+  }
+  .ddg.data.node("Exception", msg.type, msg, scope)
+  .ddg.lastproc2data(msg.type, dscope=scope)
 }
 
 # .ddg.lookup.function.name gets the name of the calling function 
@@ -4438,7 +4499,9 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, f = NULL, enable.consol
         ddg.procedure(pname="tryCatch")
         ddg.exception.out("error.msg", e.str, "tryCatch")
       },
-      finally={ddg.save()}
+      finally={
+        ddg.save()
+      }
   )
   invisible()
 }
