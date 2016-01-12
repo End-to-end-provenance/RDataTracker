@@ -4671,7 +4671,11 @@ ddg.source <- function (file,  ddgdir = NULL, local = FALSE, echo = verbose, pri
   source.parsed <- .ddg.get.source.code.line.numbers(file)
   .ddg.set(".ddg.source.parsed", source.parsed)
   .ddg.set(".ddg.parsed.num", 1)
-  
+
+  # save source.parsed table to ddg directory
+  file.out <- file(paste(.ddg.path(), "source-parsed.txt", sep="/"))
+  write.table(source.parsed, file.out, quote=FALSE, sep="\t", na="NA", row.names=FALSE, col.names=TRUE)
+ 
   ### CODE IN THIS SECTION IS BASICALLY REPLICATION OF source FUNCTION ###
   
   # Get the environment under which the script should be executed.
@@ -4924,6 +4928,7 @@ ddg.flush.ddg <- function(ddg.path=NULL) {
     unlink(paste(ddg.path, "dnodes.txt", sep="/"))
     unlink(paste(ddg.path, "pnodes.txt", sep="/"))
     unlink(paste(ddg.path, "returns.txt", sep="/"))
+    unlink(paste(ddg.path, "source-parsed.txt", sep="/"))
     unlink(paste(ddg.path, "annotated-script.r", sep="/"))
     unlink(paste(ddg.path, ".ddghistory", sep="/"))
     unlink(paste(ddg.path,"[1-9]-*.*", sep="/"))
