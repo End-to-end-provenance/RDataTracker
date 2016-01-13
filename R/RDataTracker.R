@@ -1936,58 +1936,62 @@ ddg.MAX_HIST_LINES <- 2^14
 # file - name of source code file
 
 .ddg.get.source.code.line.numbers <- function(file) {
-  # Parse script file and keep source information
-  parsed <- parse(file, keep.source = TRUE)
-  
-  # Get parsed data
-  parsed.data <- getParseData(parsed, includeText = TRUE)
-  
-  # Get index of top-level expressions (but exclude semicolons )
-  exp.index <- which(parsed.data$parent == 0 & parsed.data$text != ";")
-  
-  # Get parsed command numbers
-  parsed.num <- seq(1:length(exp.index))
-  
-  # Get source code line numbers
-  for (i in 1:length(exp.index)) {
-    if (i == 1) source.num <- parsed.data$line1[exp.index[i]]
-    else source.num <- append(source.num, parsed.data$line1[exp.index[i]])
-  }
-    
-  # Create data frame
-  df <- data.frame(source.num, parsed.num)  
-    
-  return(df)
-}
-
-.ddg.get.source.code.line.numbers.xxx <- function(file) {
   # read source code
   script.file <- file(file)
   source.code <- readLines(script.file)
   close(script.file)
-
-  line <- seq(1:length(source.code))
-  command <- rep(0, length(source.code))
-  df <- data.frame(line, command)
-
-  j <- 0
-  source.line <- ""
-
+  
+  # retain line numbers but split lines separated by semicolons
+  index <- 0
+  
   for (i in 1:length(source.code)) {
+    line <- source.code[i]
+    if (line == "") {
+      index <- index + 1
+      if (index == 1) {
+        snum <- i
+        scode <- ""
+      } else {
+        snum <- append(snum, i)
+        scode <- append(scode, "")
+      }
+    } else {
+      split.line <- strsplit(source.code[i], ";")
+      for (j in 1:length(split.line[[1]])) {
+        index <- index + 1
+        if (index == 1) {
+          snum <- i
+          scode <- as.character((split.line[[1]][[j]]))
+        } else {
+          snum <- append(snum, i)
+          scode <- append(scode, as.character(split.line[[1]][[j]]))
+        }
+      }
+    }
+  }
+
+  source.num <- snum
+  parsed.num <- rep(0, length(snum))
+  df <- data.frame(source.num, parsed.num)
+  
+  pnum <- 0
+  source.line <- ""
+  
+  for (i in 1:length(snum)) {
     tryCatch(
       {
-        if (source.line == "") source.line <- source.code[i]
-        else source.line <- paste(source.line, "\n", source.code[i])
+        if (source.line == "") source.line <- scode[i]
+        else source.line <- paste(source.line, "\n", scode[i])
         # try to parse line
         command.line <- parse(text=source.line)
         # comment or white space
         if (length(command.line) == 0) {
-          df$command[i] <- NA
+          df$parsed.num[i] <- NA
           source.line <- ""
-          # R command
+          # parsable R command
         } else {
-          j <- j + 1
-          df$command[i] <- j
+          pnum <- pnum + 1
+          df$parsed.num[i] <- pnum
           source.line <- ""
         }
       },
@@ -1996,16 +2000,20 @@ ddg.MAX_HIST_LINES <- 2^14
       }
     )
   } 
-
+  
   # adjust for blocks
-  for (i in length(source.code):2) {
-    if (!is.na(df$command[i-1]) & !is.na(df$command[i]) & df$command[i-1] == 0 & df$command[i] > 0) {
-      df$command[i-1] <- df$command[i]
-      df$command[i] <- NA
+  for (i in nrow(df):2) {
+    if (!is.na(df$parsed.num[i-1]) & !is.na(df$parsed.num[i]) & df$parsed.num[i-1] == 0 & df$parsed.num[i] > 0) {
+      df$parsed.num[i-1] <- df$parsed.num[i]
+      df$parsed.num[i] <- NA
     }
   }
-
-  return(df)
+  
+  # remove unnecessary rows
+  index <- which(!is.na(df$parsed.num))
+  df2 <- df[index, ]
+  
+  return(df2)
 }
 
 # .ddg.parse.commands takes as input a list of R script commands 
@@ -2500,14 +2508,19 @@ ddg.MAX_HIST_LINES <- 2^14
       else ""
 
   # Get line number of source code if possible
-  parsed.num <- .ddg.parsed.num()
-
-  if (is.na(parsed.num)) {
-    source.num <- NA
-  } else {
+  if (.ddg.is.sourced()) {
+    parsed.num <- .ddg.parsed.num()
     source.parsed <- .ddg.source.parsed()  
-    index <- which(source.parsed[ , "parsed.num"]==parsed.num)
-    source.num <- source.parsed$source.num[index]
+  
+    if (parsed.num > nrow(source.parsed)) {
+      source.num <- NA
+      .ddg.insert.error.message("Source code line numbers may be incorrect")
+    } else {
+      index <- which(source.parsed[ , "parsed.num"]==parsed.num)
+      source.num <- source.parsed$source.num[index]
+    }
+  } else {
+    source.num <- NA
   }
   
   # Add line number
