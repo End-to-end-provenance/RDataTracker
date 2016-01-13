@@ -246,9 +246,6 @@ ddg.MAX_HIST_LINES <- 2^14
   # (used when executing a script using ddg.source).
 	.ddg.set(".ddg.possible.last.cmd", NULL)
 
-	# Used for keeping track of current execution command.
-	.ddg.set("var.num", 1)
-
 	# Keep track of history.
 	.ddg.set(".ddg.history.timestamp", NULL)
 	
@@ -1162,10 +1159,13 @@ ddg.MAX_HIST_LINES <- 2^14
     # The variable was not in the table. Add a new line for this 
     # variable.
 		else {
-			var.num <- .ddg.get("var.num")
-			# Check space.
-			size <- nrow(vars.set)
-			if (var.num > size) vars.set <- .ddg.double.vars.set(vars.set,size)
+			# Find the first empty row
+      empty.rows <- which(vars.set$variable == "")
+      if (length(empty.rows) == 0) {
+        vars.set <- .ddg.double.vars.set(vars.set,nrow(vars.set))
+        empty.rows <- which(vars.set$variable == "")
+      }
+      var.num <- empty.rows[1]
 
 			# Set the variable.
 			vars.set$variable[var.num] <- var
@@ -1177,7 +1177,6 @@ ddg.MAX_HIST_LINES <- 2^14
 				vars.set$possible.first.writer[var.num] <- i
 				vars.set$possible.last.writer[var.num] <- i
 			}
-			.ddg.inc("var.num")
 		}
 	}
 
@@ -1200,7 +1199,6 @@ ddg.MAX_HIST_LINES <- 2^14
   
   # Build the table recording where variables are assigned to or may 
   # be assigned to.
-  .ddg.set("var.num", 1)
   for ( i in 1:length(parsed.commands)) {
     cmd.expr <- parsed.commands[[i]]
     vars.set <- .ddg.add.to.vars.set(vars.set,cmd.expr, i)
@@ -2119,7 +2117,6 @@ ddg.MAX_HIST_LINES <- 2^14
       vars.set <- .ddg.find.var.assignments(parsed.commands)
     } 
     else {
-      .ddg.set("var.num", 1)
       vars.set <- .ddg.create.empty.vars.set()
     }
     
@@ -2288,7 +2285,7 @@ ddg.MAX_HIST_LINES <- 2^14
           }
           
           .ddg.create.data.use.edges.for.console.cmd(vars.set, cmd.abbrev, cmd.expr, i, env=environ)
-          .ddg.create.file.read.nodes.and.edges(cmd.abbrev, cmd.expr, environ)          
+          .ddg.create.file.read.nodes.and.edges(cmd.abbrev, cmd.expr, environ)      
           .ddg.link.function.returns(cmd.text)
           
           if (.ddg.debug()) print(paste(".ddg.parse.commands: Adding input data nodes for", cmd.abbrev))
@@ -2324,6 +2321,7 @@ ddg.MAX_HIST_LINES <- 2^14
         }
       }
     }
+    
     
     # Create a data node for each variable that might have been set in 
     # something other than a simple assignment, with an edge from the 

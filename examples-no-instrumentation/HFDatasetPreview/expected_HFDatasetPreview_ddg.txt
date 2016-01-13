@@ -1,1341 +1,2524 @@
-Architecture="i386"
-OperatingSystem="windows"
+Architecture="x86_64"
+OperatingSystem="unix"
 Language="R"
-LanguageVersion="R version 3.1.1 (2014-07-10)"
-RDataTrackerVersion="1.9"
+LanguageVersion="R version 3.2.3 (2015-12-10)"
+RDataTrackerVersion="2.7"
 Script="[DIR]/HFDatasetPreview.R"
-ProcessFileTimestamp="2015-08-31T18.39.41EDT"
+ProcessFileTimestamp="2016-01-13T16.40.38EST"
 WorkingDirectory="[DIR]"
 DDGDirectory="[DIR]/ddg"
-DateTime="2015-09-20T12.23.17EDT"
-382
-Start p1 "1-HFDatasetPreview.R" Value="HFDatasetPreview.R" Time="2015-09-20T12.22.45EDT";
-Operation p2 "2-library(RCurl)" Value="library(RCurl)" Time="2015-09-20T12.22.45EDT";
+DateTime="2016-01-13T17.36.06EST"
+666
+Start p1 "1-HFDatasetPreview.R" Value="HFDatasetPreview.R" Time="0.117";
+Operation p2 "2-library(RCurl)" Value="library(RCurl)" Time="0.318";
 CF p1 p2
-Operation p3 "3-library(XML)" Value="library(XML)" Time="2015-09-20T12.22.45EDT";
+Operation p3 "3-library(XML)" Value="library(XML)" Time="0.456";
 CF p2 p3
-Operation p4 "4-library(gplots)" Value="library(gplots)" Time="2015-09-20T12.22.46EDT";
+Operation p4 "4-library(gplots)" Value="library(gplots)" Time="0.498";
 CF p3 p4
-Operation p5 "5-hf.eml.dir <- \"http://harvardforest.fas.harvard.edu/sites/ha" Value="hf.eml.dir <- \"http://harvardforest.fas.harvard.edu/sites/ha" Time="2015-09-20T12.22.46EDT";
+Operation p5 "5-hf.eml.dir <- \"http://harvardforest.fas.harvard.edu/sites/ha" Value="hf.eml.dir <- \"http://harvardforest.fas.harvard.edu/sites/ha" Time="0.502";
 CF p4 p5
 Data d1 "1-hf.eml.dir" Value="\"http://harvardforest.fas.harvard.edu/sites/harvardforest.fas.harvard.edu/files/data/eml/\"";
 DF p5 d1
-Operation p6 "6-hf.data.dir <- \"http://harvardforest.fas.harvard.edu/sites/h" Value="hf.data.dir <- \"http://harvardforest.fas.harvard.edu/sites/h" Time="2015-09-20T12.22.46EDT";
+Operation p6 "6-hf.data.dir <- \"http://harvardforest.fas.harvard.edu/sites/h" Value="hf.data.dir <- \"http://harvardforest.fas.harvard.edu/sites/h" Time="0.506";
 CF p5 p6
 Data d2 "2-hf.data.dir" Value="\"http://harvardforest.fas.harvard.edu/sites/harvardforest.fas.harvard.edu/files/data/\"";
 DF p6 d2
-Operation p7 "7-get.parsed.eml <- function(dataset.id) {    eml.url <<- past" Value="get.parsed.eml <- function(dataset.id) {    eml.url <<- past" Time="2015-09-20T12.22.46EDT";
+Operation p7 "7-get.parsed.eml <- function(dataset.id) {    eml.url <<- past" Value="get.parsed.eml <- function(dataset.id) {    eml.url <<- past" Time="0.512";
 CF p6 p7
 Data d3 "3-get.parsed.eml" Value="#ddg.function";
 DF p7 d3
-Operation p8 "8-parse.time.series.string <- function(st) {    stp <- strspli" Value="parse.time.series.string <- function(st) {    stp <- strspli" Time="2015-09-20T12.22.46EDT";
+Operation p8 "8-parse.time.series.string <- function(st) {    stp <- strspli" Value="parse.time.series.string <- function(st) {    stp <- strspli" Time="0.518";
 CF p7 p8
 Data d4 "4-parse.time.series.string" Value="#ddg.function";
 DF p8 d4
-Operation p9 "9-get.time.series.ids <- function(dataset.id) {    xpath <- pa" Value="get.time.series.ids <- function(dataset.id) {    xpath <- pa" Time="2015-09-20T12.22.46EDT";
+Operation p9 "9-get.time.series.ids <- function(dataset.id) {    xpath <- pa" Value="get.time.series.ids <- function(dataset.id) {    xpath <- pa" Time="0.522";
 CF p8 p9
 Data d5 "5-get.time.series.ids" Value="#ddg.function";
 DF p9 d5
-Operation p10 "10-get.datafile.id <- function(dataset.id, datafile.num) {    i" Value="get.datafile.id <- function(dataset.id, datafile.num) {    i" Time="2015-09-20T12.22.46EDT";
+Operation p10 "10-get.datafile.id <- function(dataset.id, datafile.num) {    i" Value="get.datafile.id <- function(dataset.id, datafile.num) {    i" Time="0.527";
 CF p9 p10
 Data d6 "6-get.datafile.id" Value="#ddg.function";
 DF p10 d6
-Operation p11 "11-get.all.datafile.ids <- function(ns) {    datafile.ids <- NU" Value="get.all.datafile.ids <- function(ns) {    datafile.ids <- NU" Time="2015-09-20T12.22.46EDT";
+Operation p11 "11-get.all.datafile.ids <- function(ns) {    datafile.ids <- NU" Value="get.all.datafile.ids <- function(ns) {    datafile.ids <- NU" Time="0.532";
 CF p10 p11
 Data d7 "7-get.all.datafile.ids" Value="#ddg.function";
 DF p11 d7
-Operation p12 "12-get.datafile.ids <- function(dataset.id) {    xpath <- paste" Value="get.datafile.ids <- function(dataset.id) {    xpath <- paste" Time="2015-09-20T12.22.46EDT";
+Operation p12 "12-get.datafile.ids <- function(dataset.id) {    xpath <- paste" Value="get.datafile.ids <- function(dataset.id) {    xpath <- paste" Time="0.537";
 CF p11 p12
 Data d8 "8-get.datafile.ids" Value="#ddg.function";
 DF p12 d8
-Operation p13 "13-get.datafile.name <- function(eml, datafile.id) {    xpath1 " Value="get.datafile.name <- function(eml, datafile.id) {    xpath1 " Time="2015-09-20T12.22.46EDT";
+Operation p13 "13-get.datafile.name <- function(eml, datafile.id) {    xpath1 " Value="get.datafile.name <- function(eml, datafile.id) {    xpath1 " Time="0.541";
 CF p12 p13
 Data d9 "9-get.datafile.name" Value="#ddg.function";
 DF p13 d9
-Operation p14 "14-get.data.url <- function(eml, datafile.id) {    xpath1 <- pa" Value="get.data.url <- function(eml, datafile.id) {    xpath1 <- pa" Time="2015-09-20T12.22.46EDT";
+Operation p14 "14-get.data.url <- function(eml, datafile.id) {    xpath1 <- pa" Value="get.data.url <- function(eml, datafile.id) {    xpath1 <- pa" Time="0.547";
 CF p13 p14
 Data d10 "10-get.data.url" Value="#ddg.function";
 DF p14 d10
-Operation p15 "15-get.data.table.node.set <- function(eml, datafile.id) {    x" Value="get.data.table.node.set <- function(eml, datafile.id) {    x" Time="2015-09-20T12.22.46EDT";
+Operation p15 "15-get.data.table.node.set <- function(eml, datafile.id) {    x" Value="get.data.table.node.set <- function(eml, datafile.id) {    x" Time="0.551";
 CF p14 p15
 Data d11 "11-get.data.table.node.set" Value="#ddg.function";
 DF p15 d11
-Operation p16 "16-get.variable.type <- function(ns) {    x1 <- xpathApply(ns, " Value="get.variable.type <- function(ns) {    x1 <- xpathApply(ns, " Time="2015-09-20T12.22.46EDT";
+Operation p16 "16-get.variable.type <- function(ns) {    x1 <- xpathApply(ns, " Value="get.variable.type <- function(ns) {    x1 <- xpathApply(ns, " Time="0.556";
 CF p15 p16
 Data d12 "12-get.variable.type" Value="#ddg.function";
 DF p16 d12
-Operation p17 "17-get.all.variable.types <- function(ns) {    num <- xmlSize(n" Value="get.all.variable.types <- function(ns) {    num <- xmlSize(n" Time="2015-09-20T12.22.46EDT";
+Operation p17 "17-get.all.variable.types <- function(ns) {    num <- xmlSize(n" Value="get.all.variable.types <- function(ns) {    num <- xmlSize(n" Time="0.56";
 CF p16 p17
 Data d13 "13-get.all.variable.types" Value="#ddg.function";
 DF p17 d13
-Operation p18 "18-get.variable.format.string <- function(ns) {    x <- xpathAp" Value="get.variable.format.string <- function(ns) {    x <- xpathAp" Time="2015-09-20T12.22.46EDT";
+Operation p18 "18-get.variable.format.string <- function(ns) {    x <- xpathAp" Value="get.variable.format.string <- function(ns) {    x <- xpathAp" Time="0.565";
 CF p17 p18
 Data d14 "14-get.variable.format.string" Value="#ddg.function";
 DF p18 d14
-Operation p19 "19-get.all.variable.format.strings <- function(ns) {    num <- " Value="get.all.variable.format.strings <- function(ns) {    num <- " Time="2015-09-20T12.22.46EDT";
+Operation p19 "19-get.all.variable.format.strings <- function(ns) {    num <- " Value="get.all.variable.format.strings <- function(ns) {    num <- " Time="0.57";
 CF p18 p19
 Data d15 "15-get.all.variable.format.strings" Value="#ddg.function";
 DF p19 d15
-Operation p20 "20-get.data.file <- function(data.url, var.types) {    con <- f" Value="get.data.file <- function(data.url, var.types) {    con <- f" Time="2015-09-20T12.22.46EDT";
+Operation p20 "20-get.data.file <- function(data.url, var.types) {    con <- f" Value="get.data.file <- function(data.url, var.types) {    con <- f" Time="0.574";
 CF p19 p20
 Data d16 "16-get.data.file" Value="#ddg.function";
 DF p20 d16
-Operation p21 "21-get.hf.datafile <- function(datafile.id) {    datafile.name " Value="get.hf.datafile <- function(datafile.id) {    datafile.name " Time="2015-09-20T12.22.46EDT";
+Operation p21 "21-get.hf.datafile <- function(datafile.id) {    datafile.name " Value="get.hf.datafile <- function(datafile.id) {    datafile.name " Time="0.579";
 CF p20 p21
 Data d17 "17-get.hf.datafile" Value="#ddg.function";
 DF p21 d17
-Operation p22 "22-get.summary.stats.data.frame <- function(xx) {    sum.types " Value="get.summary.stats.data.frame <- function(xx) {    sum.types " Time="2015-09-20T12.22.46EDT";
+Operation p22 "22-get.summary.stats.data.frame <- function(xx) {    sum.types " Value="get.summary.stats.data.frame <- function(xx) {    sum.types " Time="0.584";
 CF p21 p22
 Data d18 "18-get.summary.stats.data.frame" Value="#ddg.function";
 DF p22 d18
-Operation p23 "23-get.plot.dataframe <- function(xx, max.rows) {    plt.types " Value="get.plot.dataframe <- function(xx, max.rows) {    plt.types " Time="2015-09-20T12.22.46EDT";
+Operation p23 "23-get.plot.dataframe <- function(xx, max.rows) {    plt.types " Value="get.plot.dataframe <- function(xx, max.rows) {    plt.types " Time="0.589";
 CF p22 p23
 Data d19 "19-get.plot.dataframe" Value="#ddg.function";
 DF p23 d19
-Operation p24 "24-create.summary.stats.table <- function(xx) {    xx.sum <- ge" Value="create.summary.stats.table <- function(xx) {    xx.sum <- ge" Time="2015-09-20T12.22.46EDT";
+Operation p24 "24-create.summary.stats.table <- function(xx) {    xx.sum <- ge" Value="create.summary.stats.table <- function(xx) {    xx.sum <- ge" Time="0.596";
 CF p23 p24
 Data d20 "20-create.summary.stats.table" Value="#ddg.function";
 DF p24 d20
-Operation p25 "25-create.time.series.plot <- function(xx) {    xx.plt <- get.p" Value="create.time.series.plot <- function(xx) {    xx.plt <- get.p" Time="2015-09-20T12.22.46EDT";
+Operation p25 "25-create.time.series.plot <- function(xx) {    xx.plt <- get.p" Value="create.time.series.plot <- function(xx) {    xx.plt <- get.p" Time="0.604";
 CF p24 p25
 Data d21 "21-create.time.series.plot" Value="#ddg.function";
 DF p25 d21
-Operation p26 "26-create.scatterplot.matrix <- function(xx) {    xx.plt <- get" Value="create.scatterplot.matrix <- function(xx) {    xx.plt <- get" Time="2015-09-20T12.22.46EDT";
+Operation p26 "26-create.scatterplot.matrix <- function(xx) {    xx.plt <- get" Value="create.scatterplot.matrix <- function(xx) {    xx.plt <- get" Time="0.609";
 CF p25 p26
 Data d22 "22-create.scatterplot.matrix" Value="#ddg.function";
 DF p26 d22
-Operation p27 "27-get.plot.type <- function(datafile.id) {    num <- as.intege" Value="get.plot.type <- function(datafile.id) {    num <- as.intege" Time="2015-09-20T12.22.46EDT";
+Operation p27 "27-get.plot.type <- function(datafile.id) {    num <- as.intege" Value="get.plot.type <- function(datafile.id) {    num <- as.intege" Time="0.615";
 CF p26 p27
 Data d23 "23-get.plot.type" Value="#ddg.function";
 DF p27 d23
-Operation p28 "28-create.datafile.preview <- function(datafile.id) {    dd <<-" Value="create.datafile.preview <- function(datafile.id) {    dd <<-" Time="2015-09-20T12.22.46EDT";
+Operation p28 "28-create.datafile.preview <- function(datafile.id) {    dd <<-" Value="create.datafile.preview <- function(datafile.id) {    dd <<-" Time="0.619";
 CF p27 p28
 Data d24 "24-create.datafile.preview" Value="#ddg.function";
 DF p28 d24
-Operation p29 "29-dataset.id <- \"hf000\"" Value="dataset.id <- \"hf000\"" Time="2015-09-20T12.22.46EDT";
+Operation p29 "29-dataset.id <- \"hf000\"" Value="dataset.id <- \"hf000\"" Time="0.624";
 CF p28 p29
 Data d25 "25-dataset.id" Value="\"hf000\"";
 DF p29 d25
-Operation p30 "30-datafile.num <- 0" Value="datafile.num <- 0" Time="2015-09-20T12.22.46EDT";
+Operation p30 "30-datafile.num <- 0" Value="datafile.num <- 0" Time="0.628";
 CF p29 p30
 Data d26 "26-datafile.num" Value="0";
 DF p30 d26
-Start p31 "31-eml <- get.parsed.eml(dataset.id)" Value="eml <- get.parsed.eml(dataset.id)" Time="2015-09-20T12.22.46EDT";
+Start p31 "31-eml <- get.parsed.eml(dataset.id)" Value="eml <- get.parsed.eml(dataset.id)" Time="0.633";
 CF p30 p31
-Start p32 "32-get.parsed.eml(dataset.id)" Value="get.parsed.eml(dataset.id)" Time="2015-09-20T12.22.46EDT";
+Start p32 "32-get.parsed.eml(dataset.id)" Value="get.parsed.eml(dataset.id)" Time="0.633";
 CF p31 p32
-Binding p33 "33-dataset.id  <-  dataset.id" Time="2015-09-20T12.22.46EDT"
+Binding p33 "33-dataset.id  <-  dataset.id" Time="0.634"
 CF p32 p33
 DF d25 p33
 Data d27 "27-dataset.id" Value="\"hf000\"";
 DF p33 d27
-Operation p34 "34-get.parsed.eml" Value="get.parsed.eml" Time="2015-09-20T12.22.46EDT";
+Operation p34 "34-get.parsed.eml" Value="get.parsed.eml" Time="0.639";
 DF d3 p34
 DF d27 p34
 CF p33 p34
-Snapshot d28 "28-get.parsed.eml(dataset.id) return" Value="[DIR]/ddg/28-get.parsed.eml(dataset.id) return.txt" Time="2015-09-20T12.22.50EDT";
-Operation p35 "35-return (eml)" Value="return (eml)" Time="2015-09-20T12.22.50EDT";
+Operation p35 "35-eml.url <<- paste(hf.eml.dir, dataset.id, \".xml\", sep = \"\")" Value="eml.url <<- paste(hf.eml.dir, dataset.id, \".xml\", sep = \"\")" Time="0.648";
 CF p34 p35
+DF d27 p35
+Data d28 "28-eml.url" Value="\"http://harvardforest.fas.harvard.edu/sites/harvardforest.fas.harvard.edu/files/data/eml/hf000.xml\"";
 DF p35 d28
-Finish p36 "36-get.parsed.eml(dataset.id)" Value="get.parsed.eml(dataset.id)" Time="2015-09-20T12.22.50EDT";
+Operation p36 "36-if (!url.exists(eml.url)) {    msg <- paste(dataset.id, \": E" Value="if (!url.exists(eml.url)) {    msg <- paste(dataset.id, \": E" Time="0.664";
 CF p35 p36
-Finish p37 "37-eml <- get.parsed.eml(dataset.id)" Value="eml <- get.parsed.eml(dataset.id)" Time="2015-09-20T12.22.50EDT";
+DF d27 p36
+Snapshot d29 "29-eml" Value="[DIR]/ddg/29-eml.xml" Time="2016-01-13T17.35.51EST";
+DF p36 d29
+Operation p37 "37-eml" Value="eml" Time="0.687";
 CF p36 p37
-DF d28 p37
-Snapshot d29 "29-eml" Value="[DIR]/ddg/29-eml.txt" Time="2015-09-20T12.22.50EDT";
-DF p37 d29
-Start p38 "38-time.series.ids <- get.time.series.ids(dataset.id)" Value="time.series.ids <- get.time.series.ids(dataset.id)" Time="2015-09-20T12.22.50EDT";
+Snapshot d30 "30-get.parsed.eml(dataset.id) return" Value="[DIR]/ddg/30-get.parsed.eml(dataset.id) return.xml" Time="2016-01-13T17.35.51EST";
+Operation p38 "38-return (eml)" Value="return (eml)" Time="0.692";
 CF p37 p38
-Start p39 "39-get.time.series.ids(dataset.id)" Value="get.time.series.ids(dataset.id)" Time="2015-09-20T12.22.50EDT";
+DF p38 d30
+Finish p39 "39-get.parsed.eml(dataset.id)" Value="get.parsed.eml(dataset.id)" Time="0.696";
 CF p38 p39
-Binding p40 "40-dataset.id  <-  dataset.id" Time="2015-09-20T12.22.50EDT"
+Finish p40 "40-eml <- get.parsed.eml(dataset.id)" Value="eml <- get.parsed.eml(dataset.id)" Time="0.698";
 CF p39 p40
-DF d25 p40
-Data d30 "30-dataset.id" Value="\"hf000\"";
-DF p40 d30
-Operation p41 "41-get.time.series.ids" Value="get.time.series.ids" Time="2015-09-20T12.22.50EDT";
-DF d5 p41
-DF d30 p41
+DF d30 p40
+Snapshot d31 "31-eml" Value="[DIR]/ddg/31-eml.xml" Time="2016-01-13T17.35.51EST";
+DF p40 d31
+Start p41 "41-time.series.ids <- get.time.series.ids(dataset.id)" Value="time.series.ids <- get.time.series.ids(dataset.id)" Time="0.703";
 CF p40 p41
-Start p42 "42-parse.time.series.string(st)" Value="parse.time.series.string(st)" Time="2015-09-20T12.22.50EDT";
+Start p42 "42-get.time.series.ids(dataset.id)" Value="get.time.series.ids(dataset.id)" Time="0.704";
 CF p41 p42
-Binding p43 "43-st  <-  st" Time="2015-09-20T12.22.50EDT"
+Binding p43 "43-dataset.id  <-  dataset.id" Time="0.704"
 CF p42 p43
-Data d31 "31-st" Value="\"1,2\"";
-DF p43 d31
-Operation p44 "44-parse.time.series.string" Value="parse.time.series.string" Time="2015-09-20T12.22.50EDT";
-DF d4 p44
-DF d31 p44
+DF d25 p43
+Data d32 "32-dataset.id" Value="\"hf000\"";
+DF p43 d32
+Operation p44 "44-get.time.series.ids" Value="get.time.series.ids" Time="0.709";
+DF d5 p44
+DF d32 p44
 CF p43 p44
-Snapshot d32 "32-parse.time.series.string(st) return" Value="[DIR]/ddg/32-parse.time.series.string(st) return.csv" Time="2015-09-20T12.22.50EDT";
-Operation p45 "45-return (ids)" Value="return (ids)" Time="2015-09-20T12.22.50EDT";
+Operation p45 "45-xpath <- paste(\"//additionalMetadata/metadata/additionalClas" Value="xpath <- paste(\"//additionalMetadata/metadata/additionalClas" Time="0.717";
 CF p44 p45
-DF p45 d32
-Finish p46 "46-parse.time.series.string(st)" Value="parse.time.series.string(st)" Time="2015-09-20T12.22.50EDT";
+Data d33 "33-xpath" Value="\"//additionalMetadata/metadata/additionalClassifications/timeSeries\"";
+DF p45 d33
+Operation p46 "46-ns <- getNodeSet(eml, xpath, fun = xmlValue)" Value="ns <- getNodeSet(eml, xpath, fun = xmlValue)" Time="0.723";
 CF p45 p46
-Snapshot d33 "33-get.time.series.ids(dataset.id) return" Value="[DIR]/ddg/33-get.time.series.ids(dataset.id) return.csv" Time="2015-09-20T12.22.50EDT";
-Operation p47 "47-return (time.series.ids)" Value="return (time.series.ids)" Time="2015-09-20T12.22.50EDT";
+DF d33 p46
+Snapshot d34 "34-ns" Value="[DIR]/ddg/34-ns.csv" Time="2016-01-13T17.35.51EST";
+DF p46 d34
+Start p47 "47-if (length(ns) == 0) {    time.series.ids <- NULL} else {   " Value="if (length(ns) == 0) {    time.series.ids <- NULL} else {   " Time="0.737";
 CF p46 p47
-DF p47 d33
-Finish p48 "48-get.time.series.ids(dataset.id)" Value="get.time.series.ids(dataset.id)" Time="2015-09-20T12.22.50EDT";
+Start p48 "48-parse.time.series.string(st)" Value="parse.time.series.string(st)" Time="0.737";
 CF p47 p48
-Finish p49 "49-time.series.ids <- get.time.series.ids(dataset.id)" Value="time.series.ids <- get.time.series.ids(dataset.id)" Time="2015-09-20T12.22.50EDT";
+Binding p49 "49-st  <-  st" Time="0.738"
 CF p48 p49
-DF d33 p49
-Snapshot d34 "34-time.series.ids" Value="[DIR]/ddg/34-time.series.ids.csv" Time="2015-09-20T12.22.50EDT";
-DF p49 d34
-Start p50 "50-if (datafile.num != 0) {    datafile.id <- get.datafile.id(d" Value="if (datafile.num != 0) {    datafile.id <- get.datafile.id(d" Time="2015-09-20T12.22.50EDT";
+Data d35 "35-st" Value="\"1,2\"";
+DF p49 d35
+Operation p50 "50-parse.time.series.string" Value="parse.time.series.string" Time="0.741";
+DF d4 p50
+DF d35 p50
 CF p49 p50
-Start p51 "51-get.datafile.ids(dataset.id)" Value="get.datafile.ids(dataset.id)" Time="2015-09-20T12.22.50EDT";
+Operation p51 "51-stp <- strsplit(st, \",\")" Value="stp <- strsplit(st, \",\")" Time="0.75";
 CF p50 p51
-Binding p52 "52-dataset.id  <-  dataset.id" Time="2015-09-20T12.22.50EDT"
+DF d35 p51
+Snapshot d36 "36-stp" Value="[DIR]/ddg/36-stp.csv" Time="2016-01-13T17.35.51EST";
+DF p51 d36
+Operation p52 "52-for (i in 1:length(stp[[1]])) {    if (i == 1) {        ids " Value="for (i in 1:length(stp[[1]])) {    if (i == 1) {        ids " Time="0.76";
 CF p51 p52
-DF d25 p52
-Data d35 "35-dataset.id" Value="\"hf000\"";
-DF p52 d35
-Operation p53 "53-get.datafile.ids" Value="get.datafile.ids" Time="2015-09-20T12.22.50EDT";
-DF d8 p53
-DF d35 p53
+DF d36 p52
+Data d37 "37-ids" Value="1,2";
+DF p52 d37
+Operation p53 "53-ids" Value="ids" Time="0.782";
 CF p52 p53
-Start p54 "54-get.all.datafile.ids(ns)" Value="get.all.datafile.ids(ns)" Time="2015-09-20T12.22.50EDT";
+Snapshot d38 "38-parse.time.series.string(st) return" Value="[DIR]/ddg/38-parse.time.series.string(st) return.csv" Time="2016-01-13T17.35.51EST";
+Operation p54 "54-return (ids)" Value="return (ids)" Time="0.787";
 CF p53 p54
-Binding p55 "55-ns  <-  ns" Time="2015-09-20T12.22.50EDT"
+DF p54 d38
+Finish p55 "55-parse.time.series.string(st)" Value="parse.time.series.string(st)" Time="0.791";
 CF p54 p55
-Snapshot d36 "36-ns" Value="[DIR]/ddg/36-ns.txt" Time="2015-09-20T12.22.50EDT";
-DF p55 d36
-Operation p56 "56-get.all.datafile.ids" Value="get.all.datafile.ids" Time="2015-09-20T12.22.50EDT";
-DF d7 p56
-DF d36 p56
+Finish p56 "56-if (length(ns) == 0) {    time.series.ids <- NULL} else {   " Value="if (length(ns) == 0) {    time.series.ids <- NULL} else {   " Time="0.791";
 CF p55 p56
-Snapshot d37 "37-get.all.datafile.ids(ns) return" Value="[DIR]/ddg/37-get.all.datafile.ids(ns) return.csv" Time="2015-09-20T12.22.50EDT";
-Operation p57 "57-return (datafile.ids)" Value="return (datafile.ids)" Time="2015-09-20T12.22.50EDT";
+DF d38 p56
+Operation p57 "57-time.series.ids" Value="time.series.ids" Time="0.793";
 CF p56 p57
-DF p57 d37
-Finish p58 "58-get.all.datafile.ids(ns)" Value="get.all.datafile.ids(ns)" Time="2015-09-20T12.22.50EDT";
+Snapshot d39 "39-get.time.series.ids(dataset.id) return" Value="[DIR]/ddg/39-get.time.series.ids(dataset.id) return.csv" Time="2016-01-13T17.35.51EST";
+Operation p58 "58-return (time.series.ids)" Value="return (time.series.ids)" Time="0.798";
 CF p57 p58
-Snapshot d38 "38-get.datafile.ids(dataset.id) return" Value="[DIR]/ddg/38-get.datafile.ids(dataset.id) return.csv" Time="2015-09-20T12.22.50EDT";
-Operation p59 "59-return (datafile.ids)" Value="return (datafile.ids)" Time="2015-09-20T12.22.50EDT";
+DF p58 d39
+Finish p59 "59-get.time.series.ids(dataset.id)" Value="get.time.series.ids(dataset.id)" Time="0.802";
 CF p58 p59
-DF p59 d38
-Finish p60 "60-get.datafile.ids(dataset.id)" Value="get.datafile.ids(dataset.id)" Time="2015-09-20T12.22.50EDT";
+Finish p60 "60-time.series.ids <- get.time.series.ids(dataset.id)" Value="time.series.ids <- get.time.series.ids(dataset.id)" Time="0.803";
 CF p59 p60
-Start p61 "61-create.datafile.preview(datafile.id)" Value="create.datafile.preview(datafile.id)" Time="2015-09-20T12.22.50EDT";
+DF d39 p60
+Snapshot d40 "40-time.series.ids" Value="[DIR]/ddg/40-time.series.ids.csv" Time="2016-01-13T17.35.51EST";
+DF p60 d40
+Start p61 "61-if (datafile.num != 0) {    datafile.id <- get.datafile.id(d" Value="if (datafile.num != 0) {    datafile.id <- get.datafile.id(d" Time="0.807";
 CF p60 p61
-Binding p62 "62-datafile.id  <-  datafile.id" Time="2015-09-20T12.22.50EDT"
+Start p62 "62-get.datafile.ids(dataset.id)" Value="get.datafile.ids(dataset.id)" Time="0.808";
 CF p61 p62
-Data d39 "39-datafile.id" Value="\"hf000-01\"";
-DF p62 d39
-Operation p63 "63-create.datafile.preview" Value="create.datafile.preview" Time="2015-09-20T12.22.50EDT";
-DF d24 p63
-DF d39 p63
+Binding p63 "63-dataset.id  <-  dataset.id" Time="0.808"
 CF p62 p63
-Start p64 "64-get.hf.datafile(datafile.id)" Value="get.hf.datafile(datafile.id)" Time="2015-09-20T12.22.50EDT";
+DF d25 p63
+Data d41 "41-dataset.id" Value="\"hf000\"";
+DF p63 d41
+Operation p64 "64-get.datafile.ids" Value="get.datafile.ids" Time="0.813";
+DF d8 p64
+DF d41 p64
 CF p63 p64
-Binding p65 "65-datafile.id  <-  datafile.id" Time="2015-09-20T12.22.50EDT"
+Operation p65 "65-xpath <- paste(\"//dataTable\", sep = \"\")" Value="xpath <- paste(\"//dataTable\", sep = \"\")" Time="0.82";
 CF p64 p65
-DF d39 p65
-Data d40 "40-datafile.id" Value="\"hf000-01\"";
-DF p65 d40
-Operation p66 "66-get.hf.datafile" Value="get.hf.datafile" Time="2015-09-20T12.22.50EDT";
-DF d17 p66
-DF d40 p66
+Data d42 "42-xpath" Value="\"//dataTable\"";
+DF p65 d42
+Operation p66 "66-ns <- getNodeSet(eml, xpath)" Value="ns <- getNodeSet(eml, xpath)" Time="0.826";
 CF p65 p66
-Start p67 "67-get.datafile.name(eml, datafile.id)" Value="get.datafile.name(eml, datafile.id)" Time="2015-09-20T12.22.50EDT";
+DF d42 p66
+Snapshot d43 "43-ns" Value="[DIR]/ddg/43-ns.csv" Time="2016-01-13T17.35.51EST";
+DF p66 d43
+Start p67 "67-datafile.ids <- get.all.datafile.ids(ns)" Value="datafile.ids <- get.all.datafile.ids(ns)" Time="0.838";
 CF p66 p67
-Binding p68 "68-eml  <-  eml" Time="2015-09-20T12.22.50EDT"
+Start p68 "68-get.all.datafile.ids(ns)" Value="get.all.datafile.ids(ns)" Time="0.838";
 CF p67 p68
-DF d29 p68
-Snapshot d41 "41-eml" Value="[DIR]/ddg/41-eml.txt" Time="2015-09-20T12.22.50EDT";
-DF p68 d41
-Binding p69 "69-datafile.id  <-  datafile.id" Time="2015-09-20T12.22.50EDT"
+Binding p69 "69-ns  <-  ns" Time="0.839"
 CF p68 p69
-DF d40 p69
-Data d42 "42-datafile.id" Value="\"hf000-01\"";
-DF p69 d42
-Operation p70 "70-get.datafile.name" Value="get.datafile.name" Time="2015-09-20T12.22.50EDT";
-DF d9 p70
-DF d41 p70
-DF d42 p70
+DF d43 p69
+Snapshot d44 "44-ns" Value="[DIR]/ddg/44-ns.csv" Time="2016-01-13T17.35.51EST";
+DF p69 d44
+Operation p70 "70-get.all.datafile.ids" Value="get.all.datafile.ids" Time="0.845";
+DF d7 p70
+DF d44 p70
 CF p69 p70
-Data d43 "43-get.datafile.name(eml,datafile.id) return" Value="\"hf000-01-daily-m.csv\"";
-Operation p71 "71-return (name)" Value="return (name)" Time="2015-09-20T12.22.50EDT";
+Operation p71 "71-datafile.ids <- NULL" Value="datafile.ids <- NULL" Time="0.851";
 CF p70 p71
-DF p71 d43
-Finish p72 "72-get.datafile.name(eml, datafile.id)" Value="get.datafile.name(eml, datafile.id)" Time="2015-09-20T12.22.50EDT";
+Data d45 "45-datafile.ids" Value="NULL";
+DF p71 d45
+Operation p72 "72-num <- xmlSize(ns)" Value="num <- xmlSize(ns)" Time="0.855";
 CF p71 p72
-Start p73 "73-get.data.url(eml, datafile.id)" Value="get.data.url(eml, datafile.id)" Time="2015-09-20T12.22.50EDT";
+DF d44 p72
+Data d46 "46-num" Value="2";
+DF p72 d46
+Operation p73 "73-if (num > 0) {    ns2 <- xmlSApply(ns, xmlGetAttr, \"id\")    " Value="if (num > 0) {    ns2 <- xmlSApply(ns, xmlGetAttr, \"id\")    " Time="0.862";
 CF p72 p73
-Binding p74 "74-eml  <-  eml" Time="2015-09-20T12.22.50EDT"
+DF d46 p73
+DF d44 p73
+DF d45 p73
+Data d47 "47-ns2" Value="\"HF000-01\",\"HF000-02\"";
+DF p73 d47
+Data d48 "48-datafile.id" Value="\"hf000-02\"";
+DF p73 d48
+Data d49 "49-datafile.ids" Value="\"hf000-01\",\"hf000-02\"";
+DF p73 d49
+Operation p74 "74-datafile.ids" Value="datafile.ids" Time="0.898";
 CF p73 p74
-DF d29 p74
-Snapshot d44 "44-eml" Value="[DIR]/ddg/44-eml.txt" Time="2015-09-20T12.22.50EDT";
-DF p74 d44
-Binding p75 "75-datafile.id  <-  datafile.id" Time="2015-09-20T12.22.50EDT"
+DF d45 p74
+Snapshot d50 "50-get.all.datafile.ids(ns) return" Value="[DIR]/ddg/50-get.all.datafile.ids(ns) return.csv" Time="2016-01-13T17.35.51EST";
+Operation p75 "75-return (datafile.ids)" Value="return (datafile.ids)" Time="0.904";
 CF p74 p75
-DF d40 p75
-Data d45 "45-datafile.id" Value="\"hf000-01\"";
-DF p75 d45
-Operation p76 "76-get.data.url" Value="get.data.url" Time="2015-09-20T12.22.50EDT";
-DF d10 p76
-DF d44 p76
-DF d45 p76
+DF d45 p75
+DF p75 d50
+Finish p76 "76-get.all.datafile.ids(ns)" Value="get.all.datafile.ids(ns)" Time="0.908";
 CF p75 p76
-Data d46 "46-get.data.url(eml,datafile.id) return" Value="\"http://harvardforest.fas.harvard.edu/data/p00/hf000/hf000-01-daily-m.csv\"";
-Operation p77 "77-return (data.url)" Value="return (data.url)" Time="2015-09-20T12.22.51EDT";
+Finish p77 "77-datafile.ids <- get.all.datafile.ids(ns)" Value="datafile.ids <- get.all.datafile.ids(ns)" Time="0.909";
 CF p76 p77
-DF p77 d46
-Finish p78 "78-get.data.url(eml, datafile.id)" Value="get.data.url(eml, datafile.id)" Time="2015-09-20T12.22.51EDT";
+DF d50 p77
+Snapshot d51 "51-datafile.ids" Value="[DIR]/ddg/51-datafile.ids.csv" Time="2016-01-13T17.35.51EST";
+DF p77 d51
+Operation p78 "78-datafile.ids" Value="datafile.ids" Time="0.913";
 CF p77 p78
-Start p79 "79-get.data.table.node.set(eml, datafile.id)" Value="get.data.table.node.set(eml, datafile.id)" Time="2015-09-20T12.22.51EDT";
+DF d51 p78
+Snapshot d52 "52-get.datafile.ids(dataset.id) return" Value="[DIR]/ddg/52-get.datafile.ids(dataset.id) return.csv" Time="2016-01-13T17.35.51EST";
+Operation p79 "79-return (datafile.ids)" Value="return (datafile.ids)" Time="0.917";
 CF p78 p79
-Binding p80 "80-eml  <-  eml" Time="2015-09-20T12.22.51EDT"
+DF d51 p79
+DF p79 d52
+Finish p80 "80-get.datafile.ids(dataset.id)" Value="get.datafile.ids(dataset.id)" Time="0.921";
 CF p79 p80
-DF d29 p80
-Snapshot d47 "47-eml" Value="[DIR]/ddg/47-eml.txt" Time="2015-09-20T12.22.51EDT";
-DF p80 d47
-Binding p81 "81-datafile.id  <-  datafile.id" Time="2015-09-20T12.22.51EDT"
+Start p81 "81-create.datafile.preview(datafile.id)" Value="create.datafile.preview(datafile.id)" Time="0.921";
 CF p80 p81
-DF d40 p81
-Data d48 "48-datafile.id" Value="\"hf000-01\"";
-DF p81 d48
-Operation p82 "82-get.data.table.node.set" Value="get.data.table.node.set" Time="2015-09-20T12.22.51EDT";
-DF d11 p82
-DF d47 p82
-DF d48 p82
+Binding p82 "82-datafile.id  <-  datafile.id" Time="0.922"
 CF p81 p82
-Snapshot d49 "49-get.data.table.node.set(eml,datafile.id) return" Value="[DIR]/ddg/49-get.data.table.node.set(eml,datafile.id) return.txt" Time="2015-09-20T12.22.51EDT";
-Operation p83 "83-return (ns)" Value="return (ns)" Time="2015-09-20T12.22.51EDT";
+Data d53 "53-datafile.id" Value="\"hf000-01\"";
+DF p82 d53
+Operation p83 "83-create.datafile.preview" Value="create.datafile.preview" Time="0.926";
+DF d24 p83
+DF d53 p83
 CF p82 p83
-DF p83 d49
-Finish p84 "84-get.data.table.node.set(eml, datafile.id)" Value="get.data.table.node.set(eml, datafile.id)" Time="2015-09-20T12.22.51EDT";
+Start p84 "84-dd <<- get.hf.datafile(datafile.id)" Value="dd <<- get.hf.datafile(datafile.id)" Time="0.931";
 CF p83 p84
-Start p85 "85-get.all.variable.types(ns)" Value="get.all.variable.types(ns)" Time="2015-09-20T12.22.51EDT";
+Start p85 "85-get.hf.datafile(datafile.id)" Value="get.hf.datafile(datafile.id)" Time="0.932";
 CF p84 p85
-Binding p86 "86-ns  <-  ns" Time="2015-09-20T12.22.51EDT"
+Binding p86 "86-datafile.id  <-  datafile.id" Time="0.932"
 CF p85 p86
-Snapshot d50 "50-ns" Value="[DIR]/ddg/50-ns.txt" Time="2015-09-20T12.22.51EDT";
-DF p86 d50
-Operation p87 "87-get.all.variable.types" Value="get.all.variable.types" Time="2015-09-20T12.22.51EDT";
-DF d13 p87
-DF d50 p87
+DF d53 p86
+Data d54 "54-datafile.id" Value="\"hf000-01\"";
+DF p86 d54
+Operation p87 "87-get.hf.datafile" Value="get.hf.datafile" Time="0.935";
+DF d17 p87
+DF d54 p87
 CF p86 p87
-Start p88 "88-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="2015-09-20T12.22.51EDT";
+Start p88 "88-datafile.name <<- get.datafile.name(eml, datafile.id)" Value="datafile.name <<- get.datafile.name(eml, datafile.id)" Time="0.967";
 CF p87 p88
-Binding p89 "89-ns  <-  ns[[i]]" Time="2015-09-20T12.22.51EDT"
+Start p89 "89-get.datafile.name(eml, datafile.id)" Value="get.datafile.name(eml, datafile.id)" Time="0.968";
 CF p88 p89
-DF d50 p89
-Snapshot d51 "51-ns" Value="[DIR]/ddg/51-ns.txt" Time="2015-09-20T12.22.51EDT";
-DF p89 d51
-Operation p90 "90-get.variable.type" Value="get.variable.type" Time="2015-09-20T12.22.51EDT";
-DF d12 p90
-DF d51 p90
+Binding p90 "90-eml  <-  eml" Time="0.968"
 CF p89 p90
-Data d52 "52-get.variable.type(ns[[i]]) return" Value="\"Date\"";
-Operation p91 "91-return (var.type)" Value="return (var.type)" Time="2015-09-20T12.22.51EDT";
+DF d31 p90
+Snapshot d55 "55-eml" Value="[DIR]/ddg/55-eml.xml" Time="2016-01-13T17.35.51EST";
+DF p90 d55
+Binding p91 "91-datafile.id  <-  datafile.id" Time="0.972"
 CF p90 p91
-DF p91 d52
-Finish p92 "92-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="2015-09-20T12.22.51EDT";
+DF d54 p91
+Data d56 "56-datafile.id" Value="\"hf000-01\"";
+DF p91 d56
+Operation p92 "92-get.datafile.name" Value="get.datafile.name" Time="0.975";
+DF d9 p92
+DF d55 p92
+DF d56 p92
 CF p91 p92
-Start p93 "93-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="2015-09-20T12.22.51EDT";
+Operation p93 "93-xpath1 <- paste(\"//dataTable[@id='\", datafile.id, \"']/entity" Value="xpath1 <- paste(\"//dataTable[@id='\", datafile.id, \"']/entity" Time="0.982";
 CF p92 p93
-Binding p94 "94-ns  <-  ns[[i]]" Time="2015-09-20T12.22.51EDT"
+DF d56 p93
+Data d57 "57-xpath1" Value="\"//dataTable[@id='hf000-01']/entityName\"";
+DF p93 d57
+Operation p94 "94-xpath2 <- paste(\"//dataTable[@id='\", toupper(datafile.id), \"" Value="xpath2 <- paste(\"//dataTable[@id='\", toupper(datafile.id), \"" Time="0.989";
 CF p93 p94
-DF d50 p94
-Snapshot d53 "53-ns" Value="[DIR]/ddg/53-ns.txt" Time="2015-09-20T12.22.51EDT";
-DF p94 d53
-Operation p95 "95-get.variable.type" Value="get.variable.type" Time="2015-09-20T12.22.51EDT";
-DF d12 p95
-DF d53 p95
+DF d56 p94
+Data d58 "58-xpath2" Value="\"//dataTable[@id='HF000-01']/entityName\"";
+DF p94 d58
+Operation p95 "95-ns <- getNodeSet(eml, xpath1, fun = xmlValue)" Value="ns <- getNodeSet(eml, xpath1, fun = xmlValue)" Time="1";
 CF p94 p95
-Data d54 "54-get.variable.type(ns[[i]]) return" Value="\"numeric\"";
-Operation p96 "96-return (var.type)" Value="return (var.type)" Time="2015-09-20T12.22.51EDT";
+DF d55 p95
+DF d57 p95
+Data d59 "59-ns" Value="NULL";
+DF p95 d59
+Operation p96 "96-if (length(ns) == 0) ns <- getNodeSet(eml, xpath2, fun = xml" Value="if (length(ns) == 0) ns <- getNodeSet(eml, xpath2, fun = xml" Time="1.008";
 CF p95 p96
-DF p96 d54
-Finish p97 "97-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="2015-09-20T12.22.51EDT";
+DF d59 p96
+DF d55 p96
+DF d58 p96
+Data d60 "60-ns" Value="[[ 1 ]] hf000-01-daily-m.csv";
+DF p96 d60
+Operation p97 "97-name <- ns[[1]]" Value="name <- ns[[1]]" Time="1.023";
 CF p96 p97
-Start p98 "98-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="2015-09-20T12.22.51EDT";
+DF d59 p97
+Data d61 "61-name" Value="\"hf000-01-daily-m.csv\"";
+DF p97 d61
+Operation p98 "98-name" Value="name" Time="1.058";
 CF p97 p98
-Binding p99 "99-ns  <-  ns[[i]]" Time="2015-09-20T12.22.51EDT"
+DF d61 p98
+Data d62 "62-get.datafile.name(eml,datafile.id) return" Value="\"hf000-01-daily-m.csv\"";
+Operation p99 "99-return (name)" Value="return (name)" Time="1.062";
 CF p98 p99
-DF d50 p99
-Snapshot d55 "55-ns" Value="[DIR]/ddg/55-ns.txt" Time="2015-09-20T12.22.51EDT";
-DF p99 d55
-Operation p100 "100-get.variable.type" Value="get.variable.type" Time="2015-09-20T12.22.51EDT";
-DF d12 p100
-DF d55 p100
+DF d61 p99
+DF p99 d62
+Finish p100 "100-get.datafile.name(eml, datafile.id)" Value="get.datafile.name(eml, datafile.id)" Time="1.065";
 CF p99 p100
-Data d56 "56-get.variable.type(ns[[i]]) return" Value="\"character\"";
-Operation p101 "101-return (var.type)" Value="return (var.type)" Time="2015-09-20T12.22.51EDT";
+Finish p101 "101-datafile.name <<- get.datafile.name(eml, datafile.id)" Value="datafile.name <<- get.datafile.name(eml, datafile.id)" Time="1.065";
 CF p100 p101
-DF p101 d56
-Finish p102 "102-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="2015-09-20T12.22.51EDT";
+DF d62 p101
+Data d63 "63-datafile.name" Value="\"hf000-01-daily-m.csv\"";
+DF p101 d63
+Start p102 "102-data.url <<- get.data.url(eml, datafile.id)" Value="data.url <<- get.data.url(eml, datafile.id)" Time="1.071";
 CF p101 p102
-Start p103 "103-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="2015-09-20T12.22.51EDT";
+Start p103 "103-get.data.url(eml, datafile.id)" Value="get.data.url(eml, datafile.id)" Time="1.072";
 CF p102 p103
-Binding p104 "104-ns  <-  ns[[i]]" Time="2015-09-20T12.22.51EDT"
+Binding p104 "104-eml  <-  eml" Time="1.072"
 CF p103 p104
-DF d50 p104
-Snapshot d57 "57-ns" Value="[DIR]/ddg/57-ns.txt" Time="2015-09-20T12.22.51EDT";
-DF p104 d57
-Operation p105 "105-get.variable.type" Value="get.variable.type" Time="2015-09-20T12.22.51EDT";
-DF d12 p105
-DF d57 p105
+DF d31 p104
+Snapshot d64 "64-eml" Value="[DIR]/ddg/64-eml.xml" Time="2016-01-13T17.35.51EST";
+DF p104 d64
+Binding p105 "105-datafile.id  <-  datafile.id" Time="1.08"
 CF p104 p105
-Data d58 "58-get.variable.type(ns[[i]]) return" Value="\"numeric\"";
-Operation p106 "106-return (var.type)" Value="return (var.type)" Time="2015-09-20T12.22.51EDT";
+DF d54 p105
+Data d65 "65-datafile.id" Value="\"hf000-01\"";
+DF p105 d65
+Operation p106 "106-get.data.url" Value="get.data.url" Time="1.088";
+DF d10 p106
+DF d64 p106
+DF d65 p106
 CF p105 p106
-DF p106 d58
-Finish p107 "107-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="2015-09-20T12.22.51EDT";
+Operation p107 "107-xpath1 <- paste(\"//dataTable[@id='\", datafile.id, \"']/physic" Value="xpath1 <- paste(\"//dataTable[@id='\", datafile.id, \"']/physic" Time="1.098";
 CF p106 p107
-Start p108 "108-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="2015-09-20T12.22.51EDT";
+DF d65 p107
+Data d66 "66-xpath1" Value="\"//dataTable[@id='hf000-01']/physical/distribution/online/url\"";
+DF p107 d66
+Operation p108 "108-xpath2 <- paste(\"//dataTable[@id='\", toupper(datafile.id), \"" Value="xpath2 <- paste(\"//dataTable[@id='\", toupper(datafile.id), \"" Time="1.107";
 CF p107 p108
-Binding p109 "109-ns  <-  ns[[i]]" Time="2015-09-20T12.22.51EDT"
+DF d65 p108
+Data d67 "67-xpath2" Value="\"//dataTable[@id='HF000-01']/physical/distribution/online/url\"";
+DF p108 d67
+Operation p109 "109-ns <- getNodeSet(eml, xpath1, fun = xmlValue)" Value="ns <- getNodeSet(eml, xpath1, fun = xmlValue)" Time="1.119";
 CF p108 p109
-DF d50 p109
-Snapshot d59 "59-ns" Value="[DIR]/ddg/59-ns.txt" Time="2015-09-20T12.22.51EDT";
-DF p109 d59
-Operation p110 "110-get.variable.type" Value="get.variable.type" Time="2015-09-20T12.22.51EDT";
-DF d12 p110
-DF d59 p110
+DF d64 p109
+DF d66 p109
+Data d68 "68-ns" Value="NULL";
+DF p109 d68
+Operation p110 "110-if (length(ns) == 0) ns <- getNodeSet(eml, xpath2, fun = xml" Value="if (length(ns) == 0) ns <- getNodeSet(eml, xpath2, fun = xml" Time="1.131";
 CF p109 p110
-Data d60 "60-get.variable.type(ns[[i]]) return" Value="\"character\"";
-Operation p111 "111-return (var.type)" Value="return (var.type)" Time="2015-09-20T12.22.51EDT";
+DF d68 p110
+DF d64 p110
+DF d67 p110
+Data d69 "69-ns" Value="[[ 1 ]] http://harvardforest.fas.harvard.edu/data/p00/hf000/hf000-01-daily-m.csv";
+DF p110 d69
+Operation p111 "111-data.url <- ns[[1]]" Value="data.url <- ns[[1]]" Time="1.152";
 CF p110 p111
-DF p111 d60
-Finish p112 "112-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="2015-09-20T12.22.51EDT";
+DF d68 p111
+Data d70 "70-data.url" Value="\"http://harvardforest.fas.harvard.edu/data/p00/hf000/hf000-01-daily-m.csv\"";
+DF p111 d70
+Operation p112 "112-if (!url.exists(data.url)) {    data.url <- NULL}" Value="if (!url.exists(data.url)) {    data.url <- NULL}" Time="1.162";
 CF p111 p112
-Start p113 "113-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="2015-09-20T12.22.51EDT";
+DF d70 p112
+Data d71 "71-data.url" Value="\"http://harvardforest.fas.harvard.edu/data/p00/hf000/hf000-01-daily-m.csv\"";
+DF p112 d71
+Operation p113 "113-data.url" Value="data.url" Time="1.176";
 CF p112 p113
-Binding p114 "114-ns  <-  ns[[i]]" Time="2015-09-20T12.22.51EDT"
+DF d70 p113
+Data d72 "72-get.data.url(eml,datafile.id) return" Value="\"http://harvardforest.fas.harvard.edu/data/p00/hf000/hf000-01-daily-m.csv\"";
+Operation p114 "114-return (data.url)" Value="return (data.url)" Time="1.183";
 CF p113 p114
-DF d50 p114
-Snapshot d61 "61-ns" Value="[DIR]/ddg/61-ns.txt" Time="2015-09-20T12.22.51EDT";
-DF p114 d61
-Operation p115 "115-get.variable.type" Value="get.variable.type" Time="2015-09-20T12.22.51EDT";
-DF d12 p115
-DF d61 p115
+DF d70 p114
+DF p114 d72
+Finish p115 "115-get.data.url(eml, datafile.id)" Value="get.data.url(eml, datafile.id)" Time="1.188";
 CF p114 p115
-Data d62 "62-get.variable.type(ns[[i]]) return" Value="\"numeric\"";
-Operation p116 "116-return (var.type)" Value="return (var.type)" Time="2015-09-20T12.22.51EDT";
+Finish p116 "116-data.url <<- get.data.url(eml, datafile.id)" Value="data.url <<- get.data.url(eml, datafile.id)" Time="1.188";
 CF p115 p116
-DF p116 d62
-Finish p117 "117-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="2015-09-20T12.22.51EDT";
+DF d72 p116
+Data d73 "73-data.url" Value="\"http://harvardforest.fas.harvard.edu/data/p00/hf000/hf000-01-daily-m.csv\"";
+DF p116 d73
+Start p117 "117-ns <- get.data.table.node.set(eml, datafile.id)" Value="ns <- get.data.table.node.set(eml, datafile.id)" Time="1.193";
 CF p116 p117
-Start p118 "118-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="2015-09-20T12.22.51EDT";
+Start p118 "118-get.data.table.node.set(eml, datafile.id)" Value="get.data.table.node.set(eml, datafile.id)" Time="1.193";
 CF p117 p118
-Binding p119 "119-ns  <-  ns[[i]]" Time="2015-09-20T12.22.51EDT"
+Binding p119 "119-eml  <-  eml" Time="1.194"
 CF p118 p119
-DF d50 p119
-Snapshot d63 "63-ns" Value="[DIR]/ddg/63-ns.txt" Time="2015-09-20T12.22.51EDT";
-DF p119 d63
-Operation p120 "120-get.variable.type" Value="get.variable.type" Time="2015-09-20T12.22.51EDT";
-DF d12 p120
-DF d63 p120
+DF d31 p119
+Snapshot d74 "74-eml" Value="[DIR]/ddg/74-eml.xml" Time="2016-01-13T17.35.52EST";
+DF p119 d74
+Binding p120 "120-datafile.id  <-  datafile.id" Time="1.201"
 CF p119 p120
-Data d64 "64-get.variable.type(ns[[i]]) return" Value="\"character\"";
-Operation p121 "121-return (var.type)" Value="return (var.type)" Time="2015-09-20T12.22.51EDT";
+DF d54 p120
+Data d75 "75-datafile.id" Value="\"hf000-01\"";
+DF p120 d75
+Operation p121 "121-get.data.table.node.set" Value="get.data.table.node.set" Time="1.207";
+DF d11 p121
+DF d74 p121
+DF d75 p121
 CF p120 p121
-DF p121 d64
-Finish p122 "122-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="2015-09-20T12.22.51EDT";
+Operation p122 "122-xpath1 <- paste(\"//dataTable[@id='\", datafile.id, \"']/attrib" Value="xpath1 <- paste(\"//dataTable[@id='\", datafile.id, \"']/attrib" Time="1.217";
 CF p121 p122
-Start p123 "123-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="2015-09-20T12.22.51EDT";
+DF d75 p122
+Data d76 "76-xpath1" Value="\"//dataTable[@id='hf000-01']/attributeList/attribute\"";
+DF p122 d76
+Operation p123 "123-xpath2 <- paste(\"//dataTable[@id='\", toupper(datafile.id), \"" Value="xpath2 <- paste(\"//dataTable[@id='\", toupper(datafile.id), \"" Time="1.226";
 CF p122 p123
-Binding p124 "124-ns  <-  ns[[i]]" Time="2015-09-20T12.22.51EDT"
+DF d75 p123
+Data d77 "77-xpath2" Value="\"//dataTable[@id='HF000-01']/attributeList/attribute\"";
+DF p123 d77
+Operation p124 "124-ns <- getNodeSet(eml, xpath1)" Value="ns <- getNodeSet(eml, xpath1)" Time="1.236";
 CF p123 p124
-DF d50 p124
-Snapshot d65 "65-ns" Value="[DIR]/ddg/65-ns.txt" Time="2015-09-20T12.22.51EDT";
-DF p124 d65
-Operation p125 "125-get.variable.type" Value="get.variable.type" Time="2015-09-20T12.22.51EDT";
-DF d12 p125
-DF d65 p125
+DF d74 p124
+DF d76 p124
+Data d78 "78-ns" Value="NULL";
+DF p124 d78
+Operation p125 "125-if (length(ns) == 0) ns <- getNodeSet(eml, xpath2)" Value="if (length(ns) == 0) ns <- getNodeSet(eml, xpath2)" Time="1.25";
 CF p124 p125
-Data d66 "66-get.variable.type(ns[[i]]) return" Value="\"numeric\"";
-Operation p126 "126-return (var.type)" Value="return (var.type)" Time="2015-09-20T12.22.51EDT";
+DF d78 p125
+DF d74 p125
+DF d77 p125
+Snapshot d79 "79-ns" Value="[DIR]/ddg/79-ns.txt" Time="2016-01-13T17.35.52EST";
+DF p125 d79
+Operation p126 "126-ns" Value="ns" Time="1.27";
 CF p125 p126
-DF p126 d66
-Finish p127 "127-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="2015-09-20T12.22.51EDT";
+DF d78 p126
+Snapshot d80 "80-get.data.table.node.set(eml,datafile.id) return" Value="[DIR]/ddg/80-get.data.table.node.set(eml,datafile.id) return.csv" Time="2016-01-13T17.35.52EST";
+Operation p127 "127-return (ns)" Value="return (ns)" Time="1.28";
 CF p126 p127
-Start p128 "128-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="2015-09-20T12.22.51EDT";
+DF d78 p127
+DF p127 d80
+Finish p128 "128-get.data.table.node.set(eml, datafile.id)" Value="get.data.table.node.set(eml, datafile.id)" Time="1.316";
 CF p127 p128
-Binding p129 "129-ns  <-  ns[[i]]" Time="2015-09-20T12.22.51EDT"
+Finish p129 "129-ns <- get.data.table.node.set(eml, datafile.id)" Value="ns <- get.data.table.node.set(eml, datafile.id)" Time="1.316";
 CF p128 p129
-DF d50 p129
-Snapshot d67 "67-ns" Value="[DIR]/ddg/67-ns.txt" Time="2015-09-20T12.22.51EDT";
-DF p129 d67
-Operation p130 "130-get.variable.type" Value="get.variable.type" Time="2015-09-20T12.22.51EDT";
-DF d12 p130
-DF d67 p130
+DF d80 p129
+Snapshot d81 "81-ns" Value="[DIR]/ddg/81-ns.csv" Time="2016-01-13T17.35.52EST";
+DF p129 d81
+Start p130 "130-var.types <<- get.all.variable.types(ns)" Value="var.types <<- get.all.variable.types(ns)" Time="1.321";
 CF p129 p130
-Data d68 "68-get.variable.type(ns[[i]]) return" Value="\"character\"";
-Operation p131 "131-return (var.type)" Value="return (var.type)" Time="2015-09-20T12.22.51EDT";
+Start p131 "131-get.all.variable.types(ns)" Value="get.all.variable.types(ns)" Time="1.321";
 CF p130 p131
-DF p131 d68
-Finish p132 "132-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="2015-09-20T12.22.51EDT";
+Binding p132 "132-ns  <-  ns" Time="1.322"
 CF p131 p132
-Snapshot d69 "69-get.all.variable.types(ns) return" Value="[DIR]/ddg/69-get.all.variable.types(ns) return.csv" Time="2015-09-20T12.22.51EDT";
-Operation p133 "133-return (var.types)" Value="return (var.types)" Time="2015-09-20T12.22.51EDT";
+DF d81 p132
+Snapshot d82 "82-ns" Value="[DIR]/ddg/82-ns.csv" Time="2016-01-13T17.35.52EST";
+DF p132 d82
+Operation p133 "133-get.all.variable.types" Value="get.all.variable.types" Time="1.327";
+DF d13 p133
+DF d82 p133
 CF p132 p133
-DF p133 d69
-Finish p134 "134-get.all.variable.types(ns)" Value="get.all.variable.types(ns)" Time="2015-09-20T12.22.51EDT";
+Operation p134 "134-num <- xmlSize(ns)" Value="num <- xmlSize(ns)" Time="1.334";
 CF p133 p134
-Start p135 "135-get.all.variable.format.strings(ns)" Value="get.all.variable.format.strings(ns)" Time="2015-09-20T12.22.51EDT";
+DF d82 p134
+Data d83 "83-num" Value="9";
+DF p134 d83
+Start p135 "135-for (i in 1:num) {    var.type <- get.variable.type(ns[[i]])" Value="for (i in 1:num) {    var.type <- get.variable.type(ns[[i]])" Time="1.342";
 CF p134 p135
-Binding p136 "136-ns  <-  ns" Time="2015-09-20T12.22.51EDT"
+Start p136 "136-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="1.342";
 CF p135 p136
-Snapshot d70 "70-ns" Value="[DIR]/ddg/70-ns.txt" Time="2015-09-20T12.22.51EDT";
-DF p136 d70
-Operation p137 "137-get.all.variable.format.strings" Value="get.all.variable.format.strings" Time="2015-09-20T12.22.51EDT";
-DF d15 p137
-DF d70 p137
+Binding p137 "137-ns  <-  ns[[i]]" Time="1.343"
 CF p136 p137
-Start p138 "138-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="2015-09-20T12.22.51EDT";
+DF d82 p137
+Operation p138 "138-get.variable.type" Value="get.variable.type" Time="1.35";
+DF d12 p138
 CF p137 p138
-Binding p139 "139-ns  <-  ns[[i]]" Time="2015-09-20T12.22.51EDT"
+Operation p139 "139-x1 <- xpathApply(ns, \"measurementScale/ratio\", xmlValue)" Value="x1 <- xpathApply(ns, \"measurementScale/ratio\", xmlValue)" Time="1.357";
 CF p138 p139
-DF d70 p139
-Snapshot d71 "71-ns" Value="[DIR]/ddg/71-ns.txt" Time="2015-09-20T12.22.51EDT";
-DF p139 d71
-Operation p140 "140-get.variable.format.string" Value="get.variable.format.string" Time="2015-09-20T12.22.51EDT";
-DF d14 p140
-DF d71 p140
+Snapshot d85 "85-x1" Value="[DIR]/ddg/85-x1.csv" Time="2016-01-13T17.35.52EST";
+DF p139 d85
+Operation p140 "140-x2 <- xpathApply(ns, \"measurementScale/interval\", xmlValue)" Value="x2 <- xpathApply(ns, \"measurementScale/interval\", xmlValue)" Time="1.368";
 CF p139 p140
-Data d72 "72-get.variable.format.string(ns[[i]]) return" Value="\"YYYY-MM-DD\"";
-Operation p141 "141-return (var.format.string)" Value="return (var.format.string)" Time="2015-09-20T12.22.51EDT";
+Snapshot d86 "86-x2" Value="[DIR]/ddg/86-x2.csv" Time="2016-01-13T17.35.52EST";
+DF p140 d86
+Operation p141 "141-if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Value="if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Time="1.38";
 CF p140 p141
-DF p141 d72
-Finish p142 "142-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="2015-09-20T12.22.51EDT";
+DF d85 p141
+DF d86 p141
+Data d87 "87-var.type" Value="\"Date\"";
+DF p141 d87
+Data d88 "88-x3" Value="[[ 1 ]] YYYY-MM-DD";
+DF p141 d88
+Operation p142 "142-var.type" Value="var.type" Time="1.412";
 CF p141 p142
-Start p143 "143-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="2015-09-20T12.22.51EDT";
+Data d89 "89-get.variable.type(ns[[i]]) return" Value="\"Date\"";
+Operation p143 "143-return (var.type)" Value="return (var.type)" Time="1.417";
 CF p142 p143
-Binding p144 "144-ns  <-  ns[[i]]" Time="2015-09-20T12.22.51EDT"
+DF p143 d89
+Finish p144 "144-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="1.42";
 CF p143 p144
-DF d70 p144
-Snapshot d73 "73-ns" Value="[DIR]/ddg/73-ns.txt" Time="2015-09-20T12.22.51EDT";
-DF p144 d73
-Operation p145 "145-get.variable.format.string" Value="get.variable.format.string" Time="2015-09-20T12.22.51EDT";
-DF d14 p145
-DF d73 p145
+Start p145 "145-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="1.421";
 CF p144 p145
-Data d74 "74-get.variable.format.string(ns[[i]]) return" Value="NotRecorded";
-Operation p146 "146-return (var.format.string)" Value="return (var.format.string)" Time="2015-09-20T12.22.51EDT";
+Binding p146 "146-ns  <-  ns[[i]]" Time="1.421"
 CF p145 p146
-DF p146 d74
-Finish p147 "147-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="2015-09-20T12.22.51EDT";
+DF d82 p146
+Operation p147 "147-get.variable.type" Value="get.variable.type" Time="1.427";
+DF d12 p147
 CF p146 p147
-Start p148 "148-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="2015-09-20T12.22.51EDT";
+Operation p148 "148-x1 <- xpathApply(ns, \"measurementScale/ratio\", xmlValue)" Value="x1 <- xpathApply(ns, \"measurementScale/ratio\", xmlValue)" Time="1.435";
 CF p147 p148
-Binding p149 "149-ns  <-  ns[[i]]" Time="2015-09-20T12.22.51EDT"
+Snapshot d91 "91-x1" Value="[DIR]/ddg/91-x1.csv" Time="2016-01-13T17.35.52EST";
+DF p148 d91
+Operation p149 "149-x2 <- xpathApply(ns, \"measurementScale/interval\", xmlValue)" Value="x2 <- xpathApply(ns, \"measurementScale/interval\", xmlValue)" Time="1.445";
 CF p148 p149
-DF d70 p149
-Snapshot d75 "75-ns" Value="[DIR]/ddg/75-ns.txt" Time="2015-09-20T12.22.51EDT";
-DF p149 d75
-Operation p150 "150-get.variable.format.string" Value="get.variable.format.string" Time="2015-09-20T12.22.51EDT";
-DF d14 p150
-DF d75 p150
+Snapshot d92 "92-x2" Value="[DIR]/ddg/92-x2.csv" Time="2016-01-13T17.35.52EST";
+DF p149 d92
+Operation p150 "150-if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Value="if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Time="1.456";
 CF p149 p150
-Data d76 "76-get.variable.format.string(ns[[i]]) return" Value="NotRecorded";
-Operation p151 "151-return (var.format.string)" Value="return (var.format.string)" Time="2015-09-20T12.22.51EDT";
+DF d91 p150
+DF d92 p150
+Data d93 "93-var.type" Value="\"numeric\"";
+DF p150 d93
+Operation p151 "151-var.type" Value="var.type" Time="1.486";
 CF p150 p151
-DF p151 d76
-Finish p152 "152-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="2015-09-20T12.22.51EDT";
+Data d94 "94-get.variable.type(ns[[i]]) return" Value="\"numeric\"";
+Operation p152 "152-return (var.type)" Value="return (var.type)" Time="1.492";
 CF p151 p152
-Start p153 "153-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="2015-09-20T12.22.51EDT";
+DF p152 d94
+Finish p153 "153-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="1.495";
 CF p152 p153
-Binding p154 "154-ns  <-  ns[[i]]" Time="2015-09-20T12.22.51EDT"
+Start p154 "154-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="1.496";
 CF p153 p154
-DF d70 p154
-Snapshot d77 "77-ns" Value="[DIR]/ddg/77-ns.txt" Time="2015-09-20T12.22.51EDT";
-DF p154 d77
-Operation p155 "155-get.variable.format.string" Value="get.variable.format.string" Time="2015-09-20T12.22.51EDT";
-DF d14 p155
-DF d77 p155
+Binding p155 "155-ns  <-  ns[[i]]" Time="1.496"
 CF p154 p155
-Data d78 "78-get.variable.format.string(ns[[i]]) return" Value="NotRecorded";
-Operation p156 "156-return (var.format.string)" Value="return (var.format.string)" Time="2015-09-20T12.22.51EDT";
+DF d82 p155
+Operation p156 "156-get.variable.type" Value="get.variable.type" Time="1.502";
+DF d12 p156
 CF p155 p156
-DF p156 d78
-Finish p157 "157-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="2015-09-20T12.22.51EDT";
+Operation p157 "157-x1 <- xpathApply(ns, \"measurementScale/ratio\", xmlValue)" Value="x1 <- xpathApply(ns, \"measurementScale/ratio\", xmlValue)" Time="1.509";
 CF p156 p157
-Start p158 "158-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="2015-09-20T12.22.51EDT";
+Snapshot d96 "96-x1" Value="[DIR]/ddg/96-x1.csv" Time="2016-01-13T17.35.52EST";
+DF p157 d96
+Operation p158 "158-x2 <- xpathApply(ns, \"measurementScale/interval\", xmlValue)" Value="x2 <- xpathApply(ns, \"measurementScale/interval\", xmlValue)" Time="1.521";
 CF p157 p158
-Binding p159 "159-ns  <-  ns[[i]]" Time="2015-09-20T12.22.51EDT"
+Snapshot d97 "97-x2" Value="[DIR]/ddg/97-x2.csv" Time="2016-01-13T17.35.52EST";
+DF p158 d97
+Operation p159 "159-if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Value="if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Time="1.531";
 CF p158 p159
-DF d70 p159
-Snapshot d79 "79-ns" Value="[DIR]/ddg/79-ns.txt" Time="2015-09-20T12.22.51EDT";
-DF p159 d79
-Operation p160 "160-get.variable.format.string" Value="get.variable.format.string" Time="2015-09-20T12.22.51EDT";
-DF d14 p160
-DF d79 p160
+DF d96 p159
+DF d97 p159
+Data d98 "98-var.type" Value="\"character\"";
+DF p159 d98
+Snapshot d99 "99-x3" Value="[DIR]/ddg/99-x3.txt" Time="2016-01-13T17.35.52EST";
+DF p159 d88
+Operation p160 "160-var.type" Value="var.type" Time="1.588";
 CF p159 p160
-Data d80 "80-get.variable.format.string(ns[[i]]) return" Value="NotRecorded";
-Operation p161 "161-return (var.format.string)" Value="return (var.format.string)" Time="2015-09-20T12.22.51EDT";
+Data d100 "100-get.variable.type(ns[[i]]) return" Value="\"character\"";
+Operation p161 "161-return (var.type)" Value="return (var.type)" Time="1.592";
 CF p160 p161
-DF p161 d80
-Finish p162 "162-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="2015-09-20T12.22.51EDT";
+DF p161 d100
+Finish p162 "162-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="1.596";
 CF p161 p162
-Start p163 "163-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="2015-09-20T12.22.51EDT";
+Start p163 "163-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="1.596";
 CF p162 p163
-Binding p164 "164-ns  <-  ns[[i]]" Time="2015-09-20T12.22.51EDT"
+Binding p164 "164-ns  <-  ns[[i]]" Time="1.597"
 CF p163 p164
-DF d70 p164
-Snapshot d81 "81-ns" Value="[DIR]/ddg/81-ns.txt" Time="2015-09-20T12.22.52EDT";
-DF p164 d81
-Operation p165 "165-get.variable.format.string" Value="get.variable.format.string" Time="2015-09-20T12.22.52EDT";
-DF d14 p165
-DF d81 p165
+DF d82 p164
+Operation p165 "165-get.variable.type" Value="get.variable.type" Time="1.606";
+DF d12 p165
 CF p164 p165
-Data d82 "82-get.variable.format.string(ns[[i]]) return" Value="NotRecorded";
-Operation p166 "166-return (var.format.string)" Value="return (var.format.string)" Time="2015-09-20T12.22.52EDT";
+Operation p166 "166-x1 <- xpathApply(ns, \"measurementScale/ratio\", xmlValue)" Value="x1 <- xpathApply(ns, \"measurementScale/ratio\", xmlValue)" Time="1.613";
 CF p165 p166
-DF p166 d82
-Finish p167 "167-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="2015-09-20T12.22.52EDT";
+Snapshot d102 "102-x1" Value="[DIR]/ddg/102-x1.csv" Time="2016-01-13T17.35.52EST";
+DF p166 d102
+Operation p167 "167-x2 <- xpathApply(ns, \"measurementScale/interval\", xmlValue)" Value="x2 <- xpathApply(ns, \"measurementScale/interval\", xmlValue)" Time="1.624";
 CF p166 p167
-Start p168 "168-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="2015-09-20T12.22.52EDT";
+Snapshot d103 "103-x2" Value="[DIR]/ddg/103-x2.csv" Time="2016-01-13T17.35.52EST";
+DF p167 d103
+Operation p168 "168-if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Value="if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Time="1.64";
 CF p167 p168
-Binding p169 "169-ns  <-  ns[[i]]" Time="2015-09-20T12.22.52EDT"
+DF d102 p168
+DF d103 p168
+Data d104 "104-var.type" Value="\"numeric\"";
+DF p168 d104
+Operation p169 "169-var.type" Value="var.type" Time="1.675";
 CF p168 p169
-DF d70 p169
-Snapshot d83 "83-ns" Value="[DIR]/ddg/83-ns.txt" Time="2015-09-20T12.22.52EDT";
-DF p169 d83
-Operation p170 "170-get.variable.format.string" Value="get.variable.format.string" Time="2015-09-20T12.22.52EDT";
-DF d14 p170
-DF d83 p170
+Data d105 "105-get.variable.type(ns[[i]]) return" Value="\"numeric\"";
+Operation p170 "170-return (var.type)" Value="return (var.type)" Time="1.68";
 CF p169 p170
-Data d84 "84-get.variable.format.string(ns[[i]]) return" Value="NotRecorded";
-Operation p171 "171-return (var.format.string)" Value="return (var.format.string)" Time="2015-09-20T12.22.52EDT";
+DF p170 d105
+Finish p171 "171-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="1.685";
 CF p170 p171
-DF p171 d84
-Finish p172 "172-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="2015-09-20T12.22.52EDT";
+Start p172 "172-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="1.686";
 CF p171 p172
-Start p173 "173-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="2015-09-20T12.22.52EDT";
+Binding p173 "173-ns  <-  ns[[i]]" Time="1.687"
 CF p172 p173
-Binding p174 "174-ns  <-  ns[[i]]" Time="2015-09-20T12.22.52EDT"
+DF d82 p173
+Operation p174 "174-get.variable.type" Value="get.variable.type" Time="1.695";
+DF d12 p174
 CF p173 p174
-DF d70 p174
-Snapshot d85 "85-ns" Value="[DIR]/ddg/85-ns.txt" Time="2015-09-20T12.22.52EDT";
-DF p174 d85
-Operation p175 "175-get.variable.format.string" Value="get.variable.format.string" Time="2015-09-20T12.22.52EDT";
-DF d14 p175
-DF d85 p175
+Operation p175 "175-x1 <- xpathApply(ns, \"measurementScale/ratio\", xmlValue)" Value="x1 <- xpathApply(ns, \"measurementScale/ratio\", xmlValue)" Time="1.704";
 CF p174 p175
-Data d86 "86-get.variable.format.string(ns[[i]]) return" Value="NotRecorded";
-Operation p176 "176-return (var.format.string)" Value="return (var.format.string)" Time="2015-09-20T12.22.52EDT";
+Snapshot d107 "107-x1" Value="[DIR]/ddg/107-x1.csv" Time="2016-01-13T17.35.52EST";
+DF p175 d107
+Operation p176 "176-x2 <- xpathApply(ns, \"measurementScale/interval\", xmlValue)" Value="x2 <- xpathApply(ns, \"measurementScale/interval\", xmlValue)" Time="1.718";
 CF p175 p176
-DF p176 d86
-Finish p177 "177-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="2015-09-20T12.22.52EDT";
+Snapshot d108 "108-x2" Value="[DIR]/ddg/108-x2.csv" Time="2016-01-13T17.35.52EST";
+DF p176 d108
+Operation p177 "177-if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Value="if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Time="1.733";
 CF p176 p177
-Start p178 "178-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="2015-09-20T12.22.52EDT";
+DF d107 p177
+DF d108 p177
+Data d109 "109-var.type" Value="\"character\"";
+DF p177 d109
+Snapshot d110 "110-x3" Value="[DIR]/ddg/110-x3.txt" Time="2016-01-13T17.35.52EST";
+DF p177 d88
+Operation p178 "178-var.type" Value="var.type" Time="1.772";
 CF p177 p178
-Binding p179 "179-ns  <-  ns[[i]]" Time="2015-09-20T12.22.52EDT"
+Data d111 "111-get.variable.type(ns[[i]]) return" Value="\"character\"";
+Operation p179 "179-return (var.type)" Value="return (var.type)" Time="1.776";
 CF p178 p179
-DF d70 p179
-Snapshot d87 "87-ns" Value="[DIR]/ddg/87-ns.txt" Time="2015-09-20T12.22.52EDT";
-DF p179 d87
-Operation p180 "180-get.variable.format.string" Value="get.variable.format.string" Time="2015-09-20T12.22.52EDT";
-DF d14 p180
-DF d87 p180
+DF p179 d111
+Finish p180 "180-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="1.781";
 CF p179 p180
-Data d88 "88-get.variable.format.string(ns[[i]]) return" Value="NotRecorded";
-Operation p181 "181-return (var.format.string)" Value="return (var.format.string)" Time="2015-09-20T12.22.52EDT";
+Start p181 "181-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="1.782";
 CF p180 p181
-DF p181 d88
-Finish p182 "182-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="2015-09-20T12.22.52EDT";
+Binding p182 "182-ns  <-  ns[[i]]" Time="1.782"
 CF p181 p182
-Snapshot d89 "89-get.all.variable.format.strings(ns) return" Value="[DIR]/ddg/89-get.all.variable.format.strings(ns) return.csv" Time="2015-09-20T12.22.52EDT";
-Operation p183 "183-return (var.format.strings)" Value="return (var.format.strings)" Time="2015-09-20T12.22.52EDT";
+DF d82 p182
+Operation p183 "183-get.variable.type" Value="get.variable.type" Time="1.793";
+DF d12 p183
 CF p182 p183
-DF p183 d89
-Finish p184 "184-get.all.variable.format.strings(ns)" Value="get.all.variable.format.strings(ns)" Time="2015-09-20T12.22.52EDT";
+Operation p184 "184-x1 <- xpathApply(ns, \"measurementScale/ratio\", xmlValue)" Value="x1 <- xpathApply(ns, \"measurementScale/ratio\", xmlValue)" Time="1.802";
 CF p183 p184
-Start p185 "185-get.data.file(data.url, var.types)" Value="get.data.file(data.url, var.types)" Time="2015-09-20T12.22.52EDT";
+Snapshot d113 "113-x1" Value="[DIR]/ddg/113-x1.csv" Time="2016-01-13T17.35.52EST";
+DF p184 d113
+Operation p185 "185-x2 <- xpathApply(ns, \"measurementScale/interval\", xmlValue)" Value="x2 <- xpathApply(ns, \"measurementScale/interval\", xmlValue)" Time="1.818";
 CF p184 p185
-Binding p186 "186-data.url  <-  data.url" Time="2015-09-20T12.22.52EDT"
+Snapshot d114 "114-x2" Value="[DIR]/ddg/114-x2.csv" Time="2016-01-13T17.35.52EST";
+DF p185 d114
+Operation p186 "186-if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Value="if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Time="1.83";
 CF p185 p186
-Data d90 "90-data.url" Value="\"http://harvardforest.fas.harvard.edu/data/p00/hf000/hf000-01-daily-m.csv\"";
-DF p186 d90
-Binding p187 "187-var.types  <-  var.types" Time="2015-09-20T12.22.52EDT"
+DF d113 p186
+DF d114 p186
+Data d115 "115-var.type" Value="\"numeric\"";
+DF p186 d115
+Operation p187 "187-var.type" Value="var.type" Time="1.89";
 CF p186 p187
-Snapshot d91 "91-var.types" Value="[DIR]/ddg/91-var.types.csv" Time="2015-09-20T12.22.52EDT";
-DF p187 d91
-Operation p188 "188-get.data.file" Value="get.data.file" Time="2015-09-20T12.22.52EDT";
-DF d16 p188
-DF d90 p188
-DF d91 p188
+Data d116 "116-get.variable.type(ns[[i]]) return" Value="\"numeric\"";
+Operation p188 "188-return (var.type)" Value="return (var.type)" Time="1.898";
 CF p187 p188
-Snapshot d92 "92-get.data.file(data.url,var.types) return" Value="[DIR]/ddg/92-get.data.file(data.url,var.types) return.csv" Time="2015-09-20T12.23.00EDT";
-Operation p189 "189-return (xx)" Value="return (xx)" Time="2015-09-20T12.23.00EDT";
+DF p188 d116
+Finish p189 "189-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="1.902";
 CF p188 p189
-DF p189 d92
-Finish p190 "190-get.data.file(data.url, var.types)" Value="get.data.file(data.url, var.types)" Time="2015-09-20T12.23.00EDT";
+Start p190 "190-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="1.903";
 CF p189 p190
-Snapshot d93 "93-get.hf.datafile(datafile.id) return" Value="[DIR]/ddg/93-get.hf.datafile(datafile.id) return.csv" Time="2015-09-20T12.23.00EDT";
-Operation p191 "191-return (xx)" Value="return (xx)" Time="2015-09-20T12.23.00EDT";
+Binding p191 "191-ns  <-  ns[[i]]" Time="1.903"
 CF p190 p191
-DF p191 d93
-Finish p192 "192-get.hf.datafile(datafile.id)" Value="get.hf.datafile(datafile.id)" Time="2015-09-20T12.23.00EDT";
+DF d82 p191
+Operation p192 "192-get.variable.type" Value="get.variable.type" Time="1.912";
+DF d12 p192
 CF p191 p192
-Start p193 "193-create.summary.stats.table(dd)" Value="create.summary.stats.table(dd)" Time="2015-09-20T12.23.00EDT";
+Operation p193 "193-x1 <- xpathApply(ns, \"measurementScale/ratio\", xmlValue)" Value="x1 <- xpathApply(ns, \"measurementScale/ratio\", xmlValue)" Time="1.925";
 CF p192 p193
-Binding p194 "194-xx  <-  dd" Time="2015-09-20T12.23.00EDT"
+Snapshot d118 "118-x1" Value="[DIR]/ddg/118-x1.csv" Time="2016-01-13T17.35.53EST";
+DF p193 d118
+Operation p194 "194-x2 <- xpathApply(ns, \"measurementScale/interval\", xmlValue)" Value="x2 <- xpathApply(ns, \"measurementScale/interval\", xmlValue)" Time="1.937";
 CF p193 p194
-Snapshot d94 "94-xx" Value="[DIR]/ddg/94-xx.csv" Time="2015-09-20T12.23.00EDT";
-DF p194 d94
-Operation p195 "195-create.summary.stats.table" Value="create.summary.stats.table" Time="2015-09-20T12.23.00EDT";
-DF d20 p195
-DF d94 p195
+Snapshot d119 "119-x2" Value="[DIR]/ddg/119-x2.csv" Time="2016-01-13T17.35.53EST";
+DF p194 d119
+Operation p195 "195-if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Value="if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Time="1.951";
 CF p194 p195
-Start p196 "196-get.summary.stats.data.frame(xx)" Value="get.summary.stats.data.frame(xx)" Time="2015-09-20T12.23.00EDT";
+DF d118 p195
+DF d119 p195
+Data d120 "120-var.type" Value="\"character\"";
+DF p195 d120
+Snapshot d121 "121-x3" Value="[DIR]/ddg/121-x3.txt" Time="2016-01-13T17.35.53EST";
+DF p195 d88
+Operation p196 "196-var.type" Value="var.type" Time="1.988";
 CF p195 p196
-Binding p197 "197-xx  <-  xx" Time="2015-09-20T12.23.00EDT"
+Data d122 "122-get.variable.type(ns[[i]]) return" Value="\"character\"";
+Operation p197 "197-return (var.type)" Value="return (var.type)" Time="1.992";
 CF p196 p197
-DF d94 p197
-Snapshot d95 "95-xx" Value="[DIR]/ddg/95-xx.csv" Time="2015-09-20T12.23.01EDT";
-DF p197 d95
-Operation p198 "198-get.summary.stats.data.frame" Value="get.summary.stats.data.frame" Time="2015-09-20T12.23.01EDT";
-DF d18 p198
-DF d95 p198
+DF p197 d122
+Finish p198 "198-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="1.997";
 CF p197 p198
-Snapshot d96 "96-get.summary.stats.data.frame(xx) return" Value="[DIR]/ddg/96-get.summary.stats.data.frame(xx) return.csv" Time="2015-09-20T12.23.01EDT";
-Operation p199 "199-return (xx.sum)" Value="return (xx.sum)" Time="2015-09-20T12.23.01EDT";
+Start p199 "199-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="1.997";
 CF p198 p199
-DF p199 d96
-Finish p200 "200-get.summary.stats.data.frame(xx)" Value="get.summary.stats.data.frame(xx)" Time="2015-09-20T12.23.01EDT";
+Binding p200 "200-ns  <-  ns[[i]]" Time="1.998"
 CF p199 p200
-Data d97 "97-create.summary.stats.table(dd) return" Value="0.916232803403842";
-Operation p201 "201-return (textplot(capture.output(writeLines(xstr))))" Value="return (textplot(capture.output(writeLines(xstr))))" Time="2015-09-20T12.23.01EDT";
+DF d82 p200
+Operation p201 "201-get.variable.type" Value="get.variable.type" Time="2.008";
+DF d12 p201
 CF p200 p201
-DF p201 d97
-Finish p202 "202-create.summary.stats.table(dd)" Value="create.summary.stats.table(dd)" Time="2015-09-20T12.23.01EDT";
+Operation p202 "202-x1 <- xpathApply(ns, \"measurementScale/ratio\", xmlValue)" Value="x1 <- xpathApply(ns, \"measurementScale/ratio\", xmlValue)" Time="2.019";
 CF p201 p202
-Start p203 "203-get.plot.type(datafile.id)" Value="get.plot.type(datafile.id)" Time="2015-09-20T12.23.01EDT";
+Snapshot d124 "124-x1" Value="[DIR]/ddg/124-x1.csv" Time="2016-01-13T17.35.53EST";
+DF p202 d124
+Operation p203 "203-x2 <- xpathApply(ns, \"measurementScale/interval\", xmlValue)" Value="x2 <- xpathApply(ns, \"measurementScale/interval\", xmlValue)" Time="2.034";
 CF p202 p203
-Binding p204 "204-datafile.id  <-  datafile.id" Time="2015-09-20T12.23.01EDT"
+Snapshot d125 "125-x2" Value="[DIR]/ddg/125-x2.csv" Time="2016-01-13T17.35.53EST";
+DF p203 d125
+Operation p204 "204-if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Value="if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Time="2.052";
 CF p203 p204
-DF d39 p204
-Data d98 "98-datafile.id" Value="\"hf000-01\"";
-DF p204 d98
-Operation p205 "205-get.plot.type" Value="get.plot.type" Time="2015-09-20T12.23.01EDT";
-DF d23 p205
-DF d98 p205
+DF d124 p204
+DF d125 p204
+Data d126 "126-var.type" Value="\"numeric\"";
+DF p204 d126
+Operation p205 "205-var.type" Value="var.type" Time="2.091";
 CF p204 p205
-Data d99 "99-get.plot.type(datafile.id) return" Value="\"time-series\"";
-Operation p206 "206-return (plot.type)" Value="return (plot.type)" Time="2015-09-20T12.23.01EDT";
+Data d127 "127-get.variable.type(ns[[i]]) return" Value="\"numeric\"";
+Operation p206 "206-return (var.type)" Value="return (var.type)" Time="2.098";
 CF p205 p206
-DF p206 d99
-Finish p207 "207-get.plot.type(datafile.id)" Value="get.plot.type(datafile.id)" Time="2015-09-20T12.23.01EDT";
+DF p206 d127
+Finish p207 "207-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="2.104";
 CF p206 p207
-Start p208 "208-create.time.series.plot(dd)" Value="create.time.series.plot(dd)" Time="2015-09-20T12.23.01EDT";
+Start p208 "208-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="2.105";
 CF p207 p208
-Binding p209 "209-xx  <-  dd" Time="2015-09-20T12.23.01EDT"
+Binding p209 "209-ns  <-  ns[[i]]" Time="2.106"
 CF p208 p209
-Snapshot d100 "100-xx" Value="[DIR]/ddg/100-xx.csv" Time="2015-09-20T12.23.01EDT";
-DF p209 d100
-Operation p210 "210-create.time.series.plot" Value="create.time.series.plot" Time="2015-09-20T12.23.01EDT";
-DF d21 p210
-DF d100 p210
+DF d82 p209
+Operation p210 "210-get.variable.type" Value="get.variable.type" Time="2.146";
+DF d12 p210
 CF p209 p210
-Start p211 "211-get.plot.dataframe(xx, max.rows = 10000)" Value="get.plot.dataframe(xx, max.rows = 10000)" Time="2015-09-20T12.23.01EDT";
+Operation p211 "211-x1 <- xpathApply(ns, \"measurementScale/ratio\", xmlValue)" Value="x1 <- xpathApply(ns, \"measurementScale/ratio\", xmlValue)" Time="2.156";
 CF p210 p211
-Binding p212 "212-xx  <-  xx" Time="2015-09-20T12.23.01EDT"
+Snapshot d129 "129-x1" Value="[DIR]/ddg/129-x1.csv" Time="2016-01-13T17.35.53EST";
+DF p211 d129
+Operation p212 "212-x2 <- xpathApply(ns, \"measurementScale/interval\", xmlValue)" Value="x2 <- xpathApply(ns, \"measurementScale/interval\", xmlValue)" Time="2.172";
 CF p211 p212
-DF d100 p212
-Snapshot d101 "101-xx" Value="[DIR]/ddg/101-xx.csv" Time="2015-09-20T12.23.02EDT";
-DF p212 d101
-Binding p213 "213-max.rows  <-  10000" Time="2015-09-20T12.23.02EDT"
+Snapshot d130 "130-x2" Value="[DIR]/ddg/130-x2.csv" Time="2016-01-13T17.35.53EST";
+DF p212 d130
+Operation p213 "213-if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Value="if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Time="2.187";
 CF p212 p213
-Data d102 "102-max.rows" Value="10000";
-DF p213 d102
-Operation p214 "214-get.plot.dataframe" Value="get.plot.dataframe" Time="2015-09-20T12.23.02EDT";
-DF d19 p214
-DF d101 p214
-DF d102 p214
+DF d129 p213
+DF d130 p213
+Data d131 "131-var.type" Value="\"character\"";
+DF p213 d131
+Snapshot d132 "132-x3" Value="[DIR]/ddg/132-x3.txt" Time="2016-01-13T17.35.53EST";
+DF p213 d88
+Operation p214 "214-var.type" Value="var.type" Time="2.229";
 CF p213 p214
-Snapshot d103 "103-get.plot.dataframe(xx,max.rows=10000) return" Value="[DIR]/ddg/103-get.plot.dataframe(xx,max.rows=10000) return.csv" Time="2015-09-20T12.23.02EDT";
-Operation p215 "215-return (xx.plt)" Value="return (xx.plt)" Time="2015-09-20T12.23.02EDT";
+Data d133 "133-get.variable.type(ns[[i]]) return" Value="\"character\"";
+Operation p215 "215-return (var.type)" Value="return (var.type)" Time="2.237";
 CF p214 p215
-DF p215 d103
-Finish p216 "216-get.plot.dataframe(xx, max.rows = 10000)" Value="get.plot.dataframe(xx, max.rows = 10000)" Time="2015-09-20T12.23.02EDT";
+DF p215 d133
+Finish p216 "216-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="2.243";
 CF p215 p216
-Data d104 "104-create.time.series.plot(dd) return" Value="NULL";
-Operation p217 "217-return (if (is.null(xx.plt)) {    msg <- paste(datafile.id)" Value="return (if (is.null(xx.plt)) {    msg <- paste(datafile.id)" Time="2015-09-20T12.23.02EDT";
+Finish p217 "217-for (i in 1:num) {    var.type <- get.variable.type(ns[[i]])" Value="for (i in 1:num) {    var.type <- get.variable.type(ns[[i]])" Time="2.243";
 CF p216 p217
-DF p217 d104
-Finish p218 "218-create.time.series.plot(dd)" Value="create.time.series.plot(dd)" Time="2015-09-20T12.23.02EDT";
+DF d89 p217
+DF d94 p217
+DF d100 p217
+DF d105 p217
+DF d111 p217
+DF d116 p217
+DF d122 p217
+DF d127 p217
+DF d133 p217
+Operation p218 "218-var.types" Value="var.types" Time="2.248";
 CF p217 p218
-Data d105 "105-create.datafile.preview(datafile.id) return" Value="NULL";
-Operation p219 "219-return (if (is.null(dd)) {    msg <- paste(datafile.id, \":)" Value="return (if (is.null(dd)) {    msg <- paste(datafile.id, \":)" Time="2015-09-20T12.23.02EDT";
+Snapshot d134 "134-get.all.variable.types(ns) return" Value="[DIR]/ddg/134-get.all.variable.types(ns) return.csv" Time="2016-01-13T17.35.53EST";
+Operation p219 "219-return (var.types)" Value="return (var.types)" Time="2.259";
 CF p218 p219
-DF d39 p219
-DF d20 p219
-DF d23 p219
-DF d21 p219
-DF d22 p219
-DF p219 d105
-Finish p220 "220-create.datafile.preview(datafile.id)" Value="create.datafile.preview(datafile.id)" Time="2015-09-20T12.23.02EDT";
+DF p219 d134
+Finish p220 "220-get.all.variable.types(ns)" Value="get.all.variable.types(ns)" Time="2.264";
 CF p219 p220
-Start p221 "221-create.datafile.preview(datafile.id)" Value="create.datafile.preview(datafile.id)" Time="2015-09-20T12.23.02EDT";
+Finish p221 "221-var.types <<- get.all.variable.types(ns)" Value="var.types <<- get.all.variable.types(ns)" Time="2.264";
 CF p220 p221
-Binding p222 "222-datafile.id  <-  datafile.id" Time="2015-09-20T12.23.02EDT"
+DF d134 p221
+Snapshot d135 "135-var.types" Value="[DIR]/ddg/135-var.types.csv" Time="2016-01-13T17.35.53EST";
+DF p221 d135
+Start p222 "222-var.format.strings <<- get.all.variable.format.strings(ns)" Value="var.format.strings <<- get.all.variable.format.strings(ns)" Time="2.271";
 CF p221 p222
-Data d106 "106-datafile.id" Value="\"hf000-02\"";
-DF p222 d106
-Operation p223 "223-create.datafile.preview" Value="create.datafile.preview" Time="2015-09-20T12.23.03EDT";
-DF d24 p223
-DF d106 p223
+Start p223 "223-get.all.variable.format.strings(ns)" Value="get.all.variable.format.strings(ns)" Time="2.272";
 CF p222 p223
-Start p224 "224-get.hf.datafile(datafile.id)" Value="get.hf.datafile(datafile.id)" Time="2015-09-20T12.23.03EDT";
+Binding p224 "224-ns  <-  ns" Time="2.273"
 CF p223 p224
-Binding p225 "225-datafile.id  <-  datafile.id" Time="2015-09-20T12.23.03EDT"
+DF d81 p224
+Snapshot d136 "136-ns" Value="[DIR]/ddg/136-ns.csv" Time="2016-01-13T17.35.53EST";
+DF p224 d136
+Operation p225 "225-get.all.variable.format.strings" Value="get.all.variable.format.strings" Time="2.281";
+DF d15 p225
+DF d136 p225
 CF p224 p225
-DF d106 p225
-Data d107 "107-datafile.id" Value="\"hf000-02\"";
-DF p225 d107
-Operation p226 "226-get.hf.datafile" Value="get.hf.datafile" Time="2015-09-20T12.23.03EDT";
-DF d17 p226
-DF d107 p226
+Operation p226 "226-num <- xmlSize(ns)" Value="num <- xmlSize(ns)" Time="2.294";
 CF p225 p226
-Start p227 "227-get.datafile.name(eml, datafile.id)" Value="get.datafile.name(eml, datafile.id)" Time="2015-09-20T12.23.03EDT";
+DF d136 p226
+Data d137 "137-num" Value="9";
+DF p226 d137
+Start p227 "227-for (i in 1:num) {    var.format.string <- get.variable.form" Value="for (i in 1:num) {    var.format.string <- get.variable.form" Time="2.306";
 CF p226 p227
-Binding p228 "228-eml  <-  eml" Time="2015-09-20T12.23.03EDT"
+Start p228 "228-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="2.307";
 CF p227 p228
-DF d29 p228
-Snapshot d108 "108-eml" Value="[DIR]/ddg/108-eml.txt" Time="2015-09-20T12.23.03EDT";
-DF p228 d108
-Binding p229 "229-datafile.id  <-  datafile.id" Time="2015-09-20T12.23.03EDT"
+Binding p229 "229-ns  <-  ns[[i]]" Time="2.307"
 CF p228 p229
-DF d107 p229
-Data d109 "109-datafile.id" Value="\"hf000-02\"";
-DF p229 d109
-Operation p230 "230-get.datafile.name" Value="get.datafile.name" Time="2015-09-20T12.23.03EDT";
-DF d9 p230
-DF d108 p230
-DF d109 p230
+DF d136 p229
+Operation p230 "230-get.variable.format.string" Value="get.variable.format.string" Time="2.316";
+DF d14 p230
 CF p229 p230
-Data d110 "110-get.datafile.name(eml,datafile.id) return" Value="\"hf000-02-daily-e.csv\"";
-Operation p231 "231-return (name)" Value="return (name)" Time="2015-09-20T12.23.03EDT";
+Operation p231 "231-x <- xpathApply(ns, \"measurementScale/dateTime/formatString\"" Value="x <- xpathApply(ns, \"measurementScale/dateTime/formatString\"" Time="2.358";
 CF p230 p231
-DF p231 d110
-Finish p232 "232-get.datafile.name(eml, datafile.id)" Value="get.datafile.name(eml, datafile.id)" Time="2015-09-20T12.23.03EDT";
+Snapshot d139 "139-x" Value="[DIR]/ddg/139-x.csv" Time="2016-01-13T17.35.53EST";
+DF p231 d139
+Operation p232 "232-if (length(x) > 0) var.format.string <- x[[1]] else var.form" Value="if (length(x) > 0) var.format.string <- x[[1]] else var.form" Time="2.372";
 CF p231 p232
-Start p233 "233-get.data.url(eml, datafile.id)" Value="get.data.url(eml, datafile.id)" Time="2015-09-20T12.23.03EDT";
+DF d139 p232
+Data d140 "140-var.format.string" Value="\"YYYY-MM-DD\"";
+DF p232 d140
+Operation p233 "233-var.format.string" Value="var.format.string" Time="2.388";
 CF p232 p233
-Binding p234 "234-eml  <-  eml" Time="2015-09-20T12.23.03EDT"
+Data d141 "141-get.variable.format.string(ns[[i]]) return" Value="\"YYYY-MM-DD\"";
+Operation p234 "234-return (var.format.string)" Value="return (var.format.string)" Time="2.394";
 CF p233 p234
-DF d29 p234
-Snapshot d111 "111-eml" Value="[DIR]/ddg/111-eml.txt" Time="2015-09-20T12.23.03EDT";
-DF p234 d111
-Binding p235 "235-datafile.id  <-  datafile.id" Time="2015-09-20T12.23.03EDT"
+DF p234 d141
+Finish p235 "235-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="2.399";
 CF p234 p235
-DF d107 p235
-Data d112 "112-datafile.id" Value="\"hf000-02\"";
-DF p235 d112
-Operation p236 "236-get.data.url" Value="get.data.url" Time="2015-09-20T12.23.03EDT";
-DF d10 p236
-DF d111 p236
-DF d112 p236
+Start p236 "236-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="2.4";
 CF p235 p236
-Data d113 "113-get.data.url(eml,datafile.id) return" Value="\"http://harvardforest.fas.harvard.edu/data/p00/hf000/hf000-02-daily-e.csv\"";
-Operation p237 "237-return (data.url)" Value="return (data.url)" Time="2015-09-20T12.23.10EDT";
+Binding p237 "237-ns  <-  ns[[i]]" Time="2.401"
 CF p236 p237
-DF p237 d113
-Finish p238 "238-get.data.url(eml, datafile.id)" Value="get.data.url(eml, datafile.id)" Time="2015-09-20T12.23.10EDT";
+DF d136 p237
+Operation p238 "238-get.variable.format.string" Value="get.variable.format.string" Time="2.41";
+DF d14 p238
 CF p237 p238
-Start p239 "239-get.data.table.node.set(eml, datafile.id)" Value="get.data.table.node.set(eml, datafile.id)" Time="2015-09-20T12.23.10EDT";
+Operation p239 "239-x <- xpathApply(ns, \"measurementScale/dateTime/formatString\"" Value="x <- xpathApply(ns, \"measurementScale/dateTime/formatString\"" Time="2.42";
 CF p238 p239
-Binding p240 "240-eml  <-  eml" Time="2015-09-20T12.23.10EDT"
+Snapshot d143 "143-x" Value="[DIR]/ddg/143-x.csv" Time="2016-01-13T17.35.53EST";
+DF p239 d143
+Operation p240 "240-if (length(x) > 0) var.format.string <- x[[1]] else var.form" Value="if (length(x) > 0) var.format.string <- x[[1]] else var.form" Time="2.434";
 CF p239 p240
-DF d29 p240
-Snapshot d114 "114-eml" Value="[DIR]/ddg/114-eml.txt" Time="2015-09-20T12.23.10EDT";
-DF p240 d114
-Binding p241 "241-datafile.id  <-  datafile.id" Time="2015-09-20T12.23.10EDT"
+DF d143 p240
+Data d144 "144-var.format.string" Value="NotRecorded";
+DF p240 d144
+Operation p241 "241-var.format.string" Value="var.format.string" Time="2.451";
 CF p240 p241
-DF d107 p241
-Data d115 "115-datafile.id" Value="\"hf000-02\"";
-DF p241 d115
-Operation p242 "242-get.data.table.node.set" Value="get.data.table.node.set" Time="2015-09-20T12.23.10EDT";
-DF d11 p242
-DF d114 p242
-DF d115 p242
-CF p241 p242
-Snapshot d116 "116-get.data.table.node.set(eml,datafile.id) return" Value="[DIR]/ddg/116-get.data.table.node.set(eml,datafile.id) return.txt" Time="2015-09-20T12.23.10EDT";
-Operation p243 "243-return (ns)" Value="return (ns)" Time="2015-09-20T12.23.10EDT";
-CF p242 p243
-DF p243 d116
-Finish p244 "244-get.data.table.node.set(eml, datafile.id)" Value="get.data.table.node.set(eml, datafile.id)" Time="2015-09-20T12.23.10EDT";
-CF p243 p244
-Start p245 "245-get.all.variable.types(ns)" Value="get.all.variable.types(ns)" Time="2015-09-20T12.23.10EDT";
-CF p244 p245
-Binding p246 "246-ns  <-  ns" Time="2015-09-20T12.23.10EDT"
-CF p245 p246
-Snapshot d117 "117-ns" Value="[DIR]/ddg/117-ns.txt" Time="2015-09-20T12.23.10EDT";
-DF p246 d117
-Operation p247 "247-get.all.variable.types" Value="get.all.variable.types" Time="2015-09-20T12.23.10EDT";
-DF d13 p247
-DF d117 p247
-CF p246 p247
-Start p248 "248-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="2015-09-20T12.23.10EDT";
-CF p247 p248
-Binding p249 "249-ns  <-  ns[[i]]" Time="2015-09-20T12.23.10EDT"
-CF p248 p249
-DF d117 p249
-Snapshot d118 "118-ns" Value="[DIR]/ddg/118-ns.txt" Time="2015-09-20T12.23.10EDT";
-DF p249 d118
-Operation p250 "250-get.variable.type" Value="get.variable.type" Time="2015-09-20T12.23.10EDT";
-DF d12 p250
-DF d118 p250
-CF p249 p250
-Data d119 "119-get.variable.type(ns[[i]]) return" Value="\"Date\"";
-Operation p251 "251-return (var.type)" Value="return (var.type)" Time="2015-09-20T12.23.10EDT";
-CF p250 p251
-DF p251 d119
-Finish p252 "252-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="2015-09-20T12.23.10EDT";
-CF p251 p252
-Start p253 "253-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="2015-09-20T12.23.10EDT";
-CF p252 p253
-Binding p254 "254-ns  <-  ns[[i]]" Time="2015-09-20T12.23.10EDT"
-CF p253 p254
-DF d117 p254
-Snapshot d120 "120-ns" Value="[DIR]/ddg/120-ns.txt" Time="2015-09-20T12.23.10EDT";
-DF p254 d120
-Operation p255 "255-get.variable.type" Value="get.variable.type" Time="2015-09-20T12.23.10EDT";
-DF d12 p255
-DF d120 p255
-CF p254 p255
-Data d121 "121-get.variable.type(ns[[i]]) return" Value="\"numeric\"";
-Operation p256 "256-return (var.type)" Value="return (var.type)" Time="2015-09-20T12.23.10EDT";
-CF p255 p256
-DF p256 d121
-Finish p257 "257-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="2015-09-20T12.23.10EDT";
-CF p256 p257
-Start p258 "258-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="2015-09-20T12.23.10EDT";
-CF p257 p258
-Binding p259 "259-ns  <-  ns[[i]]" Time="2015-09-20T12.23.10EDT"
-CF p258 p259
-DF d117 p259
-Snapshot d122 "122-ns" Value="[DIR]/ddg/122-ns.txt" Time="2015-09-20T12.23.10EDT";
-DF p259 d122
-Operation p260 "260-get.variable.type" Value="get.variable.type" Time="2015-09-20T12.23.10EDT";
-DF d12 p260
-DF d122 p260
-CF p259 p260
-Data d123 "123-get.variable.type(ns[[i]]) return" Value="\"character\"";
-Operation p261 "261-return (var.type)" Value="return (var.type)" Time="2015-09-20T12.23.10EDT";
-CF p260 p261
-DF p261 d123
-Finish p262 "262-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="2015-09-20T12.23.10EDT";
-CF p261 p262
-Start p263 "263-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="2015-09-20T12.23.10EDT";
-CF p262 p263
-Binding p264 "264-ns  <-  ns[[i]]" Time="2015-09-20T12.23.10EDT"
-CF p263 p264
-DF d117 p264
-Snapshot d124 "124-ns" Value="[DIR]/ddg/124-ns.txt" Time="2015-09-20T12.23.10EDT";
-DF p264 d124
-Operation p265 "265-get.variable.type" Value="get.variable.type" Time="2015-09-20T12.23.10EDT";
-DF d12 p265
-DF d124 p265
-CF p264 p265
-Data d125 "125-get.variable.type(ns[[i]]) return" Value="\"numeric\"";
-Operation p266 "266-return (var.type)" Value="return (var.type)" Time="2015-09-20T12.23.10EDT";
-CF p265 p266
-DF p266 d125
-Finish p267 "267-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="2015-09-20T12.23.10EDT";
-CF p266 p267
-Start p268 "268-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="2015-09-20T12.23.10EDT";
-CF p267 p268
-Binding p269 "269-ns  <-  ns[[i]]" Time="2015-09-20T12.23.10EDT"
-CF p268 p269
-DF d117 p269
-Snapshot d126 "126-ns" Value="[DIR]/ddg/126-ns.txt" Time="2015-09-20T12.23.10EDT";
-DF p269 d126
-Operation p270 "270-get.variable.type" Value="get.variable.type" Time="2015-09-20T12.23.10EDT";
-DF d12 p270
-DF d126 p270
-CF p269 p270
-Data d127 "127-get.variable.type(ns[[i]]) return" Value="\"character\"";
-Operation p271 "271-return (var.type)" Value="return (var.type)" Time="2015-09-20T12.23.10EDT";
-CF p270 p271
-DF p271 d127
-Finish p272 "272-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="2015-09-20T12.23.10EDT";
-CF p271 p272
-Start p273 "273-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="2015-09-20T12.23.10EDT";
-CF p272 p273
-Binding p274 "274-ns  <-  ns[[i]]" Time="2015-09-20T12.23.10EDT"
-CF p273 p274
-DF d117 p274
-Snapshot d128 "128-ns" Value="[DIR]/ddg/128-ns.txt" Time="2015-09-20T12.23.10EDT";
-DF p274 d128
-Operation p275 "275-get.variable.type" Value="get.variable.type" Time="2015-09-20T12.23.10EDT";
-DF d12 p275
-DF d128 p275
-CF p274 p275
-Data d129 "129-get.variable.type(ns[[i]]) return" Value="\"numeric\"";
-Operation p276 "276-return (var.type)" Value="return (var.type)" Time="2015-09-20T12.23.10EDT";
-CF p275 p276
-DF p276 d129
-Finish p277 "277-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="2015-09-20T12.23.10EDT";
-CF p276 p277
-Start p278 "278-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="2015-09-20T12.23.10EDT";
-CF p277 p278
-Binding p279 "279-ns  <-  ns[[i]]" Time="2015-09-20T12.23.10EDT"
-CF p278 p279
-DF d117 p279
-Snapshot d130 "130-ns" Value="[DIR]/ddg/130-ns.txt" Time="2015-09-20T12.23.10EDT";
-DF p279 d130
-Operation p280 "280-get.variable.type" Value="get.variable.type" Time="2015-09-20T12.23.10EDT";
-DF d12 p280
-DF d130 p280
-CF p279 p280
-Data d131 "131-get.variable.type(ns[[i]]) return" Value="\"character\"";
-Operation p281 "281-return (var.type)" Value="return (var.type)" Time="2015-09-20T12.23.10EDT";
-CF p280 p281
-DF p281 d131
-Finish p282 "282-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="2015-09-20T12.23.10EDT";
-CF p281 p282
-Start p283 "283-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="2015-09-20T12.23.10EDT";
-CF p282 p283
-Binding p284 "284-ns  <-  ns[[i]]" Time="2015-09-20T12.23.10EDT"
-CF p283 p284
-DF d117 p284
-Snapshot d132 "132-ns" Value="[DIR]/ddg/132-ns.txt" Time="2015-09-20T12.23.10EDT";
-DF p284 d132
-Operation p285 "285-get.variable.type" Value="get.variable.type" Time="2015-09-20T12.23.10EDT";
-DF d12 p285
-DF d132 p285
-CF p284 p285
-Data d133 "133-get.variable.type(ns[[i]]) return" Value="\"numeric\"";
-Operation p286 "286-return (var.type)" Value="return (var.type)" Time="2015-09-20T12.23.10EDT";
-CF p285 p286
-DF p286 d133
-Finish p287 "287-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="2015-09-20T12.23.10EDT";
-CF p286 p287
-Start p288 "288-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="2015-09-20T12.23.10EDT";
-CF p287 p288
-Binding p289 "289-ns  <-  ns[[i]]" Time="2015-09-20T12.23.10EDT"
-CF p288 p289
-DF d117 p289
-Snapshot d134 "134-ns" Value="[DIR]/ddg/134-ns.txt" Time="2015-09-20T12.23.10EDT";
-DF p289 d134
-Operation p290 "290-get.variable.type" Value="get.variable.type" Time="2015-09-20T12.23.10EDT";
-DF d12 p290
-DF d134 p290
-CF p289 p290
-Data d135 "135-get.variable.type(ns[[i]]) return" Value="\"character\"";
-Operation p291 "291-return (var.type)" Value="return (var.type)" Time="2015-09-20T12.23.10EDT";
-CF p290 p291
-DF p291 d135
-Finish p292 "292-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="2015-09-20T12.23.10EDT";
-CF p291 p292
-Snapshot d136 "136-get.all.variable.types(ns) return" Value="[DIR]/ddg/136-get.all.variable.types(ns) return.csv" Time="2015-09-20T12.23.10EDT";
-Operation p293 "293-return (var.types)" Value="return (var.types)" Time="2015-09-20T12.23.10EDT";
-CF p292 p293
-DF p293 d136
-Finish p294 "294-get.all.variable.types(ns)" Value="get.all.variable.types(ns)" Time="2015-09-20T12.23.10EDT";
-CF p293 p294
-Start p295 "295-get.all.variable.format.strings(ns)" Value="get.all.variable.format.strings(ns)" Time="2015-09-20T12.23.10EDT";
-CF p294 p295
-Binding p296 "296-ns  <-  ns" Time="2015-09-20T12.23.10EDT"
-CF p295 p296
-Snapshot d137 "137-ns" Value="[DIR]/ddg/137-ns.txt" Time="2015-09-20T12.23.10EDT";
-DF p296 d137
-Operation p297 "297-get.all.variable.format.strings" Value="get.all.variable.format.strings" Time="2015-09-20T12.23.10EDT";
-DF d15 p297
-DF d137 p297
-CF p296 p297
-Start p298 "298-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="2015-09-20T12.23.10EDT";
-CF p297 p298
-Binding p299 "299-ns  <-  ns[[i]]" Time="2015-09-20T12.23.10EDT"
-CF p298 p299
-DF d137 p299
-Snapshot d138 "138-ns" Value="[DIR]/ddg/138-ns.txt" Time="2015-09-20T12.23.10EDT";
-DF p299 d138
-Operation p300 "300-get.variable.format.string" Value="get.variable.format.string" Time="2015-09-20T12.23.10EDT";
-DF d14 p300
-DF d138 p300
-CF p299 p300
-Data d139 "139-get.variable.format.string(ns[[i]]) return" Value="\"YYYY-MM-DD\"";
-Operation p301 "301-return (var.format.string)" Value="return (var.format.string)" Time="2015-09-20T12.23.10EDT";
-CF p300 p301
-DF p301 d139
-Finish p302 "302-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="2015-09-20T12.23.10EDT";
-CF p301 p302
-Start p303 "303-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="2015-09-20T12.23.10EDT";
-CF p302 p303
-Binding p304 "304-ns  <-  ns[[i]]" Time="2015-09-20T12.23.10EDT"
-CF p303 p304
-DF d137 p304
-Snapshot d140 "140-ns" Value="[DIR]/ddg/140-ns.txt" Time="2015-09-20T12.23.10EDT";
-DF p304 d140
-Operation p305 "305-get.variable.format.string" Value="get.variable.format.string" Time="2015-09-20T12.23.10EDT";
-DF d14 p305
-DF d140 p305
-CF p304 p305
-Data d141 "141-get.variable.format.string(ns[[i]]) return" Value="NotRecorded";
-Operation p306 "306-return (var.format.string)" Value="return (var.format.string)" Time="2015-09-20T12.23.10EDT";
-CF p305 p306
-DF p306 d141
-Finish p307 "307-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="2015-09-20T12.23.10EDT";
-CF p306 p307
-Start p308 "308-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="2015-09-20T12.23.10EDT";
-CF p307 p308
-Binding p309 "309-ns  <-  ns[[i]]" Time="2015-09-20T12.23.10EDT"
-CF p308 p309
-DF d137 p309
-Snapshot d142 "142-ns" Value="[DIR]/ddg/142-ns.txt" Time="2015-09-20T12.23.10EDT";
-DF p309 d142
-Operation p310 "310-get.variable.format.string" Value="get.variable.format.string" Time="2015-09-20T12.23.10EDT";
-DF d14 p310
-DF d142 p310
-CF p309 p310
-Data d143 "143-get.variable.format.string(ns[[i]]) return" Value="NotRecorded";
-Operation p311 "311-return (var.format.string)" Value="return (var.format.string)" Time="2015-09-20T12.23.10EDT";
-CF p310 p311
-DF p311 d143
-Finish p312 "312-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="2015-09-20T12.23.10EDT";
-CF p311 p312
-Start p313 "313-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="2015-09-20T12.23.10EDT";
-CF p312 p313
-Binding p314 "314-ns  <-  ns[[i]]" Time="2015-09-20T12.23.10EDT"
-CF p313 p314
-DF d137 p314
-Snapshot d144 "144-ns" Value="[DIR]/ddg/144-ns.txt" Time="2015-09-20T12.23.10EDT";
-DF p314 d144
-Operation p315 "315-get.variable.format.string" Value="get.variable.format.string" Time="2015-09-20T12.23.10EDT";
-DF d14 p315
-DF d144 p315
-CF p314 p315
 Data d145 "145-get.variable.format.string(ns[[i]]) return" Value="NotRecorded";
-Operation p316 "316-return (var.format.string)" Value="return (var.format.string)" Time="2015-09-20T12.23.10EDT";
-CF p315 p316
-DF p316 d145
-Finish p317 "317-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="2015-09-20T12.23.10EDT";
-CF p316 p317
-Start p318 "318-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="2015-09-20T12.23.10EDT";
-CF p317 p318
-Binding p319 "319-ns  <-  ns[[i]]" Time="2015-09-20T12.23.10EDT"
-CF p318 p319
-DF d137 p319
-Snapshot d146 "146-ns" Value="[DIR]/ddg/146-ns.txt" Time="2015-09-20T12.23.10EDT";
-DF p319 d146
-Operation p320 "320-get.variable.format.string" Value="get.variable.format.string" Time="2015-09-20T12.23.10EDT";
-DF d14 p320
-DF d146 p320
-CF p319 p320
-Data d147 "147-get.variable.format.string(ns[[i]]) return" Value="NotRecorded";
-Operation p321 "321-return (var.format.string)" Value="return (var.format.string)" Time="2015-09-20T12.23.10EDT";
-CF p320 p321
-DF p321 d147
-Finish p322 "322-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="2015-09-20T12.23.10EDT";
-CF p321 p322
-Start p323 "323-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="2015-09-20T12.23.10EDT";
-CF p322 p323
-Binding p324 "324-ns  <-  ns[[i]]" Time="2015-09-20T12.23.10EDT"
-CF p323 p324
-DF d137 p324
-Snapshot d148 "148-ns" Value="[DIR]/ddg/148-ns.txt" Time="2015-09-20T12.23.10EDT";
-DF p324 d148
-Operation p325 "325-get.variable.format.string" Value="get.variable.format.string" Time="2015-09-20T12.23.10EDT";
-DF d14 p325
-DF d148 p325
-CF p324 p325
+Operation p242 "242-return (var.format.string)" Value="return (var.format.string)" Time="2.458";
+CF p241 p242
+DF p242 d145
+Finish p243 "243-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="2.463";
+CF p242 p243
+Start p244 "244-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="2.464";
+CF p243 p244
+Binding p245 "245-ns  <-  ns[[i]]" Time="2.465"
+CF p244 p245
+DF d136 p245
+Operation p246 "246-get.variable.format.string" Value="get.variable.format.string" Time="2.473";
+DF d14 p246
+CF p245 p246
+Operation p247 "247-x <- xpathApply(ns, \"measurementScale/dateTime/formatString\"" Value="x <- xpathApply(ns, \"measurementScale/dateTime/formatString\"" Time="2.484";
+CF p246 p247
+Snapshot d147 "147-x" Value="[DIR]/ddg/147-x.csv" Time="2016-01-13T17.35.53EST";
+DF p247 d147
+Operation p248 "248-if (length(x) > 0) var.format.string <- x[[1]] else var.form" Value="if (length(x) > 0) var.format.string <- x[[1]] else var.form" Time="2.497";
+CF p247 p248
+DF d147 p248
+Data d148 "148-var.format.string" Value="NotRecorded";
+DF p248 d148
+Operation p249 "249-var.format.string" Value="var.format.string" Time="2.514";
+CF p248 p249
 Data d149 "149-get.variable.format.string(ns[[i]]) return" Value="NotRecorded";
-Operation p326 "326-return (var.format.string)" Value="return (var.format.string)" Time="2015-09-20T12.23.11EDT";
-CF p325 p326
-DF p326 d149
-Finish p327 "327-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="2015-09-20T12.23.11EDT";
-CF p326 p327
-Start p328 "328-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="2015-09-20T12.23.11EDT";
-CF p327 p328
-Binding p329 "329-ns  <-  ns[[i]]" Time="2015-09-20T12.23.11EDT"
-CF p328 p329
-DF d137 p329
-Snapshot d150 "150-ns" Value="[DIR]/ddg/150-ns.txt" Time="2015-09-20T12.23.11EDT";
-DF p329 d150
-Operation p330 "330-get.variable.format.string" Value="get.variable.format.string" Time="2015-09-20T12.23.11EDT";
-DF d14 p330
-DF d150 p330
-CF p329 p330
-Data d151 "151-get.variable.format.string(ns[[i]]) return" Value="NotRecorded";
-Operation p331 "331-return (var.format.string)" Value="return (var.format.string)" Time="2015-09-20T12.23.11EDT";
-CF p330 p331
-DF p331 d151
-Finish p332 "332-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="2015-09-20T12.23.11EDT";
-CF p331 p332
-Start p333 "333-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="2015-09-20T12.23.11EDT";
-CF p332 p333
-Binding p334 "334-ns  <-  ns[[i]]" Time="2015-09-20T12.23.11EDT"
-CF p333 p334
-DF d137 p334
-Snapshot d152 "152-ns" Value="[DIR]/ddg/152-ns.txt" Time="2015-09-20T12.23.11EDT";
-DF p334 d152
-Operation p335 "335-get.variable.format.string" Value="get.variable.format.string" Time="2015-09-20T12.23.11EDT";
-DF d14 p335
-DF d152 p335
-CF p334 p335
+Operation p250 "250-return (var.format.string)" Value="return (var.format.string)" Time="2.519";
+CF p249 p250
+DF p250 d149
+Finish p251 "251-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="2.525";
+CF p250 p251
+Start p252 "252-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="2.526";
+CF p251 p252
+Binding p253 "253-ns  <-  ns[[i]]" Time="2.526"
+CF p252 p253
+DF d136 p253
+Operation p254 "254-get.variable.format.string" Value="get.variable.format.string" Time="2.565";
+DF d14 p254
+CF p253 p254
+Operation p255 "255-x <- xpathApply(ns, \"measurementScale/dateTime/formatString\"" Value="x <- xpathApply(ns, \"measurementScale/dateTime/formatString\"" Time="2.575";
+CF p254 p255
+Snapshot d151 "151-x" Value="[DIR]/ddg/151-x.csv" Time="2016-01-13T17.35.53EST";
+DF p255 d151
+Operation p256 "256-if (length(x) > 0) var.format.string <- x[[1]] else var.form" Value="if (length(x) > 0) var.format.string <- x[[1]] else var.form" Time="2.593";
+CF p255 p256
+DF d151 p256
+Data d152 "152-var.format.string" Value="NotRecorded";
+DF p256 d152
+Operation p257 "257-var.format.string" Value="var.format.string" Time="2.607";
+CF p256 p257
 Data d153 "153-get.variable.format.string(ns[[i]]) return" Value="NotRecorded";
-Operation p336 "336-return (var.format.string)" Value="return (var.format.string)" Time="2015-09-20T12.23.11EDT";
+Operation p258 "258-return (var.format.string)" Value="return (var.format.string)" Time="2.613";
+CF p257 p258
+DF p258 d153
+Finish p259 "259-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="2.618";
+CF p258 p259
+Start p260 "260-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="2.619";
+CF p259 p260
+Binding p261 "261-ns  <-  ns[[i]]" Time="2.619"
+CF p260 p261
+DF d136 p261
+Operation p262 "262-get.variable.format.string" Value="get.variable.format.string" Time="2.628";
+DF d14 p262
+CF p261 p262
+Operation p263 "263-x <- xpathApply(ns, \"measurementScale/dateTime/formatString\"" Value="x <- xpathApply(ns, \"measurementScale/dateTime/formatString\"" Time="2.639";
+CF p262 p263
+Snapshot d155 "155-x" Value="[DIR]/ddg/155-x.csv" Time="2016-01-13T17.35.53EST";
+DF p263 d155
+Operation p264 "264-if (length(x) > 0) var.format.string <- x[[1]] else var.form" Value="if (length(x) > 0) var.format.string <- x[[1]] else var.form" Time="2.652";
+CF p263 p264
+DF d155 p264
+Data d156 "156-var.format.string" Value="NotRecorded";
+DF p264 d156
+Operation p265 "265-var.format.string" Value="var.format.string" Time="2.671";
+CF p264 p265
+Data d157 "157-get.variable.format.string(ns[[i]]) return" Value="NotRecorded";
+Operation p266 "266-return (var.format.string)" Value="return (var.format.string)" Time="2.676";
+CF p265 p266
+DF p266 d157
+Finish p267 "267-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="2.681";
+CF p266 p267
+Start p268 "268-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="2.682";
+CF p267 p268
+Binding p269 "269-ns  <-  ns[[i]]" Time="2.683"
+CF p268 p269
+DF d136 p269
+Operation p270 "270-get.variable.format.string" Value="get.variable.format.string" Time="2.693";
+DF d14 p270
+CF p269 p270
+Operation p271 "271-x <- xpathApply(ns, \"measurementScale/dateTime/formatString\"" Value="x <- xpathApply(ns, \"measurementScale/dateTime/formatString\"" Time="2.703";
+CF p270 p271
+Snapshot d159 "159-x" Value="[DIR]/ddg/159-x.csv" Time="2016-01-13T17.35.53EST";
+DF p271 d159
+Operation p272 "272-if (length(x) > 0) var.format.string <- x[[1]] else var.form" Value="if (length(x) > 0) var.format.string <- x[[1]] else var.form" Time="2.716";
+CF p271 p272
+DF d159 p272
+Data d160 "160-var.format.string" Value="NotRecorded";
+DF p272 d160
+Operation p273 "273-var.format.string" Value="var.format.string" Time="2.734";
+CF p272 p273
+Data d161 "161-get.variable.format.string(ns[[i]]) return" Value="NotRecorded";
+Operation p274 "274-return (var.format.string)" Value="return (var.format.string)" Time="2.739";
+CF p273 p274
+DF p274 d161
+Finish p275 "275-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="2.775";
+CF p274 p275
+Start p276 "276-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="2.776";
+CF p275 p276
+Binding p277 "277-ns  <-  ns[[i]]" Time="2.777"
+CF p276 p277
+DF d136 p277
+Operation p278 "278-get.variable.format.string" Value="get.variable.format.string" Time="2.784";
+DF d14 p278
+CF p277 p278
+Operation p279 "279-x <- xpathApply(ns, \"measurementScale/dateTime/formatString\"" Value="x <- xpathApply(ns, \"measurementScale/dateTime/formatString\"" Time="2.795";
+CF p278 p279
+Snapshot d163 "163-x" Value="[DIR]/ddg/163-x.csv" Time="2016-01-13T17.35.53EST";
+DF p279 d163
+Operation p280 "280-if (length(x) > 0) var.format.string <- x[[1]] else var.form" Value="if (length(x) > 0) var.format.string <- x[[1]] else var.form" Time="2.808";
+CF p279 p280
+DF d163 p280
+Data d164 "164-var.format.string" Value="NotRecorded";
+DF p280 d164
+Operation p281 "281-var.format.string" Value="var.format.string" Time="2.824";
+CF p280 p281
+Data d165 "165-get.variable.format.string(ns[[i]]) return" Value="NotRecorded";
+Operation p282 "282-return (var.format.string)" Value="return (var.format.string)" Time="2.831";
+CF p281 p282
+DF p282 d165
+Finish p283 "283-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="2.835";
+CF p282 p283
+Start p284 "284-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="2.836";
+CF p283 p284
+Binding p285 "285-ns  <-  ns[[i]]" Time="2.837"
+CF p284 p285
+DF d136 p285
+Operation p286 "286-get.variable.format.string" Value="get.variable.format.string" Time="2.846";
+DF d14 p286
+CF p285 p286
+Operation p287 "287-x <- xpathApply(ns, \"measurementScale/dateTime/formatString\"" Value="x <- xpathApply(ns, \"measurementScale/dateTime/formatString\"" Time="2.858";
+CF p286 p287
+Snapshot d167 "167-x" Value="[DIR]/ddg/167-x.csv" Time="2016-01-13T17.35.54EST";
+DF p287 d167
+Operation p288 "288-if (length(x) > 0) var.format.string <- x[[1]] else var.form" Value="if (length(x) > 0) var.format.string <- x[[1]] else var.form" Time="2.87";
+CF p287 p288
+DF d167 p288
+Data d168 "168-var.format.string" Value="NotRecorded";
+DF p288 d168
+Operation p289 "289-var.format.string" Value="var.format.string" Time="2.884";
+CF p288 p289
+Data d169 "169-get.variable.format.string(ns[[i]]) return" Value="NotRecorded";
+Operation p290 "290-return (var.format.string)" Value="return (var.format.string)" Time="2.889";
+CF p289 p290
+DF p290 d169
+Finish p291 "291-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="2.893";
+CF p290 p291
+Start p292 "292-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="2.894";
+CF p291 p292
+Binding p293 "293-ns  <-  ns[[i]]" Time="2.895"
+CF p292 p293
+DF d136 p293
+Operation p294 "294-get.variable.format.string" Value="get.variable.format.string" Time="2.904";
+DF d14 p294
+CF p293 p294
+Operation p295 "295-x <- xpathApply(ns, \"measurementScale/dateTime/formatString\"" Value="x <- xpathApply(ns, \"measurementScale/dateTime/formatString\"" Time="2.914";
+CF p294 p295
+Snapshot d171 "171-x" Value="[DIR]/ddg/171-x.csv" Time="2016-01-13T17.35.54EST";
+DF p295 d171
+Operation p296 "296-if (length(x) > 0) var.format.string <- x[[1]] else var.form" Value="if (length(x) > 0) var.format.string <- x[[1]] else var.form" Time="2.959";
+CF p295 p296
+DF d171 p296
+Data d172 "172-var.format.string" Value="NotRecorded";
+DF p296 d172
+Operation p297 "297-var.format.string" Value="var.format.string" Time="2.972";
+CF p296 p297
+Data d173 "173-get.variable.format.string(ns[[i]]) return" Value="NotRecorded";
+Operation p298 "298-return (var.format.string)" Value="return (var.format.string)" Time="2.976";
+CF p297 p298
+DF p298 d173
+Finish p299 "299-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="2.98";
+CF p298 p299
+Finish p300 "300-for (i in 1:num) {    var.format.string <- get.variable.form" Value="for (i in 1:num) {    var.format.string <- get.variable.form" Time="2.981";
+CF p299 p300
+DF d141 p300
+DF d145 p300
+DF d149 p300
+DF d153 p300
+DF d157 p300
+DF d161 p300
+DF d165 p300
+DF d169 p300
+DF d173 p300
+Operation p301 "301-var.format.strings" Value="var.format.strings" Time="2.986";
+CF p300 p301
+Snapshot d174 "174-get.all.variable.format.strings(ns) return" Value="[DIR]/ddg/174-get.all.variable.format.strings(ns) return.csv" Time="2016-01-13T17.35.54EST";
+Operation p302 "302-return (var.format.strings)" Value="return (var.format.strings)" Time="2.998";
+CF p301 p302
+DF p302 d174
+Finish p303 "303-get.all.variable.format.strings(ns)" Value="get.all.variable.format.strings(ns)" Time="3.004";
+CF p302 p303
+Finish p304 "304-var.format.strings <<- get.all.variable.format.strings(ns)" Value="var.format.strings <<- get.all.variable.format.strings(ns)" Time="3.005";
+CF p303 p304
+DF d174 p304
+Snapshot d175 "175-var.format.strings" Value="[DIR]/ddg/175-var.format.strings.csv" Time="2016-01-13T17.35.54EST";
+DF p304 d175
+Start p305 "305-if (is.null(data.url)) {    msg <- paste(datafile.id, \": dat" Value="if (is.null(data.url)) {    msg <- paste(datafile.id, \": dat" Time="3.011";
+CF p304 p305
+Start p306 "306-get.data.file(data.url, var.types)" Value="get.data.file(data.url, var.types)" Time="3.012";
+CF p305 p306
+Binding p307 "307-data.url  <-  data.url" Time="3.013"
+CF p306 p307
+Data d176 "176-data.url" Value="\"http://harvardforest.fas.harvard.edu/data/p00/hf000/hf000-01-daily-m.csv\"";
+DF p307 d176
+Binding p308 "308-var.types  <-  var.types" Time="3.02"
+CF p307 p308
+Snapshot d177 "177-var.types" Value="[DIR]/ddg/177-var.types.csv" Time="2016-01-13T17.35.54EST";
+DF p308 d177
+Operation p309 "309-get.data.file" Value="get.data.file" Time="3.028";
+DF d16 p309
+DF d176 p309
+DF d177 p309
+CF p308 p309
+Operation p310 "310-con <- file(data.url)" Value="con <- file(data.url)" Time="3.044";
+CF p309 p310
+DF d176 p310
+URL d178 "178-http://harvardforest.fas.harvard.edu/data/p00/hf000/hf000-01-daily-m.csv" Value="\"http://harvardforest.fas.harvard.edu/data/p00/hf000/hf000-01-daily-m.csv\"";
+DF d178 p310
+Snapshot d179 "179-con" Value="[DIR]/ddg/179-con.txt" Time="2016-01-13T17.35.54EST";
+DF p310 d179
+Operation p311 "311-xx <- read.csv(con, header = TRUE, colClasses = var.types)" Value="xx <- read.csv(con, header = TRUE, colClasses = var.types)" Time="3.232";
+CF p310 p311
+DF d179 p311
+DF d177 p311
+Snapshot d180 "180-xx" Value="[DIR]/ddg/180-xx.csv" Time="2016-01-13T17.35.55EST";
+DF p311 d180
+Operation p312 "312-xx" Value="xx" Time="3.399";
+CF p311 p312
+DF d180 p312
+Snapshot d181 "181-get.data.file(data.url,var.types) return" Value="[DIR]/ddg/181-get.data.file(data.url,var.types) return.csv" Time="2016-01-13T17.35.55EST";
+Operation p313 "313-return (xx)" Value="return (xx)" Time="3.528";
+CF p312 p313
+DF d180 p313
+DF p313 d181
+Finish p314 "314-get.data.file(data.url, var.types)" Value="get.data.file(data.url, var.types)" Time="3.534";
+CF p313 p314
+Finish p315 "315-if (is.null(data.url)) {    msg <- paste(datafile.id, \": dat" Value="if (is.null(data.url)) {    msg <- paste(datafile.id, \": dat" Time="3.535";
+CF p314 p315
+DF d181 p315
+Operation p316 "316-xx" Value="xx" Time="3.538";
+CF p315 p316
+Snapshot d182 "182-get.hf.datafile(datafile.id) return" Value="[DIR]/ddg/182-get.hf.datafile(datafile.id) return.csv" Time="2016-01-13T17.35.55EST";
+Operation p317 "317-return (xx)" Value="return (xx)" Time="3.677";
+CF p316 p317
+DF p317 d182
+Finish p318 "318-get.hf.datafile(datafile.id)" Value="get.hf.datafile(datafile.id)" Time="3.683";
+CF p317 p318
+Finish p319 "319-dd <<- get.hf.datafile(datafile.id)" Value="dd <<- get.hf.datafile(datafile.id)" Time="3.684";
+CF p318 p319
+DF d182 p319
+Snapshot d183 "183-dd" Value="[DIR]/ddg/183-dd.csv" Time="2016-01-13T17.35.55EST";
+DF p319 d183
+Operation p320 "320-if (is.null(dd)) {    msg <- paste(datafile.id, \": unable to download data file\",         sep = \"\")    warning(msg)} else {    pdf.file <- paste(datafile.id, \".pdf\", sep = \"\")    pdf(pdf.file)    create.summary.stats.table(dd)    plot.type <<- get.plot.type(datafile.id)    if (plot.type == \"time-series\")         create.time.series.plot(dd)    if (plot.type == \"scatterplot-matrix\")         create.scatterplot.matrix(dd)    dev.off()    xstr <- paste(\"\n*** \", toupper(datafile.id), \" completed ***\n\",         sep = \"\")    writeLines(xstr)}" Value="if (is.null(dd)) {    msg <- paste(datafile.id, \": unable to download data file\",         sep = \"\")    warning(msg)} else {    pdf.file <- paste(datafile.id, \".pdf\", sep = \"\")    pdf(pdf.file)    create.summary.stats.table(dd)    plot.type <<- get.plot.type(datafile.id)    if (plot.type == \"time-series\")         create.time.series.plot(dd)    if (plot.type == \"scatterplot-matrix\")         create.scatterplot.matrix(dd)    dev.off()    xstr <- paste(\"\n*** \", toupper(datafile.id), \" completed ***\n\",         sep = \"\")    writeLines(xstr)}" Time="3.808";
+CF p319 p320
+DF d53 p320
+DF d20 p320
+DF d23 p320
+DF d21 p320
+DF d22 p320
+Start p321 "321-create.summary.stats.table(dd)" Value="create.summary.stats.table(dd)" Time="3.933";
+CF p320 p321
+Binding p322 "322-xx  <-  dd" Time="3.934"
+CF p321 p322
+Snapshot d184 "184-xx" Value="[DIR]/ddg/184-xx.csv" Time="2016-01-13T17.35.55EST";
+DF p322 d184
+Operation p323 "323-create.summary.stats.table" Value="create.summary.stats.table" Time="4.089";
+DF d20 p323
+DF d184 p323
+CF p322 p323
+Start p324 "324-xx.sum <- get.summary.stats.data.frame(xx)" Value="xx.sum <- get.summary.stats.data.frame(xx)" Time="4.098";
+CF p323 p324
+Start p325 "325-get.summary.stats.data.frame(xx)" Value="get.summary.stats.data.frame(xx)" Time="4.099";
+CF p324 p325
+Binding p326 "326-xx  <-  xx" Time="4.099"
+CF p325 p326
+DF d184 p326
+Snapshot d185 "185-xx" Value="[DIR]/ddg/185-xx.csv" Time="2016-01-13T17.35.56EST";
+DF p326 d185
+Operation p327 "327-get.summary.stats.data.frame" Value="get.summary.stats.data.frame" Time="4.23";
+DF d18 p327
+DF d185 p327
+CF p326 p327
+Operation p328 "328-sum.types <<- \"\"" Value="sum.types <<- \"\"" Time="4.241";
+CF p327 p328
+Data d186 "186-sum.types" Value="NotRecorded";
+DF p328 d186
+Operation p329 "329-sum.names <<- \"\"" Value="sum.names <<- \"\"" Time="4.248";
+CF p328 p329
+Data d187 "187-sum.names" Value="NotRecorded";
+DF p329 d187
+Operation p330 "330-count <- 0" Value="count <- 0" Time="4.253";
+CF p329 p330
+Data d188 "188-count" Value="0";
+DF p330 d188
+Operation p331 "331-for (i in 1:length(xx)) {    if (var.types[i] == \"Date\" | va" Value="for (i in 1:length(xx)) {    if (var.types[i] == \"Date\" | va" Time="4.258";
+CF p330 p331
+DF d185 p331
+DF d188 p331
+Data d189 "189-count" Value="5";
+DF p331 d189
+Data d190 "190-sum.types" Value="\"Date\",\"numeric\",\"numeric\",\"numeric\",\"numeric\"";
+DF p331 d190
+Data d191 "191-sum.names" Value="\"date\",\"airt\",\"airtmax\",\"airtmin\",\"prec\"";
+DF p331 d191
+Operation p332 "332-if (all(sum.names == \"\")) {    xx.sum <- NULL} else {    xx." Value="if (all(sum.names == \"\")) {    xx.sum <- NULL} else {    xx." Time="4.345";
+CF p331 p332
+DF d185 p332
+Snapshot d192 "192-xx.sum" Value="[DIR]/ddg/192-xx.sum.txt" Time="2016-01-13T17.35.56EST";
+DF p332 d192
+Operation p333 "333-xx.sum" Value="xx.sum" Time="4.464";
+CF p332 p333
+Snapshot d193 "193-get.summary.stats.data.frame(xx) return" Value="[DIR]/ddg/193-get.summary.stats.data.frame(xx) return.csv" Time="2016-01-13T17.35.56EST";
+Operation p334 "334-return (xx.sum)" Value="return (xx.sum)" Time="4.573";
+CF p333 p334
+DF p334 d193
+Finish p335 "335-get.summary.stats.data.frame(xx)" Value="get.summary.stats.data.frame(xx)" Time="4.578";
+CF p334 p335
+Finish p336 "336-xx.sum <- get.summary.stats.data.frame(xx)" Value="xx.sum <- get.summary.stats.data.frame(xx)" Time="4.579";
 CF p335 p336
-DF p336 d153
-Finish p337 "337-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="2015-09-20T12.23.11EDT";
+DF d193 p336
+Snapshot d194 "194-xx.sum" Value="[DIR]/ddg/194-xx.sum.csv" Time="2016-01-13T17.35.56EST";
+DF p336 d194
+Operation p337 "337-xstr <- paste(\"Harvard Forest Data Archive \", toupper(datafi" Value="xstr <- paste(\"Harvard Forest Data Archive \", toupper(datafi" Time="4.682";
 CF p336 p337
-Start p338 "338-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="2015-09-20T12.23.11EDT";
+Data d195 "195-xstr" Value="\"Harvard Forest Data Archive HF000-01  \"";
+DF p337 d195
+Operation p338 "338-xstr <- paste(xstr, \"Data File = \", datafile.name, \"\n\nRows" Value="xstr <- paste(xstr, \"Data File = \", datafile.name, \"\n\nRows" Time="4.697";
 CF p337 p338
-Binding p339 "339-ns  <-  ns[[i]]" Time="2015-09-20T12.23.11EDT"
+DF d195 p338
+DF d184 p338
+Data d196 "196-xstr" Value="\"Harvard Forest Data Archive HF000-01  Data File = hf000-01-daily-m.csv  Rows = 14061  Columns = 9  \"";
+DF p338 d196
+Operation p339 "339-if (is.null(xx.sum)) {    msg <- paste(datafile.id, \": no da" Value="if (is.null(xx.sum)) {    msg <- paste(datafile.id, \": no da" Time="4.768";
 CF p338 p339
-DF d137 p339
-Snapshot d154 "154-ns" Value="[DIR]/ddg/154-ns.txt" Time="2015-09-20T12.23.11EDT";
-DF p339 d154
-Operation p340 "340-get.variable.format.string" Value="get.variable.format.string" Time="2015-09-20T12.23.11EDT";
-DF d14 p340
-DF d154 p340
+DF d194 p339
+DF d196 p339
+DF d184 p339
+Data d197 "197-xstr" Value="\"Harvard Forest Data Archive HF000-01  Data File = hf000-01-daily-m.csv  Rows = 14061  Columns = 9  Variable         Min         Median      Mean        Max         NAs ------------------------------------------------------------------------ date          1964-01-01  1983-04-01  1983-04-01  2002-06-30       0 airt             -24.000       8.000       7.342      28.000     489 airtmax          -20.000      14.000      13.091      36.000     288 airtmin          -33.000       2.000       1.473      24.000     384 prec               0.000       0.000       3.013     119.400     148 \"";
+DF p339 d197
+Data d198 "198-xnas" Value="148";
+DF p339 d198
+Data d199 "199-xmin" Value="0";
+DF p339 d199
+Data d200 "200-xmax" Value="119.4";
+DF p339 d200
+Data d201 "201-xmedian" Value="0";
+DF p339 d201
+Data d202 "202-xmean" Value="3.01294472795227";
+DF p339 d202
+Data d203 "203-d" Value="3";
+DF p339 d203
+Operation p340 "340-textplot(capture.output(writeLines(xstr)))" Value="textplot(capture.output(writeLines(xstr)))" Time="4.904";
 CF p339 p340
-Data d155 "155-get.variable.format.string(ns[[i]]) return" Value="NotRecorded";
-Operation p341 "341-return (var.format.string)" Value="return (var.format.string)" Time="2015-09-20T12.23.11EDT";
+DF d196 p340
+Data d204 "204-create.summary.stats.table(dd) return" Value="0.916232803403836";
+Operation p341 "341-return (textplot(capture.output(writeLines(xstr))))" Value="return (textplot(capture.output(writeLines(xstr))))" Time="5.059";
 CF p340 p341
-DF p341 d155
-Finish p342 "342-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="2015-09-20T12.23.11EDT";
+DF d196 p341
+DF p341 d204
+Finish p342 "342-create.summary.stats.table(dd)" Value="create.summary.stats.table(dd)" Time="5.077";
 CF p341 p342
-Snapshot d156 "156-get.all.variable.format.strings(ns) return" Value="[DIR]/ddg/156-get.all.variable.format.strings(ns) return.csv" Time="2015-09-20T12.23.11EDT";
-Operation p343 "343-return (var.format.strings)" Value="return (var.format.strings)" Time="2015-09-20T12.23.11EDT";
+Start p343 "343-get.plot.type(datafile.id)" Value="get.plot.type(datafile.id)" Time="5.078";
 CF p342 p343
-DF p343 d156
-Finish p344 "344-get.all.variable.format.strings(ns)" Value="get.all.variable.format.strings(ns)" Time="2015-09-20T12.23.11EDT";
+Binding p344 "344-datafile.id  <-  datafile.id" Time="5.079"
 CF p343 p344
-Start p345 "345-get.data.file(data.url, var.types)" Value="get.data.file(data.url, var.types)" Time="2015-09-20T12.23.11EDT";
+DF d53 p344
+Data d205 "205-datafile.id" Value="\"hf000-01\"";
+DF p344 d205
+Operation p345 "345-get.plot.type" Value="get.plot.type" Time="5.089";
+DF d23 p345
+DF d205 p345
 CF p344 p345
-Binding p346 "346-data.url  <-  data.url" Time="2015-09-20T12.23.11EDT"
+Operation p346 "346-num <- as.integer(substr(datafile.id, 7, 8))" Value="num <- as.integer(substr(datafile.id, 7, 8))" Time="5.102";
 CF p345 p346
-Data d157 "157-data.url" Value="\"http://harvardforest.fas.harvard.edu/data/p00/hf000/hf000-02-daily-e.csv\"";
-DF p346 d157
-Binding p347 "347-var.types  <-  var.types" Time="2015-09-20T12.23.11EDT"
+DF d205 p346
+Data d206 "206-num" Value="1";
+DF p346 d206
+Operation p347 "347-if (num %in% time.series.ids) {    plot.type <- \"time-series" Value="if (num %in% time.series.ids) {    plot.type <- \"time-series" Time="5.118";
 CF p346 p347
-Snapshot d158 "158-var.types" Value="[DIR]/ddg/158-var.types.csv" Time="2015-09-20T12.23.11EDT";
-DF p347 d158
-Operation p348 "348-get.data.file" Value="get.data.file" Time="2015-09-20T12.23.11EDT";
-DF d16 p348
-DF d157 p348
-DF d158 p348
+DF d206 p347
+Data d207 "207-plot.type" Value="\"time-series\"";
+DF p347 d207
+Operation p348 "348-plot.type" Value="plot.type" Time="5.138";
 CF p347 p348
-Snapshot d159 "159-get.data.file(data.url,var.types) return" Value="[DIR]/ddg/159-get.data.file(data.url,var.types) return.csv" Time="2015-09-20T12.23.14EDT";
-Operation p349 "349-return (xx)" Value="return (xx)" Time="2015-09-20T12.23.14EDT";
+Data d208 "208-get.plot.type(datafile.id) return" Value="\"time-series\"";
+Operation p349 "349-return (plot.type)" Value="return (plot.type)" Time="5.145";
 CF p348 p349
-DF p349 d159
-Finish p350 "350-get.data.file(data.url, var.types)" Value="get.data.file(data.url, var.types)" Time="2015-09-20T12.23.14EDT";
+DF p349 d208
+Finish p350 "350-get.plot.type(datafile.id)" Value="get.plot.type(datafile.id)" Time="5.152";
 CF p349 p350
-Snapshot d160 "160-get.hf.datafile(datafile.id) return" Value="[DIR]/ddg/160-get.hf.datafile(datafile.id) return.csv" Time="2015-09-20T12.23.14EDT";
-Operation p351 "351-return (xx)" Value="return (xx)" Time="2015-09-20T12.23.14EDT";
+Start p351 "351-create.time.series.plot(dd)" Value="create.time.series.plot(dd)" Time="5.153";
 CF p350 p351
-DF p351 d160
-Finish p352 "352-get.hf.datafile(datafile.id)" Value="get.hf.datafile(datafile.id)" Time="2015-09-20T12.23.14EDT";
+Binding p352 "352-xx  <-  dd" Time="5.153"
 CF p351 p352
-Start p353 "353-create.summary.stats.table(dd)" Value="create.summary.stats.table(dd)" Time="2015-09-20T12.23.14EDT";
+Snapshot d209 "209-xx" Value="[DIR]/ddg/209-xx.csv" Time="2016-01-13T17.35.57EST";
+DF p352 d209
+Operation p353 "353-create.time.series.plot" Value="create.time.series.plot" Time="5.282";
+DF d21 p353
+DF d209 p353
 CF p352 p353
-Binding p354 "354-xx  <-  dd" Time="2015-09-20T12.23.14EDT"
+Start p354 "354-xx.plt <- get.plot.dataframe(xx, max.rows = 10000)" Value="xx.plt <- get.plot.dataframe(xx, max.rows = 10000)" Time="5.294";
 CF p353 p354
-Snapshot d161 "161-xx" Value="[DIR]/ddg/161-xx.csv" Time="2015-09-20T12.23.15EDT";
-DF p354 d161
-Operation p355 "355-create.summary.stats.table" Value="create.summary.stats.table" Time="2015-09-20T12.23.15EDT";
-DF d20 p355
-DF d161 p355
+Start p355 "355-get.plot.dataframe(xx, max.rows = 10000)" Value="get.plot.dataframe(xx, max.rows = 10000)" Time="5.295";
 CF p354 p355
-Start p356 "356-get.summary.stats.data.frame(xx)" Value="get.summary.stats.data.frame(xx)" Time="2015-09-20T12.23.15EDT";
+Binding p356 "356-xx  <-  xx" Time="5.296"
 CF p355 p356
-Binding p357 "357-xx  <-  xx" Time="2015-09-20T12.23.15EDT"
+DF d209 p356
+Snapshot d210 "210-xx" Value="[DIR]/ddg/210-xx.csv" Time="2016-01-13T17.35.57EST";
+DF p356 d210
+Binding p357 "357-max.rows  <-  10000" Time="5.46"
 CF p356 p357
-DF d161 p357
-Snapshot d162 "162-xx" Value="[DIR]/ddg/162-xx.csv" Time="2015-09-20T12.23.15EDT";
-DF p357 d162
-Operation p358 "358-get.summary.stats.data.frame" Value="get.summary.stats.data.frame" Time="2015-09-20T12.23.15EDT";
-DF d18 p358
-DF d162 p358
+Data d211 "211-max.rows" Value="10000";
+DF p357 d211
+Operation p358 "358-get.plot.dataframe" Value="get.plot.dataframe" Time="5.463";
+DF d19 p358
+DF d210 p358
+DF d211 p358
 CF p357 p358
-Snapshot d163 "163-get.summary.stats.data.frame(xx) return" Value="[DIR]/ddg/163-get.summary.stats.data.frame(xx) return.csv" Time="2015-09-20T12.23.15EDT";
-Operation p359 "359-return (xx.sum)" Value="return (xx.sum)" Time="2015-09-20T12.23.15EDT";
+Operation p359 "359-plt.types <<- \"\"" Value="plt.types <<- \"\"" Time="5.477";
 CF p358 p359
-DF p359 d163
-Finish p360 "360-get.summary.stats.data.frame(xx)" Value="get.summary.stats.data.frame(xx)" Time="2015-09-20T12.23.15EDT";
+Data d212 "212-plt.types" Value="NotRecorded";
+DF p359 d212
+Operation p360 "360-plt.names <<- \"\"" Value="plt.names <<- \"\"" Time="5.483";
 CF p359 p360
-Data d164 "164-create.summary.stats.table(dd) return" Value="0.916232803403842";
-Operation p361 "361-return (textplot(capture.output(writeLines(xstr))))" Value="return (textplot(capture.output(writeLines(xstr))))" Time="2015-09-20T12.23.15EDT";
+Data d213 "213-plt.names" Value="NotRecorded";
+DF p360 d213
+Operation p361 "361-count <- 0" Value="count <- 0" Time="5.49";
 CF p360 p361
-DF p361 d164
-Finish p362 "362-create.summary.stats.table(dd)" Value="create.summary.stats.table(dd)" Time="2015-09-20T12.23.15EDT";
+Data d214 "214-count" Value="0";
+DF p361 d214
+Operation p362 "362-for (i in 1:length(xx)) {    if (var.types[i] == \"numeric\" |" Value="for (i in 1:length(xx)) {    if (var.types[i] == \"numeric\" |" Time="5.495";
 CF p361 p362
-Start p363 "363-get.plot.type(datafile.id)" Value="get.plot.type(datafile.id)" Time="2015-09-20T12.23.15EDT";
+DF d210 p362
+DF d214 p362
+Data d215 "215-count" Value="5";
+DF p362 d215
+Data d216 "216-plt.types" Value="\"Date\",\"numeric\",\"numeric\",\"numeric\",\"numeric\"";
+DF p362 d216
+Data d217 "217-plt.names" Value="\"date\",\"airt\",\"airtmax\",\"airtmin\",\"prec\"";
+DF p362 d217
+Operation p363 "363-if (all(plt.names == \"\")) {    xx.plt <- NULL} else {    xx." Value="if (all(plt.names == \"\")) {    xx.plt <- NULL} else {    xx." Time="5.563";
 CF p362 p363
-Binding p364 "364-datafile.id  <-  datafile.id" Time="2015-09-20T12.23.15EDT"
+DF d210 p363
+DF d211 p363
+DF d214 p363
+Snapshot d218 "218-xx.plt" Value="[DIR]/ddg/218-xx.plt.txt" Time="2016-01-13T17.35.57EST";
+DF p363 d218
+Data d219 "219-plt.rows" Value="14061";
+DF p363 d219
+Data d220 "220-skip" Value="1";
+DF p363 d220
+Snapshot d221 "221-index" Value="[DIR]/ddg/221-index.csv" Time="2016-01-13T17.35.57EST";
+DF p363 d221
+Data d222 "222-keep" Value="1,2,3,4,5";
+DF p363 d222
+Data d223 "223-count" Value="5";
+DF p363 d223
+Operation p364 "364-xx.plt" Value="xx.plt" Time="5.825";
 CF p363 p364
-DF d106 p364
-Data d165 "165-datafile.id" Value="\"hf000-02\"";
-DF p364 d165
-Operation p365 "365-get.plot.type" Value="get.plot.type" Time="2015-09-20T12.23.15EDT";
-DF d23 p365
-DF d165 p365
+Snapshot d224 "224-get.plot.dataframe(xx,max.rows=10000) return" Value="[DIR]/ddg/224-get.plot.dataframe(xx,max.rows=10000) return.csv" Time="2016-01-13T17.35.57EST";
+Operation p365 "365-return (xx.plt)" Value="return (xx.plt)" Time="5.931";
 CF p364 p365
-Data d166 "166-get.plot.type(datafile.id) return" Value="\"time-series\"";
-Operation p366 "366-return (plot.type)" Value="return (plot.type)" Time="2015-09-20T12.23.15EDT";
+DF p365 d224
+Finish p366 "366-get.plot.dataframe(xx, max.rows = 10000)" Value="get.plot.dataframe(xx, max.rows = 10000)" Time="5.937";
 CF p365 p366
-DF p366 d166
-Finish p367 "367-get.plot.type(datafile.id)" Value="get.plot.type(datafile.id)" Time="2015-09-20T12.23.15EDT";
+Finish p367 "367-xx.plt <- get.plot.dataframe(xx, max.rows = 10000)" Value="xx.plt <- get.plot.dataframe(xx, max.rows = 10000)" Time="5.938";
 CF p366 p367
-Start p368 "368-create.time.series.plot(dd)" Value="create.time.series.plot(dd)" Time="2015-09-20T12.23.15EDT";
+DF d224 p367
+Snapshot d225 "225-xx.plt" Value="[DIR]/ddg/225-xx.plt.csv" Time="2016-01-13T17.35.57EST";
+DF p367 d225
+Operation p368 "368-if (is.null(xx.plt)) {    msg <- paste(datafile.id, \": no variables to plot\", sep = \"\")    warning(msg)} else {    max.var <- 4    var.num <- length(xx.plt)    if (var.num <= max.var) {        plot.num <- 1        plot.last <- 0    }    else {        plot.num <- var.num%/%max.var        plot.last <- var.num%%max.var        if (plot.last > 0)             plot.num <- plot.num + 1    }    for (i in 1:plot.num) {        first.col <- (i - 1) * max.var + 1        if (plot.num == 1) {            last.col <- first.col + var.num - 1        }        else if (i < plot.num | plot.last == 0) {            last.col <- first.col + max.var - 1        }        else {            last.col <- first.col + plot.last - 1        }        if (first.col == last.col) {            zz <- as.data.frame(xx.plt[, c(first.col:last.col)])            colnames(zz) <- names(xx.plt[first.col])        }        else {            zz <- xx.plt[, c(first.col:last.col)]        }        xx.ts <- ts(zz)        plot.title <- paste(toupper(datafile.id), \" Plot \", i,             sep = \"\")        plot(xx.ts, main = plot.title, col = \"blue\")    }    xstr <- paste(\"\nTime-series plots = \", plot.num, \"\n\", sep = \"\")    writeLines(xstr)}" Value="if (is.null(xx.plt)) {    msg <- paste(datafile.id, \": no variables to plot\", sep = \"\")    warning(msg)} else {    max.var <- 4    var.num <- length(xx.plt)    if (var.num <= max.var) {        plot.num <- 1        plot.last <- 0    }    else {        plot.num <- var.num%/%max.var        plot.last <- var.num%%max.var        if (plot.last > 0)             plot.num <- plot.num + 1    }    for (i in 1:plot.num) {        first.col <- (i - 1) * max.var + 1        if (plot.num == 1) {            last.col <- first.col + var.num - 1        }        else if (i < plot.num | plot.last == 0) {            last.col <- first.col + max.var - 1        }        else {            last.col <- first.col + plot.last - 1        }        if (first.col == last.col) {            zz <- as.data.frame(xx.plt[, c(first.col:last.col)])            colnames(zz) <- names(xx.plt[first.col])        }        else {            zz <- xx.plt[, c(first.col:last.col)]        }        xx.ts <- ts(zz)        plot.title <- paste(toupper(datafile.id), \" Plot \", i,             sep = \"\")        plot(xx.ts, main = plot.title, col = \"blue\")    }    xstr <- paste(\"\nTime-series plots = \", plot.num, \"\n\", sep = \"\")    writeLines(xstr)}" Time="6.043";
 CF p367 p368
-Binding p369 "369-xx  <-  dd" Time="2015-09-20T12.23.15EDT"
+DF d225 p368
+Data d226 "226-create.time.series.plot(dd) return" Value="NULL";
+Operation p369 "369-return (if (is.null(xx.plt)) {    msg <- paste(datafile.id)" Value="return (if (is.null(xx.plt)) {    msg <- paste(datafile.id)" Time="6.3";
 CF p368 p369
-Snapshot d167 "167-xx" Value="[DIR]/ddg/167-xx.csv" Time="2015-09-20T12.23.16EDT";
-DF p369 d167
-Operation p370 "370-create.time.series.plot" Value="create.time.series.plot" Time="2015-09-20T12.23.16EDT";
-DF d21 p370
-DF d167 p370
+DF d225 p369
+DF p369 d226
+Finish p370 "370-create.time.series.plot(dd)" Value="create.time.series.plot(dd)" Time="6.451";
 CF p369 p370
-Start p371 "371-get.plot.dataframe(xx, max.rows = 10000)" Value="get.plot.dataframe(xx, max.rows = 10000)" Time="2015-09-20T12.23.16EDT";
+Data d227 "227-create.datafile.preview(datafile.id) return" Value="NULL";
+Operation p371 "371-return (if (is.null(dd)) {    msg <- paste(datafile.id, \":)" Value="return (if (is.null(dd)) {    msg <- paste(datafile.id, \":)" Time="6.463";
 CF p370 p371
-Binding p372 "372-xx  <-  xx" Time="2015-09-20T12.23.16EDT"
+DF d53 p371
+DF d20 p371
+DF d23 p371
+DF d21 p371
+DF d22 p371
+DF p371 d227
+Finish p372 "372-create.datafile.preview(datafile.id)" Value="create.datafile.preview(datafile.id)" Time="6.572";
 CF p371 p372
-DF d167 p372
-Snapshot d168 "168-xx" Value="[DIR]/ddg/168-xx.csv" Time="2015-09-20T12.23.16EDT";
-DF p372 d168
-Binding p373 "373-max.rows  <-  10000" Time="2015-09-20T12.23.16EDT"
+Start p373 "373-create.datafile.preview(datafile.id)" Value="create.datafile.preview(datafile.id)" Time="6.573";
 CF p372 p373
-Data d169 "169-max.rows" Value="10000";
-DF p373 d169
-Operation p374 "374-get.plot.dataframe" Value="get.plot.dataframe" Time="2015-09-20T12.23.16EDT";
-DF d19 p374
-DF d168 p374
-DF d169 p374
+Binding p374 "374-datafile.id  <-  datafile.id" Time="6.574"
 CF p373 p374
-Snapshot d170 "170-get.plot.dataframe(xx,max.rows=10000) return" Value="[DIR]/ddg/170-get.plot.dataframe(xx,max.rows=10000) return.csv" Time="2015-09-20T12.23.16EDT";
-Operation p375 "375-return (xx.plt)" Value="return (xx.plt)" Time="2015-09-20T12.23.16EDT";
+Data d228 "228-datafile.id" Value="\"hf000-02\"";
+DF p374 d228
+Operation p375 "375-create.datafile.preview" Value="create.datafile.preview" Time="6.58";
+DF d24 p375
+DF d228 p375
 CF p374 p375
-DF p375 d170
-Finish p376 "376-get.plot.dataframe(xx, max.rows = 10000)" Value="get.plot.dataframe(xx, max.rows = 10000)" Time="2015-09-20T12.23.16EDT";
+Start p376 "376-dd <<- get.hf.datafile(datafile.id)" Value="dd <<- get.hf.datafile(datafile.id)" Time="6.594";
 CF p375 p376
-Data d171 "171-create.time.series.plot(dd) return" Value="NULL";
-Operation p377 "377-return (if (is.null(xx.plt)) {    msg <- paste(datafile.id)" Value="return (if (is.null(xx.plt)) {    msg <- paste(datafile.id)" Time="2015-09-20T12.23.16EDT";
+Start p377 "377-get.hf.datafile(datafile.id)" Value="get.hf.datafile(datafile.id)" Time="6.594";
 CF p376 p377
-DF p377 d171
-Finish p378 "378-create.time.series.plot(dd)" Value="create.time.series.plot(dd)" Time="2015-09-20T12.23.16EDT";
+Binding p378 "378-datafile.id  <-  datafile.id" Time="6.595"
 CF p377 p378
-Data d172 "172-create.datafile.preview(datafile.id) return" Value="NULL";
-Operation p379 "379-return (if (is.null(dd)) {    msg <- paste(datafile.id, \":)" Value="return (if (is.null(dd)) {    msg <- paste(datafile.id, \":)" Time="2015-09-20T12.23.16EDT";
+DF d228 p378
+Data d229 "229-datafile.id" Value="\"hf000-02\"";
+DF p378 d229
+Operation p379 "379-get.hf.datafile" Value="get.hf.datafile" Time="6.6";
+DF d17 p379
+DF d229 p379
 CF p378 p379
-DF d106 p379
-DF d20 p379
-DF d23 p379
-DF d21 p379
-DF d22 p379
-DF p379 d172
-Finish p380 "380-create.datafile.preview(datafile.id)" Value="create.datafile.preview(datafile.id)" Time="2015-09-20T12.23.17EDT";
+Start p380 "380-datafile.name <<- get.datafile.name(eml, datafile.id)" Value="datafile.name <<- get.datafile.name(eml, datafile.id)" Time="6.612";
 CF p379 p380
-Finish p381 "381-if (datafile.num != 0) {    datafile.id <- get.datafile.id(d" Value="if (datafile.num != 0) {    datafile.id <- get.datafile.id(d" Time="2015-09-20T12.23.17EDT";
+Start p381 "381-get.datafile.name(eml, datafile.id)" Value="get.datafile.name(eml, datafile.id)" Time="6.612";
 CF p380 p381
-DF d38 p381
-DF d105 p381
-DF d172 p381
-Data d173 "173-datafile.id" Value="\"hf000-02\"";
-DF p30 d173
-Data d174 "174-datafile.ids" Value="\"hf000-01\",\"hf000-02\"";
-DF p30 d174
-Finish p382 "382-HFDatasetPreview.R" Value="HFDatasetPreview.R" Time="2015-09-20T12.23.17EDT";
+Binding p382 "382-eml  <-  eml" Time="6.615"
 CF p381 p382
+DF d31 p382
+Snapshot d230 "230-eml" Value="[DIR]/ddg/230-eml.xml" Time="2016-01-13T17.35.58EST";
+DF p382 d230
+Binding p383 "383-datafile.id  <-  datafile.id" Time="6.662"
+CF p382 p383
+DF d229 p383
+Data d231 "231-datafile.id" Value="\"hf000-02\"";
+DF p383 d231
+Operation p384 "384-get.datafile.name" Value="get.datafile.name" Time="6.667";
+DF d9 p384
+DF d230 p384
+DF d231 p384
+CF p383 p384
+Operation p385 "385-xpath1 <- paste(\"//dataTable[@id='\", datafile.id, \"']/entity" Value="xpath1 <- paste(\"//dataTable[@id='\", datafile.id, \"']/entity" Time="6.68";
+CF p384 p385
+DF d231 p385
+Data d232 "232-xpath1" Value="\"//dataTable[@id='hf000-02']/entityName\"";
+DF p385 d232
+Operation p386 "386-xpath2 <- paste(\"//dataTable[@id='\", toupper(datafile.id), \"" Value="xpath2 <- paste(\"//dataTable[@id='\", toupper(datafile.id), \"" Time="6.692";
+CF p385 p386
+DF d231 p386
+Data d233 "233-xpath2" Value="\"//dataTable[@id='HF000-02']/entityName\"";
+DF p386 d233
+Operation p387 "387-ns <- getNodeSet(eml, xpath1, fun = xmlValue)" Value="ns <- getNodeSet(eml, xpath1, fun = xmlValue)" Time="6.708";
+CF p386 p387
+DF d230 p387
+DF d232 p387
+Data d234 "234-ns" Value="NULL";
+DF p387 d234
+Operation p388 "388-if (length(ns) == 0) ns <- getNodeSet(eml, xpath2, fun = xml" Value="if (length(ns) == 0) ns <- getNodeSet(eml, xpath2, fun = xml" Time="6.726";
+CF p387 p388
+DF d234 p388
+DF d230 p388
+DF d233 p388
+Data d235 "235-ns" Value="[[ 1 ]] hf000-02-daily-e.csv";
+DF p388 d235
+Operation p389 "389-name <- ns[[1]]" Value="name <- ns[[1]]" Time="6.757";
+CF p388 p389
+DF d234 p389
+Data d236 "236-name" Value="\"hf000-02-daily-e.csv\"";
+DF p389 d236
+Operation p390 "390-name" Value="name" Time="6.768";
+CF p389 p390
+DF d236 p390
+Data d237 "237-get.datafile.name(eml,datafile.id) return" Value="\"hf000-02-daily-e.csv\"";
+Operation p391 "391-return (name)" Value="return (name)" Time="6.773";
+CF p390 p391
+DF d236 p391
+DF p391 d237
+Finish p392 "392-get.datafile.name(eml, datafile.id)" Value="get.datafile.name(eml, datafile.id)" Time="6.777";
+CF p391 p392
+Finish p393 "393-datafile.name <<- get.datafile.name(eml, datafile.id)" Value="datafile.name <<- get.datafile.name(eml, datafile.id)" Time="6.778";
+CF p392 p393
+DF d237 p393
+Data d238 "238-datafile.name" Value="\"hf000-02-daily-e.csv\"";
+DF p393 d238
+Start p394 "394-data.url <<- get.data.url(eml, datafile.id)" Value="data.url <<- get.data.url(eml, datafile.id)" Time="6.782";
+CF p393 p394
+Start p395 "395-get.data.url(eml, datafile.id)" Value="get.data.url(eml, datafile.id)" Time="6.783";
+CF p394 p395
+Binding p396 "396-eml  <-  eml" Time="6.784"
+CF p395 p396
+DF d31 p396
+Snapshot d239 "239-eml" Value="[DIR]/ddg/239-eml.xml" Time="2016-01-13T17.35.58EST";
+DF p396 d239
+Binding p397 "397-datafile.id  <-  datafile.id" Time="6.796"
+CF p396 p397
+DF d229 p397
+Data d240 "240-datafile.id" Value="\"hf000-02\"";
+DF p397 d240
+Operation p398 "398-get.data.url" Value="get.data.url" Time="6.801";
+DF d10 p398
+DF d239 p398
+DF d240 p398
+CF p397 p398
+Operation p399 "399-xpath1 <- paste(\"//dataTable[@id='\", datafile.id, \"']/physic" Value="xpath1 <- paste(\"//dataTable[@id='\", datafile.id, \"']/physic" Time="6.814";
+CF p398 p399
+DF d240 p399
+Data d241 "241-xpath1" Value="\"//dataTable[@id='hf000-02']/physical/distribution/online/url\"";
+DF p399 d241
+Operation p400 "400-xpath2 <- paste(\"//dataTable[@id='\", toupper(datafile.id), \"" Value="xpath2 <- paste(\"//dataTable[@id='\", toupper(datafile.id), \"" Time="6.827";
+CF p399 p400
+DF d240 p400
+Data d242 "242-xpath2" Value="\"//dataTable[@id='HF000-02']/physical/distribution/online/url\"";
+DF p400 d242
+Operation p401 "401-ns <- getNodeSet(eml, xpath1, fun = xmlValue)" Value="ns <- getNodeSet(eml, xpath1, fun = xmlValue)" Time="6.844";
+CF p400 p401
+DF d239 p401
+DF d241 p401
+Data d243 "243-ns" Value="NULL";
+DF p401 d243
+Operation p402 "402-if (length(ns) == 0) ns <- getNodeSet(eml, xpath2, fun = xml" Value="if (length(ns) == 0) ns <- getNodeSet(eml, xpath2, fun = xml" Time="6.895";
+CF p401 p402
+DF d243 p402
+DF d239 p402
+DF d242 p402
+Data d244 "244-ns" Value="[[ 1 ]] http://harvardforest.fas.harvard.edu/data/p00/hf000/hf000-02-daily-e.csv";
+DF p402 d244
+Operation p403 "403-data.url <- ns[[1]]" Value="data.url <- ns[[1]]" Time="6.939";
+CF p402 p403
+DF d243 p403
+Data d245 "245-data.url" Value="\"http://harvardforest.fas.harvard.edu/data/p00/hf000/hf000-02-daily-e.csv\"";
+DF p403 d245
+Operation p404 "404-if (!url.exists(data.url)) {    data.url <- NULL}" Value="if (!url.exists(data.url)) {    data.url <- NULL}" Time="6.955";
+CF p403 p404
+DF d245 p404
+Data d246 "246-data.url" Value="\"http://harvardforest.fas.harvard.edu/data/p00/hf000/hf000-02-daily-e.csv\"";
+DF p404 d246
+Operation p405 "405-data.url" Value="data.url" Time="6.976";
+CF p404 p405
+DF d245 p405
+Data d247 "247-get.data.url(eml,datafile.id) return" Value="\"http://harvardforest.fas.harvard.edu/data/p00/hf000/hf000-02-daily-e.csv\"";
+Operation p406 "406-return (data.url)" Value="return (data.url)" Time="6.984";
+CF p405 p406
+DF d245 p406
+DF p406 d247
+Finish p407 "407-get.data.url(eml, datafile.id)" Value="get.data.url(eml, datafile.id)" Time="6.991";
+CF p406 p407
+Finish p408 "408-data.url <<- get.data.url(eml, datafile.id)" Value="data.url <<- get.data.url(eml, datafile.id)" Time="6.992";
+CF p407 p408
+DF d247 p408
+Data d248 "248-data.url" Value="\"http://harvardforest.fas.harvard.edu/data/p00/hf000/hf000-02-daily-e.csv\"";
+DF p408 d248
+Start p409 "409-ns <- get.data.table.node.set(eml, datafile.id)" Value="ns <- get.data.table.node.set(eml, datafile.id)" Time="6.998";
+CF p408 p409
+Start p410 "410-get.data.table.node.set(eml, datafile.id)" Value="get.data.table.node.set(eml, datafile.id)" Time="6.999";
+CF p409 p410
+Binding p411 "411-eml  <-  eml" Time="6.999"
+CF p410 p411
+DF d31 p411
+Snapshot d249 "249-eml" Value="[DIR]/ddg/249-eml.xml" Time="2016-01-13T17.35.59EST";
+DF p411 d249
+Binding p412 "412-datafile.id  <-  datafile.id" Time="7.013"
+CF p411 p412
+DF d229 p412
+Data d250 "250-datafile.id" Value="\"hf000-02\"";
+DF p412 d250
+Operation p413 "413-get.data.table.node.set" Value="get.data.table.node.set" Time="7.024";
+DF d11 p413
+DF d249 p413
+DF d250 p413
+CF p412 p413
+Operation p414 "414-xpath1 <- paste(\"//dataTable[@id='\", datafile.id, \"']/attrib" Value="xpath1 <- paste(\"//dataTable[@id='\", datafile.id, \"']/attrib" Time="7.041";
+CF p413 p414
+DF d250 p414
+Data d251 "251-xpath1" Value="\"//dataTable[@id='hf000-02']/attributeList/attribute\"";
+DF p414 d251
+Operation p415 "415-xpath2 <- paste(\"//dataTable[@id='\", toupper(datafile.id), \"" Value="xpath2 <- paste(\"//dataTable[@id='\", toupper(datafile.id), \"" Time="7.055";
+CF p414 p415
+DF d250 p415
+Data d252 "252-xpath2" Value="\"//dataTable[@id='HF000-02']/attributeList/attribute\"";
+DF p415 d252
+Operation p416 "416-ns <- getNodeSet(eml, xpath1)" Value="ns <- getNodeSet(eml, xpath1)" Time="7.099";
+CF p415 p416
+DF d249 p416
+DF d251 p416
+Data d253 "253-ns" Value="NULL";
+DF p416 d253
+Operation p417 "417-if (length(ns) == 0) ns <- getNodeSet(eml, xpath2)" Value="if (length(ns) == 0) ns <- getNodeSet(eml, xpath2)" Time="7.112";
+CF p416 p417
+DF d253 p417
+DF d249 p417
+DF d252 p417
+Snapshot d254 "254-ns" Value="[DIR]/ddg/254-ns.txt" Time="2016-01-13T17.35.59EST";
+DF p417 d254
+Operation p418 "418-ns" Value="ns" Time="7.144";
+CF p417 p418
+DF d253 p418
+Snapshot d255 "255-get.data.table.node.set(eml,datafile.id) return" Value="[DIR]/ddg/255-get.data.table.node.set(eml,datafile.id) return.csv" Time="2016-01-13T17.35.59EST";
+Operation p419 "419-return (ns)" Value="return (ns)" Time="7.155";
+CF p418 p419
+DF d253 p419
+DF p419 d255
+Finish p420 "420-get.data.table.node.set(eml, datafile.id)" Value="get.data.table.node.set(eml, datafile.id)" Time="7.162";
+CF p419 p420
+Finish p421 "421-ns <- get.data.table.node.set(eml, datafile.id)" Value="ns <- get.data.table.node.set(eml, datafile.id)" Time="7.163";
+CF p420 p421
+DF d255 p421
+Snapshot d256 "256-ns" Value="[DIR]/ddg/256-ns.csv" Time="2016-01-13T17.35.59EST";
+DF p421 d256
+Start p422 "422-var.types <<- get.all.variable.types(ns)" Value="var.types <<- get.all.variable.types(ns)" Time="7.169";
+CF p421 p422
+Start p423 "423-get.all.variable.types(ns)" Value="get.all.variable.types(ns)" Time="7.17";
+CF p422 p423
+Binding p424 "424-ns  <-  ns" Time="7.171"
+CF p423 p424
+DF d256 p424
+Snapshot d257 "257-ns" Value="[DIR]/ddg/257-ns.csv" Time="2016-01-13T17.35.59EST";
+DF p424 d257
+Operation p425 "425-get.all.variable.types" Value="get.all.variable.types" Time="7.179";
+DF d13 p425
+DF d257 p425
+CF p424 p425
+Operation p426 "426-num <- xmlSize(ns)" Value="num <- xmlSize(ns)" Time="7.192";
+CF p425 p426
+DF d257 p426
+Data d258 "258-num" Value="9";
+DF p426 d258
+Start p427 "427-for (i in 1:num) {    var.type <- get.variable.type(ns[[i]])" Value="for (i in 1:num) {    var.type <- get.variable.type(ns[[i]])" Time="7.205";
+CF p426 p427
+Start p428 "428-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="7.205";
+CF p427 p428
+Binding p429 "429-ns  <-  ns[[i]]" Time="7.206"
+CF p428 p429
+DF d257 p429
+Operation p430 "430-get.variable.type" Value="get.variable.type" Time="7.218";
+DF d12 p430
+CF p429 p430
+Operation p431 "431-x1 <- xpathApply(ns, \"measurementScale/ratio\", xmlValue)" Value="x1 <- xpathApply(ns, \"measurementScale/ratio\", xmlValue)" Time="7.234";
+CF p430 p431
+Snapshot d260 "260-x1" Value="[DIR]/ddg/260-x1.csv" Time="2016-01-13T17.35.59EST";
+DF p431 d260
+Operation p432 "432-x2 <- xpathApply(ns, \"measurementScale/interval\", xmlValue)" Value="x2 <- xpathApply(ns, \"measurementScale/interval\", xmlValue)" Time="7.255";
+CF p431 p432
+Snapshot d261 "261-x2" Value="[DIR]/ddg/261-x2.csv" Time="2016-01-13T17.35.59EST";
+DF p432 d261
+Operation p433 "433-if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Value="if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Time="7.307";
+CF p432 p433
+DF d260 p433
+DF d261 p433
+Data d262 "262-var.type" Value="\"Date\"";
+DF p433 d262
+Data d263 "263-x3" Value="[[ 1 ]] YYYY-MM-DD";
+DF p433 d263
+Operation p434 "434-var.type" Value="var.type" Time="7.361";
+CF p433 p434
+Data d264 "264-get.variable.type(ns[[i]]) return" Value="\"Date\"";
+Operation p435 "435-return (var.type)" Value="return (var.type)" Time="7.369";
+CF p434 p435
+DF p435 d264
+Finish p436 "436-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="7.376";
+CF p435 p436
+Start p437 "437-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="7.378";
+CF p436 p437
+Binding p438 "438-ns  <-  ns[[i]]" Time="7.379"
+CF p437 p438
+DF d257 p438
+Operation p439 "439-get.variable.type" Value="get.variable.type" Time="7.391";
+DF d12 p439
+CF p438 p439
+Operation p440 "440-x1 <- xpathApply(ns, \"measurementScale/ratio\", xmlValue)" Value="x1 <- xpathApply(ns, \"measurementScale/ratio\", xmlValue)" Time="7.407";
+CF p439 p440
+Snapshot d266 "266-x1" Value="[DIR]/ddg/266-x1.csv" Time="2016-01-13T17.35.59EST";
+DF p440 d266
+Operation p441 "441-x2 <- xpathApply(ns, \"measurementScale/interval\", xmlValue)" Value="x2 <- xpathApply(ns, \"measurementScale/interval\", xmlValue)" Time="7.427";
+CF p440 p441
+Snapshot d267 "267-x2" Value="[DIR]/ddg/267-x2.csv" Time="2016-01-13T17.35.59EST";
+DF p441 d267
+Operation p442 "442-if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Value="if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Time="7.449";
+CF p441 p442
+DF d266 p442
+DF d267 p442
+Data d268 "268-var.type" Value="\"numeric\"";
+DF p442 d268
+Operation p443 "443-var.type" Value="var.type" Time="7.501";
+CF p442 p443
+Data d269 "269-get.variable.type(ns[[i]]) return" Value="\"numeric\"";
+Operation p444 "444-return (var.type)" Value="return (var.type)" Time="7.508";
+CF p443 p444
+DF p444 d269
+Finish p445 "445-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="7.516";
+CF p444 p445
+Start p446 "446-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="7.518";
+CF p445 p446
+Binding p447 "447-ns  <-  ns[[i]]" Time="7.519"
+CF p446 p447
+DF d257 p447
+Operation p448 "448-get.variable.type" Value="get.variable.type" Time="7.534";
+DF d12 p448
+CF p447 p448
+Operation p449 "449-x1 <- xpathApply(ns, \"measurementScale/ratio\", xmlValue)" Value="x1 <- xpathApply(ns, \"measurementScale/ratio\", xmlValue)" Time="7.552";
+CF p448 p449
+Snapshot d271 "271-x1" Value="[DIR]/ddg/271-x1.csv" Time="2016-01-13T17.35.59EST";
+DF p449 d271
+Operation p450 "450-x2 <- xpathApply(ns, \"measurementScale/interval\", xmlValue)" Value="x2 <- xpathApply(ns, \"measurementScale/interval\", xmlValue)" Time="7.572";
+CF p449 p450
+Snapshot d272 "272-x2" Value="[DIR]/ddg/272-x2.csv" Time="2016-01-13T17.35.59EST";
+DF p450 d272
+Operation p451 "451-if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Value="if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Time="7.598";
+CF p450 p451
+DF d271 p451
+DF d272 p451
+Data d273 "273-var.type" Value="\"character\"";
+DF p451 d273
+Snapshot d274 "274-x3" Value="[DIR]/ddg/274-x3.txt" Time="2016-01-13T17.35.59EST";
+DF p451 d263
+Operation p452 "452-var.type" Value="var.type" Time="7.679";
+CF p451 p452
+Data d275 "275-get.variable.type(ns[[i]]) return" Value="\"character\"";
+Operation p453 "453-return (var.type)" Value="return (var.type)" Time="7.688";
+CF p452 p453
+DF p453 d275
+Finish p454 "454-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="7.695";
+CF p453 p454
+Start p455 "455-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="7.696";
+CF p454 p455
+Binding p456 "456-ns  <-  ns[[i]]" Time="7.697"
+CF p455 p456
+DF d257 p456
+Operation p457 "457-get.variable.type" Value="get.variable.type" Time="7.711";
+DF d12 p457
+CF p456 p457
+Operation p458 "458-x1 <- xpathApply(ns, \"measurementScale/ratio\", xmlValue)" Value="x1 <- xpathApply(ns, \"measurementScale/ratio\", xmlValue)" Time="7.726";
+CF p457 p458
+Snapshot d277 "277-x1" Value="[DIR]/ddg/277-x1.csv" Time="2016-01-13T17.35.59EST";
+DF p458 d277
+Operation p459 "459-x2 <- xpathApply(ns, \"measurementScale/interval\", xmlValue)" Value="x2 <- xpathApply(ns, \"measurementScale/interval\", xmlValue)" Time="7.745";
+CF p458 p459
+Snapshot d278 "278-x2" Value="[DIR]/ddg/278-x2.csv" Time="2016-01-13T17.35.59EST";
+DF p459 d278
+Operation p460 "460-if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Value="if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Time="7.766";
+CF p459 p460
+DF d277 p460
+DF d278 p460
+Data d279 "279-var.type" Value="\"numeric\"";
+DF p460 d279
+Operation p461 "461-var.type" Value="var.type" Time="7.821";
+CF p460 p461
+Data d280 "280-get.variable.type(ns[[i]]) return" Value="\"numeric\"";
+Operation p462 "462-return (var.type)" Value="return (var.type)" Time="7.828";
+CF p461 p462
+DF p462 d280
+Finish p463 "463-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="7.836";
+CF p462 p463
+Start p464 "464-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="7.837";
+CF p463 p464
+Binding p465 "465-ns  <-  ns[[i]]" Time="7.838"
+CF p464 p465
+DF d257 p465
+Operation p466 "466-get.variable.type" Value="get.variable.type" Time="7.85";
+DF d12 p466
+CF p465 p466
+Operation p467 "467-x1 <- xpathApply(ns, \"measurementScale/ratio\", xmlValue)" Value="x1 <- xpathApply(ns, \"measurementScale/ratio\", xmlValue)" Time="7.865";
+CF p466 p467
+Snapshot d282 "282-x1" Value="[DIR]/ddg/282-x1.csv" Time="2016-01-13T17.35.59EST";
+DF p467 d282
+Operation p468 "468-x2 <- xpathApply(ns, \"measurementScale/interval\", xmlValue)" Value="x2 <- xpathApply(ns, \"measurementScale/interval\", xmlValue)" Time="7.885";
+CF p467 p468
+Snapshot d283 "283-x2" Value="[DIR]/ddg/283-x2.csv" Time="2016-01-13T17.36.00EST";
+DF p468 d283
+Operation p469 "469-if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Value="if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Time="7.932";
+CF p468 p469
+DF d282 p469
+DF d283 p469
+Data d284 "284-var.type" Value="\"character\"";
+DF p469 d284
+Snapshot d285 "285-x3" Value="[DIR]/ddg/285-x3.txt" Time="2016-01-13T17.36.00EST";
+DF p469 d263
+Operation p470 "470-var.type" Value="var.type" Time="7.987";
+CF p469 p470
+Data d286 "286-get.variable.type(ns[[i]]) return" Value="\"character\"";
+Operation p471 "471-return (var.type)" Value="return (var.type)" Time="7.994";
+CF p470 p471
+DF p471 d286
+Finish p472 "472-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="8";
+CF p471 p472
+Start p473 "473-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="8.001";
+CF p472 p473
+Binding p474 "474-ns  <-  ns[[i]]" Time="8.002"
+CF p473 p474
+DF d257 p474
+Operation p475 "475-get.variable.type" Value="get.variable.type" Time="8.015";
+DF d12 p475
+CF p474 p475
+Operation p476 "476-x1 <- xpathApply(ns, \"measurementScale/ratio\", xmlValue)" Value="x1 <- xpathApply(ns, \"measurementScale/ratio\", xmlValue)" Time="8.031";
+CF p475 p476
+Snapshot d288 "288-x1" Value="[DIR]/ddg/288-x1.csv" Time="2016-01-13T17.36.00EST";
+DF p476 d288
+Operation p477 "477-x2 <- xpathApply(ns, \"measurementScale/interval\", xmlValue)" Value="x2 <- xpathApply(ns, \"measurementScale/interval\", xmlValue)" Time="8.049";
+CF p476 p477
+Snapshot d289 "289-x2" Value="[DIR]/ddg/289-x2.csv" Time="2016-01-13T17.36.00EST";
+DF p477 d289
+Operation p478 "478-if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Value="if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Time="8.069";
+CF p477 p478
+DF d288 p478
+DF d289 p478
+Data d290 "290-var.type" Value="\"numeric\"";
+DF p478 d290
+Operation p479 "479-var.type" Value="var.type" Time="8.118";
+CF p478 p479
+Data d291 "291-get.variable.type(ns[[i]]) return" Value="\"numeric\"";
+Operation p480 "480-return (var.type)" Value="return (var.type)" Time="8.126";
+CF p479 p480
+DF p480 d291
+Finish p481 "481-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="8.132";
+CF p480 p481
+Start p482 "482-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="8.133";
+CF p481 p482
+Binding p483 "483-ns  <-  ns[[i]]" Time="8.134"
+CF p482 p483
+DF d257 p483
+Operation p484 "484-get.variable.type" Value="get.variable.type" Time="8.147";
+DF d12 p484
+CF p483 p484
+Operation p485 "485-x1 <- xpathApply(ns, \"measurementScale/ratio\", xmlValue)" Value="x1 <- xpathApply(ns, \"measurementScale/ratio\", xmlValue)" Time="8.162";
+CF p484 p485
+Snapshot d293 "293-x1" Value="[DIR]/ddg/293-x1.csv" Time="2016-01-13T17.36.00EST";
+DF p485 d293
+Operation p486 "486-x2 <- xpathApply(ns, \"measurementScale/interval\", xmlValue)" Value="x2 <- xpathApply(ns, \"measurementScale/interval\", xmlValue)" Time="8.212";
+CF p485 p486
+Snapshot d294 "294-x2" Value="[DIR]/ddg/294-x2.csv" Time="2016-01-13T17.36.00EST";
+DF p486 d294
+Operation p487 "487-if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Value="if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Time="8.232";
+CF p486 p487
+DF d293 p487
+DF d294 p487
+Data d295 "295-var.type" Value="\"character\"";
+DF p487 d295
+Snapshot d296 "296-x3" Value="[DIR]/ddg/296-x3.txt" Time="2016-01-13T17.36.00EST";
+DF p487 d263
+Operation p488 "488-var.type" Value="var.type" Time="8.284";
+CF p487 p488
+Data d297 "297-get.variable.type(ns[[i]]) return" Value="\"character\"";
+Operation p489 "489-return (var.type)" Value="return (var.type)" Time="8.291";
+CF p488 p489
+DF p489 d297
+Finish p490 "490-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="8.3";
+CF p489 p490
+Start p491 "491-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="8.301";
+CF p490 p491
+Binding p492 "492-ns  <-  ns[[i]]" Time="8.303"
+CF p491 p492
+DF d257 p492
+Operation p493 "493-get.variable.type" Value="get.variable.type" Time="8.314";
+DF d12 p493
+CF p492 p493
+Operation p494 "494-x1 <- xpathApply(ns, \"measurementScale/ratio\", xmlValue)" Value="x1 <- xpathApply(ns, \"measurementScale/ratio\", xmlValue)" Time="8.33";
+CF p493 p494
+Snapshot d299 "299-x1" Value="[DIR]/ddg/299-x1.csv" Time="2016-01-13T17.36.00EST";
+DF p494 d299
+Operation p495 "495-x2 <- xpathApply(ns, \"measurementScale/interval\", xmlValue)" Value="x2 <- xpathApply(ns, \"measurementScale/interval\", xmlValue)" Time="8.349";
+CF p494 p495
+Snapshot d300 "300-x2" Value="[DIR]/ddg/300-x2.csv" Time="2016-01-13T17.36.00EST";
+DF p495 d300
+Operation p496 "496-if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Value="if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Time="8.371";
+CF p495 p496
+DF d299 p496
+DF d300 p496
+Data d301 "301-var.type" Value="\"numeric\"";
+DF p496 d301
+Operation p497 "497-var.type" Value="var.type" Time="8.421";
+CF p496 p497
+Data d302 "302-get.variable.type(ns[[i]]) return" Value="\"numeric\"";
+Operation p498 "498-return (var.type)" Value="return (var.type)" Time="8.427";
+CF p497 p498
+DF p498 d302
+Finish p499 "499-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="8.435";
+CF p498 p499
+Start p500 "500-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="8.436";
+CF p499 p500
+Binding p501 "501-ns  <-  ns[[i]]" Time="8.437"
+CF p500 p501
+DF d257 p501
+Operation p502 "502-get.variable.type" Value="get.variable.type" Time="8.455";
+DF d12 p502
+CF p501 p502
+Operation p503 "503-x1 <- xpathApply(ns, \"measurementScale/ratio\", xmlValue)" Value="x1 <- xpathApply(ns, \"measurementScale/ratio\", xmlValue)" Time="8.474";
+CF p502 p503
+Snapshot d304 "304-x1" Value="[DIR]/ddg/304-x1.csv" Time="2016-01-13T17.36.00EST";
+DF p503 d304
+Operation p504 "504-x2 <- xpathApply(ns, \"measurementScale/interval\", xmlValue)" Value="x2 <- xpathApply(ns, \"measurementScale/interval\", xmlValue)" Time="8.526";
+CF p503 p504
+Snapshot d305 "305-x2" Value="[DIR]/ddg/305-x2.csv" Time="2016-01-13T17.36.00EST";
+DF p504 d305
+Operation p505 "505-if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Value="if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Time="8.551";
+CF p504 p505
+DF d304 p505
+DF d305 p505
+Data d306 "306-var.type" Value="\"character\"";
+DF p505 d306
+Snapshot d307 "307-x3" Value="[DIR]/ddg/307-x3.txt" Time="2016-01-13T17.36.00EST";
+DF p505 d263
+Operation p506 "506-var.type" Value="var.type" Time="8.617";
+CF p505 p506
+Data d308 "308-get.variable.type(ns[[i]]) return" Value="\"character\"";
+Operation p507 "507-return (var.type)" Value="return (var.type)" Time="8.628";
+CF p506 p507
+DF p507 d308
+Finish p508 "508-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="8.638";
+CF p507 p508
+Finish p509 "509-for (i in 1:num) {    var.type <- get.variable.type(ns[[i]])" Value="for (i in 1:num) {    var.type <- get.variable.type(ns[[i]])" Time="8.639";
+CF p508 p509
+DF d89 p509
+DF d94 p509
+DF d100 p509
+DF d105 p509
+DF d111 p509
+DF d116 p509
+DF d122 p509
+DF d127 p509
+DF d264 p509
+DF d269 p509
+DF d275 p509
+DF d280 p509
+DF d286 p509
+DF d291 p509
+DF d297 p509
+DF d302 p509
+DF d308 p509
+Operation p510 "510-var.types" Value="var.types" Time="8.647";
+CF p509 p510
+Snapshot d309 "309-get.all.variable.types(ns) return" Value="[DIR]/ddg/309-get.all.variable.types(ns) return.csv" Time="2016-01-13T17.36.00EST";
+Operation p511 "511-return (var.types)" Value="return (var.types)" Time="8.661";
+CF p510 p511
+DF p511 d309
+Finish p512 "512-get.all.variable.types(ns)" Value="get.all.variable.types(ns)" Time="8.673";
+CF p511 p512
+Finish p513 "513-var.types <<- get.all.variable.types(ns)" Value="var.types <<- get.all.variable.types(ns)" Time="8.674";
+CF p512 p513
+DF d309 p513
+Snapshot d310 "310-var.types" Value="[DIR]/ddg/310-var.types.csv" Time="2016-01-13T17.36.00EST";
+DF p513 d310
+Start p514 "514-var.format.strings <<- get.all.variable.format.strings(ns)" Value="var.format.strings <<- get.all.variable.format.strings(ns)" Time="8.682";
+CF p513 p514
+Start p515 "515-get.all.variable.format.strings(ns)" Value="get.all.variable.format.strings(ns)" Time="8.683";
+CF p514 p515
+Binding p516 "516-ns  <-  ns" Time="8.684"
+CF p515 p516
+DF d256 p516
+Snapshot d311 "311-ns" Value="[DIR]/ddg/311-ns.csv" Time="2016-01-13T17.36.00EST";
+DF p516 d311
+Operation p517 "517-get.all.variable.format.strings" Value="get.all.variable.format.strings" Time="8.694";
+DF d15 p517
+DF d311 p517
+CF p516 p517
+Operation p518 "518-num <- xmlSize(ns)" Value="num <- xmlSize(ns)" Time="8.715";
+CF p517 p518
+DF d311 p518
+Data d312 "312-num" Value="9";
+DF p518 d312
+Start p519 "519-for (i in 1:num) {    var.format.string <- get.variable.form" Value="for (i in 1:num) {    var.format.string <- get.variable.form" Time="8.764";
+CF p518 p519
+Start p520 "520-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="8.765";
+CF p519 p520
+Binding p521 "521-ns  <-  ns[[i]]" Time="8.766"
+CF p520 p521
+DF d311 p521
+Operation p522 "522-get.variable.format.string" Value="get.variable.format.string" Time="8.78";
+DF d14 p522
+CF p521 p522
+Operation p523 "523-x <- xpathApply(ns, \"measurementScale/dateTime/formatString\"" Value="x <- xpathApply(ns, \"measurementScale/dateTime/formatString\"" Time="8.799";
+CF p522 p523
+Snapshot d314 "314-x" Value="[DIR]/ddg/314-x.csv" Time="2016-01-13T17.36.00EST";
+DF p523 d314
+Operation p524 "524-if (length(x) > 0) var.format.string <- x[[1]] else var.form" Value="if (length(x) > 0) var.format.string <- x[[1]] else var.form" Time="8.822";
+CF p523 p524
+DF d314 p524
+Data d315 "315-var.format.string" Value="\"YYYY-MM-DD\"";
+DF p524 d315
+Operation p525 "525-var.format.string" Value="var.format.string" Time="8.847";
+CF p524 p525
+Data d316 "316-get.variable.format.string(ns[[i]]) return" Value="\"YYYY-MM-DD\"";
+Operation p526 "526-return (var.format.string)" Value="return (var.format.string)" Time="8.857";
+CF p525 p526
+DF p526 d316
+Finish p527 "527-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="8.866";
+CF p526 p527
+Start p528 "528-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="8.867";
+CF p527 p528
+Binding p529 "529-ns  <-  ns[[i]]" Time="8.868"
+CF p528 p529
+DF d311 p529
+Operation p530 "530-get.variable.format.string" Value="get.variable.format.string" Time="8.883";
+DF d14 p530
+CF p529 p530
+Operation p531 "531-x <- xpathApply(ns, \"measurementScale/dateTime/formatString\"" Value="x <- xpathApply(ns, \"measurementScale/dateTime/formatString\"" Time="8.903";
+CF p530 p531
+Snapshot d318 "318-x" Value="[DIR]/ddg/318-x.csv" Time="2016-01-13T17.36.01EST";
+DF p531 d318
+Operation p532 "532-if (length(x) > 0) var.format.string <- x[[1]] else var.form" Value="if (length(x) > 0) var.format.string <- x[[1]] else var.form" Time="8.927";
+CF p531 p532
+DF d318 p532
+Data d319 "319-var.format.string" Value="NotRecorded";
+DF p532 d319
+Operation p533 "533-var.format.string" Value="var.format.string" Time="8.952";
+CF p532 p533
+Data d320 "320-get.variable.format.string(ns[[i]]) return" Value="NotRecorded";
+Operation p534 "534-return (var.format.string)" Value="return (var.format.string)" Time="8.961";
+CF p533 p534
+DF p534 d320
+Finish p535 "535-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="8.972";
+CF p534 p535
+Start p536 "536-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="8.973";
+CF p535 p536
+Binding p537 "537-ns  <-  ns[[i]]" Time="8.974"
+CF p536 p537
+DF d311 p537
+Operation p538 "538-get.variable.format.string" Value="get.variable.format.string" Time="8.989";
+DF d14 p538
+CF p537 p538
+Operation p539 "539-x <- xpathApply(ns, \"measurementScale/dateTime/formatString\"" Value="x <- xpathApply(ns, \"measurementScale/dateTime/formatString\"" Time="9.038";
+CF p538 p539
+Snapshot d322 "322-x" Value="[DIR]/ddg/322-x.csv" Time="2016-01-13T17.36.01EST";
+DF p539 d322
+Operation p540 "540-if (length(x) > 0) var.format.string <- x[[1]] else var.form" Value="if (length(x) > 0) var.format.string <- x[[1]] else var.form" Time="9.061";
+CF p539 p540
+DF d322 p540
+Data d323 "323-var.format.string" Value="NotRecorded";
+DF p540 d323
+Operation p541 "541-var.format.string" Value="var.format.string" Time="9.086";
+CF p540 p541
+Data d324 "324-get.variable.format.string(ns[[i]]) return" Value="NotRecorded";
+Operation p542 "542-return (var.format.string)" Value="return (var.format.string)" Time="9.096";
+CF p541 p542
+DF p542 d324
+Finish p543 "543-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="9.104";
+CF p542 p543
+Start p544 "544-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="9.105";
+CF p543 p544
+Binding p545 "545-ns  <-  ns[[i]]" Time="9.106"
+CF p544 p545
+DF d311 p545
+Operation p546 "546-get.variable.format.string" Value="get.variable.format.string" Time="9.122";
+DF d14 p546
+CF p545 p546
+Operation p547 "547-x <- xpathApply(ns, \"measurementScale/dateTime/formatString\"" Value="x <- xpathApply(ns, \"measurementScale/dateTime/formatString\"" Time="9.141";
+CF p546 p547
+Snapshot d326 "326-x" Value="[DIR]/ddg/326-x.csv" Time="2016-01-13T17.36.01EST";
+DF p547 d326
+Operation p548 "548-if (length(x) > 0) var.format.string <- x[[1]] else var.form" Value="if (length(x) > 0) var.format.string <- x[[1]] else var.form" Time="9.163";
+CF p547 p548
+DF d326 p548
+Data d327 "327-var.format.string" Value="NotRecorded";
+DF p548 d327
+Operation p549 "549-var.format.string" Value="var.format.string" Time="9.19";
+CF p548 p549
+Data d328 "328-get.variable.format.string(ns[[i]]) return" Value="NotRecorded";
+Operation p550 "550-return (var.format.string)" Value="return (var.format.string)" Time="9.199";
+CF p549 p550
+DF p550 d328
+Finish p551 "551-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="9.207";
+CF p550 p551
+Start p552 "552-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="9.208";
+CF p551 p552
+Binding p553 "553-ns  <-  ns[[i]]" Time="9.209"
+CF p552 p553
+DF d311 p553
+Operation p554 "554-get.variable.format.string" Value="get.variable.format.string" Time="9.226";
+DF d14 p554
+CF p553 p554
+Operation p555 "555-x <- xpathApply(ns, \"measurementScale/dateTime/formatString\"" Value="x <- xpathApply(ns, \"measurementScale/dateTime/formatString\"" Time="9.247";
+CF p554 p555
+Snapshot d330 "330-x" Value="[DIR]/ddg/330-x.csv" Time="2016-01-13T17.36.01EST";
+DF p555 d330
+Operation p556 "556-if (length(x) > 0) var.format.string <- x[[1]] else var.form" Value="if (length(x) > 0) var.format.string <- x[[1]] else var.form" Time="9.3";
+CF p555 p556
+DF d330 p556
+Data d331 "331-var.format.string" Value="NotRecorded";
+DF p556 d331
+Operation p557 "557-var.format.string" Value="var.format.string" Time="9.324";
+CF p556 p557
+Data d332 "332-get.variable.format.string(ns[[i]]) return" Value="NotRecorded";
+Operation p558 "558-return (var.format.string)" Value="return (var.format.string)" Time="9.332";
+CF p557 p558
+DF p558 d332
+Finish p559 "559-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="9.341";
+CF p558 p559
+Start p560 "560-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="9.342";
+CF p559 p560
+Binding p561 "561-ns  <-  ns[[i]]" Time="9.343"
+CF p560 p561
+DF d311 p561
+Operation p562 "562-get.variable.format.string" Value="get.variable.format.string" Time="9.359";
+DF d14 p562
+CF p561 p562
+Operation p563 "563-x <- xpathApply(ns, \"measurementScale/dateTime/formatString\"" Value="x <- xpathApply(ns, \"measurementScale/dateTime/formatString\"" Time="9.377";
+CF p562 p563
+Snapshot d334 "334-x" Value="[DIR]/ddg/334-x.csv" Time="2016-01-13T17.36.01EST";
+DF p563 d334
+Operation p564 "564-if (length(x) > 0) var.format.string <- x[[1]] else var.form" Value="if (length(x) > 0) var.format.string <- x[[1]] else var.form" Time="9.427";
+CF p563 p564
+DF d334 p564
+Data d335 "335-var.format.string" Value="NotRecorded";
+DF p564 d335
+Operation p565 "565-var.format.string" Value="var.format.string" Time="9.451";
+CF p564 p565
+Data d336 "336-get.variable.format.string(ns[[i]]) return" Value="NotRecorded";
+Operation p566 "566-return (var.format.string)" Value="return (var.format.string)" Time="9.46";
+CF p565 p566
+DF p566 d336
+Finish p567 "567-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="9.468";
+CF p566 p567
+Start p568 "568-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="9.469";
+CF p567 p568
+Binding p569 "569-ns  <-  ns[[i]]" Time="9.47"
+CF p568 p569
+DF d311 p569
+Operation p570 "570-get.variable.format.string" Value="get.variable.format.string" Time="9.486";
+DF d14 p570
+CF p569 p570
+Operation p571 "571-x <- xpathApply(ns, \"measurementScale/dateTime/formatString\"" Value="x <- xpathApply(ns, \"measurementScale/dateTime/formatString\"" Time="9.505";
+CF p570 p571
+Snapshot d338 "338-x" Value="[DIR]/ddg/338-x.csv" Time="2016-01-13T17.36.01EST";
+DF p571 d338
+Operation p572 "572-if (length(x) > 0) var.format.string <- x[[1]] else var.form" Value="if (length(x) > 0) var.format.string <- x[[1]] else var.form" Time="9.528";
+CF p571 p572
+DF d338 p572
+Data d339 "339-var.format.string" Value="NotRecorded";
+DF p572 d339
+Operation p573 "573-var.format.string" Value="var.format.string" Time="9.555";
+CF p572 p573
+Data d340 "340-get.variable.format.string(ns[[i]]) return" Value="NotRecorded";
+Operation p574 "574-return (var.format.string)" Value="return (var.format.string)" Time="9.563";
+CF p573 p574
+DF p574 d340
+Finish p575 "575-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="9.572";
+CF p574 p575
+Start p576 "576-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="9.573";
+CF p575 p576
+Binding p577 "577-ns  <-  ns[[i]]" Time="9.574"
+CF p576 p577
+DF d311 p577
+Operation p578 "578-get.variable.format.string" Value="get.variable.format.string" Time="9.589";
+DF d14 p578
+CF p577 p578
+Operation p579 "579-x <- xpathApply(ns, \"measurementScale/dateTime/formatString\"" Value="x <- xpathApply(ns, \"measurementScale/dateTime/formatString\"" Time="9.608";
+CF p578 p579
+Snapshot d342 "342-x" Value="[DIR]/ddg/342-x.csv" Time="2016-01-13T17.36.01EST";
+DF p579 d342
+Operation p580 "580-if (length(x) > 0) var.format.string <- x[[1]] else var.form" Value="if (length(x) > 0) var.format.string <- x[[1]] else var.form" Time="9.658";
+CF p579 p580
+DF d342 p580
+Data d343 "343-var.format.string" Value="NotRecorded";
+DF p580 d343
+Operation p581 "581-var.format.string" Value="var.format.string" Time="9.684";
+CF p580 p581
+Data d344 "344-get.variable.format.string(ns[[i]]) return" Value="NotRecorded";
+Operation p582 "582-return (var.format.string)" Value="return (var.format.string)" Time="9.691";
+CF p581 p582
+DF p582 d344
+Finish p583 "583-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="9.7";
+CF p582 p583
+Start p584 "584-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="9.701";
+CF p583 p584
+Binding p585 "585-ns  <-  ns[[i]]" Time="9.702"
+CF p584 p585
+DF d311 p585
+Operation p586 "586-get.variable.format.string" Value="get.variable.format.string" Time="9.716";
+DF d14 p586
+CF p585 p586
+Operation p587 "587-x <- xpathApply(ns, \"measurementScale/dateTime/formatString\"" Value="x <- xpathApply(ns, \"measurementScale/dateTime/formatString\"" Time="9.735";
+CF p586 p587
+Snapshot d346 "346-x" Value="[DIR]/ddg/346-x.csv" Time="2016-01-13T17.36.01EST";
+DF p587 d346
+Operation p588 "588-if (length(x) > 0) var.format.string <- x[[1]] else var.form" Value="if (length(x) > 0) var.format.string <- x[[1]] else var.form" Time="9.758";
+CF p587 p588
+DF d346 p588
+Data d347 "347-var.format.string" Value="NotRecorded";
+DF p588 d347
+Operation p589 "589-var.format.string" Value="var.format.string" Time="9.784";
+CF p588 p589
+Data d348 "348-get.variable.format.string(ns[[i]]) return" Value="NotRecorded";
+Operation p590 "590-return (var.format.string)" Value="return (var.format.string)" Time="9.791";
+CF p589 p590
+DF p590 d348
+Finish p591 "591-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="9.8";
+CF p590 p591
+Finish p592 "592-for (i in 1:num) {    var.format.string <- get.variable.form" Value="for (i in 1:num) {    var.format.string <- get.variable.form" Time="9.801";
+CF p591 p592
+DF d141 p592
+DF d145 p592
+DF d149 p592
+DF d153 p592
+DF d157 p592
+DF d161 p592
+DF d165 p592
+DF d169 p592
+DF d316 p592
+DF d320 p592
+DF d324 p592
+DF d328 p592
+DF d332 p592
+DF d336 p592
+DF d340 p592
+DF d344 p592
+DF d348 p592
+Operation p593 "593-var.format.strings" Value="var.format.strings" Time="9.811";
+CF p592 p593
+Snapshot d349 "349-get.all.variable.format.strings(ns) return" Value="[DIR]/ddg/349-get.all.variable.format.strings(ns) return.csv" Time="2016-01-13T17.36.01EST";
+Operation p594 "594-return (var.format.strings)" Value="return (var.format.strings)" Time="9.853";
+CF p593 p594
+DF p594 d349
+Finish p595 "595-get.all.variable.format.strings(ns)" Value="get.all.variable.format.strings(ns)" Time="9.86";
+CF p594 p595
+Finish p596 "596-var.format.strings <<- get.all.variable.format.strings(ns)" Value="var.format.strings <<- get.all.variable.format.strings(ns)" Time="9.861";
+CF p595 p596
+DF d349 p596
+Snapshot d350 "350-var.format.strings" Value="[DIR]/ddg/350-var.format.strings.csv" Time="2016-01-13T17.36.01EST";
+DF p596 d350
+Start p597 "597-if (is.null(data.url)) {    msg <- paste(datafile.id, \": dat" Value="if (is.null(data.url)) {    msg <- paste(datafile.id, \": dat" Time="9.866";
+CF p596 p597
+Start p598 "598-get.data.file(data.url, var.types)" Value="get.data.file(data.url, var.types)" Time="9.867";
+CF p597 p598
+Binding p599 "599-data.url  <-  data.url" Time="9.868"
+CF p598 p599
+Data d351 "351-data.url" Value="\"http://harvardforest.fas.harvard.edu/data/p00/hf000/hf000-02-daily-e.csv\"";
+DF p599 d351
+Binding p600 "600-var.types  <-  var.types" Time="9.879"
+CF p599 p600
+Snapshot d352 "352-var.types" Value="[DIR]/ddg/352-var.types.csv" Time="2016-01-13T17.36.02EST";
+DF p600 d352
+Operation p601 "601-get.data.file" Value="get.data.file" Time="9.891";
+DF d16 p601
+DF d351 p601
+DF d352 p601
+CF p600 p601
+Operation p602 "602-con <- file(data.url)" Value="con <- file(data.url)" Time="9.916";
+CF p601 p602
+DF d351 p602
+URL d353 "353-http://harvardforest.fas.harvard.edu/data/p00/hf000/hf000-02-daily-e.csv" Value="\"http://harvardforest.fas.harvard.edu/data/p00/hf000/hf000-02-daily-e.csv\"";
+DF d353 p602
+Snapshot d354 "354-con" Value="[DIR]/ddg/354-con.txt" Time="2016-01-13T17.36.02EST";
+DF p602 d354
+Operation p603 "603-xx <- read.csv(con, header = TRUE, colClasses = var.types)" Value="xx <- read.csv(con, header = TRUE, colClasses = var.types)" Time="10.072";
+CF p602 p603
+DF d354 p603
+DF d352 p603
+Snapshot d355 "355-xx" Value="[DIR]/ddg/355-xx.csv" Time="2016-01-13T17.36.02EST";
+DF p603 d355
+Operation p604 "604-xx" Value="xx" Time="10.246";
+CF p603 p604
+DF d355 p604
+Snapshot d356 "356-get.data.file(data.url,var.types) return" Value="[DIR]/ddg/356-get.data.file(data.url,var.types) return.csv" Time="2016-01-13T17.36.03EST";
+Operation p605 "605-return (xx)" Value="return (xx)" Time="10.381";
+CF p604 p605
+DF d355 p605
+DF p605 d356
+Finish p606 "606-get.data.file(data.url, var.types)" Value="get.data.file(data.url, var.types)" Time="10.388";
+CF p605 p606
+Finish p607 "607-if (is.null(data.url)) {    msg <- paste(datafile.id, \": dat" Value="if (is.null(data.url)) {    msg <- paste(datafile.id, \": dat" Time="10.389";
+CF p606 p607
+DF d356 p607
+Operation p608 "608-xx" Value="xx" Time="10.393";
+CF p607 p608
+Snapshot d357 "357-get.hf.datafile(datafile.id) return" Value="[DIR]/ddg/357-get.hf.datafile(datafile.id) return.csv" Time="2016-01-13T17.36.03EST";
+Operation p609 "609-return (xx)" Value="return (xx)" Time="10.536";
+CF p608 p609
+DF p609 d357
+Finish p610 "610-get.hf.datafile(datafile.id)" Value="get.hf.datafile(datafile.id)" Time="10.546";
+CF p609 p610
+Finish p611 "611-dd <<- get.hf.datafile(datafile.id)" Value="dd <<- get.hf.datafile(datafile.id)" Time="10.547";
+CF p610 p611
+DF d357 p611
+Snapshot d358 "358-dd" Value="[DIR]/ddg/358-dd.csv" Time="2016-01-13T17.36.03EST";
+DF p611 d358
+Operation p612 "612-if (is.null(dd)) {    msg <- paste(datafile.id, \": unable to download data file\",         sep = \"\")    warning(msg)} else {    pdf.file <- paste(datafile.id, \".pdf\", sep = \"\")    pdf(pdf.file)    create.summary.stats.table(dd)    plot.type <<- get.plot.type(datafile.id)    if (plot.type == \"time-series\")         create.time.series.plot(dd)    if (plot.type == \"scatterplot-matrix\")         create.scatterplot.matrix(dd)    dev.off()    xstr <- paste(\"\n*** \", toupper(datafile.id), \" completed ***\n\",         sep = \"\")    writeLines(xstr)}" Value="if (is.null(dd)) {    msg <- paste(datafile.id, \": unable to download data file\",         sep = \"\")    warning(msg)} else {    pdf.file <- paste(datafile.id, \".pdf\", sep = \"\")    pdf(pdf.file)    create.summary.stats.table(dd)    plot.type <<- get.plot.type(datafile.id)    if (plot.type == \"time-series\")         create.time.series.plot(dd)    if (plot.type == \"scatterplot-matrix\")         create.scatterplot.matrix(dd)    dev.off()    xstr <- paste(\"\n*** \", toupper(datafile.id), \" completed ***\n\",         sep = \"\")    writeLines(xstr)}" Time="10.673";
+CF p611 p612
+DF d228 p612
+DF d20 p612
+DF d23 p612
+DF d21 p612
+DF d22 p612
+Start p613 "613-create.summary.stats.table(dd)" Value="create.summary.stats.table(dd)" Time="10.854";
+CF p612 p613
+Binding p614 "614-xx  <-  dd" Time="10.855"
+CF p613 p614
+Snapshot d359 "359-xx" Value="[DIR]/ddg/359-xx.csv" Time="2016-01-13T17.36.03EST";
+DF p614 d359
+Operation p615 "615-create.summary.stats.table" Value="create.summary.stats.table" Time="10.989";
+DF d20 p615
+DF d359 p615
+CF p614 p615
+Start p616 "616-xx.sum <- get.summary.stats.data.frame(xx)" Value="xx.sum <- get.summary.stats.data.frame(xx)" Time="11.007";
+CF p615 p616
+Start p617 "617-get.summary.stats.data.frame(xx)" Value="get.summary.stats.data.frame(xx)" Time="11.008";
+CF p616 p617
+Binding p618 "618-xx  <-  xx" Time="11.011"
+CF p617 p618
+DF d359 p618
+Snapshot d360 "360-xx" Value="[DIR]/ddg/360-xx.csv" Time="2016-01-13T17.36.03EST";
+DF p618 d360
+Operation p619 "619-get.summary.stats.data.frame" Value="get.summary.stats.data.frame" Time="11.141";
+DF d18 p619
+DF d360 p619
+CF p618 p619
+Operation p620 "620-sum.types <<- \"\"" Value="sum.types <<- \"\"" Time="11.158";
+CF p619 p620
+Data d361 "361-sum.types" Value="NotRecorded";
+DF p620 d361
+Operation p621 "621-sum.names <<- \"\"" Value="sum.names <<- \"\"" Time="11.164";
+CF p620 p621
+Data d362 "362-sum.names" Value="NotRecorded";
+DF p621 d362
+Operation p622 "622-count <- 0" Value="count <- 0" Time="11.17";
+CF p621 p622
+Data d363 "363-count" Value="0";
+DF p622 d363
+Operation p623 "623-for (i in 1:length(xx)) {    if (var.types[i] == \"Date\" | va" Value="for (i in 1:length(xx)) {    if (var.types[i] == \"Date\" | va" Time="11.177";
+CF p622 p623
+DF d360 p623
+DF d363 p623
+Data d364 "364-count" Value="5";
+DF p623 d364
+Data d365 "365-sum.types" Value="\"Date\",\"numeric\",\"numeric\",\"numeric\",\"numeric\"";
+DF p623 d365
+Data d366 "366-sum.names" Value="\"date\",\"airt\",\"airtmax\",\"airtmin\",\"prec\"";
+DF p623 d366
+Operation p624 "624-if (all(sum.names == \"\")) {    xx.sum <- NULL} else {    xx." Value="if (all(sum.names == \"\")) {    xx.sum <- NULL} else {    xx." Time="11.294";
+CF p623 p624
+DF d360 p624
+Snapshot d367 "367-xx.sum" Value="[DIR]/ddg/367-xx.sum.txt" Time="2016-01-13T17.36.04EST";
+DF p624 d367
+Operation p625 "625-xx.sum" Value="xx.sum" Time="11.431";
+CF p624 p625
+Snapshot d368 "368-get.summary.stats.data.frame(xx) return" Value="[DIR]/ddg/368-get.summary.stats.data.frame(xx) return.csv" Time="2016-01-13T17.36.04EST";
+Operation p626 "626-return (xx.sum)" Value="return (xx.sum)" Time="11.542";
+CF p625 p626
+DF p626 d368
+Finish p627 "627-get.summary.stats.data.frame(xx)" Value="get.summary.stats.data.frame(xx)" Time="11.551";
+CF p626 p627
+Finish p628 "628-xx.sum <- get.summary.stats.data.frame(xx)" Value="xx.sum <- get.summary.stats.data.frame(xx)" Time="11.552";
+CF p627 p628
+DF d368 p628
+Snapshot d369 "369-xx.sum" Value="[DIR]/ddg/369-xx.sum.csv" Time="2016-01-13T17.36.04EST";
+DF p628 d369
+Operation p629 "629-xstr <- paste(\"Harvard Forest Data Archive \", toupper(datafi" Value="xstr <- paste(\"Harvard Forest Data Archive \", toupper(datafi" Time="11.66";
+CF p628 p629
+Data d370 "370-xstr" Value="\"Harvard Forest Data Archive HF000-02  \"";
+DF p629 d370
+Operation p630 "630-xstr <- paste(xstr, \"Data File = \", datafile.name, \"\n\nRows" Value="xstr <- paste(xstr, \"Data File = \", datafile.name, \"\n\nRows" Time="11.684";
+CF p629 p630
+DF d370 p630
+DF d359 p630
+Data d371 "371-xstr" Value="\"Harvard Forest Data Archive HF000-02  Data File = hf000-02-daily-e.csv  Rows = 14061  Columns = 9  \"";
+DF p630 d371
+Operation p631 "631-if (is.null(xx.sum)) {    msg <- paste(datafile.id, \": no da" Value="if (is.null(xx.sum)) {    msg <- paste(datafile.id, \": no da" Time="11.772";
+CF p630 p631
+DF d369 p631
+DF d371 p631
+DF d359 p631
+Data d372 "372-xstr" Value="\"Harvard Forest Data Archive HF000-02  Data File = hf000-02-daily-e.csv  Rows = 14061  Columns = 9  Variable         Min         Median      Mean        Max         NAs ------------------------------------------------------------------------ date          1964-01-01  1983-04-01  1983-04-01  2002-06-30       0 airt             -11.000      46.000      45.207      82.000     489 airtmax           -4.000      57.000      55.567      97.000     288 airtmin          -27.000      36.000      34.652      75.000     384 prec               0.000       0.000       0.119       4.700     148 \"";
+DF p631 d372
+Data d373 "373-xnas" Value="148";
+DF p631 d373
+Data d374 "374-xmin" Value="0";
+DF p631 d374
+Data d375 "375-xmax" Value="4.7";
+DF p631 d375
+Data d376 "376-xmedian" Value="0";
+DF p631 d376
+Data d377 "377-xmean" Value="0.118535182922447";
+DF p631 d377
+Data d378 "378-d" Value="3";
+DF p631 d378
+Operation p632 "632-textplot(capture.output(writeLines(xstr)))" Value="textplot(capture.output(writeLines(xstr)))" Time="11.992";
+CF p631 p632
+DF d371 p632
+Data d379 "379-create.summary.stats.table(dd) return" Value="0.916232803403836";
+Operation p633 "633-return (textplot(capture.output(writeLines(xstr))))" Value="return (textplot(capture.output(writeLines(xstr))))" Time="12.142";
+CF p632 p633
+DF d371 p633
+DF p633 d379
+Finish p634 "634-create.summary.stats.table(dd)" Value="create.summary.stats.table(dd)" Time="12.165";
+CF p633 p634
+Start p635 "635-get.plot.type(datafile.id)" Value="get.plot.type(datafile.id)" Time="12.167";
+CF p634 p635
+Binding p636 "636-datafile.id  <-  datafile.id" Time="12.168"
+CF p635 p636
+DF d228 p636
+Data d380 "380-datafile.id" Value="\"hf000-02\"";
+DF p636 d380
+Operation p637 "637-get.plot.type" Value="get.plot.type" Time="12.178";
+DF d23 p637
+DF d380 p637
+CF p636 p637
+Operation p638 "638-num <- as.integer(substr(datafile.id, 7, 8))" Value="num <- as.integer(substr(datafile.id, 7, 8))" Time="12.195";
+CF p637 p638
+DF d380 p638
+Data d381 "381-num" Value="2";
+DF p638 d381
+Operation p639 "639-if (num %in% time.series.ids) {    plot.type <- \"time-series" Value="if (num %in% time.series.ids) {    plot.type <- \"time-series" Time="12.217";
+CF p638 p639
+DF d381 p639
+Data d382 "382-plot.type" Value="\"time-series\"";
+DF p639 d382
+Operation p640 "640-plot.type" Value="plot.type" Time="12.271";
+CF p639 p640
+Data d383 "383-get.plot.type(datafile.id) return" Value="\"time-series\"";
+Operation p641 "641-return (plot.type)" Value="return (plot.type)" Time="12.279";
+CF p640 p641
+DF p641 d383
+Finish p642 "642-get.plot.type(datafile.id)" Value="get.plot.type(datafile.id)" Time="12.287";
+CF p641 p642
+Start p643 "643-create.time.series.plot(dd)" Value="create.time.series.plot(dd)" Time="12.288";
+CF p642 p643
+Binding p644 "644-xx  <-  dd" Time="12.289"
+CF p643 p644
+Snapshot d384 "384-xx" Value="[DIR]/ddg/384-xx.csv" Time="2016-01-13T17.36.05EST";
+DF p644 d384
+Operation p645 "645-create.time.series.plot" Value="create.time.series.plot" Time="12.42";
+DF d21 p645
+DF d384 p645
+CF p644 p645
+Start p646 "646-xx.plt <- get.plot.dataframe(xx, max.rows = 10000)" Value="xx.plt <- get.plot.dataframe(xx, max.rows = 10000)" Time="12.437";
+CF p645 p646
+Start p647 "647-get.plot.dataframe(xx, max.rows = 10000)" Value="get.plot.dataframe(xx, max.rows = 10000)" Time="12.438";
+CF p646 p647
+Binding p648 "648-xx  <-  xx" Time="12.439"
+CF p647 p648
+DF d384 p648
+Snapshot d385 "385-xx" Value="[DIR]/ddg/385-xx.csv" Time="2016-01-13T17.36.05EST";
+DF p648 d385
+Binding p649 "649-max.rows  <-  10000" Time="12.57"
+CF p648 p649
+Data d386 "386-max.rows" Value="10000";
+DF p649 d386
+Operation p650 "650-get.plot.dataframe" Value="get.plot.dataframe" Time="12.574";
+DF d19 p650
+DF d385 p650
+DF d386 p650
+CF p649 p650
+Operation p651 "651-plt.types <<- \"\"" Value="plt.types <<- \"\"" Time="12.592";
+CF p650 p651
+Data d387 "387-plt.types" Value="NotRecorded";
+DF p651 d387
+Operation p652 "652-plt.names <<- \"\"" Value="plt.names <<- \"\"" Time="12.597";
+CF p651 p652
+Data d388 "388-plt.names" Value="NotRecorded";
+DF p652 d388
+Operation p653 "653-count <- 0" Value="count <- 0" Time="12.605";
+CF p652 p653
+Data d389 "389-count" Value="0";
+DF p653 d389
+Operation p654 "654-for (i in 1:length(xx)) {    if (var.types[i] == \"numeric\" |" Value="for (i in 1:length(xx)) {    if (var.types[i] == \"numeric\" |" Time="12.637";
+CF p653 p654
+DF d385 p654
+DF d389 p654
+Data d390 "390-count" Value="5";
+DF p654 d390
+Data d391 "391-plt.types" Value="\"Date\",\"numeric\",\"numeric\",\"numeric\",\"numeric\"";
+DF p654 d391
+Data d392 "392-plt.names" Value="\"date\",\"airt\",\"airtmax\",\"airtmin\",\"prec\"";
+DF p654 d392
+Operation p655 "655-if (all(plt.names == \"\")) {    xx.plt <- NULL} else {    xx." Value="if (all(plt.names == \"\")) {    xx.plt <- NULL} else {    xx." Time="12.718";
+CF p654 p655
+DF d385 p655
+DF d386 p655
+DF d389 p655
+Snapshot d393 "393-xx.plt" Value="[DIR]/ddg/393-xx.plt.txt" Time="2016-01-13T17.36.05EST";
+DF p655 d393
+Data d394 "394-plt.rows" Value="14061";
+DF p655 d394
+Data d395 "395-skip" Value="1";
+DF p655 d395
+Snapshot d396 "396-index" Value="[DIR]/ddg/396-index.csv" Time="2016-01-13T17.36.05EST";
+DF p655 d396
+Data d397 "397-keep" Value="1,2,3,4,5";
+DF p655 d397
+Data d398 "398-count" Value="5";
+DF p655 d398
+Operation p656 "656-xx.plt" Value="xx.plt" Time="12.992";
+CF p655 p656
+Snapshot d399 "399-get.plot.dataframe(xx,max.rows=10000) return" Value="[DIR]/ddg/399-get.plot.dataframe(xx,max.rows=10000) return.csv" Time="2016-01-13T17.36.05EST";
+Operation p657 "657-return (xx.plt)" Value="return (xx.plt)" Time="13.101";
+CF p656 p657
+DF p657 d399
+Finish p658 "658-get.plot.dataframe(xx, max.rows = 10000)" Value="get.plot.dataframe(xx, max.rows = 10000)" Time="13.11";
+CF p657 p658
+Finish p659 "659-xx.plt <- get.plot.dataframe(xx, max.rows = 10000)" Value="xx.plt <- get.plot.dataframe(xx, max.rows = 10000)" Time="13.111";
+CF p658 p659
+DF d399 p659
+Snapshot d400 "400-xx.plt" Value="[DIR]/ddg/400-xx.plt.csv" Time="2016-01-13T17.36.06EST";
+DF p659 d400
+Operation p660 "660-if (is.null(xx.plt)) {    msg <- paste(datafile.id, \": no variables to plot\", sep = \"\")    warning(msg)} else {    max.var <- 4    var.num <- length(xx.plt)    if (var.num <= max.var) {        plot.num <- 1        plot.last <- 0    }    else {        plot.num <- var.num%/%max.var        plot.last <- var.num%%max.var        if (plot.last > 0)             plot.num <- plot.num + 1    }    for (i in 1:plot.num) {        first.col <- (i - 1) * max.var + 1        if (plot.num == 1) {            last.col <- first.col + var.num - 1        }        else if (i < plot.num | plot.last == 0) {            last.col <- first.col + max.var - 1        }        else {            last.col <- first.col + plot.last - 1        }        if (first.col == last.col) {            zz <- as.data.frame(xx.plt[, c(first.col:last.col)])            colnames(zz) <- names(xx.plt[first.col])        }        else {            zz <- xx.plt[, c(first.col:last.col)]        }        xx.ts <- ts(zz)        plot.title <- paste(toupper(datafile.id), \" Plot \", i,             sep = \"\")        plot(xx.ts, main = plot.title, col = \"blue\")    }    xstr <- paste(\"\nTime-series plots = \", plot.num, \"\n\", sep = \"\")    writeLines(xstr)}" Value="if (is.null(xx.plt)) {    msg <- paste(datafile.id, \": no variables to plot\", sep = \"\")    warning(msg)} else {    max.var <- 4    var.num <- length(xx.plt)    if (var.num <= max.var) {        plot.num <- 1        plot.last <- 0    }    else {        plot.num <- var.num%/%max.var        plot.last <- var.num%%max.var        if (plot.last > 0)             plot.num <- plot.num + 1    }    for (i in 1:plot.num) {        first.col <- (i - 1) * max.var + 1        if (plot.num == 1) {            last.col <- first.col + var.num - 1        }        else if (i < plot.num | plot.last == 0) {            last.col <- first.col + max.var - 1        }        else {            last.col <- first.col + plot.last - 1        }        if (first.col == last.col) {            zz <- as.data.frame(xx.plt[, c(first.col:last.col)])            colnames(zz) <- names(xx.plt[first.col])        }        else {            zz <- xx.plt[, c(first.col:last.col)]        }        xx.ts <- ts(zz)        plot.title <- paste(toupper(datafile.id), \" Plot \", i,             sep = \"\")        plot(xx.ts, main = plot.title, col = \"blue\")    }    xstr <- paste(\"\nTime-series plots = \", plot.num, \"\n\", sep = \"\")    writeLines(xstr)}" Time="13.245";
+CF p659 p660
+DF d400 p660
+Data d401 "401-create.time.series.plot(dd) return" Value="NULL";
+Operation p661 "661-return (if (is.null(xx.plt)) {    msg <- paste(datafile.id)" Value="return (if (is.null(xx.plt)) {    msg <- paste(datafile.id)" Time="13.538";
+CF p660 p661
+DF d400 p661
+DF p661 d401
+Finish p662 "662-create.time.series.plot(dd)" Value="create.time.series.plot(dd)" Time="13.758";
+CF p661 p662
+Data d402 "402-create.datafile.preview(datafile.id) return" Value="NULL";
+Operation p663 "663-return (if (is.null(dd)) {    msg <- paste(datafile.id, \":)" Value="return (if (is.null(dd)) {    msg <- paste(datafile.id, \":)" Time="13.77";
+CF p662 p663
+DF d228 p663
+DF d20 p663
+DF d23 p663
+DF d21 p663
+DF d22 p663
+DF p663 d402
+Finish p664 "664-create.datafile.preview(datafile.id)" Value="create.datafile.preview(datafile.id)" Time="13.94";
+CF p663 p664
+Finish p665 "665-if (datafile.num != 0) {    datafile.id <- get.datafile.id(d" Value="if (datafile.num != 0) {    datafile.id <- get.datafile.id(d" Time="13.941";
+CF p664 p665
+DF d52 p665
+DF d227 p665
+DF d402 p665
+Finish p666 "666-HFDatasetPreview.R" Value="HFDatasetPreview.R" Time="13.947";
+CF p665 p666
 
