@@ -2554,11 +2554,11 @@ ddg.MAX_HIST_LINES <- 2^14
   if (is.object(dvalue)) {
     tryCatch(
         {
-          .ddg.snapshot.node (dname, "txt", as.character(dvalue), dscope=dscope)
+          .ddg.snapshot.node (dname, "txt", dvalue, dscope=dscope)
           return(NULL)
         },
         error = function(e) {
-          error.msg <- paste("Unable to create snapshot node for", dname)
+          error.msg <- paste("Unable to create snapshot node for", dname, "Details:", e)
           .ddg.insert.error.message(error.msg)
           .ddg.dec("ddg.dnum")
           return (.ddg.data.node (dtype, dname, "complex", dscope))
@@ -2704,6 +2704,12 @@ ddg.MAX_HIST_LINES <- 2^14
     envHeader <- paste0 ("<environemnt: ", environmentName (data), ">")
     data <- c (envHeader, ls(data), recursive=TRUE)
   }
+  else if ("XMLInternalDocument" %in% class(data)) {
+    fext <- "xml"
+  }
+  else if (!is.character(data)) {
+    data <- as.character(data)
+  }
 
   # object.size returns bytes, but max.snapshot.size is in kilobytes
   if (max.snapshot.size == -1 || object.size(data) < max.snapshot.size * 1024) {
@@ -2728,6 +2734,8 @@ ddg.MAX_HIST_LINES <- 2^14
   
   # Write to file .
   if (fext == "csv") write.csv(data, dpfile, row.names=FALSE)
+  
+  else if (fext == "xml") saveXML (data, dpfile)
   
   # Capture graphic.
   else if (.ddg.supported.graphic(fext)) .ddg.graphic.snapshot(fext, dpfile)
