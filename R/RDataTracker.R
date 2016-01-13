@@ -642,7 +642,7 @@ ddg.MAX_HIST_LINES <- 2^14
   .ddg.set("ddg.data.nodes", ddg.data.nodes)
   
   if (.ddg.debug()) {
-    print(paste("Adding data node", ddg.dnum, "named", dname, "with scope", dscope))
+    print(paste("Adding data node", ddg.dnum, "named", dname, "with scope", dscope, " and value ", ddg.data.nodes$ddg.value[ddg.dnum]))
   }
 }
 
@@ -2550,7 +2550,7 @@ ddg.MAX_HIST_LINES <- 2^14
 # dscope - scope of data node.
 
 .ddg.data.node <- function(dtype, dname, dvalue, dscope) {
-  # If object, try to create snapshot node.
+  # If object or a long list, try to create snapshot node.
   if (is.object(dvalue)) {
     tryCatch(
         {
@@ -2565,6 +2565,11 @@ ddg.MAX_HIST_LINES <- 2^14
         }
     )
     
+  }
+  
+  else if (is.matrix(dvalue)) {
+    .ddg.snapshot.node (dname, "csv", dvalue, dscope=dscope)
+    return (NULL)
   }
   
   # Convert value to a string.
