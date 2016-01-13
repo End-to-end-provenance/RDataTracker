@@ -2567,7 +2567,7 @@ ddg.MAX_HIST_LINES <- 2^14
     
   }
   
-  else if (is.matrix(dvalue)) {
+  else if (is.matrix(dvalue) || (is.vector(dvalue) && length(dvalue) > 20)) {
     .ddg.snapshot.node (dname, "csv", dvalue, dscope=dscope)
     return (NULL)
   }

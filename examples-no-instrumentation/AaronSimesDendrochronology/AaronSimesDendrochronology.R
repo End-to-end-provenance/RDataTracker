@@ -3500,7 +3500,6 @@ for (n in unique(den$TreeNum)) {
     Age <- c(Age, hold$Year - min(hold$Year))
     Radius <- c(Radius, cumsum(hold$mmperyear))
 }
-
 BAI <- (pi * Radius^2) - (pi * (Radius - den$mmperyear)^2)
 
 gpyr <- 1865 + (den$Year - 1861)%/%5 * 5
