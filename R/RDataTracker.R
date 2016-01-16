@@ -174,6 +174,11 @@ ddg.MAX_HIST_LINES <- 2^14
   .ddg.set("ddg.text", paste(text, ...))
 }
 
+.ddg.append.json <- function(...) {
+  text <- .ddg.get("ddg.json")
+  .ddg.set("ddg.json", paste(text, ...))
+}
+
 .ddg.add.rows <- function(df, new.rows) {
   table <- .ddg.get(df)
   .ddg.set(df, rbind(table, new.rows))
@@ -217,7 +222,11 @@ ddg.MAX_HIST_LINES <- 2^14
   # is called.
   .ddg.set("ddg.text", "")
   
-  # Used to control debugging output.  If already defined, don't 
+  # Create JSON string. This string is written to file when ddg.save 
+  # is called.
+  .ddg.set("ddg.json", "")
+
+    # Used to control debugging output.  If already defined, don't 
   # change its value.
 	if (!.ddg.is.set("ddg.debug")) .ddg.set("ddg.debug", FALSE)
 
@@ -331,6 +340,89 @@ ddg.MAX_HIST_LINES <- 2^14
   environ <- paste(environ, "DDGDirectory=\"", .ddg.path(), "\"\n", sep="")
   environ <- paste(environ, "DateTime=\"", time, "\"\n", sep="")
   return (environ)
+}
+
+### Functions to save ddg in json format
+
+# .ddg.json.environ stores the environment in json format.
+
+.ddg.json.environ <- function() {
+  architecture <- R.Version()$arch
+  operating.system <- .Platform$OS.type
+  language="R"
+  r.version <- R.Version()$version
+  lib.version <- packageVersion("RDataTracker")
+  ddg.r.script.path <- .ddg.get("ddg.r.script.path")
+  if (!is.null(ddg.r.script.path)) {
+    script.path <- .ddg.get("ddg.r.script.path")
+    script.timestamp <- .ddg.format.time(file.info(ddg.r.script.path)$mtime)
+  } else {
+    script.path <- NA
+    script.timestamp <- NA
+  }
+  working.directory=getwd()
+  ddg.directory=.ddg.path()
+  date.time=time
+  time <- .ddg.timestamp()
+  
+  environ <- "\"environment\": {\n"
+  environ <- paste(environ, "\"architecture\": \"", architecture, "\",\n", sep="")
+  environ <- paste(environ, "\"operating system\": \"", operating.system, "\",\n", sep="")
+  environ <- paste(environ, "\"language\": \"", language, "\",\n", sep="")
+  environ <- paste(environ, "\"r version\": \"", r.version, "\",\n", sep="")
+  environ <- paste(environ, "\"rdatatracker version\": \"", lib.version, "\",\n", sep="")
+  environ <- paste(environ, "\"script\": \"", script.path, "\",\n", sep="")
+  environ <- paste(environ, "\"script timestamp\": \"", script.timestamp, "\",\n", sep="")
+  environ <- paste(environ, "\"working directory\": \"", working.directory, "\",\n", sep="")
+  environ <- paste(environ, "\"ddg directory\": \"", ddg.directory, "\",\n", sep="")
+  environ <- paste(environ, "\"date-time\": \"", time, "\",\n", sep="")
+  environ <- paste(environ, "},\n", sep="")
+  environ <- paste(environ, "\"provenance graph\": {\n", sep="")
+
+#  environ <- .ddg.environ()
+  return(environ)
+}
+
+# .ddg.json.proc2proc stores a control flow edge in json format.
+
+.ddg.json.proc2proc <- function(pn) {
+  .ddg.append.json("\"control flow edge ", pn-1, "-", pn, "\": {\n\"pnode1\": \"", pn-1, "\",\n\"pnode2\": \"", pn, "\"\n},\n", sep="")
+}
+
+# .ddg.json.data2proc stores a data flow edge from data node to 
+# procedure node in json format.
+
+.ddg.json.data2proc <- function(dn, pn) {
+  .ddg.append.json("\"data flow edge ", dn, "-", pn, "\": {\n\"dnode\": \"", dn, "\",\n\"pnode\": \"", pn, "\"\n},\n", sep="")
+}
+
+# .ddg.json.proc2data stores a data flow edge from procedure node to
+# data node in json format.
+
+.ddg.json.proc2data <- function(pn, dn) {
+  .ddg.append.json("\"data flow edge ", pn, "-", dn, "\": {\n\"pnode\": \"", pn, "\",\n\"dnode\": \"", dn, "\"\n},\n", sep="")
+}
+
+# .ddg.json.proc.node stores a procedure node in json format.
+
+.ddg.json.proc.node <- function(type, num, name, value, time, line) {
+  value <- .ddg.replace.quotes(value)
+  .ddg.append.json("\"procedure node ", num, "\": {\n\"type\": \"", type, "\",\n\"num\": \"", num, "\",\n\"name\": \"", name, "\",\n\"value\": \"", value, "\",\n\"time\": \"", time, "\",\n\"line\": \"", line, "\"\n},\n", sep="")
+}
+
+# .ddg.json.data.node stores a data node in json format.
+
+.ddg.json.data.node <- function(type, num, name, value, time="", location="") {
+  .ddg.append.json("\"data node ", num, "\": {\n\"type\": \"", type, "\",\n\"num\": \"", num, "\",\n\"name\": \"", name, "\",\n\"value\": \"", value, "\",\n\"time\": \"", time, "\",\n\"location\": \"", location, "\"\n},\n", sep="")
+}
+
+# .ddg.json.final creates the final ddg in json format.
+
+.ddg.json.final <- function() {
+  graph <- .ddg.get("ddg.json")
+  graph <- substr(graph, 1, nchar(graph)-2)
+  ddg.json <- paste("{\"data derviation graph\": {\n", .ddg.json.environ(), graph, "\n}}}\n", sep="")
+  return(ddg.json)
 }
 
 # .ddg.is.init is called at the beginning of all user accessible 
@@ -821,6 +913,7 @@ ddg.MAX_HIST_LINES <- 2^14
   ddg.pnum <- .ddg.pnum()
   if (ddg.pnum > 1) {
     .ddg.append("CF p", ddg.pnum-1, " p", ddg.pnum, "\n", sep="")
+    .ddg.json.proc2proc(ddg.pnum)
     
     if (.ddg.debug()) {
       pname1 <- .ddg.proc.name(ddg.pnum-1)
@@ -847,6 +940,7 @@ ddg.MAX_HIST_LINES <- 2^14
   
   # Create data flow edge from data node to procedure node.
   .ddg.append("DF d", dn, " p", pn, "\n", sep="")
+  .ddg.json.data2proc(dn, pn)
   
   if (.ddg.debug()) {
     print(paste("data2proc: ", dname, " ", pname, sep=""))
@@ -875,6 +969,7 @@ ddg.MAX_HIST_LINES <- 2^14
   # Create data flow edge from procedure node to data node.
   if (dn != 0 && pn != 0) {
     .ddg.append("DF p", pn, " d", dn, "\n", sep="")
+    .ddg.json.proc2data(dn, pn)
 
     # Record that the function is linked to a return value.  This
     # is necessary for recursive functions to get linked to their
@@ -911,6 +1006,7 @@ ddg.MAX_HIST_LINES <- 2^14
   
   # Create data flow edge from procedure node to data node.
   .ddg.append("DF p", pn, " d", dn, "\n", sep="")
+  .ddg.json.proc2data(pn, dn)
   
   if (.ddg.debug()) {
     print(paste("lastproc2data:", dname))
@@ -1810,6 +1906,8 @@ ddg.MAX_HIST_LINES <- 2^14
 				
 				# Create data flow edge from procedure node to data node.
 				.ddg.append("DF d", data.num, " p", proc.num, "\n", sep="")
+				.ddg.json.data2proc(data.num, proc.num)
+				
 				
 				if (.ddg.debug()) {
 					print(paste(".ddg.link.function.returns:", command))
@@ -2592,9 +2690,11 @@ ddg.MAX_HIST_LINES <- 2^14
   
   if (proc.value != "") {
     .ddg.append(ptype, " p", ddg.pnum, " \"", ddg.pnum, "-", quoted.name, "\"", proc.value, proc.time, proc.line, ";\n", sep="")
+    .ddg.json.proc.node(ptype, ddg.pnum, quoted.name, pvalue, ptime, source.num)
   }
   else {
     .ddg.append(ptype, " p", ddg.pnum, " \"", ddg.pnum, "-", quoted.name, "\"", proc.time, proc.line, "\n", sep="")
+    .ddg.json.proc.node(ptype, ddg.pnum, quoted.name, pvalue, ptime, source.num)
   }
   
   # Record procedure node information.
@@ -2744,6 +2844,7 @@ ddg.MAX_HIST_LINES <- 2^14
     # Add node to DDG.
     ddg.dnum <- .ddg.dnum()
     .ddg.append(dtype, " d", ddg.dnum, " \"", ddg.dnum, "-", dname, "\"", data.value, ";\n", sep="")
+    .ddg.json.data.node(dtype, ddg.dnum, dname, val)
     
     # Record data node information.
     .ddg.record.data(dtype, dname, dvalue, dscope)
@@ -2901,6 +3002,7 @@ ddg.MAX_HIST_LINES <- 2^14
   
   # Create file node.
   .ddg.append("Snapshot", " d", ddg.dnum, " \"", ddg.dnum, "-", dname, "\" Value=\"", dpfile, "\" Time=\"", dtime, "\";\n", sep="")
+  .ddg.json.data.node("Snapshot", ddg.dnum, dname, dpfile, dtime)
   
   # Record data node information.
   .ddg.record.data("Snapshot", dname, dfile, dscope, dtime)
@@ -2948,6 +3050,7 @@ ddg.MAX_HIST_LINES <- 2^14
   
   # Create file node.
   .ddg.append(dtype, " d", ddg.dnum, " \"", ddg.dnum, "-", dname, "\" Value=\"", dpfile.out, "\" Time=\"", dtime, "\"", loc.value, ";\n", sep="")
+  .ddg.json.data.node(dtype, ddg.dnum, dname, dpfile.out, dtime, file.loc)
   
   # Record data node information.
   .ddg.record.data(dtype, dname, dfile, dscope, dtime, file.loc)
@@ -4676,6 +4779,12 @@ ddg.save <- function(quit=FALSE) {
   # Save DDG to file.
   ddg.path <- .ddg.path()
   fileout <- paste(ddg.path, "/ddg.txt", sep="")
+  if (interactive()) print(paste("Saving DDG in ", fileout))
+  write(output, fileout)
+  
+  # Save DDG in JSON format.
+  output <- .ddg.json.final()
+  fileout <- paste(ddg.path, "/ddg.json", sep="")
   if (interactive()) print(paste("Saving DDG in ", fileout))
   write(output, fileout)
   
