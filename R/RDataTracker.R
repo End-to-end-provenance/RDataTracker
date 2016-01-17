@@ -89,12 +89,20 @@ ddg.MAX_HIST_LINES <- 2^14
   return (.ddg.get("ddg.pnum"))
 }
 
+.ddg.fnum <- function() {
+  return (.ddg.get("ddg.fnum"))
+}
+
 .ddg.data.nodes <- function() {
   return (.ddg.get("ddg.data.nodes"))
 }
 
 .ddg.proc.nodes <- function() {
   return (.ddg.get("ddg.proc.nodes"))
+}
+
+.ddg.data.flow <- function() {
+  return (.ddg.get("ddg.data.flow"))
 }
 
 .ddg.enable.console <- function() {
@@ -187,8 +195,8 @@ ddg.MAX_HIST_LINES <- 2^14
 #-------------------BASIC FUNCTIONS-----------------------#
 
 # .ddg.init.tables creates data frames to store procedure nodes, 
-# data nodes, function return values, and checkpoints. It also 
-# initializes selected constants and variables.
+# data nodes, data flow edges, function return values, and 
+# checkpoints. It also initializes selected constants and variables.
 
 .ddg.init.tables <- function() {
 # Create tables for procedure and data nodes.  Initially, tables 
@@ -213,10 +221,15 @@ ddg.MAX_HIST_LINES <- 2^14
           ddg.time = character(size),
           ddg.loc = character(size),
           ddg.current = logical(size), stringsAsFactors=FALSE))
-  
+
+  .ddg.set("ddg.data.flow", data.frame(ddg.num = numeric(size),
+          ddg.from = character(size),
+          ddg.to = character(size), stringsAsFactors=FALSE))
+    
   # Create procedure and data node counters.
   .ddg.set("ddg.pnum", 0)
   .ddg.set("ddg.dnum", 0)
+  .ddg.set("ddg.fnum", 0)
   
   # Create DDG string. This string is written to file when ddg.save 
   # is called.
@@ -750,6 +763,36 @@ ddg.MAX_HIST_LINES <- 2^14
   }
 }
 
+# .ddg.record.data.flow records a data flow edge in the data flow
+# table.
+
+# node1 - name of first node
+# node1 - name of second node
+
+.ddg.record.data.flow <- function(node1, node2) {
+  # If the table is full, make it bigger.
+  ddg.fnum <- .ddg.fnum()
+  ddg.data.flow <- .ddg.data.flow()
+  if (nrow(ddg.data.flow) < ddg.fnum) {
+    size = 100
+    new.rows <- data.frame(ddg.num = numeric(size),
+        ddg.from = character(size),
+        ddg.to = character(size),
+        stringsAsFactors=FALSE)
+    .ddg.add.rows("ddg.data.flow", new.rows)
+    ddg.data.flow <- .ddg.data.flow()
+  }
+  
+  ddg.data.flow$ddg.num[ddg.fnum] <- ddg.fnum
+  ddg.data.flow$ddg.from[ddg.fnum] <- node1
+  ddg.data.flow$ddg.to[ddg.fnum] <- node2
+  .ddg.set("ddg.data.flow", ddg.data.flow)
+  
+  if (.ddg.debug()) {
+    print (paste("Adding data flow edge", ddg.fnum, "for", node1, "to", node2))
+  }
+}
+
 # .ddg.is.proc.node returns TRUE if the specified type supports 
 # input and output edges in an expanded DDG. Currently this 
 # includes all procedure node types except Start.
@@ -942,6 +985,12 @@ ddg.MAX_HIST_LINES <- 2^14
   .ddg.append("DF d", dn, " p", pn, "\n", sep="")
   .ddg.json.data2proc(dn, pn)
   
+  # Record in data flow table
+  .ddg.inc("ddg.fnum")
+  node1 <- paste("D", dn, sep="")
+  node2 <- paste("P", pn, sep="")
+  .ddg.record.data.flow(node1, node2)
+  
   if (.ddg.debug()) {
     print(paste("data2proc: ", dname, " ", pname, sep=""))
     print(paste("DF d", dn, " p", pn, sep=""))
@@ -970,7 +1019,13 @@ ddg.MAX_HIST_LINES <- 2^14
   if (dn != 0 && pn != 0) {
     .ddg.append("DF p", pn, " d", dn, "\n", sep="")
     .ddg.json.proc2data(dn, pn)
-
+    
+    # Record in data flow table
+    .ddg.inc("ddg.fnum")
+    node1 <- paste("P", pn, sep="")
+    node2 <- paste("D", dn, sep="")
+    .ddg.record.data.flow(node1, node2)
+    
     # Record that the function is linked to a return value.  This
     # is necessary for recursive functions to get linked to their
     # return values correctly.
@@ -1007,6 +1062,12 @@ ddg.MAX_HIST_LINES <- 2^14
   # Create data flow edge from procedure node to data node.
   .ddg.append("DF p", pn, " d", dn, "\n", sep="")
   .ddg.json.proc2data(pn, dn)
+  
+  # Record in data flow table
+  .ddg.inc("ddg.fnum")
+  node1 <- paste("P", pn, sep="")
+  node2 <- paste("D", dn, sep="")
+  .ddg.record.data.flow(node1, node2)
   
   if (.ddg.debug()) {
     print(paste("lastproc2data:", dname))
@@ -1907,6 +1968,12 @@ ddg.MAX_HIST_LINES <- 2^14
 				# Create data flow edge from procedure node to data node.
 				.ddg.append("DF d", data.num, " p", proc.num, "\n", sep="")
 				.ddg.json.data2proc(data.num, proc.num)
+				
+				# Record in data flow table
+				.ddg.inc("ddg.fnum")
+				node1 <- paste("D", data.num, sep="")
+				node2 <- paste("P", proc.num, sep="")
+				.ddg.record.data.flow(node1, node2)
 				
 				
 				if (.ddg.debug()) {
@@ -4798,7 +4865,12 @@ ddg.save <- function(quit=FALSE) {
   ddg.data.nodes <- .ddg.data.nodes()
   write.table(ddg.data.nodes[ddg.data.nodes$ddg.num > 0, ], fileout, quote=FALSE, sep="\t", na="NA", row.names=FALSE, col.names=TRUE)
   
-  # Save the function return table to file.
+  # Save data flow table to file.
+  fileout <- paste(ddg.path, "/dflow.txt", sep="")
+  ddg.data.flow <- .ddg.data.flow()
+  write.table(ddg.data.flow[ddg.data.flow$ddg.num > 0, ], fileout, quote=FALSE, sep="\t", na="NA", row.names=FALSE, col.names=TRUE)
+
+    # Save the function return table to file.
   fileout <- paste(ddg.path, "/returns.txt", sep="")
   ddg.returns <- .ddg.get(".ddg.return.values")
   write.table(ddg.returns[ddg.returns$return.node.id > 0, ], fileout, quote=FALSE, sep="\t", na="NA", row.names=FALSE, col.names=TRUE)
