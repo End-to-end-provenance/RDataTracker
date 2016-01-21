@@ -354,8 +354,6 @@ ddg.MAX_HIST_LINES <- 2^14
 
 .ddg.get.json <- function() {
   # ENVIRONMENT (entity)
-  json.entity <- paste("\"entity\": {\n")
-  
   architecture <- R.Version()$arch
   operating.system <- .Platform$OS.type
   language="R"
@@ -373,6 +371,7 @@ ddg.MAX_HIST_LINES <- 2^14
   ddg.timestamp <- .ddg.timestamp()
   lib.version <- packageVersion("RDataTracker")
   
+  json.entity <- ""
   json.entity <- paste(json.entity, "\"environment\": {\n", sep="")
   json.entity <- paste(json.entity, "\"architecture\": \"", architecture, "\",\n", sep="")
   json.entity <- paste(json.entity, "\"operatingSystem\": \"", operating.system, "\",\n", sep="")
@@ -389,102 +388,126 @@ ddg.MAX_HIST_LINES <- 2^14
   # DATA NODES (entity)
   data.nodes <- .ddg.data.nodes()
   dnum <- .ddg.dnum()
-  for (i in 1:dnum) {
-    did <- paste("d", i, sep="")
-    dnum <- data.nodes$ddg.num[i]
-    dtype <- data.nodes$ddg.type[i]
-    dname <- data.nodes$ddg.name[i]
-    dvalue <- data.nodes$ddg.value[i]
-    if (!is.na(suppressWarnings(as.numeric(dvalue)))) dvalue <- as.numeric(dvalue)
-    dscope <- data.nodes$ddg.scope[i]
-    dtime <- data.nodes$ddg.time[i]
-    dloc <- data.nodes$ddg.loc[i]
-    json.entity <- paste(json.entity, "\"", did, "\": {\n", sep="")
-    json.entity <- paste(json.entity, "\"number\": ", dnum, ",\n", sep="")
-    json.entity <- paste(json.entity, "\"type\": \"", dtype, "\",\n", sep="")
-    json.entity <- paste(json.entity, "\"name\": \"", dname, "\",\n", sep="")
-    if (is.numeric(dvalue)) {
-      json.entity <- paste(json.entity, "\"value\": ", dvalue, ",\n", sep="")
-    } else {
-      json.entity <- paste(json.entity, "\"value\": \"", dvalue, "\",\n", sep="")
+  if (dnum > 0) {
+    for (i in 1:dnum) {
+      did <- paste("d", i, sep="")
+      dnum <- data.nodes$ddg.num[i]
+      dtype <- data.nodes$ddg.type[i]
+      dname <- data.nodes$ddg.name[i]
+      dvalue <- data.nodes$ddg.value[i]
+      if (length(dvalue) > 0) {
+        if (grepl("\"", dvalue) || grepl("\r", dvalue)  || grepl("\n", dvalue) || grepl("\t", dvalue)) dvalue <- .ddg.replace.quotes(dvalue)
+        if (!is.na(suppressWarnings(as.numeric(dvalue)))) dvalue <- as.numeric(dvalue)
+      }
+      dscope <- data.nodes$ddg.scope[i]
+      dtime <- data.nodes$ddg.time[i]
+      dloc <- data.nodes$ddg.loc[i]
+      json.entity <- paste(json.entity, "\"", did, "\": {\n", sep="")
+      json.entity <- paste(json.entity, "\"number\": ", dnum, ",\n", sep="")
+      json.entity <- paste(json.entity, "\"type\": \"", dtype, "\",\n", sep="")
+      json.entity <- paste(json.entity, "\"name\": \"", dname, "\",\n", sep="")
+      if (is.numeric(dvalue)) {
+        json.entity <- paste(json.entity, "\"value\": ", dvalue, ",\n", sep="")
+      } else {
+        json.entity <- paste(json.entity, "\"value\": \"", dvalue, "\",\n", sep="")
+      }
+      json.entity <- paste(json.entity, "\"scope\": \"", dscope, "\",\n", sep="")
+      json.entity <- paste(json.entity, "\"timestamp\": \"", dtime, "\",\n", sep="")
+      json.entity <- paste(json.entity, "\"location\": \"", dloc, "\"\n", sep="")
+      json.entity <- paste(json.entity, "},\n", sep="")
     }
-    json.entity <- paste(json.entity, "\"scope\": \"", dscope, "\",\n", sep="")
-    json.entity <- paste(json.entity, "\"timestamp\": \"", dtime, "\",\n", sep="")
-    json.entity <- paste(json.entity, "\"location\": \"", dloc, "\"\n", sep="")
-    json.entity <- paste(json.entity, "},\n", sep="")
   }
-  json.entity <- paste(substr(json.entity, 1, nchar(json.entity)-2), "\n", sep="")
-  json.entity <- paste(json.entity, "},\n", sep="")
+  if (json.entity != "") {
+    json.entity <- paste(substr(json.entity, 1, nchar(json.entity)-2), "\n", sep="")
+    json.entity <- paste("\"entity\": {\n", json.entity, "},\n", sep="")
+  }
+
 
   # PROCEDURE NODES (activity)
-  json.activity <- paste("\"activity\": {\n")
+  json.activity <- ""
   proc.nodes <- .ddg.proc.nodes()
   pnum <- .ddg.pnum()
-  for (i in 1:pnum) {
-    pid <- paste("p", i, sep="")
-    pnum <- proc.nodes$ddg.num[i]
-    ptype <- proc.nodes$ddg.type[i]
-    pname <- proc.nodes$ddg.name[i]
-    if (grepl("\"", pname)) pname <- .ddg.replace.quotes(pname)
-    pvalue <- proc.nodes$ddg.value[i]
-    if (grepl("\"", pvalue)) pvalue <- .ddg.replace.quotes(pvalue)
-    ptime <- proc.nodes$ddg.time[i]
-    psource <- proc.nodes$ddg.source[i]
-    json.activity <- paste(json.activity, "\"", pid, "\": {\n", sep="")
-    json.activity <- paste(json.activity, "\"number\": ", pnum, ",\n", sep="")
-    json.activity <- paste(json.activity, "\"type\": \"", ptype, "\",\n", sep="")
-    json.activity <- paste(json.activity, "\"name\": \"", pname, "\",\n", sep="")
-    json.activity <- paste(json.activity, "\"value\": \"", pvalue, "\",\n", sep="")
-    json.activity <- paste(json.activity, "\"elapsedTime\": ", ptime, ",\n", sep="")
-    json.activity <- paste(json.activity, "\"scriptLine\": ", psource, "\n", sep="")
-    json.activity <- paste(json.activity, "},\n", sep="")
+  if (pnum > 0) {
+    for (i in 1:pnum) {
+      pid <- paste("p", i, sep="")
+      pnum <- proc.nodes$ddg.num[i]
+      ptype <- proc.nodes$ddg.type[i]
+      pname <- proc.nodes$ddg.name[i]
+      if (length(pname) > 0) {
+        if (grepl("\"", pname) || grepl("\r", pname)  || grepl("\n", pname) || grepl("\t", pname)) pname <- .ddg.replace.quotes(pname)
+      }
+      pvalue <- proc.nodes$ddg.value[i]
+      if (length(pvalue) > 0) {
+        if (grepl("\"", pvalue) || grepl("\r", pvalue)  || grepl("\n", pvalue) || grepl("\t", pvalue)) pvalue <- .ddg.replace.quotes(pvalue)
+      }
+      ptime <- proc.nodes$ddg.time[i]
+      psource <- proc.nodes$ddg.source[i]
+      json.activity <- paste(json.activity, "\"", pid, "\": {\n", sep="")
+      json.activity <- paste(json.activity, "\"number\": ", pnum, ",\n", sep="")
+      json.activity <- paste(json.activity, "\"type\": \"", ptype, "\",\n", sep="")
+      json.activity <- paste(json.activity, "\"name\": \"", pname, "\",\n", sep="")
+      json.activity <- paste(json.activity, "\"value\": \"", pvalue, "\",\n", sep="")
+      json.activity <- paste(json.activity, "\"elapsedTime\": ", ptime, ",\n", sep="")
+      json.activity <- paste(json.activity, "\"scriptLine\": ", psource, "\n", sep="")
+      json.activity <- paste(json.activity, "},\n", sep="")
   }
-  json.activity <- paste(substr(json.activity, 1, nchar(json.activity)-2), "\n", sep="")
-  json.activity <- paste(json.activity, "},\n", sep="")
+    if (json.activity != "") {
+      json.activity <- paste(substr(json.activity, 1, nchar(json.activity)-2), "\n", sep="")
+      json.activity <- paste("\"activity\": {\n", json.activity, "},\n", sep="")
+    }
+  }
 
   # INPUT DATA FLOW (used)
-  json.used <- paste("\"used\": {\n")
+  json.used <- ""
   data.flow <- .ddg.data.flow()
   dp <- 0
-  for (i in 1:dnum) {
-    dnode <- paste("d", i, sep="")
-    index <- which(data.flow$ddg.from == dnode)
-    if (length(index) > 0 ) {
-      for (j in 1:length(index)) {
-        pnode <- data.flow$ddg.to[index[j]]
-        dp <- dp + 1
-        dpid <- paste("in", dp, sep="")
-        json.used <- paste(json.used, "\"", dpid, "\": {\n", sep="")
-        json.used <- paste(json.used, "\"entity\": \"", dnode, "\",\n", sep="")
-        json.used <- paste(json.used, "\"activity\": \"", pnode, "\"\n", sep="")
-        json.used <- paste(json.used, "},\n", sep="")
+  if (dnum > 0) {
+    for (i in 1:dnum) {
+      dnode <- paste("d", i, sep="")
+      index <- which(data.flow$ddg.from == dnode)
+      if (length(index) > 0 ) {
+        for (j in 1:length(index)) {
+          pnode <- data.flow$ddg.to[index[j]]
+          dp <- dp + 1
+          dpid <- paste("in", dp, sep="")
+          json.used <- paste(json.used, "\"", dpid, "\": {\n", sep="")
+          json.used <- paste(json.used, "\"entity\": \"", dnode, "\",\n", sep="")
+          json.used <- paste(json.used, "\"activity\": \"", pnode, "\"\n", sep="")
+          json.used <- paste(json.used, "},\n", sep="")
+        }
       }
     }
+    if (json.used != "") {
+      json.used <- paste(substr(json.used, 1, nchar(json.used)-2), "\n", sep="")
+      json.used <- paste("\"used\": {\n", json.used, "},\n", sep="")
+    }
   }
-  json.used <- paste(substr(json.used, 1, nchar(json.used)-2), "\n", sep="")
-  json.used <- paste(json.used, "},\n", sep="")
   
   #  OUTPUT DATA FLOW (wasGeneratedBy)
-  json.generated <- paste("\"wasGeneratedBy\": {\n")
+  json.generated <- ""
   data.flow <- .ddg.data.flow()
   pd <- 0
-  for (i in 1:dnum) {
-    dnode <- paste("d", i, sep="")
-    index <- which(data.flow$ddg.to == dnode)
-    if (length(index) > 0) {
-      for (j in 1:length(index)) {
-        pnode <- data.flow$ddg.from[index[j]]
-        pd <- pd + 1
-        pdid <- paste("out", pd, sep="")
-        json.generated <- paste(json.generated, "\"", pdid, "\": {\n", sep="")
-        json.generated <- paste(json.generated, "\"entity\": \"", dnode, "\",\n", sep="")
-        json.generated <- paste(json.generated, "\"activity\": \"", pnode, "\"\n", sep="")
-        json.generated <- paste(json.generated, "},\n", sep="")
+  if (dnum > 0) {
+    for (i in 1:dnum) {
+      dnode <- paste("d", i, sep="")
+      index <- which(data.flow$ddg.to == dnode)
+      if (length(index) > 0) {
+        for (j in 1:length(index)) {
+          pnode <- data.flow$ddg.from[index[j]]
+          pd <- pd + 1
+          pdid <- paste("out", pd, sep="")
+          json.generated <- paste(json.generated, "\"", pdid, "\": {\n", sep="")
+          json.generated <- paste(json.generated, "\"entity\": \"", dnode, "\",\n", sep="")
+          json.generated <- paste(json.generated, "\"activity\": \"", pnode, "\"\n", sep="")
+          json.generated <- paste(json.generated, "},\n", sep="")
+        }
       }
     }
+    if (json.generated != "") {
+      json.generated <- paste(substr(json.generated, 1, nchar(json.generated)-2), "\n", sep="")
+      json.generated <- paste("\"wasGeneratedBy\": {\n", json.generated, "}\n", sep="")
+    }
   }
-  json.generated <- paste(substr(json.generated, 1, nchar(json.generated)-2), "\n", sep="")
-  json.generated <- paste(json.generated, "}\n", sep="")    
   
   # FINAL
   json.final <- paste("{\n", json.entity, json.activity, json.used, json.generated, "}\n", sep="")
