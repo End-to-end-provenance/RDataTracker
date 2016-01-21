@@ -350,9 +350,28 @@ ddg.MAX_HIST_LINES <- 2^14
   return (environ)
 }
 
+# .ddg.json.node builds a node string for the DDG in JSON format.
+
+.ddg.json.node <- function(st, name, type, value, last=FALSE) {
+  value <- as.character(value)
+  st <- paste(st, "\"", name, "\": {\n\"$\": \"", value, "\",\n\"type\": \"xsd:", type, "\"\n},\n", sep="")
+  if (last==TRUE) st <- paste(substr(st, 1, nchar(st)-2), "\n", sep="")
+  return(st)
+}
+
+# .ddg.json.edge builds an edge string for the DDG in JSON format.
+
+.ddg.json.edge <- function(st, entity, activity) {
+  st <- paste(st, "\"prov:entity\": \"ex:", entity, "\",\n\"prov:activity\": \"ex:", activity, "\"\n", sep="")
+  return(st)
+}
+
 # .ddg.get.json creates a version of the DDG in JSON format.
 
 .ddg.get.json <- function() {
+  # PREFIX
+  json.prefix <- paste("\"prefix\": {\n\"ex\": \"http://example.org/\"\n},\n", sep="")
+  
   # ENVIRONMENT (entity)
   architecture <- R.Version()$arch
   operating.system <- .Platform$OS.type
@@ -373,16 +392,16 @@ ddg.MAX_HIST_LINES <- 2^14
   
   json.entity <- ""
   json.entity <- paste(json.entity, "\"environment\": {\n", sep="")
-  json.entity <- paste(json.entity, "\"architecture\": \"", architecture, "\",\n", sep="")
-  json.entity <- paste(json.entity, "\"operatingSystem\": \"", operating.system, "\",\n", sep="")
-  json.entity <- paste(json.entity, "\"language\": \"", language, "\",\n", sep="")
-  json.entity <- paste(json.entity, "\"rVersion\": \"", r.version, "\",\n", sep="")
-  json.entity <- paste(json.entity, "\"script\": \"", script, "\",\n", sep="")
-  json.entity <- paste(json.entity, "\"scriptTimestamp\": \"", script.timestamp, "\",\n", sep="")
-  json.entity <- paste(json.entity, "\"workingDirectory\": \"", working.directory, "\",\n", sep="")
-  json.entity <- paste(json.entity, "\"ddgDirectory\": \"", ddg.directory, "\",\n", sep="")
-  json.entity <- paste(json.entity, "\"ddgTimestamp\": \"", ddg.timestamp, "\",\n", sep="")
-  json.entity <- paste(json.entity, "\"rdatatrackerVersion\": \"", lib.version, "\"\n", sep="")
+  json.entity <- .ddg.json.node(json.entity, "architecture", "string", architecture)
+  json.entity <- .ddg.json.node(json.entity, "operatingSystem", "string", operating.system)
+  json.entity <- .ddg.json.node(json.entity, "language", "string", language)
+  json.entity <- .ddg.json.node(json.entity, "rVersion", "string", r.version)
+  json.entity <- .ddg.json.node(json.entity, "script", "string", script)
+  json.entity <- .ddg.json.node(json.entity, "scriptTimestamp", "string", script.timestamp)
+  json.entity <- .ddg.json.node(json.entity, "workingDirectory", "string", working.directory)
+  json.entity <- .ddg.json.node(json.entity, "ddgDirectory", "string", ddg.directory)
+  json.entity <- .ddg.json.node(json.entity, "ddgTimestamp", "string", ddg.timestamp)
+  json.entity <- .ddg.json.node(json.entity, "rdatatrackerVersion", "string", lib.version, last=TRUE)
   json.entity <- paste(json.entity, "},\n", sep="")
 
   # DATA NODES (entity)
@@ -395,33 +414,27 @@ ddg.MAX_HIST_LINES <- 2^14
       dtype <- data.nodes$ddg.type[i]
       dname <- data.nodes$ddg.name[i]
       dvalue <- data.nodes$ddg.value[i]
+      value.type <- "string"
       if (length(dvalue) > 0) {
         if (grepl("\"", dvalue) || grepl("\r", dvalue)  || grepl("\n", dvalue) || grepl("\t", dvalue)) dvalue <- .ddg.replace.quotes(dvalue)
-        if (!is.na(suppressWarnings(as.numeric(dvalue)))) dvalue <- as.numeric(dvalue)
+        if (is.numeric(dvalue)) value.type <- "number"
       }
       dscope <- data.nodes$ddg.scope[i]
       dtime <- data.nodes$ddg.time[i]
       dloc <- data.nodes$ddg.loc[i]
       json.entity <- paste(json.entity, "\"", did, "\": {\n", sep="")
-      json.entity <- paste(json.entity, "\"number\": ", dnum, ",\n", sep="")
-      json.entity <- paste(json.entity, "\"type\": \"", dtype, "\",\n", sep="")
-      json.entity <- paste(json.entity, "\"name\": \"", dname, "\",\n", sep="")
-      if (is.numeric(dvalue)) {
-        json.entity <- paste(json.entity, "\"value\": ", dvalue, ",\n", sep="")
-      } else {
-        json.entity <- paste(json.entity, "\"value\": \"", dvalue, "\",\n", sep="")
-      }
-      json.entity <- paste(json.entity, "\"scope\": \"", dscope, "\",\n", sep="")
-      json.entity <- paste(json.entity, "\"timestamp\": \"", dtime, "\",\n", sep="")
-      json.entity <- paste(json.entity, "\"location\": \"", dloc, "\"\n", sep="")
+      json.entity <- .ddg.json.node(json.entity, "number", "integer", dnum)
+      json.entity <- .ddg.json.node(json.entity, "type", "string", dtype)
+      json.entity <- .ddg.json.node(json.entity, "name", "string", dname)
+      json.entity <- .ddg.json.node(json.entity, "value", value.type, dvalue)
+      json.entity <- .ddg.json.node(json.entity, "scope", "string", dscope)
+      json.entity <- .ddg.json.node(json.entity, "timestamp", "string", dtime)
+      json.entity <- .ddg.json.node(json.entity, "location", "string", dloc, last=TRUE)
       json.entity <- paste(json.entity, "},\n", sep="")
     }
-  }
-  if (json.entity != "") {
     json.entity <- paste(substr(json.entity, 1, nchar(json.entity)-2), "\n", sep="")
     json.entity <- paste("\"entity\": {\n", json.entity, "},\n", sep="")
   }
-
 
   # PROCEDURE NODES (activity)
   json.activity <- ""
@@ -443,18 +456,16 @@ ddg.MAX_HIST_LINES <- 2^14
       ptime <- proc.nodes$ddg.time[i]
       psource <- proc.nodes$ddg.source[i]
       json.activity <- paste(json.activity, "\"", pid, "\": {\n", sep="")
-      json.activity <- paste(json.activity, "\"number\": ", pnum, ",\n", sep="")
-      json.activity <- paste(json.activity, "\"type\": \"", ptype, "\",\n", sep="")
-      json.activity <- paste(json.activity, "\"name\": \"", pname, "\",\n", sep="")
-      json.activity <- paste(json.activity, "\"value\": \"", pvalue, "\",\n", sep="")
-      json.activity <- paste(json.activity, "\"elapsedTime\": ", ptime, ",\n", sep="")
-      json.activity <- paste(json.activity, "\"scriptLine\": ", psource, "\n", sep="")
+      json.activity <- .ddg.json.node(json.activity, "number", "integer", pnum)
+      json.activity <- .ddg.json.node(json.activity, "type", "string", ptype)
+      json.activity <- .ddg.json.node(json.activity, "name", "string", pname)
+      json.activity <- .ddg.json.node(json.activity, "value", "string", pvalue)
+      json.activity <- .ddg.json.node(json.activity, "elapsedTime", "number", ptime)
+      json.activity <- .ddg.json.node(json.activity, "scriptLine", "integer", psource, last=TRUE)
       json.activity <- paste(json.activity, "},\n", sep="")
-  }
-    if (json.activity != "") {
-      json.activity <- paste(substr(json.activity, 1, nchar(json.activity)-2), "\n", sep="")
-      json.activity <- paste("\"activity\": {\n", json.activity, "},\n", sep="")
     }
+    json.activity <- paste(substr(json.activity, 1, nchar(json.activity)-2), "\n", sep="")
+    json.activity <- paste("\"activity\": {\n", json.activity, "},\n", sep="")
   }
 
   # INPUT DATA FLOW (used)
@@ -471,8 +482,7 @@ ddg.MAX_HIST_LINES <- 2^14
           dp <- dp + 1
           dpid <- paste("in", dp, sep="")
           json.used <- paste(json.used, "\"", dpid, "\": {\n", sep="")
-          json.used <- paste(json.used, "\"entity\": \"", dnode, "\",\n", sep="")
-          json.used <- paste(json.used, "\"activity\": \"", pnode, "\"\n", sep="")
+          json.used <- .ddg.json.edge(json.used, dnode, pnode)
           json.used <- paste(json.used, "},\n", sep="")
         }
       }
@@ -497,8 +507,7 @@ ddg.MAX_HIST_LINES <- 2^14
           pd <- pd + 1
           pdid <- paste("out", pd, sep="")
           json.generated <- paste(json.generated, "\"", pdid, "\": {\n", sep="")
-          json.generated <- paste(json.generated, "\"entity\": \"", dnode, "\",\n", sep="")
-          json.generated <- paste(json.generated, "\"activity\": \"", pnode, "\"\n", sep="")
+          json.generated <- .ddg.json.edge(json.generated, dnode, pnode)
           json.generated <- paste(json.generated, "},\n", sep="")
         }
       }
@@ -510,7 +519,7 @@ ddg.MAX_HIST_LINES <- 2^14
   }
   
   # FINAL
-  json.final <- paste("{\n", json.entity, json.activity, json.used, json.generated, "}\n", sep="")
+  json.final <- paste("{\n", json.prefix, json.entity, json.activity, json.used, json.generated, "}\n", sep="")
   
   return(json.final)
 }
