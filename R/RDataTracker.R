@@ -230,11 +230,7 @@ ddg.MAX_HIST_LINES <- 2^14
   # is called.
   .ddg.set("ddg.text", "")
   
-  # Create JSON string. This string is written to file when ddg.save 
-  # is called.
-  .ddg.set("ddg.json", "")
-
-    # Used to control debugging output.  If already defined, don't 
+  # Used to control debugging output.  If already defined, don't 
   # change its value.
 	if (!.ddg.is.set("ddg.debug")) .ddg.set("ddg.debug", FALSE)
 
@@ -366,11 +362,16 @@ ddg.MAX_HIST_LINES <- 2^14
   return(st)
 }
 
-# .ddg.get.json creates a version of the DDG in JSON format.
+# .ddg.json.save creates a version of the DDG in JSON format and saves
+# it to file.
 
-.ddg.get.json <- function() {
+.ddg.json.save <- function(fileout) {
+  # write to file after num nodes or edges
+  num <- 100
+  
   # PREFIX
-  json.prefix <- paste("\"prefix\": {\n\"ex\": \"http://example.org/\"\n},\n", sep="")
+  json.prefix <- paste("{\n\"prefix\": {\n\"ex\": \"http://example.org/\"\n},\n", sep="")
+  write(json.prefix, fileout)
   
   # ENVIRONMENT (entity)
   architecture <- R.Version()$arch
@@ -390,7 +391,7 @@ ddg.MAX_HIST_LINES <- 2^14
   ddg.timestamp <- .ddg.timestamp()
   lib.version <- packageVersion("RDataTracker")
   
-  json.entity <- ""
+  json.entity <- "\"entity\": {\n"
   json.entity <- paste(json.entity, "\"environment\": {\n", sep="")
   json.entity <- .ddg.json.node(json.entity, "architecture", "string", architecture)
   json.entity <- .ddg.json.node(json.entity, "operatingSystem", "string", operating.system)
@@ -431,13 +432,18 @@ ddg.MAX_HIST_LINES <- 2^14
       json.entity <- .ddg.json.node(json.entity, "timestamp", "string", dtime)
       json.entity <- .ddg.json.node(json.entity, "location", "string", dloc, last=TRUE)
       json.entity <- paste(json.entity, "},\n", sep="")
+      if (i %% num == 0) {
+        write(json.entity, fileout, append=TRUE)
+        json.entity <- ""
+      }
     }
     json.entity <- paste(substr(json.entity, 1, nchar(json.entity)-2), "\n", sep="")
-    json.entity <- paste("\"entity\": {\n", json.entity, "},\n", sep="")
   }
+  json.entity <- paste(json.entity, "},\n", sep="")
+  write(json.entity, fileout, append=TRUE)
 
   # PROCEDURE NODES (activity)
-  json.activity <- ""
+  json.activity <- "\"activity\": {\n"
   proc.nodes <- .ddg.proc.nodes()
   pnum <- .ddg.pnum()
   if (pnum > 0) {
@@ -463,13 +469,18 @@ ddg.MAX_HIST_LINES <- 2^14
       json.activity <- .ddg.json.node(json.activity, "elapsedTime", "number", ptime)
       json.activity <- .ddg.json.node(json.activity, "scriptLine", "integer", psource, last=TRUE)
       json.activity <- paste(json.activity, "},\n", sep="")
+      if (i %% num == 0) {
+        write(json.activity, fileout, append=TRUE)
+        json.activity <- ""
+      }
     }
     json.activity <- paste(substr(json.activity, 1, nchar(json.activity)-2), "\n", sep="")
-    json.activity <- paste("\"activity\": {\n", json.activity, "},\n", sep="")
   }
+  json.activity <- paste(json.activity, "},\n", sep="")
+  write(json.activity, fileout, append=TRUE)
 
   # INPUT DATA FLOW (used)
-  json.used <- ""
+  json.used <- "\"used\": {\n"
   data.flow <- .ddg.data.flow()
   dp <- 0
   if (dnum > 0) {
@@ -486,15 +497,18 @@ ddg.MAX_HIST_LINES <- 2^14
           json.used <- paste(json.used, "},\n", sep="")
         }
       }
+      if (i %% num == 0) {
+        write(json.used, fileout, append=TRUE)
+        json.used <- ""
+      }
     }
-    if (json.used != "") {
-      json.used <- paste(substr(json.used, 1, nchar(json.used)-2), "\n", sep="")
-      json.used <- paste("\"used\": {\n", json.used, "},\n", sep="")
-    }
+    if (dp > 0) json.used <- paste(substr(json.used, 1, nchar(json.used)-2), "\n", sep="")
   }
+  json.used <- paste(json.used, "},\n", sep="")
+  write(json.used, fileout, append=TRUE)
   
   #  OUTPUT DATA FLOW (wasGeneratedBy)
-  json.generated <- ""
+  json.generated <- "\"wasGeneratedBy\": {\n"
   data.flow <- .ddg.data.flow()
   pd <- 0
   if (dnum > 0) {
@@ -511,17 +525,15 @@ ddg.MAX_HIST_LINES <- 2^14
           json.generated <- paste(json.generated, "},\n", sep="")
         }
       }
+      if (i %% num == 0) {
+        write(json.generated, fileout, append=TRUE)
+        json.generated <- ""
+      }
     }
-    if (json.generated != "") {
-      json.generated <- paste(substr(json.generated, 1, nchar(json.generated)-2), "\n", sep="")
-      json.generated <- paste("\"wasGeneratedBy\": {\n", json.generated, "}\n", sep="")
-    }
+    if (pd > 0) json.generated <- paste(substr(json.generated, 1, nchar(json.generated)-2), "\n", sep="")
   }
-  
-  # FINAL
-  json.final <- paste("{\n", json.prefix, json.entity, json.activity, json.used, json.generated, "}\n", sep="")
-  
-  return(json.final)
+  json.generated <- paste(json.generated, "}\n}\n", sep="")  
+  write(json.generated, fileout, append=TRUE)
 }
 
 # .ddg.is.init is called at the beginning of all user accessible 
@@ -4926,11 +4938,9 @@ ddg.save <- function(quit=FALSE) {
   write(output, fileout)
   
   # Get DDG in JSON format and save to file.
-  ddg.json <- .ddg.get.json()
-  .ddg.set("ddg.json", ddg.json)
   fileout <- paste(ddg.path, "/ddg.json", sep="")
   if (interactive()) print(paste("Saving DDG in ", fileout))
-  write(ddg.json, fileout)
+  .ddg.json.save(fileout)
   
   # Save procedure nodes table to file.
   fileout <- paste(ddg.path, "/pnodes.txt", sep="")
@@ -5190,7 +5200,7 @@ ddg.source <- function (file,  ddgdir = NULL, local = FALSE, echo = verbose, pri
     
     # Save the DDG among other things, but don't return any 
     # values, TODO - should we do this?
-    ddg.save()
+    # ddg.save()
     .ddg.set("from.source", prev.source)
     
     # Turn return console to previous state.
@@ -5270,8 +5280,10 @@ ddg.flush.ddg <- function(ddg.path=NULL) {
   # from the working directory.
   if (file.exists(ddg.path) && ddg.path != getwd()) {
     unlink(paste(ddg.path, "ddg.txt", sep="/"))
+    unlink(paste(ddg.path, "ddg.json", sep="/"))
     unlink(paste(ddg.path, "dnodes.txt", sep="/"))
     unlink(paste(ddg.path, "pnodes.txt", sep="/"))
+    unlink(paste(ddg.path, "dflow.txt", sep="/"))
     unlink(paste(ddg.path, "returns.txt", sep="/"))
     unlink(paste(ddg.path, "source-parsed.txt", sep="/"))
     unlink(paste(ddg.path, "annotated-script.r", sep="/"))
