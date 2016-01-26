@@ -370,7 +370,9 @@ ddg.MAX_HIST_LINES <- 2^14
   num <- 100
   
   # PREFIX
-  json.prefix <- paste("{\n\"prefix\": {\n\"ex\": \"http://example.org/\"\n},\n", sep="")
+  json.prefix <- "{\n\"prefix\": {\n"
+  json.prefix <- paste(json.prefix, "\"default\": \"http://example.org/default\",\n", sep="")
+  json.prefix <- paste(json.prefix, "\"ex\": \"http://example.org/\"\n},\n", sep="")
   write(json.prefix, fileout)
   
   # ENVIRONMENT (entity)
@@ -392,17 +394,17 @@ ddg.MAX_HIST_LINES <- 2^14
   lib.version <- packageVersion("RDataTracker")
   
   json.entity <- "\"entity\": {\n"
-  json.entity <- paste(json.entity, "\"environment\": {\n", sep="")
-  json.entity <- .ddg.json.node(json.entity, "architecture", "string", architecture)
-  json.entity <- .ddg.json.node(json.entity, "operatingSystem", "string", operating.system)
-  json.entity <- .ddg.json.node(json.entity, "language", "string", language)
-  json.entity <- .ddg.json.node(json.entity, "rVersion", "string", r.version)
-  json.entity <- .ddg.json.node(json.entity, "script", "string", script)
-  json.entity <- .ddg.json.node(json.entity, "scriptTimestamp", "string", script.timestamp)
-  json.entity <- .ddg.json.node(json.entity, "workingDirectory", "string", working.directory)
-  json.entity <- .ddg.json.node(json.entity, "ddgDirectory", "string", ddg.directory)
-  json.entity <- .ddg.json.node(json.entity, "ddgTimestamp", "string", ddg.timestamp)
-  json.entity <- .ddg.json.node(json.entity, "rdatatrackerVersion", "string", lib.version, last=TRUE)
+  json.entity <- paste(json.entity, "\"ex:environment\": {\n", sep="")
+  json.entity <- .ddg.json.node(json.entity, "ex:architecture", "string", architecture)
+  json.entity <- .ddg.json.node(json.entity, "ex:operatingSystem", "string", operating.system)
+  json.entity <- .ddg.json.node(json.entity, "ex:language", "string", language)
+  json.entity <- .ddg.json.node(json.entity, "ex:rVersion", "string", r.version)
+  json.entity <- .ddg.json.node(json.entity, "ex:script", "string", script)
+  json.entity <- .ddg.json.node(json.entity, "ex:scriptTimestamp", "string", script.timestamp)
+  json.entity <- .ddg.json.node(json.entity, "ex:workingDirectory", "string", working.directory)
+  json.entity <- .ddg.json.node(json.entity, "ex:ddgDirectory", "string", ddg.directory)
+  json.entity <- .ddg.json.node(json.entity, "ex:ddgTimestamp", "string", ddg.timestamp)
+  json.entity <- .ddg.json.node(json.entity, "ex:rdatatrackerVersion", "string", lib.version, last=TRUE)
   json.entity <- paste(json.entity, "},\n", sep="")
 
   # DATA NODES (entity)
@@ -410,27 +412,27 @@ ddg.MAX_HIST_LINES <- 2^14
   dnum <- .ddg.dnum()
   if (dnum > 0) {
     for (i in 1:dnum) {
-      did <- paste("d", i, sep="")
+      did <- paste("ex:d", i, sep="")
       dnum <- data.nodes$ddg.num[i]
       dtype <- data.nodes$ddg.type[i]
       dname <- data.nodes$ddg.name[i]
       dvalue <- data.nodes$ddg.value[i]
       value.type <- "string"
       if (length(dvalue) > 0) {
+        if (!is.na(suppressWarnings(as.numeric(dvalue)))) value.type <- "decimal"
         if (grepl("\"", dvalue) || grepl("\r", dvalue)  || grepl("\n", dvalue) || grepl("\t", dvalue)) dvalue <- .ddg.replace.quotes(dvalue)
-        if (is.numeric(dvalue)) value.type <- "number"
       }
       dscope <- data.nodes$ddg.scope[i]
       dtime <- data.nodes$ddg.time[i]
       dloc <- data.nodes$ddg.loc[i]
       json.entity <- paste(json.entity, "\"", did, "\": {\n", sep="")
-      json.entity <- .ddg.json.node(json.entity, "number", "integer", dnum)
-      json.entity <- .ddg.json.node(json.entity, "type", "string", dtype)
-      json.entity <- .ddg.json.node(json.entity, "name", "string", dname)
-      json.entity <- .ddg.json.node(json.entity, "value", value.type, dvalue)
-      json.entity <- .ddg.json.node(json.entity, "scope", "string", dscope)
-      json.entity <- .ddg.json.node(json.entity, "timestamp", "string", dtime)
-      json.entity <- .ddg.json.node(json.entity, "location", "string", dloc, last=TRUE)
+      json.entity <- .ddg.json.node(json.entity, "ex:number", "positiveInteger", dnum)
+      json.entity <- .ddg.json.node(json.entity, "ex:type", "string", dtype)
+      json.entity <- .ddg.json.node(json.entity, "ex:name", "string", dname)
+      json.entity <- .ddg.json.node(json.entity, "ex:value", value.type, dvalue)
+      json.entity <- .ddg.json.node(json.entity, "ex:scope", "string", dscope)
+      json.entity <- .ddg.json.node(json.entity, "ex:timestamp", "string", dtime)
+      json.entity <- .ddg.json.node(json.entity, "ex:location", "string", dloc, last=TRUE)
       json.entity <- paste(json.entity, "},\n", sep="")
       if (i %% num == 0) {
         write(json.entity, fileout, append=TRUE)
@@ -448,7 +450,7 @@ ddg.MAX_HIST_LINES <- 2^14
   pnum <- .ddg.pnum()
   if (pnum > 0) {
     for (i in 1:pnum) {
-      pid <- paste("p", i, sep="")
+      pid <- paste("ex:p", i, sep="")
       pnum <- proc.nodes$ddg.num[i]
       ptype <- proc.nodes$ddg.type[i]
       pname <- proc.nodes$ddg.name[i]
@@ -462,12 +464,12 @@ ddg.MAX_HIST_LINES <- 2^14
       ptime <- proc.nodes$ddg.time[i]
       psource <- proc.nodes$ddg.source[i]
       json.activity <- paste(json.activity, "\"", pid, "\": {\n", sep="")
-      json.activity <- .ddg.json.node(json.activity, "number", "integer", pnum)
-      json.activity <- .ddg.json.node(json.activity, "type", "string", ptype)
-      json.activity <- .ddg.json.node(json.activity, "name", "string", pname)
-      json.activity <- .ddg.json.node(json.activity, "value", "string", pvalue)
-      json.activity <- .ddg.json.node(json.activity, "elapsedTime", "number", ptime)
-      json.activity <- .ddg.json.node(json.activity, "scriptLine", "integer", psource, last=TRUE)
+      json.activity <- .ddg.json.node(json.activity, "ex:number", "positiveInteger", pnum)
+      json.activity <- .ddg.json.node(json.activity, "ex:type", "string", ptype)
+      json.activity <- .ddg.json.node(json.activity, "ex:name", "string", pname)
+      json.activity <- .ddg.json.node(json.activity, "ex:value", "string", pvalue)
+      json.activity <- .ddg.json.node(json.activity, "ex:elapsedTime", "decimal", ptime)
+      json.activity <- .ddg.json.node(json.activity, "ex:scriptLine", "positiveInteger", psource, last=TRUE)
       json.activity <- paste(json.activity, "},\n", sep="")
       if (i %% num == 0) {
         write(json.activity, fileout, append=TRUE)
@@ -491,7 +493,7 @@ ddg.MAX_HIST_LINES <- 2^14
         for (j in 1:length(index)) {
           pnode <- data.flow$ddg.to[index[j]]
           dp <- dp + 1
-          dpid <- paste("in", dp, sep="")
+          dpid <- paste("ex:in", dp, sep="")
           json.used <- paste(json.used, "\"", dpid, "\": {\n", sep="")
           json.used <- .ddg.json.edge(json.used, dnode, pnode)
           json.used <- paste(json.used, "},\n", sep="")
@@ -519,7 +521,7 @@ ddg.MAX_HIST_LINES <- 2^14
         for (j in 1:length(index)) {
           pnode <- data.flow$ddg.from[index[j]]
           pd <- pd + 1
-          pdid <- paste("out", pd, sep="")
+          pdid <- paste("ex:out", pd, sep="")
           json.generated <- paste(json.generated, "\"", pdid, "\": {\n", sep="")
           json.generated <- .ddg.json.edge(json.generated, dnode, pnode)
           json.generated <- paste(json.generated, "},\n", sep="")
