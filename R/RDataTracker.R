@@ -105,6 +105,10 @@ ddg.MAX_HIST_LINES <- 2^14
   return (.ddg.get("ddg.data.flow"))
 }
 
+.ddg.initial.env <- function() {
+  return(.ddg.get("ddg.initial.env"))
+}
+
 .ddg.enable.console <- function() {
   return (.ddg.get(".ddg.enable.console"))
 }
@@ -189,15 +193,41 @@ ddg.MAX_HIST_LINES <- 2^14
 
 #-------------------BASIC FUNCTIONS-----------------------#
 
-# .ddg.init.tables creates data frames to store procedure nodes, 
-# data nodes, data flow edges, function return values, and 
-# checkpoints. It also initializes selected constants and variables.
+# .ddg.get.initial.env creates a table of non-ddg objects present in the
+# R environment before the script is executed.
+
+.ddg.get.initial.env <- function() {
+  e <- globalenv()
+  e.ls <- ls(e, all.names=TRUE)
+  n <- 0
+  x <- ""
+
+  if (length(e.ls) > 0) {
+    for (i in 1:length(e.ls)) {
+      if (!grepl("ddg", e.ls[i]) && e.ls[i] != ".onLoad") {
+        n <- n + 1
+        if (n == 1) x <- e.ls[i]
+        else x <- append(x, e.ls[i])
+      }
+    }
+  }
+  
+  ddg.initial.env <- data.frame(x)
+  colnames(ddg.initial.env) <- "ddg.name"
+
+  .ddg.set("ddg.initial.env", ddg.initial.env)  
+}
+
+# .ddg.init.tables creates data frames to store the initial environment,
+# procedure nodes, data nodes, data flow edges, function return values, 
+# and checkpoints. It also initializes selected constants and variables.
+# Tables are saved as tab-delimited files in ddg.save.
 
 .ddg.init.tables <- function() {
-# Create tables for procedure and data nodes.  Initially, tables 
-# have 100 rows each.
   size <- 100
   
+  .ddg.get.initial.env()
+    
   .ddg.set("ddg.proc.nodes", data.frame(ddg.type = character(size),
           ddg.num = numeric(size),
           ddg.name = character(size),
@@ -213,6 +243,7 @@ ddg.MAX_HIST_LINES <- 2^14
           ddg.name = character(size),
           ddg.value = character(size),
           ddg.scope = character(size),                                   
+          ddg.from.env = logical(size),
           ddg.time = character(size),
           ddg.loc = character(size),
           ddg.current = logical(size), stringsAsFactors=FALSE))
@@ -423,6 +454,7 @@ ddg.MAX_HIST_LINES <- 2^14
         if (grepl("\"", dvalue) || grepl("\r", dvalue)  || grepl("\n", dvalue) || grepl("\t", dvalue)) dvalue <- .ddg.replace.quotes(dvalue)
       }
       dscope <- data.nodes$ddg.scope[i]
+      dfrom.env <- data.nodes$ddg.from.env[i]
       dtime <- data.nodes$ddg.time[i]
       dloc <- data.nodes$ddg.loc[i]
       json.entity <- paste(json.entity, "\"", did, "\": {\n", sep="")
@@ -431,6 +463,7 @@ ddg.MAX_HIST_LINES <- 2^14
       json.entity <- .ddg.json.node(json.entity, "ex:name", "string", dname)
       json.entity <- .ddg.json.node(json.entity, "ex:value", value.type, dvalue)
       json.entity <- .ddg.json.node(json.entity, "ex:scope", "string", dscope)
+      json.entity <- .ddg.json.node(json.entity, "ex:fromEnv", "string", dfrom.env)
       json.entity <- .ddg.json.node(json.entity, "ex:timestamp", "string", dtime)
       json.entity <- .ddg.json.node(json.entity, "ex:location", "string", dloc, last=TRUE)
       json.entity <- paste(json.entity, "},\n", sep="")
@@ -457,17 +490,12 @@ ddg.MAX_HIST_LINES <- 2^14
       if (length(pname) > 0) {
         if (grepl("\"", pname) || grepl("\r", pname)  || grepl("\n", pname) || grepl("\t", pname)) pname <- .ddg.replace.quotes(pname)
       }
-      pvalue <- proc.nodes$ddg.value[i]
-      if (length(pvalue) > 0) {
-        if (grepl("\"", pvalue) || grepl("\r", pvalue)  || grepl("\n", pvalue) || grepl("\t", pvalue)) pvalue <- .ddg.replace.quotes(pvalue)
-      }
       ptime <- proc.nodes$ddg.time[i]
       psource <- proc.nodes$ddg.source[i]
       json.activity <- paste(json.activity, "\"", pid, "\": {\n", sep="")
       json.activity <- .ddg.json.node(json.activity, "ex:number", "positiveInteger", pnum)
       json.activity <- .ddg.json.node(json.activity, "ex:type", "string", ptype)
       json.activity <- .ddg.json.node(json.activity, "ex:name", "string", pname)
-      json.activity <- .ddg.json.node(json.activity, "ex:value", "string", pvalue)
       json.activity <- .ddg.json.node(json.activity, "ex:elapsedTime", "decimal", ptime)
       json.activity <- .ddg.json.node(json.activity, "ex:scriptLine", "positiveInteger", psource, last=TRUE)
       json.activity <- paste(json.activity, "},\n", sep="")
@@ -686,9 +714,9 @@ ddg.MAX_HIST_LINES <- 2^14
 # value - data node value.
 # scope - data node scope.
 
-.ddg.save.simple <- function(name, value, scope=NULL) {
+.ddg.save.simple <- function(name, value, scope=NULL, from.env=FALSE) {
 	# Save the true value.
-	.ddg.data.node("Data", name, value, scope)
+	.ddg.data.node("Data", name, value, scope, from.env=from.env)
 }
 
 # .ddg.write.graphic takes as input the name of a variable as well 
@@ -702,19 +730,19 @@ ddg.MAX_HIST_LINES <- 2^14
 # fext - file extension.
 # scope - data node scope.
 
-.ddg.write.graphic <- function(name, value=NULL, fext="jpeg", scope=NULL){
+.ddg.write.graphic <- function(name, value=NULL, fext="jpeg", scope=NULL, from.env=FALSE){
 	# Try to output graphic value.
 	tryCatch({
-		.ddg.snapshot.node(name, fext, NULL, dscope=scope)
+		.ddg.snapshot.node(name, fext, NULL, dscope=scope, from.env=from.env)
 	}, error = function(e) {
 		# warning(paste("Attempted to write", name, "as", fext, "snapshot. Trying jpeg", ".", e))
 		tryCatch({
 			.ddg.dec("ddg.dnum")
-			.ddg.snapshot.node(name, "jpeg", NULL, dscope=scope)
+			.ddg.snapshot.node(name, "jpeg", NULL, dscope=scope, from.env=from.env)
 		}, error = function(e) {
 			 # warning(paste("Attempted to write", name, "as jpeg snapshot. Failed.", e, "Defaulting to saving RObject and .txt file."))
 			.ddg.dec("ddg.dnum")
-  		.ddg.snapshot.node(name, "txt", value, save.object = TRUE, dscope=scope)
+  		.ddg.snapshot.node(name, "txt", value, save.object = TRUE, dscope=scope, from.env=from.env)
   	})
 	})
 }
@@ -728,13 +756,13 @@ ddg.MAX_HIST_LINES <- 2^14
 # value - data node value.
 # scope - data node scope.
 
-.ddg.write.csv <- function(name, value, scope=NULL) {
+.ddg.write.csv <- function(name, value, scope=NULL, from.env=FALSE) {
   tryCatch({
-		.ddg.snapshot.node(name, "csv", value, dscope=scope)
+		.ddg.snapshot.node(name, "csv", value, dscope=scope, from.env=from.env)
 	}, error = function(e) {
 		# warning(paste("Attempted to write", name, "as .csv snapshot but failed. Out as RDataObject.", e))
 		.ddg.dec("ddg.dnum")
-		.ddg.snapshot.node(name, "txt", value, save.object = TRUE, dscope=scope)
+		.ddg.snapshot.node(name, "txt", value, save.object = TRUE, dscope=scope, from.env=from.env)
 	})
 }
 
@@ -744,6 +772,7 @@ ddg.MAX_HIST_LINES <- 2^14
 
 # name - name of created node.
 # value - value of created node.
+# from.env - if node is from initial environment
 # fname (optional) - name of calling function. Used to generate 
 #   helpful error messages if something goes wrong.
 # graphic.fext (optional) - file extension for graphic file.
@@ -752,7 +781,7 @@ ddg.MAX_HIST_LINES <- 2^14
 # scope (optional) - scope of node.
 # stack (optional) - stack to use in determing scope.
 
-.ddg.save.data <- function(name, value, fname=".ddg.save.data", graphic.fext='jpeg', error=FALSE, scope=NULL, stack=NULL, env=NULL){
+.ddg.save.data <- function(name, value, from.env=FALSE, fname=".ddg.save.data", graphic.fext='jpeg', error=FALSE, scope=NULL, stack=NULL, env=NULL){
   #print (paste (".ddg.save.data: looking for name =", name, "with scope", scope))
   if (is.null(scope)) {
     scope <- .ddg.get.scope(name, calls=stack, env=env)
@@ -760,11 +789,11 @@ ddg.MAX_HIST_LINES <- 2^14
   
   #print (paste (".ddg.save.data: saving", name, "in scope", scope))
 	# Determine type for value, and save accordingly.
-	if (.ddg.is.graphic(value)) .ddg.write.graphic(name, value, graphic.fext, scope=scope)
-	else if (.ddg.is.simple(value)) .ddg.save.simple(name, value, scope=scope)
-	else if (.ddg.is.csv(value)) .ddg.write.csv(name, value, scope=scope)
-	else if (.ddg.is.object(value)) .ddg.snapshot.node(name, "txt", value, dscope=scope)
-	else if (.ddg.is.function(value)) .ddg.save.simple(name, "#ddg.function", scope=scope)
+	if (.ddg.is.graphic(value)) .ddg.write.graphic(name, value, graphic.fext, scope=scope, from.env=from.env)
+	else if (.ddg.is.simple(value)) .ddg.save.simple(name, value, scope=scope, from.env=from.env)
+	else if (.ddg.is.csv(value)) .ddg.write.csv(name, value, scope=scope, from.env=from.env)
+	else if (.ddg.is.object(value)) .ddg.snapshot.node(name, "txt", value, dscope=scope, from.env=from.env)
+	else if (.ddg.is.function(value)) .ddg.save.simple(name, "#ddg.function", scope=scope, from.env=from.env)
 	else if (error) stop("Unable to create data (snapshot) node. Non-Object value to", fname, ".")
 	else {
 		error.msg <- paste("Unable to create data (snapshot) node. Non-Object value to", fname, ".")
@@ -824,10 +853,11 @@ ddg.MAX_HIST_LINES <- 2^14
 # dname - data node name.
 # dvalue - data node value.
 # dscope - data node scope.
+# from.env - if object is from initial environment.
 # dtime (optional) - timestamp of original file.
 # dloc (optional) -  path and name of original file.
 
-.ddg.record.data <- function(dtype, dname, dvalue, dscope, dtime="", dloc="") {
+.ddg.record.data <- function(dtype, dname, dvalue, dscope, from.env=FALSE, dtime="", dloc="") {
   # If the table is full, make it bigger.
   ddg.dnum <- .ddg.dnum()
   ddg.data.nodes <- .ddg.data.nodes()
@@ -838,6 +868,7 @@ ddg.MAX_HIST_LINES <- 2^14
         ddg.name = character(size),
         ddg.value = character(size),
         ddg.scope = character(size),                 
+        ddg.from.env = logical(size),
         ddg.time = character(size),
         ddg.loc = character(size),
         ddg.current = logical(size), stringsAsFactors=FALSE)
@@ -853,6 +884,7 @@ ddg.MAX_HIST_LINES <- 2^14
       else if (!is.null(dvalue)) dvalue
       else ""
   ddg.data.nodes$ddg.scope[ddg.dnum] <- dscope
+  ddg.data.nodes$ddg.from.env[ddg.dnum] <- from.env
   ddg.data.nodes$ddg.time[ddg.dnum] <- dtime
   ddg.data.nodes$ddg.loc[ddg.dnum] <- dloc
   ddg.data.nodes$ddg.current[ddg.dnum] <- TRUE
@@ -980,9 +1012,10 @@ ddg.MAX_HIST_LINES <- 2^14
   return(0)
 }
 
-# .ddg.data.node.exists searches for a preceding current matching 
-# data node. It returns TRUE if a match is found and FALSE 
-# otherwise.
+# .ddg.data.node.exists searches the data node table for a matching
+# data node and returns TRUE if a match is found. Otherwise it searches
+# the initial environment table and, if a match is found, creates a
+# data node and returns TRUE. Otherwise it returns FALSE.
 
 # dname - data node name.
 # dscope - data node scope.
@@ -990,7 +1023,8 @@ ddg.MAX_HIST_LINES <- 2^14
 .ddg.data.node.exists <- function(dname, dscope=NULL) {
   if (is.null(dscope)) dscope <- .ddg.get.scope(dname)
   
-  #print (paste (".ddg.data.node.exists: Looking for", dname, "in scope", dscope))
+  # Search data nodes table.
+  # print (paste (".ddg.data.node.exists: Looking for", dname, "in scope", dscope))
   ddg.data.nodes <- .ddg.data.nodes()
   rows <- nrow(ddg.data.nodes)
   for (i in rows:1) {
@@ -1005,6 +1039,21 @@ ddg.MAX_HIST_LINES <- 2^14
       }
     }
   }
+  
+  # Search initial environment table.
+  if (dscope == "R_GlobalEnv") {
+    ddg.initial.env <- .ddg.initial.env()
+    for (i in 1:nrow(ddg.initial.env)) {
+      if (dname == ddg.initial.env$ddg.name[i]) {
+        # If found, create data node.
+        parsed <- parse(text=dname)
+        dvalue <- eval(parsed, envir=globalenv())
+        .ddg.save.data(dname, dvalue, scope=dscope, from.env=TRUE)
+        return(TRUE)
+      }
+    }
+  }
+  
   #print(".ddg.data.node.exists NOT found")
   return(FALSE)
 }
@@ -1595,7 +1644,7 @@ ddg.MAX_HIST_LINES <- 2^14
             eval (parse(text=var), parent.env(env))
           }
 			)
-			tryCatch(.ddg.save.data(var, val,fname=".ddg.create.data.set.edges.for.cmd", error=TRUE, scope=scope, stack=stack, env=env),
+			tryCatch(.ddg.save.data(var, val, fname=".ddg.create.data.set.edges.for.cmd", error=TRUE, scope=scope, stack=stack, env=env),
 			         error = function(e){.ddg.data.node("Data", var, "complex", scope)})
 
 #			if (!is.null(val)) {
@@ -2934,27 +2983,28 @@ ddg.MAX_HIST_LINES <- 2^14
 # dname - name of data node.
 # dvalue - value of data node.
 # dscope - scope of data node.
+# from.env - if object is from initial environment
 
-.ddg.data.node <- function(dtype, dname, dvalue, dscope) {
+.ddg.data.node <- function(dtype, dname, dvalue, dscope, from.env=FALSE) {
   # If object or a long list, try to create snapshot node.
   if (is.object(dvalue)) {
     tryCatch(
         {
-          .ddg.snapshot.node (dname, "txt", dvalue, dscope=dscope)
+          .ddg.snapshot.node (dname, "txt", dvalue, dscope=dscope, from.env=from.env)
           return(NULL)
         },
         error = function(e) {
           error.msg <- paste("Unable to create snapshot node for", dname, "Details:", e)
           .ddg.insert.error.message(error.msg)
           .ddg.dec("ddg.dnum")
-          return (.ddg.data.node (dtype, dname, "complex", dscope))
+          return (.ddg.data.node (dtype, dname, "complex", dscope, from.env=from.env))
         }
     )
     
   }
   
   else if (is.matrix(dvalue) || (is.vector(dvalue) && length(dvalue) > 20)) {
-    .ddg.snapshot.node (dname, "csv", dvalue, dscope=dscope)
+    .ddg.snapshot.node (dname, "csv", dvalue, dscope=dscope, from.env=from.env)
     return (NULL)
   }
   
@@ -2987,7 +3037,7 @@ ddg.MAX_HIST_LINES <- 2^14
   
   if (grepl("\n", val)) {
     # Create snapshot node.
-    .ddg.snapshot.node (dname, "txt", val)
+    .ddg.snapshot.node (dname, "txt", val, from.env=from.env)
     return
   }
   
@@ -3004,9 +3054,9 @@ ddg.MAX_HIST_LINES <- 2^14
     # Add node to DDG.
     ddg.dnum <- .ddg.dnum()
     .ddg.append(dtype, " d", ddg.dnum, " \"", ddg.dnum, "-", dname, "\"", data.value, ";\n", sep="")
-
+    
     # Record data node information.
-    .ddg.record.data(dtype, dname, dvalue, dscope)
+    .ddg.record.data(dtype, dname, dvalue, dscope, from.env=from.env)
     
     if (.ddg.debug()) print(paste("data.node:", dtype, dname))
   }
@@ -3071,11 +3121,11 @@ ddg.MAX_HIST_LINES <- 2^14
 # save.object (optional) - if TRUE, also save as an R object.
 # dscope (optional) - scope of data node.
 
-.ddg.snapshot.node <- function(dname, fext, data, save.object = FALSE, dscope=NULL) {
+.ddg.snapshot.node <- function(dname, fext, data, save.object = FALSE, dscope=NULL, from.env=FALSE) {
   # Determine if we should save the entire data
   max.snapshot.size <- .ddg.get(".ddg.max.snapshot.size") 
   if (max.snapshot.size == 0) {
-    return(.ddg.data.node ("Data", dname, "", dscope))
+    return(.ddg.data.node ("Data", dname, "", dscope, from.env=from.env))
   }
   
   # Increment data counter.
@@ -3084,8 +3134,8 @@ ddg.MAX_HIST_LINES <- 2^14
   # Get file name.
   ddg.dnum <- .ddg.dnum()
   
-  # If the object is an environment, update the data to be the environment's name
-  # followed by a list of the variables bound in the environment
+  # If the object is an environment, update the data to be the environment's
+  # name followed by a list of the variables bound in the environment.
   if (is.environment (data)) {
     envHeader <- paste0 ("<environemnt: ", environmentName (data), ">")
     data <- c (envHeader, ls(data), recursive=TRUE)
@@ -3163,7 +3213,7 @@ ddg.MAX_HIST_LINES <- 2^14
   .ddg.append("Snapshot", " d", ddg.dnum, " \"", ddg.dnum, "-", dname, "\" Value=\"", dpfile, "\" Time=\"", dtime, "\";\n", sep="")
 
   # Record data node information.
-  .ddg.record.data("Snapshot", dname, dfile, dscope, dtime)
+  .ddg.record.data("Snapshot", dname, dfile, dscope, from.env=from.env, dtime)
   
   if (.ddg.debug()) print(paste("snapshot.node: ", dname))
   return(dpfile)
@@ -3339,7 +3389,7 @@ ddg.MAX_HIST_LINES <- 2^14
 	.ddg.env <- new.env(parent=emptyenv())
 }
 
-# .ddg.create.output.nodes creates output nodes for >
+# .ddg.create.output.nodes creates output nodes for ddg.function
 # and ddg.procedure. Outs values must be passed as strings, not 
 # names, unless the value is a file name.
 
@@ -3428,7 +3478,7 @@ ddg.MAX_HIST_LINES <- 2^14
                 if (!is.character(name)) name <- deparse(substitute(name))
                 envName <- environmentName(env)
                 scope <- .ddg.get.scope(param, calls=stack)
-                .ddg.save.data(name,value, fname, error=TRUE, scope=scope)
+                .ddg.save.data(name, value, fname, error=TRUE, scope=scope)
                 .ddg.proc2data(pname, name, scope)
               }, error = function(e) {
                 .ddg.insert.error.message(e)
@@ -4944,6 +4994,11 @@ ddg.save <- function(quit=FALSE) {
   if (interactive()) print(paste("Saving DDG in ", fileout))
   .ddg.json.save(fileout)
   
+  # Save initial environment table to file.
+  fileout <- paste(ddg.path, "/inenv.txt", sep="")
+  ddg.initial.env <- .ddg.initial.env()
+  write.table(ddg.initial.env, fileout, quote=FALSE, sep="\t", na="NA", row.names=FALSE, col.names=TRUE)
+
   # Save procedure nodes table to file.
   fileout <- paste(ddg.path, "/pnodes.txt", sep="")
   ddg.proc.nodes <- .ddg.proc.nodes()
@@ -5283,6 +5338,7 @@ ddg.flush.ddg <- function(ddg.path=NULL) {
   if (file.exists(ddg.path) && ddg.path != getwd()) {
     unlink(paste(ddg.path, "ddg.txt", sep="/"))
     unlink(paste(ddg.path, "ddg.json", sep="/"))
+    unlink(paste(ddg.path, "inenv.txt", sep="/"))
     unlink(paste(ddg.path, "dnodes.txt", sep="/"))
     unlink(paste(ddg.path, "pnodes.txt", sep="/"))
     unlink(paste(ddg.path, "dflow.txt", sep="/"))
