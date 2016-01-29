@@ -783,6 +783,7 @@ ddg.MAX_HIST_LINES <- 2^14
 
 .ddg.save.data <- function(name, value, from.env=FALSE, fname=".ddg.save.data", graphic.fext='jpeg', error=FALSE, scope=NULL, stack=NULL, env=NULL){
   #print (paste (".ddg.save.data: looking for name =", name, "with scope", scope))
+  #print(paste(".ddg.save.data saving ", name, "with value structured as", str(value)))
   if (is.null(scope)) {
     scope <- .ddg.get.scope(name, calls=stack, env=env)
   }
@@ -1159,6 +1160,7 @@ ddg.MAX_HIST_LINES <- 2^14
   # Get data & procedure numbers.
   #print (paste(".ddg.proc2data: Looking for", dname, "in scope", dscope))
   dn <- .ddg.data.number(dname, dscope)
+  #print (paste(".ddg.proc2data: Found node", dn))
   #pn <- .ddg.proc.number(pname, find.unreturned.function=TRUE)
   pn <- .ddg.proc.number(pname, return.value)
   
@@ -1677,8 +1679,10 @@ ddg.MAX_HIST_LINES <- 2^14
 # Only create the node and edge if we were successful in
 # looking up the value.
       if (!is.null(value)) {
-        .ddg.data.node("Data", vars.set$variable[i], value, environmentName(environment))
-        .ddg.proc2data(last.command, vars.set$variable[i], environmentName(environment))
+        envName <- environmentName(environment)
+        if (envName == "") envName <- .ddg.get.scope(vars.set$variable[i])
+        .ddg.data.node("Data", vars.set$variable[i], value, envName)
+        .ddg.proc2data(last.command, vars.set$variable[i], envName)
       }
     }
   }
@@ -3144,7 +3148,14 @@ ddg.MAX_HIST_LINES <- 2^14
     fext <- "xml"
   }
   else if (!is.character(data)) {
-    data <- as.character(data)
+      
+    tryCatch(data <- as.character(data),
+          error = function(e){
+            # Not sure if str or summary will give us the most useful information
+            #data <- capture.output(str(data));
+            #print(paste(".ddg.snapshot.node: generating summary for", dname))
+            data <- summary(data)
+          })
   }
 
   # object.size returns bytes, but max.snapshot.size is in kilobytes
@@ -4088,6 +4099,7 @@ ddg.function <- function(outs.graphic=NULL, outs.data=NULL, outs.exception=NULL,
   #tokens <- unlist(strsplit (as.character(call), "[(,)]"))
   # match.call expands any argument names to be the 
   # full parameter name
+  #print(paste("ddg.function: pname =", pname))
   full.call <- match.call(sys.function(-1), call=call)
   
   # Create start node for the calling statement if one is not already created.
@@ -4298,7 +4310,7 @@ ddg.return.value <- function (expr=NULL) {
     # causes some examples to work with debugging on but not off.
     # Checking.  (6/26/2015 - Barb).
     # Yes, ReturnTest.R fails on the recursive f5 function
-    print(paste("ddg.return:", sys.call(caller.frame))) #, "returns", expr))
+    print(paste("ddg.return.value:", sys.call(caller.frame))) #, "returns", expr))
   }
   
   ddg.return.values <- .ddg.get(".ddg.return.values")
@@ -4318,6 +4330,7 @@ ddg.return.value <- function (expr=NULL) {
   # it would have created.
   call <- sys.call(caller.frame)
   if (!.ddg.proc.node.exists(pname)) {
+    #print(paste("ddg.return.value: pname = ", pname))
     full.call <- match.call(sys.function(caller.frame), call=call)
     #print (paste0("ddg.return.value creating function node for ", pname))
     .ddg.create.function.nodes(pname, call, full.call, auto.created = TRUE, env = sys.frame(.ddg.get.frame.number(sys.calls()))
@@ -4372,7 +4385,6 @@ ddg.return.value <- function (expr=NULL) {
       .ddg.data2proc(var, scope, return.stmt)
     }
   }
-  #print ("ddg.return.value: done looking for nodes")
 
   # Create nodes and edges dealing with reading and writing files
   return.abbrev <- orig.pname
@@ -4382,7 +4394,6 @@ ddg.return.value <- function (expr=NULL) {
   if (.ddg.has.dev.off.call(return.expr)) {
     .ddg.capture.graphics(return.abbrev)
   }
-
   
   # Create an edge from the return statement to its return value.
   .ddg.proc2data(return.stmt, return.node.name, return.node.scope, return.value=TRUE)

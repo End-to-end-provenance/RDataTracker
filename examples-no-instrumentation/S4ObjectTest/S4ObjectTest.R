@@ -4,10 +4,9 @@
 # Modified by Luis Perez 7-Jul-2014
 # Modified by Luis Perez 17-Jul-2014
 
-require(methods)
-# ddg.debug.on()
-# options(warn=2)
 
+
+require(methods)
 
 #setGeneric("toString", function(object) {
 #			standardGeneric("toString")
@@ -66,4 +65,5 @@ generate1Sample <- function () {
 totalNumOfSample <- 5
 newSample <- generate1Sample()
 samplesArr <- generateSamples(totalNumOfSample)
+
 

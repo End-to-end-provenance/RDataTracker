@@ -1,14 +1,14 @@
 ddg.type	ddg.num	ddg.name	ddg.value	ddg.return.linked	ddg.auto.created	ddg.time
-Start	1	CheckpointFileTest.R	CheckpointFileTest.R	FALSE	FALSE	0.00699999999999999
-Operation	2	rm(list = ls())	rm(list = ls())	FALSE	FALSE	0.00799999999999999
-Operation	3	source("/Users/blerner/Documents/Process/DataProvenance/gith	source("/Users/blerner/Documents/Process/DataProvenance/gith	FALSE	FALSE	0.016
-Operation	4	write("This file will be deleted", "testfile3.txt")	write("This file will be deleted", "testfile3.txt")	FALSE	FALSE	0.028
-Operation	5	if (!file.exists("testfile3.txt")) {    print("testfile3.txt	if (!file.exists("testfile3.txt")) {    print("testfile3.txt	FALSE	FALSE	0.031
+Start	1	CheckpointFileTest.R	CheckpointFileTest.R	FALSE	FALSE	0.005
+Operation	2	rm(list = ls())	rm(list = ls())	FALSE	FALSE	0.00700000000000001
+Operation	3	source("/Users/blerner/Documents/Process/DataProvenance/gith	source("/Users/blerner/Documents/Process/DataProvenance/gith	FALSE	FALSE	0.015
+Operation	4	write("This file will be deleted", "testfile3.txt")	write("This file will be deleted", "testfile3.txt")	FALSE	FALSE	0.025
+Operation	5	if (!file.exists("testfile3.txt")) {    print("testfile3.txt	if (!file.exists("testfile3.txt")) {    print("testfile3.txt	FALSE	FALSE	0.028
 Checkpoint	6	my checkpoint		FALSE	FALSE	0.038
-Operation	7	checkpoint <- ddg.checkpoint("my checkpoint")	checkpoint <- ddg.checkpoint("my checkpoint")	FALSE	FALSE	0.044
-Operation	8	write("abc", file = "testfile2.txt", append = TRUE)	write("abc", file = "testfile2.txt", append = TRUE)	FALSE	FALSE	0.051
-Operation	9	if (!file.exists("testfile2.txt")) {    print("testfile2.txt	if (!file.exists("testfile2.txt")) {    print("testfile2.txt	FALSE	FALSE	0.055
-Operation	10	unlink("testfile3.txt")	unlink("testfile3.txt")	FALSE	FALSE	0.063
-Operation	11	if (file.exists("testfile3.txt")) {    print("testfile3.txt 	if (file.exists("testfile3.txt")) {    print("testfile3.txt 	FALSE	FALSE	0.065
-Restore	12	my checkpoint		FALSE	FALSE	0.071
-Operation	13	tryCatch	tryCatch	FALSE	FALSE	0.078
+Operation	7	checkpoint <- ddg.checkpoint("my checkpoint")	checkpoint <- ddg.checkpoint("my checkpoint")	FALSE	FALSE	0.045
+Operation	8	write("abc", file = "testfile2.txt", append = TRUE)	write("abc", file = "testfile2.txt", append = TRUE)	FALSE	FALSE	0.052
+Operation	9	if (!file.exists("testfile2.txt")) {    print("testfile2.txt	if (!file.exists("testfile2.txt")) {    print("testfile2.txt	FALSE	FALSE	0.054
+Operation	10	unlink("testfile3.txt")	unlink("testfile3.txt")	FALSE	FALSE	0.06
+Operation	11	if (file.exists("testfile3.txt")) {    print("testfile3.txt 	if (file.exists("testfile3.txt")) {    print("testfile3.txt 	FALSE	FALSE	0.063
+Restore	12	my checkpoint		FALSE	FALSE	0.069
+Operation	13	tryCatch	tryCatch	FALSE	FALSE	0.076
