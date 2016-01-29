@@ -855,6 +855,7 @@ ddg.MAX_HIST_LINES <- 2^14
   # Get data & procedure numbers.
   #print (paste(".ddg.proc2data: Looking for", dname, "in scope", dscope))
   dn <- .ddg.data.number(dname, dscope)
+  #print (paste(".ddg.proc2data: Found node", dn))
   #pn <- .ddg.proc.number(pname, find.unreturned.function=TRUE)
   pn <- .ddg.proc.number(pname, return.value)
   
@@ -1361,8 +1362,10 @@ ddg.MAX_HIST_LINES <- 2^14
 # Only create the node and edge if we were successful in
 # looking up the value.
       if (!is.null(value)) {
-        .ddg.data.node("Data", vars.set$variable[i], value, environmentName(environment))
-        .ddg.proc2data(last.command, vars.set$variable[i], environmentName(environment))
+        envName <- environmentName(environment)
+        if (envName == "") envName <- .ddg.get.scope(vars.set$variable[i])
+        .ddg.data.node("Data", vars.set$variable[i], value, envName)
+        .ddg.proc2data(last.command, vars.set$variable[i], envName)
       }
     }
   }
@@ -2710,7 +2713,10 @@ ddg.MAX_HIST_LINES <- 2^14
       
     tryCatch(data <- as.character(data),
           error = function(e){
-            data <- capture.output(str(data));
+            # Not sure if str or summary will give us the most useful information
+            #data <- capture.output(str(data));
+            #print(paste(".ddg.snapshot.node: generating summary for", dname))
+            data <- summary(data)
           })
   }
 
