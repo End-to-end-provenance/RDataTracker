@@ -4281,7 +4281,7 @@ ddg.return.value <- function (expr=NULL) {
     # Create output data node.
     var <- orig.expr[[2]]
     dname <- deparse(var)
-    dvalue <- eval(orig.expr[[3]], env=env)
+    dvalue <- eval(orig.expr[[3]], envir=env)
 
     # Check for global assignment
     if (.ddg.is.global.assign(orig.expr)) env <- globalenv()

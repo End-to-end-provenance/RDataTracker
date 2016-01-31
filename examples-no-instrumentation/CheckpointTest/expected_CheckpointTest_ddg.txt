@@ -1,15 +1,15 @@
-Architecture="i386"
-OperatingSystem="windows"
+Architecture="x86_64"
+OperatingSystem="unix"
 Language="R"
-LanguageVersion="R version 3.1.1 (2014-07-10)"
-RDataTrackerVersion="1.9"
+LanguageVersion="R version 3.2.3 (2015-12-10)"
+RDataTrackerVersion="2.11"
 Script="[DIR]/CheckpointTest.R"
-ProcessFileTimestamp="2015-07-30T18.31.34EDT"
+ProcessFileTimestamp="2015-08-03T14.14.14EDT"
 WorkingDirectory="[DIR]"
 DDGDirectory="[DIR]/ddg"
-DateTime="2015-09-20T12.19.51EDT"
+DateTime="2016-01-29T16.41.44EST"
 1
-Operation p1 "1-tryCatch" Value="tryCatch" Time="2015-09-20T12.19.51EDT";
+Operation p1 "1-tryCatch" Value="tryCatch" Time="0.011" Source="8";
 Exception d1 "1-error.msg" Value="\"Error in last.statement[1]: object of type 'symbol' is not subsettable \"";
 DF p1 d1
 
