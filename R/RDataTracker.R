@@ -2302,9 +2302,11 @@ ddg.MAX_HIST_LINES <- 2^14
   
   # retain line numbers but split lines separated by semicolons
   index <- 0
-  
   for (i in 1:length(source.code)) {
     line <- source.code[i]
+    # remove trailing comment, if any
+    if (grepl("#", line)) line <- strsplit(line, "#")[[1]][1]
+
     if (line == "") {
       index <- index + 1
       if (index == 1) {
@@ -2884,7 +2886,12 @@ ddg.MAX_HIST_LINES <- 2^14
       .ddg.insert.error.message("Source code line numbers may be incorrect")
     } else {
       index <- which(source.parsed[ , "parsed.num"]==parsed.num)
-      source.num <- source.parsed$source.num[index]
+      if (length(index) == 0) {
+        source.num <- NA
+        .ddg.insert.error.message("Source code line numbers may be incorrect")
+      } else {
+        source.num <- source.parsed$source.num[index]
+      }
     }
   } else {
     source.num <- NA

@@ -1,6 +1,6 @@
-ddg.type	ddg.num	ddg.name	ddg.value	ddg.scope	ddg.time	ddg.loc	ddg.current
-File	1	DDGCheckpoint.R	1-DDGCheckpoint.R	undefined	2016-01-29T16.18.28EST	/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/R/DDGCheckpoint.R	TRUE
-Checkpoint	2	0.RData	2-0.RData	undefined	2016-01-29T16.18.28EST	/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples-no-instrumentation/CheckpointFileTest/ddg	TRUE
-Data	3	checkpoint	/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples-no-instrumentation/CheckpointFileTest/ddg/2-0.RData	R_GlobalEnv			FALSE
+ddg.type	ddg.num	ddg.name	ddg.value	ddg.scope	ddg.from.env	ddg.time	ddg.loc	ddg.current
+File	1	DDGCheckpoint.R	1-DDGCheckpoint.R	undefined	2016-01-31T11.46.50EST	/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/R/DDGCheckpoint.R		TRUE
+Checkpoint	2	0.RData	2-0.RData	undefined	2016-01-31T11.46.50EST	/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples-no-instrumentation/CheckpointFileTest/ddg		TRUE
+Data	3	checkpoint	/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples-no-instrumentation/CheckpointFileTest/ddg/2-0.RData	R_GlobalEnv	FALSE			FALSE
 Exception	4	error.msg	Error in eval(expr, envir, enclos): 
-	ddg.library			TRUE
+	ddg.library	FALSE			TRUE
