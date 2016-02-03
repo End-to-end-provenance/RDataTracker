@@ -2,26 +2,26 @@ Architecture="x86_64"
 OperatingSystem="windows"
 Language="R"
 LanguageVersion="R version 3.2.2 (2015-08-14)"
-RDataTrackerVersion="2.7"
+RDataTrackerVersion="2.16"
 Script="[DIR]/WarningTest.R"
 ProcessFileTimestamp="2016-01-13T16.02.32EST"
 WorkingDirectory="[DIR]"
 DDGDirectory="[DIR]/ddg"
-DateTime="2016-01-13T16.29.16EST"
+DateTime="2016-02-02T17.34.29EST"
 5
-Start p1 "1-WarningTest.R" Value="WarningTest.R" Time="0.00999999999999998" Source="1";
-Operation p2 "2-a <- 1" Value="a <- 1" Time="0.00999999999999998" Source="1";
+Start p1 "1-WarningTest.R" Value="WarningTest.R" Time="0.02";
+Operation p2 "2-a <- 1 [1]" Value="a <- 1" Time="0.02";
 CF p1 p2
 Data d1 "1-a" Value="1";
 DF p2 d1
-Operation p3 "3-warning(\"foo\")" Value="warning(\"foo\")" Time="0.00999999999999998" Source="2";
+Operation p3 "3-warning(\"foo\") [2]" Value="warning(\"foo\")" Time="0.03";
 CF p2 p3
 Exception d2 "2-warning.msg" Value="\"In  eval(expr, envir, enclos) :  foo\"";
 DF p3 d2
-Operation p4 "4-b <- 2" Value="b <- 2" Time="0.00999999999999998" Source="3";
+Operation p4 "4-b <- 2 [3]" Value="b <- 2" Time="0.03";
 CF p3 p4
 Data d3 "3-b" Value="2";
 DF p4 d3
-Finish p5 "5-WarningTest.R" Value="WarningTest.R" Time="0.03" Source="3";
+Finish p5 "5-WarningTest.R" Value="WarningTest.R" Time="0.03";
 CF p4 p5
 

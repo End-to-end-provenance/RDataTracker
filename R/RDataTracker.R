@@ -781,7 +781,7 @@ ddg.MAX_HIST_LINES <- 2^14
 # scope (optional) - scope of node.
 # stack (optional) - stack to use in determing scope.
 
-.ddg.save.data <- function(name, value, from.env=FALSE, fname=".ddg.save.data", graphic.fext='jpeg', error=FALSE, scope=NULL, stack=NULL, env=NULL){
+.ddg.save.data <- function(name, value, fname=".ddg.save.data", graphic.fext='jpeg', error=FALSE, scope=NULL, from.env=FALSE, stack=NULL, env=NULL){
   #print (paste (".ddg.save.data: looking for name =", name, "with scope", scope))
   #print(paste(".ddg.save.data saving ", name, "with value structured as", str(value)))
   if (is.null(scope)) {
@@ -2898,7 +2898,7 @@ ddg.MAX_HIST_LINES <- 2^14
   }
   
   # Add line number
-  proc.line <- paste0(" Source=\"", source.num, "\"")
+  # proc.line <- paste0(" Source=\"", source.num, "\"")
   
   # Obtain the elapsed time for this procedure node.
   ptime <- .ddg.elapsed.time()
@@ -2910,11 +2910,21 @@ ddg.MAX_HIST_LINES <- 2^14
   # Quote quote characters
   quoted.name <- gsub("\\\"", "\\\\\"", pname)
   
+  # Add source code line number
+  script.path <- .ddg.get("ddg.r.script.path")
+  if (!is.null(script.path)) {
+    x <- strsplit(script.path, "/")
+    script.name <- x[[1]][[length(x[[1]])]]
+  }
+  if (!is.na(source.num) && source.num > 0 && pname != script.name) {
+    quoted.name <- paste(quoted.name, " [", source.num, "]", sep="")
+  }
+  
   if (proc.value != "") {
-    .ddg.append(ptype, " p", ddg.pnum, " \"", ddg.pnum, "-", quoted.name, "\"", proc.value, proc.time, proc.line, ";\n", sep="")
+    .ddg.append(ptype, " p", ddg.pnum, " \"", ddg.pnum, "-", quoted.name, "\"", proc.value, proc.time, ";\n", sep="")
   }
   else {
-    .ddg.append(ptype, " p", ddg.pnum, " \"", ddg.pnum, "-", quoted.name, "\"", proc.time, proc.line, "\n", sep="")
+    .ddg.append(ptype, " p", ddg.pnum, " \"", ddg.pnum, "-", quoted.name, "\"", proc.time, "\n", sep="")
   }
   
   # Record procedure node information.
@@ -3064,7 +3074,11 @@ ddg.MAX_HIST_LINES <- 2^14
     
     # Add node to DDG.
     ddg.dnum <- .ddg.dnum()
-    .ddg.append(dtype, " d", ddg.dnum, " \"", ddg.dnum, "-", dname, "\"", data.value, ";\n", sep="")
+
+    if (!from.env) dname.env <- dname
+    else dname.env <- paste(dname, " [ENV]", sep="")
+    
+    .ddg.append(dtype, " d", ddg.dnum, " \"", ddg.dnum, "-", dname.env, "\"", data.value, ";\n", sep="")
     
     # Record data node information.
     .ddg.record.data(dtype, dname, dvalue, dscope, from.env=from.env)
