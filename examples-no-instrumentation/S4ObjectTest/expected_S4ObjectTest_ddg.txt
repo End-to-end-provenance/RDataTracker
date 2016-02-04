@@ -2,17 +2,17 @@ Architecture="x86_64"
 OperatingSystem="windows"
 Language="R"
 LanguageVersion="R version 3.2.2 (2015-08-14)"
-RDataTrackerVersion="2.16"
+RDataTrackerVersion="2.17"
 Script="[DIR]/S4ObjectTest.R"
 ProcessFileTimestamp="2016-01-30T10.33.13EST"
 WorkingDirectory="[DIR]"
 DDGDirectory="[DIR]/ddg"
-DateTime="2016-02-02T17.34.18EST"
+DateTime="2016-02-03T18.06.01EST"
 27
 Start p1 "1-S4ObjectTest.R" Value="S4ObjectTest.R" Time="0.03";
 Operation p2 "2-require(methods) [9]" Value="require(methods)" Time="0.0700000000000001";
 CF p1 p2
-Operation p3 "3-setClass(\"SampleObj\", slots = c(sampleCode = \"integer\", nInd [15]" Value="setClass(\"SampleObj\", slots = c(sampleCode = \"integer\", nInd" Time="0.0700000000000001";
+Operation p3 "3-setClass(\"SampleObj\", slots = c(sampleCode = \"integer\", nInd [15]" Value="setClass(\"SampleObj\", slots = c(sampleCode = \"integer\", nInd" Time="0.09";
 CF p2 p3
 Operation p4 "4-as.character.SampleObj <- function(x) {    str <- paste(\"sam [21]" Value="as.character.SampleObj <- function(x) {    str <- paste(\"sam" Time="0.09";
 CF p3 p4
@@ -21,34 +21,34 @@ DF p4 d1
 Operation p5 "5-setMethod(\"as.character\", signature(x = \"SampleObj\"), as.cha [39]" Value="setMethod(\"as.character\", signature(x = \"SampleObj\"), as.cha" Time="0.1";
 CF p4 p5
 DF d1 p5
-Operation p6 "6-generateSamples <- function(n) {    samplesArr <- list()     [43]" Value="generateSamples <- function(n) {    samplesArr <- list()    " Time="0.14";
+Operation p6 "6-generateSamples <- function(n) {    samplesArr <- list()     [43]" Value="generateSamples <- function(n) {    samplesArr <- list()    " Time="0.15";
 CF p5 p6
 Data d2 "2-generateSamples" Value="#ddg.function";
 DF p6 d2
-Operation p7 "7-generate1Sample <- function() {    newSample <- new(\"SampleO [56]" Value="generate1Sample <- function() {    newSample <- new(\"SampleO" Time="0.14";
+Operation p7 "7-generate1Sample <- function() {    newSample <- new(\"SampleO [56]" Value="generate1Sample <- function() {    newSample <- new(\"SampleO" Time="0.15";
 CF p6 p7
 Data d3 "3-generate1Sample" Value="#ddg.function";
 DF p7 d3
-Operation p8 "8-totalNumOfSample <- 5 [65]" Value="totalNumOfSample <- 5" Time="0.15";
+Operation p8 "8-totalNumOfSample <- 5 [65]" Value="totalNumOfSample <- 5" Time="0.17";
 CF p7 p8
 Data d4 "4-totalNumOfSample" Value="5";
 DF p8 d4
-Start p9 "9-newSample <- generate1Sample() [66]" Value="newSample <- generate1Sample()" Time="0.15";
+Start p9 "9-newSample <- generate1Sample() [66]" Value="newSample <- generate1Sample()" Time="0.17";
 CF p8 p9
-Start p10 "10-generate1Sample() [66]" Value="generate1Sample()" Time="0.15";
+Start p10 "10-generate1Sample() [66]" Value="generate1Sample()" Time="0.17";
 CF p9 p10
-Operation p11 "11-generate1Sample [66]" Value="generate1Sample" Time="0.15";
+Operation p11 "11-generate1Sample [66]" Value="generate1Sample" Time="0.17";
 DF d3 p11
 CF p10 p11
-Operation p12 "12-newSample <- new(\"SampleObj\", sampleCode = as.integer(1), nI [66]" Value="newSample <- new(\"SampleObj\", sampleCode = as.integer(1), nI" Time="0.17";
+Operation p12 "12-newSample <- new(\"SampleObj\", sampleCode = as.integer(1), nI [66]" Value="newSample <- new(\"SampleObj\", sampleCode = as.integer(1), nI" Time="0.18";
 CF p11 p12
-Snapshot d5 "5-newSample" Value="[DIR]/ddg/5-newSample.txt" Time="2016-02-02T17.34.18EST";
+Snapshot d5 "5-newSample" Value="[DIR]/ddg/5-newSample.txt" Time="2016-02-03T18.06.01EST";
 DF p12 d5
-Operation p13 "13-newSample [66]" Value="newSample" Time="0.18";
+Operation p13 "13-newSample [66]" Value="newSample" Time="0.2";
 CF p12 p13
 DF d5 p13
-Snapshot d6 "6-generate1Sample() return" Value="[DIR]/ddg/6-generate1Sample() return.txt" Time="2016-02-02T17.34.18EST";
-Operation p14 "14-return (newSample) [66]" Value="return (newSample)" Time="0.2";
+Snapshot d6 "6-generate1Sample() return" Value="[DIR]/ddg/6-generate1Sample() return.txt" Time="2016-02-03T18.06.01EST";
+Operation p14 "14-return (newSample) [66]" Value="return (newSample)" Time="0.21";
 CF p13 p14
 DF d5 p14
 DF p14 d6
@@ -57,48 +57,48 @@ CF p14 p15
 Finish p16 "16-newSample <- generate1Sample() [66]" Value="newSample <- generate1Sample()" Time="0.21";
 CF p15 p16
 DF d6 p16
-Snapshot d7 "7-newSample" Value="[DIR]/ddg/7-newSample.txt" Time="2016-02-02T17.34.18EST";
+Snapshot d7 "7-newSample" Value="[DIR]/ddg/7-newSample.txt" Time="2016-02-03T18.06.01EST";
 DF p16 d7
 Start p17 "17-samplesArr <- generateSamples(totalNumOfSample) [67]" Value="samplesArr <- generateSamples(totalNumOfSample)" Time="0.21";
 CF p16 p17
 Start p18 "18-generateSamples(totalNumOfSample) [67]" Value="generateSamples(totalNumOfSample)" Time="0.21";
 CF p17 p18
-Binding p19 "19-n  <-  totalNumOfSample [67]" Time="0.23"
+Binding p19 "19-n  <-  totalNumOfSample [67]" Time="0.21"
 CF p18 p19
 DF d4 p19
 Data d8 "8-n" Value="5";
 DF p19 d8
-Operation p20 "20-generateSamples [67]" Value="generateSamples" Time="0.24";
+Operation p20 "20-generateSamples [67]" Value="generateSamples" Time="0.23";
 DF d2 p20
 DF d8 p20
 CF p19 p20
-Operation p21 "21-samplesArr <- list() [67]" Value="samplesArr <- list()" Time="0.24";
+Operation p21 "21-samplesArr <- list() [67]" Value="samplesArr <- list()" Time="0.23";
 CF p20 p21
-Snapshot d9 "9-samplesArr" Value="[DIR]/ddg/9-samplesArr.csv" Time="2016-02-02T17.34.18EST";
+Snapshot d9 "9-samplesArr" Value="[DIR]/ddg/9-samplesArr.csv" Time="2016-02-03T18.06.01EST";
 DF p21 d9
-Operation p22 "22-for (ix in 1:n) {    newSample <- new(\"SampleObj\", sampleCod [67]" Value="for (ix in 1:n) {    newSample <- new(\"SampleObj\", sampleCod" Time="0.26";
+Operation p22 "22-for (ix in 1:n) {    newSample <- new(\"SampleObj\", sampleCod [67]" Value="for (ix in 1:n) {    newSample <- new(\"SampleObj\", sampleCod" Time="0.24";
 CF p21 p22
 DF d8 p22
 DF d9 p22
-Snapshot d10 "10-newSample" Value="[DIR]/ddg/10-newSample.txt" Time="2016-02-02T17.34.18EST";
+Snapshot d10 "10-newSample" Value="[DIR]/ddg/10-newSample.txt" Time="2016-02-03T18.06.01EST";
 DF p22 d10
-Snapshot d11 "11-samplesArr" Value="[DIR]/ddg/11-samplesArr.txt" Time="2016-02-02T17.34.18EST";
+Snapshot d11 "11-samplesArr" Value="[DIR]/ddg/11-samplesArr.txt" Time="2016-02-03T18.06.01EST";
 DF p22 d11
-Operation p23 "23-samplesArr [67]" Value="samplesArr" Time="0.32";
+Operation p23 "23-samplesArr [67]" Value="samplesArr" Time="0.29";
 CF p22 p23
 DF d11 p23
-Snapshot d12 "12-generateSamples(totalNumOfSample) return" Value="[DIR]/ddg/12-generateSamples(totalNumOfSample) return.csv" Time="2016-02-02T17.34.18EST";
-Operation p24 "24-return (samplesArr) [67]" Value="return (samplesArr)" Time="0.32";
+Snapshot d12 "12-generateSamples(totalNumOfSample) return" Value="[DIR]/ddg/12-generateSamples(totalNumOfSample) return.txt" Time="2016-02-03T18.06.01EST";
+Operation p24 "24-return (samplesArr) [67]" Value="return (samplesArr)" Time="0.31";
 CF p23 p24
 DF d11 p24
 DF p24 d12
-Finish p25 "25-generateSamples(totalNumOfSample) [67]" Value="generateSamples(totalNumOfSample)" Time="0.33";
+Finish p25 "25-generateSamples(totalNumOfSample) [67]" Value="generateSamples(totalNumOfSample)" Time="0.31";
 CF p24 p25
-Finish p26 "26-samplesArr <- generateSamples(totalNumOfSample) [67]" Value="samplesArr <- generateSamples(totalNumOfSample)" Time="0.33";
+Finish p26 "26-samplesArr <- generateSamples(totalNumOfSample) [67]" Value="samplesArr <- generateSamples(totalNumOfSample)" Time="0.31";
 CF p25 p26
 DF d12 p26
-Snapshot d13 "13-samplesArr" Value="[DIR]/ddg/13-samplesArr.csv" Time="2016-02-02T17.34.18EST";
+Snapshot d13 "13-samplesArr" Value="[DIR]/ddg/13-samplesArr.txt" Time="2016-02-03T18.06.01EST";
 DF p26 d13
-Finish p27 "27-S4ObjectTest.R" Value="S4ObjectTest.R" Time="0.35";
+Finish p27 "27-S4ObjectTest.R" Value="S4ObjectTest.R" Time="0.32";
 CF p26 p27
 

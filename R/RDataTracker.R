@@ -3149,15 +3149,24 @@ ddg.MAX_HIST_LINES <- 2^14
 .ddg.snapshot.node <- function(dname, fext, data, save.object = FALSE, dscope=NULL, from.env=FALSE) {
   # Determine if we should save the entire data
   max.snapshot.size <- .ddg.get(".ddg.max.snapshot.size") 
+  
   if (max.snapshot.size == 0) {
     return(.ddg.data.node ("Data", dname, "", dscope, from.env=from.env))
+  }
+
+    # object.size returns bytes, but max.snapshot.size is in kilobytes
+  if (max.snapshot.size == -1 || object.size(data) < max.snapshot.size * 1024) {
+    full.snapshot <- TRUE
+  } else {
+    full.snapshot <- FALSE
   }
   
   # Increment data counter.
   .ddg.inc("ddg.dnum")
-  
-  # Get file name.
   ddg.dnum <- .ddg.dnum()
+  
+  # Snapshot name
+  snapname <- dname
   
   # If the object is an environment, update the data to be the environment's
   # name followed by a list of the variables bound in the environment.
@@ -3168,32 +3177,29 @@ ddg.MAX_HIST_LINES <- 2^14
   else if ("XMLInternalDocument" %in% class(data)) {
     fext <- "xml"
   }
+  else if (is.vector(data)) {
+  }
+  else if (is.data.frame(data) || is.matrix(data)) {
+    if (!full.snapshot) {
+      data <- head(data, n=1000)
+      snapname <- paste(dname, "-PARTIAL", sep="")
+    }
+  }
   else if (!is.character(data)) {
-      
     tryCatch(data <- as.character(data),
           error = function(e){
-            # Not sure if str or summary will give us the most useful information
+            # Not sure if str or summary will give us the most useful
+            # information.
             #data <- capture.output(str(data));
             #print(paste(".ddg.snapshot.node: generating summary for", dname))
             data <- summary(data)
           })
   }
 
-  # object.size returns bytes, but max.snapshot.size is in kilobytes
-  if (max.snapshot.size == -1 || object.size(data) < max.snapshot.size * 1024) {
-    full.snapshot <- TRUE
-    snapname <- dname
-  }
-  else {
-    data <- head(data)
-    full.snapshot <- FALSE
-    snapname <- paste(dname, "-PARTIAL", sep="")
-  }
-  
   # Default file extensions.
   dfile <- 
       if (fext == "" || is.null(fext)) paste(ddg.dnum, "-", snapname, sep="")
-      else                             paste(ddg.dnum, "-", snapname, ".", fext, sep="")
+      else paste(ddg.dnum, "-", snapname, ".", fext, sep="")
   
   # Get path plus file name.
   ddg.path <- .ddg.path()
@@ -4886,7 +4892,7 @@ ddg.finish <- function(pname=NULL) {
 #   this tests the size of the object that will be turned into a 
 #   snapshot, not the size of the resulting snapshot.
 
-ddg.init <- function(r.script.path = NULL, ddgdir = NULL, enable.console = TRUE, max.snapshot.size = -1) {
+ddg.init <- function(r.script.path = NULL, ddgdir = NULL, enable.console = TRUE, max.snapshot.size = 100) {
   .ddg.init.tables()
   
   .ddg.set("ddg.r.script.path", 
@@ -4959,7 +4965,7 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, enable.console = TRUE,
 #   Note that this tests the size of the object that will be turned
 #   into a snapshot, not the size of the resulting snapshot.
 
-ddg.run <- function(r.script.path = NULL, ddgdir = NULL, f = NULL, enable.console = TRUE, annotate.functions = TRUE, max.snapshot.size = -1) {
+ddg.run <- function(r.script.path = NULL, ddgdir = NULL, f = NULL, enable.console = TRUE, annotate.functions = TRUE, max.snapshot.size = 100) {
   
   ddg.init(r.script.path, ddgdir, enable.console, max.snapshot.size)
   
