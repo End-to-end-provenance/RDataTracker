@@ -1933,24 +1933,29 @@ ddg.MAX_HIST_LINES <- 2^14
 }
 
 .ddg.has.dev.off.call <- function(main.object) {
-  #print ("In .ddg.has.dev.off.call")
-  #print (main.object)
+  print ("In .ddg.has.dev.off.call")
+  print (main.object)
   # Recursive helper function.
   has.dev.off.call.rec <- function(obj) {
-    #print (obj)
+    print (obj)
     # Base cases.
     if (!is.recursive(obj)) {
+      #print(".ddg.has.dev.off.call: not recursive")
       return(FALSE)
     }
     
     if (length(obj) == 0) {
+      #print(".ddg.has.dev.off.call: length is 0")
       return(FALSE)
     }
     ## It might be useful to record somehow that this function
     # reads a file, but we wouldn't actually do the reading
     # until the function is called, not here where it is
     # being declared.
-    if (.ddg.is.functiondecl(obj)) return(FALSE)
+    if (.ddg.is.functiondecl(obj)){
+      #print(".ddg.has.dev.off.call: function decl")
+      return(FALSE)
+    } 
     
     if (is.call(obj)) {
       #print("Found call")
@@ -1962,37 +1967,45 @@ ddg.MAX_HIST_LINES <- 2^14
           return (TRUE)
         }
         
-        else if (length (obj) == 1) return (FALSE)
-        
-        else return (has.dev.off.call.rec (2:length(obj)))
+        else if (length (obj) == 1) {
+          #print(".ddg.has.dev.off.call: length of call is 1")
+          return (FALSE)
         }
         
-      else return (has.dev.off.call.rec (obj[[1]]) || has.dev.off.call.rec (2:length(obj)))
+        else {
+          #print(paste(".ddg.has.dev.off.call: length of call =", length(obj)))
+          return (has.dev.off.call.rec (obj[2:length(obj)]))
         }
-    
-    else return (has.dev.off.call.rec (obj[[1]]) || has.dev.off.call.rec (2:length(obj)))
       }
-      
-  return(has.dev.off.call.rec(main.object))
-    } 
+        
+      else return (has.dev.off.call.rec (obj[[1]]) || has.dev.off.call.rec (obj[2:length(obj)]))
+    }
+    
+    #else return (has.dev.off.call.rec (obj[[1]]) || has.dev.off.call.rec (obj[2:length(obj)]))
+    return (FALSE)
+  }
+  
+  return (grepl("dev.off", deparse(main.object)))
+  #return(has.dev.off.call.rec(main.object))
+} 
     
 .ddg.capture.graphics <- function(cmd) {
-  print(paste(".ddg.capture.graphics: ", cmd))
+  #print(paste(".ddg.capture.graphics: ", cmd))
   if (.ddg.is.set ("possible.graphics.files.open")) {
     possible.graphics.files.open <- .ddg.get ("possible.graphics.files.open")
     
     # Find the most recent file
     if (!is.null(possible.graphics.files.open)) {
-      print(paste(".ddg.capture.graphics: possible.graphics.files.open =", possible.graphics.files.open))
-      print(".ddg.capture.graphics: getting file info")
+      #print(paste(".ddg.capture.graphics: possible.graphics.files.open =", possible.graphics.files.open))
+      #print(".ddg.capture.graphics: getting file info")
       graphics.file.info <- file.info(possible.graphics.files.open)
-      print(".ddg.capture.graphics: getting modification time")
+      #print(".ddg.capture.graphics: getting modification time")
       latest.file.date.row <- which.max (graphics.file.info$mtime)
       
-      print(".ddg.capture.graphics: creating file node")
+      #print(".ddg.capture.graphics: creating file node")
       #ddg.file.out (possible.graphics.files.open[latest.file.date.row], pname=cmd)
       .ddg.capture.current.graphics(cmd, possible.graphics.files.open[latest.file.date.row])
-      print(paste(".ddg.capture.graphics: writing to ", possible.graphics.files.open[latest.file.date.row]))
+      #print(paste(".ddg.capture.graphics: writing to ", possible.graphics.files.open[latest.file.date.row]))
       .ddg.set ("possible.graphics.files.open", NULL)
       return()
     }
@@ -4802,9 +4815,9 @@ ddg.file.out <- function(filename, dname=NULL, pname=NULL) {
 	}
 	
 	# Create output file node called filename and copy file.
-  print(paste("ddg.file.out copying ", filename))
+  #print(paste("ddg.file.out copying ", filename))
   saved.file <- .ddg.file.copy("File", filename, dname, scope)
-  print(paste("ddg.file.out done copying ", filename))
+  #print(paste("ddg.file.out done copying ", filename))
   
 	.ddg.lookup.function.name(pname)
 	
@@ -5039,7 +5052,7 @@ ddg.save <- function(r.script.path=NULL, quit=FALSE) {
   
   # If there is a display device open, grab what is on the display
   if (length(dev.list()) > 1) {
-    print("ddg.save: Saving graphics open at end of script")
+    #print("ddg.save: Saving graphics open at end of script")
     tryCatch (.ddg.capture.current.graphics(basename(r.script.path)),
         error = function (e) e)
   }
