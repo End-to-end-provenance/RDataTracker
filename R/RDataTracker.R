@@ -1933,8 +1933,8 @@ ddg.MAX_HIST_LINES <- 2^14
 }
 
 .ddg.has.dev.off.call <- function(main.object) {
-  print ("In .ddg.has.dev.off.call")
-  print (main.object)
+  #print ("In .ddg.has.dev.off.call")
+  #print (main.object)
   # Recursive helper function.
   has.dev.off.call.rec <- function(obj) {
     print (obj)
@@ -1985,7 +1985,26 @@ ddg.MAX_HIST_LINES <- 2^14
     return (FALSE)
   }
   
-  return (grepl("dev.off", deparse(main.object)))
+  # This is a vastly simpler implementation but only 
+  # approximate.  It is very expensive to search the 
+  # parse tree with every expression and sometimes
+  # even went into infinite recursion.  
+  # 
+  # If this ends up causing problems, we could try
+  # searching the text for dev.off and if the text is
+  # found, then do the recursive search of the parse tree
+  # to check that it is a call to dev.off and not some
+  # other things accidentally getting caught.
+  #
+  # Leaving the unused recursive function in in case
+  # we need to go back to it later.
+  text <- deparse(main.object)
+  
+  # Make sure this is not a function declaration
+  if (any(grepl("function", text))) return(FALSE)
+  
+  # Return true if dev.off appears in the text.
+  return (any(grepl("dev.off", text)))
   #return(has.dev.off.call.rec(main.object))
 } 
     
@@ -2003,8 +2022,8 @@ ddg.MAX_HIST_LINES <- 2^14
       latest.file.date.row <- which.max (graphics.file.info$mtime)
       
       #print(".ddg.capture.graphics: creating file node")
-      #ddg.file.out (possible.graphics.files.open[latest.file.date.row], pname=cmd)
-      .ddg.capture.current.graphics(cmd, possible.graphics.files.open[latest.file.date.row])
+      ddg.file.out (possible.graphics.files.open[latest.file.date.row], pname=cmd)
+      #.ddg.capture.current.graphics(cmd, possible.graphics.files.open[latest.file.date.row])
       #print(paste(".ddg.capture.graphics: writing to ", possible.graphics.files.open[latest.file.date.row]))
       .ddg.set ("possible.graphics.files.open", NULL)
       return()
@@ -2022,7 +2041,7 @@ ddg.MAX_HIST_LINES <- 2^14
   if (is.null(file)) {
     file <- paste0("dev.off.", .ddg.dnum()+1, ".pdf")
   }
-  print(paste(".ddg.capture.graphics: writing to ", file))
+  #print(paste(".ddg.capture.graphics: writing to ", file))
   dev.print(device=pdf, file=file)
   ddg.file.out (file, pname=cmd)
 }

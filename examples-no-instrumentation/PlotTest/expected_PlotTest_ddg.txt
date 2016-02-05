@@ -1,0 +1,61 @@
+Architecture="x86_64"
+OperatingSystem="unix"
+Language="R"
+LanguageVersion="R version 3.2.3 (2015-12-10)"
+RDataTrackerVersion="2.17"
+Script="[DIR]/PlotTest.R"
+ProcessFileTimestamp="2016-02-05T16.26.11EST"
+WorkingDirectory="[DIR]"
+DDGDirectory="[DIR]/ddg"
+DateTime="2016-02-05T17.41.45EST"
+13
+Start p1 "1-PlotTest.R" Value="PlotTest.R" Time="0.015";
+Operation p2 "2-data(mtcars) [1]" Value="data(mtcars)" Time="0.027";
+CF p1 p2
+Operation p3 "3-allCars.df <- mtcars [4]" Value="allCars.df <- mtcars" Time="0.0349999999999999";
+CF p2 p3
+Snapshot d1 "1-allCars.df" Value="[DIR]/ddg/1-allCars.df.csv" Time="2016-02-05T17.41.44EST";
+DF p3 d1
+Operation p4 "4-cars4Cyl.df <- allCars.df[allCars.df$cyl == 4, ] [7]" Value="cars4Cyl.df <- allCars.df[allCars.df$cyl == 4, ]" Time="0.0489999999999999";
+CF p3 p4
+DF d1 p4
+Snapshot d2 "2-cars4Cyl.df" Value="[DIR]/ddg/2-cars4Cyl.df.csv" Time="2016-02-05T17.41.44EST";
+DF p4 d2
+Operation p5 "5-cars6Cyl.df <- allCars.df[allCars.df$cyl == 6, ] [8]" Value="cars6Cyl.df <- allCars.df[allCars.df$cyl == 6, ]" Time="0.084";
+CF p4 p5
+DF d1 p5
+Snapshot d3 "3-cars6Cyl.df" Value="[DIR]/ddg/3-cars6Cyl.df.csv" Time="2016-02-05T17.41.44EST";
+DF p5 d3
+Operation p6 "6-cars8Cyl.df <- allCars.df[allCars.df$cyl == 8, ] [9]" Value="cars8Cyl.df <- allCars.df[allCars.df$cyl == 8, ]" Time="0.1";
+CF p5 p6
+DF d1 p6
+Snapshot d4 "4-cars8Cyl.df" Value="[DIR]/ddg/4-cars8Cyl.df.csv" Time="2016-02-05T17.41.44EST";
+DF p6 d4
+Operation p7 "7-cylinders = c(4, 6, 8) [12]" Value="cylinders = c(4, 6, 8)" Time="0.115";
+CF p6 p7
+Snapshot d5 "5-cylinders" Value="[DIR]/ddg/5-cylinders.csv" Time="2016-02-05T17.41.44EST";
+DF p7 d5
+Operation p8 "8-mpg = c(mean(cars4Cyl.df$mpg), mean(cars6Cyl.df$mpg), mean(c [13]" Value="mpg = c(mean(cars4Cyl.df$mpg), mean(cars6Cyl.df$mpg), mean(c" Time="0.124";
+CF p7 p8
+DF d2 p8
+DF d3 p8
+DF d4 p8
+Snapshot d6 "6-mpg" Value="[DIR]/ddg/6-mpg.csv" Time="2016-02-05T17.41.44EST";
+DF p8 d6
+Operation p9 "9-plot(cylinders, mpg) [16]" Value="plot(cylinders, mpg)" Time="0.188";
+CF p8 p9
+DF d5 p9
+DF d6 p9
+Operation p10 "10-X11() [20]" Value="X11()" Time="0.227";
+CF p9 p10
+Operation p11 "11-plot(cylinders, mpg) [21]" Value="plot(cylinders, mpg)" Time="0.236";
+CF p10 p11
+DF d5 p11
+DF d6 p11
+Operation p12 "12-dev.off() [22]" Value="dev.off()" Time="0.25";
+CF p11 p12
+Operation p13 "13-tryCatch [22]" Value="tryCatch" Time="0.253";
+CF p12 p13
+Exception d7 "7-error.msg" Value="\"Error in dev.print(device = pdf, file = file): can only print from a screen device \"";
+DF p13 d7
+
