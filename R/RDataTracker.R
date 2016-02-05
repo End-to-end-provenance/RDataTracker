@@ -1977,17 +1977,41 @@ ddg.MAX_HIST_LINES <- 2^14
     } 
     
 .ddg.capture.graphics <- function(cmd) {
-  if (!.ddg.is.set ("possible.graphics.files.open")) return
-  possible.graphics.files.open <- .ddg.get ("possible.graphics.files.open")
+  print(paste(".ddg.capture.graphics: ", cmd))
+  if (.ddg.is.set ("possible.graphics.files.open")) {
+    possible.graphics.files.open <- .ddg.get ("possible.graphics.files.open")
+    
+    # Find the most recent file
+    if (!is.null(possible.graphics.files.open)) {
+      print(paste(".ddg.capture.graphics: possible.graphics.files.open =", possible.graphics.files.open))
+      print(".ddg.capture.graphics: getting file info")
+      graphics.file.info <- file.info(possible.graphics.files.open)
+      print(".ddg.capture.graphics: getting modification time")
+      latest.file.date.row <- which.max (graphics.file.info$mtime)
+      
+      print(".ddg.capture.graphics: creating file node")
+      #ddg.file.out (possible.graphics.files.open[latest.file.date.row], pname=cmd)
+      .ddg.capture.current.graphics(cmd, possible.graphics.files.open[latest.file.date.row])
+      print(paste(".ddg.capture.graphics: writing to ", possible.graphics.files.open[latest.file.date.row]))
+      .ddg.set ("possible.graphics.files.open", NULL)
+      return()
+    }
+  }
   
-  # Find the most recent file
-  if (is.null(possible.graphics.files.open)) return
+  # Output is going to the display, so we need to make up a name
+  .ddg.capture.current.graphics(cmd)
 
-  graphics.file.info <- file.info(possible.graphics.files.open)
-  latest.file.date.row <- which.max (graphics.file.info$mtime)
-  
-  ddg.file.out (possible.graphics.files.open[latest.file.date.row], pname=cmd)
-  .ddg.set ("possible.graphics.files.open", NULL)
+}
+
+# Captures what is on the current display to a file, creates a file node
+# and connects to the ddg.
+.ddg.capture.current.graphics <- function(cmd, file=NULL) {
+  if (is.null(file)) {
+    file <- paste0("dev.off.", .ddg.dnum()+1, ".pdf")
+  }
+  print(paste(".ddg.capture.graphics: writing to ", file))
+  dev.print(device=pdf, file=file)
+  ddg.file.out (file, pname=cmd)
 }
 
 # .ddg.abbrev.cmd abbreviates a command to the specified length.
@@ -2844,7 +2868,8 @@ ddg.MAX_HIST_LINES <- 2^14
   if (.ddg.enable.console()) {
     
     # Capture graphic output of previous procedure node.
-    .ddg.auto.graphic.node()
+    # Comment out this function???
+    #.ddg.auto.graphic.node()
 
 #    if(!console) {
       # We're sourcing, so regardless of interactivity, capture 
@@ -4777,8 +4802,10 @@ ddg.file.out <- function(filename, dname=NULL, pname=NULL) {
 	}
 	
 	# Create output file node called filename and copy file.
-	saved.file <- .ddg.file.copy("File", filename, dname, scope)
-	
+  print(paste("ddg.file.out copying ", filename))
+  saved.file <- .ddg.file.copy("File", filename, dname, scope)
+  print(paste("ddg.file.out done copying ", filename))
+  
 	.ddg.lookup.function.name(pname)
 	
 	# Create data flow edge from operation node to file node.
@@ -4987,7 +5014,7 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, f = NULL, enable.consol
         ddg.exception.out("error.msg", e.str, "tryCatch")
       },
       finally={
-        ddg.save()
+        ddg.save(r.script.path)
       }
   )
   invisible()
@@ -4998,15 +5025,23 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, f = NULL, enable.consol
 # the procedure nodes, data nodes, and function return tables
 # to the DDG directory.
 
+# r.script.path (optional) - Path to the R script
 # quit (optional) - If TRUE, remove all DDG files from memory.
 
-ddg.save <- function(quit=FALSE) {
+ddg.save <- function(r.script.path=NULL, quit=FALSE) {
   
   if (!.ddg.is.init()) return(invisible())
   
   if (interactive() && .ddg.enable.console()) {
     # Get the final commands
     .ddg.console.node()
+  }
+  
+  # If there is a display device open, grab what is on the display
+  if (length(dev.list()) > 1) {
+    print("ddg.save: Saving graphics open at end of script")
+    tryCatch (.ddg.capture.current.graphics(basename(r.script.path)),
+        error = function (e) e)
   }
   
   # Get environment parameters.
