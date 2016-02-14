@@ -2479,8 +2479,8 @@ ddg.MAX_HIST_LINES <- 2^14
     
     for (i in 1:(length(parsed.commands))) {
       # Get annotations.
-      parsed.commands[i] <- .ddg.add.function.annotations(parsed.commands[i])
-      
+      parsed.commands[i] <- .ddg.add.annotations(parsed.commands[i])
+
       # Get annotated source code.
       line <- paste(i, ": ", deparse(parsed.commands[i][[1]]), sep="")
       if (i == 1) lines <- line
@@ -4050,16 +4050,9 @@ ddg.MAX_HIST_LINES <- 2^14
 # or not to annotate, respectively.
 
 .ddg.add.function.annotations <- function(parsed.command) {
-  # Return if statement is empty.
-  if (length(parsed.command) == 0) return(parsed.command)
-  # Return if not an assignment statement.
-  else if (!.ddg.is.assign(parsed.command[[1]])) return(parsed.command)
-  # Return if not a function declaration.
-  else if (!.ddg.is.functiondecl(parsed.command[[1]][[3]])) return(parsed.command)
-
   # Return if a list of functions to annotate is provided and this
   # function is not on the list.
-  else if (!is.null(.ddg.annotate.on()) & !(toString(parsed.command[[1]][[2]]) %in% .ddg.annotate.on())) return(parsed.command)
+  if (!is.null(.ddg.annotate.on()) & !(toString(parsed.command[[1]][[2]]) %in% .ddg.annotate.on())) return(parsed.command)
   
   # Return if a list of functions not to annotate is provided and this
   # function is on the list.
@@ -4110,6 +4103,24 @@ ddg.MAX_HIST_LINES <- 2^14
     # Return modified parsed command
     return(parsed.command)
   }
+}
+
+# .ddg.add.annotations accepts and returns a parsed command.
+# The returned command is annotated as needed.
+
+.ddg.add.annotations <- function(parsed.command) {
+  # Return if statement is empty.
+  if (length(parsed.command) == 0) return(parsed.command)
+  
+  # Annotate user-defined functions.
+  else if (.ddg.is.assign(parsed.command[[1]]) && .ddg.is.functiondecl(parsed.command[[1]][[3]])) {
+    return(.ddg.add.function.annotations(parsed.command))
+  }
+  
+  # Add other annotations here.
+
+  # No annotation required.
+  else return(parsed.command)
 }
 
 # .ddg.get.annotation.list checks to see if the script contains calls to
