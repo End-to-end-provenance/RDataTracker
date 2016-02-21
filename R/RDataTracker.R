@@ -133,6 +133,18 @@ ddg.MAX_HIST_LINES <- 2^14
   return(.ddg.get(".ddg.parsed.num"))
 }
 
+.ddg.sourced.scripts <- function() {
+  return(.ddg.get(".ddg.sourced.scripts"))
+}
+
+.ddg.next.script.num <- function() {
+  return(.ddg.get(".ddg.next.script.num"))
+}
+
+.ddg.script.num.stack <- function() {
+  return(.ddg.get(".ddg.script.num.stack"))
+}
+
 .ddg.enable.source <- function() {
   return(.ddg.is.set("from.source") && .ddg.get("from.source"))
 }
@@ -186,9 +198,22 @@ ddg.MAX_HIST_LINES <- 2^14
   .ddg.set("ddg.text", paste(text, ...))
 }
 
+.ddg.append.line <- function(line) {
+  script <- .ddg.get("ddg.annotated.script")
+  .ddg.set("ddg.annotated.script", append(script, line))
+}
+
 .ddg.add.rows <- function(df, new.rows) {
   table <- .ddg.get(df)
   .ddg.set(df, rbind(table, new.rows))
+}
+
+.ddg.push <- function(x, value) {
+  return(assign(as.character(substitute(x)), c(x, value), parent.frame()))
+}
+
+.ddg.pop <- function(x) {
+  return(assign(as.character(substitute(x)), x[-length(x)], parent.frame()))
 }
 
 #-------------------BASIC FUNCTIONS-----------------------#
@@ -219,7 +244,7 @@ ddg.MAX_HIST_LINES <- 2^14
 }
 
 # .ddg.init.tables creates data frames to store the initial environment,
-# procedure nodes, data nodes, data flow edges, function return values, 
+# procedure nodes, data nodes, data flow edges, function return values,
 # and checkpoints. It also initializes selected constants and variables.
 # Tables are saved as tab-delimited files in ddg.save.
 
@@ -235,7 +260,8 @@ ddg.MAX_HIST_LINES <- 2^14
           ddg.return.linked = logical(size),
           ddg.auto.created = logical(size),
           ddg.time = numeric(size),
-          ddg.source = numeric(size),
+          ddg.snum = numeric(size),
+          ddg.lnum = character(size),
           stringsAsFactors=FALSE))
   
   .ddg.set("ddg.data.nodes", data.frame(ddg.type = character(size),
@@ -251,7 +277,7 @@ ddg.MAX_HIST_LINES <- 2^14
   .ddg.set("ddg.data.flow", data.frame(ddg.num = numeric(size),
           ddg.from = character(size),
           ddg.to = character(size), stringsAsFactors=FALSE))
-    
+  
   # Create procedure and data node counters.
   .ddg.set("ddg.pnum", 0)
   .ddg.set("ddg.dnum", 0)
@@ -260,6 +286,10 @@ ddg.MAX_HIST_LINES <- 2^14
   # Create DDG string. This string is written to file when ddg.save 
   # is called.
   .ddg.set("ddg.text", "")
+  
+  # Create annotated script string. This string is written to file
+  # when ddg.save is called.
+  .ddg.set("ddg.annotated.script", NULL)
   
   # Used to control debugging output.  If already defined, don't 
   # change its value.
@@ -329,8 +359,14 @@ ddg.MAX_HIST_LINES <- 2^14
   # Script sourced with ddg.source
   .ddg.set(".ddg.is.sourced", FALSE)
   
-  # Number of current parsed command
-  .ddg.set(".ddg.parsed.num", NA)
+  # Number of first sourced script (main script).
+  .ddg.set(".ddg.next.script.num", 0)
+  
+  # Number of first parsed command.
+  .ddg.set(".ddg.parsed.num", 1)
+  
+  # Stack for sourced files
+  .ddg.set(".ddg.script.num.stack", 0)
 }
 
 # .ddg.set.history provides a wrapper to change the number of 
@@ -491,13 +527,15 @@ ddg.MAX_HIST_LINES <- 2^14
         if (grepl("\"", pname) || grepl("\r", pname)  || grepl("\n", pname) || grepl("\t", pname)) pname <- .ddg.replace.quotes(pname)
       }
       ptime <- proc.nodes$ddg.time[i]
-      psource <- proc.nodes$ddg.source[i]
+      psnum <- proc.nodes$ddg.snum[i]
+      plnum <- proc.nodes$ddg.lnum[i]
       json.activity <- paste(json.activity, "\"", pid, "\": {\n", sep="")
       json.activity <- .ddg.json.node(json.activity, "ex:number", "positiveInteger", pnum)
       json.activity <- .ddg.json.node(json.activity, "ex:type", "string", ptype)
       json.activity <- .ddg.json.node(json.activity, "ex:name", "string", pname)
       json.activity <- .ddg.json.node(json.activity, "ex:elapsedTime", "decimal", ptime)
-      json.activity <- .ddg.json.node(json.activity, "ex:scriptLine", "positiveInteger", psource, last=TRUE)
+      json.activity <- .ddg.json.node(json.activity, "ex:scriptNum", "positiveInteger", psnum)
+      json.activity <- .ddg.json.node(json.activity, "ex:scriptLine", "positiveInteger", plnum, last=TRUE)
       json.activity <- paste(json.activity, "},\n", sep="")
       if (i %% num == 0) {
         write(json.activity, fileout, append=TRUE)
@@ -813,9 +851,10 @@ ddg.MAX_HIST_LINES <- 2^14
 # auto.created - TRUE means the node is being created automatically 
 #   when a return is found
 # ptime - elapsed time
-# source.num - number of line in source code if available
+# snum - number of sourced script (main script = 0)
+# lnum - number of line in source code (if available)
 
-.ddg.record.proc <- function(ptype, pname, pvalue, auto.created=FALSE, ptime, source.num=NA) {
+.ddg.record.proc <- function(ptype, pname, pvalue, auto.created=FALSE, ptime, snum=NA, lnum=NA) {
   # If the table is full, make it bigger.
   ddg.pnum <- .ddg.pnum()
   ddg.proc.nodes <- .ddg.proc.nodes()
@@ -828,7 +867,8 @@ ddg.MAX_HIST_LINES <- 2^14
         ddg.return.linked = logical(size),
         ddg.auto.created = logical(size),
         ddg.time = numeric(size),
-        ddg.source = numeric(size),
+        ddg.snum = numeric(size),
+        ddg.lnum = numeric(size),
         stringsAsFactors=FALSE)
     .ddg.add.rows("ddg.proc.nodes", new.rows)
     ddg.proc.nodes <- .ddg.proc.nodes()
@@ -840,7 +880,8 @@ ddg.MAX_HIST_LINES <- 2^14
   ddg.proc.nodes$ddg.value[ddg.pnum] <- pvalue
   ddg.proc.nodes$ddg.auto.created[ddg.pnum] <- auto.created
   ddg.proc.nodes$ddg.time[ddg.pnum] <- ptime
-  ddg.proc.nodes$ddg.source[ddg.pnum] <- source.num
+  ddg.proc.nodes$ddg.snum[ddg.pnum] <- snum
+  ddg.proc.nodes$ddg.lnum[ddg.pnum] <- lnum
   .ddg.set("ddg.proc.nodes", ddg.proc.nodes)
   
   if (.ddg.debug()) {
@@ -2344,32 +2385,30 @@ ddg.MAX_HIST_LINES <- 2^14
   .ddg.clear.warning()
 }
 
-# .ddg.get.source.code.line.numbers returns a data frame containing
-# the line number in the original R script that corresponds to each
-# top-level parsed command.
+# .ddg.get.source.code.line.numbers reads a script, splits lines 
+# separated by semicolons, and returns a data frame containing script 
+# number, source code line number, and parsed command number.
 
-# file - name of source code file
-
-.ddg.get.source.code.line.numbers <- function(file) {
-  # read source code
-  script.file <- file(file)
+.ddg.get.source.code.line.numbers <- function(fname, snum) {
+  # Read source code.
+  script.file <- file(fname)
   source.code <- readLines(script.file)
   close(script.file)
   
-  # retain line numbers but split lines separated by semicolons
+  # Retain line numbers but split lines separated by semicolons.
   index <- 0
   for (i in 1:length(source.code)) {
     line <- source.code[i]
-    # remove trailing comment, if any
+    # Remove trailing comment, if any.
     if (grepl("#", line)) line <- strsplit(line, "#")[[1]][1]
-
+    
     if (line == "") {
       index <- index + 1
       if (index == 1) {
-        snum <- i
+        lnum <- i
         scode <- ""
       } else {
-        snum <- append(snum, i)
+        lnum <- append(lnum, i)
         scode <- append(scode, "")
       }
     } else {
@@ -2377,57 +2416,59 @@ ddg.MAX_HIST_LINES <- 2^14
       for (j in 1:length(split.line[[1]])) {
         index <- index + 1
         if (index == 1) {
-          snum <- i
+          lnum <- i
           scode <- as.character((split.line[[1]][[j]]))
         } else {
-          snum <- append(snum, i)
+          lnum <- append(lnum, i)
           scode <- append(scode, as.character(split.line[[1]][[j]]))
         }
       }
     }
   }
-
-  source.num <- snum
-  parsed.num <- rep(0, length(snum))
-  df <- data.frame(source.num, parsed.num)
   
-  pnum <- 0
+  # Add parsed command numbers
   source.line <- ""
-  
-  for (i in 1:length(snum)) {
+  parsed.num <- 0
+  pnum <- rep(0, length(lnum))
+
+  for (i in 1:length(lnum)) {
     tryCatch(
       {
         if (source.line == "") source.line <- scode[i]
         else source.line <- paste(source.line, "\n", scode[i])
-        # try to parse line
+        
+        # Try to parse line.
         command.line <- parse(text=source.line)
-        # comment or white space
+        # Comment or white space.
         if (length(command.line) == 0) {
-          df$parsed.num[i] <- NA
+          pnum[i] <- NA
           source.line <- ""
-          # parsable R command
+          # Parsable R command.
         } else {
-          pnum <- pnum + 1
-          df$parsed.num[i] <- pnum
+          parsed.num <- parsed.num + 1
+          pnum[i] <- parsed.num
           source.line <- ""
         }
       },
-      # unable to parse
+      # Unable to parse.
       error=function(e) {
       }
     )
-  } 
+  }
   
-  # adjust for blocks
+  # Create data frame.
+  df <- data.frame(snum, lnum, pnum)
+  
+  # Adjust for blocks.
   for (i in nrow(df):2) {
-    if (!is.na(df$parsed.num[i-1]) & !is.na(df$parsed.num[i]) & df$parsed.num[i-1] == 0 & df$parsed.num[i] > 0) {
-      df$parsed.num[i-1] <- df$parsed.num[i]
-      df$parsed.num[i] <- NA
+    if (!is.na(df$pnum[i-1]) & !is.na(df$pnum[i]) & df$pnum[i-1] == 0 & df$pnum[i] > 0) {
+      df$pnum[i-1] <- df$pnum[i]
+      df$pnum[i] <- NA
     }
   }
   
-  # remove unnecessary rows
-  index <- which(!is.na(df$parsed.num))
+  # Remove unnecessary rows.
+  index <- which(!is.na(df$pnum))
   df2 <- df[index, ]
   
   return(df2)
@@ -2467,30 +2508,6 @@ ddg.MAX_HIST_LINES <- 2^14
   # Save copy of original commands for procedural node labels
   original.parsed.commands <- parsed.commands
   
-  # Add function annotations.  
-  if (annotate.functions == TRUE) {
-    # Write annotated source code to ddg directory.
-    file.out <- file(paste(.ddg.path(), "annotated-script.r", sep="/"))
-    
-    # Check for list of functions to annotate or not to annotate
-    for (i in 1:(length(parsed.commands))) {
-      .ddg.get.annotation.list(parsed.commands[i])
-    }
-    
-    for (i in 1:(length(parsed.commands))) {
-      # Get annotations.
-      parsed.commands[i] <- .ddg.add.annotations(parsed.commands[i])
-
-      # Get annotated source code.
-      line <- paste(i, ": ", deparse(parsed.commands[i][[1]]), sep="")
-      if (i == 1) lines <- line
-      else lines <- append(lines, line)
-    }
-    # Write annotated source code.
-    writeLines(lines, file.out)
-    close(file.out)
-  }
-
   # Figure out if we will execute commands or not.
 
   execute <- run.commands & !is.null(environ) & is.environment(environ)
@@ -2595,10 +2612,19 @@ ddg.MAX_HIST_LINES <- 2^14
     
     # Loop over the commands as well as their string representations.
     for (i in 1:length(parsed.commands)) {
-      # Updated number of parsed command
-      if (.ddg.is.sourced() && !called.from.ddg.eval)
+
+      if (.ddg.is.sourced() && !called.from.ddg.eval) {
+        # Updated number of parsed command
         .ddg.set(".ddg.parsed.num", i)
   
+        # Add annotations.
+        parsed.commands[i] <- .ddg.add.annotations(parsed.commands[i], annotate.functions)
+      
+        # Save annotations.
+        line <- paste(i, ": ", deparse(parsed.commands[i][[1]]), sep="")
+        .ddg.append.line(line)
+      }
+      
       cmd.expr <- parsed.commands[[i]]
       cmd.text <- new.commands[[i]]
       cmd <- quoted.commands[[i]]
@@ -2732,7 +2758,7 @@ ddg.MAX_HIST_LINES <- 2^14
             if (.ddg.is.set (".ddg.last.proc.node.created")).ddg.get(".ddg.last.proc.node.created")
             else ""
         cur.cmd.closed <- (last.proc.node.created == paste ("Finish", deparse(cmd.expr)))
-        create.procedure <- create && (!cur.cmd.closed || !named.node.set) && !start.finish.created
+        create.procedure <- create && (!cur.cmd.closed || !named.node.set) && !start.finish.created  && !grepl("^ddg.source", cmd.expr)
         
         
         # We want to create a procedure node for this command.
@@ -2836,9 +2862,7 @@ ddg.MAX_HIST_LINES <- 2^14
 
   # print(paste("last.commad:",.ddg.get(".ddg.last.cmd")))
   # print(paste("command:", .ddg.get(".ddg.possible.last.cmd")))
-  
 }
-
 
 # .ddg.console.node creates a console node.
 
@@ -2888,7 +2912,6 @@ ddg.MAX_HIST_LINES <- 2^14
 # auto.created - TRUE means that the node is being automatically 
 #   created when a return call is found
 # ptime - elapsed time
-# source.num - number of line in source code if available
 # env - the environment in which the procedure occurs
 
 # CHECK!  Looks like env parameter is not needed!
@@ -2932,30 +2955,39 @@ ddg.MAX_HIST_LINES <- 2^14
         paste(" Value=\"", quoted.value, "\"", sep="")
       }
       else ""
-
-  # Get line number of source code if possible
-  if (.ddg.is.sourced()) {
-    parsed.num <- .ddg.parsed.num()
-    source.parsed <- .ddg.source.parsed()  
   
-    if (parsed.num > nrow(source.parsed)) {
-      source.num <- NA
+  # Get script & line numbers if possible
+  if (.ddg.is.sourced()) {
+    source.parsed <- .ddg.source.parsed()
+    snum <- source.parsed$snum[1]
+    pnum <- .ddg.parsed.num()
+    sourced.scripts <- .ddg.sourced.scripts()
+    script.name <- sourced.scripts$sname[sourced.scripts$snum==snum]
+    if (pname == script.name) {
+      lnum <- NA
+    } else if (pnum > nrow(source.parsed)) {
+      lnum <- NA
       .ddg.insert.error.message("Source code line numbers may be incorrect")
     } else {
-      index <- which(source.parsed[ , "parsed.num"]==parsed.num)
+      index <- which(source.parsed[ , "pnum"] == pnum)
       if (length(index) == 0) {
-        source.num <- NA
+        lnum <- NA
         .ddg.insert.error.message("Source code line numbers may be incorrect")
       } else {
-        source.num <- source.parsed$source.num[index]
+        snum <- source.parsed$snum[index]
+        lnum <- source.parsed$lnum[index]
       }
     }
+    if (snum == 0) line.num <- lnum
+    else line.num <- paste(snum, ":", lnum, sep="")
   } else {
-    source.num <- NA
+    snum <- NA
+    lnum <- NA
+    line.num <- ""
   }
-  
-  # Add line number
-  # proc.line <- paste0(" Source=\"", source.num, "\"")
+
+  # Add line number (and script number if > 0)
+  # proc.line <- paste0(" Line=\"", lnum, "\"")
   
   # Obtain the elapsed time for this procedure node.
   ptime <- .ddg.elapsed.time()
@@ -2967,14 +2999,8 @@ ddg.MAX_HIST_LINES <- 2^14
   # Quote quote characters
   quoted.name <- gsub("\\\"", "\\\\\"", pname)
   
-  # Add source code line number
-  script.path <- .ddg.get("ddg.r.script.path")
-  if (!is.null(script.path)) {
-    x <- strsplit(script.path, "/")
-    script.name <- x[[1]][[length(x[[1]])]]
-  }
-  if (!is.na(source.num) && source.num > 0 && pname != script.name) {
-    quoted.name <- paste(quoted.name, " [", source.num, "]", sep="")
+  if (!is.na(lnum) && lnum > 0 && pname != script.name) {
+    quoted.name <- paste(quoted.name, " [", line.num, "]", sep="")
   }
   
   if (proc.value != "") {
@@ -3011,7 +3037,7 @@ ddg.MAX_HIST_LINES <- 2^14
     }
   }
   .ddg.set(".ddg.last.proc.node.created", paste(ptype, pname))
-  .ddg.record.proc(ptype, pname, pvalue, auto.created, ptime, source.num)
+  .ddg.record.proc(ptype, pname, pvalue, auto.created, ptime, snum, lnum)
   
   #if (ptype == "Finish") print(sys.calls())
   if (.ddg.debug()) print(paste("proc.node:", ptype, pname))
@@ -4105,15 +4131,30 @@ ddg.MAX_HIST_LINES <- 2^14
   }
 }
 
+
+# .ddg.add.ddg.source replaces source with ddg.source
+
+.ddg.add.ddg.source <- function(parsed.command) {
+  script.name <- deparse(parsed.command[[1]][[2]])
+  new.command.txt <- paste("ddg.source(", script.name, ")", sep="")
+  parsed.command <- parse(text=new.command.txt)
+  return(parsed.command)
+}
+
 # .ddg.add.annotations accepts and returns a parsed command.
 # The returned command is annotated as needed.
 
-.ddg.add.annotations <- function(parsed.command) {
+.ddg.add.annotations <- function(parsed.command, annotate.functions=FALSE) {
   # Return if statement is empty.
   if (length(parsed.command) == 0) return(parsed.command)
   
+  # Replace source with ddg.source.
+  else if (parsed.command[[1]][[1]] == "source") {
+    return(.ddg.add.ddg.source(parsed.command))
+  }
+  
   # Annotate user-defined functions.
-  else if (.ddg.is.assign(parsed.command[[1]]) && .ddg.is.functiondecl(parsed.command[[1]][[3]])) {
+  else if (annotate.functions && .ddg.is.assign(parsed.command[[1]]) && .ddg.is.functiondecl(parsed.command[[1]][[3]])) {
     return(.ddg.add.function.annotations(parsed.command))
   }
   
@@ -5037,7 +5078,18 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, enable.console = TRUE,
 
 ddg.run <- function(r.script.path = NULL, ddgdir = NULL, f = NULL, enable.console = TRUE, annotate.functions = TRUE, max.snapshot.size = 100) {
   
+  # Initiate ddg.
   ddg.init(r.script.path, ddgdir, enable.console, max.snapshot.size)
+  
+  # Create ddg directory.
+  dir.create(.ddg.path(), showWarnings = FALSE)
+  
+  # Remove existing files if ddg directory different from working
+  # directory.
+  ddg.flush.ddg()
+  
+  # Set .ddg.is.sourced to TRUE.
+  .ddg.set(".ddg.is.sourced", TRUE)
   
   # If an R error is generated, get the error message and close 
   # the DDG.
@@ -5135,6 +5187,17 @@ ddg.save <- function(r.script.path=NULL, quit=FALSE) {
   ddg.returns <- .ddg.get(".ddg.return.values")
   write.table(ddg.returns[ddg.returns$return.node.id > 0, ], fileout, quote=FALSE, sep="\t", na="NA", row.names=FALSE, col.names=TRUE)
   
+  # Save sourced script table to file.
+  fileout <- paste(ddg.path, "/sourced-scripts.txt", sep="")
+  ddg.sourced.scripts <- .ddg.get(".ddg.sourced.scripts")
+  write.table(ddg.sourced.scripts[ddg.sourced.scripts$snum >= 0, ], fileout, quote=FALSE, sep="\t", na="NA", row.names=FALSE, col.names=TRUE)
+
+    # Save annotated script to file.
+  fileout <- file(paste(.ddg.path(), "annotated-script.r", sep="/"))
+  ddg.annotated.script <- .ddg.get("ddg.annotated.script")
+  write(ddg.annotated.script, fileout)
+  close(fileout)
+  
   # By convention, this is the final call to ddg.save.
   if (quit) {
     # Restore history settings.
@@ -5182,28 +5245,36 @@ ddg.save <- function(r.script.path=NULL, quit=FALSE) {
 ddg.source <- function (file,  ddgdir = NULL, local = FALSE, echo = verbose, print.eval = echo, 
     verbose = getOption("verbose"), max.deparse.length = 150, chdir = FALSE, encoding = getOption("encoding"),
     ignore.ddg.calls = TRUE, ignore.init = ignore.ddg.calls, force.console=ignore.init, annotate.functions = TRUE){
-    
-  # Create ddg directory.
-  .ddg.set("ddg.path", 
-    if (is.null(ddgdir)) paste(getwd(), "ddg", sep="/") 
-    else normalizePath(ddgdir, winslash="/", mustWork=FALSE))
-  dir.create(.ddg.path(), showWarnings = FALSE)
-  
-  # Remove existing files if ddg directory different from working directory
-  ddg.flush.ddg()
-  
-  # Set .ddg.is.sourced to TRUE
-  .ddg.set(".ddg.is.sourced", TRUE)
-  
-  # get line numbers from source code
-  source.parsed <- .ddg.get.source.code.line.numbers(file)
-  .ddg.set(".ddg.source.parsed", source.parsed)
-  .ddg.set(".ddg.parsed.num", 1)
 
-  # save source.parsed table to ddg directory
-  file.out <- file(paste(.ddg.path(), "source-parsed.txt", sep="/"))
-  write.table(source.parsed, file.out, quote=FALSE, sep="\t", na="NA", row.names=FALSE, col.names=TRUE)
- 
+  # Store script number & name.
+  snum <- .ddg.next.script.num()
+  sname <- file
+
+  if (snum == 0) {
+    df <- data.frame(snum, sname, stringsAsFactors=FALSE)
+  } else {
+    df<- rbind(.ddg.sourced.scripts(), c(snum, sname))
+  }
+  .ddg.set(".ddg.sourced.scripts", df)
+
+  # Get line numbers from source code.
+  df <- .ddg.get.source.code.line.numbers(file, snum)
+  
+  # Set current source.parsed table.
+  .ddg.set(".ddg.source.parsed", df)
+  
+  # Store in numbered data frame.
+  df.name <- paste(".ddg.source.parsed-", snum, sep="")
+  .ddg.set(df.name, df)
+  
+  # Push script number on stack.
+  stack <- .ddg.script.num.stack()
+  .ddg.push(stack, snum)
+  .ddg.set(".ddg.script.num.stack", stack)
+  
+  # Increment script number.
+  .ddg.inc(".ddg.next.script.num")
+
   ### CODE IN THIS SECTION IS BASICALLY REPLICATION OF source FUNCTION ###
   
   # Get the environment under which the script should be executed.
@@ -5379,6 +5450,17 @@ ddg.source <- function (file,  ddgdir = NULL, local = FALSE, echo = verbose, pri
     # Turn return console to previous state.
     if (!prev.on) ddg.console.off() else ddg.console.on()
   }
+  
+  # Pop script number from stack.
+  stack <- .ddg.script.num.stack()
+  .ddg.pop(stack)
+  .ddg.set(".ddg.script.num.stack", stack)   
+
+  # Restore previous source.parsed table.
+  snum <- stack[length(stack)]
+  df.name <- paste(".ddg.source.parsed-", snum, sep="")
+  df <- .ddg.get(df.name)
+  .ddg.set(".ddg.source.parsed", df)
   
   invisible()
 }
