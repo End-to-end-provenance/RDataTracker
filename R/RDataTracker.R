@@ -3377,11 +3377,14 @@ ddg.MAX_HIST_LINES <- 2^14
 	# Get scope if necessary.
 	if (is.null(dscope)) dscope <- .ddg.get.scope(dname)
   
+	# Not from environment.
+	from.env <- FALSE
+	
   # Create file node.
   .ddg.append(dtype, " d", ddg.dnum, " \"", ddg.dnum, "-", dname, "\" Value=\"", dpfile.out, "\" Time=\"", dtime, "\"", loc.value, ";\n", sep="")
 
   # Record data node information.
-  .ddg.record.data(dtype, dname, dfile, dscope, dtime, file.loc)
+  .ddg.record.data(dtype, dname, dfile, dscope, from.env, dtime, file.loc)
   
   return(dpfile.out)
 }
