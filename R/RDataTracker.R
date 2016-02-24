@@ -604,6 +604,82 @@ ddg.MAX_HIST_LINES <- 2^14
   write(json.generated, fileout, append=TRUE)
 }
 
+# .ddg.data.objects returns a list of data objects used or created by the script.
+# The list includes node number, name, value, type, scope, line number (if any)
+# where the object was created, and line numbers(s) (if any) where the object was
+# used. The scope is set to ENV if the object was not created by the script and
+# was taken from the pre-existing environment.
+
+.ddg.data.objects <- function() {
+  # Get data node, procedure node, and data flow tables.
+  dnodes <- .ddg.data.nodes()
+  pnodes <- .ddg.proc.nodes()
+  dflow <- .ddg.data.flow()
+
+  # Subset data node table
+  dnum <- .ddg.dnum()
+  dinv <- dnodes[1:dnum , c("ddg.num", "ddg.name", "ddg.value", "ddg.type", "ddg.scope")]
+  
+  # Replace scope with ENV if from initial environment
+  index <- which(dnodes$ddg.from.env==TRUE)
+  if (length(index) > 0) {
+    dinv$ddg.scope[index] <- "ENV"
+  }
+  
+  # Get input line numbers
+  dinv$line.in <- 0
+  for (i in 1:nrow(dinv)) {
+    dnode <- paste("d", i, sep="")
+    index <- which(dflow$ddg.to == dnode)
+    lines <- NULL
+    if (length(index) > 0 ) {
+      for (j in 1:length(index)) {
+        pnode <- dflow$ddg.from[index[j]]
+        pnum <- substr(pnode, 2, nchar(pnode))
+        snum <- pnodes$ddg.snum[pnodes$ddg.num == pnum]
+        lnum <- pnodes$ddg.lnum[pnodes$ddg.num == pnum]
+        if (as.numeric(snum) > 0) line <- paste(snum, ":", lnum, sep="")
+        else line <- lnum
+        lines <- append(lines, line)
+      }
+      lines <- unique(lines)
+      lines <- paste(lines, collapse=" ")
+    } else {
+      lines <- "NA"
+    }
+    dinv$line.in[i] <- lines
+  }
+  
+  # Get output line numbers
+  dinv$line.out <- 0
+  for (i in 1:nrow(dinv)) {
+    dnode <- paste("d", i, sep="")
+    index <- which(dflow$ddg.from == dnode)
+    lines <- NULL
+    if (length(index) > 0 ) {
+      for (j in 1:length(index)) {
+        pnode <- dflow$ddg.to[index[j]]
+        pnum <- substr(pnode, 2, nchar(pnode))
+        snum <- pnodes$ddg.snum[pnodes$ddg.num == pnum]
+        lnum <- pnodes$ddg.lnum[pnodes$ddg.num == pnum]
+        if (as.numeric(snum) > 0) line <- paste(snum, ":", lnum, sep="")
+        else line <- lnum
+        lines <- append(lines, line)
+      }
+      lines <- unique(lines)
+      lines <- paste(lines, collapse=" ")
+    } else {
+      lines <- "NA"
+    }
+    dinv$line.out[i] <- lines
+  }
+  
+  # Rename columns
+  colnames(dinv) <- c("node", "name", "value", "type", "scope", "line.in", "line.out")
+  
+  return(dinv)  
+}
+
 # .ddg.is.init is called at the beginning of all user accessible 
 # functions. It verifies that a DDG has been initialized. If it 
 # hasn't, it returns FALSE. 
@@ -5185,21 +5261,31 @@ ddg.save <- function(r.script.path=NULL, quit=FALSE) {
   ddg.data.flow <- .ddg.data.flow()
   write.table(ddg.data.flow[ddg.data.flow$ddg.num > 0, ], fileout, quote=FALSE, sep="\t", na="NA", row.names=FALSE, col.names=TRUE)
 
-    # Save the function return table to file.
+  # Save the function return table to file.
   fileout <- paste(ddg.path, "/returns.txt", sep="")
   ddg.returns <- .ddg.get(".ddg.return.values")
   write.table(ddg.returns[ddg.returns$return.node.id > 0, ], fileout, quote=FALSE, sep="\t", na="NA", row.names=FALSE, col.names=TRUE)
-  
-  # Save sourced script table to file.
-  fileout <- paste(ddg.path, "/sourced-scripts.txt", sep="")
-  ddg.sourced.scripts <- .ddg.get(".ddg.sourced.scripts")
-  write.table(ddg.sourced.scripts[ddg.sourced.scripts$snum >= 0, ], fileout, quote=FALSE, sep="\t", na="NA", row.names=FALSE, col.names=TRUE)
 
+  # Save if script is sourced.
+  ddg.is.sourced <- .ddg.is.sourced()
+  
+  if (ddg.is.sourced) {
+    # Save sourced script table to file.
+    fileout <- paste(ddg.path, "/sourced-scripts.txt", sep="")
+    ddg.sourced.scripts <- .ddg.get(".ddg.sourced.scripts")
+    write.table(ddg.sourced.scripts[ddg.sourced.scripts$snum >= 0, ], fileout, quote=FALSE, sep="\t", na="NA", row.names=FALSE, col.names=TRUE)
+  
     # Save annotated script to file.
-  fileout <- file(paste(.ddg.path(), "annotated-script.r", sep="/"))
-  ddg.annotated.script <- .ddg.get("ddg.annotated.script")
-  write(ddg.annotated.script, fileout)
-  close(fileout)
+    fileout <- file(paste(.ddg.path(), "annotated-script.r", sep="/"))
+    ddg.annotated.script <- .ddg.get("ddg.annotated.script")
+    write(ddg.annotated.script, fileout)
+    close(fileout)
+    
+    # Save data object table to file.
+    fileout <- paste(ddg.path, "dobjects.csv", sep="/")
+    ddg.data.objects <- .ddg.data.objects()
+    write.csv(ddg.data.objects, fileout, row.names=FALSE)
+  }
   
   # By convention, this is the final call to ddg.save.
   if (quit) {
