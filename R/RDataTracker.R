@@ -4228,19 +4228,19 @@ ddg.MAX_HIST_LINES <- 2^14
   if (length(parsed.command) == 0) return(parsed.command)
   
   # Replace source with ddg.source.
-  else if (parsed.command[[1]][[1]] == "source") {
-    return(.ddg.add.ddg.source(parsed.command))
+  if (length(parsed.command[[1]]) > 1 && parsed.command[[1]][[1]] == "source") {
+      return(.ddg.add.ddg.source(parsed.command))
   }
   
   # Annotate user-defined functions.
-  else if (annotate.functions && .ddg.is.assign(parsed.command[[1]]) && .ddg.is.functiondecl(parsed.command[[1]][[3]])) {
+  if (annotate.functions && .ddg.is.assign(parsed.command[[1]]) && .ddg.is.functiondecl(parsed.command[[1]][[3]])) {
     return(.ddg.add.function.annotations(parsed.command))
   }
   
   # Add other annotations here.
 
   # No annotation required.
-  else return(parsed.command)
+  return(parsed.command)
 }
 
 # .ddg.get.annotation.list checks to see if the script contains calls to
@@ -5630,8 +5630,9 @@ ddg.flush.ddg <- function(ddg.path=NULL) {
     unlink(paste(ddg.path, "pnodes.txt", sep="/"))
     unlink(paste(ddg.path, "dflow.txt", sep="/"))
     unlink(paste(ddg.path, "returns.txt", sep="/"))
-    unlink(paste(ddg.path, "source-parsed.txt", sep="/"))
+    unlink(paste(ddg.path, "sourced-scripts.txt", sep="/"))
     unlink(paste(ddg.path, "annotated-script.r", sep="/"))
+    unlink(paste(ddg.path, "dobjects.csv", sep="/"))
     unlink(paste(ddg.path, ".ddghistory", sep="/"))
     unlink(paste(ddg.path,"[1-9]-*.*", sep="/"))
     unlink(paste(ddg.path,"[1-9][0-9]-*.*", sep="/"))
