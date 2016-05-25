@@ -1,10 +1,10 @@
 <!--
-  This file supports testing of RDataTracker.  Each test case runs 
-  RDataTracker and compares both its standard output and the created 
-  ddg.txt file to an expected result.  The comparison ignores differences 
-  related to file paths, platform executed on and timestamps.  For each 
-  test case, there is also a separate update task that can be used to 
-  update the expected results.  
+  This file supports testing of RDataTracker.  Each test case runs
+  RDataTracker and compares both its standard output and the created
+  ddg.txt file to an expected result.  The comparison ignores differences
+  related to file paths, platform executed on and timestamps.  For each
+  test case, there is also a separate update task that can be used to
+  update the expected results.
 
   To run it, use:
 
@@ -20,28 +20,28 @@
   ddg/ddg.txt - ddg from executing the test
 
   After a test is run, the .out files and the ddg.txt files are compared
-  to expected_ files with the same names.  The differences are displayed 
-  on standard output.  If the tests work as before, the only differences 
-  you should see are in the execution time.  
+  to expected_ files with the same names.  The differences are displayed
+  on standard output.  If the tests work as before, the only differences
+  you should see are in the execution time.
 
-  If the tests stop with Build failed, see what the last test was that was 
-  attempted.  Look in its .out file(s).  Most likely, there is something 
-  that caused it to not work.  Perhaps a library function has changed and 
-  the test needs to be updated.  Perhaps the test needs a network connection 
-  and you are not online.  It is usually easy to understand the problem by 
+  If the tests stop with Build failed, see what the last test was that was
+  attempted.  Look in its .out file(s).  Most likely, there is something
+  that caused it to not work.  Perhaps a library function has changed and
+  the test needs to be updated.  Perhaps the test needs a network connection
+  and you are not online.  It is usually easy to understand the problem by
   looking at the .out files.
 
   If the test results differ from the expected results as reported by the
   diff output at the end of the test case run, examine the results.  If the
-  new version is incorrect, you should fix the problem and try again.  If 
+  new version is incorrect, you should fix the problem and try again.  If
   the new version is correct, then you have either fixed a bug or added
-  an enhancement and should update the expected results.  To do that, you 
-  run an update task.  Update tasks are only provided for individual tests 
-  to reduce the likelihood that somebody would inadvertently update the 
-  expected results.  The task is always named "update-<test>" where "<test>" 
+  an enhancement and should update the expected results.  To do that, you
+  run an update task.  Update tasks are only provided for individual tests
+  to reduce the likelihood that somebody would inadvertently update the
+  expected results.  The task is always named "update-<test>" where "<test>"
   would be replaced with the name of the test, like "update-basicTest".
 
-  When basicTest works, move on to normal-tests which will run the following 
+  When basicTest works, move on to normal-tests which will run the following
   test cases:
 
 - basicTest
@@ -60,21 +60,21 @@
 - HFDatasetPreview
 - SivanSamplingSmaller
 
-  The target "test-all" will do all of the normal & script tests above and 
+  The target "test-all" will do all of the normal & script tests above and
   also Aaron's Simes script, which takes longer to run.
-  
+
   Currently SivanSampling is not included in the tests because it produces a DDG
   that is too big.  We need to exclude collecting data on the simple getter functions
   at least.
-  
+
   To add a new test case, duplicate one of the existing test and update tasks,
   modify the name of the task and the value passed to run-no-instrumentation-test
-  and update-no-instrumentation-expected.  It is important that each test 
+  and update-no-instrumentation-expected.  It is important that each test
   script live in its own directory.  The value passed to run-no-instrumentation-test
-  and update-no-instrumentation-expected should be the directory name.  The 
-  script inside that directory should have the same name, with .R appended to it.  
+  and update-no-instrumentation-expected should be the directory name.  The
+  script inside that directory should have the same name, with .R appended to it.
   When you add a new test case, you should also add it to one of the tasks that
-  group together test cases: 
+  group together test cases:
   - normal-tests is used for basic R tests.
   - script-tests is used for real R scripts that are short-running
   - long-script-tests are used for real R scripts that are long-running
@@ -94,13 +94,13 @@
   <import file="build.xml" />
 
   <!-- Get the base directory -->
-  <dirname 
+  <dirname
       property="TESTS.basedir"
       file="${ant.file.TESTS}"
   />
 
   <!-- For windows, we need to replace \ (backslashes) with / (forwardslashes) -->
-  <loadresource property="FILE.basedir"> 
+  <loadresource property="FILE.basedir">
     <propertyresource name="TESTS.basedir"/>
       <filterchain>
         <tokenfilter>
@@ -120,7 +120,7 @@
   </target>
 
   <!-- Run a specified tests. Parameters needed are :
-    @param dir : specified the directory where the test files are contained. This 
+    @param dir : specified the directory where the test files are contained. This
                   directory should contain all files required by the test scripts
                   as this is the working directory
     @param out : specified the relative location and name of the output file where
@@ -135,14 +135,14 @@
                           with the prefix "source_" attached
     @param source_test: a boolean which, when true, causes the test file to be sourced
                         using ddg.source(script-file, ignore.ddg.calls=F). This leads to the
-                        creation of ddg-source directory, as well to the execution of 
+                        creation of ddg-source directory, as well to the execution of
                         diff with the output of the sourcing with the expected output files
                         which should have the "source_" prefix
   -->
   <target name="run-test">
     <!-- Directory to store local files for comparison -->
     <property name="local_dir" value="${dir}/local" />
-    <delete dir="${local_dir}" quiet="true" /> 
+    <delete dir="${local_dir}" quiet="true" />
     <mkdir dir="${local_dir}" />
 
     <!-- Copy the source test file to this directory, and replace with correct script name and directory -->
@@ -174,7 +174,7 @@
     <basename property="expected_out_name" file="${expected_out}" />
     <basename property="out_name" file="${out}" />
 
-    <!-- Make copy of output files (.out and ddg.txt) as well as expected 
+    <!-- Make copy of output files (.out and ddg.txt) as well as expected
          outputs for diff. Append .local to all files -->
     <copy todir="${local_dir}" overwrite="true">
       <!-- Executed ddg.txt file -->
@@ -188,7 +188,7 @@
     </copy>
 
     <!-- Delete all timestamp occurrences and local OS/R/Version information -->
-    <replaceregexp flags="g"> 
+    <replaceregexp flags="g">
       <regexp pattern='(( Time=)?("?[0-9]{4}-[0-9]{2}-[0-9]{2}(T| )[0-9]{2}(.|:)[0-9]{2}(.|:)[0-9]{2}[A-Z]{0,3}"?))|((Architecture|OperatingSystem|Language|LanguageVersion|RDataTrackerVersion)=(.*)\n)' />
       <substitution expression=""/>
       <fileset dir="${local_dir}">
@@ -199,7 +199,7 @@
     </replaceregexp>
 
     <!-- Delete all elapsed time occurrences  -->
-    <replaceregexp flags="g"> 
+    <replaceregexp flags="g">
       <regexp pattern='(( Time=)?("?[0-9]*\.?[0-9]+"))' />
       <substitution expression=""/>
       <fileset dir="${local_dir}">
@@ -210,7 +210,7 @@
     </replaceregexp>
 
     <!-- Replace local file paths with [DIR] -->
-    <replaceregexp flags="g"> 
+    <replaceregexp flags="g">
       <regexp pattern="${FILE.basedir}/${dir}" />
       <substitution expression="\[DIR\]"/>
       <fileset dir="${local_dir}">
@@ -219,11 +219,11 @@
     </replaceregexp>
 
     <!-- Fix line endings on all local files so diff works well -->
-    <fixcrlf srcdir="${local_dir}" 
+    <fixcrlf srcdir="${local_dir}"
       includes="*.local"
-      eol="lf" 
+      eol="lf"
       eof="remove"
-      tab="remove" 
+      tab="remove"
       tablength="2"
     />
 
@@ -243,7 +243,7 @@
       <arg line="--strip-trailing-cr ${local_dir}/ddg.txt.local ${local_dir}/${ddg_name}.local" />
     </exec>
   </target>
-	
+
 	<!-- Runs a test using a standard file naming scheme. -->
 	<target name = "run-no-instrumentation-test">
 	    <antcall target="run-test">
@@ -254,7 +254,7 @@
 			<param name="expected_ddg" value="examples-no-instrumentation/${test-name}/expected_${test-name}_ddg.txt" />
 	    </antcall>
 	</target>
-	
+
 	<!-- Updates the expected result files for a test case.  This should only be used when the
 		 expected results have changed for the better!  -->
 	<target name="update-expected">
@@ -270,10 +270,10 @@
 			</not>
 		</condition>
 		<fail if="do.abort">Update aborted by user.</fail>
-		
+
 		<!-- Directory to store expected results while editing -->
 	    <property name="expected_dir" value="${dir}/expected" />
-	    <delete dir="${expected_dir}" quiet="true" /> 
+	    <delete dir="${expected_dir}" quiet="true" />
 	    <mkdir dir="${expected_dir}" />
 
 	    <!-- Make copy of ddg.txt and the .out file into the expected folder -->
@@ -282,20 +282,20 @@
 	      <fileset file="${dir}/ddg/ddg.txt" />
 		  <fileset file="${FILE.basedir}/${out}" />
 	    </copy>
-		
+
 	    <!-- Replace local file paths with [DIR] -->
-	    <replaceregexp flags="g"> 
+	    <replaceregexp flags="g">
 	      <regexp pattern="${FILE.basedir}/${dir}" />
 	      <substitution expression="\[DIR\]"/>
 	      <fileset dir="${expected_dir}" />
 	    </replaceregexp>
-		
+
 		<!-- Move the edited files up to become the new expected results -->
 	  	<copy file="${expected_dir}/ddg.txt" tofile="${expected_ddg}" overwrite="true" />
 	    <basename property="out_name" file="${out}" />
 		<copy file="${expected_dir}/${out_name}" tofile="${expected_out}" overwrite="true" />
 	</target>
-		
+
 	<!-- Task to update the expected results using the standard naming scheme -->
 	<target name = "update-no-instrumentation-expected">
 	    <antcall target="update-expected">
@@ -305,11 +305,11 @@
 	      <param name="expected_ddg" value="examples-no-instrumentation/${test-name}/expected_${test-name}_ddg.txt"/>
 	    </antcall>
 	</target>
-	
-	
+
+
 	  <!--############################ End FUNCTIONS ############################-->
 
-	
+
   	<!--########################## Start Basic TESTS ##########################-->
   	<target name="basicTest">
   		<antcall target="run-no-instrumentation-test">
@@ -412,7 +412,7 @@
 	      Finished Execution of Normal Tests. Nothing should have malfunctioned.
     	  ##############################################</echo>
   	</target>
-	
+
   <!--########################## End Basic TESTS ##########################-->
 
   <!--########################## Start Checkpoint TESTS ##########################-->
@@ -482,7 +482,7 @@
 	<!--########################## End Source TESTS ##########################-->
 
     <!--########################## Start Script Tests ##########################-->
-  
+
   	<target name="CalculateSquareRoot">
   		<antcall target="run-no-instrumentation-test">
   			<param name="test-name" value="CalculateSquareRoot" />
@@ -512,6 +512,8 @@
   		<antcall target="run-no-instrumentation-test">
   			<param name="test-name" value="HFDatasetPreview" />
   		</antcall>
+      <echo>The test requires RCurl and gplots (+ dependencies) to be installed.
+      </echo>
   	</target>
 
 	<target name="update-HFDatasetPreview">
@@ -553,7 +555,7 @@
 	<!--########################## End Script Tests ##########################-->
 
     <!--########################## Start Interactive Tests ##########################-->
-  
+
   	<target name="RealTime15MinMET">
   		<antcall target="run-no-instrumentation-test">
   			<param name="test-name" value="RealTime15MinMET" />
@@ -581,7 +583,7 @@
     <target name="interactive-tests" depends="RealTime15MinMET, QualityControl15Min">
 	    <echo>Script tests for which the user needs to provide input </echo>
 	</target>
-	
+
   	<target name="AaronSimesDendrochronology">
   		<antcall target="run-no-instrumentation-test">
   			<param name="test-name" value="AaronSimesDendrochronology" />
@@ -597,7 +599,7 @@
 	<target name="long-script-tests" depends="AaronSimesDendrochronology" >
 	    <echo>Long tests derived from real-world scripts. </echo>
 	</target>
-	  
+
 
 
   <!--########################## Start Bug Tests ##########################-->
@@ -622,7 +624,7 @@
   </target>
 
   <!--########################## End Bug Tests ##########################-->
-  
+
 
   <!--################################# MAIN #################################-->
   <target name="quick-test" depends="normal-tests, checkpoint-tests, source-tests, bug-tests" description="Run quick regressions tests for the currently installed RDataTracker Package.">
@@ -658,9 +660,9 @@
     files with a (-clear.r) suffix and a (template_)*(-annotated.r) pattern and
     combined matching pairs to create a timing test. It executes a clean version of
     the script, then minimally annotated the clean version and executes a console
-    and source version, and finally executes the annotated version. 
+    and source version, and finally executes the annotated version.
 
-    This data is saved in the examples/_timingResults/ directory under the data/time 
+    This data is saved in the examples/_timingResults/ directory under the data/time
     of execution.
   -->
   <target name="script-timer" depends="dependencies">
@@ -672,12 +674,12 @@
     />
     <record name="script-timer.log" action="start" />
       <exec executable="Rscript" dir="utilities">
-        <arg line="scriptTimer.r execute" /> 
+        <arg line="scriptTimer.r execute" />
       </exec>
     <record name="script-timer.log" action="stop" />
   </target>
 
-  <!-- Executes the same as above, but logs a lot more information on each 
+  <!-- Executes the same as above, but logs a lot more information on each
    script -->
   <target name="script-timer-debug" depends="dependencies">
     <replaceregexp  file="utilities/scriptTimer.r"
@@ -686,13 +688,13 @@
     />
     <record name="script-timer-debug.log" action="start" />
       <exec executable="Rscript" dir="utilities">
-        <arg line="scriptTimer.r execute debug" /> 
+        <arg line="scriptTimer.r execute debug" />
       </exec>
     <record name="script-timer-debug.log" action="stop" />
   </target>
 
   <!-- Executes utilities/plot.r. Within this file, scriptTimer.r is executed (making the above
-    and unnecessary dependence). 
+    and unnecessary dependence).
   -->
   <target name="performance-report" depends="dependencies" description="Execute performance scripts on the current version of the library and generate a report.">
     <splash displaytext="Creating Performance Report."/>
