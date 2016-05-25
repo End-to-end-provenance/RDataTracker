@@ -3062,8 +3062,8 @@ ddg.MAX_HIST_LINES <- 2^14
     line.num <- ""
   }
 
-  # Add line number (and script number if > 0)
-  # proc.line <- paste0(" Line=\"", lnum, "\"")
+  # Add script and line numbers
+  proc.line <- paste0(" Script=\"", snum, "\"", " Line=\"", lnum, "\"")
   
   # Obtain the elapsed time for this procedure node.
   ptime <- .ddg.elapsed.time()
@@ -3075,15 +3075,16 @@ ddg.MAX_HIST_LINES <- 2^14
   # Quote quote characters
   quoted.name <- gsub("\\\"", "\\\\\"", pname)
   
-  if (!is.na(lnum) && lnum > 0 && pname != script.name) {
-    quoted.name <- paste(quoted.name, " [", line.num, "]", sep="")
-  }
+  # Add script & line numbers to procedure name
+  # if (!is.na(lnum) && lnum > 0 && pname != script.name) {
+  #   quoted.name <- paste(quoted.name, " [", line.num, "]", sep="")
+  # }
   
   if (proc.value != "") {
-    .ddg.append(ptype, " p", ddg.pnum, " \"", ddg.pnum, "-", quoted.name, "\"", proc.value, proc.time, ";\n", sep="")
+    .ddg.append(ptype, " p", ddg.pnum, " \"", ddg.pnum, "-", quoted.name, "\"", proc.value, proc.time, proc.line, ";\n", sep="")
   }
   else {
-    .ddg.append(ptype, " p", ddg.pnum, " \"", ddg.pnum, "-", quoted.name, "\"", proc.time, "\n", sep="")
+    .ddg.append(ptype, " p", ddg.pnum, " \"", ddg.pnum, "-", quoted.name, "\"", proc.time, proc.line, "\n", sep="")
   }
   
   # Record procedure node information.
