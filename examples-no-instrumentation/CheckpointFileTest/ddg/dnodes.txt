@@ -1,6 +1,9 @@
 ddg.type	ddg.num	ddg.name	ddg.value	ddg.scope	ddg.from.env	ddg.time	ddg.loc	ddg.current
-File	1	DDGCheckpoint.R	1-DDGCheckpoint.R	undefined	2016-01-31T11.46.50EST	/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/R/DDGCheckpoint.R		TRUE
-Checkpoint	2	0.RData	2-0.RData	undefined	2016-01-31T11.46.50EST	/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples-no-instrumentation/CheckpointFileTest/ddg		TRUE
-Data	3	checkpoint	/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples-no-instrumentation/CheckpointFileTest/ddg/2-0.RData	R_GlobalEnv	FALSE			FALSE
-Exception	4	error.msg	Error in eval(expr, envir, enclos): 
+Data	1	.ddg.checkpoint.file.node	#ddg.function	R_GlobalEnv	FALSE			TRUE
+Data	2	.ddg.checkpoint.out	#ddg.function	R_GlobalEnv	FALSE			TRUE
+Data	3	.ddg.record.checkpoint	#ddg.function	R_GlobalEnv	FALSE			TRUE
+Data	4	.ddg.lookup.checkpoint.name	#ddg.function	R_GlobalEnv	FALSE			TRUE
+Data	5	.ddg.mark.stale.data	#ddg.function	R_GlobalEnv	FALSE			TRUE
+Data	6	.ddg.restore.ddg.state	#ddg.function	R_GlobalEnv	FALSE			TRUE
+Exception	7	error.msg	Error in eval(expr, envir, enclos): could not find function "ddg.checkpoint"
 	ddg.library	FALSE			TRUE
