@@ -10,8 +10,8 @@ increment.value <- function(a) {
 
 a <- 0
 # n <- 100 Value reduced for automated function annotations
-n <- 10
-#n <- 2
+n <- 5
+
 	
 ddg.start("iteration i")
 for (i in 1:n) {
