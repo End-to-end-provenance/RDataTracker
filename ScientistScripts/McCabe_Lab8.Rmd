@@ -1,0 +1,134 @@
+---
+title: "Lab 8"
+author: "Tess McCabe"
+date: "April 8, 2015"
+output: html_document
+---
+
+**Question 1**
+
+```{r}
+library(lattice)
+library(permute)
+library(car)
+setwd("/Users/tessmccabe/Dropbox/Junior/Junior Year research/Ant Stats/data")
+
+#### Begining of Lab 8
+source('biostats.R') # Load functions in the informal biostats library
+
+fishdata<-read.csv("Fish_data.csv")
+#### In question 1 
+table(fishdata$Treatment) #Determine the number of sample rows per Treatment
+#All treatments have at least 1 
+
+fish2<-subset(fishdata, fishdata$Year>2006)
+#Make a subset of data
+
+fish3<-fish2[,-c(1:4)]
+fish3[fish3>0]<-1
+##Created the incedence matrix 
+###Part 3 Rowsums! 
+
+Rich<-rowSums(fish3) #Has 30 variables, represents richness of each replication
+fishbin<-Rich # Oops, I guess we're calling this somethign else
+fish4<-cbind(fish3,fishbin)#Check, and it looks alright. 
+
+```
+
+**Question 2: Entering Anova land**
+
+```{r}
+richness_mod<-aov(fishbin~fish2$Treatment*fish2$Year)# Anova that looks at group differences of year, treatment, and thier interaction
+plot(resid(richness_mod)) # The residuals actually look pretty good, if there's a bit of a bump in the middle/ or a band. 
+#Downloaded car package
+
+Anova(richness_mod) # Both Year and treatment are significant! 
+#Pairwise compareisons
+TukeyHSD(richness_mod) # WOW. SO SIGNIFICANT. But it didn't run for years, cuz  those aren't factors. That's fine though, because we just found out that year was significant. 
+
+```
+This was a very exciting analysis. Not only were both year and treatment significant, but each pairwise comparison of the treatment groups were also significantly different. The pruned-intact difference was less significantly different than either treatment with the cleared. 
+
+
+**Ordination Sensation**
+
+```{r}
+#### Lab Manual Code
+
+# Subset data into abundances per linear meter for intact, cleared, vs. pruned comparison years 2008 & 2015
+cpi <- subset(fishdata, Year>2006)
+cpi <- rbind(subset(cpi, Treatment=="pruned"),subset(cpi, Treatment=="intact"), subset(cpi, Treatment=="cleared"))
+
+# Perform row summary statistics to see if there are any rows containing all zeros
+sum.stats(cpi, var='CHCA:UNKN', margin='row')
+
+# Remove rows with all zeros
+cpi_no0rows <- cpi[rowSums(cpi[,5:dim(cpi)[2]])!=0, ]
+
+# Perform column summary statistics to see if there are any columns containing all zeros
+sum.stats(cpi_no0rows, var='CHCA:UNKN', margin='column')
+
+# Remove columns with all missing values
+cpi_no0 <- subset(cpi_no0rows, select=-c(CHST, PAIN, BLEN, THBI, CHMU, CTSA, GRLO, SPGU, TYCR, GOGR, HAPA, EUGU, SILV, TEUT))
+
+# Create a response variable y that consists of the species abundance per linear meter data matrix
+y <- cpi_no0[,5:dim(cpi_no0)[2]]
+
+# Standardize with a column total standardization to put relative species abundance to a species profile
+y.std <- data.stand(cpi_no0[,5:dim(cpi_no0)[2]], method='total') # why this step?
+```
+
+
+
+**Question 4**
+
+```{r}
+## Are there mv outliers? 
+mv.outliers(y.std, method='bray') #This didn't return any outliers! -good sign. 
+
+## is there colinearity 
+splom(y.std) # This produces an image that isn't really easy to interpret. 
+splom(y.std[1:10])# This is better, and shows non-linearity. A PCA isn't apropriate because it relies on linearity. 
+
+
+## NMDS
+#Lab manual code. 
+# Create a scree plot to determine dimensionality (k) of the NMDS
+nmds.scree(y.std, distance='bray', k=6, trymax=50, autotransform=FALSE)
+#Based on this, 5 axis gets us at 0.05 stress. 
+```
+The first time stress dips below 0.05 is when there are five axes. We could go to six axes, but that wouldn't follow the principle of pasimony. 
+
+
+
+**Question 5**
+
+```{r}
+## Lab manual code
+# Conduct NMDS. Be sure to fill in a value for k! #Done :)
+cpi_nmds <- metaMDS(y.std, distance='bray', k=5, trymax=50, autotransform=FALSE)
+
+# Create stress plot of relationship between the original dissimilarities and Euclidean distances in the ordination species
+stressplot(cpi_nmds)
+
+```
+
+Based on the plot, the fit is really good. The linear R2 value if 0.92 which is incredible. This mans that the equation generated really well represent the point in the plot. 
+
+
+**Question 7**
+
+```{r}
+# Create a vector corresponding to the grouping variable (i.e., Treatment)
+grp <- cpi_no0$Treatment #Making a smaller argument for the ordihull f(x)n
+
+p <- ordiplot(cpi_nmds, choices=c(1,2), display='sites') #Makes a plot of all of the "cleaned up" matrix data
+
+ordihull(p, groups=grp, col='blue', show.groups="cleared") # Draws the cleared group on the plot
+
+ordihull(p, groups=grp, col='red', show.groups="intact") #Draws the intact group on the plot
+
+ordihull(p, groups=grp, col='orange', show.groups="pruned") # Draws the pruned group on the plot. 
+
+```
+ This plot represents the three trials plotted in species space. 

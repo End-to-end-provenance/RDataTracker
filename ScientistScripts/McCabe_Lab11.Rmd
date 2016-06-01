@@ -1,0 +1,101 @@
+---
+title: "McCabe_Lab11"
+author: "Tess McCabe"
+date: "April 29, 2015"
+output: html_document
+---
+
+
+```{r, echo=FALSE}
+#How many workers are availible? 
+
+## OnlineRcode40.R
+require(parallel)
+## Loading required package: parallel
+ncores<-detectCores()
+print(ncores)
+
+#It's good to leave some workers Idle
+ncores<-detectCores()/2
+print(ncores)
+
+#A randome number generator that is for parallel code. 
+## set RNG to "L'Ecuyer-CMRG"
+RNGkind("L'Ecuyer-CMRG")
+
+#Build a test algorythm for the normal cureve
+
+## number of workers
+ncores<-2
+## make an object to save the output from each child process
+children<-vector("list", ncores)
+# change the random number generator
+RNGkind("L'Ecuyer-CMRG") ## set an initial seed
+set.seed(20130808)
+## The following will make runs from mcparallel reproducible
+mc.reset.stream()
+
+## initialize each child process
+for(i in 1:ncores){ children[[i]]<-mcparallel(rnorm(4))
+}
+# collect results
+randomnumbers<-parallel::mccollect(children)
+
+## OnlineRcode44.R
+## reset an initial seed (this is to test if the seed givers same randome numbers)
+set.seed(20130808)
+mc.reset.stream()
+## re-initialize each child process
+for(i in 1:ncores){ children[[i]]<-mcparallel(rnorm(4)) }
+## collect results
+randomnumbers2<-parallel::mccollect(children)
+print(randomnumbers)
+print(randomnumbers2) #They match! Hooray
+
+subR<-1000
+## Set the number of workers we will use
+ncores<-3
+## Split the jobs
+splitR<-table(cut(1:subR,ncores,labels=F))
+print(splitR)
+ ### Now Let's look at the time
+tp0 <- structure(.Internal(Sys.time()))
+## initialize a list where we can store the id of each child
+children<-vector("list", ncores)
+## send the division of work in splitR to each of the cores
+for(i in 1:ncores){
+children[[i]] <- mcparallel(fastBoot(subBioData,
+splitR[i]))
+}
+## Wait for the child processes named in "children" to finish
+results <- mccollect(children) ## Record end time
+tp1 <- structure(.Internal(Sys.time()))
+## Calculate execution time
+tp <- tp1-tp0
+
+
+
+
+
+###############Bootstrapping ##########################
+
+
+N<-7.5*10^2 #Number of records per site
+S<-1000 # Number of sites
+BioData<-data.frame(S=rpois(N*S,15),
+site=as.factor(rep(1:S,N)))
+object.size(BioData)[1]/1048600
+
+## Write the data to the disk
+write.table(BioData, file = "biodata.txt", sep=";", row.names=FALSE)
+## load packages and create a ff object.
+require(ff) #
+require(ffbase) # Packages do not install 
+ffBioData <- read.table.ffdf(file="biodata.txt",
+                             sep=";", header=TRUE,
+                             colClasses=c("numeric","factor"))
+
+object.size(ffBioData)[1]/1048600
+#### I made a smaller but slower object
+dim(ffBioData)
+```

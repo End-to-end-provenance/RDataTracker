@@ -1,0 +1,195 @@
+---
+title: "BR_Manova"
+author: "Tess McCabe"
+date: "July 23, 2015"
+output: html_document
+---
+
+*Tess This is your attempt at adapting the HF Simes analysis to your Black Rock Forest summer 2015 data. Enjoy*
+
+
+
+**Packages & Data**
+
+```{r}
+#### Packages
+library(permute)
+library(lattice)
+library(vegan)
+library(vegetarian)
+library(car)
+library(reshape)
+library(reshape2)
+#Note that a package not published on the CRAN server "biostats.r" is sourced later. For more information please contact Kevin McGarigal of the University of Massachusetts, Amherst
+
+#### Read in Data 
+setwd("/Users/tessmccabe/Dropbox/Harvard Forest/R-code") #Set to appropriate local working directory
+source('biostats.R')
+ants<-read.csv("BRdata.csv") #Read in data
+#Standardize data
+ants1<-ants[ants$trap.type=="Hand",] #Removes non hand collected data. Is this apropriate? 
+##Also getting errors
+ants1<-ants1[ants1$plot!="A5",]
+ants1<-ants1[ants1$plot!="A6",]
+ants1<-ants1[ants1$plot!="B6",]
+ants1<-ants1[ants1$plot!="B7",]
+ants1<-ants1[ants1$plot!="B5",]
+ants1<-ants1[ants1$plot!="Z5",]
+ants1<-ants1[ants1$plot!="GX",]
+ants1<-ants1[ants1$plot!="GC",]
+
+
+ year <- substr(ants1$date, 0, 4) #cuts out the year and coverts to string
+# Thanks to Marios! 
+ants1<-cbind(year,ants1)
+ants1$treatment[(ants1$plot=="A1")]<-"N" #Make sure years 2006 and 2007 have treatments
+ants1$treatment[(ants1$plot=="A2")]<-"O50"
+ants1$treatment[(ants1$plot=="A3")]<-"C"
+ants1$treatment[(ants1$plot=="A4")]<-"O"
+ants1$treatment[(ants1$plot=="B1")]<-"O50"
+ants1$treatment[(ants1$plot=="B2")]<-"O"
+ants1$treatment[(ants1$plot=="B3")]<-"N"
+ants1$treatment[(ants1$plot=="B4")]<-"C"
+ants1$treatment[(ants1$plot=="C1")]<-"O"
+ants1$treatment[(ants1$plot=="C2")]<-"C"
+ants1$treatment[(ants1$plot=="C3")]<-"O50"
+ants1$treatment[(ants1$plot=="C4")]<-"N"
+
+ants1$no.ants[is.na(ants1$no.ants)==TRUE]<-1 #IF USE NON INCIDNECE MATRIX CALCS THIS IS BAD AND DO SOMETHING ELSE
+
+###
+ants2<-ants1[,-c(2,5,6,7,8,9,12,13,14)]#Cut out vars that I don't want, and makes sure I don't have NAs
+ants3<-reshape(ants2, timevar= "spec.code", idvar=c("year","plot","treatment"), direction="wide")
+ #Reshape data
+##dcast(melt(ants2),formula=ants2~c(subset=FALSE,add.missing=TRUE)
+##Something happened to 2007, and I don't know what it is. Ok, so 2007apears to be all NA's so that's probably it. 
+
+ants4<-ants3[,-c(1:3)] #get out lable columbs
+ants4[is.na(ants4)==TRUE] <-0# Make the NA's zeros
+ants4[ants4>0]<-1 #Make presence vs absence
+ants5<-cbind(ants3[1:3],ants4)
+```
+
+**Figures & Discriptive Statistics**
+
+```{r, echo=FALSE}
+#### Species Occurences 
+ants4Plot<-(colSums(ants4)) #a vector of the sum of every column
+par(mar=(c(10, 4, 4, 2) + 0.1))# Set margins for barplot
+barplot(ants4Plot, ylab= "Occurrence", names.arg= names(ants4), las=3, cex.names=0.8, main="Species Occurence")
+par(mar=(c(5, 4, 4, 2) + 0.1)) #Reset paramaters for other figures 
+#Plot of Species Occurences
+
+#### Species Richness by Year
+
+specRichYear6<-rowSums(ants5[ants5$year=="2006",-c(1:3)])
+specRichYear7<-rowSums(ants5[ants5$year=="2007",-c(1:3)])
+specRichYear9<-rowSums(ants5[ants5$year=="2009",-c(1:3)])
+specRichYear11<-rowSums(ants5[ants5$year=="2011",-c(1:3)])
+
+
+sdyear<-c(sd(specRichYear6),sd(specRichYear7),
+          sd(specRichYear9),
+          sd(specRichYear11))#Vector of standard deveations
+barplot(c(mean(specRichYear6),mean(specRichYear7), mean(specRichYear9),mean(specRichYear11)), names.arg= c("2006", "2007","2009","2011"), ylab="Average Species Richness", main= "Species Richness by Year") #Displays the mean number of species per year
+
+
+#### Species Richness by Treatment
+specRichTreat1<-rowSums(ants5[ants5$treatment=="N",-c(1:3)])
+specRichTreat2<-rowSums(ants5[ants5$treatment=="O50",-c(1:3)])
+specRichTreat3<-rowSums(ants5[ants5$treatment=="C",-c(1:3)])
+specRichTreat4<-rowSums(ants5[ants5$treatment=="O",-c(1:3)])
+
+
+sdtreat<-c(sd(specRichTreat1),sd(specRichTreat2),sd(specRichTreat3),sd(specRichTreat4))# Vector of standard deveations
+
+
+
+barplot(c(mean(specRichTreat1),mean(specRichTreat2),mean(specRichTreat3),mean(specRichTreat4)), names.arg= c("N", "O50", "C","O"), ylab="Average Species Richness", main= "Species Richness by Treatment", col=c("purple","orange","blue","red"))#Displays the mean number of species per treatment 
+
+## NOT WORKING
+```
+
+
+**Statistical Tests**
+
+Part one: Multivariate Analysis 
+```{r}
+#### Manova
+rowZero<-ants5[(rowSums(ants5[,-c(1:3)])!=0),]# Check for and remove any rows without any species found. 
+rowZero2<-rowZero[rowZero$year!="2006",]
+rowZero2<-rowZero[rowZero$year!="2007",]# Removes 2006 & 2007, which I assume are the control years. 
+mv.outliers(rowZero2[,-c(1:3)], method='bray')# Returns outliers. 283 (14)
+rowZero2<-rowZero2[-c(14),] #Nix outliers
+mv.outliers(rowZero2[,-c(1:3)], method='bray')# Check again for no outliers
+adonis(rowZero2[,-c(1:3)]~(rowZero2$treatment/rowZero2$plot)*rowZero2$year, method='bray')# No significant difference. Closest was treatment by year. 
+
+
+### Visual Confirmation of Manova results  PCoA
+treat<-rowZero2$treatment
+year<-rowZero2$year
+plot<-rowZero2$plot
+yearBeta<-betadisper(vegdist(rowZero2[,-c(1:3)], method= 'bray'), group= year, type=c("median","centroid")) #Creates a betadisper object useing a vector of bray distance measures  grouped by year
+treatBeta<-betadisper(vegdist(rowZero2[,-c(1:3)], method= 'bray'), group= treat, type=c("median","centroid")) #Creates a similar betadisper object grouped by treatment
+plotBeta<-betadisper(vegdist(rowZero2[,-c(1:3)], method= 'bray'), group= plot, type=c("median","centroid"))
+plot(yearBeta, axes = c(1,2), cex = 0.7, hull = TRUE, main= "Year Visualization")
+plot(treatBeta, axes = c(1,2), cex = 0.7, hull = TRUE, main= "Treatment Visualization") 
+
+#Permutests not used because of the lack of sigs
+### Pairwise Comparisons of years
+#permutest(yearBeta, pairwise =TRUE,control = how(nperm = 999)) 
+#permutest(treatBeta, pairwise =TRUE,control = how(nperm = 999)) 
+nmds.scree(rowZero[,-c(1:3)], distance='bray', k=10, trymax=50, autotransform=FALSE)# looks like 9 axes. 
+Ant_nmds <- metaMDS(rowZero[,-c(1:3)], distance='bray', k=5, trymax=50, autotransform=FALSE)
+stressplot(Ant_nmds) #The linear fit is only 0.85 
+grp <- rowZero$treatment
+p <- ordiplot(Ant_nmds, choices=c(1,2), display='sites', main= "Treatment")
+
+ordihull(p, groups=grp, col='blue', show.groups="N") 
+ordihull(p, groups=grp, col='gray', show.groups="O50") 
+ordihull(p, groups=grp, col='orange', show.groups="C") 
+ordihull(p, groups=grp, col='red', show.groups="O") 
+#almost no diferentiation
+###adding in a legend 
+#legend2<- c("2006-2006 (Control)","2009", "2011")
+#legend(-2, y =-0.7, legend=legend1,border = "white", fill=c('blue','red', 'green', 'purple'),cex=0.75)
+l<- ordiplot(Ant_nmds, choices=c(1,2), display='sites', main= "Year")
+#legend1<- c("N","O50", "C","O","all","none")
+#legend(-2, y =-0.5, legend=legend2,border = "white", fill=c('blue','gray', 'red'))
+grp2<-rowZero$year
+ 
+ordihull(p, groups=grp2, col='gray40', show.groups="2006") 
+ordihull(p, groups=grp2, col='gray40', show.groups="2007") #all of them overlap with the control. 
+ordihull(p, groups=grp2, col='blue', show.groups="2009")
+ordihull(p, groups=grp2, col='red', show.groups="2011")
+
+```
+
+Univariate Analysis
+
+```{r}
+rowZeroNum<-ants5[(rowSums(ants5[,-c(1:3)])!=0),] # I included the control years in this. Is this apropriate? 
+rich<-rowSums(rowZeroNum[,-c(1:3)])
+rich_aov<-aov(rich~rowZeroNum$treatment*as.factor(rowZeroNum$year))
+
+plot(resid(rich_aov)) # Plot siduals to double check normality. Appears normal. 
+Anova(rich_aov) #Year is significant
+TukeyHSD(rich_aov) #this is a lot of information not really sure if it's worth it. 
+
+```
+
+Check of control years 2006 & 2007
+```{r}
+think<-ants5[ants5=="2006",]
+dink<-ants5[ants5=="2007",]
+ants4Con<-rbind(think,dink)
+rowZero2006<-ants4Con[(rowSums(ants4Con[,-c(1:3)])!=0),]
+rich2006<-rowSums(rowZero2006[,-c(1:3)])
+
+aov2006<-aov(rich2006~as.factor(rowZero2006$treatment))
+Anova(aov2006)
+# Not significant! Hooray!
+
+```
+
+
