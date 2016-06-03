@@ -430,7 +430,22 @@
 		</antcall>
 	</target>
 	
-	<target name="normal-tests" depends="basicTest, S4ObjectTest, ScopeTest, ReturnTest, OddParameterTest, FunctionAnnotationTest, WarningTest, PlotTest, DataTypeTest">
+  	<target name="HigherOrderFuncTest">
+  		<antcall target="run-no-instrumentation-test">
+  			<param name="test-name" value="HigherOrderFuncTest" />
+  		</antcall>
+  	</target>
+
+	<target name="update-HigherOrderFuncTest">
+	  	<antcall target="update-no-instrumentation-expected">
+	  		<param name="test-name" value="HigherOrderFuncTest" />
+	 	</antcall>
+	</target>
+
+	<target name="normal-tests" depends="basicTest, S4ObjectTest,
+		ScopeTest, ReturnTest, OddParameterTest,
+		FunctionAnnotationTest, WarningTest, PlotTest,
+		DataTypeTest, HigherOrderFuncTest">
 		<echo>##############################################
 	      Finished Execution of Normal Tests. Nothing should have malfunctioned.
     	  ##############################################</echo>
