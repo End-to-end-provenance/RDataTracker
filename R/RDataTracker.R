@@ -5166,7 +5166,13 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, enable.console = TRUE,
 #   into a snapshot, not the size of the resulting snapshot.
 
 ddg.run <- function(r.script.path = NULL, ddgdir = NULL, f = NULL, enable.console = TRUE, annotate.functions = TRUE, max.snapshot.size = 100) {
-
+  
+  if (tools::file_ext(r.script.path) == "Rmd"){
+    library(knitr)
+    purl(r.script.path, documentation = 2L)
+    r.script.path <- sub(".Rmd", ".R", r.script.path)
+    print(r.script.path)
+  }
   # Initiate ddg.
   ddg.init(r.script.path, ddgdir, enable.console, max.snapshot.size)
 
