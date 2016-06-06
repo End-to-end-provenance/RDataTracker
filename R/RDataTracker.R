@@ -5167,11 +5167,8 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, enable.console = TRUE,
 
 ddg.run <- function(r.script.path = NULL, ddgdir = NULL, f = NULL, enable.console = TRUE, annotate.functions = TRUE, max.snapshot.size = 100) {
   
-  if (tools::file_ext(r.script.path) == "Rmd"){
-    library(knitr)
-    purl(r.script.path, documentation = 2L)
-    r.script.path <- sub(".Rmd", ".R", r.script.path)
-    print(r.script.path)
+  if (tools::file_ext(r.script.path) == "Rmd") {
+    r.script.path <- ddg.markdown(r.script.path)
   }
   # Initiate ddg.
   ddg.init(r.script.path, ddgdir, enable.console, max.snapshot.size)
@@ -5208,6 +5205,51 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, f = NULL, enable.consol
       }
   )
   invisible()
+}
+
+ddg.markdown <- function(r.script.path = NULL){
+  library(knitr)
+  purl(r.script.path, documentation = 2L)
+  r.script.path <- sub(".Rmd", ".R", r.script.path)
+  script <- readLines(r.script.path)
+  
+  library(stringr)
+  skip <- FALSE
+  name <- "ddg.chunk"
+  annotated <- character(0)
+  index <- 1
+  
+  for(i in 1:length(script)){
+    if(regexpr("eval = FALSE", script[i]) != -1){
+      skip <- TRUE
+      annotated <- append(annotated, script[i])
+    }
+    else if(regexpr("## ----", script[i]) != -1){
+      if(regexpr("=", script[i]) == -1){
+        end <- regexpr("-----", script[i])
+        name <- substring(script[i], 8, last = end -1)
+      }
+      else if(regexpr(",", script[i]) != -1){
+        comma <- regexpr(",", script[i])
+        name <- substring(script[i], 8, last = comma -1)
+      }
+      else{
+        name <- paste("ddg.chunk_", index, sep = "")
+        index <- index + 1
+      }
+      name <- str_trim(name, side = "both")
+      annotated <- append(annotated, paste("ddg.start(\"", name, "\")", sep = ""))
+    }
+    else if(nchar(script[i]) == 0 && skip == FALSE){
+      annotated <- append(annotated, paste("ddg.finish(\"", name, "\")", sep = ""))
+      skip <- FALSE
+    }
+    else{
+      annotated <- append(annotated, script[i])
+    }
+  }
+  writeLines(annotated, r.script.path)
+  r.script.path
 }
 
 # ddg.save inserts attribute information and the number of
@@ -5476,6 +5518,7 @@ ddg.source <- function (file,  ddgdir = NULL, local = FALSE, echo = verbose, pri
 
   # Parse the expressions from the file.
   exprs <- if (!from_file) {
+    print("not from file")
         if (length(lines))
           parse(stdin(), n = -1, lines, "?", srcfile,
               encoding)
