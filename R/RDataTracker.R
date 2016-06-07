@@ -5220,29 +5220,40 @@ ddg.markdown <- function(r.script.path = NULL){
   index <- 1
   
   for(i in 1:length(script)){
-    if(regexpr("eval = FALSE", script[i]) != -1){
+    if(regexpr("eval+(\\s*)+=+(\\s*)+FALSE", script[i]) != -1){
       skip <- TRUE
       annotated <- append(annotated, script[i])
     }
     else if(regexpr("## ----", script[i]) != -1){
-      if(regexpr("=", script[i]) == -1){
-        end <- regexpr("-----", script[i])
-        name <- substring(script[i], 8, last = end -1)
-      }
-      else if(regexpr(",", script[i]) != -1){
-        comma <- regexpr(",", script[i])
-        name <- substring(script[i], 8, last = comma -1)
-      }
-      else{
+      if(regexpr("## -----", script[i] != -1)){
+        print(paste("generating name", i))
         name <- paste("ddg.chunk_", index, sep = "")
         index <- index + 1
+      }
+      else{
+        if(regexpr("=", script[i]) == -1){
+          print(paste("no equal", i))
+          end <- regexpr("-----", script[i])
+          name <- substring(script[i], 8, last = end -1)
+        }
+        else if(regexpr(",", script[i]) != -1){
+          print(paste("has comma", i))
+          comma <- regexpr(",", script[i])
+          name <- substring(script[i], 8, last = comma -1)
+        }
       }
       name <- str_trim(name, side = "both")
       annotated <- append(annotated, paste("ddg.start(\"", name, "\")", sep = ""))
     }
-    else if(nchar(script[i]) == 0 && skip == FALSE){
-      annotated <- append(annotated, paste("ddg.finish(\"", name, "\")", sep = ""))
-      skip <- FALSE
+    else if(nchar(script[i]) == 0 && (regexpr("#'", script[i + 1]) != -1 || 
+            i == length(script) || regexpr("## ----", script[i + 1]) != -1 )){
+      if(skip){
+        annotated <- append(annotated, script[i])
+        skip <- FALSE
+      }
+      else{
+        annotated <- append(annotated, paste("ddg.finish(\"", name, "\")", sep = ""))
+      }
     }
     else{
       annotated <- append(annotated, script[i])
