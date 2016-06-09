@@ -4239,10 +4239,13 @@ ddg.MAX_HIST_LINES <- 2^14
   }
 
   # Add other annotations here.
-
+oh
   # No annotation required.
   return(parsed.command)
 }
+
+#.ddg.rm removes all data except ddg information
+.ddg.rm <-function()
 
 # .ddg.get.annotation.list checks to see if the script contains calls to
 # ddg.annotate.on or ddg.annotate.off. If it does, these calls are executed.
@@ -5092,16 +5095,27 @@ ddg.finish <- function(pname=NULL) {
 #   this tests the size of the object that will be turned into a
 #   snapshot, not the size of the resulting snapshot.
 
-ddg.init <- function(r.script.path = NULL, ddgdir = NULL, enable.console = TRUE, max.snapshot.size = 100) {
+ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = NULL, enable.console = TRUE, max.snapshot.size = 100) {
   .ddg.init.tables()
 
   .ddg.set("ddg.r.script.path",
       if (is.null(r.script.path)) NULL
           else normalizePath(r.script.path, winslash="/"))
-  .ddg.set("ddg.path",
-      if (is.null(ddgdir)) paste(getwd(), "ddg", sep="/")
-          else normalizePath(ddgdir, winslash="/", mustWork=FALSE))
-
+  
+  #Setting the path for the ddg    
+  if (is.null(ddgdir)) {
+        ddg.path <- paste(dirname(r.script.path), "/", 
+              basename(tools::file_path_sans_ext(r.script.path)), 
+              "_ddg", sep="")
+  }
+  else ddg.path <- normalizePath(ddgdir, winslash="/", mustWork=FALSE)
+  
+  if(!overwrite){
+    ddg.path <- paste(ddg.path, .ddg.timestamp(), sep = "_")
+  }
+  
+  .ddg.set("ddg.path", ddg.path)
+           
   # Set environment constants.
   .ddg.set(".ddg.enable.console", enable.console)
   .ddg.set(".ddg.max.snapshot.size", max.snapshot.size)
@@ -5165,13 +5179,13 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, enable.console = TRUE,
 #   Note that this tests the size of the object that will be turned
 #   into a snapshot, not the size of the resulting snapshot.
 
-ddg.run <- function(r.script.path = NULL, ddgdir = NULL, f = NULL, enable.console = TRUE, annotate.functions = TRUE, max.snapshot.size = 100) {
+ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = NULL, enable.console = TRUE, annotate.functions = TRUE, max.snapshot.size = 100) {
   
   if (tools::file_ext(r.script.path) == "Rmd") {
     r.script.path <- ddg.markdown(r.script.path)
   }
   # Initiate ddg.
-  ddg.init(r.script.path, ddgdir, enable.console, max.snapshot.size)
+  ddg.init(r.script.path, ddgdir, overwrite, enable.console, max.snapshot.size)
 
   # Create ddg directory.
   dir.create(.ddg.path(), showWarnings = FALSE)
