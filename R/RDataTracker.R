@@ -5097,16 +5097,12 @@ ddg.finish <- function(pname=NULL) {
 
 ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = NULL, enable.console = TRUE, max.snapshot.size = 100) {
   .ddg.init.tables()
-
-  .ddg.set("ddg.r.script.path",
-      if (is.null(r.script.path)) NULL
-          else normalizePath(r.script.path, winslash="/"))
   
   #Setting the path for the ddg    
   if (is.null(ddgdir)) {
-        ddg.path <- paste(dirname(r.script.path), "/", 
-              basename(tools::file_path_sans_ext(r.script.path)), 
-              "_ddg", sep="")
+    ddg.path <- paste(dirname(r.script.path), "/", 
+                      basename(tools::file_path_sans_ext(r.script.path)), 
+                      "_ddg", sep="")
   }
   else ddg.path <- normalizePath(ddgdir, winslash="/", mustWork=FALSE)
   
@@ -5115,12 +5111,30 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = NULL, enab
   }
   
   .ddg.set("ddg.path", ddg.path)
+  
+  .ddg.init.environ()
+  
+  #Reset r.script.path if RMarkdown file
+
+  if (tools::file_ext(r.script.path) == "Rmd") {
+    output.path <- paste(ddg.path, "/",
+                           basename(tools::file_path_sans_ext(r.script.path)),
+                           ".R", sep = "")
+    .ddg.markdown(r.script.path, output.path)
+  }
+  
+  #Set r.script.path
+  
+  .ddg.set("ddg.r.script.path",
+      if (is.null(r.script.path)) NULL
+          else normalizePath(r.script.path, winslash="/"))
+  
+ 
            
   # Set environment constants.
   .ddg.set(".ddg.enable.console", enable.console)
   .ddg.set(".ddg.max.snapshot.size", max.snapshot.size)
   .ddg.set(".ddg.func.depth", 0)
-  .ddg.init.environ()
 
   # Initialize the information about the open start-finish blocks
   .ddg.set (".ddg.starts.open", vector())
@@ -5181,9 +5195,7 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = NULL, enab
 
 ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = NULL, enable.console = TRUE, annotate.functions = TRUE, max.snapshot.size = 100) {
   
-  if (tools::file_ext(r.script.path) == "Rmd") {
-    r.script.path <- ddg.markdown(r.script.path)
-  }
+ 
   # Initiate ddg.
   ddg.init(r.script.path, ddgdir, overwrite, enable.console, max.snapshot.size)
 
@@ -5221,11 +5233,12 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
   invisible()
 }
 
-ddg.markdown <- function(r.script.path = NULL){
+.ddg.markdown <- function(r.script.path = NULL, output.path = NULL){
   library(knitr)
   purl(r.script.path, documentation = 2L)
-  r.script.path <- sub(".Rmd", ".R", r.script.path)
-  script <- readLines(r.script.path)
+  file.rename(from = paste(getwd(), "/", basename(tools::file_path_sans_ext(r.script.path)),
+                           ".R", sep = ""), to = output.path)
+  script <- readLines(output.path)
   
   library(stringr)
   skip <- FALSE
@@ -5273,7 +5286,7 @@ ddg.markdown <- function(r.script.path = NULL){
       annotated <- append(annotated, script[i])
     }
   }
-  writeLines(annotated, r.script.path)
+  writeLines(annotated, output.path)
   r.script.path
 }
 
