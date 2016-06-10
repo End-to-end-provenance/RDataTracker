@@ -5223,7 +5223,7 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
       error=function(e) {
         e.str <- toString(e)
         print(e.str)
-        ddg.procedure(pname="tryCatch")
+        #ddg.procedure(pname="tryCatch")
         ddg.exception.out("error.msg", e.str, "tryCatch")
       },
       finally={
