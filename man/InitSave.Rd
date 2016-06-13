@@ -10,7 +10,8 @@
 \title{Creating Provenance Graphs with RDataTracker}
 \description{These functions are needed to create provenance graphs.}
 \usage{
-ddg.init(r.script.path = NULL, ddgdir = NULL, enable.console = TRUE, max.snapshot.size = 100) 
+ddg.init(r.script.path = NULL, ddgdir = NULL, enable.console = TRUE, 
+    max.snapshot.size = 100) 
 ddg.save(r.script.path = NULL, quit=FALSE)
 ddg.run(r.script.path = NULL, ddgdir = NULL, f = NULL, enable.console = TRUE, 
     annotate.functions = TRUE, max.snapshot.size = 100)

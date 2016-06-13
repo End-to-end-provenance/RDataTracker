@@ -1,0 +1,17 @@
+---
+title: "Noramilty Check summary"
+author: "Tess McCabe"
+date: "April 6, 2015"
+output: html_document
+---
+A compilation of other code's normality checks and also a few new ones just for my curiosity. 
+
+```{r}
+plot(antdata2~antdata3$Treatment+antdata3$Year)
+as.data.frame(antdata2)
+plot(antdata2~antdata3$Treatment)
+is.list(antdata2)
+is.data.frame(antdata2)
+#The plot function is giving me an error. Why? 
+```
+

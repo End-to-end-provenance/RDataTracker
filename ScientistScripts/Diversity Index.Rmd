@@ -1,0 +1,112 @@
+---
+title: "DiversityIndex"
+author: "Tess McCabe"
+date: "April 15, 2015"
+output: html_document
+---
+
+
+```{r}
+#### Packages
+library(permute)
+library(lattice)
+library(vegan)
+library(vegetarian)
+library(car)
+library(fossil)
+  library(foreign)
+  library(maps)
+  library(shapefiles)
+```
+
+Setup part 2
+```{r}
+#### Read in Data 
+setwd("/Users/tessmccabe/Dropbox/Junior/Junior Year research/Ant Stats/data") #Set to appropriate local working directory
+source('biostats.R')
+antdatanum<-read.csv("ants.csv") #Only the ant portion of Harvard Forest dataset. All three "Q" Charachtors were removed manually. 
+antdata2 <- antdatanum[,-c(1:3)]#Create a matrix without lable columns
+antdata2[antdata2>0] <-1 #Make that matrix presence vs absence change all numbers into 1's. 
+antdata3<-cbind(antdatanum[,1:3],antdata2) #Create a presence vs absence matrix with lable columns. 
+```
+
+Subsetting
+```{r}
+#### Years
+antdata2006<-antdata3[which(antdata3$Year=="2006"),]
+antdata2007<-antdata3[which(antdata3$Year=="2007"),]
+antdata2008<-antdata3[which(antdata3$Year=="2008"),]
+antdata2009<-antdata3[which(antdata3$Year=="2009"),]
+# trim year variables for Hill number calculations
+antdata2006a<-antdata2006[,-c(1:3)]
+antdata2007a<-antdata2007[,-c(1:3)]
+antdata2008a<-antdata2008[,-c(1:3)]
+antdata2009a<-antdata2009[,-c(1:3)]
+#### Plot Number
+antdataTR1<-antdata3[which(antdata3$Treatment==1),]
+antdataTR2<-antdata3[which(antdata3$Treatment==2),]
+antdataTR3<-antdata3[which(antdata3$Treatment==3),]
+antdataTR4<-antdata3[which(antdata3$Treatment==4),]
+# trim plot variables for Hill number calculations
+antdataTR1a<-antdataTR1[,-c(1:3)]
+antdataTR2a<-antdataTR2[,-c(1:3)]
+antdataTR3a<-antdataTR3[,-c(1:3)]
+antdataTR4a<-antdataTR4[,-c(1:3)]
+```
+
+Choa2
+```{r}
+chao2(antdata2, taxa.row=TRUE) #Boo gotta subset it. 
+# look at Gotelli Et All 2010
+ya<-chao2(antdata2006a,taxa.row=TRUE)
+yb<-chao2(antdata2007a,taxa.row=TRUE)
+yc<-chao2(antdata2008a,taxa.row=TRUE)
+yd<-chao2(antdata2009a,taxa.row=TRUE)
+#Treatment
+ta<-chao2(antdataTR1a,taxa.row=TRUE)
+tb<-chao2(antdataTR2a,taxa.row=TRUE)
+tc<-chao2(antdataTR3a,taxa.row=TRUE)
+td<-chao2(antdataTR4a,taxa.row=TRUE)
+#Vectors of treatment choa2 number and year
+treatChao2<-c(ta,tb,tc,td)
+yearChao2<-c(ya,yb,yc,yd)
+
+barplot(treatChao2, xlab="Treatment") #Huge axis shift, 
+barplot(yearChao2, xlab="Year")
+##Vector of Chao numbers per row
+antChao2<- apply(antdata2, 1, FUN=chao2)
+chao2(antdata2[1,]) #Same as first element of vector. Just a check. 
+
+plot(antChao2~antdata3$Treatment) 
+plot(antChao2~antdata3$Year) #Both have same basic pattern as richness counts
+```
+
+PIE Richness
+```{r}
+
+pie_calc <- function(vec) {
+  
+  N <- sum(vec)
+  a <- (N / ( N -1 ))
+  b <- 1 - sum((vec/N)^2)
+  return(a*b)
+  
+}
+h_pie <- function(sp_list){
+  
+  #convert vector to matrix
+  if(is.vector(sp_list)){
+    sp_list <- t(as.matrix(sp_list))
+  }
+  
+  out <- apply(sp_list,1, pie_calc)
+  return(out)
+  
+}
+
+pie_calc(antdata2[1,]) #Returns a NaN value. Will return NaN values if row doesn't have more than one. 
+rowZeroNum<-antdata3[(rowSums(antdata3[,-c(1:3)])!=0),]
+antdataPIE<-antdata2[(rowSums(antdata2)>1),]
+pie_vals<-apply(antdataPIE, 1, pie_calc) # All this is is a vec of ones. 
+pie_vals2<-apply(antdata2, 1, pie_calc) #Vec of 1 and NaN's 
+```

@@ -1,0 +1,980 @@
+---
+title: "seed_minerals_carb"
+author: "Josia"
+date: "June 29, 2015"
+output: html_document
+---
+
+```{r}
+rm(list=ls())
+library(ggplot2)
+library(scales)
+library(reshape2)
+library(stringr)
+require(car)
+require(geoR)
+require(stats)
+require(sciplot)
+
+#Mapping file
+metagenome.map<-read.table("~/Documents/2014-15/HF_Summer/Data/MEGAN_files/HF_metaT_key.txt",header=T,sep="\t")
+```
+
+#Phosphorus Metabolism
+
+```{r}
+phosdata<- read.csv("~/Documents/2014-15/HF_Summer/Data/P-SEED-all.csv", header = TRUE)
+phosdata$Datasets=as.character(phosdata$Datasets)
+phosdata=rbind(c(NA,t(colSums(phosdata[,-1]))),phosdata)
+data.D=phosdata
+
+data.D[,-1] = (sweep(as.matrix(data.D[,-1]),2,as.matrix(data.D[1,-1]),'/')*100)
+data.D <- data.D[2:nrow(data.D),]   #trim off totals
+data.nomelt=data.D
+data.D = melt(data.D,id.vars = 'Datasets')
+data.D$Site = metagenome.map$Site[match(data.D$variable,metagenome.map$Sample_ID)]
+data.D$Treatment = metagenome.map$Treatment[match(data.D$variable,metagenome.map$Sample_ID)]
+data.D$Horizon = metagenome.map$Horizon[match(data.D$variable,metagenome.map$Sample_ID)]
+
+
+```
+
+
+##Phosphorus Statistics
+```{r, warning=FALSE}
+#make aggregate dfs of same dimensions with samples in same order
+#datatrt has which treatment applies to each replicate
+#dataval has which value applies to each replicate- includes all 8, 4C then 4H (alphabetical)
+datatrt<- aggregate(value~Datasets:Horizon:Site:Treatment,FUN = mean,data = data.D)
+dataval<- aggregate(value~Datasets:Horizon:Site,FUN = c,data = data.D)
+#select just 8 replicates and transpose
+dataval=t(apply(dataval, 1, function(x) as.numeric(x[4:11])))
+#do wilcox test on 8 replicates. generatelevels(2,4) says to group 8 replicates by 2 grps of 4
+#output is list of wtests for each gene:horizon:site, which each have a p.value
+datawilcox= apply(dataval,1,function(y) wilcox.test(y~gl(2,4)))
+#select the pval from each wtest and make a vector from them (unlist)
+datawilcox=unlist(lapply(datawilcox, function(x) x$p.value))
+#remove NAs and put p=1 instead: not true but will never be under p cutoff, happens bc all vals=0
+datawilcox[is.na(datawilcox)]=1
+#add list of pvals back onto whole df: p for H/C is the same, so pval list needs to be added
+#twice for the whole df that has all C then all H but identical otherwise
+datatrt=data.frame(datatrt,p.value=rep(datawilcox,2))
+data.Dmean=datatrt
+data.Dmean$se <- aggregate(value~Datasets:Horizon:Site:Treatment,FUN = sd,data = data.D)$value
+#print significant rows for researching genes
+print(data.Dmean[which(data.Dmean$p.value<=.05),])
+```
+
+#Graphing prep
+```{r, fig.width=10, fig.height=10}
+
+
+data.Dmean$value=log10(data.Dmean$value)
+#this is the wrong representation below
+data.Dmean$se=log10(data.Dmean$se+data.Dmean$value)
+data.Dmean=subset(data.Dmean, data.Dmean$value>(-6))
+data.Dmean$Datasets=substr(data.Dmean$Datasets, 28, 200) 
+data.Dmean$Datasets=str_wrap(data.Dmean$Datasets, width=30) 
+
+```
+
+```{r}
+signames<-unique(subset(data.Dmean, p.value<=.05)$Datasets)
+sig<-data.Dmean[match(signames,data.Dmean$Datasets),]
+
+
+```
+Plotting- Phosphorus
+```{r,fig.width=10, fig.height=10}
+
+#SWaN
+data.Dswo=subset(data.Dmean, Site=='SWaN'&Horizon=='Organic')
+#data.Dswo=data.Dswo[order(data.Dswo$value, decreasing = T),]
+data.Dswo=data.Dswo[1:(nrow(data.Dswo)),]
+p<- ggplot(data.Dswo, aes(x=value,y=Datasets, color=Treatment))+
+  #facet_grid(~Horizon)+
+  scale_color_manual(values=c("#33CCFF", "#FF6666"))+  #c=blue, h=red
+  #scale_x_log10(limits = c(0.0000001, 1))+   #STILL DOESN'T WORK
+  geom_point(cex=2.5)+
+  ggtitle("Phosphorus Metabolism in SEED for SWaN Organic")+
+  ylab(" ")+
+  xlab("Log10 Transformed Percent composition")+
+  geom_errorbarh(aes(xmin=value-se, xmax=value+se),width=.05) +  # Width of the error bars
+  theme(axis.text.y = element_text(size=3))+
+  scale_x_continuous(limits = c(-6,2))+
+  theme_bw()
+#if no sigvals in the array, aes has error bc length<1
+if (any(data.Dswo$p.value<=.05)) {
+p=p+ geom_text(data=subset(data.Dswo, p.value<=.05), aes(x=value, y=Datasets, label="*"), vjust= -.1, colour="black")    #only print * for sig pvals
+}
+
+p
+data.Dswm=subset(data.Dmean, Site=='SWaN'&Horizon=='Mineral')
+#data.Dswm=data.Dswm[order(data.Dswm$value, decreasing = T),]
+data.Dswm=data.Dswm[1:(nrow(data.Dswm)),]
+p<- ggplot(data.Dswm, aes(x=value,y=Datasets, color=Treatment))+
+  #facet_grid(~Horizon)+
+  scale_color_manual(values=c("#33CCFF", "#FF6666"))+  #c=blue, h=red
+  #scale_x_log10(limits = c(0.0000001, 1))+   #STILL DOESN'T WORK
+  geom_point(cex=2.5)+
+  ggtitle("Phosphorus Metabolism in SEED for SWaN Mineral")+
+  ylab(" ")+
+  xlab("Log10 Transformed Percent composition")+
+  geom_errorbarh(aes(xmin=value-se, xmax=value+se),width=.05) +  # Width of the error bars
+  theme(axis.text.y = element_text(size=3))+
+  theme_bw()
+#if no sigvals in the array, aes has error bc length<1
+if (any(data.Dswm$p.value<=.05)) {
+p=p+ geom_text(data=subset(data.Dswm, p.value<=.05), aes(x=value, y=Datasets, label="*"), vjust= -.1, colour="black")    #only print * for sig pvals
+}
+p
+
+
+##Barre Woods
+data.Dbwo=subset(data.Dmean, Site=='Barre Woods'&Horizon=='Organic')
+#data.Dbwo=data.Dbwo[order(data.Dbwo$value, decreasing = T),]
+data.Dbwo=data.Dbwo[1:(nrow(data.Dbwo)),]
+p<- ggplot(data.Dbwo, aes(x=value,y=Datasets, color=Treatment))+
+  #facet_grid(~Horizon)+
+  scale_color_manual(values=c("#33CCFF", "#FF6666"))+  #c=blue, h=red
+  #scale_x_log10(limits = c(0.0000001, 1))+   #STILL DOESN'T WORK
+  geom_point(cex=2.5)+
+  ggtitle("Phosphorus Metabolism in SEED for Barre Woods Organic")+
+  ylab(" ")+
+  xlab("Log10 Transformed Percent composition")+
+  geom_errorbarh(aes(xmin=value-se, xmax=value+se),width=.05) +  # Width of the error bars
+  theme(axis.text.y = element_text(size=3))+
+  theme_bw()
+#if no sigvals in the array, aes has error bc length<1
+if (any(data.Dbwo$p.value<=.05)) {
+p=p+ geom_text(data=subset(data.Dbwo, p.value<=.05), aes(x=value, y=Datasets, label="*"), vjust= -.1, colour="black")    #only print * for sig pvals
+}
+
+p
+data.Dbwm=subset(data.Dmean, Site=='Barre Woods'&Horizon=='Mineral')
+#data.Dbwm=data.Dbwm[order(data.Dbwm$value, decreasing = T),]
+data.Dbwm=data.Dbwm[1:(nrow(data.Dbwm)),]
+p<- ggplot(data.Dbwm, aes(x=value,y=Datasets, color=Treatment))+
+  #facet_grid(~Horizon)+
+  scale_color_manual(values=c("#33CCFF", "#FF6666"))+  #c=blue, h=red
+  #scale_x_log10(limits = c(0.0000001, 1))+   #STILL DOESN'T WORK
+  geom_point(cex=2.5)+
+  ggtitle("Phosphorus Metabolism in SEED for Barre Woods Mineral")+
+  ylab(" ")+
+  xlab("Log10 Transformed Percent composition")+
+  geom_errorbarh(aes(xmin=value-se, xmax=value+se),width=.05) +  # Width of the error bars
+  theme(axis.text.y = element_text(size=3))+
+  theme_bw()
+#if no sigvals in the array, aes has error bc length<1
+if (any(data.Dbwm$p.value<=.05)) {
+p=p+ geom_text(data=subset(data.Dbwm, p.value<=.05), aes(x=value, y=Datasets, label="*"), vjust= -.1, colour="black")    #only print * for sig pvals
+}
+p
+
+##Prospect Hill
+data.Dpho=subset(data.Dmean, Site=='Prospect Hill'&Horizon=='Organic')
+#data.Dpho=data.Dpho[order(data.Dpho$value, decreasing = T),]
+data.Dpho=data.Dpho[1:(nrow(data.Dpho)),]
+p<- ggplot(data.Dpho, aes(x=value,y=Datasets, color=Treatment))+
+  #facet_grid(~Horizon)+
+  scale_color_manual(values=c("#33CCFF", "#FF6666"))+  #c=blue, h=red
+  #scale_x_log10(limits = c(0.0000001, 1))+   #STILL DOESN'T WORK
+  geom_point(cex=2.5)+
+  ggtitle("Phosphorus Metabolism in SEED for Prospect Hill Organic")+
+  ylab(" ")+
+  xlab("Log10 Transformed Percent composition")+
+  geom_errorbarh(aes(xmin=value-se, xmax=value+se),width=.05) +  # Width of the error bars
+  theme(axis.text.y = element_text(size=3))+
+  theme_bw()
+#if no sigvals in the array, aes has error bc length<1
+if (any(data.Dpho$p.value<=.05)) {
+p=p+ geom_text(data=subset(data.Dpho, p.value<=.05), aes(x=value, y=Datasets, label="*"), vjust= -.1, colour="black")    #only print * for sig pvals
+}
+
+p
+data.Dphm=subset(data.Dmean, Site=='Prospect Hill'&Horizon=='Mineral')
+#data.Dphm=data.Dphm[order(data.Dphm$value, decreasing = T),]
+data.Dphm=data.Dphm[1:(nrow(data.Dphm)),]
+p<- ggplot(data.Dphm, aes(x=value,y=Datasets, color=Treatment))+
+  #facet_grid(~Horizon)+
+  scale_color_manual(values=c("#33CCFF", "#FF6666"))+  #c=blue, h=red
+  #scale_x_log10(limits = c(0.0000001, 1))+   #STILL DOESN'T WORK
+  geom_point(cex=2.5)+
+  ggtitle("Phosphorus Metabolism in SEED for Prospect Hill Mineral")+
+  ylab(" ")+
+  xlab("Log10 Transformed Percent composition")+
+  geom_errorbarh(aes(xmin=value-se, xmax=value+se),width=.05) +  # Width of the error bars
+  theme(axis.text.y = element_text(size=3))+
+  theme_bw()
+#if no sigvals in the array, aes has error bc length<1
+if (any(data.Dphm$p.value<=.05)) {
+p=p+ geom_text(data=subset(data.Dphm, p.value<=.05), aes(x=value, y=Datasets, label="*"), vjust= -.1, colour="black")    #only print * for sig pvals
+}
+p
+```
+
+
+###Carbohydrates
+
+```{r}
+#Read data for one function category
+carbdata=read.csv("~/Documents/2014-15/HF_Summer/Data/MEGAN_files/carb_seed.csv", header = T)
+carbdata$Datasets=as.character(carbdata$Datasets)
+carbdata=rbind(c(NA,t(colSums(carbdata[,-1]))),carbdata )
+#carbdata=cbind(rep("Carbohydrates", nrow(carbdata)), carbdata)
+#colnames(carbdata)[1]="Function"
+data.D=carbdata
+
+data.D[,-1] = (sweep(as.matrix(data.D[,-1]),2,as.matrix(data.D[1,-1]),'/')*100)
+data.D <- data.D[2:nrow(data.D),]   #trim off totals
+data.nomelt=data.D
+data.D = melt(data.D,id.vars = 'Datasets')
+data.D$Site = metagenome.map$Site[match(data.D$variable,metagenome.map$Sample_ID)]
+data.D$Treatment = metagenome.map$Treatment[match(data.D$variable,metagenome.map$Sample_ID)]
+data.D$Horizon = metagenome.map$Horizon[match(data.D$variable,metagenome.map$Sample_ID)]
+
+```
+
+
+##Carbohydrate Statistics
+```{r, warning=FALSE}
+#make aggregate dfs of same dimensions with samples in same order
+#datatrt has which treatment applies to each replicate
+#dataval has which value applies to each replicate- includes all 8, 4C then 4H (alphabetical)
+datatrt<- aggregate(value~Datasets:Horizon:Site:Treatment,FUN = mean,data = data.D)
+dataval<- aggregate(value~Datasets:Horizon:Site,FUN = c,data = data.D)
+#select just 8 replicates and transpose
+dataval=t(apply(dataval, 1, function(x) as.numeric(x[4:11])))
+#do wilcox test on 8 replicates. generatelevels(2,4) says to group 8 replicates by 2 grps of 4
+#output is list of wtests for each gene:horizon:site, which each have a p.value
+datawilcox= apply(dataval,1,function(y) wilcox.test(y~gl(2,4)))
+#select the pval from each wtest and make a vector from them (unlist)
+datawilcox=unlist(lapply(datawilcox, function(x) x$p.value))
+#remove NAs and put p=1 instead: not true but will never be under p cutoff, happens bc all vals=0
+datawilcox[is.na(datawilcox)]=1
+#add list of pvals back onto whole df: p for H/C is the same, so pval list needs to be added
+#twice for the whole df that has all C then all H but identical otherwise
+datatrt=data.frame(datatrt,p.value=rep(datawilcox,2))
+data.Dmean=datatrt
+data.Dmean$se <- aggregate(value~Datasets:Horizon:Site:Treatment,FUN = sd,data = data.D)$value
+#print significant rows for researching genes
+print(data.Dmean[which(data.Dmean$p.value<=.05),])
+```
+
+#Graphing prep
+```{r, fig.width=10, fig.height=10}
+
+
+data.Dmean$value=log10(data.Dmean$value)
+#this is the wrong representation below
+data.Dmean$se=log10(data.Dmean$se+data.Dmean$value)
+data.Dmean=subset(data.Dmean, data.Dmean$value>(-6))
+data.Dmean$Datasets=substr(data.Dmean$Datasets, 28, 200) 
+data.Dmean$Datasets=str_wrap(data.Dmean$Datasets, width=30) 
+
+```
+
+Plotting- Carbohydrates
+```{r, fig.width=10, fig.height=10}
+#SWaN
+data.Dswo=subset(data.Dmean, Site=='SWaN'&Horizon=='Organic')
+data.Dswo=data.Dswo[order(data.Dswo$value, decreasing = T),]
+data.Dswo=data.Dswo[1:50,]
+p<- ggplot(data.Dswo, aes(x=value,y=Datasets, color=Treatment))+
+  #facet_grid(~Horizon)+
+  scale_color_manual(values=c("#33CCFF", "#FF6666"))+  #c=blue, h=red
+  #scale_x_log10(limits = c(0.0000001, 1))+   #STILL DOESN'T WORK
+  geom_point(cex=2.5)+
+  ggtitle("Top 50 Carbohydrate Annotations from SEED for SWaN Organic")+
+  ylab(" ")+
+  xlab("Log10 Transformed Percent composition")+
+  geom_errorbarh(aes(xmin=value-se, xmax=value+se),width=.05) +  # Width of the error bars
+  theme(axis.text.y = element_text(size=3))+
+  theme_bw()
+#if no sigvals in the array, aes has error bc length<1
+if (any(data.Dswo$p.value<=.05)) {
+p=p+ geom_text(data=subset(data.Dswo, p.value<=.05), aes(x=value, y=Datasets, label="*"), vjust= -.1, colour="black")    #only print * for sig pvals
+}
+
+p
+data.Dswm=subset(data.Dmean, Site=='SWaN'&Horizon=='Mineral')
+data.Dswm=data.Dswm[order(data.Dswm$value, decreasing = T),]
+data.Dswm=data.Dswm[1:50,]
+p<- ggplot(data.Dswm, aes(x=value,y=Datasets, color=Treatment))+
+  #facet_grid(~Horizon)+
+  scale_color_manual(values=c("#33CCFF", "#FF6666"))+  #c=blue, h=red
+  #scale_x_log10(limits = c(0.0000001, 1))+   #STILL DOESN'T WORK
+  geom_point(cex=2.5)+
+  ggtitle("Top 100 Carbohydrate Annotations from SEED for SWaN Mineral")+
+  ylab(" ")+
+  xlab("Log10 Transformed Percent composition")+
+  geom_errorbarh(aes(xmin=value-se, xmax=value+se),width=.05) +  # Width of the error bars
+  theme(axis.text.y = element_text(size=3))+
+  theme_bw()
+#if no sigvals in the array, aes has error bc length<1
+if (any(data.Dswm$p.value<=.05)) {
+p=p+ geom_text(data=subset(data.Dswm, p.value<=.05), aes(x=value, y=Datasets, label="*"), vjust= -.1, colour="black")    #only print * for sig pvals
+}
+p
+
+
+##Barre Woods
+data.Dbwo=subset(data.Dmean, Site=='Barre Woods'&Horizon=='Organic')
+data.Dbwo=data.Dbwo[order(data.Dbwo$value, decreasing = T),]
+data.Dbwo=data.Dbwo[1:50,]
+p<- ggplot(data.Dbwo, aes(x=value,y=Datasets, color=Treatment))+
+  #facet_grid(~Horizon)+
+  scale_color_manual(values=c("#33CCFF", "#FF6666"))+  #c=blue, h=red
+  #scale_x_log10(limits = c(0.0000001, 1))+   #STILL DOESN'T WORK
+  geom_point(cex=2.5)+
+  ggtitle("Top 50 Carbohydrate Annotations from SEED for Barre Woods Organic")+
+  ylab(" ")+
+  xlab("Log10 Transformed Percent composition")+
+  geom_errorbarh(aes(xmin=value-se, xmax=value+se),width=.05) +  # Width of the error bars
+  theme(axis.text.y = element_text(size=3))+
+  theme_bw()
+#if no sigvals in the array, aes has error bc length<1
+if (any(data.Dbwo$p.value<=.05)) {
+p=p+ geom_text(data=subset(data.Dbwo, p.value<=.05), aes(x=value, y=Datasets, label="*"), vjust= -.1, colour="black")    #only print * for sig pvals
+}
+
+p
+data.Dbwm=subset(data.Dmean, Site=='Barre Woods'&Horizon=='Mineral')
+data.Dbwm=data.Dbwm[order(data.Dbwm$value, decreasing = T),]
+data.Dbwm=data.Dbwm[1:50,]
+p<- ggplot(data.Dbwm, aes(x=value,y=Datasets, color=Treatment))+
+  #facet_grid(~Horizon)+
+  scale_color_manual(values=c("#33CCFF", "#FF6666"))+  #c=blue, h=red
+  #scale_x_log10(limits = c(0.0000001, 1))+   #STILL DOESN'T WORK
+  geom_point(cex=2.5)+
+  ggtitle("Top 50 Carbohydrate Annotations from SEED for Barre Woods Mineral")+
+  ylab(" ")+
+  xlab("Log10 Transformed Percent composition")+
+  geom_errorbarh(aes(xmin=value-se, xmax=value+se),width=.05) +  # Width of the error bars
+  theme(axis.text.y = element_text(size=3))+
+  theme_bw()
+#if no sigvals in the array, aes has error bc length<1
+if (any(data.Dbwm$p.value<=.05)) {
+p=p+ geom_text(data=subset(data.Dbwm, p.value<=.05), aes(x=value, y=Datasets, label="*"), vjust= -.1, colour="black")    #only print * for sig pvals
+}
+p
+
+##Prospect Hill
+data.Dpho=subset(data.Dmean, Site=='Prospect Hill'&Horizon=='Organic')
+data.Dpho=data.Dpho[order(data.Dpho$value, decreasing = T),]
+data.Dpho=data.Dpho[1:50,]
+p<- ggplot(data.Dpho, aes(x=value,y=Datasets, color=Treatment))+
+  #facet_grid(~Horizon)+
+  scale_color_manual(values=c("#33CCFF", "#FF6666"))+  #c=blue, h=red
+  #scale_x_log10(limits = c(0.0000001, 1))+   #STILL DOESN'T WORK
+  geom_point(cex=2.5)+
+  ggtitle("Top 50 Carbohydrate Annotations from SEED for Prospect Hill Organic")+
+  ylab(" ")+
+  xlab("Log10 Transformed Percent composition")+
+  geom_errorbarh(aes(xmin=value-se, xmax=value+se),width=.05) +  # Width of the error bars
+  theme(axis.text.y = element_text(size=3))+
+  theme_bw()
+#if no sigvals in the array, aes has error bc length<1
+if (any(data.Dpho$p.value<=.05)) {
+p=p+ geom_text(data=subset(data.Dpho, p.value<=.05), aes(x=value, y=Datasets, label="*"), vjust= -.1, colour="black")    #only print * for sig pvals
+}
+
+p
+data.Dphm=subset(data.Dmean, Site=='Prospect Hill'&Horizon=='Mineral')
+data.Dphm=data.Dphm[order(data.Dphm$value, decreasing = T),]
+data.Dphm=data.Dphm[1:50,]
+p<- ggplot(data.Dphm, aes(x=value,y=Datasets, color=Treatment))+
+  #facet_grid(~Horizon)+
+  scale_color_manual(values=c("#33CCFF", "#FF6666"))+  #c=blue, h=red
+  #scale_x_log10(limits = c(0.0000001, 1))+   #STILL DOESN'T WORK
+  geom_point(cex=2.5)+
+  ggtitle("Top 50 Carbohydrate Annotations from SEED for Prospect Hill Mineral")+
+  ylab(" ")+
+  xlab("Log10 Transformed Percent composition")+
+  geom_errorbarh(aes(xmin=value-se, xmax=value+se),width=.05) +  # Width of the error bars
+  theme(axis.text.y = element_text(size=3))+
+  theme_bw()
+#if no sigvals in the array, aes has error bc length<1
+if (any(data.Dphm$p.value<=.05)) {
+p=p+ geom_text(data=subset(data.Dphm, p.value<=.05), aes(x=value, y=Datasets, label="*"), vjust= -.1, colour="black")    #only print * for sig pvals
+}
+p
+
+print(data.Dswo[which(data.Dswo$p.value<=.05),])
+print(data.Dswm[which(data.Dswm$p.value<=.05),])
+print(data.Dbwo[which(data.Dbwo$p.value<=.05),])
+print(data.Dbwm[which(data.Dbwm$p.value<=.05),])
+print(data.Dpho[which(data.Dpho$p.value<=.05),])
+print(data.Dphm[which(data.Dphm$p.value<=.05),])
+
+```
+
+
+###Nitrogen Metabolism
+
+```{r}
+
+#Read data for one function category
+nmetdata=read.csv("~/Documents/2014-15/HF_Summer/Data/MEGAN_files/nitrogen_metab_seed.csv")
+nmetdata$Datasets=as.character(nmetdata$Datasets)
+nmetdata=rbind( c(NA,t(colSums(nmetdata[,-1]))), nmetdata)
+data.D=nmetdata
+
+data.D[,-1] = (sweep(as.matrix(data.D[,-1]),2,as.matrix(data.D[1,-1]),'/')*100)
+data.D <- data.D[2:nrow(data.D),]   #trim off totals
+data.nomelt=data.D
+data.D = melt(data.D,id.vars = 'Datasets')
+data.D$Site = metagenome.map$Site[match(data.D$variable,metagenome.map$Sample_ID)]
+data.D$Treatment = metagenome.map$Treatment[match(data.D$variable,metagenome.map$Sample_ID)]
+data.D$Horizon = metagenome.map$Horizon[match(data.D$variable,metagenome.map$Sample_ID)]
+
+
+```
+
+
+##Nitrogen Statistics
+```{r, warning=FALSE}
+#make aggregate dfs of same dimensions with samples in same order
+#datatrt has which treatment applies to each replicate
+#dataval has which value applies to each replicate- includes all 8, 4C then 4H (alphabetical)
+datatrt<- aggregate(value~Datasets:Horizon:Site:Treatment,FUN = mean,data = data.D)
+dataval<- aggregate(value~Datasets:Horizon:Site,FUN = c,data = data.D)
+#select just 8 replicates and transpose
+dataval=t(apply(dataval, 1, function(x) as.numeric(x[4:11])))
+#do wilcox test on 8 replicates. generatelevels(2,4) says to group 8 replicates by 2 grps of 4
+#output is list of wtests for each gene:horizon:site, which each have a p.value
+datawilcox= apply(dataval,1,function(y) wilcox.test(y~gl(2,4)))
+#select the pval from each wtest and make a vector from them (unlist)
+datawilcox=unlist(lapply(datawilcox, function(x) x$p.value))
+#remove NAs and put p=1 instead: not true but will never be under p cutoff, happens bc all vals=0
+datawilcox[is.na(datawilcox)]=1
+#add list of pvals back onto whole df: p for H/C is the same, so pval list needs to be added
+#twice for the whole df that has all C then all H but identical otherwise
+datatrt=data.frame(datatrt,p.value=rep(datawilcox,2))
+data.Dmean=datatrt
+data.Dmean$se <- aggregate(value~Datasets:Horizon:Site:Treatment,FUN = sd,data = data.D)$value
+#print significant rows for researching genes
+print(data.Dmean[which(data.Dmean$p.value<=.05),])
+```
+
+#Graphing prep
+```{r, fig.width=10, fig.height=10}
+
+
+data.Dmean$value=log10(data.Dmean$value)
+#this is the wrong representation below
+data.Dmean$se=log10(data.Dmean$se+data.Dmean$value)
+data.Dmean=subset(data.Dmean, data.Dmean$value>(-6))
+data.Dmean$Datasets=substr(data.Dmean$Datasets, 28, 200) 
+data.Dmean$Datasets=str_wrap(data.Dmean$Datasets, width=30) 
+
+```
+
+
+Plotting- Nitrogen
+```{r,fig.width=10, fig.height=10}
+
+#SWaN
+data.Dswo=subset(data.Dmean, Site=='SWaN'&Horizon=='Organic')
+data.Dswo=data.Dswo[order(data.Dswo$value, decreasing = T),]
+data.Dswo=data.Dswo[1:(nrow(data.Dswo)),]
+p<- ggplot(data.Dswo, aes(x=value,y=Datasets, color=Treatment))+
+  #facet_grid(~Horizon)+
+  scale_color_manual(values=c("#33CCFF", "#FF6666"))+  #c=blue, h=red
+  #scale_x_log10(limits = c(0.0000001, 1))+   #STILL DOESN'T WORK
+  geom_point(cex=2.5)+
+  ggtitle("Nitrogen Metabolism in SEED for SWaN Organic")+
+  ylab(" ")+
+  xlab("Log10 Transformed Percent composition")+
+  geom_errorbarh(aes(xmin=value-se, xmax=value+se),width=.05) +  # Width of the error bars
+  theme(axis.text.y = element_text(size=3))+
+  theme_bw()
+#if no sigvals in the array, aes has error bc length<1
+if (any(data.Dswo$p.value<=.05)) {
+p=p+ geom_text(data=subset(data.Dswo, p.value<=.05), aes(x=value, y=Datasets, label="*"), vjust= -.1, colour="black")    #only print * for sig pvals
+}
+
+p
+data.Dswm=subset(data.Dmean, Site=='SWaN'&Horizon=='Mineral')
+data.Dswm=data.Dswm[order(data.Dswm$value, decreasing = T),]
+data.Dswm=data.Dswm[1:(nrow(data.Dswm)),]
+p<- ggplot(data.Dswm, aes(x=value,y=Datasets, color=Treatment))+
+  #facet_grid(~Horizon)+
+  scale_color_manual(values=c("#33CCFF", "#FF6666"))+  #c=blue, h=red
+  #scale_x_log10(limits = c(0.0000001, 1))+   #STILL DOESN'T WORK
+  geom_point(cex=2.5)+
+  ggtitle("Nitrogen Metabolism in SEED for SWaN Mineral")+
+  ylab(" ")+
+  xlab("Log10 Transformed Percent composition")+
+  geom_errorbarh(aes(xmin=value-se, xmax=value+se),width=.05) +  # Width of the error bars
+  theme(axis.text.y = element_text(size=3))+
+  theme_bw()
+#if no sigvals in the array, aes has error bc length<1
+if (any(data.Dswm$p.value<=.05)) {
+p=p+ geom_text(data=subset(data.Dswm, p.value<=.05), aes(x=value, y=Datasets, label="*"), vjust= -.1, colour="black")    #only print * for sig pvals
+}
+p
+
+
+##Barre Woods
+data.Dbwo=subset(data.Dmean, Site=='Barre Woods'&Horizon=='Organic')
+data.Dbwo=data.Dbwo[order(data.Dbwo$value, decreasing = T),]
+data.Dbwo=data.Dbwo[1:(nrow(data.Dbwo)),]
+p<- ggplot(data.Dbwo, aes(x=value,y=Datasets, color=Treatment))+
+  #facet_grid(~Horizon)+
+  scale_color_manual(values=c("#33CCFF", "#FF6666"))+  #c=blue, h=red
+  #scale_x_log10(limits = c(0.0000001, 1))+   #STILL DOESN'T WORK
+  geom_point(cex=2.5)+
+  ggtitle("Nitrogen Metabolism in SEED for Barre Woods Organic")+
+  ylab(" ")+
+  xlab("Log10 Transformed Percent composition")+
+  geom_errorbarh(aes(xmin=value-se, xmax=value+se),width=.05) +  # Width of the error bars
+  theme(axis.text.y = element_text(size=3))+
+  theme_bw()
+#if no sigvals in the array, aes has error bc length<1
+if (any(data.Dbwo$p.value<=.05)) {
+p=p+ geom_text(data=subset(data.Dbwo, p.value<=.05), aes(x=value, y=Datasets, label="*"), vjust= -.1, colour="black")    #only print * for sig pvals
+}
+
+p
+data.Dbwm=subset(data.Dmean, Site=='Barre Woods'&Horizon=='Mineral')
+data.Dbwm=data.Dbwm[order(data.Dbwm$value, decreasing = T),]
+data.Dbwm=data.Dbwm[1:(nrow(data.Dbwm)),]
+p<- ggplot(data.Dbwm, aes(x=value,y=Datasets, color=Treatment))+
+  #facet_grid(~Horizon)+
+  scale_color_manual(values=c("#33CCFF", "#FF6666"))+  #c=blue, h=red
+  #scale_x_log10(limits = c(0.0000001, 1))+   #STILL DOESN'T WORK
+  geom_point(cex=2.5)+
+  ggtitle("Nitrogen Metabolism in SEED for Barre Woods Mineral")+
+  ylab(" ")+
+  xlab("Log10 Transformed Percent composition")+
+  geom_errorbarh(aes(xmin=value-se, xmax=value+se),width=.05) +  # Width of the error bars
+  theme(axis.text.y = element_text(size=3))+
+  theme_bw()
+#if no sigvals in the array, aes has error bc length<1
+if (any(data.Dbwm$p.value<=.05)) {
+p=p+ geom_text(data=subset(data.Dbwm, p.value<=.05), aes(x=value, y=Datasets, label="*"), vjust= -.1, colour="black")    #only print * for sig pvals
+}
+p
+
+##Prospect Hill
+data.Dpho=subset(data.Dmean, Site=='Prospect Hill'&Horizon=='Organic')
+data.Dpho=data.Dpho[order(data.Dpho$value, decreasing = T),]
+data.Dpho=data.Dpho[1:(nrow(data.Dpho)),]
+p<- ggplot(data.Dpho, aes(x=value,y=Datasets, color=Treatment))+
+  #facet_grid(~Horizon)+
+  scale_color_manual(values=c("#33CCFF", "#FF6666"))+  #c=blue, h=red
+  #scale_x_log10(limits = c(0.0000001, 1))+   #STILL DOESN'T WORK
+  geom_point(cex=2.5)+
+  ggtitle("Nitrogen Metabolism in SEED for Prospect Hill Organic")+
+  ylab(" ")+
+  xlab("Log10 Transformed Percent composition")+
+  geom_errorbarh(aes(xmin=value-se, xmax=value+se),width=.05) +  # Width of the error bars
+  theme(axis.text.y = element_text(size=3))+
+  theme_bw()
+#if no sigvals in the array, aes has error bc length<1
+if (any(data.Dpho$p.value<=.05)) {
+p=p+ geom_text(data=subset(data.Dpho, p.value<=.05), aes(x=value, y=Datasets, label="*"), vjust= -.1, colour="black")    #only print * for sig pvals
+}
+
+p
+data.Dphm=subset(data.Dmean, Site=='Prospect Hill'&Horizon=='Mineral')
+data.Dphm=data.Dphm[order(data.Dphm$value, decreasing = T),]
+data.Dphm=data.Dphm[1:(nrow(data.Dphm)),]
+p<- ggplot(data.Dphm, aes(x=value,y=Datasets, color=Treatment))+
+  #facet_grid(~Horizon)+
+  scale_color_manual(values=c("#33CCFF", "#FF6666"))+  #c=blue, h=red
+  #scale_x_log10(limits = c(0.0000001, 1))+   #STILL DOESN'T WORK
+  geom_point(cex=2.5)+
+  ggtitle("Nitrogen Metabolism in SEED for Prospect Hill Mineral")+
+  ylab(" ")+
+  xlab("Log10 Transformed Percent composition")+
+  geom_errorbarh(aes(xmin=value-se, xmax=value+se),width=.05) +  # Width of the error bars
+  theme(axis.text.y = element_text(size=3))+
+  theme_bw()
+#if no sigvals in the array, aes has error bc length<1
+if (any(data.Dphm$p.value<=.05)) {
+p=p+ geom_text(data=subset(data.Dphm, p.value<=.05), aes(x=value, y=Datasets, label="*"), vjust= -.1, colour="black")    #only print * for sig pvals
+}
+p
+```
+
+###Sulfur Metabolism
+
+```{r}
+
+#Read data for one function category
+sulfurdata=read.csv("~/Documents/2014-15/HF_Summer/Data/MEGAN_files/sulfur_metab_seed.csv")
+sulfurdata$Datasets=as.character(sulfurdata$Datasets)
+sulfurdata=rbind(c(NA,t(colSums(sulfurdata[,-1]))),sulfurdata)
+data.D=sulfurdata
+
+data.D[,-1] = (sweep(as.matrix(data.D[,-1]),2,as.matrix(data.D[1,-1]),'/')*100)
+data.D <- data.D[2:nrow(data.D),]   #trim off totals
+data.nomelt=data.D
+data.D = melt(data.D,id.vars = 'Datasets')
+data.D$Site = metagenome.map$Site[match(data.D$variable,metagenome.map$Sample_ID)]
+data.D$Treatment = metagenome.map$Treatment[match(data.D$variable,metagenome.map$Sample_ID)]
+data.D$Horizon = metagenome.map$Horizon[match(data.D$variable,metagenome.map$Sample_ID)]
+
+
+```
+
+
+##Sulfur Statistics
+```{r, warning=FALSE}
+#make aggregate dfs of same dimensions with samples in same order
+#datatrt has which treatment applies to each replicate
+#dataval has which value applies to each replicate- includes all 8, 4C then 4H (alphabetical)
+datatrt<- aggregate(value~Datasets:Horizon:Site:Treatment,FUN = mean,data = data.D)
+dataval<- aggregate(value~Datasets:Horizon:Site,FUN = c,data = data.D)
+#select just 8 replicates and transpose
+dataval=t(apply(dataval, 1, function(x) as.numeric(x[4:11])))
+#do wilcox test on 8 replicates. generatelevels(2,4) says to group 8 replicates by 2 grps of 4
+#output is list of wtests for each gene:horizon:site, which each have a p.value
+datawilcox= apply(dataval,1,function(y) wilcox.test(y~gl(2,4)))
+#select the pval from each wtest and make a vector from them (unlist)
+datawilcox=unlist(lapply(datawilcox, function(x) x$p.value))
+#remove NAs and put p=1 instead: not true but will never be under p cutoff, happens bc all vals=0
+datawilcox[is.na(datawilcox)]=1
+#add list of pvals back onto whole df: p for H/C is the same, so pval list needs to be added
+#twice for the whole df that has all C then all H but identical otherwise
+datatrt=data.frame(datatrt,p.value=rep(datawilcox,2))
+data.Dmean=datatrt
+data.Dmean$se <- aggregate(value~Datasets:Horizon:Site:Treatment,FUN = sd,data = data.D)$value
+#print significant rows for researching genes
+print(data.Dmean[which(data.Dmean$p.value<=.05),])
+```
+
+#Graphing prep
+```{r, fig.width=10, fig.height=10}
+
+
+data.Dmean$value=log10(data.Dmean$value)
+#this is the wrong representation below
+data.Dmean$se=log10(data.Dmean$se+data.Dmean$value)
+data.Dmean=subset(data.Dmean, data.Dmean$value>(-6))
+data.Dmean$Datasets=substr(data.Dmean$Datasets, 28, 200) 
+data.Dmean$Datasets=str_wrap(data.Dmean$Datasets, width=30) 
+
+```
+
+
+Plotting- Sulfur
+```{r,fig.width=10, fig.height=10}
+#SWaN
+data.Dswo=subset(data.Dmean, Site=='SWaN'&Horizon=='Organic')
+data.Dswo=data.Dswo[order(data.Dswo$value, decreasing = T),]
+#data.Dswo=data.Dswo[1:100,]
+p<- ggplot(data.Dswo, aes(x=value,y=Datasets, color=Treatment))+
+  #facet_grid(~Horizon)+
+  scale_color_manual(values=c("#33CCFF", "#FF6666"))+  #c=blue, h=red
+  #scale_x_log10(limits = c(0.0000001, 1))+   #STILL DOESN'T WORK
+  geom_point(cex=2.5)+
+  ggtitle("Sulfur Metabolism in SEED for SWaN Organic")+
+  ylab(" ")+
+  xlab("Log10 Transformed Percent composition")+
+  geom_errorbarh(aes(xmin=value-se, xmax=value+se),width=.05) +  # Width of the error bars
+  theme(axis.text.y = element_text(size=3))+
+  theme_bw()
+#if no sigvals in the array, aes has error bc length<1
+if (any(data.Dswo$p.value<=.05)) {
+p=p+ geom_text(data=subset(data.Dswo, p.value<=.05), aes(x=value, y=Datasets, label="*"), vjust= -.1, colour="black")    #only print * for sig pvals
+}
+
+p
+data.Dswm=subset(data.Dmean, Site=='SWaN'&Horizon=='Mineral')
+data.Dswm=data.Dswm[order(data.Dswm$value, decreasing = T),]
+#data.Dswm=data.Dswm[1:100,]
+p<- ggplot(data.Dswm, aes(x=value,y=Datasets, color=Treatment))+
+  #facet_grid(~Horizon)+
+  scale_color_manual(values=c("#33CCFF", "#FF6666"))+  #c=blue, h=red
+  #scale_x_log10(limits = c(0.0000001, 1))+   #STILL DOESN'T WORK
+  geom_point(cex=2.5)+
+  ggtitle("Sulfur Metabolism in SEED for SWaN Mineral")+
+  ylab(" ")+
+  xlab("Log10 Transformed Percent composition")+
+  geom_errorbarh(aes(xmin=value-se, xmax=value+se),width=.05) +  # Width of the error bars
+  theme(axis.text.y = element_text(size=3))+
+  theme_bw()
+#if no sigvals in the array, aes has error bc length<1
+if (any(data.Dswm$p.value<=.05)) {
+p=p+ geom_text(data=subset(data.Dswm, p.value<=.05), aes(x=value, y=Datasets, label="*"), vjust= -.1, colour="black")    #only print * for sig pvals
+}
+p
+
+
+##Barre Woods
+data.Dbwo=subset(data.Dmean, Site=='Barre Woods'&Horizon=='Organic')
+data.Dbwo=data.Dbwo[order(data.Dbwo$value, decreasing = T),]
+#data.Dbwo=data.Dbwo[1:100,]
+p<- ggplot(data.Dbwo, aes(x=value,y=Datasets, color=Treatment))+
+  #facet_grid(~Horizon)+
+  scale_color_manual(values=c("#33CCFF", "#FF6666"))+  #c=blue, h=red
+  #scale_x_log10(limits = c(0.0000001, 1))+   #STILL DOESN'T WORK
+  geom_point(cex=2.5)+
+  ggtitle("Sulfur Metabolism in SEED for Barre Woods Organic")+
+  ylab(" ")+
+  xlab("Log10 Transformed Percent composition")+
+  geom_errorbarh(aes(xmin=value-se, xmax=value+se),width=.05) +  # Width of the error bars
+  theme(axis.text.y = element_text(size=3))+
+  theme_bw()
+#if no sigvals in the array, aes has error bc length<1
+if (any(data.Dbwo$p.value<=.05)) {
+p=p+ geom_text(data=subset(data.Dbwo, p.value<=.05), aes(x=value, y=Datasets, label="*"), vjust= -.1, colour="black")    #only print * for sig pvals
+}
+
+p
+data.Dbwm=subset(data.Dmean, Site=='Barre Woods'&Horizon=='Mineral')
+data.Dbwm=data.Dbwm[order(data.Dbwm$value, decreasing = T),]
+#data.Dbwm=data.Dbwm[1:100,]
+p<- ggplot(data.Dbwm, aes(x=value,y=Datasets, color=Treatment))+
+  #facet_grid(~Horizon)+
+  scale_color_manual(values=c("#33CCFF", "#FF6666"))+  #c=blue, h=red
+  #scale_x_log10(limits = c(0.0000001, 1))+   #STILL DOESN'T WORK
+  geom_point(cex=2.5)+
+  ggtitle("Sulfur Metabolism in SEED for Barre Woods Mineral")+
+  ylab(" ")+
+  xlab("Log10 Transformed Percent composition")+
+  geom_errorbarh(aes(xmin=value-se, xmax=value+se),width=.05) +  # Width of the error bars
+  theme(axis.text.y = element_text(size=3))+
+  theme_bw()
+#if no sigvals in the array, aes has error bc length<1
+if (any(data.Dbwm$p.value<=.05)) {
+p=p+ geom_text(data=subset(data.Dbwm, p.value<=.05), aes(x=value, y=Datasets, label="*"), vjust= -.1, colour="black")    #only print * for sig pvals
+}
+p
+
+##Prospect Hill
+data.Dpho=subset(data.Dmean, Site=='Prospect Hill'&Horizon=='Organic')
+data.Dpho=data.Dpho[order(data.Dpho$value, decreasing = T),]
+#data.Dpho=data.Dpho[1:100,]
+p<- ggplot(data.Dpho, aes(x=value,y=Datasets, color=Treatment))+
+  #facet_grid(~Horizon)+
+  scale_color_manual(values=c("#33CCFF", "#FF6666"))+  #c=blue, h=red
+  #scale_x_log10(limits = c(0.0000001, 1))+   #STILL DOESN'T WORK
+  geom_point(cex=2.5)+
+  ggtitle("Sulfur Metabolism in SEED for Prospect Hill Organic")+
+  ylab(" ")+
+  xlab("Log10 Transformed Percent composition")+
+  geom_errorbarh(aes(xmin=value-se, xmax=value+se),width=.05) +  # Width of the error bars
+  theme(axis.text.y = element_text(size=3))+
+  theme_bw()
+#if no sigvals in the array, aes has error bc length<1
+if (any(data.Dpho$p.value<=.05)) {
+p=p+ geom_text(data=subset(data.Dpho, p.value<=.05), aes(x=value, y=Datasets, label="*"), vjust= -.1, colour="black")    #only print * for sig pvals
+}
+
+p
+data.Dphm=subset(data.Dmean, Site=='Prospect Hill'&Horizon=='Mineral')
+data.Dphm=data.Dphm[order(data.Dphm$value, decreasing = T),]
+#data.Dphm=data.Dphm[1:100,]
+p<- ggplot(data.Dphm, aes(x=value,y=Datasets, color=Treatment))+
+  #facet_grid(~Horizon)+
+  scale_color_manual(values=c("#33CCFF", "#FF6666"))+  #c=blue, h=red
+  #scale_x_log10(limits = c(0.0000001, 1))+   #STILL DOESN'T WORK
+  geom_point(cex=2.5)+
+  ggtitle("Sulfur Metabolism in SEED for Prospect Hill Mineral")+
+  ylab(" ")+
+  xlab("Log10 Transformed Percent composition")+
+  geom_errorbarh(aes(xmin=value-se, xmax=value+se),width=.05) +  # Width of the error bars
+  theme(axis.text.y = element_text(size=3))+
+  theme_bw()
+#if no sigvals in the array, aes has error bc length<1
+if (any(data.Dphm$p.value<=.05)) {
+p=p+ geom_text(data=subset(data.Dphm, p.value<=.05), aes(x=value, y=Datasets, label="*"), vjust= -.1, colour="black")    #only print * for sig pvals
+}
+p
+```
+
+
+
+
+###Iron acquisition and Metabolism
+
+```{r}
+#Read data for one function category
+irondata=read.csv("~/Documents/2014-15/HF_Summer/Data/MEGAN_files/Iron_metab_seed.csv")
+irondata$Datasets=as.character(irondata$Datasets)
+irondata=rbind(c(NA,t(colSums(irondata[,-1]))),irondata)
+
+data.D=irondata
+
+data.D[,-1] = (sweep(as.matrix(data.D[,-1]),2,as.matrix(data.D[1,-1]),'/')*100)
+data.D <- data.D[2:nrow(data.D),]   #trim off totals
+data.nomelt=data.D
+data.D = melt(data.D,id.vars = 'Datasets')
+data.D$Site = metagenome.map$Site[match(data.D$variable,metagenome.map$Sample_ID)]
+data.D$Treatment = metagenome.map$Treatment[match(data.D$variable,metagenome.map$Sample_ID)]
+data.D$Horizon = metagenome.map$Horizon[match(data.D$variable,metagenome.map$Sample_ID)]
+
+
+```
+
+
+##Iron Statistics
+```{r, warning=FALSE}
+#make aggregate dfs of same dimensions with samples in same order
+#datatrt has which treatment applies to each replicate
+#dataval has which value applies to each replicate- includes all 8, 4C then 4H (alphabetical)
+datatrt<- aggregate(value~Datasets:Horizon:Site:Treatment,FUN = mean,data = data.D)
+dataval<- aggregate(value~Datasets:Horizon:Site,FUN = c,data = data.D)
+#select just 8 replicates and transpose
+dataval=t(apply(dataval, 1, function(x) as.numeric(x[4:11])))
+#do wilcox test on 8 replicates. generatelevels(2,4) says to group 8 replicates by 2 grps of 4
+#output is list of wtests for each gene:horizon:site, which each have a p.value
+datawilcox= apply(dataval,1,function(y) wilcox.test(y~gl(2,4)))
+#select the pval from each wtest and make a vector from them (unlist)
+datawilcox=unlist(lapply(datawilcox, function(x) x$p.value))
+#remove NAs and put p=1 instead: not true but will never be under p cutoff, happens bc all vals=0
+datawilcox[is.na(datawilcox)]=1
+#add list of pvals back onto whole df: p for H/C is the same, so pval list needs to be added
+#twice for the whole df that has all C then all H but identical otherwise
+datatrt=data.frame(datatrt,p.value=rep(datawilcox,2))
+data.Dmean=datatrt
+data.Dmean$se <- aggregate(value~Datasets:Horizon:Site:Treatment,FUN = sd,data = data.D)$value
+#print significant rows for researching genes
+print(data.Dmean[which(data.Dmean$p.value<=.05),])
+```
+
+#Graphing prep
+```{r, fig.width=10, fig.height=10}
+
+
+data.Dmean$value=log10(data.Dmean$value)
+#this is the wrong representation below
+data.Dmean$se=log10(data.Dmean$se+data.Dmean$value)
+data.Dmean=subset(data.Dmean, data.Dmean$value>(-6))
+data.Dmean$Datasets=substr(data.Dmean$Datasets, 28, 200) 
+data.Dmean$Datasets=str_wrap(data.Dmean$Datasets, width=30) 
+
+```
+
+
+Plotting- Iron
+```{r,fig.width=10, fig.height=10}
+
+#SWaN
+data.Dswo=subset(data.Dmean, Site=='SWaN'&Horizon=='Organic')
+data.Dswo=data.Dswo[order(data.Dswo$value, decreasing = T),]
+#data.Dswo=data.Dswo[1:100,]
+p<- ggplot(data.Dswo, aes(x=value,y=Datasets, color=Treatment))+
+  #facet_grid(~Horizon)+
+  scale_color_manual(values=c("#33CCFF", "#FF6666"))+  #c=blue, h=red
+  #scale_x_log10(limits = c(0.0000001, 1))+   #STILL DOESN'T WORK
+  geom_point(cex=2.5)+
+  ggtitle("Iron Acquisition & Metabolism in SEED for SWaN Organic")+
+  ylab(" ")+
+  xlab("Log10 Transformed Percent composition")+
+  geom_errorbarh(aes(xmin=value-se, xmax=value+se),width=.05) +  # Width of the error bars
+  theme(axis.text.y = element_text(size=3))+
+  theme_bw()
+#if no sigvals in the array, aes has error bc length<1
+if (any(data.Dswo$p.value<=.05)) {
+p=p+ geom_text(data=subset(data.Dswo, p.value<=.05), aes(x=value, y=Datasets, label="*"), vjust= -.1, colour="black")    #only print * for sig pvals
+}
+
+p
+data.Dswm=subset(data.Dmean, Site=='SWaN'&Horizon=='Mineral')
+data.Dswm=data.Dswm[order(data.Dswm$value, decreasing = T),]
+#data.Dswm=data.Dswm[1:100,]
+p<- ggplot(data.Dswm, aes(x=value,y=Datasets, color=Treatment))+
+  #facet_grid(~Horizon)+
+  scale_color_manual(values=c("#33CCFF", "#FF6666"))+  #c=blue, h=red
+  #scale_x_log10(limits = c(0.0000001, 1))+   #STILL DOESN'T WORK
+  geom_point(cex=2.5)+
+  ggtitle("Iron Acquisition & Metabolism in SEED for SWaN Mineral")+
+  ylab(" ")+
+  xlab("Log10 Transformed Percent composition")+
+  geom_errorbarh(aes(xmin=value-se, xmax=value+se),width=.05) +  # Width of the error bars
+  theme(axis.text.y = element_text(size=3))+
+  theme_bw()
+#if no sigvals in the array, aes has error bc length<1
+if (any(data.Dswm$p.value<=.05)) {
+p=p+ geom_text(data=subset(data.Dswm, p.value<=.05), aes(x=value, y=Datasets, label="*"), vjust= -.1, colour="black")    #only print * for sig pvals
+}
+p
+
+
+##Barre Woods
+data.Dbwo=subset(data.Dmean, Site=='Barre Woods'&Horizon=='Organic')
+data.Dbwo=data.Dbwo[order(data.Dbwo$value, decreasing = T),]
+#data.Dbwo=data.Dbwo[1:100,]
+p<- ggplot(data.Dbwo, aes(x=value,y=Datasets, color=Treatment))+
+  #facet_grid(~Horizon)+
+  scale_color_manual(values=c("#33CCFF", "#FF6666"))+  #c=blue, h=red
+  #scale_x_log10(limits = c(0.0000001, 1))+   #STILL DOESN'T WORK
+  geom_point(cex=2.5)+
+  ggtitle("Iron Acquisition & Metabolism in SEED for Barre Woods Organic")+
+  ylab(" ")+
+  xlab("Log10 Transformed Percent composition")+
+  geom_errorbarh(aes(xmin=value-se, xmax=value+se),width=.05) +  # Width of the error bars
+  theme(axis.text.y = element_text(size=3))+
+  theme_bw()
+#if no sigvals in the array, aes has error bc length<1
+if (any(data.Dbwo$p.value<=.05)) {
+p=p+ geom_text(data=subset(data.Dbwo, p.value<=.05), aes(x=value, y=Datasets, label="*"), vjust= -.1, colour="black")    #only print * for sig pvals
+}
+
+p
+data.Dbwm=subset(data.Dmean, Site=='Barre Woods'&Horizon=='Mineral')
+data.Dbwm=data.Dbwm[order(data.Dbwm$value, decreasing = T),]
+#data.Dbwm=data.Dbwm[1:100,]
+p<- ggplot(data.Dbwm, aes(x=value,y=Datasets, color=Treatment))+
+  #facet_grid(~Horizon)+
+  scale_color_manual(values=c("#33CCFF", "#FF6666"))+  #c=blue, h=red
+  #scale_x_log10(limits = c(0.0000001, 1))+   #STILL DOESN'T WORK
+  geom_point(cex=2.5)+
+  ggtitle("Iron Acquisition & Metabolism in SEED for Barre Woods Mineral")+
+  ylab(" ")+
+  xlab("Log10 Transformed Percent composition")+
+  geom_errorbarh(aes(xmin=value-se, xmax=value+se),width=.05) +  # Width of the error bars
+  theme(axis.text.y = element_text(size=3))+
+  theme_bw()
+#if no sigvals in the array, aes has error bc length<1
+if (any(data.Dbwm$p.value<=.05)) {
+p=p+ geom_text(data=subset(data.Dbwm, p.value<=.05), aes(x=value, y=Datasets, label="*"), vjust= -.1, colour="black")    #only print * for sig pvals
+}
+p
+
+##Prospect Hill
+data.Dpho=subset(data.Dmean, Site=='Prospect Hill'&Horizon=='Organic')
+data.Dpho=data.Dpho[order(data.Dpho$value, decreasing = T),]
+#data.Dpho=data.Dpho[1:100,]
+p<- ggplot(data.Dpho, aes(x=value,y=Datasets, color=Treatment))+
+  #facet_grid(~Horizon)+
+  scale_color_manual(values=c("#33CCFF", "#FF6666"))+  #c=blue, h=red
+  #scale_x_log10(limits = c(0.0000001, 1))+   #STILL DOESN'T WORK
+  geom_point(cex=2.5)+
+  ggtitle("Iron Acquisition & Metabolism in SEED for Prospect Hill Organic")+
+  ylab(" ")+
+  xlab("Log10 Transformed Percent composition")+
+  geom_errorbarh(aes(xmin=value-se, xmax=value+se),width=.05) +  # Width of the error bars
+  theme(axis.text.y = element_text(size=3))+
+  theme_bw()
+#if no sigvals in the array, aes has error bc length<1
+if (any(data.Dpho$p.value<=.05)) {
+p=p+ geom_text(data=subset(data.Dpho, p.value<=.05), aes(x=value, y=Datasets, label="*"), vjust= -.1, colour="black")    #only print * for sig pvals
+}
+
+p
+data.Dphm=subset(data.Dmean, Site=='Prospect Hill'&Horizon=='Mineral')
+data.Dphm=data.Dphm[order(data.Dphm$value, decreasing = T),]
+#data.Dphm=data.Dphm[1:100,]
+p<- ggplot(data.Dphm, aes(x=value,y=Datasets, color=Treatment))+
+  #facet_grid(~Horizon)+
+  scale_color_manual(values=c("#33CCFF", "#FF6666"))+  #c=blue, h=red
+  #scale_x_log10(limits = c(0.0000001, 1))+   #STILL DOESN'T WORK
+  geom_point(cex=2.5)+
+  ggtitle("Iron Acquisition & Metabolism in SEED for Prospect Hill Mineral")+
+  ylab(" ")+
+  xlab("Log10 Transformed Percent composition")+
+  geom_errorbarh(aes(xmin=value-se, xmax=value+se),width=.05) +  # Width of the error bars
+  theme(axis.text.y = element_text(size=3))+
+  theme_bw()
+#if no sigvals in the array, aes has error bc length<1
+if (any(data.Dphm$p.value<=.05)) {
+p=p+ geom_text(data=subset(data.Dphm, p.value<=.05), aes(x=value, y=Datasets, label="*"), vjust= -.1, colour="black")    #only print * for sig pvals
+}
+p
+```

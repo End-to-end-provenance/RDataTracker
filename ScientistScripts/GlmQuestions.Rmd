@@ -1,0 +1,114 @@
+---
+title: 'Questions about GLM''s '
+author: "Tess"
+date: "February 16, 2015"
+output: word_document
+---
+
+Hello, here's a summery of my struggle with GLM's. 
+
+This section of code just reads in/ cleans up all of the data sets, the glm stuff starts in the second chunk of code. 
+
+```{r, echo=TRUE}
+library(permute)
+library(lattice)
+library(vegan)
+library(vegetarian)
+library(pscl)
+
+setwd("/Users/tessmccabe/Dropbox/Junior/Junior Year research/Ant Stats/data")
+antdatanum<-read.csv("ants.csv") #I set data as working directory
+antdata2 <- antdatanum[,-c(1:3)]
+# take all abundance data and replace it with 0s and 1s
+antdata2[antdata2>0] <-1
+# append columns with plot information to ant occurrence data
+antdata3<-cbind(antdatanum[,1:3],antdata2)
+
+
+```
+
+Start of GLM experimmentation
+Failed code: 
+```{r, echo=TRUE}
+##this code doesn't run. It's been commented out, but it should produce the same error messeges when it's run without comments. 
+#glm(antdata3~Treatment*Year,family=poisson()) #Gives "invalid type (list)"" error
+#glm(antdata2~Treatment*Year,family=poisson()) #same error
+#glm(antdata3~antdata3$Treatment*antdata3$Year,family=poisson()) #again
+#glm(antdata3$Aphful~antdata3$Treatment*antdata3$Year*antdata3$Aphpic*antdata3$Aphrud*antdata3$Camnov*antdata3$Campen*antdata3$Forase* antdata3$Forneo*antdata3$Forrub*antdata3$Forsubi*antdata3$Forsub*antdata3$Lasali*antdata3$Lasumb*antdata3$Mryame*antdata3$Myrpun*antdata3$Steimp,family=poisson()) #This does work, but gives the warning messege "glm.fit: fitted rates numerically 0 occurred" and only incorperates one species. 
+#glm(antdata3$Aphful:antdata3$Steimp~antdata3$Treatment*antdata3$Year,family=poisson()) # ###Gives error "Error in model.frame.default(formula = antdata3$Aphful:antdata3$Steimp ~  : 
+#  variable lengths differ (found for 'antdata3$Treatment')
+#In addition: Warning messages:
+#1: In antdata3$Aphful:antdata3$Steimp :
+#  numerical expression has 96 elements: only the first used
+#2: In antdata3$Aphful:antdata3$Steimp :
+ # numerical expression has 96 elements: only the first used"
+#DEADLY CODE: CAUSES  CRASHES
+#did.it.work<-glm(antdata3$Aphful~antdata3$Treatment*antdata3$Year*antdata3$Aphpic*antdata3$Aphrud*antdata3$Camnov*antdata3$Campen*antdata3$Forase* antdata3$Forneo*antdata3$Forrub*antdata3$Forsubi*antdata3$Forsub*antdata3$Lasali*antdata3$Lasumb*antdata3$Mryame*antdata3$Myrpun*antdata3$Steimp,family=poisson()) 
+
+
+```
+
+
+Here's what worked: 
+
+ #start by making a dataframe of form: plot# treatment# year# Species name Count#
+Species<-c(antdata3$Aphful,antdata3$Aphpic,antdata3$Aphrud,antdata3$Camnov,antdata3$Campen,antdata3$Forase, antdata3$Forneo,antdata3$Forrub,antdata3$Forsubi,antdata3$Forsub,antdata3$Lasali,antdata3$Lasumb,antdata3$Mryame,antdata3$Myrpun,antdata3$Steimp)
+#checked and this does have a lengthof 1440, or 15 * 96, or the number of elements in the matrix
+
+Year<-antdata3[,1]
+Treatment<-antdata3[,3]
+glm.dataframe<-cbind(Year,Treatment,Species) #so that I can access the variable names
+as.data.frame(glm.dataframe) # I have to coerce it. But it doesn't work if I just coerce it
+#so I chop up the columns again
+Year<-glm.dataframe[,1]
+as.character(Year)
+Species<-glm.dataframe[,3]
+Treatment<-glm.dataframe[,2]
+as.character(Treatment)
+#now I can run the glm function
+glm.test<-glm(Species~Treatment*Year, family=quasipoisson)
+summary(glm.test)
+plot(glm.test)
+
+#still getting an AIC of nearly 900
+
+
+This still lumps all of the species counts into one vector, which doesn't really allow for effect comparisons between species. Do you have any advice for how to format the data so that I can use it in the GLM function? 
+
+Thanks, 
+
+
+-Tess McCabe
+
+
+Ok: here's the deal, now I'm fitting a glm for diversity indices alpha and beta
+
+```{r, echo=TRUE}
+#Let's start with making a vector of alpha  values
+d(antdata2[c(3),], lev = "alpha", wts = FALSE, q = 1, boot = FALSE) # USed this to test that the alpha values vector reflects this function's values. Checked out. 
+Alpha_values<-apply(antdata2,1,d)
+#Alpha_values<-log(Alpha_values)
+alpha_glm<-glm(Alpha_values~antdata3$Treatment*antdata3$Plot*antdata3$Year)
+plot(alpha_glm)
+
+summary(alpha_glm)
+alpha_glm2<-glm(Alpha_values~antdata3$Treatment*antdata3$Year)
+plot(alpha_glm2)
+summary(alpha_glm2)
+
+
+#Trying a zero inflated model 
+#alpha_zeroinfl<- zeroinfl(Alpha_values ~ antdata3$Treatment*antdata3$Plot*antdata3$Year) # Not quite. 
+```
+
+Look up non-parametric tests for ancova
+Play with data transformations
+
+#methods from Frey paper: Harvard forest paper methods to prove that 
+
+Eviroemtal data: 
+```{r, echo=TRUE}
+#rarefaction
+#you want to report the error in observation. 
+
+```

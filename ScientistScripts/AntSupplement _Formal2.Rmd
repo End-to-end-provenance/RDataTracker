@@ -1,0 +1,99 @@
+---
+title: "Suplementary Code"
+author: "Tess McCabe"
+date: "April 6, 2015"
+output: word_document
+---
+
+*This is the R code for the analysis of all ant data. It is broken into roughly three code blocks. The first section loads all of the nessisary packages and reads in the data. The second section is code for the figures displaying the descriptive statistics. The third section outlines the statistical methods used and include brief notes and visualizations of thier interpretation. All datasets used in these analyses are availible at Harvard Forest Datasets*
+
+
+
+
+**Packages & Data**
+
+```{r}
+#### Packages
+#Written in R vesion 3.1.1 "Sock it to Me"
+library(permute) #Version 0.8-3
+library(lattice) #Version 0.20-29
+library(vegan)  #Version 2.0-10
+library(vegetarian) #Version 1.2
+library(car) #Version 2.0-25
+#Note that a package not published on the CRAN server "biostats.r" is sourced later. For more information please contact Kevin McGarigal of the University of Massachusetts, Amherst
+
+#### Read in Data 
+setwd("/Users/tessmccabe/Dropbox/Junior/Junior Year research/Ant Stats/data") #Set to appropriate local working directory
+source('biostats.R')
+antdatanum<-read.csv("ants.csv") #Only the ant portion of Harvard Forest dataset. All three "Q" Charachtors were removed manually. 
+antdatanum$Aphpic<-antdatanum$Aphpic+antdatanum$Aphrud #Combine both Aphpic and Aphrud 
+antdatanum<-antdatanum[,-6] # nix aphrud
+antdata2 <- antdatanum[,-c(1:3)]#Create a matrix without lable columns
+antdata2[antdata2>0] <-1 #Make that matrix presence vs absence change all numbers into 1's. 
+antdata3<-cbind(antdatanum[,1:3],antdata2) #Create a presence vs absence matrix with lable columns. 
+
+```
+
+
+**Figures & Discriptive Statistics**
+
+```{r, echo=FALSE}
+#### Species Occurences 
+antdata2Plot<-(c(sum(antdata2$Aphful),sum(antdata2$Aphpic),sum(antdata2$Camnov),sum(antdata2$Campen),sum(antdata2$Forase),sum(antdata2$Forneo),sum(antdata2$Forrub),sum(antdata2$Forsubi),sum(antdata2$Forsub),sum(antdata2$Lasali),sum(antdata2$Lasumb),sum(antdata2$Mryame),sum(antdata2$Myrpun),sum(antdata2$Steimp))) #a vector of the sum of every column
+par(mar=(c(10, 4, 4, 2) + 0.1))# Set margins for barplot
+barplot(antdata2Plot, ylab= "Occurrence", names.arg= c("Aphaenogaster fulva","Aphaenogaster picea/ rudis","Camponotus noveboracensis","Camponotus pennsylvanicus","Formica aserva","Formica neogagates","Formica rubicunda","Formica subintegra","Formica subsericea","Lasius alienus","Lasius umbratus","Myrmica americana","Myrmica punctiventris","Stenamma impar"), las=3, cex.names=0.8, main="Species Occurence")
+par(mar=(c(5, 4, 4, 2) + 0.1)) #Reset paramaters for other figures 
+#Plot of Species Occurences
+
+```
+
+
+**Statistical Tests**
+
+Multivariate Analysis 
+```{r}
+#### Manova
+rowZero<-antdata3[(rowSums(antdata3[,-c(1:3)])!=0),]# Check for and remove any rows without any species found. 
+mv.outliers(rowZero[,-c(1:3)], method='bray')# Returns no outliers
+adonis(rowZero[,-c(1:3)]~(rowZero$Treatment/rowZero$Plot)*rowZero$Year, method='bray')# a Non-Patametric MANOVA function.  Only found significant differences between different years. 
+
+
+# Check to see if 2007 is the cuase of significant difference, by deleteing 2007. 
+rowZero1<-rowZero[rowZero$Year!="2007",]# Removes 2007
+adonis(rowZero1[,-c(1:3)]~rowZero1$Treatment/rowZero1$Plot*rowZero1$Year,method='bray')# Year is still significant. Results warrent more investigation. 
+
+### Visual Confirmation of Manova resuls 
+treat<-rowZero$Treatment
+year<-rowZero$Year
+yearBeta<-betadisper(vegdist(rowZero[,-c(1:3)], method= 'bray'), group= year, type=c("median","centroid")) #Creates a betadisper object useing a vector of bray distance measures  grouped by year
+treatBeta<-betadisper(vegdist(rowZero[,-c(1:3)], method= 'bray'), group= treat, type=c("median","centroid")) #Creates a similar betadisper object grouped by treatment
+plot(yearBeta, axes = c(1,2), cex = 0.7, hull = TRUE, main= "Year Visualization of NPMANOVA")
+plot(treatBeta, axes = c(1,2), cex = 0.7, hull = TRUE, main= "Treatment Visualization of NPMANOVA") #The difference between the two plots is clear.The year group look more distinct.  Results of MANOVA likely accurate. 
+
+### Pairwise Comparisons of years
+permutest(yearBeta, pairwise =TRUE,control = how(nperm = 999)) #Only significant difference between 2007 & 2008 and 2008 & 2009. None are significantly different from control year.  
+
+permutest(treatBeta, pairwise =TRUE,control = how(nperm = 999)) #A significant value between treatment 1 (control) and warming/nitrogen, as well as a just verging on significance value for control and just nitrogen. Because the adonis found no significant difference will disregard. 
+```
+
+Univariate Analysis
+
+```{r}
+rowZeroNum<-antdata3[(rowSums(antdata3[,-c(1:3)])!=0),] 
+rich<-rowSums(rowZeroNum[,-c(1:3)]) #Creates a vector of the species richness for each plot
+rich_aov<-aov(rich~rowZeroNum$Treatment*as.factor(rowZeroNum$Year)) #create an ANOVA object. 
+
+plot(resid(rich_aov)) #Plot siduals to double check normality. Appears normal. 
+Anova(rich_aov) #Year is the only significant term, and not at an alpha of 0.05.  
+```
+
+Check of control year 2006 
+```{r}
+antdata2006<-antdata3[which(antdata3$Year=="2006"),] # Subset of 2006
+rowZero2006<-antdata2006[(rowSums(antdata2006[,-c(1:3)])!=0),] # remove any rows with zero values
+rich2006<-rowSums(rowZero2006[,-c(1:3)]) #creates a richness value for all plots in 2006
+aov2006<-aov(rich2006~as.factor(rowZero2006$Treatment)) #Makes an anova object
+Anova(aov2006) #No significance found. 
+```
+
+*Special thanks to group members Ashni, Carly & Lauren!*
