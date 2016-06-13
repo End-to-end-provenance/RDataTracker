@@ -4250,7 +4250,7 @@ ddg.MAX_HIST_LINES <- 2^14
   }
 
   # Add other annotations here.
-oh
+
   # No annotation required.
   return(parsed.command)
 }
@@ -5105,18 +5105,23 @@ ddg.finish <- function(pname=NULL) {
 #   If -1, all snapshot files are saved. Size in kilobytes.  Note that
 #   this tests the size of the object that will be turned into a
 #   snapshot, not the size of the resulting snapshot.
+# Addition : overwrite (optional) - default TRUE, if FALSE, generates
+#   timestamp for ddg directory
 
 ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = NULL, enable.console = TRUE, max.snapshot.size = 100) {
   .ddg.init.tables()
   
   #Setting the path for the ddg    
   if (is.null(ddgdir)) {
+    
+    #default is the file where the script is located
     ddg.path <- paste(dirname(r.script.path), "/", 
                       basename(tools::file_path_sans_ext(r.script.path)), 
                       "_ddg", sep="")
   }
   else ddg.path <- normalizePath(ddgdir, winslash="/", mustWork=FALSE)
   
+  #overwrite default is 
   if(!overwrite){
     ddg.path <- paste(ddg.path, .ddg.timestamp(), sep = "_")
   }
@@ -5132,13 +5137,14 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = NULL, enab
                            basename(tools::file_path_sans_ext(r.script.path)),
                            ".R", sep = "")
     .ddg.markdown(r.script.path, output.path)
+    .ddg.set("ddg.r.script.path", output.path)
   }
-  
+  else{
   #Set r.script.path
-  
-  .ddg.set("ddg.r.script.path",
-      if (is.null(r.script.path)) NULL
-          else normalizePath(r.script.path, winslash="/"))
+    .ddg.set("ddg.r.script.path",
+        if (is.null(r.script.path)) NULL
+            else normalizePath(r.script.path, winslash="/"))
+  }
   
  
            
@@ -5224,7 +5230,8 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
   # the DDG.
   tryCatch(
       if (!is.null(f)) f()
-          else if (!is.null(r.script.path)) ddg.source(r.script.path,
+          else if (!is.null(r.script.path)) ddg.source(
+               .ddg.get("ddg.r.script.path"),
                 ddgdir = ddgdir,
                 ignore.ddg.calls = FALSE,
                 ignore.init = TRUE,
@@ -5234,7 +5241,7 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
       error=function(e) {
         e.str <- toString(e)
         print(e.str)
-        #ddg.procedure(pname="tryCatch")
+        ddg.procedure(pname="tryCatch")
         ddg.exception.out("error.msg", e.str, "tryCatch")
       },
       finally={
@@ -5244,9 +5251,26 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
   invisible()
 }
 
+# This function takes a Rmd file and extracts the R code and text through
+# the purl function in the knitr library. It then annotates the R script
+# to insert start and finish nodes based on the chunks the user already
+# created. If eval = false, then the chunk will not be added to the DDG. If
+# the user has a name for the chunk, then that name will be used, else a chunk
+# name "ddg.chunk_1" and higher numbers will be generated.
+# 
+# Important: If in a code chunk, there is an empty line followed by "# ----"
+# or "#'", then an extra finish node will be inserted, causing an error.
+# 
+# r.script.path is the path of the original Rmd file
+# output.path is the path of the generated R script
+
 .ddg.markdown <- function(r.script.path = NULL, output.path = NULL){
   library(knitr)
+  
+  #generates R script file from markdown file
   purl(r.script.path, documentation = 2L)
+  
+  #moves file to ddg directory
   file.rename(from = paste(getwd(), "/", basename(tools::file_path_sans_ext(r.script.path)),
                            ".R", sep = ""), to = output.path)
   script <- readLines(output.path)
@@ -5257,31 +5281,40 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
   annotated <- character(0)
   index <- 1
   
+  
+  # This for loop goes through the script line by line and searches for patterns
+  # to insert the start and finish nodes
   for(i in 1:length(script)){
+    
+    #eval = false means we skip this code chunk, therefore skip = TRUE
     if(regexpr("eval+(\\s*)+=+(\\s*)+FALSE", script[i]) != -1){
       skip <- TRUE
       annotated <- append(annotated, script[i])
     }
+    
     else if(regexpr("## ----", script[i]) != -1){
-      if(regexpr("## -----", script[i] != -1)){
-        print(paste("generating name", i))
-        name <- paste("ddg.chunk_", index, sep = "")
-        index <- index + 1
-      }
-      else{
+
+      #if no options in the line, then generate default name.      
+      if(regexpr("## -----", script[i]) == -1){
         if(regexpr("=", script[i]) == -1){
-          print(paste("no equal", i))
           end <- regexpr("-----", script[i])
           name <- substring(script[i], 8, last = end -1)
         }
         else if(regexpr(",", script[i]) != -1){
-          print(paste("has comma", i))
           comma <- regexpr(",", script[i])
           name <- substring(script[i], 8, last = comma -1)
         }
+        else{
+          name <- paste("ddg.chunk_", index, sep = "")
+          index <- index + 1
+        }
       }
-      name <- str_trim(name, side = "both")
-      annotated <- append(annotated, paste("ddg.start(\"", name, "\")", sep = ""))
+      else{
+        name <- paste("ddg.chunk_", index, sep = "")
+        index <- index + 1
+      }
+    name <- str_trim(name, side = "both")
+    annotated <- append(annotated, paste("ddg.start(\"", name, "\")", sep = ""))
     }
     else if(nchar(script[i]) == 0 && (regexpr("#'", script[i + 1]) != -1 || 
             i == length(script) || regexpr("## ----", script[i + 1]) != -1 )){
