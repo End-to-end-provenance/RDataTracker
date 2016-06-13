@@ -4250,10 +4250,13 @@ ddg.MAX_HIST_LINES <- 2^14
   }
 
   # Add other annotations here.
-
+oh
   # No annotation required.
   return(parsed.command)
 }
+
+#.ddg.rm removes all data except ddg information
+.ddg.rm <-function()
 
 # .ddg.get.annotation.list checks to see if the script contains calls to
 # ddg.annotate.on or ddg.annotate.off. If it does, these calls are executed.
@@ -5103,21 +5106,46 @@ ddg.finish <- function(pname=NULL) {
 #   this tests the size of the object that will be turned into a
 #   snapshot, not the size of the resulting snapshot.
 
-ddg.init <- function(r.script.path = NULL, ddgdir = NULL, enable.console = TRUE, max.snapshot.size = 100) {
+ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = NULL, enable.console = TRUE, max.snapshot.size = 100) {
   .ddg.init.tables()
+  
+  #Setting the path for the ddg    
+  if (is.null(ddgdir)) {
+    ddg.path <- paste(dirname(r.script.path), "/", 
+                      basename(tools::file_path_sans_ext(r.script.path)), 
+                      "_ddg", sep="")
+  }
+  else ddg.path <- normalizePath(ddgdir, winslash="/", mustWork=FALSE)
+  
+  if(!overwrite){
+    ddg.path <- paste(ddg.path, .ddg.timestamp(), sep = "_")
+  }
+  
+  .ddg.set("ddg.path", ddg.path)
+  
+  .ddg.init.environ()
+  
+  #Reset r.script.path if RMarkdown file
 
+  if (tools::file_ext(r.script.path) == "Rmd") {
+    output.path <- paste(ddg.path, "/",
+                           basename(tools::file_path_sans_ext(r.script.path)),
+                           ".R", sep = "")
+    .ddg.markdown(r.script.path, output.path)
+  }
+  
+  #Set r.script.path
+  
   .ddg.set("ddg.r.script.path",
       if (is.null(r.script.path)) NULL
           else normalizePath(r.script.path, winslash="/"))
-  .ddg.set("ddg.path",
-      if (is.null(ddgdir)) paste(getwd(), "ddg", sep="/")
-          else normalizePath(ddgdir, winslash="/", mustWork=FALSE))
-
+  
+ 
+           
   # Set environment constants.
   .ddg.set(".ddg.enable.console", enable.console)
   .ddg.set(".ddg.max.snapshot.size", max.snapshot.size)
   .ddg.set(".ddg.func.depth", 0)
-  .ddg.init.environ()
 
   # Initialize the information about the open start-finish blocks
   .ddg.set (".ddg.starts.open", vector())
@@ -5176,10 +5204,11 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, enable.console = TRUE,
 #   Note that this tests the size of the object that will be turned
 #   into a snapshot, not the size of the resulting snapshot.
 
-ddg.run <- function(r.script.path = NULL, ddgdir = NULL, f = NULL, enable.console = TRUE, annotate.functions = TRUE, max.snapshot.size = 100) {
-
+ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = NULL, enable.console = TRUE, annotate.functions = TRUE, max.snapshot.size = 100) {
+  
+ 
   # Initiate ddg.
-  ddg.init(r.script.path, ddgdir, enable.console, max.snapshot.size)
+  ddg.init(r.script.path, ddgdir, overwrite, enable.console, max.snapshot.size)
 
   # Create ddg directory.
   dir.create(.ddg.path(), showWarnings = FALSE)
@@ -5205,7 +5234,7 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, f = NULL, enable.consol
       error=function(e) {
         e.str <- toString(e)
         print(e.str)
-        ddg.procedure(pname="tryCatch")
+        #ddg.procedure(pname="tryCatch")
         ddg.exception.out("error.msg", e.str, "tryCatch")
       },
       finally={
@@ -5213,6 +5242,63 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, f = NULL, enable.consol
       }
   )
   invisible()
+}
+
+.ddg.markdown <- function(r.script.path = NULL, output.path = NULL){
+  library(knitr)
+  purl(r.script.path, documentation = 2L)
+  file.rename(from = paste(getwd(), "/", basename(tools::file_path_sans_ext(r.script.path)),
+                           ".R", sep = ""), to = output.path)
+  script <- readLines(output.path)
+  
+  library(stringr)
+  skip <- FALSE
+  name <- "ddg.chunk"
+  annotated <- character(0)
+  index <- 1
+  
+  for(i in 1:length(script)){
+    if(regexpr("eval+(\\s*)+=+(\\s*)+FALSE", script[i]) != -1){
+      skip <- TRUE
+      annotated <- append(annotated, script[i])
+    }
+    else if(regexpr("## ----", script[i]) != -1){
+      if(regexpr("## -----", script[i] != -1)){
+        print(paste("generating name", i))
+        name <- paste("ddg.chunk_", index, sep = "")
+        index <- index + 1
+      }
+      else{
+        if(regexpr("=", script[i]) == -1){
+          print(paste("no equal", i))
+          end <- regexpr("-----", script[i])
+          name <- substring(script[i], 8, last = end -1)
+        }
+        else if(regexpr(",", script[i]) != -1){
+          print(paste("has comma", i))
+          comma <- regexpr(",", script[i])
+          name <- substring(script[i], 8, last = comma -1)
+        }
+      }
+      name <- str_trim(name, side = "both")
+      annotated <- append(annotated, paste("ddg.start(\"", name, "\")", sep = ""))
+    }
+    else if(nchar(script[i]) == 0 && (regexpr("#'", script[i + 1]) != -1 || 
+            i == length(script) || regexpr("## ----", script[i + 1]) != -1 )){
+      if(skip){
+        annotated <- append(annotated, script[i])
+        skip <- FALSE
+      }
+      else{
+        annotated <- append(annotated, paste("ddg.finish(\"", name, "\")", sep = ""))
+      }
+    }
+    else{
+      annotated <- append(annotated, script[i])
+    }
+  }
+  writeLines(annotated, output.path)
+  r.script.path
 }
 
 # ddg.save inserts attribute information and the number of
@@ -5481,6 +5567,7 @@ ddg.source <- function (file,  ddgdir = NULL, local = FALSE, echo = verbose, pri
 
   # Parse the expressions from the file.
   exprs <- if (!from_file) {
+    print("not from file")
         if (length(lines))
           parse(stdin(), n = -1, lines, "?", srcfile,
               encoding)
