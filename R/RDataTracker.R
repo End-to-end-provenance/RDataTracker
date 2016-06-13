@@ -410,6 +410,16 @@ ddg.MAX_HIST_LINES <- 2^14
   environ <- paste(environ, "WorkingDirectory=\"", getwd(), "\"\n", sep="")
   environ <- paste(environ, "DDGDirectory=\"", .ddg.path(), "\"\n", sep="")
   environ <- paste(environ, "DateTime=\"", time, "\"\n", sep="")
+  environ <- paste(environ, "InstalledPackages=\"")
+  installed <- devtools::session_info()
+  installed <- installed[[2]]
+  installed <- installed[installed[2] == "*"]
+  if(!is.null(nrow(installed))) {
+    for(i in 1:nrow(installed)){
+      paste(environ, installed[i,1], " ", installed[i,2], ",", sep = "")
+    }
+  }
+  paste(environ, "\"\n", sep = "")
   return (environ)
 }
 
