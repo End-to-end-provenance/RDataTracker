@@ -3851,8 +3851,11 @@ ddg.MAX_HIST_LINES <- 2^14
   for (i in nframe:1) {
     call.func <- as.character(sys.call(i)[[1]])
     #print(paste(".ddg.get.frame.number: call.func =", call.func))
+    # Ignore calls to ddg functions or to the functions that get called from the outermost tryCatch
+    # to ddg code.
     if (substr(call.func, 1, 4) != ".ddg" && substr(call.func, 1, 3) != "ddg" 
-        && substr(call.func, 1, 10) != "doTryCatch" && substr(call.func, 1, 11) != "tryCatchOne") {
+        && substr(call.func, 1, 10) != "doTryCatch" && substr(call.func, 1, 11) != "tryCatchOne"
+        && substr(call.func, 1, 12) != "tryCatchList" && substr(call.func, 1, 8) != "tryCatch") {
       if (for.caller && !script.func.found) {
         script.func.found <- TRUE
       }
