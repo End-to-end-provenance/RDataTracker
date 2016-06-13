@@ -1,115 +1,117 @@
 Architecture="x86_64"
-OperatingSystem="windows"
+OperatingSystem="unix"
 Language="R"
-LanguageVersion="R version 3.2.5 (2016-04-14)"
-RDataTrackerVersion="2.22"
+LanguageVersion="R version 3.2.3 (2015-12-10)"
+RDataTrackerVersion="2.24"
 Script="[DIR]/OnOffTest.R"
-ProcessFileTimestamp="2015-11-13T10.09.16EST"
+ProcessFileTimestamp="2015-08-03T14.14.14EDT"
 WorkingDirectory="[DIR]"
 DDGDirectory="[DIR]/ddg"
-DateTime="2016-05-25T15.14.22EDT"
+DateTime="2016-06-07T13.54.21EDT"
 36
-Start p1 "1-OnOffTest.R" Value="OnOffTest.R" Time="0.01" Script="0" Line="NA";
-Operation p2 "2-h <- function() {    d <- 333    return(d)}" Value="h <- function() {    d <- 333    return(d)}" Time="0.03" Script="0" Line="21";
+Start p1 "1-OnOffTest.R" Value="OnOffTest.R" Time="0.015" Script="0" Line="NA";
+Operation p2 "2-h <- function() {    d <- 333    return(d)}" Value="h <- function() {    d <- 333    return(d)}" Time="0.022" Script="0" Line="21";
 CF p1 p2
 Data d1 "1-h" Value="#ddg.function";
 DF p2 d1
-Operation p3 "3-a <- 1" Value="a <- 1" Time="0.03" Script="0" Line="33";
+Operation p3 "3-a <- 1" Value="a <- 1" Time="0.031" Script="0" Line="33";
 CF p2 p3
 Data d2 "2-a" Value="1";
 DF p3 d2
-Operation p4 "4-b <- a + 1" Value="b <- a + 1" Time="0.04" Script="0" Line="34";
+Operation p4 "4-b <- a + 1" Value="b <- a + 1" Time="0.037" Script="0" Line="34";
 CF p3 p4
 DF d2 p4
 Data d3 "3-b" Value="2";
 DF p4 d3
-Start p5 "5-f_val <- f()" Value="f_val <- f()" Time="0.06" Script="0" Line="36";
+Start p5 "5-f_val <- f()" Value="f_val <- f()" Time="0.047" Script="0" Line="36";
 CF p4 p5
-Start p6 "6-f()" Value="f()" Time="0.06" Script="0" Line="36";
+Start p6 "6-f()" Value="f()" Time="0.05" Script="0" Line="36";
 CF p5 p6
-Operation p7 "7-f" Value="f" Time="0.06" Script="0" Line="36";
+Operation p7 "7-f" Value="f" Time="0.051" Script="0" Line="36";
 CF p6 p7
-Operation p8 "8-10" Value="10" Time="0.06" Script="0" Line="36";
+Operation p8 "8-10" Value="10" Time="0.053" Script="0" Line="36";
 CF p7 p8
 Data d4 "4-f() return" Value="10";
-Operation p9 "9-return (10)" Value="return (10)" Time="0.06" Script="0" Line="36";
+Operation p9 "9-return (10)" Value="return (10)" Time="0.057" Script="0" Line="36";
 CF p8 p9
 DF p9 d4
-Finish p10 "10-f()" Value="f()" Time="0.07" Script="0" Line="36";
+Finish p10 "10-f()" Value="f()" Time="0.061" Script="0" Line="36";
 CF p9 p10
-Finish p11 "11-f_val <- f()" Value="f_val <- f()" Time="0.07" Script="0" Line="36";
+Finish p11 "11-f_val <- f()" Value="f_val <- f()" Time="0.061" Script="0" Line="36";
 CF p10 p11
 DF d4 p11
 Data d5 "5-f_val" Value="10";
 DF p11 d5
-Operation p12 "12-c <- 100" Value="c <- 100" Time="0.07" Script="0" Line="38";
+Operation p12 "12-c <- 100" Value="c <- 100" Time="0.066" Script="0" Line="38";
 CF p11 p12
 Data d6 "6-c" Value="100";
 DF p12 d6
-Start p13 "13-d <- g(c)" Value="d <- g(c)" Time="0.07" Script="0" Line="42";
+Start p13 "13-d <- g(c)" Value="d <- g(c)" Time="0.072" Script="0" Line="42";
 CF p12 p13
-Start p14 "14-g(c)" Value="g(c)" Time="0.07" Script="0" Line="42";
+DF d6 p13
+Start p14 "14-g(c)" Value="g(c)" Time="0.078" Script="0" Line="42";
 CF p13 p14
-Binding p15 "15-a  <-  c" Time="0.09" Script="0" Line="42"
+Binding p15 "15-a  <-  c" Time="0.079" Script="0" Line="42"
 CF p14 p15
 DF d6 p15
 Data d7 "7-a" Value="100";
 DF p15 d7
-Operation p16 "16-g" Value="g" Time="0.09" Script="0" Line="42";
+Operation p16 "16-g" Value="g" Time="0.087" Script="0" Line="42";
 DF d7 p16
 CF p15 p16
-Operation p17 "17-c" Value="c" Time="0.1" Script="0" Line="42";
+Operation p17 "17-c" Value="c" Time="0.092" Script="0" Line="42";
 CF p16 p17
 Data d8 "8-g(c) return" Value="110";
-Operation p18 "18-return (c)" Value="return (c)" Time="0.1" Script="0" Line="42";
+Operation p18 "18-return (c)" Value="return (c)" Time="0.098" Script="0" Line="42";
 CF p17 p18
 DF p18 d8
-Finish p19 "19-g(c)" Value="g(c)" Time="0.1" Script="0" Line="42";
+Finish p19 "19-g(c)" Value="g(c)" Time="0.104" Script="0" Line="42";
 CF p18 p19
-Finish p20 "20-d <- g(c)" Value="d <- g(c)" Time="0.12" Script="0" Line="42";
+Finish p20 "20-d <- g(c)" Value="d <- g(c)" Time="0.104" Script="0" Line="42";
 CF p19 p20
 DF d8 p20
-Start p21 "21-h_val <- h()" Value="h_val <- h()" Time="0.12" Script="0" Line="43";
+Start p21 "21-h_val <- h()" Value="h_val <- h()" Time="0.105" Script="0" Line="43";
 CF p20 p21
-Start p22 "22-h()" Value="h()" Time="0.12" Script="0" Line="43";
+DF d1 p21
+Start p22 "22-h()" Value="h()" Time="0.109" Script="0" Line="43";
 CF p21 p22
-Operation p23 "23-h" Value="h" Time="0.12" Script="0" Line="43";
+Operation p23 "23-h" Value="h" Time="0.11" Script="0" Line="43";
 DF d1 p23
 CF p22 p23
-Operation p24 "24-d" Value="d" Time="0.12" Script="0" Line="43";
+Operation p24 "24-d" Value="d" Time="0.115" Script="0" Line="43";
 CF p23 p24
 Data d9 "9-h() return" Value="333";
-Operation p25 "25-return (d)" Value="return (d)" Time="0.12" Script="0" Line="43";
+Operation p25 "25-return (d)" Value="return (d)" Time="0.122" Script="0" Line="43";
 CF p24 p25
 DF p25 d9
-Finish p26 "26-h()" Value="h()" Time="0.14" Script="0" Line="43";
+Finish p26 "26-h()" Value="h()" Time="0.127" Script="0" Line="43";
 CF p25 p26
-Finish p27 "27-h_val <- h()" Value="h_val <- h()" Time="0.14" Script="0" Line="43";
+Finish p27 "27-h_val <- h()" Value="h_val <- h()" Time="0.127" Script="0" Line="43";
 CF p26 p27
 DF d9 p27
-Operation p28 "28-x <- 5" Value="x <- 5" Time="0.14" Script="0" Line="47";
+Operation p28 "28-x <- 5" Value="x <- 5" Time="0.129" Script="0" Line="47";
 CF p27 p28
 Data d10 "10-x" Value="5";
 DF p28 d10
-Start p29 "29-i_val <- i()" Value="i_val <- i()" Time="0.14" Script="0" Line="48";
+Start p29 "29-i_val <- i()" Value="i_val <- i()" Time="0.134" Script="0" Line="48";
 CF p28 p29
-Start p30 "30-i()" Value="i()" Time="0.14" Script="0" Line="48";
+Start p30 "30-i()" Value="i()" Time="0.136" Script="0" Line="48";
 CF p29 p30
-Operation p31 "31-i" Value="i" Time="0.14" Script="0" Line="48";
+Operation p31 "31-i" Value="i" Time="0.136" Script="0" Line="48";
 CF p30 p31
-Operation p32 "32-1000" Value="1000" Time="0.15" Script="0" Line="48";
+Operation p32 "32-1000" Value="1000" Time="0.137" Script="0" Line="48";
 CF p31 p32
 Data d11 "11-i() return" Value="1000";
-Operation p33 "33-return (1000)" Value="return (1000)" Time="0.15" Script="0" Line="48";
+Operation p33 "33-return (1000)" Value="return (1000)" Time="0.144" Script="0" Line="48";
 CF p32 p33
 DF p33 d11
-Finish p34 "34-i()" Value="i()" Time="0.15" Script="0" Line="48";
+Finish p34 "34-i()" Value="i()" Time="0.147" Script="0" Line="48";
 CF p33 p34
-Finish p35 "35-i_val <- i()" Value="i_val <- i()" Time="0.15" Script="0" Line="48";
+Finish p35 "35-i_val <- i()" Value="i_val <- i()" Time="0.147" Script="0" Line="48";
 CF p34 p35
 DF d11 p35
 Data d12 "12-i_val" Value="1000";
 DF p35 d12
-Finish p36 "36-OnOffTest.R" Value="OnOffTest.R" Time="0.17" Script="0" Line="NA";
+Finish p36 "36-OnOffTest.R" Value="OnOffTest.R" Time="0.154" Script="0" Line="NA";
 CF p35 p36
 

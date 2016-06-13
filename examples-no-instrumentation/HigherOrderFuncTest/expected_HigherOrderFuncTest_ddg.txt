@@ -2,63 +2,65 @@ Architecture="x86_64"
 OperatingSystem="unix"
 Language="R"
 LanguageVersion="R version 3.2.3 (2015-12-10)"
-RDataTrackerVersion="2.23"
+RDataTrackerVersion="2.24"
 Script="[DIR]/HigherOrderFuncTest.R"
-ProcessFileTimestamp="2016-06-03T15.23.31EDT"
+ProcessFileTimestamp="2016-06-03T15.35.41EDT"
 WorkingDirectory="[DIR]"
 DDGDirectory="[DIR]/ddg"
-DateTime="2016-06-03T15.25.44EDT"
+DateTime="2016-06-07T13.50.44EDT"
 21
-Start p1 "1-HigherOrderFuncTest.R" Value="HigherOrderFuncTest.R" Time="0.005" Script="0" Line="NA";
-Operation p2 "2-d <- c(1, 2)" Value="d <- c(1, 2)" Time="0.00700000000000001" Script="0" Line="5";
+Start p1 "1-HigherOrderFuncTest.R" Value="HigherOrderFuncTest.R" Time="0.00600000000000001" Script="0" Line="NA";
+Operation p2 "2-d <- c(1, 2)" Value="d <- c(1, 2)" Time="0.00800000000000001" Script="0" Line="5";
 CF p1 p2
-Snapshot d1 "1-d" Value="[DIR]/ddg/1-d.csv" Time="2016-06-03T15.25.44EDT";
+Snapshot d1 "1-d" Value="[DIR]/ddg/1-d.csv" Time="2016-06-07T13.50.44EDT";
 DF p2 d1
-Operation p3 "3-inc <- function(num) {    num + 1}" Value="inc <- function(num) {    num + 1}" Time="0.023" Script="0" Line="7";
+Operation p3 "3-inc <- function(num) {    num + 1}" Value="inc <- function(num) {    num + 1}" Time="0.02" Script="0" Line="7";
 CF p2 p3
 Data d2 "2-inc" Value="#ddg.function";
 DF p3 d2
-Start p4 "4-e <- sapply(d, inc)" Value="e <- sapply(d, inc)" Time="0.031" Script="0" Line="11";
+Start p4 "4-e <- sapply(d, inc)" Value="e <- sapply(d, inc)" Time="0.029" Script="0" Line="11";
 CF p3 p4
-Start p5 "5-FUN(X[[i]], ...)" Value="FUN(X[[i]], ...)" Time="0.031" Script="0" Line="11";
+DF d1 p4
+DF d2 p4
+Start p5 "5-FUN(X[[i]], ...)" Value="FUN(X[[i]], ...)" Time="0.039" Script="0" Line="11";
 CF p4 p5
-Binding p6 "6-...  <-  X[[i]]" Time="0.032" Script="0" Line="11"
+Binding p6 "6-...  <-  X[[i]]" Time="0.039" Script="0" Line="11"
 CF p5 p6
-Binding p7 "7-...  <-  ..." Time="0.035" Script="0" Line="11"
+Binding p7 "7-...  <-  ..." Time="0.043" Script="0" Line="11"
 CF p6 p7
-Operation p8 "8-FUN" Value="FUN" Time="0.037" Script="0" Line="11";
+Operation p8 "8-FUN" Value="FUN" Time="0.045" Script="0" Line="11";
 CF p7 p8
-Operation p9 "9-num + 1" Value="num + 1" Time="0.039" Script="0" Line="11";
+Operation p9 "9-num + 1" Value="num + 1" Time="0.046" Script="0" Line="11";
 CF p8 p9
 Data d3 "3-FUN(X[[i]],...) return" Value="2";
-Operation p10 "10-return (num + 1)" Value="return (num + 1)" Time="0.045" Script="0" Line="11";
+Operation p10 "10-return (num + 1)" Value="return (num + 1)" Time="0.052" Script="0" Line="11";
 CF p9 p10
 DF p10 d3
-Finish p11 "11-FUN(X[[i]], ...)" Value="FUN(X[[i]], ...)" Time="0.05" Script="0" Line="11";
+Finish p11 "11-FUN(X[[i]], ...)" Value="FUN(X[[i]], ...)" Time="0.057" Script="0" Line="11";
 CF p10 p11
-Start p12 "12-FUN(X[[i]], ...)" Value="FUN(X[[i]], ...)" Time="0.05" Script="0" Line="11";
+Start p12 "12-FUN(X[[i]], ...)" Value="FUN(X[[i]], ...)" Time="0.057" Script="0" Line="11";
 CF p11 p12
-Binding p13 "13-...  <-  X[[i]]" Time="0.051" Script="0" Line="11"
+Binding p13 "13-...  <-  X[[i]]" Time="0.058" Script="0" Line="11"
 CF p12 p13
-Binding p14 "14-...  <-  ..." Time="0.055" Script="0" Line="11"
+Binding p14 "14-...  <-  ..." Time="0.062" Script="0" Line="11"
 CF p13 p14
-Operation p15 "15-FUN" Value="FUN" Time="0.056" Script="0" Line="11";
+Operation p15 "15-FUN" Value="FUN" Time="0.064" Script="0" Line="11";
 CF p14 p15
-Operation p16 "16-num + 1" Value="num + 1" Time="0.0580000000000001" Script="0" Line="11";
+Operation p16 "16-num + 1" Value="num + 1" Time="0.065" Script="0" Line="11";
 CF p15 p16
 Data d4 "4-FUN(X[[i]],...) return" Value="3";
-Operation p17 "17-return (num + 1)" Value="return (num + 1)" Time="0.0630000000000001" Script="0" Line="11";
+Operation p17 "17-return (num + 1)" Value="return (num + 1)" Time="0.071" Script="0" Line="11";
 CF p16 p17
 DF p17 d4
-Finish p18 "18-FUN(X[[i]], ...)" Value="FUN(X[[i]], ...)" Time="0.0670000000000001" Script="0" Line="11";
+Finish p18 "18-FUN(X[[i]], ...)" Value="FUN(X[[i]], ...)" Time="0.076" Script="0" Line="11";
 CF p17 p18
-Finish p19 "19-e <- sapply(d, inc)" Value="e <- sapply(d, inc)" Time="0.0680000000000001" Script="0" Line="11";
+Finish p19 "19-e <- sapply(d, inc)" Value="e <- sapply(d, inc)" Time="0.076" Script="0" Line="11";
 CF p18 p19
-Snapshot d5 "5-e" Value="[DIR]/ddg/5-e.csv" Time="2016-06-03T15.25.44EDT";
+Snapshot d5 "5-e" Value="[DIR]/ddg/5-e.csv" Time="2016-06-07T13.50.44EDT";
 DF p19 d5
-Operation p20 "20-print(e)" Value="print(e)" Time="0.0740000000000001" Script="0" Line="12";
+Operation p20 "20-print(e)" Value="print(e)" Time="0.083" Script="0" Line="12";
 CF p19 p20
 DF d5 p20
-Finish p21 "21-HigherOrderFuncTest.R" Value="HigherOrderFuncTest.R" Time="0.0810000000000001" Script="0" Line="NA";
+Finish p21 "21-HigherOrderFuncTest.R" Value="HigherOrderFuncTest.R" Time="0.089" Script="0" Line="NA";
 CF p20 p21
 
