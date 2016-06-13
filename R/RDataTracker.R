@@ -5170,7 +5170,7 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, enable.console = TRUE,
 #   provenance for the function is captured.
 # enable.console (optional) - if TRUE, console mode is turned on.
 # annotate.functions (optional) - if TRUE, functions are annotated.
-# max.snapshot.size (optional) - the maximum size for objects that
+# max.snapshot.size ( optional) - the maximum size for objects that
 #   should be output to snapshot files. If 0, no snapshot files are
 #   saved. If -1, all snapshot files are saved.  Size in kilobytes.
 #   Note that this tests the size of the object that will be turned
