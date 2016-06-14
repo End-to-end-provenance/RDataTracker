@@ -4,63 +4,409 @@ Language="R"
 LanguageVersion="R version 3.2.3 (2015-12-10)"
 RDataTrackerVersion="2.24"
 Script="[DIR]/HigherOrderFuncTest.R"
-ProcessFileTimestamp="2016-06-03T15.35.41EDT"
+ProcessFileTimestamp="2016-06-14T13.49.58EDT"
 WorkingDirectory="[DIR]"
 DDGDirectory="[DIR]/ddg"
-DateTime="2016-06-07T13.50.44EDT"
-21
-Start p1 "1-HigherOrderFuncTest.R" Value="HigherOrderFuncTest.R" Time="0.00600000000000001" Script="0" Line="NA";
-Operation p2 "2-d <- c(1, 2)" Value="d <- c(1, 2)" Time="0.00800000000000001" Script="0" Line="5";
+DateTime="2016-06-14T15.08.04EDT"
+130
+Start p1 "1-HigherOrderFuncTest.R" Value="HigherOrderFuncTest.R" Time="0.01" Script="0" Line="NA";
+Operation p2 "2-d <- c(1, 2, 3, 4)" Value="d <- c(1, 2, 3, 4)" Time="0.012" Script="0" Line="5";
 CF p1 p2
-Snapshot d1 "1-d" Value="[DIR]/ddg/1-d.csv" Time="2016-06-07T13.50.44EDT";
+Snapshot d1 "1-d" Value="[DIR]/ddg/1-d.csv" Time="2016-06-14T15.08.04EDT";
 DF p2 d1
-Operation p3 "3-inc <- function(num) {    num + 1}" Value="inc <- function(num) {    num + 1}" Time="0.02" Script="0" Line="7";
+Operation p3 "3-inc <- function(num) {    num + 1}" Value="inc <- function(num) {    num + 1}" Time="0.026" Script="0" Line="7";
 CF p2 p3
 Data d2 "2-inc" Value="#ddg.function";
 DF p3 d2
-Start p4 "4-e <- sapply(d, inc)" Value="e <- sapply(d, inc)" Time="0.029" Script="0" Line="11";
+Start p4 "4-e <- sapply(d, inc)" Value="e <- sapply(d, inc)" Time="0.032" Script="0" Line="11";
 CF p3 p4
 DF d1 p4
 DF d2 p4
-Start p5 "5-FUN(X[[i]], ...)" Value="FUN(X[[i]], ...)" Time="0.039" Script="0" Line="11";
+Start p5 "5-FUN(X[[i]], ...)" Value="FUN(X[[i]], ...)" Time="0.043" Script="0" Line="11";
 CF p4 p5
-Binding p6 "6-...  <-  X[[i]]" Time="0.039" Script="0" Line="11"
+Binding p6 "6-...  <-  X[[i]]" Time="0.043" Script="0" Line="11"
 CF p5 p6
-Binding p7 "7-...  <-  ..." Time="0.043" Script="0" Line="11"
+Binding p7 "7-...  <-  ..." Time="0.047" Script="0" Line="11"
 CF p6 p7
-Operation p8 "8-FUN" Value="FUN" Time="0.045" Script="0" Line="11";
+Operation p8 "8-FUN" Value="FUN" Time="0.049" Script="0" Line="11";
 CF p7 p8
-Operation p9 "9-num + 1" Value="num + 1" Time="0.046" Script="0" Line="11";
+Operation p9 "9-num + 1" Value="num + 1" Time="0.051" Script="0" Line="11";
 CF p8 p9
 Data d3 "3-FUN(X[[i]],...) return" Value="2";
-Operation p10 "10-return (num + 1)" Value="return (num + 1)" Time="0.052" Script="0" Line="11";
+Operation p10 "10-return (num + 1)" Value="return (num + 1)" Time="0.057" Script="0" Line="11";
 CF p9 p10
 DF p10 d3
-Finish p11 "11-FUN(X[[i]], ...)" Value="FUN(X[[i]], ...)" Time="0.057" Script="0" Line="11";
+Finish p11 "11-FUN(X[[i]], ...)" Value="FUN(X[[i]], ...)" Time="0.062" Script="0" Line="11";
 CF p10 p11
-Start p12 "12-FUN(X[[i]], ...)" Value="FUN(X[[i]], ...)" Time="0.057" Script="0" Line="11";
+Start p12 "12-FUN(X[[i]], ...)" Value="FUN(X[[i]], ...)" Time="0.063" Script="0" Line="11";
 CF p11 p12
-Binding p13 "13-...  <-  X[[i]]" Time="0.058" Script="0" Line="11"
+Binding p13 "13-...  <-  X[[i]]" Time="0.063" Script="0" Line="11"
 CF p12 p13
-Binding p14 "14-...  <-  ..." Time="0.062" Script="0" Line="11"
+Binding p14 "14-...  <-  ..." Time="0.067" Script="0" Line="11"
 CF p13 p14
-Operation p15 "15-FUN" Value="FUN" Time="0.064" Script="0" Line="11";
+Operation p15 "15-FUN" Value="FUN" Time="0.069" Script="0" Line="11";
 CF p14 p15
-Operation p16 "16-num + 1" Value="num + 1" Time="0.065" Script="0" Line="11";
+Operation p16 "16-num + 1" Value="num + 1" Time="0.071" Script="0" Line="11";
 CF p15 p16
 Data d4 "4-FUN(X[[i]],...) return" Value="3";
-Operation p17 "17-return (num + 1)" Value="return (num + 1)" Time="0.071" Script="0" Line="11";
+Operation p17 "17-return (num + 1)" Value="return (num + 1)" Time="0.075" Script="0" Line="11";
 CF p16 p17
 DF p17 d4
-Finish p18 "18-FUN(X[[i]], ...)" Value="FUN(X[[i]], ...)" Time="0.076" Script="0" Line="11";
+Finish p18 "18-FUN(X[[i]], ...)" Value="FUN(X[[i]], ...)" Time="0.08" Script="0" Line="11";
 CF p17 p18
-Finish p19 "19-e <- sapply(d, inc)" Value="e <- sapply(d, inc)" Time="0.076" Script="0" Line="11";
+Start p19 "19-FUN(X[[i]], ...)" Value="FUN(X[[i]], ...)" Time="0.081" Script="0" Line="11";
 CF p18 p19
-Snapshot d5 "5-e" Value="[DIR]/ddg/5-e.csv" Time="2016-06-07T13.50.44EDT";
-DF p19 d5
-Operation p20 "20-print(e)" Value="print(e)" Time="0.083" Script="0" Line="12";
+Binding p20 "20-...  <-  X[[i]]" Time="0.082" Script="0" Line="11"
 CF p19 p20
-DF d5 p20
-Finish p21 "21-HigherOrderFuncTest.R" Value="HigherOrderFuncTest.R" Time="0.089" Script="0" Line="NA";
+Binding p21 "21-...  <-  ..." Time="0.086" Script="0" Line="11"
 CF p20 p21
+Operation p22 "22-FUN" Value="FUN" Time="0.088" Script="0" Line="11";
+CF p21 p22
+Operation p23 "23-num + 1" Value="num + 1" Time="0.09" Script="0" Line="11";
+CF p22 p23
+Data d5 "5-FUN(X[[i]],...) return" Value="4";
+Operation p24 "24-return (num + 1)" Value="return (num + 1)" Time="0.095" Script="0" Line="11";
+CF p23 p24
+DF p24 d5
+Finish p25 "25-FUN(X[[i]], ...)" Value="FUN(X[[i]], ...)" Time="0.101" Script="0" Line="11";
+CF p24 p25
+Start p26 "26-FUN(X[[i]], ...)" Value="FUN(X[[i]], ...)" Time="0.102" Script="0" Line="11";
+CF p25 p26
+Binding p27 "27-...  <-  X[[i]]" Time="0.102" Script="0" Line="11"
+CF p26 p27
+Binding p28 "28-...  <-  ..." Time="0.107" Script="0" Line="11"
+CF p27 p28
+Operation p29 "29-FUN" Value="FUN" Time="0.109" Script="0" Line="11";
+CF p28 p29
+Operation p30 "30-num + 1" Value="num + 1" Time="0.11" Script="0" Line="11";
+CF p29 p30
+Data d6 "6-FUN(X[[i]],...) return" Value="5";
+Operation p31 "31-return (num + 1)" Value="return (num + 1)" Time="0.118" Script="0" Line="11";
+CF p30 p31
+DF p31 d6
+Finish p32 "32-FUN(X[[i]], ...)" Value="FUN(X[[i]], ...)" Time="0.123" Script="0" Line="11";
+CF p31 p32
+Finish p33 "33-e <- sapply(d, inc)" Value="e <- sapply(d, inc)" Time="0.124" Script="0" Line="11";
+CF p32 p33
+Snapshot d7 "7-e" Value="[DIR]/ddg/7-e.csv" Time="2016-06-14T15.08.04EDT";
+DF p33 d7
+Operation p34 "34-print(e)" Value="print(e)" Time="0.133" Script="0" Line="12";
+CF p33 p34
+DF d7 p34
+Operation p35 "35-is.even <- function(num) {    num%%2 == 0}" Value="is.even <- function(num) {    num%%2 == 0}" Time="0.141" Script="0" Line="14";
+CF p34 p35
+Data d8 "8-is.even" Value="#ddg.function";
+DF p35 d8
+Start p36 "36-evens <- Filter(is.even, d)" Value="evens <- Filter(is.even, d)" Time="0.146" Script="0" Line="18";
+CF p35 p36
+DF d8 p36
+DF d1 p36
+Start p37 "37-FUN(X[[i]], ...)" Value="FUN(X[[i]], ...)" Time="0.156" Script="0" Line="18";
+CF p36 p37
+Binding p38 "38-...  <-  X[[i]]" Time="0.157" Script="0" Line="18"
+CF p37 p38
+Binding p39 "39-...  <-  ..." Time="0.162" Script="0" Line="18"
+CF p38 p39
+Operation p40 "40-FUN" Value="FUN" Time="0.164" Script="0" Line="18";
+CF p39 p40
+Operation p41 "41-num%%2 == 0" Value="num%%2 == 0" Time="0.166" Script="0" Line="18";
+CF p40 p41
+Data d9 "9-FUN(X[[i]],...) return" Value="FALSE";
+Operation p42 "42-return (num%%2 == 0)" Value="return (num%%2 == 0)" Time="0.174" Script="0" Line="18";
+CF p41 p42
+DF p42 d9
+Finish p43 "43-FUN(X[[i]], ...)" Value="FUN(X[[i]], ...)" Time="0.182" Script="0" Line="18";
+CF p42 p43
+Start p44 "44-FUN(X[[i]], ...)" Value="FUN(X[[i]], ...)" Time="0.182" Script="0" Line="18";
+CF p43 p44
+Binding p45 "45-...  <-  X[[i]]" Time="0.183" Script="0" Line="18"
+CF p44 p45
+Binding p46 "46-...  <-  ..." Time="0.188" Script="0" Line="18"
+CF p45 p46
+Operation p47 "47-FUN" Value="FUN" Time="0.189" Script="0" Line="18";
+CF p46 p47
+Operation p48 "48-num%%2 == 0" Value="num%%2 == 0" Time="0.19" Script="0" Line="18";
+CF p47 p48
+Data d10 "10-FUN(X[[i]],...) return" Value="TRUE";
+Operation p49 "49-return (num%%2 == 0)" Value="return (num%%2 == 0)" Time="0.197" Script="0" Line="18";
+CF p48 p49
+DF p49 d10
+Finish p50 "50-FUN(X[[i]], ...)" Value="FUN(X[[i]], ...)" Time="0.207" Script="0" Line="18";
+CF p49 p50
+Start p51 "51-FUN(X[[i]], ...)" Value="FUN(X[[i]], ...)" Time="0.207" Script="0" Line="18";
+CF p50 p51
+Binding p52 "52-...  <-  X[[i]]" Time="0.208" Script="0" Line="18"
+CF p51 p52
+Binding p53 "53-...  <-  ..." Time="0.214" Script="0" Line="18"
+CF p52 p53
+Operation p54 "54-FUN" Value="FUN" Time="0.216" Script="0" Line="18";
+CF p53 p54
+Operation p55 "55-num%%2 == 0" Value="num%%2 == 0" Time="0.217" Script="0" Line="18";
+CF p54 p55
+Data d11 "11-FUN(X[[i]],...) return" Value="FALSE";
+Operation p56 "56-return (num%%2 == 0)" Value="return (num%%2 == 0)" Time="0.226" Script="0" Line="18";
+CF p55 p56
+DF p56 d11
+Finish p57 "57-FUN(X[[i]], ...)" Value="FUN(X[[i]], ...)" Time="0.235" Script="0" Line="18";
+CF p56 p57
+Start p58 "58-FUN(X[[i]], ...)" Value="FUN(X[[i]], ...)" Time="0.236" Script="0" Line="18";
+CF p57 p58
+Binding p59 "59-...  <-  X[[i]]" Time="0.236" Script="0" Line="18"
+CF p58 p59
+Binding p60 "60-...  <-  ..." Time="0.242" Script="0" Line="18"
+CF p59 p60
+Operation p61 "61-FUN" Value="FUN" Time="0.245" Script="0" Line="18";
+CF p60 p61
+Operation p62 "62-num%%2 == 0" Value="num%%2 == 0" Time="0.247" Script="0" Line="18";
+CF p61 p62
+Data d12 "12-FUN(X[[i]],...) return" Value="TRUE";
+Operation p63 "63-return (num%%2 == 0)" Value="return (num%%2 == 0)" Time="0.258" Script="0" Line="18";
+CF p62 p63
+DF p63 d12
+Finish p64 "64-FUN(X[[i]], ...)" Value="FUN(X[[i]], ...)" Time="0.265" Script="0" Line="18";
+CF p63 p64
+Finish p65 "65-evens <- Filter(is.even, d)" Value="evens <- Filter(is.even, d)" Time="0.265" Script="0" Line="18";
+CF p64 p65
+Snapshot d13 "13-evens" Value="[DIR]/ddg/13-evens.csv" Time="2016-06-14T15.08.04EDT";
+DF p65 d13
+Operation p66 "66-print(evens)" Value="print(evens)" Time="0.272" Script="0" Line="19";
+CF p65 p66
+DF d13 p66
+Operation p67 "67-add <- function(x, y) {    x + y}" Value="add <- function(x, y) {    x + y}" Time="0.279" Script="0" Line="21";
+CF p66 p67
+Data d14 "14-add" Value="#ddg.function";
+DF p67 d14
+Start p68 "68-sum <- Reduce(add, d, 0)" Value="sum <- Reduce(add, d, 0)" Time="0.284" Script="0" Line="25";
+CF p67 p68
+DF d14 p68
+DF d1 p68
+Start p69 "69-f(init, x[[i]])" Value="f(init, x[[i]])" Time="0.292" Script="0" Line="25";
+CF p68 p69
+Binding p70 "70-x  <-  init" Time="0.294" Script="0" Line="25"
+CF p69 p70
+Data d15 "15-x" Value="0";
+DF p70 d15
+Binding p71 "71-y  <-  x[[i]]" Time="0.299" Script="0" Line="25"
+CF p70 p71
+Data d16 "16-y" Value="1";
+DF p71 d16
+Operation p72 "72-f" Value="f" Time="0.305" Script="0" Line="25";
+DF d15 p72
+DF d16 p72
+CF p71 p72
+Operation p73 "73-x + y" Value="x + y" Time="0.316" Script="0" Line="25";
+CF p72 p73
+DF d15 p73
+DF d16 p73
+Data d17 "17-f(init,x[[i]]) return" Value="1";
+Operation p74 "74-return (x + y)" Value="return (x + y)" Time="0.326" Script="0" Line="25";
+CF p73 p74
+DF d15 p74
+DF d16 p74
+DF p74 d17
+Finish p75 "75-f(init, x[[i]])" Value="f(init, x[[i]])" Time="0.334" Script="0" Line="25";
+CF p74 p75
+Start p76 "76-f(init, x[[i]])" Value="f(init, x[[i]])" Time="0.335" Script="0" Line="25";
+CF p75 p76
+Binding p77 "77-x  <-  init" Time="0.335" Script="0" Line="25"
+CF p76 p77
+Data d18 "18-x" Value="1";
+DF p77 d18
+Binding p78 "78-y  <-  x[[i]]" Time="0.34" Script="0" Line="25"
+CF p77 p78
+Data d19 "19-y" Value="2";
+DF p78 d19
+Operation p79 "79-f" Value="f" Time="0.347" Script="0" Line="25";
+DF d18 p79
+DF d19 p79
+CF p78 p79
+Operation p80 "80-x + y" Value="x + y" Time="0.353" Script="0" Line="25";
+CF p79 p80
+DF d18 p80
+DF d19 p80
+Data d20 "20-f(init,x[[i]]) return" Value="3";
+Operation p81 "81-return (x + y)" Value="return (x + y)" Time="0.36" Script="0" Line="25";
+CF p80 p81
+DF d18 p81
+DF d19 p81
+DF p81 d20
+Finish p82 "82-f(init, x[[i]])" Value="f(init, x[[i]])" Time="0.371" Script="0" Line="25";
+CF p81 p82
+Start p83 "83-f(init, x[[i]])" Value="f(init, x[[i]])" Time="0.372" Script="0" Line="25";
+CF p82 p83
+Binding p84 "84-x  <-  init" Time="0.372" Script="0" Line="25"
+CF p83 p84
+Data d21 "21-x" Value="3";
+DF p84 d21
+Binding p85 "85-y  <-  x[[i]]" Time="0.399" Script="0" Line="25"
+CF p84 p85
+Data d22 "22-y" Value="3";
+DF p85 d22
+Operation p86 "86-f" Value="f" Time="0.405" Script="0" Line="25";
+DF d21 p86
+DF d22 p86
+CF p85 p86
+Operation p87 "87-x + y" Value="x + y" Time="0.411" Script="0" Line="25";
+CF p86 p87
+DF d21 p87
+DF d22 p87
+Data d23 "23-f(init,x[[i]]) return" Value="6";
+Operation p88 "88-return (x + y)" Value="return (x + y)" Time="0.418" Script="0" Line="25";
+CF p87 p88
+DF d21 p88
+DF d22 p88
+DF p88 d23
+Finish p89 "89-f(init, x[[i]])" Value="f(init, x[[i]])" Time="0.425" Script="0" Line="25";
+CF p88 p89
+Start p90 "90-f(init, x[[i]])" Value="f(init, x[[i]])" Time="0.426" Script="0" Line="25";
+CF p89 p90
+Binding p91 "91-x  <-  init" Time="0.426" Script="0" Line="25"
+CF p90 p91
+Data d24 "24-x" Value="6";
+DF p91 d24
+Binding p92 "92-y  <-  x[[i]]" Time="0.43" Script="0" Line="25"
+CF p91 p92
+Data d25 "25-y" Value="4";
+DF p92 d25
+Operation p93 "93-f" Value="f" Time="0.436" Script="0" Line="25";
+DF d24 p93
+DF d25 p93
+CF p92 p93
+Operation p94 "94-x + y" Value="x + y" Time="0.442" Script="0" Line="25";
+CF p93 p94
+DF d24 p94
+DF d25 p94
+Data d26 "26-f(init,x[[i]]) return" Value="10";
+Operation p95 "95-return (x + y)" Value="return (x + y)" Time="0.446" Script="0" Line="25";
+CF p94 p95
+DF d24 p95
+DF d25 p95
+DF p95 d26
+Finish p96 "96-f(init, x[[i]])" Value="f(init, x[[i]])" Time="0.452" Script="0" Line="25";
+CF p95 p96
+Finish p97 "97-sum <- Reduce(add, d, 0)" Value="sum <- Reduce(add, d, 0)" Time="0.453" Script="0" Line="25";
+CF p96 p97
+Data d27 "27-sum" Value="10";
+DF p97 d27
+Operation p98 "98-print(sum)" Value="print(sum)" Time="0.456" Script="0" Line="26";
+CF p97 p98
+DF d27 p98
+Start p99 "99-sum2 <- mapply(add, d, e)" Value="sum2 <- mapply(add, d, e)" Time="0.46" Script="0" Line="28";
+CF p98 p99
+DF d14 p99
+DF d1 p99
+DF d7 p99
+Start p100 "100-FUN" Value="FUN" Time="0.47" Script="0" Line="28";
+CF p99 p100
+Binding p101 "101-x  <-  dots[[1L]][[1L]]" Time="0.471" Script="0" Line="28"
+CF p100 p101
+Data d28 "28-x" Value="1";
+DF p101 d28
+Binding p102 "102-y  <-  dots[[2L]][[1L]]" Time="0.478" Script="0" Line="28"
+CF p101 p102
+Data d29 "29-y" Value="2";
+DF p102 d29
+Operation p103 "103-FUN" Value="FUN" Time="0.487" Script="0" Line="28";
+DF d28 p103
+DF d29 p103
+CF p102 p103
+Operation p104 "104-x + y" Value="x + y" Time="0.497" Script="0" Line="28";
+CF p103 p104
+DF d28 p104
+DF d29 p104
+Data d30 "30-(function(x,y) return" Value="3";
+Operation p105 "105-return (x + y)" Value="return (x + y)" Time="0.508" Script="0" Line="28";
+CF p104 p105
+DF d28 p105
+DF d29 p105
+DF p105 d30
+Finish p106 "106-FUN" Value="FUN" Time="0.52" Script="0" Line="28";
+CF p105 p106
+Start p107 "107-FUN" Value="FUN" Time="0.521" Script="0" Line="28";
+CF p106 p107
+Binding p108 "108-x  <-  dots[[1L]][[2L]]" Time="0.522" Script="0" Line="28"
+CF p107 p108
+Data d31 "31-x" Value="2";
+DF p108 d31
+Binding p109 "109-y  <-  dots[[2L]][[2L]]" Time="0.53" Script="0" Line="28"
+CF p108 p109
+Data d32 "32-y" Value="3";
+DF p109 d32
+Operation p110 "110-FUN" Value="FUN" Time="0.538" Script="0" Line="28";
+DF d31 p110
+DF d32 p110
+CF p109 p110
+Operation p111 "111-x + y" Value="x + y" Time="0.547" Script="0" Line="28";
+CF p110 p111
+DF d31 p111
+DF d32 p111
+Data d33 "33-(function(x,y) return" Value="5";
+Operation p112 "112-return (x + y)" Value="return (x + y)" Time="0.559" Script="0" Line="28";
+CF p111 p112
+DF d31 p112
+DF d32 p112
+DF p112 d33
+Finish p113 "113-FUN" Value="FUN" Time="0.569" Script="0" Line="28";
+CF p112 p113
+Start p114 "114-FUN" Value="FUN" Time="0.569" Script="0" Line="28";
+CF p113 p114
+Binding p115 "115-x  <-  dots[[1L]][[3L]]" Time="0.57" Script="0" Line="28"
+CF p114 p115
+Data d34 "34-x" Value="3";
+DF p115 d34
+Binding p116 "116-y  <-  dots[[2L]][[3L]]" Time="0.577" Script="0" Line="28"
+CF p115 p116
+Data d35 "35-y" Value="4";
+DF p116 d35
+Operation p117 "117-FUN" Value="FUN" Time="0.586" Script="0" Line="28";
+DF d34 p117
+DF d35 p117
+CF p116 p117
+Operation p118 "118-x + y" Value="x + y" Time="0.595" Script="0" Line="28";
+CF p117 p118
+DF d34 p118
+DF d35 p118
+Data d36 "36-(function(x,y) return" Value="7";
+Operation p119 "119-return (x + y)" Value="return (x + y)" Time="0.606" Script="0" Line="28";
+CF p118 p119
+DF d34 p119
+DF d35 p119
+DF p119 d36
+Finish p120 "120-FUN" Value="FUN" Time="0.615" Script="0" Line="28";
+CF p119 p120
+Start p121 "121-FUN" Value="FUN" Time="0.615" Script="0" Line="28";
+CF p120 p121
+Binding p122 "122-x  <-  dots[[1L]][[4L]]" Time="0.616" Script="0" Line="28"
+CF p121 p122
+Data d37 "37-x" Value="4";
+DF p122 d37
+Binding p123 "123-y  <-  dots[[2L]][[4L]]" Time="0.623" Script="0" Line="28"
+CF p122 p123
+Data d38 "38-y" Value="5";
+DF p123 d38
+Operation p124 "124-FUN" Value="FUN" Time="0.63" Script="0" Line="28";
+DF d37 p124
+DF d38 p124
+CF p123 p124
+Operation p125 "125-x + y" Value="x + y" Time="0.637" Script="0" Line="28";
+CF p124 p125
+DF d37 p125
+DF d38 p125
+Data d39 "39-(function(x,y) return" Value="9";
+Operation p126 "126-return (x + y)" Value="return (x + y)" Time="0.651" Script="0" Line="28";
+CF p125 p126
+DF d37 p126
+DF d38 p126
+DF p126 d39
+Finish p127 "127-FUN" Value="FUN" Time="0.662" Script="0" Line="28";
+CF p126 p127
+Finish p128 "128-sum2 <- mapply(add, d, e)" Value="sum2 <- mapply(add, d, e)" Time="0.662" Script="0" Line="28";
+CF p127 p128
+Snapshot d40 "40-sum2" Value="[DIR]/ddg/40-sum2.csv" Time="2016-06-14T15.08.04EDT";
+DF p128 d40
+Operation p129 "129-print(sum2)" Value="print(sum2)" Time="0.667" Script="0" Line="29";
+CF p128 p129
+DF d40 p129
+Finish p130 "130-HigherOrderFuncTest.R" Value="HigherOrderFuncTest.R" Time="0.674" Script="0" Line="NA";
+CF p129 p130
 
