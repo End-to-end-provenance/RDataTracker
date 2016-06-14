@@ -73,8 +73,16 @@ ddg.MAX_HIST_LINES <- 2^14
 
 ##### Getters for specific variables
 
-.ddg.debug <- function() {
-  return (.ddg.get("ddg.debug"))
+.ddg.debug.lib <- function() {
+  return (.ddg.get("ddg.debug.lib"))
+}
+
+.ddg.break <- function() {
+  return (.ddg.get("ddg.break"))
+}
+
+.ddg.break.ignore <- function() {
+  return (.ddg.get("ddg.break.ignore"))
 }
 
 .ddg.path <- function() {
@@ -303,8 +311,12 @@ ddg.MAX_HIST_LINES <- 2^14
 
   # Used to control debugging output.  If already defined, don't
   # change its value.
-	if (!.ddg.is.set("ddg.debug")) .ddg.set("ddg.debug", FALSE)
+	if (!.ddg.is.set("ddg.debug.lib")) .ddg.set("ddg.debug.lib", FALSE)
 
+  # Used to control script debugging.
+  .ddg.set("ddg.break", FALSE)
+  .ddg.set("ddg.break.ignore", FALSE)
+  
 	# Used to control sourcing. If already defined, don't change
   # its value.
 	if (!.ddg.is.set("from.source")) .ddg.set("from.source", FALSE)
@@ -997,7 +1009,7 @@ ddg.MAX_HIST_LINES <- 2^14
   # Output procedure node.
   .ddg.output.procedure.node(ptype, pname, pvalue, auto.created, ptime, snum, lnum)
   
-  if (.ddg.debug()) {
+  if (.ddg.debug.lib()) {
     print (paste("Adding procedure node", ddg.pnum, "named", pname))
   }
 }
@@ -1052,7 +1064,7 @@ ddg.MAX_HIST_LINES <- 2^14
   # Output data node.
   .ddg.output.data.node(dtype, dname, dvalue2, dscope, from.env, dtime, dloc)
   
-  if (.ddg.debug()) {
+  if (.ddg.debug.lib()) {
     print(paste("Adding data node", ddg.dnum, "named", dname, "with scope", dscope, " and value ", ddg.data.nodes$ddg.value[ddg.dnum]))
   }
 }
@@ -1091,7 +1103,7 @@ ddg.MAX_HIST_LINES <- 2^14
   # Output control flow or data flow edge.
   .ddg.output.edge(etype, node1, node2)
 
-  if (.ddg.debug()) {
+  if (.ddg.debug.lib()) {
     if (etype == "cf") etype.long <- "control flow"
     else if (etype == "df.in") etype.long <-"data flow in"
     else etype.long <- "data flow out"
@@ -1164,7 +1176,7 @@ ddg.MAX_HIST_LINES <- 2^14
   # Error message if no match is found.
   #print ("Returning error!")
   error.msg <- paste("No procedure node found for", pname)
-  if (.ddg.debug()) print (sys.calls())
+  if (.ddg.debug.lib()) print (sys.calls())
   .ddg.insert.error.message(error.msg)
   return(0)
 }
@@ -1285,7 +1297,7 @@ ddg.MAX_HIST_LINES <- 2^14
     node2 <- paste("p", ddg.pnum, sep="")
     .ddg.record.edge(etype, node1, node2)
     
-    if (.ddg.debug()) {
+    if (.ddg.debug.lib()) {
       pname1 <- .ddg.proc.name(ddg.pnum-1)
       pname2 <- .ddg.proc.name(ddg.pnum)
       print(paste("proc2proc: ", pname1, " ", pname2))
@@ -1314,7 +1326,7 @@ ddg.MAX_HIST_LINES <- 2^14
   node2 <- paste("p", pn, sep="")
   .ddg.record.edge(etype, node1, node2)
 
-  if (.ddg.debug()) {
+  if (.ddg.debug.lib()) {
     print(paste("data2proc: ", dname, " ", pname, sep=""))
     print(paste("DF ", node1, " ", node2, sep=""))
   }
@@ -1360,7 +1372,7 @@ ddg.MAX_HIST_LINES <- 2^14
       .ddg.set("ddg.proc.nodes", ddg.proc.nodes)
     }
 
-    if (.ddg.debug()) {
+    if (.ddg.debug.lib()) {
       print(paste("proc2data: ", pname, " ", dname, sep=""))
       print(paste("DF ", node1, " ", node2, sep=""))
     }
@@ -1388,7 +1400,7 @@ ddg.MAX_HIST_LINES <- 2^14
   node2 <- paste("d", dn, sep="")
   .ddg.record.edge(etype, node1, node2)
 
-  if (.ddg.debug()) {
+  if (.ddg.debug.lib()) {
     print(paste("lastproc2data:", dname))
     print(paste("DF ", node1, " ", node2, sep=""))
   }
@@ -2348,7 +2360,7 @@ ddg.MAX_HIST_LINES <- 2^14
 				node2 <- paste("p", proc.num, sep="")
 				.ddg.record.edge(etype, node1, node2)
 
-				if (.ddg.debug()) {
+				if (.ddg.debug.lib()) {
 					print(paste(".ddg.link.function.returns:", command))
 					print(paste("DF ", node1, " ", node2, sep=""))
 				}
@@ -2369,7 +2381,7 @@ ddg.MAX_HIST_LINES <- 2^14
 
 .ddg.add.abstract.node <- function(type, cmd, env, called=".ddg.parse.commands") {
   cmd.abbrev <- .ddg.abbrev.cmd(cmd)
-  if (.ddg.debug()) print(paste(called, ":  Adding", cmd.abbrev,  type, "node"))
+  if (.ddg.debug.lib()) print(paste(called, ":  Adding", cmd.abbrev,  type, "node"))
   .ddg.proc.node(type, cmd.abbrev, cmd.abbrev, TRUE, env=env)
   .ddg.proc2proc()
 
@@ -2737,6 +2749,9 @@ ddg.MAX_HIST_LINES <- 2^14
       vars.set <- .ddg.create.empty.vars.set()
     }
 
+    # Get script & line numbers for breakpoints.
+    source.parsed <- .ddg.source.parsed()
+    
     # Loop over the commands as well as their string representations.
     for (i in 1:length(parsed.commands)) {
 
@@ -2827,14 +2842,14 @@ ddg.MAX_HIST_LINES <- 2^14
           else if (.ddg.is.procedure.cmd(cmd)) .ddg.set(".ddg.possible.last.cmd", NULL)
 
           # Evaluate.
-          if (.ddg.debug()) print (paste (".ddg.parse.commands evaluating ", deparse(cmd.expr)))
+          if (.ddg.debug.lib()) print (paste (".ddg.parse.commands evaluating ", deparse(cmd.expr)))
 
           # Capture any warnings that occur when an expression is evaluated.
           # Note that we cannot just use a tryCatch here because it behaves slightly differently
           # and we would lose the value that eval returns.  withCallingHandlers returns the value.
           result <- withCallingHandlers (eval(cmd.expr, environ, NULL), warning = .ddg.set.warning)
 
-          if (.ddg.debug()) print (paste (".ddg.parse.commands done evaluating ", deparse(cmd.expr)))
+          if (.ddg.debug.lib()) print (paste (".ddg.parse.commands done evaluating ", deparse(cmd.expr)))
 
           if (!grepl("^ddg.", cmd)) {
             # Need to get the stack again because it could have been
@@ -2893,7 +2908,7 @@ ddg.MAX_HIST_LINES <- 2^14
 
           # Create the procedure node.
 
-          if (.ddg.debug()) print(paste(".ddg.parse.commands: Adding operation node for", cmd.abbrev))
+          if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Adding operation node for", cmd.abbrev))
 
           .ddg.proc.node("Operation", cmd.abbrev, cmd.abbrev, env=environ, console=TRUE)
           .ddg.proc2proc()
@@ -2913,16 +2928,16 @@ ddg.MAX_HIST_LINES <- 2^14
           if (execute) {
             # Add variables to set.
             vars.set <- .ddg.add.to.vars.set(vars.set,cmd.expr,i)
-            if (.ddg.debug()) print(paste(".ddg.parse.commands: Adding", cmd.abbrev, "information to vars.set"))
+            if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Adding", cmd.abbrev, "information to vars.set"))
           }
 
           .ddg.create.data.use.edges.for.console.cmd(vars.set, cmd.abbrev, cmd.expr, i, env=environ)
           .ddg.create.file.read.nodes.and.edges(cmd.abbrev, cmd.expr, environ)
           .ddg.link.function.returns(cmd.text)
 
-          if (.ddg.debug()) print(paste(".ddg.parse.commands: Adding input data nodes for", cmd.abbrev))
+          if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Adding input data nodes for", cmd.abbrev))
           .ddg.create.data.set.edges.for.cmd(vars.set, cmd.abbrev, cmd.expr, i, d.environ)
-          if (.ddg.debug()) print(paste(".ddg.parse.commands: Adding output data nodes for", cmd.abbrev))
+          if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Adding output data nodes for", cmd.abbrev))
 
           .ddg.create.file.write.nodes.and.edges (cmd.abbrev, cmd.expr, environ)
           .ddg.set.graphics.files (cmd.expr, environ)
@@ -2936,8 +2951,7 @@ ddg.MAX_HIST_LINES <- 2^14
           if (execute) {
             # Add variables to set.
             vars.set <- .ddg.add.to.vars.set(vars.set,cmd.expr,i)
-            if (.ddg.debug()) print(paste(".ddg.parse.commands: Adding", cmd.abbrev, "information to vars.set"))
-            #.ddg.create.data.use.edges.for.console.cmd(vars.set, cmd.abbrev, cmd.expr, i, env=environ)
+            if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Adding", cmd.abbrev, "information to vars.set"))
             .ddg.create.data.set.edges.for.cmd(vars.set, cmd.abbrev, cmd.expr, i, environ)
             #.ddg.create.data.set.edges.for.cmd(vars.set, cmd.text, cmd.expr, i, environ)
           }
@@ -2953,8 +2967,21 @@ ddg.MAX_HIST_LINES <- 2^14
           vars.set$possible.last.writer <- vars.set$last.writer
         }
       }
+      
+      # If breakpoint, display script & line numbers and statement
+      # executed, save DDG, and wait for user input.
+      if (.ddg.break() && !.ddg.break.ignore()) {
+        snum <- source.parsed$snum[i]
+        lnum <- source.parsed$lnum[i]
+        slnum <- paste(snum, ":", lnum, sep="")
+        print(paste(slnum, " | ", new.commands[[i]]), sep="")
+        .ddg.txt.write()
+        .ddg.json.write()
+        line <- readline()
+        if (toupper(line) == "C") .ddg.set("ddg.break", FALSE)
+        if (toupper(line) == "Q") .ddg.set("ddg.break.ignore", TRUE)
+      }
     }
-
 
     # Create a data node for each variable that might have been set in
     # something other than a simple assignment, with an edge from the
@@ -3135,7 +3162,7 @@ ddg.MAX_HIST_LINES <- 2^14
   .ddg.record.proc(ptype, pname, pvalue, auto.created, ptime, snum, lnum)
 
   #if (ptype == "Finish") print(sys.calls())
-  if (.ddg.debug()) print(paste("proc.node:", ptype, pname))
+  if (.ddg.debug.lib()) print(paste("proc.node:", ptype, pname))
 }
 
 # .ddg.replace.quotes quotes quotation characters. It also replaces
@@ -3247,7 +3274,7 @@ ddg.MAX_HIST_LINES <- 2^14
     # Record in data node table
     .ddg.record.data(dtype, dname, val, dscope, from.env=from.env)
     
-    if (.ddg.debug()) print(paste("data.node:", dtype, dname))
+    if (.ddg.debug.lib()) print(paste("data.node:", dtype, dname))
   }
 
   invisible()
@@ -3367,7 +3394,7 @@ ddg.MAX_HIST_LINES <- 2^14
   # Get path plus file name.
   ddg.path <- .ddg.path()
   dpfile <- paste(ddg.path, "/", dfile, sep="")
-  if (.ddg.debug()) print(paste("Saving snapshot in ", dpfile))
+  if (.ddg.debug.lib()) print(paste("Saving snapshot in ", dpfile))
 
   # Write to file .
   if (fext == "csv") write.csv(data, dpfile, row.names=FALSE)
@@ -3413,7 +3440,7 @@ ddg.MAX_HIST_LINES <- 2^14
   # Record in data node table
   .ddg.record.data(dtype, dname, dpfile, dscope, from.env=from.env, dtime)
 
-  if (.ddg.debug()) print(paste("snapshot.node: ", dname))
+  if (.ddg.debug.lib()) print(paste("snapshot.node: ", dname))
   return(dpfile)
 }
 
@@ -3484,7 +3511,7 @@ ddg.MAX_HIST_LINES <- 2^14
     return(NULL)
   }
 
-  if (.ddg.debug()) print(paste("file.copy: ", dtype, " ", file.loc))
+  if (.ddg.debug.lib()) print(paste("file.copy: ", dtype, " ", file.loc))
   return (dpfile.out)
 }
 
@@ -3773,7 +3800,7 @@ ddg.MAX_HIST_LINES <- 2^14
             param.scope <- .ddg.get.scope(var, for.caller = TRUE, calls=stack)
             if (.ddg.data.node.exists(var, param.scope)) {
               .ddg.data2proc(as.character(var), param.scope, binding.node.name)
-              if (.ddg.debug()) print(paste("param:", var))
+              if (.ddg.debug.lib()) print(paste("param:", var))
             }
           }
           if (formal != "...") {
@@ -4372,7 +4399,7 @@ ddg.procedure <- function(pname, ins=NULL, outs.graphic=NULL, outs.data=NULL, ou
           if (.ddg.is.local(param, function.scope)) {
             if (.ddg.data.node.exists(param, scope)) {
               .ddg.data2proc(param, scope, pname)
-              if (.ddg.debug()) print(paste("param:", param))
+              if (.ddg.debug.lib()) print(paste("param:", param))
             }
             else {
               error.msg <- paste("No data node found for local", param)
@@ -4381,20 +4408,20 @@ ddg.procedure <- function(pname, ins=NULL, outs.graphic=NULL, outs.data=NULL, ou
           }
           else if (scope != "undefined" && .ddg.data.node.exists(param, scope)) {
             .ddg.data2proc(param, scope, pname)
-            if (.ddg.debug()) print(paste("param:", param))
+            if (.ddg.debug.lib()) print(paste("param:", param))
           }
           else {
             scope <- .ddg.get.scope(param, for.caller = TRUE, calls=stack)
             if (scope != "undefined" && .ddg.data.node.exists(param, scope)) {
               .ddg.data2proc(param, scope, pname)
-              if (.ddg.debug()) print(paste("param:", param))
+              if (.ddg.debug.lib()) print(paste("param:", param))
             }
 
             else if (.ddg.data.node.exists(param, "undefined")) {
               # This could be the case if the parameter is the name
               # of a file rather than a variable in the program.
               .ddg.data2proc(param, "undefined", pname)
-              if (.ddg.debug()) print(paste("param:", param))
+              if (.ddg.debug.lib()) print(paste("param:", param))
             }
 
             else {
@@ -4407,7 +4434,7 @@ ddg.procedure <- function(pname, ins=NULL, outs.graphic=NULL, outs.data=NULL, ou
               # arg <- substitute(param)
               # if (!is.character(arg) && .ddg.data.node.exists(arg)) {
               #	.ddg.data2proc(deparse(arg), pname)
-              #	if (.ddg.debug()) print(paste("param:", deparse(arg)))
+              #	if (.ddg.debug.lib()) print(paste("param:", deparse(arg)))
               #   else {warning}
               # }
 
@@ -4514,7 +4541,7 @@ ddg.return.value <- function (expr=NULL) {
   }
 
   # Prints the call & arguments.
-  if (.ddg.debug()) {
+  if (.ddg.debug.lib()) {
     # expr forces evaluation of the function early.  I think that
     # causes some examples to work with debugging on but not off.
     # Checking.  (6/26/2015 - Barb).
@@ -4632,7 +4659,7 @@ ddg.return.value <- function (expr=NULL) {
 # statement - the statement to evaluate.
 
 ddg.eval <- function(statement) {
-  if (.ddg.debug()) print (paste("ddg.eval: statement =", statement))
+  if (.ddg.debug.lib()) print (paste("ddg.eval: statement =", statement))
   parsed.statement <- parse(text=statement)
   frame.num <- .ddg.get.frame.number(sys.calls())
   # print(paste("statement = ", statement, sep=""))
@@ -5151,8 +5178,10 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, enable.console = TRUE,
 #   saved. If -1, all snapshot files are saved.  Size in kilobytes.
 #   Note that this tests the size of the object that will be turned
 #   into a snapshot, not the size of the resulting snapshot.
+# debug (optional) - If TRUE, enable script debugging. This has the
+#   same effect as inserting ddg.breakpoint() at the top of the script.
 
-ddg.run <- function(r.script.path = NULL, ddgdir = NULL, f = NULL, enable.console = TRUE, annotate.functions = TRUE, max.snapshot.size = 100) {
+ddg.run <- function(r.script.path = NULL, ddgdir = NULL, f = NULL, enable.console = TRUE, annotate.functions = TRUE, max.snapshot.size = 100, debug = FALSE) {
 
   # Initiate ddg.
   ddg.init(r.script.path, ddgdir, enable.console, max.snapshot.size)
@@ -5166,6 +5195,9 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, f = NULL, enable.consol
 
   # Set .ddg.is.sourced to TRUE.
   .ddg.set(".ddg.is.sourced", TRUE)
+  
+  # Set breakpoint if debug is TRUE
+  if (debug) ddg.breakpoint()
 
   # If an R error is generated, get the error message and close
   # the DDG.
@@ -5542,16 +5574,26 @@ ddg.source <- function (file,  ddgdir = NULL, local = FALSE, echo = verbose, pri
   invisible()
 }
 
-# ddg.debug.on turns on debugging of DDG construction.
+# ddg.debug.lib.on turns on debugging of DDG construction.
 
-ddg.debug.on <- function () {
-  .ddg.set("ddg.debug", TRUE)
+ddg.debug.lib.on <- function () {
+  .ddg.set("ddg.debug.lib", TRUE)
 }
 
-# ddg.debug.off turns off debugging of DDG construction.
+# ddg.debug.lib.off turns off debugging of DDG construction.
 
-ddg.debug.off <- function () {
-  .ddg.set("ddg.debug", FALSE)
+ddg.debug.lib.off <- function () {
+  .ddg.set("ddg.debug.lib", FALSE)
+}
+
+# .ddg.breakpoint turns on script debugging unless ddg.break.ignore
+# is TRUE.
+
+ddg.breakpoint <- function() {
+  if (!.ddg.break.ignore()) {
+    writeLines("\nEnter = next command, C = next breakpoint, Q = quit debugging\n")
+    .ddg.set("ddg.break", TRUE)
+  }  
 }
 
 # ddg.console.off turns off the console mode of DDG construction.
