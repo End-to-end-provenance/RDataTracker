@@ -24,3 +24,21 @@ add <- function (x, y) {
 
 sum <- Reduce(add, d, 0)
 print (sum)
+
+sum2 <- mapply(add, d, e)
+print(sum2)
+
+# x <- 1
+# usingClosure <- function (num) {
+#   num + x
+# }
+# sum3 <- sapply (d, usingClosure)
+# print(sum3)
+# 
+# addUsingClosure <- function (num1, num2) {
+#   num1 + num2 + x
+# }
+# 
+# sum4 <- mapply(addUsingClosure, d, e)
+# print(sum2)
+# 
