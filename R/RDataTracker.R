@@ -206,6 +206,11 @@ ddg.MAX_HIST_LINES <- 2^14
   .ddg.set("ddg.txt", paste(text, ...))
 }
 
+.ddg.append.inc <- function(...) {
+  increment <- .ddg.get("ddg.increment")
+  .ddg.set("ddg.increment", paste(increment, ...))
+}
+
 .ddg.append.json <- function(...) {
   text <- .ddg.get("ddg.json")
   .ddg.set("ddg.json", paste(text, ..., sep=""))
@@ -301,6 +306,10 @@ ddg.MAX_HIST_LINES <- 2^14
   # is called.
   .ddg.set("ddg.txt", "")
 
+  # Create DDG increment string. This string contains the current
+  # incremental change to the DDG string.
+  .ddg.set("ddg.increment", "")
+  
   # Create JSON string. This string is written to file when ddg.save
   # is called.
   .ddg.set("ddg.json", "")
@@ -316,7 +325,7 @@ ddg.MAX_HIST_LINES <- 2^14
   # Used to control script debugging.
   .ddg.set("ddg.break", FALSE)
   .ddg.set("ddg.break.ignore", FALSE)
-  
+
 	# Used to control sourcing. If already defined, don't change
   # its value.
 	if (!.ddg.is.set("from.source")) .ddg.set("from.source", FALSE)
@@ -457,6 +466,17 @@ ddg.MAX_HIST_LINES <- 2^14
   write(ddg.txt, fileout)
 }
 
+# .ddg.txt.increment returns the current incremental change to the
+# ddg.txt string.
+
+.ddg.txt.increment <- function() {
+  # Get current increment.
+  dtxt <- .ddg.get("ddg.increment")
+  # Reset for next increment.
+  .ddg.set("ddg.increment", "")
+  return(dtxt)
+}
+
 # .ddg.json.nv returns a name-value pair for the ddg.json string.
 
 .ddg.json.nv <- function(name, value) {
@@ -593,13 +613,17 @@ ddg.MAX_HIST_LINES <- 2^14
   
   # Adjust name & value
   pname <- gsub("\\\"", "\\\\\"", pname)
-
+  
+  # Record in ddg.txt
   if (pvalue !="") {
     pvalue <- gsub("\\\"", "\\\\\"", pvalue)
     value.str <- paste(" Value=\"", pvalue, "\"", sep="")
   } else value.str <- ""
   
   .ddg.append(ptype, " p", ddg.pnum, " \"", ddg.pnum, "-", pname, "\"", value.str, " Time=\"", ptime , "\" Script=\"", snum, "\"", " Line=\"", lnum, "\";\n", sep="")
+  
+  # Record in ddg.increment
+  .ddg.append.inc(ptype, " p", ddg.pnum, " \"", ddg.pnum, "-", pname, "\"", value.str, " Time=\"", ptime , "\" Script=\"", snum, "\"", " Line=\"", lnum, "\";\n", sep="")
   
   # Record in ddg.json
   .ddg.json.procedure.node(ddg.pnum, pname, ptype, ptime, snum, lnum)
@@ -626,6 +650,9 @@ ddg.MAX_HIST_LINES <- 2^14
   
   .ddg.append(dtype, " d", ddg.dnum, " \"", ddg.dnum, "-", dname, "\"", value.str, time.str, loc.str, ";\n", sep="")
   
+  # Record in ddg.increment
+  .ddg.append.inc(dtype, " d", ddg.dnum, " \"", ddg.dnum, "-", dname, "\"", value.str, time.str, loc.str, ";\n", sep="")
+  
   # Record in ddg.json
   .ddg.json.data.node(ddg.dnum, dname, dvalue, dtype, dscope, from.env, dtime="", dloc="")
 }
@@ -639,6 +666,10 @@ ddg.MAX_HIST_LINES <- 2^14
   # Record in ddg.txt
   if (etype == "cf") .ddg.append("CF ", node1, " ", node2, "\n", sep="")
   else .ddg.append("DF ", node1, " ", node2, "\n", sep="")
+  
+  # Record in ddg.increment
+  if (etype == "cf") .ddg.append.inc("CF ", node1, " ", node2, "\n", sep="")
+  else .ddg.append.inc("DF ", node1, " ", node2, "\n", sep="")
   
   # Record in ddg.json
   if (etype == "cf") .ddg.json.control.edge(ddg.enum, node1, node2)
@@ -2970,6 +3001,7 @@ ddg.MAX_HIST_LINES <- 2^14
       
       # If breakpoint, display script & line numbers and statement
       # executed, save DDG, and wait for user input.
+
       if (.ddg.break() && !.ddg.break.ignore()) {
         snum <- source.parsed$snum[i]
         lnum <- source.parsed$lnum[i]
@@ -2979,6 +3011,7 @@ ddg.MAX_HIST_LINES <- 2^14
         .ddg.json.write()
         line <- readline()
         if (toupper(line) == "C") .ddg.set("ddg.break", FALSE)
+        if (toupper(line) == "D") writeLines(paste("\n", .ddg.txt.increment(), "\n", sep=""))
         if (toupper(line) == "Q") .ddg.set("ddg.break.ignore", TRUE)
       }
     }
@@ -5591,7 +5624,7 @@ ddg.debug.lib.off <- function () {
 
 ddg.breakpoint <- function() {
   if (!.ddg.break.ignore()) {
-    writeLines("\nEnter = next command, C = next breakpoint, Q = quit debugging\n")
+    writeLines("\nEnter = next command, C = next breakpoint, D = ddg text, Q = quit debugging\n")
     .ddg.set("ddg.break", TRUE)
   }  
 }
