@@ -3779,6 +3779,7 @@ ddg.MAX_HIST_LINES <- 2^14
 
     # param,names contains the names of the parameters (this is
     # what the variable is known as inside the function).
+    #print(paste(".ddg.create.function.nodes: full.call =", full.call))
     param.names <- names(full.call)
     param.names <- param.names[2:length(param.names)]
     stack <- sys.calls()
@@ -3790,6 +3791,7 @@ ddg.MAX_HIST_LINES <- 2^14
     lapply(bindings,
         function(binding) {
           # Here, arg is the arguments passed IN.
+          #print(paste(".ddg.create.function.nodes: binding =", binding))
           arg <- binding[[1]]
 
           # formal is the paramenter name of the function (what
