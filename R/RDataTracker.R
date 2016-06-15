@@ -4441,7 +4441,16 @@ ddg.function <- function(outs.graphic=NULL, outs.data=NULL, outs.exception=NULL,
   # match.call expands any argument names to be the
   # full parameter name
   #print(paste("ddg.function: pname =", pname))
-  full.call <- match.call(sys.function(-1), call=call)
+  #print(paste("ddg.function: caller =", sys.call(-2)[[1]]))
+
+  # Try to find the full call so that we can bind the parameters
+  # by name in the DDG.  In the case that the function being executed
+  # has been passed as a parameter to another function and is being
+  # called from the context (for example, with lapply and other higher-order
+  # functions), the match.call will fail.  In that case, we will use the
+  # call as it appears in side the higher-order function.
+  full.call <- tryCatch (match.call(sys.function(-1), call=call), 
+         error = function(e) call)
 
   # Create start node for the calling statement if one is not already created.
   #print("ddg.function creating start node")
