@@ -608,22 +608,24 @@ ddg.MAX_HIST_LINES <- 2^14
 # .ddg.output.procedure.node outputs a procedure node.
 
 .ddg.output.procedure.node <- function(ptype, pname, pvalue, auto.created, ptime, snum, lnum) {
-  # Get counter value
+  # Get counter
   ddg.pnum <- .ddg.get("ddg.pnum")
   
-  # Adjust name & value
+  # Prepare values
   pname <- gsub("\\\"", "\\\\\"", pname)
   
-  # Record in ddg.txt
   if (pvalue !="") {
     pvalue <- gsub("\\\"", "\\\\\"", pvalue)
     value.str <- paste(" Value=\"", pvalue, "\"", sep="")
   } else value.str <- ""
   
-  .ddg.append(ptype, " p", ddg.pnum, " \"", ddg.pnum, "-", pname, "\"", value.str, " Time=\"", ptime , "\" Script=\"", snum, "\"", " Line=\"", lnum, "\";\n", sep="")
+  dtxt <- paste(ptype, " p", ddg.pnum, " \"", ddg.pnum, "-", pname, "\"", value.str, " Time=\"", ptime , "\" Script=\"", snum, "\"", " Line=\"", lnum, "\";\n", sep="")
+  
+  # Record in ddg.txt
+  .ddg.append(dtxt)
   
   # Record in ddg.increment
-  .ddg.append.inc(ptype, " p", ddg.pnum, " \"", ddg.pnum, "-", pname, "\"", value.str, " Time=\"", ptime , "\" Script=\"", snum, "\"", " Line=\"", lnum, "\";\n", sep="")
+  .ddg.append.inc(dtxt)
   
   # Record in ddg.json
   .ddg.json.procedure.node(ddg.pnum, pname, ptype, ptime, snum, lnum)
@@ -632,13 +634,12 @@ ddg.MAX_HIST_LINES <- 2^14
 # .ddg.output.data.node outputs a data node.
 
 .ddg.output.data.node <- function(dtype, dname, dvalue, dscope, from.env, dtime, dloc) {
-  # Get counter value
+  # Get counter
   ddg.dnum <- .ddg.get("ddg.dnum")
   
-  # Adjust name
+  # Prepare values
   if (from.env) dname <- paste(dname, " [ENV]", sep="")
   
-  # Record in ddg.txt
   if (dvalue != "") value.str <- paste(" Value=\"", dvalue, "\"", sep="")
   else value.str <- ""
   
@@ -648,10 +649,13 @@ ddg.MAX_HIST_LINES <- 2^14
   if (dloc != "") loc.str <- paste(" Location=\"", dloc, "\"", sep="")
   else loc.str <- ""
   
-  .ddg.append(dtype, " d", ddg.dnum, " \"", ddg.dnum, "-", dname, "\"", value.str, time.str, loc.str, ";\n", sep="")
+  dtxt <- paste(dtype, " d", ddg.dnum, " \"", ddg.dnum, "-", dname, "\"", value.str, time.str, loc.str, ";\n", sep="")
+  
+  # Record in ddg.txt
+  .ddg.append(dtxt)
   
   # Record in ddg.increment
-  .ddg.append.inc(dtype, " d", ddg.dnum, " \"", ddg.dnum, "-", dname, "\"", value.str, time.str, loc.str, ";\n", sep="")
+  .ddg.append.inc(dtxt)
   
   # Record in ddg.json
   .ddg.json.data.node(ddg.dnum, dname, dvalue, dtype, dscope, from.env, dtime="", dloc="")
@@ -660,16 +664,19 @@ ddg.MAX_HIST_LINES <- 2^14
 # .ddg.output.edge outputs a control flow or data flow edge.
 
 .ddg.output.edge <- function(etype, node1, node2) {
-  # Get counter value
+  # Get counter
   ddg.enum <- .ddg.get("ddg.enum")
   
+  # Prepare values
+  
+  if (etype == "cf") dtxt <- paste("CF ", node1, " ", node2, "\n", sep="")
+  else dtxt <- paste("DF ", node1, " ", node2, "\n", sep="")
+  
   # Record in ddg.txt
-  if (etype == "cf") .ddg.append("CF ", node1, " ", node2, "\n", sep="")
-  else .ddg.append("DF ", node1, " ", node2, "\n", sep="")
+  .ddg.append(dtxt)
   
   # Record in ddg.increment
-  if (etype == "cf") .ddg.append.inc("CF ", node1, " ", node2, "\n", sep="")
-  else .ddg.append.inc("DF ", node1, " ", node2, "\n", sep="")
+  .ddg.append.inc(dtxt)
   
   # Record in ddg.json
   if (etype == "cf") .ddg.json.control.edge(ddg.enum, node1, node2)
@@ -4023,6 +4030,20 @@ ddg.MAX_HIST_LINES <- 2^14
   }
 }
 
+# .ddg.is.call.to.ddg.function returns TRUE if the parsed expression
+# passed in is a call to a ddg function.
+
+.ddg.is.call.to.ddg.function <- function(parsed.expr) {
+  # Check if a function call.
+  if (is.call(parsed.expr)) {
+    # Check if the function called is a ddg function.
+    if (grepl("^ddg.", parsed.expr[1])) {
+      return (TRUE)
+    }
+  }
+  return (FALSE)
+}
+
 # .ddg.find.last.statement finds the last statement of a function.
 
 .ddg.find.last.statement <- function (func.definition) {
@@ -4243,8 +4264,8 @@ ddg.MAX_HIST_LINES <- 2^14
     # Wrap last statement with ddg.return.value if not already added
     # and if last statement is not a simple return or a ddg function.
     last.statement <- .ddg.find.last.statement(func.definition)
-    if (!.ddg.is.call.to(last.statement, "ddg.return.value") & !.ddg.is.call.to(last.statement, "return") & !grepl("^ddg.", last.statement[1])) {
-     func.definition <- .ddg.wrap.last.line(func.definition)
+    if (!.ddg.is.call.to(last.statement, "ddg.return.value") & !.ddg.is.call.to(last.statement, "return") & !.ddg.is.call.to.ddg.function(last.statement)) {
+      func.definition <- .ddg.wrap.last.line(func.definition)
     }
 
     # Wrap statements with ddg.eval if not already added and if
