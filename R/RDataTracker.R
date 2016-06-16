@@ -410,7 +410,7 @@ ddg.MAX_HIST_LINES <- 2^14
   environ <- paste(environ, "WorkingDirectory=\"", getwd(), "\"\n", sep="")
   environ <- paste(environ, "DDGDirectory=\"", .ddg.path(), "\"\n", sep="")
   environ <- paste(environ, "DateTime=\"", time, "\"\n", sep="")
-  environ <- paste(environ, "InstalledPackages=\"")
+  environ <- paste(environ, "InstalledPackages=\"", sep = "")
   installed <- devtools::session_info()
   installed <- installed[[2]]
   installed <- installed[installed[2] == "*"]
@@ -419,7 +419,7 @@ ddg.MAX_HIST_LINES <- 2^14
       paste(environ, installed[i,1], " ", installed[i,2], ",", sep = "")
     }
   }
-  paste(environ, "\"\n", sep = "")
+  environ <- paste(environ, "\"\n", sep = "")
   return (environ)
 }
 
@@ -5268,7 +5268,7 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
   library(knitr)
   
   #generates R script file from markdown file
-  purl(r.script.path, documentation = 2L)
+  purl(r.script.path, documentation = 2L, quiet = TRUE)
   
   #moves file to ddg directory
   file.rename(from = paste(getwd(), "/", basename(tools::file_path_sans_ext(r.script.path)),
@@ -5600,7 +5600,6 @@ ddg.source <- function (file,  ddgdir = NULL, local = FALSE, echo = verbose, pri
 
   # Parse the expressions from the file.
   exprs <- if (!from_file) {
-    print("not from file")
         if (length(lines))
           parse(stdin(), n = -1, lines, "?", srcfile,
               encoding)
