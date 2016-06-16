@@ -203,12 +203,12 @@ ddg.MAX_HIST_LINES <- 2^14
 
 .ddg.append <- function(...) {
   text <- .ddg.get("ddg.txt")
-  .ddg.set("ddg.txt", paste(text, ...))
+  .ddg.set("ddg.txt", paste(text, ..., sep=""))
 }
 
 .ddg.append.inc <- function(...) {
   increment <- .ddg.get("ddg.increment")
-  .ddg.set("ddg.increment", paste(increment, ...))
+  .ddg.set("ddg.increment", paste(increment, ..., sep=""))
 }
 
 .ddg.append.json <- function(...) {
@@ -3023,12 +3023,14 @@ ddg.MAX_HIST_LINES <- 2^14
         lnum <- source.parsed$lnum[i]
         slnum <- paste(snum, ":", lnum, sep="")
         print(paste(slnum, " | ", new.commands[[i]]), sep="")
+        
         .ddg.txt.write()
         .ddg.json.write()
-        line <- readline()
-        if (toupper(line) == "C") .ddg.set("ddg.break", FALSE)
-        if (toupper(line) == "D") writeLines(paste("\n", .ddg.txt.increment(), "\n", sep=""))
-        if (toupper(line) == "Q") .ddg.set("ddg.break.ignore", TRUE)
+        
+        line <- toupper(readline())
+        if (line == "C") .ddg.set("ddg.break", FALSE)
+        if (line == "D") writeLines(paste("\n", .ddg.txt.increment(), "\n", sep=""))
+        if (line == "Q") .ddg.set("ddg.break.ignore", TRUE)
       }
     }
 
