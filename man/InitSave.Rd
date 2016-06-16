@@ -10,10 +10,10 @@
 \title{Creating Provenance Graphs with RDataTracker}
 \description{These functions are needed to create provenance graphs.}
 \usage{
-ddg.init(r.script.path = NULL, ddgdir = NULL, enable.console = TRUE, 
+ddg.init(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enable.console = TRUE, 
     max.snapshot.size = 100) 
 ddg.save(r.script.path = NULL, quit=FALSE)
-ddg.run(r.script.path = NULL, ddgdir = NULL, f = NULL, enable.console = TRUE, 
+ddg.run(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = NULL, enable.console = TRUE, 
     annotate.functions = TRUE, max.snapshot.size = 100)
 ddg.annotate.on(fnames = NULL)
 ddg.annotate.off(fnames = NULL)
@@ -24,6 +24,7 @@ ddg.flush.ddg(ddg.path = NULL)
 \arguments{
   \item{r.script.path}{ the full path to the file containing the R script that is being executed. }
   \item{ddgdir}{the directory where the DDG should be saved. }
+  \item{overwrite}{Defaults is TRUE, if FALSE, adds timestamp to ddg directory to prevent overwriting}
   \item{enable.console}{ If TRUE, any commands executed in the console, either by typing, copying and 
     pasting, or selecting and running, will result in a procedure node created in the provenance graph, with
     data nodes created for each variable assigned and data flow edges for variables used and set. }
@@ -44,7 +45,9 @@ ddg.flush.ddg(ddg.path = NULL)
 
   ddg.init initializes the provenance graph.  If r.script.path is not NULL, the R script is copied
   into the DDG directory, becoming a permanent part of the provenance record.  If ddgdir is NULL,
-  the provenance graph will be saved in a subdirectory called "ddg" within the current working directory.
+  the provenance graph will be saved in a subdirectory called "ddg_[script name]" in the script's directory.
+  Further changes can be made to the save directory by specifying overwrite = FALSE, which will add a
+  timestamp to the directory to prevent overwriting, i.e. "ddg_script.name_2016-06-09T15.41.02EDT"
    
   ddg.save writes the provenance graph along with additional provenance information to a file named
   ddg.txt.  The extra information includes the platform and operating system, the R version, the name

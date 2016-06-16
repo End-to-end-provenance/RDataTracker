@@ -5108,16 +5108,21 @@ ddg.finish <- function(pname=NULL) {
 # Addition : overwrite (optional) - default TRUE, if FALSE, generates
 #   timestamp for ddg directory
 
-ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = NULL, enable.console = TRUE, max.snapshot.size = 100) {
+ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enable.console = TRUE, max.snapshot.size = 100) {
   .ddg.init.tables()
   
   #Setting the path for the ddg    
   if (is.null(ddgdir)) {
     
     #default is the file where the script is located
-    ddg.path <- paste(dirname(r.script.path), "/", 
+    if (!is.null(r.script.path)){
+      ddg.path <- paste(dirname(r.script.path), "/", 
                       basename(tools::file_path_sans_ext(r.script.path)), 
                       "_ddg", sep="")
+    }
+    else{
+      ddg.path <- paste(getwd(), "/","ddg",sep = "")
+    }
   }
   else ddg.path <- normalizePath(ddgdir, winslash="/", mustWork=FALSE)
   
@@ -5131,8 +5136,8 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = NULL, enab
   .ddg.init.environ()
   
   #Reset r.script.path if RMarkdown file
-
-  if (tools::file_ext(r.script.path) == "Rmd") {
+  
+  if (!is.null(r.script.path) && tools::file_ext(r.script.path) == "Rmd") {
     output.path <- paste(ddg.path, "/",
                            basename(tools::file_path_sans_ext(r.script.path)),
                            ".R", sep = "")
@@ -5265,17 +5270,15 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
 # output.path is the path of the generated R script
 
 .ddg.markdown <- function(r.script.path = NULL, output.path = NULL){
-  library(knitr)
-  
+
   #generates R script file from markdown file
-  purl(r.script.path, documentation = 2L, quiet = TRUE)
+  knitr::purl(r.script.path, documentation = 2L, quiet = TRUE)
   
   #moves file to ddg directory
   file.rename(from = paste(getwd(), "/", basename(tools::file_path_sans_ext(r.script.path)),
                            ".R", sep = ""), to = output.path)
   script <- readLines(output.path)
   
-  library(stringr)
   skip <- FALSE
   name <- "ddg.chunk"
   annotated <- character(0)
@@ -5313,7 +5316,7 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
         name <- paste("ddg.chunk_", index, sep = "")
         index <- index + 1
       }
-    name <- str_trim(name, side = "both")
+    name <- stringr::str_trim(name, side = "both")
     annotated <- append(annotated, paste("ddg.start(\"", name, "\")", sep = ""))
     }
     else if(nchar(script[i]) == 0 && (regexpr("#'", script[i + 1]) != -1 || 
