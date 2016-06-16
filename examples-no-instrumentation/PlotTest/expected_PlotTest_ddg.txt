@@ -1,61 +1,66 @@
 Architecture="x86_64"
-OperatingSystem="windows"
+OperatingSystem="unix"
 Language="R"
-LanguageVersion="R version 3.2.5 (2016-04-14)"
+LanguageVersion="R version 3.2.3 (2015-12-10)"
 RDataTrackerVersion="2.24"
 Script="[DIR]/PlotTest.R"
-ProcessFileTimestamp="2016-06-14T11.38.55EDT"
+ProcessFileTimestamp="2016-06-15T16.56.39EDT"
 WorkingDirectory="[DIR]"
 DDGDirectory="[DIR]/ddg"
-DateTime="2016-06-14T11.39.03EDT"
+DateTime="2016-06-15T17.00.53EDT"
 13
 Start p1 "1-PlotTest.R" Value="PlotTest.R" Time="0.01" Script="0" Line="NA";
-Operation p2 "2-data(mtcars)" Value="data(mtcars)" Time="0.05" Script="0" Line="1";
+Operation p2 "2-data(mtcars)" Value="data(mtcars)" Time="0.022" Script="0" Line="1";
 CF p1 p2
-Operation p3 "3-allCars.df <- mtcars" Value="allCars.df <- mtcars" Time="0.05" Script="0" Line="4";
+Snapshot d1 "1-mtcars [ENV]" Value="[DIR]/ddg/1-mtcars.csv" Time="2016-06-15T17.00.53EDT";
+DF d1 p2
+Operation p3 "3-allCars.df <- mtcars" Value="allCars.df <- mtcars" Time="0.036" Script="0" Line="4";
 CF p2 p3
-Snapshot d1 "1-allCars.df" Value="[DIR]/ddg/1-allCars.df.csv" Time="2016-06-14T11.39.04EDT";
-DF p3 d1
-Operation p4 "4-cars4Cyl.df <- allCars.df[allCars.df$cyl == 4, ]" Value="cars4Cyl.df <- allCars.df[allCars.df$cyl == 4, ]" Time="0.07" Script="0" Line="7";
+DF d1 p3
+Snapshot d2 "2-allCars.df" Value="[DIR]/ddg/2-allCars.df.csv" Time="2016-06-15T17.00.53EDT";
+DF p3 d2
+Operation p4 "4-cars4Cyl.df <- allCars.df[allCars.df$cyl == 4, ]" Value="cars4Cyl.df <- allCars.df[allCars.df$cyl == 4, ]" Time="0.048" Script="0" Line="7";
 CF p3 p4
-DF d1 p4
-Snapshot d2 "2-cars4Cyl.df" Value="[DIR]/ddg/2-cars4Cyl.df.csv" Time="2016-06-14T11.39.04EDT";
-DF p4 d2
-Operation p5 "5-cars6Cyl.df <- allCars.df[allCars.df$cyl == 6, ]" Value="cars6Cyl.df <- allCars.df[allCars.df$cyl == 6, ]" Time="0.1" Script="0" Line="8";
+DF d2 p4
+Snapshot d3 "3-cars4Cyl.df" Value="[DIR]/ddg/3-cars4Cyl.df.csv" Time="2016-06-15T17.00.54EDT";
+DF p4 d3
+Operation p5 "5-cars6Cyl.df <- allCars.df[allCars.df$cyl == 6, ]" Value="cars6Cyl.df <- allCars.df[allCars.df$cyl == 6, ]" Time="0.089" Script="0" Line="8";
 CF p4 p5
-DF d1 p5
-Snapshot d3 "3-cars6Cyl.df" Value="[DIR]/ddg/3-cars6Cyl.df.csv" Time="2016-06-14T11.39.04EDT";
-DF p5 d3
-Operation p6 "6-cars8Cyl.df <- allCars.df[allCars.df$cyl == 8, ]" Value="cars8Cyl.df <- allCars.df[allCars.df$cyl == 8, ]" Time="0.14" Script="0" Line="9";
+DF d2 p5
+Snapshot d4 "4-cars6Cyl.df" Value="[DIR]/ddg/4-cars6Cyl.df.csv" Time="2016-06-15T17.00.54EDT";
+DF p5 d4
+Operation p6 "6-cars8Cyl.df <- allCars.df[allCars.df$cyl == 8, ]" Value="cars8Cyl.df <- allCars.df[allCars.df$cyl == 8, ]" Time="0.109" Script="0" Line="9";
 CF p5 p6
-DF d1 p6
-Snapshot d4 "4-cars8Cyl.df" Value="[DIR]/ddg/4-cars8Cyl.df.csv" Time="2016-06-14T11.39.04EDT";
-DF p6 d4
-Operation p7 "7-cylinders = c(4, 6, 8)" Value="cylinders = c(4, 6, 8)" Time="0.16" Script="0" Line="12";
+DF d2 p6
+Snapshot d5 "5-cars8Cyl.df" Value="[DIR]/ddg/5-cars8Cyl.df.csv" Time="2016-06-15T17.00.54EDT";
+DF p6 d5
+Operation p7 "7-cylinders = c(4, 6, 8)" Value="cylinders = c(4, 6, 8)" Time="0.122" Script="0" Line="12";
 CF p6 p7
-Snapshot d5 "5-cylinders" Value="[DIR]/ddg/5-cylinders.csv" Time="2016-06-14T11.39.04EDT";
-DF p7 d5
-Operation p8 "8-mpg = c(mean(cars4Cyl.df$mpg), mean(cars6Cyl.df$mpg), mean(c" Value="mpg = c(mean(cars4Cyl.df$mpg), mean(cars6Cyl.df$mpg), mean(c" Time="0.16" Script="0" Line="13";
+Snapshot d6 "6-cylinders" Value="[DIR]/ddg/6-cylinders.csv" Time="2016-06-15T17.00.54EDT";
+DF p7 d6
+Operation p8 "8-mpg = c(mean(cars4Cyl.df$mpg), mean(cars6Cyl.df$mpg), mean(c" Value="mpg = c(mean(cars4Cyl.df$mpg), mean(cars6Cyl.df$mpg), mean(c" Time="0.131" Script="0" Line="13";
 CF p7 p8
-DF d2 p8
 DF d3 p8
+Snapshot d7 "7-mpg [ENV]" Value="[DIR]/ddg/7-mpg.csv" Time="2016-06-15T17.00.54EDT";
+DF d7 p8
 DF d4 p8
-Snapshot d6 "6-mpg" Value="[DIR]/ddg/6-mpg.csv" Time="2016-06-14T11.39.04EDT";
-DF p8 d6
-Operation p9 "9-plot(cylinders, mpg)" Value="plot(cylinders, mpg)" Time="0.25" Script="0" Line="16";
+DF d5 p8
+Snapshot d8 "8-mpg" Value="[DIR]/ddg/8-mpg.csv" Time="2016-06-15T17.00.54EDT";
+DF p8 d8
+Operation p9 "9-plot(cylinders, mpg)" Value="plot(cylinders, mpg)" Time="0.208" Script="0" Line="16";
 CF p8 p9
-DF d5 p9
 DF d6 p9
-Operation p10 "10-X11()" Value="X11()" Time="0.27" Script="0" Line="20";
+DF d8 p9
+Operation p10 "10-X11()" Value="X11()" Time="0.242" Script="0" Line="19";
 CF p9 p10
-Operation p11 "11-plot(cylinders, mpg)" Value="plot(cylinders, mpg)" Time="0.27" Script="0" Line="21";
+Operation p11 "11-plot(cylinders, mpg)" Value="plot(cylinders, mpg)" Time="0.25" Script="0" Line="20";
 CF p10 p11
-DF d5 p11
 DF d6 p11
-Operation p12 "12-dev.off()" Value="dev.off()" Time="0.28" Script="0" Line="22";
+DF d8 p11
+Operation p12 "12-dev.off()" Value="dev.off()" Time="0.267" Script="0" Line="21";
 CF p11 p12
-Operation p13 "13-tryCatch" Value="tryCatch" Time="0.3" Script="0" Line="22";
+Operation p13 "13-tryCatch" Value="tryCatch" Time="0.271" Script="0" Line="21";
 CF p12 p13
-Exception d7 "7-error.msg" Value="\"Error in dev.print(device = pdf, file = file): can only print from a screen device \"";
-DF p13 d7
+Exception d9 "9-error.msg" Value="\"Error in dev.print(device = pdf, file = file): can only print from a screen device \"";
+DF p13 d9
 
