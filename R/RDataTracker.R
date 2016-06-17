@@ -221,6 +221,7 @@ ddg.MAX_HIST_LINES <- 2^14
   .ddg.set("ddg.annotated.script", append(script, line))
 }
 
+
 .ddg.add.rows <- function(df, new.rows) {
   table <- .ddg.get(df)
   .ddg.set(df, rbind(table, new.rows))
@@ -2784,8 +2785,10 @@ ddg.MAX_HIST_LINES <- 2^14
       vars.set <- .ddg.create.empty.vars.set()
     }
 
-    # Get script & line numbers for breakpoints.
+    # Get breakpoint information.
+    sourced.scripts <- .ddg.sourced.scripts()
     source.parsed <- .ddg.source.parsed()
+    breakpoints <- ddg.list.breakpoints()
     
     # Loop over the commands as well as their string representations.
     for (i in 1:length(parsed.commands)) {
@@ -3015,12 +3018,27 @@ ddg.MAX_HIST_LINES <- 2^14
         }
       }
       
+      # Check for set breakpoint.
+      snum <- source.parsed$snum[i]
+      lnum <- source.parsed$lnum[i]
+      if (i > 1) lnum1 <- source.parsed$lnum[i-1]
+      sname <- sourced.scripts$sname[sourced.scripts$snum==snum]
+      
+      if (!is.null(breakpoints)) {
+        for (j in 1:nrow(breakpoints)) {
+          if (breakpoints$sname[j] == sname) {
+            if (i == 1) {
+              if (breakpoints$lnum[j] <= lnum) ddg.breakpoint()
+            } else {
+              if (breakpoints$lnum[j] > lnum1 & breakpoints$lnum[j] <= lnum) ddg.breakpoint()
+            }
+          }  
+        }
+      }
+      
       # If breakpoint, display script & line numbers and statement
       # executed, save DDG, and wait for user input.
-
       if (.ddg.break() && !.ddg.break.ignore()) {
-        snum <- source.parsed$snum[i]
-        lnum <- source.parsed$lnum[i]
         slnum <- paste(snum, ":", lnum, sep="")
         print(paste(slnum, " | ", new.commands[[i]]), sep="")
         
@@ -5733,7 +5751,7 @@ ddg.debug.lib.off <- function () {
   .ddg.set("ddg.debug.lib", FALSE)
 }
 
-# .ddg.breakpoint turns on script debugging unless ddg.break.ignore
+# ddg.breakpoint turns on script debugging unless ddg.break.ignore
 # is TRUE.
 
 ddg.breakpoint <- function() {
@@ -5741,6 +5759,36 @@ ddg.breakpoint <- function() {
     writeLines("\nEnter = next command, C = next breakpoint, D = ddg text, Q = quit debugging\n")
     .ddg.set("ddg.break", TRUE)
   }  
+}
+
+# ddg.set.breakpoint sets a breakpoint for the specified script at
+# the specified line number.
+
+ddg.set.breakpoint <- function(script.name, line.num) {
+  df2 <- data.frame(script.name, line.num)
+  colnames(df2) <- c("sname", "lnum")
+  
+  if (.ddg.is.set("ddg.breakpoints")) {
+    df1 <- ddg.list.breakpoints()
+    .ddg.set("ddg.breakpoints", rbind(df1, df2))
+  } else {
+    .ddg.set("ddg.breakpoints", df2)
+  }
+}
+
+# ddg.list.breakpoints returns a list of breakpoints set by script
+# name and line number.
+
+ddg.list.breakpoints <- function() {
+  if (.ddg.is.set("ddg.breakpoints")) return (.ddg.get("ddg.breakpoints"))
+  else return(NULL)
+}
+
+# ddg.clear.breakpoints removes all breakpoints at specified scripts
+# and line numbers.
+
+ddg.clear.breakpoints <- function() {
+  .ddg.set("ddg.breakpoints", NULL)
 }
 
 # ddg.console.off turns off the console mode of DDG construction.
