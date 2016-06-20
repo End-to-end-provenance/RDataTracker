@@ -2649,6 +2649,67 @@ ddg.MAX_HIST_LINES <- 2^14
   return(df2)
 }
 
+# .ddg.process.breakpoint checks if a breakpoint has been set for the
+# current parsed command. Breakpoints may be set by using the debug
+# parameter in ddg.run, adding ddg.breakpoint to the script, or using
+# ddg.set.breakpoint at the R command line. If a breakpoint has been 
+# set, execution is paused and the script number, line number, and text
+# of the next command to be executed are displayed in the console.
+# Execution resumes when the user enters text at the keyboard. Options
+# include: Enter = execute next command, C = continue execution until
+# another breakpoint is reached, and Q = quit debugging and continue
+# execution until finished.
+
+# pnum - number of current parsed command.
+# command - text of current parsed command.
+
+.ddg.process.breakpoint <- function(pnum, command) {
+  # Get script number and line number for this command.
+  source.parsed <- .ddg.source.parsed()
+  snum <- source.parsed$snum[pnum]
+  lnum <- source.parsed$lnum[pnum]
+  
+  # Get line number for preceeding parsed command (if not first).
+  if (pnum > 1) lnum1 <- source.parsed$lnum[pnum-1]
+  
+  # Get name of sourced script.
+  sourced.scripts <- .ddg.sourced.scripts()
+  sname <- sourced.scripts$sname[sourced.scripts$snum==snum]
+  
+  # Get table of set breakpoints, if any.
+  breakpoints <- ddg.list.breakpoints()
+  
+  # Check for a match with script name and line number. Set breakpoint
+  # if user-supplied line number is less than or equal to the curent
+  # line number and greater than the preceeding line number (if any).
+  if (!is.null(breakpoints)) {
+    for (i in 1:nrow(breakpoints)) {
+      if (breakpoints$sname[i] == sname) {
+        if (pnum == 1) {
+          if (breakpoints$lnum[i] <= lnum) ddg.breakpoint()
+        } else {
+          if (breakpoints$lnum[i] > lnum1 & breakpoints$lnum[i] <= lnum) ddg.breakpoint()
+        }
+      }  
+    }
+  }
+  
+  # If a breakpoint is set, display script & line number and text of
+  # next command to be executed, save the DDG, and wait for user input.
+  if (.ddg.break() && !.ddg.break.ignore()) {
+    slnum <- paste(snum, ":", lnum, sep="")
+    print(paste(slnum, " | ", command), sep="")
+    
+    .ddg.txt.write()
+    .ddg.json.write()
+    
+    # Get user input from the keyboard.
+    line <- toupper(readline())
+    if (line == "C") .ddg.set("ddg.break", FALSE)
+    if (line == "Q") .ddg.set("ddg.break.ignore", TRUE)
+  }
+}
+
 # .ddg.parse.commands takes as input a list of R script commands
 # and creates DDG nodes for each command. If environ is an
 # environment, it executes the commands in that environment
@@ -2785,16 +2846,11 @@ ddg.MAX_HIST_LINES <- 2^14
       vars.set <- .ddg.create.empty.vars.set()
     }
 
-    # Get breakpoint information.
-    sourced.scripts <- .ddg.sourced.scripts()
-    source.parsed <- .ddg.source.parsed()
-    breakpoints <- ddg.list.breakpoints()
-    
     # Loop over the commands as well as their string representations.
     for (i in 1:length(parsed.commands)) {
 
-        if (.ddg.is.sourced() && !called.from.ddg.eval) {
-        # Updated number of parsed command
+      if (.ddg.is.sourced() && !called.from.ddg.eval) {
+        # Updated number of parsed command.
         .ddg.set(".ddg.parsed.num", i)
 
         # Add annotations.
@@ -2803,8 +2859,11 @@ ddg.MAX_HIST_LINES <- 2^14
         # Save annotations.
         line <- paste(i, ": ", deparse(parsed.commands[i][[1]]), sep="")
         .ddg.append.line(line)
-      }
 
+        # Process breakpoint if set.
+        .ddg.process.breakpoint(i, new.commands[[i]])
+      }
+      
       cmd.expr <- parsed.commands[[i]]
       cmd.text <- new.commands[[i]]
       cmd <- quoted.commands[[i]]
@@ -3016,39 +3075,6 @@ ddg.MAX_HIST_LINES <- 2^14
           # Update so we don't set these again.
           vars.set$possible.last.writer <- vars.set$last.writer
         }
-      }
-      
-      # Check for set breakpoint.
-      snum <- source.parsed$snum[i]
-      lnum <- source.parsed$lnum[i]
-      if (i > 1) lnum1 <- source.parsed$lnum[i-1]
-      sname <- sourced.scripts$sname[sourced.scripts$snum==snum]
-      
-      if (!is.null(breakpoints)) {
-        for (j in 1:nrow(breakpoints)) {
-          if (breakpoints$sname[j] == sname) {
-            if (i == 1) {
-              if (breakpoints$lnum[j] <= lnum) ddg.breakpoint()
-            } else {
-              if (breakpoints$lnum[j] > lnum1 & breakpoints$lnum[j] <= lnum) ddg.breakpoint()
-            }
-          }  
-        }
-      }
-      
-      # If breakpoint, display script & line numbers and statement
-      # executed, save DDG, and wait for user input.
-      if (.ddg.break() && !.ddg.break.ignore()) {
-        slnum <- paste(snum, ":", lnum, sep="")
-        print(paste(slnum, " | ", new.commands[[i]]), sep="")
-        
-        .ddg.txt.write()
-        .ddg.json.write()
-        
-        line <- toupper(readline())
-        if (line == "C") .ddg.set("ddg.break", FALSE)
-        if (line == "D") writeLines(paste("\n", .ddg.txt.increment(), "\n", sep=""))
-        if (line == "Q") .ddg.set("ddg.break.ignore", TRUE)
       }
     }
 
@@ -5756,7 +5782,7 @@ ddg.debug.lib.off <- function () {
 
 ddg.breakpoint <- function() {
   if (!.ddg.break.ignore()) {
-    writeLines("\nEnter = next command, C = next breakpoint, D = ddg text, Q = quit debugging\n")
+    writeLines("\nEnter = next command, C = next breakpoint, Q = quit debugging\n")
     .ddg.set("ddg.break", TRUE)
   }  
 }
