@@ -5325,7 +5325,7 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, enable.console = TRUE,
 # debug (optional) - If TRUE, enable script debugging. This has the
 #   same effect as inserting ddg.breakpoint() at the top of the script.
 
-ddg.run <- function(r.script.path = NULL, ddgdir = NULL, f = NULL, enable.console = TRUE, annotate.functions = TRUE, max.snapshot.size = 100, debug = FALSE) {
+ddg.run <- function(r.script.path = NULL, ddgdir = NULL, f = NULL, enable.console = TRUE, annotate.functions = TRUE, max.snapshot.size = 100, debug = FALSE, load = FALSE) {
 
   # Initiate ddg.
   ddg.init(r.script.path, ddgdir, enable.console, max.snapshot.size)
@@ -5362,11 +5362,22 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, f = NULL, enable.consol
       },
       finally={
         ddg.save(r.script.path)
+		if(load == TRUE)
+			ddg.loadDDG(.ddg.path())
       }
   )
   invisible()
 }
 
+#Function to load DDG automatically
+ddg.loadDDG<- function(x){
+	r_home<- Sys.getenv("R_HOME")
+	library_path<- "/library/RDataTracker/java/ddg-explorer_2.06.jar"
+	ddg_path<- paste(r_home,library_path,sep = "")
+	ddgtxt_path<- paste(x, "/ddg.txt", sep="")
+	ddg <- system(paste("java -jar", ddg_path, ddgtxt_path))
+	return(ddg)
+}
 # ddg.save inserts attribute information and the number of
 # procedure steps at the top of the DDG. It writes the DDG and
 # the procedure nodes, data nodes, and function return tables
