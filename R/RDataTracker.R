@@ -2180,13 +2180,17 @@ ddg.MAX_HIST_LINES <- 2^14
 # len (optional) - number of characters.
 
 .ddg.abbrev.cmd <- function(cmd, len=60) {
-  if (length(cmd) > 1) {
-    cmd <- paste (cmd, collapse = " ")
+  if(file.exists(cmd)){
+    basename(cmd);
+  }else{
+    if (length(cmd) > 1) {
+      cmd <- paste (cmd, collapse = " ")
+    }
+    if (nchar(cmd) <= len) cmd
+    else if (substr(cmd, len, len) != "\\") substr(cmd, 1, len)
+    else if (substr(cmd, len-1, len) == "\\\\") substr(cmd, 1, len)
+    else substr(cmd, 1, len-1)
   }
-  if (nchar(cmd) <= len) cmd
-  else if (substr(cmd, len, len) != "\\") substr(cmd, 1, len)
-  else if (substr(cmd, len-1, len) == "\\\\") substr(cmd, 1, len)
-  else substr(cmd, 1, len-1)
 }
 
 # .ddg.loadhistory takes in the name of a history file, opens it,
