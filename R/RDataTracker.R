@@ -2561,8 +2561,11 @@ ddg.MAX_HIST_LINES <- 2^14
 }
 
 # .ddg.get.source.code.line.numbers reads a script, splits lines
-# separated by semicolons, and returns a data frame containing script
-# number, source code line number, and parsed command number.
+# separated by semicolons, inserts ddg.breakpoint() for breakpoints
+# set at the command line, and returns a data frame containing script
+# number, source code line number, and parsed command number. If
+# breakpoints were set, a modified version of the script is written
+# to the ddg directory and sourced by ddg.source.
 
 .ddg.get.source.code.line.numbers <- function(fname, snum) {
   # Read source code.
@@ -2570,13 +2573,14 @@ ddg.MAX_HIST_LINES <- 2^14
   source.code <- readLines(script.file)
   close(script.file)
 
-  # Retain line numbers but split lines separated by semicolons.
+  # Split lines separated by a semicolon (if any) but retain original
+  # line numbers.
   index <- 0
   for (i in 1:length(source.code)) {
     line <- source.code[i]
     # Remove trailing comment, if any.
     if (grepl("#", line)) line <- strsplit(line, "#")[[1]][1]
-
+    
     if (line == "") {
       index <- index + 1
       if (index == 1) {
@@ -2600,8 +2604,63 @@ ddg.MAX_HIST_LINES <- 2^14
       }
     }
   }
+  
+  # Add breakpoints set at command line (if any) but retain original
+  # line numbers.
+  breakpoints <- ddg.list.breakpoints()
+  
+  if (!is.null(breakpoints)) {
+    index <- 0
 
-  # Add parsed command numbers
+    for (i in 1:length(scode)) {
+      index <- index + 1
+      line <- scode[i]
+      
+      # Check for set breakpoint.
+      set.break <- FALSE
+      for (j in 1:nrow(breakpoints)) {
+        if (breakpoints$sname[j] == fname & breakpoints$lnum[j] == lnum[i]) {
+          set.break <- TRUE
+        }
+      }
+
+      if (set.break) {
+      # Breakpoint set.
+        if (index == 1) {
+          lnum2 <- lnum[i]
+          lnum2 <- append(lnum2, lnum[i])
+          scode2 <- "ddg.breakpoint()"
+          scode2 <- append(scode2, line)
+        } else {
+          lnum2 <- append(lnum2, lnum[i])
+          lnum2 <- append(lnum2, lnum[i])
+          scode2 <- append(scode2, "ddg.breakpoint()")
+          scode2 <- append(scode2, line)
+        }
+      } else {
+      # No breakpoint set.
+        if (index ==1) {
+          lnum2 <- lnum[i]
+          scode2 <- line
+        } else {
+          lnum2 <- append(lnum2, lnum[i])
+          scode2 <- append(scode2, line)
+        }
+      }
+    } 
+    lnum <- lnum2
+    scode <- scode2
+
+    # Save modified script in ddg directory.
+    out.name <- paste(.ddg.path(), "/script-", snum, ".r", sep="")
+    out.file <- file(out.name, "w")
+    for (i in 1:length(scode)) {
+      writeLines(scode[i], out.file)  
+    }
+    close(out.file)
+  }
+    
+  # Add parsed command numbers.
   source.line <- ""
   parsed.num <- 0
   pnum <- rep(0, length(lnum))
@@ -2649,57 +2708,51 @@ ddg.MAX_HIST_LINES <- 2^14
   return(df2)
 }
 
-# .ddg.process.breakpoint checks if a breakpoint has been set for the
-# current parsed command. Breakpoints may be set by using the debug
+# .ddg.process.breakpoint checks if a breakpoint has been set for
+# the current parsed command. Breakpoints may be set by using the debug
 # parameter in ddg.run, adding ddg.breakpoint to the script, or using
 # ddg.set.breakpoint at the R command line. If a breakpoint has been 
-# set, execution is paused and the script number, line number, and text
-# of the next command to be executed are displayed in the console.
-# Execution resumes when the user enters text at the keyboard. Options
-# include: Enter = execute next command, C = continue execution until
-# another breakpoint is reached, and Q = quit debugging and continue
-# execution until finished.
+# set and ddg.breakpoint.ignore is FALSE, execution is paused and the
+# script number (if > 0) and line number of the next command to be
+# executed (or the function name if internal to a function) are
+# displayed, followed by the text of the command. Execution resumes 
+# when the user enters text at the keyboard. Options include: Enter =
+# execute next command, C = continue execution until another breakpoint
+# is reached, and Q = quit debugging and continue until execution
+# is finished.
 
-# pnum - number of current parsed command.
 # command - text of current parsed command.
+# inside.function - whether called from within a function.
 
-.ddg.process.breakpoint <- function(pnum, command) {
+.ddg.process.breakpoint <- function(command, inside.function) {
+  # Abbreviate command.
+  command <- substr(command, 1, 60)
+
+  # Get number of parsed command
+  pnum <- .ddg.parsed.num()
+  
   # Get script number and line number for this command.
   source.parsed <- .ddg.source.parsed()
   snum <- source.parsed$snum[pnum]
   lnum <- source.parsed$lnum[pnum]
   
-  # Get line number for preceeding parsed command (if not first).
-  if (pnum > 1) lnum1 <- source.parsed$lnum[pnum-1]
-  
-  # Get name of sourced script.
-  sourced.scripts <- .ddg.sourced.scripts()
-  sname <- sourced.scripts$sname[sourced.scripts$snum==snum]
-  
-  # Get table of set breakpoints, if any.
-  breakpoints <- ddg.list.breakpoints()
-  
-  # Check for a match with script name and line number. Set breakpoint
-  # if user-supplied line number is less than or equal to the curent
-  # line number and greater than the preceeding line number (if any).
-  if (!is.null(breakpoints)) {
-    for (i in 1:nrow(breakpoints)) {
-      if (breakpoints$sname[i] == sname) {
-        if (pnum == 1) {
-          if (breakpoints$lnum[i] <= lnum) ddg.breakpoint()
-        } else {
-          if (breakpoints$lnum[i] > lnum1 & breakpoints$lnum[i] <= lnum) ddg.breakpoint()
-        }
-      }  
+  # If breakpoint is set, display next command to be executed, save
+  # the DDG, and wait for user input.
+  if (.ddg.break() & !.ddg.break.ignore()) {
+    # Display script and line numbers if top-level command.
+    if (!inside.function) {
+      if (snum == 0) slnum <- lnum
+      else slnum <- paste(snum, ":", lnum, sep="")
+      print(paste(slnum,  "  |  ", command, sep=""))
+
+    # Display name of function if inside function.
+    } else {
+      frame.num <- .ddg.get.frame.number(sys.calls())
+      func.name <- sys.call(frame.num)[[1]]
+      print(paste("[", func.name, "]  |  ", command, sep=""))
     }
-  }
-  
-  # If a breakpoint is set, display script & line number and text of
-  # next command to be executed, save the DDG, and wait for user input.
-  if (.ddg.break() && !.ddg.break.ignore()) {
-    slnum <- paste(snum, ":", lnum, sep="")
-    print(paste(slnum, " | ", command), sep="")
-    
+
+    # Save ddg.
     .ddg.txt.write()
     .ddg.json.write()
     
@@ -2738,6 +2791,7 @@ ddg.MAX_HIST_LINES <- 2^14
 # max.deparse.length (optional) - maximum number of characters
 #   output for deparse of a single expression.
 # annotate.functions (optional) - if TRUE, functions are annotated
+# called.from.ddg.eval(optional) - whether called from ddg.eval
 
 .ddg.parse.commands <- function(parsed.commands, environ, ignore.patterns=c('^ddg.'), node.name="Console", run.commands = FALSE, echo=FALSE, print.eval=echo, max.deparse.length=150, annotate.functions = FALSE, called.from.ddg.eval=FALSE) {
 
@@ -2859,11 +2913,13 @@ ddg.MAX_HIST_LINES <- 2^14
         # Save annotations.
         line <- paste(i, ": ", deparse(parsed.commands[i][[1]]), sep="")
         .ddg.append.line(line)
-
-        # Process breakpoint if set.
-        .ddg.process.breakpoint(i, new.commands[[i]])
       }
-      
+              
+      # Process breakpoint.
+      if (.ddg.is.sourced()) {
+        .ddg.process.breakpoint(new.commands[[i]], inside.function=called.from.ddg.eval)
+      }
+        
       cmd.expr <- parsed.commands[[i]]
       cmd.text <- new.commands[[i]]
       cmd <- quoted.commands[[i]]
@@ -3204,12 +3260,12 @@ ddg.MAX_HIST_LINES <- 2^14
       lnum <- NA
     } else if (pnum > nrow(source.parsed)) {
       lnum <- NA
-      .ddg.insert.error.message("Source code line numbers may be incorrect")
+      .ddg.insert.error.message("Source code line numbers may be incorrect 1")
     } else {
       index <- which(source.parsed[ , "pnum"] == pnum)
       if (length(index) == 0) {
         lnum <- NA
-        .ddg.insert.error.message("Source code line numbers may be incorrect")
+        .ddg.insert.error.message("Source code line numbers may be incorrect 2")
       } else {
         snum <- source.parsed$snum[index]
         lnum <- source.parsed$lnum[index]
@@ -4675,10 +4731,15 @@ ddg.return.value <- function (expr=NULL) {
   frame.num <- .ddg.get.frame.number(sys.calls())
   env <- sys.frame(frame.num)
 
+  orig.pname <- paste(deparse(orig.expr), collapse="")
+
+  # Process breakpoint.
+  orig.return <- paste("return(", orig.pname, ")", sep="")
+  .ddg.process.breakpoint(orig.return, inside.function=TRUE)
+
   # Create procedure node.
   #print ("ddg.return.value: orig.expr =")
   #print (orig.expr)
-  orig.pname <- paste(deparse(orig.expr), collapse="")
   #print ("ddg.return.value: orig.pname =")
   #print (orig.pname)
   .ddg.proc.node("Operation", orig.pname, orig.pname, console=TRUE)
@@ -5603,6 +5664,12 @@ ddg.source <- function (file,  ddgdir = NULL, local = FALSE, echo = verbose, pri
     print(envir)
   }
 
+  # Source from modified script if breakpoints were set.
+  orig.file <- file
+  if (!is.null(ddg.list.breakpoints())) {
+    file <- paste(.ddg.path(), "/script-", snum, ".r", sep="")
+  }
+  
   # Parse input file and figure out encoding.
   ofile <- file
   from_file <- FALSE
@@ -5667,6 +5734,7 @@ ddg.source <- function (file,  ddgdir = NULL, local = FALSE, echo = verbose, pri
   }
 
   # Parse the expressions from the file.
+  
   exprs <- if (!from_file) {
         if (length(lines)) {
           parse(stdin(), n = -1, lines, "?", srcfile,
@@ -5738,7 +5806,7 @@ ddg.source <- function (file,  ddgdir = NULL, local = FALSE, echo = verbose, pri
     .ddg.set("from.source", TRUE)
 
     # Parse the commands into a console node.
-    .ddg.parse.commands(exprs, environ=envir, ignore.patterns=ignores, node.name=filename,
+    .ddg.parse.commands(exprs, environ=envir, ignore.patterns=ignores, node.name=orig.file,
         echo = echo, print.eval = print.eval, max.deparse.length = max.deparse.length,
         run.commands = TRUE, annotate.functions = annotate.functions)
 
@@ -5883,6 +5951,7 @@ ddg.flush.ddg <- function(ddg.path=NULL) {
     unlink(paste(ddg.path, "returns.txt", sep="/"))
     unlink(paste(ddg.path, "sourced-scripts.txt", sep="/"))
     unlink(paste(ddg.path, "annotated-script.r", sep="/"))
+    unlink(paste(ddg.path, "script-*.r", sep="/"))
     unlink(paste(ddg.path, "dobjects.csv", sep="/"))
     unlink(paste(ddg.path, ".ddghistory", sep="/"))
     unlink(paste(ddg.path,"[1-9]-*.*", sep="/"))
