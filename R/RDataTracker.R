@@ -5370,13 +5370,15 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, f = NULL, enable.consol
 }
 
 #Function to load DDG automatically
-ddg.loadDDG<- function(x){
-	jar.path<- "/RDataTracker/java/ddg-explorer_2.06.jar "
+ddg.loadDDG<- function(ddg.folder){
+	jar.path<- "/RDataTracker/java/ddg-explorer_2.06.jar"
 	check.library.paths<- file.exists(paste(.libPaths(),jar.path,sep = ""))
 	index<- min(which(check.library.paths == TRUE))
-	ddgtxt_path<- paste(x,"/ddg.txt",sep = "")
-	system(paste("java -jar ",.libPaths()[index],jar.path, ddgtxt_path,sep = ""))
+	ddgexplorer_path<- paste(.libPaths()[index],jar.path,sep = "")
+	ddgtxt.path<- paste(ddg.folder,"/ddg.txt",sep = "")
+	system(paste("java -jar ",ddgexplorer_path, ddgtxt.path,sep = " "))
 }
+
 # ddg.save inserts attribute information and the number of
 # procedure steps at the top of the DDG. It writes the DDG and
 # the procedure nodes, data nodes, and function return tables
