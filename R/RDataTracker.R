@@ -5371,12 +5371,16 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, f = NULL, enable.consol
 
 #Function to load DDG automatically
 ddg.loadDDG<- function(x){
-	r_home<- Sys.getenv("R_HOME")
-	library_path<- "/library/RDataTracker/java/ddg-explorer_2.06.jar"
-	ddg_path<- paste(r_home,library_path,sep = "")
-	ddgtxt_path<- paste(x, "/ddg.txt", sep="")
-	ddg <- system(paste("java -jar", ddg_path, ddgtxt_path))
-	return(ddg)
+	jar.path<- "/RDataTracker/java/ddg-explorer_2.06.jar"
+	check.library.paths<- file.exists(paste(.libPaths(),jar.path,sep = ""))
+	index<- min(which(check.library.paths == TRUE))
+	system(paste("java -jar ",.libPaths()[index],jar.path,sep = ""))
+	
+#	r_home<- Sys.getenv("R_HOME")
+#	library_path<- "/library/RDataTracker/java/ddg-explorer_2.06.jar"
+#	ddg_path<- paste(r_home,library_path,sep = "")
+#	ddgtxt_path<- paste(x, "/ddg.txt", sep="")
+#	ddg <- system(paste("java -jar", ddg_path, ddgtxt_path))
 }
 # ddg.save inserts attribute information and the number of
 # procedure steps at the top of the DDG. It writes the DDG and
