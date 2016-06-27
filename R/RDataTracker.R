@@ -5132,7 +5132,12 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
   
   #overwrite default is 
   if(!overwrite){
-    ddg.path <- paste(ddg.path, .ddg.timestamp(), sep = "_")
+    no.overwrite.folder <- paste(ddg.path, "_timestamps", sep = "")
+    if(!dir.exists(no.overwrite.folder)){
+      dir.create(no.overwrite.folder)
+    }
+  ddg.path <- paste(no.overwrite.folder, "/",  basename(tools::file_path_sans_ext(r.script.path)),
+                  "_ddg_", .ddg.timestamp(), sep = "")
   }
   
   .ddg.set("ddg.path", ddg.path)
@@ -5149,12 +5154,14 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
     .ddg.set("ddg.r.script.path", output.path)
   }
   else{
-  #Set r.script.path
+  #Set r.script.path and copy it
     .ddg.set("ddg.r.script.path",
         if (is.null(r.script.path)) NULL
             else normalizePath(r.script.path, winslash="/"))
+    file.copy(r.script.path, paste(ddg.path, "/", 
+                                   basename(tools::file_path_sans_ext(r.script.path)),
+                                   ".R", sep = ""))
   }
-  
  
            
   # Set environment constants.
