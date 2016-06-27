@@ -2708,18 +2708,17 @@ ddg.MAX_HIST_LINES <- 2^14
   return(df2)
 }
 
-# .ddg.process.breakpoint checks if a breakpoint has been set for
-# the current parsed command. Breakpoints may be set by using the debug
+# .ddg.process.breakpoint pauses execution of a script when a break
+# point is reached.  Breakpoints may be set by using the debug 
 # parameter in ddg.run, adding ddg.breakpoint to the script, or using
 # ddg.set.breakpoint at the R command line. If a breakpoint has been 
-# set and ddg.breakpoint.ignore is FALSE, execution is paused and the
-# script number (if > 0) and line number of the next command to be
-# executed (or the function name if internal to a function) are
-# displayed, followed by the text of the command. Execution resumes 
-# when the user enters text at the keyboard. Options include: Enter =
-# execute next command, C = continue execution until another breakpoint
-# is reached, and Q = quit debugging and continue until execution
-# is finished.
+# set, execution is paused and the script number (if > 0) and line
+# number of the next command to be executed (or the function name if
+# internal to a function) are displayed, followed by the text of the
+# command. Execution resumes when the user enters text at the keyboard.
+# Options include: Enter = execute next command, C = continue execution
+# until another breakpoint is reached, and Q = quit debugging and
+# continue until execution is finished.
 
 # command - text of current parsed command.
 # inside.function - whether called from within a function.
@@ -2727,40 +2726,43 @@ ddg.MAX_HIST_LINES <- 2^14
 .ddg.process.breakpoint <- function(command, inside.function) {
   # Abbreviate command.
   command <- substr(command, 1, 60)
-
-  # Get number of parsed command
-  pnum <- .ddg.parsed.num()
-  
-  # Get script number and line number for this command.
-  source.parsed <- .ddg.source.parsed()
-  snum <- source.parsed$snum[pnum]
-  lnum <- source.parsed$lnum[pnum]
-  
-  # If breakpoint is set, display next command to be executed, save
-  # the DDG, and wait for user input.
-  if (.ddg.break() & !.ddg.break.ignore()) {
-    # Display script and line numbers if top-level command.
-    if (!inside.function) {
-      if (snum == 0) slnum <- lnum
-      else slnum <- paste(snum, ":", lnum, sep="")
-      print(paste(slnum,  "  |  ", command, sep=""))
-
-    # Display name of function if inside function.
-    } else {
-      frame.num <- .ddg.get.frame.number(sys.calls())
-      func.name <- sys.call(frame.num)[[1]]
-      print(paste("[", func.name, "]  |  ", command, sep=""))
-    }
-
-    # Save ddg.
-    .ddg.txt.write()
-    .ddg.json.write()
     
-    # Get user input from the keyboard.
-    line <- toupper(readline())
-    if (line == "C") .ddg.set("ddg.break", FALSE)
-    if (line == "Q") .ddg.set("ddg.break.ignore", TRUE)
+  # Display script and line numbers if top-level command.
+  if (!inside.function) {
+    # Get number of parsed command
+    pnum <- .ddg.parsed.num()
+  
+    # Get script number and line number for this command.
+    source.parsed <- .ddg.source.parsed()
+    snum <- source.parsed$snum[pnum]
+    lnum <- source.parsed$lnum[pnum]
+
+    if (snum == 0) slnum <- lnum
+    else slnum <- paste(snum, ":", lnum, sep="")
+    print(paste(slnum,  "  |  ", command, sep=""))
+
+  # Display name of function if inside function.
+  } else {
+    frame.num <- .ddg.get.frame.number(sys.calls())
+    func.call <- sys.call(frame.num)
+
+    # Need to check for closure in case of mapply function
+    if (typeof(func.call[[1]]) == "closure") {
+      func.name <- "FUN"
+    } else {
+      func.name <- as.character(func.call[[1]])
+    }
+    
+    print(paste("[", func.name, "]  |  ", command, sep=""))
   }
+  # Save ddg.
+  .ddg.txt.write()
+  .ddg.json.write()
+    
+  # Get user input from the keyboard.
+  line <- toupper(readline())
+  if (line == "C") .ddg.set("ddg.break", FALSE)
+  if (line == "Q") .ddg.set("ddg.break.ignore", TRUE)
 }
 
 # .ddg.parse.commands takes as input a list of R script commands
@@ -2916,7 +2918,7 @@ ddg.MAX_HIST_LINES <- 2^14
       }
               
       # Process breakpoint.
-      if (.ddg.is.sourced()) {
+      if (.ddg.is.sourced() & .ddg.break() & !.ddg.break.ignore()) {
         .ddg.process.breakpoint(new.commands[[i]], inside.function=called.from.ddg.eval)
       }
         
@@ -4735,8 +4737,11 @@ ddg.return.value <- function (expr=NULL) {
 
   # Process breakpoint.
   orig.return <- paste("return(", orig.pname, ")", sep="")
-  .ddg.process.breakpoint(orig.return, inside.function=TRUE)
 
+  if (.ddg.break() & !.ddg.break.ignore()) {
+    .ddg.process.breakpoint(orig.return, inside.function=TRUE)
+  }
+    
   # Create procedure node.
   #print ("ddg.return.value: orig.expr =")
   #print (orig.expr)
