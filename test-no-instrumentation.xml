@@ -266,6 +266,16 @@
 	    </antcall>
 	</target>
 
+    <target name = "run-no-instrumentation-test-Rmd">
+      <antcall target="run-test">
+        <param name="dir" value="examples-no-instrumentation/${test-name}" />
+      <param name="out" value="examples-no-instrumentation/${test-name}/${test-name}.out" />
+      <param name="script-file" value="${test-name}.Rmd" />
+      <param name="expected_out" value="examples-no-instrumentation/${test-name}/expected_${test-name}.out" />
+      <param name="expected_ddg" value="examples-no-instrumentation/${test-name}/expected_${test-name}_ddg.txt" />
+      </antcall>
+  </target>
+
 	<!-- Updates the expected result files for a test case.  This should only be used when the
 		 expected results have changed for the better!  -->
 	<target name="update-expected">
@@ -430,13 +440,41 @@
 		</antcall>
 	</target>
 	
-	<target name="normal-tests" depends="basicTest, S4ObjectTest, ScopeTest, ReturnTest, OddParameterTest, FunctionAnnotationTest, WarningTest, PlotTest, DataTypeTest">
+  	<target name="HigherOrderFuncTest">
+  		<antcall target="run-no-instrumentation-test">
+  			<param name="test-name" value="HigherOrderFuncTest" />
+  		</antcall>
+  	</target>
+
+	<target name="update-HigherOrderFuncTest">
+	  	<antcall target="update-no-instrumentation-expected">
+	  		<param name="test-name" value="HigherOrderFuncTest" />
+	 	</antcall>
+	</target>
+
+    <target name="RMarkdownTest">
+      <antcall target="run-no-instrumentation-test-Rmd">
+        <param name="test-name" value="RMarkdownTest" />
+      </antcall>
+    </target>
+
+  <target name="update-RMarkdownTest">
+      <antcall target="update-no-instrumentation-expected">
+        <param name="test-name" value="RMarkdownTest" />
+    </antcall>
+  </target>
+
+	<target name="normal-tests" depends="basicTest, S4ObjectTest,
+		ScopeTest, ReturnTest, OddParameterTest,
+		FunctionAnnotationTest, WarningTest, PlotTest,
+		DataTypeTest, HigherOrderFuncTest, RMarkdownTest">
 		<echo>##############################################
 	      Finished Execution of Normal Tests. Nothing should have malfunctioned.
     	  ##############################################</echo>
   	</target>
 
   <!--########################## End Basic TESTS ##########################-->
+
 
   <!--########################## Start Checkpoint TESTS ##########################-->
 

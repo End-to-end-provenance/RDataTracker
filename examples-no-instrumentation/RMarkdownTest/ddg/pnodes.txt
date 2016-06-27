@@ -1,0 +1,60 @@
+ddg.type	ddg.num	ddg.name	ddg.value	ddg.return.linked	ddg.auto.created	ddg.time	ddg.snum	ddg.lnum
+Start	1	/Users/Alex/Google Drive/Harvard Forest/RDataTracker/example	/Users/Alex/Google Drive/Harvard Forest/RDataTracker/example	FALSE	FALSE	0.069	0	11
+Start	2	setup	setup	FALSE	FALSE	0.072	0	11
+Operation	3	library(Ecdat)	library(Ecdat)	FALSE	FALSE	1.024	0	13
+Operation	4	library(mosaic)	library(mosaic)	FALSE	FALSE	1.954	0	14
+Operation	5	x <- DoctorAUS	x <- DoctorAUS	FALSE	FALSE	1.965	0	15
+Finish	6	setup	setup	FALSE	FALSE	1.994	0	16
+Start	7	test1	test1	FALSE	FALSE	1.997	0	24
+Operation	8	x$sex2 <- "Male"	x$sex2 <- "Male"	FALSE	FALSE	1.998	0	25
+Operation	9	x$sex2[x$sex == "1"] <- "Female"	x$sex2[x$sex == "1"] <- "Female"	FALSE	FALSE	2.03	0	26
+Operation	10	x$Age <- (x$age) * 100	x$Age <- (x$age) * 100	FALSE	FALSE	2.054	0	27
+Operation	11	x$Income <- (x$income) * 10000	x$Income <- (x$income) * 10000	FALSE	FALSE	2.078	0	28
+Finish	12	test1	test1	FALSE	FALSE	2.101	0	30
+Start	13	ddg.chunk_1	ddg.chunk_1	FALSE	FALSE	2.102	0	31
+Operation	14	histogram(~Age, data = x)	histogram(~Age, data = x)	FALSE	FALSE	2.117	0	32
+Finish	15	ddg.chunk_1	ddg.chunk_1	FALSE	FALSE	2.125	0	33
+Start	16	ddg.chunk_2	ddg.chunk_2	FALSE	FALSE	2.126	0	37
+Operation	17	histogram(~illness, data = x)	histogram(~illness, data = x)	FALSE	FALSE	2.133	0	38
+Operation	18	histogram(~doctorco, data = x)	histogram(~doctorco, data = x)	FALSE	FALSE	2.148	0	39
+Finish	19	ddg.chunk_2	ddg.chunk_2	FALSE	FALSE	2.156	0	40
+Start	20	ddg.chunk_3	ddg.chunk_3	FALSE	FALSE	2.157	0	44
+Operation	21	histogram(~doctorco, data = x)	histogram(~doctorco, data = x)	FALSE	FALSE	2.163	0	45
+Operation	22	x$doctorcobin <- 1	x$doctorcobin <- 1	FALSE	FALSE	2.171	0	46
+Operation	23	x$doctorcobin[x$doctorco == "0"] <- 0	x$doctorcobin[x$doctorco == "0"] <- 0	FALSE	FALSE	2.195	0	47
+Operation	24	histogram(~doctorcobin, data = x)	histogram(~doctorcobin, data = x)	FALSE	FALSE	2.223	0	48
+Finish	25	ddg.chunk_3	ddg.chunk_3	FALSE	FALSE	2.234	0	49
+Start	26	test2	test2	FALSE	FALSE	2.235	0	51
+Operation	27	histogram(~doctorcobin, data = x)	histogram(~doctorcobin, data = x)	FALSE	FALSE	2.24	0	52
+Finish	28	test2	test2	FALSE	FALSE	2.248	0	53
+Start	29	test3	test3	FALSE	FALSE	2.249	0	57
+Operation	30	x$sex2 <- "Male"	x$sex2 <- "Male"	FALSE	FALSE	2.25	0	58
+Operation	31	x$sex2[x$sex == "1"] <- "Female"	x$sex2[x$sex == "1"] <- "Female"	FALSE	FALSE	2.277	0	59
+Operation	32	x$Income <- (x$income) * 1e+05	x$Income <- (x$income) * 1e+05	FALSE	FALSE	2.302	0	60
+Finish	33	test3	test3	FALSE	FALSE	2.326	0	61
+Start	34	ddg.chunk_4	ddg.chunk_4	FALSE	FALSE	2.327	0	63
+Operation	35	histogram(~Income, data = x)	histogram(~Income, data = x)	FALSE	FALSE	2.332	0	64
+Finish	36	ddg.chunk_4	ddg.chunk_4	FALSE	FALSE	2.34	0	65
+Start	37	ddg.chunk_5	ddg.chunk_5	FALSE	FALSE	2.341	0	72
+Operation	38	bwplot(Age ~ Income, data = x, ylab = "Age groups (of five y	bwplot(Age ~ Income, data = x, ylab = "Age groups (of five y	FALSE	FALSE	2.355	0	73
+Operation	39	lmage <- lm(sqrt(income) ~ poly(age, 2, raw = T), data = x)	lmage <- lm(sqrt(income) ~ poly(age, 2, raw = T), data = x)	FALSE	FALSE	2.373	0	74
+Operation	40	plot(x$age * 100, sqrt(x$income), xlab = "Age", ylab = "Sqrt	plot(x$age * 100, sqrt(x$income), xlab = "Age", ylab = "Sqrt	FALSE	FALSE	2.565	0	76
+Operation	41	lines(x$age * 100, predict(lmage))	lines(x$age * 100, predict(lmage))	FALSE	FALSE	2.585	0	77
+Finish	42	ddg.chunk_5	ddg.chunk_5	FALSE	FALSE	2.605	0	78
+Start	43	ddg.chunk_6	ddg.chunk_6	FALSE	FALSE	2.606	0	84
+Operation	44	x$Age2 <- x$Age^2	x$Age2 <- x$Age^2	FALSE	FALSE	2.606	0	85
+Operation	45	Quadratic <- lm(Income ~ Age + Age2, data = x)	Quadratic <- lm(Income ~ Age + Age2, data = x)	FALSE	FALSE	2.634	0	86
+Finish	46	ddg.chunk_6	ddg.chunk_6	FALSE	FALSE	2.793	0	87
+Start	47	ddg.chunk_7	ddg.chunk_7	FALSE	FALSE	2.794	0	89
+Operation	48	summary(Quadratic)	summary(Quadratic)	FALSE	FALSE	2.796	0	90
+Finish	49	ddg.chunk_7	ddg.chunk_7	FALSE	FALSE	2.802	0	91
+Start	50	ddg.chunk_8	ddg.chunk_8	FALSE	FALSE	2.803	0	96
+Operation	51	x$illnessbin <- 1	x$illnessbin <- 1	FALSE	FALSE	2.804	0	98
+Operation	52	x$illnessbin[x$illness == 0] <- 0	x$illnessbin[x$illness == 0] <- 0	FALSE	FALSE	2.83	0	99
+Operation	53	glmill <- glm(illnessbin ~ income + sex + age + chcond, data	glmill <- glm(illnessbin ~ income + sex + age + chcond, data	FALSE	FALSE	3.01	0	102
+Operation	54	summary(glmill)	summary(glmill)	FALSE	FALSE	3.433	0	103
+Operation	55	x$logitillness <- predict(glmill)	x$logitillness <- predict(glmill)	FALSE	FALSE	3.441	0	107
+Operation	56	x$probabilityillness <- exp(x$logitillness)/(1 + exp(x$logit	x$probabilityillness <- exp(x$logitillness)/(1 + exp(x$logit	FALSE	FALSE	3.47	0	109
+Operation	57	xyplot(probabilityillness ~ income * 10000, groups = chcond,	xyplot(probabilityillness ~ income * 10000, groups = chcond,	FALSE	FALSE	3.51	0	111
+Finish	58	ddg.chunk_8	ddg.chunk_8	FALSE	FALSE	3.522	0	112
+Finish	59	/Users/Alex/Google Drive/Harvard Forest/RDataTracker/example	/Users/Alex/Google Drive/Harvard Forest/RDataTracker/example	FALSE	FALSE	3.522	0	112
