@@ -416,6 +416,23 @@ ddg.MAX_HIST_LINES <- 2^14
   }
 }
 
+# ddg.installedpackages() returns information on packages installed at the time of execution
+# and their versions.
+.ddg.installedpackages <- function(){
+  packages <- devtools::session_info()
+  packages <- packages [[2]]
+  installed <- packages[packages[,2] == "*",]
+  installed <- installed[ ,c(1,3)]
+  return(installed)
+}
+
+.ddg.installedpackages.json <- function(){
+  installed <- .ddg.installedpackages()
+  output <- "\"rdt:InstalledPackages\": [\n\t"
+  packagearray <- paste("{\"package\":\"", installed[,1], "\", \"version\":\"",installed[,2], "\"}", sep = "", collapse =",\n\t")
+  output <- paste(output, packagearray, "]", sep = "")
+  return(output)
+}
 # ddg.txt.environ returns environment information for the ddg.txt
 # string.
 
@@ -438,6 +455,9 @@ ddg.MAX_HIST_LINES <- 2^14
   environ <- paste(environ, "WorkingDirectory=\"", getwd(), "\"\n", sep="")
   environ <- paste(environ, "DDGDirectory=\"", .ddg.path(), "\"\n", sep="")
   environ <- paste(environ, "DateTime=\"", time, "\"\n", sep="")
+  installed <- .ddg.installedpackages()
+  environ <- paste(environ, "InstalledPackages=\"",
+                   paste(installed[,1], installed[,2], sep = " ", collapse = ", "), "\"\n", sep = "")
   return (environ)
 }
 
@@ -526,6 +546,8 @@ ddg.MAX_HIST_LINES <- 2^14
   
   lib.version <- packageVersion("RDataTracker")
   environ <- paste(environ, .ddg.json.nv("rdt:rdatatrackerVersion", lib.version), sep="")
+  
+  environ <- paste(environ, .ddg.installedpackages.json(), sep = "")
   
   environ <- paste(environ, "}\n},\n\n", sep="")
   
