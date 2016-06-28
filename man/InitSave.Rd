@@ -14,7 +14,7 @@ ddg.init(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enable.console =
     max.snapshot.size = 100) 
 ddg.save(r.script.path = NULL, quit=FALSE)
 ddg.run(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = NULL, enable.console = TRUE, 
-    annotate.functions = TRUE, max.snapshot.size = 100)
+    annotate.functions = TRUE, max.snapshot.size = 100, debug=FALSE)
 ddg.annotate.on(fnames = NULL)
 ddg.annotate.off(fnames = NULL)
 ddg.console.on()
@@ -32,6 +32,7 @@ ddg.flush.ddg(ddg.path = NULL)
   \item{max.snapshot.size}{ The maximum size for objects that should be output in snapshot
     files.  If max.snapshot.size is -1, there is no limit. If max.snapshot.size is 0, snapshot nodes
     are created but no snapshot files are saved. }
+  \item{debug}{ If TRUE, enable script debugging. }
   \item{f}{ A function to run.  Data provenance is collected within the function. }
   \item{fnames}{ A list of one or more function names. }
   \item{quit}{ If TRUE, all DDG files are removed from memory. }
@@ -67,7 +68,8 @@ ddg.flush.ddg(ddg.path = NULL)
   ddg.function, ddg.eval, and ddg.return.value are added to each function definition before the
   script is executed and these changes are saved to the file annotated-script.r in the ddg directory. 
   ddg.annotate.on and ddg.annotate.off may be used to limit the functions 
-  that will be annotated or not annotated, respectively.
+  that will be annotated or not annotated, respectively. If break is set to TRUE, script debugging is
+  enabled. This has the same effect as inserting ddg.breakpoint() at the top of the script.
   
   ddg.console.on and ddg.console.off toggle the console parameter for DDG creation. 
   When the console is enabled, all commands sent to the R console are captured as provenance 

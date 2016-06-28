@@ -1,59 +1,55 @@
 Loading required package: Ecfun
 
-Attaching package: ‘Ecfun’
+Attaching package: 'Ecfun'
 
-The following object is masked from ‘package:base’:
+The following object is masked from 'package:base':
 
     sign
 
 
-Attaching package: ‘Ecdat’
+Attaching package: 'Ecdat'
 
-The following object is masked from ‘package:datasets’:
+The following object is masked from 'package:datasets':
 
     Orange
 
 Loading required package: dplyr
 
-Attaching package: ‘dplyr’
+Attaching package: 'dplyr'
 
-The following objects are masked from ‘package:stats’:
+The following objects are masked from 'package:stats':
 
     filter, lag
 
-The following objects are masked from ‘package:base’:
+The following objects are masked from 'package:base':
 
     intersect, setdiff, setequal, union
 
 Loading required package: lattice
 Loading required package: ggplot2
-Loading required package: car
-
-Attaching package: ‘car’
-
-The following object is masked from ‘package:Ecdat’:
-
-    Mroz
-
 Loading required package: mosaicData
+Loading required package: Matrix
 
-Attaching package: ‘mosaic’
+The 'mosaic' package masks several functions from core packages in order to add additional features.  
+The original behavior of these functions should not be affected by this.
 
-The following object is masked from ‘package:car’:
+Attaching package: 'mosaic'
 
-    logit
+The following object is masked from 'package:Matrix':
 
-The following objects are masked from ‘package:dplyr’:
+    mean
+
+The following objects are masked from 'package:dplyr':
 
     count, do, tally
 
-The following objects are masked from ‘package:stats’:
+The following objects are masked from 'package:stats':
 
     binom.test, cor, cov, D, fivenum, IQR, median, prop.test, quantile,
     sd, t.test, var
 
-The following objects are masked from ‘package:base’:
+The following objects are masked from 'package:base':
 
     max, mean, min, prod, range, sample, sum
 
-Execution Time = 5.136362
+Execution Time = 5.8716
