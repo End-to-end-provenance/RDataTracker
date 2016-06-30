@@ -5386,6 +5386,8 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, f = NULL, enable.consol
   
   # Set breakpoint if debug is TRUE
   if (debug) ddg.breakpoint()
+  
+  sink(file = paste(.ddg.path(), "/output.txt", sep = ""), type = "output")
 
   # If an R error is generated, get the error message and close
   # the DDG.
@@ -5441,6 +5443,8 @@ ddg.save <- function(r.script.path=NULL, quit=FALSE) {
   # Get ddg path.
   ddg.path <- .ddg.path()
   
+  sink()
+  unlink(paste(.ddg.path(), "/output.txt", sep = ""))
   # Save ddg.txt to file.
   .ddg.txt.write()
   if (interactive()) print(paste("Saving ddg.txt in ", ddg.path, sep=""))
