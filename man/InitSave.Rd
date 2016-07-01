@@ -10,11 +10,11 @@
 \title{Creating Provenance Graphs with RDataTracker}
 \description{These functions are needed to create provenance graphs.}
 \usage{
-ddg.init(r.script.path = NULL, ddgdir = NULL, enable.console = TRUE, 
+ddg.init(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enable.console = TRUE, 
     max.snapshot.size = 100) 
 ddg.save(r.script.path = NULL, quit=FALSE)
-ddg.run(r.script.path = NULL, ddgdir = NULL, f = NULL, enable.console = TRUE, 
-    annotate.functions = TRUE, max.snapshot.size = 100, debug = FALSE)
+ddg.run(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = NULL, enable.console = TRUE, 
+    annotate.functions = TRUE, max.snapshot.size = 100, debug = FALSE, display = FALSE)
 ddg.annotate.on(fnames = NULL)
 ddg.annotate.off(fnames = NULL)
 ddg.console.on()
@@ -24,6 +24,7 @@ ddg.flush.ddg(ddg.path = NULL)
 \arguments{
   \item{r.script.path}{ the full path to the file containing the R script that is being executed. }
   \item{ddgdir}{the directory where the DDG should be saved. }
+  \item{overwrite}{Defaults is TRUE, if FALSE, adds timestamp to ddg directory to prevent overwriting}
   \item{enable.console}{ If TRUE, any commands executed in the console, either by typing, copying and 
     pasting, or selecting and running, will result in a procedure node created in the provenance graph, with
     data nodes created for each variable assigned and data flow edges for variables used and set. }
@@ -32,6 +33,7 @@ ddg.flush.ddg(ddg.path = NULL)
     files.  If max.snapshot.size is -1, there is no limit. If max.snapshot.size is 0, snapshot nodes
     are created but no snapshot files are saved. }
   \item{debug}{ If TRUE, enable script debugging. }
+  \item{display}{ If TRUE, display the DDG when the R script completes.}
   \item{f}{ A function to run.  Data provenance is collected within the function. }
   \item{fnames}{ A list of one or more function names. }
   \item{quit}{ If TRUE, all DDG files are removed from memory. }
@@ -45,7 +47,9 @@ ddg.flush.ddg(ddg.path = NULL)
 
   ddg.init initializes the provenance graph.  If r.script.path is not NULL, the R script is copied
   into the DDG directory, becoming a permanent part of the provenance record.  If ddgdir is NULL,
-  the provenance graph will be saved in a subdirectory called "ddg" within the current working directory.
+  the provenance graph will be saved in a subdirectory called "ddg_[script name]" in the script's directory.
+  Further changes can be made to the save directory by specifying overwrite = FALSE, which will add a
+  timestamp to the directory to prevent overwriting, i.e. "ddg_script.name_2016-06-09T15.41.02EDT"
    
   ddg.save writes the provenance graph along with additional provenance information to a file named
   ddg.txt.  The extra information includes the platform and operating system, the R version, the name
@@ -66,7 +70,7 @@ ddg.flush.ddg(ddg.path = NULL)
   script is executed and these changes are saved to the file annotated-script.r in the ddg directory. 
   ddg.annotate.on and ddg.annotate.off may be used to limit the functions 
   that will be annotated or not annotated, respectively. If break is set to TRUE, script debugging is
-  enabled. This has the same effect as inserting ddg.breakpoint() at the top of the script.
+  enabled. This has the same effect as inserting ddg.breakpoint() at the top of the script. If display is set to   TRUE, DDG is displayed after the R script finished executing.
   
   ddg.console.on and ddg.console.off toggle the console parameter for DDG creation. 
   When the console is enabled, all commands sent to the R console are captured as provenance 

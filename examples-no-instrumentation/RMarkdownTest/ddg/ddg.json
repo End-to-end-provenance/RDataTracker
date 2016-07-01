@@ -1,0 +1,43 @@
+{
+
+"prefix" : {
+"prov" : "http://www.w3.org/ns/prov#",
+"rdt" : "http://rdatatracker.org/"
+},
+
+"entity" : {
+"rdt:environment" : {
+"rdt:architecture" : "x86_64",
+"rdt:operatingSystem" : "unix",
+"rdt:language" : "R",
+"rdt:rVersion" : "R version 3.2.3 (2015-12-10)",
+"rdt:script" : "/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples-no-instrumentation/RMarkdownTest/ddg/RMarkdownTest.R",
+"rdt:scriptTimeStamp" : "NA",
+"rdt:workingDirectory" : "/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples-no-instrumentation/RMarkdownTest",
+"rdt:ddgDirectory" : "/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples-no-instrumentation/RMarkdownTest/ddg",
+"rdt:ddgTimeStamp" : "2016-07-01T16.34.28EDT",
+"rdt:rdatatrackerVersion" : "2.24.1",
+"rdt:InstalledPackages": [
+	{"package":"RDataTracker", "version":"2.24.1"}]}
+},
+
+"entity" : {
+"d1" : {
+"rdt:name" : "error.msg",
+"rdt:value" : "\"No binding for .ddg.source.parsed . DDG may be incorrect!\"",
+"rdt:type" : "Exception",
+"rdt:scope" : "ddg.library",
+"rdt:fromEnv" : "FALSE",
+"rdt:timestamp" : "",
+"rdt:location" : ""
+}
+},
+
+"wasGeneratedBy" : {
+"e1" : {
+"prov:entity" : "p0",
+"prov:activity" : "d1"
+}
+},
+
+}

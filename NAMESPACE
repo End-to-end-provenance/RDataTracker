@@ -9,3 +9,6 @@ export(ddg.source)
 
 importFrom(gtools, defmacro)
 importFrom(XML, saveXML)
+importFrom(knitr, purl)
+importFrom(stringr, str_trim)
+importFrom(devtools, session_info)
