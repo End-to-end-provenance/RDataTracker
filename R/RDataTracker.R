@@ -5349,12 +5349,12 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, f = NULL, enable.consol
 	if(incremental == TRUE){
 		.ddg.set("incremental","True")
 		# ddg.start.server()
-		Sys.sleep(5)
+		Sys.sleep(2)
 		.ddg.set("con",socketConnection(host=Sys.info()["nodename"], port = 6096, blocking = FALSE,
 						server=FALSE, open="w"))
-		ddg.output.String(.ddg.get("ddg.r.script.path"))
+		ddg.output.String(r.script.path)
 		ddg.output.String(.ddg.get("ddg.start.time"))
-		
+		print(paste("RSCRIPTPATH",r.script.path))
 	}
 	
 	# Create ddg directory.
