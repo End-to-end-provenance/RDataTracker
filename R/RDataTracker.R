@@ -859,14 +859,14 @@ ddg.MAX_HIST_LINES <- 2^14
 				 is.null(value))
 }
 
-# .ddg.is.csv returns TRUE if the value passed in should be written
-# out as a csv file. No assumptions are made about input.
+# .ddg.is.csv returns TRUE if the value passed in should be saved
+# as a csv file, i.e. if it is a vector, matrix, or data frame.
+# Note that is.vector returns TRUE for lists.
 
 # value - input value.
 
 .ddg.is.csv <- function(value) {
-  return(!(.ddg.is.graphic(value) || .ddg.is.simple(value)) && (
-            is.list(value) || is.vector(value) || is.matrix(value) || is.data.frame(value)))
+  return(!.ddg.is.graphic(value) && !.ddg.is.simple(value) && ((is.vector(value) && !is.list(value)) || is.matrix(value) || is.data.frame(value)))
 }
 
 # .ddg.is.object returns TRUE if the value is determined to be an
@@ -912,15 +912,21 @@ ddg.MAX_HIST_LINES <- 2^14
 }
 
 # .ddg.save.simple takes in a simple name-value pair and saves
-# it to the DDG. It does not however create any edges.
+# it to the DDG. It does not however create any edges. Extra long
+# strings are saved as snapshots.
 
 # name - data node name.
 # value - data node value.
 # scope - data node scope.
 
 .ddg.save.simple <- function(name, value, scope=NULL, from.env=FALSE) {
-	# Save the true value.
+	# Save extra long strings as snapshot.
+  if (is.character(value) && nchar(value) > 100) {
+    .ddg.snapshot.node(name, "txt", value, dscope=scope, from.env=from.env)
+  } else {
+  # Save the true value.
 	.ddg.data.node("Data", name, value, scope, from.env=from.env)
+  }
 }
 
 # .ddg.write.graphic takes as input the name of a variable as well
@@ -997,6 +1003,7 @@ ddg.MAX_HIST_LINES <- 2^14
 	if (.ddg.is.graphic(value)) .ddg.write.graphic(name, value, graphic.fext, scope=scope, from.env=from.env)
 	else if (.ddg.is.simple(value)) .ddg.save.simple(name, value, scope=scope, from.env=from.env)
 	else if (.ddg.is.csv(value)) .ddg.write.csv(name, value, scope=scope, from.env=from.env)
+  else if (is.list(value) || is.array(value)) .ddg.snapshot.node(name, "txt", value, save.object=TRUE, dscope=scope, from.env=from.env)
 	else if (.ddg.is.object(value)) .ddg.snapshot.node(name, "txt", value, dscope=scope, from.env=from.env)
 	else if (.ddg.is.function(value)) .ddg.save.simple(name, "#ddg.function", scope=scope, from.env=from.env)
 	else if (error) stop("Unable to create data (snapshot) node. Non-Object value to", fname, ".")
@@ -3542,7 +3549,7 @@ ddg.MAX_HIST_LINES <- 2^14
   }
   else if (is.vector(data)) {
   }
-  else if (is.data.frame(data) || is.matrix(data)) {
+  else if (is.data.frame(data) || is.matrix(data) || is.array(data) || is.list(data)) {
     if (!full.snapshot) {
       data <- head(data, n=1000)
       snapname <- paste(dname, "-PARTIAL", sep="")
@@ -3603,7 +3610,7 @@ ddg.MAX_HIST_LINES <- 2^14
   }
 
   # Check to see if we want to save the object.
-  if (save.object && full.snapshot) save(data, file = paste(dpfile, ".RObject"), ascii = TRUE)
+  if (save.object && full.snapshot) save(data, file = paste(.ddg.path(), "/", .ddg.dnum()+1, "-", snapname, ".RObject", sep=""), ascii = TRUE)
 
   dtime <- .ddg.timestamp()
 
