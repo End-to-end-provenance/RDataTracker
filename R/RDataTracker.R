@@ -5325,7 +5325,7 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, enable.console = TRUE,
 # debug (optional) - If TRUE, enable script debugging. This has the
 #   same effect as inserting ddg.breakpoint() at the top of the script.
 
-ddg.run <- function(r.script.path = NULL, ddgdir = NULL, f = NULL, enable.console = TRUE, annotate.functions = TRUE, max.snapshot.size = 100, debug = FALSE, load = FALSE) {
+ddg.run <- function(r.script.path = NULL, ddgdir = NULL, f = NULL, enable.console = TRUE, annotate.functions = TRUE, max.snapshot.size = 100, debug = FALSE, display = FALSE) {
 
   # Initiate ddg.
   ddg.init(r.script.path, ddgdir, enable.console, max.snapshot.size)
@@ -5362,16 +5362,16 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, f = NULL, enable.consol
       },
       finally={
         ddg.save(r.script.path)
-		if(load == TRUE)
-			ddg.loadDDG(.ddg.path())
+		if(display == TRUE)
+			.ddg.loadDDG(.ddg.path())
       }
   )
   invisible()
 }
 
-#Function to load DDG automatically
-ddg.loadDDG<- function(ddg.folder){
-	jar.path<- "/RDataTracker/java/ddg-explorer_2.06.jar"
+#Function to display DDG automatically
+.ddg.loadDDG<- function(ddg.folder){
+	jar.path<- "/RDataTracker/java/DDGExplorer.jar"
 	check.library.paths<- file.exists(paste(.libPaths(),jar.path,sep = ""))
 	index<- min(which(check.library.paths == TRUE))
 	ddgexplorer_path<- paste(.libPaths()[index],jar.path,sep = "")
