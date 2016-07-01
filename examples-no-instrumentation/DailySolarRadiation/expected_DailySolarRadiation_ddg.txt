@@ -1,275 +1,293 @@
 Architecture="x86_64"
-OperatingSystem="windows"
+OperatingSystem="unix"
 Language="R"
-LanguageVersion="R version 3.2.5 (2016-04-14)"
-RDataTrackerVersion="2.22"
+LanguageVersion="R version 3.2.3 (2015-12-10)"
+RDataTrackerVersion="2.24"
 Script="[DIR]/DailySolarRadiation.R"
-ProcessFileTimestamp="2015-11-13T10.09.16EST"
+ProcessFileTimestamp="2015-08-03T14.14.14EDT"
 WorkingDirectory="[DIR]"
 DDGDirectory="[DIR]/ddg"
-DateTime="2016-05-25T15.21.59EDT"
+DateTime="2016-06-15T15.01.18EDT"
 216
-Start p1 "1-DailySolarRadiation.R" Value="DailySolarRadiation.R" Time="0.05" Script="0" Line="NA";
-Operation p2 "2-read.data <- function() {    data.file <<- \"met-daily.csv\"  " Value="read.data <- function() {    data.file <<- \"met-daily.csv\"  " Time="0.06" Script="0" Line="14";
+Start p1 "1-DailySolarRadiation.R" Value="DailySolarRadiation.R" Time="0.045" Script="0" Line="NA";
+Operation p2 "2-read.data <- function() {    data.file <<- \"met-daily.csv\"  " Value="read.data <- function() {    data.file <<- \"met-daily.csv\"  " Time="0.055" Script="0" Line="14";
 CF p1 p2
 Data d1 "1-read.data" Value="#ddg.function";
 DF p2 d1
-Operation p3 "3-calibrate <- function(xx) {    date.start <- as.Date(calibra" Value="calibrate <- function(xx) {    date.start <- as.Date(calibra" Time="0.08" Script="0" Line="48";
+Operation p3 "3-calibrate <- function(xx) {    date.start <- as.Date(calibra" Value="calibrate <- function(xx) {    date.start <- as.Date(calibra" Time="0.068" Script="0" Line="48";
 CF p2 p3
 Data d2 "2-calibrate" Value="#ddg.function";
 DF p3 d2
-Operation p4 "4-quality.control <- function(xx) {    repeats <- quality.cont" Value="quality.control <- function(xx) {    repeats <- quality.cont" Time="0.11" Script="0" Line="65";
+Operation p4 "4-quality.control <- function(xx) {    repeats <- quality.cont" Value="quality.control <- function(xx) {    repeats <- quality.cont" Time="0.082" Script="0" Line="65";
 CF p3 p4
 Data d3 "3-quality.control" Value="#ddg.function";
 DF p4 d3
-Operation p5 "5-gap.fill <- function(xx) {    slope <- gap.fill.parameters$s" Value="gap.fill <- function(xx) {    slope <- gap.fill.parameters$s" Time="0.12" Script="0" Line="89";
+Operation p5 "5-gap.fill <- function(xx) {    slope <- gap.fill.parameters$s" Value="gap.fill <- function(xx) {    slope <- gap.fill.parameters$s" Time="0.093" Script="0" Line="89";
 CF p4 p5
 Data d4 "4-gap.fill" Value="#ddg.function";
 DF p5 d4
-Operation p6 "6-write.result <- function(fn, xx) {    file.out <- paste(getw" Value="write.result <- function(fn, xx) {    file.out <- paste(getw" Time="0.12" Script="0" Line="103";
+Operation p6 "6-write.result <- function(fn, xx) {    file.out <- paste(getw" Value="write.result <- function(fn, xx) {    file.out <- paste(getw" Time="0.1" Script="0" Line="103";
 CF p5 p6
 Data d5 "5-write.result" Value="#ddg.function";
 DF p6 d5
-Operation p7 "7-plot.data <- function(xx, v) {    if (v == \"R\")         name" Value="plot.data <- function(xx, v) {    if (v == \"R\")         name" Time="0.17" Script="0" Line="108";
+Operation p7 "7-plot.data <- function(xx, v) {    if (v == \"R\")         name" Value="plot.data <- function(xx, v) {    if (v == \"R\")         name" Time="0.128" Script="0" Line="108";
 CF p6 p7
 Data d6 "6-plot.data" Value="#ddg.function";
 DF p7 d6
-Start p8 "8-get.data" Value="get.data" Time="0.19" Script="0" Line="177";
+Start p8 "8-get.data" Value="get.data" Time="0.134" Script="0" Line="177";
 CF p7 p8
-Start p9 "9-raw.data <- read.data()" Value="raw.data <- read.data()" Time="0.19" Script="0" Line="179";
+Start p9 "9-raw.data <- read.data()" Value="raw.data <- read.data()" Time="0.136" Script="0" Line="179";
 CF p8 p9
-Start p10 "10-read.data()" Value="read.data()" Time="0.19" Script="0" Line="179";
+DF d1 p9
+Start p10 "10-read.data()" Value="read.data()" Time="0.141" Script="0" Line="179";
 CF p9 p10
-Operation p11 "11-read.data" Value="read.data" Time="0.19" Script="0" Line="179";
+Operation p11 "11-read.data" Value="read.data" Time="0.141" Script="0" Line="179";
 DF d1 p11
 CF p10 p11
-Operation p12 "12-data.file <<- \"met-daily.csv\"" Value="data.file <<- \"met-daily.csv\"" Time="0.19" Script="0" Line="179";
+Operation p12 "12-data.file <<- \"met-daily.csv\"" Value="data.file <<- \"met-daily.csv\"" Time="0.147" Script="0" Line="179";
 CF p11 p12
 Data d7 "7-data.file" Value="\"met-daily.csv\"";
 DF p12 d7
-Operation p13 "13-cal.file <<- \"par-cal.csv\"" Value="cal.file <<- \"par-cal.csv\"" Time="0.2" Script="0" Line="179";
+Operation p13 "13-cal.file <<- \"par-cal.csv\"" Value="cal.file <<- \"par-cal.csv\"" Time="0.156" Script="0" Line="179";
 CF p12 p13
 Data d8 "8-cal.file" Value="\"par-cal.csv\"";
 DF p13 d8
-Operation p14 "14-qc.file <<- \"par-qc.csv\"" Value="qc.file <<- \"par-qc.csv\"" Time="0.2" Script="0" Line="179";
+Operation p14 "14-qc.file <<- \"par-qc.csv\"" Value="qc.file <<- \"par-qc.csv\"" Time="0.163" Script="0" Line="179";
 CF p13 p14
 Data d9 "9-qc.file" Value="\"par-qc.csv\"";
 DF p14 d9
-Operation p15 "15-gf.file <<- \"par-gf.csv\"" Value="gf.file <<- \"par-gf.csv\"" Time="0.22" Script="0" Line="179";
+Operation p15 "15-gf.file <<- \"par-gf.csv\"" Value="gf.file <<- \"par-gf.csv\"" Time="0.17" Script="0" Line="179";
 CF p14 p15
 Data d10 "10-gf.file" Value="\"par-gf.csv\"";
 DF p15 d10
-Operation p16 "16-start.date <<- \"2012-01-01\"" Value="start.date <<- \"2012-01-01\"" Time="0.22" Script="0" Line="179";
+Operation p16 "16-start.date <<- \"2012-01-01\"" Value="start.date <<- \"2012-01-01\"" Time="0.175" Script="0" Line="179";
 CF p15 p16
 Data d11 "11-start.date" Value="\"2012-01-01\"";
 DF p16 d11
-Operation p17 "17-end.date <<- \"2012-03-31\"" Value="end.date <<- \"2012-03-31\"" Time="0.23" Script="0" Line="179";
+Operation p17 "17-end.date <<- \"2012-03-31\"" Value="end.date <<- \"2012-03-31\"" Time="0.182" Script="0" Line="179";
 CF p16 p17
 Data d12 "12-end.date" Value="\"2012-03-31\"";
 DF p17 d12
-Operation p18 "18-variable <<- \"slrt\"" Value="variable <<- \"slrt\"" Time="0.23" Script="0" Line="179";
+Operation p18 "18-variable <<- \"slrt\"" Value="variable <<- \"slrt\"" Time="0.188" Script="0" Line="179";
 CF p17 p18
 Data d13 "13-variable" Value="\"slrt\"";
 DF p18 d13
-Operation p19 "19-zz <- read.csv(data.file)" Value="zz <- read.csv(data.file)" Time="0.28" Script="0" Line="179";
+Operation p19 "19-zz <- read.csv(data.file)" Value="zz <- read.csv(data.file)" Time="0.266" Script="0" Line="179";
 CF p18 p19
-File d14 "14-met-daily.csv" Value="[DIR]/ddg/14-met-daily.csv" Time="2016-05-25T15.21.55EDT" Location="[DIR]/met-daily.csv";
+DF d7 p19
+File d14 "14-met-daily.csv" Value="[DIR]/ddg/14-met-daily.csv" Time="2016-06-15T15.01.19EDT" Location="[DIR]/met-daily.csv";
 DF d14 p19
-Snapshot d15 "15-zz" Value="[DIR]/ddg/15-zz-PARTIAL.csv" Time="2016-05-25T15.21.56EDT";
+Snapshot d15 "15-zz" Value="[DIR]/ddg/15-zz-PARTIAL.csv" Time="2016-06-15T15.01.19EDT";
 DF p19 d15
-Operation p20 "20-zz$date <- as.Date(zz$date)" Value="zz$date <- as.Date(zz$date)" Time="0.4" Script="0" Line="179";
+Operation p20 "20-zz$date <- as.Date(zz$date)" Value="zz$date <- as.Date(zz$date)" Time="0.358" Script="0" Line="179";
 CF p19 p20
 DF d15 p20
-Snapshot d16 "16-zz" Value="[DIR]/ddg/16-zz-PARTIAL.csv" Time="2016-05-25T15.21.56EDT";
+Snapshot d16 "16-zz" Value="[DIR]/ddg/16-zz-PARTIAL.csv" Time="2016-06-15T15.01.19EDT";
 DF p20 d16
-Operation p21 "21-all.data <<- subset(zz, zz$date >= start.date & zz$date <= e" Value="all.data <<- subset(zz, zz$date >= start.date & zz$date <= e" Time="0.45" Script="0" Line="179";
+Operation p21 "21-all.data <<- subset(zz, zz$date >= start.date & zz$date <= e" Value="all.data <<- subset(zz, zz$date >= start.date & zz$date <= e" Time="0.393" Script="0" Line="179";
 CF p20 p21
 DF d16 p21
-Snapshot d17 "17-all.data" Value="[DIR]/ddg/17-all.data.csv" Time="2016-05-25T15.21.56EDT";
+DF d11 p21
+DF d12 p21
+Snapshot d17 "17-all.data" Value="[DIR]/ddg/17-all.data.csv" Time="2016-06-15T15.01.19EDT";
 DF p21 d17
-Operation p22 "22-raw.data <<- all.data[c(\"date\", variable)]" Value="raw.data <<- all.data[c(\"date\", variable)]" Time="0.48" Script="0" Line="179";
+Operation p22 "22-raw.data <<- all.data[c(\"date\", variable)]" Value="raw.data <<- all.data[c(\"date\", variable)]" Time="0.42" Script="0" Line="179";
 CF p21 p22
-Snapshot d18 "18-raw.data" Value="[DIR]/ddg/18-raw.data.csv" Time="2016-05-25T15.21.56EDT";
+DF d17 p22
+DF d13 p22
+Snapshot d18 "18-raw.data" Value="[DIR]/ddg/18-raw.data.csv" Time="2016-06-15T15.01.19EDT";
 DF p22 d18
-Operation p23 "23-names(raw.data)[names(raw.data) == variable] <<- \"raw\"" Value="names(raw.data)[names(raw.data) == variable] <<- \"raw\"" Time="0.5" Script="0" Line="179";
+Operation p23 "23-names(raw.data)[names(raw.data) == variable] <<- \"raw\"" Value="names(raw.data)[names(raw.data) == variable] <<- \"raw\"" Time="0.437" Script="0" Line="179";
 CF p22 p23
-Snapshot d19 "19-raw.data" Value="[DIR]/ddg/19-raw.data.csv" Time="2016-05-25T15.21.56EDT";
+DF d18 p23
+Snapshot d19 "19-raw.data" Value="[DIR]/ddg/19-raw.data.csv" Time="2016-06-15T15.01.19EDT";
 DF p23 d19
-Operation p24 "24-data.rows <<- nrow(raw.data)" Value="data.rows <<- nrow(raw.data)" Time="0.5" Script="0" Line="179";
+Operation p24 "24-data.rows <<- nrow(raw.data)" Value="data.rows <<- nrow(raw.data)" Time="0.449" Script="0" Line="179";
 CF p23 p24
+DF d19 p24
 Data d20 "20-data.rows" Value="91";
 DF p24 d20
-Operation p25 "25-calibration.parameters <<- read.csv(cal.file)" Value="calibration.parameters <<- read.csv(cal.file)" Time="0.52" Script="0" Line="179";
+Operation p25 "25-calibration.parameters <<- read.csv(cal.file)" Value="calibration.parameters <<- read.csv(cal.file)" Time="0.463" Script="0" Line="179";
 CF p24 p25
-File d21 "21-par-cal.csv" Value="[DIR]/ddg/21-par-cal.csv" Time="2016-05-25T15.21.56EDT" Location="[DIR]/par-cal.csv";
+DF d8 p25
+File d21 "21-par-cal.csv" Value="[DIR]/ddg/21-par-cal.csv" Time="2016-06-15T15.01.19EDT" Location="[DIR]/par-cal.csv";
 DF d21 p25
-Snapshot d22 "22-calibration.parameters" Value="[DIR]/ddg/22-calibration.parameters.csv" Time="2016-05-25T15.21.56EDT";
+Snapshot d22 "22-calibration.parameters" Value="[DIR]/ddg/22-calibration.parameters.csv" Time="2016-06-15T15.01.19EDT";
 DF p25 d22
-Operation p26 "26-quality.control.parameters <<- read.csv(qc.file)" Value="quality.control.parameters <<- read.csv(qc.file)" Time="0.53" Script="0" Line="179";
+Operation p26 "26-quality.control.parameters <<- read.csv(qc.file)" Value="quality.control.parameters <<- read.csv(qc.file)" Time="0.483" Script="0" Line="179";
 CF p25 p26
-File d23 "23-par-qc.csv" Value="[DIR]/ddg/23-par-qc.csv" Time="2016-05-25T15.21.56EDT" Location="[DIR]/par-qc.csv";
+DF d9 p26
+File d23 "23-par-qc.csv" Value="[DIR]/ddg/23-par-qc.csv" Time="2016-06-15T15.01.19EDT" Location="[DIR]/par-qc.csv";
 DF d23 p26
-Snapshot d24 "24-quality.control.parameters" Value="[DIR]/ddg/24-quality.control.parameters.csv" Time="2016-05-25T15.21.56EDT";
+Snapshot d24 "24-quality.control.parameters" Value="[DIR]/ddg/24-quality.control.parameters.csv" Time="2016-06-15T15.01.19EDT";
 DF p26 d24
-Operation p27 "27-gap.fill.parameters <<- read.csv(gf.file)" Value="gap.fill.parameters <<- read.csv(gf.file)" Time="0.56" Script="0" Line="179";
+Operation p27 "27-gap.fill.parameters <<- read.csv(gf.file)" Value="gap.fill.parameters <<- read.csv(gf.file)" Time="0.503" Script="0" Line="179";
 CF p26 p27
-File d25 "25-par-gf.csv" Value="[DIR]/ddg/25-par-gf.csv" Time="2016-05-25T15.21.56EDT" Location="[DIR]/par-gf.csv";
+DF d10 p27
+File d25 "25-par-gf.csv" Value="[DIR]/ddg/25-par-gf.csv" Time="2016-06-15T15.01.19EDT" Location="[DIR]/par-gf.csv";
 DF d25 p27
-Snapshot d26 "26-gap.fill.parameters" Value="[DIR]/ddg/26-gap.fill.parameters.csv" Time="2016-05-25T15.21.56EDT";
+Snapshot d26 "26-gap.fill.parameters" Value="[DIR]/ddg/26-gap.fill.parameters.csv" Time="2016-06-15T15.01.19EDT";
 DF p27 d26
-Operation p28 "28-raw.data$cal <<- 0" Value="raw.data$cal <<- 0" Time="0.58" Script="0" Line="179";
+Operation p28 "28-raw.data$cal <<- 0" Value="raw.data$cal <<- 0" Time="0.522" Script="0" Line="179";
 CF p27 p28
-Snapshot d27 "27-raw.data" Value="[DIR]/ddg/27-raw.data.csv" Time="2016-05-25T15.21.56EDT";
+DF d19 p28
+Snapshot d27 "27-raw.data" Value="[DIR]/ddg/27-raw.data.csv" Time="2016-06-15T15.01.19EDT";
 DF p28 d27
-Operation p29 "29-raw.data$cal.f <<- \"\"" Value="raw.data$cal.f <<- \"\"" Time="0.59" Script="0" Line="179";
+Operation p29 "29-raw.data$cal.f <<- \"\"" Value="raw.data$cal.f <<- \"\"" Time="0.533" Script="0" Line="179";
 CF p28 p29
-Snapshot d28 "28-raw.data" Value="[DIR]/ddg/28-raw.data.csv" Time="2016-05-25T15.21.56EDT";
+DF d27 p29
+Snapshot d28 "28-raw.data" Value="[DIR]/ddg/28-raw.data.csv" Time="2016-06-15T15.01.19EDT";
 DF p29 d28
-Operation p30 "30-raw.data$qc <<- 0" Value="raw.data$qc <<- 0" Time="0.59" Script="0" Line="179";
+Operation p30 "30-raw.data$qc <<- 0" Value="raw.data$qc <<- 0" Time="0.544" Script="0" Line="179";
 CF p29 p30
-Snapshot d29 "29-raw.data" Value="[DIR]/ddg/29-raw.data.csv" Time="2016-05-25T15.21.56EDT";
+DF d28 p30
+Snapshot d29 "29-raw.data" Value="[DIR]/ddg/29-raw.data.csv" Time="2016-06-15T15.01.19EDT";
 DF p30 d29
-Operation p31 "31-raw.data$qc.f <<- \"\"" Value="raw.data$qc.f <<- \"\"" Time="0.61" Script="0" Line="179";
+Operation p31 "31-raw.data$qc.f <<- \"\"" Value="raw.data$qc.f <<- \"\"" Time="0.555" Script="0" Line="179";
 CF p30 p31
-Snapshot d30 "30-raw.data" Value="[DIR]/ddg/30-raw.data.csv" Time="2016-05-25T15.21.56EDT";
+DF d29 p31
+Snapshot d30 "30-raw.data" Value="[DIR]/ddg/30-raw.data.csv" Time="2016-06-15T15.01.19EDT";
 DF p31 d30
-Operation p32 "32-raw.data$gf <<- 0" Value="raw.data$gf <<- 0" Time="0.63" Script="0" Line="179";
+Operation p32 "32-raw.data$gf <<- 0" Value="raw.data$gf <<- 0" Time="0.566" Script="0" Line="179";
 CF p31 p32
-Snapshot d31 "31-raw.data" Value="[DIR]/ddg/31-raw.data.csv" Time="2016-05-25T15.21.56EDT";
+DF d30 p32
+Snapshot d31 "31-raw.data" Value="[DIR]/ddg/31-raw.data.csv" Time="2016-06-15T15.01.19EDT";
 DF p32 d31
-Operation p33 "33-raw.data$gf.f <<- \"\"" Value="raw.data$gf.f <<- \"\"" Time="0.64" Script="0" Line="179";
+Operation p33 "33-raw.data$gf.f <<- \"\"" Value="raw.data$gf.f <<- \"\"" Time="0.577" Script="0" Line="179";
 CF p32 p33
-Snapshot d32 "32-raw.data" Value="[DIR]/ddg/32-raw.data.csv" Time="2016-05-25T15.21.56EDT";
+DF d31 p33
+Snapshot d32 "32-raw.data" Value="[DIR]/ddg/32-raw.data.csv" Time="2016-06-15T15.01.19EDT";
 DF p33 d32
-Operation p34 "34-raw.data" Value="raw.data" Time="0.64" Script="0" Line="179";
+Operation p34 "34-raw.data" Value="raw.data" Time="0.59" Script="0" Line="179";
 CF p33 p34
 DF d32 p34
-Snapshot d33 "33-read.data() return" Value="[DIR]/ddg/33-read.data() return.csv" Time="2016-05-25T15.21.56EDT";
-Operation p35 "35-return (raw.data)" Value="return (raw.data)" Time="0.66" Script="0" Line="179";
+Snapshot d33 "33-read.data() return" Value="[DIR]/ddg/33-read.data() return.csv" Time="2016-06-15T15.01.19EDT";
+Operation p35 "35-return (raw.data)" Value="return (raw.data)" Time="0.601" Script="0" Line="179";
 CF p34 p35
 DF d32 p35
 DF p35 d33
-Finish p36 "36-read.data()" Value="read.data()" Time="0.67" Script="0" Line="179";
+Finish p36 "36-read.data()" Value="read.data()" Time="0.608" Script="0" Line="179";
 CF p35 p36
-Finish p37 "37-raw.data <- read.data()" Value="raw.data <- read.data()" Time="0.67" Script="0" Line="179";
+Finish p37 "37-raw.data <- read.data()" Value="raw.data <- read.data()" Time="0.609" Script="0" Line="179";
 CF p36 p37
 DF d33 p37
-Snapshot d34 "34-raw.data" Value="[DIR]/ddg/34-raw.data.csv" Time="2016-05-25T15.21.56EDT";
+Snapshot d34 "34-raw.data" Value="[DIR]/ddg/34-raw.data.csv" Time="2016-06-15T15.01.19EDT";
 DF p37 d34
-Start p38 "38-plot.data(raw.data, \"R\")" Value="plot.data(raw.data, \"R\")" Time="0.67" Script="0" Line="180";
+Start p38 "38-plot.data(raw.data, \"R\")" Value="plot.data(raw.data, \"R\")" Time="0.617" Script="0" Line="180";
 CF p37 p38
-Binding p39 "39-xx  <-  raw.data" Time="0.67" Script="0" Line="180"
+Binding p39 "39-xx  <-  raw.data" Time="0.618" Script="0" Line="180";
 CF p38 p39
 DF d34 p39
-Snapshot d35 "35-xx" Value="[DIR]/ddg/35-xx.csv" Time="2016-05-25T15.21.56EDT";
+Snapshot d35 "35-xx" Value="[DIR]/ddg/35-xx.csv" Time="2016-06-15T15.01.19EDT";
 DF p39 d35
-Binding p40 "40-v <- \"R\"" Time="0.69" Script="0" Line="180"
+Binding p40 "40-v <- \"R\"" Time="0.628" Script="0" Line="180";
 CF p39 p40
 Data d36 "36-v" Value="\"R\"";
 DF p40 d36
-Operation p41 "41-plot.data" Value="plot.data" Time="0.69" Script="0" Line="180";
+Operation p41 "41-plot.data" Value="plot.data" Time="0.632" Script="0" Line="180";
 DF d6 p41
 DF d35 p41
 DF d36 p41
 CF p40 p41
-Operation p42 "42-if (v == \"R\") name <- \"raw\" else if (v == \"C\") name <- \"cali" Value="if (v == \"R\") name <- \"raw\" else if (v == \"C\") name <- \"cali" Time="0.7" Script="0" Line="180";
+Operation p42 "42-if (v == \"R\") name <- \"raw\" else if (v == \"C\") name <- \"cali" Value="if (v == \"R\") name <- \"raw\" else if (v == \"C\") name <- \"cali" Time="0.646" Script="0" Line="180";
 CF p41 p42
 DF d36 p42
 Data d37 "37-name" Value="\"raw\"";
 DF p42 d37
-Operation p43 "43-dname <- paste(name, \"-data.csv\", sep = \"\")" Value="dname <- paste(name, \"-data.csv\", sep = \"\")" Time="0.72" Script="0" Line="180";
+Operation p43 "43-dname <- paste(name, \"-data.csv\", sep = \"\")" Value="dname <- paste(name, \"-data.csv\", sep = \"\")" Time="0.66" Script="0" Line="180";
 CF p42 p43
 DF d37 p43
 Data d38 "38-dname" Value="\"raw-data.csv\"";
 DF p43 d38
-Operation p44 "44-jname <- paste(name, \"-plot.jpeg\", sep = \"\")" Value="jname <- paste(name, \"-plot.jpeg\", sep = \"\")" Time="0.73" Script="0" Line="180";
+Operation p44 "44-jname <- paste(name, \"-plot.jpeg\", sep = \"\")" Value="jname <- paste(name, \"-plot.jpeg\", sep = \"\")" Time="0.671" Script="0" Line="180";
 CF p43 p44
 DF d37 p44
 Data d39 "39-jname" Value="\"raw-plot.jpeg\"";
 DF p44 d39
-Operation p45 "45-dpfile <- paste(getwd(), \"/\", jname, sep = \"\")" Value="dpfile <- paste(getwd(), \"/\", jname, sep = \"\")" Time="0.75" Script="0" Line="180";
+Operation p45 "45-dpfile <- paste(getwd(), \"/\", jname, sep = \"\")" Value="dpfile <- paste(getwd(), \"/\", jname, sep = \"\")" Time="0.68" Script="0" Line="180";
 CF p44 p45
 DF d39 p45
 Data d40 "40-dpfile" Value="\"[DIR]/raw-plot.jpeg\"";
 DF p45 d40
-Operation p46 "46-jpeg(file = dpfile, width = 800, height = 500, quality = 100" Value="jpeg(file = dpfile, width = 800, height = 500, quality = 100" Time="0.75" Script="0" Line="180";
+Operation p46 "46-jpeg(file = dpfile, width = 800, height = 500, quality = 100" Value="jpeg(file = dpfile, width = 800, height = 500, quality = 100" Time="0.696" Script="0" Line="180";
 CF p45 p46
 DF d40 p46
-Operation p47 "47-xmin <- xx$date[1]" Value="xmin <- xx$date[1]" Time="0.77" Script="0" Line="180";
+Operation p47 "47-xmin <- xx$date[1]" Value="xmin <- xx$date[1]" Time="0.703" Script="0" Line="180";
 CF p46 p47
 DF d35 p47
-Snapshot d41 "41-xmin" Value="[DIR]/ddg/41-xmin.txt" Time="2016-05-25T15.21.56EDT";
+Snapshot d41 "41-xmin" Value="[DIR]/ddg/41-xmin.txt" Time="2016-06-15T15.01.19EDT";
 DF p47 d41
-Operation p48 "48-xmax <- xx$date[data.rows]" Value="xmax <- xx$date[data.rows]" Time="0.77" Script="0" Line="180";
+Operation p48 "48-xmax <- xx$date[data.rows]" Value="xmax <- xx$date[data.rows]" Time="0.716" Script="0" Line="180";
 CF p47 p48
 DF d35 p48
-Snapshot d42 "42-xmax" Value="[DIR]/ddg/42-xmax.txt" Time="2016-05-25T15.21.56EDT";
+DF d20 p48
+Snapshot d42 "42-xmax" Value="[DIR]/ddg/42-xmax.txt" Time="2016-06-15T15.01.19EDT";
 DF p48 d42
-Operation p49 "49-xlim <- c(xmin, xmax)" Value="xlim <- c(xmin, xmax)" Time="0.78" Script="0" Line="180";
+Operation p49 "49-xlim <- c(xmin, xmax)" Value="xlim <- c(xmin, xmax)" Time="0.732" Script="0" Line="180";
 CF p48 p49
 DF d41 p49
 DF d42 p49
-Snapshot d43 "43-xlim" Value="[DIR]/ddg/43-xlim.txt" Time="2016-05-25T15.21.56EDT";
+Snapshot d43 "43-xlim" Value="[DIR]/ddg/43-xlim.txt" Time="2016-06-15T15.01.19EDT";
 DF p49 d43
-Operation p50 "50-xrange <- xmax - xmin" Value="xrange <- xmax - xmin" Time="0.8" Script="0" Line="180";
+Operation p50 "50-xrange <- xmax - xmin" Value="xrange <- xmax - xmin" Time="0.75" Script="0" Line="180";
 CF p49 p50
 DF d42 p50
 DF d41 p50
-Snapshot d44 "44-xrange" Value="[DIR]/ddg/44-xrange.txt" Time="2016-05-25T15.21.56EDT";
+Snapshot d44 "44-xrange" Value="[DIR]/ddg/44-xrange.txt" Time="2016-06-15T15.01.19EDT";
 DF p50 d44
-Operation p51 "51-daterange <- c(as.POSIXlt(xmin), as.POSIXlt(xmax))" Value="daterange <- c(as.POSIXlt(xmin), as.POSIXlt(xmax))" Time="0.82" Script="0" Line="180";
+Operation p51 "51-daterange <- c(as.POSIXlt(xmin), as.POSIXlt(xmax))" Value="daterange <- c(as.POSIXlt(xmin), as.POSIXlt(xmax))" Time="0.761" Script="0" Line="180";
 CF p50 p51
 DF d41 p51
 DF d42 p51
-Snapshot d45 "45-daterange" Value="[DIR]/ddg/45-daterange.csv" Time="2016-05-25T15.21.56EDT";
+Snapshot d45 "45-daterange" Value="[DIR]/ddg/45-daterange.csv" Time="2016-06-15T15.01.19EDT";
 DF p51 d45
-Operation p52 "52-ymin <- min(xx$raw, xx$cal, xx$gc, xx$gf, na.rm = TRUE)" Value="ymin <- min(xx$raw, xx$cal, xx$gc, xx$gf, na.rm = TRUE)" Time="0.83" Script="0" Line="180";
+Operation p52 "52-ymin <- min(xx$raw, xx$cal, xx$gc, xx$gf, na.rm = TRUE)" Value="ymin <- min(xx$raw, xx$cal, xx$gc, xx$gf, na.rm = TRUE)" Time="0.8" Script="0" Line="180";
 CF p51 p52
 DF d35 p52
 Data d46 "46-ymin" Value="0";
 DF p52 d46
-Operation p53 "53-ymax <- max(xx$raw, xx$cal, xx$gc, xx$gf, na.rm = TRUE)" Value="ymax <- max(xx$raw, xx$cal, xx$gc, xx$gf, na.rm = TRUE)" Time="0.85" Script="0" Line="180";
+Operation p53 "53-ymax <- max(xx$raw, xx$cal, xx$gc, xx$gf, na.rm = TRUE)" Value="ymax <- max(xx$raw, xx$cal, xx$gc, xx$gf, na.rm = TRUE)" Time="0.819" Script="0" Line="180";
 CF p52 p53
 DF d35 p53
 Data d47 "47-ymax" Value="20.7";
 DF p53 d47
-Operation p54 "54-ylim <- c(ymin, ymax)" Value="ylim <- c(ymin, ymax)" Time="0.88" Script="0" Line="180";
+Operation p54 "54-ylim <- c(ymin, ymax)" Value="ylim <- c(ymin, ymax)" Time="0.837" Script="0" Line="180";
 CF p53 p54
 DF d46 p54
 DF d47 p54
-Snapshot d48 "48-ylim" Value="[DIR]/ddg/48-ylim.csv" Time="2016-05-25T15.21.56EDT";
+Snapshot d48 "48-ylim" Value="[DIR]/ddg/48-ylim.csv" Time="2016-06-15T15.01.19EDT";
 DF p54 d48
-Operation p55 "55-par(mar = c(5.1, 5.1, 5.1, 10.1))" Value="par(mar = c(5.1, 5.1, 5.1, 10.1))" Time="0.9" Script="0" Line="180";
+Operation p55 "55-par(mar = c(5.1, 5.1, 5.1, 10.1))" Value="par(mar = c(5.1, 5.1, 5.1, 10.1))" Time="0.853" Script="0" Line="180";
 CF p54 p55
-Operation p56 "56-plot(xaxt = \"n\", xlim, ylim, cex.main = 1.7, cex.axis = 1.7," Value="plot(xaxt = \"n\", xlim, ylim, cex.main = 1.7, cex.axis = 1.7," Time="0.91" Script="0" Line="180";
+Operation p56 "56-plot(xaxt = \"n\", xlim, ylim, cex.main = 1.7, cex.axis = 1.7," Value="plot(xaxt = \"n\", xlim, ylim, cex.main = 1.7, cex.axis = 1.7," Time="0.87" Script="0" Line="180";
 CF p55 p56
 DF d43 p56
 DF d48 p56
-Operation p57 "57-if (xrange <= 30) axis.Date(1, at = seq(daterange[1], datera" Value="if (xrange <= 30) axis.Date(1, at = seq(daterange[1], datera" Time="0.93" Script="0" Line="180";
+Operation p57 "57-if (xrange <= 30) axis.Date(1, at = seq(daterange[1], datera" Value="if (xrange <= 30) axis.Date(1, at = seq(daterange[1], datera" Time="0.889" Script="0" Line="180";
 CF p56 p57
 DF d44 p57
 DF d45 p57
-Operation p58 "58-good <- subset(xx, xx$qc.f == \"\")" Value="good <- subset(xx, xx$qc.f == \"\")" Time="0.96" Script="0" Line="180";
+Operation p58 "58-good <- subset(xx, xx$qc.f == \"\")" Value="good <- subset(xx, xx$qc.f == \"\")" Time="0.948" Script="0" Line="180";
 CF p57 p58
 DF d35 p58
-Snapshot d49 "49-good" Value="[DIR]/ddg/49-good.csv" Time="2016-05-25T15.21.56EDT";
+Snapshot d49 "49-good" Value="[DIR]/ddg/49-good.csv" Time="2016-06-15T15.01.19EDT";
 DF p58 d49
-Operation p59 "59-ques <- subset(xx, xx$qc.f == \"Q\")" Value="ques <- subset(xx, xx$qc.f == \"Q\")" Time="0.97" Script="0" Line="180";
+Operation p59 "59-ques <- subset(xx, xx$qc.f == \"Q\")" Value="ques <- subset(xx, xx$qc.f == \"Q\")" Time="0.965" Script="0" Line="180";
 CF p58 p59
 DF d35 p59
-Snapshot d50 "50-ques" Value="[DIR]/ddg/50-ques.csv" Time="2016-05-25T15.21.56EDT";
+Snapshot d50 "50-ques" Value="[DIR]/ddg/50-ques.csv" Time="2016-06-15T15.01.20EDT";
 DF p59 d50
-Operation p60 "60-mea <- subset(xx, xx$gf.f == \"\")" Value="mea <- subset(xx, xx$gf.f == \"\")" Time="0.99" Script="0" Line="180";
+Operation p60 "60-mea <- subset(xx, xx$gf.f == \"\")" Value="mea <- subset(xx, xx$gf.f == \"\")" Time="0.983" Script="0" Line="180";
 CF p59 p60
 DF d35 p60
-Snapshot d51 "51-mea" Value="[DIR]/ddg/51-mea.csv" Time="2016-05-25T15.21.56EDT";
+Snapshot d51 "51-mea" Value="[DIR]/ddg/51-mea.csv" Time="2016-06-15T15.01.20EDT";
 DF p60 d51
-Operation p61 "61-mod <- subset(xx, xx$gf.f == \"E\")" Value="mod <- subset(xx, xx$gf.f == \"E\")" Time="1" Script="0" Line="180";
+Operation p61 "61-mod <- subset(xx, xx$gf.f == \"E\")" Value="mod <- subset(xx, xx$gf.f == \"E\")" Time="0.999" Script="0" Line="180";
 CF p60 p61
 DF d35 p61
-Snapshot d52 "52-mod" Value="[DIR]/ddg/52-mod.csv" Time="2016-05-25T15.21.56EDT";
+Snapshot d52 "52-mod" Value="[DIR]/ddg/52-mod.csv" Time="2016-06-15T15.01.20EDT";
 DF p61 d52
-Operation p62 "62-if (v == \"R\") {    title(main = \"Raw Data\")    points(xx$dat" Value="if (v == \"R\") {    title(main = \"Raw Data\")    points(xx$dat" Time="1.03" Script="0" Line="180";
+Operation p62 "62-if (v == \"R\") {    title(main = \"Raw Data\")    points(xx$dat" Value="if (v == \"R\") {    title(main = \"Raw Data\")    points(xx$dat" Time="1.017" Script="0" Line="180";
 CF p61 p62
 DF d36 p62
 DF d35 p62
@@ -277,206 +295,213 @@ DF d49 p62
 DF d50 p62
 DF d51 p62
 DF d52 p62
-Operation p63 "63-labs <- c(\"Raw\", \"Calibrated\", \"QC Check\", \"Modeled\")" Value="labs <- c(\"Raw\", \"Calibrated\", \"QC Check\", \"Modeled\")" Time="1.08" Script="0" Line="180";
+Operation p63 "63-labs <- c(\"Raw\", \"Calibrated\", \"QC Check\", \"Modeled\")" Value="labs <- c(\"Raw\", \"Calibrated\", \"QC Check\", \"Modeled\")" Time="1.057" Script="0" Line="180";
 CF p62 p63
-Snapshot d53 "53-labs" Value="[DIR]/ddg/53-labs.csv" Time="2016-05-25T15.21.56EDT";
+Snapshot d53 "53-labs" Value="[DIR]/ddg/53-labs.csv" Time="2016-06-15T15.01.20EDT";
 DF p63 d53
-Operation p64 "64-cols <- c(\"black\", \"blue\", \"red\", \"green\")" Value="cols <- c(\"black\", \"blue\", \"red\", \"green\")" Time="1.09" Script="0" Line="180";
+Operation p64 "64-cols <- c(\"black\", \"blue\", \"red\", \"green\")" Value="cols <- c(\"black\", \"blue\", \"red\", \"green\")" Time="1.067" Script="0" Line="180";
 CF p63 p64
-Snapshot d54 "54-cols" Value="[DIR]/ddg/54-cols.csv" Time="2016-05-25T15.21.56EDT";
+Snapshot d54 "54-cols" Value="[DIR]/ddg/54-cols.csv" Time="2016-06-15T15.01.20EDT";
 DF p64 d54
-Operation p65 "65-par(xpd = TRUE)" Value="par(xpd = TRUE)" Time="1.09" Script="0" Line="180";
+Operation p65 "65-par(xpd = TRUE)" Value="par(xpd = TRUE)" Time="1.075" Script="0" Line="180";
 CF p64 p65
-Operation p66 "66-legend(xmax + xrange/15, ymax, labs, cols, cex = 1)" Value="legend(xmax + xrange/15, ymax, labs, cols, cex = 1)" Time="1.11" Script="0" Line="180";
+Operation p66 "66-legend(xmax + xrange/15, ymax, labs, cols, cex = 1)" Value="legend(xmax + xrange/15, ymax, labs, cols, cex = 1)" Time="1.084" Script="0" Line="180";
 CF p65 p66
 DF d42 p66
 DF d44 p66
 DF d47 p66
 DF d53 p66
 DF d54 p66
-Operation p67 "67-dev.off()" Value="dev.off()" Time="1.12" Script="0" Line="180";
+Operation p67 "67-dev.off()" Value="dev.off()" Time="1.102" Script="0" Line="180";
 CF p66 p67
 Data d55 "55-plot.data(raw.data,\"R\") return" Value="1";
-Operation p68 "68-return (dev.off())" Value="return (dev.off())" Time="1.14" Script="0" Line="180";
+Operation p68 "68-return (dev.off())" Value="return (dev.off())" Time="1.111" Script="0" Line="180";
 CF p67 p68
-File d56 "56-raw-plot.jpeg" Value="[DIR]/ddg/56-raw-plot.jpeg" Time="2016-05-25T15.21.56EDT" Location="[DIR]/raw-plot.jpeg";
+File d56 "56-raw-plot.jpeg" Value="[DIR]/ddg/56-raw-plot.jpeg" Time="2016-06-15T15.01.20EDT" Location="[DIR]/raw-plot.jpeg";
 DF p67 d56
 DF p68 d55
-Finish p69 "69-plot.data(raw.data, \"R\")" Value="plot.data(raw.data, \"R\")" Time="1.16" Script="0" Line="180";
+Finish p69 "69-plot.data(raw.data, \"R\")" Value="plot.data(raw.data, \"R\")" Time="1.119" Script="0" Line="180";
 CF p68 p69
-Finish p70 "70-get.data" Value="get.data" Time="1.16" Script="0" Line="182";
+Finish p70 "70-get.data" Value="get.data" Time="1.121" Script="0" Line="182";
 CF p69 p70
-Start p71 "71-analyze.data" Value="analyze.data" Time="1.16" Script="0" Line="184";
+Start p71 "71-analyze.data" Value="analyze.data" Time="1.123" Script="0" Line="184";
 CF p70 p71
-Start p72 "72-calibrate.data" Value="calibrate.data" Time="1.16" Script="0" Line="186";
+Start p72 "72-calibrate.data" Value="calibrate.data" Time="1.124" Script="0" Line="186";
 CF p71 p72
-Start p73 "73-calibrated.data <- calibrate(raw.data)" Value="calibrated.data <- calibrate(raw.data)" Time="1.16" Script="0" Line="187";
+Start p73 "73-calibrated.data <- calibrate(raw.data)" Value="calibrated.data <- calibrate(raw.data)" Time="1.126" Script="0" Line="187";
 CF p72 p73
-Start p74 "74-calibrate(raw.data)" Value="calibrate(raw.data)" Time="1.16" Script="0" Line="187";
+DF d2 p73
+DF d34 p73
+Start p74 "74-calibrate(raw.data)" Value="calibrate(raw.data)" Time="1.133" Script="0" Line="187";
 CF p73 p74
-Binding p75 "75-xx  <-  raw.data" Time="1.16" Script="0" Line="187"
+Binding p75 "75-xx  <-  raw.data" Time="1.134" Script="0" Line="187";
 CF p74 p75
 DF d34 p75
-Snapshot d57 "57-xx" Value="[DIR]/ddg/57-xx.csv" Time="2016-05-25T15.21.56EDT";
+Snapshot d57 "57-xx" Value="[DIR]/ddg/57-xx.csv" Time="2016-06-15T15.01.20EDT";
 DF p75 d57
-Operation p76 "76-calibrate" Value="calibrate" Time="1.17" Script="0" Line="187";
+Operation p76 "76-calibrate" Value="calibrate" Time="1.142" Script="0" Line="187";
 DF d2 p76
 DF d57 p76
 CF p75 p76
-Operation p77 "77-date.start <- as.Date(calibration.parameters$start)" Value="date.start <- as.Date(calibration.parameters$start)" Time="1.17" Script="0" Line="187";
+Operation p77 "77-date.start <- as.Date(calibration.parameters$start)" Value="date.start <- as.Date(calibration.parameters$start)" Time="1.15" Script="0" Line="187";
 CF p76 p77
-Snapshot d58 "58-date.start" Value="[DIR]/ddg/58-date.start.txt" Time="2016-05-25T15.21.56EDT";
+DF d22 p77
+Snapshot d58 "58-date.start" Value="[DIR]/ddg/58-date.start.txt" Time="2016-06-15T15.01.20EDT";
 DF p77 d58
-Operation p78 "78-date.finish <- as.Date(calibration.parameters$finish)" Value="date.finish <- as.Date(calibration.parameters$finish)" Time="1.19" Script="0" Line="187";
+Operation p78 "78-date.finish <- as.Date(calibration.parameters$finish)" Value="date.finish <- as.Date(calibration.parameters$finish)" Time="1.163" Script="0" Line="187";
 CF p77 p78
-Snapshot d59 "59-date.finish" Value="[DIR]/ddg/59-date.finish.txt" Time="2016-05-25T15.21.56EDT";
+DF d22 p78
+Snapshot d59 "59-date.finish" Value="[DIR]/ddg/59-date.finish.txt" Time="2016-06-15T15.01.20EDT";
 DF p78 d59
-Operation p79 "79-days <- as.numeric(date.finish - date.start)" Value="days <- as.numeric(date.finish - date.start)" Time="1.21" Script="0" Line="187";
+Operation p79 "79-days <- as.numeric(date.finish - date.start)" Value="days <- as.numeric(date.finish - date.start)" Time="1.175" Script="0" Line="187";
 CF p78 p79
 DF d59 p79
 DF d58 p79
 Data d60 "60-days" Value="365";
 DF p79 d60
-Operation p80 "80-daily.drift <- calibration.parameters$correction/days" Value="daily.drift <- calibration.parameters$correction/days" Time="1.22" Script="0" Line="187";
+Operation p80 "80-daily.drift <- calibration.parameters$correction/days" Value="daily.drift <- calibration.parameters$correction/days" Time="1.191" Script="0" Line="187";
 CF p79 p80
+DF d22 p80
 DF d60 p80
 Data d61 "61-daily.drift" Value="0.000273972602739726";
 DF p80 d61
-Operation p81 "81-for (i in 1:data.rows) {    if (is.na(xx$raw[i])) {        x" Value="for (i in 1:data.rows) {    if (is.na(xx$raw[i])) {        x" Time="1.24" Script="0" Line="187";
+Operation p81 "81-for (i in 1:data.rows) {    if (is.na(xx$raw[i])) {        x" Value="for (i in 1:data.rows) {    if (is.na(xx$raw[i])) {        x" Time="1.232" Script="0" Line="187";
 CF p80 p81
+DF d20 p81
 DF d57 p81
 DF d61 p81
-Snapshot d62 "62-xx" Value="[DIR]/ddg/62-xx.txt" Time="2016-05-25T15.21.57EDT";
+Snapshot d62 "62-xx" Value="[DIR]/ddg/62-xx.txt" Time="2016-06-15T15.01.20EDT";
 DF p81 d62
-Operation p82 "82-xx" Value="xx" Time="1.27" Script="0" Line="187";
+Operation p82 "82-xx" Value="xx" Time="1.264" Script="0" Line="187";
 CF p81 p82
 DF d62 p82
-Snapshot d63 "63-calibrate(raw.data) return" Value="[DIR]/ddg/63-calibrate(raw.data) return.csv" Time="2016-05-25T15.21.57EDT";
-Operation p83 "83-return (xx)" Value="return (xx)" Time="1.28" Script="0" Line="187";
+Snapshot d63 "63-calibrate(raw.data) return" Value="[DIR]/ddg/63-calibrate(raw.data) return.csv" Time="2016-06-15T15.01.20EDT";
+Operation p83 "83-return (xx)" Value="return (xx)" Time="1.272" Script="0" Line="187";
 CF p82 p83
 DF d62 p83
 DF p83 d63
-Finish p84 "84-calibrate(raw.data)" Value="calibrate(raw.data)" Time="1.28" Script="0" Line="187";
+Finish p84 "84-calibrate(raw.data)" Value="calibrate(raw.data)" Time="1.277" Script="0" Line="187";
 CF p83 p84
-Finish p85 "85-calibrated.data <- calibrate(raw.data)" Value="calibrated.data <- calibrate(raw.data)" Time="1.28" Script="0" Line="187";
+Finish p85 "85-calibrated.data <- calibrate(raw.data)" Value="calibrated.data <- calibrate(raw.data)" Time="1.279" Script="0" Line="187";
 CF p84 p85
 DF d63 p85
-Snapshot d64 "64-calibrated.data" Value="[DIR]/ddg/64-calibrated.data.csv" Time="2016-05-25T15.21.57EDT";
+Snapshot d64 "64-calibrated.data" Value="[DIR]/ddg/64-calibrated.data.csv" Time="2016-06-15T15.01.20EDT";
 DF p85 d64
-Start p86 "86-plot.data(calibrated.data, \"C\")" Value="plot.data(calibrated.data, \"C\")" Time="1.3" Script="0" Line="188";
+Start p86 "86-plot.data(calibrated.data, \"C\")" Value="plot.data(calibrated.data, \"C\")" Time="1.286" Script="0" Line="188";
 CF p85 p86
-Binding p87 "87-xx  <-  calibrated.data" Time="1.3" Script="0" Line="188"
+Binding p87 "87-xx  <-  calibrated.data" Time="1.287" Script="0" Line="188";
 CF p86 p87
 DF d64 p87
-Snapshot d65 "65-xx" Value="[DIR]/ddg/65-xx.csv" Time="2016-05-25T15.21.57EDT";
+Snapshot d65 "65-xx" Value="[DIR]/ddg/65-xx.csv" Time="2016-06-15T15.01.20EDT";
 DF p87 d65
-Binding p88 "88-v <- \"C\"" Time="1.33" Script="0" Line="188"
+Binding p88 "88-v <- \"C\"" Time="1.295" Script="0" Line="188";
 CF p87 p88
 Data d66 "66-v" Value="\"C\"";
 DF p88 d66
-Operation p89 "89-plot.data" Value="plot.data" Time="1.33" Script="0" Line="188";
+Operation p89 "89-plot.data" Value="plot.data" Time="1.298" Script="0" Line="188";
 DF d6 p89
 DF d65 p89
 DF d66 p89
 CF p88 p89
-Operation p90 "90-if (v == \"R\") name <- \"raw\" else if (v == \"C\") name <- \"cali" Value="if (v == \"R\") name <- \"raw\" else if (v == \"C\") name <- \"cali" Time="1.35" Script="0" Line="188";
+Operation p90 "90-if (v == \"R\") name <- \"raw\" else if (v == \"C\") name <- \"cali" Value="if (v == \"R\") name <- \"raw\" else if (v == \"C\") name <- \"cali" Time="1.308" Script="0" Line="188";
 CF p89 p90
 DF d66 p90
 Data d67 "67-name" Value="\"calibrated\"";
 DF p90 d67
-Operation p91 "91-dname <- paste(name, \"-data.csv\", sep = \"\")" Value="dname <- paste(name, \"-data.csv\", sep = \"\")" Time="1.36" Script="0" Line="188";
+Operation p91 "91-dname <- paste(name, \"-data.csv\", sep = \"\")" Value="dname <- paste(name, \"-data.csv\", sep = \"\")" Time="1.321" Script="0" Line="188";
 CF p90 p91
 DF d67 p91
 Data d68 "68-dname" Value="\"calibrated-data.csv\"";
 DF p91 d68
-Operation p92 "92-jname <- paste(name, \"-plot.jpeg\", sep = \"\")" Value="jname <- paste(name, \"-plot.jpeg\", sep = \"\")" Time="1.36" Script="0" Line="188";
+Operation p92 "92-jname <- paste(name, \"-plot.jpeg\", sep = \"\")" Value="jname <- paste(name, \"-plot.jpeg\", sep = \"\")" Time="1.329" Script="0" Line="188";
 CF p91 p92
 DF d67 p92
 Data d69 "69-jname" Value="\"calibrated-plot.jpeg\"";
 DF p92 d69
-Operation p93 "93-dpfile <- paste(getwd(), \"/\", jname, sep = \"\")" Value="dpfile <- paste(getwd(), \"/\", jname, sep = \"\")" Time="1.38" Script="0" Line="188";
+Operation p93 "93-dpfile <- paste(getwd(), \"/\", jname, sep = \"\")" Value="dpfile <- paste(getwd(), \"/\", jname, sep = \"\")" Time="1.337" Script="0" Line="188";
 CF p92 p93
 DF d69 p93
 Data d70 "70-dpfile" Value="\"[DIR]/calibrated-plot.jpeg\"";
 DF p93 d70
-Operation p94 "94-jpeg(file = dpfile, width = 800, height = 500, quality = 100" Value="jpeg(file = dpfile, width = 800, height = 500, quality = 100" Time="1.39" Script="0" Line="188";
+Operation p94 "94-jpeg(file = dpfile, width = 800, height = 500, quality = 100" Value="jpeg(file = dpfile, width = 800, height = 500, quality = 100" Time="1.348" Script="0" Line="188";
 CF p93 p94
 DF d70 p94
-Operation p95 "95-xmin <- xx$date[1]" Value="xmin <- xx$date[1]" Time="1.39" Script="0" Line="188";
+Operation p95 "95-xmin <- xx$date[1]" Value="xmin <- xx$date[1]" Time="1.357" Script="0" Line="188";
 CF p94 p95
 DF d65 p95
-Snapshot d71 "71-xmin" Value="[DIR]/ddg/71-xmin.txt" Time="2016-05-25T15.21.57EDT";
+Snapshot d71 "71-xmin" Value="[DIR]/ddg/71-xmin.txt" Time="2016-06-15T15.01.20EDT";
 DF p95 d71
-Operation p96 "96-xmax <- xx$date[data.rows]" Value="xmax <- xx$date[data.rows]" Time="1.41" Script="0" Line="188";
+Operation p96 "96-xmax <- xx$date[data.rows]" Value="xmax <- xx$date[data.rows]" Time="1.367" Script="0" Line="188";
 CF p95 p96
 DF d65 p96
-Snapshot d72 "72-xmax" Value="[DIR]/ddg/72-xmax.txt" Time="2016-05-25T15.21.57EDT";
+DF d20 p96
+Snapshot d72 "72-xmax" Value="[DIR]/ddg/72-xmax.txt" Time="2016-06-15T15.01.20EDT";
 DF p96 d72
-Operation p97 "97-xlim <- c(xmin, xmax)" Value="xlim <- c(xmin, xmax)" Time="1.42" Script="0" Line="188";
+Operation p97 "97-xlim <- c(xmin, xmax)" Value="xlim <- c(xmin, xmax)" Time="1.379" Script="0" Line="188";
 CF p96 p97
 DF d71 p97
 DF d72 p97
-Snapshot d73 "73-xlim" Value="[DIR]/ddg/73-xlim.txt" Time="2016-05-25T15.21.57EDT";
+Snapshot d73 "73-xlim" Value="[DIR]/ddg/73-xlim.txt" Time="2016-06-15T15.01.20EDT";
 DF p97 d73
-Operation p98 "98-xrange <- xmax - xmin" Value="xrange <- xmax - xmin" Time="1.44" Script="0" Line="188";
+Operation p98 "98-xrange <- xmax - xmin" Value="xrange <- xmax - xmin" Time="1.423" Script="0" Line="188";
 CF p97 p98
 DF d72 p98
 DF d71 p98
-Snapshot d74 "74-xrange" Value="[DIR]/ddg/74-xrange.txt" Time="2016-05-25T15.21.57EDT";
+Snapshot d74 "74-xrange" Value="[DIR]/ddg/74-xrange.txt" Time="2016-06-15T15.01.20EDT";
 DF p98 d74
-Operation p99 "99-daterange <- c(as.POSIXlt(xmin), as.POSIXlt(xmax))" Value="daterange <- c(as.POSIXlt(xmin), as.POSIXlt(xmax))" Time="1.44" Script="0" Line="188";
+Operation p99 "99-daterange <- c(as.POSIXlt(xmin), as.POSIXlt(xmax))" Value="daterange <- c(as.POSIXlt(xmin), as.POSIXlt(xmax))" Time="1.431" Script="0" Line="188";
 CF p98 p99
 DF d71 p99
 DF d72 p99
-Snapshot d75 "75-daterange" Value="[DIR]/ddg/75-daterange.csv" Time="2016-05-25T15.21.57EDT";
+Snapshot d75 "75-daterange" Value="[DIR]/ddg/75-daterange.csv" Time="2016-06-15T15.01.20EDT";
 DF p99 d75
-Operation p100 "100-ymin <- min(xx$raw, xx$cal, xx$gc, xx$gf, na.rm = TRUE)" Value="ymin <- min(xx$raw, xx$cal, xx$gc, xx$gf, na.rm = TRUE)" Time="1.46" Script="0" Line="188";
+Operation p100 "100-ymin <- min(xx$raw, xx$cal, xx$gc, xx$gf, na.rm = TRUE)" Value="ymin <- min(xx$raw, xx$cal, xx$gc, xx$gf, na.rm = TRUE)" Time="1.444" Script="0" Line="188";
 CF p99 p100
 DF d65 p100
 Data d76 "76-ymin" Value="0";
 DF p100 d76
-Operation p101 "101-ymax <- max(xx$raw, xx$cal, xx$gc, xx$gf, na.rm = TRUE)" Value="ymax <- max(xx$raw, xx$cal, xx$gc, xx$gf, na.rm = TRUE)" Time="1.47" Script="0" Line="188";
+Operation p101 "101-ymax <- max(xx$raw, xx$cal, xx$gc, xx$gf, na.rm = TRUE)" Value="ymax <- max(xx$raw, xx$cal, xx$gc, xx$gf, na.rm = TRUE)" Time="1.462" Script="0" Line="188";
 CF p100 p101
 DF d65 p101
 Data d77 "77-ymax" Value="21.2047397260274";
 DF p101 d77
-Operation p102 "102-ylim <- c(ymin, ymax)" Value="ylim <- c(ymin, ymax)" Time="1.5" Script="0" Line="188";
+Operation p102 "102-ylim <- c(ymin, ymax)" Value="ylim <- c(ymin, ymax)" Time="1.484" Script="0" Line="188";
 CF p101 p102
 DF d76 p102
 DF d77 p102
-Snapshot d78 "78-ylim" Value="[DIR]/ddg/78-ylim.csv" Time="2016-05-25T15.21.57EDT";
+Snapshot d78 "78-ylim" Value="[DIR]/ddg/78-ylim.csv" Time="2016-06-15T15.01.20EDT";
 DF p102 d78
-Operation p103 "103-par(mar = c(5.1, 5.1, 5.1, 10.1))" Value="par(mar = c(5.1, 5.1, 5.1, 10.1))" Time="1.52" Script="0" Line="188";
+Operation p103 "103-par(mar = c(5.1, 5.1, 5.1, 10.1))" Value="par(mar = c(5.1, 5.1, 5.1, 10.1))" Time="1.501" Script="0" Line="188";
 CF p102 p103
-Operation p104 "104-plot(xaxt = \"n\", xlim, ylim, cex.main = 1.7, cex.axis = 1.7," Value="plot(xaxt = \"n\", xlim, ylim, cex.main = 1.7, cex.axis = 1.7," Time="1.53" Script="0" Line="188";
+Operation p104 "104-plot(xaxt = \"n\", xlim, ylim, cex.main = 1.7, cex.axis = 1.7," Value="plot(xaxt = \"n\", xlim, ylim, cex.main = 1.7, cex.axis = 1.7," Time="1.517" Script="0" Line="188";
 CF p103 p104
 DF d73 p104
 DF d78 p104
-Operation p105 "105-if (xrange <= 30) axis.Date(1, at = seq(daterange[1], datera" Value="if (xrange <= 30) axis.Date(1, at = seq(daterange[1], datera" Time="1.55" Script="0" Line="188";
+Operation p105 "105-if (xrange <= 30) axis.Date(1, at = seq(daterange[1], datera" Value="if (xrange <= 30) axis.Date(1, at = seq(daterange[1], datera" Time="1.536" Script="0" Line="188";
 CF p104 p105
 DF d74 p105
 DF d75 p105
-Operation p106 "106-good <- subset(xx, xx$qc.f == \"\")" Value="good <- subset(xx, xx$qc.f == \"\")" Time="1.58" Script="0" Line="188";
+Operation p106 "106-good <- subset(xx, xx$qc.f == \"\")" Value="good <- subset(xx, xx$qc.f == \"\")" Time="1.564" Script="0" Line="188";
 CF p105 p106
 DF d65 p106
-Snapshot d79 "79-good" Value="[DIR]/ddg/79-good.csv" Time="2016-05-25T15.21.57EDT";
+Snapshot d79 "79-good" Value="[DIR]/ddg/79-good.csv" Time="2016-06-15T15.01.20EDT";
 DF p106 d79
-Operation p107 "107-ques <- subset(xx, xx$qc.f == \"Q\")" Value="ques <- subset(xx, xx$qc.f == \"Q\")" Time="1.61" Script="0" Line="188";
+Operation p107 "107-ques <- subset(xx, xx$qc.f == \"Q\")" Value="ques <- subset(xx, xx$qc.f == \"Q\")" Time="1.585" Script="0" Line="188";
 CF p106 p107
 DF d65 p107
-Snapshot d80 "80-ques" Value="[DIR]/ddg/80-ques.csv" Time="2016-05-25T15.21.57EDT";
+Snapshot d80 "80-ques" Value="[DIR]/ddg/80-ques.csv" Time="2016-06-15T15.01.20EDT";
 DF p107 d80
-Operation p108 "108-mea <- subset(xx, xx$gf.f == \"\")" Value="mea <- subset(xx, xx$gf.f == \"\")" Time="1.61" Script="0" Line="188";
+Operation p108 "108-mea <- subset(xx, xx$gf.f == \"\")" Value="mea <- subset(xx, xx$gf.f == \"\")" Time="1.603" Script="0" Line="188";
 CF p107 p108
 DF d65 p108
-Snapshot d81 "81-mea" Value="[DIR]/ddg/81-mea.csv" Time="2016-05-25T15.21.57EDT";
+Snapshot d81 "81-mea" Value="[DIR]/ddg/81-mea.csv" Time="2016-06-15T15.01.20EDT";
 DF p108 d81
-Operation p109 "109-mod <- subset(xx, xx$gf.f == \"E\")" Value="mod <- subset(xx, xx$gf.f == \"E\")" Time="1.63" Script="0" Line="188";
+Operation p109 "109-mod <- subset(xx, xx$gf.f == \"E\")" Value="mod <- subset(xx, xx$gf.f == \"E\")" Time="1.624" Script="0" Line="188";
 CF p108 p109
 DF d65 p109
-Snapshot d82 "82-mod" Value="[DIR]/ddg/82-mod.csv" Time="2016-05-25T15.21.57EDT";
+Snapshot d82 "82-mod" Value="[DIR]/ddg/82-mod.csv" Time="2016-06-15T15.01.20EDT";
 DF p109 d82
-Operation p110 "110-if (v == \"R\") {    title(main = \"Raw Data\")    points(xx$dat" Value="if (v == \"R\") {    title(main = \"Raw Data\")    points(xx$dat" Time="1.66" Script="0" Line="188";
+Operation p110 "110-if (v == \"R\") {    title(main = \"Raw Data\")    points(xx$dat" Value="if (v == \"R\") {    title(main = \"Raw Data\")    points(xx$dat" Time="1.651" Script="0" Line="188";
 CF p109 p110
 DF d66 p110
 DF d65 p110
@@ -484,191 +509,196 @@ DF d79 p110
 DF d80 p110
 DF d81 p110
 DF d82 p110
-Operation p111 "111-labs <- c(\"Raw\", \"Calibrated\", \"QC Check\", \"Modeled\")" Value="labs <- c(\"Raw\", \"Calibrated\", \"QC Check\", \"Modeled\")" Time="1.71" Script="0" Line="188";
+Operation p111 "111-labs <- c(\"Raw\", \"Calibrated\", \"QC Check\", \"Modeled\")" Value="labs <- c(\"Raw\", \"Calibrated\", \"QC Check\", \"Modeled\")" Time="1.722" Script="0" Line="188";
 CF p110 p111
-Snapshot d83 "83-labs" Value="[DIR]/ddg/83-labs.csv" Time="2016-05-25T15.21.57EDT";
+Snapshot d83 "83-labs" Value="[DIR]/ddg/83-labs.csv" Time="2016-06-15T15.01.20EDT";
 DF p111 d83
-Operation p112 "112-cols <- c(\"black\", \"blue\", \"red\", \"green\")" Value="cols <- c(\"black\", \"blue\", \"red\", \"green\")" Time="1.72" Script="0" Line="188";
+Operation p112 "112-cols <- c(\"black\", \"blue\", \"red\", \"green\")" Value="cols <- c(\"black\", \"blue\", \"red\", \"green\")" Time="1.732" Script="0" Line="188";
 CF p111 p112
-Snapshot d84 "84-cols" Value="[DIR]/ddg/84-cols.csv" Time="2016-05-25T15.21.57EDT";
+Snapshot d84 "84-cols" Value="[DIR]/ddg/84-cols.csv" Time="2016-06-15T15.01.20EDT";
 DF p112 d84
-Operation p113 "113-par(xpd = TRUE)" Value="par(xpd = TRUE)" Time="1.74" Script="0" Line="188";
+Operation p113 "113-par(xpd = TRUE)" Value="par(xpd = TRUE)" Time="1.744" Script="0" Line="188";
 CF p112 p113
-Operation p114 "114-legend(xmax + xrange/15, ymax, labs, cols, cex = 1)" Value="legend(xmax + xrange/15, ymax, labs, cols, cex = 1)" Time="1.74" Script="0" Line="188";
+Operation p114 "114-legend(xmax + xrange/15, ymax, labs, cols, cex = 1)" Value="legend(xmax + xrange/15, ymax, labs, cols, cex = 1)" Time="1.753" Script="0" Line="188";
 CF p113 p114
 DF d72 p114
 DF d74 p114
 DF d77 p114
 DF d83 p114
 DF d84 p114
-Operation p115 "115-dev.off()" Value="dev.off()" Time="1.77" Script="0" Line="188";
+Operation p115 "115-dev.off()" Value="dev.off()" Time="1.774" Script="0" Line="188";
 CF p114 p115
 Data d85 "85-plot.data(calibrated.data,\"C\") return" Value="1";
-Operation p116 "116-return (dev.off())" Value="return (dev.off())" Time="1.78" Script="0" Line="188";
+Operation p116 "116-return (dev.off())" Value="return (dev.off())" Time="1.786" Script="0" Line="188";
 CF p115 p116
-File d86 "86-calibrated-plot.jpeg" Value="[DIR]/ddg/86-calibrated-plot.jpeg" Time="2016-05-25T15.21.57EDT" Location="[DIR]/calibrated-plot.jpeg";
+File d86 "86-calibrated-plot.jpeg" Value="[DIR]/ddg/86-calibrated-plot.jpeg" Time="2016-06-15T15.01.20EDT" Location="[DIR]/calibrated-plot.jpeg";
 DF p115 d86
 DF p116 d85
-Finish p117 "117-plot.data(calibrated.data, \"C\")" Value="plot.data(calibrated.data, \"C\")" Time="1.82" Script="0" Line="188";
+Finish p117 "117-plot.data(calibrated.data, \"C\")" Value="plot.data(calibrated.data, \"C\")" Time="1.795" Script="0" Line="188";
 CF p116 p117
-Finish p118 "118-calibrate.data" Value="calibrate.data" Time="1.82" Script="0" Line="189";
+Finish p118 "118-calibrate.data" Value="calibrate.data" Time="1.797" Script="0" Line="189";
 CF p117 p118
-Start p119 "119-quality.control.data" Value="quality.control.data" Time="1.82" Script="0" Line="191";
+Start p119 "119-quality.control.data" Value="quality.control.data" Time="1.799" Script="0" Line="191";
 CF p118 p119
-Start p120 "120-quality.controlled.data <- quality.control(calibrated.data)" Value="quality.controlled.data <- quality.control(calibrated.data)" Time="1.82" Script="0" Line="192";
+Start p120 "120-quality.controlled.data <- quality.control(calibrated.data)" Value="quality.controlled.data <- quality.control(calibrated.data)" Time="1.801" Script="0" Line="192";
 CF p119 p120
-Start p121 "121-quality.control(calibrated.data)" Value="quality.control(calibrated.data)" Time="1.82" Script="0" Line="192";
+DF d3 p120
+DF d64 p120
+Start p121 "121-quality.control(calibrated.data)" Value="quality.control(calibrated.data)" Time="1.812" Script="0" Line="192";
 CF p120 p121
-Binding p122 "122-xx  <-  calibrated.data" Time="1.82" Script="0" Line="192"
+Binding p122 "122-xx  <-  calibrated.data" Time="1.813" Script="0" Line="192";
 CF p121 p122
 DF d64 p122
-Snapshot d87 "87-xx" Value="[DIR]/ddg/87-xx.csv" Time="2016-05-25T15.21.57EDT";
+Snapshot d87 "87-xx" Value="[DIR]/ddg/87-xx.csv" Time="2016-06-15T15.01.20EDT";
 DF p122 d87
-Operation p123 "123-quality.control" Value="quality.control" Time="1.84" Script="0" Line="192";
+Operation p123 "123-quality.control" Value="quality.control" Time="1.825" Script="0" Line="192";
 DF d3 p123
 DF d87 p123
 CF p122 p123
-Operation p124 "124-repeats <- quality.control.parameters$repeats" Value="repeats <- quality.control.parameters$repeats" Time="1.86" Script="0" Line="192";
+Operation p124 "124-repeats <- quality.control.parameters$repeats" Value="repeats <- quality.control.parameters$repeats" Time="1.835" Script="0" Line="192";
 CF p123 p124
+DF d24 p124
 Data d88 "88-repeats" Value="3";
 DF p124 d88
-Operation p125 "125-for (i in 1:data.rows) {    if (is.na(xx$cal[i])) {        x" Value="for (i in 1:data.rows) {    if (is.na(xx$cal[i])) {        x" Time="1.87" Script="0" Line="192";
+Operation p125 "125-for (i in 1:data.rows) {    if (is.na(xx$cal[i])) {        x" Value="for (i in 1:data.rows) {    if (is.na(xx$cal[i])) {        x" Time="1.858" Script="0" Line="192";
 CF p124 p125
+DF d20 p125
 DF d87 p125
 DF d88 p125
-Snapshot d89 "89-xx" Value="[DIR]/ddg/89-xx.txt" Time="2016-05-25T15.21.57EDT";
+Snapshot d89 "89-xx" Value="[DIR]/ddg/89-xx.txt" Time="2016-06-15T15.01.21EDT";
 DF p125 d89
 Data d90 "90-questionable" Value="0";
 DF p125 d90
-Operation p126 "126-xx" Value="xx" Time="1.93" Script="0" Line="192";
+Operation p126 "126-xx" Value="xx" Time="1.945" Script="0" Line="192";
 CF p125 p126
 DF d89 p126
-Snapshot d91 "91-quality.control(calibrated.data) return" Value="[DIR]/ddg/91-quality.control(calibrated.data) return.csv" Time="2016-05-25T15.21.57EDT";
-Operation p127 "127-return (xx)" Value="return (xx)" Time="1.95" Script="0" Line="192";
+Snapshot d91 "91-quality.control(calibrated.data) return" Value="[DIR]/ddg/91-quality.control(calibrated.data) return.csv" Time="2016-06-15T15.01.21EDT";
+Operation p127 "127-return (xx)" Value="return (xx)" Time="1.955" Script="0" Line="192";
 CF p126 p127
 DF d89 p127
 DF p127 d91
-Finish p128 "128-quality.control(calibrated.data)" Value="quality.control(calibrated.data)" Time="1.95" Script="0" Line="192";
+Finish p128 "128-quality.control(calibrated.data)" Value="quality.control(calibrated.data)" Time="1.963" Script="0" Line="192";
 CF p127 p128
-Finish p129 "129-quality.controlled.data <- quality.control(calibrated.data)" Value="quality.controlled.data <- quality.control(calibrated.data)" Time="1.95" Script="0" Line="192";
+Finish p129 "129-quality.controlled.data <- quality.control(calibrated.data)" Value="quality.controlled.data <- quality.control(calibrated.data)" Time="1.964" Script="0" Line="192";
 CF p128 p129
 DF d91 p129
-Snapshot d92 "92-quality.controlled.data" Value="[DIR]/ddg/92-quality.controlled.data.csv" Time="2016-05-25T15.21.57EDT";
+Snapshot d92 "92-quality.controlled.data" Value="[DIR]/ddg/92-quality.controlled.data.csv" Time="2016-06-15T15.01.21EDT";
 DF p129 d92
-Start p130 "130-plot.data(quality.controlled.data, \"Q\")" Value="plot.data(quality.controlled.data, \"Q\")" Time="1.96" Script="0" Line="193";
+Start p130 "130-plot.data(quality.controlled.data, \"Q\")" Value="plot.data(quality.controlled.data, \"Q\")" Time="1.972" Script="0" Line="193";
 CF p129 p130
-Binding p131 "131-xx  <-  quality.controlled.data" Time="1.96" Script="0" Line="193"
+Binding p131 "131-xx  <-  quality.controlled.data" Time="1.974" Script="0" Line="193";
 CF p130 p131
 DF d92 p131
-Snapshot d93 "93-xx" Value="[DIR]/ddg/93-xx.csv" Time="2016-05-25T15.21.57EDT";
+Snapshot d93 "93-xx" Value="[DIR]/ddg/93-xx.csv" Time="2016-06-15T15.01.21EDT";
 DF p131 d93
-Binding p132 "132-v <- \"Q\"" Time="1.96" Script="0" Line="193"
+Binding p132 "132-v <- \"Q\"" Time="1.982" Script="0" Line="193";
 CF p131 p132
 Data d94 "94-v" Value="\"Q\"";
 DF p132 d94
-Operation p133 "133-plot.data" Value="plot.data" Time="1.96" Script="0" Line="193";
+Operation p133 "133-plot.data" Value="plot.data" Time="1.989" Script="0" Line="193";
 DF d6 p133
 DF d93 p133
 DF d94 p133
 CF p132 p133
-Operation p134 "134-if (v == \"R\") name <- \"raw\" else if (v == \"C\") name <- \"cali" Value="if (v == \"R\") name <- \"raw\" else if (v == \"C\") name <- \"cali" Time="1.98" Script="0" Line="193";
+Operation p134 "134-if (v == \"R\") name <- \"raw\" else if (v == \"C\") name <- \"cali" Value="if (v == \"R\") name <- \"raw\" else if (v == \"C\") name <- \"cali" Time="2.002" Script="0" Line="193";
 CF p133 p134
 DF d94 p134
 Data d95 "95-name" Value="\"quality-controlled\"";
 DF p134 d95
-Operation p135 "135-dname <- paste(name, \"-data.csv\", sep = \"\")" Value="dname <- paste(name, \"-data.csv\", sep = \"\")" Time="2" Script="0" Line="193";
+Operation p135 "135-dname <- paste(name, \"-data.csv\", sep = \"\")" Value="dname <- paste(name, \"-data.csv\", sep = \"\")" Time="2.018" Script="0" Line="193";
 CF p134 p135
 DF d95 p135
 Data d96 "96-dname" Value="\"quality-controlled-data.csv\"";
 DF p135 d96
-Operation p136 "136-jname <- paste(name, \"-plot.jpeg\", sep = \"\")" Value="jname <- paste(name, \"-plot.jpeg\", sep = \"\")" Time="2.01" Script="0" Line="193";
+Operation p136 "136-jname <- paste(name, \"-plot.jpeg\", sep = \"\")" Value="jname <- paste(name, \"-plot.jpeg\", sep = \"\")" Time="2.028" Script="0" Line="193";
 CF p135 p136
 DF d95 p136
 Data d97 "97-jname" Value="\"quality-controlled-plot.jpeg\"";
 DF p136 d97
-Operation p137 "137-dpfile <- paste(getwd(), \"/\", jname, sep = \"\")" Value="dpfile <- paste(getwd(), \"/\", jname, sep = \"\")" Time="2.01" Script="0" Line="193";
+Operation p137 "137-dpfile <- paste(getwd(), \"/\", jname, sep = \"\")" Value="dpfile <- paste(getwd(), \"/\", jname, sep = \"\")" Time="2.074" Script="0" Line="193";
 CF p136 p137
 DF d97 p137
 Data d98 "98-dpfile" Value="\"[DIR]/quality-controlled-plot.jpeg\"";
 DF p137 d98
-Operation p138 "138-jpeg(file = dpfile, width = 800, height = 500, quality = 100" Value="jpeg(file = dpfile, width = 800, height = 500, quality = 100" Time="2.03" Script="0" Line="193";
+Operation p138 "138-jpeg(file = dpfile, width = 800, height = 500, quality = 100" Value="jpeg(file = dpfile, width = 800, height = 500, quality = 100" Time="2.086" Script="0" Line="193";
 CF p137 p138
 DF d98 p138
-Operation p139 "139-xmin <- xx$date[1]" Value="xmin <- xx$date[1]" Time="2.04" Script="0" Line="193";
+Operation p139 "139-xmin <- xx$date[1]" Value="xmin <- xx$date[1]" Time="2.093" Script="0" Line="193";
 CF p138 p139
 DF d93 p139
-Snapshot d99 "99-xmin" Value="[DIR]/ddg/99-xmin.txt" Time="2016-05-25T15.21.57EDT";
+Snapshot d99 "99-xmin" Value="[DIR]/ddg/99-xmin.txt" Time="2016-06-15T15.01.21EDT";
 DF p139 d99
-Operation p140 "140-xmax <- xx$date[data.rows]" Value="xmax <- xx$date[data.rows]" Time="2.06" Script="0" Line="193";
+Operation p140 "140-xmax <- xx$date[data.rows]" Value="xmax <- xx$date[data.rows]" Time="2.107" Script="0" Line="193";
 CF p139 p140
 DF d93 p140
-Snapshot d100 "100-xmax" Value="[DIR]/ddg/100-xmax.txt" Time="2016-05-25T15.21.57EDT";
+DF d20 p140
+Snapshot d100 "100-xmax" Value="[DIR]/ddg/100-xmax.txt" Time="2016-06-15T15.01.21EDT";
 DF p140 d100
-Operation p141 "141-xlim <- c(xmin, xmax)" Value="xlim <- c(xmin, xmax)" Time="2.07" Script="0" Line="193";
+Operation p141 "141-xlim <- c(xmin, xmax)" Value="xlim <- c(xmin, xmax)" Time="2.124" Script="0" Line="193";
 CF p140 p141
 DF d99 p141
 DF d100 p141
-Snapshot d101 "101-xlim" Value="[DIR]/ddg/101-xlim.txt" Time="2016-05-25T15.21.57EDT";
+Snapshot d101 "101-xlim" Value="[DIR]/ddg/101-xlim.txt" Time="2016-06-15T15.01.21EDT";
 DF p141 d101
-Operation p142 "142-xrange <- xmax - xmin" Value="xrange <- xmax - xmin" Time="2.09" Script="0" Line="193";
+Operation p142 "142-xrange <- xmax - xmin" Value="xrange <- xmax - xmin" Time="2.14" Script="0" Line="193";
 CF p141 p142
 DF d100 p142
 DF d99 p142
-Snapshot d102 "102-xrange" Value="[DIR]/ddg/102-xrange.txt" Time="2016-05-25T15.21.57EDT";
+Snapshot d102 "102-xrange" Value="[DIR]/ddg/102-xrange.txt" Time="2016-06-15T15.01.21EDT";
 DF p142 d102
-Operation p143 "143-daterange <- c(as.POSIXlt(xmin), as.POSIXlt(xmax))" Value="daterange <- c(as.POSIXlt(xmin), as.POSIXlt(xmax))" Time="2.11" Script="0" Line="193";
+Operation p143 "143-daterange <- c(as.POSIXlt(xmin), as.POSIXlt(xmax))" Value="daterange <- c(as.POSIXlt(xmin), as.POSIXlt(xmax))" Time="2.186" Script="0" Line="193";
 CF p142 p143
 DF d99 p143
 DF d100 p143
-Snapshot d103 "103-daterange" Value="[DIR]/ddg/103-daterange.csv" Time="2016-05-25T15.21.57EDT";
+Snapshot d103 "103-daterange" Value="[DIR]/ddg/103-daterange.csv" Time="2016-06-15T15.01.21EDT";
 DF p143 d103
-Operation p144 "144-ymin <- min(xx$raw, xx$cal, xx$gc, xx$gf, na.rm = TRUE)" Value="ymin <- min(xx$raw, xx$cal, xx$gc, xx$gf, na.rm = TRUE)" Time="2.12" Script="0" Line="193";
+Operation p144 "144-ymin <- min(xx$raw, xx$cal, xx$gc, xx$gf, na.rm = TRUE)" Value="ymin <- min(xx$raw, xx$cal, xx$gc, xx$gf, na.rm = TRUE)" Time="2.207" Script="0" Line="193";
 CF p143 p144
 DF d93 p144
 Data d104 "104-ymin" Value="0";
 DF p144 d104
-Operation p145 "145-ymax <- max(xx$raw, xx$cal, xx$gc, xx$gf, na.rm = TRUE)" Value="ymax <- max(xx$raw, xx$cal, xx$gc, xx$gf, na.rm = TRUE)" Time="2.15" Script="0" Line="193";
+Operation p145 "145-ymax <- max(xx$raw, xx$cal, xx$gc, xx$gf, na.rm = TRUE)" Value="ymax <- max(xx$raw, xx$cal, xx$gc, xx$gf, na.rm = TRUE)" Time="2.233" Script="0" Line="193";
 CF p144 p145
 DF d93 p145
 Data d105 "105-ymax" Value="21.2047397260274";
 DF p145 d105
-Operation p146 "146-ylim <- c(ymin, ymax)" Value="ylim <- c(ymin, ymax)" Time="2.18" Script="0" Line="193";
+Operation p146 "146-ylim <- c(ymin, ymax)" Value="ylim <- c(ymin, ymax)" Time="2.259" Script="0" Line="193";
 CF p145 p146
 DF d104 p146
 DF d105 p146
-Snapshot d106 "106-ylim" Value="[DIR]/ddg/106-ylim.csv" Time="2016-05-25T15.21.58EDT";
+Snapshot d106 "106-ylim" Value="[DIR]/ddg/106-ylim.csv" Time="2016-06-15T15.01.21EDT";
 DF p146 d106
-Operation p147 "147-par(mar = c(5.1, 5.1, 5.1, 10.1))" Value="par(mar = c(5.1, 5.1, 5.1, 10.1))" Time="2.2" Script="0" Line="193";
+Operation p147 "147-par(mar = c(5.1, 5.1, 5.1, 10.1))" Value="par(mar = c(5.1, 5.1, 5.1, 10.1))" Time="2.277" Script="0" Line="193";
 CF p146 p147
-Operation p148 "148-plot(xaxt = \"n\", xlim, ylim, cex.main = 1.7, cex.axis = 1.7," Value="plot(xaxt = \"n\", xlim, ylim, cex.main = 1.7, cex.axis = 1.7," Time="2.21" Script="0" Line="193";
+Operation p148 "148-plot(xaxt = \"n\", xlim, ylim, cex.main = 1.7, cex.axis = 1.7," Value="plot(xaxt = \"n\", xlim, ylim, cex.main = 1.7, cex.axis = 1.7," Time="2.295" Script="0" Line="193";
 CF p147 p148
 DF d101 p148
 DF d106 p148
-Operation p149 "149-if (xrange <= 30) axis.Date(1, at = seq(daterange[1], datera" Value="if (xrange <= 30) axis.Date(1, at = seq(daterange[1], datera" Time="2.23" Script="0" Line="193";
+Operation p149 "149-if (xrange <= 30) axis.Date(1, at = seq(daterange[1], datera" Value="if (xrange <= 30) axis.Date(1, at = seq(daterange[1], datera" Time="2.316" Script="0" Line="193";
 CF p148 p149
 DF d102 p149
 DF d103 p149
-Operation p150 "150-good <- subset(xx, xx$qc.f == \"\")" Value="good <- subset(xx, xx$qc.f == \"\")" Time="2.28" Script="0" Line="193";
+Operation p150 "150-good <- subset(xx, xx$qc.f == \"\")" Value="good <- subset(xx, xx$qc.f == \"\")" Time="2.349" Script="0" Line="193";
 CF p149 p150
 DF d93 p150
-Snapshot d107 "107-good" Value="[DIR]/ddg/107-good.csv" Time="2016-05-25T15.21.58EDT";
+Snapshot d107 "107-good" Value="[DIR]/ddg/107-good.csv" Time="2016-06-15T15.01.21EDT";
 DF p150 d107
-Operation p151 "151-ques <- subset(xx, xx$qc.f == \"Q\")" Value="ques <- subset(xx, xx$qc.f == \"Q\")" Time="2.32" Script="0" Line="193";
+Operation p151 "151-ques <- subset(xx, xx$qc.f == \"Q\")" Value="ques <- subset(xx, xx$qc.f == \"Q\")" Time="2.37" Script="0" Line="193";
 CF p150 p151
 DF d93 p151
-Snapshot d108 "108-ques" Value="[DIR]/ddg/108-ques.csv" Time="2016-05-25T15.21.58EDT";
+Snapshot d108 "108-ques" Value="[DIR]/ddg/108-ques.csv" Time="2016-06-15T15.01.21EDT";
 DF p151 d108
-Operation p152 "152-mea <- subset(xx, xx$gf.f == \"\")" Value="mea <- subset(xx, xx$gf.f == \"\")" Time="2.35" Script="0" Line="193";
+Operation p152 "152-mea <- subset(xx, xx$gf.f == \"\")" Value="mea <- subset(xx, xx$gf.f == \"\")" Time="2.392" Script="0" Line="193";
 CF p151 p152
 DF d93 p152
-Snapshot d109 "109-mea" Value="[DIR]/ddg/109-mea.csv" Time="2016-05-25T15.21.58EDT";
+Snapshot d109 "109-mea" Value="[DIR]/ddg/109-mea.csv" Time="2016-06-15T15.01.21EDT";
 DF p152 d109
-Operation p153 "153-mod <- subset(xx, xx$gf.f == \"E\")" Value="mod <- subset(xx, xx$gf.f == \"E\")" Time="2.37" Script="0" Line="193";
+Operation p153 "153-mod <- subset(xx, xx$gf.f == \"E\")" Value="mod <- subset(xx, xx$gf.f == \"E\")" Time="2.441" Script="0" Line="193";
 CF p152 p153
 DF d93 p153
-Snapshot d110 "110-mod" Value="[DIR]/ddg/110-mod.csv" Time="2016-05-25T15.21.58EDT";
+Snapshot d110 "110-mod" Value="[DIR]/ddg/110-mod.csv" Time="2016-06-15T15.01.21EDT";
 DF p153 d110
-Operation p154 "154-if (v == \"R\") {    title(main = \"Raw Data\")    points(xx$dat" Value="if (v == \"R\") {    title(main = \"Raw Data\")    points(xx$dat" Time="2.4" Script="0" Line="193";
+Operation p154 "154-if (v == \"R\") {    title(main = \"Raw Data\")    points(xx$dat" Value="if (v == \"R\") {    title(main = \"Raw Data\")    points(xx$dat" Time="2.466" Script="0" Line="193";
 CF p153 p154
 DF d94 p154
 DF d93 p154
@@ -676,189 +706,195 @@ DF d107 p154
 DF d108 p154
 DF d109 p154
 DF d110 p154
-Operation p155 "155-labs <- c(\"Raw\", \"Calibrated\", \"QC Check\", \"Modeled\")" Value="labs <- c(\"Raw\", \"Calibrated\", \"QC Check\", \"Modeled\")" Time="2.46" Script="0" Line="193";
+Operation p155 "155-labs <- c(\"Raw\", \"Calibrated\", \"QC Check\", \"Modeled\")" Value="labs <- c(\"Raw\", \"Calibrated\", \"QC Check\", \"Modeled\")" Time="2.524" Script="0" Line="193";
 CF p154 p155
-Snapshot d111 "111-labs" Value="[DIR]/ddg/111-labs.csv" Time="2016-05-25T15.21.58EDT";
+Snapshot d111 "111-labs" Value="[DIR]/ddg/111-labs.csv" Time="2016-06-15T15.01.21EDT";
 DF p155 d111
-Operation p156 "156-cols <- c(\"black\", \"blue\", \"red\", \"green\")" Value="cols <- c(\"black\", \"blue\", \"red\", \"green\")" Time="2.48" Script="0" Line="193";
+Operation p156 "156-cols <- c(\"black\", \"blue\", \"red\", \"green\")" Value="cols <- c(\"black\", \"blue\", \"red\", \"green\")" Time="2.534" Script="0" Line="193";
 CF p155 p156
-Snapshot d112 "112-cols" Value="[DIR]/ddg/112-cols.csv" Time="2016-05-25T15.21.58EDT";
+Snapshot d112 "112-cols" Value="[DIR]/ddg/112-cols.csv" Time="2016-06-15T15.01.21EDT";
 DF p156 d112
-Operation p157 "157-par(xpd = TRUE)" Value="par(xpd = TRUE)" Time="2.5" Script="0" Line="193";
+Operation p157 "157-par(xpd = TRUE)" Value="par(xpd = TRUE)" Time="2.548" Script="0" Line="193";
 CF p156 p157
-Operation p158 "158-legend(xmax + xrange/15, ymax, labs, cols, cex = 1)" Value="legend(xmax + xrange/15, ymax, labs, cols, cex = 1)" Time="2.5" Script="0" Line="193";
+Operation p158 "158-legend(xmax + xrange/15, ymax, labs, cols, cex = 1)" Value="legend(xmax + xrange/15, ymax, labs, cols, cex = 1)" Time="2.557" Script="0" Line="193";
 CF p157 p158
 DF d100 p158
 DF d102 p158
 DF d105 p158
 DF d111 p158
 DF d112 p158
-Operation p159 "159-dev.off()" Value="dev.off()" Time="2.53" Script="0" Line="193";
+Operation p159 "159-dev.off()" Value="dev.off()" Time="2.58" Script="0" Line="193";
 CF p158 p159
 Data d113 "113-plot.data(quality.controlled.data,\"Q\") return" Value="1";
-Operation p160 "160-return (dev.off())" Value="return (dev.off())" Time="2.55" Script="0" Line="193";
+Operation p160 "160-return (dev.off())" Value="return (dev.off())" Time="2.591" Script="0" Line="193";
 CF p159 p160
-File d114 "114-quality-controlled-plot.jpeg" Value="[DIR]/ddg/114-quality-controlled-plot.jpeg" Time="2016-05-25T15.21.58EDT" Location="[DIR]/quality-controlled-plot.jpeg";
+File d114 "114-quality-controlled-plot.jpeg" Value="[DIR]/ddg/114-quality-controlled-plot.jpeg" Time="2016-06-15T15.01.21EDT" Location="[DIR]/quality-controlled-plot.jpeg";
 DF p159 d114
 DF p160 d113
-Finish p161 "161-plot.data(quality.controlled.data, \"Q\")" Value="plot.data(quality.controlled.data, \"Q\")" Time="2.55" Script="0" Line="193";
+Finish p161 "161-plot.data(quality.controlled.data, \"Q\")" Value="plot.data(quality.controlled.data, \"Q\")" Time="2.604" Script="0" Line="193";
 CF p160 p161
-Finish p162 "162-quality.control.data" Value="quality.control.data" Time="2.55" Script="0" Line="194";
+Finish p162 "162-quality.control.data" Value="quality.control.data" Time="2.632" Script="0" Line="194";
 CF p161 p162
-Start p163 "163-gap.fill.data" Value="gap.fill.data" Time="2.55" Script="0" Line="196";
+Start p163 "163-gap.fill.data" Value="gap.fill.data" Time="2.634" Script="0" Line="196";
 CF p162 p163
-Start p164 "164-gap.filled.data <- gap.fill(quality.controlled.data)" Value="gap.filled.data <- gap.fill(quality.controlled.data)" Time="2.55" Script="0" Line="197";
+Start p164 "164-gap.filled.data <- gap.fill(quality.controlled.data)" Value="gap.filled.data <- gap.fill(quality.controlled.data)" Time="2.636" Script="0" Line="197";
 CF p163 p164
-Start p165 "165-gap.fill(quality.controlled.data)" Value="gap.fill(quality.controlled.data)" Time="2.55" Script="0" Line="197";
+DF d4 p164
+DF d92 p164
+Start p165 "165-gap.fill(quality.controlled.data)" Value="gap.fill(quality.controlled.data)" Time="2.646" Script="0" Line="197";
 CF p164 p165
-Binding p166 "166-xx  <-  quality.controlled.data" Time="2.56" Script="0" Line="197"
+Binding p166 "166-xx  <-  quality.controlled.data" Time="2.648" Script="0" Line="197";
 CF p165 p166
 DF d92 p166
-Snapshot d115 "115-xx" Value="[DIR]/ddg/115-xx.csv" Time="2016-05-25T15.21.58EDT";
+Snapshot d115 "115-xx" Value="[DIR]/ddg/115-xx.csv" Time="2016-06-15T15.01.21EDT";
 DF p166 d115
-Operation p167 "167-gap.fill" Value="gap.fill" Time="2.56" Script="0" Line="197";
+Operation p167 "167-gap.fill" Value="gap.fill" Time="2.657" Script="0" Line="197";
 DF d4 p167
 DF d115 p167
 CF p166 p167
-Operation p168 "168-slope <- gap.fill.parameters$slope" Value="slope <- gap.fill.parameters$slope" Time="2.58" Script="0" Line="197";
+Operation p168 "168-slope <- gap.fill.parameters$slope" Value="slope <- gap.fill.parameters$slope" Time="2.671" Script="0" Line="197";
 CF p167 p168
+DF d26 p168
 Data d116 "116-slope" Value="0.5";
 DF p168 d116
-Operation p169 "169-for (i in 1:data.rows) {    if (xx$qc.f[i] == \"M\" | xx$qc.f[" Value="for (i in 1:data.rows) {    if (xx$qc.f[i] == \"M\" | xx$qc.f[" Time="2.59" Script="0" Line="197";
+Operation p169 "169-for (i in 1:data.rows) {    if (xx$qc.f[i] == \"M\" | xx$qc.f[" Value="for (i in 1:data.rows) {    if (xx$qc.f[i] == \"M\" | xx$qc.f[" Time="2.691" Script="0" Line="197";
 CF p168 p169
+DF d20 p169
 DF d115 p169
 DF d116 p169
-Snapshot d117 "117-xx" Value="[DIR]/ddg/117-xx.txt" Time="2016-05-25T15.21.58EDT";
+DF d17 p169
+Snapshot d117 "117-xx" Value="[DIR]/ddg/117-xx.txt" Time="2016-06-15T15.01.21EDT";
 DF p169 d117
-Operation p170 "170-xx" Value="xx" Time="2.66" Script="0" Line="197";
+Operation p170 "170-xx" Value="xx" Time="2.755" Script="0" Line="197";
 CF p169 p170
 DF d117 p170
-Snapshot d118 "118-gap.fill(quality.controlled.data) return" Value="[DIR]/ddg/118-gap.fill(quality.controlled.data) return.csv" Time="2016-05-25T15.21.58EDT";
-Operation p171 "171-return (xx)" Value="return (xx)" Time="2.67" Script="0" Line="197";
+Snapshot d118 "118-gap.fill(quality.controlled.data) return" Value="[DIR]/ddg/118-gap.fill(quality.controlled.data) return.csv" Time="2016-06-15T15.01.21EDT";
+Operation p171 "171-return (xx)" Value="return (xx)" Time="2.765" Script="0" Line="197";
 CF p170 p171
 DF d117 p171
 DF p171 d118
-Finish p172 "172-gap.fill(quality.controlled.data)" Value="gap.fill(quality.controlled.data)" Time="2.67" Script="0" Line="197";
+Finish p172 "172-gap.fill(quality.controlled.data)" Value="gap.fill(quality.controlled.data)" Time="2.773" Script="0" Line="197";
 CF p171 p172
-Finish p173 "173-gap.filled.data <- gap.fill(quality.controlled.data)" Value="gap.filled.data <- gap.fill(quality.controlled.data)" Time="2.67" Script="0" Line="197";
+Finish p173 "173-gap.filled.data <- gap.fill(quality.controlled.data)" Value="gap.filled.data <- gap.fill(quality.controlled.data)" Time="2.802" Script="0" Line="197";
 CF p172 p173
 DF d118 p173
-Snapshot d119 "119-gap.filled.data" Value="[DIR]/ddg/119-gap.filled.data.csv" Time="2016-05-25T15.21.58EDT";
+Snapshot d119 "119-gap.filled.data" Value="[DIR]/ddg/119-gap.filled.data.csv" Time="2016-06-15T15.01.22EDT";
 DF p173 d119
-Start p174 "174-plot.data(gap.filled.data, \"G\")" Value="plot.data(gap.filled.data, \"G\")" Time="2.69" Script="0" Line="198";
+Start p174 "174-plot.data(gap.filled.data, \"G\")" Value="plot.data(gap.filled.data, \"G\")" Time="2.811" Script="0" Line="198";
 CF p173 p174
-Binding p175 "175-xx  <-  gap.filled.data" Time="2.69" Script="0" Line="198"
+Binding p175 "175-xx  <-  gap.filled.data" Time="2.813" Script="0" Line="198";
 CF p174 p175
 DF d119 p175
-Snapshot d120 "120-xx" Value="[DIR]/ddg/120-xx.csv" Time="2016-05-25T15.21.58EDT";
+Snapshot d120 "120-xx" Value="[DIR]/ddg/120-xx.csv" Time="2016-06-15T15.01.22EDT";
 DF p175 d120
-Binding p176 "176-v <- \"G\"" Time="2.69" Script="0" Line="198"
+Binding p176 "176-v <- \"G\"" Time="2.823" Script="0" Line="198";
 CF p175 p176
 Data d121 "121-v" Value="\"G\"";
 DF p176 d121
-Operation p177 "177-plot.data" Value="plot.data" Time="2.7" Script="0" Line="198";
+Operation p177 "177-plot.data" Value="plot.data" Time="2.828" Script="0" Line="198";
 DF d6 p177
 DF d120 p177
 DF d121 p177
 CF p176 p177
-Operation p178 "178-if (v == \"R\") name <- \"raw\" else if (v == \"C\") name <- \"cali" Value="if (v == \"R\") name <- \"raw\" else if (v == \"C\") name <- \"cali" Time="2.72" Script="0" Line="198";
+Operation p178 "178-if (v == \"R\") name <- \"raw\" else if (v == \"C\") name <- \"cali" Value="if (v == \"R\") name <- \"raw\" else if (v == \"C\") name <- \"cali" Time="2.845" Script="0" Line="198";
 CF p177 p178
 DF d121 p178
 Data d122 "122-name" Value="\"gap-filled\"";
 DF p178 d122
-Operation p179 "179-dname <- paste(name, \"-data.csv\", sep = \"\")" Value="dname <- paste(name, \"-data.csv\", sep = \"\")" Time="2.73" Script="0" Line="198";
+Operation p179 "179-dname <- paste(name, \"-data.csv\", sep = \"\")" Value="dname <- paste(name, \"-data.csv\", sep = \"\")" Time="2.868" Script="0" Line="198";
 CF p178 p179
 DF d122 p179
 Data d123 "123-dname" Value="\"gap-filled-data.csv\"";
 DF p179 d123
-Operation p180 "180-jname <- paste(name, \"-plot.jpeg\", sep = \"\")" Value="jname <- paste(name, \"-plot.jpeg\", sep = \"\")" Time="2.75" Script="0" Line="198";
+Operation p180 "180-jname <- paste(name, \"-plot.jpeg\", sep = \"\")" Value="jname <- paste(name, \"-plot.jpeg\", sep = \"\")" Time="2.881" Script="0" Line="198";
 CF p179 p180
 DF d122 p180
 Data d124 "124-jname" Value="\"gap-filled-plot.jpeg\"";
 DF p180 d124
-Operation p181 "181-dpfile <- paste(getwd(), \"/\", jname, sep = \"\")" Value="dpfile <- paste(getwd(), \"/\", jname, sep = \"\")" Time="2.76" Script="0" Line="198";
+Operation p181 "181-dpfile <- paste(getwd(), \"/\", jname, sep = \"\")" Value="dpfile <- paste(getwd(), \"/\", jname, sep = \"\")" Time="2.899" Script="0" Line="198";
 CF p180 p181
 DF d124 p181
 Data d125 "125-dpfile" Value="\"[DIR]/gap-filled-plot.jpeg\"";
 DF p181 d125
-Operation p182 "182-jpeg(file = dpfile, width = 800, height = 500, quality = 100" Value="jpeg(file = dpfile, width = 800, height = 500, quality = 100" Time="2.78" Script="0" Line="198";
+Operation p182 "182-jpeg(file = dpfile, width = 800, height = 500, quality = 100" Value="jpeg(file = dpfile, width = 800, height = 500, quality = 100" Time="2.939" Script="0" Line="198";
 CF p181 p182
 DF d125 p182
-Operation p183 "183-xmin <- xx$date[1]" Value="xmin <- xx$date[1]" Time="2.81" Script="0" Line="198";
+Operation p183 "183-xmin <- xx$date[1]" Value="xmin <- xx$date[1]" Time="2.949" Script="0" Line="198";
 CF p182 p183
 DF d120 p183
-Snapshot d126 "126-xmin" Value="[DIR]/ddg/126-xmin.txt" Time="2016-05-25T15.21.58EDT";
+Snapshot d126 "126-xmin" Value="[DIR]/ddg/126-xmin.txt" Time="2016-06-15T15.01.22EDT";
 DF p183 d126
-Operation p184 "184-xmax <- xx$date[data.rows]" Value="xmax <- xx$date[data.rows]" Time="2.83" Script="0" Line="198";
+Operation p184 "184-xmax <- xx$date[data.rows]" Value="xmax <- xx$date[data.rows]" Time="2.961" Script="0" Line="198";
 CF p183 p184
 DF d120 p184
-Snapshot d127 "127-xmax" Value="[DIR]/ddg/127-xmax.txt" Time="2016-05-25T15.21.58EDT";
+DF d20 p184
+Snapshot d127 "127-xmax" Value="[DIR]/ddg/127-xmax.txt" Time="2016-06-15T15.01.22EDT";
 DF p184 d127
-Operation p185 "185-xlim <- c(xmin, xmax)" Value="xlim <- c(xmin, xmax)" Time="2.84" Script="0" Line="198";
+Operation p185 "185-xlim <- c(xmin, xmax)" Value="xlim <- c(xmin, xmax)" Time="2.985" Script="0" Line="198";
 CF p184 p185
 DF d126 p185
 DF d127 p185
-Snapshot d128 "128-xlim" Value="[DIR]/ddg/128-xlim.txt" Time="2016-05-25T15.21.58EDT";
+Snapshot d128 "128-xlim" Value="[DIR]/ddg/128-xlim.txt" Time="2016-06-15T15.01.22EDT";
 DF p185 d128
-Operation p186 "186-xrange <- xmax - xmin" Value="xrange <- xmax - xmin" Time="2.86" Script="0" Line="198";
+Operation p186 "186-xrange <- xmax - xmin" Value="xrange <- xmax - xmin" Time="3.001" Script="0" Line="198";
 CF p185 p186
 DF d127 p186
 DF d126 p186
-Snapshot d129 "129-xrange" Value="[DIR]/ddg/129-xrange.txt" Time="2016-05-25T15.21.58EDT";
+Snapshot d129 "129-xrange" Value="[DIR]/ddg/129-xrange.txt" Time="2016-06-15T15.01.22EDT";
 DF p186 d129
-Operation p187 "187-daterange <- c(as.POSIXlt(xmin), as.POSIXlt(xmax))" Value="daterange <- c(as.POSIXlt(xmin), as.POSIXlt(xmax))" Time="2.87" Script="0" Line="198";
+Operation p187 "187-daterange <- c(as.POSIXlt(xmin), as.POSIXlt(xmax))" Value="daterange <- c(as.POSIXlt(xmin), as.POSIXlt(xmax))" Time="3.015" Script="0" Line="198";
 CF p186 p187
 DF d126 p187
 DF d127 p187
-Snapshot d130 "130-daterange" Value="[DIR]/ddg/130-daterange.csv" Time="2016-05-25T15.21.58EDT";
+Snapshot d130 "130-daterange" Value="[DIR]/ddg/130-daterange.csv" Time="2016-06-15T15.01.22EDT";
 DF p187 d130
-Operation p188 "188-ymin <- min(xx$raw, xx$cal, xx$gc, xx$gf, na.rm = TRUE)" Value="ymin <- min(xx$raw, xx$cal, xx$gc, xx$gf, na.rm = TRUE)" Time="2.91" Script="0" Line="198";
+Operation p188 "188-ymin <- min(xx$raw, xx$cal, xx$gc, xx$gf, na.rm = TRUE)" Value="ymin <- min(xx$raw, xx$cal, xx$gc, xx$gf, na.rm = TRUE)" Time="3.037" Script="0" Line="198";
 CF p187 p188
 DF d120 p188
 Data d131 "131-ymin" Value="1.05";
 DF p188 d131
-Operation p189 "189-ymax <- max(xx$raw, xx$cal, xx$gc, xx$gf, na.rm = TRUE)" Value="ymax <- max(xx$raw, xx$cal, xx$gc, xx$gf, na.rm = TRUE)" Time="2.92" Script="0" Line="198";
+Operation p189 "189-ymax <- max(xx$raw, xx$cal, xx$gc, xx$gf, na.rm = TRUE)" Value="ymax <- max(xx$raw, xx$cal, xx$gc, xx$gf, na.rm = TRUE)" Time="3.091" Script="0" Line="198";
 CF p188 p189
 DF d120 p189
 Data d132 "132-ymax" Value="21.2047397260274";
 DF p189 d132
-Operation p190 "190-ylim <- c(ymin, ymax)" Value="ylim <- c(ymin, ymax)" Time="2.95" Script="0" Line="198";
+Operation p190 "190-ylim <- c(ymin, ymax)" Value="ylim <- c(ymin, ymax)" Time="3.121" Script="0" Line="198";
 CF p189 p190
 DF d131 p190
 DF d132 p190
-Snapshot d133 "133-ylim" Value="[DIR]/ddg/133-ylim.csv" Time="2016-05-25T15.21.58EDT";
+Snapshot d133 "133-ylim" Value="[DIR]/ddg/133-ylim.csv" Time="2016-06-15T15.01.22EDT";
 DF p190 d133
-Operation p191 "191-par(mar = c(5.1, 5.1, 5.1, 10.1))" Value="par(mar = c(5.1, 5.1, 5.1, 10.1))" Time="2.97" Script="0" Line="198";
+Operation p191 "191-par(mar = c(5.1, 5.1, 5.1, 10.1))" Value="par(mar = c(5.1, 5.1, 5.1, 10.1))" Time="3.141" Script="0" Line="198";
 CF p190 p191
-Operation p192 "192-plot(xaxt = \"n\", xlim, ylim, cex.main = 1.7, cex.axis = 1.7," Value="plot(xaxt = \"n\", xlim, ylim, cex.main = 1.7, cex.axis = 1.7," Time="2.98" Script="0" Line="198";
+Operation p192 "192-plot(xaxt = \"n\", xlim, ylim, cex.main = 1.7, cex.axis = 1.7," Value="plot(xaxt = \"n\", xlim, ylim, cex.main = 1.7, cex.axis = 1.7," Time="3.158" Script="0" Line="198";
 CF p191 p192
 DF d128 p192
 DF d133 p192
-Operation p193 "193-if (xrange <= 30) axis.Date(1, at = seq(daterange[1], datera" Value="if (xrange <= 30) axis.Date(1, at = seq(daterange[1], datera" Time="3" Script="0" Line="198";
+Operation p193 "193-if (xrange <= 30) axis.Date(1, at = seq(daterange[1], datera" Value="if (xrange <= 30) axis.Date(1, at = seq(daterange[1], datera" Time="3.178" Script="0" Line="198";
 CF p192 p193
 DF d129 p193
 DF d130 p193
-Operation p194 "194-good <- subset(xx, xx$qc.f == \"\")" Value="good <- subset(xx, xx$qc.f == \"\")" Time="3.05" Script="0" Line="198";
+Operation p194 "194-good <- subset(xx, xx$qc.f == \"\")" Value="good <- subset(xx, xx$qc.f == \"\")" Time="3.221" Script="0" Line="198";
 CF p193 p194
 DF d120 p194
-Snapshot d134 "134-good" Value="[DIR]/ddg/134-good.csv" Time="2016-05-25T15.21.58EDT";
+Snapshot d134 "134-good" Value="[DIR]/ddg/134-good.csv" Time="2016-06-15T15.01.22EDT";
 DF p194 d134
-Operation p195 "195-ques <- subset(xx, xx$qc.f == \"Q\")" Value="ques <- subset(xx, xx$qc.f == \"Q\")" Time="3.06" Script="0" Line="198";
+Operation p195 "195-ques <- subset(xx, xx$qc.f == \"Q\")" Value="ques <- subset(xx, xx$qc.f == \"Q\")" Time="3.266" Script="0" Line="198";
 CF p194 p195
 DF d120 p195
-Snapshot d135 "135-ques" Value="[DIR]/ddg/135-ques.csv" Time="2016-05-25T15.21.58EDT";
+Snapshot d135 "135-ques" Value="[DIR]/ddg/135-ques.csv" Time="2016-06-15T15.01.22EDT";
 DF p195 d135
-Operation p196 "196-mea <- subset(xx, xx$gf.f == \"\")" Value="mea <- subset(xx, xx$gf.f == \"\")" Time="3.09" Script="0" Line="198";
+Operation p196 "196-mea <- subset(xx, xx$gf.f == \"\")" Value="mea <- subset(xx, xx$gf.f == \"\")" Time="3.285" Script="0" Line="198";
 CF p195 p196
 DF d120 p196
-Snapshot d136 "136-mea" Value="[DIR]/ddg/136-mea.csv" Time="2016-05-25T15.21.58EDT";
+Snapshot d136 "136-mea" Value="[DIR]/ddg/136-mea.csv" Time="2016-06-15T15.01.22EDT";
 DF p196 d136
-Operation p197 "197-mod <- subset(xx, xx$gf.f == \"E\")" Value="mod <- subset(xx, xx$gf.f == \"E\")" Time="3.11" Script="0" Line="198";
+Operation p197 "197-mod <- subset(xx, xx$gf.f == \"E\")" Value="mod <- subset(xx, xx$gf.f == \"E\")" Time="3.305" Script="0" Line="198";
 CF p196 p197
 DF d120 p197
-Snapshot d137 "137-mod" Value="[DIR]/ddg/137-mod.csv" Time="2016-05-25T15.21.59EDT";
+Snapshot d137 "137-mod" Value="[DIR]/ddg/137-mod.csv" Time="2016-06-15T15.01.22EDT";
 DF p197 d137
-Operation p198 "198-if (v == \"R\") {    title(main = \"Raw Data\")    points(xx$dat" Value="if (v == \"R\") {    title(main = \"Raw Data\")    points(xx$dat" Time="3.13" Script="0" Line="198";
+Operation p198 "198-if (v == \"R\") {    title(main = \"Raw Data\")    points(xx$dat" Value="if (v == \"R\") {    title(main = \"Raw Data\")    points(xx$dat" Time="3.33" Script="0" Line="198";
 CF p197 p198
 DF d121 p198
 DF d120 p198
@@ -866,72 +902,72 @@ DF d134 p198
 DF d135 p198
 DF d136 p198
 DF d137 p198
-Operation p199 "199-labs <- c(\"Raw\", \"Calibrated\", \"QC Check\", \"Modeled\")" Value="labs <- c(\"Raw\", \"Calibrated\", \"QC Check\", \"Modeled\")" Time="3.2" Script="0" Line="198";
+Operation p199 "199-labs <- c(\"Raw\", \"Calibrated\", \"QC Check\", \"Modeled\")" Value="labs <- c(\"Raw\", \"Calibrated\", \"QC Check\", \"Modeled\")" Time="3.395" Script="0" Line="198";
 CF p198 p199
-Snapshot d138 "138-labs" Value="[DIR]/ddg/138-labs.csv" Time="2016-05-25T15.21.59EDT";
+Snapshot d138 "138-labs" Value="[DIR]/ddg/138-labs.csv" Time="2016-06-15T15.01.22EDT";
 DF p199 d138
-Operation p200 "200-cols <- c(\"black\", \"blue\", \"red\", \"green\")" Value="cols <- c(\"black\", \"blue\", \"red\", \"green\")" Time="3.2" Script="0" Line="198";
+Operation p200 "200-cols <- c(\"black\", \"blue\", \"red\", \"green\")" Value="cols <- c(\"black\", \"blue\", \"red\", \"green\")" Time="3.41" Script="0" Line="198";
 CF p199 p200
-Snapshot d139 "139-cols" Value="[DIR]/ddg/139-cols.csv" Time="2016-05-25T15.21.59EDT";
+Snapshot d139 "139-cols" Value="[DIR]/ddg/139-cols.csv" Time="2016-06-15T15.01.22EDT";
 DF p200 d139
-Operation p201 "201-par(xpd = TRUE)" Value="par(xpd = TRUE)" Time="3.21" Script="0" Line="198";
+Operation p201 "201-par(xpd = TRUE)" Value="par(xpd = TRUE)" Time="3.423" Script="0" Line="198";
 CF p200 p201
-Operation p202 "202-legend(xmax + xrange/15, ymax, labs, cols, cex = 1)" Value="legend(xmax + xrange/15, ymax, labs, cols, cex = 1)" Time="3.23" Script="0" Line="198";
+Operation p202 "202-legend(xmax + xrange/15, ymax, labs, cols, cex = 1)" Value="legend(xmax + xrange/15, ymax, labs, cols, cex = 1)" Time="3.464" Script="0" Line="198";
 CF p201 p202
 DF d127 p202
 DF d129 p202
 DF d132 p202
 DF d138 p202
 DF d139 p202
-Operation p203 "203-dev.off()" Value="dev.off()" Time="3.24" Script="0" Line="198";
+Operation p203 "203-dev.off()" Value="dev.off()" Time="3.496" Script="0" Line="198";
 CF p202 p203
 Data d140 "140-plot.data(gap.filled.data,\"G\") return" Value="1";
-Operation p204 "204-return (dev.off())" Value="return (dev.off())" Time="3.27" Script="0" Line="198";
+Operation p204 "204-return (dev.off())" Value="return (dev.off())" Time="3.513" Script="0" Line="198";
 CF p203 p204
-File d141 "141-gap-filled-plot.jpeg" Value="[DIR]/ddg/141-gap-filled-plot.jpeg" Time="2016-05-25T15.21.59EDT" Location="[DIR]/gap-filled-plot.jpeg";
+File d141 "141-gap-filled-plot.jpeg" Value="[DIR]/ddg/141-gap-filled-plot.jpeg" Time="2016-06-15T15.01.22EDT" Location="[DIR]/gap-filled-plot.jpeg";
 DF p203 d141
 DF p204 d140
-Finish p205 "205-plot.data(gap.filled.data, \"G\")" Value="plot.data(gap.filled.data, \"G\")" Time="3.29" Script="0" Line="198";
+Finish p205 "205-plot.data(gap.filled.data, \"G\")" Value="plot.data(gap.filled.data, \"G\")" Time="3.529" Script="0" Line="198";
 CF p204 p205
-Finish p206 "206-gap.fill.data" Value="gap.fill.data" Time="3.29" Script="0" Line="199";
+Finish p206 "206-gap.fill.data" Value="gap.fill.data" Time="3.532" Script="0" Line="199";
 CF p205 p206
-Finish p207 "207-analyze.data" Value="analyze.data" Time="3.29" Script="0" Line="201";
+Finish p207 "207-analyze.data" Value="analyze.data" Time="3.534" Script="0" Line="201";
 CF p206 p207
-Start p208 "208-write.result(\"processed-data.csv\", gap.filled.data)" Value="write.result(\"processed-data.csv\", gap.filled.data)" Time="3.31" Script="0" Line="203";
+Start p208 "208-write.result(\"processed-data.csv\", gap.filled.data)" Value="write.result(\"processed-data.csv\", gap.filled.data)" Time="3.537" Script="0" Line="203";
 CF p207 p208
-Binding p209 "209-fn <- \"processed-data.csv\"" Time="3.31" Script="0" Line="203"
+Binding p209 "209-fn <- \"processed-data.csv\"" Time="3.539" Script="0" Line="203";
 CF p208 p209
 Data d142 "142-fn" Value="\"processed-data.csv\"";
 DF p209 d142
-Binding p210 "210-xx  <-  gap.filled.data" Time="3.31" Script="0" Line="203"
+Binding p210 "210-xx  <-  gap.filled.data" Time="3.545" Script="0" Line="203";
 CF p209 p210
 DF d119 p210
-Snapshot d143 "143-xx" Value="[DIR]/ddg/143-xx.csv" Time="2016-05-25T15.21.59EDT";
+Snapshot d143 "143-xx" Value="[DIR]/ddg/143-xx.csv" Time="2016-06-15T15.01.22EDT";
 DF p210 d143
-Operation p211 "211-write.result" Value="write.result" Time="3.34" Script="0" Line="203";
+Operation p211 "211-write.result" Value="write.result" Time="3.56" Script="0" Line="203";
 DF d5 p211
 DF d142 p211
 DF d143 p211
 CF p210 p211
-Operation p212 "212-file.out <- paste(getwd(), \"/\", fn, sep = \"\")" Value="file.out <- paste(getwd(), \"/\", fn, sep = \"\")" Time="3.35" Script="0" Line="203";
+Operation p212 "212-file.out <- paste(getwd(), \"/\", fn, sep = \"\")" Value="file.out <- paste(getwd(), \"/\", fn, sep = \"\")" Time="3.603" Script="0" Line="203";
 CF p211 p212
 DF d142 p212
 Data d144 "144-file.out" Value="\"[DIR]/processed-data.csv\"";
 DF p212 d144
-Operation p213 "213-write.csv(xx, file.out, row.names = FALSE)" Value="write.csv(xx, file.out, row.names = FALSE)" Time="3.37" Script="0" Line="203";
+Operation p213 "213-write.csv(xx, file.out, row.names = FALSE)" Value="write.csv(xx, file.out, row.names = FALSE)" Time="3.624" Script="0" Line="203";
 CF p212 p213
 DF d143 p213
 DF d144 p213
 Data d145 "145-write.result(\"processed-data.csv\",gap.filled.data) return" Value="NULL";
-Operation p214 "214-return (write.csv(xx, file.out, row.names = FALSE))" Value="return (write.csv(xx, file.out, row.names = FALSE))" Time="3.38" Script="0" Line="203";
+Operation p214 "214-return (write.csv(xx, file.out, row.names = FALSE))" Value="return (write.csv(xx, file.out, row.names = FALSE))" Time="3.644" Script="0" Line="203";
 CF p213 p214
 DF d143 p214
 DF d144 p214
-File d146 "146-processed-data.csv" Value="[DIR]/ddg/146-processed-data.csv" Time="2016-05-25T15.21.59EDT" Location="[DIR]/processed-data.csv";
+File d146 "146-processed-data.csv" Value="[DIR]/ddg/146-processed-data.csv" Time="2016-06-15T15.01.22EDT" Location="[DIR]/processed-data.csv";
 DF p213 d146
 DF p214 d145
-Finish p215 "215-write.result(\"processed-data.csv\", gap.filled.data)" Value="write.result(\"processed-data.csv\", gap.filled.data)" Time="3.4" Script="0" Line="203";
+Finish p215 "215-write.result(\"processed-data.csv\", gap.filled.data)" Value="write.result(\"processed-data.csv\", gap.filled.data)" Time="3.67" Script="0" Line="203";
 CF p214 p215
-Finish p216 "216-DailySolarRadiation.R" Value="DailySolarRadiation.R" Time="3.4" Script="0" Line="NA";
+Finish p216 "216-DailySolarRadiation.R" Value="DailySolarRadiation.R" Time="3.672" Script="0" Line="NA";
 CF p215 p216
 

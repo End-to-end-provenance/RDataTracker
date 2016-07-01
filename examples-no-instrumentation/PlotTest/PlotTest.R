@@ -16,11 +16,9 @@ mpg = c(mean(cars4Cyl.df$mpg), mean(cars6Cyl.df$mpg), mean(cars8Cyl.df$mpg))
 plot(cylinders, mpg)
 
 # Plot to X11
-ddg.debug.on()
 X11()
 plot(cylinders, mpg)
 dev.off()
-ddg.debug.off()
 
 # Plot to a file
 pdf ("plot.pdf")

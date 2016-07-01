@@ -5,23 +5,9 @@ The following objects are masked from 'package:base':
 
     as.Date, as.Date.numeric
 
-gdata: Unable to locate valid perl interpreter
-gdata: 
-gdata: read.xls() will be unable to read Excel XLS and XLSX files
-gdata: unless the 'perl=' argument is used to specify the location of a
-gdata: valid perl intrpreter.
-gdata: 
-gdata: (To avoid display of this message in the future, please ensure
-gdata: perl is installed and available on the executable search path.)
-gdata: Unable to load perl libaries needed by read.xls()
-gdata: to support 'XLX' (Excel 97-2004) files.
+gdata: read.xls support for 'XLS' (Excel 97-2004) files ENABLED.
 
-gdata: Unable to load perl libaries needed by read.xls()
-gdata: to support 'XLSX' (Excel 2007+) files.
-
-gdata: Run the function 'installXLSXsupport()'
-gdata: to automatically download and install the perl
-gdata: libaries needed to support Excel XLS and XLSX formats.
+gdata: read.xls support for 'XLSX' (Excel 2007+) files ENABLED.
 
 Attaching package: 'gdata'
 
@@ -34,13 +20,13 @@ The following object is masked from 'package:utils':
     object.size
 
 Loading required package: nlme
-This is mgcv 1.8-12. For overview type 'help("mgcv-package")'.
+This is mgcv 1.8-11. For overview type 'help("mgcv-package")'.
 Loading required package: methods
 
-spatstat 1.45-0       (nickname: 'One Lakh') 
+spatstat 1.44-1       (nickname: 'Gift Horse') 
 For an introduction to spatstat, type 'beginner'
 
-Note: spatstat version 1.45-0 is out of date by more than 10 weeks; a newer version should be available.
+Note: spatstat version 1.44-1 is out of date by more than 5 months; we recommend upgrading to the latest version.
 Generating 99 simulations of CSR  ...
 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30,
@@ -459,4 +445,4 @@ Warning messages:
   data contain duplicated points
 8: In ppp(plot.8[, 9], plot.8[, 10], c(0, 90), c(0, 90)) :
   data contain duplicated points
-Execution Time = 92.51906
+Execution Time = 90.70592
