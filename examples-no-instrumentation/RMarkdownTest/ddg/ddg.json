@@ -1,0 +1,1525 @@
+{
+
+"prefix" : {
+"prov" : "http://www.w3.org/ns/prov#",
+"rdt" : "http://rdatatracker.org/"
+},
+
+"entity" : {
+"rdt:environment" : {
+"rdt:architecture" : "x86_64",
+"rdt:operatingSystem" : "unix",
+"rdt:language" : "R",
+"rdt:rVersion" : "R version 3.2.3 (2015-12-10)",
+"rdt:script" : "/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples-no-instrumentation/RMarkdownTest/ddg/RMarkdownTest.R",
+"rdt:scriptTimeStamp" : "2016-07-01T14.52.50EDT",
+"rdt:workingDirectory" : "/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples-no-instrumentation/RMarkdownTest",
+"rdt:ddgDirectory" : "/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples-no-instrumentation/RMarkdownTest/ddg",
+"rdt:ddgTimeStamp" : "2016-07-01T14.52.50EDT",
+"rdt:rdatatrackerVersion" : "2.24.1",
+}
+},
+
+"activity" : {
+"p1" : {
+"rdt:name" : "RMarkdownTest.R",
+"rdt:type" : "Start",
+"rdt:elapsedTime" : "0.026",
+"rdt:scriptNum" : "0",
+"rdt:scriptLine" : "NA"
+}
+},
+
+"activity" : {
+"p2" : {
+"rdt:name" : "setup",
+"rdt:type" : "Start",
+"rdt:elapsedTime" : "0.028",
+"rdt:scriptNum" : "0",
+"rdt:scriptLine" : "11"
+}
+},
+
+"wasInformedBy" : {
+"e1" : {
+"prov:informant" : "p1",
+"prov:informed" : "p2"
+}
+},
+
+"activity" : {
+"p3" : {
+"rdt:name" : "library(Ecdat)",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "0.952",
+"rdt:scriptNum" : "0",
+"rdt:scriptLine" : "13"
+}
+},
+
+"wasInformedBy" : {
+"e2" : {
+"prov:informant" : "p2",
+"prov:informed" : "p3"
+}
+},
+
+"entity" : {
+"d1" : {
+"rdt:name" : "warning.msg",
+"rdt:value" : "\" package 'Ecfun' was built under R version 3.2.5\"",
+"rdt:type" : "Exception",
+"rdt:scope" : "ddg.library",
+"rdt:fromEnv" : "FALSE",
+"rdt:timestamp" : "",
+"rdt:location" : ""
+}
+},
+
+"wasGeneratedBy" : {
+"e3" : {
+"prov:entity" : "p3",
+"prov:activity" : "d1"
+}
+},
+
+"activity" : {
+"p4" : {
+"rdt:name" : "library(mosaic)",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "1.434",
+"rdt:scriptNum" : "0",
+"rdt:scriptLine" : "14"
+}
+},
+
+"wasInformedBy" : {
+"e4" : {
+"prov:informant" : "p3",
+"prov:informed" : "p4"
+}
+},
+
+"entity" : {
+"d2" : {
+"rdt:name" : "warning.msg",
+"rdt:value" : "\" package 'mosaicData' was built under R version 3.2.5\"",
+"rdt:type" : "Exception",
+"rdt:scope" : "ddg.library",
+"rdt:fromEnv" : "FALSE",
+"rdt:timestamp" : "",
+"rdt:location" : ""
+}
+},
+
+"wasGeneratedBy" : {
+"e5" : {
+"prov:entity" : "p4",
+"prov:activity" : "d2"
+}
+},
+
+"activity" : {
+"p5" : {
+"rdt:name" : "x <- DoctorAUS",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "1.456",
+"rdt:scriptNum" : "0",
+"rdt:scriptLine" : "15"
+}
+},
+
+"wasInformedBy" : {
+"e6" : {
+"prov:informant" : "p4",
+"prov:informed" : "p5"
+}
+},
+
+"entity" : {
+"d3" : {
+"rdt:name" : "x",
+"rdt:value" : "/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples-no-instrumentation/RMarkdownTest/ddg/3-x-PARTIAL.csv",
+"rdt:type" : "Snapshot",
+"rdt:scope" : "R_GlobalEnv",
+"rdt:fromEnv" : "FALSE",
+"rdt:timestamp" : "",
+"rdt:location" : ""
+}
+},
+
+"wasGeneratedBy" : {
+"e7" : {
+"prov:entity" : "p5",
+"prov:activity" : "d3"
+}
+},
+
+"activity" : {
+"p6" : {
+"rdt:name" : "setup",
+"rdt:type" : "Finish",
+"rdt:elapsedTime" : "1.484",
+"rdt:scriptNum" : "0",
+"rdt:scriptLine" : "16"
+}
+},
+
+"wasInformedBy" : {
+"e8" : {
+"prov:informant" : "p5",
+"prov:informed" : "p6"
+}
+},
+
+"activity" : {
+"p7" : {
+"rdt:name" : "test1",
+"rdt:type" : "Start",
+"rdt:elapsedTime" : "1.485",
+"rdt:scriptNum" : "0",
+"rdt:scriptLine" : "24"
+}
+},
+
+"wasInformedBy" : {
+"e9" : {
+"prov:informant" : "p6",
+"prov:informed" : "p7"
+}
+},
+
+"activity" : {
+"p8" : {
+"rdt:name" : "x$sex2 <- \"Male\"",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "1.486",
+"rdt:scriptNum" : "0",
+"rdt:scriptLine" : "25"
+}
+},
+
+"wasInformedBy" : {
+"e10" : {
+"prov:informant" : "p7",
+"prov:informed" : "p8"
+}
+},
+
+"entity" : {
+"d4" : {
+"rdt:name" : "x",
+"rdt:value" : "/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples-no-instrumentation/RMarkdownTest/ddg/4-x-PARTIAL.csv",
+"rdt:type" : "Snapshot",
+"rdt:scope" : "R_GlobalEnv",
+"rdt:fromEnv" : "FALSE",
+"rdt:timestamp" : "",
+"rdt:location" : ""
+}
+},
+
+"wasGeneratedBy" : {
+"e11" : {
+"prov:entity" : "p8",
+"prov:activity" : "d4"
+}
+},
+
+"activity" : {
+"p9" : {
+"rdt:name" : "x$sex2[x$sex == \"1\"] <- \"Female\"",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "1.515",
+"rdt:scriptNum" : "0",
+"rdt:scriptLine" : "26"
+}
+},
+
+"wasInformedBy" : {
+"e12" : {
+"prov:informant" : "p8",
+"prov:informed" : "p9"
+}
+},
+
+"entity" : {
+"d5" : {
+"rdt:name" : "x",
+"rdt:value" : "/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples-no-instrumentation/RMarkdownTest/ddg/5-x-PARTIAL.csv",
+"rdt:type" : "Snapshot",
+"rdt:scope" : "R_GlobalEnv",
+"rdt:fromEnv" : "FALSE",
+"rdt:timestamp" : "",
+"rdt:location" : ""
+}
+},
+
+"wasGeneratedBy" : {
+"e13" : {
+"prov:entity" : "p9",
+"prov:activity" : "d5"
+}
+},
+
+"activity" : {
+"p10" : {
+"rdt:name" : "x$Age <- (x$age) * 100",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "1.54",
+"rdt:scriptNum" : "0",
+"rdt:scriptLine" : "27"
+}
+},
+
+"wasInformedBy" : {
+"e14" : {
+"prov:informant" : "p9",
+"prov:informed" : "p10"
+}
+},
+
+"entity" : {
+"d6" : {
+"rdt:name" : "x",
+"rdt:value" : "/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples-no-instrumentation/RMarkdownTest/ddg/6-x-PARTIAL.csv",
+"rdt:type" : "Snapshot",
+"rdt:scope" : "R_GlobalEnv",
+"rdt:fromEnv" : "FALSE",
+"rdt:timestamp" : "",
+"rdt:location" : ""
+}
+},
+
+"wasGeneratedBy" : {
+"e15" : {
+"prov:entity" : "p10",
+"prov:activity" : "d6"
+}
+},
+
+"activity" : {
+"p11" : {
+"rdt:name" : "x$Income <- (x$income) * 10000",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "1.663",
+"rdt:scriptNum" : "0",
+"rdt:scriptLine" : "28"
+}
+},
+
+"wasInformedBy" : {
+"e16" : {
+"prov:informant" : "p10",
+"prov:informed" : "p11"
+}
+},
+
+"entity" : {
+"d7" : {
+"rdt:name" : "x",
+"rdt:value" : "/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples-no-instrumentation/RMarkdownTest/ddg/7-x-PARTIAL.csv",
+"rdt:type" : "Snapshot",
+"rdt:scope" : "R_GlobalEnv",
+"rdt:fromEnv" : "FALSE",
+"rdt:timestamp" : "",
+"rdt:location" : ""
+}
+},
+
+"wasGeneratedBy" : {
+"e17" : {
+"prov:entity" : "p11",
+"prov:activity" : "d7"
+}
+},
+
+"activity" : {
+"p12" : {
+"rdt:name" : "test1",
+"rdt:type" : "Finish",
+"rdt:elapsedTime" : "1.691",
+"rdt:scriptNum" : "0",
+"rdt:scriptLine" : "30"
+}
+},
+
+"wasInformedBy" : {
+"e18" : {
+"prov:informant" : "p11",
+"prov:informed" : "p12"
+}
+},
+
+"activity" : {
+"p13" : {
+"rdt:name" : "ddg.chunk_1",
+"rdt:type" : "Start",
+"rdt:elapsedTime" : "1.692",
+"rdt:scriptNum" : "0",
+"rdt:scriptLine" : "31"
+}
+},
+
+"wasInformedBy" : {
+"e19" : {
+"prov:informant" : "p12",
+"prov:informed" : "p13"
+}
+},
+
+"activity" : {
+"p14" : {
+"rdt:name" : "histogram(~Age, data = x)",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "1.699",
+"rdt:scriptNum" : "0",
+"rdt:scriptLine" : "32"
+}
+},
+
+"wasInformedBy" : {
+"e20" : {
+"prov:informant" : "p13",
+"prov:informed" : "p14"
+}
+},
+
+"used" : {
+"e21" : {
+"prov:activity" : "d7",
+"prov:entity" : "p14"
+}
+},
+
+"activity" : {
+"p15" : {
+"rdt:name" : "ddg.chunk_1",
+"rdt:type" : "Finish",
+"rdt:elapsedTime" : "1.708",
+"rdt:scriptNum" : "0",
+"rdt:scriptLine" : "33"
+}
+},
+
+"wasInformedBy" : {
+"e22" : {
+"prov:informant" : "p14",
+"prov:informed" : "p15"
+}
+},
+
+"activity" : {
+"p16" : {
+"rdt:name" : "ddg.chunk_2",
+"rdt:type" : "Start",
+"rdt:elapsedTime" : "1.709",
+"rdt:scriptNum" : "0",
+"rdt:scriptLine" : "37"
+}
+},
+
+"wasInformedBy" : {
+"e23" : {
+"prov:informant" : "p15",
+"prov:informed" : "p16"
+}
+},
+
+"activity" : {
+"p17" : {
+"rdt:name" : "histogram(~illness, data = x)",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "1.712",
+"rdt:scriptNum" : "0",
+"rdt:scriptLine" : "38"
+}
+},
+
+"wasInformedBy" : {
+"e24" : {
+"prov:informant" : "p16",
+"prov:informed" : "p17"
+}
+},
+
+"used" : {
+"e25" : {
+"prov:activity" : "d7",
+"prov:entity" : "p17"
+}
+},
+
+"activity" : {
+"p18" : {
+"rdt:name" : "histogram(~doctorco, data = x)",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "1.727",
+"rdt:scriptNum" : "0",
+"rdt:scriptLine" : "39"
+}
+},
+
+"wasInformedBy" : {
+"e26" : {
+"prov:informant" : "p17",
+"prov:informed" : "p18"
+}
+},
+
+"used" : {
+"e27" : {
+"prov:activity" : "d7",
+"prov:entity" : "p18"
+}
+},
+
+"activity" : {
+"p19" : {
+"rdt:name" : "ddg.chunk_2",
+"rdt:type" : "Finish",
+"rdt:elapsedTime" : "1.738",
+"rdt:scriptNum" : "0",
+"rdt:scriptLine" : "40"
+}
+},
+
+"wasInformedBy" : {
+"e28" : {
+"prov:informant" : "p18",
+"prov:informed" : "p19"
+}
+},
+
+"activity" : {
+"p20" : {
+"rdt:name" : "ddg.chunk_3",
+"rdt:type" : "Start",
+"rdt:elapsedTime" : "1.739",
+"rdt:scriptNum" : "0",
+"rdt:scriptLine" : "44"
+}
+},
+
+"wasInformedBy" : {
+"e29" : {
+"prov:informant" : "p19",
+"prov:informed" : "p20"
+}
+},
+
+"activity" : {
+"p21" : {
+"rdt:name" : "histogram(~doctorco, data = x)",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "1.743",
+"rdt:scriptNum" : "0",
+"rdt:scriptLine" : "45"
+}
+},
+
+"wasInformedBy" : {
+"e30" : {
+"prov:informant" : "p20",
+"prov:informed" : "p21"
+}
+},
+
+"used" : {
+"e31" : {
+"prov:activity" : "d7",
+"prov:entity" : "p21"
+}
+},
+
+"activity" : {
+"p22" : {
+"rdt:name" : "x$doctorcobin <- 1",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "1.753",
+"rdt:scriptNum" : "0",
+"rdt:scriptLine" : "46"
+}
+},
+
+"wasInformedBy" : {
+"e32" : {
+"prov:informant" : "p21",
+"prov:informed" : "p22"
+}
+},
+
+"entity" : {
+"d8" : {
+"rdt:name" : "x",
+"rdt:value" : "/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples-no-instrumentation/RMarkdownTest/ddg/8-x-PARTIAL.csv",
+"rdt:type" : "Snapshot",
+"rdt:scope" : "R_GlobalEnv",
+"rdt:fromEnv" : "FALSE",
+"rdt:timestamp" : "",
+"rdt:location" : ""
+}
+},
+
+"wasGeneratedBy" : {
+"e33" : {
+"prov:entity" : "p22",
+"prov:activity" : "d8"
+}
+},
+
+"activity" : {
+"p23" : {
+"rdt:name" : "x$doctorcobin[x$doctorco == \"0\"] <- 0",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "1.783",
+"rdt:scriptNum" : "0",
+"rdt:scriptLine" : "47"
+}
+},
+
+"wasInformedBy" : {
+"e34" : {
+"prov:informant" : "p22",
+"prov:informed" : "p23"
+}
+},
+
+"entity" : {
+"d9" : {
+"rdt:name" : "x",
+"rdt:value" : "/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples-no-instrumentation/RMarkdownTest/ddg/9-x-PARTIAL.csv",
+"rdt:type" : "Snapshot",
+"rdt:scope" : "R_GlobalEnv",
+"rdt:fromEnv" : "FALSE",
+"rdt:timestamp" : "",
+"rdt:location" : ""
+}
+},
+
+"wasGeneratedBy" : {
+"e35" : {
+"prov:entity" : "p23",
+"prov:activity" : "d9"
+}
+},
+
+"activity" : {
+"p24" : {
+"rdt:name" : "histogram(~doctorcobin, data = x)",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "1.821",
+"rdt:scriptNum" : "0",
+"rdt:scriptLine" : "48"
+}
+},
+
+"wasInformedBy" : {
+"e36" : {
+"prov:informant" : "p23",
+"prov:informed" : "p24"
+}
+},
+
+"used" : {
+"e37" : {
+"prov:activity" : "d9",
+"prov:entity" : "p24"
+}
+},
+
+"activity" : {
+"p25" : {
+"rdt:name" : "ddg.chunk_3",
+"rdt:type" : "Finish",
+"rdt:elapsedTime" : "1.83",
+"rdt:scriptNum" : "0",
+"rdt:scriptLine" : "49"
+}
+},
+
+"wasInformedBy" : {
+"e38" : {
+"prov:informant" : "p24",
+"prov:informed" : "p25"
+}
+},
+
+"activity" : {
+"p26" : {
+"rdt:name" : "test2",
+"rdt:type" : "Start",
+"rdt:elapsedTime" : "1.831",
+"rdt:scriptNum" : "0",
+"rdt:scriptLine" : "51"
+}
+},
+
+"wasInformedBy" : {
+"e39" : {
+"prov:informant" : "p25",
+"prov:informed" : "p26"
+}
+},
+
+"activity" : {
+"p27" : {
+"rdt:name" : "histogram(~doctorcobin, data = x)",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "1.835",
+"rdt:scriptNum" : "0",
+"rdt:scriptLine" : "52"
+}
+},
+
+"wasInformedBy" : {
+"e40" : {
+"prov:informant" : "p26",
+"prov:informed" : "p27"
+}
+},
+
+"used" : {
+"e41" : {
+"prov:activity" : "d9",
+"prov:entity" : "p27"
+}
+},
+
+"activity" : {
+"p28" : {
+"rdt:name" : "test2",
+"rdt:type" : "Finish",
+"rdt:elapsedTime" : "1.842",
+"rdt:scriptNum" : "0",
+"rdt:scriptLine" : "53"
+}
+},
+
+"wasInformedBy" : {
+"e42" : {
+"prov:informant" : "p27",
+"prov:informed" : "p28"
+}
+},
+
+"activity" : {
+"p29" : {
+"rdt:name" : "test3",
+"rdt:type" : "Start",
+"rdt:elapsedTime" : "1.844",
+"rdt:scriptNum" : "0",
+"rdt:scriptLine" : "57"
+}
+},
+
+"wasInformedBy" : {
+"e43" : {
+"prov:informant" : "p28",
+"prov:informed" : "p29"
+}
+},
+
+"activity" : {
+"p30" : {
+"rdt:name" : "x$sex2 <- \"Male\"",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "1.845",
+"rdt:scriptNum" : "0",
+"rdt:scriptLine" : "58"
+}
+},
+
+"wasInformedBy" : {
+"e44" : {
+"prov:informant" : "p29",
+"prov:informed" : "p30"
+}
+},
+
+"entity" : {
+"d10" : {
+"rdt:name" : "x",
+"rdt:value" : "/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples-no-instrumentation/RMarkdownTest/ddg/10-x-PARTIAL.csv",
+"rdt:type" : "Snapshot",
+"rdt:scope" : "R_GlobalEnv",
+"rdt:fromEnv" : "FALSE",
+"rdt:timestamp" : "",
+"rdt:location" : ""
+}
+},
+
+"wasGeneratedBy" : {
+"e45" : {
+"prov:entity" : "p30",
+"prov:activity" : "d10"
+}
+},
+
+"activity" : {
+"p31" : {
+"rdt:name" : "x$sex2[x$sex == \"1\"] <- \"Female\"",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "1.873",
+"rdt:scriptNum" : "0",
+"rdt:scriptLine" : "59"
+}
+},
+
+"wasInformedBy" : {
+"e46" : {
+"prov:informant" : "p30",
+"prov:informed" : "p31"
+}
+},
+
+"entity" : {
+"d11" : {
+"rdt:name" : "x",
+"rdt:value" : "/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples-no-instrumentation/RMarkdownTest/ddg/11-x-PARTIAL.csv",
+"rdt:type" : "Snapshot",
+"rdt:scope" : "R_GlobalEnv",
+"rdt:fromEnv" : "FALSE",
+"rdt:timestamp" : "",
+"rdt:location" : ""
+}
+},
+
+"wasGeneratedBy" : {
+"e47" : {
+"prov:entity" : "p31",
+"prov:activity" : "d11"
+}
+},
+
+"activity" : {
+"p32" : {
+"rdt:name" : "x$Income <- (x$income) * 1e+05",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "1.904",
+"rdt:scriptNum" : "0",
+"rdt:scriptLine" : "60"
+}
+},
+
+"wasInformedBy" : {
+"e48" : {
+"prov:informant" : "p31",
+"prov:informed" : "p32"
+}
+},
+
+"entity" : {
+"d12" : {
+"rdt:name" : "x",
+"rdt:value" : "/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples-no-instrumentation/RMarkdownTest/ddg/12-x-PARTIAL.csv",
+"rdt:type" : "Snapshot",
+"rdt:scope" : "R_GlobalEnv",
+"rdt:fromEnv" : "FALSE",
+"rdt:timestamp" : "",
+"rdt:location" : ""
+}
+},
+
+"wasGeneratedBy" : {
+"e49" : {
+"prov:entity" : "p32",
+"prov:activity" : "d12"
+}
+},
+
+"activity" : {
+"p33" : {
+"rdt:name" : "test3",
+"rdt:type" : "Finish",
+"rdt:elapsedTime" : "1.938",
+"rdt:scriptNum" : "0",
+"rdt:scriptLine" : "61"
+}
+},
+
+"wasInformedBy" : {
+"e50" : {
+"prov:informant" : "p32",
+"prov:informed" : "p33"
+}
+},
+
+"activity" : {
+"p34" : {
+"rdt:name" : "ddg.chunk_4",
+"rdt:type" : "Start",
+"rdt:elapsedTime" : "1.939",
+"rdt:scriptNum" : "0",
+"rdt:scriptLine" : "63"
+}
+},
+
+"wasInformedBy" : {
+"e51" : {
+"prov:informant" : "p33",
+"prov:informed" : "p34"
+}
+},
+
+"activity" : {
+"p35" : {
+"rdt:name" : "histogram(~Income, data = x)",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "1.943",
+"rdt:scriptNum" : "0",
+"rdt:scriptLine" : "64"
+}
+},
+
+"wasInformedBy" : {
+"e52" : {
+"prov:informant" : "p34",
+"prov:informed" : "p35"
+}
+},
+
+"used" : {
+"e53" : {
+"prov:activity" : "d12",
+"prov:entity" : "p35"
+}
+},
+
+"activity" : {
+"p36" : {
+"rdt:name" : "ddg.chunk_4",
+"rdt:type" : "Finish",
+"rdt:elapsedTime" : "1.953",
+"rdt:scriptNum" : "0",
+"rdt:scriptLine" : "65"
+}
+},
+
+"wasInformedBy" : {
+"e54" : {
+"prov:informant" : "p35",
+"prov:informed" : "p36"
+}
+},
+
+"activity" : {
+"p37" : {
+"rdt:name" : "ddg.chunk_5",
+"rdt:type" : "Start",
+"rdt:elapsedTime" : "1.955",
+"rdt:scriptNum" : "0",
+"rdt:scriptLine" : "72"
+}
+},
+
+"wasInformedBy" : {
+"e55" : {
+"prov:informant" : "p36",
+"prov:informed" : "p37"
+}
+},
+
+"activity" : {
+"p38" : {
+"rdt:name" : "bwplot(Age ~ Income, data = x, ylab = \"Age groups (of five y",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "1.97",
+"rdt:scriptNum" : "0",
+"rdt:scriptLine" : "73"
+}
+},
+
+"wasInformedBy" : {
+"e56" : {
+"prov:informant" : "p37",
+"prov:informed" : "p38"
+}
+},
+
+"used" : {
+"e57" : {
+"prov:activity" : "d12",
+"prov:entity" : "p38"
+}
+},
+
+"activity" : {
+"p39" : {
+"rdt:name" : "lmage <- lm(sqrt(income) ~ poly(age, 2, raw = T), data = x)",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "1.987",
+"rdt:scriptNum" : "0",
+"rdt:scriptLine" : "74"
+}
+},
+
+"wasInformedBy" : {
+"e58" : {
+"prov:informant" : "p38",
+"prov:informed" : "p39"
+}
+},
+
+"used" : {
+"e59" : {
+"prov:activity" : "d12",
+"prov:entity" : "p39"
+}
+},
+
+"entity" : {
+"d13" : {
+"rdt:name" : "lmage",
+"rdt:value" : "/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples-no-instrumentation/RMarkdownTest/ddg/13-lmage.csv",
+"rdt:type" : "Snapshot",
+"rdt:scope" : "R_GlobalEnv",
+"rdt:fromEnv" : "FALSE",
+"rdt:timestamp" : "",
+"rdt:location" : ""
+}
+},
+
+"wasGeneratedBy" : {
+"e60" : {
+"prov:entity" : "p39",
+"prov:activity" : "d13"
+}
+},
+
+"activity" : {
+"p40" : {
+"rdt:name" : "plot(x$age * 100, sqrt(x$income), xlab = \"Age\", ylab = \"Sqrt",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "2.174",
+"rdt:scriptNum" : "0",
+"rdt:scriptLine" : "76"
+}
+},
+
+"wasInformedBy" : {
+"e61" : {
+"prov:informant" : "p39",
+"prov:informed" : "p40"
+}
+},
+
+"used" : {
+"e62" : {
+"prov:activity" : "d12",
+"prov:entity" : "p40"
+}
+},
+
+"activity" : {
+"p41" : {
+"rdt:name" : "lines(x$age * 100, predict(lmage))",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "2.197",
+"rdt:scriptNum" : "0",
+"rdt:scriptLine" : "77"
+}
+},
+
+"wasInformedBy" : {
+"e63" : {
+"prov:informant" : "p40",
+"prov:informed" : "p41"
+}
+},
+
+"used" : {
+"e64" : {
+"prov:activity" : "d12",
+"prov:entity" : "p41"
+}
+},
+
+"used" : {
+"e65" : {
+"prov:activity" : "d13",
+"prov:entity" : "p41"
+}
+},
+
+"activity" : {
+"p42" : {
+"rdt:name" : "ddg.chunk_5",
+"rdt:type" : "Finish",
+"rdt:elapsedTime" : "2.211",
+"rdt:scriptNum" : "0",
+"rdt:scriptLine" : "78"
+}
+},
+
+"wasInformedBy" : {
+"e66" : {
+"prov:informant" : "p41",
+"prov:informed" : "p42"
+}
+},
+
+"activity" : {
+"p43" : {
+"rdt:name" : "ddg.chunk_6",
+"rdt:type" : "Start",
+"rdt:elapsedTime" : "2.212",
+"rdt:scriptNum" : "0",
+"rdt:scriptLine" : "84"
+}
+},
+
+"wasInformedBy" : {
+"e67" : {
+"prov:informant" : "p42",
+"prov:informed" : "p43"
+}
+},
+
+"activity" : {
+"p44" : {
+"rdt:name" : "x$Age2 <- x$Age^2",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "2.214",
+"rdt:scriptNum" : "0",
+"rdt:scriptLine" : "85"
+}
+},
+
+"wasInformedBy" : {
+"e68" : {
+"prov:informant" : "p43",
+"prov:informed" : "p44"
+}
+},
+
+"entity" : {
+"d14" : {
+"rdt:name" : "x",
+"rdt:value" : "/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples-no-instrumentation/RMarkdownTest/ddg/14-x-PARTIAL.csv",
+"rdt:type" : "Snapshot",
+"rdt:scope" : "R_GlobalEnv",
+"rdt:fromEnv" : "FALSE",
+"rdt:timestamp" : "",
+"rdt:location" : ""
+}
+},
+
+"wasGeneratedBy" : {
+"e69" : {
+"prov:entity" : "p44",
+"prov:activity" : "d14"
+}
+},
+
+"activity" : {
+"p45" : {
+"rdt:name" : "Quadratic <- lm(Income ~ Age + Age2, data = x)",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "2.247",
+"rdt:scriptNum" : "0",
+"rdt:scriptLine" : "86"
+}
+},
+
+"wasInformedBy" : {
+"e70" : {
+"prov:informant" : "p44",
+"prov:informed" : "p45"
+}
+},
+
+"used" : {
+"e71" : {
+"prov:activity" : "d14",
+"prov:entity" : "p45"
+}
+},
+
+"entity" : {
+"d15" : {
+"rdt:name" : "Quadratic",
+"rdt:value" : "/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples-no-instrumentation/RMarkdownTest/ddg/15-Quadratic.csv",
+"rdt:type" : "Snapshot",
+"rdt:scope" : "R_GlobalEnv",
+"rdt:fromEnv" : "FALSE",
+"rdt:timestamp" : "",
+"rdt:location" : ""
+}
+},
+
+"wasGeneratedBy" : {
+"e72" : {
+"prov:entity" : "p45",
+"prov:activity" : "d15"
+}
+},
+
+"activity" : {
+"p46" : {
+"rdt:name" : "ddg.chunk_6",
+"rdt:type" : "Finish",
+"rdt:elapsedTime" : "2.374",
+"rdt:scriptNum" : "0",
+"rdt:scriptLine" : "87"
+}
+},
+
+"wasInformedBy" : {
+"e73" : {
+"prov:informant" : "p45",
+"prov:informed" : "p46"
+}
+},
+
+"activity" : {
+"p47" : {
+"rdt:name" : "ddg.chunk_7",
+"rdt:type" : "Start",
+"rdt:elapsedTime" : "2.375",
+"rdt:scriptNum" : "0",
+"rdt:scriptLine" : "89"
+}
+},
+
+"wasInformedBy" : {
+"e74" : {
+"prov:informant" : "p46",
+"prov:informed" : "p47"
+}
+},
+
+"activity" : {
+"p48" : {
+"rdt:name" : "summary(Quadratic)",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "2.379",
+"rdt:scriptNum" : "0",
+"rdt:scriptLine" : "90"
+}
+},
+
+"wasInformedBy" : {
+"e75" : {
+"prov:informant" : "p47",
+"prov:informed" : "p48"
+}
+},
+
+"used" : {
+"e76" : {
+"prov:activity" : "d15",
+"prov:entity" : "p48"
+}
+},
+
+"activity" : {
+"p49" : {
+"rdt:name" : "ddg.chunk_7",
+"rdt:type" : "Finish",
+"rdt:elapsedTime" : "2.386",
+"rdt:scriptNum" : "0",
+"rdt:scriptLine" : "91"
+}
+},
+
+"wasInformedBy" : {
+"e77" : {
+"prov:informant" : "p48",
+"prov:informed" : "p49"
+}
+},
+
+"activity" : {
+"p50" : {
+"rdt:name" : "ddg.chunk_8",
+"rdt:type" : "Start",
+"rdt:elapsedTime" : "2.388",
+"rdt:scriptNum" : "0",
+"rdt:scriptLine" : "96"
+}
+},
+
+"wasInformedBy" : {
+"e78" : {
+"prov:informant" : "p49",
+"prov:informed" : "p50"
+}
+},
+
+"activity" : {
+"p51" : {
+"rdt:name" : "x$illnessbin <- 1",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "2.389",
+"rdt:scriptNum" : "0",
+"rdt:scriptLine" : "98"
+}
+},
+
+"wasInformedBy" : {
+"e79" : {
+"prov:informant" : "p50",
+"prov:informed" : "p51"
+}
+},
+
+"entity" : {
+"d16" : {
+"rdt:name" : "x",
+"rdt:value" : "/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples-no-instrumentation/RMarkdownTest/ddg/16-x-PARTIAL.csv",
+"rdt:type" : "Snapshot",
+"rdt:scope" : "R_GlobalEnv",
+"rdt:fromEnv" : "FALSE",
+"rdt:timestamp" : "",
+"rdt:location" : ""
+}
+},
+
+"wasGeneratedBy" : {
+"e80" : {
+"prov:entity" : "p51",
+"prov:activity" : "d16"
+}
+},
+
+"activity" : {
+"p52" : {
+"rdt:name" : "x$illnessbin[x$illness == 0] <- 0",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "2.418",
+"rdt:scriptNum" : "0",
+"rdt:scriptLine" : "99"
+}
+},
+
+"wasInformedBy" : {
+"e81" : {
+"prov:informant" : "p51",
+"prov:informed" : "p52"
+}
+},
+
+"entity" : {
+"d17" : {
+"rdt:name" : "x",
+"rdt:value" : "/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples-no-instrumentation/RMarkdownTest/ddg/17-x-PARTIAL.csv",
+"rdt:type" : "Snapshot",
+"rdt:scope" : "R_GlobalEnv",
+"rdt:fromEnv" : "FALSE",
+"rdt:timestamp" : "",
+"rdt:location" : ""
+}
+},
+
+"wasGeneratedBy" : {
+"e82" : {
+"prov:entity" : "p52",
+"prov:activity" : "d17"
+}
+},
+
+"activity" : {
+"p53" : {
+"rdt:name" : "glmill <- glm(illnessbin ~ income + sex + age + chcond, data",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "2.591",
+"rdt:scriptNum" : "0",
+"rdt:scriptLine" : "102"
+}
+},
+
+"wasInformedBy" : {
+"e83" : {
+"prov:informant" : "p52",
+"prov:informed" : "p53"
+}
+},
+
+"used" : {
+"e84" : {
+"prov:activity" : "d17",
+"prov:entity" : "p53"
+}
+},
+
+"entity" : {
+"d18" : {
+"rdt:name" : "glmill",
+"rdt:value" : "/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples-no-instrumentation/RMarkdownTest/ddg/18-glmill.csv",
+"rdt:type" : "Snapshot",
+"rdt:scope" : "R_GlobalEnv",
+"rdt:fromEnv" : "FALSE",
+"rdt:timestamp" : "",
+"rdt:location" : ""
+}
+},
+
+"wasGeneratedBy" : {
+"e85" : {
+"prov:entity" : "p53",
+"prov:activity" : "d18"
+}
+},
+
+"activity" : {
+"p54" : {
+"rdt:name" : "summary(glmill)",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "2.962",
+"rdt:scriptNum" : "0",
+"rdt:scriptLine" : "103"
+}
+},
+
+"wasInformedBy" : {
+"e86" : {
+"prov:informant" : "p53",
+"prov:informed" : "p54"
+}
+},
+
+"used" : {
+"e87" : {
+"prov:activity" : "d18",
+"prov:entity" : "p54"
+}
+},
+
+"activity" : {
+"p55" : {
+"rdt:name" : "x$logitillness <- predict(glmill)",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "2.969",
+"rdt:scriptNum" : "0",
+"rdt:scriptLine" : "107"
+}
+},
+
+"wasInformedBy" : {
+"e88" : {
+"prov:informant" : "p54",
+"prov:informed" : "p55"
+}
+},
+
+"used" : {
+"e89" : {
+"prov:activity" : "d18",
+"prov:entity" : "p55"
+}
+},
+
+"entity" : {
+"d19" : {
+"rdt:name" : "x",
+"rdt:value" : "/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples-no-instrumentation/RMarkdownTest/ddg/19-x-PARTIAL.csv",
+"rdt:type" : "Snapshot",
+"rdt:scope" : "R_GlobalEnv",
+"rdt:fromEnv" : "FALSE",
+"rdt:timestamp" : "",
+"rdt:location" : ""
+}
+},
+
+"wasGeneratedBy" : {
+"e90" : {
+"prov:entity" : "p55",
+"prov:activity" : "d19"
+}
+},
+
+"activity" : {
+"p56" : {
+"rdt:name" : "x$probabilityillness <- exp(x$logitillness)/(1 + exp(x$logit",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "3",
+"rdt:scriptNum" : "0",
+"rdt:scriptLine" : "109"
+}
+},
+
+"wasInformedBy" : {
+"e91" : {
+"prov:informant" : "p55",
+"prov:informed" : "p56"
+}
+},
+
+"entity" : {
+"d20" : {
+"rdt:name" : "x",
+"rdt:value" : "/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples-no-instrumentation/RMarkdownTest/ddg/20-x-PARTIAL.csv",
+"rdt:type" : "Snapshot",
+"rdt:scope" : "R_GlobalEnv",
+"rdt:fromEnv" : "FALSE",
+"rdt:timestamp" : "",
+"rdt:location" : ""
+}
+},
+
+"wasGeneratedBy" : {
+"e92" : {
+"prov:entity" : "p56",
+"prov:activity" : "d20"
+}
+},
+
+"activity" : {
+"p57" : {
+"rdt:name" : "xyplot(probabilityillness ~ income * 10000, groups = chcond,",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "3.041",
+"rdt:scriptNum" : "0",
+"rdt:scriptLine" : "111"
+}
+},
+
+"wasInformedBy" : {
+"e93" : {
+"prov:informant" : "p56",
+"prov:informed" : "p57"
+}
+},
+
+"used" : {
+"e94" : {
+"prov:activity" : "d20",
+"prov:entity" : "p57"
+}
+},
+
+"activity" : {
+"p58" : {
+"rdt:name" : "ddg.chunk_8",
+"rdt:type" : "Finish",
+"rdt:elapsedTime" : "3.053",
+"rdt:scriptNum" : "0",
+"rdt:scriptLine" : "112"
+}
+},
+
+"wasInformedBy" : {
+"e95" : {
+"prov:informant" : "p57",
+"prov:informed" : "p58"
+}
+},
+
+"activity" : {
+"p59" : {
+"rdt:name" : "RMarkdownTest.R",
+"rdt:type" : "Finish",
+"rdt:elapsedTime" : "3.054",
+"rdt:scriptNum" : "0",
+"rdt:scriptLine" : "NA"
+}
+},
+
+"wasInformedBy" : {
+"e96" : {
+"prov:informant" : "p58",
+"prov:informed" : "p59"
+}
+},
+
+}
