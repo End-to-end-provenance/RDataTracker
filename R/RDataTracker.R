@@ -2949,11 +2949,11 @@ ddg.MAX_HIST_LINES <- 2^14
         # Save annotations.
         line <- paste(i, ": ", deparse(parsed.commands[i][[1]]), sep="")
         .ddg.append.line(line)
-
-        # Process breakpoint.
-        if (.ddg.is.sourced() & .ddg.break() & !.ddg.break.ignore()) {        
-          .ddg.process.breakpoint(new.commands[[i]], inside.function=called.from.ddg.eval)
-        }
+      }
+      
+      # Process breakpoint.
+      if (.ddg.is.sourced() & .ddg.break() & !.ddg.break.ignore()) {
+        .ddg.process.breakpoint(new.commands[[i]], inside.function=called.from.ddg.eval)
       }
       
       cmd.expr <- parsed.commands[[i]]
@@ -5442,7 +5442,7 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
   .ddg.set(".ddg.enable.console", enable.console)
   .ddg.set(".ddg.max.snapshot.size", max.snapshot.size)
   .ddg.set(".ddg.func.depth", 0)
-  .ddg.init.environ()
+  # .ddg.init.environ()
 
   # Initialize the information about the open start-finish blocks
   .ddg.set (".ddg.starts.open", vector())
