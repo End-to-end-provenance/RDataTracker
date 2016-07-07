@@ -1,107 +1,107 @@
 Architecture="x86_64"
-OperatingSystem="unix"
+OperatingSystem="windows"
 Language="R"
-LanguageVersion="R version 3.2.3 (2015-12-10)"
-RDataTrackerVersion="2.24.1"
+LanguageVersion="R version 3.2.5 (2016-04-14)"
+RDataTrackerVersion="2.24.2"
 Script="[DIR]/DataTypeTest.R"
-ProcessFileTimestamp="2016-06-01T14.49.52EDT"
+ProcessFileTimestamp="2016-05-30T10.32.56EDT"
 WorkingDirectory="[DIR]"
 DDGDirectory="[DIR]/ddg"
-DateTime="2016-07-01T16.25.23EDT"
-InstalledPackages="RDataTracker 2.24.1"
+DateTime="2016-07-07T13.53.35EDT"
+InstalledPackages="RDataTracker 2.24.2"
 21
-Start p1 "1-DataTypeTest.R" Value="DataTypeTest.R" Time="0.01" Script="0" Line="NA";
-Operation p2 "2-x.number <- 10" Value="x.number <- 10" Time="0.012" Script="0" Line="5";
+Start p1 "1-DataTypeTest.R" Value="DataTypeTest.R" Time="0.02" Script="0" Line="NA";
+Operation p2 "2-x.number <- 10" Value="x.number <- 10" Time="0.02" Script="0" Line="5";
 CF p1 p2
 Data d1 "1-x.number" Value="10";
 DF p2 d1
-Operation p3 "3-x.string <- \"one two three\"" Value="x.string <- \"one two three\"" Time="0.018" Script="0" Line="7";
+Operation p3 "3-x.string <- \"one two three\"" Value="x.string <- \"one two three\"" Time="0.0299999999999998" Script="0" Line="7";
 CF p2 p3
 Data d2 "2-x.string" Value="\"one two three\"";
 DF p3 d2
-Operation p4 "4-x.long.string <- \" Four score and seven years ago our father" Value="x.long.string <- \" Four score and seven years ago our father" Time="0.027" Script="0" Line="9";
+Operation p4 "4-x.long.string <- \" Four score and seven years ago our father" Value="x.long.string <- \" Four score and seven years ago our father" Time="0.0499999999999998" Script="0" Line="9";
 CF p3 p4
-Data d3 "3-x.long.string" Value="\" Four score and seven years ago our fathers brought forth on this continent, a new nation, conceived in Liberty, and dedicated to the proposition that all men are created equal. Now we are engaged in a great civil war, testing whether that nation, or any nation so conceived and so dedicated, can long endure. We are met on a great battle-field of that war. We have come to dedicate a portion of that field, as a final resting place for those who here gave their lives that that nation might live. It is altogether fitting and proper that we should do this. But, in a larger sense, we can not dedicate -- we can not consecrate -- we can not hallow -- this ground. The brave men, living and dead, who struggled here, have consecrated it, far above our poor power to add or detract. The world will little note, nor long remember what we say here, but it can never forget what they did here. It is for us the living, rather, to be dedicated here to the unfinished work which they who fought here have thus far so nobly advanced. It is rather for us to be here dedicated to the great task remaining before us -- that from these honored dead we take increased devotion to that cause for which they gave the last full measure of devotion -- that we here highly resolve that these dead shall not have died in vain -- that this nation, under God, shall have a new birth of freedom -- and that government of the people, by the people, for the people, shall not perish from the earth.\"";
+Snapshot d3 "3-x.long.string" Value="[DIR]/ddg/3-x.long.string.txt" Time="2016-07-07T13.53.35EDT";
 DF p4 d3
-Operation p5 "5-x.logical <- TRUE" Value="x.logical <- TRUE" Time="0.033" Script="0" Line="11";
+Operation p5 "5-x.logical <- TRUE" Value="x.logical <- TRUE" Time="0.0499999999999998" Script="0" Line="11";
 CF p4 p5
 Data d4 "4-x.logical" Value="TRUE";
 DF p5 d4
-Operation p6 "6-x.na <- NA" Value="x.na <- NA" Time="0.039" Script="0" Line="13";
+Operation p6 "6-x.na <- NA" Value="x.na <- NA" Time="0.0599999999999998" Script="0" Line="13";
 CF p5 p6
 Data d5 "5-x.na" Value="NA";
 DF p6 d5
-Operation p7 "7-x.null <- NULL" Value="x.null <- NULL" Time="0.046" Script="0" Line="15";
+Operation p7 "7-x.null <- NULL" Value="x.null <- NULL" Time="0.0599999999999998" Script="0" Line="15";
 CF p6 p7
 Data d6 "6-x.null" Value="NULL";
 DF p7 d6
-Operation p8 "8-x.int0 <- integer(0)" Value="x.int0 <- integer(0)" Time="0.051" Script="0" Line="17";
+Operation p8 "8-x.int0 <- integer(0)" Value="x.int0 <- integer(0)" Time="0.0799999999999998" Script="0" Line="17";
 CF p7 p8
-Snapshot d7 "7-x.int0" Value="[DIR]/ddg/7-x.int0.csv" Time="2016-07-01T16.25.23EDT";
+Snapshot d7 "7-x.int0" Value="[DIR]/ddg/7-x.int0.csv" Time="2016-07-07T13.53.35EDT";
 DF p8 d7
-Operation p9 "9-x.chr0 <- character(0)" Value="x.chr0 <- character(0)" Time="0.0590000000000001" Script="0" Line="19";
+Operation p9 "9-x.chr0 <- character(0)" Value="x.chr0 <- character(0)" Time="0.0799999999999998" Script="0" Line="19";
 CF p8 p9
-Snapshot d8 "8-x.chr0" Value="[DIR]/ddg/8-x.chr0.csv" Time="2016-07-01T16.25.23EDT";
+Snapshot d8 "8-x.chr0" Value="[DIR]/ddg/8-x.chr0.csv" Time="2016-07-07T13.53.35EDT";
 DF p9 d8
-Operation p10 "10-x.log0 <- logical(0)" Value="x.log0 <- logical(0)" Time="0.0680000000000001" Script="0" Line="21";
+Operation p10 "10-x.log0 <- logical(0)" Value="x.log0 <- logical(0)" Time="0.0899999999999999" Script="0" Line="21";
 CF p9 p10
-Snapshot d9 "9-x.log0" Value="[DIR]/ddg/9-x.log0.csv" Time="2016-07-01T16.25.24EDT";
+Snapshot d9 "9-x.log0" Value="[DIR]/ddg/9-x.log0.csv" Time="2016-07-07T13.53.35EDT";
 DF p10 d9
-Operation p11 "11-x.factor <- factor(c(\"red\", \"green\", \"blue\", \"red\", \"green\"," Value="x.factor <- factor(c(\"red\", \"green\", \"blue\", \"red\", \"green\"," Time="0.0780000000000001" Script="0" Line="23";
+Operation p11 "11-x.factor <- factor(c(\"red\", \"green\", \"blue\", \"red\", \"green\"," Value="x.factor <- factor(c(\"red\", \"green\", \"blue\", \"red\", \"green\"," Time="0.11" Script="0" Line="23";
 CF p10 p11
-Snapshot d10 "10-x.factor" Value="[DIR]/ddg/10-x.factor.txt" Time="2016-07-01T16.25.24EDT";
+Snapshot d10 "10-x.factor" Value="[DIR]/ddg/10-x.factor.txt" Time="2016-07-07T13.53.35EDT";
 DF p11 d10
-Operation p12 "12-x.vector.number <- c(1, 2, 3)" Value="x.vector.number <- c(1, 2, 3)" Time="0.0890000000000001" Script="0" Line="25";
+Operation p12 "12-x.vector.number <- c(1, 2, 3)" Value="x.vector.number <- c(1, 2, 3)" Time="0.12" Script="0" Line="25";
 CF p11 p12
-Snapshot d11 "11-x.vector.number" Value="[DIR]/ddg/11-x.vector.number.csv" Time="2016-07-01T16.25.24EDT";
+Snapshot d11 "11-x.vector.number" Value="[DIR]/ddg/11-x.vector.number.csv" Time="2016-07-07T13.53.35EDT";
 DF p12 d11
-Operation p13 "13-x.vector.string <- c(\"one\", \"two\", \"three\")" Value="x.vector.string <- c(\"one\", \"two\", \"three\")" Time="0.0990000000000001" Script="0" Line="27";
+Operation p13 "13-x.vector.string <- c(\"one\", \"two\", \"three\")" Value="x.vector.string <- c(\"one\", \"two\", \"three\")" Time="0.14" Script="0" Line="27";
 CF p12 p13
-Snapshot d12 "12-x.vector.string" Value="[DIR]/ddg/12-x.vector.string.csv" Time="2016-07-01T16.25.24EDT";
+Snapshot d12 "12-x.vector.string" Value="[DIR]/ddg/12-x.vector.string.csv" Time="2016-07-07T13.53.35EDT";
 DF p13 d12
-Operation p14 "14-x.vector.logical <- c(TRUE, FALSE, TRUE)" Value="x.vector.logical <- c(TRUE, FALSE, TRUE)" Time="0.11" Script="0" Line="29";
+Operation p14 "14-x.vector.logical <- c(TRUE, FALSE, TRUE)" Value="x.vector.logical <- c(TRUE, FALSE, TRUE)" Time="0.15" Script="0" Line="29";
 CF p13 p14
-Snapshot d13 "13-x.vector.logical" Value="[DIR]/ddg/13-x.vector.logical.csv" Time="2016-07-01T16.25.24EDT";
+Snapshot d13 "13-x.vector.logical" Value="[DIR]/ddg/13-x.vector.logical.csv" Time="2016-07-07T13.53.35EDT";
 DF p14 d13
-Operation p15 "15-x.matrix <- matrix(data = c(1, 2, 3, 4, 5, 6), nrow = 3, nco" Value="x.matrix <- matrix(data = c(1, 2, 3, 4, 5, 6), nrow = 3, nco" Time="0.117" Script="0" Line="31";
+Operation p15 "15-x.matrix <- matrix(data = c(1, 2, 3, 4, 5, 6), nrow = 3, nco" Value="x.matrix <- matrix(data = c(1, 2, 3, 4, 5, 6), nrow = 3, nco" Time="0.15" Script="0" Line="31";
 CF p14 p15
-Snapshot d14 "14-x.matrix" Value="[DIR]/ddg/14-x.matrix.csv" Time="2016-07-01T16.25.24EDT";
+Snapshot d14 "14-x.matrix" Value="[DIR]/ddg/14-x.matrix.csv" Time="2016-07-07T13.53.35EDT";
 DF p15 d14
-Operation p16 "16-x.array <- array(data = c(1, 2, 3, 4, 5, 6, 7, 8), dim = c(2" Value="x.array <- array(data = c(1, 2, 3, 4, 5, 6, 7, 8), dim = c(2" Time="0.129" Script="0" Line="33";
+Operation p16 "16-x.array <- array(data = c(1, 2, 3, 4, 5, 6, 7, 8), dim = c(2" Value="x.array <- array(data = c(1, 2, 3, 4, 5, 6, 7, 8), dim = c(2" Time="0.17" Script="0" Line="33";
 CF p15 p16
-Data d15 "15-x.array" Value="complex";
+Snapshot d15 "15-x.array" Value="[DIR]/ddg/15-x.array.txt" Time="2016-07-07T13.53.35EDT";
 DF p16 d15
-Operation p17 "17-x.data.frame <- data.frame(x.vector.number, x.vector.string," Value="x.data.frame <- data.frame(x.vector.number, x.vector.string," Time="0.14" Script="0" Line="35";
+Operation p17 "17-x.data.frame <- data.frame(x.vector.number, x.vector.string," Value="x.data.frame <- data.frame(x.vector.number, x.vector.string," Time="0.18" Script="0" Line="35";
 CF p16 p17
 DF d11 p17
 DF d12 p17
 DF d13 p17
-Snapshot d16 "16-x.data.frame" Value="[DIR]/ddg/16-x.data.frame.csv" Time="2016-07-01T16.25.24EDT";
+Snapshot d16 "16-x.data.frame" Value="[DIR]/ddg/16-x.data.frame.csv" Time="2016-07-07T13.53.35EDT";
 DF p17 d16
-Operation p18 "18-x.list1 <- list(x.number, x.string, x.logical, x.na, x.null)" Value="x.list1 <- list(x.number, x.string, x.logical, x.na, x.null)" Time="0.164" Script="0" Line="37";
+Operation p18 "18-x.list1 <- list(x.number, x.string, x.logical, x.na, x.null)" Value="x.list1 <- list(x.number, x.string, x.logical, x.na, x.null)" Time="0.21" Script="0" Line="37";
 CF p17 p18
 DF d1 p18
 DF d2 p18
 DF d4 p18
 DF d5 p18
 DF d6 p18
-Snapshot d17 "17-x.list1" Value="[DIR]/ddg/17-x.list1.txt" Time="2016-07-01T16.25.24EDT";
+Snapshot d17 "17-x.list1" Value="[DIR]/ddg/17-x.list1.txt" Time="2016-07-07T13.53.35EDT";
 DF p18 d17
-Operation p19 "19-x.list2 <- list(x.vector.number, x.vector.string, x.vector.l" Value="x.list2 <- list(x.vector.number, x.vector.string, x.vector.l" Time="0.198" Script="0" Line="39";
+Operation p19 "19-x.list2 <- list(x.vector.number, x.vector.string, x.vector.l" Value="x.list2 <- list(x.vector.number, x.vector.string, x.vector.l" Time="0.26" Script="0" Line="39";
 CF p18 p19
 DF d11 p19
 DF d12 p19
 DF d13 p19
 DF d14 p19
 DF d16 p19
-Snapshot d18 "18-x.list2" Value="[DIR]/ddg/18-x.list2.csv" Time="2016-07-01T16.25.24EDT";
+Snapshot d18 "18-x.list2" Value="[DIR]/ddg/18-x.list2.txt" Time="2016-07-07T13.53.35EDT";
 DF p19 d18
-Operation p20 "20-x.list3 <- list(x.list1, x.list2)" Value="x.list3 <- list(x.list1, x.list2)" Time="0.23" Script="0" Line="41";
+Operation p20 "20-x.list3 <- list(x.list1, x.list2)" Value="x.list3 <- list(x.list1, x.list2)" Time="0.29" Script="0" Line="41";
 CF p19 p20
 DF d17 p20
 DF d18 p20
-Snapshot d19 "19-x.list3" Value="[DIR]/ddg/19-x.list3.txt" Time="2016-07-01T16.25.24EDT";
+Snapshot d19 "19-x.list3" Value="[DIR]/ddg/19-x.list3.txt" Time="2016-07-07T13.53.35EDT";
 DF p20 d19
-Finish p21 "21-DataTypeTest.R" Value="DataTypeTest.R" Time="0.251" Script="0" Line="NA";
+Finish p21 "21-DataTypeTest.R" Value="DataTypeTest.R" Time="0.31" Script="0" Line="NA";
 CF p20 p21
 

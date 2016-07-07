@@ -7,6 +7,7 @@
 \alias{ddg.flush.ddg}
 \alias{ddg.console.off}
 \alias{ddg.console.on}
+\alias{ddg.display.ddg}
 \title{Creating Provenance Graphs with RDataTracker}
 \description{These functions are needed to create provenance graphs.}
 \usage{
@@ -20,6 +21,7 @@ ddg.annotate.off(fnames = NULL)
 ddg.console.on()
 ddg.console.off()
 ddg.flush.ddg(ddg.path = NULL)
+ddg.display.ddg()
 }
 \arguments{
   \item{r.script.path}{ the full path to the file containing the R script that is being executed. }
@@ -82,6 +84,10 @@ ddg.flush.ddg(ddg.path = NULL)
   ddg.flush.ddg removes all files from the DDG directory specified unless the DDG directory is also 
   the working directory, in which case it does nothing. If no DDG directory is specified, the current
   DDG directory (if any) is assumed.
+  
+  The last DDG created (if any) can be displayed with ddg.display.ddg. This function starts DDG Explorer
+  and loads the most recent ddg.txt file (if any). If the DDG path is not set or a ddg.txt file is not available,
+  the function returns "DDG not available".
 }
 \author{Emery Boose and Barbara Lerner}
 \examples{
