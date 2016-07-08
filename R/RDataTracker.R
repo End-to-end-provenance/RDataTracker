@@ -2799,12 +2799,16 @@ ddg.MAX_HIST_LINES <- 2^14
   # Save ddg.
   .ddg.txt.write()
   .ddg.json.write()
-    
-  # Get user input from the keyboard.
-  line <- toupper(readline())
-  if (line == "C") .ddg.set("ddg.break", FALSE)
-  if (line == "Q") .ddg.set("ddg.break.ignore", TRUE)
 
+  # Get user input from the keyboard.
+  line <- "D"
+  while (line == "D") {
+    line <- toupper(readline())
+    if (line == "D") .ddg.loadDDG(.ddg.path())
+    else if (line == "") {}
+    else if (line == "C") .ddg.set("ddg.break", FALSE)
+    else if (line == "Q") .ddg.set("ddg.break.ignore", TRUE)
+  }
 }
 
 # .ddg.parse.commands takes as input a list of R script commands
@@ -6040,7 +6044,7 @@ ddg.debug.lib.off <- function () {
 
 ddg.breakpoint <- function() {
   if (!.ddg.break.ignore()) {
-    writeLines("\nEnter = next command, C = next breakpoint, Q = quit debugging\n")
+    writeLines("\nEnter = next command, C = next breakpoint, D = display DDG, Q = quit debugging\n")
     .ddg.set("ddg.break", TRUE)
   }  
 }
