@@ -456,6 +456,10 @@ ddg.MAX_HIST_LINES <- 2^14
     environ <- paste(environ, "Script=\"", ddg.r.script.path, "\"\n", sep="")
     environ <- paste(environ, "ProcessFileTimestamp=\"", .ddg.format.time(file.info(ddg.r.script.path)$mtime), "\"\n", sep="")
   }
+  else {
+    environ <- paste(environ, "Script=\"Console\"\n")
+    environ <- paste(environ, "ProcessFileTimestamp=\"", time, "\"\n", sep="")
+  }
   environ <- paste(environ, "WorkingDirectory=\"", getwd(), "\"\n", sep="")
   environ <- paste(environ, "DDGDirectory=\"", .ddg.path(), "\"\n", sep="")
   environ <- paste(environ, "DateTime=\"", time, "\"\n", sep="")
