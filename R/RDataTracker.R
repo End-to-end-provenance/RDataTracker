@@ -203,6 +203,7 @@ ddg.MAX_HIST_LINES <- 2^14
 
 .ddg.append <- function(...) {
   text <- .ddg.get("ddg.txt")
+  if (.ddg.debug.lib() && length(text) > 1) stop()
   .ddg.set("ddg.txt", paste(text, ..., sep=""))
 }
 
@@ -3275,6 +3276,13 @@ ddg.MAX_HIST_LINES <- 2^14
 # CHECK!  Looks like env parameter is not needed!
 .ddg.proc.node <- function(ptype, pname, pvalue="", console=FALSE, auto.created=FALSE, env = sys.frame(.ddg.get.frame.number(sys.calls()))
 ) {
+  if (.ddg.debug.lib()) {
+  	#print(paste(".ddg.proc.node: length(pname) =", length(pname)))
+  	#print(paste(".ddg.proc.node: pname =", pname))
+  	if (length(pname) > 1) {
+    	print(sys.calls())
+    }
+  }
 
   # We're not in a console node but we're capturing data
   # automatically.
@@ -4007,6 +4015,7 @@ ddg.MAX_HIST_LINES <- 2^14
           # Here, arg is the arguments passed IN.
           #print(paste(".ddg.create.function.nodes: binding =", binding))
           arg <- binding[[1]]
+          #print(paste(".ddg.create.function.nodes: arg =", arg))
 
           # formal is the paramenter name of the function (what
           # is the variable known as inside?).
@@ -4023,7 +4032,8 @@ ddg.MAX_HIST_LINES <- 2^14
           }
           else {
             vars.used <- .ddg.find.var.uses(arg)
-            binding.node.name <- paste(formal, " <- ", deparse(arg))
+            binding.node.name <- paste(formal, " <- ", paste(deparse(arg), collapse=" "))
+            #print(paste(".ddg.create.function.nodes: binding.node.name =", binding.node.name))
           }
 
           .ddg.proc.node("Binding", binding.node.name, env=env)
@@ -4662,6 +4672,9 @@ ddg.procedure <- function(pname, ins=NULL, outs.graphic=NULL, outs.data=NULL, ou
   if (!.ddg.is.init()) return(invisible())
 
   .ddg.lookup.function.name(pname)
+  
+  #print(paste("ddg.procedure: length(pname) =", length(pname)))
+  #print(paste("ddg.procedure: pname =", pname))
 
   .ddg.proc.node("Operation", pname, pname)
 
