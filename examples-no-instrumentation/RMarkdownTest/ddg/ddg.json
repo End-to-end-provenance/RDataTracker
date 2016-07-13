@@ -12,10 +12,10 @@
 "rdt:language" : "R",
 "rdt:rVersion" : "R version 3.2.3 (2015-12-10)",
 "rdt:script" : "/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples-no-instrumentation/RMarkdownTest/ddg/RMarkdownTest.R",
-"rdt:scriptTimeStamp" : "2016-07-11T16.40.53EDT",
+"rdt:scriptTimeStamp" : "2016-07-13T17.00.50EDT",
 "rdt:workingDirectory" : "/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples-no-instrumentation/RMarkdownTest",
 "rdt:ddgDirectory" : "/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/examples-no-instrumentation/RMarkdownTest/ddg",
-"rdt:ddgTimeStamp" : "2016-07-11T16.40.53EDT",
+"rdt:ddgTimeStamp" : "2016-07-13T17.00.50EDT",
 "rdt:rdatatrackerVersion" : "2.24.0",
 "rdt:InstalledPackages": [
 	{"package":"Ecdat", "version":"0.2-9"},
@@ -33,7 +33,7 @@
 "p1" : {
 "rdt:name" : "RMarkdownTest.R",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "0.023",
+"rdt:elapsedTime" : "0.024",
 "rdt:scriptNum" : "0",
 "rdt:scriptLine" : "NA"
 }
@@ -60,7 +60,7 @@
 "p3" : {
 "rdt:name" : "library(Ecdat)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.976",
+"rdt:elapsedTime" : "0.959",
 "rdt:scriptNum" : "0",
 "rdt:scriptLine" : "13"
 }
@@ -96,7 +96,7 @@
 "p4" : {
 "rdt:name" : "library(mosaic)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.504",
+"rdt:elapsedTime" : "1.439",
 "rdt:scriptNum" : "0",
 "rdt:scriptLine" : "14"
 }
@@ -132,7 +132,7 @@
 "p5" : {
 "rdt:name" : "x <- DoctorAUS",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.527",
+"rdt:elapsedTime" : "1.461",
 "rdt:scriptNum" : "0",
 "rdt:scriptLine" : "15"
 }
@@ -168,7 +168,7 @@
 "p6" : {
 "rdt:name" : "setup",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.549",
+"rdt:elapsedTime" : "1.483",
 "rdt:scriptNum" : "0",
 "rdt:scriptLine" : "16"
 }
@@ -185,7 +185,7 @@
 "p7" : {
 "rdt:name" : "test1",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "1.55",
+"rdt:elapsedTime" : "1.484",
 "rdt:scriptNum" : "0",
 "rdt:scriptLine" : "24"
 }
@@ -202,7 +202,7 @@
 "p8" : {
 "rdt:name" : "x$sex2 <- \"Male\"",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.551",
+"rdt:elapsedTime" : "1.486",
 "rdt:scriptNum" : "0",
 "rdt:scriptLine" : "25"
 }
@@ -238,7 +238,7 @@
 "p9" : {
 "rdt:name" : "x$sex2[x$sex == \"1\"] <- \"Female\"",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.575",
+"rdt:elapsedTime" : "1.509",
 "rdt:scriptNum" : "0",
 "rdt:scriptLine" : "26"
 }
@@ -274,7 +274,7 @@
 "p10" : {
 "rdt:name" : "x$Age <- (x$age) * 100",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.598",
+"rdt:elapsedTime" : "1.532",
 "rdt:scriptNum" : "0",
 "rdt:scriptLine" : "27"
 }
@@ -310,7 +310,7 @@
 "p11" : {
 "rdt:name" : "x$Income <- (x$income) * 10000",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.718",
+"rdt:elapsedTime" : "1.653",
 "rdt:scriptNum" : "0",
 "rdt:scriptLine" : "28"
 }
@@ -346,7 +346,7 @@
 "p12" : {
 "rdt:name" : "test1",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.741",
+"rdt:elapsedTime" : "1.676",
 "rdt:scriptNum" : "0",
 "rdt:scriptLine" : "30"
 }
@@ -363,7 +363,7 @@
 "p13" : {
 "rdt:name" : "ddg.chunk_1",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "1.742",
+"rdt:elapsedTime" : "1.677",
 "rdt:scriptNum" : "0",
 "rdt:scriptLine" : "31"
 }
@@ -380,7 +380,7 @@
 "p14" : {
 "rdt:name" : "histogram(~Age, data = x)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.749",
+"rdt:elapsedTime" : "1.684",
 "rdt:scriptNum" : "0",
 "rdt:scriptLine" : "32"
 }
@@ -404,7 +404,7 @@
 "p15" : {
 "rdt:name" : "ddg.chunk_1",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.757",
+"rdt:elapsedTime" : "1.692",
 "rdt:scriptNum" : "0",
 "rdt:scriptLine" : "33"
 }
@@ -421,7 +421,7 @@
 "p16" : {
 "rdt:name" : "ddg.chunk_2",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "1.758",
+"rdt:elapsedTime" : "1.693",
 "rdt:scriptNum" : "0",
 "rdt:scriptLine" : "37"
 }
@@ -438,7 +438,7 @@
 "p17" : {
 "rdt:name" : "histogram(~illness, data = x)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.763",
+"rdt:elapsedTime" : "1.696",
 "rdt:scriptNum" : "0",
 "rdt:scriptLine" : "38"
 }
@@ -462,7 +462,7 @@
 "p18" : {
 "rdt:name" : "histogram(~doctorco, data = x)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.777",
+"rdt:elapsedTime" : "1.708",
 "rdt:scriptNum" : "0",
 "rdt:scriptLine" : "39"
 }
@@ -486,7 +486,7 @@
 "p19" : {
 "rdt:name" : "ddg.chunk_2",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.789",
+"rdt:elapsedTime" : "1.718",
 "rdt:scriptNum" : "0",
 "rdt:scriptLine" : "40"
 }
@@ -503,7 +503,7 @@
 "p20" : {
 "rdt:name" : "ddg.chunk_3",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "1.792",
+"rdt:elapsedTime" : "1.719",
 "rdt:scriptNum" : "0",
 "rdt:scriptLine" : "44"
 }
@@ -520,7 +520,7 @@
 "p21" : {
 "rdt:name" : "histogram(~doctorco, data = x)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.795",
+"rdt:elapsedTime" : "1.723",
 "rdt:scriptNum" : "0",
 "rdt:scriptLine" : "45"
 }
@@ -544,7 +544,7 @@
 "p22" : {
 "rdt:name" : "x$doctorcobin <- 1",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.808",
+"rdt:elapsedTime" : "1.733",
 "rdt:scriptNum" : "0",
 "rdt:scriptLine" : "46"
 }
@@ -580,7 +580,7 @@
 "p23" : {
 "rdt:name" : "x$doctorcobin[x$doctorco == \"0\"] <- 0",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.834",
+"rdt:elapsedTime" : "1.761",
 "rdt:scriptNum" : "0",
 "rdt:scriptLine" : "47"
 }
@@ -616,7 +616,7 @@
 "p24" : {
 "rdt:name" : "histogram(~doctorcobin, data = x)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.863",
+"rdt:elapsedTime" : "1.791",
 "rdt:scriptNum" : "0",
 "rdt:scriptLine" : "48"
 }
@@ -640,7 +640,7 @@
 "p25" : {
 "rdt:name" : "ddg.chunk_3",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.872",
+"rdt:elapsedTime" : "1.801",
 "rdt:scriptNum" : "0",
 "rdt:scriptLine" : "49"
 }
@@ -657,7 +657,7 @@
 "p26" : {
 "rdt:name" : "test2",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "1.873",
+"rdt:elapsedTime" : "1.802",
 "rdt:scriptNum" : "0",
 "rdt:scriptLine" : "51"
 }
@@ -674,7 +674,7 @@
 "p27" : {
 "rdt:name" : "histogram(~doctorcobin, data = x)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.878",
+"rdt:elapsedTime" : "1.806",
 "rdt:scriptNum" : "0",
 "rdt:scriptLine" : "52"
 }
@@ -698,7 +698,7 @@
 "p28" : {
 "rdt:name" : "test2",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.887",
+"rdt:elapsedTime" : "1.814",
 "rdt:scriptNum" : "0",
 "rdt:scriptLine" : "53"
 }
@@ -715,7 +715,7 @@
 "p29" : {
 "rdt:name" : "test3",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "1.888",
+"rdt:elapsedTime" : "1.816",
 "rdt:scriptNum" : "0",
 "rdt:scriptLine" : "57"
 }
@@ -732,7 +732,7 @@
 "p30" : {
 "rdt:name" : "x$sex2 <- \"Male\"",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.89",
+"rdt:elapsedTime" : "1.817",
 "rdt:scriptNum" : "0",
 "rdt:scriptLine" : "58"
 }
@@ -768,7 +768,7 @@
 "p31" : {
 "rdt:name" : "x$sex2[x$sex == \"1\"] <- \"Female\"",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.914",
+"rdt:elapsedTime" : "1.845",
 "rdt:scriptNum" : "0",
 "rdt:scriptLine" : "59"
 }
@@ -804,7 +804,7 @@
 "p32" : {
 "rdt:name" : "x$Income <- (x$income) * 1e+05",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.943",
+"rdt:elapsedTime" : "1.87",
 "rdt:scriptNum" : "0",
 "rdt:scriptLine" : "60"
 }
@@ -840,7 +840,7 @@
 "p33" : {
 "rdt:name" : "test3",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.971",
+"rdt:elapsedTime" : "1.896",
 "rdt:scriptNum" : "0",
 "rdt:scriptLine" : "61"
 }
@@ -857,7 +857,7 @@
 "p34" : {
 "rdt:name" : "ddg.chunk_4",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "1.972",
+"rdt:elapsedTime" : "1.898",
 "rdt:scriptNum" : "0",
 "rdt:scriptLine" : "63"
 }
@@ -874,7 +874,7 @@
 "p35" : {
 "rdt:name" : "histogram(~Income, data = x)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.976",
+"rdt:elapsedTime" : "1.902",
 "rdt:scriptNum" : "0",
 "rdt:scriptLine" : "64"
 }
@@ -898,7 +898,7 @@
 "p36" : {
 "rdt:name" : "ddg.chunk_4",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.985",
+"rdt:elapsedTime" : "1.909",
 "rdt:scriptNum" : "0",
 "rdt:scriptLine" : "65"
 }
@@ -915,7 +915,7 @@
 "p37" : {
 "rdt:name" : "ddg.chunk_5",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "1.986",
+"rdt:elapsedTime" : "1.911",
 "rdt:scriptNum" : "0",
 "rdt:scriptLine" : "72"
 }
@@ -932,7 +932,7 @@
 "p38" : {
 "rdt:name" : "bwplot(Age ~ Income, data = x, ylab = \"Age groups (of five y",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "2.001",
+"rdt:elapsedTime" : "1.925",
 "rdt:scriptNum" : "0",
 "rdt:scriptLine" : "73"
 }
@@ -956,7 +956,7 @@
 "p39" : {
 "rdt:name" : "lmage <- lm(sqrt(income) ~ poly(age, 2, raw = T), data = x)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "2.017",
+"rdt:elapsedTime" : "1.94",
 "rdt:scriptNum" : "0",
 "rdt:scriptLine" : "74"
 }
@@ -999,7 +999,7 @@
 "p40" : {
 "rdt:name" : "plot(x$age * 100, sqrt(x$income), xlab = \"Age\", ylab = \"Sqrt",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "2.202",
+"rdt:elapsedTime" : "2.119",
 "rdt:scriptNum" : "0",
 "rdt:scriptLine" : "76"
 }
@@ -1023,7 +1023,7 @@
 "p41" : {
 "rdt:name" : "lines(x$age * 100, predict(lmage))",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "2.218",
+"rdt:elapsedTime" : "2.135",
 "rdt:scriptNum" : "0",
 "rdt:scriptLine" : "77"
 }
@@ -1054,7 +1054,7 @@
 "p42" : {
 "rdt:name" : "ddg.chunk_5",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "2.234",
+"rdt:elapsedTime" : "2.148",
 "rdt:scriptNum" : "0",
 "rdt:scriptLine" : "78"
 }
@@ -1071,7 +1071,7 @@
 "p43" : {
 "rdt:name" : "ddg.chunk_6",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "2.235",
+"rdt:elapsedTime" : "2.149",
 "rdt:scriptNum" : "0",
 "rdt:scriptLine" : "84"
 }
@@ -1088,7 +1088,7 @@
 "p44" : {
 "rdt:name" : "x$Age2 <- x$Age^2",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "2.236",
+"rdt:elapsedTime" : "2.15",
 "rdt:scriptNum" : "0",
 "rdt:scriptLine" : "85"
 }
@@ -1124,7 +1124,7 @@
 "p45" : {
 "rdt:name" : "Quadratic <- lm(Income ~ Age + Age2, data = x)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "2.27",
+"rdt:elapsedTime" : "2.182",
 "rdt:scriptNum" : "0",
 "rdt:scriptLine" : "86"
 }
@@ -1167,7 +1167,7 @@
 "p46" : {
 "rdt:name" : "ddg.chunk_6",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "2.491",
+"rdt:elapsedTime" : "2.406",
 "rdt:scriptNum" : "0",
 "rdt:scriptLine" : "87"
 }
@@ -1184,7 +1184,7 @@
 "p47" : {
 "rdt:name" : "ddg.chunk_7",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "2.493",
+"rdt:elapsedTime" : "2.407",
 "rdt:scriptNum" : "0",
 "rdt:scriptLine" : "89"
 }
@@ -1201,7 +1201,7 @@
 "p48" : {
 "rdt:name" : "summary(Quadratic)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "2.497",
+"rdt:elapsedTime" : "2.411",
 "rdt:scriptNum" : "0",
 "rdt:scriptLine" : "90"
 }
@@ -1225,7 +1225,7 @@
 "p49" : {
 "rdt:name" : "ddg.chunk_7",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "2.505",
+"rdt:elapsedTime" : "2.419",
 "rdt:scriptNum" : "0",
 "rdt:scriptLine" : "91"
 }
@@ -1242,7 +1242,7 @@
 "p50" : {
 "rdt:name" : "ddg.chunk_8",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "2.506",
+"rdt:elapsedTime" : "2.421",
 "rdt:scriptNum" : "0",
 "rdt:scriptLine" : "96"
 }
@@ -1259,7 +1259,7 @@
 "p51" : {
 "rdt:name" : "x$illnessbin <- 1",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "2.508",
+"rdt:elapsedTime" : "2.422",
 "rdt:scriptNum" : "0",
 "rdt:scriptLine" : "98"
 }
@@ -1295,7 +1295,7 @@
 "p52" : {
 "rdt:name" : "x$illnessbin[x$illness == 0] <- 0",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "2.532",
+"rdt:elapsedTime" : "2.447",
 "rdt:scriptNum" : "0",
 "rdt:scriptLine" : "99"
 }
@@ -1331,7 +1331,7 @@
 "p53" : {
 "rdt:name" : "glmill <- glm(illnessbin ~ income + sex + age + chcond, data",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "2.589",
+"rdt:elapsedTime" : "2.497",
 "rdt:scriptNum" : "0",
 "rdt:scriptLine" : "102"
 }
@@ -1374,7 +1374,7 @@
 "p54" : {
 "rdt:name" : "summary(glmill)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "3.086",
+"rdt:elapsedTime" : "2.974",
 "rdt:scriptNum" : "0",
 "rdt:scriptLine" : "103"
 }
@@ -1398,7 +1398,7 @@
 "p55" : {
 "rdt:name" : "x$logitillness <- predict(glmill)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "3.093",
+"rdt:elapsedTime" : "2.98",
 "rdt:scriptNum" : "0",
 "rdt:scriptLine" : "107"
 }
@@ -1441,7 +1441,7 @@
 "p56" : {
 "rdt:name" : "x$probabilityillness <- exp(x$logitillness)/(1 + exp(x$logit",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "3.13",
+"rdt:elapsedTime" : "3.012",
 "rdt:scriptNum" : "0",
 "rdt:scriptLine" : "109"
 }
@@ -1477,7 +1477,7 @@
 "p57" : {
 "rdt:name" : "xyplot(probabilityillness ~ income * 10000, groups = chcond,",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "3.168",
+"rdt:elapsedTime" : "3.054",
 "rdt:scriptNum" : "0",
 "rdt:scriptLine" : "111"
 }
@@ -1501,7 +1501,7 @@
 "p58" : {
 "rdt:name" : "ddg.chunk_8",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "3.182",
+"rdt:elapsedTime" : "3.066",
 "rdt:scriptNum" : "0",
 "rdt:scriptLine" : "112"
 }
@@ -1518,7 +1518,7 @@
 "p59" : {
 "rdt:name" : "RMarkdownTest.R",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "3.183",
+"rdt:elapsedTime" : "3.067",
 "rdt:scriptNum" : "0",
 "rdt:scriptLine" : "NA"
 }
