@@ -547,15 +547,18 @@ ddg.MAX_HIST_LINES <- 2^14
   return(jstr)
 }
 
+.ddg.json.prefix <- function(){
+  # add json prefix
+  prefix <- "\"prefix\" : {\n\"prov\" : \"http://www.w3.org/ns/prov#\",\n\"rdt\" : \"http://rdatatracker.org/\"\n},\n"
+  return (prefix)
+}
+
 # .ddg.json.environ returns prefix and environment information
 # for the ddg.json string.
 
 .ddg.json.environ <- function() {
-  # add json prefix
-  environ <- "\"prefix\" : {\n\"prov\" : \"http://www.w3.org/ns/prov#\",\n\"rdt\" : \"http://rdatatracker.org/\"\n},\n\n"
-
   # add environment entities
-  environ <- paste(environ, "\"entity\" : {\n\"rdt:environment\" : {\n", sep="")
+  environ <- paste(environ, "\n\"rdt:environment\" : {\n", sep="")
 
   architecture <- R.Version()$arch
   environ <- paste(environ, .ddg.json.nv("rdt:architecture", architecture), sep="")
@@ -596,8 +599,6 @@ ddg.MAX_HIST_LINES <- 2^14
 
   environ <- paste(environ, .ddg.installedpackages.json(), sep = "")
 
-  environ <- paste(environ, "}\n},\n\n", sep="")
-
   return(environ)
 }
 
@@ -625,7 +626,7 @@ ddg.MAX_HIST_LINES <- 2^14
 
 .ddg.json.control.edge <- function(id, node1, node2) {
 
-  jstr <- paste("\"wasInformedBy\" : {\n\"e", id , "\" : {\n\"prov:informant\" : \"", node1, "\",\n\"prov:informed\" : \"", node2, "\"\n}", sep="")
+  jstr <- paste("\n\"e", id , "\" : {\n\"prov:informant\" : \"", node1, "\",\n\"prov:informed\" : \"", node2, "\"\n}", sep="")
 
   .ddg.append.wasInformedBy(jstr)
 }
@@ -635,7 +636,7 @@ ddg.MAX_HIST_LINES <- 2^14
 
 .ddg.json.data.out.edge <- function(id, node1, node2) {
 
-  jstr <- paste("\"wasGeneratedBy\" : {\n\"e", id , "\" : {\n\"prov:entity\" : \"", node1, "\",\n\"prov:activity\" : \"", node2, "\"\n}", sep="")
+  jstr <- paste("\n\"e", id , "\" : {\n\"prov:entity\" : \"", node1, "\",\n\"prov:activity\" : \"", node2, "\"\n}", sep="")
 
   .ddg.append.wasGeneratedBy(jstr)
 }
@@ -645,7 +646,7 @@ ddg.MAX_HIST_LINES <- 2^14
 
 .ddg.json.data.in.edge <- function(id, node1, node2) {
 
-  jstr <- paste("\"used\" : {\n\"e", id , "\" : {\n\"prov:activity\" : \"", node1, "\",\n\"prov:entity\" : \"", node2, "\"\n}", sep="")
+  jstr <- paste("\n\"e", id , "\" : {\n\"prov:activity\" : \"", node1, "\",\n\"prov:entity\" : \"", node2, "\"\n}", sep="")
 
   .ddg.append.used(jstr)
 }
@@ -653,13 +654,15 @@ ddg.MAX_HIST_LINES <- 2^14
 # .ddg.json.current returns the current ddg.json string.
 
 .ddg.json.current <- function() {
+  prefix <- ddg.json.prefix()
   environ <- .ddg.json.environ()
+  .ddg.append.activity(environ)
   activity <- .ddg.get("ddg.activity")
   entity <- .ddg.get("ddg.entity")
   wasInformedBy <- .ddg.get('ddg.wasInformedBy')
   wasGeneratedBy <- .ddg.get('ddg.wasGeneratedBy')
   used <- .ddg.get('ddg.used')
-  ddg.json <- paste("{\n\n", environ, '"activity":{\n', activity, '},\n', '"entity":{\n', entity, '},\n', '"wasInformedBy":{\n', wasInformedBy, '},\n', '"wasGeneratedBy":{\n', wasGeneratedBy, '},\n', '"used":{\n', used, '}\n', "}", sep="")
+  ddg.json <- paste("{\n\n", prefix, '"activity":{\n', activity, '},\n', '"entity":{\n', entity, '},\n', '"wasInformedBy":{\n', wasInformedBy, '},\n', '"wasGeneratedBy":{\n', wasGeneratedBy, '},\n', '"used":{\n', used, '}\n', "}", sep="")
   return(ddg.json)
 }
 
