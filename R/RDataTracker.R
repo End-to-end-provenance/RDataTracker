@@ -654,7 +654,7 @@ ddg.MAX_HIST_LINES <- 2^14
 # .ddg.json.current returns the current ddg.json string.
 
 .ddg.json.current <- function() {
-  prefix <- ddg.json.prefix()
+  prefix <- .ddg.json.prefix()
   environ <- .ddg.json.environ()
   .ddg.append.activity(environ)
   activity <- .ddg.get("ddg.activity")
