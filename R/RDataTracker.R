@@ -638,7 +638,7 @@ ddg.MAX_HIST_LINES <- 2^14
 
 .ddg.json.data.out.edge <- function(id, node1, node2) {
 
-  jstr <- paste("\n\"e", id , "\" : {\n\"prov:entity\" : \"", node1, "\",\n\"prov:activity\" : \"", node2, "\"\n}", sep="")
+  jstr <- paste("\n\"e", id , "\" : {\n\"prov:entity\" : \"", node2, "\",\n\"prov:activity\" : \"", node1, "\"\n}", sep="")
 
   .ddg.append.wasGeneratedBy(jstr)
 }
@@ -648,7 +648,7 @@ ddg.MAX_HIST_LINES <- 2^14
 
 .ddg.json.data.in.edge <- function(id, node1, node2) {
 
-  jstr <- paste("\n\"e", id , "\" : {\n\"prov:activity\" : \"", node1, "\",\n\"prov:entity\" : \"", node2, "\"\n}", sep="")
+  jstr <- paste("\n\"e", id , "\" : {\n\"prov:activity\" : \"", node2, "\",\n\"prov:entity\" : \"", node1, "\"\n}", sep="")
 
   .ddg.append.used(jstr)
 }
