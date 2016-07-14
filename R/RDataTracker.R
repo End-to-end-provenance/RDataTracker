@@ -558,6 +558,7 @@ ddg.MAX_HIST_LINES <- 2^14
 
 .ddg.json.environ <- function() {
   # add environment entities
+  environ <- ""
   environ <- paste(environ, "\n\"rdt:environment\" : {\n", sep="")
 
   architecture <- R.Version()$arch
