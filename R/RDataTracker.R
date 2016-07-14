@@ -599,6 +599,7 @@ ddg.MAX_HIST_LINES <- 2^14
   environ <- paste(environ, .ddg.json.nv("rdt:rdatatrackerVersion", lib.version), sep="")
 
   environ <- paste(environ, .ddg.installedpackages.json(), sep = "")
+  environ <- paste(environ, "\n}", sep = "")
 
   return(environ)
 }
