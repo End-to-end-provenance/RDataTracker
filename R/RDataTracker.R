@@ -659,7 +659,7 @@ ddg.MAX_HIST_LINES <- 2^14
   wasInformedBy <- .ddg.get('ddg.wasInformedBy')
   wasGeneratedBy <- .ddg.get('ddg.wasGeneratedBy')
   used <- .ddg.get('ddg.used')
-  ddg.json <- paste("{\n\n", environ, activity, entity, wasInformedBy, wasGeneratedBy, used "}", sep="")
+  ddg.json <- paste("{\n\n", environ, activity, entity, wasInformedBy, wasGeneratedBy, used, "}", sep="")
   return(ddg.json)
 }
 
