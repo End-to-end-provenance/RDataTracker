@@ -5639,7 +5639,7 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
 	index<- min(which(check.library.paths == TRUE))
 	ddgexplorer_path<- paste(.libPaths()[index],jar.path,sep = "")
 	ddgtxt.path<- paste(ddg.folder,"/ddg.txt",sep = "")
-	system(paste("java -jar ",ddgexplorer_path, ddgtxt.path,sep = " "))
+	system(paste("java -jar ",ddgexplorer_path, ddgtxt.path,sep = " &"))
 }
 
 # This function takes a Rmd file and extracts the R code and text through
