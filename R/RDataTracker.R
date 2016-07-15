@@ -6085,7 +6085,7 @@ ddg.source <- function (file,  ddgdir = NULL, local = FALSE, echo = verbose, pri
 
 # ddg.display.ddg loads & displays the current DDG.
 
-ddg.display.ddg <- function () {
+ddg.display <- function () {
   if (.ddg.is.set("ddg.path") & file.exists(paste(.ddg.path(), "/ddg.txt", sep=""))) {
     .ddg.loadDDG(.ddg.path())
   } else {
