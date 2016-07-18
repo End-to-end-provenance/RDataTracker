@@ -89,6 +89,18 @@ ddg.MAX_HIST_LINES <- 2^14
   return (.ddg.get("ddg.path"))
 }
 
+.ddg.path.data <- function() {
+  return(paste(.ddg.path(), "/data", sep=""))
+}
+
+.ddg.path.debug <- function() {
+  return(paste(.ddg.path(), "/debug", sep=""))
+}
+
+.ddg.path.scripts <- function() {
+  return(paste(.ddg.path(), "/scripts", sep=""))
+}
+
 .ddg.dnum <- function() {
   return (.ddg.get("ddg.dnum"))
 }
@@ -433,6 +445,12 @@ ddg.MAX_HIST_LINES <- 2^14
 
   # Stack for sourced files
   .ddg.set(".ddg.script.num.stack", 0)
+
+  # Table of sourced scripts
+  .ddg.set(".ddg.sourced.scripts", NULL)
+  
+  # Table of script, line & parsed command numbers
+  .ddg.set(".ddg.source.parsed", NULL)
 }
 
 # .ddg.set.history provides a wrapper to change the number of
@@ -448,15 +466,46 @@ ddg.MAX_HIST_LINES <- 2^14
 # for use.
 
 .ddg.init.environ <- function() {
-  if (dir.exists(.ddg.path())) {
-    ddg.flush.ddg()
-  } else {
-    dir.create(.ddg.path(), showWarnings = FALSE)
-  }
+  dir.create(.ddg.path(), showWarnings=FALSE)
+  dir.create(.ddg.path.data(), showWarnings=FALSE)
+  dir.create(.ddg.path.debug(), showWarnings=FALSE)
+  dir.create(.ddg.path.scripts(), showWarnings=FALSE)
+  
   if (interactive() && .ddg.enable.console()) {
     .ddg.set('ddg.original.hist.size', Sys.getenv('R_HISTSIZE'))
     .ddg.set.history()
   }
+}
+
+# .ddg.sourced.script.names returns a string containing the names
+# of sourced scripts, if any. If no scripts were sourced it returns
+# an empty string.
+
+.ddg.sourced.script.names <- function() {
+  ss <- .ddg.sourced.scripts()
+  # First row is main script.
+  if (nrow(ss) == 1) snames <- ""
+  else {
+    snames <- ss[ss$snum >= 1, "sname"]
+    snames <- paste0(snames, collapse=",")
+  }
+  return(snames)
+}
+
+# .ddg.sourced.script.names.json returns sourced script names and
+# numbers for the JSON file.
+
+.ddg.sourced.script.names.json <- function() {
+  ss <- .ddg.sourced.scripts()
+  # First row is main script.
+  if (nrow(ss) == 1) {
+    output <- "\"\"\n"
+  } else {
+    ss <- ss[ss$snum > 0, ]
+    scriptarray <- paste("\t{\"number\" : \"", ss[ , 1], "\", \"name\" : \"",ss[ , 2], "\"}", sep = "", collapse =",\n")
+    output <- paste("[\n", scriptarray, " ],\n", sep = "")
+  }
+  return(output)
 }
 
 # ddg.installedpackages() returns information on packages installed at the time of execution
@@ -493,6 +542,7 @@ ddg.MAX_HIST_LINES <- 2^14
   ddg.r.script.path <- .ddg.get("ddg.r.script.path")
   if (!is.null(ddg.r.script.path)) {
     environ <- paste(environ, "Script=\"", ddg.r.script.path, "\"\n", sep="")
+    environ <- paste(environ, "SourcedScripts=\"", .ddg.sourced.script.names(), "\"\n", sep="")
     environ <- paste(environ, "ProcessFileTimestamp=\"", .ddg.format.time(file.info(ddg.r.script.path)$mtime), "\"\n", sep="")
   }
   else {
@@ -522,8 +572,7 @@ ddg.MAX_HIST_LINES <- 2^14
 # ddg.txt on the ddg directory.
 
 .ddg.txt.write <- function() {
-  ddg.path <- .ddg.path()
-  fileout <- paste(ddg.path, "/ddg.txt", sep="")
+  fileout <- paste(.ddg.path(), "/ddg.txt", sep="")
   # if (interactive()) print(paste("Saving DDG in ", fileout))
   ddg.txt <- .ddg.txt.current()
   write(ddg.txt, fileout)
@@ -576,13 +625,17 @@ ddg.MAX_HIST_LINES <- 2^14
   ddg.r.script.path <- .ddg.get("ddg.r.script.path")
   if (!is.null(ddg.r.script.path)) {
     script <- ddg.r.script.path
+    sourced.scripts <- .ddg.sourced.script.names.json()
     script.timestamp <- .ddg.format.time(file.info(ddg.r.script.path)$mtime)
   } else {
     script <- ""
+    sourced.scripts <- ""
     script.timestamp <- ""
   }
 
   environ <- paste(environ, .ddg.json.nv("rdt:script", ddg.r.script.path), sep="")
+
+  environ <- paste(environ, "\"rdt:sourcedScripts\" : ", sourced.scripts, sep="")
 
   environ <- paste(environ, .ddg.json.nv("rdt:scriptTimeStamp", script.timestamp), sep="")
 
@@ -672,8 +725,7 @@ ddg.MAX_HIST_LINES <- 2^14
 # ddg.json on the ddg directory.
 
 .ddg.json.write <- function() {
-  ddg.path <- .ddg.path()
-  fileout <- paste(ddg.path, "/ddg.json", sep="")
+  fileout <- paste(.ddg.path(), "/ddg.json", sep="")
   #if (interactive()) print(paste("Saving DDG in ", fileout))
   ddg.json <- .ddg.json.current()
   write(ddg.json, fileout)
@@ -2745,7 +2797,7 @@ ddg.MAX_HIST_LINES <- 2^14
     scode <- scode2
 
     # Save modified script in ddg directory.
-    out.name <- paste(.ddg.path(), "/script-", snum, ".r", sep="")
+    out.name <- paste(.ddg.path.scripts(), "/script-", snum, ".r", sep="")
     out.file <- file(out.name, "w")
     for (i in 1:length(scode)) {
       writeLines(scode[i], out.file)
@@ -3650,8 +3702,7 @@ ddg.MAX_HIST_LINES <- 2^14
       else paste(.ddg.dnum()+1, "-", snapname, ".", fext, sep="")
 
   # Get path plus file name.
-  ddg.path <- .ddg.path()
-  dpfile <- paste(ddg.path, "/", dfile, sep="")
+  dpfile <- paste(.ddg.path.data(), "/", dfile, sep="")
   if (.ddg.debug.lib()) print(paste("Saving snapshot in ", dpfile))
 
   # Write to file .
@@ -3663,7 +3714,7 @@ ddg.MAX_HIST_LINES <- 2^14
   else if (.ddg.supported.graphic(fext)) .ddg.graphic.snapshot(fext, dpfile)
 
   # Write out RData (this is old code, not sure if we need it).
-  else if (fext == "RData") file.rename(paste(ddg.path, "/", dname, sep=""), dpfile)
+  else if (fext == "RData") file.rename(paste(.ddg.path.data(), "/", dname, sep=""), dpfile)
 
   # Write out text file for txt or empty fext.
   else if (fext == "txt" || fext == "") {
@@ -3688,7 +3739,7 @@ ddg.MAX_HIST_LINES <- 2^14
   }
 
   # Check to see if we want to save the object.
-  if (save.object && full.snapshot) save(data, file = paste(.ddg.path(), "/", .ddg.dnum()+1, "-", snapname, ".RObject", sep=""), ascii = TRUE)
+  if (save.object && full.snapshot) save(data, file = paste(.ddg.path.data(), "/", .ddg.dnum()+1, "-", snapname, ".RObject", sep=""), ascii = TRUE)
 
   dtime <- .ddg.timestamp()
 
@@ -3725,7 +3776,7 @@ ddg.MAX_HIST_LINES <- 2^14
 	dfile <- paste(.ddg.dnum()+1, "-", file.name, sep="")
 
 	# Get path plus file name.
-	dpfile <- paste(.ddg.path(), "/", dfile, sep="")
+	dpfile <- paste(.ddg.path.data(), "/", dfile, sep="")
 
 	dtime <- .ddg.timestamp()
 
@@ -4639,6 +4690,97 @@ ddg.MAX_HIST_LINES <- 2^14
   }
 }
 
+# .ddg.loadDDG displays the DDG automatically.
+
+.ddg.loadDDG<- function(ddg.folder){
+  jar.path<- "/RDataTracker/java/DDGExplorer.jar"
+  check.library.paths<- file.exists(paste(.libPaths(),jar.path,sep = ""))
+  index<- min(which(check.library.paths == TRUE))
+  ddgexplorer_path<- paste(.libPaths()[index],jar.path,sep = "")
+  ddgtxt.path<- paste(ddg.folder,"/ddg.txt",sep = "")
+  system(paste("java -jar ",ddgexplorer_path, ddgtxt.path,sep = " "))
+}
+
+# .ddg.markdown takes a Rmd file and extracts the R code and text through
+# the purl function in the knitr library. It then annotates the R script
+# to insert start and finish nodes based on the chunks the user already
+# created. If eval = false, then the chunk will not be added to the DDG. If
+# the user has a name for the chunk, then that name will be used, else a chunk
+# name "ddg.chunk_1" and higher numbers will be generated.
+# 
+# Important: If in a code chunk, there is an empty line followed by "# ----"
+# or "#'", then an extra finish node will be inserted, causing an error.
+# 
+# r.script.path is the path of the original Rmd file
+# output.path is the path of the generated R script
+
+.ddg.markdown <- function(r.script.path = NULL, output.path = NULL){
+  
+  #generates R script file from markdown file
+  knitr::purl(r.script.path, documentation = 2L, quiet = TRUE)
+  
+  #moves file to ddg directory
+  file.rename(from = paste(getwd(), "/", basename(tools::file_path_sans_ext(r.script.path)), ".R", sep = ""), to = output.path)
+  script <- readLines(output.path)
+  
+  skip <- FALSE
+  name <- "ddg.chunk"
+  annotated <- character(0)
+  index <- 1
+  
+  
+  # This for loop goes through the script line by line and searches for patterns
+  # to insert the start and finish nodes
+  for(i in 1:length(script)){
+    
+    #eval = false means we skip this code chunk, therefore skip = TRUE
+    if(regexpr("eval+(\\s*)+=+(\\s*)+FALSE", script[i]) != -1){
+      skip <- TRUE
+      annotated <- append(annotated, script[i])
+    }
+    
+    else if(regexpr("## ----", script[i]) != -1){
+      
+      #if no options in the line, then generate default name.      
+      if(regexpr("## -----", script[i]) == -1){
+        if(regexpr("=", script[i]) == -1){
+          end <- regexpr("-----", script[i])
+          name <- substring(script[i], 8, last = end -1)
+        }
+        else if(regexpr(",", script[i]) != -1){
+          comma <- regexpr(",", script[i])
+          name <- substring(script[i], 8, last = comma -1)
+        }
+        else{
+          name <- paste("ddg.chunk_", index, sep = "")
+          index <- index + 1
+        }
+      }
+      else{
+        name <- paste("ddg.chunk_", index, sep = "")
+        index <- index + 1
+      }
+      name <- stringr::str_trim(name, side = "both")
+      annotated <- append(annotated, paste("ddg.start(\"", name, "\")", sep = ""))
+    }
+    else if(nchar(script[i]) == 0 && (regexpr("#'", script[i + 1]) != -1 || 
+                                      i == length(script) || regexpr("## ----", script[i + 1]) != -1 )){
+      if(skip){
+        annotated <- append(annotated, script[i])
+        skip <- FALSE
+      }
+      else{
+        annotated <- append(annotated, paste("ddg.finish(\"", name, "\")", sep = ""))
+      }
+    }
+    else{
+      annotated <- append(annotated, script[i])
+    }
+  }
+  writeLines(annotated, output.path)
+  r.script.path
+}
+
 
 #--------------------USER FUNCTIONS-----------------------#
 
@@ -5453,12 +5595,11 @@ ddg.finish <- function(pname=NULL) {
   .ddg.proc2proc()
 }
 
-
 # ddg.init intializes a new DDG.
 
 # r.script.path (optional) - the full path to the R script file
-# that is being executed. If provided, a copy of the script will
-# be saved with the DDG.
+#  that is being executed. If provided, a copy of the script will
+#  be saved with the DDG.
 # ddgdir (optional) - the directory where the DDG should be saved.
 #   If not provided, the DDG will be saved in a subdirectory called
 #   "ddg" in the current working directory.
@@ -5473,11 +5614,11 @@ ddg.finish <- function(pname=NULL) {
 
 ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enable.console = TRUE, max.snapshot.size = 100) {
   .ddg.init.tables()
-
-  #Setting the path for the ddg
+  
+  # Setting the path for the ddg    
   if (is.null(ddgdir)) {
-
-    #default is the file where the script is located
+    
+    # Default is the file where the script is located
     if (!is.null(r.script.path)){
       ddg.path <- paste(dirname(r.script.path), "/", basename(tools::file_path_sans_ext(r.script.path)), "_ddg", sep="")
     }
@@ -5485,8 +5626,8 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
       ddg.path <- paste(getwd(), "/","ddg",sep = "")
     }
   } else ddg.path <- normalizePath(ddgdir, winslash="/", mustWork=FALSE)
-
-  #overwrite default is
+  
+  # Overwrite default is 
   if(!overwrite){
     no.overwrite.folder <- paste(ddg.path, "_timestamps", sep = "")
     if(!dir.exists(no.overwrite.folder)){
@@ -5494,65 +5635,69 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
     }
     ddg.path <- paste(no.overwrite.folder, "/",  basename(tools::file_path_sans_ext(r.script.path)), "_ddg_", .ddg.timestamp(), sep = "")
   }
-
+  
   .ddg.set("ddg.path", ddg.path)
-
+  
+  # Remove files from DDG directory
+  ddg.flush.ddg()
+  
+  # Create DDG directories
   .ddg.init.environ()
-
+  
+  # Save copy of original script.
+  file.copy(r.script.path, paste(.ddg.path.scripts(), "/", basename(r.script.path), sep = ""))
+  
   # Reset r.script.path if RMarkdown file
-
+  
   if (!is.null(r.script.path) && tools::file_ext(r.script.path) == "Rmd") {
-    output.path <- paste(ddg.path, "/", basename(tools::file_path_sans_ext(r.script.path)), ".R", sep = "")
+    output.path <- paste(.ddg.path.scripts(), "/", basename(tools::file_path_sans_ext(r.script.path)), ".R", sep = "")
     .ddg.markdown(r.script.path, output.path)
     .ddg.set("ddg.r.script.path", output.path)
   } else {
-  # Set r.script.path and copy it
-  .ddg.set("ddg.r.script.path",
-      if (is.null(r.script.path)) NULL
-          else normalizePath(r.script.path, winslash="/"))
-    file.copy(r.script.path, paste(ddg.path, "/", basename(tools::file_path_sans_ext(r.script.path)), ".R", sep = ""))
+    .ddg.set("ddg.r.script.path",
+             if (is.null(r.script.path)) NULL
+             else normalizePath(r.script.path, winslash="/"))
   }
-
-
+  
   # Set environment constants.
   .ddg.set(".ddg.enable.console", enable.console)
   .ddg.set(".ddg.max.snapshot.size", max.snapshot.size)
   .ddg.set(".ddg.func.depth", 0)
   # .ddg.init.environ()
-
+  
   # Initialize the information about the open start-finish blocks
   .ddg.set (".ddg.starts.open", vector())
-
+  
   # Initialize the stack of commands and environments being executed in active functions
   .ddg.set(".ddg.cur.cmd.stack", vector())
   .ddg.set(".ddg.cur.expr.stack", vector())
-
+  
   # Mark graph as initilized.
   .ddg.set(".ddg.initialized", TRUE)
-
+  
   # Store the starting graphics device.
   .ddg.set("prev.device", dev.cur())
-
+  
   if (interactive() && .ddg.enable.console()) {
-    ddg.history.file <- paste(.ddg.path(), ".ddghistory", sep="/")
+    ddg.history.file <- paste(.ddg.path.debug(), "/.ddghistory", sep="")
     .ddg.set(".ddg.history.file", ddg.history.file)
-
+    
     # Empty file if it already exists, do the same with tmp file.
-    file.create(ddg.history.file)
-
+    file.create(ddg.history.file, showWarnings=FALSE)
+    
     # One timestamp keeps track of last ddg.save (the default).
     .ddg.write.timestamp.to.history()
-
+    
     # Save the history if the platform supports it.
     tryCatch (savehistory(ddg.history.file),
-        error = function(e) {})
+              error = function(e) {})
   }
-
+  
   .ddg.set(".ddg.proc.start.time", .ddg.elapsed.time())
-
+  
   # Store time when script begins execution.
   .ddg.set("ddg.start.time", .ddg.timestamp())
-
+  
   invisible()
 }
 
@@ -5597,9 +5742,9 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
   # directory.
   # ddg.flush.ddg()
 
-  # Set .ddg.is.sourced to TRUE.
-  .ddg.set(".ddg.is.sourced", TRUE)
-
+  # Set .ddg.is.sourced to TRUE if script provided.
+  if (!is.null(r.script.path)) .ddg.set(".ddg.is.sourced", TRUE)
+  
   # Set breakpoint if debug is TRUE
   if (debug) ddg.breakpoint()
 
@@ -5630,96 +5775,6 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
   invisible()
 }
 
-#Function to display DDG automatically
-.ddg.loadDDG<- function(ddg.folder){
-	jar.path<- "/RDataTracker/java/DDGExplorer.jar"
-	check.library.paths<- file.exists(paste(.libPaths(),jar.path,sep = ""))
-	index<- min(which(check.library.paths == TRUE))
-	ddgexplorer_path<- paste(.libPaths()[index],jar.path,sep = "")
-	ddgtxt.path<- paste(ddg.folder,"/ddg.txt",sep = "")
-	system(paste("java -jar ",ddgexplorer_path, ddgtxt.path,sep = " "))
-}
-
-# This function takes a Rmd file and extracts the R code and text through
-# the purl function in the knitr library. It then annotates the R script
-# to insert start and finish nodes based on the chunks the user already
-# created. If eval = false, then the chunk will not be added to the DDG. If
-# the user has a name for the chunk, then that name will be used, else a chunk
-# name "ddg.chunk_1" and higher numbers will be generated.
-#
-# Important: If in a code chunk, there is an empty line followed by "# ----"
-# or "#'", then an extra finish node will be inserted, causing an error.
-#
-# r.script.path is the path of the original Rmd file
-# output.path is the path of the generated R script
-
-.ddg.markdown <- function(r.script.path = NULL, output.path = NULL){
-
-  #generates R script file from markdown file
-  knitr::purl(r.script.path, documentation = 2L, quiet = TRUE)
-
-  #moves file to ddg directory
-  file.rename(from = paste(getwd(), "/", basename(tools::file_path_sans_ext(r.script.path)), ".R", sep = ""), to = output.path)
-  script <- readLines(output.path)
-
-  skip <- FALSE
-  name <- "ddg.chunk"
-  annotated <- character(0)
-  index <- 1
-
-
-  # This for loop goes through the script line by line and searches for patterns
-  # to insert the start and finish nodes
-  for(i in 1:length(script)){
-
-    #eval = false means we skip this code chunk, therefore skip = TRUE
-    if(regexpr("eval+(\\s*)+=+(\\s*)+FALSE", script[i]) != -1){
-      skip <- TRUE
-      annotated <- append(annotated, script[i])
-    }
-
-    else if(regexpr("## ----", script[i]) != -1){
-
-      #if no options in the line, then generate default name.
-      if(regexpr("## -----", script[i]) == -1){
-        if(regexpr("=", script[i]) == -1){
-          end <- regexpr("-----", script[i])
-          name <- substring(script[i], 8, last = end -1)
-        }
-        else if(regexpr(",", script[i]) != -1){
-          comma <- regexpr(",", script[i])
-          name <- substring(script[i], 8, last = comma -1)
-        }
-        else{
-          name <- paste("ddg.chunk_", index, sep = "")
-          index <- index + 1
-        }
-      }
-      else{
-        name <- paste("ddg.chunk_", index, sep = "")
-        index <- index + 1
-      }
-    name <- stringr::str_trim(name, side = "both")
-    annotated <- append(annotated, paste("ddg.start(\"", name, "\")", sep = ""))
-    }
-    else if(nchar(script[i]) == 0 && (regexpr("#'", script[i + 1]) != -1 ||
-            i == length(script) || regexpr("## ----", script[i + 1]) != -1 )){
-      if(skip){
-        annotated <- append(annotated, script[i])
-        skip <- FALSE
-      }
-      else{
-        annotated <- append(annotated, paste("ddg.finish(\"", name, "\")", sep = ""))
-      }
-    }
-    else{
-      annotated <- append(annotated, script[i])
-    }
-  }
-  writeLines(annotated, output.path)
-  r.script.path
-}
-
 # ddg.save inserts attribute information and the number of
 # procedure steps at the top of the DDG. It writes the DDG and
 # the procedure nodes, data nodes, and function return tables
@@ -5729,97 +5784,117 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
 # quit (optional) - If TRUE, remove all DDG files from memory.
 
 ddg.save <- function(r.script.path=NULL, quit=FALSE) {
-
+  
   if (!.ddg.is.init()) return(invisible())
-
+  
   if (interactive() && .ddg.enable.console()) {
     # Get the final commands
     .ddg.console.node()
   }
-
-  # If there is a display device open, grab what is on the display
-  if (length(dev.list()) > 1) {
-    #print("ddg.save: Saving graphics open at end of script")
-    # tryCatch (.ddg.capture.current.graphics(basename(r.script.path)),
-    tryCatch (.ddg.capture.current.graphics(basename(.ddg.get("ddg.r.script.path"))),
-        error = function (e) e)
-  }
-
+  
+  # # If there is a display device open, grab what is on the display
+  # if (length(dev.list()) > 1) {
+  #   #print("ddg.save: Saving graphics open at end of script")
+  #   # tryCatch (.ddg.capture.current.graphics(basename(r.script.path)),
+  #   tryCatch (.ddg.capture.current.graphics(basename(.ddg.get("ddg.r.script.path"))),
+  #       error = function (e) e)
+  # }
+  
   # Delete temporary files.
-  .ddg.delete.temp()
-
-  # Get ddg path.
-  ddg.path <- .ddg.path()
-
+  # .ddg.delete.temp()
+  
   # Save ddg.txt to file.
   .ddg.txt.write()
-  if (interactive()) print(paste("Saving ddg.txt in ", ddg.path, sep=""))
-
-  # Save json.txt to file.
+  if (interactive()) print(paste("Saving ddg.txt in ", .ddg.path(), sep=""))
+  
+  # Save ddg.json to file.
   .ddg.json.write()
-  if (interactive()) print(paste("Saving ddg.json in ", ddg.path, sep=""))
-
+  if (interactive()) print(paste("Saving ddg.json in ", .ddg.path(), sep=""))
+  
   # Save initial environment table to file.
-  fileout <- paste(ddg.path, "/inenv.txt", sep="")
+  fileout <- paste(.ddg.path.debug(), "/inenv.csv", sep="")
   ddg.initial.env <- .ddg.initial.env()
-  write.table(ddg.initial.env, fileout, quote=FALSE, sep="\t", na="NA", row.names=FALSE, col.names=TRUE)
-
+  write.csv(ddg.initial.env, fileout, row.names=FALSE)
+  
   # Save procedure nodes table to file.
-  fileout <- paste(ddg.path, "/pnodes.txt", sep="")
+  fileout <- paste(.ddg.path.debug(), "/pnodes.csv", sep="")
   ddg.proc.nodes <- .ddg.proc.nodes()
-  write.table(ddg.proc.nodes[ddg.proc.nodes$ddg.num > 0, ], fileout, quote=FALSE, sep="\t", na="NA", row.names=FALSE, col.names=TRUE)
-
+  ddg.proc.nodes <- ddg.proc.nodes[ddg.proc.nodes$ddg.num > 0, ]
+  write.csv(ddg.proc.nodes, fileout, row.names=FALSE)
+  
   # Save data nodes table to file.
-  fileout <- paste(ddg.path, "/dnodes.txt", sep="")
+  fileout <- paste(.ddg.path.debug(), "/dnodes.csv", sep="")
   ddg.data.nodes <- .ddg.data.nodes()
-  write.table(ddg.data.nodes[ddg.data.nodes$ddg.num > 0, ], fileout, quote=FALSE, sep="\t", na="NA", row.names=FALSE, col.names=TRUE)
-
-  # Save data flow table to file.
-  fileout <- paste(ddg.path, "/edges.txt", sep="")
+  ddg.data.nodes2 <- ddg.data.nodes[ddg.data.nodes$ddg.num > 0, ]
+  write.csv(ddg.data.nodes2, fileout, row.names=FALSE)
+  
+  # Save edges table to file.
+  fileout <- paste(.ddg.path.debug(), "/edges.csv", sep="")
   ddg.edges <- .ddg.edges()
-  write.table(ddg.edges[ddg.edges$ddg.num > 0, ], fileout, quote=FALSE, sep="\t", na="NA", row.names=FALSE, col.names=TRUE)
-
+  ddg.edges2 <- ddg.edges[ddg.edges$ddg.num > 0, ]
+  write.csv(ddg.edges2, fileout, row.names=FALSE)
+  
   # Save the function return table to file.
-  fileout <- paste(ddg.path, "/returns.txt", sep="")
+  fileout <- paste(.ddg.path.debug(), "/returns.csv", sep="")
   ddg.returns <- .ddg.get(".ddg.return.values")
-  write.table(ddg.returns[ddg.returns$return.node.id > 0, ], fileout, quote=FALSE, sep="\t", na="NA", row.names=FALSE, col.names=TRUE)
-
+  ddg.returns2 <- ddg.returns[ddg.returns$return.node.id > 0, ]
+  write.csv(ddg.returns2, fileout, row.names=FALSE)
+  
   # Save if script is sourced.
-  ddg.is.sourced <- .ddg.is.sourced()
-
-  if (ddg.is.sourced) {
+  if (.ddg.is.sourced()) {
     # Save sourced script table to file.
-    fileout <- paste(ddg.path, "/sourced-scripts.txt", sep="")
+    fileout <- paste(.ddg.path.debug(), "/sourced-scripts.csv", sep="")
     ddg.sourced.scripts <- .ddg.get(".ddg.sourced.scripts")
-    write.table(ddg.sourced.scripts[ddg.sourced.scripts$snum >= 0, ], fileout, quote=FALSE, sep="\t", na="NA", row.names=FALSE, col.names=TRUE)
-
+    ddg.sourced.scripts2 <- ddg.sourced.scripts[ddg.sourced.scripts$snum >= 0, ]
+    write.csv(ddg.sourced.scripts2, fileout, row.names=FALSE)
+    
+    # Save source-parsed tables to file.
+    fileout <- paste(.ddg.path.debug(), "/source-parsed.csv", sep="")
+    source.parsed <- .ddg.source.parsed()
+    # First row is main script.
+    if (nrow(ddg.sourced.scripts) > 1) {
+      for (i in 1:(nrow(ddg.sourced.scripts)-1)) {
+        sp <- .ddg.get(paste(".ddg.source.parsed-", i, sep=""))
+        source.parsed <- rbind(source.parsed, sp)
+      }
+    }
+    write.csv(source.parsed, fileout, row.names=FALSE)
+    
+    # Save sourced scripts (if any). First row is main script.
+    if (nrow(ddg.sourced.scripts) > 1 ) {
+      for (i in 1:nrow(ddg.sourced.scripts)) {
+        sname <- ddg.sourced.scripts[i, "sname"]
+        file.copy(sname, paste(.ddg.path.scripts(), basename(sname), sep="/"))
+      }
+    }
+    
     # Save annotated script to file.
-    fileout <- file(paste(.ddg.path(), "annotated-script.r", sep="/"))
+    fileout <- file(paste(.ddg.path.scripts(), "/annotated-script.r", sep=""))
     ddg.annotated.script <- .ddg.get("ddg.annotated.script")
     write(ddg.annotated.script, fileout)
     close(fileout)
-
+    
     # Save data object table to file.
-    fileout <- paste(ddg.path, "dobjects.csv", sep="/")
+    fileout <- paste(.ddg.path.debug(), "/dobjects.csv", sep="")
     ddg.data.objects <- .ddg.data.objects()
     write.csv(ddg.data.objects, fileout, row.names=FALSE)
   }
-
+  
   # By convention, this is the final call to ddg.save.
   if (quit) {
     # Restore history settings.
     if (.ddg.is.set('ddg.original.hist.size')) Sys.setenv("R_HISTSIZE"=.ddg.get('ddg.original.hist.size'))
-
+    
     # Delete temporary files.
     .ddg.delete.temp()
-
+    
     # Capture current graphics device.
     .ddg.auto.graphic.node(dev.to.capture=dev.cur)
-
+    
     # Shut down the DDG.
     .ddg.clear()
   }
-
+  
   invisible()
 }
 
@@ -5916,7 +5991,7 @@ ddg.source <- function (file,  ddgdir = NULL, local = FALSE, echo = verbose, pri
   # Source from modified script if breakpoints were set.
   orig.file <- file
   if (!is.null(ddg.list.breakpoints())) {
-    file <- paste(.ddg.path(), "/script-", snum, ".r", sep="")
+    file <- paste(.ddg.path.scripts(), "/script-", snum, ".r", sep="")
   }
 
   # Parse input file and figure out encoding.
@@ -6186,34 +6261,30 @@ ddg.annotate.off <- function (fnames=NULL) {
   .ddg.set("ddg.annotate.off", fnames)
 }
 
-# ddg.flush.ddg removes all files from the DDG directory unless the
-#   DDG directory is the working directory. If no DDG directory is
+# ddg.flush.ddg removes all files from the DDG directories unless the
+#   the DDG directory is the working directory. If no DDG directory is
 #   specified, the current DDG directory is assumed.
 
 # ddg.path (optional) - path to DDG directory.
 
 ddg.flush.ddg <- function(ddg.path=NULL) {
-	if (is.null(ddg.path)) {
-		ddg.path <- .ddg.path()
-	}
-
-	# Do not remove files unless ddg.path exists and is different
-  # from the working directory.
-  if (file.exists(ddg.path) && ddg.path != getwd()) {
-    unlink(paste(ddg.path, "*.txt", sep="/"))
-    unlink(paste(ddg.path, "*.csv", sep="/"))
-    unlink(paste(ddg.path, "*.json", sep="/"))
-    unlink(paste(ddg.path, "*.r", sep="/"))
-    unlink(paste(ddg.path, "*.R", sep="/"))
-    unlink(paste(ddg.path, ".ddghistory", sep="/"))
-    unlink(paste(ddg.path,"[1-9]-*.*", sep="/"))
-    unlink(paste(ddg.path,"[1-9][0-9]-*.*", sep="/"))
-    unlink(paste(ddg.path,"[1-9][0-9][0-9]-*.*", sep="/"))
-    unlink(paste(ddg.path,"[1-9][0-9][0-9][0-9]-*.*", sep="/"))
-    unlink(paste(ddg.path,"[1-9][0-9][0-9][0-9][0-9]-*.*", sep="/"))
-    unlink(paste(ddg.path,"[1-9][0-9][0-9][0-9][0-9][0-9]-*.*", sep="/"))
+  # Use current DDG directories if no directory is specified.
+  if (is.null(ddg.path)) {
+    ddg.path <- .ddg.path()
+    ddg.path.data <- .ddg.path.data()
+    ddg.path.debug <- .ddg.path.debug()
+    ddg.path.scripts <- .ddg.path.scripts()
   }
-
+  
+  # Remove files unless the DDG directory is the working directory.
+  if (ddg.path != getwd()) {
+    unlink(paste(ddg.path, "*.*", sep="/"))
+    unlink(paste(ddg.path.data, "*.*", sep="/"))
+    unlink(paste(ddg.path.debug, ".ddghistory", sep="/"))
+    unlink(paste(ddg.path.debug, "*.*", sep="/"))
+    unlink(paste(ddg.path.scripts, "*.*", sep="/"))
+  }
+  
   invisible()
 }
 
