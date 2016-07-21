@@ -559,7 +559,9 @@ ddg.MAX_HIST_LINES <- 2^14
 .ddg.json.environ <- function() {
   # add environment entities
   environ <- ""
-  environ <- paste(environ, "\n\"rdt:environment\" : {\n", sep="")
+  environ <- paste(environ, "\n\"environment\" : {\n", sep="")
+
+  environ <- paste(environ, .ddg.json.nv("rdt:name", "environment"), sep="")
 
   architecture <- R.Version()$arch
   environ <- paste(environ, .ddg.json.nv("rdt:architecture", architecture), sep="")
@@ -5637,7 +5639,11 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
 	index<- min(which(check.library.paths == TRUE))
 	ddgexplorer_path<- paste(.libPaths()[index],jar.path,sep = "")
 	ddgtxt.path<- paste(ddg.folder,"/ddg.txt",sep = "")
-	system(paste("java -jar ",ddgexplorer_path, ddgtxt.path,sep = " "))
+	if(Sys.info()['sysname']!="Windows"){
+		system(paste("java -jar ",ddgexplorer_path, ddgtxt.path,'&',sep = " "))
+	}else{
+		system(paste("START java -jar ",ddgexplorer_path, ddgtxt.path,sep = " "))
+	}
 }
 
 # This function takes a Rmd file and extracts the R code and text through
@@ -6083,7 +6089,7 @@ ddg.source <- function (file,  ddgdir = NULL, local = FALSE, echo = verbose, pri
 
 # ddg.display.ddg loads & displays the current DDG.
 
-ddg.display.ddg <- function () {
+ddg.display <- function () {
   if (.ddg.is.set("ddg.path") & file.exists(paste(.ddg.path(), "/ddg.txt", sep=""))) {
     .ddg.loadDDG(.ddg.path())
   } else {
