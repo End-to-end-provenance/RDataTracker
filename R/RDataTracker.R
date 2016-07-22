@@ -5642,7 +5642,7 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
 	if(Sys.info()['sysname']!="Windows"){
 		system(paste("java -jar ",ddgexplorer_path, ddgtxt.path,'&',sep = " "))
 	}else{
-		system(paste("START java -jar ",ddgexplorer_path, ddgtxt.path,sep = " "))
+		shell(paste("START java -jar ",ddgexplorer_path, ddgtxt.path,sep = " "))
 	}
 }
 
