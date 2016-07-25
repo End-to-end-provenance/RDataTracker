@@ -21,7 +21,12 @@ substituting the name of a target for <target>.  The targets are:
 
 Regression testing is controlled by the test-no-instrumentation.xml ant script
 
-To build and install the library and run all the tests say:
+To run all the tests, first be sure that you have the version of the 
+library that you want to test installed. You can do this by saying:
+
+ant install
+
+Then, to run all of the regression tests, say:
 
 ant -file test-no-instrumentation.xml   
 

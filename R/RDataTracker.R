@@ -492,6 +492,25 @@ ddg.MAX_HIST_LINES <- 2^14
   return(snames)
 }
 
+.ddg.sourced.script.timestamps<- function() {
+  ss <- .ddg.sourced.scripts()
+  # First row is main script.
+  if (nrow(ss) == 1) stimes <- ""
+  else {
+    snames <- ss[ss$snum >= 1, "sname"]
+    print(paste(".ddg.sourced.scripts: snames = ", snames))
+    stimes <- file.info(snames)$mtime
+    print(paste(".ddg.sourced.script.timestamps: after file.info, stimes = ", stimes))
+    stimes <- .ddg.format.time(stimes)
+    print(paste(".ddg.sourced.script.timestamps: after format, stimes = ", stimes))
+    stimes <- paste0(stimes, collapse=",")
+    print(paste(".ddg.sourced.script.timestamps: after collapsing, stimes = ", stimes))
+  }
+  return(stimes)
+}
+
+
+
 # .ddg.sourced.script.names.json returns sourced script names and
 # numbers for the JSON file.
 
@@ -544,6 +563,8 @@ ddg.MAX_HIST_LINES <- 2^14
     environ <- paste(environ, "Script=\"", ddg.r.script.path, "\"\n", sep="")
     environ <- paste(environ, "SourcedScripts=\"", .ddg.sourced.script.names(), "\"\n", sep="")
     environ <- paste(environ, "ProcessFileTimestamp=\"", .ddg.format.time(file.info(ddg.r.script.path)$mtime), "\"\n", sep="")
+    print(paste(".ddg.txt.environ: .ddg.sourced.script.names() = ", .ddg.sourced.script.names()))
+    environ <- paste(environ, "SourcedScriptTimestamps=\"", .ddg.sourced.script.timestamps(), "\"\n", sep="")
   }
   else {
     environ <- paste(environ, "Script=\"Console\"\n")
