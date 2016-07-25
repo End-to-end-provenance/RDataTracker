@@ -4700,11 +4700,13 @@ ddg.MAX_HIST_LINES <- 2^14
   index<- min(which(check.library.paths == TRUE))
   ddgexplorer_path<- paste(.libPaths()[index],jar.path,sep = "")
   ddgtxt.path<- paste(ddg.folder,"/ddg.txt",sep = "")
-	if(Sys.info()['sysname']!="Windows"){
-		system(paste("java -jar ",ddgexplorer_path, ddgtxt.path,'&',sep = " "))
-	}else{
-		system(paste("START java -jar ",ddgexplorer_path, ddgtxt.path,sep = " "))
-	}
+  system(paste("java -jar ", ddgexplorer_path, ddgtxt.path, sep = " "), wait = FALSE)
+  
+#   if(Sys.info()['sysname']!="Windows"){
+# 		system(paste("java -jar ",ddgexplorer_path, ddgtxt.path,'&',sep = " "))
+# 	}else{
+# 		system(paste("START java -jar ",ddgexplorer_path, ddgtxt.path,sep = " "))
+# 	}
 }
 
 # .ddg.markdown takes a Rmd file and extracts the R code and text through
