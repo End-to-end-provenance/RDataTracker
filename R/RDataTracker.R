@@ -492,8 +492,31 @@ ddg.MAX_HIST_LINES <- 2^14
   return(snames)
 }
 
-# .ddg.sourced.script.names.json returns sourced script names and
-# numbers for the JSON file.
+# .ddg.sourced.script.timestamps returns a string containing the timestamps
+# of sourced scripts, if any. If no scripts were sourced it returns
+# an empty string.
+
+.ddg.sourced.script.timestamps<- function() {
+  ss <- .ddg.sourced.scripts()
+  # First row is main script.
+  if (nrow(ss) == 1) stimes <- ""
+  else {
+    snames <- ss[ss$snum >= 1, "sname"]
+    #print(paste(".ddg.sourced.scripts: snames = ", snames))
+    stimes <- file.info(snames)$mtime
+    #print(paste(".ddg.sourced.script.timestamps: after file.info, stimes = ", stimes))
+    stimes <- .ddg.format.time(stimes)
+    #print(paste(".ddg.sourced.script.timestamps: after format, stimes = ", stimes))
+    stimes <- paste0(stimes, collapse=",")
+    #print(paste(".ddg.sourced.script.timestamps: after collapsing, stimes = ", stimes))
+  }
+  return(stimes)
+}
+
+
+
+# .ddg.sourced.script.names.json returns sourced script names,
+# numbers and timestamps for the JSON file.
 
 .ddg.sourced.script.names.json <- function() {
   ss <- .ddg.sourced.scripts()
@@ -502,10 +525,16 @@ ddg.MAX_HIST_LINES <- 2^14
     output <- "\"\"\n"
   } else {
     ss <- ss[ss$snum > 0, ]
-    scriptarray <- paste("\t{\"number\" : \"", ss[ , 1], "\", \"name\" : \"",ss[ , 2], "\"}", sep = "", collapse =",\n")
+    stimes <- file.info(ss$sname)$mtime
+    stimes <- .ddg.format.time(stimes)
+    
+    scriptarray <- paste("\t{\"number\" : \"", ss[ , 1], "\", 
+                             \"name\" : \"",ss[ , 2], "\",
+                             \"timestamp\" : \"",stimes, "\"}",
+                         sep = "", collapse =",\n")
     output <- paste("[\n", scriptarray, " ],\n", sep = "")
   }
-  return(output)
+  return(output)  
 }
 
 # ddg.installedpackages() returns information on packages installed at the time of execution
@@ -544,6 +573,11 @@ ddg.MAX_HIST_LINES <- 2^14
     environ <- paste(environ, "Script=\"", ddg.r.script.path, "\"\n", sep="")
     environ <- paste(environ, "SourcedScripts=\"", .ddg.sourced.script.names(), "\"\n", sep="")
     environ <- paste(environ, "ProcessFileTimestamp=\"", .ddg.format.time(file.info(ddg.r.script.path)$mtime), "\"\n", sep="")
+    #print(paste(".ddg.txt.environ: .ddg.sourced.script.names() = ", .ddg.sourced.script.names()))
+    stimes <- .ddg.sourced.script.timestamps()
+    if (stimes != "") {
+      environ <- paste(environ, "SourcedScriptTimestamps=\"", stimes, "\"\n", sep="")
+    }
   }
   else {
     environ <- paste(environ, "Script=\"Console\"\n")
@@ -633,6 +667,7 @@ ddg.MAX_HIST_LINES <- 2^14
     script <- ""
     sourced.scripts <- ""
     script.timestamp <- ""
+    sourced.scripts.timestamps <- ""
   }
 
   environ <- paste(environ, .ddg.json.nv("rdt:script", ddg.r.script.path), sep="")
