@@ -40,6 +40,18 @@ ddg.MAX_HIST_LINES <- 2^14
 # we need to place the variables in our own environment.  These
 # functions make that environment easier to use.
 
+ddg.cache.on <- function(){
+  .ddg.set("ddg.cache", TRUE)
+}
+
+ddg.cache.off <- function(){
+  .ddg.set("ddg.cache", FALSE)
+}
+
+.ddg.cache <- function(){
+  return(.ddg.get("ddg.cache"))
+}
+
 .onLoad <- function(libname, pkgname) {
   .ddg.init.tables()
 }
@@ -334,7 +346,9 @@ ddg.MAX_HIST_LINES <- 2^14
           ddg.from.env = logical(size),
           ddg.time = character(size),
           ddg.loc = character(size),
-          ddg.current = logical(size), stringsAsFactors=FALSE))
+          ddg.current = logical(size), 
+          ddg.changed = logical(size),
+          stringsAsFactors=FALSE))
 
   .ddg.set("ddg.edges", data.frame(ddg.num = numeric(size),
           ddg.type = character(size),
@@ -1198,7 +1212,7 @@ ddg.MAX_HIST_LINES <- 2^14
 # dtime (optional) - timestamp of original file.
 # dloc (optional) -  path and name of original file.
 
-.ddg.record.data <- function(dtype, dname, dvalue, dscope, from.env=FALSE, dtime="", dloc="") {
+.ddg.record.data <- function(dtype, dname, dvalue, dscope, from.env=FALSE, dtime="", dloc="", dchanged = FALSE) {
   # Increment data node counter.
   .ddg.inc("ddg.dnum")
   ddg.dnum <- .ddg.dnum()
@@ -1215,7 +1229,9 @@ ddg.MAX_HIST_LINES <- 2^14
         ddg.from.env = logical(size),
         ddg.time = character(size),
         ddg.loc = character(size),
-        ddg.current = logical(size), stringsAsFactors=FALSE)
+        ddg.current = logical(size),
+        ddg.changed = logical(size),
+        stringsAsFactors=FALSE)
     .ddg.add.rows("ddg.data.nodes", new.rows)
     ddg.data.nodes <- .ddg.data.nodes()
   }
@@ -1233,6 +1249,7 @@ ddg.MAX_HIST_LINES <- 2^14
   ddg.data.nodes$ddg.time[ddg.dnum] <- dtime
   ddg.data.nodes$ddg.loc[ddg.dnum] <- dloc
   ddg.data.nodes$ddg.current[ddg.dnum] <- TRUE
+  ddg.data.nodes$ddg.changed[ddg.dnum] <- dchanged
   .ddg.set("ddg.data.nodes", ddg.data.nodes)
 
   # Output data node.
@@ -1733,7 +1750,7 @@ ddg.MAX_HIST_LINES <- 2^14
 			}
 
 			# Not an assignment.  Recurse on all parts of the expression
-	    # except the operator.
+	    # except the operator.f
 			else {
 				filter(unlist(lapply(obj[1:length(obj)], .ddg.find.var.uses.rec)))
 			},
@@ -1989,6 +2006,7 @@ ddg.MAX_HIST_LINES <- 2^14
 .ddg.create.data.set.edges.for.cmd <- function(vars.set, cmd.abbrev, cmd.expr, cmd.pos, env, for.finish.node = FALSE, scope=NULL, stack=NULL) {
   vars.assigned <- .ddg.find.assign (cmd.expr)
   for (var in vars.assigned) {
+    print(paste("wtf", var))
 
     nRow <- which(vars.set$variable == var)
 
@@ -1996,16 +2014,21 @@ ddg.MAX_HIST_LINES <- 2^14
     # set within a console block.
 		if ((length(nRow) > 0 && vars.set$last.writer[nRow] == cmd.pos && vars.set$possible.last.writer[nRow] <= vars.set$last.writer[nRow]) || for.finish.node) {
 		    if (is.null(env)) {
-		      env <- .ddg.get.env(var, calls=stack)
+		      env <- .ddg.get.env(var, calls=stack)  
         }
 		    scope <- .ddg.get.scope(var, calls=stack, env=env)
+
         #print (paste (".ddg.create.data.set.edges.for.cmd: looking for ", var, "in", environmentName(env)))
 		    val <- tryCatch(eval(parse(text=var), env),
 					error = function(e) {
             #print (paste (".ddg.create.data.set.edges.for.cmd: looking for ", var, "in", environmentName(parent.env(env))))
             eval (parse(text=var), parent.env(env))
-          }
-			)
+					}
+		    )
+		    
+				assign(x = vars.assigned, value = val)
+				save(vars.assigned, file = paste(vars.assigned, ".RData", sep = ""), compress = "gzip")
+				
 			tryCatch(.ddg.save.data(var, val, fname=".ddg.create.data.set.edges.for.cmd", error=TRUE, scope=scope, stack=stack, env=env),
 			         error = function(e){.ddg.data.node("Data", var, "complex", scope)})
 
@@ -2016,7 +2039,8 @@ ddg.MAX_HIST_LINES <- 2^14
 #			else {
 #				.ddg.data.node("Data", var, "complex", environmentName(.GlobalEnv))
 #			}
-      .ddg.proc2data(cmd.abbrev, var, scope)
+			.ddg.proc2data(cmd.abbrev, var, scope)
+				
     }
   }
 }
@@ -3163,6 +3187,34 @@ ddg.MAX_HIST_LINES <- 2^14
           # Capture any warnings that occur when an expression is evaluated.
           # Note that we cannot just use a tryCatch here because it behaves slightly differently
           # and we would lose the value that eval returns.  withCallingHandlers returns the value.
+          
+          
+          # if(!inside.func & .ddg.is.assign(cmd.expr)){
+          #   
+          #   name <- .ddg.find.simple.assign(cmd.expr)
+          #   
+          #   
+          #   #Caching
+          #   edges <- .ddg.edges()
+          #   pn <- paste("p", .ddg.proc.number(cmd.abbrev), sep = "")
+          #   data.in <- edges[with(edges, ddg.type == "df.in" & ddg.to == pn) , 3]
+          # 
+          # 
+          #   if(length(data.in) == 0 && typeof(data.in) == "character"){
+          #     print(paste(cmd.abbrev, "isn't dependent on any data nodes, will not re-execute"))
+          #     depends.changed <- FALSE
+          #   }
+          #   else{
+          #     data.num <- gsub("d", "", x = data.in)
+          #     data.nodes <- .ddg.data.nodes()
+          #     depends.data <- data.nodes[data.nodes$ddg.num %in% data.num, "ddg.changed"]
+          #     depends.changed <- any(depends.data)
+          #   }
+          # 
+          #   print(depends.changed)
+          # 
+          # }
+          
           result <- withCallingHandlers (eval(cmd.expr, environ, NULL), warning = .ddg.set.warning)
 
           if (.ddg.debug.lib()) print (paste (".ddg.parse.commands done evaluating ", deparse(cmd.expr)))
@@ -5781,6 +5833,27 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
   invisible()
 }
 
+
+.ddg.load.cache <- function(){
+  ddg.path.cache <- paste(.ddg.path(), "/cache/", sep = "")
+  cache.data.nodes <- read.csv(file = paste(ddg.path.cache, "dnodes.csv"), sep = "")
+  cache.edges <- read.csv(file = paste(ddg.path.cache, "edges.csv"))
+  cache.proc.nodes <- read.csv(file = paste(ddg.path.cache, "pnodes.csv"))
+}
+
+.ddg.cache.data.nodes <- function(){
+  cache.data.nodes
+}
+
+.ddg.cache.edges <- function(){
+  cache.edges
+}
+
+.ddg.proc.nodes <- function(){
+  cache.proc.nodes
+}
+
+
 # ddg.save inserts attribute information and the number of
 # procedure steps at the top of the DDG. It writes the DDG and
 # the procedure nodes, data nodes, and function return tables
@@ -5828,17 +5901,34 @@ ddg.save <- function(r.script.path=NULL, quit=FALSE) {
   ddg.proc.nodes <- ddg.proc.nodes[ddg.proc.nodes$ddg.num > 0, ]
   write.csv(ddg.proc.nodes, fileout, row.names=FALSE)
   
+  #save to cache
+  cachepath <- paste(.ddg.path(), "/cache/", sep = "")
+  dir.create(cachepath)
+  
+  cacheout <- paste(cachepath, "pnodes.csv", sep = "")
+  write.csv(ddg.proc.nodes, cacheout, row.names=FALSE)
+  
+  
   # Save data nodes table to file.
   fileout <- paste(.ddg.path.debug(), "/dnodes.csv", sep="")
   ddg.data.nodes <- .ddg.data.nodes()
   ddg.data.nodes2 <- ddg.data.nodes[ddg.data.nodes$ddg.num > 0, ]
   write.csv(ddg.data.nodes2, fileout, row.names=FALSE)
   
+  cacheout <- paste(cachepath, "dnodes.csv", sep = "")
+  write.csv(ddg.data.nodes2, cacheout, row.names=FALSE)
+  
+  
   # Save edges table to file.
   fileout <- paste(.ddg.path.debug(), "/edges.csv", sep="")
   ddg.edges <- .ddg.edges()
   ddg.edges2 <- ddg.edges[ddg.edges$ddg.num > 0, ]
   write.csv(ddg.edges2, fileout, row.names=FALSE)
+  
+  cacheout <- paste(cachepath, "edges.csv", sep = "")
+  write.csv(ddg.edges2, cacheout, row.names=FALSE)
+  
+  
   
   # Save the function return table to file.
   fileout <- paste(.ddg.path.debug(), "/returns.csv", sep="")
@@ -5884,6 +5974,7 @@ ddg.save <- function(r.script.path=NULL, quit=FALSE) {
     fileout <- paste(.ddg.path.debug(), "/dobjects.csv", sep="")
     ddg.data.objects <- .ddg.data.objects()
     write.csv(ddg.data.objects, fileout, row.names=FALSE)
+    
   }
   
   # By convention, this is the final call to ddg.save.
