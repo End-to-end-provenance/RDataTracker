@@ -2437,8 +2437,15 @@ ddg.MAX_HIST_LINES <- 2^14
     file <- paste0("dev.off.", .ddg.dnum()+1, ".pdf")
   }
   #print(paste(".ddg.capture.graphics: writing to ", file))
+  
+  # Save the graphic to a file temporarily
   dev.print(device=pdf, file=file)
+  
+  # Add it to the ddg.  This will copy the file to the right directory
   ddg.file.out (file, pname=cmd)
+  
+  # Remove the temporary file
+  file.remove(file)
 }
 
 # .ddg.abbrev.cmd abbreviates a command to the specified length.
@@ -5835,13 +5842,13 @@ ddg.save <- function(r.script.path=NULL, quit=FALSE) {
     .ddg.console.node()
   }
   
-  # # If there is a display device open, grab what is on the display
-  # if (length(dev.list()) > 1) {
-  #   #print("ddg.save: Saving graphics open at end of script")
-  #   # tryCatch (.ddg.capture.current.graphics(basename(r.script.path)),
-  #   tryCatch (.ddg.capture.current.graphics(basename(.ddg.get("ddg.r.script.path"))),
-  #       error = function (e) e)
-  # }
+   # If there is a display device open, grab what is on the display
+   if (length(dev.list()) >= 1) {
+     #print("ddg.save: Saving graphics open at end of script")
+     # tryCatch (.ddg.capture.current.graphics(basename(r.script.path)),
+     tryCatch (.ddg.capture.current.graphics(basename(.ddg.get("ddg.r.script.path"))),
+         error = function (e) e)
+   }
   
   # Delete temporary files.
   # .ddg.delete.temp()
