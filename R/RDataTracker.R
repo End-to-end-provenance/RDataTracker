@@ -2582,8 +2582,15 @@ ddg.cache.off <- function(){
 
 .ddg.add.abstract.node <- function(type, cmd, env, called=".ddg.parse.commands") {
   cmd.abbrev <- .ddg.abbrev.cmd(cmd)
+
   if (.ddg.debug.lib()) print(paste(called, ":  Adding", cmd.abbrev,  type, "node"))
-  .ddg.proc.node(type, cmd.abbrev, cmd.abbrev, TRUE, env=env)
+  
+  
+  #ddg.cache
+  if(.ddg.cache()) .ddg.proc.node(type, cmd.abbrev, cmd, TRUE, env = env)
+  else{
+    .ddg.proc.node(type, cmd.abbrev, cmd.abbrev, TRUE, env=env)
+  }
   .ddg.proc2proc()
 
   return(cmd.abbrev)
@@ -3195,16 +3202,19 @@ ddg.cache.off <- function(){
             
             if(.ddg.cache.exists()){
             
-            forceEval <- FALSE
+              #forceEval <- FALSE
             
               #Don't want to peek inside functions because that caching is difficult to implement
               #a possible TODO. Only cache simple assignments, to avoid side effects and further complications
-              if(!inside.func & length(.ddg.find.assign(cmd.expr)) == 1){
+              if(!inside.func & !is.null(.ddg.find.simple.assign(cmd.expr))){
   
                 save.to.cache <- TRUE
                 
                 #Generate Hash
-                artifact <- list(cmd.text, .ddg.pnum() + 1)
+                source.script <- .ddg.source.parsed()
+                snum <- source.script[source.script$pnum == .ddg.parsed.num(), "snum"]
+                
+                artifact <- list(cmd.text, .ddg.parsed.num(), snum)
                 hash <- digest::digest(artifact)
 
                 name <- .ddg.find.simple.assign(cmd.expr)
@@ -3226,17 +3236,18 @@ ddg.cache.off <- function(){
                 #A quick way to filter through most cmd.expressions
                 if(name %in% cached.names){
                   if(.ddg.node.is.cached(hash)){
+                    .ddg.log.cache(paste(cmd.text, "has a previous cache, checking if it matches and dependencies haven't changed"))
                     
                     #If the specific deparsed cmd.expr and relative position don't match a previous
                     #procedure node, must be evaluated
-                    if(.ddg.match.proc.node(cmd.text, .ddg.pnum() + 1)){
+                    pn <- .ddg.get.pn(.ddg.parsed.num())
+                    
+                    if(.ddg.match.proc.node(cmd.text, pn)){
                       
-                      pnum <- .ddg.pnum() + 1
-                      pn <- paste("p", pnum, sep = "")
+
+                      #.ddg.log.cache(paste(cmd.text, "matched with", pn))
                       
-                      .ddg.log.cache(paste(cmd.text, "matched with", pn))
-                      
-                      depends.changed <- .ddg.check.dependencies(cmd.text, pn, pnum)
+                      depends.changed <- .ddg.check.dependencies(cmd.text, pn)
                       
                       
                       #If no dependencies have changed, produce hash to see if we have a previous file cached.
@@ -3245,7 +3256,10 @@ ddg.cache.off <- function(){
                         .ddg.log.cache(paste("No depencies changed, not re-evaluating for", cmd.text))
                         forceEval <- FALSE
                       }
-                      else .ddg.log.cache(paste("Dependencies changed for", cmd.text, "forcing reevaluation"))
+                      else {
+                        .ddg.log.cache(paste("Dependencies changed for", cmd.text, "forcing reevaluation"))
+                        forceEval <- TRUE                      
+                      }
                     }
                   }
                   else{
@@ -3256,7 +3270,7 @@ ddg.cache.off <- function(){
                 }
                 
                 else{
-                  .ddg.log.cache(paste("There are no previously saved nodes of this name, forcing evaluation for", cmd.text))
+                  .ddg.log.cache(paste("There are no previously saved nodes of this name, evaluating", cmd.text))
                 }
                   
               }
@@ -3268,7 +3282,9 @@ ddg.cache.off <- function(){
             
                 #unsure of environment to load it into, chose d.environ because that encompassed the cases
                 #there was a global assignment
-                load(file = paste(.ddg.get("ddg.path.cache"), "/", hash, ".RData", sep = ""), envir = d.environ)
+                .ddg.cache.meta(name, cmd.text, .ddg.parsed.num(), snum, hash, FALSE, load = TRUE)
+            
+                load(file = paste(.ddg.get(".ddg.path.cache.db"), "/", hash, ".RData", sep = ""), envir = d.environ)
               
           }
           
@@ -3288,12 +3304,12 @@ ddg.cache.off <- function(){
             
             if(.ddg.cache() & .ddg.cache.exists()){
               if(save.to.cache){
-                if(forceEval) print(paste("Forced evaluation for", cmd.text, "with", hash))
-                else{
-                  print(paste("Finished evaluating, saving", cmd.text, "with", hash))
-                }
-                assign(x = name, value = result)
-                save(list = name, file = paste(.ddg.get("ddg.path.cache"), "/", hash, ".RData", sep = ""))
+                # if(forceEval) print(paste("Forced evaluation for", cmd.text, "with", hash))
+                # else{
+                #   print(paste("Finished evaluating, saving", cmd.text, "with", hash))
+                # }
+                # 
+                .ddg.save.to.cache(name, result, cmd.text, .ddg.parsed.num(), forceEval, cmd.expr, environ)
                 }
             }
           }
@@ -3371,15 +3387,17 @@ ddg.cache.off <- function(){
             
             #print(cmd.abbrev)
             
-            if(!.ddg.cache.exists() & !inside.func & length(.ddg.find.assign(cmd.expr)) == 1){
-              operationorder <- .ddg.pnum()
-              hash <- digest::digest(list(operationorder, cmd.text))
+            if(!.ddg.cache.exists() & !inside.func & !is.null(.ddg.find.simple.assign(cmd.expr))){
+              #operationorder <- .ddg.pnum()
+              # hash <- digest::digest(list(cmd.text, .ddg.parsed.num()))
               name <- .ddg.find.simple.assign(cmd.expr)
-              assign(x = name, value = result)
+              # assign(x = name, value = result)
               
-              .ddg.log.cache(paste("Evaluated, saving:", name, "with hash:", hash))
+              # .ddg.log.cache(paste("Evaluated, saving:", name, "with hash:", hash))
+              # 
+              # save(list = name, file = paste(.ddg.path.cache(), "/", hash, ".RData", sep = ""))
               
-              save(list = name, file = paste(.ddg.get("ddg.path.cache"), "/", hash, ".RData", sep = ""))
+              .ddg.save.to.cache(name, result, cmd.text, .ddg.parsed.num(), forceEval = FALSE, cmd.expr, environ)
             }
           }
           else .ddg.proc.node("Operation", cmd.abbrev, cmd.abbrev, env=environ, console=TRUE)
@@ -3427,6 +3445,25 @@ ddg.cache.off <- function(){
             vars.set <- .ddg.add.to.vars.set(vars.set,cmd.expr,i)
             if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Adding", cmd.abbrev, "information to vars.set"))
             .ddg.create.data.set.edges.for.cmd(vars.set, cmd.abbrev, cmd.expr, i, environ)
+            
+            
+            #TODOcache
+            if(.ddg.cache()){
+              if(!.ddg.cache.exists() & !inside.func & !is.null(.ddg.find.simple.assign(cmd.expr))){
+                #operationorder <- .ddg.pnum()
+                # hash <- digest::digest(list(cmd.text, .ddg.parsed.num()))
+                name <- .ddg.find.simple.assign(cmd.expr)
+                # assign(x = name, value = result)
+                # print("LOL12j3k1l2;j312")
+                # .ddg.log.cache(paste("Evaluated, saving:", name, "with hash:", hash))
+                # 
+                # save(list = name, file = paste(.ddg.path.cache(), "/", hash, ".RData", sep = ""))
+                .ddg.save.to.cache(name, result, cmd.text, .ddg.parsed.num(), forceEval = FALSE)
+                
+              }
+            }
+            
+            
             #.ddg.create.data.set.edges.for.cmd(vars.set, cmd.text, cmd.expr, i, environ)
           }
         }
@@ -5950,22 +5987,45 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
 }
 
 .ddg.start.cache <- function() {
-  ddg.path.cache <- paste(.ddg.path(), "/cache", sep = "")
+  r.script.path <- .ddg.get("ddg.r.script.path")
+  ddg.path.cache <- paste(dirname(r.script.path), "/cache", sep = "")
+  if(!dir.exists(ddg.path.cache)) dir.create(ddg.path.cache)
+  
+  ddg.path.cache <- paste(ddg.path.cache, "/",basename(tools::file_path_sans_ext(r.script.path)), "_cache",  sep = "")
+
   .ddg.set("ddg.path.cache", ddg.path.cache)
-  .ddg.set("ddg.cache.log", character(0))
+  .ddg.set("ddg.cache.log", "")
+  .ddg.set("ddg.cache.meta", "")
+  
+  .ddg.path.cache.ddg <- paste(.ddg.path.cache(), "/ddg", sep = "")
+  .ddg.set(".ddg.path.cache.ddg", .ddg.path.cache.ddg)
+  
+  .ddg.path.cache.db <- paste(.ddg.path.cache(), "/db", sep = "")
+  .ddg.set(".ddg.path.cache.db", .ddg.path.cache.db)
+  
+  
+  
   if(dir.exists(ddg.path.cache)){
-    .ddg.log.cache(paste("Previous cache is present, location:", .ddg.get("ddg.path.cache")))
+    .ddg.log.cache(paste("Previous cache is present, location:", .ddg.path.cache()))
     .ddg.load.cache()
     .ddg.set("ddg.cache.exists", TRUE)
     return(TRUE)
   }
   else{
     .ddg.set("ddg.cache.exists", FALSE)
-    dir.create(.ddg.get("ddg.path.cache"))
-    .ddg.log.cache(paste("No previous cache, evaluating and saving all simple assignments to new cache at:", .ddg.get("ddg.path.cache")))
+    dir.create(.ddg.path.cache())
+    dir.create(.ddg.path.cache.ddg)
+    dir.create(.ddg.path.cache.db)
+    
+    .ddg.log.cache(paste("No previous cache, evaluating and saving all simple assignments to new cache at:", .ddg.path.cache()))
     return(FALSE)
     } 
 }
+
+.ddg.path.cache <- function(){
+  .ddg.get("ddg.path.cache")
+}
+
 .ddg.cache.exists <- function(){
   if(.ddg.cache()){ 
     return(.ddg.get("ddg.cache.exists"))
@@ -5977,11 +6037,54 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
 
 .ddg.load.cache <- function(){
     .ddg.log.cache("Loading in previous cache")
-    ddg.path.cache <- .ddg.get("ddg.path.cache")
-    .ddg.set("cached.data.nodes", .ddg.append.cache.columns(.ddg.index(read.csv(file = paste(ddg.path.cache, "/dnodes.csv", sep = "")))))
-    .ddg.set("cached.edges", read.csv(file = paste(ddg.path.cache, "/edges.csv", sep = "")))
-    .ddg.set("cached.proc.nodes", .ddg.append.cache.columns(.ddg.index(read.csv(file = paste(ddg.path.cache, "/pnodes.csv", sep = "")))))
+    .ddg.path.cache.ddg <- .ddg.get(".ddg.path.cache.ddg")
+    print(.ddg.path.cache.ddg)
+    
+    .ddg.set("cached.data.nodes", .ddg.append.cache.columns(.ddg.index(read.csv(file = paste(.ddg.path.cache.ddg, "/dnodes.csv", sep = "")))))
+    .ddg.set("cached.edges", read.csv(file = paste(.ddg.path.cache.ddg, "/edges.csv", sep = "")))
+    .ddg.set("cached.proc.nodes", .ddg.append.cache.columns(.ddg.index(read.csv(file = paste(.ddg.path.cache.ddg, "/pnodes.csv", sep = "")))))
+    .ddg.set("cached.pnum", read.csv(file = paste(.ddg.path.cache.ddg, "/sourced-scripts.csv", sep = "")))
     .ddg.log.cache("Finished loading in cache")
+}
+
+.ddg.save.to.cache <- function(name, result, cmd.text, pnum, forceEval, cmd.expr = "", env = ""){
+  .ddg.path.cache.db <- .ddg.get(".ddg.path.cache.db")
+  
+  assign(x = name, value = result)
+  
+  source.script <- .ddg.source.parsed()
+  snum <- source.script[source.script$pnum == pnum, "snum"]
+  
+  #if(is.null(files.read <- .ddg.find.files.read(cmd.expr, env))){
+    hash <- digest::digest(list(cmd.text, pnum, snum))
+  #else{
+    
+  #}
+  
+  .ddg.cache.meta(name, cmd.text, pnum, snum, hash, forceEval, FALSE)
+  
+  if(forceEval) .ddg.log.cache(paste("Evaluated and saving:", cmd.text, "with hash:", hash))
+  else{
+    .ddg.log.cache(paste("Forced evaluation for:", cmd.text, "with hash:", hash))
+  }
+  
+  save(list = name, file = paste(.ddg.path.cache.db, "/", hash, ".RData", sep = ""))
+}
+
+.ddg.cache.meta <- function(name, cmd.text, pnum, snum, hash, forceEval, load){
+  meta <- .ddg.get("ddg.cache.meta")
+  if(load) meta <- paste(meta, "LOADED", "\n", sep = "")
+  else{
+    meta <- paste(meta, "SAVED", "\n", sep = "")
+  }
+  meta <- paste(meta, "Name: ", name,  "\n", sep = "")
+  meta <- paste(meta, "Full Command: ", cmd.text,  "\n", sep = "")
+  meta <- paste(meta, "Forced Evaluation: ", forceEval, "\n", sep = "")
+  meta <- paste(meta, "Parsed Command Number: ", pnum,  "\n", sep = "")
+  meta <- paste(meta, "Sourced Script Number: ", snum,  "\n", sep = "")
+  meta <- paste(meta, "Hash: ", hash,  "\n", sep = "")
+  meta <- paste(meta, "\n", sep = "")
+  .ddg.set("ddg.cache.meta", meta)
 }
 
 .ddg.index <- function(df){
@@ -6007,34 +6110,75 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
   return(.ddg.get("cached.proc.nodes"))
 }
 
-.ddg.match.proc.node <- function(ddg.value, pnum){
-  cached.proc.nodes <- .ddg.cached.proc.nodes()
-  index <- which(cached.proc.nodes$ddg.value %in% ddg.value)
-
-  if(length(index) > 0){
-    .ddg.log.cache(paste("Found", ddg.value, "in proc nodes, now looking for", pnum))
-    if(!is.na(match(pnum, cached.proc.nodes$ddg.num))){
-      .ddg.log.cache(paste("Found", pnum, "checking if matched already"))
-      if(!cached.proc.nodes[pnum, "ddg.matched"]){
-        .ddg.log.cache(paste(ddg.value, "and", pnum, "are matched"))
-        cached.proc.nodes[pnum, "ddg.matched"] <- TRUE
-        .ddg.set("cached.proc.nodes", cached.proc.nodes)
-        return(TRUE)
-      }
-    }
-    else{
-      .ddg.log.cache(paste("Corresponding", pnum, "has changed, relative ordering is different, forcing evaluation"))
-    }
-  }
-  
-  .ddg.log.cache(paste("No match for", ddg.value, "relative ordering of assignments have changed,", pnum, "has not been matched"))
-  .ddg.set("cached.proc.nodes", cached.proc.nodes)
-  return(FALSE)
+.ddg.cached.pnum <- function(){
+  return(.ddg.get("cached.pnum"))
 }
 
-.ddg.check.dependencies <- function(cmd.text, pn, pnum){
+.ddg.get.pn <- function(pnum){
+  pnumtable <- .ddg.cached.pnum()
+  lnum <- pnumtable[pnumtable$pnum == pnum, "lnum"]
+  
+  cached.proc.nodes <- .ddg.cached.proc.nodes()
+  
+  pn <- cached.proc.nodes[match(lnum, cached.proc.nodes$ddg.lnum), "ddg.num"]
+  .ddg.log.cache(paste("Parsed command:", pnum, "matched with line number:", lnum,
+                       "which has first procedure node of:", pn))
+  
+  return(pn)
+}
+
+.ddg.match.proc.node <- function(ddg.value, pn){
+
+  #.ddg.log.cache(paste(ddg.value, "has parsed command number:", pnum, "which matched with procedure node number", pn,
+                       #"now looking for corresponding command in procedure node table"))
+
+  cached.proc.nodes <- .ddg.cached.proc.nodes()
+  if(cached.proc.nodes[pn, "ddg.value"] == ddg.value){
+    .ddg.log.cache(paste("Found text, now checking if matched already"))
+    if(!cached.proc.nodes[pn, "ddg.matched"]){
+      .ddg.log.cache(paste(pn, "has not been matched, now matching"))
+      cached.proc.nodes[pn, "ddg.matched"] <- TRUE
+      .ddg.set("cached.proc.nodes", cached.proc.nodes)
+      return(TRUE)
+    }
+    else{
+      .ddg.log.cache("Command has already been matched, forcing re-evaluation")
+      return(FALSE)
+    }
+  }  
+  else{
+    .ddg.log.cache("Command did not match with previous cache, forcing re-evaluation")
+    return(FALSE)
+  }
+
+  # index <- which(cached.proc.nodes$ddg.value %in% ddg.value)
+  # 
+  # if(length(index) > 0){
+  #   .ddg.log.cache(paste("Found", ddg.value, "in proc nodes, now looking for", pnum))
+  #   if(!is.na(match(pnum, cached.proc.nodes$ddg.num))){
+  #     .ddg.log.cache(paste("Found", pnum, "checking if matched already"))
+  #     if(!cached.proc.nodes[pnum, "ddg.matched"]){
+  #       .ddg.log.cache(paste(ddg.value, "and", pnum, "are matched"))
+  #       cached.proc.nodes[pnum, "ddg.matched"] <- TRUE
+  #       .ddg.set("cached.proc.nodes", cached.proc.nodes)
+  #       return(TRUE)
+  #     }
+  #   }
+  #   else{
+  #     .ddg.log.cache(paste("Corresponding", pnum, "has changed, order of procedures is different, forcing evaluation"))
+  #   }
+  # }
+  # 
+  # .ddg.log.cache(paste("No match for", ddg.value, "order of assignments have changed,", pnum, "has not been matched"))
+  
+}
+
+.ddg.check.dependencies <- function(cmd.text, pn){
   edges <- .ddg.cached.edges()
-  data.in <- edges[with(edges, ddg.type == "df.in" & ddg.to == pn) , "ddg.from"]
+  
+  fullpn <- paste("p", pn, sep = "")
+  
+  data.in <- edges[with(edges, ddg.type == "df.in" & ddg.to == fullpn) , "ddg.from"]
   
   if(length(data.in) == 0){
     .ddg.log.cache(paste(cmd.text, "isn't dependent on any data nodes"))
@@ -6054,11 +6198,34 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
     cached.proc.nodes <- .ddg.cached.proc.nodes()
     depends.data <- cached.proc.nodes[cached.proc.nodes$ddg.num %in% depends.on.proc.nodes, ]
     
+
+    finish.nodes <- which(depends.data$ddg.type == "Finish")
+    
+    if(length((finish.nodes)) > 0){
+      .ddg.log.cache("One or more dependencies is a finish node, suggests function call, searching for Start")
+      for(i in 1: length(finish.nodes)){
+        finish.node.number <- finish.nodes[i]
+        finish.node.line <- depends.data[finish.node.number, ]
+        name <- finish.node.line[,"ddg.name"]
+        ddg.num <- finish.node.line[,"ddg.num"]
+        for(j in ddg.num:1){
+          if(cached.proc.nodes[j,"ddg.name"] == name & cached.proc.nodes[j, "ddg.type"] == "Start"){
+            
+            .ddg.log.cache(paste("Finish node:", ddg.num, "matched with Start Node", j))
+            start.node <- j
+            break
+          }
+        }
+        depends.data[finish.node.number,] <- cached.proc.nodes[cached.proc.nodes$ddg.num == start.node,]
+      }
+    }
+    
+
     .ddg.log.cache(paste("The record of the dependencies:", paste(depends.data[,"ddg.num"], depends.data[,"ddg.matched"], depends.data[,"ddg.depends.changed"], sep = " ", collapse = ", ")))
     
      if (any(!depends.data[,"ddg.matched"])){
        .ddg.log.cache(paste("One or more of the dependencies have not been matched, marking depends.changed"))
-       cached.proc.nodes[pnum, "ddg.depends.changed"] <- TRUE
+       cached.proc.nodes[pn, "ddg.depends.changed"] <- TRUE
       .ddg.set("cached.proc.nodes", cached.proc.nodes)
       return(TRUE) 
      }
@@ -6066,7 +6233,7 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
         
         if(any(depends.data[,"ddg.depends.changed"])){
           .ddg.log.cache(paste("One or more of the dependencies have been changed, marking depends.changed"))
-          cached.proc.nodes[pnum, "ddg.depends.changed"] <- TRUE
+          cached.proc.nodes[pn, "ddg.depends.changed"] <- TRUE
           
           
           .ddg.set("cached.proc.nodes", cached.proc.nodes)
@@ -6091,13 +6258,14 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
 }
 
 .ddg.cache.file <- function(hash){
-  paste(.ddg.get("ddg.path.cache"), "/", hash, ".RData", sep = "")
+  paste(.ddg.get(".ddg.path.cache.db"), "/", hash, ".RData", sep = "")
 }
 
 .ddg.log.cache <- function(msg) {
   log <- .ddg.get("ddg.cache.log")
   print(paste(".ddg.cache:", msg))
-  .ddg.set("ddg.cache.log", append(log, msg))
+  
+  .ddg.set("ddg.cache.log", paste(log, msg, "\n", sep = ""))
 }
 
 # ddg.save inserts attribute information and the number of
@@ -6147,13 +6315,7 @@ ddg.save <- function(r.script.path=NULL, quit=FALSE) {
   ddg.proc.nodes <- ddg.proc.nodes[ddg.proc.nodes$ddg.num > 0, ]
   write.csv(ddg.proc.nodes, fileout, row.names=FALSE)
   
-  #save to cache
-  cachepath <- paste(.ddg.path(), "/cache/", sep = "")
-  
-  if(!dir.exists(cachepath)) dir.create(cachepath)
-  
-  cacheout <- paste(cachepath, "pnodes.csv", sep = "")
-  write.csv(ddg.proc.nodes, cacheout, row.names=FALSE)
+ 
   
   
   # Save data nodes table to file.
@@ -6162,8 +6324,7 @@ ddg.save <- function(r.script.path=NULL, quit=FALSE) {
   ddg.data.nodes2 <- ddg.data.nodes[ddg.data.nodes$ddg.num > 0, ]
   write.csv(ddg.data.nodes2, fileout, row.names=FALSE)
   
-  cacheout <- paste(cachepath, "dnodes.csv", sep = "")
-  write.csv(ddg.data.nodes2, cacheout, row.names=FALSE)
+
   
   
   # Save edges table to file.
@@ -6172,9 +6333,7 @@ ddg.save <- function(r.script.path=NULL, quit=FALSE) {
   ddg.edges2 <- ddg.edges[ddg.edges$ddg.num > 0, ]
   write.csv(ddg.edges2, fileout, row.names=FALSE)
   
-  cacheout <- paste(cachepath, "edges.csv", sep = "")
-  write.csv(ddg.edges2, cacheout, row.names=FALSE)
-  
+
   
   
   # Save the function return table to file.
@@ -6203,6 +6362,7 @@ ddg.save <- function(r.script.path=NULL, quit=FALSE) {
     }
     write.csv(source.parsed, fileout, row.names=FALSE)
     
+    
     # Save sourced scripts (if any). First row is main script.
     if (nrow(ddg.sourced.scripts) > 1 ) {
       for (i in 1:nrow(ddg.sourced.scripts)) {
@@ -6222,6 +6382,32 @@ ddg.save <- function(r.script.path=NULL, quit=FALSE) {
     ddg.data.objects <- .ddg.data.objects()
     write.csv(ddg.data.objects, fileout, row.names=FALSE)
     
+  }
+  
+  #Saving if cache is turned on
+  
+  #save to cache
+  if(.ddg.cache()){
+    cachepath <- .ddg.get(".ddg.path.cache.ddg")
+    
+    cacheout <- paste(cachepath, "/pnodes.csv", sep = "")
+    write.csv(ddg.proc.nodes, cacheout, row.names=FALSE)
+    
+    cacheout <- paste(cachepath, "/dnodes.csv", sep = "")
+    write.csv(ddg.data.nodes2, cacheout, row.names=FALSE)
+    
+    cacheout <- paste(cachepath, "/edges.csv", sep = "")
+    write.csv(ddg.edges2, cacheout, row.names=FALSE)
+    
+    cacheout <- paste(cachepath, "/sourced-scripts.csv", sep = "")
+    write.csv(source.parsed, cacheout, row.names = FALSE)
+    
+    ddg.cache.log <- .ddg.get("ddg.cache.log")
+
+    write(ddg.cache.log, file = paste(.ddg.path.cache(), "/log.txt", sep = ""))
+    
+    ddg.meta.cache <- .ddg.get("ddg.cache.meta")
+    write(ddg.meta.cache, file = paste(.ddg.path.cache(), "/meta.txt", sep = ""))
   }
   
   # By convention, this is the final call to ddg.save.
