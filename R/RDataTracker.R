@@ -5998,6 +5998,7 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
   .ddg.set("ddg.path.cache", ddg.path.cache)
   .ddg.set("ddg.cache.log", "")
   .ddg.set("ddg.cache.meta", "")
+  .ddg.set("ddg.cache.db.tracking", character(length = 0))
   
   .ddg.path.cache.ddg <- paste(.ddg.path.cache(), "/ddg", sep = "")
   .ddg.set(".ddg.path.cache.ddg", .ddg.path.cache.ddg)
@@ -6046,6 +6047,10 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
     .ddg.set("cached.edges", read.csv(file = paste(.ddg.path.cache.ddg, "/edges.csv", sep = "")))
     .ddg.set("cached.proc.nodes", .ddg.append.cache.columns(.ddg.index(read.csv(file = paste(.ddg.path.cache.ddg, "/pnodes.csv", sep = "")))))
     .ddg.set("cached.pnum", read.csv(file = paste(.ddg.path.cache.ddg, "/sourced-scripts.csv", sep = "")))
+    
+    cached.tracking <- readLines(con = paste(.ddg.get(".ddg.path.cache.db"), "/tracking.txt", sep = ""))
+    .ddg.set("cached.tracking", cached.tracking)
+    
     .ddg.log.cache("Finished loading in cache")
 }
 
@@ -6089,7 +6094,7 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
         artifact <- c(artifact, info)
       }
       else if (grepl ("^http", file) || grepl ("^ftp", file)) {
-        .ddg.log.cache("Saving URL")
+        .ddg.log.cache(paste("Hashing URL", file))
         artifact <- c(artifact, file)
       }
     }
@@ -6110,7 +6115,15 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
   meta <- paste(meta, "Sourced Script Number: ", snum,  "\n", sep = "")
   meta <- paste(meta, "Hash: ", hash,  "\n", sep = "")
   meta <- paste(meta, "\n", sep = "")
+  
+  .ddg.cache.db.tracking(hash)
+  
   .ddg.set("ddg.cache.meta", meta)
+}
+
+.ddg.cache.db.tracking <- function(hash){
+  tracking <- .ddg.get("ddg.cache.db.tracking")
+  .ddg.set("ddg.cache.db.tracking", append(tracking, hash))
 }
 
 .ddg.index <- function(df){
@@ -6274,8 +6287,16 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
 }
 
 .ddg.node.is.cached <- function(hash) {
-  if(.ddg.cache()){
-    file.exists(.ddg.cache.file(hash))
+  if(.ddg.cache() & .ddg.cache.exists()){
+    cached.tracking <- .ddg.get("cached.tracking")
+
+    if(hash %in% cached.tracking){
+      return(TRUE)
+    }
+    else{
+      return(FALSE)
+    }
+    
   }
   else{
     return(FALSE)
@@ -6434,6 +6455,19 @@ ddg.save <- function(r.script.path=NULL, quit=FALSE) {
     
     ddg.meta.cache <- .ddg.get("ddg.cache.meta")
     write(ddg.meta.cache, file = paste(.ddg.path.cache(), "/meta.txt", sep = ""))
+    
+    cache.tracking <- .ddg.get("ddg.cache.db.tracking")
+    
+    if(.ddg.cache.exists()){
+      past.tracking <- .ddg.get("cached.tracking")
+      
+      diff <- base::setdiff(past.tracking, cache.tracking)
+      db.dir <- .ddg.get(".ddg.path.cache.db")
+      diff.dir <- paste(db.dir, "/", diff, ".RData", sep = "")
+      unlink(x = diff.dir)
+    }
+    
+    writeLines(cache.tracking, con = paste(.ddg.get(".ddg.path.cache.db"), "/tracking.txt", sep = ""))
   }
   
   # By convention, this is the final call to ddg.save.
