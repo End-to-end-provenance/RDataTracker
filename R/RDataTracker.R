@@ -3215,6 +3215,8 @@ ddg.cache.off <- function(){
                 snum <- source.script[source.script$pnum == .ddg.parsed.num(), "snum"]
                 
                 artifact <- list(cmd.text, .ddg.parsed.num(), snum)
+                artifact <- .ddg.cache.file.info(artifact, cmd.expr, environ)
+                
                 hash <- digest::digest(artifact)
 
                 name <- .ddg.find.simple.assign(cmd.expr)
@@ -6055,11 +6057,9 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
   source.script <- .ddg.source.parsed()
   snum <- source.script[source.script$pnum == pnum, "snum"]
   
-  #if(is.null(files.read <- .ddg.find.files.read(cmd.expr, env))){
-    hash <- digest::digest(list(cmd.text, pnum, snum))
-  #else{
-    
-  #}
+  artifact <- list(cmd.text, pnum, snum)
+  artifact <- .ddg.cache.file.info(artifact, cmd.expr, env)
+  hash <- digest::digest(artifact)
   
   .ddg.cache.meta(name, cmd.text, pnum, snum, hash, forceEval, FALSE)
   
@@ -6071,6 +6071,32 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
   save(list = name, file = paste(.ddg.path.cache.db, "/", hash, ".RData", sep = ""))
 }
 
+.ddg.cache.file.info <- function(artifact, cmd.expr, env){
+  files.read <- .ddg.find.files.read(cmd.expr, env)
+  if(is.null(files.read)){
+    return(artifact)
+  }
+  else{
+    for (file in files.read) {
+      # Only add hash if there actually is a file
+      # Even if the file exists, it is possible that it was not read here
+      if (file.exists(file)) {
+        # Create the file node and edge
+        info <- file.info(file)
+        info <- info[,1:4]
+        .ddg.log.cache(paste("Hashing file information, size:", info[,1], "isdir:", info[,2],
+                             "mode:", info[,3], "time of modification:", info[,4]))
+        artifact <- c(artifact, info)
+      }
+      else if (grepl ("^http", file) || grepl ("^ftp", file)) {
+        .ddg.log.cache("Saving URL")
+        artifact <- c(artifact, file)
+      }
+    }
+    return(artifact)
+  }
+}  
+  
 .ddg.cache.meta <- function(name, cmd.text, pnum, snum, hash, forceEval, load){
   meta <- .ddg.get("ddg.cache.meta")
   if(load) meta <- paste(meta, "LOADED", "\n", sep = "")
