@@ -776,16 +776,17 @@
    <!--################################# START CACHE TESTS #################################-->
   <target name="example2Test">
         <antcall target="run-cache-times-test">
-          <param name="test-name" value="example2" />
+          <param name="test-name" value="example2Test" />
         </antcall>
   </target>
 
 
   <target name = "run-cache-times-test">
-        <antcall target="run-cache-times">
-          <param name="dir" value="examples-no-instrumentation/${test-name}" />
-        <param name="script-file" value="${test-name}.R" />
-        </antcall>
+      <!-- <numbergen start = "1" end ="15" /> -->
+          <antcall target="run-cache-times">
+            <param name="dir" value="examples-no-instrumentation/${test-name}" />
+            <param name="script-file" value="${test-name}.R" />
+          </antcall>
   </target>
 
   <!-- This is specifically for running tests on ddg.cache because it requires extra file manipulation -->
@@ -798,7 +799,7 @@
 
 
     <!-- Copy the source test cache file to this directory, and replace with correct script name and directory -->
-      <copy file="${FILE.basedir}/examples-no-instrumentation/sourceTest.r" todir="${dir}" overwrite="true"/>
+      <copy file="${FILE.basedir}/examples-no-instrumentation/sourceTestCACHING.r" todir="${dir}" overwrite="true"/>
       <replaceregexp  file="${dir}/sourceTestCACHING.r"
                       match="\[DIR_LOCAL\]"
                       replace="${FILE.basedir}/${dir}"
@@ -824,7 +825,7 @@
       />
 
     <!-- Copy the original script into the current working directory -->
-    <copy file = "${cache_script_original_dir}/${test-name}" todir = "${dir}" overwrite = "true" />
+    <copy file = "${cache_script_original_dir}/${script-file}" todir = "${dir}" overwrite = "true" />
 
 
       <!-- Execute the R Script with CACHE ON to build cache (delete ddg AND previous cache directory first) -->
@@ -832,41 +833,41 @@
     <property name = "cache_dir" value = "${dir}/cache" />
     <delete dir = "${cache_dir}" quiet = "true" />
       <delete dir="${dir}/ddg" quiet="true" />
-      <exec executable="Rscript" dir="${dir}" output="${FILE.basedir}/${test-name}_original_cache.out" >
+      <exec executable="Rscript" dir="${dir}" output="${dir}/${test-name}_original_cache.out" >
         <arg line="sourceTestCACHING.r" />
       </exec>
 
     <!-- Execute the R Script with CACHE OFF to compare run times -->
       <replaceregexp  file="${dir}/sourceTestCACHING.r"
-                          match="ddg.cache.on()"
-                          replace="ddg.cache.off()"
+                          match="ddg.cache.on"
+                          replace="ddg.cache.off"
                           flags="g"
       />
-      <exec executable="Rscript" dir="${dir}" output="${FILE.basedir}/${test-name}_original_base.out" >
+      <exec executable="Rscript" dir="${dir}" output="${dir}/${test-name}_original_base.out" >
         <arg line="sourceTestCACHING.r" />
       </exec>
 
 
       <!-- Remove original script and replace it with edited script -->
-      <copy file = "${cache_script_edited_dir}/${test-name}" todir = "${dir}" overwrite = "true" />
+      <copy file = "${cache_script_edited_dir}/${script-file}" todir = "${dir}" overwrite = "true" />
 
       
       <!-- Execute the R script with CACHE OFF on EDITED script, writing ddg txt to EXPECTED FOLDER-->
-    <exec executable="Rscript" dir="${dir}" output="${FILE.basedir}/${test-name}_edited_base.out" >
+    <exec executable="Rscript" dir="${dir}" output="${dir}/${test-name}_edited_base.out" >
         <arg line="sourceTestCACHING.r" />
       </exec>   
 
       <property name = "expected_dir" value = "${dir}/expected" />
-      <copy file = "ddg/ddg.txt" to dir = "${expected_dir}" overwrite = "true" />
+      <copy file = "${dir}/ddg/ddg.txt" todir = "${expected_dir}" overwrite = "true" />
 
 
       <!-- Execute the R script with CACHE ON on the EDITED script, producing a result generated with previous cache -->
       <replaceregexp  file="${dir}/sourceTestCACHING.r"
-                          match="ddg.cache.off()"
-                          replace="ddg.cache.on()"
+                          match="ddg.cache.off"
+                          replace="ddg.cache.on"
                           flags="g"
       />
-    <exec executable="Rscript" dir="${dir}" output="${FILE.basedir}/${test-name}_edited_cache.out" >
+    <exec executable="Rscript" dir="${dir}" output="${dir}/${test-name}_edited_cache.out" >
         <arg line="sourceTestCACHING.r" />
       </exec>
 

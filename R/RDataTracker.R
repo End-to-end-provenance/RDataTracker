@@ -5898,8 +5898,15 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
   # Store time when script begins execution.
   .ddg.set("ddg.start.time", .ddg.timestamp())
   
+  # If cache is set, don't change it, otherwise default is FALSE
+  
+  if (!.ddg.is.set("ddg.cache")) .ddg.set("ddg.cache", FALSE)
+  if(.ddg.cache()){
+    print("cache is on")
+  } 
+  
   if (.ddg.cache()){
-    .ddg.start.cache()
+    .ddg.start.cache(r.script.path)
   } 
   
   invisible()
@@ -5936,12 +5943,7 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
 
 ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = NULL, enable.console = TRUE, annotate.functions = TRUE, max.snapshot.size = 100, debug = FALSE, display = FALSE) {
 
-  # If cache is set, don't change it, otherwise default is FALSE
-  
-  if (!.ddg.is.set("ddg.cache")) .ddg.set("ddg.cache", TRUE)
-  if(.ddg.cache()){
-    print("cache is on")
-  } 
+
   
   # Initiate ddg.
   ddg.init(r.script.path, ddgdir, overwrite, enable.console, max.snapshot.size)
@@ -5988,8 +5990,7 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
   invisible()
 }
 
-.ddg.start.cache <- function() {
-  r.script.path <- .ddg.get("ddg.r.script.path")
+.ddg.start.cache <- function(r.script.path) {
   ddg.path.cache <- paste(dirname(r.script.path), "/cache", sep = "")
   if(!dir.exists(ddg.path.cache)) dir.create(ddg.path.cache)
   
@@ -6310,7 +6311,7 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
 
 .ddg.log.cache <- function(msg) {
   log <- .ddg.get("ddg.cache.log")
-  print(paste(".ddg.cache:", msg))
+  #print(paste(".ddg.cache:", msg))
   
   .ddg.set("ddg.cache.log", paste(log, msg, "\n", sep = ""))
 }

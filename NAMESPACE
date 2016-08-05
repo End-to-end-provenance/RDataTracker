@@ -6,6 +6,7 @@ export(ddg.debug.lib.on, ddg.debug.lib.off, ddg.display)
 export(ddg.breakpoint, ddg.set.breakpoint, ddg.list.breakpoints, ddg.clear.breakpoints)
 export(ddg.flush.ddg)
 export(ddg.source)
+export(ddg.cache.on, ddg.cache.off)
 
 importFrom(gtools, defmacro)
 importFrom(XML, saveXML)
