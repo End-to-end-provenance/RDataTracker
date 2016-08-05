@@ -22,6 +22,7 @@
 
 # Create DDG environment variable.
 
+counter<<- 0
 .ddg.env <- new.env(parent=emptyenv())
 
 # Set maximum number of checkpoints in DDG.
@@ -784,6 +785,7 @@ ddg.MAX_HIST_LINES <- 2^14
   
   dtxt <- paste(ptype, " p", ddg.pnum, " \"", ddg.pnum, "-", pname, "\"", value.str, " Time=\"", ptime , "\" Script=\"", snum, "\"", " Line=\"", lnum, "\";\n", sep="")
   
+  # Sys.sleep(.5)
   .ddg.output.String(dtxt)
   # Record in ddg.txt
   .ddg.append(dtxt)
@@ -815,6 +817,7 @@ ddg.MAX_HIST_LINES <- 2^14
   
   dtxt <- paste(dtype, " d", ddg.dnum, " \"", ddg.dnum, "-", dname, "\"", value.str, time.str, loc.str, ";\n", sep="")
   
+  # Sys.sleep(.5)
   .ddg.output.String(dtxt)
   # Record in ddg.txt
   .ddg.append(dtxt)
@@ -837,6 +840,7 @@ ddg.MAX_HIST_LINES <- 2^14
   if (etype == "cf") dtxt <- paste("CF ", node1, " ", node2, "\n", sep="")
   else dtxt <- paste("DF ", node1, " ", node2, "\n", sep="")
   
+  # Sys.sleep(.5)
   .ddg.output.String(dtxt)
   # Record in ddg.txt
   .ddg.append(dtxt)
@@ -4760,6 +4764,14 @@ ddg.MAX_HIST_LINES <- 2^14
     writeLines(x,.ddg.get("con"))
 }
 
+#function that starts the server from java side
+.ddg.start.server<- function(x){
+  jar.path<- "/RDataTracker/java/DDGExplorer.jar"
+  check.library.paths<- file.exists(paste(.libPaths(),jar.path,sep = ""))
+  index<- min(which(check.library.paths == TRUE))
+  ddgexplorer_path<- paste(.libPaths()[index],jar.path,sep = "")
+  system(paste("java -jar ", ddgexplorer_path,x, sep = " "), wait = FALSE)
+}
 # .ddg.markdown takes a Rmd file and extracts the R code and text through
 # the purl function in the knitr library. It then annotates the R script
 # to insert start and finish nodes based on the chunks the user already
@@ -5792,14 +5804,15 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
 #   same effect as inserting ddg.breakpoint() at the top of the script.
 
 ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = NULL, enable.console = TRUE, annotate.functions = TRUE, max.snapshot.size = 100, debug = FALSE, display = FALSE, incremental = FALSE) {
-  
   # Initiate ddg.
   ddg.init(r.script.path, ddgdir, overwrite, enable.console, max.snapshot.size)
   
+  
   if(incremental == TRUE){
     .ddg.set("incremental","True")
-    # ddg.start.server()
-    # Sys.sleep(5)
+    #still needs to change this part of code to multithread
+    .ddg.start.server(.ddg.get("incremental"))
+    Sys.sleep(6)
     .ddg.set("con",socketConnection(host= "localhost", port = 6096, blocking = FALSE,
                                     server=FALSE, open="w"))
     .ddg.output.String(r.script.path)
