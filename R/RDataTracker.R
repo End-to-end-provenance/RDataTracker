@@ -3821,7 +3821,7 @@ ddg.MAX_HIST_LINES <- 2^14
 
           # New commands since last timestamp.
           if (!is.null(parsed.commands) && length(parsed.commands) > 0) {
-           .ddg.parse.commands(parsed.commands,
+           .ddg.new.parse.commands(parsed.commands,
                 environ = .GlobalEnv,
                 run.commands=FALSE)
           }
@@ -5472,21 +5472,17 @@ ddg.procedure <- function(pname, ins=NULL, outs.graphic=NULL, outs.data=NULL, ou
 # expr - the value returned by the function.
 
 ddg.return.value <- function (expr=NULL) {
-  print("In ddg.return.value")
-  print(paste("typeof(expr) =", typeof(expr)))
+  #print("In ddg.return.value")
 
   if (!.ddg.is.init()) return(expr)
 
   # If expr is an assignment, create nodes and edges for the assignment.
   orig.expr <- substitute(expr)
-  print(paste("typeof(orig.expr) =", typeof(orig.expr)))
   
   frame.num <- .ddg.get.frame.number(sys.calls())
   env <- sys.frame(frame.num)
 
   orig.cmd <- .ddg.construct.DDGStatement (orig.expr, pos=NA, script.num=NA, is.breakpoint=FALSE, annotate.functions=FALSE)
-  print("ddg.return.value: orig.cmd =")
-  print(orig.cmd)
   #orig.pname <- paste(deparse(orig.expr), collapse="")
 
   orig.return <- paste("return(", orig.cmd@text, ")", sep="")
@@ -5497,7 +5493,7 @@ ddg.return.value <- function (expr=NULL) {
   #print ("ddg.return.value: orig.pname =")
   #print (orig.pname)
   .ddg.proc.node("Operation", orig.cmd@text, orig.cmd@text, console=TRUE)
-  print(paste("ddg.return.value: Create proc node", orig.cmd@text))
+  #print(paste("ddg.return.value: Create proc node", orig.cmd@text))
 
   # Create control flow edge from preceding procedure node.
   .ddg.proc2proc()
@@ -5510,7 +5506,7 @@ ddg.return.value <- function (expr=NULL) {
       .ddg.data2proc(var, scope, orig.cmd@text)
     }
   }
-  print("ddg.return.value done creating data in edges")
+  #print("ddg.return.value done creating data in edges")
 
   for (var in orig.cmd@vars.set) {
     if (var != "") {
@@ -5525,7 +5521,7 @@ ddg.return.value <- function (expr=NULL) {
       .ddg.proc2data(orig.cmd@text, var, dscope=dscope, return.value=FALSE)
     }
   }
-  print("ddg.return.value done creating data out edges")
+  #print("ddg.return.value done creating data out edges")
   
   pname <- NULL
   .ddg.lookup.function.name(pname)
@@ -5546,7 +5542,7 @@ ddg.return.value <- function (expr=NULL) {
     # causes some examples to work with debugging on but not off.
     # Checking.  (6/26/2015 - Barb).
     # Yes, ReturnTest.R fails on the recursive f5 function
-    print(paste("ddg.return.value:", sys.call(caller.frame))) #, "returns", expr))
+    #print(paste("ddg.return.value:", sys.call(caller.frame))) #, "returns", expr))
   }
 
   ddg.return.values <- .ddg.get(".ddg.return.values")
@@ -5607,7 +5603,7 @@ ddg.return.value <- function (expr=NULL) {
 
   caller.env = sys.frame(caller.frame)
   .ddg.proc.node("Operation", return.stmt@abbrev, return.stmt@abbrev, console = TRUE, env=caller.env)
-  print("ddg.return.value created return proc node")
+  #print("ddg.return.value created return proc node")
 
   # Create control flow edge from preceding procedure node.
   .ddg.proc2proc()
@@ -5624,7 +5620,7 @@ ddg.return.value <- function (expr=NULL) {
       .ddg.data2proc(var, scope, return.stmt@abbrev)
     }
   }
-  print("ddg.return.value created return proc node data in edges")
+  #print("ddg.return.value created return proc node data in edges")
   
   # Create nodes and edges dealing with reading and writing files
   .ddg.create.file.read.nodes.and.edges(return.stmt, env)
@@ -5633,11 +5629,11 @@ ddg.return.value <- function (expr=NULL) {
   if (return.stmt@has.dev.off) {
     .ddg.capture.graphics(return.stmt)
   }
-  print("ddg.return.value created return file nodes and edges")
+  #print("ddg.return.value created return file nodes and edges")
   
   # Create an edge from the return statement to its return value.
   .ddg.proc2data(return.stmt@abbrev, return.node.name, return.node.scope, return.value=TRUE)
-  print("ddg.return.value created node to return value")
+  #print("ddg.return.value created node to return value")
 
   # Update the table.
   ddg.num.returns <- ddg.num.returns + 1
@@ -5696,7 +5692,7 @@ ddg.eval <- function(statement) {
 
     # Create outflowing edges .
     # print ("ddg.eval: creating data set edges")
-    .ddg.create.data.set.edges.for.cmd(vars.set, cmd, 1, env)
+    .ddg.create.data.set.edges.for.cmd(cmd@vars.set, cmd, 1, env)
     # print ("ddg.eval done")
   }
 }

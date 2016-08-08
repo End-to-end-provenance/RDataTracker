@@ -3,106 +3,105 @@
 # Author: blerner
 ###############################################################################
 
-#.ddg.DDGStatement.init <- function() {
+library (methods)
 
-  setClass("DDGStatementPos",
-      slots = list(
-          startLine = "numeric",
-          startCol = "numeric",
-          endLine = "numeric", 
-          endCol = "numeric")
-  )
-  
-  setMethod ("initialize",
-      "DDGStatementPos",
-      function(.Object, parseData){
-        if (length(parseData) == 1 && is.na(parseData)) {
-          .Object@startLine <- -1
-          .Object@startCol <- -1
-          .Object@endLine <- -1
-          .Object@endCol<- -1
-        }
-        else {
-          .Object@startLine <- parseData$line1
-          .Object@startCol <- parseData$col1
-          .Object@endLine <- parseData$line2
-          .Object@endCol<- parseData$col2
-        }
-        #print(.Object)
-        return (.Object)
+setClass("DDGStatementPos",
+    slots = list(
+        startLine = "numeric",
+        startCol = "numeric",
+        endLine = "numeric", 
+        endCol = "numeric")
+)
+
+setMethod ("initialize",
+    "DDGStatementPos",
+    function(.Object, parseData){
+      if (length(parseData) == 1 && is.na(parseData)) {
+        .Object@startLine <- -1
+        .Object@startCol <- -1
+        .Object@endLine <- -1
+        .Object@endCol<- -1
       }
-  )
-  
-  setClass("DDGStatement",
-      slots = list(
-          text = "character",
-          parsed = "language",
-          quoted = "character",
-          abbrev = "character",
-          annotated = "language",
-          vars.used = "character",
-          vars.set = "character",
-          vars.possibly.set = "character",
-          isDdgFunc = "logical",
-          readsFile = "logical",
-          writesFile = "logical",
-          createsGraphics = "logical",
-          has.dev.off = "logical",
-          pos = "DDGStatementPos",
-          script.num = "numeric",
-          is.breakpoint = "logical")
-  )
-  
-  setMethod ("initialize",
-      "DDGStatement",
-      function(.Object, parsed, pos, script.num, is.breakpoint, annotate.functions){
-        if (typeof(parsed) == "expression") {
-          .Object@parsed <- parsed[[1]]
-        }
-        else {
-          .Object@parsed <- parsed
-        }
-        .Object@text <- paste(deparse(.Object@parsed), collapse="")
-        .Object@quoted <- gsub("\\\"", "\\\\\"", .Object@text)
-        .Object@abbrev <- 
-            if (grepl("^ddg.eval", .Object@text)) {
-              .ddg.abbrev.cmd(.Object@parsed[[2]])
-            }
-            else {
-              .ddg.abbrev.cmd(.Object@text)
-            }
-        
-        .Object@annotated <- 
-            if (grepl("^ddg.eval", .Object@text)) {
-              parse(text=.Object@parsed[[2]])[[1]]
-            }
-            else {
-              .ddg.add.annotations(.Object@parsed, annotate.functions)
-            }
-        .Object@vars.used <- .ddg.find.var.uses(.Object@annotated)
-        .Object@vars.set <- .ddg.find.simple.assign(.Object@annotated)
-        .Object@vars.possibly.set <- .ddg.find.assign(.Object@annotated)
-        .Object@isDdgFunc <- grepl("^ddg.", .Object@text) & !grepl("^ddg.eval", .Object@text)
-        .Object@readsFile <- .ddg.reads.file (.Object@parsed)
-        .Object@writesFile <- .ddg.writes.file (.Object@parsed)
-        .Object@createsGraphics <- .ddg.creates.graphics (.Object@parsed)
-        .Object@has.dev.off <- .ddg.has.call.to (.Object@parsed, "dev.off")
-        .Object@pos <- 
-            if (is.object(pos)) {
-              pos
-            }
-            else {
-              null.pos()
-            }
-        .Object@script.num <- 
-            if (is.na(script.num)) -1
-            else script.num
-        .Object@is.breakpoint <- is.breakpoint
-        #print (.Object)
-        return (.Object)
+      else {
+        .Object@startLine <- parseData$line1
+        .Object@startCol <- parseData$col1
+        .Object@endLine <- parseData$line2
+        .Object@endCol<- parseData$col2
       }
-  )
-#}
+      #print(.Object)
+      return (.Object)
+    }
+)
+
+setClass("DDGStatement",
+    slots = list(
+        text = "character",
+        parsed = "language",
+        quoted = "character",
+        abbrev = "character",
+        annotated = "language",
+        vars.used = "character",
+        vars.set = "character",
+        vars.possibly.set = "character",
+        isDdgFunc = "logical",
+        readsFile = "logical",
+        writesFile = "logical",
+        createsGraphics = "logical",
+        has.dev.off = "logical",
+        pos = "DDGStatementPos",
+        script.num = "numeric",
+      is.breakpoint = "logical")
+)
+
+setMethod ("initialize",
+  "DDGStatement",
+    function(.Object, parsed, pos, script.num, is.breakpoint, annotate.functions){
+      if (typeof(parsed) == "expression") {
+        .Object@parsed <- parsed[[1]]
+      }
+      else {
+        .Object@parsed <- parsed
+      }
+      .Object@text <- paste(deparse(.Object@parsed), collapse="")
+      .Object@quoted <- gsub("\\\"", "\\\\\"", .Object@text)
+      .Object@abbrev <- 
+          if (grepl("^ddg.eval", .Object@text)) {
+            .ddg.abbrev.cmd(.Object@parsed[[2]])
+          }
+          else {
+            .ddg.abbrev.cmd(.Object@text)
+          }
+      
+      .Object@annotated <- 
+          if (grepl("^ddg.eval", .Object@text)) {
+            parse(text=.Object@parsed[[2]])[[1]]
+          }
+          else {
+            .ddg.add.annotations(.Object@parsed, annotate.functions)
+          }
+      .Object@vars.used <- .ddg.find.var.uses(.Object@annotated)
+      .Object@vars.set <- .ddg.find.simple.assign(.Object@annotated)
+      .Object@vars.possibly.set <- .ddg.find.assign(.Object@annotated)
+      .Object@isDdgFunc <- grepl("^ddg.", .Object@text) & !grepl("^ddg.eval", .Object@text)
+      .Object@readsFile <- .ddg.reads.file (.Object@parsed)
+      .Object@writesFile <- .ddg.writes.file (.Object@parsed)
+      .Object@createsGraphics <- .ddg.creates.graphics (.Object@parsed)
+      .Object@has.dev.off <- .ddg.has.call.to (.Object@parsed, "dev.off")
+      .Object@pos <- 
+          if (is.object(pos)) {
+            pos
+          }
+          else {
+            null.pos()
+          }
+      .Object@script.num <- 
+          if (is.na(script.num)) -1
+          else script.num
+      .Object@is.breakpoint <- is.breakpoint
+      #print (.Object)
+      return (.Object)
+    }
+)
 
 null.pos <- function() {
   return (new (Class = "DDGStatementPos", NA))
