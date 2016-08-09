@@ -1267,8 +1267,8 @@ ddg.MAX_HIST_LINES <- 2^14
     ddg.proc.nodes$ddg.endCol[ddg.pnum] <- pos@endCol
   }
   else {
-    #print(".ddg.record.proc: pos is NA")
-    #print(sys.calls())
+    print(".ddg.record.proc: pos is NA")
+    print(sys.calls())
     ddg.proc.nodes$ddg.startLine[ddg.pnum] <- NA
     ddg.proc.nodes$ddg.startCol[ddg.pnum] <- NA
     ddg.proc.nodes$ddg.endLine[ddg.pnum] <- NA
@@ -2993,6 +2993,11 @@ ddg.MAX_HIST_LINES <- 2^14
 # inside.function - whether called from within a function.
 
 .ddg.process.breakpoint <- function(command, inside.function) {
+  # Display prompt if we are reaching a breakpoint (i.e., not single-stepping)
+  if (!.ddg.get("ddg.break")) {
+    writeLines("\nEnter = next command, C = next breakpoint, D = display DDG, Q = quit debugging\n")
+  }
+  
   # Abbreviate command.
   abbrev <- command@abbrev
 
@@ -3029,7 +3034,7 @@ ddg.MAX_HIST_LINES <- 2^14
   while (line == "D") {
     line <- toupper(readline())
     if (line == "D") .ddg.loadDDG(.ddg.path())
-    else if (line == "") {}
+    else if (line == "") .ddg.set("ddg.break", TRUE)
     else if (line == "C") .ddg.set("ddg.break", FALSE)
     else if (line == "Q") .ddg.set("ddg.break.ignore", TRUE)
   }
@@ -3157,8 +3162,8 @@ ddg.MAX_HIST_LINES <- 2^14
       cmd <- cmds[[i]]
       #print(paste("Processing", cmd@text))
       
-      # Process breakpoint.
-      if (.ddg.is.sourced() & cmd@is.breakpoint & !.ddg.break.ignore()) {
+      # Process breakpoint. We stop if there is a breakpoint set on this line or we are single-stepping.
+      if (.ddg.is.sourced() & (cmd@is.breakpoint | .ddg.get("ddg.break")) & !.ddg.break.ignore()) {
         .ddg.process.breakpoint(cmd, inside.function=called.from.ddg.eval)
       }
       
@@ -3912,12 +3917,15 @@ ddg.MAX_HIST_LINES <- 2^14
 #  }
 
   if (is.null(cmd)) {
+    print (paste(".ddg.proc.node: cmd is null; pname =", pname))
     snum <- NA
     pos <- NA
   }
   else {
     snum <- cmd@script.num
     pos <- cmd@pos
+    print (paste(".ddg.proc.node: cmd =", cmd@abbrev))
+    print (paste(".ddg.proc.node: snum =", snum))
   }
 
   # Record start & finish information
