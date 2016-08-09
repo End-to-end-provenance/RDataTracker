@@ -50,12 +50,14 @@ setClass("DDGStatement",
         has.dev.off = "logical",
         pos = "DDGStatementPos",
         script.num = "numeric",
-      is.breakpoint = "logical")
+        is.breakpoint = "logical",
+        contained = "list"
+      )
 )
 
 setMethod ("initialize",
   "DDGStatement",
-    function(.Object, parsed, pos, script.num, is.breakpoint, annotate.functions){
+    function(.Object, parsed, pos, script.name, script.num, is.breakpoint, annotate.functions, parseData){
       if (typeof(parsed) == "expression") {
         .Object@parsed <- parsed[[1]]
       }
@@ -98,6 +100,13 @@ setMethod ("initialize",
           if (is.na(script.num)) -1
           else script.num
       .Object@is.breakpoint <- is.breakpoint
+      .Object@contained <- 
+          if (annotate.functions) {
+            .ddg.parse.contained(.Object, script.name, parseData)
+          }
+      else {
+        list()
+      }
       #print (.Object)
       return (.Object)
     }
@@ -107,10 +116,10 @@ null.pos <- function() {
   return (new (Class = "DDGStatementPos", NA))
 }
 
-.ddg.construct.DDGStatement <- function (expr, pos, script.num, is.breakpoint, annotate.functions) {
+.ddg.construct.DDGStatement <- function (expr, pos, script.name, script.num, is.breakpoint, annotate.functions, parseData) {
   #print(expr)
   #print(typeof(expr))
-  return (new (Class = "DDGStatement", parsed = expr, pos, script.num, is.breakpoint, annotate.functions))
+  return (new (Class = "DDGStatement", parsed = expr, pos, script.name, script.num, is.breakpoint, annotate.functions, parseData))
 }
 
 
@@ -314,6 +323,28 @@ null.pos <- function() {
   
   # No annotation required.
   return(parsed.command)
+}
+
+.ddg.parse.contained <- function (cmd, script.name, parseData) {
+  parsed.cmd <- cmd@parsed
+  if (.ddg.is.assign(parsed.cmd) && .ddg.is.functiondecl(parsed.cmd[[3]])) {
+    func.body <- parsed.cmd[[3]][[3]]
+    if (func.body[[1]] == "{") {
+      #func.stmts <- func.body[2:length(func.body)]
+      func.stmts <- list()
+      for (i in 2:length(func.body)) {
+        func.stmts <- c(func.stmts, func.body[[i]])
+      }
+    }
+    else {
+      func.stmts <- func.body[[1]]
+    }
+    print(".ddg.parse.contained:  func.stmts =")
+    print(func.stmts)
+    return (.ddg.create.DDGStatements (func.stmts, script.name, cmd@script.num, annotate.functions = TRUE, parseData, cmd@pos))
+#    return (.ddg.create.DDGStatements (func.body, script.name, cmd@script.num, annotate.functions = TRUE, parseData))
+  }
+  return(list())
 }
 
 # .ddg.add.ddg.source replaces source with ddg.source

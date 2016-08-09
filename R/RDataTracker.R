@@ -3041,17 +3041,34 @@ ddg.MAX_HIST_LINES <- 2^14
   
 }
 
-.ddg.create.DDGStatements <- function (exprs, script.name, script.num, annotate.functions) {
-  # The parse data gives us line number information
-  parseData <- getParseData(exprs, includeText=TRUE)
-  #print("All parse data")
-  #print(parseData)
+.ddg.create.DDGStatements <- function (exprs, script.name, script.num, annotate.functions, parseData = NULL, enclosing.pos = NULL) {
+  print(paste(".ddg.create.DDGStatements: typeof(exprs) =", typeof(exprs)))
   
-  non.comment.parse.data <- parseData[parseData$token != "COMMENT", ]
-  #print ("Non-comment parse data")
-  #print(non.comment.parse.data)
-  if (nrow(non.comment.parse.data) == 0) {
-    return
+  # The parse data gives us line number information
+  if (is.null(parseData)) {
+    parseData <- getParseData(exprs, includeText=TRUE)
+    #print("All parse data")
+    #print(parseData)
+    
+    non.comment.parse.data <- parseData[parseData$token != "COMMENT", ]
+    #print ("Non-comment parse data")
+    #print(non.comment.parse.data)
+    if (nrow(non.comment.parse.data) == 0) {
+      return
+    }
+    next.parseData <- 1
+  }
+  
+  else {
+    print("All parse data")
+    print(parseData)
+    print("enclosing.pos")
+    print(enclosing.pos)
+    non.comment.parse.data <- parseData
+    next.parseData <- which(parseData$line1 >= enclosing.pos@startLine &
+            parseData$line2 <= enclosing.pos@endLine & 
+            parseData$text == deparse(exprs[[1]]) )
+    print(paste("next.parseData = ", next.parseData))
   }
   
   # Get the breakpoint information
@@ -3061,25 +3078,31 @@ ddg.MAX_HIST_LINES <- 2^14
   #print(breakpoints)
   
   cmds <- vector("list", (length(exprs)))
-  next.parseData <- 1
   next.cmd <- 1
-  for (expr in exprs) {
+  for (i in 1:length(exprs)) {
+    expr <- as.expression(exprs[i])
     next.expr.pos <- new (Class = "DDGStatementPos", 
         non.comment.parse.data[next.parseData, ])
     #print(paste("Creating statement for:", expr))
-    cmds[next.cmd] <- .ddg.construct.DDGStatement(expr, next.expr.pos, script.num,
+    cmds[next.cmd] <- .ddg.construct.DDGStatement(expr, next.expr.pos, script.name, script.num,
         any(breakpoints$lnum >= next.expr.pos@startLine & breakpoints$lnum <= next.expr.pos@endLine),
-        annotate.functions)
+        annotate.functions, parseData)
     next.cmd <- next.cmd + 1
     
     # Find the parse data that ends where this statement ends
-    ending.tokens <- which(non.comment.parse.data$line2 == next.expr.pos@endLine & non.comment.parse.data$col2 == next.expr.pos@endCol)
+    #ending.tokens <- which(non.comment.parse.data$line2 == next.expr.pos@endLine & non.comment.parse.data$col2 == next.expr.pos@endCol)
     
     # The parse data for the next statement is the next entry in the parse data
-    next.parseData <- ending.tokens[length(ending.tokens)] + 1
+    #next.parseData <- ending.tokens[length(ending.tokens)] + 1
+  
+    if (i < length(exprs)) {
+      next.parseData <- which(parseData$line1 >= parseData[next.parseData,]$line2 &
+          parseData$text == deparse(exprs[[i+1]]) )
+    }
+  
   }
   
-  #print(cmds)
+  print(cmds)
   return (cmds)
 }
 
