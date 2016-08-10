@@ -74,9 +74,9 @@ setMethod ("initialize",
             .ddg.abbrev.cmd(.Object@text)
           }
       
-      .Object@vars.used <- .ddg.find.var.uses(.Object@annotated)
-      .Object@vars.set <- .ddg.find.simple.assign(.Object@annotated)
-      .Object@vars.possibly.set <- .ddg.find.assign(.Object@annotated)
+      .Object@vars.used <- .ddg.find.var.uses(.Object@parsed)
+      .Object@vars.set <- .ddg.find.simple.assign(.Object@parsed)
+      .Object@vars.possibly.set <- .ddg.find.assign(.Object@parsed)
       .Object@isDdgFunc <- grepl("^ddg.", .Object@text) & !grepl("^ddg.eval", .Object@text)
       .Object@readsFile <- .ddg.reads.file (.Object@parsed)
       .Object@writesFile <- .ddg.writes.file (.Object@parsed)
@@ -122,7 +122,7 @@ setMethod ("initialize",
             .ddg.add.annotations(.Object, annotate.functions)
           }
 
-      #print (.Object)
+      print (.Object)
       return (.Object)
     }
 )
