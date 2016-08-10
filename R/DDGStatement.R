@@ -122,7 +122,7 @@ setMethod ("initialize",
             .ddg.add.annotations(.Object, annotate.functions)
           }
 
-      print (.Object)
+      #print (.Object)
       return (.Object)
     }
 )
@@ -418,14 +418,14 @@ null.pos <- function() {
     
     # Insert calls to ddg.return.value if not already added.
     if (!.ddg.has.call.to(func.definition, "ddg.return.value")) {
-      func.definition <- .ddg.wrap.all.return.parameters(func.definition)
+      func.definition <- .ddg.wrap.all.return.parameters(func.definition, function.decl@contained)
     }
     
     # Wrap last statement with ddg.return.value if not already added
     # and if last statement is not a simple return or a ddg function.
     last.statement <- .ddg.find.last.statement(func.definition)
     if (!.ddg.is.call.to(last.statement, "ddg.return.value") & !.ddg.is.call.to(last.statement, "return") & !.ddg.is.call.to.ddg.function(last.statement)) {
-      func.definition <- .ddg.wrap.last.line(func.definition)
+      func.definition <- .ddg.wrap.last.line(func.definition, function.decl@contained)
     }
     
     # Wrap statements with ddg.eval if not already added and if
@@ -492,7 +492,7 @@ null.pos <- function() {
 # .ddg.wrap.return.parameters wraps parameters of return functions
 # with ddg.return.value in a function body.
 
-.ddg.wrap.return.parameters <- function(func.body) {
+.ddg.wrap.return.parameters <- function(func.body, parsed.stmts) {
   pos <- length(func.body)
   # Check each statement in the function body to see if it
   # contains a return.
@@ -511,17 +511,30 @@ null.pos <- function() {
         }
         
         # If parameters contain a return, recurse on parameters.
+        if (is.list(parsed.stmts)) {
+          parsed.stmt <- parsed.stmts[[i-2]]
+        }
+        else {
+          parsed.stmt <- parsed.stmts
+        }
         if (.ddg.has.call.to(ret.params, "return")) {
-          ret.params <- .ddg.wrap.return.parameters(ret.params)
+          ret.params <- .ddg.wrap.return.parameters(ret.params, parsed.stmt)
         }
         
-        new.ret.params <- call("ddg.return.value", ret.params)
+        new.ret.params <- .ddg.create.ddg.return.call(ret.params, parsed.stmt)
         new.statement <- call("return", new.ret.params)
         func.body[[i]] <- new.statement
         
         # If statement contains a return, recurse on statement.
       } else {
-        func.body[[i]] <- .ddg.wrap.return.parameters(statement)
+        if (is.list(parsed.stmts)) {
+          parsed.stmt <- parsed.stmts[[i-2]]
+        }
+        else {
+          parsed.stmt <- parsed.stmts
+        }
+        
+        func.body[[i]] <- .ddg.wrap.return.parameters(statement, parsed.stmt)
       }
     }
   }
@@ -531,7 +544,7 @@ null.pos <- function() {
 # .ddg.wrap.all.return.parameters wraps parameters of all return
 # functions with ddg.return.value in a function definition.
 
-.ddg.wrap.all.return.parameters <- function(func.definition) {
+.ddg.wrap.all.return.parameters <- function(func.definition, parsed.stmts) {
   # Get function parameters.
   func.params <- func.definition[[2]]
   
@@ -539,7 +552,7 @@ null.pos <- function() {
   func.body <- func.definition[[3]]
   
   # Wrap individual return functions.
-  new.func.body <- .ddg.wrap.return.parameters(func.body)
+  new.func.body <- .ddg.wrap.return.parameters(func.body, parsed.stmts)
   
   # Reconstruct function.
   return(call("function", func.params, as.call(new.func.body)))
@@ -548,7 +561,7 @@ null.pos <- function() {
 # .ddg.wrap.last.line wraps the last line of a function with
 # ddg.return.value.
 
-.ddg.wrap.last.line <- function(func.definition) {
+.ddg.wrap.last.line <- function(func.definition, parsed.stmts) {
   # Get function parameters.
   func.params <- func.definition[[2]]
   
@@ -560,9 +573,10 @@ null.pos <- function() {
   
   # If the function body contains a single statement, wrap that
   # statement and reconstruct the call.
+  parsed.stmt <- parsed.stmts[[length(parsed.stmts)]]
   if (pos == 2) {
     last.statement <- func.body[[pos]]
-    wrapped.statement <- call ("ddg.return.value", last.statement)
+    wrapped.statement <- .ddg.create.ddg.return.call(last.statement, parsed.stmt)
     new.func.body <- call("{", wrapped.statement)
     return(call("function", func.params, new.func.body))
   }
@@ -571,10 +585,18 @@ null.pos <- function() {
   # last statement, wrap it, and reconstruct the call.
   else {
     last.statement <- func.body[[pos]]
-    wrapped.statement <- call ("ddg.return.value", last.statement)
+    wrapped.statement <- .ddg.create.ddg.return.call(last.statement, parsed.stmt)
     new.statements <- c(as.list(func.body[2:pos-1]), wrapped.statement)
     return(call("function", func.params, as.call(new.statements)))
   }
+}
+
+.ddg.create.ddg.return.call <- function (last.statement, parsed.stmt) {
+  # We need to force the evaluation of parsed.stmt for the closure to
+  # return the value that parsed.stmt has at the time the ddg.eval 
+  # call is created.
+  force(parsed.stmt)
+  return (call ("ddg.return.value", last.statement, function() parsed.stmt))
 }
 
 # .ddg.wrap.with.ddg.eval wraps each statement in a function body
@@ -583,8 +605,8 @@ null.pos <- function() {
 # in quotation marks.
 
 .ddg.wrap.with.ddg.eval <- function(func.definition, parsed.stmts) {
-  print(paste(".ddg.wrap.with.ddg.eval: typeof(parsed.stmts) =", typeof(parsed.stmts)))
-  print(paste(".ddg.wrap.with.ddg.eval: length(parsed.stmts) =", length(parsed.stmts)))
+  #print(paste(".ddg.wrap.with.ddg.eval: typeof(parsed.stmts) =", typeof(parsed.stmts)))
+  #print(paste(".ddg.wrap.with.ddg.eval: length(parsed.stmts) =", length(parsed.stmts)))
   # Get the function parameters.
   func.params <- func.definition[[2]]
   
@@ -592,9 +614,9 @@ null.pos <- function() {
   func.body <- func.definition[[3]]
   
   pos <- length(func.body)
-  print(paste(".ddg.wrap.with.ddg.eval: pos =", pos))
-  print(paste(".ddg.wrap.with.ddg.eval: func.body ="))
-  print(func.body)
+  #print(paste(".ddg.wrap.with.ddg.eval: pos =", pos))
+  #print(paste(".ddg.wrap.with.ddg.eval: func.body ="))
+  #print(func.body)
   
   
   # Process each statement in the function body
@@ -605,10 +627,10 @@ null.pos <- function() {
     statement <- func.body[[i]]
     if (!grepl("^ddg.", statement[1]) & !.ddg.has.call.to(statement, "ddg.return.value")) {
       parsed.stmt <- parsed.stmts[[i-2]]
-      print("Creating ddg.eval call")
-      print(paste("parsed.stmt = ", parsed.stmt@text))
+      #print("Creating ddg.eval call")
+      #print(paste("parsed.stmt = ", parsed.stmt@text))
       new.statement <- .ddg.create.ddg.eval.call(statement, parsed.stmt)
-      print("Done creating ddg.eval call")
+      #print("Done creating ddg.eval call")
       func.body[[i]] <- new.statement
     }
   }

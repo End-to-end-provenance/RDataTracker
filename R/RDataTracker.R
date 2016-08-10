@@ -3127,7 +3127,7 @@ ddg.MAX_HIST_LINES <- 2^14
   
   # Gather all the information that we need about the statements
   if (is.null(cmds)) {
-    print(".ddg.new.parse.commands: cmds = NULL")
+    #print(".ddg.new.parse.commands: cmds = NULL")
     cmds <- .ddg.create.DDGStatements (exprs, script.name, script.num, annotate.functions)
   }
 #  else {
@@ -5524,8 +5524,7 @@ ddg.procedure <- function(pname, ins=NULL, outs.graphic=NULL, outs.data=NULL, ou
 # and edges are created for the assignment.
 
 # expr - the value returned by the function.
-
-ddg.return.value <- function (expr=NULL) {
+ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
   #print("In ddg.return.value")
 
   if (!.ddg.is.init()) return(expr)
@@ -5654,7 +5653,13 @@ ddg.return.value <- function (expr=NULL) {
 #  return.expr.text.toparse <- paste (return.expr.text.vector, collapse="\n")
 #  return.expr <- parse (text=return.expr.text.toparse)
 
-  return.stmt <- .ddg.construct.DDGStatement (parse(text=orig.return), pos=NA, script.num=NA, breakpoints=NA, annotate.functions=FALSE)
+  if (is.null(cmd.func)) {
+    return.stmt <- .ddg.construct.DDGStatement (parsed.statement, pos=NA, script.num=NA, breakpoints=NA, annotate.functions=FALSE)
+  }
+  else {
+    return.stmt <- cmd.func()
+    parsed.statement <- return.stmt@parsed
+  }
 
   caller.env = sys.frame(caller.frame)
   .ddg.proc.node("Operation", return.stmt@abbrev, return.stmt@abbrev, console = TRUE, env=caller.env)
@@ -5675,16 +5680,18 @@ ddg.return.value <- function (expr=NULL) {
       .ddg.data2proc(var, scope, return.stmt@abbrev)
     }
   }
-  #print("ddg.return.value created return proc node data in edges")
+  print("ddg.return.value created return proc node data in edges")
   
   # Create nodes and edges dealing with reading and writing files
   .ddg.create.file.read.nodes.and.edges(return.stmt, env)
   .ddg.create.file.write.nodes.and.edges (return.stmt, env)
+  print("ddg.return.value setting graphics files")
   .ddg.set.graphics.files (return.stmt, env)
+  print("ddg.return.value checking for dev.off")
   if (return.stmt@has.dev.off) {
     .ddg.capture.graphics(return.stmt)
   }
-  #print("ddg.return.value created return file nodes and edges")
+  print("ddg.return.value created return file nodes and edges")
   
   # Create an edge from the return statement to its return value.
   .ddg.proc2data(return.stmt@abbrev, return.node.name, return.node.scope, return.value=TRUE)
@@ -5745,11 +5752,11 @@ ddg.eval <- function(statement, cmd.func=NULL) {
     .ddg.console.node()
   }
 
-  print ("ddg.eval:  calling .ddg.parse.commands")
-  print("cmd =")
-  print(cmd)
+  #print ("ddg.eval:  calling .ddg.parse.commands")
+  #print("cmd =")
+  #print(cmd)
   cmd <- .ddg.new.parse.commands(parsed.statement, environ=env, run.commands = TRUE, node.name=statement, called.from.ddg.eval=TRUE, cmds=list(cmd))
-  print ("ddg.eval:  .ddg.parse.commands returned")
+  #print ("ddg.eval:  .ddg.parse.commands returned")
   if (.ddg.get(".ddg.func.depth") == 0) {
     # print ("ddg.eval:  calling .ddg.link.function.returns")
     .ddg.link.function.returns(statement)
