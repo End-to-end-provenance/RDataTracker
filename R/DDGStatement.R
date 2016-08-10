@@ -98,15 +98,18 @@ setMethod ("initialize",
               is.breakpoint <- any(breakpoints$lnum == .Object@pos@startLine)
             }
             else {
+              #print(paste("DDGStatement initialize: text =", .Object@text))
+              #print(paste("DDGStatement initialize: pos ="))
+              #print(.Object@pos)
               is.breakpoint <- any(breakpoints$lnum >= .Object@pos@startLine & breakpoints$lnum <= .Object@pos@endLine)
             }
           }
           else {
             is.breakpoint <- FALSE
           }
-       if (.Object@is.breakpoint) {
-         print(paste("Breakpoint set for", .Object@text))
-       }
+       #if (.Object@is.breakpoint) {
+       #  print(paste("Breakpoint set for", .Object@text))
+       #}
       .Object@contained <- 
           if (annotate.functions) {
             .ddg.parse.contained(.Object, script.name, parseData)

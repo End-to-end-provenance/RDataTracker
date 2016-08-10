@@ -3079,10 +3079,12 @@ ddg.MAX_HIST_LINES <- 2^14
     #print(parseData)
     #print("enclosing.pos")
     #print(enclosing.pos)
-    non.comment.parse.data <- parseData
-    next.parseData <- which(parseData$line1 >= enclosing.pos@startLine &
-            parseData$line2 <= enclosing.pos@endLine & 
-            parseData$text == deparse(exprs[[1]]) )
+    non.comment.parse.data <- parseData[parseData$token != "COMMENT", ]
+    next.parseData <- which(non.comment.parse.data$line1 >= enclosing.pos@startLine &
+            non.comment.parse.data$line2 <= enclosing.pos@endLine & 
+            non.comment.parse.data$text == deparse(exprs[[1]]) )
+    #print("Non-comment parse data")
+    #print(non.comment.parse.data)
     #print(paste("next.parseData = ", next.parseData))
   }
   
@@ -3099,6 +3101,8 @@ ddg.MAX_HIST_LINES <- 2^14
     next.expr.pos <- new (Class = "DDGStatementPos", 
         non.comment.parse.data[next.parseData, ])
     #print(paste("Creating statement for:", expr))
+    #print("next.expr.pos =")
+    #print(next.expr.pos)
     cmds[next.cmd] <- .ddg.construct.DDGStatement(expr, next.expr.pos, script.name, script.num, breakpoints,
         annotate.functions, parseData)
     next.cmd <- next.cmd + 1
@@ -3110,9 +3114,9 @@ ddg.MAX_HIST_LINES <- 2^14
     #next.parseData <- ending.tokens[length(ending.tokens)] + 1
   
     if (i < length(exprs)) {
-      next.parseData <- which(parseData$line1 >= parseData[next.parseData,]$line2 &&
-          length(parseData$text) == length(deparse(exprs[[i+1]])) && 
-          parseData$text == deparse(exprs[[i+1]]) )
+      last.ending.line <- non.comment.parse.data[next.parseData,]$line2
+      next.parseData <- which(non.comment.parse.data$line1 >= last.ending.line &
+          non.comment.parse.data$text == deparse(exprs[[i+1]]) )
     }
   
   }
@@ -3205,7 +3209,7 @@ ddg.MAX_HIST_LINES <- 2^14
     # Loop over the commands as well as their string representations.
     for (i in 1:length(cmds)) {
       cmd <- cmds[[i]]
-      print(paste("Processing", cmd@text))
+      #print(paste(.ddg.new.parse.commands: Processing", cmd@text))
       
       # Process breakpoint. We stop if there is a breakpoint set on this line or we are single-stepping.
       if (.ddg.is.sourced() & (cmd@is.breakpoint | .ddg.get("ddg.break")) & !.ddg.break.ignore()) {
@@ -5660,6 +5664,13 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
     return.stmt <- cmd.func()
     parsed.statement <- return.stmt@parsed
   }
+  
+  # Process breakpoint. We stop if there is a breakpoint set on this line or we are single-stepping.
+  #print("ddg.return.value: checking for breakpoint")
+  if (.ddg.is.sourced() & (return.stmt@is.breakpoint | .ddg.get("ddg.break")) & !.ddg.break.ignore()) {
+    #print("ddg.return.value: found breakpoint")
+    .ddg.process.breakpoint(return.stmt, inside.function=TRUE)
+  }
 
   caller.env = sys.frame(caller.frame)
   .ddg.proc.node("Operation", return.stmt@abbrev, return.stmt@abbrev, console = TRUE, env=caller.env)
@@ -5680,18 +5691,18 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
       .ddg.data2proc(var, scope, return.stmt@abbrev)
     }
   }
-  print("ddg.return.value created return proc node data in edges")
+  #print("ddg.return.value created return proc node data in edges")
   
   # Create nodes and edges dealing with reading and writing files
   .ddg.create.file.read.nodes.and.edges(return.stmt, env)
   .ddg.create.file.write.nodes.and.edges (return.stmt, env)
-  print("ddg.return.value setting graphics files")
+  #print("ddg.return.value setting graphics files")
   .ddg.set.graphics.files (return.stmt, env)
-  print("ddg.return.value checking for dev.off")
+  #print("ddg.return.value checking for dev.off")
   if (return.stmt@has.dev.off) {
     .ddg.capture.graphics(return.stmt)
   }
-  print("ddg.return.value created return file nodes and edges")
+  #print("ddg.return.value created return file nodes and edges")
   
   # Create an edge from the return statement to its return value.
   .ddg.proc2data(return.stmt@abbrev, return.node.name, return.node.scope, return.value=TRUE)
