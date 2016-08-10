@@ -74,13 +74,6 @@ setMethod ("initialize",
             .ddg.abbrev.cmd(.Object@text)
           }
       
-      .Object@annotated <- 
-          if (grepl("^ddg.eval", .Object@text)) {
-            parse(text=.Object@parsed[[2]])[[1]]
-          }
-          else {
-            .ddg.add.annotations(.Object@parsed, annotate.functions)
-          }
       .Object@vars.used <- .ddg.find.var.uses(.Object@annotated)
       .Object@vars.set <- .ddg.find.simple.assign(.Object@annotated)
       .Object@vars.possibly.set <- .ddg.find.assign(.Object@annotated)
@@ -104,9 +97,17 @@ setMethod ("initialize",
           if (annotate.functions) {
             .ddg.parse.contained(.Object, script.name, parseData)
           }
-      else {
-        list()
-      }
+          else {
+            list()
+          }
+      .Object@annotated <- 
+          if (grepl("^ddg.eval", .Object@text)) {
+            parse(text=.Object@parsed[[2]])[[1]]
+          }
+          else {
+            .ddg.add.annotations(.Object, annotate.functions)
+          }
+
       #print (.Object)
       return (.Object)
     }
@@ -117,8 +118,11 @@ null.pos <- function() {
 }
 
 .ddg.construct.DDGStatement <- function (expr, pos, script.name, script.num, is.breakpoint, annotate.functions, parseData) {
+  #print("In .ddg.construct.DDGStatement")
   #print(expr)
+  #print(paste("script.num =", script.num))
   #print(typeof(expr))
+  if (is.numeric(expr)) expr <- parse(text=expr)
   return (new (Class = "DDGStatement", parsed = expr, pos, script.name, script.num, is.breakpoint, annotate.functions, parseData))
 }
 
@@ -303,7 +307,9 @@ null.pos <- function() {
 # .ddg.add.annotations accepts and returns a parsed command.
 # The returned command is annotated as needed.
 
-.ddg.add.annotations <- function(parsed.command, annotate.functions) {
+.ddg.add.annotations <- function(command, annotate.functions) {
+  parsed.command <- command@parsed
+  
   # Return if statement is empty.
   if (length(parsed.command) == 0) return(parsed.command)
   
@@ -316,7 +322,7 @@ null.pos <- function() {
   # Note that this will not annotate anonymous functions, like ones that might be passed to lapply, for example
   # Is that what we want?
   if (annotate.functions && .ddg.is.assign(parsed.command) && .ddg.is.functiondecl(parsed.command[[3]])) {
-    return(.ddg.add.function.annotations(parsed.command))
+    return(.ddg.add.function.annotations(command))
   }
   
   # Add other annotations here.
@@ -339,8 +345,8 @@ null.pos <- function() {
     else {
       func.stmts <- func.body[[1]]
     }
-    print(".ddg.parse.contained:  func.stmts =")
-    print(func.stmts)
+   # print(".ddg.parse.contained:  func.stmts =")
+   # print(func.stmts)
     return (.ddg.create.DDGStatements (func.stmts, script.name, cmd@script.num, annotate.functions = TRUE, parseData, cmd@pos))
 #    return (.ddg.create.DDGStatements (func.body, script.name, cmd@script.num, annotate.functions = TRUE, parseData))
   }
@@ -369,7 +375,8 @@ null.pos <- function() {
 # parsed.function.decl should be an assignment statement where the value
 # being bound is a function declaration
 
-.ddg.add.function.annotations <- function(parsed.function.decl) {
+.ddg.add.function.annotations <- function(function.decl) {
+  parsed.function.decl <- function.decl@parsed
   # Get function name.
   func.name <- toString(parsed.function.decl[[2]])
   
@@ -412,7 +419,7 @@ null.pos <- function() {
     # statements are not calls to a ddg function and do not contain
     # ddg.return.value.
     if (!.ddg.has.call.to(func.definition, "ddg.eval")) {
-      func.definition <- .ddg.wrap.with.ddg.eval(func.definition)
+      func.definition <- .ddg.wrap.with.ddg.eval(func.definition, function.decl@contained)
     }
     
     # Reassemble parsed.command.
@@ -562,7 +569,9 @@ null.pos <- function() {
 # does not contain a call to ddg.return.value. The statement is enclosed
 # in quotation marks.
 
-.ddg.wrap.with.ddg.eval <- function(func.definition) {
+.ddg.wrap.with.ddg.eval <- function(func.definition, parsed.stmts) {
+  print(paste(".ddg.wrap.with.ddg.eval: typeof(parsed.stmts) =", typeof(parsed.stmts)))
+  print(paste(".ddg.wrap.with.ddg.eval: length(parsed.stmts) =", length(parsed.stmts)))
   # Get the function parameters.
   func.params <- func.definition[[2]]
   
@@ -570,6 +579,10 @@ null.pos <- function() {
   func.body <- func.definition[[3]]
   
   pos <- length(func.body)
+  print(paste(".ddg.wrap.with.ddg.eval: pos =", pos))
+  print(paste(".ddg.wrap.with.ddg.eval: func.body ="))
+  print(func.body)
+  
   
   # Process each statement in the function body
   for (i in 2:pos) {
@@ -578,7 +591,10 @@ null.pos <- function() {
     # quotation marks.
     statement <- func.body[[i]]
     if (!grepl("^ddg.", statement[1]) & !.ddg.has.call.to(statement, "ddg.return.value")) {
-      new.statement <- call("ddg.eval", deparse(statement))
+      stmt <- parsed.stmts[[i-2]]
+      print("Creating ddg.eval call")
+      new.statement <- call("ddg.eval", deparse(statement), function() stmt)
+      print("Done creating ddg.eval call")
       func.body[[i]] <- new.statement
     }
   }

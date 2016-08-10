@@ -1255,10 +1255,16 @@ ddg.MAX_HIST_LINES <- 2^14
   ddg.proc.nodes$ddg.value[ddg.pnum] <- pvalue
   ddg.proc.nodes$ddg.auto.created[ddg.pnum] <- auto.created
   ddg.proc.nodes$ddg.time[ddg.pnum] <- ptime
+  
+#  if (is.na(snum)) {
+#    print(".ddg.record.proc: snum is NA")
+#    print(paste("pname =", pname))
+#    print(sys.calls())
+#  }
   ddg.proc.nodes$ddg.snum[ddg.pnum] <- snum
   
   #print(paste(".ddg.record.proc: typeof(pos) =", typeof(pos)))
-  if (is.object(pos)) {
+  if (is.object(pos) && length(pos@startLine == 1)) {
     #print(".ddg.record.proc: pos is an object")
     #print(pos)
     ddg.proc.nodes$ddg.startLine[ddg.pnum] <- pos@startLine
@@ -1267,8 +1273,8 @@ ddg.MAX_HIST_LINES <- 2^14
     ddg.proc.nodes$ddg.endCol[ddg.pnum] <- pos@endCol
   }
   else {
-    print(".ddg.record.proc: pos is NA")
-    print(sys.calls())
+    #print(".ddg.record.proc: pos is NA")
+    #print(sys.calls())
     ddg.proc.nodes$ddg.startLine[ddg.pnum] <- NA
     ddg.proc.nodes$ddg.startCol[ddg.pnum] <- NA
     ddg.proc.nodes$ddg.endLine[ddg.pnum] <- NA
@@ -1282,7 +1288,7 @@ ddg.MAX_HIST_LINES <- 2^14
 
   if (.ddg.debug.lib()) {
     print (paste("Adding procedure node", ddg.pnum, "named", pname))
-    print (sys.calls())
+    #print (sys.calls())
   }
 }
 
@@ -2691,7 +2697,7 @@ ddg.MAX_HIST_LINES <- 2^14
     }
   }
   if (.ddg.debug.lib()) print(paste(called, ":  Adding", node.name,  type, "node"))
-  .ddg.proc.node(type, node.name, node.name, TRUE, env=env)
+  .ddg.proc.node(type, node.name, node.name, TRUE, env=env, cmd = cmd)
   .ddg.proc2proc()
   
   return(node.name)
@@ -2729,7 +2735,7 @@ ddg.MAX_HIST_LINES <- 2^14
   # Only create a finish node if a new command exists (i.e., we've
   # parsed some lines of code).
 	if (!is.null(.ddg.last.cmd) && (!is.null(.ddg.possible.last.cmd) || initial)) {
-		cmd.abbrev <- .ddg.add.abstract.node("Finish", .ddg.last.cmd$abbrev, env, called=paste(called, "-> .ddg.close.last.command.node"))
+		cmd.abbrev <- .ddg.add.abstract.node("Finish", .ddg.last.cmd, env=env, called=paste(called, "-> .ddg.close.last.command.node"))
 
 		# Add link from a function return node if there is one.
 		.ddg.link.function.returns(.ddg.last.cmd$text)
@@ -2756,7 +2762,7 @@ ddg.MAX_HIST_LINES <- 2^14
 .ddg.open.new.command.node <- function(env, called=".ddg.parse.commands") {
   new.command <- .ddg.get(".ddg.possible.last.cmd")
 	if (!is.null(new.command)) {
-		.ddg.add.abstract.node("Start", new.command$abbrev, env, called=paste(called, "-> .ddg.open.new.command.node"))
+		.ddg.add.abstract.node("Start", new.command, env, called=paste(called, "-> .ddg.open.new.command.node"))
 
 		# Now the new command becomes the last command, and new command
     # is null.
@@ -3042,7 +3048,7 @@ ddg.MAX_HIST_LINES <- 2^14
 }
 
 .ddg.create.DDGStatements <- function (exprs, script.name, script.num, annotate.functions, parseData = NULL, enclosing.pos = NULL) {
-  print(paste(".ddg.create.DDGStatements: typeof(exprs) =", typeof(exprs)))
+  #print(paste(".ddg.create.DDGStatements: typeof(exprs) =", typeof(exprs)))
   
   # The parse data gives us line number information
   if (is.null(parseData)) {
@@ -3050,25 +3056,34 @@ ddg.MAX_HIST_LINES <- 2^14
     #print("All parse data")
     #print(parseData)
     
+    if (is.null(parseData)) {
+      # In this case there is no line number information available
+      cmds <- vector("list", (length(exprs)))
+      for (i in 1:length(exprs)) {
+        expr <- as.expression(exprs[i])
+        cmds[i] <- .ddg.construct.DDGStatement(expr, NA, script.name, script.num, FALSE,
+            annotate.functions, parseData)
+      }
+      return(cmds)
+    }
+
     non.comment.parse.data <- parseData[parseData$token != "COMMENT", ]
-    #print ("Non-comment parse data")
-    #print(non.comment.parse.data)
     if (nrow(non.comment.parse.data) == 0) {
-      return
+      return(list())
     }
     next.parseData <- 1
   }
   
   else {
-    print("All parse data")
-    print(parseData)
-    print("enclosing.pos")
-    print(enclosing.pos)
+    #print("All parse data")
+    #print(parseData)
+    #print("enclosing.pos")
+    #print(enclosing.pos)
     non.comment.parse.data <- parseData
     next.parseData <- which(parseData$line1 >= enclosing.pos@startLine &
             parseData$line2 <= enclosing.pos@endLine & 
             parseData$text == deparse(exprs[[1]]) )
-    print(paste("next.parseData = ", next.parseData))
+    #print(paste("next.parseData = ", next.parseData))
   }
   
   # Get the breakpoint information
@@ -3096,22 +3111,30 @@ ddg.MAX_HIST_LINES <- 2^14
     #next.parseData <- ending.tokens[length(ending.tokens)] + 1
   
     if (i < length(exprs)) {
-      next.parseData <- which(parseData$line1 >= parseData[next.parseData,]$line2 &
+      next.parseData <- which(parseData$line1 >= parseData[next.parseData,]$line2 &&
+          length(parseData$text) == length(deparse(exprs[[i+1]])) && 
           parseData$text == deparse(exprs[[i+1]]) )
     }
   
   }
   
-  print(cmds)
+  #print(cmds)
   return (cmds)
 }
 
 .ddg.new.parse.commands <- function (exprs, script.name="", script.num=NA, environ, ignore.patterns=c('^ddg.'), 
     node.name="Console", run.commands = FALSE, echo=FALSE, print.eval=echo, max.deparse.length=150, 
-    annotate.functions = FALSE, called.from.ddg.eval=FALSE) {
+    annotate.functions = FALSE, called.from.ddg.eval=FALSE, cmds=NULL) {
   
   # Gather all the information that we need about the statements
-  cmds <- .ddg.create.DDGStatements (exprs, script.name, script.num, annotate.functions)
+  if (is.null(cmds)) {
+    print(".ddg.new.parse.commands: cmds = NULL")
+    cmds <- .ddg.create.DDGStatements (exprs, script.name, script.num, annotate.functions)
+  }
+  else {
+    print(".ddg.new.parse.commands: cmds =")
+    print(cmds)
+  }
   num.cmds <- length(cmds)
   
   # Figure out if we will execute commands or not.
@@ -3183,7 +3206,7 @@ ddg.MAX_HIST_LINES <- 2^14
     # Loop over the commands as well as their string representations.
     for (i in 1:length(cmds)) {
       cmd <- cmds[[i]]
-      #print(paste("Processing", cmd@text))
+      print(paste("Processing", cmd@text))
       
       # Process breakpoint. We stop if there is a breakpoint set on this line or we are single-stepping.
       if (.ddg.is.sourced() & (cmd@is.breakpoint | .ddg.get("ddg.break")) & !.ddg.break.ignore()) {
@@ -3389,7 +3412,7 @@ ddg.MAX_HIST_LINES <- 2^14
   # is initialized (also, save).
   #
   if (.ddg.is.init() && named.node.set && !inside.func) {
-    .ddg.add.abstract.node("Finish", node.name = node.name, environ)
+    .ddg.add.abstract.node("Finish", node.name = node.name, env=environ)
   }
   
   # Open up a new collapsible node in case we need to parse
@@ -3939,16 +3962,17 @@ ddg.MAX_HIST_LINES <- 2^14
 #    line.num <- ""
 #  }
 
+
   if (is.null(cmd)) {
-    print (paste(".ddg.proc.node: cmd is null; pname =", pname))
+    #print (paste(".ddg.proc.node: cmd is null; pname =", pname))
     snum <- NA
     pos <- NA
   }
   else {
     snum <- cmd@script.num
     pos <- cmd@pos
-    print (paste(".ddg.proc.node: cmd =", cmd@abbrev))
-    print (paste(".ddg.proc.node: snum =", snum))
+    #print (paste(".ddg.proc.node: cmd =", cmd@abbrev))
+    #print (paste(".ddg.proc.node: snum =", snum))
   }
 
   # Record start & finish information
@@ -5509,50 +5533,51 @@ ddg.return.value <- function (expr=NULL) {
 
   # If expr is an assignment, create nodes and edges for the assignment.
   orig.expr <- substitute(expr)
+  #print(paste("ddg.return.value: typeof(orig.expr) =", typeof(orig.expr)))
   
   frame.num <- .ddg.get.frame.number(sys.calls())
   env <- sys.frame(frame.num)
 
-  orig.cmd <- .ddg.construct.DDGStatement (orig.expr, pos=NA, script.num=NA, is.breakpoint=FALSE, annotate.functions=FALSE)
   #orig.pname <- paste(deparse(orig.expr), collapse="")
 
-  orig.return <- paste("return(", orig.cmd@text, ")", sep="")
-
-  # Create procedure node.
-  #print ("ddg.return.value: orig.expr =")
-  #print (orig.expr)
-  #print ("ddg.return.value: orig.pname =")
-  #print (orig.pname)
-  .ddg.proc.node("Operation", orig.cmd@text, orig.cmd@text, console=TRUE)
-  #print(paste("ddg.return.value: Create proc node", orig.cmd@text))
-
-  # Create control flow edge from preceding procedure node.
-  .ddg.proc2proc()
-
-  # Create data flow edges from input data nodes, if any.
-  vars.used <- orig.cmd@vars.used
-  for (var in vars.used) {
-    scope <- .ddg.get.scope(var)
-    if (.ddg.data.node.exists(var, scope)) {
-      .ddg.data2proc(var, scope, orig.cmd@text)
-    }
-  }
-  #print("ddg.return.value done creating data in edges")
-
-  for (var in orig.cmd@vars.set) {
-    if (var != "") {
-      # Create output data node.
-      dvalue <- eval(var, envir=env)
-  
-      # Check for global assignment
-      if (.ddg.is.global.assign(orig.cmd@parsed)) env <- globalenv()
-      dscope <- .ddg.get.scope(var, env=env)
-      .ddg.save.data(var, dvalue, scope=dscope)
-      # Create an edge from procedure node to data node.
-      .ddg.proc2data(orig.cmd@text, var, dscope=dscope, return.value=FALSE)
-    }
-  }
-  #print("ddg.return.value done creating data out edges")
+  orig.return <- paste("return(", deparse(orig.expr), ")", sep="")
+#  orig.cmd <- .ddg.construct.DDGStatement (parse(text=orig.return), pos=NA, script.num=NA, is.breakpoint=FALSE, annotate.functions=FALSE)
+#  
+#  # Create procedure node.
+#  #print ("ddg.return.value: orig.expr =")
+#  #print (orig.expr)
+#  #print ("ddg.return.value: orig.pname =")
+#  #print (orig.pname)
+#  .ddg.proc.node("Operation", orig.cmd@text, orig.cmd@text, console=TRUE)
+#  #print(paste("ddg.return.value: Create proc node", orig.cmd@text))
+#
+#  # Create control flow edge from preceding procedure node.
+#  .ddg.proc2proc()
+#
+#  # Create data flow edges from input data nodes, if any.
+#  vars.used <- orig.cmd@vars.used
+#  for (var in vars.used) {
+#    scope <- .ddg.get.scope(var)
+#    if (.ddg.data.node.exists(var, scope)) {
+#      .ddg.data2proc(var, scope, orig.cmd@text)
+#    }
+#  }
+#  #print("ddg.return.value done creating data in edges")
+#
+#  for (var in orig.cmd@vars.set) {
+#    if (var != "") {
+#      # Create output data node.
+#      dvalue <- eval(var, envir=env)
+#  
+#      # Check for global assignment
+#      if (.ddg.is.global.assign(orig.cmd@parsed)) env <- globalenv()
+#      dscope <- .ddg.get.scope(var, env=env)
+#      .ddg.save.data(var, dvalue, scope=dscope)
+#      # Create an edge from procedure node to data node.
+#      .ddg.proc2data(orig.cmd@text, var, dscope=dscope, return.value=FALSE)
+#    }
+#  }
+#  #print("ddg.return.value done creating data out edges")
   
   pname <- NULL
   .ddg.lookup.function.name(pname)
@@ -5677,7 +5702,7 @@ ddg.return.value <- function (expr=NULL) {
   # Create the finish node for the function
   #.ddg.close.last.command.node(sys.frame(caller.frame-1), called="ddg.return.value", initial=TRUE)
   if (typeof(call[[1]]) == "closure") {
-    .ddg.add.abstract.node ("Finish", pname, caller.env)
+    .ddg.add.abstract.node ("Finish", node.name=pname, env=caller.env)
   }
   else {
     .ddg.add.abstract.node ("Finish", node.name=deparse(call), env=caller.env)
@@ -5695,9 +5720,17 @@ ddg.return.value <- function (expr=NULL) {
 
 # statement - the statement to evaluate.
 
-ddg.eval <- function(statement) {
+ddg.eval <- function(statement, cmd.func=NULL) {
+  if (is.null(cmd.func)) {
+    parsed.statement <- parse(text=statement)
+    cmd <- NULL
+  }
+  else {
+    cmd <- cmd.func()
+    parsed.statement <- cmd@parsed
+  }
   if (.ddg.debug.lib()) print (paste("ddg.eval: statement =", statement))
-  parsed.statement <- parse(text=statement)
+  
   frame.num <- .ddg.get.frame.number(sys.calls())
   # print(paste("statement = ", statement, sep=""))
   # print (paste("ddg.eval:  frame.num =", frame.num))
@@ -5705,8 +5738,7 @@ ddg.eval <- function(statement) {
 
   if (!.ddg.is.init()) {
     # print ("ddg.eval:  no ddg!")
-    eval(parsed.statement, env)
-    return(cmd)
+    return(eval(parsed.statement, env))
   }
 
   if (interactive() && .ddg.enable.console() && !.ddg.enable.source()) {
@@ -5714,9 +5746,11 @@ ddg.eval <- function(statement) {
     .ddg.console.node()
   }
 
-  #print ("ddg.eval:  calling .ddg.parse.commands")
-  cmd <- .ddg.new.parse.commands(parsed.statement, environ=env, run.commands = TRUE, node.name=statement, called.from.ddg.eval=TRUE)
-  #print ("ddg.eval:  .ddg.parse.commands returned")
+  print ("ddg.eval:  calling .ddg.parse.commands")
+  #print("cmd =")
+  #print(cmd)
+  cmd <- .ddg.new.parse.commands(parsed.statement, environ=env, run.commands = TRUE, node.name=statement, called.from.ddg.eval=TRUE, cmds=list(cmd))
+  print ("ddg.eval:  .ddg.parse.commands returned")
   if (.ddg.get(".ddg.func.depth") == 0) {
     # print ("ddg.eval:  calling .ddg.link.function.returns")
     .ddg.link.function.returns(statement)
