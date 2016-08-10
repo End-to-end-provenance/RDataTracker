@@ -57,7 +57,7 @@ setClass("DDGStatement",
 
 setMethod ("initialize",
   "DDGStatement",
-    function(.Object, parsed, pos, script.name, script.num, is.breakpoint, annotate.functions, parseData){
+    function(.Object, parsed, pos, script.name, script.num, breakpoints, annotate.functions, parseData){
       if (typeof(parsed) == "expression") {
         .Object@parsed <- parsed[[1]]
       }
@@ -92,7 +92,21 @@ setMethod ("initialize",
       .Object@script.num <- 
           if (is.na(script.num)) -1
           else script.num
-      .Object@is.breakpoint <- is.breakpoint
+      .Object@is.breakpoint <- 
+          if (is.object(breakpoints)) {
+            if (.ddg.is.assign(.Object@parsed) && .ddg.is.functiondecl(.Object@parsed[[3]])) {
+              is.breakpoint <- any(breakpoints$lnum == .Object@pos@startLine)
+            }
+            else {
+              is.breakpoint <- any(breakpoints$lnum >= .Object@pos@startLine & breakpoints$lnum <= .Object@pos@endLine)
+            }
+          }
+          else {
+            is.breakpoint <- FALSE
+          }
+       if (.Object@is.breakpoint) {
+         print(paste("Breakpoint set for", .Object@text))
+       }
       .Object@contained <- 
           if (annotate.functions) {
             .ddg.parse.contained(.Object, script.name, parseData)
@@ -117,15 +131,14 @@ null.pos <- function() {
   return (new (Class = "DDGStatementPos", NA))
 }
 
-.ddg.construct.DDGStatement <- function (expr, pos, script.name, script.num, is.breakpoint, annotate.functions, parseData) {
+.ddg.construct.DDGStatement <- function (expr, pos, script.name, script.num, breakpoints, annotate.functions, parseData) {
   #print("In .ddg.construct.DDGStatement")
   #print(expr)
   #print(paste("script.num =", script.num))
   #print(typeof(expr))
   if (is.numeric(expr)) expr <- parse(text=expr)
-  return (new (Class = "DDGStatement", parsed = expr, pos, script.name, script.num, is.breakpoint, annotate.functions, parseData))
+  return (new (Class = "DDGStatement", parsed = expr, pos, script.name, script.num, breakpoints, annotate.functions, parseData))
 }
-
 
 # .ddg.abbrev.cmd abbreviates a command to the specified length.
 # Default is 60 characters.
@@ -591,9 +604,10 @@ null.pos <- function() {
     # quotation marks.
     statement <- func.body[[i]]
     if (!grepl("^ddg.", statement[1]) & !.ddg.has.call.to(statement, "ddg.return.value")) {
-      stmt <- parsed.stmts[[i-2]]
+      parsed.stmt <- parsed.stmts[[i-2]]
       print("Creating ddg.eval call")
-      new.statement <- call("ddg.eval", deparse(statement), function() stmt)
+      print(paste("parsed.stmt = ", parsed.stmt@text))
+      new.statement <- .ddg.create.ddg.eval.call(statement, parsed.stmt)
       print("Done creating ddg.eval call")
       func.body[[i]] <- new.statement
     }
@@ -603,6 +617,14 @@ null.pos <- function() {
   func.definition <- call("function", func.params, as.call(func.body))
   
   return(func.definition)
+}
+
+.ddg.create.ddg.eval.call <- function (statement, parsed.stmt) {
+  # We need to force the evaluation of parsed.stmt for the closure to
+  # return the value that parsed.stmt has at the time the ddg.eval 
+  # call is created.
+  force(parsed.stmt)
+  return (call("ddg.eval", deparse(statement), function() parsed.stmt))
 }
 
 # .ddg.find.last.statement finds the last statement of a function.

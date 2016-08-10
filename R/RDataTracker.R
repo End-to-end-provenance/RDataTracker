@@ -3061,7 +3061,7 @@ ddg.MAX_HIST_LINES <- 2^14
       cmds <- vector("list", (length(exprs)))
       for (i in 1:length(exprs)) {
         expr <- as.expression(exprs[i])
-        cmds[i] <- .ddg.construct.DDGStatement(expr, NA, script.name, script.num, FALSE,
+        cmds[i] <- .ddg.construct.DDGStatement(expr, NA, script.name, script.num, NA,
             annotate.functions, parseData)
       }
       return(cmds)
@@ -3099,8 +3099,7 @@ ddg.MAX_HIST_LINES <- 2^14
     next.expr.pos <- new (Class = "DDGStatementPos", 
         non.comment.parse.data[next.parseData, ])
     #print(paste("Creating statement for:", expr))
-    cmds[next.cmd] <- .ddg.construct.DDGStatement(expr, next.expr.pos, script.name, script.num,
-        any(breakpoints$lnum >= next.expr.pos@startLine & breakpoints$lnum <= next.expr.pos@endLine),
+    cmds[next.cmd] <- .ddg.construct.DDGStatement(expr, next.expr.pos, script.name, script.num, breakpoints,
         annotate.functions, parseData)
     next.cmd <- next.cmd + 1
     
@@ -3131,10 +3130,10 @@ ddg.MAX_HIST_LINES <- 2^14
     print(".ddg.new.parse.commands: cmds = NULL")
     cmds <- .ddg.create.DDGStatements (exprs, script.name, script.num, annotate.functions)
   }
-  else {
-    print(".ddg.new.parse.commands: cmds =")
-    print(cmds)
-  }
+#  else {
+#    print(".ddg.new.parse.commands: cmds =")
+#    print(cmds)
+#  }
   num.cmds <- length(cmds)
   
   # Figure out if we will execute commands or not.
@@ -5655,7 +5654,7 @@ ddg.return.value <- function (expr=NULL) {
 #  return.expr.text.toparse <- paste (return.expr.text.vector, collapse="\n")
 #  return.expr <- parse (text=return.expr.text.toparse)
 
-  return.stmt <- .ddg.construct.DDGStatement (parse(text=orig.return), pos=NA, script.num=NA, is.breakpoint=FALSE, annotate.functions=FALSE)
+  return.stmt <- .ddg.construct.DDGStatement (parse(text=orig.return), pos=NA, script.num=NA, breakpoints=NA, annotate.functions=FALSE)
 
   caller.env = sys.frame(caller.frame)
   .ddg.proc.node("Operation", return.stmt@abbrev, return.stmt@abbrev, console = TRUE, env=caller.env)
@@ -5747,8 +5746,8 @@ ddg.eval <- function(statement, cmd.func=NULL) {
   }
 
   print ("ddg.eval:  calling .ddg.parse.commands")
-  #print("cmd =")
-  #print(cmd)
+  print("cmd =")
+  print(cmd)
   cmd <- .ddg.new.parse.commands(parsed.statement, environ=env, run.commands = TRUE, node.name=statement, called.from.ddg.eval=TRUE, cmds=list(cmd))
   print ("ddg.eval:  .ddg.parse.commands returned")
   if (.ddg.get(".ddg.func.depth") == 0) {
