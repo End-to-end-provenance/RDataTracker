@@ -1262,7 +1262,8 @@ ddg.MAX_HIST_LINES <- 2^14
 #    print(sys.calls())
 #  }
   ddg.proc.nodes$ddg.snum[ddg.pnum] <- snum
-  
+
+  #print(paste(".ddg.record.proc: pname =", pname))
   #print(paste(".ddg.record.proc: typeof(pos) =", typeof(pos)))
   if (is.object(pos) && length(pos@startLine == 1)) {
     #print(".ddg.record.proc: pos is an object")
@@ -3077,17 +3078,26 @@ ddg.MAX_HIST_LINES <- 2^14
   else {
     #print("All parse data")
     #print(parseData)
-    #print("enclosing.pos")
-    #print(enclosing.pos)
     #print(sys.calls())
     #stop()
     non.comment.parse.data <- parseData[parseData$token != "COMMENT", ]
     next.parseData <- which(non.comment.parse.data$line1 >= enclosing.pos@startLine &
             non.comment.parse.data$line2 <= enclosing.pos@endLine & 
             non.comment.parse.data$text == deparse(exprs[[1]]) )
+#    parent.parseData <- which(non.comment.parse.data$line1 == enclosing.pos@startLine &
+#            non.comment.parse.data$col1 == enclosing.pos@startCol &
+#            non.comment.parse.data$line2 == enclosing.pos@endLine & 
+#            non.comment.parse.data$col2 == enclosing.pos@endCol)
+#    parent <- non.comment.parse.data[parent.parseData,"id"]
+#    next.parseData <- which(non.comment.parse.data$parent == parent) [1]
+    
     #print("Non-comment parse data")
     #print(non.comment.parse.data)
-    #print(paste("next.parseData = ", next.parseData))
+    #print(paste("parent id =", parent))
+    #print("enclosing.pos")
+    #print(enclosing.pos)
+    #print(paste("Looking for", deparse(exprs[[1]])))
+    #print(paste("next.parseData =", next.parseData))
   }
   
   # Get the breakpoint information
@@ -3117,7 +3127,7 @@ ddg.MAX_HIST_LINES <- 2^14
   
     if (i < length(exprs)) {
       last.ending.line <- non.comment.parse.data[next.parseData,]$line2
-#      print(paste("last.ending.line =", last.ending.line))
+      #print(paste("last.ending.line =", last.ending.line))
 #      print(paste("looking for ", paste(deparse(exprs[[i+1]]),collapse="\n")))
 #      next.parseData <- which(non.comment.parse.data$line1 >= last.ending.line &
 #          non.comment.parse.data$text == paste(deparse(exprs[[i+1]]),collapse="\n") )[1]
@@ -3134,6 +3144,7 @@ ddg.MAX_HIST_LINES <- 2^14
                non.comment.parse.data$line1 >= last.ending.line &
                non.comment.parse.data$id > last.id) [1]
        #print(paste("next.parseData =", next.parseData))
+       #print(paste("next text =", non.comment.parse.data[next.parseData, "text"]))
     }
   
   }
@@ -5675,11 +5686,14 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
 #  return.expr <- parse (text=return.expr.text.toparse)
 
   if (is.null(cmd.func)) {
+    #print("ddg.return.value: cmd.func is null")
     return.stmt <- .ddg.construct.DDGStatement (parsed.statement, pos=NA, script.num=NA, breakpoints=NA, annotate.functions=FALSE)
   }
   else {
     return.stmt <- cmd.func()
     parsed.statement <- return.stmt@parsed
+    #print("ddg.return.value: return.stmt@pos =")
+    #print(return.stmt@pos)
   }
   
   # Process breakpoint. We stop if there is a breakpoint set on this line or we are single-stepping.
@@ -5690,7 +5704,7 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
   }
 
   caller.env = sys.frame(caller.frame)
-  .ddg.proc.node("Operation", return.stmt@abbrev, return.stmt@abbrev, console = TRUE, env=caller.env)
+  .ddg.proc.node("Operation", return.stmt@abbrev, return.stmt@abbrev, console = TRUE, env=caller.env, cmd=return.stmt)
   #print("ddg.return.value created return proc node")
 
   # Create control flow edge from preceding procedure node.
@@ -5709,7 +5723,22 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
     }
   }
   #print("ddg.return.value created return proc node data in edges")
+
+  for (var in return.stmt@vars.set) {
+    if (var != "") {
+      # Create output data node.
+      dvalue <- eval(var, envir=env)
   
+      # Check for global assignment
+      if (.ddg.is.global.assign(return.stmt@parsed)) env <- globalenv()
+      dscope <- .ddg.get.scope(var, env=env)
+      .ddg.save.data(var, dvalue, scope=dscope)
+      # Create an edge from procedure node to data node.
+      .ddg.proc2data(return.stmt@text, var, dscope=dscope, return.value=FALSE)
+    }
+  }
+
+
   # Create nodes and edges dealing with reading and writing files
   .ddg.create.file.read.nodes.and.edges(return.stmt, env)
   .ddg.create.file.write.nodes.and.edges (return.stmt, env)
@@ -5762,6 +5791,9 @@ ddg.eval <- function(statement, cmd.func=NULL) {
   else {
     cmd <- cmd.func()
     parsed.statement <- cmd@parsed
+    #print(paste("ddg.eval:", cmd@text))
+    #print(paste("pos ="))
+    #print(cmd@pos)
   }
   if (.ddg.debug.lib()) print (paste("ddg.eval: statement =", statement))
   
