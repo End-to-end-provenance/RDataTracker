@@ -361,8 +361,8 @@ null.pos <- function() {
     else {
       func.stmts <- func.body[[1]]
     }
-   # print(".ddg.parse.contained:  func.stmts =")
-   # print(func.stmts)
+    #print(".ddg.parse.contained:  cmd =")
+    #print(cmd)
     return (.ddg.create.DDGStatements (func.stmts, script.name, cmd@script.num, annotate.functions = TRUE, parseData, cmd@pos))
 #    return (.ddg.create.DDGStatements (func.body, script.name, cmd@script.num, annotate.functions = TRUE, parseData))
   }

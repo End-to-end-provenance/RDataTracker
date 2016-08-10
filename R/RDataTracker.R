@@ -3079,6 +3079,8 @@ ddg.MAX_HIST_LINES <- 2^14
     #print(parseData)
     #print("enclosing.pos")
     #print(enclosing.pos)
+    #print(sys.calls())
+    #stop()
     non.comment.parse.data <- parseData[parseData$token != "COMMENT", ]
     next.parseData <- which(non.comment.parse.data$line1 >= enclosing.pos@startLine &
             non.comment.parse.data$line2 <= enclosing.pos@endLine & 
@@ -3115,8 +3117,23 @@ ddg.MAX_HIST_LINES <- 2^14
   
     if (i < length(exprs)) {
       last.ending.line <- non.comment.parse.data[next.parseData,]$line2
-      next.parseData <- which(non.comment.parse.data$line1 >= last.ending.line &
-          non.comment.parse.data$text == deparse(exprs[[i+1]]) )
+#      print(paste("last.ending.line =", last.ending.line))
+#      print(paste("looking for ", paste(deparse(exprs[[i+1]]),collapse="\n")))
+#      next.parseData <- which(non.comment.parse.data$line1 >= last.ending.line &
+#          non.comment.parse.data$text == paste(deparse(exprs[[i+1]]),collapse="\n") )[1]
+#      print(paste("next.parseData =", next.parseData))
+#      print(non.comment.parse.data[10,])
+#      print(non.comment.parse.data[10,"text"] == paste(deparse(exprs[[i+1]]),collapse="\n"))
+       last.parent <- non.comment.parse.data[next.parseData,"parent"]
+       #print(non.comment.parse.data[next.parseData,])
+       #print(paste("last.parent =", last.parent))
+       #siblings <- which(non.comment.parse.data$parent == last.parent)
+       #print(paste("siblings =", siblings))
+       last.id <- non.comment.parse.data[next.parseData,"id"]
+       next.parseData <- which(non.comment.parse.data$parent == last.parent & 
+               non.comment.parse.data$line1 >= last.ending.line &
+               non.comment.parse.data$id > last.id) [1]
+       #print(paste("next.parseData =", next.parseData))
     }
   
   }
