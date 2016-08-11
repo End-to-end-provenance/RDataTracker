@@ -5710,6 +5710,18 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
   # Create control flow edge from preceding procedure node.
   .ddg.proc2proc()
 
+  # Create an edge from the return statement to its return value.
+  .ddg.proc2data(return.stmt@abbrev, return.node.name, return.node.scope, return.value=TRUE)
+  #print("ddg.return.value created node to return value")
+  
+  # Update the table.
+  ddg.num.returns <- ddg.num.returns + 1
+  ddg.return.values$ddg.call[ddg.num.returns] <- call.text
+  ddg.return.values$return.used[ddg.num.returns] <- FALSE
+  ddg.return.values$return.node.id[ddg.num.returns] <- .ddg.dnum()
+  .ddg.set(".ddg.return.values", ddg.return.values)
+  .ddg.set(".ddg.num.returns", ddg.num.returns)
+  
   # Create edges from variables used in the return statement
   vars.used <- return.stmt@vars.used
   #print (paste( "ddg.return.value: vars.used =", vars.used))
@@ -5727,7 +5739,7 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
   for (var in return.stmt@vars.set) {
     if (var != "") {
       # Create output data node.
-      dvalue <- eval(var, envir=env)
+      dvalue <- eval(as.symbol(var), envir=env)
   
       # Check for global assignment
       if (.ddg.is.global.assign(return.stmt@parsed)) env <- globalenv()
@@ -5750,18 +5762,6 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
   }
   #print("ddg.return.value created return file nodes and edges")
   
-  # Create an edge from the return statement to its return value.
-  .ddg.proc2data(return.stmt@abbrev, return.node.name, return.node.scope, return.value=TRUE)
-  #print("ddg.return.value created node to return value")
-
-  # Update the table.
-  ddg.num.returns <- ddg.num.returns + 1
-  ddg.return.values$ddg.call[ddg.num.returns] <- call.text
-  ddg.return.values$return.used[ddg.num.returns] <- FALSE
-  ddg.return.values$return.node.id[ddg.num.returns] <- .ddg.dnum()
-  .ddg.set(".ddg.return.values", ddg.return.values)
-  .ddg.set(".ddg.num.returns", ddg.num.returns)
-
   # Create the finish node for the function
   #.ddg.close.last.command.node(sys.frame(caller.frame-1), called="ddg.return.value", initial=TRUE)
   if (typeof(call[[1]]) == "closure") {
@@ -6758,7 +6758,7 @@ ddg.source <- function (file,  ddgdir = NULL, local = FALSE, echo = verbose, pri
 #    .ddg.parse.commands(exprs, environ=envir, ignore.patterns=ignores, node.name=orig.file,
 #        echo = echo, print.eval = print.eval, max.deparse.length = max.deparse.length,
 #        run.commands = TRUE, annotate.functions = annotate.functions)
-    .ddg.new.parse.commands(exprs, sname, snum, environ=envir, ignore.patterns=ignores, node.name=orig.file,
+    .ddg.new.parse.commands(exprs, sname, snum, environ=envir, ignore.patterns=ignores, node.name=sname,
         echo = echo, print.eval = print.eval, max.deparse.length = max.deparse.length,
         run.commands = TRUE, annotate.functions)
 
