@@ -1114,6 +1114,7 @@ ddg.MAX_HIST_LINES <- 2^14
 
 .ddg.save.simple <- function(name, value, scope=NULL, from.env=FALSE) {
   #print(paste("In .ddg.save.simple: name =", name))
+  #print(paste("In .ddg.save.simple: scope =", scope))
   # Save extra long strings as snapshot.
   if (is.character(value) && nchar(value) > 100) {
     #print(".ddg.save.simple: saving snapshot")
@@ -1329,6 +1330,12 @@ ddg.MAX_HIST_LINES <- 2^14
   if (length(dvalue) > 1 || !is.atomic(dvalue)) dvalue2 <- "complex"
   else if (!is.null(dvalue)) dvalue2 <- dvalue
   else dvalue2 <- ""
+  
+  #if (dvalue2 == "complex") {
+    #print(".ddg.record.data: complex")
+    #print(sys.calls())
+    #stop()
+  #}
 
   #print(".ddg.record.data: adding info")
   ddg.data.nodes$ddg.type[ddg.dnum] <- dtype
@@ -1490,7 +1497,7 @@ ddg.MAX_HIST_LINES <- 2^14
   if (is.null(dscope)) dscope <- .ddg.get.scope(dname)
 
   # Search data nodes table.
-  # print (paste (".ddg.data.node.exists: Looking for", dname, "in scope", dscope))
+  #print (paste (".ddg.data.node.exists: Looking for", dname, "in scope", dscope))
   ddg.data.nodes <- .ddg.data.nodes()
   rows <- nrow(ddg.data.nodes)
   for (i in rows:1) {
@@ -1508,6 +1515,7 @@ ddg.MAX_HIST_LINES <- 2^14
 
   # Search initial environment table.
   if (dscope == "R_GlobalEnv") {
+    #print("Searching global environment")
     if (exists(dname, globalenv())) {
       dvalue <- get(dname, envir = globalenv())
       if (!is.function(dvalue)) {
@@ -2084,7 +2092,7 @@ ddg.MAX_HIST_LINES <- 2^14
     	# .ddg.insert.error.message(error.msg)
 		}
 	}
-  # print (".ddg.create.data.use.edges.for.console.cmd Done")
+  #print (".ddg.create.data.use.edges.for.console.cmd Done")
 }
 
 # .ddg.create.data.set.edges.for.cmd creates edges that correspond
@@ -2118,8 +2126,11 @@ ddg.MAX_HIST_LINES <- 2^14
     # set within a console block.
 		if ((length(whichRows) > 0 && vars.set$last.writer[whichRows] == cmd.pos && vars.set$possible.last.writer[whichRows] <= vars.set$last.writer[whichRows]) || for.finish.node) {
 		    if (is.null(env)) {
+          #print("env is null")
 		      env <- .ddg.get.env(var, calls=stack)
         }
+        #print(paste("env ="))
+        #print(ls(env))
 		    scope <- .ddg.get.scope(var, calls=stack, env=env)
         #print (paste (".ddg.create.data.set.edges.for.cmd: looking for ", var, "in", environmentName(env)))
 		    val <- tryCatch(eval(parse(text=var), env),
@@ -2523,6 +2534,7 @@ ddg.MAX_HIST_LINES <- 2^14
   #print(paste(".ddg.capture.graphics: writing to ", file))
   
   # Save the graphic to a file temporarily
+  #print(sys.calls())
   dev.print(device=pdf, file=file)
   
   # Add it to the ddg.  This will copy the file to the right directory
@@ -2689,6 +2701,8 @@ ddg.MAX_HIST_LINES <- 2^14
   #print("In .ddg.add.abstract.node")
   #print("cmd =")
   #print(cmd)
+  #print("node.name =")
+  #print(node.name)
   if (node.name == "") {
     if (is.null(cmd)) {
       node.name <- .ddg.abbrev.cmd(cmd)
@@ -3050,6 +3064,8 @@ ddg.MAX_HIST_LINES <- 2^14
 
 .ddg.create.DDGStatements <- function (exprs, script.name, script.num, annotate.functions, parseData = NULL, enclosing.pos = NULL) {
   #print(paste(".ddg.create.DDGStatements: typeof(exprs) =", typeof(exprs)))
+  #print("exprs =")
+  #print(exprs)
   
   # The parse data gives us line number information
   if (is.null(parseData)) {
@@ -3083,7 +3099,7 @@ ddg.MAX_HIST_LINES <- 2^14
     non.comment.parse.data <- parseData[parseData$token != "COMMENT", ]
     next.parseData <- which(non.comment.parse.data$line1 >= enclosing.pos@startLine &
             non.comment.parse.data$line2 <= enclosing.pos@endLine & 
-            non.comment.parse.data$text == deparse(exprs[[1]]) )
+            non.comment.parse.data$text == paste(deparse(exprs[[1]]), collapse="\n") )[1]
 #    parent.parseData <- which(non.comment.parse.data$line1 == enclosing.pos@startLine &
 #            non.comment.parse.data$col1 == enclosing.pos@startCol &
 #            non.comment.parse.data$line2 == enclosing.pos@endLine & 
@@ -3112,7 +3128,7 @@ ddg.MAX_HIST_LINES <- 2^14
     expr <- as.expression(exprs[i])
     next.expr.pos <- new (Class = "DDGStatementPos", 
         non.comment.parse.data[next.parseData, ])
-    #print(paste("Creating statement for:", expr))
+    #print(paste(".ddg.create.DDGStatements: Creating statement for:", expr))
     #print("next.expr.pos =")
     #print(next.expr.pos)
     cmds[next.cmd] <- .ddg.construct.DDGStatement(expr, next.expr.pos, script.name, script.num, breakpoints,
@@ -3237,7 +3253,7 @@ ddg.MAX_HIST_LINES <- 2^14
     # Loop over the commands as well as their string representations.
     for (i in 1:length(cmds)) {
       cmd <- cmds[[i]]
-      #print(paste(.ddg.new.parse.commands: Processing", cmd@text))
+      #print(paste(".ddg.new.parse.commands: Processing", cmd@abbrev))
       
       # Process breakpoint. We stop if there is a breakpoint set on this line or we are single-stepping.
       if (.ddg.is.sourced() & (cmd@is.breakpoint | .ddg.get("ddg.break")) & !.ddg.break.ignore()) {
@@ -3252,7 +3268,7 @@ ddg.MAX_HIST_LINES <- 2^14
       
       # Get environment for output data node.
       d.environ <- environ
-      if (.ddg.is.global.assign(cmd@parsed)) d.environ <- globalenv()
+      if (.ddg.is.global.assign(cmd@parsed[[1]])) d.environ <- globalenv()
       
       # Specifies whether or not a procedure node should be created
       # for this command. Basically, if a ddg exists and the
@@ -4090,6 +4106,8 @@ ddg.MAX_HIST_LINES <- 2^14
 # from.env - if object is from initial environment
 
 .ddg.data.node <- function(dtype, dname, dvalue, dscope, from.env=FALSE) {
+  #print(paste(".ddg.data.node: dname =", dname))
+  #print(paste(".ddg.data.node: dscope =", dscope))
   # If object or a long list, try to create snapshot node.
   if (is.object(dvalue)) {
     #print(".ddg.data.node: is object")
@@ -4115,8 +4133,13 @@ ddg.MAX_HIST_LINES <- 2^14
   }
 
   # Convert value to a string.
+#  print(paste(".ddg.data.node: dname =", dname))
+#  print(".ddg.data.node: dvalue =")
+#  print(dvalue)
+#  print(paste("typeof(dvalue) =", typeof(dvalue)))
   val <-
       if (is.list(dvalue)) {
+        #print("is list")
         tryCatch(
             {
               .ddg.convert.list.to.string(dvalue)
@@ -4128,7 +4151,9 @@ ddg.MAX_HIST_LINES <- 2^14
             }
         )
       }
+      else if (typeof(dvalue) == "closure") "#ddg.function"
       else if (length(dvalue) > 1 || !is.atomic(dvalue)) {
+        #print("replacing quotes")
         tryCatch(paste(.ddg.replace.quotes(dvalue), collapse=","),
             error = function(e) {"complex"})
       }
@@ -4662,7 +4687,7 @@ ddg.MAX_HIST_LINES <- 2^14
   }
   else {
     #print(paste(".ddg.create.function.nodes: deparse(call) =", deparse(call)))
-    .ddg.add.abstract.node ("Start", node.name=deparse(call), env=env)
+    .ddg.add.abstract.node ("Start", node.name=paste(deparse(call), collapse=""), env=env)
   }
 
   # Tokens will contain the function name and the argument
@@ -5687,7 +5712,7 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
 
   if (is.null(cmd.func)) {
     #print("ddg.return.value: cmd.func is null")
-    return.stmt <- .ddg.construct.DDGStatement (parsed.statement, pos=NA, script.num=NA, breakpoints=NA, annotate.functions=FALSE)
+    return.stmt <- .ddg.construct.DDGStatement (parse(text=orig.return), pos=NA, script.num=NA, breakpoints=NA, annotate.functions=FALSE)
   }
   else {
     return.stmt <- cmd.func()
@@ -5746,7 +5771,7 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
       dscope <- .ddg.get.scope(var, env=env)
       .ddg.save.data(var, dvalue, scope=dscope)
       # Create an edge from procedure node to data node.
-      .ddg.proc2data(return.stmt@text, var, dscope=dscope, return.value=FALSE)
+      .ddg.proc2data(return.stmt@abbrev, var, dscope=dscope, return.value=FALSE)
     }
   }
 
@@ -5768,7 +5793,7 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
     .ddg.add.abstract.node ("Finish", node.name=pname, env=caller.env)
   }
   else {
-    .ddg.add.abstract.node ("Finish", node.name=deparse(call), env=caller.env)
+    .ddg.add.abstract.node ("Finish", node.name=paste(deparse(call),collapse=""), env=caller.env)
   }
 
   #print ("Returning from ddg.return.value")
@@ -5813,8 +5838,8 @@ ddg.eval <- function(statement, cmd.func=NULL) {
   }
 
   #print ("ddg.eval:  calling .ddg.parse.commands")
-  #print("cmd =")
-  #print(cmd)
+  #print("parsed.statement =")
+  #print(parsed.statement)
   cmd <- .ddg.new.parse.commands(parsed.statement, environ=env, run.commands = TRUE, node.name=statement, called.from.ddg.eval=TRUE, cmds=list(cmd))
   #print ("ddg.eval:  .ddg.parse.commands returned")
   if (.ddg.get(".ddg.func.depth") == 0) {

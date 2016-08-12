@@ -36,10 +36,10 @@ setMethod ("initialize",
 setClass("DDGStatement",
     slots = list(
         text = "character",
-        parsed = "language",
+        parsed = "expression",
         quoted = "character",
         abbrev = "character",
-        annotated = "language",
+        annotated = "expression",
         vars.used = "character",
         vars.set = "character",
         vars.possibly.set = "character",
@@ -58,13 +58,20 @@ setClass("DDGStatement",
 setMethod ("initialize",
   "DDGStatement",
     function(.Object, parsed, pos, script.name, script.num, breakpoints, annotate.functions, parseData){
-      if (typeof(parsed) == "expression") {
-        .Object@parsed <- parsed[[1]]
-      }
-      else {
+#      if (typeof(parsed) == "expression") {
+#        print("initialize: got expression")
+#        print(paste("typeof(parsed[[1]] =", typeof(parsed[[1]])))
+#        print("parsed[[1]] =")
+#        print(parsed[[1]])
+#        print(paste("is(parsed[[1]], \"language\") =", is(parsed[[1]], "language")))
+#        print(paste("is(parsed[[1]]) =", is(parsed[[1]])))
+#        .Object@parsed <- parsed[[1]]
+#      }
+#      else {
         .Object@parsed <- parsed
-      }
-      .Object@text <- paste(deparse(.Object@parsed), collapse="")
+#      }
+      #print("Parsed field set")
+      .Object@text <- paste(deparse(.Object@parsed[[1]]), collapse="")
       .Object@quoted <- gsub("\\\"", "\\\\\"", .Object@text)
       .Object@abbrev <- 
           if (grepl("^ddg.eval", .Object@text)) {
@@ -74,14 +81,15 @@ setMethod ("initialize",
             .ddg.abbrev.cmd(.Object@text)
           }
       
-      .Object@vars.used <- .ddg.find.var.uses(.Object@parsed)
-      .Object@vars.set <- .ddg.find.simple.assign(.Object@parsed)
-      .Object@vars.possibly.set <- .ddg.find.assign(.Object@parsed)
+      .Object@vars.used <- .ddg.find.var.uses(.Object@parsed[[1]])
+      .Object@vars.set <- .ddg.find.simple.assign(.Object@parsed[[1]])
+      .Object@vars.possibly.set <- .ddg.find.assign(.Object@parsed[[1]])
       .Object@isDdgFunc <- grepl("^ddg.", .Object@text) & !grepl("^ddg.eval", .Object@text)
-      .Object@readsFile <- .ddg.reads.file (.Object@parsed)
-      .Object@writesFile <- .ddg.writes.file (.Object@parsed)
-      .Object@createsGraphics <- .ddg.creates.graphics (.Object@parsed)
-      .Object@has.dev.off <- .ddg.has.call.to (.Object@parsed, "dev.off")
+      .Object@readsFile <- .ddg.reads.file (.Object@parsed[[1]])
+      .Object@writesFile <- .ddg.writes.file (.Object@parsed[[1]])
+      .Object@createsGraphics <- .ddg.creates.graphics (.Object@parsed[[1]])
+      .Object@has.dev.off <- .ddg.has.call.to (.Object@parsed[[1]], "dev.off")
+      #print(paste(.Object@abbrev, ": dev.off =", .Object@has.dev.off))
       .Object@pos <- 
           if (is.object(pos)) {
             pos
@@ -94,7 +102,7 @@ setMethod ("initialize",
           else script.num
       .Object@is.breakpoint <- 
           if (is.object(breakpoints)) {
-            if (.ddg.is.assign(.Object@parsed) && .ddg.is.functiondecl(.Object@parsed[[3]])) {
+            if (.ddg.is.assign(.Object@parsed[[1]]) && .ddg.is.functiondecl(.Object@parsed[[1]][[3]])) {
               is.breakpoint <- any(breakpoints$lnum == .Object@pos@startLine)
             }
             else {
@@ -117,14 +125,16 @@ setMethod ("initialize",
           else {
             list()
           }
+
       .Object@annotated <- 
           if (grepl("^ddg.eval", .Object@text)) {
-            parse(text=.Object@parsed[[2]])[[1]]
+            print("Found ddg.eval")
+            parse(text=.Object@parsed[[1]][[2]])[[1]]
           }
           else {
             .ddg.add.annotations(.Object, annotate.functions)
           }
-
+          
       #print (.Object)
       return (.Object)
     }
@@ -135,7 +145,9 @@ null.pos <- function() {
 }
 
 .ddg.construct.DDGStatement <- function (expr, pos, script.name, script.num, breakpoints, annotate.functions, parseData) {
+  #print(sys.calls())
   #print("In .ddg.construct.DDGStatement")
+  #print(paste("typeof(expr) =", typeof(expr)))
   #print(expr)
   #print(paste("script.num =", script.num))
   #print(typeof(expr))
@@ -324,10 +336,11 @@ null.pos <- function() {
 # The returned command is annotated as needed.
 
 .ddg.add.annotations <- function(command, annotate.functions) {
-  parsed.command <- command@parsed
+  #print("In .ddg.add.annotations")
+  parsed.command <- command@parsed[[1]]
   
   # Return if statement is empty.
-  if (length(parsed.command) == 0) return(parsed.command)
+  if (length(parsed.command) == 0) return(command@parsed)
   
   # Replace source with ddg.source.
   if (is.call(parsed.command) && parsed.command[[1]] == "source") {
@@ -344,11 +357,12 @@ null.pos <- function() {
   # Add other annotations here.
   
   # No annotation required.
-  return(parsed.command)
+  return(command@parsed)
 }
 
 .ddg.parse.contained <- function (cmd, script.name, parseData) {
-  parsed.cmd <- cmd@parsed
+  #print("In .ddg.parse.contained")
+  parsed.cmd <- cmd@parsed[[1]]
   if (.ddg.is.assign(parsed.cmd) && .ddg.is.functiondecl(parsed.cmd[[3]])) {
     func.body <- parsed.cmd[[3]][[3]]
     if (func.body[[1]] == "{") {
@@ -359,7 +373,7 @@ null.pos <- function() {
       }
     }
     else {
-      func.stmts <- func.body[[1]]
+      func.stmts <- func.body
     }
     #print(".ddg.parse.contained:  cmd =")
     #print(cmd)
@@ -378,7 +392,8 @@ null.pos <- function() {
   script.name <- deparse(parsed.source.call[[2]])
   new.command.txt <- paste("ddg.source(", script.name, ")", sep="")
   parsed.ddg.source.call <- parse(text=new.command.txt)
-  return(parsed.ddg.source.call[[1]])
+  #print(paste(".ddg.add.ddg.source: typeof(parsed.ddg.source.call) =", typeof(parsed.ddg.source.call)))
+  return(parsed.ddg.source.call)
 }
 
 # .ddg.add.function.annotations accepts and returns a parsed command.
@@ -392,7 +407,8 @@ null.pos <- function() {
 # being bound is a function declaration
 
 .ddg.add.function.annotations <- function(function.decl) {
-  parsed.function.decl <- function.decl@parsed
+  #print("In .ddg.add.function.annotations")
+  parsed.function.decl <- function.decl@parsed[[1]]
   # Get function name.
   func.name <- toString(parsed.function.decl[[2]])
   
@@ -415,12 +431,14 @@ null.pos <- function() {
     }
     
     # Insert call to ddg.function if not already added.
-    if (!.ddg.has.call.to(func.definition, "ddg.function")) {
+    #print(".ddg.add.function.annotations checking for existing call to ddg.function in")
+    #print(func.definition)
+    if (!.ddg.has.call.to(func.definition[[3]], "ddg.function")) {
       func.definition <- .ddg.insert.ddg.function(func.definition)
     }
     
     # Insert calls to ddg.return.value if not already added.
-    if (!.ddg.has.call.to(func.definition, "ddg.return.value")) {
+    if (!.ddg.has.call.to(func.definition[[3]], "ddg.return.value")) {
       func.definition <- .ddg.wrap.all.return.parameters(func.definition, function.decl@contained)
     }
     
@@ -445,7 +463,7 @@ null.pos <- function() {
 #    # Return modified parsed command
 #    return(annotated.funcdecl.parsed)
     
-    return (call ("<-", as.name(func.name), func.definition))
+    return (as.expression (call ("<-", as.name(func.name), func.definition)))
   }
 }
 
@@ -576,6 +594,9 @@ null.pos <- function() {
   
   # If the function body contains a single statement, wrap that
   # statement and reconstruct the call.
+#  print(paste(".ddg.wrap.last.line: typeof(parsed.stmts) =", typeof(parsed.stmts)))
+#  print(paste(".ddg.wrap.last.line: length(parsed.stmts) =", length(parsed.stmts)))
+#  print(sys.calls())
   parsed.stmt <- parsed.stmts[[length(parsed.stmts)]]
   if (pos == 2) {
     last.statement <- func.body[[pos]]
@@ -689,6 +710,10 @@ null.pos <- function() {
 .ddg.has.call.to <- function(parsed.expr, func.name) {
   # Base case.
   if (!is.recursive(parsed.expr)) return(FALSE)
+  
+  # If this is a function declaration, skip it
+  if (.ddg.is.functiondecl(parsed.expr)) return(FALSE)
+    
   # A call to the specified function.
   if (.ddg.is.call.to(parsed.expr, func.name)) {
     return (TRUE)
