@@ -1901,6 +1901,8 @@ ddg.MAX_HIST_LINES <- 2^14
 	vars.set$first.writer <- var.table.size + 1
 	vars.set$possible.first.writer <- var.table.size + 1
 
+  #print(".ddg.create.empty.vars.set returning")
+  #print(vars.set)
 	return(vars.set)
 }
 
@@ -1918,6 +1920,8 @@ ddg.MAX_HIST_LINES <- 2^14
 	new.vars.set$first.writer <- ifelse(new.vars.set$first.writer == size + 1, size*2 + 1, new.vars.set$first.writer)
 	new.vars.set$possible.first.writer <- ifelse(new.vars.set$possible.first.writer == size + 1, size*2 + 1, new.vars.set$possible.first.writer)
 
+  print(".ddg.double.vars.set returning")
+  print(new.vars.set)
 	return(new.vars.set)
 }
 
@@ -1977,6 +1981,8 @@ ddg.MAX_HIST_LINES <- 2^14
 		}
 	}
 
+  #print (".ddg.add.to.vars.set: returning")
+  #print(vars.set)
 	return(vars.set)
 }
 
@@ -1987,17 +1993,19 @@ ddg.MAX_HIST_LINES <- 2^14
 #
 ## parsed.commands - a list of parsed commands.
 #
-.ddg.find.var.assignments <- function(parsed.commands) {
-  if (length(parsed.commands) == 0) return (data.frame())
+.ddg.find.var.assignments <- function(cmds) {
+  #print("In .ddg.find.var.assignments")
+  if (length(cmds) == 0) return (data.frame())
 
   # Make it big so we don't run out of space.
-  var.table.size <- length(parsed.commands)
+  var.table.size <- length(cmds)
   vars.set <- .ddg.create.empty.vars.set(var.table.size)
 
   # Build the table recording where variables are assigned to or may
   # be assigned to.
-  for ( i in 1:length(parsed.commands)) {
-    cmd.expr <- parsed.commands[[i]]
+  for ( i in 1:length(cmds)) {
+    cmd.expr <- cmds[[i]]
+    #print(paste("Looking for var assignments in", cmd.expr@abbrev))
     vars.set <- .ddg.add.to.vars.set(vars.set,cmd.expr, i)
   }
   return (vars.set)
@@ -2159,11 +2167,17 @@ ddg.MAX_HIST_LINES <- 2^14
 # last.command - last command in console block.
 
 .ddg.create.data.node.for.possible.writes <- function (vars.set, last.command, env= NULL) {
+  #print("In .ddg.create.data.node.for.possible.writes")
   environment <- if (is.environment(env)) env else .GlobalEnv
+  #print("environment =")
+  #print(environment)
+  #print("vars.set =")
+  #print(vars.set)
   for (i in 1:nrow(vars.set)) {
+    #print(paste("Checking ", vars.set$variable[i]))
     if (vars.set$possible.last.writer[i] > vars.set$last.writer[i]) {
       value <- tryCatch(eval(parse(text=vars.set$variable[i]), environment),
-          error = function(e) {NULL}
+          error = function(e) {print(e)}
       )
 # Only create the node and edge if we were successful in
 # looking up the value.
@@ -2175,6 +2189,8 @@ ddg.MAX_HIST_LINES <- 2^14
       }
     }
   }
+  #print("Done with .ddg.create.data.node.for.possible.writes")
+  
 }
 
 # Given a parse tree, this function returns a list containing
@@ -3218,6 +3234,7 @@ ddg.MAX_HIST_LINES <- 2^14
   #
   #if (.ddg.is.init() && (!execute && length(new.commands) > 0) || (execute && length(new.commands) > 1)) {
   if (num.cmds > 0 && .ddg.is.init() && !inside.func) {
+    #print(paste("ddg.new.parse.commands: Creating Start for", node.name))
     .ddg.add.abstract.node("Start", node.name = node.name, env = environ)
     named.node.set <- TRUE
     start.node.created <- node.name
@@ -3244,9 +3261,13 @@ ddg.MAX_HIST_LINES <- 2^14
     # Find where all the variables are assigned for non-environ
     # files.
     if (!execute) {
-      vars.set <- unique(lapply (cmds, function(cmd) cmd@vars.set))
+      #vars.set <- unique(lapply (cmds, function(cmd) cmd@vars.set))
+      vars.set <- .ddg.find.var.assignments(cmds)
+      #print("ddg.new.parse.commands initialized vars.set to")
+      #print(vars.set)
     }
     else {
+      #print(".ddg.new.parse.commands initialing vars.set to empty")
       vars.set <- .ddg.create.empty.vars.set()
     }
 
@@ -3256,10 +3277,12 @@ ddg.MAX_HIST_LINES <- 2^14
       #print(paste(".ddg.new.parse.commands: Processing", cmd@abbrev))
       
       # Process breakpoint. We stop if there is a breakpoint set on this line or we are single-stepping.
+      #print("Checking for breakpoints")
       if (.ddg.is.sourced() & (cmd@is.breakpoint | .ddg.get("ddg.break")) & !.ddg.break.ignore()) {
         .ddg.process.breakpoint(cmd, inside.function=called.from.ddg.eval)
       }
       
+      #print("Checking whether to set last.cmd")
       if (.ddg.enable.source() && grepl("^ddg.eval", cmd@text) && .ddg.enable.console()) {
         if (is.null(.ddg.last.cmd)) {
           .ddg.last.cmd <- cmd
@@ -3267,6 +3290,7 @@ ddg.MAX_HIST_LINES <- 2^14
       }
       
       # Get environment for output data node.
+      #print("Getting data environment")
       d.environ <- environ
       if (.ddg.is.global.assign(cmd@parsed[[1]])) d.environ <- globalenv()
       
@@ -3275,10 +3299,12 @@ ddg.MAX_HIST_LINES <- 2^14
       # command is not a DDG command, it should be created.
       
       create <- !cmd@isDdgFunc && .ddg.is.init() && .ddg.enable.console()
+      #print(paste("create set to", create))
       start.finish.created <- FALSE
       
       # If the command does not match one of the ignored patterns.
       if (!any(sapply(ignore.patterns, function(pattern){grepl(pattern, cmd@text)}))) {
+        #print("ddg.new.parse.commands: passes ignore patterns")
         
         # If sourcing, we want to execute the command.
         if (execute) {
@@ -3448,9 +3474,13 @@ ddg.MAX_HIST_LINES <- 2^14
      # last node in the console block or source .
      if (!execute) {
        #print (paste (".ddg.parse.commands, 2nd if: last.proc.node =", last.proc.node@abbrev))
+       #print("Creating output edges")
        .ddg.create.data.node.for.possible.writes(vars.set, last.proc.node, env=environ)
+       #print("Done creating output edges")
      }
   }
+  
+  #print("Done with ddg.new.parse.commands loop")
     
   # Close any node left open during execution.
   if (execute && !inside.func) .ddg.close.last.command.node(environ, initial=TRUE)
@@ -3458,6 +3488,9 @@ ddg.MAX_HIST_LINES <- 2^14
   # Close the console block if we processed anything and the DDG
   # is initialized (also, save).
   #
+  #print(paste(".ddg.new.parse.commands:  should we create finish node for", node.name))
+  #print(paste("named.node.set =", named.node.set))
+  #print(paste("inside.func =", inside.func))
   if (.ddg.is.init() && named.node.set && !inside.func) {
     .ddg.add.abstract.node("Finish", node.name = node.name, env=environ)
   }
