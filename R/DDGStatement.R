@@ -1,10 +1,20 @@
-# An S4 class to maintain information about a command
+# This file contains definitions of S4 classes to manage information about 
+# individual R statements and functions that operate on individual statements
+# 
+# All of these functions are internal to the RDataTracker library and
+# not called from user code.
 # 
 # Author: blerner
+# August 2016
+#
 ###############################################################################
 
+# Needed to work with S4 classes.  Normally, this library is automatically
+# loaded.  However, it is not loaded when running non-interactively, as
+# in our test cases or if a user uses RScript to run R files.
 library (methods)
 
+# Information about where in the source code this statement appears.
 setClass("DDGStatementPos",
     slots = list(
         startLine = "numeric",
@@ -13,15 +23,21 @@ setClass("DDGStatementPos",
         endCol = "numeric")
 )
 
+# This is called automatically when there is a call to create a new
+# DDGStatementPos object.
 setMethod ("initialize",
     "DDGStatementPos",
     function(.Object, parseData){
+      # If the parse data is missing, we set all the fields to -1
       if (length(parseData) == 1 && is.na(parseData)) {
         .Object@startLine <- -1
         .Object@startCol <- -1
         .Object@endLine <- -1
         .Object@endCol<- -1
       }
+      
+      # If we have parseData, we extract the information into oure
+      # object.
       else {
         .Object@startLine <- parseData$line1
         .Object@startCol <- parseData$col1
@@ -33,49 +49,60 @@ setMethod ("initialize",
     }
 )
 
+# This class contains all the information that we need when building a ddg.
+# We create this when we parse the statement so that it is only done once
+# and then look up the information we need when the statement executes.
 setClass("DDGStatement",
     slots = list(
-        text = "character",
-        parsed = "expression",
-        quoted = "character",
-        abbrev = "character",
-        annotated = "expression",
-        vars.used = "character",
-        vars.set = "character",
-        vars.possibly.set = "character",
-        isDdgFunc = "logical",
-        readsFile = "logical",
-        writesFile = "logical",
-        createsGraphics = "logical",
-        has.dev.off = "logical",
-        pos = "DDGStatementPos",
-        script.num = "numeric",
-        is.breakpoint = "logical",
-        contained = "list"
+        text = "character",     # The original text in the file
+        parsed = "expression",  # The parse tree for the statement
+        abbrev = "character",   # A shortened version of the text to use in node names
+        annotated = "expression",  # An annotated version of the statement.  This is 
+                                   # what we actually execute.
+        
+        # Note that vars.used through has.dev.off do not apply to a situation where
+        # the statement is a function declaration, since declaring the statement
+        # does not read from files, etc.  That happens when the function is called,
+        # at which point we will refer to the information in the contained statements.
+        
+        vars.used = "character", # A list of the variables that are used in the statement
+        vars.set = "character",  # If this is an assignment statement, this is the variable assigned
+        vars.possibly.set = "character",  # If this contains any internal assignment statements,
+                                          # like an if-statement might, for example, these are the
+                                          # variables assigned within the statement.
+        isDdgFunc = "logical",   # True if this is a call to a ddg function
+        readsFile = "logical",   # True if this statement contains a call to a function that
+                                 # reads from a file
+        writesFile = "logical",  # True if this statement contains a call to a function that
+                                 # writes to a file
+        createsGraphics = "logical",  # True if this is a function that creates a graphics
+                                      # object, like a call to pdf, for example
+        has.dev.off = "logical",  # True if this statement contains a call to dev.off
+        pos = "DDGStatementPos",  # The location of this statement in the source code.
+                                  # Has the value null.pos() if it is not available.
+        script.num = "numeric",   # The number for the script this statement comes from.
+                                  # Has the value -1 if it is not available
+        is.breakpoint = "logical", # True if a breakpoint has been set for this statement
+        contained = "list"         # If this is a function declaration, this will be a list of 
+                                   # DDGStatement objects for the statements it contains.
       )
 )
 
+# This is called when a new DDG Statement is created.  It initializes all of the slots.
 setMethod ("initialize",
   "DDGStatement",
     function(.Object, parsed, pos, script.name, script.num, breakpoints, annotate.functions, parseData){
-#      if (typeof(parsed) == "expression") {
-#        print("initialize: got expression")
-#        print(paste("typeof(parsed[[1]] =", typeof(parsed[[1]])))
-#        print("parsed[[1]] =")
-#        print(parsed[[1]])
-#        print(paste("is(parsed[[1]], \"language\") =", is(parsed[[1]], "language")))
-#        print(paste("is(parsed[[1]]) =", is(parsed[[1]])))
-#        .Object@parsed <- parsed[[1]]
-#      }
-#      else {
-        .Object@parsed <- parsed
-#      }
-      #print("Parsed field set")
+      .Object@parsed <- parsed
+      
+      # deparse can return a vector of strings.  We convert that into
+      # one long string.
       .Object@text <- paste(deparse(.Object@parsed[[1]]), collapse="")
-      .Object@quoted <- gsub("\\\"", "\\\\\"", .Object@text)
-      .Object@abbrev <- 
+      
+      .Object@abbrev <-
+          # If this is a call to ddg.eval, we only want the argument to ddg.eval
+          # (which is a string) to appear in the node label
           if (grepl("^ddg.eval", .Object@text)) {
-            .ddg.abbrev.cmd(.Object@parsed[[2]])
+            .ddg.abbrev.cmd(.Object@parsed[[1]][[2]])
           }
           else {
             .ddg.abbrev.cmd(.Object@text)
@@ -84,12 +111,16 @@ setMethod ("initialize",
       .Object@vars.used <- .ddg.find.var.uses(.Object@parsed[[1]])
       .Object@vars.set <- .ddg.find.simple.assign(.Object@parsed[[1]])
       .Object@vars.possibly.set <- .ddg.find.assign(.Object@parsed[[1]])
+      
+      # ddg.eval is treated differently than other calls to ddg functions since
+      # we will execute the parameter as a command and want a node for it.
       .Object@isDdgFunc <- grepl("^ddg.", .Object@text) & !grepl("^ddg.eval", .Object@text)
+      
       .Object@readsFile <- .ddg.reads.file (.Object@parsed[[1]])
       .Object@writesFile <- .ddg.writes.file (.Object@parsed[[1]])
       .Object@createsGraphics <- .ddg.creates.graphics (.Object@parsed[[1]])
       .Object@has.dev.off <- .ddg.has.call.to (.Object@parsed[[1]], "dev.off")
-      #print(paste(.Object@abbrev, ": dev.off =", .Object@has.dev.off))
+
       .Object@pos <- 
           if (is.object(pos)) {
             pos
@@ -97,40 +128,51 @@ setMethod ("initialize",
           else {
             null.pos()
           }
+
       .Object@script.num <- 
           if (is.na(script.num)) -1
           else script.num
+
       .Object@is.breakpoint <- 
           if (is.object(breakpoints)) {
+            # If this statement is a function declaration, set a breakpoint on the declaration
+            # if the breakpoint is for the first line of the function.  Otherwise, we will
+            # want the breakpoint to be on one of the contained lines.
             if (.ddg.is.assign(.Object@parsed[[1]]) && .ddg.is.functiondecl(.Object@parsed[[1]][[3]])) {
               is.breakpoint <- any(breakpoints$lnum == .Object@pos@startLine)
             }
+            
+            # If this is not a function declaration, then set a breakpoint if it is on any line
+            # within the statement.
             else {
-              #print(paste("DDGStatement initialize: text =", .Object@text))
-              #print(paste("DDGStatement initialize: pos ="))
-              #print(.Object@pos)
               is.breakpoint <- any(breakpoints$lnum >= .Object@pos@startLine & breakpoints$lnum <= .Object@pos@endLine)
             }
           }
+      
+          # No breakpoints are set in the script.
           else {
             is.breakpoint <- FALSE
           }
-       #if (.Object@is.breakpoint) {
-       #  print(paste("Breakpoint set for", .Object@text))
-       #}
+
       .Object@contained <- 
+          # If we are annotating functions and this is a function declaration, the contained
+          # field is a list of DDGStatements for all of the statements inside the function
           if (annotate.functions) {
             .ddg.parse.contained(.Object, script.name, parseData)
           }
+      
+          # If we are not annotating functions, the contained field is an empty list
           else {
             list()
           }
 
       .Object@annotated <- 
+          # If this is a call to ddg.eval, we only want to execute
+          # the argument to ddg.eval
           if (grepl("^ddg.eval", .Object@text)) {
-            print("Found ddg.eval")
-            parse(text=.Object@parsed[[1]][[2]])[[1]]
+            parse(text=.Object@parsed[[1]][[2]])
           }
+      
           else {
             .ddg.add.annotations(.Object, annotate.functions)
           }
@@ -140,18 +182,24 @@ setMethod ("initialize",
     }
 )
 
+# A special null value for when source code position information is missing. 
 null.pos <- function() {
   return (new (Class = "DDGStatementPos", NA))
 }
 
+# Create a DDGStatement.  
+# expr - the parsed expression
+# pos - the DDGStatementPos object for this statement
+# script.name - the name of the script the statement is from
+# script.num - the script number used to find the script in the sourced script table
+# breakpoints - all the breakpoints currently set
+# annotate.functions - true if we want internal annotations on functions
+# parseData - the object created by the parser that gives us source position information
 .ddg.construct.DDGStatement <- function (expr, pos, script.name, script.num, breakpoints, annotate.functions, parseData) {
-  #print(sys.calls())
-  #print("In .ddg.construct.DDGStatement")
-  #print(paste("typeof(expr) =", typeof(expr)))
-  #print(expr)
-  #print(paste("script.num =", script.num))
-  #print(typeof(expr))
+  # Surprisingly, if a statement is just a number, like 1 (which could be the last statement in a function, for example),
+  # the parser returns a number, rather than a parse tree!
   if (is.numeric(expr)) expr <- parse(text=expr)
+  
   return (new (Class = "DDGStatement", parsed = expr, pos, script.name, script.num, breakpoints, annotate.functions, parseData))
 }
 
@@ -165,26 +213,22 @@ null.pos <- function() {
   if (length(cmd) > 1) {
     cmd <- paste (cmd, collapse = " ")
   }
-  if(file.exists(cmd)){
-    basename(cmd);
-  } else {
-    if (nchar(cmd) <= len) cmd
-    else if (substr(cmd, len, len) != "\\") substr(cmd, 1, len)
-    else if (substr(cmd, len-1, len) == "\\\\") substr(cmd, 1, len)
-    else substr(cmd, 1, len-1)
-  }
+  
+  if (file.exists(cmd)) basename(cmd)
+  else if (nchar(cmd) <= len) cmd
+  else if (substr(cmd, len, len) != "\\") substr(cmd, 1, len)
+  else if (substr(cmd, len-1, len) == "\\\\") substr(cmd, 1, len)
+  else substr(cmd, 1, len-1)
 }
 
 # .ddg.find.var.uses returns a vector containing all the variables
-# used in an expression.
+# used in an expression.  Each value is unique in the returned
+# vector, so that if a variable is used more than once, it 
+# only appears once.
 
 # main.object - input expression.
-# all (optional) - whether to return a vector of unique values
-#   (FALSE) or all values (TRUE).
 
-.ddg.find.var.uses <- function(main.object, all=FALSE) {
-  # Find function to filter results.
-  filter <- if (all) identity else unique
+.ddg.find.var.uses <- function(main.object) {
   
   # Recursive helper function.
   .ddg.find.var.uses.rec <- function(obj) {
@@ -210,22 +254,22 @@ null.pos <- function() {
               # If assigning to a simple variable, recurse on the right
               # hand side of the assignment.
               if (is.symbol(obj[[2]])) {
-                filter(unlist(.ddg.find.var.uses.rec(obj[[3]])))
+                unique(unlist(.ddg.find.var.uses.rec(obj[[3]])))
               }
               else if (is.call(obj[[2]])) {
-                filter(c (.ddg.find.var.uses.rec(obj[[2]][[2]]), unlist(.ddg.find.var.uses.rec(obj[[3]]))))
+                unique(c (.ddg.find.var.uses.rec(obj[[2]][[2]]), unlist(.ddg.find.var.uses.rec(obj[[3]]))))
               }
               # If assigning to an expression (like a[b]), recurse on the
               # indexing part of the lvalue as well as on the expression.
               else {
-                filter(c (.ddg.find.var.uses.rec(obj[[2]][[3]]), unlist(.ddg.find.var.uses.rec(obj[[3]]))))
+                unique(c (.ddg.find.var.uses.rec(obj[[2]][[3]]), unlist(.ddg.find.var.uses.rec(obj[[3]]))))
               }
             }
             
             # Not an assignment.  Recurse on all parts of the expression
             # except the operator.
             else {
-              filter(unlist(lapply(obj[1:length(obj)], .ddg.find.var.uses.rec)))
+              unique(unlist(lapply(obj[1:length(obj)], .ddg.find.var.uses.rec)))
             },
         error = function(e) {
           print (paste(".ddg.find.var.uses.rec:  Error analyzing", deparse(obj)))
@@ -360,26 +404,39 @@ null.pos <- function() {
   return(command@parsed)
 }
 
+# If cmd is a function declaration, this will create the DDGStatement
+# objects that correspond to the statements within the function
+#
+# cmd - the DDGStatement being considered
+# script.name - the name of the script the statement is from
+# parseData - the data returned by the parser that is used to extract
+#     source position information
+#
+# Returns a list of DDTStatements or an empty list if this is not a function declaration
 .ddg.parse.contained <- function (cmd, script.name, parseData) {
   #print("In .ddg.parse.contained")
   parsed.cmd <- cmd@parsed[[1]]
   if (.ddg.is.assign(parsed.cmd) && .ddg.is.functiondecl(parsed.cmd[[3]])) {
     func.body <- parsed.cmd[[3]][[3]]
+    
+    # The function body is a block.  Extract the statements inside the block
     if (func.body[[1]] == "{") {
-      #func.stmts <- func.body[2:length(func.body)]
       func.stmts <- list()
       for (i in 2:length(func.body)) {
         func.stmts <- c(func.stmts, func.body[[i]])
       }
     }
+    
+    # The function body is a single statement.
     else {
       func.stmts <- func.body
     }
-    #print(".ddg.parse.contained:  cmd =")
-    #print(cmd)
+    
+    # Create the DDGStatement objects for the statements in the function
     return (.ddg.create.DDGStatements (func.stmts, script.name, cmd@script.num, annotate.functions = TRUE, parseData, cmd@pos))
-#    return (.ddg.create.DDGStatements (func.body, script.name, cmd@script.num, annotate.functions = TRUE, parseData))
   }
+  
+  # Not a function declaration
   return(list())
 }
 
@@ -392,23 +449,23 @@ null.pos <- function() {
   script.name <- deparse(parsed.source.call[[2]])
   new.command.txt <- paste("ddg.source(", script.name, ")", sep="")
   parsed.ddg.source.call <- parse(text=new.command.txt)
-  #print(paste(".ddg.add.ddg.source: typeof(parsed.ddg.source.call) =", typeof(parsed.ddg.source.call)))
   return(parsed.ddg.source.call)
 }
 
-# .ddg.add.function.annotations accepts and returns a parsed command.
-# If the command is a function declaration, calls to ddg.function, ddg.eval
-# and ddg.return.value are added, if not already present. Otherwise the
-# command is returned unchanged. The functions ddg.annotate.on and
-# ddg.annotate.off may be used to provide a list of functions to annotate
-# or not to annotate, respectively.
+# .ddg.add.function.annotations is passed a command that corresponds
+# to a function declaration.  It returns a parsed command corresponding
+# to the same function declaration but with calls to ddg.function, 
+# ddg.eval and ddg.return.value inserted if they are not already present.
+# The functions ddg.annotate.on and ddg.annotate.off may be used to provide 
+# a list of functions to annotate or not to annotate, respectively.
 #
-# parsed.function.decl should be an assignment statement where the value
+# function.decl should be a command that contains an assignment statement where the value
 # being bound is a function declaration
 
 .ddg.add.function.annotations <- function(function.decl) {
   #print("In .ddg.add.function.annotations")
   parsed.function.decl <- function.decl@parsed[[1]]
+  
   # Get function name.
   func.name <- toString(parsed.function.decl[[2]])
   
@@ -431,8 +488,6 @@ null.pos <- function() {
     }
     
     # Insert call to ddg.function if not already added.
-    #print(".ddg.add.function.annotations checking for existing call to ddg.function in")
-    #print(func.definition)
     if (!.ddg.has.call.to(func.definition[[3]], "ddg.function")) {
       func.definition <- .ddg.insert.ddg.function(func.definition)
     }
@@ -457,17 +512,17 @@ null.pos <- function() {
     }
     
     # Reassemble parsed.command.
-#    func.definition.txt <- deparse(func.definition)
-#    annotated.funcdecl.txt <- paste(c(paste(func.name, "<-", sep=" "), func.definition.txt, collapse="\n"))
-#    annotated.funcdecl.parsed <- parse(text=annotated.funcdecl.txt)
-#    # Return modified parsed command
-#    return(annotated.funcdecl.parsed)
-    
     return (as.expression (call ("<-", as.name(func.name), func.definition)))
   }
 }
 
 # .ddg.create.function.block creates a function block.
+# 
+# func.definition is a parsed expression for a function declaration (not 
+#   the full assignment statement in which it is declared)
+#
+# Returns a parse tree for the same function declaration but with 
+# the function statements inside a block.
 
 .ddg.create.function.block <- function(func.definition) {
   # Get the function parameters.
@@ -483,6 +538,12 @@ null.pos <- function() {
 
 # .ddg.insert.ddg.function inserts ddg.function before the first line
 # in a function body.
+# 
+# func.definition is a parsed expression for a function declaration (not 
+#   the full assignment statement in which it is declared)
+#
+# Returns a parse tree for the same function declaration but with 
+# a call to ddg.function() as the first statement.
 
 .ddg.insert.ddg.function <- function(func.definition) {
   # Get the function parameters.
@@ -512,9 +573,19 @@ null.pos <- function() {
 
 # .ddg.wrap.return.parameters wraps parameters of return functions
 # with ddg.return.value in a function body.
+# 
+# func.body is the parse tree corresponding to the statements within
+#   a function
+# parsed.stmts is the list of DDGStatement objects contained in the
+#   function
+#
+# Returns a parse tree for the same function body but with 
+# a call to ddg.return.value wrapped around all expressions that are
+# returned.
 
 .ddg.wrap.return.parameters <- function(func.body, parsed.stmts) {
   pos <- length(func.body)
+  
   # Check each statement in the function body to see if it
   # contains a return.
   #
@@ -564,6 +635,15 @@ null.pos <- function() {
 
 # .ddg.wrap.all.return.parameters wraps parameters of all return
 # functions with ddg.return.value in a function definition.
+# 
+# func.definition is a parsed expression for a function declaration (not 
+#   the full assignment statement in which it is declared)
+# parsed.stmts is the list of DDGStatement objects contained in the
+#   function
+#
+# Returns a parse tree for the same function declaration but with 
+# a call to ddg.return.value wrapped around all expressions that are
+# returned.
 
 .ddg.wrap.all.return.parameters <- function(func.definition, parsed.stmts) {
   # Get function parameters.
@@ -581,6 +661,15 @@ null.pos <- function() {
 
 # .ddg.wrap.last.line wraps the last line of a function with
 # ddg.return.value.
+# 
+# func.definition is a parsed expression for a function declaration (not 
+#   the full assignment statement in which it is declared)
+# parsed.stmts is the list of DDGStatement objects contained in the
+#   function
+#
+# Returns a parse tree for the same function declaration but with 
+# a call to ddg.return.value wrapped around the last line in the
+# body.
 
 .ddg.wrap.last.line <- function(func.definition, parsed.stmts) {
   # Get function parameters.
@@ -594,9 +683,6 @@ null.pos <- function() {
   
   # If the function body contains a single statement, wrap that
   # statement and reconstruct the call.
-#  print(paste(".ddg.wrap.last.line: typeof(parsed.stmts) =", typeof(parsed.stmts)))
-#  print(paste(".ddg.wrap.last.line: length(parsed.stmts) =", length(parsed.stmts)))
-#  print(sys.calls())
   parsed.stmt <- parsed.stmts[[length(parsed.stmts)]]
   if (pos == 2) {
     last.statement <- func.body[[pos]]
@@ -615,6 +701,15 @@ null.pos <- function() {
   }
 }
 
+# Creates a call to ddg.return.value using a closure so that we 
+# will be able to refer to the correct DDGStatement object when the
+# return call is executed.
+#
+# last.statement is the parse tree for the expression being returned
+# parsed.stmt is the DDGStatement object corresponding to the last statement
+#
+# Returns a parse tree with a call to ddg.return.value.  The arguments to 
+# ddg.return.value are the parsed statement and the DDGStatement object.
 .ddg.create.ddg.return.call <- function (last.statement, parsed.stmt) {
   # We need to force the evaluation of parsed.stmt for the closure to
   # return the value that parsed.stmt has at the time the ddg.eval 
@@ -627,10 +722,16 @@ null.pos <- function() {
 # with ddg.eval if the statement is not a call to a ddg function and
 # does not contain a call to ddg.return.value. The statement is enclosed
 # in quotation marks.
+# 
+# func.definition is a parsed expression for a function declaration (not 
+#   the full assignment statement in which it is declared)
+# parsed.stmts is the list of DDGStatement objects contained in the
+#   function
+#
+# Returns a parse tree for the same function declaration but with 
+# the calls to ddg.eval inserted.
 
 .ddg.wrap.with.ddg.eval <- function(func.definition, parsed.stmts) {
-  #print(paste(".ddg.wrap.with.ddg.eval: typeof(parsed.stmts) =", typeof(parsed.stmts)))
-  #print(paste(".ddg.wrap.with.ddg.eval: length(parsed.stmts) =", length(parsed.stmts)))
   # Get the function parameters.
   func.params <- func.definition[[2]]
   
@@ -638,10 +739,6 @@ null.pos <- function() {
   func.body <- func.definition[[3]]
   
   pos <- length(func.body)
-  #print(paste(".ddg.wrap.with.ddg.eval: pos =", pos))
-  #print(paste(".ddg.wrap.with.ddg.eval: func.body ="))
-  #print(func.body)
-  
   
   # Process each statement in the function body
   for (i in 2:pos) {
@@ -651,10 +748,7 @@ null.pos <- function() {
     statement <- func.body[[i]]
     if (!grepl("^ddg.", statement[1]) & !.ddg.has.call.to(statement, "ddg.return.value")) {
       parsed.stmt <- parsed.stmts[[i-2]]
-      #print("Creating ddg.eval call")
-      #print(paste("parsed.stmt = ", parsed.stmt@text))
       new.statement <- .ddg.create.ddg.eval.call(statement, parsed.stmt)
-      #print("Done creating ddg.eval call")
       func.body[[i]] <- new.statement
     }
   }
@@ -665,15 +759,31 @@ null.pos <- function() {
   return(func.definition)
 }
 
+# Creates a call to ddg.eval using a closure so that we 
+# will be able to refer to the correct DDGStatement object when the
+# return call is executed.
+#
+# statement is the parse tree for the expression being returned
+# parsed.stmt is the DDGStatement object corresponding to the last statement
+#
+# Returns a parse tree with a call to ddg.eval.  The arguments to 
+# ddg.eval are the original statement and the DDGStatement object.
+
 .ddg.create.ddg.eval.call <- function (statement, parsed.stmt) {
   # We need to force the evaluation of parsed.stmt for the closure to
   # return the value that parsed.stmt has at the time the ddg.eval 
   # call is created.
   force(parsed.stmt)
-  return (call("ddg.eval", deparse(statement), function() parsed.stmt))
+  return (call("ddg.eval", paste(deparse(statement), collapse=""), function() parsed.stmt))
 }
 
 # .ddg.find.last.statement finds the last statement of a function.
+# 
+# func.definition is a parsed expression for a function declaration (not 
+#   the full assignment statement in which it is declared)
+#
+# Returns the parse tree corresponding to the last statement in the
+# function definition.
 
 .ddg.find.last.statement <- function (func.definition) {
   # Get function body.
@@ -692,6 +802,9 @@ null.pos <- function() {
 
 # .ddg.is.call.to returns TRUE if the parsed expression passed
 # in is a call to the specified function.
+#
+# parsed.expr - a parse tree
+# func.name - the name of a function
 
 .ddg.is.call.to <- function(parsed.expr, func.name) {
   # Check if a function call.
@@ -706,6 +819,9 @@ null.pos <- function() {
 
 # .ddg.has.call.to returns TRUE if the parsed expression passed
 # in contains a call to the specified function.
+#
+# parsed.expr - a parse tree
+# func.name - the name of a function
 
 .ddg.has.call.to <- function(parsed.expr, func.name) {
   # Base case.
@@ -727,6 +843,8 @@ null.pos <- function() {
 
 # .ddg.is.call.to.ddg.function returns TRUE if the parsed expression
 # passed in is a call to a ddg function.
+#
+# parsed.expr - a parse tree
 
 .ddg.is.call.to.ddg.function <- function(parsed.expr) {
   # Check if a function call.
@@ -739,18 +857,30 @@ null.pos <- function() {
   return (FALSE)
 }
 
+# Returns true if the statement contains a call to a function that read from a file
+#
+# parsed.statement - a parse tree
+#
 .ddg.reads.file <- function (parsed.statement) {
   .ddg.file.read.functions.df <- .ddg.get (".ddg.file.read.functions.df")
   reading.functions <- .ddg.file.read.functions.df$function.names
   return (TRUE %in% (lapply (reading.functions, function(fun.name) {return (.ddg.has.call.to(parsed.statement, fun.name))})))
 }
 
+# Returns true if the statement contains a call to a function that writes to a file
+#
+# parsed.statement - a parse tree
+#
 .ddg.writes.file <- function (parsed.statement) {
   .ddg.file.write.functions.df <- .ddg.get (".ddg.file.write.functions.df")
   writing.functions <- .ddg.file.write.functions.df$function.names
   return (TRUE %in% (lapply (writing.functions, function(fun.name) {return (.ddg.has.call.to(parsed.statement, fun.name))})))
 }
 
+# Returns true if the statement contains a call to a function that creates a graphics object
+#
+# parsed.statement - a parse tree
+#
 .ddg.creates.graphics <- function (parsed.statement) {
   .ddg.graphics.functions.df <- .ddg.get (".ddg.graphics.functions.df")
   graphics.functions <- .ddg.graphics.functions.df$function.names

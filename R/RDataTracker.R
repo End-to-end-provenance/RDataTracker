@@ -1920,8 +1920,6 @@ ddg.MAX_HIST_LINES <- 2^14
 	new.vars.set$first.writer <- ifelse(new.vars.set$first.writer == size + 1, size*2 + 1, new.vars.set$first.writer)
 	new.vars.set$possible.first.writer <- ifelse(new.vars.set$possible.first.writer == size + 1, size*2 + 1, new.vars.set$possible.first.writer)
 
-  print(".ddg.double.vars.set returning")
-  print(new.vars.set)
 	return(new.vars.set)
 }
 
@@ -2177,7 +2175,7 @@ ddg.MAX_HIST_LINES <- 2^14
     #print(paste("Checking ", vars.set$variable[i]))
     if (vars.set$possible.last.writer[i] > vars.set$last.writer[i]) {
       value <- tryCatch(eval(parse(text=vars.set$variable[i]), environment),
-          error = function(e) {print(e)}
+          error = function(e) {NULL}
       )
 # Only create the node and edge if we were successful in
 # looking up the value.

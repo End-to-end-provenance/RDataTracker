@@ -220,39 +220,6 @@
       </fileset>
     </replaceregexp>
 
-    <!-- Delete all script occurrences  -->
-    <replaceregexp flags="g">
-      <regexp pattern='(( Script=)("[0-9NA]*"))' />
-      <substitution expression=""/>
-      <fileset dir="${local_dir}">
-        <patternset id="local_files">
-          <include name="*.local" />
-        </patternset>
-      </fileset>
-    </replaceregexp>
-
-    <!-- Delete all line occurrences  -->
-    <replaceregexp flags="g">
-      <regexp pattern='(( Line=)("[0-9NA]*"))' />
-      <substitution expression=""/>
-      <fileset dir="${local_dir}">
-        <patternset id="local_files">
-          <include name="*.local" />
-        </patternset>
-      </fileset>
-    </replaceregexp>
-
-    <!-- Delete all pos occurrences  -->
-    <replaceregexp flags="g">
-      <regexp pattern='(( Pos=)("[0-9NA,]*"))' />
-      <substitution expression=""/>
-      <fileset dir="${local_dir}">
-        <patternset id="local_files">
-          <include name="*.local" />
-        </patternset>
-      </fileset>
-    </replaceregexp>
-
     <!-- Replace local file paths with [DIR] -->
     <replaceregexp flags="g">
       <regexp pattern="${FILE.basedir}/${dir}" />
