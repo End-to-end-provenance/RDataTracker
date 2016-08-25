@@ -707,18 +707,18 @@ ddg.MAX_HIST_LINES <- 2^14
     jstr <- paste("\n\"p", id, "\" : {\n\"rdt:name\" : \"", pname, "\",\n\"rdt:type\" : \"", ptype, 
         "\",\n\"rdt:elapsedTime\" : \"", ptime, "\",\n\"rdt:scriptNum\" : \"", snum, 
         "\",\n\"rdt:startLine\" : \"", pos@startLine, "\"", 
-        "\",\n\"rdt:startCol\" : \"", pos@startCol, "\"", 
-        "\",\n\"rdt:endLine\" : \"", pos@endLine, "\"", 
-        "\",\n\"rdt:endCol\" : \"", pos@endCol, "\"", 
+        ",\n\"rdt:startCol\" : \"", pos@startCol, "\"", 
+        ",\n\"rdt:endLine\" : \"", pos@endLine, "\"", 
+        ",\n\"rdt:endCol\" : \"", pos@endCol, "\"", 
         "\n}", sep="")
   }
   else {
     jstr <- paste("\n\"p", id, "\" : {\n\"rdt:name\" : \"", pname, "\",\n\"rdt:type\" : \"", ptype, 
         "\",\n\"rdt:elapsedTime\" : \"", ptime, "\",\n\"rdt:scriptNum\" : \"", snum, 
         "\",\n\"rdt:startLine\" : \"NA\"", 
-        "\",\n\"rdt:startCol\" : \"NA\"", 
-        "\",\n\"rdt:endLine\" : \"NA\"", 
-        "\",\n\"rdt:endLine\" : \"NA\"", 
+        ",\n\"rdt:startCol\" : \"NA\"", 
+        ",\n\"rdt:endLine\" : \"NA\"", 
+        ",\n\"rdt:endCol\" : \"NA\"", 
         "\n}", sep="")
   }
 
