@@ -5401,11 +5401,12 @@ ddg.source <- function (file,  ddgdir = NULL, local = FALSE, echo = verbose, pri
 # ddg.display loads & displays the current DDG.
 
 ddg.display <- function () {
-  if (.ddg.is.set("ddg.path") & file.exists(paste(.ddg.path(), "/ddg.txt", sep=""))) {
-    .ddg.loadDDG(.ddg.path())
-  } else {
-    print("DDG not available")
-  }
+  #if (.ddg.is.set("ddg.path") & file.exists(paste(.ddg.path(), "/ddg.txt", sep=""))) {
+  #  .ddg.loadDDG(.ddg.path())
+  #} else {
+  #  print("DDG not available")
+  #}
+  .ddg.loadDDG("") # empty string we don't care
 }
 
 # ddg.debug.lib.on turns on debugging of DDG construction.
