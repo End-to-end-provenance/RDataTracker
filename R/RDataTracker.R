@@ -676,7 +676,11 @@ ddg.MAX_HIST_LINES <- 2^14
 
   environ <- paste(environ, .ddg.json.nv("rdt:script", ddg.r.script.path), sep="")
 
-  environ <- paste(environ, "\"rdt:sourcedScripts\" : ", sourced.scripts, sep="")
+  if(sourced.scripts==""){
+    environ <- paste(environ, .ddg.json.nv("rdt:sourcedScripts", sourced.scripts), sep="")
+  }else{
+    environ <- paste(environ, "\"rdt:sourcedScripts\" : ", sourced.scripts, sep="")
+  }
 
   environ <- paste(environ, .ddg.json.nv("rdt:scriptTimeStamp", script.timestamp), sep="")
 
