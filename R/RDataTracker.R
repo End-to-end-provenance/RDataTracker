@@ -4011,7 +4011,8 @@ ddg.MAX_HIST_LINES <- 2^14
 #  ddgexplorer_path<- paste(.libPaths()[index],jar.path,sep = "")
 #  ddgtxt.path<- paste(ddg.folder,"/ddg.txt",sep = "")
 #  system(paste("java -jar ", ddgexplorer_path, ddgtxt.path, sep = " "), wait = FALSE)
-  browseURL("http://camflow.org/demo")
+  ddg.json <- .ddg.json.current()
+  browseURL(paste("http://camflow.org/demo?provenance=", ddg.json, sep="")
 
 #   if(Sys.info()['sysname']!="Windows"){
 # 		system(paste("java -jar ",ddgexplorer_path, ddgtxt.path,'&',sep = " "))
