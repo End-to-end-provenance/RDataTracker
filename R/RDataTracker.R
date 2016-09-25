@@ -102,6 +102,10 @@ ddg.MAX_HIST_LINES <- 2^14
   return(paste(.ddg.path(), "/scripts", sep=""))
 }
 
+.ddg.save.debug <- function() {
+  return(.ddg.get("ddg.save.debug"))
+}
+
 .ddg.dnum <- function() {
   return (.ddg.get("ddg.dnum"))
 }
@@ -265,12 +269,6 @@ ddg.MAX_HIST_LINES <- 2^14
   .ddg.set("ddg.used", paste(text, ..., sep=""))
 }
 
-.ddg.append.line <- function(line) {
-  script <- .ddg.get("ddg.annotated.script")
-  .ddg.set("ddg.annotated.script", append(script, line))
-}
-
-
 .ddg.add.rows <- function(df, new.rows) {
   table <- .ddg.get(df)
   .ddg.set(df, rbind(table, new.rows))
@@ -365,10 +363,6 @@ ddg.MAX_HIST_LINES <- 2^14
   .ddg.set('ddg.wasGeneratedBy', "")
   .ddg.set('ddg.used', "")
 
-  # Create annotated script string. This string is written to file
-  # when ddg.save is called.
-  .ddg.set("ddg.annotated.script", NULL)
-
   # Used to control debugging output.  If already defined, don't
   # change its value.
 	if (!.ddg.is.set("ddg.debug.lib")) .ddg.set("ddg.debug.lib", FALSE)
@@ -455,6 +449,10 @@ ddg.MAX_HIST_LINES <- 2^14
   
   # Table of script, line & parsed command numbers
   .ddg.set(".ddg.source.parsed", NULL)
+
+  # Save debug files on debug directory
+  .ddg.set("ddg.save.debug", FALSE)
+  
 }
 
 # .ddg.set.history provides a wrapper to change the number of
@@ -2649,6 +2647,21 @@ ddg.MAX_HIST_LINES <- 2^14
   return (cmds)
 }
 
+# .ddg.save.annotated.script saves a copy of the annotated script to
+# the debug directory.
+
+.ddg.save.annotated.script <- function(cmds, script.name) {
+    for (i in 1:length(cmds)) {
+    expr <- cmds[[i]]@annotated
+    line <- paste(deparse(expr[[1]]), collapse="\n")
+    if (i == 1) script <- line else script <- append(script, line)
+  }
+
+  fileout <- file(paste(.ddg.path.debug(), "/annotated-", script.name, sep=""))
+  write(script, fileout)
+  close(fileout)
+}
+
 # .ddg.parse.commands takes as input a list of parsed expressions from an R script
 # and creates DDG nodes for each command. If environ is an
 # environment, it executes the commands in that environment
@@ -2695,6 +2708,10 @@ ddg.MAX_HIST_LINES <- 2^14
   # Gather all the information that we need about the statements
   if (is.null(cmds)) {
     cmds <- .ddg.create.DDGStatements (exprs, script.name, script.num, annotate.functions)
+
+    if (.ddg.save.debug()) {
+      .ddg.save.annotated.script(cmds, script.name)
+    }
   }
   num.cmds <- length(cmds)
   
@@ -4099,6 +4116,52 @@ ddg.MAX_HIST_LINES <- 2^14
   r.script.path
 }
 
+# .ddg.save.debug.files saves debug files to the debug directory.
+
+.ddg.save.debug.files <- function() {
+  # Save initial environment table to file.
+  fileout <- paste(.ddg.path.debug(), "/initial-environment.csv", sep="")
+  ddg.initial.env <- .ddg.initial.env()
+  write.csv(ddg.initial.env, fileout, row.names=FALSE)
+  
+  # Save procedure nodes table to file.
+  fileout <- paste(.ddg.path.debug(), "/procedure-nodes.csv", sep="")
+  ddg.proc.nodes <- .ddg.proc.nodes()
+  ddg.proc.nodes <- ddg.proc.nodes[ddg.proc.nodes$ddg.num > 0, ]
+  write.csv(ddg.proc.nodes, fileout, row.names=FALSE)
+  
+  # Save data nodes table to file.
+  fileout <- paste(.ddg.path.debug(), "/data-nodes.csv", sep="")
+  ddg.data.nodes <- .ddg.data.nodes()
+  ddg.data.nodes2 <- ddg.data.nodes[ddg.data.nodes$ddg.num > 0, ]
+  write.csv(ddg.data.nodes2, fileout, row.names=FALSE)
+  
+  # Save edges table to file.
+  fileout <- paste(.ddg.path.debug(), "/edges.csv", sep="")
+  ddg.edges <- .ddg.edges()
+  ddg.edges2 <- ddg.edges[ddg.edges$ddg.num > 0, ]
+  write.csv(ddg.edges2, fileout, row.names=FALSE)
+  
+  # Save function return table to file.
+  fileout <- paste(.ddg.path.debug(), "/function-returns.csv", sep="")
+  ddg.returns <- .ddg.get(".ddg.return.values")
+  ddg.returns2 <- ddg.returns[ddg.returns$return.node.id > 0, ]
+  write.csv(ddg.returns2, fileout, row.names=FALSE)
+  
+  # Save if script is sourced.
+  if (.ddg.is.sourced()) {
+    # Save sourced script table to file.
+    fileout <- paste(.ddg.path.debug(), "/sourced-scripts.csv", sep="")
+    ddg.sourced.scripts <- .ddg.get(".ddg.sourced.scripts")
+    ddg.sourced.scripts2 <- ddg.sourced.scripts[ddg.sourced.scripts$snum >= 0, ]
+    write.csv(ddg.sourced.scripts2, fileout, row.names=FALSE)
+    
+    # Save data object table to file.
+    fileout <- paste(.ddg.path.debug(), "/data-objects.csv", sep="")
+    ddg.data.objects <- .ddg.data.objects()
+    write.csv(ddg.data.objects, fileout, row.names=FALSE)
+  }
+}
 
 #--------------------USER FUNCTIONS-----------------------#
 
@@ -4962,7 +5025,7 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
   .ddg.set("prev.device", dev.cur())
   
   if (interactive() && .ddg.enable.console()) {
-    ddg.history.file <- paste(.ddg.path.debug(), "/.ddghistory", sep="")
+    ddg.history.file <- paste(.ddg.path.data(), "/.ddghistory", sep="")
     .ddg.set(".ddg.history.file", ddg.history.file)
     
     # Empty file if it already exists, do the same with tmp file.
@@ -5012,8 +5075,9 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
 #   into a snapshot, not the size of the resulting snapshot.
 # debug (optional) - If TRUE, enable script debugging. This has the
 #   same effect as inserting ddg.breakpoint() at the top of the script.
+# save.debug (optional) - If TRUE, save debug files to debug directory.
 
-ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = NULL, enable.console = TRUE, annotate.functions = TRUE, max.snapshot.size = 100, debug = FALSE, display = FALSE) {
+ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = NULL, enable.console = TRUE, annotate.functions = TRUE, max.snapshot.size = 100, debug = FALSE, save.debug = FALSE, display = FALSE) {
 
   # Initiate ddg.
   ddg.init(r.script.path, ddgdir, overwrite, enable.console, max.snapshot.size)
@@ -5028,8 +5092,11 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
   # Set .ddg.is.sourced to TRUE if script provided.
   if (!is.null(r.script.path)) .ddg.set(".ddg.is.sourced", TRUE)
   
-  # Set breakpoint if debug is TRUE
+  # Set breakpoint if debug is TRUE.
   if (debug) ddg.breakpoint()
+
+  # Save debug files to debug directory.
+  if (save.debug) .ddg.set("ddg.save.debug", TRUE)
 
   # If an R error is generated, get the error message and close
   # the DDG.
@@ -5063,10 +5130,12 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
 # the procedure nodes, data nodes, and function return tables
 # to the DDG directory.
 
-# r.script.path (optional) - Path to the R script
+# r.script.path (optional) - Path to the R script.
+# save.debug (optional) - If TRUE, save debug files to debug directory.
+#   Used in console mode.
 # quit (optional) - If TRUE, remove all DDG files from memory.
 
-ddg.save <- function(r.script.path=NULL, quit=FALSE) {
+ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE) {
   
   if (!.ddg.is.init()) return(invisible())
   
@@ -5094,61 +5163,20 @@ ddg.save <- function(r.script.path=NULL, quit=FALSE) {
   .ddg.json.write()
   if (interactive()) print(paste("Saving ddg.json in ", .ddg.path(), sep=""))
   
-  # Save initial environment table to file.
-  fileout <- paste(.ddg.path.debug(), "/inenv.csv", sep="")
-  ddg.initial.env <- .ddg.initial.env()
-  write.csv(ddg.initial.env, fileout, row.names=FALSE)
-  
-  # Save procedure nodes table to file.
-  fileout <- paste(.ddg.path.debug(), "/pnodes.csv", sep="")
-  ddg.proc.nodes <- .ddg.proc.nodes()
-  ddg.proc.nodes <- ddg.proc.nodes[ddg.proc.nodes$ddg.num > 0, ]
-  write.csv(ddg.proc.nodes, fileout, row.names=FALSE)
-  
-  # Save data nodes table to file.
-  fileout <- paste(.ddg.path.debug(), "/dnodes.csv", sep="")
-  ddg.data.nodes <- .ddg.data.nodes()
-  ddg.data.nodes2 <- ddg.data.nodes[ddg.data.nodes$ddg.num > 0, ]
-  write.csv(ddg.data.nodes2, fileout, row.names=FALSE)
-  
-  # Save edges table to file.
-  fileout <- paste(.ddg.path.debug(), "/edges.csv", sep="")
-  ddg.edges <- .ddg.edges()
-  ddg.edges2 <- ddg.edges[ddg.edges$ddg.num > 0, ]
-  write.csv(ddg.edges2, fileout, row.names=FALSE)
-  
-  # Save the function return table to file.
-  fileout <- paste(.ddg.path.debug(), "/returns.csv", sep="")
-  ddg.returns <- .ddg.get(".ddg.return.values")
-  ddg.returns2 <- ddg.returns[ddg.returns$return.node.id > 0, ]
-  write.csv(ddg.returns2, fileout, row.names=FALSE)
-  
-  # Save if script is sourced.
-  if (.ddg.is.sourced()) {
-    # Save sourced script table to file.
-    fileout <- paste(.ddg.path.debug(), "/sourced-scripts.csv", sep="")
-    ddg.sourced.scripts <- .ddg.get(".ddg.sourced.scripts")
-    ddg.sourced.scripts2 <- ddg.sourced.scripts[ddg.sourced.scripts$snum >= 0, ]
-    write.csv(ddg.sourced.scripts2, fileout, row.names=FALSE)
-    
-    # Save sourced scripts (if any). First row is main script.
+  # Save sourced scripts (if any). First row is main script.
+  ddg.sourced.scripts <- .ddg.get(".ddg.sourced.scripts")
+  if (!is.null(ddg.sourced.scripts)) {
     if (nrow(ddg.sourced.scripts) > 1 ) {
       for (i in 1:nrow(ddg.sourced.scripts)) {
         sname <- ddg.sourced.scripts[i, "sname"]
         file.copy(sname, paste(.ddg.path.scripts(), basename(sname), sep="/"))
       }
     }
-    
-    # Save annotated script to file.
-    fileout <- file(paste(.ddg.path.scripts(), "/annotated-script.r", sep=""))
-    ddg.annotated.script <- .ddg.get("ddg.annotated.script")
-    write(ddg.annotated.script, fileout)
-    close(fileout)
-    
-    # Save data object table to file.
-    fileout <- paste(.ddg.path.debug(), "/dobjects.csv", sep="")
-    ddg.data.objects <- .ddg.data.objects()
-    write.csv(ddg.data.objects, fileout, row.names=FALSE)
+  }
+  
+  # Save debug files to debug directory.
+  if (save.debug | .ddg.save.debug()) {
+    .ddg.save.debug.files()
   }
   
   # By convention, this is the final call to ddg.save.
@@ -5381,7 +5409,7 @@ ddg.source <- function (file,  ddgdir = NULL, local = FALSE, echo = verbose, pri
     # Parse the commands into a console node.
     .ddg.parse.commands(exprs, sname, snum, environ=envir, ignore.patterns=ignores, node.name=sname,
         echo = echo, print.eval = print.eval, max.deparse.length = max.deparse.length,
-        run.commands = TRUE, annotate.functions)
+        run.commands = TRUE, annotate.functions = annotate.functions)
 
 
     # Save the DDG among other things, but don't return any
@@ -5520,7 +5548,7 @@ ddg.flush.ddg <- function(ddg.path=NULL) {
   if (ddg.path != getwd()) {
     unlink(paste(ddg.path, "*.*", sep="/"))
     unlink(paste(ddg.path.data, "*.*", sep="/"))
-    unlink(paste(ddg.path.debug, ".ddghistory", sep="/"))
+    unlink(paste(ddg.path.data, ".ddghistory", sep="/"))
     unlink(paste(ddg.path.debug, "*.*", sep="/"))
     unlink(paste(ddg.path.scripts, "*.*", sep="/"))
   }
