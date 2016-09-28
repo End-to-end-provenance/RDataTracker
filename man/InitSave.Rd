@@ -13,9 +13,9 @@
 \usage{
 ddg.init(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enable.console = TRUE, 
     max.snapshot.size = 100) 
-ddg.save(r.script.path = NULL, quit=FALSE)
+ddg.save(r.script.path = NULL, save.debug=FALSE, quit=FALSE)
 ddg.run(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = NULL, enable.console = TRUE, 
-    annotate.functions = TRUE, max.snapshot.size = 100, debug = FALSE, display = FALSE)
+    annotate.functions = TRUE, max.snapshot.size = 100, debug = FALSE, save.debug=FALSE, display = FALSE)
 ddg.annotate.on(fnames = NULL)
 ddg.annotate.off(fnames = NULL)
 ddg.console.on()
@@ -35,6 +35,7 @@ ddg.display()
     files.  If max.snapshot.size is -1, there is no limit. If max.snapshot.size is 0, snapshot nodes
     are created but no snapshot files are saved. }
   \item{debug}{ If TRUE, enable script debugging. }
+  \item{save.debug}{ If TRUE, save debug files to debug directory. }
   \item{display}{ If TRUE, display the DDG when the R script completes.}
   \item{f}{ A function to run.  Data provenance is collected within the function. }
   \item{fnames}{ A list of one or more function names. }
@@ -59,7 +60,8 @@ ddg.display()
   single call to ddg.init, where each call will extend the previous provenance graph, overwriting the file
   containing the previous version. When the final save procedure is wanted, the parameter "quit" can 
   be set to TRUE, causing all temporary files in memory to be cleared out.  While not strictly 
-  necessary, this prevents issues when creating multiple DDGs from the same script.
+  necessary, this prevents issues when creating multiple DDGs from the same script. If save.debug
+  is set to TRUE, debug files are saved to the debug directory.
   
   ddg.run provides a short cut for ddg.init...ddg.save.  It initializes the provenance graph,
   calls the script or function provided as a parameter, and then saves the provenance graph.  
@@ -70,9 +72,10 @@ ddg.display()
   captured in an Exception node in the provenance graph. If annotate.functions is set to TRUE, 
   ddg.function, ddg.eval, and ddg.return.value are added to each function definition before the
   script is executed and these changes are saved to the file annotated-script.r in the ddg directory. 
-  ddg.annotate.on and ddg.annotate.off may be used to limit the functions 
-  that will be annotated or not annotated, respectively. If break is set to TRUE, script debugging is
-  enabled. This has the same effect as inserting ddg.breakpoint() at the top of the script. If display is set to   TRUE, DDG is displayed after the R script finished executing.
+  ddg.annotate.on and ddg.annotate.off may be used to limit the functions that will be annotated or not annotated, 
+  respectively. If break is set to TRUE, script debugging is enabled. This has the same effect as inserting ddg.breakpoint() 
+  at the top of the script. If display is set to TRUE, the DDG is displayed after the R script finished executing.
+  If save.debug is set to TRUE, debug files are saved to the debug directory.
   
   ddg.console.on and ddg.console.off toggle the console parameter for DDG creation. 
   When the console is enabled, all commands sent to the R console are captured as provenance 
