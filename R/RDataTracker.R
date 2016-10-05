@@ -5810,16 +5810,31 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
   
   if(incremental == TRUE){
     .ddg.set("incremental","True")
-    #still needs to change this part of code to multithread
-    .ddg.start.server(.ddg.get("incremental"))
-    Sys.sleep(6)
-    .ddg.set("con",socketConnection(host= "localhost", port = 6096, blocking = FALSE,
-                                    server=FALSE, open="w"))
-    .ddg.output.String(r.script.path)
-    .ddg.output.String(.ddg.get("ddg.start.time"))
-    .ddg.output.String("R")
-    .ddg.output.String(paste(.ddg.txt.environ(),"-1",sep = ""))
+    tryCatch(
+      {
+        if(!isOpen(con<- socketConnection(server = FALSE, port = 6096))){
+          .ddg.output.String(r.script.path)
+          .ddg.output.String(.ddg.get("ddg.start.time"))
+          .ddg.output.String("R")
+          .ddg.output.String(paste(.ddg.txt.environ(),"-1",sep = ""))
+        }
+      }, 
+      warning = function(w){
+        .ddg.start.server(.ddg.get("incremental"))
+        Sys.sleep(6)
+        .ddg.set("con",socketConnection(host= "localhost", port = 6096, blocking = FALSE,
+                                        server=FALSE, open="w"))
+      }, 
+      finally = {
+        .ddg.output.String(r.script.path)
+        .ddg.output.String(.ddg.get("ddg.start.time"))
+        .ddg.output.String("R")
+        .ddg.output.String(paste(.ddg.txt.environ(),"-1",sep = ""))
+      }
+    )
   }
+  
+  
   
   # Create ddg directory.
   # dir.create(.ddg.path(), showWarnings = FALSE)
