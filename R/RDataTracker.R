@@ -2565,7 +2565,7 @@ ddg.MAX_HIST_LINES <- 2^14
   line <- "D"
   while (line == "D") {
     line <- toupper(readline())
-    if (line == "D") .ddg.loadDDG(.ddg.path())
+    if (line == "D") .ddg.loadDDG()
     else if (line == "") .ddg.set("ddg.break", TRUE)
     else if (line == "C") .ddg.set("ddg.break", FALSE)
     else if (line == "Q") .ddg.set("ddg.break.ignore", TRUE)
@@ -4008,20 +4008,9 @@ ddg.MAX_HIST_LINES <- 2^14
 
 # .ddg.loadDDG displays the DDG automatically.
 
-.ddg.loadDDG<- function(ddg.folder){
-#  jar.path<- "/RDataTracker/java/DDGExplorer.jar"
-#  check.library.paths<- file.exists(paste(.libPaths(),jar.path,sep = ""))
-#  index<- min(which(check.library.paths == TRUE))
-#  ddgexplorer_path<- paste(.libPaths()[index],jar.path,sep = "")
-#  ddgtxt.path<- paste(ddg.folder,"/ddg.txt",sep = "")
-#  system(paste("java -jar ", ddgexplorer_path, ddgtxt.path, sep = " "), wait = FALSE)
+.ddg.loadDDG<- function(){
   json <- .ddg.json.current()
   CamFlowVisualiser(json)
-#   if(Sys.info()['sysname']!="Windows"){
-# 		system(paste("java -jar ",ddgexplorer_path, ddgtxt.path,'&',sep = " "))
-# 	}else{
-# 		system(paste("START java -jar ",ddgexplorer_path, ddgtxt.path,sep = " "))
-# 	}
 }
 
 # .ddg.markdown takes a Rmd file and extracts the R code and text through
@@ -5055,9 +5044,10 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
         ddg.exception.out("error.msg", e.str, "tryCatch")
       },
       finally={
+        if(display == TRUE){
+			    .ddg.loadDDG()
+        }
         ddg.save(r.script.path)
-		    if(display == TRUE)
-			    .ddg.loadDDG(.ddg.path())
       }
   )
   invisible()
@@ -5404,12 +5394,7 @@ ddg.source <- function (file,  ddgdir = NULL, local = FALSE, echo = verbose, pri
 # ddg.display loads & displays the current DDG.
 
 ddg.display <- function () {
-  #if (.ddg.is.set("ddg.path") & file.exists(paste(.ddg.path(), "/ddg.txt", sep=""))) {
-  #  .ddg.loadDDG(.ddg.path())
-  #} else {
-  #  print("DDG not available")
-  #}
-  .ddg.loadDDG("") # empty string we don't care
+  .ddg.loadDDG() # empty string we don't care
 }
 
 # ddg.debug.lib.on turns on debugging of DDG construction.
