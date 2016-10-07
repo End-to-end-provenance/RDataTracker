@@ -5038,7 +5038,12 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
       },
       finally={
         ddg.save(r.script.path)
-        ddg.display()
+        if(display==TRUE){
+          disp <- ddg.display()
+          return(disp)
+        }else{
+          invisible()
+        }
       }
   )
 }
