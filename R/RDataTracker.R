@@ -2565,7 +2565,7 @@ ddg.MAX_HIST_LINES <- 2^14
   line <- "D"
   while (line == "D") {
     line <- toupper(readline())
-    if (line == "D") .ddg.loadDDG()
+    if (line == "D") ddg.display()
     else if (line == "") .ddg.set("ddg.break", TRUE)
     else if (line == "C") .ddg.set("ddg.break", FALSE)
     else if (line == "Q") .ddg.set("ddg.break.ignore", TRUE)
@@ -4006,13 +4006,6 @@ ddg.MAX_HIST_LINES <- 2^14
   }
 }
 
-# .ddg.loadDDG displays the DDG automatically.
-
-.ddg.loadDDG<- function(){
-  json <- .ddg.json.current()
-  CamFlowVisualiser(json)
-}
-
 # .ddg.markdown takes a Rmd file and extracts the R code and text through
 # the purl function in the knitr library. It then annotates the R script
 # to insert start and finish nodes based on the chunks the user already
@@ -5044,13 +5037,10 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
         ddg.exception.out("error.msg", e.str, "tryCatch")
       },
       finally={
-        if(display == TRUE){
-			    .ddg.loadDDG()
-        }
         ddg.save(r.script.path)
+        ddg.display()
       }
   )
-  invisible()
 }
 
 # ddg.save inserts attribute information and the number of
@@ -5394,7 +5384,8 @@ ddg.source <- function (file,  ddgdir = NULL, local = FALSE, echo = verbose, pri
 # ddg.display loads & displays the current DDG.
 
 ddg.display <- function () {
-  .ddg.loadDDG() # empty string we don't care
+  json <- .ddg.json.current()
+  CamFlowVisualiser(json)
 }
 
 # ddg.debug.lib.on turns on debugging of DDG construction.
