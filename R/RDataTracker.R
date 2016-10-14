@@ -5416,8 +5416,17 @@ ddg.source <- function (file,  ddgdir = NULL, local = FALSE, echo = verbose, pri
 # ddg.display loads & displays the current DDG.
 
 ddg.display <- function () {
-  json <- .ddg.json.current()
-  CamFlowVisualiser(json)
+  if(is.element('CamFlow', installed.packages()[,1])){ # did we install the CamFlow visualiser?
+    json <- .ddg.json.current()
+    CamFlowVisualiser(json)
+  }else{ # if not default to ddg-explorer
+    jar.path<- "/RDataTracker/java/DDGExplorer.jar"
+    check.library.paths<- file.exists(paste(.libPaths(),jar.path,sep = ""))
+    index<- min(which(check.library.paths == TRUE))
+    ddgexplorer_path<- paste(.libPaths()[index],jar.path,sep = "")
+    ddgtxt.path<- paste(.ddg.path() ,"/ddg.txt",sep = "")
+    system(paste("java -jar ", ddgexplorer_path, ddgtxt.path, sep = " "), wait = FALSE)
+  }
 }
 
 # ddg.debug.lib.on turns on debugging of DDG construction.
