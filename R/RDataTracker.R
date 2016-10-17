@@ -5094,6 +5094,9 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
   
   # Set breakpoint if debug is TRUE.
   if (debug) ddg.breakpoint()
+  
+  #Redirects standard output from console to a txt file, saves it within the ddg folder
+  sink(file = paste(.ddg.path(), "/standardOutputFromConsole.txt", sep = ""), type = "output")
 
   # Save debug files to debug directory.
   if (save.debug) .ddg.set("ddg.save.debug", TRUE)
@@ -5155,6 +5158,10 @@ ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE) {
   # Delete temporary files.
   # .ddg.delete.temp()
   
+  #Redirects remaining standard output back from txt file to console
+  sink()
+  
+  unlink(paste(.ddg.path(), "/output.txt", sep = ""))
   # Save ddg.txt to file.
   .ddg.txt.write()
   if (interactive()) print(paste("Saving ddg.txt in ", .ddg.path(), sep=""))
