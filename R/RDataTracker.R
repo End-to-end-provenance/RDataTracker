@@ -2590,7 +2590,7 @@ ddg.MAX_HIST_LINES <- 2^14
       cmds <- vector("list", (length(exprs)))
       for (i in 1:length(exprs)) {
         expr <- as.expression(exprs[i])
-        cmds[i] <- .ddg.construct.DDGStatement(expr, NA, script.name, script.num, NA,
+        cmds[[i]] <- .ddg.construct.DDGStatement(expr, NA, script.name, script.num, NA,
             annotate.functions, parseData)
       }
       return(cmds)
@@ -2626,7 +2626,7 @@ ddg.MAX_HIST_LINES <- 2^14
     expr <- as.expression(exprs[i])
     next.expr.pos <- new (Class = "DDGStatementPos", 
         non.comment.parse.data[next.parseData, ])
-    cmds[next.cmd] <- .ddg.construct.DDGStatement(expr, next.expr.pos, script.name, script.num, breakpoints,
+    cmds[[next.cmd]] <- .ddg.construct.DDGStatement(expr, next.expr.pos, script.name, script.num, breakpoints,
         annotate.functions, parseData)
     next.cmd <- next.cmd + 1
     
