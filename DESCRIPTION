@@ -1,8 +1,8 @@
 Package: RDataTracker
 Title: Data Provenance Collector
-Version: 2.24.0
+Version: 2.24.1
 CheckpointVersion: 1.000
-Date: 2016-07-07
+Date: 2016-09-25
 Authors@R: c( person( "Emery", "Boose", role = c("aut", "cre"),
                       email = "boose@fas.harvard.edu"),
               person("Barbara", "Lerner", role = c("aut"),
@@ -20,4 +20,4 @@ License: GPL-3 | file LICENSE
 SystemRequirements:  DDG Explorer
 URL: http://harvardforest.fas.harvard.edu:8080/exist/xquery/data.xq?id=hf091
 BugReports: https://github.com/blernermhc/RDataTracker/issues
-Imports: gtools, XML, knitr, stringr, utils, grDevices, devtools
+Imports: gtools, XML, knitr, stringr, utils, devtools, methods

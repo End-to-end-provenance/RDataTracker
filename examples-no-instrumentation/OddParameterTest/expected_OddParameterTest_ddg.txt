@@ -1,165 +1,152 @@
 Architecture="x86_64"
-OperatingSystem="windows"
+OperatingSystem="unix"
 Language="R"
-LanguageVersion="R version 3.2.5 (2016-04-14)"
-RDataTrackerVersion="2.24.2"
+LanguageVersion="R version 3.2.3 (2015-12-10)"
+RDataTrackerVersion="2.24.1"
 Script="[DIR]/OddParameterTest.R"
-ProcessFileTimestamp="2015-11-13T10.09.16EST"
+SourcedScripts=""
+ProcessFileTimestamp="2016-07-21T15.34.18EDT"
 WorkingDirectory="[DIR]"
 DDGDirectory="[DIR]/ddg"
-DateTime="2016-07-07T13.53.27EDT"
-InstalledPackages="RDataTracker 2.24.2"
-50
-Start p1 "1-OddParameterTest.R" Value="OddParameterTest.R" Time="0" Script="0" Line="NA";
-Operation p2 "2-f <- function(x) {    return(1)}" Value="f <- function(x) {    return(1)}" Time="0" Script="0" Line="5";
+DateTime="2016-08-17T13.49.38EDT"
+InstalledPackages="RDataTracker 2.24.1"
+43
+Start p1 "1-OddParameterTest.R" Value="OddParameterTest.R" Time="0.0419999999999999" Script="NA" Pos="NA";
+Operation p2 "2-f <- function(x) {    return(1)}" Value="f <- function(x) {    return(1)}" Time="0.0429999999999999" Script="0" Pos="5,1,7,1";
 CF p1 p2
 Data d1 "1-f" Value="#ddg.function";
 DF p2 d1
-Operation p3 "3-f3 <- function() {    stop(\"f3 stopped execution\")}" Value="f3 <- function() {    stop(\"f3 stopped execution\")}" Time="0.02" Script="0" Line="9";
+Operation p3 "3-f3 <- function() {    stop(\"f3 stopped execution\")}" Value="f3 <- function() {    stop(\"f3 stopped execution\")}" Time="0.0489999999999999" Script="0" Pos="9,1,11,1";
 CF p2 p3
 Data d2 "2-f3" Value="#ddg.function";
 DF p3 d2
-Operation p4 "4-a <- 3" Value="a <- 3" Time="0.0299999999999998" Script="0" Line="13";
+Operation p4 "4-a <- 3" Value="a <- 3" Time="0.0549999999999999" Script="0" Pos="13,1,13,6";
 CF p3 p4
 Data d3 "3-a" Value="3";
 DF p4 d3
-Start p5 "5-f(a)" Value="f(a)" Time="0.0299999999999998" Script="0" Line="14";
+Start p5 "5-f(a)" Value="f(a)" Time="0.0619999999999999" Script="NA" Pos="NA";
 CF p4 p5
-Binding p6 "6-x  <-  a" Time="0.0299999999999998" Script="0" Line="14";
+Binding p6 "6-x  <-  a" Time="0.0629999999999999" Script="NA" Pos="NA";
 CF p5 p6
 DF d3 p6
 Data d4 "4-x" Value="3";
 DF p6 d4
-Operation p7 "7-f" Value="f" Time="0.0499999999999998" Script="0" Line="14";
+Operation p7 "7-f" Value="f" Time="0.072" Script="NA" Pos="NA";
 DF d1 p7
 DF d4 p7
 CF p6 p7
-Operation p8 "8-1" Value="1" Time="0.0599999999999998" Script="0" Line="14";
-CF p7 p8
 Data d5 "5-f(a) return" Value="1";
-Operation p9 "9-return (1)" Value="return (1)" Time="0.0599999999999998" Script="0" Line="14";
+Operation p8 "8-return(1)" Value="return(1)" Time="0.086" Script="0" Pos="6,9,6,17";
+CF p7 p8
+DF p8 d5
+Finish p9 "9-f(a)" Value="f(a)" Time="0.092" Script="NA" Pos="NA";
 CF p8 p9
-DF p9 d5
-Finish p10 "10-f(a)" Value="f(a)" Time="0.0799999999999998" Script="0" Line="14";
+Operation p10 "10-b <- 1/0" Value="b <- 1/0" Time="0.093" Script="0" Pos="17,1,17,8";
 CF p9 p10
-Operation p11 "11-b <- 1/0" Value="b <- 1/0" Time="0.0799999999999998" Script="0" Line="17";
-CF p10 p11
 Data d6 "6-b" Value="Inf";
-DF p11 d6
-Start p12 "12-f(b)" Value="f(b)" Time="0.0799999999999998" Script="0" Line="18";
+DF p10 d6
+Start p11 "11-f(b)" Value="f(b)" Time="0.098" Script="NA" Pos="NA";
+CF p10 p11
+Binding p12 "12-x  <-  b" Time="0.099" Script="NA" Pos="NA";
 CF p11 p12
-Binding p13 "13-x  <-  b" Time="0.0799999999999998" Script="0" Line="18";
-CF p12 p13
-DF d6 p13
+DF d6 p12
 Data d7 "7-x" Value="Inf";
-DF p13 d7
-Operation p14 "14-f" Value="f" Time="0.0899999999999999" Script="0" Line="18";
-DF d1 p14
-DF d7 p14
-CF p13 p14
-Operation p15 "15-1" Value="1" Time="0.11" Script="0" Line="18";
-CF p14 p15
+DF p12 d7
+Operation p13 "13-f" Value="f" Time="0.108" Script="NA" Pos="NA";
+DF d1 p13
+DF d7 p13
+CF p12 p13
 Data d8 "8-f(b) return" Value="1";
-Operation p16 "16-return (1)" Value="return (1)" Time="0.11" Script="0" Line="18";
+Operation p14 "14-return(1)" Value="return(1)" Time="0.12" Script="0" Pos="6,9,6,17";
+CF p13 p14
+DF p14 d8
+Finish p15 "15-f(b)" Value="f(b)" Time="0.125" Script="NA" Pos="NA";
+CF p14 p15
+Start p16 "16-f(d)" Value="f(d)" Time="0.127" Script="NA" Pos="NA";
 CF p15 p16
-DF p16 d8
-Finish p17 "17-f(b)" Value="f(b)" Time="0.11" Script="0" Line="18";
+Binding p17 "17-x  <-  d" Time="0.127" Script="NA" Pos="NA";
 CF p16 p17
-Start p18 "18-f(d)" Value="f(d)" Time="0.13" Script="0" Line="21";
+Operation p18 "18-f" Value="f" Time="0.129" Script="NA" Pos="NA";
+DF d1 p18
 CF p17 p18
-Binding p19 "19-x  <-  d" Time="0.13" Script="0" Line="21";
-CF p18 p19
-Operation p20 "20-f" Value="f" Time="0.13" Script="0" Line="21";
-DF d1 p20
-CF p19 p20
-Operation p21 "21-1" Value="1" Time="0.13" Script="0" Line="21";
-CF p20 p21
 Data d9 "9-f(d) return" Value="1";
-Operation p22 "22-return (1)" Value="return (1)" Time="0.14" Script="0" Line="21";
-CF p21 p22
-DF p22 d9
-Finish p23 "23-f(d)" Value="f(d)" Time="0.14" Script="0" Line="21";
-CF p22 p23
-Operation p24 "24-d <- 1" Value="d <- 1" Time="0.14" Script="0" Line="22";
-CF p23 p24
+Operation p19 "19-return(1)" Value="return(1)" Time="0.141" Script="0" Pos="6,9,6,17";
+CF p18 p19
+DF p19 d9
+Finish p20 "20-f(d)" Value="f(d)" Time="0.146" Script="NA" Pos="NA";
+CF p19 p20
+Operation p21 "21-d <- 1" Value="d <- 1" Time="0.147" Script="0" Pos="22,1,22,6";
+CF p20 p21
 Data d10 "10-d" Value="1";
-DF p24 d10
-Start p25 "25-f(d)" Value="f(d)" Time="0.16" Script="0" Line="23";
-CF p24 p25
-Binding p26 "26-x  <-  d" Time="0.16" Script="0" Line="23";
-CF p25 p26
-DF d10 p26
+DF p21 d10
+Start p22 "22-f(d)" Value="f(d)" Time="0.154" Script="NA" Pos="NA";
+CF p21 p22
+Binding p23 "23-x  <-  d" Time="0.154" Script="NA" Pos="NA";
+CF p22 p23
+DF d10 p23
 Data d11 "11-x" Value="1";
-DF p26 d11
-Operation p27 "27-f" Value="f" Time="0.16" Script="0" Line="23";
-DF d1 p27
-DF d11 p27
-CF p26 p27
-Operation p28 "28-1" Value="1" Time="0.17" Script="0" Line="23";
-CF p27 p28
+DF p23 d11
+Operation p24 "24-f" Value="f" Time="0.162" Script="NA" Pos="NA";
+DF d1 p24
+DF d11 p24
+CF p23 p24
 Data d12 "12-f(d) return" Value="1";
-Operation p29 "29-return (1)" Value="return (1)" Time="0.17" Script="0" Line="23";
-CF p28 p29
-DF p29 d12
-Finish p30 "30-f(d)" Value="f(d)" Time="0.19" Script="0" Line="23";
-CF p29 p30
-Operation p31 "31-d <- 6" Value="d <- 6" Time="0.19" Script="0" Line="25";
-CF p30 p31
+Operation p25 "25-return(1)" Value="return(1)" Time="0.174" Script="0" Pos="6,9,6,17";
+CF p24 p25
+DF p25 d12
+Finish p26 "26-f(d)" Value="f(d)" Time="0.178" Script="NA" Pos="NA";
+CF p25 p26
+Operation p27 "27-d <- 6" Value="d <- 6" Time="0.179" Script="0" Pos="25,1,25,6";
+CF p26 p27
 Data d13 "13-d" Value="6";
-DF p31 d13
-Start p32 "32-f(d[[2]])" Value="f(d[[2]])" Time="0.19" Script="0" Line="26";
-CF p31 p32
-Binding p33 "33-x  <-  d[[2]]" Time="0.19" Script="0" Line="26";
-CF p32 p33
-DF d13 p33
-Operation p34 "34-f" Value="f" Time="0.2" Script="0" Line="26";
-DF d1 p34
-CF p33 p34
-Operation p35 "35-1" Value="1" Time="0.2" Script="0" Line="26";
-CF p34 p35
+DF p27 d13
+Start p28 "28-f(d[[2]])" Value="f(d[[2]])" Time="0.185" Script="NA" Pos="NA";
+CF p27 p28
+Binding p29 "29-x  <-  d[[2]]" Time="0.186" Script="NA" Pos="NA";
+CF p28 p29
+DF d13 p29
+Operation p30 "30-f" Value="f" Time="0.192" Script="NA" Pos="NA";
+DF d1 p30
+CF p29 p30
 Data d14 "14-f(d[[2]]) return" Value="1";
-Operation p36 "36-return (1)" Value="return (1)" Time="0.22" Script="0" Line="26";
-CF p35 p36
-DF p36 d14
-Finish p37 "37-f(d[[2]])" Value="f(d[[2]])" Time="0.22" Script="0" Line="26";
-CF p36 p37
-Start p38 "38-f(f3)" Value="f(f3)" Time="0.22" Script="0" Line="29";
-CF p37 p38
-Binding p39 "39-x  <-  f3" Time="0.22" Script="0" Line="29";
-CF p38 p39
-DF d2 p39
+Operation p31 "31-return(1)" Value="return(1)" Time="0.201" Script="0" Pos="6,9,6,17";
+CF p30 p31
+DF p31 d14
+Finish p32 "32-f(d[[2]])" Value="f(d[[2]])" Time="0.206" Script="NA" Pos="NA";
+CF p31 p32
+Start p33 "33-f(f3)" Value="f(f3)" Time="0.207" Script="NA" Pos="NA";
+CF p32 p33
+Binding p34 "34-x  <-  f3" Time="0.208" Script="NA" Pos="NA";
+CF p33 p34
+DF d2 p34
 Data d15 "15-x" Value="#ddg.function";
-DF p39 d15
-Operation p40 "40-f" Value="f" Time="0.23" Script="0" Line="29";
-DF d1 p40
-DF d15 p40
-CF p39 p40
-Operation p41 "41-1" Value="1" Time="0.23" Script="0" Line="29";
-CF p40 p41
+DF p34 d15
+Operation p35 "35-f" Value="f" Time="0.22" Script="NA" Pos="NA";
+DF d1 p35
+DF d15 p35
+CF p34 p35
 Data d16 "16-f(f3) return" Value="1";
-Operation p42 "42-return (1)" Value="return (1)" Time="0.25" Script="0" Line="29";
-CF p41 p42
-DF p42 d16
-Finish p43 "43-f(f3)" Value="f(f3)" Time="0.25" Script="0" Line="29";
-CF p42 p43
-Start p44 "44-f(.GlobalEnv)" Value="f(.GlobalEnv)" Time="0.25" Script="0" Line="32";
-CF p43 p44
-Binding p45 "45-x  <-  .GlobalEnv" Time="0.25" Script="0" Line="32";
-CF p44 p45
-Snapshot d17 "17-x" Value="[DIR]/ddg/17-x.txt" Time="2016-07-07T13.53.27EDT";
-DF p45 d17
-Operation p46 "46-f" Value="f" Time="0.25" Script="0" Line="32";
-DF d1 p46
-DF d17 p46
-CF p45 p46
-Operation p47 "47-1" Value="1" Time="0.25" Script="0" Line="32";
-CF p46 p47
+Operation p36 "36-return(1)" Value="return(1)" Time="0.232" Script="0" Pos="6,9,6,17";
+CF p35 p36
+DF p36 d16
+Finish p37 "37-f(f3)" Value="f(f3)" Time="0.237" Script="NA" Pos="NA";
+CF p36 p37
+Start p38 "38-f(.GlobalEnv)" Value="f(.GlobalEnv)" Time="0.238" Script="NA" Pos="NA";
+CF p37 p38
+Binding p39 "39-x  <-  .GlobalEnv" Time="0.239" Script="NA" Pos="NA";
+CF p38 p39
+Snapshot d17 "17-x" Value="[DIR]/ddg/data/17-x.txt" Time="2016-08-17T13.49.38EDT";
+DF p39 d17
+Operation p40 "40-f" Value="f" Time="0.245" Script="NA" Pos="NA";
+DF d1 p40
+DF d17 p40
+CF p39 p40
 Data d18 "18-f(.GlobalEnv) return" Value="1";
-Operation p48 "48-return (1)" Value="return (1)" Time="0.27" Script="0" Line="32";
-CF p47 p48
-DF p48 d18
-Finish p49 "49-f(.GlobalEnv)" Value="f(.GlobalEnv)" Time="0.27" Script="0" Line="32";
-CF p48 p49
-Finish p50 "50-OddParameterTest.R" Value="OddParameterTest.R" Time="0.27" Script="0" Line="NA";
-CF p49 p50
+Operation p41 "41-return(1)" Value="return(1)" Time="0.258" Script="0" Pos="6,9,6,17";
+CF p40 p41
+DF p41 d18
+Finish p42 "42-f(.GlobalEnv)" Value="f(.GlobalEnv)" Time="0.263" Script="NA" Pos="NA";
+CF p41 p42
+Finish p43 "43-OddParameterTest.R" Value="OddParameterTest.R" Time="0.265" Script="NA" Pos="NA";
+CF p42 p43
 
