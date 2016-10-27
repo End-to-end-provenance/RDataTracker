@@ -90,8 +90,12 @@ ddg.MAX_HIST_LINES <- 2^14
   return (.ddg.get("ddg.path"))
 }
 
+.ddg.data.dir <- function() {
+  return ("data")
+}
+
 .ddg.path.data <- function() {
-  return(paste(.ddg.path(), "/data", sep=""))
+  return(paste(.ddg.path(), .ddg.data.dir() , sep="/"))
 }
 
 .ddg.path.debug <- function() {
@@ -3431,9 +3435,10 @@ ddg.MAX_HIST_LINES <- 2^14
 	# Add number to file name.
 	dfile <- paste(.ddg.dnum()+1, "-", file.name, sep="")
 
-	# Get path plus file name.
-	dpfile <- paste(.ddg.path.data(), "/", dfile, sep="")
-
+  # Calculate the path to the file relative to the ddg directory.
+  # This is the value stored in the node.
+  dpfile <- paste(.ddg.data.dir(), dfile, sep="/")
+  
 	dtime <- .ddg.timestamp()
 
 	# Set the node label.
@@ -3448,7 +3453,9 @@ ddg.MAX_HIST_LINES <- 2^14
   # Record in data node table
   .ddg.record.data(dtype, dname, dpfile, dscope, from.env=from.env, dtime, file.loc)
 
-  return(dpfile)
+  # Get path plus file name to where the file will be copied
+  dpath <- paste(.ddg.path.data(), "/", dfile, sep="")
+  return(dpath)
 }
 
 # .ddg.file.copy creates a data node of type File. File nodes are
