@@ -21,7 +21,7 @@ NUL
 examples/**/*.md
 examples/**/*.Rmd
 
-# IGNORE local ddg directories 
+# IGNORE local ddg directories
 examples/**/ddg*/
 examples/**/local*/
 examples/checkPointTest/testfile*.txt
@@ -88,6 +88,10 @@ examples/seminars/seminar1/*.csv
 # IGNORE the Java directory
 Java/
 /ddg.txt
+/ddg/*
 
 # IGNORE local copies of sourceTest.r
 examples-no-instrumentation/*/sourceTest.r
+
+# IGNORE generated ddg folder
+*_ddg
