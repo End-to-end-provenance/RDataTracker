@@ -15,7 +15,7 @@ ddg.init(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enable.console =
     max.snapshot.size = 100) 
 ddg.save(r.script.path = NULL, save.debug=FALSE, quit=FALSE)
 ddg.run(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = NULL, enable.console = TRUE, 
-    annotate.functions = TRUE, max.snapshot.size = 100, debug = FALSE, save.debug=FALSE, display = FALSE)
+    annotate.inside = TRUE, max.snapshot.size = 100, debug = FALSE, save.debug=FALSE, display = FALSE)
 ddg.annotate.on(fnames = NULL)
 ddg.annotate.off(fnames = NULL)
 ddg.console.on()
@@ -30,7 +30,7 @@ ddg.display()
   \item{enable.console}{ If TRUE, any commands executed in the console, either by typing, copying and 
     pasting, or selecting and running, will result in a procedure node created in the provenance graph, with
     data nodes created for each variable assigned and data flow edges for variables used and set. }
-  \item{annotate.functions}{specifies whether automatic annotation of functions should be enabled. }
+  \item{annotate.inside}{specifies whether automatic annotation of functions and control constructs should be enabled. }
   \item{max.snapshot.size}{ The maximum size for objects that should be output in snapshot
     files.  If max.snapshot.size is -1, there is no limit. If max.snapshot.size is 0, snapshot nodes
     are created but no snapshot files are saved. }
@@ -69,13 +69,12 @@ ddg.display()
   a DDG is created for the script, and a copy of the script is saved with the DDG.  If a function 
   is provided, the function is executed with calls to ddg.init and ddg.save so that provenance 
   for the function is captured. In either case, if an R error occurs during execution, the error will be
-  captured in an Exception node in the provenance graph. If annotate.functions is set to TRUE, 
-  ddg.function, ddg.eval, and ddg.return.value are added to each function definition before the
-  script is executed and these changes are saved to the file annotated-script.r in the ddg directory. 
-  ddg.annotate.on and ddg.annotate.off may be used to limit the functions that will be annotated or not annotated, 
-  respectively. If break is set to TRUE, script debugging is enabled. This has the same effect as inserting ddg.breakpoint() 
-  at the top of the script. If display is set to TRUE, the DDG is displayed after the R script finished executing.
-  If save.debug is set to TRUE, debug files are saved to the debug directory.
+  captured in an Exception node in the provenance graph. If annotate.inside is set to TRUE, 
+  provenance is collected for statements inside functions and inside control constructs
+  (if, for, while, repeat, and simple block).  ddg.annotate.on and ddg.annotate.off may be used to limit 
+  the functions that will be annotated or not annotated, respectively. If break is set to TRUE, script debugging  is enabled. This has the same effect as inserting ddg.breakpoint() at the top of the script. 
+  If display is set to TRUE, the DDG is displayed after the R script finished executing. If save.debug 
+  is set to TRUE, debug files are saved to the debug directory.
   
   ddg.console.on and ddg.console.off toggle the console parameter for DDG creation. 
   When the console is enabled, all commands sent to the R console are captured as provenance 

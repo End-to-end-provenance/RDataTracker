@@ -1,3 +1,6 @@
+
+############################ DDGStatement.R #############################
+
 # This file contains definitions of S4 classes to manage information about 
 # individual R statements and functions that operate on individual statements
 # 
@@ -7,7 +10,7 @@
 # Author: blerner
 # August 2016
 #
-###############################################################################
+#########################################################################
 
 # Needed to work with S4 classes.  Normally, this library is automatically
 # loaded.  However, it is not loaded when running non-interactively, as
@@ -91,7 +94,7 @@ setClass("DDGStatement",
 # This is called when a new DDG Statement is created.  It initializes all of the slots.
 setMethod ("initialize",
   "DDGStatement",
-    function(.Object, parsed, pos, script.name, script.num, breakpoints, annotate.functions, parseData){
+    function(.Object, parsed, pos, script.name, script.num, breakpoints, annotate.inside, parseData){
       .Object@parsed <- parsed
       
       # deparse can return a vector of strings.  We convert that into
@@ -107,8 +110,8 @@ setMethod ("initialize",
           else {
             .ddg.abbrev.cmd(.Object@text)
           }
-      
-      .Object@vars.used <- .ddg.find.var.uses(.Object@parsed[[1]])
+
+      .Object@vars.used <- .ddg.find.var.uses(.Object@parsed[[1]])  
       .Object@vars.set <- .ddg.find.simple.assign(.Object@parsed[[1]])
       .Object@vars.possibly.set <- .ddg.find.assign(.Object@parsed[[1]])
       
@@ -155,9 +158,11 @@ setMethod ("initialize",
           }
 
       .Object@contained <- 
-          # If we are annotating functions and this is a function declaration, the contained
-          # field is a list of DDGStatements for all of the statements inside the function
-          if (annotate.functions) {
+        # If we are annotating statements inside functions and control statements,
+        # the contained field is a list of DDGStatements for all statements inside
+        # the function or control statement.
+
+          if (annotate.inside) {
             .ddg.parse.contained(.Object, script.name, parseData)
           }
       
@@ -170,11 +175,11 @@ setMethod ("initialize",
           # If this is a call to ddg.eval, we only want to execute
           # the argument to ddg.eval
           if (grepl("^ddg.eval", .Object@text)) {
-            parse(text=.Object@parsed[[1]][[2]])
+             parse(text=.Object@parsed[[1]][[2]])
           }
-      
+           
           else {
-            .ddg.add.annotations(.Object, annotate.functions)
+            .ddg.add.annotations(.Object, annotate.inside)
           }
           
       #print (.Object)
@@ -193,14 +198,15 @@ null.pos <- function() {
 # script.name - the name of the script the statement is from
 # script.num - the script number used to find the script in the sourced script table
 # breakpoints - all the breakpoints currently set
-# annotate.functions - true if we want internal annotations on functions
+# annotate.inside - true if we want internal annotations on functions and control
+#   statements
 # parseData - the object created by the parser that gives us source position information
-.ddg.construct.DDGStatement <- function (expr, pos, script.name, script.num, breakpoints, annotate.functions, parseData) {
+.ddg.construct.DDGStatement <- function (expr, pos, script.name, script.num, breakpoints, annotate.inside, parseData) {
   # Surprisingly, if a statement is just a number, like 1 (which could be the last statement in a function, for example),
   # the parser returns a number, rather than a parse tree!
   if (is.numeric(expr)) expr <- parse(text=expr)
   
-  return (new (Class = "DDGStatement", parsed = expr, pos, script.name, script.num, breakpoints, annotate.functions, parseData))
+  return (new (Class = "DDGStatement", parsed = expr, pos, script.name, script.num, breakpoints, annotate.inside, parseData))
 }
 
 # .ddg.abbrev.cmd abbreviates a command to the specified length.
@@ -229,6 +235,9 @@ null.pos <- function() {
 # main.object - input expression.
 
 .ddg.find.var.uses <- function(main.object) {
+  
+  # Skip for statements (handled separately by ddg.forloop)
+  if (length(main.object) > 1 && main.object[[1]] == "for") return(character(0))
   
   # Recursive helper function.
   .ddg.find.var.uses.rec <- function(obj) {
@@ -376,13 +385,21 @@ null.pos <- function() {
   return (expr[[1]] == "function")
 }
 
-# .ddg.add.annotations accepts and returns a parsed command.
-# The returned command is annotated as needed.
+# .ddg.get.statement.type returns the control type (if applicable) of a 
+# parsed statement.
 
-.ddg.add.annotations <- function(command, annotate.functions) {
+.ddg.get.statement.type <- function(parsed.command) {
+  if (length(parsed.command) > 1) return(parsed.command[[1]])
+  return(0)
+}
+
+# .ddg.add.annotations accepts a DDGStatement and returns an expression.
+# The returned expression is annotated as needed.
+
+.ddg.add.annotations <- function(command, annotate.inside) {
   #print("In .ddg.add.annotations")
   parsed.command <- command@parsed[[1]]
-  
+
   # Return if statement is empty.
   if (length(parsed.command) == 0) return(command@parsed)
   
@@ -390,15 +407,41 @@ null.pos <- function() {
   if (is.call(parsed.command) && parsed.command[[1]] == "source") {
     return(.ddg.add.ddg.source(parsed.command))
   }
+
+  # Annotate internal statements if annotate.inside is TRUE.
+  if (annotate.inside) {
+    # Annotate user-defined functions.
+    # Note that this will not annotate anonymous functions, like ones that might be passed to lapply, for example
+    # Is that what we want?
+    if (annotate.inside && .ddg.is.assign(parsed.command) && .ddg.is.functiondecl(parsed.command[[3]])) {
+      return(.ddg.add.function.annotations(command))
+    }
   
-  # Annotate user-defined functions.
-  # Note that this will not annotate anonymous functions, like ones that might be passed to lapply, for example
-  # Is that what we want?
-  if (annotate.functions && .ddg.is.assign(parsed.command) && .ddg.is.functiondecl(parsed.command[[3]])) {
-    return(.ddg.add.function.annotations(command))
+    # Annotate if statement.
+    if (.ddg.get.statement.type(parsed.command) == "if"){
+      return(.ddg.annotate.if.statement(command)) 
+    }
+  
+    # Annotate for statement.
+    if (.ddg.get.statement.type(parsed.command) == "for") {
+      return(.ddg.annotate.for.statement(command)) 
+    }
+  
+    # Annotate while statement.
+    if (.ddg.get.statement.type(parsed.command) == "while") {
+      return(.ddg.annotate.while.statement(command)) 
+    }
+  
+    # Annotate repeat statement.
+    if (.ddg.get.statement.type(parsed.command) == "repeat") {
+      return(.ddg.annotate.repeat.statement(command)) 
+    }
+  
+    # Annotate simple block.
+    if (.ddg.get.statement.type(parsed.command) == "{") {
+      return(.ddg.annotate.simple.block(command))
+    }
   }
-  
-  # Add other annotations here.
   
   # No annotation required.
   return(command@parsed)
@@ -413,9 +456,12 @@ null.pos <- function() {
 #     source position information
 #
 # Returns a list of DDTStatements or an empty list if this is not a function declaration
+
 .ddg.parse.contained <- function (cmd, script.name, parseData) {
-  #print("In .ddg.parse.contained")
+  # print("In .ddg.parse.contained")
   parsed.cmd <- cmd@parsed[[1]]
+  
+  # Function declaration
   if (.ddg.is.assign(parsed.cmd) && .ddg.is.functiondecl(parsed.cmd[[3]])) {
     func.body <- parsed.cmd[[3]][[3]]
     
@@ -433,7 +479,71 @@ null.pos <- function() {
     }
     
     # Create the DDGStatement objects for the statements in the function
-    return (.ddg.create.DDGStatements (func.stmts, script.name, cmd@script.num, annotate.functions = TRUE, parseData, cmd@pos))
+    return (.ddg.create.DDGStatements (func.stmts, script.name, cmd@script.num, annotate.inside = TRUE, parseData, cmd@pos))
+  }
+  
+  # Control statements.
+  st.type <- as.character(.ddg.get.statement.type(parsed.cmd))
+  block.stmts <- list()
+
+  # If statement.  
+  if (st.type == "if") {
+    parent <- parsed.cmd
+
+    # If and else if blocks.
+    while(parent[[1]] == "if") {
+      # Get block
+      block <- parent[[3]]
+      if (block[[1]] != "{") block <- call("{", block)
+      
+      # Get statements for this block.
+      for (i in 2:(length(block))) {
+        block.stmts <- c(block.stmts, block[[i]])
+      }
+
+      # Check for possible final else.
+      if (length(parent) == 4) {
+        final.else <- TRUE
+      } else {
+        final.else <- FALSE
+      }
+      
+      # Get next parent
+      parent <- parent[[(length(parent))]]
+    }
+    
+    # Final else block (if any).
+    if (final.else) {
+      # Get block.
+      block <- parent
+      if (block[[1]] != "{") block <- call("{", block)
+    
+      # Get statements for this block.
+      for (i in 2:(length(block))) {
+        block.stmts <- c(block.stmts, block[[i]])
+      }
+    }
+
+    # Create the DDGStatement objects for statements in block
+    return (.ddg.create.DDGStatements (block.stmts, script.name, cmd@script.num, annotate.inside = TRUE, parseData, cmd@pos))
+  }
+
+  # Other control statements  
+  control.types <- list("for", "while", "repeat", "{")
+  if (length(st.type) > 0 && !is.null(st.type) && (st.type %in% control.types)) {
+    if (st.type == "for") block <- parsed.cmd[[4]]
+    if (st.type == "while") block <- parsed.cmd[[3]]
+    if (st.type == "repeat") block <- parsed.cmd[[2]]
+    if (st.type == "{") block <- parsed.cmd
+
+    if (block[[1]] != "{") block <- call("{", block)
+      
+    for (i in 2:length(block)) {
+      block.stmts <- c(block.stmts, block[[i]])
+    }
+
+    # Create the DDGStatement objects for statements in block
+    return (.ddg.create.DDGStatements (block.stmts, script.name, cmd@script.num, annotate.inside = TRUE, parseData, cmd@pos))
   }
   
   # Not a function declaration
@@ -659,6 +769,29 @@ null.pos <- function() {
   return(call("function", func.params, as.call(new.func.body)))
 }
 
+# .ddg.find.last.statement finds the last statement of a function.
+# 
+# func.definition is a parsed expression for a function declaration (not 
+#   the full assignment statement in which it is declared)
+#
+# Returns the parse tree corresponding to the last statement in the
+# function definition.
+
+.ddg.find.last.statement <- function (func.definition) {
+  # Get function body.
+  func.body <- func.definition[[3]]
+  # Check to see if the function body is a block.
+  if (func.body[[1]] == "{") {
+    # Return the last statement in the block.
+    pos <- length(func.body)
+    return(func.body[[pos]])
+  }
+  # Not a block. Return the single statement that is the body.
+  else {
+    return(func.body)
+  }
+}
+
 # .ddg.wrap.last.line wraps the last line of a function with
 # ddg.return.value.
 # 
@@ -710,12 +843,32 @@ null.pos <- function() {
 #
 # Returns a parse tree with a call to ddg.return.value.  The arguments to 
 # ddg.return.value are the parsed statement and the DDGStatement object.
+
 .ddg.create.ddg.return.call <- function (last.statement, parsed.stmt) {
   # We need to force the evaluation of parsed.stmt for the closure to
   # return the value that parsed.stmt has at the time the ddg.eval 
   # call is created.
   force(parsed.stmt)
   return (call ("ddg.return.value", last.statement, function() parsed.stmt))
+}
+
+# Creates a call to ddg.eval using a closure so that we 
+# will be able to refer to the correct DDGStatement object when the
+# return call is executed.
+#
+# statement is the parse tree for the expression being returned
+# parsed.stmt is the DDGStatement object corresponding to the last statement
+#
+# Returns a parse tree with a call to ddg.eval.  The arguments to 
+# ddg.eval are the original statement and the DDGStatement object.
+
+.ddg.create.ddg.eval.call <- function (statement, parsed.stmt) {
+  # We need to force the evaluation of parsed.stmt for the closure to
+  # return the value that parsed.stmt has at the time the ddg.eval 
+  # call is created.
+  force(parsed.stmt)
+  
+  return (call("ddg.eval", paste(deparse(statement), collapse=""), function() parsed.stmt))
 }
 
 # .ddg.wrap.with.ddg.eval wraps each statement in a function body
@@ -759,45 +912,284 @@ null.pos <- function() {
   return(func.definition)
 }
 
-# Creates a call to ddg.eval using a closure so that we 
-# will be able to refer to the correct DDGStatement object when the
-# return call is executed.
+# Creates a call to ddg.eval using the number of the DDGStatement
+# stored in the list ddg.statements in the ddg environment.
 #
-# statement is the parse tree for the expression being returned
-# parsed.stmt is the DDGStatement object corresponding to the last statement
+# statement is the parse tree for the expression being returned and
+# parsed.stmt is the corresponding DDGStatement object.
 #
 # Returns a parse tree with a call to ddg.eval.  The arguments to 
-# ddg.eval are the original statement and the DDGStatement object.
+# ddg.eval are the original statement and the number of the DDGStatement object.
 
-.ddg.create.ddg.eval.call <- function (statement, parsed.stmt) {
-  # We need to force the evaluation of parsed.stmt for the closure to
-  # return the value that parsed.stmt has at the time the ddg.eval 
-  # call is created.
+.ddg.create.block.ddg.eval.call <- function (statement, parsed.stmt) {
+  # We need to force the evaluation of parsed.stmt.
   force(parsed.stmt)
-  return (call("ddg.eval", paste(deparse(statement), collapse=""), function() parsed.stmt))
+
+  # Get the next DDGStatement number and store parsed.stmt at this location.
+  .ddg.inc("ddg.statement.num")
+  num <- .ddg.statement.num()
+  .ddg.add.ddgstatement(parsed.stmt)
+
+  return (call("ddg.eval", paste(deparse(statement), collapse=""), num))
 }
 
-# .ddg.find.last.statement finds the last statement of a function.
-# 
-# func.definition is a parsed expression for a function declaration (not 
-#   the full assignment statement in which it is declared)
-#
-# Returns the parse tree corresponding to the last statement in the
-# function definition.
+#.ddg.wrap.block.with.ddg.eval wraps each statement in a block with
+# ddg.eval unless the statement is a ddg function or contains a call
+# to ddg.return.value.
 
-.ddg.find.last.statement <- function (func.definition) {
-  # Get function body.
-  func.body <- func.definition[[3]]
-  # Check to see if the function body is a block.
-  if (func.body[[1]] == "{") {
-    # Return the last statement in the block.
-    pos <- length(func.body)
-    return(func.body[[pos]])
+.ddg.wrap.block.with.ddg.eval <- function(block, parsed.stmts) {
+  # Ignore initial brace.
+  for (i in 2:length(block)) {
+    # Enclose statement in quotation marks and wrap with ddg.eval.
+    statement <- block[[i]]
+    if (!grepl("^ddg.", statement) && !.ddg.has.call.to(statement, "ddg.return.value")) {
+      parsed.stmt <- parsed.stmts[[i-1]]
+      # print(statement)
+      
+      # print(parsed.stmt@text)
+
+      new.statement <- .ddg.create.block.ddg.eval.call(statement, parsed.stmt)
+      block[[i]] <- new.statement
+    }
   }
-  # Not a block. Return the single statement that is the body.
+  return(block)
+}
+
+# .ddg.add.block.start.finish adds start and finish nodes to blocks in control
+# statements.
+
+.ddg.add.block.start.finish <- function(block, pname) {
+  # Create ddg.start & ddg.finish statements.
+  start.statement <- deparse(call("ddg.start", pname))
+  finish.statement <- deparse(call("ddg.finish", pname))
+  
+  # Get internal statements.
+  pos <- length(block)
+  statements <- deparse(block[[2]])
+  if (pos > 2) {
+    for (i in 3:pos) {
+      statements <- append(statements, deparse(block[[i]]))
+    }
+  }
+  
+  # Create new block.
+  block.txt <- paste(c("{", start.statement, statements, finish.statement, "}"), collapse="\n")
+  block.parsed <- parse(text=block.txt)
+  
+  return(block.parsed[[1]])
+}
+
+# .ddg.insert.ddg.forloop inserts a ddg.forloop statement at the top of a block.
+
+.ddg.insert.ddg.forloop <- function(block, index.var) {
+  pos <- length(block)
+  inserted.statement <- call("ddg.forloop", index.var)
+  
+  # Block with single statement.
+  if (pos == 2) {
+    new.statements <- c(as.list(block[[1]]), inserted.statement, as.list(block[2]))
+    return(as.call(new.statements))
+  }
+  
+  # Block with multiple statements.
   else {
-    return(func.body)
+    new.statements <- c(as.list(block[[1]]), inserted.statement, as.list(block[2:pos]))
+    return(as.call(new.statements))
   }
+}
+
+# .ddg.annotate.if.statement adds annotations to if statements.
+
+.ddg.annotate.if.statement <- function(command) {
+  # Get parsed command & contained statements
+  parsed.command <- command@parsed[[1]]
+  parsed.stmts <- command@contained
+
+  # Set initial values.
+  bnum <- 1
+  ptr <- 0
+  parent <- parsed.command
+  parsed.command.txt <- vector()
+
+  # If & else if blocks.
+  while(parent[[1]] == "if") {
+    # Get block
+    block <- parent[[3]]
+    if (block[[1]] != "{") block <- call("{", block)
+    
+    # Get statements for this block.
+    block.stmts<- list()
+    for (i in 1:(length(block)-1)) {
+      block.stmts <- c(block.stmts, parsed.stmts[[i+ptr]])
+    }
+
+    # Advance pointer for next block.
+    ptr <- ptr + length(block) - 1
+
+    # Wrap each statement with ddg.eval.
+    block <- .ddg.wrap.block.with.ddg.eval(block, block.stmts)
+
+    # Add start and finish nodes.
+    block <- .ddg.add.block.start.finish(block, "if")
+
+    # Reconstruct original statement.
+    cond <- paste(deparse(parent[[2]]), collapse="")
+    if (bnum == 1) {
+      statement.txt <- paste(c(paste("if (", cond, ")", sep=""), deparse(block), collapse="\n"))
+    } else {
+      statement.txt <- paste(c(paste("} else if (", cond, ")", sep=""), deparse(block), collapse="\n"))
+    }
+
+    # Remove final brace & new line.
+    if (bnum > 1) {
+      last <- length(parsed.command.txt) - 2
+      parsed.command.txt <- parsed.command.txt[c(1:last)]
+    }
+    parsed.command.txt <- append(parsed.command.txt, statement.txt)
+
+    # Check for possible final else.
+    if (length(parent) == 4) {
+      final.else <- TRUE
+    } else {
+      final.else <- FALSE
+    }
+
+    # Get next parent
+    bnum <- bnum + 1
+    parent <- parent[[(length(parent))]]
+  }
+  
+  # Final else block (if any).
+  if (final.else) {
+    # Get block.
+    block <- parent
+    if (block[[1]] != "{") block <- call("{", block)
+
+    # Get statements for this block
+    block.stmts <- list()
+    for (i in 1:(length(block)-1)) {
+      block.stmts <- c(block.stmts, parsed.stmts[[i+ptr]])
+    }
+
+    # Wrap each statement with ddg.eval.
+    block <- .ddg.wrap.block.with.ddg.eval(block, block.stmts)
+
+    # Add start and finish nodes.
+    block <- .ddg.add.block.start.finish(block, "if")
+    
+    # Reconstruct original statement
+    statement.txt <- paste(c(paste("} else", sep=""), deparse(block), collapse=""))
+
+    # Remove final brace.
+      last <- length(parsed.command.txt) - 2
+      parsed.command.txt <- parsed.command.txt[c(1:last)]
+      parsed.command.txt <- append(parsed.command.txt, statement.txt)
+  }
+
+  return(parse(text=parsed.command.txt))
+}
+
+# .ddg.annotate.for.statement add annotations to for statements.
+
+.ddg.annotate.for.statement <- function(command) {
+  # Get parsed command
+  parsed.command <- command@parsed[[1]]
+  
+  # Get statements in block.
+  block <- parsed.command[[4]]
+
+  # Add braces if necessary.
+  if (block[[1]] != "{") block <- call("{", block)
+  
+  # Wrap each statement with ddg.eval.
+  block <- .ddg.wrap.block.with.ddg.eval(block, command@contained)
+  
+  # Insert ddg.forloop statement.
+  index.var <- parsed.command[[2]]
+  block <- .ddg.insert.ddg.forloop(block, index.var)
+  
+  # Add start and finish nodes.
+  block <- .ddg.add.block.start.finish(block, "for loop")
+  
+  # Reconstruct for statement.
+  block.txt <- deparse(block)
+  
+  parsed.command.txt <- paste(c(paste("for (", deparse(parsed.command[[2]]), " in ", deparse(parsed.command[[3]]), ")", sep=""), block.txt, collapse="\n"))
+  
+  return(parse(text=parsed.command.txt))
+}
+
+# .ddg.annotate.while.statement adds annotations to while statements.
+
+.ddg.annotate.while.statement <- function(command) {
+  # Get parsed command
+  parsed.command <- command@parsed[[1]]
+
+  # Get statements in block.
+  block <- parsed.command[[3]]
+  
+  # Add braces if necessary.
+  if (block[[1]] != "{") block <- call("{", block)
+
+  # Wrap each statement with ddg.eval.
+  block <- .ddg.wrap.block.with.ddg.eval(block, command@contained)
+  
+  # Add start and finish nodes.
+  block <- .ddg.add.block.start.finish(block, "while loop")
+  
+  # Reconstruct for statement.
+  block.txt <- deparse(block)
+  
+  parsed.command.txt <- paste(c(paste("while (", deparse(parsed.command[[2]]), ")", sep=""), block.txt, collapse="\n"))
+  
+  return(parse(text=parsed.command.txt))
+}
+
+# .ddg.annotate.repeat.statement add annotations to repeat statements.
+
+.ddg.annotate.repeat.statement <- function(command) {
+  # Get parsed command
+  parsed.command <- command@parsed[[1]]
+
+  # Get statements in block.
+  block <- parsed.command[[2]]
+  
+  # Add braces if necessary.
+  if (block[[1]] != "{") block <- call("{", block)
+
+  # Wrap each statement with ddg.eval.
+  block <- .ddg.wrap.block.with.ddg.eval(block, command@contained)
+  
+  # Add start and finish nodes.
+  block <- .ddg.add.block.start.finish(block, "repeat loop")
+  
+  # Reconstruct for statement.
+  block.txt <- deparse(block)
+  
+  parsed.command.txt <- paste(c(paste("repeat", sep=""), block.txt, collapse="\n"))
+  
+  return(parse(text=parsed.command.txt))
+}
+
+# .ddg.annotate.simple.block adds annotations to simple blocks.
+
+.ddg.annotate.simple.block <- function(command) {
+  # Get parsed command
+  parsed.command <- command@parsed[[1]]
+
+  # Get statements in block.
+  block <- parsed.command
+  
+  # Wrap each statement with ddg.eval.
+  block <- .ddg.wrap.block.with.ddg.eval(block, command@contained)
+
+  # Add start and finish nodes.
+  block <- .ddg.add.block.start.finish(block, "block")
+
+  # Reconstruct block.
+  block.txt <- deparse(block)
+  
+  return(parse(text=block.txt))
 }
 
 # .ddg.is.call.to returns TRUE if the parsed expression passed

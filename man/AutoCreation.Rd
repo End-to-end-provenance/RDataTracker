@@ -7,7 +7,7 @@ versios which automatically capture provenance data. }
 ddg.source(file, ddgdir = NULL, local = FALSE, echo = verbose, print.eval = echo, 
     verbose = getOption("verbose"), max.deparse.length = 150, chdir = FALSE, 
     encoding = getOption("encoding"), ignore.ddg.calls = TRUE, 
-    ignore.init = ignore.ddg.calls, force.console=ignore.init, annotate.functions = TRUE)
+    ignore.init = ignore.ddg.calls, force.console=ignore.init, annotate.inside = TRUE)
 }
 \arguments{
   \item{file}{see \code{\link{source}}}
@@ -24,7 +24,7 @@ ddg.source(file, ddgdir = NULL, local = FALSE, echo = verbose, print.eval = echo
   \item{ignore.init}{specifies whether suppresion of source script DDG Initialization
   should occur.}
   \item{force.console}{specifies whether console parsing should be forced on the source script. }
-  \item{annotate.functions}{specifies whether automatic annotation of functions should be enabled. }
+  \item{annotate.inside}{specifies whether automatic annotation of functions and control constructs should be enabled. }
 } 
 \seealso{
   \code{\link{source}}.
@@ -70,8 +70,8 @@ ddg.source(file, ddgdir = NULL, local = FALSE, echo = verbose, print.eval = echo
   the state of command capturing. In any case, the console is returned to the mode set 
   before the call to ddg.source.
 
-  If annotate.functions is set to TRUE, ddg.function and ddg.return.value are added to 
-  each function definition before the script is executed.
+  If annotate.inside is set to TRUE, provenance is collected for statements inside functions
+  and control constructs.
 
   Note that a call to ddg.save is always made once the script has been sourced.
 }
