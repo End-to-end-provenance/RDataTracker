@@ -1094,7 +1094,16 @@ null.pos <- function() {
 .ddg.annotate.for.statement <- function(command) {
   # Get parsed command
   parsed.command <- command@parsed[[1]]
-  
+
+  # Return if no annotation
+  ddg.max.loops <- ddg.max.loops()
+  if (ddg.max.loops == 0) return(command@parsed)
+
+  # Add new loop & get loop number.
+  .ddg.add.loop()
+  .ddg.inc("ddg.loop.num")
+  ddg.loop.num <- .ddg.loop.num()
+
   # Get statements in block.
   block <- parsed.command[[4]]
 
@@ -1102,19 +1111,27 @@ null.pos <- function() {
   if (block[[1]] != "{") block <- call("{", block)
   
   # Wrap each statement with ddg.eval.
-  block <- .ddg.wrap.block.with.ddg.eval(block, command@contained)
+  annotated.block <- .ddg.wrap.block.with.ddg.eval(block, command@contained)
   
   # Insert ddg.forloop statement.
   index.var <- parsed.command[[2]]
-  block <- .ddg.insert.ddg.forloop(block, index.var)
+  annotated.block <- .ddg.insert.ddg.forloop(annotated.block, index.var)
   
   # Add start and finish nodes.
-  block <- .ddg.add.block.start.finish(block, "for loop")
+  annotated.block <- .ddg.add.block.start.finish(annotated.block, "for loop")
   
   # Reconstruct for statement.
   block.txt <- deparse(block)
+  annotated.block.txt <- deparse(annotated.block)
   
-  parsed.command.txt <- paste(c(paste("for (", deparse(parsed.command[[2]]), " in ", deparse(parsed.command[[3]]), ")", sep=""), block.txt, collapse="\n"))
+  parsed.command.txt <- paste(c(paste("for (", deparse(parsed.command[[2]]), " in ", deparse(parsed.command[[3]]), ") {", sep=""),
+    paste("if (ddg.loop.count(", ddg.loop.num, ") <= ", ddg.max.loops, ")", sep=""),
+    annotated.block.txt,
+    paste("else", sep = ""),
+    block.txt,
+    paste("}", sep=""),
+    paste("ddg.reset.loop.count(", ddg.loop.num, ")", sep=""),
+    collapse="\n"))
   
   return(parse(text=parsed.command.txt))
 }
@@ -1125,6 +1142,15 @@ null.pos <- function() {
   # Get parsed command
   parsed.command <- command@parsed[[1]]
 
+  # Return if no annotation
+  ddg.max.loops <- ddg.max.loops()
+  if (ddg.max.loops == 0) return(command@parsed)
+  
+  # Add new loop & get loop number.
+  .ddg.add.loop()
+  .ddg.inc("ddg.loop.num")
+  ddg.loop.num <- .ddg.loop.num()
+
   # Get statements in block.
   block <- parsed.command[[3]]
   
@@ -1132,15 +1158,23 @@ null.pos <- function() {
   if (block[[1]] != "{") block <- call("{", block)
 
   # Wrap each statement with ddg.eval.
-  block <- .ddg.wrap.block.with.ddg.eval(block, command@contained)
+  annotated.block <- .ddg.wrap.block.with.ddg.eval(block, command@contained)
   
   # Add start and finish nodes.
-  block <- .ddg.add.block.start.finish(block, "while loop")
+  annotated.block <- .ddg.add.block.start.finish(annotated.block, "while loop")
   
   # Reconstruct for statement.
   block.txt <- deparse(block)
+  annotated.block.txt <- deparse(annotated.block)
   
-  parsed.command.txt <- paste(c(paste("while (", deparse(parsed.command[[2]]), ")", sep=""), block.txt, collapse="\n"))
+  parsed.command.txt <- paste(c(paste("while (", deparse(parsed.command[[2]]), ") {", sep=""),
+    paste("if (ddg.loop.count(", ddg.loop.num, ") <= ", ddg.max.loops, ")", sep=""),
+    annotated.block.txt,
+    paste("else", sep = ""),
+    block.txt,
+    paste("}", sep=""),
+    paste("ddg.reset.loop.count(", ddg.loop.num, ")", sep=""),
+    collapse="\n"))
   
   return(parse(text=parsed.command.txt))
 }
@@ -1151,6 +1185,15 @@ null.pos <- function() {
   # Get parsed command
   parsed.command <- command@parsed[[1]]
 
+  # Return if no annotation
+  ddg.max.loops <- ddg.max.loops()
+  if (ddg.max.loops == 0) return(command@parsed)
+  
+  # Add new loop & get loop number.
+  .ddg.add.loop()
+  .ddg.inc("ddg.loop.num")
+  ddg.loop.num <- .ddg.loop.num()
+
   # Get statements in block.
   block <- parsed.command[[2]]
   
@@ -1158,16 +1201,24 @@ null.pos <- function() {
   if (block[[1]] != "{") block <- call("{", block)
 
   # Wrap each statement with ddg.eval.
-  block <- .ddg.wrap.block.with.ddg.eval(block, command@contained)
+  annotated.block <- .ddg.wrap.block.with.ddg.eval(block, command@contained)
   
   # Add start and finish nodes.
-  block <- .ddg.add.block.start.finish(block, "repeat loop")
+  annotated.block <- .ddg.add.block.start.finish(annotated.block, "repeat loop")
   
   # Reconstruct for statement.
   block.txt <- deparse(block)
+  annotated.block.txt <- deparse(annotated.block)
   
-  parsed.command.txt <- paste(c(paste("repeat", sep=""), block.txt, collapse="\n"))
-  
+  parsed.command.txt <- paste(c(paste("repeat {", sep=""),
+    paste("if (ddg.loop.count(", ddg.loop.num, ") <= ", ddg.max.loops, ")", sep=""),
+    annotated.block.txt,
+    paste("else", sep = ""),
+    block.txt,
+    paste("}", sep=""),
+    paste("ddg.reset.loop.count(", ddg.loop.num, ")", sep=""),
+    collapse="\n"))
+
   return(parse(text=parsed.command.txt))
 }
 

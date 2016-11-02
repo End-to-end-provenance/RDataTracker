@@ -15,7 +15,7 @@ ddg.init(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enable.console =
     max.snapshot.size = 100) 
 ddg.save(r.script.path = NULL, save.debug=FALSE, quit=FALSE)
 ddg.run(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = NULL, enable.console = TRUE, 
-    annotate.inside = TRUE, max.snapshot.size = 100, debug = FALSE, save.debug=FALSE, display = FALSE)
+    annotate.inside = TRUE, max.loops = 10, max.snapshot.size = 100, debug = FALSE, save.debug=FALSE, display = FALSE)
 ddg.annotate.on(fnames = NULL)
 ddg.annotate.off(fnames = NULL)
 ddg.console.on()
@@ -31,6 +31,8 @@ ddg.display()
     pasting, or selecting and running, will result in a procedure node created in the provenance graph, with
     data nodes created for each variable assigned and data flow edges for variables used and set. }
   \item{annotate.inside}{specifies whether automatic annotation of functions and control constructs should be enabled. }
+  \item{max.loops}{ The maximum number of times that a for, while, or repeat loop will be annotated.
+    If max.loops is -1, there is no limit. If max.loops = 0, no loops will be annotated. }
   \item{max.snapshot.size}{ The maximum size for objects that should be output in snapshot
     files.  If max.snapshot.size is -1, there is no limit. If max.snapshot.size is 0, snapshot nodes
     are created but no snapshot files are saved. }
@@ -72,8 +74,9 @@ ddg.display()
   captured in an Exception node in the provenance graph. If annotate.inside is set to TRUE, 
   provenance is collected for statements inside functions and inside control constructs
   (if, for, while, repeat, and simple block).  ddg.annotate.on and ddg.annotate.off may be used to limit 
-  the functions that will be annotated or not annotated, respectively. If break is set to TRUE, script debugging  is enabled. This has the same effect as inserting ddg.breakpoint() at the top of the script. 
-  If display is set to TRUE, the DDG is displayed after the R script finished executing. If save.debug 
+  the functions that will be annotated or not annotated, respectively. The parameter max.loops sets
+  the maxiumum number of times that a for, while or repeat loop will be annotated. If break is set to TRUE,
+  script debugging  is enabled. This has the same effect as inserting ddg.breakpoint() at the top of the script. If display is set to TRUE, the DDG is displayed after the R script finished executing. If save.debug
   is set to TRUE, debug files are saved to the debug directory.
   
   ddg.console.on and ddg.console.off toggle the console parameter for DDG creation. 
