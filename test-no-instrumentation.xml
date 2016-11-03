@@ -404,6 +404,18 @@
 	 	</antcall>
 	</target>
 
+	<target name="ControlConstructTest">
+		<antcall target="run-no-instrumentation-test">
+			<param name="test-name" value="ControlConstructTest" />
+		</antcall>
+	</target>
+	
+	<target name="update-ControlConstructTest">
+		<antcall target="update-no-instrumentation-expected">
+			<param name="test-name" value="ControlConstructTest" />
+		</antcall>
+	</target>
+
   	<target name="WarningTest">
   		<antcall target="run-no-instrumentation-test">
   			<param name="test-name" value="WarningTest" />
@@ -477,8 +489,8 @@
   </target>
 
 	<target name="normal-tests" depends="basicTest, S4ObjectTest,
-		ScopeTest, ReturnTest, OddParameterTest,
-		FunctionAnnotationTest, WarningTest, PlotTest,
+		ScopeTest, ReturnTest, OddParameterTest, FunctionAnnotationTest, 
+		ControlConstructTest, WarningTest, PlotTest,
 		DataTypeTest, HigherOrderFuncTest, RMarkdownTest, DDGStatementTest">
 		<echo>##############################################
 	      Finished Execution of Normal Tests. Nothing should have malfunctioned.

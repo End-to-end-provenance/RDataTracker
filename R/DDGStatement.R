@@ -447,15 +447,16 @@ null.pos <- function() {
   return(command@parsed)
 }
 
-# If cmd is a function declaration, this will create the DDGStatement
-# objects that correspond to the statements within the function
+# .ddg.parse.contained creates the DDGStatement objects that correspond to
+# statements inside a function or control block (or blocks). 
 #
 # cmd - the DDGStatement being considered
 # script.name - the name of the script the statement is from
 # parseData - the data returned by the parser that is used to extract
 #     source position information
 #
-# Returns a list of DDTStatements or an empty list if this is not a function declaration
+# Returns a list of DDTStatements or an empty list if this is not a function 
+# declaration or a control construct.
 
 .ddg.parse.contained <- function (cmd, script.name, parseData) {
   # print("In .ddg.parse.contained")
@@ -546,7 +547,7 @@ null.pos <- function() {
     return (.ddg.create.DDGStatements (block.stmts, script.name, cmd@script.num, annotate.inside = TRUE, parseData, cmd@pos))
   }
   
-  # Not a function declaration
+  # Not a function declaration or control construct.
   return(list())
 }
 
@@ -945,7 +946,6 @@ null.pos <- function() {
     if (!grepl("^ddg.", statement) && !.ddg.has.call.to(statement, "ddg.return.value")) {
       parsed.stmt <- parsed.stmts[[i-1]]
       # print(statement)
-      
       # print(parsed.stmt@text)
 
       new.statement <- .ddg.create.block.ddg.eval.call(statement, parsed.stmt)

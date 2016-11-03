@@ -490,10 +490,10 @@ ddg.MAX_HIST_LINES <- 2^14
   # DDGStatements list
   .ddg.set("ddg.statements", list())
   
-  # Loop number
+  # Control loop number
   .ddg.set("ddg.loop.num", 0)
   
-  # Loop vector.
+  # Control loop list
   .ddg.set("ddg.loops", list())
 }
 
@@ -556,8 +556,6 @@ ddg.MAX_HIST_LINES <- 2^14
   }
   return(stimes)
 }
-
-
 
 # .ddg.sourced.script.names.json returns sourced script names,
 # numbers and timestamps for the JSON file.
@@ -4115,7 +4113,7 @@ ddg.MAX_HIST_LINES <- 2^14
     loop.type <- as.character(cmd@parsed[[1]][[1]])
   }
   
-  # Create finish nodes for for, repeat, or while loop.
+  # Create finish node for for, repeat, or while loop.
   loop.name <- paste(loop.type, "loop")
   ddg.finish(loop.name)
   
@@ -4132,7 +4130,7 @@ ddg.MAX_HIST_LINES <- 2^14
 # the for, while, or repeat loop where the next occurs.
 
 .ddg.next.statement <- function() {
-  # Create procedure node for break statement.
+  # Create procedure node for next statement.
   .ddg.proc.node("Operation", "next", "next")
   .ddg.proc2proc()
   
@@ -4156,7 +4154,7 @@ ddg.MAX_HIST_LINES <- 2^14
     loop.type <- as.character(cmd@parsed[[1]][[1]])
   }
   
-  # Create finish nodes for for, repeat, or while loop.
+  # Create finish node for for, repeat, or while loop.
   loop.name <- paste(loop.type, "loop")
   ddg.finish(loop.name)
 }
@@ -4500,6 +4498,7 @@ ddg.procedure <- function(pname, ins=NULL, outs.graphic=NULL, outs.data=NULL, ou
 # and edges are created for the assignment.
 
 # expr - the value returned by the function.
+
 ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
   #print("In ddg.return.value")
 
@@ -4652,7 +4651,8 @@ ddg.max.loops <- function() {
   return(.ddg.get("ddg.max.loops"))
 }
 
-# ddg.loop.count returns the current count for the specified loop.
+# ddg.loop.count increments the current count for the specified loop
+# and returns the incremented value.
 
 ddg.loop.count <- function(i) {
   ddg.loops <- .ddg.loops()
@@ -4689,7 +4689,11 @@ ddg.forloop <- function(index.var) {
 # variable and function return nodes that are used in the
 # statement. If the statement is an assignment statement, it also
 # creates a data node for the variable assigned and a corresponding
-# data flow edge.
+# data flow edge. If ddg.eval is called from inside a function, cmd.func
+# is a function that returns the corresponding DDGStatement object. 
+# If ddg.eval is called from inside a control block, cmd.func is an 
+# integer that points to the corresponding DDGStatement object stored
+# in the list .ddg.statements.
 
 # statement - the statement to evaluate.
 
@@ -4735,12 +4739,12 @@ ddg.eval <- function(statement, cmd.func=NULL) {
   }
 
   # If break statement, create procedure node and close open start nodes.
+
   if (!is.null(cmd) && cmd@text == "break") {
     .ddg.break.statement()
   }
   
-  # If next statement, create procedure node and close open start node for
-  # current loop.
+  # If next statement, create procedure node and close open start nodes.
   
   if (!is.null(cmd) && cmd@text == "next") {
     .ddg.next.statement()
