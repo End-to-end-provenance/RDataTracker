@@ -15,7 +15,7 @@ ddg.init(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enable.console =
     max.snapshot.size = 100) 
 ddg.save(r.script.path = NULL, save.debug=FALSE, quit=FALSE)
 ddg.run(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = NULL, enable.console = TRUE, 
-    annotate.inside = TRUE, max.loops = 10, max.snapshot.size = 100, debug = FALSE, save.debug=FALSE, display = FALSE)
+    annotate.inside = TRUE, max.loops = 3, max.snapshot.size = 100, debug = FALSE, save.debug=FALSE, display = FALSE)
 ddg.annotate.on(fnames = NULL)
 ddg.annotate.off(fnames = NULL)
 ddg.console.on()

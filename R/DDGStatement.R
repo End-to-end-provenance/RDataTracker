@@ -405,7 +405,7 @@ null.pos <- function() {
   
   # Replace source with ddg.source.
   if (is.call(parsed.command) && parsed.command[[1]] == "source") {
-    return(.ddg.add.ddg.source(parsed.command))
+    return(.ddg.add.ddg.source(parsed.command, annotate.inside))
   }
 
   # Annotate internal statements if annotate.inside is TRUE.
@@ -551,16 +551,16 @@ null.pos <- function() {
   return(list())
 }
 
-# .ddg.add.ddg.source replaces source with ddg.source
+# .ddg.add.ddg.source replaces source with ddg.source.
 #
-# parsed.source.call must be a parsed expression that is a call
-# to the source function
+# parsed.command must be a parsed expression that is a call
+# to the source function. The value of annotate.inside is passed
+# to ddg.source.
 
-.ddg.add.ddg.source <- function(parsed.source.call) {
-  script.name <- deparse(parsed.source.call[[2]])
-  new.command.txt <- paste("ddg.source(", script.name, ")", sep="")
-  parsed.ddg.source.call <- parse(text=new.command.txt)
-  return(parsed.ddg.source.call)
+.ddg.add.ddg.source <- function(parsed.command, annotate.inside) {
+  script.name <- deparse(parsed.command[[2]])
+  parsed.command.txt <- paste("ddg.source(", script.name, ", annotate.inside=", annotate.inside, ")", sep="")
+  return(parse(text=parsed.command.txt))
 }
 
 # .ddg.add.function.annotations is passed a command that corresponds
