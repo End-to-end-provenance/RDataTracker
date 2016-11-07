@@ -1857,14 +1857,16 @@ ddg.MAX_HIST_LINES <- 2^14
   # Find all the variables used in this command.
   #print (paste(".ddg.create.data.use.edges.for.console.cmd: cmd = ", cmd@text))
   vars.used <- cmd@vars.used
-  
+
   for (var in vars.used) {
     #print(paste(".ddg.create.data.use.edges.for.console.cmd: var =", var))
     # Make sure there is a node we could connect to.
     scope <- .ddg.get.scope(var, for.caller)
+
     #print(paste(".ddg.create.data.use.edges.for.console.cmd: scope =", scope))
+
     if (.ddg.data.node.exists(var, scope)) {
-      #print(".ddg.create.data.use.edges.for.console.cmd found data node")
+      # print(".ddg.create.data.use.edges.for.console.cmd found data node")
       nRow <- which(vars.set$variable == var)
 
       # Check if the node is written in the console block.
@@ -1875,7 +1877,9 @@ ddg.MAX_HIST_LINES <- 2^14
         # Draw the edge if we will connect to a node that exists
         # before the console block or to the last writer of this
         # variable within the console block.
-				if (cmd.pos <= first.writer || cmd.pos > last.writer) {
+
+        if (cmd.pos <= first.writer || cmd.pos >= last.writer) {
+        # if (cmd.pos <= first.writer || cmd.pos > last.writer) {
           .ddg.data2proc(var, scope, cmd@abbrev)
         }
 
@@ -2889,7 +2893,7 @@ ddg.MAX_HIST_LINES <- 2^14
           # Note that we cannot just use a tryCatch here because it behaves slightly differently
           # and we would lose the value that eval returns.  withCallingHandlers returns the value.
 
-          # Evaluate.
+          # EVALUATE.
 
           if (.ddg.debug.lib()) print (paste (".ddg.parse.commands evaluating ", cmd@annotated))
           
@@ -5286,7 +5290,8 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
 # annotate.inside (optional) - if TRUE, functions and control statements
 #   are annotated.
 # max.loops (optional) - the maximum number of loops to annotate in a for,
-#   while, or repeat statement.
+#   while, or repeat statement. If max.loops = -1 there is no limit.
+#   If max.loops = 0, no loops are annotated.
 # max.snapshot.size (optional) - the maximum size for objects that
 #   should be output to snapshot files. If 0, no snapshot files are
 #   saved. If -1, all snapshot files are saved.  Size in kilobytes.
@@ -5296,7 +5301,7 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
 #   same effect as inserting ddg.breakpoint() at the top of the script.
 # save.debug (optional) - If TRUE, save debug files to debug directory.
 
-ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = NULL, enable.console = TRUE, annotate.inside = TRUE, max.loops = 3, max.snapshot.size = 100, debug = FALSE, save.debug = FALSE, display = FALSE) {
+ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = NULL, enable.console = TRUE, annotate.inside = TRUE, max.loops = -1, max.snapshot.size = 100, debug = FALSE, save.debug = FALSE, display = FALSE) {
 
   # Initiate ddg.
   ddg.init(r.script.path, ddgdir, overwrite, enable.console, max.snapshot.size)

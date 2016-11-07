@@ -111,7 +111,7 @@ setMethod ("initialize",
             .ddg.abbrev.cmd(.Object@text)
           }
 
-      .Object@vars.used <- .ddg.find.var.uses(.Object@parsed[[1]])  
+      .Object@vars.used <- .ddg.find.var.uses(.Object@parsed[[1]]) 
       .Object@vars.set <- .ddg.find.simple.assign(.Object@parsed[[1]])
       .Object@vars.possibly.set <- .ddg.find.assign(.Object@parsed[[1]])
       
