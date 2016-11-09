@@ -14,10 +14,10 @@ ddg.function(outs.graphic=NULL, outs.data=NULL, outs.exception=NULL,
 ddg.procedure(pname, ins = NULL, outs.graphic = NULL, outs.data = NULL, 
     outs.exception = NULL, outs.url = NULL, outs.file =NULL, 
     graphic.fext = "jpeg")
-ddg.return.value(expr)
+ddg.return.value(expr, cmd.func=NULL)
 ddg.start(pname = NULL)
 ddg.finish(pname = NULL)
-ddg.eval(statement)
+ddg.eval(statement, cmd.func=NULL)
 }
 \arguments{
   \item{pname}{ the label for the node. }
@@ -26,10 +26,11 @@ ddg.eval(statement)
   \item{outs.file}{ a list of names of file nodes to be created and linked as outputs to the node being created. }
   \item{outs.url}{ a list of names of url nodes to be created and linked as outputs to the node being created. }
   \item{outs.exception}{ a list of names of exception nodes to be created and linked as outputs to the node being created. }
-  \item{outs.graphic}{the name of the snapshot node to be created and linked as output to the procedural node being created}
-  \item{graphic.fext}{the file extension for the capturd graphics file}
-  \item{expr}{the value the function returns}
-  \item{statement}{the statement to evaluate}
+  \item{outs.graphic}{ the name of the snapshot node to be created and linked as output to the procedural node being created }
+  \item{graphic.fext}{ the file extension for the capturd graphics file }
+  \item{expr}{ the value the function returns }
+  \item{statement}{ the statement to evaluate }
+  \item{cmd.func}{ used internally by RDataTracker--do not use }
 }
 \details{
   ddg.function creates a procedural node of type Operation for procedures implemented as functions in the 

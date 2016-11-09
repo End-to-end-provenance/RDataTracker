@@ -1,6 +1,12 @@
 \name{InitSave}
 \alias{ddg.init}
 \alias{ddg.run}
+\alias{ddg.set.detail}
+\alias{ddg.get.detail}
+\alias{ddg.clear.detail}
+\alias{ddg.annotate.inside}
+\alias{ddg.max.loops}
+\alias{ddg.max.snapshot.size}
 \alias{ddg.annotate.on}
 \alias{ddg.annotate.off}
 \alias{ddg.save}
@@ -8,6 +14,9 @@
 \alias{ddg.console.off}
 \alias{ddg.console.on}
 \alias{ddg.display}
+\alias{ddg.forloop}
+\alias{ddg.loop.count}
+\alias{ddg.reset.loop.count}
 \title{Creating Provenance Graphs with RDataTracker}
 \description{These functions are needed to create provenance graphs.}
 \usage{
@@ -15,13 +24,23 @@ ddg.init(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enable.console =
     max.snapshot.size = 100) 
 ddg.save(r.script.path = NULL, save.debug=FALSE, quit=FALSE)
 ddg.run(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = NULL, enable.console = TRUE, 
-    annotate.inside = TRUE, max.loops = -1, max.snapshot.size = 100, debug = FALSE, save.debug=FALSE, display = FALSE)
+    annotate.inside = TRUE, max.loops = 1, max.snapshot.size = 10, debug = FALSE, save.debug=FALSE, 
+    display = FALSE)
+ddg.set.detail(detail.level)
+ddg.get.detail()
+ddg.clear.detail()
+ddg.annotate.inside()
+ddg.max.loops()
+ddg.max.snapshot.size()
 ddg.annotate.on(fnames = NULL)
 ddg.annotate.off(fnames = NULL)
 ddg.console.on()
 ddg.console.off()
 ddg.flush.ddg(ddg.path = NULL)
 ddg.display()
+ddg.forloop(index.var)
+ddg.loop.count(loop.num)
+ddg.reset.loop.count(loop.num)
 }
 \arguments{
   \item{r.script.path}{ the full path to the file containing the R script that is being executed. }
@@ -40,9 +59,12 @@ ddg.display()
   \item{save.debug}{ If TRUE, save debug files to debug directory. }
   \item{display}{ If TRUE, display the DDG when the R script completes.}
   \item{f}{ A function to run.  Data provenance is collected within the function. }
+  \item{detail.level}{ An integer indicating the level of provenance detail to be collected. }
   \item{fnames}{ A list of one or more function names. }
   \item{quit}{ If TRUE, all DDG files are removed from memory. }
-  \item{ddg.path}{The path to the DDG directory which needs to be flushed. }
+  \item{ddg.path}{ The path to the DDG directory which needs to be flushed. }
+  \item{index.var}{ The index variable passed to ddg.forloop. }
+  \item{loop.num}{ The loop number passed to ddg.loop.count and ddg.reset.loop.count. }
 }
 \details{
   In order to use RDataTracker to collect data provenance, the user must either call ddg.init 
@@ -79,6 +101,15 @@ ddg.display()
   script debugging  is enabled. This has the same effect as inserting ddg.breakpoint() at the top of the script. If display is set to TRUE, the DDG is displayed after the R script finished executing. If save.debug
   is set to TRUE, debug files are saved to the debug directory.
   
+  ddg.set.detail can be used to set the level of provenance detail to be collected.  Options include:
+  0 = no internal annotation, no snapshots. 1 = 1 loop, snapshots < 10k. 2 = 10 loops, snapshots < 100k.
+  3 = all loops, all snapshots.  If ddg.detail is not set, the values of annotate.internal, max.loops, and 
+  max.snapshot.size passed to ddg.run are used instead.  The current level of detail is returned by
+  ddg.get.detail and reset to NULL by ddg.clear.detail.
+  
+  ddg.annotate.inside returns the current value of annotate.inside.  ddg.max.loops returns the current
+  value of max.loops.  ddg.max.snapshot.size returns the current value of max.snapshot.size.
+  
   ddg.console.on and ddg.console.off toggle the console parameter for DDG creation. 
   When the console is enabled, all commands sent to the R console are captured as provenance 
   by the RDataTracker library. These functions allow for an intermixing of automatic and more detailed 
@@ -93,6 +124,8 @@ ddg.display()
   The last DDG created (if any) can be displayed with ddg.display. This function starts DDG Explorer
   and loads the most recent ddg.txt file (if any). If the DDG path is not set or a ddg.txt file is not available,
   the function returns "DDG not available".
+  
+  ddg.forloop, ddg.loop.count, and ddg.reset.loop.count are used internally by RDataTracker--do not use.
 }
 \author{Emery Boose and Barbara Lerner}
 \examples{

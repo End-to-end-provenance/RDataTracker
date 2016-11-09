@@ -94,7 +94,7 @@ setClass("DDGStatement",
 # This is called when a new DDG Statement is created.  It initializes all of the slots.
 setMethod ("initialize",
   "DDGStatement",
-    function(.Object, parsed, pos, script.name, script.num, breakpoints, annotate.inside, parseData){
+    function(.Object, parsed, pos, script.name, script.num, breakpoints, parseData){
       .Object@parsed <- parsed
       
       # deparse can return a vector of strings.  We convert that into
@@ -162,7 +162,7 @@ setMethod ("initialize",
         # the contained field is a list of DDGStatements for all statements inside
         # the function or control statement.
 
-          if (annotate.inside) {
+          if (ddg.annotate.inside()) {
             .ddg.parse.contained(.Object, script.name, parseData)
           }
       
@@ -179,7 +179,7 @@ setMethod ("initialize",
           }
            
           else {
-            .ddg.add.annotations(.Object, annotate.inside)
+            .ddg.add.annotations(.Object)
           }
           
       #print (.Object)
@@ -198,15 +198,13 @@ null.pos <- function() {
 # script.name - the name of the script the statement is from
 # script.num - the script number used to find the script in the sourced script table
 # breakpoints - all the breakpoints currently set
-# annotate.inside - true if we want internal annotations on functions and control
-#   statements
 # parseData - the object created by the parser that gives us source position information
-.ddg.construct.DDGStatement <- function (expr, pos, script.name, script.num, breakpoints, annotate.inside, parseData) {
+.ddg.construct.DDGStatement <- function (expr, pos, script.name, script.num, breakpoints, parseData) {
   # Surprisingly, if a statement is just a number, like 1 (which could be the last statement in a function, for example),
   # the parser returns a number, rather than a parse tree!
   if (is.numeric(expr)) expr <- parse(text=expr)
   
-  return (new (Class = "DDGStatement", parsed = expr, pos, script.name, script.num, breakpoints, annotate.inside, parseData))
+  return (new (Class = "DDGStatement", parsed = expr, pos, script.name, script.num, breakpoints, parseData))
 }
 
 # .ddg.abbrev.cmd abbreviates a command to the specified length.
@@ -396,7 +394,7 @@ null.pos <- function() {
 # .ddg.add.annotations accepts a DDGStatement and returns an expression.
 # The returned expression is annotated as needed.
 
-.ddg.add.annotations <- function(command, annotate.inside) {
+.ddg.add.annotations <- function(command) {
   #print("In .ddg.add.annotations")
   parsed.command <- command@parsed[[1]]
 
@@ -405,15 +403,15 @@ null.pos <- function() {
   
   # Replace source with ddg.source.
   if (is.call(parsed.command) && parsed.command[[1]] == "source") {
-    return(.ddg.add.ddg.source(parsed.command, annotate.inside))
+    return(.ddg.add.ddg.source(parsed.command))
   }
 
   # Annotate internal statements if annotate.inside is TRUE.
-  if (annotate.inside) {
+  if (ddg.annotate.inside()) {
     # Annotate user-defined functions.
     # Note that this will not annotate anonymous functions, like ones that might be passed to lapply, for example
     # Is that what we want?
-    if (annotate.inside && .ddg.is.assign(parsed.command) && .ddg.is.functiondecl(parsed.command[[3]])) {
+    if (.ddg.is.assign(parsed.command) && .ddg.is.functiondecl(parsed.command[[3]])) {
       return(.ddg.add.function.annotations(command))
     }
   
@@ -480,7 +478,7 @@ null.pos <- function() {
     }
     
     # Create the DDGStatement objects for the statements in the function
-    return (.ddg.create.DDGStatements (func.stmts, script.name, cmd@script.num, annotate.inside = TRUE, parseData, cmd@pos))
+    return (.ddg.create.DDGStatements (func.stmts, script.name, cmd@script.num, parseData, cmd@pos))
   }
   
   # Control statements.
@@ -526,7 +524,7 @@ null.pos <- function() {
     }
 
     # Create the DDGStatement objects for statements in block
-    return (.ddg.create.DDGStatements (block.stmts, script.name, cmd@script.num, annotate.inside = TRUE, parseData, cmd@pos))
+    return (.ddg.create.DDGStatements (block.stmts, script.name, cmd@script.num, parseData, cmd@pos))
   }
 
   # Other control statements  
@@ -544,7 +542,7 @@ null.pos <- function() {
     }
 
     # Create the DDGStatement objects for statements in block
-    return (.ddg.create.DDGStatements (block.stmts, script.name, cmd@script.num, annotate.inside = TRUE, parseData, cmd@pos))
+    return (.ddg.create.DDGStatements (block.stmts, script.name, cmd@script.num, parseData, cmd@pos))
   }
   
   # Not a function declaration or control construct.
@@ -554,12 +552,11 @@ null.pos <- function() {
 # .ddg.add.ddg.source replaces source with ddg.source.
 #
 # parsed.command must be a parsed expression that is a call
-# to the source function. The value of annotate.inside is passed
-# to ddg.source.
+# to the source function.
 
-.ddg.add.ddg.source <- function(parsed.command, annotate.inside) {
+.ddg.add.ddg.source <- function(parsed.command) {
   script.name <- deparse(parsed.command[[2]])
-  parsed.command.txt <- paste("ddg.source(", script.name, ", annotate.inside=", annotate.inside, ")", sep="")
+  parsed.command.txt <- paste("ddg.source(", script.name, ")", sep="")
   return(parse(text=parsed.command.txt))
 }
 
@@ -1096,8 +1093,7 @@ null.pos <- function() {
   parsed.command <- command@parsed[[1]]
 
   # Return if no annotation
-  ddg.max.loops <- ddg.max.loops()
-  if (ddg.max.loops == 0) return(command@parsed)
+  if (ddg.max.loops() == 0) return(command@parsed)
 
   # Add new loop & get loop number.
   .ddg.add.loop()
@@ -1125,7 +1121,7 @@ null.pos <- function() {
   annotated.block.txt <- deparse(annotated.block)
   
   parsed.command.txt <- paste(c(paste("for (", deparse(parsed.command[[2]]), " in ", deparse(parsed.command[[3]]), ") {", sep=""),
-    paste("if (ddg.loop.count(", ddg.loop.num, ") <= ", ddg.max.loops, ")", sep=""),
+    paste("if (ddg.loop.count(", ddg.loop.num, ") <= ", ddg.max.loops(), ")", sep=""),
     annotated.block.txt,
     paste("else", sep = ""),
     block.txt,
@@ -1143,8 +1139,7 @@ null.pos <- function() {
   parsed.command <- command@parsed[[1]]
 
   # Return if no annotation
-  ddg.max.loops <- ddg.max.loops()
-  if (ddg.max.loops == 0) return(command@parsed)
+  if (ddg.max.loops() == 0) return(command@parsed)
   
   # Add new loop & get loop number.
   .ddg.add.loop()
@@ -1168,7 +1163,7 @@ null.pos <- function() {
   annotated.block.txt <- deparse(annotated.block)
   
   parsed.command.txt <- paste(c(paste("while (", deparse(parsed.command[[2]]), ") {", sep=""),
-    paste("if (ddg.loop.count(", ddg.loop.num, ") <= ", ddg.max.loops, ")", sep=""),
+    paste("if (ddg.loop.count(", ddg.loop.num, ") <= ", ddg.max.loops(), ")", sep=""),
     annotated.block.txt,
     paste("else", sep = ""),
     block.txt,
@@ -1186,8 +1181,7 @@ null.pos <- function() {
   parsed.command <- command@parsed[[1]]
 
   # Return if no annotation
-  ddg.max.loops <- ddg.max.loops()
-  if (ddg.max.loops == 0) return(command@parsed)
+  if (ddg.max.loops() == 0) return(command@parsed)
   
   # Add new loop & get loop number.
   .ddg.add.loop()
@@ -1211,7 +1205,7 @@ null.pos <- function() {
   annotated.block.txt <- deparse(annotated.block)
   
   parsed.command.txt <- paste(c(paste("repeat {", sep=""),
-    paste("if (ddg.loop.count(", ddg.loop.num, ") <= ", ddg.max.loops, ")", sep=""),
+    paste("if (ddg.loop.count(", ddg.loop.num, ") <= ", ddg.max.loops(), ")", sep=""),
     annotated.block.txt,
     paste("else", sep = ""),
     block.txt,

@@ -7,6 +7,8 @@ export(ddg.breakpoint, ddg.set.breakpoint, ddg.list.breakpoints, ddg.clear.break
 export(ddg.flush.ddg)
 export(ddg.source)
 export(ddg.forloop, ddg.max.loops, ddg.loop.count, ddg.reset.loop.count)
+export(ddg.annotate.inside, ddg.max.snapshot.size)
+export(ddg.set.detail, ddg.get.detail, ddg.clear.detail)
 
 importFrom(gtools, defmacro)
 importFrom(XML, saveXML)

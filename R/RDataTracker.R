@@ -495,6 +495,12 @@ ddg.MAX_HIST_LINES <- 2^14
   
   # Control loop list
   .ddg.set("ddg.loops", list())
+ 
+  # Set max.snapshot.size for console mode.
+  if (!.ddg.is.set("ddg.max.snapshot.size")) {
+    .ddg.set("ddg.max.snapshot.size", 100)
+  }
+    
 }
 
 # .ddg.set.history provides a wrapper to change the number of
@@ -2616,15 +2622,13 @@ ddg.MAX_HIST_LINES <- 2^14
 
 # exprs - a list of parsed expressions
 # script.name - the name of the script the expressions come from
-# annotate.inside - if true, we will place annotations inside function definitions
-#   and control statementss so we can record provenance internal to them
 # parseData - information provided by the parser that we use to find line numbers
 # enclosing.pos - if exprs are statements within a function definition, enclosing.pos
 #   is the source position information of the entire function declaration
 
 # Returns a list of DDGStatement objects
 
-.ddg.create.DDGStatements <- function (exprs, script.name, script.num, annotate.inside, parseData = NULL, enclosing.pos = NULL) {
+.ddg.create.DDGStatements <- function (exprs, script.name, script.num, parseData = NULL, enclosing.pos = NULL) {
   
   # The parse data gives us line number information
   if (is.null(parseData)) {
@@ -2635,7 +2639,7 @@ ddg.MAX_HIST_LINES <- 2^14
       cmds <- vector("list", (length(exprs)))
       for (i in 1:length(exprs)) {
         expr <- as.expression(exprs[i])
-        cmds[[i]] <- .ddg.construct.DDGStatement(expr, NA, script.name, script.num, NA, annotate.inside, parseData)
+        cmds[[i]] <- .ddg.construct.DDGStatement(expr, NA, script.name, script.num, NA, parseData)
       }
       return(cmds)
     }
@@ -2667,7 +2671,7 @@ ddg.MAX_HIST_LINES <- 2^14
   for (i in 1:length(exprs)) {
     expr <- as.expression(exprs[i])
     next.expr.pos <- new (Class = "DDGStatementPos", non.comment.parse.data[next.parseData, ])
-    cmds[[next.cmd]] <- .ddg.construct.DDGStatement(expr, next.expr.pos, script.name, script.num, breakpoints, annotate.inside, parseData)
+    cmds[[next.cmd]] <- .ddg.construct.DDGStatement(expr, next.expr.pos, script.name, script.num, breakpoints, parseData)
     next.cmd <- next.cmd + 1
     
     # If there are more expressions, determine where to look next in the parseData
@@ -2734,20 +2738,16 @@ ddg.MAX_HIST_LINES <- 2^14
 # print.eval (optional) - print result of each evaluation.
 # max.deparse.length (optional) - maximum number of characters
 #   output for deparse of a single expression.
-# annotate.inside (optional) - if TRUE, functions and control statements are 
-#   annotated
 # called.from.ddg.eval(optional) - whether called from ddg.eval
 # cmds - list of DDG Statements that correspond to the exprs passed in.  This is 
 #   currently only used when called from ddg.eval.  Normally, ddg.parse.commands
 #   creates the DDG Statement objects.
 
-.ddg.parse.commands <- function (exprs, script.name="", script.num=NA, environ, ignore.patterns=c('^ddg.'), 
-    node.name="Console", run.commands = FALSE, echo=FALSE, print.eval=echo, max.deparse.length=150, 
-    annotate.inside = FALSE, called.from.ddg.eval=FALSE, cmds=NULL) {
+.ddg.parse.commands <- function (exprs, script.name="", script.num=NA, environ, ignore.patterns=c('^ddg.'), node.name="Console", run.commands = FALSE, echo=FALSE, print.eval=echo, max.deparse.length=150, called.from.ddg.eval=FALSE, cmds=NULL) {
   
   # Gather all the information that we need about the statements
   if (is.null(cmds)) {
-    cmds <- .ddg.create.DDGStatements (exprs, script.name, script.num, annotate.inside)
+    cmds <- .ddg.create.DDGStatements (exprs, script.name, script.num)
 
     if (.ddg.save.debug()) {
       .ddg.save.annotated.script(cmds, script.name)
@@ -3345,7 +3345,7 @@ ddg.MAX_HIST_LINES <- 2^14
 
 .ddg.snapshot.node <- function(dname, fext, data, save.object = FALSE, dscope=NULL, from.env=FALSE) {
   # Determine if we should save the entire data
-  max.snapshot.size <- .ddg.get(".ddg.max.snapshot.size")
+  max.snapshot.size <- ddg.max.snapshot.size()
 
   if (max.snapshot.size == 0) {
     return(.ddg.data.node ("Data", dname, "", dscope, from.env=from.env))
@@ -3377,7 +3377,7 @@ ddg.MAX_HIST_LINES <- 2^14
   }
   else if (is.data.frame(data) || is.matrix(data) || is.array(data) || is.list(data)) {
     if (!full.snapshot) {
-      data <- head(data, n=1000)
+      data <- head(data, n=10*max.snapshot.size)
       snapname <- paste(dname, "-PARTIAL", sep="")
     }
   }
@@ -4575,7 +4575,7 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
   # Create a return proc node
 
   if (is.null(cmd.func)) {
-    return.stmt <- .ddg.construct.DDGStatement (parse(text=orig.return), pos=NA, script.num=NA, breakpoints=NA, annotate.inside=FALSE)
+    return.stmt <- .ddg.construct.DDGStatement (parse(text=orig.return), pos=NA, script.num=NA, breakpoints=NA)
   }
   else {
     return.stmt <- cmd.func()
@@ -4649,28 +4649,42 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
   return(expr)
 }
 
-# ddg.max.loops returns the value of the input parameter max.loops.
+# ddg.annotate.inside returns the value of the parameter
+# annotate.inside.
+
+ddg.annotate.inside <- function() {
+  return(.ddg.get("ddg.annotate.inside"))
+}
+
+# ddg.max.loops returns the value of the parameter max.loops.
 
 ddg.max.loops <- function() {
   return(.ddg.get("ddg.max.loops"))
 }
 
+# ddg.max.snapshot.size returns the value of the parameter
+# max.snapshot.size.
+
+ddg.max.snapshot.size <- function() {
+  return(.ddg.get("ddg.max.snapshot.size"))
+}
+
 # ddg.loop.count increments the current count for the specified loop
 # and returns the incremented value.
 
-ddg.loop.count <- function(i) {
+ddg.loop.count <- function(loop.num) {
   ddg.loops <- .ddg.loops()
-  ddg.loops[[i]] <- ddg.loops[[i]] + 1
+  ddg.loops[[loop.num]] <- ddg.loops[[loop.num]] + 1
   .ddg.set("ddg.loops", ddg.loops)
-  return(ddg.loops[[i]])
+  return(ddg.loops[[loop.num]])
 }
 
 # ddg.reset.loop.count sets the current count for the specified loop
 # to zero.
 
-ddg.reset.loop.count <- function(i) {
+ddg.reset.loop.count <- function(loop.num) {
   ddg.loops <- .ddg.loops()
-  ddg.loops[i] <- 0
+  ddg.loops[loop.num] <- 0
   .ddg.set("ddg.loops", ddg.loops)
 }
 
@@ -5227,7 +5241,6 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
   
   # Set environment constants.
   .ddg.set(".ddg.enable.console", enable.console)
-  .ddg.set(".ddg.max.snapshot.size", max.snapshot.size)
   .ddg.set(".ddg.func.depth", 0)
   # .ddg.init.environ()
   
@@ -5301,10 +5314,10 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
 #   same effect as inserting ddg.breakpoint() at the top of the script.
 # save.debug (optional) - If TRUE, save debug files to debug directory.
 
-ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = NULL, enable.console = TRUE, annotate.inside = TRUE, max.loops = -1, max.snapshot.size = 100, debug = FALSE, save.debug = FALSE, display = FALSE) {
+ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = NULL, enable.console = TRUE, annotate.inside = TRUE, max.loops = 1, max.snapshot.size = 10, debug = FALSE, save.debug = FALSE, display = FALSE) {
 
   # Initiate ddg.
-  ddg.init(r.script.path, ddgdir, overwrite, enable.console, max.snapshot.size)
+  ddg.init(r.script.path, ddgdir, overwrite, enable.console)
 
   # Create ddg directory.
   # dir.create(.ddg.path(), showWarnings = FALSE)
@@ -5316,10 +5329,20 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
   # Set .ddg.is.sourced to TRUE if script provided.
   if (!is.null(r.script.path)) .ddg.set(".ddg.is.sourced", TRUE)
   
-  # Store maximum number of loops to annotate.
-  if (max.loops < 0) max.loops <- 10^10
-  .ddg.set("ddg.max.loops", max.loops)
+  # If ddg.detail is not set, use values of annotate.inside, max.loops
+  # and max.snapshot.size.
+  if (is.null(ddg.get.detail())) {
+    # Store value of annotate.inside.
+    .ddg.set("ddg.annotate.inside", annotate.inside)
   
+    # Store maximum number of loops to annotate.
+    if (max.loops < 0) max.loops <- 10^10
+    .ddg.set("ddg.max.loops", max.loops)
+  
+    # Store maximum snapshot size.
+    .ddg.set("ddg.max.snapshot.size", max.snapshot.size)
+  }
+    
   # Set breakpoint if debug is TRUE.
   if (debug) ddg.breakpoint()
 
@@ -5335,8 +5358,7 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
                 ddgdir = ddgdir,
                 ignore.ddg.calls = FALSE,
                 ignore.init = TRUE,
-                force.console = FALSE,
-                annotate.inside = annotate.inside)
+                force.console = FALSE)
           else stop("r.script.path and f cannot both be NULL"),
       error=function(e) {
         e.str <- toString(e)
@@ -5457,12 +5479,10 @@ ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE) {
 # ignore.ddg.calls (optional) - if TRUE, ignore DDG function calls.
 # ignore.init (optional) - if TRUE, ignore ddg.init and ddg.run.
 # force.console (optional) - if TRUE, turn console mode on.
-# annotate.inside (optional) - if TRUE, functions and control statements
-#   are annotated.
 
 ddg.source <- function (file,  ddgdir = NULL, local = FALSE, echo = verbose, print.eval = echo,
     verbose = getOption("verbose"), max.deparse.length = 150, chdir = FALSE, encoding = getOption("encoding"),
-    ignore.ddg.calls = TRUE, ignore.init = ignore.ddg.calls, force.console=ignore.init, annotate.inside = TRUE){
+    ignore.ddg.calls = TRUE, ignore.init = ignore.ddg.calls, force.console=ignore.init){
 
   # Store script number & name.
   snum <- .ddg.next.script.num()
@@ -5646,7 +5666,7 @@ ddg.source <- function (file,  ddgdir = NULL, local = FALSE, echo = verbose, pri
     # Parse the commands into a console node.
     .ddg.parse.commands(exprs, sname, snum, environ=envir, ignore.patterns=ignores, node.name=sname,
         echo = echo, print.eval = print.eval, max.deparse.length = max.deparse.length,
-        run.commands = TRUE, annotate.inside = annotate.inside)
+        run.commands = TRUE)
 
 
     # Save the DDG among other things, but don't return any
@@ -5721,6 +5741,57 @@ ddg.list.breakpoints <- function() {
 
 ddg.clear.breakpoints <- function() {
   .ddg.set("ddg.breakpoints", NULL)
+}
+
+# ddg.set.detail sets the level of provenance detail to be collected.
+# If ddg.detail is not set, the values of annotate.inside, max.loops, 
+# and max.snapshot.size passed to ddg.run are used instead.
+
+#   0 = no internal annotation, no snapshots.
+#   1 = 1 loop, snapshots < 10k.
+#   2 = 10 loops, snapshots < 100k.
+#   3 = all loops, all snapshots.
+
+ddg.set.detail <- function(detail.level) {
+  if (detail.level == 0) {
+    .ddg.set("ddg.annotate.inside", FALSE)
+    .ddg.set("ddg.max.loops", 0)
+    .ddg.set("ddg.max.snapshot.size", 0)
+    .ddg.set("ddg.detail", 0)
+  } else if (detail.level == 1) {
+    .ddg.set("ddg.annotate.inside", TRUE)
+    .ddg.set("ddg.max.loops", 1)
+    .ddg.set("ddg.max.snapshot.size", 10)
+    .ddg.set("ddg.detail", 1)
+  } else if (detail.level == 2) {
+    .ddg.set("ddg.annotate.inside", TRUE)
+    .ddg.set("ddg.max.loops", 10)
+    .ddg.set("ddg.max.snapshot.size", 100)
+    .ddg.set("ddg.detail", 2)
+  } else if (detail.level == 3) {
+    .ddg.set("ddg.annotate.inside", TRUE)
+    .ddg.set("ddg.max.loops", 10^10)
+    .ddg.set("ddg.max.snapshot.size", -1)
+    .ddg.set("ddg.detail", 3)
+  } else {
+    print("0 = no internal annotation, no snapshots")
+    print("1 = 1 loop, snapshots < 10k")
+    print("2 = 10 loops, snapshots < 100k")
+    print("3 = all loops, all snapshots")
+  }
+}
+
+# ddg.detail returns the current level of provenance detail.
+
+ddg.get.detail <- function() {
+  if (!.ddg.is.set("ddg.detail")) .ddg.set("ddg.detail", NULL)
+  return(.ddg.get("ddg.detail"))
+}
+
+# ddg.clear.detail clears the current value of provenance detail.
+
+ddg.clear.detail <- function() {
+  .ddg.set("ddg.detail", NULL)
 }
 
 # ddg.console.off turns off the console mode of DDG construction.
