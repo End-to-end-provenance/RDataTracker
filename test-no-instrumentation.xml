@@ -491,7 +491,7 @@
 	<target name="normal-tests" depends="basicTest, S4ObjectTest,
 		ScopeTest, ReturnTest, OddParameterTest, FunctionAnnotationTest, 
 		ControlConstructTest, WarningTest, PlotTest,
-		DataTypeTest, HigherOrderFuncTest, RMarkdownTest, DDGStatementTest">
+		DataTypeTest, HigherOrderFuncTest, RMarkdownTest">
 		<echo>##############################################
 	      Finished Execution of Normal Tests. Nothing should have malfunctioned.
     	  ##############################################</echo>
@@ -634,7 +634,7 @@
 	 	</antcall>
 	</target>
 
-    <target name="script-tests" depends="CalculateSquareRoot, DailySolarRadiation, HFDatasetPreview, SivanSamplingSmaller">
+    <target name="script-tests" depends="CalculateSquareRoot, DailySolarRadiation, HFDatasetPreview">
 	    <echo>Script tests for which out put should not differ </echo>
 	</target>
 	<!--########################## End Script Tests ##########################-->
@@ -716,7 +716,7 @@
     <echo>This batch of tests is quick to execute, but not as extensive.</echo>
   </target>
 
-  <target name="long-test" depends="script-tests, long-script-tests" description="Run long regression tests for the currently installed RDataTracker Package.">
+  <target name="long-test" depends="script-tests" description="Run long regression tests for the currently installed RDataTracker Package.">
     <echo>This batch of tests takes longer, but is a bit more real-world</echo>
   </target>
 

@@ -601,7 +601,7 @@ create.datafile.preview <- function(datafile.id) {
 
 # dataset id
 dataset.id <- "hf000"
-datafile.num <- 0
+datafile.num <- 1
 
 # read eml file
 eml <- get.parsed.eml(dataset.id)

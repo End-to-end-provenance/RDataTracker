@@ -1739,7 +1739,7 @@ ddg.MAX_HIST_LINES <- 2^14
 
 .ddg.add.to.vars.set <- function(vars.set, cmd, i) {
   #print("In .ddg.add.to.vars.set")
-  
+
   # Find out the variable being assigned to by a simple assignment
   # statement.
   main.var.assigned <- cmd@vars.set
@@ -1885,6 +1885,8 @@ ddg.MAX_HIST_LINES <- 2^14
         # variable within the console block.
 
         if (cmd.pos <= first.writer || cmd.pos >= last.writer) {
+        # Note: the following line leads to the self-referencing 
+        # node problem.
         # if (cmd.pos <= first.writer || cmd.pos > last.writer) {
           .ddg.data2proc(var, scope, cmd@abbrev)
         }
@@ -2758,7 +2760,7 @@ ddg.MAX_HIST_LINES <- 2^14
   # Figure out if we will execute commands or not.
   execute <- run.commands & !is.null(environ) & is.environment(environ)
   
-  #print (paste("ddg.parse.commands: .ddg.func.depth =", .ddg.get(".ddg.func.depth")))
+  # print (paste("ddg.parse.commands: .ddg.func.depth =", .ddg.get(".ddg.func.depth")))
   inside.func <- (.ddg.get(".ddg.func.depth") > 0)
 
   # Attempt to close the previous collapsible command node if a ddg
@@ -2823,6 +2825,7 @@ ddg.MAX_HIST_LINES <- 2^14
     # Loop over the commands as well as their string representations.
     for (i in 1:length(cmds)) {
       cmd <- cmds[[i]]
+
       if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Processing", cmd@abbrev))
       
       # Process breakpoint. We stop if there is a breakpoint set on this line or we are single-stepping.
@@ -2831,22 +2834,30 @@ ddg.MAX_HIST_LINES <- 2^14
         .ddg.process.breakpoint(cmd, inside.function=called.from.ddg.eval)
       }
       
-      #print("Checking whether to set last.cmd")
+      # print("Checking whether to set last.cmd")
       if (.ddg.enable.source() && grepl("^ddg.eval", cmd@text) && .ddg.enable.console()) {
         if (is.null(.ddg.last.cmd)) {
           .ddg.last.cmd <- cmd
         }
       }
-      
+
       # Get environment for output data node.
       d.environ <- environ
       if (.ddg.is.global.assign(cmd@parsed[[1]])) d.environ <- globalenv()
       
+      # Check for control statement
+      st.type <- .ddg.get.statement.type(cmd@parsed[[1]])
+      control.statement <- (st.type == "if" || st.type == "for" || st.type == "while" || st.type == "repeat" || st.type == "{")
+
       # Specifies whether or not a procedure node should be created
       # for this command. Basically, if a ddg exists and the
-      # command is not a DDG command, it should be created.
+      # command is not a DDG command or a control statement, it should 
+      # be created. Note that if control statements are annotated,
+      # a procedure node is created for each statement inside a control
+      # block, so there is no need to create additional nodes for the 
+      # control statement itself.
 
-      create <- !cmd@isDdgFunc && .ddg.is.init() && .ddg.enable.console()
+      create <- !cmd@isDdgFunc && .ddg.is.init() && .ddg.enable.console() && !(control.statement && ddg.annotate.inside() && ddg.max.loops() > 0)
       start.finish.created <- FALSE
       
       # If the command does not match one of the ignored patterns.
@@ -2968,6 +2979,7 @@ ddg.MAX_HIST_LINES <- 2^14
           if (execute) {
             # Add variables to set.
             vars.set <- .ddg.add.to.vars.set(vars.set,cmd,i)
+
             if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Adding", cmd@abbrev, "information to vars.set"))
           }
           

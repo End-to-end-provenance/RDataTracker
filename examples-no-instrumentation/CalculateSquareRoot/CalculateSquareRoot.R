@@ -15,7 +15,10 @@ get.initial.values <- function() {
 
 get.random <- function(x) {
   # get random seed value
-  z <- runif(1,1,x)
+  # z <- runif(1,1,x)
+
+  # use fixed value for regression test
+  z <- 3
 
   return(z)
 }

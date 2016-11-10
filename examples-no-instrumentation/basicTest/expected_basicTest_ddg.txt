@@ -1,109 +1,109 @@
 Architecture="x86_64"
-OperatingSystem="unix"
+OperatingSystem="windows"
 Language="R"
-LanguageVersion="R version 3.2.3 (2015-12-10)"
+LanguageVersion="R version 3.2.5 (2016-04-14)"
 RDataTrackerVersion="2.24.1"
 Script="[DIR]/basicTest.R"
 SourcedScripts=""
-ProcessFileTimestamp="2016-08-09T16.00.10EDT"
+ProcessFileTimestamp="2016-07-18T10.17.48EDT"
 WorkingDirectory="[DIR]"
 DDGDirectory="[DIR]/ddg"
-DateTime="2016-08-17T13.49.28EDT"
+DateTime="2016-11-10T10.09.11EST"
 InstalledPackages="RDataTracker 2.24.1"
-46
-Start p1 "1-basicTest.R" Value="basicTest.R" Time="0.0840000000000001" Script="NA" Pos="NA";
-Operation p2 "2-f <- function(a, b, yy, d, e, f) {    return(a + 1)}" Value="f <- function(a, b, yy, d, e, f) {    return(a + 1)}" Time="0.0860000000000001" Script="0" Pos="14,1,16,1";
+45
+Start p1 "1-basicTest.R" Value="basicTest.R" Time="0.13" Script="NA" Pos="NA";
+Operation p2 "2-f <- function(a, b, yy, d, e, f) {    return(a + 1)}" Value="f <- function(a, b, yy, d, e, f) {    return(a + 1)}" Time="0.13" Script="0" Pos="14,1,16,1";
 CF p1 p2
 Data d1 "1-f" Value="#ddg.function";
 DF p2 d1
-Operation p3 "3-g <- function(x) {    return(x^2)}" Value="g <- function(x) {    return(x^2)}" Time="0.0930000000000001" Script="0" Pos="18,1,20,1";
+Operation p3 "3-g <- function(x) {    return(x^2)}" Value="g <- function(x) {    return(x^2)}" Time="0.13" Script="0" Pos="18,1,20,1";
 CF p2 p3
 Data d2 "2-g" Value="#ddg.function";
 DF p3 d2
-Operation p4 "4-x <- 1 + 2" Value="x <- 1 + 2" Time="0.0980000000000001" Script="0" Pos="23,1,23,8";
+Operation p4 "4-x <- 1 + 2" Value="x <- 1 + 2" Time="0.14" Script="0" Pos="23,1,23,8";
 CF p3 p4
 Data d3 "3-x" Value="3";
 DF p4 d3
-Operation p5 "5-y <- paste(\"a\", \"b\", \"c\")" Value="y <- paste(\"a\", \"b\", \"c\")" Time="0.104" Script="0" Pos="24,1,24,25";
+Operation p5 "5-y <- paste(\"a\", \"b\", \"c\")" Value="y <- paste(\"a\", \"b\", \"c\")" Time="0.14" Script="0" Pos="24,1,24,25";
 CF p4 p5
 Data d4 "4-y" Value="\"a b c\"";
 DF p5 d4
-Operation p6 "6-z <- x + 2" Value="z <- x + 2" Time="0.111" Script="0" Pos="25,1,25,10";
+Operation p6 "6-z <- x + 2" Value="z <- x + 2" Time="0.16" Script="0" Pos="25,1,25,10";
 CF p5 p6
 DF d3 p6
 Data d5 "5-z" Value="5";
 DF p6 d5
-Operation p7 "7-w <- x + 3" Value="w <- x + 3" Time="0.121" Script="0" Pos="26,1,26,10";
+Operation p7 "7-w <- x + 3" Value="w <- x + 3" Time="0.17" Script="0" Pos="26,1,26,10";
 CF p6 p7
 DF d3 p7
 Data d6 "6-w" Value="6";
 DF p7 d6
-Operation p8 "8-year <- c(1992, 1995)" Value="year <- c(1992, 1995)" Time="0.13" Script="0" Pos="29,1,29,21";
+Operation p8 "8-year <- c(1992, 1995)" Value="year <- c(1992, 1995)" Time="0.19" Script="0" Pos="29,1,29,21";
 CF p7 p8
-Snapshot d7 "7-year" Value="[DIR]/ddg/data/7-year.csv" Time="2016-08-17T13.49.28EDT";
+Snapshot d7 "7-year" Value="[DIR]/ddg/data/7-year.csv" Time="2016-11-10T10.09.12EST";
 DF p8 d7
-Operation p9 "9-name <- c(\"Ben\", \"Greg\")" Value="name <- c(\"Ben\", \"Greg\")" Time="0.139" Script="0" Pos="60,1,63,1";
+Operation p9 "9-name <- c(\"Ben\", \"Greg\")" Value="name <- c(\"Ben\", \"Greg\")" Time="0.19" Script="0" Pos="60,1,63,1";
 CF p8 p9
-Snapshot d8 "8-name" Value="[DIR]/ddg/data/8-name.csv" Time="2016-08-17T13.49.28EDT";
+Snapshot d8 "8-name" Value="[DIR]/ddg/data/8-name.csv" Time="2016-11-10T10.09.12EST";
 DF p9 d8
-Operation p10 "10-male <- c(TRUE, TRUE)" Value="male <- c(TRUE, TRUE)" Time="0.148" Script="0" Pos="66,1,66,14";
+Operation p10 "10-male <- c(TRUE, TRUE)" Value="male <- c(TRUE, TRUE)" Time="0.21" Script="0" Pos="66,1,66,14";
 CF p9 p10
-Snapshot d9 "9-male" Value="[DIR]/ddg/data/9-male.csv" Time="2016-08-17T13.49.28EDT";
+Snapshot d9 "9-male" Value="[DIR]/ddg/data/9-male.csv" Time="2016-11-10T10.09.12EST";
 DF p10 d9
-Operation p11 "11-kids.df <- data.frame(year, name, male)" Value="kids.df <- data.frame(year, name, male)" Time="0.159" Script="0" Pos="NA,NA,NA,NA";
+Operation p11 "11-kids.df <- data.frame(year, name, male)" Value="kids.df <- data.frame(year, name, male)" Time="0.22" Script="0" Pos="NA,NA,NA,NA";
 CF p10 p11
 DF d7 p11
 DF d8 p11
 DF d9 p11
-Snapshot d10 "10-kids.df" Value="[DIR]/ddg/data/10-kids.df.csv" Time="2016-08-17T13.49.28EDT";
+Snapshot d10 "10-kids.df" Value="[DIR]/ddg/data/10-kids.df.csv" Time="2016-11-10T10.09.12EST";
 DF p11 d10
-Operation p12 "12-x <- NA" Value="x <- NA" Time="0.181" Script="0" Pos="NA,NA,NA,NA";
+Operation p12 "12-x <- NA" Value="x <- NA" Time="0.24" Script="0" Pos="NA,NA,NA,NA";
 CF p11 p12
 Data d11 "11-x" Value="NA";
 DF p12 d11
-Operation p13 "13-y <- NULL" Value="y <- NULL" Time="0.187" Script="0" Pos="NA,NA,NA,NA";
+Operation p13 "13-y <- NULL" Value="y <- NULL" Time="0.25" Script="0" Pos="NA,NA,NA,NA";
 CF p12 p13
 Data d12 "12-y" Value="NULL";
 DF p13 d12
-Start p14 "14-val <- f(w, x, y, z, x + 1, vector())" Value="val <- f(w, x, y, z, x + 1, vector())" Time="0.196" Script="0" Pos="NA,NA,NA,NA";
+Start p14 "14-val <- f(w, x, y, z, x + 1, vector())" Value="val <- f(w, x, y, z, x + 1, vector())" Time="0.25" Script="0" Pos="NA,NA,NA,NA";
 CF p13 p14
 DF d1 p14
 DF d6 p14
 DF d11 p14
 DF d12 p14
 DF d5 p14
-Start p15 "15-f(w, x, y, z, x + 1, vector())" Value="f(w, x, y, z, x + 1, vector())" Time="0.226" Script="NA" Pos="NA";
+Start p15 "15-f(w, x, y, z, x + 1, vector())" Value="f(w, x, y, z, x + 1, vector())" Time="0.28" Script="NA" Pos="NA";
 CF p14 p15
-Binding p16 "16-a  <-  w" Time="0.227" Script="NA" Pos="NA";
+Binding p16 "16-a  <-  w" Time="0.28" Script="NA" Pos="NA";
 CF p15 p16
 DF d6 p16
 Data d13 "13-a" Value="6";
 DF p16 d13
-Binding p17 "17-b  <-  x" Time="0.237" Script="NA" Pos="NA";
+Binding p17 "17-b  <-  x" Time="0.3" Script="NA" Pos="NA";
 CF p16 p17
 DF d11 p17
 Data d14 "14-b" Value="NA";
 DF p17 d14
-Binding p18 "18-yy  <-  y" Time="0.246" Script="NA" Pos="NA";
+Binding p18 "18-yy  <-  y" Time="0.32" Script="NA" Pos="NA";
 CF p17 p18
 DF d12 p18
 Data d15 "15-yy" Value="NULL";
 DF p18 d15
-Binding p19 "19-d  <-  z" Time="0.255" Script="NA" Pos="NA";
+Binding p19 "19-d  <-  z" Time="0.32" Script="NA" Pos="NA";
 CF p18 p19
 DF d5 p19
 Data d16 "16-d" Value="5";
 DF p19 d16
-Binding p20 "20-e  <-  x + 1" Time="0.265" Script="NA" Pos="NA";
+Binding p20 "20-e  <-  x + 1" Time="0.33" Script="NA" Pos="NA";
 CF p19 p20
 DF d11 p20
 Data d17 "17-e" Value="NA";
 DF p20 d17
-Binding p21 "21-f  <-  vector()" Time="0.273" Script="NA" Pos="NA";
+Binding p21 "21-f  <-  vector()" Time="0.35" Script="NA" Pos="NA";
 CF p20 p21
-Snapshot d18 "18-f" Value="[DIR]/ddg/data/18-f.csv" Time="2016-08-17T13.49.28EDT";
+Snapshot d18 "18-f" Value="[DIR]/ddg/data/18-f.csv" Time="2016-11-10T10.09.12EST";
 DF p21 d18
-Operation p22 "22-f" Value="f" Time="0.281" Script="NA" Pos="NA";
+Operation p22 "22-f" Value="f" Time="0.35" Script="NA" Pos="NA";
 DF d1 p22
 DF d13 p22
 DF d14 p22
@@ -113,90 +113,89 @@ DF d17 p22
 DF d18 p22
 CF p21 p22
 Data d19 "19-f(w,x,y,z,x+1,vector()) return" Value="7";
-Operation p23 "23-return(a + 1)" Value="return(a + 1)" Time="0.313" Script="0" Pos="NA,NA,NA,NA";
+Operation p23 "23-return(a + 1)" Value="return(a + 1)" Time="0.39" Script="0" Pos="NA,NA,NA,NA";
 CF p22 p23
 DF p23 d19
 DF d13 p23
-Finish p24 "24-f(w, x, y, z, x + 1, vector())" Value="f(w, x, y, z, x + 1, vector())" Time="0.324" Script="NA" Pos="NA";
+Finish p24 "24-f(w, x, y, z, x + 1, vector())" Value="f(w, x, y, z, x + 1, vector())" Time="0.41" Script="NA" Pos="NA";
 CF p23 p24
-Finish p25 "25-val <- f(w, x, y, z, x + 1, vector())" Value="val <- f(w, x, y, z, x + 1, vector())" Time="0.325" Script="0" Pos="NA,NA,NA,NA";
+Finish p25 "25-val <- f(w, x, y, z, x + 1, vector())" Value="val <- f(w, x, y, z, x + 1, vector())" Time="0.41" Script="0" Pos="NA,NA,NA,NA";
 CF p24 p25
 DF d19 p25
 Data d20 "20-val" Value="7";
 DF p25 d20
-Start p26 "26-x <- g(10)" Value="x <- g(10)" Time="0.33" Script="0" Pos="NA,NA,NA,NA";
+Start p26 "26-x <- g(10)" Value="x <- g(10)" Time="0.41" Script="0" Pos="NA,NA,NA,NA";
 CF p25 p26
 DF d2 p26
-Start p27 "27-g(10)" Value="g(10)" Time="0.339" Script="NA" Pos="NA";
+Start p27 "27-g(10)" Value="g(10)" Time="0.42" Script="NA" Pos="NA";
 CF p26 p27
-Binding p28 "28-x  <-  10" Time="0.34" Script="NA" Pos="NA";
+Binding p28 "28-x  <-  10" Time="0.42" Script="NA" Pos="NA";
 CF p27 p28
 Data d21 "21-x" Value="10";
 DF p28 d21
-Operation p29 "29-g" Value="g" Time="0.344" Script="NA" Pos="NA";
+Operation p29 "29-g" Value="g" Time="0.42" Script="NA" Pos="NA";
 DF d2 p29
 DF d21 p29
 CF p28 p29
 Data d22 "22-g(10) return" Value="100";
-Operation p30 "30-return(x^2)" Value="return(x^2)" Time="0.356" Script="0" Pos="19,3,19,13";
+Operation p30 "30-return(x^2)" Value="return(x^2)" Time="0.44" Script="0" Pos="19,3,19,13";
 CF p29 p30
 DF p30 d22
 DF d21 p30
-Finish p31 "31-g(10)" Value="g(10)" Time="0.364" Script="NA" Pos="NA";
+Finish p31 "31-g(10)" Value="g(10)" Time="0.46" Script="NA" Pos="NA";
 CF p30 p31
-Finish p32 "32-x <- g(10)" Value="x <- g(10)" Time="0.365" Script="0" Pos="NA,NA,NA,NA";
+Finish p32 "32-x <- g(10)" Value="x <- g(10)" Time="0.46" Script="0" Pos="NA,NA,NA,NA";
 CF p31 p32
 DF d22 p32
 Data d23 "23-x" Value="100";
 DF p32 d23
-Operation p33 "33-z <- 5" Value="z <- 5" Time="0.371" Script="0" Pos="NA,NA,NA,NA";
+Operation p33 "33-z <- 5" Value="z <- 5" Time="0.46" Script="0" Pos="NA,NA,NA,NA";
 CF p32 p33
 Data d24 "24-z" Value="5";
 DF p33 d24
-Operation p34 "34-a <- \"character\"" Value="a <- \"character\"" Time="0.376" Script="0" Pos="NA,NA,NA,NA";
+Operation p34 "34-a <- \"character\"" Value="a <- \"character\"" Time="0.46" Script="0" Pos="NA,NA,NA,NA";
 CF p33 p34
 Data d25 "25-a" Value="\"character\"";
 DF p34 d25
-Operation p35 "35-storage.mode(z) <- a" Value="storage.mode(z) <- a" Time="0.38" Script="0" Pos="NA,NA,NA,NA";
+Operation p35 "35-storage.mode(z) <- a" Value="storage.mode(z) <- a" Time="0.47" Script="0" Pos="NA,NA,NA,NA";
 CF p34 p35
+DF d24 p35
 DF d25 p35
 Data d26 "26-z" Value="\"5\"";
 DF p35 d26
-Start p36 "36-File tests" Value="File tests" Time="0.391" Script="NA" Pos="NA";
+Start p36 "36-File tests" Value="File tests" Time="0.49" Script="NA" Pos="NA";
 CF p35 p36
-Operation p37 "37-data.df <- read.csv(\"http://harvardforest.fas.harvard.edu/da" Value="data.df <- read.csv(\"http://harvardforest.fas.harvard.edu/da" Time="0.494" Script="0" Pos="NA,NA,NA,NA";
+Operation p37 "37-data.df <- read.csv(\"http://harvardforest.fas.harvard.edu/da" Value="data.df <- read.csv(\"http://harvardforest.fas.harvard.edu/da" Time="2.25" Script="0" Pos="NA,NA,NA,NA";
 CF p36 p37
 URL d27 "27-http://harvardforest.fas.harvard.edu/data/p00/hf000/hf000-01-daily-m.csv" Value="\"http://harvardforest.fas.harvard.edu/data/p00/hf000/hf000-01-daily-m.csv\"";
 DF d27 p37
-Snapshot d28 "28-data.df" Value="[DIR]/ddg/data/28-data.df-PARTIAL.csv" Time="2016-08-17T13.49.29EDT";
+Snapshot d28 "28-data.df" Value="[DIR]/ddg/data/28-data.df-PARTIAL.csv" Time="2016-11-10T10.09.14EST";
 DF p37 d28
-Operation p38 "38-if (FALSE) read.csv(\"foo.csv\")" Value="if (FALSE) read.csv(\"foo.csv\")" Time="0.507" Script="0" Pos="NA,NA,NA,NA";
+Operation p38 "38-shortdata.df <- data.df[1:100, ]" Value="shortdata.df <- data.df[1:100, ]" Time="2.26" Script="0" Pos="NA,NA,NA,NA";
 CF p37 p38
-Operation p39 "39-shortdata.df <- data.df[1:100, ]" Value="shortdata.df <- data.df[1:100, ]" Time="0.512" Script="0" Pos="NA,NA,NA,NA";
+DF d28 p38
+Snapshot d29 "29-shortdata.df" Value="[DIR]/ddg/data/29-shortdata.df-PARTIAL.csv" Time="2016-11-10T10.09.14EST";
+DF p38 d29
+Operation p39 "39-write.csv(shortdata.df, \"shortdata.csv\")" Value="write.csv(shortdata.df, \"shortdata.csv\")" Time="2.28" Script="0" Pos="NA,NA,NA,NA";
 CF p38 p39
-DF d28 p39
-Snapshot d29 "29-shortdata.df" Value="[DIR]/ddg/data/29-shortdata.df-PARTIAL.csv" Time="2016-08-17T13.49.29EDT";
-DF p39 d29
-Operation p40 "40-write.csv(shortdata.df, \"shortdata.csv\")" Value="write.csv(shortdata.df, \"shortdata.csv\")" Time="0.53" Script="0" Pos="NA,NA,NA,NA";
+DF d29 p39
+File d30 "30-shortdata.csv" Value="[DIR]/ddg/data/30-shortdata.csv" Time="2016-11-10T10.09.14EST" Location="[DIR]/shortdata.csv";
+DF p39 d30
+Operation p40 "40-pdf(\"airt-vs-prec.pdf\")" Value="pdf(\"airt-vs-prec.pdf\")" Time="2.36" Script="0" Pos="NA,NA,NA,NA";
 CF p39 p40
-DF d29 p40
-File d30 "30-shortdata.csv" Value="[DIR]/ddg/data/30-shortdata.csv" Time="2016-08-17T13.49.29EDT" Location="[DIR]/shortdata.csv";
-DF p40 d30
-Operation p41 "41-pdf(\"airt-vs-prec.pdf\")" Value="pdf(\"airt-vs-prec.pdf\")" Time="0.592" Script="0" Pos="NA,NA,NA,NA";
+Operation p41 "41-plot(shortdata.df$airt, shortdata.df$prec)" Value="plot(shortdata.df$airt, shortdata.df$prec)" Time="2.36" Script="0" Pos="NA,NA,NA,NA";
 CF p40 p41
-Operation p42 "42-plot(shortdata.df$airt, shortdata.df$prec)" Value="plot(shortdata.df$airt, shortdata.df$prec)" Time="0.597" Script="0" Pos="NA,NA,NA,NA";
+DF d29 p41
+Operation p42 "42-dev.off()" Value="dev.off()" Time="2.37" Script="0" Pos="NA,NA,NA,NA";
 CF p41 p42
-DF d29 p42
-Operation p43 "43-dev.off()" Value="dev.off()" Time="0.608" Script="0" Pos="NA,NA,NA,NA";
+File d31 "31-airt-vs-prec.pdf" Value="[DIR]/ddg/data/31-airt-vs-prec.pdf" Time="2016-11-10T10.09.14EST" Location="[DIR]/airt-vs-prec.pdf";
+DF p42 d31
+Finish p43 "43-File tests" Value="File tests" Time="2.39" Script="NA" Pos="NA";
 CF p42 p43
-File d31 "31-airt-vs-prec.pdf" Value="[DIR]/ddg/data/31-airt-vs-prec.pdf" Time="2016-08-17T13.49.29EDT" Location="[DIR]/airt-vs-prec.pdf";
-DF p43 d31
-Finish p44 "44-File tests" Value="File tests" Time="0.617" Script="NA" Pos="NA";
+Operation p44 "44-tryCatch(foo_val <- foo(), error = function(e) {})" Value="tryCatch(foo_val <- foo(), error = function(e) {})" Time="2.39" Script="0" Pos="NA,NA,NA,NA";
 CF p43 p44
-Operation p45 "45-tryCatch(foo_val <- foo(), error = function(e) {})" Value="tryCatch(foo_val <- foo(), error = function(e) {})" Time="0.618" Script="0" Pos="NA,NA,NA,NA";
+Operation p45 "45-tryCatch" Value="tryCatch" Time="2.39" Script="NA" Pos="NA";
 CF p44 p45
-Operation p46 "46-tryCatch" Value="tryCatch" Time="0.624" Script="NA" Pos="NA";
-CF p45 p46
 Exception d32 "32-error.msg" Value="\"Error in eval(expr, envir, enclos): could not find function \"foo\" \"";
-DF p46 d32
+DF p45 d32
 

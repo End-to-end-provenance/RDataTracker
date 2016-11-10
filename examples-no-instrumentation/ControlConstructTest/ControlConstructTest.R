@@ -3,6 +3,12 @@
 # Created by Barbara Lerner 27 June 2016.
 # Modified by Emery Boose 3 Nov 2016.
 
+if (TRUE) {
+  n <- 1
+}
+
+m <- 2
+
 {
   a <- 1
   b <- 2
