@@ -416,27 +416,27 @@ null.pos <- function() {
     }
   
     # Annotate if statement.
-    if (.ddg.get.statement.type(parsed.command) == "if"){
+    else if (.ddg.get.statement.type(parsed.command) == "if"){
       return(.ddg.annotate.if.statement(command)) 
     }
   
     # Annotate for statement.
-    if (.ddg.get.statement.type(parsed.command) == "for") {
+    else if (.ddg.get.statement.type(parsed.command) == "for") {
       return(.ddg.annotate.for.statement(command)) 
     }
   
     # Annotate while statement.
-    if (.ddg.get.statement.type(parsed.command) == "while") {
+    else if (.ddg.get.statement.type(parsed.command) == "while") {
       return(.ddg.annotate.while.statement(command)) 
     }
   
     # Annotate repeat statement.
-    if (.ddg.get.statement.type(parsed.command) == "repeat") {
+    else if (.ddg.get.statement.type(parsed.command) == "repeat") {
       return(.ddg.annotate.repeat.statement(command)) 
     }
   
     # Annotate simple block.
-    if (.ddg.get.statement.type(parsed.command) == "{") {
+    else if (.ddg.get.statement.type(parsed.command) == "{") {
       return(.ddg.annotate.simple.block(command))
     }
   }
@@ -462,91 +462,106 @@ null.pos <- function() {
   
   # Function declaration
   if (.ddg.is.assign(parsed.cmd) && .ddg.is.functiondecl(parsed.cmd[[3]])) {
-    func.body <- parsed.cmd[[3]][[3]]
-    
-    # The function body is a block.  Extract the statements inside the block
-    if (func.body[[1]] == "{") {
-      func.stmts <- list()
-      for (i in 2:length(func.body)) {
-        func.stmts <- c(func.stmts, func.body[[i]])
-      }
-    }
-    
-    # The function body is a single statement.
-    else {
-      func.stmts <- func.body
-    }
     
     # Create the DDGStatement objects for the statements in the function
-    return (.ddg.create.DDGStatements (func.stmts, script.name, cmd@script.num, parseData, cmd@pos))
+    return (.ddg.parse.contained.function(cmd, script.name, parseData, parsed.cmd[[3]][[3]]))
   }
   
   # Control statements.
   st.type <- as.character(.ddg.get.statement.type(parsed.cmd))
-  block.stmts <- list()
 
   # If statement.  
   if (st.type == "if") {
-    parent <- parsed.cmd
-
-    # If and else if blocks.
-    while(parent[[1]] == "if") {
-      # Get block
-      block <- parent[[3]]
-      if (block[[1]] != "{") block <- call("{", block)
-      
-      # Get statements for this block.
-      for (i in 2:(length(block))) {
-        block.stmts <- c(block.stmts, block[[i]])
-      }
-
-      # Check for possible final else.
-      if (length(parent) == 4) {
-        final.else <- TRUE
-      } else {
-        final.else <- FALSE
-      }
-      
-      # Get next parent
-      parent <- parent[[(length(parent))]]
-    }
-    
-    # Final else block (if any).
-    if (final.else) {
-      # Get block.
-      block <- parent
-      if (block[[1]] != "{") block <- call("{", block)
-    
-      # Get statements for this block.
-      for (i in 2:(length(block))) {
-        block.stmts <- c(block.stmts, block[[i]])
-      }
-    }
-
-    # Create the DDGStatement objects for statements in block
-    return (.ddg.create.DDGStatements (block.stmts, script.name, cmd@script.num, parseData, cmd@pos))
+    return (.ddg.parse.contained.if(cmd, script.name, parseData, parsed.cmd))    
   }
 
   # Other control statements  
-  control.types <- list("for", "while", "repeat", "{")
-  if (length(st.type) > 0 && !is.null(st.type) && (st.type %in% control.types)) {
-    if (st.type == "for") block <- parsed.cmd[[4]]
-    if (st.type == "while") block <- parsed.cmd[[3]]
-    if (st.type == "repeat") block <- parsed.cmd[[2]]
-    if (st.type == "{") block <- parsed.cmd
-
-    if (block[[1]] != "{") block <- call("{", block)
-      
-    for (i in 2:length(block)) {
-      block.stmts <- c(block.stmts, block[[i]])
+  else {
+    control.types <- list("for", "while", "repeat", "{")
+    if (length(st.type) > 0 && !is.null(st.type) && (st.type %in% control.types)) {
+      return (.ddg.parse.contained.control(cmd, script.name, parseData, parsed.cmd, st.type))
     }
-
-    # Create the DDGStatement objects for statements in block
-    return (.ddg.create.DDGStatements (block.stmts, script.name, cmd@script.num, parseData, cmd@pos))
   }
   
   # Not a function declaration or control construct.
   return(list())
+}
+
+.ddg.parse.contained.function <- function (cmd, script.name, parseData, func.body) {
+  # The function body is a block.  Extract the statements inside the block
+  if (func.body[[1]] == "{") {
+    func.stmts <- list()
+    for (i in 2:length(func.body)) {
+      func.stmts <- c(func.stmts, func.body[[i]])
+    }
+  }
+  
+  # The function body is a single statement.
+  else {
+    func.stmts <- func.body
+  }
+  
+  # Create the DDGStatement objects for the statements in the function
+  return (.ddg.create.DDGStatements (func.stmts, script.name, cmd@script.num, parseData, cmd@pos))
+}
+
+.ddg.parse.contained.if <- function (cmd, script.name, parseData, parent) {
+  block.stmts <- list()
+  
+  # If and else if blocks.
+  while(parent[[1]] == "if") {
+    # Get block
+    block <- parent[[3]]
+    if (block[[1]] != "{") block <- call("{", block)
+    
+    # Get statements for this block.
+    for (i in 2:(length(block))) {
+      block.stmts <- c(block.stmts, block[[i]])
+    }
+    
+    # Check for possible final else.
+    if (length(parent) == 4) {
+      final.else <- TRUE
+    } else {
+      final.else <- FALSE
+    }
+    
+    # Get next parent
+    parent <- parent[[(length(parent))]]
+  }
+  
+  # Final else block (if any).
+  if (final.else) {
+    # Get block.
+    block <- parent
+    if (block[[1]] != "{") block <- call("{", block)
+    
+    # Get statements for this block.
+    for (i in 2:(length(block))) {
+      block.stmts <- c(block.stmts, block[[i]])
+    }
+  }
+  
+  # Create the DDGStatement objects for statements in block
+  return (.ddg.create.DDGStatements (block.stmts, script.name, cmd@script.num, parseData, cmd@pos))
+}
+
+.ddg.parse.contained.control <- function(cmd, script.name, parseData, parsed.cmd, st.type) {
+  block.stmts <- list()
+  
+  if (st.type == "for") block <- parsed.cmd[[4]]
+  else if (st.type == "while") block <- parsed.cmd[[3]]
+  else if (st.type == "repeat") block <- parsed.cmd[[2]]
+  else if (st.type == "{") block <- parsed.cmd
+    
+  if (block[[1]] != "{") block <- call("{", block)
+    
+  for (i in 2:length(block)) {
+    block.stmts <- c(block.stmts, block[[i]])
+  }
+    
+  # Create the DDGStatement objects for statements in block
+  return (.ddg.create.DDGStatements (block.stmts, script.name, cmd@script.num, parseData, cmd@pos))
 }
 
 # .ddg.add.ddg.source replaces source with ddg.source.
