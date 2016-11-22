@@ -415,29 +415,24 @@ null.pos <- function() {
       return(.ddg.add.function.annotations(command))
     }
   
-    # Annotate if statement.
-    else if (.ddg.get.statement.type(parsed.command) == "if"){
-      return(.ddg.annotate.if.statement(command)) 
-    }
-  
-    # Annotate for statement.
-    else if (.ddg.get.statement.type(parsed.command) == "for") {
-      return(.ddg.annotate.for.statement(command)) 
-    }
-  
-    # Annotate while statement.
-    else if (.ddg.get.statement.type(parsed.command) == "while") {
-      return(.ddg.annotate.while.statement(command)) 
-    }
-  
-    # Annotate repeat statement.
-    else if (.ddg.get.statement.type(parsed.command) == "repeat") {
-      return(.ddg.annotate.repeat.statement(command)) 
-    }
-  
-    # Annotate simple block.
-    else if (.ddg.get.statement.type(parsed.command) == "{") {
-      return(.ddg.annotate.simple.block(command))
+    statement.type <- as.character(.ddg.get.statement.type(parsed.command))
+    loop.types <- list("for", "while", "repeat")
+    if (length(statement.type > 0) && !is.null(statement.type)) {
+    
+      # Annotate if statement.
+      if (statement.type == "if"){
+        return(.ddg.annotate.if.statement(command)) 
+      }
+    
+      # Annotate for, while, repeat statement.
+      else if (statement.type %in% loop.types) {
+        return(.ddg.annotate.loop.statement(command, statement.type)) 
+      }
+    
+      # Annotate simple block.
+      else if (statement.type == "{") {
+        return(.ddg.annotate.simple.block(command))
+      }
     }
   }
   
@@ -935,9 +930,6 @@ null.pos <- function() {
 # ddg.eval are the original statement and the number of the DDGStatement object.
 
 .ddg.create.block.ddg.eval.call <- function (statement, parsed.stmt) {
-  # We need to force the evaluation of parsed.stmt.
-  force(parsed.stmt)
-
   # Get the next DDGStatement number and store parsed.stmt at this location.
   .ddg.inc("ddg.statement.num")
   num <- .ddg.statement.num()
@@ -1101,14 +1093,14 @@ null.pos <- function() {
   return(parse(text=parsed.command.txt))
 }
 
-# .ddg.annotate.for.statement add annotations to for statements.
+# .ddg.annotate.loop.statement add annotations to for, while and repeat statements.
 
-.ddg.annotate.for.statement <- function(command) {
-  # Get parsed command
-  parsed.command <- command@parsed[[1]]
-
+.ddg.annotate.loop.statement <- function(command, loop.type) {
   # Return if no annotation
   if (ddg.max.loops() == 0) return(command@parsed)
+  
+  # Get parsed command
+  parsed.command <- command@parsed[[1]]
 
   # Add new loop & get loop number.
   .ddg.add.loop()
@@ -1116,7 +1108,15 @@ null.pos <- function() {
   ddg.loop.num <- .ddg.loop.num()
 
   # Get statements in block.
-  block <- parsed.command[[4]]
+  if (loop.type == "for") {
+    block <- parsed.command[[4]]
+  }
+  else if (loop.type == "while") {
+    block <- parsed.command[[3]]
+  }
+  else {  # repeat
+    block <- parsed.command[[2]]
+  }
 
   # Add braces if necessary.
   if (block[[1]] != "{") block <- call("{", block)
@@ -1125,17 +1125,30 @@ null.pos <- function() {
   annotated.block <- .ddg.wrap.block.with.ddg.eval(block, command@contained)
   
   # Insert ddg.forloop statement.
-  index.var <- parsed.command[[2]]
-  annotated.block <- .ddg.insert.ddg.forloop(annotated.block, index.var)
+  if (loop.type == "for") {
+    index.var <- parsed.command[[2]]
+    annotated.block <- .ddg.insert.ddg.forloop(annotated.block, index.var)
+  }
   
   # Add start and finish nodes.
-  annotated.block <- .ddg.add.block.start.finish(annotated.block, "for loop")
+  annotated.block <- .ddg.add.block.start.finish(annotated.block, paste(loop.type, "loop"))
   
   # Reconstruct for statement.
   block.txt <- deparse(block)
   annotated.block.txt <- deparse(annotated.block)
   
-  parsed.command.txt <- paste(c(paste("for (", deparse(parsed.command[[2]]), " in ", deparse(parsed.command[[3]]), ") {", sep=""),
+  # Calculate the control line of the annotated code
+  if (loop.type == "for") {
+    firstLine <- paste("for (", deparse(parsed.command[[2]]), " in ", deparse(parsed.command[[3]]), ") {", sep="")
+  }
+  else if (loop.type == "while") {
+    firstLine <- paste("while (", deparse(parsed.command[[2]]), ") {", sep="")
+  }
+  else {  # repeat
+    firstLine <- paste("repeat {", sep="")
+  }
+  
+  parsed.command.txt <- paste(c(firstLine,
     paste("if (ddg.loop.count(", ddg.loop.num, ") <= ", ddg.max.loops(), ")", sep=""),
     annotated.block.txt,
     paste("else", sep = ""),
