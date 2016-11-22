@@ -3,6 +3,12 @@
 # Created by Barbara Lerner 27 June 2016.
 # Modified by Emery Boose 3 Nov 2016.
 
+if (TRUE) {
+  n <- 1
+}
+
+m <- 2
+
 {
   a <- 1
   b <- 2
@@ -67,3 +73,13 @@ for (i in 1:3) {
   if (i == 2) break
   b <- b + i
 }
+
+f <- function (a) {
+  if (a < 0) {
+    return (-1)
+  }
+  return (1)
+}
+
+f(-2)
+f(2)

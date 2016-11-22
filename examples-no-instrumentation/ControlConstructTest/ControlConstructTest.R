@@ -73,3 +73,13 @@ for (i in 1:3) {
   if (i == 2) break
   b <- b + i
 }
+
+f <- function (a) {
+  if (a < 0) {
+    return (-1)
+  }
+  return (1)
+}
+
+f(-2)
+f(2)
