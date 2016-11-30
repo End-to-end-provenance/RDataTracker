@@ -17,6 +17,7 @@
 \alias{ddg.forloop}
 \alias{ddg.loop.count}
 \alias{ddg.reset.loop.count}
+\alias{ddg.details.omitted}
 \title{Creating Provenance Graphs with RDataTracker}
 \description{These functions are needed to create provenance graphs.}
 \usage{
@@ -41,6 +42,7 @@ ddg.display()
 ddg.forloop(index.var)
 ddg.loop.count(loop.num)
 ddg.reset.loop.count(loop.num)
+ddg.details.omitted()
 }
 \arguments{
   \item{r.script.path}{ the full path to the file containing the R script that is being executed. }
@@ -98,7 +100,8 @@ ddg.reset.loop.count(loop.num)
   (if, for, while, repeat, and simple block).  ddg.annotate.on and ddg.annotate.off may be used to limit 
   the functions that will be annotated or not annotated, respectively. The parameter max.loops sets
   the maxiumum number of times that a for, while or repeat loop will be annotated. If break is set to TRUE,
-  script debugging  is enabled. This has the same effect as inserting ddg.breakpoint() at the top of the script. If display is set to TRUE, the DDG is displayed after the R script finished executing. If save.debug
+  script debugging  is enabled. This has the same effect as inserting ddg.breakpoint() at the top of the script. 
+  If display is set to TRUE, the DDG is displayed after the R script finished executing. If save.debug
   is set to TRUE, debug files are saved to the debug directory.
   
   ddg.set.detail can be used to set the level of provenance detail to be collected.  Options include:
@@ -125,7 +128,8 @@ ddg.reset.loop.count(loop.num)
   and loads the most recent ddg.txt file (if any). If the DDG path is not set or a ddg.txt file is not available,
   the function returns "DDG not available".
   
-  ddg.forloop, ddg.loop.count, and ddg.reset.loop.count are used internally by RDataTracker--do not use.
+  ddg.forloop, ddg.loop.count, ddg.reset.loop.count, and ddg.details.omitted are used internally by 
+  RDataTracker--do not use.
 }
 \author{Emery Boose and Barbara Lerner}
 \examples{

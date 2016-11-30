@@ -1093,7 +1093,7 @@ null.pos <- function() {
   return(parse(text=parsed.command.txt))
 }
 
-# .ddg.annotate.loop.statement add annotations to for, while and repeat statements.
+# .ddg.annotate.loop.statement adds annotations to for, while and repeat statements.
 
 .ddg.annotate.loop.statement <- function(command, loop.type) {
   # Return if no annotation
@@ -1154,9 +1154,10 @@ null.pos <- function() {
     paste("else", sep = ""),
     block.txt,
     paste("}", sep=""),
+    paste("if (ddg.loop.count(", ddg.loop.num, ") > ", ddg.max.loops(), ") ddg.details.omitted()", sep=""),
     paste("ddg.reset.loop.count(", ddg.loop.num, ")", sep=""),
     collapse="\n"))
-  
+
   return(parse(text=parsed.command.txt))
 }
 

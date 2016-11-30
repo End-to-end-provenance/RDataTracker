@@ -4715,6 +4715,16 @@ ddg.forloop <- function(index.var) {
   .ddg.proc2data(pnode.name, index.name)
 }
 
+# ddg.details.omitted inserts an operational node called "Details Omitted"
+# in cases where the number of iterations of a loop exceeds the current value
+# of the parameter max.loops.
+
+ddg.details.omitted <- function() {
+  pnode.name <- "Details Omitted"
+  .ddg.proc.node("Operation", pnode.name, pnode.name)
+  .ddg.proc2proc()
+}
+
 # ddg.eval evaluates a statement and creates data flow edges from
 # variable and function return nodes that are used in the
 # statement. If the statement is an assignment statement, it also
