@@ -48,7 +48,10 @@ ddg.MAX_HIST_LINES <- 2^14
 .ddg.set <- function(var, value) {
   .ddg.env[[var]] <- value
   #return(invisible(.ddg.env[[var]]))
-  print(paste("variable:",var,", value:",value))
+  if( var == "ddg.data.nodes" )
+  {
+    print(paste("variable:",var,", value:",value))
+  }
   return(.ddg.env[[var]])
 }
 
