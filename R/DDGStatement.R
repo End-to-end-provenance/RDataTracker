@@ -1154,7 +1154,7 @@ null.pos <- function() {
     paste("else", sep = ""),
     block.txt,
     paste("}", sep=""),
-    paste("if (ddg.loop.count(", ddg.loop.num, ") > ", ddg.max.loops(), ") ddg.details.omitted()", sep=""),
+    paste("if (ddg.loop.count(", ddg.loop.num, ")-1 > ", ddg.max.loops(), ") ddg.details.omitted()", sep=""),
     paste("ddg.reset.loop.count(", ddg.loop.num, ")", sep=""),
     collapse="\n"))
 
