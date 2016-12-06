@@ -2854,8 +2854,7 @@ ddg.MAX_HIST_LINES <- 2^14
       # Get environment for output data node.
       d.environ <- environ
       if (.ddg.is.global.assign(cmd@parsed[[1]])) d.environ <- globalenv()
-      
-      # Check for control & loop statement
+      # Check for control & loop statements.
       st.type <- .ddg.get.statement.type(cmd@parsed[[1]])
       
       control.statement <- (st.type == "if" || st.type == "for" || st.type == "while" || st.type == "repeat" || st.type == "{")
@@ -2888,7 +2887,7 @@ ddg.MAX_HIST_LINES <- 2^14
                         else nd), "\n")
             cat(cmd.show)
           }
-          
+
           # If we will create a node, then before execution, set
           # this command as a possible abstraction node but only
           # if it's not a call that itself creates abstract nodes.
@@ -4073,7 +4072,7 @@ ddg.MAX_HIST_LINES <- 2^14
 # been created already.
 .ddg.create.start.for.cur.cmd <- function (call, caller.env) {
   if (.ddg.is.set(".ddg.cur.cmd")) {
-    #print("In .ddg.create.start.for.cur.cmd")
+    # print("In .ddg.create.start.for.cur.cmd")
     .ddg.cur.cmd <- .ddg.get(".ddg.cur.cmd")
     .ddg.cur.cmd.stack <- .ddg.get(".ddg.cur.cmd.stack")
     stack.length <- length(.ddg.cur.cmd.stack)
@@ -4086,6 +4085,13 @@ ddg.MAX_HIST_LINES <- 2^14
           cmd.abbrev <- .ddg.add.abstract.node ("Start", .ddg.cur.cmd, caller.env)
           .ddg.cur.expr.stack <- .ddg.get(".ddg.cur.expr.stack")
           .ddg.create.data.use.edges.for.console.cmd(vars.set = data.frame(), .ddg.cur.cmd, 0, for.caller=TRUE)
+
+          # Add Details Omitted node if needed.
+          st.type <- .ddg.get.statement.type(.ddg.cur.cmd@parsed[[1]])
+          loop.statement <- (st.type == "for" || st.type == "while" || st.type == "repeat")
+          if (loop.statement && ddg.first.loop() > 1) {
+            ddg.details.omitted(1)
+          }
 
           # Mark the start node as created on the stack.  Mark it even if we did not
           # create the abstract node above, because we will create it below.
@@ -4693,6 +4699,12 @@ ddg.annotate.inside <- function() {
   return(.ddg.get("ddg.annotate.inside"))
 }
 
+# ddg.first.loop returns the value of the parameter first.loop.
+
+ddg.first.loop <- function() {
+  return(.ddg.get("ddg.first.loop"))
+}
+
 # ddg.max.loops returns the value of the parameter max.loops.
 
 ddg.max.loops <- function() {
@@ -4706,10 +4718,17 @@ ddg.max.snapshot.size <- function() {
   return(.ddg.get("ddg.max.snapshot.size"))
 }
 
-# ddg.loop.count increments the current count for the specified loop
-# and returns the incremented value.
+# ddg.loop.count returns the current count for the specified loop.
 
 ddg.loop.count <- function(loop.num) {
+  ddg.loops <- .ddg.loops()
+  return(ddg.loops[[loop.num]])
+}
+
+# ddg.loop.count.inc increments the current count for the specified loop
+# and returns the incremented value.
+
+ddg.loop.count.inc <- function(loop.num) {
   ddg.loops <- .ddg.loops()
   ddg.loops[[loop.num]] <- ddg.loops[[loop.num]] + 1
   .ddg.set("ddg.loops", ddg.loops)
@@ -4741,16 +4760,25 @@ ddg.forloop <- function(index.var) {
 }
 
 # ddg.details.omitted inserts an operational node called "Details Omitted"
-# in cases where the number of iterations of a loop exceeds the current value
-# of the parameter max.loops.
+# in cases where not all iterations of a loop are annotated.  This may happen
+# if the number of the first loop to be annotaed (first.loop) is greater 
+# than 1 and/or if the total number of loops to be annotated is less than
+# the actual number of iterations.
 
-ddg.details.omitted <- function() {
+# loc - location of Details Omitted node before (loc=1) or after (loc=2)
+#   the annotated section of the loop.
+
+ddg.details.omitted <- function(loc) {
   pnode.name <- "Details Omitted"
   .ddg.proc.node("Operation", pnode.name, pnode.name)
   .ddg.proc2proc()
   
-  .ddg.set(".ddg.details.omitted", TRUE)
-  if (.ddg.debug.lib()) print("Adding Details Omitted node")
+  if (loc == 2) .ddg.set(".ddg.details.omitted", TRUE)
+  
+  if (.ddg.debug.lib()) {
+    if (loc == 1) print("Adding Details Omitted 1 node")
+    if (loc == 2) print("Adding Details Omitted 2 node")
+  }
 }
 
 # ddg.eval evaluates a statement and creates data flow edges from
@@ -5352,6 +5380,8 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
 # enable.console (optional) - if TRUE, console mode is turned on.
 # annotate.inside (optional) - if TRUE, functions and control statements
 #   are annotated.
+# first.loop (optional) - the first loop to annotate in a for, while, or
+#   repeat statement.
 # max.loops (optional) - the maximum number of loops to annotate in a for,
 #   while, or repeat statement. If max.loops = -1 there is no limit.
 #   If max.loops = 0, no loops are annotated.
@@ -5364,7 +5394,7 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
 #   same effect as inserting ddg.breakpoint() at the top of the script.
 # save.debug (optional) - If TRUE, save debug files to debug directory.
 
-ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = NULL, enable.console = TRUE, annotate.inside = TRUE, max.loops = 1, max.snapshot.size = 10, debug = FALSE, save.debug = FALSE, display = FALSE) {
+ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = NULL, enable.console = TRUE, annotate.inside = TRUE, first.loop = 1, max.loops = 1, max.snapshot.size = 10, debug = FALSE, save.debug = FALSE, display = FALSE) {
 
   # Initiate ddg.
   ddg.init(r.script.path, ddgdir, overwrite, enable.console)
@@ -5393,6 +5423,9 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
     .ddg.set("ddg.max.snapshot.size", max.snapshot.size)
   }
     
+  # Set number of first loop.
+  .ddg.set("ddg.first.loop", first.loop)
+  
   # Set breakpoint if debug is TRUE.
   if (debug) ddg.breakpoint()
 

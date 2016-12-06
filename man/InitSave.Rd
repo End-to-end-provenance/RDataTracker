@@ -15,7 +15,9 @@
 \alias{ddg.console.on}
 \alias{ddg.display}
 \alias{ddg.forloop}
+\alias{ddg.first.loop}
 \alias{ddg.loop.count}
+\alias{ddg.loop.count.inc}
 \alias{ddg.reset.loop.count}
 \alias{ddg.details.omitted}
 \title{Creating Provenance Graphs with RDataTracker}
@@ -25,8 +27,8 @@ ddg.init(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enable.console =
     max.snapshot.size = 100) 
 ddg.save(r.script.path = NULL, save.debug=FALSE, quit=FALSE)
 ddg.run(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = NULL, enable.console = TRUE, 
-    annotate.inside = TRUE, max.loops = 1, max.snapshot.size = 10, debug = FALSE, save.debug=FALSE, 
-    display = FALSE)
+    annotate.inside = TRUE, first.loop = 1, max.loops = 1, max.snapshot.size = 10, debug = FALSE, 
+    save.debug=FALSE, display = FALSE)
 ddg.set.detail(detail.level)
 ddg.get.detail()
 ddg.clear.detail()
@@ -40,9 +42,11 @@ ddg.console.off()
 ddg.flush.ddg(ddg.path = NULL)
 ddg.display()
 ddg.forloop(index.var)
+ddg.first.loop()
 ddg.loop.count(loop.num)
+ddg.loop.count.inc(loop.num)
 ddg.reset.loop.count(loop.num)
-ddg.details.omitted()
+ddg.details.omitted(loc)
 }
 \arguments{
   \item{r.script.path}{ the full path to the file containing the R script that is being executed. }
@@ -52,6 +56,7 @@ ddg.details.omitted()
     pasting, or selecting and running, will result in a procedure node created in the provenance graph, with
     data nodes created for each variable assigned and data flow edges for variables used and set. }
   \item{annotate.inside}{specifies whether automatic annotation of functions and control constructs should be enabled. }
+  \item{first.loop}{ The number of the first iteration to be annotated in a for, while, or repeat loop. }
   \item{max.loops}{ The maximum number of times that a for, while, or repeat loop will be annotated.
     If max.loops is -1, there is no limit. If max.loops = 0, no loops will be annotated. }
   \item{max.snapshot.size}{ The maximum size for objects that should be output in snapshot
@@ -67,6 +72,7 @@ ddg.details.omitted()
   \item{ddg.path}{ The path to the DDG directory which needs to be flushed. }
   \item{index.var}{ The index variable passed to ddg.forloop. }
   \item{loop.num}{ The loop number passed to ddg.loop.count and ddg.reset.loop.count. }
+  \item{loc}{ Location of details omitted node before (loc=1) or after (loc=2) annotated section of loop. }
 }
 \details{
   In order to use RDataTracker to collect data provenance, the user must either call ddg.init 
@@ -128,8 +134,8 @@ ddg.details.omitted()
   and loads the most recent ddg.txt file (if any). If the DDG path is not set or a ddg.txt file is not available,
   the function returns "DDG not available".
   
-  ddg.forloop, ddg.loop.count, ddg.reset.loop.count, and ddg.details.omitted are used internally by 
-  RDataTracker--do not use.
+  ddg.forloop, ddg.first.loop, ddg.loop.count, ddg.loop.count.inc, ddg.reset.loop.count, and ddg.details.omitted 
+  are used internally by RDataTracker--do not use.
 }
 \author{Emery Boose and Barbara Lerner}
 \examples{

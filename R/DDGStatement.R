@@ -111,7 +111,16 @@ setMethod ("initialize",
             .ddg.abbrev.cmd(.Object@text)
           }
 
-      .Object@vars.used <- .ddg.find.var.uses(.Object@parsed[[1]]) 
+      vars.used <- .ddg.find.var.uses(.Object@parsed[[1]])
+
+      # Remove index variable in for statement (handled separately in ddg.forloop).
+      if (length(parsed) > 0 && parsed[[1]][[1]] == "for") {
+        index.var <- c(parsed[[1]][[2]])
+        vars.used <- vars.used[! vars.used %in% index.var]
+      }
+
+      .Object@vars.used <- vars.used
+      
       .Object@vars.set <- .ddg.find.simple.assign(.Object@parsed[[1]])
       .Object@vars.possibly.set <- .ddg.find.assign(.Object@parsed[[1]])
       
@@ -233,10 +242,6 @@ null.pos <- function() {
 # main.object - input expression.
 
 .ddg.find.var.uses <- function(main.object) {
-  
-  # Skip for statements (handled separately by ddg.forloop)
-  if (length(main.object) > 1 && main.object[[1]] == "for") return(character(0))
-  
   # Recursive helper function.
   .ddg.find.var.uses.rec <- function(obj) {
     # Base cases.
@@ -991,7 +996,7 @@ null.pos <- function() {
   
   # Block with single statement.
   if (pos == 2) {
-    new.statements <- c(as.list(block[[1]]), inserted.statement, as.list(block[2]))
+    new.statements <- c(as.list(block[[1]]),  inserted.statement, as.list(block[2]))
     return(as.call(new.statements))
   }
   
@@ -1132,11 +1137,11 @@ null.pos <- function() {
   
   # Add start and finish nodes.
   annotated.block <- .ddg.add.block.start.finish(annotated.block, paste(loop.type, "loop"))
-  
+
   # Reconstruct for statement.
   block.txt <- deparse(block)
   annotated.block.txt <- deparse(annotated.block)
-  
+
   # Calculate the control line of the annotated code
   if (loop.type == "for") {
     firstLine <- paste("for (", deparse(parsed.command[[2]]), " in ", deparse(parsed.command[[3]]), ") {", sep="")
@@ -1147,17 +1152,19 @@ null.pos <- function() {
   else {  # repeat
     firstLine <- paste("repeat {", sep="")
   }
-  
+
   parsed.command.txt <- paste(c(firstLine,
-    paste("if (ddg.loop.count(", ddg.loop.num, ") <= ", ddg.max.loops(), ")", sep=""),
+    paste("if (ddg.loop.count.inc(", ddg.loop.num, ") >= ddg.first.loop() && ddg.loop.count(", ddg.loop.num, ") <= ddg.first.loop() + ddg.max.loops() - 1)", sep=""),
     annotated.block.txt,
     paste("else", sep = ""),
     block.txt,
     paste("}", sep=""),
-    paste("if (ddg.loop.count(", ddg.loop.num, ")-1 > ", ddg.max.loops(), ") ddg.details.omitted()", sep=""),
+    paste("if (ddg.loop.count(", ddg.loop.num, ") > ddg.first.loop() + ddg.max.loops() - 1) ddg.details.omitted(2)", sep=""),
     paste("ddg.reset.loop.count(", ddg.loop.num, ")", sep=""),
     collapse="\n"))
 
+  # print(parse(text=parsed.command.txt))
+  
   return(parse(text=parsed.command.txt))
 }
 
