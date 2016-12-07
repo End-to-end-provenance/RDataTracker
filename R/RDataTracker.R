@@ -2789,7 +2789,7 @@ ddg.MAX_HIST_LINES <- 2^14
     else {
       vars.set <- .ddg.create.empty.vars.set()
     }
-
+    
     # Loop over the commands as well as their string representations.
     for (i in 1:length(cmds)) {
       cmd <- cmds[[i]]
@@ -2812,16 +2812,17 @@ ddg.MAX_HIST_LINES <- 2^14
       d.environ <- environ
       if ( .ddg.is.nonlocal.assign(cmd@parsed[[1]]) ) 
       {
-      	for( var in cmd@vars.set)
-      	{
-      		d.environ <- .ddg.where( var , parent.env(parent.frame()) )
+      	#for( var in cmd@vars.set)
+      	#{
+      		d.environ <- .ddg.where( cmd@vars.set , parent.env(parent.frame()) )
 
-      		if( d.environ == "undefined" )
-      		{
-      			d.environ <- globalenv()
-      		}
-      	}
+      		#if( d.environ == "undefined" )
+      		#{
+      		#	d.environ <- globalenv()
+      		#}
+      	#}
       }
+
       # Specifies whether or not a procedure node should be created
       # for this command. Basically, if a ddg exists and the
       # command is not a DDG command, it should be created.
@@ -2981,7 +2982,7 @@ ddg.MAX_HIST_LINES <- 2^14
         }
       }
      }
-
+    
      # Create a data node for each variable that might have been set in
      # something other than a simple assignment, with an edge from the
      # last node in the console block or source .
@@ -4502,10 +4503,10 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
       {
       	env <- .ddg.where( var, parent.env(parent.frame()) )
 
-      	if( env == "undefined" )
-      	{
-      		env <- globalenv()
-      	}
+      	#if( env == "undefined" )
+      	#{
+      	#	env <- globalenv()
+      	#}
       }
       dscope <- .ddg.get.scope(var, env=env)
       .ddg.save.data(var, dvalue, scope=dscope)
