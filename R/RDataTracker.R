@@ -200,10 +200,6 @@ ddg.MAX_HIST_LINES <- 2^14
   return(.ddg.get("ddg.loops"))
 }
 
-.ddg.details.omitted <- function() {
-  return(.ddg.get(".ddg.details.omitted"))
-}
-
 # Functions that allow us to save warnings when they occur
 # so that we can create the warning node after the node
 # that caused the warning is created.
@@ -500,9 +496,9 @@ ddg.MAX_HIST_LINES <- 2^14
   # Control loop list
   .ddg.set("ddg.loops", list())
   
-  # DDG details omitted
-  .ddg.set(".ddg.details.omitted", FALSE)
- 
+  # Loop annotation
+  .ddg.set("ddg.loop.annotate", TRUE)
+
   # Set max.snapshot.size for console mode.
   if (!.ddg.is.set("ddg.max.snapshot.size")) {
     .ddg.set("ddg.max.snapshot.size", 100)
@@ -2921,9 +2917,9 @@ ddg.MAX_HIST_LINES <- 2^14
           # EVALUATE.
 
           if (.ddg.debug.lib()) print (paste (".ddg.parse.commands: Evaluating ", cmd@annotated))
-          
+
           result <- withCallingHandlers (eval(cmd@annotated, environ, NULL), warning = .ddg.set.warning)
-          
+
           if (.ddg.debug.lib()) print (paste (".ddg.parse.commands: Done evaluating ", cmd@annotated))
 
           if (!cmd@isDdgFunc && cmd@text != "next") {
@@ -2943,10 +2939,9 @@ ddg.MAX_HIST_LINES <- 2^14
               
               # If the number of loop iterations exceeds max.loops, add
               # output data nodes containing final values to the finish node.
-              if (loop.statement && .ddg.details.omitted()) {
+              if (loop.statement && !ddg.loop.annotate()) {
                 vars.set2 <- .ddg.add.to.vars.set(vars.set, cmd, i)
                 .ddg.create.data.node.for.possible.writes(vars.set2, cmd, environ)
-                .ddg.set(".ddg.details.omitted", FALSE)
               }
             }
 
@@ -4086,11 +4081,11 @@ ddg.MAX_HIST_LINES <- 2^14
           .ddg.cur.expr.stack <- .ddg.get(".ddg.cur.expr.stack")
           .ddg.create.data.use.edges.for.console.cmd(vars.set = data.frame(), .ddg.cur.cmd, 0, for.caller=TRUE)
 
-          # Add Details Omitted node if needed.
+          # Add Details Omitted node before annotated loops if needed.
           st.type <- .ddg.get.statement.type(.ddg.cur.cmd@parsed[[1]])
           loop.statement <- (st.type == "for" || st.type == "while" || st.type == "repeat")
           if (loop.statement && ddg.first.loop() > 1) {
-            ddg.details.omitted(1)
+            ddg.details.omitted()
           }
 
           # Mark the start node as created on the stack.  Mark it even if we did not
@@ -4718,6 +4713,21 @@ ddg.max.snapshot.size <- function() {
   return(.ddg.get("ddg.max.snapshot.size"))
 }
 
+# ddg.loop.annotate returns the value of the parameter ddg.loop.annotate.
+ddg.loop.annotate <- function() {
+  return(.ddg.get("ddg.loop.annotate"))
+}
+
+# ddg.loop.annotate.on turns on loop annotation.
+ddg.loop.annotate.on <- function() {
+  .ddg.set("ddg.loop.annotate", TRUE)
+}
+
+# ddg.loop.annotate.off turns off loop annotation.
+ddg.loop.annotate.off <- function() {
+  .ddg.set("ddg.loop.annotate", FALSE)
+}
+
 # ddg.loop.count returns the current count for the specified loop.
 
 ddg.loop.count <- function(loop.num) {
@@ -4760,24 +4770,18 @@ ddg.forloop <- function(index.var) {
 }
 
 # ddg.details.omitted inserts an operational node called "Details Omitted"
-# in cases where not all iterations of a loop are annotated.  This may happen
-# if the number of the first loop to be annotaed (first.loop) is greater 
-# than 1 and/or if the total number of loops to be annotated is less than
-# the actual number of iterations.
+# in cases where not all iterations of a loop are annotated.  This may
+# happen if the number of the first loop to be annotaed (first.loop) is
+# greater than 1 and/or if the total number of loops to be annotated is
+# less than the actual number of iterations.
 
-# loc - location of Details Omitted node before (loc=1) or after (loc=2)
-#   the annotated section of the loop.
-
-ddg.details.omitted <- function(loc) {
+ddg.details.omitted <- function() {
   pnode.name <- "Details Omitted"
   .ddg.proc.node("Operation", pnode.name, pnode.name)
   .ddg.proc2proc()
   
-  if (loc == 2) .ddg.set(".ddg.details.omitted", TRUE)
-  
   if (.ddg.debug.lib()) {
-    if (loc == 1) print("Adding Details Omitted 1 node")
-    if (loc == 2) print("Adding Details Omitted 2 node")
+    print("Adding Details Omitted node")
   }
 }
 

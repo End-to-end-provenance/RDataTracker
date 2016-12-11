@@ -586,12 +586,12 @@ null.pos <- function() {
 # being bound is a function declaration
 
 .ddg.add.function.annotations <- function(function.decl) {
-  #print("In .ddg.add.function.annotations")
+  # print("In .ddg.add.function.annotations")
   parsed.function.decl <- function.decl@parsed[[1]]
   
   # Get function name.
   func.name <- toString(parsed.function.decl[[2]])
-  
+
   # Return if a list of functions to annotate is provided and this
   # function is not on the list.
   if (!is.null(.ddg.annotate.on()) & !(func.name %in% .ddg.annotate.on())) return(parsed.function.decl)
@@ -609,31 +609,34 @@ null.pos <- function() {
     if (func.definition[[3]][[1]] != "{") {
       func.definition <- .ddg.create.function.block(func.definition)
     }
-    
+
+    # Create new function body with an if-then statement for annotations.
+    func.definition <- .ddg.add.conditional.statement(func.definition)
+
     # Insert call to ddg.function if not already added.
     if (!.ddg.has.call.to(func.definition[[3]], "ddg.function")) {
       func.definition <- .ddg.insert.ddg.function(func.definition)
     }
-    
+
     # Insert calls to ddg.return.value if not already added.
     if (!.ddg.has.call.to(func.definition[[3]], "ddg.return.value")) {
       func.definition <- .ddg.wrap.all.return.parameters(func.definition, function.decl@contained)
     }
-    
+
     # Wrap last statement with ddg.return.value if not already added
     # and if last statement is not a simple return or a ddg function.
     last.statement <- .ddg.find.last.statement(func.definition)
     if (!.ddg.is.call.to(last.statement, "ddg.return.value") & !.ddg.is.call.to(last.statement, "return") & !.ddg.is.call.to.ddg.function(last.statement)) {
       func.definition <- .ddg.wrap.last.line(func.definition, function.decl@contained)
     }
-    
+
     # Wrap statements with ddg.eval if not already added and if
     # statements are not calls to a ddg function and do not contain
     # ddg.return.value.
     if (!.ddg.has.call.to(func.definition, "ddg.eval")) {
       func.definition <- .ddg.wrap.with.ddg.eval(func.definition, function.decl@contained)
     }
-    
+
     # Reassemble parsed.command.
     return (as.expression (call ("<-", as.name(func.name), func.definition)))
   }
@@ -659,8 +662,36 @@ null.pos <- function() {
   return(call("function", func.params, as.call(new.func.body)))
 }
 
+# .ddg.add.conditional.statement creates a new function definition 
+# containing an if-then statement used to control annotation.
+#
+# func.definition - original function definition.
+
+.ddg.add.conditional.statement <- function(func.definition) {
+  # Get the function parameters.
+  func.params <- func.definition[[2]]
+  
+  # Get the body of the function.
+  func.body <- func.definition[[3]]
+
+  pos <- length(func.body)
+  
+  # Create new function definition containing if-then statement.
+  new.func.body.txt <-
+    c(paste("if (ddg.loop.annotate()) {", sep=""),
+    as.list(func.body[2:pos]),
+    paste("} else {", sep=""),
+    as.list(func.body[2:pos]),
+    paste("}", sep=""))
+  
+  new.func.expr <- parse(text=new.func.body.txt)
+  new.func.body <- new.func.expr[[1]]
+
+  return(call("function", func.params, call("{", new.func.body)))
+}  
+
 # .ddg.insert.ddg.function inserts ddg.function before the first line
-# in a function body.
+# in the annotated block of a function body.
 # 
 # func.definition is a parsed expression for a function declaration (not 
 #   the full assignment statement in which it is declared)
@@ -674,31 +705,26 @@ null.pos <- function() {
   
   # Get the body of the function.
   func.body <- func.definition[[3]]
-  
-  pos <- length (func.body)
-  
-  # If the function body contains a single statement, insert
-  # ddg.function and reconstruct the call.
-  if (pos == 2) {
-    inserted.statement <- call("ddg.function")
-    new.statements <- c(as.list(func.body[1]), inserted.statement, as.list(func.body[2]))
-    return(call("function", func.params, as.call(new.statements)))
-  }
-  
-  # If the function body contains more than one statement, insert
-  # ddg.function and reconstruct the call.
-  else {
-    inserted.statement <- call("ddg.function")
-    new.statements <- c(as.list(func.body[1]), inserted.statement, as.list(func.body[2:pos]))
-    return(call("function", func.params, as.call(new.statements)))
-  }
+
+  # Get annotated block.
+  block <- func.body[[2]][[3]]
+  pos <- length(block)
+ 
+  # Insert ddg.function.
+  inserted.statement <- call("ddg.function")
+  new.statements.txt <- c(as.list("{"), inserted.statement, as.list(block[2:pos]), as.list("}"))
+  block <- parse(text=new.statements.txt)[[1]]
+
+  func.body[[2]][[3]] <- block
+
+  return(call("function", func.params, as.call(func.body)))
 }
 
 # .ddg.wrap.return.parameters wraps parameters of return functions
-# with ddg.return.value in a function body.
+# with ddg.return.value in the annotated block of a function body.
 # 
-# func.body is the parse tree corresponding to the statements within
-#   a function
+# block is the parse tree corresponding to the statements within
+#   the annotated block of a function
 # parsed.stmts is the list of DDGStatement objects contained in the
 #   function
 #
@@ -706,14 +732,13 @@ null.pos <- function() {
 # a call to ddg.return.value wrapped around all expressions that are
 # returned.
 
-.ddg.wrap.return.parameters <- function(func.body, parsed.stmts) {
-  pos <- length(func.body)
-  
-  # Check each statement in the function body to see if it
+.ddg.wrap.return.parameters <- function(block, parsed.stmts) {
+  # Check each statement in the annotated block to see if it
   # contains a return.
-  #
+  pos <- length(block)
+  
   for (i in 1:pos) {
-    statement <- func.body[[i]]
+    statement <- block[[i]]
     if (.ddg.has.call.to(statement, "return")) {
       
       # If statement is a return, wrap parameters with ddg.return.value.
@@ -738,7 +763,7 @@ null.pos <- function() {
         
         new.ret.params <- .ddg.create.ddg.return.call(ret.params, parsed.stmt)
         new.statement <- call("return", new.ret.params)
-        func.body[[i]] <- new.statement
+        block[[i]] <- new.statement
         
         # If statement contains a return, recurse on statement.
       } else {
@@ -749,15 +774,17 @@ null.pos <- function() {
           parsed.stmt <- parsed.stmts
         }
         
-        func.body[[i]] <- .ddg.wrap.return.parameters(statement, parsed.stmt)
+        block[[i]] <- .ddg.wrap.return.parameters(statement, parsed.stmt)
       }
     }
   }
-  return(func.body)
+
+  return(block)
 }
 
 # .ddg.wrap.all.return.parameters wraps parameters of all return
-# functions with ddg.return.value in a function definition.
+# functions with ddg.return.value in the annotated block of a function
+# definition.
 # 
 # func.definition is a parsed expression for a function declaration (not 
 #   the full assignment statement in which it is declared)
@@ -775,14 +802,22 @@ null.pos <- function() {
   # Get the body of the function.
   func.body <- func.definition[[3]]
   
-  # Wrap individual return functions.
-  new.func.body <- .ddg.wrap.return.parameters(func.body, parsed.stmts)
+  # Get annotated block.
+  block <- func.body[[2]][[3]]
+  pos <- length(block)
   
+  # Wrap individual return functions.
+  block <- .ddg.wrap.return.parameters(block, parsed.stmts)
+
+  # Get new function body
+  func.body[[2]][[3]] <- block
+    
   # Reconstruct function.
-  return(call("function", func.params, as.call(new.func.body)))
+  return(call("function", func.params, as.call(func.body)))
 }
 
-# .ddg.find.last.statement finds the last statement of a function.
+# .ddg.find.last.statement finds the last statement in the annotated
+# block of a function.
 # 
 # func.definition is a parsed expression for a function declaration (not 
 #   the full assignment statement in which it is declared)
@@ -793,20 +828,17 @@ null.pos <- function() {
 .ddg.find.last.statement <- function (func.definition) {
   # Get function body.
   func.body <- func.definition[[3]]
-  # Check to see if the function body is a block.
-  if (func.body[[1]] == "{") {
-    # Return the last statement in the block.
-    pos <- length(func.body)
-    return(func.body[[pos]])
-  }
-  # Not a block. Return the single statement that is the body.
-  else {
-    return(func.body)
-  }
+
+  # Get annotated block.
+  block <- func.body[[2]][[3]]
+  pos <- length(block)
+  
+  # Return final statement in block.
+  return(block[[pos]])
 }
 
-# .ddg.wrap.last.line wraps the last line of a function with
-# ddg.return.value.
+# .ddg.wrap.last.line wraps the last line of the annotated block of a 
+# function with ddg.return.value.
 # 
 # func.definition is a parsed expression for a function declaration (not 
 #   the full assignment statement in which it is declared)
@@ -823,28 +855,18 @@ null.pos <- function() {
   
   # Get the body of the function.
   func.body <- func.definition[[3]]
+ 
+  # Get annotated block.
+  block <- func.body[[2]][[3]]
+  pos <- length(block)
   
-  # Check to see if the function body is a block.
-  pos <- length (func.body)
-  
-  # If the function body contains a single statement, wrap that
-  # statement and reconstruct the call.
+  last.statement <- block[[pos]]
   parsed.stmt <- parsed.stmts[[length(parsed.stmts)]]
-  if (pos == 2) {
-    last.statement <- func.body[[pos]]
-    wrapped.statement <- .ddg.create.ddg.return.call(last.statement, parsed.stmt)
-    new.func.body <- call("{", wrapped.statement)
-    return(call("function", func.params, new.func.body))
-  }
   
-  # If the function body contains more than one statement, find the
-  # last statement, wrap it, and reconstruct the call.
-  else {
-    last.statement <- func.body[[pos]]
-    wrapped.statement <- .ddg.create.ddg.return.call(last.statement, parsed.stmt)
-    new.statements <- c(as.list(func.body[2:pos-1]), wrapped.statement)
-    return(call("function", func.params, as.call(new.statements)))
-  }
+  wrapped.statement <- .ddg.create.ddg.return.call(last.statement, parsed.stmt)
+  func.body[[2]][[3]][[pos]] <- wrapped.statement
+  
+  return(call("function", func.params, as.call(func.body)))
 }
 
 # Creates a call to ddg.return.value using a closure so that we 
@@ -884,10 +906,10 @@ null.pos <- function() {
   return (call("ddg.eval", paste(deparse(statement), collapse=""), function() parsed.stmt))
 }
 
-# .ddg.wrap.with.ddg.eval wraps each statement in a function body
-# with ddg.eval if the statement is not a call to a ddg function and
-# does not contain a call to ddg.return.value. The statement is enclosed
-# in quotation marks.
+# .ddg.wrap.with.ddg.eval wraps each statement in the annotated block 
+# of a function body with ddg.eval if the statement is not a call to a ddg 
+# function and does not contain a call to ddg.return.value. The statement 
+# is enclosed in quotation marks.
 # 
 # func.definition is a parsed expression for a function declaration (not 
 #   the full assignment statement in which it is declared)
@@ -904,25 +926,24 @@ null.pos <- function() {
   # Get the body of the function.
   func.body <- func.definition[[3]]
   
-  pos <- length(func.body)
-  
-  # Process each statement in the function body
+  # Get annotated block.
+  block <- func.body[[2]][[3]]
+  pos <- length(block)
+
+  # Process each statement in block.
   for (i in 2:pos) {
     # Wrap with ddg.eval if statement is not a call to a ddg function and
     # does not contain a call to ddg.return.value. Enclose statement in
     # quotation marks.
-    statement <- func.body[[i]]
+    statement <- block[[i]]
     if (!grepl("^ddg.", statement[1]) & !.ddg.has.call.to(statement, "ddg.return.value")) {
       parsed.stmt <- parsed.stmts[[i-2]]
       new.statement <- .ddg.create.ddg.eval.call(statement, parsed.stmt)
-      func.body[[i]] <- new.statement
+      func.body[[2]][[3]][[i]] <- new.statement
     }
   }
-  
-  # Reassemble function definition.
-  func.definition <- call("function", func.params, as.call(func.body))
-  
-  return(func.definition)
+
+  return(call("function", func.params, as.call(func.body)))
 }
 
 # Creates a call to ddg.eval using the number of the DDGStatement
@@ -994,6 +1015,27 @@ null.pos <- function() {
   pos <- length(block)
   inserted.statement <- call("ddg.forloop", index.var)
   
+  # Block with single statement.
+  if (pos == 2) {
+    new.statements <- c(as.list(block[[1]]),  inserted.statement, as.list(block[2]))
+    return(as.call(new.statements))
+  }
+  
+  # Block with multiple statements.
+  else {
+    new.statements <- c(as.list(block[[1]]), inserted.statement, as.list(block[2:pos]))
+    return(as.call(new.statements))
+  }
+}
+
+# .ddg.insert.ddg.loop.annotate inserts a ddg.loop.annotate.on or
+# ddg.loop.annotate.off statement at the beginning of a block.
+
+.ddg.insert.ddg.loop.annotate <- function(block, var) {
+  pos <- length(block)
+  if (var == "on") inserted.statement <- call("ddg.loop.annotate.on")
+  else if (var == "off") inserted.statement <- call("ddg.loop.annotate.off")
+    
   # Block with single statement.
   if (pos == 2) {
     new.statements <- c(as.list(block[[1]]),  inserted.statement, as.list(block[2]))
@@ -1098,7 +1140,11 @@ null.pos <- function() {
   return(parse(text=parsed.command.txt))
 }
 
-# .ddg.annotate.loop.statement adds annotations to for, while and repeat statements.
+# .ddg.annotate.loop.statement adds annotations to for, while and repeat
+# statements. Provenance is collected for the number of iterations 
+# specified in the parameter max.loops, beginning with the iteration 
+# specified in the parameter first.loop. A Details Omitted node may be
+# added before and after the annotated section, as needed.
 
 .ddg.annotate.loop.statement <- function(command, loop.type) {
   # Return if no annotation
@@ -1138,6 +1184,10 @@ null.pos <- function() {
   # Add start and finish nodes.
   annotated.block <- .ddg.add.block.start.finish(annotated.block, paste(loop.type, "loop"))
 
+  # Insert ddg.loop.annotate statements.
+  annotated.block <- .ddg.insert.ddg.loop.annotate(annotated.block, "on")
+  block <- .ddg.insert.ddg.loop.annotate(block, "off")
+
   # Reconstruct for statement.
   block.txt <- deparse(block)
   annotated.block.txt <- deparse(annotated.block)
@@ -1159,7 +1209,7 @@ null.pos <- function() {
     paste("else", sep = ""),
     block.txt,
     paste("}", sep=""),
-    paste("if (ddg.loop.count(", ddg.loop.num, ") > ddg.first.loop() + ddg.max.loops() - 1) ddg.details.omitted(2)", sep=""),
+    paste("if (ddg.loop.count(", ddg.loop.num, ") > ddg.first.loop() + ddg.max.loops() - 1) ddg.details.omitted()", sep=""),
     paste("ddg.reset.loop.count(", ddg.loop.num, ")", sep=""),
     collapse="\n"))
 

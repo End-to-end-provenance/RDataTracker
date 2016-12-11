@@ -19,6 +19,9 @@
 \alias{ddg.loop.count}
 \alias{ddg.loop.count.inc}
 \alias{ddg.reset.loop.count}
+\alias{ddg.loop.annotate}
+\alias{ddg.loop.annotate.on}
+\alias{ddg.loop.annotate.off}
 \alias{ddg.details.omitted}
 \title{Creating Provenance Graphs with RDataTracker}
 \description{These functions are needed to create provenance graphs.}
@@ -46,7 +49,10 @@ ddg.first.loop()
 ddg.loop.count(loop.num)
 ddg.loop.count.inc(loop.num)
 ddg.reset.loop.count(loop.num)
-ddg.details.omitted(loc)
+ddg.loop.annotate()
+ddg.loop.annotate.on()
+ddg.loop.annotate.off()
+ddg.details.omitted()
 }
 \arguments{
   \item{r.script.path}{ the full path to the file containing the R script that is being executed. }
@@ -72,7 +78,6 @@ ddg.details.omitted(loc)
   \item{ddg.path}{ The path to the DDG directory which needs to be flushed. }
   \item{index.var}{ The index variable passed to ddg.forloop. }
   \item{loop.num}{ The loop number passed to ddg.loop.count and ddg.reset.loop.count. }
-  \item{loc}{ Location of details omitted node before (loc=1) or after (loc=2) annotated section of loop. }
 }
 \details{
   In order to use RDataTracker to collect data provenance, the user must either call ddg.init 
@@ -134,8 +139,8 @@ ddg.details.omitted(loc)
   and loads the most recent ddg.txt file (if any). If the DDG path is not set or a ddg.txt file is not available,
   the function returns "DDG not available".
   
-  ddg.forloop, ddg.first.loop, ddg.loop.count, ddg.loop.count.inc, ddg.reset.loop.count, and ddg.details.omitted 
-  are used internally by RDataTracker--do not use.
+  ddg.forloop, ddg.first.loop, ddg.loop.count, ddg.loop.count.inc, ddg.reset.loop.count, ddg.loop.annotate,
+  ddg.loop.annotate.on, ddg.loop.annotate.off, and ddg.details.omitted are used internally by RDataTracker--do not use.
 }
 \author{Emery Boose and Barbara Lerner}
 \examples{
