@@ -4497,9 +4497,9 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
     if (var != "") {
       # Create output data node.
       dvalue <- eval(as.symbol(var), envir=env)
-  
+
       # Check for non-local assignment
-      if ( .ddg.is.nonlocal.assign(return.stmt@parsed) )
+      if ( .ddg.is.nonlocal.assign(return.stmt@parsed[[1]]) )
       {
       	env <- .ddg.where( var, parent.env(parent.frame()) )
 
