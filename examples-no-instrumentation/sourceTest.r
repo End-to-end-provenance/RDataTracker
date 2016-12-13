@@ -10,6 +10,7 @@
  
 # Author @Luis Perez
 
+library(methods)
 library(RDataTracker)
 
 ## Directories

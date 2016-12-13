@@ -5,7 +5,6 @@
 
 
 #library(RDataTracker)
-
 options(warn=1)
 
 # We would like f and f2 to produce the same DDG but currently
