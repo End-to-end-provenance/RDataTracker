@@ -422,7 +422,7 @@ null.pos <- function() {
   
     statement.type <- as.character(.ddg.get.statement.type(parsed.command))
     loop.types <- list("for", "while", "repeat")
-    if (length(statement.type > 0) && !is.null(statement.type)) {
+    if (length(statement.type > 0) && !is.null(statement.type) && ddg.max.loops() > 0) {
     
       # Annotate if statement.
       if (statement.type == "if"){

@@ -5427,6 +5427,9 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
     .ddg.set("ddg.max.snapshot.size", max.snapshot.size)
   }
     
+  # If loops are not annotated, do not annotate functions called from inside a loop.
+  if (max.loops == 0) ddg.loop.annotate.off()
+  
   # Set number of first loop.
   .ddg.set("ddg.first.loop", first.loop)
   

@@ -1,2143 +1,324 @@
 Architecture="x86_64"
 OperatingSystem="windows"
 Language="R"
-LanguageVersion="R version 3.2.5 (2016-04-14)"
+LanguageVersion="R version 3.3.2 (2016-10-31)"
 RDataTrackerVersion="2.24.1"
 Script="[DIR]/HFDatasetPreview.R"
 SourcedScripts=""
 ProcessFileTimestamp="2016-11-09T16.27.25EST"
 WorkingDirectory="[DIR]"
 DDGDirectory="[DIR]/ddg"
-DateTime="2016-11-10T10.10.13EST"
-InstalledPackages="bitops 1.0-6, gplots 3.0.1, RCurl 1.95-4.8, RDataTracker 2.24.1, XML 3.98-1.4"
-601
-Start p1 "1-HFDatasetPreview.R" Value="HFDatasetPreview.R" Time="2.8" Script="NA" Pos="NA";
-Operation p2 "2-library(RCurl)" Value="library(RCurl)" Time="2.97" Script="0" Pos="39,1,39,14";
+DateTime="2016-12-14T12.43.25EST"
+InstalledPackages="bitops 1.0-6, gplots 3.0.1, RCurl 1.95-4.8, RDataTracker 2.24.1, XML 3.98-1.5"
+87
+Start p1 "1-HFDatasetPreview.R" Value="HFDatasetPreview.R" Time="2.89" Script="NA" Pos="NA";
+Operation p2 "2-library(RCurl)" Value="library(RCurl)" Time="3.01" Script="0" Pos="39,1,39,14";
 CF p1 p2
-Operation p3 "3-library(XML)" Value="library(XML)" Time="3.04" Script="0" Pos="40,1,40,12";
+Operation p3 "3-library(XML)" Value="library(XML)" Time="3.01" Script="0" Pos="40,1,40,12";
 CF p2 p3
-Operation p4 "4-library(gplots)" Value="library(gplots)" Time="3.13" Script="0" Pos="41,1,41,15";
+Operation p4 "4-library(gplots)" Value="library(gplots)" Time="3.04" Script="0" Pos="41,1,41,15";
 CF p3 p4
-Operation p5 "5-hf.eml.dir <- \"http://harvardforest.fas.harvard.edu/sites/ha" Value="hf.eml.dir <- \"http://harvardforest.fas.harvard.edu/sites/ha" Time="3.13" Script="0" Pos="44,1,44,104";
+Operation p5 "5-hf.eml.dir <- \"http://harvardforest.fas.harvard.edu/sites/ha" Value="hf.eml.dir <- \"http://harvardforest.fas.harvard.edu/sites/ha" Time="3.07" Script="0" Pos="44,1,44,104";
 CF p4 p5
 Data d1 "1-hf.eml.dir" Value="\"http://harvardforest.fas.harvard.edu/sites/harvardforest.fas.harvard.edu/files/data/eml/\"";
 DF p5 d1
-Operation p6 "6-hf.data.dir <- \"http://harvardforest.fas.harvard.edu/sites/h" Value="hf.data.dir <- \"http://harvardforest.fas.harvard.edu/sites/h" Time="3.15" Script="0" Pos="47,1,47,101";
+Operation p6 "6-hf.data.dir <- \"http://harvardforest.fas.harvard.edu/sites/h" Value="hf.data.dir <- \"http://harvardforest.fas.harvard.edu/sites/h" Time="3.09" Script="0" Pos="47,1,47,101";
 CF p5 p6
 Data d2 "2-hf.data.dir" Value="\"http://harvardforest.fas.harvard.edu/sites/harvardforest.fas.harvard.edu/files/data/\"";
 DF p6 d2
-Operation p7 "7-get.parsed.eml <- function(dataset.id) {    eml.url <<- past" Value="get.parsed.eml <- function(dataset.id) {    eml.url <<- past" Time="3.15" Script="0" Pos="153,1,164,1";
+Operation p7 "7-get.parsed.eml <- function(dataset.id) {    eml.url <<- past" Value="get.parsed.eml <- function(dataset.id) {    eml.url <<- past" Time="3.1" Script="0" Pos="153,1,164,1";
 CF p6 p7
 Data d3 "3-get.parsed.eml" Value="#ddg.function";
 DF p7 d3
-Operation p8 "8-parse.time.series.string <- function(st) {    stp <- strspli" Value="parse.time.series.string <- function(st) {    stp <- strspli" Time="3.16" Script="0" Pos="167,1,174,1";
+Operation p8 "8-parse.time.series.string <- function(st) {    stp <- strspli" Value="parse.time.series.string <- function(st) {    stp <- strspli" Time="3.1" Script="0" Pos="167,1,174,1";
 CF p7 p8
 Data d4 "4-parse.time.series.string" Value="#ddg.function";
 DF p8 d4
-Operation p9 "9-get.time.series.ids <- function(dataset.id) {    xpath <- pa" Value="get.time.series.ids <- function(dataset.id) {    xpath <- pa" Time="3.16" Script="0" Pos="177,1,202,1";
+Operation p9 "9-get.time.series.ids <- function(dataset.id) {    xpath <- pa" Value="get.time.series.ids <- function(dataset.id) {    xpath <- pa" Time="3.1" Script="0" Pos="177,1,202,1";
 CF p8 p9
 Data d5 "5-get.time.series.ids" Value="#ddg.function";
 DF p9 d5
-Operation p10 "10-get.datafile.id <- function(dataset.id, datafile.num) {    i" Value="get.datafile.id <- function(dataset.id, datafile.num) {    i" Time="3.18" Script="0" Pos="205,1,213,1";
+Operation p10 "10-get.datafile.id <- function(dataset.id, datafile.num) {    i" Value="get.datafile.id <- function(dataset.id, datafile.num) {    i" Time="3.12" Script="0" Pos="205,1,213,1";
 CF p9 p10
 Data d6 "6-get.datafile.id" Value="#ddg.function";
 DF p10 d6
-Operation p11 "11-get.all.datafile.ids <- function(ns) {    datafile.ids <- NU" Value="get.all.datafile.ids <- function(ns) {    datafile.ids <- NU" Time="3.18" Script="0" Pos="216,1,221,1";
+Operation p11 "11-get.all.datafile.ids <- function(ns) {    datafile.ids <- NU" Value="get.all.datafile.ids <- function(ns) {    datafile.ids <- NU" Time="3.13" Script="0" Pos="216,1,221,1";
 CF p10 p11
 Data d7 "7-get.all.datafile.ids" Value="#ddg.function";
 DF p11 d7
-Operation p12 "12-get.datafile.ids <- function(dataset.id) {    xpath <- paste" Value="get.datafile.ids <- function(dataset.id) {    xpath <- paste" Time="3.19" Script="0" Pos="224,1,232,1";
+Operation p12 "12-get.datafile.ids <- function(dataset.id) {    xpath <- paste" Value="get.datafile.ids <- function(dataset.id) {    xpath <- paste" Time="3.13" Script="0" Pos="224,1,232,1";
 CF p11 p12
 Data d8 "8-get.datafile.ids" Value="#ddg.function";
 DF p12 d8
-Operation p13 "13-get.datafile.name <- function(eml, datafile.id) {    xpath1 " Value="get.datafile.name <- function(eml, datafile.id) {    xpath1 " Time="3.19" Script="0" Pos="235,1,239,1";
+Operation p13 "13-get.datafile.name <- function(eml, datafile.id) {    xpath1 " Value="get.datafile.name <- function(eml, datafile.id) {    xpath1 " Time="3.13" Script="0" Pos="235,1,239,1";
 CF p12 p13
 Data d9 "9-get.datafile.name" Value="#ddg.function";
 DF p13 d9
-Operation p14 "14-get.data.url <- function(eml, datafile.id) {    xpath1 <- pa" Value="get.data.url <- function(eml, datafile.id) {    xpath1 <- pa" Time="3.21" Script="0" Pos="242,1,267,1";
+Operation p14 "14-get.data.url <- function(eml, datafile.id) {    xpath1 <- pa" Value="get.data.url <- function(eml, datafile.id) {    xpath1 <- pa" Time="3.15" Script="0" Pos="242,1,267,1";
 CF p13 p14
 Data d10 "10-get.data.url" Value="#ddg.function";
 DF p14 d10
-Operation p15 "15-get.data.table.node.set <- function(eml, datafile.id) {    x" Value="get.data.table.node.set <- function(eml, datafile.id) {    x" Time="3.21" Script="0" Pos="272,1,301,1";
+Operation p15 "15-get.data.table.node.set <- function(eml, datafile.id) {    x" Value="get.data.table.node.set <- function(eml, datafile.id) {    x" Time="3.16" Script="0" Pos="272,1,301,1";
 CF p14 p15
 Data d11 "11-get.data.table.node.set" Value="#ddg.function";
 DF p15 d11
-Operation p16 "16-get.variable.type <- function(ns) {    x1 <- xpathApply(ns, " Value="get.variable.type <- function(ns) {    x1 <- xpathApply(ns, " Time="3.22" Script="0" Pos="304,1,367,1";
+Operation p16 "16-get.variable.type <- function(ns) {    x1 <- xpathApply(ns, " Value="get.variable.type <- function(ns) {    x1 <- xpathApply(ns, " Time="3.16" Script="0" Pos="304,1,367,1";
 CF p15 p16
 Data d12 "12-get.variable.type" Value="#ddg.function";
 DF p16 d12
-Operation p17 "17-get.all.variable.types <- function(ns) {    num <- xmlSize(n" Value="get.all.variable.types <- function(ns) {    num <- xmlSize(n" Time="3.22" Script="0" Pos="372,1,437,1";
+Operation p17 "17-get.all.variable.types <- function(ns) {    num <- xmlSize(n" Value="get.all.variable.types <- function(ns) {    num <- xmlSize(n" Time="3.16" Script="0" Pos="372,1,437,1";
 CF p16 p17
 Data d13 "13-get.all.variable.types" Value="#ddg.function";
 DF p17 d13
-Operation p18 "18-get.variable.format.string <- function(ns) {    x <- xpathAp" Value="get.variable.format.string <- function(ns) {    x <- xpathAp" Time="3.24" Script="0" Pos="442,1,496,1";
+Operation p18 "18-get.variable.format.string <- function(ns) {    x <- xpathAp" Value="get.variable.format.string <- function(ns) {    x <- xpathAp" Time="3.16" Script="0" Pos="442,1,496,1";
 CF p17 p18
 Data d14 "14-get.variable.format.string" Value="#ddg.function";
 DF p18 d14
-Operation p19 "19-get.all.variable.format.strings <- function(ns) {    num <- " Value="get.all.variable.format.strings <- function(ns) {    num <- " Time="3.24" Script="0" Pos="501,1,550,1";
+Operation p19 "19-get.all.variable.format.strings <- function(ns) {    num <- " Value="get.all.variable.format.strings <- function(ns) {    num <- " Time="3.18" Script="0" Pos="501,1,550,1";
 CF p18 p19
 Data d15 "15-get.all.variable.format.strings" Value="#ddg.function";
 DF p19 d15
-Operation p20 "20-get.data.file <- function(data.url, var.types) {    con <- f" Value="get.data.file <- function(data.url, var.types) {    con <- f" Time="3.24" Script="0" Pos="555,1,563,1";
+Operation p20 "20-get.data.file <- function(data.url, var.types) {    con <- f" Value="get.data.file <- function(data.url, var.types) {    con <- f" Time="3.2" Script="0" Pos="555,1,563,1";
 CF p19 p20
 Data d16 "16-get.data.file" Value="#ddg.function";
 DF p20 d16
-Operation p21 "21-get.hf.datafile <- function(datafile.id) {    datafile.name " Value="get.hf.datafile <- function(datafile.id) {    datafile.name " Time="3.25" Script="0" Pos="566,1,593,1";
+Operation p21 "21-get.hf.datafile <- function(datafile.id) {    datafile.name " Value="get.hf.datafile <- function(datafile.id) {    datafile.name " Time="3.2" Script="0" Pos="566,1,593,1";
 CF p20 p21
 Data d17 "17-get.hf.datafile" Value="#ddg.function";
 DF p21 d17
-Operation p22 "22-get.summary.stats.data.frame <- function(xx) {    sum.types " Value="get.summary.stats.data.frame <- function(xx) {    sum.types " Time="3.25" Script="0" Pos="603,1,603,21";
+Operation p22 "22-get.summary.stats.data.frame <- function(xx) {    sum.types " Value="get.summary.stats.data.frame <- function(xx) {    sum.types " Time="3.2" Script="0" Pos="603,1,603,21";
 CF p21 p22
 Data d18 "18-get.summary.stats.data.frame" Value="#ddg.function";
 DF p22 d18
-Operation p23 "23-get.plot.dataframe <- function(xx, max.rows) {    plt.types " Value="get.plot.dataframe <- function(xx, max.rows) {    plt.types " Time="3.27" Script="0" Pos="604,1,604,17";
+Operation p23 "23-get.plot.dataframe <- function(xx, max.rows) {    plt.types " Value="get.plot.dataframe <- function(xx, max.rows) {    plt.types " Time="3.21" Script="0" Pos="604,1,604,17";
 CF p22 p23
 Data d19 "19-get.plot.dataframe" Value="#ddg.function";
 DF p23 d19
-Operation p24 "24-create.summary.stats.table <- function(xx) {    xx.sum <- ge" Value="create.summary.stats.table <- function(xx) {    xx.sum <- ge" Time="3.27" Script="0" Pos="607,1,607,33";
+Operation p24 "24-create.summary.stats.table <- function(xx) {    xx.sum <- ge" Value="create.summary.stats.table <- function(xx) {    xx.sum <- ge" Time="3.21" Script="0" Pos="607,1,607,33";
 CF p23 p24
 Data d20 "20-create.summary.stats.table" Value="#ddg.function";
 DF p24 d20
-Operation p25 "25-create.time.series.plot <- function(xx) {    xx.plt <- get.p" Value="create.time.series.plot <- function(xx) {    xx.plt <- get.p" Time="3.29" Script="0" Pos="608,1,608,50";
+Operation p25 "25-create.time.series.plot <- function(xx) {    xx.plt <- get.p" Value="create.time.series.plot <- function(xx) {    xx.plt <- get.p" Time="3.21" Script="0" Pos="608,1,608,50";
 CF p24 p25
 Data d21 "21-create.time.series.plot" Value="#ddg.function";
 DF p25 d21
-Operation p26 "26-create.scatterplot.matrix <- function(xx) {    xx.plt <- get" Value="create.scatterplot.matrix <- function(xx) {    xx.plt <- get" Time="3.29" Script="0" Pos="611,1,630,1";
+Operation p26 "26-create.scatterplot.matrix <- function(xx) {    xx.plt <- get" Value="create.scatterplot.matrix <- function(xx) {    xx.plt <- get" Time="3.23" Script="0" Pos="611,1,630,1";
 CF p25 p26
 Data d22 "22-create.scatterplot.matrix" Value="#ddg.function";
 DF p26 d22
-Operation p27 "27-get.plot.type <- function(datafile.id) {    num <- as.intege" Value="get.plot.type <- function(datafile.id) {    num <- as.intege" Time="3.3" Script="0" Pos="NA,NA,NA,NA";
+Operation p27 "27-get.plot.type <- function(datafile.id) {    num <- as.intege" Value="get.plot.type <- function(datafile.id) {    num <- as.intege" Time="3.23" Script="0" Pos="NA,NA,NA,NA";
 CF p26 p27
 Data d23 "23-get.plot.type" Value="#ddg.function";
 DF p27 d23
-Operation p28 "28-create.datafile.preview <- function(datafile.id) {    dd <<-" Value="create.datafile.preview <- function(datafile.id) {    dd <<-" Time="3.3" Script="0" Pos="NA,NA,NA,NA";
+Operation p28 "28-create.datafile.preview <- function(datafile.id) {    dd <<-" Value="create.datafile.preview <- function(datafile.id) {    dd <<-" Time="3.23" Script="0" Pos="NA,NA,NA,NA";
 CF p27 p28
 Data d24 "24-create.datafile.preview" Value="#ddg.function";
 DF p28 d24
-Operation p29 "29-dataset.id <- \"hf000\"" Value="dataset.id <- \"hf000\"" Time="3.3" Script="0" Pos="NA,NA,NA,NA";
+Operation p29 "29-dataset.id <- \"hf000\"" Value="dataset.id <- \"hf000\"" Time="3.24" Script="0" Pos="NA,NA,NA,NA";
 CF p28 p29
 Data d25 "25-dataset.id" Value="\"hf000\"";
 DF p29 d25
-Operation p30 "30-datafile.num <- 1" Value="datafile.num <- 1" Time="3.32" Script="0" Pos="NA,NA,NA,NA";
+Operation p30 "30-datafile.num <- 1" Value="datafile.num <- 1" Time="3.24" Script="0" Pos="NA,NA,NA,NA";
 CF p29 p30
 Data d26 "26-datafile.num" Value="1";
 DF p30 d26
-Start p31 "31-eml <- get.parsed.eml(dataset.id)" Value="eml <- get.parsed.eml(dataset.id)" Time="3.32" Script="0" Pos="NA,NA,NA,NA";
+Start p31 "31-eml <- get.parsed.eml(dataset.id)" Value="eml <- get.parsed.eml(dataset.id)" Time="3.26" Script="0" Pos="NA,NA,NA,NA";
 CF p30 p31
 DF d3 p31
 DF d25 p31
-Start p32 "32-get.parsed.eml(dataset.id)" Value="get.parsed.eml(dataset.id)" Time="3.33" Script="NA" Pos="NA";
+Start p32 "32-get.parsed.eml(dataset.id)" Value="get.parsed.eml(dataset.id)" Time="3.26" Script="NA" Pos="NA";
 CF p31 p32
-Binding p33 "33-dataset.id  <-  dataset.id" Time="3.33" Script="NA" Pos="NA";
+Binding p33 "33-dataset.id  <-  dataset.id" Time="3.26" Script="NA" Pos="NA";
 CF p32 p33
 DF d25 p33
 Data d27 "27-dataset.id" Value="\"hf000\"";
 DF p33 d27
-Operation p34 "34-get.parsed.eml" Value="get.parsed.eml" Time="3.35" Script="NA" Pos="NA";
+Operation p34 "34-get.parsed.eml" Value="get.parsed.eml" Time="3.27" Script="NA" Pos="NA";
 DF d3 p34
 DF d27 p34
 CF p33 p34
-Operation p35 "35-eml.url <<- paste(hf.eml.dir, dataset.id, \".xml\", sep = \"\")" Value="eml.url <<- paste(hf.eml.dir, dataset.id, \".xml\", sep = \"\")" Time="3.35" Script="0" Pos="NA,NA,NA,NA";
+Operation p35 "35-eml.url <<- paste(hf.eml.dir, dataset.id, \".xml\", sep = \"\")" Value="eml.url <<- paste(hf.eml.dir, dataset.id, \".xml\", sep = \"\")" Time="3.29" Script="0" Pos="NA,NA,NA,NA";
 CF p34 p35
 DF d1 p35
 DF d27 p35
 Data d28 "28-eml.url" Value="\"http://harvardforest.fas.harvard.edu/sites/harvardforest.fas.harvard.edu/files/data/eml/hf000.xml\"";
 DF p35 d28
-Start p36 "36-if (!url.exists(eml.url)) {    msg <- paste(dataset.id, \": E" Value="if (!url.exists(eml.url)) {    msg <- paste(dataset.id, \": E" Time="3.4" Script="0" Pos="NA,NA,NA,NA";
+Start p36 "36-if (!url.exists(eml.url)) {    msg <- paste(dataset.id, \": E" Value="if (!url.exists(eml.url)) {    msg <- paste(dataset.id, \": E" Time="3.31" Script="0" Pos="NA,NA,NA,NA";
 CF p35 p36
 DF d28 p36
 DF d25 p36
-Start p37 "37-if" Value="if" Time="3.42" Script="NA" Pos="NA";
+Start p37 "37-if" Value="if" Time="3.32" Script="NA" Pos="NA";
 CF p36 p37
-Operation p38 "38-eml <- xmlTreeParse(eml.url, useInternalNodes = TRUE)" Value="eml <- xmlTreeParse(eml.url, useInternalNodes = TRUE)" Time="3.42" Script="0" Pos="NA,NA,NA,NA";
+Operation p38 "38-eml <- xmlTreeParse(eml.url, useInternalNodes = TRUE)" Value="eml <- xmlTreeParse(eml.url, useInternalNodes = TRUE)" Time="3.34" Script="0" Pos="NA,NA,NA,NA";
 CF p37 p38
 DF d28 p38
-Snapshot d29 "29-eml" Value="[DIR]/ddg/data/29-eml.xml" Time="2016-11-10T10.10.17EST";
+Snapshot d29 "29-eml" Value="[DIR]/ddg/data/29-eml.xml" Time="2016-12-14T12.43.29EST";
 DF p38 d29
-Finish p39 "39-if" Value="if" Time="3.44" Script="NA" Pos="NA";
+Finish p39 "39-if" Value="if" Time="3.35" Script="NA" Pos="NA";
 CF p38 p39
-Finish p40 "40-if (!url.exists(eml.url)) {    msg <- paste(dataset.id, \": E" Value="if (!url.exists(eml.url)) {    msg <- paste(dataset.id, \": E" Time="3.44" Script="0" Pos="NA,NA,NA,NA";
+Finish p40 "40-if (!url.exists(eml.url)) {    msg <- paste(dataset.id, \": E" Value="if (!url.exists(eml.url)) {    msg <- paste(dataset.id, \": E" Time="3.35" Script="0" Pos="NA,NA,NA,NA";
 CF p39 p40
-Snapshot d30 "30-get.parsed.eml(dataset.id) return" Value="[DIR]/ddg/data/30-get.parsed.eml(dataset.id) return.xml" Time="2016-11-10T10.10.17EST";
-Operation p41 "41-return(eml)" Value="return(eml)" Time="3.45" Script="0" Pos="NA,NA,NA,NA";
+Snapshot d30 "30-get.parsed.eml(dataset.id) return" Value="[DIR]/ddg/data/30-get.parsed.eml(dataset.id) return.xml" Time="2016-12-14T12.43.29EST";
+Operation p41 "41-return(eml)" Value="return(eml)" Time="3.35" Script="0" Pos="NA,NA,NA,NA";
 CF p40 p41
 DF p41 d30
 DF d29 p41
-Finish p42 "42-get.parsed.eml(dataset.id)" Value="get.parsed.eml(dataset.id)" Time="3.45" Script="NA" Pos="NA";
+Finish p42 "42-get.parsed.eml(dataset.id)" Value="get.parsed.eml(dataset.id)" Time="3.37" Script="NA" Pos="NA";
 CF p41 p42
-Finish p43 "43-eml <- get.parsed.eml(dataset.id)" Value="eml <- get.parsed.eml(dataset.id)" Time="3.45" Script="0" Pos="NA,NA,NA,NA";
+Finish p43 "43-eml <- get.parsed.eml(dataset.id)" Value="eml <- get.parsed.eml(dataset.id)" Time="3.37" Script="0" Pos="NA,NA,NA,NA";
 CF p42 p43
 DF d30 p43
-Snapshot d31 "31-eml" Value="[DIR]/ddg/data/31-eml.xml" Time="2016-11-10T10.10.17EST";
+Snapshot d31 "31-eml" Value="[DIR]/ddg/data/31-eml.xml" Time="2016-12-14T12.43.29EST";
 DF p43 d31
-Start p44 "44-time.series.ids <- get.time.series.ids(dataset.id)" Value="time.series.ids <- get.time.series.ids(dataset.id)" Time="3.47" Script="0" Pos="NA,NA,NA,NA";
+Start p44 "44-time.series.ids <- get.time.series.ids(dataset.id)" Value="time.series.ids <- get.time.series.ids(dataset.id)" Time="3.37" Script="0" Pos="NA,NA,NA,NA";
 CF p43 p44
 DF d5 p44
 DF d25 p44
-Start p45 "45-get.time.series.ids(dataset.id)" Value="get.time.series.ids(dataset.id)" Time="3.48" Script="NA" Pos="NA";
+Start p45 "45-get.time.series.ids(dataset.id)" Value="get.time.series.ids(dataset.id)" Time="3.38" Script="NA" Pos="NA";
 CF p44 p45
-Binding p46 "46-dataset.id  <-  dataset.id" Time="3.48" Script="NA" Pos="NA";
+Binding p46 "46-dataset.id  <-  dataset.id" Time="3.38" Script="NA" Pos="NA";
 CF p45 p46
 DF d25 p46
 Data d32 "32-dataset.id" Value="\"hf000\"";
 DF p46 d32
-Operation p47 "47-get.time.series.ids" Value="get.time.series.ids" Time="3.48" Script="NA" Pos="NA";
+Operation p47 "47-get.time.series.ids" Value="get.time.series.ids" Time="3.4" Script="NA" Pos="NA";
 DF d5 p47
 DF d32 p47
 CF p46 p47
-Operation p48 "48-xpath <- paste(\"//additionalMetadata/metadata/additionalClas" Value="xpath <- paste(\"//additionalMetadata/metadata/additionalClas" Time="3.5" Script="0" Pos="NA,NA,NA,NA";
+Operation p48 "48-xpath <- paste(\"//additionalMetadata/metadata/additionalClas" Value="xpath <- paste(\"//additionalMetadata/metadata/additionalClas" Time="3.4" Script="0" Pos="NA,NA,NA,NA";
 CF p47 p48
 Data d33 "33-xpath" Value="\"//additionalMetadata/metadata/additionalClassifications/timeSeries\"";
 DF p48 d33
-Operation p49 "49-ns <- getNodeSet(eml, xpath, fun = xmlValue)" Value="ns <- getNodeSet(eml, xpath, fun = xmlValue)" Time="3.5" Script="0" Pos="NA,NA,NA,NA";
+Operation p49 "49-ns <- getNodeSet(eml, xpath, fun = xmlValue)" Value="ns <- getNodeSet(eml, xpath, fun = xmlValue)" Time="3.42" Script="0" Pos="NA,NA,NA,NA";
 CF p48 p49
 DF d31 p49
 DF d33 p49
-Snapshot d34 "34-ns" Value="[DIR]/ddg/data/34-ns.txt" Time="2016-11-10T10.10.17EST";
+Snapshot d34 "34-ns" Value="[DIR]/ddg/data/34-ns.txt" Time="2016-12-14T12.43.29EST";
 DF p49 d34
-Start p50 "50-if (length(ns) == 0) {    time.series.ids <- NULL} else {   " Value="if (length(ns) == 0) {    time.series.ids <- NULL} else {   " Time="3.51" Script="0" Pos="NA,NA,NA,NA";
+Start p50 "50-if (length(ns) == 0) {    time.series.ids <- NULL} else {   " Value="if (length(ns) == 0) {    time.series.ids <- NULL} else {   " Time="3.43" Script="0" Pos="NA,NA,NA,NA";
 CF p49 p50
 DF d4 p50
-Start p51 "51-if" Value="if" Time="3.53" Script="NA" Pos="NA";
+Start p51 "51-if" Value="if" Time="3.45" Script="NA" Pos="NA";
 CF p50 p51
-Operation p52 "52-st <- ns[[1]]" Value="st <- ns[[1]]" Time="3.53" Script="0" Pos="NA,NA,NA,NA";
+Operation p52 "52-st <- ns[[1]]" Value="st <- ns[[1]]" Time="3.45" Script="0" Pos="NA,NA,NA,NA";
 CF p51 p52
 DF d34 p52
 Data d35 "35-st" Value="\"1,2\"";
 DF p52 d35
-Start p53 "53-time.series.ids <- parse.time.series.string(st)" Value="time.series.ids <- parse.time.series.string(st)" Time="3.55" Script="0" Pos="NA,NA,NA,NA";
+Start p53 "53-time.series.ids <- parse.time.series.string(st)" Value="time.series.ids <- parse.time.series.string(st)" Time="3.47" Script="0" Pos="NA,NA,NA,NA";
 CF p52 p53
 DF d4 p53
 DF d35 p53
-Start p54 "54-parse.time.series.string(st)" Value="parse.time.series.string(st)" Time="3.56" Script="NA" Pos="NA";
+Start p54 "54-parse.time.series.string(st)" Value="parse.time.series.string(st)" Time="3.48" Script="NA" Pos="NA";
 CF p53 p54
-Binding p55 "55-st  <-  st" Time="3.56" Script="NA" Pos="NA";
+Binding p55 "55-st  <-  st" Time="3.48" Script="NA" Pos="NA";
 CF p54 p55
 DF d35 p55
 Data d36 "36-st" Value="\"1,2\"";
 DF p55 d36
-Operation p56 "56-parse.time.series.string" Value="parse.time.series.string" Time="3.56" Script="NA" Pos="NA";
+Operation p56 "56-parse.time.series.string" Value="parse.time.series.string" Time="3.48" Script="NA" Pos="NA";
 DF d4 p56
 DF d36 p56
 CF p55 p56
-Operation p57 "57-stp <- strsplit(st, \",\")" Value="stp <- strsplit(st, \",\")" Time="3.58" Script="0" Pos="NA,NA,NA,NA";
+Operation p57 "57-stp <- strsplit(st, \",\")" Value="stp <- strsplit(st, \",\")" Time="3.5" Script="0" Pos="NA,NA,NA,NA";
 CF p56 p57
 DF d36 p57
-Snapshot d37 "37-stp" Value="[DIR]/ddg/data/37-stp.txt" Time="2016-11-10T10.10.17EST";
+Snapshot d37 "37-stp" Value="[DIR]/ddg/data/37-stp.txt" Time="2016-12-14T12.43.29EST";
 DF p57 d37
-Start p58 "58-for (i in 1:length(stp[[1]])) {    if (i == 1) {        ids " Value="for (i in 1:length(stp[[1]])) {    if (i == 1) {        ids " Time="3.59" Script="0" Pos="NA,NA,NA,NA";
+Start p58 "58-for (i in 1:length(stp[[1]])) {    if (i == 1) {        ids " Value="for (i in 1:length(stp[[1]])) {    if (i == 1) {        ids " Time="3.51" Script="0" Pos="NA,NA,NA,NA";
 CF p57 p58
-Start p59 "59-for loop" Value="for loop" Time="3.59" Script="NA" Pos="NA";
+Start p59 "59-for loop" Value="for loop" Time="3.52" Script="NA" Pos="NA";
 CF p58 p59
-Operation p60 "60-i <- 1" Value="i <- 1" Time="3.59" Script="NA" Pos="NA";
+Operation p60 "60-i <- 1" Value="i <- 1" Time="3.52" Script="NA" Pos="NA";
 CF p59 p60
 Data d38 "38-i" Value="1";
 DF p60 d38
-Start p61 "61-if (i == 1) {    ids <- as.integer(stp[[1]][i])} else {    i" Value="if (i == 1) {    ids <- as.integer(stp[[1]][i])} else {    i" Time="3.59" Script="0" Pos="NA,NA,NA,NA";
+Start p61 "61-if (i == 1) {    ids <- as.integer(stp[[1]][i])} else {    i" Value="if (i == 1) {    ids <- as.integer(stp[[1]][i])} else {    i" Time="3.54" Script="0" Pos="NA,NA,NA,NA";
 CF p60 p61
-Start p62 "62-if" Value="if" Time="3.61" Script="NA" Pos="NA";
+Start p62 "62-if" Value="if" Time="3.54" Script="NA" Pos="NA";
 CF p61 p62
-Operation p63 "63-ids <- as.integer(stp[[1]][i])" Value="ids <- as.integer(stp[[1]][i])" Time="3.61" Script="0" Pos="NA,NA,NA,NA";
+Operation p63 "63-ids <- as.integer(stp[[1]][i])" Value="ids <- as.integer(stp[[1]][i])" Time="3.55" Script="0" Pos="NA,NA,NA,NA";
 CF p62 p63
 DF d37 p63
 DF d38 p63
 Data d39 "39-ids" Value="1";
 DF p63 d39
-Finish p64 "64-if" Value="if" Time="3.62" Script="NA" Pos="NA";
+Finish p64 "64-if" Value="if" Time="3.57" Script="NA" Pos="NA";
 CF p63 p64
-Finish p65 "65-if (i == 1) {    ids <- as.integer(stp[[1]][i])} else {    i" Value="if (i == 1) {    ids <- as.integer(stp[[1]][i])} else {    i" Time="3.64" Script="0" Pos="NA,NA,NA,NA";
+Finish p65 "65-if (i == 1) {    ids <- as.integer(stp[[1]][i])} else {    i" Value="if (i == 1) {    ids <- as.integer(stp[[1]][i])} else {    i" Time="3.57" Script="0" Pos="NA,NA,NA,NA";
 CF p64 p65
-Finish p66 "66-for loop" Value="for loop" Time="3.64" Script="NA" Pos="NA";
+Finish p66 "66-for loop" Value="for loop" Time="3.57" Script="NA" Pos="NA";
 CF p65 p66
-Finish p67 "67-for (i in 1:length(stp[[1]])) {    if (i == 1) {        ids " Value="for (i in 1:length(stp[[1]])) {    if (i == 1) {        ids " Time="3.64" Script="0" Pos="NA,NA,NA,NA";
+Operation p67 "67-Details Omitted" Value="Details Omitted" Time="3.57" Script="NA" Pos="NA";
 CF p66 p67
-Snapshot d40 "40-parse.time.series.string(st) return" Value="[DIR]/ddg/data/40-parse.time.series.string(st) return.csv" Time="2016-11-10T10.10.17EST";
-Operation p68 "68-return(ids)" Value="return(ids)" Time="3.64" Script="0" Pos="NA,NA,NA,NA";
+Finish p68 "68-for (i in 1:length(stp[[1]])) {    if (i == 1) {        ids " Value="for (i in 1:length(stp[[1]])) {    if (i == 1) {        ids " Time="3.57" Script="0" Pos="NA,NA,NA,NA";
 CF p67 p68
+Data d40 "40-ids" Value="1,2";
 DF p68 d40
-DF d39 p68
-Finish p69 "69-parse.time.series.string(st)" Value="parse.time.series.string(st)" Time="3.65" Script="NA" Pos="NA";
+Snapshot d41 "41-parse.time.series.string(st) return" Value="[DIR]/ddg/data/41-parse.time.series.string(st) return.csv" Time="2016-12-14T12.43.29EST";
+Operation p69 "69-return(ids)" Value="return(ids)" Time="3.58" Script="0" Pos="NA,NA,NA,NA";
 CF p68 p69
-Finish p70 "70-time.series.ids <- parse.time.series.string(st)" Value="time.series.ids <- parse.time.series.string(st)" Time="3.65" Script="0" Pos="NA,NA,NA,NA";
+DF p69 d41
+DF d40 p69
+Finish p70 "70-parse.time.series.string(st)" Value="parse.time.series.string(st)" Time="3.58" Script="NA" Pos="NA";
 CF p69 p70
-DF d40 p70
-Snapshot d41 "41-time.series.ids" Value="[DIR]/ddg/data/41-time.series.ids.csv" Time="2016-11-10T10.10.17EST";
-DF p70 d41
-Finish p71 "71-if" Value="if" Time="3.67" Script="NA" Pos="NA";
+Finish p71 "71-time.series.ids <- parse.time.series.string(st)" Value="time.series.ids <- parse.time.series.string(st)" Time="3.58" Script="0" Pos="NA,NA,NA,NA";
 CF p70 p71
-Finish p72 "72-if (length(ns) == 0) {    time.series.ids <- NULL} else {   " Value="if (length(ns) == 0) {    time.series.ids <- NULL} else {   " Time="3.67" Script="0" Pos="NA,NA,NA,NA";
+DF d41 p71
+Snapshot d42 "42-time.series.ids" Value="[DIR]/ddg/data/42-time.series.ids.csv" Time="2016-12-14T12.43.29EST";
+DF p71 d42
+Finish p72 "72-if" Value="if" Time="3.6" Script="NA" Pos="NA";
 CF p71 p72
-Snapshot d42 "42-get.time.series.ids(dataset.id) return" Value="[DIR]/ddg/data/42-get.time.series.ids(dataset.id) return.csv" Time="2016-11-10T10.10.17EST";
-Operation p73 "73-return(time.series.ids)" Value="return(time.series.ids)" Time="3.69" Script="0" Pos="NA,NA,NA,NA";
+Finish p73 "73-if (length(ns) == 0) {    time.series.ids <- NULL} else {   " Value="if (length(ns) == 0) {    time.series.ids <- NULL} else {   " Time="3.65" Script="0" Pos="NA,NA,NA,NA";
 CF p72 p73
-DF p73 d42
-DF d41 p73
-Finish p74 "74-get.time.series.ids(dataset.id)" Value="get.time.series.ids(dataset.id)" Time="3.69" Script="NA" Pos="NA";
+Snapshot d43 "43-get.time.series.ids(dataset.id) return" Value="[DIR]/ddg/data/43-get.time.series.ids(dataset.id) return.csv" Time="2016-12-14T12.43.29EST";
+Operation p74 "74-return(time.series.ids)" Value="return(time.series.ids)" Time="3.65" Script="0" Pos="NA,NA,NA,NA";
 CF p73 p74
-Finish p75 "75-time.series.ids <- get.time.series.ids(dataset.id)" Value="time.series.ids <- get.time.series.ids(dataset.id)" Time="3.69" Script="0" Pos="NA,NA,NA,NA";
+DF p74 d43
+DF d42 p74
+Finish p75 "75-get.time.series.ids(dataset.id)" Value="get.time.series.ids(dataset.id)" Time="3.66" Script="NA" Pos="NA";
 CF p74 p75
-DF d42 p75
-Snapshot d43 "43-time.series.ids" Value="[DIR]/ddg/data/43-time.series.ids.csv" Time="2016-11-10T10.10.17EST";
-DF p75 d43
-Start p76 "76-if (datafile.num != 0) {    datafile.id <- get.datafile.id(d" Value="if (datafile.num != 0) {    datafile.id <- get.datafile.id(d" Time="3.71" Script="0" Pos="NA,NA,NA,NA";
+Finish p76 "76-time.series.ids <- get.time.series.ids(dataset.id)" Value="time.series.ids <- get.time.series.ids(dataset.id)" Time="3.66" Script="0" Pos="NA,NA,NA,NA";
 CF p75 p76
-DF d26 p76
-DF d6 p76
-DF d25 p76
-DF d24 p76
-DF d8 p76
-Start p77 "77-if" Value="if" Time="3.78" Script="NA" Pos="NA";
+DF d43 p76
+Snapshot d44 "44-time.series.ids" Value="[DIR]/ddg/data/44-time.series.ids.csv" Time="2016-12-14T12.43.29EST";
+DF p76 d44
+Start p77 "77-if (datafile.num != 0) {    datafile.id <- get.datafile.id(d" Value="if (datafile.num != 0) {    datafile.id <- get.datafile.id(d" Time="3.66" Script="0" Pos="NA,NA,NA,NA";
 CF p76 p77
-Start p78 "78-datafile.id <- get.datafile.id(dataset.id, datafile.num)" Value="datafile.id <- get.datafile.id(dataset.id, datafile.num)" Time="3.78" Script="0" Pos="NA,NA,NA,NA";
+DF d26 p77
+DF d6 p77
+DF d25 p77
+DF d24 p77
+DF d8 p77
+Start p78 "78-if" Value="if" Time="3.71" Script="NA" Pos="NA";
 CF p77 p78
-DF d6 p78
-DF d25 p78
-DF d26 p78
-Start p79 "79-get.datafile.id(dataset.id, datafile.num)" Value="get.datafile.id(dataset.id, datafile.num)" Time="3.8" Script="NA" Pos="NA";
+Operation p79 "79-datafile.id <- get.datafile.id(dataset.id, datafile.num)" Value="datafile.id <- get.datafile.id(dataset.id, datafile.num)" Time="3.71" Script="0" Pos="NA,NA,NA,NA";
 CF p78 p79
-Binding p80 "80-dataset.id  <-  dataset.id" Time="3.8" Script="NA" Pos="NA";
+DF d6 p79
+DF d25 p79
+DF d26 p79
+Data d45 "45-datafile.id" Value="\"hf000-01\"";
+DF p79 d45
+Start p80 "80-if (is.null(datafile.id)) {    msg <- paste(dataset.id, \" : " Value="if (is.null(datafile.id)) {    msg <- paste(dataset.id, \" : " Time="3.73" Script="0" Pos="NA,NA,NA,NA";
 CF p79 p80
+DF d45 p80
 DF d25 p80
-Data d44 "44-dataset.id" Value="\"hf000\"";
-DF p80 d44
-Binding p81 "81-datafile.num  <-  datafile.num" Time="3.81" Script="NA" Pos="NA";
+DF d26 p80
+DF d24 p80
+Start p81 "81-if" Value="if" Time="3.76" Script="NA" Pos="NA";
 CF p80 p81
-DF d26 p81
-Data d45 "45-datafile.num" Value="1";
-DF p81 d45
-Operation p82 "82-get.datafile.id" Value="get.datafile.id" Time="3.81" Script="NA" Pos="NA";
-DF d6 p82
-DF d44 p82
-DF d45 p82
+Operation p82 "82-create.datafile.preview(datafile.id)" Value="create.datafile.preview(datafile.id)" Time="5.92" Script="0" Pos="NA,NA,NA,NA";
 CF p81 p82
-Start p83 "83-if (datafile.num > 9) {    st <- toString(datafile.num)} els" Value="if (datafile.num > 9) {    st <- toString(datafile.num)} els" Time="3.83" Script="0" Pos="NA,NA,NA,NA";
+DF d24 p82
+DF d45 p82
+Finish p83 "83-if" Value="if" Time="5.92" Script="NA" Pos="NA";
 CF p82 p83
-DF d26 p83
-Start p84 "84-if" Value="if" Time="3.85" Script="NA" Pos="NA";
+Finish p84 "84-if (is.null(datafile.id)) {    msg <- paste(dataset.id, \" : " Value="if (is.null(datafile.id)) {    msg <- paste(dataset.id, \" : " Time="5.93" Script="0" Pos="NA,NA,NA,NA";
 CF p83 p84
-Operation p85 "85-st <- paste(\"0\", toString(datafile.num), sep = \"\")" Value="st <- paste(\"0\", toString(datafile.num), sep = \"\")" Time="3.85" Script="0" Pos="NA,NA,NA,NA";
+Finish p85 "85-if" Value="if" Time="5.93" Script="NA" Pos="NA";
 CF p84 p85
-DF d45 p85
-Data d46 "46-st" Value="\"01\"";
-DF p85 d46
-Finish p86 "86-if" Value="if" Time="3.85" Script="NA" Pos="NA";
+Finish p86 "86-if (datafile.num != 0) {    datafile.id <- get.datafile.id(d" Value="if (datafile.num != 0) {    datafile.id <- get.datafile.id(d" Time="5.93" Script="0" Pos="NA,NA,NA,NA";
 CF p85 p86
-Finish p87 "87-if (datafile.num > 9) {    st <- toString(datafile.num)} els" Value="if (datafile.num > 9) {    st <- toString(datafile.num)} els" Time="3.85" Script="0" Pos="NA,NA,NA,NA";
+Finish p87 "87-HFDatasetPreview.R" Value="HFDatasetPreview.R" Time="5.93" Script="NA" Pos="NA";
 CF p86 p87
-Operation p88 "88-datafile.id <- paste(dataset.id, \"-\", st, sep = \"\")" Value="datafile.id <- paste(dataset.id, \"-\", st, sep = \"\")" Time="3.86" Script="0" Pos="NA,NA,NA,NA";
-CF p87 p88
-DF d44 p88
-DF d46 p88
-Data d47 "47-datafile.id" Value="\"hf000-01\"";
-DF p88 d47
-Operation p89 "89-xpath1 <- paste(\"//dataTable[@id='\", datafile.id, \"']\", sep " Value="xpath1 <- paste(\"//dataTable[@id='\", datafile.id, \"']\", sep " Time="3.86" Script="0" Pos="NA,NA,NA,NA";
-CF p88 p89
-DF d47 p89
-Data d48 "48-xpath1" Value="\"//dataTable[@id='hf000-01']\"";
-DF p89 d48
-Operation p90 "90-xpath2 <- paste(\"//dataTable[@id='\", toupper(datafile.id), \"" Value="xpath2 <- paste(\"//dataTable[@id='\", toupper(datafile.id), \"" Time="3.88" Script="0" Pos="NA,NA,NA,NA";
-CF p89 p90
-DF d47 p90
-Data d49 "49-xpath2" Value="\"//dataTable[@id='HF000-01']\"";
-DF p90 d49
-Operation p91 "91-ns1 <- getNodeSet(eml, xpath1)" Value="ns1 <- getNodeSet(eml, xpath1)" Time="3.89" Script="0" Pos="NA,NA,NA,NA";
-CF p90 p91
-DF d31 p91
-DF d48 p91
-Snapshot d50 "50-ns1" Value="[DIR]/ddg/data/50-ns1.txt" Time="2016-11-10T10.10.17EST";
-DF p91 d50
-Operation p92 "92-ns2 <- getNodeSet(eml, xpath2)" Value="ns2 <- getNodeSet(eml, xpath2)" Time="3.91" Script="0" Pos="NA,NA,NA,NA";
-CF p91 p92
-DF d31 p92
-DF d49 p92
-Snapshot d51 "51-ns2" Value="[DIR]/ddg/data/51-ns2.txt" Time="2016-11-10T10.10.17EST";
-DF p92 d51
-Data d52 "52-get.datafile.id(dataset.id,datafile.num) return" Value="\"hf000-01\"";
-Operation p93 "93-return(datafile.id)" Value="return(datafile.id)" Time="3.92" Script="0" Pos="NA,NA,NA,NA";
-CF p92 p93
-DF p93 d52
-DF d47 p93
-Finish p94 "94-get.datafile.id(dataset.id, datafile.num)" Value="get.datafile.id(dataset.id, datafile.num)" Time="3.94" Script="NA" Pos="NA";
-CF p93 p94
-Finish p95 "95-datafile.id <- get.datafile.id(dataset.id, datafile.num)" Value="datafile.id <- get.datafile.id(dataset.id, datafile.num)" Time="3.94" Script="0" Pos="NA,NA,NA,NA";
-CF p94 p95
-DF d52 p95
-Data d53 "53-datafile.id" Value="\"hf000-01\"";
-DF p95 d53
-Start p96 "96-if (is.null(datafile.id)) {    msg <- paste(dataset.id, \" : " Value="if (is.null(datafile.id)) {    msg <- paste(dataset.id, \" : " Time="3.94" Script="0" Pos="NA,NA,NA,NA";
-CF p95 p96
-DF d53 p96
-DF d25 p96
-DF d26 p96
-DF d24 p96
-Start p97 "97-if" Value="if" Time="3.97" Script="NA" Pos="NA";
-CF p96 p97
-Start p98 "98-create.datafile.preview(datafile.id)" Value="create.datafile.preview(datafile.id)" Time="3.97" Script="NA" Pos="NA";
-CF p97 p98
-Binding p99 "99-datafile.id  <-  datafile.id" Time="3.97" Script="NA" Pos="NA";
-CF p98 p99
-DF d53 p99
-Data d54 "54-datafile.id" Value="\"hf000-01\"";
-DF p99 d54
-Operation p100 "100-create.datafile.preview" Value="create.datafile.preview" Time="3.97" Script="NA" Pos="NA";
-DF d24 p100
-DF d54 p100
-CF p99 p100
-Start p101 "101-dd <<- get.hf.datafile(datafile.id)" Value="dd <<- get.hf.datafile(datafile.id)" Time="3.99" Script="0" Pos="NA,NA,NA,NA";
-CF p100 p101
-DF d17 p101
-DF d54 p101
-Start p102 "102-get.hf.datafile(datafile.id)" Value="get.hf.datafile(datafile.id)" Time="4" Script="NA" Pos="NA";
-CF p101 p102
-Binding p103 "103-datafile.id  <-  datafile.id" Time="4" Script="NA" Pos="NA";
-CF p102 p103
-DF d54 p103
-Data d55 "55-datafile.id" Value="\"hf000-01\"";
-DF p103 d55
-Operation p104 "104-get.hf.datafile" Value="get.hf.datafile" Time="4" Script="NA" Pos="NA";
-DF d17 p104
-DF d55 p104
-CF p103 p104
-Start p105 "105-datafile.name <<- get.datafile.name(eml, datafile.id)" Value="datafile.name <<- get.datafile.name(eml, datafile.id)" Time="4.02" Script="0" Pos="NA,NA,NA,NA";
-CF p104 p105
-DF d9 p105
-DF d31 p105
-DF d55 p105
-Start p106 "106-get.datafile.name(eml, datafile.id)" Value="get.datafile.name(eml, datafile.id)" Time="4.03" Script="NA" Pos="NA";
-CF p105 p106
-Binding p107 "107-eml  <-  eml" Time="4.05" Script="NA" Pos="NA";
-CF p106 p107
-DF d31 p107
-Snapshot d56 "56-eml" Value="[DIR]/ddg/data/56-eml.xml" Time="2016-11-10T10.10.17EST";
-DF p107 d56
-Binding p108 "108-datafile.id  <-  datafile.id" Time="4.05" Script="NA" Pos="NA";
-CF p107 p108
-DF d55 p108
-Data d57 "57-datafile.id" Value="\"hf000-01\"";
-DF p108 d57
-Operation p109 "109-get.datafile.name" Value="get.datafile.name" Time="4.06" Script="NA" Pos="NA";
-DF d9 p109
-DF d56 p109
-DF d57 p109
-CF p108 p109
-Operation p110 "110-xpath1 <- paste(\"//dataTable[@id='\", datafile.id, \"']/entity" Value="xpath1 <- paste(\"//dataTable[@id='\", datafile.id, \"']/entity" Time="4.08" Script="0" Pos="NA,NA,NA,NA";
-CF p109 p110
-DF d57 p110
-Data d58 "58-xpath1" Value="\"//dataTable[@id='hf000-01']/entityName\"";
-DF p110 d58
-Operation p111 "111-xpath2 <- paste(\"//dataTable[@id='\", toupper(datafile.id), \"" Value="xpath2 <- paste(\"//dataTable[@id='\", toupper(datafile.id), \"" Time="4.1" Script="0" Pos="NA,NA,NA,NA";
-CF p110 p111
-DF d57 p111
-Data d59 "59-xpath2" Value="\"//dataTable[@id='HF000-01']/entityName\"";
-DF p111 d59
-Operation p112 "112-ns <- getNodeSet(eml, xpath1, fun = xmlValue)" Value="ns <- getNodeSet(eml, xpath1, fun = xmlValue)" Time="4.11" Script="0" Pos="NA,NA,NA,NA";
-CF p111 p112
-DF d56 p112
-DF d58 p112
-Data d60 "60-ns" Value="NULL";
-DF p112 d60
-Start p113 "113-if (length(ns) == 0) ns <- getNodeSet(eml, xpath2, fun = xml" Value="if (length(ns) == 0) ns <- getNodeSet(eml, xpath2, fun = xml" Time="4.13" Script="0" Pos="NA,NA,NA,NA";
-CF p112 p113
-DF d31 p113
-Start p114 "114-if" Value="if" Time="4.16" Script="NA" Pos="NA";
-CF p113 p114
-Operation p115 "115-ns <- getNodeSet(eml, xpath2, fun = xmlValue)" Value="ns <- getNodeSet(eml, xpath2, fun = xmlValue)" Time="4.16" Script="0" Pos="NA,NA,NA,NA";
-CF p114 p115
-DF d56 p115
-DF d59 p115
-Snapshot d61 "61-ns" Value="[DIR]/ddg/data/61-ns.txt" Time="2016-11-10T10.10.18EST";
-DF p115 d61
-Finish p116 "116-if" Value="if" Time="4.17" Script="NA" Pos="NA";
-CF p115 p116
-Finish p117 "117-if (length(ns) == 0) ns <- getNodeSet(eml, xpath2, fun = xml" Value="if (length(ns) == 0) ns <- getNodeSet(eml, xpath2, fun = xml" Time="4.17" Script="0" Pos="NA,NA,NA,NA";
-CF p116 p117
-Operation p118 "118-name <- ns[[1]]" Value="name <- ns[[1]]" Time="4.19" Script="0" Pos="NA,NA,NA,NA";
-CF p117 p118
-DF d61 p118
-Data d62 "62-name" Value="\"hf000-01-daily-m.csv\"";
-DF p118 d62
-Data d63 "63-get.datafile.name(eml,datafile.id) return" Value="\"hf000-01-daily-m.csv\"";
-Operation p119 "119-return(name)" Value="return(name)" Time="4.25" Script="0" Pos="NA,NA,NA,NA";
-CF p118 p119
-DF p119 d63
-DF d62 p119
-Finish p120 "120-get.datafile.name(eml, datafile.id)" Value="get.datafile.name(eml, datafile.id)" Time="4.27" Script="NA" Pos="NA";
-CF p119 p120
-Finish p121 "121-datafile.name <<- get.datafile.name(eml, datafile.id)" Value="datafile.name <<- get.datafile.name(eml, datafile.id)" Time="4.27" Script="0" Pos="NA,NA,NA,NA";
-CF p120 p121
-DF d63 p121
-Data d64 "64-datafile.name" Value="\"hf000-01-daily-m.csv\"";
-DF p121 d64
-Start p122 "122-data.url <<- get.data.url(eml, datafile.id)" Value="data.url <<- get.data.url(eml, datafile.id)" Time="4.28" Script="0" Pos="NA,NA,NA,NA";
-CF p121 p122
-DF d10 p122
-DF d31 p122
-DF d55 p122
-Start p123 "123-get.data.url(eml, datafile.id)" Value="get.data.url(eml, datafile.id)" Time="4.3" Script="NA" Pos="NA";
-CF p122 p123
-Binding p124 "124-eml  <-  eml" Time="4.3" Script="NA" Pos="NA";
-CF p123 p124
-DF d31 p124
-Snapshot d65 "65-eml" Value="[DIR]/ddg/data/65-eml.xml" Time="2016-11-10T10.10.18EST";
-DF p124 d65
-Binding p125 "125-datafile.id  <-  datafile.id" Time="4.31" Script="NA" Pos="NA";
-CF p124 p125
-DF d55 p125
-Data d66 "66-datafile.id" Value="\"hf000-01\"";
-DF p125 d66
-Operation p126 "126-get.data.url" Value="get.data.url" Time="4.31" Script="NA" Pos="NA";
-DF d10 p126
-DF d65 p126
-DF d66 p126
-CF p125 p126
-Operation p127 "127-xpath1 <- paste(\"//dataTable[@id='\", datafile.id, \"']/physic" Value="xpath1 <- paste(\"//dataTable[@id='\", datafile.id, \"']/physic" Time="4.33" Script="0" Pos="NA,NA,NA,NA";
-CF p126 p127
-DF d66 p127
-Data d67 "67-xpath1" Value="\"//dataTable[@id='hf000-01']/physical/distribution/online/url\"";
-DF p127 d67
-Operation p128 "128-xpath2 <- paste(\"//dataTable[@id='\", toupper(datafile.id), \"" Value="xpath2 <- paste(\"//dataTable[@id='\", toupper(datafile.id), \"" Time="4.35" Script="0" Pos="NA,NA,NA,NA";
-CF p127 p128
-DF d66 p128
-Data d68 "68-xpath2" Value="\"//dataTable[@id='HF000-01']/physical/distribution/online/url\"";
-DF p128 d68
-Operation p129 "129-ns <- getNodeSet(eml, xpath1, fun = xmlValue)" Value="ns <- getNodeSet(eml, xpath1, fun = xmlValue)" Time="4.36" Script="0" Pos="NA,NA,NA,NA";
-CF p128 p129
-DF d65 p129
-DF d67 p129
-Data d69 "69-ns" Value="NULL";
-DF p129 d69
-Start p130 "130-if (length(ns) == 0) ns <- getNodeSet(eml, xpath2, fun = xml" Value="if (length(ns) == 0) ns <- getNodeSet(eml, xpath2, fun = xml" Time="4.38" Script="0" Pos="NA,NA,NA,NA";
-CF p129 p130
-DF d31 p130
-Start p131 "131-if" Value="if" Time="4.41" Script="NA" Pos="NA";
-CF p130 p131
-Operation p132 "132-ns <- getNodeSet(eml, xpath2, fun = xmlValue)" Value="ns <- getNodeSet(eml, xpath2, fun = xmlValue)" Time="4.41" Script="0" Pos="NA,NA,NA,NA";
-CF p131 p132
-DF d65 p132
-DF d68 p132
-Snapshot d70 "70-ns" Value="[DIR]/ddg/data/70-ns.txt" Time="2016-11-10T10.10.18EST";
-DF p132 d70
-Finish p133 "133-if" Value="if" Time="4.42" Script="NA" Pos="NA";
-CF p132 p133
-Finish p134 "134-if (length(ns) == 0) ns <- getNodeSet(eml, xpath2, fun = xml" Value="if (length(ns) == 0) ns <- getNodeSet(eml, xpath2, fun = xml" Time="4.42" Script="0" Pos="NA,NA,NA,NA";
-CF p133 p134
-Operation p135 "135-data.url <- ns[[1]]" Value="data.url <- ns[[1]]" Time="4.42" Script="0" Pos="NA,NA,NA,NA";
-CF p134 p135
-DF d70 p135
-Data d71 "71-data.url" Value="\"http://harvardforest.fas.harvard.edu/data/p00/hf000/hf000-01-daily-m.csv\"";
-DF p135 d71
-Data d72 "72-get.data.url(eml,datafile.id) return" Value="\"http://harvardforest.fas.harvard.edu/data/p00/hf000/hf000-01-daily-m.csv\"";
-Operation p136 "136-return(data.url)" Value="return(data.url)" Time="4.44" Script="0" Pos="NA,NA,NA,NA";
-CF p135 p136
-DF p136 d72
-DF d71 p136
-Finish p137 "137-get.data.url(eml, datafile.id)" Value="get.data.url(eml, datafile.id)" Time="4.45" Script="NA" Pos="NA";
-CF p136 p137
-Finish p138 "138-data.url <<- get.data.url(eml, datafile.id)" Value="data.url <<- get.data.url(eml, datafile.id)" Time="4.45" Script="0" Pos="NA,NA,NA,NA";
-CF p137 p138
-DF d72 p138
-Data d73 "73-data.url" Value="\"http://harvardforest.fas.harvard.edu/data/p00/hf000/hf000-01-daily-m.csv\"";
-DF p138 d73
-Start p139 "139-ns <- get.data.table.node.set(eml, datafile.id)" Value="ns <- get.data.table.node.set(eml, datafile.id)" Time="4.45" Script="0" Pos="NA,NA,NA,NA";
-CF p138 p139
-DF d11 p139
-DF d31 p139
-DF d55 p139
-Start p140 "140-get.data.table.node.set(eml, datafile.id)" Value="get.data.table.node.set(eml, datafile.id)" Time="4.47" Script="NA" Pos="NA";
-CF p139 p140
-Binding p141 "141-eml  <-  eml" Time="4.49" Script="NA" Pos="NA";
-CF p140 p141
-DF d31 p141
-Snapshot d74 "74-eml" Value="[DIR]/ddg/data/74-eml.xml" Time="2016-11-10T10.10.18EST";
-DF p141 d74
-Binding p142 "142-datafile.id  <-  datafile.id" Time="4.49" Script="NA" Pos="NA";
-CF p141 p142
-DF d55 p142
-Data d75 "75-datafile.id" Value="\"hf000-01\"";
-DF p142 d75
-Operation p143 "143-get.data.table.node.set" Value="get.data.table.node.set" Time="4.5" Script="NA" Pos="NA";
-DF d11 p143
-DF d74 p143
-DF d75 p143
-CF p142 p143
-Operation p144 "144-xpath1 <- paste(\"//dataTable[@id='\", datafile.id, \"']/attrib" Value="xpath1 <- paste(\"//dataTable[@id='\", datafile.id, \"']/attrib" Time="4.52" Script="0" Pos="NA,NA,NA,NA";
-CF p143 p144
-DF d75 p144
-Data d76 "76-xpath1" Value="\"//dataTable[@id='hf000-01']/attributeList/attribute\"";
-DF p144 d76
-Operation p145 "145-xpath2 <- paste(\"//dataTable[@id='\", toupper(datafile.id), \"" Value="xpath2 <- paste(\"//dataTable[@id='\", toupper(datafile.id), \"" Time="4.52" Script="0" Pos="NA,NA,NA,NA";
-CF p144 p145
-DF d75 p145
-Data d77 "77-xpath2" Value="\"//dataTable[@id='HF000-01']/attributeList/attribute\"";
-DF p145 d77
-Operation p146 "146-ns <- getNodeSet(eml, xpath1)" Value="ns <- getNodeSet(eml, xpath1)" Time="4.53" Script="0" Pos="NA,NA,NA,NA";
-CF p145 p146
-DF d74 p146
-DF d76 p146
-Data d78 "78-ns" Value="NULL";
-DF p146 d78
-Start p147 "147-if (length(ns) == 0) ns <- getNodeSet(eml, xpath2)" Value="if (length(ns) == 0) ns <- getNodeSet(eml, xpath2)" Time="4.55" Script="0" Pos="NA,NA,NA,NA";
-CF p146 p147
-DF d31 p147
-Start p148 "148-if" Value="if" Time="4.58" Script="NA" Pos="NA";
-CF p147 p148
-Operation p149 "149-ns <- getNodeSet(eml, xpath2)" Value="ns <- getNodeSet(eml, xpath2)" Time="4.58" Script="0" Pos="NA,NA,NA,NA";
-CF p148 p149
-DF d74 p149
-DF d77 p149
-Snapshot d79 "79-ns" Value="[DIR]/ddg/data/79-ns.txt" Time="2016-11-10T10.10.18EST";
-DF p149 d79
-Finish p150 "150-if" Value="if" Time="4.63" Script="NA" Pos="NA";
-CF p149 p150
-Finish p151 "151-if (length(ns) == 0) ns <- getNodeSet(eml, xpath2)" Value="if (length(ns) == 0) ns <- getNodeSet(eml, xpath2)" Time="4.63" Script="0" Pos="NA,NA,NA,NA";
-CF p150 p151
-Snapshot d80 "80-get.data.table.node.set(eml,datafile.id) return" Value="[DIR]/ddg/data/80-get.data.table.node.set(eml,datafile.id) return.txt" Time="2016-11-10T10.10.18EST";
-Operation p152 "152-return(ns)" Value="return(ns)" Time="4.64" Script="0" Pos="NA,NA,NA,NA";
-CF p151 p152
-DF p152 d80
-DF d79 p152
-Finish p153 "153-get.data.table.node.set(eml, datafile.id)" Value="get.data.table.node.set(eml, datafile.id)" Time="4.66" Script="NA" Pos="NA";
-CF p152 p153
-Finish p154 "154-ns <- get.data.table.node.set(eml, datafile.id)" Value="ns <- get.data.table.node.set(eml, datafile.id)" Time="4.66" Script="0" Pos="NA,NA,NA,NA";
-CF p153 p154
-DF d80 p154
-Snapshot d81 "81-ns" Value="[DIR]/ddg/data/81-ns.txt" Time="2016-11-10T10.10.18EST";
-DF p154 d81
-Start p155 "155-var.types <<- get.all.variable.types(ns)" Value="var.types <<- get.all.variable.types(ns)" Time="4.66" Script="0" Pos="NA,NA,NA,NA";
-CF p154 p155
-DF d13 p155
-DF d81 p155
-Start p156 "156-get.all.variable.types(ns)" Value="get.all.variable.types(ns)" Time="4.67" Script="NA" Pos="NA";
-CF p155 p156
-Binding p157 "157-ns  <-  ns" Time="4.67" Script="NA" Pos="NA";
-CF p156 p157
-DF d81 p157
-Snapshot d82 "82-ns" Value="[DIR]/ddg/data/82-ns.txt" Time="2016-11-10T10.10.18EST";
-DF p157 d82
-Operation p158 "158-get.all.variable.types" Value="get.all.variable.types" Time="4.69" Script="NA" Pos="NA";
-DF d13 p158
-DF d82 p158
-CF p157 p158
-Operation p159 "159-num <- xmlSize(ns)" Value="num <- xmlSize(ns)" Time="4.7" Script="0" Pos="NA,NA,NA,NA";
-CF p158 p159
-DF d82 p159
-Data d83 "83-num" Value="9";
-DF p159 d83
-Start p160 "160-for (i in 1:num) {    var.type <- get.variable.type(ns[[i]])" Value="for (i in 1:num) {    var.type <- get.variable.type(ns[[i]])" Time="4.7" Script="0" Pos="NA,NA,NA,NA";
-CF p159 p160
-Start p161 "161-for loop" Value="for loop" Time="4.72" Script="NA" Pos="NA";
-CF p160 p161
-Operation p162 "162-i <- 1" Value="i <- 1" Time="4.72" Script="NA" Pos="NA";
-CF p161 p162
-Data d84 "84-i" Value="1";
-DF p162 d84
-Start p163 "163-var.type <- get.variable.type(ns[[i]])" Value="var.type <- get.variable.type(ns[[i]])" Time="4.72" Script="0" Pos="NA,NA,NA,NA";
-CF p162 p163
-DF d12 p163
-DF d82 p163
-DF d84 p163
-Start p164 "164-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="4.74" Script="NA" Pos="NA";
-CF p163 p164
-Binding p165 "165-ns  <-  ns[[i]]" Time="4.74" Script="NA" Pos="NA";
-CF p164 p165
-DF d82 p165
-DF d84 p165
-Snapshot d85 "85-ns" Value="[DIR]/ddg/data/85-ns.txt" Time="2016-11-10T10.10.18EST";
-DF p165 d85
-Operation p166 "166-get.variable.type" Value="get.variable.type" Time="4.75" Script="NA" Pos="NA";
-DF d12 p166
-DF d85 p166
-CF p165 p166
-Operation p167 "167-x1 <- xpathApply(ns, \"measurementScale/ratio\", xmlValue)" Value="x1 <- xpathApply(ns, \"measurementScale/ratio\", xmlValue)" Time="4.77" Script="0" Pos="NA,NA,NA,NA";
-CF p166 p167
-DF d85 p167
-Snapshot d86 "86-x1" Value="[DIR]/ddg/data/86-x1.txt" Time="2016-11-10T10.10.18EST";
-DF p167 d86
-Operation p168 "168-x2 <- xpathApply(ns, \"measurementScale/interval\", xmlValue)" Value="x2 <- xpathApply(ns, \"measurementScale/interval\", xmlValue)" Time="4.78" Script="0" Pos="NA,NA,NA,NA";
-CF p167 p168
-DF d85 p168
-Snapshot d87 "87-x2" Value="[DIR]/ddg/data/87-x2.txt" Time="2016-11-10T10.10.18EST";
-DF p168 d87
-Start p169 "169-if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Value="if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Time="4.79" Script="0" Pos="NA,NA,NA,NA";
-CF p168 p169
-Start p170 "170-if" Value="if" Time="4.81" Script="NA" Pos="NA";
-CF p169 p170
-Operation p171 "171-x3 <- xpathApply(ns, \"measurementScale/dateTime/formatString" Value="x3 <- xpathApply(ns, \"measurementScale/dateTime/formatString" Time="4.82" Script="0" Pos="NA,NA,NA,NA";
-CF p170 p171
-DF d85 p171
-Snapshot d88 "88-x3" Value="[DIR]/ddg/data/88-x3.txt" Time="2016-11-10T10.10.18EST";
-DF p171 d88
-Start p172 "172-if (length(x3) > 0) {    if (x3[[1]] == \"YYYY-MM-DD\") {     " Value="if (length(x3) > 0) {    if (x3[[1]] == \"YYYY-MM-DD\") {     " Time="4.84" Script="0" Pos="NA,NA,NA,NA";
-CF p171 p172
-Start p173 "173-if" Value="if" Time="4.89" Script="NA" Pos="NA";
-CF p172 p173
-Start p174 "174-if (x3[[1]] == \"YYYY-MM-DD\") {    var.type <- \"Date\"} else i" Value="if (x3[[1]] == \"YYYY-MM-DD\") {    var.type <- \"Date\"} else i" Time="4.89" Script="0" Pos="NA,NA,NA,NA";
-CF p173 p174
-Start p175 "175-if" Value="if" Time="4.9" Script="NA" Pos="NA";
-CF p174 p175
-Operation p176 "176-var.type <- \"Date\"" Value="var.type <- \"Date\"" Time="4.9" Script="0" Pos="NA,NA,NA,NA";
-CF p175 p176
-Data d89 "89-var.type" Value="\"Date\"";
-DF p176 d89
-Finish p177 "177-if" Value="if" Time="4.9" Script="NA" Pos="NA";
-CF p176 p177
-Finish p178 "178-if (x3[[1]] == \"YYYY-MM-DD\") {    var.type <- \"Date\"} else i" Value="if (x3[[1]] == \"YYYY-MM-DD\") {    var.type <- \"Date\"} else i" Time="4.9" Script="0" Pos="NA,NA,NA,NA";
-CF p177 p178
-Finish p179 "179-if" Value="if" Time="4.92" Script="NA" Pos="NA";
-CF p178 p179
-Finish p180 "180-if (length(x3) > 0) {    if (x3[[1]] == \"YYYY-MM-DD\") {     " Value="if (length(x3) > 0) {    if (x3[[1]] == \"YYYY-MM-DD\") {     " Time="4.92" Script="0" Pos="NA,NA,NA,NA";
-CF p179 p180
-Finish p181 "181-if" Value="if" Time="4.92" Script="NA" Pos="NA";
-CF p180 p181
-Finish p182 "182-if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Value="if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Time="4.92" Script="0" Pos="NA,NA,NA,NA";
-CF p181 p182
-Data d90 "90-get.variable.type(ns[[i]]) return" Value="\"Date\"";
-Operation p183 "183-return(var.type)" Value="return(var.type)" Time="4.92" Script="0" Pos="NA,NA,NA,NA";
-CF p182 p183
-DF p183 d90
-DF d89 p183
-Finish p184 "184-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="4.93" Script="NA" Pos="NA";
-CF p183 p184
-Finish p185 "185-var.type <- get.variable.type(ns[[i]])" Value="var.type <- get.variable.type(ns[[i]])" Time="4.93" Script="0" Pos="NA,NA,NA,NA";
-CF p184 p185
-DF d90 p185
-Data d91 "91-var.type" Value="\"Date\"";
-DF p185 d91
-Start p186 "186-if (i == 1) var.types <- var.type else var.types <- append(v" Value="if (i == 1) var.types <- var.type else var.types <- append(v" Time="4.93" Script="0" Pos="NA,NA,NA,NA";
-CF p185 p186
-Start p187 "187-if" Value="if" Time="4.95" Script="NA" Pos="NA";
-CF p186 p187
-Operation p188 "188-var.types <- var.type" Value="var.types <- var.type" Time="4.95" Script="0" Pos="NA,NA,NA,NA";
-CF p187 p188
-DF d91 p188
-Data d92 "92-var.types" Value="\"Date\"";
-DF p188 d92
-Finish p189 "189-if" Value="if" Time="4.96" Script="NA" Pos="NA";
-CF p188 p189
-Finish p190 "190-if (i == 1) var.types <- var.type else var.types <- append(v" Value="if (i == 1) var.types <- var.type else var.types <- append(v" Time="4.96" Script="0" Pos="NA,NA,NA,NA";
-CF p189 p190
-Finish p191 "191-for loop" Value="for loop" Time="4.96" Script="NA" Pos="NA";
-CF p190 p191
-Start p192 "192-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="4.96" Script="NA" Pos="NA";
-CF p191 p192
-Binding p193 "193-ns  <-  ns[[i]]" Time="4.96" Script="NA" Pos="NA";
-CF p192 p193
-DF d82 p193
-DF d84 p193
-Snapshot d93 "93-ns" Value="[DIR]/ddg/data/93-ns.txt" Time="2016-11-10T10.10.19EST";
-DF p193 d93
-Operation p194 "194-get.variable.type" Value="get.variable.type" Time="4.98" Script="NA" Pos="NA";
-DF d12 p194
-DF d93 p194
-CF p193 p194
-Operation p195 "195-x1 <- xpathApply(ns, \"measurementScale/ratio\", xmlValue)" Value="x1 <- xpathApply(ns, \"measurementScale/ratio\", xmlValue)" Time="4.99" Script="0" Pos="NA,NA,NA,NA";
-CF p194 p195
-DF d93 p195
-Snapshot d94 "94-x1" Value="[DIR]/ddg/data/94-x1.txt" Time="2016-11-10T10.10.19EST";
-DF p195 d94
-Operation p196 "196-x2 <- xpathApply(ns, \"measurementScale/interval\", xmlValue)" Value="x2 <- xpathApply(ns, \"measurementScale/interval\", xmlValue)" Time="4.99" Script="0" Pos="NA,NA,NA,NA";
-CF p195 p196
-DF d93 p196
-Snapshot d95 "95-x2" Value="[DIR]/ddg/data/95-x2.txt" Time="2016-11-10T10.10.19EST";
-DF p196 d95
-Start p197 "197-if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Value="if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Time="5.03" Script="0" Pos="NA,NA,NA,NA";
-CF p196 p197
-Start p198 "198-if" Value="if" Time="5.04" Script="NA" Pos="NA";
-CF p197 p198
-Operation p199 "199-var.type <- \"numeric\"" Value="var.type <- \"numeric\"" Time="5.04" Script="0" Pos="NA,NA,NA,NA";
-CF p198 p199
-Data d96 "96-var.type" Value="\"numeric\"";
-DF p199 d96
-Finish p200 "200-if" Value="if" Time="5.04" Script="NA" Pos="NA";
-CF p199 p200
-Finish p201 "201-if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Value="if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Time="5.06" Script="0" Pos="NA,NA,NA,NA";
-CF p200 p201
-Data d97 "97-get.variable.type(ns[[i]]) return" Value="\"numeric\"";
-Operation p202 "202-return(var.type)" Value="return(var.type)" Time="5.06" Script="0" Pos="NA,NA,NA,NA";
-CF p201 p202
-DF p202 d97
-DF d96 p202
-Finish p203 "203-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="5.1" Script="NA" Pos="NA";
-CF p202 p203
-Start p204 "204-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="5.1" Script="NA" Pos="NA";
-CF p203 p204
-Binding p205 "205-ns  <-  ns[[i]]" Time="5.1" Script="NA" Pos="NA";
-CF p204 p205
-DF d82 p205
-DF d84 p205
-Snapshot d98 "98-ns" Value="[DIR]/ddg/data/98-ns.txt" Time="2016-11-10T10.10.19EST";
-DF p205 d98
-Operation p206 "206-get.variable.type" Value="get.variable.type" Time="5.12" Script="NA" Pos="NA";
-DF d12 p206
-DF d98 p206
-CF p205 p206
-Operation p207 "207-x1 <- xpathApply(ns, \"measurementScale/ratio\", xmlValue)" Value="x1 <- xpathApply(ns, \"measurementScale/ratio\", xmlValue)" Time="5.14" Script="0" Pos="NA,NA,NA,NA";
-CF p206 p207
-DF d98 p207
-Snapshot d99 "99-x1" Value="[DIR]/ddg/data/99-x1.txt" Time="2016-11-10T10.10.19EST";
-DF p207 d99
-Operation p208 "208-x2 <- xpathApply(ns, \"measurementScale/interval\", xmlValue)" Value="x2 <- xpathApply(ns, \"measurementScale/interval\", xmlValue)" Time="5.15" Script="0" Pos="NA,NA,NA,NA";
-CF p207 p208
-DF d98 p208
-Snapshot d100 "100-x2" Value="[DIR]/ddg/data/100-x2.txt" Time="2016-11-10T10.10.19EST";
-DF p208 d100
-Start p209 "209-if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Value="if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Time="5.18" Script="0" Pos="NA,NA,NA,NA";
-CF p208 p209
-Start p210 "210-if" Value="if" Time="5.21" Script="NA" Pos="NA";
-CF p209 p210
-Operation p211 "211-x3 <- xpathApply(ns, \"measurementScale/dateTime/formatString" Value="x3 <- xpathApply(ns, \"measurementScale/dateTime/formatString" Time="5.21" Script="0" Pos="NA,NA,NA,NA";
-CF p210 p211
-DF d98 p211
-Snapshot d101 "101-x3" Value="[DIR]/ddg/data/101-x3.txt" Time="2016-11-10T10.10.19EST";
-DF p211 d101
-Start p212 "212-if (length(x3) > 0) {    if (x3[[1]] == \"YYYY-MM-DD\") {     " Value="if (length(x3) > 0) {    if (x3[[1]] == \"YYYY-MM-DD\") {     " Time="5.24" Script="0" Pos="NA,NA,NA,NA";
-CF p211 p212
-Start p213 "213-if" Value="if" Time="5.26" Script="NA" Pos="NA";
-CF p212 p213
-Operation p214 "214-var.type <- \"character\"" Value="var.type <- \"character\"" Time="5.26" Script="0" Pos="NA,NA,NA,NA";
-CF p213 p214
-Data d102 "102-var.type" Value="\"character\"";
-DF p214 d102
-Finish p215 "215-if" Value="if" Time="5.26" Script="NA" Pos="NA";
-CF p214 p215
-Finish p216 "216-if (length(x3) > 0) {    if (x3[[1]] == \"YYYY-MM-DD\") {     " Value="if (length(x3) > 0) {    if (x3[[1]] == \"YYYY-MM-DD\") {     " Time="5.28" Script="0" Pos="NA,NA,NA,NA";
-CF p215 p216
-Finish p217 "217-if" Value="if" Time="5.28" Script="NA" Pos="NA";
-CF p216 p217
-Finish p218 "218-if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Value="if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Time="5.28" Script="0" Pos="NA,NA,NA,NA";
-CF p217 p218
-Data d103 "103-get.variable.type(ns[[i]]) return" Value="\"character\"";
-Operation p219 "219-return(var.type)" Value="return(var.type)" Time="5.28" Script="0" Pos="NA,NA,NA,NA";
-CF p218 p219
-DF p219 d103
-DF d102 p219
-Finish p220 "220-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="5.29" Script="NA" Pos="NA";
-CF p219 p220
-Start p221 "221-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="5.29" Script="NA" Pos="NA";
-CF p220 p221
-Binding p222 "222-ns  <-  ns[[i]]" Time="5.29" Script="NA" Pos="NA";
-CF p221 p222
-DF d82 p222
-DF d84 p222
-Snapshot d104 "104-ns" Value="[DIR]/ddg/data/104-ns.txt" Time="2016-11-10T10.10.19EST";
-DF p222 d104
-Operation p223 "223-get.variable.type" Value="get.variable.type" Time="5.32" Script="NA" Pos="NA";
-DF d12 p223
-DF d104 p223
-CF p222 p223
-Operation p224 "224-x1 <- xpathApply(ns, \"measurementScale/ratio\", xmlValue)" Value="x1 <- xpathApply(ns, \"measurementScale/ratio\", xmlValue)" Time="5.34" Script="0" Pos="NA,NA,NA,NA";
-CF p223 p224
-DF d104 p224
-Snapshot d105 "105-x1" Value="[DIR]/ddg/data/105-x1.txt" Time="2016-11-10T10.10.19EST";
-DF p224 d105
-Operation p225 "225-x2 <- xpathApply(ns, \"measurementScale/interval\", xmlValue)" Value="x2 <- xpathApply(ns, \"measurementScale/interval\", xmlValue)" Time="5.37" Script="0" Pos="NA,NA,NA,NA";
-CF p224 p225
-DF d104 p225
-Snapshot d106 "106-x2" Value="[DIR]/ddg/data/106-x2.txt" Time="2016-11-10T10.10.19EST";
-DF p225 d106
-Start p226 "226-if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Value="if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Time="5.44" Script="0" Pos="NA,NA,NA,NA";
-CF p225 p226
-Start p227 "227-if" Value="if" Time="5.47" Script="NA" Pos="NA";
-CF p226 p227
-Operation p228 "228-var.type <- \"numeric\"" Value="var.type <- \"numeric\"" Time="5.47" Script="0" Pos="NA,NA,NA,NA";
-CF p227 p228
-Data d107 "107-var.type" Value="\"numeric\"";
-DF p228 d107
-Finish p229 "229-if" Value="if" Time="5.48" Script="NA" Pos="NA";
-CF p228 p229
-Finish p230 "230-if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Value="if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Time="5.48" Script="0" Pos="NA,NA,NA,NA";
-CF p229 p230
-Data d108 "108-get.variable.type(ns[[i]]) return" Value="\"numeric\"";
-Operation p231 "231-return(var.type)" Value="return(var.type)" Time="5.48" Script="0" Pos="NA,NA,NA,NA";
-CF p230 p231
-DF p231 d108
-DF d107 p231
-Finish p232 "232-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="5.5" Script="NA" Pos="NA";
-CF p231 p232
-Start p233 "233-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="5.51" Script="NA" Pos="NA";
-CF p232 p233
-Binding p234 "234-ns  <-  ns[[i]]" Time="5.51" Script="NA" Pos="NA";
-CF p233 p234
-DF d82 p234
-DF d84 p234
-Snapshot d109 "109-ns" Value="[DIR]/ddg/data/109-ns.txt" Time="2016-11-10T10.10.19EST";
-DF p234 d109
-Operation p235 "235-get.variable.type" Value="get.variable.type" Time="5.53" Script="NA" Pos="NA";
-DF d12 p235
-DF d109 p235
-CF p234 p235
-Operation p236 "236-x1 <- xpathApply(ns, \"measurementScale/ratio\", xmlValue)" Value="x1 <- xpathApply(ns, \"measurementScale/ratio\", xmlValue)" Time="5.55" Script="0" Pos="NA,NA,NA,NA";
-CF p235 p236
-DF d109 p236
-Snapshot d110 "110-x1" Value="[DIR]/ddg/data/110-x1.txt" Time="2016-11-10T10.10.19EST";
-DF p236 d110
-Operation p237 "237-x2 <- xpathApply(ns, \"measurementScale/interval\", xmlValue)" Value="x2 <- xpathApply(ns, \"measurementScale/interval\", xmlValue)" Time="5.57" Script="0" Pos="NA,NA,NA,NA";
-CF p236 p237
-DF d109 p237
-Snapshot d111 "111-x2" Value="[DIR]/ddg/data/111-x2.txt" Time="2016-11-10T10.10.19EST";
-DF p237 d111
-Start p238 "238-if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Value="if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Time="5.6" Script="0" Pos="NA,NA,NA,NA";
-CF p237 p238
-Start p239 "239-if" Value="if" Time="5.63" Script="NA" Pos="NA";
-CF p238 p239
-Operation p240 "240-x3 <- xpathApply(ns, \"measurementScale/dateTime/formatString" Value="x3 <- xpathApply(ns, \"measurementScale/dateTime/formatString" Time="5.63" Script="0" Pos="NA,NA,NA,NA";
-CF p239 p240
-DF d109 p240
-Snapshot d112 "112-x3" Value="[DIR]/ddg/data/112-x3.txt" Time="2016-11-10T10.10.19EST";
-DF p240 d112
-Start p241 "241-if (length(x3) > 0) {    if (x3[[1]] == \"YYYY-MM-DD\") {     " Value="if (length(x3) > 0) {    if (x3[[1]] == \"YYYY-MM-DD\") {     " Time="5.66" Script="0" Pos="NA,NA,NA,NA";
-CF p240 p241
-Start p242 "242-if" Value="if" Time="5.68" Script="NA" Pos="NA";
-CF p241 p242
-Operation p243 "243-var.type <- \"character\"" Value="var.type <- \"character\"" Time="5.68" Script="0" Pos="NA,NA,NA,NA";
-CF p242 p243
-Data d113 "113-var.type" Value="\"character\"";
-DF p243 d113
-Finish p244 "244-if" Value="if" Time="5.68" Script="NA" Pos="NA";
-CF p243 p244
-Finish p245 "245-if (length(x3) > 0) {    if (x3[[1]] == \"YYYY-MM-DD\") {     " Value="if (length(x3) > 0) {    if (x3[[1]] == \"YYYY-MM-DD\") {     " Time="5.7" Script="0" Pos="NA,NA,NA,NA";
-CF p244 p245
-Finish p246 "246-if" Value="if" Time="5.7" Script="NA" Pos="NA";
-CF p245 p246
-Finish p247 "247-if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Value="if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Time="5.74" Script="0" Pos="NA,NA,NA,NA";
-CF p246 p247
-Data d114 "114-get.variable.type(ns[[i]]) return" Value="\"character\"";
-Operation p248 "248-return(var.type)" Value="return(var.type)" Time="5.74" Script="0" Pos="NA,NA,NA,NA";
-CF p247 p248
-DF p248 d114
-DF d113 p248
-Finish p249 "249-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="5.76" Script="NA" Pos="NA";
-CF p248 p249
-Start p250 "250-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="5.76" Script="NA" Pos="NA";
-CF p249 p250
-Binding p251 "251-ns  <-  ns[[i]]" Time="5.76" Script="NA" Pos="NA";
-CF p250 p251
-DF d82 p251
-DF d84 p251
-Snapshot d115 "115-ns" Value="[DIR]/ddg/data/115-ns.txt" Time="2016-11-10T10.10.19EST";
-DF p251 d115
-Operation p252 "252-get.variable.type" Value="get.variable.type" Time="5.79" Script="NA" Pos="NA";
-DF d12 p252
-DF d115 p252
-CF p251 p252
-Operation p253 "253-x1 <- xpathApply(ns, \"measurementScale/ratio\", xmlValue)" Value="x1 <- xpathApply(ns, \"measurementScale/ratio\", xmlValue)" Time="5.8" Script="0" Pos="NA,NA,NA,NA";
-CF p252 p253
-DF d115 p253
-Snapshot d116 "116-x1" Value="[DIR]/ddg/data/116-x1.txt" Time="2016-11-10T10.10.19EST";
-DF p253 d116
-Operation p254 "254-x2 <- xpathApply(ns, \"measurementScale/interval\", xmlValue)" Value="x2 <- xpathApply(ns, \"measurementScale/interval\", xmlValue)" Time="5.82" Script="0" Pos="NA,NA,NA,NA";
-CF p253 p254
-DF d115 p254
-Snapshot d117 "117-x2" Value="[DIR]/ddg/data/117-x2.txt" Time="2016-11-10T10.10.19EST";
-DF p254 d117
-Start p255 "255-if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Value="if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Time="5.84" Script="0" Pos="NA,NA,NA,NA";
-CF p254 p255
-Start p256 "256-if" Value="if" Time="5.87" Script="NA" Pos="NA";
-CF p255 p256
-Operation p257 "257-var.type <- \"numeric\"" Value="var.type <- \"numeric\"" Time="5.87" Script="0" Pos="NA,NA,NA,NA";
-CF p256 p257
-Data d118 "118-var.type" Value="\"numeric\"";
-DF p257 d118
-Finish p258 "258-if" Value="if" Time="5.88" Script="NA" Pos="NA";
-CF p257 p258
-Finish p259 "259-if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Value="if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Time="5.88" Script="0" Pos="NA,NA,NA,NA";
-CF p258 p259
-Data d119 "119-get.variable.type(ns[[i]]) return" Value="\"numeric\"";
-Operation p260 "260-return(var.type)" Value="return(var.type)" Time="5.88" Script="0" Pos="NA,NA,NA,NA";
-CF p259 p260
-DF p260 d119
-DF d118 p260
-Finish p261 "261-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="5.9" Script="NA" Pos="NA";
-CF p260 p261
-Start p262 "262-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="5.9" Script="NA" Pos="NA";
-CF p261 p262
-Binding p263 "263-ns  <-  ns[[i]]" Time="5.9" Script="NA" Pos="NA";
-CF p262 p263
-DF d82 p263
-DF d84 p263
-Snapshot d120 "120-ns" Value="[DIR]/ddg/data/120-ns.txt" Time="2016-11-10T10.10.19EST";
-DF p263 d120
-Operation p264 "264-get.variable.type" Value="get.variable.type" Time="5.93" Script="NA" Pos="NA";
-DF d12 p264
-DF d120 p264
-CF p263 p264
-Operation p265 "265-x1 <- xpathApply(ns, \"measurementScale/ratio\", xmlValue)" Value="x1 <- xpathApply(ns, \"measurementScale/ratio\", xmlValue)" Time="5.95" Script="0" Pos="NA,NA,NA,NA";
-CF p264 p265
-DF d120 p265
-Snapshot d121 "121-x1" Value="[DIR]/ddg/data/121-x1.txt" Time="2016-11-10T10.10.20EST";
-DF p265 d121
-Operation p266 "266-x2 <- xpathApply(ns, \"measurementScale/interval\", xmlValue)" Value="x2 <- xpathApply(ns, \"measurementScale/interval\", xmlValue)" Time="6.01" Script="0" Pos="NA,NA,NA,NA";
-CF p265 p266
-DF d120 p266
-Snapshot d122 "122-x2" Value="[DIR]/ddg/data/122-x2.txt" Time="2016-11-10T10.10.20EST";
-DF p266 d122
-Start p267 "267-if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Value="if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Time="6.04" Script="0" Pos="NA,NA,NA,NA";
-CF p266 p267
-Start p268 "268-if" Value="if" Time="6.07" Script="NA" Pos="NA";
-CF p267 p268
-Operation p269 "269-x3 <- xpathApply(ns, \"measurementScale/dateTime/formatString" Value="x3 <- xpathApply(ns, \"measurementScale/dateTime/formatString" Time="6.07" Script="0" Pos="NA,NA,NA,NA";
-CF p268 p269
-DF d120 p269
-Snapshot d123 "123-x3" Value="[DIR]/ddg/data/123-x3.txt" Time="2016-11-10T10.10.20EST";
-DF p269 d123
-Start p270 "270-if (length(x3) > 0) {    if (x3[[1]] == \"YYYY-MM-DD\") {     " Value="if (length(x3) > 0) {    if (x3[[1]] == \"YYYY-MM-DD\") {     " Time="6.09" Script="0" Pos="NA,NA,NA,NA";
-CF p269 p270
-Start p271 "271-if" Value="if" Time="6.1" Script="NA" Pos="NA";
-CF p270 p271
-Operation p272 "272-var.type <- \"character\"" Value="var.type <- \"character\"" Time="6.1" Script="0" Pos="NA,NA,NA,NA";
-CF p271 p272
-Data d124 "124-var.type" Value="\"character\"";
-DF p272 d124
-Finish p273 "273-if" Value="if" Time="6.12" Script="NA" Pos="NA";
-CF p272 p273
-Finish p274 "274-if (length(x3) > 0) {    if (x3[[1]] == \"YYYY-MM-DD\") {     " Value="if (length(x3) > 0) {    if (x3[[1]] == \"YYYY-MM-DD\") {     " Time="6.12" Script="0" Pos="NA,NA,NA,NA";
-CF p273 p274
-Finish p275 "275-if" Value="if" Time="6.12" Script="NA" Pos="NA";
-CF p274 p275
-Finish p276 "276-if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Value="if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Time="6.12" Script="0" Pos="NA,NA,NA,NA";
-CF p275 p276
-Data d125 "125-get.variable.type(ns[[i]]) return" Value="\"character\"";
-Operation p277 "277-return(var.type)" Value="return(var.type)" Time="6.12" Script="0" Pos="NA,NA,NA,NA";
-CF p276 p277
-DF p277 d125
-DF d124 p277
-Finish p278 "278-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="6.13" Script="NA" Pos="NA";
-CF p277 p278
-Start p279 "279-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="6.13" Script="NA" Pos="NA";
-CF p278 p279
-Binding p280 "280-ns  <-  ns[[i]]" Time="6.15" Script="NA" Pos="NA";
-CF p279 p280
-DF d82 p280
-DF d84 p280
-Snapshot d126 "126-ns" Value="[DIR]/ddg/data/126-ns.txt" Time="2016-11-10T10.10.20EST";
-DF p280 d126
-Operation p281 "281-get.variable.type" Value="get.variable.type" Time="6.16" Script="NA" Pos="NA";
-DF d12 p281
-DF d126 p281
-CF p280 p281
-Operation p282 "282-x1 <- xpathApply(ns, \"measurementScale/ratio\", xmlValue)" Value="x1 <- xpathApply(ns, \"measurementScale/ratio\", xmlValue)" Time="6.18" Script="0" Pos="NA,NA,NA,NA";
-CF p281 p282
-DF d126 p282
-Snapshot d127 "127-x1" Value="[DIR]/ddg/data/127-x1.txt" Time="2016-11-10T10.10.20EST";
-DF p282 d127
-Operation p283 "283-x2 <- xpathApply(ns, \"measurementScale/interval\", xmlValue)" Value="x2 <- xpathApply(ns, \"measurementScale/interval\", xmlValue)" Time="6.24" Script="0" Pos="NA,NA,NA,NA";
-CF p282 p283
-DF d126 p283
-Snapshot d128 "128-x2" Value="[DIR]/ddg/data/128-x2.txt" Time="2016-11-10T10.10.20EST";
-DF p283 d128
-Start p284 "284-if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Value="if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Time="6.26" Script="0" Pos="NA,NA,NA,NA";
-CF p283 p284
-Start p285 "285-if" Value="if" Time="6.3" Script="NA" Pos="NA";
-CF p284 p285
-Operation p286 "286-var.type <- \"numeric\"" Value="var.type <- \"numeric\"" Time="6.3" Script="0" Pos="NA,NA,NA,NA";
-CF p285 p286
-Data d129 "129-var.type" Value="\"numeric\"";
-DF p286 d129
-Finish p287 "287-if" Value="if" Time="6.3" Script="NA" Pos="NA";
-CF p286 p287
-Finish p288 "288-if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Value="if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Time="6.32" Script="0" Pos="NA,NA,NA,NA";
-CF p287 p288
-Data d130 "130-get.variable.type(ns[[i]]) return" Value="\"numeric\"";
-Operation p289 "289-return(var.type)" Value="return(var.type)" Time="6.32" Script="0" Pos="NA,NA,NA,NA";
-CF p288 p289
-DF p289 d130
-DF d129 p289
-Finish p290 "290-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="6.34" Script="NA" Pos="NA";
-CF p289 p290
-Start p291 "291-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="6.34" Script="NA" Pos="NA";
-CF p290 p291
-Binding p292 "292-ns  <-  ns[[i]]" Time="6.34" Script="NA" Pos="NA";
-CF p291 p292
-DF d82 p292
-DF d84 p292
-Snapshot d131 "131-ns" Value="[DIR]/ddg/data/131-ns.txt" Time="2016-11-10T10.10.20EST";
-DF p292 d131
-Operation p293 "293-get.variable.type" Value="get.variable.type" Time="6.35" Script="NA" Pos="NA";
-DF d12 p293
-DF d131 p293
-CF p292 p293
-Operation p294 "294-x1 <- xpathApply(ns, \"measurementScale/ratio\", xmlValue)" Value="x1 <- xpathApply(ns, \"measurementScale/ratio\", xmlValue)" Time="6.37" Script="0" Pos="NA,NA,NA,NA";
-CF p293 p294
-DF d131 p294
-Snapshot d132 "132-x1" Value="[DIR]/ddg/data/132-x1.txt" Time="2016-11-10T10.10.20EST";
-DF p294 d132
-Operation p295 "295-x2 <- xpathApply(ns, \"measurementScale/interval\", xmlValue)" Value="x2 <- xpathApply(ns, \"measurementScale/interval\", xmlValue)" Time="6.38" Script="0" Pos="NA,NA,NA,NA";
-CF p294 p295
-DF d131 p295
-Snapshot d133 "133-x2" Value="[DIR]/ddg/data/133-x2.txt" Time="2016-11-10T10.10.20EST";
-DF p295 d133
-Start p296 "296-if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Value="if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Time="6.42" Script="0" Pos="NA,NA,NA,NA";
-CF p295 p296
-Start p297 "297-if" Value="if" Time="6.46" Script="NA" Pos="NA";
-CF p296 p297
-Operation p298 "298-x3 <- xpathApply(ns, \"measurementScale/dateTime/formatString" Value="x3 <- xpathApply(ns, \"measurementScale/dateTime/formatString" Time="6.46" Script="0" Pos="NA,NA,NA,NA";
-CF p297 p298
-DF d131 p298
-Snapshot d134 "134-x3" Value="[DIR]/ddg/data/134-x3.txt" Time="2016-11-10T10.10.20EST";
-DF p298 d134
-Start p299 "299-if (length(x3) > 0) {    if (x3[[1]] == \"YYYY-MM-DD\") {     " Value="if (length(x3) > 0) {    if (x3[[1]] == \"YYYY-MM-DD\") {     " Time="6.53" Script="0" Pos="NA,NA,NA,NA";
-CF p298 p299
-Start p300 "300-if" Value="if" Time="6.54" Script="NA" Pos="NA";
-CF p299 p300
-Operation p301 "301-var.type <- \"character\"" Value="var.type <- \"character\"" Time="6.54" Script="0" Pos="NA,NA,NA,NA";
-CF p300 p301
-Data d135 "135-var.type" Value="\"character\"";
-DF p301 d135
-Finish p302 "302-if" Value="if" Time="6.56" Script="NA" Pos="NA";
-CF p301 p302
-Finish p303 "303-if (length(x3) > 0) {    if (x3[[1]] == \"YYYY-MM-DD\") {     " Value="if (length(x3) > 0) {    if (x3[[1]] == \"YYYY-MM-DD\") {     " Time="6.56" Script="0" Pos="NA,NA,NA,NA";
-CF p302 p303
-Finish p304 "304-if" Value="if" Time="6.56" Script="NA" Pos="NA";
-CF p303 p304
-Finish p305 "305-if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Value="if (length(x1) > 0 | length(x2) > 0) {    var.type <- \"numer" Time="6.56" Script="0" Pos="NA,NA,NA,NA";
-CF p304 p305
-Data d136 "136-get.variable.type(ns[[i]]) return" Value="\"character\"";
-Operation p306 "306-return(var.type)" Value="return(var.type)" Time="6.57" Script="0" Pos="NA,NA,NA,NA";
-CF p305 p306
-DF p306 d136
-DF d135 p306
-Finish p307 "307-get.variable.type(ns[[i]])" Value="get.variable.type(ns[[i]])" Time="6.59" Script="NA" Pos="NA";
-CF p306 p307
-Finish p308 "308-for (i in 1:num) {    var.type <- get.variable.type(ns[[i]])" Value="for (i in 1:num) {    var.type <- get.variable.type(ns[[i]])" Time="6.59" Script="0" Pos="NA,NA,NA,NA";
-CF p307 p308
-DF d97 p308
-DF d103 p308
-DF d108 p308
-DF d114 p308
-DF d119 p308
-DF d125 p308
-DF d130 p308
-DF d136 p308
-DF d97 p308
-DF d103 p308
-DF d108 p308
-DF d114 p308
-DF d119 p308
-DF d125 p308
-DF d130 p308
-Snapshot d137 "137-get.all.variable.types(ns) return" Value="[DIR]/ddg/data/137-get.all.variable.types(ns) return.csv" Time="2016-11-10T10.10.20EST";
-Operation p309 "309-return(var.types)" Value="return(var.types)" Time="6.62" Script="0" Pos="NA,NA,NA,NA";
-CF p308 p309
-DF p309 d137
-DF d92 p309
-Finish p310 "310-get.all.variable.types(ns)" Value="get.all.variable.types(ns)" Time="6.64" Script="NA" Pos="NA";
-CF p309 p310
-Finish p311 "311-var.types <<- get.all.variable.types(ns)" Value="var.types <<- get.all.variable.types(ns)" Time="6.64" Script="0" Pos="NA,NA,NA,NA";
-CF p310 p311
-DF d137 p311
-Snapshot d138 "138-var.types" Value="[DIR]/ddg/data/138-var.types.csv" Time="2016-11-10T10.10.20EST";
-DF p311 d138
-Start p312 "312-var.format.strings <<- get.all.variable.format.strings(ns)" Value="var.format.strings <<- get.all.variable.format.strings(ns)" Time="6.65" Script="0" Pos="NA,NA,NA,NA";
-CF p311 p312
-DF d15 p312
-DF d81 p312
-Start p313 "313-get.all.variable.format.strings(ns)" Value="get.all.variable.format.strings(ns)" Time="6.67" Script="NA" Pos="NA";
-CF p312 p313
-Binding p314 "314-ns  <-  ns" Time="6.71" Script="NA" Pos="NA";
-CF p313 p314
-DF d81 p314
-Snapshot d139 "139-ns" Value="[DIR]/ddg/data/139-ns.txt" Time="2016-11-10T10.10.20EST";
-DF p314 d139
-Operation p315 "315-get.all.variable.format.strings" Value="get.all.variable.format.strings" Time="6.73" Script="NA" Pos="NA";
-DF d15 p315
-DF d139 p315
-CF p314 p315
-Operation p316 "316-num <- xmlSize(ns)" Value="num <- xmlSize(ns)" Time="6.75" Script="0" Pos="NA,NA,NA,NA";
-CF p315 p316
-DF d139 p316
-Data d140 "140-num" Value="9";
-DF p316 d140
-Start p317 "317-for (i in 1:num) {    var.format.string <- get.variable.form" Value="for (i in 1:num) {    var.format.string <- get.variable.form" Time="6.78" Script="0" Pos="NA,NA,NA,NA";
-CF p316 p317
-Start p318 "318-for loop" Value="for loop" Time="6.78" Script="NA" Pos="NA";
-CF p317 p318
-Operation p319 "319-i <- 1" Value="i <- 1" Time="6.78" Script="NA" Pos="NA";
-CF p318 p319
-Data d141 "141-i" Value="1";
-DF p319 d141
-Start p320 "320-var.format.string <- get.variable.format.string(ns[[i]])" Value="var.format.string <- get.variable.format.string(ns[[i]])" Time="6.79" Script="0" Pos="NA,NA,NA,NA";
-CF p319 p320
-DF d14 p320
-DF d139 p320
-DF d141 p320
-Start p321 "321-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="6.81" Script="NA" Pos="NA";
-CF p320 p321
-Binding p322 "322-ns  <-  ns[[i]]" Time="6.82" Script="NA" Pos="NA";
-CF p321 p322
-DF d139 p322
-DF d141 p322
-Snapshot d142 "142-ns" Value="[DIR]/ddg/data/142-ns.txt" Time="2016-11-10T10.10.20EST";
-DF p322 d142
-Operation p323 "323-get.variable.format.string" Value="get.variable.format.string" Time="6.85" Script="NA" Pos="NA";
-DF d14 p323
-DF d142 p323
-CF p322 p323
-Operation p324 "324-x <- xpathApply(ns, \"measurementScale/dateTime/formatString\"" Value="x <- xpathApply(ns, \"measurementScale/dateTime/formatString\"" Time="6.87" Script="0" Pos="NA,NA,NA,NA";
-CF p323 p324
-DF d142 p324
-Snapshot d143 "143-x" Value="[DIR]/ddg/data/143-x.txt" Time="2016-11-10T10.10.20EST";
-DF p324 d143
-Start p325 "325-if (length(x) > 0) var.format.string <- x[[1]] else var.form" Value="if (length(x) > 0) var.format.string <- x[[1]] else var.form" Time="6.89" Script="0" Pos="NA,NA,NA,NA";
-CF p324 p325
-Start p326 "326-if" Value="if" Time="6.92" Script="NA" Pos="NA";
-CF p325 p326
-Operation p327 "327-var.format.string <- x[[1]]" Value="var.format.string <- x[[1]]" Time="6.92" Script="0" Pos="NA,NA,NA,NA";
-CF p326 p327
-DF d143 p327
-Data d144 "144-var.format.string" Value="\"YYYY-MM-DD\"";
-DF p327 d144
-Finish p328 "328-if" Value="if" Time="6.96" Script="NA" Pos="NA";
-CF p327 p328
-Finish p329 "329-if (length(x) > 0) var.format.string <- x[[1]] else var.form" Value="if (length(x) > 0) var.format.string <- x[[1]] else var.form" Time="6.98" Script="0" Pos="NA,NA,NA,NA";
-CF p328 p329
-Data d145 "145-get.variable.format.string(ns[[i]]) return" Value="\"YYYY-MM-DD\"";
-Operation p330 "330-return(var.format.string)" Value="return(var.format.string)" Time="6.98" Script="0" Pos="NA,NA,NA,NA";
-CF p329 p330
-DF p330 d145
-DF d144 p330
-Finish p331 "331-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="6.99" Script="NA" Pos="NA";
-CF p330 p331
-Finish p332 "332-var.format.string <- get.variable.format.string(ns[[i]])" Value="var.format.string <- get.variable.format.string(ns[[i]])" Time="6.99" Script="0" Pos="NA,NA,NA,NA";
-CF p331 p332
-DF d145 p332
-Data d146 "146-var.format.string" Value="\"YYYY-MM-DD\"";
-DF p332 d146
-Start p333 "333-if (i == 1) var.format.strings <- var.format.string else var" Value="if (i == 1) var.format.strings <- var.format.string else var" Time="7.01" Script="0" Pos="NA,NA,NA,NA";
-CF p332 p333
-Start p334 "334-if" Value="if" Time="7.03" Script="NA" Pos="NA";
-CF p333 p334
-Operation p335 "335-var.format.strings <- var.format.string" Value="var.format.strings <- var.format.string" Time="7.04" Script="0" Pos="NA,NA,NA,NA";
-CF p334 p335
-DF d146 p335
-Data d147 "147-var.format.strings" Value="\"YYYY-MM-DD\"";
-DF p335 d147
-Finish p336 "336-if" Value="if" Time="7.04" Script="NA" Pos="NA";
-CF p335 p336
-Finish p337 "337-if (i == 1) var.format.strings <- var.format.string else var" Value="if (i == 1) var.format.strings <- var.format.string else var" Time="7.06" Script="0" Pos="NA,NA,NA,NA";
-CF p336 p337
-Finish p338 "338-for loop" Value="for loop" Time="7.06" Script="NA" Pos="NA";
-CF p337 p338
-Start p339 "339-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="7.06" Script="NA" Pos="NA";
-CF p338 p339
-Binding p340 "340-ns  <-  ns[[i]]" Time="7.06" Script="NA" Pos="NA";
-CF p339 p340
-DF d139 p340
-DF d141 p340
-Snapshot d148 "148-ns" Value="[DIR]/ddg/data/148-ns.txt" Time="2016-11-10T10.10.21EST";
-DF p340 d148
-Operation p341 "341-get.variable.format.string" Value="get.variable.format.string" Time="7.09" Script="NA" Pos="NA";
-DF d14 p341
-DF d148 p341
-CF p340 p341
-Operation p342 "342-x <- xpathApply(ns, \"measurementScale/dateTime/formatString\"" Value="x <- xpathApply(ns, \"measurementScale/dateTime/formatString\"" Time="7.1" Script="0" Pos="NA,NA,NA,NA";
-CF p341 p342
-DF d148 p342
-Snapshot d149 "149-x" Value="[DIR]/ddg/data/149-x.txt" Time="2016-11-10T10.10.21EST";
-DF p342 d149
-Start p343 "343-if (length(x) > 0) var.format.string <- x[[1]] else var.form" Value="if (length(x) > 0) var.format.string <- x[[1]] else var.form" Time="7.15" Script="0" Pos="NA,NA,NA,NA";
-CF p342 p343
-Start p344 "344-if" Value="if" Time="7.2" Script="NA" Pos="NA";
-CF p343 p344
-Operation p345 "345-var.format.string <- \"\"" Value="var.format.string <- \"\"" Time="7.2" Script="0" Pos="NA,NA,NA,NA";
-CF p344 p345
-Data d150 "150-var.format.string" Value="NotRecorded";
-DF p345 d150
-Finish p346 "346-if" Value="if" Time="7.21" Script="NA" Pos="NA";
-CF p345 p346
-Finish p347 "347-if (length(x) > 0) var.format.string <- x[[1]] else var.form" Value="if (length(x) > 0) var.format.string <- x[[1]] else var.form" Time="7.21" Script="0" Pos="NA,NA,NA,NA";
-CF p346 p347
-Data d151 "151-get.variable.format.string(ns[[i]]) return" Value="NotRecorded";
-Operation p348 "348-return(var.format.string)" Value="return(var.format.string)" Time="7.21" Script="0" Pos="NA,NA,NA,NA";
-CF p347 p348
-DF p348 d151
-DF d150 p348
-Finish p349 "349-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="7.23" Script="NA" Pos="NA";
-CF p348 p349
-Start p350 "350-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="7.23" Script="NA" Pos="NA";
-CF p349 p350
-Binding p351 "351-ns  <-  ns[[i]]" Time="7.24" Script="NA" Pos="NA";
-CF p350 p351
-DF d139 p351
-DF d141 p351
-Snapshot d152 "152-ns" Value="[DIR]/ddg/data/152-ns.txt" Time="2016-11-10T10.10.21EST";
-DF p351 d152
-Operation p352 "352-get.variable.format.string" Value="get.variable.format.string" Time="7.26" Script="NA" Pos="NA";
-DF d14 p352
-DF d152 p352
-CF p351 p352
-Operation p353 "353-x <- xpathApply(ns, \"measurementScale/dateTime/formatString\"" Value="x <- xpathApply(ns, \"measurementScale/dateTime/formatString\"" Time="7.28" Script="0" Pos="NA,NA,NA,NA";
-CF p352 p353
-DF d152 p353
-Snapshot d153 "153-x" Value="[DIR]/ddg/data/153-x.txt" Time="2016-11-10T10.10.21EST";
-DF p353 d153
-Start p354 "354-if (length(x) > 0) var.format.string <- x[[1]] else var.form" Value="if (length(x) > 0) var.format.string <- x[[1]] else var.form" Time="7.29" Script="0" Pos="NA,NA,NA,NA";
-CF p353 p354
-Start p355 "355-if" Value="if" Time="7.31" Script="NA" Pos="NA";
-CF p354 p355
-Operation p356 "356-var.format.string <- \"\"" Value="var.format.string <- \"\"" Time="7.31" Script="0" Pos="NA,NA,NA,NA";
-CF p355 p356
-Data d154 "154-var.format.string" Value="NotRecorded";
-DF p356 d154
-Finish p357 "357-if" Value="if" Time="7.32" Script="NA" Pos="NA";
-CF p356 p357
-Finish p358 "358-if (length(x) > 0) var.format.string <- x[[1]] else var.form" Value="if (length(x) > 0) var.format.string <- x[[1]] else var.form" Time="7.32" Script="0" Pos="NA,NA,NA,NA";
-CF p357 p358
-Data d155 "155-get.variable.format.string(ns[[i]]) return" Value="NotRecorded";
-Operation p359 "359-return(var.format.string)" Value="return(var.format.string)" Time="7.38" Script="0" Pos="NA,NA,NA,NA";
-CF p358 p359
-DF p359 d155
-DF d154 p359
-Finish p360 "360-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="7.38" Script="NA" Pos="NA";
-CF p359 p360
-Start p361 "361-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="7.4" Script="NA" Pos="NA";
-CF p360 p361
-Binding p362 "362-ns  <-  ns[[i]]" Time="7.4" Script="NA" Pos="NA";
-CF p361 p362
-DF d139 p362
-DF d141 p362
-Snapshot d156 "156-ns" Value="[DIR]/ddg/data/156-ns.txt" Time="2016-11-10T10.10.21EST";
-DF p362 d156
-Operation p363 "363-get.variable.format.string" Value="get.variable.format.string" Time="7.42" Script="NA" Pos="NA";
-DF d14 p363
-DF d156 p363
-CF p362 p363
-Operation p364 "364-x <- xpathApply(ns, \"measurementScale/dateTime/formatString\"" Value="x <- xpathApply(ns, \"measurementScale/dateTime/formatString\"" Time="7.43" Script="0" Pos="NA,NA,NA,NA";
-CF p363 p364
-DF d156 p364
-Snapshot d157 "157-x" Value="[DIR]/ddg/data/157-x.txt" Time="2016-11-10T10.10.21EST";
-DF p364 d157
-Start p365 "365-if (length(x) > 0) var.format.string <- x[[1]] else var.form" Value="if (length(x) > 0) var.format.string <- x[[1]] else var.form" Time="7.49" Script="0" Pos="NA,NA,NA,NA";
-CF p364 p365
-Start p366 "366-if" Value="if" Time="7.51" Script="NA" Pos="NA";
-CF p365 p366
-Operation p367 "367-var.format.string <- \"\"" Value="var.format.string <- \"\"" Time="7.53" Script="0" Pos="NA,NA,NA,NA";
-CF p366 p367
-Data d158 "158-var.format.string" Value="NotRecorded";
-DF p367 d158
-Finish p368 "368-if" Value="if" Time="7.53" Script="NA" Pos="NA";
-CF p367 p368
-Finish p369 "369-if (length(x) > 0) var.format.string <- x[[1]] else var.form" Value="if (length(x) > 0) var.format.string <- x[[1]] else var.form" Time="7.53" Script="0" Pos="NA,NA,NA,NA";
-CF p368 p369
-Data d159 "159-get.variable.format.string(ns[[i]]) return" Value="NotRecorded";
-Operation p370 "370-return(var.format.string)" Value="return(var.format.string)" Time="7.54" Script="0" Pos="NA,NA,NA,NA";
-CF p369 p370
-DF p370 d159
-DF d158 p370
-Finish p371 "371-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="7.54" Script="NA" Pos="NA";
-CF p370 p371
-Start p372 "372-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="7.56" Script="NA" Pos="NA";
-CF p371 p372
-Binding p373 "373-ns  <-  ns[[i]]" Time="7.56" Script="NA" Pos="NA";
-CF p372 p373
-DF d139 p373
-DF d141 p373
-Snapshot d160 "160-ns" Value="[DIR]/ddg/data/160-ns.txt" Time="2016-11-10T10.10.21EST";
-DF p373 d160
-Operation p374 "374-get.variable.format.string" Value="get.variable.format.string" Time="7.57" Script="NA" Pos="NA";
-DF d14 p374
-DF d160 p374
-CF p373 p374
-Operation p375 "375-x <- xpathApply(ns, \"measurementScale/dateTime/formatString\"" Value="x <- xpathApply(ns, \"measurementScale/dateTime/formatString\"" Time="7.59" Script="0" Pos="NA,NA,NA,NA";
-CF p374 p375
-DF d160 p375
-Snapshot d161 "161-x" Value="[DIR]/ddg/data/161-x.txt" Time="2016-11-10T10.10.21EST";
-DF p375 d161
-Start p376 "376-if (length(x) > 0) var.format.string <- x[[1]] else var.form" Value="if (length(x) > 0) var.format.string <- x[[1]] else var.form" Time="7.62" Script="0" Pos="NA,NA,NA,NA";
-CF p375 p376
-Start p377 "377-if" Value="if" Time="7.63" Script="NA" Pos="NA";
-CF p376 p377
-Operation p378 "378-var.format.string <- \"\"" Value="var.format.string <- \"\"" Time="7.68" Script="0" Pos="NA,NA,NA,NA";
-CF p377 p378
-Data d162 "162-var.format.string" Value="NotRecorded";
-DF p378 d162
-Finish p379 "379-if" Value="if" Time="7.68" Script="NA" Pos="NA";
-CF p378 p379
-Finish p380 "380-if (length(x) > 0) var.format.string <- x[[1]] else var.form" Value="if (length(x) > 0) var.format.string <- x[[1]] else var.form" Time="7.68" Script="0" Pos="NA,NA,NA,NA";
-CF p379 p380
-Data d163 "163-get.variable.format.string(ns[[i]]) return" Value="NotRecorded";
-Operation p381 "381-return(var.format.string)" Value="return(var.format.string)" Time="7.68" Script="0" Pos="NA,NA,NA,NA";
-CF p380 p381
-DF p381 d163
-DF d162 p381
-Finish p382 "382-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="7.7" Script="NA" Pos="NA";
-CF p381 p382
-Start p383 "383-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="7.7" Script="NA" Pos="NA";
-CF p382 p383
-Binding p384 "384-ns  <-  ns[[i]]" Time="7.7" Script="NA" Pos="NA";
-CF p383 p384
-DF d139 p384
-DF d141 p384
-Snapshot d164 "164-ns" Value="[DIR]/ddg/data/164-ns.txt" Time="2016-11-10T10.10.21EST";
-DF p384 d164
-Operation p385 "385-get.variable.format.string" Value="get.variable.format.string" Time="7.72" Script="NA" Pos="NA";
-DF d14 p385
-DF d164 p385
-CF p384 p385
-Operation p386 "386-x <- xpathApply(ns, \"measurementScale/dateTime/formatString\"" Value="x <- xpathApply(ns, \"measurementScale/dateTime/formatString\"" Time="7.74" Script="0" Pos="NA,NA,NA,NA";
-CF p385 p386
-DF d164 p386
-Snapshot d165 "165-x" Value="[DIR]/ddg/data/165-x.txt" Time="2016-11-10T10.10.21EST";
-DF p386 d165
-Start p387 "387-if (length(x) > 0) var.format.string <- x[[1]] else var.form" Value="if (length(x) > 0) var.format.string <- x[[1]] else var.form" Time="7.75" Script="0" Pos="NA,NA,NA,NA";
-CF p386 p387
-Start p388 "388-if" Value="if" Time="7.77" Script="NA" Pos="NA";
-CF p387 p388
-Operation p389 "389-var.format.string <- \"\"" Value="var.format.string <- \"\"" Time="7.77" Script="0" Pos="NA,NA,NA,NA";
-CF p388 p389
-Data d166 "166-var.format.string" Value="NotRecorded";
-DF p389 d166
-Finish p390 "390-if" Value="if" Time="7.78" Script="NA" Pos="NA";
-CF p389 p390
-Finish p391 "391-if (length(x) > 0) var.format.string <- x[[1]] else var.form" Value="if (length(x) > 0) var.format.string <- x[[1]] else var.form" Time="7.78" Script="0" Pos="NA,NA,NA,NA";
-CF p390 p391
-Data d167 "167-get.variable.format.string(ns[[i]]) return" Value="NotRecorded";
-Operation p392 "392-return(var.format.string)" Value="return(var.format.string)" Time="7.83" Script="0" Pos="NA,NA,NA,NA";
-CF p391 p392
-DF p392 d167
-DF d166 p392
-Finish p393 "393-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="7.85" Script="NA" Pos="NA";
-CF p392 p393
-Start p394 "394-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="7.85" Script="NA" Pos="NA";
-CF p393 p394
-Binding p395 "395-ns  <-  ns[[i]]" Time="7.85" Script="NA" Pos="NA";
-CF p394 p395
-DF d139 p395
-DF d141 p395
-Snapshot d168 "168-ns" Value="[DIR]/ddg/data/168-ns.txt" Time="2016-11-10T10.10.21EST";
-DF p395 d168
-Operation p396 "396-get.variable.format.string" Value="get.variable.format.string" Time="7.86" Script="NA" Pos="NA";
-DF d14 p396
-DF d168 p396
-CF p395 p396
-Operation p397 "397-x <- xpathApply(ns, \"measurementScale/dateTime/formatString\"" Value="x <- xpathApply(ns, \"measurementScale/dateTime/formatString\"" Time="7.88" Script="0" Pos="NA,NA,NA,NA";
-CF p396 p397
-DF d168 p397
-Snapshot d169 "169-x" Value="[DIR]/ddg/data/169-x.txt" Time="2016-11-10T10.10.22EST";
-DF p397 d169
-Start p398 "398-if (length(x) > 0) var.format.string <- x[[1]] else var.form" Value="if (length(x) > 0) var.format.string <- x[[1]] else var.form" Time="7.89" Script="0" Pos="NA,NA,NA,NA";
-CF p397 p398
-Start p399 "399-if" Value="if" Time="7.91" Script="NA" Pos="NA";
-CF p398 p399
-Operation p400 "400-var.format.string <- \"\"" Value="var.format.string <- \"\"" Time="7.91" Script="0" Pos="NA,NA,NA,NA";
-CF p399 p400
-Data d170 "170-var.format.string" Value="NotRecorded";
-DF p400 d170
-Finish p401 "401-if" Value="if" Time="7.91" Script="NA" Pos="NA";
-CF p400 p401
-Finish p402 "402-if (length(x) > 0) var.format.string <- x[[1]] else var.form" Value="if (length(x) > 0) var.format.string <- x[[1]] else var.form" Time="7.93" Script="0" Pos="NA,NA,NA,NA";
-CF p401 p402
-Data d171 "171-get.variable.format.string(ns[[i]]) return" Value="NotRecorded";
-Operation p403 "403-return(var.format.string)" Value="return(var.format.string)" Time="7.93" Script="0" Pos="NA,NA,NA,NA";
-CF p402 p403
-DF p403 d171
-DF d170 p403
-Finish p404 "404-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="7.99" Script="NA" Pos="NA";
-CF p403 p404
-Start p405 "405-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="7.99" Script="NA" Pos="NA";
-CF p404 p405
-Binding p406 "406-ns  <-  ns[[i]]" Time="7.99" Script="NA" Pos="NA";
-CF p405 p406
-DF d139 p406
-DF d141 p406
-Snapshot d172 "172-ns" Value="[DIR]/ddg/data/172-ns.txt" Time="2016-11-10T10.10.22EST";
-DF p406 d172
-Operation p407 "407-get.variable.format.string" Value="get.variable.format.string" Time="8.02" Script="NA" Pos="NA";
-DF d14 p407
-DF d172 p407
-CF p406 p407
-Operation p408 "408-x <- xpathApply(ns, \"measurementScale/dateTime/formatString\"" Value="x <- xpathApply(ns, \"measurementScale/dateTime/formatString\"" Time="8.03" Script="0" Pos="NA,NA,NA,NA";
-CF p407 p408
-DF d172 p408
-Snapshot d173 "173-x" Value="[DIR]/ddg/data/173-x.txt" Time="2016-11-10T10.10.22EST";
-DF p408 d173
-Start p409 "409-if (length(x) > 0) var.format.string <- x[[1]] else var.form" Value="if (length(x) > 0) var.format.string <- x[[1]] else var.form" Time="8.05" Script="0" Pos="NA,NA,NA,NA";
-CF p408 p409
-Start p410 "410-if" Value="if" Time="8.07" Script="NA" Pos="NA";
-CF p409 p410
-Operation p411 "411-var.format.string <- \"\"" Value="var.format.string <- \"\"" Time="8.07" Script="0" Pos="NA,NA,NA,NA";
-CF p410 p411
-Data d174 "174-var.format.string" Value="NotRecorded";
-DF p411 d174
-Finish p412 "412-if" Value="if" Time="8.08" Script="NA" Pos="NA";
-CF p411 p412
-Finish p413 "413-if (length(x) > 0) var.format.string <- x[[1]] else var.form" Value="if (length(x) > 0) var.format.string <- x[[1]] else var.form" Time="8.08" Script="0" Pos="NA,NA,NA,NA";
-CF p412 p413
-Data d175 "175-get.variable.format.string(ns[[i]]) return" Value="NotRecorded";
-Operation p414 "414-return(var.format.string)" Value="return(var.format.string)" Time="8.1" Script="0" Pos="NA,NA,NA,NA";
-CF p413 p414
-DF p414 d175
-DF d174 p414
-Finish p415 "415-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="8.11" Script="NA" Pos="NA";
-CF p414 p415
-Start p416 "416-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="8.11" Script="NA" Pos="NA";
-CF p415 p416
-Binding p417 "417-ns  <-  ns[[i]]" Time="8.16" Script="NA" Pos="NA";
-CF p416 p417
-DF d139 p417
-DF d141 p417
-Snapshot d176 "176-ns" Value="[DIR]/ddg/data/176-ns.txt" Time="2016-11-10T10.10.22EST";
-DF p417 d176
-Operation p418 "418-get.variable.format.string" Value="get.variable.format.string" Time="8.19" Script="NA" Pos="NA";
-DF d14 p418
-DF d176 p418
-CF p417 p418
-Operation p419 "419-x <- xpathApply(ns, \"measurementScale/dateTime/formatString\"" Value="x <- xpathApply(ns, \"measurementScale/dateTime/formatString\"" Time="8.21" Script="0" Pos="NA,NA,NA,NA";
-CF p418 p419
-DF d176 p419
-Snapshot d177 "177-x" Value="[DIR]/ddg/data/177-x.txt" Time="2016-11-10T10.10.22EST";
-DF p419 d177
-Start p420 "420-if (length(x) > 0) var.format.string <- x[[1]] else var.form" Value="if (length(x) > 0) var.format.string <- x[[1]] else var.form" Time="8.22" Script="0" Pos="NA,NA,NA,NA";
-CF p419 p420
-Start p421 "421-if" Value="if" Time="8.25" Script="NA" Pos="NA";
-CF p420 p421
-Operation p422 "422-var.format.string <- \"\"" Value="var.format.string <- \"\"" Time="8.25" Script="0" Pos="NA,NA,NA,NA";
-CF p421 p422
-Data d178 "178-var.format.string" Value="NotRecorded";
-DF p422 d178
-Finish p423 "423-if" Value="if" Time="8.25" Script="NA" Pos="NA";
-CF p422 p423
-Finish p424 "424-if (length(x) > 0) var.format.string <- x[[1]] else var.form" Value="if (length(x) > 0) var.format.string <- x[[1]] else var.form" Time="8.25" Script="0" Pos="NA,NA,NA,NA";
-CF p423 p424
-Data d179 "179-get.variable.format.string(ns[[i]]) return" Value="NotRecorded";
-Operation p425 "425-return(var.format.string)" Value="return(var.format.string)" Time="8.27" Script="0" Pos="NA,NA,NA,NA";
-CF p424 p425
-DF p425 d179
-DF d178 p425
-Finish p426 "426-get.variable.format.string(ns[[i]])" Value="get.variable.format.string(ns[[i]])" Time="8.28" Script="NA" Pos="NA";
-CF p425 p426
-Finish p427 "427-for (i in 1:num) {    var.format.string <- get.variable.form" Value="for (i in 1:num) {    var.format.string <- get.variable.form" Time="8.28" Script="0" Pos="NA,NA,NA,NA";
-CF p426 p427
-DF d151 p427
-DF d155 p427
-DF d159 p427
-DF d163 p427
-DF d167 p427
-DF d171 p427
-DF d175 p427
-DF d179 p427
-DF d151 p427
-DF d155 p427
-DF d159 p427
-DF d163 p427
-DF d167 p427
-DF d171 p427
-DF d175 p427
-Snapshot d180 "180-get.all.variable.format.strings(ns) return" Value="[DIR]/ddg/data/180-get.all.variable.format.strings(ns) return.csv" Time="2016-11-10T10.10.22EST";
-Operation p428 "428-return(var.format.strings)" Value="return(var.format.strings)" Time="8.35" Script="0" Pos="NA,NA,NA,NA";
-CF p427 p428
-DF p428 d180
-DF d147 p428
-Finish p429 "429-get.all.variable.format.strings(ns)" Value="get.all.variable.format.strings(ns)" Time="8.36" Script="NA" Pos="NA";
-CF p428 p429
-Finish p430 "430-var.format.strings <<- get.all.variable.format.strings(ns)" Value="var.format.strings <<- get.all.variable.format.strings(ns)" Time="8.36" Script="0" Pos="NA,NA,NA,NA";
-CF p429 p430
-DF d180 p430
-Snapshot d181 "181-var.format.strings" Value="[DIR]/ddg/data/181-var.format.strings.csv" Time="2016-11-10T10.10.22EST";
-DF p430 d181
-Start p431 "431-if (is.null(data.url)) {    msg <- paste(datafile.id, \": dat" Value="if (is.null(data.url)) {    msg <- paste(datafile.id, \": dat" Time="8.38" Script="0" Pos="NA,NA,NA,NA";
-CF p430 p431
-Data d182 "182-data.url [ENV]" Value="\"http://harvardforest.fas.harvard.edu/data/p00/hf000/hf000-01-daily-m.csv\"";
-DF d182 p431
-DF d53 p431
-DF d16 p431
-Snapshot d183 "183-var.types [ENV]" Value="[DIR]/ddg/data/183-var.types.csv" Time="2016-11-10T10.10.22EST";
-DF d183 p431
-Start p432 "432-if" Value="if" Time="8.44" Script="NA" Pos="NA";
-CF p431 p432
-Start p433 "433-xx <- get.data.file(data.url, var.types)" Value="xx <- get.data.file(data.url, var.types)" Time="8.44" Script="0" Pos="NA,NA,NA,NA";
-CF p432 p433
-DF d16 p433
-DF d182 p433
-DF d183 p433
-Start p434 "434-get.data.file(data.url, var.types)" Value="get.data.file(data.url, var.types)" Time="8.46" Script="NA" Pos="NA";
-CF p433 p434
-Binding p435 "435-data.url  <-  data.url" Time="8.47" Script="NA" Pos="NA";
-CF p434 p435
-DF d182 p435
-Data d184 "184-data.url" Value="\"http://harvardforest.fas.harvard.edu/data/p00/hf000/hf000-01-daily-m.csv\"";
-DF p435 d184
-Binding p436 "436-var.types  <-  var.types" Time="8.52" Script="NA" Pos="NA";
-CF p435 p436
-DF d183 p436
-Snapshot d185 "185-var.types" Value="[DIR]/ddg/data/185-var.types.csv" Time="2016-11-10T10.10.22EST";
-DF p436 d185
-Operation p437 "437-get.data.file" Value="get.data.file" Time="8.53" Script="NA" Pos="NA";
-DF d16 p437
-DF d184 p437
-DF d185 p437
-CF p436 p437
-Operation p438 "438-con <- file(data.url)" Value="con <- file(data.url)" Time="8.55" Script="0" Pos="NA,NA,NA,NA";
-CF p437 p438
-DF d184 p438
-URL d186 "186-http://harvardforest.fas.harvard.edu/data/p00/hf000/hf000-01-daily-m.csv" Value="\"http://harvardforest.fas.harvard.edu/data/p00/hf000/hf000-01-daily-m.csv\"";
-DF d186 p438
-Snapshot d187 "187-con" Value="[DIR]/ddg/data/187-con.txt" Time="2016-11-10T10.10.22EST";
-DF p438 d187
-Operation p439 "439-xx <- read.csv(con, header = TRUE, colClasses = var.types)" Value="xx <- read.csv(con, header = TRUE, colClasses = var.types)" Time="10.1" Script="0" Pos="NA,NA,NA,NA";
-CF p438 p439
-DF d187 p439
-DF d185 p439
-Snapshot d188 "188-xx" Value="[DIR]/ddg/data/188-xx-PARTIAL.csv" Time="2016-11-10T10.10.24EST";
-DF p439 d188
-Snapshot d189 "189-get.data.file(data.url,var.types) return" Value="[DIR]/ddg/data/189-get.data.file(data.url,var.types) return-PARTIAL.csv" Time="2016-11-10T10.10.24EST";
-Operation p440 "440-return(xx)" Value="return(xx)" Time="10.11" Script="0" Pos="NA,NA,NA,NA";
-CF p439 p440
-DF p440 d189
-DF d188 p440
-Finish p441 "441-get.data.file(data.url, var.types)" Value="get.data.file(data.url, var.types)" Time="10.18" Script="NA" Pos="NA";
-CF p440 p441
-Finish p442 "442-xx <- get.data.file(data.url, var.types)" Value="xx <- get.data.file(data.url, var.types)" Time="10.18" Script="0" Pos="NA,NA,NA,NA";
-CF p441 p442
-DF d189 p442
-Snapshot d190 "190-xx" Value="[DIR]/ddg/data/190-xx-PARTIAL.csv" Time="2016-11-10T10.10.24EST";
-DF p442 d190
-Finish p443 "443-if" Value="if" Time="10.19" Script="NA" Pos="NA";
-CF p442 p443
-Finish p444 "444-if (is.null(data.url)) {    msg <- paste(datafile.id, \": dat" Value="if (is.null(data.url)) {    msg <- paste(datafile.id, \": dat" Time="10.19" Script="0" Pos="NA,NA,NA,NA";
-CF p443 p444
-Snapshot d191 "191-get.hf.datafile(datafile.id) return" Value="[DIR]/ddg/data/191-get.hf.datafile(datafile.id) return-PARTIAL.csv" Time="2016-11-10T10.10.24EST";
-Operation p445 "445-return(xx)" Value="return(xx)" Time="10.22" Script="0" Pos="NA,NA,NA,NA";
-CF p444 p445
-DF p445 d191
-DF d190 p445
-Finish p446 "446-get.hf.datafile(datafile.id)" Value="get.hf.datafile(datafile.id)" Time="10.24" Script="NA" Pos="NA";
-CF p445 p446
-Finish p447 "447-dd <<- get.hf.datafile(datafile.id)" Value="dd <<- get.hf.datafile(datafile.id)" Time="10.24" Script="0" Pos="NA,NA,NA,NA";
-CF p446 p447
-DF d191 p447
-Snapshot d192 "192-dd" Value="[DIR]/ddg/data/192-dd-PARTIAL.csv" Time="2016-11-10T10.10.24EST";
-DF p447 d192
-Start p448 "448-create.summary.stats.table(dd)" Value="create.summary.stats.table(dd)" Time="10.32" Script="NA" Pos="NA";
-CF p447 p448
-Binding p449 "449-xx  <-  dd" Time="10.32" Script="NA" Pos="NA";
-CF p448 p449
-Snapshot d193 "193-dd [ENV]" Value="[DIR]/ddg/data/193-dd-PARTIAL.csv" Time="2016-11-10T10.10.24EST";
-DF d193 p449
-Snapshot d194 "194-xx" Value="[DIR]/ddg/data/194-xx-PARTIAL.csv" Time="2016-11-10T10.10.24EST";
-DF p449 d194
-Operation p450 "450-create.summary.stats.table" Value="create.summary.stats.table" Time="10.39" Script="NA" Pos="NA";
-DF d20 p450
-DF d194 p450
-CF p449 p450
-Start p451 "451-xx.sum <- get.summary.stats.data.frame(xx)" Value="xx.sum <- get.summary.stats.data.frame(xx)" Time="10.39" Script="0" Pos="NA,NA,NA,NA";
-CF p450 p451
-DF d18 p451
-DF d194 p451
-Start p452 "452-get.summary.stats.data.frame(xx)" Value="get.summary.stats.data.frame(xx)" Time="10.41" Script="NA" Pos="NA";
-CF p451 p452
-Binding p453 "453-xx  <-  xx" Time="10.42" Script="NA" Pos="NA";
-CF p452 p453
-DF d194 p453
-Snapshot d195 "195-xx" Value="[DIR]/ddg/data/195-xx-PARTIAL.csv" Time="2016-11-10T10.10.24EST";
-DF p453 d195
-Operation p454 "454-get.summary.stats.data.frame" Value="get.summary.stats.data.frame" Time="10.44" Script="NA" Pos="NA";
-DF d18 p454
-DF d195 p454
-CF p453 p454
-Operation p455 "455-sum.types <<- \"\"" Value="sum.types <<- \"\"" Time="10.46" Script="0" Pos="NA,NA,NA,NA";
-CF p454 p455
-Data d196 "196-sum.types" Value="NotRecorded";
-DF p455 d196
-Operation p456 "456-sum.names <<- \"\"" Value="sum.names <<- \"\"" Time="10.47" Script="0" Pos="NA,NA,NA,NA";
-CF p455 p456
-Data d197 "197-sum.names" Value="NotRecorded";
-DF p456 d197
-Operation p457 "457-count <- 0" Value="count <- 0" Time="10.49" Script="0" Pos="NA,NA,NA,NA";
-CF p456 p457
-Data d198 "198-count" Value="0";
-DF p457 d198
-Start p458 "458-for (i in 1:length(xx)) {    if (var.types[i] == \"Date\" | va" Value="for (i in 1:length(xx)) {    if (var.types[i] == \"Date\" | va" Time="10.53" Script="0" Pos="NA,NA,NA,NA";
-CF p457 p458
-Start p459 "459-for loop" Value="for loop" Time="10.53" Script="NA" Pos="NA";
-CF p458 p459
-Operation p460 "460-i <- 1" Value="i <- 1" Time="10.53" Script="NA" Pos="NA";
-CF p459 p460
-Data d199 "199-i" Value="1";
-DF p460 d199
-Start p461 "461-if (var.types[i] == \"Date\" | var.types[i] == \"numeric\" | var" Value="if (var.types[i] == \"Date\" | var.types[i] == \"numeric\" | var" Time="10.55" Script="0" Pos="NA,NA,NA,NA";
-CF p460 p461
-DF d183 p461
-Snapshot d200 "200-var.format.strings [ENV]" Value="[DIR]/ddg/data/200-var.format.strings.csv" Time="2016-11-10T10.10.24EST";
-DF d200 p461
-DF d196 p461
-DF d197 p461
-Start p462 "462-if" Value="if" Time="10.58" Script="NA" Pos="NA";
-CF p461 p462
-Operation p463 "463-count <- count + 1" Value="count <- count + 1" Time="10.6" Script="0" Pos="NA,NA,NA,NA";
-CF p462 p463
-DF d198 p463
-Data d201 "201-count" Value="1";
-DF p463 d201
-Start p464 "464-if (count == 1) {    sum.types <<- var.types[i]    sum.names" Value="if (count == 1) {    sum.types <<- var.types[i]    sum.names" Time="10.61" Script="0" Pos="NA,NA,NA,NA";
-CF p463 p464
-DF d183 p464
-DF d196 p464
-DF d197 p464
-Start p465 "465-if" Value="if" Time="10.71" Script="NA" Pos="NA";
-CF p464 p465
-Operation p466 "466-sum.types <<- var.types[i]" Value="sum.types <<- var.types[i]" Time="10.71" Script="0" Pos="NA,NA,NA,NA";
-CF p465 p466
-DF d183 p466
-DF d199 p466
-Data d202 "202-sum.types" Value="\"Date\"";
-DF p466 d202
-Operation p467 "467-sum.names <<- names(xx)[i]" Value="sum.names <<- names(xx)[i]" Time="10.72" Script="0" Pos="NA,NA,NA,NA";
-CF p466 p467
-DF d195 p467
-DF d199 p467
-Data d203 "203-sum.names" Value="\"date\"";
-DF p467 d203
-Finish p468 "468-if" Value="if" Time="10.75" Script="NA" Pos="NA";
-CF p467 p468
-Finish p469 "469-if (count == 1) {    sum.types <<- var.types[i]    sum.names" Value="if (count == 1) {    sum.types <<- var.types[i]    sum.names" Time="10.75" Script="0" Pos="NA,NA,NA,NA";
-CF p468 p469
-Finish p470 "470-if" Value="if" Time="10.75" Script="NA" Pos="NA";
-CF p469 p470
-Finish p471 "471-if (var.types[i] == \"Date\" | var.types[i] == \"numeric\" | var" Value="if (var.types[i] == \"Date\" | var.types[i] == \"numeric\" | var" Time="10.75" Script="0" Pos="NA,NA,NA,NA";
-CF p470 p471
-Finish p472 "472-for loop" Value="for loop" Time="10.75" Script="NA" Pos="NA";
-CF p471 p472
-Finish p473 "473-for (i in 1:length(xx)) {    if (var.types[i] == \"Date\" | va" Value="for (i in 1:length(xx)) {    if (var.types[i] == \"Date\" | va" Time="10.77" Script="0" Pos="NA,NA,NA,NA";
-CF p472 p473
-Start p474 "474-if (all(sum.names == \"\")) {    xx.sum <- NULL} else {    xx." Value="if (all(sum.names == \"\")) {    xx.sum <- NULL} else {    xx." Time="10.77" Script="0" Pos="NA,NA,NA,NA";
-CF p473 p474
-DF d203 p474
-Start p475 "475-if" Value="if" Time="10.85" Script="NA" Pos="NA";
-CF p474 p475
-Operation p476 "476-xx.sum <- subset(xx, select = sum.names)" Value="xx.sum <- subset(xx, select = sum.names)" Time="10.85" Script="0" Pos="NA,NA,NA,NA";
-CF p475 p476
-DF d195 p476
-DF d203 p476
-Snapshot d204 "204-xx.sum" Value="[DIR]/ddg/data/204-xx.sum-PARTIAL.csv" Time="2016-11-10T10.10.25EST";
-DF p476 d204
-Finish p477 "477-if" Value="if" Time="10.88" Script="NA" Pos="NA";
-CF p476 p477
-Finish p478 "478-if (all(sum.names == \"\")) {    xx.sum <- NULL} else {    xx." Value="if (all(sum.names == \"\")) {    xx.sum <- NULL} else {    xx." Time="10.88" Script="0" Pos="NA,NA,NA,NA";
-CF p477 p478
-Snapshot d205 "205-get.summary.stats.data.frame(xx) return" Value="[DIR]/ddg/data/205-get.summary.stats.data.frame(xx) return-PARTIAL.csv" Time="2016-11-10T10.10.25EST";
-Operation p479 "479-return(xx.sum)" Value="return(xx.sum)" Time="10.88" Script="0" Pos="NA,NA,NA,NA";
-CF p478 p479
-DF p479 d205
-DF d204 p479
-Finish p480 "480-get.summary.stats.data.frame(xx)" Value="get.summary.stats.data.frame(xx)" Time="10.89" Script="NA" Pos="NA";
-CF p479 p480
-Finish p481 "481-xx.sum <- get.summary.stats.data.frame(xx)" Value="xx.sum <- get.summary.stats.data.frame(xx)" Time="10.91" Script="0" Pos="NA,NA,NA,NA";
-CF p480 p481
-DF d205 p481
-Snapshot d206 "206-xx.sum" Value="[DIR]/ddg/data/206-xx.sum-PARTIAL.csv" Time="2016-11-10T10.10.25EST";
-DF p481 d206
-Operation p482 "482-xstr <- paste(\"Harvard Forest Data Archive \", toupper(datafi" Value="xstr <- paste(\"Harvard Forest Data Archive \", toupper(datafi" Time="10.96" Script="0" Pos="NA,NA,NA,NA";
-CF p481 p482
-DF d53 p482
-Data d207 "207-xstr" Value="\"Harvard Forest Data Archive HF000-01  \"";
-DF p482 d207
-Operation p483 "483-xstr <- paste(xstr, \"Data File = \", datafile.name, \"\n\nRows" Value="xstr <- paste(xstr, \"Data File = \", datafile.name, \"\n\nRows" Time="11" Script="0" Pos="NA,NA,NA,NA";
-CF p482 p483
-DF d207 p483
-Data d208 "208-datafile.name [ENV]" Value="\"hf000-01-daily-m.csv\"";
-DF d208 p483
-DF d194 p483
-Data d209 "209-xstr" Value="\"Harvard Forest Data Archive HF000-01  Data File = hf000-01-daily-m.csv  Rows = 14061  Columns = 9  \"";
-DF p483 d209
-Start p484 "484-if (is.null(xx.sum)) {    msg <- paste(datafile.id, \": no da" Value="if (is.null(xx.sum)) {    msg <- paste(datafile.id, \": no da" Time="11.05" Script="0" Pos="NA,NA,NA,NA";
-CF p483 p484
-DF d53 p484
-DF d200 p484
-DF d202 p484
-Start p485 "485-if" Value="if" Time="11.27" Script="NA" Pos="NA";
-CF p484 p485
-Operation p486 "486-xstr <- paste(xstr, \"Variable         Min         Median    " Value="xstr <- paste(xstr, \"Variable         Min         Median    " Time="11.27" Script="0" Pos="NA,NA,NA,NA";
-CF p485 p486
-DF d209 p486
-Snapshot d210 "210-xstr" Value="[DIR]/ddg/data/210-xstr.txt" Time="2016-11-10T10.10.25EST";
-DF p486 d210
-Operation p487 "487-xstr <- paste(xstr, \"---------------------------------------" Value="xstr <- paste(xstr, \"---------------------------------------" Time="11.3" Script="0" Pos="NA,NA,NA,NA";
-CF p486 p487
-DF d210 p487
-Snapshot d211 "211-xstr" Value="[DIR]/ddg/data/211-xstr.txt" Time="2016-11-10T10.10.25EST";
-DF p487 d211
-Start p488 "488-for (i in 1:length(xx.sum)) {    xstr <- paste(xstr, substr(" Value="for (i in 1:length(xx.sum)) {    xstr <- paste(xstr, substr(" Time="11.32" Script="0" Pos="NA,NA,NA,NA";
-CF p487 p488
-Start p489 "489-for loop" Value="for loop" Time="11.32" Script="NA" Pos="NA";
-CF p488 p489
-Operation p490 "490-i <- 1" Value="i <- 1" Time="11.32" Script="NA" Pos="NA";
-CF p489 p490
-Data d212 "212-i" Value="1";
-DF p490 d212
-Operation p491 "491-xstr <- paste(xstr, substr(paste(names(xx.sum[i]), \"        " Value="xstr <- paste(xstr, substr(paste(names(xx.sum[i]), \"        " Time="11.33" Script="0" Pos="NA,NA,NA,NA";
-CF p490 p491
-DF d211 p491
-DF d206 p491
-DF d212 p491
-Snapshot d213 "213-xstr" Value="[DIR]/ddg/data/213-xstr.txt" Time="2016-11-10T10.10.25EST";
-DF p491 d213
-Start p492 "492-if (all(is.na(xx.sum[, i]))) {    xnas <- sum(is.na(xx.sum[," Value="if (all(is.na(xx.sum[, i]))) {    xnas <- sum(is.na(xx.sum[," Time="11.41" Script="0" Pos="NA,NA,NA,NA";
-CF p491 p492
-DF d200 p492
-DF d202 p492
-Start p493 "493-if" Value="if" Time="11.57" Script="NA" Pos="NA";
-CF p492 p493
-Operation p494 "494-xmin <- min(xx.sum[, i], na.rm = TRUE)" Value="xmin <- min(xx.sum[, i], na.rm = TRUE)" Time="11.57" Script="0" Pos="NA,NA,NA,NA";
-CF p493 p494
-DF d206 p494
-DF d212 p494
-Snapshot d214 "214-xmin" Value="[DIR]/ddg/data/214-xmin.txt" Time="2016-11-10T10.10.25EST";
-DF p494 d214
-Operation p495 "495-xmedian <- median(xx.sum[, i], na.rm = TRUE)" Value="xmedian <- median(xx.sum[, i], na.rm = TRUE)" Time="11.61" Script="0" Pos="NA,NA,NA,NA";
-CF p494 p495
-DF d206 p495
-DF d212 p495
-Snapshot d215 "215-xmedian" Value="[DIR]/ddg/data/215-xmedian.txt" Time="2016-11-10T10.10.25EST";
-DF p495 d215
-Operation p496 "496-xmean <- mean(xx.sum[, i], na.rm = TRUE)" Value="xmean <- mean(xx.sum[, i], na.rm = TRUE)" Time="11.68" Script="0" Pos="NA,NA,NA,NA";
-CF p495 p496
-DF d206 p496
-DF d212 p496
-Snapshot d216 "216-xmean" Value="[DIR]/ddg/data/216-xmean.txt" Time="2016-11-10T10.10.25EST";
-DF p496 d216
-Operation p497 "497-xmax <- max(xx.sum[, i], na.rm = TRUE)" Value="xmax <- max(xx.sum[, i], na.rm = TRUE)" Time="11.71" Script="0" Pos="NA,NA,NA,NA";
-CF p496 p497
-DF d206 p497
-DF d212 p497
-Snapshot d217 "217-xmax" Value="[DIR]/ddg/data/217-xmax.txt" Time="2016-11-10T10.10.25EST";
-DF p497 d217
-Operation p498 "498-xnas <- sum(is.na(xx.sum[, i]))" Value="xnas <- sum(is.na(xx.sum[, i]))" Time="11.72" Script="0" Pos="NA,NA,NA,NA";
-CF p497 p498
-DF d206 p498
-DF d212 p498
-Data d218 "218-xnas" Value="0";
-DF p498 d218
-Start p499 "499-if (sum.types[i] == \"Date\") {    xstr <- paste(xstr, \"  \", x" Value="if (sum.types[i] == \"Date\") {    xstr <- paste(xstr, \"  \", x" Time="11.76" Script="0" Pos="NA,NA,NA,NA";
-CF p498 p499
-DF d202 p499
-Start p500 "500-if" Value="if" Time="11.83" Script="NA" Pos="NA";
-CF p499 p500
-Operation p501 "501-xstr <- paste(xstr, \"  \", xmin, \"  \", xmedian, \"  \", xmean, " Value="xstr <- paste(xstr, \"  \", xmin, \"  \", xmedian, \"  \", xmean, " Time="11.83" Script="0" Pos="NA,NA,NA,NA";
-CF p500 p501
-DF d213 p501
-DF d214 p501
-DF d215 p501
-DF d216 p501
-DF d217 p501
-DF d218 p501
-Snapshot d219 "219-xstr" Value="[DIR]/ddg/data/219-xstr.txt" Time="2016-11-10T10.10.26EST";
-DF p501 d219
-Finish p502 "502-if" Value="if" Time="11.9" Script="NA" Pos="NA";
-CF p501 p502
-Finish p503 "503-if (sum.types[i] == \"Date\") {    xstr <- paste(xstr, \"  \", x" Value="if (sum.types[i] == \"Date\") {    xstr <- paste(xstr, \"  \", x" Time="11.9" Script="0" Pos="NA,NA,NA,NA";
-CF p502 p503
-Finish p504 "504-if" Value="if" Time="11.9" Script="NA" Pos="NA";
-CF p503 p504
-Finish p505 "505-if (all(is.na(xx.sum[, i]))) {    xnas <- sum(is.na(xx.sum[," Value="if (all(is.na(xx.sum[, i]))) {    xnas <- sum(is.na(xx.sum[," Time="11.91" Script="0" Pos="NA,NA,NA,NA";
-CF p504 p505
-Finish p506 "506-for loop" Value="for loop" Time="11.91" Script="NA" Pos="NA";
-CF p505 p506
-Finish p507 "507-for (i in 1:length(xx.sum)) {    xstr <- paste(xstr, substr(" Value="for (i in 1:length(xx.sum)) {    xstr <- paste(xstr, substr(" Time="11.96" Script="0" Pos="NA,NA,NA,NA";
-CF p506 p507
-Finish p508 "508-if" Value="if" Time="11.96" Script="NA" Pos="NA";
-CF p507 p508
-Finish p509 "509-if (is.null(xx.sum)) {    msg <- paste(datafile.id, \": no da" Value="if (is.null(xx.sum)) {    msg <- paste(datafile.id, \": no da" Time="11.97" Script="0" Pos="NA,NA,NA,NA";
-CF p508 p509
-Data d220 "220-create.summary.stats.table(dd) return" Value="0.916232803403836";
-Operation p510 "510-textplot(capture.output(writeLines(xstr)))" Value="textplot(capture.output(writeLines(xstr)))" Time="12.16" Script="0" Pos="NA,NA,NA,NA";
-CF p509 p510
-DF p510 d220
-DF d219 p510
-Finish p511 "511-create.summary.stats.table(dd)" Value="create.summary.stats.table(dd)" Time="12.19" Script="NA" Pos="NA";
-CF p510 p511
-Start p512 "512-get.plot.type(datafile.id)" Value="get.plot.type(datafile.id)" Time="12.21" Script="NA" Pos="NA";
-CF p511 p512
-Binding p513 "513-datafile.id  <-  datafile.id" Time="12.21" Script="NA" Pos="NA";
-CF p512 p513
-DF d54 p513
-Data d221 "221-datafile.id" Value="\"hf000-01\"";
-DF p513 d221
-Operation p514 "514-get.plot.type" Value="get.plot.type" Time="12.22" Script="NA" Pos="NA";
-DF d23 p514
-DF d221 p514
-CF p513 p514
-Operation p515 "515-num <- as.integer(substr(datafile.id, 7, 8))" Value="num <- as.integer(substr(datafile.id, 7, 8))" Time="12.24" Script="0" Pos="NA,NA,NA,NA";
-CF p514 p515
-DF d221 p515
-Data d222 "222-num" Value="1";
-DF p515 d222
-Start p516 "516-if (num %in% time.series.ids) {    plot.type <- \"time-series" Value="if (num %in% time.series.ids) {    plot.type <- \"time-series" Time="12.27" Script="0" Pos="NA,NA,NA,NA";
-CF p515 p516
-DF d43 p516
-Start p517 "517-if" Value="if" Time="12.35" Script="NA" Pos="NA";
-CF p516 p517
-Operation p518 "518-plot.type <- \"time-series\"" Value="plot.type <- \"time-series\"" Time="12.35" Script="0" Pos="NA,NA,NA,NA";
-CF p517 p518
-Data d223 "223-plot.type" Value="\"time-series\"";
-DF p518 d223
-Finish p519 "519-if" Value="if" Time="12.36" Script="NA" Pos="NA";
-CF p518 p519
-Finish p520 "520-if (num %in% time.series.ids) {    plot.type <- \"time-series" Value="if (num %in% time.series.ids) {    plot.type <- \"time-series" Time="12.36" Script="0" Pos="NA,NA,NA,NA";
-CF p519 p520
-Data d224 "224-get.plot.type(datafile.id) return" Value="\"time-series\"";
-Operation p521 "521-return(plot.type)" Value="return(plot.type)" Time="12.38" Script="0" Pos="NA,NA,NA,NA";
-CF p520 p521
-DF p521 d224
-DF d223 p521
-Finish p522 "522-get.plot.type(datafile.id)" Value="get.plot.type(datafile.id)" Time="12.39" Script="NA" Pos="NA";
-CF p521 p522
-Start p523 "523-create.time.series.plot(dd)" Value="create.time.series.plot(dd)" Time="12.39" Script="NA" Pos="NA";
-CF p522 p523
-Binding p524 "524-xx  <-  dd" Time="12.39" Script="NA" Pos="NA";
-CF p523 p524
-DF d193 p524
-Snapshot d225 "225-xx" Value="[DIR]/ddg/data/225-xx-PARTIAL.csv" Time="2016-11-10T10.10.26EST";
-DF p524 d225
-Operation p525 "525-create.time.series.plot" Value="create.time.series.plot" Time="12.41" Script="NA" Pos="NA";
-DF d21 p525
-DF d225 p525
-CF p524 p525
-Start p526 "526-xx.plt <- get.plot.dataframe(xx, max.rows = 10000)" Value="xx.plt <- get.plot.dataframe(xx, max.rows = 10000)" Time="12.44" Script="0" Pos="NA,NA,NA,NA";
-CF p525 p526
-DF d19 p526
-DF d225 p526
-Start p527 "527-get.plot.dataframe(xx, max.rows = 10000)" Value="get.plot.dataframe(xx, max.rows = 10000)" Time="12.46" Script="NA" Pos="NA";
-CF p526 p527
-Binding p528 "528-xx  <-  xx" Time="12.46" Script="NA" Pos="NA";
-CF p527 p528
-DF d225 p528
-Snapshot d226 "226-xx" Value="[DIR]/ddg/data/226-xx-PARTIAL.csv" Time="2016-11-10T10.10.26EST";
-DF p528 d226
-Binding p529 "529-max.rows  <-  10000" Time="12.52" Script="NA" Pos="NA";
-CF p528 p529
-Data d227 "227-max.rows" Value="10000";
-DF p529 d227
-Operation p530 "530-get.plot.dataframe" Value="get.plot.dataframe" Time="12.54" Script="NA" Pos="NA";
-DF d19 p530
-DF d226 p530
-DF d227 p530
-CF p529 p530
-Operation p531 "531-plt.types <<- \"\"" Value="plt.types <<- \"\"" Time="12.57" Script="0" Pos="NA,NA,NA,NA";
-CF p530 p531
-Data d228 "228-plt.types" Value="NotRecorded";
-DF p531 d228
-Operation p532 "532-plt.names <<- \"\"" Value="plt.names <<- \"\"" Time="12.57" Script="0" Pos="NA,NA,NA,NA";
-CF p531 p532
-Data d229 "229-plt.names" Value="NotRecorded";
-DF p532 d229
-Operation p533 "533-count <- 0" Value="count <- 0" Time="12.58" Script="0" Pos="NA,NA,NA,NA";
-CF p532 p533
-Data d230 "230-count" Value="0";
-DF p533 d230
-Start p534 "534-for (i in 1:length(xx)) {    if (var.types[i] == \"numeric\" |" Value="for (i in 1:length(xx)) {    if (var.types[i] == \"numeric\" |" Time="12.6" Script="0" Pos="NA,NA,NA,NA";
-CF p533 p534
-Start p535 "535-for loop" Value="for loop" Time="12.6" Script="NA" Pos="NA";
-CF p534 p535
-Operation p536 "536-i <- 1" Value="i <- 1" Time="12.6" Script="NA" Pos="NA";
-CF p535 p536
-Data d231 "231-i" Value="1";
-DF p536 d231
-Start p537 "537-if (var.types[i] == \"numeric\" | var.types[i] == \"Date\") {   " Value="if (var.types[i] == \"numeric\" | var.types[i] == \"Date\") {   " Time="12.6" Script="0" Pos="NA,NA,NA,NA";
-CF p536 p537
-DF d183 p537
-DF d228 p537
-DF d229 p537
-Start p538 "538-if" Value="if" Time="12.69" Script="NA" Pos="NA";
-CF p537 p538
-Operation p539 "539-count <- count + 1" Value="count <- count + 1" Time="12.69" Script="0" Pos="NA,NA,NA,NA";
-CF p538 p539
-DF d230 p539
-Data d232 "232-count" Value="1";
-DF p539 d232
-Start p540 "540-if (count == 1) {    plt.types <<- var.types[i]    plt.names" Value="if (count == 1) {    plt.types <<- var.types[i]    plt.names" Time="12.75" Script="0" Pos="NA,NA,NA,NA";
-CF p539 p540
-DF d183 p540
-DF d228 p540
-DF d229 p540
-Start p541 "541-if" Value="if" Time="12.82" Script="NA" Pos="NA";
-CF p540 p541
-Operation p542 "542-plt.types <<- var.types[i]" Value="plt.types <<- var.types[i]" Time="12.83" Script="0" Pos="NA,NA,NA,NA";
-CF p541 p542
-DF d183 p542
-DF d231 p542
-Data d233 "233-plt.types" Value="\"Date\"";
-DF p542 d233
-Operation p543 "543-plt.names <<- names(xx)[i]" Value="plt.names <<- names(xx)[i]" Time="12.85" Script="0" Pos="NA,NA,NA,NA";
-CF p542 p543
-DF d226 p543
-DF d231 p543
-Data d234 "234-plt.names" Value="\"date\"";
-DF p543 d234
-Finish p544 "544-if" Value="if" Time="12.88" Script="NA" Pos="NA";
-CF p543 p544
-Finish p545 "545-if (count == 1) {    plt.types <<- var.types[i]    plt.names" Value="if (count == 1) {    plt.types <<- var.types[i]    plt.names" Time="12.88" Script="0" Pos="NA,NA,NA,NA";
-CF p544 p545
-Finish p546 "546-if" Value="if" Time="12.88" Script="NA" Pos="NA";
-CF p545 p546
-Finish p547 "547-if (var.types[i] == \"numeric\" | var.types[i] == \"Date\") {   " Value="if (var.types[i] == \"numeric\" | var.types[i] == \"Date\") {   " Time="12.88" Script="0" Pos="NA,NA,NA,NA";
-CF p546 p547
-Finish p548 "548-for loop" Value="for loop" Time="12.88" Script="NA" Pos="NA";
-CF p547 p548
-Finish p549 "549-for (i in 1:length(xx)) {    if (var.types[i] == \"numeric\" |" Value="for (i in 1:length(xx)) {    if (var.types[i] == \"numeric\" |" Time="12.89" Script="0" Pos="NA,NA,NA,NA";
-CF p548 p549
-Start p550 "550-if (all(plt.names == \"\")) {    xx.plt <- NULL} else {    xx." Value="if (all(plt.names == \"\")) {    xx.plt <- NULL} else {    xx." Time="12.89" Script="0" Pos="NA,NA,NA,NA";
-CF p549 p550
-DF d234 p550
-Start p551 "551-if" Value="if" Time="13.07" Script="NA" Pos="NA";
-CF p550 p551
-Operation p552 "552-xx.plt <- subset(xx, select = plt.names)" Value="xx.plt <- subset(xx, select = plt.names)" Time="13.07" Script="0" Pos="NA,NA,NA,NA";
-CF p551 p552
-DF d226 p552
-DF d234 p552
-Snapshot d235 "235-xx.plt" Value="[DIR]/ddg/data/235-xx.plt-PARTIAL.csv" Time="2016-11-10T10.10.27EST";
-DF p552 d235
-Operation p553 "553-plt.rows <- nrow(xx.plt)" Value="plt.rows <- nrow(xx.plt)" Time="13.1" Script="0" Pos="NA,NA,NA,NA";
-CF p552 p553
-DF d235 p553
-Data d236 "236-plt.rows" Value="14061";
-DF p553 d236
-Start p554 "554-if (plt.rows > max.rows) {    skip <- round(plt.rows/max.row" Value="if (plt.rows > max.rows) {    skip <- round(plt.rows/max.row" Time="13.11" Script="0" Pos="NA,NA,NA,NA";
-CF p553 p554
-Start p555 "555-if" Value="if" Time="13.16" Script="NA" Pos="NA";
-CF p554 p555
-Operation p556 "556-skip <- round(plt.rows/max.rows)" Value="skip <- round(plt.rows/max.rows)" Time="13.17" Script="0" Pos="NA,NA,NA,NA";
-CF p555 p556
-DF d236 p556
-DF d227 p556
-Data d237 "237-skip" Value="1";
-DF p556 d237
-Operation p557 "557-index <- seq(from = 1, to = plt.rows, by = skip)" Value="index <- seq(from = 1, to = plt.rows, by = skip)" Time="13.21" Script="0" Pos="NA,NA,NA,NA";
-CF p556 p557
-DF d236 p557
-DF d237 p557
-Snapshot d238 "238-index" Value="[DIR]/ddg/data/238-index.csv" Time="2016-11-10T10.10.27EST";
-DF p557 d238
-Operation p558 "558-xx.plt <- xx.plt[index, , drop = FALSE]" Value="xx.plt <- xx.plt[index, , drop = FALSE]" Time="13.27" Script="0" Pos="NA,NA,NA,NA";
-CF p557 p558
-DF d235 p558
-DF d238 p558
-Snapshot d239 "239-xx.plt" Value="[DIR]/ddg/data/239-xx.plt-PARTIAL.csv" Time="2016-11-10T10.10.27EST";
-DF p558 d239
-Finish p559 "559-if" Value="if" Time="13.3" Script="NA" Pos="NA";
-CF p558 p559
-Finish p560 "560-if (plt.rows > max.rows) {    skip <- round(plt.rows/max.row" Value="if (plt.rows > max.rows) {    skip <- round(plt.rows/max.row" Time="13.33" Script="0" Pos="NA,NA,NA,NA";
-CF p559 p560
-Operation p561 "561-keep <- 0" Value="keep <- 0" Time="13.35" Script="0" Pos="NA,NA,NA,NA";
-CF p560 p561
-Data d240 "240-keep" Value="0";
-DF p561 d240
-Operation p562 "562-count <- 0" Value="count <- 0" Time="13.35" Script="0" Pos="NA,NA,NA,NA";
-CF p561 p562
-Data d241 "241-count" Value="0";
-DF p562 d241
-Start p563 "563-if (is.vector(xx.plt)) {    if (all(is.na(xx.plt))) {       " Value="if (is.vector(xx.plt)) {    if (all(is.na(xx.plt))) {       " Time="13.36" Script="0" Pos="NA,NA,NA,NA";
-CF p562 p563
-Start p564 "564-if" Value="if" Time="13.44" Script="NA" Pos="NA";
-CF p563 p564
-Start p565 "565-for (i in 1:length(xx.plt)) {    if (!all(is.na(xx.plt[, i])" Value="for (i in 1:length(xx.plt)) {    if (!all(is.na(xx.plt[, i])" Time="13.44" Script="0" Pos="NA,NA,NA,NA";
-CF p564 p565
-Start p566 "566-for loop" Value="for loop" Time="13.44" Script="NA" Pos="NA";
-CF p565 p566
-Operation p567 "567-i <- 1" Value="i <- 1" Time="13.44" Script="NA" Pos="NA";
-CF p566 p567
-Data d242 "242-i" Value="1";
-DF p567 d242
-Start p568 "568-if (!all(is.na(xx.plt[, i]))) {    count <- count + 1    if " Value="if (!all(is.na(xx.plt[, i]))) {    count <- count + 1    if " Time="13.46" Script="0" Pos="NA,NA,NA,NA";
-CF p567 p568
-Start p569 "569-if" Value="if" Time="13.52" Script="NA" Pos="NA";
-CF p568 p569
-Operation p570 "570-count <- count + 1" Value="count <- count + 1" Time="13.52" Script="0" Pos="NA,NA,NA,NA";
-CF p569 p570
-DF d241 p570
-Data d243 "243-count" Value="1";
-DF p570 d243
-Start p571 "571-if (count == 1) {    keep <- i} else {    keep <- append(kee" Value="if (count == 1) {    keep <- i} else {    keep <- append(kee" Time="13.56" Script="0" Pos="NA,NA,NA,NA";
-CF p570 p571
-Start p572 "572-if" Value="if" Time="13.61" Script="NA" Pos="NA";
-CF p571 p572
-Operation p573 "573-keep <- i" Value="keep <- i" Time="13.61" Script="0" Pos="NA,NA,NA,NA";
-CF p572 p573
-DF d242 p573
-Data d244 "244-keep" Value="1";
-DF p573 d244
-Finish p574 "574-if" Value="if" Time="13.63" Script="NA" Pos="NA";
-CF p573 p574
-Finish p575 "575-if (count == 1) {    keep <- i} else {    keep <- append(kee" Value="if (count == 1) {    keep <- i} else {    keep <- append(kee" Time="13.63" Script="0" Pos="NA,NA,NA,NA";
-CF p574 p575
-Finish p576 "576-if" Value="if" Time="13.64" Script="NA" Pos="NA";
-CF p575 p576
-Finish p577 "577-if (!all(is.na(xx.plt[, i]))) {    count <- count + 1    if " Value="if (!all(is.na(xx.plt[, i]))) {    count <- count + 1    if " Time="13.64" Script="0" Pos="NA,NA,NA,NA";
-CF p576 p577
-Finish p578 "578-for loop" Value="for loop" Time="13.64" Script="NA" Pos="NA";
-CF p577 p578
-Finish p579 "579-for (i in 1:length(xx.plt)) {    if (!all(is.na(xx.plt[, i])" Value="for (i in 1:length(xx.plt)) {    if (!all(is.na(xx.plt[, i])" Time="13.64" Script="0" Pos="NA,NA,NA,NA";
-CF p578 p579
-Start p580 "580-if (length(keep) == 1) {    if (keep == 0) {        xx.plt <" Value="if (length(keep) == 1) {    if (keep == 0) {        xx.plt <" Time="13.66" Script="0" Pos="NA,NA,NA,NA";
-CF p579 p580
-Start p581 "581-if" Value="if" Time="13.69" Script="NA" Pos="NA";
-CF p580 p581
-Operation p582 "582-xx.plt <- xx.plt[, keep]" Value="xx.plt <- xx.plt[, keep]" Time="13.69" Script="0" Pos="NA,NA,NA,NA";
-CF p581 p582
-DF d239 p582
-DF d244 p582
-Snapshot d245 "245-xx.plt" Value="[DIR]/ddg/data/245-xx.plt-PARTIAL.csv" Time="2016-11-10T10.10.27EST";
-DF p582 d245
-Finish p583 "583-if" Value="if" Time="13.77" Script="NA" Pos="NA";
-CF p582 p583
-Finish p584 "584-if (length(keep) == 1) {    if (keep == 0) {        xx.plt <" Value="if (length(keep) == 1) {    if (keep == 0) {        xx.plt <" Time="13.77" Script="0" Pos="NA,NA,NA,NA";
-CF p583 p584
-Finish p585 "585-if" Value="if" Time="13.77" Script="NA" Pos="NA";
-CF p584 p585
-Finish p586 "586-if (is.vector(xx.plt)) {    if (all(is.na(xx.plt))) {       " Value="if (is.vector(xx.plt)) {    if (all(is.na(xx.plt))) {       " Time="13.77" Script="0" Pos="NA,NA,NA,NA";
-CF p585 p586
-Finish p587 "587-if" Value="if" Time="13.78" Script="NA" Pos="NA";
-CF p586 p587
-Finish p588 "588-if (all(plt.names == \"\")) {    xx.plt <- NULL} else {    xx." Value="if (all(plt.names == \"\")) {    xx.plt <- NULL} else {    xx." Time="13.78" Script="0" Pos="NA,NA,NA,NA";
-CF p587 p588
-Snapshot d246 "246-get.plot.dataframe(xx,max.rows=10000) return" Value="[DIR]/ddg/data/246-get.plot.dataframe(xx,max.rows=10000) return-PARTIAL.csv" Time="2016-11-10T10.10.28EST";
-Operation p589 "589-return(xx.plt)" Value="return(xx.plt)" Time="13.8" Script="0" Pos="NA,NA,NA,NA";
-CF p588 p589
-DF p589 d246
-DF d245 p589
-Finish p590 "590-get.plot.dataframe(xx, max.rows = 10000)" Value="get.plot.dataframe(xx, max.rows = 10000)" Time="13.81" Script="NA" Pos="NA";
-CF p589 p590
-Finish p591 "591-xx.plt <- get.plot.dataframe(xx, max.rows = 10000)" Value="xx.plt <- get.plot.dataframe(xx, max.rows = 10000)" Time="13.81" Script="0" Pos="NA,NA,NA,NA";
-CF p590 p591
-DF d246 p591
-Snapshot d247 "247-xx.plt" Value="[DIR]/ddg/data/247-xx.plt-PARTIAL.csv" Time="2016-11-10T10.10.28EST";
-DF p591 d247
-Data d248 "248-create.time.series.plot(dd) return" Value="NULL";
-Operation p592 "592-if (is.null(xx.plt)) {    msg <- paste(datafile.id, \": no va" Value="if (is.null(xx.plt)) {    msg <- paste(datafile.id, \": no va" Time="14.05" Script="0" Pos="NA,NA,NA,NA";
-CF p591 p592
-DF p592 d248
-DF d247 p592
-DF d53 p592
-Finish p593 "593-create.time.series.plot(dd)" Value="create.time.series.plot(dd)" Time="14.25" Script="NA" Pos="NA";
-CF p592 p593
-Data d249 "249-create.datafile.preview(datafile.id) return" Value="NULL";
-Operation p594 "594-if (is.null(dd)) {    msg <- paste(datafile.id, \": unable to" Value="if (is.null(dd)) {    msg <- paste(datafile.id, \": unable to" Time="14.27" Script="0" Pos="NA,NA,NA,NA";
-CF p593 p594
-DF p594 d249
-DF d193 p594
-DF d54 p594
-DF d20 p594
-DF d23 p594
-Data d250 "250-plot.type [ENV]" Value="\"time-series\"";
-DF d250 p594
-DF d21 p594
-DF d22 p594
-File d251 "251-hf000-01.pdf" Value="[DIR]/ddg/data/251-hf000-01.pdf" Time="2016-11-10T10.10.28EST" Location="[DIR]/hf000-01.pdf";
-DF p594 d251
-Finish p595 "595-create.datafile.preview(datafile.id)" Value="create.datafile.preview(datafile.id)" Time="14.44" Script="NA" Pos="NA";
-CF p594 p595
-Operation p596 "596-create.datafile.preview(datafile.id)" Value="create.datafile.preview(datafile.id)" Time="14.44" Script="0" Pos="NA,NA,NA,NA";
-CF p595 p596
-DF d24 p596
-DF d53 p596
-DF d249 p596
-Finish p597 "597-if" Value="if" Time="14.47" Script="NA" Pos="NA";
-CF p596 p597
-Finish p598 "598-if (is.null(datafile.id)) {    msg <- paste(dataset.id, \" : " Value="if (is.null(datafile.id)) {    msg <- paste(dataset.id, \" : " Time="14.47" Script="0" Pos="NA,NA,NA,NA";
-CF p597 p598
-Finish p599 "599-if" Value="if" Time="14.47" Script="NA" Pos="NA";
-CF p598 p599
-Finish p600 "600-if (datafile.num != 0) {    datafile.id <- get.datafile.id(d" Value="if (datafile.num != 0) {    datafile.id <- get.datafile.id(d" Time="14.52" Script="0" Pos="NA,NA,NA,NA";
-CF p599 p600
-Finish p601 "601-HFDatasetPreview.R" Value="HFDatasetPreview.R" Time="14.52" Script="NA" Pos="NA";
-CF p600 p601
 

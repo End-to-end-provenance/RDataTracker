@@ -1,199 +1,199 @@
 Architecture="x86_64"
 OperatingSystem="windows"
 Language="R"
-LanguageVersion="R version 3.2.5 (2016-04-14)"
+LanguageVersion="R version 3.3.2 (2016-10-31)"
 RDataTrackerVersion="2.24.1"
 Script="[DIR]/ddg/scripts/RMarkdownTest.R"
 SourcedScripts=""
-ProcessFileTimestamp="2016-11-10T10.09.39EST"
+ProcessFileTimestamp="2016-12-14T12.43.06EST"
 WorkingDirectory="[DIR]"
 DDGDirectory="[DIR]/ddg"
-DateTime="2016-11-10T10.09.39EST"
-InstalledPackages="dplyr 0.5.0, Ecdat 0.2-9, Ecfun 0.1-7, ggplot2 2.1.0, lattice 0.20-33, Matrix 1.2-5, mosaic 0.14, mosaicData 0.14.0, RDataTracker 2.24.1"
+DateTime="2016-12-14T12.43.06EST"
+InstalledPackages="dplyr 0.5.0, Ecdat 0.2-9, Ecfun 0.1-7, ggplot2 2.2.0, lattice 0.20-34, Matrix 1.2-7.1, mosaic 0.14.4, mosaicData 0.14.0, RDataTracker 2.24.1"
 59
-Start p1 "1-RMarkdownTest.R" Value="RMarkdownTest.R" Time="0.23" Script="NA" Pos="NA";
-Start p2 "2-setup" Value="setup" Time="0.23" Script="NA" Pos="NA";
+Start p1 "1-RMarkdownTest.R" Value="RMarkdownTest.R" Time="0.29" Script="NA" Pos="NA";
+Start p2 "2-setup" Value="setup" Time="0.29" Script="NA" Pos="NA";
 CF p1 p2
-Operation p3 "3-library(Ecdat)" Value="library(Ecdat)" Time="1.39" Script="0" Pos="13,1,13,14";
+Operation p3 "3-library(Ecdat)" Value="library(Ecdat)" Time="1.31" Script="0" Pos="13,1,13,14";
 CF p2 p3
-Operation p4 "4-library(mosaic)" Value="library(mosaic)" Time="2.23" Script="0" Pos="13,15,13,15";
+Operation p4 "4-library(mosaic)" Value="library(mosaic)" Time="1.93" Script="0" Pos="13,15,13,15";
 CF p3 p4
-Operation p5 "5-x <- DoctorAUS" Value="x <- DoctorAUS" Time="2.23" Script="0" Pos="14,1,14,15";
+Operation p5 "5-x <- DoctorAUS" Value="x <- DoctorAUS" Time="1.94" Script="0" Pos="14,1,14,15";
 CF p4 p5
-Snapshot d1 "1-x" Value="[DIR]/ddg/data/1-x-PARTIAL.csv" Time="2016-11-10T10.09.42EST";
+Snapshot d1 "1-x" Value="[DIR]/ddg/data/1-x-PARTIAL.csv" Time="2016-12-14T12.43.08EST";
 DF p5 d1
-Finish p6 "6-setup" Value="setup" Time="2.25" Script="NA" Pos="NA";
+Finish p6 "6-setup" Value="setup" Time="1.94" Script="NA" Pos="NA";
 CF p5 p6
-Start p7 "7-test1" Value="test1" Time="2.25" Script="NA" Pos="NA";
+Start p7 "7-test1" Value="test1" Time="1.94" Script="NA" Pos="NA";
 CF p6 p7
-Operation p8 "8-x$sex2 <- \"Male\"" Value="x$sex2 <- \"Male\"" Time="2.25" Script="0" Pos="24,1,24,18";
+Operation p8 "8-x$sex2 <- \"Male\"" Value="x$sex2 <- \"Male\"" Time="1.94" Script="0" Pos="24,1,24,18";
 CF p7 p8
 DF d1 p8
-Snapshot d2 "2-x" Value="[DIR]/ddg/data/2-x-PARTIAL.csv" Time="2016-11-10T10.09.42EST";
+Snapshot d2 "2-x" Value="[DIR]/ddg/data/2-x-PARTIAL.csv" Time="2016-12-14T12.43.08EST";
 DF p8 d2
-Operation p9 "9-x$sex2[x$sex == \"1\"] <- \"Female\"" Value="x$sex2[x$sex == \"1\"] <- \"Female\"" Time="2.37" Script="0" Pos="25,1,25,16";
+Operation p9 "9-x$sex2[x$sex == \"1\"] <- \"Female\"" Value="x$sex2[x$sex == \"1\"] <- \"Female\"" Time="1.97" Script="0" Pos="25,1,25,16";
 CF p8 p9
 DF d2 p9
-Snapshot d3 "3-x" Value="[DIR]/ddg/data/3-x-PARTIAL.csv" Time="2016-11-10T10.09.42EST";
+Snapshot d3 "3-x" Value="[DIR]/ddg/data/3-x-PARTIAL.csv" Time="2016-12-14T12.43.08EST";
 DF p9 d3
-Operation p10 "10-x$Age <- (x$age) * 100" Value="x$Age <- (x$age) * 100" Time="2.39" Script="0" Pos="26,1,26,32";
+Operation p10 "10-x$Age <- (x$age) * 100" Value="x$Age <- (x$age) * 100" Time="2.08" Script="0" Pos="26,1,26,32";
 CF p9 p10
 DF d3 p10
-Snapshot d4 "4-x" Value="[DIR]/ddg/data/4-x-PARTIAL.csv" Time="2016-11-10T10.09.42EST";
+Snapshot d4 "4-x" Value="[DIR]/ddg/data/4-x-PARTIAL.csv" Time="2016-12-14T12.43.08EST";
 DF p10 d4
-Operation p11 "11-x$Income <- (x$income) * 10000" Value="x$Income <- (x$income) * 10000" Time="2.4" Script="0" Pos="27,1,27,20";
+Operation p11 "11-x$Income <- (x$income) * 10000" Value="x$Income <- (x$income) * 10000" Time="2.11" Script="0" Pos="27,1,27,20";
 CF p10 p11
 DF d4 p11
-Snapshot d5 "5-x" Value="[DIR]/ddg/data/5-x-PARTIAL.csv" Time="2016-11-10T10.09.42EST";
+Snapshot d5 "5-x" Value="[DIR]/ddg/data/5-x-PARTIAL.csv" Time="2016-12-14T12.43.08EST";
 DF p11 d5
-Finish p12 "12-test1" Value="test1" Time="2.43" Script="NA" Pos="NA";
+Finish p12 "12-test1" Value="test1" Time="2.13" Script="NA" Pos="NA";
 CF p11 p12
-Start p13 "13-ddg.chunk_1" Value="ddg.chunk_1" Time="2.43" Script="NA" Pos="NA";
+Start p13 "13-ddg.chunk_1" Value="ddg.chunk_1" Time="2.13" Script="NA" Pos="NA";
 CF p12 p13
-Operation p14 "14-histogram(~Age, data = x)" Value="histogram(~Age, data = x)" Time="2.43" Script="0" Pos="NA,NA,NA,NA";
+Operation p14 "14-histogram(~Age, data = x)" Value="histogram(~Age, data = x)" Time="2.15" Script="0" Pos="NA,NA,NA,NA";
 CF p13 p14
 DF d5 p14
-Finish p15 "15-ddg.chunk_1" Value="ddg.chunk_1" Time="2.45" Script="NA" Pos="NA";
+Finish p15 "15-ddg.chunk_1" Value="ddg.chunk_1" Time="2.15" Script="NA" Pos="NA";
 CF p14 p15
-Start p16 "16-ddg.chunk_2" Value="ddg.chunk_2" Time="2.45" Script="NA" Pos="NA";
+Start p16 "16-ddg.chunk_2" Value="ddg.chunk_2" Time="2.16" Script="NA" Pos="NA";
 CF p15 p16
-Operation p17 "17-histogram(~illness, data = x)" Value="histogram(~illness, data = x)" Time="2.45" Script="0" Pos="NA,NA,NA,NA";
+Operation p17 "17-histogram(~illness, data = x)" Value="histogram(~illness, data = x)" Time="2.16" Script="0" Pos="NA,NA,NA,NA";
 CF p16 p17
 DF d5 p17
-Operation p18 "18-histogram(~doctorco, data = x)" Value="histogram(~doctorco, data = x)" Time="2.46" Script="0" Pos="NA,NA,NA,NA";
+Operation p18 "18-histogram(~doctorco, data = x)" Value="histogram(~doctorco, data = x)" Time="2.18" Script="0" Pos="NA,NA,NA,NA";
 CF p17 p18
 DF d5 p18
-Finish p19 "19-ddg.chunk_2" Value="ddg.chunk_2" Time="2.48" Script="NA" Pos="NA";
+Finish p19 "19-ddg.chunk_2" Value="ddg.chunk_2" Time="2.19" Script="NA" Pos="NA";
 CF p18 p19
-Start p20 "20-ddg.chunk_3" Value="ddg.chunk_3" Time="2.48" Script="NA" Pos="NA";
+Start p20 "20-ddg.chunk_3" Value="ddg.chunk_3" Time="2.19" Script="NA" Pos="NA";
 CF p19 p20
-Operation p21 "21-histogram(~doctorco, data = x)" Value="histogram(~doctorco, data = x)" Time="2.48" Script="0" Pos="NA,NA,NA,NA";
+Operation p21 "21-histogram(~doctorco, data = x)" Value="histogram(~doctorco, data = x)" Time="2.19" Script="0" Pos="NA,NA,NA,NA";
 CF p20 p21
 DF d5 p21
-Operation p22 "22-x$doctorcobin <- 1" Value="x$doctorcobin <- 1" Time="2.5" Script="0" Pos="NA,NA,NA,NA";
+Operation p22 "22-x$doctorcobin <- 1" Value="x$doctorcobin <- 1" Time="2.21" Script="0" Pos="NA,NA,NA,NA";
 CF p21 p22
 DF d5 p22
-Snapshot d6 "6-x" Value="[DIR]/ddg/data/6-x-PARTIAL.csv" Time="2016-11-10T10.09.43EST";
+Snapshot d6 "6-x" Value="[DIR]/ddg/data/6-x-PARTIAL.csv" Time="2016-12-14T12.43.08EST";
 DF p22 d6
-Operation p23 "23-x$doctorcobin[x$doctorco == \"0\"] <- 0" Value="x$doctorcobin[x$doctorco == \"0\"] <- 0" Time="2.51" Script="0" Pos="NA,NA,NA,NA";
+Operation p23 "23-x$doctorcobin[x$doctorco == \"0\"] <- 0" Value="x$doctorcobin[x$doctorco == \"0\"] <- 0" Time="2.22" Script="0" Pos="NA,NA,NA,NA";
 CF p22 p23
 DF d6 p23
-Snapshot d7 "7-x" Value="[DIR]/ddg/data/7-x-PARTIAL.csv" Time="2016-11-10T10.09.43EST";
+Snapshot d7 "7-x" Value="[DIR]/ddg/data/7-x-PARTIAL.csv" Time="2016-12-14T12.43.08EST";
 DF p23 d7
-Operation p24 "24-histogram(~doctorcobin, data = x)" Value="histogram(~doctorcobin, data = x)" Time="2.54" Script="0" Pos="NA,NA,NA,NA";
+Operation p24 "24-histogram(~doctorcobin, data = x)" Value="histogram(~doctorcobin, data = x)" Time="2.25" Script="0" Pos="NA,NA,NA,NA";
 CF p23 p24
 DF d7 p24
-Finish p25 "25-ddg.chunk_3" Value="ddg.chunk_3" Time="2.54" Script="NA" Pos="NA";
+Finish p25 "25-ddg.chunk_3" Value="ddg.chunk_3" Time="2.25" Script="NA" Pos="NA";
 CF p24 p25
-Start p26 "26-test2" Value="test2" Time="2.54" Script="NA" Pos="NA";
+Start p26 "26-test2" Value="test2" Time="2.27" Script="NA" Pos="NA";
 CF p25 p26
-Operation p27 "27-histogram(~doctorcobin, data = x)" Value="histogram(~doctorcobin, data = x)" Time="2.56" Script="0" Pos="NA,NA,NA,NA";
+Operation p27 "27-histogram(~doctorcobin, data = x)" Value="histogram(~doctorcobin, data = x)" Time="2.27" Script="0" Pos="NA,NA,NA,NA";
 CF p26 p27
 DF d7 p27
-Finish p28 "28-test2" Value="test2" Time="2.56" Script="NA" Pos="NA";
+Finish p28 "28-test2" Value="test2" Time="2.27" Script="NA" Pos="NA";
 CF p27 p28
-Start p29 "29-test3" Value="test3" Time="2.56" Script="NA" Pos="NA";
+Start p29 "29-test3" Value="test3" Time="2.27" Script="NA" Pos="NA";
 CF p28 p29
-Operation p30 "30-x$sex2 <- \"Male\"" Value="x$sex2 <- \"Male\"" Time="2.56" Script="0" Pos="NA,NA,NA,NA";
+Operation p30 "30-x$sex2 <- \"Male\"" Value="x$sex2 <- \"Male\"" Time="2.27" Script="0" Pos="NA,NA,NA,NA";
 CF p29 p30
 DF d7 p30
-Snapshot d8 "8-x" Value="[DIR]/ddg/data/8-x-PARTIAL.csv" Time="2016-11-10T10.09.43EST";
+Snapshot d8 "8-x" Value="[DIR]/ddg/data/8-x-PARTIAL.csv" Time="2016-12-14T12.43.08EST";
 DF p30 d8
-Operation p31 "31-x$sex2[x$sex == \"1\"] <- \"Female\"" Value="x$sex2[x$sex == \"1\"] <- \"Female\"" Time="2.59" Script="0" Pos="NA,NA,NA,NA";
+Operation p31 "31-x$sex2[x$sex == \"1\"] <- \"Female\"" Value="x$sex2[x$sex == \"1\"] <- \"Female\"" Time="2.3" Script="0" Pos="NA,NA,NA,NA";
 CF p30 p31
 DF d8 p31
-Snapshot d9 "9-x" Value="[DIR]/ddg/data/9-x-PARTIAL.csv" Time="2016-11-10T10.09.43EST";
+Snapshot d9 "9-x" Value="[DIR]/ddg/data/9-x-PARTIAL.csv" Time="2016-12-14T12.43.08EST";
 DF p31 d9
-Operation p32 "32-x$Income <- (x$income) * 1e+05" Value="x$Income <- (x$income) * 1e+05" Time="2.6" Script="0" Pos="NA,NA,NA,NA";
+Operation p32 "32-x$Income <- (x$income) * 1e+05" Value="x$Income <- (x$income) * 1e+05" Time="2.32" Script="0" Pos="NA,NA,NA,NA";
 CF p31 p32
 DF d9 p32
-Snapshot d10 "10-x" Value="[DIR]/ddg/data/10-x-PARTIAL.csv" Time="2016-11-10T10.09.43EST";
+Snapshot d10 "10-x" Value="[DIR]/ddg/data/10-x-PARTIAL.csv" Time="2016-12-14T12.43.08EST";
 DF p32 d10
-Finish p33 "33-test3" Value="test3" Time="2.62" Script="NA" Pos="NA";
+Finish p33 "33-test3" Value="test3" Time="2.33" Script="NA" Pos="NA";
 CF p32 p33
-Start p34 "34-ddg.chunk_4" Value="ddg.chunk_4" Time="2.62" Script="NA" Pos="NA";
+Start p34 "34-ddg.chunk_4" Value="ddg.chunk_4" Time="2.33" Script="NA" Pos="NA";
 CF p33 p34
-Operation p35 "35-histogram(~Income, data = x)" Value="histogram(~Income, data = x)" Time="2.62" Script="0" Pos="NA,NA,NA,NA";
+Operation p35 "35-histogram(~Income, data = x)" Value="histogram(~Income, data = x)" Time="2.35" Script="0" Pos="NA,NA,NA,NA";
 CF p34 p35
 DF d10 p35
-Finish p36 "36-ddg.chunk_4" Value="ddg.chunk_4" Time="2.64" Script="NA" Pos="NA";
+Finish p36 "36-ddg.chunk_4" Value="ddg.chunk_4" Time="2.36" Script="NA" Pos="NA";
 CF p35 p36
-Start p37 "37-ddg.chunk_5" Value="ddg.chunk_5" Time="2.64" Script="NA" Pos="NA";
+Start p37 "37-ddg.chunk_5" Value="ddg.chunk_5" Time="2.36" Script="NA" Pos="NA";
 CF p36 p37
-Operation p38 "38-bwplot(Age ~ Income, data = x, ylab = \"Age groups (of five y" Value="bwplot(Age ~ Income, data = x, ylab = \"Age groups (of five y" Time="2.65" Script="0" Pos="NA,NA,NA,NA";
+Operation p38 "38-bwplot(Age ~ Income, data = x, ylab = \"Age groups (of five y" Value="bwplot(Age ~ Income, data = x, ylab = \"Age groups (of five y" Time="2.36" Script="0" Pos="NA,NA,NA,NA";
 CF p37 p38
 DF d10 p38
-Operation p39 "39-lmage <- lm(sqrt(income) ~ poly(age, 2, raw = T), data = x)" Value="lmage <- lm(sqrt(income) ~ poly(age, 2, raw = T), data = x)" Time="2.67" Script="0" Pos="NA,NA,NA,NA";
+Operation p39 "39-lmage <- lm(sqrt(income) ~ poly(age, 2, raw = T), data = x)" Value="lmage <- lm(sqrt(income) ~ poly(age, 2, raw = T), data = x)" Time="2.41" Script="0" Pos="NA,NA,NA,NA";
 CF p38 p39
 DF d10 p39
-Snapshot d11 "11-lmage" Value="[DIR]/ddg/data/11-lmage-PARTIAL.txt" Time="2016-11-10T10.09.43EST";
+Snapshot d11 "11-lmage" Value="[DIR]/ddg/data/11-lmage-PARTIAL.txt" Time="2016-12-14T12.43.09EST";
 DF p39 d11
-Operation p40 "40-plot(x$age * 100, sqrt(x$income), xlab = \"Age\", ylab = \"Sqrt" Value="plot(x$age * 100, sqrt(x$income), xlab = \"Age\", ylab = \"Sqrt" Time="3.07" Script="0" Pos="NA,NA,NA,NA";
+Operation p40 "40-plot(x$age * 100, sqrt(x$income), xlab = \"Age\", ylab = \"Sqrt" Value="plot(x$age * 100, sqrt(x$income), xlab = \"Age\", ylab = \"Sqrt" Time="2.79" Script="0" Pos="NA,NA,NA,NA";
 CF p39 p40
 DF d10 p40
-Operation p41 "41-lines(x$age * 100, predict(lmage))" Value="lines(x$age * 100, predict(lmage))" Time="3.1" Script="0" Pos="NA,NA,NA,NA";
+Operation p41 "41-lines(x$age * 100, predict(lmage))" Value="lines(x$age * 100, predict(lmage))" Time="2.82" Script="0" Pos="NA,NA,NA,NA";
 CF p40 p41
 DF d10 p41
 DF d11 p41
-Finish p42 "42-ddg.chunk_5" Value="ddg.chunk_5" Time="3.1" Script="NA" Pos="NA";
+Finish p42 "42-ddg.chunk_5" Value="ddg.chunk_5" Time="2.82" Script="NA" Pos="NA";
 CF p41 p42
-Start p43 "43-ddg.chunk_6" Value="ddg.chunk_6" Time="3.11" Script="NA" Pos="NA";
+Start p43 "43-ddg.chunk_6" Value="ddg.chunk_6" Time="2.82" Script="NA" Pos="NA";
 CF p42 p43
-Operation p44 "44-x$Age2 <- x$Age^2" Value="x$Age2 <- x$Age^2" Time="3.11" Script="0" Pos="NA,NA,NA,NA";
+Operation p44 "44-x$Age2 <- x$Age^2" Value="x$Age2 <- x$Age^2" Time="2.83" Script="0" Pos="NA,NA,NA,NA";
 CF p43 p44
 DF d10 p44
-Snapshot d12 "12-x" Value="[DIR]/ddg/data/12-x-PARTIAL.csv" Time="2016-11-10T10.09.43EST";
+Snapshot d12 "12-x" Value="[DIR]/ddg/data/12-x-PARTIAL.csv" Time="2016-12-14T12.43.09EST";
 DF p44 d12
-Operation p45 "45-Quadratic <- lm(Income ~ Age + Age2, data = x)" Value="Quadratic <- lm(Income ~ Age + Age2, data = x)" Time="3.13" Script="0" Pos="NA,NA,NA,NA";
+Operation p45 "45-Quadratic <- lm(Income ~ Age + Age2, data = x)" Value="Quadratic <- lm(Income ~ Age + Age2, data = x)" Time="2.85" Script="0" Pos="NA,NA,NA,NA";
 CF p44 p45
 DF d12 p45
-Snapshot d13 "13-Quadratic" Value="[DIR]/ddg/data/13-Quadratic-PARTIAL.txt" Time="2016-11-10T10.09.43EST";
+Snapshot d13 "13-Quadratic" Value="[DIR]/ddg/data/13-Quadratic-PARTIAL.txt" Time="2016-12-14T12.43.09EST";
 DF p45 d13
-Finish p46 "46-ddg.chunk_6" Value="ddg.chunk_6" Time="3.45" Script="NA" Pos="NA";
+Finish p46 "46-ddg.chunk_6" Value="ddg.chunk_6" Time="3.25" Script="NA" Pos="NA";
 CF p45 p46
-Start p47 "47-ddg.chunk_7" Value="ddg.chunk_7" Time="3.45" Script="NA" Pos="NA";
+Start p47 "47-ddg.chunk_7" Value="ddg.chunk_7" Time="3.25" Script="NA" Pos="NA";
 CF p46 p47
-Operation p48 "48-summary(Quadratic)" Value="summary(Quadratic)" Time="3.46" Script="0" Pos="NA,NA,NA,NA";
+Operation p48 "48-summary(Quadratic)" Value="summary(Quadratic)" Time="3.27" Script="0" Pos="NA,NA,NA,NA";
 CF p47 p48
 DF d13 p48
-Finish p49 "49-ddg.chunk_7" Value="ddg.chunk_7" Time="3.46" Script="NA" Pos="NA";
+Finish p49 "49-ddg.chunk_7" Value="ddg.chunk_7" Time="3.27" Script="NA" Pos="NA";
 CF p48 p49
-Start p50 "50-ddg.chunk_8" Value="ddg.chunk_8" Time="3.46" Script="NA" Pos="NA";
+Start p50 "50-ddg.chunk_8" Value="ddg.chunk_8" Time="3.27" Script="NA" Pos="NA";
 CF p49 p50
-Operation p51 "51-x$illnessbin <- 1" Value="x$illnessbin <- 1" Time="3.46" Script="0" Pos="NA,NA,NA,NA";
+Operation p51 "51-x$illnessbin <- 1" Value="x$illnessbin <- 1" Time="3.27" Script="0" Pos="NA,NA,NA,NA";
 CF p50 p51
 DF d12 p51
-Snapshot d14 "14-x" Value="[DIR]/ddg/data/14-x-PARTIAL.csv" Time="2016-11-10T10.09.44EST";
+Snapshot d14 "14-x" Value="[DIR]/ddg/data/14-x-PARTIAL.csv" Time="2016-12-14T12.43.10EST";
 DF p51 d14
-Operation p52 "52-x$illnessbin[x$illness == 0] <- 0" Value="x$illnessbin[x$illness == 0] <- 0" Time="3.47" Script="0" Pos="NA,NA,NA,NA";
+Operation p52 "52-x$illnessbin[x$illness == 0] <- 0" Value="x$illnessbin[x$illness == 0] <- 0" Time="3.3" Script="0" Pos="NA,NA,NA,NA";
 CF p51 p52
 DF d14 p52
-Snapshot d15 "15-x" Value="[DIR]/ddg/data/15-x-PARTIAL.csv" Time="2016-11-10T10.09.44EST";
+Snapshot d15 "15-x" Value="[DIR]/ddg/data/15-x-PARTIAL.csv" Time="2016-12-14T12.43.10EST";
 DF p52 d15
-Operation p53 "53-glmill <- glm(illnessbin ~ income + sex + age + chcond, data" Value="glmill <- glm(illnessbin ~ income + sex + age + chcond, data" Time="3.63" Script="0" Pos="NA,NA,NA,NA";
+Operation p53 "53-glmill <- glm(illnessbin ~ income + sex + age + chcond, data" Value="glmill <- glm(illnessbin ~ income + sex + age + chcond, data" Time="3.33" Script="0" Pos="NA,NA,NA,NA";
 CF p52 p53
 DF d15 p53
-Snapshot d16 "16-glmill" Value="[DIR]/ddg/data/16-glmill-PARTIAL.txt" Time="2016-11-10T10.09.45EST";
+Snapshot d16 "16-glmill" Value="[DIR]/ddg/data/16-glmill-PARTIAL.txt" Time="2016-12-14T12.43.11EST";
 DF p53 d16
-Operation p54 "54-summary(glmill)" Value="summary(glmill)" Time="4.64" Script="0" Pos="NA,NA,NA,NA";
+Operation p54 "54-summary(glmill)" Value="summary(glmill)" Time="4.35" Script="0" Pos="NA,NA,NA,NA";
 CF p53 p54
 DF d16 p54
-Operation p55 "55-x$logitillness <- predict(glmill)" Value="x$logitillness <- predict(glmill)" Time="4.64" Script="0" Pos="NA,NA,NA,NA";
+Operation p55 "55-x$logitillness <- predict(glmill)" Value="x$logitillness <- predict(glmill)" Time="4.36" Script="0" Pos="NA,NA,NA,NA";
 CF p54 p55
 DF d15 p55
 DF d16 p55
-Snapshot d17 "17-x" Value="[DIR]/ddg/data/17-x-PARTIAL.csv" Time="2016-11-10T10.09.45EST";
+Snapshot d17 "17-x" Value="[DIR]/ddg/data/17-x-PARTIAL.csv" Time="2016-12-14T12.43.11EST";
 DF p55 d17
-Operation p56 "56-x$probabilityillness <- exp(x$logitillness)/(1 + exp(x$logit" Value="x$probabilityillness <- exp(x$logitillness)/(1 + exp(x$logit" Time="4.67" Script="0" Pos="NA,NA,NA,NA";
+Operation p56 "56-x$probabilityillness <- exp(x$logitillness)/(1 + exp(x$logit" Value="x$probabilityillness <- exp(x$logitillness)/(1 + exp(x$logit" Time="4.36" Script="0" Pos="NA,NA,NA,NA";
 CF p55 p56
 DF d17 p56
-Snapshot d18 "18-x" Value="[DIR]/ddg/data/18-x-PARTIAL.csv" Time="2016-11-10T10.09.45EST";
+Snapshot d18 "18-x" Value="[DIR]/ddg/data/18-x-PARTIAL.csv" Time="2016-12-14T12.43.11EST";
 DF p56 d18
-Operation p57 "57-xyplot(probabilityillness ~ income * 10000, groups = chcond," Value="xyplot(probabilityillness ~ income * 10000, groups = chcond," Time="4.69" Script="0" Pos="NA,NA,NA,NA";
+Operation p57 "57-xyplot(probabilityillness ~ income * 10000, groups = chcond," Value="xyplot(probabilityillness ~ income * 10000, groups = chcond," Time="4.41" Script="0" Pos="NA,NA,NA,NA";
 CF p56 p57
 DF d18 p57
-Finish p58 "58-ddg.chunk_8" Value="ddg.chunk_8" Time="4.7" Script="NA" Pos="NA";
+Finish p58 "58-ddg.chunk_8" Value="ddg.chunk_8" Time="4.41" Script="NA" Pos="NA";
 CF p57 p58
-Finish p59 "59-RMarkdownTest.R" Value="RMarkdownTest.R" Time="4.7" Script="NA" Pos="NA";
+Finish p59 "59-RMarkdownTest.R" Value="RMarkdownTest.R" Time="4.41" Script="NA" Pos="NA";
 CF p58 p59
 
