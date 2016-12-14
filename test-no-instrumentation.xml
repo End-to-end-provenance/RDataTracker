@@ -58,7 +58,6 @@
 - CalculateSquareRoot
 - DailySolarRadiation
 - HFDatasetPreview
-- SivanSamplingSmaller
 
   The target "test-all" will do all of the normal & script tests above and
   also Aaron's Simes script, which takes longer to run.
@@ -66,6 +65,10 @@
   Currently SivanSampling is not included in the tests because it produces a DDG
   that is too big.  We need to exclude collecting data on the simple getter functions
   at least.
+  
+  SivanSamplingSmaller was removed from testing with the release of R 3.3.1 since the 
+  script no longer works even without RDataTracker since they have changes how lists of S4 objects
+  are implemented.
 
   To add a new test case, duplicate one of the existing test and update tasks,
   modify the name of the task and the value passed to run-no-instrumentation-test

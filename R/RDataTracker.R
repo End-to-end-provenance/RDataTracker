@@ -90,8 +90,12 @@ ddg.MAX_HIST_LINES <- 2^14
   return (.ddg.get("ddg.path"))
 }
 
+.ddg.data.dir <- function() {
+  return ("data")
+}
+
 .ddg.path.data <- function() {
-  return(paste(.ddg.path(), "/data", sep=""))
+  return(paste(.ddg.path(), .ddg.data.dir() , sep="/"))
 }
 
 .ddg.path.debug <- function() {
@@ -477,7 +481,7 @@ ddg.MAX_HIST_LINES <- 2^14
 
   # Table of sourced scripts
   .ddg.set(".ddg.sourced.scripts", NULL)
-  
+
   # Table of script, line & parsed command numbers
   .ddg.set(".ddg.source.parsed", NULL)
 
@@ -503,7 +507,6 @@ ddg.MAX_HIST_LINES <- 2^14
   if (!.ddg.is.set("ddg.max.snapshot.size")) {
     .ddg.set("ddg.max.snapshot.size", 100)
   }
-    
 }
 
 # .ddg.set.history provides a wrapper to change the number of
@@ -523,7 +526,7 @@ ddg.MAX_HIST_LINES <- 2^14
   dir.create(.ddg.path.data(), showWarnings=FALSE)
   dir.create(.ddg.path.debug(), showWarnings=FALSE)
   dir.create(.ddg.path.scripts(), showWarnings=FALSE)
-  
+
   if (interactive() && .ddg.enable.console()) {
     .ddg.set('ddg.original.hist.size', Sys.getenv('R_HISTSIZE'))
     .ddg.set.history()
@@ -578,14 +581,14 @@ ddg.MAX_HIST_LINES <- 2^14
     ss <- ss[ss$snum > 0, ]
     stimes <- file.info(ss$sname)$mtime
     stimes <- .ddg.format.time(stimes)
-    
-    scriptarray <- paste("\t{\"number\" : \"", ss[ , 1], "\", 
+
+    scriptarray <- paste("\t{\"number\" : \"", ss[ , 1], "\",
                              \"name\" : \"",ss[ , 2], "\",
                              \"timestamp\" : \"",stimes, "\"}",
                          sep = "", collapse =",\n")
     output <- paste("[\n", scriptarray, " ],\n", sep = "")
   }
-  return(output)  
+  return(output)
 }
 
 # ddg.installedpackages() returns information on packages installed at the time of execution
@@ -723,7 +726,11 @@ ddg.MAX_HIST_LINES <- 2^14
 
   environ <- paste(environ, .ddg.json.nv("rdt:script", ddg.r.script.path), sep="")
 
-  environ <- paste(environ, "\"rdt:sourcedScripts\" : ", sourced.scripts, sep="")
+  if(sourced.scripts==""){
+    environ <- paste(environ, .ddg.json.nv("rdt:sourcedScripts", sourced.scripts), sep="")
+  }else{
+    environ <- paste(environ, "\"rdt:sourcedScripts\" : ", sourced.scripts, ",\n", sep="")
+  }
 
   environ <- paste(environ, .ddg.json.nv("rdt:scriptTimeStamp", script.timestamp), sep="")
 
@@ -751,21 +758,21 @@ ddg.MAX_HIST_LINES <- 2^14
 .ddg.json.procedure.node <- function(id, pname, ptype, ptime, snum, pos) {
 
   if (is.object(pos)) {
-    jstr <- paste("\n\"p", id, "\" : {\n\"rdt:name\" : \"", pname, "\",\n\"rdt:type\" : \"", ptype, 
-        "\",\n\"rdt:elapsedTime\" : \"", ptime, "\",\n\"rdt:scriptNum\" : \"", snum, 
-        "\",\n\"rdt:startLine\" : \"", pos@startLine, "\"", 
-        ",\n\"rdt:startCol\" : \"", pos@startCol, "\"", 
-        ",\n\"rdt:endLine\" : \"", pos@endLine, "\"", 
-        ",\n\"rdt:endCol\" : \"", pos@endCol, "\"", 
+    jstr <- paste("\n\"p", id, "\" : {\n\"rdt:name\" : \"", pname, "\",\n\"rdt:type\" : \"", ptype,
+        "\",\n\"rdt:elapsedTime\" : \"", ptime, "\",\n\"rdt:scriptNum\" : \"", snum,
+        "\",\n\"rdt:startLine\" : \"", pos@startLine, "\"",
+        ",\n\"rdt:startCol\" : \"", pos@startCol, "\"",
+        ",\n\"rdt:endLine\" : \"", pos@endLine, "\"",
+        ",\n\"rdt:endCol\" : \"", pos@endCol, "\"",
         "\n}", sep="")
   }
   else {
-    jstr <- paste("\n\"p", id, "\" : {\n\"rdt:name\" : \"", pname, "\",\n\"rdt:type\" : \"", ptype, 
-        "\",\n\"rdt:elapsedTime\" : \"", ptime, "\",\n\"rdt:scriptNum\" : \"", snum, 
-        "\",\n\"rdt:startLine\" : \"NA\"", 
-        ",\n\"rdt:startCol\" : \"NA\"", 
-        ",\n\"rdt:endLine\" : \"NA\"", 
-        ",\n\"rdt:endCol\" : \"NA\"", 
+    jstr <- paste("\n\"p", id, "\" : {\n\"rdt:name\" : \"", pname, "\",\n\"rdt:type\" : \"", ptype,
+        "\",\n\"rdt:elapsedTime\" : \"", ptime, "\",\n\"rdt:scriptNum\" : \"", snum,
+        "\",\n\"rdt:startLine\" : \"NA\"",
+        ",\n\"rdt:startCol\" : \"NA\"",
+        ",\n\"rdt:endLine\" : \"NA\"",
+        ",\n\"rdt:endCol\" : \"NA\"",
         "\n}", sep="")
   }
 
@@ -851,16 +858,16 @@ ddg.MAX_HIST_LINES <- 2^14
   } else value.str <- ""
 
   if (is.object(pos)) {
-    dtxt <- paste(ptype, " p", ddg.pnum, " \"", ddg.pnum, "-", pname, "\"", value.str, " Time=\"", ptime , 
+    dtxt <- paste(ptype, " p", ddg.pnum, " \"", ddg.pnum, "-", pname, "\"", value.str, " Time=\"", ptime ,
         "\" Script=\"", snum, "\"", " Pos=\"", pos@startLine, ",", pos@startCol, ",", pos@endLine, ",", pos@endCol, "\";\n", sep="")
     #print(".ddg.output.procedure.node: dtxt =")
     #print(dtxt)
   }
   else {
-    dtxt <- paste(ptype, " p", ddg.pnum, " \"", ddg.pnum, "-", pname, "\"", value.str, " Time=\"", ptime , 
+    dtxt <- paste(ptype, " p", ddg.pnum, " \"", ddg.pnum, "-", pname, "\"", value.str, " Time=\"", ptime ,
         "\" Script=\"", snum, "\"", " Pos=\"NA\";\n", sep="")
   }
-  
+
   # Record in ddg.txt
   .ddg.append(dtxt)
 
@@ -1244,7 +1251,7 @@ ddg.MAX_HIST_LINES <- 2^14
   ddg.proc.nodes$ddg.value[ddg.pnum] <- pvalue
   ddg.proc.nodes$ddg.auto.created[ddg.pnum] <- auto.created
   ddg.proc.nodes$ddg.time[ddg.pnum] <- ptime
-  
+
   ddg.proc.nodes$ddg.snum[ddg.pnum] <- snum
   if (is.object(pos) && length(pos@startLine == 1)) {
     ddg.proc.nodes$ddg.startLine[ddg.pnum] <- pos@startLine
@@ -1258,7 +1265,7 @@ ddg.MAX_HIST_LINES <- 2^14
     ddg.proc.nodes$ddg.endLine[ddg.pnum] <- NA
     ddg.proc.nodes$ddg.endCol[ddg.pnum] <- NA
   }
-  
+
   .ddg.set("ddg.proc.nodes", ddg.proc.nodes)
 
   # Output procedure node.
@@ -1305,7 +1312,7 @@ ddg.MAX_HIST_LINES <- 2^14
   if (length(dvalue) > 1 || !is.atomic(dvalue)) dvalue2 <- "complex"
   else if (!is.null(dvalue)) dvalue2 <- dvalue
   else dvalue2 <- ""
-  
+
   #print(".ddg.record.data: adding info")
   ddg.data.nodes$ddg.type[ddg.dnum] <- dtype
   ddg.data.nodes$ddg.num[ddg.dnum] <- ddg.dnum
@@ -1953,14 +1960,14 @@ ddg.MAX_HIST_LINES <- 2^14
             eval (parse(text=var), parent.env(env))
           }
         )
-      
+
 			  tryCatch(.ddg.save.data(var, val, fname=".ddg.create.data.set.edges.for.cmd", error=TRUE, scope=scope, stack=stack, env=env),
 			         error = function(e){.ddg.data.node("Data", var, "complex", scope)})
 
         .ddg.proc2data(cmd@abbrev, var, scope)
     }
   }
-  
+
 }
 
 # .ddg.create.data.node.for.possible.writes creates a data node for
@@ -1993,7 +2000,7 @@ ddg.MAX_HIST_LINES <- 2^14
     }
   }
   #print("Done with .ddg.create.data.node.for.possible.writes")
-  
+
 }
 
 # Given a parse tree, this function returns a list containing
@@ -2275,14 +2282,14 @@ ddg.MAX_HIST_LINES <- 2^14
     file <- paste0("dev.off.", .ddg.dnum()+1, ".pdf")
   }
   #print(paste(".ddg.capture.graphics: writing to ", file))
-  
+
   # Save the graphic to a file temporarily
   #print(sys.calls())
   dev.print(device=pdf, file=file)
-  
+
   # Add it to the ddg.  This will copy the file to the right directory
   ddg.file.out (file, pname=cmd@abbrev)
-  
+
   # Remove the temporary file
   file.remove(file)
 }
@@ -2437,7 +2444,7 @@ ddg.MAX_HIST_LINES <- 2^14
   if (.ddg.debug.lib()) print(paste(called, ":  Adding", node.name,  type, "node"))
   .ddg.proc.node(type, node.name, node.name, TRUE, env=env, cmd = cmd)
   .ddg.proc2proc()
-  
+
   return(node.name)
 }
 
@@ -2582,7 +2589,7 @@ ddg.MAX_HIST_LINES <- 2^14
   if (!.ddg.get("ddg.break")) {
     writeLines("\nEnter = next command, C = next breakpoint, D = display DDG, Q = quit debugging\n")
   }
-  
+
   # Abbreviate command.
   abbrev <- command@abbrev
 
@@ -2609,7 +2616,7 @@ ddg.MAX_HIST_LINES <- 2^14
 
     print(paste("[", func.name, "]  |  ", abbrev, sep=""))
   }
-  
+
   # Save ddg.
   .ddg.txt.write()
   .ddg.json.write()
@@ -2618,12 +2625,12 @@ ddg.MAX_HIST_LINES <- 2^14
   line <- "D"
   while (line == "D") {
     line <- toupper(readline())
-    if (line == "D") .ddg.loadDDG(.ddg.path())
+    if (line == "D") ddg.display()
     else if (line == "") .ddg.set("ddg.break", TRUE)
     else if (line == "C") .ddg.set("ddg.break", FALSE)
     else if (line == "Q") .ddg.set("ddg.break.ignore", TRUE)
   }
-  
+
 }
 
 # Create the DDGStatement list for a list of parsed expressions.
@@ -2637,11 +2644,10 @@ ddg.MAX_HIST_LINES <- 2^14
 # Returns a list of DDGStatement objects
 
 .ddg.create.DDGStatements <- function (exprs, script.name, script.num, parseData = NULL, enclosing.pos = NULL) {
-  
   # The parse data gives us line number information
   if (is.null(parseData)) {
     parseData <- getParseData(exprs, includeText=TRUE)
-    
+
     if (is.null(parseData)) {
       # In this case there is no line number information available
       cmds <- vector("list", (length(exprs)))
@@ -2656,23 +2662,23 @@ ddg.MAX_HIST_LINES <- 2^14
     if (nrow(non.comment.parse.data) == 0) {
       return(list())
     }
-    
+
     # Start at the first non-comment expression in parseData
     next.parseData <- 1
   }
-  
+
   else {
     non.comment.parse.data <- parseData[parseData$token != "COMMENT", ]
-    
+
     # Start at the first entry in parse data that begins after the enclosing function begins,
     # ends before the enclosing function ends, and matches the text of the first expression.
     next.parseData <- which(non.comment.parse.data$line1 >= enclosing.pos@startLine & non.comment.parse.data$line2 <= enclosing.pos@endLine & non.comment.parse.data$text == paste(deparse(exprs[[1]]), collapse="\n") )[1]
   }
-  
+
   # Get the breakpoint information
   breakpoints <- ddg.list.breakpoints()
   breakpoints <- breakpoints[breakpoints$sname == script.name, ]
-  
+
   # Create the DDGStatements
   cmds <- vector("list", (length(exprs)))
   next.cmd <- 1
@@ -2681,19 +2687,19 @@ ddg.MAX_HIST_LINES <- 2^14
     next.expr.pos <- new (Class = "DDGStatementPos", non.comment.parse.data[next.parseData, ])
     cmds[[next.cmd]] <- .ddg.construct.DDGStatement(expr, next.expr.pos, script.name, script.num, breakpoints, parseData)
     next.cmd <- next.cmd + 1
-    
+
     # If there are more expressions, determine where to look next in the parseData
     if (i < length(exprs)) {
        last.ending.line <- non.comment.parse.data[next.parseData,]$line2
        last.parent <- non.comment.parse.data[next.parseData,"parent"]
        last.id <- non.comment.parse.data[next.parseData,"id"]
-       
-       # Find the first entry in parseData that has the same parent as the 
+
+       # Find the first entry in parseData that has the same parent as the
        # previous expression and starts after the previous expression.
        next.parseData <- which(non.comment.parse.data$parent == last.parent & non.comment.parse.data$line1 >= last.ending.line & non.comment.parse.data$id > last.id) [1]
     }
   }
-  
+
   return (cmds)
 }
 
@@ -2726,7 +2732,7 @@ ddg.MAX_HIST_LINES <- 2^14
 # ddg.annotate.on and ddg.annotate.off may be used to limit the
 # functions that are annotated or not annotated, respectively.
 #
-# If run.commands is false, the commands are not executed.  This allows 
+# If run.commands is false, the commands are not executed.  This allows
 # us to build ddgs for commands run from the console as those commands
 # have already been executed.
 
@@ -2747,7 +2753,7 @@ ddg.MAX_HIST_LINES <- 2^14
 # max.deparse.length (optional) - maximum number of characters
 #   output for deparse of a single expression.
 # called.from.ddg.eval(optional) - whether called from ddg.eval
-# cmds - list of DDG Statements that correspond to the exprs passed in.  This is 
+# cmds - list of DDG Statements that correspond to the exprs passed in.  This is
 #   currently only used when called from ddg.eval.  Normally, ddg.parse.commands
 #   creates the DDG Statement objects.
 
@@ -2765,7 +2771,7 @@ ddg.MAX_HIST_LINES <- 2^14
 
   # Figure out if we will execute commands or not.
   execute <- run.commands & !is.null(environ) & is.environment(environ)
-  
+
   # print (paste("ddg.parse.commands: .ddg.func.depth =", .ddg.get(".ddg.func.depth")))
   inside.func <- (.ddg.get(".ddg.func.depth") > 0)
 
@@ -2782,7 +2788,7 @@ ddg.MAX_HIST_LINES <- 2^14
       .ddg.last.cmd <- NULL
       #print(".ddg.parse.commands: setting .ddg.last.cmd to null")
     }
-    
+
     else if (!execute) {
       cmds <- cmds[1:num.cmds-1]
     }
@@ -2800,11 +2806,11 @@ ddg.MAX_HIST_LINES <- 2^14
     named.node.set <- TRUE
     start.node.created <- node.name
   }
-  
+
   # Don't set .ddg.last.cmd.  We want it to have the value from
   # the last call. We set it at the end of this function:
   # .ddg.set(".ddg.last.cmd", .ddg.last.cmd)
-  
+
   # Create an operation node for each command.  We can't use lapply
   # here because we need to process the commands in order and
   # lapply does not guarantee an order. Also decide which data nodes
@@ -2815,10 +2821,10 @@ ddg.MAX_HIST_LINES <- 2^14
   # the last writer/possible writer. Lastly, if execute is set to
   # true, then execute each command immediately before attempting
   # to create the DDG nodes.
-  
+
   # Only go through this if  we have at least one command to parse.
   if (num.cmds > 0) {
-    
+
     # Find where all the variables are assigned for non-environ
     # files.
     if (!execute) {
@@ -2833,13 +2839,13 @@ ddg.MAX_HIST_LINES <- 2^14
       cmd <- cmds[[i]]
 
       if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Processing", cmd@abbrev))
-      
+
       # Process breakpoint. We stop if there is a breakpoint set on this line or we are single-stepping.
       # print("Checking for breakpoints")
       if (.ddg.is.sourced() & (cmd@is.breakpoint | .ddg.get("ddg.break")) & !.ddg.break.ignore()) {
         .ddg.process.breakpoint(cmd, inside.function=called.from.ddg.eval)
       }
-      
+
       # print("Checking whether to set last.cmd")
       if (.ddg.enable.source() && grepl("^ddg.eval", cmd@text) && .ddg.enable.console()) {
         if (is.null(.ddg.last.cmd)) {
@@ -2868,10 +2874,10 @@ ddg.MAX_HIST_LINES <- 2^14
       create <- !cmd@isDdgFunc && .ddg.is.init() && .ddg.enable.console() && !(control.statement && ddg.annotate.inside() && ddg.max.loops() > 0)
       # create <- !cmd@isDdgFunc && .ddg.is.init() && .ddg.enable.console()
       start.finish.created <- FALSE
-      
+
       # If the command does not match one of the ignored patterns.
       if (!any(sapply(ignore.patterns, function(pattern){grepl(pattern, cmd@text)}))) {
-        
+
         # If sourcing, we want to execute the command.
         if (execute) {
           # Print command.
@@ -2890,12 +2896,12 @@ ddg.MAX_HIST_LINES <- 2^14
           if (!cmd@isDdgFunc && cmd@text != "next") {
             .ddg.set(".ddg.possible.last.cmd", cmd)
             .ddg.set (".ddg.cur.cmd", cmd)
-            
+
             # Remember the current statement on the stack so that we
             # will be able to create a corresponding Finish node later
             # if needed.
             .ddg.cur.cmd.stack <- .ddg.get(".ddg.cur.cmd.stack")
-            
+
             if (length(.ddg.cur.cmd.stack) == 0) {
               .ddg.cur.cmd.stack <- c(cmd, FALSE)
             }
@@ -2904,11 +2910,11 @@ ddg.MAX_HIST_LINES <- 2^14
             }
             .ddg.set(".ddg.cur.cmd.stack", .ddg.cur.cmd.stack)
           }
-          
+
           else if (.ddg.is.procedure.cmd(cmd)) {
             .ddg.set(".ddg.possible.last.cmd", NULL)
           }
-          
+
           # Capture any warnings that occur when an expression is evaluated.
           # Note that we cannot just use a tryCatch here because it behaves
           # slightly differently and we would lose the value that eval
@@ -2954,34 +2960,34 @@ ddg.MAX_HIST_LINES <- 2^14
               .ddg.set(".ddg.cur.cmd.stack", .ddg.cur.cmd.stack[1:(stack.length-2)])
             }
           }
-          
+
           # Print evaluation.
           if (print.eval) print(result)
-          
+
         }
-        
+
         # Figure out if we should create a procedure node for this
         # command. We don't create it if it matches a last command
         # (because that last command has now become a collapsible
         # node). Matching a last command means that the last command
         # is set, is not NULL, and is equal to the current command.
-        
+
         last.proc.node.created <-
             if (.ddg.is.set (".ddg.last.proc.node.created")).ddg.get(".ddg.last.proc.node.created")
             else ""
         cur.cmd.closed <- (last.proc.node.created == paste ("Finish", cmd@abbrev))
         create.procedure <- create && (!cur.cmd.closed || !named.node.set) && !start.finish.created  && !grepl("^ddg.source", cmd@text)
-        
+
         # We want to create a procedure node for this command.
         if (create.procedure) {
-          
+
           # Create the procedure node.
-          
+
           if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Adding operation node for", cmd@abbrev))
-          
+
           .ddg.proc.node("Operation", cmd@abbrev, cmd@abbrev, env=environ, console=TRUE, cmd=cmd)
           .ddg.proc2proc()
-          
+
           # If a warning occurred when cmd was evaluated,
           # attach a warning node
           if (.ddg.warning.occurred()) {
@@ -2990,7 +2996,7 @@ ddg.MAX_HIST_LINES <- 2^14
           # Store information on the last procedure node in this
           # block.
           last.proc.node <- cmd
-          
+
           # We want to create the incoming data nodes (by updating
           # the vars.set).
           if (execute) {
@@ -2999,17 +3005,17 @@ ddg.MAX_HIST_LINES <- 2^14
 
             if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Adding", cmd@abbrev, "information to vars.set"))
           }
-          
+
           .ddg.create.data.use.edges.for.console.cmd(vars.set, cmd, i, for.caller=FALSE)
           if (cmd@readsFile) .ddg.create.file.read.nodes.and.edges(cmd, environ)
           .ddg.link.function.returns(cmd)
-          
+
           if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Adding input data nodes for", cmd@abbrev))
           
           .ddg.create.data.set.edges.for.cmd(vars.set, cmd, i, d.environ)
           
           if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Adding output data nodes for", cmd@abbrev))
-          
+
           if (cmd@writesFile) .ddg.create.file.write.nodes.and.edges (cmd, environ)
           .ddg.set.graphics.files (cmd, environ)
 
@@ -3027,16 +3033,16 @@ ddg.MAX_HIST_LINES <- 2^14
             .ddg.create.data.set.edges.for.cmd(vars.set, cmd, i, environ)
           }
         }
-        
+
         if (create.procedure && execute) {
           .ddg.create.data.node.for.possible.writes(vars.set, last.proc.node, env=environ)
-          
+
           # Update so we don't set these again.
           vars.set$possible.last.writer <- vars.set$last.writer
         }
       }
      }
-     
+
      # Create a data node for each variable that might have been set in
      # something other than a simple assignment, with an edge from the
      # last node in the console block or source .
@@ -3044,9 +3050,9 @@ ddg.MAX_HIST_LINES <- 2^14
        .ddg.create.data.node.for.possible.writes(vars.set, last.proc.node, env=environ)
      }
   }
-  
+
   #print("Done with ddg.parse.commands loop")
-    
+
   # Close any node left open during execution.
   if (execute && !inside.func) .ddg.close.last.command.node(environ, initial=TRUE)
 
@@ -3056,19 +3062,19 @@ ddg.MAX_HIST_LINES <- 2^14
   if (.ddg.is.init() && named.node.set && !inside.func) {
       .ddg.add.abstract.node("Finish", node.name = node.name, env=environ)
   }
-  
+
   # Open up a new collapsible node in case we need to parse
   # further later.
   if (!execute) {
-    
+
     .ddg.set(".ddg.possible.last.cmd", .ddg.last.cmd)
     .ddg.set(".ddg.last.cmd", .ddg.last.cmd)
     .ddg.open.new.command.node(environ)
   }
-  
+
   # Write time stamp to history.
   if (.ddg.is.init() && !.ddg.is.sourced()) .ddg.write.timestamp.to.history()
-  
+
 }
 
 
@@ -3123,8 +3129,8 @@ ddg.MAX_HIST_LINES <- 2^14
 # env - the environment in which the procedure occurs
 
 # CHECK!  Looks like env parameter is not needed!
-.ddg.proc.node <- function(ptype, pname, pvalue="", console=FALSE, 
-    auto.created=FALSE, env = sys.frame(.ddg.get.frame.number(sys.calls())), 
+.ddg.proc.node <- function(ptype, pname, pvalue="", console=FALSE,
+    auto.created=FALSE, env = sys.frame(.ddg.get.frame.number(sys.calls())),
     cmd = NULL) {
   if (.ddg.debug.lib()) {
   	if (length(pname) > 1) {
@@ -3290,13 +3296,13 @@ ddg.MAX_HIST_LINES <- 2^14
         # Replace double quotes with single quotes.
         .ddg.replace.quotes(dvalue)
       }
-      
+
   #print(".ddg.data.node: converted value to string")
-      
+
 
   if (grepl("\n", val)) {
     #print(".ddg.data.node: saving as snapshot")
-    
+
     # Create snapshot node.
     .ddg.snapshot.node (dname, "txt", val, from.env=from.env)
     return
@@ -3304,7 +3310,7 @@ ddg.MAX_HIST_LINES <- 2^14
 
   else {
     #print(".ddg.data.node: recording data")
-    
+
     # Get scope if necessary.
     if (is.null(dscope)) dscope <- .ddg.get.scope(dname)
 
@@ -3502,9 +3508,10 @@ ddg.MAX_HIST_LINES <- 2^14
 	# Add number to file name.
 	dfile <- paste(.ddg.dnum()+1, "-", file.name, sep="")
 
-	# Get path plus file name.
-	dpfile <- paste(.ddg.path.data(), "/", dfile, sep="")
-
+  # Calculate the path to the file relative to the ddg directory.
+  # This is the value stored in the node.
+  dpfile <- paste(.ddg.data.dir(), dfile, sep="/")
+  
 	dtime <- .ddg.timestamp()
 
 	# Set the node label.
@@ -3519,7 +3526,9 @@ ddg.MAX_HIST_LINES <- 2^14
   # Record in data node table
   .ddg.record.data(dtype, dname, dpfile, dscope, from.env=from.env, dtime, file.loc)
 
-  return(dpfile)
+  # Get path plus file name to where the file will be copied
+  dpath <- paste(.ddg.path.data(), "/", dfile, sep="")
+  return(dpath)
 }
 
 # .ddg.file.copy creates a data node of type File. File nodes are
@@ -4224,41 +4233,41 @@ ddg.MAX_HIST_LINES <- 2^14
 # created. If eval = false, then the chunk will not be added to the DDG. If
 # the user has a name for the chunk, then that name will be used, else a chunk
 # name "ddg.chunk_1" and higher numbers will be generated.
-# 
+#
 # Important: If in a code chunk, there is an empty line followed by "# ----"
 # or "#'", then an extra finish node will be inserted, causing an error.
-# 
+#
 # r.script.path is the path of the original Rmd file
 # output.path is the path of the generated R script
 
 .ddg.markdown <- function(r.script.path = NULL, output.path = NULL){
-  
+
   #generates R script file from markdown file
   knitr::purl(r.script.path, documentation = 2L, quiet = TRUE)
-  
+
   #moves file to ddg directory
   file.rename(from = paste(getwd(), "/", basename(tools::file_path_sans_ext(r.script.path)), ".R", sep = ""), to = output.path)
   script <- readLines(output.path)
-  
+
   skip <- FALSE
   name <- "ddg.chunk"
   annotated <- character(0)
   index <- 1
-  
-  
+
+
   # This for loop goes through the script line by line and searches for patterns
   # to insert the start and finish nodes
   for(i in 1:length(script)){
-    
+
     #eval = false means we skip this code chunk, therefore skip = TRUE
     if(regexpr("eval+(\\s*)+=+(\\s*)+FALSE", script[i]) != -1){
       skip <- TRUE
       annotated <- append(annotated, script[i])
     }
-    
+
     else if(regexpr("## ----", script[i]) != -1){
-      
-      #if no options in the line, then generate default name.      
+
+      #if no options in the line, then generate default name.
       if(regexpr("## -----", script[i]) == -1){
         if(regexpr("=", script[i]) == -1){
           end <- regexpr("-----", script[i])
@@ -4280,7 +4289,7 @@ ddg.MAX_HIST_LINES <- 2^14
       name <- stringr::str_trim(name, side = "both")
       annotated <- append(annotated, paste("ddg.start(\"", name, "\")", sep = ""))
     }
-    else if(nchar(script[i]) == 0 && (regexpr("#'", script[i + 1]) != -1 || 
+    else if(nchar(script[i]) == 0 && (regexpr("#'", script[i + 1]) != -1 ||
                                       i == length(script) || regexpr("## ----", script[i + 1]) != -1 )){
       if(skip){
         annotated <- append(annotated, script[i])
@@ -4305,31 +4314,31 @@ ddg.MAX_HIST_LINES <- 2^14
   fileout <- paste(.ddg.path.debug(), "/initial-environment.csv", sep="")
   ddg.initial.env <- .ddg.initial.env()
   write.csv(ddg.initial.env, fileout, row.names=FALSE)
-  
+
   # Save procedure nodes table to file.
   fileout <- paste(.ddg.path.debug(), "/procedure-nodes.csv", sep="")
   ddg.proc.nodes <- .ddg.proc.nodes()
   ddg.proc.nodes <- ddg.proc.nodes[ddg.proc.nodes$ddg.num > 0, ]
   write.csv(ddg.proc.nodes, fileout, row.names=FALSE)
-  
+
   # Save data nodes table to file.
   fileout <- paste(.ddg.path.debug(), "/data-nodes.csv", sep="")
   ddg.data.nodes <- .ddg.data.nodes()
   ddg.data.nodes2 <- ddg.data.nodes[ddg.data.nodes$ddg.num > 0, ]
   write.csv(ddg.data.nodes2, fileout, row.names=FALSE)
-  
+
   # Save edges table to file.
   fileout <- paste(.ddg.path.debug(), "/edges.csv", sep="")
   ddg.edges <- .ddg.edges()
   ddg.edges2 <- ddg.edges[ddg.edges$ddg.num > 0, ]
   write.csv(ddg.edges2, fileout, row.names=FALSE)
-  
+
   # Save function return table to file.
   fileout <- paste(.ddg.path.debug(), "/function-returns.csv", sep="")
   ddg.returns <- .ddg.get(".ddg.return.values")
   ddg.returns2 <- ddg.returns[ddg.returns$return.node.id > 0, ]
   write.csv(ddg.returns2, fileout, row.names=FALSE)
-  
+
   # Save if script is sourced.
   if (.ddg.is.sourced()) {
     # Save sourced script table to file.
@@ -4337,7 +4346,7 @@ ddg.MAX_HIST_LINES <- 2^14
     ddg.sourced.scripts <- .ddg.get(".ddg.sourced.scripts")
     ddg.sourced.scripts2 <- ddg.sourced.scripts[ddg.sourced.scripts$snum >= 0, ]
     write.csv(ddg.sourced.scripts2, fileout, row.names=FALSE)
-    
+
     # Save data object table to file.
     fileout <- paste(.ddg.path.debug(), "/data-objects.csv", sep="")
     ddg.data.objects <- .ddg.data.objects()
@@ -4548,12 +4557,12 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
 
   # If expr is an assignment, create nodes and edges for the assignment.
   orig.expr <- substitute(expr)
-  
+
   frame.num <- .ddg.get.frame.number(sys.calls())
   env <- sys.frame(frame.num)
 
   orig.return <- paste("return(", deparse(orig.expr), ")", sep="")
-  
+
   pname <- NULL
   .ddg.lookup.function.name(pname)
 
@@ -4619,7 +4628,7 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
     return.stmt <- cmd.func()
     parsed.statement <- return.stmt@parsed
   }
-  
+
   # Process breakpoint. We stop if there is a breakpoint set on this line or we are single-stepping.
   if (.ddg.is.sourced() & (return.stmt@is.breakpoint | .ddg.get("ddg.break")) & !.ddg.break.ignore()) {
     .ddg.process.breakpoint(return.stmt, inside.function=TRUE)
@@ -4633,7 +4642,7 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
 
   # Create an edge from the return statement to its return value.
   .ddg.proc2data(return.stmt@abbrev, return.node.name, return.node.scope, return.value=TRUE)
-  
+
   # Update the table.
   ddg.num.returns <- ddg.num.returns + 1
   ddg.return.values$ddg.call[ddg.num.returns] <- call.text
@@ -4641,7 +4650,7 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
   ddg.return.values$return.node.id[ddg.num.returns] <- .ddg.dnum()
   .ddg.set(".ddg.return.values", ddg.return.values)
   .ddg.set(".ddg.num.returns", ddg.num.returns)
-  
+
   # Create edges from variables used in the return statement
   vars.used <- return.stmt@vars.used
   for (var in vars.used) {
@@ -4656,7 +4665,7 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
     if (var != "") {
       # Create output data node.
       dvalue <- eval(as.symbol(var), envir=env)
-  
+
       # Check for global assignment
       if (.ddg.is.global.assign(return.stmt@parsed)) env <- globalenv()
       dscope <- .ddg.get.scope(var, env=env)
@@ -4674,7 +4683,7 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
   if (return.stmt@has.dev.off) {
     .ddg.capture.graphics(return.stmt)
   }
-  
+
   # Create the finish node for the function
   if (typeof(call[[1]]) == "closure") {
     .ddg.add.abstract.node ("Finish", node.name=pname, env=caller.env)
@@ -4824,7 +4833,7 @@ ddg.eval <- function(statement, cmd.func=NULL) {
   }
 
   if (.ddg.debug.lib()) print (paste("ddg.eval: statement =", statement))
-  
+
   frame.num <- .ddg.get.frame.number(sys.calls())
   env <- sys.frame(frame.num)
 
@@ -5276,10 +5285,10 @@ ddg.finish <- function(pname=NULL) {
 ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enable.console = TRUE, max.snapshot.size = 100) {
   #.ddg.DDGStatement.init()
   .ddg.init.tables()
-  
-  # Setting the path for the ddg    
+
+  # Setting the path for the ddg
   if (is.null(ddgdir)) {
-    
+
     # Default is the file where the script is located
     if (!is.null(r.script.path)){
       ddg.path <- paste(dirname(r.script.path), "/", basename(tools::file_path_sans_ext(r.script.path)), "_ddg", sep="")
@@ -5288,8 +5297,8 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
       ddg.path <- paste(getwd(), "/","ddg",sep = "")
     }
   } else ddg.path <- normalizePath(ddgdir, winslash="/", mustWork=FALSE)
-  
-  # Overwrite default is 
+
+  # Overwrite default is
   if(!overwrite){
     no.overwrite.folder <- paste(ddg.path, "_timestamps", sep = "")
     if(!dir.exists(no.overwrite.folder)){
@@ -5297,20 +5306,20 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
     }
     ddg.path <- paste(no.overwrite.folder, "/",  basename(tools::file_path_sans_ext(r.script.path)), "_ddg_", .ddg.timestamp(), sep = "")
   }
-  
+
   .ddg.set("ddg.path", ddg.path)
-  
+
   # Remove files from DDG directory
   ddg.flush.ddg()
-  
+
   # Create DDG directories
   .ddg.init.environ()
-  
+
   # Save copy of original script.
   file.copy(r.script.path, paste(.ddg.path.scripts(), "/", basename(r.script.path), sep = ""))
-  
+
   # Reset r.script.path if RMarkdown file
-  
+
   if (!is.null(r.script.path) && tools::file_ext(r.script.path) == "Rmd") {
     output.path <- paste(.ddg.path.scripts(), "/", basename(tools::file_path_sans_ext(r.script.path)), ".R", sep = "")
     .ddg.markdown(r.script.path, output.path)
@@ -5320,45 +5329,45 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
              if (is.null(r.script.path)) NULL
              else normalizePath(r.script.path, winslash="/"))
   }
-  
+
   # Set environment constants.
   .ddg.set(".ddg.enable.console", enable.console)
   .ddg.set(".ddg.func.depth", 0)
   # .ddg.init.environ()
-  
+
   # Initialize the information about the open start-finish blocks
   .ddg.set (".ddg.starts.open", vector())
-  
+
   # Initialize the stack of commands and environments being executed in active functions
   .ddg.set(".ddg.cur.cmd.stack", vector())
   .ddg.set(".ddg.cur.expr.stack", vector())
-  
+
   # Mark graph as initilized.
   .ddg.set(".ddg.initialized", TRUE)
-  
+
   # Store the starting graphics device.
   .ddg.set("prev.device", dev.cur())
-  
+
   if (interactive() && .ddg.enable.console()) {
     ddg.history.file <- paste(.ddg.path.data(), "/.ddghistory", sep="")
     .ddg.set(".ddg.history.file", ddg.history.file)
-    
+
     # Empty file if it already exists, do the same with tmp file.
     file.create(ddg.history.file, showWarnings=FALSE)
-    
+
     # One timestamp keeps track of last ddg.save (the default).
     .ddg.write.timestamp.to.history()
-    
+
     # Save the history if the platform supports it.
     tryCatch (savehistory(ddg.history.file),
               error = function(e) {})
   }
-  
+
   .ddg.set(".ddg.proc.start.time", .ddg.elapsed.time())
-  
+
   # Store time when script begins execution.
   .ddg.set("ddg.start.time", .ddg.timestamp())
-  
+
   invisible()
 }
 
@@ -5412,7 +5421,7 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
 
   # Set .ddg.is.sourced to TRUE if script provided.
   if (!is.null(r.script.path)) .ddg.set(".ddg.is.sourced", TRUE)
-  
+
   # If ddg.detail is not set, use values of annotate.inside, max.loops
   # and max.snapshot.size.
   if (is.null(ddg.get.detail())) {
@@ -5458,11 +5467,14 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
       },
       finally={
         ddg.save(r.script.path)
-		    if(display == TRUE)
-			    .ddg.loadDDG(.ddg.path())
+        if(display==TRUE){
+          disp <- ddg.display()
+          return(disp)
+        }else{
+          invisible()
+        }
       }
   )
-  invisible()
 }
 
 # ddg.save inserts attribute information and the number of
@@ -5476,14 +5488,13 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
 # quit (optional) - If TRUE, remove all DDG files from memory.
 
 ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE) {
-  
   if (!.ddg.is.init()) return(invisible())
-  
+
   if (interactive() && .ddg.enable.console()) {
     # Get the final commands
     .ddg.console.node()
   }
-  
+
    # If there is a display device open, grab what is on the display
    if (length(dev.list()) >= 1) {
      #print("ddg.save: Saving graphics open at end of script")
@@ -5491,18 +5502,18 @@ ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE) {
      tryCatch (.ddg.capture.current.graphics(basename(.ddg.get("ddg.r.script.path"))),
          error = function (e) e)
    }
-  
+
   # Delete temporary files.
   # .ddg.delete.temp()
-  
+
   # Save ddg.txt to file.
   .ddg.txt.write()
   if (interactive()) print(paste("Saving ddg.txt in ", .ddg.path(), sep=""))
-  
+
   # Save ddg.json to file.
   .ddg.json.write()
   if (interactive()) print(paste("Saving ddg.json in ", .ddg.path(), sep=""))
-  
+
   # Save sourced scripts (if any). First row is main script.
   ddg.sourced.scripts <- .ddg.get(".ddg.sourced.scripts")
   if (!is.null(ddg.sourced.scripts)) {
@@ -5513,12 +5524,12 @@ ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE) {
       }
     }
   }
-  
+
   # Save debug files to debug directory.
   if (save.debug | .ddg.save.debug()) {
     .ddg.save.debug.files()
   }
-  
+
   # Clear DDGStatements from ddg environment.
   .ddg.set("ddg.statement.num", 0)
   .ddg.set("ddg.statements", list())
@@ -5531,17 +5542,17 @@ ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE) {
   if (quit) {
     # Restore history settings.
     if (.ddg.is.set('ddg.original.hist.size')) Sys.setenv("R_HISTSIZE"=.ddg.get('ddg.original.hist.size'))
-    
+
     # Delete temporary files.
     .ddg.delete.temp()
-    
+
     # Capture current graphics device.
     .ddg.auto.graphic.node(dev.to.capture=dev.cur)
-    
+
     # Shut down the DDG.
     .ddg.clear()
   }
-  
+
   invisible()
 }
 
@@ -5774,10 +5785,16 @@ ddg.source <- function (file,  ddgdir = NULL, local = FALSE, echo = verbose, pri
 # ddg.display loads & displays the current DDG.
 
 ddg.display <- function () {
-  if (.ddg.is.set("ddg.path") & file.exists(paste(.ddg.path(), "/ddg.txt", sep=""))) {
-    .ddg.loadDDG(.ddg.path())
-  } else {
-    print("DDG not available")
+  jar.path<- "/RDataTracker/java/DDGExplorer.jar"
+  check.library.paths<- file.exists(paste(.libPaths(),jar.path,sep = ""))
+  index<- min(which(check.library.paths == TRUE))
+  ddgexplorer_path<- paste(.libPaths()[index],jar.path,sep = "")
+  ddgtxt.path<- paste(.ddg.path() ,"/ddg.txt",sep = "")
+  system(paste("java -jar ", ddgexplorer_path, ddgtxt.path, sep = " "), wait = FALSE)
+  
+  if(is.element('CamFlow', installed.packages()[,1])){ # did we install the CamFlow visualiser?
+    json <- .ddg.json.current()
+    CamFlowVisualiser(json)
   }
 }
 
@@ -5941,7 +5958,7 @@ ddg.flush.ddg <- function(ddg.path=NULL) {
     ddg.path.debug <- .ddg.path.debug()
     ddg.path.scripts <- .ddg.path.scripts()
   }
-  
+
   # Remove files unless the DDG directory is the working directory.
   if (ddg.path != getwd()) {
     unlink(paste(ddg.path, "*.*", sep="/"))
@@ -5950,7 +5967,7 @@ ddg.flush.ddg <- function(ddg.path=NULL) {
     unlink(paste(ddg.path.debug, "*.*", sep="/"))
     unlink(paste(ddg.path.scripts, "*.*", sep="/"))
   }
-  
+
   invisible()
 }
 

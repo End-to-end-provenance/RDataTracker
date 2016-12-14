@@ -18,3 +18,14 @@ importFrom(stringr, str_trim)
 importFrom(devtools, session_info)
 importFrom(methods, setMethod)
 importFrom(methods, setClass)
+
+# CRAN check gives errors if these are not included.
+# However, if we include these, ddg.run crashes R when run 
+# in RStudio on Windows.  It does not crash on Mac.  It 
+# also does not crash on Windows using the standard R environment.
+#importFrom("grDevices", "dev.copy", "dev.copy2pdf", "dev.cur",
+#           "dev.list", "dev.off", "dev.print", "dev.set", "pdf")
+#importFrom("methods", "new")
+#importFrom("utils", "capture.output", "getParseData", "head",
+#           "object.size", "packageVersion", "savehistory", "tail",
+#           "timestamp", "write.csv")
