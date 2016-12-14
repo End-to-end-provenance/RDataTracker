@@ -183,6 +183,27 @@ ddg.MAX_HIST_LINES <- 2^14
   else return (0)
 }
 
+.ddg.statement.num <- function() {
+  return(.ddg.get("ddg.statement.num"))
+}
+
+.ddg.statements <- function() {
+  return(.ddg.get("ddg.statements"))
+}
+
+.ddg.statement <- function(i) {
+  ddg.statements <- .ddg.statements()
+  return(ddg.statements[[i]])
+}
+
+.ddg.loop.num <- function() {
+  return(.ddg.get("ddg.loop.num"))
+}
+
+.ddg.loops <- function() {
+  return(.ddg.get("ddg.loops"))
+}
+
 # Functions that allow us to save warnings when they occur
 # so that we can create the warning node after the node
 # that caused the warning is created.
@@ -284,6 +305,16 @@ ddg.MAX_HIST_LINES <- 2^14
 
 .ddg.pop <- function(x) {
   return(assign(as.character(substitute(x)), x[-length(x)], parent.frame()))
+}
+
+.ddg.add.ddgstatement <- function(parsed.stmt) {
+  ddg.statements <- c(.ddg.statements(), parsed.stmt)
+  .ddg.set("ddg.statements", ddg.statements)
+}
+
+.ddg.add.loop <- function() {
+  ddg.loops <- c(.ddg.loops(), 0)
+  .ddg.set("ddg.loops", ddg.loops)
 }
 
 #-------------------BASIC FUNCTIONS-----------------------#
@@ -457,6 +488,25 @@ ddg.MAX_HIST_LINES <- 2^14
   # Save debug files on debug directory
   .ddg.set("ddg.save.debug", FALSE)
 
+  # DDGStatement number
+  .ddg.set("ddg.statement.num", 0)
+  
+  # DDGStatements list
+  .ddg.set("ddg.statements", list())
+  
+  # Control loop number
+  .ddg.set("ddg.loop.num", 0)
+  
+  # Control loop list
+  .ddg.set("ddg.loops", list())
+  
+  # Loop annotation
+  .ddg.set("ddg.loop.annotate", TRUE)
+
+  # Set max.snapshot.size for console mode.
+  if (!.ddg.is.set("ddg.max.snapshot.size")) {
+    .ddg.set("ddg.max.snapshot.size", 100)
+  }
 }
 
 # .ddg.set.history provides a wrapper to change the number of
@@ -518,8 +568,6 @@ ddg.MAX_HIST_LINES <- 2^14
   }
   return(stimes)
 }
-
-
 
 # .ddg.sourced.script.names.json returns sourced script names,
 # numbers and timestamps for the JSON file.
@@ -1830,9 +1878,11 @@ ddg.MAX_HIST_LINES <- 2^14
     #print(paste(".ddg.create.data.use.edges.for.console.cmd: var =", var))
     # Make sure there is a node we could connect to.
     scope <- .ddg.get.scope(var, for.caller)
+
     #print(paste(".ddg.create.data.use.edges.for.console.cmd: scope =", scope))
+
     if (.ddg.data.node.exists(var, scope)) {
-      #print(".ddg.create.data.use.edges.for.console.cmd found data node")
+      # print(".ddg.create.data.use.edges.for.console.cmd found data node")
       nRow <- which(vars.set$variable == var)
 
       # Check if the node is written in the console block.
@@ -1843,7 +1893,11 @@ ddg.MAX_HIST_LINES <- 2^14
         # Draw the edge if we will connect to a node that exists
         # before the console block or to the last writer of this
         # variable within the console block.
-				if (cmd.pos <= first.writer || cmd.pos > last.writer) {
+
+        if (cmd.pos <= first.writer || cmd.pos >= last.writer) {
+        # Note: the following line leads to the self-referencing 
+        # node problem.
+        # if (cmd.pos <= first.writer || cmd.pos > last.writer) {
           .ddg.data2proc(var, scope, cmd@abbrev)
         }
 
@@ -1882,13 +1936,16 @@ ddg.MAX_HIST_LINES <- 2^14
 # stack (optional) - stack to use for evaluating variable.
 
 .ddg.create.data.set.edges.for.cmd <- function(vars.set, cmd, cmd.pos, env, for.finish.node = FALSE, scope=NULL, stack=NULL) {
-  #print(paste("In .ddg.create.data.set.edges.for.cmd: cmd = ", cmd@abbrev))
+  # print(paste("In .ddg.create.data.set.edges.for.cmd: cmd = ", cmd@abbrev))
+  
   vars.assigned <- cmd@vars.set
-  #print(paste("In .ddg.create.data.set.edges.for.cmd: vars.assigned = ", vars.assigned))
-  #print("In .ddg.create.data.set.edges.for.cmd: vars.set = ")
-  #print(vars.set)
+
+  # print(paste("In .ddg.create.data.set.edges.for.cmd: vars.assigned = ", vars.assigned))
+  # print("In .ddg.create.data.set.edges.for.cmd: vars.set = ")
+  # print(vars.set)
+
   for (var in vars.assigned) {
-    #print(paste(".ddg.create.data.set.edges.for.cmd: var = ", var))
+    # print(paste(".ddg.create.data.set.edges.for.cmd: var = ", var))
     whichRows <- which(vars.set$variable == var)
 
     # Only create a node edge for the last place that a variable is
@@ -1926,7 +1983,7 @@ ddg.MAX_HIST_LINES <- 2^14
   environment <- if (is.environment(env)) env else .GlobalEnv
 
   for (i in 1:nrow(vars.set)) {
-    #print(paste("Checking ", vars.set$variable[i]))
+    # print(paste("Checking ", vars.set$variable[i]))
     if (vars.set$possible.last.writer[i] > vars.set$last.writer[i]) {
       value <- tryCatch(eval(parse(text=vars.set$variable[i]), environment),
           error = function(e) {NULL}
@@ -2316,7 +2373,7 @@ ddg.MAX_HIST_LINES <- 2^14
 # command - input command.
 
 .ddg.link.function.returns <- function(command) {
-	# Find the functions that have completed but whose returns have
+  # Find the functions that have completed but whose returns have
   # not been used yet.
 	returns <- .ddg.get(".ddg.return.values")
 	unused.returns <- returns[!returns$return.used & returns$return.node.id > 0, ]
@@ -2426,8 +2483,9 @@ ddg.MAX_HIST_LINES <- 2^14
 		cmd.abbrev <- .ddg.add.abstract.node("Finish", .ddg.last.cmd, env=env, called=paste(called, "-> .ddg.close.last.command.node"))
 
 		# Add link from a function return node if there is one.
-		.ddg.link.function.returns(.ddg.last.cmd$text)
-
+		.ddg.link.function.returns(.ddg.last.cmd)
+		# .ddg.link.function.returns(.ddg.last.cmd$text)
+		
 		# Create outflowing edges.
     # Has the assignment happened yet???
 		#vars.set <- .ddg.find.var.assignments(.ddg.last.cmd)
@@ -2579,16 +2637,13 @@ ddg.MAX_HIST_LINES <- 2^14
 
 # exprs - a list of parsed expressions
 # script.name - the name of the script the expressions come from
-# annotate.functions - if true, we will place annotations inside function defintions so we can record
-#      provenance internal to them
 # parseData - information provided by the parser that we use to find line numbers
-# enclosing.pos - if exprs are statements within a function definition, enclosing.pos is the source position
-#      information of the entire function declaration
+# enclosing.pos - if exprs are statements within a function definition, enclosing.pos
+#   is the source position information of the entire function declaration
 
 # Returns a list of DDGStatement objects
 
-.ddg.create.DDGStatements <- function (exprs, script.name, script.num, annotate.functions, parseData = NULL, enclosing.pos = NULL) {
-
+.ddg.create.DDGStatements <- function (exprs, script.name, script.num, parseData = NULL, enclosing.pos = NULL) {
   # The parse data gives us line number information
   if (is.null(parseData)) {
     parseData <- getParseData(exprs, includeText=TRUE)
@@ -2598,8 +2653,7 @@ ddg.MAX_HIST_LINES <- 2^14
       cmds <- vector("list", (length(exprs)))
       for (i in 1:length(exprs)) {
         expr <- as.expression(exprs[i])
-        cmds[[i]] <- .ddg.construct.DDGStatement(expr, NA, script.name, script.num, NA,
-            annotate.functions, parseData)
+        cmds[[i]] <- .ddg.construct.DDGStatement(expr, NA, script.name, script.num, NA, parseData)
       }
       return(cmds)
     }
@@ -2618,9 +2672,7 @@ ddg.MAX_HIST_LINES <- 2^14
 
     # Start at the first entry in parse data that begins after the enclosing function begins,
     # ends before the enclosing function ends, and matches the text of the first expression.
-    next.parseData <- which(non.comment.parse.data$line1 >= enclosing.pos@startLine &
-            non.comment.parse.data$line2 <= enclosing.pos@endLine &
-            non.comment.parse.data$text == paste(deparse(exprs[[1]]), collapse="\n") )[1]
+    next.parseData <- which(non.comment.parse.data$line1 >= enclosing.pos@startLine & non.comment.parse.data$line2 <= enclosing.pos@endLine & non.comment.parse.data$text == paste(deparse(exprs[[1]]), collapse="\n") )[1]
   }
 
   # Get the breakpoint information
@@ -2632,10 +2684,8 @@ ddg.MAX_HIST_LINES <- 2^14
   next.cmd <- 1
   for (i in 1:length(exprs)) {
     expr <- as.expression(exprs[i])
-    next.expr.pos <- new (Class = "DDGStatementPos",
-        non.comment.parse.data[next.parseData, ])
-    cmds[[next.cmd]] <- .ddg.construct.DDGStatement(expr, next.expr.pos, script.name, script.num, breakpoints,
-        annotate.functions, parseData)
+    next.expr.pos <- new (Class = "DDGStatementPos", non.comment.parse.data[next.parseData, ])
+    cmds[[next.cmd]] <- .ddg.construct.DDGStatement(expr, next.expr.pos, script.name, script.num, breakpoints, parseData)
     next.cmd <- next.cmd + 1
 
     # If there are more expressions, determine where to look next in the parseData
@@ -2646,9 +2696,7 @@ ddg.MAX_HIST_LINES <- 2^14
 
        # Find the first entry in parseData that has the same parent as the
        # previous expression and starts after the previous expression.
-       next.parseData <- which(non.comment.parse.data$parent == last.parent &
-               non.comment.parse.data$line1 >= last.ending.line &
-               non.comment.parse.data$id > last.id) [1]
+       next.parseData <- which(non.comment.parse.data$parent == last.parent & non.comment.parse.data$line1 >= last.ending.line & non.comment.parse.data$id > last.id) [1]
     }
   }
 
@@ -2659,7 +2707,7 @@ ddg.MAX_HIST_LINES <- 2^14
 # the debug directory.
 
 .ddg.save.annotated.script <- function(cmds, script.name) {
-    for (i in 1:length(cmds)) {
+  for (i in 1:length(cmds)) {
     expr <- cmds[[i]]@annotated
     line <- paste(deparse(expr[[1]]), collapse="\n")
     if (i == 1) script <- line else script <- append(script, line)
@@ -2670,16 +2718,17 @@ ddg.MAX_HIST_LINES <- 2^14
   close(fileout)
 }
 
-# .ddg.parse.commands takes as input a list of parsed expressions from an R script
-# and creates DDG nodes for each command. If environ is an
+# .ddg.parse.commands takes as input a list of parsed expressions from 
+# an R script and creates DDG nodes for each command. If environ is an
 # environment, it executes the commands in that environment
 # immediately before creating the respective nodes for that
 # command, and then creates the data nodes based on the information
 # available in the environment. If environ is not NULL, calls to
 # ddg.* are not executed so only the clean script is processed.
-# If annotate.functions is TRUE, ddg.function, ddg.eval and ddg.return.value
-# are added to each function definition before commands are processed and
-# the changes are saved to the file annotated-script.r in the ddg directory.
+# If annotate.inside is TRUE, ddg.function, ddg.eval and ddg.return.value
+# are added to each function definition and ddg.eval is added to control
+# statements before commands are processed. If save.debug is TRUE,
+# changes to the script are saved in the ddg/debug directory.
 # ddg.annotate.on and ddg.annotate.off may be used to limit the
 # functions that are annotated or not annotated, respectively.
 #
@@ -2703,19 +2752,16 @@ ddg.MAX_HIST_LINES <- 2^14
 # print.eval (optional) - print result of each evaluation.
 # max.deparse.length (optional) - maximum number of characters
 #   output for deparse of a single expression.
-# annotate.functions (optional) - if TRUE, functions are annotated
 # called.from.ddg.eval(optional) - whether called from ddg.eval
 # cmds - list of DDG Statements that correspond to the exprs passed in.  This is
 #   currently only used when called from ddg.eval.  Normally, ddg.parse.commands
 #   creates the DDG Statement objects.
 
-.ddg.parse.commands <- function (exprs, script.name="", script.num=NA, environ, ignore.patterns=c('^ddg.'),
-    node.name="Console", run.commands = FALSE, echo=FALSE, print.eval=echo, max.deparse.length=150,
-    annotate.functions = FALSE, called.from.ddg.eval=FALSE, cmds=NULL) {
-
+.ddg.parse.commands <- function (exprs, script.name="", script.num=NA, environ, ignore.patterns=c('^ddg.'), node.name="Console", run.commands = FALSE, echo=FALSE, print.eval=echo, max.deparse.length=150, called.from.ddg.eval=FALSE, cmds=NULL) {
+  
   # Gather all the information that we need about the statements
   if (is.null(cmds)) {
-    cmds <- .ddg.create.DDGStatements (exprs, script.name, script.num, annotate.functions)
+    cmds <- .ddg.create.DDGStatements (exprs, script.name, script.num)
 
     if (.ddg.save.debug()) {
       .ddg.save.annotated.script(cmds, script.name)
@@ -2726,7 +2772,7 @@ ddg.MAX_HIST_LINES <- 2^14
   # Figure out if we will execute commands or not.
   execute <- run.commands & !is.null(environ) & is.environment(environ)
 
-  #print (paste("ddg.parse.commands: .ddg.func.depth =", .ddg.get(".ddg.func.depth")))
+  # print (paste("ddg.parse.commands: .ddg.func.depth =", .ddg.get(".ddg.func.depth")))
   inside.func <- (.ddg.get(".ddg.func.depth") > 0)
 
   # Attempt to close the previous collapsible command node if a ddg
@@ -2736,8 +2782,8 @@ ddg.MAX_HIST_LINES <- 2^14
   # Get the last command in the new commands and check to see if
   # we need to create a new .ddg.last.cmd node for future reference.
   if (!inside.func) {
-    .ddg.last.cmd <- cmds[[num.cmds]]
-    #print(paste(".ddg.parse.commands: setting .ddg.last.cmd to", .ddg.last.cmd$text))
+      .ddg.last.cmd <- cmds[[num.cmds]]
+    # print(paste(".ddg.parse.commands: setting .ddg.last.cmd to", .ddg.last.cmd$text))
     if (.ddg.last.cmd@isDdgFunc) {
       .ddg.last.cmd <- NULL
       #print(".ddg.parse.commands: setting .ddg.last.cmd to null")
@@ -2754,8 +2800,8 @@ ddg.MAX_HIST_LINES <- 2^14
   named.node.set <- FALSE
   start.node.created <- ""
 
-  if (num.cmds > 0 && .ddg.is.init() && !inside.func) {
-    #print(paste("ddg.new.parse.commands: Creating Start for", node.name))
+  if (num.cmds > 0 && .ddg.is.init() && !inside.func && !called.from.ddg.eval) {
+    # print(paste("ddg.new.parse.commands: Creating Start for", node.name))
     .ddg.add.abstract.node("Start", node.name = node.name, env = environ)
     named.node.set <- TRUE
     start.node.created <- node.name
@@ -2772,7 +2818,7 @@ ddg.MAX_HIST_LINES <- 2^14
   # write of a variable and only if that occurs after the last
   # possible writer. Create an edge for a data use as long as the
   # use happens before the first writer/possible writer or after
-  # the last writer/possible writer. Lastly, if environ is set to
+  # the last writer/possible writer. Lastly, if execute is set to
   # true, then execute each command immediately before attempting
   # to create the DDG nodes.
 
@@ -2791,15 +2837,16 @@ ddg.MAX_HIST_LINES <- 2^14
     # Loop over the commands as well as their string representations.
     for (i in 1:length(cmds)) {
       cmd <- cmds[[i]]
+
       if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Processing", cmd@abbrev))
 
       # Process breakpoint. We stop if there is a breakpoint set on this line or we are single-stepping.
-      #print("Checking for breakpoints")
+      # print("Checking for breakpoints")
       if (.ddg.is.sourced() & (cmd@is.breakpoint | .ddg.get("ddg.break")) & !.ddg.break.ignore()) {
         .ddg.process.breakpoint(cmd, inside.function=called.from.ddg.eval)
       }
 
-      #print("Checking whether to set last.cmd")
+      # print("Checking whether to set last.cmd")
       if (.ddg.enable.source() && grepl("^ddg.eval", cmd@text) && .ddg.enable.console()) {
         if (is.null(.ddg.last.cmd)) {
           .ddg.last.cmd <- cmd
@@ -2809,12 +2856,23 @@ ddg.MAX_HIST_LINES <- 2^14
       # Get environment for output data node.
       d.environ <- environ
       if (.ddg.is.global.assign(cmd@parsed[[1]])) d.environ <- globalenv()
-
+      # Check for control & loop statements.
+      st.type <- .ddg.get.statement.type(cmd@parsed[[1]])
+      
+      control.statement <- (st.type == "if" || st.type == "for" || st.type == "while" || st.type == "repeat" || st.type == "{")
+      
+      loop.statement <- (st.type == "for" || st.type == "while" || st.type == "repeat")
+      
       # Specifies whether or not a procedure node should be created
       # for this command. Basically, if a ddg exists and the
-      # command is not a DDG command, it should be created.
+      # command is not a DDG command or a control statement, it should 
+      # be created. Note that if control statements are annotated,
+      # a procedure node is created for each statement inside a control
+      # block, so there is no need to create additional nodes for the 
+      # control statement itself.
 
-      create <- !cmd@isDdgFunc && .ddg.is.init() && .ddg.enable.console()
+      create <- !cmd@isDdgFunc && .ddg.is.init() && .ddg.enable.console() && !(control.statement && ddg.annotate.inside() && ddg.max.loops() > 0)
+      # create <- !cmd@isDdgFunc && .ddg.is.init() && .ddg.enable.console()
       start.finish.created <- FALSE
 
       # If the command does not match one of the ignored patterns.
@@ -2835,7 +2893,7 @@ ddg.MAX_HIST_LINES <- 2^14
           # If we will create a node, then before execution, set
           # this command as a possible abstraction node but only
           # if it's not a call that itself creates abstract nodes.
-          if (!cmd@isDdgFunc) {
+          if (!cmd@isDdgFunc && cmd@text != "next") {
             .ddg.set(".ddg.possible.last.cmd", cmd)
             .ddg.set (".ddg.cur.cmd", cmd)
 
@@ -2858,15 +2916,19 @@ ddg.MAX_HIST_LINES <- 2^14
           }
 
           # Capture any warnings that occur when an expression is evaluated.
-          # Note that we cannot just use a tryCatch here because it behaves slightly differently
-          # and we would lose the value that eval returns.  withCallingHandlers returns the value.
+          # Note that we cannot just use a tryCatch here because it behaves
+          # slightly differently and we would lose the value that eval
+          # returns.  withCallingHandlers returns the value.
 
-          # Evaluate.
-          if (.ddg.debug.lib()) print (paste (".ddg.parse.commands evaluating ", cmd@annotated))
+          # EVALUATE.
+
+          if (.ddg.debug.lib()) print (paste (".ddg.parse.commands: Evaluating ", cmd@annotated))
+
           result <- withCallingHandlers (eval(cmd@annotated, environ, NULL), warning = .ddg.set.warning)
-          if (.ddg.debug.lib()) print (paste (".ddg.parse.commands done evaluating ", cmd@annotated))
 
-          if (!cmd@isDdgFunc) {
+          if (.ddg.debug.lib()) print (paste (".ddg.parse.commands: Done evaluating ", cmd@annotated))
+
+          if (!cmd@isDdgFunc && cmd@text != "next") {
             # Need to get the stack again because it could have been
             # modified during the eval call.
             .ddg.cur.cmd.stack <- .ddg.get(".ddg.cur.cmd.stack")
@@ -2880,6 +2942,13 @@ ddg.MAX_HIST_LINES <- 2^14
               .ddg.add.abstract.node("Finish", cmd, environ)
               start.finish.created <- TRUE
               .ddg.link.function.returns(cmd)
+              
+              # If the number of loop iterations exceeds max.loops, add
+              # output data nodes containing final values to the finish node.
+              if (loop.statement && !ddg.loop.annotate()) {
+                vars.set2 <- .ddg.add.to.vars.set(vars.set, cmd, i)
+                .ddg.create.data.node.for.possible.writes(vars.set2, cmd, environ)
+              }
             }
 
             # Remove the last command & start.created values pushed
@@ -2933,6 +3002,7 @@ ddg.MAX_HIST_LINES <- 2^14
           if (execute) {
             # Add variables to set.
             vars.set <- .ddg.add.to.vars.set(vars.set,cmd,i)
+
             if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Adding", cmd@abbrev, "information to vars.set"))
           }
 
@@ -2941,11 +3011,14 @@ ddg.MAX_HIST_LINES <- 2^14
           .ddg.link.function.returns(cmd)
 
           if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Adding input data nodes for", cmd@abbrev))
+          
           .ddg.create.data.set.edges.for.cmd(vars.set, cmd, i, d.environ)
+          
           if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Adding output data nodes for", cmd@abbrev))
 
           if (cmd@writesFile) .ddg.create.file.write.nodes.and.edges (cmd, environ)
           .ddg.set.graphics.files (cmd, environ)
+
           if (cmd@has.dev.off) {
             .ddg.capture.graphics(cmd)
           }
@@ -2987,7 +3060,7 @@ ddg.MAX_HIST_LINES <- 2^14
   # is initialized (also, save).
   #
   if (.ddg.is.init() && named.node.set && !inside.func) {
-    .ddg.add.abstract.node("Finish", node.name = node.name, env=environ)
+      .ddg.add.abstract.node("Finish", node.name = node.name, env=environ)
   }
 
   # Open up a new collapsible node in case we need to parse
@@ -3309,7 +3382,7 @@ ddg.MAX_HIST_LINES <- 2^14
 
 .ddg.snapshot.node <- function(dname, fext, data, save.object = FALSE, dscope=NULL, from.env=FALSE) {
   # Determine if we should save the entire data
-  max.snapshot.size <- .ddg.get(".ddg.max.snapshot.size")
+  max.snapshot.size <- ddg.max.snapshot.size()
 
   if (max.snapshot.size == 0) {
     return(.ddg.data.node ("Data", dname, "", dscope, from.env=from.env))
@@ -3341,7 +3414,7 @@ ddg.MAX_HIST_LINES <- 2^14
   }
   else if (is.data.frame(data) || is.matrix(data) || is.array(data) || is.list(data)) {
     if (!full.snapshot) {
-      data <- head(data, n=1000)
+      data <- head(data, n=10*max.snapshot.size)
       snapname <- paste(dname, "-PARTIAL", sep="")
     }
   }
@@ -4003,7 +4076,7 @@ ddg.MAX_HIST_LINES <- 2^14
 # been created already.
 .ddg.create.start.for.cur.cmd <- function (call, caller.env) {
   if (.ddg.is.set(".ddg.cur.cmd")) {
-    #print("In .ddg.create.start.for.cur.cmd")
+    # print("In .ddg.create.start.for.cur.cmd")
     .ddg.cur.cmd <- .ddg.get(".ddg.cur.cmd")
     .ddg.cur.cmd.stack <- .ddg.get(".ddg.cur.cmd.stack")
     stack.length <- length(.ddg.cur.cmd.stack)
@@ -4017,6 +4090,13 @@ ddg.MAX_HIST_LINES <- 2^14
           .ddg.cur.expr.stack <- .ddg.get(".ddg.cur.expr.stack")
           .ddg.create.data.use.edges.for.console.cmd(vars.set = data.frame(), .ddg.cur.cmd, 0, for.caller=TRUE)
 
+          # Add Details Omitted node before annotated loops if needed.
+          st.type <- .ddg.get.statement.type(.ddg.cur.cmd@parsed[[1]])
+          loop.statement <- (st.type == "for" || st.type == "while" || st.type == "repeat")
+          if (loop.statement && ddg.first.loop() > 1) {
+            ddg.details.omitted()
+          }
+
           # Mark the start node as created on the stack.  Mark it even if we did not
           # create the abstract node above, because we will create it below.
           .ddg.set (".ddg.cur.cmd.stack", c(.ddg.cur.cmd.stack[1:stack.length-1], TRUE))
@@ -4028,6 +4108,123 @@ ddg.MAX_HIST_LINES <- 2^14
     }
     #print("Done .ddg.create.start.for.cur.cmd")
   }
+}
+
+# .ddg.get.last.cmd returns the last command on the stack.
+
+.ddg.get.last.cmd <- function() {
+  .ddg.cur.cmd.stack <- .ddg.get(".ddg.cur.cmd.stack")
+  stack.length <- length(.ddg.cur.cmd.stack)
+  cmd <- .ddg.cur.cmd.stack[stack.length-1][[1]]
+}
+
+# .ddg.remove.last.cmd.start.created removes the last command and 
+# start.created from the stack.
+
+.ddg.remove.last.cmd.start.created <- function () {
+  .ddg.cur.cmd.stack <- .ddg.get(".ddg.cur.cmd.stack")
+  stack.length <- length(.ddg.cur.cmd.stack)
+  
+  if (stack.length == 2) {
+    .ddg.set(".ddg.cur.cmd.stack", vector())
+  }
+  else {
+    .ddg.set(".ddg.cur.cmd.stack", .ddg.cur.cmd.stack[1:(stack.length-2)])
+  }
+}
+
+# .ddg.break.statement creates a procedure node for a break statement in
+# a for, repeat, or while statement. It also adds a finish node for the 
+# if statement (if any) where the break occurs, adds a finish node 
+# for the for, repeat, or while loop where the break occurs, and adds a
+# finish node for the for, repeat, or while statement.
+
+.ddg.break.statement <- function() {
+  # Create procedure node for break statement.
+  .ddg.proc.node("Operation", "break", "break")
+  .ddg.proc2proc()
+  
+  # Get last command from stack.
+  cmd <- .ddg.get.last.cmd()
+  # Get loop type.
+  loop.type <- as.character(cmd@parsed[[1]][[1]])
+  
+  # Create finish nodes if break occurs in if statement.
+  if (loop.type == "if") {
+    # Create finish node for if loop.
+    ddg.finish("if")
+    # Create finish node for if statement.
+    .ddg.add.abstract.node("Finish", cmd, parent.frame())
+    
+    # Remove last command & start.created from stack.
+    .ddg.remove.last.cmd.start.created()
+    # Get last command from stack.
+    cmd <- .ddg.get.last.cmd()
+    # Get loop type.
+    loop.type <- as.character(cmd@parsed[[1]][[1]])
+  }
+  
+  # Create finish node for for, repeat, or while loop.
+  loop.name <- paste(loop.type, "loop")
+  ddg.finish(loop.name)
+  
+  # Create finish node for for, while, or repeat statement.
+  .ddg.add.abstract.node("Finish", cmd, parent.frame())
+  
+  # Remove last command & start.created from stack.
+  .ddg.remove.last.cmd.start.created()
+}
+
+# .ddg.next.statement creates a procedure node for a next statement in
+# a for, repeat, or while statement. It also adds a finish node for the 
+# if statement (if any) where the next occurs and adds a finish node for
+# the for, while, or repeat loop where the next occurs.
+
+.ddg.next.statement <- function() {
+  # Create procedure node for next statement.
+  .ddg.proc.node("Operation", "next", "next")
+  .ddg.proc2proc()
+  
+  # Get last command from stack.
+  cmd <- .ddg.get.last.cmd()
+  # Get loop type.
+  loop.type <- as.character(cmd@parsed[[1]][[1]])
+  
+  # Create finish nodes if break occurs in if statement.
+  if (loop.type == "if") {
+    # Create finish node for if loop.
+    ddg.finish("if")
+    # Create finish node for if statement.
+    .ddg.add.abstract.node("Finish", cmd, parent.frame())
+    
+    # Remove last command & start.created from stack.
+    .ddg.remove.last.cmd.start.created()
+    # Get last command from stack.
+    cmd <- .ddg.get.last.cmd()
+    # Get loop type.
+    loop.type <- as.character(cmd@parsed[[1]][[1]])
+  }
+  
+  # Create finish node for for, repeat, or while loop.
+  loop.name <- paste(loop.type, "loop")
+  ddg.finish(loop.name)
+}
+
+# .ddg.loadDDG displays the DDG automatically.
+
+.ddg.loadDDG<- function(ddg.folder){
+  jar.path<- "/RDataTracker/java/DDGExplorer.jar"
+  check.library.paths<- file.exists(paste(.libPaths(),jar.path,sep = ""))
+  index<- min(which(check.library.paths == TRUE))
+  ddgexplorer_path<- paste(.libPaths()[index],jar.path,sep = "")
+  ddgtxt.path<- paste(ddg.folder,"/ddg.txt",sep = "")
+  system(paste("java -jar ", ddgexplorer_path, ddgtxt.path, sep = " "), wait = FALSE)
+  
+#   if(Sys.info()['sysname']!="Windows"){
+# 		system(paste("java -jar ",ddgexplorer_path, ddgtxt.path,'&',sep = " "))
+# 	}else{
+# 		system(paste("START java -jar ",ddgexplorer_path, ddgtxt.path,sep = " "))
+# 	}
 }
 
 # .ddg.markdown takes a Rmd file and extracts the R code and text through
@@ -4352,6 +4549,7 @@ ddg.procedure <- function(pname, ins=NULL, outs.graphic=NULL, outs.data=NULL, ou
 # and edges are created for the assignment.
 
 # expr - the value returned by the function.
+
 ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
   #print("In ddg.return.value")
 
@@ -4424,7 +4622,7 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
   # Create a return proc node
 
   if (is.null(cmd.func)) {
-    return.stmt <- .ddg.construct.DDGStatement (parse(text=orig.return), pos=NA, script.num=NA, breakpoints=NA, annotate.functions=FALSE)
+    return.stmt <- .ddg.construct.DDGStatement (parse(text=orig.return), pos=NA, script.num=NA, breakpoints=NA)
   }
   else {
     return.stmt <- cmd.func()
@@ -4498,26 +4696,142 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
   return(expr)
 }
 
+# ddg.annotate.inside returns the value of the parameter
+# annotate.inside.
+
+ddg.annotate.inside <- function() {
+  return(.ddg.get("ddg.annotate.inside"))
+}
+
+# ddg.first.loop returns the value of the parameter first.loop.
+
+ddg.first.loop <- function() {
+  return(.ddg.get("ddg.first.loop"))
+}
+
+# ddg.max.loops returns the value of the parameter max.loops.
+
+ddg.max.loops <- function() {
+  return(.ddg.get("ddg.max.loops"))
+}
+
+# ddg.max.snapshot.size returns the value of the parameter
+# max.snapshot.size.
+
+ddg.max.snapshot.size <- function() {
+  return(.ddg.get("ddg.max.snapshot.size"))
+}
+
+# ddg.loop.annotate returns the value of the parameter ddg.loop.annotate.
+ddg.loop.annotate <- function() {
+  return(.ddg.get("ddg.loop.annotate"))
+}
+
+# ddg.loop.annotate.on turns on loop annotation.
+ddg.loop.annotate.on <- function() {
+  .ddg.set("ddg.loop.annotate", TRUE)
+}
+
+# ddg.loop.annotate.off turns off loop annotation.
+ddg.loop.annotate.off <- function() {
+  .ddg.set("ddg.loop.annotate", FALSE)
+}
+
+# ddg.loop.count returns the current count for the specified loop.
+
+ddg.loop.count <- function(loop.num) {
+  ddg.loops <- .ddg.loops()
+  return(ddg.loops[[loop.num]])
+}
+
+# ddg.loop.count.inc increments the current count for the specified loop
+# and returns the incremented value.
+
+ddg.loop.count.inc <- function(loop.num) {
+  ddg.loops <- .ddg.loops()
+  ddg.loops[[loop.num]] <- ddg.loops[[loop.num]] + 1
+  .ddg.set("ddg.loops", ddg.loops)
+  return(ddg.loops[[loop.num]])
+}
+
+# ddg.reset.loop.count sets the current count for the specified loop
+# to zero.
+
+ddg.reset.loop.count <- function(loop.num) {
+  ddg.loops <- .ddg.loops()
+  ddg.loops[loop.num] <- 0
+  .ddg.set("ddg.loops", ddg.loops)
+}
+
+# ddg.for.loop inserts a procedure node and a data node in a for loop,
+# indicating the value currently assigned to the index variable.
+
+ddg.forloop <- function(index.var) {
+  index.name <- as.character(deparse(substitute(index.var)))
+  pnode.name <- paste(index.name, "<-", index.var)
+  dscope <- .ddg.get.scope(index.name)
+  
+  .ddg.proc.node("Operation", pnode.name, pnode.name)
+  .ddg.proc2proc()
+  
+  .ddg.data.node("Data", index.name, index.var, dscope, from.env=FALSE)
+  .ddg.proc2data(pnode.name, index.name)
+}
+
+# ddg.details.omitted inserts an operational node called "Details Omitted"
+# in cases where not all iterations of a loop are annotated.  This may
+# happen if the number of the first loop to be annotaed (first.loop) is
+# greater than 1 and/or if the total number of loops to be annotated is
+# less than the actual number of iterations.
+
+ddg.details.omitted <- function() {
+  pnode.name <- "Details Omitted"
+  .ddg.proc.node("Operation", pnode.name, pnode.name)
+  .ddg.proc2proc()
+  
+  if (.ddg.debug.lib()) {
+    print("Adding Details Omitted node")
+  }
+}
+
 # ddg.eval evaluates a statement and creates data flow edges from
 # variable and function return nodes that are used in the
 # statement. If the statement is an assignment statement, it also
 # creates a data node for the variable assigned and a corresponding
-# data flow edge.
+# data flow edge. If ddg.eval is called from inside a function, cmd.func
+# is a function that returns the corresponding DDGStatement object. 
+# If ddg.eval is called from inside a control block, cmd.func is an 
+# integer that points to the corresponding DDGStatement object stored
+# in the list .ddg.statements.
 
 # statement - the statement to evaluate.
 
 ddg.eval <- function(statement, cmd.func=NULL) {
+  # print(statement)
+  # print(cmd.func)
+
+  # Statement at top level.
   if (is.null(cmd.func)) {
     parsed.statement <- parse(text=statement)
     cmd <- NULL
   }
-  else {
+
+  # Statement inside control block.
+  else if (is.numeric(cmd.func)) {
+    num <- cmd.func
+    cmd <- .ddg.statement(num)
+    parsed.statement <- cmd@parsed
+    # print(paste("ddg.eval:", cmd@text))
+    
+  # Statement inside function.
+  } else {
     cmd <- cmd.func()
     parsed.statement <- cmd@parsed
-    #print(paste("ddg.eval:", cmd@text))
-    #print(paste("pos ="))
-    #print(cmd@pos)
+    # print(paste("ddg.eval:", cmd@text))
+    # print(paste("pos ="))
+    # print(cmd@pos)
   }
+
   if (.ddg.debug.lib()) print (paste("ddg.eval: statement =", statement))
 
   frame.num <- .ddg.get.frame.number(sys.calls())
@@ -4533,13 +4847,30 @@ ddg.eval <- function(statement, cmd.func=NULL) {
     .ddg.console.node()
   }
 
-  cmd <- .ddg.parse.commands(parsed.statement, environ=env, run.commands = TRUE, node.name=statement, called.from.ddg.eval=TRUE, cmds=list(cmd))
-  if (.ddg.get(".ddg.func.depth") == 0) {
-    .ddg.link.function.returns(statement)
+  # If break statement, create procedure node and close open start nodes.
 
-    # Create outflowing edges .
-    .ddg.create.data.set.edges.for.cmd(cmd@vars.set, cmd, 1, env)
+  if (!is.null(cmd) && cmd@text == "break") {
+    .ddg.break.statement()
   }
+  
+  # If next statement, create procedure node and close open start nodes.
+  
+  if (!is.null(cmd) && cmd@text == "next") {
+    .ddg.next.statement()
+  }
+  
+  .ddg.parse.commands(parsed.statement, environ=env, run.commands = TRUE, node.name=statement, called.from.ddg.eval=TRUE, cmds=list(cmd))
+  # cmd <- .ddg.parse.commands(parsed.statement, environ=env, run.commands = TRUE, node.name=statement, called.from.ddg.eval=TRUE, cmds=list(cmd))
+
+  if (.ddg.get(".ddg.func.depth")) {
+    if (!is.null(cmd)) {
+      .ddg.link.function.returns(cmd)
+    }
+    # .ddg.link.function.returns(statement)
+  }
+  
+  # Create outflowing edges .
+  # .ddg.create.data.set.edges.for.cmd(cmd@vars.set, cmd, 1, env)
 }
 
 # ddg.data creates a data node for a single or complex data value.
@@ -5001,7 +5332,6 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
 
   # Set environment constants.
   .ddg.set(".ddg.enable.console", enable.console)
-  .ddg.set(".ddg.max.snapshot.size", max.snapshot.size)
   .ddg.set(".ddg.func.depth", 0)
   # .ddg.init.environ()
 
@@ -5061,7 +5391,13 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
 #   is executed with calls to ddg.init and ddg.save so that
 #   provenance for the function is captured.
 # enable.console (optional) - if TRUE, console mode is turned on.
-# annotate.functions (optional) - if TRUE, functions are annotated.
+# annotate.inside (optional) - if TRUE, functions and control statements
+#   are annotated.
+# first.loop (optional) - the first loop to annotate in a for, while, or
+#   repeat statement.
+# max.loops (optional) - the maximum number of loops to annotate in a for,
+#   while, or repeat statement. If max.loops = -1 there is no limit.
+#   If max.loops = 0, no loops are annotated.
 # max.snapshot.size (optional) - the maximum size for objects that
 #   should be output to snapshot files. If 0, no snapshot files are
 #   saved. If -1, all snapshot files are saved.  Size in kilobytes.
@@ -5071,10 +5407,10 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
 #   same effect as inserting ddg.breakpoint() at the top of the script.
 # save.debug (optional) - If TRUE, save debug files to debug directory.
 
-ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = NULL, enable.console = TRUE, annotate.functions = TRUE, max.snapshot.size = 100, debug = FALSE, save.debug = FALSE, display = FALSE) {
+ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = NULL, enable.console = TRUE, annotate.inside = TRUE, first.loop = 1, max.loops = 1, max.snapshot.size = 10, debug = FALSE, save.debug = FALSE, display = FALSE) {
 
   # Initiate ddg.
-  ddg.init(r.script.path, ddgdir, overwrite, enable.console, max.snapshot.size)
+  ddg.init(r.script.path, ddgdir, overwrite, enable.console)
 
   # Create ddg directory.
   # dir.create(.ddg.path(), showWarnings = FALSE)
@@ -5086,6 +5422,26 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
   # Set .ddg.is.sourced to TRUE if script provided.
   if (!is.null(r.script.path)) .ddg.set(".ddg.is.sourced", TRUE)
 
+  # If ddg.detail is not set, use values of annotate.inside, max.loops
+  # and max.snapshot.size.
+  if (is.null(ddg.get.detail())) {
+    # Store value of annotate.inside.
+    .ddg.set("ddg.annotate.inside", annotate.inside)
+  
+    # Store maximum number of loops to annotate.
+    if (max.loops < 0) max.loops <- 10^10
+    .ddg.set("ddg.max.loops", max.loops)
+  
+    # Store maximum snapshot size.
+    .ddg.set("ddg.max.snapshot.size", max.snapshot.size)
+  }
+    
+  # If loops are not annotated, do not annotate functions called from inside a loop.
+  if (max.loops == 0) ddg.loop.annotate.off()
+  
+  # Set number of first loop.
+  .ddg.set("ddg.first.loop", first.loop)
+  
   # Set breakpoint if debug is TRUE.
   if (debug) ddg.breakpoint()
 
@@ -5101,8 +5457,7 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
                 ddgdir = ddgdir,
                 ignore.ddg.calls = FALSE,
                 ignore.init = TRUE,
-                force.console = FALSE,
-                annotate.functions = annotate.functions)
+                force.console = FALSE)
           else stop("r.script.path and f cannot both be NULL"),
       error=function(e) {
         e.str <- toString(e)
@@ -5175,6 +5530,14 @@ ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE) {
     .ddg.save.debug.files()
   }
 
+  # Clear DDGStatements from ddg environment.
+  .ddg.set("ddg.statement.num", 0)
+  .ddg.set("ddg.statements", list())
+  
+  # Clear loop information from ddg environment.
+  .ddg.set("ddg.loop.num", 0)
+  .ddg.set("ddg.loops", list())
+  
   # By convention, this is the final call to ddg.save.
   if (quit) {
     # Restore history settings.
@@ -5217,11 +5580,10 @@ ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE) {
 # ignore.ddg.calls (optional) - if TRUE, ignore DDG function calls.
 # ignore.init (optional) - if TRUE, ignore ddg.init and ddg.run.
 # force.console (optional) - if TRUE, turn console mode on.
-# annotate.functions (optional) - if TRUE, functions are annotated.
 
 ddg.source <- function (file,  ddgdir = NULL, local = FALSE, echo = verbose, print.eval = echo,
     verbose = getOption("verbose"), max.deparse.length = 150, chdir = FALSE, encoding = getOption("encoding"),
-    ignore.ddg.calls = TRUE, ignore.init = ignore.ddg.calls, force.console=ignore.init, annotate.functions = TRUE){
+    ignore.ddg.calls = TRUE, ignore.init = ignore.ddg.calls, force.console=ignore.init){
 
   # Store script number & name.
   snum <- .ddg.next.script.num()
@@ -5405,7 +5767,7 @@ ddg.source <- function (file,  ddgdir = NULL, local = FALSE, echo = verbose, pri
     # Parse the commands into a console node.
     .ddg.parse.commands(exprs, sname, snum, environ=envir, ignore.patterns=ignores, node.name=sname,
         echo = echo, print.eval = print.eval, max.deparse.length = max.deparse.length,
-        run.commands = TRUE, annotate.functions = annotate.functions)
+        run.commands = TRUE)
 
 
     # Save the DDG among other things, but don't return any
@@ -5486,6 +5848,57 @@ ddg.list.breakpoints <- function() {
 
 ddg.clear.breakpoints <- function() {
   .ddg.set("ddg.breakpoints", NULL)
+}
+
+# ddg.set.detail sets the level of provenance detail to be collected.
+# If ddg.detail is not set, the values of annotate.inside, max.loops, 
+# and max.snapshot.size passed to ddg.run are used instead.
+
+#   0 = no internal annotation, no snapshots.
+#   1 = 1 loop, snapshots < 10k.
+#   2 = 10 loops, snapshots < 100k.
+#   3 = all loops, all snapshots.
+
+ddg.set.detail <- function(detail.level) {
+  if (detail.level == 0) {
+    .ddg.set("ddg.annotate.inside", FALSE)
+    .ddg.set("ddg.max.loops", 0)
+    .ddg.set("ddg.max.snapshot.size", 0)
+    .ddg.set("ddg.detail", 0)
+  } else if (detail.level == 1) {
+    .ddg.set("ddg.annotate.inside", TRUE)
+    .ddg.set("ddg.max.loops", 1)
+    .ddg.set("ddg.max.snapshot.size", 10)
+    .ddg.set("ddg.detail", 1)
+  } else if (detail.level == 2) {
+    .ddg.set("ddg.annotate.inside", TRUE)
+    .ddg.set("ddg.max.loops", 10)
+    .ddg.set("ddg.max.snapshot.size", 100)
+    .ddg.set("ddg.detail", 2)
+  } else if (detail.level == 3) {
+    .ddg.set("ddg.annotate.inside", TRUE)
+    .ddg.set("ddg.max.loops", 10^10)
+    .ddg.set("ddg.max.snapshot.size", -1)
+    .ddg.set("ddg.detail", 3)
+  } else {
+    print("0 = no internal annotation, no snapshots")
+    print("1 = 1 loop, snapshots < 10k")
+    print("2 = 10 loops, snapshots < 100k")
+    print("3 = all loops, all snapshots")
+  }
+}
+
+# ddg.detail returns the current level of provenance detail.
+
+ddg.get.detail <- function() {
+  if (!.ddg.is.set("ddg.detail")) .ddg.set("ddg.detail", NULL)
+  return(.ddg.get("ddg.detail"))
+}
+
+# ddg.clear.detail clears the current value of provenance detail.
+
+ddg.clear.detail <- function() {
+  .ddg.set("ddg.detail", NULL)
 }
 
 # ddg.console.off turns off the console mode of DDG construction.
