@@ -2807,15 +2807,7 @@ ddg.MAX_HIST_LINES <- 2^14
       d.environ <- environ
       if ( .ddg.is.nonlocal.assign(cmd@parsed[[1]]) ) 
       {
-      	#for( var in cmd@vars.set)
-      	#{
       		d.environ <- .ddg.where( cmd@vars.set , parent.env(parent.frame()) )
-
-      		#if( d.environ == "undefined" )
-      		#{
-      		#	d.environ <- globalenv()
-      		#}
-      	#}
       }
 
       # Specifies whether or not a procedure node should be created
@@ -4489,7 +4481,8 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
   }
 
   for (var in return.stmt@vars.set) {
-    if (var != "") {
+    if (var != "") 
+    {
       # Create output data node.
       dvalue <- eval(as.symbol(var), envir=env)
 
@@ -4497,14 +4490,11 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
       if ( .ddg.is.nonlocal.assign(return.stmt@parsed[[1]]) )
       {
       	env <- .ddg.where( var, parent.env(parent.frame()) )
-
-      	#if( env == "undefined" )
-      	#{
-      	#	env <- globalenv()
-      	#}
       }
+
       dscope <- .ddg.get.scope(var, env=env)
       .ddg.save.data(var, dvalue, scope=dscope)
+      
       # Create an edge from procedure node to data node.
       .ddg.proc2data(return.stmt@abbrev, var, dscope=dscope, return.value=FALSE)
     }
