@@ -12,14 +12,12 @@ substituting the name of a target for <target>.  The targets are:
 - check - this builds the tar file (like build does) and then runs R CMD check on it
 - install - this builds the tar file, checks in, and installs it as an R library
 - cran-check - this builds the tar file and then runs the extra checks required by CRAN
-- dropbox - this builds the tar file (but no check) and installs it on dropbox.
-  It also copies the DDGCheckpoint.R file to dropbox.
 - clean - this deletes the directory files are copied to for a build.  It may occasionally 
   be useful if you think the build is not working properly.
   
 --------------------------------------------------------------------
 
-Regression testing is controlled by the test-no-instrumentation.xml ant script
+Regression testing is controlled by the tests.xml ant script
 
 To run all the tests, first be sure that you have the version of the 
 library that you want to test installed. You can do this by saying:
@@ -28,7 +26,7 @@ ant install
 
 Then, to run all of the regression tests, say:
 
-ant -file test-no-instrumentation.xml   
+ant -file tests.xml   
 
 To run an individual test on the current library, please read the comment at
 the top of the test-no-instrumentation.xml file.

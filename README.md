@@ -128,7 +128,6 @@ sessions. Consider the following session:
     # Save the DDG.
     > ddg.save()
 
-![Console Session](vignettes/UsingRDataTracker-img/UsingRDataTracker-console.jpg?raw=TRUE)
 
 Here line 4 loads the RDataTracker package. Line 7 sets the working
 directory. Line 10 initiates a DDG. Lines 13-15 are user commands
@@ -190,8 +189,6 @@ script itself:
     # Execute the script.
     > ddg.run("test.r")
 
-![Sourcing a Script with
-**ddg.run**](vignettes/UsingRDataTracker-img/UsingRDataTracker-source1.jpg?raw=TRUE)
 
 Here line 4 loads the RDataTracker package. Line 7 sets the working
 directory. Line 10 uses the **ddg.run** function to execute the script
@@ -231,8 +228,6 @@ function parameter bindings:
 Running this script in the console using **ddg.run** (as above) yields
 the following DDG:
 
-![Sourcing a Script with Function
-Annotations](vignettes/UsingRDataTracker-img/UsingRDataTracker-source2.jpg?raw=TRUE)
 
 Here **ddg.function** in line 5 causes RDataTracker to create a data
 node for formal parameter **x** in function **f** and to show the
@@ -271,8 +266,6 @@ A data flow edge to an existing data node may also be created using
 
 Here is the resulting DDG as displayed in DDG Explorer:
 
-![Select and Run in Console
-Mode](vignettes/UsingRDataTracker-img/UsingRDataTracker-selectrun1.jpg?raw=TRUE)
 
 This script is identical to the preceding one except for lines 3-4,
 which load the library and set the working directory, and the calls to
@@ -309,8 +302,6 @@ wish to collect provenance for only a portion of a script. For example:
 
     ddg.save()
 
-![Select and Run Not in Console
-Mode](vignettes/UsingRDataTracker-img/UsingRDataTracker-selectrun2.jpg?raw=TRUE)
 
 Here **enable.console** in **ddg.init** is set to FALSE. Because the
 assignment statements in lines 8, 9, and 11 are not annotated, they are
@@ -339,7 +330,6 @@ the intervening nodes.
 
     ddg.finish("create.data.frame")
 
-![Abstraction Levels](vignettes/UsingRDataTracker-img/UsingRDataTracker-abstract.jpg?raw=TRUE)
 
 When this script is executed with **ddg.run**, data nodes are created
 for vectors **x** and **y** and data frame **z**. These data nodes are
@@ -380,8 +370,6 @@ shown as displayed in DDG Explorer.
         a <- 10
         b <- f(a)
 
-    ![Operational Node with
-    **ddg.function**](vignettes/UsingRDataTracker-img/UsingRDataTracker-function.jpg?raw=TRUE)
 
     This example creates a data node called **a** with value 10, a
     procedural node for the function **f**, a binding node indicating
@@ -425,9 +413,7 @@ shown as displayed in DDG Explorer.
           ddg.data.out(x, pname="sum.squares")
         }
 
-    ![Operational Node with
-    **ddg.procedure**](vignettes/UsingRDataTracker-img/UsingRDataTracker-procedure.jpg?raw=TRUE)
-
+ 
     This example creates a procedural node called **sum.squares** with
     input data node **i** and output data node **x** for each iteration
     of the **while** loop.
@@ -453,9 +439,7 @@ shown as displayed in DDG Explorer.
           x <- x + i^2
         }
 
-    ![Loop without
-    **ddg.eval**](vignettes/UsingRDataTracker-img/UsingRDataTracker-eval1.jpg?raw=TRUE)
-
+   
     Here data nodes are created for **x** before and after the **while**
     loop is executed.
 
@@ -465,9 +449,7 @@ shown as displayed in DDG Explorer.
           ddg.eval("x <- x + i^2")
         }
 
-    ![Loop with
-    **ddg.eval**](vignettes/UsingRDataTracker-img/UsingRDataTracker-eval2.jpg?raw=TRUE)
-
+   
     Here **start** and **finish** nodes for the assignment statement and
     a data node for **x** are created for each iteration of the
     **while** loop as a result of the **ddg.eval** function.
@@ -482,9 +464,7 @@ shown as displayed in DDG Explorer.
         ddg.console.off()
         b <- 20
 
-    ![Turning Console Mode On and
-    Off](vignettes/UsingRDataTracker-img/UsingRDataTracker-consoleoff.jpg?raw=TRUE)
-
+    
     This example creates a data node called **a** with value 10 enclosed
     by Console start and finish nodes. A data node for **b** is not
     created.
@@ -504,9 +484,7 @@ shown as displayed in DDG Explorer.
         ddg.source("script-1.r")
         d <- a + b
 
-    ![Inserting the DDG for a Sourced
-    Script](vignettes/UsingRDataTracker-img/UsingRDataTracker-source.jpg?raw=TRUE)
-
+ 
     This example inserts the DDG for **script-1.r** into the DDG for
     **test.r**. A data flow edge connects data node **b** created in the
     sourced script to the assignment statement for **d** in the main
@@ -543,8 +521,6 @@ pasting to the console with console mode turned off.
       estimate <- (number/estimate + estimate)/2
     }
 
-![Example Script with
-**ddg.run**](vignettes/UsingRDataTracker-img/UsingRDataTracker-sqrroot1.jpg?raw=TRUE)
 
     # R SCRIPT
 
@@ -574,8 +550,6 @@ pasting to the console with console mode turned off.
 
     ddg.save()
 
-![Example Script with
-Annotations](vignettes/UsingRDataTracker-img/UsingRDataTracker-sqrroot2.jpg?raw=TRUE)
 
 The first DDG captures the essentials of the process, including the
 assignment statements and the final value of **estimate**. The second
@@ -626,8 +600,6 @@ the file **0.RData**.
 Note that the DDGCheckpoint.R file is not included in RDataTracker and
 must be separately sourced.
 
-![Checkpoint and
-Restore](vignettes/UsingRDataTracker-img/UsingRDataTracker-checkpoint.jpg?raw=TRUE)
 
 Troubleshooting 
 ---------------
@@ -659,7 +631,6 @@ Explorer.
     ddg.data(b)
     b <- 20
 
-![DDG Error](vignettes/UsingRDataTracker-img/UsingRDataTracker-error1.jpg?raw=TRUE)
 
 Here a DDG error is generated (“In .ddg.insert.error.message(error.msg):
 Unable to evaluate b in call to ddg.data”) but the R script continues to
@@ -670,7 +641,6 @@ execute.
     a <- 10
     c <- a * b
 
-![R Error](vignettes/UsingRDataTracker-img/UsingRDataTracker-error2.jpg?raw=TRUE)
 
 Here an R error (“Error in eval(expr, envir, enclos): object ’b’ not
 found”) terminates execution of the R script.
