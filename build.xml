@@ -28,10 +28,10 @@
     		<fileset dir="R"
       			includes="RDataTracker.R DDGStatement.R"/>
   		</copy>
-  		<copy overwrite="true" todir="${builddir}/vignettes">
-        <fileset dir="vignettes"
+  		<!-- copy overwrite="true" todir="${builddir}/vignettes">
+	        <fileset dir="vignettes"
             includes="*.Rnw *-img/"/>
-      </copy>
+	     </copy-->
       <copy overwrite="true" file="DESCRIPTION" todir="${builddir}"/>
   		<copy overwrite="true" file="LICENSE" todir="${builddir}"/>
   		<copy overwrite="true" file="NAMESPACE" todir="${builddir}"/>
