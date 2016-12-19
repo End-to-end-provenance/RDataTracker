@@ -2809,16 +2809,8 @@ ddg.MAX_HIST_LINES <- 2^14
       d.environ <- environ
       if ( .ddg.is.nonlocal.assign(cmd@parsed[[1]]) ) 
       {
-        print( "in parse commands - nonlocal assignment TRUE")
-        print( cmd@vars.set )
-        ddg.print.scope.tree(env=parent.frame())
-        print( "" )
-
-        print( "in parse commands - ddg.where" )
-
-      	#d.environ <- .ddg.where( cmd@vars.set , parent.env(parent.frame()) )
-        #d.environ <- ddg.where( cmd@vars.set , env=parent.env(parent.frame()) )
-        d.environ <- ddg.where( cmd@vars.set , skip = TRUE )
+        # NOT WORKING!! - CAN NOT FIND ENVIRONMENT EVEN IF VARIABLE EXISTS
+        d.environ <- .ddg.where( cmd@vars.set , env = parent.env(parent.frame()) )
 
         if( identical(d.environ,"undefined") )
           d.environ <- globalenv()
@@ -3910,13 +3902,14 @@ ddg.MAX_HIST_LINES <- 2^14
   return(0)
 }
 
+
 # .ddg.where looks up the environment for the variable specified
 # by name.  Adapted from Hadley Wickham, Advanced R programming.
 
 # name - name of variable.
 # env (optional) - environment in which to look for variable.
 
-.ddg.where <- function(name, env=parent.frame()) 
+.ddg.where <- function( name , env = parent.frame() ) 
 {
   stopifnot(is.character(name), length(name) == 1)
   
@@ -3932,48 +3925,6 @@ ddg.MAX_HIST_LINES <- 2^14
   else 
   {
     .ddg.where(name, parent.env(env))
-  }
-}
-
-
-
-# TO BE DELETED - FOR TESTING ONLY
-ddg.where <- function( name , env = parent.frame() , skip = FALSE ) 
-{
-  print( "in ddg.where" )
-  ddg.print.scope.tree(env)
-  print( "" )
-
-  #if( skip )
-  #{
-  #  env = parent.env(env)
-  #  print( "skip = TRUE" )
-  #}
-
-  #if (identical(env, emptyenv())) 
-  #{
-  #  warning("Can't find ", name)
-  #  return("undefined")
-  #}
-  #if (exists(name, env, inherits=FALSE)) 
-  #{
-  #  env
-  #}
-  #else 
-  #{
-  #  print( "recurse up" )
-  #  ddg.where(name, parent.env(env))
-  #}
-}
-
-ddg.print.scope.tree <- function( env = parent.frame() )
-{
-  print( env )
-
-  while( ! identical(env,globalenv()) )
-  {
-    env = parent.env(env)
-    print( env )
   }
 }
 
@@ -4551,15 +4502,7 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
       # Check for non-local assignment
       if ( .ddg.is.nonlocal.assign(return.stmt@parsed[[1]]) )
       {
-        print( "in return.value" )
-        print( var )
-        ddg.print.scope.tree(env=parent.frame())
-        print( "" )
-
-        print( "return.value - ddg.where" )
-
-      	# env <- .ddg.where( var, parent.env(parent.frame()) )
-        env <- ddg.where( var , skip = TRUE )
+      	env <- .ddg.where( var, env = parent.env(parent.frame()) )
 
         if( identical(env,"undefined") )
           env <- globalenv()
