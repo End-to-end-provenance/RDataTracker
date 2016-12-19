@@ -1620,9 +1620,11 @@ ddg.MAX_HIST_LINES <- 2^14
 
 # expr - input expression.
 
-.ddg.is.nonlocal.assign <- function (expr) {
+.ddg.is.nonlocal.assign <- function (expr) 
+{
   # <<- or ->> means that the assignment is non-local
-  if (is.call(expr)) {
+  if (is.call(expr)) 
+  {
     # This also finds uses of ->>.
     if (identical(expr[[1]], as.name("<<-")))
       return (TRUE)
@@ -2784,7 +2786,7 @@ ddg.MAX_HIST_LINES <- 2^14
     else {
       vars.set <- .ddg.create.empty.vars.set()
     }
-    
+
     # Loop over the commands as well as their string representations.
     for (i in 1:length(cmds)) {
       cmd <- cmds[[i]]
@@ -2807,7 +2809,19 @@ ddg.MAX_HIST_LINES <- 2^14
       d.environ <- environ
       if ( .ddg.is.nonlocal.assign(cmd@parsed[[1]]) ) 
       {
-      		d.environ <- .ddg.where( cmd@vars.set , parent.env(parent.frame()) )
+        print( "in parse commands - nonlocal assignment TRUE")
+        print( cmd@vars.set )
+        ddg.print.scope.tree(env=parent.frame())
+        print( "" )
+
+        print( "in parse commands - ddg.where" )
+
+      	#d.environ <- .ddg.where( cmd@vars.set , parent.env(parent.frame()) )
+        #d.environ <- ddg.where( cmd@vars.set , env=parent.env(parent.frame()) )
+        d.environ <- ddg.where( cmd@vars.set , skip = TRUE )
+
+        if( identical(d.environ,"undefined") )
+          d.environ <- globalenv()
       }
 
       # Specifies whether or not a procedure node should be created
@@ -3902,20 +3916,67 @@ ddg.MAX_HIST_LINES <- 2^14
 # name - name of variable.
 # env (optional) - environment in which to look for variable.
 
-.ddg.where <- function(name, env=parent.frame()) {
+.ddg.where <- function(name, env=parent.frame()) 
+{
   stopifnot(is.character(name), length(name) == 1)
-  if (identical(env, emptyenv())) {
-    # stop("Can't find ", name, call.=FALSE)
+  
+  if (identical(env, emptyenv())) 
+  {
     warning("Can't find ", name)
     return("undefined")
   }
-  if (exists(name, env, inherits=FALSE)) {
+  if (exists(name, env, inherits=FALSE)) 
+  {
     env
   }
-  else {
+  else 
+  {
     .ddg.where(name, parent.env(env))
   }
 }
+
+
+
+# TO BE DELETED - FOR TESTING ONLY
+ddg.where <- function( name , env = parent.frame() , skip = FALSE ) 
+{
+  print( "in ddg.where" )
+  ddg.print.scope.tree(env)
+  print( "" )
+
+  #if( skip )
+  #{
+  #  env = parent.env(env)
+  #  print( "skip = TRUE" )
+  #}
+
+  #if (identical(env, emptyenv())) 
+  #{
+  #  warning("Can't find ", name)
+  #  return("undefined")
+  #}
+  #if (exists(name, env, inherits=FALSE)) 
+  #{
+  #  env
+  #}
+  #else 
+  #{
+  #  print( "recurse up" )
+  #  ddg.where(name, parent.env(env))
+  #}
+}
+
+ddg.print.scope.tree <- function( env = parent.frame() )
+{
+  print( env )
+
+  while( ! identical(env,globalenv()) )
+  {
+    env = parent.env(env)
+    print( env )
+  }
+}
+
 
 #.ddg.get.env gets the environment in which name is declared.
 
@@ -4480,7 +4541,8 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
     }
   }
 
-  for (var in return.stmt@vars.set) {
+  for (var in return.stmt@vars.set) 
+  {
     if (var != "") 
     {
       # Create output data node.
@@ -4489,7 +4551,18 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
       # Check for non-local assignment
       if ( .ddg.is.nonlocal.assign(return.stmt@parsed[[1]]) )
       {
-      	env <- .ddg.where( var, parent.env(parent.frame()) )
+        print( "in return.value" )
+        print( var )
+        ddg.print.scope.tree(env=parent.frame())
+        print( "" )
+
+        print( "return.value - ddg.where" )
+
+      	# env <- .ddg.where( var, parent.env(parent.frame()) )
+        env <- ddg.where( var , skip = TRUE )
+
+        if( identical(env,"undefined") )
+          env <- globalenv()
       }
 
       dscope <- .ddg.get.scope(var, env=env)
