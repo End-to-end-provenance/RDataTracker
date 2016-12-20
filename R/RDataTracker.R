@@ -3407,7 +3407,7 @@ ddg.MAX_HIST_LINES <- 2^14
   if (is.null(dscope)) dscope <- .ddg.get.scope(dname)
 
   # Record in data node table
-  .ddg.record.data(dtype, dname, dpfile, dscope, from.env=from.env, dtime)
+  .ddg.record.data(dtype, dname, paste(.ddg.data.dir(), dfile, sep="/"), dscope, from.env=from.env, dtime)
 
   if (.ddg.debug.lib()) print(paste("snapshot.node: ", dname))
   return(dpfile)
