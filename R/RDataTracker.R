@@ -603,8 +603,8 @@ ddg.MAX_HIST_LINES <- 2^14
 
 .ddg.installedpackages.json <- function(){
   installed <- .ddg.installedpackages()
-  output <- "\"rdt:InstalledPackages\": [\n\t"
-  packagearray <- paste("{\"package\":\"", installed[,1], "\", \"version\":\"",installed[,2], "\"}", sep = "", collapse =",\n\t")
+  output <- "\"rdt:installedPackages\" : [\n\t"
+  packagearray <- paste("{\"package\" : \"", installed[,1], "\", \"version\" : \"",installed[,2], "\"}", sep = "", collapse =",\n\t")
   output <- paste(output, packagearray, "]", sep = "")
   return(output)
 }

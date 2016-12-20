@@ -1,0 +1,423 @@
+{
+
+"prefix" : {
+"prov" : "http://www.w3.org/ns/prov#",
+"rdt" : "http://rdatatracker.org/"
+},
+"activity":{
+
+"p1" : {
+"rdt:name" : "PlotTest.R",
+"rdt:type" : "Start",
+"rdt:elapsedTime" : "0.0800000000000001",
+"rdt:scriptNum" : "NA",
+"rdt:startLine" : "NA",
+"rdt:startCol" : "NA",
+"rdt:endLine" : "NA",
+"rdt:endCol" : "NA"
+} ,
+
+"p2" : {
+"rdt:name" : "data(mtcars)",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "0.0800000000000001",
+"rdt:scriptNum" : "0",
+"rdt:startLine" : "1",
+"rdt:startCol" : "1",
+"rdt:endLine" : "1",
+"rdt:endCol" : "13"
+} ,
+
+"p3" : {
+"rdt:name" : "allCars.df <- mtcars",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "0.11",
+"rdt:scriptNum" : "0",
+"rdt:startLine" : "4",
+"rdt:startCol" : "1",
+"rdt:endLine" : "4",
+"rdt:endCol" : "20"
+} ,
+
+"p4" : {
+"rdt:name" : "cars4Cyl.df <- allCars.df[allCars.df$cyl == 4, ]",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "0.12",
+"rdt:scriptNum" : "0",
+"rdt:startLine" : "7",
+"rdt:startCol" : "1",
+"rdt:endLine" : "7",
+"rdt:endCol" : "48"
+} ,
+
+"p5" : {
+"rdt:name" : "cars6Cyl.df <- allCars.df[allCars.df$cyl == 6, ]",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "0.14",
+"rdt:scriptNum" : "0",
+"rdt:startLine" : "8",
+"rdt:startCol" : "1",
+"rdt:endLine" : "8",
+"rdt:endCol" : "48"
+} ,
+
+"p6" : {
+"rdt:name" : "cars8Cyl.df <- allCars.df[allCars.df$cyl == 8, ]",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "0.17",
+"rdt:scriptNum" : "0",
+"rdt:startLine" : "9",
+"rdt:startCol" : "1",
+"rdt:endLine" : "9",
+"rdt:endCol" : "48"
+} ,
+
+"p7" : {
+"rdt:name" : "cylinders = c(4, 6, 8)",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "0.19",
+"rdt:scriptNum" : "0",
+"rdt:startLine" : "12",
+"rdt:startCol" : "1",
+"rdt:endLine" : "12",
+"rdt:endCol" : "9"
+} ,
+
+"p8" : {
+"rdt:name" : "mpg = c(mean(cars4Cyl.df$mpg), mean(cars6Cyl.df$mpg), mean(c",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "0.2",
+"rdt:scriptNum" : "0",
+"rdt:startLine" : "12",
+"rdt:startCol" : "13",
+"rdt:endLine" : "12",
+"rdt:endCol" : "22"
+} ,
+
+"p9" : {
+"rdt:name" : "plot(cylinders, mpg)",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "0.29",
+"rdt:scriptNum" : "0",
+"rdt:startLine" : "13",
+"rdt:startCol" : "1",
+"rdt:endLine" : "13",
+"rdt:endCol" : "3"
+} ,
+
+"p10" : {
+"rdt:name" : "X11()",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "0.34",
+"rdt:scriptNum" : "0",
+"rdt:startLine" : "13",
+"rdt:startCol" : "7",
+"rdt:endLine" : "13",
+"rdt:endCol" : "76"
+} ,
+
+"p11" : {
+"rdt:name" : "plot(cylinders, mpg)",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "0.35",
+"rdt:scriptNum" : "0",
+"rdt:startLine" : "16",
+"rdt:startCol" : "1",
+"rdt:endLine" : "16",
+"rdt:endCol" : "20"
+} ,
+
+"p12" : {
+"rdt:name" : "dev.off()",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "0.37",
+"rdt:scriptNum" : "0",
+"rdt:startLine" : "29",
+"rdt:startCol" : "1",
+"rdt:endLine" : "29",
+"rdt:endCol" : "6"
+} ,
+
+"p13" : {
+"rdt:name" : "tryCatch",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "0.38",
+"rdt:scriptNum" : "NA",
+"rdt:startLine" : "NA",
+"rdt:startCol" : "NA",
+"rdt:endLine" : "NA",
+"rdt:endCol" : "NA"
+} ,
+
+"environment" : {
+"rdt:name" : "environment",
+"rdt:architecture" : "x86_64",
+"rdt:operatingSystem" : "windows",
+"rdt:language" : "R",
+"rdt:rVersion" : "R version 3.3.2 (2016-10-31)",
+"rdt:script" : "[DIR]/PlotTest.R",
+"rdt:sourcedScripts" : ""
+,
+"rdt:scriptTimeStamp" : "2016-12-18T11.26.01EST",
+"rdt:workingDirectory" : "[DIR]",
+"rdt:ddgDirectory" : "[DIR]/ddg",
+"rdt:ddgTimeStamp" : "2016-12-19T20.05.34EST",
+"rdt:rdatatrackerVersion" : "2.24.1",
+"rdt:installedPackages" : [
+	{"package" : "RDataTracker", "version" : "2.24.1"}]
+}},
+"entity":{
+
+"d1" : {
+"rdt:name" : "mtcars [ENV]",
+"rdt:value" : "[DIR]/ddg/data/1-mtcars.csv",
+"rdt:type" : "Snapshot",
+"rdt:scope" : "R_GlobalEnv",
+"rdt:fromEnv" : "TRUE",
+"rdt:timestamp" : "",
+"rdt:location" : ""
+} ,
+
+"d2" : {
+"rdt:name" : "allCars.df",
+"rdt:value" : "[DIR]/ddg/data/2-allCars.df.csv",
+"rdt:type" : "Snapshot",
+"rdt:scope" : "R_GlobalEnv",
+"rdt:fromEnv" : "FALSE",
+"rdt:timestamp" : "",
+"rdt:location" : ""
+} ,
+
+"d3" : {
+"rdt:name" : "cars4Cyl.df",
+"rdt:value" : "[DIR]/ddg/data/3-cars4Cyl.df.csv",
+"rdt:type" : "Snapshot",
+"rdt:scope" : "R_GlobalEnv",
+"rdt:fromEnv" : "FALSE",
+"rdt:timestamp" : "",
+"rdt:location" : ""
+} ,
+
+"d4" : {
+"rdt:name" : "cars6Cyl.df",
+"rdt:value" : "[DIR]/ddg/data/4-cars6Cyl.df.csv",
+"rdt:type" : "Snapshot",
+"rdt:scope" : "R_GlobalEnv",
+"rdt:fromEnv" : "FALSE",
+"rdt:timestamp" : "",
+"rdt:location" : ""
+} ,
+
+"d5" : {
+"rdt:name" : "cars8Cyl.df",
+"rdt:value" : "[DIR]/ddg/data/5-cars8Cyl.df.csv",
+"rdt:type" : "Snapshot",
+"rdt:scope" : "R_GlobalEnv",
+"rdt:fromEnv" : "FALSE",
+"rdt:timestamp" : "",
+"rdt:location" : ""
+} ,
+
+"d6" : {
+"rdt:name" : "cylinders",
+"rdt:value" : "[DIR]/ddg/data/6-cylinders.csv",
+"rdt:type" : "Snapshot",
+"rdt:scope" : "R_GlobalEnv",
+"rdt:fromEnv" : "FALSE",
+"rdt:timestamp" : "",
+"rdt:location" : ""
+} ,
+
+"d7" : {
+"rdt:name" : "mpg [ENV]",
+"rdt:value" : "[DIR]/ddg/data/7-mpg.csv",
+"rdt:type" : "Snapshot",
+"rdt:scope" : "R_GlobalEnv",
+"rdt:fromEnv" : "TRUE",
+"rdt:timestamp" : "",
+"rdt:location" : ""
+} ,
+
+"d8" : {
+"rdt:name" : "mpg",
+"rdt:value" : "[DIR]/ddg/data/8-mpg.csv",
+"rdt:type" : "Snapshot",
+"rdt:scope" : "R_GlobalEnv",
+"rdt:fromEnv" : "FALSE",
+"rdt:timestamp" : "",
+"rdt:location" : ""
+} ,
+
+"d9" : {
+"rdt:name" : "error.msg",
+"rdt:value" : "\"Error in dev.print(device = pdf, file = file): can only print from a screen device \"",
+"rdt:type" : "Exception",
+"rdt:scope" : "ddg.library",
+"rdt:fromEnv" : "FALSE",
+"rdt:timestamp" : "",
+"rdt:location" : ""
+}},
+"wasInformedBy":{
+
+"e1" : {
+"prov:informant" : "p1",
+"prov:informed" : "p2"
+} ,
+
+"e3" : {
+"prov:informant" : "p2",
+"prov:informed" : "p3"
+} ,
+
+"e6" : {
+"prov:informant" : "p3",
+"prov:informed" : "p4"
+} ,
+
+"e9" : {
+"prov:informant" : "p4",
+"prov:informed" : "p5"
+} ,
+
+"e12" : {
+"prov:informant" : "p5",
+"prov:informed" : "p6"
+} ,
+
+"e15" : {
+"prov:informant" : "p6",
+"prov:informed" : "p7"
+} ,
+
+"e17" : {
+"prov:informant" : "p7",
+"prov:informed" : "p8"
+} ,
+
+"e23" : {
+"prov:informant" : "p8",
+"prov:informed" : "p9"
+} ,
+
+"e26" : {
+"prov:informant" : "p9",
+"prov:informed" : "p10"
+} ,
+
+"e27" : {
+"prov:informant" : "p10",
+"prov:informed" : "p11"
+} ,
+
+"e30" : {
+"prov:informant" : "p11",
+"prov:informed" : "p12"
+} ,
+
+"e31" : {
+"prov:informant" : "p12",
+"prov:informed" : "p13"
+}},
+"wasGeneratedBy":{
+
+"e5" : {
+"prov:entity" : "d2",
+"prov:activity" : "p3"
+} ,
+
+"e8" : {
+"prov:entity" : "d3",
+"prov:activity" : "p4"
+} ,
+
+"e11" : {
+"prov:entity" : "d4",
+"prov:activity" : "p5"
+} ,
+
+"e14" : {
+"prov:entity" : "d5",
+"prov:activity" : "p6"
+} ,
+
+"e16" : {
+"prov:entity" : "d6",
+"prov:activity" : "p7"
+} ,
+
+"e22" : {
+"prov:entity" : "d8",
+"prov:activity" : "p8"
+} ,
+
+"e32" : {
+"prov:entity" : "d9",
+"prov:activity" : "p13"
+}},
+"used":{
+
+"e2" : {
+"prov:activity" : "p2",
+"prov:entity" : "d1"
+} ,
+
+"e4" : {
+"prov:activity" : "p3",
+"prov:entity" : "d1"
+} ,
+
+"e7" : {
+"prov:activity" : "p4",
+"prov:entity" : "d2"
+} ,
+
+"e10" : {
+"prov:activity" : "p5",
+"prov:entity" : "d2"
+} ,
+
+"e13" : {
+"prov:activity" : "p6",
+"prov:entity" : "d2"
+} ,
+
+"e18" : {
+"prov:activity" : "p8",
+"prov:entity" : "d3"
+} ,
+
+"e19" : {
+"prov:activity" : "p8",
+"prov:entity" : "d7"
+} ,
+
+"e20" : {
+"prov:activity" : "p8",
+"prov:entity" : "d4"
+} ,
+
+"e21" : {
+"prov:activity" : "p8",
+"prov:entity" : "d5"
+} ,
+
+"e24" : {
+"prov:activity" : "p9",
+"prov:entity" : "d6"
+} ,
+
+"e25" : {
+"prov:activity" : "p9",
+"prov:entity" : "d8"
+} ,
+
+"e28" : {
+"prov:activity" : "p11",
+"prov:entity" : "d6"
+} ,
+
+"e29" : {
+"prov:activity" : "p11",
+"prov:entity" : "d8"
+}}
+}
