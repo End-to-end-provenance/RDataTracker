@@ -53,7 +53,8 @@
   - WarningTest
   - PlotTest
   - DataTypeTest
-  - HigherOrderFunctTest
+  - HigherOrderFuncTest
+  - AssignmentOperatorsTest
   - RMarkdownTest
 
   The target "source-tests" will run the following tests cases:
@@ -477,6 +478,18 @@
 	 	</antcall>
 	</target>
 
+	<target name="AssignmentOperatorsTest">
+		<antcall target="run-regression-test">
+			<param name="test-name" value="AssignmentOperatorsTest" />
+		</antcall>
+	</target>
+	
+	<target name="update-AssignmentOperatorsTest">
+		<antcall target="update-regression-expected">
+			<param name="test-name" value="AssignmentOperatorsTest" />
+		</antcall>
+	</target>
+
   	<target name="DDGStatementTest">
   		<antcall target="run-regression-test">
   			<param name="test-name" value="DDGStatementTest" />
@@ -495,16 +508,16 @@
       </antcall>
     </target>
 
-  <target name="update-RMarkdownTest">
+	<target name="update-RMarkdownTest">
       <antcall target="update-regression-expected">
         <param name="test-name" value="RMarkdownTest" />
-    </antcall>
-  </target>
+ 	  </antcall>
+  	</target>
 
 	<target name="normal-tests" depends="basicTest, S4ObjectTest,
 		ScopeTest, ReturnTest, OddParameterTest, FunctionAnnotationTest, 
-		ControlConstructTest, WarningTest, PlotTest,
-		DataTypeTest, HigherOrderFuncTest, RMarkdownTest">
+		ControlConstructTest, WarningTest, PlotTest, DataTypeTest, 
+		HigherOrderFuncTest, AssignmentOperatorsTest, RMarkdownTest">
 		<echo>##############################################
 	      Finished Execution of Normal Tests. Nothing should have malfunctioned.
     	  ##############################################</echo>
