@@ -83,3 +83,12 @@ f <- function (a) {
 
 f(-2)
 f(2)
+
+q <- 1
+
+repeat {
+  q <- q + 1
+  if (TRUE) r <- q^2
+  if (FALSE) s <- q^3
+  if (q > 4) break
+}
