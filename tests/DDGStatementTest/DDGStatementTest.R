@@ -5,10 +5,11 @@
 
 a <- 1
 
-if(true) {
+if(TRUE) {
   a <- 1
 }
  
+ddddd <- 0
 repeat {  
   ddddd <- ddddd + 1
   if (ddddd == 7) { 
@@ -43,5 +44,6 @@ constructDDGStatement <- function (expr) {
   print(typeof(expr))
   return (new (Class = "DDGStatement", parsed = expr))
 }
-cmds <- lapply(exprs, constructDDGStatement)
+
+ddg.finish("foo")
 
