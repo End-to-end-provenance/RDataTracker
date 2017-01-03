@@ -2,7 +2,7 @@ Package: RDataTracker
 Title: Data Provenance Collector
 Version: 2.24.1
 CheckpointVersion: 1.000
-Date: 2016-12-14
+Date: 2016-12-19
 Authors@R: c( person( "Emery", "Boose", role = c("aut", "cre"),
                       email = "boose@fas.harvard.edu"),
               person("Barbara", "Lerner", role = c("aut"),
@@ -12,11 +12,11 @@ Authors@R: c( person( "Emery", "Boose", role = c("aut", "cre"),
 Author: Emery Boose [aut, cre], Barbara Lerner [aut], Luis Perez [ctb]
 Maintainer: Emery Boose <boose@fas.harvard.edu>
 Depends: R (>= 2.13.0)
-Description: Defines functions that can be used to collect
-  data provenance as an R script executes.  The output is a text file
-  named ddg.txt, which can be read into a separate tool, DDG Explorer,
-  written in Java, that can be used to visualize and query the provenance.
+Description: Defines functions that can be used to collect data provenance as 
+  an R script executes. The output is a text file in PROV-JSON format which 
+  can be read into a separate tool, DDG Explorer, written in Java, that can be 
+  used to visualize and query the provenance.
 License: GPL-3 | file LICENSE
-URL: http://harvardforest.fas.harvard.edu:8080/exist/xquery/data.xq?id=hf091
-BugReports: https://github.com/blernermhc/RDataTracker/issues
+URL: https://github.com/End-to-end-provenance/RDataTracker
+BugReports: https://github.com/End-to-end-provenance/RDataTracker/issues
 Imports: gtools, XML, knitr, stringr, utils, devtools, methods
