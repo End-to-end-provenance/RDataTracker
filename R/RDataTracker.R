@@ -4211,22 +4211,6 @@ ddg.MAX_HIST_LINES <- 2^14
   ddg.finish(loop.name)
 }
 
-# .ddg.loadDDG displays the DDG automatically.
-
-.ddg.loadDDG<- function(ddg.folder){
-  jar.path<- "/RDataTracker/java/DDGExplorer.jar"
-  check.library.paths<- file.exists(paste(.libPaths(),jar.path,sep = ""))
-  index<- min(which(check.library.paths == TRUE))
-  ddgexplorer_path<- paste(.libPaths()[index],jar.path,sep = "")
-  ddgtxt.path<- paste(ddg.folder,"/ddg.txt",sep = "")
-  system(paste("java -jar ", ddgexplorer_path, ddgtxt.path, sep = " "), wait = FALSE)
-  
-#   if(Sys.info()['sysname']!="Windows"){
-# 		system(paste("java -jar ",ddgexplorer_path, ddgtxt.path,'&',sep = " "))
-# 	}else{
-# 		system(paste("START java -jar ",ddgexplorer_path, ddgtxt.path,sep = " "))
-# 	}
-}
 
 # .ddg.markdown takes a Rmd file and extracts the R code and text through
 # the purl function in the knitr library. It then annotates the R script
@@ -5334,6 +5318,7 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
   # Set environment constants.
   .ddg.set(".ddg.enable.console", enable.console)
   .ddg.set(".ddg.func.depth", 0)
+  .ddg.set(".ddg.explorer.port", 6096)
   # .ddg.init.environ()
 
   # Initialize the information about the open start-finish blocks
@@ -5469,13 +5454,12 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
       finally={
         ddg.save(r.script.path)
         if(display==TRUE){
-          disp <- ddg.display()
-          return(disp)
-        }else{
-          invisible()
+          ddg.display()
         }
       }
   )
+  
+  invisible()
 }
 
 # ddg.save inserts attribute information and the number of
@@ -5783,20 +5767,49 @@ ddg.source <- function (file,  ddgdir = NULL, local = FALSE, echo = verbose, pri
   invisible()
 }
 
-# ddg.display loads & displays the current DDG.
-
-ddg.display <- function () {
+.ddg.start.ddg.explorer <- function () {
   jar.path<- "/RDataTracker/java/DDGExplorer.jar"
   check.library.paths<- file.exists(paste(.libPaths(),jar.path,sep = ""))
   index<- min(which(check.library.paths == TRUE))
   ddgexplorer_path<- paste(.libPaths()[index],jar.path,sep = "")
   ddgtxt.path<- paste(.ddg.path() ,"/ddg.txt",sep = "")
-  system(paste("java -jar ", ddgexplorer_path, ddgtxt.path, sep = " "), wait = FALSE)
   
-  if(is.element('CamFlow', installed.packages()[,1])){ # did we install the CamFlow visualiser?
-    json <- .ddg.json.current()
-    CamFlowVisualiser(json)
-  }
+  # -s flag starts DDG Explorer as a server.  This allows each new ddg to show
+  # up in a new tab of an existing running DDG Explorer. 
+  # print("Starting DDG Explorer server")
+  systemResult <- system2("java", c("-jar", ddgexplorer_path, ddgtxt.path, "-port", .ddg.get(".ddg.explorer.port")), wait = FALSE)
+  # print(paste("Starting java server return code:", systemResult))
+}
+
+# ddg.display loads & displays the current DDG.
+
+ddg.display <- function () {
+  
+  # See if the server is already running
+  # print("Opening socket connection")
+  tryCatch ({
+        con <- socketConnection(host= "localhost", port = .ddg.get(".ddg.explorer.port"), blocking = FALSE,
+            server=FALSE, open="w")
+        ddgtxt.path<- paste(getwd(), .ddg.path() ,"ddg.txt",sep = "/")
+        # print ("Socket open; writing to socket")
+        writeLines(ddgtxt.path, con)
+        # print ("Wrote to socket")
+        close(con)
+      },
+      warning = function(e) {
+        .ddg.start.ddg.explorer()
+      }
+  )
+  
+  tryCatch(
+    if(is.element('CamFlow', installed.packages()[,1])){ # did we install the CamFlow visualiser?
+      json <- .ddg.json.current()
+      CamFlowVisualiser(json)
+    },
+    error = function(e) {}
+  )
+  
+  invisible()
 }
 
 # ddg.debug.lib.on turns on debugging of DDG construction.
