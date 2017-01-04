@@ -1,0 +1,12 @@
+ddg.type	ddg.num	ddg.name	ddg.value	ddg.return.linked	ddg.auto.created	ddg.time	ddg.snum	ddg.lnum
+Start	1	CheckpointTest.R	CheckpointTest.R	FALSE	FALSE	0.013	0	NA
+Operation	2	rm(list = ls())	rm(list = ls())	FALSE	FALSE	0.015	0	8
+Start	3	/Users/blerner/Documents/Process/DataProvenance/github/RData	/Users/blerner/Documents/Process/DataProvenance/github/RData	FALSE	FALSE	0.095	1	73
+Operation	4	.ddg.checkpoint.file.node <- function(fname, dname, checkpoi	.ddg.checkpoint.file.node <- function(fname, dname, checkpoi	FALSE	FALSE	0.107	1	32
+Operation	5	.ddg.checkpoint.out <- function(checkpoint.name, filename) {	.ddg.checkpoint.out <- function(checkpoint.name, filename) {	FALSE	FALSE	0.116	1	73
+Operation	6	.ddg.record.checkpoint <- function(filename, checkpoint.name	.ddg.record.checkpoint <- function(filename, checkpoint.name	FALSE	FALSE	0.127	1	88
+Operation	7	.ddg.lookup.checkpoint.name <- function(filename) {    ddg.c	.ddg.lookup.checkpoint.name <- function(filename) {    ddg.c	FALSE	FALSE	0.146	1	124
+Operation	8	.ddg.mark.stale.data <- function(saved.env, checkpointed.env	.ddg.mark.stale.data <- function(saved.env, checkpointed.env	FALSE	FALSE	0.172	1	145
+Operation	9	.ddg.restore.ddg.state <- function(saved.env, ddg.env) {    	.ddg.restore.ddg.state <- function(saved.env, ddg.env) {    	FALSE	FALSE	0.183	1	226
+Finish	10	/Users/blerner/Documents/Process/DataProvenance/github/RData	/Users/blerner/Documents/Process/DataProvenance/github/RData	FALSE	FALSE	0.197	1	245
+Operation	11	tryCatch	tryCatch	FALSE	FALSE	0.199	0	12

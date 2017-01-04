@@ -603,8 +603,8 @@ ddg.MAX_HIST_LINES <- 2^14
 
 .ddg.installedpackages.json <- function(){
   installed <- .ddg.installedpackages()
-  output <- "\"rdt:InstalledPackages\": [\n\t"
-  packagearray <- paste("{\"package\":\"", installed[,1], "\", \"version\":\"",installed[,2], "\"}", sep = "", collapse =",\n\t")
+  output <- "\"rdt:installedPackages\" : [\n\t"
+  packagearray <- paste("{\"package\" : \"", installed[,1], "\", \"version\" : \"",installed[,2], "\"}", sep = "", collapse =",\n\t")
   output <- paste(output, packagearray, "]", sep = "")
   return(output)
 }
@@ -1114,8 +1114,9 @@ ddg.MAX_HIST_LINES <- 2^14
   #print(paste("In .ddg.save.simple: name =", name))
   #print(paste("In .ddg.save.simple: scope =", scope))
   # Save extra long strings as snapshot.
-  if (is.character(value) && nchar(value) > 100) {
+  if (is.character(value) && nchar(value) > 200) {
     #print(".ddg.save.simple: saving snapshot")
+    #print(head(value))
     .ddg.snapshot.node(name, "txt", value, dscope=scope, from.env=from.env)
   } else {
     # Save the true value.
@@ -4770,7 +4771,7 @@ ddg.forloop <- function(index.var) {
 
 ddg.details.omitted <- function() {
   pnode.name <- "Details Omitted"
-  .ddg.proc.node("Operation", pnode.name, pnode.name)
+  .ddg.proc.node("Incomplete", pnode.name, pnode.name)
   .ddg.proc2proc()
   
   if (.ddg.debug.lib()) {

@@ -1,0 +1,259 @@
+Architecture="x86_64"
+OperatingSystem="unix"
+Language="R"
+LanguageVersion="R version 3.3.1 (2016-06-21)"
+RDataTrackerVersion="2.24.1"
+Script="[DIR]/CalculateSquareRoot.R"
+SourcedScripts=""
+ProcessFileTimestamp="2017-01-04T14.21.23EST"
+WorkingDirectory="[DIR]"
+DDGDirectory="[DIR]/ddg"
+DateTime="2017-01-04T15.46.22EST"
+InstalledPackages="RDataTracker 2.24.1"
+58
+Start p1 "1-CalculateSquareRoot.R" Value="CalculateSquareRoot.R" Time="0.111" Script="NA" Pos="NA";
+Operation p2 "2-get.initial.values <- function() {    number <<- 10    toler" Value="get.initial.values <- function() {    number <<- 10    toler" Time="0.112" Script="0" Pos="11,1,14,1";
+CF p1 p2
+Data d1 "1-get.initial.values" Value="#ddg.function";
+DF p2 d1
+Operation p3 "3-get.random <- function(x) {    z <- 3    return(z)}" Value="get.random <- function(x) {    z <- 3    return(z)}" Time="0.118" Script="0" Pos="16,1,24,1";
+CF p2 p3
+Data d2 "2-get.random" Value="#ddg.function";
+DF p3 d2
+Operation p4 "4-calc.square.root <- function(n, x) {    y <- n/x    z <- (x " Value="calc.square.root <- function(n, x) {    y <- n/x    z <- (x " Time="0.126" Script="0" Pos="26,1,32,1";
+CF p3 p4
+Data d3 "3-calc.square.root" Value="#ddg.function";
+DF p4 d3
+Operation p5 "5-get.difference <- function(n, x) {    z <- abs(n - x^2)    r" Value="get.difference <- function(n, x) {    z <- abs(n - x^2)    r" Time="0.131" Script="0" Pos="68,1,73,1";
+CF p4 p5
+Data d4 "4-get.difference" Value="#ddg.function";
+DF p5 d4
+Operation p6 "6-get.check.value <- function(d, t) {    z <- d - t    return(" Value="get.check.value <- function(d, t) {    z <- d - t    return(" Time="0.136" Script="0" Pos="76,1,76,37";
+CF p5 p6
+Data d5 "5-get.check.value" Value="#ddg.function";
+DF p6 d5
+Operation p7 "7-store.result <- function(n, x) {    num <- n    sqrt <- x   " Value="store.result <- function(n, x) {    num <- n    sqrt <- x   " Time="0.144" Script="0" Pos="NA,NA,NA,NA";
+CF p6 p7
+Data d6 "6-store.result" Value="#ddg.function";
+DF p7 d6
+Operation p8 "8-write.result <- function(fn, zz) {    file.out <- paste(getw" Value="write.result <- function(fn, zz) {    file.out <- paste(getw" Time="0.149" Script="0" Pos="NA,NA,NA,NA";
+CF p7 p8
+Data d7 "7-write.result" Value="#ddg.function";
+DF p8 d7
+Start p9 "9-get.initial.values()" Value="get.initial.values()" Time="0.155" Script="NA" Pos="NA";
+CF p8 p9
+Operation p10 "10-get.initial.values" Value="get.initial.values" Time="0.155" Script="NA" Pos="NA";
+DF d1 p10
+CF p9 p10
+Operation p11 "11-number <<- 10" Value="number <<- 10" Time="0.162" Script="0" Pos="12,3,12,15";
+CF p10 p11
+Data d8 "8-number" Value="10";
+DF p11 d8
+Data d9 "9-get.initial.values() return" Value="1e-05";
+Operation p12 "12-tolerance <<- 1e-05" Value="tolerance <<- 1e-05" Time="0.17" Script="0" Pos="13,3,13,23";
+CF p11 p12
+DF p12 d9
+Data d10 "10-tolerance" Value="1e-05";
+DF p12 d10
+Finish p13 "13-get.initial.values()" Value="get.initial.values()" Time="0.179" Script="NA" Pos="NA";
+CF p12 p13
+Start p14 "14-estimate <- get.random(number)" Value="estimate <- get.random(number)" Time="0.18" Script="0" Pos="NA,NA,NA,NA";
+CF p13 p14
+DF d2 p14
+DF d8 p14
+Start p15 "15-get.random(number)" Value="get.random(number)" Time="0.189" Script="NA" Pos="NA";
+CF p14 p15
+Binding p16 "16-x  <-  number" Time="0.19" Script="NA" Pos="NA";
+CF p15 p16
+DF d8 p16
+Data d11 "11-x" Value="10";
+DF p16 d11
+Operation p17 "17-get.random" Value="get.random" Time="0.201" Script="NA" Pos="NA";
+DF d2 p17
+DF d11 p17
+CF p16 p17
+Operation p18 "18-z <- 3" Value="z <- 3" Time="0.214" Script="0" Pos="21,3,21,8";
+CF p17 p18
+Data d12 "12-z" Value="3";
+DF p18 d12
+Data d13 "13-get.random(number) return" Value="3";
+Operation p19 "19-return(z)" Value="return(z)" Time="0.223" Script="0" Pos="23,3,23,11";
+CF p18 p19
+DF p19 d13
+DF d12 p19
+Finish p20 "20-get.random(number)" Value="get.random(number)" Time="0.233" Script="NA" Pos="NA";
+CF p19 p20
+Finish p21 "21-estimate <- get.random(number)" Value="estimate <- get.random(number)" Time="0.234" Script="0" Pos="NA,NA,NA,NA";
+CF p20 p21
+DF d13 p21
+Data d14 "14-estimate" Value="3";
+DF p21 d14
+Operation p22 "22-check <- number" Value="check <- number" Time="0.239" Script="0" Pos="NA,NA,NA,NA";
+CF p21 p22
+DF d8 p22
+Data d15 "15-check" Value="10";
+DF p22 d15
+Start p23 "23-while (check > 0) {    estimate <- calc.square.root(number, " Value="while (check > 0) {    estimate <- calc.square.root(number, " Time="0.251" Script="0" Pos="NA,NA,NA,NA";
+CF p22 p23
+DF d15 p23
+DF d3 p23
+DF d8 p23
+DF d14 p23
+DF d4 p23
+DF d5 p23
+Data d16 "16-tolerance [ENV]" Value="1e-05";
+DF d16 p23
+Start p24 "24-while loop" Value="while loop" Time="0.283" Script="NA" Pos="NA";
+CF p23 p24
+Start p25 "25-estimate <- calc.square.root(number, estimate)" Value="estimate <- calc.square.root(number, estimate)" Time="0.284" Script="0" Pos="NA,NA,NA,NA";
+CF p24 p25
+DF d3 p25
+DF d8 p25
+DF d14 p25
+Start p26 "26-calc.square.root(number, estimate)" Value="calc.square.root(number, estimate)" Time="0.297" Script="NA" Pos="NA";
+CF p25 p26
+Binding p27 "27-n  <-  number" Time="0.298" Script="NA" Pos="NA";
+CF p26 p27
+DF d8 p27
+Data d17 "17-n" Value="10";
+DF p27 d17
+Binding p28 "28-x  <-  estimate" Time="0.305" Script="NA" Pos="NA";
+CF p27 p28
+DF d14 p28
+Data d18 "18-x" Value="3";
+DF p28 d18
+Operation p29 "29-calc.square.root" Value="calc.square.root" Time="0.313" Script="NA" Pos="NA";
+DF d3 p29
+DF d17 p29
+DF d18 p29
+CF p28 p29
+Operation p30 "30-y <- n/x" Value="y <- n/x" Time="0.326" Script="0" Pos="28,3,28,10";
+CF p29 p30
+DF d17 p30
+DF d18 p30
+Data d19 "19-y" Value="3.33333333333333";
+DF p30 d19
+Operation p31 "31-z <- (x + y)/2" Value="z <- (x + y)/2" Time="0.338" Script="0" Pos="29,3,29,14";
+CF p30 p31
+DF d18 p31
+DF d19 p31
+Data d20 "20-z" Value="3.16666666666667";
+DF p31 d20
+Data d21 "21-calc.square.root(number,estimate) return" Value="3.16666666666667";
+Operation p32 "32-return(z)" Value="return(z)" Time="0.354" Script="0" Pos="31,3,31,11";
+CF p31 p32
+DF p32 d21
+DF d20 p32
+Finish p33 "33-calc.square.root(number, estimate)" Value="calc.square.root(number, estimate)" Time="0.361" Script="NA" Pos="NA";
+CF p32 p33
+Finish p34 "34-estimate <- calc.square.root(number, estimate)" Value="estimate <- calc.square.root(number, estimate)" Time="0.362" Script="0" Pos="NA,NA,NA,NA";
+CF p33 p34
+DF d21 p34
+Data d22 "22-estimate" Value="3.16666666666667";
+DF p34 d22
+Start p35 "35-difference <- get.difference(number, estimate)" Value="difference <- get.difference(number, estimate)" Time="0.368" Script="0" Pos="NA,NA,NA,NA";
+CF p34 p35
+DF d4 p35
+DF d8 p35
+DF d22 p35
+Start p36 "36-get.difference(number, estimate)" Value="get.difference(number, estimate)" Time="0.379" Script="NA" Pos="NA";
+CF p35 p36
+Binding p37 "37-n  <-  number" Time="0.38" Script="NA" Pos="NA";
+CF p36 p37
+DF d8 p37
+Data d23 "23-n" Value="10";
+DF p37 d23
+Binding p38 "38-x  <-  estimate" Time="0.391" Script="NA" Pos="NA";
+CF p37 p38
+DF d22 p38
+Data d24 "24-x" Value="3.16666666666667";
+DF p38 d24
+Operation p39 "39-get.difference" Value="get.difference" Time="0.399" Script="NA" Pos="NA";
+DF d4 p39
+DF d23 p39
+DF d24 p39
+CF p38 p39
+Operation p40 "40-z <- abs(n - x^2)" Value="z <- abs(n - x^2)" Time="0.414" Script="0" Pos="NA,NA,NA,NA";
+CF p39 p40
+DF d23 p40
+DF d24 p40
+Data d25 "25-z" Value="0.0277777777777803";
+DF p40 d25
+Data d26 "26-get.difference(number,estimate) return" Value="0.0277777777777803";
+Operation p41 "41-return(z)" Value="return(z)" Time="0.431" Script="0" Pos="NA,NA,NA,NA";
+CF p40 p41
+DF p41 d26
+DF d25 p41
+Finish p42 "42-get.difference(number, estimate)" Value="get.difference(number, estimate)" Time="0.44" Script="NA" Pos="NA";
+CF p41 p42
+Finish p43 "43-difference <- get.difference(number, estimate)" Value="difference <- get.difference(number, estimate)" Time="0.441" Script="0" Pos="NA,NA,NA,NA";
+CF p42 p43
+DF d26 p43
+Data d27 "27-difference" Value="0.0277777777777803";
+DF p43 d27
+Start p44 "44-check <- get.check.value(difference, tolerance)" Value="check <- get.check.value(difference, tolerance)" Time="0.447" Script="0" Pos="NA,NA,NA,NA";
+CF p43 p44
+DF d5 p44
+DF d27 p44
+DF d16 p44
+Start p45 "45-get.check.value(difference, tolerance)" Value="get.check.value(difference, tolerance)" Time="0.46" Script="NA" Pos="NA";
+CF p44 p45
+Binding p46 "46-d  <-  difference" Time="0.461" Script="NA" Pos="NA";
+CF p45 p46
+DF d27 p46
+Data d28 "28-d" Value="0.0277777777777803";
+DF p46 d28
+Binding p47 "47-t  <-  tolerance" Time="0.467" Script="NA" Pos="NA";
+CF p46 p47
+DF d16 p47
+Data d29 "29-t" Value="1e-05";
+DF p47 d29
+Operation p48 "48-get.check.value" Value="get.check.value" Time="0.476" Script="NA" Pos="NA";
+DF d5 p48
+DF d28 p48
+DF d29 p48
+CF p47 p48
+Operation p49 "49-z <- d - t" Value="z <- d - t" Time="0.488" Script="0" Pos="NA,NA,NA,NA";
+CF p48 p49
+DF d28 p49
+DF d29 p49
+Data d30 "30-z" Value="0.0277677777777803";
+DF p49 d30
+Data d31 "31-get.check.value(difference,tolerance) return" Value="0.0277677777777803";
+Operation p50 "50-return(z)" Value="return(z)" Time="0.505" Script="0" Pos="NA,NA,NA,NA";
+CF p49 p50
+DF p50 d31
+DF d30 p50
+Finish p51 "51-get.check.value(difference, tolerance)" Value="get.check.value(difference, tolerance)" Time="0.546" Script="NA" Pos="NA";
+CF p50 p51
+Finish p52 "52-check <- get.check.value(difference, tolerance)" Value="check <- get.check.value(difference, tolerance)" Time="0.547" Script="0" Pos="NA,NA,NA,NA";
+CF p51 p52
+DF d31 p52
+Data d32 "32-check" Value="0.0277677777777803";
+DF p52 d32
+Finish p53 "53-while loop" Value="while loop" Time="0.552" Script="NA" Pos="NA";
+CF p52 p53
+Incomplete p54 "54-Details Omitted" Value="Details Omitted" Time="0.553" Script="NA" Pos="NA";
+CF p53 p54
+Finish p55 "55-while (check > 0) {    estimate <- calc.square.root(number, " Value="while (check > 0) {    estimate <- calc.square.root(number, " Time="0.553" Script="0" Pos="NA,NA,NA,NA";
+CF p54 p55
+Data d33 "33-estimate" Value="3.16227766016984";
+DF p55 d33
+Data d34 "34-check" Value="-9.99999075050994e-06";
+DF p55 d34
+Data d35 "35-difference" Value="9.2494900627571e-12";
+DF p55 d35
+Operation p56 "56-sqr.root <- store.result(number, estimate)" Value="sqr.root <- store.result(number, estimate)" Time="0.562" Script="0" Pos="NA,NA,NA,NA";
+CF p55 p56
+DF d6 p56
+DF d8 p56
+DF d33 p56
+Snapshot d36 "36-sqr.root" Value="data/36-sqr.root.csv" Time="2017-01-04T15.46.22EST";
+DF p56 d36
+Operation p57 "57-write.result(\"sqr-root.csv\", sqr.root)" Value="write.result(\"sqr-root.csv\", sqr.root)" Time="0.583" Script="0" Pos="NA,NA,NA,NA";
+CF p56 p57
+DF d7 p57
+DF d36 p57
+Finish p58 "58-CalculateSquareRoot.R" Value="CalculateSquareRoot.R" Time="0.594" Script="NA" Pos="NA";
+CF p57 p58
+

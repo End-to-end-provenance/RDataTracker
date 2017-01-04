@@ -1,0 +1,182 @@
+Architecture="x86_64"
+OperatingSystem="unix"
+Language="R"
+LanguageVersion="R version 3.1.2 (2014-10-31)"
+RDataTrackerVersion="1.4"
+Script="[DIR]/SivanSampling.R"
+ProcessFileTimestamp="2015-07-29T15.42.25EDT"
+WorkingDirectory="[DIR]"
+DDGDirectory="[DIR]/ddg"
+DateTime="2015-07-29T15.42.31EDT"
+50
+Start p1 "1-SivanSampling.R" Value="SivanSampling.R" Time="2015-07-29T15.42.30EDT";
+Operation p2 "2-library(methods)" Value="library(methods)" Time="2015-07-29T15.42.30EDT";
+CF p1 p2
+Operation p3 "3-setClass(\"SpeciesInSampleObj\", slots = c(sampleCode = \"in" Value="setClass(\"SpeciesInSampleObj\", slots = c(sampleCode = \"in" Time="2015-07-29T15.42.30EDT";
+CF p2 p3
+Operation p4 "4-setClass(\"DistributionConstraintObj\", slots = c(p = \"nume" Value="setClass(\"DistributionConstraintObj\", slots = c(p = \"nume" Time="2015-07-29T15.42.30EDT";
+CF p3 p4
+Operation p5 "5-setClass(\"SpeciesDistributionAreas\", slots = c(areaDiction" Value="setClass(\"SpeciesDistributionAreas\", slots = c(areaDiction" Time="2015-07-29T15.42.30EDT";
+CF p4 p5
+Operation p6 "6-setGeneric(\"getNumSpecies\", function(object) {    standard" Value="setGeneric(\"getNumSpecies\", function(object) {    standard" Time="2015-07-29T15.42.30EDT";
+CF p5 p6
+Operation p7 "7-setGeneric(\"getDistributionOfSpecies\", function(object, in" Value="setGeneric(\"getDistributionOfSpecies\", function(object, in" Time="2015-07-29T15.42.30EDT";
+CF p6 p7
+Operation p8 "8-newSpeciesDistribution <- function(aCode, numOfSpecies, prob" Value="newSpeciesDistribution <- function(aCode, numOfSpecies, prob" Time="2015-07-29T15.42.30EDT";
+CF p7 p8
+Data d1 "1-newSpeciesDistribution" Value="#ddg.function";
+DF p8 d1
+Operation p9 "9-addToDictionary <- function(speciesDistributionAreas, specie" Value="addToDictionary <- function(speciesDistributionAreas, specie" Time="2015-07-29T15.42.30EDT";
+CF p8 p9
+Data d2 "2-addToDictionary" Value="#ddg.function";
+DF p9 d2
+Operation p10 "10-getNumSpeciesFun <- function(object) {    return(length(obje" Value="getNumSpeciesFun <- function(object) {    return(length(obje" Time="2015-07-29T15.42.30EDT";
+CF p9 p10
+Data d3 "3-getNumSpeciesFun" Value="#ddg.function";
+DF p10 d3
+Operation p11 "11-getDistributionOfSpeciesFun <- function(object, index) {    " Value="getDistributionOfSpeciesFun <- function(object, index) {    " Time="2015-07-29T15.42.30EDT";
+CF p10 p11
+Data d4 "4-getDistributionOfSpeciesFun" Value="#ddg.function";
+DF p11 d4
+Operation p12 "12-setMethod(\"getNumSpecies\", signature(object = \"SpeciesDis" Value="setMethod(\"getNumSpecies\", signature(object = \"SpeciesDis" Time="2015-07-29T15.42.30EDT";
+CF p11 p12
+DF d3 p12
+Operation p13 "13-setMethod(\"getDistributionOfSpecies\", signature(object = " Value="setMethod(\"getDistributionOfSpecies\", signature(object = " Time="2015-07-29T15.42.30EDT";
+CF p12 p13
+DF d4 p13
+Operation p14 "14-setClass(\"SampleSizeDistribution\", slots = c(sampleSizeDis" Value="setClass(\"SampleSizeDistribution\", slots = c(sampleSizeDis" Time="2015-07-29T15.42.30EDT";
+CF p13 p14
+Operation p15 "15-setGeneric(\"addConstraint\", function(object, inP, inMin, i" Value="setGeneric(\"addConstraint\", function(object, inP, inMin, i" Time="2015-07-29T15.42.30EDT";
+CF p14 p15
+Operation p16 "16-setGeneric(\"raffleSampleSize\", function(object, maxSampleS" Value="setGeneric(\"raffleSampleSize\", function(object, maxSampleS" Time="2015-07-29T15.42.30EDT";
+CF p15 p16
+Operation p17 "17-addConstraintFun <- function(object, inP, inMin, inMax) {   " Value="addConstraintFun <- function(object, inP, inMin, inMax) {   " Time="2015-07-29T15.42.30EDT";
+CF p16 p17
+Data d5 "5-addConstraintFun" Value="#ddg.function";
+DF p17 d5
+Operation p18 "18-raffleSampleSizeFun <- function(object, maxSampleSize) {    " Value="raffleSampleSizeFun <- function(object, maxSampleSize) {    " Time="2015-07-29T15.42.30EDT";
+CF p17 p18
+Data d6 "6-raffleSampleSizeFun" Value="#ddg.function";
+DF p18 d6
+Operation p19 "19-setMethod(\"addConstraint\", signature(object = \"SampleSize" Value="setMethod(\"addConstraint\", signature(object = \"SampleSize" Time="2015-07-29T15.42.30EDT";
+CF p18 p19
+DF d5 p19
+Operation p20 "20-setMethod(\"raffleSampleSize\", signature(object = \"SampleS" Value="setMethod(\"raffleSampleSize\", signature(object = \"SampleS" Time="2015-07-29T15.42.30EDT";
+CF p19 p20
+DF d6 p20
+Operation p21 "21-setClass(\"SampleObj\", slots = c(sampleCode = \"integer\", " Value="setClass(\"SampleObj\", slots = c(sampleCode = \"integer\", " Time="2015-07-29T15.42.30EDT";
+CF p20 p21
+Operation p22 "22-setGeneric(\"assignArea\", function(object, inAreaCode, spec" Value="setGeneric(\"assignArea\", function(object, inAreaCode, spec" Time="2015-07-29T15.42.30EDT";
+CF p21 p22
+Operation p23 "23-setGeneric(\"assignSizeDistProperty\", function(object, inSa" Value="setGeneric(\"assignSizeDistProperty\", function(object, inSa" Time="2015-07-29T15.42.30EDT";
+CF p22 p23
+Operation p24 "24-setGeneric(\"raffleIndividualsPerSample\", function(object) " Value="setGeneric(\"raffleIndividualsPerSample\", function(object) " Time="2015-07-29T15.42.30EDT";
+CF p23 p24
+Operation p25 "25-assignAreaFun <- function(object, inAreaCode, speciesDistrib" Value="assignAreaFun <- function(object, inAreaCode, speciesDistrib" Time="2015-07-29T15.42.30EDT";
+CF p24 p25
+Data d7 "7-assignAreaFun" Value="#ddg.function";
+DF p25 d7
+Operation p26 "26-assignSizeDistPropertyFun <- function(object, inSampleSizeDi" Value="assignSizeDistPropertyFun <- function(object, inSampleSizeDi" Time="2015-07-29T15.42.30EDT";
+CF p25 p26
+Data d8 "8-assignSizeDistPropertyFun" Value="#ddg.function";
+DF p26 d8
+Operation p27 "27-raffleIndividualsPerSampleFun <- function(object) {    if (g" Value="raffleIndividualsPerSampleFun <- function(object) {    if (g" Time="2015-07-29T15.42.30EDT";
+CF p26 p27
+Data d9 "9-raffleIndividualsPerSampleFun" Value="#ddg.function";
+DF p27 d9
+Operation p28 "28-setMethod(\"assignArea\", signature(object = \"SampleObj\", " Value="setMethod(\"assignArea\", signature(object = \"SampleObj\", " Time="2015-07-29T15.42.30EDT";
+CF p27 p28
+DF d7 p28
+Operation p29 "29-setMethod(\"assignSizeDistProperty\", signature(object = \"S" Value="setMethod(\"assignSizeDistProperty\", signature(object = \"S" Time="2015-07-29T15.42.30EDT";
+CF p28 p29
+DF d8 p29
+Operation p30 "30-setMethod(\"raffleIndividualsPerSample\", signature(object =" Value="setMethod(\"raffleIndividualsPerSample\", signature(object =" Time="2015-07-29T15.42.30EDT";
+CF p29 p30
+DF d9 p30
+Operation p31 "31-defineAreasDistributions <- function(totalNumOfSpecies, area" Value="defineAreasDistributions <- function(totalNumOfSpecies, area" Time="2015-07-29T15.42.30EDT";
+CF p30 p31
+Data d10 "10-defineAreasDistributions" Value="#ddg.function";
+DF p31 d10
+Operation p32 "32-defineSamplesSizeDistribution <- function() {    sampleSizeD" Value="defineSamplesSizeDistribution <- function() {    sampleSizeD" Time="2015-07-29T15.42.30EDT";
+CF p31 p32
+Data d11 "11-defineSamplesSizeDistribution" Value="#ddg.function";
+DF p32 d11
+Operation p33 "33-generateSamples <- function(n) {    samplesArr <- list()    " Value="generateSamples <- function(n) {    samplesArr <- list()    " Time="2015-07-29T15.42.30EDT";
+CF p32 p33
+Data d12 "12-generateSamples" Value="#ddg.function";
+DF p33 d12
+Operation p34 "34-assignSampleData <- function(sampleInAreaStr, areaCode, spec" Value="assignSampleData <- function(sampleInAreaStr, areaCode, spec" Time="2015-07-29T15.42.30EDT";
+CF p33 p34
+Data d13 "13-assignSampleData" Value="#ddg.function";
+DF p34 d13
+Operation p35 "35-assignSamplesToArea <- function(areaStr, speciesDistribution" Value="assignSamplesToArea <- function(areaStr, speciesDistribution" Time="2015-07-29T15.42.30EDT";
+CF p34 p35
+Data d14 "14-assignSamplesToArea" Value="#ddg.function";
+DF p35 d14
+Operation p36 "36-assignSamplesToAreas <- function(samplesMapStr, speciesDistr" Value="assignSamplesToAreas <- function(samplesMapStr, speciesDistr" Time="2015-07-29T15.42.30EDT";
+CF p35 p36
+Data d15 "15-assignSamplesToAreas" Value="#ddg.function";
+DF p36 d15
+Operation p37 "37-raffleSamplesToWorksheet <- function(wsName, title, totalNum" Value="raffleSamplesToWorksheet <- function(wsName, title, totalNum" Time="2015-07-29T15.42.30EDT";
+CF p36 p37
+Data d16 "16-raffleSamplesToWorksheet" Value="#ddg.function";
+DF p37 d16
+Operation p38 "38-writeToFile <- function(sample, smplx, fileConn, totalNumOfS" Value="writeToFile <- function(sample, smplx, fileConn, totalNumOfS" Time="2015-07-29T15.42.30EDT";
+CF p37 p38
+Data d17 "17-writeToFile" Value="#ddg.function";
+DF p38 d17
+Operation p39 "39-area1str <- \"1(0.01) , 2(0.01), 3(0.01), 4(0.01), 5(0.01), " Value="area1str <- \"1(0.01) , 2(0.01), 3(0.01), 4(0.01), 5(0.01), " Time="2015-07-29T15.42.30EDT";
+CF p38 p39
+Data d18 "18-area1str" Value="\"1(0.01) , 2(0.01), 3(0.01), 4(0.01), 5(0.01), 6(0.05), 7(0.05), 8(0.1), 9(0.15), 10(0.25), 11(0.35)\"";
+DF p39 d18
+Operation p40 "40-area2str <- \"12(0.3), 13(0.3), 14(0.3), 15(0.1)\"" Value="area2str <- \"12(0.3), 13(0.3), 14(0.3), 15(0.1)\"" Time="2015-07-29T15.42.30EDT";
+CF p39 p40
+Data d19 "19-area2str" Value="\"12(0.3), 13(0.3), 14(0.3), 15(0.1)\"";
+DF p40 d19
+Operation p41 "41-area3str <- \"\"" Value="area3str <- \"\"" Time="2015-07-29T15.42.30EDT";
+CF p40 p41
+Data d20 "20-area3str" Value="NotRecorded";
+DF p41 d20
+Operation p42 "42-samplesMapsStr <- paste(\"[1:  1, 3, 4, 5, 6, 7, 8, 9, 10, 1" Value="samplesMapsStr <- paste(\"[1:  1, 3, 4, 5, 6, 7, 8, 9, 10, 1" Time="2015-07-29T15.42.30EDT";
+CF p41 p42
+Data d21 "21-samplesMapsStr" Value="\"[1:  1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 19, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 33, 34, 35, 36, 37, 38, 39, 40, 41, 43, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 70, 72, 73, 74, 75, 77, 78, 83, 84, 85, 86, 87, 88, 89, 91, 92, 93, 95, 96, 97, 98, 99, 100, 101, 103, 104, 105, 106, 107, 108, 110, 111, 112, 113, 114, 115, 116, 117, 118, 120, 121, 122, 123, 124, 125, 127, 128, 129, 130, 131, 133, 134, 136, 137, 138, 139, 140, 142, 143, 144, 145, 146, 147, 148, 149, 151, 153, 154, 155, 156, 158, 159, 160, 162, 163, 165, 166, 167, 169, 170, 171, 174, 176, 177, 179, 180], [2: 2, 14, 20, 32, 42, 44, 69, 71, 76, 79, 80, 81, 82, 90, 94, 102, 109, 119, 126, 132, 135, 141, 150, 152, 157, 161, 164, 168, 172, 173, 175, 178]\"";
+DF p42 d21
+Operation p43 "43-totalNumOfSpecies <- 33" Value="totalNumOfSpecies <- 33" Time="2015-07-29T15.42.30EDT";
+CF p42 p43
+Data d22 "22-totalNumOfSpecies" Value="33";
+DF p43 d22
+Operation p44 "44-totalNumOfSample <- 180" Value="totalNumOfSample <- 180" Time="2015-07-29T15.42.30EDT";
+CF p43 p44
+Data d23 "23-totalNumOfSample" Value="180";
+DF p44 d23
+Operation p45 "45-speciesDistribution <- defineAreasDistributions(totalNumOfSp" Value="speciesDistribution <- defineAreasDistributions(totalNumOfSp" Time="2015-07-29T15.42.30EDT";
+CF p44 p45
+DF d22 p45
+DF d18 p45
+DF d19 p45
+Snapshot d24 "24-speciesDistribution" Value="[DIR]/ddg/24-speciesDistribution.txt" Time="2015-07-29T15.42.30EDT";
+DF p45 d24
+Operation p46 "46-sampleSizeDistributionMng <- defineSamplesSizeDistribution()" Value="sampleSizeDistributionMng <- defineSamplesSizeDistribution()" Time="2015-07-29T15.42.30EDT";
+CF p45 p46
+DF d11 p46
+Snapshot d25 "25-sampleSizeDistributionMng" Value="[DIR]/ddg/25-sampleSizeDistributionMng.txt" Time="2015-07-29T15.42.30EDT";
+DF p46 d25
+Operation p47 "47-samplesArr <- generateSamples(totalNumOfSample)" Value="samplesArr <- generateSamples(totalNumOfSample)" Time="2015-07-29T15.42.30EDT";
+CF p46 p47
+DF d23 p47
+Snapshot d26 "26-samplesArr" Value="[DIR]/ddg/26-samplesArr.txt" Time="2015-07-29T15.42.31EDT";
+DF p47 d26
+Operation p48 "48-samplesArr <- assignSamplesToAreas(samplesMapStr, speciesDis" Value="samplesArr <- assignSamplesToAreas(samplesMapStr, speciesDis" Time="2015-07-29T15.42.31EDT";
+CF p47 p48
+DF d24 p48
+DF d25 p48
+Snapshot d27 "27-samplesArr" Value="[DIR]/ddg/27-samplesArr.txt" Time="2015-07-29T15.42.31EDT";
+DF p48 d27
+Operation p49 "49-raffleSamplesToWorksheet(\"genSmpls1\", \"virtual sampling1 " Value="raffleSamplesToWorksheet(\"genSmpls1\", \"virtual sampling1 " Time="2015-07-29T15.42.31EDT";
+CF p48 p49
+DF d22 p49
+DF d23 p49
+DF d27 p49
+Finish p50 "50-SivanSampling.R" Value="SivanSampling.R" Time="2015-07-29T15.42.31EDT";
+CF p49 p50
+

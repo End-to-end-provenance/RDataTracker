@@ -1,0 +1,189 @@
+Architecture="x86_64"
+OperatingSystem="unix"
+Language="R"
+LanguageVersion="R version 3.3.0 (2016-05-03)"
+RDataTrackerVersion="2.23"
+Script="./RMarkdownTest_ddg/RMarkdownTest.R"
+ProcessFileTimestamp="2016-06-14T16.13.54EDT"
+WorkingDirectory="/Users/Alex/Google Drive/Harvard Forest/RDataTracker/examples-no-instrumentation/RMarkdownTest"
+DDGDirectory="./RMarkdownTest_ddg"
+DateTime="2016-06-14T16.13.57EDT"
+InstalledPackages=""
+59
+Start p1 "1-./RMarkdownTest_ddg/RMarkdownTest.R" Value="./RMarkdownTest_ddg/RMarkdownTest.R" Time="77.945" Script="0" Line="NA";
+Start p2 "2-setup" Value="setup" Time="77.948" Script="0" Line="11";
+CF p1 p2
+Operation p3 "3-library(Ecdat)" Value="library(Ecdat)" Time="77.95" Script="0" Line="13";
+CF p2 p3
+Operation p4 "4-library(mosaic)" Value="library(mosaic)" Time="77.97" Script="0" Line="14";
+CF p3 p4
+Operation p5 "5-x <- DoctorAUS" Value="x <- DoctorAUS" Time="77.981" Script="0" Line="15";
+CF p4 p5
+Snapshot d1 "1-x" Value="./RMarkdownTest_ddg/1-x-PARTIAL.csv" Time="2016-06-14T16.13.54EDT";
+DF p5 d1
+Finish p6 "6-setup" Value="setup" Time="78.018" Script="0" Line="16";
+CF p5 p6
+Start p7 "7-test1" Value="test1" Time="78.02" Script="0" Line="24";
+CF p6 p7
+Operation p8 "8-x$sex2 <- \"Male\"" Value="x$sex2 <- \"Male\"" Time="78.022" Script="0" Line="25";
+CF p7 p8
+Snapshot d2 "2-x" Value="./RMarkdownTest_ddg/2-x-PARTIAL.csv" Time="2016-06-14T16.13.54EDT";
+DF p8 d2
+Operation p9 "9-x$sex2[x$sex == \"1\"] <- \"Female\"" Value="x$sex2[x$sex == \"1\"] <- \"Female\"" Time="78.065" Script="0" Line="26";
+CF p8 p9
+Snapshot d3 "3-x" Value="./RMarkdownTest_ddg/3-x-PARTIAL.csv" Time="2016-06-14T16.13.54EDT";
+DF p9 d3
+Operation p10 "10-x$Age <- (x$age) * 100" Value="x$Age <- (x$age) * 100" Time="78.105" Script="0" Line="27";
+CF p9 p10
+Snapshot d4 "4-x" Value="./RMarkdownTest_ddg/4-x-PARTIAL.csv" Time="2016-06-14T16.13.54EDT";
+DF p10 d4
+Operation p11 "11-x$Income <- (x$income) * 10000" Value="x$Income <- (x$income) * 10000" Time="78.147" Script="0" Line="28";
+CF p10 p11
+Snapshot d5 "5-x" Value="./RMarkdownTest_ddg/5-x-PARTIAL.csv" Time="2016-06-14T16.13.54EDT";
+DF p11 d5
+Finish p12 "12-test1" Value="test1" Time="78.186" Script="0" Line="30";
+CF p11 p12
+Start p13 "13-ddg.chunk_1" Value="ddg.chunk_1" Time="78.189" Script="0" Line="31";
+CF p12 p13
+Operation p14 "14-histogram(~Age, data = x)" Value="histogram(~Age, data = x)" Time="78.198" Script="0" Line="32";
+CF p13 p14
+DF d5 p14
+Finish p15 "15-ddg.chunk_1" Value="ddg.chunk_1" Time="78.223" Script="0" Line="33";
+CF p14 p15
+Start p16 "16-ddg.chunk_2" Value="ddg.chunk_2" Time="78.224" Script="0" Line="37";
+CF p15 p16
+Operation p17 "17-histogram(~illness, data = x)" Value="histogram(~illness, data = x)" Time="78.234" Script="0" Line="38";
+CF p16 p17
+DF d5 p17
+Operation p18 "18-histogram(~doctorco, data = x)" Value="histogram(~doctorco, data = x)" Time="78.463" Script="0" Line="39";
+CF p17 p18
+DF d5 p18
+Finish p19 "19-ddg.chunk_2" Value="ddg.chunk_2" Time="78.482" Script="0" Line="40";
+CF p18 p19
+Start p20 "20-ddg.chunk_3" Value="ddg.chunk_3" Time="78.486" Script="0" Line="44";
+CF p19 p20
+Operation p21 "21-histogram(~doctorco, data = x)" Value="histogram(~doctorco, data = x)" Time="78.496" Script="0" Line="45";
+CF p20 p21
+DF d5 p21
+Operation p22 "22-x$doctorcobin <- 1" Value="x$doctorcobin <- 1" Time="78.522" Script="0" Line="46";
+CF p21 p22
+Snapshot d6 "6-x" Value="./RMarkdownTest_ddg/6-x-PARTIAL.csv" Time="2016-06-14T16.13.54EDT";
+DF p22 d6
+Operation p23 "23-x$doctorcobin[x$doctorco == \"0\"] <- 0" Value="x$doctorcobin[x$doctorco == \"0\"] <- 0" Time="78.559" Script="0" Line="47";
+CF p22 p23
+Snapshot d7 "7-x" Value="./RMarkdownTest_ddg/7-x-PARTIAL.csv" Time="2016-06-14T16.13.54EDT";
+DF p23 d7
+Operation p24 "24-histogram(~doctorcobin, data = x)" Value="histogram(~doctorcobin, data = x)" Time="78.605" Script="0" Line="48";
+CF p23 p24
+DF d7 p24
+Finish p25 "25-ddg.chunk_3" Value="ddg.chunk_3" Time="78.631" Script="0" Line="49";
+CF p24 p25
+Start p26 "26-test2" Value="test2" Time="78.633" Script="0" Line="51";
+CF p25 p26
+Operation p27 "27-histogram(~doctorcobin, data = x)" Value="histogram(~doctorcobin, data = x)" Time="78.645" Script="0" Line="52";
+CF p26 p27
+DF d7 p27
+Finish p28 "28-test2" Value="test2" Time="78.666" Script="0" Line="53";
+CF p27 p28
+Start p29 "29-test3" Value="test3" Time="78.667" Script="0" Line="57";
+CF p28 p29
+Operation p30 "30-x$sex2 <- \"Male\"" Value="x$sex2 <- \"Male\"" Time="78.668" Script="0" Line="58";
+CF p29 p30
+Snapshot d8 "8-x" Value="./RMarkdownTest_ddg/8-x-PARTIAL.csv" Time="2016-06-14T16.13.55EDT";
+DF p30 d8
+Operation p31 "31-x$sex2[x$sex == \"1\"] <- \"Female\"" Value="x$sex2[x$sex == \"1\"] <- \"Female\"" Time="78.702" Script="0" Line="59";
+CF p30 p31
+Snapshot d9 "9-x" Value="./RMarkdownTest_ddg/9-x-PARTIAL.csv" Time="2016-06-14T16.13.55EDT";
+DF p31 d9
+Operation p32 "32-x$Income <- (x$income) * 1e+05" Value="x$Income <- (x$income) * 1e+05" Time="78.746" Script="0" Line="60";
+CF p31 p32
+Snapshot d10 "10-x" Value="./RMarkdownTest_ddg/10-x-PARTIAL.csv" Time="2016-06-14T16.13.55EDT";
+DF p32 d10
+Finish p33 "33-test3" Value="test3" Time="78.787" Script="0" Line="61";
+CF p32 p33
+Start p34 "34-ddg.chunk_4" Value="ddg.chunk_4" Time="78.79" Script="0" Line="63";
+CF p33 p34
+Operation p35 "35-histogram(~Income, data = x)" Value="histogram(~Income, data = x)" Time="78.799" Script="0" Line="64";
+CF p34 p35
+DF d10 p35
+Finish p36 "36-ddg.chunk_4" Value="ddg.chunk_4" Time="78.821" Script="0" Line="65";
+CF p35 p36
+Start p37 "37-ddg.chunk_5" Value="ddg.chunk_5" Time="78.823" Script="0" Line="72";
+CF p36 p37
+Operation p38 "38-bwplot(Age ~ Income, data = x, ylab = \"Age groups (of five y" Value="bwplot(Age ~ Income, data = x, ylab = \"Age groups (of five y" Time="78.832" Script="0" Line="73";
+CF p37 p38
+DF d10 p38
+Operation p39 "39-lmage <- lm(sqrt(income) ~ poly(age, 2, raw = T), data = x)" Value="lmage <- lm(sqrt(income) ~ poly(age, 2, raw = T), data = x)" Time="78.867" Script="0" Line="74";
+CF p38 p39
+DF d10 p39
+Snapshot d11 "11-lmage" Value="./RMarkdownTest_ddg/11-lmage.csv" Time="2016-06-14T16.13.55EDT";
+DF p39 d11
+Operation p40 "40-plot(x$age * 100, sqrt(x$income), xlab = \"Age\", ylab = \"Sqrt" Value="plot(x$age * 100, sqrt(x$income), xlab = \"Age\", ylab = \"Sqrt" Time="79.174" Script="0" Line="76";
+CF p39 p40
+DF d10 p40
+Operation p41 "41-lines(x$age * 100, predict(lmage))" Value="lines(x$age * 100, predict(lmage))" Time="79.203" Script="0" Line="77";
+CF p40 p41
+DF d10 p41
+DF d11 p41
+Finish p42 "42-ddg.chunk_5" Value="ddg.chunk_5" Time="79.236" Script="0" Line="78";
+CF p41 p42
+Start p43 "43-ddg.chunk_6" Value="ddg.chunk_6" Time="79.238" Script="0" Line="84";
+CF p42 p43
+Operation p44 "44-x$Age2 <- x$Age^2" Value="x$Age2 <- x$Age^2" Time="79.24" Script="0" Line="85";
+CF p43 p44
+Snapshot d12 "12-x" Value="./RMarkdownTest_ddg/12-x-PARTIAL.csv" Time="2016-06-14T16.13.55EDT";
+DF p44 d12
+Operation p45 "45-Quadratic <- lm(Income ~ Age + Age2, data = x)" Value="Quadratic <- lm(Income ~ Age + Age2, data = x)" Time="79.528" Script="0" Line="86";
+CF p44 p45
+DF d12 p45
+Snapshot d13 "13-Quadratic" Value="./RMarkdownTest_ddg/13-Quadratic.csv" Time="2016-06-14T16.13.56EDT";
+DF p45 d13
+Finish p46 "46-ddg.chunk_6" Value="ddg.chunk_6" Time="79.687" Script="0" Line="87";
+CF p45 p46
+Start p47 "47-ddg.chunk_7" Value="ddg.chunk_7" Time="79.69" Script="0" Line="89";
+CF p46 p47
+Operation p48 "48-summary(Quadratic)" Value="summary(Quadratic)" Time="79.692" Script="0" Line="90";
+CF p47 p48
+DF d13 p48
+Finish p49 "49-ddg.chunk_7" Value="ddg.chunk_7" Time="79.708" Script="0" Line="91";
+CF p48 p49
+Start p50 "50-ddg.chunk_8" Value="ddg.chunk_8" Time="79.709" Script="0" Line="96";
+CF p49 p50
+Operation p51 "51-x$illnessbin <- 1" Value="x$illnessbin <- 1" Time="79.711" Script="0" Line="98";
+CF p50 p51
+Snapshot d14 "14-x" Value="./RMarkdownTest_ddg/14-x-PARTIAL.csv" Time="2016-06-14T16.13.56EDT";
+DF p51 d14
+Operation p52 "52-x$illnessbin[x$illness == 0] <- 0" Value="x$illnessbin[x$illness == 0] <- 0" Time="79.743" Script="0" Line="99";
+CF p51 p52
+Snapshot d15 "15-x" Value="./RMarkdownTest_ddg/15-x-PARTIAL.csv" Time="2016-06-14T16.13.56EDT";
+DF p52 d15
+Operation p53 "53-glmill <- glm(illnessbin ~ income + sex + age + chcond, data" Value="glmill <- glm(illnessbin ~ income + sex + age + chcond, data" Time="79.8" Script="0" Line="102";
+CF p52 p53
+DF d15 p53
+Snapshot d16 "16-glmill" Value="./RMarkdownTest_ddg/16-glmill.csv" Time="2016-06-14T16.13.56EDT";
+DF p53 d16
+Operation p54 "54-summary(glmill)" Value="summary(glmill)" Time="80.273" Script="0" Line="103";
+CF p53 p54
+DF d16 p54
+Operation p55 "55-x$logitillness <- predict(glmill)" Value="x$logitillness <- predict(glmill)" Time="80.287" Script="0" Line="107";
+CF p54 p55
+DF d16 p55
+Snapshot d17 "17-x" Value="./RMarkdownTest_ddg/17-x-PARTIAL.csv" Time="2016-06-14T16.13.56EDT";
+DF p55 d17
+Operation p56 "56-x$probabilityillness <- exp(x$logitillness)/(1 + exp(x$logit" Value="x$probabilityillness <- exp(x$logitillness)/(1 + exp(x$logit" Time="80.342" Script="0" Line="109";
+CF p55 p56
+Snapshot d18 "18-x" Value="./RMarkdownTest_ddg/18-x-PARTIAL.csv" Time="2016-06-14T16.13.57EDT";
+DF p56 d18
+Operation p57 "57-xyplot(probabilityillness ~ income * 10000, groups = chcond," Value="xyplot(probabilityillness ~ income * 10000, groups = chcond," Time="80.397" Script="0" Line="111";
+CF p56 p57
+DF d18 p57
+Data d19 "19-c [ENV]" Value="10";
+DF d19 p57
+Finish p58 "58-ddg.chunk_8" Value="ddg.chunk_8" Time="80.432" Script="0" Line="112";
+CF p57 p58
+Finish p59 "59-./RMarkdownTest_ddg/RMarkdownTest.R" Value="./RMarkdownTest_ddg/RMarkdownTest.R" Time="80.433" Script="0" Line="NA";
+CF p58 p59
+File d20 "20-dev.off.20.pdf" Value="./RMarkdownTest_ddg/20-dev.off.20.pdf" Time="2016-06-14T16.13.57EDT" Location="/Users/Alex/Google Drive/Harvard Forest/RDataTracker/examples-no-instrumentation/RMarkdownTest/dev.off.20.pdf";
+Exception d21 "21-error.msg" Value="\"No procedure node found for RMarkdownTest.Rmd\"";
+DF p59 d21
+
