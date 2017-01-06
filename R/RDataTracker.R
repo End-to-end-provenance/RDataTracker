@@ -2810,7 +2810,7 @@ ddg.MAX_HIST_LINES <- 2^14
       if ( .ddg.is.nonlocal.assign(cmd@parsed[[1]]) ) 
       {
         # NOT WORKING!! - CAN NOT FIND ENVIRONMENT EVEN IF VARIABLE EXISTS
-        d.environ <- .ddg.where( cmd@vars.set , env = parent.env(parent.frame()) )
+        d.environ <- .ddg.where( cmd@vars.set , env = parent.env(parent.frame()) , warning = FALSE )
 
         if( identical(d.environ,"undefined") )
           d.environ <- globalenv()
@@ -3908,14 +3908,17 @@ ddg.MAX_HIST_LINES <- 2^14
 
 # name - name of variable.
 # env (optional) - environment in which to look for variable.
+# warning (optional) - set to TRUE if a warning should be thrown when a variable is not found.
 
-.ddg.where <- function( name , env = parent.frame() ) 
+.ddg.where <- function( name , env = parent.frame() , warning = TRUE ) 
 {
   stopifnot(is.character(name), length(name) == 1)
   
   if (identical(env, emptyenv())) 
   {
-    warning("Can't find ", name)
+    if(warning)
+      warning("Can't find ", name)
+
     return("undefined")
   }
   if (exists(name, env, inherits=FALSE)) 
@@ -3924,7 +3927,7 @@ ddg.MAX_HIST_LINES <- 2^14
   }
   else 
   {
-    .ddg.where(name, parent.env(env))
+    .ddg.where(name, parent.env(env), warning)
   }
 }
 
@@ -4502,7 +4505,7 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
       # Check for non-local assignment
       if ( .ddg.is.nonlocal.assign(return.stmt@parsed[[1]]) )
       {
-      	env <- .ddg.where( var, env = parent.env(parent.frame()) )
+      	env <- .ddg.where( var, env = parent.env(parent.frame()) , warning = FALSE )
 
         if( identical(env,"undefined") )
           env <- globalenv()
