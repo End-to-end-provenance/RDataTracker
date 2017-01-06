@@ -76,3 +76,16 @@ f8_val <- f8(); stopifnot(f8_val == TRUE)
 f9_val <- f9(3); stopifnot(f9_val == 9)
 f10_val_pos <- f10(1); stopifnot(f10_val_pos == 2)
 f10_val_neg <- f10(-1); stopifnot(is.null(f10_val_neg))
+
+# Nested function
+outer <- function() {
+  inner <- function() {
+    a <- 1
+  }
+  
+  b <- 2
+  inner()
+}
+
+outer()
+
