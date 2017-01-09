@@ -5789,7 +5789,7 @@ ddg.display <- function () {
   # print("Opening socket connection")
   tryCatch ({
         con <- socketConnection(host= "localhost", port = .ddg.get(".ddg.explorer.port"), blocking = FALSE,
-            server=FALSE, open="w")
+            server=FALSE, open="w", timeout=1)
         ddgtxt.path<- paste(getwd(), .ddg.path() ,"ddg.txt",sep = "/")
         # print ("Socket open; writing to socket")
         writeLines(ddgtxt.path, con)
