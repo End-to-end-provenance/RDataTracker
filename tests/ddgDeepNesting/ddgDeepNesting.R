@@ -1,5 +1,5 @@
 # Test R script
-# ERB rev. 3-Apr-2014
+# ERB rev. 10-Jan-2017
 
 # Modified by Luis Perez 7-Jul-2014
 # Modified by Luis Perez 17-Jul-2014
@@ -13,19 +13,19 @@ a <- 0
 n <- 5
 
 	
-ddg.start("iteration i")
+# ddg.start("iteration i")
 for (i in 1:n) {
-	ddg.start("iteration j")    
+	# ddg.start("iteration j")    
 	for (j in 1:n) {
-		ddg.start("iteration k")
+		# ddg.start("iteration k")
 		for (k in 1:n) {
 			a <- increment.value(a)
 			invisible(a)
 		}
-		ddg.finish("iteration k")         
+		# ddg.finish("iteration k")         
 	}
-	ddg.finish("iteration j") 
+	# ddg.finish("iteration j") 
 }
-ddg.finish("iteration i")
+# ddg.finish("iteration i")
 
 
