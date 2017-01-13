@@ -2138,22 +2138,41 @@ ddg.MAX_HIST_LINES <- 2^14
   # read are within an if-statement, for example.
   files.read <- .ddg.find.files.read(cmd, env)
   #print (".ddg.create.file.read.nodes.and.edges: Files read:")
-  #print (files.read)
+  print (files.read)
+
+  print( .ddg.contains.factor(cmd@vars.set) )
 
   for (file in files.read) {
+
     # Only create the node and edge if there actually is a file
     # Even if the file exists, it is possible that it was not read here
-    if (file.exists(file)) {
+    if (file.exists(file)) 
+    {
       # Create the file node and edge
-      ddg.file (file)
-      ddg.data.in (basename(file), pname=cmd@abbrev)
+      ddg.file(file)
+      ddg.data.in(basename(file), pname=cmd@abbrev)
     }
-    else if (grepl ("^http", file) || grepl ("^ftp", file)) {
+    else if (grepl ("^http", file) || grepl ("^ftp", file)) 
+    {
       scope <- environmentName(.GlobalEnv)
       .ddg.data.node("URL", file, file, scope)
       .ddg.data2proc(file, scope, cmd@abbrev)
     }
   }
+}
+
+# Returns TRUE if the value of the given variable name is a data frame
+# containing at least one factor. Returns FALSE otherwise.
+# var - the variable name
+.ddg.contains.factor <- function( var )
+{
+  content <- get(var)
+  print( class(content) )
+
+  if( is.data.frame(content) )
+    return( is.element("factor",sapply(content,class)) )
+
+  return(FALSE)
 }
 
 # Initialize the information about functions that read from files
