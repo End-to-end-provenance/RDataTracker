@@ -1987,7 +1987,10 @@ ddg.MAX_HIST_LINES <- 2^14
     # print(paste("Checking ", vars.set$variable[i]))
     if (vars.set$possible.last.writer[i] > vars.set$last.writer[i]) {
       value <- tryCatch(eval(parse(text=vars.set$variable[i]), environment),
-          error = function(e) {NULL}
+          error = function(e) {
+            #print(paste("Could not find value for", vars.set$variable[i], "in environment", environment))
+            NULL
+          }
       )
 
       # Only create the node and edge if we were successful in
@@ -3246,6 +3249,8 @@ ddg.MAX_HIST_LINES <- 2^14
 
 .ddg.data.node <- function(dtype, dname, dvalue, dscope, from.env=FALSE) {
   #print(paste(".ddg.data.node: dname =", dname))
+  #print(paste(".ddg.data.node: typeof(dvalue) =", typeof(dvalue)))
+  #print(paste(".ddg.data.node: dvalue =", dvalue))
   #print(paste(".ddg.data.node: dscope =", dscope))
   # If object or a long list, try to create snapshot node.
   if (is.object(dvalue)) {
@@ -3270,6 +3275,7 @@ ddg.MAX_HIST_LINES <- 2^14
     return (NULL)
   }
 
+  #print("Converting value to a string")
   # Convert value to a string.
   val <-
       if (is.list(dvalue)) {
@@ -3290,15 +3296,16 @@ ddg.MAX_HIST_LINES <- 2^14
             error = function(e) {"complex"})
       }
       else if (is.null(dvalue)) "NULL"
+      else if (length(dvalue) == 0) "Empty"
       else if (is.na(dvalue)) "NA"
       else if (dvalue == "complex" || dvalue == "#ddg.function") dvalue
       else if (is.character(dvalue) && dvalue == "") "NotRecorded"
       else {
-        # Replace double quotes with single quotes.
-        .ddg.replace.quotes(dvalue)
+         # Replace double quotes with single quotes.
+         .ddg.replace.quotes(dvalue)
       }
 
-  #print(".ddg.data.node: converted value to string")
+  #print(paste(".ddg.data.node: converted value to string", val))
 
 
   if (grepl("\n", val)) {
@@ -5432,7 +5439,7 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
   if (debug) ddg.breakpoint()
 
   # Save debug files to debug directory.
-  if (save.debug) .ddg.set("ddg.save.debug", TRUE)
+  .ddg.set("ddg.save.debug", save.debug)
 
   # If an R error is generated, get the error message and close
   # the DDG.
