@@ -92,3 +92,7 @@ repeat {
   if (FALSE) s <- q^3
   if (q > 4) break
 }
+
+f <- function(x, y) {if (b == 1) x else y}
+f(1, 2)
+
