@@ -2935,7 +2935,11 @@ ddg.MAX_HIST_LINES <- 2^14
 
           if (.ddg.debug.lib()) print (paste (".ddg.parse.commands: Evaluating ", cmd@annotated))
 
-          result <- withCallingHandlers (eval(cmd@annotated, environ, NULL), warning = .ddg.set.warning)
+          result <- withCallingHandlers (eval(cmd@annotated, environ, NULL), warning = .ddg.set.warning , error = .ddg.set.error)
+
+
+
+
 
           if (.ddg.debug.lib()) print (paste (".ddg.parse.commands: Done evaluating ", cmd@annotated))
 
@@ -3023,8 +3027,14 @@ ddg.MAX_HIST_LINES <- 2^14
 
           if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Adding input data nodes for", cmd@abbrev))
           
+
+
+          
           .ddg.create.data.set.edges.for.cmd(vars.set, cmd, i, d.environ)
           
+
+
+
           if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Adding output data nodes for", cmd@abbrev))
 
           if (cmd@writesFile) .ddg.create.file.write.nodes.and.edges (cmd, environ)
@@ -3087,6 +3097,14 @@ ddg.MAX_HIST_LINES <- 2^14
   if (.ddg.is.init() && !.ddg.is.sourced()) .ddg.write.timestamp.to.history()
 
 }
+
+
+.ddg.set.error <- function(e)
+{
+  message( ".ddg.error: " , e )
+  .ddg.set( "ddg.error" , e )
+}
+
 
 
 # .ddg.console.node creates a console node.
