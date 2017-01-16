@@ -3396,16 +3396,40 @@ ddg.MAX_HIST_LINES <- 2^14
     return(.ddg.data.node ("Data", dname, "", dscope, from.env=from.env))
   }
 
-    # object.size returns bytes, but max.snapshot.size is in kilobytes
-  if (max.snapshot.size == -1 || object.size(data) < max.snapshot.size * 1024) {
-    full.snapshot <- TRUE
-  } else {
-    full.snapshot <- FALSE
-  }
-
   # Snapshot name
   snapname <- dname
-
+  
+  # object.size returns bytes, but max.snapshot.size is in kilobytes
+  if (max.snapshot.size == -1 || object.size(data) < max.snapshot.size * 1024) {
+    full.snapshot <- TRUE
+    
+  } 
+  
+  else if (is.vector(data) || is.list(data) || is.data.frame(data) || is.matrix(data) || is.array(data)) { 
+    # Decide how much data to save
+    
+    element.size <- object.size(head(data, 1))
+    num.elements.to.save <- ceiling(max.snapshot.size * 1024 / element.size)
+    if (num.elements.to.save < length(data)) {
+      #print (paste ("object.size(data)" = object.size(data)))
+      data <- head(data, num.elements.to.save)
+      snapname <- paste(dname, "-PARTIAL", sep="")
+      full.snapshot <- FALSE
+      #print(paste ("element.size =", element.size))
+      #print (paste (".ddg.snapshot.node: Saving", num.elements.to.save, "elements for", dname))
+      #print(paste("Size of saved data =", object.size(data)))
+      
+    }
+    else {
+      full.snapshot <- TRUE
+    }
+  }
+    
+  else {
+    full.snapshot <- FALSE
+    snapname <- paste(dname, "-PARTIAL", sep="")
+  }
+    
   # Snapshot type
   dtype <- "Snapshot"
 
@@ -3418,13 +3442,7 @@ ddg.MAX_HIST_LINES <- 2^14
   else if ("XMLInternalDocument" %in% class(data)) {
     fext <- "xml"
   }
-  else if (is.vector(data)) {
-  }
-  else if (is.data.frame(data) || is.matrix(data) || is.array(data) || is.list(data)) {
-    if (!full.snapshot) {
-      data <- head(data, n=10*max.snapshot.size)
-      snapname <- paste(dname, "-PARTIAL", sep="")
-    }
+  else if (is.vector(data) || is.data.frame(data) || is.matrix(data) || is.array(data) || is.list(data)) {
   }
   else if (!is.character(data)) {
     tryCatch(data <- as.character(data),
