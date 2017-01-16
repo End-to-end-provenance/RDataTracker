@@ -586,7 +586,7 @@ ddg.MAX_HIST_LINES <- 2^14
                              \"name\" : \"",ss[ , 2], "\",
                              \"timestamp\" : \"",stimes, "\"}",
                          sep = "", collapse =",\n")
-    output <- paste("[\n", scriptarray, " ],\n", sep = "")
+    output <- paste("[\n", scriptarray, " ]", sep = "")
   }
   return(output)
 }
@@ -726,11 +726,7 @@ ddg.MAX_HIST_LINES <- 2^14
 
   environ <- paste(environ, .ddg.json.nv("rdt:script", ddg.r.script.path), sep="")
 
-  if(sourced.scripts==""){
-    environ <- paste(environ, .ddg.json.nv("rdt:sourcedScripts", sourced.scripts), sep="")
-  }else{
-    environ <- paste(environ, "\"rdt:sourcedScripts\" : ", sourced.scripts, ",\n", sep="")
-  }
+  environ <- paste(environ, "\"rdt:sourcedScripts\" : ", sourced.scripts, ",\n", sep="")
 
   environ <- paste(environ, .ddg.json.nv("rdt:scriptTimeStamp", script.timestamp), sep="")
 
@@ -5814,7 +5810,7 @@ ddg.display <- function () {
   # print("Opening socket connection")
   tryCatch ({
         con <- socketConnection(host= "localhost", port = .ddg.get(".ddg.explorer.port"), blocking = FALSE,
-            server=FALSE, open="w")
+            server=FALSE, open="w", timeout=1)
         ddgtxt.path<- paste(getwd(), .ddg.path() ,"ddg.txt",sep = "/")
         # print ("Socket open; writing to socket")
         writeLines(ddgtxt.path, con)
