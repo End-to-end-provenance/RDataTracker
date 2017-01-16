@@ -2,269 +2,269 @@ Architecture="x86_64"
 OperatingSystem="unix"
 Language="R"
 LanguageVersion="R version 3.3.1 (2016-06-21)"
-RDataTrackerVersion="2.24.1"
+RDataTrackerVersion="2.25.0"
 Script="[DIR]/S4ObjectTest.R"
 SourcedScripts=""
-ProcessFileTimestamp="2017-01-04T14.21.23EST"
+ProcessFileTimestamp="2017-01-06T17.10.23EST"
 WorkingDirectory="[DIR]"
 DDGDirectory="[DIR]/ddg"
-DateTime="2017-01-04T15.45.57EST"
-InstalledPackages="RDataTracker 2.24.1"
+DateTime="2017-01-16T16.41.44EST"
+InstalledPackages="RDataTracker 2.25.0"
 77
-Start p1 "1-S4ObjectTest.R" Value="S4ObjectTest.R" Time="0.085" Script="NA" Pos="NA";
-Operation p2 "2-require(methods)" Value="require(methods)" Time="0.087" Script="0" Pos="9,1,9,16";
+Start p1 "1-S4ObjectTest.R" Value="S4ObjectTest.R" Time="0.078" Script="NA" Pos="NA";
+Operation p2 "2-require(methods)" Value="require(methods)" Time="0.079" Script="0" Pos="9,1,9,16";
 CF p1 p2
-Operation p3 "3-setClass(\"SampleObj\", slots = c(sampleCode = \"integer\", nInd" Value="setClass(\"SampleObj\", slots = c(sampleCode = \"integer\", nInd" Time="0.096" Script="0" Pos="15,1,19,54";
+Operation p3 "3-setClass(\"SampleObj\", slots = c(sampleCode = \"integer\", nInd" Value="setClass(\"SampleObj\", slots = c(sampleCode = \"integer\", nInd" Time="0.088" Script="0" Pos="15,1,19,54";
 CF p2 p3
-Operation p4 "4-as.character.SampleObj <- function(x) {    str <- paste(\"sam" Value="as.character.SampleObj <- function(x) {    str <- paste(\"sam" Time="0.101" Script="0" Pos="21,1,27,1";
+Operation p4 "4-as.character.SampleObj <- function(x) {    str <- paste(\"sam" Value="as.character.SampleObj <- function(x) {    str <- paste(\"sam" Time="0.092" Script="0" Pos="21,1,27,1";
 CF p3 p4
 Data d1 "1-as.character.SampleObj" Value="#ddg.function";
 DF p4 d1
-Operation p5 "5-setMethod(\"as.character\", signature(x = \"SampleObj\"), as.cha" Value="setMethod(\"as.character\", signature(x = \"SampleObj\"), as.cha" Time="0.11" Script="0" Pos="66,1,66,30";
+Operation p5 "5-setMethod(\"as.character\", signature(x = \"SampleObj\"), as.cha" Value="setMethod(\"as.character\", signature(x = \"SampleObj\"), as.cha" Time="0.101" Script="0" Pos="66,1,66,30";
 CF p4 p5
 DF d1 p5
-Operation p6 "6-generateSamples <- function(n) {    samplesArr <- list()    " Value="generateSamples <- function(n) {    samplesArr <- list()    " Time="0.12" Script="0" Pos="67,1,67,47";
+Operation p6 "6-generateSamples <- function(n) {    samplesArr <- list()    " Value="generateSamples <- function(n) {    samplesArr <- list()    " Time="0.109" Script="0" Pos="67,1,67,47";
 CF p5 p6
 Data d2 "2-generateSamples" Value="#ddg.function";
 DF p6 d2
-Operation p7 "7-generate1Sample <- function() {    newSample <- new(\"SampleO" Value="generate1Sample <- function() {    newSample <- new(\"SampleO" Time="0.127" Script="0" Pos="NA,NA,NA,NA";
+Operation p7 "7-generate1Sample <- function() {    newSample <- new(\"SampleO" Value="generate1Sample <- function() {    newSample <- new(\"SampleO" Time="0.115" Script="0" Pos="NA,NA,NA,NA";
 CF p6 p7
 Data d3 "3-generate1Sample" Value="#ddg.function";
 DF p7 d3
-Operation p8 "8-totalNumOfSample <- 5" Value="totalNumOfSample <- 5" Time="0.133" Script="0" Pos="NA,NA,NA,NA";
+Operation p8 "8-totalNumOfSample <- 5" Value="totalNumOfSample <- 5" Time="0.12" Script="0" Pos="NA,NA,NA,NA";
 CF p7 p8
 Data d4 "4-totalNumOfSample" Value="5";
 DF p8 d4
-Start p9 "9-newSample <- generate1Sample()" Value="newSample <- generate1Sample()" Time="0.139" Script="0" Pos="NA,NA,NA,NA";
+Start p9 "9-newSample <- generate1Sample()" Value="newSample <- generate1Sample()" Time="0.127" Script="0" Pos="NA,NA,NA,NA";
 CF p8 p9
 DF d3 p9
-Start p10 "10-generate1Sample()" Value="generate1Sample()" Time="0.144" Script="NA" Pos="NA";
+Start p10 "10-generate1Sample()" Value="generate1Sample()" Time="0.131" Script="NA" Pos="NA";
 CF p9 p10
-Operation p11 "11-generate1Sample" Value="generate1Sample" Time="0.145" Script="NA" Pos="NA";
+Operation p11 "11-generate1Sample" Value="generate1Sample" Time="0.132" Script="NA" Pos="NA";
 DF d3 p11
 CF p10 p11
-Operation p12 "12-newSample <- new(\"SampleObj\", sampleCode = as.integer(1), nI" Value="newSample <- new(\"SampleObj\", sampleCode = as.integer(1), nI" Time="0.151" Script="0" Pos="NA,NA,NA,NA";
+Operation p12 "12-newSample <- new(\"SampleObj\", sampleCode = as.integer(1), nI" Value="newSample <- new(\"SampleObj\", sampleCode = as.integer(1), nI" Time="0.137" Script="0" Pos="NA,NA,NA,NA";
 CF p11 p12
-Start p13 "13-.local(x, ...)" Value=".local(x, ...)" Time="0.158" Script="NA" Pos="NA";
+Start p13 "13-.local(x, ...)" Value=".local(x, ...)" Time="0.141" Script="NA" Pos="NA";
 CF p12 p13
-Binding p14 "14-...  <-  x" Time="0.159" Script="NA" Pos="NA";
+Binding p14 "14-...  <-  x" Time="0.142" Script="NA" Pos="NA";
 CF p13 p14
-Binding p15 "15-...  <-  ..." Time="0.161" Script="NA" Pos="NA";
+Binding p15 "15-...  <-  ..." Time="0.144" Script="NA" Pos="NA";
 CF p14 p15
-Operation p16 "16-.local" Value=".local" Time="0.162" Script="NA" Pos="NA";
+Operation p16 "16-.local" Value=".local" Time="0.145" Script="NA" Pos="NA";
 CF p15 p16
-Operation p17 "17-str <- paste(\"sampleCode =\", x@sampleCode, \"\n\")" Value="str <- paste(\"sampleCode =\", x@sampleCode, \"\n\")" Time="0.165" Script="0" Pos="23,9,23,56";
+Operation p17 "17-str <- paste(\"sampleCode =\", x@sampleCode, \"\n\")" Value="str <- paste(\"sampleCode =\", x@sampleCode, \"\n\")" Time="0.147" Script="0" Pos="23,9,23,56";
 CF p16 p17
 Data d5 "5-str" Value="\"sampleCode = 1  \"";
 DF p17 d5
-Operation p18 "18-str <- paste(str, \"nIndividuals =\", x@nIndividuals, \"\n\")" Value="str <- paste(str, \"nIndividuals =\", x@nIndividuals, \"\n\")" Time="0.176" Script="0" Pos="24,9,24,65";
+Operation p18 "18-str <- paste(str, \"nIndividuals =\", x@nIndividuals, \"\n\")" Value="str <- paste(str, \"nIndividuals =\", x@nIndividuals, \"\n\")" Time="0.157" Script="0" Pos="24,9,24,65";
 CF p17 p18
 DF d5 p18
 Data d6 "6-str" Value="\"sampleCode = 1   nIndividuals = 10  \"";
 DF p18 d6
-Operation p19 "19-str <- paste(str, \"areaCode =\", x@areaCode, \"\n\")" Value="str <- paste(str, \"areaCode =\", x@areaCode, \"\n\")" Time="0.189" Script="0" Pos="25,9,25,57";
+Operation p19 "19-str <- paste(str, \"areaCode =\", x@areaCode, \"\n\")" Value="str <- paste(str, \"areaCode =\", x@areaCode, \"\n\")" Time="0.17" Script="0" Pos="25,9,25,57";
 CF p18 p19
 DF d6 p19
 Data d7 "7-str" Value="\"sampleCode = 1   nIndividuals = 10   areaCode = 100  \"";
 DF p19 d7
 Data d8 "8-.local(x,...) return" Value="\"sampleCode = 1   nIndividuals = 10   areaCode = 100  \"";
-Operation p20 "20-return(str)" Value="return(str)" Time="0.207" Script="0" Pos="26,9,26,19";
+Operation p20 "20-return(str)" Value="return(str)" Time="0.185" Script="0" Pos="26,9,26,19";
 CF p19 p20
 DF p20 d8
 DF d7 p20
-Finish p21 "21-.local(x, ...)" Value=".local(x, ...)" Time="0.219" Script="NA" Pos="NA";
+Finish p21 "21-.local(x, ...)" Value=".local(x, ...)" Time="0.193" Script="NA" Pos="NA";
 CF p20 p21
-Snapshot d9 "9-newSample" Value="data/9-newSample.txt" Time="2017-01-04T15.45.57EST";
+Snapshot d9 "9-newSample" Value="data/9-newSample.txt" Time="2017-01-16T16.41.44EST";
 DF p12 d9
-Start p22 "22-.local(x, ...)" Value=".local(x, ...)" Time="0.228" Script="NA" Pos="NA";
+Start p22 "22-.local(x, ...)" Value=".local(x, ...)" Time="0.203" Script="NA" Pos="NA";
 CF p21 p22
-Binding p23 "23-...  <-  x" Time="0.229" Script="NA" Pos="NA";
+Binding p23 "23-...  <-  x" Time="0.204" Script="NA" Pos="NA";
 CF p22 p23
-Binding p24 "24-...  <-  ..." Time="0.231" Script="NA" Pos="NA";
+Binding p24 "24-...  <-  ..." Time="0.207" Script="NA" Pos="NA";
 CF p23 p24
-Operation p25 "25-.local" Value=".local" Time="0.233" Script="NA" Pos="NA";
+Operation p25 "25-.local" Value=".local" Time="0.209" Script="NA" Pos="NA";
 CF p24 p25
-Operation p26 "26-str <- paste(\"sampleCode =\", x@sampleCode, \"\n\")" Value="str <- paste(\"sampleCode =\", x@sampleCode, \"\n\")" Time="0.237" Script="0" Pos="23,9,23,56";
+Operation p26 "26-str <- paste(\"sampleCode =\", x@sampleCode, \"\n\")" Value="str <- paste(\"sampleCode =\", x@sampleCode, \"\n\")" Time="0.213" Script="0" Pos="23,9,23,56";
 CF p25 p26
 Data d10 "10-str" Value="\"sampleCode = 1  \"";
 DF p26 d10
-Operation p27 "27-str <- paste(str, \"nIndividuals =\", x@nIndividuals, \"\n\")" Value="str <- paste(str, \"nIndividuals =\", x@nIndividuals, \"\n\")" Time="0.246" Script="0" Pos="24,9,24,65";
+Operation p27 "27-str <- paste(str, \"nIndividuals =\", x@nIndividuals, \"\n\")" Value="str <- paste(str, \"nIndividuals =\", x@nIndividuals, \"\n\")" Time="0.222" Script="0" Pos="24,9,24,65";
 CF p26 p27
 DF d10 p27
 Data d11 "11-str" Value="\"sampleCode = 1   nIndividuals = 10  \"";
 DF p27 d11
-Operation p28 "28-str <- paste(str, \"areaCode =\", x@areaCode, \"\n\")" Value="str <- paste(str, \"areaCode =\", x@areaCode, \"\n\")" Time="0.262" Script="0" Pos="25,9,25,57";
+Operation p28 "28-str <- paste(str, \"areaCode =\", x@areaCode, \"\n\")" Value="str <- paste(str, \"areaCode =\", x@areaCode, \"\n\")" Time="0.235" Script="0" Pos="25,9,25,57";
 CF p27 p28
 DF d11 p28
 Data d12 "12-str" Value="\"sampleCode = 1   nIndividuals = 10   areaCode = 100  \"";
 DF p28 d12
 Data d13 "13-.local(x,...) return" Value="\"sampleCode = 1   nIndividuals = 10   areaCode = 100  \"";
-Operation p29 "29-return(str)" Value="return(str)" Time="0.28" Script="0" Pos="26,9,26,19";
+Operation p29 "29-return(str)" Value="return(str)" Time="0.25" Script="0" Pos="26,9,26,19";
 CF p28 p29
 DF p29 d13
 DF d12 p29
-Finish p30 "30-.local(x, ...)" Value=".local(x, ...)" Time="0.29" Script="NA" Pos="NA";
+Finish p30 "30-.local(x, ...)" Value=".local(x, ...)" Time="0.259" Script="NA" Pos="NA";
 CF p29 p30
-Snapshot d14 "14-generate1Sample() return" Value="data/14-generate1Sample() return.txt" Time="2017-01-04T15.45.57EST";
-Operation p31 "31-return(newSample)" Value="return(newSample)" Time="0.291" Script="0" Pos="NA,NA,NA,NA";
+Snapshot d14 "14-generate1Sample() return" Value="data/14-generate1Sample() return.txt" Time="2017-01-16T16.41.44EST";
+Operation p31 "31-return(newSample)" Value="return(newSample)" Time="0.262" Script="0" Pos="NA,NA,NA,NA";
 CF p30 p31
 DF p31 d14
 DF d9 p31
-Finish p32 "32-generate1Sample()" Value="generate1Sample()" Time="0.302" Script="NA" Pos="NA";
+Finish p32 "32-generate1Sample()" Value="generate1Sample()" Time="0.271" Script="NA" Pos="NA";
 CF p31 p32
-Finish p33 "33-newSample <- generate1Sample()" Value="newSample <- generate1Sample()" Time="0.303" Script="0" Pos="NA,NA,NA,NA";
+Finish p33 "33-newSample <- generate1Sample()" Value="newSample <- generate1Sample()" Time="0.272" Script="0" Pos="NA,NA,NA,NA";
 CF p32 p33
 DF d14 p33
-Start p34 "34-.local(x, ...)" Value=".local(x, ...)" Time="0.306" Script="NA" Pos="NA";
+Start p34 "34-.local(x, ...)" Value=".local(x, ...)" Time="0.274" Script="NA" Pos="NA";
 CF p33 p34
-Binding p35 "35-...  <-  x" Time="0.307" Script="NA" Pos="NA";
+Binding p35 "35-...  <-  x" Time="0.275" Script="NA" Pos="NA";
 CF p34 p35
-Binding p36 "36-...  <-  ..." Time="0.309" Script="NA" Pos="NA";
+Binding p36 "36-...  <-  ..." Time="0.277" Script="NA" Pos="NA";
 CF p35 p36
-Operation p37 "37-.local" Value=".local" Time="0.312" Script="NA" Pos="NA";
+Operation p37 "37-.local" Value=".local" Time="0.279" Script="NA" Pos="NA";
 CF p36 p37
-Operation p38 "38-str <- paste(\"sampleCode =\", x@sampleCode, \"\n\")" Value="str <- paste(\"sampleCode =\", x@sampleCode, \"\n\")" Time="0.315" Script="0" Pos="23,9,23,56";
+Operation p38 "38-str <- paste(\"sampleCode =\", x@sampleCode, \"\n\")" Value="str <- paste(\"sampleCode =\", x@sampleCode, \"\n\")" Time="0.281" Script="0" Pos="23,9,23,56";
 CF p37 p38
 Data d15 "15-str" Value="\"sampleCode = 1  \"";
 DF p38 d15
-Operation p39 "39-str <- paste(str, \"nIndividuals =\", x@nIndividuals, \"\n\")" Value="str <- paste(str, \"nIndividuals =\", x@nIndividuals, \"\n\")" Time="0.326" Script="0" Pos="24,9,24,65";
+Operation p39 "39-str <- paste(str, \"nIndividuals =\", x@nIndividuals, \"\n\")" Value="str <- paste(str, \"nIndividuals =\", x@nIndividuals, \"\n\")" Time="0.291" Script="0" Pos="24,9,24,65";
 CF p38 p39
 DF d15 p39
 Data d16 "16-str" Value="\"sampleCode = 1   nIndividuals = 10  \"";
 DF p39 d16
-Operation p40 "40-str <- paste(str, \"areaCode =\", x@areaCode, \"\n\")" Value="str <- paste(str, \"areaCode =\", x@areaCode, \"\n\")" Time="0.34" Script="0" Pos="25,9,25,57";
+Operation p40 "40-str <- paste(str, \"areaCode =\", x@areaCode, \"\n\")" Value="str <- paste(str, \"areaCode =\", x@areaCode, \"\n\")" Time="0.303" Script="0" Pos="25,9,25,57";
 CF p39 p40
 DF d16 p40
 Data d17 "17-str" Value="\"sampleCode = 1   nIndividuals = 10   areaCode = 100  \"";
 DF p40 d17
 Data d18 "18-.local(x,...) return" Value="\"sampleCode = 1   nIndividuals = 10   areaCode = 100  \"";
-Operation p41 "41-return(str)" Value="return(str)" Time="0.356" Script="0" Pos="26,9,26,19";
+Operation p41 "41-return(str)" Value="return(str)" Time="0.318" Script="0" Pos="26,9,26,19";
 CF p40 p41
 DF p41 d18
 DF d17 p41
-Finish p42 "42-.local(x, ...)" Value=".local(x, ...)" Time="0.364" Script="NA" Pos="NA";
+Finish p42 "42-.local(x, ...)" Value=".local(x, ...)" Time="0.325" Script="NA" Pos="NA";
 CF p41 p42
-Snapshot d19 "19-newSample" Value="data/19-newSample.txt" Time="2017-01-04T15.45.58EST";
+Snapshot d19 "19-newSample" Value="data/19-newSample.txt" Time="2017-01-16T16.41.44EST";
 DF p33 d19
-Start p43 "43-samplesArr <- generateSamples(totalNumOfSample)" Value="samplesArr <- generateSamples(totalNumOfSample)" Time="0.369" Script="0" Pos="NA,NA,NA,NA";
+Start p43 "43-samplesArr <- generateSamples(totalNumOfSample)" Value="samplesArr <- generateSamples(totalNumOfSample)" Time="0.331" Script="0" Pos="NA,NA,NA,NA";
 CF p42 p43
 DF d2 p43
 DF d4 p43
-Start p44 "44-generateSamples(totalNumOfSample)" Value="generateSamples(totalNumOfSample)" Time="0.378" Script="NA" Pos="NA";
+Start p44 "44-generateSamples(totalNumOfSample)" Value="generateSamples(totalNumOfSample)" Time="0.34" Script="NA" Pos="NA";
 CF p43 p44
-Binding p45 "45-n  <-  totalNumOfSample" Time="0.379" Script="NA" Pos="NA";
+Binding p45 "45-n  <-  totalNumOfSample" Time="0.341" Script="NA" Pos="NA";
 CF p44 p45
 DF d4 p45
 Data d20 "20-n" Value="5";
 DF p45 d20
-Operation p46 "46-generateSamples" Value="generateSamples" Time="0.393" Script="NA" Pos="NA";
+Operation p46 "46-generateSamples" Value="generateSamples" Time="0.354" Script="NA" Pos="NA";
 DF d2 p46
 DF d20 p46
 CF p45 p46
-Operation p47 "47-samplesArr <- list()" Value="samplesArr <- list()" Time="0.401" Script="0" Pos="NA,NA,NA,NA";
+Operation p47 "47-samplesArr <- list()" Value="samplesArr <- list()" Time="0.361" Script="0" Pos="NA,NA,NA,NA";
 CF p46 p47
-Snapshot d21 "21-samplesArr" Value="data/21-samplesArr.txt" Time="2017-01-04T15.45.58EST";
+Snapshot d21 "21-samplesArr" Value="data/21-samplesArr.txt" Time="2017-01-16T16.41.44EST";
 DF p47 d21
-Start p48 "48-for (ix in 1:n) {    newSample <- new(\"SampleObj\", sampleCod" Value="for (ix in 1:n) {    newSample <- new(\"SampleObj\", sampleCod" Time="0.411" Script="0" Pos="NA,NA,NA,NA";
+Start p48 "48-for (ix in 1:n) {    newSample <- new(\"SampleObj\", sampleCod" Value="for (ix in 1:n) {    newSample <- new(\"SampleObj\", sampleCod" Time="0.371" Script="0" Pos="NA,NA,NA,NA";
 CF p47 p48
 DF d19 p48
-Start p49 "49-for loop" Value="for loop" Time="0.426" Script="NA" Pos="NA";
+Start p49 "49-for loop" Value="for loop" Time="0.384" Script="NA" Pos="NA";
 CF p48 p49
-Operation p50 "50-ix <- 1" Value="ix <- 1" Time="0.427" Script="NA" Pos="NA";
+Operation p50 "50-ix <- 1" Value="ix <- 1" Time="0.385" Script="NA" Pos="NA";
 CF p49 p50
 Data d22 "22-ix" Value="1";
 DF p50 d22
-Operation p51 "51-newSample <- new(\"SampleObj\", sampleCode = ix, nIndividuals " Value="newSample <- new(\"SampleObj\", sampleCode = ix, nIndividuals " Time="0.431" Script="0" Pos="NA,NA,NA,NA";
+Operation p51 "51-newSample <- new(\"SampleObj\", sampleCode = ix, nIndividuals " Value="newSample <- new(\"SampleObj\", sampleCode = ix, nIndividuals " Time="0.389" Script="0" Pos="NA,NA,NA,NA";
 CF p50 p51
 DF d22 p51
-Start p52 "52-.local(x, ...)" Value=".local(x, ...)" Time="0.438" Script="NA" Pos="NA";
+Start p52 "52-.local(x, ...)" Value=".local(x, ...)" Time="0.396" Script="NA" Pos="NA";
 CF p51 p52
-Binding p53 "53-...  <-  x" Time="0.441" Script="NA" Pos="NA";
+Binding p53 "53-...  <-  x" Time="0.398" Script="NA" Pos="NA";
 CF p52 p53
-Binding p54 "54-...  <-  ..." Time="0.443" Script="NA" Pos="NA";
+Binding p54 "54-...  <-  ..." Time="0.401" Script="NA" Pos="NA";
 CF p53 p54
-Operation p55 "55-.local" Value=".local" Time="0.446" Script="NA" Pos="NA";
+Operation p55 "55-.local" Value=".local" Time="0.402" Script="NA" Pos="NA";
 CF p54 p55
-Operation p56 "56-str <- paste(\"sampleCode =\", x@sampleCode, \"\n\")" Value="str <- paste(\"sampleCode =\", x@sampleCode, \"\n\")" Time="0.449" Script="0" Pos="23,9,23,56";
+Operation p56 "56-str <- paste(\"sampleCode =\", x@sampleCode, \"\n\")" Value="str <- paste(\"sampleCode =\", x@sampleCode, \"\n\")" Time="0.405" Script="0" Pos="23,9,23,56";
 CF p55 p56
 Data d23 "23-str" Value="\"sampleCode = 1  \"";
 DF p56 d23
-Operation p57 "57-str <- paste(str, \"nIndividuals =\", x@nIndividuals, \"\n\")" Value="str <- paste(str, \"nIndividuals =\", x@nIndividuals, \"\n\")" Time="0.458" Script="0" Pos="24,9,24,65";
+Operation p57 "57-str <- paste(str, \"nIndividuals =\", x@nIndividuals, \"\n\")" Value="str <- paste(str, \"nIndividuals =\", x@nIndividuals, \"\n\")" Time="0.415" Script="0" Pos="24,9,24,65";
 CF p56 p57
 DF d23 p57
 Data d24 "24-str" Value="\"sampleCode = 1   nIndividuals = 10  \"";
 DF p57 d24
-Operation p58 "58-str <- paste(str, \"areaCode =\", x@areaCode, \"\n\")" Value="str <- paste(str, \"areaCode =\", x@areaCode, \"\n\")" Time="0.47" Script="0" Pos="25,9,25,57";
+Operation p58 "58-str <- paste(str, \"areaCode =\", x@areaCode, \"\n\")" Value="str <- paste(str, \"areaCode =\", x@areaCode, \"\n\")" Time="0.426" Script="0" Pos="25,9,25,57";
 CF p57 p58
 DF d24 p58
 Data d25 "25-str" Value="\"sampleCode = 1   nIndividuals = 10   areaCode = 100  \"";
 DF p58 d25
 Data d26 "26-.local(x,...) return" Value="\"sampleCode = 1   nIndividuals = 10   areaCode = 100  \"";
-Operation p59 "59-return(str)" Value="return(str)" Time="0.509" Script="0" Pos="26,9,26,19";
+Operation p59 "59-return(str)" Value="return(str)" Time="0.467" Script="0" Pos="26,9,26,19";
 CF p58 p59
 DF p59 d26
 DF d25 p59
-Finish p60 "60-.local(x, ...)" Value=".local(x, ...)" Time="0.516" Script="NA" Pos="NA";
+Finish p60 "60-.local(x, ...)" Value=".local(x, ...)" Time="0.473" Script="NA" Pos="NA";
 CF p59 p60
-Snapshot d27 "27-newSample" Value="data/27-newSample.txt" Time="2017-01-04T15.45.58EST";
+Snapshot d27 "27-newSample" Value="data/27-newSample.txt" Time="2017-01-16T16.41.45EST";
 DF p51 d27
-Operation p61 "61-samplesArr = c(samplesArr, newSample)" Value="samplesArr = c(samplesArr, newSample)" Time="0.524" Script="0" Pos="NA,NA,NA,NA";
+Operation p61 "61-samplesArr = c(samplesArr, newSample)" Value="samplesArr = c(samplesArr, newSample)" Time="0.479" Script="0" Pos="NA,NA,NA,NA";
 CF p60 p61
 DF d21 p61
 DF d27 p61
-Start p62 "62-.local(x, ...)" Value=".local(x, ...)" Time="0.536" Script="NA" Pos="NA";
+Start p62 "62-.local(x, ...)" Value=".local(x, ...)" Time="0.494" Script="NA" Pos="NA";
 CF p61 p62
-Binding p63 "63-...  <-  x" Time="0.537" Script="NA" Pos="NA";
+Binding p63 "63-...  <-  x" Time="0.495" Script="NA" Pos="NA";
 CF p62 p63
-Binding p64 "64-...  <-  ..." Time="0.539" Script="NA" Pos="NA";
+Binding p64 "64-...  <-  ..." Time="0.497" Script="NA" Pos="NA";
 CF p63 p64
-Operation p65 "65-.local" Value=".local" Time="0.542" Script="NA" Pos="NA";
+Operation p65 "65-.local" Value=".local" Time="0.499" Script="NA" Pos="NA";
 CF p64 p65
-Operation p66 "66-str <- paste(\"sampleCode =\", x@sampleCode, \"\n\")" Value="str <- paste(\"sampleCode =\", x@sampleCode, \"\n\")" Time="0.544" Script="0" Pos="23,9,23,56";
+Operation p66 "66-str <- paste(\"sampleCode =\", x@sampleCode, \"\n\")" Value="str <- paste(\"sampleCode =\", x@sampleCode, \"\n\")" Time="0.502" Script="0" Pos="23,9,23,56";
 CF p65 p66
 Data d28 "28-str" Value="\"sampleCode = 1  \"";
 DF p66 d28
-Operation p67 "67-str <- paste(str, \"nIndividuals =\", x@nIndividuals, \"\n\")" Value="str <- paste(str, \"nIndividuals =\", x@nIndividuals, \"\n\")" Time="0.553" Script="0" Pos="24,9,24,65";
+Operation p67 "67-str <- paste(str, \"nIndividuals =\", x@nIndividuals, \"\n\")" Value="str <- paste(str, \"nIndividuals =\", x@nIndividuals, \"\n\")" Time="0.51" Script="0" Pos="24,9,24,65";
 CF p66 p67
 DF d28 p67
 Data d29 "29-str" Value="\"sampleCode = 1   nIndividuals = 10  \"";
 DF p67 d29
-Operation p68 "68-str <- paste(str, \"areaCode =\", x@areaCode, \"\n\")" Value="str <- paste(str, \"areaCode =\", x@areaCode, \"\n\")" Time="0.565" Script="0" Pos="25,9,25,57";
+Operation p68 "68-str <- paste(str, \"areaCode =\", x@areaCode, \"\n\")" Value="str <- paste(str, \"areaCode =\", x@areaCode, \"\n\")" Time="0.52" Script="0" Pos="25,9,25,57";
 CF p67 p68
 DF d29 p68
 Data d30 "30-str" Value="\"sampleCode = 1   nIndividuals = 10   areaCode = 100  \"";
 DF p68 d30
 Data d31 "31-.local(x,...) return" Value="\"sampleCode = 1   nIndividuals = 10   areaCode = 100  \"";
-Operation p69 "69-return(str)" Value="return(str)" Time="0.579" Script="0" Pos="26,9,26,19";
+Operation p69 "69-return(str)" Value="return(str)" Time="0.533" Script="0" Pos="26,9,26,19";
 CF p68 p69
 DF p69 d31
 DF d30 p69
-Finish p70 "70-.local(x, ...)" Value=".local(x, ...)" Time="0.586" Script="NA" Pos="NA";
+Finish p70 "70-.local(x, ...)" Value=".local(x, ...)" Time="0.539" Script="NA" Pos="NA";
 CF p69 p70
-Snapshot d32 "32-samplesArr" Value="data/28-samplesArr.txt" Time="2017-01-04T15.45.58EST";
+Snapshot d32 "32-samplesArr" Value="data/28-samplesArr.txt" Time="2017-01-16T16.41.45EST";
 DF p61 d32
-Finish p71 "71-for loop" Value="for loop" Time="0.591" Script="NA" Pos="NA";
+Finish p71 "71-for loop" Value="for loop" Time="0.544" Script="NA" Pos="NA";
 CF p70 p71
-Incomplete p72 "72-Details Omitted" Value="Details Omitted" Time="0.593" Script="NA" Pos="NA";
+Incomplete p72 "72-Details Omitted" Value="Details Omitted" Time="0.546" Script="NA" Pos="NA";
 CF p71 p72
-Finish p73 "73-for (ix in 1:n) {    newSample <- new(\"SampleObj\", sampleCod" Value="for (ix in 1:n) {    newSample <- new(\"SampleObj\", sampleCod" Time="0.594" Script="0" Pos="NA,NA,NA,NA";
+Finish p73 "73-for (ix in 1:n) {    newSample <- new(\"SampleObj\", sampleCod" Value="for (ix in 1:n) {    newSample <- new(\"SampleObj\", sampleCod" Time="0.547" Script="0" Pos="NA,NA,NA,NA";
 CF p72 p73
-Snapshot d33 "33-newSample" Value="data/33-newSample.txt" Time="2017-01-04T15.45.58EST";
+Snapshot d33 "33-newSample" Value="data/33-newSample.txt" Time="2017-01-16T16.41.45EST";
 DF p73 d33
-Snapshot d34 "34-samplesArr" Value="data/34-samplesArr.txt" Time="2017-01-04T15.45.58EST";
+Snapshot d34 "34-samplesArr" Value="data/34-samplesArr.txt" Time="2017-01-16T16.41.45EST";
 DF p73 d34
-Snapshot d35 "35-generateSamples(totalNumOfSample) return" Value="data/35-generateSamples(totalNumOfSample) return.txt" Time="2017-01-04T15.45.58EST";
-Operation p74 "74-return(samplesArr)" Value="return(samplesArr)" Time="0.609" Script="0" Pos="NA,NA,NA,NA";
+Snapshot d35 "35-generateSamples(totalNumOfSample) return" Value="data/35-generateSamples(totalNumOfSample) return.txt" Time="2017-01-16T16.41.45EST";
+Operation p74 "74-return(samplesArr)" Value="return(samplesArr)" Time="0.56" Script="0" Pos="NA,NA,NA,NA";
 CF p73 p74
 DF p74 d35
 DF d34 p74
-Finish p75 "75-generateSamples(totalNumOfSample)" Value="generateSamples(totalNumOfSample)" Time="0.616" Script="NA" Pos="NA";
+Finish p75 "75-generateSamples(totalNumOfSample)" Value="generateSamples(totalNumOfSample)" Time="0.567" Script="NA" Pos="NA";
 CF p74 p75
-Finish p76 "76-samplesArr <- generateSamples(totalNumOfSample)" Value="samplesArr <- generateSamples(totalNumOfSample)" Time="0.617" Script="0" Pos="NA,NA,NA,NA";
+Finish p76 "76-samplesArr <- generateSamples(totalNumOfSample)" Value="samplesArr <- generateSamples(totalNumOfSample)" Time="0.568" Script="0" Pos="NA,NA,NA,NA";
 CF p75 p76
 DF d35 p76
-Snapshot d36 "36-samplesArr" Value="data/36-samplesArr.txt" Time="2017-01-04T15.45.58EST";
+Snapshot d36 "36-samplesArr" Value="data/36-samplesArr.txt" Time="2017-01-16T16.41.45EST";
 DF p76 d36
-Finish p77 "77-S4ObjectTest.R" Value="S4ObjectTest.R" Time="0.623" Script="NA" Pos="NA";
+Finish p77 "77-S4ObjectTest.R" Value="S4ObjectTest.R" Time="0.573" Script="NA" Pos="NA";
 CF p76 p77
 
