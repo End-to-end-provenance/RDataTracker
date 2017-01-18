@@ -9,7 +9,11 @@
 "p1" : {
 "rdt:name" : "PlotTest.R",
 "rdt:type" : "Start",
+<<<<<<< HEAD
+"rdt:elapsedTime" : "0.049",
+=======
 "rdt:elapsedTime" : "0.0599999999999999",
+>>>>>>> refs/remotes/origin/development
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -20,7 +24,11 @@
 "p2" : {
 "rdt:name" : "data(mtcars)",
 "rdt:type" : "Operation",
+<<<<<<< HEAD
+"rdt:elapsedTime" : "0.052",
+=======
 "rdt:elapsedTime" : "0.07",
+>>>>>>> refs/remotes/origin/development
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "1",
 "rdt:startCol" : "1",
@@ -31,7 +39,11 @@
 "p3" : {
 "rdt:name" : "allCars.df <- mtcars",
 "rdt:type" : "Operation",
+<<<<<<< HEAD
+"rdt:elapsedTime" : "0.0630000000000001",
+=======
 "rdt:elapsedTime" : "0.12",
+>>>>>>> refs/remotes/origin/development
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "4",
 "rdt:startCol" : "1",
@@ -42,7 +54,11 @@
 "p4" : {
 "rdt:name" : "cars4Cyl.df <- allCars.df[allCars.df$cyl == 4, ]",
 "rdt:type" : "Operation",
+<<<<<<< HEAD
+"rdt:elapsedTime" : "0.075",
+=======
 "rdt:elapsedTime" : "0.14",
+>>>>>>> refs/remotes/origin/development
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "7",
 "rdt:startCol" : "1",
@@ -53,7 +69,11 @@
 "p5" : {
 "rdt:name" : "cars6Cyl.df <- allCars.df[allCars.df$cyl == 6, ]",
 "rdt:type" : "Operation",
+<<<<<<< HEAD
+"rdt:elapsedTime" : "0.089",
+=======
 "rdt:elapsedTime" : "0.15",
+>>>>>>> refs/remotes/origin/development
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "8",
 "rdt:startCol" : "1",
@@ -64,7 +84,11 @@
 "p6" : {
 "rdt:name" : "cars8Cyl.df <- allCars.df[allCars.df$cyl == 8, ]",
 "rdt:type" : "Operation",
+<<<<<<< HEAD
+"rdt:elapsedTime" : "0.106",
+=======
 "rdt:elapsedTime" : "0.17",
+>>>>>>> refs/remotes/origin/development
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "9",
 "rdt:startCol" : "1",
@@ -75,7 +99,11 @@
 "p7" : {
 "rdt:name" : "cylinders = c(4, 6, 8)",
 "rdt:type" : "Operation",
+<<<<<<< HEAD
+"rdt:elapsedTime" : "0.122",
+=======
 "rdt:elapsedTime" : "0.2",
+>>>>>>> refs/remotes/origin/development
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "12",
 "rdt:startCol" : "1",
@@ -86,7 +114,11 @@
 "p8" : {
 "rdt:name" : "mpg = c(mean(cars4Cyl.df$mpg), mean(cars6Cyl.df$mpg), mean(c",
 "rdt:type" : "Operation",
+<<<<<<< HEAD
+"rdt:elapsedTime" : "0.133",
+=======
 "rdt:elapsedTime" : "0.21",
+>>>>>>> refs/remotes/origin/development
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "12",
 "rdt:startCol" : "13",
@@ -97,7 +129,11 @@
 "p9" : {
 "rdt:name" : "plot(cylinders, mpg)",
 "rdt:type" : "Operation",
+<<<<<<< HEAD
+"rdt:elapsedTime" : "0.205",
+=======
 "rdt:elapsedTime" : "0.33",
+>>>>>>> refs/remotes/origin/development
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "13",
 "rdt:startCol" : "1",
@@ -108,7 +144,11 @@
 "p10" : {
 "rdt:name" : "X11()",
 "rdt:type" : "Operation",
+<<<<<<< HEAD
+"rdt:elapsedTime" : "0.221",
+=======
 "rdt:elapsedTime" : "0.36",
+>>>>>>> refs/remotes/origin/development
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "13",
 "rdt:startCol" : "7",
@@ -119,7 +159,11 @@
 "p11" : {
 "rdt:name" : "plot(cylinders, mpg)",
 "rdt:type" : "Operation",
+<<<<<<< HEAD
+"rdt:elapsedTime" : "0.23",
+=======
 "rdt:elapsedTime" : "0.37",
+>>>>>>> refs/remotes/origin/development
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "16",
 "rdt:startCol" : "1",
@@ -130,7 +174,11 @@
 "p12" : {
 "rdt:name" : "dev.off()",
 "rdt:type" : "Operation",
+<<<<<<< HEAD
+"rdt:elapsedTime" : "0.243",
+=======
 "rdt:elapsedTime" : "0.39",
+>>>>>>> refs/remotes/origin/development
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "29",
 "rdt:startCol" : "1",
@@ -141,7 +189,11 @@
 "p13" : {
 "rdt:name" : "tryCatch",
 "rdt:type" : "Operation",
+<<<<<<< HEAD
+"rdt:elapsedTime" : "0.247",
+=======
 "rdt:elapsedTime" : "0.39",
+>>>>>>> refs/remotes/origin/development
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -158,10 +210,18 @@
 "rdt:script" : "[DIR]/PlotTest.R",
 "rdt:sourcedScripts" : ""
 ,
+<<<<<<< HEAD
+"rdt:scriptTimeStamp" : "2017-01-06T17.10.23EST",
+=======
 "rdt:scriptTimeStamp" : "2017-01-06T10.48.51EST",
+>>>>>>> refs/remotes/origin/development
 "rdt:workingDirectory" : "[DIR]",
 "rdt:ddgDirectory" : "[DIR]/ddg",
+<<<<<<< HEAD
+"rdt:ddgTimeStamp" : "2017-01-13T14.52.29EST",
+=======
 "rdt:ddgTimeStamp" : "2017-01-10T10.59.52EST",
+>>>>>>> refs/remotes/origin/development
 "rdt:rdatatrackerVersion" : "2.25.0",
 "rdt:installedPackages" : [
 	{"package" : "RDataTracker", "version" : "2.25.0"}]
