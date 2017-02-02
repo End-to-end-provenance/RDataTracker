@@ -2935,12 +2935,20 @@ ddg.MAX_HIST_LINES <- 2^14
 
           if (.ddg.debug.lib()) print (paste (".ddg.parse.commands: Evaluating ", cmd@annotated))
 
-          result <- withCallingHandlers (eval(cmd@annotated, environ, NULL), warning = .ddg.set.warning , error = .ddg.set.error)
-
-
-
-
-
+          result <- withCallingHandlers(
+            eval(cmd@annotated, environ, NULL) , 
+            warning = .ddg.set.warning , 
+            error = function(e)
+            {
+              # create procedure node for the error-causing operation
+              .ddg.proc.node("Operation", cmd@abbrev, cmd@abbrev, env=environ, console=TRUE, cmd=cmd)
+              .ddg.proc2proc()
+              
+              # create and link to an error node
+              ddg.exception.out("error.msg", toString(e) , cmd@abbrev)
+            }
+          )
+          
           if (.ddg.debug.lib()) print (paste (".ddg.parse.commands: Done evaluating ", cmd@annotated))
 
           if (!cmd@isDdgFunc && cmd@text != "next") {
@@ -2978,7 +2986,6 @@ ddg.MAX_HIST_LINES <- 2^14
 
           # Print evaluation.
           if (print.eval) print(result)
-
         }
 
         # Figure out if we should create a procedure node for this
@@ -2992,7 +2999,7 @@ ddg.MAX_HIST_LINES <- 2^14
             else ""
         cur.cmd.closed <- (last.proc.node.created == paste ("Finish", cmd@abbrev))
         create.procedure <- create && (!cur.cmd.closed || !named.node.set) && !start.finish.created  && !grepl("^ddg.source", cmd@text)
-
+        
         # We want to create a procedure node for this command.
         if (create.procedure) {
 
@@ -3027,14 +3034,8 @@ ddg.MAX_HIST_LINES <- 2^14
 
           if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Adding input data nodes for", cmd@abbrev))
           
-
-
-          
           .ddg.create.data.set.edges.for.cmd(vars.set, cmd, i, d.environ)
           
-
-
-
           if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Adding output data nodes for", cmd@abbrev))
 
           if (cmd@writesFile) .ddg.create.file.write.nodes.and.edges (cmd, environ)
@@ -3097,14 +3098,6 @@ ddg.MAX_HIST_LINES <- 2^14
   if (.ddg.is.init() && !.ddg.is.sourced()) .ddg.write.timestamp.to.history()
 
 }
-
-
-.ddg.set.error <- function(e)
-{
-  message( ".ddg.error: " , e )
-  .ddg.set( "ddg.error" , e )
-}
-
 
 
 # .ddg.console.node creates a console node.
@@ -5491,12 +5484,6 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
                 ignore.init = TRUE,
                 force.console = FALSE)
           else stop("r.script.path and f cannot both be NULL"),
-      error=function(e) {
-        e.str <- toString(e)
-        print(e.str)
-        ddg.procedure(pname="tryCatch")
-        ddg.exception.out("error.msg", e.str, "tryCatch")
-      },
       finally={
         ddg.save(r.script.path)
         if(display==TRUE){
