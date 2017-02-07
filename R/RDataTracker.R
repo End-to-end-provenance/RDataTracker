@@ -1982,7 +1982,10 @@ ddg.MAX_HIST_LINES <- 2^14
     # print(paste("Checking ", vars.set$variable[i]))
     if (vars.set$possible.last.writer[i] > vars.set$last.writer[i]) {
       value <- tryCatch(eval(parse(text=vars.set$variable[i]), environment),
-          error = function(e) {NULL}
+          error = function(e) {
+            #print(paste("Could not find value for", vars.set$variable[i], "in environment", environment))
+            NULL
+          }
       )
 
       # Only create the node and edge if we were successful in
@@ -3263,6 +3266,8 @@ ddg.MAX_HIST_LINES <- 2^14
 
 .ddg.data.node <- function(dtype, dname, dvalue, dscope, from.env=FALSE) {
   #print(paste(".ddg.data.node: dname =", dname))
+  #print(paste(".ddg.data.node: typeof(dvalue) =", typeof(dvalue)))
+  #print(paste(".ddg.data.node: dvalue =", dvalue))
   #print(paste(".ddg.data.node: dscope =", dscope))
   # If object or a long list, try to create snapshot node.
   if (is.object(dvalue)) {
@@ -3287,6 +3292,7 @@ ddg.MAX_HIST_LINES <- 2^14
     return (NULL)
   }
 
+  #print("Converting value to a string")
   # Convert value to a string.
   val <-
       if (is.list(dvalue)) {
@@ -3307,15 +3313,16 @@ ddg.MAX_HIST_LINES <- 2^14
             error = function(e) {"complex"})
       }
       else if (is.null(dvalue)) "NULL"
+      else if (length(dvalue) == 0) "Empty"
       else if (is.na(dvalue)) "NA"
       else if (dvalue == "complex" || dvalue == "#ddg.function") dvalue
       else if (is.character(dvalue) && dvalue == "") "NotRecorded"
       else {
-        # Replace double quotes with single quotes.
-        .ddg.replace.quotes(dvalue)
+         # Replace double quotes with single quotes.
+         .ddg.replace.quotes(dvalue)
       }
 
-  #print(".ddg.data.node: converted value to string")
+  #print(paste(".ddg.data.node: converted value to string", val))
 
 
   if (grepl("\n", val)) {
@@ -3406,16 +3413,40 @@ ddg.MAX_HIST_LINES <- 2^14
     return(.ddg.data.node ("Data", dname, "", dscope, from.env=from.env))
   }
 
-    # object.size returns bytes, but max.snapshot.size is in kilobytes
-  if (max.snapshot.size == -1 || object.size(data) < max.snapshot.size * 1024) {
-    full.snapshot <- TRUE
-  } else {
-    full.snapshot <- FALSE
-  }
-
   # Snapshot name
   snapname <- dname
-
+  
+  # object.size returns bytes, but max.snapshot.size is in kilobytes
+  if (max.snapshot.size == -1 || object.size(data) < max.snapshot.size * 1024) {
+    full.snapshot <- TRUE
+    
+  } 
+  
+  else if (is.vector(data) || is.list(data) || is.data.frame(data) || is.matrix(data) || is.array(data)) { 
+    # Decide how much data to save
+    
+    element.size <- object.size(head(data, 1))
+    num.elements.to.save <- ceiling(max.snapshot.size * 1024 / element.size)
+    if (num.elements.to.save < length(data)) {
+      #print (paste ("object.size(data)" = object.size(data)))
+      data <- head(data, num.elements.to.save)
+      snapname <- paste(dname, "-PARTIAL", sep="")
+      full.snapshot <- FALSE
+      #print(paste ("element.size =", element.size))
+      #print (paste (".ddg.snapshot.node: Saving", num.elements.to.save, "elements for", dname))
+      #print(paste("Size of saved data =", object.size(data)))
+      
+    }
+    else {
+      full.snapshot <- TRUE
+    }
+  }
+    
+  else {
+    full.snapshot <- FALSE
+    snapname <- paste(dname, "-PARTIAL", sep="")
+  }
+    
   # Snapshot type
   dtype <- "Snapshot"
 
@@ -3428,13 +3459,7 @@ ddg.MAX_HIST_LINES <- 2^14
   else if ("XMLInternalDocument" %in% class(data)) {
     fext <- "xml"
   }
-  else if (is.vector(data)) {
-  }
-  else if (is.data.frame(data) || is.matrix(data) || is.array(data) || is.list(data)) {
-    if (!full.snapshot) {
-      data <- head(data, n=10*max.snapshot.size)
-      snapname <- paste(dname, "-PARTIAL", sep="")
-    }
+  else if (is.vector(data) || is.data.frame(data) || is.matrix(data) || is.array(data) || is.list(data)) {
   }
   else if (!is.character(data)) {
     tryCatch(data <- as.character(data),
@@ -5467,7 +5492,7 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
   if (debug) ddg.breakpoint()
 
   # Save debug files to debug directory.
-  if (save.debug) .ddg.set("ddg.save.debug", TRUE)
+  .ddg.set("ddg.save.debug", save.debug)
 
   # If an R error is generated, get the error message and close
   # the DDG.
