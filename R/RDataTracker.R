@@ -1660,17 +1660,16 @@ ddg.MAX_HIST_LINES <- 2^14
   }
 }
 
-# .ddg.is.global.assign returns TRUE if the object passed is an
-# expression object containing a global assignment.
+# .ddg.is.nonlocal.assign returns TRUE if the object passed is an
+# expression object containing a non-local assignment.
 
 # expr - input expression.
 
-.ddg.is.global.assign <- function (expr) {
-  # This is not really right!  <<- does not necessarily mean it is global
-  # It uses the scope in which the function was declared, so if this is
-  # used inside a function that is returned by another function, it will
-  # not necessarily mean it is global.
-  if (is.call(expr)) {
+.ddg.is.nonlocal.assign <- function (expr) 
+{
+  # <<- or ->> means that the assignment is non-local
+  if (is.call(expr)) 
+  {
     # This also finds uses of ->>.
     if (identical(expr[[1]], as.name("<<-")))
       return (TRUE)
@@ -2855,14 +2854,25 @@ ddg.MAX_HIST_LINES <- 2^14
 
       # Get environment for output data node.
       d.environ <- environ
-      if (.ddg.is.global.assign(cmd@parsed[[1]])) d.environ <- globalenv()
+
+      #if ( .ddg.is.nonlocal.assign(cmd@parsed[[1]]) ) 
+      #{
+        # NOT WORKING!! - CAN NOT FIND ENVIRONMENT EVEN IF VARIABLE EXISTS
+      #  d.environ <- .ddg.where( cmd@vars.set , env = parent.env(parent.frame()) , warning = FALSE )
+      #
+      #  if( identical(d.environ,"undefined") )
+      #    d.environ <- globalenv()
+      #}
+
+      if (.ddg.is.nonlocal.assign(cmd@parsed[[1]])) d.environ <- globalenv()
+
       # Check for control & loop statements.
       st.type <- .ddg.get.statement.type(cmd@parsed[[1]])
       
       control.statement <- (st.type == "if" || st.type == "for" || st.type == "while" || st.type == "repeat" || st.type == "{")
       
       loop.statement <- (st.type == "for" || st.type == "while" || st.type == "repeat")
-      
+
       # Specifies whether or not a procedure node should be created
       # for this command. Basically, if a ddg exists and the
       # command is not a DDG command or a control statement, it should 
@@ -2924,8 +2934,20 @@ ddg.MAX_HIST_LINES <- 2^14
 
           if (.ddg.debug.lib()) print (paste (".ddg.parse.commands: Evaluating ", cmd@annotated))
 
-          result <- withCallingHandlers (eval(cmd@annotated, environ, NULL), warning = .ddg.set.warning)
-
+          result <- withCallingHandlers(
+            eval(cmd@annotated, environ, NULL) , 
+            warning = .ddg.set.warning , 
+            error = function(e)
+            {
+              # create procedure node for the error-causing operation
+              .ddg.proc.node("Operation", cmd@abbrev, cmd@abbrev, env=environ, console=TRUE, cmd=cmd)
+              .ddg.proc2proc()
+              
+              # create and link to an error node
+              ddg.exception.out("error.msg", toString(e) , cmd@abbrev)
+            }
+          )
+          
           if (.ddg.debug.lib()) print (paste (".ddg.parse.commands: Done evaluating ", cmd@annotated))
 
           if (!cmd@isDdgFunc && cmd@text != "next") {
@@ -2963,7 +2985,6 @@ ddg.MAX_HIST_LINES <- 2^14
 
           # Print evaluation.
           if (print.eval) print(result)
-
         }
 
         # Figure out if we should create a procedure node for this
@@ -2977,7 +2998,7 @@ ddg.MAX_HIST_LINES <- 2^14
             else ""
         cur.cmd.closed <- (last.proc.node.created == paste ("Finish", cmd@abbrev))
         create.procedure <- create && (!cur.cmd.closed || !named.node.set) && !start.finish.created  && !grepl("^ddg.source", cmd@text)
-
+        
         # We want to create a procedure node for this command.
         if (create.procedure) {
 
@@ -3042,7 +3063,7 @@ ddg.MAX_HIST_LINES <- 2^14
         }
       }
      }
-
+    
      # Create a data node for each variable that might have been set in
      # something other than a simple assignment, with an edge from the
      # last node in the console block or source .
@@ -3133,8 +3154,8 @@ ddg.MAX_HIST_LINES <- 2^14
     auto.created=FALSE, env = sys.frame(.ddg.get.frame.number(sys.calls())),
     cmd = NULL) {
   if (.ddg.debug.lib()) {
-  	if (length(pname) > 1) {
-    	print(sys.calls())
+    if (length(pname) > 1) {
+      print(sys.calls())
     }
   }
 
@@ -3991,26 +4012,35 @@ ddg.MAX_HIST_LINES <- 2^14
   return(0)
 }
 
+
 # .ddg.where looks up the environment for the variable specified
 # by name.  Adapted from Hadley Wickham, Advanced R programming.
 
 # name - name of variable.
 # env (optional) - environment in which to look for variable.
+# warning (optional) - set to TRUE if a warning should be thrown when a variable is not found.
 
-.ddg.where <- function(name, env=parent.frame()) {
+.ddg.where <- function( name , env = parent.frame() , warning = TRUE ) 
+{
   stopifnot(is.character(name), length(name) == 1)
-  if (identical(env, emptyenv())) {
-    # stop("Can't find ", name, call.=FALSE)
-    warning("Can't find ", name)
+  
+  if (identical(env, emptyenv())) 
+  {
+    if(warning)
+      warning("Can't find ", name)
+
     return("undefined")
   }
-  if (exists(name, env, inherits=FALSE)) {
+  if (exists(name, env, inherits=FALSE)) 
+  {
     env
   }
-  else {
-    .ddg.where(name, parent.env(env))
+  else 
+  {
+    .ddg.where(name, parent.env(env), warning)
   }
 }
+
 
 #.ddg.get.env gets the environment in which name is declared.
 
@@ -4231,7 +4261,6 @@ ddg.MAX_HIST_LINES <- 2^14
   loop.name <- paste(loop.type, "loop")
   ddg.finish(loop.name)
 }
-
 
 # .ddg.markdown takes a Rmd file and extracts the R code and text through
 # the purl function in the knitr library. It then annotates the R script
@@ -4667,15 +4696,25 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
     }
   }
 
-  for (var in return.stmt@vars.set) {
-    if (var != "") {
+  for (var in return.stmt@vars.set) 
+  {
+    if (var != "") 
+    {
       # Create output data node.
       dvalue <- eval(as.symbol(var), envir=env)
 
-      # Check for global assignment
-      if (.ddg.is.global.assign(return.stmt@parsed)) env <- globalenv()
+      # Check for non-local assignment
+      if ( .ddg.is.nonlocal.assign(return.stmt@parsed[[1]]) )
+      {
+      	env <- .ddg.where( var, env = parent.env(parent.frame()) , warning = FALSE )
+
+        if( identical(env,"undefined") )
+          env <- globalenv()
+      }
+
       dscope <- .ddg.get.scope(var, env=env)
       .ddg.save.data(var, dvalue, scope=dscope)
+      
       # Create an edge from procedure node to data node.
       .ddg.proc2data(return.stmt@abbrev, var, dscope=dscope, return.value=FALSE)
     }
@@ -5466,12 +5505,6 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
                 ignore.init = TRUE,
                 force.console = FALSE)
           else stop("r.script.path and f cannot both be NULL"),
-      error=function(e) {
-        e.str <- toString(e)
-        print(e.str)
-        ddg.procedure(pname="tryCatch")
-        ddg.exception.out("error.msg", e.str, "tryCatch")
-      },
       finally={
         ddg.save(r.script.path)
         if(display==TRUE){

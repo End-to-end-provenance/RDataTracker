@@ -1,6 +1,4 @@
-[1] "Error in dev.print(device = pdf, file = file): can only print from a screen device\n"
-<<<<<<< HEAD
-Execution Time = 0.5691991
-=======
-Execution Time = 0.983
->>>>>>> refs/remotes/origin/development
+Error in dev.print(device = pdf, file = file) : 
+  can only print from a screen device
+Calls: ddg.run ... .ddg.capture.graphics -> .ddg.capture.current.graphics -> dev.print
+Execution halted
