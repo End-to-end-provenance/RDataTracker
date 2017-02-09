@@ -1952,7 +1952,15 @@ ddg.MAX_HIST_LINES <- 2^14
 		      env <- .ddg.get.env(var, calls=stack)
         }
 		    scope <- .ddg.get.scope(var, calls=stack, env=env)
-		    val <- tryCatch(eval(parse(text=var), env),
+        
+        # Special operators are defined by enclosing the name in `.  However,
+        # the R parser drops those characters when we deparse, so when we parse
+        # here they are missing and we get an error about unexpected SPECIAL
+        # characters.  The first tryCatch, puts the ` back in and parses again.
+        # The second tryCatch handles errors associated with evaluated the variable.
+        parsed <- tryCatch(parse(text=var), 
+            error = function(e) parse(text=paste("`",var,"`",sep="")))
+		    val <- tryCatch(eval(parsed, env),
 					error = function(e) {
             eval (parse(text=var), parent.env(env))
           }
