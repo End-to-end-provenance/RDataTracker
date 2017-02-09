@@ -9,11 +9,7 @@
 "p1" : {
 "rdt:name" : "DailySolarRadiation.R",
 "rdt:type" : "Start",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "0.686",
-=======
-"rdt:elapsedTime" : "1.06",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "0.748",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -24,11 +20,7 @@
 "p2" : {
 "rdt:name" : "read.data <- function() {    data.file <<- \"met-daily.csv\"  ",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "0.687",
-=======
-"rdt:elapsedTime" : "1.06",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "0.75",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "14",
 "rdt:startCol" : "1",
@@ -39,11 +31,7 @@
 "p3" : {
 "rdt:name" : "calibrate <- function(xx) {    date.start <- as.Date(calibra",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "0.696",
-=======
-"rdt:elapsedTime" : "1.07",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "0.756",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -54,11 +42,7 @@
 "p4" : {
 "rdt:name" : "quality.control <- function(xx) {    repeats <- quality.cont",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "0.702",
-=======
-"rdt:elapsedTime" : "1.07",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "0.762",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -69,11 +53,7 @@
 "p5" : {
 "rdt:name" : "gap.fill <- function(xx) {    slope <- gap.fill.parameters$s",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "0.71",
-=======
-"rdt:elapsedTime" : "1.09",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "0.77",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -84,11 +64,7 @@
 "p6" : {
 "rdt:name" : "write.result <- function(fn, xx) {    file.out <- paste(getw",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "0.714",
-=======
-"rdt:elapsedTime" : "1.09",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "0.775",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -99,11 +75,7 @@
 "p7" : {
 "rdt:name" : "plot.data <- function(xx, v) {    if (v == \"R\")         name",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "0.72",
-=======
-"rdt:elapsedTime" : "1.1",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "0.781",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -114,11 +86,7 @@
 "p8" : {
 "rdt:name" : "get.data",
 "rdt:type" : "Start",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "0.726",
-=======
-"rdt:elapsedTime" : "1.1",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "0.787",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -129,11 +97,7 @@
 "p9" : {
 "rdt:name" : "raw.data <- read.data()",
 "rdt:type" : "Start",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "0.727",
-=======
-"rdt:elapsedTime" : "1.1",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "0.788",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -144,11 +108,7 @@
 "p10" : {
 "rdt:name" : "read.data()",
 "rdt:type" : "Start",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "0.732",
-=======
-"rdt:elapsedTime" : "1.12",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "0.793",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -159,11 +119,7 @@
 "p11" : {
 "rdt:name" : "read.data",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "0.733",
-=======
-"rdt:elapsedTime" : "1.12",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "0.794",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -174,11 +130,7 @@
 "p12" : {
 "rdt:name" : "data.file <<- \"met-daily.csv\"",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "0.739",
-=======
-"rdt:elapsedTime" : "1.12",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "0.801",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "16",
 "rdt:startCol" : "3",
@@ -189,11 +141,7 @@
 "p13" : {
 "rdt:name" : "cal.file <<- \"par-cal.csv\"",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "0.744",
-=======
-"rdt:elapsedTime" : "1.13",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "0.806",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "17",
 "rdt:startCol" : "3",
@@ -204,11 +152,7 @@
 "p14" : {
 "rdt:name" : "qc.file <<- \"par-qc.csv\"",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "0.749",
-=======
-"rdt:elapsedTime" : "1.13",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "0.812",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "18",
 "rdt:startCol" : "3",
@@ -219,11 +163,7 @@
 "p15" : {
 "rdt:name" : "gf.file <<- \"par-gf.csv\"",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "0.756",
-=======
-"rdt:elapsedTime" : "1.15",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "0.818",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "19",
 "rdt:startCol" : "3",
@@ -234,11 +174,7 @@
 "p16" : {
 "rdt:name" : "start.date <<- \"2012-01-01\"",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "0.761",
-=======
-"rdt:elapsedTime" : "1.15",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "0.823",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "20",
 "rdt:startCol" : "3",
@@ -249,11 +185,7 @@
 "p17" : {
 "rdt:name" : "end.date <<- \"2012-03-31\"",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "0.766",
-=======
-"rdt:elapsedTime" : "1.17",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "0.828",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "21",
 "rdt:startCol" : "3",
@@ -264,11 +196,7 @@
 "p18" : {
 "rdt:name" : "variable <<- \"slrt\"",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "0.774",
-=======
-"rdt:elapsedTime" : "1.17",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "0.837",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "22",
 "rdt:startCol" : "3",
@@ -279,11 +207,7 @@
 "p19" : {
 "rdt:name" : "zz <- read.csv(data.file)",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "0.874",
-=======
-"rdt:elapsedTime" : "1.26",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "0.965",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "25",
 "rdt:startCol" : "3",
@@ -294,11 +218,7 @@
 "p20" : {
 "rdt:name" : "zz$date <- as.Date(zz$date)",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "0.923",
-=======
-"rdt:elapsedTime" : "1.34",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.017",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "26",
 "rdt:startCol" : "3",
@@ -309,7 +229,7 @@
 "p21" : {
 "rdt:name" : "all.data <<- subset(zz, zz$date >= start.date & zz$date <= e",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.35",
+"rdt:elapsedTime" : "1.036",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "27",
 "rdt:startCol" : "3",
@@ -320,11 +240,7 @@
 "p22" : {
 "rdt:name" : "raw.data <<- all.data[c(\"date\", variable)]",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "0.969",
-=======
-"rdt:elapsedTime" : "1.38",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.062",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "28",
 "rdt:startCol" : "3",
@@ -335,11 +251,7 @@
 "p23" : {
 "rdt:name" : "names(raw.data)[names(raw.data) == variable] <<- \"raw\"",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "0.984",
-=======
-"rdt:elapsedTime" : "1.42",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.078",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "29",
 "rdt:startCol" : "3",
@@ -350,11 +262,7 @@
 "p24" : {
 "rdt:name" : "data.rows <<- nrow(raw.data)",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "0.997",
-=======
-"rdt:elapsedTime" : "1.43",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.089",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "30",
 "rdt:startCol" : "3",
@@ -365,11 +273,7 @@
 "p25" : {
 "rdt:name" : "calibration.parameters <<- read.csv(cal.file)",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.009",
-=======
-"rdt:elapsedTime" : "1.45",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.104",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "33",
 "rdt:startCol" : "3",
@@ -380,11 +284,7 @@
 "p26" : {
 "rdt:name" : "quality.control.parameters <<- read.csv(qc.file)",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.026",
-=======
-"rdt:elapsedTime" : "1.46",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.123",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "34",
 "rdt:startCol" : "3",
@@ -395,11 +295,7 @@
 "p27" : {
 "rdt:name" : "gap.fill.parameters <<- read.csv(gf.file)",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.047",
-=======
-"rdt:elapsedTime" : "1.49",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.143",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "35",
 "rdt:startCol" : "3",
@@ -410,11 +306,7 @@
 "p28" : {
 "rdt:name" : "raw.data$cal <<- 0",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.064",
-=======
-"rdt:elapsedTime" : "1.52",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.161",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "38",
 "rdt:startCol" : "3",
@@ -425,11 +317,7 @@
 "p29" : {
 "rdt:name" : "raw.data$cal.f <<- \"\"",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.074",
-=======
-"rdt:elapsedTime" : "1.54",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.172",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "39",
 "rdt:startCol" : "3",
@@ -440,7 +328,7 @@
 "p30" : {
 "rdt:name" : "raw.data$qc <<- 0",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.56",
+"rdt:elapsedTime" : "1.183",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "40",
 "rdt:startCol" : "3",
@@ -451,7 +339,7 @@
 "p31" : {
 "rdt:name" : "raw.data$qc.f <<- \"\"",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.58",
+"rdt:elapsedTime" : "1.193",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "41",
 "rdt:startCol" : "3",
@@ -462,11 +350,7 @@
 "p32" : {
 "rdt:name" : "raw.data$gf <<- 0",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.107",
-=======
-"rdt:elapsedTime" : "1.59",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.204",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "42",
 "rdt:startCol" : "3",
@@ -477,11 +361,7 @@
 "p33" : {
 "rdt:name" : "raw.data$gf.f <<- \"\"",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.117",
-=======
-"rdt:elapsedTime" : "1.59",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.215",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "43",
 "rdt:startCol" : "3",
@@ -492,7 +372,7 @@
 "p34" : {
 "rdt:name" : "return(raw.data)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.61",
+"rdt:elapsedTime" : "1.23",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "45",
 "rdt:startCol" : "3",
@@ -503,11 +383,7 @@
 "p35" : {
 "rdt:name" : "read.data()",
 "rdt:type" : "Finish",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.141",
-=======
-"rdt:elapsedTime" : "1.62",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.239",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -518,11 +394,7 @@
 "p36" : {
 "rdt:name" : "raw.data <- read.data()",
 "rdt:type" : "Finish",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.141",
-=======
-"rdt:elapsedTime" : "1.62",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.24",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -533,7 +405,7 @@
 "p37" : {
 "rdt:name" : "plot.data(raw.data, \"R\")",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "1.64",
+"rdt:elapsedTime" : "1.247",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -544,7 +416,7 @@
 "p38" : {
 "rdt:name" : "xx  <-  raw.data",
 "rdt:type" : "Binding",
-"rdt:elapsedTime" : "1.64",
+"rdt:elapsedTime" : "1.248",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -555,11 +427,7 @@
 "p39" : {
 "rdt:name" : "v <- \"R\"",
 "rdt:type" : "Binding",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.159",
-=======
-"rdt:elapsedTime" : "1.64",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.258",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -570,11 +438,7 @@
 "p40" : {
 "rdt:name" : "plot.data",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.164",
-=======
-"rdt:elapsedTime" : "1.65",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.262",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -585,11 +449,7 @@
 "p41" : {
 "rdt:name" : "if (v == \"R\") name <- \"raw\" else if (v == \"C\") name <- \"cali",
 "rdt:type" : "Start",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.178",
-=======
-"rdt:elapsedTime" : "1.67",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.277",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -600,11 +460,7 @@
 "p42" : {
 "rdt:name" : "if",
 "rdt:type" : "Start",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.183",
-=======
-"rdt:elapsedTime" : "1.67",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.281",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -615,11 +471,7 @@
 "p43" : {
 "rdt:name" : "name <- \"raw\"",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.184",
-=======
-"rdt:elapsedTime" : "1.67",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.283",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -630,11 +482,7 @@
 "p44" : {
 "rdt:name" : "if",
 "rdt:type" : "Finish",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.189",
-=======
-"rdt:elapsedTime" : "1.69",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.287",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -645,7 +493,7 @@
 "p45" : {
 "rdt:name" : "if (v == \"R\") name <- \"raw\" else if (v == \"C\") name <- \"cali",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.69",
+"rdt:elapsedTime" : "1.288",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -656,11 +504,7 @@
 "p46" : {
 "rdt:name" : "dname <- paste(name, \"-data.csv\", sep = \"\")",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.191",
-=======
-"rdt:elapsedTime" : "1.69",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.29",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -671,11 +515,7 @@
 "p47" : {
 "rdt:name" : "jname <- paste(name, \"-plot.jpeg\", sep = \"\")",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.2",
-=======
-"rdt:elapsedTime" : "1.7",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.298",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -686,7 +526,7 @@
 "p48" : {
 "rdt:name" : "dpfile <- paste(getwd(), \"/\", jname, sep = \"\")",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.73",
+"rdt:elapsedTime" : "1.309",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -697,11 +537,7 @@
 "p49" : {
 "rdt:name" : "jpeg(file = dpfile, width = 800, height = 500, quality = 100",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.225",
-=======
-"rdt:elapsedTime" : "1.75",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.322",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -712,11 +548,7 @@
 "p50" : {
 "rdt:name" : "xmin <- xx$date[1]",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.231",
-=======
-"rdt:elapsedTime" : "1.75",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.328",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -727,11 +559,7 @@
 "p51" : {
 "rdt:name" : "xmax <- xx$date[data.rows]",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.246",
-=======
-"rdt:elapsedTime" : "1.76",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.34",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -742,11 +570,7 @@
 "p52" : {
 "rdt:name" : "xlim <- c(xmin, xmax)",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.26",
-=======
-"rdt:elapsedTime" : "1.78",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.353",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -757,11 +581,7 @@
 "p53" : {
 "rdt:name" : "xrange <- xmax - xmin",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.271",
-=======
-"rdt:elapsedTime" : "1.79",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.401",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -772,11 +592,7 @@
 "p54" : {
 "rdt:name" : "daterange <- c(as.POSIXlt(xmin), as.POSIXlt(xmax))",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.31",
-=======
-"rdt:elapsedTime" : "1.81",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.412",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -787,11 +603,7 @@
 "p55" : {
 "rdt:name" : "ymin <- min(xx$raw, xx$cal, xx$gc, xx$gf, na.rm = TRUE)",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.325",
-=======
-"rdt:elapsedTime" : "1.84",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.431",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -802,11 +614,7 @@
 "p56" : {
 "rdt:name" : "ymax <- max(xx$raw, xx$cal, xx$gc, xx$gf, na.rm = TRUE)",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.342",
-=======
-"rdt:elapsedTime" : "1.86",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.45",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -817,11 +625,7 @@
 "p57" : {
 "rdt:name" : "ylim <- c(ymin, ymax)",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.357",
-=======
-"rdt:elapsedTime" : "1.87",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.464",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -832,11 +636,7 @@
 "p58" : {
 "rdt:name" : "par(mar = c(5.1, 5.1, 5.1, 10.1))",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.369",
-=======
-"rdt:elapsedTime" : "1.89",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.477",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -847,11 +647,7 @@
 "p59" : {
 "rdt:name" : "plot(xaxt = \"n\", xlim, ylim, cex.main = 1.7, cex.axis = 1.7,",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.387",
-=======
-"rdt:elapsedTime" : "1.89",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.496",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -862,11 +658,7 @@
 "p60" : {
 "rdt:name" : "if (xrange <= 30) axis.Date(1, at = seq(daterange[1], datera",
 "rdt:type" : "Start",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.396",
-=======
-"rdt:elapsedTime" : "1.9",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.504",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -877,11 +669,7 @@
 "p61" : {
 "rdt:name" : "if",
 "rdt:type" : "Start",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.409",
-=======
-"rdt:elapsedTime" : "1.92",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.517",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -892,11 +680,7 @@
 "p62" : {
 "rdt:name" : "axis.Date(1, at = seq(daterange[1], daterange[2], by = \"week",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.417",
-=======
-"rdt:elapsedTime" : "1.93",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.526",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -907,11 +691,7 @@
 "p63" : {
 "rdt:name" : "if",
 "rdt:type" : "Finish",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.424",
-=======
-"rdt:elapsedTime" : "1.93",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.534",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -922,11 +702,7 @@
 "p64" : {
 "rdt:name" : "if (xrange <= 30) axis.Date(1, at = seq(daterange[1], datera",
 "rdt:type" : "Finish",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.425",
-=======
-"rdt:elapsedTime" : "1.93",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.535",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -937,11 +713,7 @@
 "p65" : {
 "rdt:name" : "good <- subset(xx, xx$qc.f == \"\")",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.427",
-=======
-"rdt:elapsedTime" : "1.93",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.537",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -952,11 +724,7 @@
 "p66" : {
 "rdt:name" : "ques <- subset(xx, xx$qc.f == \"Q\")",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.442",
-=======
-"rdt:elapsedTime" : "1.97",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.552",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -967,11 +735,7 @@
 "p67" : {
 "rdt:name" : "mea <- subset(xx, xx$gf.f == \"\")",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.456",
-=======
-"rdt:elapsedTime" : "1.98",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.566",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -982,11 +746,7 @@
 "p68" : {
 "rdt:name" : "mod <- subset(xx, xx$gf.f == \"E\")",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.469",
-=======
-"rdt:elapsedTime" : "2",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.58",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -997,11 +757,7 @@
 "p69" : {
 "rdt:name" : "if (v == \"R\") {    title(main = \"Raw Data\")    points(xx$dat",
 "rdt:type" : "Start",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.484",
-=======
-"rdt:elapsedTime" : "2.01",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.595",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1012,11 +768,7 @@
 "p70" : {
 "rdt:name" : "if",
 "rdt:type" : "Start",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.506",
-=======
-"rdt:elapsedTime" : "2.04",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.619",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1027,11 +779,7 @@
 "p71" : {
 "rdt:name" : "title(main = \"Raw Data\")",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.508",
-=======
-"rdt:elapsedTime" : "2.04",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.622",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1042,11 +790,7 @@
 "p72" : {
 "rdt:name" : "points(xx$date, xx$raw, lwd = 2, col = \"black\")",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.514",
-=======
-"rdt:elapsedTime" : "2.04",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.629",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1057,11 +801,7 @@
 "p73" : {
 "rdt:name" : "if",
 "rdt:type" : "Finish",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.522",
-=======
-"rdt:elapsedTime" : "2.06",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.638",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1072,11 +812,7 @@
 "p74" : {
 "rdt:name" : "if (v == \"R\") {    title(main = \"Raw Data\")    points(xx$dat",
 "rdt:type" : "Finish",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.523",
-=======
-"rdt:elapsedTime" : "2.06",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.639",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1087,11 +823,7 @@
 "p75" : {
 "rdt:name" : "labs <- c(\"Raw\", \"Calibrated\", \"QC Check\", \"Modeled\")",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.525",
-=======
-"rdt:elapsedTime" : "2.06",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.641",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1102,11 +834,7 @@
 "p76" : {
 "rdt:name" : "cols <- c(\"black\", \"blue\", \"red\", \"green\")",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.531",
-=======
-"rdt:elapsedTime" : "2.08",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.649",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1117,11 +845,7 @@
 "p77" : {
 "rdt:name" : "par(xpd = TRUE)",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.54",
-=======
-"rdt:elapsedTime" : "2.08",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.657",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1132,11 +856,7 @@
 "p78" : {
 "rdt:name" : "legend(xmax + xrange/15, ymax, labs, cols, cex = 1)",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.548",
-=======
-"rdt:elapsedTime" : "2.09",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.665",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1147,11 +867,7 @@
 "p79" : {
 "rdt:name" : "dev.off()",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.568",
-=======
-"rdt:elapsedTime" : "2.12",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.686",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1162,11 +878,7 @@
 "p80" : {
 "rdt:name" : "plot.data(raw.data, \"R\")",
 "rdt:type" : "Finish",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.577",
-=======
-"rdt:elapsedTime" : "2.12",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.694",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1177,11 +889,7 @@
 "p81" : {
 "rdt:name" : "get.data",
 "rdt:type" : "Finish",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.578",
-=======
-"rdt:elapsedTime" : "2.12",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.695",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1192,11 +900,7 @@
 "p82" : {
 "rdt:name" : "analyze.data",
 "rdt:type" : "Start",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.579",
-=======
-"rdt:elapsedTime" : "2.12",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.696",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1207,11 +911,7 @@
 "p83" : {
 "rdt:name" : "calibrate.data",
 "rdt:type" : "Start",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.58",
-=======
-"rdt:elapsedTime" : "2.14",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.698",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1222,11 +922,7 @@
 "p84" : {
 "rdt:name" : "calibrated.data <- calibrate(raw.data)",
 "rdt:type" : "Start",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.581",
-=======
-"rdt:elapsedTime" : "2.14",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.699",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1237,11 +933,7 @@
 "p85" : {
 "rdt:name" : "calibrate(raw.data)",
 "rdt:type" : "Start",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.59",
-=======
-"rdt:elapsedTime" : "2.14",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.706",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1252,11 +944,7 @@
 "p86" : {
 "rdt:name" : "xx  <-  raw.data",
 "rdt:type" : "Binding",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.592",
-=======
-"rdt:elapsedTime" : "2.14",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.707",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1267,11 +955,7 @@
 "p87" : {
 "rdt:name" : "calibrate",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.599",
-=======
-"rdt:elapsedTime" : "2.15",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.716",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1282,11 +966,7 @@
 "p88" : {
 "rdt:name" : "date.start <- as.Date(calibration.parameters$start)",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.605",
-=======
-"rdt:elapsedTime" : "2.15",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.722",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1297,11 +977,7 @@
 "p89" : {
 "rdt:name" : "date.finish <- as.Date(calibration.parameters$finish)",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.618",
-=======
-"rdt:elapsedTime" : "2.22",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.734",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1312,11 +988,7 @@
 "p90" : {
 "rdt:name" : "days <- as.numeric(date.finish - date.start)",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.629",
-=======
-"rdt:elapsedTime" : "2.23",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.745",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1327,11 +999,7 @@
 "p91" : {
 "rdt:name" : "daily.drift <- calibration.parameters$correction/days",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.64",
-=======
-"rdt:elapsedTime" : "2.23",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.755",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1342,11 +1010,7 @@
 "p92" : {
 "rdt:name" : "for (i in 1:data.rows) {    if (is.na(xx$raw[i])) {        x",
 "rdt:type" : "Start",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.653",
-=======
-"rdt:elapsedTime" : "2.25",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.766",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1357,11 +1021,7 @@
 "p93" : {
 "rdt:name" : "for loop",
 "rdt:type" : "Start",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.668",
-=======
-"rdt:elapsedTime" : "2.26",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.785",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1372,11 +1032,7 @@
 "p94" : {
 "rdt:name" : "i <- 1",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.669",
-=======
-"rdt:elapsedTime" : "2.26",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.819",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1387,11 +1043,7 @@
 "p95" : {
 "rdt:name" : "if (is.na(xx$raw[i])) {    xx$cal[i] <- NA} else {    xx$cal",
 "rdt:type" : "Start",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.706",
-=======
-"rdt:elapsedTime" : "2.28",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.823",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1402,11 +1054,7 @@
 "p96" : {
 "rdt:name" : "if",
 "rdt:type" : "Start",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.716",
-=======
-"rdt:elapsedTime" : "2.29",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.833",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1417,11 +1065,7 @@
 "p97" : {
 "rdt:name" : "xx$cal[i] <- (1 + (i - 1) * daily.drift) * xx$raw[i]",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.718",
-=======
-"rdt:elapsedTime" : "2.29",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.836",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1432,11 +1076,7 @@
 "p98" : {
 "rdt:name" : "xx$cal.f[i] <- \"C\"",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.736",
-=======
-"rdt:elapsedTime" : "2.31",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.855",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1447,11 +1087,7 @@
 "p99" : {
 "rdt:name" : "if",
 "rdt:type" : "Finish",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.744",
-=======
-"rdt:elapsedTime" : "2.32",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.863",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1462,11 +1098,7 @@
 "p100" : {
 "rdt:name" : "if (is.na(xx$raw[i])) {    xx$cal[i] <- NA} else {    xx$cal",
 "rdt:type" : "Finish",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.745",
-=======
-"rdt:elapsedTime" : "2.32",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.865",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1477,11 +1109,7 @@
 "p101" : {
 "rdt:name" : "for loop",
 "rdt:type" : "Finish",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.748",
-=======
-"rdt:elapsedTime" : "2.32",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.866",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1492,11 +1120,7 @@
 "p102" : {
 "rdt:name" : "Details Omitted",
 "rdt:type" : "Incomplete",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.759",
-=======
-"rdt:elapsedTime" : "2.34",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.875",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1507,11 +1131,7 @@
 "p103" : {
 "rdt:name" : "for (i in 1:data.rows) {    if (is.na(xx$raw[i])) {        x",
 "rdt:type" : "Finish",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.76",
-=======
-"rdt:elapsedTime" : "2.34",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.876",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1522,11 +1142,7 @@
 "p104" : {
 "rdt:name" : "return(xx)",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.775",
-=======
-"rdt:elapsedTime" : "2.37",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.893",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1537,11 +1153,7 @@
 "p105" : {
 "rdt:name" : "calibrate(raw.data)",
 "rdt:type" : "Finish",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.786",
-=======
-"rdt:elapsedTime" : "2.39",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.902",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1552,11 +1164,7 @@
 "p106" : {
 "rdt:name" : "calibrated.data <- calibrate(raw.data)",
 "rdt:type" : "Finish",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.787",
-=======
-"rdt:elapsedTime" : "2.39",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.903",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1567,11 +1175,7 @@
 "p107" : {
 "rdt:name" : "plot.data(calibrated.data, \"C\")",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.819",
-=======
-"rdt:elapsedTime" : "2.42",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.939",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1582,11 +1186,7 @@
 "p108" : {
 "rdt:name" : "calibrate.data",
 "rdt:type" : "Finish",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.833",
-=======
-"rdt:elapsedTime" : "2.44",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.952",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1597,11 +1197,7 @@
 "p109" : {
 "rdt:name" : "quality.control.data",
 "rdt:type" : "Start",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.835",
-=======
-"rdt:elapsedTime" : "2.44",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.953",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1612,11 +1208,7 @@
 "p110" : {
 "rdt:name" : "quality.controlled.data <- quality.control(calibrated.data)",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.843",
-=======
-"rdt:elapsedTime" : "2.45",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "1.961",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1627,11 +1219,7 @@
 "p111" : {
 "rdt:name" : "plot.data(quality.controlled.data, \"Q\")",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.884",
-=======
-"rdt:elapsedTime" : "2.5",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "2.002",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1642,11 +1230,7 @@
 "p112" : {
 "rdt:name" : "quality.control.data",
 "rdt:type" : "Finish",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.894",
-=======
-"rdt:elapsedTime" : "2.51",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "2.013",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1657,11 +1241,7 @@
 "p113" : {
 "rdt:name" : "gap.fill.data",
 "rdt:type" : "Start",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.895",
-=======
-"rdt:elapsedTime" : "2.51",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "2.014",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1672,11 +1252,7 @@
 "p114" : {
 "rdt:name" : "gap.filled.data <- gap.fill(quality.controlled.data)",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.901",
-=======
-"rdt:elapsedTime" : "2.51",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "2.02",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1687,11 +1263,7 @@
 "p115" : {
 "rdt:name" : "plot.data(gap.filled.data, \"G\")",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.941",
-=======
-"rdt:elapsedTime" : "2.59",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "2.062",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1702,11 +1274,7 @@
 "p116" : {
 "rdt:name" : "gap.fill.data",
 "rdt:type" : "Finish",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.951",
-=======
-"rdt:elapsedTime" : "2.59",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "2.073",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1717,11 +1285,7 @@
 "p117" : {
 "rdt:name" : "analyze.data",
 "rdt:type" : "Finish",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.953",
-=======
-"rdt:elapsedTime" : "2.6",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "2.074",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1732,11 +1296,7 @@
 "p118" : {
 "rdt:name" : "write.result(\"processed-data.csv\", gap.filled.data)",
 "rdt:type" : "Operation",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.955",
-=======
-"rdt:elapsedTime" : "2.6",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "2.078",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1747,11 +1307,7 @@
 "p119" : {
 "rdt:name" : "DailySolarRadiation.R",
 "rdt:type" : "Finish",
-<<<<<<< HEAD
-"rdt:elapsedTime" : "1.968",
-=======
-"rdt:elapsedTime" : "2.62",
->>>>>>> refs/remotes/origin/development
+"rdt:elapsedTime" : "2.09",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1762,24 +1318,16 @@
 "environment" : {
 "rdt:name" : "environment",
 "rdt:architecture" : "x86_64",
-"rdt:operatingSystem" : "windows",
+"rdt:operatingSystem" : "unix",
 "rdt:language" : "R",
-"rdt:rVersion" : "R version 3.3.2 (2016-10-31)",
+"rdt:rVersion" : "R version 3.3.1 (2016-06-21)",
 "rdt:script" : "[DIR]/DailySolarRadiation.R",
 "rdt:sourcedScripts" : ""
 ,
-<<<<<<< HEAD
 "rdt:scriptTimeStamp" : "2017-01-06T17.10.23EST",
-=======
-"rdt:scriptTimeStamp" : "2017-01-06T10.48.50EST",
->>>>>>> refs/remotes/origin/development
 "rdt:workingDirectory" : "[DIR]",
 "rdt:ddgDirectory" : "[DIR]/ddg",
-<<<<<<< HEAD
-"rdt:ddgTimeStamp" : "2017-01-13T14.52.45EST",
-=======
-"rdt:ddgTimeStamp" : "2017-01-10T11.16.03EST",
->>>>>>> refs/remotes/origin/development
+"rdt:ddgTimeStamp" : "2017-02-09T18.00.32EST",
 "rdt:rdatatrackerVersion" : "2.25.0",
 "rdt:installedPackages" : [
 	{"package" : "RDataTracker", "version" : "2.25.0"}]
@@ -1930,11 +1478,7 @@
 "rdt:name" : "zz",
 "rdt:value" : "data/15-zz-PARTIAL.csv",
 "rdt:type" : "Snapshot",
-<<<<<<< HEAD
-"rdt:scope" : "0x7fe717f42808",
-=======
-"rdt:scope" : "0x0000000011017638",
->>>>>>> refs/remotes/origin/development
+"rdt:scope" : "0x7f9d9bf71e40",
 "rdt:fromEnv" : "FALSE",
 "rdt:timestamp" : "",
 "rdt:location" : ""
@@ -1944,11 +1488,7 @@
 "rdt:name" : "zz",
 "rdt:value" : "data/16-zz-PARTIAL.csv",
 "rdt:type" : "Snapshot",
-<<<<<<< HEAD
-"rdt:scope" : "0x7fe717f42808",
-=======
-"rdt:scope" : "0x0000000011017638",
->>>>>>> refs/remotes/origin/development
+"rdt:scope" : "0x7f9d9bf71e40",
 "rdt:fromEnv" : "FALSE",
 "rdt:timestamp" : "",
 "rdt:location" : ""
@@ -2138,11 +1678,7 @@
 "rdt:name" : "xx",
 "rdt:value" : "data/35-xx.csv",
 "rdt:type" : "Snapshot",
-<<<<<<< HEAD
-"rdt:scope" : "0x7fe717c0dc98",
-=======
-"rdt:scope" : "0x0000000010bc89d0",
->>>>>>> refs/remotes/origin/development
+"rdt:scope" : "0x7f9d9b3b1a98",
 "rdt:fromEnv" : "FALSE",
 "rdt:timestamp" : "",
 "rdt:location" : ""
@@ -2152,11 +1688,7 @@
 "rdt:name" : "v",
 "rdt:value" : "\"R\"",
 "rdt:type" : "Data",
-<<<<<<< HEAD
-"rdt:scope" : "0x7fe717c0dc98",
-=======
-"rdt:scope" : "0x0000000010bc89d0",
->>>>>>> refs/remotes/origin/development
+"rdt:scope" : "0x7f9d9b3b1a98",
 "rdt:fromEnv" : "FALSE",
 "rdt:timestamp" : "",
 "rdt:location" : ""
@@ -2166,11 +1698,7 @@
 "rdt:name" : "name",
 "rdt:value" : "\"raw\"",
 "rdt:type" : "Data",
-<<<<<<< HEAD
-"rdt:scope" : "0x7fe717c0dc98",
-=======
-"rdt:scope" : "0x0000000010bc89d0",
->>>>>>> refs/remotes/origin/development
+"rdt:scope" : "0x7f9d9b3b1a98",
 "rdt:fromEnv" : "FALSE",
 "rdt:timestamp" : "",
 "rdt:location" : ""
@@ -2180,11 +1708,7 @@
 "rdt:name" : "dname",
 "rdt:value" : "\"raw-data.csv\"",
 "rdt:type" : "Data",
-<<<<<<< HEAD
-"rdt:scope" : "0x7fe717c0dc98",
-=======
-"rdt:scope" : "0x0000000010bc89d0",
->>>>>>> refs/remotes/origin/development
+"rdt:scope" : "0x7f9d9b3b1a98",
 "rdt:fromEnv" : "FALSE",
 "rdt:timestamp" : "",
 "rdt:location" : ""
@@ -2194,11 +1718,7 @@
 "rdt:name" : "jname",
 "rdt:value" : "\"raw-plot.jpeg\"",
 "rdt:type" : "Data",
-<<<<<<< HEAD
-"rdt:scope" : "0x7fe717c0dc98",
-=======
-"rdt:scope" : "0x0000000010bc89d0",
->>>>>>> refs/remotes/origin/development
+"rdt:scope" : "0x7f9d9b3b1a98",
 "rdt:fromEnv" : "FALSE",
 "rdt:timestamp" : "",
 "rdt:location" : ""
@@ -2208,11 +1728,7 @@
 "rdt:name" : "dpfile",
 "rdt:value" : "\"[DIR]/raw-plot.jpeg\"",
 "rdt:type" : "Data",
-<<<<<<< HEAD
-"rdt:scope" : "0x7fe717c0dc98",
-=======
-"rdt:scope" : "0x0000000010bc89d0",
->>>>>>> refs/remotes/origin/development
+"rdt:scope" : "0x7f9d9b3b1a98",
 "rdt:fromEnv" : "FALSE",
 "rdt:timestamp" : "",
 "rdt:location" : ""
@@ -2222,11 +1738,7 @@
 "rdt:name" : "xmin",
 "rdt:value" : "data/41-xmin.txt",
 "rdt:type" : "Snapshot",
-<<<<<<< HEAD
-"rdt:scope" : "0x7fe717c0dc98",
-=======
-"rdt:scope" : "0x0000000010bc89d0",
->>>>>>> refs/remotes/origin/development
+"rdt:scope" : "0x7f9d9b3b1a98",
 "rdt:fromEnv" : "FALSE",
 "rdt:timestamp" : "",
 "rdt:location" : ""
@@ -2236,11 +1748,7 @@
 "rdt:name" : "xmax",
 "rdt:value" : "data/42-xmax.txt",
 "rdt:type" : "Snapshot",
-<<<<<<< HEAD
-"rdt:scope" : "0x7fe717c0dc98",
-=======
-"rdt:scope" : "0x0000000010bc89d0",
->>>>>>> refs/remotes/origin/development
+"rdt:scope" : "0x7f9d9b3b1a98",
 "rdt:fromEnv" : "FALSE",
 "rdt:timestamp" : "",
 "rdt:location" : ""
@@ -2250,11 +1758,7 @@
 "rdt:name" : "xlim",
 "rdt:value" : "data/43-xlim.txt",
 "rdt:type" : "Snapshot",
-<<<<<<< HEAD
-"rdt:scope" : "0x7fe717c0dc98",
-=======
-"rdt:scope" : "0x0000000010bc89d0",
->>>>>>> refs/remotes/origin/development
+"rdt:scope" : "0x7f9d9b3b1a98",
 "rdt:fromEnv" : "FALSE",
 "rdt:timestamp" : "",
 "rdt:location" : ""
@@ -2264,11 +1768,7 @@
 "rdt:name" : "xrange",
 "rdt:value" : "data/44-xrange.txt",
 "rdt:type" : "Snapshot",
-<<<<<<< HEAD
-"rdt:scope" : "0x7fe717c0dc98",
-=======
-"rdt:scope" : "0x0000000010bc89d0",
->>>>>>> refs/remotes/origin/development
+"rdt:scope" : "0x7f9d9b3b1a98",
 "rdt:fromEnv" : "FALSE",
 "rdt:timestamp" : "",
 "rdt:location" : ""
@@ -2278,11 +1778,7 @@
 "rdt:name" : "daterange",
 "rdt:value" : "data/45-daterange.txt",
 "rdt:type" : "Snapshot",
-<<<<<<< HEAD
-"rdt:scope" : "0x7fe717c0dc98",
-=======
-"rdt:scope" : "0x0000000010bc89d0",
->>>>>>> refs/remotes/origin/development
+"rdt:scope" : "0x7f9d9b3b1a98",
 "rdt:fromEnv" : "FALSE",
 "rdt:timestamp" : "",
 "rdt:location" : ""
@@ -2292,11 +1788,7 @@
 "rdt:name" : "ymin",
 "rdt:value" : "0",
 "rdt:type" : "Data",
-<<<<<<< HEAD
-"rdt:scope" : "0x7fe717c0dc98",
-=======
-"rdt:scope" : "0x0000000010bc89d0",
->>>>>>> refs/remotes/origin/development
+"rdt:scope" : "0x7f9d9b3b1a98",
 "rdt:fromEnv" : "FALSE",
 "rdt:timestamp" : "",
 "rdt:location" : ""
@@ -2306,11 +1798,7 @@
 "rdt:name" : "ymax",
 "rdt:value" : "20.7",
 "rdt:type" : "Data",
-<<<<<<< HEAD
-"rdt:scope" : "0x7fe717c0dc98",
-=======
-"rdt:scope" : "0x0000000010bc89d0",
->>>>>>> refs/remotes/origin/development
+"rdt:scope" : "0x7f9d9b3b1a98",
 "rdt:fromEnv" : "FALSE",
 "rdt:timestamp" : "",
 "rdt:location" : ""
@@ -2320,11 +1808,7 @@
 "rdt:name" : "ylim",
 "rdt:value" : "data/48-ylim.csv",
 "rdt:type" : "Snapshot",
-<<<<<<< HEAD
-"rdt:scope" : "0x7fe717c0dc98",
-=======
-"rdt:scope" : "0x0000000010bc89d0",
->>>>>>> refs/remotes/origin/development
+"rdt:scope" : "0x7f9d9b3b1a98",
 "rdt:fromEnv" : "FALSE",
 "rdt:timestamp" : "",
 "rdt:location" : ""
@@ -2334,11 +1818,7 @@
 "rdt:name" : "good",
 "rdt:value" : "data/49-good.csv",
 "rdt:type" : "Snapshot",
-<<<<<<< HEAD
-"rdt:scope" : "0x7fe717c0dc98",
-=======
-"rdt:scope" : "0x0000000010bc89d0",
->>>>>>> refs/remotes/origin/development
+"rdt:scope" : "0x7f9d9b3b1a98",
 "rdt:fromEnv" : "FALSE",
 "rdt:timestamp" : "",
 "rdt:location" : ""
@@ -2348,11 +1828,7 @@
 "rdt:name" : "ques",
 "rdt:value" : "data/50-ques.csv",
 "rdt:type" : "Snapshot",
-<<<<<<< HEAD
-"rdt:scope" : "0x7fe717c0dc98",
-=======
-"rdt:scope" : "0x0000000010bc89d0",
->>>>>>> refs/remotes/origin/development
+"rdt:scope" : "0x7f9d9b3b1a98",
 "rdt:fromEnv" : "FALSE",
 "rdt:timestamp" : "",
 "rdt:location" : ""
@@ -2362,11 +1838,7 @@
 "rdt:name" : "mea",
 "rdt:value" : "data/51-mea.csv",
 "rdt:type" : "Snapshot",
-<<<<<<< HEAD
-"rdt:scope" : "0x7fe717c0dc98",
-=======
-"rdt:scope" : "0x0000000010bc89d0",
->>>>>>> refs/remotes/origin/development
+"rdt:scope" : "0x7f9d9b3b1a98",
 "rdt:fromEnv" : "FALSE",
 "rdt:timestamp" : "",
 "rdt:location" : ""
@@ -2376,11 +1848,7 @@
 "rdt:name" : "mod",
 "rdt:value" : "data/52-mod.csv",
 "rdt:type" : "Snapshot",
-<<<<<<< HEAD
-"rdt:scope" : "0x7fe717c0dc98",
-=======
-"rdt:scope" : "0x0000000010bc89d0",
->>>>>>> refs/remotes/origin/development
+"rdt:scope" : "0x7f9d9b3b1a98",
 "rdt:fromEnv" : "FALSE",
 "rdt:timestamp" : "",
 "rdt:location" : ""
@@ -2390,11 +1858,7 @@
 "rdt:name" : "labs",
 "rdt:value" : "data/53-labs.csv",
 "rdt:type" : "Snapshot",
-<<<<<<< HEAD
-"rdt:scope" : "0x7fe717c0dc98",
-=======
-"rdt:scope" : "0x0000000010bc89d0",
->>>>>>> refs/remotes/origin/development
+"rdt:scope" : "0x7f9d9b3b1a98",
 "rdt:fromEnv" : "FALSE",
 "rdt:timestamp" : "",
 "rdt:location" : ""
@@ -2404,11 +1868,7 @@
 "rdt:name" : "cols",
 "rdt:value" : "data/54-cols.csv",
 "rdt:type" : "Snapshot",
-<<<<<<< HEAD
-"rdt:scope" : "0x7fe717c0dc98",
-=======
-"rdt:scope" : "0x0000000010bc89d0",
->>>>>>> refs/remotes/origin/development
+"rdt:scope" : "0x7f9d9b3b1a98",
 "rdt:fromEnv" : "FALSE",
 "rdt:timestamp" : "",
 "rdt:location" : ""
@@ -2438,11 +1898,7 @@
 "rdt:name" : "xx",
 "rdt:value" : "data/57-xx.csv",
 "rdt:type" : "Snapshot",
-<<<<<<< HEAD
-"rdt:scope" : "0x7fe718399bf8",
-=======
-"rdt:scope" : "0x0000000013068708",
->>>>>>> refs/remotes/origin/development
+"rdt:scope" : "0x7f9d9f2232e8",
 "rdt:fromEnv" : "FALSE",
 "rdt:timestamp" : "",
 "rdt:location" : ""
@@ -2452,11 +1908,7 @@
 "rdt:name" : "date.start",
 "rdt:value" : "data/58-date.start.txt",
 "rdt:type" : "Snapshot",
-<<<<<<< HEAD
-"rdt:scope" : "0x7fe718399bf8",
-=======
-"rdt:scope" : "0x0000000013068708",
->>>>>>> refs/remotes/origin/development
+"rdt:scope" : "0x7f9d9f2232e8",
 "rdt:fromEnv" : "FALSE",
 "rdt:timestamp" : "",
 "rdt:location" : ""
@@ -2466,11 +1918,7 @@
 "rdt:name" : "date.finish",
 "rdt:value" : "data/59-date.finish.txt",
 "rdt:type" : "Snapshot",
-<<<<<<< HEAD
-"rdt:scope" : "0x7fe718399bf8",
-=======
-"rdt:scope" : "0x0000000013068708",
->>>>>>> refs/remotes/origin/development
+"rdt:scope" : "0x7f9d9f2232e8",
 "rdt:fromEnv" : "FALSE",
 "rdt:timestamp" : "",
 "rdt:location" : ""
@@ -2480,11 +1928,7 @@
 "rdt:name" : "days",
 "rdt:value" : "365",
 "rdt:type" : "Data",
-<<<<<<< HEAD
-"rdt:scope" : "0x7fe718399bf8",
-=======
-"rdt:scope" : "0x0000000013068708",
->>>>>>> refs/remotes/origin/development
+"rdt:scope" : "0x7f9d9f2232e8",
 "rdt:fromEnv" : "FALSE",
 "rdt:timestamp" : "",
 "rdt:location" : ""
@@ -2494,11 +1938,7 @@
 "rdt:name" : "daily.drift",
 "rdt:value" : "0.000273972602739726",
 "rdt:type" : "Data",
-<<<<<<< HEAD
-"rdt:scope" : "0x7fe718399bf8",
-=======
-"rdt:scope" : "0x0000000013068708",
->>>>>>> refs/remotes/origin/development
+"rdt:scope" : "0x7f9d9f2232e8",
 "rdt:fromEnv" : "FALSE",
 "rdt:timestamp" : "",
 "rdt:location" : ""
@@ -2508,11 +1948,7 @@
 "rdt:name" : "i",
 "rdt:value" : "1",
 "rdt:type" : "Data",
-<<<<<<< HEAD
-"rdt:scope" : "0x7fe718399bf8",
-=======
-"rdt:scope" : "0x0000000013068708",
->>>>>>> refs/remotes/origin/development
+"rdt:scope" : "0x7f9d9f2232e8",
 "rdt:fromEnv" : "FALSE",
 "rdt:timestamp" : "",
 "rdt:location" : ""
@@ -2522,11 +1958,7 @@
 "rdt:name" : "xx",
 "rdt:value" : "data/63-xx.csv",
 "rdt:type" : "Snapshot",
-<<<<<<< HEAD
-"rdt:scope" : "0x7fe718399bf8",
-=======
-"rdt:scope" : "0x0000000013068708",
->>>>>>> refs/remotes/origin/development
+"rdt:scope" : "0x7f9d9f2232e8",
 "rdt:fromEnv" : "FALSE",
 "rdt:timestamp" : "",
 "rdt:location" : ""
@@ -2536,11 +1968,7 @@
 "rdt:name" : "xx",
 "rdt:value" : "data/64-xx.csv",
 "rdt:type" : "Snapshot",
-<<<<<<< HEAD
-"rdt:scope" : "0x7fe718399bf8",
-=======
-"rdt:scope" : "0x0000000013068708",
->>>>>>> refs/remotes/origin/development
+"rdt:scope" : "0x7f9d9f2232e8",
 "rdt:fromEnv" : "FALSE",
 "rdt:timestamp" : "",
 "rdt:location" : ""
@@ -2550,11 +1978,7 @@
 "rdt:name" : "xx",
 "rdt:value" : "data/65-xx.txt",
 "rdt:type" : "Snapshot",
-<<<<<<< HEAD
-"rdt:scope" : "0x7fe718399bf8",
-=======
-"rdt:scope" : "0x0000000013068708",
->>>>>>> refs/remotes/origin/development
+"rdt:scope" : "0x7f9d9f2232e8",
 "rdt:fromEnv" : "FALSE",
 "rdt:timestamp" : "",
 "rdt:location" : ""
