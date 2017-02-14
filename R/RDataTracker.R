@@ -1918,6 +1918,11 @@ ddg.MAX_HIST_LINES <- 2^14
   #print (".ddg.create.data.use.edges.for.console.cmd Done")
 }
 
+
+
+
+
+
 # .ddg.create.data.set.edges.for.cmd creates edges that correspond
 # to a console command assigning to a variable.
 
@@ -1941,6 +1946,15 @@ ddg.MAX_HIST_LINES <- 2^14
   # print(vars.set)
 
   for (var in vars.assigned) {
+
+    if( cmd@readsFile )
+    {
+      print( paste(var, ", contains factor =" , .ddg.contains.factor(cmd@vars.set)) )
+      print("")
+    }
+
+
+
     # print(paste(".ddg.create.data.set.edges.for.cmd: var = ", var))
     whichRows <- which(vars.set$variable == var)
 
@@ -1973,6 +1987,11 @@ ddg.MAX_HIST_LINES <- 2^14
   }
 
 }
+
+
+
+
+
 
 # .ddg.create.data.node.for.possible.writes creates a data node for
 # each variable that might have been set in something other than a
@@ -2135,6 +2154,11 @@ ddg.MAX_HIST_LINES <- 2^14
   return (.ddg.find.files (main.object, .ddg.get(".ddg.file.read.functions.df"), env))
 }
 
+
+
+
+
+
 # Creates file nodes and data in edges for any files that are read in this cmd
 # cmd - text command
 # cmd.expr - parsed command
@@ -2145,9 +2169,13 @@ ddg.MAX_HIST_LINES <- 2^14
   # read are within an if-statement, for example.
   files.read <- .ddg.find.files.read(cmd, env)
   #print (".ddg.create.file.read.nodes.and.edges: Files read:")
-  print (files.read)
+  #print (files.read)
 
-  print( .ddg.contains.factor(cmd@vars.set) )
+
+
+  #print( .ddg.contains.factor(cmd@vars.set) )
+
+
 
   for (file in files.read) {
 
@@ -2181,6 +2209,11 @@ ddg.MAX_HIST_LINES <- 2^14
 
   return(FALSE)
 }
+
+
+
+
+
 
 # Initialize the information about functions that read from files
 .ddg.create.file.write.functions.df <- function () {
@@ -3054,13 +3087,25 @@ ddg.MAX_HIST_LINES <- 2^14
             if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Adding", cmd@abbrev, "information to vars.set"))
           }
 
+
+
+
           .ddg.create.data.use.edges.for.console.cmd(vars.set, cmd, i, for.caller=FALSE)
           if (cmd@readsFile) .ddg.create.file.read.nodes.and.edges(cmd, environ)
           .ddg.link.function.returns(cmd)
 
+
+
+
           if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Adding input data nodes for", cmd@abbrev))
+
+
+
           
           .ddg.create.data.set.edges.for.cmd(vars.set, cmd, i, d.environ)
+
+
+
           
           if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Adding output data nodes for", cmd@abbrev))
 
