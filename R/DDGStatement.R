@@ -100,6 +100,7 @@ setMethod ("initialize",
       # deparse can return a vector of strings.  We convert that into
       # one long string.
       .Object@text <- paste(deparse(.Object@parsed[[1]]), collapse="")
+      #print(.Object@text)
       
       .Object@abbrev <-
           # If this is a call to ddg.eval, we only want the argument to ddg.eval
@@ -114,7 +115,7 @@ setMethod ("initialize",
       vars.used <- .ddg.find.var.uses(.Object@parsed[[1]])
 
       # Remove index variable in for statement (handled separately in ddg.forloop).
-      if (length(parsed) > 0 && parsed[[1]][[1]] == "for") {
+      if (length(parsed) > 0 && !is.symbol(parsed[[1]]) && parsed[[1]][[1]] == "for") {
         index.var <- c(parsed[[1]][[2]])
         vars.used <- vars.used[! vars.used %in% index.var]
       }
@@ -509,10 +510,10 @@ null.pos <- function() {
   block.stmts <- list()
   
   # If and else if blocks.
-  while(parent[[1]] == "if") {
+  while(!is.symbol(parent) && parent[[1]] == "if") {
     # Get block
     block <- parent[[3]]
-    if (block[[1]] != "{") block <- call("{", block)
+    block <- .ddg.ensure.in.block(block)
     
     # Get statements for this block.
     for (i in 2:(length(block))) {
@@ -534,7 +535,7 @@ null.pos <- function() {
   if (final.else) {
     # Get block.
     block <- parent
-    if (block[[1]] != "{") block <- call("{", block)
+    block <- .ddg.ensure.in.block(block)
     
     # Get statements for this block.
     for (i in 2:(length(block))) {
@@ -546,6 +547,14 @@ null.pos <- function() {
   return (.ddg.create.DDGStatements (block.stmts, script.name, cmd@script.num, parseData, cmd@pos))
 }
 
+# If there is a singleton statement inside a control construct nest it inside a block.
+# Return the block.
+.ddg.ensure.in.block <- function(block) {
+  if (is.symbol(block) || block[[1]] != "{") call("{", block)
+  else block
+}
+
+
 .ddg.parse.contained.control <- function(cmd, script.name, parseData, parsed.cmd, st.type) {
   block.stmts <- list()
   
@@ -554,8 +563,8 @@ null.pos <- function() {
   else if (st.type == "repeat") block <- parsed.cmd[[2]]
   else if (st.type == "{") block <- parsed.cmd
     
-  if (block[[1]] != "{") block <- call("{", block)
-    
+  block <- .ddg.ensure.in.block(block)
+  
   for (i in 2:length(block)) {
     block.stmts <- c(block.stmts, block[[i]])
   }
@@ -1063,10 +1072,10 @@ null.pos <- function() {
   parsed.command.txt <- vector()
 
   # If & else if blocks.
-  while(parent[[1]] == "if") {
+  while(!is.symbol(parent) && parent[[1]] == "if") {
     # Get block
     block <- parent[[3]]
-    if (block[[1]] != "{") block <- call("{", block)
+    block <- .ddg.ensure.in.block(block)
     
     # Get statements for this block.
     block.stmts<- list()
@@ -1114,8 +1123,8 @@ null.pos <- function() {
   if (final.else) {
     # Get block.
     block <- parent
-    if (block[[1]] != "{") block <- call("{", block)
-
+    block <- .ddg.ensure.in.block(block)
+    
     # Get statements for this block
     block.stmts <- list()
     for (i in 1:(length(block)-1)) {
@@ -1170,7 +1179,7 @@ null.pos <- function() {
   }
 
   # Add braces if necessary.
-  if (block[[1]] != "{") block <- call("{", block)
+  block <- .ddg.ensure.in.block(block)
   
   # Wrap each statement with ddg.eval.
   annotated.block <- .ddg.wrap.block.with.ddg.eval(block, command@contained)

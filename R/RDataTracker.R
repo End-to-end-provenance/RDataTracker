@@ -586,7 +586,7 @@ ddg.MAX_HIST_LINES <- 2^14
                              \"name\" : \"",ss[ , 2], "\",
                              \"timestamp\" : \"",stimes, "\"}",
                          sep = "", collapse =",\n")
-    output <- paste("[\n", scriptarray, " ],\n", sep = "")
+    output <- paste("[\n", scriptarray, " ]", sep = "")
   }
   return(output)
 }
@@ -726,11 +726,7 @@ ddg.MAX_HIST_LINES <- 2^14
 
   environ <- paste(environ, .ddg.json.nv("rdt:script", ddg.r.script.path), sep="")
 
-  if(sourced.scripts==""){
-    environ <- paste(environ, .ddg.json.nv("rdt:sourcedScripts", sourced.scripts), sep="")
-  }else{
-    environ <- paste(environ, "\"rdt:sourcedScripts\" : ", sourced.scripts, ",\n", sep="")
-  }
+  environ <- paste(environ, "\"rdt:sourcedScripts\" : ", sourced.scripts, ",\n", sep="")
 
   environ <- paste(environ, .ddg.json.nv("rdt:scriptTimeStamp", script.timestamp), sep="")
 
@@ -1955,7 +1951,15 @@ ddg.MAX_HIST_LINES <- 2^14
 		      env <- .ddg.get.env(var, calls=stack)
         }
 		    scope <- .ddg.get.scope(var, calls=stack, env=env)
-		    val <- tryCatch(eval(parse(text=var), env),
+        
+        # Special operators are defined by enclosing the name in `.  However,
+        # the R parser drops those characters when we deparse, so when we parse
+        # here they are missing and we get an error about unexpected SPECIAL
+        # characters.  The first tryCatch, puts the ` back in and parses again.
+        # The second tryCatch handles errors associated with evaluated the variable.
+        parsed <- tryCatch(parse(text=var), 
+            error = function(e) parse(text=paste("`",var,"`",sep="")))
+		    val <- tryCatch(eval(parsed, env),
 					error = function(e) {
             eval (parse(text=var), parent.env(env))
           }
@@ -1986,7 +1990,10 @@ ddg.MAX_HIST_LINES <- 2^14
     # print(paste("Checking ", vars.set$variable[i]))
     if (vars.set$possible.last.writer[i] > vars.set$last.writer[i]) {
       value <- tryCatch(eval(parse(text=vars.set$variable[i]), environment),
-          error = function(e) {NULL}
+          error = function(e) {
+            #print(paste("Could not find value for", vars.set$variable[i], "in environment", environment))
+            NULL
+          }
       )
 
       # Only create the node and edge if we were successful in
@@ -2954,8 +2961,20 @@ ddg.MAX_HIST_LINES <- 2^14
 
           if (.ddg.debug.lib()) print (paste (".ddg.parse.commands: Evaluating ", cmd@annotated))
 
-          result <- withCallingHandlers (eval(cmd@annotated, environ, NULL), warning = .ddg.set.warning)
-
+          result <- withCallingHandlers(
+            eval(cmd@annotated, environ, NULL) , 
+            warning = .ddg.set.warning , 
+            error = function(e)
+            {
+              # create procedure node for the error-causing operation
+              .ddg.proc.node("Operation", cmd@abbrev, cmd@abbrev, env=environ, console=TRUE, cmd=cmd)
+              .ddg.proc2proc()
+              
+              # create and link to an error node
+              ddg.exception.out("error.msg", toString(e) , cmd@abbrev)
+            }
+          )
+          
           if (.ddg.debug.lib()) print (paste (".ddg.parse.commands: Done evaluating ", cmd@annotated))
 
           if (!cmd@isDdgFunc && cmd@text != "next") {
@@ -2993,7 +3012,6 @@ ddg.MAX_HIST_LINES <- 2^14
 
           # Print evaluation.
           if (print.eval) print(result)
-
         }
 
         # Figure out if we should create a procedure node for this
@@ -3007,7 +3025,7 @@ ddg.MAX_HIST_LINES <- 2^14
             else ""
         cur.cmd.closed <- (last.proc.node.created == paste ("Finish", cmd@abbrev))
         create.procedure <- create && (!cur.cmd.closed || !named.node.set) && !start.finish.created  && !grepl("^ddg.source", cmd@text)
-
+        
         # We want to create a procedure node for this command.
         if (create.procedure) {
 
@@ -3275,6 +3293,8 @@ ddg.MAX_HIST_LINES <- 2^14
 
 .ddg.data.node <- function(dtype, dname, dvalue, dscope, from.env=FALSE) {
   #print(paste(".ddg.data.node: dname =", dname))
+  #print(paste(".ddg.data.node: typeof(dvalue) =", typeof(dvalue)))
+  #print(paste(".ddg.data.node: dvalue =", dvalue))
   #print(paste(".ddg.data.node: dscope =", dscope))
   # If object or a long list, try to create snapshot node.
   if (is.object(dvalue)) {
@@ -3299,6 +3319,7 @@ ddg.MAX_HIST_LINES <- 2^14
     return (NULL)
   }
 
+  #print("Converting value to a string")
   # Convert value to a string.
   val <-
       if (is.list(dvalue)) {
@@ -3319,15 +3340,16 @@ ddg.MAX_HIST_LINES <- 2^14
             error = function(e) {"complex"})
       }
       else if (is.null(dvalue)) "NULL"
+      else if (length(dvalue) == 0) "Empty"
       else if (is.na(dvalue)) "NA"
       else if (dvalue == "complex" || dvalue == "#ddg.function") dvalue
       else if (is.character(dvalue) && dvalue == "") "NotRecorded"
       else {
-        # Replace double quotes with single quotes.
-        .ddg.replace.quotes(dvalue)
+         # Replace double quotes with single quotes.
+         .ddg.replace.quotes(dvalue)
       }
 
-  #print(".ddg.data.node: converted value to string")
+  #print(paste(".ddg.data.node: converted value to string", val))
 
 
   if (grepl("\n", val)) {
@@ -3418,16 +3440,40 @@ ddg.MAX_HIST_LINES <- 2^14
     return(.ddg.data.node ("Data", dname, "", dscope, from.env=from.env))
   }
 
-    # object.size returns bytes, but max.snapshot.size is in kilobytes
-  if (max.snapshot.size == -1 || object.size(data) < max.snapshot.size * 1024) {
-    full.snapshot <- TRUE
-  } else {
-    full.snapshot <- FALSE
-  }
-
   # Snapshot name
   snapname <- dname
-
+  
+  # object.size returns bytes, but max.snapshot.size is in kilobytes
+  if (max.snapshot.size == -1 || object.size(data) < max.snapshot.size * 1024) {
+    full.snapshot <- TRUE
+    
+  } 
+  
+  else if (is.vector(data) || is.list(data) || is.data.frame(data) || is.matrix(data) || is.array(data)) { 
+    # Decide how much data to save
+    
+    element.size <- object.size(head(data, 1))
+    num.elements.to.save <- ceiling(max.snapshot.size * 1024 / element.size)
+    if (num.elements.to.save < length(data)) {
+      #print (paste ("object.size(data)" = object.size(data)))
+      data <- head(data, num.elements.to.save)
+      snapname <- paste(dname, "-PARTIAL", sep="")
+      full.snapshot <- FALSE
+      #print(paste ("element.size =", element.size))
+      #print (paste (".ddg.snapshot.node: Saving", num.elements.to.save, "elements for", dname))
+      #print(paste("Size of saved data =", object.size(data)))
+      
+    }
+    else {
+      full.snapshot <- TRUE
+    }
+  }
+    
+  else {
+    full.snapshot <- FALSE
+    snapname <- paste(dname, "-PARTIAL", sep="")
+  }
+    
   # Snapshot type
   dtype <- "Snapshot"
 
@@ -3440,13 +3486,7 @@ ddg.MAX_HIST_LINES <- 2^14
   else if ("XMLInternalDocument" %in% class(data)) {
     fext <- "xml"
   }
-  else if (is.vector(data)) {
-  }
-  else if (is.data.frame(data) || is.matrix(data) || is.array(data) || is.list(data)) {
-    if (!full.snapshot) {
-      data <- head(data, n=10*max.snapshot.size)
-      snapname <- paste(dname, "-PARTIAL", sep="")
-    }
+  else if (is.vector(data) || is.data.frame(data) || is.matrix(data) || is.array(data) || is.list(data)) {
   }
   else if (!is.character(data)) {
     tryCatch(data <- as.character(data),
@@ -5479,7 +5519,7 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
   if (debug) ddg.breakpoint()
 
   # Save debug files to debug directory.
-  if (save.debug) .ddg.set("ddg.save.debug", TRUE)
+  .ddg.set("ddg.save.debug", save.debug)
 
   # If an R error is generated, get the error message and close
   # the DDG.
@@ -5492,12 +5532,6 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
                 ignore.init = TRUE,
                 force.console = FALSE)
           else stop("r.script.path and f cannot both be NULL"),
-      error=function(e) {
-        e.str <- toString(e)
-        print(e.str)
-        ddg.procedure(pname="tryCatch")
-        ddg.exception.out("error.msg", e.str, "tryCatch")
-      },
       finally={
         ddg.save(r.script.path)
         if(display==TRUE){
@@ -5836,7 +5870,7 @@ ddg.display <- function () {
   # print("Opening socket connection")
   tryCatch ({
         con <- socketConnection(host= "localhost", port = .ddg.get(".ddg.explorer.port"), blocking = FALSE,
-            server=FALSE, open="w")
+            server=FALSE, open="w", timeout=1)
         ddgtxt.path<- paste(getwd(), .ddg.path() ,"ddg.txt",sep = "/")
         # print ("Socket open; writing to socket")
         writeLines(ddgtxt.path, con)

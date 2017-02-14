@@ -9,7 +9,7 @@
 "p1" : {
 "rdt:name" : "PlotTest.R",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "0.056",
+"rdt:elapsedTime" : "0.0499999999999998",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -20,7 +20,7 @@
 "p2" : {
 "rdt:name" : "data(mtcars)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.0600000000000001",
+"rdt:elapsedTime" : "0.0499999999999998",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "1",
 "rdt:startCol" : "1",
@@ -31,7 +31,7 @@
 "p3" : {
 "rdt:name" : "allCars.df <- mtcars",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.072",
+"rdt:elapsedTime" : "0.0699999999999998",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "4",
 "rdt:startCol" : "1",
@@ -42,7 +42,7 @@
 "p4" : {
 "rdt:name" : "cars4Cyl.df <- allCars.df[allCars.df$cyl == 4, ]",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.084",
+"rdt:elapsedTime" : "0.0799999999999998",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "7",
 "rdt:startCol" : "1",
@@ -53,7 +53,7 @@
 "p5" : {
 "rdt:name" : "cars6Cyl.df <- allCars.df[allCars.df$cyl == 6, ]",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.099",
+"rdt:elapsedTime" : "0.0999999999999999",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "8",
 "rdt:startCol" : "1",
@@ -64,7 +64,7 @@
 "p6" : {
 "rdt:name" : "cars8Cyl.df <- allCars.df[allCars.df$cyl == 8, ]",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.116",
+"rdt:elapsedTime" : "0.0999999999999999",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "9",
 "rdt:startCol" : "1",
@@ -75,7 +75,7 @@
 "p7" : {
 "rdt:name" : "cylinders = c(4, 6, 8)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.131",
+"rdt:elapsedTime" : "0.12",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "12",
 "rdt:startCol" : "1",
@@ -86,7 +86,7 @@
 "p8" : {
 "rdt:name" : "mpg = c(mean(cars4Cyl.df$mpg), mean(cars6Cyl.df$mpg), mean(c",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.141",
+"rdt:elapsedTime" : "0.13",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "12",
 "rdt:startCol" : "13",
@@ -97,7 +97,7 @@
 "p9" : {
 "rdt:name" : "plot(cylinders, mpg)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.209",
+"rdt:elapsedTime" : "0.2",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "13",
 "rdt:startCol" : "1",
@@ -108,7 +108,7 @@
 "p10" : {
 "rdt:name" : "X11()",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.237",
+"rdt:elapsedTime" : "0.23",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "13",
 "rdt:startCol" : "7",
@@ -119,7 +119,7 @@
 "p11" : {
 "rdt:name" : "plot(cylinders, mpg)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.247",
+"rdt:elapsedTime" : "0.24",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "16",
 "rdt:startCol" : "1",
@@ -130,7 +130,7 @@
 "p12" : {
 "rdt:name" : "dev.off()",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.26",
+"rdt:elapsedTime" : "0.24",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "29",
 "rdt:startCol" : "1",
@@ -138,33 +138,22 @@
 "rdt:endCol" : "6"
 } ,
 
-"p13" : {
-"rdt:name" : "tryCatch",
-"rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.265",
-"rdt:scriptNum" : "NA",
-"rdt:startLine" : "NA",
-"rdt:startCol" : "NA",
-"rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
-} ,
-
 "environment" : {
 "rdt:name" : "environment",
 "rdt:architecture" : "x86_64",
-"rdt:operatingSystem" : "unix",
+"rdt:operatingSystem" : "windows",
 "rdt:language" : "R",
-"rdt:rVersion" : "R version 3.3.1 (2016-06-21)",
+"rdt:rVersion" : "R version 3.3.2 (2016-10-31)",
 "rdt:script" : "[DIR]/PlotTest.R",
 "rdt:sourcedScripts" : ""
 ,
-"rdt:scriptTimeStamp" : "2017-01-04T14.21.23EST",
+"rdt:scriptTimeStamp" : "2017-01-06T18.11.47EST",
 "rdt:workingDirectory" : "[DIR]",
 "rdt:ddgDirectory" : "[DIR]/ddg",
-"rdt:ddgTimeStamp" : "2017-01-04T14.25.33EST",
-"rdt:rdatatrackerVersion" : "2.24.1",
+"rdt:ddgTimeStamp" : "2017-02-06T20.24.55EST",
+"rdt:rdatatrackerVersion" : "2.25.0",
 "rdt:installedPackages" : [
-	{"package" : "RDataTracker", "version" : "2.24.1"}]
+	{"package" : "RDataTracker", "version" : "2.25.0"}]
 }},
 "entity":{
 
@@ -246,16 +235,6 @@
 "rdt:fromEnv" : "FALSE",
 "rdt:timestamp" : "",
 "rdt:location" : ""
-} ,
-
-"d9" : {
-"rdt:name" : "error.msg",
-"rdt:value" : "\"Error in dev.print(device = pdf, file = file): can only print from a screen device \"",
-"rdt:type" : "Exception",
-"rdt:scope" : "ddg.library",
-"rdt:fromEnv" : "FALSE",
-"rdt:timestamp" : "",
-"rdt:location" : ""
 }},
 "wasInformedBy":{
 
@@ -312,11 +291,6 @@
 "e30" : {
 "prov:informant" : "p11",
 "prov:informed" : "p12"
-} ,
-
-"e31" : {
-"prov:informant" : "p12",
-"prov:informed" : "p13"
 }},
 "wasGeneratedBy":{
 
@@ -348,11 +322,6 @@
 "e22" : {
 "prov:entity" : "d8",
 "prov:activity" : "p8"
-} ,
-
-"e32" : {
-"prov:entity" : "d9",
-"prov:activity" : "p13"
 }},
 "used":{
 

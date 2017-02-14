@@ -89,3 +89,7 @@ outer <- function() {
 
 outer()
 
+# Defining a special operator
+`%test%` = function (a, b) a * b
+2 %test% 4
+
