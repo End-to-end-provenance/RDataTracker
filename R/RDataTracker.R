@@ -1853,6 +1853,7 @@ ddg.MAX_HIST_LINES <- 2^14
   }
 }
 
+
 # .ddg.create.data.use.edges.for.console.cmd creates a data flow
 # edge from the node for each variable used in cmd.expr to the
 # procedural node labeled cmd, as long as the value would either
@@ -1919,10 +1920,6 @@ ddg.MAX_HIST_LINES <- 2^14
 }
 
 
-
-
-
-
 # .ddg.create.data.set.edges.for.cmd creates edges that correspond
 # to a console command assigning to a variable.
 
@@ -1946,16 +1943,7 @@ ddg.MAX_HIST_LINES <- 2^14
   # print(vars.set)
 
   for (var in vars.assigned) {
-
-    if( cmd@readsFile )
-    {
-      containsFactor <- .ddg.contains.factor(cmd@vars.set)
-      print( paste(var, ", contains factor =" , containsFactor) )
-      print("")
-    }
-
-
-
+    
     # print(paste(".ddg.create.data.set.edges.for.cmd: var = ", var))
     whichRows <- which(vars.set$variable == var)
 
@@ -1983,38 +1971,11 @@ ddg.MAX_HIST_LINES <- 2^14
         tryCatch(.ddg.save.data(var, val, fname=".ddg.create.data.set.edges.for.cmd", error=TRUE, scope=scope, stack=stack, env=env),
                error = function(e){.ddg.data.node("Data", var, "complex", scope)})
         
-        
-        #tryCatch(
-        #  .ddg.save.data(var, val, fname=".ddg.create.data.set.edges.for.cmd", error=TRUE, scope=scope, stack=stack, env=env),
-        #  error = function(e)
-        #  {
-         #   if(containsFactor)
-          #    print("containsFactor is true")
-           # .ddg.data.node("Data", var, "complex", scope)
-          #}
-        #)
-        
         .ddg.proc2data(cmd@abbrev, var, scope)
     }
   }
 
 }
-
-# Returns TRUE if the value of the given variable name is a data frame
-# containing at least one factor. Returns FALSE otherwise.
-# var - the variable name
-.ddg.contains.factor <- function( var )
-{
-  content <- get(var)
-  print( class(content) )
-
-  if( is.data.frame(content) )
-    return( is.element("factor",sapply(content,class)) )
-
-  return(FALSE)
-}
-
-
 
 
 # .ddg.create.data.node.for.possible.writes creates a data node for
@@ -2052,6 +2013,7 @@ ddg.MAX_HIST_LINES <- 2^14
   #print("Done with .ddg.create.data.node.for.possible.writes")
 
 }
+
 
 # Given a parse tree, this function returns a list containing
 # the expressions that correspond to the filename argument
@@ -2151,6 +2113,7 @@ ddg.MAX_HIST_LINES <- 2^14
   return(find.files.rec(main.object@parsed))
 }
 
+
 # Initialize the information about functions that read from files
 .ddg.create.file.read.functions.df <- function () {
   # Functions that read files
@@ -2177,11 +2140,6 @@ ddg.MAX_HIST_LINES <- 2^14
 .ddg.find.files.read <- function(main.object, env) {
   return (.ddg.find.files (main.object, .ddg.get(".ddg.file.read.functions.df"), env))
 }
-
-
-
-
-
 
 # Creates file nodes and data in edges for any files that are read in this cmd
 # cmd - text command
@@ -2988,8 +2946,7 @@ ddg.MAX_HIST_LINES <- 2^14
           # Note that we cannot just use a tryCatch here because it behaves
           # slightly differently and we would lose the value that eval
           # returns.  withCallingHandlers returns the value.
-          
-          
+          # withCallingHandlers also re-throws the error after it is caught.
           
           # EVALUATE.
 
@@ -3013,9 +2970,6 @@ ddg.MAX_HIST_LINES <- 2^14
               ddg.exception.out("error.msg", toString(e) , cmd@abbrev)
             }
           )
-          
-          
-          
           
           if (.ddg.debug.lib()) print (paste (".ddg.parse.commands: Done evaluating ", cmd@annotated))
 
