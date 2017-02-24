@@ -5335,7 +5335,7 @@ ddg.finish <- function(pname=NULL) {
 # Addition : overwrite (optional) - default TRUE, if FALSE, generates
 #   timestamp for ddg directory
 
-ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enable.console = TRUE, max.snapshot.size = 100) {
+ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enable.console = TRUE, annotate.inside = TRUE, first.loop = 1, max.loops = 1, max.snapshot.size = 10) {
   #.ddg.DDGStatement.init()
   .ddg.init.tables()
 
@@ -5416,6 +5416,26 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
     tryCatch (savehistory(ddg.history.file),
               error = function(e) {})
   }
+  
+  # If ddg.detail is not set, use values of annotate.inside, max.loops
+  # and max.snapshot.size.
+  if (is.null(ddg.get.detail())) {
+    # Store value of annotate.inside.
+    .ddg.set("ddg.annotate.inside", annotate.inside)
+    
+    # Store maximum number of loops to annotate.
+    if (max.loops < 0) max.loops <- 10^10
+    .ddg.set("ddg.max.loops", max.loops)
+    
+    # Store maximum snapshot size.
+    .ddg.set("ddg.max.snapshot.size", max.snapshot.size)
+  }
+  
+  # If loops are not annotated, do not annotate functions called from inside a loop.
+  if (max.loops == 0) ddg.loop.annotate.off()
+  
+  # Set number of first loop.
+  .ddg.set("ddg.first.loop", first.loop)
 
   .ddg.set(".ddg.proc.start.time", .ddg.elapsed.time())
 
@@ -5464,7 +5484,7 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
 ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = NULL, enable.console = TRUE, annotate.inside = TRUE, first.loop = 1, max.loops = 1, max.snapshot.size = 10, debug = FALSE, save.debug = FALSE, display = FALSE) {
 
   # Initiate ddg.
-  ddg.init(r.script.path, ddgdir, overwrite, enable.console)
+  ddg.init(r.script.path, ddgdir, overwrite, enable.console, annotate.inside, first.loop, max.loops, max.snapshot.size)
 
   # Create ddg directory.
   # dir.create(.ddg.path(), showWarnings = FALSE)
@@ -5476,26 +5496,6 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
   # Set .ddg.is.sourced to TRUE if script provided.
   if (!is.null(r.script.path)) .ddg.set(".ddg.is.sourced", TRUE)
 
-  # If ddg.detail is not set, use values of annotate.inside, max.loops
-  # and max.snapshot.size.
-  if (is.null(ddg.get.detail())) {
-    # Store value of annotate.inside.
-    .ddg.set("ddg.annotate.inside", annotate.inside)
-  
-    # Store maximum number of loops to annotate.
-    if (max.loops < 0) max.loops <- 10^10
-    .ddg.set("ddg.max.loops", max.loops)
-  
-    # Store maximum snapshot size.
-    .ddg.set("ddg.max.snapshot.size", max.snapshot.size)
-  }
-    
-  # If loops are not annotated, do not annotate functions called from inside a loop.
-  if (max.loops == 0) ddg.loop.annotate.off()
-  
-  # Set number of first loop.
-  .ddg.set("ddg.first.loop", first.loop)
-  
   # Set breakpoint if debug is TRUE.
   if (debug) ddg.breakpoint()
 
