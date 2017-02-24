@@ -1,13 +1,13 @@
-RDataTracker v2.25.0
+RDataTracker v2.25.1
 
-Updates
-- Adds control statement (e.g. if and for loop) tracking
-- Updates DDG Explorer v2.8.5 with tab functionality for multiple DDGs
-- Reduces package size by removing out of date content
-- Fixes a CamFlow Error message in R 
-- Fixes a file path bug for snapshot nodes
-- Fixes data file path name bug
-- Adds dual loading of DDG Explorer and CamFlow
-
+- Adds support for special operators (#240)
+- Adds additional tests
+- Links error node to error operation
+- Adds more control statement tracking
+- Adjusts file snapshot method
+- Adds test for empty vectors
+- Fixes bug in tracking nested statements
+	
+	
 Known Bugs
-- TBD...
+- Error resulting from assign()
