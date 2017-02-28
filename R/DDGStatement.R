@@ -113,6 +113,10 @@ setMethod ("initialize",
           }
 
       vars.used <- .ddg.find.var.uses(.Object@parsed[[1]])
+      
+      
+      print(paste("vars.used:", vars.used))
+      
 
       # Remove index variable in for statement (handled separately in ddg.forloop).
       if (length(parsed) > 0 && !is.symbol(parsed[[1]]) && parsed[[1]][[1]] == "for") {
@@ -245,6 +249,11 @@ null.pos <- function() {
 .ddg.find.var.uses <- function(main.object) {
   # Recursive helper function.
   .ddg.find.var.uses.rec <- function(obj) {
+    
+    
+    print(obj)
+    
+    
     # Base cases.
     if (is.atomic(obj)) {
       return(character())  # A name is not atomic!
@@ -263,31 +272,80 @@ null.pos <- function() {
     if (.ddg.is.functiondecl(obj)) return(character())
     
     tryCatch(
+      {
+        
+        print(obj)
+        a <<- obj
+      
         if (.ddg.is.assign(obj)) {
-              # If assigning to a simple variable, recurse on the right
-              # hand side of the assignment.
-              if (is.symbol(obj[[2]])) {
-                unique(unlist(.ddg.find.var.uses.rec(obj[[3]])))
-              }
-              else if (is.call(obj[[2]])) {
-                unique(c (.ddg.find.var.uses.rec(obj[[2]][[2]]), unlist(.ddg.find.var.uses.rec(obj[[3]]))))
-              }
-              # If assigning to an expression (like a[b]), recurse on the
-              # indexing part of the lvalue as well as on the expression.
-              else {
-                unique(c (.ddg.find.var.uses.rec(obj[[2]][[3]]), unlist(.ddg.find.var.uses.rec(obj[[3]]))))
-              }
-            }
+          
+          print("is an assignment")
+          
+          
+          # If assigning to a simple variable, recurse on the right
+          # hand side of the assignment.
+          
+          # covers cases: '=', '<-', '<<-' for simple variable assignments
+          # e.g.  a <- 2
+          
+          if (is.symbol(obj[[2]])) {
             
-            # Not an assignment.  Recurse on all parts of the expression
-            # except the operator.
-            else {
-              unique(unlist(lapply(obj[1:length(obj)], .ddg.find.var.uses.rec)))
-            },
-        error = function(e) {
-          print (paste(".ddg.find.var.uses.rec:  Error analyzing", deparse(obj)))
-          character()
+            print("is symbol")
+            print("")
+            
+            unique(unlist(.ddg.find.var.uses.rec(obj[[3]])))
+          }
+          
+          # covers cases:
+          # e.g.  a[1] <- 2, a[b] <- 3
+          # anything else?
+          
+          else if (is.call(obj[[2]])) {
+            
+            print("is call")
+            print("")
+            
+            # made sure it recurses to find var in cases like a[b] <- 3
+            unique(c (.ddg.find.var.uses.rec(obj[[2]][[2]]), .ddg.find.var.uses.rec(obj[[2]][[3]]), unlist(.ddg.find.var.uses.rec(obj[[3]]))))
+            
+            #unique(c (.ddg.find.var.uses.rec(obj[[2]][[2]]), unlist(.ddg.find.var.uses.rec(obj[[3]]))))
+          }
+          
+          # If assigning to an expression (like a[b]), recurse on the
+          # indexing part of the lvalue as well as on the expression.
+          
+          # ^?
+          # assign function falls into this category
+          # anything else?
+          
+          else {
+            
+            print("is neither symbol nor call")
+            
+            x <<- obj
+            
+            print(obj[[2]])
+            print(obj[[3]])
+            print("")
+            
+            # this is to fix the assign case. not sure if it will break other things
+            unique(c (.ddg.find.var.uses.rec(obj[[2]]), unlist(.ddg.find.var.uses.rec(obj[[3]]))))
+            
+            #unique(c (.ddg.find.var.uses.rec(obj[[2]][[3]]), unlist(.ddg.find.var.uses.rec(obj[[3]]))))
+          }
         }
+            
+        # Not an assignment.  Recurse on all parts of the expression
+        # except the operator.
+        else {
+          unique(unlist(lapply(obj[1:length(obj)], .ddg.find.var.uses.rec)))
+        }
+      },
+      error = function(e) 
+      {
+        print (paste(".ddg.find.var.uses.rec:  Error analyzing", deparse(obj)))
+        character()
+      }
     )
   }
   
