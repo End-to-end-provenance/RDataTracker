@@ -2966,6 +2966,29 @@ ddg.MAX_HIST_LINES <- 2^14
               if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Adding", cmd@abbrev, "information to vars.set, for an error"))
               .ddg.create.data.use.edges.for.console.cmd(vars.set, cmd, i, for.caller=FALSE)
               
+              # check for factors
+              msg <- e[[1]]
+              
+              if( msg == "invalid 'type' (character) of argument" | msg == "only defined on a data frame with all numeric variables" )
+              {
+                containsFactor <- sapply( cmd@vars.used , .ddg.contains.factor )
+                
+                if( is.element(TRUE , containsFactor) )
+                {
+                  factors <- names(containsFactor)[which(containsFactor==TRUE)]
+                  
+                  # form suggestion
+                  cat( "The following input data contain(s) a factor:\n" )
+                  cat( paste(shQuote(factors , type="cmd") , collapse = ", ") )
+                  cat("\nThis website may be helpful:\n")
+                  
+                  if( msg == "invalid 'type' (character) of argument" )
+                    cat("https://stat.ethz.ch/pipermail/r-help/2010-May/239461.html")
+                  else
+                    cat("http://stackoverflow.com/questions/38032814/trying-to-understand-r-error-error-in-funxi-only-defined-on-a-data")
+                }
+              }
+              
               # create and link to an error node
               ddg.exception.out("error.msg", toString(e) , cmd@abbrev)
             }
@@ -3120,6 +3143,23 @@ ddg.MAX_HIST_LINES <- 2^14
   # Write time stamp to history.
   if (.ddg.is.init() && !.ddg.is.sourced()) .ddg.write.timestamp.to.history()
 
+}
+
+
+# Returns TRUE if the value of the given variable name is a data frame
+# containing at least one factor. Returns FALSE otherwise.
+# var - the variable name
+.ddg.contains.factor <- function( var )
+{
+  if( var == "" )
+    return(FALSE)
+  
+  content <- get(var)
+
+  if( is.data.frame(content) )
+    return( is.element("factor",sapply(content,class)) )
+
+  return(FALSE)
 }
 
 
