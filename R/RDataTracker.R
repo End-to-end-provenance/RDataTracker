@@ -2982,10 +2982,11 @@ ddg.MAX_HIST_LINES <- 2^14
                   cat( paste(shQuote(factors , type="cmd") , collapse = ", ") )
                   cat("\nThis website may be helpful:\n")
                   
-                  if( msg == "invalid 'type' (character) of argument" )
-                    cat("https://stat.ethz.ch/pipermail/r-help/2010-May/239461.html")
-                  else
-                    cat("http://stackoverflow.com/questions/38032814/trying-to-understand-r-error-error-in-funxi-only-defined-on-a-data")
+                  #if( msg == "invalid 'type' (character) of argument" )
+                  #  cat("https://stat.ethz.ch/pipermail/r-help/2010-May/239461.html")
+                  #else
+                  #  cat("http://stackoverflow.com/questions/38032814/trying-to-understand-r-error-error-in-funxi-only-defined-on-a-data")
+                	cat( "https://www.r-bloggers.com/using-r-common-errors-in-table-import/" )
                 }
               }
               
