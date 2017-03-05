@@ -251,6 +251,7 @@ null.pos <- function() {
     if (is.atomic(obj)) {
       return(character())  # A name is not atomic!
     }
+    
     if (is.name(obj)) {
       if (nchar(obj) == 0) return (character())
       
@@ -260,6 +261,7 @@ null.pos <- function() {
       #print(paste(".ddg.find.var.uses found", deparse(obj)))
       return (deparse(obj))
     }
+    
     if (!is.recursive(obj)) return(character())
     
     if (.ddg.is.functiondecl(obj)) return(character())
@@ -280,9 +282,17 @@ null.pos <- function() {
           # If assigning to an expression (like a[b]), recurse on the
           # indexing part of the lvalue as well as on the expression.
           # covers cases:
-          # e.g.  a[1] <- 2, a[b] <- 3
+          # storage.mode(z)
+          # a[1] <- 2, a[b] <- 3
           else if (is.call(obj[[2]])) {
-            unique( c(.ddg.find.var.uses.rec(obj[[2]][[2]]), .ddg.find.var.uses.rec(obj[[2]][[3]]), unlist(.ddg.find.var.uses.rec(obj[[3]]))) )
+            variables <- c( .ddg.find.var.uses.rec(obj[[2]][[2]]) , unlist(.ddg.find.var.uses.rec(obj[[3]])) )
+            
+            # for array index cases like a[b] <- 3,
+            # where there could be a variable in the brackets
+            if( obj[[2]][[1]] == '[' )
+              variables[3] <- .ddg.find.var.uses.rec(obj[[2]][[3]])
+            
+            unique( variables )
           }
           
           # covers cases where there is a string literal.
