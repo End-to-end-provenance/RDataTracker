@@ -290,7 +290,7 @@ null.pos <- function() {
             # for array index cases like a[b] <- 3,
             # where there could be a variable in the brackets
             if( obj[[2]][[1]] == '[' )
-              variables[3] <- .ddg.find.var.uses.rec(obj[[2]][[3]])
+              append( variables , .ddg.find.var.uses.rec(obj[[2]][[3]]) )
             
             unique( variables )
           }
