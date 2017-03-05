@@ -113,20 +113,17 @@ setMethod ("initialize",
           }
 
       vars.used <- .ddg.find.var.uses(.Object@parsed[[1]])
-      
-      
-      print(paste("vars.used:", vars.used))
-      
 
       # Remove index variable in for statement (handled separately in ddg.forloop).
       if (length(parsed) > 0 && !is.symbol(parsed[[1]]) && parsed[[1]][[1]] == "for") {
         index.var <- c(parsed[[1]][[2]])
         vars.used <- vars.used[! vars.used %in% index.var]
       }
-
+      
       .Object@vars.used <- vars.used
       
       .Object@vars.set <- .ddg.find.simple.assign(.Object@parsed[[1]])
+      
       .Object@vars.possibly.set <- .ddg.find.assign(.Object@parsed[[1]])
       
       # ddg.eval is treated differently than other calls to ddg functions since
@@ -137,7 +134,7 @@ setMethod ("initialize",
       .Object@writesFile <- .ddg.writes.file (.Object@parsed[[1]])
       .Object@createsGraphics <- .ddg.creates.graphics (.Object@parsed[[1]])
       .Object@has.dev.off <- .ddg.has.call.to (.Object@parsed[[1]], "dev.off")
-
+      
       .Object@pos <- 
           if (is.object(pos)) {
             pos
@@ -145,11 +142,11 @@ setMethod ("initialize",
           else {
             null.pos()
           }
-
+      
       .Object@script.num <- 
           if (is.na(script.num)) -1
           else script.num
-
+      
       .Object@is.breakpoint <- 
           if (is.object(breakpoints)) {
             # If this statement is a function declaration, set a breakpoint on the declaration
@@ -170,7 +167,7 @@ setMethod ("initialize",
           else {
             is.breakpoint <- FALSE
           }
-
+      
       .Object@contained <- 
         # If we are annotating statements inside functions and control statements,
         # the contained field is a list of DDGStatements for all statements inside
@@ -184,7 +181,7 @@ setMethod ("initialize",
           else {
             list()
           }
-
+      
       .Object@annotated <- 
           # If this is a call to ddg.eval, we only want to execute
           # the argument to ddg.eval
@@ -195,7 +192,7 @@ setMethod ("initialize",
           else {
             .ddg.add.annotations(.Object)
           }
-          
+      
       #print (.Object)
       return (.Object)
     }
@@ -250,10 +247,6 @@ null.pos <- function() {
   # Recursive helper function.
   .ddg.find.var.uses.rec <- function(obj) {
     
-    
-    print(obj)
-    
-    
     # Base cases.
     if (is.atomic(obj)) {
       return(character())  # A name is not atomic!
@@ -268,70 +261,39 @@ null.pos <- function() {
       return (deparse(obj))
     }
     if (!is.recursive(obj)) return(character())
-    ##
+    
     if (.ddg.is.functiondecl(obj)) return(character())
     
     tryCatch(
       {
-        
-        print(obj)
-        a <<- obj
-      
         if (.ddg.is.assign(obj)) {
-          
-          print("is an assignment")
-          
           
           # If assigning to a simple variable, recurse on the right
           # hand side of the assignment.
           
           # covers cases: '=', '<-', '<<-' for simple variable assignments
           # e.g.  a <- 2
-          
           if (is.symbol(obj[[2]])) {
-            
-            print("is symbol")
-            print("")
-            
             unique(unlist(.ddg.find.var.uses.rec(obj[[3]])))
-          }
-          
-          # covers cases:
-          # e.g.  a[1] <- 2, a[b] <- 3
-          # anything else?
-          
-          else if (is.call(obj[[2]])) {
-            
-            print("is call")
-            print("")
-            
-            # made sure it recurses to find var in cases like a[b] <- 3
-            unique(c (.ddg.find.var.uses.rec(obj[[2]][[2]]), .ddg.find.var.uses.rec(obj[[2]][[3]]), unlist(.ddg.find.var.uses.rec(obj[[3]]))))
-            
-            #unique(c (.ddg.find.var.uses.rec(obj[[2]][[2]]), unlist(.ddg.find.var.uses.rec(obj[[3]]))))
           }
           
           # If assigning to an expression (like a[b]), recurse on the
           # indexing part of the lvalue as well as on the expression.
+          # covers cases:
+          # e.g.  a[1] <- 2, a[b] <- 3
+          else if (is.call(obj[[2]])) {
+            unique( c(.ddg.find.var.uses.rec(obj[[2]][[2]]), .ddg.find.var.uses.rec(obj[[2]][[3]]), unlist(.ddg.find.var.uses.rec(obj[[3]]))) )
+          }
           
-          # ^?
-          # assign function falls into this category
-          # anything else?
+          # covers cases where there is a string literal.
+          # for assign function
+          else if (is.character(obj[[2]])) {
+            unique( c(unlist(.ddg.find.var.uses.rec(parse(text = obj[[2]])[[1]])) , unlist(.ddg.find.var.uses.rec(parse(text = obj[[3]])[[1]]))) )
+          }
           
+          # not entirely sure what this catches
           else {
-            
-            print("is neither symbol nor call")
-            
-            x <<- obj
-            
-            print(obj[[2]])
-            print(obj[[3]])
-            print("")
-            
-            # this is to fix the assign case. not sure if it will break other things
             unique(c (.ddg.find.var.uses.rec(obj[[2]]), unlist(.ddg.find.var.uses.rec(obj[[3]]))))
-            
-            #unique(c (.ddg.find.var.uses.rec(obj[[2]][[3]]), unlist(.ddg.find.var.uses.rec(obj[[3]]))))
           }
         }
             
@@ -352,42 +314,51 @@ null.pos <- function() {
   return(.ddg.find.var.uses.rec(main.object))
 }
 
+
 # .ddg.find.simple.assign returns the name of the variable assigned
 # to if the object passed in is an expression representing an
 # assignment statement.  Otherwise, it returns NULL.
 
 # obj - input expression.
 
-.ddg.find.simple.assign <- function(obj) {
+.ddg.find.simple.assign <- function(obj) 
+{  
   if (.ddg.is.assign(obj)) {
     .ddg.get.var(obj[[2]])
-  }
+  } 
   else {
     ""
   }
 }
+
 
 # .ddg.is.assign returns TRUE if the object passed is an expression
 # object containing an assignment statement.
 
 # expr - a parsed expression.
 
-.ddg.is.assign <- function (expr) {
-  if (is.call(expr)) {
+.ddg.is.assign <- function (expr) 
+{
+  if (is.call(expr)) 
+  {  
     # This also finds uses of ->.
     if (identical(expr[[1]], as.name("<-")))
       return (TRUE)
-    
+      
     # This also finds uses of ->>.
     else if (identical(expr[[1]], as.name("<<-")))
       return (TRUE)
+    
     else if (identical(expr[[1]], as.name("=")))
       return (TRUE)
+    
     else if (identical(expr[[1]], as.name("assign")))
       return (TRUE)
   }
+  
   return (FALSE)
 }
+
 
 # .ddg.get.var returns the variable being referenced in an
 # expression. It should be passed an expression object that is
@@ -397,10 +368,20 @@ null.pos <- function() {
 
 # lvalue - a parsed expression.
 
-.ddg.get.var <- function(lvalue) {
-  if (is.symbol(lvalue)) deparse(lvalue)
-  else .ddg.get.var(lvalue[[2]])
+.ddg.get.var <- function(lvalue) 
+{
+  if (is.symbol(lvalue))
+    deparse(lvalue)
+    
+  # for string literals
+  # e.g. when the assign function is used
+  else if ( is.character(lvalue) )
+    .ddg.get.var( parse(text = lvalue)[[1]] )
+    
+  else 
+    .ddg.get.var(lvalue[[2]])
 }
+
 
 # .ddg.find.assign returns a vector containing the names of all
 # the variables assigned in an expression.  The parameter should
@@ -435,6 +416,7 @@ null.pos <- function() {
     unique(unlist(lapply(obj, .ddg.find.assign)))
   }
 }
+
 
 # ddg.is.functiondecl tests to see if an expression is a function
 # declaration.
