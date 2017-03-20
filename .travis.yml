@@ -1,0 +1,19 @@
+# R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
+
+language: R
+sudo: false
+cache: packages
+
+addons:
+  apt:
+    packages:
+      libicu-dev
+
+r_github_packages:
+  - jimhester/lintr
+
+script:
+  - ./travis-linter.sh
+
+notifications:
+  slack: camflow:T3Umf9cAIwKnaxFEkjeZV7RM
