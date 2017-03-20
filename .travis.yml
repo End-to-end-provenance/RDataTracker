@@ -12,8 +12,8 @@ addons:
 r_github_packages:
   - jimhester/lintr
 
-script:
-  - ./travis-linter.sh
+after_success:
+  - Rscript -e 'lintr::lint_package()'
 
 notifications:
   slack: endtoendprovenance:WxevOs6n66eZRbCn9HcW2mGD
