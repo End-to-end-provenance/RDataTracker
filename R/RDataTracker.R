@@ -367,6 +367,7 @@ ddg.MAX_HIST_LINES <- 2^14
           ddg.num = numeric(size),
           ddg.name = character(size),
           ddg.value = character(size),
+          ddg.val.type = character(size),
           ddg.scope = character(size),
           ddg.from.env = logical(size),
           ddg.time = character(size),
@@ -690,6 +691,7 @@ ddg.MAX_HIST_LINES <- 2^14
   return (prefix)
 }
 
+
 # .ddg.json.environ returns prefix and environment information
 # for the ddg.json string.
 
@@ -748,6 +750,7 @@ ddg.MAX_HIST_LINES <- 2^14
   return(environ)
 }
 
+
 # .ddg.json.procedure.node adds a procedure node to the ddg.json
 # string.
 
@@ -775,14 +778,16 @@ ddg.MAX_HIST_LINES <- 2^14
   .ddg.append.activity(jstr)
 }
 
+
 # .ddg.json.data.node adds a data node to the ddg.json string.
 
-.ddg.json.data.node <- function(id, dname, dvalue, dtype, dscope, from.env, dtime, dloc) {
+.ddg.json.data.node <- function(id, dname, dvalue, val.type, dtype, dscope, from.env, dtime, dloc) {
 
-  jstr <- paste("\n\"d", id, "\" : {\n\"rdt:name\" : \"", dname, "\",\n\"rdt:value\" : \"", dvalue, "\",\n\"rdt:type\" : \"", dtype, "\",\n\"rdt:scope\" : \"", dscope, "\",\n\"rdt:fromEnv\" : \"", from.env, "\",\n\"rdt:timestamp\" : \"", dtime, "\",\n\"rdt:location\" : \"", dloc, "\"\n}", sep="")
+  jstr <- paste("\n\"d", id, "\" : {\n\"rdt:name\" : \"", dname, "\",\n\"rdt:value\" : \"", dvalue, "\",\n\"rdt:valType\" : \"", val.type, "\",\n\"rdt:type\" : \"", dtype, "\",\n\"rdt:scope\" : \"", dscope, "\",\n\"rdt:fromEnv\" : \"", from.env, "\",\n\"rdt:timestamp\" : \"", dtime, "\",\n\"rdt:location\" : \"", dloc, "\"\n}", sep="")
 
   .ddg.append.entity(jstr)
 }
+
 
 # .ddg.json.control.edge adds a control flow edge to the ddg.json
 # string.
@@ -794,6 +799,7 @@ ddg.MAX_HIST_LINES <- 2^14
   .ddg.append.wasInformedBy(jstr)
 }
 
+
 # .ddg.json.data.out.edge adds an output data flow edge to the
 # ddg.json string.
 
@@ -804,6 +810,7 @@ ddg.MAX_HIST_LINES <- 2^14
   .ddg.append.wasGeneratedBy(jstr)
 }
 
+
 # .ddg.json.data.in.edge adds an input data flow edge to the
 # ddg.json string.
 
@@ -813,6 +820,7 @@ ddg.MAX_HIST_LINES <- 2^14
 
   .ddg.append.used(jstr)
 }
+
 
 # .ddg.json.current returns the current ddg.json string.
 
@@ -829,6 +837,7 @@ ddg.MAX_HIST_LINES <- 2^14
   return(ddg.json)
 }
 
+
 # .ddg.json.write writes the current ddg.json string to the file
 # ddg.json on the ddg directory.
 
@@ -838,6 +847,7 @@ ddg.MAX_HIST_LINES <- 2^14
   ddg.json <- .ddg.json.current()
   write(ddg.json, fileout)
 }
+
 
 # .ddg.output.procedure.node outputs a procedure node.
 
@@ -874,9 +884,10 @@ ddg.MAX_HIST_LINES <- 2^14
   .ddg.json.procedure.node(ddg.pnum, pname, ptype, ptime, snum, pos)
 }
 
+
 # .ddg.output.data.node outputs a data node.
 
-.ddg.output.data.node <- function(dtype, dname, dvalue, dscope, from.env, dtime, dloc) {
+.ddg.output.data.node <- function(dtype, dname, dvalue, val.type, dscope, from.env, dtime, dloc) {
   # Get counter
   ddg.dnum <- .ddg.get("ddg.dnum")
 
@@ -885,14 +896,17 @@ ddg.MAX_HIST_LINES <- 2^14
 
   if (dvalue != "") value.str <- paste(" Value=\"", dvalue, "\"", sep="")
   else value.str <- ""
-
+  
+  if(val.type != "" ) val.type.str <- paste(" ValType=\"", val.type, "\"", sep="")
+  else val.type.str <- ""
+  
   if (dtime != "") time.str <- paste(" Time=\"", dtime, "\"", sep="")
   else time.str <- ""
 
   if (dloc != "") loc.str <- paste(" Location=\"", dloc, "\"", sep="")
   else loc.str <- ""
 
-  dtxt <- paste(dtype, " d", ddg.dnum, " \"", ddg.dnum, "-", dname, "\"", value.str, time.str, loc.str, ";\n", sep="")
+  dtxt <- paste(dtype, " d", ddg.dnum, " \"", ddg.dnum, "-", dname, "\"", value.str, val.type.str, time.str, loc.str, ";\n", sep="")
 
   # Record in ddg.txt
   .ddg.append(dtxt)
@@ -901,8 +915,9 @@ ddg.MAX_HIST_LINES <- 2^14
   .ddg.append.inc(dtxt)
 
   # Record in ddg.json
-  .ddg.json.data.node(ddg.dnum, dname, dvalue, dtype, dscope, from.env, dtime="", dloc="")
+  .ddg.json.data.node(ddg.dnum, dname, dvalue, val.type, dtype, dscope, from.env, dtime="", dloc="")
 }
+
 
 # .ddg.output.edge outputs a control flow or data flow edge.
 
@@ -926,6 +941,7 @@ ddg.MAX_HIST_LINES <- 2^14
   else if (etype == "df.in") .ddg.json.data.in.edge(ddg.enum, node1, node2)
   else .ddg.json.data.out.edge(ddg.enum, node1, node2)
 }
+
 
 # .ddg.data.objects returns a list of data objects used or created by
 # the script. The list includes node number, name, value, type, scope,
@@ -1278,12 +1294,13 @@ ddg.MAX_HIST_LINES <- 2^14
 # dtype - data node type.
 # dname - data node name.
 # dvalue - data node value.
+# value - the value of the data
 # dscope - data node scope.
 # from.env - if object is from initial environment.
 # dtime (optional) - timestamp of original file.
 # dloc (optional) -  path and name of original file.
 
-.ddg.record.data <- function(dtype, dname, dvalue, dscope, from.env=FALSE, dtime="", dloc="") {
+.ddg.record.data <- function(dtype, dname, dvalue, value, dscope, from.env=FALSE, dtime="", dloc="") {
   #print("In .ddg.record.data")
   # Increment data node counter.
   .ddg.inc("ddg.dnum")
@@ -1297,6 +1314,7 @@ ddg.MAX_HIST_LINES <- 2^14
         ddg.num = numeric(size),
         ddg.name = character(size),
         ddg.value = character(size),
+        ddg.val.type = character(size),
         ddg.scope = character(size),
         ddg.from.env = logical(size),
         ddg.time = character(size),
@@ -1309,27 +1327,75 @@ ddg.MAX_HIST_LINES <- 2^14
   if (length(dvalue) > 1 || !is.atomic(dvalue)) dvalue2 <- "complex"
   else if (!is.null(dvalue)) dvalue2 <- dvalue
   else dvalue2 <- ""
-
+  
+  # get value type
+  val.type <- .ddg.get.val.type(value)
+  
   #print(".ddg.record.data: adding info")
   ddg.data.nodes$ddg.type[ddg.dnum] <- dtype
   ddg.data.nodes$ddg.num[ddg.dnum] <- ddg.dnum
   ddg.data.nodes$ddg.name[ddg.dnum] <- dname
   ddg.data.nodes$ddg.value[ddg.dnum] <- dvalue2
+  ddg.data.nodes$ddg.val.type[ddg.dnum] <- val.type
   ddg.data.nodes$ddg.scope[ddg.dnum] <- dscope
   ddg.data.nodes$ddg.from.env[ddg.dnum] <- from.env
   ddg.data.nodes$ddg.time[ddg.dnum] <- dtime
   ddg.data.nodes$ddg.loc[ddg.dnum] <- dloc
   ddg.data.nodes$ddg.current[ddg.dnum] <- TRUE
   .ddg.set("ddg.data.nodes", ddg.data.nodes)
-
+  
   # Output data node.
   #print(".ddg.record.data outputting data node")
-  .ddg.output.data.node(dtype, dname, dvalue2, dscope, from.env, dtime, dloc)
-
+  .ddg.output.data.node(dtype, dname, dvalue2, val.type, dscope, from.env, dtime, dloc)
+  
   if (.ddg.debug.lib()) {
     print(paste("Adding data node", ddg.dnum, "named", dname, "with scope", dscope, " and value ", ddg.data.nodes$ddg.value[ddg.dnum]))
   }
 }
+
+
+# Returns a string representation of the type of the given value.
+
+.ddg.get.val.type <- function(value)
+{
+  if(is.data.frame(value))
+  {
+    if(.ddg.val.contains.factor(value))
+      return("data frame with factor")
+    else
+      return("data frame")
+  }
+  
+  if(is.matrix(value))
+    return("matrix")
+  
+  if(is.vector(value))
+  {
+    if(length(value) == 1)
+      return("vector of length 1")
+    else
+      return("vector")
+  }
+  
+  if(is.list(value))
+    return("list")
+  
+  if(is.array(value))
+    return("array")
+
+  if(is.object(value))
+    return("object")
+  
+  if(is.environment(value))
+    return("environment")
+  if(is.function(value))
+    return("function")
+  if(is.language(value))
+    return("language")
+  
+  return("")
+}
+
 
 # .ddg.record.edge records a control flow edge or a data flow edge
 # in the edges table.
@@ -2971,7 +3037,7 @@ ddg.MAX_HIST_LINES <- 2^14
               
               if( msg == "invalid 'type' (character) of argument" | msg == "only defined on a data frame with all numeric variables" )
               {
-                containsFactor <- sapply( cmd@vars.used , .ddg.contains.factor )
+                containsFactor <- sapply( cmd@vars.used , .ddg.var.contains.factor )
                 
                 if( is.element(TRUE , containsFactor) )
                 {
@@ -3150,15 +3216,22 @@ ddg.MAX_HIST_LINES <- 2^14
 # Returns TRUE if the value of the given variable name is a data frame
 # containing at least one factor. Returns FALSE otherwise.
 # var - the variable name
-.ddg.contains.factor <- function( var )
-{
-  if( var == "" )
-    return(FALSE)
-  
-  content <- get(var)
 
-  if( is.data.frame(content) )
-    return( is.element("factor",sapply(content,class)) )
+.ddg.var.contains.factor <- function( var )
+{
+  content <- get(var)
+  return( .ddg.val.contains.factor(content) )
+}
+
+
+# Returns TRUE if the given value is a data frame containing
+# at least one factor. Returns FALSE otherwise.
+# val - the value
+
+.ddg.val.contains.factor <- function( value )
+{
+  if( is.data.frame(value) )
+    return( is.element("factor",sapply(value,class)) )
 
   return(FALSE)
 }
@@ -3335,6 +3408,9 @@ ddg.MAX_HIST_LINES <- 2^14
   #print(paste(".ddg.data.node: dvalue =", dvalue))
   #print(paste(".ddg.data.node: dscope =", dscope))
   # If object or a long list, try to create snapshot node.
+  
+  print(paste(".data.node, dvalue =",dvalue))
+  
   if (is.object(dvalue)) {
     #print(".ddg.data.node: is object")
     tryCatch(
@@ -3405,7 +3481,7 @@ ddg.MAX_HIST_LINES <- 2^14
     if (is.null(dscope)) dscope <- .ddg.get.scope(dname)
 
     # Record in data node table
-    .ddg.record.data(dtype, dname, val, dscope, from.env=from.env)
+    .ddg.record.data(dtype, dname, val, val, dscope, from.env=from.env)
 
     if (.ddg.debug.lib()) print(paste("data.node:", dtype, dname))
   }
@@ -3471,6 +3547,9 @@ ddg.MAX_HIST_LINES <- 2^14
 # dscope (optional) - scope of data node.
 
 .ddg.snapshot.node <- function(dname, fext, data, save.object = FALSE, dscope=NULL, from.env=FALSE) {
+  
+  orig.data <- data
+  
   # Determine if we should save the entire data
   max.snapshot.size <- ddg.max.snapshot.size()
 
@@ -3588,7 +3667,7 @@ ddg.MAX_HIST_LINES <- 2^14
   if (is.null(dscope)) dscope <- .ddg.get.scope(dname)
 
   # Record in data node table
-  .ddg.record.data(dtype, dname, paste(.ddg.data.dir(), dfile, sep="/"), dscope, from.env=from.env, dtime)
+  .ddg.record.data(dtype, dname, paste(.ddg.data.dir(), dfile, sep="/"), orig.data, dscope, from.env=from.env, dtime)
 
   if (.ddg.debug.lib()) print(paste("snapshot.node: ", dname))
   return(dpfile)
@@ -3605,6 +3684,7 @@ ddg.MAX_HIST_LINES <- 2^14
 # dscope (optional) - scope of data node.
 
 .ddg.file.node <- function(dtype, fname, dname, dscope=NULL) {
+  
   # Get original file location.
   file.name <- basename(fname)
   file.loc <- normalizePath(fname, winslash="/", mustWork = FALSE)
@@ -3632,7 +3712,7 @@ ddg.MAX_HIST_LINES <- 2^14
   from.env <- FALSE
 
   # Record in data node table
-  .ddg.record.data(dtype, dname, dpfile, dscope, from.env=from.env, dtime, file.loc)
+  .ddg.record.data(dtype, dname, dpfile, dpfile, dscope, from.env=from.env, dtime, file.loc)
 
   # Get path plus file name to where the file will be copied
   dpath <- paste(.ddg.path.data(), "/", dfile, sep="")
