@@ -1358,31 +1358,52 @@ ddg.MAX_HIST_LINES <- 2^14
 
 .ddg.get.val.type <- function(value)
 {
-  if(is.data.frame(value))
-  {
-    if(.ddg.val.contains.factor(value))
-      return("data frame with factor")
-    else
-      return("data frame")
-  }
-  
-  if(is.matrix(value))
-    return("matrix")
-  
+  # vector: a 1-dimensional array (uniform typing)
   if(is.vector(value))
   {
+    type <- class(value)
+    print(type)
+    
     if(length(value) == 1)
       return("vector of length 1")
     else
       return("vector")
   }
   
+  # matrix: a 2-dimensional array (uniform typing)
+  if(is.matrix(value))
+  {
+    type <- sapply(value,class)[1]
+    print(type)
+    
+    return("matrix")
+  }
+  
+  # array: n-dimensional (uniform typing)
+  if(is.array(value))
+  {
+    type <- sapply(value,class)[1]
+    print(type)
+    
+    return("array")
+  }
+  
+  # data frame: is a type of list
+  if(is.data.frame(value))
+  {
+    types <- unname(sapply(value,class))
+    print(types)
+    
+    if( is.element("factor",types) )
+      return("data frame with factor")
+    else
+      return("data frame")
+  }
+  
+  # a list
   if(is.list(value))
     return("list")
   
-  if(is.array(value))
-    return("array")
-
   if(is.object(value))
     return("object")
   
@@ -3220,16 +3241,7 @@ ddg.MAX_HIST_LINES <- 2^14
 .ddg.var.contains.factor <- function( var )
 {
   content <- get(var)
-  return( .ddg.val.contains.factor(content) )
-}
-
-
-# Returns TRUE if the given value is a data frame containing
-# at least one factor. Returns FALSE otherwise.
-# val - the value
-
-.ddg.val.contains.factor <- function( value )
-{
+  
   if( is.data.frame(value) )
     return( is.element("factor",sapply(value,class)) )
 
