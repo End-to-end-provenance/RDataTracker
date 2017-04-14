@@ -1362,42 +1362,37 @@ ddg.MAX_HIST_LINES <- 2^14
   if(is.vector(value))
   {
     type <- class(value)
-    print(type)
     
     if(length(value) == 1)
-      return("vector of length 1")
+      return(type)
     else
-      return("vector")
+      return( paste("vector (" , type , ")" , sep = "") )
   }
   
   # matrix: a 2-dimensional array (uniform typing)
   if(is.matrix(value))
   {
     type <- sapply(value,class)[1]
-    print(type)
-    
-    return("matrix")
+    return( paste("matrix (" , type , ")" , sep = "") )
   }
   
   # array: n-dimensional (uniform typing)
   if(is.array(value))
   {
     type <- sapply(value,class)[1]
-    print(type)
-    
-    return("array")
+    return( paste("array (" , type , ")" , sep = "") )
   }
   
   # data frame: is a type of list
   if(is.data.frame(value))
   {
     types <- unname(sapply(value,class))
-    print(types)
+    types <- paste(types , collapse = ",")
     
     if( is.element("factor",types) )
-      return("data frame with factor")
+      return( paste("data frame with factor (" , types , ")" , sep = "") )
     else
-      return("data frame")
+      return( paste("data frame (" , types , ")" , sep = "") )
   }
   
   # a list
@@ -3420,8 +3415,6 @@ ddg.MAX_HIST_LINES <- 2^14
   #print(paste(".ddg.data.node: dvalue =", dvalue))
   #print(paste(".ddg.data.node: dscope =", dscope))
   # If object or a long list, try to create snapshot node.
-  
-  print(paste(".data.node, dvalue =",dvalue))
   
   if (is.object(dvalue)) {
     #print(".ddg.data.node: is object")
