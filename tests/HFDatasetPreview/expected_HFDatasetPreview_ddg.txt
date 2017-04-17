@@ -1,326 +1,330 @@
 Architecture="x86_64"
-OperatingSystem="unix"
+OperatingSystem="windows"
 Language="R"
 LanguageVersion="R version 3.3.1 (2016-06-21)"
-RDataTrackerVersion="2.24.1"
+RDataTrackerVersion="2.25.1"
 Script="[DIR]/HFDatasetPreview.R"
 SourcedScripts=""
-ProcessFileTimestamp="2017-01-04T14.21.23EST"
+ProcessFileTimestamp="2017-01-06T19.13.45EST"
 WorkingDirectory="[DIR]"
 DDGDirectory="[DIR]/ddg"
-DateTime="2017-01-04T15.46.27EST"
-InstalledPackages="RCurl 1.95-4.8, RDataTracker 2.24.1, XML 3.98-1.5, bitops 1.0-6, gplots 3.0.1"
+DateTime="2017-04-17T17.05.45EDT"
+InstalledPackages="bitops 1.0-6, gplots 3.0.1, RCurl 1.95-4.8, RDataTracker 2.25.1, XML 3.98-1.6"
 87
-Start p1 "1-HFDatasetPreview.R" Value="HFDatasetPreview.R" Time="2.039" Script="NA" Pos="NA";
-Operation p2 "2-library(RCurl)" Value="library(RCurl)" Time="2.12" Script="0" Pos="39,1,39,14";
+Start p1 "1-HFDatasetPreview.R" Value="HFDatasetPreview.R" Time="1.93" Script="NA" Pos="NA";
+Operation p2 "2-library(RCurl)" Value="library(RCurl)" Time="2.01" Script="0" Pos="39,1,39,14";
 CF p1 p2
-Operation p3 "3-library(XML)" Value="library(XML)" Time="2.131" Script="0" Pos="40,1,40,12";
+Exception d1 "1-warning.msg" Value="\" package 'bitops' was built under R version 3.3.2\"" ValType="character";
+DF p2 d1
+Operation p3 "3-library(XML)" Value="library(XML)" Time="2.03" Script="0" Pos="40,1,40,12";
 CF p2 p3
-Exception d1 "1-warning.msg" Value="\" package 'XML' was built under R version 3.3.2\"";
-DF p3 d1
-Operation p4 "4-library(gplots)" Value="library(gplots)" Time="2.169" Script="0" Pos="41,1,41,15";
+Exception d2 "2-warning.msg" Value="\" package 'XML' was built under R version 3.3.3\"" ValType="character";
+DF p3 d2
+Operation p4 "4-library(gplots)" Value="library(gplots)" Time="2.04" Script="0" Pos="41,1,41,15";
 CF p3 p4
-Operation p5 "5-hf.eml.dir <- \"http://harvardforest.fas.harvard.edu/sites/ha" Value="hf.eml.dir <- \"http://harvardforest.fas.harvard.edu/sites/ha" Time="2.173" Script="0" Pos="44,1,44,104";
+Exception d3 "3-warning.msg" Value="\" package 'gplots' was built under R version 3.3.2\"" ValType="character";
+DF p4 d3
+Operation p5 "5-hf.eml.dir <- \"http://harvardforest.fas.harvard.edu/sites/ha" Value="hf.eml.dir <- \"http://harvardforest.fas.harvard.edu/sites/ha" Time="2.04" Script="0" Pos="44,1,44,104";
 CF p4 p5
-Data d2 "2-hf.eml.dir" Value="\"http://harvardforest.fas.harvard.edu/sites/harvardforest.fas.harvard.edu/files/data/eml/\"";
-DF p5 d2
-Operation p6 "6-hf.data.dir <- \"http://harvardforest.fas.harvard.edu/sites/h" Value="hf.data.dir <- \"http://harvardforest.fas.harvard.edu/sites/h" Time="2.178" Script="0" Pos="47,1,47,101";
+Data d4 "4-hf.eml.dir" Value="\"http://harvardforest.fas.harvard.edu/sites/harvardforest.fas.harvard.edu/files/data/eml/\"" ValType="character";
+DF p5 d4
+Operation p6 "6-hf.data.dir <- \"http://harvardforest.fas.harvard.edu/sites/h" Value="hf.data.dir <- \"http://harvardforest.fas.harvard.edu/sites/h" Time="2.04" Script="0" Pos="47,1,47,101";
 CF p5 p6
-Data d3 "3-hf.data.dir" Value="\"http://harvardforest.fas.harvard.edu/sites/harvardforest.fas.harvard.edu/files/data/\"";
-DF p6 d3
-Operation p7 "7-get.parsed.eml <- function(dataset.id) {    eml.url <<- past" Value="get.parsed.eml <- function(dataset.id) {    eml.url <<- past" Time="2.184" Script="0" Pos="153,1,164,1";
+Data d5 "5-hf.data.dir" Value="\"http://harvardforest.fas.harvard.edu/sites/harvardforest.fas.harvard.edu/files/data/\"" ValType="character";
+DF p6 d5
+Operation p7 "7-get.parsed.eml <- function(dataset.id) {    eml.url <<- past" Value="get.parsed.eml <- function(dataset.id) {    eml.url <<- past" Time="2.06" Script="0" Pos="153,1,164,1";
 CF p6 p7
-Data d4 "4-get.parsed.eml" Value="#ddg.function";
-DF p7 d4
-Operation p8 "8-parse.time.series.string <- function(st) {    stp <- strspli" Value="parse.time.series.string <- function(st) {    stp <- strspli" Time="2.192" Script="0" Pos="167,1,174,1";
+Data d6 "6-get.parsed.eml" Value="#ddg.function" ValType="character";
+DF p7 d6
+Operation p8 "8-parse.time.series.string <- function(st) {    stp <- strspli" Value="parse.time.series.string <- function(st) {    stp <- strspli" Time="2.06" Script="0" Pos="167,1,174,1";
 CF p7 p8
-Data d5 "5-parse.time.series.string" Value="#ddg.function";
-DF p8 d5
-Operation p9 "9-get.time.series.ids <- function(dataset.id) {    xpath <- pa" Value="get.time.series.ids <- function(dataset.id) {    xpath <- pa" Time="2.196" Script="0" Pos="177,1,202,1";
+Data d7 "7-parse.time.series.string" Value="#ddg.function" ValType="character";
+DF p8 d7
+Operation p9 "9-get.time.series.ids <- function(dataset.id) {    xpath <- pa" Value="get.time.series.ids <- function(dataset.id) {    xpath <- pa" Time="2.06" Script="0" Pos="177,1,202,1";
 CF p8 p9
-Data d6 "6-get.time.series.ids" Value="#ddg.function";
-DF p9 d6
-Operation p10 "10-get.datafile.id <- function(dataset.id, datafile.num) {    i" Value="get.datafile.id <- function(dataset.id, datafile.num) {    i" Time="2.202" Script="0" Pos="205,1,213,1";
+Data d8 "8-get.time.series.ids" Value="#ddg.function" ValType="character";
+DF p9 d8
+Operation p10 "10-get.datafile.id <- function(dataset.id, datafile.num) {    i" Value="get.datafile.id <- function(dataset.id, datafile.num) {    i" Time="2.08" Script="0" Pos="205,1,213,1";
 CF p9 p10
-Data d7 "7-get.datafile.id" Value="#ddg.function";
-DF p10 d7
-Operation p11 "11-get.all.datafile.ids <- function(ns) {    datafile.ids <- NU" Value="get.all.datafile.ids <- function(ns) {    datafile.ids <- NU" Time="2.207" Script="0" Pos="216,1,221,1";
+Data d9 "9-get.datafile.id" Value="#ddg.function" ValType="character";
+DF p10 d9
+Operation p11 "11-get.all.datafile.ids <- function(ns) {    datafile.ids <- NU" Value="get.all.datafile.ids <- function(ns) {    datafile.ids <- NU" Time="2.08" Script="0" Pos="216,1,221,1";
 CF p10 p11
-Data d8 "8-get.all.datafile.ids" Value="#ddg.function";
-DF p11 d8
-Operation p12 "12-get.datafile.ids <- function(dataset.id) {    xpath <- paste" Value="get.datafile.ids <- function(dataset.id) {    xpath <- paste" Time="2.219" Script="0" Pos="224,1,232,1";
+Data d10 "10-get.all.datafile.ids" Value="#ddg.function" ValType="character";
+DF p11 d10
+Operation p12 "12-get.datafile.ids <- function(dataset.id) {    xpath <- paste" Value="get.datafile.ids <- function(dataset.id) {    xpath <- paste" Time="2.08" Script="0" Pos="224,1,232,1";
 CF p11 p12
-Data d9 "9-get.datafile.ids" Value="#ddg.function";
-DF p12 d9
-Operation p13 "13-get.datafile.name <- function(eml, datafile.id) {    xpath1 " Value="get.datafile.name <- function(eml, datafile.id) {    xpath1 " Time="2.224" Script="0" Pos="235,1,239,1";
+Data d11 "11-get.datafile.ids" Value="#ddg.function" ValType="character";
+DF p12 d11
+Operation p13 "13-get.datafile.name <- function(eml, datafile.id) {    xpath1 " Value="get.datafile.name <- function(eml, datafile.id) {    xpath1 " Time="2.09" Script="0" Pos="235,1,239,1";
 CF p12 p13
-Data d10 "10-get.datafile.name" Value="#ddg.function";
-DF p13 d10
-Operation p14 "14-get.data.url <- function(eml, datafile.id) {    xpath1 <- pa" Value="get.data.url <- function(eml, datafile.id) {    xpath1 <- pa" Time="2.23" Script="0" Pos="242,1,267,1";
+Data d12 "12-get.datafile.name" Value="#ddg.function" ValType="character";
+DF p13 d12
+Operation p14 "14-get.data.url <- function(eml, datafile.id) {    xpath1 <- pa" Value="get.data.url <- function(eml, datafile.id) {    xpath1 <- pa" Time="2.09" Script="0" Pos="242,1,267,1";
 CF p13 p14
-Data d11 "11-get.data.url" Value="#ddg.function";
-DF p14 d11
-Operation p15 "15-get.data.table.node.set <- function(eml, datafile.id) {    x" Value="get.data.table.node.set <- function(eml, datafile.id) {    x" Time="2.236" Script="0" Pos="272,1,301,1";
+Data d13 "13-get.data.url" Value="#ddg.function" ValType="character";
+DF p14 d13
+Operation p15 "15-get.data.table.node.set <- function(eml, datafile.id) {    x" Value="get.data.table.node.set <- function(eml, datafile.id) {    x" Time="2.09" Script="0" Pos="272,1,301,1";
 CF p14 p15
-Data d12 "12-get.data.table.node.set" Value="#ddg.function";
-DF p15 d12
-Operation p16 "16-get.variable.type <- function(ns) {    x1 <- xpathApply(ns, " Value="get.variable.type <- function(ns) {    x1 <- xpathApply(ns, " Time="2.242" Script="0" Pos="304,1,367,1";
+Data d14 "14-get.data.table.node.set" Value="#ddg.function" ValType="character";
+DF p15 d14
+Operation p16 "16-get.variable.type <- function(ns) {    x1 <- xpathApply(ns, " Value="get.variable.type <- function(ns) {    x1 <- xpathApply(ns, " Time="2.11" Script="0" Pos="304,1,367,1";
 CF p15 p16
-Data d13 "13-get.variable.type" Value="#ddg.function";
-DF p16 d13
-Operation p17 "17-get.all.variable.types <- function(ns) {    num <- xmlSize(n" Value="get.all.variable.types <- function(ns) {    num <- xmlSize(n" Time="2.249" Script="0" Pos="372,1,437,1";
+Data d15 "15-get.variable.type" Value="#ddg.function" ValType="character";
+DF p16 d15
+Operation p17 "17-get.all.variable.types <- function(ns) {    num <- xmlSize(n" Value="get.all.variable.types <- function(ns) {    num <- xmlSize(n" Time="2.11" Script="0" Pos="372,1,437,1";
 CF p16 p17
-Data d14 "14-get.all.variable.types" Value="#ddg.function";
-DF p17 d14
-Operation p18 "18-get.variable.format.string <- function(ns) {    x <- xpathAp" Value="get.variable.format.string <- function(ns) {    x <- xpathAp" Time="2.255" Script="0" Pos="442,1,496,1";
+Data d16 "16-get.all.variable.types" Value="#ddg.function" ValType="character";
+DF p17 d16
+Operation p18 "18-get.variable.format.string <- function(ns) {    x <- xpathAp" Value="get.variable.format.string <- function(ns) {    x <- xpathAp" Time="2.11" Script="0" Pos="442,1,496,1";
 CF p17 p18
-Data d15 "15-get.variable.format.string" Value="#ddg.function";
-DF p18 d15
-Operation p19 "19-get.all.variable.format.strings <- function(ns) {    num <- " Value="get.all.variable.format.strings <- function(ns) {    num <- " Time="2.259" Script="0" Pos="501,1,550,1";
+Data d17 "17-get.variable.format.string" Value="#ddg.function" ValType="character";
+DF p18 d17
+Operation p19 "19-get.all.variable.format.strings <- function(ns) {    num <- " Value="get.all.variable.format.strings <- function(ns) {    num <- " Time="2.11" Script="0" Pos="501,1,550,1";
 CF p18 p19
-Data d16 "16-get.all.variable.format.strings" Value="#ddg.function";
-DF p19 d16
-Operation p20 "20-get.data.file <- function(data.url, var.types) {    con <- f" Value="get.data.file <- function(data.url, var.types) {    con <- f" Time="2.264" Script="0" Pos="555,1,563,1";
+Data d18 "18-get.all.variable.format.strings" Value="#ddg.function" ValType="character";
+DF p19 d18
+Operation p20 "20-get.data.file <- function(data.url, var.types) {    con <- f" Value="get.data.file <- function(data.url, var.types) {    con <- f" Time="2.12" Script="0" Pos="555,1,563,1";
 CF p19 p20
-Data d17 "17-get.data.file" Value="#ddg.function";
-DF p20 d17
-Operation p21 "21-get.hf.datafile <- function(datafile.id) {    datafile.name " Value="get.hf.datafile <- function(datafile.id) {    datafile.name " Time="2.269" Script="0" Pos="566,1,593,1";
+Data d19 "19-get.data.file" Value="#ddg.function" ValType="character";
+DF p20 d19
+Operation p21 "21-get.hf.datafile <- function(datafile.id) {    datafile.name " Value="get.hf.datafile <- function(datafile.id) {    datafile.name " Time="2.12" Script="0" Pos="566,1,593,1";
 CF p20 p21
-Data d18 "18-get.hf.datafile" Value="#ddg.function";
-DF p21 d18
-Operation p22 "22-get.summary.stats.data.frame <- function(xx) {    sum.types " Value="get.summary.stats.data.frame <- function(xx) {    sum.types " Time="2.278" Script="0" Pos="603,1,603,21";
+Data d20 "20-get.hf.datafile" Value="#ddg.function" ValType="character";
+DF p21 d20
+Operation p22 "22-get.summary.stats.data.frame <- function(xx) {    sum.types " Value="get.summary.stats.data.frame <- function(xx) {    sum.types " Time="2.12" Script="0" Pos="603,1,603,21";
 CF p21 p22
-Data d19 "19-get.summary.stats.data.frame" Value="#ddg.function";
-DF p22 d19
-Operation p23 "23-get.plot.dataframe <- function(xx, max.rows) {    plt.types " Value="get.plot.dataframe <- function(xx, max.rows) {    plt.types " Time="2.283" Script="0" Pos="604,1,604,17";
+Data d21 "21-get.summary.stats.data.frame" Value="#ddg.function" ValType="character";
+DF p22 d21
+Operation p23 "23-get.plot.dataframe <- function(xx, max.rows) {    plt.types " Value="get.plot.dataframe <- function(xx, max.rows) {    plt.types " Time="2.12" Script="0" Pos="604,1,604,17";
 CF p22 p23
-Data d20 "20-get.plot.dataframe" Value="#ddg.function";
-DF p23 d20
-Operation p24 "24-create.summary.stats.table <- function(xx) {    xx.sum <- ge" Value="create.summary.stats.table <- function(xx) {    xx.sum <- ge" Time="2.289" Script="0" Pos="607,1,607,33";
+Data d22 "22-get.plot.dataframe" Value="#ddg.function" ValType="character";
+DF p23 d22
+Operation p24 "24-create.summary.stats.table <- function(xx) {    xx.sum <- ge" Value="create.summary.stats.table <- function(xx) {    xx.sum <- ge" Time="2.14" Script="0" Pos="607,1,607,33";
 CF p23 p24
-Data d21 "21-create.summary.stats.table" Value="#ddg.function";
-DF p24 d21
-Operation p25 "25-create.time.series.plot <- function(xx) {    xx.plt <- get.p" Value="create.time.series.plot <- function(xx) {    xx.plt <- get.p" Time="2.294" Script="0" Pos="608,1,608,50";
+Data d23 "23-create.summary.stats.table" Value="#ddg.function" ValType="character";
+DF p24 d23
+Operation p25 "25-create.time.series.plot <- function(xx) {    xx.plt <- get.p" Value="create.time.series.plot <- function(xx) {    xx.plt <- get.p" Time="2.14" Script="0" Pos="608,1,608,50";
 CF p24 p25
-Data d22 "22-create.time.series.plot" Value="#ddg.function";
-DF p25 d22
-Operation p26 "26-create.scatterplot.matrix <- function(xx) {    xx.plt <- get" Value="create.scatterplot.matrix <- function(xx) {    xx.plt <- get" Time="2.303" Script="0" Pos="611,1,630,1";
+Data d24 "24-create.time.series.plot" Value="#ddg.function" ValType="character";
+DF p25 d24
+Operation p26 "26-create.scatterplot.matrix <- function(xx) {    xx.plt <- get" Value="create.scatterplot.matrix <- function(xx) {    xx.plt <- get" Time="2.14" Script="0" Pos="611,1,630,1";
 CF p25 p26
-Data d23 "23-create.scatterplot.matrix" Value="#ddg.function";
-DF p26 d23
-Operation p27 "27-get.plot.type <- function(datafile.id) {    num <- as.intege" Value="get.plot.type <- function(datafile.id) {    num <- as.intege" Time="2.308" Script="0" Pos="NA,NA,NA,NA";
+Data d25 "25-create.scatterplot.matrix" Value="#ddg.function" ValType="character";
+DF p26 d25
+Operation p27 "27-get.plot.type <- function(datafile.id) {    num <- as.intege" Value="get.plot.type <- function(datafile.id) {    num <- as.intege" Time="2.15" Script="0" Pos="NA,NA,NA,NA";
 CF p26 p27
-Data d24 "24-get.plot.type" Value="#ddg.function";
-DF p27 d24
-Operation p28 "28-create.datafile.preview <- function(datafile.id) {    dd <<-" Value="create.datafile.preview <- function(datafile.id) {    dd <<-" Time="2.313" Script="0" Pos="NA,NA,NA,NA";
+Data d26 "26-get.plot.type" Value="#ddg.function" ValType="character";
+DF p27 d26
+Operation p28 "28-create.datafile.preview <- function(datafile.id) {    dd <<-" Value="create.datafile.preview <- function(datafile.id) {    dd <<-" Time="2.15" Script="0" Pos="NA,NA,NA,NA";
 CF p27 p28
-Data d25 "25-create.datafile.preview" Value="#ddg.function";
-DF p28 d25
-Operation p29 "29-dataset.id <- \"hf000\"" Value="dataset.id <- \"hf000\"" Time="2.317" Script="0" Pos="NA,NA,NA,NA";
+Data d27 "27-create.datafile.preview" Value="#ddg.function" ValType="character";
+DF p28 d27
+Operation p29 "29-dataset.id <- \"hf000\"" Value="dataset.id <- \"hf000\"" Time="2.15" Script="0" Pos="NA,NA,NA,NA";
 CF p28 p29
-Data d26 "26-dataset.id" Value="\"hf000\"";
-DF p29 d26
-Operation p30 "30-datafile.num <- 1" Value="datafile.num <- 1" Time="2.322" Script="0" Pos="NA,NA,NA,NA";
+Data d28 "28-dataset.id" Value="\"hf000\"" ValType="character";
+DF p29 d28
+Operation p30 "30-datafile.num <- 1" Value="datafile.num <- 1" Time="2.17" Script="0" Pos="NA,NA,NA,NA";
 CF p29 p30
-Data d27 "27-datafile.num" Value="1";
-DF p30 d27
-Start p31 "31-eml <- get.parsed.eml(dataset.id)" Value="eml <- get.parsed.eml(dataset.id)" Time="2.329" Script="0" Pos="NA,NA,NA,NA";
+Data d29 "29-datafile.num" Value="1" ValType="numeric";
+DF p30 d29
+Start p31 "31-eml <- get.parsed.eml(dataset.id)" Value="eml <- get.parsed.eml(dataset.id)" Time="2.17" Script="0" Pos="NA,NA,NA,NA";
 CF p30 p31
-DF d4 p31
-DF d26 p31
-Start p32 "32-get.parsed.eml(dataset.id)" Value="get.parsed.eml(dataset.id)" Time="2.338" Script="NA" Pos="NA";
+DF d6 p31
+DF d28 p31
+Start p32 "32-get.parsed.eml(dataset.id)" Value="get.parsed.eml(dataset.id)" Time="2.17" Script="NA" Pos="NA";
 CF p31 p32
-Binding p33 "33-dataset.id  <-  dataset.id" Time="2.339" Script="NA" Pos="NA";
+Binding p33 "33-dataset.id  <-  dataset.id" Time="2.17" Script="NA" Pos="NA";
 CF p32 p33
-DF d26 p33
-Data d28 "28-dataset.id" Value="\"hf000\"";
-DF p33 d28
-Operation p34 "34-get.parsed.eml" Value="get.parsed.eml" Time="2.346" Script="NA" Pos="NA";
-DF d4 p34
-DF d28 p34
+DF d28 p33
+Data d30 "30-dataset.id" Value="\"hf000\"" ValType="character";
+DF p33 d30
+Operation p34 "34-get.parsed.eml" Value="get.parsed.eml" Time="2.22" Script="NA" Pos="NA";
+DF d6 p34
+DF d30 p34
 CF p33 p34
-Operation p35 "35-eml.url <<- paste(hf.eml.dir, dataset.id, \".xml\", sep = \"\")" Value="eml.url <<- paste(hf.eml.dir, dataset.id, \".xml\", sep = \"\")" Time="2.356" Script="0" Pos="NA,NA,NA,NA";
+Operation p35 "35-eml.url <<- paste(hf.eml.dir, dataset.id, \".xml\", sep = \"\")" Value="eml.url <<- paste(hf.eml.dir, dataset.id, \".xml\", sep = \"\")" Time="2.22" Script="0" Pos="NA,NA,NA,NA";
 CF p34 p35
-DF d2 p35
-DF d28 p35
-Data d29 "29-eml.url" Value="\"http://harvardforest.fas.harvard.edu/sites/harvardforest.fas.harvard.edu/files/data/eml/hf000.xml\"";
-DF p35 d29
-Start p36 "36-if (!url.exists(eml.url)) {    msg <- paste(dataset.id, \": E" Value="if (!url.exists(eml.url)) {    msg <- paste(dataset.id, \": E" Time="2.373" Script="0" Pos="NA,NA,NA,NA";
+DF d4 p35
+DF d30 p35
+Data d31 "31-eml.url" Value="\"http://harvardforest.fas.harvard.edu/sites/harvardforest.fas.harvard.edu/files/data/eml/hf000.xml\"" ValType="character";
+DF p35 d31
+Start p36 "36-if (!url.exists(eml.url)) {    msg <- paste(dataset.id, \": E" Value="if (!url.exists(eml.url)) {    msg <- paste(dataset.id, \": E" Time="2.23" Script="0" Pos="NA,NA,NA,NA";
 CF p35 p36
-DF d29 p36
-DF d26 p36
-Start p37 "37-if" Value="if" Time="2.39" Script="NA" Pos="NA";
+DF d31 p36
+DF d28 p36
+Start p37 "37-if" Value="if" Time="2.28" Script="NA" Pos="NA";
 CF p36 p37
-Operation p38 "38-eml <- xmlTreeParse(eml.url, useInternalNodes = TRUE)" Value="eml <- xmlTreeParse(eml.url, useInternalNodes = TRUE)" Time="2.394" Script="0" Pos="NA,NA,NA,NA";
+Operation p38 "38-eml <- xmlTreeParse(eml.url, useInternalNodes = TRUE)" Value="eml <- xmlTreeParse(eml.url, useInternalNodes = TRUE)" Time="2.28" Script="0" Pos="NA,NA,NA,NA";
 CF p37 p38
-DF d29 p38
-Snapshot d30 "30-eml" Value="data/30-eml.xml" Time="2017-01-04T15.46.30EST";
-DF p38 d30
-Finish p39 "39-if" Value="if" Time="2.407" Script="NA" Pos="NA";
+DF d31 p38
+Snapshot d32 "32-eml" Value="data/32-eml.xml" ValType="object" Time="2017-04-17T17.05.47EDT";
+DF p38 d32
+Finish p39 "39-if" Value="if" Time="2.31" Script="NA" Pos="NA";
 CF p38 p39
-Finish p40 "40-if (!url.exists(eml.url)) {    msg <- paste(dataset.id, \": E" Value="if (!url.exists(eml.url)) {    msg <- paste(dataset.id, \": E" Time="2.408" Script="0" Pos="NA,NA,NA,NA";
+Finish p40 "40-if (!url.exists(eml.url)) {    msg <- paste(dataset.id, \": E" Value="if (!url.exists(eml.url)) {    msg <- paste(dataset.id, \": E" Time="2.31" Script="0" Pos="NA,NA,NA,NA";
 CF p39 p40
-Snapshot d31 "31-get.parsed.eml(dataset.id) return" Value="data/31-get.parsed.eml(dataset.id) return.xml" Time="2017-01-04T15.46.30EST";
-Operation p41 "41-return(eml)" Value="return(eml)" Time="2.413" Script="0" Pos="NA,NA,NA,NA";
+Snapshot d33 "33-get.parsed.eml(dataset.id) return" Value="data/33-get.parsed.eml(dataset.id) return.xml" ValType="object" Time="2017-04-17T17.05.47EDT";
+Operation p41 "41-return(eml)" Value="return(eml)" Time="2.33" Script="0" Pos="NA,NA,NA,NA";
 CF p40 p41
-DF p41 d31
-DF d30 p41
-Finish p42 "42-get.parsed.eml(dataset.id)" Value="get.parsed.eml(dataset.id)" Time="2.421" Script="NA" Pos="NA";
+DF p41 d33
+DF d32 p41
+Finish p42 "42-get.parsed.eml(dataset.id)" Value="get.parsed.eml(dataset.id)" Time="2.34" Script="NA" Pos="NA";
 CF p41 p42
-Finish p43 "43-eml <- get.parsed.eml(dataset.id)" Value="eml <- get.parsed.eml(dataset.id)" Time="2.422" Script="0" Pos="NA,NA,NA,NA";
+Finish p43 "43-eml <- get.parsed.eml(dataset.id)" Value="eml <- get.parsed.eml(dataset.id)" Time="2.36" Script="0" Pos="NA,NA,NA,NA";
 CF p42 p43
-DF d31 p43
-Snapshot d32 "32-eml" Value="data/32-eml.xml" Time="2017-01-04T15.46.30EST";
-DF p43 d32
-Start p44 "44-time.series.ids <- get.time.series.ids(dataset.id)" Value="time.series.ids <- get.time.series.ids(dataset.id)" Time="2.429" Script="0" Pos="NA,NA,NA,NA";
+DF d33 p43
+Snapshot d34 "34-eml" Value="data/34-eml.xml" ValType="object" Time="2017-04-17T17.05.47EDT";
+DF p43 d34
+Start p44 "44-time.series.ids <- get.time.series.ids(dataset.id)" Value="time.series.ids <- get.time.series.ids(dataset.id)" Time="2.36" Script="0" Pos="NA,NA,NA,NA";
 CF p43 p44
-DF d6 p44
-DF d26 p44
-Start p45 "45-get.time.series.ids(dataset.id)" Value="get.time.series.ids(dataset.id)" Time="2.439" Script="NA" Pos="NA";
+DF d8 p44
+DF d28 p44
+Start p45 "45-get.time.series.ids(dataset.id)" Value="get.time.series.ids(dataset.id)" Time="2.37" Script="NA" Pos="NA";
 CF p44 p45
-Binding p46 "46-dataset.id  <-  dataset.id" Time="2.439" Script="NA" Pos="NA";
+Binding p46 "46-dataset.id  <-  dataset.id" Time="2.37" Script="NA" Pos="NA";
 CF p45 p46
-DF d26 p46
-Data d33 "33-dataset.id" Value="\"hf000\"";
-DF p46 d33
-Operation p47 "47-get.time.series.ids" Value="get.time.series.ids" Time="2.446" Script="NA" Pos="NA";
-DF d6 p47
-DF d33 p47
+DF d28 p46
+Data d35 "35-dataset.id" Value="\"hf000\"" ValType="character";
+DF p46 d35
+Operation p47 "47-get.time.series.ids" Value="get.time.series.ids" Time="2.39" Script="NA" Pos="NA";
+DF d8 p47
+DF d35 p47
 CF p46 p47
-Operation p48 "48-xpath <- paste(\"//additionalMetadata/metadata/additionalClas" Value="xpath <- paste(\"//additionalMetadata/metadata/additionalClas" Time="2.456" Script="0" Pos="NA,NA,NA,NA";
+Operation p48 "48-xpath <- paste(\"//additionalMetadata/metadata/additionalClas" Value="xpath <- paste(\"//additionalMetadata/metadata/additionalClas" Time="2.39" Script="0" Pos="NA,NA,NA,NA";
 CF p47 p48
-Data d34 "34-xpath" Value="\"//additionalMetadata/metadata/additionalClassifications/timeSeries\"";
-DF p48 d34
-Operation p49 "49-ns <- getNodeSet(eml, xpath, fun = xmlValue)" Value="ns <- getNodeSet(eml, xpath, fun = xmlValue)" Time="2.464" Script="0" Pos="NA,NA,NA,NA";
+Data d36 "36-xpath" Value="\"//additionalMetadata/metadata/additionalClassifications/timeSeries\"" ValType="character";
+DF p48 d36
+Operation p49 "49-ns <- getNodeSet(eml, xpath, fun = xmlValue)" Value="ns <- getNodeSet(eml, xpath, fun = xmlValue)" Time="2.4" Script="0" Pos="NA,NA,NA,NA";
 CF p48 p49
-DF d32 p49
 DF d34 p49
-Snapshot d35 "35-ns" Value="data/35-ns.txt" Time="2017-01-04T15.46.30EST";
-DF p49 d35
-Start p50 "50-if (length(ns) == 0) {    time.series.ids <- NULL} else {   " Value="if (length(ns) == 0) {    time.series.ids <- NULL} else {   " Time="2.485" Script="0" Pos="NA,NA,NA,NA";
+DF d36 p49
+Snapshot d37 "37-ns" Value="data/37-ns.txt" ValType="list" Time="2017-04-17T17.05.48EDT";
+DF p49 d37
+Start p50 "50-if (length(ns) == 0) {    time.series.ids <- NULL} else {   " Value="if (length(ns) == 0) {    time.series.ids <- NULL} else {   " Time="2.42" Script="0" Pos="NA,NA,NA,NA";
 CF p49 p50
-DF d5 p50
-Start p51 "51-if" Value="if" Time="2.497" Script="NA" Pos="NA";
+DF d7 p50
+Start p51 "51-if" Value="if" Time="2.44" Script="NA" Pos="NA";
 CF p50 p51
-Operation p52 "52-st <- ns[[1]]" Value="st <- ns[[1]]" Time="2.499" Script="0" Pos="NA,NA,NA,NA";
+Operation p52 "52-st <- ns[[1]]" Value="st <- ns[[1]]" Time="2.44" Script="0" Pos="NA,NA,NA,NA";
 CF p51 p52
-DF d35 p52
-Data d36 "36-st" Value="\"1,2\"";
-DF p52 d36
-Start p53 "53-time.series.ids <- parse.time.series.string(st)" Value="time.series.ids <- parse.time.series.string(st)" Time="2.547" Script="0" Pos="NA,NA,NA,NA";
+DF d37 p52
+Data d38 "38-st" Value="\"1,2\"" ValType="character";
+DF p52 d38
+Start p53 "53-time.series.ids <- parse.time.series.string(st)" Value="time.series.ids <- parse.time.series.string(st)" Time="2.44" Script="0" Pos="NA,NA,NA,NA";
 CF p52 p53
-DF d5 p53
-DF d36 p53
-Start p54 "54-parse.time.series.string(st)" Value="parse.time.series.string(st)" Time="2.554" Script="NA" Pos="NA";
+DF d7 p53
+DF d38 p53
+Start p54 "54-parse.time.series.string(st)" Value="parse.time.series.string(st)" Time="2.44" Script="NA" Pos="NA";
 CF p53 p54
-Binding p55 "55-st  <-  st" Time="2.555" Script="NA" Pos="NA";
+Binding p55 "55-st  <-  st" Time="2.46" Script="NA" Pos="NA";
 CF p54 p55
-DF d36 p55
-Data d37 "37-st" Value="\"1,2\"";
-DF p55 d37
-Operation p56 "56-parse.time.series.string" Value="parse.time.series.string" Time="2.561" Script="NA" Pos="NA";
-DF d5 p56
-DF d37 p56
+DF d38 p55
+Data d39 "39-st" Value="\"1,2\"" ValType="character";
+DF p55 d39
+Operation p56 "56-parse.time.series.string" Value="parse.time.series.string" Time="2.46" Script="NA" Pos="NA";
+DF d7 p56
+DF d39 p56
 CF p55 p56
-Operation p57 "57-stp <- strsplit(st, \",\")" Value="stp <- strsplit(st, \",\")" Time="2.57" Script="0" Pos="NA,NA,NA,NA";
+Operation p57 "57-stp <- strsplit(st, \",\")" Value="stp <- strsplit(st, \",\")" Time="2.46" Script="0" Pos="NA,NA,NA,NA";
 CF p56 p57
-DF d37 p57
-Snapshot d38 "38-stp" Value="data/38-stp.txt" Time="2017-01-04T15.46.30EST";
-DF p57 d38
-Start p58 "58-for (i in 1:length(stp[[1]])) {    if (i == 1) {        ids " Value="for (i in 1:length(stp[[1]])) {    if (i == 1) {        ids " Time="2.581" Script="0" Pos="NA,NA,NA,NA";
+DF d39 p57
+Snapshot d40 "40-stp" Value="data/40-stp.txt" ValType="list" Time="2017-04-17T17.05.48EDT";
+DF p57 d40
+Start p58 "58-for (i in 1:length(stp[[1]])) {    if (i == 1) {        ids " Value="for (i in 1:length(stp[[1]])) {    if (i == 1) {        ids " Time="2.47" Script="0" Pos="NA,NA,NA,NA";
 CF p57 p58
-Start p59 "59-for loop" Value="for loop" Time="2.596" Script="NA" Pos="NA";
+Start p59 "59-for loop" Value="for loop" Time="2.49" Script="NA" Pos="NA";
 CF p58 p59
-Operation p60 "60-i <- 1" Value="i <- 1" Time="2.597" Script="NA" Pos="NA";
+Operation p60 "60-i <- 1" Value="i <- 1" Time="2.49" Script="NA" Pos="NA";
 CF p59 p60
-Data d39 "39-i" Value="1";
-DF p60 d39
-Start p61 "61-if (i == 1) {    ids <- as.integer(stp[[1]][i])} else {    i" Value="if (i == 1) {    ids <- as.integer(stp[[1]][i])} else {    i" Time="2.601" Script="0" Pos="NA,NA,NA,NA";
+Data d41 "41-i" Value="1" ValType="integer";
+DF p60 d41
+Start p61 "61-if (i == 1) {    ids <- as.integer(stp[[1]][i])} else {    i" Value="if (i == 1) {    ids <- as.integer(stp[[1]][i])} else {    i" Time="2.49" Script="0" Pos="NA,NA,NA,NA";
 CF p60 p61
-Start p62 "62-if" Value="if" Time="2.615" Script="NA" Pos="NA";
+Start p62 "62-if" Value="if" Time="2.5" Script="NA" Pos="NA";
 CF p61 p62
-Operation p63 "63-ids <- as.integer(stp[[1]][i])" Value="ids <- as.integer(stp[[1]][i])" Time="2.617" Script="0" Pos="NA,NA,NA,NA";
+Operation p63 "63-ids <- as.integer(stp[[1]][i])" Value="ids <- as.integer(stp[[1]][i])" Time="2.5" Script="0" Pos="NA,NA,NA,NA";
 CF p62 p63
-DF d38 p63
-DF d39 p63
-Data d40 "40-ids" Value="1";
-DF p63 d40
-Finish p64 "64-if" Value="if" Time="2.631" Script="NA" Pos="NA";
+DF d40 p63
+DF d41 p63
+Data d42 "42-ids" Value="1" ValType="integer";
+DF p63 d42
+Finish p64 "64-if" Value="if" Time="2.5" Script="NA" Pos="NA";
 CF p63 p64
-Finish p65 "65-if (i == 1) {    ids <- as.integer(stp[[1]][i])} else {    i" Value="if (i == 1) {    ids <- as.integer(stp[[1]][i])} else {    i" Time="2.632" Script="0" Pos="NA,NA,NA,NA";
+Finish p65 "65-if (i == 1) {    ids <- as.integer(stp[[1]][i])} else {    i" Value="if (i == 1) {    ids <- as.integer(stp[[1]][i])} else {    i" Time="2.5" Script="0" Pos="NA,NA,NA,NA";
 CF p64 p65
-Finish p66 "66-for loop" Value="for loop" Time="2.633" Script="NA" Pos="NA";
+Finish p66 "66-for loop" Value="for loop" Time="2.5" Script="NA" Pos="NA";
 CF p65 p66
-Incomplete p67 "67-Details Omitted" Value="Details Omitted" Time="2.634" Script="NA" Pos="NA";
+Incomplete p67 "67-Details Omitted" Value="Details Omitted" Time="2.52" Script="NA" Pos="NA";
 CF p66 p67
-Finish p68 "68-for (i in 1:length(stp[[1]])) {    if (i == 1) {        ids " Value="for (i in 1:length(stp[[1]])) {    if (i == 1) {        ids " Time="2.635" Script="0" Pos="NA,NA,NA,NA";
+Finish p68 "68-for (i in 1:length(stp[[1]])) {    if (i == 1) {        ids " Value="for (i in 1:length(stp[[1]])) {    if (i == 1) {        ids " Time="2.52" Script="0" Pos="NA,NA,NA,NA";
 CF p67 p68
-Data d41 "41-ids" Value="1,2";
-DF p68 d41
-Snapshot d42 "42-parse.time.series.string(st) return" Value="data/42-parse.time.series.string(st) return.csv" Time="2017-01-04T15.46.30EST";
-Operation p69 "69-return(ids)" Value="return(ids)" Time="2.644" Script="0" Pos="NA,NA,NA,NA";
+Data d43 "43-ids" Value="1,2" ValType="character";
+DF p68 d43
+Snapshot d44 "44-parse.time.series.string(st) return" Value="data/44-parse.time.series.string(st) return.csv" ValType="vector (integer)" Time="2017-04-17T17.05.48EDT";
+Operation p69 "69-return(ids)" Value="return(ids)" Time="2.52" Script="0" Pos="NA,NA,NA,NA";
 CF p68 p69
-DF p69 d42
-DF d41 p69
-Finish p70 "70-parse.time.series.string(st)" Value="parse.time.series.string(st)" Time="2.65" Script="NA" Pos="NA";
+DF p69 d44
+DF d43 p69
+Finish p70 "70-parse.time.series.string(st)" Value="parse.time.series.string(st)" Time="2.52" Script="NA" Pos="NA";
 CF p69 p70
-Finish p71 "71-time.series.ids <- parse.time.series.string(st)" Value="time.series.ids <- parse.time.series.string(st)" Time="2.651" Script="0" Pos="NA,NA,NA,NA";
+Finish p71 "71-time.series.ids <- parse.time.series.string(st)" Value="time.series.ids <- parse.time.series.string(st)" Time="2.52" Script="0" Pos="NA,NA,NA,NA";
 CF p70 p71
-DF d42 p71
-Snapshot d43 "43-time.series.ids" Value="data/43-time.series.ids.csv" Time="2017-01-04T15.46.30EST";
-DF p71 d43
-Finish p72 "72-if" Value="if" Time="2.657" Script="NA" Pos="NA";
+DF d44 p71
+Snapshot d45 "45-time.series.ids" Value="data/45-time.series.ids.csv" ValType="vector (integer)" Time="2017-04-17T17.05.48EDT";
+DF p71 d45
+Finish p72 "72-if" Value="if" Time="2.53" Script="NA" Pos="NA";
 CF p71 p72
-Finish p73 "73-if (length(ns) == 0) {    time.series.ids <- NULL} else {   " Value="if (length(ns) == 0) {    time.series.ids <- NULL} else {   " Time="2.658" Script="0" Pos="NA,NA,NA,NA";
+Finish p73 "73-if (length(ns) == 0) {    time.series.ids <- NULL} else {   " Value="if (length(ns) == 0) {    time.series.ids <- NULL} else {   " Time="2.53" Script="0" Pos="NA,NA,NA,NA";
 CF p72 p73
-Snapshot d44 "44-get.time.series.ids(dataset.id) return" Value="data/44-get.time.series.ids(dataset.id) return.csv" Time="2017-01-04T15.46.30EST";
-Operation p74 "74-return(time.series.ids)" Value="return(time.series.ids)" Time="2.663" Script="0" Pos="NA,NA,NA,NA";
+Snapshot d46 "46-get.time.series.ids(dataset.id) return" Value="data/46-get.time.series.ids(dataset.id) return.csv" ValType="vector (integer)" Time="2017-04-17T17.05.48EDT";
+Operation p74 "74-return(time.series.ids)" Value="return(time.series.ids)" Time="2.53" Script="0" Pos="NA,NA,NA,NA";
 CF p73 p74
-DF p74 d44
-DF d43 p74
-Finish p75 "75-get.time.series.ids(dataset.id)" Value="get.time.series.ids(dataset.id)" Time="2.67" Script="NA" Pos="NA";
+DF p74 d46
+DF d45 p74
+Finish p75 "75-get.time.series.ids(dataset.id)" Value="get.time.series.ids(dataset.id)" Time="2.55" Script="NA" Pos="NA";
 CF p74 p75
-Finish p76 "76-time.series.ids <- get.time.series.ids(dataset.id)" Value="time.series.ids <- get.time.series.ids(dataset.id)" Time="2.671" Script="0" Pos="NA,NA,NA,NA";
+Finish p76 "76-time.series.ids <- get.time.series.ids(dataset.id)" Value="time.series.ids <- get.time.series.ids(dataset.id)" Time="2.55" Script="0" Pos="NA,NA,NA,NA";
 CF p75 p76
-DF d44 p76
-Snapshot d45 "45-time.series.ids" Value="data/45-time.series.ids.csv" Time="2017-01-04T15.46.30EST";
-DF p76 d45
-Start p77 "77-if (datafile.num != 0) {    datafile.id <- get.datafile.id(d" Value="if (datafile.num != 0) {    datafile.id <- get.datafile.id(d" Time="2.676" Script="0" Pos="NA,NA,NA,NA";
+DF d46 p76
+Snapshot d47 "47-time.series.ids" Value="data/47-time.series.ids.csv" ValType="vector (integer)" Time="2017-04-17T17.05.48EDT";
+DF p76 d47
+Start p77 "77-if (datafile.num != 0) {    datafile.id <- get.datafile.id(d" Value="if (datafile.num != 0) {    datafile.id <- get.datafile.id(d" Time="2.55" Script="0" Pos="NA,NA,NA,NA";
 CF p76 p77
-DF d27 p77
-DF d7 p77
-DF d26 p77
-DF d25 p77
+DF d29 p77
 DF d9 p77
-Start p78 "78-if" Value="if" Time="2.709" Script="NA" Pos="NA";
+DF d28 p77
+DF d27 p77
+DF d11 p77
+Start p78 "78-if" Value="if" Time="2.58" Script="NA" Pos="NA";
 CF p77 p78
-Operation p79 "79-datafile.id <- get.datafile.id(dataset.id, datafile.num)" Value="datafile.id <- get.datafile.id(dataset.id, datafile.num)" Time="2.712" Script="0" Pos="NA,NA,NA,NA";
+Operation p79 "79-datafile.id <- get.datafile.id(dataset.id, datafile.num)" Value="datafile.id <- get.datafile.id(dataset.id, datafile.num)" Time="2.58" Script="0" Pos="NA,NA,NA,NA";
 CF p78 p79
-DF d7 p79
-DF d26 p79
-DF d27 p79
-Data d46 "46-datafile.id" Value="\"hf000-01\"";
-DF p79 d46
-Start p80 "80-if (is.null(datafile.id)) {    msg <- paste(dataset.id, \" : " Value="if (is.null(datafile.id)) {    msg <- paste(dataset.id, \" : " Time="2.727" Script="0" Pos="NA,NA,NA,NA";
+DF d9 p79
+DF d28 p79
+DF d29 p79
+Data d48 "48-datafile.id" Value="\"hf000-01\"" ValType="character";
+DF p79 d48
+Start p80 "80-if (is.null(datafile.id)) {    msg <- paste(dataset.id, \" : " Value="if (is.null(datafile.id)) {    msg <- paste(dataset.id, \" : " Time="2.58" Script="0" Pos="NA,NA,NA,NA";
 CF p79 p80
-DF d46 p80
-DF d26 p80
+DF d48 p80
+DF d28 p80
+DF d29 p80
 DF d27 p80
-DF d25 p80
-Start p81 "81-if" Value="if" Time="2.744" Script="NA" Pos="NA";
+Start p81 "81-if" Value="if" Time="2.63" Script="NA" Pos="NA";
 CF p80 p81
-Operation p82 "82-create.datafile.preview(datafile.id)" Value="create.datafile.preview(datafile.id)" Time="3.312" Script="0" Pos="NA,NA,NA,NA";
+Operation p82 "82-create.datafile.preview(datafile.id)" Value="create.datafile.preview(datafile.id)" Time="4.41" Script="0" Pos="NA,NA,NA,NA";
 CF p81 p82
-DF d25 p82
-DF d46 p82
-Finish p83 "83-if" Value="if" Time="3.317" Script="NA" Pos="NA";
+DF d27 p82
+DF d48 p82
+Finish p83 "83-if" Value="if" Time="4.41" Script="NA" Pos="NA";
 CF p82 p83
-Finish p84 "84-if (is.null(datafile.id)) {    msg <- paste(dataset.id, \" : " Value="if (is.null(datafile.id)) {    msg <- paste(dataset.id, \" : " Time="3.318" Script="0" Pos="NA,NA,NA,NA";
+Finish p84 "84-if (is.null(datafile.id)) {    msg <- paste(dataset.id, \" : " Value="if (is.null(datafile.id)) {    msg <- paste(dataset.id, \" : " Time="4.41" Script="0" Pos="NA,NA,NA,NA";
 CF p83 p84
-Finish p85 "85-if" Value="if" Time="3.319" Script="NA" Pos="NA";
+Finish p85 "85-if" Value="if" Time="4.41" Script="NA" Pos="NA";
 CF p84 p85
-Finish p86 "86-if (datafile.num != 0) {    datafile.id <- get.datafile.id(d" Value="if (datafile.num != 0) {    datafile.id <- get.datafile.id(d" Time="3.32" Script="0" Pos="NA,NA,NA,NA";
+Finish p86 "86-if (datafile.num != 0) {    datafile.id <- get.datafile.id(d" Value="if (datafile.num != 0) {    datafile.id <- get.datafile.id(d" Time="4.41" Script="0" Pos="NA,NA,NA,NA";
 CF p85 p86
-Finish p87 "87-HFDatasetPreview.R" Value="HFDatasetPreview.R" Time="3.321" Script="NA" Pos="NA";
+Finish p87 "87-HFDatasetPreview.R" Value="HFDatasetPreview.R" Time="4.41" Script="NA" Pos="NA";
 CF p86 p87
 
