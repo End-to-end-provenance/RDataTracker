@@ -2,63 +2,63 @@ Architecture="x86_64"
 OperatingSystem="windows"
 Language="R"
 LanguageVersion="R version 3.3.1 (2016-06-21)"
-RDataTrackerVersion="2.25.0"
+RDataTrackerVersion="2.25.1"
 Script="[DIR]/PlotTest.R"
 SourcedScripts=""
-ProcessFileTimestamp="2017-01-06T18.11.47EST"
+ProcessFileTimestamp="2017-01-06T19.13.45EST"
 WorkingDirectory="[DIR]"
 DDGDirectory="[DIR]/ddg"
-DateTime="2017-02-06T20.24.55EST"
-InstalledPackages="RDataTracker 2.25.0"
+DateTime="2017-04-17T15.00.58EDT"
+InstalledPackages="RDataTracker 2.25.1"
 12
-Start p1 "1-PlotTest.R" Value="PlotTest.R" Time="0.0499999999999998" Script="NA" Pos="NA";
-Operation p2 "2-data(mtcars)" Value="data(mtcars)" Time="0.0499999999999998" Script="0" Pos="1,1,1,13";
+Start p1 "1-PlotTest.R" Value="PlotTest.R" Time="0.05" Script="NA" Pos="NA";
+Operation p2 "2-data(mtcars)" Value="data(mtcars)" Time="0.05" Script="0" Pos="1,1,1,13";
 CF p1 p2
-Snapshot d1 "1-mtcars [ENV]" Value="data/1-mtcars.csv" Time="2017-02-06T20.24.55EST";
+Snapshot d1 "1-mtcars [ENV]" Value="data/1-mtcars.csv" ValType="data frame (numeric,numeric,numeric,numeric,numeric,numeric,numeric,numeric,numeric,numeric,numeric)" Time="2017-04-17T15.00.58EDT";
 DF d1 p2
-Operation p3 "3-allCars.df <- mtcars" Value="allCars.df <- mtcars" Time="0.0699999999999998" Script="0" Pos="4,1,4,20";
+Operation p3 "3-allCars.df <- mtcars" Value="allCars.df <- mtcars" Time="0.0599999999999999" Script="0" Pos="4,1,4,20";
 CF p2 p3
 DF d1 p3
-Snapshot d2 "2-allCars.df" Value="data/2-allCars.df.csv" Time="2017-02-06T20.24.55EST";
+Snapshot d2 "2-allCars.df" Value="data/2-allCars.df.csv" ValType="data frame (numeric,numeric,numeric,numeric,numeric,numeric,numeric,numeric,numeric,numeric,numeric)" Time="2017-04-17T15.00.58EDT";
 DF p3 d2
-Operation p4 "4-cars4Cyl.df <- allCars.df[allCars.df$cyl == 4, ]" Value="cars4Cyl.df <- allCars.df[allCars.df$cyl == 4, ]" Time="0.0799999999999998" Script="0" Pos="7,1,7,48";
+Operation p4 "4-cars4Cyl.df <- allCars.df[allCars.df$cyl == 4, ]" Value="cars4Cyl.df <- allCars.df[allCars.df$cyl == 4, ]" Time="0.0599999999999999" Script="0" Pos="7,1,7,48";
 CF p3 p4
 DF d2 p4
-Snapshot d3 "3-cars4Cyl.df" Value="data/3-cars4Cyl.df.csv" Time="2017-02-06T20.24.55EST";
+Snapshot d3 "3-cars4Cyl.df" Value="data/3-cars4Cyl.df.csv" ValType="data frame (numeric,numeric,numeric,numeric,numeric,numeric,numeric,numeric,numeric,numeric,numeric)" Time="2017-04-17T15.00.58EDT";
 DF p4 d3
-Operation p5 "5-cars6Cyl.df <- allCars.df[allCars.df$cyl == 6, ]" Value="cars6Cyl.df <- allCars.df[allCars.df$cyl == 6, ]" Time="0.0999999999999999" Script="0" Pos="8,1,8,48";
+Operation p5 "5-cars6Cyl.df <- allCars.df[allCars.df$cyl == 6, ]" Value="cars6Cyl.df <- allCars.df[allCars.df$cyl == 6, ]" Time="0.08" Script="0" Pos="8,1,8,48";
 CF p4 p5
 DF d2 p5
-Snapshot d4 "4-cars6Cyl.df" Value="data/4-cars6Cyl.df.csv" Time="2017-02-06T20.24.55EST";
+Snapshot d4 "4-cars6Cyl.df" Value="data/4-cars6Cyl.df.csv" ValType="data frame (numeric,numeric,numeric,numeric,numeric,numeric,numeric,numeric,numeric,numeric,numeric)" Time="2017-04-17T15.00.58EDT";
 DF p5 d4
-Operation p6 "6-cars8Cyl.df <- allCars.df[allCars.df$cyl == 8, ]" Value="cars8Cyl.df <- allCars.df[allCars.df$cyl == 8, ]" Time="0.0999999999999999" Script="0" Pos="9,1,9,48";
+Operation p6 "6-cars8Cyl.df <- allCars.df[allCars.df$cyl == 8, ]" Value="cars8Cyl.df <- allCars.df[allCars.df$cyl == 8, ]" Time="0.09" Script="0" Pos="9,1,9,48";
 CF p5 p6
 DF d2 p6
-Snapshot d5 "5-cars8Cyl.df" Value="data/5-cars8Cyl.df.csv" Time="2017-02-06T20.24.55EST";
+Snapshot d5 "5-cars8Cyl.df" Value="data/5-cars8Cyl.df.csv" ValType="data frame (numeric,numeric,numeric,numeric,numeric,numeric,numeric,numeric,numeric,numeric,numeric)" Time="2017-04-17T15.00.58EDT";
 DF p6 d5
-Operation p7 "7-cylinders = c(4, 6, 8)" Value="cylinders = c(4, 6, 8)" Time="0.12" Script="0" Pos="12,1,12,9";
+Operation p7 "7-cylinders = c(4, 6, 8)" Value="cylinders = c(4, 6, 8)" Time="0.11" Script="0" Pos="12,1,12,9";
 CF p6 p7
-Snapshot d6 "6-cylinders" Value="data/6-cylinders.csv" Time="2017-02-06T20.24.55EST";
+Snapshot d6 "6-cylinders" Value="data/6-cylinders.csv" ValType="vector (numeric)" Time="2017-04-17T15.00.58EDT";
 DF p7 d6
 Operation p8 "8-mpg = c(mean(cars4Cyl.df$mpg), mean(cars6Cyl.df$mpg), mean(c" Value="mpg = c(mean(cars4Cyl.df$mpg), mean(cars6Cyl.df$mpg), mean(c" Time="0.13" Script="0" Pos="12,13,12,22";
 CF p7 p8
 DF d3 p8
-Snapshot d7 "7-mpg [ENV]" Value="data/7-mpg.csv" Time="2017-02-06T20.24.55EST";
+Snapshot d7 "7-mpg [ENV]" Value="data/7-mpg.csv" ValType="vector (numeric)" Time="2017-04-17T15.00.58EDT";
 DF d7 p8
 DF d4 p8
 DF d5 p8
-Snapshot d8 "8-mpg" Value="data/8-mpg.csv" Time="2017-02-06T20.24.55EST";
+Snapshot d8 "8-mpg" Value="data/8-mpg.csv" ValType="vector (numeric)" Time="2017-04-17T15.00.58EDT";
 DF p8 d8
-Operation p9 "9-plot(cylinders, mpg)" Value="plot(cylinders, mpg)" Time="0.2" Script="0" Pos="13,1,13,3";
+Operation p9 "9-plot(cylinders, mpg)" Value="plot(cylinders, mpg)" Time="0.19" Script="0" Pos="13,1,13,3";
 CF p8 p9
 DF d6 p9
 DF d8 p9
-Operation p10 "10-X11()" Value="X11()" Time="0.23" Script="0" Pos="13,7,13,76";
+Operation p10 "10-X11()" Value="X11()" Time="0.2" Script="0" Pos="13,7,13,76";
 CF p9 p10
-Operation p11 "11-plot(cylinders, mpg)" Value="plot(cylinders, mpg)" Time="0.24" Script="0" Pos="16,1,16,20";
+Operation p11 "11-plot(cylinders, mpg)" Value="plot(cylinders, mpg)" Time="0.2" Script="0" Pos="16,1,16,20";
 CF p10 p11
 DF d6 p11
 DF d8 p11
-Operation p12 "12-dev.off()" Value="dev.off()" Time="0.24" Script="0" Pos="29,1,29,6";
+Operation p12 "12-dev.off()" Value="dev.off()" Time="0.23" Script="0" Pos="29,1,29,6";
 CF p11 p12
 

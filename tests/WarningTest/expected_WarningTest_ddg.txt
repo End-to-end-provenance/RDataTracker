@@ -1,29 +1,29 @@
 Architecture="x86_64"
-OperatingSystem="unix"
+OperatingSystem="windows"
 Language="R"
-LanguageVersion="R version 3.2.3 (2015-12-10)"
-RDataTrackerVersion="2.24.1"
+LanguageVersion="R version 3.3.1 (2016-06-21)"
+RDataTrackerVersion="2.25.1"
 Script="[DIR]/WarningTest.R"
 SourcedScripts=""
-ProcessFileTimestamp="2016-07-21T15.34.19EDT"
+ProcessFileTimestamp="2017-01-06T19.13.45EST"
 WorkingDirectory="[DIR]"
 DDGDirectory="[DIR]/ddg"
-DateTime="2016-08-17T13.49.41EDT"
-InstalledPackages="RDataTracker 2.24.1"
+DateTime="2017-04-17T14.59.22EDT"
+InstalledPackages="RDataTracker 2.25.1"
 5
-Start p1 "1-WarningTest.R" Value="WarningTest.R" Time="0.012" Script="NA" Pos="NA";
-Operation p2 "2-a <- 1" Value="a <- 1" Time="0.013" Script="0" Pos="1,1,1,6";
+Start p1 "1-WarningTest.R" Value="WarningTest.R" Time="0.02" Script="NA" Pos="NA";
+Operation p2 "2-a <- 1" Value="a <- 1" Time="0.02" Script="0" Pos="1,1,1,6";
 CF p1 p2
-Data d1 "1-a" Value="1";
+Data d1 "1-a" Value="1" ValType="numeric";
 DF p2 d1
-Operation p3 "3-warning(\"foo\")" Value="warning(\"foo\")" Time="0.023" Script="0" Pos="2,1,2,14";
+Operation p3 "3-warning(\"foo\")" Value="warning(\"foo\")" Time="0.02" Script="0" Pos="2,1,2,14";
 CF p2 p3
-Exception d2 "2-warning.msg" Value="\"In  eval(expr, envir, enclos) :  foo\"";
+Exception d2 "2-warning.msg" Value="\"In  eval(expr, envir, enclos) :  foo\"" ValType="character";
 DF p3 d2
-Operation p4 "4-b <- 2" Value="b <- 2" Time="0.027" Script="0" Pos="3,1,3,6";
+Operation p4 "4-b <- 2" Value="b <- 2" Time="0.03" Script="0" Pos="3,1,3,6";
 CF p3 p4
-Data d3 "3-b" Value="2";
+Data d3 "3-b" Value="2" ValType="numeric";
 DF p4 d3
-Finish p5 "5-WarningTest.R" Value="WarningTest.R" Time="0.033" Script="NA" Pos="NA";
+Finish p5 "5-WarningTest.R" Value="WarningTest.R" Time="0.03" Script="NA" Pos="NA";
 CF p4 p5
 
