@@ -3235,7 +3235,7 @@ ddg.MAX_HIST_LINES <- 2^14
 
 .ddg.var.contains.factor <- function( var )
 {
-  content <- get(var)
+  value <- get(var)
   
   if( is.data.frame(value) )
     return( is.element("factor",sapply(value,class)) )
