@@ -3061,15 +3061,35 @@ ddg.MAX_HIST_LINES <- 2^14
           if (.ddg.debug.lib()) print (paste (".ddg.parse.commands: Evaluating ", cmd@annotated))
           
           
-          #print("vars.used")
-          #used <<- cmd@vars.used
-          #print(cmd@vars.used)
-          #print("")
           
-          #print("vars.set")
-          #set <<- cmd@vars.set
-          #print(cmd@vars.set)
+          set <<- cmd@vars.set
+          used <<- cmd@vars.used
           
+          common <- intersect( set , used )
+          
+          
+          print("vars.set")
+          print(set)
+          print("")
+          
+          print("vars.used")
+          print(used)
+          print("")
+          
+          print("common.vars")
+          print(common)
+          print(NULL)
+          
+          
+          applied <<- sapply( 
+            used ,    # tmp
+            FUN = function(var)
+            {
+              return(.ddg.get.val.type(get(var)))
+            } 
+          )
+          
+          print(applied)
           
           
           
@@ -3092,7 +3112,16 @@ ddg.MAX_HIST_LINES <- 2^14
               
               if( msg == "invalid 'type' (character) of argument" | msg == "only defined on a data frame with all numeric variables" )
               {
-                containsFactor <- sapply( cmd@vars.used , .ddg.var.contains.factor )
+                containsFactor <- sapply( 
+                  cmd@vars.used , 
+                  FUN = function(var)
+                  {
+                    if( identical(.ddg.get.val.type(get(var))[1],"data frame with factor") )
+                      return(TRUE)
+                    
+                    return(FALSE)
+                  }
+                )
                 
                 if( is.element(TRUE , containsFactor) )
                 {
@@ -3265,21 +3294,6 @@ ddg.MAX_HIST_LINES <- 2^14
   # Write time stamp to history.
   if (.ddg.is.init() && !.ddg.is.sourced()) .ddg.write.timestamp.to.history()
 
-}
-
-
-# Returns TRUE if the value of the given variable name is a data frame
-# containing at least one factor. Returns FALSE otherwise.
-# var - the variable name
-
-.ddg.var.contains.factor <- function( var )
-{
-  value <- get(var)
-  
-  if( identical(.ddg.get.val.type(value)[1],"data frame with factor") )
-    return(TRUE)
-  
-  return(FALSE)
 }
 
 
