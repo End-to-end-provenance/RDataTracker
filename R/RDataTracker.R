@@ -1329,7 +1329,7 @@ ddg.MAX_HIST_LINES <- 2^14
   else dvalue2 <- ""
   
   # get value type
-  val.type <- .ddg.get.val.type(value)
+  val.type <- .ddg.get.val.type.string(value)
   
   #print(".ddg.record.data: adding info")
   ddg.data.nodes$ddg.type[ddg.dnum] <- dtype
@@ -1356,6 +1356,30 @@ ddg.MAX_HIST_LINES <- 2^14
 
 # Returns a string representation of the type of the given value.
 
+.ddg.get.val.type.string <- function(value)
+{
+  val.type <- .ddg.get.val.type(value)
+  
+  # convert val.type vector to string representation
+  len <- length(val.type)
+  
+  # single value: vector of length 1, list, object, environment, function, language
+  if( len == 1 )
+    return(val.type)
+  
+  # uniform type: vector, matrix, array
+  if( len == 2 )
+    return( paste(val.type[1] , " (" , val.type[2] , ')' , sep = "") )
+  
+  # else - multiple types: data frame
+  types <- val.type[2:len]
+  types <- paste( types , collapse = "," )
+  return( paste(val.type[1] , " (" , types , ')' , sep = "") )
+}
+
+
+# Returns the type of the given value, in a character vector.
+
 .ddg.get.val.type <- function(value)
 {
   # vector: a 1-dimensional array (uniform typing)
@@ -1366,42 +1390,43 @@ ddg.MAX_HIST_LINES <- 2^14
     if(length(value) == 1)
       return(type)
     else
-      return( paste("vector (" , type , ")" , sep = "") )
+      return( c("vector",type) )
   }
   
   # matrix: a 2-dimensional array (uniform typing)
   if(is.matrix(value))
   {
     type <- sapply(value,class)[1]
-    return( paste("matrix (" , type , ")" , sep = "") )
+    return( return( c("matrix",type) ) )
   }
   
   # array: n-dimensional (uniform typing)
   if(is.array(value))
   {
     type <- sapply(value,class)[1]
-    return( paste("array (" , type , ")" , sep = "") )
+    return( c("array",type) )
   }
   
   # data frame: is a type of list
   if(is.data.frame(value))
   {
     types <- unname(sapply(value,class))
-    types <- paste(types , collapse = ",")
     
     if( is.element("factor",types) )
-      return( paste("data frame with factor (" , types , ")" , sep = "") )
+      return( c("data frame with factor",types) )
     else
-      return( paste("data frame (" , types , ")" , sep = "") )
+      return( c("data frame",types) )
   }
   
   # a list
   if(is.list(value))
     return("list")
   
+  # object
   if(is.object(value))
     return("object")
   
+  # envrionment, function, language
   if(is.environment(value))
     return("environment")
   if(is.function(value))
@@ -1409,7 +1434,8 @@ ddg.MAX_HIST_LINES <- 2^14
   if(is.language(value))
     return("language")
   
-  return("")
+  # missing value
+  return(NA)
 }
 
 
@@ -3033,7 +3059,20 @@ ddg.MAX_HIST_LINES <- 2^14
           # EVALUATE.
 
           if (.ddg.debug.lib()) print (paste (".ddg.parse.commands: Evaluating ", cmd@annotated))
-
+          
+          
+          #print("vars.used")
+          #used <<- cmd@vars.used
+          #print(cmd@vars.used)
+          #print("")
+          
+          #print("vars.set")
+          #set <<- cmd@vars.set
+          #print(cmd@vars.set)
+          
+          
+          
+          
           result <- withCallingHandlers(
             eval(cmd@annotated, environ, NULL) ,
             warning = .ddg.set.warning ,
@@ -3137,7 +3176,7 @@ ddg.MAX_HIST_LINES <- 2^14
 
           .ddg.proc.node("Operation", cmd@abbrev, cmd@abbrev, env=environ, console=TRUE, cmd=cmd)
           .ddg.proc2proc()
-
+          
           # If a warning occurred when cmd was evaluated,
           # attach a warning node
           if (.ddg.warning.occurred()) {
@@ -3160,7 +3199,7 @@ ddg.MAX_HIST_LINES <- 2^14
 
           if (cmd@readsFile) .ddg.create.file.read.nodes.and.edges(cmd, environ)
           .ddg.link.function.returns(cmd)
-
+          
           if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Adding input data nodes for", cmd@abbrev))
 
           .ddg.create.data.set.edges.for.cmd(vars.set, cmd, i, d.environ)
@@ -3237,9 +3276,9 @@ ddg.MAX_HIST_LINES <- 2^14
 {
   value <- get(var)
   
-  if( is.data.frame(value) )
-    return( is.element("factor",sapply(value,class)) )
-
+  if( identical(.ddg.get.val.type(value)[1],"data frame with factor") )
+    return(TRUE)
+  
   return(FALSE)
 }
 
