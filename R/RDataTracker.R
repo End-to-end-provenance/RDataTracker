@@ -1362,21 +1362,23 @@ ddg.MAX_HIST_LINES <- 2^14
   if(is.vector(value))
   {
     type <- class(value)
-    return( paste('{"container":"vector", "size":', length(value), ', "type":["' , type, '"]}', sep = ""))
+    return( paste('{"container":"vector", "dimension":[', length(value), '], "type":["' , type, '"]}', sep = ""))
   }
 
   # matrix: a 2-dimensional array (uniform typing)
   if(is.matrix(value))
   {
     type <- sapply(value,class)[1]
-		return( paste('{"container":"matrix", "type":["' , type, '"]}', sep = ""))
+		dimension <- paste( dim(value) , collapse="," )
+		return( paste('{"container":"matrix", "dimension":[', dimension, '], "type":["' , type, '"]}', sep = ""))
   }
 
   # array: n-dimensional (uniform typing)
   if(is.array(value))
   {
     type <- sapply(value,class)[1]
-		return( paste('{"container":"array", "type":["' , type, '"]}', sep = ""))
+		dimension <- paste( dim(value) , collapse="," )
+		return( paste('{"container":"array", "dimension":[', dimension, '], "type":["' , type, '"]}', sep = ""))
   }
 
   # data frame: is a type of list
@@ -1384,7 +1386,8 @@ ddg.MAX_HIST_LINES <- 2^14
   {
     types <- unname(sapply(value,class))
     types <- paste(types , collapse = '","')
-    return( paste('{"container":"data_frame", "type":["' , types, '"]}', sep = ""))
+		dimension <- paste( dim(value) , collapse="," )
+    return( paste('{"container":"data_frame", "dimension":[', dimension, '], "type":["' , types, '"]}', sep = ""))
   }
 
   # a list
