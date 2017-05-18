@@ -783,7 +783,7 @@ ddg.MAX_HIST_LINES <- 2^14
 
 .ddg.json.data.node <- function(id, dname, dvalue, val.type, dtype, dscope, from.env, dtime, dloc) {
 
-  jstr <- paste("\n\"d", id, "\" : {\n\"rdt:name\" : \"", dname, "\",\n\"rdt:value\" : \"", dvalue, "\",\n\"rdt:valType\" : \"", val.type, "\",\n\"rdt:type\" : \"", dtype, "\",\n\"rdt:scope\" : \"", dscope, "\",\n\"rdt:fromEnv\" : \"", from.env, "\",\n\"rdt:timestamp\" : \"", dtime, "\",\n\"rdt:location\" : \"", dloc, "\"\n}", sep="")
+  jstr <- paste("\n\"d", id, "\" : {\n\"rdt:name\" : \"", dname, "\",\n\"rdt:value\" : \"", dvalue, "\",\n\"rdt:valType\" : ", val.type, ",\n\"rdt:type\" : \"", dtype, "\",\n\"rdt:scope\" : \"", dscope, "\",\n\"rdt:fromEnv\" : \"", from.env, "\",\n\"rdt:timestamp\" : \"", dtime, "\",\n\"rdt:location\" : \"", dloc, "\"\n}", sep="")
 
   .ddg.append.entity(jstr)
 }
@@ -896,10 +896,10 @@ ddg.MAX_HIST_LINES <- 2^14
 
   if (dvalue != "") value.str <- paste(" Value=\"", dvalue, "\"", sep="")
   else value.str <- ""
-  
+
   if(val.type != "" ) val.type.str <- paste(" ValType=\"", val.type, "\"", sep="")
   else val.type.str <- ""
-  
+
   if (dtime != "") time.str <- paste(" Time=\"", dtime, "\"", sep="")
   else time.str <- ""
 
@@ -1327,9 +1327,10 @@ ddg.MAX_HIST_LINES <- 2^14
   if (length(dvalue) > 1 || !is.atomic(dvalue)) dvalue2 <- "complex"
   else if (!is.null(dvalue)) dvalue2 <- dvalue
   else dvalue2 <- ""
-  
+
   # get value type
-  val.type <- .ddg.get.val.type.string(value)
+  #val.type <- .ddg.get.val.type.string(value)
+  val.type <- .ddg.get.val.type(value)
   
   #print(".ddg.record.data: adding info")
   ddg.data.nodes$ddg.type[ddg.dnum] <- dtype
@@ -1343,11 +1344,11 @@ ddg.MAX_HIST_LINES <- 2^14
   ddg.data.nodes$ddg.loc[ddg.dnum] <- dloc
   ddg.data.nodes$ddg.current[ddg.dnum] <- TRUE
   .ddg.set("ddg.data.nodes", ddg.data.nodes)
-  
+
   # Output data node.
   #print(".ddg.record.data outputting data node")
   .ddg.output.data.node(dtype, dname, dvalue2, val.type, dscope, from.env, dtime, dloc)
-  
+
   if (.ddg.debug.lib()) {
     print(paste("Adding data node", ddg.dnum, "named", dname, "with scope", dscope, " and value ", ddg.data.nodes$ddg.value[ddg.dnum]))
   }
@@ -1395,55 +1396,69 @@ ddg.MAX_HIST_LINES <- 2^14
   {
     type <- class(value)
     
-    if(length(value) == 1)
-      return(type)
-    else
-      return( c("vector",type) )
+    #if(length(value) == 1)
+    #  return(type)
+    #else
+    #  return( c("vector",type) )
+    
+    return( paste('{"container":"vector", "dimension":[', length(value), '], "type":["' , type, '"]}', sep = ""))
   }
-  
+
   # matrix: a 2-dimensional array (uniform typing)
   if(is.matrix(value))
   {
     type <- sapply(value,class)[1]
-    return( return( c("matrix",type) ) )
+    
+    #return( return( c("matrix",type) ) )
+    
+	dimension <- paste( dim(value) , collapse="," )
+	return( paste('{"container":"matrix", "dimension":[', dimension, '], "type":["' , type, '"]}', sep = ""))
   }
-  
+
   # array: n-dimensional (uniform typing)
   if(is.array(value))
   {
     type <- sapply(value,class)[1]
-    return( c("array",type) )
+    
+    #return( c("array",type) )
+		
+	dimension <- paste( dim(value) , collapse="," )
+	return( paste('{"container":"array", "dimension":[', dimension, '], "type":["' , type, '"]}', sep = ""))
   }
-  
+
   # data frame: is a type of list
   if(is.data.frame(value))
   {
     types <- unname(sapply(value,class))
     
-    if( is.element("factor",types) )
-      return( c("data frame with factor",types) )
-    else
-      return( c("data frame",types) )
+    #if( is.element("factor",types) )
+    #  return( c("data frame with factor",types) )
+    #else
+    #  return( c("data frame",types) )
+    
+    types <- paste(types , collapse = '","')
+	dimension <- paste( dim(value) , collapse="," )
+    return( paste('{"container":"data_frame", "dimension":[', dimension, '], "type":["' , types, '"]}', sep = ""))
   }
   
   # a list
   if(is.list(value))
-    return("list")
-  
-  # object
+    return('"list"')
+    
+  # an object
   if(is.object(value))
-    return("object")
-  
+    return('"object"')
+
   # envrionment, function, language
   if(is.environment(value))
-    return("environment")
+    return('"environment"')
   if(is.function(value))
-    return("function")
+    return('"function"')
   if(is.language(value))
-    return("language")
+    return('"language"')
   
-  # missing value
-  return(NA)
+  # none of the above
+  return('null')
 }
 
 
@@ -3089,32 +3104,34 @@ ddg.MAX_HIST_LINES <- 2^14
               vars.set <- .ddg.add.to.vars.set(vars.set,cmd,i)
               if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Adding", cmd@abbrev, "information to vars.set, for an error"))
               .ddg.create.data.use.edges.for.console.cmd(vars.set, cmd, i, for.caller=FALSE)
-              
+
               # check for factors
               msg <- e[[1]]
-              
+
               if( msg == "invalid 'type' (character) of argument" | msg == "only defined on a data frame with all numeric variables" )
               {
-                containsFactor <- sapply( 
-                  cmd@vars.used , 
-                  FUN = function(var)
-                  {
-                    if( identical(.ddg.get.val.type(get(var))[1],"data frame with factor") )
-                      return(TRUE)
-                    
-                    return(FALSE)
-                  }
-                )
+                #containsFactor <- sapply( 
+                #  cmd@vars.used , 
+                #  FUN = function(var)
+                #  {
+                #    if( identical(.ddg.get.val.type(get(var))[1],"data frame with factor") )
+                #      return(TRUE)
+                #    
+                #    return(FALSE)
+                #  }
+                #)
+                
+                containsFactor <- sapply( cmd@vars.used , .ddg.var.contains.factor )
                 
                 if( is.element(TRUE , containsFactor) )
                 {
                   factors <- names(containsFactor)[which(containsFactor==TRUE)]
-                  
+
                   # form suggestion
                   cat( "The following input data contain(s) a factor:\n" )
                   cat( paste(shQuote(factors , type="cmd") , collapse = ", ") )
                   cat("\nThis website may be helpful:\n")
-                  
+
                   #if( msg == "invalid 'type' (character) of argument" )
                   #  cat("https://stat.ethz.ch/pipermail/r-help/2010-May/239461.html")
                   #else
@@ -3122,7 +3139,7 @@ ddg.MAX_HIST_LINES <- 2^14
                 	cat( "https://www.r-bloggers.com/using-r-common-errors-in-table-import/" )
                 }
               }
-              
+
               # create and link to an error node
               ddg.exception.out("error.msg", toString(e) , cmd@abbrev)
             }
@@ -3321,6 +3338,21 @@ ddg.MAX_HIST_LINES <- 2^14
 }
 
 
+# Returns TRUE if the value of the given variable name is a data frame
+# containing at least one factor. Returns FALSE otherwise.
+# var - the variable name
+
+.ddg.var.contains.factor <- function( var )
+{
+  value <- get(var)
+
+  if( is.data.frame(value) )
+    return( is.element("factor",sapply(value,class)) )
+
+  return(FALSE)
+}
+
+
 # .ddg.console.node creates a console node.
 
 .ddg.console.node <- function() {
@@ -3492,7 +3524,7 @@ ddg.MAX_HIST_LINES <- 2^14
   #print(paste(".ddg.data.node: dvalue =", dvalue))
   #print(paste(".ddg.data.node: dscope =", dscope))
   # If object or a long list, try to create snapshot node.
-  
+
   if (is.object(dvalue)) {
     #print(".ddg.data.node: is object")
     tryCatch(
@@ -3629,9 +3661,9 @@ ddg.MAX_HIST_LINES <- 2^14
 # dscope (optional) - scope of data node.
 
 .ddg.snapshot.node <- function(dname, fext, data, save.object = FALSE, dscope=NULL, from.env=FALSE) {
-  
+
   orig.data <- data
-  
+
   # Determine if we should save the entire data
   max.snapshot.size <- ddg.max.snapshot.size()
 
@@ -3766,7 +3798,7 @@ ddg.MAX_HIST_LINES <- 2^14
 # dscope (optional) - scope of data node.
 
 .ddg.file.node <- function(dtype, fname, dname, dscope=NULL) {
-  
+
   # Get original file location.
   file.name <- basename(fname)
   file.loc <- normalizePath(fname, winslash="/", mustWork = FALSE)
