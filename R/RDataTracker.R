@@ -1329,8 +1329,7 @@ ddg.MAX_HIST_LINES <- 2^14
   else dvalue2 <- ""
 
   # get value type
-  #val.type <- .ddg.get.val.type.string(value)
-  val.type <- .ddg.get.val.type(value)
+  val.type <- .ddg.get.val.type.string(value)
   
   #print(".ddg.record.data: adding info")
   ddg.data.nodes$ddg.type[ddg.dnum] <- dtype
@@ -1355,31 +1354,52 @@ ddg.MAX_HIST_LINES <- 2^14
 }
 
 
-# Returns a string representation of the type of the given value.
+# Returns a string representation of the type information of the given value.
 
 .ddg.get.val.type.string <- function(value)
 {
   val.type <- .ddg.get.val.type(value)
   
-  # convert val.type vector to string representation
-  len <- length(val.type)
+  if( is.null(val.type) )
+  	return( 'null' )
   
-  # single value: vector of length 1, list, object, environment, function, language
-  if( len == 1 )
-    return(val.type)
+  # list, object, environment, function, language
+  if( length(val.type) == 1 )
+  	return( paste('"',val.type,'"',sep="") )
   
-  # uniform type: vector, matrix, array
-  if( len == 2 )
-    return( paste(val.type[1] , " (" , val.type[2] , ')' , sep = "") )
+  # vector, matrix, array, data frame
+  # type information recorded in a list of 3 vectors (container,dimension,type)
+  container <- val.type[[1]]
+  dimension <- val.type[[2]]
+  type <- val.type[[3]]
   
-  # else - multiple types: data frame
-  types <- val.type[2:len]
-  types <- paste( types , collapse = "," )
-  return( paste(val.type[1] , " (" , types , ')' , sep = "") )
+  # vector: a 1-dimensional array (uniform typing)
+  if( identical(container,"vector") )
+    return( paste('{"container":"vector", "dimension":[', dimension, '], "type":["' , type, '"]}', sep = "") )
+  
+  # matrix: a 2-dimensional array (uniform typing)
+  if( identical(container,"matrix") )
+  {
+	dimension <- paste( dimension , collapse = "," )
+	return( paste('{"container":"matrix", "dimension":[', dimension, '], "type":["' , type, '"]}', sep = "") )
+  }
+
+  # array: n-dimensional (uniform typing)
+  if( identical(container,"array") )
+  {
+	dimension <- paste( dimension , collapse = "," )
+	return( paste('{"container":"array", "dimension":[', dimension, '], "type":["' , type, '"]}', sep = "") )
+  }
+
+  # data frame: is a type of list
+  dimension <- paste( dimension , collapse = "," )
+  type <- paste( type , collapse = '","' )
+  
+  return( paste('{"container":"data_frame", "dimension":[', dimension, '], "type":["' , type, '"]}', sep = "") )
 }
 
 
-# Returns the type of the value of the given variable.
+# Returns the type information of the value of the given variable.
 
 .ddg.get.val.type.from.var <- function(var)
 {
@@ -1387,78 +1407,48 @@ ddg.MAX_HIST_LINES <- 2^14
 }
 
 
-# Returns the type of the given value, in a character vector.
+# Returns the type information of the given value, 
+# broken into its parts and returned in a vecctor or a list.
 
 .ddg.get.val.type <- function(value)
 {
   # vector: a 1-dimensional array (uniform typing)
   if(is.vector(value))
-  {
-    type <- class(value)
-    
-    #if(length(value) == 1)
-    #  return(type)
-    #else
-    #  return( c("vector",type) )
-    
-    return( paste('{"container":"vector", "dimension":[', length(value), '], "type":["' , type, '"]}', sep = ""))
-  }
+    return( list("vector", length(value), class(value)) )
 
   # matrix: a 2-dimensional array (uniform typing)
   if(is.matrix(value))
-  {
-    type <- sapply(value,class)[1]
-    
-    #return( return( c("matrix",type) ) )
-    
-	dimension <- paste( dim(value) , collapse="," )
-	return( paste('{"container":"matrix", "dimension":[', dimension, '], "type":["' , type, '"]}', sep = ""))
-  }
+    return( list("matrix", dim(value), class(value[1])) )
 
   # array: n-dimensional (uniform typing)
   if(is.array(value))
-  {
-    type <- sapply(value,class)[1]
-    
-    #return( c("array",type) )
-		
-	dimension <- paste( dim(value) , collapse="," )
-	return( paste('{"container":"array", "dimension":[', dimension, '], "type":["' , type, '"]}', sep = ""))
-  }
+  	return( list("array", dim(value), class(value[1])) )
 
   # data frame: is a type of list
   if(is.data.frame(value))
   {
     types <- unname(sapply(value,class))
-    
-    #if( is.element("factor",types) )
-    #  return( c("data frame with factor",types) )
-    #else
-    #  return( c("data frame",types) )
-    
-    types <- paste(types , collapse = '","')
-	dimension <- paste( dim(value) , collapse="," )
-    return( paste('{"container":"data_frame", "dimension":[', dimension, '], "type":["' , types, '"]}', sep = ""))
-  }
+    return( unname(list("data_frame", dim(value), types)) )
+ }
   
   # a list
   if(is.list(value))
-    return('"list"')
+    return("list")
     
   # an object
   if(is.object(value))
-    return('"object"')
+    return("object")
 
   # envrionment, function, language
   if(is.environment(value))
-    return('"environment"')
+    return("environment")
   if(is.function(value))
-    return('"function"')
+    return("function")
   if(is.language(value))
-    return('"language"')
+    return("language")
   
-  # none of the above
-  return('null')
+  # none of the above - null is a character, not NULL or NA
+  return(NULL)
 }
 
 
