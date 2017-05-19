@@ -30,9 +30,8 @@ installFonts <- function() {
 }
 
 # List of packages that are needed
-pkgs <- c("RDataTracker", "chron", "gWidgets", "dplR", "zoo", "ggplot2",
-		"gdata", "grid", "gridExtra", "mgcv", "akima", "spatstat", "reshape2", "RCurl", "plyr",
-    "xkcd")
+pkgs <- c("RDataTracker", "chron", "dplR", "zoo", "ggplot2",
+		"gdata", "grid", "mgcv", "akima", "spatstat", "RCurl")
 
 # Install the packages that might be missing
 if (all(unlist(Map(usePackage, pkgs))))  print("All required packages installed.")
