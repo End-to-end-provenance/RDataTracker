@@ -10,7 +10,7 @@ usePackage <- function(p) {
 	if (!is.element(p, installed.packages()[,1])){
 		print("Installing...")
   	install.packages(p, dependencies = TRUE, repos = "http://cloud.r-project.org",
-                     clean=TRUE, quiet=FALSE)
+                     clean=TRUE, quiet=FALSE, verbose=TRUE)
 	}
 	print("Installed!")
 	return(TRUE)
