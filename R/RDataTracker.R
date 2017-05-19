@@ -1400,10 +1400,17 @@ ddg.MAX_HIST_LINES <- 2^14
 
 
 # Returns the type information of the value of the given variable.
+# Does not contain information on dimensions.
 
 .ddg.get.val.type.from.var <- function(var)
 {
-  return( .ddg.get.val.type(get(var)) ) 
+  val.type <- .ddg.get.val.type( get(var) )
+  
+  # remove dimension information, if any
+  if( length(val.type) > 1 )
+  	val.type[2] <- NULL
+  
+  return( val.type )
 }
 
 
@@ -3099,18 +3106,7 @@ ddg.MAX_HIST_LINES <- 2^14
               msg <- e[[1]]
 
               if( msg == "invalid 'type' (character) of argument" | msg == "only defined on a data frame with all numeric variables" )
-              {
-                #containsFactor <- sapply( 
-                #  cmd@vars.used , 
-                #  FUN = function(var)
-                #  {
-                #    if( identical(.ddg.get.val.type(get(var))[1],"data frame with factor") )
-                #      return(TRUE)
-                #    
-                #    return(FALSE)
-                #  }
-                #)
-                
+              { 
                 containsFactor <- sapply( cmd@vars.used , .ddg.var.contains.factor )
                 
                 if( is.element(TRUE , containsFactor) )
