@@ -1,5 +1,7 @@
 # R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
 
+dist: trusty
+sudo: required
 language: R
 sudo: false
 cache: packages
@@ -13,8 +15,12 @@ addons:
       r-cran-zoo
       r-cran-ggplot2
       r-cran-gdata
+      r-cran-gridbase
+      r-cran-gridextra
       r-cran-mgcv
+      r-cran-spatstat
       r-cran-reshape2
+      r-cran-rcurl
       r-cran-plyr
 
 r_packages:
