@@ -9,8 +9,8 @@ usePackage <- function(p) {
 	print(p)
 	if (!is.element(p, installed.packages()[,1])){
 		print("Installing...")
-  	install.packages(p, dependencies = TRUE, repos = "http://cloud.r-project.org",
-                     clean=TRUE, quiet=FALSE, verbose=TRUE)
+  	install.packages(p, dependencies = TRUE, repos = "http://cran.us.r-project.org",
+                     clean=TRUE, quiet=TRUE)
 	}
 	print("Installed!")
 	return(TRUE)
@@ -30,8 +30,10 @@ installFonts <- function() {
 }
 
 # List of packages that are needed
-pkgs <- c("RDataTracker", "chron", "dplR", "zoo", "ggplot2",
-		"gdata", "grid", "mgcv", "akima", "spatstat", "RCurl")
+#pkgs <- c("RDataTracker", "chron", "gWidgets", "dplR", "zoo", "ggplot2",
+#		"gdata", "grid", "gridExtra", "mgcv", "akima", "spatstat", "reshape2", "RCurl", "plyr",
+#    "xkcd", "sysfonts", "extrafont")
+pkgs <- c("RDataTracker")
 
 # Install the packages that might be missing
 if (all(unlist(Map(usePackage, pkgs))))  print("All required packages installed.")
