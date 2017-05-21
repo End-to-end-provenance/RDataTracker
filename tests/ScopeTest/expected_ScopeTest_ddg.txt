@@ -1,328 +1,328 @@
 Architecture="x86_64"
-OperatingSystem="windows"
+OperatingSystem="unix"
 Language="R"
-LanguageVersion="R version 3.3.1 (2016-06-21)"
-RDataTrackerVersion="2.25.1"
+LanguageVersion="R version 3.2.3 (2015-12-10)"
+RDataTrackerVersion="2.24.1"
 Script="[DIR]/ScopeTest.R"
 SourcedScripts=""
-ProcessFileTimestamp="2017-01-06T19.13.45EST"
+ProcessFileTimestamp="2016-08-09T17.53.57EDT"
 WorkingDirectory="[DIR]"
 DDGDirectory="[DIR]/ddg"
-DateTime="2017-04-17T14.48.54EDT"
-InstalledPackages="RDataTracker 2.25.1"
+DateTime="2016-08-17T13.49.33EDT"
+InstalledPackages="RDataTracker 2.24.1"
 87
-Start p1 "1-ScopeTest.R" Value="ScopeTest.R" Time="0.11" Script="NA" Pos="NA";
-Operation p2 "2-options(warn = 1)" Value="options(warn = 1)" Time="0.11" Script="0" Pos="8,1,8,15";
+Start p1 "1-ScopeTest.R" Value="ScopeTest.R" Time="0.094" Script="NA" Pos="NA";
+Operation p2 "2-options(warn = 1)" Value="options(warn = 1)" Time="0.095" Script="0" Pos="8,1,8,15";
 CF p1 p2
-Operation p3 "3-f <- function() {    a <<- b * 10}" Value="f <- function() {    a <<- b * 10}" Time="0.11" Script="0" Pos="13,1,15,1";
+Operation p3 "3-f <- function() {    a <<- b * 10}" Value="f <- function() {    a <<- b * 10}" Time="0.098" Script="0" Pos="13,1,15,1";
 CF p2 p3
-Data d1 "1-f" Value="#ddg.function" ValType="character";
+Data d1 "1-f" Value="#ddg.function";
 DF p3 d1
-Operation p4 "4-f2 <- function() {    a <<- b * 10    return(a)}" Value="f2 <- function() {    a <<- b * 10    return(a)}" Time="0.13" Script="0" Pos="17,1,22,1";
+Operation p4 "4-f2 <- function() {    a <<- b * 10    return(a)}" Value="f2 <- function() {    a <<- b * 10    return(a)}" Time="0.104" Script="0" Pos="17,1,22,1";
 CF p3 p4
-Data d2 "2-f2" Value="#ddg.function" ValType="character";
+Data d2 "2-f2" Value="#ddg.function";
 DF p4 d2
-Operation p5 "5-g <- function(a) {    c <- a + 10    d <- 1000}" Value="g <- function(a) {    c <- a + 10    d <- 1000}" Time="0.13" Script="0" Pos="24,1,27,1";
+Operation p5 "5-g <- function(a) {    c <- a + 10    d <- 1000}" Value="g <- function(a) {    c <- a + 10    d <- 1000}" Time="0.111" Script="0" Pos="24,1,27,1";
 CF p4 p5
-Data d3 "3-g" Value="#ddg.function" ValType="character";
+Data d3 "3-g" Value="#ddg.function";
 DF p5 d3
-Operation p6 "6-h <- function() {    d <- 333}" Value="h <- function() {    d <- 333}" Time="0.13" Script="0" Pos="29,1,31,1";
+Operation p6 "6-h <- function() {    d <- 333}" Value="h <- function() {    d <- 333}" Time="0.118" Script="0" Pos="29,1,31,1";
 CF p5 p6
-Data d4 "4-h" Value="#ddg.function" ValType="character";
+Data d4 "4-h" Value="#ddg.function";
 DF p6 d4
-Operation p7 "7-i <- function() {    x <<- 1000    return(j(x))}" Value="i <- function() {    x <<- 1000    return(j(x))}" Time="0.14" Script="0" Pos="71,1,71,8";
+Operation p7 "7-i <- function() {    x <<- 1000    return(j(x))}" Value="i <- function() {    x <<- 1000    return(j(x))}" Time="0.124" Script="0" Pos="71,1,71,8";
 CF p6 p7
-Data d5 "5-i" Value="#ddg.function" ValType="character";
+Data d5 "5-i" Value="#ddg.function";
 DF p7 d5
-Operation p8 "8-j <- function(xx) {    return(3)}" Value="j <- function(xx) {    return(3)}" Time="0.14" Script="0" Pos="NA,NA,NA,NA";
+Operation p8 "8-j <- function(xx) {    return(3)}" Value="j <- function(xx) {    return(3)}" Time="0.132" Script="0" Pos="NA,NA,NA,NA";
 CF p7 p8
-Data d6 "6-j" Value="#ddg.function" ValType="character";
+Data d6 "6-j" Value="#ddg.function";
 DF p8 d6
-Operation p9 "9-k <- function(xx = 0, yy = 1) {    return(xx + yy)}" Value="k <- function(xx = 0, yy = 1) {    return(xx + yy)}" Time="0.14" Script="0" Pos="NA,NA,NA,NA";
+Operation p9 "9-k <- function(xx = 0, yy = 1) {    return(xx + yy)}" Value="k <- function(xx = 0, yy = 1) {    return(xx + yy)}" Time="0.136" Script="0" Pos="NA,NA,NA,NA";
 CF p8 p9
-Data d7 "7-k" Value="#ddg.function" ValType="character";
+Data d7 "7-k" Value="#ddg.function";
 DF p9 d7
-Operation p10 "10-a <- 1" Value="a <- 1" Time="0.14" Script="0" Pos="NA,NA,NA,NA";
+Operation p10 "10-a <- 1" Value="a <- 1" Time="0.142" Script="0" Pos="NA,NA,NA,NA";
 CF p9 p10
-Data d8 "8-a" Value="1" ValType="numeric";
+Data d8 "8-a" Value="1";
 DF p10 d8
-Operation p11 "11-b <- a + 1" Value="b <- a + 1" Time="0.16" Script="0" Pos="NA,NA,NA,NA";
+Operation p11 "11-b <- a + 1" Value="b <- a + 1" Time="0.147" Script="0" Pos="NA,NA,NA,NA";
 CF p10 p11
 DF d8 p11
-Data d9 "9-b" Value="2" ValType="numeric";
+Data d9 "9-b" Value="2";
 DF p11 d9
-Start p12 "12-f()" Value="f()" Time="0.16" Script="NA" Pos="NA";
+Start p12 "12-f()" Value="f()" Time="0.158" Script="NA" Pos="NA";
 CF p11 p12
-Operation p13 "13-f" Value="f" Time="0.16" Script="NA" Pos="NA";
+Operation p13 "13-f" Value="f" Time="0.159" Script="NA" Pos="NA";
 DF d1 p13
 CF p12 p13
-Data d10 "10-f() return" Value="20" ValType="numeric";
+Data d10 "10-f() return" Value="20";
 Operation p14 "14-a <<- b * 10" Value="a <<- b * 10" Time="0.17" Script="0" Pos="14,4,14,15";
 CF p13 p14
 DF p14 d10
 DF d9 p14
-Data d11 "11-a" Value="20" ValType="numeric";
+Data d11 "11-a" Value="20";
 DF p14 d11
-Finish p15 "15-f()" Value="f()" Time="0.19" Script="NA" Pos="NA";
+Finish p15 "15-f()" Value="f()" Time="0.182" Script="NA" Pos="NA";
 CF p14 p15
-Start p16 "16-f2()" Value="f2()" Time="0.19" Script="NA" Pos="NA";
+Start p16 "16-f2()" Value="f2()" Time="0.183" Script="NA" Pos="NA";
 CF p15 p16
-Operation p17 "17-f2" Value="f2" Time="0.19" Script="NA" Pos="NA";
+Operation p17 "17-f2" Value="f2" Time="0.184" Script="NA" Pos="NA";
 DF d2 p17
 CF p16 p17
-Operation p18 "18-a <<- b * 10" Value="a <<- b * 10" Time="0.19" Script="0" Pos="18,3,18,14";
+Operation p18 "18-a <<- b * 10" Value="a <<- b * 10" Time="0.189" Script="0" Pos="18,3,18,14";
 CF p17 p18
 DF d9 p18
-Data d12 "12-a" Value="20" ValType="numeric";
+Data d12 "12-a" Value="20";
 DF p18 d12
-Data d13 "13-f2() return" Value="20" ValType="numeric";
-Operation p19 "19-return(a)" Value="return(a)" Time="0.2" Script="0" Pos="21,3,21,12";
+Data d13 "13-f2() return" Value="20";
+Operation p19 "19-return(a)" Value="return(a)" Time="0.205" Script="0" Pos="21,3,21,12";
 CF p18 p19
 DF p19 d13
 DF d12 p19
-Finish p20 "20-f2()" Value="f2()" Time="0.2" Script="NA" Pos="NA";
+Finish p20 "20-f2()" Value="f2()" Time="0.214" Script="NA" Pos="NA";
 CF p19 p20
-Operation p21 "21-c <- 100" Value="c <- 100" Time="0.2" Script="0" Pos="NA,NA,NA,NA";
+Operation p21 "21-c <- 100" Value="c <- 100" Time="0.215" Script="0" Pos="NA,NA,NA,NA";
 CF p20 p21
-Data d14 "14-c" Value="100" ValType="numeric";
+Data d14 "14-c" Value="100";
 DF p21 d14
-Start p22 "22-if (g(c) != 1000) print(\"g(c) returned the wrong value\")" Value="if (g(c) != 1000) print(\"g(c) returned the wrong value\")" Time="0.2" Script="0" Pos="NA,NA,NA,NA";
+Start p22 "22-if (g(c) != 1000) print(\"g(c) returned the wrong value\")" Value="if (g(c) != 1000) print(\"g(c) returned the wrong value\")" Time="0.222" Script="0" Pos="NA,NA,NA,NA";
 CF p21 p22
 DF d3 p22
 DF d14 p22
-Start p23 "23-g(c)" Value="g(c)" Time="0.22" Script="NA" Pos="NA";
+Start p23 "23-g(c)" Value="g(c)" Time="0.234" Script="NA" Pos="NA";
 CF p22 p23
-Binding p24 "24-a  <-  c" Time="0.22" Script="NA" Pos="NA";
+Binding p24 "24-a  <-  c" Time="0.236" Script="NA" Pos="NA";
 CF p23 p24
 DF d14 p24
-Data d15 "15-a" Value="100" ValType="numeric";
+Data d15 "15-a" Value="100";
 DF p24 d15
-Operation p25 "25-g" Value="g" Time="0.24" Script="NA" Pos="NA";
+Operation p25 "25-g" Value="g" Time="0.243" Script="NA" Pos="NA";
 DF d3 p25
 DF d15 p25
 CF p24 p25
-Operation p26 "26-c <- a + 10" Value="c <- a + 10" Time="0.24" Script="0" Pos="25,5,25,15";
+Operation p26 "26-c <- a + 10" Value="c <- a + 10" Time="0.252" Script="0" Pos="25,5,25,15";
 CF p25 p26
 DF d15 p26
-Data d16 "16-c" Value="110" ValType="numeric";
+Data d16 "16-c" Value="110";
 DF p26 d16
-Data d17 "17-g(c) return" Value="1000" ValType="numeric";
-Operation p27 "27-d <- 1000" Value="d <- 1000" Time="0.25" Script="0" Pos="26,5,26,13";
+Data d17 "17-g(c) return" Value="1000";
+Operation p27 "27-d <- 1000" Value="d <- 1000" Time="0.264" Script="0" Pos="26,5,26,13";
 CF p26 p27
 DF p27 d17
-Data d18 "18-d" Value="1000" ValType="numeric";
+Data d18 "18-d" Value="1000";
 DF p27 d18
-Finish p28 "28-g(c)" Value="g(c)" Time="0.25" Script="NA" Pos="NA";
+Finish p28 "28-g(c)" Value="g(c)" Time="0.27" Script="NA" Pos="NA";
 CF p27 p28
-Finish p29 "29-if (g(c) != 1000) print(\"g(c) returned the wrong value\")" Value="if (g(c) != 1000) print(\"g(c) returned the wrong value\")" Time="0.25" Script="0" Pos="NA,NA,NA,NA";
+Finish p29 "29-if (g(c) != 1000) print(\"g(c) returned the wrong value\")" Value="if (g(c) != 1000) print(\"g(c) returned the wrong value\")" Time="0.271" Script="0" Pos="NA,NA,NA,NA";
 CF p28 p29
 DF d17 p29
-Start p30 "30-d <- g(c)" Value="d <- g(c)" Time="0.25" Script="0" Pos="NA,NA,NA,NA";
+Start p30 "30-d <- g(c)" Value="d <- g(c)" Time="0.273" Script="0" Pos="NA,NA,NA,NA";
 CF p29 p30
 DF d3 p30
 DF d14 p30
-Start p31 "31-g(c)" Value="g(c)" Time="0.27" Script="NA" Pos="NA";
+Start p31 "31-g(c)" Value="g(c)" Time="0.283" Script="NA" Pos="NA";
 CF p30 p31
-Binding p32 "32-a  <-  c" Time="0.27" Script="NA" Pos="NA";
+Binding p32 "32-a  <-  c" Time="0.284" Script="NA" Pos="NA";
 CF p31 p32
 DF d14 p32
-Data d19 "19-a" Value="100" ValType="numeric";
+Data d19 "19-a" Value="100";
 DF p32 d19
-Operation p33 "33-g" Value="g" Time="0.27" Script="NA" Pos="NA";
+Operation p33 "33-g" Value="g" Time="0.293" Script="NA" Pos="NA";
 DF d3 p33
 DF d19 p33
 CF p32 p33
-Operation p34 "34-c <- a + 10" Value="c <- a + 10" Time="0.28" Script="0" Pos="25,5,25,15";
+Operation p34 "34-c <- a + 10" Value="c <- a + 10" Time="0.301" Script="0" Pos="25,5,25,15";
 CF p33 p34
 DF d19 p34
-Data d20 "20-c" Value="110" ValType="numeric";
+Data d20 "20-c" Value="110";
 DF p34 d20
-Data d21 "21-g(c) return" Value="1000" ValType="numeric";
-Operation p35 "35-d <- 1000" Value="d <- 1000" Time="0.28" Script="0" Pos="26,5,26,13";
+Data d21 "21-g(c) return" Value="1000";
+Operation p35 "35-d <- 1000" Value="d <- 1000" Time="0.313" Script="0" Pos="26,5,26,13";
 CF p34 p35
 DF p35 d21
-Data d22 "22-d" Value="1000" ValType="numeric";
+Data d22 "22-d" Value="1000";
 DF p35 d22
-Finish p36 "36-g(c)" Value="g(c)" Time="0.3" Script="NA" Pos="NA";
+Finish p36 "36-g(c)" Value="g(c)" Time="0.321" Script="NA" Pos="NA";
 CF p35 p36
-Finish p37 "37-d <- g(c)" Value="d <- g(c)" Time="0.3" Script="0" Pos="NA,NA,NA,NA";
+Finish p37 "37-d <- g(c)" Value="d <- g(c)" Time="0.322" Script="0" Pos="NA,NA,NA,NA";
 CF p36 p37
 DF d21 p37
-Data d23 "23-d" Value="1000" ValType="numeric";
+Data d23 "23-d" Value="1000";
 DF p37 d23
-Start p38 "38-h()" Value="h()" Time="0.3" Script="NA" Pos="NA";
+Start p38 "38-h()" Value="h()" Time="0.327" Script="NA" Pos="NA";
 CF p37 p38
-Operation p39 "39-h" Value="h" Time="0.3" Script="NA" Pos="NA";
+Operation p39 "39-h" Value="h" Time="0.329" Script="NA" Pos="NA";
 DF d4 p39
 CF p38 p39
-Data d24 "24-h() return" Value="333" ValType="numeric";
-Operation p40 "40-d <- 333" Value="d <- 333" Time="0.31" Script="0" Pos="30,4,30,11";
+Data d24 "24-h() return" Value="333";
+Operation p40 "40-d <- 333" Value="d <- 333" Time="0.336" Script="0" Pos="30,4,30,11";
 CF p39 p40
 DF p40 d24
-Data d25 "25-d" Value="333" ValType="numeric";
+Data d25 "25-d" Value="333";
 DF p40 d25
-Finish p41 "41-h()" Value="h()" Time="0.31" Script="NA" Pos="NA";
+Finish p41 "41-h()" Value="h()" Time="0.342" Script="NA" Pos="NA";
 CF p40 p41
-Start p42 "42-i()" Value="i()" Time="0.31" Script="NA" Pos="NA";
+Start p42 "42-i()" Value="i()" Time="0.347" Script="NA" Pos="NA";
 CF p41 p42
-Operation p43 "43-i" Value="i" Time="0.31" Script="NA" Pos="NA";
+Operation p43 "43-i" Value="i" Time="0.348" Script="NA" Pos="NA";
 DF d5 p43
 CF p42 p43
-Operation p44 "44-x <<- 1000" Value="x <<- 1000" Time="0.31" Script="0" Pos="NA,NA,NA,NA";
+Operation p44 "44-x <<- 1000" Value="x <<- 1000" Time="0.353" Script="0" Pos="NA,NA,NA,NA";
 CF p43 p44
-Data d26 "26-x" Value="1000" ValType="numeric";
+Data d26 "26-x" Value="1000";
 DF p44 d26
-Start p45 "45-j(x)" Value="j(x)" Time="0.33" Script="NA" Pos="NA";
+Start p45 "45-j(x)" Value="j(x)" Time="0.359" Script="NA" Pos="NA";
 CF p44 p45
-Binding p46 "46-xx  <-  x" Time="0.33" Script="NA" Pos="NA";
+Binding p46 "46-xx  <-  x" Time="0.36" Script="NA" Pos="NA";
 CF p45 p46
 DF d26 p46
-Data d27 "27-xx" Value="1000" ValType="numeric";
+Data d27 "27-xx" Value="1000";
 DF p46 d27
-Operation p47 "47-j" Value="j" Time="0.33" Script="NA" Pos="NA";
+Operation p47 "47-j" Value="j" Time="0.37" Script="NA" Pos="NA";
 DF d6 p47
 DF d27 p47
 CF p46 p47
-Data d28 "28-j(x) return" Value="3" ValType="numeric";
-Operation p48 "48-return(3)" Value="return(3)" Time="0.34" Script="0" Pos="NA,NA,NA,NA";
+Data d28 "28-j(x) return" Value="3";
+Operation p48 "48-return(3)" Value="return(3)" Time="0.38" Script="0" Pos="NA,NA,NA,NA";
 CF p47 p48
 DF p48 d28
-Finish p49 "49-j(x)" Value="j(x)" Time="0.34" Script="NA" Pos="NA";
+Finish p49 "49-j(x)" Value="j(x)" Time="0.385" Script="NA" Pos="NA";
 CF p48 p49
-Data d29 "29-i() return" Value="3" ValType="numeric";
-Operation p50 "50-return(j(x))" Value="return(j(x))" Time="0.34" Script="0" Pos="NA,NA,NA,NA";
+Data d29 "29-i() return" Value="3";
+Operation p50 "50-return(j(x))" Value="return(j(x))" Time="0.387" Script="0" Pos="NA,NA,NA,NA";
 CF p49 p50
 DF p50 d29
 DF d6 p50
 DF d26 p50
-Finish p51 "51-i()" Value="i()" Time="0.36" Script="NA" Pos="NA";
+Finish p51 "51-i()" Value="i()" Time="0.399" Script="NA" Pos="NA";
 CF p50 p51
-Start p52 "52-k(10)" Value="k(10)" Time="0.36" Script="NA" Pos="NA";
+Start p52 "52-k(10)" Value="k(10)" Time="0.4" Script="NA" Pos="NA";
 CF p51 p52
-Binding p53 "53-xx  <-  10" Time="0.36" Script="NA" Pos="NA";
+Binding p53 "53-xx  <-  10" Time="0.401" Script="NA" Pos="NA";
 CF p52 p53
-Data d30 "30-xx" Value="10" ValType="numeric";
+Data d30 "30-xx" Value="10";
 DF p53 d30
-Operation p54 "54-k" Value="k" Time="0.36" Script="NA" Pos="NA";
+Operation p54 "54-k" Value="k" Time="0.404" Script="NA" Pos="NA";
 DF d7 p54
 DF d30 p54
 CF p53 p54
-Data d31 "31-k(10) return" Value="11" ValType="numeric";
-Operation p55 "55-return(xx + yy)" Value="return(xx + yy)" Time="0.38" Script="0" Pos="NA,NA,NA,NA";
+Data d31 "31-k(10) return" Value="11";
+Operation p55 "55-return(xx + yy)" Value="return(xx + yy)" Time="0.414" Script="0" Pos="NA,NA,NA,NA";
 CF p54 p55
 DF p55 d31
 DF d30 p55
-Finish p56 "56-k(10)" Value="k(10)" Time="0.38" Script="NA" Pos="NA";
+Finish p56 "56-k(10)" Value="k(10)" Time="0.422" Script="NA" Pos="NA";
 CF p55 p56
-Start p57 "57-k(a, b)" Value="k(a, b)" Time="0.38" Script="NA" Pos="NA";
+Start p57 "57-k(a, b)" Value="k(a, b)" Time="0.423" Script="NA" Pos="NA";
 CF p56 p57
-Binding p58 "58-xx  <-  a" Time="0.38" Script="NA" Pos="NA";
+Binding p58 "58-xx  <-  a" Time="0.424" Script="NA" Pos="NA";
 CF p57 p58
 DF d12 p58
-Data d32 "32-xx" Value="20" ValType="numeric";
+Data d32 "32-xx" Value="20";
 DF p58 d32
-Binding p59 "59-yy  <-  b" Time="0.41" Script="NA" Pos="NA";
+Binding p59 "59-yy  <-  b" Time="0.432" Script="NA" Pos="NA";
 CF p58 p59
 DF d9 p59
-Data d33 "33-yy" Value="2" ValType="numeric";
+Data d33 "33-yy" Value="2";
 DF p59 d33
-Operation p60 "60-k" Value="k" Time="0.41" Script="NA" Pos="NA";
+Operation p60 "60-k" Value="k" Time="0.438" Script="NA" Pos="NA";
 DF d7 p60
 DF d32 p60
 DF d33 p60
 CF p59 p60
-Data d34 "34-k(a,b) return" Value="22" ValType="numeric";
-Operation p61 "61-return(xx + yy)" Value="return(xx + yy)" Time="0.42" Script="0" Pos="NA,NA,NA,NA";
+Data d34 "34-k(a,b) return" Value="22";
+Operation p61 "61-return(xx + yy)" Value="return(xx + yy)" Time="0.479" Script="0" Pos="NA,NA,NA,NA";
 CF p60 p61
 DF p61 d34
 DF d32 p61
 DF d33 p61
-Finish p62 "62-k(a, b)" Value="k(a, b)" Time="0.43" Script="NA" Pos="NA";
+Finish p62 "62-k(a, b)" Value="k(a, b)" Time="0.487" Script="NA" Pos="NA";
 CF p61 p62
-Start p63 "63-k(a)" Value="k(a)" Time="0.43" Script="NA" Pos="NA";
+Start p63 "63-k(a)" Value="k(a)" Time="0.489" Script="NA" Pos="NA";
 CF p62 p63
-Binding p64 "64-xx  <-  a" Time="0.43" Script="NA" Pos="NA";
+Binding p64 "64-xx  <-  a" Time="0.49" Script="NA" Pos="NA";
 CF p63 p64
 DF d12 p64
-Data d35 "35-xx" Value="20" ValType="numeric";
+Data d35 "35-xx" Value="20";
 DF p64 d35
-Operation p65 "65-k" Value="k" Time="0.43" Script="NA" Pos="NA";
+Operation p65 "65-k" Value="k" Time="0.498" Script="NA" Pos="NA";
 DF d7 p65
 DF d35 p65
 CF p64 p65
-Data d36 "36-k(a) return" Value="21" ValType="numeric";
-Operation p66 "66-return(xx + yy)" Value="return(xx + yy)" Time="0.45" Script="0" Pos="NA,NA,NA,NA";
+Data d36 "36-k(a) return" Value="21";
+Operation p66 "66-return(xx + yy)" Value="return(xx + yy)" Time="0.508" Script="0" Pos="NA,NA,NA,NA";
 CF p65 p66
 DF p66 d36
 DF d35 p66
-Finish p67 "67-k(a)" Value="k(a)" Time="0.45" Script="NA" Pos="NA";
+Finish p67 "67-k(a)" Value="k(a)" Time="0.516" Script="NA" Pos="NA";
 CF p66 p67
-Start p68 "68-k(yy = b)" Value="k(yy = b)" Time="0.45" Script="NA" Pos="NA";
+Start p68 "68-k(yy = b)" Value="k(yy = b)" Time="0.517" Script="NA" Pos="NA";
 CF p67 p68
-Binding p69 "69-yy  <-  b" Time="0.45" Script="NA" Pos="NA";
+Binding p69 "69-yy  <-  b" Time="0.518" Script="NA" Pos="NA";
 CF p68 p69
 DF d9 p69
-Data d37 "37-yy" Value="2" ValType="numeric";
+Data d37 "37-yy" Value="2";
 DF p69 d37
-Operation p70 "70-k" Value="k" Time="0.46" Script="NA" Pos="NA";
+Operation p70 "70-k" Value="k" Time="0.524" Script="NA" Pos="NA";
 DF d7 p70
 DF d37 p70
 CF p69 p70
-Data d38 "38-k(yy=b) return" Value="2" ValType="numeric";
-Operation p71 "71-return(xx + yy)" Value="return(xx + yy)" Time="0.46" Script="0" Pos="NA,NA,NA,NA";
+Data d38 "38-k(yy=b) return" Value="2";
+Operation p71 "71-return(xx + yy)" Value="return(xx + yy)" Time="0.531" Script="0" Pos="NA,NA,NA,NA";
 CF p70 p71
 DF p71 d38
 DF d37 p71
-Finish p72 "72-k(yy = b)" Value="k(yy = b)" Time="0.46" Script="NA" Pos="NA";
+Finish p72 "72-k(yy = b)" Value="k(yy = b)" Time="0.54" Script="NA" Pos="NA";
 CF p71 p72
-Start p73 "73-k()" Value="k()" Time="0.48" Script="NA" Pos="NA";
+Start p73 "73-k()" Value="k()" Time="0.541" Script="NA" Pos="NA";
 CF p72 p73
-Operation p74 "74-k" Value="k" Time="0.48" Script="NA" Pos="NA";
+Operation p74 "74-k" Value="k" Time="0.542" Script="NA" Pos="NA";
 DF d7 p74
 CF p73 p74
-Data d39 "39-k() return" Value="1" ValType="numeric";
-Operation p75 "75-return(xx + yy)" Value="return(xx + yy)" Time="0.48" Script="0" Pos="NA,NA,NA,NA";
+Data d39 "39-k() return" Value="1";
+Operation p75 "75-return(xx + yy)" Value="return(xx + yy)" Time="0.549" Script="0" Pos="NA,NA,NA,NA";
 CF p74 p75
 DF p75 d39
-Finish p76 "76-k()" Value="k()" Time="0.48" Script="NA" Pos="NA";
+Finish p76 "76-k()" Value="k()" Time="0.556" Script="NA" Pos="NA";
 CF p75 p76
-Start p77 "77-k(b + 1)" Value="k(b + 1)" Time="0.48" Script="NA" Pos="NA";
+Start p77 "77-k(b + 1)" Value="k(b + 1)" Time="0.557" Script="NA" Pos="NA";
 CF p76 p77
-Binding p78 "78-xx  <-  b + 1" Time="0.48" Script="NA" Pos="NA";
+Binding p78 "78-xx  <-  b + 1" Time="0.558" Script="NA" Pos="NA";
 CF p77 p78
 DF d9 p78
-Data d40 "40-xx" Value="3" ValType="numeric";
+Data d40 "40-xx" Value="3";
 DF p78 d40
-Operation p79 "79-k" Value="k" Time="0.5" Script="NA" Pos="NA";
+Operation p79 "79-k" Value="k" Time="0.565" Script="NA" Pos="NA";
 DF d7 p79
 DF d40 p79
 CF p78 p79
-Data d41 "41-k(b+1) return" Value="4" ValType="numeric";
-Operation p80 "80-return(xx + yy)" Value="return(xx + yy)" Time="0.5" Script="0" Pos="NA,NA,NA,NA";
+Data d41 "41-k(b+1) return" Value="4";
+Operation p80 "80-return(xx + yy)" Value="return(xx + yy)" Time="0.575" Script="0" Pos="NA,NA,NA,NA";
 CF p79 p80
 DF p80 d41
 DF d40 p80
-Finish p81 "81-k(b + 1)" Value="k(b + 1)" Time="0.51" Script="NA" Pos="NA";
+Finish p81 "81-k(b + 1)" Value="k(b + 1)" Time="0.583" Script="NA" Pos="NA";
 CF p80 p81
-Start p82 "82-k(a + b + 1)" Value="k(a + b + 1)" Time="0.51" Script="NA" Pos="NA";
+Start p82 "82-k(a + b + 1)" Value="k(a + b + 1)" Time="0.584" Script="NA" Pos="NA";
 CF p81 p82
-Binding p83 "83-xx  <-  a + b + 1" Time="0.51" Script="NA" Pos="NA";
+Binding p83 "83-xx  <-  a + b + 1" Time="0.585" Script="NA" Pos="NA";
 CF p82 p83
 DF d12 p83
 DF d9 p83
-Data d42 "42-xx" Value="23" ValType="numeric";
+Data d42 "42-xx" Value="23";
 DF p83 d42
-Operation p84 "84-k" Value="k" Time="0.51" Script="NA" Pos="NA";
+Operation p84 "84-k" Value="k" Time="0.594" Script="NA" Pos="NA";
 DF d7 p84
 DF d42 p84
 CF p83 p84
-Data d43 "43-k(a+b+1) return" Value="24" ValType="numeric";
-Operation p85 "85-return(xx + yy)" Value="return(xx + yy)" Time="0.53" Script="0" Pos="NA,NA,NA,NA";
+Data d43 "43-k(a+b+1) return" Value="24";
+Operation p85 "85-return(xx + yy)" Value="return(xx + yy)" Time="0.6" Script="0" Pos="NA,NA,NA,NA";
 CF p84 p85
 DF p85 d43
 DF d42 p85
-Finish p86 "86-k(a + b + 1)" Value="k(a + b + 1)" Time="0.53" Script="NA" Pos="NA";
+Finish p86 "86-k(a + b + 1)" Value="k(a + b + 1)" Time="0.608" Script="NA" Pos="NA";
 CF p85 p86
-Finish p87 "87-ScopeTest.R" Value="ScopeTest.R" Time="0.53" Script="NA" Pos="NA";
+Finish p87 "87-ScopeTest.R" Value="ScopeTest.R" Time="0.609" Script="NA" Pos="NA";
 CF p86 p87
 

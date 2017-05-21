@@ -9,7 +9,7 @@
 "p1" : {
 "rdt:name" : "DailySolarRadiation.R",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "0.71",
+"rdt:elapsedTime" : "0.748",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -20,7 +20,7 @@
 "p2" : {
 "rdt:name" : "read.data <- function() {    data.file <<- \"met-daily.csv\"  ",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.71",
+"rdt:elapsedTime" : "0.75",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "14",
 "rdt:startCol" : "1",
@@ -31,7 +31,7 @@
 "p3" : {
 "rdt:name" : "calibrate <- function(xx) {    date.start <- as.Date(calibra",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.71",
+"rdt:elapsedTime" : "0.756",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -42,7 +42,7 @@
 "p4" : {
 "rdt:name" : "quality.control <- function(xx) {    repeats <- quality.cont",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.71",
+"rdt:elapsedTime" : "0.762",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -53,7 +53,7 @@
 "p5" : {
 "rdt:name" : "gap.fill <- function(xx) {    slope <- gap.fill.parameters$s",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.73",
+"rdt:elapsedTime" : "0.77",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -64,7 +64,7 @@
 "p6" : {
 "rdt:name" : "write.result <- function(fn, xx) {    file.out <- paste(getw",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.73",
+"rdt:elapsedTime" : "0.775",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -75,7 +75,7 @@
 "p7" : {
 "rdt:name" : "plot.data <- function(xx, v) {    if (v == \"R\")         name",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.73",
+"rdt:elapsedTime" : "0.781",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -86,7 +86,7 @@
 "p8" : {
 "rdt:name" : "get.data",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "0.75",
+"rdt:elapsedTime" : "0.787",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -97,7 +97,7 @@
 "p9" : {
 "rdt:name" : "raw.data <- read.data()",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "0.75",
+"rdt:elapsedTime" : "0.788",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -108,7 +108,7 @@
 "p10" : {
 "rdt:name" : "read.data()",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "0.75",
+"rdt:elapsedTime" : "0.793",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -119,7 +119,7 @@
 "p11" : {
 "rdt:name" : "read.data",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.75",
+"rdt:elapsedTime" : "0.794",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -130,7 +130,7 @@
 "p12" : {
 "rdt:name" : "data.file <<- \"met-daily.csv\"",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.75",
+"rdt:elapsedTime" : "0.801",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "16",
 "rdt:startCol" : "3",
@@ -141,7 +141,7 @@
 "p13" : {
 "rdt:name" : "cal.file <<- \"par-cal.csv\"",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.76",
+"rdt:elapsedTime" : "0.806",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "17",
 "rdt:startCol" : "3",
@@ -152,7 +152,7 @@
 "p14" : {
 "rdt:name" : "qc.file <<- \"par-qc.csv\"",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.76",
+"rdt:elapsedTime" : "0.812",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "18",
 "rdt:startCol" : "3",
@@ -163,7 +163,7 @@
 "p15" : {
 "rdt:name" : "gf.file <<- \"par-gf.csv\"",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.76",
+"rdt:elapsedTime" : "0.818",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "19",
 "rdt:startCol" : "3",
@@ -174,7 +174,7 @@
 "p16" : {
 "rdt:name" : "start.date <<- \"2012-01-01\"",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.78",
+"rdt:elapsedTime" : "0.823",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "20",
 "rdt:startCol" : "3",
@@ -185,7 +185,7 @@
 "p17" : {
 "rdt:name" : "end.date <<- \"2012-03-31\"",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.78",
+"rdt:elapsedTime" : "0.828",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "21",
 "rdt:startCol" : "3",
@@ -196,7 +196,7 @@
 "p18" : {
 "rdt:name" : "variable <<- \"slrt\"",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.78",
+"rdt:elapsedTime" : "0.837",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "22",
 "rdt:startCol" : "3",
@@ -207,7 +207,7 @@
 "p19" : {
 "rdt:name" : "zz <- read.csv(data.file)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.85",
+"rdt:elapsedTime" : "0.965",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "25",
 "rdt:startCol" : "3",
@@ -218,7 +218,7 @@
 "p20" : {
 "rdt:name" : "zz$date <- as.Date(zz$date)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.9",
+"rdt:elapsedTime" : "1.017",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "26",
 "rdt:startCol" : "3",
@@ -229,7 +229,7 @@
 "p21" : {
 "rdt:name" : "all.data <<- subset(zz, zz$date >= start.date & zz$date <= e",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.92",
+"rdt:elapsedTime" : "1.036",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "27",
 "rdt:startCol" : "3",
@@ -240,7 +240,7 @@
 "p22" : {
 "rdt:name" : "raw.data <<- all.data[c(\"date\", variable)]",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.93",
+"rdt:elapsedTime" : "1.062",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "28",
 "rdt:startCol" : "3",
@@ -251,7 +251,7 @@
 "p23" : {
 "rdt:name" : "names(raw.data)[names(raw.data) == variable] <<- \"raw\"",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.98",
+"rdt:elapsedTime" : "1.078",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "29",
 "rdt:startCol" : "3",
@@ -262,7 +262,7 @@
 "p24" : {
 "rdt:name" : "data.rows <<- nrow(raw.data)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1",
+"rdt:elapsedTime" : "1.089",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "30",
 "rdt:startCol" : "3",
@@ -273,7 +273,7 @@
 "p25" : {
 "rdt:name" : "calibration.parameters <<- read.csv(cal.file)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.01",
+"rdt:elapsedTime" : "1.104",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "33",
 "rdt:startCol" : "3",
@@ -284,7 +284,7 @@
 "p26" : {
 "rdt:name" : "quality.control.parameters <<- read.csv(qc.file)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.03",
+"rdt:elapsedTime" : "1.123",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "34",
 "rdt:startCol" : "3",
@@ -295,7 +295,7 @@
 "p27" : {
 "rdt:name" : "gap.fill.parameters <<- read.csv(gf.file)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.05",
+"rdt:elapsedTime" : "1.143",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "35",
 "rdt:startCol" : "3",
@@ -306,7 +306,7 @@
 "p28" : {
 "rdt:name" : "raw.data$cal <<- 0",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.06",
+"rdt:elapsedTime" : "1.161",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "38",
 "rdt:startCol" : "3",
@@ -317,7 +317,7 @@
 "p29" : {
 "rdt:name" : "raw.data$cal.f <<- \"\"",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.08",
+"rdt:elapsedTime" : "1.172",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "39",
 "rdt:startCol" : "3",
@@ -328,7 +328,7 @@
 "p30" : {
 "rdt:name" : "raw.data$qc <<- 0",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.09",
+"rdt:elapsedTime" : "1.183",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "40",
 "rdt:startCol" : "3",
@@ -339,7 +339,7 @@
 "p31" : {
 "rdt:name" : "raw.data$qc.f <<- \"\"",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.09",
+"rdt:elapsedTime" : "1.193",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "41",
 "rdt:startCol" : "3",
@@ -350,7 +350,7 @@
 "p32" : {
 "rdt:name" : "raw.data$gf <<- 0",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.11",
+"rdt:elapsedTime" : "1.204",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "42",
 "rdt:startCol" : "3",
@@ -361,7 +361,7 @@
 "p33" : {
 "rdt:name" : "raw.data$gf.f <<- \"\"",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.11",
+"rdt:elapsedTime" : "1.215",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "43",
 "rdt:startCol" : "3",
@@ -372,7 +372,7 @@
 "p34" : {
 "rdt:name" : "return(raw.data)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.12",
+"rdt:elapsedTime" : "1.23",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "45",
 "rdt:startCol" : "3",
@@ -383,7 +383,7 @@
 "p35" : {
 "rdt:name" : "read.data()",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.14",
+"rdt:elapsedTime" : "1.239",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -394,7 +394,7 @@
 "p36" : {
 "rdt:name" : "raw.data <- read.data()",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.14",
+"rdt:elapsedTime" : "1.24",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -405,7 +405,7 @@
 "p37" : {
 "rdt:name" : "plot.data(raw.data, \"R\")",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "1.14",
+"rdt:elapsedTime" : "1.247",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -416,7 +416,7 @@
 "p38" : {
 "rdt:name" : "xx  <-  raw.data",
 "rdt:type" : "Binding",
-"rdt:elapsedTime" : "1.14",
+"rdt:elapsedTime" : "1.248",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -427,7 +427,7 @@
 "p39" : {
 "rdt:name" : "v <- \"R\"",
 "rdt:type" : "Binding",
-"rdt:elapsedTime" : "1.16",
+"rdt:elapsedTime" : "1.258",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -438,7 +438,7 @@
 "p40" : {
 "rdt:name" : "plot.data",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.16",
+"rdt:elapsedTime" : "1.262",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -449,7 +449,7 @@
 "p41" : {
 "rdt:name" : "if (v == \"R\") name <- \"raw\" else if (v == \"C\") name <- \"cali",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "1.17",
+"rdt:elapsedTime" : "1.277",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -460,7 +460,7 @@
 "p42" : {
 "rdt:name" : "if",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "1.17",
+"rdt:elapsedTime" : "1.281",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -471,7 +471,7 @@
 "p43" : {
 "rdt:name" : "name <- \"raw\"",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.17",
+"rdt:elapsedTime" : "1.283",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -482,7 +482,7 @@
 "p44" : {
 "rdt:name" : "if",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.17",
+"rdt:elapsedTime" : "1.287",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -493,7 +493,7 @@
 "p45" : {
 "rdt:name" : "if (v == \"R\") name <- \"raw\" else if (v == \"C\") name <- \"cali",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.17",
+"rdt:elapsedTime" : "1.288",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -504,7 +504,7 @@
 "p46" : {
 "rdt:name" : "dname <- paste(name, \"-data.csv\", sep = \"\")",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.19",
+"rdt:elapsedTime" : "1.29",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -515,7 +515,7 @@
 "p47" : {
 "rdt:name" : "jname <- paste(name, \"-plot.jpeg\", sep = \"\")",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.22",
+"rdt:elapsedTime" : "1.298",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -526,7 +526,7 @@
 "p48" : {
 "rdt:name" : "dpfile <- paste(getwd(), \"/\", jname, sep = \"\")",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.22",
+"rdt:elapsedTime" : "1.309",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -537,7 +537,7 @@
 "p49" : {
 "rdt:name" : "jpeg(file = dpfile, width = 800, height = 500, quality = 100",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.23",
+"rdt:elapsedTime" : "1.322",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -548,7 +548,7 @@
 "p50" : {
 "rdt:name" : "xmin <- xx$date[1]",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.23",
+"rdt:elapsedTime" : "1.328",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -559,7 +559,7 @@
 "p51" : {
 "rdt:name" : "xmax <- xx$date[data.rows]",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.25",
+"rdt:elapsedTime" : "1.34",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -570,7 +570,7 @@
 "p52" : {
 "rdt:name" : "xlim <- c(xmin, xmax)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.27",
+"rdt:elapsedTime" : "1.353",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -581,7 +581,7 @@
 "p53" : {
 "rdt:name" : "xrange <- xmax - xmin",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.27",
+"rdt:elapsedTime" : "1.401",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -592,7 +592,7 @@
 "p54" : {
 "rdt:name" : "daterange <- c(as.POSIXlt(xmin), as.POSIXlt(xmax))",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.28",
+"rdt:elapsedTime" : "1.412",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -603,7 +603,7 @@
 "p55" : {
 "rdt:name" : "ymin <- min(xx$raw, xx$cal, xx$gc, xx$gf, na.rm = TRUE)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.3",
+"rdt:elapsedTime" : "1.431",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -614,7 +614,7 @@
 "p56" : {
 "rdt:name" : "ymax <- max(xx$raw, xx$cal, xx$gc, xx$gf, na.rm = TRUE)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.31",
+"rdt:elapsedTime" : "1.45",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -625,7 +625,7 @@
 "p57" : {
 "rdt:name" : "ylim <- c(ymin, ymax)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.33",
+"rdt:elapsedTime" : "1.464",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -636,7 +636,7 @@
 "p58" : {
 "rdt:name" : "par(mar = c(5.1, 5.1, 5.1, 10.1))",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.33",
+"rdt:elapsedTime" : "1.477",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -647,7 +647,7 @@
 "p59" : {
 "rdt:name" : "plot(xaxt = \"n\", xlim, ylim, cex.main = 1.7, cex.axis = 1.7,",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.34",
+"rdt:elapsedTime" : "1.496",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -658,7 +658,7 @@
 "p60" : {
 "rdt:name" : "if (xrange <= 30) axis.Date(1, at = seq(daterange[1], datera",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "1.36",
+"rdt:elapsedTime" : "1.504",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -669,7 +669,7 @@
 "p61" : {
 "rdt:name" : "if",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "1.36",
+"rdt:elapsedTime" : "1.517",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -680,7 +680,7 @@
 "p62" : {
 "rdt:name" : "axis.Date(1, at = seq(daterange[1], daterange[2], by = \"week",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.36",
+"rdt:elapsedTime" : "1.526",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -691,7 +691,7 @@
 "p63" : {
 "rdt:name" : "if",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.37",
+"rdt:elapsedTime" : "1.534",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -702,7 +702,7 @@
 "p64" : {
 "rdt:name" : "if (xrange <= 30) axis.Date(1, at = seq(daterange[1], datera",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.37",
+"rdt:elapsedTime" : "1.535",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -713,7 +713,7 @@
 "p65" : {
 "rdt:name" : "good <- subset(xx, xx$qc.f == \"\")",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.37",
+"rdt:elapsedTime" : "1.537",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -724,7 +724,7 @@
 "p66" : {
 "rdt:name" : "ques <- subset(xx, xx$qc.f == \"Q\")",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.39",
+"rdt:elapsedTime" : "1.552",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -735,7 +735,7 @@
 "p67" : {
 "rdt:name" : "mea <- subset(xx, xx$gf.f == \"\")",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.39",
+"rdt:elapsedTime" : "1.566",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -746,7 +746,7 @@
 "p68" : {
 "rdt:name" : "mod <- subset(xx, xx$gf.f == \"E\")",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.41",
+"rdt:elapsedTime" : "1.58",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -757,7 +757,7 @@
 "p69" : {
 "rdt:name" : "if (v == \"R\") {    title(main = \"Raw Data\")    points(xx$dat",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "1.42",
+"rdt:elapsedTime" : "1.595",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -768,7 +768,7 @@
 "p70" : {
 "rdt:name" : "if",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "1.44",
+"rdt:elapsedTime" : "1.619",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -779,7 +779,7 @@
 "p71" : {
 "rdt:name" : "title(main = \"Raw Data\")",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.44",
+"rdt:elapsedTime" : "1.622",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -790,7 +790,7 @@
 "p72" : {
 "rdt:name" : "points(xx$date, xx$raw, lwd = 2, col = \"black\")",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.46",
+"rdt:elapsedTime" : "1.629",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -801,7 +801,7 @@
 "p73" : {
 "rdt:name" : "if",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.46",
+"rdt:elapsedTime" : "1.638",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -812,7 +812,7 @@
 "p74" : {
 "rdt:name" : "if (v == \"R\") {    title(main = \"Raw Data\")    points(xx$dat",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.46",
+"rdt:elapsedTime" : "1.639",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -823,7 +823,7 @@
 "p75" : {
 "rdt:name" : "labs <- c(\"Raw\", \"Calibrated\", \"QC Check\", \"Modeled\")",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.46",
+"rdt:elapsedTime" : "1.641",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -834,7 +834,7 @@
 "p76" : {
 "rdt:name" : "cols <- c(\"black\", \"blue\", \"red\", \"green\")",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.47",
+"rdt:elapsedTime" : "1.649",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -845,7 +845,7 @@
 "p77" : {
 "rdt:name" : "par(xpd = TRUE)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.47",
+"rdt:elapsedTime" : "1.657",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -856,7 +856,7 @@
 "p78" : {
 "rdt:name" : "legend(xmax + xrange/15, ymax, labs, cols, cex = 1)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.47",
+"rdt:elapsedTime" : "1.665",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -867,7 +867,7 @@
 "p79" : {
 "rdt:name" : "dev.off()",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.5",
+"rdt:elapsedTime" : "1.686",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -878,7 +878,7 @@
 "p80" : {
 "rdt:name" : "plot.data(raw.data, \"R\")",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.5",
+"rdt:elapsedTime" : "1.694",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -889,7 +889,7 @@
 "p81" : {
 "rdt:name" : "get.data",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.5",
+"rdt:elapsedTime" : "1.695",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -900,7 +900,7 @@
 "p82" : {
 "rdt:name" : "analyze.data",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "1.5",
+"rdt:elapsedTime" : "1.696",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -911,7 +911,7 @@
 "p83" : {
 "rdt:name" : "calibrate.data",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "1.5",
+"rdt:elapsedTime" : "1.698",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -922,7 +922,7 @@
 "p84" : {
 "rdt:name" : "calibrated.data <- calibrate(raw.data)",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "1.5",
+"rdt:elapsedTime" : "1.699",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -933,7 +933,7 @@
 "p85" : {
 "rdt:name" : "calibrate(raw.data)",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "1.52",
+"rdt:elapsedTime" : "1.706",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -944,7 +944,7 @@
 "p86" : {
 "rdt:name" : "xx  <-  raw.data",
 "rdt:type" : "Binding",
-"rdt:elapsedTime" : "1.52",
+"rdt:elapsedTime" : "1.707",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -955,7 +955,7 @@
 "p87" : {
 "rdt:name" : "calibrate",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.55",
+"rdt:elapsedTime" : "1.716",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -966,7 +966,7 @@
 "p88" : {
 "rdt:name" : "date.start <- as.Date(calibration.parameters$start)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.55",
+"rdt:elapsedTime" : "1.722",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -977,7 +977,7 @@
 "p89" : {
 "rdt:name" : "date.finish <- as.Date(calibration.parameters$finish)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.57",
+"rdt:elapsedTime" : "1.734",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -988,7 +988,7 @@
 "p90" : {
 "rdt:name" : "days <- as.numeric(date.finish - date.start)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.58",
+"rdt:elapsedTime" : "1.745",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -999,7 +999,7 @@
 "p91" : {
 "rdt:name" : "daily.drift <- calibration.parameters$correction/days",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.58",
+"rdt:elapsedTime" : "1.755",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1010,7 +1010,7 @@
 "p92" : {
 "rdt:name" : "for (i in 1:data.rows) {    if (is.na(xx$raw[i])) {        x",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "1.6",
+"rdt:elapsedTime" : "1.766",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1021,7 +1021,7 @@
 "p93" : {
 "rdt:name" : "for loop",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "1.6",
+"rdt:elapsedTime" : "1.785",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1032,7 +1032,7 @@
 "p94" : {
 "rdt:name" : "i <- 1",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.6",
+"rdt:elapsedTime" : "1.819",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1043,7 +1043,7 @@
 "p95" : {
 "rdt:name" : "if (is.na(xx$raw[i])) {    xx$cal[i] <- NA} else {    xx$cal",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "1.61",
+"rdt:elapsedTime" : "1.823",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1054,7 +1054,7 @@
 "p96" : {
 "rdt:name" : "if",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "1.61",
+"rdt:elapsedTime" : "1.833",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1065,7 +1065,7 @@
 "p97" : {
 "rdt:name" : "xx$cal[i] <- (1 + (i - 1) * daily.drift) * xx$raw[i]",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.61",
+"rdt:elapsedTime" : "1.836",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1076,7 +1076,7 @@
 "p98" : {
 "rdt:name" : "xx$cal.f[i] <- \"C\"",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.63",
+"rdt:elapsedTime" : "1.855",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1087,7 +1087,7 @@
 "p99" : {
 "rdt:name" : "if",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.64",
+"rdt:elapsedTime" : "1.863",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1098,7 +1098,7 @@
 "p100" : {
 "rdt:name" : "if (is.na(xx$raw[i])) {    xx$cal[i] <- NA} else {    xx$cal",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.64",
+"rdt:elapsedTime" : "1.865",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1109,7 +1109,7 @@
 "p101" : {
 "rdt:name" : "for loop",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.64",
+"rdt:elapsedTime" : "1.866",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1120,7 +1120,7 @@
 "p102" : {
 "rdt:name" : "Details Omitted",
 "rdt:type" : "Incomplete",
-"rdt:elapsedTime" : "1.64",
+"rdt:elapsedTime" : "1.875",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1131,7 +1131,7 @@
 "p103" : {
 "rdt:name" : "for (i in 1:data.rows) {    if (is.na(xx$raw[i])) {        x",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.64",
+"rdt:elapsedTime" : "1.876",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1142,7 +1142,7 @@
 "p104" : {
 "rdt:name" : "return(xx)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.66",
+"rdt:elapsedTime" : "1.893",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1153,7 +1153,7 @@
 "p105" : {
 "rdt:name" : "calibrate(raw.data)",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.68",
+"rdt:elapsedTime" : "1.902",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1164,7 +1164,7 @@
 "p106" : {
 "rdt:name" : "calibrated.data <- calibrate(raw.data)",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.68",
+"rdt:elapsedTime" : "1.903",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1175,7 +1175,7 @@
 "p107" : {
 "rdt:name" : "plot.data(calibrated.data, \"C\")",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.71",
+"rdt:elapsedTime" : "1.939",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1186,7 +1186,7 @@
 "p108" : {
 "rdt:name" : "calibrate.data",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.71",
+"rdt:elapsedTime" : "1.952",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1197,7 +1197,7 @@
 "p109" : {
 "rdt:name" : "quality.control.data",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "1.71",
+"rdt:elapsedTime" : "1.953",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1208,7 +1208,7 @@
 "p110" : {
 "rdt:name" : "quality.controlled.data <- quality.control(calibrated.data)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.72",
+"rdt:elapsedTime" : "1.961",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1219,7 +1219,7 @@
 "p111" : {
 "rdt:name" : "plot.data(quality.controlled.data, \"Q\")",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.75",
+"rdt:elapsedTime" : "2.002",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1230,7 +1230,7 @@
 "p112" : {
 "rdt:name" : "quality.control.data",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.77",
+"rdt:elapsedTime" : "2.013",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1241,7 +1241,7 @@
 "p113" : {
 "rdt:name" : "gap.fill.data",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "1.77",
+"rdt:elapsedTime" : "2.014",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1252,7 +1252,7 @@
 "p114" : {
 "rdt:name" : "gap.filled.data <- gap.fill(quality.controlled.data)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.8",
+"rdt:elapsedTime" : "2.02",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1263,7 +1263,7 @@
 "p115" : {
 "rdt:name" : "plot.data(gap.filled.data, \"G\")",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.83",
+"rdt:elapsedTime" : "2.062",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1274,7 +1274,7 @@
 "p116" : {
 "rdt:name" : "gap.fill.data",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.83",
+"rdt:elapsedTime" : "2.073",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1285,7 +1285,7 @@
 "p117" : {
 "rdt:name" : "analyze.data",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.85",
+"rdt:elapsedTime" : "2.074",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1296,7 +1296,7 @@
 "p118" : {
 "rdt:name" : "write.result(\"processed-data.csv\", gap.filled.data)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.85",
+"rdt:elapsedTime" : "2.078",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1307,7 +1307,7 @@
 "p119" : {
 "rdt:name" : "DailySolarRadiation.R",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.85",
+"rdt:elapsedTime" : "2.09",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -1318,26 +1318,25 @@
 "environment" : {
 "rdt:name" : "environment",
 "rdt:architecture" : "x86_64",
-"rdt:operatingSystem" : "windows",
+"rdt:operatingSystem" : "unix",
 "rdt:language" : "R",
 "rdt:rVersion" : "R version 3.3.1 (2016-06-21)",
 "rdt:script" : "[DIR]/DailySolarRadiation.R",
 "rdt:sourcedScripts" : ""
 ,
-"rdt:scriptTimeStamp" : "2017-01-06T19.13.45EST",
+"rdt:scriptTimeStamp" : "2017-01-06T17.10.23EST",
 "rdt:workingDirectory" : "[DIR]",
 "rdt:ddgDirectory" : "[DIR]/ddg",
-"rdt:ddgTimeStamp" : "2017-04-17T17.03.52EDT",
-"rdt:rdatatrackerVersion" : "2.25.1",
+"rdt:ddgTimeStamp" : "2017-02-09T18.00.32EST",
+"rdt:rdatatrackerVersion" : "2.25.0",
 "rdt:installedPackages" : [
-	{"package" : "RDataTracker", "version" : "2.25.1"}]
+	{"package" : "RDataTracker", "version" : "2.25.0"}]
 }},
 "entity":{
 
 "d1" : {
 "rdt:name" : "read.data",
 "rdt:value" : "#ddg.function",
-"rdt:valType" : "character",
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE",
@@ -1348,7 +1347,6 @@
 "d2" : {
 "rdt:name" : "calibrate",
 "rdt:value" : "#ddg.function",
-"rdt:valType" : "character",
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE",
@@ -1359,7 +1357,6 @@
 "d3" : {
 "rdt:name" : "quality.control",
 "rdt:value" : "#ddg.function",
-"rdt:valType" : "character",
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE",
@@ -1370,7 +1367,6 @@
 "d4" : {
 "rdt:name" : "gap.fill",
 "rdt:value" : "#ddg.function",
-"rdt:valType" : "character",
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE",
@@ -1381,7 +1377,6 @@
 "d5" : {
 "rdt:name" : "write.result",
 "rdt:value" : "#ddg.function",
-"rdt:valType" : "character",
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE",
@@ -1392,7 +1387,6 @@
 "d6" : {
 "rdt:name" : "plot.data",
 "rdt:value" : "#ddg.function",
-"rdt:valType" : "character",
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE",
@@ -1403,7 +1397,6 @@
 "d7" : {
 "rdt:name" : "data.file",
 "rdt:value" : "\"met-daily.csv\"",
-"rdt:valType" : "character",
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE",
@@ -1414,7 +1407,6 @@
 "d8" : {
 "rdt:name" : "cal.file",
 "rdt:value" : "\"par-cal.csv\"",
-"rdt:valType" : "character",
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE",
@@ -1425,7 +1417,6 @@
 "d9" : {
 "rdt:name" : "qc.file",
 "rdt:value" : "\"par-qc.csv\"",
-"rdt:valType" : "character",
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE",
@@ -1436,7 +1427,6 @@
 "d10" : {
 "rdt:name" : "gf.file",
 "rdt:value" : "\"par-gf.csv\"",
-"rdt:valType" : "character",
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE",
@@ -1447,7 +1437,6 @@
 "d11" : {
 "rdt:name" : "start.date",
 "rdt:value" : "\"2012-01-01\"",
-"rdt:valType" : "character",
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE",
@@ -1458,7 +1447,6 @@
 "d12" : {
 "rdt:name" : "end.date",
 "rdt:value" : "\"2012-03-31\"",
-"rdt:valType" : "character",
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE",
@@ -1469,7 +1457,6 @@
 "d13" : {
 "rdt:name" : "variable",
 "rdt:value" : "\"slrt\"",
-"rdt:valType" : "character",
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE",
@@ -1480,7 +1467,6 @@
 "d14" : {
 "rdt:name" : "met-daily.csv",
 "rdt:value" : "data/14-met-daily.csv",
-"rdt:valType" : "character",
 "rdt:type" : "File",
 "rdt:scope" : "undefined",
 "rdt:fromEnv" : "FALSE",
@@ -1491,9 +1477,8 @@
 "d15" : {
 "rdt:name" : "zz",
 "rdt:value" : "data/15-zz-PARTIAL.csv",
-"rdt:valType" : "data frame (factor,integer,numeric,numeric,numeric,integer,integer,integer,numeric,numeric,numeric,numeric,numeric,numeric,numeric,integer,numeric,numeric,integer,integer,numeric,numeric,numeric,numeric)",
 "rdt:type" : "Snapshot",
-"rdt:scope" : "0x00000000141c09e0",
+"rdt:scope" : "0x7f9d9bf71e40",
 "rdt:fromEnv" : "FALSE",
 "rdt:timestamp" : "",
 "rdt:location" : ""
@@ -1502,9 +1487,8 @@
 "d16" : {
 "rdt:name" : "zz",
 "rdt:value" : "data/16-zz-PARTIAL.csv",
-"rdt:valType" : "data frame (Date,integer,numeric,numeric,numeric,integer,integer,integer,numeric,numeric,numeric,numeric,numeric,numeric,numeric,integer,numeric,numeric,integer,integer,numeric,numeric,numeric,numeric)",
 "rdt:type" : "Snapshot",
-"rdt:scope" : "0x00000000141c09e0",
+"rdt:scope" : "0x7f9d9bf71e40",
 "rdt:fromEnv" : "FALSE",
 "rdt:timestamp" : "",
 "rdt:location" : ""
@@ -1513,7 +1497,6 @@
 "d17" : {
 "rdt:name" : "all.data",
 "rdt:value" : "data/17-all.data-PARTIAL.csv",
-"rdt:valType" : "data frame (Date,integer,numeric,numeric,numeric,integer,integer,integer,numeric,numeric,numeric,numeric,numeric,numeric,numeric,integer,numeric,numeric,integer,integer,numeric,numeric,numeric,numeric)",
 "rdt:type" : "Snapshot",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE",
@@ -1524,7 +1507,6 @@
 "d18" : {
 "rdt:name" : "raw.data",
 "rdt:value" : "data/18-raw.data.csv",
-"rdt:valType" : "data frame (Date,numeric)",
 "rdt:type" : "Snapshot",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE",
@@ -1535,7 +1517,6 @@
 "d19" : {
 "rdt:name" : "raw.data",
 "rdt:value" : "data/19-raw.data.csv",
-"rdt:valType" : "data frame (Date,numeric)",
 "rdt:type" : "Snapshot",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE",
@@ -1546,7 +1527,6 @@
 "d20" : {
 "rdt:name" : "data.rows",
 "rdt:value" : "91",
-"rdt:valType" : "integer",
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE",
@@ -1557,7 +1537,6 @@
 "d21" : {
 "rdt:name" : "par-cal.csv",
 "rdt:value" : "data/21-par-cal.csv",
-"rdt:valType" : "character",
 "rdt:type" : "File",
 "rdt:scope" : "undefined",
 "rdt:fromEnv" : "FALSE",
@@ -1568,7 +1547,6 @@
 "d22" : {
 "rdt:name" : "calibration.parameters",
 "rdt:value" : "data/22-calibration.parameters.csv",
-"rdt:valType" : "data frame (factor,factor,numeric)",
 "rdt:type" : "Snapshot",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE",
@@ -1579,7 +1557,6 @@
 "d23" : {
 "rdt:name" : "par-qc.csv",
 "rdt:value" : "data/23-par-qc.csv",
-"rdt:valType" : "character",
 "rdt:type" : "File",
 "rdt:scope" : "undefined",
 "rdt:fromEnv" : "FALSE",
@@ -1590,7 +1567,6 @@
 "d24" : {
 "rdt:name" : "quality.control.parameters",
 "rdt:value" : "data/24-quality.control.parameters.csv",
-"rdt:valType" : "data frame (integer)",
 "rdt:type" : "Snapshot",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE",
@@ -1601,7 +1577,6 @@
 "d25" : {
 "rdt:name" : "par-gf.csv",
 "rdt:value" : "data/25-par-gf.csv",
-"rdt:valType" : "character",
 "rdt:type" : "File",
 "rdt:scope" : "undefined",
 "rdt:fromEnv" : "FALSE",
@@ -1612,7 +1587,6 @@
 "d26" : {
 "rdt:name" : "gap.fill.parameters",
 "rdt:value" : "data/26-gap.fill.parameters.csv",
-"rdt:valType" : "data frame (numeric,integer)",
 "rdt:type" : "Snapshot",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE",
@@ -1623,7 +1597,6 @@
 "d27" : {
 "rdt:name" : "raw.data",
 "rdt:value" : "data/27-raw.data.csv",
-"rdt:valType" : "data frame (Date,numeric,numeric)",
 "rdt:type" : "Snapshot",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE",
@@ -1634,7 +1607,6 @@
 "d28" : {
 "rdt:name" : "raw.data",
 "rdt:value" : "data/28-raw.data.csv",
-"rdt:valType" : "data frame (Date,numeric,numeric,character)",
 "rdt:type" : "Snapshot",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE",
@@ -1645,7 +1617,6 @@
 "d29" : {
 "rdt:name" : "raw.data",
 "rdt:value" : "data/29-raw.data.csv",
-"rdt:valType" : "data frame (Date,numeric,numeric,character,numeric)",
 "rdt:type" : "Snapshot",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE",
@@ -1656,7 +1627,6 @@
 "d30" : {
 "rdt:name" : "raw.data",
 "rdt:value" : "data/30-raw.data.csv",
-"rdt:valType" : "data frame (Date,numeric,numeric,character,numeric,character)",
 "rdt:type" : "Snapshot",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE",
@@ -1667,7 +1637,6 @@
 "d31" : {
 "rdt:name" : "raw.data",
 "rdt:value" : "data/31-raw.data.csv",
-"rdt:valType" : "data frame (Date,numeric,numeric,character,numeric,character,numeric)",
 "rdt:type" : "Snapshot",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE",
@@ -1678,7 +1647,6 @@
 "d32" : {
 "rdt:name" : "raw.data",
 "rdt:value" : "data/32-raw.data.csv",
-"rdt:valType" : "data frame (Date,numeric,numeric,character,numeric,character,numeric,character)",
 "rdt:type" : "Snapshot",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE",
@@ -1689,7 +1657,6 @@
 "d33" : {
 "rdt:name" : "read.data() return",
 "rdt:value" : "data/33-read.data() return.csv",
-"rdt:valType" : "data frame (Date,numeric,numeric,character,numeric,character,numeric,character)",
 "rdt:type" : "Snapshot",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE",
@@ -1700,7 +1667,6 @@
 "d34" : {
 "rdt:name" : "raw.data",
 "rdt:value" : "data/34-raw.data.csv",
-"rdt:valType" : "data frame (Date,numeric,numeric,character,numeric,character,numeric,character)",
 "rdt:type" : "Snapshot",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE",
@@ -1711,9 +1677,8 @@
 "d35" : {
 "rdt:name" : "xx",
 "rdt:value" : "data/35-xx.csv",
-"rdt:valType" : "data frame (Date,numeric,numeric,character,numeric,character,numeric,character)",
 "rdt:type" : "Snapshot",
-"rdt:scope" : "0x00000000120481b8",
+"rdt:scope" : "0x7f9d9b3b1a98",
 "rdt:fromEnv" : "FALSE",
 "rdt:timestamp" : "",
 "rdt:location" : ""
@@ -1722,9 +1687,8 @@
 "d36" : {
 "rdt:name" : "v",
 "rdt:value" : "\"R\"",
-"rdt:valType" : "character",
 "rdt:type" : "Data",
-"rdt:scope" : "0x00000000120481b8",
+"rdt:scope" : "0x7f9d9b3b1a98",
 "rdt:fromEnv" : "FALSE",
 "rdt:timestamp" : "",
 "rdt:location" : ""
@@ -1733,9 +1697,8 @@
 "d37" : {
 "rdt:name" : "name",
 "rdt:value" : "\"raw\"",
-"rdt:valType" : "character",
 "rdt:type" : "Data",
-"rdt:scope" : "0x00000000120481b8",
+"rdt:scope" : "0x7f9d9b3b1a98",
 "rdt:fromEnv" : "FALSE",
 "rdt:timestamp" : "",
 "rdt:location" : ""
@@ -1744,9 +1707,8 @@
 "d38" : {
 "rdt:name" : "dname",
 "rdt:value" : "\"raw-data.csv\"",
-"rdt:valType" : "character",
 "rdt:type" : "Data",
-"rdt:scope" : "0x00000000120481b8",
+"rdt:scope" : "0x7f9d9b3b1a98",
 "rdt:fromEnv" : "FALSE",
 "rdt:timestamp" : "",
 "rdt:location" : ""
@@ -1755,9 +1717,8 @@
 "d39" : {
 "rdt:name" : "jname",
 "rdt:value" : "\"raw-plot.jpeg\"",
-"rdt:valType" : "character",
 "rdt:type" : "Data",
-"rdt:scope" : "0x00000000120481b8",
+"rdt:scope" : "0x7f9d9b3b1a98",
 "rdt:fromEnv" : "FALSE",
 "rdt:timestamp" : "",
 "rdt:location" : ""
@@ -1766,9 +1727,8 @@
 "d40" : {
 "rdt:name" : "dpfile",
 "rdt:value" : "\"[DIR]/raw-plot.jpeg\"",
-"rdt:valType" : "character",
 "rdt:type" : "Data",
-"rdt:scope" : "0x00000000120481b8",
+"rdt:scope" : "0x7f9d9b3b1a98",
 "rdt:fromEnv" : "FALSE",
 "rdt:timestamp" : "",
 "rdt:location" : ""
@@ -1777,9 +1737,8 @@
 "d41" : {
 "rdt:name" : "xmin",
 "rdt:value" : "data/41-xmin.txt",
-"rdt:valType" : "object",
 "rdt:type" : "Snapshot",
-"rdt:scope" : "0x00000000120481b8",
+"rdt:scope" : "0x7f9d9b3b1a98",
 "rdt:fromEnv" : "FALSE",
 "rdt:timestamp" : "",
 "rdt:location" : ""
@@ -1788,9 +1747,8 @@
 "d42" : {
 "rdt:name" : "xmax",
 "rdt:value" : "data/42-xmax.txt",
-"rdt:valType" : "object",
 "rdt:type" : "Snapshot",
-"rdt:scope" : "0x00000000120481b8",
+"rdt:scope" : "0x7f9d9b3b1a98",
 "rdt:fromEnv" : "FALSE",
 "rdt:timestamp" : "",
 "rdt:location" : ""
@@ -1799,9 +1757,8 @@
 "d43" : {
 "rdt:name" : "xlim",
 "rdt:value" : "data/43-xlim.txt",
-"rdt:valType" : "object",
 "rdt:type" : "Snapshot",
-"rdt:scope" : "0x00000000120481b8",
+"rdt:scope" : "0x7f9d9b3b1a98",
 "rdt:fromEnv" : "FALSE",
 "rdt:timestamp" : "",
 "rdt:location" : ""
@@ -1810,9 +1767,8 @@
 "d44" : {
 "rdt:name" : "xrange",
 "rdt:value" : "data/44-xrange.txt",
-"rdt:valType" : "object",
 "rdt:type" : "Snapshot",
-"rdt:scope" : "0x00000000120481b8",
+"rdt:scope" : "0x7f9d9b3b1a98",
 "rdt:fromEnv" : "FALSE",
 "rdt:timestamp" : "",
 "rdt:location" : ""
@@ -1821,9 +1777,8 @@
 "d45" : {
 "rdt:name" : "daterange",
 "rdt:value" : "data/45-daterange.txt",
-"rdt:valType" : "list",
 "rdt:type" : "Snapshot",
-"rdt:scope" : "0x00000000120481b8",
+"rdt:scope" : "0x7f9d9b3b1a98",
 "rdt:fromEnv" : "FALSE",
 "rdt:timestamp" : "",
 "rdt:location" : ""
@@ -1832,9 +1787,8 @@
 "d46" : {
 "rdt:name" : "ymin",
 "rdt:value" : "0",
-"rdt:valType" : "numeric",
 "rdt:type" : "Data",
-"rdt:scope" : "0x00000000120481b8",
+"rdt:scope" : "0x7f9d9b3b1a98",
 "rdt:fromEnv" : "FALSE",
 "rdt:timestamp" : "",
 "rdt:location" : ""
@@ -1843,9 +1797,8 @@
 "d47" : {
 "rdt:name" : "ymax",
 "rdt:value" : "20.7",
-"rdt:valType" : "numeric",
 "rdt:type" : "Data",
-"rdt:scope" : "0x00000000120481b8",
+"rdt:scope" : "0x7f9d9b3b1a98",
 "rdt:fromEnv" : "FALSE",
 "rdt:timestamp" : "",
 "rdt:location" : ""
@@ -1854,9 +1807,8 @@
 "d48" : {
 "rdt:name" : "ylim",
 "rdt:value" : "data/48-ylim.csv",
-"rdt:valType" : "vector (numeric)",
 "rdt:type" : "Snapshot",
-"rdt:scope" : "0x00000000120481b8",
+"rdt:scope" : "0x7f9d9b3b1a98",
 "rdt:fromEnv" : "FALSE",
 "rdt:timestamp" : "",
 "rdt:location" : ""
@@ -1865,9 +1817,8 @@
 "d49" : {
 "rdt:name" : "good",
 "rdt:value" : "data/49-good.csv",
-"rdt:valType" : "data frame (Date,numeric,numeric,character,numeric,character,numeric,character)",
 "rdt:type" : "Snapshot",
-"rdt:scope" : "0x00000000120481b8",
+"rdt:scope" : "0x7f9d9b3b1a98",
 "rdt:fromEnv" : "FALSE",
 "rdt:timestamp" : "",
 "rdt:location" : ""
@@ -1876,9 +1827,8 @@
 "d50" : {
 "rdt:name" : "ques",
 "rdt:value" : "data/50-ques.csv",
-"rdt:valType" : "data frame (Date,numeric,numeric,character,numeric,character,numeric,character)",
 "rdt:type" : "Snapshot",
-"rdt:scope" : "0x00000000120481b8",
+"rdt:scope" : "0x7f9d9b3b1a98",
 "rdt:fromEnv" : "FALSE",
 "rdt:timestamp" : "",
 "rdt:location" : ""
@@ -1887,9 +1837,8 @@
 "d51" : {
 "rdt:name" : "mea",
 "rdt:value" : "data/51-mea.csv",
-"rdt:valType" : "data frame (Date,numeric,numeric,character,numeric,character,numeric,character)",
 "rdt:type" : "Snapshot",
-"rdt:scope" : "0x00000000120481b8",
+"rdt:scope" : "0x7f9d9b3b1a98",
 "rdt:fromEnv" : "FALSE",
 "rdt:timestamp" : "",
 "rdt:location" : ""
@@ -1898,9 +1847,8 @@
 "d52" : {
 "rdt:name" : "mod",
 "rdt:value" : "data/52-mod.csv",
-"rdt:valType" : "data frame (Date,numeric,numeric,character,numeric,character,numeric,character)",
 "rdt:type" : "Snapshot",
-"rdt:scope" : "0x00000000120481b8",
+"rdt:scope" : "0x7f9d9b3b1a98",
 "rdt:fromEnv" : "FALSE",
 "rdt:timestamp" : "",
 "rdt:location" : ""
@@ -1909,9 +1857,8 @@
 "d53" : {
 "rdt:name" : "labs",
 "rdt:value" : "data/53-labs.csv",
-"rdt:valType" : "vector (character)",
 "rdt:type" : "Snapshot",
-"rdt:scope" : "0x00000000120481b8",
+"rdt:scope" : "0x7f9d9b3b1a98",
 "rdt:fromEnv" : "FALSE",
 "rdt:timestamp" : "",
 "rdt:location" : ""
@@ -1920,9 +1867,8 @@
 "d54" : {
 "rdt:name" : "cols",
 "rdt:value" : "data/54-cols.csv",
-"rdt:valType" : "vector (character)",
 "rdt:type" : "Snapshot",
-"rdt:scope" : "0x00000000120481b8",
+"rdt:scope" : "0x7f9d9b3b1a98",
 "rdt:fromEnv" : "FALSE",
 "rdt:timestamp" : "",
 "rdt:location" : ""
@@ -1931,7 +1877,6 @@
 "d55" : {
 "rdt:name" : "plot.data(raw.data,\"R\") return",
 "rdt:value" : "1",
-"rdt:valType" : "integer",
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE",
@@ -1942,7 +1887,6 @@
 "d56" : {
 "rdt:name" : "raw-plot.jpeg",
 "rdt:value" : "data/56-raw-plot.jpeg",
-"rdt:valType" : "character",
 "rdt:type" : "File",
 "rdt:scope" : "undefined",
 "rdt:fromEnv" : "FALSE",
@@ -1953,9 +1897,8 @@
 "d57" : {
 "rdt:name" : "xx",
 "rdt:value" : "data/57-xx.csv",
-"rdt:valType" : "data frame (Date,numeric,numeric,character,numeric,character,numeric,character)",
 "rdt:type" : "Snapshot",
-"rdt:scope" : "0x0000000016be4198",
+"rdt:scope" : "0x7f9d9f2232e8",
 "rdt:fromEnv" : "FALSE",
 "rdt:timestamp" : "",
 "rdt:location" : ""
@@ -1964,9 +1907,8 @@
 "d58" : {
 "rdt:name" : "date.start",
 "rdt:value" : "data/58-date.start.txt",
-"rdt:valType" : "object",
 "rdt:type" : "Snapshot",
-"rdt:scope" : "0x0000000016be4198",
+"rdt:scope" : "0x7f9d9f2232e8",
 "rdt:fromEnv" : "FALSE",
 "rdt:timestamp" : "",
 "rdt:location" : ""
@@ -1975,9 +1917,8 @@
 "d59" : {
 "rdt:name" : "date.finish",
 "rdt:value" : "data/59-date.finish.txt",
-"rdt:valType" : "object",
 "rdt:type" : "Snapshot",
-"rdt:scope" : "0x0000000016be4198",
+"rdt:scope" : "0x7f9d9f2232e8",
 "rdt:fromEnv" : "FALSE",
 "rdt:timestamp" : "",
 "rdt:location" : ""
@@ -1986,9 +1927,8 @@
 "d60" : {
 "rdt:name" : "days",
 "rdt:value" : "365",
-"rdt:valType" : "numeric",
 "rdt:type" : "Data",
-"rdt:scope" : "0x0000000016be4198",
+"rdt:scope" : "0x7f9d9f2232e8",
 "rdt:fromEnv" : "FALSE",
 "rdt:timestamp" : "",
 "rdt:location" : ""
@@ -1997,9 +1937,8 @@
 "d61" : {
 "rdt:name" : "daily.drift",
 "rdt:value" : "0.000273972602739726",
-"rdt:valType" : "numeric",
 "rdt:type" : "Data",
-"rdt:scope" : "0x0000000016be4198",
+"rdt:scope" : "0x7f9d9f2232e8",
 "rdt:fromEnv" : "FALSE",
 "rdt:timestamp" : "",
 "rdt:location" : ""
@@ -2008,9 +1947,8 @@
 "d62" : {
 "rdt:name" : "i",
 "rdt:value" : "1",
-"rdt:valType" : "integer",
 "rdt:type" : "Data",
-"rdt:scope" : "0x0000000016be4198",
+"rdt:scope" : "0x7f9d9f2232e8",
 "rdt:fromEnv" : "FALSE",
 "rdt:timestamp" : "",
 "rdt:location" : ""
@@ -2019,9 +1957,8 @@
 "d63" : {
 "rdt:name" : "xx",
 "rdt:value" : "data/63-xx.csv",
-"rdt:valType" : "data frame (Date,numeric,numeric,character,numeric,character,numeric,character)",
 "rdt:type" : "Snapshot",
-"rdt:scope" : "0x0000000016be4198",
+"rdt:scope" : "0x7f9d9f2232e8",
 "rdt:fromEnv" : "FALSE",
 "rdt:timestamp" : "",
 "rdt:location" : ""
@@ -2030,9 +1967,8 @@
 "d64" : {
 "rdt:name" : "xx",
 "rdt:value" : "data/64-xx.csv",
-"rdt:valType" : "data frame (Date,numeric,numeric,character,numeric,character,numeric,character)",
 "rdt:type" : "Snapshot",
-"rdt:scope" : "0x0000000016be4198",
+"rdt:scope" : "0x7f9d9f2232e8",
 "rdt:fromEnv" : "FALSE",
 "rdt:timestamp" : "",
 "rdt:location" : ""
@@ -2041,9 +1977,8 @@
 "d65" : {
 "rdt:name" : "xx",
 "rdt:value" : "data/65-xx.txt",
-"rdt:valType" : "data frame (Date,numeric,numeric,character,numeric,character,numeric,character)",
 "rdt:type" : "Snapshot",
-"rdt:scope" : "0x0000000016be4198",
+"rdt:scope" : "0x7f9d9f2232e8",
 "rdt:fromEnv" : "FALSE",
 "rdt:timestamp" : "",
 "rdt:location" : ""
@@ -2052,7 +1987,6 @@
 "d66" : {
 "rdt:name" : "calibrate(raw.data) return",
 "rdt:value" : "data/66-calibrate(raw.data) return.csv",
-"rdt:valType" : "data frame (Date,numeric,numeric,character,numeric,character,numeric,character)",
 "rdt:type" : "Snapshot",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE",
@@ -2063,7 +1997,6 @@
 "d67" : {
 "rdt:name" : "calibrated.data",
 "rdt:value" : "data/67-calibrated.data.csv",
-"rdt:valType" : "data frame (Date,numeric,numeric,character,numeric,character,numeric,character)",
 "rdt:type" : "Snapshot",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE",
@@ -2074,7 +2007,6 @@
 "d68" : {
 "rdt:name" : "quality.controlled.data",
 "rdt:value" : "data/68-quality.controlled.data.csv",
-"rdt:valType" : "data frame (Date,numeric,numeric,character,numeric,character,numeric,character)",
 "rdt:type" : "Snapshot",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE",
@@ -2085,7 +2017,6 @@
 "d69" : {
 "rdt:name" : "gap.filled.data",
 "rdt:value" : "data/69-gap.filled.data.csv",
-"rdt:valType" : "data frame (Date,numeric,numeric,character,numeric,character,numeric,character)",
 "rdt:type" : "Snapshot",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE",

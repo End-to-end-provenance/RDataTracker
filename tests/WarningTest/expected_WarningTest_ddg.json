@@ -9,7 +9,7 @@
 "p1" : {
 "rdt:name" : "WarningTest.R",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "0.02",
+"rdt:elapsedTime" : "0.017",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -20,7 +20,7 @@
 "p2" : {
 "rdt:name" : "a <- 1",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.02",
+"rdt:elapsedTime" : "0.018",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "1",
 "rdt:startCol" : "1",
@@ -31,7 +31,7 @@
 "p3" : {
 "rdt:name" : "warning(\"foo\")",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.02",
+"rdt:elapsedTime" : "0.025",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "2",
 "rdt:startCol" : "1",
@@ -42,7 +42,7 @@
 "p4" : {
 "rdt:name" : "b <- 2",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.03",
+"rdt:elapsedTime" : "0.029",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "3",
 "rdt:startCol" : "1",
@@ -53,7 +53,7 @@
 "p5" : {
 "rdt:name" : "WarningTest.R",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "0.03",
+"rdt:elapsedTime" : "0.037",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -64,26 +64,25 @@
 "environment" : {
 "rdt:name" : "environment",
 "rdt:architecture" : "x86_64",
-"rdt:operatingSystem" : "windows",
+"rdt:operatingSystem" : "unix",
 "rdt:language" : "R",
 "rdt:rVersion" : "R version 3.3.1 (2016-06-21)",
 "rdt:script" : "[DIR]/WarningTest.R",
 "rdt:sourcedScripts" : ""
 ,
-"rdt:scriptTimeStamp" : "2017-01-06T19.13.45EST",
+"rdt:scriptTimeStamp" : "2017-01-06T17.10.23EST",
 "rdt:workingDirectory" : "[DIR]",
 "rdt:ddgDirectory" : "[DIR]/ddg",
-"rdt:ddgTimeStamp" : "2017-04-17T14.59.22EDT",
-"rdt:rdatatrackerVersion" : "2.25.1",
+"rdt:ddgTimeStamp" : "2017-02-09T18.00.11EST",
+"rdt:rdatatrackerVersion" : "2.25.0",
 "rdt:installedPackages" : [
-	{"package" : "RDataTracker", "version" : "2.25.1"}]
+	{"package" : "RDataTracker", "version" : "2.25.0"}]
 }},
 "entity":{
 
 "d1" : {
 "rdt:name" : "a",
 "rdt:value" : "1",
-"rdt:valType" : "numeric",
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE",
@@ -94,7 +93,6 @@
 "d2" : {
 "rdt:name" : "warning.msg",
 "rdt:value" : "\"In  eval(expr, envir, enclos) :  foo\"",
-"rdt:valType" : "character",
 "rdt:type" : "Exception",
 "rdt:scope" : "ddg.library",
 "rdt:fromEnv" : "FALSE",
@@ -105,7 +103,6 @@
 "d3" : {
 "rdt:name" : "b",
 "rdt:value" : "2",
-"rdt:valType" : "numeric",
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE",

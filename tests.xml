@@ -56,7 +56,6 @@
   - HigherOrderFuncTest
   - AssignmentOperatorsTest
   - RMarkdownTest
-  - DDGStatementTest
 
   The target "source-tests" will run the following tests cases:
 
@@ -524,7 +523,7 @@
       <antcall target="update-regression-expected">
         <param name="test-name" value="RMarkdownTest" />
  	  </antcall>
-  </target>
+  	</target>
 
 	<target name="normal-tests" depends="basicTest, S4ObjectTest,
 		ScopeTest, ReturnTest, OddParameterTest, FunctionAnnotationTest, 
