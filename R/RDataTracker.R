@@ -3122,7 +3122,7 @@ ddg.MAX_HIST_LINES <- 2^14
                   #  cat("https://stat.ethz.ch/pipermail/r-help/2010-May/239461.html")
                   #else
                   #  cat("http://stackoverflow.com/questions/38032814/trying-to-understand-r-error-error-in-funxi-only-defined-on-a-data")
-                	cat( "https://www.r-bloggers.com/using-r-common-errors-in-table-import/" )
+                  cat( "https://www.r-bloggers.com/using-r-common-errors-in-table-import/" )
                 }
               }
 
@@ -3167,7 +3167,7 @@ ddg.MAX_HIST_LINES <- 2^14
             # show warning message
             if( ! is.null(changed.vars) )
             { 
-              msg <- paste( "\nFor the statement \"" , cmd@text , "\", " , "in line " , cmd@pos@startLine , ",\n" , sep = "" )
+              msg <- paste( "For the statement \"" , cmd@text , "\", " , "in line " , cmd@pos@startLine , ",\n" , sep = "" )
               msg <- paste( msg , "The type changed for the following variables: " , changed.vars , sep = "" )
               
               warning( msg , call. = FALSE )
