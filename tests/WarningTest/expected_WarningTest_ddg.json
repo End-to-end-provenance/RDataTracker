@@ -31,7 +31,7 @@
 "p3" : {
 "rdt:name" : "warning(\"foo\")",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.02",
+"rdt:elapsedTime" : "0.03",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "2",
 "rdt:startCol" : "1",
@@ -73,17 +73,17 @@
 "rdt:scriptTimeStamp" : "2017-01-06T19.13.45EST",
 "rdt:workingDirectory" : "[DIR]",
 "rdt:ddgDirectory" : "[DIR]/ddg",
-"rdt:ddgTimeStamp" : "2017-04-17T14.59.22EDT",
-"rdt:rdatatrackerVersion" : "2.25.1",
+"rdt:ddgTimeStamp" : "2017-05-24T21.38.44EDT",
+"rdt:rdatatrackerVersion" : "2.26.1",
 "rdt:installedPackages" : [
-	{"package" : "RDataTracker", "version" : "2.25.1"}]
+	{"package" : "RDataTracker", "version" : "2.26.1"}]
 }},
 "entity":{
 
 "d1" : {
 "rdt:name" : "a",
 "rdt:value" : "1",
-"rdt:valType" : "numeric",
+"rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE",
@@ -94,7 +94,7 @@
 "d2" : {
 "rdt:name" : "warning.msg",
 "rdt:value" : "\"In  eval(expr, envir, enclos) :  foo\"",
-"rdt:valType" : "character",
+"rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
 "rdt:type" : "Exception",
 "rdt:scope" : "ddg.library",
 "rdt:fromEnv" : "FALSE",
@@ -105,7 +105,7 @@
 "d3" : {
 "rdt:name" : "b",
 "rdt:value" : "2",
-"rdt:valType" : "numeric",
+"rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE",
