@@ -1,5 +1,6 @@
-RDataTracker v2.25.1
+## RDataTracker v2.25.1
 
+```
 - Adds support for special operators (#240)
 - Adds additional tests
 - Links error node to error operation
@@ -7,7 +8,11 @@ RDataTracker v2.25.1
 - Adjusts file snapshot method
 - Adds test for empty vectors
 - Fixes bug in tracking nested statements
-	
-	
-Known Bugs
+```
+
+
+## Known Bugs
+
+```
 - Error resulting from assign()
+```
