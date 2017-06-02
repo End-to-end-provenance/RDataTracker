@@ -45,9 +45,6 @@ r_packages:
   - sysfonts
   - extrafont
 
-r_github_packages:
-  - jimhester/lintr
-
 script:
   - R CMD build .
   - R CMD check *tar.gz
