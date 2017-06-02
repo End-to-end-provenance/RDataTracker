@@ -848,7 +848,7 @@ ddg.MAX_HIST_LINES <- 2^14
   write(ddg.json, fileout)
 }
 
-.ddg.csv.current <- function() {
+.ddg.hashtable.current <- function() {
   architecture <- R.Version()$arch
   operating.system <- .Platform$OS.type
   r.version <- R.Version()$version
@@ -858,9 +858,9 @@ ddg.MAX_HIST_LINES <- 2^14
   return(ddg.info)
 }
 
-.ddg.csv.write <- function() {
+.ddg.hashtable.write <- function() {
   fileout <- paste(.ddg.path(), "/ddg.csv", sep="")
-  ddg.csv <- .ddg.csv.current()
+  ddg.csv <- .ddg.hashtable.current()
   write.table(ddg.csv, file = fileout, col.names = FALSE, row.names = FALSE, sep = ",")
 }
 
@@ -2779,6 +2779,7 @@ ddg.MAX_HIST_LINES <- 2^14
   # Save ddg.
   .ddg.txt.write()
   .ddg.json.write()
+  .ddg.hashtable.write()
 
   # Get user input from the keyboard.
   line <- "D"
@@ -5812,6 +5813,10 @@ ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE) {
   # Save ddg.json to file.
   .ddg.json.write()
   if (interactive()) print(paste("Saving ddg.json in ", .ddg.path(), sep=""))
+
+  # Save ddg.hashtable to file.
+  .ddg.hashtable.write()
+  if (interactive()) print(paste("Saving ddg.csv in ", .ddg.path(), sep=""))
 
   # Save sourced scripts (if any). First row is main script.
   ddg.sourced.scripts <- .ddg.get(".ddg.sourced.scripts")
