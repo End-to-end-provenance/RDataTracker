@@ -3072,11 +3072,11 @@ ddg.MAX_HIST_LINES <- 2^14
           
           # Before evaluating, 
           # keep track of variable types for common variables between vars.set and vars.used.
-          common.vars <- intersect( cmd@vars.set , cmd@vars.used )
-          num.vars <- length(common.vars)
+          #common.vars <- intersect( cmd@vars.set , cmd@vars.used )
+          #num.vars <- length(common.vars)
           
-          if( num.vars > 0 )
-            used.types <- sapply( common.vars , .ddg.get.val.type.from.var )
+          #if( num.vars > 0 )
+          #  used.types <- sapply( common.vars , .ddg.get.val.type.from.var )
           
           # Capture any warnings that occur when an expression is evaluated.
           # Note that we cannot just use a tryCatch here because it behaves
@@ -3135,44 +3135,44 @@ ddg.MAX_HIST_LINES <- 2^14
           
           # After evaluating
           # Check changes to variable type for common variables between vars.set and vars.used
-          if( num.vars > 0 )
-          {
-            set.types <- sapply( common.vars , .ddg.get.val.type.from.var )
-            
-            # comparing type changes for variables set and variables used
-            # only 1 common variable between vars.set and vars.used
-            if( num.vars == 1 )
-            {
-              is.same <- identical( set.types , used.types )
-              
-              # remember var names for vars whose types have changed, NULL otherwise
-              if(is.same)
-                changed.vars <- NULL
-              else
-                changed.vars <- common.vars
-            }
-          
-            # multiple common variables between vars.set and vars.used
-            # currently untested since multiple variable assignment is not working!
-            else
-            {
-              is.same <- mapply( identical , set.types , used.types )
-              changed.vars <- names(is.same)[which(is.same==FALSE)]
-              
-              # convert to string
-              if( ! is.null(changed.vars) )
-                changed.vars <- paste( changed.vars , collapse = "," )
-            }
-            
-            # show warning message
-            if( ! is.null(changed.vars) )
-            { 
-              msg <- paste( "For the statement \"" , cmd@text , "\", " , "in line " , cmd@pos@startLine , ",\n" , sep = "" )
-              msg <- paste( msg , "The type changed for the following variables: " , changed.vars , sep = "" )
-              
-              warning( msg , call. = FALSE )
-            }
-          }
+          #if( num.vars > 0 )
+          #{
+          #  set.types <- sapply( common.vars , .ddg.get.val.type.from.var )
+          #  
+          #  # comparing type changes for variables set and variables used
+          #  # only 1 common variable between vars.set and vars.used
+          #  if( num.vars == 1 )
+          #  {
+          #    is.same <- identical( set.types , used.types )
+          #    
+          #    # remember var names for vars whose types have changed, NULL otherwise
+          #    if(is.same)
+          #      changed.vars <- NULL
+          #    else
+          #      changed.vars <- common.vars
+          #  }
+          #
+          #  # multiple common variables between vars.set and vars.used
+          #  # currently untested since multiple variable assignment is not working!
+          #  else
+          #  {
+          #    is.same <- mapply( identical , set.types , used.types )
+          #    changed.vars <- names(is.same)[which(is.same==FALSE)]
+          #    
+          #    # convert to string
+          #    if( ! is.null(changed.vars) )
+          #      changed.vars <- paste( changed.vars , collapse = "," )
+          #  }
+          #  
+          #  # show warning message
+          #  if( ! is.null(changed.vars) )
+          #  { 
+          #    msg <- paste( "For the statement \"" , cmd@text , "\", " , "in line " , cmd@pos@startLine , ",\n" , sep = "" )
+          #    msg <- paste( msg , "The type changed for the following variables: " , changed.vars , sep = "" )
+          #    
+          #    warning( msg , call. = FALSE )
+          #  }
+          #}
           
           if (!cmd@isDdgFunc && cmd@text != "next") {
             # Need to get the stack again because it could have been
