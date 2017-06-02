@@ -51,6 +51,7 @@ r_github_packages:
 script:
   - R CMD build .
   - R CMD check *tar.gz
+  - ant -file build.xml install
   - ant -file tests.xml basicTest
   - ant -file tests.xml test-all
 
