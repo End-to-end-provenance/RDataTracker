@@ -516,8 +516,9 @@ library(tools)
   }
 
   # List of files read and written
-  .ddg.set("ddg.infiles", list())
-  .ddg.set("ddg.outfiles", list())
+  #.ddg.set("ddg.infiles", list())
+  #.ddg.set("ddg.outfiles", list())
+  .ddg.set("ddg.usedfiles", data.frame())
 }
 
 # .ddg.set.history provides a wrapper to change the number of
@@ -859,19 +860,20 @@ library(tools)
 }
 
 .ddg.hashtable.current <- function() {
-  architecture <- R.Version()$arch
-  r.version <- R.Version()$version
-  ddg.info <- c(architecture, r.version)
-  .ddg.set("ddg.infiles", lapply(.ddg.get("ddg.infiles"), "md5sum"))
-  .ddg.set("ddg.outfiles", lapply(.ddg.get("ddg.outfiles"), "md5sum"))
-  ddg.info <- c(.ddg.get("ddg.infiles"), ddg.info, .ddg.get("ddg.outfiles"))
-  ddg.info.data.frame <- data.frame(ddg.info)
-  return(ddg.info.data.frame)
+
+  # ddg.info <- .ddg.get("ddg.infiles")
+  # ddg.info <- c(ddg.info, .ddg.get("ddg.outfiles"))
+  # .ddg.set("ddg.infiles", lapply(.ddg.get("ddg.infiles"), "md5sum"))
+  # .ddg.set("ddg.outfiles", lapply(.ddg.get("ddg.outfiles"), "md5sum"))
+  # ddg.info <- c(.ddg.get("ddg.infiles"), ddg.info, .ddg.get("ddg.outfiles"))
+  # ddg.info.data.frame <- data.frame(ddg.info)
+  # return(ddg.info.data.frame)
 }
 
 .ddg.hashtable.write <- function() {
   fileout <- paste(.ddg.path(), "/ddg.csv", sep="")
-  ddg.csv <- .ddg.hashtable.current()
+  # ddg.csv <- .ddg.hashtable.current()
+  ddg.csv <- .ddg.get("ddg.usedfiles")
   write.table(ddg.csv, file = fileout, col.names = FALSE, row.names = FALSE, sep = ",")
 }
 
@@ -1373,6 +1375,15 @@ library(tools)
   # Output data node.
   #print(".ddg.record.data outputting data node")
   .ddg.output.data.node(dtype, dname, dvalue2, val.type, dscope, from.env, dtime, dloc)
+
+
+  # Record file node information and hash
+  if(dtype == "File") {
+    print("Found File!")
+    nodeloc <- paste(.ddg.path(), dvalue, sep="/")
+    .ddg.set("ddg.usedfiles", rbind(.ddg.get("ddg.usedfiles"), c(ddg.dnum, dname, nodeloc, md5sum(dname)), stringsAsFactors = FALSE))
+  }
+
 
   if (.ddg.debug.lib()) {
     print(paste("Adding data node", ddg.dnum, "named", dname, "with scope", dscope, " and value ", ddg.data.nodes$ddg.value[ddg.dnum]))
@@ -2304,7 +2315,7 @@ library(tools)
   # This may include files that are not actually read if the
   # read are within an if-statement, for example.
   files.read <- .ddg.find.files.read(cmd, env)
-  .ddg.set("ddg.infiles", c(.ddg.get("ddg.infiles"), files.read))
+  #.ddg.set("ddg.infiles", c(.ddg.get("ddg.infiles"), files.read))
   #print (".ddg.create.file.read.nodes.and.edges: Files read:")
   # print (files.read)
 
@@ -2362,7 +2373,7 @@ library(tools)
   # This may include files that are not actually written if the
   # write calls are within an if-statement, for example.
   files.written <- .ddg.find.files.written(cmd, env)
-  .ddg.set("ddg.outfiles", c(.ddg.get("ddg.outfiles"), files.written))
+  #.ddg.set("ddg.outfiles", c(.ddg.get("ddg.outfiles"), files.written))
   #print ("Files written:")
   #print (files.written)
 
