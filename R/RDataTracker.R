@@ -35,6 +35,7 @@ ddg.MAX_CHECKPOINTS <- 10
 
 ddg.MAX_HIST_LINES <- 2^14
 
+
 #-------- FUNCTIONS TO MANAGE THE GLOBAL VARIABLES--------#
 
 # Global variables cannot be used directly in a library.  Instead,
@@ -508,6 +509,10 @@ ddg.MAX_HIST_LINES <- 2^14
   if (!.ddg.is.set("ddg.max.snapshot.size")) {
     .ddg.set("ddg.max.snapshot.size", 100)
   }
+  
+  # List of files read and written
+  .ddg.set("ddg.infiles", list())
+  .ddg.set("ddg.outfiles", list())
 }
 
 # .ddg.set.history provides a wrapper to change the number of
@@ -854,7 +859,7 @@ ddg.MAX_HIST_LINES <- 2^14
   r.version <- R.Version()$version
   lib.version <- packageVersion("RDataTracker")
 
-  ddg.info = data.frame(architecture, operating.system, r.version, lib.version)
+  ddg.info <- data.frame(architecture, operating.system, r.version, lib.version)
   return(ddg.info)
 }
 
@@ -2293,8 +2298,9 @@ ddg.MAX_HIST_LINES <- 2^14
   # This may include files that are not actually read if the
   # read are within an if-statement, for example.
   files.read <- .ddg.find.files.read(cmd, env)
+  .ddg.set("ddg.infiles", c(.ddg.get("ddg.infiles"), files.read))
   #print (".ddg.create.file.read.nodes.and.edges: Files read:")
-  #print (files.read)
+  # print (files.read)
 
   for (file in files.read) {
 
@@ -2350,6 +2356,7 @@ ddg.MAX_HIST_LINES <- 2^14
   # This may include files that are not actually written if the
   # write calls are within an if-statement, for example.
   files.written <- .ddg.find.files.written(cmd, env)
+  .ddg.set("ddg.outfiles", c(.ddg.get("ddg.outfiles"), files.written))
   #print ("Files written:")
   #print (files.written)
 
