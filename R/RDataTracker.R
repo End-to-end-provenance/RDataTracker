@@ -509,7 +509,7 @@ ddg.MAX_HIST_LINES <- 2^14
   if (!.ddg.is.set("ddg.max.snapshot.size")) {
     .ddg.set("ddg.max.snapshot.size", 100)
   }
-  
+
   # List of files read and written
   .ddg.set("ddg.infiles", list())
   .ddg.set("ddg.outfiles", list())
@@ -855,12 +855,12 @@ ddg.MAX_HIST_LINES <- 2^14
 
 .ddg.hashtable.current <- function() {
   architecture <- R.Version()$arch
-  operating.system <- .Platform$OS.type
   r.version <- R.Version()$version
-  lib.version <- packageVersion("RDataTracker")
 
-  ddg.info <- data.frame(architecture, operating.system, r.version, lib.version)
-  return(ddg.info)
+  ddg.info <- c(architecture, r.version)
+  ddg.info <- c(.ddg.get("ddg.infiles"), ddg.info, .ddg.get("ddg.outfiles"))
+  ddg.info.data.frame <- data.frame(ddg.info)
+  return(ddg.info.data.frame)
 }
 
 .ddg.hashtable.write <- function() {
