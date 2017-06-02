@@ -11,6 +11,7 @@ addons:
     packages:
       libicu-dev
       libfreetype6-dev
+      ant
       r-cran-chron
       r-cran-zoo
       r-cran-shiny
@@ -44,11 +45,12 @@ r_packages:
   - sysfonts
   - extrafont
 
-r_github_packages:
-  - jimhester/lintr
-
-after_success:
-  - Rscript -e 'lintr::lint_package()'
+script:
+  - R CMD build .
+  - R CMD check *tar.gz
+  - ant -file build.xml install
+  - ant -file tests.xml basicTest
+  - ant -file tests.xml test-all
 
 notifications:
   slack: endtoendprovenance:WxevOs6n66eZRbCn9HcW2mGD
