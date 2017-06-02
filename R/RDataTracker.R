@@ -36,6 +36,11 @@ ddg.MAX_CHECKPOINTS <- 10
 ddg.MAX_HIST_LINES <- 2^14
 
 
+# Import the tools library for use in creating md5 hashes.
+
+library(tools)
+
+
 #-------- FUNCTIONS TO MANAGE THE GLOBAL VARIABLES--------#
 
 # Global variables cannot be used directly in a library.  Instead,
@@ -856,8 +861,9 @@ ddg.MAX_HIST_LINES <- 2^14
 .ddg.hashtable.current <- function() {
   architecture <- R.Version()$arch
   r.version <- R.Version()$version
-
   ddg.info <- c(architecture, r.version)
+  .ddg.set("ddg.infiles", lapply(.ddg.get("ddg.infiles"), "md5sum"))
+  .ddg.set("ddg.outfiles", lapply(.ddg.get("ddg.outfiles"), "md5sum"))
   ddg.info <- c(.ddg.get("ddg.infiles"), ddg.info, .ddg.get("ddg.outfiles"))
   ddg.info.data.frame <- data.frame(ddg.info)
   return(ddg.info.data.frame)
