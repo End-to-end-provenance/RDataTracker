@@ -871,10 +871,10 @@ library(tools)
 }
 
 .ddg.hashtable.write <- function() {
-  fileout <- paste(.ddg.path(), "/ddg.csv", sep="")
-  # ddg.csv <- .ddg.hashtable.current()
-  ddg.csv <- .ddg.get("ddg.usedfiles")
-  write.table(ddg.csv, file = fileout, col.names = FALSE, row.names = FALSE, sep = ",")
+  fileout <- paste(.ddg.path(), "/hashtable.csv", sep="")
+  # hashtable.csv <- .ddg.hashtable.current()
+  hashtable.csv <- .ddg.get("ddg.usedfiles")
+  write.table(hashtable.csv, file = fileout, col.names = FALSE, row.names = FALSE, sep = ",")
 }
 
 # .ddg.output.procedure.node outputs a procedure node.
@@ -5840,7 +5840,7 @@ ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE) {
 
   # Save ddg.hashtable to file.
   .ddg.hashtable.write()
-  if (interactive()) print(paste("Saving ddg.csv in ", .ddg.path(), sep=""))
+  if (interactive()) print(paste("Saving hashtable.csv in ", .ddg.path(), sep=""))
 
   # Save sourced scripts (if any). First row is main script.
   ddg.sourced.scripts <- .ddg.get(".ddg.sourced.scripts")
