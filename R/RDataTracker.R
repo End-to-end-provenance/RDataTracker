@@ -518,7 +518,6 @@ library(tools)
   # List of files read and written
   .ddg.set("ddg.infilenodes", list())
   .ddg.set("ddg.outfilenodes", list())
-  .ddg.set("ddg.filenodes", data.frame())
 }
 
 # .ddg.set.history provides a wrapper to change the number of
@@ -857,15 +856,6 @@ library(tools)
   #if (interactive()) print(paste("Saving DDG in ", fileout))
   ddg.json <- .ddg.json.current()
   write(ddg.json, fileout)
-}
-
-# .ddg.hashtable.write writes the hashtable of files used to the file
-# hashtable.csv on the ddg directory.
-
-.ddg.hashtable.write <- function() {
-  fileout <- paste(.ddg.path(), "/hashtable.csv", sep="")
-  hashtable.csv <- .ddg.get("ddg.filenodes")
-  write.table(hashtable.csv, file = fileout, col.names = FALSE, row.names = FALSE, sep = ",")
 }
 
 # .ddg.output.procedure.node outputs a procedure node.
