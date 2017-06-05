@@ -1371,29 +1371,20 @@ library(tools)
   # Record file node information and hash
   if(dtype == "File" | dtype == "URL") {
     # print(".ddg.record.data recording file information and hash")
-
     infiles <- .ddg.get("ddg.infilenodes")
     outfiles <- .ddg.get("ddg.outfilenodes")
-
     if (dtype == "URL") {
       nodeloc <- NA
     } else {
       nodeloc <- paste(.ddg.path(), dvalue, sep="/")
     }
-
-    if (length(infiles) != 0) {
-      if (dname == infiles[length(infiles)]) {
-        .ddg.set("ddg.filenodes", rbind(.ddg.get("ddg.filenodes"), c(ddg.dnum, dname, nodeloc, md5sum(dname), "READ"), stringsAsFactors = FALSE))
-      }
+    if (length(infiles) != 0 && dname == infiles[length(infiles)]) {
+      .ddg.set("ddg.filenodes", rbind(.ddg.get("ddg.filenodes"), c(ddg.dnum, dname, nodeloc, md5sum(dname), "READ"), stringsAsFactors = FALSE))
     }
-    if (length(outfiles) != 0) {
-      if (dname == outfiles[length(outfiles)]) {
-        .ddg.set("ddg.filenodes", rbind(.ddg.get("ddg.filenodes"), c(ddg.dnum, dname, nodeloc, md5sum(dname), "WRITE"), stringsAsFactors = FALSE))
-      }
+    if (length(outfiles) != 0 && dname == outfiles[length(outfiles)]) {
+      .ddg.set("ddg.filenodes", rbind(.ddg.get("ddg.filenodes"), c(ddg.dnum, dname, nodeloc, md5sum(dname), "WRITE"), stringsAsFactors = FALSE))
     }
-
   }
-
 
   if (.ddg.debug.lib()) {
     print(paste("Adding data node", ddg.dnum, "named", dname, "with scope", dscope, " and value ", ddg.data.nodes$ddg.value[ddg.dnum]))
