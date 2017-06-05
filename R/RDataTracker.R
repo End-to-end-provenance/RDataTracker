@@ -1316,6 +1316,8 @@ library(tools)
 # value - the value of the data
 # dscope - data node scope.
 # from.env - if object is from initial environment.
+# ddg.rw - whether the file was read or written.
+# ddg.hash - the md5 hash of original file.
 # dtime (optional) - timestamp of original file.
 # dloc (optional) -  path and name of original file.
 
@@ -1337,9 +1339,9 @@ library(tools)
         ddg.scope = character(size),
         ddg.from.env = logical(size),
         ddg.time = character(size),
-        ddg.loc = character(size),
         ddg.rw = character(size),
         ddg.hash = character(size),
+        ddg.loc = character(size),
         ddg.current = logical(size), stringsAsFactors=FALSE)
     .ddg.add.rows("ddg.data.nodes", new.rows)
     ddg.data.nodes <- .ddg.data.nodes()
@@ -1363,16 +1365,17 @@ library(tools)
   ddg.data.nodes$ddg.time[ddg.dnum] <- dtime
   ddg.data.nodes$ddg.loc[ddg.dnum] <- dloc
 
+  #print (".ddg.record.data: adding file hash info")
   infiles <- .ddg.get("ddg.infilenodes")
   outfiles <- .ddg.get("ddg.outfilenodes")
   if (dtype == "File") {
     ddg.data.nodes$ddg.hash[ddg.dnum] <- md5sum(dname)
     if (length(infiles) != 0 && dname == infiles[length(infiles)]) {
       ddg.data.nodes$ddg.rw[ddg.dnum] <- "READ"
-      # .ddg.set("ddg.infilenodes"[length(infiles)], NA)
+      .ddg.set("ddg.infilenodes", list())
     } else {
       ddg.data.nodes$ddg.rw[ddg.dnum] <- "WRITE"
-      # .ddg.set("ddg.outfilenodes"[length(outfiles)], NA)
+      .ddg.set("ddg.outfilenodes", list())
     }
   } else {
     ddg.data.nodes$ddg.hash[ddg.dnum] <- ""
@@ -1385,25 +1388,6 @@ library(tools)
   # Output data node.
   #print(".ddg.record.data outputting data node")
   .ddg.output.data.node(dtype, dname, dvalue2, val.type, dscope, from.env, dtime, dloc)
-
-
-  # Record file node information and hash
-  if(dtype == "File" | dtype == "URL") {
-    # print(".ddg.record.data recording file information and hash")
-    infiles <- .ddg.get("ddg.infilenodes")
-    outfiles <- .ddg.get("ddg.outfilenodes")
-    if (dtype == "URL") {
-      nodeloc <- NA
-    } else {
-      nodeloc <- paste(.ddg.path(), dvalue, sep="/")
-    }
-    if (length(infiles) != 0 && dname == infiles[length(infiles)]) {
-      .ddg.set("ddg.filenodes", rbind(.ddg.get("ddg.filenodes"), c(ddg.dnum, dname, nodeloc, md5sum(dname), "READ"), stringsAsFactors = FALSE))
-    }
-    if (length(outfiles) != 0 && dname == outfiles[length(outfiles)]) {
-      .ddg.set("ddg.filenodes", rbind(.ddg.get("ddg.filenodes"), c(ddg.dnum, dname, nodeloc, md5sum(dname), "WRITE"), stringsAsFactors = FALSE))
-    }
-  }
 
   if (.ddg.debug.lib()) {
     print(paste("Adding data node", ddg.dnum, "named", dname, "with scope", dscope, " and value ", ddg.data.nodes$ddg.value[ddg.dnum]))
