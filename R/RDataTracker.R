@@ -2797,7 +2797,6 @@ library(tools)
   # Save ddg.
   .ddg.txt.write()
   .ddg.json.write()
-  .ddg.hashtable.write()
 
   # Get user input from the keyboard.
   line <- "D"
@@ -5831,10 +5830,6 @@ ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE) {
   # Save ddg.json to file.
   .ddg.json.write()
   if (interactive()) print(paste("Saving ddg.json in ", .ddg.path(), sep=""))
-
-  # Save ddg.hashtable to file.
-  .ddg.hashtable.write()
-  if (interactive()) print(paste("Saving hashtable.csv in ", .ddg.path(), sep=""))
 
   # Save sourced scripts (if any). First row is main script.
   ddg.sourced.scripts <- .ddg.get(".ddg.sourced.scripts")
