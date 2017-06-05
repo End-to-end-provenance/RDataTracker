@@ -2375,7 +2375,7 @@ library(tools)
   # write calls are within an if-statement, for example.
   files.written <- .ddg.find.files.written(cmd, env)
   .ddg.set("ddg.outfilenodes", c(.ddg.get("ddg.outfilenodes"), files.written))
-  #print ("Files written:")
+  #print (".ddg.create.file.read.nodes.and.edges: Files written:")
   #print (files.written)
 
   for (file in files.written) {
