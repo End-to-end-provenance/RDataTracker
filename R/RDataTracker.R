@@ -1370,7 +1370,7 @@ library(tools)
 
   # Record file node information and hash
   if(dtype == "File" | dtype == "URL") {
-    # print("Added a file or url node.")
+    # print(".ddg.record.data recording file information and hash")
 
     infiles <- .ddg.get("ddg.infilenodes")
     outfiles <- .ddg.get("ddg.outfilenodes")
@@ -1381,20 +1381,17 @@ library(tools)
       nodeloc <- paste(.ddg.path(), dvalue, sep="/")
     }
 
-    if (length(infiles != 0)) {
+    if (length(infiles) != 0) {
       if (dname == infiles[length(infiles)]) {
         .ddg.set("ddg.filenodes", rbind(.ddg.get("ddg.filenodes"), c(ddg.dnum, dname, nodeloc, md5sum(dname), "READ"), stringsAsFactors = FALSE))
-        }
+      }
     }
-    if (length(outfiles != 0)) {
+    if (length(outfiles) != 0) {
       if (dname == outfiles[length(outfiles)]) {
         .ddg.set("ddg.filenodes", rbind(.ddg.get("ddg.filenodes"), c(ddg.dnum, dname, nodeloc, md5sum(dname), "WRITE"), stringsAsFactors = FALSE))
       }
     }
 
-    #print(infiles[length(infiles)])
-    #print(dname)
-    #print(outfiles[length(outfiles)])
   }
 
 
