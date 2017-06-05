@@ -1338,6 +1338,8 @@ library(tools)
         ddg.from.env = logical(size),
         ddg.time = character(size),
         ddg.loc = character(size),
+        ddg.rw = character(size),
+        ddg.hash = character(size),
         ddg.current = logical(size), stringsAsFactors=FALSE)
     .ddg.add.rows("ddg.data.nodes", new.rows)
     ddg.data.nodes <- .ddg.data.nodes()
@@ -1360,6 +1362,23 @@ library(tools)
   ddg.data.nodes$ddg.from.env[ddg.dnum] <- from.env
   ddg.data.nodes$ddg.time[ddg.dnum] <- dtime
   ddg.data.nodes$ddg.loc[ddg.dnum] <- dloc
+
+  infiles <- .ddg.get("ddg.infilenodes")
+  outfiles <- .ddg.get("ddg.outfilenodes")
+  if (dtype == "File") {
+    ddg.data.nodes$ddg.hash[ddg.dnum] <- md5sum(dname)
+    if (length(infiles) != 0 && dname == infiles[length(infiles)]) {
+      ddg.data.nodes$ddg.rw[ddg.dnum] <- "READ"
+      # .ddg.set("ddg.infilenodes"[length(infiles)], NA)
+    } else {
+      ddg.data.nodes$ddg.rw[ddg.dnum] <- "WRITE"
+      # .ddg.set("ddg.outfilenodes"[length(outfiles)], NA)
+    }
+  } else {
+    ddg.data.nodes$ddg.hash[ddg.dnum] <- ""
+    ddg.data.nodes$ddg.rw[ddg.dnum] <- ""
+  }
+
   ddg.data.nodes$ddg.current[ddg.dnum] <- TRUE
   .ddg.set("ddg.data.nodes", ddg.data.nodes)
 
