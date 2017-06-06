@@ -896,7 +896,7 @@ library(tools)
 
 # .ddg.output.data.node outputs a data node.
 
-.ddg.output.data.node <- function(dtype, dname, dvalue, val.type, dscope, from.env, dtime, dloc) {
+.ddg.output.data.node <- function(dtype, dname, dvalue, val.type, dscope, from.env, dhash, drw, dtime, dloc) {
   # Get counter
   ddg.dnum <- .ddg.get("ddg.dnum")
 
@@ -915,7 +915,13 @@ library(tools)
   if (dloc != "") loc.str <- paste(" Location=\"", dloc, "\"", sep="")
   else loc.str <- ""
 
-  dtxt <- paste(dtype, " d", ddg.dnum, " \"", ddg.dnum, "-", dname, "\"", value.str, val.type.str, time.str, loc.str, ";\n", sep="")
+  if (dhash != "") dhash.str <- paste(" Hash=\"", dhash, "\"", sep="")
+  else dhash.str <- ""
+
+  if (drw != "") drw.str <- paste(" RW=\"", drw, "\"", sep="")
+  else drw.str <- ""
+
+  dtxt <- paste(dtype, " d", ddg.dnum, " \"", ddg.dnum, "-", dname, "\"", value.str, val.type.str, time.str, loc.str, dhash.str, drw.str, ";\n", sep="")
 
   # Record in ddg.txt
   .ddg.append(dtxt)
@@ -1352,8 +1358,10 @@ library(tools)
   ddg.data.nodes$ddg.val.type[ddg.dnum] <- val.type
   ddg.data.nodes$ddg.scope[ddg.dnum] <- dscope
   ddg.data.nodes$ddg.from.env[ddg.dnum] <- from.env
-  ddg.data.nodes$ddg.hash[ddg.dnum] <- ""
-  ddg.data.nodes$ddg.rw[ddg.dnum] <- ""
+  dhash <- ""
+  ddg.data.nodes$ddg.hash[ddg.dnum] <- dhash
+  drw <- ""
+  ddg.data.nodes$ddg.rw[ddg.dnum] <- drw
   ddg.data.nodes$ddg.time[ddg.dnum] <- dtime
   ddg.data.nodes$ddg.loc[ddg.dnum] <- dloc
 
@@ -1361,12 +1369,15 @@ library(tools)
   infiles <- .ddg.get("ddg.infilenodes")
   outfiles <- .ddg.get("ddg.outfilenodes")
   if (dtype == "File") {
-    ddg.data.nodes$ddg.hash[ddg.dnum] <- md5sum(dname)
+    dhash <- md5sum(dname)
+    ddg.data.nodes$ddg.hash[ddg.dnum] <- dhash
     if (length(infiles) != 0 && dname == infiles[length(infiles)]) {
-      ddg.data.nodes$ddg.rw[ddg.dnum] <- "READ"
+      drw <- "READ"
+      ddg.data.nodes$ddg.rw[ddg.dnum] <- drw
       .ddg.set("ddg.infilenodes", list())
     } else {
-      ddg.data.nodes$ddg.rw[ddg.dnum] <- "WRITE"
+      drw <- "WRITE"
+      ddg.data.nodes$ddg.rw[ddg.dnum] <- drw
       .ddg.set("ddg.outfilenodes", list())
     }
   }
@@ -1376,7 +1387,7 @@ library(tools)
 
   # Output data node.
   #print(".ddg.record.data outputting data node")
-  .ddg.output.data.node(dtype, dname, dvalue2, val.type, dscope, from.env, dtime, dloc)
+  .ddg.output.data.node(dtype, dname, dvalue2, val.type, dscope, from.env, dhash, drw, dtime, dloc)
 
   if (.ddg.debug.lib()) {
     print(paste("Adding data node", ddg.dnum, "named", dname, "with scope", dscope, " and value ", ddg.data.nodes$ddg.value[ddg.dnum]))
