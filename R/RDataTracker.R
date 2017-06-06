@@ -1312,8 +1312,8 @@ library(tools)
 # value - the value of the data
 # dscope - data node scope.
 # from.env - if object is from initial environment.
-# ddg.hash - the md5 hash of original file.
-# ddg.rw - whether the file was read or written.
+# dhash - the md5 hash of original file.
+# drw - whether the file was read or written.
 # dtime (optional) - timestamp of original file.
 # dloc (optional) -  path and name of original file.
 
