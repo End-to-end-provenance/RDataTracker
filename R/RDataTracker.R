@@ -1350,6 +1350,10 @@ library(tools)
   # get value type
   val.type <- .ddg.get.val.type.string(value)
 
+  #Initialize dhash and drw
+  dhash <- ""
+  drw <- ""
+
   #print(".ddg.record.data: adding info")
   ddg.data.nodes$ddg.type[ddg.dnum] <- dtype
   ddg.data.nodes$ddg.num[ddg.dnum] <- ddg.dnum
@@ -1358,9 +1362,7 @@ library(tools)
   ddg.data.nodes$ddg.val.type[ddg.dnum] <- val.type
   ddg.data.nodes$ddg.scope[ddg.dnum] <- dscope
   ddg.data.nodes$ddg.from.env[ddg.dnum] <- from.env
-  dhash <- ""
   ddg.data.nodes$ddg.hash[ddg.dnum] <- dhash
-  drw <- ""
   ddg.data.nodes$ddg.rw[ddg.dnum] <- drw
   ddg.data.nodes$ddg.time[ddg.dnum] <- dtime
   ddg.data.nodes$ddg.loc[ddg.dnum] <- dloc
