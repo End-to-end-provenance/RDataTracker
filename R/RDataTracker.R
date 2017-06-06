@@ -1372,11 +1372,11 @@ library(tools)
     dhash <- md5sum(dname)
     ddg.data.nodes$ddg.hash[ddg.dnum] <- dhash
     if (length(infiles) != 0 && dname == infiles[length(infiles)]) {
-      drw <- "READ"
+      drw <- "read"
       ddg.data.nodes$ddg.rw[ddg.dnum] <- drw
       .ddg.set("ddg.infilenodes", list())
     } else {
-      drw <- "WRITE"
+      drw <- "write"
       ddg.data.nodes$ddg.rw[ddg.dnum] <- drw
       .ddg.set("ddg.outfilenodes", list())
     }
@@ -1390,7 +1390,11 @@ library(tools)
   .ddg.output.data.node(dtype, dname, dvalue2, val.type, dscope, from.env, dhash, drw, dtime, dloc)
 
   if (.ddg.debug.lib()) {
-    print(paste("Adding data node", ddg.dnum, "named", dname, "with scope", dscope, " and value ", ddg.data.nodes$ddg.value[ddg.dnum]))
+    if (dtype != "File") {
+      print(paste("Adding data node", ddg.dnum, "named", dname, "with scope", dscope, " and value ", ddg.data.nodes$ddg.value[ddg.dnum]))
+    } else {
+      print(paste("Adding data node", ddg.dnum, "named", dname, "with scope", dscope, " and value ", ddg.data.nodes$ddg.value[ddg.dnum], " that hashes to ", dhash, " and performs a file ", drw))
+    }
   }
 }
 
