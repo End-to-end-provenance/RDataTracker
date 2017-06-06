@@ -1306,8 +1306,8 @@ library(tools)
 # value - the value of the data
 # dscope - data node scope.
 # from.env - if object is from initial environment.
-# ddg.rw - whether the file was read or written.
 # ddg.hash - the md5 hash of original file.
+# ddg.rw - whether the file was read or written.
 # dtime (optional) - timestamp of original file.
 # dloc (optional) -  path and name of original file.
 
@@ -1329,8 +1329,8 @@ library(tools)
         ddg.scope = character(size),
         ddg.from.env = logical(size),
         ddg.time = character(size),
-        ddg.rw = character(size),
         ddg.hash = character(size),
+        ddg.rw = character(size),
         ddg.loc = character(size),
         ddg.current = logical(size), stringsAsFactors=FALSE)
     .ddg.add.rows("ddg.data.nodes", new.rows)
@@ -1352,6 +1352,8 @@ library(tools)
   ddg.data.nodes$ddg.val.type[ddg.dnum] <- val.type
   ddg.data.nodes$ddg.scope[ddg.dnum] <- dscope
   ddg.data.nodes$ddg.from.env[ddg.dnum] <- from.env
+  ddg.data.nodes$ddg.hash[ddg.dnum] <- ""
+  ddg.data.nodes$ddg.rw[ddg.dnum] <- ""
   ddg.data.nodes$ddg.time[ddg.dnum] <- dtime
   ddg.data.nodes$ddg.loc[ddg.dnum] <- dloc
 
@@ -1367,9 +1369,6 @@ library(tools)
       ddg.data.nodes$ddg.rw[ddg.dnum] <- "WRITE"
       .ddg.set("ddg.outfilenodes", list())
     }
-  } else {
-    ddg.data.nodes$ddg.hash[ddg.dnum] <- ""
-    ddg.data.nodes$ddg.rw[ddg.dnum] <- ""
   }
 
   ddg.data.nodes$ddg.current[ddg.dnum] <- TRUE
