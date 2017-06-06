@@ -14,7 +14,7 @@ library(methods)
 library(RDataTracker)
 
 ## Directories
-testDir <- "C:/Users/fong22e/My Documents/HarvardForest/RDataTracker_typecoercion/tests/DDGStatementTest/"
+testDir <- "C:/Users/fong22e/Documents/HarvardForest/RDataTracker_debugRegressionTests/tests/DDGStatementTest/"
 setwd(testDir)
 
 # get initial time
@@ -22,8 +22,8 @@ startTime <- Sys.time()
 invisible(force(startTime))
 
 # Run the script
-#ddg.run("DDGStatementTest.R", "C:/Users/fong22e/My Documents/HarvardForest/RDataTracker_typecoercion/tests/DDGStatementTest/ddg", ignore.ddg.calls = F)
-ddg.run("DDGStatementTest.R", "C:/Users/fong22e/My Documents/HarvardForest/RDataTracker_typecoercion/tests/DDGStatementTest/ddg")
+#ddg.run("DDGStatementTest.R", "C:/Users/fong22e/Documents/HarvardForest/RDataTracker_debugRegressionTests/tests/DDGStatementTest/ddg", ignore.ddg.calls = F)
+ddg.run("DDGStatementTest.R", "C:/Users/fong22e/Documents/HarvardForest/RDataTracker_debugRegressionTests/tests/DDGStatementTest/ddg")
 
 # Calculate total time of execution
 endTime <- Sys.time()
