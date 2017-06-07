@@ -1410,21 +1410,19 @@ library(tools)
 
 .ddg.hashtable.write <- function() {
   # if (interactive()) print(paste("Saving DDG in ", fileout))
-  hashtable.csv <- .ddg.get("ddg.hashtable")
-  colnames(hashtable.csv) <- c("FilePath","DDGPath","NodePath","NodeNumber","MD5Hash","ReadWrite","Timestamp")
-
+  new_hashtable.csv <- .ddg.get("ddg.hashtable")
+  colnames(new_hashtable.csv) <- c("FilePath","DDGPath","NodePath","NodeNumber","MD5Hash","ReadWrite","Timestamp")
   if (file.exists("~/.ddg/hashtable.csv")) {
-    rbind(hashtable.csv,.ddg.hashtable.cleanup())
+    rbind(new_hashtable.csv,.ddg.hashtable.cleanup())
   }
-
-  write.table(hashtable.csv, "~/.ddg/hashtable.csv", append = FALSE, col.names = TRUE, row.names = FALSE, sep = ",")
+  write.table(new_hashtable.csv, "~/.ddg/hashtable.csv", append = FALSE, col.names = TRUE, row.names = FALSE, sep = ",")
 }
 
-# .ddg.hashtable.cleanup cleans up the hashtable.csv
+# .ddg.hashtable.cleanup cleans the previous hashtable.csv of entries containing
+# ddg data that has been overwritten.
 
 .ddg.hashtable.cleanup <- function() {
   old_hashtable.csv <- read.csv(file = "~/.ddg/hashtable.csv")
-  print(old_hashtable.csv)
   old_hashtable.csv <- subset(old_hashtable.csv, DDGPath != .ddg.path())
 }
 
