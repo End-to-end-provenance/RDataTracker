@@ -1409,10 +1409,9 @@ library(tools)
 # hashtable.csv on the ddg directory.
 
 .ddg.hashtable.write <- function() {
-  fileout <- paste(.ddg.path(), "/hashtable.csv", sep="")
   # if (interactive()) print(paste("Saving DDG in ", fileout))
   hashtable.csv <- .ddg.get("ddg.hashtable")
-  write.table(hashtable.csv, file = fileout, col.names = FALSE, row.names = FALSE, sep = ",")
+  write.table(hashtable.csv, "~/.ddg/hashtable.csv", col.names = FALSE, row.names = FALSE, sep = ",")
 }
 
 # Returns a string representation of the type information of the given value.
@@ -5863,7 +5862,7 @@ ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE) {
 
   # Save hashtable.csv to file.
   .ddg.hashtable.write()
-  if (interactive()) print(paste("Saving hashtable.csv in ", .ddg.path(), sep=""))
+  if (interactive()) print("Saving hashtable.csv in ~/.ddg")
 
   # Save sourced scripts (if any). First row is main script.
   ddg.sourced.scripts <- .ddg.get(".ddg.sourced.scripts")
