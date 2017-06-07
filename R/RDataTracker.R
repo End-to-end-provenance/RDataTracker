@@ -2826,6 +2826,7 @@ library(tools)
   # Save ddg.
   .ddg.txt.write()
   .ddg.json.write()
+  .ddg.hashtable.write()
 
   # Get user input from the keyboard.
   line <- "D"
