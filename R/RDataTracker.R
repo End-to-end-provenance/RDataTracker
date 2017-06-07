@@ -518,6 +518,9 @@ library(tools)
   # List of files read and written
   .ddg.set("ddg.infilenodes", list())
   .ddg.set("ddg.outfilenodes", list())
+
+  # Data frame containing file reads and writes
+  .ddg.set("ddg.hashtable", data.frame())
 }
 
 # .ddg.set.history provides a wrapper to change the number of
@@ -1382,6 +1385,8 @@ library(tools)
       ddg.data.nodes$ddg.rw[ddg.dnum] <- drw
       .ddg.set("ddg.outfilenodes", list())
     }
+    # Output file nodes to hashtable
+    .ddg.set("ddg.hashtable", rbind(.ddg.get("ddg.hashtable"), c(dhash, drw, dloc, dname, ddg.dnum), stringsAsFactors = FALSE))
   }
 
   ddg.data.nodes$ddg.current[ddg.dnum] <- TRUE
@@ -1400,6 +1405,15 @@ library(tools)
   }
 }
 
+# .ddg.hashtable.write writes the current ddg.txt string to the file
+# hashtable.csv on the ddg directory.
+
+.ddg.hashtable.write <- function() {
+  fileout <- paste(.ddg.path(), "/hashtable.csv", sep="")
+  # if (interactive()) print(paste("Saving DDG in ", fileout))
+  hashtable.csv <- .ddg.get("ddg.hashtable")
+  write.table(hashtable.csv, file = fileout, col.names = FALSE, row.names = FALSE, sep = ",")
+}
 
 # Returns a string representation of the type information of the given value.
 
@@ -5846,6 +5860,10 @@ ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE) {
   # Save ddg.json to file.
   .ddg.json.write()
   if (interactive()) print(paste("Saving ddg.json in ", .ddg.path(), sep=""))
+
+  # Save hashtable.csv to file.
+  .ddg.hashtable.write()
+  if (interactive()) print(paste("Saving hashtable.csv in ", .ddg.path(), sep=""))
 
   # Save sourced scripts (if any). First row is main script.
   ddg.sourced.scripts <- .ddg.get(".ddg.sourced.scripts")
