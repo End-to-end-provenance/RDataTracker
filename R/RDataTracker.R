@@ -1325,6 +1325,10 @@ library(tools)
   .ddg.inc("ddg.dnum")
   ddg.dnum <- .ddg.dnum()
 
+  #Initialize dhash and drw
+  dhash <- ""
+  drw <- ""
+
   # If the table is full, make it bigger.
   ddg.data.nodes <- .ddg.data.nodes()
   if (nrow(ddg.data.nodes) < ddg.dnum) {
@@ -1352,10 +1356,6 @@ library(tools)
   # get value type
   val.type <- .ddg.get.val.type.string(value)
 
-  #Initialize dhash and drw
-  dhash <- ""
-  drw <- ""
-
   #print(".ddg.record.data: adding info")
   ddg.data.nodes$ddg.type[ddg.dnum] <- dtype
   ddg.data.nodes$ddg.num[ddg.dnum] <- ddg.dnum
@@ -1369,10 +1369,9 @@ library(tools)
   ddg.data.nodes$ddg.time[ddg.dnum] <- dtime
   ddg.data.nodes$ddg.loc[ddg.dnum] <- dloc
 
-  #print (".ddg.record.data: adding file hash info")
-  infiles <- .ddg.get("ddg.infilenodes")
-  outfiles <- .ddg.get("ddg.outfilenodes")
+  #print(".ddg.record.data: adding file MD5 hash info")
   if (dtype == "File") {
+    infiles <- .ddg.get("ddg.infilenodes")
     dhash <- md5sum(dname)
     ddg.data.nodes$ddg.hash[ddg.dnum] <- dhash
     if (length(infiles) != 0 && dname == infiles[length(infiles)]) {
@@ -1384,9 +1383,7 @@ library(tools)
       ddg.data.nodes$ddg.rw[ddg.dnum] <- drw
       .ddg.set("ddg.outfilenodes", list())
     }
-    # Output file nodes to hashtable
-    path <- .ddg.path()
-    .ddg.set("ddg.hashtable", rbind(.ddg.get("ddg.hashtable"), c(dloc, path, paste(.ddg.path(), dvalue, sep="/"), ddg.dnum, dhash, drw, dtime), stringsAsFactors = FALSE))
+    .ddg.set("ddg.hashtable", rbind(.ddg.get("ddg.hashtable"), c(dloc, .ddg.path(), paste(.ddg.path(), dvalue, sep="/"), ddg.dnum, dhash, drw, dtime), stringsAsFactors = FALSE))
   }
 
   ddg.data.nodes$ddg.current[ddg.dnum] <- TRUE
@@ -1422,6 +1419,7 @@ library(tools)
 # ddg data that has been overwritten.
 
 .ddg.hashtable.cleanup <- function() {
+  # if (interactive()) print(paste("Cleaning ddg of entries with DDGPath ", .ddg.path()))
   old_hashtable.csv <- read.csv(file = "~/.ddg/hashtable.csv")
   old_hashtable.csv <- subset(old_hashtable.csv, DDGPath != .ddg.path())
 }
