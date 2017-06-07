@@ -1386,7 +1386,7 @@ library(tools)
       .ddg.set("ddg.outfilenodes", list())
     }
     # Output file nodes to hashtable
-    .ddg.set("ddg.hashtable", rbind(.ddg.get("ddg.hashtable"), c(dhash, drw, dloc, dname, ddg.dnum), stringsAsFactors = FALSE))
+    .ddg.set("ddg.hashtable", rbind(.ddg.get("ddg.hashtable"), c(dloc, paste(.ddg.path(), dvalue, sep="/"), ddg.dnum, dhash, drw), stringsAsFactors = FALSE))
   }
 
   ddg.data.nodes$ddg.current[ddg.dnum] <- TRUE
