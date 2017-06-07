@@ -36,8 +36,7 @@ ddg.MAX_CHECKPOINTS <- 10
 ddg.MAX_HIST_LINES <- 2^14
 
 
-# Import the tools library for use in creating md5 hashes.
-
+# Import the tools library for use in creating MD5 hashes.
 library(tools)
 
 
@@ -796,7 +795,7 @@ library(tools)
 
 .ddg.json.data.node <- function(id, dname, dvalue, val.type, dtype, dscope, from.env, dhash, drw, dtime, dloc) {
 
-  jstr <- paste("\n\"d", id, "\" : {\n\"rdt:name\" : \"", dname, "\",\n\"rdt:value\" : \"", dvalue, "\",\n\"rdt:valType\" : ", val.type, ",\n\"rdt:type\" : \"", dtype, "\",\n\"rdt:scope\" : \"", dscope, "\",\n\"rdt:fromEnv\" : \"", from.env, "\", \n\"rdt:hash\" : \"", dhash, "\",\n\"rdt:rw\" : \"", drw, "\",\n\"rdt:timestamp\" : \"", dtime, "\",\n\"rdt:location\" : \"", dloc, "\"\n}", sep="")
+  jstr <- paste("\n\"d", id, "\" : {\n\"rdt:name\" : \"", dname, "\",\n\"rdt:value\" : \"", dvalue, "\",\n\"rdt:valType\" : ", val.type, ",\n\"rdt:type\" : \"", dtype, "\",\n\"rdt:scope\" : \"", dscope, "\",\n\"rdt:fromEnv\" : \"", from.env, "\", \n\"rdt:MD5hash\" : \"", dhash, "\",\n\"rdt:rw\" : \"", drw, "\",\n\"rdt:timestamp\" : \"", dtime, "\",\n\"rdt:location\" : \"", dloc, "\"\n}", sep="")
 
   .ddg.append.entity(jstr)
 }
@@ -918,7 +917,7 @@ library(tools)
   if (dloc != "") loc.str <- paste(" Location=\"", dloc, "\"", sep="")
   else loc.str <- ""
 
-  if (dhash != "") dhash.str <- paste(" Hash=\"", dhash, "\"", sep="")
+  if (dhash != "") dhash.str <- paste(" MD5 Hash=\"", dhash, "\"", sep="")
   else dhash.str <- ""
 
   if (drw != "") drw.str <- paste(" RW=\"", drw, "\"", sep="")
@@ -1315,7 +1314,7 @@ library(tools)
 # value - the value of the data
 # dscope - data node scope.
 # from.env - if object is from initial environment.
-# dhash - the md5 hash of original file.
+# dhash - the MD5 hash of original file.
 # drw - whether the file was read or written.
 # dtime (optional) - timestamp of original file.
 # dloc (optional) -  path and name of original file.
@@ -1386,7 +1385,8 @@ library(tools)
       .ddg.set("ddg.outfilenodes", list())
     }
     # Output file nodes to hashtable
-    .ddg.set("ddg.hashtable", rbind(.ddg.get("ddg.hashtable"), c(dloc, paste(.ddg.path(), dvalue, sep="/"), ddg.dnum, dhash, drw), stringsAsFactors = FALSE))
+    path <- .ddg.path()
+    .ddg.set("ddg.hashtable", rbind(.ddg.get("ddg.hashtable"), c(dloc, path, paste(.ddg.path(), dvalue, sep="/"), ddg.dnum, dhash, drw, dtime), stringsAsFactors = FALSE))
   }
 
   ddg.data.nodes$ddg.current[ddg.dnum] <- TRUE
@@ -1411,7 +1411,21 @@ library(tools)
 .ddg.hashtable.write <- function() {
   # if (interactive()) print(paste("Saving DDG in ", fileout))
   hashtable.csv <- .ddg.get("ddg.hashtable")
-  write.table(hashtable.csv, "~/.ddg/hashtable.csv", col.names = FALSE, row.names = FALSE, sep = ",")
+  colnames(hashtable.csv) <- c("FilePath","DDGPath","NodePath","NodeNumber","MD5Hash","ReadWrite","Timestamp")
+
+  if (file.exists("~/.ddg/hashtable.csv")) {
+    rbind(hashtable.csv,.ddg.hashtable.cleanup())
+  }
+
+  write.table(hashtable.csv, "~/.ddg/hashtable.csv", append = FALSE, col.names = TRUE, row.names = FALSE, sep = ",")
+}
+
+# .ddg.hashtable.cleanup cleans up the hashtable.csv
+
+.ddg.hashtable.cleanup <- function() {
+  old_hashtable.csv <- read.csv(file = "~/.ddg/hashtable.csv")
+  print(old_hashtable.csv)
+  old_hashtable.csv <- subset(old_hashtable.csv, DDGPath != .ddg.path())
 }
 
 # Returns a string representation of the type information of the given value.
