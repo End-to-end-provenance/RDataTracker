@@ -1411,7 +1411,7 @@ library(tools)
   colnames(new_hashtable.csv) <- c("FilePath","DDGPath","NodePath","NodeNumber","MD5Hash","ReadWrite","Timestamp")
   if (file.exists("~/.ddg/hashtable.csv")) {
     old_hashtable.csv <- .ddg.hashtable.cleanup()
-    new_hashtable.csv <- rbind(new_hashtable.csv,old_hashtable.csv)
+    new_hashtable.csv <- rbind(old_hashtable.csv,new_hashtable.csv)
   }
   write.table(new_hashtable.csv, "~/.ddg/hashtable.csv", append = FALSE, col.names = TRUE, row.names = FALSE, sep = ",")
 }
