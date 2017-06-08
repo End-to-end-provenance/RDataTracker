@@ -1410,7 +1410,8 @@ library(tools)
   new_hashtable.csv <- .ddg.get("ddg.hashtable")
   colnames(new_hashtable.csv) <- c("FilePath","DDGPath","NodePath","NodeNumber","MD5Hash","ReadWrite","Timestamp")
   if (file.exists("~/.ddg/hashtable.csv")) {
-    rbind(new_hashtable.csv,.ddg.hashtable.cleanup())
+    old_hashtable.csv <- .ddg.hashtable.cleanup()
+    new_hashtable.csv <- rbind(new_hashtable.csv,old_hashtable.csv)
   }
   write.table(new_hashtable.csv, "~/.ddg/hashtable.csv", append = FALSE, col.names = TRUE, row.names = FALSE, sep = ",")
 }
@@ -1422,10 +1423,10 @@ library(tools)
   # if (interactive()) print(paste("Cleaning ddg of entries with DDGPath ", .ddg.path()))
   old_hashtable.csv <- read.csv(file = "~/.ddg/hashtable.csv")
   old_hashtable.csv <- subset(old_hashtable.csv, DDGPath != .ddg.path())
+  return(old_hashtable.csv)
 }
 
 # Returns a string representation of the type information of the given value.
-
 .ddg.get.val.type.string <- function(value)
 {
   val.type <- .ddg.get.val.type(value)
