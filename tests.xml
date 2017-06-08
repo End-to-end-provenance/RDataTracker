@@ -25,9 +25,9 @@
   you should see are in the execution time.
 
   If the tests stop with Build failed, find the last test that was
-  attempted and look in its .out file(s).  Perhaps a library function has 
-  changed and the test needs to be updated.  Perhaps the test needs a network 
-  connection and you are not online.  It is usually easy to understand the 
+  attempted and look in its .out file(s).  Perhaps a library function has
+  changed and the test needs to be updated.  Perhaps the test needs a network
+  connection and you are not online.  It is usually easy to understand the
   problem by looking at the .out files.
 
   If the test results differ from the expected results as reported by the
@@ -83,7 +83,7 @@
   script inside that directory should have the same name, with .R appended to it.
   When you add a new test case, you should also add it to one of the tasks that
   group together test cases:
-  
+
   - normal-tests is used for basic R tests.
   - script-tests is used for real R scripts that are short-running
   - long-script-tests are used for real R scripts that are long-running
@@ -212,7 +212,7 @@
   			</patternset>
   		</fileset>
   	</replaceregexp>
-  	
+
   	<!-- Delete all entity timestamp occurrences -->
   	<replaceregexp flags="g">
   		<regexp pattern='("rdt:timestamp" : ("?([0-9]{4}-[0-9]{2}-[0-9]{2}(T| )[0-9]{2}(.|:)[0-9]{2}(.|:)[0-9]{2}[A-Z]{0,3})?"?,)\r?\n)' />
@@ -223,7 +223,7 @@
   			</patternset>
   		</fileset>
   	</replaceregexp>
-  	
+
   	<!-- Delete all entity scope occurrences  -->
   	<replaceregexp flags="g">
   		<regexp pattern='("rdt:scope" : ("(.*)",)\r?\n)' />
@@ -245,7 +245,7 @@
   			</patternset>
   		</fileset>
   	</replaceregexp>
-  	
+
     <!-- Replace local file paths with [DIR] -->
     <replaceregexp flags="g">
       <regexp pattern="${FILE.basedir}/${dir}" />
@@ -279,6 +279,16 @@
     <exec executable="diff" >
       <arg line="--strip-trailing-cr ${local_dir}/ddg.json.local ${local_dir}/${ddg_name}.local" />
     </exec>
+		<echo>cmp (1) ddg.json.local and (2) ${ddg_name}.local:</echo>
+    <exec executable="cmp" failonerror="false" resultproperty="return.code">
+        <arg value="${local_dir}/${out_name}.local" />
+        <arg value="${local_dir}/${expected_out_name}.local" />
+    </exec>
+		<fail message="Does not match expected output.">
+			<condition>
+				<equals arg1="1" arg2="${return.code}"/>
+			</condition>
+		</fail>
   </target>
 
 	<!-- Runs a test using a standard file naming scheme. -->
@@ -435,7 +445,7 @@
 			<param name="test-name" value="ControlConstructTest" />
 		</antcall>
 	</target>
-	
+
 	<target name="update-ControlConstructTest">
 		<antcall target="update-regression-expected">
 			<param name="test-name" value="ControlConstructTest" />
@@ -471,13 +481,13 @@
 			<param name="test-name" value="DataTypeTest" />
 		</antcall>
 	</target>
-	
+
 	<target name="update-DataTypeTest">
 		<antcall target="update-regression-expected">
 			<param name="test-name" value="DataTypeTest" />
 		</antcall>
 	</target>
-	
+
   	<target name="HigherOrderFuncTest">
   		<antcall target="run-regression-test">
   			<param name="test-name" value="HigherOrderFuncTest" />
@@ -495,7 +505,7 @@
 			<param name="test-name" value="AssignmentOperatorsTest" />
 		</antcall>
 	</target>
-	
+
 	<target name="update-AssignmentOperatorsTest">
 		<antcall target="update-regression-expected">
 			<param name="test-name" value="AssignmentOperatorsTest" />
@@ -527,8 +537,8 @@
   </target>
 
 	<target name="normal-tests" depends="basicTest, S4ObjectTest,
-		ScopeTest, ReturnTest, OddParameterTest, FunctionAnnotationTest, 
-		ControlConstructTest, WarningTest, PlotTest, DataTypeTest, 
+		ScopeTest, ReturnTest, OddParameterTest, FunctionAnnotationTest,
+		ControlConstructTest, WarningTest, PlotTest, DataTypeTest,
 		HigherOrderFuncTest, AssignmentOperatorsTest, RMarkdownTest, DDGStatementTest">
 		<echo>##############################################
 	      Finished Execution of Normal Tests. Nothing should have malfunctioned.
