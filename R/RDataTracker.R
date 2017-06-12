@@ -36,10 +36,6 @@ ddg.MAX_CHECKPOINTS <- 10
 ddg.MAX_HIST_LINES <- 2^14
 
 
-# Import the tools library for use in creating MD5 hashes.
-library(tools)
-
-
 #-------- FUNCTIONS TO MANAGE THE GLOBAL VARIABLES--------#
 
 # Global variables cannot be used directly in a library.  Instead,
