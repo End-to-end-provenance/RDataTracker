@@ -35,6 +35,7 @@ ddg.MAX_CHECKPOINTS <- 10
 
 ddg.MAX_HIST_LINES <- 2^14
 
+library(tools)
 
 #-------- FUNCTIONS TO MANAGE THE GLOBAL VARIABLES--------#
 
@@ -912,7 +913,7 @@ ddg.MAX_HIST_LINES <- 2^14
 
   if (dloc != "") loc.str <- paste(" Location=\"", dloc, "\"", sep="")
   else loc.str <- ""
-
+  
   if (dhash != "") dhash.str <- paste(" MD5 Hash=\"", dhash, "\"", sep="")
   else dhash.str <- ""
 
@@ -920,7 +921,7 @@ ddg.MAX_HIST_LINES <- 2^14
   else drw.str <- ""
 
   dtxt <- paste(dtype, " d", ddg.dnum, " \"", ddg.dnum, "-", dname, "\"", value.str, val.type.str, time.str, loc.str, dhash.str, drw.str, ";\n", sep="")
-
+  
   # Record in ddg.txt
   .ddg.append(dtxt)
 
@@ -928,7 +929,7 @@ ddg.MAX_HIST_LINES <- 2^14
   .ddg.append.inc(dtxt)
 
   # Record in ddg.json
-  .ddg.json.data.node(ddg.dnum, dname, dvalue, val.type, dtype, dscope, from.env, dhash, drw, dtime="", dloc="")
+  .ddg.json.data.node(ddg.dnum, dname, dvalue, val.type, dtype, dscope, from.env, dhash, drw, dtime, dloc)
 }
 
 
