@@ -5564,6 +5564,13 @@ ddg.finish <- function(pname=NULL) {
 #   If not provided, the DDG will be saved in a subdirectory called
 #   "ddg" in the current working directory.
 # enable.console (optional) - if TRUE, console mode is turned on.
+# annotate.inside.functions (optional) - if TRUE, functions are annotated.
+# first.loop (optional) - the first loop to annotate in a for, while, or
+#   repeat statement.
+# max.loops (optional) - the maximum number of loops to annotate in a for,
+#   while, or repeat statement. If max.loops = -1 there is no limit.
+#   If max.loops = 0, no loops are annotated.  If non-zero, if-statements
+#   are also annotated.
 # max.snapshot.size (optional) - the maximum size for objects that
 #   should be output to snapshot files. If 0, no snapshot files are saved.
 #   If -1, all snapshot files are saved. Size in kilobytes.  Note that
@@ -5572,7 +5579,7 @@ ddg.finish <- function(pname=NULL) {
 # Addition : overwrite (optional) - default TRUE, if FALSE, generates
 #   timestamp for ddg directory
 
-ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enable.console = TRUE, annotate.inside = TRUE, first.loop = 1, max.loops = 1, max.snapshot.size = 10) {
+ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enable.console = TRUE, annotate.inside.functions = TRUE, first.loop = 1, max.loops = 1, max.snapshot.size = 10) {
   #.ddg.DDGStatement.init()
   .ddg.init.tables()
 
@@ -5658,7 +5665,7 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
   # and max.snapshot.size.
   if (is.null(ddg.get.detail())) {
     # Store value of annotate.inside.
-    .ddg.set("ddg.annotate.inside", annotate.inside)
+    .ddg.set("ddg.annotate.inside", annotate.inside.functions)
 
     # Store maximum number of loops to annotate.
     if (max.loops < 0) max.loops <- 10^10
@@ -5702,13 +5709,13 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
 #   is executed with calls to ddg.init and ddg.save so that
 #   provenance for the function is captured.
 # enable.console (optional) - if TRUE, console mode is turned on.
-# annotate.inside (optional) - if TRUE, functions and control statements
-#   are annotated.
+# annotate.inside.functions (optional) - if TRUE, functions are annotated.
 # first.loop (optional) - the first loop to annotate in a for, while, or
 #   repeat statement.
 # max.loops (optional) - the maximum number of loops to annotate in a for,
 #   while, or repeat statement. If max.loops = -1 there is no limit.
-#   If max.loops = 0, no loops are annotated.
+#   If max.loops = 0, no loops are annotated.  If non-zero, if-statements
+#   are also annotated.
 # max.snapshot.size (optional) - the maximum size for objects that
 #   should be output to snapshot files. If 0, no snapshot files are
 #   saved. If -1, all snapshot files are saved.  Size in kilobytes.
@@ -5718,10 +5725,10 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
 #   same effect as inserting ddg.breakpoint() at the top of the script.
 # save.debug (optional) - If TRUE, save debug files to debug directory.
 
-ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = NULL, enable.console = TRUE, annotate.inside = TRUE, first.loop = 1, max.loops = 1, max.snapshot.size = 10, debug = FALSE, save.debug = FALSE, display = FALSE) {
+ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = NULL, enable.console = TRUE, annotate.inside.functions = TRUE, first.loop = 1, max.loops = 1, max.snapshot.size = 10, debug = FALSE, save.debug = FALSE, display = FALSE) {
 
   # Initiate ddg.
-  ddg.init(r.script.path, ddgdir, overwrite, enable.console, annotate.inside, first.loop, max.loops, max.snapshot.size)
+  ddg.init(r.script.path, ddgdir, overwrite, enable.console, annotate.inside.functions, first.loop, max.loops, max.snapshot.size)
 
   # Create ddg directory.
   # dir.create(.ddg.path(), showWarnings = FALSE)

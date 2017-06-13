@@ -172,15 +172,7 @@ setMethod ("initialize",
         # If we are annotating statements inside functions and control statements,
         # the contained field is a list of DDGStatements for all statements inside
         # the function or control statement.
-
-          if (ddg.annotate.inside()) {
-            .ddg.parse.contained(.Object, script.name, parseData)
-          }
-
-          # If we are not annotating functions, the contained field is an empty list
-          else {
-            list()
-          }
+          .ddg.parse.contained(.Object, script.name, parseData)
 
       .Object@annotated <-
           # If this is a call to ddg.eval, we only want to execute
@@ -463,36 +455,45 @@ null.pos <- function() {
   }
 
   # Annotate internal statements if annotate.inside is TRUE.
-  if (ddg.annotate.inside()) {
+
     # Annotate user-defined functions.
     # Note that this will not annotate anonymous functions, like ones that might be passed to lapply, for example
     # Is that what we want?
-    if (.ddg.is.assign(parsed.command) && .ddg.is.functiondecl(parsed.command[[3]])) {
+  if (.ddg.is.assign(parsed.command) && .ddg.is.functiondecl(parsed.command[[3]])) {
+    if (ddg.annotate.inside()) {
       return(.ddg.add.function.annotations(command))
     }
+    else {
+      return(command@parsed)
+    }
+  }
+  
+  # Return original if we do not want to go into control constructs
+  if (ddg.max.loops() == 0) {
+    return(command@parsed)
+  }
 
-    statement.type <- as.character(.ddg.get.statement.type(parsed.command))
-    loop.types <- list("for", "while", "repeat")
-    if (length(statement.type > 0) && !is.null(statement.type) && ddg.max.loops() > 0) {
+  statement.type <- as.character(.ddg.get.statement.type(parsed.command))
+  loop.types <- list("for", "while", "repeat")
+  if (length(statement.type > 0) && !is.null(statement.type) && ddg.max.loops() > 0) {
 
-      # Annotate if statement.
-      if (statement.type == "if"){
-        return(.ddg.annotate.if.statement(command))
-      }
+    # Annotate if statement.
+    if (statement.type == "if"){
+      return(.ddg.annotate.if.statement(command))
+    }
 
-      # Annotate for, while, repeat statement.
-      else if (statement.type %in% loop.types) {
-        return(.ddg.annotate.loop.statement(command, statement.type))
-      }
+    # Annotate for, while, repeat statement.
+    else if (statement.type %in% loop.types) {
+      return(.ddg.annotate.loop.statement(command, statement.type))
+    }
 
-      # Annotate simple block.
-      else if (statement.type == "{") {
-        return(.ddg.annotate.simple.block(command))
-      }
+    # Annotate simple block.
+    else if (statement.type == "{") {
+      return(.ddg.annotate.simple.block(command))
     }
   }
 
-  # No annotation required.
+  # Not a function or control construct.  No annotation required.
   return(command@parsed)
 }
 
@@ -513,9 +514,18 @@ null.pos <- function() {
 
   # Function declaration
   if (.ddg.is.assign(parsed.cmd) && .ddg.is.functiondecl(parsed.cmd[[3]])) {
-
-    # Create the DDGStatement objects for the statements in the function
-    return (.ddg.parse.contained.function(cmd, script.name, parseData, parsed.cmd[[3]][[3]]))
+    if (ddg.annotate.inside()) {
+      # Create the DDGStatement objects for the statements in the function
+      return (.ddg.parse.contained.function(cmd, script.name, parseData, parsed.cmd[[3]][[3]]))
+    }
+    else {
+      return (list())
+    }
+  }
+  
+  # Check if we want to go inside loop and if-statements
+  else if (ddg.max.loops() == 0) {
+    return (list())
   }
 
   # Control statements.
@@ -669,9 +679,6 @@ null.pos <- function() {
       func.definition <- .ddg.create.function.block(func.definition)
     }
 
-    # Create new function body with an if-then statement for annotations.
-    func.definition <- .ddg.add.conditional.statement(func.definition)
-
     # Insert call to ddg.function if not already added.
     if (!.ddg.has.call.to(func.definition[[3]], "ddg.function")) {
       func.definition <- .ddg.insert.ddg.function(func.definition)
@@ -719,34 +726,6 @@ null.pos <- function() {
   # Add block and reconstruct the call.
   new.func.body <- call("{", func.body)
   return(call("function", func.params, as.call(new.func.body)))
-}
-
-# .ddg.add.conditional.statement creates a new function definition
-# containing an if-then statement used to control annotation.
-#
-# func.definition - original function definition.
-
-.ddg.add.conditional.statement <- function(func.definition) {
-  # Get the function parameters.
-  func.params <- func.definition[[2]]
-
-  # Get the body of the function.
-  func.body <- func.definition[[3]]
-
-  pos <- length(func.body)
-
-  # Create new function definition containing if-then statement.
-  new.func.body.txt <-
-    c(paste("if (ddg.loop.annotate()) {", sep=""),
-    as.list(func.body[2:pos]),
-    paste("} else {", sep=""),
-    as.list(func.body[2:pos]),
-    paste("}", sep=""))
-
-  new.func.expr <- parse(text=new.func.body.txt)
-  new.func.body <- new.func.expr[[1]]
-
-  return(call("function", func.params, call("{", new.func.body)))
 }
 
 # .ddg.insert.ddg.function inserts ddg.function before the first line

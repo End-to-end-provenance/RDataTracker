@@ -284,7 +284,8 @@
         <arg value="${local_dir}/${out_name}.local" />
         <arg value="${local_dir}/${expected_out_name}.local" />
     </exec>
-		<fail message="Does not match expected output.">
+
+  	<fail message="Does not match expected output.">
 			<condition>
 				<equals arg1="1" arg2="${return.code}"/>
 			</condition>
