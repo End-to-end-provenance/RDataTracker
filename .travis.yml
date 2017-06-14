@@ -49,7 +49,7 @@ script:
   - R CMD build .
   - R CMD check *tar.gz
   - ant -file build.xml install
-  - ant -file tests.xml test-all
+  - ant -file tests.xml test-travis
 
 notifications:
   slack: endtoendprovenance:WxevOs6n66eZRbCn9HcW2mGD
