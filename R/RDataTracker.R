@@ -1380,7 +1380,7 @@ library(tools)
       ddg.data.nodes$ddg.rw[ddg.dnum] <- drw
       .ddg.set("ddg.outfilenodes", list())
     }
-    .ddg.set("ddg.hashtable", rbind(.ddg.get("ddg.hashtable"), c(dloc, .ddg.path(), paste(.ddg.path(), dvalue, sep="/"), ddg.dnum, dhash, drw, dtime), stringsAsFactors = FALSE))
+    .ddg.set("ddg.hashtable", rbind(.ddg.get("ddg.hashtable"), c(dloc, .ddg.path(), paste(.ddg.path(), dvalue, sep="/"), ddg.dnum, dhash, drw, dtime, .ddg.get("ddg.r.script.path")), stringsAsFactors = FALSE))
   }
 
   ddg.data.nodes$ddg.current[ddg.dnum] <- TRUE
@@ -1405,7 +1405,7 @@ library(tools)
 .ddg.hashtable.write <- function() {
   # if (interactive()) print(paste("Saving DDG in ", fileout))
   new_hashtable.csv <- .ddg.get("ddg.hashtable")
-  colnames(new_hashtable.csv) <- c("FilePath","DDGPath","NodePath","NodeNumber","MD5Hash","ReadWrite","Timestamp")
+  colnames(new_hashtable.csv) <- c("FilePath","DDGPath","NodePath","NodeNumber","MD5Hash","ReadWrite","Timestamp","ScriptPath")
   if (file.exists("~/.ddg/hashtable.csv")) {
     old_hashtable.csv <- .ddg.hashtable.cleanup()
     new_hashtable.csv <- rbind(old_hashtable.csv,new_hashtable.csv)
