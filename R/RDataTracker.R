@@ -1380,7 +1380,8 @@ library(tools)
       ddg.data.nodes$ddg.rw[ddg.dnum] <- drw
       .ddg.set("ddg.outfilenodes", list())
     }
-    .ddg.set("ddg.hashtable", rbind(.ddg.get("ddg.hashtable"), c(dloc, .ddg.path(), paste(.ddg.path(), dvalue, sep="/"), ddg.dnum, dhash, drw, dtime), stringsAsFactors = FALSE))
+    longpath = paste0(getwd(), substring(.ddg.path(),2))
+    .ddg.set("ddg.hashtable", rbind(.ddg.get("ddg.hashtable"), c(dloc, longpath, paste(.ddg.path(), dvalue, sep="/"), ddg.dnum, dhash, drw, dtime), stringsAsFactors = FALSE))
   }
 
   ddg.data.nodes$ddg.current[ddg.dnum] <- TRUE
