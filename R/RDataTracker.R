@@ -2853,8 +2853,10 @@ ddg.MAX_HIST_LINES <- 2^14
 .ddg.save.annotated.script <- function(cmds, script.name) {
   for (i in 1:length(cmds)) {
     expr <- cmds[[i]]@annotated
-    line <- paste(deparse(expr[[1]]), collapse="\n")
-    if (i == 1) script <- line else script <- append(script, line)
+    for (j in 1:length(expr)) {
+      line <- deparse(expr[[j]])
+      if (i == 1 && j == 1) script <- line else script <- append(script, line)
+    }
   }
 
   fileout <- file(paste(.ddg.path.debug(), "/annotated-", script.name, sep=""))

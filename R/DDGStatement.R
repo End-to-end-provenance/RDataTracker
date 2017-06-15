@@ -679,6 +679,9 @@ null.pos <- function() {
       func.definition <- .ddg.create.function.block(func.definition)
     }
 
+    # Create new function body with an if-then statement for annotations.
+    func.definition <- .ddg.add.conditional.statement(func.definition)
+
     # Insert call to ddg.function if not already added.
     if (!.ddg.has.call.to(func.definition[[3]], "ddg.function")) {
       func.definition <- .ddg.insert.ddg.function(func.definition)
@@ -726,6 +729,37 @@ null.pos <- function() {
   # Add block and reconstruct the call.
   new.func.body <- call("{", func.body)
   return(call("function", func.params, as.call(new.func.body)))
+}
+
+# .ddg.add.conditional.statement creates a new function definition
+# containing an if-then statement used to control annotation.
+#
+# func.definition - original function definition.
+
+.ddg.add.conditional.statement <- function(func.definition) {
+  # Get the function parameters.
+  func.params <- func.definition[[2]]
+
+  # Get the body of the function.
+  func.body <- func.definition[[3]]
+
+  pos <- length(func.body)
+
+  # Create new function definition containing if-then statement.
+  # This will prevent us from collecting provenance inside
+  # functions that are inside control structures when we 
+  # are not collecting provenance in control structures.
+  new.func.body.txt <-
+    c(paste("if (ddg.loop.annotate()) {", sep=""),
+    as.list(func.body[2:pos]),
+    paste("} else {", sep=""),
+    as.list(func.body[2:pos]),
+    paste("}", sep=""))
+
+  new.func.expr <- parse(text=new.func.body.txt)
+  new.func.body <- new.func.expr[[1]]
+
+  return(call("function", func.params, call("{", new.func.body)))
 }
 
 # .ddg.insert.ddg.function inserts ddg.function before the first line
@@ -1223,7 +1257,6 @@ null.pos <- function() {
   annotated.block <- .ddg.add.block.start.finish(annotated.block, paste(loop.type, "loop"))
 
   # Insert ddg.loop.annotate statements.
-  annotated.block <- .ddg.insert.ddg.loop.annotate(annotated.block, "on")
   block <- .ddg.insert.ddg.loop.annotate(block, "off")
 
   # Reconstruct for statement.
@@ -1249,9 +1282,10 @@ null.pos <- function() {
     paste("}", sep=""),
     paste("if (ddg.loop.count(", ddg.loop.num, ") > ddg.first.loop() + ddg.max.loops() - 1) ddg.details.omitted()", sep=""),
     paste("ddg.reset.loop.count(", ddg.loop.num, ")", sep=""),
+    paste("if (ddg.max.loops() != 0) ddg.loop.annotate.on()"),  # Turn loop annotations back on in case we reached the max.
     collapse="\n"))
 
-  # print(parse(text=parsed.command.txt))
+  #print(parse(text=parsed.command.txt))
 
   return(parse(text=parsed.command.txt))
 }
