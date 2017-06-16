@@ -26,28 +26,28 @@ addons:
       r-cran-plyr
 
 r_packages:
+  - akima
   - chron
-  - gWidgets
   - dplR
   - dplyr
-  - zoo
+  - Ecdat
+  - Ecfun
+  - extrafont
+  - gWidgets
   - ggplot2
   - gdata
   - grid
   - gridExtra
-  - shiny
   - mgcv
-  - akima
-  - spatstat
-  - reshape2
-  - RCurl
-  - plyr
-  - xkcd
-  - sysfonts
-  - extrafont
-  - Ecfun
-  - Ecdat
   - mosaic
+  - plyr
+  - RCurl
+  - reshape2
+  - shiny
+  - spatstat
+  - sysfonts
+  - xkcd
+  - zoo
 
 before_script:
   - "export DISPLAY=:99.0"
