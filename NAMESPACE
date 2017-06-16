@@ -10,6 +10,7 @@ export(ddg.forloop, ddg.first.loop, ddg.max.loops, ddg.loop.count, ddg.loop.coun
 export(ddg.loop.annotate, ddg.loop.annotate.on, ddg.loop.annotate.off)
 export(ddg.annotate.inside, ddg.max.snapshot.size, ddg.details.omitted)
 export(ddg.set.detail, ddg.get.detail, ddg.clear.detail)
+export(ddg.inside.loop, ddg.set.inside.loop, ddg.not.inside.loop)
 
 importFrom(gtools, defmacro)
 importFrom(XML, saveXML)

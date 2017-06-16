@@ -5029,6 +5029,23 @@ ddg.loop.annotate.off <- function() {
   .ddg.set("ddg.loop.annotate", FALSE)
 }
 
+ddg.inside.loop <- function() {
+  return (.ddg.get("ddg.inside.loop"))
+}
+
+ddg.set.inside.loop <- function() {
+  if (!.ddg.is.set("ddg.inside.loop")) {
+    .ddg.set("ddg.inside.loop", 0)    
+  }
+  else {
+    .ddg.set("ddg.inside.loop", .ddg.get("ddg.inside.loop") + 1)    
+  }
+}
+
+ddg.not.inside.loop <- function() {
+  .ddg.set("ddg.inside.loop", .ddg.get("ddg.inside.loop") - 1)    
+}
+
 # ddg.loop.count returns the current count for the specified loop.
 
 ddg.loop.count <- function(loop.num) {
@@ -5676,9 +5693,13 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
     # Store maximum snapshot size.
     .ddg.set("ddg.max.snapshot.size", max.snapshot.size)
   }
-
+  
   # If loops are not annotated, do not annotate functions called from inside a loop.
   if (max.loops == 0) ddg.loop.annotate.off()
+  
+  # Initialize the counter that keeps track of nested levels
+  # of ifs and loops
+  ddg.set.inside.loop()
 
   # Set number of first loop.
   .ddg.set("ddg.first.loop", first.loop)

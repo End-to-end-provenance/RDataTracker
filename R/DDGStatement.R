@@ -468,14 +468,9 @@ null.pos <- function() {
     }
   }
   
-  # Return original if we do not want to go into control constructs
-  if (ddg.max.loops() == 0) {
-    return(command@parsed)
-  }
-
   statement.type <- as.character(.ddg.get.statement.type(parsed.command))
   loop.types <- list("for", "while", "repeat")
-  if (length(statement.type > 0) && !is.null(statement.type) && ddg.max.loops() > 0) {
+  if (length(statement.type > 0) && !is.null(statement.type)) { # Move into funcs below && ddg.max.loops() > 0) {
 
     # Annotate if statement.
     if (statement.type == "if"){
@@ -750,7 +745,7 @@ null.pos <- function() {
   # functions that are inside control structures when we 
   # are not collecting provenance in control structures.
   new.func.body.txt <-
-    c(paste("if (ddg.loop.annotate()) {", sep=""),
+    c(paste("if (ddg.loop.annotate() || !ddg.inside.loop()) {", sep=""),
     as.list(func.body[2:pos]),
     paste("} else {", sep=""),
     as.list(func.body[2:pos]),
@@ -1124,90 +1119,102 @@ null.pos <- function() {
 # .ddg.annotate.if.statement adds annotations to if statements.
 
 .ddg.annotate.if.statement <- function(command) {
-  # Get parsed command & contained statements
-  parsed.command <- command@parsed[[1]]
-  parsed.stmts <- command@contained
-
-  # Set initial values.
-  bnum <- 1
-  ptr <- 0
-  parent <- parsed.command
-  parsed.command.txt <- vector()
-
-  # If & else if blocks.
-  while(!is.symbol(parent) && parent[[1]] == "if") {
-    # Get block
-    block <- parent[[3]]
-    block <- .ddg.ensure.in.block(block)
-
-    # Get statements for this block.
-    block.stmts<- list()
-    for (i in 1:(length(block)-1)) {
-      block.stmts <- c(block.stmts, parsed.stmts[[i+ptr]])
-    }
-
-    # Advance pointer for next block.
-    ptr <- ptr + length(block) - 1
-
-    # Wrap each statement with ddg.eval.
-    block <- .ddg.wrap.block.with.ddg.eval(block, block.stmts)
-
-    # Add start and finish nodes.
-    block <- .ddg.add.block.start.finish(block, "if")
-
-    # Reconstruct original statement.
-    cond <- paste(deparse(parent[[2]]), collapse="")
-    if (bnum == 1) {
-      statement.txt <- paste(c(paste("if (", cond, ")", sep=""), deparse(block), collapse="\n"))
-    } else {
-      statement.txt <- paste(c(paste("} else if (", cond, ")", sep=""), deparse(block), collapse="\n"))
-    }
-
-    # Remove final brace & new line.
-    if (bnum > 1) {
-      last <- length(parsed.command.txt) - 2
-      parsed.command.txt <- parsed.command.txt[c(1:last)]
-    }
-    parsed.command.txt <- append(parsed.command.txt, statement.txt)
-
-    # Check for possible final else.
-    if (length(parent) == 4) {
-      final.else <- TRUE
-    } else {
-      final.else <- FALSE
-    }
-
-    # Get next parent
-    bnum <- bnum + 1
-    parent <- parent[[(length(parent))]]
+  
+  if (ddg.max.loops() == 0) {
+    parsed.command.txt <- deparse(command@parsed[[1]])
   }
-
-  # Final else block (if any).
-  if (final.else) {
-    # Get block.
-    block <- parent
-    block <- .ddg.ensure.in.block(block)
-
-    # Get statements for this block
-    block.stmts <- list()
-    for (i in 1:(length(block)-1)) {
-      block.stmts <- c(block.stmts, parsed.stmts[[i+ptr]])
-    }
-
-    # Wrap each statement with ddg.eval.
-    block <- .ddg.wrap.block.with.ddg.eval(block, block.stmts)
-
-    # Add start and finish nodes.
-    block <- .ddg.add.block.start.finish(block, "if")
-
-    # Reconstruct original statement
-    statement.txt <- paste(c(paste("} else", sep=""), deparse(block), collapse=""))
-
-    # Remove final brace.
-      last <- length(parsed.command.txt) - 2
-      parsed.command.txt <- parsed.command.txt[c(1:last)]
+  
+  else  {
+    # Get parsed command & contained statements
+    parsed.command <- command@parsed[[1]]
+    parsed.stmts <- command@contained
+  
+    # Set initial values.
+    bnum <- 1
+    ptr <- 0
+    parent <- parsed.command
+    parsed.command.txt <- vector()
+  
+    # If & else if blocks.
+    while(!is.symbol(parent) && parent[[1]] == "if") {
+      # Get block
+      block <- parent[[3]]
+      block <- .ddg.ensure.in.block(block)
+  
+      # Get statements for this block.
+      block.stmts<- list()
+      for (i in 1:(length(block)-1)) {
+        block.stmts <- c(block.stmts, parsed.stmts[[i+ptr]])
+      }
+  
+      # Advance pointer for next block.
+      ptr <- ptr + length(block) - 1
+  
+      # Wrap each statement with ddg.eval.
+      block <- .ddg.wrap.block.with.ddg.eval(block, block.stmts)
+  
+      # Add start and finish nodes.
+      block <- .ddg.add.block.start.finish(block, "if")
+  
+      # Reconstruct original statement.
+      cond <- paste(deparse(parent[[2]]), collapse="")
+      if (bnum == 1) {
+        statement.txt <- paste(c(paste("if (", cond, ")", sep=""), deparse(block), collapse="\n"))
+      } else {
+        statement.txt <- paste(c(paste("} else if (", cond, ")", sep=""), deparse(block), collapse="\n"))
+      }
+  
+      # Remove final brace & new line.
+      if (bnum > 1) {
+        last <- length(parsed.command.txt) - 2
+        parsed.command.txt <- parsed.command.txt[c(1:last)]
+      }
       parsed.command.txt <- append(parsed.command.txt, statement.txt)
+  
+      # Check for possible final else.
+      if (length(parent) == 4) {
+        final.else <- TRUE
+      } else {
+        final.else <- FALSE
+      }
+  
+      # Get next parent
+      bnum <- bnum + 1
+      parent <- parent[[(length(parent))]]
+    }
+  
+    # Final else block (if any).
+    if (final.else) {
+      # Get block.
+      block <- parent
+      block <- .ddg.ensure.in.block(block)
+  
+      # Get statements for this block
+      block.stmts <- list()
+      for (i in 1:(length(block)-1)) {
+        block.stmts <- c(block.stmts, parsed.stmts[[i+ptr]])
+      }
+  
+      # Wrap each statement with ddg.eval.
+      block <- .ddg.wrap.block.with.ddg.eval(block, block.stmts)
+  
+      # Add start and finish nodes.
+      block <- .ddg.add.block.start.finish(block, "if")
+  
+      # Reconstruct original statement
+      statement.txt <- paste(c(paste("} else", sep=""), deparse(block), collapse=""))
+  
+      # Remove final brace.
+        last <- length(parsed.command.txt) - 2
+        parsed.command.txt <- parsed.command.txt[c(1:last)]
+        parsed.command.txt <- append(parsed.command.txt, statement.txt)
+    }
   }
+  
+  parsed.command.txt <- 
+      append(parsed.command.txt, "ddg.set.inside.loop()", after = 0)
+  parsed.command.txt <-
+      append(parsed.command.txt, "ddg.not.inside.loop()")
 
   return(parse(text=parsed.command.txt))
 }
@@ -1219,72 +1226,81 @@ null.pos <- function() {
 # added before and after the annotated section, as needed.
 
 .ddg.annotate.loop.statement <- function(command, loop.type) {
-  # Return if no annotation
-  if (ddg.max.loops() == 0) return(command@parsed)
-
-  # Get parsed command
-  parsed.command <- command@parsed[[1]]
-
-  # Add new loop & get loop number.
-  .ddg.add.loop()
-  .ddg.inc("ddg.loop.num")
-  ddg.loop.num <- .ddg.loop.num()
-
-  # Get statements in block.
-  if (loop.type == "for") {
-    block <- parsed.command[[4]]
+  if (ddg.max.loops() == 0) {
+    parsed.command.txt <- command@text[[1]]
   }
-  else if (loop.type == "while") {
-    block <- parsed.command[[3]]
+  
+  else  {
+    
+    # Get parsed command
+    parsed.command <- command@parsed[[1]]
+  
+    # Add new loop & get loop number.
+    .ddg.add.loop()
+    .ddg.inc("ddg.loop.num")
+    ddg.loop.num <- .ddg.loop.num()
+  
+    # Get statements in block.
+    if (loop.type == "for") {
+      block <- parsed.command[[4]]
+    }
+    else if (loop.type == "while") {
+      block <- parsed.command[[3]]
+    }
+    else {  # repeat
+      block <- parsed.command[[2]]
+    }
+  
+    # Add braces if necessary.
+    block <- .ddg.ensure.in.block(block)
+  
+    # Wrap each statement with ddg.eval.
+    annotated.block <- .ddg.wrap.block.with.ddg.eval(block, command@contained)
+  
+    # Insert ddg.forloop statement.
+    if (loop.type == "for") {
+      index.var <- parsed.command[[2]]
+      annotated.block <- .ddg.insert.ddg.forloop(annotated.block, index.var)
+    }
+  
+    # Add start and finish nodes.
+    annotated.block <- .ddg.add.block.start.finish(annotated.block, paste(loop.type, "loop"))
+  
+    # Insert ddg.loop.annotate statements.
+    block <- .ddg.insert.ddg.loop.annotate(block, "off")
+  
+    # Reconstruct for statement.
+    block.txt <- deparse(block)
+    annotated.block.txt <- deparse(annotated.block)
+  
+    # Calculate the control line of the annotated code
+    if (loop.type == "for") {
+      firstLine <- paste("for (", deparse(parsed.command[[2]]), " in ", deparse(parsed.command[[3]]), ") {", sep="")
+    }
+    else if (loop.type == "while") {
+      firstLine <- paste("while (", deparse(parsed.command[[2]]), ") {", sep="")
+    }
+    else {  # repeat
+      firstLine <- paste("repeat {", sep="")
+    }
+  
+    parsed.command.txt <- paste(c(firstLine,
+      paste("if (ddg.loop.count.inc(", ddg.loop.num, ") >= ddg.first.loop() && ddg.loop.count(", ddg.loop.num, ") <= ddg.first.loop() + ddg.max.loops() - 1)", sep=""),
+      annotated.block.txt,
+      paste("else", sep = ""),
+      block.txt,
+      paste("}", sep=""),
+      paste("if (ddg.loop.count(", ddg.loop.num, ") > ddg.first.loop() + ddg.max.loops() - 1) ddg.details.omitted()", sep=""),
+      paste("ddg.reset.loop.count(", ddg.loop.num, ")", sep=""),
+      paste("if (ddg.max.loops() != 0) ddg.loop.annotate.on()"),  # Turn loop annotations back on in case we reached the max.
+      collapse="\n"))
   }
-  else {  # repeat
-    block <- parsed.command[[2]]
-  }
 
-  # Add braces if necessary.
-  block <- .ddg.ensure.in.block(block)
-
-  # Wrap each statement with ddg.eval.
-  annotated.block <- .ddg.wrap.block.with.ddg.eval(block, command@contained)
-
-  # Insert ddg.forloop statement.
-  if (loop.type == "for") {
-    index.var <- parsed.command[[2]]
-    annotated.block <- .ddg.insert.ddg.forloop(annotated.block, index.var)
-  }
-
-  # Add start and finish nodes.
-  annotated.block <- .ddg.add.block.start.finish(annotated.block, paste(loop.type, "loop"))
-
-  # Insert ddg.loop.annotate statements.
-  block <- .ddg.insert.ddg.loop.annotate(block, "off")
-
-  # Reconstruct for statement.
-  block.txt <- deparse(block)
-  annotated.block.txt <- deparse(annotated.block)
-
-  # Calculate the control line of the annotated code
-  if (loop.type == "for") {
-    firstLine <- paste("for (", deparse(parsed.command[[2]]), " in ", deparse(parsed.command[[3]]), ") {", sep="")
-  }
-  else if (loop.type == "while") {
-    firstLine <- paste("while (", deparse(parsed.command[[2]]), ") {", sep="")
-  }
-  else {  # repeat
-    firstLine <- paste("repeat {", sep="")
-  }
-
-  parsed.command.txt <- paste(c(firstLine,
-    paste("if (ddg.loop.count.inc(", ddg.loop.num, ") >= ddg.first.loop() && ddg.loop.count(", ddg.loop.num, ") <= ddg.first.loop() + ddg.max.loops() - 1)", sep=""),
-    annotated.block.txt,
-    paste("else", sep = ""),
-    block.txt,
-    paste("}", sep=""),
-    paste("if (ddg.loop.count(", ddg.loop.num, ") > ddg.first.loop() + ddg.max.loops() - 1) ddg.details.omitted()", sep=""),
-    paste("ddg.reset.loop.count(", ddg.loop.num, ")", sep=""),
-    paste("if (ddg.max.loops() != 0) ddg.loop.annotate.on()"),  # Turn loop annotations back on in case we reached the max.
-    collapse="\n"))
-
+  parsed.command.txt <- 
+      append(parsed.command.txt, "ddg.set.inside.loop()", after = 0)
+  parsed.command.txt <-
+      append(parsed.command.txt, "ddg.not.inside.loop()")
+  
   #print(parse(text=parsed.command.txt))
 
   return(parse(text=parsed.command.txt))
