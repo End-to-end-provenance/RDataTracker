@@ -253,6 +253,27 @@
     <!-- Further edit the .local files if running tests on Travis -->
     <antcall target="travis-edits"/>
     
+    <!-- Replace quotes on all local files -->
+    <replaceregexp flags="g">
+      <regexp pattern='\‘' />
+      <substitution expression="\'" />
+      <fileset dir="${local_dir}">
+        <patternset id="local_files">
+          <include name="*.local" />
+        </patternset>
+      </fileset>
+    </replaceregexp>
+    
+    <replaceregexp flags="g">
+      <regexp pattern='\’' />
+      <substitution expression="\'" />
+      <fileset dir="${local_dir}">
+        <patternset id="local_files">
+          <include name="*.local" />
+        </patternset>
+      </fileset>
+    </replaceregexp>
+    
     <!-- Replace local file paths with [DIR] -->
     <replaceregexp flags="g">
       <regexp pattern="${FILE.basedir}/${dir}" />
