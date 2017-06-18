@@ -27,7 +27,7 @@
 \description{These functions are needed to create provenance graphs.}
 \usage{
 ddg.init(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enable.console = TRUE, 
-    max.snapshot.size = 100) 
+    max.snapshot.size = 10) 
 ddg.save(r.script.path = NULL, save.debug=FALSE, quit=FALSE)
 ddg.run(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = NULL, enable.console = TRUE, 
     annotate.inside = TRUE, first.loop = 1, max.loops = 1, max.snapshot.size = 10, debug = FALSE, 
