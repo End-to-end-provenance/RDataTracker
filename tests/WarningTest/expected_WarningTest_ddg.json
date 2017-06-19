@@ -9,7 +9,7 @@
 "p1" : {
 "rdt:name" : "WarningTest.R",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "0.02",
+"rdt:elapsedTime" : "0.01",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -20,7 +20,7 @@
 "p2" : {
 "rdt:name" : "a <- 1",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.02",
+"rdt:elapsedTime" : "0.01",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "1",
 "rdt:startCol" : "1",
@@ -29,14 +29,14 @@
 } ,
 
 "p3" : {
-"rdt:name" : "warning(\"foo\")",
+"rdt:name" : "warning(\"foo\", call. = FALSE)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.03",
+"rdt:elapsedTime" : "0.01",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "2",
 "rdt:startCol" : "1",
 "rdt:endLine" : "2",
-"rdt:endCol" : "14"
+"rdt:endCol" : "27"
 } ,
 
 "p4" : {
@@ -66,17 +66,24 @@
 "rdt:architecture" : "x86_64",
 "rdt:operatingSystem" : "windows",
 "rdt:language" : "R",
-"rdt:rVersion" : "R version 3.3.1 (2016-06-21)",
+"rdt:rVersion" : "R version 3.3.3 (2017-03-06)",
 "rdt:script" : "[DIR]/WarningTest.R",
 "rdt:sourcedScripts" : ""
 ,
-"rdt:scriptTimeStamp" : "2017-01-06T19.13.45EST",
+"rdt:scriptTimeStamp" : "2017-06-16T14.56.24EDT",
 "rdt:workingDirectory" : "[DIR]",
 "rdt:ddgDirectory" : "[DIR]/ddg",
-"rdt:ddgTimeStamp" : "2017-05-24T21.38.44EDT",
+"rdt:ddgTimeStamp" : "2017-06-16T14.57.04EDT",
 "rdt:rdatatrackerVersion" : "2.26.1",
 "rdt:installedPackages" : [
-	{"package" : "RDataTracker", "version" : "2.26.1"}]
+	{"package" : "base", "version" : "3.3.3"},
+	{"package" : "datasets", "version" : "3.3.3"},
+	{"package" : "graphics", "version" : "3.3.3"},
+	{"package" : "grDevices", "version" : "3.3.3"},
+	{"package" : "methods", "version" : "3.3.3"},
+	{"package" : "RDataTracker", "version" : "2.26.1"},
+	{"package" : "stats", "version" : "3.3.3"},
+	{"package" : "utils", "version" : "3.3.3"}]
 }},
 "entity":{
 
@@ -93,7 +100,7 @@
 
 "d2" : {
 "rdt:name" : "warning.msg",
-"rdt:value" : "\"In  eval(expr, envir, enclos) :  foo\"",
+"rdt:value" : "\" foo\"",
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
 "rdt:type" : "Exception",
 "rdt:scope" : "ddg.library",
