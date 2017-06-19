@@ -26,30 +26,40 @@ addons:
       r-cran-plyr
 
 r_packages:
+  - akima
   - chron
-  - gWidgets
   - dplR
-  - zoo
-  - ggplot2
+  - dplyr
+  - Ecdat
+  - Ecfun
+  - extrafont
   - gdata
+  - ggplot2
+  - gplots
   - grid
   - gridExtra
-  - shiny
+  - gWidgets
   - mgcv
-  - akima
-  - spatstat
-  - reshape2
-  - RCurl
+  - mosaic
   - plyr
-  - xkcd
+  - RCurl
+  - reshape2
+  - shiny
+  - spatstat
   - sysfonts
-  - extrafont
+  - xkcd
+  - zoo
+
+before_script:
+  - "export DISPLAY=:99.0"
+  - "sh -e /etc/init.d/xvfb start"
+  - sleep 3
 
 script:
   - R CMD build .
   - R CMD check *tar.gz
   - ant -file build.xml install
-  - ant -file tests.xml test-all
+  - ant -file tests.xml test-travis
 
 notifications:
   slack: endtoendprovenance:WxevOs6n66eZRbCn9HcW2mGD
