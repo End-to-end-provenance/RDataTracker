@@ -1227,7 +1227,8 @@ null.pos <- function() {
 
 .ddg.annotate.loop.statement <- function(command, loop.type) {
   if (ddg.max.loops() == 0) {
-    parsed.command.txt <- command@text[[1]]
+    # Note that I can't just use command@text because it does not separate statements with newlines
+    parsed.command.txt <- deparse(command@parsed[[1]])
   }
   
   else  {

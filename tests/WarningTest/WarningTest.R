@@ -1,3 +1,3 @@
 a <- 1
-warning("foo")
+warning("foo", call.=FALSE)
 b <- 2
