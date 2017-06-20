@@ -1,15 +1,3 @@
-Loading required package: bitops
-
-Attaching package: 'gplots'
-
-The following object is masked from 'package:stats':
-
-    lowess
-
-
-Time-series plots = 2
-
-
-*** HF000-01 completed ***
-
-Execution Time = 4.719047
+Error in library(RCurl) : there is no package called ‘RCurl’
+Calls: ddg.run ... .ddg.parse.commands -> withCallingHandlers -> eval -> eval -> library
+Execution halted
