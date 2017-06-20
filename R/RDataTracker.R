@@ -1405,21 +1405,35 @@ library(tools)
 
 .ddg.hashtable.write <- function() {
   # if (interactive()) print(paste("Saving DDG in ", fileout))
+  writedir <- paste0(path.expand("~"),"/.ddg/")
+  if (!dir.exists(writedir)) {
+    tryCatch({
+      dir.create(writedir)
+    },
+    error = function(c){
+      writedir <- paste0(getwd(),"/.ddg/")
+      if (!dir.exists(writedir)) {
+        dir.create(writedir)
+      }
+    })
+  }
+  writefile <- paste0(writedir,"/hashtable.csv")
   new_hashtable.csv <- .ddg.get("ddg.hashtable")
   colnames(new_hashtable.csv) <- c("FilePath","DDGPath","NodePath","NodeNumber","MD5Hash","ReadWrite","Timestamp")
-  if (file.exists("~/.ddg/hashtable.csv")) {
-    old_hashtable.csv <- .ddg.hashtable.cleanup()
+  
+  if (file.exists(writefile)) {
+    old_hashtable.csv <- .ddg.hashtable.cleanup(writefile)
     new_hashtable.csv <- rbind(old_hashtable.csv,new_hashtable.csv)
   }
-  write.table(new_hashtable.csv, "~/.ddg/hashtable.csv", append = FALSE, col.names = TRUE, row.names = FALSE, sep = ",")
+  write.table(new_hashtable.csv, writefile, append = FALSE, col.names = TRUE, row.names = FALSE, sep = ",")
 }
 
 # .ddg.hashtable.cleanup cleans the previous hashtable.csv of entries containing
 # ddg data that has been overwritten.
 
-.ddg.hashtable.cleanup <- function() {
+.ddg.hashtable.cleanup <- function(writefile) {
   # if (interactive()) print(paste("Cleaning ddg of entries with DDGPath ", .ddg.path()))
-  old_hashtable.csv <- read.csv(file = "~/.ddg/hashtable.csv")
+  old_hashtable.csv <- read.csv(file = writefile)
   old_hashtable.csv <- subset(old_hashtable.csv, DDGPath != .ddg.path())
   return(old_hashtable.csv)
 }
@@ -5872,7 +5886,13 @@ ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE) {
 
   # Save hashtable.csv to file.
   .ddg.hashtable.write()
-  if (interactive()) print("Saving hashtable.csv in ~/.ddg")
+  if (interactive()) {
+    if (dir.exists(paste0(path.expand("~"),"/.ddg/"))) {
+      print("Saving hashtable.csv in .ddg directory.")
+    } else {
+      print("No .ddg directory found in home directory, saving hashtable.csv in local directory.")
+    }
+  }
 
   # Save sourced scripts (if any). First row is main script.
   ddg.sourced.scripts <- .ddg.get(".ddg.sourced.scripts")
