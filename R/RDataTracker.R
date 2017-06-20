@@ -3175,29 +3175,29 @@ library(tools)
               .ddg.create.data.use.edges.for.console.cmd(vars.set, cmd, i, for.caller=FALSE)
 
               # check for factors
-              msg <- e[[1]]
-
-              if( msg == "invalid 'type' (character) of argument" | msg == "only defined on a data frame with all numeric variables" )
-              {
-                containsFactor <- sapply( cmd@vars.used , .ddg.var.contains.factor )
-
-                if( is.element(TRUE , containsFactor) )
-                {
-                  factors <- names(containsFactor)[which(containsFactor==TRUE)]
-
-                  # form suggestion
-                  cat( "The following input data contain(s) a factor:\n" )
-                  cat( paste(shQuote(factors , type="cmd") , collapse = ", ") )
-                  cat("\nThis website may be helpful:\n")
-
-                  #if( msg == "invalid 'type' (character) of argument" )
-                  #  cat("https://stat.ethz.ch/pipermail/r-help/2010-May/239461.html")
-                  #else
-                  #  cat("http://stackoverflow.com/questions/38032814/trying-to-understand-r-error-error-in-funxi-only-defined-on-a-data")
-                  cat( "https://www.r-bloggers.com/using-r-common-errors-in-table-import/" )
-                }
-              }
-
+              #msg <- e[[1]]
+              #
+              #if( msg == "invalid 'type' (character) of argument" | msg == "only defined on a data frame with all numeric variables" )
+              #{ 
+              #  containsFactor <- sapply( cmd@vars.used , .ddg.var.contains.factor )
+              #  
+              #  if( is.element(TRUE , containsFactor) )
+              #  {
+              #    factors <- names(containsFactor)[which(containsFactor==TRUE)]
+              #
+              #    # form suggestion
+              #    cat( "The following input data contain(s) a factor:\n" )
+              #    cat( paste(shQuote(factors , type="cmd") , collapse = ", ") )
+              #    cat("\nThis website may be helpful:\n")
+              #
+              #    #if( msg == "invalid 'type' (character) of argument" )
+              #    #  cat("https://stat.ethz.ch/pipermail/r-help/2010-May/239461.html")
+              #    #else
+              #    #  cat("http://stackoverflow.com/questions/38032814/trying-to-understand-r-error-error-in-funxi-only-defined-on-a-data")
+              #    cat( "https://www.r-bloggers.com/using-r-common-errors-in-table-import/" )
+              #  }
+              #}
+              
               # create and link to an error node
               ddg.exception.out("error.msg", toString(e) , cmd@abbrev)
             }
