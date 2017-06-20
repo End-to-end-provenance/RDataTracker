@@ -745,7 +745,7 @@ null.pos <- function() {
   # functions that are inside control structures when we 
   # are not collecting provenance in control structures.
   new.func.body.txt <-
-    c(paste("if (ddg.loop.annotate() || !ddg.inside.loop()) {", sep=""),
+    c(paste("if (ddg.loop.annotate() || ddg.inside.loop() == 0) {", sep=""),
     as.list(func.body[2:pos]),
     paste("} else {", sep=""),
     as.list(func.body[2:pos]),
