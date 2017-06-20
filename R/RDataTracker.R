@@ -897,7 +897,7 @@ ddg.MAX_HIST_LINES <- 2^14
   if (dvalue != "") value.str <- paste(" Value=\"", dvalue, "\"", sep="")
   else value.str <- ""
 
-  if(val.type != "" ) val.type.str <- paste(" ValType=\"", val.type, "\"", sep="")
+  if(val.type != "" ) val.type.str <- paste(" ValType=\"", .ddg.replace.quotes(val.type), "\"", sep="")
   else val.type.str <- ""
 
   if (dtime != "") time.str <- paste(" Time=\"", dtime, "\"", sep="")
