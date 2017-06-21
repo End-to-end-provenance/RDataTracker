@@ -1405,19 +1405,19 @@ library(tools)
 
 .ddg.hashtable.write <- function() {
   # if (interactive()) print(paste("Saving DDG in ", fileout))
- # writedir <- paste0(getwd(),"/.ddg/")
-#  if (!dir.exists(writedir)) {
-    #tryCatch({
-    #  dir.create(writedir)
-    #},
-    #error = function(c){
-    #  writedir <- paste0(getwd(),"/.ddg/")
-    #  if (!dir.exists(writedir)) {
-    #    dir.create(writedir)
-    #  }
-  #  })
-  #}
-  writefile <- paste0(getwd(),"/hashtable.csv")
+  writedir <- paste0(path.expand("~"),"/.ddg/")
+  if (!dir.exists(writedir)) {
+    tryCatch({
+      dir.create(writedir)
+    },
+    error = function(c){
+      writedir <- paste0(getwd(),"/.ddg/")
+      if (!dir.exists(writedir)) {
+        dir.create(writedir)
+      }
+    })
+  }
+  writefile <- paste0(writedir,"/hashtable.csv")
   new_hashtable.csv <- .ddg.get("ddg.hashtable")
   colnames(new_hashtable.csv) <- c("FilePath","DDGPath","NodePath","NodeNumber","MD5Hash","ReadWrite","Timestamp")
   
@@ -5805,7 +5805,7 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
 #   same effect as inserting ddg.breakpoint() at the top of the script.
 # save.debug (optional) - If TRUE, save debug files to debug directory.
 
-ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = NULL, enable.console = TRUE, annotate.inside = TRUE, first.loop = 1, max.loops = 1, max.snapshot.size = 10, debug = FALSE, save.debug = FALSE, display = FALSE) {
+ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = NULL, enable.console = TRUE, annotate.inside = TRUE, first.loop = 1, max.loops = 1, max.snapshot.size = 10, debug = FALSE, save.debug = FALSE, display = FALSE, save.hashtable = TRUE) {
 
   # Initiate ddg.
   ddg.init(r.script.path, ddgdir, overwrite, enable.console, annotate.inside, first.loop, max.loops, max.snapshot.size)
@@ -5838,7 +5838,7 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
                 force.console = FALSE)
           else stop("r.script.path and f cannot both be NULL"),
       finally={
-        ddg.save(r.script.path)
+        ddg.save(r.script.path, save.hashtable = save.hashtable)
         if(display==TRUE){
           ddg.display()
         }
@@ -5858,7 +5858,7 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
 #   Used in console mode.
 # quit (optional) - If TRUE, remove all DDG files from memory.
 
-ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE) {
+ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE, save.hashtable = FALSE) {
   if (!.ddg.is.init()) return(invisible())
 
   if (interactive() && .ddg.enable.console()) {
@@ -5886,15 +5886,17 @@ ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE) {
   if (interactive()) print(paste("Saving ddg.json in ", .ddg.path(), sep=""))
 
   # Save hashtable.csv to file.
-  .ddg.hashtable.write()
-  if (interactive()) {
-    if (dir.exists(paste0(path.expand("~"),"/.ddg/"))) {
-      print("Saving hashtable.csv in .ddg directory.")
-    } else {
-      print("No .ddg directory found in home directory, saving hashtable.csv in local directory.")
+  if (save.hashtable) {
+    .ddg.hashtable.write()
+    if (interactive()) {
+      if (dir.exists(paste0(path.expand("~"),"/.ddg/"))) {
+        print("Saving hashtable.csv in .ddg directory.")
+      } else {
+        print("No .ddg directory found in home directory, saving hashtable.csv in local directory.")
+      }
     }
   }
-
+  
   # Save sourced scripts (if any). First row is main script.
   ddg.sourced.scripts <- .ddg.get(".ddg.sourced.scripts")
   if (!is.null(ddg.sourced.scripts)) {
