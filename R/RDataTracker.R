@@ -1380,7 +1380,8 @@ library(tools)
       ddg.data.nodes$ddg.rw[ddg.dnum] <- drw
       .ddg.set("ddg.outfilenodes", list())
     }
-    .ddg.set("ddg.hashtable", rbind(.ddg.get("ddg.hashtable"), c(dloc, .ddg.path(), paste(.ddg.path(), dvalue, sep="/"), ddg.dnum, dhash, drw, dtime), stringsAsFactors = FALSE))
+    longpath <- paste0(getwd(), substring(.ddg.path(),2))
+    .ddg.set("ddg.hashtable", rbind(.ddg.get("ddg.hashtable"), c(dloc, longpath, paste(.ddg.path(), dvalue, sep="/"), ddg.dnum, dhash, drw, dtime), stringsAsFactors = FALSE))
   }
 
   ddg.data.nodes$ddg.current[ddg.dnum] <- TRUE
@@ -1404,7 +1405,7 @@ library(tools)
 
 .ddg.hashtable.write <- function() {
   # if (interactive()) print(paste("Saving DDG in ", fileout))
-  writedir <- paste0(path.expand("~"),"/.ddg/")
+  writedir <- paste0(getwd(),"/.ddg/")
   if (!dir.exists(writedir)) {
     tryCatch({
       dir.create(writedir)
@@ -1433,8 +1434,8 @@ library(tools)
 .ddg.hashtable.cleanup <- function(writefile) {
   # if (interactive()) print(paste("Cleaning ddg of entries with DDGPath ", .ddg.path()))
   old_hashtable.csv <- read.csv(file = writefile)
-  print(.ddg.path())
-  old_hashtable.csv <- subset(old_hashtable.csv, DDGPath != .ddg.path())
+  longpath <- paste0(getwd(), substring(.ddg.path(),2))
+  old_hashtable.csv <- subset(old_hashtable.csv, DDGPath != longpath)
   return(old_hashtable.csv)
 }
 
