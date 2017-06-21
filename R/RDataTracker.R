@@ -1405,19 +1405,19 @@ library(tools)
 
 .ddg.hashtable.write <- function() {
   # if (interactive()) print(paste("Saving DDG in ", fileout))
-  writedir <- paste0(getwd(),"/.ddg/")
-  if (!dir.exists(writedir)) {
-    tryCatch({
-      dir.create(writedir)
-    },
-    error = function(c){
-      writedir <- paste0(getwd(),"/.ddg/")
-      if (!dir.exists(writedir)) {
-        dir.create(writedir)
-      }
-    })
-  }
-  writefile <- paste0(writedir,"/hashtable.csv")
+ # writedir <- paste0(getwd(),"/.ddg/")
+#  if (!dir.exists(writedir)) {
+    #tryCatch({
+    #  dir.create(writedir)
+    #},
+    #error = function(c){
+    #  writedir <- paste0(getwd(),"/.ddg/")
+    #  if (!dir.exists(writedir)) {
+    #    dir.create(writedir)
+    #  }
+  #  })
+  #}
+  writefile <- paste0(getwd(),"/hashtable.csv")
   new_hashtable.csv <- .ddg.get("ddg.hashtable")
   colnames(new_hashtable.csv) <- c("FilePath","DDGPath","NodePath","NodeNumber","MD5Hash","ReadWrite","Timestamp")
   
