@@ -23,7 +23,7 @@ invisible(force(startTime))
 
 # Run the script
 #ddg.run("DDGStatementTest.R", "/Users/CGT/Documents/HF Stuff/RDataTracker_GitStuff/RDataTracker/tests/DDGStatementTest/ddg", ignore.ddg.calls = F)
-ddg.run("DDGStatementTest.R", "/Users/CGT/Documents/HF Stuff/RDataTracker_GitStuff/RDataTracker/tests/DDGStatementTest/ddg")
+ddg.run("DDGStatementTest.R", "/Users/CGT/Documents/HF Stuff/RDataTracker_GitStuff/RDataTracker/tests/DDGStatementTest/ddg", save.hashtable = FALSE)
 
 # Calculate total time of execution
 endTime <- Sys.time()

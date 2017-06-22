@@ -9,7 +9,7 @@
 "p1" : {
 "rdt:name" : "S4ObjectTest.R",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "0.322",
+"rdt:elapsedTime" : "0.26",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -20,7 +20,7 @@
 "p2" : {
 "rdt:name" : "require(methods)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.346",
+"rdt:elapsedTime" : "0.282",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "9",
 "rdt:startCol" : "1",
@@ -31,7 +31,7 @@
 "p3" : {
 "rdt:name" : "setClass(\"SampleObj\", slots = c(sampleCode = \"integer\", nInd",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.447",
+"rdt:elapsedTime" : "0.364",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "15",
 "rdt:startCol" : "1",
@@ -42,7 +42,7 @@
 "p4" : {
 "rdt:name" : "as.character.SampleObj <- function(x) {    str <- paste(\"sam",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.56",
+"rdt:elapsedTime" : "0.455",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "21",
 "rdt:startCol" : "1",
@@ -53,7 +53,7 @@
 "p5" : {
 "rdt:name" : "setMethod(\"as.character\", signature(x = \"SampleObj\"), as.cha",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.575",
+"rdt:elapsedTime" : "0.466",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "66",
 "rdt:startCol" : "1",
@@ -64,7 +64,7 @@
 "p6" : {
 "rdt:name" : "generateSamples <- function(n) {    samplesArr <- list()    ",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.606",
+"rdt:elapsedTime" : "0.494",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "67",
 "rdt:startCol" : "1",
@@ -75,7 +75,7 @@
 "p7" : {
 "rdt:name" : "generate1Sample <- function() {    newSample <- new(\"SampleO",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.699",
+"rdt:elapsedTime" : "0.619",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -86,7 +86,7 @@
 "p8" : {
 "rdt:name" : "totalNumOfSample <- 5",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.708",
+"rdt:elapsedTime" : "0.625",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -97,7 +97,7 @@
 "p9" : {
 "rdt:name" : "newSample <- generate1Sample()",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "0.714",
+"rdt:elapsedTime" : "0.63",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -108,7 +108,7 @@
 "p10" : {
 "rdt:name" : "generate1Sample()",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "0.721",
+"rdt:elapsedTime" : "0.635",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -119,7 +119,7 @@
 "p11" : {
 "rdt:name" : "generate1Sample",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.721",
+"rdt:elapsedTime" : "0.635",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -130,7 +130,7 @@
 "p12" : {
 "rdt:name" : "newSample <- new(\"SampleObj\", sampleCode = as.integer(1), nI",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.862",
+"rdt:elapsedTime" : "0.753",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -141,7 +141,7 @@
 "p13" : {
 "rdt:name" : ".local(x, ...)",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "0.933",
+"rdt:elapsedTime" : "0.81",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -152,7 +152,7 @@
 "p14" : {
 "rdt:name" : "...  <-  x",
 "rdt:type" : "Binding",
-"rdt:elapsedTime" : "0.933999999999999",
+"rdt:elapsedTime" : "0.811",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -163,7 +163,7 @@
 "p15" : {
 "rdt:name" : "...  <-  ...",
 "rdt:type" : "Binding",
-"rdt:elapsedTime" : "0.936",
+"rdt:elapsedTime" : "0.813",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -174,7 +174,7 @@
 "p16" : {
 "rdt:name" : ".local",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.938",
+"rdt:elapsedTime" : "0.814",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -185,7 +185,7 @@
 "p17" : {
 "rdt:name" : "str <- paste(\"sampleCode =\", x@sampleCode, \"\n\")",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.997",
+"rdt:elapsedTime" : "0.865",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "23",
 "rdt:startCol" : "9",
@@ -196,7 +196,7 @@
 "p18" : {
 "rdt:name" : "str <- paste(str, \"nIndividuals =\", x@nIndividuals, \"\n\")",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.008",
+"rdt:elapsedTime" : "0.874",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "24",
 "rdt:startCol" : "9",
@@ -207,7 +207,7 @@
 "p19" : {
 "rdt:name" : "str <- paste(str, \"areaCode =\", x@areaCode, \"\n\")",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.026",
+"rdt:elapsedTime" : "0.885",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "25",
 "rdt:startCol" : "9",
@@ -218,7 +218,7 @@
 "p20" : {
 "rdt:name" : "return(str)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.045",
+"rdt:elapsedTime" : "0.901",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "26",
 "rdt:startCol" : "9",
@@ -229,7 +229,7 @@
 "p21" : {
 "rdt:name" : ".local(x, ...)",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.054",
+"rdt:elapsedTime" : "0.911",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -240,7 +240,7 @@
 "p22" : {
 "rdt:name" : ".local(x, ...)",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "1.209",
+"rdt:elapsedTime" : "1.078",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -251,7 +251,7 @@
 "p23" : {
 "rdt:name" : "...  <-  x",
 "rdt:type" : "Binding",
-"rdt:elapsedTime" : "1.211",
+"rdt:elapsedTime" : "1.079",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -262,7 +262,7 @@
 "p24" : {
 "rdt:name" : "...  <-  ...",
 "rdt:type" : "Binding",
-"rdt:elapsedTime" : "1.213",
+"rdt:elapsedTime" : "1.08",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -273,7 +273,7 @@
 "p25" : {
 "rdt:name" : ".local",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.215",
+"rdt:elapsedTime" : "1.082",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -284,7 +284,7 @@
 "p26" : {
 "rdt:name" : "str <- paste(\"sampleCode =\", x@sampleCode, \"\n\")",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.217",
+"rdt:elapsedTime" : "1.084",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "23",
 "rdt:startCol" : "9",
@@ -295,7 +295,7 @@
 "p27" : {
 "rdt:name" : "str <- paste(str, \"nIndividuals =\", x@nIndividuals, \"\n\")",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.232",
+"rdt:elapsedTime" : "1.093",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "24",
 "rdt:startCol" : "9",
@@ -306,7 +306,7 @@
 "p28" : {
 "rdt:name" : "str <- paste(str, \"areaCode =\", x@areaCode, \"\n\")",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.246",
+"rdt:elapsedTime" : "1.11",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "25",
 "rdt:startCol" : "9",
@@ -317,7 +317,7 @@
 "p29" : {
 "rdt:name" : "return(str)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.264",
+"rdt:elapsedTime" : "1.127",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "26",
 "rdt:startCol" : "9",
@@ -328,7 +328,7 @@
 "p30" : {
 "rdt:name" : ".local(x, ...)",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.34",
+"rdt:elapsedTime" : "1.145",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -339,7 +339,7 @@
 "p31" : {
 "rdt:name" : "return(newSample)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.343",
+"rdt:elapsedTime" : "1.148",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -350,7 +350,7 @@
 "p32" : {
 "rdt:name" : "generate1Sample()",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.357",
+"rdt:elapsedTime" : "1.157",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -361,7 +361,7 @@
 "p33" : {
 "rdt:name" : "newSample <- generate1Sample()",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.358",
+"rdt:elapsedTime" : "1.158",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -372,7 +372,7 @@
 "p34" : {
 "rdt:name" : ".local(x, ...)",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "1.361",
+"rdt:elapsedTime" : "1.161",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -383,7 +383,7 @@
 "p35" : {
 "rdt:name" : "...  <-  x",
 "rdt:type" : "Binding",
-"rdt:elapsedTime" : "1.363",
+"rdt:elapsedTime" : "1.162",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -394,7 +394,7 @@
 "p36" : {
 "rdt:name" : "...  <-  ...",
 "rdt:type" : "Binding",
-"rdt:elapsedTime" : "1.365",
+"rdt:elapsedTime" : "1.163",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -405,7 +405,7 @@
 "p37" : {
 "rdt:name" : ".local",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.367",
+"rdt:elapsedTime" : "1.165",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -416,7 +416,7 @@
 "p38" : {
 "rdt:name" : "str <- paste(\"sampleCode =\", x@sampleCode, \"\n\")",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.372",
+"rdt:elapsedTime" : "1.167",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "23",
 "rdt:startCol" : "9",
@@ -427,7 +427,7 @@
 "p39" : {
 "rdt:name" : "str <- paste(str, \"nIndividuals =\", x@nIndividuals, \"\n\")",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.388",
+"rdt:elapsedTime" : "1.175",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "24",
 "rdt:startCol" : "9",
@@ -438,7 +438,7 @@
 "p40" : {
 "rdt:name" : "str <- paste(str, \"areaCode =\", x@areaCode, \"\n\")",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.401",
+"rdt:elapsedTime" : "1.186",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "25",
 "rdt:startCol" : "9",
@@ -449,7 +449,7 @@
 "p41" : {
 "rdt:name" : "return(str)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.419",
+"rdt:elapsedTime" : "1.2",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "26",
 "rdt:startCol" : "9",
@@ -460,7 +460,7 @@
 "p42" : {
 "rdt:name" : ".local(x, ...)",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.427",
+"rdt:elapsedTime" : "1.208",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -471,7 +471,7 @@
 "p43" : {
 "rdt:name" : "samplesArr <- generateSamples(totalNumOfSample)",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "1.433",
+"rdt:elapsedTime" : "1.212",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -482,7 +482,7 @@
 "p44" : {
 "rdt:name" : "generateSamples(totalNumOfSample)",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "1.444",
+"rdt:elapsedTime" : "1.219",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -493,7 +493,7 @@
 "p45" : {
 "rdt:name" : "n  <-  totalNumOfSample",
 "rdt:type" : "Binding",
-"rdt:elapsedTime" : "1.445",
+"rdt:elapsedTime" : "1.221",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -504,7 +504,7 @@
 "p46" : {
 "rdt:name" : "generateSamples",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.453",
+"rdt:elapsedTime" : "1.228",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -515,7 +515,7 @@
 "p47" : {
 "rdt:name" : "samplesArr <- list()",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.461",
+"rdt:elapsedTime" : "1.236",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -526,7 +526,7 @@
 "p48" : {
 "rdt:name" : "for (ix in 1:n) {    newSample <- new(\"SampleObj\", sampleCod",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "1.47",
+"rdt:elapsedTime" : "1.244",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -537,7 +537,7 @@
 "p49" : {
 "rdt:name" : "for loop",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "1.481",
+"rdt:elapsedTime" : "1.254",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -548,7 +548,7 @@
 "p50" : {
 "rdt:name" : "ix <- 1",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.485",
+"rdt:elapsedTime" : "1.255",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -559,7 +559,7 @@
 "p51" : {
 "rdt:name" : "newSample <- new(\"SampleObj\", sampleCode = ix, nIndividuals ",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.492",
+"rdt:elapsedTime" : "1.259",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -570,7 +570,7 @@
 "p52" : {
 "rdt:name" : ".local(x, ...)",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "1.499",
+"rdt:elapsedTime" : "1.267",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -581,7 +581,7 @@
 "p53" : {
 "rdt:name" : "...  <-  x",
 "rdt:type" : "Binding",
-"rdt:elapsedTime" : "1.5",
+"rdt:elapsedTime" : "1.267",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -592,7 +592,7 @@
 "p54" : {
 "rdt:name" : "...  <-  ...",
 "rdt:type" : "Binding",
-"rdt:elapsedTime" : "1.502",
+"rdt:elapsedTime" : "1.269",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -603,7 +603,7 @@
 "p55" : {
 "rdt:name" : ".local",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.504",
+"rdt:elapsedTime" : "1.271",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -614,7 +614,7 @@
 "p56" : {
 "rdt:name" : "str <- paste(\"sampleCode =\", x@sampleCode, \"\n\")",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.506",
+"rdt:elapsedTime" : "1.275",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "23",
 "rdt:startCol" : "9",
@@ -625,7 +625,7 @@
 "p57" : {
 "rdt:name" : "str <- paste(str, \"nIndividuals =\", x@nIndividuals, \"\n\")",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.517",
+"rdt:elapsedTime" : "1.283",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "24",
 "rdt:startCol" : "9",
@@ -636,7 +636,7 @@
 "p58" : {
 "rdt:name" : "str <- paste(str, \"areaCode =\", x@areaCode, \"\n\")",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.533",
+"rdt:elapsedTime" : "1.298",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "25",
 "rdt:startCol" : "9",
@@ -647,7 +647,7 @@
 "p59" : {
 "rdt:name" : "return(str)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.546",
+"rdt:elapsedTime" : "1.31",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "26",
 "rdt:startCol" : "9",
@@ -658,7 +658,7 @@
 "p60" : {
 "rdt:name" : ".local(x, ...)",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.556",
+"rdt:elapsedTime" : "1.318",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -669,7 +669,7 @@
 "p61" : {
 "rdt:name" : "samplesArr = c(samplesArr, newSample)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.561",
+"rdt:elapsedTime" : "1.323",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -680,7 +680,7 @@
 "p62" : {
 "rdt:name" : ".local(x, ...)",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "1.571",
+"rdt:elapsedTime" : "1.331",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -691,7 +691,7 @@
 "p63" : {
 "rdt:name" : "...  <-  x",
 "rdt:type" : "Binding",
-"rdt:elapsedTime" : "1.572",
+"rdt:elapsedTime" : "1.332",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -702,7 +702,7 @@
 "p64" : {
 "rdt:name" : "...  <-  ...",
 "rdt:type" : "Binding",
-"rdt:elapsedTime" : "1.575",
+"rdt:elapsedTime" : "1.333",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -713,7 +713,7 @@
 "p65" : {
 "rdt:name" : ".local",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.577",
+"rdt:elapsedTime" : "1.335",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -724,7 +724,7 @@
 "p66" : {
 "rdt:name" : "str <- paste(\"sampleCode =\", x@sampleCode, \"\n\")",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.581",
+"rdt:elapsedTime" : "1.338",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "23",
 "rdt:startCol" : "9",
@@ -735,7 +735,7 @@
 "p67" : {
 "rdt:name" : "str <- paste(str, \"nIndividuals =\", x@nIndividuals, \"\n\")",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.593",
+"rdt:elapsedTime" : "1.347",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "24",
 "rdt:startCol" : "9",
@@ -746,7 +746,7 @@
 "p68" : {
 "rdt:name" : "str <- paste(str, \"areaCode =\", x@areaCode, \"\n\")",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.603",
+"rdt:elapsedTime" : "1.359",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "25",
 "rdt:startCol" : "9",
@@ -757,7 +757,7 @@
 "p69" : {
 "rdt:name" : "return(str)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.62",
+"rdt:elapsedTime" : "1.371",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "26",
 "rdt:startCol" : "9",
@@ -768,7 +768,7 @@
 "p70" : {
 "rdt:name" : ".local(x, ...)",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.628",
+"rdt:elapsedTime" : "1.376",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -779,7 +779,7 @@
 "p71" : {
 "rdt:name" : "for loop",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.632",
+"rdt:elapsedTime" : "1.381",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -790,7 +790,7 @@
 "p72" : {
 "rdt:name" : "Details Omitted",
 "rdt:type" : "Incomplete",
-"rdt:elapsedTime" : "1.634",
+"rdt:elapsedTime" : "1.382",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -801,7 +801,7 @@
 "p73" : {
 "rdt:name" : "for (ix in 1:n) {    newSample <- new(\"SampleObj\", sampleCod",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.636",
+"rdt:elapsedTime" : "1.384",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -812,7 +812,7 @@
 "p74" : {
 "rdt:name" : "return(samplesArr)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.652",
+"rdt:elapsedTime" : "1.397",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -823,7 +823,7 @@
 "p75" : {
 "rdt:name" : "generateSamples(totalNumOfSample)",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.659",
+"rdt:elapsedTime" : "1.405",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -834,7 +834,7 @@
 "p76" : {
 "rdt:name" : "samplesArr <- generateSamples(totalNumOfSample)",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.661",
+"rdt:elapsedTime" : "1.405",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -845,7 +845,7 @@
 "p77" : {
 "rdt:name" : "S4ObjectTest.R",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.668",
+"rdt:elapsedTime" : "1.41",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -865,15 +865,15 @@
 "rdt:scriptTimeStamp" : "2017-06-20T14.14.36EDT",
 "rdt:workingDirectory" : "[DIR]",
 "rdt:ddgDirectory" : "[DIR]/ddg",
-"rdt:ddgTimeStamp" : "2017-06-20T15.28.41EDT",
-"rdt:rdatatrackerVersion" : "2.26.0",
+"rdt:ddgTimeStamp" : "2017-06-21T16.52.50EDT",
+"rdt:rdatatrackerVersion" : "2.26.1",
 "rdt:installedPackages" : [
 	{"package" : "base", "version" : "3.4.0"},
 	{"package" : "datasets", "version" : "3.4.0"},
 	{"package" : "graphics", "version" : "3.4.0"},
 	{"package" : "grDevices", "version" : "3.4.0"},
 	{"package" : "methods", "version" : "3.4.0"},
-	{"package" : "RDataTracker", "version" : "2.26.0"},
+	{"package" : "RDataTracker", "version" : "2.26.1"},
 	{"package" : "stats", "version" : "3.4.0"},
 	{"package" : "utils", "version" : "3.4.0"}]
 }},
@@ -882,9 +882,12 @@
 "d1" : {
 "rdt:name" : "as.character.SampleObj",
 "rdt:value" : "#ddg.function",
+"rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE",
+"rdt:fromEnv" : "FALSE", 
+"rdt:MD5hash" : "",
+"rdt:rw" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -892,9 +895,12 @@
 "d2" : {
 "rdt:name" : "generateSamples",
 "rdt:value" : "#ddg.function",
+"rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE",
+"rdt:fromEnv" : "FALSE", 
+"rdt:MD5hash" : "",
+"rdt:rw" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -902,9 +908,12 @@
 "d3" : {
 "rdt:name" : "generate1Sample",
 "rdt:value" : "#ddg.function",
+"rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE",
+"rdt:fromEnv" : "FALSE", 
+"rdt:MD5hash" : "",
+"rdt:rw" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -912,9 +921,12 @@
 "d4" : {
 "rdt:name" : "totalNumOfSample",
 "rdt:value" : "5",
+"rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE",
+"rdt:fromEnv" : "FALSE", 
+"rdt:MD5hash" : "",
+"rdt:rw" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -922,9 +934,12 @@
 "d5" : {
 "rdt:name" : "str",
 "rdt:value" : "\"sampleCode = 1  \"",
+"rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
 "rdt:type" : "Data",
-"rdt:scope" : "0x7fa39654ee68",
-"rdt:fromEnv" : "FALSE",
+"rdt:scope" : "0x7fefe8e43228",
+"rdt:fromEnv" : "FALSE", 
+"rdt:MD5hash" : "",
+"rdt:rw" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -932,9 +947,12 @@
 "d6" : {
 "rdt:name" : "str",
 "rdt:value" : "\"sampleCode = 1   nIndividuals = 10  \"",
+"rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
 "rdt:type" : "Data",
-"rdt:scope" : "0x7fa39654ee68",
-"rdt:fromEnv" : "FALSE",
+"rdt:scope" : "0x7fefe8e43228",
+"rdt:fromEnv" : "FALSE", 
+"rdt:MD5hash" : "",
+"rdt:rw" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -942,9 +960,12 @@
 "d7" : {
 "rdt:name" : "str",
 "rdt:value" : "\"sampleCode = 1   nIndividuals = 10   areaCode = 100  \"",
+"rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
 "rdt:type" : "Data",
-"rdt:scope" : "0x7fa39654ee68",
-"rdt:fromEnv" : "FALSE",
+"rdt:scope" : "0x7fefe8e43228",
+"rdt:fromEnv" : "FALSE", 
+"rdt:MD5hash" : "",
+"rdt:rw" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -952,9 +973,12 @@
 "d8" : {
 "rdt:name" : ".local(x,...) return",
 "rdt:value" : "\"sampleCode = 1   nIndividuals = 10   areaCode = 100  \"",
+"rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE",
+"rdt:fromEnv" : "FALSE", 
+"rdt:MD5hash" : "",
+"rdt:rw" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -962,19 +986,25 @@
 "d9" : {
 "rdt:name" : "newSample",
 "rdt:value" : "data/9-newSample.txt",
+"rdt:valType" : "object",
 "rdt:type" : "Snapshot",
-"rdt:scope" : "0x7fa395a2a6d8",
-"rdt:fromEnv" : "FALSE",
-"rdt:timestamp" : "",
+"rdt:scope" : "0x7fefe9f4b758",
+"rdt:fromEnv" : "FALSE", 
+"rdt:MD5hash" : "",
+"rdt:rw" : "",
+"rdt:timestamp" : "2017-06-21T16.52.50EDT",
 "rdt:location" : ""
 } ,
 
 "d10" : {
 "rdt:name" : "str",
 "rdt:value" : "\"sampleCode = 1  \"",
+"rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
 "rdt:type" : "Data",
-"rdt:scope" : "0x7fa396168078",
-"rdt:fromEnv" : "FALSE",
+"rdt:scope" : "0x7fefeb370d80",
+"rdt:fromEnv" : "FALSE", 
+"rdt:MD5hash" : "",
+"rdt:rw" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -982,9 +1012,12 @@
 "d11" : {
 "rdt:name" : "str",
 "rdt:value" : "\"sampleCode = 1   nIndividuals = 10  \"",
+"rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
 "rdt:type" : "Data",
-"rdt:scope" : "0x7fa396168078",
-"rdt:fromEnv" : "FALSE",
+"rdt:scope" : "0x7fefeb370d80",
+"rdt:fromEnv" : "FALSE", 
+"rdt:MD5hash" : "",
+"rdt:rw" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -992,9 +1025,12 @@
 "d12" : {
 "rdt:name" : "str",
 "rdt:value" : "\"sampleCode = 1   nIndividuals = 10   areaCode = 100  \"",
+"rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
 "rdt:type" : "Data",
-"rdt:scope" : "0x7fa396168078",
-"rdt:fromEnv" : "FALSE",
+"rdt:scope" : "0x7fefeb370d80",
+"rdt:fromEnv" : "FALSE", 
+"rdt:MD5hash" : "",
+"rdt:rw" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1002,9 +1038,12 @@
 "d13" : {
 "rdt:name" : ".local(x,...) return",
 "rdt:value" : "\"sampleCode = 1   nIndividuals = 10   areaCode = 100  \"",
+"rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE",
+"rdt:fromEnv" : "FALSE", 
+"rdt:MD5hash" : "",
+"rdt:rw" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1012,19 +1051,25 @@
 "d14" : {
 "rdt:name" : "generate1Sample() return",
 "rdt:value" : "data/14-generate1Sample() return.txt",
+"rdt:valType" : "object",
 "rdt:type" : "Snapshot",
 "rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE",
-"rdt:timestamp" : "",
+"rdt:fromEnv" : "FALSE", 
+"rdt:MD5hash" : "",
+"rdt:rw" : "",
+"rdt:timestamp" : "2017-06-21T16.52.51EDT",
 "rdt:location" : ""
 } ,
 
 "d15" : {
 "rdt:name" : "str",
 "rdt:value" : "\"sampleCode = 1  \"",
+"rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
 "rdt:type" : "Data",
-"rdt:scope" : "0x7fa39792f230",
-"rdt:fromEnv" : "FALSE",
+"rdt:scope" : "0x7fefeb316a70",
+"rdt:fromEnv" : "FALSE", 
+"rdt:MD5hash" : "",
+"rdt:rw" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1032,9 +1077,12 @@
 "d16" : {
 "rdt:name" : "str",
 "rdt:value" : "\"sampleCode = 1   nIndividuals = 10  \"",
+"rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
 "rdt:type" : "Data",
-"rdt:scope" : "0x7fa39792f230",
-"rdt:fromEnv" : "FALSE",
+"rdt:scope" : "0x7fefeb316a70",
+"rdt:fromEnv" : "FALSE", 
+"rdt:MD5hash" : "",
+"rdt:rw" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1042,9 +1090,12 @@
 "d17" : {
 "rdt:name" : "str",
 "rdt:value" : "\"sampleCode = 1   nIndividuals = 10   areaCode = 100  \"",
+"rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
 "rdt:type" : "Data",
-"rdt:scope" : "0x7fa39792f230",
-"rdt:fromEnv" : "FALSE",
+"rdt:scope" : "0x7fefeb316a70",
+"rdt:fromEnv" : "FALSE", 
+"rdt:MD5hash" : "",
+"rdt:rw" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1052,9 +1103,12 @@
 "d18" : {
 "rdt:name" : ".local(x,...) return",
 "rdt:value" : "\"sampleCode = 1   nIndividuals = 10   areaCode = 100  \"",
+"rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE",
+"rdt:fromEnv" : "FALSE", 
+"rdt:MD5hash" : "",
+"rdt:rw" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1062,19 +1116,25 @@
 "d19" : {
 "rdt:name" : "newSample",
 "rdt:value" : "data/19-newSample.txt",
+"rdt:valType" : "object",
 "rdt:type" : "Snapshot",
 "rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE",
-"rdt:timestamp" : "",
+"rdt:fromEnv" : "FALSE", 
+"rdt:MD5hash" : "",
+"rdt:rw" : "",
+"rdt:timestamp" : "2017-06-21T16.52.51EDT",
 "rdt:location" : ""
 } ,
 
 "d20" : {
 "rdt:name" : "n",
 "rdt:value" : "5",
+"rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",
-"rdt:scope" : "0x7fa393ddf260",
-"rdt:fromEnv" : "FALSE",
+"rdt:scope" : "0x7fefe8dc8270",
+"rdt:fromEnv" : "FALSE", 
+"rdt:MD5hash" : "",
+"rdt:rw" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1082,19 +1142,25 @@
 "d21" : {
 "rdt:name" : "samplesArr",
 "rdt:value" : "data/21-samplesArr.txt",
+"rdt:valType" : {"container":"vector", "dimension":[0], "type":["list"]},
 "rdt:type" : "Snapshot",
-"rdt:scope" : "0x7fa393ddf260",
-"rdt:fromEnv" : "FALSE",
-"rdt:timestamp" : "",
+"rdt:scope" : "0x7fefe8dc8270",
+"rdt:fromEnv" : "FALSE", 
+"rdt:MD5hash" : "",
+"rdt:rw" : "",
+"rdt:timestamp" : "2017-06-21T16.52.51EDT",
 "rdt:location" : ""
 } ,
 
 "d22" : {
 "rdt:name" : "ix",
 "rdt:value" : "1",
+"rdt:valType" : {"container":"vector", "dimension":[1], "type":["integer"]},
 "rdt:type" : "Data",
-"rdt:scope" : "0x7fa393ddf260",
-"rdt:fromEnv" : "FALSE",
+"rdt:scope" : "0x7fefe8dc8270",
+"rdt:fromEnv" : "FALSE", 
+"rdt:MD5hash" : "",
+"rdt:rw" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1102,9 +1168,12 @@
 "d23" : {
 "rdt:name" : "str",
 "rdt:value" : "\"sampleCode = 1  \"",
+"rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
 "rdt:type" : "Data",
-"rdt:scope" : "0x7fa3956a4710",
-"rdt:fromEnv" : "FALSE",
+"rdt:scope" : "0x7fefead79670",
+"rdt:fromEnv" : "FALSE", 
+"rdt:MD5hash" : "",
+"rdt:rw" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1112,9 +1181,12 @@
 "d24" : {
 "rdt:name" : "str",
 "rdt:value" : "\"sampleCode = 1   nIndividuals = 10  \"",
+"rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
 "rdt:type" : "Data",
-"rdt:scope" : "0x7fa3956a4710",
-"rdt:fromEnv" : "FALSE",
+"rdt:scope" : "0x7fefead79670",
+"rdt:fromEnv" : "FALSE", 
+"rdt:MD5hash" : "",
+"rdt:rw" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1122,9 +1194,12 @@
 "d25" : {
 "rdt:name" : "str",
 "rdt:value" : "\"sampleCode = 1   nIndividuals = 10   areaCode = 100  \"",
+"rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
 "rdt:type" : "Data",
-"rdt:scope" : "0x7fa3956a4710",
-"rdt:fromEnv" : "FALSE",
+"rdt:scope" : "0x7fefead79670",
+"rdt:fromEnv" : "FALSE", 
+"rdt:MD5hash" : "",
+"rdt:rw" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1132,9 +1207,12 @@
 "d26" : {
 "rdt:name" : ".local(x,...) return",
 "rdt:value" : "\"sampleCode = 1   nIndividuals = 10   areaCode = 100  \"",
+"rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE",
+"rdt:fromEnv" : "FALSE", 
+"rdt:MD5hash" : "",
+"rdt:rw" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1142,19 +1220,25 @@
 "d27" : {
 "rdt:name" : "newSample",
 "rdt:value" : "data/27-newSample.txt",
+"rdt:valType" : "object",
 "rdt:type" : "Snapshot",
-"rdt:scope" : "0x7fa393ddf260",
-"rdt:fromEnv" : "FALSE",
-"rdt:timestamp" : "",
+"rdt:scope" : "0x7fefe8dc8270",
+"rdt:fromEnv" : "FALSE", 
+"rdt:MD5hash" : "",
+"rdt:rw" : "",
+"rdt:timestamp" : "2017-06-21T16.52.51EDT",
 "rdt:location" : ""
 } ,
 
 "d28" : {
 "rdt:name" : "str",
 "rdt:value" : "\"sampleCode = 1  \"",
+"rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
 "rdt:type" : "Data",
-"rdt:scope" : "0x7fa396c86708",
-"rdt:fromEnv" : "FALSE",
+"rdt:scope" : "0x7fefe896b980",
+"rdt:fromEnv" : "FALSE", 
+"rdt:MD5hash" : "",
+"rdt:rw" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1162,9 +1246,12 @@
 "d29" : {
 "rdt:name" : "str",
 "rdt:value" : "\"sampleCode = 1   nIndividuals = 10  \"",
+"rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
 "rdt:type" : "Data",
-"rdt:scope" : "0x7fa396c86708",
-"rdt:fromEnv" : "FALSE",
+"rdt:scope" : "0x7fefe896b980",
+"rdt:fromEnv" : "FALSE", 
+"rdt:MD5hash" : "",
+"rdt:rw" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1172,9 +1259,12 @@
 "d30" : {
 "rdt:name" : "str",
 "rdt:value" : "\"sampleCode = 1   nIndividuals = 10   areaCode = 100  \"",
+"rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
 "rdt:type" : "Data",
-"rdt:scope" : "0x7fa396c86708",
-"rdt:fromEnv" : "FALSE",
+"rdt:scope" : "0x7fefe896b980",
+"rdt:fromEnv" : "FALSE", 
+"rdt:MD5hash" : "",
+"rdt:rw" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1182,9 +1272,12 @@
 "d31" : {
 "rdt:name" : ".local(x,...) return",
 "rdt:value" : "\"sampleCode = 1   nIndividuals = 10   areaCode = 100  \"",
+"rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE",
+"rdt:fromEnv" : "FALSE", 
+"rdt:MD5hash" : "",
+"rdt:rw" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1192,50 +1285,65 @@
 "d32" : {
 "rdt:name" : "samplesArr",
 "rdt:value" : "data/28-samplesArr.txt",
+"rdt:valType" : {"container":"vector", "dimension":[1], "type":["list"]},
 "rdt:type" : "Snapshot",
-"rdt:scope" : "0x7fa393ddf260",
-"rdt:fromEnv" : "FALSE",
-"rdt:timestamp" : "",
+"rdt:scope" : "0x7fefe8dc8270",
+"rdt:fromEnv" : "FALSE", 
+"rdt:MD5hash" : "",
+"rdt:rw" : "",
+"rdt:timestamp" : "2017-06-21T16.52.51EDT",
 "rdt:location" : ""
 } ,
 
 "d33" : {
 "rdt:name" : "newSample",
 "rdt:value" : "data/33-newSample.txt",
+"rdt:valType" : "object",
 "rdt:type" : "Snapshot",
-"rdt:scope" : "0x7fa393ddf260",
-"rdt:fromEnv" : "FALSE",
-"rdt:timestamp" : "",
+"rdt:scope" : "0x7fefe8dc8270",
+"rdt:fromEnv" : "FALSE", 
+"rdt:MD5hash" : "",
+"rdt:rw" : "",
+"rdt:timestamp" : "2017-06-21T16.52.51EDT",
 "rdt:location" : ""
 } ,
 
 "d34" : {
 "rdt:name" : "samplesArr",
 "rdt:value" : "data/34-samplesArr.txt",
+"rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
 "rdt:type" : "Snapshot",
-"rdt:scope" : "0x7fa393ddf260",
-"rdt:fromEnv" : "FALSE",
-"rdt:timestamp" : "",
+"rdt:scope" : "0x7fefe8dc8270",
+"rdt:fromEnv" : "FALSE", 
+"rdt:MD5hash" : "",
+"rdt:rw" : "",
+"rdt:timestamp" : "2017-06-21T16.52.51EDT",
 "rdt:location" : ""
 } ,
 
 "d35" : {
 "rdt:name" : "generateSamples(totalNumOfSample) return",
 "rdt:value" : "data/35-generateSamples(totalNumOfSample) return.txt",
+"rdt:valType" : {"container":"vector", "dimension":[5], "type":["list"]},
 "rdt:type" : "Snapshot",
 "rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE",
-"rdt:timestamp" : "",
+"rdt:fromEnv" : "FALSE", 
+"rdt:MD5hash" : "",
+"rdt:rw" : "",
+"rdt:timestamp" : "2017-06-21T16.52.51EDT",
 "rdt:location" : ""
 } ,
 
 "d36" : {
 "rdt:name" : "samplesArr",
 "rdt:value" : "data/36-samplesArr.txt",
+"rdt:valType" : {"container":"vector", "dimension":[5], "type":["list"]},
 "rdt:type" : "Snapshot",
 "rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE",
-"rdt:timestamp" : "",
+"rdt:fromEnv" : "FALSE", 
+"rdt:MD5hash" : "",
+"rdt:rw" : "",
+"rdt:timestamp" : "2017-06-21T16.52.51EDT",
 "rdt:location" : ""
 }},
 "wasInformedBy":{

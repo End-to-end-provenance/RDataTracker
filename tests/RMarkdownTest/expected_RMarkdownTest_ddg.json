@@ -9,7 +9,7 @@
 "p1" : {
 "rdt:name" : "RMarkdownTest.R",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "0.439",
+"rdt:elapsedTime" : "0.29",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -20,7 +20,7 @@
 "p2" : {
 "rdt:name" : "setup",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "0.468",
+"rdt:elapsedTime" : "0.316",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -31,7 +31,7 @@
 "p3" : {
 "rdt:name" : "library(Ecdat)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.536",
+"rdt:elapsedTime" : "0.364",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "13",
 "rdt:startCol" : "1",
@@ -48,18 +48,18 @@
 "rdt:script" : "[DIR]/ddg/scripts/RMarkdownTest.R",
 "rdt:sourcedScripts" : ""
 ,
-"rdt:scriptTimeStamp" : "2017-06-20T15.29.41EDT",
+"rdt:scriptTimeStamp" : "2017-06-21T16.53.38EDT",
 "rdt:workingDirectory" : "[DIR]",
 "rdt:ddgDirectory" : "[DIR]/ddg",
-"rdt:ddgTimeStamp" : "2017-06-20T15.29.41EDT",
-"rdt:rdatatrackerVersion" : "2.26.0",
+"rdt:ddgTimeStamp" : "2017-06-21T16.53.38EDT",
+"rdt:rdatatrackerVersion" : "2.26.1",
 "rdt:installedPackages" : [
 	{"package" : "base", "version" : "3.4.0"},
 	{"package" : "datasets", "version" : "3.4.0"},
 	{"package" : "graphics", "version" : "3.4.0"},
 	{"package" : "grDevices", "version" : "3.4.0"},
 	{"package" : "methods", "version" : "3.4.0"},
-	{"package" : "RDataTracker", "version" : "2.26.0"},
+	{"package" : "RDataTracker", "version" : "2.26.1"},
 	{"package" : "stats", "version" : "3.4.0"},
 	{"package" : "utils", "version" : "3.4.0"}]
 }},
@@ -68,9 +68,12 @@
 "d1" : {
 "rdt:name" : "error.msg",
 "rdt:value" : "\"Error in library(Ecdat): there is no package called ‘Ecdat’ \"",
+"rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
 "rdt:type" : "Exception",
 "rdt:scope" : "ddg.library",
-"rdt:fromEnv" : "FALSE",
+"rdt:fromEnv" : "FALSE", 
+"rdt:MD5hash" : "",
+"rdt:rw" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 }},
