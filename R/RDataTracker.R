@@ -204,6 +204,18 @@ ddg.MAX_HIST_LINES <- 2^14
   return(.ddg.get("ddg.loops"))
 }
 
+# value should be TRUE or FALSE
+# Keeps track of whether the last loop has all iterations
+# recorded or not.
+.ddg.set.details.omitted <- function (value) {
+  .ddg.set ("details.omitted", value)
+}
+
+.ddg.were.details.omitted <- function () {
+  .ddg.get ("details.omitted")
+}
+
+
 # Functions that allow us to save warnings when they occur
 # so that we can create the warning node after the node
 # that caused the warning is created.
@@ -3193,9 +3205,10 @@ ddg.MAX_HIST_LINES <- 2^14
 
               # If the number of loop iterations exceeds max.loops, add
               # output data nodes containing final values to the finish node.
-              if (loop.statement && !ddg.loop.annotate()) {
+              if (loop.statement && .ddg.were.details.omitted()) {
                 vars.set2 <- .ddg.add.to.vars.set(vars.set, cmd, i)
                 .ddg.create.data.node.for.possible.writes(vars.set2, cmd, environ)
+                .ddg.set.details.omitted(FALSE)
               }
             }
 
@@ -5092,11 +5105,15 @@ ddg.forloop <- function(index.var) {
 # happen if the number of the first loop to be annotaed (first.loop) is
 # greater than 1 and/or if the total number of loops to be annotated is
 # less than the actual number of iterations.
+#
+# It also sets a variable to remember that the last construct is incomplete
+# so that the right data nodes get created.
 
 ddg.details.omitted <- function() {
   pnode.name <- "Details Omitted"
   .ddg.proc.node("Incomplete", pnode.name, pnode.name)
   .ddg.proc2proc()
+  .ddg.set.details.omitted(TRUE)
 
   if (.ddg.debug.lib()) {
     print("Adding Details Omitted node")
@@ -5650,6 +5667,7 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
   .ddg.set(".ddg.enable.console", enable.console)
   .ddg.set(".ddg.func.depth", 0)
   .ddg.set(".ddg.explorer.port", 6096)
+  .ddg.set.details.omitted(FALSE)
   # .ddg.init.environ()
 
   # Initialize the information about the open start-finish blocks
