@@ -25,9 +25,9 @@
   you should see are in the execution time.
 
   If the tests stop with Build failed, find the last test that was
-  attempted and look in its .out file(s).  Perhaps a library function has 
-  changed and the test needs to be updated.  Perhaps the test needs a network 
-  connection and you are not online.  It is usually easy to understand the 
+  attempted and look in its .out file(s).  Perhaps a library function has
+  changed and the test needs to be updated.  Perhaps the test needs a network
+  connection and you are not online.  It is usually easy to understand the
   problem by looking at the .out files.
 
   If the test results differ from the expected results as reported by the
@@ -83,7 +83,7 @@
   script inside that directory should have the same name, with .R appended to it.
   When you add a new test case, you should also add it to one of the tasks that
   group together test cases:
-  
+
   - normal-tests is used for basic R tests.
   - script-tests is used for real R scripts that are short-running
   - long-script-tests are used for real R scripts that are long-running
@@ -216,6 +216,17 @@
     <!-- Delete all elapsed time occurrences  -->
     <replaceregexp flags="g">
       <regexp pattern='(( Time=)("?[0-9]*\.?[0-9]+"))' />
+      <substitution expression=""/>
+      <fileset dir="${local_dir}">
+        <patternset id="local_files">
+          <include name="*.local" />
+        </patternset>
+      </fileset>
+    </replaceregexp>
+
+    <!-- Delete all MD5 hash occurrences  -->
+    <replaceregexp flags="g">
+      <regexp pattern='(( MD5 Hash=)("?\w+"))' />
       <substitution expression=""/>
       <fileset dir="${local_dir}">
         <patternset id="local_files">
@@ -413,7 +424,7 @@
 			<param name="test-name" value="ControlConstructTest" />
 		</antcall>
 	</target>
-	
+
 	<target name="update-ControlConstructTest">
 		<antcall target="update-regression-expected">
 			<param name="test-name" value="ControlConstructTest" />
@@ -449,13 +460,13 @@
 			<param name="test-name" value="DataTypeTest" />
 		</antcall>
 	</target>
-	
+
 	<target name="update-DataTypeTest">
 		<antcall target="update-regression-expected">
 			<param name="test-name" value="DataTypeTest" />
 		</antcall>
 	</target>
-	
+
   	<target name="HigherOrderFuncTest">
   		<antcall target="run-regression-test">
   			<param name="test-name" value="HigherOrderFuncTest" />
@@ -467,13 +478,13 @@
 	  		<param name="test-name" value="HigherOrderFuncTest" />
 	 	</antcall>
 	</target>
-  
+
   <target name="AssignmentOperatorsTest">
     <antcall target="run-regression-test">
       <param name="test-name" value="AssignmentOperatorsTest" />
     </antcall>
   </target>
-  
+
   <target name="update-AssignmentOperatorsTest">
     <antcall target="update-regression-expected">
       <param name="test-name" value="AssignmentOperatorsTest" />
@@ -505,8 +516,8 @@
   </target>
 
 	<target name="normal-tests" depends="basicTest, S4ObjectTest,
-		ScopeTest, ReturnTest, OddParameterTest, FunctionAnnotationTest, 
-		ControlConstructTest, WarningTest, PlotTest, DataTypeTest, 
+		ScopeTest, ReturnTest, OddParameterTest, FunctionAnnotationTest,
+		ControlConstructTest, WarningTest, PlotTest, DataTypeTest,
     HigherOrderFuncTest, AssignmentOperatorsTest, RMarkdownTest, DDGStatementTest">
 		<echo>##############################################
 	      Finished Execution of Normal Tests. Nothing should have malfunctioned.
