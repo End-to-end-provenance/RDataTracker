@@ -23,14 +23,17 @@
 \alias{ddg.loop.annotate.on}
 \alias{ddg.loop.annotate.off}
 \alias{ddg.details.omitted}
+\alias{ddg.inside.loop}
+\alias{ddg.set.inside.loop}
+\alias{ddg.not.inside.loop}
 \title{Creating Provenance Graphs with RDataTracker}
 \description{These functions are needed to create provenance graphs.}
 \usage{
 ddg.init(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enable.console = TRUE, 
-    max.snapshot.size = 10) 
+    annotate.inside.functions = TRUE, first.loop = 1, max.loops = 1, max.snapshot.size = 10) 
 ddg.save(r.script.path = NULL, save.debug=FALSE, quit=FALSE)
 ddg.run(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = NULL, enable.console = TRUE, 
-    annotate.inside = TRUE, first.loop = 1, max.loops = 1, max.snapshot.size = 10, debug = FALSE, 
+    annotate.inside.functions = TRUE, first.loop = 1, max.loops = 1, max.snapshot.size = 10, debug = FALSE, 
     save.debug=FALSE, display = FALSE)
 ddg.set.detail(detail.level)
 ddg.get.detail()
@@ -53,6 +56,9 @@ ddg.loop.annotate()
 ddg.loop.annotate.on()
 ddg.loop.annotate.off()
 ddg.details.omitted()
+ddg.inside.loop()
+ddg.not.inside.loop()
+ddg.set.inside.loop()
 }
 \arguments{
   \item{r.script.path}{ the full path to the file containing the R script that is being executed. }
@@ -61,10 +67,10 @@ ddg.details.omitted()
   \item{enable.console}{ If TRUE, any commands executed in the console, either by typing, copying and 
     pasting, or selecting and running, will result in a procedure node created in the provenance graph, with
     data nodes created for each variable assigned and data flow edges for variables used and set. }
-  \item{annotate.inside}{specifies whether automatic annotation of functions and control constructs should be enabled. }
+  \item{annotate.inside.functions}{specifies whether automatic annotation of functions should be enabled. }
   \item{first.loop}{ The number of the first iteration to be annotated in a for, while, or repeat loop. }
-  \item{max.loops}{ The maximum number of times that a for, while, or repeat loop will be annotated.
-    If max.loops is -1, there is no limit. If max.loops = 0, no loops will be annotated. }
+  \item{max.loops}{ The maximum number of times that a for, while, or repeat loop or if-statement will be annotated.
+    If max.loops is -1, there is no limit. If max.loops = 0, no loops or if-statements will be annotated. }
   \item{max.snapshot.size}{ The maximum size for objects that should be output in snapshot
     files.  If max.snapshot.size is -1, there is no limit. If max.snapshot.size is 0, snapshot nodes
     are created but no snapshot files are saved. }
@@ -106,14 +112,14 @@ ddg.details.omitted()
   a DDG is created for the script, and a copy of the script is saved with the DDG.  If a function 
   is provided, the function is executed with calls to ddg.init and ddg.save so that provenance 
   for the function is captured. In either case, if an R error occurs during execution, the error will be
-  captured in an Exception node in the provenance graph. If annotate.inside is set to TRUE, 
-  provenance is collected for statements inside functions and inside control constructs
-  (if, for, while, repeat, and simple block).  ddg.annotate.on and ddg.annotate.off may be used to limit 
-  the functions that will be annotated or not annotated, respectively. The parameter max.loops sets
-  the maxiumum number of times that a for, while or repeat loop will be annotated. If break is set to TRUE,
-  script debugging  is enabled. This has the same effect as inserting ddg.breakpoint() at the top of the script. 
-  If display is set to TRUE, the DDG is displayed after the R script finished executing. If save.debug
-  is set to TRUE, debug files are saved to the debug directory.
+  captured in an Exception node in the provenance graph. If annotate.inside.functions is set to TRUE, 
+  provenance is collected for statements inside functions.  ddg.annotate.on and ddg.annotate.off may be 
+  used to limit the functions that will be annotated or not annotated, respectively. The parameter max.loops 
+  sets the maxiumum number of times that a for, while or repeat loop will be annotated.  If max.loops is not 0,
+  if-stateements are also annotated.  If break is set to TRUE, script debugging  is enabled. This has the same 
+  effect as inserting ddg.breakpoint() at the top of the script.  If display is set to TRUE, the DDG is 
+  displayed after the R script finished executing. If save.debug is set to TRUE, debug files are saved to the 
+  debug directory.
   
   ddg.set.detail can be used to set the level of provenance detail to be collected.  Options include:
   0 = no internal annotation, no snapshots. 1 = 1 loop, snapshots < 10k. 2 = 10 loops, snapshots < 100k.
@@ -140,7 +146,8 @@ ddg.details.omitted()
   the function returns "DDG not available".
   
   ddg.forloop, ddg.first.loop, ddg.loop.count, ddg.loop.count.inc, ddg.reset.loop.count, ddg.loop.annotate,
-  ddg.loop.annotate.on, ddg.loop.annotate.off, and ddg.details.omitted are used internally by RDataTracker--do not use.
+  ddg.loop.annotate.on, ddg.loop.annotate.off, ddg.details.omitted, ddg.inside.loop, ddg.not.inside.loop, and
+  ddg.set.inside.loop are used internally by RDataTracker--do not use.
 }
 \author{Emery Boose and Barbara Lerner}
 \examples{

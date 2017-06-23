@@ -204,6 +204,18 @@ ddg.MAX_HIST_LINES <- 2^14
   return(.ddg.get("ddg.loops"))
 }
 
+# value should be TRUE or FALSE
+# Keeps track of whether the last loop has all iterations
+# recorded or not.
+.ddg.set.details.omitted <- function (value) {
+  .ddg.set ("details.omitted", value)
+}
+
+.ddg.were.details.omitted <- function () {
+  .ddg.get ("details.omitted")
+}
+
+
 # Functions that allow us to save warnings when they occur
 # so that we can create the warning node after the node
 # that caused the warning is created.
@@ -2853,8 +2865,10 @@ ddg.MAX_HIST_LINES <- 2^14
 .ddg.save.annotated.script <- function(cmds, script.name) {
   for (i in 1:length(cmds)) {
     expr <- cmds[[i]]@annotated
-    line <- paste(deparse(expr[[1]]), collapse="\n")
-    if (i == 1) script <- line else script <- append(script, line)
+    for (j in 1:length(expr)) {
+      line <- deparse(expr[[j]])
+      if (i == 1 && j == 1) script <- line else script <- append(script, line)
+    }
   }
 
   fileout <- file(paste(.ddg.path.debug(), "/annotated-", script.name, sep=""))
@@ -3191,9 +3205,10 @@ ddg.MAX_HIST_LINES <- 2^14
 
               # If the number of loop iterations exceeds max.loops, add
               # output data nodes containing final values to the finish node.
-              if (loop.statement && !ddg.loop.annotate()) {
+              if (loop.statement && .ddg.were.details.omitted()) {
                 vars.set2 <- .ddg.add.to.vars.set(vars.set, cmd, i)
                 .ddg.create.data.node.for.possible.writes(vars.set2, cmd, environ)
+                .ddg.set.details.omitted(FALSE)
               }
             }
 
@@ -5027,6 +5042,23 @@ ddg.loop.annotate.off <- function() {
   .ddg.set("ddg.loop.annotate", FALSE)
 }
 
+ddg.inside.loop <- function() {
+  return (.ddg.get("ddg.inside.loop"))
+}
+
+ddg.set.inside.loop <- function() {
+  if (!.ddg.is.set("ddg.inside.loop")) {
+    .ddg.set("ddg.inside.loop", 0)    
+  }
+  else {
+    .ddg.set("ddg.inside.loop", .ddg.get("ddg.inside.loop") + 1)    
+  }
+}
+
+ddg.not.inside.loop <- function() {
+  .ddg.set("ddg.inside.loop", .ddg.get("ddg.inside.loop") - 1)    
+}
+
 # ddg.loop.count returns the current count for the specified loop.
 
 ddg.loop.count <- function(loop.num) {
@@ -5073,11 +5105,15 @@ ddg.forloop <- function(index.var) {
 # happen if the number of the first loop to be annotaed (first.loop) is
 # greater than 1 and/or if the total number of loops to be annotated is
 # less than the actual number of iterations.
+#
+# It also sets a variable to remember that the last construct is incomplete
+# so that the right data nodes get created.
 
 ddg.details.omitted <- function() {
   pnode.name <- "Details Omitted"
   .ddg.proc.node("Incomplete", pnode.name, pnode.name)
   .ddg.proc2proc()
+  .ddg.set.details.omitted(TRUE)
 
   if (.ddg.debug.lib()) {
     print("Adding Details Omitted node")
@@ -5564,6 +5600,13 @@ ddg.finish <- function(pname=NULL) {
 #   If not provided, the DDG will be saved in a subdirectory called
 #   "ddg" in the current working directory.
 # enable.console (optional) - if TRUE, console mode is turned on.
+# annotate.inside.functions (optional) - if TRUE, functions are annotated.
+# first.loop (optional) - the first loop to annotate in a for, while, or
+#   repeat statement.
+# max.loops (optional) - the maximum number of loops to annotate in a for,
+#   while, or repeat statement. If max.loops = -1 there is no limit.
+#   If max.loops = 0, no loops are annotated.  If non-zero, if-statements
+#   are also annotated.
 # max.snapshot.size (optional) - the maximum size for objects that
 #   should be output to snapshot files. If 0, no snapshot files are saved.
 #   If -1, all snapshot files are saved. Size in kilobytes.  Note that
@@ -5572,7 +5615,7 @@ ddg.finish <- function(pname=NULL) {
 # Addition : overwrite (optional) - default TRUE, if FALSE, generates
 #   timestamp for ddg directory
 
-ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enable.console = TRUE, annotate.inside = TRUE, first.loop = 1, max.loops = 1, max.snapshot.size = 10) {
+ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enable.console = TRUE, annotate.inside.functions = TRUE, first.loop = 1, max.loops = 1, max.snapshot.size = 10) {
   #.ddg.DDGStatement.init()
   .ddg.init.tables()
 
@@ -5624,6 +5667,7 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
   .ddg.set(".ddg.enable.console", enable.console)
   .ddg.set(".ddg.func.depth", 0)
   .ddg.set(".ddg.explorer.port", 6096)
+  .ddg.set.details.omitted(FALSE)
   # .ddg.init.environ()
 
   # Initialize the information about the open start-finish blocks
@@ -5658,7 +5702,7 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
   # and max.snapshot.size.
   if (is.null(ddg.get.detail())) {
     # Store value of annotate.inside.
-    .ddg.set("ddg.annotate.inside", annotate.inside)
+    .ddg.set("ddg.annotate.inside", annotate.inside.functions)
 
     # Store maximum number of loops to annotate.
     if (max.loops < 0) max.loops <- 10^10
@@ -5667,9 +5711,13 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
     # Store maximum snapshot size.
     .ddg.set("ddg.max.snapshot.size", max.snapshot.size)
   }
-
+  
   # If loops are not annotated, do not annotate functions called from inside a loop.
   if (max.loops == 0) ddg.loop.annotate.off()
+  
+  # Initialize the counter that keeps track of nested levels
+  # of ifs and loops
+  ddg.set.inside.loop()
 
   # Set number of first loop.
   .ddg.set("ddg.first.loop", first.loop)
@@ -5702,13 +5750,13 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
 #   is executed with calls to ddg.init and ddg.save so that
 #   provenance for the function is captured.
 # enable.console (optional) - if TRUE, console mode is turned on.
-# annotate.inside (optional) - if TRUE, functions and control statements
-#   are annotated.
+# annotate.inside.functions (optional) - if TRUE, functions are annotated.
 # first.loop (optional) - the first loop to annotate in a for, while, or
 #   repeat statement.
 # max.loops (optional) - the maximum number of loops to annotate in a for,
 #   while, or repeat statement. If max.loops = -1 there is no limit.
-#   If max.loops = 0, no loops are annotated.
+#   If max.loops = 0, no loops are annotated.  If non-zero, if-statements
+#   are also annotated.
 # max.snapshot.size (optional) - the maximum size for objects that
 #   should be output to snapshot files. If 0, no snapshot files are
 #   saved. If -1, all snapshot files are saved.  Size in kilobytes.
@@ -5718,10 +5766,10 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
 #   same effect as inserting ddg.breakpoint() at the top of the script.
 # save.debug (optional) - If TRUE, save debug files to debug directory.
 
-ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = NULL, enable.console = TRUE, annotate.inside = TRUE, first.loop = 1, max.loops = 1, max.snapshot.size = 10, debug = FALSE, save.debug = FALSE, display = FALSE) {
+ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = NULL, enable.console = TRUE, annotate.inside.functions = TRUE, first.loop = 1, max.loops = 1, max.snapshot.size = 10, debug = FALSE, save.debug = FALSE, display = FALSE) {
 
   # Initiate ddg.
-  ddg.init(r.script.path, ddgdir, overwrite, enable.console, annotate.inside, first.loop, max.loops, max.snapshot.size)
+  ddg.init(r.script.path, ddgdir, overwrite, enable.console, annotate.inside.functions, first.loop, max.loops, max.snapshot.size)
 
   # Create ddg directory.
   # dir.create(.ddg.path(), showWarnings = FALSE)
