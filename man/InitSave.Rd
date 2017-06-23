@@ -78,7 +78,7 @@ ddg.details.omitted()
   \item{ddg.path}{ The path to the DDG directory which needs to be flushed. }
   \item{index.var}{ The index variable passed to ddg.forloop. }
   \item{loop.num}{ The loop number passed to ddg.loop.count and ddg.reset.loop.count. }
-  \item{save.hashtable}{ Whether a table of hashes for file nodes should be generated. }
+  \item{save.hashtable}{ If TRUE, add file node information to a hashtable of file nodes. }
 }
 \details{
   In order to use RDataTracker to collect data provenance, the user must either call ddg.init 

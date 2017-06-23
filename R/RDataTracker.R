@@ -1400,8 +1400,10 @@ library(tools)
   }
 }
 
-# .ddg.hashtable.write writes the current ddg.txt string to the file
-# hashtable.csv on the ddg directory.
+# .ddg.hashtable.write writes relevant information about the ddg
+# to the .ddg directory in the user's home directory. If the
+# function is unable to access or create this directory, then 
+# it will write to the working directory.
 
 .ddg.hashtable.write <- function() {
   # if (interactive()) print(paste("Saving DDG in ", fileout))
@@ -1429,7 +1431,8 @@ library(tools)
 }
 
 # .ddg.hashtable.cleanup cleans the previous hashtable.csv of entries containing
-# ddg data that has been overwritten.
+# ddg data that has been overwritten. Ddg data is considered to be overwritten if
+# it has an identical ddg path to the new elements being written to the file.
 
 .ddg.hashtable.cleanup <- function(writefile) {
   # if (interactive()) print(paste("Cleaning ddg of entries with DDGPath ", .ddg.path()))
@@ -2362,6 +2365,8 @@ library(tools)
   # This may include files that are not actually read if the
   # read are within an if-statement, for example.
   files.read <- .ddg.find.files.read(cmd, env)
+  # Adds the files read to ddg.infilenodes for use in determining reads
+  # and writes in the hashtable.
   .ddg.set("ddg.infilenodes", c(.ddg.get("ddg.infilenodes"), files.read))
   #print (".ddg.create.file.read.nodes.and.edges: Files read:")
   # print (files.read)
@@ -2420,6 +2425,8 @@ library(tools)
   # This may include files that are not actually written if the
   # write calls are within an if-statement, for example.
   files.written <- .ddg.find.files.written(cmd, env)
+  # Adds the files written to ddg.outfilenodes for use in determining reads
+  # and writes in the hashtable.
   .ddg.set("ddg.outfilenodes", c(.ddg.get("ddg.outfilenodes"), files.written))
   #print (".ddg.create.file.read.nodes.and.edges: Files written:")
   #print (files.written)
@@ -2850,6 +2857,7 @@ library(tools)
   # Save ddg.
   .ddg.txt.write()
   .ddg.json.write()
+  # Save hashtable.
   .ddg.hashtable.write()
 
   # Get user input from the keyboard.
@@ -5804,6 +5812,7 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
 # debug (optional) - If TRUE, enable script debugging. This has the
 #   same effect as inserting ddg.breakpoint() at the top of the script.
 # save.debug (optional) - If TRUE, save debug files to debug directory.
+# save.hashtable (optional) - If TRUE, save ddg information to hashtable.csv.
 
 ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = NULL, enable.console = TRUE, annotate.inside = TRUE, first.loop = 1, max.loops = 1, max.snapshot.size = 10, debug = FALSE, save.debug = FALSE, display = FALSE, save.hashtable = TRUE) {
 
@@ -5857,6 +5866,9 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
 # save.debug (optional) - If TRUE, save debug files to debug directory.
 #   Used in console mode.
 # quit (optional) - If TRUE, remove all DDG files from memory.
+# save.hashtable (optional) - If TRUE, save DDG information to hashtable.csv.
+#   Unlike ddg.run, this is set to false as default since it will generally
+#   be called internally and by tests, as opposed to by the user.
 
 ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE, save.hashtable = FALSE) {
   if (!.ddg.is.init()) return(invisible())
@@ -5887,7 +5899,6 @@ ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE, sav
 
   # Save hashtable.csv to file.
   if (save.hashtable) {
-    .ddg.hashtable.write()
     if (interactive()) {
       if (dir.exists(paste0(path.expand("~"),"/.ddg/"))) {
         print("Saving hashtable.csv in .ddg directory.")
@@ -5895,6 +5906,7 @@ ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE, sav
         print("No .ddg directory found in home directory, saving hashtable.csv in local directory.")
       }
     }
+    .ddg.hashtable.write()
   }
   
   # Save sourced scripts (if any). First row is main script.
