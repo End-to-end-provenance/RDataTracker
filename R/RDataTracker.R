@@ -147,6 +147,7 @@ ddg.MAX_HIST_LINES <- 2^14
 }
 
 .ddg.annotate.off <- function() {
+  print(paste("ddg.annotate.off =", .ddg.get("ddg.annotate.off")))
   return (.ddg.get("ddg.annotate.off"))
 }
 
@@ -1505,6 +1506,8 @@ ddg.MAX_HIST_LINES <- 2^14
   # Output control flow or data flow edge.
   .ddg.output.edge(etype, node1, node2)
 
+  print(sys.calls())
+  
   if (.ddg.debug.lib()) {
     if (etype == "cf") etype.long <- "control flow"
     else if (etype == "df.in") etype.long <-"data flow in"
@@ -1714,6 +1717,7 @@ ddg.MAX_HIST_LINES <- 2^14
 .ddg.data2proc <- function(dname, dscope, pname) {
   # Get data & procedure numbers.
   dn <- .ddg.data.number(dname, dscope)
+  print(paste("dn =", dn))
   pn <- .ddg.proc.number(pname)
 
   # Record in edges table
@@ -1721,6 +1725,8 @@ ddg.MAX_HIST_LINES <- 2^14
   node1 <- paste("d", dn, sep="")
   node2 <- paste("p", pn, sep="")
   .ddg.record.edge(etype, node1, node2)
+  
+  print(sys.calls())
 
   if (.ddg.debug.lib()) {
     print(paste("data2proc: ", dname, " ", pname, sep=""))
@@ -2012,7 +2018,7 @@ ddg.MAX_HIST_LINES <- 2^14
   vars.used <- cmd@vars.used
 
   for (var in vars.used) {
-    #print(paste(".ddg.create.data.use.edges.for.console.cmd: var =", var))
+    print(paste(".ddg.create.data.use.edges.for.console.cmd: var =", var))
     # Make sure there is a node we could connect to.
     scope <- .ddg.get.scope(var, for.caller)
 
@@ -2026,6 +2032,9 @@ ddg.MAX_HIST_LINES <- 2^14
       if (length(nRow) > 0) {
         first.writer <- min(vars.set$first.writer[nRow], vars.set$possible.first.writer[nRow])
         last.writer <- max(vars.set$last.writer[nRow], vars.set$possible.last.writer[nRow])
+        
+        print(paste("first.writer =", first.writer))
+        print(paste("last.writer =", last.writer))
 
         # Draw the edge if we will connect to a node that exists
         # before the console block or to the last writer of this
@@ -3041,6 +3050,8 @@ ddg.MAX_HIST_LINES <- 2^14
       # control statement itself.
 
       create <- !cmd@isDdgFunc && .ddg.is.init() && .ddg.enable.console() && !(control.statement && ddg.annotate.inside() && ddg.max.loops() > 0)
+      #create <- !cmd@isDdgFunc && .ddg.is.init() && .ddg.enable.console() && !(control.statement && ddg.max.loops() > 0)
+      print(paste("create =", create))
       # create <- !cmd@isDdgFunc && .ddg.is.init() && .ddg.enable.console()
       start.finish.created <- FALSE
 
@@ -3237,7 +3248,12 @@ ddg.MAX_HIST_LINES <- 2^14
             else ""
         cur.cmd.closed <- (last.proc.node.created == paste ("Finish", cmd@abbrev))
         create.procedure <- create && (!cur.cmd.closed || !named.node.set) && !start.finish.created  && !grepl("^ddg.source", cmd@text)
-
+        print(paste("create =", create))
+        print(paste("cur.cmd.closed =", cur.cmd.closed))
+        print(paste("named.node.set =", named.node.set))
+        print(paste("start.finish.created =", start.finish.created))
+        
+        
         # We want to create a procedure node for this command.
         if (create.procedure) {
 
@@ -4375,6 +4391,7 @@ ddg.MAX_HIST_LINES <- 2^14
 
 # .ddg.get.annotation.list checks to see if the script contains calls to
 # ddg.annotate.on or ddg.annotate.off. If it does, these calls are executed.
+# No longer used
 
 .ddg.get.annotation.list <- function(parsed.command) {
   if (length(parsed.command[[1]]) > 1) {
@@ -5118,6 +5135,34 @@ ddg.details.omitted <- function() {
   if (.ddg.debug.lib()) {
     print("Adding Details Omitted node")
   }
+}
+
+# Returns true if we should run the annotated version of a function and
+# false if we should run the unannotated version.
+
+ddg.should.run.annotated <- function (func.name) {
+#  print("In ddg.should.run.annotated")
+#  if (!is.null(.ddg.annotate.off())) {
+#    print(paste("functions to NOT annotate:", .ddg.annotate.off()))
+#  }
+  
+  # Check if we are in a loop and loop annotations are off
+  if (!ddg.loop.annotate() && ddg.inside.loop > 0) return (TRUE)
+  
+  # Make sure this specific function has not been disabled
+  if (!is.null(.ddg.annotate.off()) & func.name %in% .ddg.annotate.off()) return(FALSE)
+  
+  print(paste(func.name, "is not in off list"))
+  
+  # Not annotating functions in general
+  # Check if this specific function should be annotated
+  if (!is.null(.ddg.annotate.on()) & func.name %in% .ddg.annotate.on()) return(TRUE)
+  
+  print(paste(func.name, "is not in on list"))
+  
+  # If we do not know anything specific about this function, follow the 
+  # general rule
+  return (ddg.annotate.inside()) 
 }
 
 # ddg.eval evaluates a statement and creates data flow edges from
@@ -6289,20 +6334,68 @@ ddg.console.on <- function() {
 
 # ddg.annotate.on enables annotation for the specified functions. Functions
 # not on this list are not annotated.
+# 
+# If fnames is NULL, all functions will be annotated
 
 # fnames - a list of one or more function names passed in as strings.
 
-ddg.annotate.on <- function (fnames=NULL) {
-  .ddg.set("ddg.annotate.on", fnames)
+ddg.annotate.on <- function (fnames=NULL){
+  if (is.null(fnames)) {
+    .ddg.set("ddg.annotate.off", vector())
+    .ddg.set("ddg.annotate.inside", TRUE)
+#    print(paste("After ddg.annotate.on."))
+#    print(paste("onlist =", .ddg.get("ddg.annotate.on")))
+#    print(paste("offlist =", .ddg.get("ddg.annotate.off")))
+    return()
+  }
+#  .ddg.set("ddg.annotate.on", fnames)
+  # Add to the on list
+  on.list <- .ddg.get("ddg.annotate.on")
+  on.list <- union (on.list, fnames)
+  .ddg.set("ddg.annotate.on", on.list)
+  
+  # Remove from the off list
+  off.list <- .ddg.get("ddg.annotate.off")
+  off.list <- off.list[which(off.list != fnames)]
+  .ddg.set("ddg.annotate.off", off.list) 
+
+#  print(paste("After ddg.annotate.on."))
+#  print(paste("onlist =", .ddg.get("ddg.annotate.on")))
+#  print(paste("offlist =", .ddg.get("ddg.annotate.off")))
 }
 
 # ddg.annotate.off disables annotation for the specified functions.
 # Functions not on this list are annotated.
-
+# 
+# If fnames is NULL, no functions will be annotated
+#
 # fnames - a list of one or more function names passed in as strings.
 
 ddg.annotate.off <- function (fnames=NULL) {
-  .ddg.set("ddg.annotate.off", fnames)
+  if (is.null(fnames)) {
+    .ddg.set("ddg.annotate.on", vector())
+    .ddg.set("ddg.annotate.inside", FALSE)
+#    print(paste("After ddg.annotate.off."))
+#    print(paste("onlist =", .ddg.get("ddg.annotate.on")))
+#    print(paste("offlist =", .ddg.get("ddg.annotate.off")))
+    return()
+  }
+  
+#  print("Setting ddg.annotate.off")
+#  .ddg.set("ddg.annotate.off", fnames)
+  # Add to the off list
+  off.list <- .ddg.get("ddg.annotate.off")
+  off.list <- union (off.list, fnames)
+  .ddg.set("ddg.annotate.off", off.list)
+  
+  # Remove from the on list
+  on.list <- .ddg.get("ddg.annotate.on")
+  on.list <- on.list[which(on.list != fnames)]
+  .ddg.set("ddg.annotate.on", on.list) 
+  
+#  print(paste("After ddg.annotate.off."))
+#  print(paste("onlist =", .ddg.get("ddg.annotate.on")))
+#  print(paste("offlist =", .ddg.get("ddg.annotate.off")))
 }
 
 # ddg.flush.ddg removes all files from the DDG directories unless the

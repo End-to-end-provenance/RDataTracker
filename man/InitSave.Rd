@@ -9,6 +9,7 @@
 \alias{ddg.max.snapshot.size}
 \alias{ddg.annotate.on}
 \alias{ddg.annotate.off}
+\alias{ddg.should.run.annotated}
 \alias{ddg.save}
 \alias{ddg.flush.ddg}
 \alias{ddg.console.off}
@@ -43,6 +44,7 @@ ddg.max.loops()
 ddg.max.snapshot.size()
 ddg.annotate.on(fnames = NULL)
 ddg.annotate.off(fnames = NULL)
+ddg.should.run.annotated(func.name)
 ddg.console.on()
 ddg.console.off()
 ddg.flush.ddg(ddg.path = NULL)
@@ -80,6 +82,7 @@ ddg.set.inside.loop()
   \item{f}{ A function to run.  Data provenance is collected within the function. }
   \item{detail.level}{ An integer indicating the level of provenance detail to be collected. }
   \item{fnames}{ A list of one or more function names. }
+  \item{func.name}{A function name passed as a string.}
   \item{quit}{ If TRUE, all DDG files are removed from memory. }
   \item{ddg.path}{ The path to the DDG directory which needs to be flushed. }
   \item{index.var}{ The index variable passed to ddg.forloop. }
@@ -145,9 +148,9 @@ ddg.set.inside.loop()
   and loads the most recent ddg.txt file (if any). If the DDG path is not set or a ddg.txt file is not available,
   the function returns "DDG not available".
   
-  ddg.forloop, ddg.first.loop, ddg.loop.count, ddg.loop.count.inc, ddg.reset.loop.count, ddg.loop.annotate,
-  ddg.loop.annotate.on, ddg.loop.annotate.off, ddg.details.omitted, ddg.inside.loop, ddg.not.inside.loop, and
-  ddg.set.inside.loop are used internally by RDataTracker--do not use.
+  ddg.should.run.annotated, ddg.forloop, ddg.first.loop, ddg.loop.count, ddg.loop.count.inc, ddg.reset.loop.count, 
+  ddg.loop.annotate, ddg.loop.annotate.on, ddg.loop.annotate.off, ddg.details.omitted, ddg.inside.loop, 
+  ddg.not.inside.loop, and ddg.set.inside.loop are used internally by RDataTracker--do not use.
 }
 \author{Emery Boose and Barbara Lerner}
 \examples{
