@@ -1506,7 +1506,7 @@ ddg.MAX_HIST_LINES <- 2^14
   # Output control flow or data flow edge.
   .ddg.output.edge(etype, node1, node2)
 
-  print(sys.calls())
+  #print(sys.calls())
   
   if (.ddg.debug.lib()) {
     if (etype == "cf") etype.long <- "control flow"
@@ -1726,7 +1726,7 @@ ddg.MAX_HIST_LINES <- 2^14
   node2 <- paste("p", pn, sep="")
   .ddg.record.edge(etype, node1, node2)
   
-  print(sys.calls())
+  #print(sys.calls())
 
   if (.ddg.debug.lib()) {
     print(paste("data2proc: ", dname, " ", pname, sep=""))
@@ -3054,6 +3054,7 @@ ddg.MAX_HIST_LINES <- 2^14
       print(paste("create =", create))
       # create <- !cmd@isDdgFunc && .ddg.is.init() && .ddg.enable.console()
       start.finish.created <- FALSE
+      cur.cmd.closed <- FALSE
 
       # If the command does not match one of the ignored patterns.
       if (!any(sapply(ignore.patterns, function(pattern){grepl(pattern, cmd@text)}))) {
@@ -3077,6 +3078,8 @@ ddg.MAX_HIST_LINES <- 2^14
             .ddg.set(".ddg.possible.last.cmd", cmd)
             .ddg.set (".ddg.cur.cmd", cmd)
 
+            print(paste("Pushing onto the stack:", cmd@text))
+            
             # Remember the current statement on the stack so that we
             # will be able to create a corresponding Finish node later
             # if needed.
@@ -3225,6 +3228,11 @@ ddg.MAX_HIST_LINES <- 2^14
 
             # Remove the last command & start.created values pushed
             # onto the stack
+            #print(paste("Popping from the stack:", .ddg.cur.cmd.stack[stack.length-1]@text))
+            #print(paste("Popping from the stack:", .ddg.cur.cmd.stack[stack.length]@text))
+            cur.cmd.closed <- (.ddg.cur.cmd.stack[stack.length] == "MATCHES_CALL")
+            print(paste("Popping from the stack:", .ddg.cur.cmd.stack[stack.length]))
+            print(paste("Popping from the stack:", .ddg.cur.cmd.stack[stack.length-1][[1]]@text))
             if (stack.length == 2) {
               .ddg.set(".ddg.cur.cmd.stack", vector())
             }
@@ -3246,7 +3254,12 @@ ddg.MAX_HIST_LINES <- 2^14
         last.proc.node.created <-
             if (.ddg.is.set (".ddg.last.proc.node.created")).ddg.get(".ddg.last.proc.node.created")
             else ""
-        cur.cmd.closed <- (last.proc.node.created == paste ("Finish", cmd@abbrev))
+        last.statement <- if (.ddg.is.set (".ddg.last.statement")).ddg.get(".ddg.last.statement")
+            else ""
+        
+#        cur.cmd.closed <- 
+#            if (is.null(last.statement)) { print("last.statement is null"); FALSE}
+#            else (last.proc.node.created == paste ("Finish", cmd@abbrev) && last.statement == cmd) 
         create.procedure <- create && (!cur.cmd.closed || !named.node.set) && !start.finish.created  && !grepl("^ddg.source", cmd@text)
         print(paste("create =", create))
         print(paste("cur.cmd.closed =", cur.cmd.closed))
@@ -3479,6 +3492,13 @@ ddg.MAX_HIST_LINES <- 2^14
     }
   }
   .ddg.set(".ddg.last.proc.node.created", paste(ptype, pname))
+  print(paste("Setting .ddg.last.proc.node.create to", ptype, pname))
+  if (!is.null(cmd)) print(paste("Setting .ddg.last.statement to ", cmd@text))
+  else {
+    print("cmd is null")
+    #print(sys.calls())
+  }
+  .ddg.set(".ddg.last.statement", cmd)
 
   ptime <- .ddg.elapsed.time()
 
@@ -4411,6 +4431,7 @@ ddg.MAX_HIST_LINES <- 2^14
     stack.length <- length(.ddg.cur.cmd.stack)
     if (stack.length >= 1) {
       last.created <- .ddg.cur.cmd.stack[stack.length]
+      print(paste(".ddg.create.start.for.cur.cmd: checking top of stack"))
       # Only create a start node for the current command if we have not already
       # created one and the command is more than just the call to this function
       if (last.created[[1]] == "FALSE") {
@@ -4429,8 +4450,10 @@ ddg.MAX_HIST_LINES <- 2^14
           # Mark the start node as created on the stack.  Mark it even if we did not
           # create the abstract node above, because we will create it below.
           .ddg.set (".ddg.cur.cmd.stack", c(.ddg.cur.cmd.stack[1:stack.length-1], TRUE))
+          print(paste(".ddg.cur.cmd.stack: Marking that we are creating a start node"))
         }
         else {
+          print(paste(".ddg.cur.cmd.stack: Setting stack top as MATCHES_CALL"))
           .ddg.set (".ddg.cur.cmd.stack", c(.ddg.cur.cmd.stack[1:stack.length-1], "MATCHES_CALL"))
         }
       }
@@ -4453,6 +4476,7 @@ ddg.MAX_HIST_LINES <- 2^14
 .ddg.remove.last.cmd.start.created <- function () {
   .ddg.cur.cmd.stack <- .ddg.get(".ddg.cur.cmd.stack")
   stack.length <- length(.ddg.cur.cmd.stack)
+  print(paste(".ddg.remove.last.cmd.start.created: Popping from stack:", .ddg.cur.cmd.stack[stack.length-1]))
 
   if (stack.length == 2) {
     .ddg.set(".ddg.cur.cmd.stack", vector())
