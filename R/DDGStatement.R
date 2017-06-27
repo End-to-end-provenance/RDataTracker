@@ -655,8 +655,8 @@ null.pos <- function() {
 
   # Get function name.
   func.name <- toString(parsed.function.decl[[2]])
-  print(paste("Annotating", func.name))
-  print(paste("length(function.decl@contained) =", length(function.decl@contained)))
+  #print(paste("Annotating", func.name))
+  #print(paste("length(function.decl@contained) =", length(function.decl@contained)))
 
   # Return if a list of functions to annotate is provided and this
   # function is not on the list.
@@ -681,13 +681,13 @@ null.pos <- function() {
 
     # Insert call to ddg.function if not already added.
     if (!.ddg.has.call.to(func.definition[[3]], "ddg.function")) {
-      print("Adding ddg.function call")
+      #print("Adding ddg.function call")
       func.definition <- .ddg.insert.ddg.function(func.definition)
     }
 
     # Insert calls to ddg.return.value if not already added.
     if (!.ddg.has.call.to(func.definition[[3]], "ddg.return.value")) {
-      print("Wrapping all return parameters")
+      #print("Wrapping all return parameters")
       func.definition <- .ddg.wrap.all.return.parameters(func.definition, function.decl@contained)
     }
 
@@ -695,7 +695,7 @@ null.pos <- function() {
     # and if last statement is not a simple return or a ddg function.
     last.statement <- .ddg.find.last.statement(func.definition)
     if (!.ddg.is.call.to(last.statement, "ddg.return.value") & !.ddg.is.call.to(last.statement, "return") & !.ddg.is.call.to.ddg.function(last.statement)) {
-      print("Wrapping last line")
+      #print("Wrapping last line")
       func.definition <- .ddg.wrap.last.line(func.definition, function.decl@contained)
     }
 
@@ -703,12 +703,12 @@ null.pos <- function() {
     # statements are not calls to a ddg function and do not contain
     # ddg.return.value.
     if (!.ddg.has.call.to(func.definition, "ddg.eval")) {
-      print("Adding ddg.eval calls")
+      #print("Adding ddg.eval calls")
       func.definition <- .ddg.wrap.with.ddg.eval(func.definition, function.decl@contained)
     }
 
     # Reassemble parsed.command.
-    print(paste("Done annotating", func.name))
+    #print(paste("Done annotating", func.name))
     return (as.expression (call ("<-", as.name(func.name), func.definition)))
   #}
 }
@@ -739,7 +739,7 @@ null.pos <- function() {
 # func.definition - original function definition.
 
 .ddg.add.conditional.statement <- function(func.definition, func.name) {
-  print(paste("Adding if statement to", func.name))
+  #print(paste("Adding if statement to", func.name))
   # Get the function parameters.
   func.params <- func.definition[[2]]
 
@@ -937,8 +937,8 @@ null.pos <- function() {
   pos <- length(block)
 
   last.statement <- block[[pos]]
-  print(paste(".ddg.wrap.last.line: parsed.stmts =", deparse(parsed.stmts)))
-  print(paste("length(parsed.stmts) =", length(parsed.stmts)))
+  #print(paste(".ddg.wrap.last.line: parsed.stmts =", deparse(parsed.stmts)))
+  #print(paste("length(parsed.stmts) =", length(parsed.stmts)))
   parsed.stmt <- parsed.stmts[[length(parsed.stmts)]]
 
   wrapped.statement <- .ddg.create.ddg.return.call(last.statement, parsed.stmt)
