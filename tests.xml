@@ -49,6 +49,7 @@
   - ReturnTest
   - OddParameterTest
   - FunctionAnnotationTest
+  - AnnotateOnOffTest
   - ControlConstructTest
   - WarningTest
   - PlotTest
@@ -505,6 +506,18 @@
 	 	</antcall>
 	</target>
 
+  	<target name="AnnotateOnOffTest">
+  		<antcall target="run-regression-test">
+  			<param name="test-name" value="AnnotateOnOffTest" />
+  		</antcall>
+  	</target>
+
+	<target name="update-AnnotateOnOffTest">
+	  <antcall target="update-regression-expected">
+	  	<param name="test-name" value="AnnotateOnOffTest" />
+	 	</antcall>
+	</target>
+
 	<target name="ControlConstructTest">
 		<antcall target="run-regression-test">
 			<param name="test-name" value="ControlConstructTest" />
@@ -602,7 +615,7 @@
   </target>
 
 	<target name="normal-tests" depends="basicTest, S4ObjectTest,
-		ScopeTest, ReturnTest, OddParameterTest, FunctionAnnotationTest,
+		ScopeTest, ReturnTest, OddParameterTest, FunctionAnnotationTest, AnnotateOnOffTest,
 		ControlConstructTest, WarningTest, PlotTest, DataTypeTest,
 		HigherOrderFuncTest, AssignmentOperatorsTest, RMarkdownTest, DDGStatementTest">
 		<echo>
