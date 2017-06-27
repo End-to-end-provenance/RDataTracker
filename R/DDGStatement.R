@@ -80,6 +80,8 @@ setClass("DDGStatement",
                                  # writes to a file
         createsGraphics = "logical",  # True if this is a function that creates a graphics
                                       # object, like a call to pdf, for example
+        updatesGraphics = "logical",  # True if this is a function that updates a graphics
+                                      # object, like a call to a function in the graphics package, for example
         has.dev.off = "logical",  # True if this statement contains a call to dev.off
         pos = "DDGStatementPos",  # The location of this statement in the source code.
                                   # Has the value null.pos() if it is not available.
@@ -133,6 +135,7 @@ setMethod ("initialize",
       .Object@readsFile <- .ddg.reads.file (.Object@parsed[[1]])
       .Object@writesFile <- .ddg.writes.file (.Object@parsed[[1]])
       .Object@createsGraphics <- .ddg.creates.graphics (.Object@parsed[[1]])
+      .Object@updatesGraphics <- .ddg.updates.graphics (.Object@parsed[[1]])
       .Object@has.dev.off <- .ddg.has.call.to (.Object@parsed[[1]], "dev.off")
 
       .Object@pos <-
@@ -1413,4 +1416,17 @@ null.pos <- function() {
   .ddg.graphics.functions.df <- .ddg.get (".ddg.graphics.functions.df")
   graphics.functions <- .ddg.graphics.functions.df$function.names
   return (TRUE %in% (lapply (graphics.functions, function(fun.name) {return (.ddg.has.call.to(parsed.statement, fun.name))})))
+}
+
+# Returns true if the statement contains a call to a function that updates a graphics object
+#
+# parsed.statement - a parse tree
+#
+.ddg.updates.graphics <- function (parsed.statement) {
+  graphics.update.functions <- .ddg.get(".ddg.graphics.update.functions")
+  if (TRUE %in% (lapply (graphics.update.functions, function(fun.name) {return (.ddg.has.call.to(parsed.statement, fun.name))}))) {
+    print("Found a graphics update function")
+    return (TRUE)
+  }
+  return (FALSE)
 }

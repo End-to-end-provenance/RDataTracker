@@ -2379,6 +2379,11 @@ ddg.MAX_HIST_LINES <- 2^14
 
 .ddg.set (".ddg.graphics.functions.df", .ddg.create.graphics.functions.df ())
 
+# Initialize the information about functions that update graphics
+.ddg.set(".ddg.graphics.update.functions", ls(which(search()=="package:graphics")))
+#print(paste("graphics update functions:", .ddg.get(".ddg.graphics.update.functions")))
+
+
 # Given a parse tree, this function returns a list containing
 # the expressions that correspond to the filename argument
 # of the calls to functions that create graphics devices.  If there are
