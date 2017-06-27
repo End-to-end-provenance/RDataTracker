@@ -2,8 +2,6 @@
 # execute locally using ddg.source. It also uses ddg.return and ddg.procedure.
 x <- 5
 f <- function(w){
-#  ddg.function()
-#  ddg.return.value(w+1)
   return(w+1)
 }
 

@@ -4,7 +4,6 @@
 \alias{ddg.set.detail}
 \alias{ddg.get.detail}
 \alias{ddg.clear.detail}
-\alias{ddg.annotate.inside}
 \alias{ddg.max.loops}
 \alias{ddg.max.snapshot.size}
 \alias{ddg.annotate.on}
@@ -20,11 +19,9 @@
 \alias{ddg.loop.count}
 \alias{ddg.loop.count.inc}
 \alias{ddg.reset.loop.count}
-\alias{ddg.loop.annotate}
 \alias{ddg.loop.annotate.on}
 \alias{ddg.loop.annotate.off}
 \alias{ddg.details.omitted}
-\alias{ddg.inside.loop}
 \alias{ddg.set.inside.loop}
 \alias{ddg.not.inside.loop}
 \title{Creating Provenance Graphs with RDataTracker}
@@ -39,7 +36,6 @@ ddg.run(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = NULL, enable.
 ddg.set.detail(detail.level)
 ddg.get.detail()
 ddg.clear.detail()
-ddg.annotate.inside()
 ddg.max.loops()
 ddg.max.snapshot.size()
 ddg.annotate.on(fnames = NULL)
@@ -58,7 +54,6 @@ ddg.loop.annotate()
 ddg.loop.annotate.on()
 ddg.loop.annotate.off()
 ddg.details.omitted()
-ddg.inside.loop()
 ddg.not.inside.loop()
 ddg.set.inside.loop()
 }
@@ -130,7 +125,7 @@ ddg.set.inside.loop()
   max.snapshot.size passed to ddg.run are used instead.  The current level of detail is returned by
   ddg.get.detail and reset to NULL by ddg.clear.detail.
   
-  ddg.annotate.inside returns the current value of annotate.inside.  ddg.max.loops returns the current
+  ddg.max.loops returns the current
   value of max.loops.  ddg.max.snapshot.size returns the current value of max.snapshot.size.
   
   ddg.console.on and ddg.console.off toggle the console parameter for DDG creation. 
@@ -149,7 +144,7 @@ ddg.set.inside.loop()
   the function returns "DDG not available".
   
   ddg.should.run.annotated, ddg.forloop, ddg.first.loop, ddg.loop.count, ddg.loop.count.inc, ddg.reset.loop.count, 
-  ddg.loop.annotate, ddg.loop.annotate.on, ddg.loop.annotate.off, ddg.details.omitted, ddg.inside.loop, 
+  ddg.loop.annotate.on, ddg.loop.annotate.off, ddg.details.omitted, 
   ddg.not.inside.loop, and ddg.set.inside.loop are used internally by RDataTracker--do not use.
 }
 \author{Emery Boose and Barbara Lerner}
