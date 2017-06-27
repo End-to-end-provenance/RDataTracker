@@ -460,12 +460,7 @@ null.pos <- function() {
     # Note that this will not annotate anonymous functions, like ones that might be passed to lapply, for example
     # Is that what we want?
   if (.ddg.is.assign(parsed.command) && .ddg.is.functiondecl(parsed.command[[3]])) {
-    if (ddg.annotate.inside()) {
-      return(.ddg.add.function.annotations(command))
-    }
-    else {
-      return(command@parsed)
-    }
+    return(.ddg.add.function.annotations(command))
   }
   
   statement.type <- as.character(.ddg.get.statement.type(parsed.command))
@@ -509,13 +504,8 @@ null.pos <- function() {
 
   # Function declaration
   if (.ddg.is.assign(parsed.cmd) && .ddg.is.functiondecl(parsed.cmd[[3]])) {
-    if (ddg.annotate.inside()) {
-      # Create the DDGStatement objects for the statements in the function
-      return (.ddg.parse.contained.function(cmd, script.name, parseData, parsed.cmd[[3]][[3]]))
-    }
-    else {
-      return (list())
-    }
+    # Create the DDGStatement objects for the statements in the function
+    return (.ddg.parse.contained.function(cmd, script.name, parseData, parsed.cmd[[3]][[3]]))
   }
   
   # Check if we want to go inside loop and if-statements
@@ -655,55 +645,46 @@ null.pos <- function() {
 
   # Get function name.
   func.name <- toString(parsed.function.decl[[2]])
+  #print(paste("Annotating", func.name))
 
-  # Return if a list of functions to annotate is provided and this
-  # function is not on the list.
-  if (!is.null(.ddg.annotate.on()) & !(func.name %in% .ddg.annotate.on())) return(parsed.function.decl)
+  # Get function definition.
+  func.definition <- parsed.function.decl[[3]]
 
-  # Return if a list of functions not to annotate is provided and this
-  # function is on the list.
-  else if (!is.null(.ddg.annotate.off()) & func.name %in% .ddg.annotate.off()) return(parsed.function.decl)
-
-  # Add function annotations.
-  else {
-    # Get function definition.
-    func.definition <- parsed.function.decl[[3]]
-
-    # Create function block if necessary.
-    if (func.definition[[3]][[1]] != "{") {
-      func.definition <- .ddg.create.function.block(func.definition)
-    }
-
-    # Create new function body with an if-then statement for annotations.
-    func.definition <- .ddg.add.conditional.statement(func.definition)
-
-    # Insert call to ddg.function if not already added.
-    if (!.ddg.has.call.to(func.definition[[3]], "ddg.function")) {
-      func.definition <- .ddg.insert.ddg.function(func.definition)
-    }
-
-    # Insert calls to ddg.return.value if not already added.
-    if (!.ddg.has.call.to(func.definition[[3]], "ddg.return.value")) {
-      func.definition <- .ddg.wrap.all.return.parameters(func.definition, function.decl@contained)
-    }
-
-    # Wrap last statement with ddg.return.value if not already added
-    # and if last statement is not a simple return or a ddg function.
-    last.statement <- .ddg.find.last.statement(func.definition)
-    if (!.ddg.is.call.to(last.statement, "ddg.return.value") & !.ddg.is.call.to(last.statement, "return") & !.ddg.is.call.to.ddg.function(last.statement)) {
-      func.definition <- .ddg.wrap.last.line(func.definition, function.decl@contained)
-    }
-
-    # Wrap statements with ddg.eval if not already added and if
-    # statements are not calls to a ddg function and do not contain
-    # ddg.return.value.
-    if (!.ddg.has.call.to(func.definition, "ddg.eval")) {
-      func.definition <- .ddg.wrap.with.ddg.eval(func.definition, function.decl@contained)
-    }
-
-    # Reassemble parsed.command.
-    return (as.expression (call ("<-", as.name(func.name), func.definition)))
+  # Create function block if necessary.
+  if (func.definition[[3]][[1]] != "{") {
+    func.definition <- .ddg.create.function.block(func.definition)
   }
+
+  # Create new function body with an if-then statement for annotations.
+  func.definition <- .ddg.add.conditional.statement(func.definition, func.name)
+
+  # Insert call to ddg.function if not already added.
+  if (!.ddg.has.call.to(func.definition[[3]], "ddg.function")) {
+    func.definition <- .ddg.insert.ddg.function(func.definition)
+  }
+
+  # Insert calls to ddg.return.value if not already added.
+  if (!.ddg.has.call.to(func.definition[[3]], "ddg.return.value")) {
+    func.definition <- .ddg.wrap.all.return.parameters(func.definition, function.decl@contained)
+  }
+
+  # Wrap last statement with ddg.return.value if not already added
+  # and if last statement is not a simple return or a ddg function.
+  last.statement <- .ddg.find.last.statement(func.definition)
+  if (!.ddg.is.call.to(last.statement, "ddg.return.value") & !.ddg.is.call.to(last.statement, "return") & !.ddg.is.call.to.ddg.function(last.statement)) {
+    func.definition <- .ddg.wrap.last.line(func.definition, function.decl@contained)
+  }
+
+  # Wrap statements with ddg.eval if not already added and if
+  # statements are not calls to a ddg function and do not contain
+  # ddg.return.value.
+  if (!.ddg.has.call.to(func.definition, "ddg.eval")) {
+    func.definition <- .ddg.wrap.with.ddg.eval(func.definition, function.decl@contained)
+  }
+
+  # Reassemble parsed.command.
+  #print(paste("Done annotating", func.name))
+  return (as.expression (call ("<-", as.name(func.name), func.definition)))
 }
 
 # .ddg.create.function.block creates a function block.
@@ -731,7 +712,7 @@ null.pos <- function() {
 #
 # func.definition - original function definition.
 
-.ddg.add.conditional.statement <- function(func.definition) {
+.ddg.add.conditional.statement <- function(func.definition, func.name) {
   # Get the function parameters.
   func.params <- func.definition[[2]]
 
@@ -745,7 +726,7 @@ null.pos <- function() {
   # functions that are inside control structures when we 
   # are not collecting provenance in control structures.
   new.func.body.txt <-
-    c(paste("if (ddg.loop.annotate() || ddg.inside.loop() == 0) {", sep=""),
+    c(paste("if (ddg.should.run.annotated(\"", func.name, "\")) {", sep=""),
     as.list(func.body[2:pos]),
     paste("} else {", sep=""),
     as.list(func.body[2:pos]),

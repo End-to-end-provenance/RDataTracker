@@ -4,11 +4,11 @@
 \alias{ddg.set.detail}
 \alias{ddg.get.detail}
 \alias{ddg.clear.detail}
-\alias{ddg.annotate.inside}
 \alias{ddg.max.loops}
 \alias{ddg.max.snapshot.size}
 \alias{ddg.annotate.on}
 \alias{ddg.annotate.off}
+\alias{ddg.should.run.annotated}
 \alias{ddg.save}
 \alias{ddg.flush.ddg}
 \alias{ddg.console.off}
@@ -19,11 +19,9 @@
 \alias{ddg.loop.count}
 \alias{ddg.loop.count.inc}
 \alias{ddg.reset.loop.count}
-\alias{ddg.loop.annotate}
 \alias{ddg.loop.annotate.on}
 \alias{ddg.loop.annotate.off}
 \alias{ddg.details.omitted}
-\alias{ddg.inside.loop}
 \alias{ddg.set.inside.loop}
 \alias{ddg.not.inside.loop}
 \title{Creating Provenance Graphs with RDataTracker}
@@ -38,11 +36,11 @@ ddg.run(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = NULL, enable.
 ddg.set.detail(detail.level)
 ddg.get.detail()
 ddg.clear.detail()
-ddg.annotate.inside()
 ddg.max.loops()
 ddg.max.snapshot.size()
 ddg.annotate.on(fnames = NULL)
 ddg.annotate.off(fnames = NULL)
+ddg.should.run.annotated(func.name)
 ddg.console.on()
 ddg.console.off()
 ddg.flush.ddg(ddg.path = NULL)
@@ -56,7 +54,6 @@ ddg.loop.annotate()
 ddg.loop.annotate.on()
 ddg.loop.annotate.off()
 ddg.details.omitted()
-ddg.inside.loop()
 ddg.not.inside.loop()
 ddg.set.inside.loop()
 }
@@ -80,6 +77,7 @@ ddg.set.inside.loop()
   \item{f}{ A function to run.  Data provenance is collected within the function. }
   \item{detail.level}{ An integer indicating the level of provenance detail to be collected. }
   \item{fnames}{ A list of one or more function names. }
+  \item{func.name}{A function name passed as a string.}
   \item{quit}{ If TRUE, all DDG files are removed from memory. }
   \item{ddg.path}{ The path to the DDG directory which needs to be flushed. }
   \item{index.var}{ The index variable passed to ddg.forloop. }
@@ -127,7 +125,7 @@ ddg.set.inside.loop()
   max.snapshot.size passed to ddg.run are used instead.  The current level of detail is returned by
   ddg.get.detail and reset to NULL by ddg.clear.detail.
   
-  ddg.annotate.inside returns the current value of annotate.inside.  ddg.max.loops returns the current
+  ddg.max.loops returns the current
   value of max.loops.  ddg.max.snapshot.size returns the current value of max.snapshot.size.
   
   ddg.console.on and ddg.console.off toggle the console parameter for DDG creation. 
@@ -145,9 +143,9 @@ ddg.set.inside.loop()
   and loads the most recent ddg.txt file (if any). If the DDG path is not set or a ddg.txt file is not available,
   the function returns "DDG not available".
   
-  ddg.forloop, ddg.first.loop, ddg.loop.count, ddg.loop.count.inc, ddg.reset.loop.count, ddg.loop.annotate,
-  ddg.loop.annotate.on, ddg.loop.annotate.off, ddg.details.omitted, ddg.inside.loop, ddg.not.inside.loop, and
-  ddg.set.inside.loop are used internally by RDataTracker--do not use.
+  ddg.should.run.annotated, ddg.forloop, ddg.first.loop, ddg.loop.count, ddg.loop.count.inc, ddg.reset.loop.count, 
+  ddg.loop.annotate.on, ddg.loop.annotate.off, ddg.details.omitted, 
+  ddg.not.inside.loop, and ddg.set.inside.loop are used internally by RDataTracker--do not use.
 }
 \author{Emery Boose and Barbara Lerner}
 \examples{
