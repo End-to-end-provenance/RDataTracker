@@ -3047,7 +3047,7 @@ ddg.MAX_HIST_LINES <- 2^14
       # block, so there is no need to create additional nodes for the
       # control statement itself.
 
-      create <- !cmd@isDdgFunc && .ddg.is.init() && .ddg.enable.console() && !(control.statement && ddg.annotate.inside() && ddg.max.loops() > 0)
+      create <- !cmd@isDdgFunc && .ddg.is.init() && .ddg.enable.console() && !(control.statement && .ddg.annotate.inside() && ddg.max.loops() > 0)
       # create <- !cmd@isDdgFunc && .ddg.is.init() && .ddg.enable.console()
       start.finish.created <- FALSE
       cur.cmd.closed <- FALSE
@@ -4380,21 +4380,6 @@ ddg.MAX_HIST_LINES <- 2^14
 .ddg.is.local <- function(name, scope) {
   return(exists(name, scope, inherits=FALSE))
 }
-
-#.ddg.rm removes all data except ddg information
-.ddg.rm <-function()
-
-# .ddg.get.annotation.list checks to see if the script contains calls to
-# ddg.annotate.on or ddg.annotate.off. If it does, these calls are executed.
-# No longer used
-
-#.ddg.get.annotation.list <- function(parsed.command) {
-#  if (length(parsed.command[[1]]) > 1) {
-#    if (toString(parsed.command[[1]][[1]]) == "ddg.annotate.on" | toString(parsed.command[[1]][[1]]) == "ddg.annotate.off") {
-#      eval(parsed.command)
-#    }
-#  }
-#}
 
 # Creates a start node for the current command if one has not
 # been created already.
