@@ -1416,7 +1416,7 @@ null.pos <- function() {
   .ddg.graphics.functions.df <- .ddg.get (".ddg.graphics.functions.df")
   graphics.functions <- .ddg.graphics.functions.df$function.names
   if (TRUE %in% (lapply (graphics.functions, function(fun.name) {return (.ddg.has.call.to(parsed.statement, fun.name))}))) {
-    print(paste("Setting @creates.graphics in", deparse(parsed.statement)))
+    #print(paste("Setting @creates.graphics in", deparse(parsed.statement)))
     return(TRUE)
   }
   return (FALSE)

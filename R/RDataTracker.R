@@ -2389,14 +2389,14 @@ ddg.MAX_HIST_LINES <- 2^14
 # of the calls to functions that create graphics devices.  If there are
 # none, it returns NULL.
 .ddg.set.graphics.files <- function(main.object, env) {
-  print(paste(".ddg.set.graphics.files: main.object =", main.object@text))
+  #print(paste(".ddg.set.graphics.files: main.object =", main.object@text))
 
   # Find all the graphics files that have potentially been opened.
   # Remember these file names until we find the dev.off call and then
   # determine which was written.
   new.possible.graphics.files.open <- .ddg.find.files (main.object, .ddg.get(".ddg.graphics.functions.df"), env)
   if (!is.null(new.possible.graphics.files.open)) {
-    print(paste(".ddg.set.grpahics.files: opened", new.possible.graphics.files.open))
+    #print(paste(".ddg.set.grpahics.files: opened", new.possible.graphics.files.open))
     if (.ddg.is.set ("possible.graphics.files.open")) {
       possible.graphics.files.open <- .ddg.get ("possible.graphics.files.open")
       .ddg.set ("possible.graphics.files.open",
@@ -2406,8 +2406,8 @@ ddg.MAX_HIST_LINES <- 2^14
     else {
       .ddg.set ("possible.graphics.files.open", new.possible.graphics.files.open)
     }
-    print(paste(".ddg.set.graphics.files: dev.cur =", dev.cur()))
-    dev.node.name <- paste0("dev.cur.", dev.cur())
+    #print(paste(".ddg.set.graphics.files: dev.cur =", dev.cur()))
+    dev.node.name <- paste0("dev.", dev.cur())
     .ddg.data.node("Data", dev.node.name, "graph", NULL)
     .ddg.proc2data(main.object@abbrev, dev.node.name)
   
@@ -2416,10 +2416,23 @@ ddg.MAX_HIST_LINES <- 2^14
   }
 }
 
+# Add data in and data out nodes that represent the current device.
+#
+# cmd - Assumed to be a function that modifies the graphics device,
+# such as a function in the base graphics package.
+
 .ddg.add.graphics.io <- function (cmd) {
-  # Try adding the input edge
-  dev.node.name <- paste0("dev.cur.", dev.cur())
-  .ddg.data2proc(dev.node.name, NULL, cmd@abbrev)
+  # Try adding the input edge.  It is not a problem if the node 
+  # can't be found.  It means that the output is going to the
+  # RStudio window, not a file, so there has been no call like pdf
+  # or jpg that would have created the data node.
+  try (
+      {
+        dev.node.name <- paste0("dev.", dev.cur())
+        .ddg.data2proc(dev.node.name, NULL, cmd@abbrev)
+      }, 
+      silent = TRUE 
+  )
   
   # Add an output node with the same name
   .ddg.data.node("Data", dev.node.name, "graph", NULL)
@@ -2448,8 +2461,8 @@ ddg.MAX_HIST_LINES <- 2^14
 
       # Add an input edge from the current device
       #dev.node.name <- paste0("dev.cur.", dev.cur())
-      dev.node.name <- paste0("dev.cur.", dev.number)
-      print(paste(".ddg.capture.current.graphics: dev.node.name =", dev.node.name))
+      dev.node.name <- paste0("dev.", dev.number)
+      #print(paste(".ddg.capture.current.graphics: dev.node.name =", dev.node.name))
       .ddg.data2proc(dev.node.name, NULL, cmd@abbrev)
       
       #.ddg.capture.current.graphics(cmd, possible.graphics.files.open[latest.file.date.row])
@@ -2477,14 +2490,15 @@ ddg.MAX_HIST_LINES <- 2^14
   dev.print(device=pdf, file=file)
 
   # Add it to the ddg.  This will copy the file to the right directory
+  #print(paste(".ddg.capture.current.graphics: cmd@abbrev =", cmd.abbrev))
   ddg.file.out (file, pname=cmd@abbrev)
 
   # Remove the temporary file
   file.remove(file)
   
   # Add an input edge from the current device
-  dev.node.name <- paste0("dev.cur.", dev.cur())
-  print(paste(".ddg.capture.current.graphics: dev.node.name =", dev.node.name))
+  dev.node.name <- paste0("dev.", dev.cur())
+  #print(paste(".ddg.capture.current.graphics: dev.node.name =", dev.node.name))
   .ddg.data2proc(dev.node.name, NULL, main.object@abbrev)
 }
 
@@ -3143,7 +3157,7 @@ ddg.MAX_HIST_LINES <- 2^14
           # EVALUATE.
 
           if (.ddg.debug.lib()) print (paste (".ddg.parse.commands: Evaluating ", cmd@annotated))
-          print (paste (".ddg.parse.commands: Evaluating ", cmd@annotated))
+          #print (paste (".ddg.parse.commands: Evaluating ", cmd@annotated))
           
           result <- withCallingHandlers(
           
@@ -5878,7 +5892,7 @@ ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE) {
      #print("ddg.save: Saving graphics open at end of script")
      # tryCatch (.ddg.capture.current.graphics(basename(r.script.path)),
      tryCatch (.ddg.capture.current.graphics(basename(.ddg.get("ddg.r.script.path"))),
-         error = function (e) e)
+        error = function (e) e)
    }
 
   # Delete temporary files.
