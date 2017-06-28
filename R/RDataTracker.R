@@ -2389,12 +2389,14 @@ ddg.MAX_HIST_LINES <- 2^14
 # of the calls to functions that create graphics devices.  If there are
 # none, it returns NULL.
 .ddg.set.graphics.files <- function(main.object, env) {
+  print(paste(".ddg.set.graphics.files: main.object =", main.object@text))
 
   # Find all the graphics files that have potentially been opened.
   # Remember these file names until we find the dev.off call and then
   # determine which was written.
   new.possible.graphics.files.open <- .ddg.find.files (main.object, .ddg.get(".ddg.graphics.functions.df"), env)
   if (!is.null(new.possible.graphics.files.open)) {
+    print(paste(".ddg.set.grpahics.files: opened", new.possible.graphics.files.open))
     if (.ddg.is.set ("possible.graphics.files.open")) {
       possible.graphics.files.open <- .ddg.get ("possible.graphics.files.open")
       .ddg.set ("possible.graphics.files.open",
@@ -2404,13 +2406,32 @@ ddg.MAX_HIST_LINES <- 2^14
     else {
       .ddg.set ("possible.graphics.files.open", new.possible.graphics.files.open)
     }
+    print(paste(".ddg.set.graphics.files: dev.cur =", dev.cur()))
+    dev.node.name <- paste0("dev.cur.", dev.cur())
+    .ddg.data.node("Data", dev.node.name, "graph", NULL)
+    .ddg.proc2data(main.object@abbrev, dev.node.name)
+  
     #print (paste (".ddg.set.graphics.files: Found ", new.possible.graphics.files.open))
 
   }
 }
 
-.ddg.capture.graphics <- function(cmd) {
-  #print(paste(".ddg.capture.graphics: ", cmd@abbrev))
+.ddg.add.graphics.io <- function (cmd) {
+  # Try adding the input edge
+  dev.node.name <- paste0("dev.cur.", dev.cur())
+  .ddg.data2proc(dev.node.name, NULL, cmd@abbrev)
+  
+  # Add an output node with the same name
+  .ddg.data.node("Data", dev.node.name, "graph", NULL)
+  .ddg.proc2data(cmd@abbrev, dev.node.name)
+  
+}
+
+.ddg.capture.graphics <- function(cmd, dev.number) {
+  #### WARNING:  Test that this works if dev.off() is the last statement in a function!!!!
+  #### It goes through ddg.returnv.value in that case and dev.number isn't getting passed in.
+  
+  print(paste(".ddg.capture.graphics: ", cmd@abbrev))
   if (.ddg.is.set ("possible.graphics.files.open")) {
     possible.graphics.files.open <- .ddg.get ("possible.graphics.files.open")
 
@@ -2424,6 +2445,13 @@ ddg.MAX_HIST_LINES <- 2^14
 
       #print(".ddg.capture.graphics: creating file node")
       ddg.file.out (possible.graphics.files.open[latest.file.date.row], pname=cmd@abbrev)
+
+      # Add an input edge from the current device
+      #dev.node.name <- paste0("dev.cur.", dev.cur())
+      dev.node.name <- paste0("dev.cur.", dev.number)
+      print(paste(".ddg.capture.current.graphics: dev.node.name =", dev.node.name))
+      .ddg.data2proc(dev.node.name, NULL, cmd@abbrev)
+      
       #.ddg.capture.current.graphics(cmd, possible.graphics.files.open[latest.file.date.row])
       #print(paste(".ddg.capture.graphics: writing to ", possible.graphics.files.open[latest.file.date.row]))
       .ddg.set ("possible.graphics.files.open", NULL)
@@ -2453,6 +2481,11 @@ ddg.MAX_HIST_LINES <- 2^14
 
   # Remove the temporary file
   file.remove(file)
+  
+  # Add an input edge from the current device
+  dev.node.name <- paste0("dev.cur.", dev.cur())
+  print(paste(".ddg.capture.current.graphics: dev.node.name =", dev.node.name))
+  .ddg.data2proc(dev.node.name, NULL, main.object@abbrev)
 }
 
 # .ddg.loadhistory takes in the name of a history file, opens it,
@@ -3088,6 +3121,10 @@ ddg.MAX_HIST_LINES <- 2^14
           else if (.ddg.is.procedure.cmd(cmd)) {
             .ddg.set(".ddg.possible.last.cmd", NULL)
           }
+
+          # Need to get this number before evaluating the command so that 
+          # when we evaluate a dev.off call we know which device was closed
+          dev.number <- dev.cur()
           
           # Before evaluating, 
           # keep track of variable types for common variables between vars.set and vars.used.
@@ -3106,8 +3143,10 @@ ddg.MAX_HIST_LINES <- 2^14
           # EVALUATE.
 
           if (.ddg.debug.lib()) print (paste (".ddg.parse.commands: Evaluating ", cmd@annotated))
+          print (paste (".ddg.parse.commands: Evaluating ", cmd@annotated))
           
           result <- withCallingHandlers(
+          
             eval(cmd@annotated, environ, NULL) ,
             warning = .ddg.set.warning ,
             error = function(e)
@@ -3283,10 +3322,12 @@ ddg.MAX_HIST_LINES <- 2^14
           if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Adding output data nodes for", cmd@abbrev))
 
           if (cmd@writesFile) .ddg.create.file.write.nodes.and.edges (cmd, environ)
-          .ddg.set.graphics.files (cmd, environ)
+          if (cmd@createsGraphics) .ddg.set.graphics.files (cmd, environ)
+          #.ddg.set.graphics.files (cmd, environ)
+          if (cmd@updatesGraphics) .ddg.add.graphics.io (cmd)
 
           if (cmd@has.dev.off) {
-            .ddg.capture.graphics(cmd)
+            .ddg.capture.graphics(cmd, dev.number)
           }
         }
         # We wanted to create it but it matched a last command node.

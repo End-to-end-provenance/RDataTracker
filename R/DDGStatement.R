@@ -1415,7 +1415,11 @@ null.pos <- function() {
 .ddg.creates.graphics <- function (parsed.statement) {
   .ddg.graphics.functions.df <- .ddg.get (".ddg.graphics.functions.df")
   graphics.functions <- .ddg.graphics.functions.df$function.names
-  return (TRUE %in% (lapply (graphics.functions, function(fun.name) {return (.ddg.has.call.to(parsed.statement, fun.name))})))
+  if (TRUE %in% (lapply (graphics.functions, function(fun.name) {return (.ddg.has.call.to(parsed.statement, fun.name))}))) {
+    print(paste("Setting @creates.graphics in", deparse(parsed.statement)))
+    return(TRUE)
+  }
+  return (FALSE)
 }
 
 # Returns true if the statement contains a call to a function that updates a graphics object
@@ -1425,7 +1429,7 @@ null.pos <- function() {
 .ddg.updates.graphics <- function (parsed.statement) {
   graphics.update.functions <- .ddg.get(".ddg.graphics.update.functions")
   if (TRUE %in% (lapply (graphics.update.functions, function(fun.name) {return (.ddg.has.call.to(parsed.statement, fun.name))}))) {
-    print("Found a graphics update function")
+    #print("Found a graphics update function")
     return (TRUE)
   }
   return (FALSE)
