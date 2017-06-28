@@ -1736,7 +1736,7 @@ ddg.MAX_HIST_LINES <- 2^14
   #print (paste(".ddg.proc2data: Found node", dn))
   
   # attach data node to the last procedure node if pname is NULL.
-  if(is.null(pname))
+  if(is.null(pname) || startsWith(pname,".ddg.") || startsWith(pname,"ddg"))
     pn <- .ddg.last.proc.number()
   else
     pn <- .ddg.proc.number(pname, return.value)
@@ -3910,8 +3910,8 @@ ddg.MAX_HIST_LINES <- 2^14
             pname <- as.character(call[[1]])
             
             # set pname to null for internal function calls
-            if(startsWith(pname,".ddg."))
-              pname <- NULL
+#            if(startsWith(pname,".ddg."))
+#              pname <- NULL
           }
         }
 
@@ -4854,7 +4854,7 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
 
   pname <- NULL
   .ddg.lookup.function.name(pname)
-
+  
   # If this is a recursive call to ddg.return.value, find
   # the caller of the first ddg.return.value
   if (grepl("(^ddg|.ddg)", pname)) {
