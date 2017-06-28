@@ -2444,7 +2444,11 @@ ddg.MAX_HIST_LINES <- 2^14
   #### WARNING:  Test that this works if dev.off() is the last statement in a function!!!!
   #### It goes through ddg.returnv.value in that case and dev.number isn't getting passed in.
   
-  print(paste(".ddg.capture.graphics: ", cmd@abbrev))
+  proc.node.name <- 
+      if (is.character(cmd)) cmd
+      else cmd@abbrev
+  
+  print(paste(".ddg.capture.graphics: ", proc.node.name))
   if (.ddg.is.set ("possible.graphics.files.open")) {
     possible.graphics.files.open <- .ddg.get ("possible.graphics.files.open")
 
@@ -2455,15 +2459,23 @@ ddg.MAX_HIST_LINES <- 2^14
       graphics.file.info <- file.info(possible.graphics.files.open)
       #print(".ddg.capture.graphics: getting modification time")
       latest.file.date.row <- which.max (graphics.file.info$mtime)
+      
+      # Check if the device is still open and close it if it is
+      # We need to do this so that the file.out call can
+      # copy the file.
+      if (dev.number %in% dev.list()) dev.off(dev.number)
 
       #print(".ddg.capture.graphics: creating file node")
-      ddg.file.out (possible.graphics.files.open[latest.file.date.row], pname=cmd@abbrev)
+      ddg.file.out (possible.graphics.files.open[latest.file.date.row], pname=proc.node.name)
+      #print(".ddg.capture.graphics: done creating file node")
 
       # Add an input edge from the current device
       #dev.node.name <- paste0("dev.cur.", dev.cur())
       dev.node.name <- paste0("dev.", dev.number)
       #print(paste(".ddg.capture.current.graphics: dev.node.name =", dev.node.name))
-      .ddg.data2proc(dev.node.name, NULL, cmd@abbrev)
+      #print(".ddg.capture.graphics: creating in edge")
+      .ddg.data2proc(dev.node.name, NULL, proc.node.name)
+      #print(".ddg.capture.graphics: done creating in edge")
       
       #.ddg.capture.current.graphics(cmd, possible.graphics.files.open[latest.file.date.row])
       #print(paste(".ddg.capture.graphics: writing to ", possible.graphics.files.open[latest.file.date.row]))
@@ -2473,13 +2485,14 @@ ddg.MAX_HIST_LINES <- 2^14
   }
 
   # Output is going to the display, so we need to make up a name
-  .ddg.capture.current.graphics(cmd)
+  .ddg.capture.current.graphics(proc.node.name)
 
 }
 
 # Captures what is on the current display to a file, creates a file node
 # and connects to the ddg.
-.ddg.capture.current.graphics <- function(cmd, file=NULL) {
+#.ddg.capture.current.graphics <- function(cmd, file=NULL) {
+.ddg.capture.current.graphics <- function(proc.node.name, file=NULL) {
   if (is.null(file)) {
     file <- paste0("dev.off.", .ddg.dnum()+1, ".pdf")
   }
@@ -2491,7 +2504,7 @@ ddg.MAX_HIST_LINES <- 2^14
 
   # Add it to the ddg.  This will copy the file to the right directory
   #print(paste(".ddg.capture.current.graphics: cmd@abbrev =", cmd.abbrev))
-  ddg.file.out (file, pname=cmd@abbrev)
+  ddg.file.out (file, pname=proc.node.name)
 
   # Remove the temporary file
   file.remove(file)
@@ -2499,7 +2512,7 @@ ddg.MAX_HIST_LINES <- 2^14
   # Add an input edge from the current device
   dev.node.name <- paste0("dev.", dev.cur())
   #print(paste(".ddg.capture.current.graphics: dev.node.name =", dev.node.name))
-  .ddg.data2proc(dev.node.name, NULL, main.object@abbrev)
+  .ddg.data2proc(dev.node.name, NULL, proc.node.name)
 }
 
 # .ddg.loadhistory takes in the name of a history file, opens it,
@@ -3341,7 +3354,9 @@ ddg.MAX_HIST_LINES <- 2^14
           if (cmd@updatesGraphics) .ddg.add.graphics.io (cmd)
 
           if (cmd@has.dev.off) {
+            #print("Capturing graphics after dev.off")
             .ddg.capture.graphics(cmd, dev.number)
+            #print("Done capturing graphics after dev.off")
           }
         }
         # We wanted to create it but it matched a last command node.
@@ -5891,9 +5906,13 @@ ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE) {
    if (length(dev.list()) >= 1) {
      #print("ddg.save: Saving graphics open at end of script")
      # tryCatch (.ddg.capture.current.graphics(basename(r.script.path)),
-     tryCatch (.ddg.capture.current.graphics(basename(.ddg.get("ddg.r.script.path"))),
-        error = function (e) e)
-   }
+#     tryCatch (.ddg.capture.current.graphics(basename(.ddg.get("ddg.r.script.path"))),
+#        error = function (e) print(e))
+    #print("Capturing graphics in ddg.save")
+    tryCatch (.ddg.capture.graphics(basename(.ddg.get("ddg.r.script.path")), dev.cur()),
+        error = function (e) print(e))
+    #print("Done capturing graphics in ddg.save")
+  }
 
   # Delete temporary files.
   # .ddg.delete.temp()
