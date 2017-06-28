@@ -1329,6 +1329,10 @@ library(tools)
   dhash <- ""
   drw <- ""
   dscriptpath <- .ddg.get("ddg.r.script.path")
+  if (is.null(dscriptpath)) {
+    print("NULL")
+    dscriptpath = ""
+  }
 
   # If the table is full, make it bigger.
   ddg.data.nodes <- .ddg.data.nodes()
