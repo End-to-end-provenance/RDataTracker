@@ -790,9 +790,9 @@ library(tools)
 
 # .ddg.json.data.node adds a data node to the ddg.json string.
 
-.ddg.json.data.node <- function(id, dname, dvalue, val.type, dtype, dscope, from.env, dhash, drw, dtime, dloc) {
+.ddg.json.data.node <- function(dscriptpath, id, dname, dvalue, val.type, dtype, dscope, from.env, dhash, drw, dtime, dloc) {
 
-  jstr <- paste("\n\"d", id, "\" : {\n\"rdt:name\" : \"", dname, "\",\n\"rdt:value\" : \"", dvalue, "\",\n\"rdt:valType\" : ", val.type, ",\n\"rdt:type\" : \"", dtype, "\",\n\"rdt:scope\" : \"", dscope, "\",\n\"rdt:fromEnv\" : \"", from.env, "\", \n\"rdt:MD5hash\" : \"", dhash, "\",\n\"rdt:rw\" : \"", drw, "\",\n\"rdt:timestamp\" : \"", dtime, "\",\n\"rdt:location\" : \"", dloc, "\"\n}", sep="")
+  jstr <- paste("\n\"d", id, "\" : {\n\"rdt:name\" : \"", dname, "\",\n\"rdt:scriptpath\" : \"", dscriptpath, "\",\n\"rdt:value\" : \"", dvalue, "\",\n\"rdt:valType\" : ", val.type, ",\n\"rdt:type\" : \"", dtype, "\",\n\"rdt:scope\" : \"", dscope, "\",\n\"rdt:fromEnv\" : \"", from.env, "\", \n\"rdt:MD5hash\" : \"", dhash, "\",\n\"rdt:rw\" : \"", drw, "\",\n\"rdt:timestamp\" : \"", dtime, "\",\n\"rdt:location\" : \"", dloc, "\"\n}", sep="")
 
   .ddg.append.entity(jstr)
 }
@@ -895,7 +895,7 @@ library(tools)
 
 # .ddg.output.data.node outputs a data node.
 
-.ddg.output.data.node <- function(dtype, dname, dvalue, val.type, dscope, from.env, dhash, drw, dtime, dloc) {
+.ddg.output.data.node <- function(dscriptpath, dtype, dname, dvalue, val.type, dscope, from.env, dhash, drw, dtime, dloc) {
   # Get counter
   ddg.dnum <- .ddg.get("ddg.dnum")
 
@@ -905,6 +905,9 @@ library(tools)
   if (dvalue != "") value.str <- paste(" Value=\"", dvalue, "\"", sep="")
   else value.str <- ""
 
+  if(dscriptpath != "" ) dscriptpath.str <- paste(" Script Path=\"", dscriptpath, "\"", sep="")
+  else dscriptpath.str <- ""
+  
   if(val.type != "" ) val.type.str <- paste(" ValType=\"", val.type, "\"", sep="")
   else val.type.str <- ""
 
@@ -920,7 +923,7 @@ library(tools)
   if (drw != "") drw.str <- paste(" RW=\"", drw, "\"", sep="")
   else drw.str <- ""
 
-  dtxt <- paste(dtype, " d", ddg.dnum, " \"", ddg.dnum, "-", dname, "\"", value.str, val.type.str, time.str, loc.str, dhash.str, drw.str, ";\n", sep="")
+  dtxt <- paste(dscriptpath, dtype, " d", ddg.dnum, " \"", ddg.dnum, "-", dname, "\"", value.str, val.type.str, time.str, loc.str, dhash.str, drw.str, ";\n", sep="")
   
   # Record in ddg.txt
   .ddg.append(dtxt)
@@ -929,7 +932,7 @@ library(tools)
   .ddg.append.inc(dtxt)
 
   # Record in ddg.json
-  .ddg.json.data.node(ddg.dnum, dname, dvalue, val.type, dtype, dscope, from.env, dhash, drw, dtime, dloc)
+  .ddg.json.data.node(dscriptpath, ddg.dnum, dname, dvalue, val.type, dtype, dscope, from.env, dhash, drw, dtime, dloc)
 }
 
 
@@ -1322,9 +1325,10 @@ library(tools)
   .ddg.inc("ddg.dnum")
   ddg.dnum <- .ddg.dnum()
 
-  #Initialize dhash and drw
+  #Initialize dhash, drw, dscriptpath
   dhash <- ""
   drw <- ""
+  dscriptpath <- .ddg.get("ddg.r.script.path")
 
   # If the table is full, make it bigger.
   ddg.data.nodes <- .ddg.data.nodes()
@@ -1333,6 +1337,7 @@ library(tools)
     new.rows <- data.frame(ddg.type = character(size),
         ddg.num = numeric(size),
         ddg.name = character(size),
+        ddg.path = characters(size),
         ddg.value = character(size),
         ddg.val.type = character(size),
         ddg.scope = character(size),
@@ -1356,6 +1361,7 @@ library(tools)
   #print(".ddg.record.data: adding info")
   ddg.data.nodes$ddg.type[ddg.dnum] <- dtype
   ddg.data.nodes$ddg.num[ddg.dnum] <- ddg.dnum
+  ddg.data.nodes$ddg.path[ddg.dnum] <- dscriptpath
   ddg.data.nodes$ddg.name[ddg.dnum] <- dname
   ddg.data.nodes$ddg.value[ddg.dnum] <- dvalue2
   ddg.data.nodes$ddg.val.type[ddg.dnum] <- val.type
@@ -1381,7 +1387,7 @@ library(tools)
       .ddg.set("ddg.outfilenodes", list())
     }
     longpath <- paste0(getwd(), substring(.ddg.path(),2))
-    .ddg.set("ddg.hashtable", rbind(.ddg.get("ddg.hashtable"), c(dloc, longpath, paste(.ddg.path(), dvalue, sep="/"), ddg.dnum, dhash, drw, dtime), stringsAsFactors = FALSE))
+    .ddg.set("ddg.hashtable", rbind(.ddg.get("ddg.hashtable"), c(dscriptpath, dloc, longpath, paste(.ddg.path(), dvalue, sep="/"), ddg.dnum, dhash, drw, dtime, dvalue2), stringsAsFactors = FALSE))
   }
 
   ddg.data.nodes$ddg.current[ddg.dnum] <- TRUE
@@ -1389,7 +1395,7 @@ library(tools)
 
   # Output data node.
   #print(".ddg.record.data outputting data node")
-  .ddg.output.data.node(dtype, dname, dvalue2, val.type, dscope, from.env, dhash, drw, dtime, dloc)
+  .ddg.output.data.node(dscriptpath, dtype, dname, dvalue2, val.type, dscope, from.env, dhash, drw, dtime, dloc)
 
   if (.ddg.debug.lib()) {
     if (dtype != "File") {
@@ -1421,7 +1427,7 @@ library(tools)
   }
   writefile <- paste0(writedir,"/hashtable.csv")
   new_hashtable.csv <- .ddg.get("ddg.hashtable")
-  colnames(new_hashtable.csv) <- c("FilePath","DDGPath","NodePath","NodeNumber","MD5Hash","ReadWrite","Timestamp")
+  colnames(new_hashtable.csv) <- c("ScriptPath", "FilePath","DDGPath","NodePath","NodeNumber","MD5Hash","ReadWrite","Timestamp","Value")
   
   if (file.exists(writefile)) {
     old_hashtable.csv <- .ddg.hashtable.cleanup(writefile)
