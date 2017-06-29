@@ -2426,13 +2426,10 @@ ddg.MAX_HIST_LINES <- 2^14
   # can't be found.  It means that the output is going to the
   # RStudio window, not a file, so there has been no call like pdf
   # or jpg that would have created the data node.
-  try (
-      {
-        dev.node.name <- paste0("dev.", dev.cur())
-        .ddg.data2proc(dev.node.name, NULL, cmd@abbrev)
-      }, 
-      silent = TRUE 
-  )
+  dev.node.name <- paste0("dev.", dev.cur())
+  if (.ddg.data.node.exists(dev.node.name)) {
+    .ddg.data2proc(dev.node.name, NULL, cmd@abbrev)
+  }
   
   # Add an output node with the same name
   .ddg.data.node("Data", dev.node.name, "graph", NULL)
