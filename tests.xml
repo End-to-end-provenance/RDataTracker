@@ -49,6 +49,7 @@
   - ReturnTest
   - OddParameterTest
   - FunctionAnnotationTest
+  - AnnotateOnOffTest
   - ControlConstructTest
   - WarningTest
   - PlotTest
@@ -502,6 +503,18 @@
 	<target name="update-FunctionAnnotationTest">
 	  <antcall target="update-regression-expected">
 	  	<param name="test-name" value="FunctionAnnotationTest" />
+	 	</antcall>
+	</target>
+
+  	<target name="AnnotateOnOffTest">
+  		<antcall target="run-regression-test">
+  			<param name="test-name" value="AnnotateOnOffTest" />
+  		</antcall>
+  	</target>
+
+	<target name="update-AnnotateOnOffTest">
+	  <antcall target="update-regression-expected">
+	  	<param name="test-name" value="AnnotateOnOffTest" />
 	 	</antcall>
 	</target>
 

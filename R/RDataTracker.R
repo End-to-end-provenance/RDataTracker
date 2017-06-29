@@ -204,6 +204,18 @@ ddg.MAX_HIST_LINES <- 2^14
   return(.ddg.get("ddg.loops"))
 }
 
+# value should be TRUE or FALSE
+# Keeps track of whether the last loop has all iterations
+# recorded or not.
+.ddg.set.details.omitted <- function (value) {
+  .ddg.set ("details.omitted", value)
+}
+
+.ddg.were.details.omitted <- function () {
+  .ddg.get ("details.omitted")
+}
+
+
 # Functions that allow us to save warnings when they occur
 # so that we can create the warning node after the node
 # that caused the warning is created.
@@ -425,12 +437,14 @@ ddg.MAX_HIST_LINES <- 2^14
 
   # Record value returned by calls to ddg.return.
   # ddg.call - the string representing the call, like "f(a)".
+  # line - the line where the function is called that is now returning
   # return.used - remembers if this function return value has been
   #   linked to the caller.
   # return.node.id - the id of the data node that holds the return
   #   value.
   .ddg.set(".ddg.return.values",
           data.frame(ddg.call=character(size),
+          line = integer(size),
           return.used = logical(size),
           return.node.id = integer(size),
           stringsAsFactors=FALSE))
@@ -1709,7 +1723,7 @@ ddg.MAX_HIST_LINES <- 2^14
   node1 <- paste("d", dn, sep="")
   node2 <- paste("p", pn, sep="")
   .ddg.record.edge(etype, node1, node2)
-
+  
   if (.ddg.debug.lib()) {
     print(paste("data2proc: ", dname, " ", pname, sep=""))
     print(paste("DF ", node1, " ", node2, sep=""))
@@ -2020,7 +2034,7 @@ ddg.MAX_HIST_LINES <- 2^14
       if (length(nRow) > 0) {
         first.writer <- min(vars.set$first.writer[nRow], vars.set$possible.first.writer[nRow])
         last.writer <- max(vars.set$last.writer[nRow], vars.set$possible.last.writer[nRow])
-
+        
         # Draw the edge if we will connect to a node that exists
         # before the console block or to the last writer of this
         # variable within the console block.
@@ -2529,7 +2543,12 @@ ddg.MAX_HIST_LINES <- 2^14
   # Find the functions that have completed but whose returns have
   # not been used yet.
   returns <- .ddg.get(".ddg.return.values")
-  unused.returns <- returns[!returns$return.used & returns$return.node.id > 0, ]
+  if (!is.na(command@pos@startLine)) {
+    unused.returns <- returns[!returns$return.used & returns$return.node.id > 0 & !is.na(returns$line) & returns$line == command@pos@startLine, ]
+  }
+  else {
+    unused.returns <- returns[!returns$return.used & returns$return.node.id > 0, ]
+  }
   if (nrow(unused.returns) == 0) return()
   #print (paste(".ddg.link.function.returns: unused.returns:", unused.returns))
 
@@ -2862,8 +2881,10 @@ ddg.MAX_HIST_LINES <- 2^14
 .ddg.save.annotated.script <- function(cmds, script.name) {
   for (i in 1:length(cmds)) {
     expr <- cmds[[i]]@annotated
-    line <- paste(deparse(expr[[1]]), collapse="\n")
-    if (i == 1) script <- line else script <- append(script, line)
+    for (j in 1:length(expr)) {
+      line <- deparse(expr[[j]])
+      if (i == 1 && j == 1) script <- line else script <- append(script, line)
+    }
   }
 
   fileout <- file(paste(.ddg.path.debug(), "/annotated-", script.name, sep=""))
@@ -3035,9 +3056,10 @@ ddg.MAX_HIST_LINES <- 2^14
       # block, so there is no need to create additional nodes for the
       # control statement itself.
 
-      create <- !cmd@isDdgFunc && .ddg.is.init() && .ddg.enable.console() && !(control.statement && ddg.annotate.inside() && ddg.max.loops() > 0)
+      create <- !cmd@isDdgFunc && .ddg.is.init() && .ddg.enable.console() && !(control.statement && .ddg.annotate.inside() && ddg.max.loops() > 0)
       # create <- !cmd@isDdgFunc && .ddg.is.init() && .ddg.enable.console()
       start.finish.created <- FALSE
+      cur.cmd.closed <- FALSE
 
       # If the command does not match one of the ignored patterns.
       if (!any(sapply(ignore.patterns, function(pattern){grepl(pattern, cmd@text)}))) {
@@ -3061,6 +3083,8 @@ ddg.MAX_HIST_LINES <- 2^14
             .ddg.set(".ddg.possible.last.cmd", cmd)
             .ddg.set (".ddg.cur.cmd", cmd)
 
+            #print(paste("Pushing onto the stack:", cmd@text))
+            
             # Remember the current statement on the stack so that we
             # will be able to create a corresponding Finish node later
             # if needed.
@@ -3200,14 +3224,16 @@ ddg.MAX_HIST_LINES <- 2^14
 
               # If the number of loop iterations exceeds max.loops, add
               # output data nodes containing final values to the finish node.
-              if (loop.statement && !ddg.loop.annotate()) {
+              if (loop.statement && .ddg.were.details.omitted()) {
                 vars.set2 <- .ddg.add.to.vars.set(vars.set, cmd, i)
                 .ddg.create.data.node.for.possible.writes(vars.set2, cmd, environ)
+                .ddg.set.details.omitted(FALSE)
               }
             }
 
             # Remove the last command & start.created values pushed
             # onto the stack
+            cur.cmd.closed <- (.ddg.cur.cmd.stack[stack.length] == "MATCHES_CALL")
             if (stack.length == 2) {
               .ddg.set(".ddg.cur.cmd.stack", vector())
             }
@@ -3229,9 +3255,9 @@ ddg.MAX_HIST_LINES <- 2^14
         last.proc.node.created <-
             if (.ddg.is.set (".ddg.last.proc.node.created")).ddg.get(".ddg.last.proc.node.created")
             else ""
-        cur.cmd.closed <- (last.proc.node.created == paste ("Finish", cmd@abbrev))
+        
         create.procedure <- create && (!cur.cmd.closed || !named.node.set) && !start.finish.created  && !grepl("^ddg.source", cmd@text)
-
+        
         # We want to create a procedure node for this command.
         if (create.procedure) {
 
@@ -4364,20 +4390,6 @@ ddg.MAX_HIST_LINES <- 2^14
   return(exists(name, scope, inherits=FALSE))
 }
 
-#.ddg.rm removes all data except ddg information
-.ddg.rm <-function()
-
-# .ddg.get.annotation.list checks to see if the script contains calls to
-# ddg.annotate.on or ddg.annotate.off. If it does, these calls are executed.
-
-.ddg.get.annotation.list <- function(parsed.command) {
-  if (length(parsed.command[[1]]) > 1) {
-    if (toString(parsed.command[[1]][[1]]) == "ddg.annotate.on" | toString(parsed.command[[1]][[1]]) == "ddg.annotate.off") {
-      eval(parsed.command)
-    }
-  }
-}
-
 # Creates a start node for the current command if one has not
 # been created already.
 .ddg.create.start.for.cur.cmd <- function (call, caller.env) {
@@ -4430,6 +4442,7 @@ ddg.MAX_HIST_LINES <- 2^14
 .ddg.remove.last.cmd.start.created <- function () {
   .ddg.cur.cmd.stack <- .ddg.get(".ddg.cur.cmd.stack")
   stack.length <- length(.ddg.cur.cmd.stack)
+  #print(paste(".ddg.remove.last.cmd.start.created: Popping from stack:", .ddg.cur.cmd.stack[stack.length-1]))
 
   if (stack.length == 2) {
     .ddg.set(".ddg.cur.cmd.stack", vector())
@@ -4877,6 +4890,7 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
   if (nrow(ddg.return.values) == ddg.num.returns) {
     size = 100
     new.rows <- data.frame(ddg.call = character(size),
+                           line = integer(size),
                            return.used = logical(size),
                            return.node.id = integer(size),
                            stringsAsFactors=FALSE)
@@ -4931,12 +4945,17 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
 
   # Create an edge from the return statement to its return value.
   .ddg.proc2data(return.stmt@abbrev, return.node.name, return.node.scope, return.value=TRUE)
+  
 
   # Update the table.
   ddg.num.returns <- ddg.num.returns + 1
   ddg.return.values$ddg.call[ddg.num.returns] <- call.text
   ddg.return.values$return.used[ddg.num.returns] <- FALSE
   ddg.return.values$return.node.id[ddg.num.returns] <- .ddg.dnum()
+  ddg.cur.cmd.stack <- .ddg.get(".ddg.cur.cmd.stack")
+  ddg.return.values$line[ddg.num.returns] <- 
+      if (length(ddg.cur.cmd.stack) == 0) NA
+      else ddg.cur.cmd.stack[length(ddg.cur.cmd.stack) - 1][[1]]@pos@startLine
   .ddg.set(".ddg.return.values", ddg.return.values)
   .ddg.set(".ddg.num.returns", ddg.num.returns)
 
@@ -4998,7 +5017,7 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
 # ddg.annotate.inside returns the value of the parameter
 # annotate.inside.
 
-ddg.annotate.inside <- function() {
+.ddg.annotate.inside <- function() {
   return(.ddg.get("ddg.annotate.inside"))
 }
 
@@ -5022,7 +5041,7 @@ ddg.max.snapshot.size <- function() {
 }
 
 # ddg.loop.annotate returns the value of the parameter ddg.loop.annotate.
-ddg.loop.annotate <- function() {
+.ddg.loop.annotate <- function() {
   return(.ddg.get("ddg.loop.annotate"))
 }
 
@@ -5034,6 +5053,23 @@ ddg.loop.annotate.on <- function() {
 # ddg.loop.annotate.off turns off loop annotation.
 ddg.loop.annotate.off <- function() {
   .ddg.set("ddg.loop.annotate", FALSE)
+}
+
+.ddg.inside.loop <- function() {
+  return (.ddg.get("ddg.inside.loop"))
+}
+
+ddg.set.inside.loop <- function() {
+  if (!.ddg.is.set("ddg.inside.loop")) {
+    .ddg.set("ddg.inside.loop", 0)    
+  }
+  else {
+    .ddg.set("ddg.inside.loop", .ddg.get("ddg.inside.loop") + 1)    
+  }
+}
+
+ddg.not.inside.loop <- function() {
+  .ddg.set("ddg.inside.loop", .ddg.get("ddg.inside.loop") - 1)    
 }
 
 # ddg.loop.count returns the current count for the specified loop.
@@ -5082,15 +5118,44 @@ ddg.forloop <- function(index.var) {
 # happen if the number of the first loop to be annotaed (first.loop) is
 # greater than 1 and/or if the total number of loops to be annotated is
 # less than the actual number of iterations.
+#
+# It also sets a variable to remember that the last construct is incomplete
+# so that the right data nodes get created.
 
 ddg.details.omitted <- function() {
   pnode.name <- "Details Omitted"
   .ddg.proc.node("Incomplete", pnode.name, pnode.name)
   .ddg.proc2proc()
+  .ddg.set.details.omitted(TRUE)
 
   if (.ddg.debug.lib()) {
     print("Adding Details Omitted node")
   }
+}
+
+# Returns true if we should run the annotated version of a function and
+# false if we should run the unannotated version.
+
+ddg.should.run.annotated <- function (func.name) {
+  #print("In ddg.should.run.annotated")
+  
+  # Check if we are in a loop and loop annotations are off
+  if (!.ddg.loop.annotate() && .ddg.inside.loop() > 0) return (FALSE)
+  
+  # Make sure this specific function has not been disabled
+  if (!is.null(.ddg.annotate.off()) & func.name %in% .ddg.annotate.off()) return(FALSE)
+  
+  #print(paste(func.name, "is not in off list"))
+  
+  # Not annotating functions in general
+  # Check if this specific function should be annotated
+  if (!is.null(.ddg.annotate.on()) & func.name %in% .ddg.annotate.on()) return(TRUE)
+  
+  #print(paste(func.name, "is not in on list"))
+  
+  # If we do not know anything specific about this function, follow the 
+  # general rule
+  return (.ddg.annotate.inside()) 
 }
 
 # ddg.eval evaluates a statement and creates data flow edges from
@@ -5573,6 +5638,13 @@ ddg.finish <- function(pname=NULL) {
 #   If not provided, the DDG will be saved in a subdirectory called
 #   "ddg" in the current working directory.
 # enable.console (optional) - if TRUE, console mode is turned on.
+# annotate.inside.functions (optional) - if TRUE, functions are annotated.
+# first.loop (optional) - the first loop to annotate in a for, while, or
+#   repeat statement.
+# max.loops (optional) - the maximum number of loops to annotate in a for,
+#   while, or repeat statement. If max.loops = -1 there is no limit.
+#   If max.loops = 0, no loops are annotated.  If non-zero, if-statements
+#   are also annotated.
 # max.snapshot.size (optional) - the maximum size for objects that
 #   should be output to snapshot files. If 0, no snapshot files are saved.
 #   If -1, all snapshot files are saved. Size in kilobytes.  Note that
@@ -5581,7 +5653,7 @@ ddg.finish <- function(pname=NULL) {
 # Addition : overwrite (optional) - default TRUE, if FALSE, generates
 #   timestamp for ddg directory
 
-ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enable.console = TRUE, annotate.inside = TRUE, first.loop = 1, max.loops = 1, max.snapshot.size = 10) {
+ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enable.console = TRUE, annotate.inside.functions = TRUE, first.loop = 1, max.loops = 1, max.snapshot.size = 10) {
   #.ddg.DDGStatement.init()
   .ddg.init.tables()
 
@@ -5633,6 +5705,7 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
   .ddg.set(".ddg.enable.console", enable.console)
   .ddg.set(".ddg.func.depth", 0)
   .ddg.set(".ddg.explorer.port", 6096)
+  .ddg.set.details.omitted(FALSE)
   # .ddg.init.environ()
 
   # Initialize the information about the open start-finish blocks
@@ -5667,7 +5740,7 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
   # and max.snapshot.size.
   if (is.null(ddg.get.detail())) {
     # Store value of annotate.inside.
-    .ddg.set("ddg.annotate.inside", annotate.inside)
+    .ddg.set("ddg.annotate.inside", annotate.inside.functions)
 
     # Store maximum number of loops to annotate.
     if (max.loops < 0) max.loops <- 10^10
@@ -5676,9 +5749,13 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
     # Store maximum snapshot size.
     .ddg.set("ddg.max.snapshot.size", max.snapshot.size)
   }
-
+  
   # If loops are not annotated, do not annotate functions called from inside a loop.
   if (max.loops == 0) ddg.loop.annotate.off()
+  
+  # Initialize the counter that keeps track of nested levels
+  # of ifs and loops
+  ddg.set.inside.loop()
 
   # Set number of first loop.
   .ddg.set("ddg.first.loop", first.loop)
@@ -5711,13 +5788,13 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
 #   is executed with calls to ddg.init and ddg.save so that
 #   provenance for the function is captured.
 # enable.console (optional) - if TRUE, console mode is turned on.
-# annotate.inside (optional) - if TRUE, functions and control statements
-#   are annotated.
+# annotate.inside.functions (optional) - if TRUE, functions are annotated.
 # first.loop (optional) - the first loop to annotate in a for, while, or
 #   repeat statement.
 # max.loops (optional) - the maximum number of loops to annotate in a for,
 #   while, or repeat statement. If max.loops = -1 there is no limit.
-#   If max.loops = 0, no loops are annotated.
+#   If max.loops = 0, no loops are annotated.  If non-zero, if-statements
+#   are also annotated.
 # max.snapshot.size (optional) - the maximum size for objects that
 #   should be output to snapshot files. If 0, no snapshot files are
 #   saved. If -1, all snapshot files are saved.  Size in kilobytes.
@@ -5727,10 +5804,10 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
 #   same effect as inserting ddg.breakpoint() at the top of the script.
 # save.debug (optional) - If TRUE, save debug files to debug directory.
 
-ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = NULL, enable.console = TRUE, annotate.inside = TRUE, first.loop = 1, max.loops = 1, max.snapshot.size = 10, debug = FALSE, save.debug = FALSE, display = FALSE) {
+ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = NULL, enable.console = TRUE, annotate.inside.functions = TRUE, first.loop = 1, max.loops = 1, max.snapshot.size = 10, debug = FALSE, save.debug = FALSE, display = FALSE) {
 
   # Initiate ddg.
-  ddg.init(r.script.path, ddgdir, overwrite, enable.console, annotate.inside, first.loop, max.loops, max.snapshot.size)
+  ddg.init(r.script.path, ddgdir, overwrite, enable.console, annotate.inside.functions, first.loop, max.loops, max.snapshot.size)
 
   # Create ddg directory.
   # dir.create(.ddg.path(), showWarnings = FALSE)
@@ -6254,20 +6331,54 @@ ddg.console.on <- function() {
 
 # ddg.annotate.on enables annotation for the specified functions. Functions
 # not on this list are not annotated.
+# 
+# If fnames is NULL, all functions will be annotated
 
 # fnames - a list of one or more function names passed in as strings.
 
-ddg.annotate.on <- function (fnames=NULL) {
-  .ddg.set("ddg.annotate.on", fnames)
+ddg.annotate.on <- function (fnames=NULL){
+  if (is.null(fnames)) {
+    .ddg.set("ddg.annotate.off", vector())
+    .ddg.set("ddg.annotate.inside", TRUE)
+    return()
+  }
+
+  # Add to the on list
+  on.list <- .ddg.get("ddg.annotate.on")
+  on.list <- union (on.list, fnames)
+  .ddg.set("ddg.annotate.on", on.list)
+  
+  # Remove from the off list
+  off.list <- .ddg.get("ddg.annotate.off")
+  off.list <- Filter (function(off) !(off %in% fnames), off.list)
+  .ddg.set("ddg.annotate.off", off.list) 
+
 }
 
 # ddg.annotate.off disables annotation for the specified functions.
 # Functions not on this list are annotated.
-
+# 
+# If fnames is NULL, no functions will be annotated
+#
 # fnames - a list of one or more function names passed in as strings.
 
 ddg.annotate.off <- function (fnames=NULL) {
-  .ddg.set("ddg.annotate.off", fnames)
+  if (is.null(fnames)) {
+    .ddg.set("ddg.annotate.on", vector())
+    .ddg.set("ddg.annotate.inside", FALSE)
+    return()
+  }
+  
+  # Add to the off list
+  off.list <- .ddg.get("ddg.annotate.off")
+  off.list <- union (off.list, fnames)
+  .ddg.set("ddg.annotate.off", off.list)
+  
+  # Remove from the on list
+  on.list <- .ddg.get("ddg.annotate.on")
+  on.list <- Filter (function(on) !(on %in% fnames), on.list)
+  .ddg.set("ddg.annotate.on", on.list) 
+  
 }
 
 # ddg.flush.ddg removes all files from the DDG directories unless the
