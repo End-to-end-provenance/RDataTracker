@@ -1746,8 +1746,14 @@ ddg.MAX_HIST_LINES <- 2^14
   # Get data & procedure numbers.
   #print (paste(".ddg.proc2data: Looking for", dname, "in scope", dscope))
   dn <- .ddg.data.number(dname, dscope)
+  
   #print (paste(".ddg.proc2data: Found node", dn))
-  pn <- .ddg.proc.number(pname, return.value)
+  
+  # attach data node to the last procedure node if pname is NULL.
+  if(is.null(pname) || startsWith(pname,".ddg.") || startsWith(pname,"ddg"))
+    pn <- .ddg.last.proc.number()
+  else
+    pn <- .ddg.proc.number(pname, return.value)
 
   # Create data flow edge from procedure node to data node.
   if (dn != 0 && pn != 0) {
@@ -2287,7 +2293,7 @@ ddg.MAX_HIST_LINES <- 2^14
 # cmd - text command
 # cmd.expr - parsed command
 .ddg.create.file.read.nodes.and.edges <- function (cmd, env) {
-  #print(paste("In .ddg.create.file.read.nodes.and.edges"))
+  #print("In .ddg.create.file.read.nodes.and.edges")
   # Find all the files potentially read in this command.
   # This may include files that are not actually read if the
   # read are within an if-statement, for example.
@@ -2440,14 +2446,17 @@ ddg.MAX_HIST_LINES <- 2^14
     file <- paste0("dev.off.", .ddg.dnum()+1, ".pdf")
   }
   #print(paste(".ddg.capture.graphics: writing to ", file))
-
+  
   # Save the graphic to a file temporarily
   #print(sys.calls())
   dev.print(device=pdf, file=file)
-
+  
   # Add it to the ddg.  This will copy the file to the right directory
-  ddg.file.out (file, pname=cmd@abbrev)
-
+  if(is.null(cmd))
+    ddg.file.out( file )
+  else
+    ddg.file.out (file, pname=cmd@abbrev)
+  
   # Remove the temporary file
   file.remove(file)
 }
@@ -3904,7 +3913,7 @@ ddg.MAX_HIST_LINES <- 2^14
     expr =
         # If pname is not provided, get from function call.
         if (is.null(pname)) {
-          #print(".ddg.lookup.function.name: pname is null")
+          
           #print(".ddg.lookup.function.name: sys.calls() =")
           #print(sys.calls())
 
@@ -3925,17 +3934,17 @@ ddg.MAX_HIST_LINES <- 2^14
           }
           else {
             pname <- as.character(call[[1]])
+            
+            # set pname to null for internal function calls
+#            if(startsWith(pname,".ddg."))
+#              pname <- NULL
           }
         }
 
         # Convert pname to a string if necessary.
         else if (!is.character(pname)) {
-          #print(paste(".ddg.lookup.function.name: pname is string ", pname))
           pname <- deparse(substitute(pname))
         }
-        #else {
-        #  print(paste(".ddg.lookup.function.name: pname is NOT a string ", pname))
-        #}
 )
 
 # .ddg.lookup.value is used to determine what value to use when
@@ -4858,7 +4867,7 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
 
   pname <- NULL
   .ddg.lookup.function.name(pname)
-
+  
   # If this is a recursive call to ddg.return.value, find
   # the caller of the first ddg.return.value
   if (grepl("(^ddg|.ddg)", pname)) {
@@ -5509,7 +5518,7 @@ ddg.url.out <- function(dname, dvalue=NULL, pname=NULL) {
 
 ddg.file.out <- function(filename, dname=NULL, pname=NULL) {
   if (!.ddg.is.init()) return(invisible())
-
+  
   if (is.null(dname)) {
     dname <- basename(filename)
     scope <- NULL
@@ -5517,17 +5526,17 @@ ddg.file.out <- function(filename, dname=NULL, pname=NULL) {
   else {
     scope <- .ddg.get.scope (dname)
   }
-
+  
   # Create output file node called filename and copy file.
   #print(paste("ddg.file.out copying ", filename))
   saved.file <- .ddg.file.copy("File", filename, dname, scope)
   #print(paste("ddg.file.out done copying ", filename))
-
+  
   .ddg.lookup.function.name(pname)
-
+  
   # Create data flow edge from operation node to file node.
   .ddg.proc2data(pname, dname, scope)
-
+  
   return (saved.file)
 }
 
@@ -5860,7 +5869,11 @@ ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE) {
    if (length(dev.list()) >= 1) {
      #print("ddg.save: Saving graphics open at end of script")
      # tryCatch (.ddg.capture.current.graphics(basename(r.script.path)),
-     tryCatch (.ddg.capture.current.graphics(basename(.ddg.get("ddg.r.script.path"))),
+     
+     #tryCatch (.ddg.capture.current.graphics(basename(.ddg.get("ddg.r.script.path"))),
+      
+     tryCatch (.ddg.capture.current.graphics(NULL),
+      
          error = function (e) e)
    }
 

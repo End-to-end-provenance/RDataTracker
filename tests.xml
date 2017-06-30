@@ -554,6 +554,18 @@
 	 	</antcall>
 	</target>
 
+    <target name="NoDevOffTest">
+      <antcall target="run-regression-test">
+        <param name="test-name" value="NoDevOffTest" />
+      </antcall>
+    </target>
+
+  <target name="update-NoDevOffTest">
+    <antcall target="update-regression-expected">
+      <param name="test-name" value="NoDevOffTest" />
+    </antcall>
+  </target>
+
 	<target name="DataTypeTest">
 		<antcall target="run-regression-test">
 			<param name="test-name" value="DataTypeTest" />
@@ -615,8 +627,8 @@
   </target>
 
 	<target name="normal-tests" depends="basicTest, S4ObjectTest,
-		ScopeTest, ReturnTest, OddParameterTest, FunctionAnnotationTest, AnnotateOnOffTest,
-		ControlConstructTest, WarningTest, PlotTest, DataTypeTest,
+		ScopeTest, ReturnTest, OddParameterTest, FunctionAnnotationTest,
+		ControlConstructTest, WarningTest, PlotTest, NoDevOffTest, DataTypeTest,
 		HigherOrderFuncTest, AssignmentOperatorsTest, RMarkdownTest, DDGStatementTest">
 		<echo>
       ##############################################
