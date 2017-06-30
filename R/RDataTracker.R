@@ -2397,7 +2397,7 @@ ddg.MAX_HIST_LINES <- 2^14
   new.possible.graphics.files.open <- .ddg.find.files (main.object, .ddg.get(".ddg.graphics.functions.df"), env)
   if (!is.null(new.possible.graphics.files.open)) {
     #print(paste(".ddg.set.grpahics.files: opened", new.possible.graphics.files.open))
-    if (.ddg.is.set ("possible.graphics.files.open")) {
+    if (!is.null(.ddg.get ("possible.graphics.files.open"))) {
       possible.graphics.files.open <- .ddg.get ("possible.graphics.files.open")
       .ddg.set ("possible.graphics.files.open",
                 c (new.possible.graphics.files.open, possible.graphics.files.open))
@@ -2437,7 +2437,7 @@ ddg.MAX_HIST_LINES <- 2^14
   
 }
 
-.ddg.capture.graphics <- function(cmd, dev.number, called.from.save = FALSE) {
+.ddg.capture.graphics <- function(cmd, called.from.save = FALSE) {
   #### WARNING:  Test that this works if dev.off() is the last statement in a function!!!!
   #### It goes through ddg.returnv.value in that case and dev.number isn't getting passed in.
   
@@ -2446,7 +2446,7 @@ ddg.MAX_HIST_LINES <- 2^14
       else cmd@abbrev
   
   print(paste(".ddg.capture.graphics: ", proc.node.name))
-  if (.ddg.is.set ("possible.graphics.files.open")) {
+  if (!is.null(.ddg.get ("possible.graphics.files.open"))) {
     possible.graphics.files.open <- .ddg.get ("possible.graphics.files.open")
 
     # Find the most recent file
@@ -2460,6 +2460,7 @@ ddg.MAX_HIST_LINES <- 2^14
       # Check if the device is still open and close it if it is
       # We need to do this so that the file.out call can
       # copy the file.
+      dev.number <- .ddg.get(".ddg.dev.number")
       if (dev.number %in% dev.list()) dev.off(dev.number)
 
       #print(".ddg.capture.graphics: creating file node")
@@ -2485,7 +2486,10 @@ ddg.MAX_HIST_LINES <- 2^14
   dev.file <- .ddg.capture.current.graphics(proc.node.name)
   
   if (called.from.save) {
+    #print(paste(".ddg.capture.graphics: dev.file =", dev.file))
+    #print(paste(".ddg.capture.graphics: proc.node.name =", proc.node.name))
     ddg.file.out (dev.file, pname=proc.node.name)
+    #print(paste(".ddg.capture.graphics: returned from ddg.file.out"))
   
     # Remove the temporary file
     file.remove(dev.file)
@@ -3164,12 +3168,14 @@ ddg.MAX_HIST_LINES <- 2^14
 
           # Need to get this number before evaluating the command so that 
           # when we evaluate a dev.off call we know which device was closed
-          dev.number <- dev.cur()
+          .ddg.set(".ddg.dev.number", dev.cur())
           
-          if (cmd@has.dev.off && !.ddg.is.set ("possible.graphics.files.open")) {
-            #print("Capturing graphics after dev.off")
+          #print(paste(".ddg.parse.commands: has.dev.off =", cmd@has.dev.off))
+          #print(paste(".ddg.parse.commands: possible.graphics.files.open null?", is.null(.ddg.get ("possible.graphics.files.open"))))
+          if (cmd@has.dev.off && is.null(.ddg.get ("possible.graphics.files.open"))) {
+            print("Capturing graphics before dev.off")
             dev.file.created <- .ddg.capture.current.graphics()
-            #print("Done capturing graphics after dev.off")
+            #print("Done capturing graphics before dev.off")
           }
           else {
             dev.file.created <- NULL
@@ -3378,7 +3384,7 @@ ddg.MAX_HIST_LINES <- 2^14
 
           if (cmd@has.dev.off) {
             #print("Capturing graphics after dev.off")
-            .ddg.capture.graphics(cmd, dev.number)
+            .ddg.capture.graphics(cmd)
             #print("Done capturing graphics after dev.off")
   
             if (!is.null(dev.file.created)) {
@@ -5784,6 +5790,7 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
 
   # Store the starting graphics device.
   .ddg.set("prev.device", dev.cur())
+  .ddg.set("possible.graphics.files.open", NULL)
 
   if (interactive() && .ddg.enable.console()) {
     ddg.history.file <- paste(.ddg.path.data(), "/.ddghistory", sep="")
