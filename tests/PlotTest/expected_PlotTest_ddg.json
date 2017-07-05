@@ -9,7 +9,7 @@
 "p1" : {
 "rdt:name" : "PlotTest.R",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "0.0800000000000001",
+"rdt:elapsedTime" : "0.155",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -20,7 +20,7 @@
 "p2" : {
 "rdt:name" : "data(mtcars)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.0800000000000001",
+"rdt:elapsedTime" : "0.181",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "1",
 "rdt:startCol" : "1",
@@ -31,7 +31,7 @@
 "p3" : {
 "rdt:name" : "allCars.df <- mtcars",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.0900000000000001",
+"rdt:elapsedTime" : "0.312",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "4",
 "rdt:startCol" : "1",
@@ -42,7 +42,7 @@
 "p4" : {
 "rdt:name" : "cars4Cyl.df <- allCars.df[allCars.df$cyl == 4, ]",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.0900000000000001",
+"rdt:elapsedTime" : "0.569",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "7",
 "rdt:startCol" : "1",
@@ -53,7 +53,7 @@
 "p5" : {
 "rdt:name" : "cars6Cyl.df <- allCars.df[allCars.df$cyl == 6, ]",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.11",
+"rdt:elapsedTime" : "0.603",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "8",
 "rdt:startCol" : "1",
@@ -64,7 +64,7 @@
 "p6" : {
 "rdt:name" : "cars8Cyl.df <- allCars.df[allCars.df$cyl == 8, ]",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.14",
+"rdt:elapsedTime" : "0.619",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "9",
 "rdt:startCol" : "1",
@@ -75,7 +75,7 @@
 "p7" : {
 "rdt:name" : "cylinders = c(4, 6, 8)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.16",
+"rdt:elapsedTime" : "0.633",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "12",
 "rdt:startCol" : "1",
@@ -86,7 +86,7 @@
 "p8" : {
 "rdt:name" : "mpg = c(mean(cars4Cyl.df$mpg), mean(cars6Cyl.df$mpg), mean(c",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.16",
+"rdt:elapsedTime" : "0.646",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "12",
 "rdt:startCol" : "13",
@@ -97,7 +97,7 @@
 "p9" : {
 "rdt:name" : "plot(cylinders, mpg)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.23",
+"rdt:elapsedTime" : "0.725",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "13",
 "rdt:startCol" : "1",
@@ -108,7 +108,7 @@
 "p10" : {
 "rdt:name" : "X11()",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.27",
+"rdt:elapsedTime" : "0.796",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "13",
 "rdt:startCol" : "7",
@@ -119,7 +119,7 @@
 "p11" : {
 "rdt:name" : "plot(cylinders, mpg)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.28",
+"rdt:elapsedTime" : "0.807",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "16",
 "rdt:startCol" : "1",
@@ -130,7 +130,7 @@
 "p12" : {
 "rdt:name" : "dev.off()",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.29",
+"rdt:elapsedTime" : "0.82",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "29",
 "rdt:startCol" : "1",
@@ -141,19 +141,26 @@
 "environment" : {
 "rdt:name" : "environment",
 "rdt:architecture" : "x86_64",
-"rdt:operatingSystem" : "windows",
+"rdt:operatingSystem" : "unix",
 "rdt:language" : "R",
-"rdt:rVersion" : "R version 3.3.1 (2016-06-21)",
+"rdt:rVersion" : "R version 3.4.0 (2017-04-21)",
 "rdt:script" : "[DIR]/PlotTest.R",
 "rdt:sourcedScripts" : ""
 ,
-"rdt:scriptTimeStamp" : "2017-01-06T19.13.45EST",
+"rdt:scriptTimeStamp" : "2017-07-05T11.21.37EDT",
 "rdt:workingDirectory" : "[DIR]",
 "rdt:ddgDirectory" : "[DIR]/ddg",
-"rdt:ddgTimeStamp" : "2017-06-01T17.43.16EDT",
-"rdt:rdatatrackerVersion" : "2.25.1",
+"rdt:ddgTimeStamp" : "2017-07-05T11.29.47EDT",
+"rdt:rdatatrackerVersion" : "2.26.2",
 "rdt:installedPackages" : [
-	{"package" : "RDataTracker", "version" : "2.25.1"}]
+	{"package" : "base", "version" : "3.4.0"},
+	{"package" : "datasets", "version" : "3.4.0"},
+	{"package" : "graphics", "version" : "3.4.0"},
+	{"package" : "grDevices", "version" : "3.4.0"},
+	{"package" : "methods", "version" : "3.4.0"},
+	{"package" : "RDataTracker", "version" : "2.26.2"},
+	{"package" : "stats", "version" : "3.4.0"},
+	{"package" : "utils", "version" : "3.4.0"}]
 }},
 "entity":{
 
@@ -164,7 +171,7 @@
 "rdt:type" : "Snapshot",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "TRUE",
-"rdt:timestamp" : "",
+"rdt:timestamp" : "2017-07-05T11.29.47EDT",
 "rdt:location" : ""
 } ,
 
@@ -175,7 +182,7 @@
 "rdt:type" : "Snapshot",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE",
-"rdt:timestamp" : "",
+"rdt:timestamp" : "2017-07-05T11.29.47EDT",
 "rdt:location" : ""
 } ,
 
@@ -186,7 +193,7 @@
 "rdt:type" : "Snapshot",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE",
-"rdt:timestamp" : "",
+"rdt:timestamp" : "2017-07-05T11.29.47EDT",
 "rdt:location" : ""
 } ,
 
@@ -197,7 +204,7 @@
 "rdt:type" : "Snapshot",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE",
-"rdt:timestamp" : "",
+"rdt:timestamp" : "2017-07-05T11.29.47EDT",
 "rdt:location" : ""
 } ,
 
@@ -208,7 +215,7 @@
 "rdt:type" : "Snapshot",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE",
-"rdt:timestamp" : "",
+"rdt:timestamp" : "2017-07-05T11.29.47EDT",
 "rdt:location" : ""
 } ,
 
@@ -219,7 +226,7 @@
 "rdt:type" : "Snapshot",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE",
-"rdt:timestamp" : "",
+"rdt:timestamp" : "2017-07-05T11.29.48EDT",
 "rdt:location" : ""
 } ,
 
@@ -230,7 +237,7 @@
 "rdt:type" : "Snapshot",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "TRUE",
-"rdt:timestamp" : "",
+"rdt:timestamp" : "2017-07-05T11.29.48EDT",
 "rdt:location" : ""
 } ,
 
@@ -241,7 +248,7 @@
 "rdt:type" : "Snapshot",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE",
-"rdt:timestamp" : "",
+"rdt:timestamp" : "2017-07-05T11.29.48EDT",
 "rdt:location" : ""
 }},
 "wasInformedBy":{
