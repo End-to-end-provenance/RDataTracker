@@ -1,3 +1,4 @@
-Error in FUN(newX[, i], ...) : invalid 'type' (character) of argument
-Calls: ddg.run ... .ddg.parse.commands -> withCallingHandlers -> eval -> eval -> apply
+Error in .ddg.record.data(dtype, dname, val, val, dscope, from.env = from.env) : 
+  argument "dtime" is missing, with no default
+Calls: ddg.run ... tryCatchOne -> <Anonymous> -> .ddg.data.node -> .ddg.record.data
 Execution halted

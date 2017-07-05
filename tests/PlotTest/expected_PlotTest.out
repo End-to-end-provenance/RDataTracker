@@ -1,4 +1,4 @@
-Error in dev.print(device = pdf, file = file) : 
-  can only print from a screen device
-Calls: ddg.run ... .ddg.capture.graphics -> .ddg.capture.current.graphics -> dev.print
+Error in .ddg.record.data(dtype, dname, paste(.ddg.data.dir(), dfile,  : 
+  argument "dloc" is missing, with no default
+Calls: ddg.run ... <Anonymous> -> .ddg.snapshot.node -> .ddg.record.data
 Execution halted

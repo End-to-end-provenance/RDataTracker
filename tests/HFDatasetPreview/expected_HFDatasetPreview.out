@@ -6,10 +6,7 @@ The following object is masked from ‘package:stats’:
 
     lowess
 
-
-Time-series plots = 2
-
-
-*** HF000-01 completed ***
-
-Execution Time = 12.96761
+Error in .ddg.record.data(dtype, dname, val, val, dscope, from.env = from.env) : 
+  argument "dtime" is missing, with no default
+Calls: ddg.run ... tryCatchOne -> <Anonymous> -> .ddg.data.node -> .ddg.record.data
+Execution halted

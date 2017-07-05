@@ -1,3 +1,4 @@
-Warning message:
-foo 
-Execution Time = 0.674825
+Error in .ddg.record.data(dtype, dname, val, val, dscope, from.env = from.env) : 
+  argument "dtime" is missing, with no default
+Calls: ddg.run ... tryCatchOne -> <Anonymous> -> .ddg.data.node -> .ddg.record.data
+Execution halted

@@ -9,7 +9,7 @@
 "p1" : {
 "rdt:name" : "RMarkdownTest.R",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "0.322",
+"rdt:elapsedTime" : "0.302",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -20,7 +20,7 @@
 "p2" : {
 "rdt:name" : "setup",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "0.349",
+"rdt:elapsedTime" : "0.329",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -31,7 +31,7 @@
 "p3" : {
 "rdt:name" : "library(Ecdat)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.405",
+"rdt:elapsedTime" : "0.381",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "13",
 "rdt:startCol" : "1",
@@ -48,10 +48,10 @@
 "rdt:script" : "[DIR]/ddg/scripts/RMarkdownTest.R",
 "rdt:sourcedScripts" : ""
 ,
-"rdt:scriptTimeStamp" : "2017-07-05T11.30.19EDT",
+"rdt:scriptTimeStamp" : "2017-07-05T15.01.19EDT",
 "rdt:workingDirectory" : "[DIR]",
 "rdt:ddgDirectory" : "[DIR]/ddg",
-"rdt:ddgTimeStamp" : "2017-07-05T11.30.19EDT",
+"rdt:ddgTimeStamp" : "2017-07-05T15.01.19EDT",
 "rdt:rdatatrackerVersion" : "2.26.2",
 "rdt:installedPackages" : [
 	{"package" : "base", "version" : "3.4.0"},
@@ -64,17 +64,7 @@
 	{"package" : "utils", "version" : "3.4.0"}]
 }},
 "entity":{
-
-"d1" : {
-"rdt:name" : "error.msg",
-"rdt:value" : "\"Error in library(Ecdat): there is no package called ‘Ecdat’ \"",
-"rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
-"rdt:type" : "Exception",
-"rdt:scope" : "ddg.library",
-"rdt:fromEnv" : "FALSE",
-"rdt:timestamp" : "",
-"rdt:location" : ""
-}},
+},
 "wasInformedBy":{
 
 "e1" : {
@@ -87,11 +77,7 @@
 "prov:informed" : "p3"
 }},
 "wasGeneratedBy":{
-
-"e3" : {
-"prov:entity" : "d1",
-"prov:activity" : "p3"
-}},
+},
 "used":{
 }
 }

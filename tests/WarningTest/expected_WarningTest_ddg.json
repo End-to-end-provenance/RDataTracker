@@ -9,7 +9,7 @@
 "p1" : {
 "rdt:name" : "WarningTest.R",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "0.126",
+"rdt:elapsedTime" : "0.132",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -20,45 +20,12 @@
 "p2" : {
 "rdt:name" : "a <- 1",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.149",
+"rdt:elapsedTime" : "0.155",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "1",
 "rdt:startCol" : "1",
 "rdt:endLine" : "1",
 "rdt:endCol" : "6"
-} ,
-
-"p3" : {
-"rdt:name" : "warning(\"foo\", call. = FALSE)",
-"rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.222",
-"rdt:scriptNum" : "0",
-"rdt:startLine" : "2",
-"rdt:startCol" : "1",
-"rdt:endLine" : "2",
-"rdt:endCol" : "27"
-} ,
-
-"p4" : {
-"rdt:name" : "b <- 2",
-"rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.425",
-"rdt:scriptNum" : "0",
-"rdt:startLine" : "3",
-"rdt:startCol" : "1",
-"rdt:endLine" : "3",
-"rdt:endCol" : "6"
-} ,
-
-"p5" : {
-"rdt:name" : "WarningTest.R",
-"rdt:type" : "Finish",
-"rdt:elapsedTime" : "0.461",
-"rdt:scriptNum" : "NA",
-"rdt:startLine" : "NA",
-"rdt:startCol" : "NA",
-"rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
 } ,
 
 "environment" : {
@@ -73,7 +40,7 @@
 "rdt:scriptTimeStamp" : "2017-07-05T11.21.53EDT",
 "rdt:workingDirectory" : "[DIR]",
 "rdt:ddgDirectory" : "[DIR]/ddg",
-"rdt:ddgTimeStamp" : "2017-07-05T11.29.45EDT",
+"rdt:ddgTimeStamp" : "2017-07-05T15.01.08EDT",
 "rdt:rdatatrackerVersion" : "2.26.2",
 "rdt:installedPackages" : [
 	{"package" : "base", "version" : "3.4.0"},
@@ -86,76 +53,15 @@
 	{"package" : "utils", "version" : "3.4.0"}]
 }},
 "entity":{
-
-"d1" : {
-"rdt:name" : "a",
-"rdt:value" : "1",
-"rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
-"rdt:type" : "Data",
-"rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE",
-"rdt:timestamp" : "",
-"rdt:location" : ""
-} ,
-
-"d2" : {
-"rdt:name" : "warning.msg",
-"rdt:value" : "\" foo\"",
-"rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
-"rdt:type" : "Exception",
-"rdt:scope" : "ddg.library",
-"rdt:fromEnv" : "FALSE",
-"rdt:timestamp" : "",
-"rdt:location" : ""
-} ,
-
-"d3" : {
-"rdt:name" : "b",
-"rdt:value" : "2",
-"rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
-"rdt:type" : "Data",
-"rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE",
-"rdt:timestamp" : "",
-"rdt:location" : ""
-}},
+},
 "wasInformedBy":{
 
 "e1" : {
 "prov:informant" : "p1",
 "prov:informed" : "p2"
-} ,
-
-"e3" : {
-"prov:informant" : "p2",
-"prov:informed" : "p3"
-} ,
-
-"e5" : {
-"prov:informant" : "p3",
-"prov:informed" : "p4"
-} ,
-
-"e7" : {
-"prov:informant" : "p4",
-"prov:informed" : "p5"
 }},
 "wasGeneratedBy":{
-
-"e2" : {
-"prov:entity" : "d1",
-"prov:activity" : "p2"
-} ,
-
-"e4" : {
-"prov:entity" : "d2",
-"prov:activity" : "p3"
-} ,
-
-"e6" : {
-"prov:entity" : "d3",
-"prov:activity" : "p4"
-}},
+},
 "used":{
 }
 }
