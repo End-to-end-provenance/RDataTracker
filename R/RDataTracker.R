@@ -929,7 +929,7 @@ ddg.MAX_HIST_LINES <- 2^14
   .ddg.append.inc(dtxt)
 
   # Record in ddg.json
-  .ddg.json.data.node(ddg.dnum, dname, dvalue, val.type, dtype, dscope, from.env, dtime="", dloc="")
+  .ddg.json.data.node(ddg.dnum, dname, dvalue, val.type, dtype, dscope, from.env, dtime, dloc)
 }
 
 
