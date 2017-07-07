@@ -9,7 +9,7 @@
 "p1" : {
 "rdt:name" : "WarningTest.R",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "0.14",
+"rdt:elapsedTime" : "0.117",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -20,7 +20,7 @@
 "p2" : {
 "rdt:name" : "a <- 1",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.17",
+"rdt:elapsedTime" : "0.141",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "1",
 "rdt:startCol" : "1",
@@ -31,7 +31,7 @@
 "p3" : {
 "rdt:name" : "warning(\"foo\", call. = FALSE)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.263",
+"rdt:elapsedTime" : "0.218",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "2",
 "rdt:startCol" : "1",
@@ -42,7 +42,7 @@
 "p4" : {
 "rdt:name" : "b <- 2",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.562",
+"rdt:elapsedTime" : "0.45",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "3",
 "rdt:startCol" : "1",
@@ -53,7 +53,7 @@
 "p5" : {
 "rdt:name" : "WarningTest.R",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "0.6",
+"rdt:elapsedTime" : "0.483",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -73,7 +73,7 @@
 "rdt:scriptTimeStamp" : "2017-06-20T14.27.19EDT",
 "rdt:workingDirectory" : "[DIR]",
 "rdt:ddgDirectory" : "[DIR]/ddg",
-"rdt:ddgTimeStamp" : "2017-06-22T11.37.26EDT",
+"rdt:ddgTimeStamp" : "2017-07-07T15.35.51EDT",
 "rdt:rdatatrackerVersion" : "2.26.1",
 "rdt:installedPackages" : [
 	{"package" : "base", "version" : "3.4.0"},
@@ -89,6 +89,7 @@
 
 "d1" : {
 "rdt:name" : "a",
+"rdt:scriptpath" : "[DIR]/WarningTest.R",
 "rdt:value" : "1",
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",
@@ -102,6 +103,7 @@
 
 "d2" : {
 "rdt:name" : "warning.msg",
+"rdt:scriptpath" : "[DIR]/WarningTest.R",
 "rdt:value" : "\" foo\"",
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
 "rdt:type" : "Exception",
@@ -115,6 +117,7 @@
 
 "d3" : {
 "rdt:name" : "b",
+"rdt:scriptpath" : "[DIR]/WarningTest.R",
 "rdt:value" : "2",
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",

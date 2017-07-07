@@ -1319,19 +1319,15 @@ library(tools)
 # dtime (optional) - timestamp of original file.
 # dloc (optional) -  path and name of original file.
 
-.ddg.record.data <- function(dtype, dname, dvalue, value, dscope, from.env=FALSE, dtime="", dloc="") {
+.ddg.record.data <- function(dtype, dname, dvalue, value, dscope, from.env=FALSE, dtime="", dloc="", dhash="", drw="", dscriptpath="") {
   #print("In .ddg.record.data")
   # Increment data node counter.
   .ddg.inc("ddg.dnum")
   ddg.dnum <- .ddg.dnum()
 
-  #Initialize dhash, drw, dscriptpath
-  dhash <- ""
-  drw <- ""
-  dscriptpath <- .ddg.get("ddg.r.script.path")
-  if (is.null(dscriptpath)) {
-    print("NULL")
-    dscriptpath = ""
+  #Initialize dscriptpath
+  if (!is.null(.ddg.get("ddg.r.script.path"))) {
+    dscriptpath <- .ddg.get("ddg.r.script.path")
   }
 
   # If the table is full, make it bigger.
