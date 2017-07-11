@@ -49,7 +49,6 @@
   - ReturnTest
   - OddParameterTest
   - FunctionAnnotationTest
-  - AnnotateOnOffTest
   - ControlConstructTest
   - WarningTest
   - PlotTest
@@ -313,7 +312,10 @@
       <arg value="${local_dir}/${out_name}.local" />
       <arg value="${local_dir}/${expected_out_name}.local" />
     </exec>
+    
+    <!-- checks for failure  -->
     <antcall target="failure-check"/>
+  
   </target>
   
   
@@ -506,18 +508,6 @@
 	 	</antcall>
 	</target>
 
-  	<target name="AnnotateOnOffTest">
-  		<antcall target="run-regression-test">
-  			<param name="test-name" value="AnnotateOnOffTest" />
-  		</antcall>
-  	</target>
-
-	<target name="update-AnnotateOnOffTest">
-	  <antcall target="update-regression-expected">
-	  	<param name="test-name" value="AnnotateOnOffTest" />
-	 	</antcall>
-	</target>
-
 	<target name="ControlConstructTest">
 		<antcall target="run-regression-test">
 			<param name="test-name" value="ControlConstructTest" />
@@ -553,18 +543,6 @@
 	  	<param name="test-name" value="PlotTest" />
 	 	</antcall>
 	</target>
-
-    <target name="NoDevOffTest">
-      <antcall target="run-regression-test">
-        <param name="test-name" value="NoDevOffTest" />
-      </antcall>
-    </target>
-
-  <target name="update-NoDevOffTest">
-    <antcall target="update-regression-expected">
-      <param name="test-name" value="NoDevOffTest" />
-    </antcall>
-  </target>
 
 	<target name="DataTypeTest">
 		<antcall target="run-regression-test">
@@ -628,7 +606,7 @@
 
 	<target name="normal-tests" depends="basicTest, S4ObjectTest,
 		ScopeTest, ReturnTest, OddParameterTest, FunctionAnnotationTest,
-		ControlConstructTest, WarningTest, PlotTest, NoDevOffTest, DataTypeTest,
+		ControlConstructTest, WarningTest, PlotTest, DataTypeTest,
 		HigherOrderFuncTest, AssignmentOperatorsTest, RMarkdownTest, DDGStatementTest">
 		<echo>
       ##############################################
