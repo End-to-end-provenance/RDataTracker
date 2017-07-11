@@ -828,7 +828,7 @@ null.pos <- function() {
           parsed.stmt <- parsed.stmts
         }
         
-        print(paste(".ddg.wrap.return.parameters: parsed.stmt =", parsed.stmt@abbrev))
+        #print(paste(".ddg.wrap.return.parameters: parsed.stmt =", parsed.stmt@abbrev))
         
         # If parameters contain a return, recurse on parameters.
         if (.ddg.has.call.to(ret.params, "return")) {
