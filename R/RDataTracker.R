@@ -1,4 +1,4 @@
-
+""
 #################### DDG LIBRARY FOR R ####################
 
 # The functions in this library may be used to annotate an R script
@@ -2647,7 +2647,7 @@ ddg.MAX_HIST_LINES <- 2^14
         .ddg.record.edge(etype, node1, node2)
 
         if (.ddg.debug.lib()) {
-          print(paste(".ddg.link.function.returns:", command))
+          print(paste(".ddg.link.function.returns:", command@abbrev))
           print(paste("DF ", node1, " ", node2, sep=""))
         }
 
@@ -2999,6 +2999,8 @@ ddg.MAX_HIST_LINES <- 2^14
 
 .ddg.parse.commands <- function (exprs, script.name="", script.num=NA, environ, ignore.patterns=c('^ddg.'), node.name="Console", run.commands = FALSE, echo=FALSE, print.eval=echo, max.deparse.length=150, called.from.ddg.eval=FALSE, cmds=NULL) {
 
+  return.value <- NULL
+  
   # Gather all the information that we need about the statements
   if (is.null(cmds)) {
     cmds <- .ddg.create.DDGStatements (exprs, script.name, script.num)
@@ -3199,11 +3201,21 @@ ddg.MAX_HIST_LINES <- 2^14
           # EVALUATE.
 
           if (.ddg.debug.lib()) print (paste (".ddg.parse.commands: Evaluating ", cmd@annotated))
-          #print (paste (".ddg.parse.commands: Evaluating ", cmd@annotated))
+          print (paste (".ddg.parse.commands: Evaluating ", cmd@annotated))
           
           result <- withCallingHandlers(
           
-            eval(cmd@annotated, environ, NULL) ,
+              {
+                #print(paste("In .ddg.parse.commands, environ =", ls(environ)))
+#                if ("x" %in% ls(environ)) {
+#                  print ("x =", eval(x, environ))
+#                  #print(ls(environ))
+#                }
+                return.value <- eval(cmd@annotated, environ, NULL)
+                if (typeof(return.value) != "closure") {
+                  print(paste("In .ddg.parse.commands, eval returned", paste(return.value, collapse=", ")))
+                }
+              },
             warning = .ddg.set.warning ,
             error = function(e)
             {
@@ -3444,6 +3456,8 @@ ddg.MAX_HIST_LINES <- 2^14
   # Write time stamp to history.
   if (.ddg.is.init() && !.ddg.is.sourced()) .ddg.write.timestamp.to.history()
 
+  print(paste(".ddg.parse.commands: returning", return.value))
+  return(return.value)
 }
 
 
@@ -4345,6 +4359,7 @@ ddg.MAX_HIST_LINES <- 2^14
 
 .ddg.get.frame.number <- function(calls, for.caller=FALSE) {
   #print (".ddg.get.frame.number: for.caller =", for.caller)
+  #print(sys.calls())
   if (is.null(calls)) calls <- sys.calls()
   script.func.found <- FALSE
   nframe <- length(calls)
@@ -4954,9 +4969,26 @@ ddg.procedure <- function(pname, ins=NULL, outs.graphic=NULL, outs.data=NULL, ou
 # expr - the value returned by the function.
 
 ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
+  # Note: We have changed annotations so that the parameter to 
+  # ddg.return.value is alwasy ddg.eval("fadfasdfa").  If that works,
+  # we can probably simplify this function ?!?
+  
+  if (!is.null(cmd.func)) {
+    parsed.stmt <- cmd.func()
+    if (parsed.stmt@has.dev.off) {
+      if (.ddg.is.call.to(parsed.stmt@parsed[[1]], "dev.off") || !ddg.loop.annotate()) {
+        print("do dev.off stuff")
+      }
+      else {
+        print("found dev.off but delaying handling it")
+      }
+    }
+  }
   #print("In ddg.return.value")
 
   if (!.ddg.is.init()) return(expr)
+  
+  #print(paste("ddg.return.value: expr =", expr))
 
   # If expr is an assignment, create nodes and edges for the assignment.
   orig.expr <- substitute(expr)
@@ -5003,6 +5035,7 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
   # it would have created.
   call <- sys.call(caller.frame)
   if (!.ddg.proc.node.exists(pname)) {
+    print("ddg.return.value: creating function nodes")
     full.call <- match.call(sys.function(caller.frame), call=call)
     .ddg.create.function.nodes(pname, call, full.call, auto.created = TRUE, env = sys.frame(.ddg.get.frame.number(sys.calls()))
     )
@@ -5020,6 +5053,7 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
   return.node.scope <-
     environmentName (if (sys.nframe() == 2) .GlobalEnv
                      else parent.env(sys.frame(caller.frame)))
+  print("ddg.return.value: saving return data node")
   .ddg.save.data(return.node.name, expr, fname="ddg.return", scope=return.node.scope)
 
   # Create a return proc node
@@ -5031,6 +5065,8 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
     return.stmt <- cmd.func()
     parsed.statement <- return.stmt@parsed
   }
+  
+  print(paste("ddg.return.value: return.stmt =", return.stmt@abbrev))
 
   # Process breakpoint. We stop if there is a breakpoint set on this line or we are single-stepping.
   if (.ddg.is.sourced() & (return.stmt@is.breakpoint | .ddg.get("ddg.break")) & !.ddg.break.ignore()) {
@@ -5038,12 +5074,15 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
   }
 
   caller.env = sys.frame(caller.frame)
-  .ddg.proc.node("Operation", return.stmt@abbrev, return.stmt@abbrev, console = TRUE, env=caller.env, cmd=return.stmt)
+#  .ddg.proc.node("Operation", return.stmt@abbrev, return.stmt@abbrev, console = TRUE, env=caller.env, cmd=return.stmt)
 
   # Create control flow edge from preceding procedure node.
+  print("ddg.return.value: creating control flow edge")
   .ddg.proc2proc()
 
   # Create an edge from the return statement to its return value.
+  print("ddg.return.value: creating edge from return statement to return value")
+  print(paste("ddg.return.value: return.stmt@abbrev =", return.stmt@abbrev))
   .ddg.proc2data(return.stmt@abbrev, return.node.name, return.node.scope, return.value=TRUE)
 
   # Update the table.
@@ -5055,6 +5094,7 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
   .ddg.set(".ddg.num.returns", ddg.num.returns)
 
   # Create edges from variables used in the return statement
+  print("ddg.return.value: creating data flow edges into return statement")
   vars.used <- return.stmt@vars.used
   for (var in vars.used) {
     # Make sure there is a node we could connect to.
@@ -5064,32 +5104,33 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
     }
   }
 
-  for (var in return.stmt@vars.set)
-  {
-    if (var != "")
-    {
-      # Create output data node.
-      dvalue <- eval(as.symbol(var), envir=env)
-
-      # Check for non-local assignment
-      if ( .ddg.is.nonlocal.assign(return.stmt@parsed[[1]]) )
-      {
-        env <- .ddg.where( var, env = parent.env(parent.frame()) , warning = FALSE )
-
-        if( identical(env,"undefined") )
-          env <- globalenv()
-      }
-
-      dscope <- .ddg.get.scope(var, env=env)
-      .ddg.save.data(var, dvalue, scope=dscope)
-
-      # Create an edge from procedure node to data node.
-      .ddg.proc2data(return.stmt@abbrev, var, dscope=dscope, return.value=FALSE)
-    }
-  }
+#  for (var in return.stmt@vars.set)
+#  {
+#    if (var != "")
+#    {
+#      # Create output data node.
+#      dvalue <- eval(as.symbol(var), envir=env)
+#
+#      # Check for non-local assignment
+#      if ( .ddg.is.nonlocal.assign(return.stmt@parsed[[1]]) )
+#      {
+#        env <- .ddg.where( var, env = parent.env(parent.frame()) , warning = FALSE )
+#
+#        if( identical(env,"undefined") )
+#          env <- globalenv()
+#      }
+#
+#      dscope <- .ddg.get.scope(var, env=env)
+#      .ddg.save.data(var, dvalue, scope=dscope)
+#
+#      # Create an edge from procedure node to data node.
+#      .ddg.proc2data(return.stmt@abbrev, var, dscope=dscope, return.value=FALSE)
+#    }
+#  }
 
 
   # Create nodes and edges dealing with reading and writing files
+  print("ddg.return.value: creating file in/out/graphics edges")
   .ddg.create.file.read.nodes.and.edges(return.stmt, env)
   .ddg.create.file.write.nodes.and.edges (return.stmt, env)
   .ddg.set.graphics.files (return.stmt, env)
@@ -5098,6 +5139,7 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
   }
 
   # Create the finish node for the function
+  print("ddg.return.value: creating finish node")
   if (typeof(call[[1]]) == "closure") {
     .ddg.add.abstract.node ("Finish", node.name=pname, env=caller.env)
   }
@@ -5105,7 +5147,7 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
     .ddg.add.abstract.node ("Finish", node.name=paste(deparse(call),collapse=""), env=caller.env)
   }
 
-  #print ("Returning from ddg.return.value")
+  print(paste ("ddg.return.value: returning", expr))
   return(expr)
 }
 
@@ -5241,8 +5283,8 @@ ddg.details.omitted <- function() {
 # statement - the statement to evaluate.
 
 ddg.eval <- function(statement, cmd.func=NULL) {
-  # print(statement)
-  # print(cmd.func)
+  print(paste("ddg.eval: statement =", statement))
+  #print(paste("ddg.eval: cmd.func =", cmd.func))
 
   # Statement at top level.
   if (is.null(cmd.func)) {
@@ -5276,6 +5318,8 @@ ddg.eval <- function(statement, cmd.func=NULL) {
     return(eval(parsed.statement, env))
   }
 
+  print (paste("ddg.eval: statement =", statement))
+  
   if (interactive() && .ddg.enable.console() && !.ddg.enable.source()) {
     # print("ddg.eval:  Creating console node")
     .ddg.console.node()
@@ -5293,7 +5337,9 @@ ddg.eval <- function(statement, cmd.func=NULL) {
     .ddg.next.statement()
   }
 
-  .ddg.parse.commands(parsed.statement, environ=env, run.commands = TRUE, node.name=statement, called.from.ddg.eval=TRUE, cmds=list(cmd))
+  print(paste("ddg.eval: Passing to .ddg.parse.commands as node.name:", statement))
+  print(paste("ddg.eval: cmd@abbrev =", cmd@abbrev))
+  return.value <- .ddg.parse.commands(parsed.statement, environ=env, run.commands = TRUE, node.name=statement, called.from.ddg.eval=TRUE, cmds=list(cmd))
   # cmd <- .ddg.parse.commands(parsed.statement, environ=env, run.commands = TRUE, node.name=statement, called.from.ddg.eval=TRUE, cmds=list(cmd))
 
   if (.ddg.get(".ddg.func.depth")) {
@@ -5305,6 +5351,9 @@ ddg.eval <- function(statement, cmd.func=NULL) {
 
   # Create outflowing edges .
   # .ddg.create.data.set.edges.for.cmd(cmd@vars.set, cmd, 1, env)
+
+  print(paste("ddg.eval: returning", return.value))
+  return (return.value)
 }
 
 # ddg.data creates a data node for a single or complex data value.

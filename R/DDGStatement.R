@@ -693,9 +693,10 @@ null.pos <- function() {
     # Wrap last statement with ddg.return.value if not already added
     # and if last statement is not a simple return or a ddg function.
     last.statement <- .ddg.find.last.statement(func.definition)
-    if (!.ddg.is.call.to(last.statement, "ddg.return.value") & !.ddg.is.call.to(last.statement, "return") & !.ddg.is.call.to.ddg.function(last.statement)) {
-      func.definition <- .ddg.wrap.last.line(func.definition, function.decl@contained)
-    }
+    
+   if (!.ddg.is.call.to(last.statement, "ddg.return.value") & !.ddg.is.call.to(last.statement, "return") & !.ddg.is.call.to.ddg.function(last.statement)) {
+     func.definition <- .ddg.wrap.last.line(func.definition, function.decl@contained)
+   }
 
     # Wrap statements with ddg.eval if not already added and if
     # statements are not calls to a ddg function and do not contain
@@ -820,13 +821,16 @@ null.pos <- function() {
           ret.params <- statement[[2]]
         }
 
-        # If parameters contain a return, recurse on parameters.
         if (is.list(parsed.stmts)) {
           parsed.stmt <- parsed.stmts[[i-2]]
         }
         else {
           parsed.stmt <- parsed.stmts
         }
+        
+        print(paste(".ddg.wrap.return.parameters: parsed.stmt =", parsed.stmt@abbrev))
+        
+        # If parameters contain a return, recurse on parameters.
         if (.ddg.has.call.to(ret.params, "return")) {
           ret.params <- .ddg.wrap.return.parameters(ret.params, parsed.stmt)
         }
@@ -954,7 +958,13 @@ null.pos <- function() {
   # return the value that parsed.stmt has at the time the ddg.eval
   # call is created.
   force(parsed.stmt)
-  return (call ("ddg.return.value", last.statement, function() parsed.stmt))
+  print(paste(".ddg.create.ddg.return.call: last.statement =", last.statement))
+  print(paste(".ddg.create.ddg.return.call: deparse(last.statement) =", deparse(last.statement)))
+  #eval.cmd <- .ddg.construct.DDGStatement (last.statement, pos=NA, script.num=NA, breakpoints=NA)
+  eval.cmd <- .ddg.construct.DDGStatement (parse(text=deparse(last.statement)), pos=NA, script.num=NA, breakpoints=NA, parseData=NULL)
+  #new.statement <- .ddg.create.ddg.eval.call(last.statement, eval.cmd)
+  new.statement <- .ddg.create.ddg.eval.call(last.statement, parsed.stmt)
+  return (call ("ddg.return.value", new.statement, function() parsed.stmt))
 }
 
 # Creates a call to ddg.eval using a closure so that we

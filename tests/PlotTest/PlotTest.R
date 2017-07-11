@@ -23,8 +23,8 @@ dev.off()
 # Plot to a file
 pdf ("plot.pdf")
 plot(cylinders, mpg)
-invisible(dev.off())
-#dev.off()
+#invisible(dev.off())
+dev.off()
 
 x <- 1
 
