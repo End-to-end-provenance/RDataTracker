@@ -3213,7 +3213,7 @@ ddg.MAX_HIST_LINES <- 2^14
           # EVALUATE.
 
           if (.ddg.debug.lib()) print (paste (".ddg.parse.commands: Evaluating ", cmd@annotated))
-          print (paste (".ddg.parse.commands: Evaluating ", cmd@annotated))
+          #print (paste (".ddg.parse.commands: Evaluating ", cmd@annotated))
           
           result <- withCallingHandlers(
           
@@ -3223,11 +3223,11 @@ ddg.MAX_HIST_LINES <- 2^14
 #                  print ("x =", eval(x, environ))
 #                  #print(ls(environ))
 #                }
-                print(paste(".ddg.parse.commands: passing to eval:", cmd@annotated))
+                #print(paste(".ddg.parse.commands: passing to eval:", cmd@annotated))
                 return.value <- eval(cmd@annotated, environ, NULL)
-                if (typeof(return.value) != "closure") {
-                  print(paste("In .ddg.parse.commands, eval returned", paste(return.value, collapse=", ")))
-                }
+                #if (typeof(return.value) != "closure") {
+                #  print(paste("In .ddg.parse.commands, eval returned", paste(return.value, collapse=", ")))
+                #}
               },
             warning = .ddg.set.warning ,
             error = function(e)
@@ -3469,9 +3469,9 @@ ddg.MAX_HIST_LINES <- 2^14
   # Write time stamp to history.
   if (.ddg.is.init() && !.ddg.is.sourced()) .ddg.write.timestamp.to.history()
 
-  if (typeof(return.value) != "closure") {
-    print(paste(".ddg.parse.commands: returning", return.value))
-  }
+  #if (typeof(return.value) != "closure") {
+  #  print(paste(".ddg.parse.commands: returning", return.value))
+  #}
   return(return.value)
 }
 
@@ -5072,7 +5072,7 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
     parsed.statement <- return.stmt@parsed
   }
   
-  print(paste("ddg.return.value: return.stmt =", return.stmt@abbrev))
+  #print(paste("ddg.return.value: return.stmt =", return.stmt@abbrev))
   
   # Create a data node for the return value. We want the scope of
   # the function that called the function that called ddg.return.
@@ -5397,8 +5397,8 @@ ddg.eval <- function(statement, cmd.func=NULL) {
   # Create outflowing edges .
   # .ddg.create.data.set.edges.for.cmd(cmd@vars.set, cmd, 1, env)
 
-  print(paste("ddg.eval: returning", return.value))
-  print(paste("Called from", sys.calls()))
+  #print(paste("ddg.eval: returning", return.value))
+  #print(paste("Called from", sys.calls()))
   return (return.value)
 }
 
