@@ -958,7 +958,14 @@ null.pos <- function() {
   # return the value that parsed.stmt has at the time the ddg.eval
   # call is created.
   force(parsed.stmt)
-  return (call ("ddg.return.value", last.statement, function() parsed.stmt))
+  if (.ddg.has.call.to(last.statement, "return")) {
+  	return (call ("ddg.return.value", last.statement, function() parsed.stmt))
+  }
+  else {
+    eval.cmd <- .ddg.construct.DDGStatement (parse(text=deparse(last.statement)), pos=NA, script.num=NA, breakpoints=NA, parseData=NULL)
+    new.statement <- .ddg.create.ddg.eval.call(last.statement, parsed.stmt)
+    return (call ("ddg.return.value", new.statement, function() parsed.stmt))
+  }
 }
 
 # Creates a call to ddg.eval using a closure so that we

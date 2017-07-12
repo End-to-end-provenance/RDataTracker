@@ -2389,6 +2389,11 @@ ddg.MAX_HIST_LINES <- 2^14
 # of the calls to functions that create graphics devices.  If there are
 # none, it returns NULL.
 .ddg.set.graphics.files <- function(main.object, env) {
+  tryCatch(
+    # Allows dev.print to work when we want to save the plot.
+    dev.control("enable"),
+    error = function (e) return()
+  )
   #print(paste(".ddg.set.graphics.files: main.object =", main.object@text))
 
   # Find all the graphics files that have potentially been opened.
@@ -2449,7 +2454,7 @@ ddg.MAX_HIST_LINES <- 2^14
       else cmd@abbrev
   
   #print(paste(".ddg.capture.graphics: ", proc.node.name))
-  if (!is.null(.ddg.get ("possible.graphics.files.open"))) {
+  if (!is.null(.ddg.get ("possible.graphics.files.open")) && !is.null(proc.node.name)) {
     possible.graphics.files.open <- .ddg.get ("possible.graphics.files.open")
     #print(paste("possible.graphics.files.open =", possible.graphics.files.open))
 
@@ -3208,7 +3213,7 @@ ddg.MAX_HIST_LINES <- 2^14
           # EVALUATE.
 
           if (.ddg.debug.lib()) print (paste (".ddg.parse.commands: Evaluating ", cmd@annotated))
-          #print (paste (".ddg.parse.commands: Evaluating ", cmd@annotated))
+          print (paste (".ddg.parse.commands: Evaluating ", cmd@annotated))
           
           result <- withCallingHandlers(
           
@@ -3218,10 +3223,11 @@ ddg.MAX_HIST_LINES <- 2^14
 #                  print ("x =", eval(x, environ))
 #                  #print(ls(environ))
 #                }
+                print(paste(".ddg.parse.commands: passing to eval:", cmd@annotated))
                 return.value <- eval(cmd@annotated, environ, NULL)
-                #if (typeof(return.value) != "closure") {
-                #  print(paste("In .ddg.parse.commands, eval returned", paste(return.value, collapse=", ")))
-                #}
+                if (typeof(return.value) != "closure") {
+                  print(paste("In .ddg.parse.commands, eval returned", paste(return.value, collapse=", ")))
+                }
               },
             warning = .ddg.set.warning ,
             error = function(e)
@@ -3463,7 +3469,9 @@ ddg.MAX_HIST_LINES <- 2^14
   # Write time stamp to history.
   if (.ddg.is.init() && !.ddg.is.sourced()) .ddg.write.timestamp.to.history()
 
-  #print(paste(".ddg.parse.commands: returning", return.value))
+  if (typeof(return.value) != "closure") {
+    print(paste(".ddg.parse.commands: returning", return.value))
+  }
   return(return.value)
 }
 
@@ -4983,12 +4991,14 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
   # we can probably simplify this function ?!?
   
   dev.file <- NULL
+  parsed.stmt <- NULL
   if (!is.null(cmd.func)) {
     parsed.stmt <- cmd.func()
     if (parsed.stmt@has.dev.off) {
       if (.ddg.is.call.to(parsed.stmt@parsed[[1]], "dev.off") || !ddg.loop.annotate()) {
         #print("doing dev.off stuff")
         dev.file <- .ddg.capture.graphics(NULL)
+        dev.node.name <- paste0("dev.", dev.cur())
       }
       #else {
         #print("found dev.off but delaying handling it")
@@ -4998,7 +5008,7 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
   #print("In ddg.return.value")
 
   
-  #print(paste("ddg.return.value: expr =", expr))
+  #print(paste("ddg.return.value: expr =", deparse(expr)))
 
   # If expr is an assignment, create nodes and edges for the assignment.
   orig.expr <- substitute(expr)
@@ -5054,6 +5064,16 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
     .ddg.dec (".ddg.func.depth")
   }
 
+  if (is.null(cmd.func)) {
+    return.stmt <- .ddg.construct.DDGStatement (parse(text=orig.return), pos=NA, script.num=NA, breakpoints=NA)
+  }
+  else {
+    return.stmt <- cmd.func()
+    parsed.statement <- return.stmt@parsed
+  }
+  
+  print(paste("ddg.return.value: return.stmt =", return.stmt@abbrev))
+  
   # Create a data node for the return value. We want the scope of
   # the function that called the function that called ddg.return.
   call.text <- gsub(" ", "", deparse(call, nlines=1))
@@ -5068,32 +5088,28 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
 
   # Create a return proc node
 
-  if (is.null(cmd.func)) {
-    return.stmt <- .ddg.construct.DDGStatement (parse(text=orig.return), pos=NA, script.num=NA, breakpoints=NA)
-  }
-  else {
-    return.stmt <- cmd.func()
-    parsed.statement <- return.stmt@parsed
-  }
-  
-  #print(paste("ddg.return.value: return.stmt =", return.stmt@abbrev))
-
   # Process breakpoint. We stop if there is a breakpoint set on this line or we are single-stepping.
   if (.ddg.is.sourced() & (return.stmt@is.breakpoint | .ddg.get("ddg.break")) & !.ddg.break.ignore()) {
     .ddg.process.breakpoint(return.stmt, inside.function=TRUE)
   }
 
   caller.env = sys.frame(caller.frame)
-  .ddg.proc.node("Operation", return.stmt@abbrev, return.stmt@abbrev, console = TRUE, env=caller.env, cmd=return.stmt)
+  if (.ddg.has.call.to(return.stmt, "return")) {
+    .ddg.proc.node("Operation", return.stmt@abbrev, return.stmt@abbrev, console = TRUE, env=caller.env, cmd=return.stmt)
 
-  # Create control flow edge from preceding procedure node.
-  #print("ddg.return.value: creating control flow edge")
-  .ddg.proc2proc()
-
-  # Create an edge from the return statement to its return value.
-  #print("ddg.return.value: creating edge from return statement to return value")
-  #print(paste("ddg.return.value: return.stmt@abbrev =", return.stmt@abbrev))
-  .ddg.proc2data(return.stmt@abbrev, return.node.name, return.node.scope, return.value=TRUE)
+    # Create control flow edge from preceding procedure node.
+    #print("ddg.return.value: creating control flow edge")
+    .ddg.proc2proc()
+    
+    # Create an edge from the return statement to its return value.
+    #print("ddg.return.value: creating edge from return statement to return value")
+    #print(paste("ddg.return.value: return.stmt@abbrev =", return.stmt@abbrev))
+    .ddg.proc2data(return.stmt@abbrev, return.node.name, return.node.scope, return.value=TRUE)
+  }
+  else {
+    .ddg.lastproc2data(return.node.name, dscope=return.node.scope)
+  }
+  
   
   if (!is.null(dev.file)) {
     #print(paste("return.stmt@abbrev =", return.stmt@abbrev))
@@ -5105,9 +5121,9 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
     file.remove(dev.file)
     
     # Add an input edge from the current device
-    #dev.node.name <- paste0("dev.", dev.cur())
+
     #print(paste(".ddg.capture.current.graphics: dev.node.name =", dev.node.name))
-    #.ddg.data2proc(dev.file, NULL, return.stmt@abbrev)
+    .ddg.data2proc(dev.node.name, NULL, return.stmt@abbrev)
     
   }
 
@@ -5159,8 +5175,11 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
   #print("ddg.return.value: creating file in/out/graphics edges")
   .ddg.create.file.read.nodes.and.edges(return.stmt, env)
   .ddg.create.file.write.nodes.and.edges (return.stmt, env)
-  .ddg.set.graphics.files (return.stmt, env)
-#  if (return.stmt@has.dev.off) {
+  
+  if (return.stmt@createsGraphics) {
+    .ddg.set.graphics.files (return.stmt, env)
+  }
+#  if (return.stmt@has.dev.off) {xxx
 #    .ddg.capture.graphics(return.stmt)
 #  }
 
@@ -5378,7 +5397,8 @@ ddg.eval <- function(statement, cmd.func=NULL) {
   # Create outflowing edges .
   # .ddg.create.data.set.edges.for.cmd(cmd@vars.set, cmd, 1, env)
 
-  #print(paste("ddg.eval: returning", return.value))
+  print(paste("ddg.eval: returning", return.value))
+  print(paste("Called from", sys.calls()))
   return (return.value)
 }
 
