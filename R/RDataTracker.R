@@ -4563,11 +4563,13 @@ ddg.MAX_HIST_LINES <- 2^14
         if (.ddg.cur.cmd@text != paste(deparse(call), collapse="")) {
           cmd.abbrev <- .ddg.add.abstract.node ("Start", .ddg.cur.cmd, caller.env)
           .ddg.cur.expr.stack <- .ddg.get(".ddg.cur.expr.stack")
-          .ddg.create.data.use.edges.for.console.cmd(vars.set = data.frame(), .ddg.cur.cmd, 0, for.caller=TRUE)
-
-          # Add Details Omitted node before annotated loops if needed.
           st.type <- .ddg.get.statement.type(.ddg.cur.cmd@parsed[[1]])
           loop.statement <- (st.type == "for" || st.type == "while" || st.type == "repeat")
+          control.statement <- loop.statement || st.type == "if"
+          #print(paste(".ddg.create.start.for.cur.cmd: control.statement?", control.statement))
+          .ddg.create.data.use.edges.for.console.cmd(vars.set = data.frame(), .ddg.cur.cmd, 0, for.caller=!control.statement)
+
+          # Add Details Omitted node before annotated loops if needed.
           if (loop.statement && ddg.first.loop() > 1) {
             ddg.details.omitted()
           }
