@@ -5147,26 +5147,24 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
     #print("ddg.return.value: creating edge from return statement to return value")
     #print(paste("ddg.return.value: return.stmt@abbrev =", return.stmt@abbrev))
     .ddg.proc2data(return.stmt@abbrev, return.node.name, return.node.scope, return.value=TRUE)
+    
+    if (!is.null(dev.file)) {
+      #print(paste("return.stmt@abbrev =", return.stmt@abbrev))
+      #print(paste("dev.file =", dev.file))
+      ddg.file.out (dev.file, pname=return.stmt@abbrev)
+      #print(paste(".ddg.capture.graphics: returned from ddg.file.out"))
+      
+      # Remove the temporary file
+      file.remove(dev.file)
+      
+      # Add an input edge from the current device
+      
+      #print(paste(".ddg.capture.current.graphics: dev.node.name =", dev.node.name))
+      .ddg.data2proc(dev.node.name, NULL, return.stmt@abbrev)
+    }
   }
   else {
     .ddg.lastproc2data(return.node.name, dscope=return.node.scope)
-  }
-  
-  
-  if (!is.null(dev.file)) {
-    #print(paste("return.stmt@abbrev =", return.stmt@abbrev))
-    #print(paste("dev.file =", dev.file))
-    ddg.file.out (dev.file, pname=return.stmt@abbrev)
-    #print(paste(".ddg.capture.graphics: returned from ddg.file.out"))
-    
-    # Remove the temporary file
-    file.remove(dev.file)
-    
-    # Add an input edge from the current device
-
-    #print(paste(".ddg.capture.current.graphics: dev.node.name =", dev.node.name))
-    .ddg.data2proc(dev.node.name, NULL, return.stmt@abbrev)
-    
   }
 
   # Update the table.
