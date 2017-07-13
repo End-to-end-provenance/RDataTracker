@@ -1,4 +1,3 @@
-""
 #################### DDG LIBRARY FOR R ####################
 
 # The functions in this library may be used to annotate an R script
@@ -2075,7 +2074,8 @@ ddg.MAX_HIST_LINES <- 2^14
 
 .ddg.create.data.set.edges.for.cmd <- function(vars.set, cmd, cmd.pos, env, for.finish.node = FALSE, scope=NULL, stack=NULL) {
   # print(paste("In .ddg.create.data.set.edges.for.cmd: cmd = ", cmd@abbrev))
-
+  #print(paste(".ddg.create.data.set.edges.for.cmd: env =", environmentName(env)))
+  #print(sys.calls())
   vars.assigned <- cmd@vars.set
 
   # print(paste("In .ddg.create.data.set.edges.for.cmd: vars.assigned = ", vars.assigned))
@@ -3125,16 +3125,23 @@ ddg.MAX_HIST_LINES <- 2^14
       # Get environment for output data node.
       d.environ <- environ
 
-      #if ( .ddg.is.nonlocal.assign(cmd@parsed[[1]]) )
-      #{
+      if ( .ddg.is.nonlocal.assign(cmd@parsed[[1]]) )
+      {
         # NOT WORKING!! - CAN NOT FIND ENVIRONMENT EVEN IF VARIABLE EXISTS
-      #  d.environ <- .ddg.where( cmd@vars.set , env = parent.env(parent.frame()) , warning = FALSE )
-      #
-      #  if( identical(d.environ,"undefined") )
-      #    d.environ <- globalenv()
-      #}
+        #d.environ <- .ddg.where( cmd@vars.set , env = parent.env(parent.frame()) , warning = FALSE )
+        #d.environ <- .ddg.where( cmd@vars.set , env = parent.frame() , warning = FALSE )
+        #d.environ <- .ddg.where( cmd@vars.set , warning = TRUE )
+        d.environ <- .ddg.get.env(cmd@vars.set, for.caller=TRUE)
+        #print(paste(".ddg.parse.commands: cmd@text =", cmd@text))
+        #print(paste(".ddg.parse.commands: cmd@vars.set =", cmd@vars.set))
+        #print(paste(".ddg.parse.commands: d.environ set?", !is.null(d.environ)))
+      
+        if( identical(d.environ,"undefined") )
+          d.environ <- globalenv()
+        #print(paste(cmd@vars.set, "=", eval(parse(text=cmd@vars.set), d.environ)))
+      }
 
-      if (.ddg.is.nonlocal.assign(cmd@parsed[[1]])) d.environ <- globalenv()
+      #if (.ddg.is.nonlocal.assign(cmd@parsed[[1]])) d.environ <- globalenv()
 
       # Check for control & loop statements.
       st.type <- .ddg.get.statement.type(cmd@parsed[[1]])
