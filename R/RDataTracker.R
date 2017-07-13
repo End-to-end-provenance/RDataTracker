@@ -1659,6 +1659,7 @@ ddg.MAX_HIST_LINES <- 2^14
   }
 
   # Error message if no match found.
+  print(sys.calls())
   error.msg <- paste("No data node found for", dname)
   .ddg.insert.error.message(error.msg)
   return(0)
@@ -2482,7 +2483,11 @@ ddg.MAX_HIST_LINES <- 2^14
       dev.node.name <- paste0("dev.", dev.number)
       #print(paste(".ddg.capture.current.graphics: dev.node.name =", dev.node.name))
       #print(".ddg.capture.graphics: creating in edge")
-      .ddg.data2proc(dev.node.name, NULL, proc.node.name)
+      
+      # If the device was opened but never written to there will be no node.
+      if (.ddg.data.node.exists (dev.node.name)) {
+       .ddg.data2proc(dev.node.name, NULL, proc.node.name)
+      }
       #print(".ddg.capture.graphics: done creating in edge")
         
       #.ddg.capture.current.graphics(cmd, possible.graphics.files.open[latest.file.date.row])
@@ -2507,7 +2512,10 @@ ddg.MAX_HIST_LINES <- 2^14
     # Add an input edge from the current device
     dev.node.name <- paste0("dev.", dev.cur())
     #print(paste(".ddg.capture.current.graphics: dev.node.name =", dev.node.name))
-    .ddg.data2proc(dev.node.name, NULL, proc.node.name)
+    # If the device was opened but never written to there will be no node.
+    if (.ddg.data.node.exists (dev.node.name)) {
+      .ddg.data2proc(dev.node.name, NULL, proc.node.name)
+    }
   }
   
   return (dev.file)
@@ -3037,6 +3045,7 @@ ddg.MAX_HIST_LINES <- 2^14
     }
   }
   num.cmds <- length(cmds)
+  #print(paste(".ddg.parse.commands: num.cmds =", num.cmds))
 
   # Figure out if we will execute commands or not.
   execute <- run.commands & !is.null(environ) & is.environment(environ)
@@ -3208,7 +3217,7 @@ ddg.MAX_HIST_LINES <- 2^14
           
           #print(paste(".ddg.parse.commands: has.dev.off =", cmd@has.dev.off))
           #print(paste(".ddg.parse.commands: possible.graphics.files.open null?", is.null(.ddg.get ("possible.graphics.files.open"))))
-          if (cmd@has.dev.off && is.null(.ddg.get ("possible.graphics.files.open"))) {
+          if (cmd@has.dev.off && !cmd@createsGraphics && is.null(.ddg.get ("possible.graphics.files.open"))) {
             #print("Capturing graphics before dev.off")
             dev.file.created <- .ddg.capture.current.graphics()
             #print("Done capturing graphics before dev.off")
@@ -3235,7 +3244,6 @@ ddg.MAX_HIST_LINES <- 2^14
           # EVALUATE.
 
           if (.ddg.debug.lib()) print (paste (".ddg.parse.commands: Evaluating ", cmd@annotated))
-          #print (paste (".ddg.parse.commands: Evaluating ", cmd@annotated))
           
           result <- withCallingHandlers(
           
@@ -4971,7 +4979,7 @@ ddg.procedure <- function(pname, ins=NULL, outs.graphic=NULL, outs.data=NULL, ou
               # if (.ddg.debug.lib()) print(paste("param:", deparse(arg)))
               #   else {warning}
               # }
-
+              print(sys.calls())
               error.msg <- paste("No data node found for", param)
               .ddg.insert.error.message(error.msg)
             }
@@ -5035,7 +5043,7 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
         dev.node.name <- paste0("dev.", dev.cur())
       }
       #else {
-        #print("found dev.off but delaying handling it")
+      #  print("found dev.off but delaying handling it")
       #}
     }
   }
@@ -5586,6 +5594,7 @@ ddg.data.in <- function(dname, pname=NULL) {
         # name, using the scope "undefined".
         dscope <- "undefined"
         if (!is.character(dname) || !.ddg.data.node.exists(dname, dscope)) {
+          print(sys.calls())
           error.msg <- paste("No data node found for", arg)
           .ddg.insert.error.message(error.msg)
           return()
