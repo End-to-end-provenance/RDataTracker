@@ -1214,7 +1214,7 @@ ddg.MAX_HIST_LINES <- 2^14
   if (is.null(scope)) {
     scope <- .ddg.get.scope(name, calls=stack, env=env)
   }
-
+  
   #print (paste (".ddg.save.data: saving", name, "in scope", scope))
   # Determine type for value, and save accordingly.
   if (.ddg.is.graphic(value)) .ddg.write.graphic(name, value, graphic.fext, scope=scope, from.env=from.env)
@@ -5168,53 +5168,57 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
   .ddg.set(".ddg.return.values", ddg.return.values)
   .ddg.set(".ddg.num.returns", ddg.num.returns)
 
-  # Create edges from variables used in the return statement
-  #print("ddg.return.value: creating data flow edges into return statement")
-  vars.used <- return.stmt@vars.used
-  for (var in vars.used) {
-    # Make sure there is a node we could connect to.
-    scope <- .ddg.get.scope(var)
-    if (.ddg.data.node.exists(var, scope)) {
-      .ddg.data2proc(var, scope, return.stmt@abbrev)
-    }
-  }
-
-  for (var in return.stmt@vars.set)
-  {
-    if (var != "")
-    {
-      # Create output data node.
-      dvalue <- eval(as.symbol(var), envir=env)
-
-      # Check for non-local assignment
-      if ( .ddg.is.nonlocal.assign(return.stmt@parsed[[1]]) )
-      {
-        env <- .ddg.where( var, env = parent.env(parent.frame()) , warning = FALSE )
-
-        if( identical(env,"undefined") )
-          env <- globalenv()
+  # If it does not have return, then its parameter was a call to ddg.eval
+  # and this stuff has been done already.
+  if (.ddg.has.call.to(parsed.stmt, "return")) {
+    # Create edges from variables used in the return statement
+    #print("ddg.return.value: creating data flow edges into return statement")
+    vars.used <- return.stmt@vars.used
+    for (var in vars.used) {
+      # Make sure there is a node we could connect to.
+      scope <- .ddg.get.scope(var)
+      if (.ddg.data.node.exists(var, scope)) {
+        .ddg.data2proc(var, scope, return.stmt@abbrev)
       }
-
-      dscope <- .ddg.get.scope(var, env=env)
-      .ddg.save.data(var, dvalue, scope=dscope)
-
-      # Create an edge from procedure node to data node.
-      .ddg.proc2data(return.stmt@abbrev, var, dscope=dscope, return.value=FALSE)
     }
-  }
-
-
-  # Create nodes and edges dealing with reading and writing files
-  #print("ddg.return.value: creating file in/out/graphics edges")
-  .ddg.create.file.read.nodes.and.edges(return.stmt, env)
-  .ddg.create.file.write.nodes.and.edges (return.stmt, env)
   
-  if (return.stmt@createsGraphics) {
-    .ddg.set.graphics.files (return.stmt, env)
+    for (var in return.stmt@vars.set)
+    {
+      if (var != "")
+      {
+        # Create output data node.
+        dvalue <- eval(as.symbol(var), envir=env)
+  
+        # Check for non-local assignment
+        if ( .ddg.is.nonlocal.assign(return.stmt@parsed[[1]]) )
+        {
+          env <- .ddg.where( var, env = parent.env(parent.frame()) , warning = FALSE )
+  
+          if( identical(env,"undefined") )
+            env <- globalenv()
+        }
+  
+        dscope <- .ddg.get.scope(var, env=env)
+        .ddg.save.data(var, dvalue, scope=dscope)
+  
+        # Create an edge from procedure node to data node.
+        .ddg.proc2data(return.stmt@abbrev, var, dscope=dscope, return.value=FALSE)
+      }
+    }
+  
+  
+    # Create nodes and edges dealing with reading and writing files
+    #print("ddg.return.value: creating file in/out/graphics edges")
+    .ddg.create.file.read.nodes.and.edges(return.stmt, env)
+    .ddg.create.file.write.nodes.and.edges (return.stmt, env)
+    
+    if (return.stmt@createsGraphics) {
+      .ddg.set.graphics.files (return.stmt, env)
+    }
+  #  if (return.stmt@has.dev.off) {xxx
+  #    .ddg.capture.graphics(return.stmt)
+  #  }
   }
-#  if (return.stmt@has.dev.off) {xxx
-#    .ddg.capture.graphics(return.stmt)
-#  }
 
   # Create the finish node for the function
   #print("ddg.return.value: creating finish node")
