@@ -206,6 +206,8 @@ null.pos <- function() {
 # breakpoints - all the breakpoints currently set
 # parseData - the object created by the parser that gives us source position information
 .ddg.construct.DDGStatement <- function (expr, pos, script.name, script.num, breakpoints, parseData) {
+  #print(paste(".ddg.construct.DDGStatement: expr =", expr))
+  #print(sys.calls())
   # Surprisingly, if a statement is just a number, like 1 (which could be the last statement in a function, for example),
   # the parser returns a number, rather than a parse tree!
   if (is.numeric(expr)) expr <- parse(text=expr)
@@ -447,6 +449,7 @@ null.pos <- function() {
 
 .ddg.add.annotations <- function(command) {
   #print("In .ddg.add.annotations")
+  #print(paste("command@text =", command@text))
   parsed.command <- command@parsed[[1]]
 
   # Return if statement is empty.
@@ -509,6 +512,8 @@ null.pos <- function() {
 .ddg.parse.contained <- function (cmd, script.name, parseData) {
   # print("In .ddg.parse.contained")
   parsed.cmd <- cmd@parsed[[1]]
+  #print(paste(".ddg.parse.contained: cmd@parsed =", deparse(cmd@parsed)))
+  #print(paste(".ddg.parse.contained: parsed.cmd =", deparse(parsed.cmd)))
 
   # Function declaration
   if (.ddg.is.assign(parsed.cmd) && .ddg.is.functiondecl(parsed.cmd[[3]])) {
@@ -547,17 +552,19 @@ null.pos <- function() {
 }
 
 .ddg.parse.contained.function <- function (cmd, script.name, parseData, func.body) {
+  #print(paste(".ddg.parse.contained.function: func.body =", deparse(func.body)))
   # The function body is a block.  Extract the statements inside the block
   if (func.body[[1]] == "{") {
-    func.stmts <- list()
-    for (i in 2:length(func.body)) {
-      func.stmts <- c(func.stmts, func.body[[i]])
-    }
+#    func.stmts <- list()
+#    for (i in 2:length(func.body)) {
+#      func.stmts <- c(func.stmts, func.body[[i]])
+#    }
+    func.stmts <- func.body[2:length(func.body)]
   }
 
   # The function body is a single statement.
   else {
-    func.stmts <- func.body
+    func.stmts <- list(func.body)
   }
 
   # Create the DDGStatement objects for the statements in the function
@@ -687,6 +694,11 @@ null.pos <- function() {
 
     # Insert calls to ddg.return.value if not already added.
     if (!.ddg.has.call.to(func.definition[[3]], "ddg.return.value")) {
+      #print(paste(".ddg.add.function.annotations: function.decl =", function.decl@text))
+      #print(paste(".ddg.add.function.annotations: function.decl@contained ="))
+      #for (i in 1:length(function.decl@contained)) {
+      #  print(function.decl@contained[[i]])
+      #}
       func.definition <- .ddg.wrap.all.return.parameters(func.definition, function.decl@contained)
     }
 
@@ -810,6 +822,8 @@ null.pos <- function() {
 
   for (i in 1:pos) {
     statement <- block[[i]]
+    #print(paste("statement", i, "=", deparse(statement)))
+    #print(paste("parsed.stmts", i, "=", parsed.stmts[[i]]@abbrev))
     if (.ddg.has.call.to(statement, "return")) {
 
       # If statement is a return, wrap parameters with ddg.return.value.
@@ -820,9 +834,15 @@ null.pos <- function() {
         } else {
           ret.params <- statement[[2]]
         }
+        
+        #print(paste(".ddg.wrap.return.parameters: ret.params =", ret.params))
 
+        #for (i in 1:length(parsed.stmts)) {
+        #  print(paste(".ddg.wrap.return.parameters: parsed.stmts =", parsed.stmts[[i]]@abbrev))
+        #}
         if (is.list(parsed.stmts)) {
           parsed.stmt <- parsed.stmts[[i-2]]
+         # parsed.stmt <- parsed.stmts[[i-1]]
         }
         else {
           parsed.stmt <- parsed.stmts
@@ -958,6 +978,8 @@ null.pos <- function() {
   # return the value that parsed.stmt has at the time the ddg.eval
   # call is created.
   force(parsed.stmt)
+  #print(sys.calls())
+  #print(paste(".ddg.create.ddg.return.call: parsed.stmt =", parsed.stmt@abbrev))
   if (.ddg.has.call.to(last.statement, "return")) {
   	return (call ("ddg.return.value", last.statement, function() parsed.stmt))
   }
