@@ -97,7 +97,7 @@
     name="TESTS"
     xmlns:if="ant:if"
     xmlns:unless="ant:unless"
-  default="install-and-test"
+    default="install-and-test"
   >
 
   <!--############################# Start Setup #############################-->
@@ -298,21 +298,30 @@
     <echo>
       Diff of (1) ${out_name}.local and (2) ${expected_out_name}.local:
     </echo>
+    
     <exec executable="diff">
       <arg line="--strip-trailing-cr ${local_dir}/${out_name}.local ${local_dir}/${expected_out_name}.local" />
     </exec>
     
-    <!-- Exectute diff on .txt files -->
+    <!-- Exectute diff on .json files -->
     <echo>
       Diff of (1) ddg.json.local and (2) ${ddg_name}.local:
     </echo>
-    <exec executable="diff" >
+    
+    <exec executable="diff">
       <arg line="--strip-trailing-cr ${local_dir}/ddg.json.local ${local_dir}/${ddg_name}.local" />
     </exec>
+    
     <echo>cmp (1) ddg.json.local and (2) ${ddg_name}.local:</echo>
-    <exec executable="cmp" failonerror="false" resultproperty="return.code">
+    
+    <exec executable="cmp" failonerror="false" resultproperty="return.code.out">
       <arg value="${local_dir}/${out_name}.local" />
       <arg value="${local_dir}/${expected_out_name}.local" />
+    </exec>
+    
+    <exec executable="cmp" failonerror="false" resultproperty="return.code.json">
+      <arg value="${local_dir}/ddg.json.local" />
+      <arg value="${local_dir}/${ddg_name}.local" />
     </exec>
     
     <!-- check for failure -->
@@ -353,7 +362,10 @@
   <target name="failure-check" if="using-travis">
     <fail message="Does not match expected output.">
       <condition>
-        <equals arg1="1" arg2="${return.code}"/>
+        <or>
+          <equals arg1="${return.code.out}" arg2="1"/>
+          <equals arg1="${return.code.json}" arg2="1"/>
+        </or>
       </condition>
     </fail>
   </target>
