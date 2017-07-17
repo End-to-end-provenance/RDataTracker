@@ -53,6 +53,7 @@
   - ControlConstructTest
   - WarningTest
   - PlotTest
+  - NoDevOffTest
   - DataTypeTest
   - HigherOrderFuncTest
   - AssignmentOperatorsTest
@@ -96,7 +97,7 @@
     name="TESTS"
     xmlns:if="ant:if"
     xmlns:unless="ant:unless"
-	default="install-and-test"
+    default="install-and-test"
   >
 
   <!--############################# Start Setup #############################-->
@@ -155,26 +156,26 @@
     <mkdir dir="${local_dir}" />
 
     <!-- Copy the source test file to this directory, and replace with correct script name and directory -->
-  	<copy file="${FILE.basedir}/tests/sourceTest.r" todir="${dir}" overwrite="true"/>
-  	<replaceregexp  file="${dir}/sourceTest.r"
+    <copy file="${FILE.basedir}/tests/sourceTest.r" todir="${dir}" overwrite="true"/>
+    <replaceregexp  file="${dir}/sourceTest.r"
                     match="\[DIR_LOCAL\]"
                     replace="${FILE.basedir}/${dir}"
                     flags="g"
     />
-  	<replaceregexp  file="${dir}/sourceTest.r"
+    <replaceregexp  file="${dir}/sourceTest.r"
                     match="\[SCRIPT\]"
                     replace="${script-file}"
                     flags="g"
     />
-  	<replaceregexp  file="${dir}/sourceTest.r"
-  	                    match="\[DIR_DDG\]"
-  	                    replace="${FILE.basedir}/${dir}/ddg"
-  	                    flags="g"
-  	/>
+    <replaceregexp  file="${dir}/sourceTest.r"
+                        match="\[DIR_DDG\]"
+                        replace="${FILE.basedir}/${dir}/ddg"
+                        flags="g"
+    />
 
-  	<!-- Execute the R Script (delete ddg directory first) -->
+    <!-- Execute the R Script (delete ddg directory first) -->
     <delete dir="${dir}/ddg" quiet="true" />
-  	<exec executable="Rscript" dir="${dir}" output="${FILE.basedir}/${out}" >
+    <exec executable="Rscript" dir="${dir}" output="${FILE.basedir}/${out}" >
       <arg line="sourceTest.r" />
     </exec>
 
@@ -207,49 +208,49 @@
       </fileset>
     </replaceregexp>
 
-  	<!-- Delete all sourced script timestamp occurrences -->
-  	<replaceregexp flags="g">
-  		<regexp pattern='("timestamp" : ("?([0-9]{4}-[0-9]{2}-[0-9]{2}(T| )[0-9]{2}(.|:)[0-9]{2}(.|:)[0-9]{2}[A-Z]{0,3})?"?))' />
-  		<substitution expression=""/>
-  		<fileset dir="${local_dir}">
-  			<patternset id="local_files">
-  				<include name="*.local" />
-  			</patternset>
-  		</fileset>
-  	</replaceregexp>
+    <!-- Delete all sourced script timestamp occurrences -->
+    <replaceregexp flags="g">
+      <regexp pattern='("timestamp" : ("?([0-9]{4}-[0-9]{2}-[0-9]{2}(T| )[0-9]{2}(.|:)[0-9]{2}(.|:)[0-9]{2}[A-Z]{0,3})?"?))' />
+      <substitution expression=""/>
+      <fileset dir="${local_dir}">
+        <patternset id="local_files">
+          <include name="*.local" />
+        </patternset>
+      </fileset>
+    </replaceregexp>
 
-  	<!-- Delete all entity timestamp occurrences -->
-  	<replaceregexp flags="g">
-  		<regexp pattern='("rdt:timestamp" : ("?([0-9]{4}-[0-9]{2}-[0-9]{2}(T| )[0-9]{2}(.|:)[0-9]{2}(.|:)[0-9]{2}[A-Z]{0,3})?"?,)\r?\n)' />
-  		<substitution expression=""/>
-  		<fileset dir="${local_dir}">
-  			<patternset id="local_files">
-  				<include name="*.local" />
-  			</patternset>
-  		</fileset>
-  	</replaceregexp>
+    <!-- Delete all entity timestamp occurrences -->
+    <replaceregexp flags="g">
+      <regexp pattern='("rdt:timestamp" : ("?([0-9]{4}-[0-9]{2}-[0-9]{2}(T| )[0-9]{2}(.|:)[0-9]{2}(.|:)[0-9]{2}[A-Z]{0,3})?"?,)\r?\n)' />
+      <substitution expression=""/>
+      <fileset dir="${local_dir}">
+        <patternset id="local_files">
+          <include name="*.local" />
+        </patternset>
+      </fileset>
+    </replaceregexp>
 
-  	<!-- Delete all entity scope occurrences  -->
-  	<replaceregexp flags="g">
-  		<regexp pattern='("rdt:scope" : ("(.*)",)\r?\n)' />
-  		<substitution expression=""/>
-  		<fileset dir="${local_dir}">
-  			<patternset id="local_files">
-  				<include name="*.local" />
-  			</patternset>
-  		</fileset>
-  	</replaceregexp>
+    <!-- Delete all entity scope occurrences  -->
+    <replaceregexp flags="g">
+      <regexp pattern='("rdt:scope" : ("(.*)",)\r?\n)' />
+      <substitution expression=""/>
+      <fileset dir="${local_dir}">
+        <patternset id="local_files">
+          <include name="*.local" />
+        </patternset>
+      </fileset>
+    </replaceregexp>
 
-  	<!-- Delete all activity elapsed time occurrences  -->
-  	<replaceregexp flags="g">
-  		<regexp pattern='("rdt:elapsedTime" : ("?[0-9]*\.?[0-9]+",)\r?\n)' />
-  		<substitution expression=""/>
-  		<fileset dir="${local_dir}">
-  			<patternset id="local_files">
-  				<include name="*.local" />
-  			</patternset>
-  		</fileset>
-  	</replaceregexp>
+    <!-- Delete all activity elapsed time occurrences  -->
+    <replaceregexp flags="g">
+      <regexp pattern='("rdt:elapsedTime" : ("?[0-9]*\.?[0-9]+",)\r?\n)' />
+      <substitution expression=""/>
+      <fileset dir="${local_dir}">
+        <patternset id="local_files">
+          <include name="*.local" />
+        </patternset>
+      </fileset>
+    </replaceregexp>
     
     <!-- Further edit the .local files if running tests on Travis -->
     <antcall target="travis-edits"/>
@@ -297,23 +298,35 @@
     <echo>
       Diff of (1) ${out_name}.local and (2) ${expected_out_name}.local:
     </echo>
+    
     <exec executable="diff">
       <arg line="--strip-trailing-cr ${local_dir}/${out_name}.local ${local_dir}/${expected_out_name}.local" />
     </exec>
     
-    <!-- Exectute diff on .txt files -->
+    <!-- Exectute diff on .json files -->
     <echo>
       Diff of (1) ddg.json.local and (2) ${ddg_name}.local:
     </echo>
-    <exec executable="diff" >
+    
+    <exec executable="diff">
       <arg line="--strip-trailing-cr ${local_dir}/ddg.json.local ${local_dir}/${ddg_name}.local" />
     </exec>
-		<echo>cmp (1) ddg.json.local and (2) ${ddg_name}.local:</echo>
-    <exec executable="cmp" failonerror="false" resultproperty="return.code">
+    
+    <echo>cmp (1) ddg.json.local and (2) ${ddg_name}.local:</echo>
+    
+    <exec executable="cmp" failonerror="false" resultproperty="return.code.out">
       <arg value="${local_dir}/${out_name}.local" />
       <arg value="${local_dir}/${expected_out_name}.local" />
     </exec>
+    
+    <exec executable="cmp" failonerror="false" resultproperty="return.code.json">
+      <arg value="${local_dir}/ddg.json.local" />
+      <arg value="${local_dir}/${ddg_name}.local" />
+    </exec>
+    
+    <!-- check for failure -->
     <antcall target="failure-check"/>
+  
   </target>
   
   
@@ -349,22 +362,25 @@
   <target name="failure-check" if="using-travis">
     <fail message="Does not match expected output.">
       <condition>
-        <equals arg1="1" arg2="${return.code}"/>
+        <or>
+          <equals arg1="${return.code.out}" arg2="1"/>
+          <equals arg1="${return.code.json}" arg2="1"/>
+        </or>
       </condition>
     </fail>
   </target>
   
   
-	<!-- Runs a test using a standard file naming scheme. -->
-	<target name = "run-regression-test">
+  <!-- Runs a test using a standard file naming scheme. -->
+  <target name = "run-regression-test">
     <antcall target="run-test">
-		  <param name="dir" value="tests/${test-name}" />
-			<param name="out" value="tests/${test-name}/${test-name}.out" />
-			<param name="script-file" value="${test-name}.R" />
-			<param name="expected_out" value="tests/${test-name}/expected_${test-name}.out" />
-			<param name="expected_ddg" value="tests/${test-name}/expected_${test-name}_ddg.json" />
+      <param name="dir" value="tests/${test-name}" />
+      <param name="out" value="tests/${test-name}/${test-name}.out" />
+      <param name="script-file" value="${test-name}.R" />
+      <param name="expected_out" value="tests/${test-name}/expected_${test-name}.out" />
+      <param name="expected_ddg" value="tests/${test-name}/expected_${test-name}_ddg.json" />
     </antcall>
-	</target>
+  </target>
 
   <target name = "run-regression-test-Rmd">
     <antcall target="run-test">
@@ -377,23 +393,23 @@
   </target>
   
   
-	<!-- Updates the expected result files for a test case. -->
+  <!-- Updates the expected result files for a test case. -->
   <!-- This should only be used when the expected results have changed for the better! -->
-	<target name="update-expected">
-		<!-- Confirm that the user wants to update the expected results.  -->
-		<input
-		    message="Do you want to update the expected results for ${dir}?"
-		    validargs="y,n"
-		    addproperty="do.update"
-		/>
-		<condition property="do.abort">
-			<not>
-				<equals arg1="y" arg2="${do.update}"/>
-			</not>
-		</condition>
-		<fail if="do.abort">Update aborted by user.</fail>
+  <target name="update-expected">
+    <!-- Confirm that the user wants to update the expected results.  -->
+    <input
+        message="Do you want to update the expected results for ${dir}?"
+        validargs="y,n"
+        addproperty="do.update"
+    />
+    <condition property="do.abort">
+      <not>
+        <equals arg1="y" arg2="${do.update}"/>
+      </not>
+    </condition>
+    <fail if="do.abort">Update aborted by user.</fail>
 
-		<!-- Directory to store expected results while editing -->
+    <!-- Directory to store expected results while editing -->
     <property name="expected_dir" value="${dir}/expected" />
     <delete dir="${expected_dir}" quiet="true" />
     <mkdir dir="${expected_dir}" />
@@ -402,7 +418,7 @@
     <copy todir="${expected_dir}" overwrite="true">
       <!-- Executed ddg.json file -->
       <fileset file="${dir}/ddg/ddg.json" />
-		  <fileset file="${FILE.basedir}/${out}" />
+      <fileset file="${FILE.basedir}/${out}" />
     </copy>
     
     <!-- Replace local file paths with [DIR] -->
@@ -412,153 +428,153 @@
       <fileset dir="${expected_dir}" />
     </replaceregexp>
     
-		<!-- Move the edited files up to become the new expected results -->
+    <!-- Move the edited files up to become the new expected results -->
     <copy file="${expected_dir}/ddg.json" tofile="${expected_ddg}" overwrite="true" />
     <basename property="out_name" file="${out}" />
-		<copy file="${expected_dir}/${out_name}" tofile="${expected_out}" overwrite="true" />
-	</target>
+    <copy file="${expected_dir}/${out_name}" tofile="${expected_out}" overwrite="true" />
+  </target>
   
   
-	<!-- Task to update the expected results using the standard naming scheme -->
-	<target name = "update-regression-expected">
+  <!-- Task to update the expected results using the standard naming scheme -->
+  <target name = "update-regression-expected">
     <antcall target="update-expected">
       <param name="dir" value="tests/${test-name}"/>
       <param name="out" value="tests/${test-name}/${test-name}.out"/>
       <param name="expected_out" value="tests/${test-name}/expected_${test-name}.out"/>
       <param name="expected_ddg" value="tests/${test-name}/expected_${test-name}_ddg.json"/>
     </antcall>
-	</target>
+  </target>
 
   <!--############################ End FUNCTIONS ############################-->
 
 
   <!--########################## Start Basic TESTS ##########################-->
   
-  	<target name="basicTest">
-  		<antcall target="run-regression-test">
-  			<param name="test-name" value="basicTest" />
-  		</antcall>
-  	</target>
+  <target name="basicTest">
+    <antcall target="run-regression-test">
+      <param name="test-name" value="basicTest" />
+    </antcall>
+  </target>
 
-	<target name="update-basicTest">
-	  <antcall target="update-regression-expected">
-	  	<param name="test-name" value="basicTest" />
-	 	</antcall>
-	</target>
+  <target name="update-basicTest">
+    <antcall target="update-regression-expected">
+      <param name="test-name" value="basicTest" />
+    </antcall>
+  </target>
 
-  	<target name="S4ObjectTest">
-  		<antcall target="run-regression-test">
-  			<param name="test-name" value="S4ObjectTest" />
-  		</antcall>
-  	</target>
+  <target name="S4ObjectTest">
+    <antcall target="run-regression-test">
+      <param name="test-name" value="S4ObjectTest" />
+    </antcall>
+  </target>
 
-	<target name="update-S4ObjectTest">
-	  <antcall target="update-regression-expected">
-	  	<param name="test-name" value="S4ObjectTest" />
-	 	</antcall>
-	</target>
+  <target name="update-S4ObjectTest">
+    <antcall target="update-regression-expected">
+      <param name="test-name" value="S4ObjectTest" />
+    </antcall>
+  </target>
 
-  	<target name="ScopeTest">
-  		<antcall target="run-regression-test">
-  			<param name="test-name" value="ScopeTest" />
-  		</antcall>
-  	</target>
+  <target name="ScopeTest">
+    <antcall target="run-regression-test">
+      <param name="test-name" value="ScopeTest" />
+    </antcall>
+  </target>
 
-	<target name="update-ScopeTest">
-	  <antcall target="update-regression-expected">
-	  	<param name="test-name" value="ScopeTest" />
-	 	</antcall>
-	</target>
+  <target name="update-ScopeTest">
+    <antcall target="update-regression-expected">
+      <param name="test-name" value="ScopeTest" />
+    </antcall>
+  </target>
 
-  	<target name="ReturnTest">
-  		<antcall target="run-regression-test">
-  			<param name="test-name" value="ReturnTest" />
-  		</antcall>
-  	</target>
+  <target name="ReturnTest">
+    <antcall target="run-regression-test">
+      <param name="test-name" value="ReturnTest" />
+    </antcall>
+  </target>
 
-	<target name="update-ReturnTest">
-	  <antcall target="update-regression-expected">
-	  	<param name="test-name" value="ReturnTest" />
-	 	</antcall>
-	</target>
+  <target name="update-ReturnTest">
+    <antcall target="update-regression-expected">
+      <param name="test-name" value="ReturnTest" />
+    </antcall>
+  </target>
 
-  	<target name="OddParameterTest">
-  		<antcall target="run-regression-test">
-  			<param name="test-name" value="OddParameterTest" />
-  		</antcall>
-  	</target>
+  <target name="OddParameterTest">
+    <antcall target="run-regression-test">
+      <param name="test-name" value="OddParameterTest" />
+    </antcall>
+  </target>
 
-	<target name="update-OddParameterTest">
-	  <antcall target="update-regression-expected">
-	  	<param name="test-name" value="OddParameterTest" />
-	 	</antcall>
-	</target>
+  <target name="update-OddParameterTest">
+    <antcall target="update-regression-expected">
+      <param name="test-name" value="OddParameterTest" />
+    </antcall>
+  </target>
 
-  	<target name="FunctionAnnotationTest">
-  		<antcall target="run-regression-test">
-  			<param name="test-name" value="FunctionAnnotationTest" />
-  		</antcall>
-  	</target>
+  <target name="FunctionAnnotationTest">
+    <antcall target="run-regression-test">
+      <param name="test-name" value="FunctionAnnotationTest" />
+    </antcall>
+  </target>
 
-	<target name="update-FunctionAnnotationTest">
-	  <antcall target="update-regression-expected">
-	  	<param name="test-name" value="FunctionAnnotationTest" />
-	 	</antcall>
-	</target>
+  <target name="update-FunctionAnnotationTest">
+    <antcall target="update-regression-expected">
+      <param name="test-name" value="FunctionAnnotationTest" />
+    </antcall>
+  </target>
 
-  	<target name="AnnotateOnOffTest">
-  		<antcall target="run-regression-test">
-  			<param name="test-name" value="AnnotateOnOffTest" />
-  		</antcall>
-  	</target>
+  <target name="AnnotateOnOffTest">
+    <antcall target="run-regression-test">
+      <param name="test-name" value="AnnotateOnOffTest" />
+    </antcall>
+  </target>
 
-	<target name="update-AnnotateOnOffTest">
-	  <antcall target="update-regression-expected">
-	  	<param name="test-name" value="AnnotateOnOffTest" />
-	 	</antcall>
-	</target>
+  <target name="update-AnnotateOnOffTest">
+    <antcall target="update-regression-expected">
+      <param name="test-name" value="AnnotateOnOffTest" />
+    </antcall>
+  </target>
 
-	<target name="ControlConstructTest">
-		<antcall target="run-regression-test">
-			<param name="test-name" value="ControlConstructTest" />
-		</antcall>
-	</target>
+  <target name="ControlConstructTest">
+    <antcall target="run-regression-test">
+      <param name="test-name" value="ControlConstructTest" />
+    </antcall>
+  </target>
 
-	<target name="update-ControlConstructTest">
-		<antcall target="update-regression-expected">
-			<param name="test-name" value="ControlConstructTest" />
-		</antcall>
-	</target>
+  <target name="update-ControlConstructTest">
+    <antcall target="update-regression-expected">
+      <param name="test-name" value="ControlConstructTest" />
+    </antcall>
+  </target>
 
-  	<target name="WarningTest">
-  		<antcall target="run-regression-test">
-  			<param name="test-name" value="WarningTest" />
-  		</antcall>
-  	</target>
+  <target name="WarningTest">
+    <antcall target="run-regression-test">
+      <param name="test-name" value="WarningTest" />
+    </antcall>
+  </target>
 
-	<target name="update-WarningTest">
-	  <antcall target="update-regression-expected">
-	  	<param name="test-name" value="WarningTest" />
-	 	</antcall>
-	</target>
+  <target name="update-WarningTest">
+    <antcall target="update-regression-expected">
+      <param name="test-name" value="WarningTest" />
+    </antcall>
+  </target>
 
-  	<target name="PlotTest">
-  		<antcall target="run-regression-test">
-  			<param name="test-name" value="PlotTest" />
-  		</antcall>
-  	</target>
+  <target name="PlotTest">
+    <antcall target="run-regression-test">
+      <param name="test-name" value="PlotTest" />
+    </antcall>
+  </target>
 
-	<target name="update-PlotTest">
-	  <antcall target="update-regression-expected">
-	  	<param name="test-name" value="PlotTest" />
-	 	</antcall>
-	</target>
+  <target name="update-PlotTest">
+    <antcall target="update-regression-expected">
+      <param name="test-name" value="PlotTest" />
+    </antcall>
+  </target>
 
-    <target name="NoDevOffTest">
-      <antcall target="run-regression-test">
-        <param name="test-name" value="NoDevOffTest" />
-      </antcall>
-    </target>
+  <target name="NoDevOffTest">
+    <antcall target="run-regression-test">
+      <param name="test-name" value="NoDevOffTest" />
+    </antcall>
+  </target>
 
   <target name="update-NoDevOffTest">
     <antcall target="update-regression-expected">
@@ -566,71 +582,71 @@
     </antcall>
   </target>
 
-	<target name="DataTypeTest">
-		<antcall target="run-regression-test">
-			<param name="test-name" value="DataTypeTest" />
-		</antcall>
-	</target>
-
-	<target name="update-DataTypeTest">
-		<antcall target="update-regression-expected">
-			<param name="test-name" value="DataTypeTest" />
-		</antcall>
-	</target>
-
-  	<target name="HigherOrderFuncTest">
-  		<antcall target="run-regression-test">
-  			<param name="test-name" value="HigherOrderFuncTest" />
-  		</antcall>
-  	</target>
-
-	<target name="update-HigherOrderFuncTest">
-	  <antcall target="update-regression-expected">
-	  	<param name="test-name" value="HigherOrderFuncTest" />
-	 	</antcall>
-	</target>
-
-	<target name="AssignmentOperatorsTest">
-		<antcall target="run-regression-test">
-			<param name="test-name" value="AssignmentOperatorsTest" />
-		</antcall>
-	</target>
-
-	<target name="update-AssignmentOperatorsTest">
-		<antcall target="update-regression-expected">
-			<param name="test-name" value="AssignmentOperatorsTest" />
-		</antcall>
-	</target>
-
-  	<target name="DDGStatementTest">
-  		<antcall target="run-regression-test">
-  			<param name="test-name" value="DDGStatementTest" />
-  		</antcall>
-  	</target>
-
-	<target name="update-DDGStatementTest">
-	  <antcall target="update-regression-expected">
-	  	<param name="test-name" value="DDGStatementTest" />
-	 	</antcall>
-	</target>
-
-    <target name="RMarkdownTest">
-      <antcall target="run-regression-test-Rmd">
-        <param name="test-name" value="RMarkdownTest" />
-      </antcall>
-    </target>
-
-	<target name="update-RMarkdownTest">
-    <antcall target="update-regression-expected">
-      <param name="test-name" value="RMarkdownTest" />
- 	  </antcall>
+  <target name="DataTypeTest">
+    <antcall target="run-regression-test">
+      <param name="test-name" value="DataTypeTest" />
+    </antcall>
   </target>
 
-	<target name="normal-tests" depends="basicTest, S4ObjectTest,
-		ScopeTest, ReturnTest, OddParameterTest, FunctionAnnotationTest,
-		ControlConstructTest, WarningTest, PlotTest, NoDevOffTest, DataTypeTest,
-		HigherOrderFuncTest, AssignmentOperatorsTest, RMarkdownTest, DDGStatementTest">
-		<echo>
+  <target name="update-DataTypeTest">
+    <antcall target="update-regression-expected">
+      <param name="test-name" value="DataTypeTest" />
+    </antcall>
+  </target>
+
+  <target name="HigherOrderFuncTest">
+    <antcall target="run-regression-test">
+      <param name="test-name" value="HigherOrderFuncTest" />
+    </antcall>
+  </target>
+
+  <target name="update-HigherOrderFuncTest">
+    <antcall target="update-regression-expected">
+      <param name="test-name" value="HigherOrderFuncTest" />
+    </antcall>
+  </target>
+
+  <target name="AssignmentOperatorsTest">
+    <antcall target="run-regression-test">
+      <param name="test-name" value="AssignmentOperatorsTest" />
+    </antcall>
+  </target>
+
+  <target name="update-AssignmentOperatorsTest">
+    <antcall target="update-regression-expected">
+      <param name="test-name" value="AssignmentOperatorsTest" />
+    </antcall>
+  </target>
+
+  <target name="DDGStatementTest">
+    <antcall target="run-regression-test">
+      <param name="test-name" value="DDGStatementTest" />
+    </antcall>
+  </target>
+
+  <target name="update-DDGStatementTest">
+    <antcall target="update-regression-expected">
+      <param name="test-name" value="DDGStatementTest" />
+    </antcall>
+  </target>
+
+  <target name="RMarkdownTest">
+    <antcall target="run-regression-test-Rmd">
+      <param name="test-name" value="RMarkdownTest" />
+    </antcall>
+  </target>
+
+  <target name="update-RMarkdownTest">
+    <antcall target="update-regression-expected">
+      <param name="test-name" value="RMarkdownTest" />
+    </antcall>
+  </target>
+
+  <target name="normal-tests" depends="basicTest, S4ObjectTest,
+    ScopeTest, ReturnTest, OddParameterTest, FunctionAnnotationTest,
+    ControlConstructTest, WarningTest, PlotTest, NoDevOffTest, DataTypeTest,
+    HigherOrderFuncTest, AssignmentOperatorsTest, RMarkdownTest, DDGStatementTest">
+    <echo>
       ##############################################
       Finished Execution of Normal Tests. Nothing should have malfunctioned.
       ##############################################
@@ -642,35 +658,35 @@
 
   <!--########################## Start Checkpoint TESTS ##########################-->
 
-  	<target name="CheckpointTest">
-  		<antcall target="run-regression-test">
-  			<param name="test-name" value="CheckpointTest" />
-  		</antcall>
-  	</target>
+  <target name="CheckpointTest">
+    <antcall target="run-regression-test">
+      <param name="test-name" value="CheckpointTest" />
+    </antcall>
+  </target>
 
-	<target name="update-CheckpointTest">
-	  <antcall target="update-regression-expected">
-	  	<param name="test-name" value="CheckpointTest" />
-	 	</antcall>
-	</target>
+  <target name="update-CheckpointTest">
+    <antcall target="update-regression-expected">
+      <param name="test-name" value="CheckpointTest" />
+    </antcall>
+  </target>
 
-  	<target name="CheckpointFileTest">
-  		<antcall target="run-regression-test">
-  			<param name="test-name" value="CheckpointFileTest" />
-  		</antcall>
-  	</target>
+  <target name="CheckpointFileTest">
+    <antcall target="run-regression-test">
+      <param name="test-name" value="CheckpointFileTest" />
+    </antcall>
+  </target>
 
-	<target name="update-CheckpointFileTest">
-	  <antcall target="update-regression-expected">
-	  	<param name="test-name" value="CheckpointFileTest" />
-	 	</antcall>
-	</target>
+  <target name="update-CheckpointFileTest">
+    <antcall target="update-regression-expected">
+      <param name="test-name" value="CheckpointFileTest" />
+    </antcall>
+  </target>
 
-	<target name="checkpoint-tests" depends="CheckpointTest, CheckpointFileTest">
+  <target name="checkpoint-tests" depends="CheckpointTest, CheckpointFileTest">
     <echo>
       ##############################################
       Finished Execution of Checkpoint Tests. Expect differences in output for checkpoint-file-test due to directory creation in Windows (using : and spaces).
-    	##############################################
+      ##############################################
     </echo>
   </target>
 
@@ -678,172 +694,172 @@
 
   <!--########################## Start Source Tests ##########################-->
 
-  	<target name="SourceFuncTest">
-  		<antcall target="run-regression-test">
-  			<param name="test-name" value="SourceFuncTest" />
-  		</antcall>
-  	</target>
+  <target name="SourceFuncTest">
+    <antcall target="run-regression-test">
+      <param name="test-name" value="SourceFuncTest" />
+    </antcall>
+  </target>
 
-	<target name="update-SourceFuncTest">
-	  <antcall target="update-regression-expected">
-	  	<param name="test-name" value="SourceFuncTest" />
-	 	</antcall>
-	</target>
+  <target name="update-SourceFuncTest">
+    <antcall target="update-regression-expected">
+      <param name="test-name" value="SourceFuncTest" />
+    </antcall>
+  </target>
 
-  	<target name="OnOffTest">
-  		<antcall target="run-regression-test">
-  			<param name="test-name" value="OnOffTest" />
-  		</antcall>
-  	</target>
+  <target name="OnOffTest">
+    <antcall target="run-regression-test">
+      <param name="test-name" value="OnOffTest" />
+    </antcall>
+  </target>
 
-	<target name="update-OnOffTest">
-	  <antcall target="update-regression-expected">
-	  	<param name="test-name" value="OnOffTest" />
-	 	</antcall>
-	</target>
+  <target name="update-OnOffTest">
+    <antcall target="update-regression-expected">
+      <param name="test-name" value="OnOffTest" />
+    </antcall>
+  </target>
 
   <target name="source-tests" depends="SourceFuncTest, OnOffTest">
     <echo>Finished Execution of Source Tests.</echo>
   </target>
 
-	<!--########################## End Source TESTS ##########################-->
+  <!--########################## End Source TESTS ##########################-->
   
   
   <!--########################## Start Script Tests ##########################-->
 
-  	<target name="CalculateSquareRoot">
-  		<antcall target="run-regression-test">
-  			<param name="test-name" value="CalculateSquareRoot" />
-  		</antcall>
-  	</target>
+  <target name="CalculateSquareRoot">
+    <antcall target="run-regression-test">
+      <param name="test-name" value="CalculateSquareRoot" />
+    </antcall>
+  </target>
 
-	<target name="update-CalculateSquareRoot">
-	  <antcall target="update-regression-expected">
-	  	<param name="test-name" value="CalculateSquareRoot" />
-	 	</antcall>
-	</target>
+  <target name="update-CalculateSquareRoot">
+    <antcall target="update-regression-expected">
+      <param name="test-name" value="CalculateSquareRoot" />
+    </antcall>
+  </target>
 
-  	<target name="DailySolarRadiation">
-  		<antcall target="run-regression-test">
-  			<param name="test-name" value="DailySolarRadiation" />
-  		</antcall>
-  	</target>
+  <target name="DailySolarRadiation">
+    <antcall target="run-regression-test">
+      <param name="test-name" value="DailySolarRadiation" />
+    </antcall>
+  </target>
 
-	<target name="update-DailySolarRadiation">
-	  <antcall target="update-regression-expected">
-	  	<param name="test-name" value="DailySolarRadiation" />
-	 	</antcall>
-	</target>
+  <target name="update-DailySolarRadiation">
+    <antcall target="update-regression-expected">
+      <param name="test-name" value="DailySolarRadiation" />
+    </antcall>
+  </target>
 
-  	<target name="HFDatasetPreview">
-  		<antcall target="run-regression-test">
-  			<param name="test-name" value="HFDatasetPreview" />
-  		</antcall>
-      <echo>The test requires RCurl and gplots (+ dependencies) to be installed.</echo>
-  	</target>
+  <target name="HFDatasetPreview">
+    <antcall target="run-regression-test">
+      <param name="test-name" value="HFDatasetPreview" />
+    </antcall>
+    <echo>The test requires RCurl and gplots (+ dependencies) to be installed.</echo>
+  </target>
 
-	<target name="update-HFDatasetPreview">
-	  <antcall target="update-regression-expected">
-	  	<param name="test-name" value="HFDatasetPreview" />
-	 	</antcall>
-	</target>
+  <target name="update-HFDatasetPreview">
+    <antcall target="update-regression-expected">
+      <param name="test-name" value="HFDatasetPreview" />
+    </antcall>
+  </target>
 
-  	<target name="SivanSamplingSmaller">
-  		<antcall target="run-regression-test">
-  			<param name="test-name" value="SivanSamplingSmaller" />
-  		</antcall>
-	    <echo>This script uses randomization.</echo>
-  	</target>
+  <target name="SivanSamplingSmaller">
+    <antcall target="run-regression-test">
+      <param name="test-name" value="SivanSamplingSmaller" />
+    </antcall>
+    <echo>This script uses randomization.</echo>
+  </target>
 
-	<target name="update-SivanSamplingSmaller">
-	  <antcall target="update-regression-expected">
-	  	<param name="test-name" value="SivanSamplingSmaller" />
-	 	</antcall>
-	</target>
+  <target name="update-SivanSamplingSmaller">
+    <antcall target="update-regression-expected">
+      <param name="test-name" value="SivanSamplingSmaller" />
+    </antcall>
+  </target>
 
-	<!-- SivanSampling is not currently included in the test suites because it collects too much data -->
-  	<target name="SivanSampling">
-  		<antcall target="run-regression-test">
-  			<param name="test-name" value="SivanSampling" />
-  		</antcall>
-	    <echo>This script uses randomization.</echo>
-  	</target>
+  <!-- SivanSampling is not currently included in the test suites because it collects too much data -->
+  <target name="SivanSampling">
+    <antcall target="run-regression-test">
+      <param name="test-name" value="SivanSampling" />
+    </antcall>
+    <echo>This script uses randomization.</echo>
+  </target>
 
-	<target name="update-SivanSampling">
-	  <antcall target="update-regression-expected">
-	  	<param name="test-name" value="SivanSampling" />
-	 	</antcall>
-	</target>
+  <target name="update-SivanSampling">
+    <antcall target="update-regression-expected">
+      <param name="test-name" value="SivanSampling" />
+    </antcall>
+  </target>
 
   <target name="script-tests" depends="CalculateSquareRoot, DailySolarRadiation, HFDatasetPreview">
-	  <echo>Script tests for which output should not differ </echo>
-	</target>
+    <echo>Script tests for which output should not differ </echo>
+  </target>
   
-	<!--########################## End Script Tests ##########################-->
+  <!--########################## End Script Tests ##########################-->
   
   
   <!--########################## Start Interactive Tests ##########################-->
 
-  	<target name="RealTime15MinMET">
-  		<antcall target="run-regression-test">
-  			<param name="test-name" value="RealTime15MinMET" />
-  		</antcall>
-  	</target>
+  <target name="RealTime15MinMET">
+    <antcall target="run-regression-test">
+      <param name="test-name" value="RealTime15MinMET" />
+    </antcall>
+  </target>
 
-	<target name="update-RealTime15MinMET">
-	  <antcall target="update-regression-expected">
-	  	<param name="test-name" value="RealTime15MinMET" />
-	 	</antcall>
-	</target>
+  <target name="update-RealTime15MinMET">
+    <antcall target="update-regression-expected">
+      <param name="test-name" value="RealTime15MinMET" />
+    </antcall>
+  </target>
 
-  	<target name="QualityControl15Min">
-  		<antcall target="run-regression-test">
-  			<param name="test-name" value="QualityControl15Min" />
-  		</antcall>
-  	</target>
+  <target name="QualityControl15Min">
+    <antcall target="run-regression-test">
+      <param name="test-name" value="QualityControl15Min" />
+    </antcall>
+  </target>
 
-	<target name="update-QualityControl15Min">
-	  <antcall target="update-regression-expected">
-	  	<param name="test-name" value="QualityControl15Min" />
-	 	</antcall>
-	</target>
+  <target name="update-QualityControl15Min">
+    <antcall target="update-regression-expected">
+      <param name="test-name" value="QualityControl15Min" />
+    </antcall>
+  </target>
 
   <target name="interactive-tests" depends="RealTime15MinMET, QualityControl15Min">
     <echo>Script tests for which the user needs to provide input </echo>
-	</target>
+  </target>
 
-  	<target name="AaronSimesDendrochronology">
-  		<antcall target="run-regression-test">
-  			<param name="test-name" value="AaronSimesDendrochronology" />
-  		</antcall>
-  	</target>
+  <target name="AaronSimesDendrochronology">
+    <antcall target="run-regression-test">
+      <param name="test-name" value="AaronSimesDendrochronology" />
+    </antcall>
+  </target>
 
-	<target name="update-AaronSimesDendrochronology">
-	  <antcall target="update-regression-expected">
-	  	<param name="test-name" value="AaronSimesDendrochronology" />
-	 	</antcall>
-	</target>
+  <target name="update-AaronSimesDendrochronology">
+    <antcall target="update-regression-expected">
+      <param name="test-name" value="AaronSimesDendrochronology" />
+    </antcall>
+  </target>
 
-	<target name="long-script-tests" depends="AaronSimesDendrochronology" >
+  <target name="long-script-tests" depends="AaronSimesDendrochronology" >
     <echo>Long tests derived from real-world scripts. </echo>
-	</target>
+  </target>
   
   <!--########################## End Interactive Tests ##########################-->
 
 
   <!--########################## Start Bug Tests ##########################-->
 
-  	<target name="ddgDeepNesting">
-  		<antcall target="run-regression-test">
-  			<param name="test-name" value="ddgDeepNesting" />
-  		</antcall>
-  	</target>
-
-	<target name="update-ddgDeepNesting">
-	  <antcall target="update-regression-expected">
+  <target name="ddgDeepNesting">
+    <antcall target="run-regression-test">
       <param name="test-name" value="ddgDeepNesting" />
-	 	</antcall>
-	</target>
+    </antcall>
+  </target>
+
+  <target name="update-ddgDeepNesting">
+    <antcall target="update-regression-expected">
+      <param name="test-name" value="ddgDeepNesting" />
+    </antcall>
+  </target>
 
   <target name="bug-tests" depends="ddgDeepNesting" >
     <echo>Tests which were added to check for specific bug fixes </echo>
