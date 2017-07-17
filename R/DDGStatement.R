@@ -172,10 +172,11 @@ setMethod ("initialize",
           }
 
       .Object@contained <-
-        # If we are annotating statements inside functions and control statements,
-        # the contained field is a list of DDGStatements for all statements inside
-        # the function or control statement.
-          .ddg.parse.contained(.Object, script.name, parseData)
+        # The contained field is a list of DDGStatements for all statements inside
+        # the function or control statement.  If we are collecting
+        # provenance inside functions or control statements, we will execute
+        # annotated versions of these statements.
+        .ddg.parse.contained(.Object, script.name, parseData)
 
       .Object@annotated <-
           # If this is a call to ddg.eval, we only want to execute
@@ -207,7 +208,6 @@ null.pos <- function() {
 # parseData - the object created by the parser that gives us source position information
 .ddg.construct.DDGStatement <- function (expr, pos, script.name, script.num, breakpoints, parseData) {
   #print(paste(".ddg.construct.DDGStatement: expr =", expr))
-  #print(sys.calls())
   # Surprisingly, if a statement is just a number, like 1 (which could be the last statement in a function, for example),
   # the parser returns a number, rather than a parse tree!
   if (is.numeric(expr)) expr <- parse(text=expr)
@@ -460,11 +460,9 @@ null.pos <- function() {
     return(.ddg.add.ddg.source(parsed.command))
   }
 
-  # Annotate internal statements if annotate.inside is TRUE.
-
-    # Annotate user-defined functions.
-    # Note that this will not annotate anonymous functions, like ones that might be passed to lapply, for example
-    # Is that what we want?
+  # Annotate user-defined functions.
+  # Note that this will not annotate anonymous functions, like ones that might be passed to lapply, for example
+  # Is that what we want?
   if (.ddg.is.assign(parsed.command) && .ddg.is.functiondecl(parsed.command[[3]])) {
     if (ddg.annotate.inside()) {
       return(.ddg.add.function.annotations(command))
@@ -555,10 +553,6 @@ null.pos <- function() {
   #print(paste(".ddg.parse.contained.function: func.body =", deparse(func.body)))
   # The function body is a block.  Extract the statements inside the block
   if (func.body[[1]] == "{") {
-#    func.stmts <- list()
-#    for (i in 2:length(func.body)) {
-#      func.stmts <- c(func.stmts, func.body[[i]])
-#    }
     func.stmts <- func.body[2:length(func.body)]
   }
 
@@ -978,12 +972,16 @@ null.pos <- function() {
   # return the value that parsed.stmt has at the time the ddg.eval
   # call is created.
   force(parsed.stmt)
-  #print(sys.calls())
   #print(paste(".ddg.create.ddg.return.call: parsed.stmt =", parsed.stmt@abbrev))
   if (.ddg.has.call.to(last.statement, "return")) {
   	return (call ("ddg.return.value", last.statement, function() parsed.stmt))
   }
   else {
+    # If there is no return call, we will use ddg.eval to execute the
+    # statement and then ddg.return.value to create the necessary return
+    # structure.  We cannot use this technique if there is a return call
+    # because we if tried to eval a return call, we would end up returning
+    # from some code inside RDT, instead of the user's function.
     eval.cmd <- .ddg.construct.DDGStatement (parse(text=deparse(last.statement)), pos=NA, script.num=NA, breakpoints=NA, parseData=NULL)
     new.statement <- .ddg.create.ddg.eval.call(last.statement, parsed.stmt)
     return (call ("ddg.return.value", new.statement, function() parsed.stmt))
