@@ -20,11 +20,10 @@ X11()
 plot(cylinders, mpg)
 dev.off()
 
-# Plot to a file
+# Plot to a file.  Test when the plot is not explicitly closed.
 pdf ("plot.pdf")
 plot(cylinders, mpg)
-#invisible(dev.off())
-dev.off()
+
 
 x <- 1
 
