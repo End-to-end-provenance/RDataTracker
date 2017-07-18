@@ -2395,6 +2395,10 @@ ddg.MAX_HIST_LINES <- 2^14
     error = function (e) return()
   )
   #print(paste(".ddg.set.graphics.files: main.object =", main.object@text))
+  
+  # Add the newly-opened graphics device to the list of open devices
+  .ddg.set("ddg.open.devices", union(.ddg.get("ddg.open.devices"), dev.cur()))
+  
 
   # Find all the graphics files that have potentially been opened.
   # Remember these file names until we find the dev.off call and then
@@ -2434,8 +2438,12 @@ ddg.MAX_HIST_LINES <- 2^14
   # RStudio window, not a file, so there has been no call like pdf
   # or jpg that would have created the data node.
   dev.node.name <- paste0("dev.", dev.cur())
-  if (.ddg.data.node.exists(dev.node.name)) {
+  if (dev.cur() %in% .ddg.get("ddg.open.devices")) {
     .ddg.data2proc(dev.node.name, NULL, cmd@abbrev)
+  }
+  else {
+    # Add the newly-opened graphics device to the list of open devices
+    .ddg.set("ddg.open.devices", union(.ddg.get("ddg.open.devices"), dev.cur()))    
   }
   
   # Add an output node with the same name
@@ -2451,6 +2459,9 @@ ddg.MAX_HIST_LINES <- 2^14
       else if (is.character(cmd)) cmd
       else cmd@abbrev
   
+  dev.number <- .ddg.get(".ddg.dev.number")
+  .ddg.set("ddg.open.devices", setdiff(.ddg.get("ddg.open.devices"), dev.number))
+  
   #print(paste(".ddg.capture.graphics: ", proc.node.name))
   if (!is.null(.ddg.get ("possible.graphics.files.open")) && !is.null(proc.node.name)) {
     possible.graphics.files.open <- .ddg.get ("possible.graphics.files.open")
@@ -2465,9 +2476,8 @@ ddg.MAX_HIST_LINES <- 2^14
     # Check if the device is still open and close it if it is
     # We need to do this so that the file.out call can
     # copy the file.
-    dev.number <- .ddg.get(".ddg.dev.number")
     if (dev.number %in% dev.list()) dev.off(dev.number)
-
+    
     #print(".ddg.capture.graphics: creating file node")
     
     if (!is.null(proc.node.name)) {
@@ -5843,6 +5853,7 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
   # Store the starting graphics device.
   .ddg.set("prev.device", dev.cur())
   .ddg.set("possible.graphics.files.open", NULL)
+  .ddg.set("ddg.open.devices", vector())
 
   if (interactive() && .ddg.enable.console()) {
     ddg.history.file <- paste(.ddg.path.data(), "/.ddghistory", sep="")
