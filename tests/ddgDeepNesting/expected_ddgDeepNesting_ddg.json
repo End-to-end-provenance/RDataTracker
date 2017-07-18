@@ -9,7 +9,7 @@
 "p1" : {
 "rdt:name" : "ddgDeepNesting.R",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "0.386",
+"rdt:elapsedTime" : "0.216",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -20,7 +20,7 @@
 "p2" : {
 "rdt:name" : "increment.value <- function(a) {    a <- a + 1}",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.459",
+"rdt:elapsedTime" : "0.24",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "7",
 "rdt:startCol" : "1",
@@ -31,7 +31,7 @@
 "p3" : {
 "rdt:name" : "a <- 0",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.544",
+"rdt:elapsedTime" : "0.316",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "11",
 "rdt:startCol" : "1",
@@ -42,7 +42,7 @@
 "p4" : {
 "rdt:name" : "n <- 5",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.05",
+"rdt:elapsedTime" : "0.569",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "13",
 "rdt:startCol" : "1",
@@ -53,7 +53,7 @@
 "p5" : {
 "rdt:name" : "for (i in 1:n) {    for (j in 1:n) {        for (k in 1:n) {",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "1.069",
+"rdt:elapsedTime" : "0.586",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "17",
 "rdt:startCol" : "1",
@@ -64,7 +64,7 @@
 "p6" : {
 "rdt:name" : "for loop",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "1.135",
+"rdt:elapsedTime" : "0.633",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -75,7 +75,7 @@
 "p7" : {
 "rdt:name" : "i <- 1",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.136",
+"rdt:elapsedTime" : "0.635",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -86,7 +86,7 @@
 "p8" : {
 "rdt:name" : "for (j in 1:n) {    for (k in 1:n) {        a <- increment.v",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "1.328",
+"rdt:elapsedTime" : "0.787",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -97,7 +97,7 @@
 "p9" : {
 "rdt:name" : "for loop",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "1.346",
+"rdt:elapsedTime" : "0.803",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -108,7 +108,7 @@
 "p10" : {
 "rdt:name" : "j <- 1",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.347",
+"rdt:elapsedTime" : "0.804",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -119,7 +119,7 @@
 "p11" : {
 "rdt:name" : "for (k in 1:n) {    a <- increment.value(a)    invisible(a)}",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "1.381",
+"rdt:elapsedTime" : "0.838",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -130,7 +130,7 @@
 "p12" : {
 "rdt:name" : "for loop",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "1.397",
+"rdt:elapsedTime" : "0.854",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -141,7 +141,7 @@
 "p13" : {
 "rdt:name" : "k <- 1",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.398",
+"rdt:elapsedTime" : "0.855",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -152,7 +152,7 @@
 "p14" : {
 "rdt:name" : "a <- increment.value(a)",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "1.403",
+"rdt:elapsedTime" : "0.861",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -163,7 +163,7 @@
 "p15" : {
 "rdt:name" : "increment.value(a)",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "1.413",
+"rdt:elapsedTime" : "0.871",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -174,7 +174,7 @@
 "p16" : {
 "rdt:name" : "a  <-  a",
 "rdt:type" : "Binding",
-"rdt:elapsedTime" : "1.414",
+"rdt:elapsedTime" : "0.872",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -185,7 +185,7 @@
 "p17" : {
 "rdt:name" : "increment.value",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.421",
+"rdt:elapsedTime" : "0.879",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -196,7 +196,7 @@
 "p18" : {
 "rdt:name" : "a <- a + 1",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.435",
+"rdt:elapsedTime" : "0.894",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "8",
 "rdt:startCol" : "9",
@@ -207,7 +207,7 @@
 "p19" : {
 "rdt:name" : "increment.value(a)",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.446",
+"rdt:elapsedTime" : "0.905",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -218,7 +218,7 @@
 "p20" : {
 "rdt:name" : "a <- increment.value(a)",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.447",
+"rdt:elapsedTime" : "0.906",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -229,7 +229,7 @@
 "p21" : {
 "rdt:name" : "invisible(a)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.452",
+"rdt:elapsedTime" : "0.912",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -240,7 +240,7 @@
 "p22" : {
 "rdt:name" : "for loop",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.459",
+"rdt:elapsedTime" : "0.919",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -251,7 +251,7 @@
 "p23" : {
 "rdt:name" : "Details Omitted",
 "rdt:type" : "Incomplete",
-"rdt:elapsedTime" : "1.464",
+"rdt:elapsedTime" : "0.924",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -262,7 +262,7 @@
 "p24" : {
 "rdt:name" : "for (k in 1:n) {    a <- increment.value(a)    invisible(a)}",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.465",
+"rdt:elapsedTime" : "0.925",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -273,7 +273,7 @@
 "p25" : {
 "rdt:name" : "for loop",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.468",
+"rdt:elapsedTime" : "0.928",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -284,7 +284,7 @@
 "p26" : {
 "rdt:name" : "Details Omitted",
 "rdt:type" : "Incomplete",
-"rdt:elapsedTime" : "1.469",
+"rdt:elapsedTime" : "0.929",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -295,7 +295,7 @@
 "p27" : {
 "rdt:name" : "for (j in 1:n) {    for (k in 1:n) {        a <- increment.v",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.47",
+"rdt:elapsedTime" : "0.93",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -306,7 +306,7 @@
 "p28" : {
 "rdt:name" : "for loop",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.474",
+"rdt:elapsedTime" : "0.934",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -317,7 +317,7 @@
 "p29" : {
 "rdt:name" : "Details Omitted",
 "rdt:type" : "Incomplete",
-"rdt:elapsedTime" : "1.476",
+"rdt:elapsedTime" : "0.936",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -328,7 +328,7 @@
 "p30" : {
 "rdt:name" : "for (i in 1:n) {    for (j in 1:n) {        for (k in 1:n) {",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.477",
+"rdt:elapsedTime" : "0.936",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "17",
 "rdt:startCol" : "1",
@@ -339,7 +339,7 @@
 "p31" : {
 "rdt:name" : "ddgDeepNesting.R",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.484",
+"rdt:elapsedTime" : "0.943",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -359,7 +359,7 @@
 "rdt:scriptTimeStamp" : "2017-07-18T09.47.51EDT",
 "rdt:workingDirectory" : "[DIR]",
 "rdt:ddgDirectory" : "[DIR]/ddg",
-"rdt:ddgTimeStamp" : "2017-07-18T10.25.35EDT",
+"rdt:ddgTimeStamp" : "2017-07-18T15.22.41EDT",
 "rdt:rdatatrackerVersion" : "2.26.2",
 "rdt:installedPackages" : [
 	{"package" : "base", "version" : "3.4.0"},
@@ -375,182 +375,156 @@
 
 "d1" : {
 "rdt:name" : "increment.value",
-"rdt:scriptpath" : "[DIR]/ddgDeepNesting.R",
 "rdt:value" : "#ddg.function",
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE", 
 "rdt:MD5hash" : "",
-"rdt:rw" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
 
 "d2" : {
 "rdt:name" : "a",
-"rdt:scriptpath" : "[DIR]/ddgDeepNesting.R",
 "rdt:value" : "0",
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE", 
 "rdt:MD5hash" : "",
-"rdt:rw" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
 
 "d3" : {
 "rdt:name" : "n",
-"rdt:scriptpath" : "[DIR]/ddgDeepNesting.R",
 "rdt:value" : "5",
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE", 
 "rdt:MD5hash" : "",
-"rdt:rw" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
 
 "d4" : {
 "rdt:name" : "i",
-"rdt:scriptpath" : "[DIR]/ddgDeepNesting.R",
 "rdt:value" : "1",
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["integer"]},
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE", 
 "rdt:MD5hash" : "",
-"rdt:rw" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
 
 "d5" : {
 "rdt:name" : "j",
-"rdt:scriptpath" : "[DIR]/ddgDeepNesting.R",
 "rdt:value" : "1",
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["integer"]},
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE", 
 "rdt:MD5hash" : "",
-"rdt:rw" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
 
 "d6" : {
 "rdt:name" : "k",
-"rdt:scriptpath" : "[DIR]/ddgDeepNesting.R",
 "rdt:value" : "1",
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["integer"]},
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE", 
 "rdt:MD5hash" : "",
-"rdt:rw" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
 
 "d7" : {
 "rdt:name" : "a",
-"rdt:scriptpath" : "[DIR]/ddgDeepNesting.R",
 "rdt:value" : "0",
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",
-"rdt:scope" : "0x7fe623a07630",
+"rdt:scope" : "0x7fcac4186c70",
 "rdt:fromEnv" : "FALSE", 
 "rdt:MD5hash" : "",
-"rdt:rw" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
 
 "d8" : {
 "rdt:name" : "increment.value(a) return",
-"rdt:scriptpath" : "[DIR]/ddgDeepNesting.R",
 "rdt:value" : "1",
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE", 
 "rdt:MD5hash" : "",
-"rdt:rw" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
 
 "d9" : {
 "rdt:name" : "a",
-"rdt:scriptpath" : "[DIR]/ddgDeepNesting.R",
 "rdt:value" : "1",
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",
-"rdt:scope" : "0x7fe623a07630",
+"rdt:scope" : "0x7fcac4186c70",
 "rdt:fromEnv" : "FALSE", 
 "rdt:MD5hash" : "",
-"rdt:rw" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
 
 "d10" : {
 "rdt:name" : "a",
-"rdt:scriptpath" : "[DIR]/ddgDeepNesting.R",
 "rdt:value" : "1",
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE", 
 "rdt:MD5hash" : "",
-"rdt:rw" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
 
 "d11" : {
 "rdt:name" : "a",
-"rdt:scriptpath" : "[DIR]/ddgDeepNesting.R",
 "rdt:value" : "5",
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE", 
 "rdt:MD5hash" : "",
-"rdt:rw" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
 
 "d12" : {
 "rdt:name" : "a",
-"rdt:scriptpath" : "[DIR]/ddgDeepNesting.R",
 "rdt:value" : "25",
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE", 
 "rdt:MD5hash" : "",
-"rdt:rw" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
 
 "d13" : {
 "rdt:name" : "a",
-"rdt:scriptpath" : "[DIR]/ddgDeepNesting.R",
 "rdt:value" : "125",
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE", 
 "rdt:MD5hash" : "",
-"rdt:rw" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 }},

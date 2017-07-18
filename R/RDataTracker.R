@@ -36,6 +36,7 @@ ddg.MAX_CHECKPOINTS <- 10
 ddg.MAX_HIST_LINES <- 2^14
 
 library(tools)
+library(jsonlite)
 
 #-------- FUNCTIONS TO MANAGE THE GLOBAL VARIABLES--------#
 
@@ -804,9 +805,9 @@ library(tools)
 
 # .ddg.json.data.node adds a data node to the ddg.json string.
 
-.ddg.json.data.node <- function(dscriptpath, id, dname, dvalue, val.type, dtype, dscope, from.env, dhash, drw, dtime, dloc) {
+.ddg.json.data.node <- function(id, dname, dvalue, val.type, dtype, dscope, from.env, dhash, dtime, dloc) {
 
-  jstr <- paste("\n\"d", id, "\" : {\n\"rdt:name\" : \"", dname, "\",\n\"rdt:scriptpath\" : \"", dscriptpath, "\",\n\"rdt:value\" : \"", dvalue, "\",\n\"rdt:valType\" : ", val.type, ",\n\"rdt:type\" : \"", dtype, "\",\n\"rdt:scope\" : \"", dscope, "\",\n\"rdt:fromEnv\" : \"", from.env, "\", \n\"rdt:MD5hash\" : \"", dhash, "\",\n\"rdt:rw\" : \"", drw, "\",\n\"rdt:timestamp\" : \"", dtime, "\",\n\"rdt:location\" : \"", dloc, "\"\n}", sep="")
+  jstr <- paste("\n\"d", id, "\" : {\n\"rdt:name\" : \"", dname, "\",\n\"rdt:value\" : \"", dvalue, "\",\n\"rdt:valType\" : ", val.type, ",\n\"rdt:type\" : \"", dtype, "\",\n\"rdt:scope\" : \"", dscope, "\",\n\"rdt:fromEnv\" : \"", from.env, "\", \n\"rdt:MD5hash\" : \"", dhash, "\",\n\"rdt:timestamp\" : \"", dtime, "\",\n\"rdt:location\" : \"", dloc, "\"\n}", sep="")
 
   .ddg.append.entity(jstr)
 }
@@ -937,7 +938,7 @@ library(tools)
   if (drw != "") drw.str <- paste(" RW=\"", drw, "\"", sep="")
   else drw.str <- ""
 
-  dtxt <- paste(dscriptpath, dtype, " d", ddg.dnum, " \"", ddg.dnum, "-", dname, "\"", value.str, val.type.str, time.str, loc.str, dhash.str, drw.str, ";\n", sep="")
+  dtxt <- paste(dtype, " d", ddg.dnum, " \"", ddg.dnum, "-", dname, "\"", value.str, val.type.str, time.str, loc.str, dhash.str, ";\n", sep="")
   
   # Record in ddg.txt
   .ddg.append(dtxt)
@@ -946,7 +947,7 @@ library(tools)
   .ddg.append.inc(dtxt)
 
   # Record in ddg.json
-  .ddg.json.data.node(dscriptpath, ddg.dnum, dname, dvalue, val.type, dtype, dscope, from.env, dhash, drw, dtime, dloc)
+  .ddg.json.data.node(ddg.dnum, dname, dvalue, val.type, dtype, dscope, from.env, dhash, dtime, dloc)
 }
 
 
@@ -1448,6 +1449,20 @@ library(tools)
     new_hashtable.csv <- rbind(old_hashtable.csv,new_hashtable.csv)
   }
   write.table(new_hashtable.csv, writefile, append = FALSE, col.names = TRUE, row.names = FALSE, sep = ",")
+  
+  
+  # JSON TABLE WORK GOES HERE
+  
+  writejsonfile <- paste0(writedir,"/hashtable.json")
+  new_hashtable.json <- .ddg.get("ddg.hashtable")
+  colnames(new_hashtable.json) <- c("ScriptPath", "FilePath","DDGPath","NodePath","NodeNumber","MD5Hash","ReadWrite","Timestamp","Value")
+  
+  if (file.exists(writejsonfile)) {
+    old_hashtable.json <- .ddg.hashtable.json.cleanup(writejsonfile)
+    new_hashtable.json <- rbind(old_hashtable.json, new_hashtable.json)
+  }
+ write_json(new_hashtable.json, writejsonfile)
+  
 }
 
 # .ddg.hashtable.cleanup cleans the previous hashtable.csv of entries containing
@@ -1460,6 +1475,13 @@ library(tools)
   longpath <- paste0(getwd(), substring(.ddg.path(),2))
   old_hashtable.csv <- subset(old_hashtable.csv, DDGPath != longpath)
   return(old_hashtable.csv)
+}
+
+.ddg.hashtable.json.cleanup <- function(writejsonfile) {
+  old_hashtable.json <- read_json(writejsonfile, simplifyVector = TRUE)
+  longpath <- paste0(getwd(), substring(.ddg.path(),2))
+  old_hashtable.json <- subset(old_hashtable.json, DDGPath != longpath)
+  return(old_hashtable.json)
 }
 
 # Returns a string representation of the type information of the given value.
