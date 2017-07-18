@@ -34,6 +34,9 @@ ddg.MAX_CHECKPOINTS <- 10
 
 ddg.MAX_HIST_LINES <- 2^14
 
+library(tools)
+library(jsonlite)
+
 #-------- FUNCTIONS TO MANAGE THE GLOBAL VARIABLES--------#
 
 # Global variables cannot be used directly in a library.  Instead,
@@ -519,6 +522,13 @@ ddg.MAX_HIST_LINES <- 2^14
   if (!.ddg.is.set("ddg.max.snapshot.size")) {
     .ddg.set("ddg.max.snapshot.size", 100)
   }
+
+  # List of files read and written
+  .ddg.set("ddg.infilenodes", list())
+  .ddg.set("ddg.outfilenodes", list())
+
+  # Data frame containing file reads and writes
+  .ddg.set("ddg.hashtable", data.frame())
 }
 
 # .ddg.set.history provides a wrapper to change the number of
@@ -792,9 +802,9 @@ ddg.MAX_HIST_LINES <- 2^14
 
 # .ddg.json.data.node adds a data node to the ddg.json string.
 
-.ddg.json.data.node <- function(id, dname, dvalue, val.type, dtype, dscope, from.env, dtime, dloc) {
+.ddg.json.data.node <- function(id, dname, dvalue, val.type, dtype, dscope, from.env, dhash, dtime, dloc) {
 
-  jstr <- paste("\n\"d", id, "\" : {\n\"rdt:name\" : \"", dname, "\",\n\"rdt:value\" : \"", dvalue, "\",\n\"rdt:valType\" : ", val.type, ",\n\"rdt:type\" : \"", dtype, "\",\n\"rdt:scope\" : \"", dscope, "\",\n\"rdt:fromEnv\" : \"", from.env, "\",\n\"rdt:timestamp\" : \"", dtime, "\",\n\"rdt:location\" : \"", dloc, "\"\n}", sep="")
+  jstr <- paste("\n\"d", id, "\" : {\n\"rdt:name\" : \"", dname, "\",\n\"rdt:value\" : \"", dvalue, "\",\n\"rdt:valType\" : ", val.type, ",\n\"rdt:type\" : \"", dtype, "\",\n\"rdt:scope\" : \"", dscope, "\",\n\"rdt:fromEnv\" : \"", from.env, "\", \n\"rdt:MD5hash\" : \"", dhash, "\",\n\"rdt:timestamp\" : \"", dtime, "\",\n\"rdt:location\" : \"", dloc, "\"\n}", sep="")
 
   .ddg.append.entity(jstr)
 }
@@ -898,7 +908,7 @@ ddg.MAX_HIST_LINES <- 2^14
 
 # .ddg.output.data.node outputs a data node.
 
-.ddg.output.data.node <- function(dtype, dname, dvalue, val.type, dscope, from.env, dtime, dloc) {
+.ddg.output.data.node <- function(dscriptpath, dtype, dname, dvalue, val.type, dscope, from.env, dhash, drw, dtime, dloc) {
   # Get counter
   ddg.dnum <- .ddg.get("ddg.dnum")
 
@@ -908,6 +918,9 @@ ddg.MAX_HIST_LINES <- 2^14
   if (dvalue != "") value.str <- paste(" Value=\"", dvalue, "\"", sep="")
   else value.str <- ""
 
+  if(dscriptpath != "" ) dscriptpath.str <- paste(" Script Path=\"", dscriptpath, "\"", sep="")
+  else dscriptpath.str <- ""
+  
   if(val.type != "" ) val.type.str <- paste(" ValType=\"", .ddg.replace.quotes(val.type), "\"", sep="")
   else val.type.str <- ""
 
@@ -917,7 +930,13 @@ ddg.MAX_HIST_LINES <- 2^14
   if (dloc != "") loc.str <- paste(" Location=\"", dloc, "\"", sep="")
   else loc.str <- ""
 
-  dtxt <- paste(dtype, " d", ddg.dnum, " \"", ddg.dnum, "-", dname, "\"", value.str, val.type.str, time.str, loc.str, ";\n", sep="")
+  if (dhash != "") dhash.str <- paste(" MD5 Hash=\"", dhash, "\"", sep="")
+  else dhash.str <- ""
+
+  if (drw != "") drw.str <- paste(" RW=\"", drw, "\"", sep="")
+  else drw.str <- ""
+
+  dtxt <- paste(dtype, " d", ddg.dnum, " \"", ddg.dnum, "-", dname, "\"", value.str, val.type.str, time.str, loc.str, dhash.str, ";\n", sep="")
 
   # Record in ddg.txt
   .ddg.append(dtxt)
@@ -926,7 +945,7 @@ ddg.MAX_HIST_LINES <- 2^14
   .ddg.append.inc(dtxt)
 
   # Record in ddg.json
-  .ddg.json.data.node(ddg.dnum, dname, dvalue, val.type, dtype, dscope, from.env, dtime="", dloc="")
+  .ddg.json.data.node(ddg.dnum, dname, dvalue, val.type, dtype, dscope, from.env, dhash, dtime, dloc)
 }
 
 
@@ -1308,14 +1327,21 @@ ddg.MAX_HIST_LINES <- 2^14
 # value - the value of the data
 # dscope - data node scope.
 # from.env - if object is from initial environment.
+# dhash - the MD5 hash of original file.
+# drw - whether the file was read or written.
 # dtime (optional) - timestamp of original file.
 # dloc (optional) -  path and name of original file.
 
-.ddg.record.data <- function(dtype, dname, dvalue, value, dscope, from.env=FALSE, dtime="", dloc="") {
+.ddg.record.data <- function(dtype, dname, dvalue, value, dscope, from.env=FALSE, dtime="", dloc="", dhash="", drw="", dscriptpath="") {
   #print("In .ddg.record.data")
   # Increment data node counter.
   .ddg.inc("ddg.dnum")
   ddg.dnum <- .ddg.dnum()
+
+  #Initialize dscriptpath
+  if (!is.null(.ddg.get("ddg.r.script.path"))) {
+    dscriptpath <- .ddg.get("ddg.r.script.path")
+  }
 
   # If the table is full, make it bigger.
   ddg.data.nodes <- .ddg.data.nodes()
@@ -1324,11 +1350,14 @@ ddg.MAX_HIST_LINES <- 2^14
     new.rows <- data.frame(ddg.type = character(size),
         ddg.num = numeric(size),
         ddg.name = character(size),
+        ddg.path = characters(size),
         ddg.value = character(size),
         ddg.val.type = character(size),
         ddg.scope = character(size),
         ddg.from.env = logical(size),
         ddg.time = character(size),
+        ddg.hash = character(size),
+        ddg.rw = character(size),
         ddg.loc = character(size),
         ddg.current = logical(size), stringsAsFactors=FALSE)
     .ddg.add.rows("ddg.data.nodes", new.rows)
@@ -1345,25 +1374,113 @@ ddg.MAX_HIST_LINES <- 2^14
   #print(".ddg.record.data: adding info")
   ddg.data.nodes$ddg.type[ddg.dnum] <- dtype
   ddg.data.nodes$ddg.num[ddg.dnum] <- ddg.dnum
+  ddg.data.nodes$ddg.path[ddg.dnum] <- dscriptpath
   ddg.data.nodes$ddg.name[ddg.dnum] <- dname
   ddg.data.nodes$ddg.value[ddg.dnum] <- dvalue2
   ddg.data.nodes$ddg.val.type[ddg.dnum] <- val.type
   ddg.data.nodes$ddg.scope[ddg.dnum] <- dscope
   ddg.data.nodes$ddg.from.env[ddg.dnum] <- from.env
+  ddg.data.nodes$ddg.hash[ddg.dnum] <- dhash
+  ddg.data.nodes$ddg.rw[ddg.dnum] <- drw
   ddg.data.nodes$ddg.time[ddg.dnum] <- dtime
   ddg.data.nodes$ddg.loc[ddg.dnum] <- dloc
+
+  #print(".ddg.record.data: adding file MD5 hash info")
+  if (dtype == "File") {
+    infiles <- .ddg.get("ddg.infilenodes")
+    dhash <- md5sum(dname)
+    ddg.data.nodes$ddg.hash[ddg.dnum] <- dhash
+    if (length(infiles) != 0 && dname == infiles[length(infiles)]) {
+      drw <- "read"
+      ddg.data.nodes$ddg.rw[ddg.dnum] <- drw
+      .ddg.set("ddg.infilenodes", list())
+    } else {
+      drw <- "write"
+      ddg.data.nodes$ddg.rw[ddg.dnum] <- drw
+      .ddg.set("ddg.outfilenodes", list())
+    }
+    longpath <- paste0(getwd(), substring(.ddg.path(),2))
+    .ddg.set("ddg.hashtable", rbind(.ddg.get("ddg.hashtable"), c(dscriptpath, dloc, longpath, paste(.ddg.path(), dvalue, sep="/"), ddg.dnum, dhash, drw, dtime, dvalue2), stringsAsFactors = FALSE))
+  }
+
   ddg.data.nodes$ddg.current[ddg.dnum] <- TRUE
   .ddg.set("ddg.data.nodes", ddg.data.nodes)
 
   # Output data node.
   #print(".ddg.record.data outputting data node")
-  .ddg.output.data.node(dtype, dname, dvalue2, val.type, dscope, from.env, dtime, dloc)
+  .ddg.output.data.node(dscriptpath, dtype, dname, dvalue2, val.type, dscope, from.env, dhash, drw, dtime, dloc)
 
   if (.ddg.debug.lib()) {
-    print(paste("Adding data node", ddg.dnum, "named", dname, "with scope", dscope, " and value ", ddg.data.nodes$ddg.value[ddg.dnum]))
+    if (dtype != "File") {
+      print(paste("Adding data node", ddg.dnum, "named", dname, "with scope", dscope, " and value ", ddg.data.nodes$ddg.value[ddg.dnum]))
+    } else {
+      print(paste("Adding data node", ddg.dnum, "named", dname, "with scope", dscope, " and value ", ddg.data.nodes$ddg.value[ddg.dnum], " that hashes to ", dhash, " and performs a file ", drw))
+    }
   }
 }
 
+# .ddg.hashtable.write writes relevant information about the ddg
+# to the .ddg directory in the user's home directory. If the
+# function is unable to access or create this directory, then 
+# it will write to the working directory.
+
+.ddg.hashtable.write <- function() {
+  # if (interactive()) print(paste("Saving DDG in ", fileout))
+  writedir <- paste0(path.expand("~"),"/.ddg/")
+  if (!dir.exists(writedir)) {
+    tryCatch({
+      dir.create(writedir)
+    },
+    error = function(c){
+      writedir <- paste0(getwd(),"/.ddg/")
+      if (!dir.exists(writedir)) {
+        dir.create(writedir)
+      }
+    })
+  }
+  writefile <- paste0(writedir,"/hashtable.csv")
+  new_hashtable.csv <- .ddg.get("ddg.hashtable")
+  colnames(new_hashtable.csv) <- c("ScriptPath", "FilePath","DDGPath","NodePath","NodeNumber","MD5Hash","ReadWrite","Timestamp","Value")
+  
+  if (file.exists(writefile)) {
+    old_hashtable.csv <- .ddg.hashtable.cleanup(writefile)
+    new_hashtable.csv <- rbind(old_hashtable.csv,new_hashtable.csv)
+  }
+  write.table(new_hashtable.csv, writefile, append = FALSE, col.names = TRUE, row.names = FALSE, sep = ",")
+  
+  
+  # JSON TABLE WORK GOES HERE
+  
+  writejsonfile <- paste0(writedir,"/hashtable.json")
+  new_hashtable.json <- .ddg.get("ddg.hashtable")
+  colnames(new_hashtable.json) <- c("ScriptPath", "FilePath","DDGPath","NodePath","NodeNumber","MD5Hash","ReadWrite","Timestamp","Value")
+  
+  if (file.exists(writejsonfile)) {
+    old_hashtable.json <- .ddg.hashtable.json.cleanup(writejsonfile)
+    new_hashtable.json <- rbind(old_hashtable.json, new_hashtable.json)
+  }
+ write_json(new_hashtable.json, writejsonfile)
+  
+}
+
+# .ddg.hashtable.cleanup cleans the previous hashtable.csv of entries containing
+# ddg data that has been overwritten. Ddg data is considered to be overwritten if
+# it has an identical ddg path to the new elements being written to the file.
+
+.ddg.hashtable.cleanup <- function(writefile) {
+  # if (interactive()) print(paste("Cleaning ddg of entries with DDGPath ", .ddg.path()))
+  old_hashtable.csv <- read.csv(file = writefile)
+  longpath <- paste0(getwd(), substring(.ddg.path(),2))
+  old_hashtable.csv <- subset(old_hashtable.csv, DDGPath != longpath)
+  return(old_hashtable.csv)
+}
+
+.ddg.hashtable.json.cleanup <- function(writejsonfile) {
+  old_hashtable.json <- read_json(writejsonfile, simplifyVector = TRUE)
+  longpath <- paste0(getwd(), substring(.ddg.path(),2))
+  old_hashtable.json <- subset(old_hashtable.json, DDGPath != longpath)
+  return(old_hashtable.json)
+}
 
 # Returns a string representation of the type information of the given value.
 
@@ -2290,6 +2407,9 @@ ddg.MAX_HIST_LINES <- 2^14
   # This may include files that are not actually read if the
   # read are within an if-statement, for example.
   files.read <- .ddg.find.files.read(cmd, env)
+  # Adds the files read to ddg.infilenodes for use in determining reads
+  # and writes in the hashtable.
+  .ddg.set("ddg.infilenodes", c(.ddg.get("ddg.infilenodes"), files.read))
   #print (".ddg.create.file.read.nodes.and.edges: Files read:")
   #print (files.read)
 
@@ -2347,7 +2467,10 @@ ddg.MAX_HIST_LINES <- 2^14
   # This may include files that are not actually written if the
   # write calls are within an if-statement, for example.
   files.written <- .ddg.find.files.written(cmd, env)
-  #print ("Files written:")
+  # Adds the files written to ddg.outfilenodes for use in determining reads
+  # and writes in the hashtable.
+  .ddg.set("ddg.outfilenodes", c(.ddg.get("ddg.outfilenodes"), files.written))
+  #print (".ddg.create.file.read.nodes.and.edges: Files written:")
   #print (files.written)
 
   for (file in files.written) {
@@ -4493,20 +4616,6 @@ ddg.MAX_HIST_LINES <- 2^14
   return(exists(name, scope, inherits=FALSE))
 }
 
-#.ddg.rm removes all data except ddg information
-.ddg.rm <-function()
-
-# .ddg.get.annotation.list checks to see if the script contains calls to
-# ddg.annotate.on or ddg.annotate.off. If it does, these calls are executed.
-
-.ddg.get.annotation.list <- function(parsed.command) {
-  if (length(parsed.command[[1]]) > 1) {
-    if (toString(parsed.command[[1]][[1]]) == "ddg.annotate.on" | toString(parsed.command[[1]][[1]]) == "ddg.annotate.off") {
-      eval(parsed.command)
-    }
-  }
-}
-
 # Creates a start node for the current command if one has not
 # been created already.
 .ddg.create.start.for.cur.cmd <- function (call, caller.env) {
@@ -5163,7 +5272,7 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
 # ddg.annotate.inside returns the value of the parameter
 # annotate.inside.
 
-ddg.annotate.inside <- function() {
+.ddg.annotate.inside <- function() {
   return(.ddg.get("ddg.annotate.inside"))
 }
 
@@ -5187,7 +5296,7 @@ ddg.max.snapshot.size <- function() {
 }
 
 # ddg.loop.annotate returns the value of the parameter ddg.loop.annotate.
-ddg.loop.annotate <- function() {
+.ddg.loop.annotate <- function() {
   return(.ddg.get("ddg.loop.annotate"))
 }
 
@@ -5201,8 +5310,7 @@ ddg.loop.annotate.off <- function() {
   .ddg.set("ddg.loop.annotate", FALSE)
 }
 
-# Counts number of nested loops we are inside of
-ddg.inside.loop <- function() {
+.ddg.inside.loop <- function() {
   return (.ddg.get("ddg.inside.loop"))
 }
 
@@ -5278,6 +5386,31 @@ ddg.details.omitted <- function() {
   if (.ddg.debug.lib()) {
     print("Adding Details Omitted node")
   }
+}
+
+# Returns true if we should run the annotated version of a function and
+# false if we should run the unannotated version.
+
+ddg.should.run.annotated <- function (func.name) {
+  #print("In ddg.should.run.annotated")
+  
+  # Check if we are in a loop and loop annotations are off
+  if (!.ddg.loop.annotate() && .ddg.inside.loop() > 0) return (FALSE)
+  
+  # Make sure this specific function has not been disabled
+  if (!is.null(.ddg.annotate.off()) & func.name %in% .ddg.annotate.off()) return(FALSE)
+  
+  #print(paste(func.name, "is not in off list"))
+  
+  # Not annotating functions in general
+  # Check if this specific function should be annotated
+  if (!is.null(.ddg.annotate.on()) & func.name %in% .ddg.annotate.on()) return(TRUE)
+  
+  #print(paste(func.name, "is not in on list"))
+  
+  # If we do not know anything specific about this function, follow the 
+  # general rule
+  return (.ddg.annotate.inside()) 
 }
 
 # ddg.eval evaluates a statement and creates data flow edges from
@@ -5937,8 +6070,9 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
 # debug (optional) - If TRUE, enable script debugging. This has the
 #   same effect as inserting ddg.breakpoint() at the top of the script.
 # save.debug (optional) - If TRUE, save debug files to debug directory.
+# save.hashtable (optional) - If TRUE, save ddg information to hashtable.csv.
 
-ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = NULL, enable.console = TRUE, annotate.inside.functions = TRUE, first.loop = 1, max.loops = 1, max.snapshot.size = 10, debug = FALSE, save.debug = FALSE, display = FALSE) {
+ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = NULL, enable.console = TRUE, annotate.inside.functions = TRUE, first.loop = 1, max.loops = 1, max.snapshot.size = 10, debug = FALSE, save.debug = FALSE, display = FALSE, save.hashtable = TRUE) {
 
   # Initiate ddg.
   ddg.init(r.script.path, ddgdir, overwrite, enable.console, annotate.inside.functions, first.loop, max.loops, max.snapshot.size)
@@ -5971,7 +6105,7 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
                 force.console = FALSE)
           else stop("r.script.path and f cannot both be NULL"),
       finally={
-        ddg.save(r.script.path)
+        ddg.save(r.script.path, save.hashtable = save.hashtable)
         if(display==TRUE){
           ddg.display()
         }
@@ -5990,8 +6124,11 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
 # save.debug (optional) - If TRUE, save debug files to debug directory.
 #   Used in console mode.
 # quit (optional) - If TRUE, remove all DDG files from memory.
+# save.hashtable (optional) - If TRUE, save DDG information to hashtable.csv.
+#   Unlike ddg.run, this is set to false as default since it will generally
+#   be called internally and by tests, as opposed to by the user.
 
-ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE) {
+ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE, save.hashtable = FALSE) {
   if (!.ddg.is.init()) return(invisible())
 
   if (interactive() && .ddg.enable.console()) {
@@ -6017,6 +6154,18 @@ ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE) {
   .ddg.json.write()
   if (interactive()) print(paste("Saving ddg.json in ", .ddg.path(), sep=""))
 
+  # Save hashtable.csv to file.
+  if (save.hashtable) {
+    if (interactive()) {
+      if (dir.exists(paste0(path.expand("~"),"/.ddg/"))) {
+        print("Saving hashtable.csv in .ddg directory.")
+      } else {
+        print("No .ddg directory found in home directory, saving hashtable.csv in local directory.")
+      }
+    }
+    .ddg.hashtable.write()
+  }
+  
   # Save sourced scripts (if any). First row is main script.
   ddg.sourced.scripts <- .ddg.get(".ddg.sourced.scripts")
   if (!is.null(ddg.sourced.scripts)) {
@@ -6460,20 +6609,54 @@ ddg.console.on <- function() {
 
 # ddg.annotate.on enables annotation for the specified functions. Functions
 # not on this list are not annotated.
+# 
+# If fnames is NULL, all functions will be annotated
 
 # fnames - a list of one or more function names passed in as strings.
 
 ddg.annotate.on <- function (fnames=NULL) {
-  .ddg.set("ddg.annotate.on", fnames)
+  if (is.null(fnames)) {
+    .ddg.set("ddg.annotate.off", vector())
+    .ddg.set("ddg.annotate.inside", TRUE)
+    return()
+  }
+
+  # Add to the on list
+  on.list <- .ddg.get("ddg.annotate.on")
+  on.list <- union (on.list, fnames)
+  .ddg.set("ddg.annotate.on", on.list)
+  
+  # Remove from the off list
+  off.list <- .ddg.get("ddg.annotate.off")
+  off.list <- Filter (function(off) !(off %in% fnames), off.list)
+  .ddg.set("ddg.annotate.off", off.list) 
+
 }
 
 # ddg.annotate.off disables annotation for the specified functions.
 # Functions not on this list are annotated.
-
+# 
+# If fnames is NULL, no functions will be annotated
+#
 # fnames - a list of one or more function names passed in as strings.
 
 ddg.annotate.off <- function (fnames=NULL) {
-  .ddg.set("ddg.annotate.off", fnames)
+  if (is.null(fnames)) {
+    .ddg.set("ddg.annotate.on", vector())
+    .ddg.set("ddg.annotate.inside", FALSE)
+    return()
+  }
+  
+  # Add to the off list
+  off.list <- .ddg.get("ddg.annotate.off")
+  off.list <- union (off.list, fnames)
+  .ddg.set("ddg.annotate.off", off.list)
+  
+  # Remove from the on list
+  on.list <- .ddg.get("ddg.annotate.on")
+  on.list <- Filter (function(on) !(on %in% fnames), on.list)
+  .ddg.set("ddg.annotate.on", on.list) 
+  
 }
 
 # ddg.flush.ddg removes all files from the DDG directories unless the

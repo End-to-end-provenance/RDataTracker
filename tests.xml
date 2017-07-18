@@ -49,10 +49,12 @@
   - ReturnTest
   - OddParameterTest
   - FunctionAnnotationTest
+  - AnnotateOnOffTest
   - ControlConstructTest
   - WarningTest
   - PlotTest
   - Plot2Test
+  - NoDevOffTest
   - DataTypeTest
   - HigherOrderFuncTest
   - AssignmentOperatorsTest
@@ -198,7 +200,7 @@
 
     <!-- Delete all local environment information (except sourced scripts & installed packages) -->
     <replaceregexp flags="g">
-      <regexp pattern='(("rdt:architecture"|"rdt:operatingSystem"|"rdt:language"|"rdt:rVersion"|"rdt:script"|"rdt:scriptTimeStamp"|"rdt:workingDirectory"|"rdt:ddgDirectory"|"rdt:ddgTimeStamp"|"rdt:rdatatrackerVersion") : (.*)\r?\n(,\r?\n)?)' />
+      <regexp pattern='(("rdt:architecture"|"rdt:operatingSystem"|"rdt:language"|"rdt:rVersion"|"rdt:script"|"rdt:scriptTimeStamp"|"rdt:workingDirectory"|"rdt:ddgDirectory"|"rdt:MD5hash"|"rdt:ddgTimeStamp"|"rdt:rdatatrackerVersion") : (.*)\r?\n(,\r?\n)?)' />
       <substitution expression=""/>
       <fileset dir="${local_dir}">
         <patternset id="local_files">
@@ -301,7 +303,7 @@
       <arg line="--strip-trailing-cr ${local_dir}/${out_name}.local ${local_dir}/${expected_out_name}.local" />
     </exec>
     
-    <!-- Exectute diff on .txt files -->
+    <!-- Exectute diff on .json files -->
     <echo>
       Diff of (1) ddg.json.local and (2) ${ddg_name}.local:
     </echo>
@@ -309,10 +311,18 @@
       <arg line="--strip-trailing-cr ${local_dir}/ddg.json.local ${local_dir}/${ddg_name}.local" />
     </exec>
 		<echo>cmp (1) ddg.json.local and (2) ${ddg_name}.local:</echo>
-    <exec executable="cmp" failonerror="false" resultproperty="return.code">
+
+    <exec executable="cmp" failonerror="false" resultproperty="return.code.out">
       <arg value="${local_dir}/${out_name}.local" />
       <arg value="${local_dir}/${expected_out_name}.local" />
     </exec>
+
+    <exec executable="cmp" failonerror="false" resultproperty="return.code.json">
+      <arg value="${local_dir}/ddg.json.local" />
+      <arg value="${local_dir}/${ddg_name}.local" />
+    </exec>
+
+    <!-- check for failure -->
     <antcall target="failure-check"/>
   </target>
   
@@ -349,7 +359,10 @@
   <target name="failure-check" if="using-travis">
     <fail message="Does not match expected output.">
       <condition>
-        <equals arg1="1" arg2="${return.code}"/>
+        <or>
+          <equals arg1="${return.code.out}" arg2="1"/>
+          <equals arg1="${return.code.json}" arg2="1"/>
+        </or>
       </condition>
     </fail>
   </target>
@@ -506,6 +519,18 @@
 	 	</antcall>
 	</target>
 
+  <target name="AnnotateOnOffTest">
+    <antcall target="run-regression-test">
+      <param name="test-name" value="AnnotateOnOffTest" />
+    </antcall>
+  </target>
+
+  <target name="update-AnnotateOnOffTest">
+    <antcall target="update-regression-expected">
+      <param name="test-name" value="AnnotateOnOffTest" />
+    </antcall>
+  </target>
+
 	<target name="ControlConstructTest">
 		<antcall target="run-regression-test">
 			<param name="test-name" value="ControlConstructTest" />
@@ -553,6 +578,18 @@
 	  	<param name="test-name" value="Plot2Test" />
 	 	</antcall>
 	</target>
+
+  <target name="NoDevOffTest">
+    <antcall target="run-regression-test">
+      <param name="test-name" value="NoDevOffTest" />
+    </antcall>
+  </target>
+
+  <target name="update-NoDevOffTest">
+    <antcall target="update-regression-expected">
+      <param name="test-name" value="NoDevOffTest" />
+    </antcall>
+  </target>
 
 	<target name="DataTypeTest">
 		<antcall target="run-regression-test">
@@ -616,7 +653,7 @@
 
 	<target name="normal-tests" depends="basicTest, S4ObjectTest,
 		ScopeTest, ReturnTest, OddParameterTest, FunctionAnnotationTest,
-		ControlConstructTest, WarningTest, PlotTest, Plot2Test, DataTypeTest,
+		ControlConstructTest, WarningTest, PlotTest, Plot2Test, NoDevOffTest, DataTypeTest,
 		HigherOrderFuncTest, AssignmentOperatorsTest, RMarkdownTest, DDGStatementTest">
 		<echo>
       ##############################################

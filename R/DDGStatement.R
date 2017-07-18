@@ -659,6 +659,7 @@ null.pos <- function() {
 
   # Get function name.
   func.name <- toString(parsed.function.decl[[2]])
+  #print(paste("Annotating", func.name))
 
   # Return if a list of functions to annotate is provided and this
   # function is not on the list.
@@ -712,6 +713,7 @@ null.pos <- function() {
     }
 
     # Reassemble parsed.command.
+    #print(paste("Done annotating", func.name))
     return (as.expression (call ("<-", as.name(func.name), func.definition)))
   }
 }
@@ -755,7 +757,7 @@ null.pos <- function() {
   # functions that are inside control structures when we 
   # are not collecting provenance in control structures.
   new.func.body.txt <-
-    c(paste("if (ddg.loop.annotate() || ddg.inside.loop() == 0) {", sep=""),
+    c(paste("if (ddg.should.run.annotated(\"", func.name, "\")) {", sep=""),
     as.list(func.body[2:pos]),
     paste("} else {", sep=""),
     as.list(func.body[2:pos]),
@@ -836,7 +838,6 @@ null.pos <- function() {
         #}
         if (is.list(parsed.stmts)) {
           parsed.stmt <- parsed.stmts[[i-2]]
-         # parsed.stmt <- parsed.stmts[[i-1]]
         }
         else {
           parsed.stmt <- parsed.stmts
