@@ -464,7 +464,7 @@ null.pos <- function() {
   # Note that this will not annotate anonymous functions, like ones that might be passed to lapply, for example
   # Is that what we want?
   if (.ddg.is.assign(parsed.command) && .ddg.is.functiondecl(parsed.command[[3]])) {
-    if (ddg.annotate.inside()) {
+    if (.ddg.annotate.inside()) {
       return(.ddg.add.function.annotations(command))
     }
     else {
@@ -515,7 +515,7 @@ null.pos <- function() {
 
   # Function declaration
   if (.ddg.is.assign(parsed.cmd) && .ddg.is.functiondecl(parsed.cmd[[3]])) {
-    if (ddg.annotate.inside()) {
+    if (.ddg.annotate.inside()) {
       # Create the DDGStatement objects for the statements in the function
       return (.ddg.parse.contained.function(cmd, script.name, parseData, parsed.cmd[[3]][[3]]))
     }
@@ -680,7 +680,7 @@ null.pos <- function() {
     }
 
     # Create new function body with an if-then statement for annotations.
-    func.definition <- .ddg.add.conditional.statement(func.definition)
+  func.definition <- .ddg.add.conditional.statement(func.definition, func.name)
 
     # Insert call to ddg.function if not already added.
     if (!.ddg.has.call.to(func.definition[[3]], "ddg.function")) {
@@ -743,7 +743,7 @@ null.pos <- function() {
 #
 # func.definition - original function definition.
 
-.ddg.add.conditional.statement <- function(func.definition) {
+.ddg.add.conditional.statement <- function(func.definition, func.name) {
   # Get the function parameters.
   func.params <- func.definition[[2]]
 
