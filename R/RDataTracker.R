@@ -1391,6 +1391,9 @@ library(jsonlite)
   if (dtype == "File") {
     infiles <- .ddg.get("ddg.infilenodes")
     dhash <- md5sum(dname)
+    if (is.na(dhash)) {
+      dhash <- ""
+    }
     ddg.data.nodes$ddg.hash[ddg.dnum] <- dhash
     if (length(infiles) != 0 && dname == infiles[length(infiles)]) {
       drw <- "read"
@@ -1461,7 +1464,7 @@ library(jsonlite)
     old_hashtable.json <- .ddg.hashtable.json.cleanup(writejsonfile)
     new_hashtable.json <- rbind(old_hashtable.json, new_hashtable.json)
   }
- write_json(new_hashtable.json, writejsonfile)
+ write_json(new_hashtable.json, writejsonfile, simplifyVector = TRUE)
   
 }
 
