@@ -1443,18 +1443,6 @@ library(jsonlite)
       }
     })
   }
-  writefile <- paste0(writedir,"/hashtable.csv")
-  new_hashtable.csv <- .ddg.get("ddg.hashtable")
-  colnames(new_hashtable.csv) <- c("ScriptPath", "FilePath","DDGPath","NodePath","NodeNumber","SHA1Hash","ReadWrite","Timestamp","Value")
-  
-  if (file.exists(writefile)) {
-    old_hashtable.csv <- .ddg.hashtable.cleanup(writefile)
-    new_hashtable.csv <- rbind(old_hashtable.csv,new_hashtable.csv)
-  }
-  write.table(new_hashtable.csv, writefile, append = FALSE, col.names = TRUE, row.names = FALSE, sep = ",")
-  
-  
-  # JSON TABLE WORK GOES HERE
   
   writejsonfile <- paste0(writedir,"/hashtable.json")
   new_hashtable.json <- .ddg.get("ddg.hashtable")
@@ -1466,18 +1454,6 @@ library(jsonlite)
   }
  write_json(new_hashtable.json, writejsonfile, simplifyVector = TRUE)
   
-}
-
-# .ddg.hashtable.cleanup cleans the previous hashtable.csv of entries containing
-# ddg data that has been overwritten. Ddg data is considered to be overwritten if
-# it has an identical ddg path to the new elements being written to the file.
-
-.ddg.hashtable.cleanup <- function(writefile) {
-  # if (interactive()) print(paste("Cleaning ddg of entries with DDGPath ", .ddg.path()))
-  old_hashtable.csv <- read.csv(file = writefile)
-  longpath <- paste0(getwd(), substring(.ddg.path(),2))
-  old_hashtable.csv <- subset(old_hashtable.csv, DDGPath != longpath)
-  return(old_hashtable.csv)
 }
 
 .ddg.hashtable.json.cleanup <- function(writejsonfile) {
@@ -5927,7 +5903,7 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
 # debug (optional) - If TRUE, enable script debugging. This has the
 #   same effect as inserting ddg.breakpoint() at the top of the script.
 # save.debug (optional) - If TRUE, save debug files to debug directory.
-# save.hashtable (optional) - If TRUE, save ddg information to hashtable.csv.
+# save.hashtable (optional) - If TRUE, save ddg information to hashtable.json.
 
 ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = NULL, enable.console = TRUE, annotate.inside.functions = TRUE, first.loop = 1, max.loops = 1, max.snapshot.size = 10, debug = FALSE, save.debug = FALSE, display = FALSE, save.hashtable = TRUE) {
 
@@ -5981,7 +5957,7 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
 # save.debug (optional) - If TRUE, save debug files to debug directory.
 #   Used in console mode.
 # quit (optional) - If TRUE, remove all DDG files from memory.
-# save.hashtable (optional) - If TRUE, save DDG information to hashtable.csv.
+# save.hashtable (optional) - If TRUE, save DDG information to hashtable.json.
 #   Unlike ddg.run, this is set to false as default since it will generally
 #   be called internally and by tests, as opposed to by the user.
 
@@ -6016,13 +5992,13 @@ ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE, sav
   .ddg.json.write()
   if (interactive()) print(paste("Saving ddg.json in ", .ddg.path(), sep=""))
 
-  # Save hashtable.csv to file.
+  # Save hashtable.json to file.
   if (save.hashtable) {
     if (interactive()) {
       if (dir.exists(paste0(path.expand("~"),"/.ddg/"))) {
-        print("Saving hashtable.csv in .ddg directory.")
+        print("Saving hashtable.json in .ddg directory.")
       } else {
-        print("No .ddg directory found in home directory, saving hashtable.csv in local directory.")
+        print("No .ddg directory found in home directory, saving hashtable.json in local directory.")
       }
     }
     .ddg.hashtable.write()
