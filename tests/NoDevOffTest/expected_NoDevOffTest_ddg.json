@@ -9,7 +9,7 @@
 "p1" : {
 "rdt:name" : "NoDevOffTest.R",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "0.156",
+"rdt:elapsedTime" : "0.153",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -20,7 +20,7 @@
 "p2" : {
 "rdt:name" : "data(mtcars)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.181",
+"rdt:elapsedTime" : "0.178",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "4",
 "rdt:startCol" : "1",
@@ -31,7 +31,7 @@
 "p3" : {
 "rdt:name" : "allCars.df <- mtcars",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.3",
+"rdt:elapsedTime" : "0.29",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "7",
 "rdt:startCol" : "1",
@@ -42,7 +42,7 @@
 "p4" : {
 "rdt:name" : "cars4Cyl.df <- allCars.df[allCars.df$cyl == 4, ]",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.593",
+"rdt:elapsedTime" : "0.556",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "10",
 "rdt:startCol" : "1",
@@ -53,7 +53,7 @@
 "p5" : {
 "rdt:name" : "cars6Cyl.df <- allCars.df[allCars.df$cyl == 6, ]",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.623",
+"rdt:elapsedTime" : "0.586",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "11",
 "rdt:startCol" : "1",
@@ -64,7 +64,7 @@
 "p6" : {
 "rdt:name" : "cars8Cyl.df <- allCars.df[allCars.df$cyl == 8, ]",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.641",
+"rdt:elapsedTime" : "0.603",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "12",
 "rdt:startCol" : "1",
@@ -75,7 +75,7 @@
 "p7" : {
 "rdt:name" : "cylinders = c(4, 6, 8)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.66",
+"rdt:elapsedTime" : "0.619",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "15",
 "rdt:startCol" : "1",
@@ -86,7 +86,7 @@
 "p8" : {
 "rdt:name" : "mpg = c(mean(cars4Cyl.df$mpg), mean(cars6Cyl.df$mpg), mean(c",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.672",
+"rdt:elapsedTime" : "0.628",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "15",
 "rdt:startCol" : "13",
@@ -97,7 +97,7 @@
 "p9" : {
 "rdt:name" : "plot(cylinders, mpg)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.752",
+"rdt:elapsedTime" : "0.711",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "16",
 "rdt:startCol" : "1",
@@ -108,7 +108,7 @@
 "p10" : {
 "rdt:name" : "X11()",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.779",
+"rdt:elapsedTime" : "0.736",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "16",
 "rdt:startCol" : "7",
@@ -119,7 +119,7 @@
 "p11" : {
 "rdt:name" : "plot(cylinders, mpg)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.792",
+"rdt:elapsedTime" : "0.745",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "19",
 "rdt:startCol" : "1",
@@ -130,7 +130,7 @@
 "p12" : {
 "rdt:name" : "plot(cylinders, mpg)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.807",
+"rdt:elapsedTime" : "0.758",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "26",
 "rdt:startCol" : "1",
@@ -141,7 +141,7 @@
 "p13" : {
 "rdt:name" : "x <- 1",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.82",
+"rdt:elapsedTime" : "0.773",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "28",
 "rdt:startCol" : "1",
@@ -152,7 +152,7 @@
 "p14" : {
 "rdt:name" : "NoDevOffTest.R",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "0.828",
+"rdt:elapsedTime" : "0.778",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -172,7 +172,7 @@
 "rdt:scriptTimeStamp" : "2017-07-18T09.48.46EDT",
 "rdt:workingDirectory" : "[DIR]",
 "rdt:ddgDirectory" : "[DIR]/ddg",
-"rdt:ddgTimeStamp" : "2017-07-18T15.22.19EDT",
+"rdt:ddgTimeStamp" : "2017-07-19T14.25.41EDT",
 "rdt:rdatatrackerVersion" : "2.26.2",
 "rdt:installedPackages" : [
 	{"package" : "base", "version" : "3.4.0"},
@@ -193,8 +193,8 @@
 "rdt:type" : "Snapshot",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "TRUE", 
-"rdt:MD5hash" : "",
-"rdt:timestamp" : "2017-07-18T15.22.20EDT",
+"rdt:SHA1hash" : "",
+"rdt:timestamp" : "2017-07-19T14.25.41EDT",
 "rdt:location" : ""
 } ,
 
@@ -205,8 +205,8 @@
 "rdt:type" : "Snapshot",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE", 
-"rdt:MD5hash" : "",
-"rdt:timestamp" : "2017-07-18T15.22.20EDT",
+"rdt:SHA1hash" : "",
+"rdt:timestamp" : "2017-07-19T14.25.42EDT",
 "rdt:location" : ""
 } ,
 
@@ -217,8 +217,8 @@
 "rdt:type" : "Snapshot",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE", 
-"rdt:MD5hash" : "",
-"rdt:timestamp" : "2017-07-18T15.22.20EDT",
+"rdt:SHA1hash" : "",
+"rdt:timestamp" : "2017-07-19T14.25.42EDT",
 "rdt:location" : ""
 } ,
 
@@ -229,8 +229,8 @@
 "rdt:type" : "Snapshot",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE", 
-"rdt:MD5hash" : "",
-"rdt:timestamp" : "2017-07-18T15.22.20EDT",
+"rdt:SHA1hash" : "",
+"rdt:timestamp" : "2017-07-19T14.25.42EDT",
 "rdt:location" : ""
 } ,
 
@@ -241,8 +241,8 @@
 "rdt:type" : "Snapshot",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE", 
-"rdt:MD5hash" : "",
-"rdt:timestamp" : "2017-07-18T15.22.20EDT",
+"rdt:SHA1hash" : "",
+"rdt:timestamp" : "2017-07-19T14.25.42EDT",
 "rdt:location" : ""
 } ,
 
@@ -253,8 +253,8 @@
 "rdt:type" : "Snapshot",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE", 
-"rdt:MD5hash" : "",
-"rdt:timestamp" : "2017-07-18T15.22.20EDT",
+"rdt:SHA1hash" : "",
+"rdt:timestamp" : "2017-07-19T14.25.42EDT",
 "rdt:location" : ""
 } ,
 
@@ -265,8 +265,8 @@
 "rdt:type" : "Snapshot",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "TRUE", 
-"rdt:MD5hash" : "",
-"rdt:timestamp" : "2017-07-18T15.22.20EDT",
+"rdt:SHA1hash" : "",
+"rdt:timestamp" : "2017-07-19T14.25.42EDT",
 "rdt:location" : ""
 } ,
 
@@ -277,8 +277,8 @@
 "rdt:type" : "Snapshot",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE", 
-"rdt:MD5hash" : "",
-"rdt:timestamp" : "2017-07-18T15.22.20EDT",
+"rdt:SHA1hash" : "",
+"rdt:timestamp" : "2017-07-19T14.25.42EDT",
 "rdt:location" : ""
 } ,
 
@@ -289,7 +289,7 @@
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE", 
-"rdt:MD5hash" : "",
+"rdt:SHA1hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -301,8 +301,8 @@
 "rdt:type" : "File",
 "rdt:scope" : "undefined",
 "rdt:fromEnv" : "FALSE", 
-"rdt:MD5hash" : "bb4ef3989b3febeef7d9d8d1e88cec43",
-"rdt:timestamp" : "2017-07-18T15.22.20EDT",
+"rdt:SHA1hash" : "db01e66d313be3c650a6b694957e007909d882c9",
+"rdt:timestamp" : "2017-07-19T14.25.42EDT",
 "rdt:location" : "[DIR]/dev.off.10.pdf"
 }},
 "wasInformedBy":{
