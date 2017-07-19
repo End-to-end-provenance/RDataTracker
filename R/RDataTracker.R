@@ -35,7 +35,7 @@ ddg.MAX_CHECKPOINTS <- 10
 
 ddg.MAX_HIST_LINES <- 2^14
 
-library(tools)
+library(digest)
 library(jsonlite)
 
 #-------- FUNCTIONS TO MANAGE THE GLOBAL VARIABLES--------#
@@ -807,7 +807,7 @@ library(jsonlite)
 
 .ddg.json.data.node <- function(id, dname, dvalue, val.type, dtype, dscope, from.env, dhash, dtime, dloc) {
 
-  jstr <- paste("\n\"d", id, "\" : {\n\"rdt:name\" : \"", dname, "\",\n\"rdt:value\" : \"", dvalue, "\",\n\"rdt:valType\" : ", val.type, ",\n\"rdt:type\" : \"", dtype, "\",\n\"rdt:scope\" : \"", dscope, "\",\n\"rdt:fromEnv\" : \"", from.env, "\", \n\"rdt:MD5hash\" : \"", dhash, "\",\n\"rdt:timestamp\" : \"", dtime, "\",\n\"rdt:location\" : \"", dloc, "\"\n}", sep="")
+  jstr <- paste("\n\"d", id, "\" : {\n\"rdt:name\" : \"", dname, "\",\n\"rdt:value\" : \"", dvalue, "\",\n\"rdt:valType\" : ", val.type, ",\n\"rdt:type\" : \"", dtype, "\",\n\"rdt:scope\" : \"", dscope, "\",\n\"rdt:fromEnv\" : \"", from.env, "\", \n\"rdt:SHA1hash\" : \"", dhash, "\",\n\"rdt:timestamp\" : \"", dtime, "\",\n\"rdt:location\" : \"", dloc, "\"\n}", sep="")
 
   .ddg.append.entity(jstr)
 }
@@ -932,7 +932,7 @@ library(jsonlite)
   if (dloc != "") loc.str <- paste(" Location=\"", dloc, "\"", sep="")
   else loc.str <- ""
   
-  if (dhash != "") dhash.str <- paste(" MD5 Hash=\"", dhash, "\"", sep="")
+  if (dhash != "") dhash.str <- paste(" SHA1 Hash=\"", dhash, "\"", sep="")
   else dhash.str <- ""
 
   if (drw != "") drw.str <- paste(" RW=\"", drw, "\"", sep="")
@@ -1329,7 +1329,7 @@ library(jsonlite)
 # value - the value of the data
 # dscope - data node scope.
 # from.env - if object is from initial environment.
-# dhash - the MD5 hash of original file.
+# dhash - the SHA1 hash of original file.
 # drw - whether the file was read or written.
 # dtime (optional) - timestamp of original file.
 # dloc (optional) -  path and name of original file.
@@ -1387,10 +1387,10 @@ library(jsonlite)
   ddg.data.nodes$ddg.time[ddg.dnum] <- dtime
   ddg.data.nodes$ddg.loc[ddg.dnum] <- dloc
 
-  #print(".ddg.record.data: adding file MD5 hash info")
+  #print(".ddg.record.data: adding file SHA1 hash info")
   if (dtype == "File") {
     infiles <- .ddg.get("ddg.infilenodes")
-    dhash <- md5sum(dname)
+    dhash <- sha1(dname)
     if (is.na(dhash)) {
       dhash <- ""
     }
@@ -1445,7 +1445,7 @@ library(jsonlite)
   }
   writefile <- paste0(writedir,"/hashtable.csv")
   new_hashtable.csv <- .ddg.get("ddg.hashtable")
-  colnames(new_hashtable.csv) <- c("ScriptPath", "FilePath","DDGPath","NodePath","NodeNumber","MD5Hash","ReadWrite","Timestamp","Value")
+  colnames(new_hashtable.csv) <- c("ScriptPath", "FilePath","DDGPath","NodePath","NodeNumber","SHA1Hash","ReadWrite","Timestamp","Value")
   
   if (file.exists(writefile)) {
     old_hashtable.csv <- .ddg.hashtable.cleanup(writefile)
@@ -1458,7 +1458,7 @@ library(jsonlite)
   
   writejsonfile <- paste0(writedir,"/hashtable.json")
   new_hashtable.json <- .ddg.get("ddg.hashtable")
-  colnames(new_hashtable.json) <- c("ScriptPath", "FilePath","DDGPath","NodePath","NodeNumber","MD5Hash","ReadWrite","Timestamp","Value")
+  colnames(new_hashtable.json) <- c("ScriptPath", "FilePath","DDGPath","NodePath","NodeNumber","SHA1Hash","ReadWrite","Timestamp","Value")
   
   if (file.exists(writejsonfile)) {
     old_hashtable.json <- .ddg.hashtable.json.cleanup(writejsonfile)
