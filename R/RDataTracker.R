@@ -1444,23 +1444,23 @@ library(jsonlite)
     })
   }
   
-  writejsonfile <- paste0(writedir,"/hashtable.json")
-  new_hashtable.json <- .ddg.get("ddg.hashtable")
-  colnames(new_hashtable.json) <- c("ScriptPath", "FilePath","DDGPath","NodePath","NodeNumber","SHA1Hash","ReadWrite","Timestamp","Value")
+  hashtable.json <- paste0(writedir,"/hashtable.json")
+  new_hashtable <- .ddg.get("ddg.hashtable")
+  colnames(new_hashtable) <- c("ScriptPath", "FilePath","DDGPath","NodePath","NodeNumber","SHA1Hash","ReadWrite","Timestamp","Value")
   
-  if (file.exists(writejsonfile)) {
-    old_hashtable.json <- .ddg.hashtable.json.cleanup(writejsonfile)
-    new_hashtable.json <- rbind(old_hashtable.json, new_hashtable.json)
+  if (file.exists(hashtable.json)) {
+    old_hashtable <- .ddg.hashtable.json.cleanup(hashtable.json)
+    new_hashtable <- rbind(old_hashtable, new_hashtable)
   }
- write_json(new_hashtable.json, writejsonfile, simplifyVector = TRUE)
-  
+  writejson <- toJSON(new_hashtable, simplifyVector = TRUE, pretty = TRUE)
+  writeLines(writejson, hashtable.json)
 }
 
-.ddg.hashtable.json.cleanup <- function(writejsonfile) {
-  old_hashtable.json <- read_json(writejsonfile, simplifyVector = TRUE)
+.ddg.hashtable.json.cleanup <- function(hashtable.json) {
+  old_hashtable <- read_json(hashtable.json, simplifyVector = TRUE)
   longpath <- paste0(getwd(), substring(.ddg.path(),2))
-  old_hashtable.json <- subset(old_hashtable.json, DDGPath != longpath)
-  return(old_hashtable.json)
+  old_hashtable <- subset(old_hashtable, DDGPath != longpath)
+  return(old_hashtable)
 }
 
 # Returns a string representation of the type information of the given value.
