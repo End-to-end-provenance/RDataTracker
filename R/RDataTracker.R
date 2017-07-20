@@ -1350,7 +1350,7 @@ library(jsonlite)
     new.rows <- data.frame(ddg.type = character(size),
         ddg.num = numeric(size),
         ddg.name = character(size),
-        ddg.path = characters(size),
+        ddg.path = character(size),
         ddg.value = character(size),
         ddg.val.type = character(size),
         ddg.scope = character(size),
@@ -1440,27 +1440,28 @@ library(jsonlite)
   }
   writefile <- paste0(writedir,"/hashtable.csv")
   new_hashtable.csv <- .ddg.get("ddg.hashtable")
-  colnames(new_hashtable.csv) <- c("ScriptPath", "FilePath","DDGPath","NodePath","NodeNumber","MD5Hash","ReadWrite","Timestamp","Value")
+  if (nrow(new_hashtable.csv) > 0) {
+    colnames(new_hashtable.csv) <- c("ScriptPath", "FilePath","DDGPath","NodePath","NodeNumber","MD5Hash","ReadWrite","Timestamp","Value")
   
-  if (file.exists(writefile)) {
-    old_hashtable.csv <- .ddg.hashtable.cleanup(writefile)
-    new_hashtable.csv <- rbind(old_hashtable.csv,new_hashtable.csv)
+    if (file.exists(writefile)) {
+      old_hashtable.csv <- .ddg.hashtable.cleanup(writefile)
+      new_hashtable.csv <- rbind(old_hashtable.csv,new_hashtable.csv)
+    }
+    write.table(new_hashtable.csv, writefile, append = FALSE, col.names = TRUE, row.names = FALSE, sep = ",")
+  
+  
+    # JSON TABLE WORK GOES HERE
+  
+    writejsonfile <- paste0(writedir,"/hashtable.json")
+    new_hashtable.json <- .ddg.get("ddg.hashtable")
+    colnames(new_hashtable.json) <- c("ScriptPath", "FilePath","DDGPath","NodePath","NodeNumber","MD5Hash","ReadWrite","Timestamp","Value")
+  
+    if (file.exists(writejsonfile)) {
+      old_hashtable.json <- .ddg.hashtable.json.cleanup(writejsonfile)
+      new_hashtable.json <- rbind(old_hashtable.json, new_hashtable.json)
+    }
+    write_json(new_hashtable.json, writejsonfile)
   }
-  write.table(new_hashtable.csv, writefile, append = FALSE, col.names = TRUE, row.names = FALSE, sep = ",")
-  
-  
-  # JSON TABLE WORK GOES HERE
-  
-  writejsonfile <- paste0(writedir,"/hashtable.json")
-  new_hashtable.json <- .ddg.get("ddg.hashtable")
-  colnames(new_hashtable.json) <- c("ScriptPath", "FilePath","DDGPath","NodePath","NodeNumber","MD5Hash","ReadWrite","Timestamp","Value")
-  
-  if (file.exists(writejsonfile)) {
-    old_hashtable.json <- .ddg.hashtable.json.cleanup(writejsonfile)
-    new_hashtable.json <- rbind(old_hashtable.json, new_hashtable.json)
-  }
- write_json(new_hashtable.json, writejsonfile)
-  
 }
 
 # .ddg.hashtable.cleanup cleans the previous hashtable.csv of entries containing
@@ -5087,7 +5088,7 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
   if (!is.null(cmd.func)) {
     parsed.stmt <- cmd.func()
     if (parsed.stmt@has.dev.off) {
-      if (.ddg.is.call.to(parsed.stmt@parsed[[1]], "dev.off") || !ddg.loop.annotate()) {
+      if (.ddg.is.call.to(parsed.stmt@parsed[[1]], "dev.off") || !.ddg.loop.annotate()) {
         dev.file <- .ddg.capture.graphics(NULL)
         dev.node.name <- paste0("dev.", dev.cur())
       }

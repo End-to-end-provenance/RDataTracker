@@ -1,0 +1,9 @@
+Error in file(filename, "r", encoding = encoding) : 
+  cannot open the connection
+Calls: ddg.run -> tryCatch -> tryCatchList -> ddg.source -> file
+In addition: Warning messages:
+1: In normalizePath(r.script.path, winslash = "/") :
+  path[1]="NoDevOffTest.R": No such file or directory
+2: In file(filename, "r", encoding = encoding) :
+  cannot open file 'NoDevOffTest.R': No such file or directory
+Execution halted
