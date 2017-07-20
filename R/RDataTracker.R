@@ -1407,7 +1407,7 @@ library(jsonlite)
       ddg.data.nodes$ddg.rw[ddg.dnum] <- drw
       .ddg.set("ddg.outfilenodes", list())
     }
-    longpath <- paste0(getwd(), substring(.ddg.path(),2))
+    longpath <- paste0(getwd(), substring(.ddg.path(),2),"/ddg.json")
     .ddg.set("ddg.hashtable", rbind(.ddg.get("ddg.hashtable"), c(dscriptpath, dloc, longpath, paste(.ddg.path(), dvalue, sep="/"), ddg.dnum, dhash, drw, dtime, dvalue2), stringsAsFactors = FALSE))
   }
 
@@ -1467,7 +1467,7 @@ library(jsonlite)
 # with matching DDGPaths.
 .ddg.hashtable.cleanup <- function(hashtable.json) {
   old_hashtable <- read_json(hashtable.json, simplifyVector = TRUE)
-  longpath <- paste0(getwd(), substring(.ddg.path(),2))
+  longpath <- paste0(getwd(), substring(.ddg.path(),2), "/ddg.json")
   old_hashtable <- subset(old_hashtable, DDGPath != longpath)
   return(old_hashtable)
 }
