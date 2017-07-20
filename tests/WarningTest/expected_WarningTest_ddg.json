@@ -9,7 +9,7 @@
 "p1" : {
 "rdt:name" : "WarningTest.R",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "0.12",
+"rdt:elapsedTime" : "0.021",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -20,7 +20,7 @@
 "p2" : {
 "rdt:name" : "a <- 1",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.143",
+"rdt:elapsedTime" : "0.025",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "1",
 "rdt:startCol" : "1",
@@ -31,7 +31,7 @@
 "p3" : {
 "rdt:name" : "warning(\"foo\", call. = FALSE)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.214",
+"rdt:elapsedTime" : "0.031",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "2",
 "rdt:startCol" : "1",
@@ -42,7 +42,7 @@
 "p4" : {
 "rdt:name" : "b <- 2",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.439",
+"rdt:elapsedTime" : "0.035",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "3",
 "rdt:startCol" : "1",
@@ -53,7 +53,7 @@
 "p5" : {
 "rdt:name" : "WarningTest.R",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "0.472",
+"rdt:elapsedTime" : "0.04",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -66,24 +66,24 @@
 "rdt:architecture" : "x86_64",
 "rdt:operatingSystem" : "unix",
 "rdt:language" : "R",
-"rdt:rVersion" : "R version 3.4.0 (2017-04-21)",
+"rdt:rVersion" : "R version 3.3.3 (2017-03-06)",
 "rdt:script" : "[DIR]/WarningTest.R",
 "rdt:sourcedScripts" : ""
 ,
-"rdt:scriptTimeStamp" : "2017-07-18T09.48.23EDT",
+"rdt:scriptTimeStamp" : "2017-06-27T14.04.25EDT",
 "rdt:workingDirectory" : "[DIR]",
 "rdt:ddgDirectory" : "[DIR]/ddg",
-"rdt:ddgTimeStamp" : "2017-07-18T15.22.00EDT",
+"rdt:ddgTimeStamp" : "2017-07-20T13.39.34EDT",
 "rdt:rdatatrackerVersion" : "2.26.2",
 "rdt:installedPackages" : [
-	{"package" : "base", "version" : "3.4.0"},
-	{"package" : "datasets", "version" : "3.4.0"},
-	{"package" : "graphics", "version" : "3.4.0"},
-	{"package" : "grDevices", "version" : "3.4.0"},
-	{"package" : "methods", "version" : "3.4.0"},
+	{"package" : "base", "version" : "3.3.3"},
+	{"package" : "datasets", "version" : "3.3.3"},
+	{"package" : "graphics", "version" : "3.3.3"},
+	{"package" : "grDevices", "version" : "3.3.3"},
+	{"package" : "methods", "version" : "3.3.3"},
 	{"package" : "RDataTracker", "version" : "2.26.2"},
-	{"package" : "stats", "version" : "3.4.0"},
-	{"package" : "utils", "version" : "3.4.0"}]
+	{"package" : "stats", "version" : "3.3.3"},
+	{"package" : "utils", "version" : "3.3.3"}]
 }},
 "entity":{
 
@@ -93,7 +93,7 @@
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE", 
+"rdt:fromEnv" : "FALSE",
 "rdt:MD5hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
@@ -105,7 +105,7 @@
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
 "rdt:type" : "Exception",
 "rdt:scope" : "ddg.library",
-"rdt:fromEnv" : "FALSE", 
+"rdt:fromEnv" : "FALSE",
 "rdt:MD5hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
@@ -117,7 +117,7 @@
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE", 
+"rdt:fromEnv" : "FALSE",
 "rdt:MD5hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
