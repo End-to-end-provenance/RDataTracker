@@ -1446,7 +1446,10 @@ library(jsonlite)
   
   hashtable.json <- paste0(writedir,"/hashtable.json")
   new_hashtable <- .ddg.get("ddg.hashtable")
-  colnames(new_hashtable) <- c("ScriptPath", "FilePath","DDGPath","NodePath","NodeNumber","SHA1Hash","ReadWrite","Timestamp","Value")
+  columns <- c("ScriptPath", "FilePath","DDGPath","NodePath","NodeNumber","SHA1Hash","ReadWrite","Timestamp","Value")
+  if (length(new_hashtable) == length(columns)) {
+    colnames(new_hashtable) <- columns
+  }
   
   if (file.exists(hashtable.json)) {
     old_hashtable <- .ddg.hashtable.json.cleanup(hashtable.json)
