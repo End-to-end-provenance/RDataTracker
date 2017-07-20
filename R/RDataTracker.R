@@ -3272,7 +3272,7 @@ library(jsonlite)
       # block, so there is no need to create additional nodes for the
       # control statement itself.
 
-      create <- !cmd@isDdgFunc && .ddg.is.init() && .ddg.enable.console() && !(control.statement && .ddg.annotate.inside() && ddg.max.loops() > 0)
+      create <- !cmd@isDdgFunc && .ddg.is.init() && .ddg.enable.console() && !(control.statement && .ddg.loop.annotate() && ddg.max.loops() > 0)
       # create <- !cmd@isDdgFunc && .ddg.is.init() && .ddg.enable.console()
       start.finish.created <- FALSE
       cur.cmd.closed <- FALSE
@@ -5416,6 +5416,8 @@ ddg.should.run.annotated <- function (func.name) {
   #print("In ddg.should.run.annotated")
   
   # Check if we are in a loop and loop annotations are off
+  #print(paste("loop annotate?", .ddg.loop.annotate()))
+  #print(paste("inside loop?", .ddg.inside.loop()))
   if (!.ddg.loop.annotate() && .ddg.inside.loop() > 0) return (FALSE)
   
   # Make sure this specific function has not been disabled
