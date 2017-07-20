@@ -24,8 +24,8 @@ importFrom(jsonlite, read_json)
 importFrom(jsonlite, write_json)
 
 # CRAN check gives errors if these are not included.
-# However, if we include these, ddg.run crashes R when run 
-# in RStudio on Windows.  It does not crash on Mac.  It 
+# However, if we include these, ddg.run crashes R when run
+# in RStudio on Windows.  It does not crash on Mac.  It
 # also does not crash on Windows using the standard R environment.
 #importFrom("grDevices", "dev.copy", "dev.copy2pdf", "dev.cur",
 #           "dev.list", "dev.off", "dev.print", "dev.set", "pdf")

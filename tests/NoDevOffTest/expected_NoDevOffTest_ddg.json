@@ -6,19 +6,173 @@
 },
 "activity":{
 
+"p1" : {
+"rdt:name" : "NoDevOffTest.R",
+"rdt:type" : "Start",
+"rdt:elapsedTime" : "0.112",
+"rdt:scriptNum" : "NA",
+"rdt:startLine" : "NA",
+"rdt:startCol" : "NA",
+"rdt:endLine" : "NA",
+"rdt:endCol" : "NA"
+} ,
+
+"p2" : {
+"rdt:name" : "data(mtcars)",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "0.115",
+"rdt:scriptNum" : "0",
+"rdt:startLine" : "4",
+"rdt:startCol" : "1",
+"rdt:endLine" : "4",
+"rdt:endCol" : "13"
+} ,
+
+"p3" : {
+"rdt:name" : "allCars.df <- mtcars",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "0.127",
+"rdt:scriptNum" : "0",
+"rdt:startLine" : "7",
+"rdt:startCol" : "1",
+"rdt:endLine" : "7",
+"rdt:endCol" : "20"
+} ,
+
+"p4" : {
+"rdt:name" : "cars4Cyl.df <- allCars.df[allCars.df$cyl == 4, ]",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "0.142",
+"rdt:scriptNum" : "0",
+"rdt:startLine" : "10",
+"rdt:startCol" : "1",
+"rdt:endLine" : "10",
+"rdt:endCol" : "48"
+} ,
+
+"p5" : {
+"rdt:name" : "cars6Cyl.df <- allCars.df[allCars.df$cyl == 6, ]",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "0.157",
+"rdt:scriptNum" : "0",
+"rdt:startLine" : "11",
+"rdt:startCol" : "1",
+"rdt:endLine" : "11",
+"rdt:endCol" : "48"
+} ,
+
+"p6" : {
+"rdt:name" : "cars8Cyl.df <- allCars.df[allCars.df$cyl == 8, ]",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "0.173",
+"rdt:scriptNum" : "0",
+"rdt:startLine" : "12",
+"rdt:startCol" : "1",
+"rdt:endLine" : "12",
+"rdt:endCol" : "48"
+} ,
+
+"p7" : {
+"rdt:name" : "cylinders = c(4, 6, 8)",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "0.187",
+"rdt:scriptNum" : "0",
+"rdt:startLine" : "15",
+"rdt:startCol" : "1",
+"rdt:endLine" : "15",
+"rdt:endCol" : "9"
+} ,
+
+"p8" : {
+"rdt:name" : "mpg = c(mean(cars4Cyl.df$mpg), mean(cars6Cyl.df$mpg), mean(c",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "0.196",
+"rdt:scriptNum" : "0",
+"rdt:startLine" : "15",
+"rdt:startCol" : "13",
+"rdt:endLine" : "15",
+"rdt:endCol" : "22"
+} ,
+
+"p9" : {
+"rdt:name" : "plot(cylinders, mpg)",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "0.267",
+"rdt:scriptNum" : "0",
+"rdt:startLine" : "16",
+"rdt:startCol" : "1",
+"rdt:endLine" : "16",
+"rdt:endCol" : "3"
+} ,
+
+"p10" : {
+"rdt:name" : "X11()",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "0.293",
+"rdt:scriptNum" : "0",
+"rdt:startLine" : "16",
+"rdt:startCol" : "7",
+"rdt:endLine" : "16",
+"rdt:endCol" : "76"
+} ,
+
+"p11" : {
+"rdt:name" : "plot(cylinders, mpg)",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "0.307",
+"rdt:scriptNum" : "0",
+"rdt:startLine" : "19",
+"rdt:startCol" : "1",
+"rdt:endLine" : "19",
+"rdt:endCol" : "20"
+} ,
+
+"p12" : {
+"rdt:name" : "plot(cylinders, mpg)",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "0.328",
+"rdt:scriptNum" : "0",
+"rdt:startLine" : "26",
+"rdt:startCol" : "1",
+"rdt:endLine" : "26",
+"rdt:endCol" : "20"
+} ,
+
+"p13" : {
+"rdt:name" : "x <- 1",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "0.345",
+"rdt:scriptNum" : "0",
+"rdt:startLine" : "28",
+"rdt:startCol" : "1",
+"rdt:endLine" : "28",
+"rdt:endCol" : "6"
+} ,
+
+"p14" : {
+"rdt:name" : "NoDevOffTest.R",
+"rdt:type" : "Finish",
+"rdt:elapsedTime" : "0.351",
+"rdt:scriptNum" : "NA",
+"rdt:startLine" : "NA",
+"rdt:startCol" : "NA",
+"rdt:endLine" : "NA",
+"rdt:endCol" : "NA"
+} ,
+
 "environment" : {
 "rdt:name" : "environment",
 "rdt:architecture" : "x86_64",
 "rdt:operatingSystem" : "unix",
 "rdt:language" : "R",
 "rdt:rVersion" : "R version 3.3.3 (2017-03-06)",
-"rdt:script" : "NoDevOffTest.R",
+"rdt:script" : "[DIR]/NoDevOffTest.R",
 "rdt:sourcedScripts" : ""
 ,
-"rdt:scriptTimeStamp" : "NA",
+"rdt:scriptTimeStamp" : "2017-07-20T11.56.39EDT",
 "rdt:workingDirectory" : "[DIR]",
 "rdt:ddgDirectory" : "[DIR]/ddg",
-"rdt:ddgTimeStamp" : "2017-07-20T11.24.41EDT",
+"rdt:ddgTimeStamp" : "2017-07-20T13.17.45EDT",
 "rdt:rdatatrackerVersion" : "2.26.2",
 "rdt:installedPackages" : [
 	{"package" : "base", "version" : "3.3.3"},
@@ -31,11 +185,390 @@
 	{"package" : "utils", "version" : "3.3.3"}]
 }},
 "entity":{
-},
+
+"d1" : {
+"rdt:name" : "mtcars [ENV]",
+"rdt:value" : "data/1-mtcars.csv",
+"rdt:valType" : {"container":"data_frame", "dimension":[32,11], "type":["numeric","numeric","numeric","numeric","numeric","numeric","numeric","numeric","numeric","numeric","numeric"]},
+"rdt:type" : "Snapshot",
+"rdt:scope" : "R_GlobalEnv",
+"rdt:fromEnv" : "TRUE",
+"rdt:MD5hash" : "",
+"rdt:timestamp" : "2017-07-20T13.17.46EDT",
+"rdt:location" : ""
+} ,
+
+"d2" : {
+"rdt:name" : "allCars.df",
+"rdt:value" : "data/2-allCars.df.csv",
+"rdt:valType" : {"container":"data_frame", "dimension":[32,11], "type":["numeric","numeric","numeric","numeric","numeric","numeric","numeric","numeric","numeric","numeric","numeric"]},
+"rdt:type" : "Snapshot",
+"rdt:scope" : "R_GlobalEnv",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
+"rdt:timestamp" : "2017-07-20T13.17.46EDT",
+"rdt:location" : ""
+} ,
+
+"d3" : {
+"rdt:name" : "cars4Cyl.df",
+"rdt:value" : "data/3-cars4Cyl.df.csv",
+"rdt:valType" : {"container":"data_frame", "dimension":[11,11], "type":["numeric","numeric","numeric","numeric","numeric","numeric","numeric","numeric","numeric","numeric","numeric"]},
+"rdt:type" : "Snapshot",
+"rdt:scope" : "R_GlobalEnv",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
+"rdt:timestamp" : "2017-07-20T13.17.46EDT",
+"rdt:location" : ""
+} ,
+
+"d4" : {
+"rdt:name" : "cars6Cyl.df",
+"rdt:value" : "data/4-cars6Cyl.df.csv",
+"rdt:valType" : {"container":"data_frame", "dimension":[7,11], "type":["numeric","numeric","numeric","numeric","numeric","numeric","numeric","numeric","numeric","numeric","numeric"]},
+"rdt:type" : "Snapshot",
+"rdt:scope" : "R_GlobalEnv",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
+"rdt:timestamp" : "2017-07-20T13.17.46EDT",
+"rdt:location" : ""
+} ,
+
+"d5" : {
+"rdt:name" : "cars8Cyl.df",
+"rdt:value" : "data/5-cars8Cyl.df.csv",
+"rdt:valType" : {"container":"data_frame", "dimension":[14,11], "type":["numeric","numeric","numeric","numeric","numeric","numeric","numeric","numeric","numeric","numeric","numeric"]},
+"rdt:type" : "Snapshot",
+"rdt:scope" : "R_GlobalEnv",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
+"rdt:timestamp" : "2017-07-20T13.17.46EDT",
+"rdt:location" : ""
+} ,
+
+"d6" : {
+"rdt:name" : "cylinders",
+"rdt:value" : "data/6-cylinders.csv",
+"rdt:valType" : {"container":"vector", "dimension":[3], "type":["numeric"]},
+"rdt:type" : "Snapshot",
+"rdt:scope" : "R_GlobalEnv",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
+"rdt:timestamp" : "2017-07-20T13.17.46EDT",
+"rdt:location" : ""
+} ,
+
+"d7" : {
+"rdt:name" : "mpg [ENV]",
+"rdt:value" : "data/7-mpg.csv",
+"rdt:valType" : {"container":"vector", "dimension":[3], "type":["numeric"]},
+"rdt:type" : "Snapshot",
+"rdt:scope" : "R_GlobalEnv",
+"rdt:fromEnv" : "TRUE",
+"rdt:MD5hash" : "",
+"rdt:timestamp" : "2017-07-20T13.17.46EDT",
+"rdt:location" : ""
+} ,
+
+"d8" : {
+"rdt:name" : "mpg",
+"rdt:value" : "data/8-mpg.csv",
+"rdt:valType" : {"container":"vector", "dimension":[3], "type":["numeric"]},
+"rdt:type" : "Snapshot",
+"rdt:scope" : "R_GlobalEnv",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
+"rdt:timestamp" : "2017-07-20T13.17.46EDT",
+"rdt:location" : ""
+} ,
+
+"d9" : {
+"rdt:name" : "dev.2",
+"rdt:value" : "\"graph\"",
+"rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
+"rdt:type" : "Data",
+"rdt:scope" : "undefined",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
+"rdt:timestamp" : "",
+"rdt:location" : ""
+} ,
+
+"d10" : {
+"rdt:name" : "dev.3",
+"rdt:value" : "\"graph\"",
+"rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
+"rdt:type" : "Data",
+"rdt:scope" : "undefined",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
+"rdt:timestamp" : "",
+"rdt:location" : ""
+} ,
+
+"d11" : {
+"rdt:name" : "dev.3",
+"rdt:value" : "\"graph\"",
+"rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
+"rdt:type" : "Data",
+"rdt:scope" : "undefined",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
+"rdt:timestamp" : "",
+"rdt:location" : ""
+} ,
+
+"d12" : {
+"rdt:name" : "dev.3",
+"rdt:value" : "\"graph\"",
+"rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
+"rdt:type" : "Data",
+"rdt:scope" : "undefined",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
+"rdt:timestamp" : "",
+"rdt:location" : ""
+} ,
+
+"d13" : {
+"rdt:name" : "x",
+"rdt:value" : "1",
+"rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
+"rdt:type" : "Data",
+"rdt:scope" : "R_GlobalEnv",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
+"rdt:timestamp" : "",
+"rdt:location" : ""
+} ,
+
+"d14" : {
+"rdt:name" : "dev.off.14.pdf",
+"rdt:value" : "data/14-dev.off.14.pdf",
+"rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
+"rdt:type" : "File",
+"rdt:scope" : "undefined",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "59963df21c3ca394caca9e0868de2f80",
+"rdt:timestamp" : "2017-07-20T13.17.46EDT",
+"rdt:location" : "[DIR]/dev.off.14.pdf"
+}},
 "wasInformedBy":{
-},
+
+"e1" : {
+"prov:informant" : "p1",
+"prov:informed" : "p2"
+} ,
+
+"e3" : {
+"prov:informant" : "p2",
+"prov:informed" : "p3"
+} ,
+
+"e6" : {
+"prov:informant" : "p3",
+"prov:informed" : "p4"
+} ,
+
+"e9" : {
+"prov:informant" : "p4",
+"prov:informed" : "p5"
+} ,
+
+"e12" : {
+"prov:informant" : "p5",
+"prov:informed" : "p6"
+} ,
+
+"e15" : {
+"prov:informant" : "p6",
+"prov:informed" : "p7"
+} ,
+
+"e17" : {
+"prov:informant" : "p7",
+"prov:informed" : "p8"
+} ,
+
+"e23" : {
+"prov:informant" : "p8",
+"prov:informed" : "p9"
+} ,
+
+"e27" : {
+"prov:informant" : "p9",
+"prov:informed" : "p10"
+} ,
+
+"e29" : {
+"prov:informant" : "p10",
+"prov:informed" : "p11"
+} ,
+
+"e34" : {
+"prov:informant" : "p11",
+"prov:informed" : "p12"
+} ,
+
+"e39" : {
+"prov:informant" : "p12",
+"prov:informed" : "p13"
+} ,
+
+"e41" : {
+"prov:informant" : "p13",
+"prov:informed" : "p14"
+}},
 "wasGeneratedBy":{
-},
+
+"e5" : {
+"prov:entity" : "d2",
+"prov:activity" : "p3"
+} ,
+
+"e8" : {
+"prov:entity" : "d3",
+"prov:activity" : "p4"
+} ,
+
+"e11" : {
+"prov:entity" : "d4",
+"prov:activity" : "p5"
+} ,
+
+"e14" : {
+"prov:entity" : "d5",
+"prov:activity" : "p6"
+} ,
+
+"e16" : {
+"prov:entity" : "d6",
+"prov:activity" : "p7"
+} ,
+
+"e22" : {
+"prov:entity" : "d8",
+"prov:activity" : "p8"
+} ,
+
+"e26" : {
+"prov:entity" : "d9",
+"prov:activity" : "p9"
+} ,
+
+"e28" : {
+"prov:entity" : "d10",
+"prov:activity" : "p10"
+} ,
+
+"e33" : {
+"prov:entity" : "d11",
+"prov:activity" : "p11"
+} ,
+
+"e38" : {
+"prov:entity" : "d12",
+"prov:activity" : "p12"
+} ,
+
+"e40" : {
+"prov:entity" : "d13",
+"prov:activity" : "p13"
+} ,
+
+"e42" : {
+"prov:entity" : "d14",
+"prov:activity" : "p14"
+}},
 "used":{
-}
+
+"e2" : {
+"prov:activity" : "p2",
+"prov:entity" : "d1"
+} ,
+
+"e4" : {
+"prov:activity" : "p3",
+"prov:entity" : "d1"
+} ,
+
+"e7" : {
+"prov:activity" : "p4",
+"prov:entity" : "d2"
+} ,
+
+"e10" : {
+"prov:activity" : "p5",
+"prov:entity" : "d2"
+} ,
+
+"e13" : {
+"prov:activity" : "p6",
+"prov:entity" : "d2"
+} ,
+
+"e18" : {
+"prov:activity" : "p8",
+"prov:entity" : "d3"
+} ,
+
+"e19" : {
+"prov:activity" : "p8",
+"prov:entity" : "d7"
+} ,
+
+"e20" : {
+"prov:activity" : "p8",
+"prov:entity" : "d4"
+} ,
+
+"e21" : {
+"prov:activity" : "p8",
+"prov:entity" : "d5"
+} ,
+
+"e24" : {
+"prov:activity" : "p9",
+"prov:entity" : "d6"
+} ,
+
+"e25" : {
+"prov:activity" : "p9",
+"prov:entity" : "d8"
+} ,
+
+"e30" : {
+"prov:activity" : "p11",
+"prov:entity" : "d6"
+} ,
+
+"e31" : {
+"prov:activity" : "p11",
+"prov:entity" : "d8"
+} ,
+
+"e32" : {
+"prov:activity" : "p11",
+"prov:entity" : "d10"
+} ,
+
+"e35" : {
+"prov:activity" : "p12",
+"prov:entity" : "d6"
+} ,
+
+"e36" : {
+"prov:activity" : "p12",
+"prov:entity" : "d8"
+} ,
+
+"e37" : {
+"prov:activity" : "p12",
+"prov:entity" : "d11"
+} ,
+
+"e43" : {
+"prov:activity" : "p14",
+"prov:entity" : "d12"
+}}
 }

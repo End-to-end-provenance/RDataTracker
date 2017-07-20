@@ -680,7 +680,7 @@ null.pos <- function() {
     }
 
     # Create new function body with an if-then statement for annotations.
-  func.definition <- .ddg.add.conditional.statement(func.definition, func.name)
+    func.definition <- .ddg.add.conditional.statement(func.definition, func.name)
 
     # Insert call to ddg.function if not already added.
     if (!.ddg.has.call.to(func.definition[[3]], "ddg.function")) {
