@@ -532,6 +532,9 @@ library(jsonlite)
 
   # Data frame containing file reads and writes
   .ddg.set("ddg.hashtable", data.frame())
+  
+  # Boolean of whether there are any file nodes
+  .ddg.set("ddg.hasfilenodes", FALSE)
 }
 
 # .ddg.set.history provides a wrapper to change the number of
@@ -1387,8 +1390,8 @@ library(jsonlite)
   ddg.data.nodes$ddg.time[ddg.dnum] <- dtime
   ddg.data.nodes$ddg.loc[ddg.dnum] <- dloc
 
-  #print(".ddg.record.data: adding file SHA1 hash info")
   if (dtype == "File") {
+    .ddg.set("ddg.hasfilenodes", TRUE)
     infiles <- .ddg.get("ddg.infilenodes")
     dhash <- sha1(dname)
     if (is.na(dhash)) {
@@ -1452,14 +1455,17 @@ library(jsonlite)
   }
   
   if (file.exists(hashtable.json)) {
-    old_hashtable <- .ddg.hashtable.json.cleanup(hashtable.json)
+    old_hashtable <- .ddg.hashtable.cleanup(hashtable.json)
     new_hashtable <- rbind(old_hashtable, new_hashtable)
   }
   writejson <- toJSON(new_hashtable, simplifyVector = TRUE, pretty = TRUE)
   writeLines(writejson, hashtable.json)
 }
 
-.ddg.hashtable.json.cleanup <- function(hashtable.json) {
+# .ddg.hashtable.cleanup removes entries in the hashtable that have been
+# overwritten by more recent iterations. It does this by removing entries
+# with matching DDGPaths.
+.ddg.hashtable.cleanup <- function(hashtable.json) {
   old_hashtable <- read_json(hashtable.json, simplifyVector = TRUE)
   longpath <- paste0(getwd(), substring(.ddg.path(),2))
   old_hashtable <- subset(old_hashtable, DDGPath != longpath)
@@ -5996,7 +6002,7 @@ ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE, sav
   if (interactive()) print(paste("Saving ddg.json in ", .ddg.path(), sep=""))
 
   # Save hashtable.json to file.
-  if (save.hashtable) {
+  if (save.hashtable && .ddg.get("ddg.hasfilenodes")) {
     if (interactive()) {
       if (dir.exists(paste0(path.expand("~"),"/.ddg/"))) {
         print("Saving hashtable.json in .ddg directory.")
