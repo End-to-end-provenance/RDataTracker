@@ -6286,12 +6286,12 @@ ddg.source <- function (file,  ddgdir = NULL, local = FALSE, echo = verbose, pri
   check.library.paths<- file.exists(paste(.libPaths(),jar.path,sep = ""))
   index<- min(which(check.library.paths == TRUE))
   ddgexplorer_path<- paste(.libPaths()[index],jar.path,sep = "")
-  ddgtxt.path<- paste(.ddg.path() ,"/ddg.txt",sep = "")
+  ddgjson.path<- paste(.ddg.path() ,"/ddg.json",sep = "")
 
   # -s flag starts DDG Explorer as a server.  This allows each new ddg to show
   # up in a new tab of an existing running DDG Explorer.
   # print("Starting DDG Explorer server")
-  systemResult <- system2("java", c("-jar", ddgexplorer_path, ddgtxt.path, "-port", .ddg.get(".ddg.explorer.port")), wait = FALSE)
+  systemResult <- system2("java", c("-jar", ddgexplorer_path, ddgjson.path, "-port", .ddg.get(".ddg.explorer.port")), wait = FALSE)
   # print(paste("Starting java server return code:", systemResult))
 }
 
@@ -6304,17 +6304,20 @@ ddg.display <- function () {
   tryCatch ({
         con <- socketConnection(host= "localhost", port = .ddg.get(".ddg.explorer.port"), blocking = FALSE,
             server=FALSE, open="w", timeout=1)
-        ddgtxt.path<- paste(getwd(), .ddg.path() ,"ddg.txt",sep = "/")
+        ddgjson.path<- paste(getwd(), .ddg.path() ,"ddg.json",sep = "/")
         # print ("Socket open; writing to socket")
-        writeLines(ddgtxt.path, con)
+        writeLines(ddgjson.path, con)
         # print ("Wrote to socket")
         close(con)
       },
       warning = function(e) {
+        # print("Warning!")
         .ddg.start.ddg.explorer()
+      },
+      error = function(e) {
+        print(e)
       }
   )
-
   tryCatch(
     if(is.element('CamFlow', installed.packages()[,1])){ # did we install the CamFlow visualiser?
       json <- .ddg.json.current()
