@@ -1352,7 +1352,7 @@ library(jsonlite)
     new.rows <- data.frame(ddg.type = character(size),
         ddg.num = numeric(size),
         ddg.name = character(size),
-        ddg.path = characters(size),
+        ddg.path = character(size),
         ddg.value = character(size),
         ddg.val.type = character(size),
         ddg.scope = character(size),
