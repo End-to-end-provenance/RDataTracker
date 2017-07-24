@@ -1393,7 +1393,8 @@ library(jsonlite)
   if (dtype == "File") {
     .ddg.set("ddg.hasfilenodes", TRUE)
     infiles <- .ddg.get("ddg.infilenodes")
-    dhash <- sha1(dname)
+    # dhash <- sha1(dname)
+    dhash <- digest(dname, algo="sha1", file = TRUE)
     if (is.na(dhash)) {
       dhash <- ""
     }
