@@ -6505,9 +6505,9 @@ ddg.display <- function () {
   tryCatch ({
         con <- socketConnection(host= "localhost", port = .ddg.get(".ddg.explorer.port"), blocking = FALSE,
             server=FALSE, open="w", timeout=1)
-        ddgtxt.path<- paste(getwd(), .ddg.path() ,"ddg.txt",sep = "/")
+        ddgjson.path<- paste(getwd(), .ddg.path() ,"ddg.json",sep = "/")
         # print ("Socket open; writing to socket")
-        writeLines(ddgtxt.path, con)
+        writeLines(ddgjson.path, con)
         # print ("Wrote to socket")
         close(con)
       },
