@@ -3348,17 +3348,24 @@ library(jsonlite)
           # EVALUATE.
 
           if (.ddg.debug.lib()) print (paste (".ddg.parse.commands: Evaluating ", cmd@annotated))
+          #print (paste (".ddg.parse.commands: Evaluating ", cmd@annotated))
+          #print (paste ("length(cmd@annotated) =", length(cmd@annotated)))
 
           result <- withCallingHandlers(
           
               {
-                # Don't set return.value if we are calling a ddg function.
-                if (grepl("^ddg", cmd@annotated) || grepl("^.ddg", cmd@annotated)) {
-                  eval(cmd@annotated, environ, NULL)
-                }
-                else {
-                  return.value <- eval(cmd@annotated, environ, NULL)
-                  .ddg.set (".ddg.last.R.value", return.value)
+                for (annot in cmd@annotated) {
+                  # Don't set return.value if we are calling a ddg function.
+                  if (grepl("^ddg", annot) || grepl("^.ddg", annot)) {
+                    eval(annot, environ, NULL)
+                  }
+                  else {
+                    return.value <- eval(annot, environ, NULL)
+                    #if (typeof(return.value) != "closure") {
+                    #  print(paste(".ddg.parse.commands: setting .ddg.last.R.value to", return.value))
+                    #}
+                    .ddg.set (".ddg.last.R.value", return.value)
+                  }
                 }
               },
             warning = .ddg.set.warning ,
