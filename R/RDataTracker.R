@@ -1393,7 +1393,10 @@ library(jsonlite)
   if (dtype == "File") {
     .ddg.set("ddg.hasfilenodes", TRUE)
     infiles <- .ddg.get("ddg.infilenodes")
-    # dhash <- sha1(dname)
+    # This function will cause certain tests to fail if run with pdf files or
+    # other non-text files with internal timestamps. This could also cause these files
+    # to sync incorrectly in the workflow, but given that reading in a pdf file is unlikely,
+    # this should not be an overly large issue.
     dhash <- digest(dname, algo="sha1", file = TRUE)
     if (is.na(dhash)) {
       dhash <- ""
