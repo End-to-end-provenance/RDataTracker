@@ -2201,7 +2201,6 @@ library(jsonlite)
 .ddg.create.data.set.edges.for.cmd <- function(vars.set, cmd, cmd.pos, env, for.finish.node = FALSE, scope=NULL, stack=NULL) {
   # print(paste("In .ddg.create.data.set.edges.for.cmd: cmd = ", cmd@abbrev))
   #print(paste(".ddg.create.data.set.edges.for.cmd: env =", environmentName(env)))
-  #print(sys.calls())
   vars.assigned <- cmd@vars.set
 
   # print(paste("In .ddg.create.data.set.edges.for.cmd: vars.assigned = ", vars.assigned))
@@ -2764,7 +2763,6 @@ library(jsonlite)
   else {
     unused.returns <- returns[!returns$return.used & returns$return.node.id > 0, ]
   }
-#  unused.returns <- returns[!returns$return.used & returns$return.node.id > 0, ]
   if (nrow(unused.returns) == 0) return()
   #print (paste(".ddg.link.function.returns: unused.returns:", unused.returns))
 
@@ -5109,7 +5107,6 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
   if (!.ddg.is.init()) return(expr)
   
   #print("In ddg.return.value")
-  #print(sys.calls())
   
   dev.file <- NULL
   parsed.stmt <- NULL

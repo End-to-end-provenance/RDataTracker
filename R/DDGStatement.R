@@ -450,8 +450,6 @@ null.pos <- function() {
 .ddg.add.annotations <- function(command) {
   #print("In .ddg.add.annotations")
   #print(paste("command@text =", command@text))
-  #print(sys.calls())
-  #stop()
   parsed.command <- command@parsed[[1]]
 
   # Return if statement is empty.
@@ -819,15 +817,12 @@ null.pos <- function() {
         if (is.list(parsed.stmts)) {
           #print(".ddg.wrap.return.parameters: parsed.stmts is a list")
           #print(paste("str(parsed.stmts) =", str(parsed.stmts)))
-          #parsed.stmt <- parsed.stmts@contained[[i-2]]
-          #parsed.stmt <- parsed.stmts[[i-1]]
           parsed.stmt <- parsed.stmts[[i-2]]
         }
         else {
           #print(".ddg.wrap.return.parameters: parsed.stmts is NOT a list")
           #print(paste("str(parsed.stmts) =", str(parsed.stmts)))
           parsed.stmt <- parsed.stmts
-          #parsed.stmt <- parsed.stmts@contained[[i-2]]
         }
         
         #print(paste(".ddg.wrap.return.parameters: parsed.stmt =", parsed.stmt@abbrev))
@@ -849,7 +844,6 @@ null.pos <- function() {
           #print(paste("str(parsed.stmts) =", str(parsed.stmts)))
           #print(paste("@contained[[1]] =", parsed.stmts[[1]]@contained[[1]]@text))
           parsed.stmt <- parsed.stmts[[i-2]]
-          #parsed.stmt <- parsed.stmts[[i-2]]@contained
         }
         else {
           #print(".ddg.wrap.return.parameters: parsed.stmts is NOT a list")
@@ -988,7 +982,6 @@ null.pos <- function() {
     eval.cmd <- .ddg.construct.DDGStatement (parse(text=deparse(last.statement)), pos=NA, script.num=NA, breakpoints=NA, parseData=NULL)
     new.statement <- .ddg.create.ddg.eval.call(last.statement, parsed.stmt)
     return (call ("ddg.return.value", new.statement, function() parsed.stmt))
-    #return (call ("ddg.return.value", new.statement))
   }
 }
 
@@ -1188,9 +1181,6 @@ null.pos <- function() {
       # Advance pointer for next block.
       ptr <- ptr + length(block) - 1
       
-      # Insert calls to ddg.return.value if not already added.
-      #block <- .ddg.wrap.return.parameters(block, block.stmts)
-      
       # Wrap each statement with ddg.eval.
       block <- .ddg.wrap.block.with.ddg.eval(block, block.stmts)
   
@@ -1236,9 +1226,6 @@ null.pos <- function() {
         block.stmts <- c(block.stmts, parsed.stmts[[i+ptr]])
       }
   
-      # Insert calls to ddg.return.value if not already added.
-      #block <- .ddg.wrap.return.parameters(block, block.stmts)
-      
       # Wrap each statement with ddg.eval.
       block <- .ddg.wrap.block.with.ddg.eval(block, block.stmts)
   
@@ -1300,9 +1287,6 @@ null.pos <- function() {
     # Add braces if necessary.
     block <- .ddg.ensure.in.block(block)
   
-    # Insert calls to ddg.return.value if not already added.
-    #block <- .ddg.wrap.return.parameters(block, command@contained)
-    
     # Wrap each statement with ddg.eval.
     annotated.block <- .ddg.wrap.block.with.ddg.eval(block, command@contained)
   

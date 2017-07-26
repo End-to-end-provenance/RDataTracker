@@ -48,8 +48,6 @@ f10 <- function(x) {
   return(x + 1)
 }
 
-
-
 a <- 1
 b <- 2
 
@@ -79,4 +77,12 @@ h <- f6(abc, 5, "a b", x + 1)
 x <- f4(3)
 x <- f7(3)
 
+# Tests returning NULL when no branch of a final
+# if is executed
+f11 <- function(x) {
+  y <- 1
+  if (x > 0) return (10)
+}
+
+f11(-1)
 
