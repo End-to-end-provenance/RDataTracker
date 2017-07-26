@@ -189,7 +189,7 @@ setMethod ("initialize",
             .ddg.add.annotations(.Object)
           }
 
-      #print (.Object)
+      #print(paste ("annotated statement", .Object@annotated))
       return (.Object)
     }
 )
@@ -450,6 +450,8 @@ null.pos <- function() {
 .ddg.add.annotations <- function(command) {
   #print("In .ddg.add.annotations")
   #print(paste("command@text =", command@text))
+  #print(sys.calls())
+  #stop()
   parsed.command <- command@parsed[[1]]
 
   # Return if statement is empty.
@@ -464,13 +466,8 @@ null.pos <- function() {
   # Note that this will not annotate anonymous functions, like ones that might be passed to lapply, for example
   # Is that what we want?
   if (.ddg.is.assign(parsed.command) && .ddg.is.functiondecl(parsed.command[[3]])) {
-    if (.ddg.annotate.inside()) {
       return(.ddg.add.function.annotations(command))
     }
-    else {
-      return(command@parsed)
-    }
-  }
   
   statement.type <- as.character(.ddg.get.statement.type(parsed.command))
   loop.types <- list("for", "while", "repeat")
@@ -515,13 +512,8 @@ null.pos <- function() {
 
   # Function declaration
   if (.ddg.is.assign(parsed.cmd) && .ddg.is.functiondecl(parsed.cmd[[3]])) {
-    if (.ddg.annotate.inside()) {
       # Create the DDGStatement objects for the statements in the function
       return (.ddg.parse.contained.function(cmd, script.name, parseData, parsed.cmd[[3]][[3]]))
-    }
-    else {
-      return (list())
-    }
   }
   
   # Check if we want to go inside loop and if-statements
@@ -654,23 +646,13 @@ null.pos <- function() {
 # being bound is a function declaration
 
 .ddg.add.function.annotations <- function(function.decl) {
-  # print("In .ddg.add.function.annotations")
+  #print("In .ddg.add.function.annotations")
   parsed.function.decl <- function.decl@parsed[[1]]
 
   # Get function name.
   func.name <- toString(parsed.function.decl[[2]])
   #print(paste("Annotating", func.name))
 
-  # Return if a list of functions to annotate is provided and this
-  # function is not on the list.
-  if (!is.null(.ddg.annotate.on()) & !(func.name %in% .ddg.annotate.on())) return(parsed.function.decl)
-
-  # Return if a list of functions not to annotate is provided and this
-  # function is on the list.
-  else if (!is.null(.ddg.annotate.off()) & func.name %in% .ddg.annotate.off()) return(parsed.function.decl)
-
-  # Add function annotations.
-  else {
     # Get function definition.
     func.definition <- parsed.function.decl[[3]]
 
@@ -689,11 +671,6 @@ null.pos <- function() {
 
     # Insert calls to ddg.return.value if not already added.
     if (!.ddg.has.call.to(func.definition[[3]], "ddg.return.value")) {
-      #print(paste(".ddg.add.function.annotations: function.decl =", function.decl@text))
-      #print(paste(".ddg.add.function.annotations: function.decl@contained ="))
-      #for (i in 1:length(function.decl@contained)) {
-      #  print(function.decl@contained[[i]])
-      #}
       func.definition <- .ddg.wrap.all.return.parameters(func.definition, function.decl@contained)
     }
 
@@ -716,7 +693,6 @@ null.pos <- function() {
     #print(paste("Done annotating", func.name))
     return (as.expression (call ("<-", as.name(func.name), func.definition)))
   }
-}
 
 # .ddg.create.function.block creates a function block.
 #
@@ -815,6 +791,7 @@ null.pos <- function() {
   # Check each statement in the annotated block to see if it
   # contains a return.
   pos <- length(block)
+  #print(paste(".ddg.wrap.return.parameters: pos =", pos))
 
   for (i in 1:pos) {
     statement <- block[[i]]
@@ -822,8 +799,11 @@ null.pos <- function() {
     #print(paste("parsed.stmts", i, "=", parsed.stmts[[i]]@abbrev))
     if (.ddg.has.call.to(statement, "return")) {
 
+      #print(".ddg.wrap.return.parameters: found return call")
+      
       # If statement is a return, wrap parameters with ddg.return.value.
       if (.ddg.is.call.to(statement, "return")) {
+        #print(".ddg.wrap.return.parameters:  IS a return call")
         # Need to handle empty parameter separately.
         if (length(statement) == 1) {
           ret.params <- ""
@@ -837,10 +817,17 @@ null.pos <- function() {
         #  print(paste(".ddg.wrap.return.parameters: parsed.stmts =", parsed.stmts[[i]]@abbrev))
         #}
         if (is.list(parsed.stmts)) {
+          #print(".ddg.wrap.return.parameters: parsed.stmts is a list")
+          #print(paste("str(parsed.stmts) =", str(parsed.stmts)))
+          #parsed.stmt <- parsed.stmts@contained[[i-2]]
+          #parsed.stmt <- parsed.stmts[[i-1]]
           parsed.stmt <- parsed.stmts[[i-2]]
         }
         else {
+          #print(".ddg.wrap.return.parameters: parsed.stmts is NOT a list")
+          #print(paste("str(parsed.stmts) =", str(parsed.stmts)))
           parsed.stmt <- parsed.stmts
+          #parsed.stmt <- parsed.stmts@contained[[i-2]]
         }
         
         #print(paste(".ddg.wrap.return.parameters: parsed.stmt =", parsed.stmt@abbrev))
@@ -856,16 +843,27 @@ null.pos <- function() {
 
         # If statement contains a return, recurse on statement.
       } else {
+        #print(".ddg.wrap.return.parameters:  CONTAINS a return call")
         if (is.list(parsed.stmts)) {
+          #print(".ddg.wrap.return.parameters: parsed.stmts is a list")
+          #print(paste("str(parsed.stmts) =", str(parsed.stmts)))
+          #print(paste("@contained[[1]] =", parsed.stmts[[1]]@contained[[1]]@text))
           parsed.stmt <- parsed.stmts[[i-2]]
+          #parsed.stmt <- parsed.stmts[[i-2]]@contained
         }
         else {
+          #print(".ddg.wrap.return.parameters: parsed.stmts is NOT a list")
+          #parsed.stmt <- parsed.stmts@contained[[i-2]]
           parsed.stmt <- parsed.stmts
         }
 
+        #print("Recursing")
+        #print(paste("Passing for parsed.stmt:", str(parsed.stmt)))
         block[[i]] <- .ddg.wrap.return.parameters(statement, parsed.stmt)
+        #print("Returned from recursion")
       }
     }
+    #print(paste(".ddg.wrap.return.parameters: after annotation, block[[", i, "]] =", paste(deparse(block[[i]]), collapse="\n")))
   }
 
   return(block)
@@ -974,10 +972,14 @@ null.pos <- function() {
   # call is created.
   force(parsed.stmt)
   #print(paste(".ddg.create.ddg.return.call: parsed.stmt =", parsed.stmt@abbrev))
+  #print(paste(".ddg.create.ddg.return.call: last.statement =", last.statement))
   if (.ddg.has.call.to(last.statement, "return")) {
-  	return (call ("ddg.return.value", last.statement, function() parsed.stmt))
+    #print(".ddg.create.ddg.return.call: has call to return")
+    return (call ("ddg.return.value", last.statement, function() parsed.stmt))
   }
   else {
+    #print(".ddg.create.ddg.return.call: NO call to return")
+    
     # If there is no return call, we will use ddg.eval to execute the
     # statement and then ddg.return.value to create the necessary return
     # structure.  We cannot use this technique if there is a return call
@@ -986,6 +988,7 @@ null.pos <- function() {
     eval.cmd <- .ddg.construct.DDGStatement (parse(text=deparse(last.statement)), pos=NA, script.num=NA, breakpoints=NA, parseData=NULL)
     new.statement <- .ddg.create.ddg.eval.call(last.statement, parsed.stmt)
     return (call ("ddg.return.value", new.statement, function() parsed.stmt))
+    #return (call ("ddg.return.value", new.statement))
   }
 }
 
@@ -1154,7 +1157,7 @@ null.pos <- function() {
 # .ddg.annotate.if.statement adds annotations to if statements.
 
 .ddg.annotate.if.statement <- function(command) {
-  
+  #print(paste(".ddg.annotate.if.statement annotating", command@text))
   if (ddg.max.loops() == 0) {
     parsed.command.txt <- deparse(command@parsed[[1]])
   }
@@ -1184,7 +1187,10 @@ null.pos <- function() {
   
       # Advance pointer for next block.
       ptr <- ptr + length(block) - 1
-  
+      
+      # Insert calls to ddg.return.value if not already added.
+      #block <- .ddg.wrap.return.parameters(block, block.stmts)
+      
       # Wrap each statement with ddg.eval.
       block <- .ddg.wrap.block.with.ddg.eval(block, block.stmts)
   
@@ -1230,6 +1236,9 @@ null.pos <- function() {
         block.stmts <- c(block.stmts, parsed.stmts[[i+ptr]])
       }
   
+      # Insert calls to ddg.return.value if not already added.
+      #block <- .ddg.wrap.return.parameters(block, block.stmts)
+      
       # Wrap each statement with ddg.eval.
       block <- .ddg.wrap.block.with.ddg.eval(block, block.stmts)
   
@@ -1251,6 +1260,7 @@ null.pos <- function() {
   parsed.command.txt <-
       append(parsed.command.txt, "ddg.not.inside.loop()")
 
+  #print(paste(".ddg.annotate.if.statement annotated version:", parsed.command.txt))
   return(parse(text=parsed.command.txt))
 }
 
@@ -1290,6 +1300,9 @@ null.pos <- function() {
     # Add braces if necessary.
     block <- .ddg.ensure.in.block(block)
   
+    # Insert calls to ddg.return.value if not already added.
+    #block <- .ddg.wrap.return.parameters(block, command@contained)
+    
     # Wrap each statement with ddg.eval.
     annotated.block <- .ddg.wrap.block.with.ddg.eval(block, command@contained)
   

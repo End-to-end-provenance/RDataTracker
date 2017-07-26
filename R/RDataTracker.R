@@ -37,9 +37,6 @@ ddg.MAX_HIST_LINES <- 2^14
 library(tools)
 library(jsonlite)
 
-library(tools)
-library(jsonlite)
-
 #-------- FUNCTIONS TO MANAGE THE GLOBAL VARIABLES--------#
 
 # Global variables cannot be used directly in a library.  Instead,
@@ -449,7 +446,7 @@ library(jsonlite)
   #   value.
   .ddg.set(".ddg.return.values",
           data.frame(ddg.call=character(size),
-          line = integer(size),
+          #line = integer(size),
           return.used = logical(size),
           return.node.id = integer(size),
           stringsAsFactors=FALSE))
@@ -1167,6 +1164,7 @@ library(jsonlite)
   } else {
     # Save the true value.
     #print(".ddg.save.simple: saving data")
+    #print(paste(".ddg.save.simple: saving value", value))
     .ddg.data.node("Data", name, value, scope, from.env=from.env)
   }
 }
@@ -1233,6 +1231,7 @@ library(jsonlite)
 .ddg.save.data <- function(name, value, fname=".ddg.save.data", graphic.fext='jpeg', error=FALSE, scope=NULL, from.env=FALSE, stack=NULL, env=NULL){
   #print (paste (".ddg.save.data: looking for name =", name, "with scope", scope))
   #print(paste(".ddg.save.data saving ", name, "with value structured as", str(value)))
+  #if (is.null(value)) print(".ddg.save.data: value is null")
   if (is.null(scope)) {
     scope <- .ddg.get.scope(name, calls=stack, env=env)
   }
@@ -2759,12 +2758,13 @@ library(jsonlite)
   # Find the functions that have completed but whose returns have
   # not been used yet.
   returns <- .ddg.get(".ddg.return.values")
-  if (!is.na(command@pos@startLine)) {
-    unused.returns <- returns[!returns$return.used & returns$return.node.id > 0 & !is.na(returns$line) & returns$line == command@pos@startLine, ]
-  }
-  else {
-    unused.returns <- returns[!returns$return.used & returns$return.node.id > 0, ]
-  }
+#  if (!is.na(command@pos@startLine)) {
+#    unused.returns <- returns[!returns$return.used & returns$return.node.id > 0 & !is.na(returns$line) & returns$line == command@pos@startLine, ]
+#  }
+#  else {
+#    unused.returns <- returns[!returns$return.used & returns$return.node.id > 0, ]
+#  }
+  unused.returns <- returns[!returns$return.used & returns$return.node.id > 0, ]
   if (nrow(unused.returns) == 0) return()
   #print (paste(".ddg.link.function.returns: unused.returns:", unused.returns))
 
@@ -3355,6 +3355,7 @@ library(jsonlite)
           
               {
                 for (annot in cmd@annotated) {
+                  #print (paste (".ddg.parse.commands: Evaluating ", paste(annot, collapse = " ")))
                   # Don't set return.value if we are calling a ddg function.
                   if (grepl("^ddg", annot) || grepl("^.ddg", annot)) {
                     eval(annot, environ, NULL)
@@ -3362,6 +3363,7 @@ library(jsonlite)
                   else {
                     return.value <- eval(annot, environ, NULL)
                     #if (typeof(return.value) != "closure") {
+                    #  print (paste (".ddg.parse.commands: Done evaluating ", annot))
                     #  print(paste(".ddg.parse.commands: setting .ddg.last.R.value to", return.value))
                     #}
                     .ddg.set (".ddg.last.R.value", return.value)
@@ -3607,6 +3609,9 @@ library(jsonlite)
   if (.ddg.is.init() && !.ddg.is.sourced()) .ddg.write.timestamp.to.history()
 
   return.value <- .ddg.get (".ddg.last.R.value")
+  #if (typeof(return.value) != "closure") {
+  #  print(paste(".ddg.parse.commands: returning ", return.value))
+  #}
   return(return.value)
 }
 
@@ -5103,6 +5108,9 @@ ddg.procedure <- function(pname, ins=NULL, outs.graphic=NULL, outs.data=NULL, ou
 ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
   if (!.ddg.is.init()) return(expr)
   
+  #print("In ddg.return.value")
+  #print(sys.calls())
+  
   dev.file <- NULL
   parsed.stmt <- NULL
   
@@ -5116,12 +5124,12 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
       }
     }
   }
-  #print("In ddg.return.value")
 
   
   # If expr is an assignment, create nodes and edges for the assignment.
   orig.expr <- substitute(expr)
-
+  #print(paste("ddg.return.value: expr =", paste(deparse(orig.expr), collapse="\n")))
+  
   frame.num <- .ddg.get.frame.number(sys.calls())
   env <- sys.frame(frame.num)
 
@@ -5129,14 +5137,18 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
 
   pname <- NULL
   .ddg.lookup.function.name(pname)
+  #print(paste("ddg.return.value: pname =", pname))
   
   # If this is a recursive call to ddg.return.value, find
   # the caller of the first ddg.return.value
   if (grepl("(^ddg|.ddg)", pname)) {
+    #print("ddg.return.value: Found a recursive call")
     caller.frame <- .ddg.find.ddg.return.value.caller.frame.number ()
     pname <- as.character(sys.call(caller.frame)[[1]])
+    #print(paste("ddg.return.value: updated pname =", pname))
   }
   else {
+    #print("ddg.return.value: NOT a recursive call")
     caller.frame <- -1
   }
 
@@ -5152,7 +5164,7 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
   if (nrow(ddg.return.values) == ddg.num.returns) {
     size = 100
     new.rows <- data.frame(ddg.call = character(size),
-                           line = integer(size),
+                           #line = integer(size),
                            return.used = logical(size),
                            return.node.id = integer(size),
                            stringsAsFactors=FALSE)
@@ -5165,20 +5177,25 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
   # it would have created.
   call <- sys.call(caller.frame)
   if (!.ddg.proc.node.exists(pname)) {
+    #print("ddg.return.value creating function nodes")
     full.call <- match.call(sys.function(caller.frame), call=call)
     .ddg.create.function.nodes(pname, call, full.call, auto.created = TRUE, env = sys.frame(.ddg.get.frame.number(sys.calls()))
     )
   }
   else {
+    #print("ddg.return.value decrementing func.depth")
     .ddg.dec (".ddg.func.depth")
   }
 
   if (is.null(cmd.func)) {
+    #print("ddg.return.value constructing DDG statement for the return call")
     return.stmt <- .ddg.construct.DDGStatement (parse(text=orig.return), pos=NA, script.num=NA, breakpoints=NA)
   }
   else {
+    #print("ddg.return.value using existing DDG statement for the return call")
     return.stmt <- cmd.func()
     parsed.statement <- return.stmt@parsed
+    #print(paste("ddg.return.value: parsed.statement =", deparse(parsed.statement)))
   }
   
   # Create a data node for the return value. We want the scope of
@@ -5187,9 +5204,12 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
   return.node.name <- paste(call.text, "return")
   return.node.name <- gsub("\"", "\\\\\"", return.node.name)
 
+  #print(paste("ddg.return.value: sys.nframe =", sys.nframe()))
+  #print(paste("ddg.return.value: caller.frame =", caller.frame))
   return.node.scope <-
     environmentName (if (sys.nframe() == 2) .GlobalEnv
                      else parent.env(sys.frame(caller.frame)))
+  #print(paste("ddg.return.value: return.node.scope =", return.node.scope))
   .ddg.save.data(return.node.name, expr, fname="ddg.return", scope=return.node.scope)
   
   # Create a return proc node
@@ -5230,10 +5250,10 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
   ddg.return.values$ddg.call[ddg.num.returns] <- call.text
   ddg.return.values$return.used[ddg.num.returns] <- FALSE
   ddg.return.values$return.node.id[ddg.num.returns] <- .ddg.dnum()
-  ddg.cur.cmd.stack <- .ddg.get(".ddg.cur.cmd.stack")
-  ddg.return.values$line[ddg.num.returns] <- 
-      if (length(ddg.cur.cmd.stack) == 0) NA
-      else ddg.cur.cmd.stack[length(ddg.cur.cmd.stack) - 1][[1]]@pos@startLine
+  #ddg.cur.cmd.stack <- .ddg.get(".ddg.cur.cmd.stack")
+  #ddg.return.values$line[ddg.num.returns] <- 
+  #    if (length(ddg.cur.cmd.stack) == 0) NA
+  #    else ddg.cur.cmd.stack[length(ddg.cur.cmd.stack) - 1][[1]]@pos@startLine
   .ddg.set(".ddg.return.values", ddg.return.values)
   .ddg.set(".ddg.num.returns", ddg.num.returns)
 
@@ -5425,31 +5445,6 @@ ddg.should.run.annotated <- function (func.name) {
   # Check if we are in a loop and loop annotations are off
   #print(paste("loop annotate?", .ddg.loop.annotate()))
   #print(paste("inside loop?", .ddg.inside.loop()))
-  if (!.ddg.loop.annotate() && .ddg.inside.loop() > 0) return (FALSE)
-  
-  # Make sure this specific function has not been disabled
-  if (!is.null(.ddg.annotate.off()) & func.name %in% .ddg.annotate.off()) return(FALSE)
-  
-  #print(paste(func.name, "is not in off list"))
-  
-  # Not annotating functions in general
-  # Check if this specific function should be annotated
-  if (!is.null(.ddg.annotate.on()) & func.name %in% .ddg.annotate.on()) return(TRUE)
-  
-  #print(paste(func.name, "is not in on list"))
-  
-  # If we do not know anything specific about this function, follow the 
-  # general rule
-  return (.ddg.annotate.inside()) 
-}
-
-# Returns true if we should run the annotated version of a function and
-# false if we should run the unannotated version.
-
-ddg.should.run.annotated <- function (func.name) {
-  #print("In ddg.should.run.annotated")
-  
-  # Check if we are in a loop and loop annotations are off
   if (!.ddg.loop.annotate() && .ddg.inside.loop() > 0) return (FALSE)
   
   # Make sure this specific function has not been disabled
@@ -5947,6 +5942,10 @@ ddg.finish <- function(pname=NULL) {
 
   # Create control flow edge from preceding procedure node.
   .ddg.proc2proc()
+  
+  # ddg.finish is added to the end of blocks.  We want the block to
+  # return the value of the last R statement.
+  return(.ddg.get (".ddg.last.R.value"))
 }
 
 # ddg.init intializes a new DDG.
