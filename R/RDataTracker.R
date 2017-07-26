@@ -446,7 +446,7 @@ library(jsonlite)
   #   value.
   .ddg.set(".ddg.return.values",
           data.frame(ddg.call=character(size),
-          #line = integer(size),
+          line = integer(size),
           return.used = logical(size),
           return.node.id = integer(size),
           stringsAsFactors=FALSE))
@@ -2758,13 +2758,13 @@ library(jsonlite)
   # Find the functions that have completed but whose returns have
   # not been used yet.
   returns <- .ddg.get(".ddg.return.values")
-#  if (!is.na(command@pos@startLine)) {
-#    unused.returns <- returns[!returns$return.used & returns$return.node.id > 0 & !is.na(returns$line) & returns$line == command@pos@startLine, ]
-#  }
-#  else {
-#    unused.returns <- returns[!returns$return.used & returns$return.node.id > 0, ]
-#  }
-  unused.returns <- returns[!returns$return.used & returns$return.node.id > 0, ]
+  if (!is.na(command@pos@startLine)) {
+    unused.returns <- returns[!returns$return.used & returns$return.node.id > 0 & !is.na(returns$line) & returns$line == command@pos@startLine, ]
+  }
+  else {
+    unused.returns <- returns[!returns$return.used & returns$return.node.id > 0, ]
+  }
+#  unused.returns <- returns[!returns$return.used & returns$return.node.id > 0, ]
   if (nrow(unused.returns) == 0) return()
   #print (paste(".ddg.link.function.returns: unused.returns:", unused.returns))
 
@@ -5164,7 +5164,7 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
   if (nrow(ddg.return.values) == ddg.num.returns) {
     size = 100
     new.rows <- data.frame(ddg.call = character(size),
-                           #line = integer(size),
+                           line = integer(size),
                            return.used = logical(size),
                            return.node.id = integer(size),
                            stringsAsFactors=FALSE)
@@ -5250,10 +5250,10 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
   ddg.return.values$ddg.call[ddg.num.returns] <- call.text
   ddg.return.values$return.used[ddg.num.returns] <- FALSE
   ddg.return.values$return.node.id[ddg.num.returns] <- .ddg.dnum()
-  #ddg.cur.cmd.stack <- .ddg.get(".ddg.cur.cmd.stack")
-  #ddg.return.values$line[ddg.num.returns] <- 
-  #    if (length(ddg.cur.cmd.stack) == 0) NA
-  #    else ddg.cur.cmd.stack[length(ddg.cur.cmd.stack) - 1][[1]]@pos@startLine
+  ddg.cur.cmd.stack <- .ddg.get(".ddg.cur.cmd.stack")
+  ddg.return.values$line[ddg.num.returns] <- 
+      if (length(ddg.cur.cmd.stack) == 0) NA
+      else ddg.cur.cmd.stack[length(ddg.cur.cmd.stack) - 1][[1]]@pos@startLine
   .ddg.set(".ddg.return.values", ddg.return.values)
   .ddg.set(".ddg.num.returns", ddg.num.returns)
 
