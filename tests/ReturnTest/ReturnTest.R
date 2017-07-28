@@ -86,3 +86,11 @@ f11 <- function(x) {
 
 f11(-1)
 
+f11 <- function (x) {
+  sum <- 0
+  for (i in 1:x) {
+    sum <- sum + i
+  }
+}
+ 
+f11(3)
