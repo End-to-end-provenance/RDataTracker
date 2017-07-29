@@ -3354,8 +3354,8 @@ library(jsonlite)
               {
                 for (annot in cmd@annotated) {
                   #print (paste (".ddg.parse.commands: Evaluating ", paste(annot, collapse = " ")))
-                  # Don't set return.value if we are calling a ddg function.
-                  if (grepl("^ddg", annot) || grepl("^.ddg", annot)) {
+                  # Don't set return.value if we are calling a ddg function or we are executing an if-statement
+                  if (grepl("^ddg", annot) || grepl("^.ddg", annot) || as.character(.ddg.get.statement.type(annot)) == "if") {
                     eval(annot, environ, NULL)
                   }
                   else {

@@ -86,3 +86,12 @@ f11 <- function(x) {
 
 f11(-1)
 
+# Testing for loop as the last line of a function.
+f12 <- function (x) {
+  sum <- 0
+  for (i in 1:x) {
+    sum <- sum + i
+  }
+}
+ 
+f12(3)
