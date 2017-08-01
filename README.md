@@ -1,3 +1,11 @@
+Build Status
+ ============
+
+ | Branch      |Status                                                                                                                                                                                  |
+ |-------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+ | master      | [![Master Build Status](https://api.travis-ci.org/End-to-end-provenance/RDataTracker.svg?branch=master)](https://travis-ci.org/End-to-end-provenance/RDataTracker/branches)            |
+ | development | [![Development Build Status](https://api.travis-ci.org/End-to-end-provenance/RDataTracker.svg?branch=development)](https://travis-ci.org/End-to-end-provenance/RDataTracker/branches)  |
+
 What is RDataTracker?
 =====================
 
@@ -5,7 +13,7 @@ RDataTracker is a library of R functions that can be used to collect
 data provenance in the form of a Data Derivation Graph (DDG) as
 an R script executes. The DDG is saved in PROV-JSON format to
 the file ddg.json. The DDG can be viewed and queried with DDG
-Explorer, a separate visualizing tool written in Java, which is 
+Explorer, a separate visualizing tool written in Java, which is
 currently included in the RDataTracker install package.
 
 What is a DDG?
@@ -16,22 +24,22 @@ detailed history of a data analysis. The DDG consists of nodes and edges
 that represent steps or operations (procedural nodes), intermediate data
 values (data nodes), the order in which steps are executed (control flow
 edges), and how data values are used or created (data flow edges). Note
-that the DDG always records a particular execution and a new DDG is 
+that the DDG always records a particular execution and a new DDG is
 created every time an R script is run.
 
 In DDG Explorer, nodes and edges are shown as ovals and arrows
 (respectively), with the node or edge type indicated in different colors
 (as explained in the legend). Collapsible and expandable nodes provide
 a level of abstraction by allowing sections of the DDG to be expanded
-or collapsed. Clicking on a procedural node displays the corresponding 
-lines in the source code while clicking on a data node displays the 
+or collapsed. Clicking on a procedural node displays the corresponding
+lines in the source code while clicking on a data node displays the
 intermediate data value. Warnings and errors from the R interpreter are
 captured in error nodes at the point in the execution where they occur.
 
 Installing RDataTracker
 =======================
 
-RDataTracker currently requires the following R packages: gtools, XML, 
+RDataTracker currently requires the following R packages: gtools, XML,
 knitr, stringr, utils, devtools, and methods.
 
 RDataTracker is easily installed from GitHub using devtools:
@@ -49,7 +57,7 @@ with variable or function names in the main script or other libraries.
 Using RDataTracker
 ==================
 
-To capture data provenance for an R script, set the working directory, 
+To capture data provenance for an R script, set the working directory,
 load the RDataTracker package (as above), and enter the following command:
 
 > ddg.run("script.R")
@@ -69,14 +77,14 @@ how it works. For example:
 
 - r.script.path = the full path to the R script (if not in the working directory)
 
-- annotate.inside =  whether to collect provenance for statements inside functions 
+- annotate.inside =  whether to collect provenance for statements inside functions
 and control constructs (default = TRUE)
-   
+
 - first.loop = the number of the first iteration of a loop to annotate (default = 1)
 
 - max.loops = the maximum number of iterations of a loop to annotate (default = 1)
 
-- max.snapshot.size = the maximum size (in kilobytes) for objects saved in 
+- max.snapshot.size = the maximum size (in kilobytes) for objects saved in
 snapshot files (default = 10)
 
 - debug = execute the script one line at a time with an option to view the DDG
@@ -100,7 +108,7 @@ below.  For more details, see the help pages for RDataTracker.
 
 Level of Detail Collected
 
-The following commands may be used at the R command line to set 
+The following commands may be used at the R command line to set
 level of detail collected by RDataTracker:
 
 > ddg.set.detail(n) = sets the level of detail from no annotation of internal statements
