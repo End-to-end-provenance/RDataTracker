@@ -63,6 +63,7 @@ tryCatch (
 )
 
 # Test error
-error <- foo()
+data <- read.csv( './data/x.csv' , header = F )
+apply(data,2,sum)
 
 
