@@ -3246,6 +3246,7 @@ library(jsonlite)
       # Get environment for output data node.
       d.environ <- environ
 
+      
       if ( .ddg.is.nonlocal.assign(cmd@parsed[[1]]) )
       {
         d.environ <- .ddg.get.env(cmd@vars.set, for.caller=TRUE)
@@ -3253,6 +3254,16 @@ library(jsonlite)
         if( identical(d.environ,"undefined") )
           d.environ <- globalenv()
       }
+      
+      
+      #if ( .ddg.is.nonlocal.assign(cmd@parsed[[1]]) )
+      #{
+      #  # NOT WORKING!! - CAN NOT FIND ENVIRONMENT EVEN IF VARIABLE EXISTS
+      #  d.environ <- .ddg.where( cmd@vars.set , env = parent.env(parent.frame()) , warning = FALSE )
+      #
+      #  if( identical(d.environ,"undefined") )
+      #    d.environ <- globalenv()
+      #}
 
 
       # Check for control & loop statements.
@@ -3410,6 +3421,15 @@ library(jsonlite)
           )
 
           if (.ddg.debug.lib()) print (paste (".ddg.parse.commands: Done evaluating ", cmd@annotated))
+
+          
+          
+          # EDITS
+          
+          cmd@original.packages <- sapply(as.character(cmd@functions.called),.ddg.where)
+          x <<- cmd@original.packages
+          
+          
 
           # After evaluating
           # Check changes to variable type for common variables between vars.set and vars.used

@@ -88,8 +88,13 @@ setClass("DDGStatement",
         script.num = "numeric",   # The number for the script this statement comes from.
                                   # Has the value -1 if it is not available
         is.breakpoint = "logical", # True if a breakpoint has been set for this statement
-        contained = "list"         # If this is a function declaration, this will be a list of
+        contained = "list",        # If this is a function declaration, this will be a list of
                                    # DDGStatement objects for the statements it contains.
+        
+        
+        # EDITS
+        functions.called = "list",
+        original.packages = "list"
       )
 )
 
@@ -190,9 +195,55 @@ setMethod ("initialize",
           }
 
       #print(paste ("annotated statement", .Object@annotated))
+      
+      
+      
+      # EDITS
+      .Object@functions.called <- find.calls(.Object@parsed[[1]])
+      
+
       return (.Object)
     }
 )
+
+
+# EDITS
+
+find.calls <- function(obj) {
+  
+  if( is.call(obj) )
+  {
+    return( unique( c(obj[[1]], unlist(sapply(obj, find.calls, USE.NAMES=FALSE))) ) )
+  }
+  
+}
+
+
+
+
+where1 <- function( name , env = parent.frame() , warning = TRUE )
+{
+  #stopifnot(is.character(name), length(name) == 1)
+  
+  if (identical(env, emptyenv()))
+  {
+    if(warning)
+      warning("Can't find ", name)
+    
+    return("undefined")
+  }
+  if (exists(name, env, inherits=FALSE))
+  {
+    env
+  }
+  else
+  {
+    where1(name, parent.env(env), warning)
+  }
+}
+
+
+
 
 # A special null value for when source code position information is missing.
 null.pos <- function() {
