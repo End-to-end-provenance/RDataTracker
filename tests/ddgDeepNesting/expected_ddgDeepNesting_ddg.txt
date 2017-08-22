@@ -1,118 +1,118 @@
 Architecture="x86_64"
-OperatingSystem="unix"
+OperatingSystem="windows"
 Language="R"
-LanguageVersion="R version 3.3.1 (2016-06-21)"
-RDataTrackerVersion="2.25.0"
+LanguageVersion="R version 3.3.3 (2017-03-06)"
+RDataTrackerVersion="2.26.1"
 Script="[DIR]/ddgDeepNesting.R"
 SourcedScripts=""
-ProcessFileTimestamp="2017-02-09T17.43.53EST"
+ProcessFileTimestamp="2017-06-20T00.14.12EDT"
 WorkingDirectory="[DIR]"
 DDGDirectory="[DIR]/ddg"
-DateTime="2017-02-09T18.08.50EST"
-InstalledPackages="RDataTracker 2.25.0"
+DateTime="2017-06-29T03.25.11EDT"
+InstalledPackages="base 3.3.3, datasets 3.3.3, graphics 3.3.3, grDevices 3.3.3, methods 3.3.3, RDataTracker 2.26.1, stats 3.3.3, utils 3.3.3"
 31
-Start p1 "1-ddgDeepNesting.R" Value="ddgDeepNesting.R" Time="0.0499999999999999" Script="NA" Pos="NA";
-Operation p2 "2-increment.value <- function(a) {    a <- a + 1}" Value="increment.value <- function(a) {    a <- a + 1}" Time="0.0509999999999999" Script="0" Pos="7,1,9,1";
+Start p1 "1-ddgDeepNesting.R" Value="ddgDeepNesting.R" Time="0.0599999999999999" Script="NA" Pos="NA";
+Operation p2 "2-increment.value <- function(a) {    a <- a + 1}" Value="increment.value <- function(a) {    a <- a + 1}" Time="0.0599999999999999" Script="0" Pos="7,1,9,1";
 CF p1 p2
-Data d1 "1-increment.value" Value="#ddg.function";
+Data d1 "1-increment.value" Value="#ddg.function" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}\"";
 DF p2 d1
-Operation p3 "3-a <- 0" Value="a <- 0" Time="0.0589999999999999" Script="0" Pos="11,1,11,6";
+Operation p3 "3-a <- 0" Value="a <- 0" Time="0.0599999999999999" Script="0" Pos="11,1,11,6";
 CF p2 p3
-Data d2 "2-a" Value="0";
+Data d2 "2-a" Value="0" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
 DF p3 d2
-Operation p4 "4-n <- 5" Value="n <- 5" Time="0.0649999999999999" Script="0" Pos="13,1,13,6";
+Operation p4 "4-n <- 5" Value="n <- 5" Time="0.0599999999999999" Script="0" Pos="13,1,13,6";
 CF p3 p4
-Data d3 "3-n" Value="5";
+Data d3 "3-n" Value="5" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
 DF p4 d3
-Start p5 "5-for (i in 1:n) {    for (j in 1:n) {        for (k in 1:n) {" Value="for (i in 1:n) {    for (j in 1:n) {        for (k in 1:n) {" Time="0.071" Script="0" Pos="17,1,28,1";
+Start p5 "5-for (i in 1:n) {    for (j in 1:n) {        for (k in 1:n) {" Value="for (i in 1:n) {    for (j in 1:n) {        for (k in 1:n) {" Time="0.07" Script="0" Pos="17,1,28,1";
 CF p4 p5
 DF d3 p5
 DF d1 p5
 DF d2 p5
-Start p6 "6-for loop" Value="for loop" Time="0.093" Script="NA" Pos="NA";
+Start p6 "6-for loop" Value="for loop" Time="0.09" Script="NA" Pos="NA";
 CF p5 p6
-Operation p7 "7-i <- 1" Value="i <- 1" Time="0.094" Script="NA" Pos="NA";
+Operation p7 "7-i <- 1" Value="i <- 1" Time="0.09" Script="NA" Pos="NA";
 CF p6 p7
-Data d4 "4-i" Value="1";
+Data d4 "4-i" Value="1" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"integer\"]}\"";
 DF p7 d4
-Start p8 "8-for (j in 1:n) {    for (k in 1:n) {        a <- increment.v" Value="for (j in 1:n) {    for (k in 1:n) {        a <- increment.v" Time="0.1" Script="0" Pos="NA,NA,NA,NA";
+Start p8 "8-for (j in 1:n) {    for (k in 1:n) {        a <- increment.v" Value="for (j in 1:n) {    for (k in 1:n) {        a <- increment.v" Time="0.09" Script="0" Pos="NA,NA,NA,NA";
 CF p7 p8
 DF d3 p8
 DF d1 p8
 DF d2 p8
-Start p9 "9-for loop" Value="for loop" Time="0.121" Script="NA" Pos="NA";
+Start p9 "9-for loop" Value="for loop" Time="0.11" Script="NA" Pos="NA";
 CF p8 p9
-Operation p10 "10-j <- 1" Value="j <- 1" Time="0.122" Script="NA" Pos="NA";
+Operation p10 "10-j <- 1" Value="j <- 1" Time="0.11" Script="NA" Pos="NA";
 CF p9 p10
-Data d5 "5-j" Value="1";
+Data d5 "5-j" Value="1" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"integer\"]}\"";
 DF p10 d5
-Start p11 "11-for (k in 1:n) {    a <- increment.value(a)    invisible(a)}" Value="for (k in 1:n) {    a <- increment.value(a)    invisible(a)}" Time="0.128" Script="0" Pos="NA,NA,NA,NA";
+Start p11 "11-for (k in 1:n) {    a <- increment.value(a)    invisible(a)}" Value="for (k in 1:n) {    a <- increment.value(a)    invisible(a)}" Time="0.11" Script="0" Pos="NA,NA,NA,NA";
 CF p10 p11
 DF d3 p11
 DF d1 p11
 DF d2 p11
-Start p12 "12-for loop" Value="for loop" Time="0.147" Script="NA" Pos="NA";
+Start p12 "12-for loop" Value="for loop" Time="0.12" Script="NA" Pos="NA";
 CF p11 p12
-Operation p13 "13-k <- 1" Value="k <- 1" Time="0.149" Script="NA" Pos="NA";
+Operation p13 "13-k <- 1" Value="k <- 1" Time="0.12" Script="NA" Pos="NA";
 CF p12 p13
-Data d6 "6-k" Value="1";
+Data d6 "6-k" Value="1" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"integer\"]}\"";
 DF p13 d6
-Start p14 "14-a <- increment.value(a)" Value="a <- increment.value(a)" Time="0.154" Script="0" Pos="NA,NA,NA,NA";
+Start p14 "14-a <- increment.value(a)" Value="a <- increment.value(a)" Time="0.14" Script="0" Pos="NA,NA,NA,NA";
 CF p13 p14
 DF d1 p14
 DF d2 p14
-Start p15 "15-increment.value(a)" Value="increment.value(a)" Time="0.164" Script="NA" Pos="NA";
+Start p15 "15-increment.value(a)" Value="increment.value(a)" Time="0.14" Script="NA" Pos="NA";
 CF p14 p15
-Binding p16 "16-a  <-  a" Time="0.164" Script="NA" Pos="NA";
+Binding p16 "16-a  <-  a" Time="0.14" Script="NA" Pos="NA";
 CF p15 p16
 DF d2 p16
-Data d7 "7-a" Value="0";
+Data d7 "7-a" Value="0" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
 DF p16 d7
-Operation p17 "17-increment.value" Value="increment.value" Time="0.172" Script="NA" Pos="NA";
+Operation p17 "17-increment.value" Value="increment.value" Time="0.15" Script="NA" Pos="NA";
 DF d1 p17
 DF d7 p17
 CF p16 p17
-Data d8 "8-increment.value(a) return" Value="1";
-Operation p18 "18-a <- a + 1" Value="a <- a + 1" Time="0.187" Script="0" Pos="8,9,8,18";
+Data d8 "8-increment.value(a) return" Value="1" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
+Operation p18 "18-a <- a + 1" Value="a <- a + 1" Time="0.15" Script="0" Pos="8,9,8,18";
 CF p17 p18
 DF p18 d8
 DF d7 p18
-Data d9 "9-a" Value="1";
+Data d9 "9-a" Value="1" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
 DF p18 d9
-Finish p19 "19-increment.value(a)" Value="increment.value(a)" Time="0.199" Script="NA" Pos="NA";
+Finish p19 "19-increment.value(a)" Value="increment.value(a)" Time="0.17" Script="NA" Pos="NA";
 CF p18 p19
-Finish p20 "20-a <- increment.value(a)" Value="a <- increment.value(a)" Time="0.2" Script="0" Pos="NA,NA,NA,NA";
+Finish p20 "20-a <- increment.value(a)" Value="a <- increment.value(a)" Time="0.17" Script="0" Pos="NA,NA,NA,NA";
 CF p19 p20
 DF d8 p20
-Data d10 "10-a" Value="1";
+Data d10 "10-a" Value="1" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
 DF p20 d10
-Operation p21 "21-invisible(a)" Value="invisible(a)" Time="0.207" Script="0" Pos="NA,NA,NA,NA";
+Operation p21 "21-invisible(a)" Value="invisible(a)" Time="0.17" Script="0" Pos="NA,NA,NA,NA";
 CF p20 p21
 DF d10 p21
-Finish p22 "22-for loop" Value="for loop" Time="0.215" Script="NA" Pos="NA";
+Finish p22 "22-for loop" Value="for loop" Time="0.18" Script="NA" Pos="NA";
 CF p21 p22
-Incomplete p23 "23-Details Omitted" Value="Details Omitted" Time="0.216" Script="NA" Pos="NA";
+Incomplete p23 "23-Details Omitted" Value="Details Omitted" Time="0.18" Script="NA" Pos="NA";
 CF p22 p23
-Finish p24 "24-for (k in 1:n) {    a <- increment.value(a)    invisible(a)}" Value="for (k in 1:n) {    a <- increment.value(a)    invisible(a)}" Time="0.218" Script="0" Pos="NA,NA,NA,NA";
+Finish p24 "24-for (k in 1:n) {    a <- increment.value(a)    invisible(a)}" Value="for (k in 1:n) {    a <- increment.value(a)    invisible(a)}" Time="0.18" Script="0" Pos="NA,NA,NA,NA";
 CF p23 p24
-Data d11 "11-a" Value="5";
+Data d11 "11-a" Value="5" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
 DF p24 d11
-Finish p25 "25-for loop" Value="for loop" Time="0.221" Script="NA" Pos="NA";
+Finish p25 "25-for loop" Value="for loop" Time="0.18" Script="NA" Pos="NA";
 CF p24 p25
-Incomplete p26 "26-Details Omitted" Value="Details Omitted" Time="0.222" Script="NA" Pos="NA";
+Incomplete p26 "26-Details Omitted" Value="Details Omitted" Time="0.18" Script="NA" Pos="NA";
 CF p25 p26
-Finish p27 "27-for (j in 1:n) {    for (k in 1:n) {        a <- increment.v" Value="for (j in 1:n) {    for (k in 1:n) {        a <- increment.v" Time="0.223" Script="0" Pos="NA,NA,NA,NA";
+Finish p27 "27-for (j in 1:n) {    for (k in 1:n) {        a <- increment.v" Value="for (j in 1:n) {    for (k in 1:n) {        a <- increment.v" Time="0.18" Script="0" Pos="NA,NA,NA,NA";
 CF p26 p27
-Data d12 "12-a" Value="25";
+Data d12 "12-a" Value="25" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
 DF p27 d12
-Finish p28 "28-for loop" Value="for loop" Time="0.227" Script="NA" Pos="NA";
+Finish p28 "28-for loop" Value="for loop" Time="0.18" Script="NA" Pos="NA";
 CF p27 p28
-Incomplete p29 "29-Details Omitted" Value="Details Omitted" Time="0.228" Script="NA" Pos="NA";
+Incomplete p29 "29-Details Omitted" Value="Details Omitted" Time="0.18" Script="NA" Pos="NA";
 CF p28 p29
-Finish p30 "30-for (i in 1:n) {    for (j in 1:n) {        for (k in 1:n) {" Value="for (i in 1:n) {    for (j in 1:n) {        for (k in 1:n) {" Time="0.229" Script="0" Pos="17,1,28,1";
+Finish p30 "30-for (i in 1:n) {    for (j in 1:n) {        for (k in 1:n) {" Value="for (i in 1:n) {    for (j in 1:n) {        for (k in 1:n) {" Time="0.2" Script="0" Pos="17,1,28,1";
 CF p29 p30
-Data d13 "13-a" Value="125";
+Data d13 "13-a" Value="125" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
 DF p30 d13
-Finish p31 "31-ddgDeepNesting.R" Value="ddgDeepNesting.R" Time="0.233" Script="NA" Pos="NA";
+Finish p31 "31-ddgDeepNesting.R" Value="ddgDeepNesting.R" Time="0.2" Script="NA" Pos="NA";
 CF p30 p31
 

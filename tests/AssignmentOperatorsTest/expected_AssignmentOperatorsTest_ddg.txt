@@ -1,0 +1,353 @@
+Architecture="x86_64"
+OperatingSystem="windows"
+Language="R"
+LanguageVersion="R version 3.3.3 (2017-03-06)"
+RDataTrackerVersion="2.26.1"
+Script="[DIR]/AssignmentOperatorsTest.R"
+SourcedScripts=""
+ProcessFileTimestamp="2017-06-20T00.14.12EDT"
+WorkingDirectory="[DIR]"
+DDGDirectory="[DIR]/ddg"
+DateTime="2017-06-29T03.20.21EDT"
+InstalledPackages="base 3.3.3, datasets 3.3.3, graphics 3.3.3, grDevices 3.3.3, methods 3.3.3, RDataTracker 2.26.1, stats 3.3.3, utils 3.3.3"
+104
+Start p1 "1-AssignmentOperatorsTest.R" Value="AssignmentOperatorsTest.R" Time="0.19" Script="NA" Pos="NA";
+Operation p2 "2-a = 1" Value="a = 1" Time="0.19" Script="0" Pos="11,1,11,1";
+CF p1 p2
+Data d1 "1-a" Value="1" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
+DF p2 d1
+Operation p3 "3-stopifnot(a == 1)" Value="stopifnot(a == 1)" Time="0.2" Script="0" Pos="NA,NA,NA,NA";
+CF p2 p3
+DF d1 p3
+Operation p4 "4-fn1 <- function() {    b = 2    stopifnot(b == 2)}" Value="fn1 <- function() {    b = 2    stopifnot(b == 2)}" Time="0.2" Script="0" Pos="NA,NA,NA,NA";
+CF p3 p4
+Data d2 "2-fn1" Value="#ddg.function" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}\"";
+DF p4 d2
+Start p5 "5-fn1()" Value="fn1()" Time="0.2" Script="NA" Pos="NA";
+CF p4 p5
+Operation p6 "6-fn1" Value="fn1" Time="0.2" Script="NA" Pos="NA";
+DF d2 p6
+CF p5 p6
+Operation p7 "7-b = 2" Value="b = 2" Time="0.22" Script="0" Pos="NA,NA,NA,NA";
+CF p6 p7
+Data d3 "3-b" Value="2" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
+DF p7 d3
+Data d4 "4-fn1() return" Value="NULL" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}\"";
+Operation p8 "8-stopifnot(b == 2)" Value="stopifnot(b == 2)" Time="0.22" Script="0" Pos="NA,NA,NA,NA";
+CF p7 p8
+DF p8 d4
+DF d3 p8
+Finish p9 "9-fn1()" Value="fn1()" Time="0.24" Script="NA" Pos="NA";
+CF p8 p9
+Operation p10 "10-stopifnot(!exists(\"b\"))" Value="stopifnot(!exists(\"b\"))" Time="0.24" Script="0" Pos="NA,NA,NA,NA";
+CF p9 p10
+Operation p11 "11-fn2 <- function() {    d = 3    fn <- function() {        d " Value="fn2 <- function() {    d = 3    fn <- function() {        d " Time="0.24" Script="0" Pos="NA,NA,NA,NA";
+CF p10 p11
+Data d5 "5-fn2" Value="#ddg.function" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}\"";
+DF p11 d5
+Start p12 "12-fn2()" Value="fn2()" Time="0.24" Script="NA" Pos="NA";
+CF p11 p12
+Operation p13 "13-fn2" Value="fn2" Time="0.24" Script="NA" Pos="NA";
+DF d5 p13
+CF p12 p13
+Operation p14 "14-d = 3" Value="d = 3" Time="0.25" Script="0" Pos="NA,NA,NA,NA";
+CF p13 p14
+Data d6 "6-d" Value="3" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
+DF p14 d6
+Operation p15 "15-fn <- function() {    d = 4}" Value="fn <- function() {    d = 4}" Time="0.25" Script="0" Pos="NA,NA,NA,NA";
+CF p14 p15
+Data d7 "7-fn" Value="#ddg.function" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}\"";
+DF p15 d7
+Start p16 "16-fn()" Value="fn()" Time="0.27" Script="NA" Pos="NA";
+CF p15 p16
+Operation p17 "17-fn" Value="fn" Time="0.27" Script="NA" Pos="NA";
+CF p16 p17
+Data d8 "8-fn() return" Value="4" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
+Operation p18 "18-d = 4" Value="d = 4" Time="0.27" Script="0" Pos="NA,NA,NA,NA";
+CF p17 p18
+DF p18 d8
+Data d9 "9-d" Value="4" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
+DF p18 d9
+Finish p19 "19-fn()" Value="fn()" Time="0.27" Script="NA" Pos="NA";
+CF p18 p19
+Operation p20 "20-fn()" Value="fn()" Time="0.27" Script="0" Pos="NA,NA,NA,NA";
+CF p19 p20
+DF d7 p20
+DF d8 p20
+Data d10 "10-fn2() return" Value="NULL" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}\"";
+Operation p21 "21-stopifnot(d == 3)" Value="stopifnot(d == 3)" Time="0.28" Script="0" Pos="NA,NA,NA,NA";
+CF p20 p21
+DF p21 d10
+DF d6 p21
+Finish p22 "22-fn2()" Value="fn2()" Time="0.28" Script="NA" Pos="NA";
+CF p21 p22
+Operation p23 "23-stopifnot(!exists(\"d\"))" Value="stopifnot(!exists(\"d\"))" Time="0.28" Script="0" Pos="NA,NA,NA,NA";
+CF p22 p23
+Operation p24 "24-env1 <- new.env()" Value="env1 <- new.env()" Time="0.3" Script="0" Pos="NA,NA,NA,NA";
+CF p23 p24
+Snapshot d11 "11-env1" Value="data/11-env1.txt" ValType="\"\"environment\"\"" Time="2017-06-29T03.20.21EDT";
+DF p24 d11
+Operation p25 "25-env1$e = 5" Value="env1$e = 5" Time="0.3" Script="0" Pos="NA,NA,NA,NA";
+CF p24 p25
+DF d11 p25
+Snapshot d12 "12-env1" Value="data/12-env1.txt" ValType="\"\"environment\"\"" Time="2017-06-29T03.20.21EDT";
+DF p25 d12
+Operation p26 "26-stopifnot(env1$e == 5)" Value="stopifnot(env1$e == 5)" Time="0.32" Script="0" Pos="NA,NA,NA,NA";
+CF p25 p26
+DF d12 p26
+Operation p27 "27-stopifnot(!exists(\"e\"))" Value="stopifnot(!exists(\"e\"))" Time="0.32" Script="0" Pos="NA,NA,NA,NA";
+CF p26 p27
+Operation p28 "28-env2 <- new.env()" Value="env2 <- new.env()" Time="0.33" Script="0" Pos="NA,NA,NA,NA";
+CF p27 p28
+Snapshot d13 "13-env2" Value="data/13-env2.txt" ValType="\"\"environment\"\"" Time="2017-06-29T03.20.21EDT";
+DF p28 d13
+Operation p29 "29-env2$env <- new.env(parent = env2)" Value="env2$env <- new.env(parent = env2)" Time="0.33" Script="0" Pos="NA,NA,NA,NA";
+CF p28 p29
+DF d13 p29
+Snapshot d14 "14-env2" Value="data/14-env2.txt" ValType="\"\"environment\"\"" Time="2017-06-29T03.20.21EDT";
+DF p29 d14
+Operation p30 "30-env2$env$f = 6" Value="env2$env$f = 6" Time="0.35" Script="0" Pos="NA,NA,NA,NA";
+CF p29 p30
+DF d14 p30
+Snapshot d15 "15-env2" Value="data/15-env2.txt" ValType="\"\"environment\"\"" Time="2017-06-29T03.20.22EDT";
+DF p30 d15
+Operation p31 "31-stopifnot(env2$env$f == 6)" Value="stopifnot(env2$env$f == 6)" Time="0.35" Script="0" Pos="NA,NA,NA,NA";
+CF p30 p31
+DF d15 p31
+Operation p32 "32-stopifnot(!exists(\"env2$f\"))" Value="stopifnot(!exists(\"env2$f\"))" Time="0.36" Script="0" Pos="NA,NA,NA,NA";
+CF p31 p32
+Operation p33 "33-stopifnot(!exists(\"f\"))" Value="stopifnot(!exists(\"f\"))" Time="0.36" Script="0" Pos="NA,NA,NA,NA";
+CF p32 p33
+Operation p34 "34-g <- 7" Value="g <- 7" Time="0.38" Script="0" Pos="NA,NA,NA,NA";
+CF p33 p34
+Data d16 "16-g" Value="7" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
+DF p34 d16
+Operation p35 "35-stopifnot(g == 7)" Value="stopifnot(g == 7)" Time="0.38" Script="0" Pos="NA,NA,NA,NA";
+CF p34 p35
+DF d16 p35
+Operation p36 "36-fn3 <- function() {    h <- 8    stopifnot(h == 8)}" Value="fn3 <- function() {    h <- 8    stopifnot(h == 8)}" Time="0.38" Script="0" Pos="NA,NA,NA,NA";
+CF p35 p36
+Data d17 "17-fn3" Value="#ddg.function" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}\"";
+DF p36 d17
+Start p37 "37-fn3()" Value="fn3()" Time="0.4" Script="NA" Pos="NA";
+CF p36 p37
+Operation p38 "38-fn3" Value="fn3" Time="0.4" Script="NA" Pos="NA";
+DF d17 p38
+CF p37 p38
+Operation p39 "39-h <- 8" Value="h <- 8" Time="0.4" Script="0" Pos="NA,NA,NA,NA";
+CF p38 p39
+Data d18 "18-h" Value="8" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
+DF p39 d18
+Data d19 "19-fn3() return" Value="NULL" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}\"";
+Operation p40 "40-stopifnot(h == 8)" Value="stopifnot(h == 8)" Time="0.4" Script="0" Pos="NA,NA,NA,NA";
+CF p39 p40
+DF p40 d19
+DF d18 p40
+Finish p41 "41-fn3()" Value="fn3()" Time="0.41" Script="NA" Pos="NA";
+CF p40 p41
+Operation p42 "42-stopifnot(!exists(\"h\"))" Value="stopifnot(!exists(\"h\"))" Time="0.41" Script="0" Pos="NA,NA,NA,NA";
+CF p41 p42
+Operation p43 "43-fn4 <- function() {    i <- 9    fn <- function() {        i" Value="fn4 <- function() {    i <- 9    fn <- function() {        i" Time="0.41" Script="0" Pos="NA,NA,NA,NA";
+CF p42 p43
+Data d20 "20-fn4" Value="#ddg.function" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}\"";
+DF p43 d20
+Start p44 "44-fn4()" Value="fn4()" Time="0.41" Script="NA" Pos="NA";
+CF p43 p44
+Operation p45 "45-fn4" Value="fn4" Time="0.41" Script="NA" Pos="NA";
+DF d20 p45
+CF p44 p45
+Operation p46 "46-i <- 9" Value="i <- 9" Time="0.43" Script="0" Pos="NA,NA,NA,NA";
+CF p45 p46
+Data d21 "21-i" Value="9" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
+DF p46 d21
+Operation p47 "47-fn <- function() {    i <- 10}" Value="fn <- function() {    i <- 10}" Time="0.43" Script="0" Pos="NA,NA,NA,NA";
+CF p46 p47
+Data d22 "22-fn" Value="#ddg.function" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}\"";
+DF p47 d22
+Start p48 "48-fn()" Value="fn()" Time="0.43" Script="NA" Pos="NA";
+CF p47 p48
+Operation p49 "49-fn" Value="fn" Time="0.43" Script="NA" Pos="NA";
+CF p48 p49
+Data d23 "23-fn() return" Value="10" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
+Operation p50 "50-i <- 10" Value="i <- 10" Time="0.43" Script="0" Pos="NA,NA,NA,NA";
+CF p49 p50
+DF p50 d23
+Data d24 "24-i" Value="10" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
+DF p50 d24
+Finish p51 "51-fn()" Value="fn()" Time="0.44" Script="NA" Pos="NA";
+CF p50 p51
+Operation p52 "52-fn()" Value="fn()" Time="0.44" Script="0" Pos="NA,NA,NA,NA";
+CF p51 p52
+DF d22 p52
+DF d23 p52
+Data d25 "25-fn4() return" Value="NULL" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}\"";
+Operation p53 "53-stopifnot(i == 9)" Value="stopifnot(i == 9)" Time="0.44" Script="0" Pos="NA,NA,NA,NA";
+CF p52 p53
+DF p53 d25
+DF d21 p53
+Finish p54 "54-fn4()" Value="fn4()" Time="0.46" Script="NA" Pos="NA";
+CF p53 p54
+Operation p55 "55-stopifnot(!exists(\"i\"))" Value="stopifnot(!exists(\"i\"))" Time="0.46" Script="0" Pos="NA,NA,NA,NA";
+CF p54 p55
+Operation p56 "56-env3 <- new.env()" Value="env3 <- new.env()" Time="0.46" Script="0" Pos="NA,NA,NA,NA";
+CF p55 p56
+Snapshot d26 "26-env3" Value="data/26-env3.txt" ValType="\"\"environment\"\"" Time="2017-06-29T03.20.22EDT";
+DF p56 d26
+Operation p57 "57-env3$j <- 11" Value="env3$j <- 11" Time="0.46" Script="0" Pos="NA,NA,NA,NA";
+CF p56 p57
+DF d26 p57
+Snapshot d27 "27-env3" Value="data/27-env3.txt" ValType="\"\"environment\"\"" Time="2017-06-29T03.20.22EDT";
+DF p57 d27
+Operation p58 "58-stopifnot(env3$j == 11)" Value="stopifnot(env3$j == 11)" Time="0.51" Script="0" Pos="NA,NA,NA,NA";
+CF p57 p58
+DF d27 p58
+Operation p59 "59-stopifnot(!exists(\"j\"))" Value="stopifnot(!exists(\"j\"))" Time="0.51" Script="0" Pos="NA,NA,NA,NA";
+CF p58 p59
+Operation p60 "60-env4 <- new.env()" Value="env4 <- new.env()" Time="0.51" Script="0" Pos="NA,NA,NA,NA";
+CF p59 p60
+Snapshot d28 "28-env4" Value="data/28-env4.txt" ValType="\"\"environment\"\"" Time="2017-06-29T03.20.22EDT";
+DF p60 d28
+Operation p61 "61-env4$env <- new.env(parent = env4)" Value="env4$env <- new.env(parent = env4)" Time="0.52" Script="0" Pos="NA,NA,NA,NA";
+CF p60 p61
+DF d28 p61
+Snapshot d29 "29-env4" Value="data/29-env4.txt" ValType="\"\"environment\"\"" Time="2017-06-29T03.20.22EDT";
+DF p61 d29
+Operation p62 "62-env4$env$k <- 12" Value="env4$env$k <- 12" Time="0.54" Script="0" Pos="NA,NA,NA,NA";
+CF p61 p62
+DF d29 p62
+Snapshot d30 "30-env4" Value="data/30-env4.txt" ValType="\"\"environment\"\"" Time="2017-06-29T03.20.22EDT";
+DF p62 d30
+Operation p63 "63-stopifnot(env4$env$k == 12)" Value="stopifnot(env4$env$k == 12)" Time="0.54" Script="0" Pos="NA,NA,NA,NA";
+CF p62 p63
+DF d30 p63
+Operation p64 "64-stopifnot(!exists(\"env4$k\"))" Value="stopifnot(!exists(\"env4$k\"))" Time="0.55" Script="0" Pos="NA,NA,NA,NA";
+CF p63 p64
+Operation p65 "65-stopifnot(!exists(\"k\"))" Value="stopifnot(!exists(\"k\"))" Time="0.55" Script="0" Pos="NA,NA,NA,NA";
+CF p64 p65
+Operation p66 "66-fn5 <- function() {    l <<- 13    stopifnot(l == 13)}" Value="fn5 <- function() {    l <<- 13    stopifnot(l == 13)}" Time="0.55" Script="0" Pos="NA,NA,NA,NA";
+CF p65 p66
+Data d31 "31-fn5" Value="#ddg.function" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}\"";
+DF p66 d31
+Start p67 "67-fn5()" Value="fn5()" Time="0.55" Script="NA" Pos="NA";
+CF p66 p67
+Operation p68 "68-fn5" Value="fn5" Time="0.57" Script="NA" Pos="NA";
+DF d31 p68
+CF p67 p68
+Operation p69 "69-l <<- 13" Value="l <<- 13" Time="0.57" Script="0" Pos="NA,NA,NA,NA";
+CF p68 p69
+Data d32 "32-l" Value="13" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
+DF p69 d32
+Data d33 "33-fn5() return" Value="NULL" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}\"";
+Operation p70 "70-stopifnot(l == 13)" Value="stopifnot(l == 13)" Time="0.57" Script="0" Pos="NA,NA,NA,NA";
+CF p69 p70
+DF p70 d33
+DF d32 p70
+Finish p71 "71-fn5()" Value="fn5()" Time="0.58" Script="NA" Pos="NA";
+CF p70 p71
+Operation p72 "72-stopifnot(l == 13)" Value="stopifnot(l == 13)" Time="0.58" Script="0" Pos="NA,NA,NA,NA";
+CF p71 p72
+DF d32 p72
+Operation p73 "73-fn6 <- function() {    m <<- 14}" Value="fn6 <- function() {    m <<- 14}" Time="0.58" Script="0" Pos="NA,NA,NA,NA";
+CF p72 p73
+Data d34 "34-fn6" Value="#ddg.function" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}\"";
+DF p73 d34
+Start p74 "74-fn6()" Value="fn6()" Time="0.58" Script="NA" Pos="NA";
+CF p73 p74
+Operation p75 "75-fn6" Value="fn6" Time="0.58" Script="NA" Pos="NA";
+DF d34 p75
+CF p74 p75
+Data d35 "35-fn6() return" Value="14" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
+Operation p76 "76-m <<- 14" Value="m <<- 14" Time="0.6" Script="0" Pos="NA,NA,NA,NA";
+CF p75 p76
+DF p76 d35
+Data d36 "36-m" Value="14" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
+DF p76 d36
+Finish p77 "77-fn6()" Value="fn6()" Time="0.6" Script="NA" Pos="NA";
+CF p76 p77
+Operation p78 "78-stopifnot(m == 14)" Value="stopifnot(m == 14)" Time="0.6" Script="0" Pos="NA,NA,NA,NA";
+CF p77 p78
+DF d36 p78
+Operation p79 "79-fn8 <- function() {    o <- 17    fn <- function() {        " Value="fn8 <- function() {    o <- 17    fn <- function() {        " Time="0.6" Script="0" Pos="NA,NA,NA,NA";
+CF p78 p79
+Data d37 "37-fn8" Value="#ddg.function" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}\"";
+DF p79 d37
+Start p80 "80-fn8()" Value="fn8()" Time="0.6" Script="NA" Pos="NA";
+CF p79 p80
+Operation p81 "81-fn8" Value="fn8" Time="0.61" Script="NA" Pos="NA";
+DF d37 p81
+CF p80 p81
+Operation p82 "82-o <- 17" Value="o <- 17" Time="0.61" Script="0" Pos="NA,NA,NA,NA";
+CF p81 p82
+Data d38 "38-o" Value="17" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
+DF p82 d38
+Operation p83 "83-fn <- function() {    o <<- 18}" Value="fn <- function() {    o <<- 18}" Time="0.61" Script="0" Pos="NA,NA,NA,NA";
+CF p82 p83
+Data d39 "39-fn" Value="#ddg.function" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}\"";
+DF p83 d39
+Start p84 "84-fn()" Value="fn()" Time="0.61" Script="NA" Pos="NA";
+CF p83 p84
+Operation p85 "85-fn" Value="fn" Time="0.61" Script="NA" Pos="NA";
+CF p84 p85
+Data d40 "40-fn() return" Value="18" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
+Operation p86 "86-o <<- 18" Value="o <<- 18" Time="0.61" Script="0" Pos="NA,NA,NA,NA";
+CF p85 p86
+DF p86 d40
+Data d41 "41-o" Value="18" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
+DF p86 d41
+Finish p87 "87-fn()" Value="fn()" Time="0.63" Script="NA" Pos="NA";
+CF p86 p87
+Operation p88 "88-fn()" Value="fn()" Time="0.63" Script="0" Pos="NA,NA,NA,NA";
+CF p87 p88
+DF d39 p88
+DF d40 p88
+Data d42 "42-fn8() return" Value="NULL" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}\"";
+Operation p89 "89-stopifnot(o == 18)" Value="stopifnot(o == 18)" Time="0.63" Script="0" Pos="NA,NA,NA,NA";
+CF p88 p89
+DF p89 d42
+DF d41 p89
+Finish p90 "90-fn8()" Value="fn8()" Time="0.63" Script="NA" Pos="NA";
+CF p89 p90
+Operation p91 "91-stopifnot(!exists(\"o\"))" Value="stopifnot(!exists(\"o\"))" Time="0.65" Script="0" Pos="NA,NA,NA,NA";
+CF p90 p91
+Operation p92 "92-fn10 <- function() {    fn <- function() {        r <<- 20  " Value="fn10 <- function() {    fn <- function() {        r <<- 20  " Time="0.65" Script="0" Pos="NA,NA,NA,NA";
+CF p91 p92
+Data d43 "43-fn10" Value="#ddg.function" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}\"";
+DF p92 d43
+Start p93 "93-fn10()" Value="fn10()" Time="0.65" Script="NA" Pos="NA";
+CF p92 p93
+Operation p94 "94-fn10" Value="fn10" Time="0.65" Script="NA" Pos="NA";
+DF d43 p94
+CF p93 p94
+Operation p95 "95-fn <- function() {    r <<- 20}" Value="fn <- function() {    r <<- 20}" Time="0.65" Script="0" Pos="NA,NA,NA,NA";
+CF p94 p95
+Data d44 "44-fn" Value="#ddg.function" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}\"";
+DF p95 d44
+Start p96 "96-fn()" Value="fn()" Time="0.65" Script="NA" Pos="NA";
+CF p95 p96
+Operation p97 "97-fn" Value="fn" Time="0.65" Script="NA" Pos="NA";
+CF p96 p97
+Data d45 "45-fn() return" Value="20" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
+Operation p98 "98-r <<- 20" Value="r <<- 20" Time="0.66" Script="0" Pos="NA,NA,NA,NA";
+CF p97 p98
+DF p98 d45
+Data d46 "46-r" Value="20" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
+DF p98 d46
+Finish p99 "99-fn()" Value="fn()" Time="0.66" Script="NA" Pos="NA";
+CF p98 p99
+Operation p100 "100-fn()" Value="fn()" Time="0.66" Script="0" Pos="NA,NA,NA,NA";
+CF p99 p100
+DF d44 p100
+DF d45 p100
+Data d47 "47-fn10() return" Value="NULL" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}\"";
+Operation p101 "101-stopifnot(r == 20)" Value="stopifnot(r == 20)" Time="0.66" Script="0" Pos="NA,NA,NA,NA";
+CF p100 p101
+DF p101 d47
+DF d46 p101
+Finish p102 "102-fn10()" Value="fn10()" Time="0.68" Script="NA" Pos="NA";
+CF p101 p102
+Operation p103 "103-stopifnot(r == 20)" Value="stopifnot(r == 20)" Time="0.68" Script="0" Pos="NA,NA,NA,NA";
+CF p102 p103
+DF d46 p103
+Finish p104 "104-AssignmentOperatorsTest.R" Value="AssignmentOperatorsTest.R" Time="0.68" Script="NA" Pos="NA";
+CF p103 p104
+
