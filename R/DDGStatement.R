@@ -93,8 +93,8 @@ setClass("DDGStatement",
         
         
         # EDITS
-        functions.called = "list",
-        original.packages = "list"
+        functions.called = "character",
+        packages.used = "character"
       )
 )
 
@@ -199,10 +199,11 @@ setMethod ("initialize",
       
       
       # EDITS
-      .Object@functions.called <- find.calls(.Object@parsed[[1]])
-      
+      tree <<- .Object@parsed[[1]]
+      .Object@functions.called <- unique(find.calls(.Object@parsed[[1]]))
+      functions.called <<- .Object@functions.called
 
-      return (.Object)
+      return(.Object)
     }
 )
 
@@ -213,7 +214,10 @@ find.calls <- function(obj) {
   
   if( is.call(obj) )
   {
-    return( unique( c(obj[[1]], unlist(sapply(obj, find.calls, USE.NAMES=FALSE))) ) )
+    function.name <- toString(obj[[1]])
+    call.list <- unlist( sapply(obj, find.calls, USE.NAMES=FALSE) )
+    
+    return( c(function.name, call.list) )
   }
   
 }

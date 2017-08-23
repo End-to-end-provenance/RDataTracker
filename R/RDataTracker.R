@@ -3426,9 +3426,19 @@ library(jsonlite)
           
           # EDITS
           
-          cmd@original.packages <- sapply(as.character(cmd@functions.called),.ddg.where)
-          x <<- cmd@original.packages
+          packages.used <- sapply( cmd@functions.called ,.ddg.where )
+          packages.used <- sapply( packages.used , environmentName )
           
+          packages.used <- packages.used[ grepl("package:", packages.used) ]
+          packages.used <- mapply( substring , packages.used , 9 )
+          
+          packages <<- packages.used
+          
+          cmd@functions.called <- names(packages.used)
+          cmd@packages.used <- unique(packages.used)
+          
+          new.packages.used <<- cmd@packages.used
+          new.functions <<- cmd@functions.called
           
 
           # After evaluating
