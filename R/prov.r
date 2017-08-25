@@ -30,6 +30,7 @@ prov.capture <- function(r.script.path=NULL, enable.console = TRUE, annotate.ins
 #' @export
 prov.json <- function(){
   ddg.json <- .ddg.json.current()
+  return(ddg.json)
 }
 
 #' @export
