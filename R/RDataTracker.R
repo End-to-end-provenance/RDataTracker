@@ -5969,7 +5969,7 @@ ddg.finish <- function(pname=NULL) {
 # Addition : overwrite (optional) - default TRUE, if FALSE, generates
 #   timestamp for ddg directory
 
-ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enable.console = TRUE, annotate.inside.functions = TRUE, first.loop = 1, max.loops = 1, max.snapshot.size = 10) {
+ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enable.console = TRUE, annotate.inside.functions = TRUE, first.loop = 1, max.loops = 1, max.snapshot.size = 10, save.to.disk=TRUE) {
   #.ddg.DDGStatement.init()
   .ddg.init.tables()
 
@@ -5996,14 +5996,16 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
 
   .ddg.set("ddg.path", ddg.path)
 
-  # Remove files from DDG directory
-  ddg.flush.ddg()
+  if(save.to.disk){
+    # Remove files from DDG directory
+    ddg.flush.ddg()
 
-  # Create DDG directories
-  .ddg.init.environ()
+    # Create DDG directories
+    .ddg.init.environ()
 
-  # Save copy of original script.
-  file.copy(r.script.path, paste(.ddg.path.scripts(), "/", basename(r.script.path), sep = ""))
+    # Save copy of original script.
+    file.copy(r.script.path, paste(.ddg.path.scripts(), "/", basename(r.script.path), sep = ""))
+  }
 
   # Reset r.script.path if RMarkdown file
 
@@ -6022,7 +6024,6 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
   .ddg.set(".ddg.func.depth", 0)
   .ddg.set(".ddg.explorer.port", 6096)
   .ddg.set.details.omitted(FALSE)
-  # .ddg.init.environ()
 
   # Initialize the information about the open start-finish blocks
   .ddg.set (".ddg.starts.open", vector())
@@ -6039,7 +6040,7 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
   .ddg.set("possible.graphics.files.open", NULL)
   .ddg.set("ddg.open.devices", vector())
 
-  if (interactive() && .ddg.enable.console()) {
+  if (interactive() && .ddg.enable.console() && save.to.disk) {
     ddg.history.file <- paste(.ddg.path.data(), "/.ddghistory", sep="")
     .ddg.set(".ddg.history.file", ddg.history.file)
 
