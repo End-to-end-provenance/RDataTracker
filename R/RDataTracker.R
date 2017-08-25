@@ -5987,7 +5987,6 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
     }
   } else ddg.path <- normalizePath(ddgdir, winslash="/", mustWork=FALSE)
 
-  .ddg.set("ddg.path", ddg.path)
   if(save.to.disk){
     .ddg.set("ddg.save.to.disk", TRUE)
     # Overwrite default is
@@ -6010,6 +6009,7 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
   }else{
     .ddg.set("ddg.save.to.disk", FALSE)
   }
+  .ddg.set("ddg.path", ddg.path)
 
   # Reset r.script.path if RMarkdown file
 

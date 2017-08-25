@@ -11,13 +11,17 @@ prov.capture <- function(r.script.path=NULL, enable.console = TRUE, annotate.ins
 
   # If an R error is generated, get the error message and close
   # the DDG.
-  if (!is.null(r.script.path)) ddg.source(
-       .ddg.get("ddg.r.script.path"),
-        ddgdir = NULL,
-        ignore.ddg.calls = FALSE,
-        ignore.init = TRUE,
-        force.console = FALSE)
-  else stop("r.script.path cannot be NULL")
+  tryCatch(
+    if (!is.null(r.script.path)) ddg.source(
+         .ddg.get("ddg.r.script.path"),
+          ddgdir = NULL,
+          ignore.ddg.calls = FALSE,
+          ignore.init = TRUE,
+          force.console = FALSE)
+    else stop("r.script.path cannot be NULL"),
+    finally={
+      if(save) ddg.save(r.script.path, FALSE)
+    })
 
   .ddg.set('prov.script.path', r.script.path)
 
