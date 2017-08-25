@@ -1,4 +1,4 @@
-prov.capture(r.script.path=NULL, enable.console = TRUE, annotate.inside.functions = FALSE, first.loop = 1, max.loops = 1){
+prov.capture <- function(r.script.path=NULL, enable.console = TRUE, annotate.inside.functions = FALSE, first.loop = 1, max.loops = 1){
   # Initiate ddg.
   ddg.init(r.script.path, NULL, FALSE, enable.console, annotate.inside.functions, first.loop, max.loops, 0)
 
