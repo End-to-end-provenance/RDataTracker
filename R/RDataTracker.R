@@ -5998,6 +5998,8 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
       ddg.path <- paste(no.overwrite.folder, "/",  basename(tools::file_path_sans_ext(r.script.path)), "_ddg_", .ddg.timestamp(), sep = "")
     }
 
+    .ddg.set("ddg.path", ddg.path)
+
     # Remove files from DDG directory
     ddg.flush.ddg()
 
@@ -6009,7 +6011,6 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
   }else{
     .ddg.set("ddg.save.to.disk", FALSE)
   }
-  .ddg.set("ddg.path", ddg.path)
 
   # Reset r.script.path if RMarkdown file
 
