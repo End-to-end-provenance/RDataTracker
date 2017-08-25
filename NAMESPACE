@@ -11,7 +11,7 @@ export(ddg.loop.annotate.on, ddg.loop.annotate.off)
 export(ddg.max.snapshot.size, ddg.details.omitted, ddg.should.run.annotated)
 export(ddg.set.detail, ddg.get.detail, ddg.clear.detail)
 export(ddg.set.inside.loop, ddg.not.inside.loop)
-export(prov.capture)
+export(prov.capture, prov.json)
 
 importFrom(gtools, defmacro)
 importFrom(XML, saveXML)
