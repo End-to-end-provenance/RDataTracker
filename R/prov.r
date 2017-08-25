@@ -18,9 +18,24 @@ prov.capture <- function(r.script.path=NULL, enable.console = TRUE, annotate.ins
         ignore.init = TRUE,
         force.console = FALSE)
   else stop("r.script.path cannot be NULL")
+
+  .ddg.set('prov.script.path', r.script.path)
+
   invisible()
 }
 
+#' @export
 prov.json <- function(){
   ddg.json <- .ddg.json.current()
+}
+
+#' @export
+prov.display <- function(){
+  ddg.display()
+}
+
+#' @export
+prov.save <- function(){
+  path <- .ddg.get('prov.script.path')
+  ddg.save(path, FALSE)
 }
