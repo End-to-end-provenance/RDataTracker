@@ -5985,18 +5985,17 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
     }
   } else ddg.path <- normalizePath(ddgdir, winslash="/", mustWork=FALSE)
 
-  # Overwrite default is
-  if(!overwrite){
-    no.overwrite.folder <- paste(ddg.path, "_timestamps", sep = "")
-    if(!dir.exists(no.overwrite.folder)){
-      dir.create(no.overwrite.folder)
-    }
-    ddg.path <- paste(no.overwrite.folder, "/",  basename(tools::file_path_sans_ext(r.script.path)), "_ddg_", .ddg.timestamp(), sep = "")
-  }
-
   .ddg.set("ddg.path", ddg.path)
-
   if(save.to.disk){
+    # Overwrite default is
+    if(!overwrite){
+      no.overwrite.folder <- paste(ddg.path, "_timestamps", sep = "")
+      if(!dir.exists(no.overwrite.folder)){
+        dir.create(no.overwrite.folder)
+      }
+      ddg.path <- paste(no.overwrite.folder, "/",  basename(tools::file_path_sans_ext(r.script.path)), "_ddg_", .ddg.timestamp(), sep = "")
+    }
+
     # Remove files from DDG directory
     ddg.flush.ddg()
 
