@@ -6128,13 +6128,6 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
   # Initiate ddg.
   ddg.init(r.script.path, ddgdir, overwrite, enable.console, annotate.inside.functions, first.loop, max.loops, max.snapshot.size)
 
-  # Create ddg directory.
-  # dir.create(.ddg.path(), showWarnings = FALSE)
-
-  # Remove existing files if ddg directory different from working
-  # directory.
-  # ddg.flush.ddg()
-
   # Set .ddg.is.sourced to TRUE if script provided.
   if (!is.null(r.script.path)) .ddg.set(".ddg.is.sourced", TRUE)
 
