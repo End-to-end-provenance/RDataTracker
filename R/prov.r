@@ -21,9 +21,8 @@ prov.capture <- function(r.script.path=NULL, enable.console = TRUE, annotate.ins
     else stop("r.script.path cannot be NULL"),
     finally={
       if(save) ddg.save(r.script.path, FALSE)
-    })
-
-  .ddg.set('prov.script.path', r.script.path)
+    }
+  )
 
   invisible()
 }
