@@ -1,7 +1,7 @@
 #' @export
-prov.capture <- function(r.script.path=NULL, enable.console = TRUE, annotate.inside.functions = FALSE, first.loop = 1, max.loops = 1){
+prov.capture <- function(r.script.path=NULL, enable.console = TRUE, annotate.inside.functions = FALSE, first.loop = 1, max.loops = 1, save=FALSE){
   # Initiate ddg.
-  ddg.init(r.script.path, NULL, FALSE, enable.console, annotate.inside.functions, first.loop, max.loops, 0, save.to.disk=FALSE)
+  ddg.init(r.script.path, NULL, FALSE, enable.console, annotate.inside.functions, first.loop, max.loops, 0, save.to.disk=save)
 
   # Set .ddg.is.sourced to TRUE if script provided.
   if (!is.null(r.script.path)) .ddg.set(".ddg.is.sourced", TRUE)
@@ -32,10 +32,4 @@ prov.json <- function(){
 #' @export
 prov.display <- function(){
   ddg.display()
-}
-
-#' @export
-prov.save <- function(){
-  path <- .ddg.get('prov.script.path')
-  ddg.save(path, FALSE)
 }

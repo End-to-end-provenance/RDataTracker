@@ -4126,7 +4126,9 @@ library(jsonlite)
   if (file.exists(file.loc)) {
     # Create file node in DDG.
     dpfile.out <- .ddg.file.node(dtype,fname,dname, dscope)
-    file.copy(file.loc, dpfile.out, overwrite=TRUE)
+    if(.ddg.get("ddg.save.to.disk")){
+      file.copy(file.loc, dpfile.out, overwrite=TRUE)
+    }
   }
   else {
     error.msg <- paste("File to copy does not exist:", fname)
@@ -5987,6 +5989,7 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
 
   .ddg.set("ddg.path", ddg.path)
   if(save.to.disk){
+    .ddg.set("ddg.save.to.disk", TRUE)
     # Overwrite default is
     if(!overwrite){
       no.overwrite.folder <- paste(ddg.path, "_timestamps", sep = "")
@@ -6004,6 +6007,8 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
 
     # Save copy of original script.
     file.copy(r.script.path, paste(.ddg.path.scripts(), "/", basename(r.script.path), sep = ""))
+  }else{
+    .ddg.set("ddg.save.to.disk", FALSE)
   }
 
   # Reset r.script.path if RMarkdown file
@@ -6216,7 +6221,9 @@ ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE, sav
     if (nrow(ddg.sourced.scripts) > 1 ) {
       for (i in 1:nrow(ddg.sourced.scripts)) {
         sname <- ddg.sourced.scripts[i, "sname"]
-        file.copy(sname, paste(.ddg.path.scripts(), basename(sname), sep="/"))
+        if(.ddg.get("ddg.save.to.disk")){
+          file.copy(sname, paste(.ddg.path.scripts(), basename(sname), sep="/"))
+        }
       }
     }
   }
