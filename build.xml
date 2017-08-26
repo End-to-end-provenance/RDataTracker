@@ -2,58 +2,29 @@
 	xmlns:if="ant:if"
     xmlns:unless="ant:unless">
 
-	<property name="builddir" value="${user.home}/Documents/Process/DataProvenance/RDataTracker"/>
-
 	<loadproperties srcFile="DESCRIPTION" />
 	<property name="tarfile" value="RDataTracker_${Version}.tar.gz" />
 
-    <target name="build-directory">
-    	<mkdir dir="${builddir}"/>
-    </target>
-
-    <target name="copy-to-directory" depends="build-directory">
-    	<copy overwrite="true" todir="${builddir}/inst">
-    		<fileset dir="inst"
-      			excludes="\.* doc/*.pages doc/*.docx doc/*.pdf"/>
-  		</copy>
-      	<copy overwrite="true" todir="${builddir}/inst" >
-        	<fileset dir="inst"
-          excludes="doc/*.pdf" />
-        </copy>
-    	<copy overwrite="true" todir="${builddir}/man">
-    		<fileset dir="man"
-      			excludes="\.*"/>
-  		</copy>
-    	<copy overwrite="true" todir="${builddir}/R">
-    		<fileset dir="R"
-      			includes="RDataTracker.R DDGStatement.R DDGCheckpoint.R prov.r"/>
-  		</copy>
-      <copy overwrite="true" file="DESCRIPTION" todir="${builddir}"/>
-  		<copy overwrite="true" file="LICENSE" todir="${builddir}"/>
-  		<copy overwrite="true" file="NAMESPACE" todir="${builddir}"/>
-  		<copy overwrite="true" file="README.md" todir="${builddir}"/>
-    </target>
-
-    <target name="build" depends="copy-to-directory">
-    	<exec dir="${builddir}/.." executable="R" >
-    		<arg line="CMD build --no-build-vignettes ${builddir}"/>
+    <target name="build">
+    	<exec executable="R" >
+    		<arg line="CMD build --no-build-vignettes ."/>
     	</exec>
     </target>
 
     <target name="check" depends="build">
-	   	<exec dir="${builddir}/.." executable="R" >
+	   	<exec executable="R" >
   			<arg line="CMD check --no-vignettes --no-build-vignettes ${tarfile}"/>
 	   	</exec>
     </target>
 
     <target name="install" depends="check">
-    	<exec dir="${builddir}/.." executable="R" >
+    	<exec executable="R" >
   			<arg line="CMD INSTALL ${tarfile}"/>
 		</exec>
     </target>
 
     <target name="cran-check" depends="build">
-    	<exec dir="${builddir}/.." executable="R" >
+    	<exec executable="R" >
     		<arg line="CMD check --as-cran --no-vignettes --no-build-vignettes ${tarfile}"/>
     	</exec>
     </target>
