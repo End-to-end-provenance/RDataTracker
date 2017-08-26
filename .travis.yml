@@ -58,7 +58,7 @@ before_script:
 script:
   - R CMD build .
   - R CMD check *tar.gz
-  - ant -file build.xml install
+  - R CMD INSTALL *tar.gz
   - ant -file tests.xml test-travis
 
 notifications:
