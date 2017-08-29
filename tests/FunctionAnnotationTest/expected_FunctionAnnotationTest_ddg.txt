@@ -1,453 +1,453 @@
 Architecture="x86_64"
-OperatingSystem="unix"
+OperatingSystem="windows"
 Language="R"
-LanguageVersion="R version 3.3.1 (2016-06-21)"
-RDataTrackerVersion="2.25.0"
+LanguageVersion="R version 3.3.3 (2017-03-06)"
+RDataTrackerVersion="2.26.1"
 Script="[DIR]/FunctionAnnotationTest.R"
 SourcedScripts=""
-ProcessFileTimestamp="2017-02-09T17.58.31EST"
+ProcessFileTimestamp="2017-06-20T00.14.12EDT"
 WorkingDirectory="[DIR]"
 DDGDirectory="[DIR]/ddg"
-DateTime="2017-02-09T18.08.34EST"
-InstalledPackages="RDataTracker 2.25.0"
+DateTime="2017-06-29T03.12.24EDT"
+InstalledPackages="base 3.3.3, datasets 3.3.3, graphics 3.3.3, grDevices 3.3.3, methods 3.3.3, RDataTracker 2.26.1, stats 3.3.3, utils 3.3.3"
 126
-Start p1 "1-FunctionAnnotationTest.R" Value="FunctionAnnotationTest.R" Time="0.194" Script="NA" Pos="NA";
-Operation p2 "2-f1 <- function() {    a <- 1    b <- 2}" Value="f1 <- function() {    a <- 1    b <- 2}" Time="0.195" Script="0" Pos="6,1,9,1";
+Start p1 "1-FunctionAnnotationTest.R" Value="FunctionAnnotationTest.R" Time="0.18" Script="NA" Pos="NA";
+Operation p2 "2-f1 <- function() {    a <- 1    b <- 2}" Value="f1 <- function() {    a <- 1    b <- 2}" Time="0.18" Script="0" Pos="6,1,9,1";
 CF p1 p2
-Data d1 "1-f1" Value="#ddg.function";
+Data d1 "1-f1" Value="#ddg.function" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}\"";
 DF p2 d1
-Operation p3 "3-f2 <- function(x) {    return(x + 1)}" Value="f2 <- function(x) {    return(x + 1)}" Time="0.202" Script="0" Pos="13,1,15,1";
+Operation p3 "3-f2 <- function(x) {    return(x + 1)}" Value="f2 <- function(x) {    return(x + 1)}" Time="0.18" Script="0" Pos="13,1,15,1";
 CF p2 p3
-Data d2 "2-f2" Value="#ddg.function";
+Data d2 "2-f2" Value="#ddg.function" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}\"";
 DF p3 d2
-Operation p4 "4-f3 <- function(x) {    if (x > 0)         return(x + 1)    e" Value="f3 <- function(x) {    if (x > 0)         return(x + 1)    e" Time="0.208" Script="0" Pos="18,1,21,1";
+Operation p4 "4-f3 <- function(x) {    if (x > 0)         return(x + 1)    e" Value="f3 <- function(x) {    if (x > 0)         return(x + 1)    e" Time="0.2" Script="0" Pos="18,1,21,1";
 CF p3 p4
-Data d3 "3-f3" Value="#ddg.function";
+Data d3 "3-f3" Value="#ddg.function" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}\"";
 DF p4 d3
-Operation p5 "5-f4 <- function() return(1)" Value="f4 <- function() return(1)" Time="0.215" Script="0" Pos="24,1,24,28";
+Operation p5 "5-f4 <- function() return(1)" Value="f4 <- function() return(1)" Time="0.2" Script="0" Pos="24,1,24,28";
 CF p4 p5
-Data d4 "4-f4" Value="#ddg.function";
+Data d4 "4-f4" Value="#ddg.function" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}\"";
 DF p5 d4
-Operation p6 "6-f5 <- function(x, y) {    return(x + y)}" Value="f5 <- function(x, y) {    return(x + y)}" Time="0.22" Script="0" Pos="27,1,29,1";
+Operation p6 "6-f5 <- function(x, y) {    return(x + y)}" Value="f5 <- function(x, y) {    return(x + y)}" Time="0.2" Script="0" Pos="27,1,29,1";
 CF p5 p6
-Data d5 "5-f5" Value="#ddg.function";
+Data d5 "5-f5" Value="#ddg.function" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}\"";
 DF p6 d5
-Operation p7 "7-f6 <- function() {    returned <- TRUE}" Value="f6 <- function() {    returned <- TRUE}" Time="0.226" Script="0" Pos="42,1,45,1";
+Operation p7 "7-f6 <- function() {    returned <- TRUE}" Value="f6 <- function() {    returned <- TRUE}" Time="0.22" Script="0" Pos="42,1,45,1";
 CF p6 p7
-Data d6 "6-f6" Value="#ddg.function";
+Data d6 "6-f6" Value="#ddg.function" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}\"";
 DF p7 d6
-Operation p8 "8-f7 <- function() {    x <- \"return\"}" Value="f7 <- function() {    x <- \"return\"}" Time="0.233" Script="0" Pos="66,22,66,48";
+Operation p8 "8-f7 <- function() {    x <- \"return\"}" Value="f7 <- function() {    x <- \"return\"}" Time="0.22" Script="0" Pos="66,22,66,48";
 CF p7 p8
-Data d7 "7-f7" Value="#ddg.function";
+Data d7 "7-f7" Value="#ddg.function" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}\"";
 DF p8 d7
-Operation p9 "9-f8 <- function() {    returned <- TRUE    return(returned)}" Value="f8 <- function() {    returned <- TRUE    return(returned)}" Time="0.237" Script="0" Pos="76,1,76,15";
+Operation p9 "9-f8 <- function() {    returned <- TRUE    return(returned)}" Value="f8 <- function() {    returned <- TRUE    return(returned)}" Time="0.22" Script="0" Pos="76,1,76,15";
 CF p8 p9
-Data d8 "8-f8" Value="#ddg.function";
+Data d8 "8-f8" Value="#ddg.function" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}\"";
 DF p9 d8
-Operation p10 "10-f9 <- function(x) {    return(2 * return(x^2))}" Value="f9 <- function(x) {    return(2 * return(x^2))}" Time="0.242" Script="0" Pos="77,24,77,50";
+Operation p10 "10-f9 <- function(x) {    return(2 * return(x^2))}" Value="f9 <- function(x) {    return(2 * return(x^2))}" Time="0.22" Script="0" Pos="77,24,77,50";
 CF p9 p10
-Data d9 "9-f9" Value="#ddg.function";
+Data d9 "9-f9" Value="#ddg.function" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}\"";
 DF p10 d9
-Operation p11 "11-f10 <- function(x) {    if (x > 0)         return(x + 1)}" Value="f10 <- function(x) {    if (x > 0)         return(x + 1)}" Time="0.249" Script="0" Pos="81,1,88,1";
+Operation p11 "11-f10 <- function(x) {    if (x > 0)         return(x + 1)}" Value="f10 <- function(x) {    if (x > 0)         return(x + 1)}" Time="0.23" Script="0" Pos="81,1,88,1";
 CF p10 p11
-Data d10 "10-f10" Value="#ddg.function";
+Data d10 "10-f10" Value="#ddg.function" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}\"";
 DF p11 d10
-Operation p12 "12-x <- 2:6" Value="x <- 2:6" Time="0.256" Script="0" Pos="94,1,94,10";
+Operation p12 "12-x <- 2:6" Value="x <- 2:6" Time="0.23" Script="0" Pos="94,1,94,10";
 CF p11 p12
-Snapshot d11 "11-x" Value="data/11-x.csv" Time="2017-02-09T18.08.34EST";
+Snapshot d11 "11-x" Value="data/11-x.csv" ValType="\"{\"container\":\"vector\", \"dimension\":[5], \"type\":[\"integer\"]}\"" Time="2017-06-29T03.12.24EDT";
 DF p12 d11
-Operation p13 "13-lapply(x, function(num) {    return(num + 1)})" Value="lapply(x, function(num) {    return(num + 1)})" Time="0.265" Script="0" Pos="NA,NA,NA,NA";
+Operation p13 "13-lapply(x, function(num) {    return(num + 1)})" Value="lapply(x, function(num) {    return(num + 1)})" Time="0.23" Script="0" Pos="NA,NA,NA,NA";
 CF p12 p13
 DF d11 p13
-Start p14 "14-f1_val <- f1()" Value="f1_val <- f1()" Time="0.275" Script="0" Pos="NA,NA,NA,NA";
+Start p14 "14-f1_val <- f1()" Value="f1_val <- f1()" Time="0.25" Script="0" Pos="NA,NA,NA,NA";
 CF p13 p14
 DF d1 p14
-Start p15 "15-f1()" Value="f1()" Time="0.28" Script="NA" Pos="NA";
+Start p15 "15-f1()" Value="f1()" Time="0.25" Script="NA" Pos="NA";
 CF p14 p15
-Operation p16 "16-f1" Value="f1" Time="0.281" Script="NA" Pos="NA";
+Operation p16 "16-f1" Value="f1" Time="0.25" Script="NA" Pos="NA";
 DF d1 p16
 CF p15 p16
-Operation p17 "17-a <- 1" Value="a <- 1" Time="0.287" Script="0" Pos="NA,NA,NA,NA";
+Operation p17 "17-a <- 1" Value="a <- 1" Time="0.25" Script="0" Pos="NA,NA,NA,NA";
 CF p16 p17
-Data d12 "12-a" Value="1";
+Data d12 "12-a" Value="1" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
 DF p17 d12
-Data d13 "13-f1() return" Value="2";
-Operation p18 "18-b <- 2" Value="b <- 2" Time="0.296" Script="0" Pos="NA,NA,NA,NA";
+Data d13 "13-f1() return" Value="2" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
+Operation p18 "18-b <- 2" Value="b <- 2" Time="0.26" Script="0" Pos="NA,NA,NA,NA";
 CF p17 p18
 DF p18 d13
-Data d14 "14-b" Value="2";
+Data d14 "14-b" Value="2" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
 DF p18 d14
-Finish p19 "19-f1()" Value="f1()" Time="0.305" Script="NA" Pos="NA";
+Finish p19 "19-f1()" Value="f1()" Time="0.26" Script="NA" Pos="NA";
 CF p18 p19
-Finish p20 "20-f1_val <- f1()" Value="f1_val <- f1()" Time="0.306" Script="0" Pos="NA,NA,NA,NA";
+Finish p20 "20-f1_val <- f1()" Value="f1_val <- f1()" Time="0.26" Script="0" Pos="NA,NA,NA,NA";
 CF p19 p20
 DF d13 p20
-Data d15 "15-f1_val" Value="2";
+Data d15 "15-f1_val" Value="2" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
 DF p20 d15
-Operation p21 "21-stopifnot(f1_val == 2)" Value="stopifnot(f1_val == 2)" Time="0.311" Script="0" Pos="NA,NA,NA,NA";
+Operation p21 "21-stopifnot(f1_val == 2)" Value="stopifnot(f1_val == 2)" Time="0.28" Script="0" Pos="NA,NA,NA,NA";
 CF p20 p21
 DF d15 p21
-Start p22 "22-f2_val <- f2(3)" Value="f2_val <- f2(3)" Time="0.32" Script="0" Pos="NA,NA,NA,NA";
+Start p22 "22-f2_val <- f2(3)" Value="f2_val <- f2(3)" Time="0.28" Script="0" Pos="NA,NA,NA,NA";
 CF p21 p22
 DF d2 p22
-Start p23 "23-f2(3)" Value="f2(3)" Time="0.324" Script="NA" Pos="NA";
+Start p23 "23-f2(3)" Value="f2(3)" Time="0.28" Script="NA" Pos="NA";
 CF p22 p23
-Binding p24 "24-x  <-  3" Time="0.325" Script="NA" Pos="NA";
+Binding p24 "24-x  <-  3" Time="0.28" Script="NA" Pos="NA";
 CF p23 p24
-Data d16 "16-x" Value="3";
+Data d16 "16-x" Value="3" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
 DF p24 d16
-Operation p25 "25-f2" Value="f2" Time="0.33" Script="NA" Pos="NA";
+Operation p25 "25-f2" Value="f2" Time="0.29" Script="NA" Pos="NA";
 DF d2 p25
 DF d16 p25
 CF p24 p25
-Data d17 "17-f2(3) return" Value="4";
-Operation p26 "26-return(x + 1)" Value="return(x + 1)" Time="0.342" Script="0" Pos="NA,NA,NA,NA";
+Data d17 "17-f2(3) return" Value="4" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
+Operation p26 "26-return(x + 1)" Value="return(x + 1)" Time="0.29" Script="0" Pos="NA,NA,NA,NA";
 CF p25 p26
 DF p26 d17
 DF d16 p26
-Finish p27 "27-f2(3)" Value="f2(3)" Time="0.353" Script="NA" Pos="NA";
+Finish p27 "27-f2(3)" Value="f2(3)" Time="0.31" Script="NA" Pos="NA";
 CF p26 p27
-Finish p28 "28-f2_val <- f2(3)" Value="f2_val <- f2(3)" Time="0.353" Script="0" Pos="NA,NA,NA,NA";
+Finish p28 "28-f2_val <- f2(3)" Value="f2_val <- f2(3)" Time="0.31" Script="0" Pos="NA,NA,NA,NA";
 CF p27 p28
 DF d17 p28
-Data d18 "18-f2_val" Value="4";
+Data d18 "18-f2_val" Value="4" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
 DF p28 d18
-Operation p29 "29-stopifnot(f2_val == 4)" Value="stopifnot(f2_val == 4)" Time="0.358" Script="0" Pos="NA,NA,NA,NA";
+Operation p29 "29-stopifnot(f2_val == 4)" Value="stopifnot(f2_val == 4)" Time="0.31" Script="0" Pos="NA,NA,NA,NA";
 CF p28 p29
 DF d18 p29
-Start p30 "30-f3_val_pos <- f3(3)" Value="f3_val_pos <- f3(3)" Time="0.367" Script="0" Pos="NA,NA,NA,NA";
+Start p30 "30-f3_val_pos <- f3(3)" Value="f3_val_pos <- f3(3)" Time="0.31" Script="0" Pos="NA,NA,NA,NA";
 CF p29 p30
 DF d3 p30
-Start p31 "31-f3(3)" Value="f3(3)" Time="0.371" Script="NA" Pos="NA";
+Start p31 "31-f3(3)" Value="f3(3)" Time="0.32" Script="NA" Pos="NA";
 CF p30 p31
-Binding p32 "32-x  <-  3" Time="0.372" Script="NA" Pos="NA";
+Binding p32 "32-x  <-  3" Time="0.32" Script="NA" Pos="NA";
 CF p31 p32
-Data d19 "19-x" Value="3";
+Data d19 "19-x" Value="3" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
 DF p32 d19
-Operation p33 "33-f3" Value="f3" Time="0.376" Script="NA" Pos="NA";
+Operation p33 "33-f3" Value="f3" Time="0.32" Script="NA" Pos="NA";
 DF d3 p33
 DF d19 p33
 CF p32 p33
-Data d20 "20-f3(3) return" Value="4";
-Operation p34 "34-if (x > 0) return(x + 1) else return(x - 1)" Value="if (x > 0) return(x + 1) else return(x - 1)" Time="0.392" Script="0" Pos="NA,NA,NA,NA";
+Data d20 "20-f3(3) return" Value="4" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
+Operation p34 "34-if (x > 0) return(x + 1) else return(x - 1)" Value="if (x > 0) return(x + 1) else return(x - 1)" Time="0.34" Script="0" Pos="NA,NA,NA,NA";
 CF p33 p34
 DF p34 d20
 DF d19 p34
-Finish p35 "35-f3(3)" Value="f3(3)" Time="0.403" Script="NA" Pos="NA";
+Finish p35 "35-f3(3)" Value="f3(3)" Time="0.34" Script="NA" Pos="NA";
 CF p34 p35
-Finish p36 "36-f3_val_pos <- f3(3)" Value="f3_val_pos <- f3(3)" Time="0.404" Script="0" Pos="NA,NA,NA,NA";
+Finish p36 "36-f3_val_pos <- f3(3)" Value="f3_val_pos <- f3(3)" Time="0.34" Script="0" Pos="NA,NA,NA,NA";
 CF p35 p36
 DF d20 p36
-Data d21 "21-f3_val_pos" Value="4";
+Data d21 "21-f3_val_pos" Value="4" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
 DF p36 d21
-Operation p37 "37-stopifnot(f3_val_pos == 4)" Value="stopifnot(f3_val_pos == 4)" Time="0.409" Script="0" Pos="NA,NA,NA,NA";
+Operation p37 "37-stopifnot(f3_val_pos == 4)" Value="stopifnot(f3_val_pos == 4)" Time="0.36" Script="0" Pos="NA,NA,NA,NA";
 CF p36 p37
 DF d21 p37
-Start p38 "38-f3_val_neg <- f3(-3)" Value="f3_val_neg <- f3(-3)" Time="0.422" Script="0" Pos="NA,NA,NA,NA";
+Start p38 "38-f3_val_neg <- f3(-3)" Value="f3_val_neg <- f3(-3)" Time="0.36" Script="0" Pos="NA,NA,NA,NA";
 CF p37 p38
 DF d3 p38
-Start p39 "39-f3(-3)" Value="f3(-3)" Time="0.427" Script="NA" Pos="NA";
+Start p39 "39-f3(-3)" Value="f3(-3)" Time="0.36" Script="NA" Pos="NA";
 CF p38 p39
-Binding p40 "40-x  <-  -3" Time="0.428" Script="NA" Pos="NA";
+Binding p40 "40-x  <-  -3" Time="0.36" Script="NA" Pos="NA";
 CF p39 p40
-Data d22 "22-x" Value="-3";
+Data d22 "22-x" Value="-3" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
 DF p40 d22
-Operation p41 "41-f3" Value="f3" Time="0.432" Script="NA" Pos="NA";
+Operation p41 "41-f3" Value="f3" Time="0.37" Script="NA" Pos="NA";
 DF d3 p41
 DF d22 p41
 CF p40 p41
-Data d23 "23-f3(-3) return" Value="-4";
-Operation p42 "42-if (x > 0) return(x + 1) else return(x - 1)" Value="if (x > 0) return(x + 1) else return(x - 1)" Time="0.447" Script="0" Pos="NA,NA,NA,NA";
+Data d23 "23-f3(-3) return" Value="-4" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
+Operation p42 "42-if (x > 0) return(x + 1) else return(x - 1)" Value="if (x > 0) return(x + 1) else return(x - 1)" Time="0.37" Script="0" Pos="NA,NA,NA,NA";
 CF p41 p42
 DF p42 d23
 DF d22 p42
-Finish p43 "43-f3(-3)" Value="f3(-3)" Time="0.458" Script="NA" Pos="NA";
+Finish p43 "43-f3(-3)" Value="f3(-3)" Time="0.39" Script="NA" Pos="NA";
 CF p42 p43
-Finish p44 "44-f3_val_neg <- f3(-3)" Value="f3_val_neg <- f3(-3)" Time="0.459" Script="0" Pos="NA,NA,NA,NA";
+Finish p44 "44-f3_val_neg <- f3(-3)" Value="f3_val_neg <- f3(-3)" Time="0.39" Script="0" Pos="NA,NA,NA,NA";
 CF p43 p44
 DF d23 p44
-Data d24 "24-f3_val_neg" Value="-4";
+Data d24 "24-f3_val_neg" Value="-4" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
 DF p44 d24
-Operation p45 "45-stopifnot(f3_val_neg == -4)" Value="stopifnot(f3_val_neg == -4)" Time="0.464" Script="0" Pos="NA,NA,NA,NA";
+Operation p45 "45-stopifnot(f3_val_neg == -4)" Value="stopifnot(f3_val_neg == -4)" Time="0.39" Script="0" Pos="NA,NA,NA,NA";
 CF p44 p45
 DF d24 p45
-Start p46 "46-f4_val <- f4()" Value="f4_val <- f4()" Time="0.472" Script="0" Pos="NA,NA,NA,NA";
+Start p46 "46-f4_val <- f4()" Value="f4_val <- f4()" Time="0.4" Script="0" Pos="NA,NA,NA,NA";
 CF p45 p46
 DF d4 p46
-Start p47 "47-f4()" Value="f4()" Time="0.478" Script="NA" Pos="NA";
+Start p47 "47-f4()" Value="f4()" Time="0.4" Script="NA" Pos="NA";
 CF p46 p47
-Operation p48 "48-f4" Value="f4" Time="0.478" Script="NA" Pos="NA";
+Operation p48 "48-f4" Value="f4" Time="0.4" Script="NA" Pos="NA";
 DF d4 p48
 CF p47 p48
-Data d25 "25-f4() return" Value="1";
-Operation p49 "49-return()" Value="return()" Time="0.486" Script="0" Pos="24,19,24,24";
+Data d25 "25-f4() return" Value="1" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
+Operation p49 "49-return()" Value="return()" Time="0.4" Script="0" Pos="24,19,24,24";
 CF p48 p49
 DF p49 d25
-Finish p50 "50-f4()" Value="f4()" Time="0.49" Script="NA" Pos="NA";
+Finish p50 "50-f4()" Value="f4()" Time="0.42" Script="NA" Pos="NA";
 CF p49 p50
-Finish p51 "51-f4_val <- f4()" Value="f4_val <- f4()" Time="0.49" Script="0" Pos="NA,NA,NA,NA";
+Finish p51 "51-f4_val <- f4()" Value="f4_val <- f4()" Time="0.42" Script="0" Pos="NA,NA,NA,NA";
 CF p50 p51
 DF d25 p51
-Data d26 "26-f4_val" Value="1";
+Data d26 "26-f4_val" Value="1" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
 DF p51 d26
-Operation p52 "52-stopifnot(f4_val == 1)" Value="stopifnot(f4_val == 1)" Time="0.495" Script="0" Pos="NA,NA,NA,NA";
+Operation p52 "52-stopifnot(f4_val == 1)" Value="stopifnot(f4_val == 1)" Time="0.42" Script="0" Pos="NA,NA,NA,NA";
 CF p51 p52
 DF d26 p52
-Start p53 "53-f5_val <- f5(1, 2)" Value="f5_val <- f5(1, 2)" Time="0.504" Script="0" Pos="NA,NA,NA,NA";
+Start p53 "53-f5_val <- f5(1, 2)" Value="f5_val <- f5(1, 2)" Time="0.42" Script="0" Pos="NA,NA,NA,NA";
 CF p52 p53
 DF d5 p53
-Start p54 "54-f5(1, 2)" Value="f5(1, 2)" Time="0.508" Script="NA" Pos="NA";
+Start p54 "54-f5(1, 2)" Value="f5(1, 2)" Time="0.43" Script="NA" Pos="NA";
 CF p53 p54
-Binding p55 "55-x  <-  1" Time="0.508" Script="NA" Pos="NA";
+Binding p55 "55-x  <-  1" Time="0.43" Script="NA" Pos="NA";
 CF p54 p55
-Data d27 "27-x" Value="1";
+Data d27 "27-x" Value="1" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
 DF p55 d27
-Binding p56 "56-y  <-  2" Time="0.512" Script="NA" Pos="NA";
+Binding p56 "56-y  <-  2" Time="0.43" Script="NA" Pos="NA";
 CF p55 p56
-Data d28 "28-y" Value="2";
+Data d28 "28-y" Value="2" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
 DF p56 d28
-Operation p57 "57-f5" Value="f5" Time="0.516" Script="NA" Pos="NA";
+Operation p57 "57-f5" Value="f5" Time="0.43" Script="NA" Pos="NA";
 DF d5 p57
 DF d27 p57
 DF d28 p57
 CF p56 p57
-Data d29 "29-f5(1,2) return" Value="3";
-Operation p58 "58-return(x + y)" Value="return(x + y)" Time="0.527" Script="0" Pos="NA,NA,NA,NA";
+Data d29 "29-f5(1,2) return" Value="3" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
+Operation p58 "58-return(x + y)" Value="return(x + y)" Time="0.47" Script="0" Pos="NA,NA,NA,NA";
 CF p57 p58
 DF p58 d29
 DF d27 p58
 DF d28 p58
-Finish p59 "59-f5(1, 2)" Value="f5(1, 2)" Time="0.569" Script="NA" Pos="NA";
+Finish p59 "59-f5(1, 2)" Value="f5(1, 2)" Time="0.48" Script="NA" Pos="NA";
 CF p58 p59
-Finish p60 "60-f5_val <- f5(1, 2)" Value="f5_val <- f5(1, 2)" Time="0.57" Script="0" Pos="NA,NA,NA,NA";
+Finish p60 "60-f5_val <- f5(1, 2)" Value="f5_val <- f5(1, 2)" Time="0.48" Script="0" Pos="NA,NA,NA,NA";
 CF p59 p60
 DF d29 p60
-Data d30 "30-f5_val" Value="3";
+Data d30 "30-f5_val" Value="3" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
 DF p60 d30
-Operation p61 "61-stopifnot(f5_val == 3)" Value="stopifnot(f5_val == 3)" Time="0.575" Script="0" Pos="NA,NA,NA,NA";
+Operation p61 "61-stopifnot(f5_val == 3)" Value="stopifnot(f5_val == 3)" Time="0.48" Script="0" Pos="NA,NA,NA,NA";
 CF p60 p61
 DF d30 p61
-Start p62 "62-f6_val <- f6()" Value="f6_val <- f6()" Time="0.585" Script="0" Pos="NA,NA,NA,NA";
+Start p62 "62-f6_val <- f6()" Value="f6_val <- f6()" Time="0.5" Script="0" Pos="NA,NA,NA,NA";
 CF p61 p62
 DF d6 p62
-Start p63 "63-f6()" Value="f6()" Time="0.59" Script="NA" Pos="NA";
+Start p63 "63-f6()" Value="f6()" Time="0.5" Script="NA" Pos="NA";
 CF p62 p63
-Operation p64 "64-f6" Value="f6" Time="0.591" Script="NA" Pos="NA";
+Operation p64 "64-f6" Value="f6" Time="0.5" Script="NA" Pos="NA";
 DF d6 p64
 CF p63 p64
-Data d31 "31-f6() return" Value="TRUE";
-Operation p65 "65-returned <- TRUE" Value="returned <- TRUE" Time="0.599" Script="0" Pos="43,3,43,18";
+Data d31 "31-f6() return" Value="TRUE" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"logical\"]}\"";
+Operation p65 "65-returned <- TRUE" Value="returned <- TRUE" Time="0.5" Script="0" Pos="43,3,43,18";
 CF p64 p65
 DF p65 d31
-Data d32 "32-returned" Value="TRUE";
+Data d32 "32-returned" Value="TRUE" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"logical\"]}\"";
 DF p65 d32
-Finish p66 "66-f6()" Value="f6()" Time="0.605" Script="NA" Pos="NA";
+Finish p66 "66-f6()" Value="f6()" Time="0.51" Script="NA" Pos="NA";
 CF p65 p66
-Finish p67 "67-f6_val <- f6()" Value="f6_val <- f6()" Time="0.606" Script="0" Pos="NA,NA,NA,NA";
+Finish p67 "67-f6_val <- f6()" Value="f6_val <- f6()" Time="0.51" Script="0" Pos="NA,NA,NA,NA";
 CF p66 p67
 DF d31 p67
-Data d33 "33-f6_val" Value="TRUE";
+Data d33 "33-f6_val" Value="TRUE" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"logical\"]}\"";
 DF p67 d33
-Operation p68 "68-stopifnot(f6_val == TRUE)" Value="stopifnot(f6_val == TRUE)" Time="0.61" Script="0" Pos="NA,NA,NA,NA";
+Operation p68 "68-stopifnot(f6_val == TRUE)" Value="stopifnot(f6_val == TRUE)" Time="0.51" Script="0" Pos="NA,NA,NA,NA";
 CF p67 p68
 DF d33 p68
-Start p69 "69-f7_val <- f7()" Value="f7_val <- f7()" Time="0.617" Script="0" Pos="NA,NA,NA,NA";
+Start p69 "69-f7_val <- f7()" Value="f7_val <- f7()" Time="0.51" Script="0" Pos="NA,NA,NA,NA";
 CF p68 p69
 DF d7 p69
-Start p70 "70-f7()" Value="f7()" Time="0.621" Script="NA" Pos="NA";
+Start p70 "70-f7()" Value="f7()" Time="0.53" Script="NA" Pos="NA";
 CF p69 p70
-Operation p71 "71-f7" Value="f7" Time="0.622" Script="NA" Pos="NA";
+Operation p71 "71-f7" Value="f7" Time="0.53" Script="NA" Pos="NA";
 DF d7 p71
 CF p70 p71
-Data d34 "34-f7() return" Value="\"return\"";
-Operation p72 "72-x <- \"return\"" Value="x <- \"return\"" Time="0.627" Script="0" Pos="NA,NA,NA,NA";
+Data d34 "34-f7() return" Value="\"return\"" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}\"";
+Operation p72 "72-x <- \"return\"" Value="x <- \"return\"" Time="0.53" Script="0" Pos="NA,NA,NA,NA";
 CF p71 p72
 DF p72 d34
-Data d35 "35-x" Value="\"return\"";
+Data d35 "35-x" Value="\"return\"" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}\"";
 DF p72 d35
-Finish p73 "73-f7()" Value="f7()" Time="0.632" Script="NA" Pos="NA";
+Finish p73 "73-f7()" Value="f7()" Time="0.53" Script="NA" Pos="NA";
 CF p72 p73
-Finish p74 "74-f7_val <- f7()" Value="f7_val <- f7()" Time="0.633" Script="0" Pos="NA,NA,NA,NA";
+Finish p74 "74-f7_val <- f7()" Value="f7_val <- f7()" Time="0.53" Script="0" Pos="NA,NA,NA,NA";
 CF p73 p74
 DF d34 p74
-Data d36 "36-f7_val" Value="\"return\"";
+Data d36 "36-f7_val" Value="\"return\"" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}\"";
 DF p74 d36
-Operation p75 "75-stopifnot(f7_val == \"return\")" Value="stopifnot(f7_val == \"return\")" Time="0.637" Script="0" Pos="NA,NA,NA,NA";
+Operation p75 "75-stopifnot(f7_val == \"return\")" Value="stopifnot(f7_val == \"return\")" Time="0.53" Script="0" Pos="NA,NA,NA,NA";
 CF p74 p75
 DF d36 p75
-Start p76 "76-f8_val <- f8()" Value="f8_val <- f8()" Time="0.644" Script="0" Pos="NA,NA,NA,NA";
+Start p76 "76-f8_val <- f8()" Value="f8_val <- f8()" Time="0.54" Script="0" Pos="NA,NA,NA,NA";
 CF p75 p76
 DF d8 p76
-Start p77 "77-f8()" Value="f8()" Time="0.648" Script="NA" Pos="NA";
+Start p77 "77-f8()" Value="f8()" Time="0.54" Script="NA" Pos="NA";
 CF p76 p77
-Operation p78 "78-f8" Value="f8" Time="0.649" Script="NA" Pos="NA";
+Operation p78 "78-f8" Value="f8" Time="0.54" Script="NA" Pos="NA";
 DF d8 p78
 CF p77 p78
-Operation p79 "79-returned <- TRUE" Value="returned <- TRUE" Time="0.653" Script="0" Pos="NA,NA,NA,NA";
+Operation p79 "79-returned <- TRUE" Value="returned <- TRUE" Time="0.54" Script="0" Pos="NA,NA,NA,NA";
 CF p78 p79
-Data d37 "37-returned" Value="TRUE";
+Data d37 "37-returned" Value="TRUE" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"logical\"]}\"";
 DF p79 d37
-Data d38 "38-f8() return" Value="TRUE";
-Operation p80 "80-return(returned)" Value="return(returned)" Time="0.657" Script="0" Pos="NA,NA,NA,NA";
+Data d38 "38-f8() return" Value="TRUE" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"logical\"]}\"";
+Operation p80 "80-return(returned)" Value="return(returned)" Time="0.56" Script="0" Pos="NA,NA,NA,NA";
 CF p79 p80
 DF p80 d38
 DF d37 p80
-Finish p81 "81-f8()" Value="f8()" Time="0.664" Script="NA" Pos="NA";
+Finish p81 "81-f8()" Value="f8()" Time="0.56" Script="NA" Pos="NA";
 CF p80 p81
-Finish p82 "82-f8_val <- f8()" Value="f8_val <- f8()" Time="0.665" Script="0" Pos="NA,NA,NA,NA";
+Finish p82 "82-f8_val <- f8()" Value="f8_val <- f8()" Time="0.56" Script="0" Pos="NA,NA,NA,NA";
 CF p81 p82
 DF d38 p82
-Data d39 "39-f8_val" Value="TRUE";
+Data d39 "39-f8_val" Value="TRUE" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"logical\"]}\"";
 DF p82 d39
-Operation p83 "83-stopifnot(f8_val == TRUE)" Value="stopifnot(f8_val == TRUE)" Time="0.668" Script="0" Pos="NA,NA,NA,NA";
+Operation p83 "83-stopifnot(f8_val == TRUE)" Value="stopifnot(f8_val == TRUE)" Time="0.56" Script="0" Pos="NA,NA,NA,NA";
 CF p82 p83
 DF d39 p83
-Start p84 "84-f9_val <- f9(3)" Value="f9_val <- f9(3)" Time="0.675" Script="0" Pos="NA,NA,NA,NA";
+Start p84 "84-f9_val <- f9(3)" Value="f9_val <- f9(3)" Time="0.57" Script="0" Pos="NA,NA,NA,NA";
 CF p83 p84
 DF d9 p84
-Start p85 "85-f9(3)" Value="f9(3)" Time="0.68" Script="NA" Pos="NA";
+Start p85 "85-f9(3)" Value="f9(3)" Time="0.57" Script="NA" Pos="NA";
 CF p84 p85
-Binding p86 "86-x  <-  3" Time="0.681" Script="NA" Pos="NA";
+Binding p86 "86-x  <-  3" Time="0.57" Script="NA" Pos="NA";
 CF p85 p86
-Data d40 "40-x" Value="3";
+Data d40 "40-x" Value="3" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
 DF p86 d40
-Operation p87 "87-f9" Value="f9" Time="0.684" Script="NA" Pos="NA";
+Operation p87 "87-f9" Value="f9" Time="0.57" Script="NA" Pos="NA";
 DF d9 p87
 DF d40 p87
 CF p86 p87
-Data d41 "41-f9(3) return" Value="9";
-Operation p88 "88-return(2 * return(x^2))" Value="return(2 * return(x^2))" Time="0.692" Script="0" Pos="NA,NA,NA,NA";
+Data d41 "41-f9(3) return" Value="9" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
+Operation p88 "88-return(2 * return(x^2))" Value="return(2 * return(x^2))" Time="0.59" Script="0" Pos="NA,NA,NA,NA";
 CF p87 p88
 DF p88 d41
 DF d40 p88
-Finish p89 "89-f9(3)" Value="f9(3)" Time="0.702" Script="NA" Pos="NA";
+Finish p89 "89-f9(3)" Value="f9(3)" Time="0.59" Script="NA" Pos="NA";
 CF p88 p89
-Finish p90 "90-f9_val <- f9(3)" Value="f9_val <- f9(3)" Time="0.703" Script="0" Pos="NA,NA,NA,NA";
+Finish p90 "90-f9_val <- f9(3)" Value="f9_val <- f9(3)" Time="0.59" Script="0" Pos="NA,NA,NA,NA";
 CF p89 p90
 DF d41 p90
-Data d42 "42-f9_val" Value="9";
+Data d42 "42-f9_val" Value="9" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
 DF p90 d42
-Operation p91 "91-stopifnot(f9_val == 9)" Value="stopifnot(f9_val == 9)" Time="0.707" Script="0" Pos="NA,NA,NA,NA";
+Operation p91 "91-stopifnot(f9_val == 9)" Value="stopifnot(f9_val == 9)" Time="0.59" Script="0" Pos="NA,NA,NA,NA";
 CF p90 p91
 DF d42 p91
-Start p92 "92-f10_val_pos <- f10(1)" Value="f10_val_pos <- f10(1)" Time="0.713" Script="0" Pos="NA,NA,NA,NA";
+Start p92 "92-f10_val_pos <- f10(1)" Value="f10_val_pos <- f10(1)" Time="0.61" Script="0" Pos="NA,NA,NA,NA";
 CF p91 p92
 DF d10 p92
-Start p93 "93-f10(1)" Value="f10(1)" Time="0.716" Script="NA" Pos="NA";
+Start p93 "93-f10(1)" Value="f10(1)" Time="0.61" Script="NA" Pos="NA";
 CF p92 p93
-Binding p94 "94-x  <-  1" Time="0.717" Script="NA" Pos="NA";
+Binding p94 "94-x  <-  1" Time="0.61" Script="NA" Pos="NA";
 CF p93 p94
-Data d43 "43-x" Value="1";
+Data d43 "43-x" Value="1" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
 DF p94 d43
-Operation p95 "95-f10" Value="f10" Time="0.72" Script="NA" Pos="NA";
+Operation p95 "95-f10" Value="f10" Time="0.61" Script="NA" Pos="NA";
 DF d10 p95
 DF d43 p95
 CF p94 p95
-Data d44 "44-f10(1) return" Value="2";
-Operation p96 "96-if (x > 0) return(x + 1)" Value="if (x > 0) return(x + 1)" Time="0.727" Script="0" Pos="NA,NA,NA,NA";
+Data d44 "44-f10(1) return" Value="2" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
+Operation p96 "96-if (x > 0) return(x + 1)" Value="if (x > 0) return(x + 1)" Time="0.61" Script="0" Pos="NA,NA,NA,NA";
 CF p95 p96
 DF p96 d44
 DF d43 p96
-Finish p97 "97-f10(1)" Value="f10(1)" Time="0.734" Script="NA" Pos="NA";
+Finish p97 "97-f10(1)" Value="f10(1)" Time="0.62" Script="NA" Pos="NA";
 CF p96 p97
-Finish p98 "98-f10_val_pos <- f10(1)" Value="f10_val_pos <- f10(1)" Time="0.737" Script="0" Pos="NA,NA,NA,NA";
+Finish p98 "98-f10_val_pos <- f10(1)" Value="f10_val_pos <- f10(1)" Time="0.62" Script="0" Pos="NA,NA,NA,NA";
 CF p97 p98
 DF d44 p98
-Data d45 "45-f10_val_pos" Value="2";
+Data d45 "45-f10_val_pos" Value="2" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
 DF p98 d45
-Operation p99 "99-stopifnot(f10_val_pos == 2)" Value="stopifnot(f10_val_pos == 2)" Time="0.742" Script="0" Pos="NA,NA,NA,NA";
+Operation p99 "99-stopifnot(f10_val_pos == 2)" Value="stopifnot(f10_val_pos == 2)" Time="0.62" Script="0" Pos="NA,NA,NA,NA";
 CF p98 p99
 DF d45 p99
-Start p100 "100-f10_val_neg <- f10(-1)" Value="f10_val_neg <- f10(-1)" Time="0.749" Script="0" Pos="NA,NA,NA,NA";
+Start p100 "100-f10_val_neg <- f10(-1)" Value="f10_val_neg <- f10(-1)" Time="0.62" Script="0" Pos="NA,NA,NA,NA";
 CF p99 p100
 DF d10 p100
-Start p101 "101-f10(-1)" Value="f10(-1)" Time="0.752" Script="NA" Pos="NA";
+Start p101 "101-f10(-1)" Value="f10(-1)" Time="0.64" Script="NA" Pos="NA";
 CF p100 p101
-Binding p102 "102-x  <-  -1" Time="0.755" Script="NA" Pos="NA";
+Binding p102 "102-x  <-  -1" Time="0.64" Script="NA" Pos="NA";
 CF p101 p102
-Data d46 "46-x" Value="-1";
+Data d46 "46-x" Value="-1" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
 DF p102 d46
-Operation p103 "103-f10" Value="f10" Time="0.759" Script="NA" Pos="NA";
+Operation p103 "103-f10" Value="f10" Time="0.64" Script="NA" Pos="NA";
 DF d10 p103
 DF d46 p103
 CF p102 p103
-Data d47 "47-f10(-1) return" Value="NULL";
-Operation p104 "104-if (x > 0) return(x + 1)" Value="if (x > 0) return(x + 1)" Time="0.807" Script="0" Pos="NA,NA,NA,NA";
+Data d47 "47-f10(-1) return" Value="NULL" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}\"";
+Operation p104 "104-if (x > 0) return(x + 1)" Value="if (x > 0) return(x + 1)" Time="0.67" Script="0" Pos="NA,NA,NA,NA";
 CF p103 p104
 DF p104 d47
 DF d46 p104
-Finish p105 "105-f10(-1)" Value="f10(-1)" Time="0.817" Script="NA" Pos="NA";
+Finish p105 "105-f10(-1)" Value="f10(-1)" Time="0.68" Script="NA" Pos="NA";
 CF p104 p105
-Finish p106 "106-f10_val_neg <- f10(-1)" Value="f10_val_neg <- f10(-1)" Time="0.818" Script="0" Pos="NA,NA,NA,NA";
+Finish p106 "106-f10_val_neg <- f10(-1)" Value="f10_val_neg <- f10(-1)" Time="0.68" Script="0" Pos="NA,NA,NA,NA";
 CF p105 p106
 DF d47 p106
-Data d48 "48-f10_val_neg" Value="NULL";
+Data d48 "48-f10_val_neg" Value="NULL" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}\"";
 DF p106 d48
-Operation p107 "107-stopifnot(is.null(f10_val_neg))" Value="stopifnot(is.null(f10_val_neg))" Time="0.823" Script="0" Pos="NA,NA,NA,NA";
+Operation p107 "107-stopifnot(is.null(f10_val_neg))" Value="stopifnot(is.null(f10_val_neg))" Time="0.68" Script="0" Pos="NA,NA,NA,NA";
 CF p106 p107
 DF d48 p107
-Operation p108 "108-outer <- function() {    inner <- function() {        a <- 1" Value="outer <- function() {    inner <- function() {        a <- 1" Time="0.832" Script="0" Pos="NA,NA,NA,NA";
+Operation p108 "108-outer <- function() {    inner <- function() {        a <- 1" Value="outer <- function() {    inner <- function() {        a <- 1" Time="0.7" Script="0" Pos="NA,NA,NA,NA";
 CF p107 p108
-Data d49 "49-outer" Value="#ddg.function";
+Data d49 "49-outer" Value="#ddg.function" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}\"";
 DF p108 d49
-Start p109 "109-outer()" Value="outer()" Time="0.838" Script="NA" Pos="NA";
+Start p109 "109-outer()" Value="outer()" Time="0.7" Script="NA" Pos="NA";
 CF p108 p109
-Operation p110 "110-outer" Value="outer" Time="0.839" Script="NA" Pos="NA";
+Operation p110 "110-outer" Value="outer" Time="0.7" Script="NA" Pos="NA";
 DF d49 p110
 CF p109 p110
-Operation p111 "111-inner <- function() {    a <- 1}" Value="inner <- function() {    a <- 1}" Time="0.843" Script="0" Pos="NA,NA,NA,NA";
+Operation p111 "111-inner <- function() {    a <- 1}" Value="inner <- function() {    a <- 1}" Time="0.72" Script="0" Pos="NA,NA,NA,NA";
 CF p110 p111
-Data d50 "50-inner" Value="#ddg.function";
+Data d50 "50-inner" Value="#ddg.function" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}\"";
 DF p111 d50
-Operation p112 "112-b <- 2" Value="b <- 2" Time="0.848" Script="0" Pos="NA,NA,NA,NA";
+Operation p112 "112-b <- 2" Value="b <- 2" Time="0.72" Script="0" Pos="NA,NA,NA,NA";
 CF p111 p112
-Data d51 "51-b" Value="2";
+Data d51 "51-b" Value="2" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
 DF p112 d51
-Start p113 "113-inner()" Value="inner()" Time="0.856" Script="NA" Pos="NA";
+Start p113 "113-inner()" Value="inner()" Time="0.72" Script="NA" Pos="NA";
 CF p112 p113
-Operation p114 "114-inner" Value="inner" Time="0.857" Script="NA" Pos="NA";
+Operation p114 "114-inner" Value="inner" Time="0.72" Script="NA" Pos="NA";
 CF p113 p114
-Data d52 "52-inner() return" Value="1";
-Operation p115 "115-a <- 1" Value="a <- 1" Time="0.863" Script="0" Pos="NA,NA,NA,NA";
+Data d52 "52-inner() return" Value="1" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
+Operation p115 "115-a <- 1" Value="a <- 1" Time="0.73" Script="0" Pos="NA,NA,NA,NA";
 CF p114 p115
 DF p115 d52
-Data d53 "53-a" Value="1";
+Data d53 "53-a" Value="1" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
 DF p115 d53
-Finish p116 "116-inner()" Value="inner()" Time="0.872" Script="NA" Pos="NA";
+Finish p116 "116-inner()" Value="inner()" Time="0.73" Script="NA" Pos="NA";
 CF p115 p116
-Data d54 "54-outer() return" Value="1";
-Operation p117 "117-inner()" Value="inner()" Time="0.874" Script="0" Pos="NA,NA,NA,NA";
+Data d54 "54-outer() return" Value="1" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
+Operation p117 "117-inner()" Value="inner()" Time="0.73" Script="0" Pos="NA,NA,NA,NA";
 CF p116 p117
 DF p117 d54
 DF d50 p117
-Finish p118 "118-outer()" Value="outer()" Time="0.881" Script="NA" Pos="NA";
+Finish p118 "118-outer()" Value="outer()" Time="0.75" Script="NA" Pos="NA";
 CF p117 p118
-Operation p119 "119-`%test%` = function(a, b) a * b" Value="`%test%` = function(a, b) a * b" Time="0.883" Script="0" Pos="NA,NA,NA,NA";
+Operation p119 "119-`%test%` = function(a, b) a * b" Value="`%test%` = function(a, b) a * b" Time="0.75" Script="0" Pos="NA,NA,NA,NA";
 CF p118 p119
-Data d55 "55-%test%" Value="#ddg.function";
+Data d55 "55-%test%" Value="#ddg.function" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}\"";
 DF p119 d55
-Start p120 "120-2 %test% 4" Value="2 %test% 4" Time="0.888" Script="NA" Pos="NA";
+Start p120 "120-2 %test% 4" Value="2 %test% 4" Time="0.75" Script="NA" Pos="NA";
 CF p119 p120
-Binding p121 "121-a  <-  2" Time="0.889" Script="NA" Pos="NA";
+Binding p121 "121-a  <-  2" Time="0.75" Script="NA" Pos="NA";
 CF p120 p121
-Data d56 "56-a" Value="2";
+Data d56 "56-a" Value="2" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
 DF p121 d56
-Binding p122 "122-b  <-  4" Time="0.893" Script="NA" Pos="NA";
+Binding p122 "122-b  <-  4" Time="0.75" Script="NA" Pos="NA";
 CF p121 p122
-Data d57 "57-b" Value="4";
+Data d57 "57-b" Value="4" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
 DF p122 d57
-Operation p123 "123-%test%" Value="%test%" Time="0.897" Script="NA" Pos="NA";
+Operation p123 "123-%test%" Value="%test%" Time="0.76" Script="NA" Pos="NA";
 DF d55 p123
 DF d56 p123
 DF d57 p123
 CF p122 p123
-Data d58 "58-2%test%4 return" Value="8";
-Operation p124 "124-b()" Value="b()" Time="0.912" Script="0" Pos="NA,NA,NA,NA";
+Data d58 "58-2%test%4 return" Value="8" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
+Operation p124 "124-b()" Value="b()" Time="0.76" Script="0" Pos="NA,NA,NA,NA";
 CF p123 p124
 DF p124 d58
 DF d57 p124
-Finish p125 "125-2 %test% 4" Value="2 %test% 4" Time="0.918" Script="NA" Pos="NA";
+Finish p125 "125-2 %test% 4" Value="2 %test% 4" Time="0.78" Script="NA" Pos="NA";
 CF p124 p125
-Finish p126 "126-FunctionAnnotationTest.R" Value="FunctionAnnotationTest.R" Time="0.919" Script="NA" Pos="NA";
+Finish p126 "126-FunctionAnnotationTest.R" Value="FunctionAnnotationTest.R" Time="0.78" Script="NA" Pos="NA";
 CF p125 p126
 

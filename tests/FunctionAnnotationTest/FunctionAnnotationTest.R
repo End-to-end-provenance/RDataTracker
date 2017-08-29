@@ -93,3 +93,14 @@ outer()
 `%test%` = function (a, b) a * b
 2 %test% 4
 
+# Testing functions that have an implicit return from
+# within an if
+f11 <- function(x) {
+  if (x > 0) x + 1
+  else x - 1
+}
+
+xx <- f11(1)
+xx <- f11(-1)
+
+

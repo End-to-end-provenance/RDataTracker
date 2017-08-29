@@ -1,366 +1,366 @@
 Architecture="x86_64"
-OperatingSystem="unix"
+OperatingSystem="windows"
 Language="R"
-LanguageVersion="R version 3.3.1 (2016-06-21)"
-RDataTrackerVersion="2.24.1"
+LanguageVersion="R version 3.3.3 (2017-03-06)"
+RDataTrackerVersion="2.26.1"
 Script="[DIR]/HigherOrderFuncTest.R"
 SourcedScripts=""
-ProcessFileTimestamp="2017-01-04T14.21.24EST"
+ProcessFileTimestamp="2017-06-20T00.14.12EDT"
 WorkingDirectory="[DIR]"
 DDGDirectory="[DIR]/ddg"
-DateTime="2017-01-04T15.46.11EST"
-InstalledPackages="RDataTracker 2.24.1"
+DateTime="2017-06-29T03.16.15EDT"
+InstalledPackages="base 3.3.3, datasets 3.3.3, graphics 3.3.3, grDevices 3.3.3, methods 3.3.3, RDataTracker 2.26.1, stats 3.3.3, utils 3.3.3"
 114
-Start p1 "1-HigherOrderFuncTest.R" Value="HigherOrderFuncTest.R" Time="0.0519999999999999" Script="NA" Pos="NA";
-Operation p2 "2-d <- c(1, 2, 3, 4)" Value="d <- c(1, 2, 3, 4)" Time="0.0539999999999999" Script="0" Pos="5,1,5,18";
+Start p1 "1-HigherOrderFuncTest.R" Value="HigherOrderFuncTest.R" Time="0.0299999999999999" Script="NA" Pos="NA";
+Operation p2 "2-d <- c(1, 2, 3, 4)" Value="d <- c(1, 2, 3, 4)" Time="0.0499999999999999" Script="0" Pos="5,1,5,18";
 CF p1 p2
-Snapshot d1 "1-d" Value="data/1-d.csv" Time="2017-01-04T15.46.11EST";
+Snapshot d1 "1-d" Value="data/1-d.csv" ValType="\"{\"container\":\"vector\", \"dimension\":[4], \"type\":[\"numeric\"]}\"" Time="2017-06-29T03.16.15EDT";
 DF p2 d1
-Operation p3 "3-inc <- function(num) {    num + 1}" Value="inc <- function(num) {    num + 1}" Time="0.0659999999999999" Script="0" Pos="7,1,9,1";
+Operation p3 "3-inc <- function(num) {    num + 1}" Value="inc <- function(num) {    num + 1}" Time="0.0499999999999999" Script="0" Pos="7,1,9,1";
 CF p2 p3
-Data d2 "2-inc" Value="#ddg.function";
+Data d2 "2-inc" Value="#ddg.function" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}\"";
 DF p3 d2
-Start p4 "4-e <- sapply(d, inc)" Value="e <- sapply(d, inc)" Time="0.074" Script="0" Pos="11,1,11,20";
+Start p4 "4-e <- sapply(d, inc)" Value="e <- sapply(d, inc)" Time="0.07" Script="0" Pos="11,1,11,20";
 CF p3 p4
 DF d1 p4
 DF d2 p4
-Start p5 "5-FUN(X[[i]], ...)" Value="FUN(X[[i]], ...)" Time="0.086" Script="NA" Pos="NA";
+Start p5 "5-FUN(X[[i]], ...)" Value="FUN(X[[i]], ...)" Time="0.07" Script="NA" Pos="NA";
 CF p4 p5
-Binding p6 "6-...  <-  X[[i]]" Time="0.087" Script="NA" Pos="NA";
+Binding p6 "6-...  <-  X[[i]]" Time="0.07" Script="NA" Pos="NA";
 CF p5 p6
-Binding p7 "7-...  <-  ..." Time="0.091" Script="NA" Pos="NA";
+Binding p7 "7-...  <-  ..." Time="0.07" Script="NA" Pos="NA";
 CF p6 p7
-Operation p8 "8-FUN" Value="FUN" Time="0.093" Script="NA" Pos="NA";
+Operation p8 "8-FUN" Value="FUN" Time="0.08" Script="NA" Pos="NA";
 CF p7 p8
-Data d3 "3-FUN(X[[i]],...) return" Value="2";
-Operation p9 "9-num + 1" Value="num + 1" Time="0.1" Script="0" Pos="8,3,8,9";
+Data d3 "3-FUN(X[[i]],...) return" Value="2" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
+Operation p9 "9-num + 1" Value="num + 1" Time="0.08" Script="0" Pos="8,3,8,9";
 CF p8 p9
 DF p9 d3
-Finish p10 "10-FUN(X[[i]], ...)" Value="FUN(X[[i]], ...)" Time="0.105" Script="NA" Pos="NA";
+Finish p10 "10-FUN(X[[i]], ...)" Value="FUN(X[[i]], ...)" Time="0.08" Script="NA" Pos="NA";
 CF p9 p10
-Start p11 "11-FUN(X[[i]], ...)" Value="FUN(X[[i]], ...)" Time="0.106" Script="NA" Pos="NA";
+Start p11 "11-FUN(X[[i]], ...)" Value="FUN(X[[i]], ...)" Time="0.08" Script="NA" Pos="NA";
 CF p10 p11
-Binding p12 "12-...  <-  X[[i]]" Time="0.107" Script="NA" Pos="NA";
+Binding p12 "12-...  <-  X[[i]]" Time="0.08" Script="NA" Pos="NA";
 CF p11 p12
-Binding p13 "13-...  <-  ..." Time="0.111" Script="NA" Pos="NA";
+Binding p13 "13-...  <-  ..." Time="0.08" Script="NA" Pos="NA";
 CF p12 p13
-Operation p14 "14-FUN" Value="FUN" Time="0.113" Script="NA" Pos="NA";
+Operation p14 "14-FUN" Value="FUN" Time="0.1" Script="NA" Pos="NA";
 CF p13 p14
-Data d4 "4-FUN(X[[i]],...) return" Value="3";
-Operation p15 "15-num + 1" Value="num + 1" Time="0.12" Script="0" Pos="8,3,8,9";
+Data d4 "4-FUN(X[[i]],...) return" Value="3" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
+Operation p15 "15-num + 1" Value="num + 1" Time="0.1" Script="0" Pos="8,3,8,9";
 CF p14 p15
 DF p15 d4
-Finish p16 "16-FUN(X[[i]], ...)" Value="FUN(X[[i]], ...)" Time="0.124" Script="NA" Pos="NA";
+Finish p16 "16-FUN(X[[i]], ...)" Value="FUN(X[[i]], ...)" Time="0.1" Script="NA" Pos="NA";
 CF p15 p16
-Start p17 "17-FUN(X[[i]], ...)" Value="FUN(X[[i]], ...)" Time="0.125" Script="NA" Pos="NA";
+Start p17 "17-FUN(X[[i]], ...)" Value="FUN(X[[i]], ...)" Time="0.1" Script="NA" Pos="NA";
 CF p16 p17
-Binding p18 "18-...  <-  X[[i]]" Time="0.126" Script="NA" Pos="NA";
+Binding p18 "18-...  <-  X[[i]]" Time="0.1" Script="NA" Pos="NA";
 CF p17 p18
-Binding p19 "19-...  <-  ..." Time="0.13" Script="NA" Pos="NA";
+Binding p19 "19-...  <-  ..." Time="0.1" Script="NA" Pos="NA";
 CF p18 p19
-Operation p20 "20-FUN" Value="FUN" Time="0.133" Script="NA" Pos="NA";
+Operation p20 "20-FUN" Value="FUN" Time="0.11" Script="NA" Pos="NA";
 CF p19 p20
-Data d5 "5-FUN(X[[i]],...) return" Value="4";
-Operation p21 "21-num + 1" Value="num + 1" Time="0.138" Script="0" Pos="8,3,8,9";
+Data d5 "5-FUN(X[[i]],...) return" Value="4" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
+Operation p21 "21-num + 1" Value="num + 1" Time="0.11" Script="0" Pos="8,3,8,9";
 CF p20 p21
 DF p21 d5
-Finish p22 "22-FUN(X[[i]], ...)" Value="FUN(X[[i]], ...)" Time="0.143" Script="NA" Pos="NA";
+Finish p22 "22-FUN(X[[i]], ...)" Value="FUN(X[[i]], ...)" Time="0.11" Script="NA" Pos="NA";
 CF p21 p22
-Start p23 "23-FUN(X[[i]], ...)" Value="FUN(X[[i]], ...)" Time="0.144" Script="NA" Pos="NA";
+Start p23 "23-FUN(X[[i]], ...)" Value="FUN(X[[i]], ...)" Time="0.11" Script="NA" Pos="NA";
 CF p22 p23
-Binding p24 "24-...  <-  X[[i]]" Time="0.145" Script="NA" Pos="NA";
+Binding p24 "24-...  <-  X[[i]]" Time="0.11" Script="NA" Pos="NA";
 CF p23 p24
-Binding p25 "25-...  <-  ..." Time="0.151" Script="NA" Pos="NA";
+Binding p25 "25-...  <-  ..." Time="0.11" Script="NA" Pos="NA";
 CF p24 p25
-Operation p26 "26-FUN" Value="FUN" Time="0.153" Script="NA" Pos="NA";
+Operation p26 "26-FUN" Value="FUN" Time="0.13" Script="NA" Pos="NA";
 CF p25 p26
-Data d6 "6-FUN(X[[i]],...) return" Value="5";
-Operation p27 "27-num + 1" Value="num + 1" Time="0.158" Script="0" Pos="8,3,8,9";
+Data d6 "6-FUN(X[[i]],...) return" Value="5" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
+Operation p27 "27-num + 1" Value="num + 1" Time="0.13" Script="0" Pos="8,3,8,9";
 CF p26 p27
 DF p27 d6
-Finish p28 "28-FUN(X[[i]], ...)" Value="FUN(X[[i]], ...)" Time="0.163" Script="NA" Pos="NA";
+Finish p28 "28-FUN(X[[i]], ...)" Value="FUN(X[[i]], ...)" Time="0.13" Script="NA" Pos="NA";
 CF p27 p28
-Finish p29 "29-e <- sapply(d, inc)" Value="e <- sapply(d, inc)" Time="0.164" Script="0" Pos="11,1,11,20";
+Finish p29 "29-e <- sapply(d, inc)" Value="e <- sapply(d, inc)" Time="0.13" Script="0" Pos="11,1,11,20";
 CF p28 p29
-Snapshot d7 "7-e" Value="data/7-e.csv" Time="2017-01-04T15.46.11EST";
+Snapshot d7 "7-e" Value="data/7-e.csv" ValType="\"{\"container\":\"vector\", \"dimension\":[4], \"type\":[\"numeric\"]}\"" Time="2017-06-29T03.16.15EDT";
 DF p29 d7
-Operation p30 "30-print(e)" Value="print(e)" Time="0.172" Script="0" Pos="12,1,12,8";
+Operation p30 "30-print(e)" Value="print(e)" Time="0.13" Script="0" Pos="12,1,12,8";
 CF p29 p30
 DF d7 p30
-Operation p31 "31-is.even <- function(num) {    num%%2 == 0}" Value="is.even <- function(num) {    num%%2 == 0}" Time="0.178" Script="0" Pos="14,1,16,1";
+Operation p31 "31-is.even <- function(num) {    num%%2 == 0}" Value="is.even <- function(num) {    num%%2 == 0}" Time="0.14" Script="0" Pos="14,1,16,1";
 CF p30 p31
-Data d8 "8-is.even" Value="#ddg.function";
+Data d8 "8-is.even" Value="#ddg.function" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}\"";
 DF p31 d8
-Start p32 "32-evens <- Filter(is.even, d)" Value="evens <- Filter(is.even, d)" Time="0.184" Script="0" Pos="18,1,18,28";
+Start p32 "32-evens <- Filter(is.even, d)" Value="evens <- Filter(is.even, d)" Time="0.14" Script="0" Pos="18,1,18,28";
 CF p31 p32
 DF d8 p32
 DF d1 p32
-Start p33 "33-FUN(X[[i]], ...)" Value="FUN(X[[i]], ...)" Time="0.194" Script="NA" Pos="NA";
+Start p33 "33-FUN(X[[i]], ...)" Value="FUN(X[[i]], ...)" Time="0.16" Script="NA" Pos="NA";
 CF p32 p33
-Binding p34 "34-...  <-  X[[i]]" Time="0.195" Script="NA" Pos="NA";
+Binding p34 "34-...  <-  X[[i]]" Time="0.16" Script="NA" Pos="NA";
 CF p33 p34
-Binding p35 "35-...  <-  ..." Time="0.199" Script="NA" Pos="NA";
+Binding p35 "35-...  <-  ..." Time="0.16" Script="NA" Pos="NA";
 CF p34 p35
-Operation p36 "36-FUN" Value="FUN" Time="0.202" Script="NA" Pos="NA";
+Operation p36 "36-FUN" Value="FUN" Time="0.16" Script="NA" Pos="NA";
 CF p35 p36
-Data d9 "9-FUN(X[[i]],...) return" Value="FALSE";
-Operation p37 "37-num%%2 == 0" Value="num%%2 == 0" Time="0.206" Script="0" Pos="NA,NA,NA,NA";
+Data d9 "9-FUN(X[[i]],...) return" Value="FALSE" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"logical\"]}\"";
+Operation p37 "37-num%%2 == 0" Value="num%%2 == 0" Time="0.16" Script="0" Pos="NA,NA,NA,NA";
 CF p36 p37
 DF p37 d9
-Finish p38 "38-FUN(X[[i]], ...)" Value="FUN(X[[i]], ...)" Time="0.213" Script="NA" Pos="NA";
+Finish p38 "38-FUN(X[[i]], ...)" Value="FUN(X[[i]], ...)" Time="0.17" Script="NA" Pos="NA";
 CF p37 p38
-Start p39 "39-FUN(X[[i]], ...)" Value="FUN(X[[i]], ...)" Time="0.214" Script="NA" Pos="NA";
+Start p39 "39-FUN(X[[i]], ...)" Value="FUN(X[[i]], ...)" Time="0.17" Script="NA" Pos="NA";
 CF p38 p39
-Binding p40 "40-...  <-  X[[i]]" Time="0.215" Script="NA" Pos="NA";
+Binding p40 "40-...  <-  X[[i]]" Time="0.17" Script="NA" Pos="NA";
 CF p39 p40
-Binding p41 "41-...  <-  ..." Time="0.221" Script="NA" Pos="NA";
+Binding p41 "41-...  <-  ..." Time="0.17" Script="NA" Pos="NA";
 CF p40 p41
-Operation p42 "42-FUN" Value="FUN" Time="0.223" Script="NA" Pos="NA";
+Operation p42 "42-FUN" Value="FUN" Time="0.17" Script="NA" Pos="NA";
 CF p41 p42
-Data d10 "10-FUN(X[[i]],...) return" Value="TRUE";
-Operation p43 "43-num%%2 == 0" Value="num%%2 == 0" Time="0.228" Script="0" Pos="NA,NA,NA,NA";
+Data d10 "10-FUN(X[[i]],...) return" Value="TRUE" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"logical\"]}\"";
+Operation p43 "43-num%%2 == 0" Value="num%%2 == 0" Time="0.17" Script="0" Pos="NA,NA,NA,NA";
 CF p42 p43
 DF p43 d10
-Finish p44 "44-FUN(X[[i]], ...)" Value="FUN(X[[i]], ...)" Time="0.237" Script="NA" Pos="NA";
+Finish p44 "44-FUN(X[[i]], ...)" Value="FUN(X[[i]], ...)" Time="0.19" Script="NA" Pos="NA";
 CF p43 p44
-Start p45 "45-FUN(X[[i]], ...)" Value="FUN(X[[i]], ...)" Time="0.238" Script="NA" Pos="NA";
+Start p45 "45-FUN(X[[i]], ...)" Value="FUN(X[[i]], ...)" Time="0.19" Script="NA" Pos="NA";
 CF p44 p45
-Binding p46 "46-...  <-  X[[i]]" Time="0.239" Script="NA" Pos="NA";
+Binding p46 "46-...  <-  X[[i]]" Time="0.19" Script="NA" Pos="NA";
 CF p45 p46
-Binding p47 "47-...  <-  ..." Time="0.243" Script="NA" Pos="NA";
+Binding p47 "47-...  <-  ..." Time="0.19" Script="NA" Pos="NA";
 CF p46 p47
-Operation p48 "48-FUN" Value="FUN" Time="0.245" Script="NA" Pos="NA";
+Operation p48 "48-FUN" Value="FUN" Time="0.19" Script="NA" Pos="NA";
 CF p47 p48
-Data d11 "11-FUN(X[[i]],...) return" Value="FALSE";
-Operation p49 "49-num%%2 == 0" Value="num%%2 == 0" Time="0.25" Script="0" Pos="NA,NA,NA,NA";
+Data d11 "11-FUN(X[[i]],...) return" Value="FALSE" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"logical\"]}\"";
+Operation p49 "49-num%%2 == 0" Value="num%%2 == 0" Time="0.19" Script="0" Pos="NA,NA,NA,NA";
 CF p48 p49
 DF p49 d11
-Finish p50 "50-FUN(X[[i]], ...)" Value="FUN(X[[i]], ...)" Time="0.259" Script="NA" Pos="NA";
+Finish p50 "50-FUN(X[[i]], ...)" Value="FUN(X[[i]], ...)" Time="0.21" Script="NA" Pos="NA";
 CF p49 p50
-Start p51 "51-FUN(X[[i]], ...)" Value="FUN(X[[i]], ...)" Time="0.26" Script="NA" Pos="NA";
+Start p51 "51-FUN(X[[i]], ...)" Value="FUN(X[[i]], ...)" Time="0.21" Script="NA" Pos="NA";
 CF p50 p51
-Binding p52 "52-...  <-  X[[i]]" Time="0.261" Script="NA" Pos="NA";
+Binding p52 "52-...  <-  X[[i]]" Time="0.21" Script="NA" Pos="NA";
 CF p51 p52
-Binding p53 "53-...  <-  ..." Time="0.265" Script="NA" Pos="NA";
+Binding p53 "53-...  <-  ..." Time="0.21" Script="NA" Pos="NA";
 CF p52 p53
-Operation p54 "54-FUN" Value="FUN" Time="0.267" Script="NA" Pos="NA";
+Operation p54 "54-FUN" Value="FUN" Time="0.21" Script="NA" Pos="NA";
 CF p53 p54
-Data d12 "12-FUN(X[[i]],...) return" Value="TRUE";
-Operation p55 "55-num%%2 == 0" Value="num%%2 == 0" Time="0.272" Script="0" Pos="NA,NA,NA,NA";
+Data d12 "12-FUN(X[[i]],...) return" Value="TRUE" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"logical\"]}\"";
+Operation p55 "55-num%%2 == 0" Value="num%%2 == 0" Time="0.21" Script="0" Pos="NA,NA,NA,NA";
 CF p54 p55
 DF p55 d12
-Finish p56 "56-FUN(X[[i]], ...)" Value="FUN(X[[i]], ...)" Time="0.279" Script="NA" Pos="NA";
+Finish p56 "56-FUN(X[[i]], ...)" Value="FUN(X[[i]], ...)" Time="0.22" Script="NA" Pos="NA";
 CF p55 p56
-Finish p57 "57-evens <- Filter(is.even, d)" Value="evens <- Filter(is.even, d)" Time="0.28" Script="0" Pos="18,1,18,28";
+Finish p57 "57-evens <- Filter(is.even, d)" Value="evens <- Filter(is.even, d)" Time="0.22" Script="0" Pos="18,1,18,28";
 CF p56 p57
-Snapshot d13 "13-evens" Value="data/13-evens.csv" Time="2017-01-04T15.46.11EST";
+Snapshot d13 "13-evens" Value="data/13-evens.csv" ValType="\"{\"container\":\"vector\", \"dimension\":[2], \"type\":[\"numeric\"]}\"" Time="2017-06-29T03.16.15EDT";
 DF p57 d13
-Operation p58 "58-print(evens)" Value="print(evens)" Time="0.286" Script="0" Pos="19,1,19,13";
+Operation p58 "58-print(evens)" Value="print(evens)" Time="0.22" Script="0" Pos="19,1,19,13";
 CF p57 p58
 DF d13 p58
-Operation p59 "59-add <- function(x, y) {    x + y}" Value="add <- function(x, y) {    x + y}" Time="0.294" Script="0" Pos="21,1,23,1";
+Operation p59 "59-add <- function(x, y) {    x + y}" Value="add <- function(x, y) {    x + y}" Time="0.24" Script="0" Pos="21,1,23,1";
 CF p58 p59
-Data d14 "14-add" Value="#ddg.function";
+Data d14 "14-add" Value="#ddg.function" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}\"";
 DF p59 d14
-Start p60 "60-sum <- Reduce(add, d, 0)" Value="sum <- Reduce(add, d, 0)" Time="0.298" Script="0" Pos="29,1,29,11";
+Start p60 "60-sum <- Reduce(add, d, 0)" Value="sum <- Reduce(add, d, 0)" Time="0.24" Script="0" Pos="29,1,29,11";
 CF p59 p60
 DF d14 p60
 DF d1 p60
-Start p61 "61-f(init, x[[i]])" Value="f(init, x[[i]])" Time="0.308" Script="NA" Pos="NA";
+Start p61 "61-f(init, x[[i]])" Value="f(init, x[[i]])" Time="0.24" Script="NA" Pos="NA";
 CF p60 p61
-Binding p62 "62-x  <-  init" Time="0.31" Script="NA" Pos="NA";
+Binding p62 "62-x  <-  init" Time="0.24" Script="NA" Pos="NA";
 CF p61 p62
-Data d15 "15-x" Value="0";
+Data d15 "15-x" Value="0" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
 DF p62 d15
-Binding p63 "63-y  <-  x[[i]]" Time="0.316" Script="NA" Pos="NA";
+Binding p63 "63-y  <-  x[[i]]" Time="0.25" Script="NA" Pos="NA";
 CF p62 p63
-Data d16 "16-y" Value="1";
+Data d16 "16-y" Value="1" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
 DF p63 d16
-Operation p64 "64-f" Value="f" Time="0.324" Script="NA" Pos="NA";
+Operation p64 "64-f" Value="f" Time="0.25" Script="NA" Pos="NA";
 DF d15 p64
 DF d16 p64
 CF p63 p64
-Data d17 "17-f(init,x[[i]]) return" Value="1";
-Operation p65 "65-x + y" Value="x + y" Time="0.339" Script="0" Pos="22,3,22,7";
+Data d17 "17-f(init,x[[i]]) return" Value="1" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
+Operation p65 "65-x + y" Value="x + y" Time="0.27" Script="0" Pos="22,3,22,7";
 CF p64 p65
 DF p65 d17
 DF d15 p65
 DF d16 p65
-Finish p66 "66-f(init, x[[i]])" Value="f(init, x[[i]])" Time="0.349" Script="NA" Pos="NA";
+Finish p66 "66-f(init, x[[i]])" Value="f(init, x[[i]])" Time="0.28" Script="NA" Pos="NA";
 CF p65 p66
-Start p67 "67-f(init, x[[i]])" Value="f(init, x[[i]])" Time="0.35" Script="NA" Pos="NA";
+Start p67 "67-f(init, x[[i]])" Value="f(init, x[[i]])" Time="0.28" Script="NA" Pos="NA";
 CF p66 p67
-Binding p68 "68-x  <-  init" Time="0.351" Script="NA" Pos="NA";
+Binding p68 "68-x  <-  init" Time="0.28" Script="NA" Pos="NA";
 CF p67 p68
-Data d18 "18-x" Value="1";
+Data d18 "18-x" Value="1" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
 DF p68 d18
-Binding p69 "69-y  <-  x[[i]]" Time="0.356" Script="NA" Pos="NA";
+Binding p69 "69-y  <-  x[[i]]" Time="0.3" Script="NA" Pos="NA";
 CF p68 p69
-Data d19 "19-y" Value="2";
+Data d19 "19-y" Value="2" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
 DF p69 d19
-Operation p70 "70-f" Value="f" Time="0.362" Script="NA" Pos="NA";
+Operation p70 "70-f" Value="f" Time="0.3" Script="NA" Pos="NA";
 DF d18 p70
 DF d19 p70
 CF p69 p70
-Data d20 "20-f(init,x[[i]]) return" Value="3";
-Operation p71 "71-x + y" Value="x + y" Time="0.373" Script="0" Pos="22,3,22,7";
+Data d20 "20-f(init,x[[i]]) return" Value="3" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
+Operation p71 "71-x + y" Value="x + y" Time="0.31" Script="0" Pos="22,3,22,7";
 CF p70 p71
 DF p71 d20
 DF d18 p71
 DF d19 p71
-Finish p72 "72-f(init, x[[i]])" Value="f(init, x[[i]])" Time="0.413" Script="NA" Pos="NA";
+Finish p72 "72-f(init, x[[i]])" Value="f(init, x[[i]])" Time="0.31" Script="NA" Pos="NA";
 CF p71 p72
-Start p73 "73-f(init, x[[i]])" Value="f(init, x[[i]])" Time="0.414" Script="NA" Pos="NA";
+Start p73 "73-f(init, x[[i]])" Value="f(init, x[[i]])" Time="0.31" Script="NA" Pos="NA";
 CF p72 p73
-Binding p74 "74-x  <-  init" Time="0.416" Script="NA" Pos="NA";
+Binding p74 "74-x  <-  init" Time="0.31" Script="NA" Pos="NA";
 CF p73 p74
-Data d21 "21-x" Value="3";
+Data d21 "21-x" Value="3" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
 DF p74 d21
-Binding p75 "75-y  <-  x[[i]]" Time="0.421" Script="NA" Pos="NA";
+Binding p75 "75-y  <-  x[[i]]" Time="0.33" Script="NA" Pos="NA";
 CF p74 p75
-Data d22 "22-y" Value="3";
+Data d22 "22-y" Value="3" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
 DF p75 d22
-Operation p76 "76-f" Value="f" Time="0.427" Script="NA" Pos="NA";
+Operation p76 "76-f" Value="f" Time="0.33" Script="NA" Pos="NA";
 DF d21 p76
 DF d22 p76
 CF p75 p76
-Data d23 "23-f(init,x[[i]]) return" Value="6";
-Operation p77 "77-x + y" Value="x + y" Time="0.437" Script="0" Pos="22,3,22,7";
+Data d23 "23-f(init,x[[i]]) return" Value="6" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
+Operation p77 "77-x + y" Value="x + y" Time="0.34" Script="0" Pos="22,3,22,7";
 CF p76 p77
 DF p77 d23
 DF d21 p77
 DF d22 p77
-Finish p78 "78-f(init, x[[i]])" Value="f(init, x[[i]])" Time="0.446" Script="NA" Pos="NA";
+Finish p78 "78-f(init, x[[i]])" Value="f(init, x[[i]])" Time="0.34" Script="NA" Pos="NA";
 CF p77 p78
-Start p79 "79-f(init, x[[i]])" Value="f(init, x[[i]])" Time="0.448" Script="NA" Pos="NA";
+Start p79 "79-f(init, x[[i]])" Value="f(init, x[[i]])" Time="0.34" Script="NA" Pos="NA";
 CF p78 p79
-Binding p80 "80-x  <-  init" Time="0.449" Script="NA" Pos="NA";
+Binding p80 "80-x  <-  init" Time="0.34" Script="NA" Pos="NA";
 CF p79 p80
-Data d24 "24-x" Value="6";
+Data d24 "24-x" Value="6" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
 DF p80 d24
-Binding p81 "81-y  <-  x[[i]]" Time="0.457" Script="NA" Pos="NA";
+Binding p81 "81-y  <-  x[[i]]" Time="0.34" Script="NA" Pos="NA";
 CF p80 p81
-Data d25 "25-y" Value="4";
+Data d25 "25-y" Value="4" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
 DF p81 d25
-Operation p82 "82-f" Value="f" Time="0.464" Script="NA" Pos="NA";
+Operation p82 "82-f" Value="f" Time="0.36" Script="NA" Pos="NA";
 DF d24 p82
 DF d25 p82
 CF p81 p82
-Data d26 "26-f(init,x[[i]]) return" Value="10";
-Operation p83 "83-x + y" Value="x + y" Time="0.471" Script="0" Pos="22,3,22,7";
+Data d26 "26-f(init,x[[i]]) return" Value="10" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
+Operation p83 "83-x + y" Value="x + y" Time="0.36" Script="0" Pos="22,3,22,7";
 CF p82 p83
 DF p83 d26
 DF d24 p83
 DF d25 p83
-Finish p84 "84-f(init, x[[i]])" Value="f(init, x[[i]])" Time="0.479" Script="NA" Pos="NA";
+Finish p84 "84-f(init, x[[i]])" Value="f(init, x[[i]])" Time="0.36" Script="NA" Pos="NA";
 CF p83 p84
-Finish p85 "85-sum <- Reduce(add, d, 0)" Value="sum <- Reduce(add, d, 0)" Time="0.48" Script="0" Pos="29,1,29,11";
+Finish p85 "85-sum <- Reduce(add, d, 0)" Value="sum <- Reduce(add, d, 0)" Time="0.36" Script="0" Pos="29,1,29,11";
 CF p84 p85
-Data d27 "27-sum" Value="10";
+Data d27 "27-sum" Value="10" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
 DF p85 d27
-Operation p86 "86-print(sum)" Value="print(sum)" Time="0.484" Script="0" Pos="NA,NA,NA,NA";
+Operation p86 "86-print(sum)" Value="print(sum)" Time="0.37" Script="0" Pos="NA,NA,NA,NA";
 CF p85 p86
 DF d27 p86
-Start p87 "87-sum2 <- mapply(add, d, e)" Value="sum2 <- mapply(add, d, e)" Time="0.49" Script="0" Pos="NA,NA,NA,NA";
+Start p87 "87-sum2 <- mapply(add, d, e)" Value="sum2 <- mapply(add, d, e)" Time="0.37" Script="0" Pos="NA,NA,NA,NA";
 CF p86 p87
 DF d14 p87
 DF d1 p87
 DF d7 p87
-Start p88 "88-FUN" Value="FUN" Time="0.5" Script="NA" Pos="NA";
+Start p88 "88-FUN" Value="FUN" Time="0.37" Script="NA" Pos="NA";
 CF p87 p88
-Binding p89 "89-x  <-  dots[[1L]][[1L]]" Time="0.502" Script="NA" Pos="NA";
+Binding p89 "89-x  <-  dots[[1L]][[1L]]" Time="0.39" Script="NA" Pos="NA";
 CF p88 p89
-Data d28 "28-x" Value="1";
+Data d28 "28-x" Value="1" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
 DF p89 d28
-Binding p90 "90-y  <-  dots[[2L]][[1L]]" Time="0.51" Script="NA" Pos="NA";
+Binding p90 "90-y  <-  dots[[2L]][[1L]]" Time="0.39" Script="NA" Pos="NA";
 CF p89 p90
-Data d29 "29-y" Value="2";
+Data d29 "29-y" Value="2" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
 DF p90 d29
-Operation p91 "91-FUN" Value="FUN" Time="0.515" Script="NA" Pos="NA";
+Operation p91 "91-FUN" Value="FUN" Time="0.39" Script="NA" Pos="NA";
 DF d28 p91
 DF d29 p91
 CF p90 p91
-Data d30 "30-(function(x,y) return" Value="3";
-Operation p92 "92-x + y" Value="x + y" Time="0.522" Script="0" Pos="22,3,22,7";
+Data d30 "30-(function(x,y) return" Value="3" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
+Operation p92 "92-x + y" Value="x + y" Time="0.4" Script="0" Pos="22,3,22,7";
 CF p91 p92
 DF p92 d30
 DF d28 p92
 DF d29 p92
-Finish p93 "93-FUN" Value="FUN" Time="0.529" Script="NA" Pos="NA";
+Finish p93 "93-FUN" Value="FUN" Time="0.4" Script="NA" Pos="NA";
 CF p92 p93
-Start p94 "94-FUN" Value="FUN" Time="0.53" Script="NA" Pos="NA";
+Start p94 "94-FUN" Value="FUN" Time="0.4" Script="NA" Pos="NA";
 CF p93 p94
-Binding p95 "95-x  <-  dots[[1L]][[2L]]" Time="0.531" Script="NA" Pos="NA";
+Binding p95 "95-x  <-  dots[[1L]][[2L]]" Time="0.4" Script="NA" Pos="NA";
 CF p94 p95
-Data d31 "31-x" Value="2";
+Data d31 "31-x" Value="2" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
 DF p95 d31
-Binding p96 "96-y  <-  dots[[2L]][[2L]]" Time="0.536" Script="NA" Pos="NA";
+Binding p96 "96-y  <-  dots[[2L]][[2L]]" Time="0.4" Script="NA" Pos="NA";
 CF p95 p96
-Data d32 "32-y" Value="3";
+Data d32 "32-y" Value="3" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
 DF p96 d32
-Operation p97 "97-FUN" Value="FUN" Time="0.542" Script="NA" Pos="NA";
+Operation p97 "97-FUN" Value="FUN" Time="0.42" Script="NA" Pos="NA";
 DF d31 p97
 DF d32 p97
 CF p96 p97
-Data d33 "33-(function(x,y) return" Value="5";
-Operation p98 "98-x + y" Value="x + y" Time="0.549" Script="0" Pos="22,3,22,7";
+Data d33 "33-(function(x,y) return" Value="5" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
+Operation p98 "98-x + y" Value="x + y" Time="0.42" Script="0" Pos="22,3,22,7";
 CF p97 p98
 DF p98 d33
 DF d31 p98
 DF d32 p98
-Finish p99 "99-FUN" Value="FUN" Time="0.554" Script="NA" Pos="NA";
+Finish p99 "99-FUN" Value="FUN" Time="0.42" Script="NA" Pos="NA";
 CF p98 p99
-Start p100 "100-FUN" Value="FUN" Time="0.555" Script="NA" Pos="NA";
+Start p100 "100-FUN" Value="FUN" Time="0.42" Script="NA" Pos="NA";
 CF p99 p100
-Binding p101 "101-x  <-  dots[[1L]][[3L]]" Time="0.556" Script="NA" Pos="NA";
+Binding p101 "101-x  <-  dots[[1L]][[3L]]" Time="0.42" Script="NA" Pos="NA";
 CF p100 p101
-Data d34 "34-x" Value="3";
+Data d34 "34-x" Value="3" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
 DF p101 d34
-Binding p102 "102-y  <-  dots[[2L]][[3L]]" Time="0.598" Script="NA" Pos="NA";
+Binding p102 "102-y  <-  dots[[2L]][[3L]]" Time="0.43" Script="NA" Pos="NA";
 CF p101 p102
-Data d35 "35-y" Value="4";
+Data d35 "35-y" Value="4" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
 DF p102 d35
-Operation p103 "103-FUN" Value="FUN" Time="0.605" Script="NA" Pos="NA";
+Operation p103 "103-FUN" Value="FUN" Time="0.43" Script="NA" Pos="NA";
 DF d34 p103
 DF d35 p103
 CF p102 p103
-Data d36 "36-(function(x,y) return" Value="7";
-Operation p104 "104-x + y" Value="x + y" Time="0.619" Script="0" Pos="22,3,22,7";
+Data d36 "36-(function(x,y) return" Value="7" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
+Operation p104 "104-x + y" Value="x + y" Time="0.45" Script="0" Pos="22,3,22,7";
 CF p103 p104
 DF p104 d36
 DF d34 p104
 DF d35 p104
-Finish p105 "105-FUN" Value="FUN" Time="0.63" Script="NA" Pos="NA";
+Finish p105 "105-FUN" Value="FUN" Time="0.47" Script="NA" Pos="NA";
 CF p104 p105
-Start p106 "106-FUN" Value="FUN" Time="0.631" Script="NA" Pos="NA";
+Start p106 "106-FUN" Value="FUN" Time="0.47" Script="NA" Pos="NA";
 CF p105 p106
-Binding p107 "107-x  <-  dots[[1L]][[4L]]" Time="0.632" Script="NA" Pos="NA";
+Binding p107 "107-x  <-  dots[[1L]][[4L]]" Time="0.47" Script="NA" Pos="NA";
 CF p106 p107
-Data d37 "37-x" Value="4";
+Data d37 "37-x" Value="4" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
 DF p107 d37
-Binding p108 "108-y  <-  dots[[2L]][[4L]]" Time="0.639" Script="NA" Pos="NA";
+Binding p108 "108-y  <-  dots[[2L]][[4L]]" Time="0.47" Script="NA" Pos="NA";
 CF p107 p108
-Data d38 "38-y" Value="5";
+Data d38 "38-y" Value="5" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
 DF p108 d38
-Operation p109 "109-FUN" Value="FUN" Time="0.646" Script="NA" Pos="NA";
+Operation p109 "109-FUN" Value="FUN" Time="0.5" Script="NA" Pos="NA";
 DF d37 p109
 DF d38 p109
 CF p108 p109
-Data d39 "39-(function(x,y) return" Value="9";
-Operation p110 "110-x + y" Value="x + y" Time="0.66" Script="0" Pos="22,3,22,7";
+Data d39 "39-(function(x,y) return" Value="9" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
+Operation p110 "110-x + y" Value="x + y" Time="0.51" Script="0" Pos="22,3,22,7";
 CF p109 p110
 DF p110 d39
 DF d37 p110
 DF d38 p110
-Finish p111 "111-FUN" Value="FUN" Time="0.67" Script="NA" Pos="NA";
+Finish p111 "111-FUN" Value="FUN" Time="0.53" Script="NA" Pos="NA";
 CF p110 p111
-Finish p112 "112-sum2 <- mapply(add, d, e)" Value="sum2 <- mapply(add, d, e)" Time="0.671" Script="0" Pos="NA,NA,NA,NA";
+Finish p112 "112-sum2 <- mapply(add, d, e)" Value="sum2 <- mapply(add, d, e)" Time="0.53" Script="0" Pos="NA,NA,NA,NA";
 CF p111 p112
-Snapshot d40 "40-sum2" Value="data/40-sum2.csv" Time="2017-01-04T15.46.12EST";
+Snapshot d40 "40-sum2" Value="data/40-sum2.csv" ValType="\"{\"container\":\"vector\", \"dimension\":[4], \"type\":[\"numeric\"]}\"" Time="2017-06-29T03.16.16EDT";
 DF p112 d40
-Operation p113 "113-print(sum2)" Value="print(sum2)" Time="0.676" Script="0" Pos="NA,NA,NA,NA";
+Operation p113 "113-print(sum2)" Value="print(sum2)" Time="0.53" Script="0" Pos="NA,NA,NA,NA";
 CF p112 p113
 DF d40 p113
-Finish p114 "114-HigherOrderFuncTest.R" Value="HigherOrderFuncTest.R" Time="0.683" Script="NA" Pos="NA";
+Finish p114 "114-HigherOrderFuncTest.R" Value="HigherOrderFuncTest.R" Time="0.53" Script="NA" Pos="NA";
 CF p113 p114
 
