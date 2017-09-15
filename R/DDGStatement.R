@@ -90,11 +90,7 @@ setClass("DDGStatement",
         is.breakpoint = "logical", # True if a breakpoint has been set for this statement
         contained = "list",        # If this is a function declaration, this will be a list of
                                    # DDGStatement objects for the statements it contains.
-        
-        
-        # EDITS
-        functions.called = "character",
-        packages.used = "character"
+        functions.called = "character"  # A list of the names of the function calls in the statement.
       )
 )
 
@@ -196,63 +192,42 @@ setMethod ("initialize",
 
       #print(paste ("annotated statement", .Object@annotated))
       
+      # find the list of the names of the function calls in the statement
+      functions <- unique(find.calls(.Object@parsed[[1]]))
       
+      if( is.null(functions) )
+        .Object@functions.called <- character(0)
+      else
+        .Object@functions.called <- functions
       
-      # EDITS
-      tree <<- .Object@parsed[[1]]
-      .Object@functions.called <- unique(find.calls(.Object@parsed[[1]]))
-      functions.called <<- .Object@functions.called
-
       return(.Object)
     }
 )
 
 
-# EDITS
+# A recursive function which finds and returns a character vector of the names of the 
+# function calls in a statement.
+#
+# @param obj The parse tree for a statement
+# @return A character vector of the names of the function calls in the given statement.
 
-find.calls <- function(obj) {
-  
-  if( is.call(obj) )
+find.calls <- function(obj) 
+{
+  if( is.call(obj) && ! .ddg.is.functiondecl(obj) )
   {
     function.name <- toString(obj[[1]])
     call.list <- unlist( sapply(obj, find.calls, USE.NAMES=FALSE) )
     
     return( c(function.name, call.list) )
   }
-  
 }
-
-
-
-
-where1 <- function( name , env = parent.frame() , warning = TRUE )
-{
-  #stopifnot(is.character(name), length(name) == 1)
-  
-  if (identical(env, emptyenv()))
-  {
-    if(warning)
-      warning("Can't find ", name)
-    
-    return("undefined")
-  }
-  if (exists(name, env, inherits=FALSE))
-  {
-    env
-  }
-  else
-  {
-    where1(name, parent.env(env), warning)
-  }
-}
-
-
 
 
 # A special null value for when source code position information is missing.
 null.pos <- function() {
   return (new (Class = "DDGStatementPos", NA))
 }
+
 
 # Create a DDGStatement.
 # expr - the parsed expression

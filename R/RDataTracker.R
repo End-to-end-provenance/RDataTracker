@@ -372,9 +372,11 @@ library(jsonlite)
           ddg.time = numeric(size),
           ddg.snum = numeric(size),
           ddg.startLine = numeric(size),
-          ddg.startCol= numeric(size),
-          ddg.endLine= numeric(size),
-          ddg.endCol= numeric(size),
+          ddg.startCol = numeric(size),
+          ddg.endLine = numeric(size),
+          ddg.endCol = numeric(size),
+          ddg.functions.called = character(size),
+          ddg.packages.used = character(size),
           stringsAsFactors=FALSE))
 
   .ddg.set("ddg.data.nodes", data.frame(ddg.type = character(size),
@@ -777,7 +779,7 @@ library(jsonlite)
 # .ddg.json.procedure.node adds a procedure node to the ddg.json
 # string.
 
-.ddg.json.procedure.node <- function(id, pname, ptype, ptime, snum, pos) {
+.ddg.json.procedure.node <- function(id, pname, ptype, ptime, snum, pos, pfunctions, ppackages) {
 
   if (is.object(pos)) {
     jstr <- paste("\n\"p", id, "\" : {\n\"rdt:name\" : \"", pname, "\",\n\"rdt:type\" : \"", ptype,
@@ -786,6 +788,8 @@ library(jsonlite)
         ",\n\"rdt:startCol\" : \"", pos@startCol, "\"",
         ",\n\"rdt:endLine\" : \"", pos@endLine, "\"",
         ",\n\"rdt:endCol\" : \"", pos@endCol, "\"",
+        ",\n\"rdt:functionsCalled\" : \"", pfunctions, "\"",
+        ",\n\"rdt:packagesUsed\" : \"", ppackages, "\"",
         "\n}", sep="")
   }
   else {
@@ -795,6 +799,8 @@ library(jsonlite)
         ",\n\"rdt:startCol\" : \"NA\"",
         ",\n\"rdt:endLine\" : \"NA\"",
         ",\n\"rdt:endCol\" : \"NA\"",
+        ",\n\"rdt:functionsCalled\" : \"", "[]", "\"",
+        ",\n\"rdt:packagesUsed\" : \"", "[]", "\"",
         "\n}", sep="")
   }
 
@@ -871,9 +877,10 @@ library(jsonlite)
   write(ddg.json, fileout)
 }
 
+
 # .ddg.output.procedure.node outputs a procedure node.
 
-.ddg.output.procedure.node <- function(ptype, pname, pvalue, auto.created, ptime, snum, pos) {
+.ddg.output.procedure.node <- function(ptype, pname, pvalue, auto.created, ptime, snum, pos, pfunctions, ppackages) {
   # Get counter
   ddg.pnum <- .ddg.get("ddg.pnum")
 
@@ -884,18 +891,29 @@ library(jsonlite)
     pvalue <- gsub("\\\"", "\\\\\"", pvalue)
     value.str <- paste(" Value=\"", pvalue, "\"", sep="")
   } else value.str <- ""
-
+  
+  # format information for functions called and packages used, if necessary
+  if( is.na(ppackages) )
+  {
+    pfunctions <- "[]"
+    ppackages <- "[]"
+  }
+  
+  # Create formatted string for procedure node
   if (is.object(pos)) {
     dtxt <- paste(ptype, " p", ddg.pnum, " \"", ddg.pnum, "-", pname, "\"", value.str, " Time=\"", ptime ,
-        "\" Script=\"", snum, "\"", " Pos=\"", pos@startLine, ",", pos@startCol, ",", pos@endLine, ",", pos@endCol, "\";\n", sep="")
+        "\" Script=\"", snum, "\"", " Pos=\"", pos@startLine, ",", pos@startCol, ",", pos@endLine, ",", pos@endCol, 
+        ' FunctionsCalled="', pfunctions, '" PackagesUsed="', ppackages, '"', 
+        "\";\n", sep="")
     #print(".ddg.output.procedure.node: dtxt =")
     #print(dtxt)
   }
   else {
     dtxt <- paste(ptype, " p", ddg.pnum, " \"", ddg.pnum, "-", pname, "\"", value.str, " Time=\"", ptime ,
-        "\" Script=\"", snum, "\"", " Pos=\"NA\";\n", sep="")
+        "\" Script=\"", snum, "\"", " Pos=\"NA\";", ' FunctionsCalled="', pfunctions, '" PackagesUsed="', ppackages, '"', 
+        "\n", sep="")
   }
-
+  
   # Record in ddg.txt
   .ddg.append(dtxt)
 
@@ -903,7 +921,7 @@ library(jsonlite)
   .ddg.append.inc(dtxt)
 
   # Record in ddg.json
-  .ddg.json.procedure.node(ddg.pnum, pname, ptype, ptime, snum, pos)
+  .ddg.json.procedure.node(ddg.pnum, pname, ptype, ptime, snum, pos, pfunctions, ppackages)
 }
 
 
@@ -1262,10 +1280,12 @@ library(jsonlite)
 # auto.created - TRUE means the node is being created automatically
 #   when a return is found
 # ptime - elapsed time
+# pfunctions - functions called in the procedure
+# ppackages - packages used in the procedure
 # snum - number of sourced script (main script = 0)
 # pos - starting and ending lines and columns in source code (if available)
 
-.ddg.record.proc <- function(ptype, pname, pvalue, auto.created=FALSE, ptime, snum=NA, pos=NA) {
+.ddg.record.proc <- function(ptype, pname, pvalue, auto.created=FALSE, ptime, pfunctions=NA, ppackages=NA, snum=NA, pos=NA) {
   # Increment procedure node counter.
   .ddg.inc("ddg.pnum")
   ddg.pnum <- .ddg.pnum()
@@ -1283,9 +1303,11 @@ library(jsonlite)
         ddg.time = numeric(size),
         ddg.snum = numeric(size),
         ddg.startLine = numeric(size),
-        ddg.startCol= numeric(size),
-        ddg.endLine= numeric(size),
-        ddg.endCol= numeric(size),
+        ddg.startCol = numeric(size),
+        ddg.endLine = numeric(size),
+        ddg.endCol = numeric(size),
+        ddg.functions.called = character(size),
+        ddg.packages.used = character(size),
         stringsAsFactors=FALSE)
     .ddg.add.rows("ddg.proc.nodes", new.rows)
     ddg.proc.nodes <- .ddg.proc.nodes()
@@ -1311,11 +1333,15 @@ library(jsonlite)
     ddg.proc.nodes$ddg.endLine[ddg.pnum] <- NA
     ddg.proc.nodes$ddg.endCol[ddg.pnum] <- NA
   }
-
+  
+  # obtain information on functions called and their package of origin
+  ddg.proc.nodes$ddg.functions.called[ddg.pnum] <- pfunctions
+  ddg.proc.nodes$ddg.packages.used[ddg.pnum] <- ppackages
+  
   .ddg.set("ddg.proc.nodes", ddg.proc.nodes)
 
   # Output procedure node.
-  .ddg.output.procedure.node(ptype, pname, pvalue, auto.created, ptime, snum, pos)
+  .ddg.output.procedure.node(ptype, pname, pvalue, auto.created, ptime, snum, pos, pfunctions, ppackages)
 
   if (.ddg.debug.lib()) {
     print (paste("Adding procedure node", ddg.pnum, "named", pname))
@@ -3361,7 +3387,6 @@ library(jsonlite)
           #print (paste ("length(cmd@annotated) =", length(cmd@annotated)))
 
           result <- withCallingHandlers(
-          
               {
                 for (annot in cmd@annotated) {
                   #print (paste (".ddg.parse.commands: Evaluating ", paste(annot, collapse = " ")))
@@ -3382,8 +3407,11 @@ library(jsonlite)
             warning = .ddg.set.warning ,
             error = function(e)
             {
+              # obtain function information for error-causing operation
+              function.package <- .ddg.get.function.package.info(cmd@functions.called)
+              
               # create procedure node for the error-causing operation
-              .ddg.proc.node("Operation", cmd@abbrev, cmd@abbrev, env=environ, console=TRUE, cmd=cmd)
+              .ddg.proc.node("Operation", cmd@abbrev, cmd@abbrev, env=environ, pfunctions=function.package[1], ppackages=function.package[2], console=TRUE, cmd=cmd)
               .ddg.proc2proc()
 
               # create input edges by adding variables to set
@@ -3421,26 +3449,8 @@ library(jsonlite)
           )
 
           if (.ddg.debug.lib()) print (paste (".ddg.parse.commands: Done evaluating ", cmd@annotated))
-
           
           
-          # EDITS
-          
-          packages.used <- sapply( cmd@functions.called ,.ddg.where )
-          packages.used <- sapply( packages.used , environmentName )
-          
-          packages.used <- packages.used[ grepl("package:", packages.used) ]
-          packages.used <- mapply( substring , packages.used , 9 )
-          
-          packages <<- packages.used
-          
-          cmd@functions.called <- names(packages.used)
-          cmd@packages.used <- unique(packages.used)
-          
-          new.packages.used <<- cmd@packages.used
-          new.functions <<- cmd@functions.called
-          
-
           # After evaluating
           # Check changes to variable type for common variables between vars.set and vars.used
           #if( num.vars > 0 )
@@ -3535,12 +3545,14 @@ library(jsonlite)
         
         # We want to create a procedure node for this command.
         if (create.procedure) {
-
+          
+          # obtain function information for operation
+          function.package <- .ddg.get.function.package.info(cmd@functions.called)
+          
           # Create the procedure node.
-
           if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Adding operation node for", cmd@abbrev))
-
-          .ddg.proc.node("Operation", cmd@abbrev, cmd@abbrev, env=environ, console=TRUE, cmd=cmd)
+          
+          .ddg.proc.node("Operation", cmd@abbrev, cmd@abbrev, env=environ, pfunctions=function.package[1], ppackages=function.package[2], console=TRUE, cmd=cmd)
           .ddg.proc2proc()
 
           # If a warning occurred when cmd was evaluated,
@@ -3644,6 +3656,52 @@ library(jsonlite)
 }
 
 
+# Finds and returns the names of function calls to external packages,
+# as well as the names of the packages used.
+#
+# @param function.names A character vector of the names of the functions called in a statement.
+# @return A character vector containing the list of function calls to external packages
+#         and the list of packages used, formatted for output.
+
+.ddg.get.function.package.info <- function( function.names )
+{
+  # base case - no functions called
+  if( length(function.names) == 0 )
+    return( c("[]", "[]") )
+  
+  # get source package names for each function called
+  packages <- sapply( function.names ,.ddg.where )
+  packages <- sapply( packages , environmentName )
+  
+  # extract package names for external packages
+  packages <- packages[ grepl("package:", packages) ]
+  
+  if( length(packages) == 0 )
+  {
+    functions <- "[]"
+    packages <- "[]"
+  }
+  else
+  {
+    # extract package names
+    packages <- mapply( substring , packages , 9 )
+    
+    # extract to separate vectors
+    functions <- names(packages)
+    packages <- unique(packages)
+    
+    # convert to formatted string
+    functions <- paste( functions , sep="" , collapse='","' )
+    functions <- paste( '["' , functions , '"]' , sep="" )
+    
+    packages <- paste( packages , sep="" , collapse = '","' )
+    packages <- paste( '["' , packages , '"]' , sep="" )
+  }
+  
+  return( c(functions, packages) )
+}
+
+
 # Returns TRUE if the value of the given variable name is a data frame
 # containing at least one factor. Returns FALSE otherwise.
 # var - the variable name
@@ -3703,6 +3761,8 @@ library(jsonlite)
 # ptype - type of procedure node.
 # pname - name of procedure node.
 # pvalue (optional) - value of procedure node.
+# pfunctions - functions called in the procedure
+# ppackages - packages used in the procedure
 # console (optional) - if TRUE, console mode is enabled.
 # auto.created - TRUE means that the node is being automatically
 #   created when a return call is found
@@ -3710,7 +3770,7 @@ library(jsonlite)
 # env - the environment in which the procedure occurs
 
 # CHECK!  Looks like env parameter is not needed!
-.ddg.proc.node <- function(ptype, pname, pvalue="", console=FALSE,
+.ddg.proc.node <- function(ptype, pname, pvalue="", pfunctions=NA, ppackages=NA, console=FALSE,
     auto.created=FALSE, env = sys.frame(.ddg.get.frame.number(sys.calls())),
     cmd = NULL) {
   if (.ddg.debug.lib()) {
@@ -3770,13 +3830,14 @@ library(jsonlite)
   .ddg.set(".ddg.last.proc.node.created", paste(ptype, pname))
 
   ptime <- .ddg.elapsed.time()
-
+  
   # Record in procedure node table
-  .ddg.record.proc(ptype, pname, pvalue, auto.created, ptime, snum, pos)
-
+  .ddg.record.proc(ptype, pname, pvalue, auto.created, ptime, pfunctions, ppackages, snum, pos)
+  
   #if (ptype == "Finish") print(sys.calls())
   if (.ddg.debug.lib()) print(paste("proc.node:", ptype, pname))
 }
+
 
 # .ddg.replace.quotes quotes quotation characters. It also replaces
 # return, newline and tab characters with spaces.
@@ -5238,6 +5299,14 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
                      else parent.env(sys.frame(caller.frame)))
   #print(paste("ddg.return.value: return.node.scope =", return.node.scope))
   .ddg.save.data(return.node.name, expr, fname="ddg.return", scope=return.node.scope)
+  
+  
+  
+  
+  
+  
+  
+  
   
   # Create a return proc node
 
