@@ -3691,11 +3691,11 @@ library(jsonlite)
     packages <- unique(packages)
     
     # convert to formatted string
-    functions <- paste( functions , sep="" , collapse='","' )
-    functions <- paste( '["' , functions , '"]' , sep="" )
+    functions <- paste( functions , sep="" , collapse='\\",\\"' )
+    functions <- paste( '[\\"' , functions , '\\"]' , sep="" )
     
-    packages <- paste( packages , sep="" , collapse = '","' )
-    packages <- paste( '["' , packages , '"]' , sep="" )
+    packages <- paste( packages , sep="" , collapse = '\\",\\"' )
+    packages <- paste( '[\\"' , packages , '\\"]' , sep="" )
   }
   
   return( c(functions, packages) )
