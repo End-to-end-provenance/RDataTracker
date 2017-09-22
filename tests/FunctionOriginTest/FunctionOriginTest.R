@@ -4,6 +4,10 @@
 # @version: September 2017
 
 
+# calling functions from base
+stopifnot( is.double(10) )
+
+
 # explicit direct function calling from unloaded library
 # CURRENTLY NOT WORKING
 #stopifnot( identical(stringr::str_to_upper("apple"), "APPLE") )
@@ -13,6 +17,29 @@
 # loading a library before using a function
 library(stringi)
 stopifnot( identical(stri_join("ab","cde"), "abcde") )
+
+
+# multiple function calls from a single library
+stopifnot( as.numeric(
+  stri_flatten(stri_sort(stri_reverse(stri_trim(
+    c(" 12 "," 1 "," 145 ")
+  ))))
+) == 121541)
+
+
+# repeated function calls
+stopifnot( identical(stri_reverse(stri_reverse(("cat"))), "cat") )
+
+
+# multiple function calls from multiple libraries
+library(stringr)
+stopifnot( as.numeric(
+  stri_flatten( stri_sort( stri_trim( stri_reverse( 
+    str_to_lower( str_to_upper(
+      c(" 12 "," 1 "," 145 ")
+    ))
+  ))))
+) == 121541 )
 
 
 # redefining an existing function
