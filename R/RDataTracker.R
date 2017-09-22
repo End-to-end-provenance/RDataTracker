@@ -788,8 +788,8 @@ library(jsonlite)
         ",\n\"rdt:startCol\" : \"", pos@startCol, "\"",
         ",\n\"rdt:endLine\" : \"", pos@endLine, "\"",
         ",\n\"rdt:endCol\" : \"", pos@endCol, "\"",
-        ",\n\"rdt:functionsCalled\" : \"", pfunctions, "\"",
-        ",\n\"rdt:packagesUsed\" : \"", ppackages, "\"",
+        ",\n\"rdt:functionsCalled\" : ", pfunctions,
+        ",\n\"rdt:packagesUsed\" : ", ppackages,
         "\n}", sep="")
   }
   else {
@@ -799,8 +799,8 @@ library(jsonlite)
         ",\n\"rdt:startCol\" : \"NA\"",
         ",\n\"rdt:endLine\" : \"NA\"",
         ",\n\"rdt:endCol\" : \"NA\"",
-        ",\n\"rdt:functionsCalled\" : \"", "[]", "\"",
-        ",\n\"rdt:packagesUsed\" : \"", "[]", "\"",
+        ",\n\"rdt:functionsCalled\" : ", pfunctions,
+        ",\n\"rdt:packagesUsed\" : ", ppackages,
         "\n}", sep="")
   }
 
@@ -895,8 +895,8 @@ library(jsonlite)
   # format information for functions called and packages used, if necessary
   if( is.na(ppackages) )
   {
-    pfunctions <- "[]"
-    ppackages <- "[]"
+    pfunctions <- "\"[]\""
+    ppackages <- "\"[]\""
   }
   
   # Create formatted string for procedure node
@@ -3667,7 +3667,7 @@ library(jsonlite)
 {
   # base case - no functions called
   if( length(function.names) == 0 )
-    return( c("[]", "[]") )
+    return( c(NA,NA) )
   
   # get source package names for each function called
   packages <- sapply( function.names ,.ddg.where )
@@ -3678,8 +3678,8 @@ library(jsonlite)
   
   if( length(packages) == 0 )
   {
-    functions <- "[]"
-    packages <- "[]"
+    functions <- NA
+    packages <- NA
   }
   else
   {
@@ -3691,11 +3691,11 @@ library(jsonlite)
     packages <- unique(packages)
     
     # convert to formatted string
-    functions <- paste( functions , sep="" , collapse='\\",\\"' )
-    functions <- paste( '[\\"' , functions , '\\"]' , sep="" )
+    functions <- paste( functions , sep="" , collapse='","' )
+    functions <- paste( '["' , functions , '"]' , sep="" )
     
-    packages <- paste( packages , sep="" , collapse = '\\",\\"' )
-    packages <- paste( '[\\"' , packages , '\\"]' , sep="" )
+    packages <- paste( packages , sep="" , collapse = '","' )
+    packages <- paste( '["' , packages , '"]' , sep="" )
   }
   
   return( c(functions, packages) )
