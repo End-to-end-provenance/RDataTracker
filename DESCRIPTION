@@ -8,9 +8,25 @@ Authors@R: c( person( "Emery", "Boose", role = c("aut", "cre"),
               person("Barbara", "Lerner", role = c("aut"),
                       email = "blerner@mtholyoke.edu"),
               person( "Luis", "Perez", role = "ctb",
-                      email = "luisperez@college.harvard.edu"))
-Author: Emery Boose [aut, cre], Barbara Lerner [aut], Luis Perez [ctb]
+                      email = "luisperez@college.harvard.edu"),
+              person( "Yada", "Pruksachatkun", role = "ctb",
+                      email = "pruks22y@mtholyoke.edu"),
+              person( "Alex", "Liu", role = "ctb",
+                      email = "uilxela7@gmail.com"),
+              person( "Moe Pwint", "Phyu", role = "ctb",
+                      email = "phyu22m@mtholyoke.edu"),
+              person( "Elizabeth", "Fong", role = "ctb",
+                      email = "fong22e@mtholyoke.edu"),
+              person( "Thomas", "Pasquier", role = "ctb",
+                      email = "thomas.francis.pasquier@gmail.com"),
+              person( "Connor", "Gregorich-Trevor", role = "ctb",
+                      email = "gregoric@grinnell.edu")
+                      )
+Author: Emery Boose [aut, cre], Barbara Lerner [aut], Luis Perez [ctb], Yada Pruksachatkun [ctb],
+	Alex Liu [ctb],	Moe Pwint Phyu [ctb], Elizabeth Fong [ctb], Thomas Pasquier [ctb], 
+	Connor Gregorich-Trevor [ctb]
 Maintainer: Emery Boose <boose@fas.harvard.edu>
+Copyright: President and Fellows of Harvard College, Trustees of Mount Holyoke College
 Depends: R (>= 2.13.0)
 Description: Defines functions that can be used to collect data provenance as
   an R script executes. The output is a text file in PROV-JSON format which
