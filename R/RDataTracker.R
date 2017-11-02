@@ -5317,9 +5317,9 @@ library(jsonlite)
 # ddg.annotate.inside returns the value of the parameter
 # annotate.inside.
 
-# .ddg.annotate.inside <- function() {
-#   return(.ddg.get("ddg.annotate.inside"))
-# }
+.ddg.annotate.inside <- function() {
+  return(.ddg.get("ddg.annotate.inside"))
+}
 
 # ddg.first.loop returns the value of the parameter first.loop.
 
@@ -5337,9 +5337,9 @@ ddg.max.snapshot.size <- function() {
 }
 
 # ddg.loop.annotate returns the value of the parameter ddg.loop.annotate.
-# .ddg.loop.annotate <- function() {
-#   return(.ddg.get("ddg.loop.annotate"))
-# }
+.ddg.loop.annotate <- function() {
+  return(.ddg.get("ddg.loop.annotate"))
+}
 
 # ddg.loop.annotate.on turns on loop annotation.
 # ddg.loop.annotate.on <- function() {
@@ -5351,9 +5351,9 @@ ddg.loop.annotate.off <- function() {
   .ddg.set("ddg.loop.annotate", FALSE)
 }
 
-# .ddg.inside.loop <- function() {
-#   return (.ddg.get("ddg.inside.loop"))
-# }
+.ddg.inside.loop <- function() {
+  return (.ddg.get("ddg.inside.loop"))
+}
 
 ddg.set.inside.loop <- function() {
   if (!.ddg.is.set("ddg.inside.loop")) {
