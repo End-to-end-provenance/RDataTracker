@@ -34,11 +34,11 @@ ddg.clear.breakpoints()
   or quit debugging and complete execution by entering "Q".
 }
 \author{Emery Boose and Barbara Lerner}
-\examples{
-dir.create("ddg", showWarnings=FALSE)
-ddg.init()
-ddg.debug.lib.on()
-ddg.debug.lib.off()
-ddg.save()
-}
+% \examples{
+% dir.create("ddg", showWarnings=FALSE)
+% ddg.init()
+% ddg.debug.lib.on()
+% ddg.debug.lib.off()
+% ddg.save()
+% }
 \keyword{provenance}

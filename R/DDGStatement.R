@@ -171,23 +171,23 @@ setMethod ("initialize",
             is.breakpoint <- FALSE
           }
 
-      .Object@contained <-
+      # .Object@contained <- 
         # The contained field is a list of DDGStatements for all statements inside
         # the function or control statement.  If we are collecting
         # provenance inside functions or control statements, we will execute
         # annotated versions of these statements.
-        .ddg.parse.contained(.Object, script.name, parseData)
+        # .ddg.parse.contained(.Object, script.name, parseData)
 
-      .Object@annotated <-
+      .Object@annotated <- parsed
           # If this is a call to ddg.eval, we only want to execute
           # the argument to ddg.eval
-          if (grepl("^ddg.eval", .Object@text)) {
-             parse(text=.Object@parsed[[1]][[2]])
-          }
+          # if (grepl("^ddg.eval", .Object@text)) {
+          #    parse(text=.Object@parsed[[1]][[2]])
+          # }
 
-          else {
-            .ddg.add.annotations(.Object)
-          }
+          # else {
+          #   .ddg.add.annotations(.Object)
+          # }
 
       #print(paste ("annotated statement", .Object@annotated))
       return (.Object)
@@ -1366,16 +1366,16 @@ null.pos <- function() {
 # parsed.expr - a parse tree
 # func.name - the name of a function
 
-# .ddg.is.call.to <- function(parsed.expr, func.name) {
-#   # Check if a function call.
-#   if (is.call(parsed.expr)) {
-#     # Check if the function called is the specified function.
-#     if (parsed.expr[[1]] == func.name) {
-#       return (TRUE)
-#     }
-#   }
-#   return (FALSE)
-# }
+.ddg.is.call.to <- function(parsed.expr, func.name) {
+  # Check if a function call.
+  if (is.call(parsed.expr)) {
+    # Check if the function called is the specified function.
+    if (parsed.expr[[1]] == func.name) {
+      return (TRUE)
+    }
+  }
+  return (FALSE)
+}
 
 # .ddg.has.call.to returns TRUE if the parsed expression passed
 # in contains a call to the specified function.
@@ -1383,23 +1383,23 @@ null.pos <- function() {
 # parsed.expr - a parse tree
 # func.name - the name of a function
 
-# .ddg.has.call.to <- function(parsed.expr, func.name) {
-#   # Base case.
-#   if (!is.recursive(parsed.expr)) return(FALSE)
+.ddg.has.call.to <- function(parsed.expr, func.name) {
+  # Base case.
+  if (!is.recursive(parsed.expr)) return(FALSE)
 
-#   # If this is a function declaration, skip it
-#   if (.ddg.is.functiondecl(parsed.expr)) return(FALSE)
+  # If this is a function declaration, skip it
+  if (.ddg.is.functiondecl(parsed.expr)) return(FALSE)
 
-#   # A call to the specified function.
-#   if (.ddg.is.call.to(parsed.expr, func.name)) {
-#     return (TRUE)
-#   }
-#   # Not a call to the specified function.  Recurse on the parts of
-#   # the expression.
-#   else {
-#     return (any(sapply(parsed.expr, function(parsed.expr) {return(.ddg.has.call.to(parsed.expr, func.name))})))
-#   }
-# }
+  # A call to the specified function.
+  if (.ddg.is.call.to(parsed.expr, func.name)) {
+    return (TRUE)
+  }
+  # Not a call to the specified function.  Recurse on the parts of
+  # the expression.
+  else {
+    return (any(sapply(parsed.expr, function(parsed.expr) {return(.ddg.has.call.to(parsed.expr, func.name))})))
+  }
+}
 
 # .ddg.is.call.to.ddg.function returns TRUE if the parsed expression
 # passed in is a call to a ddg function.

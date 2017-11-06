@@ -148,13 +148,13 @@ ddg.set.inside.loop()
   ddg.not.inside.loop, and ddg.set.inside.loop are used internally by RDataTracker--do not use.
 }
 \author{Emery Boose and Barbara Lerner}
-\examples{
-dir.create("ddg", showWarnings=FALSE)
-ddg.init()
-ddg.save()
-myfunc <- function() {
-  a <- 1
-}
-ddg.run(f = myfunc, save.hashtable=FALSE)
-}
+% \examples{
+% dir.create("ddg", showWarnings=FALSE)
+% ddg.init()
+% ddg.save()
+% myfunc <- function() {
+%   a <- 1
+% }
+% ddg.run(f = myfunc, save.hashtable=FALSE)
+% }
 \keyword{provenance}

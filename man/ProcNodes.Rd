@@ -76,30 +76,30 @@ ddg.eval(statement, cmd.func=NULL)
   data node for the variable assigned and a corresponding data flow edge.
 }
 \author{Emery Boose and Barbara Lerner}
-\examples{
-dir.create("ddg", showWarnings=FALSE)
-ddg.init()
-a <- 0
-myfunc <- function() {
-  b <- a + 1
-  ddg.function()
-  return(ddg.return.value(b))
-}
+% \examples{
+% dir.create("ddg", showWarnings=FALSE)
+% ddg.init()
+% a <- 0
+% myfunc <- function() {
+%   b <- a + 1
+%   ddg.function()
+%   return(ddg.return.value(b))
+% }
 
-secondfunc <- function() {
-  ddg.start()
-  myfunc()
-  if (a == 1) {
-  	ddg.finish()
-  	return(10)
-  }
-  else {
-    ddg.finish()
-    return(1)
-  }
-}
-secondfunc()
-a <- myfunc()
-ddg.save()
-}
+% secondfunc <- function() {
+%   ddg.start()
+%   myfunc()
+%   if (a == 1) {
+%   	ddg.finish()
+%   	return(10)
+%   }
+%   else {
+%     ddg.finish()
+%     return(1)
+%   }
+% }
+% secondfunc()
+% a <- myfunc()
+% ddg.save()
+% }
 \keyword{provenance}

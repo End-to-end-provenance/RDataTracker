@@ -39,21 +39,21 @@ ddg.exception(dname, dvalue = NULL)
 }
 
 \author{Emery Boose and Barbara Lerner}
-\examples{
-dir.create("ddg", showWarnings=FALSE)
-ddg.init()
-ddg.data("number", 15)
-x <- 1
-ddg.data(x)
-writeLines("Hello, world", "hello.txt")
-ddg.file("hello.txt")
-year <- c(1991, 1998, 2011)
-name <- c("Sterling", "Smuggles", "Snickers")
-male <- c(FALSE, FALSE, FALSE) 
-pets.df <- data.frame(year, name, male)
-ddg.data("pets", "csv", pets.df)
-ddg.url("hf", "http://harvardforest.fas.harvard.edu")
-ddg.exception("FileNotFound", "File not found")
-ddg.save()
-}
+% \examples{
+% dir.create("ddg", showWarnings=FALSE)
+% ddg.init()
+% ddg.data("number", 15)
+% x <- 1
+% ddg.data(x)
+% writeLines("Hello, world", "hello.txt")
+% ddg.file("hello.txt")
+% year <- c(1991, 1998, 2011)
+% name <- c("Sterling", "Smuggles", "Snickers")
+% male <- c(FALSE, FALSE, FALSE) 
+% pets.df <- data.frame(year, name, male)
+% ddg.data("pets", "csv", pets.df)
+% ddg.url("hf", "http://harvardforest.fas.harvard.edu")
+% ddg.exception("FileNotFound", "File not found")
+% ddg.save()
+% }
 \keyword{provenance}

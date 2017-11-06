@@ -59,49 +59,49 @@ ddg.graphic.out(dname, pname = NULL, graphic.fext = "jpeg")
   Available file extensions are jpeg, jpg, tiff, png, and bmp.
 }
 \author{Emery Boose and Barbara Lerner}
-\examples{
-# create the directory and initialize the DDG
-dir.create("ddg", showWarnings=FALSE)
-ddg.init()
-# store simple data (note call to ddg.data)
-number <- 3
-ddg.data("number")
-a <- number + 1
+% \examples{
+% # create the directory and initialize the DDG
+% dir.create("ddg", showWarnings=FALSE)
+% ddg.init()
+% # store simple data (note call to ddg.data)
+% number <- 3
+% ddg.data("number")
+% a <- number + 1
 
-# annotate procedure above
-ddg.procedure("f")
+% # annotate procedure above
+% ddg.procedure("f")
 
-# specify inputs to procedure
-ddg.data.in("number", "f")
+% # specify inputs to procedure
+% ddg.data.in("number", "f")
 
-# specify simple data output to procedure 
-ddg.data.out("a", pname="f")
+% # specify simple data output to procedure 
+% ddg.data.out("a", pname="f")
 
-# annoate conditional procedure
-if (a < 0) {
-  warning ("a is negative!")
-  ddg.procedure("a < 0")
-  ddg.exception.out("negative", "a is negative!", "a < 0")
-}
+% # annoate conditional procedure
+% if (a < 0) {
+%   warning ("a is negative!")
+%   ddg.procedure("a < 0")
+%   ddg.exception.out("negative", "a is negative!", "a < 0")
+% }
 
-# file output example
-writeLines("Hello, world", "hello.txt")
-ddg.procedure("Say hello")
+% # file output example
+% writeLines("Hello, world", "hello.txt")
+% ddg.procedure("Say hello")
 
-# complex data example (note you use the same function ddg.data*. The library 
-# automatically determined complexity of input value)
-ddg.file.out("hello.txt", pname="Say hello")
-year <- c(1991, 1998, 2011)
-name <- c("Sterling", "Smuggles", "Snickers")
-male <- c(FALSE, FALSE, FALSE) 
-pets.df <- data.frame(year, name, male)
-ddg.procedure("data.frame(year, name, male)")
-ddg.data.in("year", pname="data.frame(year, name, male)")
-ddg.data.in("name", pname="data.frame(year, name, male)")
-ddg.data.in("male", pname="data.frame(year, name, male)")
-ddg.data.out("pets.df", pname="data.frame(year, name, male)")
+% # complex data example (note you use the same function ddg.data*. The library 
+% # automatically determined complexity of input value)
+% ddg.file.out("hello.txt", pname="Say hello")
+% year <- c(1991, 1998, 2011)
+% name <- c("Sterling", "Smuggles", "Snickers")
+% male <- c(FALSE, FALSE, FALSE) 
+% pets.df <- data.frame(year, name, male)
+% ddg.procedure("data.frame(year, name, male)")
+% ddg.data.in("year", pname="data.frame(year, name, male)")
+% ddg.data.in("name", pname="data.frame(year, name, male)")
+% ddg.data.in("male", pname="data.frame(year, name, male)")
+% ddg.data.out("pets.df", pname="data.frame(year, name, male)")
 
-# save ddg
-ddg.save()
-}
+% # save ddg
+% ddg.save()
+% }
 \keyword{provenance}
