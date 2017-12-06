@@ -1,17 +1,6 @@
-########### Checkpoint/Restore functions for DDGs #############
+# Copyright (C) President and Fellows of Harvard College and 
+# Trustees of Mount Holyoke College, 2014, 2015, 2016, 2017.
 
-# The functions in this file can be used to save the state of
-# an R environment to a file and restore it at a later time.
-# The DDG is updated to reflect the actions of the checkpoint
-# and restore operations so that data derivations are shown
-# accurately.
-
-# These functions cannot be included in RDataTracker because
-# libraries are not allowed to change the user's environment,
-# which the ddg.restore function needs to do.  To use these
-# functions, the user must "source" this file.
-
-# Copyright (C) 2014 Emery R. Boose & Barbara S. Lerner
 # This program is free software: you can redistribute it and/or 
 # modify it under the terms of the GNU General Public License as 
 # published by the Free Software Foundation, either version 3 of the 
@@ -25,6 +14,19 @@
 #   You should have received a copy of the GNU General Public 
 #   License along with this program.  If not, see 
 #   <http://www.gnu.org/licenses/>.
+
+########### Checkpoint/Restore functions for DDGs #############
+
+# The functions in this file can be used to save the state of
+# an R environment to a file and restore it at a later time.
+# The DDG is updated to reflect the actions of the checkpoint
+# and restore operations so that data derivations are shown
+# accurately.
+
+# These functions cannot be included in RDataTracker because
+# libraries are not allowed to change the user's environment,
+# which the ddg.restore function needs to do.  To use these
+# functions, the user must "source" this file.
 
 
 # .ddg.checkpoint.file.node creates a checkpoint file node.
