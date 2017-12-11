@@ -1,5 +1,7 @@
 # It assumes the caller has already found the function text.  When integrated into RDataTracker, it is much more likely that we would have the parsed function.
 # It does not add the ddg.return.value calls yet.
+#
+# edit December 11 2017: commented out nested function test
 
 
 # Function with no parameters and no return value
@@ -78,16 +80,16 @@ f10_val_pos <- f10(1); stopifnot(f10_val_pos == 2)
 f10_val_neg <- f10(-1); stopifnot(is.null(f10_val_neg))
 
 # Nested function
-outer <- function() {
-  inner <- function() {
-    a <- 1
-  }
-  
-  b <- 2
-  inner()
-}
-
-outer()
+#outer <- function() {
+#  inner <- function() {
+#    a <- 1
+#  }
+#  
+#  b <- 2
+#  inner()
+#}
+#
+#outer()
 
 # Defining a special operator
 `%test%` = function (a, b) a * b
