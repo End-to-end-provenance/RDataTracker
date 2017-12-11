@@ -1339,7 +1339,7 @@ library(jsonlite)
   ddg.proc.nodes$ddg.packages.used[ddg.pnum] <- ppackages
   
   .ddg.set("ddg.proc.nodes", ddg.proc.nodes)
-
+  
   # Output procedure node.
   .ddg.output.procedure.node(ptype, pname, pvalue, auto.created, ptime, snum, pos, pfunctions, ppackages)
 
@@ -1434,7 +1434,7 @@ library(jsonlite)
 
   ddg.data.nodes$ddg.current[ddg.dnum] <- TRUE
   .ddg.set("ddg.data.nodes", ddg.data.nodes)
-
+  
   # Output data node.
   #print(".ddg.record.data outputting data node")
   .ddg.output.data.node(dscriptpath, dtype, dname, dvalue2, val.type, dscope, from.env, dhash, drw, dtime, dloc)
