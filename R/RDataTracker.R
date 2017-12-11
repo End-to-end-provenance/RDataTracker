@@ -1,11 +1,6 @@
-#################### DDG LIBRARY FOR R ####################
+# Copyright (C) President and Fellows of Harvard College and 
+# Trustees of Mount Holyoke College, 2014, 2015, 2016, 2017.
 
-# The functions in this library may be used to annotate an R script
-# in order to collect provenance in the form of a data derivation
-# graph (DDG) as the script executes. The DDG is saved as a text file
-# (ddg.txt) that may be viewed and queried using DDG Explorer.
-
-# Copyright (C) 2014 Emery R. Boose & Barbara S. Lerner & Luis Perez
 # This program is free software: you can redistribute it and/or
 # modify it under the terms of the GNU General Public License as
 # published by the Free Software Foundation, either version 3 of the
@@ -19,6 +14,13 @@
 #   You should have received a copy of the GNU General Public
 #   License along with this program.  If not, see
 #   <http://www.gnu.org/licenses/>.
+
+#################### DDG LIBRARY FOR R ####################
+
+# The functions in this library may be used to annotate an R script
+# in order to collect provenance in the form of a data derivation
+# graph (DDG) as the script executes. The DDG is saved as a text file
+# (ddg.txt) that may be viewed and queried using DDG Explorer.
 
 # Create DDG environment variable.
 
@@ -6589,12 +6591,12 @@ ddg.source <- function (file,  ddgdir = NULL, local = FALSE, echo = verbose, pri
   check.library.paths<- file.exists(paste(.libPaths(),jar.path,sep = ""))
   index<- min(which(check.library.paths == TRUE))
   ddgexplorer_path<- paste(.libPaths()[index],jar.path,sep = "")
-  ddgtxt.path<- paste(.ddg.path() ,"/ddg.txt",sep = "")
+  ddgjson.path<- paste(getwd(), .ddg.path() ,"ddg.json",sep = "/")
 
   # -s flag starts DDG Explorer as a server.  This allows each new ddg to show
   # up in a new tab of an existing running DDG Explorer.
   # print("Starting DDG Explorer server")
-  systemResult <- system2("java", c("-jar", ddgexplorer_path, ddgtxt.path, "-port", .ddg.get(".ddg.explorer.port")), wait = FALSE)
+  systemResult <- system2("java", c("-jar", ddgexplorer_path, ddgjson.path, "-port", .ddg.get(".ddg.explorer.port")), wait = FALSE)
   # print(paste("Starting java server return code:", systemResult))
 }
 
