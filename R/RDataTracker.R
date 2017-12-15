@@ -527,11 +527,11 @@ library(jsonlite)
   }
 
   # List of files read and written
-  .ddg.set("ddg.infilenodes", list())
-  .ddg.set("ddg.outfilenodes", list())
+  .ddg.set("ddg.infilenodes", character())
+  .ddg.set("ddg.outfilenodes", character())
 
   # Data frame containing file reads and writes
-  .ddg.set("ddg.hashtable", data.frame())
+  .ddg.init.hashtable()
   
   # Boolean of whether there are any file nodes
   .ddg.set("ddg.hasfilenodes", FALSE)
@@ -771,6 +771,8 @@ library(jsonlite)
   lib.version <- packageVersion("RDataTracker")
   environ <- paste(environ, .ddg.json.nv("rdt:rdatatrackerVersion", lib.version), sep="")
 
+  environ <- paste(environ, .ddg.json.nv("rdt:hashAlgorithm", .ddg.get(".ddg.hash.algorithm")), sep="")
+
   environ <- paste(environ, .ddg.installedpackages.json(), sep = "")
   environ <- paste(environ, "\n}", sep = "")
 
@@ -808,9 +810,20 @@ library(jsonlite)
 
 # .ddg.json.data.node adds a data node to the ddg.json string.
 
-.ddg.json.data.node <- function(id, dname, dvalue, val.type, dtype, dscope, from.env, dhash, dtime, dloc) {
-
-  jstr <- paste("\n\"d", id, "\" : {\n\"rdt:name\" : \"", dname, "\",\n\"rdt:value\" : \"", dvalue, "\",\n\"rdt:valType\" : ", val.type, ",\n\"rdt:type\" : \"", dtype, "\",\n\"rdt:scope\" : \"", dscope, "\",\n\"rdt:fromEnv\" : \"", from.env, "\", \n\"rdt:SHA1hash\" : \"", dhash, "\",\n\"rdt:timestamp\" : \"", dtime, "\",\n\"rdt:location\" : \"", dloc, "\"\n}", sep="")
+.ddg.json.data.node <- function(dnum, dname) {
+  ddg.data.nodes <- .ddg.data.nodes()
+  
+  jstr <- paste("\n\"d", dnum, 
+      "\" : {\n\"rdt:name\" : \"", dname, 
+      "\",\n\"rdt:value\" : \"", ddg.data.nodes$ddg.value[dnum], 
+      "\",\n\"rdt:valType\" : ", ddg.data.nodes$ddg.val.type[dnum], 
+      ",\n\"rdt:type\" : \"", ddg.data.nodes$ddg.type[dnum], 
+      "\",\n\"rdt:scope\" : \"", ddg.data.nodes$ddg.scope[dnum], 
+      "\",\n\"rdt:fromEnv\" : \"", ddg.data.nodes$ddg.from.env[dnum], 
+      "\", \n\"rdt:hash\" : \"", ddg.data.nodes$ddg.hash[dnum], 
+      "\",\n\"rdt:timestamp\" : \"", ddg.data.nodes$ddg.time[dnum], 
+      "\",\n\"rdt:location\" : \"", ddg.data.nodes$ddg.loc[dnum], 
+      "\"\n}", sep="")
 
   .ddg.append.entity(jstr)
 }
@@ -913,35 +926,43 @@ library(jsonlite)
 
 # .ddg.output.data.node outputs a data node.
 
-.ddg.output.data.node <- function(dscriptpath, dtype, dname, dvalue, val.type, dscope, from.env, dhash, drw, dtime, dloc) {
-  # Get counter
-  ddg.dnum <- .ddg.get("ddg.dnum")
-
+.ddg.output.data.node <- function(ddg.dnum) {
+  ddg.data.nodes <- .ddg.data.nodes()
+  
   # Prepare values
-  if (from.env) dname <- paste(dname, " [ENV]", sep="")
+  dname <-
+      if (ddg.data.nodes$ddg.from.env[ddg.dnum]) paste(ddg.data.nodes$ddg.name[ddg.dnum], " [ENV]", sep="")
+      else ddg.data.nodes$ddg.name[ddg.dnum]
 
-  if (dvalue != "") value.str <- paste(" Value=\"", dvalue, "\"", sep="")
-  else value.str <- ""
+  value.str <- 
+      if (ddg.data.nodes$ddg.value[ddg.dnum] != "") paste(" Value=\"", ddg.data.nodes$ddg.value[ddg.dnum], "\"", sep="")
+      else ""
 
-  if(dscriptpath != "" ) dscriptpath.str <- paste(" Script Path=\"", dscriptpath, "\"", sep="")
-  else dscriptpath.str <- ""
+  dscriptpath.str <-
+      if(ddg.data.nodes$ddg.path[ddg.dnum] != "" ) paste(" Script Path=\"", ddg.data.nodes$ddg.path[ddg.dnum], "\"", sep="")
+      else ""
   
-  if(val.type != "" ) val.type.str <- paste(" ValType=\"", .ddg.replace.quotes(val.type), "\"", sep="")
-  else val.type.str <- ""
+  val.type.str <- 
+      if(ddg.data.nodes$ddg.val.type[ddg.dnum] != "" ) paste(" ValType=\"", .ddg.replace.quotes(ddg.data.nodes$ddg.val.type[ddg.dnum]), "\"", sep="")
+      else ""
 
-  if (dtime != "") time.str <- paste(" Time=\"", dtime, "\"", sep="")
-  else time.str <- ""
+  time.str <- 
+      if (ddg.data.nodes$ddg.time[ddg.dnum] != "") paste(" Time=\"", ddg.data.nodes$ddg.time[ddg.dnum], "\"", sep="")
+      else ""
 
-  if (dloc != "") loc.str <- paste(" Location=\"", dloc, "\"", sep="")
-  else loc.str <- ""
+  loc.str <- 
+      if (ddg.data.nodes$ddg.loc[ddg.dnum] != "") paste(" Location=\"", ddg.data.nodes$ddg.loc[ddg.dnum], "\"", sep="")
+      else ""
   
-  if (dhash != "") dhash.str <- paste(" SHA1 Hash=\"", dhash, "\"", sep="")
-  else dhash.str <- ""
+  dhash.str <-
+      if (ddg.data.nodes$ddg.hash[ddg.dnum] != "") paste(" Hash=\"", ddg.data.nodes$ddg.hash[ddg.dnum], "\"", sep="")
+      else ""
 
-  if (drw != "") drw.str <- paste(" RW=\"", drw, "\"", sep="")
-  else drw.str <- ""
+  drw.str <- 
+      if (ddg.data.nodes$ddg.rw[ddg.dnum] != "") paste(" RW=\"", ddg.data.nodes$ddg.rw[ddg.dnum], "\"", sep="")
+      else ""
 
-  dtxt <- paste(dtype, " d", ddg.dnum, " \"", ddg.dnum, "-", dname, "\"", value.str, val.type.str, time.str, loc.str, dhash.str, ";\n", sep="")
+  dtxt <- paste(ddg.data.nodes$ddg.type[ddg.dnum], " d", ddg.dnum, " \"", ddg.dnum, "-", dname, "\"", value.str, val.type.str, time.str, loc.str, dhash.str, ";\n", sep="")
   
   # Record in ddg.txt
   .ddg.append(dtxt)
@@ -950,7 +971,7 @@ library(jsonlite)
   .ddg.append.inc(dtxt)
 
   # Record in ddg.json
-  .ddg.json.data.node(ddg.dnum, dname, dvalue, val.type, dtype, dscope, from.env, dhash, dtime, dloc)
+  .ddg.json.data.node(ddg.dnum, dname)
 }
 
 
@@ -1337,7 +1358,7 @@ library(jsonlite)
 # dtime (optional) - timestamp of original file.
 # dloc (optional) -  path and name of original file.
 
-.ddg.record.data <- function(dtype, dname, dvalue, value, dscope, from.env=FALSE, dtime="", dloc="", dhash="", drw="", dscriptpath="") {
+.ddg.record.data <- function(dtype, dname, dvalue, value, dscope, from.env=FALSE, dtime="", dloc="") {
   #print("In .ddg.record.data")
   # Increment data node counter.
   .ddg.inc("ddg.dnum")
@@ -1347,6 +1368,9 @@ library(jsonlite)
   if (!is.null(.ddg.get("ddg.r.script.path"))) {
     dscriptpath <- .ddg.get("ddg.r.script.path")
   }
+  else {
+    dscriptpath <- ""
+  }
 
   # If the table is full, make it bigger.
   ddg.data.nodes <- .ddg.data.nodes()
@@ -1355,7 +1379,7 @@ library(jsonlite)
     new.rows <- data.frame(ddg.type = character(size),
         ddg.num = numeric(size),
         ddg.name = character(size),
-        ddg.path = characters(size),
+        ddg.path = character(size),
         ddg.value = character(size),
         ddg.val.type = character(size),
         ddg.scope = character(size),
@@ -1385,42 +1409,21 @@ library(jsonlite)
   ddg.data.nodes$ddg.val.type[ddg.dnum] <- val.type
   ddg.data.nodes$ddg.scope[ddg.dnum] <- dscope
   ddg.data.nodes$ddg.from.env[ddg.dnum] <- from.env
-  ddg.data.nodes$ddg.hash[ddg.dnum] <- dhash
-  ddg.data.nodes$ddg.rw[ddg.dnum] <- drw
+  ddg.data.nodes$ddg.hash[ddg.dnum] <- ""
+  ddg.data.nodes$ddg.rw[ddg.dnum] <- ""
   ddg.data.nodes$ddg.time[ddg.dnum] <- dtime
   ddg.data.nodes$ddg.loc[ddg.dnum] <- dloc
-
-  if (dtype == "File") {
-    .ddg.set("ddg.hasfilenodes", TRUE)
-    infiles <- .ddg.get("ddg.infilenodes")
-    # This function will cause certain tests to fail if run with pdf files or
-    # other non-text files with internal timestamps. This could also cause these files
-    # to sync incorrectly in the workflow, but given that reading in a pdf file is unlikely,
-    # this should not be an overly large issue.
-    dhash <- digest(dname, algo="sha1", file = TRUE)
-    if (is.na(dhash)) {
-      dhash <- ""
-    }
-    ddg.data.nodes$ddg.hash[ddg.dnum] <- dhash
-    if (length(infiles) != 0 && dname == infiles[length(infiles)]) {
-      drw <- "read"
-      ddg.data.nodes$ddg.rw[ddg.dnum] <- drw
-      .ddg.set("ddg.infilenodes", list())
-    } else {
-      drw <- "write"
-      ddg.data.nodes$ddg.rw[ddg.dnum] <- drw
-      .ddg.set("ddg.outfilenodes", list())
-    }
-    longpath <- paste0(getwd(), substring(.ddg.path(),2),"/ddg.json")
-    .ddg.set("ddg.hashtable", rbind(.ddg.get("ddg.hashtable"), c(dscriptpath, dloc, longpath, paste(.ddg.path(), dvalue, sep="/"), ddg.dnum, dhash, drw, dtime, dvalue2), stringsAsFactors = FALSE))
-  }
 
   ddg.data.nodes$ddg.current[ddg.dnum] <- TRUE
   .ddg.set("ddg.data.nodes", ddg.data.nodes)
 
   # Output data node.
   #print(".ddg.record.data outputting data node")
-  .ddg.output.data.node(dscriptpath, dtype, dname, dvalue2, val.type, dscope, from.env, dhash, drw, dtime, dloc)
+  if (dtype == "File") {
+    .ddg.add.to.hashtable(dname = dname, ddg.dnum = ddg.dnum, dscriptpath = dscriptpath, dloc = dloc, dvalue = dvalue, dtime = dtime)
+  }
+  
+  .ddg.output.data.node(ddg.dnum)
 
   if (.ddg.debug.lib()) {
     if (dtype != "File") {
@@ -1429,51 +1432,6 @@ library(jsonlite)
       print(paste("Adding data node", ddg.dnum, "named", dname, "with scope", dscope, " and value ", ddg.data.nodes$ddg.value[ddg.dnum], " that hashes to ", dhash, " and performs a file ", drw))
     }
   }
-}
-
-# .ddg.hashtable.write writes relevant information about the ddg
-# to the .ddg directory in the user's home directory. If the
-# function is unable to access or create this directory, then 
-# it will write to the working directory.
-
-.ddg.hashtable.write <- function() {
-  # if (interactive()) print(paste("Saving DDG in ", fileout))
-  writedir <- paste0(path.expand("~"),"/.ddg/")
-  if (!dir.exists(writedir)) {
-    tryCatch({
-      dir.create(writedir)
-    },
-    error = function(c){
-      writedir <- paste0(getwd(),"/.ddg/")
-      if (!dir.exists(writedir)) {
-        dir.create(writedir)
-      }
-    })
-  }
-  
-  hashtable.json <- paste0(writedir,"/hashtable.json")
-  new_hashtable <- .ddg.get("ddg.hashtable")
-  columns <- c("ScriptPath", "FilePath","DDGPath","NodePath","NodeNumber","SHA1Hash","ReadWrite","Timestamp","Value")
-  if (length(new_hashtable) == length(columns)) {
-    colnames(new_hashtable) <- columns
-  }
-  
-  if (file.exists(hashtable.json)) {
-    old_hashtable <- .ddg.hashtable.cleanup(hashtable.json)
-    new_hashtable <- rbind(old_hashtable, new_hashtable)
-  }
-  writejson <- toJSON(new_hashtable, simplifyVector = TRUE, pretty = TRUE)
-  writeLines(writejson, hashtable.json)
-}
-
-# .ddg.hashtable.cleanup removes entries in the hashtable that have been
-# overwritten by more recent iterations. It does this by removing entries
-# with matching DDGPaths.
-.ddg.hashtable.cleanup <- function(hashtable.json) {
-  old_hashtable <- read_json(hashtable.json, simplifyVector = TRUE)
-  longpath <- paste0(getwd(), substring(.ddg.path(),2), "/ddg.json")
-  old_hashtable <- subset(old_hashtable, DDGPath != longpath)
-  return(old_hashtable)
 }
 
 # Returns a string representation of the type information of the given value.
@@ -2408,6 +2366,7 @@ library(jsonlite)
   # Adds the files read to ddg.infilenodes for use in determining reads
   # and writes in the hashtable.
   .ddg.set("ddg.infilenodes", c(.ddg.get("ddg.infilenodes"), files.read))
+  #print(paste("Adding", files.read, "to ddg.infilenodes"))
   #print (".ddg.create.file.read.nodes.and.edges: Files read:")
   # print (files.read)
 
@@ -2465,9 +2424,6 @@ library(jsonlite)
   # This may include files that are not actually written if the
   # write calls are within an if-statement, for example.
   files.written <- .ddg.find.files.written(cmd, env)
-  # Adds the files written to ddg.outfilenodes for use in determining reads
-  # and writes in the hashtable.
-  .ddg.set("ddg.outfilenodes", c(.ddg.get("ddg.outfilenodes"), files.written))
   #print (".ddg.create.file.read.nodes.and.edges: Files written:")
   #print (files.written)
 
@@ -2565,11 +2521,11 @@ library(jsonlite)
   dev.print(device=pdf, file=file)
   
   # Add it to the ddg.  This will copy the file to the right directory
-  if(is.null(cmd))
+  if(is.null(cmd)) 
     ddg.file.out( file )
   else
     ddg.file.out (file, pname=cmd@abbrev)
-  
+
   # Remove the temporary file
   file.remove(file)
 }
@@ -5632,6 +5588,12 @@ ddg.url.out <- function(dname, dvalue=NULL, pname=NULL) {
 ddg.file.out <- function(filename, dname=NULL, pname=NULL) {
   if (!.ddg.is.init()) return(invisible())
   
+  # Adds the files written to ddg.outfilenodes for use in determining reads
+  # and writes in the hashtable.
+  .ddg.set("ddg.outfilenodes", c(.ddg.get("ddg.outfilenodes"), filename))
+  #print(paste("Adding", filename, "to outfilenodes"))
+  
+  
   if (is.null(dname)) {
     dname <- basename(filename)
     scope <- NULL
@@ -5765,11 +5727,20 @@ ddg.finish <- function(pname=NULL) {
 #   snapshot, not the size of the resulting snapshot.
 # Addition : overwrite (optional) - default TRUE, if FALSE, generates
 #   timestamp for ddg directory
+# save.hashtable (optional) - If TRUE, save ddg information to hashtable.json.
+# hash.algorithm (optional) - If save.hashtable is true, this allows the caller to 
+#    select the hash algorithm to use.  This uses the digest function from the digest package.
+#    The choices are md5, which is also the default, sha1, crc32, sha256, sha512, xxhash32, xxhash64 and murmur32.
 
-ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enable.console = TRUE, annotate.inside.functions = TRUE, first.loop = 1, max.loops = 1, max.snapshot.size = 10) {
+ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enable.console = TRUE, annotate.inside.functions = TRUE, first.loop = 1, max.loops = 1, max.snapshot.size = 10,
+                     save.hashtable = TRUE, hash.algorithm="md5") {
   #.ddg.DDGStatement.init()
   .ddg.init.tables()
 
+  # Save hash table related values
+  .ddg.set (".ddg.save.hashtable", save.hashtable)
+  .ddg.set (".ddg.hash.algorithm", hash.algorithm)
+  
   # Setting the path for the ddg
   if (is.null(ddgdir)) {
 
@@ -5917,11 +5888,15 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
 #   same effect as inserting ddg.breakpoint() at the top of the script.
 # save.debug (optional) - If TRUE, save debug files to debug directory.
 # save.hashtable (optional) - If TRUE, save ddg information to hashtable.json.
+# hash.algorithm (optional) - If save.hashtable is true, this allows the caller to 
+#    select the hash algorithm to use.    This uses the digest function from the digest package.
+#    The choices are md5, which is also the default, sha1, crc32, sha256, sha512, xxhash32, xxhash64 and murmur32.
 
-ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = NULL, enable.console = TRUE, annotate.inside.functions = TRUE, first.loop = 1, max.loops = 1, max.snapshot.size = 10, debug = FALSE, save.debug = FALSE, display = FALSE, save.hashtable = TRUE) {
+ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = NULL, enable.console = TRUE, annotate.inside.functions = TRUE, first.loop = 1, max.loops = 1, max.snapshot.size = 10, debug = FALSE, save.debug = FALSE, display = FALSE, 
+                    save.hashtable = TRUE, hash.algorithm="md5") {
 
   # Initiate ddg.
-  ddg.init(r.script.path, ddgdir, overwrite, enable.console, annotate.inside.functions, first.loop, max.loops, max.snapshot.size)
+  ddg.init(r.script.path, ddgdir, overwrite, enable.console, annotate.inside.functions, first.loop, max.loops, max.snapshot.size, save.hashtable, hash.algorithm)
 
   # Create ddg directory.
   # dir.create(.ddg.path(), showWarnings = FALSE)
@@ -5951,7 +5926,7 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
                 force.console = FALSE)
           else stop("r.script.path and f cannot both be NULL"),
       finally={
-        ddg.save(r.script.path, save.hashtable = save.hashtable)
+        ddg.save(r.script.path)
         if(display==TRUE){
           ddg.display()
         }
@@ -5970,11 +5945,8 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
 # save.debug (optional) - If TRUE, save debug files to debug directory.
 #   Used in console mode.
 # quit (optional) - If TRUE, remove all DDG files from memory.
-# save.hashtable (optional) - If TRUE, save DDG information to hashtable.json.
-#   Unlike ddg.run, this is set to false as default since it will generally
-#   be called internally and by tests, as opposed to by the user.
 
-ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE, save.hashtable = FALSE) {
+ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE) {
   if (!.ddg.is.init()) return(invisible())
 
   if (interactive() && .ddg.enable.console()) {
@@ -6006,16 +5978,7 @@ ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE, sav
   if (interactive()) print(paste("Saving ddg.json in ", .ddg.path(), sep=""))
 
   # Save hashtable.json to file.
-  if (save.hashtable && .ddg.get("ddg.hasfilenodes")) {
-    if (interactive()) {
-      if (dir.exists(paste0(path.expand("~"),"/.ddg/"))) {
-        print("Saving hashtable.json in .ddg directory.")
-      } else {
-        print("No .ddg directory found in home directory, saving hashtable.json in local directory.")
-      }
-    }
-    .ddg.hashtable.write()
-  }
+  .ddg.save.hashtable()
   
   # Save sourced scripts (if any). First row is main script.
   ddg.sourced.scripts <- .ddg.get(".ddg.sourced.scripts")
