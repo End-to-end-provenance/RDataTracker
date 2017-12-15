@@ -121,12 +121,12 @@ CF p27 p28
 DF d14 p28
 Data d17 "17-x" Value="3" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";
 DF p28 d17
-Operation p29 "29-calc.square.root" Value="calc.square.root" Time="0.27" Script="NA" Pos="NA";
+Operation p29 "29-calc.square.root" Value="calc.square.root" Time="0.28" Script="NA" Pos="NA";
 DF d3 p29
 DF d16 p29
 DF d17 p29
 CF p28 p29
-Operation p30 "30-y <- n/x" Value="y <- n/x" Time="0.28" Script="0" Pos="28,3,28,10";
+Operation p30 "30-y <- n/x" Value="y <- n/x" Time="0.3" Script="0" Pos="28,3,28,10";
 CF p29 p30
 DF d16 p30
 DF d17 p30
@@ -145,7 +145,7 @@ DF p32 d20
 DF d19 p32
 Finish p33 "33-calc.square.root(number, estimate)" Value="calc.square.root(number, estimate)" Time="0.31" Script="NA" Pos="NA";
 CF p32 p33
-Finish p34 "34-estimate <- calc.square.root(number, estimate)" Value="estimate <- calc.square.root(number, estimate)" Time="0.31" Script="0" Pos="NA,NA,NA,NA";
+Finish p34 "34-estimate <- calc.square.root(number, estimate)" Value="estimate <- calc.square.root(number, estimate)" Time="0.33" Script="0" Pos="NA,NA,NA,NA";
 CF p33 p34
 DF d20 p34
 Data d21 "21-estimate" Value="3.16666666666667" ValType="\"{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}\"";

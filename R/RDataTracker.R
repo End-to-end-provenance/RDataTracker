@@ -1,12 +1,6 @@
+# Copyright (C) President and Fellows of Harvard College and 
+# Trustees of Mount Holyoke College, 2014, 2015, 2016, 2017.
 
-#################### DDG LIBRARY FOR R ####################
-
-# The functions in this library may be used to annotate an R script
-# in order to collect provenance in the form of a data derivation
-# graph (DDG) as the script executes. The DDG is saved as a text file
-# (ddg.txt) that may be viewed and queried using DDG Explorer.
-
-# Copyright (C) 2014 Emery R. Boose & Barbara S. Lerner & Luis Perez
 # This program is free software: you can redistribute it and/or
 # modify it under the terms of the GNU General Public License as
 # published by the Free Software Foundation, either version 3 of the
@@ -20,6 +14,13 @@
 #   You should have received a copy of the GNU General Public
 #   License along with this program.  If not, see
 #   <http://www.gnu.org/licenses/>.
+
+#################### DDG LIBRARY FOR R ####################
+
+# The functions in this library may be used to annotate an R script
+# in order to collect provenance in the form of a data derivation
+# graph (DDG) as the script executes. The DDG is saved as a text file
+# (ddg.txt) that may be viewed and queried using DDG Explorer.
 
 # Create DDG environment variable.
 
@@ -36,6 +37,7 @@ ddg.MAX_CHECKPOINTS <- 10
 ddg.MAX_HIST_LINES <- 2^14
 
 library(digest)
+library(tools)
 library(jsonlite)
 
 #-------- FUNCTIONS TO MANAGE THE GLOBAL VARIABLES--------#
@@ -1353,7 +1355,7 @@ library(jsonlite)
 # value - the value of the data
 # dscope - data node scope.
 # from.env - if object is from initial environment.
-# dhash - the SHA1 hash of original file.
+# dhash - the hash of original file.
 # drw - whether the file was read or written.
 # dtime (optional) - timestamp of original file.
 # dloc (optional) -  path and name of original file.
@@ -2441,33 +2443,48 @@ library(jsonlite)
 .ddg.create.graphics.functions.df <- function () {
   # Functions that read files
   function.names <-
-    c ("pdf", "postscript", "bmp", "jpeg", "png", "tiff")
+    c ("pdf", "postscript", "bmp", "jpeg", "png", "tiff", "X11")
 
   # The argument that represents the file name
   param.names <-
-    c ("file", "file", "filename", "filename", "filename", "filename")
+    c ("file", "file", "filename", "filename", "filename", "filename", NA)
 
   # Position of the file parameter if it is passed by position
   param.pos <-
-    c (1, 1, 1, 1, 1, 1)
+    c (1, 1, 1, 1, 1, 1, NA)
 
   return (data.frame (function.names, param.names, param.pos, stringsAsFactors=FALSE))
 }
 
 .ddg.set (".ddg.graphics.functions.df", .ddg.create.graphics.functions.df ())
 
+# Initialize the information about functions that update graphics
+.ddg.set(".ddg.graphics.update.functions", ls(which(search()=="package:graphics")))
+#print(paste("graphics update functions:", .ddg.get(".ddg.graphics.update.functions")))
+
+
 # Given a parse tree, this function returns a list containing
 # the expressions that correspond to the filename argument
 # of the calls to functions that create graphics devices.  If there are
 # none, it returns NULL.
 .ddg.set.graphics.files <- function(main.object, env) {
+  tryCatch(
+    # Allows dev.print to work when we want to save the plot.
+    dev.control("enable"),
+    error = function (e) return()
+  )
+  #print(paste(".ddg.set.graphics.files: main.object =", main.object@text))
+  
+  # Add the newly-opened graphics device to the list of open devices
+  .ddg.set("ddg.open.devices", union(.ddg.get("ddg.open.devices"), dev.cur()))
 
   # Find all the graphics files that have potentially been opened.
   # Remember these file names until we find the dev.off call and then
   # determine which was written.
   new.possible.graphics.files.open <- .ddg.find.files (main.object, .ddg.get(".ddg.graphics.functions.df"), env)
   if (!is.null(new.possible.graphics.files.open)) {
-    if (.ddg.is.set ("possible.graphics.files.open")) {
+    #print(paste(".ddg.set.grpahics.files: opened", new.possible.graphics.files.open))
+    if (!is.null(.ddg.get ("possible.graphics.files.open"))) {
       possible.graphics.files.open <- .ddg.get ("possible.graphics.files.open")
       .ddg.set ("possible.graphics.files.open",
                 c (new.possible.graphics.files.open, possible.graphics.files.open))
@@ -2479,38 +2496,116 @@ library(jsonlite)
     #print (paste (".ddg.set.graphics.files: Found ", new.possible.graphics.files.open))
 
   }
+  
+  #print(paste(".ddg.set.graphics.files: dev.cur =", dev.cur()))
+  dev.node.name <- paste0("dev.", dev.cur())
+  .ddg.data.node("Data", dev.node.name, "graph", NULL)
+  .ddg.proc2data(main.object@abbrev, dev.node.name)
+  
 }
 
-.ddg.capture.graphics <- function(cmd) {
-  #print(paste(".ddg.capture.graphics: ", cmd@abbrev))
-  if (.ddg.is.set ("possible.graphics.files.open")) {
+# Add data in and data out nodes that represent the current device.
+#
+# cmd - Assumed to be a function that modifies the graphics device,
+# such as a function in the base graphics package.
+
+.ddg.add.graphics.io <- function (cmd) {
+  # Try adding the input edge.  It is not a problem if the node 
+  # can't be found.  It means that the output is going to the
+  # RStudio window, not a file, so there has been no call like pdf
+  # or jpg that would have created the data node.
+  dev.node.name <- paste0("dev.", dev.cur())
+  if (dev.cur() %in% .ddg.get("ddg.open.devices")) {
+    .ddg.data2proc(dev.node.name, NULL, cmd@abbrev)
+  }
+  else {
+    # Add the newly-opened graphics device to the list of open devices
+    .ddg.set("ddg.open.devices", union(.ddg.get("ddg.open.devices"), dev.cur()))    
+  }
+  
+  # Add an output node with the same name
+  .ddg.data.node("Data", dev.node.name, "graph", NULL)
+  .ddg.proc2data(cmd@abbrev, dev.node.name)
+  
+}
+
+.ddg.capture.graphics <- function(cmd, called.from.save = FALSE) {
+  
+  proc.node.name <- 
+      if (is.null(cmd)) NULL
+      else if (is.character(cmd)) cmd
+      else cmd@abbrev
+  
+  dev.number <- .ddg.get(".ddg.dev.number")
+  .ddg.set("ddg.open.devices", setdiff(.ddg.get("ddg.open.devices"), dev.number))
+  
+  #print(paste(".ddg.capture.graphics: ", proc.node.name))
+  if (!is.null(.ddg.get ("possible.graphics.files.open")) && !is.null(proc.node.name)) {
     possible.graphics.files.open <- .ddg.get ("possible.graphics.files.open")
 
     # Find the most recent file
-    if (!is.null(possible.graphics.files.open)) {
       #print(paste(".ddg.capture.graphics: possible.graphics.files.open =", possible.graphics.files.open))
       #print(".ddg.capture.graphics: getting file info")
       graphics.file.info <- file.info(possible.graphics.files.open)
       #print(".ddg.capture.graphics: getting modification time")
       latest.file.date.row <- which.max (graphics.file.info$mtime)
 
+    # Check if the device is still open and close it if it is
+    # We need to do this so that the file.out call can
+    # copy the file.
+    if (dev.number %in% dev.list()) dev.off(dev.number)
+    
       #print(".ddg.capture.graphics: creating file node")
-      ddg.file.out (possible.graphics.files.open[latest.file.date.row], pname=cmd@abbrev)
+    
+    if (!is.null(proc.node.name)) {
+      ddg.file.out (possible.graphics.files.open[latest.file.date.row], pname=proc.node.name)
+  
+      # Add an input edge from the current device
+      dev.node.name <- paste0("dev.", dev.number)
+      #print(paste(".ddg.capture.current.graphics: dev.node.name =", dev.node.name))
+      #print(".ddg.capture.graphics: creating in edge")
+      
+      # If the device was opened but never written to there will be no node.
+      if (.ddg.data.node.exists (dev.node.name)) {
+       .ddg.data2proc(dev.node.name, NULL, proc.node.name)
+      }
+      #print(".ddg.capture.graphics: done creating in edge")
+        
       #.ddg.capture.current.graphics(cmd, possible.graphics.files.open[latest.file.date.row])
       #print(paste(".ddg.capture.graphics: writing to ", possible.graphics.files.open[latest.file.date.row]))
       .ddg.set ("possible.graphics.files.open", NULL)
-      return()
     }
+    return(possible.graphics.files.open[latest.file.date.row])
   }
 
   # Output is going to the display, so we need to make up a name
-  .ddg.capture.current.graphics(cmd)
+  dev.file <- .ddg.capture.current.graphics(proc.node.name)
+  
+  if (called.from.save) {
+    #print(paste(".ddg.capture.graphics: dev.file =", dev.file))
+    #print(paste(".ddg.capture.graphics: proc.node.name =", proc.node.name))
+    ddg.file.out (dev.file, pname=proc.node.name)
+    #print(paste(".ddg.capture.graphics: returned from ddg.file.out"))
+  
+    # Remove the temporary file
+    file.remove(dev.file)
+    
+    # Add an input edge from the current device
+    dev.node.name <- paste0("dev.", dev.cur())
+    #print(paste(".ddg.capture.current.graphics: dev.node.name =", dev.node.name))
+    # If the device was opened but never written to there will be no node.
+    if (.ddg.data.node.exists (dev.node.name)) {
+      .ddg.data2proc(dev.node.name, NULL, proc.node.name)
+    }
+  }
+  
+  return (dev.file)
 
 }
 
 # Captures what is on the current display to a file, creates a file node
 # and connects to the ddg.
-.ddg.capture.current.graphics <- function(cmd, file=NULL) {
+.ddg.capture.current.graphics <- function(proc.node.name, file=NULL) {
   if (is.null(file)) {
     file <- paste0("dev.off.", .ddg.dnum()+1, ".pdf")
   }
@@ -2519,15 +2614,10 @@ library(jsonlite)
   # Save the graphic to a file temporarily
   #print(sys.calls())
   dev.print(device=pdf, file=file)
+  .ddg.set ("possible.graphics.files.open", file)
+  return(file)
   
-  # Add it to the ddg.  This will copy the file to the right directory
-  if(is.null(cmd)) 
-    ddg.file.out( file )
-  else
-    ddg.file.out (file, pname=cmd@abbrev)
 
-  # Remove the temporary file
-  file.remove(file)
 }
 
 # .ddg.loadhistory takes in the name of a history file, opens it,
@@ -2650,7 +2740,7 @@ library(jsonlite)
         .ddg.record.edge(etype, node1, node2)
 
         if (.ddg.debug.lib()) {
-          print(paste(".ddg.link.function.returns:", command))
+          print(paste(".ddg.link.function.returns:", command@abbrev))
           print(paste("DF ", node1, " ", node2, sep=""))
         }
 
@@ -2924,7 +3014,7 @@ library(jsonlite)
   cmds <- vector("list", (length(exprs)))
   next.cmd <- 1
   for (i in 1:length(exprs)) {
-    expr <- as.expression(exprs[i])
+      expr <- as.expression(exprs[i][[1]])
     next.expr.pos <- new (Class = "DDGStatementPos", non.comment.parse.data[next.parseData, ])
     cmds[[next.cmd]] <- .ddg.construct.DDGStatement(expr, next.expr.pos, script.name, script.num, breakpoints, parseData)
     next.cmd <- next.cmd + 1
@@ -3002,6 +3092,8 @@ library(jsonlite)
 
 .ddg.parse.commands <- function (exprs, script.name="", script.num=NA, environ, ignore.patterns=c('^ddg.'), node.name="Console", run.commands = FALSE, echo=FALSE, print.eval=echo, max.deparse.length=150, called.from.ddg.eval=FALSE, cmds=NULL) {
 
+  return.value <- NULL
+  
   # Gather all the information that we need about the statements
   if (is.null(cmds)) {
     cmds <- .ddg.create.DDGStatements (exprs, script.name, script.num)
@@ -3099,16 +3191,14 @@ library(jsonlite)
       # Get environment for output data node.
       d.environ <- environ
 
-      #if ( .ddg.is.nonlocal.assign(cmd@parsed[[1]]) )
-      #{
-        # NOT WORKING!! - CAN NOT FIND ENVIRONMENT EVEN IF VARIABLE EXISTS
-      #  d.environ <- .ddg.where( cmd@vars.set , env = parent.env(parent.frame()) , warning = FALSE )
-      #
-      #  if( identical(d.environ,"undefined") )
-      #    d.environ <- globalenv()
-      #}
+      if ( .ddg.is.nonlocal.assign(cmd@parsed[[1]]) )
+      {
+        d.environ <- .ddg.get.env(cmd@vars.set, for.caller=TRUE)
+      
+        if( identical(d.environ,"undefined") )
+          d.environ <- globalenv()
+      }
 
-      if (.ddg.is.nonlocal.assign(cmd@parsed[[1]])) d.environ <- globalenv()
 
       # Check for control & loop statements.
       st.type <- .ddg.get.statement.type(cmd@parsed[[1]])
@@ -3125,7 +3215,7 @@ library(jsonlite)
       # block, so there is no need to create additional nodes for the
       # control statement itself.
 
-      create <- !cmd@isDdgFunc && .ddg.is.init() && .ddg.enable.console() && !(control.statement && .ddg.annotate.inside() && ddg.max.loops() > 0)
+      create <- !cmd@isDdgFunc && .ddg.is.init() && .ddg.enable.console() && !(control.statement && .ddg.loop.annotate() && ddg.max.loops() > 0)
       # create <- !cmd@isDdgFunc && .ddg.is.init() && .ddg.enable.console()
       start.finish.created <- FALSE
       cur.cmd.closed <- FALSE
@@ -3172,6 +3262,18 @@ library(jsonlite)
             .ddg.set(".ddg.possible.last.cmd", NULL)
           }
 
+          # Need to get this number before evaluating the command so that 
+          # when we evaluate a dev.off call we know which device was closed
+          .ddg.set(".ddg.dev.number", dev.cur())
+          
+          if (cmd@has.dev.off && !cmd@createsGraphics && is.null(.ddg.get ("possible.graphics.files.open"))) {
+            dev.file.created <- .ddg.capture.current.graphics()
+          }
+          else {
+            dev.file.created <- NULL
+          }
+          
+          
           # Before evaluating,
           # keep track of variable types for common variables between vars.set and vars.used.
           #common.vars <- intersect( cmd@vars.set , cmd@vars.used )
@@ -3191,7 +3293,24 @@ library(jsonlite)
           if (.ddg.debug.lib()) print (paste (".ddg.parse.commands: Evaluating ", cmd@annotated))
 
           result <- withCallingHandlers(
-            eval(cmd@annotated, environ, NULL) ,
+          
+              {
+                for (annot in cmd@annotated) {
+                  #print (paste (".ddg.parse.commands: Evaluating ", paste(annot, collapse = " ")))
+                  # Don't set return.value if we are calling a ddg function or we are executing an if-statement
+                  if (grepl("^ddg", annot) || grepl("^.ddg", annot) || as.character(.ddg.get.statement.type(annot)) == "if") {
+                    eval(annot, environ, NULL)
+                  }
+                  else {
+                    return.value <- eval(annot, environ, NULL)
+                    #if (typeof(return.value) != "closure") {
+                    #  print (paste (".ddg.parse.commands: Done evaluating ", annot))
+                    #  print(paste(".ddg.parse.commands: setting .ddg.last.R.value to", return.value))
+                    #}
+                    .ddg.set (".ddg.last.R.value", return.value)
+                  }
+                }
+              },
             warning = .ddg.set.warning ,
             error = function(e)
             {
@@ -3367,10 +3486,15 @@ library(jsonlite)
           if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Adding output data nodes for", cmd@abbrev))
 
           if (cmd@writesFile) .ddg.create.file.write.nodes.and.edges (cmd, environ)
-          .ddg.set.graphics.files (cmd, environ)
+          if (cmd@createsGraphics) .ddg.set.graphics.files (cmd, environ)
+          if (cmd@updatesGraphics) .ddg.add.graphics.io (cmd)
 
           if (cmd@has.dev.off) {
             .ddg.capture.graphics(cmd)
+  
+            if (!is.null(dev.file.created)) {
+              file.remove(dev.file.created)
+            }
           }
         }
         # We wanted to create it but it matched a last command node.
@@ -3425,6 +3549,11 @@ library(jsonlite)
   # Write time stamp to history.
   if (.ddg.is.init() && !.ddg.is.sourced()) .ddg.write.timestamp.to.history()
 
+  return.value <- .ddg.get (".ddg.last.R.value")
+  #if (typeof(return.value) != "closure") {
+  #  print(paste(".ddg.parse.commands: returning ", return.value))
+  #}
+  return(return.value)
 }
 
 
@@ -4003,10 +4132,6 @@ library(jsonlite)
           }
           else {
             pname <- as.character(call[[1]])
-            
-            # set pname to null for internal function calls
-#            if(startsWith(pname,".ddg."))
-#              pname <- NULL
           }
         }
 
@@ -4475,11 +4600,12 @@ library(jsonlite)
         if (.ddg.cur.cmd@text != paste(deparse(call), collapse="")) {
           cmd.abbrev <- .ddg.add.abstract.node ("Start", .ddg.cur.cmd, caller.env)
           .ddg.cur.expr.stack <- .ddg.get(".ddg.cur.expr.stack")
-          .ddg.create.data.use.edges.for.console.cmd(vars.set = data.frame(), .ddg.cur.cmd, 0, for.caller=TRUE)
-
-          # Add Details Omitted node before annotated loops if needed.
           st.type <- .ddg.get.statement.type(.ddg.cur.cmd@parsed[[1]])
           loop.statement <- (st.type == "for" || st.type == "while" || st.type == "repeat")
+          control.statement <- loop.statement || st.type == "if"
+          .ddg.create.data.use.edges.for.console.cmd(vars.set = data.frame(), .ddg.cur.cmd, 0, for.caller=!control.statement)
+
+          # Add Details Omitted node before annotated loops if needed.
           if (loop.statement && ddg.first.loop() > 1) {
             ddg.details.omitted()
           }
@@ -4922,9 +5048,24 @@ ddg.procedure <- function(pname, ins=NULL, outs.graphic=NULL, outs.data=NULL, ou
 # expr - the value returned by the function.
 
 ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
+  if (!.ddg.is.init()) return(expr)
+  
   #print("In ddg.return.value")
 
-  if (!.ddg.is.init()) return(expr)
+  dev.file <- NULL
+  parsed.stmt <- NULL
+  
+  # Capture graphics if dev.off is about to be called.
+  if (!is.null(cmd.func)) {
+    parsed.stmt <- cmd.func()
+    if (parsed.stmt@has.dev.off) {
+      if (.ddg.is.call.to(parsed.stmt@parsed[[1]], "dev.off") || !.ddg.loop.annotate()) {
+        dev.file <- .ddg.capture.graphics(NULL)
+        dev.node.name <- paste0("dev.", dev.cur())
+      }
+    }
+  }
+
 
   # If expr is an assignment, create nodes and edges for the assignment.
   orig.expr <- substitute(expr)
@@ -4980,6 +5121,17 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
     .ddg.dec (".ddg.func.depth")
   }
 
+  if (is.null(cmd.func)) {
+    #print("ddg.return.value constructing DDG statement for the return call")
+    return.stmt <- .ddg.construct.DDGStatement (parse(text=orig.return), pos=NA, script.num=NA, breakpoints=NA)
+  }
+  else {
+    #print("ddg.return.value using existing DDG statement for the return call")
+    return.stmt <- cmd.func()
+    parsed.statement <- return.stmt@parsed
+    #print(paste("ddg.return.value: parsed.statement =", deparse(parsed.statement)))
+  }
+  
   # Create a data node for the return value. We want the scope of
   # the function that called the function that called ddg.return.
   call.text <- gsub(" ", "", deparse(call, nlines=1))
@@ -4993,20 +5145,15 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
 
   # Create a return proc node
 
-  if (is.null(cmd.func)) {
-    return.stmt <- .ddg.construct.DDGStatement (parse(text=orig.return), pos=NA, script.num=NA, breakpoints=NA)
-  }
-  else {
-    return.stmt <- cmd.func()
-    parsed.statement <- return.stmt@parsed
-  }
-
   # Process breakpoint. We stop if there is a breakpoint set on this line or we are single-stepping.
   if (.ddg.is.sourced() & (return.stmt@is.breakpoint | .ddg.get("ddg.break")) & !.ddg.break.ignore()) {
     .ddg.process.breakpoint(return.stmt, inside.function=TRUE)
   }
 
   caller.env = sys.frame(caller.frame)
+  
+  # Check if there is a return call within this call to ddg.return.
+  if (.ddg.has.call.to(parsed.stmt, "return")) {
   .ddg.proc.node("Operation", return.stmt@abbrev, return.stmt@abbrev, console = TRUE, env=caller.env, cmd=return.stmt)
 
   # Create control flow edge from preceding procedure node.
@@ -5015,6 +5162,19 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
   # Create an edge from the return statement to its return value.
   .ddg.proc2data(return.stmt@abbrev, return.node.name, return.node.scope, return.value=TRUE)
   
+    if (!is.null(dev.file)) {
+      ddg.file.out (dev.file, pname=return.stmt@abbrev)
+      
+      # Remove the temporary file
+      file.remove(dev.file)
+      
+      # Add an input edge from the current device
+      .ddg.data2proc(dev.node.name, NULL, return.stmt@abbrev)
+    }
+  }
+  else {
+    .ddg.lastproc2data(return.node.name, dscope=return.node.scope)
+  }
 
   # Update the table.
   ddg.num.returns <- ddg.num.returns + 1
@@ -5028,6 +5188,9 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
   .ddg.set(".ddg.return.values", ddg.return.values)
   .ddg.set(".ddg.num.returns", ddg.num.returns)
 
+  # If it does not have return, then its parameter was a call to ddg.eval
+  # and this stuff has been done already.
+  if (.ddg.has.call.to(parsed.stmt, "return")) {
   # Create edges from variables used in the return statement
   vars.used <- return.stmt@vars.used
   for (var in vars.used) {
@@ -5066,9 +5229,10 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
   # Create nodes and edges dealing with reading and writing files
   .ddg.create.file.read.nodes.and.edges(return.stmt, env)
   .ddg.create.file.write.nodes.and.edges (return.stmt, env)
+    
+    if (return.stmt@createsGraphics) {
   .ddg.set.graphics.files (return.stmt, env)
-  if (return.stmt@has.dev.off) {
-    .ddg.capture.graphics(return.stmt)
+  }
   }
 
   # Create the finish node for the function
@@ -5292,7 +5456,10 @@ ddg.eval <- function(statement, cmd.func=NULL) {
     .ddg.next.statement()
   }
 
-  .ddg.parse.commands(parsed.statement, environ=env, run.commands = TRUE, node.name=statement, called.from.ddg.eval=TRUE, cmds=list(cmd))
+  #print(paste("ddg.eval: Passing to .ddg.parse.commands as node.name:", statement))
+  #print(paste("ddg.eval: cmd@abbrev =", cmd@abbrev))
+  #print(paste("ddg.eval: Calling .ddg.parse.commands with ", deparse(parsed.statement)))
+  return.value <- .ddg.parse.commands(parsed.statement, environ=env, run.commands = TRUE, node.name=statement, called.from.ddg.eval=TRUE, cmds=list(cmd))
   # cmd <- .ddg.parse.commands(parsed.statement, environ=env, run.commands = TRUE, node.name=statement, called.from.ddg.eval=TRUE, cmds=list(cmd))
 
   if (.ddg.get(".ddg.func.depth")) {
@@ -5304,6 +5471,9 @@ ddg.eval <- function(statement, cmd.func=NULL) {
 
   # Create outflowing edges .
   # .ddg.create.data.set.edges.for.cmd(cmd@vars.set, cmd, 1, env)
+
+  #print(paste("ddg.eval: returning from", deparse(parsed.statement), "with", return.value))
+  return (return.value)
 }
 
 # ddg.data creates a data node for a single or complex data value.
@@ -5702,6 +5872,10 @@ ddg.finish <- function(pname=NULL) {
 
   # Create control flow edge from preceding procedure node.
   .ddg.proc2proc()
+  
+  # ddg.finish is added to the end of blocks.  We want the block to
+  # return the value of the last R statement.
+  return(.ddg.get (".ddg.last.R.value"))
 }
 
 # ddg.init intializes a new DDG.
@@ -5804,6 +5978,8 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
 
   # Store the starting graphics device.
   .ddg.set("prev.device", dev.cur())
+  .ddg.set("possible.graphics.files.open", NULL)
+  .ddg.set("ddg.open.devices", vector())
 
   if (interactive() && .ddg.enable.console()) {
     ddg.history.file <- paste(.ddg.path.data(), "/.ddghistory", sep="")
@@ -5957,13 +6133,8 @@ ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE) {
    # If there is a display device open, grab what is on the display
    if (length(dev.list()) >= 1) {
      #print("ddg.save: Saving graphics open at end of script")
-     # tryCatch (.ddg.capture.current.graphics(basename(r.script.path)),
-     
-     #tryCatch (.ddg.capture.current.graphics(basename(.ddg.get("ddg.r.script.path"))),
-      
-     tryCatch (.ddg.capture.current.graphics(NULL),
-      
-         error = function (e) e)
+    tryCatch (.ddg.capture.graphics(basename(.ddg.get("ddg.r.script.path")), called.from.save = TRUE),
+        error = function (e) print(e))
    }
 
   # Delete temporary files.
@@ -6253,7 +6424,7 @@ ddg.source <- function (file,  ddgdir = NULL, local = FALSE, echo = verbose, pri
   check.library.paths<- file.exists(paste(.libPaths(),jar.path,sep = ""))
   index<- min(which(check.library.paths == TRUE))
   ddgexplorer_path<- paste(.libPaths()[index],jar.path,sep = "")
-  ddgjson.path<- paste(.ddg.path() ,"/ddg.json",sep = "")
+  ddgjson.path<- paste(getwd(), .ddg.path() ,"ddg.json",sep = "/")
 
   # -s flag starts DDG Explorer as a server.  This allows each new ddg to show
   # up in a new tab of an existing running DDG Explorer.
@@ -6280,9 +6451,6 @@ ddg.display <- function () {
       warning = function(e) {
         # print("Warning!")
         .ddg.start.ddg.explorer()
-      },
-      error = function(e) {
-        print(e)
       }
   )
   tryCatch(

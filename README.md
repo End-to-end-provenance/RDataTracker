@@ -1,10 +1,10 @@
 Build Status
-============
+ ============
 
-| Branch | Status                                                                                  |
-|--------|-----------------------------------------------------------------------------------------|
-| master | [![Master Build Status](https://api.travis-ci.org/End-to-end-provenance/RDataTracker.svg?branch=master)](https://travis-ci.org/End-to-end-provenance/RDataTracker/branches)  |
-| development | [![Development Build Status](https://api.travis-ci.org/End-to-end-provenance/RDataTracker.svg?branch=development)](https://travis-ci.org/End-to-end-provenance/RDataTracker/branches)  |
+ | Branch      |Status                                                                                                                                                                                  |
+ |-------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+ | master      | [![Master Build Status](https://api.travis-ci.org/End-to-end-provenance/RDataTracker.svg?branch=master)](https://travis-ci.org/End-to-end-provenance/RDataTracker/branches)            |
+ | development | [![Development Build Status](https://api.travis-ci.org/End-to-end-provenance/RDataTracker.svg?branch=development)](https://travis-ci.org/End-to-end-provenance/RDataTracker/branches)  |
 
 What is RDataTracker?
 =====================

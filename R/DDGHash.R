@@ -38,6 +38,10 @@ library(jsonlite)
   }
   
   dhash <- .ddg.calculate.hash(dname)
+  if (dhash == "") {
+    return()
+  }
+  
   dhash.algorithm <- .ddg.get(".ddg.hash.algorithm")
   
   drw <- .ddg.calculate.rw(dname)
@@ -56,7 +60,8 @@ library(jsonlite)
 #' 
 #' @param dname the name of the file
 #' 
-#' @return the hash value based on the hash algorithm specified when ddg.run or ddg.init was called
+#' @return the hash value based on the hash algorithm specified when ddg.run or ddg.init was called.
+#'   Returns "" if the digest cannot be computed, for example, if the file does not exist.
 .ddg.calculate.hash <- function(dname) {
   .ddg.set("ddg.hasfilenodes", TRUE)
   
@@ -64,8 +69,8 @@ library(jsonlite)
   # other non-text files with internal timestamps. This could also cause these files
   # to sync incorrectly in the workflow, but given that reading in a pdf file is unlikely,
   # this should not be an overly large issue.
-  dhash <- digest(dname, algo=.ddg.get(".ddg.hash.algorithm"), file = TRUE)
-  if (is.na(dhash)) {
+  dhash <- digest(dname, algo=.ddg.get(".ddg.hash.algorithm"), file = TRUE, errormode="silent")
+  if (is.null(dhash)) {
     dhash <- ""
   }
   return (dhash)

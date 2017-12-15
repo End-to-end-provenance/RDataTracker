@@ -53,6 +53,7 @@
   - ControlConstructTest
   - WarningTest
   - PlotTest
+  - Plot2Test
   - NoDevOffTest
   - DataTypeTest
   - HigherOrderFuncTest
@@ -63,7 +64,7 @@
   The target "source-tests" will run the following tests cases:
 
   - SourceFuncTest
-  - OnOffTest
+  - OnOffTest <- temporarily removed
 
   The target "bug-tests" will run the following test cases:
 
@@ -199,7 +200,7 @@
 
     <!-- Delete all local environment information (except sourced scripts & installed packages) -->
     <replaceregexp flags="g">
-      <regexp pattern='(("rdt:architecture"|"rdt:operatingSystem"|"rdt:language"|"rdt:rVersion"|"rdt:script"|"rdt:scriptTimeStamp"|"rdt:workingDirectory"|"rdt:ddgDirectory"|"rdt:SHA1hash"|"rdt:hash"|"rdt:ddgTimeStamp"|"rdt:rdatatrackerVersion") : (.*)\r?\n(,\r?\n)?)' />
+      <regexp pattern='(("rdt:architecture"|"rdt:operatingSystem"|"rdt:language"|"rdt:rVersion"|"rdt:script"|"rdt:scriptTimeStamp"|"rdt:workingDirectory"|"rdt:ddgDirectory"|"rdt:SHA1hash"|"rdt:MD5hash"|"rdt:hash"|"rdt:ddgTimeStamp"|"rdt:rdatatrackerVersion") : (.*)\r?\n(,\r?\n)?)' />
       <substitution expression=""/>
       <fileset dir="${local_dir}">
         <patternset id="local_files">
@@ -450,77 +451,77 @@
 
   <!--########################## Start Basic TESTS ##########################-->
 
-  <target name="basicTest">
-    <antcall target="run-regression-test">
-      <param name="test-name" value="basicTest" />
-    </antcall>
-  </target>
+  	<target name="basicTest">
+  		<antcall target="run-regression-test">
+  			<param name="test-name" value="basicTest" />
+  		</antcall>
+  	</target>
 
-  <target name="update-basicTest">
-    <antcall target="update-regression-expected">
-      <param name="test-name" value="basicTest" />
-    </antcall>
-  </target>
+	<target name="update-basicTest">
+	  <antcall target="update-regression-expected">
+	  	<param name="test-name" value="basicTest" />
+	 	</antcall>
+	</target>
 
-  <target name="S4ObjectTest">
-    <antcall target="run-regression-test">
-      <param name="test-name" value="S4ObjectTest" />
-    </antcall>
-  </target>
+  	<target name="S4ObjectTest">
+  		<antcall target="run-regression-test">
+  			<param name="test-name" value="S4ObjectTest" />
+  		</antcall>
+  	</target>
 
-  <target name="update-S4ObjectTest">
-    <antcall target="update-regression-expected">
-      <param name="test-name" value="S4ObjectTest" />
-    </antcall>
-  </target>
+	<target name="update-S4ObjectTest">
+	  <antcall target="update-regression-expected">
+	  	<param name="test-name" value="S4ObjectTest" />
+	 	</antcall>
+	</target>
 
-  <target name="ScopeTest">
-    <antcall target="run-regression-test">
-      <param name="test-name" value="ScopeTest" />
-    </antcall>
-  </target>
+  	<target name="ScopeTest">
+  		<antcall target="run-regression-test">
+  			<param name="test-name" value="ScopeTest" />
+  		</antcall>
+  	</target>
 
-  <target name="update-ScopeTest">
-    <antcall target="update-regression-expected">
-      <param name="test-name" value="ScopeTest" />
-    </antcall>
-  </target>
+	<target name="update-ScopeTest">
+	  <antcall target="update-regression-expected">
+	  	<param name="test-name" value="ScopeTest" />
+	 	</antcall>
+	</target>
 
-  <target name="ReturnTest">
-    <antcall target="run-regression-test">
-      <param name="test-name" value="ReturnTest" />
-    </antcall>
-  </target>
+  	<target name="ReturnTest">
+  		<antcall target="run-regression-test">
+  			<param name="test-name" value="ReturnTest" />
+  		</antcall>
+  	</target>
 
-  <target name="update-ReturnTest">
-    <antcall target="update-regression-expected">
-      <param name="test-name" value="ReturnTest" />
-    </antcall>
-  </target>
+	<target name="update-ReturnTest">
+	  <antcall target="update-regression-expected">
+	  	<param name="test-name" value="ReturnTest" />
+	 	</antcall>
+	</target>
 
-  <target name="OddParameterTest">
-    <antcall target="run-regression-test">
-      <param name="test-name" value="OddParameterTest" />
-    </antcall>
-  </target>
+  	<target name="OddParameterTest">
+  		<antcall target="run-regression-test">
+  			<param name="test-name" value="OddParameterTest" />
+  		</antcall>
+  	</target>
 
-  <target name="update-OddParameterTest">
-    <antcall target="update-regression-expected">
-      <param name="test-name" value="OddParameterTest" />
-    </antcall>
-  </target>
+	<target name="update-OddParameterTest">
+	  <antcall target="update-regression-expected">
+	  	<param name="test-name" value="OddParameterTest" />
+	 	</antcall>
+	</target>
 
-  <target name="FunctionAnnotationTest">
-    <antcall target="run-regression-test">
-      <param name="test-name" value="FunctionAnnotationTest" />
-    </antcall>
-  </target>
+  	<target name="FunctionAnnotationTest">
+  		<antcall target="run-regression-test">
+  			<param name="test-name" value="FunctionAnnotationTest" />
+  		</antcall>
+  	</target>
 
-  <target name="update-FunctionAnnotationTest">
-    <antcall target="update-regression-expected">
-      <param name="test-name" value="FunctionAnnotationTest" />
-    </antcall>
-  </target>
+	<target name="update-FunctionAnnotationTest">
+	  <antcall target="update-regression-expected">
+	  	<param name="test-name" value="FunctionAnnotationTest" />
+	 	</antcall>
+	</target>
 
   <target name="AnnotateOnOffTest">
     <antcall target="run-regression-test">
@@ -534,41 +535,53 @@
     </antcall>
   </target>
 
-  <target name="ControlConstructTest">
-    <antcall target="run-regression-test">
-      <param name="test-name" value="ControlConstructTest" />
-    </antcall>
-  </target>
+	<target name="ControlConstructTest">
+		<antcall target="run-regression-test">
+			<param name="test-name" value="ControlConstructTest" />
+		</antcall>
+	</target>
 
-  <target name="update-ControlConstructTest">
-    <antcall target="update-regression-expected">
-      <param name="test-name" value="ControlConstructTest" />
-    </antcall>
-  </target>
+	<target name="update-ControlConstructTest">
+		<antcall target="update-regression-expected">
+			<param name="test-name" value="ControlConstructTest" />
+		</antcall>
+	</target>
 
-  <target name="WarningTest">
-    <antcall target="run-regression-test">
-      <param name="test-name" value="WarningTest" />
-    </antcall>
-  </target>
+  	<target name="WarningTest">
+  		<antcall target="run-regression-test">
+  			<param name="test-name" value="WarningTest" />
+  		</antcall>
+  	</target>
 
-  <target name="update-WarningTest">
-    <antcall target="update-regression-expected">
-      <param name="test-name" value="WarningTest" />
-    </antcall>
-  </target>
+	<target name="update-WarningTest">
+	  <antcall target="update-regression-expected">
+	  	<param name="test-name" value="WarningTest" />
+	 	</antcall>
+	</target>
 
-  <target name="PlotTest">
-    <antcall target="run-regression-test">
-      <param name="test-name" value="PlotTest" />
-    </antcall>
-  </target>
+  	<target name="PlotTest">
+  		<antcall target="run-regression-test">
+  			<param name="test-name" value="PlotTest" />
+  		</antcall>
+  	</target>
 
-  <target name="update-PlotTest">
-    <antcall target="update-regression-expected">
-      <param name="test-name" value="PlotTest" />
-    </antcall>
-  </target>
+	<target name="update-PlotTest">
+	  <antcall target="update-regression-expected">
+	  	<param name="test-name" value="PlotTest" />
+	 	</antcall>
+	</target>
+
+  	<target name="Plot2Test">
+  		<antcall target="run-regression-test">
+  			<param name="test-name" value="Plot2Test" />
+  		</antcall>
+  	</target>
+
+	<target name="update-Plot2Test">
+	  <antcall target="update-regression-expected">
+	  	<param name="test-name" value="Plot2Test" />
+	 	</antcall>
+	</target>
 
   <target name="NoDevOffTest">
     <antcall target="run-regression-test">
@@ -582,71 +595,73 @@
     </antcall>
   </target>
 
-  <target name="DataTypeTest">
-    <antcall target="run-regression-test">
-      <param name="test-name" value="DataTypeTest" />
-    </antcall>
-  </target>
+	<target name="DataTypeTest">
+		<antcall target="run-regression-test">
+			<param name="test-name" value="DataTypeTest" />
+		</antcall>
+	</target>
 
-  <target name="update-DataTypeTest">
+	<target name="update-DataTypeTest">
+		<antcall target="update-regression-expected">
+			<param name="test-name" value="DataTypeTest" />
+		</antcall>
+	</target>
+
+  	<target name="HigherOrderFuncTest">
+  		<antcall target="run-regression-test">
+  			<param name="test-name" value="HigherOrderFuncTest" />
+  		</antcall>
+  	</target>
+
+	<target name="update-HigherOrderFuncTest">
+	  <antcall target="update-regression-expected">
+	  	<param name="test-name" value="HigherOrderFuncTest" />
+	 	</antcall>
+	</target>
+
+	<target name="AssignmentOperatorsTest">
+		<antcall target="run-regression-test">
+			<param name="test-name" value="AssignmentOperatorsTest" />
+		</antcall>
+	</target>
+
+	<target name="update-AssignmentOperatorsTest">
+		<antcall target="update-regression-expected">
+			<param name="test-name" value="AssignmentOperatorsTest" />
+		</antcall>
+	</target>
+
+  	<target name="DDGStatementTest">
+  		<antcall target="run-regression-test">
+  			<param name="test-name" value="DDGStatementTest" />
+  		</antcall>
+  	</target>
+
+	<target name="update-DDGStatementTest">
+	  <antcall target="update-regression-expected">
+	  	<param name="test-name" value="DDGStatementTest" />
+	 	</antcall>
+	</target>
+
+    <target name="RMarkdownTest">
+      <antcall target="run-regression-test-Rmd">
+        <param name="test-name" value="RMarkdownTest" />
+      </antcall>
+    </target>
+
+	<target name="update-RMarkdownTest">
     <antcall target="update-regression-expected">
-      <param name="test-name" value="DataTypeTest" />
-    </antcall>
-  </target>
-
-  <target name="HigherOrderFuncTest">
-    <antcall target="run-regression-test">
-      <param name="test-name" value="HigherOrderFuncTest" />
-    </antcall>
-  </target>
-
-  <target name="update-HigherOrderFuncTest">
-    <antcall target="update-regression-expected">
-      <param name="test-name" value="HigherOrderFuncTest" />
-    </antcall>
-  </target>
-
-  <target name="AssignmentOperatorsTest">
-    <antcall target="run-regression-test">
-      <param name="test-name" value="AssignmentOperatorsTest" />
-    </antcall>
-  </target>
-
-  <target name="update-AssignmentOperatorsTest">
-    <antcall target="update-regression-expected">
-      <param name="test-name" value="AssignmentOperatorsTest" />
-    </antcall>
-  </target>
-
-  <target name="DDGStatementTest">
-    <antcall target="run-regression-test">
-      <param name="test-name" value="DDGStatementTest" />
-    </antcall>
-  </target>
-
-  <target name="update-DDGStatementTest">
-    <antcall target="update-regression-expected">
-      <param name="test-name" value="DDGStatementTest" />
-    </antcall>
-  </target>
-
-  <target name="RMarkdownTest">
-    <antcall target="run-regression-test-Rmd">
       <param name="test-name" value="RMarkdownTest" />
-    </antcall>
+ 	  </antcall>
+
   </target>
 
-  <target name="update-RMarkdownTest">
-    <antcall target="update-regression-expected">
-      <param name="test-name" value="RMarkdownTest" />
-    </antcall>
-  </target>
+	<target name="normal-tests" depends="basicTest, S4ObjectTest,
+		ScopeTest, ReturnTest, OddParameterTest, FunctionAnnotationTest,
+		ControlConstructTest, WarningTest, PlotTest, Plot2Test, NoDevOffTest, DataTypeTest,
+		HigherOrderFuncTest, AssignmentOperatorsTest, RMarkdownTest, DDGStatementTest">
+		<echo>
 
-  <target name="normal-tests" depends="basicTest, S4ObjectTest,
-    ScopeTest, ReturnTest, OddParameterTest, FunctionAnnotationTest,
-    ControlConstructTest, WarningTest, PlotTest, NoDevOffTest, DataTypeTest,
-    HigherOrderFuncTest, AssignmentOperatorsTest, RMarkdownTest, DDGStatementTest">
-    <echo>
       ##############################################
       Finished Execution of Normal Tests. Nothing should have malfunctioned.
       ##############################################
@@ -718,7 +733,8 @@
     </antcall>
   </target>
 
-  <target name="source-tests" depends="SourceFuncTest, OnOffTest">
+  <!--<target name="source-tests" depends="SourceFuncTest, OnOffTest">-->
+  <target name="source-tests" depends="SourceFuncTest">
     <echo>Finished Execution of Source Tests.</echo>
   </target>
 
