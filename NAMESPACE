@@ -19,9 +19,10 @@ importFrom(stringr, str_trim)
 importFrom(devtools, session_info)
 importFrom(methods, setMethod)
 importFrom(methods, setClass)
-importFrom(tools, md5sum)
+importFrom(digest, digest)
 importFrom(jsonlite, read_json)
 importFrom(jsonlite, write_json)
+importFrom(jsonlite, toJSON)
 
 # CRAN check gives errors if these are not included.
 # However, if we include these, ddg.run crashes R when run

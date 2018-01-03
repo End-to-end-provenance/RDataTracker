@@ -28,11 +28,12 @@
 \description{These functions are needed to create provenance graphs.}
 \usage{
 ddg.init(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enable.console = TRUE, 
-    annotate.inside.functions = TRUE, first.loop = 1, max.loops = 1, max.snapshot.size = 10) 
-ddg.save(r.script.path = NULL, save.debug=FALSE, quit=FALSE, save.hashtable = FALSE)
+    annotate.inside.functions = TRUE, first.loop = 1, max.loops = 1, max.snapshot.size = 10,
+    save.hashtable = TRUE, hash.algorithm="md5") 
+ddg.save(r.script.path = NULL, save.debug=FALSE, quit=FALSE)
 ddg.run(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = NULL, enable.console = TRUE, 
     annotate.inside.functions = TRUE, first.loop = 1, max.loops = 1, max.snapshot.size = 10, debug = FALSE, 
-    save.debug=FALSE, display = FALSE, save.hashtable = TRUE)
+    save.debug=FALSE, display = FALSE, save.hashtable = TRUE, hash.algorithm="md5")
 ddg.set.detail(detail.level)
 ddg.get.detail()
 ddg.clear.detail()
@@ -82,6 +83,7 @@ ddg.set.inside.loop()
   \item{index.var}{ The index variable passed to ddg.forloop. }
   \item{loop.num}{ The loop number passed to ddg.loop.count and ddg.reset.loop.count. }
   \item{save.hashtable}{ If TRUE, add file node information to a hashtable of file nodes. }
+  \item{hash.algorithm}{ The hash algorithm to use when saving hash values for files read or written. }
 }
 \details{
   In order to use RDataTracker to collect data provenance, the user must either call ddg.init 
