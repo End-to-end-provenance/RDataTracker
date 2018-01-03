@@ -9,7 +9,7 @@
 "p1" : {
 "rdt:name" : "PlotTest.R",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "0.22",
+"rdt:elapsedTime" : "0.21",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -22,7 +22,7 @@
 "p2" : {
 "rdt:name" : "data(mtcars)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.23",
+"rdt:elapsedTime" : "0.235",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "1",
 "rdt:startCol" : "1",
@@ -35,7 +35,7 @@
 "p3" : {
 "rdt:name" : "allCars.df <- mtcars",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.33",
+"rdt:elapsedTime" : "0.329",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "4",
 "rdt:startCol" : "1",
@@ -48,7 +48,7 @@
 "p4" : {
 "rdt:name" : "cars4Cyl.df <- allCars.df[allCars.df$cyl == 4, ]",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.54",
+"rdt:elapsedTime" : "0.537",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "7",
 "rdt:startCol" : "1",
@@ -74,7 +74,7 @@
 "p6" : {
 "rdt:name" : "cars8Cyl.df <- allCars.df[allCars.df$cyl == 8, ]",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.57",
+"rdt:elapsedTime" : "0.573",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "9",
 "rdt:startCol" : "1",
@@ -87,7 +87,7 @@
 "p7" : {
 "rdt:name" : "cylinders = c(4, 6, 8)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.57",
+"rdt:elapsedTime" : "0.583",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "12",
 "rdt:startCol" : "1",
@@ -100,7 +100,7 @@
 "p8" : {
 "rdt:name" : "mpg = c(mean(cars4Cyl.df$mpg), mean(cars6Cyl.df$mpg), mean(c",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.59",
+"rdt:elapsedTime" : "0.592",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "12",
 "rdt:startCol" : "13",
@@ -113,7 +113,7 @@
 "p9" : {
 "rdt:name" : "plot(cylinders, mpg)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.65",
+"rdt:elapsedTime" : "0.658",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "13",
 "rdt:startCol" : "1",
@@ -126,7 +126,7 @@
 "p10" : {
 "rdt:name" : "X11()",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.71",
+"rdt:elapsedTime" : "0.688",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "13",
 "rdt:startCol" : "7",
@@ -139,7 +139,7 @@
 "p11" : {
 "rdt:name" : "plot(cylinders, mpg)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.72",
+"rdt:elapsedTime" : "0.736",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "16",
 "rdt:startCol" : "1",
@@ -152,7 +152,7 @@
 "p12" : {
 "rdt:name" : "dev.off()",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.75",
+"rdt:elapsedTime" : "0.753",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "25",
 "rdt:startCol" : "1",
@@ -165,7 +165,7 @@
 "p13" : {
 "rdt:name" : "pdf(\"plot.pdf\")",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.78",
+"rdt:elapsedTime" : "0.766",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "28",
 "rdt:startCol" : "1",
@@ -178,7 +178,7 @@
 "p14" : {
 "rdt:name" : "plot(cylinders, mpg)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.78",
+"rdt:elapsedTime" : "0.772",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -191,7 +191,7 @@
 "p15" : {
 "rdt:name" : "x <- 1",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.79",
+"rdt:elapsedTime" : "0.788",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -204,7 +204,7 @@
 "p16" : {
 "rdt:name" : "PlotTest.R",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "0.79",
+"rdt:elapsedTime" : "0.792",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -217,17 +217,18 @@
 "environment" : {
 "rdt:name" : "environment",
 "rdt:architecture" : "x86_64",
-"rdt:operatingSystem" : "windows",
+"rdt:operatingSystem" : "unix",
 "rdt:language" : "R",
 "rdt:rVersion" : "R version 3.4.2 (2017-09-28)",
 "rdt:script" : "[DIR]/PlotTest.R",
 "rdt:sourcedScripts" : ""
 ,
-"rdt:scriptTimeStamp" : "2017-08-16T02.25.20EDT",
+"rdt:scriptTimeStamp" : "2017-12-15T16.01.06EST",
 "rdt:workingDirectory" : "[DIR]",
 "rdt:ddgDirectory" : "[DIR]/ddg",
-"rdt:ddgTimeStamp" : "2017-12-11T15.58.26EST",
+"rdt:ddgTimeStamp" : "2018-01-03T15.38.39EST",
 "rdt:rdatatrackerVersion" : "2.27.0",
+"rdt:hashAlgorithm" : "md5",
 "rdt:installedPackages" : [
 	{"package" : "base", "version" : "3.4.2"},
 	{"package" : "datasets", "version" : "3.4.2"},
@@ -247,8 +248,8 @@
 "rdt:type" : "Snapshot",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "TRUE",
-"rdt:MD5hash" : "",
-"rdt:timestamp" : "2017-12-11T15.58.26EST",
+"rdt:hash" : "",
+"rdt:timestamp" : "2018-01-03T15.38.39EST",
 "rdt:location" : ""
 } ,
 
@@ -259,8 +260,8 @@
 "rdt:type" : "Snapshot",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE",
-"rdt:MD5hash" : "",
-"rdt:timestamp" : "2017-12-11T15.58.27EST",
+"rdt:hash" : "",
+"rdt:timestamp" : "2018-01-03T15.38.39EST",
 "rdt:location" : ""
 } ,
 
@@ -271,8 +272,8 @@
 "rdt:type" : "Snapshot",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE",
-"rdt:MD5hash" : "",
-"rdt:timestamp" : "2017-12-11T15.58.27EST",
+"rdt:hash" : "",
+"rdt:timestamp" : "2018-01-03T15.38.39EST",
 "rdt:location" : ""
 } ,
 
@@ -283,8 +284,8 @@
 "rdt:type" : "Snapshot",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE",
-"rdt:MD5hash" : "",
-"rdt:timestamp" : "2017-12-11T15.58.27EST",
+"rdt:hash" : "",
+"rdt:timestamp" : "2018-01-03T15.38.39EST",
 "rdt:location" : ""
 } ,
 
@@ -295,8 +296,8 @@
 "rdt:type" : "Snapshot",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE",
-"rdt:MD5hash" : "",
-"rdt:timestamp" : "2017-12-11T15.58.27EST",
+"rdt:hash" : "",
+"rdt:timestamp" : "2018-01-03T15.38.39EST",
 "rdt:location" : ""
 } ,
 
@@ -307,8 +308,8 @@
 "rdt:type" : "Snapshot",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE",
-"rdt:MD5hash" : "",
-"rdt:timestamp" : "2017-12-11T15.58.27EST",
+"rdt:hash" : "",
+"rdt:timestamp" : "2018-01-03T15.38.39EST",
 "rdt:location" : ""
 } ,
 
@@ -319,8 +320,8 @@
 "rdt:type" : "Snapshot",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "TRUE",
-"rdt:MD5hash" : "",
-"rdt:timestamp" : "2017-12-11T15.58.27EST",
+"rdt:hash" : "",
+"rdt:timestamp" : "2018-01-03T15.38.39EST",
 "rdt:location" : ""
 } ,
 
@@ -331,8 +332,8 @@
 "rdt:type" : "Snapshot",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE",
-"rdt:MD5hash" : "",
-"rdt:timestamp" : "2017-12-11T15.58.27EST",
+"rdt:hash" : "",
+"rdt:timestamp" : "2018-01-03T15.38.39EST",
 "rdt:location" : ""
 } ,
 
@@ -343,7 +344,7 @@
 "rdt:type" : "Data",
 "rdt:scope" : "undefined",
 "rdt:fromEnv" : "FALSE",
-"rdt:MD5hash" : "",
+"rdt:hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -355,7 +356,7 @@
 "rdt:type" : "Data",
 "rdt:scope" : "undefined",
 "rdt:fromEnv" : "FALSE",
-"rdt:MD5hash" : "",
+"rdt:hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -367,7 +368,7 @@
 "rdt:type" : "Data",
 "rdt:scope" : "undefined",
 "rdt:fromEnv" : "FALSE",
-"rdt:MD5hash" : "",
+"rdt:hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -379,8 +380,8 @@
 "rdt:type" : "File",
 "rdt:scope" : "undefined",
 "rdt:fromEnv" : "FALSE",
-"rdt:MD5hash" : "bb86ec34938c3291440bba031b8d11e3",
-"rdt:timestamp" : "2017-12-11T15.58.27EST",
+"rdt:hash" : "439a0c745d1f3bf78b733bbb6db00946",
+"rdt:timestamp" : "2018-01-03T15.38.40EST",
 "rdt:location" : "[DIR]/dev.off.12.pdf"
 } ,
 
@@ -391,7 +392,7 @@
 "rdt:type" : "Data",
 "rdt:scope" : "undefined",
 "rdt:fromEnv" : "FALSE",
-"rdt:MD5hash" : "",
+"rdt:hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -403,7 +404,7 @@
 "rdt:type" : "Data",
 "rdt:scope" : "undefined",
 "rdt:fromEnv" : "FALSE",
-"rdt:MD5hash" : "",
+"rdt:hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -415,7 +416,7 @@
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE",
-"rdt:MD5hash" : "",
+"rdt:hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -427,8 +428,8 @@
 "rdt:type" : "File",
 "rdt:scope" : "undefined",
 "rdt:fromEnv" : "FALSE",
-"rdt:MD5hash" : "1bc05de7c7824fed846118d2d2822eb3",
-"rdt:timestamp" : "2017-12-11T15.58.27EST",
+"rdt:hash" : "81413f90d402465c5d96bff9a8eab220",
+"rdt:timestamp" : "2018-01-03T15.38.40EST",
 "rdt:location" : "[DIR]/plot.pdf"
 }},
 "wasInformedBy":{

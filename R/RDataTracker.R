@@ -828,7 +828,7 @@ library(jsonlite)
       ",\n\"rdt:type\" : \"", ddg.data.nodes$ddg.type[dnum], 
       "\",\n\"rdt:scope\" : \"", ddg.data.nodes$ddg.scope[dnum], 
       "\",\n\"rdt:fromEnv\" : \"", ddg.data.nodes$ddg.from.env[dnum], 
-      "\", \n\"rdt:hash\" : \"", ddg.data.nodes$ddg.hash[dnum], 
+      "\",\n\"rdt:hash\" : \"", ddg.data.nodes$ddg.hash[dnum], 
       "\",\n\"rdt:timestamp\" : \"", ddg.data.nodes$ddg.time[dnum], 
       "\",\n\"rdt:location\" : \"", ddg.data.nodes$ddg.loc[dnum], 
       "\"\n}", sep="")
