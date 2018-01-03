@@ -104,8 +104,9 @@ setClass("DDGStatement",
         script.num = "numeric",   # The number for the script this statement comes from.
                                   # Has the value -1 if it is not available
         is.breakpoint = "logical", # True if a breakpoint has been set for this statement
-        contained = "list"         # If this is a function declaration, this will be a list of
+        contained = "list",        # If this is a function declaration, this will be a list of
                                    # DDGStatement objects for the statements it contains.
+        functions.called = "character"  # A list of the names of the function calls in the statement.
       )
 )
 
@@ -206,14 +207,43 @@ setMethod ("initialize",
           }
 
       #print(paste ("annotated statement", .Object@annotated))
-      return (.Object)
+      
+      # find the list of the names of the function calls in the statement
+      functions <- unique(find.calls(.Object@parsed[[1]]))
+      
+      if( is.null(functions) )
+        .Object@functions.called <- character(0)
+      else
+        .Object@functions.called <- functions
+      
+      return(.Object)
     }
 )
+
+
+# A recursive function which finds and returns a character vector of the names of the 
+# function calls in a statement.
+#
+# @param obj The parse tree for a statement
+# @return A character vector of the names of the function calls in the given statement.
+
+find.calls <- function(obj) 
+{
+  if( is.call(obj) && ! .ddg.is.functiondecl(obj) )
+  {
+    function.name <- toString(obj[[1]])
+    call.list <- unlist( sapply(obj, find.calls, USE.NAMES=FALSE) )
+    
+    return( c(function.name, call.list) )
+  }
+}
+
 
 # A special null value for when source code position information is missing.
 null.pos <- function() {
   return (new (Class = "DDGStatementPos", NA))
 }
+
 
 # Create a DDGStatement.
 # expr - the parsed expression

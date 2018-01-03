@@ -9,73 +9,82 @@
 "p1" : {
 "rdt:name" : "WarningTest.R",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "0.123",
+"rdt:elapsedTime" : "0.11",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p2" : {
 "rdt:name" : "a <- 1",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.142",
+"rdt:elapsedTime" : "0.12",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "1",
 "rdt:startCol" : "1",
 "rdt:endLine" : "1",
-"rdt:endCol" : "6"
+"rdt:endCol" : "6",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p3" : {
 "rdt:name" : "warning(\"foo\", call. = FALSE)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.199",
+"rdt:elapsedTime" : "0.17",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "2",
 "rdt:startCol" : "1",
 "rdt:endLine" : "2",
-"rdt:endCol" : "27"
+"rdt:endCol" : "27",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p4" : {
 "rdt:name" : "b <- 2",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.387",
+"rdt:elapsedTime" : "0.32",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "3",
 "rdt:startCol" : "1",
 "rdt:endLine" : "3",
-"rdt:endCol" : "6"
+"rdt:endCol" : "6",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p5" : {
 "rdt:name" : "WarningTest.R",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "0.415",
+"rdt:elapsedTime" : "0.36",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "environment" : {
 "rdt:name" : "environment",
 "rdt:architecture" : "x86_64",
-"rdt:operatingSystem" : "unix",
+"rdt:operatingSystem" : "windows",
 "rdt:language" : "R",
 "rdt:rVersion" : "R version 3.4.2 (2017-09-28)",
 "rdt:script" : "[DIR]/WarningTest.R",
 "rdt:sourcedScripts" : ""
 ,
-"rdt:scriptTimeStamp" : "2017-08-01T13.22.54EDT",
+"rdt:scriptTimeStamp" : "2017-07-10T22.27.04EDT",
 "rdt:workingDirectory" : "[DIR]",
 "rdt:ddgDirectory" : "[DIR]/ddg",
-"rdt:ddgTimeStamp" : "2017-12-15T17.03.50EST",
+"rdt:ddgTimeStamp" : "2017-12-11T15.56.05EST",
 "rdt:rdatatrackerVersion" : "2.27.0",
-"rdt:hashAlgorithm" : "md5",
 "rdt:installedPackages" : [
 	{"package" : "base", "version" : "3.4.2"},
 	{"package" : "datasets", "version" : "3.4.2"},
@@ -94,8 +103,8 @@
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -106,8 +115,8 @@
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
 "rdt:type" : "Exception",
 "rdt:scope" : "ddg.library",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -118,8 +127,8 @@
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 }},

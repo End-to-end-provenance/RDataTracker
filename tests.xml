@@ -58,6 +58,7 @@
   - DataTypeTest
   - HigherOrderFuncTest
   - AssignmentOperatorsTest
+  - FunctionOriginTest
   - RMarkdownTest
   - DDGStatementTest
 
@@ -583,11 +584,11 @@
 	 	</antcall>
 	</target>
 
-  <target name="NoDevOffTest">
-    <antcall target="run-regression-test">
-      <param name="test-name" value="NoDevOffTest" />
-    </antcall>
-  </target>
+    <target name="NoDevOffTest">
+      <antcall target="run-regression-test">
+        <param name="test-name" value="NoDevOffTest" />
+      </antcall>
+    </target>
 
   <target name="update-NoDevOffTest">
     <antcall target="update-regression-expected">
@@ -595,11 +596,11 @@
     </antcall>
   </target>
 
-	<target name="DataTypeTest">
-		<antcall target="run-regression-test">
-			<param name="test-name" value="DataTypeTest" />
-		</antcall>
-	</target>
+  	<target name="DataTypeTest">
+  		<antcall target="run-regression-test">
+  			<param name="test-name" value="DataTypeTest" />
+  		</antcall>
+  	</target>
 
 	<target name="update-DataTypeTest">
 		<antcall target="update-regression-expected">
@@ -618,18 +619,30 @@
 	  	<param name="test-name" value="HigherOrderFuncTest" />
 	 	</antcall>
 	</target>
-
-	<target name="AssignmentOperatorsTest">
-		<antcall target="run-regression-test">
-			<param name="test-name" value="AssignmentOperatorsTest" />
-		</antcall>
-	</target>
+    
+    <target name="AssignmentOperatorsTest">
+		  <antcall target="run-regression-test">
+			 <param name="test-name" value="AssignmentOperatorsTest" />
+		  </antcall>
+    </target>
 
 	<target name="update-AssignmentOperatorsTest">
 		<antcall target="update-regression-expected">
 			<param name="test-name" value="AssignmentOperatorsTest" />
 		</antcall>
 	</target>
+  
+    <target name="FunctionOriginTest">
+      <antcall target="run-regression-test">
+        <param name="test-name" value="FunctionOriginTest" />
+      </antcall>
+    </target>
+
+  <target name="update-FunctionOriginTest">
+    <antcall target="update-regression-expected">
+      <param name="test-name" value="FunctionOriginTest" />
+    </antcall>
+  </target>
 
   	<target name="DDGStatementTest">
   		<antcall target="run-regression-test">
@@ -659,7 +672,8 @@
 	<target name="normal-tests" depends="basicTest, S4ObjectTest,
 		ScopeTest, ReturnTest, OddParameterTest, FunctionAnnotationTest,
 		ControlConstructTest, WarningTest, PlotTest, Plot2Test, NoDevOffTest, DataTypeTest,
-		HigherOrderFuncTest, AssignmentOperatorsTest, RMarkdownTest, DDGStatementTest">
+		HigherOrderFuncTest, AssignmentOperatorsTest, FunctionOriginTest,
+    RMarkdownTest, DDGStatementTest">
 		<echo>
 
       ##############################################

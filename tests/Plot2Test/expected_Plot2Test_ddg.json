@@ -9,128 +9,147 @@
 "p1" : {
 "rdt:name" : "Plot2Test.R",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "0.175",
+"rdt:elapsedTime" : "0.16",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p2" : {
 "rdt:name" : "f1 <- function() {    nums <- c(1, 3, 6, 4, 9)    pdf(\"nums.",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.198",
+"rdt:elapsedTime" : "0.17",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "3",
 "rdt:startCol" : "1",
 "rdt:endLine" : "8",
-"rdt:endCol" : "1"
+"rdt:endCol" : "1",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p3" : {
 "rdt:name" : "f1()",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "0.258",
+"rdt:elapsedTime" : "0.24",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p4" : {
 "rdt:name" : "f1",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.258",
+"rdt:elapsedTime" : "0.24",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p5" : {
 "rdt:name" : "nums <- c(1, 3, 6, 4, 9)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.405",
+"rdt:elapsedTime" : "0.36",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "4",
 "rdt:startCol" : "3",
 "rdt:endLine" : "4",
-"rdt:endCol" : "26"
+"rdt:endCol" : "26",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p6" : {
 "rdt:name" : "pdf(\"nums.pdf\")",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.692",
+"rdt:elapsedTime" : "0.6",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "5",
 "rdt:startCol" : "3",
 "rdt:endLine" : "5",
-"rdt:endCol" : "17"
+"rdt:endCol" : "17",
+"rdt:functionsCalled" : ["pdf"],
+"rdt:packagesUsed" : ["grDevices"]
 } ,
 
 "p7" : {
 "rdt:name" : "plot(nums)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.727",
+"rdt:elapsedTime" : "0.63",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "6",
 "rdt:startCol" : "3",
 "rdt:endLine" : "6",
-"rdt:endCol" : "12"
+"rdt:endCol" : "12",
+"rdt:functionsCalled" : ["plot"],
+"rdt:packagesUsed" : ["graphics"]
 } ,
 
 "p8" : {
 "rdt:name" : "dev.off()",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.747",
+"rdt:elapsedTime" : "0.64",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "7",
 "rdt:startCol" : "3",
 "rdt:endLine" : "7",
-"rdt:endCol" : "11"
+"rdt:endCol" : "11",
+"rdt:functionsCalled" : ["dev.off"],
+"rdt:packagesUsed" : ["grDevices"]
 } ,
 
 "p9" : {
 "rdt:name" : "f1()",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "0.779",
+"rdt:elapsedTime" : "0.67",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p10" : {
 "rdt:name" : "Plot2Test.R",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "0.78",
+"rdt:elapsedTime" : "0.67",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "environment" : {
 "rdt:name" : "environment",
 "rdt:architecture" : "x86_64",
-"rdt:operatingSystem" : "unix",
+"rdt:operatingSystem" : "windows",
 "rdt:language" : "R",
 "rdt:rVersion" : "R version 3.4.2 (2017-09-28)",
 "rdt:script" : "[DIR]/Plot2Test.R",
 "rdt:sourcedScripts" : ""
 ,
-"rdt:scriptTimeStamp" : "2017-12-15T16.01.06EST",
+"rdt:scriptTimeStamp" : "2017-08-16T02.25.20EDT",
 "rdt:workingDirectory" : "[DIR]",
 "rdt:ddgDirectory" : "[DIR]/ddg",
-"rdt:ddgTimeStamp" : "2017-12-15T17.06.19EST",
+"rdt:ddgTimeStamp" : "2017-12-11T15.58.28EST",
 "rdt:rdatatrackerVersion" : "2.27.0",
-"rdt:hashAlgorithm" : "md5",
 "rdt:installedPackages" : [
 	{"package" : "base", "version" : "3.4.2"},
 	{"package" : "datasets", "version" : "3.4.2"},
@@ -149,8 +168,8 @@
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -160,10 +179,10 @@
 "rdt:value" : "data/2-nums.csv",
 "rdt:valType" : {"container":"vector", "dimension":[5], "type":["numeric"]},
 "rdt:type" : "Snapshot",
-"rdt:scope" : "0x7fdf4023cf88",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "",
-"rdt:timestamp" : "2017-12-15T17.06.20EST",
+"rdt:scope" : "0x00000000192ba200",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
+"rdt:timestamp" : "2017-12-11T15.58.29EST",
 "rdt:location" : ""
 } ,
 
@@ -173,8 +192,8 @@
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
 "rdt:type" : "Data",
 "rdt:scope" : "undefined",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -185,8 +204,8 @@
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
 "rdt:type" : "Data",
 "rdt:scope" : "undefined",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -197,9 +216,9 @@
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
 "rdt:type" : "File",
 "rdt:scope" : "undefined",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "b79be069b3ca2c02ebc4c04516ced22e",
-"rdt:timestamp" : "2017-12-15T17.06.20EST",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "700dad00831035cc50f867c0ea4d010e",
+"rdt:timestamp" : "2017-12-11T15.58.29EST",
 "rdt:location" : "[DIR]/dev.off.5.pdf"
 } ,
 
@@ -209,8 +228,8 @@
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["integer"]},
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 }},

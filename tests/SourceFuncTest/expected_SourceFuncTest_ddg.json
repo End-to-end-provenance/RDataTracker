@@ -9,972 +9,1434 @@
 "p1" : {
 "rdt:name" : "SourceFuncTest.R",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "0.212",
+"rdt:elapsedTime" : "0.24",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p2" : {
 "rdt:name" : "fun <- function(a, b) {    return(a + b)}",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.23",
+"rdt:elapsedTime" : "0.25",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "3",
 "rdt:startCol" : "1",
 "rdt:endLine" : "5",
-"rdt:endCol" : "1"
+"rdt:endCol" : "1",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p3" : {
 "rdt:name" : "x <- 6",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.288",
+"rdt:elapsedTime" : "0.3",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "7",
 "rdt:startCol" : "1",
 "rdt:endLine" : "7",
-"rdt:endCol" : "6"
+"rdt:endCol" : "6",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p4" : {
 "rdt:name" : "y <- 10",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.497",
+"rdt:elapsedTime" : "0.5",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "8",
 "rdt:startCol" : "1",
 "rdt:endLine" : "8",
-"rdt:endCol" : "7"
+"rdt:endCol" : "7",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p5" : {
 "rdt:name" : "z <- fun(x, y)",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "0.502",
+"rdt:elapsedTime" : "0.5",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "9",
 "rdt:startCol" : "1",
 "rdt:endLine" : "9",
-"rdt:endCol" : "13"
+"rdt:endCol" : "13",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p6" : {
 "rdt:name" : "fun(x, y)",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "0.538",
+"rdt:elapsedTime" : "0.53",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p7" : {
 "rdt:name" : "a  <-  x",
 "rdt:type" : "Binding",
-"rdt:elapsedTime" : "0.538",
+"rdt:elapsedTime" : "0.53",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p8" : {
 "rdt:name" : "b  <-  y",
 "rdt:type" : "Binding",
-"rdt:elapsedTime" : "0.56",
+"rdt:elapsedTime" : "0.57",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p9" : {
 "rdt:name" : "fun",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.567",
+"rdt:elapsedTime" : "0.57",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p10" : {
 "rdt:name" : "return(a + b)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.697",
+"rdt:elapsedTime" : "0.67",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p11" : {
 "rdt:name" : "fun(x, y)",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "0.708",
+"rdt:elapsedTime" : "0.67",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p12" : {
 "rdt:name" : "z <- fun(x, y)",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "0.709",
+"rdt:elapsedTime" : "0.69",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "9",
 "rdt:startCol" : "1",
 "rdt:endLine" : "9",
-"rdt:endCol" : "13"
+"rdt:endCol" : "13",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p13" : {
 "rdt:name" : "source1.r",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "0.784",
+"rdt:elapsedTime" : "0.74",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p14" : {
 "rdt:name" : "w <- z + x",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.785",
+"rdt:elapsedTime" : "0.75",
 "rdt:scriptNum" : "1",
 "rdt:startLine" : "3",
 "rdt:startCol" : "1",
 "rdt:endLine" : "3",
-"rdt:endCol" : "10"
+"rdt:endCol" : "10",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p15" : {
 "rdt:name" : "w <- fun(w, y)",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "0.812",
+"rdt:elapsedTime" : "0.77",
 "rdt:scriptNum" : "1",
 "rdt:startLine" : "4",
 "rdt:startCol" : "1",
 "rdt:endLine" : "4",
-"rdt:endCol" : "13"
+"rdt:endCol" : "13",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p16" : {
 "rdt:name" : "fun(w, y)",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "0.859",
+"rdt:elapsedTime" : "0.82",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p17" : {
 "rdt:name" : "a  <-  w",
 "rdt:type" : "Binding",
-"rdt:elapsedTime" : "0.86",
+"rdt:elapsedTime" : "0.82",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p18" : {
 "rdt:name" : "b  <-  y",
 "rdt:type" : "Binding",
-"rdt:elapsedTime" : "0.866",
+"rdt:elapsedTime" : "0.82",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p19" : {
 "rdt:name" : "fun",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.872",
+"rdt:elapsedTime" : "0.82",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p20" : {
 "rdt:name" : "return(a + b)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.022",
+"rdt:elapsedTime" : "0.91",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p21" : {
 "rdt:name" : "fun(w, y)",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.03",
+"rdt:elapsedTime" : "0.92",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p22" : {
 "rdt:name" : "w <- fun(w, y)",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.03",
+"rdt:elapsedTime" : "0.92",
 "rdt:scriptNum" : "1",
 "rdt:startLine" : "4",
 "rdt:startCol" : "1",
 "rdt:endLine" : "4",
-"rdt:endCol" : "13"
+"rdt:endCol" : "13",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p23" : {
 "rdt:name" : "z <- 0",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.034",
+"rdt:elapsedTime" : "0.92",
 "rdt:scriptNum" : "1",
 "rdt:startLine" : "7",
 "rdt:startCol" : "1",
 "rdt:endLine" : "7",
-"rdt:endCol" : "6"
+"rdt:endCol" : "6",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p24" : {
 "rdt:name" : "source1.r",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.039",
+"rdt:elapsedTime" : "0.92",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p25" : {
 "rdt:name" : "source(\"source1.r\")",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.039",
+"rdt:elapsedTime" : "0.92",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "12",
 "rdt:startCol" : "1",
 "rdt:endLine" : "12",
-"rdt:endCol" : "19"
+"rdt:endCol" : "19",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p26" : {
 "rdt:name" : "v <- fun(w, z)",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "1.048",
+"rdt:elapsedTime" : "0.94",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "15",
 "rdt:startCol" : "1",
 "rdt:endLine" : "15",
-"rdt:endCol" : "13"
+"rdt:endCol" : "13",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p27" : {
 "rdt:name" : "fun(w, z)",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "1.059",
+"rdt:elapsedTime" : "0.96",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p28" : {
 "rdt:name" : "a  <-  w",
 "rdt:type" : "Binding",
-"rdt:elapsedTime" : "1.059",
+"rdt:elapsedTime" : "0.96",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p29" : {
 "rdt:name" : "b  <-  z",
 "rdt:type" : "Binding",
-"rdt:elapsedTime" : "1.065",
+"rdt:elapsedTime" : "0.96",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p30" : {
 "rdt:name" : "fun",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.07",
+"rdt:elapsedTime" : "0.97",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p31" : {
 "rdt:name" : "return(a + b)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.082",
+"rdt:elapsedTime" : "0.97",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p32" : {
 "rdt:name" : "fun(w, z)",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.09",
+"rdt:elapsedTime" : "0.99",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p33" : {
 "rdt:name" : "v <- fun(w, z)",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.09",
+"rdt:elapsedTime" : "0.99",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "15",
 "rdt:startCol" : "1",
 "rdt:endLine" : "15",
-"rdt:endCol" : "13"
+"rdt:endCol" : "13",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p34" : {
 "rdt:name" : "source2.r",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "1.13",
+"rdt:elapsedTime" : "1.03",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p35" : {
 "rdt:name" : "a <- 10",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.131",
+"rdt:elapsedTime" : "1.03",
 "rdt:scriptNum" : "2",
 "rdt:startLine" : "8",
 "rdt:startCol" : "1",
 "rdt:endLine" : "8",
-"rdt:endCol" : "7"
+"rdt:endCol" : "7",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p36" : {
 "rdt:name" : "c <- 100",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.135",
+"rdt:elapsedTime" : "1.03",
 "rdt:scriptNum" : "2",
 "rdt:startLine" : "9",
 "rdt:startCol" : "1",
 "rdt:endLine" : "9",
-"rdt:endCol" : "8"
+"rdt:endCol" : "8",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p37" : {
 "rdt:name" : "b <- a + c",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.139",
+"rdt:elapsedTime" : "1.03",
 "rdt:scriptNum" : "2",
 "rdt:startLine" : "12",
 "rdt:startCol" : "1",
 "rdt:endLine" : "12",
-"rdt:endCol" : "10"
+"rdt:endCol" : "10",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p38" : {
 "rdt:name" : "a <- 20",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.15",
+"rdt:elapsedTime" : "1.05",
 "rdt:scriptNum" : "2",
 "rdt:startLine" : "13",
 "rdt:startCol" : "1",
 "rdt:endLine" : "13",
-"rdt:endCol" : "7"
+"rdt:endCol" : "7",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p39" : {
 "rdt:name" : "source2.r",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.155",
+"rdt:elapsedTime" : "1.05",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p40" : {
 "rdt:name" : "source(\"source2.r\")",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.155",
+"rdt:elapsedTime" : "1.05",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "18",
 "rdt:startCol" : "1",
 "rdt:endLine" : "18",
-"rdt:endCol" : "19"
+"rdt:endCol" : "19",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p41" : {
 "rdt:name" : "source3.r",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "1.325",
+"rdt:elapsedTime" : "1.21",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p42" : {
 "rdt:name" : "f <- function(x) {    g(x)    h(x)    return(1)}",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.326",
+"rdt:elapsedTime" : "1.21",
 "rdt:scriptNum" : "3",
 "rdt:startLine" : "1",
 "rdt:startCol" : "1",
 "rdt:endLine" : "5",
-"rdt:endCol" : "1"
+"rdt:endCol" : "1",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p43" : {
 "rdt:name" : "g <- function(x) {    return(1)}",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.33",
+"rdt:elapsedTime" : "1.21",
 "rdt:scriptNum" : "3",
 "rdt:startLine" : "7",
 "rdt:startCol" : "1",
 "rdt:endLine" : "9",
-"rdt:endCol" : "1"
+"rdt:endCol" : "1",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p44" : {
 "rdt:name" : "h <- function(x) {    return(1)}",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.335",
+"rdt:elapsedTime" : "1.22",
 "rdt:scriptNum" : "3",
 "rdt:startLine" : "11",
 "rdt:startCol" : "1",
 "rdt:endLine" : "13",
-"rdt:endCol" : "1"
+"rdt:endCol" : "1",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p45" : {
 "rdt:name" : "someVector <- function() {    return(c(1, 3, 5))}",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.339",
+"rdt:elapsedTime" : "1.22",
 "rdt:scriptNum" : "3",
 "rdt:startLine" : "15",
 "rdt:startCol" : "1",
 "rdt:endLine" : "17",
-"rdt:endCol" : "1"
+"rdt:endCol" : "1",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p46" : {
 "rdt:name" : "x <- 10",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.343",
+"rdt:elapsedTime" : "1.22",
 "rdt:scriptNum" : "3",
 "rdt:startLine" : "21",
 "rdt:startCol" : "1",
 "rdt:endLine" : "21",
-"rdt:endCol" : "7"
+"rdt:endCol" : "7",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p47" : {
 "rdt:name" : "f(x)",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "1.347",
+"rdt:elapsedTime" : "1.24",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p48" : {
 "rdt:name" : "x  <-  x",
 "rdt:type" : "Binding",
-"rdt:elapsedTime" : "1.348",
+"rdt:elapsedTime" : "1.24",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p49" : {
 "rdt:name" : "f",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.354",
+"rdt:elapsedTime" : "1.24",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p50" : {
 "rdt:name" : "g(x)",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "1.36",
+"rdt:elapsedTime" : "1.24",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p51" : {
 "rdt:name" : "x  <-  x",
 "rdt:type" : "Binding",
-"rdt:elapsedTime" : "1.36",
+"rdt:elapsedTime" : "1.24",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p52" : {
 "rdt:name" : "g",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.365",
+"rdt:elapsedTime" : "1.25",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p53" : {
 "rdt:name" : "return(1)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.372",
+"rdt:elapsedTime" : "1.25",
 "rdt:scriptNum" : "3",
 "rdt:startLine" : "8",
 "rdt:startCol" : "3",
 "rdt:endLine" : "8",
-"rdt:endCol" : "11"
+"rdt:endCol" : "11",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p54" : {
 "rdt:name" : "g(x)",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.376",
+"rdt:elapsedTime" : "1.25",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p55" : {
 "rdt:name" : "g(x)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.376",
+"rdt:elapsedTime" : "1.27",
 "rdt:scriptNum" : "3",
 "rdt:startLine" : "2",
 "rdt:startCol" : "3",
 "rdt:endLine" : "2",
-"rdt:endCol" : "6"
+"rdt:endCol" : "6",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p56" : {
 "rdt:name" : "h(x)",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "1.383",
+"rdt:elapsedTime" : "1.27",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p57" : {
 "rdt:name" : "x  <-  x",
 "rdt:type" : "Binding",
-"rdt:elapsedTime" : "1.384",
+"rdt:elapsedTime" : "1.27",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p58" : {
 "rdt:name" : "h",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.39",
+"rdt:elapsedTime" : "1.28",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p59" : {
 "rdt:name" : "return(1)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.396",
+"rdt:elapsedTime" : "1.28",
 "rdt:scriptNum" : "3",
 "rdt:startLine" : "12",
 "rdt:startCol" : "3",
 "rdt:endLine" : "12",
-"rdt:endCol" : "11"
+"rdt:endCol" : "11",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p60" : {
 "rdt:name" : "h(x)",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.4",
+"rdt:elapsedTime" : "1.28",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p61" : {
 "rdt:name" : "h(x)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.4",
+"rdt:elapsedTime" : "1.28",
 "rdt:scriptNum" : "3",
 "rdt:startLine" : "3",
 "rdt:startCol" : "3",
 "rdt:endLine" : "3",
-"rdt:endCol" : "6"
+"rdt:endCol" : "6",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p62" : {
 "rdt:name" : "return(1)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.408",
+"rdt:elapsedTime" : "1.3",
 "rdt:scriptNum" : "3",
 "rdt:startLine" : "4",
 "rdt:startCol" : "3",
 "rdt:endLine" : "4",
-"rdt:endCol" : "11"
+"rdt:endCol" : "11",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p63" : {
 "rdt:name" : "f(x)",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.414",
+"rdt:elapsedTime" : "1.3",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p64" : {
 "rdt:name" : "f(x)",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "1.419",
+"rdt:elapsedTime" : "1.3",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p65" : {
 "rdt:name" : "x  <-  x",
 "rdt:type" : "Binding",
-"rdt:elapsedTime" : "1.42",
+"rdt:elapsedTime" : "1.3",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p66" : {
 "rdt:name" : "f",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.426",
+"rdt:elapsedTime" : "1.32",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p67" : {
 "rdt:name" : "g(x)",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "1.433",
+"rdt:elapsedTime" : "1.32",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p68" : {
 "rdt:name" : "x  <-  x",
 "rdt:type" : "Binding",
-"rdt:elapsedTime" : "1.434",
+"rdt:elapsedTime" : "1.32",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p69" : {
 "rdt:name" : "g",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.439",
+"rdt:elapsedTime" : "1.33",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p70" : {
 "rdt:name" : "return(1)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.446",
+"rdt:elapsedTime" : "1.33",
 "rdt:scriptNum" : "3",
 "rdt:startLine" : "8",
 "rdt:startCol" : "3",
 "rdt:endLine" : "8",
-"rdt:endCol" : "11"
+"rdt:endCol" : "11",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p71" : {
 "rdt:name" : "g(x)",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.45",
+"rdt:elapsedTime" : "1.33",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p72" : {
 "rdt:name" : "g(x)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.45",
+"rdt:elapsedTime" : "1.33",
 "rdt:scriptNum" : "3",
 "rdt:startLine" : "2",
 "rdt:startCol" : "3",
 "rdt:endLine" : "2",
-"rdt:endCol" : "6"
+"rdt:endCol" : "6",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p73" : {
 "rdt:name" : "h(x)",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "1.462",
+"rdt:elapsedTime" : "1.35",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p74" : {
 "rdt:name" : "x  <-  x",
 "rdt:type" : "Binding",
-"rdt:elapsedTime" : "1.463",
+"rdt:elapsedTime" : "1.35",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p75" : {
 "rdt:name" : "h",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.467",
+"rdt:elapsedTime" : "1.35",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p76" : {
 "rdt:name" : "return(1)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.473",
+"rdt:elapsedTime" : "1.36",
 "rdt:scriptNum" : "3",
 "rdt:startLine" : "12",
 "rdt:startCol" : "3",
 "rdt:endLine" : "12",
-"rdt:endCol" : "11"
+"rdt:endCol" : "11",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p77" : {
 "rdt:name" : "h(x)",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.476",
+"rdt:elapsedTime" : "1.36",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p78" : {
 "rdt:name" : "h(x)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.478",
+"rdt:elapsedTime" : "1.36",
 "rdt:scriptNum" : "3",
 "rdt:startLine" : "3",
 "rdt:startCol" : "3",
 "rdt:endLine" : "3",
-"rdt:endCol" : "6"
+"rdt:endCol" : "6",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p79" : {
 "rdt:name" : "return(1)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.485",
+"rdt:elapsedTime" : "1.36",
 "rdt:scriptNum" : "3",
 "rdt:startLine" : "4",
 "rdt:startCol" : "3",
 "rdt:endLine" : "4",
-"rdt:endCol" : "11"
+"rdt:endCol" : "11",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p80" : {
 "rdt:name" : "f(x)",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.488",
+"rdt:elapsedTime" : "1.38",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p81" : {
 "rdt:name" : "source3.r",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.489",
+"rdt:elapsedTime" : "1.38",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p82" : {
 "rdt:name" : "source(\"source3.r\")",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.49",
+"rdt:elapsedTime" : "1.38",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "21",
 "rdt:startCol" : "1",
 "rdt:endLine" : "21",
-"rdt:endCol" : "19"
+"rdt:endCol" : "19",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p83" : {
 "rdt:name" : "source4.r",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "1.542",
+"rdt:elapsedTime" : "1.46",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p84" : {
 "rdt:name" : "x <- 5",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.543",
+"rdt:elapsedTime" : "1.46",
 "rdt:scriptNum" : "4",
 "rdt:startLine" : "3",
 "rdt:startCol" : "1",
 "rdt:endLine" : "3",
-"rdt:endCol" : "6"
+"rdt:endCol" : "6",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p85" : {
 "rdt:name" : "f <- function(w) {    return(w + 1)}",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.546",
+"rdt:elapsedTime" : "1.46",
 "rdt:scriptNum" : "4",
 "rdt:startLine" : "4",
 "rdt:startCol" : "1",
 "rdt:endLine" : "6",
-"rdt:endCol" : "1"
+"rdt:endCol" : "1",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p86" : {
 "rdt:name" : "y <- 4",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.55",
+"rdt:elapsedTime" : "1.47",
 "rdt:scriptNum" : "4",
 "rdt:startLine" : "9",
 "rdt:startCol" : "1",
 "rdt:endLine" : "9",
-"rdt:endCol" : "6"
+"rdt:endCol" : "6",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p87" : {
 "rdt:name" : "z <- f(x) + y",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "1.554",
+"rdt:elapsedTime" : "1.47",
 "rdt:scriptNum" : "4",
 "rdt:startLine" : "10",
 "rdt:startCol" : "1",
 "rdt:endLine" : "10",
-"rdt:endCol" : "13"
+"rdt:endCol" : "13",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p88" : {
 "rdt:name" : "f(x)",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "1.559",
+"rdt:elapsedTime" : "1.47",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p89" : {
+"rdt:name" : "w  <-  x",
+"rdt:type" : "Binding",
+"rdt:elapsedTime" : "1.47",
+"rdt:scriptNum" : "NA",
+"rdt:startLine" : "NA",
+"rdt:startCol" : "NA",
+"rdt:endLine" : "NA",
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
+} ,
+
+"p90" : {
+"rdt:name" : "f",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "1.47",
+"rdt:scriptNum" : "NA",
+"rdt:startLine" : "NA",
+"rdt:startCol" : "NA",
+"rdt:endLine" : "NA",
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
+} ,
+
+"p91" : {
+"rdt:name" : "return(w + 1)",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "1.49",
+"rdt:scriptNum" : "4",
+"rdt:startLine" : "NA",
+"rdt:startCol" : "NA",
+"rdt:endLine" : "NA",
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
+} ,
+
+"p92" : {
+"rdt:name" : "f(x)",
+"rdt:type" : "Finish",
+"rdt:elapsedTime" : "1.49",
+"rdt:scriptNum" : "NA",
+"rdt:startLine" : "NA",
+"rdt:startCol" : "NA",
+"rdt:endLine" : "NA",
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
+} ,
+
+"p93" : {
+"rdt:name" : "z <- f(x) + y",
+"rdt:type" : "Finish",
+"rdt:elapsedTime" : "1.49",
+"rdt:scriptNum" : "4",
+"rdt:startLine" : "10",
+"rdt:startCol" : "1",
+"rdt:endLine" : "10",
+"rdt:endCol" : "13",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
+} ,
+
+"p94" : {
+"rdt:name" : "w <- f(x)",
+"rdt:type" : "Start",
+"rdt:elapsedTime" : "1.5",
+"rdt:scriptNum" : "4",
+"rdt:startLine" : "13",
+"rdt:startCol" : "1",
+"rdt:endLine" : "13",
+"rdt:endCol" : "9",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
+} ,
+
+"p95" : {
+"rdt:name" : "f(x)",
+"rdt:type" : "Start",
+"rdt:elapsedTime" : "1.5",
+"rdt:scriptNum" : "NA",
+"rdt:startLine" : "NA",
+"rdt:startCol" : "NA",
+"rdt:endLine" : "NA",
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
+} ,
+
+"p96" : {
+"rdt:name" : "w  <-  x",
+"rdt:type" : "Binding",
+"rdt:elapsedTime" : "1.5",
+"rdt:scriptNum" : "NA",
+"rdt:startLine" : "NA",
+"rdt:startCol" : "NA",
+"rdt:endLine" : "NA",
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
+} ,
+
+"p97" : {
+"rdt:name" : "f",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "1.5",
+"rdt:scriptNum" : "NA",
+"rdt:startLine" : "NA",
+"rdt:startCol" : "NA",
+"rdt:endLine" : "NA",
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
+} ,
+
+"p98" : {
+"rdt:name" : "return(w + 1)",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "1.5",
+"rdt:scriptNum" : "4",
+"rdt:startLine" : "NA",
+"rdt:startCol" : "NA",
+"rdt:endLine" : "NA",
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
+} ,
+
+"p99" : {
+"rdt:name" : "f(x)",
+"rdt:type" : "Finish",
+"rdt:elapsedTime" : "1.52",
+"rdt:scriptNum" : "NA",
+"rdt:startLine" : "NA",
+"rdt:startCol" : "NA",
+"rdt:endLine" : "NA",
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
+} ,
+
+"p100" : {
+"rdt:name" : "w <- f(x)",
+"rdt:type" : "Finish",
+"rdt:elapsedTime" : "1.52",
+"rdt:scriptNum" : "4",
+"rdt:startLine" : "13",
+"rdt:startCol" : "1",
+"rdt:endLine" : "13",
+"rdt:endCol" : "9",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
+} ,
+
+"p101" : {
+"rdt:name" : "source4.r",
+"rdt:type" : "Finish",
+"rdt:elapsedTime" : "1.52",
+"rdt:scriptNum" : "NA",
+"rdt:startLine" : "NA",
+"rdt:startCol" : "NA",
+"rdt:endLine" : "NA",
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
+} ,
+
+"p102" : {
+"rdt:name" : "source(\"source4.r\", local = T)",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "1.52",
+"rdt:scriptNum" : "0",
+"rdt:startLine" : "24",
+"rdt:startCol" : "1",
+"rdt:endLine" : "24",
+"rdt:endCol" : "28",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
+} ,
+
+"p103" : {
+"rdt:name" : "Stuff",
+"rdt:type" : "Start",
+"rdt:elapsedTime" : "1.53",
+"rdt:scriptNum" : "NA",
+"rdt:startLine" : "NA",
+"rdt:startCol" : "NA",
+"rdt:endLine" : "NA",
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
+} ,
+
+"p104" : {
+"rdt:name" : "m <- 10",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "1.54",
+"rdt:scriptNum" : "0",
+"rdt:startLine" : "32",
+"rdt:startCol" : "1",
+"rdt:endLine" : "32",
+"rdt:endCol" : "7",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
+} ,
+
+"p105" : {
+"rdt:name" : "f(m)",
+"rdt:type" : "Start",
+"rdt:elapsedTime" : "1.54",
+"rdt:scriptNum" : "NA",
+"rdt:startLine" : "NA",
+"rdt:startCol" : "NA",
+"rdt:endLine" : "NA",
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
+} ,
+
+"p106" : {
+"rdt:name" : "w  <-  m",
+"rdt:type" : "Binding",
+"rdt:elapsedTime" : "1.54",
+"rdt:scriptNum" : "NA",
+"rdt:startLine" : "NA",
+"rdt:startCol" : "NA",
+"rdt:endLine" : "NA",
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
+} ,
+
+"p107" : {
+"rdt:name" : "f",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "1.54",
+"rdt:scriptNum" : "NA",
+"rdt:startLine" : "NA",
+"rdt:startCol" : "NA",
+"rdt:endLine" : "NA",
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
+} ,
+
+"p108" : {
+"rdt:name" : "return(w + 1)",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "1.56",
+"rdt:scriptNum" : "4",
+"rdt:startLine" : "NA",
+"rdt:startCol" : "NA",
+"rdt:endLine" : "NA",
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
+} ,
+
+"p109" : {
+"rdt:name" : "f(m)",
+"rdt:type" : "Finish",
+"rdt:elapsedTime" : "1.56",
+"rdt:scriptNum" : "NA",
+"rdt:startLine" : "NA",
+"rdt:startCol" : "NA",
+"rdt:endLine" : "NA",
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
+} ,
+
+"p110" : {
+"rdt:name" : "f(x)",
+"rdt:type" : "Start",
+"rdt:elapsedTime" : "1.56",
+"rdt:scriptNum" : "NA",
+"rdt:startLine" : "NA",
+"rdt:startCol" : "NA",
+"rdt:endLine" : "NA",
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
+} ,
+
+"p111" : {
 "rdt:name" : "w  <-  x",
 "rdt:type" : "Binding",
 "rdt:elapsedTime" : "1.56",
@@ -982,332 +1444,101 @@
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
-} ,
-
-"p90" : {
-"rdt:name" : "f",
-"rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.566",
-"rdt:scriptNum" : "NA",
-"rdt:startLine" : "NA",
-"rdt:startCol" : "NA",
-"rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
-} ,
-
-"p91" : {
-"rdt:name" : "return(w + 1)",
-"rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.57",
-"rdt:scriptNum" : "4",
-"rdt:startLine" : "NA",
-"rdt:startCol" : "NA",
-"rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
-} ,
-
-"p92" : {
-"rdt:name" : "f(x)",
-"rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.577",
-"rdt:scriptNum" : "NA",
-"rdt:startLine" : "NA",
-"rdt:startCol" : "NA",
-"rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
-} ,
-
-"p93" : {
-"rdt:name" : "z <- f(x) + y",
-"rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.577",
-"rdt:scriptNum" : "4",
-"rdt:startLine" : "10",
-"rdt:startCol" : "1",
-"rdt:endLine" : "10",
-"rdt:endCol" : "13"
-} ,
-
-"p94" : {
-"rdt:name" : "w <- f(x)",
-"rdt:type" : "Start",
-"rdt:elapsedTime" : "1.583",
-"rdt:scriptNum" : "4",
-"rdt:startLine" : "13",
-"rdt:startCol" : "1",
-"rdt:endLine" : "13",
-"rdt:endCol" : "9"
-} ,
-
-"p95" : {
-"rdt:name" : "f(x)",
-"rdt:type" : "Start",
-"rdt:elapsedTime" : "1.588",
-"rdt:scriptNum" : "NA",
-"rdt:startLine" : "NA",
-"rdt:startCol" : "NA",
-"rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
-} ,
-
-"p96" : {
-"rdt:name" : "w  <-  x",
-"rdt:type" : "Binding",
-"rdt:elapsedTime" : "1.589",
-"rdt:scriptNum" : "NA",
-"rdt:startLine" : "NA",
-"rdt:startCol" : "NA",
-"rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
-} ,
-
-"p97" : {
-"rdt:name" : "f",
-"rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.593",
-"rdt:scriptNum" : "NA",
-"rdt:startLine" : "NA",
-"rdt:startCol" : "NA",
-"rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
-} ,
-
-"p98" : {
-"rdt:name" : "return(w + 1)",
-"rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.598",
-"rdt:scriptNum" : "4",
-"rdt:startLine" : "NA",
-"rdt:startCol" : "NA",
-"rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
-} ,
-
-"p99" : {
-"rdt:name" : "f(x)",
-"rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.603",
-"rdt:scriptNum" : "NA",
-"rdt:startLine" : "NA",
-"rdt:startCol" : "NA",
-"rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
-} ,
-
-"p100" : {
-"rdt:name" : "w <- f(x)",
-"rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.604",
-"rdt:scriptNum" : "4",
-"rdt:startLine" : "13",
-"rdt:startCol" : "1",
-"rdt:endLine" : "13",
-"rdt:endCol" : "9"
-} ,
-
-"p101" : {
-"rdt:name" : "source4.r",
-"rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.611",
-"rdt:scriptNum" : "NA",
-"rdt:startLine" : "NA",
-"rdt:startCol" : "NA",
-"rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
-} ,
-
-"p102" : {
-"rdt:name" : "source(\"source4.r\", local = T)",
-"rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.613",
-"rdt:scriptNum" : "0",
-"rdt:startLine" : "24",
-"rdt:startCol" : "1",
-"rdt:endLine" : "24",
-"rdt:endCol" : "28"
-} ,
-
-"p103" : {
-"rdt:name" : "Stuff",
-"rdt:type" : "Start",
-"rdt:elapsedTime" : "1.624",
-"rdt:scriptNum" : "NA",
-"rdt:startLine" : "NA",
-"rdt:startCol" : "NA",
-"rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
-} ,
-
-"p104" : {
-"rdt:name" : "m <- 10",
-"rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.625",
-"rdt:scriptNum" : "0",
-"rdt:startLine" : "32",
-"rdt:startCol" : "1",
-"rdt:endLine" : "32",
-"rdt:endCol" : "7"
-} ,
-
-"p105" : {
-"rdt:name" : "f(m)",
-"rdt:type" : "Start",
-"rdt:elapsedTime" : "1.665",
-"rdt:scriptNum" : "NA",
-"rdt:startLine" : "NA",
-"rdt:startCol" : "NA",
-"rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
-} ,
-
-"p106" : {
-"rdt:name" : "w  <-  m",
-"rdt:type" : "Binding",
-"rdt:elapsedTime" : "1.666",
-"rdt:scriptNum" : "NA",
-"rdt:startLine" : "NA",
-"rdt:startCol" : "NA",
-"rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
-} ,
-
-"p107" : {
-"rdt:name" : "f",
-"rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.671",
-"rdt:scriptNum" : "NA",
-"rdt:startLine" : "NA",
-"rdt:startCol" : "NA",
-"rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
-} ,
-
-"p108" : {
-"rdt:name" : "return(w + 1)",
-"rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.68",
-"rdt:scriptNum" : "4",
-"rdt:startLine" : "NA",
-"rdt:startCol" : "NA",
-"rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
-} ,
-
-"p109" : {
-"rdt:name" : "f(m)",
-"rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.687",
-"rdt:scriptNum" : "NA",
-"rdt:startLine" : "NA",
-"rdt:startCol" : "NA",
-"rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
-} ,
-
-"p110" : {
-"rdt:name" : "f(x)",
-"rdt:type" : "Start",
-"rdt:elapsedTime" : "1.688",
-"rdt:scriptNum" : "NA",
-"rdt:startLine" : "NA",
-"rdt:startCol" : "NA",
-"rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
-} ,
-
-"p111" : {
-"rdt:name" : "w  <-  x",
-"rdt:type" : "Binding",
-"rdt:elapsedTime" : "1.689",
-"rdt:scriptNum" : "NA",
-"rdt:startLine" : "NA",
-"rdt:startCol" : "NA",
-"rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p112" : {
 "rdt:name" : "f",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.699",
+"rdt:elapsedTime" : "1.58",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p113" : {
 "rdt:name" : "return(w + 1)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "1.707",
+"rdt:elapsedTime" : "1.59",
 "rdt:scriptNum" : "4",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p114" : {
 "rdt:name" : "f(x)",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.714",
+"rdt:elapsedTime" : "1.59",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p115" : {
 "rdt:name" : "Stuff",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.715",
+"rdt:elapsedTime" : "1.59",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "p116" : {
 "rdt:name" : "SourceFuncTest.R",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "1.716",
+"rdt:elapsedTime" : "1.59",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
-"rdt:endCol" : "NA"
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
 } ,
 
 "environment" : {
 "rdt:name" : "environment",
 "rdt:architecture" : "x86_64",
-"rdt:operatingSystem" : "unix",
+"rdt:operatingSystem" : "windows",
 "rdt:language" : "R",
 "rdt:rVersion" : "R version 3.4.2 (2017-09-28)",
 "rdt:script" : "[DIR]/SourceFuncTest.R",
 "rdt:sourcedScripts" : [
 	{"number" : "1",
                              "name" : "source1.r",
-                             "timestamp" : "2017-08-01T13.22.09EDT"},
+                             "timestamp" : "2017-07-10T22.27.04EDT"},
 	{"number" : "2",
                              "name" : "source2.r",
-                             "timestamp" : "2017-08-01T13.22.09EDT"},
+                             "timestamp" : "2017-07-10T22.27.04EDT"},
 	{"number" : "3",
                              "name" : "source3.r",
-                             "timestamp" : "2017-08-01T13.22.55EDT"},
+                             "timestamp" : "2017-07-10T22.27.04EDT"},
 	{"number" : "4",
                              "name" : "source4.r",
-                             "timestamp" : "2017-08-01T13.22.54EDT"} ],
-"rdt:scriptTimeStamp" : "2017-08-01T13.22.09EDT",
+                             "timestamp" : "2017-07-10T22.27.04EDT"} ],
+"rdt:scriptTimeStamp" : "2017-07-10T22.27.04EDT",
 "rdt:workingDirectory" : "[DIR]",
 "rdt:ddgDirectory" : "[DIR]/ddg",
-"rdt:ddgTimeStamp" : "2017-12-15T17.13.07EST",
+"rdt:ddgTimeStamp" : "2017-12-11T16.08.42EST",
 "rdt:rdatatrackerVersion" : "2.27.0",
-"rdt:hashAlgorithm" : "md5",
 "rdt:installedPackages" : [
 	{"package" : "base", "version" : "3.4.2"},
 	{"package" : "datasets", "version" : "3.4.2"},
@@ -1326,8 +1557,8 @@
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1338,8 +1569,8 @@
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1350,8 +1581,8 @@
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1361,9 +1592,9 @@
 "rdt:value" : "6",
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",
-"rdt:scope" : "0x7fb01831fa78",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "",
+"rdt:scope" : "0x000000001a36a9c8",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1373,9 +1604,9 @@
 "rdt:value" : "10",
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",
-"rdt:scope" : "0x7fb01831fa78",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "",
+"rdt:scope" : "0x000000001a36a9c8",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1386,8 +1617,8 @@
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1398,8 +1629,8 @@
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1410,8 +1641,8 @@
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1421,9 +1652,9 @@
 "rdt:value" : "22",
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",
-"rdt:scope" : "0x7fb01b841ad0",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "",
+"rdt:scope" : "0x0000000019d71ed8",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1433,9 +1664,9 @@
 "rdt:value" : "10",
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",
-"rdt:scope" : "0x7fb01b841ad0",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "",
+"rdt:scope" : "0x0000000019d71ed8",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1446,8 +1677,8 @@
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1458,8 +1689,8 @@
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1470,8 +1701,8 @@
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1482,9 +1713,9 @@
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
 "rdt:type" : "File",
 "rdt:scope" : "undefined",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "41a3f7de0178fd9abc2e9f54038ba6f9",
-"rdt:timestamp" : "2017-12-15T17.13.08EST",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "340bc12bb96a2c6e00559bca5882174b",
+"rdt:timestamp" : "2017-12-11T16.08.43EST",
 "rdt:location" : "[DIR]/source1.r"
 } ,
 
@@ -1493,9 +1724,9 @@
 "rdt:value" : "32",
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",
-"rdt:scope" : "0x7fb01cbc96e8",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "",
+"rdt:scope" : "0x000000001a2fd528",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1505,9 +1736,9 @@
 "rdt:value" : "0",
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",
-"rdt:scope" : "0x7fb01cbc96e8",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "",
+"rdt:scope" : "0x000000001a2fd528",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1518,8 +1749,8 @@
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1530,8 +1761,8 @@
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1542,8 +1773,8 @@
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1554,8 +1785,8 @@
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1566,8 +1797,8 @@
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1578,8 +1809,8 @@
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1590,9 +1821,9 @@
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
 "rdt:type" : "File",
 "rdt:scope" : "undefined",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "9827cfae0ac3fce02570d1d510f92056",
-"rdt:timestamp" : "2017-12-15T17.13.08EST",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "1f2c9611bb2fc815f46c695c48f01933",
+"rdt:timestamp" : "2017-12-11T16.08.43EST",
 "rdt:location" : "[DIR]/source2.r"
 } ,
 
@@ -1602,8 +1833,8 @@
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1614,8 +1845,8 @@
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1626,8 +1857,8 @@
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1638,8 +1869,8 @@
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1650,8 +1881,8 @@
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1661,9 +1892,9 @@
 "rdt:value" : "10",
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",
-"rdt:scope" : "0x7fb01c9de640",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "",
+"rdt:scope" : "0x000000001a498238",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1673,9 +1904,9 @@
 "rdt:value" : "10",
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",
-"rdt:scope" : "0x7fb017d55c68",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "",
+"rdt:scope" : "0x0000000018113df0",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1686,8 +1917,8 @@
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1697,9 +1928,9 @@
 "rdt:value" : "10",
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",
-"rdt:scope" : "0x7fb01ad27978",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "",
+"rdt:scope" : "0x0000000019bc8ba0",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1710,8 +1941,8 @@
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1722,8 +1953,8 @@
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1733,9 +1964,9 @@
 "rdt:value" : "10",
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",
-"rdt:scope" : "0x7fb01ca06e08",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "",
+"rdt:scope" : "0x0000000019f1b818",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1745,9 +1976,9 @@
 "rdt:value" : "10",
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",
-"rdt:scope" : "0x7fb017909aa8",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "",
+"rdt:scope" : "0x000000001805f4f0",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1758,8 +1989,8 @@
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1769,9 +2000,9 @@
 "rdt:value" : "10",
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",
-"rdt:scope" : "0x7fb01ada3c70",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "",
+"rdt:scope" : "0x0000000019e50930",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1782,8 +2013,8 @@
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1794,8 +2025,8 @@
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1806,9 +2037,9 @@
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
 "rdt:type" : "File",
 "rdt:scope" : "undefined",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "ba0f4b5a9b2ae20a40309154cce97b02",
-"rdt:timestamp" : "2017-12-15T17.13.08EST",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "07acb040c2e8828b17bf4bb95278abaf",
+"rdt:timestamp" : "2017-12-11T16.08.43EST",
 "rdt:location" : "[DIR]/source3.r"
 } ,
 
@@ -1818,8 +2049,8 @@
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1830,8 +2061,8 @@
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1842,8 +2073,8 @@
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1853,9 +2084,9 @@
 "rdt:value" : "5",
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",
-"rdt:scope" : "0x7fb017ceb518",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "",
+"rdt:scope" : "0x00000000147557e0",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1866,8 +2097,8 @@
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1878,8 +2109,8 @@
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1889,9 +2120,9 @@
 "rdt:value" : "5",
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",
-"rdt:scope" : "0x7fb0181a29c0",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "",
+"rdt:scope" : "0x0000000019885740",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1902,8 +2133,8 @@
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1914,8 +2145,8 @@
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1926,9 +2157,9 @@
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
 "rdt:type" : "File",
 "rdt:scope" : "undefined",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "846ae47202e5f59970bf37321073455f",
-"rdt:timestamp" : "2017-12-15T17.13.08EST",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "50b169b96f9b2053a4b420627ebfdd39",
+"rdt:timestamp" : "2017-12-11T16.08.44EST",
 "rdt:location" : "[DIR]/source4.r"
 } ,
 
@@ -1938,8 +2169,8 @@
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1949,9 +2180,9 @@
 "rdt:value" : "10",
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",
-"rdt:scope" : "0x7fb018628580",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "",
+"rdt:scope" : "0x000000001973fca0",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1962,8 +2193,8 @@
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1973,9 +2204,9 @@
 "rdt:value" : "5",
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",
-"rdt:scope" : "0x7fb01d3e5df0",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "",
+"rdt:scope" : "0x000000001a1b8718",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -1986,8 +2217,8 @@
 "rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE", 
-"rdt:hash" : "",
+"rdt:fromEnv" : "FALSE",
+"rdt:MD5hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 }},
