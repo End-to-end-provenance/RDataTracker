@@ -9,20 +9,20 @@
 "p1" : {
 "rdt:name" : "PlotTest.R",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "0.22",
+"rdt:elapsedTime" : "0.24",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
 "rdt:endCol" : "NA",
-"rdt:functionsCalled" : "[]",
-"rdt:packagesUsed" : "[]"
+"rdt:functionsCalled" : NA,
+"rdt:packagesUsed" : NA
 } ,
 
 "p2" : {
 "rdt:name" : "data(mtcars)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.23",
+"rdt:elapsedTime" : "0.27",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "1",
 "rdt:startCol" : "1",
@@ -35,85 +35,85 @@
 "p3" : {
 "rdt:name" : "allCars.df <- mtcars",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.33",
+"rdt:elapsedTime" : "0.38",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "4",
 "rdt:startCol" : "1",
 "rdt:endLine" : "4",
 "rdt:endCol" : "20",
-"rdt:functionsCalled" : "[]",
-"rdt:packagesUsed" : "[]"
+"rdt:functionsCalled" : NA,
+"rdt:packagesUsed" : NA
 } ,
 
 "p4" : {
 "rdt:name" : "cars4Cyl.df <- allCars.df[allCars.df$cyl == 4, ]",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.54",
+"rdt:elapsedTime" : "0.58",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "7",
 "rdt:startCol" : "1",
 "rdt:endLine" : "7",
 "rdt:endCol" : "48",
-"rdt:functionsCalled" : "[]",
-"rdt:packagesUsed" : "[]"
+"rdt:functionsCalled" : NA,
+"rdt:packagesUsed" : NA
 } ,
 
 "p5" : {
 "rdt:name" : "cars6Cyl.df <- allCars.df[allCars.df$cyl == 6, ]",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.56",
+"rdt:elapsedTime" : "0.6",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "8",
 "rdt:startCol" : "1",
 "rdt:endLine" : "8",
 "rdt:endCol" : "48",
-"rdt:functionsCalled" : "[]",
-"rdt:packagesUsed" : "[]"
+"rdt:functionsCalled" : NA,
+"rdt:packagesUsed" : NA
 } ,
 
 "p6" : {
 "rdt:name" : "cars8Cyl.df <- allCars.df[allCars.df$cyl == 8, ]",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.57",
+"rdt:elapsedTime" : "0.63",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "9",
 "rdt:startCol" : "1",
 "rdt:endLine" : "9",
 "rdt:endCol" : "48",
-"rdt:functionsCalled" : "[]",
-"rdt:packagesUsed" : "[]"
+"rdt:functionsCalled" : NA,
+"rdt:packagesUsed" : NA
 } ,
 
 "p7" : {
 "rdt:name" : "cylinders = c(4, 6, 8)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.57",
+"rdt:elapsedTime" : "0.64",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "12",
 "rdt:startCol" : "1",
 "rdt:endLine" : "12",
 "rdt:endCol" : "9",
-"rdt:functionsCalled" : "[]",
-"rdt:packagesUsed" : "[]"
+"rdt:functionsCalled" : NA,
+"rdt:packagesUsed" : NA
 } ,
 
 "p8" : {
 "rdt:name" : "mpg = c(mean(cars4Cyl.df$mpg), mean(cars6Cyl.df$mpg), mean(c",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.59",
+"rdt:elapsedTime" : "0.64",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "12",
 "rdt:startCol" : "13",
 "rdt:endLine" : "12",
 "rdt:endCol" : "22",
-"rdt:functionsCalled" : "[]",
-"rdt:packagesUsed" : "[]"
+"rdt:functionsCalled" : NA,
+"rdt:packagesUsed" : NA
 } ,
 
 "p9" : {
 "rdt:name" : "plot(cylinders, mpg)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.65",
+"rdt:elapsedTime" : "0.71",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "13",
 "rdt:startCol" : "1",
@@ -126,7 +126,7 @@
 "p10" : {
 "rdt:name" : "X11()",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.71",
+"rdt:elapsedTime" : "0.78",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "13",
 "rdt:startCol" : "7",
@@ -139,7 +139,7 @@
 "p11" : {
 "rdt:name" : "plot(cylinders, mpg)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.72",
+"rdt:elapsedTime" : "0.81",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "16",
 "rdt:startCol" : "1",
@@ -152,7 +152,7 @@
 "p12" : {
 "rdt:name" : "dev.off()",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.75",
+"rdt:elapsedTime" : "0.86",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "25",
 "rdt:startCol" : "1",
@@ -165,7 +165,7 @@
 "p13" : {
 "rdt:name" : "pdf(\"plot.pdf\")",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.78",
+"rdt:elapsedTime" : "0.88",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "28",
 "rdt:startCol" : "1",
@@ -178,7 +178,7 @@
 "p14" : {
 "rdt:name" : "plot(cylinders, mpg)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.78",
+"rdt:elapsedTime" : "0.89",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -191,27 +191,27 @@
 "p15" : {
 "rdt:name" : "x <- 1",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.79",
+"rdt:elapsedTime" : "0.91",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
 "rdt:endCol" : "NA",
-"rdt:functionsCalled" : "[]",
-"rdt:packagesUsed" : "[]"
+"rdt:functionsCalled" : NA,
+"rdt:packagesUsed" : NA
 } ,
 
 "p16" : {
 "rdt:name" : "PlotTest.R",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "0.79",
+"rdt:elapsedTime" : "0.91",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
 "rdt:endLine" : "NA",
 "rdt:endCol" : "NA",
-"rdt:functionsCalled" : "[]",
-"rdt:packagesUsed" : "[]"
+"rdt:functionsCalled" : NA,
+"rdt:packagesUsed" : NA
 } ,
 
 "environment" : {
@@ -223,10 +223,10 @@
 "rdt:script" : "[DIR]/PlotTest.R",
 "rdt:sourcedScripts" : ""
 ,
-"rdt:scriptTimeStamp" : "2017-08-16T02.25.20EDT",
+"rdt:scriptTimeStamp" : "2017-08-16T14.25.20+08",
 "rdt:workingDirectory" : "[DIR]",
 "rdt:ddgDirectory" : "[DIR]/ddg",
-"rdt:ddgTimeStamp" : "2017-12-11T15.58.26EST",
+"rdt:ddgTimeStamp" : "2018-01-04T23.41.46+08",
 "rdt:rdatatrackerVersion" : "2.27.0",
 "rdt:installedPackages" : [
 	{"package" : "base", "version" : "3.4.2"},
@@ -248,7 +248,7 @@
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "TRUE",
 "rdt:MD5hash" : "",
-"rdt:timestamp" : "2017-12-11T15.58.26EST",
+"rdt:timestamp" : "2018-01-04T23.41.46+08",
 "rdt:location" : ""
 } ,
 
@@ -260,7 +260,7 @@
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE",
 "rdt:MD5hash" : "",
-"rdt:timestamp" : "2017-12-11T15.58.27EST",
+"rdt:timestamp" : "2018-01-04T23.41.46+08",
 "rdt:location" : ""
 } ,
 
@@ -272,7 +272,7 @@
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE",
 "rdt:MD5hash" : "",
-"rdt:timestamp" : "2017-12-11T15.58.27EST",
+"rdt:timestamp" : "2018-01-04T23.41.46+08",
 "rdt:location" : ""
 } ,
 
@@ -284,7 +284,7 @@
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE",
 "rdt:MD5hash" : "",
-"rdt:timestamp" : "2017-12-11T15.58.27EST",
+"rdt:timestamp" : "2018-01-04T23.41.46+08",
 "rdt:location" : ""
 } ,
 
@@ -296,7 +296,7 @@
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE",
 "rdt:MD5hash" : "",
-"rdt:timestamp" : "2017-12-11T15.58.27EST",
+"rdt:timestamp" : "2018-01-04T23.41.46+08",
 "rdt:location" : ""
 } ,
 
@@ -308,7 +308,7 @@
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE",
 "rdt:MD5hash" : "",
-"rdt:timestamp" : "2017-12-11T15.58.27EST",
+"rdt:timestamp" : "2018-01-04T23.41.46+08",
 "rdt:location" : ""
 } ,
 
@@ -320,7 +320,7 @@
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "TRUE",
 "rdt:MD5hash" : "",
-"rdt:timestamp" : "2017-12-11T15.58.27EST",
+"rdt:timestamp" : "2018-01-04T23.41.46+08",
 "rdt:location" : ""
 } ,
 
@@ -332,7 +332,7 @@
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE",
 "rdt:MD5hash" : "",
-"rdt:timestamp" : "2017-12-11T15.58.27EST",
+"rdt:timestamp" : "2018-01-04T23.41.46+08",
 "rdt:location" : ""
 } ,
 
@@ -379,8 +379,8 @@
 "rdt:type" : "File",
 "rdt:scope" : "undefined",
 "rdt:fromEnv" : "FALSE",
-"rdt:MD5hash" : "bb86ec34938c3291440bba031b8d11e3",
-"rdt:timestamp" : "2017-12-11T15.58.27EST",
+"rdt:MD5hash" : "5d0e112bc018cf29836b44401acb4d65",
+"rdt:timestamp" : "2018-01-04T23.41.46+08",
 "rdt:location" : "[DIR]/dev.off.12.pdf"
 } ,
 
@@ -427,8 +427,8 @@
 "rdt:type" : "File",
 "rdt:scope" : "undefined",
 "rdt:fromEnv" : "FALSE",
-"rdt:MD5hash" : "1bc05de7c7824fed846118d2d2822eb3",
-"rdt:timestamp" : "2017-12-11T15.58.27EST",
+"rdt:MD5hash" : "4f3c890573fba12587d389552659ca24",
+"rdt:timestamp" : "2018-01-04T23.41.47+08",
 "rdt:location" : "[DIR]/plot.pdf"
 }},
 "wasInformedBy":{
