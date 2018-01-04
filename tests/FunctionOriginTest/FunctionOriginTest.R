@@ -23,6 +23,20 @@ a <- c("a","b")
 identical(stringi::stri_flatten(sapply(a,stringr::str_to_upper)),"AB")
 
 
+# function calls without parameters
+vector()
+
+
+# parameter name is ""
+a <- data.frame( c(1:3) , c(11:13) )
+a[2,]
+
+
+# not a call
+1
+a
+
+
 # loading a library before using a function
 library(stringi)
 stopifnot( identical(stri_join("ab","cde"), "abcde") )
