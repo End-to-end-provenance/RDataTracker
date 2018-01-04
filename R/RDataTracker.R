@@ -902,7 +902,7 @@ library(jsonlite)
   } else value.str <- ""
   
   # format values for pfunctions
-  if( is.null(pfunctions) )
+  if( is.null(pfunctions) || is.na(pfunctions) )
   {
     pfunctions <- NA
     ppackages <- NA
@@ -1349,7 +1349,7 @@ library(jsonlite)
   .ddg.set("ddg.proc.nodes", ddg.proc.nodes)
   
   # append to function call information to function nodes
-  if( ! is.null(pfunctions) )
+  if( ! (is.null(pfunctions) || is.na(pfunctions)) )
   {
     pfunctions <- cbind( "ddg.pnum" = rep(ddg.pnum, nrow(pfunctions)) , pfunctions )
     

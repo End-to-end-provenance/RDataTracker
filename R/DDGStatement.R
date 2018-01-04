@@ -253,8 +253,10 @@ setMethod ("initialize", "DDGStatement",
 	# base case: a name or a constant
 	if( (! is.call(expr) || .ddg.is.functiondecl(expr)) )
 	{
-		if( is.name(expr) )
-			return( list(NULL, toString(expr), NULL, NULL) )
+		elem <- toString(expr)
+		
+		if( is.name(expr) && ! identical(elem, "") )
+			return( list(NULL, elem, NULL, NULL) )
 		else
 			return( list(NULL, NULL, NULL, NULL) )
 	}
@@ -285,6 +287,10 @@ setMethod ("initialize", "DDGStatement",
 		}
 		else 	# general case
 		{
+			# case: function call with no parameters
+			if( is.null(expr[-1]) )
+				return( list(elem1, NULL, NULL, NULL) )
+			
 			recursion.result <- lapply(expr[-1], .ddg.find.calls.rec)
 			
 			fn.unknown.lib <- unlist( mapply(`[`, recursion.result, 1) )
