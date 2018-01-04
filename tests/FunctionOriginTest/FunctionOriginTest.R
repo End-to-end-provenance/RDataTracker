@@ -1,7 +1,7 @@
 # FunctionOriginTest
 #
 # @author: Elizabeth Fong
-# @version: September 2017
+# @version: January 2018
 
 
 # calling functions from base
@@ -9,9 +9,18 @@ stopifnot( is.double(10) )
 
 
 # explicit direct function calling from unloaded library
-# CURRENTLY NOT WORKING
-#stopifnot( identical(stringr::str_to_upper("apple"), "APPLE") )
-#stopifnot( identical(stringr:::str_to_lower("BAGEL"), "bagel") )
+stopifnot( identical(stringr::str_to_upper("apple"), "APPLE") )
+stopifnot( identical(stringr:::str_to_lower("BAGEL"), "bagel") )
+
+stopifnot( as.numeric(utils::as.roman(stringi::stri_reverse(stringi::stri_join("1","2")))) == 21 )
+
+
+# higher order function with variable names
+a <- c(1:10)
+stopifnot( identical(mapply(`+`, a, 1), as.double(c(2:11))) )
+
+a <- c("a","b")
+identical(stringi::stri_flatten(sapply(a,stringr::str_to_upper)),"AB")
 
 
 # loading a library before using a function
@@ -118,4 +127,4 @@ stopifnot( is.null(fn4(20)) )
 
 
 # ERROR
-as.roman(a)
+as.roman(z)
