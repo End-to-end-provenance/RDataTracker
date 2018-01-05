@@ -9,7 +9,7 @@
 "p1" : {
 "rdt:name" : "NoDevOffTest.R",
 "rdt:type" : "Start",
-"rdt:elapsedTime" : "0.24",
+"rdt:elapsedTime" : "0.203",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -22,7 +22,7 @@
 "p2" : {
 "rdt:name" : "data(mtcars)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.25",
+"rdt:elapsedTime" : "0.222",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "4",
 "rdt:startCol" : "1",
@@ -35,7 +35,7 @@
 "p3" : {
 "rdt:name" : "allCars.df <- mtcars",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.38",
+"rdt:elapsedTime" : "0.308",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "7",
 "rdt:startCol" : "1",
@@ -48,7 +48,7 @@
 "p4" : {
 "rdt:name" : "cars4Cyl.df <- allCars.df[allCars.df$cyl == 4, ]",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.57",
+"rdt:elapsedTime" : "0.511",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "10",
 "rdt:startCol" : "1",
@@ -61,7 +61,7 @@
 "p5" : {
 "rdt:name" : "cars6Cyl.df <- allCars.df[allCars.df$cyl == 6, ]",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.61",
+"rdt:elapsedTime" : "0.535",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "11",
 "rdt:startCol" : "1",
@@ -74,7 +74,7 @@
 "p6" : {
 "rdt:name" : "cars8Cyl.df <- allCars.df[allCars.df$cyl == 8, ]",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.61",
+"rdt:elapsedTime" : "0.546",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "12",
 "rdt:startCol" : "1",
@@ -87,7 +87,7 @@
 "p7" : {
 "rdt:name" : "cylinders = c(4, 6, 8)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.62",
+"rdt:elapsedTime" : "0.559",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "15",
 "rdt:startCol" : "1",
@@ -100,7 +100,7 @@
 "p8" : {
 "rdt:name" : "mpg = c(mean(cars4Cyl.df$mpg), mean(cars6Cyl.df$mpg), mean(c",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.64",
+"rdt:elapsedTime" : "0.568",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "15",
 "rdt:startCol" : "13",
@@ -113,7 +113,7 @@
 "p9" : {
 "rdt:name" : "plot(cylinders, mpg)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.7",
+"rdt:elapsedTime" : "0.631",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "16",
 "rdt:startCol" : "1",
@@ -126,7 +126,7 @@
 "p10" : {
 "rdt:name" : "X11()",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.73",
+"rdt:elapsedTime" : "0.653",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "16",
 "rdt:startCol" : "7",
@@ -139,7 +139,7 @@
 "p11" : {
 "rdt:name" : "plot(cylinders, mpg)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.77",
+"rdt:elapsedTime" : "0.7",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "19",
 "rdt:startCol" : "1",
@@ -152,7 +152,7 @@
 "p12" : {
 "rdt:name" : "plot(cylinders, mpg)",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.79",
+"rdt:elapsedTime" : "0.719",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "26",
 "rdt:startCol" : "1",
@@ -165,7 +165,7 @@
 "p13" : {
 "rdt:name" : "x <- 1",
 "rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.81",
+"rdt:elapsedTime" : "0.736",
 "rdt:scriptNum" : "0",
 "rdt:startLine" : "28",
 "rdt:startCol" : "1",
@@ -178,7 +178,7 @@
 "p14" : {
 "rdt:name" : "NoDevOffTest.R",
 "rdt:type" : "Finish",
-"rdt:elapsedTime" : "0.81",
+"rdt:elapsedTime" : "0.74",
 "rdt:scriptNum" : "NA",
 "rdt:startLine" : "NA",
 "rdt:startCol" : "NA",
@@ -191,17 +191,17 @@
 "environment" : {
 "rdt:name" : "environment",
 "rdt:architecture" : "x86_64",
-"rdt:operatingSystem" : "windows",
+"rdt:operatingSystem" : "unix",
 "rdt:language" : "R",
 "rdt:rVersion" : "R version 3.4.2 (2017-09-28)",
 "rdt:script" : "[DIR]/NoDevOffTest.R",
-"rdt:sourcedScripts" : ""
-,
-"rdt:scriptTimeStamp" : "2017-07-11T10.27.04+08",
+"rdt:sourcedScripts" : "",
+"rdt:scriptTimeStamp" : "2017-08-01T13.22.54EDT",
 "rdt:workingDirectory" : "[DIR]",
 "rdt:ddgDirectory" : "[DIR]/ddg",
-"rdt:ddgTimeStamp" : "2018-01-04T23.43.51+08",
+"rdt:ddgTimeStamp" : "2018-01-03T15.38.42EST",
 "rdt:rdatatrackerVersion" : "2.27.0",
+"rdt:hashAlgorithm" : "md5",
 "rdt:installedPackages" : [
 	{"package" : "base", "version" : "3.4.2"},
 	{"package" : "datasets", "version" : "3.4.2"},
@@ -221,8 +221,8 @@
 "rdt:type" : "Snapshot",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "TRUE",
-"rdt:MD5hash" : "",
-"rdt:timestamp" : "2018-01-04T23.43.51+08",
+"rdt:hash" : "",
+"rdt:timestamp" : "2018-01-03T15.38.42EST",
 "rdt:location" : ""
 } ,
 
@@ -233,8 +233,8 @@
 "rdt:type" : "Snapshot",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE",
-"rdt:MD5hash" : "",
-"rdt:timestamp" : "2018-01-04T23.43.51+08",
+"rdt:hash" : "",
+"rdt:timestamp" : "2018-01-03T15.38.43EST",
 "rdt:location" : ""
 } ,
 
@@ -245,8 +245,8 @@
 "rdt:type" : "Snapshot",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE",
-"rdt:MD5hash" : "",
-"rdt:timestamp" : "2018-01-04T23.43.52+08",
+"rdt:hash" : "",
+"rdt:timestamp" : "2018-01-03T15.38.43EST",
 "rdt:location" : ""
 } ,
 
@@ -257,8 +257,8 @@
 "rdt:type" : "Snapshot",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE",
-"rdt:MD5hash" : "",
-"rdt:timestamp" : "2018-01-04T23.43.52+08",
+"rdt:hash" : "",
+"rdt:timestamp" : "2018-01-03T15.38.43EST",
 "rdt:location" : ""
 } ,
 
@@ -269,8 +269,8 @@
 "rdt:type" : "Snapshot",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE",
-"rdt:MD5hash" : "",
-"rdt:timestamp" : "2018-01-04T23.43.52+08",
+"rdt:hash" : "",
+"rdt:timestamp" : "2018-01-03T15.38.43EST",
 "rdt:location" : ""
 } ,
 
@@ -281,8 +281,8 @@
 "rdt:type" : "Snapshot",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE",
-"rdt:MD5hash" : "",
-"rdt:timestamp" : "2018-01-04T23.43.52+08",
+"rdt:hash" : "",
+"rdt:timestamp" : "2018-01-03T15.38.43EST",
 "rdt:location" : ""
 } ,
 
@@ -293,8 +293,8 @@
 "rdt:type" : "Snapshot",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "TRUE",
-"rdt:MD5hash" : "",
-"rdt:timestamp" : "2018-01-04T23.43.52+08",
+"rdt:hash" : "",
+"rdt:timestamp" : "2018-01-03T15.38.43EST",
 "rdt:location" : ""
 } ,
 
@@ -305,8 +305,8 @@
 "rdt:type" : "Snapshot",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE",
-"rdt:MD5hash" : "",
-"rdt:timestamp" : "2018-01-04T23.43.52+08",
+"rdt:hash" : "",
+"rdt:timestamp" : "2018-01-03T15.38.43EST",
 "rdt:location" : ""
 } ,
 
@@ -317,7 +317,7 @@
 "rdt:type" : "Data",
 "rdt:scope" : "undefined",
 "rdt:fromEnv" : "FALSE",
-"rdt:MD5hash" : "",
+"rdt:hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -329,7 +329,7 @@
 "rdt:type" : "Data",
 "rdt:scope" : "undefined",
 "rdt:fromEnv" : "FALSE",
-"rdt:MD5hash" : "",
+"rdt:hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -341,7 +341,7 @@
 "rdt:type" : "Data",
 "rdt:scope" : "undefined",
 "rdt:fromEnv" : "FALSE",
-"rdt:MD5hash" : "",
+"rdt:hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -353,7 +353,7 @@
 "rdt:type" : "Data",
 "rdt:scope" : "undefined",
 "rdt:fromEnv" : "FALSE",
-"rdt:MD5hash" : "",
+"rdt:hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -365,7 +365,7 @@
 "rdt:type" : "Data",
 "rdt:scope" : "R_GlobalEnv",
 "rdt:fromEnv" : "FALSE",
-"rdt:MD5hash" : "",
+"rdt:hash" : "",
 "rdt:timestamp" : "",
 "rdt:location" : ""
 } ,
@@ -377,8 +377,8 @@
 "rdt:type" : "File",
 "rdt:scope" : "undefined",
 "rdt:fromEnv" : "FALSE",
-"rdt:MD5hash" : "2b059039eb54df466523165b547895bf",
-"rdt:timestamp" : "2018-01-04T23.43.52+08",
+"rdt:hash" : "fabcd78581bf452c8ab4e72991f4113f",
+"rdt:timestamp" : "2018-01-03T15.38.43EST",
 "rdt:location" : "[DIR]/dev.off.14.pdf"
 }},
 "wasInformedBy":{

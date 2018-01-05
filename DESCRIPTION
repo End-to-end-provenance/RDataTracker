@@ -2,8 +2,8 @@ Package: RDataTracker
 Title: Data Provenance Collector
 Version: 2.27.0
 CheckpointVersion: 1.000
-Date: 2017-08-01
-Authors@R: c( person("Emery", "Boose", role = c("aut", "cre"),
+Date: 2017-12-15
+Authors@R: c( person( "Emery", "Boose", role = c("aut", "cre"),
                       email = "boose@fas.harvard.edu"),
               person("Barbara", "Lerner", role = c("aut"),
                       email = "blerner@mtholyoke.edu"),
@@ -42,4 +42,4 @@ Description: Defines functions that can be used to collect data provenance as
 License: GPL-3 | file LICENSE
 URL: https://github.com/End-to-end-provenance/RDataTracker
 BugReports: https://github.com/End-to-end-provenance/RDataTracker/issues
-Imports: gtools, XML, knitr, stringr, utils, devtools, methods, jsonlite
+Imports: gtools, XML, knitr, stringr, utils, devtools, methods, jsonlite, digest
