@@ -19,8 +19,8 @@
 
 # The functions in this library may be used to annotate an R script
 # in order to collect provenance in the form of a data derivation
-# graph (DDG) as the script executes. The DDG is saved as a text file
-# (ddg.txt) that may be viewed and queried using DDG Explorer.
+# graph (DDG) as the script executes. The DDG is saved as a JSON file
+# (ddg.json) that may be viewed and queried using DDG Explorer.
 
 # Create DDG environment variable.
 
@@ -264,17 +264,6 @@ library(jsonlite)
   .ddg.set(var, value - 1)
 }
 
-.ddg.append <- function(...) {
-  text <- .ddg.get("ddg.txt")
-  if (.ddg.debug.lib() && length(text) > 1) stop()
-  .ddg.set("ddg.txt", paste(text, ..., sep=""))
-}
-
-.ddg.append.inc <- function(...) {
-  increment <- .ddg.get("ddg.increment")
-  .ddg.set("ddg.increment", paste(increment, ..., sep=""))
-}
-
 .ddg.append.activity <- function(...){
   text <- .ddg.get('ddg.activity')
   if(text!=""){
@@ -409,14 +398,6 @@ library(jsonlite)
   .ddg.set("ddg.pnum", 0)
   .ddg.set("ddg.dnum", 0)
   .ddg.set("ddg.enum", 0)
-
-  # Create DDG string. This string is written to file when ddg.save
-  # is called.
-  .ddg.set("ddg.txt", "")
-
-  # Create DDG increment string. This string contains the current
-  # incremental change to the DDG string.
-  .ddg.set("ddg.increment", "")
 
   # Create strings used to generate the JSON file.
   .ddg.set("ddg.activity", "")
@@ -572,42 +553,6 @@ library(jsonlite)
   }
 }
 
-# .ddg.sourced.script.names returns a string containing the names
-# of sourced scripts, if any. If no scripts were sourced it returns
-# an empty string.
-
-.ddg.sourced.script.names <- function() {
-  ss <- .ddg.sourced.scripts()
-  # First row is main script.
-  if (nrow(ss) == 1) snames <- ""
-  else {
-    snames <- ss[ss$snum >= 1, "sname"]
-    snames <- paste0(snames, collapse=",")
-  }
-  return(snames)
-}
-
-# .ddg.sourced.script.timestamps returns a string containing the timestamps
-# of sourced scripts, if any. If no scripts were sourced it returns
-# an empty string.
-
-.ddg.sourced.script.timestamps<- function() {
-  ss <- .ddg.sourced.scripts()
-  # First row is main script.
-  if (nrow(ss) == 1) stimes <- ""
-  else {
-    snames <- ss[ss$snum >= 1, "sname"]
-    #print(paste(".ddg.sourced.scripts: snames = ", snames))
-    stimes <- file.info(snames)$mtime
-    #print(paste(".ddg.sourced.script.timestamps: after file.info, stimes = ", stimes))
-    stimes <- .ddg.format.time(stimes)
-    #print(paste(".ddg.sourced.script.timestamps: after format, stimes = ", stimes))
-    stimes <- paste0(stimes, collapse=",")
-    #print(paste(".ddg.sourced.script.timestamps: after collapsing, stimes = ", stimes))
-  }
-  return(stimes)
-}
-
 # .ddg.sourced.script.names.json returns sourced script names,
 # numbers and timestamps for the JSON file.
 
@@ -646,74 +591,6 @@ library(jsonlite)
   packagearray <- paste("{\"package\" : \"", installed[,1], "\", \"version\" : \"",installed[,2], "\"}", sep = "", collapse =",\n\t")
   output <- paste(output, packagearray, "]", sep = "")
   return(output)
-}
-# ddg.txt.environ returns environment information for the ddg.txt
-# string.
-
-.ddg.txt.environ <- function() {
-  architecture <- R.Version()$arch
-  operating.system <- .Platform$OS.type
-  r.version <- R.Version()$version
-  lib.version <- packageVersion("RDataTracker")
-  time <- .ddg.get("ddg.start.time")
-  environ <- paste("Architecture=\"", architecture, "\"\n", sep="")
-  environ <- paste(environ, "OperatingSystem=\"", operating.system, "\"\n", sep="")
-  environ <- paste(environ, "Language=\"R\"\n", sep="")
-  environ <- paste(environ, "LanguageVersion=\"", r.version, "\"\n", sep="")
-  environ <- paste(environ, "RDataTrackerVersion=\"", lib.version, "\"\n", sep="")
-  ddg.r.script.path <- .ddg.get("ddg.r.script.path")
-  if (!is.null(ddg.r.script.path)) {
-    environ <- paste(environ, "Script=\"", ddg.r.script.path, "\"\n", sep="")
-    environ <- paste(environ, "SourcedScripts=\"", .ddg.sourced.script.names(), "\"\n", sep="")
-    environ <- paste(environ, "ProcessFileTimestamp=\"", .ddg.format.time(file.info(ddg.r.script.path)$mtime), "\"\n", sep="")
-    #print(paste(".ddg.txt.environ: .ddg.sourced.script.names() = ", .ddg.sourced.script.names()))
-    stimes <- .ddg.sourced.script.timestamps()
-    if (stimes != "") {
-      environ <- paste(environ, "SourcedScriptTimestamps=\"", stimes, "\"\n", sep="")
-    }
-  }
-  else {
-    environ <- paste(environ, "Script=\"Console\"\n")
-    environ <- paste(environ, "ProcessFileTimestamp=\"", time, "\"\n", sep="")
-  }
-  environ <- paste(environ, "WorkingDirectory=\"", getwd(), "\"\n", sep="")
-  environ <- paste(environ, "DDGDirectory=\"", .ddg.path(), "\"\n", sep="")
-  environ <- paste(environ, "DateTime=\"", time, "\"\n", sep="")
-  installed <- .ddg.installedpackages()
-  environ <- paste(environ, "InstalledPackages=\"",
-                   paste(installed[,1], installed[,2], sep = " ", collapse = ", "), "\"\n", sep = "")
-  return (environ)
-}
-
-# .ddg.txt.current returns the current ddg.txt string.
-
-.ddg.txt.current <- function() {
-  environ <- .ddg.txt.environ()
-  pnum <- .ddg.get("ddg.pnum")
-  dtxt <- .ddg.get("ddg.txt")
-  dstr <- paste(environ, pnum, "\n", dtxt, sep="")
-  return(dstr)
-}
-
-# .ddg.txt.write writes the current ddg.txt string to the file
-# ddg.txt on the ddg directory.
-
-.ddg.txt.write <- function() {
-  fileout <- paste(.ddg.path(), "/ddg.txt", sep="")
-  # if (interactive()) print(paste("Saving DDG in ", fileout))
-  ddg.txt <- .ddg.txt.current()
-  write(ddg.txt, fileout)
-}
-
-# .ddg.txt.increment returns the current incremental change to the
-# ddg.txt string.
-
-.ddg.txt.increment <- function() {
-  # Get current increment.
-  dtxt <- .ddg.get("ddg.increment")
-  # Reset for next increment.
-  .ddg.set("ddg.increment", "")
-  return(dtxt)
 }
 
 # .ddg.json.nv returns a name-value pair for the ddg.json string.
@@ -911,7 +788,7 @@ library(jsonlite)
 
   # Prepare values
   pname <- gsub("\\\"", "\\\\\"", pname)
-
+  
   if (pvalue !="") {
     pvalue <- gsub("\\\"", "\\\\\"", pvalue)
     value.str <- paste(" Value=\"", pvalue, "\"", sep="")
@@ -929,27 +806,6 @@ library(jsonlite)
     pfunctions <- jsonlite::toJSON(pfunctions$ddg.fun)
   }
   
-  # Create formatted string for procedure node
-  if (is.object(pos)) {
-    dtxt <- paste(ptype, " p", ddg.pnum, " \"", ddg.pnum, "-", pname, "\"", value.str, " Time=\"", ptime ,
-        "\" Script=\"", snum, "\"", " Pos=\"", pos@startLine, ",", pos@startCol, ",", pos@endLine, ",", pos@endCol, 
-        ' FunctionsCalled="', pfunctions, '" PackagesUsed="', ppackages, '"', 
-        "\";\n", sep="")
-    #print(".ddg.output.procedure.node: dtxt =")
-    #print(dtxt)
-  }
-  else {
-    dtxt <- paste(ptype, " p", ddg.pnum, " \"", ddg.pnum, "-", pname, "\"", value.str, " Time=\"", ptime ,
-        "\" Script=\"", snum, "\"", " Pos=\"NA\";", ' FunctionsCalled="', pfunctions, '" PackagesUsed="', ppackages, '"', 
-        "\n", sep="")
-  }
-
-  # Record in ddg.txt
-  .ddg.append(dtxt)
-
-  # Record in ddg.increment
-  .ddg.append.inc(dtxt)
-
   # Record in ddg.json
   .ddg.json.procedure.node(ddg.pnum, pname, ptype, ptime, snum, pos, pfunctions, ppackages)
 }
@@ -964,43 +820,7 @@ library(jsonlite)
   dname <-
       if (ddg.data.nodes$ddg.from.env[ddg.dnum]) paste(ddg.data.nodes$ddg.name[ddg.dnum], " [ENV]", sep="")
       else ddg.data.nodes$ddg.name[ddg.dnum]
-
-  value.str <- 
-      if (ddg.data.nodes$ddg.value[ddg.dnum] != "") paste(" Value=\"", ddg.data.nodes$ddg.value[ddg.dnum], "\"", sep="")
-      else ""
-
-  dscriptpath.str <-
-      if(ddg.data.nodes$ddg.path[ddg.dnum] != "" ) paste(" Script Path=\"", ddg.data.nodes$ddg.path[ddg.dnum], "\"", sep="")
-      else ""
   
-  val.type.str <- 
-      if(ddg.data.nodes$ddg.val.type[ddg.dnum] != "" ) paste(" ValType=\"", .ddg.replace.quotes(ddg.data.nodes$ddg.val.type[ddg.dnum]), "\"", sep="")
-      else ""
-
-  time.str <- 
-      if (ddg.data.nodes$ddg.time[ddg.dnum] != "") paste(" Time=\"", ddg.data.nodes$ddg.time[ddg.dnum], "\"", sep="")
-      else ""
-
-  loc.str <- 
-      if (ddg.data.nodes$ddg.loc[ddg.dnum] != "") paste(" Location=\"", ddg.data.nodes$ddg.loc[ddg.dnum], "\"", sep="")
-      else ""
-  
-  dhash.str <-
-      if (ddg.data.nodes$ddg.hash[ddg.dnum] != "") paste(" Hash=\"", ddg.data.nodes$ddg.hash[ddg.dnum], "\"", sep="")
-      else ""
-
-  drw.str <- 
-      if (ddg.data.nodes$ddg.rw[ddg.dnum] != "") paste(" RW=\"", ddg.data.nodes$ddg.rw[ddg.dnum], "\"", sep="")
-      else ""
-
-  dtxt <- paste(ddg.data.nodes$ddg.type[ddg.dnum], " d", ddg.dnum, " \"", ddg.dnum, "-", dname, "\"", value.str, val.type.str, time.str, loc.str, dhash.str, ";\n", sep="")
-  
-  # Record in ddg.txt
-  .ddg.append(dtxt)
-
-  # Record in ddg.increment
-  .ddg.append.inc(dtxt)
-
   # Record in ddg.json
   .ddg.json.data.node(ddg.dnum, dname)
 }
@@ -1011,17 +831,6 @@ library(jsonlite)
 .ddg.output.edge <- function(etype, node1, node2) {
   # Get counter
   ddg.enum <- .ddg.get("ddg.enum")
-
-  # Prepare values
-
-  if (etype == "cf") dtxt <- paste("CF ", node1, " ", node2, "\n", sep="")
-  else dtxt <- paste("DF ", node1, " ", node2, "\n", sep="")
-
-  # Record in ddg.txt
-  .ddg.append(dtxt)
-
-  # Record in ddg.increment
-  .ddg.append.inc(dtxt)
 
   # Record in ddg.json
   if (etype == "cf") .ddg.json.control.edge(ddg.enum, node1, node2)
@@ -2993,7 +2802,6 @@ library(jsonlite)
   }
 
   # Save ddg.
-  .ddg.txt.write()
   .ddg.json.write()
 
   # Get user input from the keyboard.
@@ -6270,10 +6078,6 @@ ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE) {
 
   # Delete temporary files.
   # .ddg.delete.temp()
-
-  # Save ddg.txt to file.
-  .ddg.txt.write()
-  if (interactive()) print(paste("Saving ddg.txt in ", .ddg.path(), sep=""))
 
   # Save ddg.json to file.
   .ddg.json.write()
