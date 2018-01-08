@@ -971,6 +971,10 @@ library(jsonlite)
   return(is.function(value))
 }
 
+.ddg.is.connection <- function (value) {
+  return ("connection" %in% class(value))
+}
+
 # .ddg.dev.change determines whether or not a new graphic device
 # has become active and whether or not we should capture the
 # previous graphic device. It returns the device number we should
@@ -1004,7 +1008,7 @@ library(jsonlite)
 # scope - data node scope.
 
 .ddg.save.simple <- function(name, value, scope=NULL, from.env=FALSE) {
-  #print(paste("In .ddg.save.simple: name =", name))
+  print(paste("In .ddg.save.simple: name =", name, "value =", value))
   #print(paste("In .ddg.save.simple: scope =", scope))
   # Save extra long strings as snapshot.
   if (is.character(value) && nchar(value) > 200) {
@@ -1016,7 +1020,9 @@ library(jsonlite)
     #print(".ddg.save.simple: saving data")
     #print(paste(".ddg.save.simple: saving value", value))
     .ddg.data.node("Data", name, value, scope, from.env=from.env)
+    print ("Back in .ddg.save.simple")
   }
+  print ("Returning from .ddg.save.simple")
 }
 
 # .ddg.write.graphic takes as input the name of a variable as well
@@ -1079,7 +1085,7 @@ library(jsonlite)
 # stack (optional) - stack to use in determing scope.
 
 .ddg.save.data <- function(name, value, fname=".ddg.save.data", graphic.fext='jpeg', error=FALSE, scope=NULL, from.env=FALSE, stack=NULL, env=NULL){
-  #print (paste (".ddg.save.data: looking for name =", name, "with scope", scope))
+  print (paste (".ddg.save.data: looking for name =", name, "with scope", scope))
   #print(paste(".ddg.save.data saving ", name, "with value structured as", str(value)))
   #if (is.null(value)) print(".ddg.save.data: value is null")
   if (is.null(scope)) {
@@ -1092,6 +1098,7 @@ library(jsonlite)
   else if (.ddg.is.simple(value)) .ddg.save.simple(name, value, scope=scope, from.env=from.env)
   else if (.ddg.is.csv(value)) .ddg.write.csv(name, value, scope=scope, from.env=from.env)
   else if (is.list(value) || is.array(value)) .ddg.snapshot.node(name, "txt", value, save.object=TRUE, dscope=scope, from.env=from.env)
+  else if (.ddg.is.connection(value)) {print ("Found connection"); .ddg.save.simple(name, value, scope=scope, from.env=from.env)}
   else if (.ddg.is.object(value)) { print ("Found object"); .ddg.snapshot.node(name, "txt", value, dscope=scope, from.env=from.env) }
   else if (.ddg.is.function(value)) .ddg.save.simple(name, "#ddg.function", scope=scope, from.env=from.env)
   else if (error) stop("Unable to create data (snapshot) node. Non-Object value to", fname, ".")
@@ -1194,7 +1201,10 @@ library(jsonlite)
 # dloc (optional) -  path and name of original file.
 
 .ddg.record.data <- function(dtype, dname, dvalue, value, dscope, from.env=FALSE, dtime="", dloc="") {
-  #print("In .ddg.record.data")
+  print("In .ddg.record.data")
+  print(paste("dvalue =", dvalue))
+  print(paste("value =", value))
+  print (sys.calls())
   # Increment data node counter.
   .ddg.inc("ddg.dnum")
   ddg.dnum <- .ddg.dnum()
@@ -1269,6 +1279,7 @@ library(jsonlite)
     }
     print(sys.calls())
   }
+  print ("Returning from .ddg.record.data")
 }
 
 # Returns a string representation of the type information of the given value.
@@ -1994,7 +2005,7 @@ library(jsonlite)
 
   for (var in vars.assigned) {
 
-    # print(paste(".ddg.create.data.set.edges.for.cmd: var = ", var))
+    print(paste(".ddg.create.data.set.edges.for.cmd: var = ", var))
     whichRows <- which(vars.set$variable == var)
 
     # Only create a node edge for the last place that a variable is
@@ -2019,7 +2030,7 @@ library(jsonlite)
         )
 
         tryCatch(.ddg.save.data(var, val, fname=".ddg.create.data.set.edges.for.cmd", error=TRUE, scope=scope, stack=stack, env=env),
-               error = function(e){.ddg.data.node("Data", var, "complex", scope)})
+               error = function(e){.ddg.data.node("Data", var, "complex", scope); print(e)})
 
         .ddg.proc2data(cmd@abbrev, var, scope)
     }
@@ -2392,6 +2403,8 @@ library(jsonlite)
       filename <- basename(connections.created$file.name[i])
       ddg.data.in(filename, pname=cmd@abbrev)
     }
+    
+    #.ddg.add.connection(urlConn, url.param)
 
   }
 }
@@ -3457,8 +3470,8 @@ library(jsonlite)
 
           if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Adding output data nodes for", cmd@abbrev))
 
-          if (cmd@writesFile) .ddg.create.file.write.nodes.and.edges (cmd, environ)
           if (cmd@createsConnection) .ddg.create.connection.nodes.and.edges (cmd, environ)
+          if (cmd@writesFile) .ddg.create.file.write.nodes.and.edges (cmd, environ)
           if (cmd@createsGraphics) .ddg.set.graphics.files (cmd, environ)
           if (cmd@updatesGraphics) .ddg.add.graphics.io (cmd)
 
@@ -3759,15 +3772,35 @@ library(jsonlite)
 # from.env - if object is from initial environment
 
 .ddg.data.node <- function(dtype, dname, dvalue, dscope, from.env=FALSE) {
-  #print(paste(".ddg.data.node: dname =", dname))
-  #print(paste(".ddg.data.node: typeof(dvalue) =", typeof(dvalue)))
-  #print(paste(".ddg.data.node: dvalue =", dvalue))
+  print ("In .ddg.data.node")
+  print(paste(".ddg.data.node: dname =", dname))
+  print(paste(".ddg.data.node: typeof(dvalue) =", typeof(dvalue)))
+  print(paste(".ddg.data.node: dvalue =", dvalue))
   #print(paste(".ddg.data.node: dscope =", dscope))
   # If object or a long list, try to create snapshot node.
 
   if (is.object(dvalue)) {
     #print(".ddg.data.node: is object")
-    tryCatch(
+    
+    if (.ddg.is.connection(dvalue)) {
+      print ("Found a connection")
+      #val <- .ddg.get.connected.file (dvalue)
+      print(showConnections(TRUE))
+      print(paste ("This connection:", dvalue[1], as.character(dvalue[1])))
+      print(showConnections(TRUE)[as.character(dvalue[1]), ])
+      print(showConnections(TRUE)[as.character(dvalue[1]), "description"])
+      val <- showConnections(TRUE)[as.character(dvalue[1]), "description"]
+      # Record in data node table
+      .ddg.record.data(dtype, dname, val, val, dscope, from.env=from.env)
+      
+      if (.ddg.debug.lib()) print(paste("data.node:", dtype, dname))
+      print(paste("data.node:", dtype, dname))
+      print ("Returning from .ddg.data.node")
+      return(NULL)
+    }
+    else {
+      print ("Found an object that is not a connection")
+      tryCatch(
         {
           .ddg.snapshot.node (dname, "txt", dvalue, dscope=dscope, from.env=from.env)
           return(NULL)
@@ -3777,7 +3810,8 @@ library(jsonlite)
           .ddg.insert.error.message(error.msg)
           return (.ddg.data.node (dtype, dname, "complex", dscope, from.env=from.env))
         }
-    )
+     )
+    }
 
   }
 
@@ -3978,7 +4012,8 @@ library(jsonlite)
   # Get path plus file name.
   dpfile <- paste(.ddg.path.data(), "/", dfile, sep="")
   if (.ddg.debug.lib()) print(paste("Saving snapshot in ", dpfile))
-
+  print(sys.calls())
+  
   # Write to file .
   if (fext == "csv") write.csv(data, dpfile, row.names=FALSE)
 
@@ -5259,8 +5294,8 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
 
   # Create nodes and edges dealing with reading and writing files
   .ddg.create.file.read.nodes.and.edges(return.stmt, env)
-  .ddg.create.file.write.nodes.and.edges (return.stmt, env)
   .ddg.create.connection.nodes.and.edges (return.stmt, env)
+  .ddg.create.file.write.nodes.and.edges (return.stmt, env)
   
     if (return.stmt@createsGraphics) {
   .ddg.set.graphics.files (return.stmt, env)
