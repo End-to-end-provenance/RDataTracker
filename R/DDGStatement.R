@@ -265,17 +265,20 @@ setMethod ("initialize", "DDGStatement",
 .ddg.find.calls.rec <- function(expr)
 {
 	# base case: a name or a constant
-	if( (! is.call(expr) || .ddg.is.functiondecl(expr)) )
+	if( ! is.call(expr) || .ddg.is.functiondecl(expr) )
 	{
 		elem <- toString(expr)
 		
+		# parameter names could be "", as is the case in a[2, ]
+		# the if branch places such function parameter names that are not ""
+		# into the var.names list for checking if they are function names at runtime.
 		if( is.name(expr) && ! identical(elem, "") )
 			return( list(NULL, elem, NULL, NULL) )
 		else
 			return( list(NULL, NULL, NULL, NULL) )
 	}
 	
-	# expr[[1]] is a call: recurse on all parts of expr
+	# expr is a call && expr[[1]] is a call: recurse on all parts of expr
 	if( is.call(expr[[1]]) )
 	{
 		recursion.result <- lapply(expr, .ddg.find.calls.rec)
@@ -291,6 +294,8 @@ setMethod ("initialize", "DDGStatement",
 		elem1 <- toString(expr[[1]])
 		
 		# general case for `::` or `:::`
+		# e.g. stringi::stri_join
+		# The parse tree is:  `::`, stringi, stri_join
 		if( identical(elem1, "::") || identical(elem1, ":::") )
 		{
 			fn.unknown.lib <- elem1
@@ -301,7 +306,19 @@ setMethod ("initialize", "DDGStatement",
 		}
 		else 	# general case
 		{
-			# case: function call with no parameters
+			# If expr is a call, expr[[1]] is not a call and not `::` or `:::`,
+			# then expr[[1]] is a function name.
+			#
+			# This recurses on all parts of expr but the first element, then
+			# appending expr[[1]] to the list of functions with unknown libraries
+			# (fn.unknown.lib) after combining the result of the recursive calls.
+			#
+			# e.g. 
+			#	let expr be 'as.character(a)'
+			#	expr is a call, its parse tree is:  as.character, a
+			#	expr[[1]], as.character, is the function name (not a call)
+			
+			# edge case: function call with no parameters
 			if( is.null(expr[-1]) )
 				return( list(elem1, NULL, NULL, NULL) )
 			
