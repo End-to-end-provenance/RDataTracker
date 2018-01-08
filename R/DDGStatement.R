@@ -216,7 +216,10 @@ setMethod ("initialize", "DDGStatement",
 	}
 )
 
-# Finds the function calls and potential function calls in an expression
+# Finds the function calls and potential function calls in an expression.
+# This function wraps the last two vectors in the returned value of 
+# .ddg.find.calls.rec into a data frame, keeping the other two vectors the same,
+# before returning the resulting list.
 #
 # @param expr The parse tree for the statement
 #
@@ -227,11 +230,22 @@ setMethod ("initialize", "DDGStatement",
 
 .ddg.find.calls <- function(expr) 
 {
+	# The returned list of .ddg.find.calls.rec(expr) contains:
+	# 	[1]: functions from unknown libraries
+	# 	[2]: variable names, which may refer to functions
+	# 	[3]: functions with known libraries
+	# 	[4]: libraries which the functions in [3] are from
 	result <- .ddg.find.calls.rec(expr)
 	
+	# [3] and [4] of the returned value of .ddg.find.calls.rec(expr) are paired.
+	# As this function wraps [3] and [4] into a data frame before returning the resulting list, 
+	# if [3] is null (the statement does not contain `::` or `:::` operators),
+	# then we can just return the result from the recursive function without [4].
 	if( is.null(result[[3]]) )
 		return( result[-4] )
 	
+	# wraps [3] and [4] into a data frame, changing the column names to match
+	# the column names for ddg.function.nodes to enable rbind.
 	fn.known.lib <- data.frame( result[[3]] , result[[4]] , stringsAsFactors = FALSE)
 	names(fn.known.lib) <- c("ddg.fun","ddg.lib")
 	
