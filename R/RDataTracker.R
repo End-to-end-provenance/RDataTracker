@@ -371,7 +371,6 @@ library(jsonlite)
           ddg.startCol = numeric(size),
           ddg.endLine = numeric(size),
           ddg.endCol = numeric(size),
-          ddg.packages.used = character(size),
           stringsAsFactors=FALSE))
 
   .ddg.set("ddg.data.nodes", data.frame(ddg.type = character(size),
@@ -1152,7 +1151,6 @@ library(jsonlite)
         ddg.startCol = numeric(size),
         ddg.endLine = numeric(size),
         ddg.endCol = numeric(size),
-        ddg.packages.used = character(size),
         stringsAsFactors=FALSE)
     .ddg.add.rows("ddg.proc.nodes", new.rows)
     ddg.proc.nodes <- .ddg.proc.nodes()
