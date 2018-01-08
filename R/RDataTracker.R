@@ -520,6 +520,8 @@ library(jsonlite)
   
   # Boolean of whether there are any file nodes
   .ddg.set("ddg.hasfilenodes", FALSE)
+  
+  .ddg.init.connection.table()
 }
 
 # .ddg.set.history provides a wrapper to change the number of
@@ -1090,7 +1092,7 @@ library(jsonlite)
   else if (.ddg.is.simple(value)) .ddg.save.simple(name, value, scope=scope, from.env=from.env)
   else if (.ddg.is.csv(value)) .ddg.write.csv(name, value, scope=scope, from.env=from.env)
   else if (is.list(value) || is.array(value)) .ddg.snapshot.node(name, "txt", value, save.object=TRUE, dscope=scope, from.env=from.env)
-  else if (.ddg.is.object(value)) .ddg.snapshot.node(name, "txt", value, dscope=scope, from.env=from.env)
+  else if (.ddg.is.object(value)) { print ("Found object"); .ddg.snapshot.node(name, "txt", value, dscope=scope, from.env=from.env) }
   else if (.ddg.is.function(value)) .ddg.save.simple(name, "#ddg.function", scope=scope, from.env=from.env)
   else if (error) stop("Unable to create data (snapshot) node. Non-Object value to", fname, ".")
   else {
@@ -1253,7 +1255,7 @@ library(jsonlite)
   # Output data node.
   #print(".ddg.record.data outputting data node")
   if (dtype == "File") {
-    .ddg.add.to.hashtable(dname = dname, ddg.dnum = ddg.dnum, dscriptpath = dscriptpath, dloc = dloc, dvalue = dvalue, dtime = dtime)
+    ddg.data.nodes <- .ddg.add.to.hashtable(dname = dname, ddg.dnum = ddg.dnum, dscriptpath = dscriptpath, dloc = dloc, dvalue = dvalue, dtime = dtime)
   }
   
   .ddg.output.data.node(ddg.dnum)
@@ -1262,8 +1264,10 @@ library(jsonlite)
     if (dtype != "File") {
       print(paste("Adding data node", ddg.dnum, "named", dname, "with scope", dscope, " and value ", ddg.data.nodes$ddg.value[ddg.dnum]))
     } else {
-      print(paste("Adding data node", ddg.dnum, "named", dname, "with scope", dscope, " and value ", ddg.data.nodes$ddg.value[ddg.dnum], " that hashes to ", dhash, " and performs a file ", drw))
+      print(paste("Adding data node", ddg.dnum, "named", dname, "with scope", dscope, " and value ", ddg.data.nodes$ddg.value[ddg.dnum], 
+                  " that hashes to ", ddg.data.nodes$ddg.hash[ddg.dnum], " and performs a file ", ddg.data.nodes$ddg.rw[ddg.dnum]))
     }
+    print(sys.calls())
   }
 }
 
@@ -2120,6 +2124,12 @@ library(jsonlite)
             file.name <- tryCatch (eval(obj[[match.pos]], environment),
                 error = function (e) NULL)
           }
+          
+          # Check if the filename parameter is a string or a connection
+          if (!is.character(file.name)) {
+            print("filename parameter is a connection")
+            str(file.name)
+          }
 
           # Recurse over the arguments to the function.  We can't just skip over the 2nd
           # element since the filename parameter is not necessarily there if it was passed
@@ -2164,15 +2174,15 @@ library(jsonlite)
 .ddg.create.file.read.functions.df <- function () {
   # Functions that read files
   function.names <-
-    c ("source", "read.csv", "read.csv2", "read.delim", "read.delim2", "read.table", "read.xls", "file", "readLines")
+    c ("source", "read.csv", "read.csv2", "read.delim", "read.delim2", "read.table", "read.xls", "readLines")
 
   # The argument that represents the file name
   param.names <-
-    c ("file", "file", "file", "file", "file", "file", "xls", "description", "con")
+    c ("file", "file", "file", "file", "file", "file", "xls", "con")
 
   # Position of the file parameter if it is passed by position
   param.pos <-
-    c (1, 1, 1, 1, 1, 1, 1, 1, 1)
+    c (1, 1, 1, 1, 1, 1, 1, 1)
 
   return (data.frame (function.names, param.names, param.pos, stringsAsFactors=FALSE))
 }
@@ -2222,6 +2232,14 @@ library(jsonlite)
   }
 }
 
+.ddg.url <- function(url.param) {
+  print("Creating a url node")
+  .ddg.data.node("URL", url.param, url.param, environmentName(.GlobalEnv))
+  urlConn <- url(url.param)
+  .ddg.add.connection(urlConn, url.param)
+  return (urlConn)
+}
+
 # Initialize the information about functions that read from files
 .ddg.create.file.write.functions.df <- function () {
   # Functions that read files
@@ -2267,6 +2285,52 @@ library(jsonlite)
       # Create the file node and edge
       ddg.file.out (file, pname=cmd@abbrev)
     }
+  }
+}
+
+# Initialize the information about functions that create connections
+.ddg.create.connection.functions.df <- function () {
+  # Functions that read files
+  function.names <-
+      c ("file", "url", "gzfile", "bzfile", "xzfile", "unz", "pipe", "fifo", "socketConnection")
+  
+  # The argument that represents the file name, URL, etc. that is being associated
+  # with the connection.
+  param.names <-
+      c ("description", "description", "description", "description", "description", "description", "description", "description", "host")
+  
+  # Position of the file parameter if it is passed by position
+  param.pos <-
+      c (1, 1, 1, 1, 1, 1, 1, 1, 1)
+  
+  secondary.param.names <- 
+      c ("", "", "", "", "", "filename", "", "", "port")
+  
+  secondary.param.pos <- 
+      c (0, 0, 0, 0, 0, 2, 0, 0, 2)
+  
+  return (data.frame (function.names, param.names, param.pos, 
+          secondary.param.names, secondary.param.pos, stringsAsFactors=FALSE))
+}
+
+.ddg.set (".ddg.file.creates.connection.df", .ddg.create.connection.functions.df ())
+
+# Creates file/url nodes and data in edges for any files that are associated with
+# a connection
+# cmd - text command
+# env
+.ddg.create.connection.nodes.and.edges <- function (cmd, env) {
+  # Find all the connections created in this command.
+  # This may include connections that are not actually created if the
+  # creation calls are within an if-statement, for example.
+  # TODO:  Need to write this function
+  # TODO:  Dealing with reading vs. writing files.
+  connections.created <- .ddg.find.connections.created(cmd, env)
+  
+  for (connection in connections.created) {
+    # Create the file node and edge
+    # TODO Should check for url or special values ("clipboard", "stdin")
+    ddg.file.in (connection, pname=cmd@abbrev)
   }
 }
 
@@ -5125,7 +5189,8 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
   # Create nodes and edges dealing with reading and writing files
   .ddg.create.file.read.nodes.and.edges(return.stmt, env)
   .ddg.create.file.write.nodes.and.edges (return.stmt, env)
-    
+  .ddg.create.connection.nodes.and.edges (return.stmt, env)
+  
     if (return.stmt@createsGraphics) {
   .ddg.set.graphics.files (return.stmt, env)
   }

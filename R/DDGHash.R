@@ -54,6 +54,7 @@ library(jsonlite)
   
   longpath <- paste0(getwd(), substring(.ddg.path(),2),"/ddg.json")
   .ddg.set("ddg.hashtable", rbind(.ddg.get("ddg.hashtable"), c(dscriptpath, dloc, longpath, paste(.ddg.path(), dvalue, sep="/"), ddg.dnum, dhash, dhash.algorithm, drw, dtime, dvalue), stringsAsFactors = FALSE))
+  return (ddg.data.nodes)
 }
 
 #' Calculate the hash value for the file
