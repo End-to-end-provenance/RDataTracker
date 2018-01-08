@@ -2103,6 +2103,8 @@ library(jsonlite)
         # Is this is file reading function?
         read.func.pos <- match (as.character(obj[[1]]), func.df$function.names)
         if (!is.na (read.func.pos)) {
+          func.name <- func.df$function.names[read.func.pos]
+          
           # Find the file argument.
           arg.name <- func.df$param.names[read.func.pos]
           # print (paste(".ddg.find.files: arg.name = ", arg.name))
@@ -2125,22 +2127,47 @@ library(jsonlite)
                 error = function (e) NULL)
           }
           
-          # Check if the filename parameter is a string or a connection
-          if (!is.character(file.name)) {
-            print("filename parameter is a connection")
-            str(file.name)
+          # Check for a secondary file argument
+          if (!is.null (func.df$secondary.param.names)) {
+            arg.name <- func.df$secondary.param.names[read.func.pos]
+            # print (paste(".ddg.find.files: arg.name = ", arg.name))
+            
+            # Find a matching parameter passed by name
+            file.name.arg.matches <- unlist(lapply (names(obj), function (arg) {return (pmatch (arg, arg.name))}))
+            match.pos <- match (1, file.name.arg.matches)
+            #print (paste(".ddg.find.files: match.pos = ", match.pos))
+            
+            
+            # If no argument qualified by the file parameter name, use the argument in the
+            # expected position
+            if (is.na (match.pos)) {
+              secondary.file.name <- tryCatch (eval(obj[[func.df$secondary.param.pos[read.func.pos]+1]], environment),
+                  error = function (e) NULL)
+            }
+            else {
+              #print (paste(".ddg.find.files: obj[[match.pos]] = ", obj[[match.pos]]))
+              secondary.file.name <- tryCatch (eval(obj[[match.pos]], environment),
+                  error = function (e) NULL)
+            }
           }
-
+          else {
+            secondary.file.name <- NA
+          }
+          
           # Recurse over the arguments to the function.  We can't just skip over the 2nd
           # element since the filename parameter is not necessarily there if it was passed
           # by name.
           funcs <- find.files.rec (obj[2:length(obj)])
 
           # Add this file name to the list of files being read.
-          # Make sure the file name could be evaluated and that it results in
-          # a name, not a connection.
           if (!is.null(file.name) && is.character(file.name)) {
-            unique (c (file.name, funcs))
+            #unique (c (file.name, funcs))
+            if (is.null (funcs)) {
+              data.frame (func.name, file.name, secondary.file.name, stringsAsFactors = FALSE)
+            }
+            else {
+              rbind (funcs, c(func.name, file.name, secondary.file.name))
+            }
           }
         }
 
@@ -2166,7 +2193,8 @@ library(jsonlite)
     }
   }
 
-  return(find.files.rec(main.object@parsed))
+  files <- find.files.rec(main.object@parsed)
+  return(files)
 }
 
 
@@ -2304,10 +2332,10 @@ library(jsonlite)
       c (1, 1, 1, 1, 1, 1, 1, 1, 1)
   
   secondary.param.names <- 
-      c ("", "", "", "", "", "filename", "", "", "port")
+      c (NA, NA, NA, NA, NA, "filename", NA, NA, "port")
   
   secondary.param.pos <- 
-      c (0, 0, 0, 0, 0, 2, 0, 0, 2)
+      c (NA, NA, NA, NA, NA, 2, NA, NA, 2)
   
   return (data.frame (function.names, param.names, param.pos, 
           secondary.param.names, secondary.param.pos, stringsAsFactors=FALSE))
@@ -2320,18 +2348,60 @@ library(jsonlite)
 # cmd - text command
 # env
 .ddg.create.connection.nodes.and.edges <- function (cmd, env) {
+  print ("In .ddg.create.connection.nodes.and.edges")
+  
   # Find all the connections created in this command.
   # This may include connections that are not actually created if the
   # creation calls are within an if-statement, for example.
-  # TODO:  Need to write this function
   # TODO:  Dealing with reading vs. writing files.
   connections.created <- .ddg.find.connections.created(cmd, env)
+  print(connections.created)
+  print (colnames (connections.created))
+  print (connections.created$func.name)
+  print (connections.created$file.name)
   
-  for (connection in connections.created) {
+  for (i in 1:nrow(connections.created)) {
     # Create the file node and edge
     # TODO Should check for url or special values ("clipboard", "stdin")
-    ddg.file.in (connection, pname=cmd@abbrev)
+    print (paste("connection function =", connections.created$func.name[i]))
+    print (paste("connection file =", connections.created$file.name[i]))
+    #print (paste("Creating file for", basename(connection$file)))
+    func.name <- connections.created$func.name[i]
+    if (func.name == "url" || 
+        (func.name == "file" && 
+          (startsWith(connections.created$file.name[i], "http://") ||
+           startsWith(connections.created$file.name[i], "https://") ||
+           startsWith(connections.created$file.name[i], "ftp://") ||
+           startsWith(connections.created$file.name[i], "file://")))) {
+      url <- connections.created$file.name[i]
+      .ddg.data.node("URL", url, url, environmentName(.GlobalEnv))
+      .ddg.data2proc(url, environmentName(.GlobalEnv), pname=cmd@abbrev)
+    }
+    else if (func.name == "socketConnection") {
+      socket <- paste(connections.created$file.name[i], connections.created$secondary.file.name[i])
+      .ddg.data.node("URL", socket, socket, environmentName(.GlobalEnv))
+      .ddg.data2proc(socket, environmentName(.GlobalEnv), pname=cmd@abbrev)
+    }
+    else if (func.name == "unz") {
+      inner.file <- paste(connections.created$secondary.file.name[i], "from", connections.created$file.name[i])
+      .ddg.data.node("URL", inner.file, inner.file, environmentName(.GlobalEnv))
+      .ddg.data2proc(inner.file, environmentName(.GlobalEnv), pname=cmd@abbrev)
+    }
+    else {
+      ddg.file(connections.created$file.name[i])
+      filename <- basename(connections.created$file.name[i])
+      ddg.data.in(filename, pname=cmd@abbrev)
+    }
+
   }
+}
+
+# Given a parse tree, this function returns a list containing
+# the expressions that correspond to the filename argument
+# of the calls to functions that write files.  If there are
+# none, it returns NULL.
+.ddg.find.connections.created <- function(main.object, env) {
+  return (.ddg.find.files (main.object, .ddg.get(".ddg.file.creates.connection.df"), env))
 }
 
 # Initialize the information about functions that initialize graphics devices
@@ -3388,6 +3458,7 @@ library(jsonlite)
           if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Adding output data nodes for", cmd@abbrev))
 
           if (cmd@writesFile) .ddg.create.file.write.nodes.and.edges (cmd, environ)
+          if (cmd@createsConnection) .ddg.create.connection.nodes.and.edges (cmd, environ)
           if (cmd@createsGraphics) .ddg.set.graphics.files (cmd, environ)
           if (cmd@updatesGraphics) .ddg.add.graphics.io (cmd)
 
@@ -3710,7 +3781,7 @@ library(jsonlite)
 
   }
 
-  else if (is.matrix(dvalue) || (is.vector(dvalue) && length(dvalue) > 20)) {
+  else if (is.matrix(dvalue) || (is.vector(dvalue) && !is.character(dvalue) && length(dvalue) > 20)) {
     #print(".ddg.data.node: saving as csv")
     .ddg.snapshot.node (dname, "csv", dvalue, dscope=dscope, from.env=from.env)
     return (NULL)
