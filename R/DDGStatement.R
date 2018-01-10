@@ -94,7 +94,7 @@ setClass("DDGStatement",
                                  # reads from a file
         writesFile = "logical",  # True if this statement contains a call to a function that
                                  # writes to a file
-        createsConnection = "logical", # True if this statement contains a call to a function that
+#        createsConnection = "logical", # True if this statement contains a call to a function that
                                        # creates a connection.
         createsGraphics = "logical",  # True if this is a function that creates a graphics
                                       # object, like a call to pdf, for example
@@ -153,7 +153,7 @@ setMethod ("initialize",
 
       .Object@readsFile <- .ddg.reads.file (.Object@parsed[[1]])
       .Object@writesFile <- .ddg.writes.file (.Object@parsed[[1]])
-      .Object@createsConnection <- .ddg.creates.connection (.Object@parsed[[1]])
+      #.Object@createsConnection <- .ddg.creates.connection (.Object@parsed[[1]])
       .Object@createsGraphics <- .ddg.creates.graphics (.Object@parsed[[1]])
       .Object@updatesGraphics <- .ddg.updates.graphics (.Object@parsed[[1]])
       .Object@has.dev.off <- .ddg.has.call.to (.Object@parsed[[1]], "dev.off")
@@ -1522,11 +1522,11 @@ null.pos <- function() {
 #
 # parsed.statement - a parse tree
 #
-.ddg.creates.connection <- function (parsed.statement) {
-  .ddg.file.creates.connection.df <- .ddg.get (".ddg.file.creates.connection.df")
-  creating.connection.functions <- .ddg.file.creates.connection.df$function.names
-  return (TRUE %in% (lapply (creating.connection.functions, function(fun.name) {return (.ddg.has.call.to(parsed.statement, fun.name))})))
-}
+#.ddg.creates.connection <- function (parsed.statement) {
+#  .ddg.file.creates.connection.df <- .ddg.get (".ddg.file.creates.connection.df")
+#  creating.connection.functions <- .ddg.file.creates.connection.df$function.names
+#  return (TRUE %in% (lapply (creating.connection.functions, function(fun.name) {return (.ddg.has.call.to(parsed.statement, fun.name))})))
+#}
 
 # Returns true if the statement contains a call to a function that creates a graphics object
 #
