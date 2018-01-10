@@ -39,7 +39,7 @@ library(jsonlite)
   
   dhash <- .ddg.calculate.hash(dname)
   if (dhash == "") {
-    print ("Empty hash value")
+    #print ("Empty hash value")
     return()
   }
   
@@ -55,7 +55,7 @@ library(jsonlite)
   
   longpath <- paste0(getwd(), substring(.ddg.path(),2),"/ddg.json")
   .ddg.set("ddg.hashtable", rbind(.ddg.get("ddg.hashtable"), c(dscriptpath, dloc, longpath, paste(.ddg.path(), dvalue, sep="/"), ddg.dnum, dhash, dhash.algorithm, drw, dtime, dvalue), stringsAsFactors = FALSE))
-  print (.ddg.get("ddg.hashtable"))
+  #print (.ddg.get("ddg.hashtable"))
   return (ddg.data.nodes)
 }
 

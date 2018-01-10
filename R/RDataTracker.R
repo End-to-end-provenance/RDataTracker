@@ -1008,7 +1008,7 @@ library(jsonlite)
 # scope - data node scope.
 
 .ddg.save.simple <- function(name, value, scope=NULL, from.env=FALSE) {
-  print(paste("In .ddg.save.simple: name =", name, "value =", value))
+  #print(paste("In .ddg.save.simple: name =", name, "value =", value))
   #print(paste("In .ddg.save.simple: scope =", scope))
   # Save extra long strings as snapshot.
   if (is.character(value) && nchar(value) > 200) {
@@ -1020,9 +1020,10 @@ library(jsonlite)
     #print(".ddg.save.simple: saving data")
     #print(paste(".ddg.save.simple: saving value", value))
     .ddg.data.node("Data", name, value, scope, from.env=from.env)
-    print ("Back in .ddg.save.simple")
+    
+    #print ("Back in .ddg.save.simple")
   }
-  print ("Returning from .ddg.save.simple")
+  #print ("Returning from .ddg.save.simple")
 }
 
 # .ddg.write.graphic takes as input the name of a variable as well
@@ -1085,7 +1086,7 @@ library(jsonlite)
 # stack (optional) - stack to use in determing scope.
 
 .ddg.save.data <- function(name, value, fname=".ddg.save.data", graphic.fext='jpeg', error=FALSE, scope=NULL, from.env=FALSE, stack=NULL, env=NULL){
-  print (paste (".ddg.save.data: looking for name =", name, "with scope", scope))
+  #print (paste (".ddg.save.data: looking for name =", name, "with scope", scope))
   #print(paste(".ddg.save.data saving ", name, "with value structured as", str(value)))
   #if (is.null(value)) print(".ddg.save.data: value is null")
   if (is.null(scope)) {
@@ -1098,8 +1099,8 @@ library(jsonlite)
   else if (.ddg.is.simple(value)) .ddg.save.simple(name, value, scope=scope, from.env=from.env)
   else if (.ddg.is.csv(value)) .ddg.write.csv(name, value, scope=scope, from.env=from.env)
   else if (is.list(value) || is.array(value)) .ddg.snapshot.node(name, "txt", value, save.object=TRUE, dscope=scope, from.env=from.env)
-  else if (.ddg.is.connection(value)) {print ("Found connection"); .ddg.save.simple(name, value, scope=scope, from.env=from.env)}
-  else if (.ddg.is.object(value)) { print ("Found object"); .ddg.snapshot.node(name, "txt", value, dscope=scope, from.env=from.env) }
+  else if (.ddg.is.connection(value)) {.ddg.save.simple(name, value, scope=scope, from.env=from.env)}
+  else if (.ddg.is.object(value)) {.ddg.snapshot.node(name, "txt", value, dscope=scope, from.env=from.env) }
   else if (.ddg.is.function(value)) .ddg.save.simple(name, "#ddg.function", scope=scope, from.env=from.env)
   else if (error) stop("Unable to create data (snapshot) node. Non-Object value to", fname, ".")
   else {
@@ -1201,9 +1202,9 @@ library(jsonlite)
 # dloc (optional) -  path and name of original file.
 
 .ddg.record.data <- function(dtype, dname, dvalue, value, dscope, from.env=FALSE, dtime="", dloc="") {
-  print("In .ddg.record.data")
-  print(paste("dvalue =", head(dvalue)))
-  print(paste("value =", head(value)))
+  #print("In .ddg.record.data")
+  #print(paste("dvalue =", head(dvalue)))
+  #print(paste("value =", head(value)))
   #print (sys.calls())
   # Increment data node counter.
   .ddg.inc("ddg.dnum")
@@ -1265,12 +1266,12 @@ library(jsonlite)
   # Output data node.
   #print(".ddg.record.data outputting data node")
   if (dtype == "File") {
-    print ("Adding to hash table")
+    #print ("Adding to hash table")
     ddg.data.nodes <- .ddg.add.to.hashtable(dname = dname, ddg.dnum = ddg.dnum, dscriptpath = dscriptpath, dloc = dloc, dvalue = dvalue, dtime = dtime)
   }
-  else {
-    print ("Not adding to hash table")
-  }
+#  else {
+#    print ("Not adding to hash table")
+#  }
   
   .ddg.output.data.node(ddg.dnum)
 
@@ -1281,9 +1282,9 @@ library(jsonlite)
       print(paste("Adding data node", ddg.dnum, "named", dname, "with scope", dscope, " and value ", ddg.data.nodes$ddg.value[ddg.dnum], 
                   " that hashes to ", ddg.data.nodes$ddg.hash[ddg.dnum], " and performs a file ", ddg.data.nodes$ddg.rw[ddg.dnum]))
     }
-    print(sys.calls())
+    #print(sys.calls())
   }
-  print ("Returning from .ddg.record.data")
+  #print ("Returning from .ddg.record.data")
 }
 
 # Returns a string representation of the type information of the given value.
@@ -1580,7 +1581,7 @@ library(jsonlite)
 
   # Error message if no match found.
   error.msg <- paste("No data node found for", dname)
-  print (sys.calls())
+  #print (sys.calls())
   .ddg.insert.error.message(error.msg)
   return(0)
 }
@@ -2011,7 +2012,7 @@ library(jsonlite)
 
   for (var in vars.assigned) {
 
-    print(paste(".ddg.create.data.set.edges.for.cmd: var = ", var))
+    #print(paste(".ddg.create.data.set.edges.for.cmd: var = ", var))
     whichRows <- which(vars.set$variable == var)
 
     # Only create a node edge for the last place that a variable is
@@ -2177,10 +2178,10 @@ library(jsonlite)
           funcs <- find.files.rec (obj[2:length(obj)])
 
           # Add this file name to the list of files being read.
-          print (paste(".ddg.find.files: checking ", file.name))
+          #print (paste(".ddg.find.files: checking ", file.name))
           if (!is.null(file.name)) { 
             if (is.character(file.name)) {
-              print ("Adding file")
+              #print ("Adding file")
               unique (c (file.name, funcs))
               #if (is.null (funcs)) {
                 # data.frame (func.name, file.name, secondary.file.name, stringsAsFactors = FALSE)
@@ -2263,7 +2264,7 @@ library(jsonlite)
 # cmd - text command
 # cmd.expr - parsed command
 .ddg.create.file.read.nodes.and.edges <- function (cmd, env) {
-  print("In .ddg.create.file.read.nodes.and.edges")
+  #print("In .ddg.create.file.read.nodes.and.edges")
   # Find all the files potentially read in this command.
   # This may include files that are not actually read if the
   # read are within an if-statement, for example.
@@ -2276,10 +2277,10 @@ library(jsonlite)
   # print (files.read)
 
   for (file in files.read) {
-    print(paste(".ddg.create.file.read.nodes.and.edges: file =", file))
+    #print(paste(".ddg.create.file.read.nodes.and.edges: file =", file))
     if (grepl ("://", file) || startsWith (file, "->"))
     {
-      print ("Creating url node")
+      #print ("Creating url node")
       scope <- environmentName(.GlobalEnv)
       .ddg.data.node("URL", file, file, scope)
       .ddg.data2proc(file, scope, cmd@abbrev)
@@ -2289,7 +2290,7 @@ library(jsonlite)
     # a zip file, so checck that the zip file exists.
     else {
       if (file.exists(file)) {
-        print ("Creating file node")
+        #print ("Creating file node")
         # Create the file node and edge
         ddg.file(file)
         ddg.data.in(basename(file), pname=cmd@abbrev)
@@ -2297,15 +2298,15 @@ library(jsonlite)
       else if (grepl(":", file)) {
         zipfile <- sub (":.*", "", file)
         if (file.exists (zipfile)) {
-          print ("Creating file node")
+          #print ("Creating file node")
           # Create the file node and edge
           ddg.file(zipfile, file)
           ddg.data.in(file, pname=cmd@abbrev)
         }
       }
-      else {
-        print ("Not creating a node")
-      }
+      #else {
+      #  print ("Not creating a node")
+      #}
     }
   }
 }
@@ -3817,10 +3818,10 @@ library(jsonlite)
 # from.env - if object is from initial environment
 
 .ddg.data.node <- function(dtype, dname, dvalue, dscope, from.env=FALSE) {
-  print ("In .ddg.data.node")
-  print(paste(".ddg.data.node: dname =", dname))
-  print(paste(".ddg.data.node: typeof(dvalue) =", typeof(dvalue)))
-  print(paste(".ddg.data.node: dvalue =", dvalue))
+  #print ("In .ddg.data.node")
+  #print(paste(".ddg.data.node: dname =", dname))
+  #print(paste(".ddg.data.node: typeof(dvalue) =", typeof(dvalue)))
+  #print(paste(".ddg.data.node: dvalue =", dvalue))
   #print(paste(".ddg.data.node: dscope =", dscope))
   # If object or a long list, try to create snapshot node.
 
@@ -3828,23 +3829,23 @@ library(jsonlite)
     #print(".ddg.data.node: is object")
     
     if (.ddg.is.connection(dvalue)) {
-      print ("Found a connection")
+      #print ("Found a connection")
       #val <- .ddg.get.connected.file (dvalue)
-      print(showConnections(TRUE))
-      print(paste ("This connection:", dvalue[1], as.character(dvalue[1])))
-      print(showConnections(TRUE)[as.character(dvalue[1]), ])
-      print(showConnections(TRUE)[as.character(dvalue[1]), "description"])
+      #print(showConnections(TRUE))
+      #print(paste ("This connection:", dvalue[1], as.character(dvalue[1])))
+      #print(showConnections(TRUE)[as.character(dvalue[1]), ])
+      #print(showConnections(TRUE)[as.character(dvalue[1]), "description"])
       val <- showConnections(TRUE)[as.character(dvalue[1]), "description"]
       # Record in data node table
       .ddg.record.data(dtype, dname, val, val, dscope, from.env=from.env)
       
       if (.ddg.debug.lib()) print(paste("data.node:", dtype, dname))
-      print(paste("data.node:", dtype, dname))
-      print ("Returning from .ddg.data.node")
+      #print(paste("data.node:", dtype, dname))
+      #print ("Returning from .ddg.data.node")
       return(NULL)
     }
     else {
-      print ("Found an object that is not a connection")
+      #print ("Found an object that is not a connection")
       tryCatch(
         {
           .ddg.snapshot.node (dname, "txt", dvalue, dscope=dscope, from.env=from.env)
@@ -4057,7 +4058,7 @@ library(jsonlite)
   # Get path plus file name.
   dpfile <- paste(.ddg.path.data(), "/", dfile, sep="")
   if (.ddg.debug.lib()) print(paste("Saving snapshot in ", dpfile))
-  print(sys.calls())
+  #print(sys.calls())
   
   # Write to file .
   if (fext == "csv") write.csv(data, dpfile, row.names=FALSE)
