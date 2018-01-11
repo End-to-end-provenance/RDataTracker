@@ -39,6 +39,7 @@ ddg.MAX_HIST_LINES <- 2^14
 library(digest)
 library(tools)
 library(jsonlite)
+library(curl)
 
 #-------- FUNCTIONS TO MANAGE THE GLOBAL VARIABLES--------#
 
@@ -2082,6 +2083,9 @@ library(jsonlite)
 
 }
 
+.ddg.get.connection.description <- function (conn) { 
+  .ddg.get (".ddg.connections")[as.character(conn[1]), "description"]
+}
 
 # Given a parse tree, this function returns a list containing
 # the expressions that correspond to the filename argument
@@ -2192,7 +2196,11 @@ library(jsonlite)
             }
             else if (.ddg.is.connection(file.name)){
               # If it is a connection, add the name of the thing connected to
-              unique (c (showConnections(TRUE)[as.character(file.name[1]), "description"], funcs))
+              #print(paste (".ddg.find.files: found connection, file.name =", file.name))
+              #print(paste (".ddg.find.files: found connection, func.name =", func.name))
+              #print(showConnections(TRUE))
+              
+              unique (c (.ddg.get.connection.description(file.name), funcs))
             }
           }
         }
@@ -2282,8 +2290,15 @@ library(jsonlite)
     {
       #print ("Creating url node")
       scope <- environmentName(.GlobalEnv)
-      .ddg.data.node("URL", file, file, scope)
+      if (grepl ("://", file) ) {
+        url.copy <- .ddg.url.copy (file)
+        .ddg.data.node("URL", file, url.copy, scope)
+      }
+      else {
+        .ddg.data.node("URL", file, file, scope)
+      }
       .ddg.data2proc(file, scope, cmd@abbrev)
+      
     }
     # Only create the node and edge if there actually is a file
     # If the filename contains a :, then it is referencing a file within 
@@ -3835,6 +3850,10 @@ library(jsonlite)
       #print(paste ("This connection:", dvalue[1], as.character(dvalue[1])))
       #print(showConnections(TRUE)[as.character(dvalue[1]), ])
       #print(showConnections(TRUE)[as.character(dvalue[1]), "description"])
+      
+      # Save the current connections so we have access to them if they are
+      # changed before we get the information we need.
+      .ddg.set (".ddg.connections", showConnections(TRUE))
       val <- showConnections(TRUE)[as.character(dvalue[1]), "description"]
       # Record in data node table
       .ddg.record.data(dtype, dname, val, val, dscope, from.env=from.env)
@@ -4190,6 +4209,22 @@ library(jsonlite)
 
   if (.ddg.debug.lib()) print(paste("file.copy: ", dtype, " ", file.loc))
   return (dpfile.out)
+}
+
+.ddg.url.copy <- function (url) {
+  # Get last part of the url.
+  file.name <- basename(url)
+  
+  # Add number to file name.
+  dfile <- paste(.ddg.dnum()+1, "-", file.name, sep="")
+  
+  # Get path plus file name to where the file will be copied
+  dpath <- paste(.ddg.path.data(), "/", dfile, sep="")
+  
+  curl_download (url, dpath)
+    
+  if (.ddg.debug.lib()) print(paste("url.copy: ", url))
+  return (paste(.ddg.data.dir(), dfile, sep="/"))
 }
 
 # .ddg.insert.error.message issues a warning and inserts an
