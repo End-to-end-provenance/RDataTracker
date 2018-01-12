@@ -1,7 +1,6 @@
-set.seed("12345")
-file.in <- url("http://harvardforest.fas.harvard.edu/sites/harvardforest.fas.harvard.edu/files/weather/metsta.dat")
+file.in <- url("http://harvardforest.fas.harvard.edu/data/p00/hf000/hf000-01-daily-m.csv")
 df <- read.csv(file.in)
-file.out <- file("test.dat", "w+")
+file.out <- file("test.csv", "w+")
 write.csv(df, file.out)
 close(file.out)
 

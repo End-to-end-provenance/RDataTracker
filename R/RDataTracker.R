@@ -2461,7 +2461,8 @@ library(curl)
       pname <-
           if (is.null(cmd)) NULL
           else cmd@abbrev
-      ddg.file.out (file, pname)
+      #print(paste("Calling ddg.file.out: file=", file, "  pname =", pname))
+      ddg.file.out (file, pname=pname)
     }
   }
 }
