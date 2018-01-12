@@ -94,8 +94,7 @@ setClass("DDGStatement",
                                  # reads from a file
         writesFile = "logical",  # True if this statement contains a call to a function that
                                  # writes to a file
-#        createsConnection = "logical", # True if this statement contains a call to a function that
-                                       # creates a connection.
+        closesFile = "logical",  # True if this statement contains a call to the close function
         createsGraphics = "logical",  # True if this is a function that creates a graphics
                                       # object, like a call to pdf, for example
         updatesGraphics = "logical",  # True if this is a function that updates a graphics
@@ -153,7 +152,7 @@ setMethod ("initialize",
 
       .Object@readsFile <- .ddg.reads.file (.Object@parsed[[1]])
       .Object@writesFile <- .ddg.writes.file (.Object@parsed[[1]])
-      #.Object@createsConnection <- .ddg.creates.connection (.Object@parsed[[1]])
+      .Object@closesFile <- .ddg.closes.file (.Object@parsed[[1]])
       .Object@createsGraphics <- .ddg.creates.graphics (.Object@parsed[[1]])
       .Object@updatesGraphics <- .ddg.updates.graphics (.Object@parsed[[1]])
       .Object@has.dev.off <- .ddg.has.call.to (.Object@parsed[[1]], "dev.off")
@@ -509,15 +508,6 @@ null.pos <- function() {
     return(.ddg.add.ddg.source(parsed.command))
   }
 
-  # Replace url with ddg.url.
-#  if (.ddg.has.call.to(parsed.command, "url")) {
-#    print ("Found call to url")
-#    print(parsed.command)
-#    updated.command <- .ddg.replace.url.call(parsed.command)
-#    print(paste("updated command:", updated.command))
-#    return (updated.command)
-#  }
-  
   # Annotate user-defined functions.
   # Note that this will not annotate anonymous functions, like ones that might be passed to lapply, for example
   # Is that what we want?
@@ -690,29 +680,6 @@ null.pos <- function() {
   parsed.command.txt <- paste("ddg.source(", script.name, ")", sep="")
   return(parse(text=parsed.command.txt))
 }
-
-# NOTE: Should generalize to work for all functions that create connections.
-#.ddg.replace.url.call <- function(parsed) {
-#  print(paste(".ddg.replace.url.call: parsed =", parsed))
-#  
-#  if (.ddg.is.call.to(parsed, "url")) {
-#    old.call <- deparse(parsed)
-#    new.call <- parse(text=sub("url", ".ddg.url", old.call))
-#    return(new.call)
-#  }
-#  if (is.symbol(parsed) && parsed == "url") {
-#    print("Replacing call to url with .ddg.url")
-#    return (as.symbol(".ddg.url"))
-#  }
-#  else if (!is.recursive(parsed)) {
-#    return (parsed)
-#  }
-#  else {
-#    print(str(parsed))
-#    #return(parsed)
-#    return (sapply (parsed, .ddg.replace.url.call))
-#  }
-#}
 
 # .ddg.add.function.annotations is passed a command that corresponds
 # to a function declaration.  It returns a parsed command corresponding
@@ -1518,15 +1485,15 @@ null.pos <- function() {
   return (TRUE %in% (lapply (writing.functions, function(fun.name) {return (.ddg.has.call.to(parsed.statement, fun.name))})))
 }
 
-# Returns true if the statement contains a call to a function that creates a connection
+# Returns true if the statement contains a call to a function that closes a file
 #
 # parsed.statement - a parse tree
 #
-#.ddg.creates.connection <- function (parsed.statement) {
-#  .ddg.file.creates.connection.df <- .ddg.get (".ddg.file.creates.connection.df")
-#  creating.connection.functions <- .ddg.file.creates.connection.df$function.names
-#  return (TRUE %in% (lapply (creating.connection.functions, function(fun.name) {return (.ddg.has.call.to(parsed.statement, fun.name))})))
-#}
+.ddg.closes.file <- function (parsed.statement) {
+  .ddg.file.close.functions.df <- .ddg.get (".ddg.file.close.functions.df")
+  closing.functions <- .ddg.file.close.functions.df$function.names
+  return (TRUE %in% (lapply (closing.functions, function(fun.name) {return (.ddg.has.call.to(parsed.statement, fun.name))})))
+}
 
 # Returns true if the statement contains a call to a function that creates a graphics object
 #

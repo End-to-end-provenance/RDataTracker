@@ -1,0 +1,823 @@
+{
+
+"prefix" : {
+"prov" : "http://www.w3.org/ns/prov#",
+"rdt" : "http://rdatatracker.org/"
+},
+"activity":{
+
+"p1" : {
+"rdt:name" : "ConnectionTest.R",
+"rdt:type" : "Start",
+"rdt:elapsedTime" : "0.224",
+"rdt:scriptNum" : "NA",
+"rdt:startLine" : "NA",
+"rdt:startCol" : "NA",
+"rdt:endLine" : "NA",
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
+} ,
+
+"p2" : {
+"rdt:name" : "set.seed(\"12345\")",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "0.244",
+"rdt:scriptNum" : "0",
+"rdt:startLine" : "1",
+"rdt:startCol" : "1",
+"rdt:endLine" : "1",
+"rdt:endCol" : "17",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
+} ,
+
+"p3" : {
+"rdt:name" : "file.in <- url(\"http://harvardforest.fas.harvard.edu/sites/h",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "0.279",
+"rdt:scriptNum" : "0",
+"rdt:startLine" : "2",
+"rdt:startCol" : "1",
+"rdt:endLine" : "2",
+"rdt:endCol" : "115",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
+} ,
+
+"p4" : {
+"rdt:name" : "df <- read.csv(file.in)",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "0.933",
+"rdt:scriptNum" : "0",
+"rdt:startLine" : "3",
+"rdt:startCol" : "1",
+"rdt:endLine" : "3",
+"rdt:endCol" : "23",
+"rdt:functionsCalled" : ["read.csv"],
+"rdt:packagesUsed" : ["utils"]
+} ,
+
+"p5" : {
+"rdt:name" : "file.out <- file(\"test.dat\", \"w+\")",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "1.096",
+"rdt:scriptNum" : "0",
+"rdt:startLine" : "4",
+"rdt:startCol" : "1",
+"rdt:endLine" : "4",
+"rdt:endCol" : "34",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
+} ,
+
+"p6" : {
+"rdt:name" : "write.csv(df, file.out)",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "1.684",
+"rdt:scriptNum" : "0",
+"rdt:startLine" : "5",
+"rdt:startCol" : "1",
+"rdt:endLine" : "5",
+"rdt:endCol" : "23",
+"rdt:functionsCalled" : ["write.csv"],
+"rdt:packagesUsed" : ["utils"]
+} ,
+
+"p7" : {
+"rdt:name" : "close(file.out)",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "1.694",
+"rdt:scriptNum" : "0",
+"rdt:startLine" : "6",
+"rdt:startCol" : "1",
+"rdt:endLine" : "6",
+"rdt:endCol" : "15",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
+} ,
+
+"p8" : {
+"rdt:name" : "socket <- socketConnection(\"harvardforest.fas.harvard.edu\", ",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "1.71",
+"rdt:scriptNum" : "0",
+"rdt:startLine" : "10",
+"rdt:startCol" : "1",
+"rdt:endLine" : "10",
+"rdt:endCol" : "83",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
+} ,
+
+"p9" : {
+"rdt:name" : "writeLines(\"GET / HTTP/1.1\", socket)",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "1.717",
+"rdt:scriptNum" : "0",
+"rdt:startLine" : "11",
+"rdt:startCol" : "1",
+"rdt:endLine" : "11",
+"rdt:endCol" : "36",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
+} ,
+
+"p10" : {
+"rdt:name" : "writeLines(\"Host: harvardforest.fas.harvard.edu\", socket)",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "1.732",
+"rdt:scriptNum" : "0",
+"rdt:startLine" : "12",
+"rdt:startCol" : "1",
+"rdt:endLine" : "12",
+"rdt:endCol" : "57",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
+} ,
+
+"p11" : {
+"rdt:name" : "writeLines(\"\", socket)",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "1.737",
+"rdt:scriptNum" : "0",
+"rdt:startLine" : "13",
+"rdt:startCol" : "1",
+"rdt:endLine" : "13",
+"rdt:endCol" : "22",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
+} ,
+
+"p12" : {
+"rdt:name" : "homepage <- readLines(socket)",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "1.743",
+"rdt:scriptNum" : "0",
+"rdt:startLine" : "14",
+"rdt:startCol" : "1",
+"rdt:endLine" : "14",
+"rdt:endCol" : "29",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
+} ,
+
+"p13" : {
+"rdt:name" : "file.out <- file(\"home.html\", \"w+\")",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "1.811",
+"rdt:scriptNum" : "0",
+"rdt:startLine" : "15",
+"rdt:startCol" : "1",
+"rdt:endLine" : "15",
+"rdt:endCol" : "35",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
+} ,
+
+"p14" : {
+"rdt:name" : "writeLines(homepage, file.out)",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "1.816",
+"rdt:scriptNum" : "0",
+"rdt:startLine" : "34",
+"rdt:startCol" : "1",
+"rdt:endLine" : "34",
+"rdt:endCol" : "29",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
+} ,
+
+"p15" : {
+"rdt:name" : "file.in <- unz(\"foo.zip\", \"foo.txt\")",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "1.826",
+"rdt:scriptNum" : "0",
+"rdt:startLine" : "NA",
+"rdt:startCol" : "NA",
+"rdt:endLine" : "NA",
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
+} ,
+
+"p16" : {
+"rdt:name" : "unzipped <- readLines(file.in)",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "1.835",
+"rdt:scriptNum" : "0",
+"rdt:startLine" : "NA",
+"rdt:startCol" : "NA",
+"rdt:endLine" : "NA",
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
+} ,
+
+"p17" : {
+"rdt:name" : "file.out <- file(\"foo_copy.txt\", \"w+\")",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "1.895",
+"rdt:scriptNum" : "0",
+"rdt:startLine" : "NA",
+"rdt:startCol" : "NA",
+"rdt:endLine" : "NA",
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
+} ,
+
+"p18" : {
+"rdt:name" : "writeLines(unzipped, file.out)",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "1.901",
+"rdt:scriptNum" : "0",
+"rdt:startLine" : "NA",
+"rdt:startCol" : "NA",
+"rdt:endLine" : "NA",
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
+} ,
+
+"p19" : {
+"rdt:name" : "writeLines(\"foobar\", \"foobar.txt\")",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "1.913",
+"rdt:scriptNum" : "0",
+"rdt:startLine" : "NA",
+"rdt:startCol" : "NA",
+"rdt:endLine" : "NA",
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
+} ,
+
+"p20" : {
+"rdt:name" : "closeAllConnections()",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "1.92",
+"rdt:scriptNum" : "0",
+"rdt:startLine" : "NA",
+"rdt:startCol" : "NA",
+"rdt:endLine" : "NA",
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
+} ,
+
+"p21" : {
+"rdt:name" : "file.out <- file(\"asdf.txt\", \"w+\")",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "1.947",
+"rdt:scriptNum" : "0",
+"rdt:startLine" : "NA",
+"rdt:startCol" : "NA",
+"rdt:endLine" : "NA",
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
+} ,
+
+"p22" : {
+"rdt:name" : "writeLines(\"asdf\", file.out)",
+"rdt:type" : "Operation",
+"rdt:elapsedTime" : "1.952",
+"rdt:scriptNum" : "0",
+"rdt:startLine" : "NA",
+"rdt:startCol" : "NA",
+"rdt:endLine" : "NA",
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
+} ,
+
+"p23" : {
+"rdt:name" : "ConnectionTest.R",
+"rdt:type" : "Finish",
+"rdt:elapsedTime" : "1.957",
+"rdt:scriptNum" : "NA",
+"rdt:startLine" : "NA",
+"rdt:startCol" : "NA",
+"rdt:endLine" : "NA",
+"rdt:endCol" : "NA",
+"rdt:functionsCalled" : "[]",
+"rdt:packagesUsed" : "[]"
+} ,
+
+"environment" : {
+"rdt:name" : "environment",
+"rdt:architecture" : "x86_64",
+"rdt:operatingSystem" : "unix",
+"rdt:language" : "R",
+"rdt:rVersion" : "R version 3.4.2 (2017-09-28)",
+"rdt:script" : "[DIR]/ConnectionTest.R",
+"rdt:sourcedScripts" : ""
+,
+"rdt:scriptTimeStamp" : "2018-01-12T14.16.37EST",
+"rdt:workingDirectory" : "[DIR]",
+"rdt:ddgDirectory" : "[DIR]/ddg",
+"rdt:ddgTimeStamp" : "2018-01-12T15.31.28EST",
+"rdt:rdatatrackerVersion" : "2.27.0",
+"rdt:hashAlgorithm" : "md5",
+"rdt:installedPackages" : [
+	{"package" : "base", "version" : "3.4.2"},
+	{"package" : "datasets", "version" : "3.4.2"},
+	{"package" : "graphics", "version" : "3.4.2"},
+	{"package" : "grDevices", "version" : "3.4.2"},
+	{"package" : "methods", "version" : "3.4.2"},
+	{"package" : "RDataTracker", "version" : "2.27.0"},
+	{"package" : "stats", "version" : "3.4.2"},
+	{"package" : "utils", "version" : "3.4.2"}]
+}},
+"entity":{
+
+"d1" : {
+"rdt:name" : "file.in",
+"rdt:value" : "http://harvardforest.fas.harvard.edu/sites/harvardforest.fas.harvard.edu/files/weather/metsta.dat",
+"rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
+"rdt:type" : "Data",
+"rdt:scope" : "R_GlobalEnv",
+"rdt:fromEnv" : "FALSE",
+"rdt:hash" : "",
+"rdt:timestamp" : "",
+"rdt:location" : ""
+} ,
+
+"d2" : {
+"rdt:name" : "http://harvardforest.fas.harvard.edu/sites/harvardforest.fas.harvard.edu/files/weather/metsta.dat",
+"rdt:value" : "data/2-metsta.dat",
+"rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
+"rdt:type" : "URL",
+"rdt:scope" : "R_GlobalEnv",
+"rdt:fromEnv" : "FALSE",
+"rdt:hash" : "",
+"rdt:timestamp" : "2018-01-12T15.31.30EST",
+"rdt:location" : ""
+} ,
+
+"d3" : {
+"rdt:name" : "df",
+"rdt:value" : "data/3-df-PARTIAL.csv",
+"rdt:valType" : {"container":"data_frame", "dimension":[36907,18], "type":["numeric","numeric","numeric","numeric","numeric","numeric","numeric","numeric","numeric","numeric","numeric","numeric","numeric","numeric","numeric","numeric","numeric","numeric"]},
+"rdt:type" : "Snapshot",
+"rdt:scope" : "R_GlobalEnv",
+"rdt:fromEnv" : "FALSE",
+"rdt:hash" : "",
+"rdt:timestamp" : "2018-01-12T15.31.30EST",
+"rdt:location" : ""
+} ,
+
+"d4" : {
+"rdt:name" : "file.out",
+"rdt:value" : "test.dat",
+"rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
+"rdt:type" : "Data",
+"rdt:scope" : "R_GlobalEnv",
+"rdt:fromEnv" : "FALSE",
+"rdt:hash" : "",
+"rdt:timestamp" : "",
+"rdt:location" : ""
+} ,
+
+"d5" : {
+"rdt:name" : "close(file.out)",
+"rdt:value" : "data/5-test.dat",
+"rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
+"rdt:type" : "File",
+"rdt:scope" : "undefined",
+"rdt:fromEnv" : "FALSE",
+"rdt:hash" : "0f474a7f788dd2318e378c063f87f345",
+"rdt:timestamp" : "2018-01-12T15.31.31EST",
+"rdt:location" : "[DIR]/test.dat"
+} ,
+
+"d6" : {
+"rdt:name" : "socket",
+"rdt:value" : "->harvardforest.fas.harvard.edu:80",
+"rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
+"rdt:type" : "Data",
+"rdt:scope" : "R_GlobalEnv",
+"rdt:fromEnv" : "FALSE",
+"rdt:hash" : "",
+"rdt:timestamp" : "",
+"rdt:location" : ""
+} ,
+
+"d7" : {
+"rdt:name" : "->harvardforest.fas.harvard.edu:80",
+"rdt:value" : "->harvardforest.fas.harvard.edu:80",
+"rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
+"rdt:type" : "URL",
+"rdt:scope" : "R_GlobalEnv",
+"rdt:fromEnv" : "FALSE",
+"rdt:hash" : "",
+"rdt:timestamp" : "2018-01-12T15.31.31EST",
+"rdt:location" : ""
+} ,
+
+"d8" : {
+"rdt:name" : "homepage",
+"rdt:value" : "data/8-homepage.csv",
+"rdt:valType" : {"container":"vector", "dimension":[17], "type":["character"]},
+"rdt:type" : "Snapshot",
+"rdt:scope" : "R_GlobalEnv",
+"rdt:fromEnv" : "FALSE",
+"rdt:hash" : "",
+"rdt:timestamp" : "2018-01-12T15.31.31EST",
+"rdt:location" : ""
+} ,
+
+"d9" : {
+"rdt:name" : "file.out",
+"rdt:value" : "home.html",
+"rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
+"rdt:type" : "Data",
+"rdt:scope" : "R_GlobalEnv",
+"rdt:fromEnv" : "FALSE",
+"rdt:hash" : "",
+"rdt:timestamp" : "",
+"rdt:location" : ""
+} ,
+
+"d10" : {
+"rdt:name" : "file.in",
+"rdt:value" : "foo.zip:foo.txt",
+"rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
+"rdt:type" : "Data",
+"rdt:scope" : "R_GlobalEnv",
+"rdt:fromEnv" : "FALSE",
+"rdt:hash" : "",
+"rdt:timestamp" : "",
+"rdt:location" : ""
+} ,
+
+"d11" : {
+"rdt:name" : "foo.zip:foo.txt",
+"rdt:value" : "data/11-foo.zip",
+"rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
+"rdt:type" : "File",
+"rdt:scope" : "undefined",
+"rdt:fromEnv" : "FALSE",
+"rdt:hash" : "06f127a7a9ac088ae567c162d9e25f9d",
+"rdt:timestamp" : "2018-01-12T15.31.31EST",
+"rdt:location" : "[DIR]/foo.zip"
+} ,
+
+"d12" : {
+"rdt:name" : "unzipped",
+"rdt:value" : "\"foo\"",
+"rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
+"rdt:type" : "Data",
+"rdt:scope" : "R_GlobalEnv",
+"rdt:fromEnv" : "FALSE",
+"rdt:hash" : "",
+"rdt:timestamp" : "",
+"rdt:location" : ""
+} ,
+
+"d13" : {
+"rdt:name" : "file.out",
+"rdt:value" : "foo_copy.txt",
+"rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
+"rdt:type" : "Data",
+"rdt:scope" : "R_GlobalEnv",
+"rdt:fromEnv" : "FALSE",
+"rdt:hash" : "",
+"rdt:timestamp" : "",
+"rdt:location" : ""
+} ,
+
+"d14" : {
+"rdt:name" : "foobar.txt",
+"rdt:value" : "data/14-foobar.txt",
+"rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
+"rdt:type" : "File",
+"rdt:scope" : "undefined",
+"rdt:fromEnv" : "FALSE",
+"rdt:hash" : "042474ed6649d01d9d70829018333665",
+"rdt:timestamp" : "2018-01-12T15.31.31EST",
+"rdt:location" : "[DIR]/foobar.txt"
+} ,
+
+"d15" : {
+"rdt:name" : "closeAllConnections()",
+"rdt:value" : "data/15-home.html",
+"rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
+"rdt:type" : "File",
+"rdt:scope" : "undefined",
+"rdt:fromEnv" : "FALSE",
+"rdt:hash" : "b89742db9a8db300519cb40cc19efc39",
+"rdt:timestamp" : "2018-01-12T15.31.31EST",
+"rdt:location" : "[DIR]/home.html"
+} ,
+
+"d16" : {
+"rdt:name" : "closeAllConnections()",
+"rdt:value" : "data/16-foo_copy.txt",
+"rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
+"rdt:type" : "File",
+"rdt:scope" : "undefined",
+"rdt:fromEnv" : "FALSE",
+"rdt:hash" : "b89742db9a8db300519cb40cc19efc39",
+"rdt:timestamp" : "2018-01-12T15.31.31EST",
+"rdt:location" : "[DIR]/foo_copy.txt"
+} ,
+
+"d17" : {
+"rdt:name" : "file.out",
+"rdt:value" : "asdf.txt",
+"rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
+"rdt:type" : "Data",
+"rdt:scope" : "R_GlobalEnv",
+"rdt:fromEnv" : "FALSE",
+"rdt:hash" : "",
+"rdt:timestamp" : "",
+"rdt:location" : ""
+} ,
+
+"d18" : {
+"rdt:name" : "asdf.txt",
+"rdt:value" : "data/18-asdf.txt",
+"rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
+"rdt:type" : "File",
+"rdt:scope" : "undefined",
+"rdt:fromEnv" : "FALSE",
+"rdt:hash" : "4a30eba62c255201d39907f1191fc304",
+"rdt:timestamp" : "2018-01-12T15.31.31EST",
+"rdt:location" : "[DIR]/asdf.txt"
+}},
+"wasInformedBy":{
+
+"e1" : {
+"prov:informant" : "p1",
+"prov:informed" : "p2"
+} ,
+
+"e2" : {
+"prov:informant" : "p2",
+"prov:informed" : "p3"
+} ,
+
+"e4" : {
+"prov:informant" : "p3",
+"prov:informed" : "p4"
+} ,
+
+"e8" : {
+"prov:informant" : "p4",
+"prov:informed" : "p5"
+} ,
+
+"e10" : {
+"prov:informant" : "p5",
+"prov:informed" : "p6"
+} ,
+
+"e13" : {
+"prov:informant" : "p6",
+"prov:informed" : "p7"
+} ,
+
+"e16" : {
+"prov:informant" : "p7",
+"prov:informed" : "p8"
+} ,
+
+"e18" : {
+"prov:informant" : "p8",
+"prov:informed" : "p9"
+} ,
+
+"e20" : {
+"prov:informant" : "p9",
+"prov:informed" : "p10"
+} ,
+
+"e22" : {
+"prov:informant" : "p10",
+"prov:informed" : "p11"
+} ,
+
+"e24" : {
+"prov:informant" : "p11",
+"prov:informed" : "p12"
+} ,
+
+"e28" : {
+"prov:informant" : "p12",
+"prov:informed" : "p13"
+} ,
+
+"e30" : {
+"prov:informant" : "p13",
+"prov:informed" : "p14"
+} ,
+
+"e33" : {
+"prov:informant" : "p14",
+"prov:informed" : "p15"
+} ,
+
+"e35" : {
+"prov:informant" : "p15",
+"prov:informed" : "p16"
+} ,
+
+"e39" : {
+"prov:informant" : "p16",
+"prov:informed" : "p17"
+} ,
+
+"e41" : {
+"prov:informant" : "p17",
+"prov:informed" : "p18"
+} ,
+
+"e44" : {
+"prov:informant" : "p18",
+"prov:informed" : "p19"
+} ,
+
+"e46" : {
+"prov:informant" : "p19",
+"prov:informed" : "p20"
+} ,
+
+"e49" : {
+"prov:informant" : "p20",
+"prov:informed" : "p21"
+} ,
+
+"e51" : {
+"prov:informant" : "p21",
+"prov:informed" : "p22"
+} ,
+
+"e53" : {
+"prov:informant" : "p22",
+"prov:informed" : "p23"
+}},
+"wasGeneratedBy":{
+
+"e3" : {
+"prov:entity" : "d1",
+"prov:activity" : "p3"
+} ,
+
+"e7" : {
+"prov:entity" : "d3",
+"prov:activity" : "p4"
+} ,
+
+"e9" : {
+"prov:entity" : "d4",
+"prov:activity" : "p5"
+} ,
+
+"e15" : {
+"prov:entity" : "d5",
+"prov:activity" : "p7"
+} ,
+
+"e17" : {
+"prov:entity" : "d6",
+"prov:activity" : "p8"
+} ,
+
+"e27" : {
+"prov:entity" : "d8",
+"prov:activity" : "p12"
+} ,
+
+"e29" : {
+"prov:entity" : "d9",
+"prov:activity" : "p13"
+} ,
+
+"e34" : {
+"prov:entity" : "d10",
+"prov:activity" : "p15"
+} ,
+
+"e38" : {
+"prov:entity" : "d12",
+"prov:activity" : "p16"
+} ,
+
+"e40" : {
+"prov:entity" : "d13",
+"prov:activity" : "p17"
+} ,
+
+"e45" : {
+"prov:entity" : "d14",
+"prov:activity" : "p19"
+} ,
+
+"e47" : {
+"prov:entity" : "d15",
+"prov:activity" : "p20"
+} ,
+
+"e48" : {
+"prov:entity" : "d16",
+"prov:activity" : "p20"
+} ,
+
+"e50" : {
+"prov:entity" : "d17",
+"prov:activity" : "p21"
+} ,
+
+"e54" : {
+"prov:entity" : "d18",
+"prov:activity" : "p23"
+}},
+"used":{
+
+"e5" : {
+"prov:activity" : "p4",
+"prov:entity" : "d1"
+} ,
+
+"e6" : {
+"prov:activity" : "p4",
+"prov:entity" : "d2"
+} ,
+
+"e11" : {
+"prov:activity" : "p6",
+"prov:entity" : "d3"
+} ,
+
+"e12" : {
+"prov:activity" : "p6",
+"prov:entity" : "d4"
+} ,
+
+"e14" : {
+"prov:activity" : "p7",
+"prov:entity" : "d4"
+} ,
+
+"e19" : {
+"prov:activity" : "p9",
+"prov:entity" : "d6"
+} ,
+
+"e21" : {
+"prov:activity" : "p10",
+"prov:entity" : "d6"
+} ,
+
+"e23" : {
+"prov:activity" : "p11",
+"prov:entity" : "d6"
+} ,
+
+"e25" : {
+"prov:activity" : "p12",
+"prov:entity" : "d6"
+} ,
+
+"e26" : {
+"prov:activity" : "p12",
+"prov:entity" : "d7"
+} ,
+
+"e31" : {
+"prov:activity" : "p14",
+"prov:entity" : "d8"
+} ,
+
+"e32" : {
+"prov:activity" : "p14",
+"prov:entity" : "d9"
+} ,
+
+"e36" : {
+"prov:activity" : "p16",
+"prov:entity" : "d10"
+} ,
+
+"e37" : {
+"prov:activity" : "p16",
+"prov:entity" : "d11"
+} ,
+
+"e42" : {
+"prov:activity" : "p18",
+"prov:entity" : "d12"
+} ,
+
+"e43" : {
+"prov:activity" : "p18",
+"prov:entity" : "d13"
+} ,
+
+"e52" : {
+"prov:activity" : "p22",
+"prov:entity" : "d17"
+}}
+}

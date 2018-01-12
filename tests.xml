@@ -61,6 +61,7 @@
   - FunctionOriginTest
   - RMarkdownTest
   - DDGStatementTest
+  - ConnectionTest
 
   The target "source-tests" will run the following tests cases:
 
@@ -656,6 +657,18 @@
 	 	</antcall>
 	</target>
 
+  	<target name="ConnectionTest">
+  		<antcall target="run-regression-test">
+  			<param name="test-name" value="ConnectionTest" />
+  		</antcall>
+  	</target>
+
+	<target name="update-ConnectionTest">
+	  <antcall target="update-regression-expected">
+	  	<param name="test-name" value="ConnectionTest" />
+	 	</antcall>
+	</target>
+
     <target name="RMarkdownTest">
       <antcall target="run-regression-test-Rmd">
         <param name="test-name" value="RMarkdownTest" />
@@ -673,7 +686,7 @@
 		ScopeTest, ReturnTest, OddParameterTest, FunctionAnnotationTest,
 		ControlConstructTest, WarningTest, PlotTest, Plot2Test, NoDevOffTest, DataTypeTest,
 		HigherOrderFuncTest, AssignmentOperatorsTest, FunctionOriginTest,
-    RMarkdownTest, DDGStatementTest">
+    RMarkdownTest, DDGStatementTest, ConnectionTest">
 		<echo>
 
       ##############################################
