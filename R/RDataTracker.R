@@ -985,20 +985,20 @@ library(curl)
   return ("connection" %in% class(value))
 }
 
+#' Returns true if the connection is open
+#'
+#' @param conn a connection object
+#'
+#' @return true if the connection is open
 .ddg.get.connection.isopen <- function (conn) { 
   .ddg.get (".ddg.connections")[as.character(conn[1]), "isopen"] == "opened"
 }
 
-.ddg.get.open.connections <- function (conn) { 
-  #m[m[, "three"] == 11,]
+#' @return a matrix containing information about all open connections
+#' 
+.ddg.get.open.connections <- function () { 
   conns <- .ddg.get (".ddg.connections")
-  #conns.df <- as.data.frame(conns)
-  #openConns <- conns.df[, conns.df$isopen == "opened"]
-  #colnames(openConns) <- colnames(conns)
-  #return (openConns)
-  #m[m[,3] == 11,,drop=FALSE]
   openConns <- conns[conns [, "isopen"] == "opened",,drop=FALSE]
-  #colnames(openConns) <- colnames(conns)
   return (openConns)
 }
 
@@ -2183,16 +2183,7 @@ library(curl)
           # Add this file name to the list of files being read.
           #print (paste(".ddg.find.files: checking ", file.name))
           if (!is.null(file.name)) { 
-            #if (is.character(file.name)) {
-              #print ("Adding file")
               unique (c (file.name, funcs))
-            #}
-            #else if (.ddg.is.connection(file.name)){
-              # If it is a connection, add the name of the thing connected to
-              #print(paste (".ddg.find.files: found connection, file.name =", file.name))
-              
-              #unique (c (.ddg.get.connection.description(file.name), funcs))
-            #}
           }
         }
 
@@ -4205,10 +4196,13 @@ library(curl)
   return (dpfile.out)
 }
 
-# .ddg.file.node creates a node of type File. File nodes are used
-# for files written to the DDG directory by capturing output from
-# the script or by copying a file that is written by the script.
-# Returns the path where the file referenced by the node is stored.
+#' Creates a node of type URL. URL nodes are used
+#' for URLs and also for server connections.
+#' 
+#' @param original the actual url or server connection description
+#' @param saved the name of the file where a copy has been saved
+#'
+#' @return the path where the file referenced by the node is stored.
 
 # fname - path and name of original file.
 # dname - name of data node.
@@ -6327,6 +6321,8 @@ ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE) {
         error = function (e) print(e))
    }
    
+   # If there are any connections still open when the script ends,
+   # create nodes and edges for them.
    .ddg.create.file.close.nodes.and.edges (allOpen = TRUE)
 
   # Delete temporary files.

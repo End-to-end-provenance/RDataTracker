@@ -1485,10 +1485,12 @@ null.pos <- function() {
   return (TRUE %in% (lapply (writing.functions, function(fun.name) {return (.ddg.has.call.to(parsed.statement, fun.name))})))
 }
 
-# Returns true if the statement contains a call to a function that closes a file
-#
-# parsed.statement - a parse tree
-#
+#' Returns true if the statement contains a call to a function that closes a file
+#'
+#' @param parsed.statement a parse tree
+#'
+#' @return true if the statement contains a function that closes a file or connection.
+#'
 .ddg.closes.file <- function (parsed.statement) {
   .ddg.file.close.functions.df <- .ddg.get (".ddg.file.close.functions.df")
   closing.functions <- .ddg.file.close.functions.df$function.names
