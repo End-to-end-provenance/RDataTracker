@@ -107,7 +107,7 @@ setClass("DDGStatement",
         is.breakpoint = "logical", # True if a breakpoint has been set for this statement
         contained = "list",        # If this is a function declaration, this will be a list of
                                    # DDGStatement objects for the statements it contains.
-        functions.called = "character"  # A list of the names of the function calls in the statement.
+		functions.called = "list"	# A list of the statement's function calls and potential function calls.]
       )
 )
 
@@ -211,35 +211,135 @@ setMethod ("initialize",
       #print(paste ("annotated statement", .Object@annotated))
       
       # find the list of the names of the function calls in the statement
-      functions <- unique(find.calls(.Object@parsed[[1]]))
-      
-      if( is.null(functions) )
-        .Object@functions.called <- character(0)
-      else
-        .Object@functions.called <- functions
+		.Object@functions.called <- .ddg.find.calls( .Object@parsed[[1]] )
       
       return(.Object)
     }
 )
 
-
-# A recursive function which finds and returns a character vector of the names of the 
-# function calls in a statement.
+# Finds the function calls and potential function calls in an expression.
+# This function wraps the last two vectors in the returned value of 
+# .ddg.find.calls.rec into a data frame, keeping the other two vectors the same,
+# before returning the resulting list.
 #
-# @param obj The parse tree for a statement
-# @return A character vector of the names of the function calls in the given statement.
+# @param expr The parse tree for the statement
+#
+# @return
+#	[1]: functions from unknown libraries (character vector)
+#	[2]: variable names, which may refer to functions (character vector)
+#	[3]: known function calls with their respective libraries (data frame)
 
-find.calls <- function(obj) 
+.ddg.find.calls <- function(expr) 
 {
-  if( is.call(obj) && ! .ddg.is.functiondecl(obj) )
+	# The returned list of .ddg.find.calls.rec(expr) contains:
+	# 	[1]: functions from unknown libraries
+	# 	[2]: variable names, which may refer to functions
+	# 	[3]: functions with known libraries
+	# 	[4]: libraries which the functions in [3] are from
+	result <- .ddg.find.calls.rec(expr)
+
+	# [3] and [4] of the returned value of .ddg.find.calls.rec(expr) are paired.
+	# As this function wraps [3] and [4] into a data frame before returning the resulting list, 
+	# if [3] is null (the statement does not contain `::` or `:::` operators),
+	# then we can just return the result from the recursive function without [4].
+	if( is.null(result[[3]]) )
+		return( result[-4] )
+	
+	# wraps [3] and [4] into a data frame, changing the column names to match
+	# the column names for ddg.function.nodes to enable rbind.
+	fn.known.lib <- data.frame( result[[3]] , result[[4]] , stringsAsFactors = FALSE)
+	names(fn.known.lib) <- c("ddg.fun","ddg.lib")
+	
+	return( list(result[[1]], result[[2]], unique(fn.known.lib)) )
+}
+
+
+# The recursive helper function for .ddg.find.calls.
+# This function WILL FAIL if the user overwrites `::` or `:::`
+#
+# @return A named list of the following character vectors:
+#		  [1]: functions from unknown libraries
+#		  [2]: variable names, which may refer to functions
+#		  [3]: functions with known libraries
+#		  [4]: libraries which the functions in [3] are from
+
+.ddg.find.calls.rec <- function(expr)
+{
+	# base case: a name or a constant
+	if( ! is.call(expr) || .ddg.is.functiondecl(expr) )
+	{
+		elem <- toString(expr)
+		
+		# parameter names could be "", as is the case in a[2, ]
+		# the if branch places such function parameter names that are not ""
+		# into the var.names list for checking if they are function names at runtime.
+		if( is.name(expr) && ! identical(elem, "") )
+			return( list(NULL, elem, NULL, NULL) )
+		else
+			return( list(NULL, NULL, NULL, NULL) )
+	}
+	
+	# expr is a call && expr[[1]] is a call: recurse on all parts of expr
+	if( is.call(expr[[1]]) )
+	{
+		recursion.result <- lapply(expr, .ddg.find.calls.rec)
+		
+		fn.unknown.lib <- unlist( mapply(`[`, recursion.result, 1) )
+		var.names <- unlist( mapply(`[`, recursion.result, 2) )
+		
+		fn.known.lib <- unlist( mapply(`[`, recursion.result, 3) )
+		libraries <- unlist( mapply(`[`, recursion.result, 4) )
+	}
+	else
+	{
+		elem1 <- toString(expr[[1]])
+
+		# general case for `::` or `:::`
+		# e.g. stringi::stri_join
+		# The parse tree is:  `::`, stringi, stri_join
+		if( identical(elem1, "::") || identical(elem1, ":::") )
+{
+			fn.unknown.lib <- elem1
+			var.names <- NULL
+			
+			fn.known.lib <- toString(expr[[3]])
+			libraries <- toString(expr[[2]])
+		}
+		else 	# general case
   {
-    function.name <- toString(obj[[1]])
-    call.list <- unlist( sapply(obj, find.calls, USE.NAMES=FALSE) )
+			# If expr is a call, expr[[1]] is not a call and not `::` or `:::`,
+			# then expr[[1]] is a function name.
+			#
+			# This recurses on all parts of expr but the first element, then
+			# appending expr[[1]] to the list of functions with unknown libraries
+			# (fn.unknown.lib) after combining the result of the recursive calls.
+			#
+			# e.g. 
+			#	let expr be 'as.character(a)'
+			#	expr is a call, its parse tree is:  as.character, a
+			#	expr[[1]], as.character, is the function name (not a call)
+			
+			# edge case: function call with no parameters
+			if( is.null(expr[-1]) )
+				return( list(elem1, NULL, NULL, NULL) )
+			
+			recursion.result <- lapply(expr[-1], .ddg.find.calls.rec)
+			
+			fn.unknown.lib <- unlist( mapply(`[`, recursion.result, 1) )
+			fn.unknown.lib <- append(elem1, fn.unknown.lib)
+			
+			var.names <- unlist( mapply(`[`, recursion.result, 2) )
     
-    return( c(function.name, call.list) )
+			fn.known.lib <- unlist( mapply(`[`, recursion.result, 3) )
+			libraries <- unlist( mapply(`[`, recursion.result, 4) )
   }
 }
 
+	fn.unknown.lib <- unique(fn.unknown.lib)
+	var.names <- unique(var.names)
+	
+	return( list(fn.unknown.lib, var.names, fn.known.lib, libraries) )
+}
 
 # A special null value for when source code position information is missing.
 null.pos <- function() {
