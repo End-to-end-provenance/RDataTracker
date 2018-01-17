@@ -54,6 +54,7 @@ library(jsonlite)
   
   longpath <- paste0(getwd(), substring(.ddg.path(),2),"/ddg.json")
   .ddg.set("ddg.hashtable", rbind(.ddg.get("ddg.hashtable"), c(dscriptpath, dloc, longpath, paste(.ddg.path(), dvalue, sep="/"), ddg.dnum, dhash, dhash.algorithm, drw, dtime, dvalue), stringsAsFactors = FALSE))
+  return (ddg.data.nodes)
 }
 
 #' Calculate the hash value for the file
@@ -69,7 +70,7 @@ library(jsonlite)
   # other non-text files with internal timestamps. This could also cause these files
   # to sync incorrectly in the workflow, but given that reading in a pdf file is unlikely,
   # this should not be an overly large issue.
-  dhash <- digest(dname, algo=.ddg.get(".ddg.hash.algorithm"), file = TRUE, errormode="silent")
+  dhash <- digest(dname, algo=.ddg.get(".ddg.hash.algorithm"))
   if (is.null(dhash)) {
     dhash <- ""
   }
