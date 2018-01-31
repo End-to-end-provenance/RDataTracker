@@ -94,6 +94,7 @@ ddg.json <- function()
 	calls <- calls[ order(calls$ddg.cnum) , ]
 	rownames(calls) <- calls$ddg.cnum
 	
+	
 	# PRINT TO JSON: func2proc
 	json$used.f2p <- .ddg.json.func2proc( calls , node.prefix )
 	
@@ -105,6 +106,9 @@ ddg.json <- function()
 	combined.json <- .ddg.json.combine( json )
 	return( combined.json )
 }
+
+
+# --- HELPER FUNCTIONS ------------------------- #
 
 # forms and returns the json string for the prefix node
 .ddg.json.prefix <- function()
@@ -268,7 +272,6 @@ ddg.json <- function()
 	return( json )
 }
 
-
 # no idea what this does (can't find an example), 
 # but it doesn't look prov-json compliant
 # tmp fix: change entire thing to a string
@@ -344,9 +347,8 @@ ddg.json <- function()
 # forms and returns the json string for function nodes
 .ddg.json.func <- function( nodes )
 {
-	# extract names of functions only
+	# extract names of functions
 	nodes <- nodes[ , "ddg.fun"]
-	nodes <- unique(nodes)
 	
 	# convert to data frame
 	nodes <- data.frame( nodes , stringsAsFactors = FALSE )
@@ -449,8 +451,9 @@ ddg.json <- function()
 	nodes <- subset( nodes , select = c("ddg.lnum", "ddg.fnum") )
 	
 	# extract unique rows
-	# order by fnum, then lnum
 	nodes <- unique(nodes)
+	
+	# order by fnum, then lnum
 	nodes <- nodes[ order(nodes$ddg.fnum) , ]
 	nodes <- nodes[ order(nodes$ddg.lnum) , ]
 	
@@ -574,7 +577,7 @@ ddg.json <- function()
 	json <- sub( '^\\{' , '' , json )
 	json <- sub( '}\n$' , '' , json )
 	
-	return(json)
+	return( json )
 }
 
 # forms a first-level prov-json node
