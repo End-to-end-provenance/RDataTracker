@@ -1190,6 +1190,9 @@ library(jsonlite)
     .ddg.set( "ddg.function.nodes" , ddg.function.nodes )
   }
   
+  # EDITS
+  #print(.ddg.function.nodes())
+  
   # Output procedure node.
   .ddg.output.procedure.node(ptype, pname, pvalue, auto.created, ptime, snum, pos, pfunctions)
 
@@ -6007,7 +6010,9 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
 
 ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = NULL, enable.console = TRUE, annotate.inside.functions = TRUE, first.loop = 1, max.loops = 1, max.snapshot.size = 10, debug = FALSE, save.debug = FALSE, display = FALSE, 
                     save.hashtable = TRUE, hash.algorithm="md5") {
-
+  
+  #print("hello world")
+  
   # Initiate ddg.
   ddg.init(r.script.path, ddgdir, overwrite, enable.console, annotate.inside.functions, first.loop, max.loops, max.snapshot.size, save.hashtable, hash.algorithm)
 
@@ -6045,7 +6050,10 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
         }
       }
   )
-
+  
+  #print("hello world 2")
+  #print(.ddg.function.nodes())
+  
   invisible()
 }
 
