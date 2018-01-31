@@ -138,6 +138,9 @@ ddg.print.json <- function( indent = 4 )
 					select = c(ddg.name, ddg.type, ddg.time, ddg.snum, 
 					ddg.startLine, ddg.startCol, ddg.endLine, ddg.endCol))
 	
+	# escape double quotes in ddg.name, if any
+	nodes$ddg.name <- sapply( nodes$ddg.name , .ddg.json.escape.quotes )
+	
 	# column names
 	col.names <- c( "rdt:name", "rdt:type", "rdt:elapsedTime", 
 					"rdt:scriptNum", "rdt:startLine", "rdt:startCol", 
@@ -161,6 +164,9 @@ ddg.print.json <- function( indent = 4 )
 	nodes <- subset(nodes, ddg.num > 0,
 					select = c(ddg.name, ddg.value, ddg.val.type, ddg.type,
 					ddg.scope, ddg.from.env, ddg.hash, ddg.time, ddg.loc))
+	
+	# escape double quotes in ddg.val.type, if any
+	nodes$ddg.val.type <- sapply( nodes$ddg.val.type , .ddg.json.escape.quotes )
 	
 	# column names
 	col.names <- c( "rdt:name", "rdt:value", "rdt:valType", 
@@ -506,6 +512,11 @@ ddg.print.json <- function( indent = 4 )
 
 
 # UTILS
+
+.ddg.json.escape.quotes <- function( string )
+{
+	return( gsub('\"', '\\\\"', string) )
+}
 
 
 .ddg.json.dataframe <- function( dataframe , col.names , obj.prefix , comment = NULL , indent = 4 )
