@@ -1,5 +1,12 @@
 
-ddg.print.json <- function( indent = 4 )
+ddg.json.write <- function() 
+{
+	fileout <- paste(.ddg.path(), "/ddg.json", sep="")
+	json <- ddg.json()
+	write(json, fileout)
+}
+
+ddg.json <- function( indent = 4 )
 {
 	library(jsonlite)
 	
@@ -509,6 +516,17 @@ ddg.print.json <- function( indent = 4 )
 	return( combined )
 }
 
+# ddg.installedpackages() returns information on packages installed at the time of execution
+# and their versions.
+.ddg.installedpackages <- function()
+{
+	packages <- devtools::session_info()
+	packages <- packages [[2]]
+	installed <- packages[packages[,2] == "*",]
+	installed <- installed[ ,c(1,3)]
+	return(installed)
+}
+
 
 
 # UTILS
@@ -577,7 +595,7 @@ ddg.print.json <- function( indent = 4 )
 	if( ! last.node )
 		node <- sub( '\n$' , '\n    },\n\n' , node )
 	else
-		node <- sub( '\n$' , '\n    }\n}\n' , node )	# ends the json file
+		node <- sub( '\n$' , '\n    }\n}' , node )	# ends the json file
 	
 	return( node )
 }
