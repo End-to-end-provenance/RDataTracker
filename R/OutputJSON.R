@@ -510,20 +510,26 @@ ddg.print.json <- function( indent = 4 )
 
 .ddg.json.dataframe <- function( dataframe , col.names , obj.prefix , comment = NULL , indent = 4 )
 {
+	# PROCESS TABLE TO PREPARE FOR PRINTING
 	# change column names
 	colnames(dataframe) <- col.names
 	
-	# change row names
+	# change row numbers
 	row.names <- c( 1 : nrow(dataframe) )
+	
+	# split data frame into list of rows
+	dataframe <- split( dataframe , as.numeric(row.names) )
+	
+	# change element names for list to include object's prefix
 	row.names <- mapply( paste , obj.prefix , row.names , sep='' , USE.NAMES=FALSE )
-	rownames(dataframe) <- row.names
+	names(dataframe) <- row.names
 	
 	# convert to json
-	# NOTE THIS MAKES THE NODES OUT OF ORDER - SPLIT FUNCTION
-	json <- toJSON( split(dataframe, row.names) , na = "string" )
+	json <- toJSON( dataframe , na = "string" )
 	json <- prettify(json, indent = indent)
 	
-	# process json
+	
+	# PROCESS JSON INTO CORRECT FORMAT
 	# add comment line to top of block, if any
 	if( ! is.null(comment) )
 	{
