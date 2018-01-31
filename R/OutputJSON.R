@@ -1,4 +1,7 @@
+# @author Elizabeth Fong
+# @version January 2018
 
+# writes json out to file
 ddg.json.write <- function() 
 {
 	fileout <- paste(.ddg.path(), "/ddg.json", sep="")
@@ -6,20 +9,14 @@ ddg.json.write <- function()
 	write(json, fileout)
 }
 
-ddg.json <- function( indent = 4 )
+# forms the prov-json string
+ddg.json <- function()
 {
 	library(jsonlite)
 	
-	data.nodes <<- subset( .ddg.data.nodes() , ddg.num > 0 )
-	proc.nodes <<- subset( .ddg.proc.nodes() , ddg.num > 0 )
-	edges <<- subset( .ddg.edges() , ddg.num > 0 )
-	
-	function.calls <<- .ddg.function.nodes()
-	libraries <<- .ddg.installedpackages()
-	
-	
 	node.prefix <- "rdt:"
 	
+	# this list is a container for each separate part that forms the json string
 	json <- list( "prefix" = NA ,
 				  "activity" = NA ,
 				  "entity.data" = NA , 
@@ -33,40 +30,37 @@ ddg.json <- function( indent = 4 )
 				  "hadMember" = NA )
 	
 	# prefix
-	json$prefix <- .ddg.json.prefix( indent )
+	json$prefix <- .ddg.json.prefix()
 	
 	# activity (proc nodes)
-	json$activity <- .ddg.json.proc( indent )
+	json$activity <- .ddg.json.proc()
 	
 	# entity: data nodes
-	json$entity.data <- .ddg.json.data( indent )
+	json$entity.data <- .ddg.json.data()
 	
 	# entity: environment
-	json$entity.env <- .ddg.json.env( indent )
+	json$entity.env <- .ddg.json.env()
 	
 	
 	# EDGE TABLE NODES
 	edges <- subset( .ddg.edges() , ddg.num > 0 )
 	
 	# wasInformedBy (proc2proc)
-	json$wasInformedBy <- .ddg.json.proc2proc( edges , node.prefix , indent = indent )
+	json$wasInformedBy <- .ddg.json.proc2proc( edges , node.prefix )
 	
 	# wasGeneratedBy (proc2data)
-	json$wasGeneratedBy <- .ddg.json.proc2data( edges , node.prefix , indent = indent )
+	json$wasGeneratedBy <- .ddg.json.proc2data( edges , node.prefix )
 	
 	# used: data2proc
-	json$used.d2p <- .ddg.json.data2proc( edges , node.prefix , indent = indent )
+	json$used.d2p <- .ddg.json.data2proc( edges , node.prefix )
 	
-	
-	# LIBRARY & FUNCTION NODES
 	
 	# LIBRARY NODES - change row numbers
 	libraries <- .ddg.installedpackages()
 	rownames(libraries) <- c( 1 : nrow(libraries) )
 	
 	# PRINT TO JSON - LIBRARY NODES
-	libraries <<- libraries
-	json$entity.lib <- .ddg.json.lib( libraries , indent = indent )
+	json$entity.lib <- .ddg.json.lib( libraries )
 	
 	
 	# FUNCTION NODES - get function numbers
@@ -78,8 +72,7 @@ ddg.json <- function( indent = 4 )
 	rownames(functions) <- c( 1 : nrow(functions) )
 	
 	# PRINT TO JSON - FUNCTION NODES
-	functions <<- functions
-	json$entity.func <- .ddg.json.func( functions , indent = indent )
+	json$entity.func <- .ddg.json.func( functions )
 	
 	
 	# MERGE TABLES: function calls, functions, libraries
@@ -102,20 +95,19 @@ ddg.json <- function( indent = 4 )
 	rownames(calls) <- calls$ddg.cnum
 	
 	# PRINT TO JSON: func2proc
-	json$used.f2p <- .ddg.json.func2proc( calls , node.prefix , indent = indent )
+	json$used.f2p <- .ddg.json.func2proc( calls , node.prefix )
 	
 	# PRINT TO JSON: func2lib
-	json$hadMember <- .ddg.json.lib2func( calls , node.prefix , indent = indent )
+	json$hadMember <- .ddg.json.lib2func( calls , node.prefix )
 	
-	json <<- json
 	
 	# COMBINE INTO COMPLETE JSON
-	combined.json <- .ddg.json.combine( json , indent = indent )
+	combined.json <- .ddg.json.combine( json )
 	return( combined.json )
 }
 
-
-.ddg.json.prefix <- function( indent = 4 )
+# forms and returns the json string for the prefix node
+.ddg.json.prefix <- function()
 {
 	# the contents of the prefix node
 	prefix <- list("http://www.w3.org/ns/prov#", "http://rdatatracker.org/")
@@ -128,7 +120,10 @@ ddg.json <- function( indent = 4 )
 	# format to json
 	# with proper indentation, without sq brackets around urls
 	json <- toJSON(prefix, auto_unbox = TRUE)
-	json <- prettify(json, indent = indent)
+	json <- prettify(json, indent = 4)
+	
+	# change '    ' into a tab (\t)
+	json <- gsub( '    ' , '\t' , json )
 	
 	# edit end close braces so to enable appending
 	json <- sub( '\n}\n$' , ',\n\n' , json )
@@ -136,8 +131,8 @@ ddg.json <- function( indent = 4 )
 	return(json)
 }
 
-
-.ddg.json.proc <- function( indent = 4 )
+# forms and returns the json string for the procedure nodes
+.ddg.json.proc <- function()
 {
 	# extract nodes and required columns
 	nodes <- .ddg.proc.nodes()
@@ -154,17 +149,16 @@ ddg.json <- function( indent = 4 )
 					"rdt:endLine", "rdt:endCol" )
 	
 	# convert to json
-	json <- .ddg.json.dataframe ( nodes , col.names , 'p' , 
-										comment = "procedure nodes" , 
-										indent = indent )
+	json <- .ddg.json.dataframe( nodes , col.names , 'p' , comment = "procedure nodes" )
 	
 	# form activity node
-	json <- .ddg.json.formNode( "activity" , json , last.node = FALSE , indent = indent )
+	json <- .ddg.json.formNode( "activity" , json , last.node = FALSE )
 	
 	return( json )
 }
 
-.ddg.json.data <- function( indent = 4 )
+# forms and returns the json string for the data nodes
+.ddg.json.data <- function()
 {
 	# extract nodes and required columns
 	nodes <- .ddg.data.nodes()
@@ -181,9 +175,7 @@ ddg.json <- function( indent = 4 )
 					"rdt:MD5hash", "rdt:timestamp", "rdt:location" )
 	
 	# convert to json
-	json <- .ddg.json.dataframe ( nodes , col.names , 'd' , 
-										comment = "data nodes" ,
-										indent = indent )
+	json <- .ddg.json.dataframe( nodes , col.names , 'd' , comment = "data nodes" )
 	
 	# add comma and newline to last node for combining
 	json <- sub( '\n$' , ',\n\n' , json )
@@ -191,7 +183,8 @@ ddg.json <- function( indent = 4 )
 	return( json )
 }
 
-.ddg.json.env <- function( indent = 4 )
+# forms and returns the json string for the environment node
+.ddg.json.env <- function()
 {
 	# GET CONTENT FOR NODE
 	fields <- list( "rdt:name" = "environment" ,
@@ -255,16 +248,19 @@ ddg.json <- function( indent = 4 )
 	
 	# convert to json
 	json <- toJSON( fields , auto_unbox = TRUE )
-	json <- prettify( json , indent = indent )
+	json <- prettify( json , indent = 4 )
+	
+	# convert '    ' into tab
+	json <- gsub( '    ' , '\t' , json )
 	
 	# remove top brace, add comment
-	json <- sub( '^\\{' , '\n    // environment' , json )
+	json <- sub( '^\\{' , '\n\t// environment' , json )
 	
 	# remove bottom brace, add comma to end of node
 	json <- sub( '\n}\n$' , ',' , json )
 	
-	# indent by 1 level
-	json <- gsub( '\n' , '\n    ' , json )
+	#by 1 level
+	json <- gsub( '\n' , '\n\t' , json )
 	
 	# add 2 newlines to end of node for appending
 	json <- sub( ',$' , ',\n\n' , json )
@@ -297,21 +293,18 @@ ddg.json <- function( indent = 4 )
 	return(output)
 }
 
-
-
-.ddg.json.lib <- function( nodes , indent = 4 )
+# forms and returns the json string for the library nodes
+.ddg.json.lib <- function( nodes )
 {
 	# change col names
 	col.names <- c( "name" , "version" )
 	
 	# convert to json
-	json <- .ddg.json.dataframe ( nodes , col.names , 'l' , 
-										comment = "library nodes - prov collections" ,
-										indent = indent )
+	json <- .ddg.json.dataframe( nodes , col.names , 'l' , comment = "library nodes - prov collections" )
 	
 	# append prov:type to json
-	prov.type <- .ddg.json.collection( indent = indent )
-	json <- gsub( '\n        }' , prov.type , json )
+	prov.type <- .ddg.json.collection()
+	json <- gsub( '\n\t\t}' , prov.type , json )
 	
 	# add comma and newline to last node for combining
 	json <- sub( '\n$' , ',\n\n' , json )
@@ -319,7 +312,8 @@ ddg.json <- function( indent = 4 )
 	return( json )
 }
 
-.ddg.json.collection <- function( indent = 4 )
+# forms and returns the json string for the type node for a collection
+.ddg.json.collection <- function()
 {
 	prov.type <- list("prov:Collection", "xsd:QName")
 	names(prov.type) <- c("$", "type")
@@ -330,13 +324,16 @@ ddg.json <- function( indent = 4 )
 	
 	# convert  to json
 	json <- toJSON(prov.type, auto_unbox = TRUE)
-	json <- prettify(json, indent = indent)
+	json <- prettify(json, indent = 4)
+	
+	# convert '    ' to tab
+	json <- gsub( '    ' , '\t' , json )
 	
 	# remove newline at the end
 	json <- sub( '\n$' , '' , json )
 	
-	# indent 2 levels
-	json <- gsub( '\n' , '\n        ' , json )
+	#2 levels
+	json <- gsub( '\n' , '\n\t\t' , json )
 	
 	# change first `{` to a `,` character for appending to library nodes
 	json <- sub( '^\\{' , ',' , json )
@@ -344,7 +341,8 @@ ddg.json <- function( indent = 4 )
 	return( json )
 }
 
-.ddg.json.func <- function( nodes , indent = 4 )
+# forms and returns the json string for function nodes
+.ddg.json.func <- function( nodes )
 {
 	# extract names of functions only
 	nodes <- nodes[ , "ddg.fun"]
@@ -354,13 +352,13 @@ ddg.json <- function( indent = 4 )
 	nodes <- data.frame( nodes , stringsAsFactors = FALSE )
 	
 	# convert to json
-	json <- .ddg.json.dataframe ( nodes , "name" , 'f' , 
-										comment = "function nodes" ,
-										indent = indent )
+	json <- .ddg.json.dataframe( nodes , "name" , 'f' , comment = "function nodes" )
+	
 	return( json )
 }
 
-.ddg.json.proc2proc <- function( edges , prefix , indent = 4 )
+# forms and returns the json string for nodes representing procedure-to-procedure edges
+.ddg.json.proc2proc <- function( edges , prefix )
 {
 	# extract procedure-to-procedure edges, where ddg.type is 'cf' (control flow)
 	edges <- subset(edges, ddg.type == "cf", select = c(ddg.from, ddg.to))
@@ -373,17 +371,16 @@ ddg.json <- function( indent = 4 )
 	col.names <- c("prov:informant", "prov:informed")
 	
 	# convert to json
-	json <- .ddg.json.dataframe ( edges , col.names , 'pp' , 
-										comment = "procedure-to-procedure edges" ,
-										indent = indent )
+	json <- .ddg.json.dataframe( edges , col.names , 'pp' , comment = "procedure-to-procedure edges" )
 	
 	# form wasInformedBy node
-	json <- .ddg.json.formNode( "wasInformedBy" , json , last.node = FALSE , indent = indent )
+	json <- .ddg.json.formNode( "wasInformedBy" , json , last.node = FALSE )
 	
 	return( json )
 }
 
-.ddg.json.proc2data <- function( edges , prefix , indent = 4 )
+# forms and returns the json string for nodes representing procedure-to-data edges
+.ddg.json.proc2data <- function( edges , prefix )
 {
 	# extract procedure-to-data edges, where ddg.type is 'df.out' (data flow out)
 	edges <- subset(edges, ddg.type == "df.out", select = c(ddg.from, ddg.to))
@@ -396,17 +393,16 @@ ddg.json <- function( indent = 4 )
 	col.names <- c("prov:activity", "prov:entity")
 	
 	# convert to json
-	json <- .ddg.json.dataframe ( edges , col.names , 'pd' , 
-										comment = "procedure-to-data edges" ,
-										indent = indent )
+	json <- .ddg.json.dataframe( edges , col.names , 'pd' , comment = "procedure-to-data edges" )
 	
 	# form wasGeneratedBy node
-	json <- .ddg.json.formNode( "wasGeneratedBy" , json , last.node = FALSE , indent = indent )
+	json <- .ddg.json.formNode( "wasGeneratedBy" , json , last.node = FALSE )
 	
 	return( json )
 }
 
-.ddg.json.data2proc <- function( edges , prefix , indent = 4 )
+# forms and returns the json string for nodes representing data-to-procedure edges
+.ddg.json.data2proc <- function( edges , prefix )
 {
 	# extract data-to-procedure edges, where ddg.type is 'df.in' (data flow in)
 	edges <- subset(edges, ddg.type == "df.in", select = c(ddg.from, ddg.to))
@@ -419,9 +415,7 @@ ddg.json <- function( indent = 4 )
 	col.names <- c("prov:entity", "prov:activity")
 	
 	# convert to json
-	json <- .ddg.json.dataframe ( edges , col.names , 'dp' , 
-										comment = "data-to-procedure edges" ,
-										indent = indent )
+	json <- .ddg.json.dataframe( edges , col.names , 'dp' , comment = "data-to-procedure edges" )
 	
 	# add comma and newline to last node for combining
 	json <- sub( '\n$' , ',\n\n' , json )
@@ -429,7 +423,8 @@ ddg.json <- function( indent = 4 )
 	return( json )
 }
 
-.ddg.json.func2proc <- function( nodes , prefix , indent = 4 )
+# forms and returns the json string for nodes representing function-to-procedure edges
+.ddg.json.func2proc <- function( nodes , prefix )
 {
 	# extract columns
 	edges <- subset( nodes , select = c("ddg.fnum", "ddg.pnum") )
@@ -442,13 +437,13 @@ ddg.json <- function( indent = 4 )
 	col.names <- c( "prov:entity" , "prov:activity" )
 	
 	# convert to json
-	json <- .ddg.json.dataframe ( edges , col.names , 'fp' , 
-										comment = "function-to-procedure edges" ,
-										indent = indent )
+	json <- .ddg.json.dataframe( edges , col.names , 'fp' , comment = "function-to-procedure edges" )
+	
 	return( json )
 }
 
-.ddg.json.lib2func <- function( nodes , prefix , indent = 4 )
+# forms and returns the json string for nodes linking functions to their libraries
+.ddg.json.lib2func <- function( nodes , prefix )
 {
 	# extract columns
 	nodes <- subset( nodes , select = c("ddg.lnum", "ddg.fnum") )
@@ -467,29 +462,27 @@ ddg.json <- function( indent = 4 )
 	col.names <- c( "prov:collection" , "prov:entity" )
 	
 	# convert to json
-	json <- .ddg.json.dataframe ( nodes , col.names , 'm' , 
-										comment = "groups function nodes with their library nodes" ,
-										indent = indent )
+	json <- .ddg.json.dataframe( nodes , col.names , 'm' , comment = "groups function nodes with their library nodes" )
 	
 	# form hadMember node
-	json <- .ddg.json.formNode( "hadMember" , json , last.node = TRUE , indent = indent )
+	json <- .ddg.json.formNode( "hadMember" , json , last.node = TRUE )
 	
 	return( json )
 }
 
-
-.ddg.json.combine <- function( json , indent = 4 )
+# combines all json parts into 1 complete prov-json string
+.ddg.json.combine <- function( json )
 {
 	# entity: merge content & wrap into node
 	entity.1 <- sub( '\n$' , json$entity.env , json$entity.data )
 	entity.2 <- sub( '\n$' , json$entity.func , json$entity.lib )
 	
 	entity <- sub( '\n$' , entity.2 , entity.1 )
-	entity <- .ddg.json.formNode( "entity" , entity , last.node = FALSE , indent = indent )
+	entity <- .ddg.json.formNode( "entity" , entity , last.node = FALSE )
 	
 	# used: merge content & wrap into node
 	used <- sub( '\n$' , json$used.f2p , json$used.d2p )
-	used <- .ddg.json.formNode( "used" , used , last.node = FALSE , indent = indent )
+	used <- .ddg.json.formNode( "used" , used , last.node = FALSE )
 	
 	
 	# combine: prefix & activity nodes
@@ -511,33 +504,31 @@ ddg.json <- function( indent = 4 )
 	
 	# COMBINE ALL ELEMENTS & RETURN
 	combined <- sub( '\n$' , combined.2 , combined.1 )
-	
-	json.full <<- combined
 	return( combined )
 }
 
-# ddg.installedpackages() returns information on packages installed at the time of execution
-# and their versions.
+# ddg.installedpackages() returns information on packages installed 
+# at the time of execution and their versions.
 .ddg.installedpackages <- function()
 {
 	packages <- devtools::session_info()
-	packages <- packages [[2]]
+	packages <- packages[[2]]
 	installed <- packages[packages[,2] == "*",]
 	installed <- installed[ ,c(1,3)]
 	return(installed)
 }
 
 
+# --- MULTIPLE-USE FUNCTIONS ------------------- #
 
-# UTILS
-
+# adds escape characters to double quotes within strings
 .ddg.json.escape.quotes <- function( string )
 {
 	return( gsub('\"', '\\\\"', string) )
 }
 
-
-.ddg.json.dataframe <- function( dataframe , col.names , obj.prefix , comment = NULL , indent = 4 )
+# converts a data frame into a formatted json string
+.ddg.json.dataframe <- function( dataframe , col.names , obj.prefix , comment = NULL )
 {
 	# PROCESS TABLE TO PREPARE FOR PRINTING
 	# change column names
@@ -555,26 +546,29 @@ ddg.json <- function( indent = 4 )
 	
 	# convert to json
 	json <- toJSON( dataframe , na = "string" )
-	json <- prettify(json, indent = indent)
+	json <- prettify( json , indent = 4 )
 	
 	
 	# PROCESS JSON INTO CORRECT FORMAT
+	# convert '    ' into tab
+	json <- gsub( '    ' , '\t' , json )
+	
 	# add comment line to top of block, if any
 	if( ! is.null(comment) )
 	{
-		comment <- paste( '{\n        //' , comment )
+		comment <- paste( '{\n\t\t//' , comment )
 		json <- sub( '^\\{' , comment , json )
 	}
 	
 	# remove square brackets
-	json <- gsub( '\\[\n        \\{' , '\\{' , json )
-	json <- gsub( '\n    ]' , '' , json )
+	json <- gsub( '\\[\n\t\t\\{' , '\\{' , json )
+	json <- gsub( '\n\t]' , '' , json )
 	
 	# add indentation to object names
-	json <- gsub( '\n    \"' , '\n        \"' , json )
+	json <- gsub( '\n\t\"' , '\n\t\t\"' , json )
 	
 	# remove row names in objects
-	json <- gsub( ',\n            "_row": "[a-z]+[0-9]+"\n' , '\n' , json)
+	json <- gsub( ',\n\t\t\t"_row": "[a-z]+[0-9]+"\n' , '\n' , json)
 	
 	# replace wrapping braces with newline characters
 	json <- sub( '^\\{' , '' , json )
@@ -583,20 +577,21 @@ ddg.json <- function( indent = 4 )
 	return(json)
 }
 
-.ddg.json.formNode <- function( node.name , node.content , last.node = FALSE , indent = 4 )
+# forms a first-level prov-json node
+# e.g. activity, entity, used, etc.
+.ddg.json.formNode <- function( node.name , node.content , last.node = FALSE )
 {
 	# form node name string
-	node.name <- paste( '\n    "' , node.name , '" : \\{\n' , sep = '' )
+	node.name <- paste( '\n\t"' , node.name , '" : \\{\n' , sep = '' )
 	
 	# top: wrap with name of node
 	node <- sub( '^\n' , node.name , node.content )
 	
 	# botton: wrap with close brace
 	if( ! last.node )
-		node <- sub( '\n$' , '\n    },\n\n' , node )
+		node <- sub( '\n$' , '\n\t},\n\n' , node )
 	else
-		node <- sub( '\n$' , '\n    }\n}' , node )	# ends the json file
+		node <- sub( '\n$' , '\n\t}\n}' , node )	# ends the json file
 	
 	return( node )
 }
-
