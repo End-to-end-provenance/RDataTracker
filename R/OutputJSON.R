@@ -197,8 +197,9 @@ ddg.json <- function()
 					"rdt:language" = NA ,
 					"rdt:rVersion" = NA ,
 					"rdt:script" = NA ,
-					"rdt:sourcedScripts" = NA ,
 					"rdt:scriptTimeStamp" = NA ,
+					"rdt:sourcedScripts" = NA ,
+					"rdt:sourcedScriptTimeStamps" = NA ,
 					"rdt:workingDirectory" = NA ,
 					"rdt:ddgDirectory" = NA ,
 					"rdt:ddgTimeStamp" = NA ,
@@ -221,14 +222,19 @@ ddg.json <- function()
 	if( ! is.null(script.path) )
 	{
 		fields$`rdt:script` <- script.path 
-		fields$`rdt:sourcedScripts` <- .ddg.json.sourced.script.names()
 		fields$`rdt:scriptTimeStamp` <- .ddg.format.time( file.info(script.path)$mtime )
+		
+		sourced.scripts <- .ddg.json.sourced.scripts()
+		fields$`rdt:sourcedScripts` <- sourced.scripts[[1]]
+		fields$`rdt:sourcedScriptTimeStamps` <- sourced.scripts[[2]]
 	}
 	else
 	{
 		fields$`rdt:script` <- ""
-		fields$`rdt:sourcedScripts` <- ""
 		fields$`rdt:scriptTimeStamp` <- ""
+		
+		fields$`rdt:sourcedScripts` <- ""
+		fields$`rdt:sourcedScriptTimeStamps` <- ""
 	}
 	
 	# working directory, ddg directory
@@ -272,28 +278,26 @@ ddg.json <- function()
 	return( json )
 }
 
-# no idea what this does (can't find an example), 
-# but it doesn't look prov-json compliant
-# tmp fix: change entire thing to a string
-.ddg.json.sourced.script.names <- function() 
+# return the names of other scripts that were sourced and their timestamps.
+.ddg.json.sourced.scripts <- function() 
 {
+	script.names <- ""
+	script.times <- ""
+	
 	ss <- .ddg.sourced.scripts()
 	
-	# First row is main script.
-	if (nrow(ss) == 1) {
-		output <- ""		# edit: made empty from "\"\"\n"
-	} else {
-		ss <- ss[ss$snum > 0, ]
-		stimes <- file.info(ss$sname)$mtime
-		stimes <- .ddg.format.time(stimes)
+	# first row: main script
+	if( nrow(ss) > 1 )
+	{
+		ss <- ss[ ss$snum > 0 , ]
 		
-		scriptarray <- paste("\t{\"number\" : \"", ss[ , 1], "\",
-                            	 \"name\" : \"",ss[ , 2], "\",
-                            	 \"timestamp\" : \"",stimes, "\"}",
-                        		 sep = "", collapse =",\n")
-		output <- paste("\"[\n", scriptarray, " ]\"", sep = "")		# edit: wrap entire thing with quotes
+		script.names <- ss[ , 2]
+		
+		script.times <- file.info(script.names)$mtime
+		script.times <- .ddg.format.time(script.times)
 	}
-	return(output)
+	
+	return( list(script.names, script.times) )
 }
 
 # forms and returns the json string for the library nodes
