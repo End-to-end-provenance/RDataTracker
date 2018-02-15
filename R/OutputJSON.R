@@ -1,5 +1,5 @@
 # @author Elizabeth Fong
-# @version January 2018
+# @version February 2018
 
 # writes json out to file
 ddg.json.write <- function() 
