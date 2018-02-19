@@ -146,6 +146,10 @@ ddg.json <- function()
 {
 	# extract nodes and required columns
 	nodes <- .ddg.proc.nodes()
+	
+	if( nrow(nodes) == 0 )
+		return(NA)
+	
 	nodes <- subset(nodes, ddg.num > 0, 
 					select = c(ddg.name, ddg.type, ddg.time, ddg.snum, 
 					ddg.startLine, ddg.startCol, ddg.endLine, ddg.endCol))
@@ -172,6 +176,10 @@ ddg.json <- function()
 {
 	# extract nodes and required columns
 	nodes <- .ddg.data.nodes()
+	
+	if( nrow(nodes) == 0 )
+		return(NA)
+	
 	nodes <- subset(nodes, ddg.num > 0,
 					select = c(ddg.name, ddg.value, ddg.val.type, ddg.type,
 					ddg.scope, ddg.from.env, ddg.hash, ddg.time, ddg.loc))
@@ -376,6 +384,9 @@ ddg.json <- function()
 	# extract procedure-to-procedure edges, where ddg.type is 'cf' (control flow)
 	edges <- subset(edges, ddg.type == "cf", select = c(ddg.from, ddg.to))
 	
+	if( nrow(edges) == 0 )
+		return(NA)
+	
 	# add prefix to node numbers
 	edges$ddg.from <- mapply( paste , prefix , edges$ddg.from , sep='' , USE.NAMES=FALSE )
 	edges$ddg.to <- mapply( paste , prefix , edges$ddg.to , sep='' , USE.NAMES=FALSE )
@@ -397,6 +408,9 @@ ddg.json <- function()
 {
 	# extract procedure-to-data edges, where ddg.type is 'df.out' (data flow out)
 	edges <- subset(edges, ddg.type == "df.out", select = c(ddg.from, ddg.to))
+	
+	if( nrow(edges) == 0 )
+		return(NA)
 	
 	# add prefix to node numbers
 	edges$ddg.from <- mapply( paste , prefix , edges$ddg.from , sep='' , USE.NAMES=FALSE )
@@ -420,6 +434,9 @@ ddg.json <- function()
 	# extract data-to-procedure edges, where ddg.type is 'df.in' (data flow in)
 	edges <- subset(edges, ddg.type == "df.in", select = c(ddg.from, ddg.to))
 	
+	if( nrow(edges) == 0 )
+		return(NA)
+	
 	# add prefix to node numbers
 	edges$ddg.from <- mapply( paste , prefix , edges$ddg.from , sep='' , USE.NAMES=FALSE )
 	edges$ddg.to <- mapply( paste , prefix , edges$ddg.to , sep='' , USE.NAMES=FALSE )
@@ -431,8 +448,9 @@ ddg.json <- function()
 	json <- .ddg.json.dataframe( edges , col.names , 'dp' , comment = "data-to-procedure edges" )
 	
 	# add comma and newline to last node for combining, if there are f2p edges
-	if( num.calls > 0 )
-		json <- sub( '\n$' , ',\n\n' , json )
+	# EDIT
+	#if( num.calls > 0 )
+	#	json <- sub( '\n$' , ',\n\n' , json )
 	
 	return( json )
 }
