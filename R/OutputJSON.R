@@ -51,8 +51,14 @@ ddg.json <- function()
 	# wasGeneratedBy (proc2data)
 	json$wasGeneratedBy <- .ddg.json.proc2data( edges , node.prefix )
 	
+	
+	# get function nodes
+	calls <- .ddg.function.nodes()
+	num.calls <- nrow(calls)
+	
+	
 	# used: data2proc
-	json$used.d2p <- .ddg.json.data2proc( edges , node.prefix )
+	json$used.d2p <- .ddg.json.data2proc( edges , node.prefix , num.calls )
 	
 	
 	# LIBRARY NODES - change row numbers
@@ -60,47 +66,47 @@ ddg.json <- function()
 	rownames(libraries) <- c( 1 : nrow(libraries) )
 	
 	# PRINT TO JSON - LIBRARY NODES
-	json$entity.lib <- .ddg.json.lib( libraries )
+	json$entity.lib <- .ddg.json.lib( libraries , num.calls )
 	
 	
 	# FUNCTION NODES - get function numbers
-	calls <- .ddg.function.nodes()
-	
-	functions <- calls[ , 2:3]
-	functions <- unique(functions)
-	
-	rownames(functions) <- c( 1 : nrow(functions) )
-	
-	# PRINT TO JSON - FUNCTION NODES
-	json$entity.func <- .ddg.json.func( functions )
-	
-	
-	# MERGE TABLES: function calls, functions, libraries
-	# library nodes - change col names, add lnum column for merging
-	colnames(libraries) <- c( "ddg.lib" , "ddg.lib.version" )
-	libraries <- cbind( "ddg.lnum" = c(1:nrow(libraries)) , libraries )
-	
-	# function nodes - add fnum column for merging
-	functions <- cbind( "ddg.fnum" = c(1:nrow(functions)) , functions )
-	
-	# function calls - add cnum column for ordering
-	calls <- cbind( "ddg.cnum" = c(1:nrow(calls)) , calls )
-	
-	# merge tables
-	calls <- merge( calls , libraries , by.x = "ddg.lib" )
-	calls <- merge( calls , functions , by = c("ddg.fun","ddg.lib") )
-	
-	# order table by cnum
-	calls <- calls[ order(calls$ddg.cnum) , ]
-	rownames(calls) <- calls$ddg.cnum
-	
-	
-	# PRINT TO JSON: func2proc
-	json$used.f2p <- .ddg.json.func2proc( calls , node.prefix )
-	
-	# PRINT TO JSON: func2lib
-	json$hadMember <- .ddg.json.lib2func( calls , node.prefix )
-	
+	if( num.calls > 0 )
+	{
+		functions <- calls[ , 2:3]
+		functions <- unique(functions)
+		
+		rownames(functions) <- c( 1 : nrow(functions) )
+		
+		# PRINT TO JSON - FUNCTION NODES
+		json$entity.func <- .ddg.json.func( functions )
+		
+		
+		# MERGE TABLES: function calls, functions, libraries
+		# library nodes - change col names, add lnum column for merging
+		colnames(libraries) <- c( "ddg.lib" , "ddg.lib.version" )
+		libraries <- cbind( "ddg.lnum" = c(1:nrow(libraries)) , libraries )
+		
+		# function nodes - add fnum column for merging
+		functions <- cbind( "ddg.fnum" = c(1:nrow(functions)) , functions )
+		
+		# function calls - add cnum column for ordering
+		calls <- cbind( "ddg.cnum" = c(1:nrow(calls)) , calls )
+		
+		# merge tables
+		calls <- merge( calls , libraries , by.x = "ddg.lib" )
+		calls <- merge( calls , functions , by = c("ddg.fun","ddg.lib") )
+		
+		# order table by cnum
+		calls <- calls[ order(calls$ddg.cnum) , ]
+		rownames(calls) <- calls$ddg.cnum
+		
+		
+		# PRINT TO JSON: func2proc
+		json$used.f2p <- .ddg.json.func2proc( calls , node.prefix )
+		
+		# PRINT TO JSON: func2lib
+		json$hadMember <- .ddg.json.lib2func( calls , node.prefix )
+	}	
 	
 	# COMBINE INTO COMPLETE JSON
 	combined.json <- .ddg.json.combine( json )
@@ -301,7 +307,7 @@ ddg.json <- function()
 }
 
 # forms and returns the json string for the library nodes
-.ddg.json.lib <- function( nodes )
+.ddg.json.lib <- function( nodes , num.calls )
 {
 	# change col names
 	col.names <- c( "name" , "version" )
@@ -313,8 +319,9 @@ ddg.json <- function()
 	prov.type <- .ddg.json.collection()
 	json <- gsub( '\n\t\t}' , prov.type , json )
 	
-	# add comma and newline to last node for combining
-	json <- sub( '\n$' , ',\n\n' , json )
+	# add comma and newline to last node for combining if there are function nodes
+	if( num.calls > 0 )
+		json <- sub( '\n$' , ',\n\n' , json )
 	
 	return( json )
 }
@@ -408,7 +415,7 @@ ddg.json <- function()
 }
 
 # forms and returns the json string for nodes representing data-to-procedure edges
-.ddg.json.data2proc <- function( edges , prefix )
+.ddg.json.data2proc <- function( edges , prefix , num.calls )
 {
 	# extract data-to-procedure edges, where ddg.type is 'df.in' (data flow in)
 	edges <- subset(edges, ddg.type == "df.in", select = c(ddg.from, ddg.to))
@@ -423,8 +430,9 @@ ddg.json <- function()
 	# convert to json
 	json <- .ddg.json.dataframe( edges , col.names , 'dp' , comment = "data-to-procedure edges" )
 	
-	# add comma and newline to last node for combining
-	json <- sub( '\n$' , ',\n\n' , json )
+	# add comma and newline to last node for combining, if there are f2p edges
+	if( num.calls > 0 )
+		json <- sub( '\n$' , ',\n\n' , json )
 	
 	return( json )
 }
@@ -482,14 +490,29 @@ ddg.json <- function()
 {
 	# entity: merge content & wrap into node
 	entity.1 <- sub( '\n$' , json$entity.env , json$entity.data )
-	entity.2 <- sub( '\n$' , json$entity.func , json$entity.lib )
 	
-	entity <- sub( '\n$' , entity.2 , entity.1 )
+	if( is.na(json$entity.func) )
+	{
+		entity <- sub( '\n$' , json$entity.lib , entity.1 )
+	}
+	else
+	{
+		entity.2 <- sub( '\n$' , json$entity.func , json$entity.lib )
+		entity <- sub( '\n$' , entity.2 , entity.1 )
+	}
+	
 	entity <- .ddg.json.formNode( "entity" , entity , last.node = FALSE )
 	
 	# used: merge content & wrap into node
-	used <- sub( '\n$' , json$used.f2p , json$used.d2p )
-	used <- .ddg.json.formNode( "used" , used , last.node = FALSE )
+	if( is.na(json$used.f2p) )
+	{
+		used <- .ddg.json.formNode( "used" , json$used.d2p , last.node = TRUE )
+	}
+	else
+	{
+		used <- sub( '\n$' , json$used.f2p , json$used.d2p )
+		used <- .ddg.json.formNode( "used" , used , last.node = FALSE )
+	}
 	
 	
 	# combine: prefix & activity nodes
