@@ -1,608 +1,580 @@
 {
-
-"prefix" : {
-"prov" : "http://www.w3.org/ns/prov#",
-"rdt" : "http://rdatatracker.org/"
-},
-"activity":{
-
-"p1" : {
-"rdt:name" : "DDGStatementTest.R",
-"rdt:type" : "Start",
-"rdt:elapsedTime" : "0.389",
-"rdt:scriptNum" : "NA",
-"rdt:startLine" : "NA",
-"rdt:startCol" : "NA",
-"rdt:endLine" : "NA",
-"rdt:endCol" : "NA",
-"rdt:functionsCalled" : NA,
-"rdt:packagesUsed" : NA
-} ,
-
-"p2" : {
-"rdt:name" : "a <- 1",
-"rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.409",
-"rdt:scriptNum" : "0",
-"rdt:startLine" : "6",
-"rdt:startCol" : "1",
-"rdt:endLine" : "6",
-"rdt:endCol" : "6",
-"rdt:functionsCalled" : NA,
-"rdt:packagesUsed" : NA
-} ,
-
-"p3" : {
-"rdt:name" : "if (TRUE) {    a <- 1}",
-"rdt:type" : "Start",
-"rdt:elapsedTime" : "0.465",
-"rdt:scriptNum" : "0",
-"rdt:startLine" : "8",
-"rdt:startCol" : "1",
-"rdt:endLine" : "10",
-"rdt:endCol" : "1",
-"rdt:functionsCalled" : NA,
-"rdt:packagesUsed" : NA
-} ,
-
-"p4" : {
-"rdt:name" : "if",
-"rdt:type" : "Start",
-"rdt:elapsedTime" : "0.492",
-"rdt:scriptNum" : "NA",
-"rdt:startLine" : "NA",
-"rdt:startCol" : "NA",
-"rdt:endLine" : "NA",
-"rdt:endCol" : "NA",
-"rdt:functionsCalled" : NA,
-"rdt:packagesUsed" : NA
-} ,
-
-"p5" : {
-"rdt:name" : "a <- 1",
-"rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.608",
-"rdt:scriptNum" : "0",
-"rdt:startLine" : "9",
-"rdt:startCol" : "3",
-"rdt:endLine" : "9",
-"rdt:endCol" : "8",
-"rdt:functionsCalled" : NA,
-"rdt:packagesUsed" : NA
-} ,
-
-"p6" : {
-"rdt:name" : "if",
-"rdt:type" : "Finish",
-"rdt:elapsedTime" : "0.795",
-"rdt:scriptNum" : "NA",
-"rdt:startLine" : "NA",
-"rdt:startCol" : "NA",
-"rdt:endLine" : "NA",
-"rdt:endCol" : "NA",
-"rdt:functionsCalled" : NA,
-"rdt:packagesUsed" : NA
-} ,
-
-"p7" : {
-"rdt:name" : "if (TRUE) {    a <- 1}",
-"rdt:type" : "Finish",
-"rdt:elapsedTime" : "0.796",
-"rdt:scriptNum" : "0",
-"rdt:startLine" : "8",
-"rdt:startCol" : "1",
-"rdt:endLine" : "10",
-"rdt:endCol" : "1",
-"rdt:functionsCalled" : NA,
-"rdt:packagesUsed" : NA
-} ,
-
-"p8" : {
-"rdt:name" : "ddddd <- 0",
-"rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.797",
-"rdt:scriptNum" : "0",
-"rdt:startLine" : "12",
-"rdt:startCol" : "1",
-"rdt:endLine" : "12",
-"rdt:endCol" : "10",
-"rdt:functionsCalled" : NA,
-"rdt:packagesUsed" : NA
-} ,
-
-"p9" : {
-"rdt:name" : "repeat {    ddddd <- ddddd + 1    if (ddddd == 7) {        b",
-"rdt:type" : "Start",
-"rdt:elapsedTime" : "0.826",
-"rdt:scriptNum" : "0",
-"rdt:startLine" : "13",
-"rdt:startCol" : "1",
-"rdt:endLine" : "18",
-"rdt:endCol" : "1",
-"rdt:functionsCalled" : NA,
-"rdt:packagesUsed" : NA
-} ,
-
-"p10" : {
-"rdt:name" : "repeat loop",
-"rdt:type" : "Start",
-"rdt:elapsedTime" : "0.845",
-"rdt:scriptNum" : "NA",
-"rdt:startLine" : "NA",
-"rdt:startCol" : "NA",
-"rdt:endLine" : "NA",
-"rdt:endCol" : "NA",
-"rdt:functionsCalled" : NA,
-"rdt:packagesUsed" : NA
-} ,
-
-"p11" : {
-"rdt:name" : "ddddd <- ddddd + 1",
-"rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.865",
-"rdt:scriptNum" : "0",
-"rdt:startLine" : "14",
-"rdt:startCol" : "3",
-"rdt:endLine" : "14",
-"rdt:endCol" : "20",
-"rdt:functionsCalled" : NA,
-"rdt:packagesUsed" : NA
-} ,
-
-"p12" : {
-"rdt:name" : "repeat loop",
-"rdt:type" : "Finish",
-"rdt:elapsedTime" : "0.874",
-"rdt:scriptNum" : "NA",
-"rdt:startLine" : "NA",
-"rdt:startCol" : "NA",
-"rdt:endLine" : "NA",
-"rdt:endCol" : "NA",
-"rdt:functionsCalled" : NA,
-"rdt:packagesUsed" : NA
-} ,
-
-"p13" : {
-"rdt:name" : "Details Omitted",
-"rdt:type" : "Incomplete",
-"rdt:elapsedTime" : "0.875",
-"rdt:scriptNum" : "NA",
-"rdt:startLine" : "NA",
-"rdt:startCol" : "NA",
-"rdt:endLine" : "NA",
-"rdt:endCol" : "NA",
-"rdt:functionsCalled" : NA,
-"rdt:packagesUsed" : NA
-} ,
-
-"p14" : {
-"rdt:name" : "repeat {    ddddd <- ddddd + 1    if (ddddd == 7) {        b",
-"rdt:type" : "Finish",
-"rdt:elapsedTime" : "0.876",
-"rdt:scriptNum" : "0",
-"rdt:startLine" : "13",
-"rdt:startCol" : "1",
-"rdt:endLine" : "18",
-"rdt:endCol" : "1",
-"rdt:functionsCalled" : NA,
-"rdt:packagesUsed" : NA
-} ,
-
-"p15" : {
-"rdt:name" : "f <- function(a) {    return(a + 1)}",
-"rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.882",
-"rdt:scriptNum" : "0",
-"rdt:startLine" : "20",
-"rdt:startCol" : "1",
-"rdt:endLine" : "22",
-"rdt:endCol" : "1",
-"rdt:functionsCalled" : NA,
-"rdt:packagesUsed" : NA
-} ,
-
-"p16" : {
-"rdt:name" : "g <- function() 1",
-"rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.888",
-"rdt:scriptNum" : "0",
-"rdt:startLine" : "24",
-"rdt:startCol" : "1",
-"rdt:endLine" : "24",
-"rdt:endCol" : "17",
-"rdt:functionsCalled" : NA,
-"rdt:packagesUsed" : NA
-} ,
-
-"p17" : {
-"rdt:name" : "h <- function(a, b) {    if (a > b)         return(1)    sum",
-"rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.893",
-"rdt:scriptNum" : "0",
-"rdt:startLine" : "48",
-"rdt:startCol" : "1",
-"rdt:endLine" : "48",
-"rdt:endCol" : "17",
-"rdt:functionsCalled" : NA,
-"rdt:packagesUsed" : NA
-} ,
-
-"p18" : {
-"rdt:name" : "foo",
-"rdt:type" : "Start",
-"rdt:elapsedTime" : "0.94",
-"rdt:scriptNum" : "NA",
-"rdt:startLine" : "NA",
-"rdt:startCol" : "NA",
-"rdt:endLine" : "NA",
-"rdt:endCol" : "NA",
-"rdt:functionsCalled" : NA,
-"rdt:packagesUsed" : NA
-} ,
-
-"p19" : {
-"rdt:name" : "exprs <- parse(\"DDGStatementTest.R\")",
-"rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.942",
-"rdt:scriptNum" : "0",
-"rdt:startLine" : "NA",
-"rdt:startCol" : "NA",
-"rdt:endLine" : "NA",
-"rdt:endCol" : "NA",
-"rdt:functionsCalled" : NA,
-"rdt:packagesUsed" : NA
-} ,
-
-"p20" : {
-"rdt:name" : "constructDDGStatement <- function(expr) {    print(expr)    ",
-"rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.996",
-"rdt:scriptNum" : "0",
-"rdt:startLine" : "NA",
-"rdt:startCol" : "NA",
-"rdt:endLine" : "NA",
-"rdt:endCol" : "NA",
-"rdt:functionsCalled" : NA,
-"rdt:packagesUsed" : NA
-} ,
-
-"p21" : {
-"rdt:name" : "foo",
-"rdt:type" : "Finish",
-"rdt:elapsedTime" : "0.999",
-"rdt:scriptNum" : "NA",
-"rdt:startLine" : "NA",
-"rdt:startCol" : "NA",
-"rdt:endLine" : "NA",
-"rdt:endCol" : "NA",
-"rdt:functionsCalled" : NA,
-"rdt:packagesUsed" : NA
-} ,
-
-"p22" : {
-"rdt:name" : "DDGStatementTest.R",
-"rdt:type" : "Finish",
-"rdt:elapsedTime" : "1",
-"rdt:scriptNum" : "NA",
-"rdt:startLine" : "NA",
-"rdt:startCol" : "NA",
-"rdt:endLine" : "NA",
-"rdt:endCol" : "NA",
-"rdt:functionsCalled" : NA,
-"rdt:packagesUsed" : NA
-} ,
-
-"environment" : {
-"rdt:name" : "environment",
-"rdt:architecture" : "x86_64",
-"rdt:operatingSystem" : "unix",
-"rdt:language" : "R",
-"rdt:rVersion" : "R version 3.4.2 (2017-09-28)",
-"rdt:script" : "[DIR]/DDGStatementTest.R",
-"rdt:sourcedScripts" : "",
-"rdt:scriptTimeStamp" : "2017-08-01T13.22.09EDT",
-"rdt:workingDirectory" : "[DIR]",
-"rdt:ddgDirectory" : "[DIR]/ddg",
-"rdt:ddgTimeStamp" : "2018-01-03T15.38.54EST",
-"rdt:rdatatrackerVersion" : "2.27.0",
-"rdt:hashAlgorithm" : "md5",
-"rdt:installedPackages" : [
-	{"package" : "base", "version" : "3.4.2"},
-	{"package" : "datasets", "version" : "3.4.2"},
-	{"package" : "graphics", "version" : "3.4.2"},
-	{"package" : "grDevices", "version" : "3.4.2"},
-	{"package" : "methods", "version" : "3.4.2"},
-	{"package" : "RDataTracker", "version" : "2.27.0"},
-	{"package" : "stats", "version" : "3.4.2"},
-	{"package" : "utils", "version" : "3.4.2"}]
-}},
-"entity":{
-
-"d1" : {
-"rdt:name" : "a",
-"rdt:value" : "1",
-"rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
-"rdt:type" : "Data",
-"rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE",
-"rdt:hash" : "",
-"rdt:timestamp" : "",
-"rdt:location" : ""
-} ,
-
-"d2" : {
-"rdt:name" : "a",
-"rdt:value" : "1",
-"rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
-"rdt:type" : "Data",
-"rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE",
-"rdt:hash" : "",
-"rdt:timestamp" : "",
-"rdt:location" : ""
-} ,
-
-"d3" : {
-"rdt:name" : "ddddd",
-"rdt:value" : "0",
-"rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
-"rdt:type" : "Data",
-"rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE",
-"rdt:hash" : "",
-"rdt:timestamp" : "",
-"rdt:location" : ""
-} ,
-
-"d4" : {
-"rdt:name" : "ddddd",
-"rdt:value" : "1",
-"rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
-"rdt:type" : "Data",
-"rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE",
-"rdt:hash" : "",
-"rdt:timestamp" : "",
-"rdt:location" : ""
-} ,
-
-"d5" : {
-"rdt:name" : "ddddd",
-"rdt:value" : "7",
-"rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
-"rdt:type" : "Data",
-"rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE",
-"rdt:hash" : "",
-"rdt:timestamp" : "",
-"rdt:location" : ""
-} ,
-
-"d6" : {
-"rdt:name" : "f",
-"rdt:value" : "#ddg.function",
-"rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
-"rdt:type" : "Data",
-"rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE",
-"rdt:hash" : "",
-"rdt:timestamp" : "",
-"rdt:location" : ""
-} ,
-
-"d7" : {
-"rdt:name" : "g",
-"rdt:value" : "#ddg.function",
-"rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
-"rdt:type" : "Data",
-"rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE",
-"rdt:hash" : "",
-"rdt:timestamp" : "",
-"rdt:location" : ""
-} ,
-
-"d8" : {
-"rdt:name" : "h",
-"rdt:value" : "#ddg.function",
-"rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
-"rdt:type" : "Data",
-"rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE",
-"rdt:hash" : "",
-"rdt:timestamp" : "",
-"rdt:location" : ""
-} ,
-
-"d9" : {
-"rdt:name" : "exprs",
-"rdt:value" : "data/9-exprs.txt",
-"rdt:valType" : {"container":"vector", "dimension":[11], "type":["expression"]},
-"rdt:type" : "Snapshot",
-"rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE",
-"rdt:hash" : "",
-"rdt:timestamp" : "2018-01-03T15.38.55EST",
-"rdt:location" : ""
-} ,
-
-"d10" : {
-"rdt:name" : "constructDDGStatement",
-"rdt:value" : "#ddg.function",
-"rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
-"rdt:type" : "Data",
-"rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE",
-"rdt:hash" : "",
-"rdt:timestamp" : "",
-"rdt:location" : ""
-}},
-"wasInformedBy":{
-
-"e1" : {
-"prov:informant" : "p1",
-"prov:informed" : "p2"
-} ,
-
-"e3" : {
-"prov:informant" : "p2",
-"prov:informed" : "p3"
-} ,
-
-"e4" : {
-"prov:informant" : "p3",
-"prov:informed" : "p4"
-} ,
-
-"e5" : {
-"prov:informant" : "p4",
-"prov:informed" : "p5"
-} ,
-
-"e7" : {
-"prov:informant" : "p5",
-"prov:informed" : "p6"
-} ,
-
-"e8" : {
-"prov:informant" : "p6",
-"prov:informed" : "p7"
-} ,
-
-"e9" : {
-"prov:informant" : "p7",
-"prov:informed" : "p8"
-} ,
-
-"e11" : {
-"prov:informant" : "p8",
-"prov:informed" : "p9"
-} ,
-
-"e13" : {
-"prov:informant" : "p9",
-"prov:informed" : "p10"
-} ,
-
-"e14" : {
-"prov:informant" : "p10",
-"prov:informed" : "p11"
-} ,
-
-"e17" : {
-"prov:informant" : "p11",
-"prov:informed" : "p12"
-} ,
-
-"e18" : {
-"prov:informant" : "p12",
-"prov:informed" : "p13"
-} ,
-
-"e19" : {
-"prov:informant" : "p13",
-"prov:informed" : "p14"
-} ,
-
-"e21" : {
-"prov:informant" : "p14",
-"prov:informed" : "p15"
-} ,
-
-"e23" : {
-"prov:informant" : "p15",
-"prov:informed" : "p16"
-} ,
-
-"e25" : {
-"prov:informant" : "p16",
-"prov:informed" : "p17"
-} ,
-
-"e27" : {
-"prov:informant" : "p17",
-"prov:informed" : "p18"
-} ,
-
-"e28" : {
-"prov:informant" : "p18",
-"prov:informed" : "p19"
-} ,
-
-"e30" : {
-"prov:informant" : "p19",
-"prov:informed" : "p20"
-} ,
-
-"e32" : {
-"prov:informant" : "p20",
-"prov:informed" : "p21"
-} ,
-
-"e33" : {
-"prov:informant" : "p21",
-"prov:informed" : "p22"
-}},
-"wasGeneratedBy":{
-
-"e2" : {
-"prov:entity" : "d1",
-"prov:activity" : "p2"
-} ,
-
-"e6" : {
-"prov:entity" : "d2",
-"prov:activity" : "p5"
-} ,
-
-"e10" : {
-"prov:entity" : "d3",
-"prov:activity" : "p8"
-} ,
-
-"e16" : {
-"prov:entity" : "d4",
-"prov:activity" : "p11"
-} ,
-
-"e20" : {
-"prov:entity" : "d5",
-"prov:activity" : "p14"
-} ,
-
-"e22" : {
-"prov:entity" : "d6",
-"prov:activity" : "p15"
-} ,
-
-"e24" : {
-"prov:entity" : "d7",
-"prov:activity" : "p16"
-} ,
-
-"e26" : {
-"prov:entity" : "d8",
-"prov:activity" : "p17"
-} ,
-
-"e29" : {
-"prov:entity" : "d9",
-"prov:activity" : "p19"
-} ,
-
-"e31" : {
-"prov:entity" : "d10",
-"prov:activity" : "p20"
-}},
-"used":{
-
-"e12" : {
-"prov:activity" : "p9",
-"prov:entity" : "d3"
-} ,
-
-"e15" : {
-"prov:activity" : "p11",
-"prov:entity" : "d3"
-}}
+	"prefix": {
+		"prov": "http://www.w3.org/ns/prov#",
+		"rdt": "http://rdatatracker.org/"
+	},
+
+	"activity" : {
+		// procedure nodes
+		"p1": {
+			"rdt:name": "DDGStatementTest.R",
+			"rdt:type": "Start",
+			"rdt:elapsedTime": 0.45,
+			"rdt:scriptNum": "NA",
+			"rdt:startLine": "NA",
+			"rdt:startCol": "NA",
+			"rdt:endLine": "NA",
+			"rdt:endCol": "NA"
+		},
+		"p2": {
+			"rdt:name": "a <- 1",
+			"rdt:type": "Operation",
+			"rdt:elapsedTime": 0.5,
+			"rdt:scriptNum": 0,
+			"rdt:startLine": 6,
+			"rdt:startCol": 1,
+			"rdt:endLine": 6,
+			"rdt:endCol": 6
+		},
+		"p3": {
+			"rdt:name": "if (TRUE) {	a <- 1}",
+			"rdt:type": "Start",
+			"rdt:elapsedTime": 0.54,
+			"rdt:scriptNum": 0,
+			"rdt:startLine": 8,
+			"rdt:startCol": 1,
+			"rdt:endLine": 10,
+			"rdt:endCol": 1
+		},
+		"p4": {
+			"rdt:name": "if",
+			"rdt:type": "Start",
+			"rdt:elapsedTime": 0.57,
+			"rdt:scriptNum": "NA",
+			"rdt:startLine": "NA",
+			"rdt:startCol": "NA",
+			"rdt:endLine": "NA",
+			"rdt:endCol": "NA"
+		},
+		"p5": {
+			"rdt:name": "a <- 1",
+			"rdt:type": "Operation",
+			"rdt:elapsedTime": 0.68,
+			"rdt:scriptNum": 0,
+			"rdt:startLine": 9,
+			"rdt:startCol": 3,
+			"rdt:endLine": 9,
+			"rdt:endCol": 8
+		},
+		"p6": {
+			"rdt:name": "if",
+			"rdt:type": "Finish",
+			"rdt:elapsedTime": 0.82,
+			"rdt:scriptNum": "NA",
+			"rdt:startLine": "NA",
+			"rdt:startCol": "NA",
+			"rdt:endLine": "NA",
+			"rdt:endCol": "NA"
+		},
+		"p7": {
+			"rdt:name": "if (TRUE) {	a <- 1}",
+			"rdt:type": "Finish",
+			"rdt:elapsedTime": 0.82,
+			"rdt:scriptNum": 0,
+			"rdt:startLine": 8,
+			"rdt:startCol": 1,
+			"rdt:endLine": 10,
+			"rdt:endCol": 1
+		},
+		"p8": {
+			"rdt:name": "ddddd <- 0",
+			"rdt:type": "Operation",
+			"rdt:elapsedTime": 0.82,
+			"rdt:scriptNum": 0,
+			"rdt:startLine": 12,
+			"rdt:startCol": 1,
+			"rdt:endLine": 12,
+			"rdt:endCol": 10
+		},
+		"p9": {
+			"rdt:name": "repeat {	ddddd <- ddddd + 1	if (ddddd == 7) {		b",
+			"rdt:type": "Start",
+			"rdt:elapsedTime": 0.86,
+			"rdt:scriptNum": 0,
+			"rdt:startLine": 13,
+			"rdt:startCol": 1,
+			"rdt:endLine": 18,
+			"rdt:endCol": 1
+		},
+		"p10": {
+			"rdt:name": "repeat loop",
+			"rdt:type": "Start",
+			"rdt:elapsedTime": 0.87,
+			"rdt:scriptNum": "NA",
+			"rdt:startLine": "NA",
+			"rdt:startCol": "NA",
+			"rdt:endLine": "NA",
+			"rdt:endCol": "NA"
+		},
+		"p11": {
+			"rdt:name": "ddddd <- ddddd + 1",
+			"rdt:type": "Operation",
+			"rdt:elapsedTime": 0.89,
+			"rdt:scriptNum": 0,
+			"rdt:startLine": 14,
+			"rdt:startCol": 3,
+			"rdt:endLine": 14,
+			"rdt:endCol": 20
+		},
+		"p12": {
+			"rdt:name": "repeat loop",
+			"rdt:type": "Finish",
+			"rdt:elapsedTime": 0.89,
+			"rdt:scriptNum": "NA",
+			"rdt:startLine": "NA",
+			"rdt:startCol": "NA",
+			"rdt:endLine": "NA",
+			"rdt:endCol": "NA"
+		},
+		"p13": {
+			"rdt:name": "Details Omitted",
+			"rdt:type": "Incomplete",
+			"rdt:elapsedTime": 0.9,
+			"rdt:scriptNum": "NA",
+			"rdt:startLine": "NA",
+			"rdt:startCol": "NA",
+			"rdt:endLine": "NA",
+			"rdt:endCol": "NA"
+		},
+		"p14": {
+			"rdt:name": "repeat {	ddddd <- ddddd + 1	if (ddddd == 7) {		b",
+			"rdt:type": "Finish",
+			"rdt:elapsedTime": 0.9,
+			"rdt:scriptNum": 0,
+			"rdt:startLine": 13,
+			"rdt:startCol": 1,
+			"rdt:endLine": 18,
+			"rdt:endCol": 1
+		},
+		"p15": {
+			"rdt:name": "f <- function(a) {	return(a + 1)}",
+			"rdt:type": "Operation",
+			"rdt:elapsedTime": 0.9,
+			"rdt:scriptNum": 0,
+			"rdt:startLine": 20,
+			"rdt:startCol": 1,
+			"rdt:endLine": 22,
+			"rdt:endCol": 1
+		},
+		"p16": {
+			"rdt:name": "g <- function() 1",
+			"rdt:type": "Operation",
+			"rdt:elapsedTime": 0.9,
+			"rdt:scriptNum": 0,
+			"rdt:startLine": 24,
+			"rdt:startCol": 1,
+			"rdt:endLine": 24,
+			"rdt:endCol": 17
+		},
+		"p17": {
+			"rdt:name": "h <- function(a, b) {	if (a > b)		 return(1)	sum",
+			"rdt:type": "Operation",
+			"rdt:elapsedTime": 0.9,
+			"rdt:scriptNum": 0,
+			"rdt:startLine": 48,
+			"rdt:startCol": 1,
+			"rdt:endLine": 48,
+			"rdt:endCol": 17
+		},
+		"p18": {
+			"rdt:name": "foo",
+			"rdt:type": "Start",
+			"rdt:elapsedTime": 0.92,
+			"rdt:scriptNum": "NA",
+			"rdt:startLine": "NA",
+			"rdt:startCol": "NA",
+			"rdt:endLine": "NA",
+			"rdt:endCol": "NA"
+		},
+		"p19": {
+			"rdt:name": "exprs <- parse(\"DDGStatementTest.R\")",
+			"rdt:type": "Operation",
+			"rdt:elapsedTime": 0.92,
+			"rdt:scriptNum": 0,
+			"rdt:startLine": "NA",
+			"rdt:startCol": "NA",
+			"rdt:endLine": "NA",
+			"rdt:endCol": "NA"
+		},
+		"p20": {
+			"rdt:name": "constructDDGStatement <- function(expr) {	print(expr)	",
+			"rdt:type": "Operation",
+			"rdt:elapsedTime": 0.96,
+			"rdt:scriptNum": 0,
+			"rdt:startLine": "NA",
+			"rdt:startCol": "NA",
+			"rdt:endLine": "NA",
+			"rdt:endCol": "NA"
+		},
+		"p21": {
+			"rdt:name": "foo",
+			"rdt:type": "Finish",
+			"rdt:elapsedTime": 0.96,
+			"rdt:scriptNum": "NA",
+			"rdt:startLine": "NA",
+			"rdt:startCol": "NA",
+			"rdt:endLine": "NA",
+			"rdt:endCol": "NA"
+		},
+		"p22": {
+			"rdt:name": "DDGStatementTest.R",
+			"rdt:type": "Finish",
+			"rdt:elapsedTime": 0.96,
+			"rdt:scriptNum": "NA",
+			"rdt:startLine": "NA",
+			"rdt:startCol": "NA",
+			"rdt:endLine": "NA",
+			"rdt:endCol": "NA"
+		}
+	},
+
+	"entity" : {
+		// data nodes
+		"d1": {
+			"rdt:name": "a",
+			"rdt:value": "1",
+			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}",
+			"rdt:type": "Data",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:MD5hash": "",
+			"rdt:timestamp": "",
+			"rdt:location": ""
+		},
+		"d2": {
+			"rdt:name": "a",
+			"rdt:value": "1",
+			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}",
+			"rdt:type": "Data",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:MD5hash": "",
+			"rdt:timestamp": "",
+			"rdt:location": ""
+		},
+		"d3": {
+			"rdt:name": "ddddd",
+			"rdt:value": "0",
+			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}",
+			"rdt:type": "Data",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:MD5hash": "",
+			"rdt:timestamp": "",
+			"rdt:location": ""
+		},
+		"d4": {
+			"rdt:name": "ddddd",
+			"rdt:value": "1",
+			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}",
+			"rdt:type": "Data",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:MD5hash": "",
+			"rdt:timestamp": "",
+			"rdt:location": ""
+		},
+		"d5": {
+			"rdt:name": "ddddd",
+			"rdt:value": "7",
+			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}",
+			"rdt:type": "Data",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:MD5hash": "",
+			"rdt:timestamp": "",
+			"rdt:location": ""
+		},
+		"d6": {
+			"rdt:name": "f",
+			"rdt:value": "#ddg.function",
+			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}",
+			"rdt:type": "Data",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:MD5hash": "",
+			"rdt:timestamp": "",
+			"rdt:location": ""
+		},
+		"d7": {
+			"rdt:name": "g",
+			"rdt:value": "#ddg.function",
+			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}",
+			"rdt:type": "Data",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:MD5hash": "",
+			"rdt:timestamp": "",
+			"rdt:location": ""
+		},
+		"d8": {
+			"rdt:name": "h",
+			"rdt:value": "#ddg.function",
+			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}",
+			"rdt:type": "Data",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:MD5hash": "",
+			"rdt:timestamp": "",
+			"rdt:location": ""
+		},
+		"d9": {
+			"rdt:name": "exprs",
+			"rdt:value": "data/9-exprs.txt",
+			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[11], \"type\":[\"expression\"]}",
+			"rdt:type": "Snapshot",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:MD5hash": "",
+			"rdt:timestamp": "2018-02-20T16.29.16EST",
+			"rdt:location": ""
+		},
+		"d10": {
+			"rdt:name": "constructDDGStatement",
+			"rdt:value": "#ddg.function",
+			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}",
+			"rdt:type": "Data",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:MD5hash": "",
+			"rdt:timestamp": "",
+			"rdt:location": ""
+		},
+
+		// environment
+		"environment": {
+			"rdt:name": "environment",
+			"rdt:architecture": "x86_64",
+			"rdt:operatingSystem": "windows",
+			"rdt:language": "R",
+			"rdt:rVersion": "R version 3.4.2 (2017-09-28)",
+			"rdt:script": "[DIR]/DDGStatementTest.R",
+			"rdt:scriptTimeStamp": "2018-01-11T06.29.25EST",
+			"rdt:sourcedScripts": "",
+			"rdt:sourcedScriptTimeStamps": "",
+			"rdt:workingDirectory": "[DIR]",
+			"rdt:ddgDirectory": "[DIR]/ddg",
+			"rdt:ddgTimeStamp": "2018-02-20T16.29.15EST",
+			"rdt:rdatatrackerVersion": "2.27.0",
+			"rdt:hashAlgorithm": "md5"
+		},
+
+		// library nodes - prov collections
+		"l1": {
+			"name": "base",
+			"version": "3.4.2",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"l2": {
+			"name": "datasets",
+			"version": "3.4.2",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"l3": {
+			"name": "graphics",
+			"version": "3.4.2",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"l4": {
+			"name": "grDevices",
+			"version": "3.4.2",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"l5": {
+			"name": "jsonlite",
+			"version": "1.5",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"l6": {
+			"name": "methods",
+			"version": "3.4.2",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"l7": {
+			"name": "RDataTracker",
+			"version": "2.27.0",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"l8": {
+			"name": "stats",
+			"version": "3.4.2",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"l9": {
+			"name": "utils",
+			"version": "3.4.2",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		}
+	},
+
+	"wasInformedBy" : {
+		// procedure-to-procedure edges
+		"pp1": {
+			"prov:informant": "rdt:p1",
+			"prov:informed": "rdt:p2"
+		},
+		"pp2": {
+			"prov:informant": "rdt:p2",
+			"prov:informed": "rdt:p3"
+		},
+		"pp3": {
+			"prov:informant": "rdt:p3",
+			"prov:informed": "rdt:p4"
+		},
+		"pp4": {
+			"prov:informant": "rdt:p4",
+			"prov:informed": "rdt:p5"
+		},
+		"pp5": {
+			"prov:informant": "rdt:p5",
+			"prov:informed": "rdt:p6"
+		},
+		"pp6": {
+			"prov:informant": "rdt:p6",
+			"prov:informed": "rdt:p7"
+		},
+		"pp7": {
+			"prov:informant": "rdt:p7",
+			"prov:informed": "rdt:p8"
+		},
+		"pp8": {
+			"prov:informant": "rdt:p8",
+			"prov:informed": "rdt:p9"
+		},
+		"pp9": {
+			"prov:informant": "rdt:p9",
+			"prov:informed": "rdt:p10"
+		},
+		"pp10": {
+			"prov:informant": "rdt:p10",
+			"prov:informed": "rdt:p11"
+		},
+		"pp11": {
+			"prov:informant": "rdt:p11",
+			"prov:informed": "rdt:p12"
+		},
+		"pp12": {
+			"prov:informant": "rdt:p12",
+			"prov:informed": "rdt:p13"
+		},
+		"pp13": {
+			"prov:informant": "rdt:p13",
+			"prov:informed": "rdt:p14"
+		},
+		"pp14": {
+			"prov:informant": "rdt:p14",
+			"prov:informed": "rdt:p15"
+		},
+		"pp15": {
+			"prov:informant": "rdt:p15",
+			"prov:informed": "rdt:p16"
+		},
+		"pp16": {
+			"prov:informant": "rdt:p16",
+			"prov:informed": "rdt:p17"
+		},
+		"pp17": {
+			"prov:informant": "rdt:p17",
+			"prov:informed": "rdt:p18"
+		},
+		"pp18": {
+			"prov:informant": "rdt:p18",
+			"prov:informed": "rdt:p19"
+		},
+		"pp19": {
+			"prov:informant": "rdt:p19",
+			"prov:informed": "rdt:p20"
+		},
+		"pp20": {
+			"prov:informant": "rdt:p20",
+			"prov:informed": "rdt:p21"
+		},
+		"pp21": {
+			"prov:informant": "rdt:p21",
+			"prov:informed": "rdt:p22"
+		}
+	},
+
+	"wasGeneratedBy" : {
+		// procedure-to-data edges
+		"pd1": {
+			"prov:activity": "rdt:p2",
+			"prov:entity": "rdt:d1"
+		},
+		"pd2": {
+			"prov:activity": "rdt:p5",
+			"prov:entity": "rdt:d2"
+		},
+		"pd3": {
+			"prov:activity": "rdt:p8",
+			"prov:entity": "rdt:d3"
+		},
+		"pd4": {
+			"prov:activity": "rdt:p11",
+			"prov:entity": "rdt:d4"
+		},
+		"pd5": {
+			"prov:activity": "rdt:p14",
+			"prov:entity": "rdt:d5"
+		},
+		"pd6": {
+			"prov:activity": "rdt:p15",
+			"prov:entity": "rdt:d6"
+		},
+		"pd7": {
+			"prov:activity": "rdt:p16",
+			"prov:entity": "rdt:d7"
+		},
+		"pd8": {
+			"prov:activity": "rdt:p17",
+			"prov:entity": "rdt:d8"
+		},
+		"pd9": {
+			"prov:activity": "rdt:p19",
+			"prov:entity": "rdt:d9"
+		},
+		"pd10": {
+			"prov:activity": "rdt:p20",
+			"prov:entity": "rdt:d10"
+		}
+	},
+
+	"used" : {
+		// data-to-procedure edges
+		"dp1": {
+			"prov:entity": "rdt:d3",
+			"prov:activity": "rdt:p9"
+		},
+		"dp2": {
+			"prov:entity": "rdt:d3",
+			"prov:activity": "rdt:p11"
+		}
+	}
 }
