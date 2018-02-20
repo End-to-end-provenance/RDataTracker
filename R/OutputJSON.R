@@ -58,7 +58,7 @@ ddg.json <- function()
 	
 	
 	# used: data2proc
-	json$used.d2p <- .ddg.json.data2proc( edges , node.prefix , num.calls )
+	json$used.d2p <- .ddg.json.data2proc( edges , node.prefix )
 	
 	
 	# LIBRARY NODES - change row numbers
@@ -66,10 +66,10 @@ ddg.json <- function()
 	rownames(libraries) <- c( 1 : nrow(libraries) )
 	
 	# PRINT TO JSON - LIBRARY NODES
-	json$entity.lib <- .ddg.json.lib( libraries , num.calls )
+	json$entity.lib <- .ddg.json.lib( libraries )
 	
 	
-	# FUNCTION NODES - get function numbers
+	# FUNCTION NODES - get function numbers if there are any function nodes
 	if( num.calls > 0 )
 	{
 		functions <- calls[ , 2:3]
@@ -109,8 +109,7 @@ ddg.json <- function()
 	}	
 	
 	# COMBINE INTO COMPLETE JSON
-	combined.json <- .ddg.json.combine( json )
-	return( combined.json )
+	return( .ddg.json.combine(json) )
 }
 
 
@@ -135,21 +134,20 @@ ddg.json <- function()
 	# change '    ' into a tab (\t)
 	json <- gsub( '    ' , '\t' , json )
 	
-	# edit end close braces so to enable appending
-	json <- sub( '\n}\n$' , ',\n\n' , json )
-	
-	return(json)
+	# remove end close brace and return
+	return( sub('\n}\n$', '\n', json) )
 }
 
 # forms and returns the json string for the procedure nodes
 .ddg.json.proc <- function()
 {
-	# extract nodes and required columns
 	nodes <- .ddg.proc.nodes()
 	
+	# base case: no procedure nodes 
 	if( nrow(nodes) == 0 )
 		return(NA)
 	
+	# extract and order required columns
 	nodes <- subset(nodes, ddg.num > 0, 
 					select = c(ddg.name, ddg.type, ddg.time, ddg.snum, 
 					ddg.startLine, ddg.startCol, ddg.endLine, ddg.endCol))
@@ -165,21 +163,20 @@ ddg.json <- function()
 	# convert to json
 	json <- .ddg.json.dataframe( nodes , col.names , 'p' , comment = "procedure nodes" )
 	
-	# form activity node
-	json <- .ddg.json.formNode( "activity" , json , last.node = FALSE )
-	
-	return( json )
+	# form activity node and return
+	return( .ddg.json.formNode("activity", json) )
 }
 
 # forms and returns the json string for the data nodes
 .ddg.json.data <- function()
 {
-	# extract nodes and required columns
 	nodes <- .ddg.data.nodes()
 	
+	# base case: no data nodes
 	if( nrow(nodes) == 0 )
 		return(NA)
 	
+	# extract and order required columns
 	nodes <- subset(nodes, ddg.num > 0,
 					select = c(ddg.name, ddg.value, ddg.val.type, ddg.type,
 					ddg.scope, ddg.from.env, ddg.hash, ddg.time, ddg.loc))
@@ -192,13 +189,8 @@ ddg.json <- function()
 					"rdt:type", "rdt:scope", "rdt:fromEnv", 
 					"rdt:MD5hash", "rdt:timestamp", "rdt:location" )
 	
-	# convert to json
-	json <- .ddg.json.dataframe( nodes , col.names , 'd' , comment = "data nodes" )
-	
-	# add comma and newline to last node for combining
-	json <- sub( '\n$' , ',\n\n' , json )
-	
-	return( json )
+	# convert to json and return
+	return( .ddg.json.dataframe(nodes, col.names, 'd', comment = "data nodes") )
 }
 
 # forms and returns the json string for the environment node
@@ -280,16 +272,14 @@ ddg.json <- function()
 	# remove top brace, add comment
 	json <- sub( '^\\{' , '\n\t// environment' , json )
 	
-	# remove bottom brace, add comma to end of node
-	json <- sub( '\n}\n$' , ',' , json )
+	# remove bottom brace
+	json <- sub( '\n}\n$' , '' , json )
 	
-	#by 1 level
+	# indent by 1 level
 	json <- gsub( '\n' , '\n\t' , json )
 	
-	# add 2 newlines to end of node for appending
-	json <- sub( ',$' , ',\n\n' , json )
-	
-	return( json )
+	# add 1 newline to end of node for appending, return
+	return( sub('}$', '}\n', json) )
 }
 
 # return the names of other scripts that were sourced and their timestamps.
@@ -315,7 +305,7 @@ ddg.json <- function()
 }
 
 # forms and returns the json string for the library nodes
-.ddg.json.lib <- function( nodes , num.calls )
+.ddg.json.lib <- function( nodes )
 {
 	# change col names
 	col.names <- c( "name" , "version" )
@@ -326,10 +316,6 @@ ddg.json <- function()
 	# append prov:type to json
 	prov.type <- .ddg.json.collection()
 	json <- gsub( '\n\t\t}' , prov.type , json )
-	
-	# add comma and newline to last node for combining if there are function nodes
-	if( num.calls > 0 )
-		json <- sub( '\n$' , ',\n\n' , json )
 	
 	return( json )
 }
@@ -357,10 +343,8 @@ ddg.json <- function()
 	#2 levels
 	json <- gsub( '\n' , '\n\t\t' , json )
 	
-	# change first `{` to a `,` character for appending to library nodes
-	json <- sub( '^\\{' , ',' , json )
-	
-	return( json )
+	# change first `{` to a `,` character for appending to library nodes, return
+	return( sub('^\\{', ',', json) )
 }
 
 # forms and returns the json string for function nodes
@@ -372,10 +356,8 @@ ddg.json <- function()
 	# convert to data frame
 	nodes <- data.frame( nodes , stringsAsFactors = FALSE )
 	
-	# convert to json
-	json <- .ddg.json.dataframe( nodes , "name" , 'f' , comment = "function nodes" )
-	
-	return( json )
+	# convert to json, return
+	return( .ddg.json.dataframe(nodes, "name", 'f', comment = "function nodes") )
 }
 
 # forms and returns the json string for nodes representing procedure-to-procedure edges
@@ -384,6 +366,7 @@ ddg.json <- function()
 	# extract procedure-to-procedure edges, where ddg.type is 'cf' (control flow)
 	edges <- subset(edges, ddg.type == "cf", select = c(ddg.from, ddg.to))
 	
+	# case: no proc-to-proc edges
 	if( nrow(edges) == 0 )
 		return(NA)
 	
@@ -397,10 +380,8 @@ ddg.json <- function()
 	# convert to json
 	json <- .ddg.json.dataframe( edges , col.names , 'pp' , comment = "procedure-to-procedure edges" )
 	
-	# form wasInformedBy node
-	json <- .ddg.json.formNode( "wasInformedBy" , json , last.node = FALSE )
-	
-	return( json )
+	# form wasInformedBy node, return
+	return( .ddg.json.formNode("wasInformedBy", json) )
 }
 
 # forms and returns the json string for nodes representing procedure-to-data edges
@@ -409,6 +390,7 @@ ddg.json <- function()
 	# extract procedure-to-data edges, where ddg.type is 'df.out' (data flow out)
 	edges <- subset(edges, ddg.type == "df.out", select = c(ddg.from, ddg.to))
 	
+	# case: no procedure-to-data edges
 	if( nrow(edges) == 0 )
 		return(NA)
 	
@@ -422,18 +404,17 @@ ddg.json <- function()
 	# convert to json
 	json <- .ddg.json.dataframe( edges , col.names , 'pd' , comment = "procedure-to-data edges" )
 	
-	# form wasGeneratedBy node
-	json <- .ddg.json.formNode( "wasGeneratedBy" , json , last.node = FALSE )
-	
-	return( json )
+	# form wasGeneratedBy node, return
+	return( .ddg.json.formNode("wasGeneratedBy", json) )
 }
 
 # forms and returns the json string for nodes representing data-to-procedure edges
-.ddg.json.data2proc <- function( edges , prefix , num.calls )
+.ddg.json.data2proc <- function( edges , prefix )
 {
 	# extract data-to-procedure edges, where ddg.type is 'df.in' (data flow in)
 	edges <- subset(edges, ddg.type == "df.in", select = c(ddg.from, ddg.to))
 	
+	# case: no data-to-procedure edges
 	if( nrow(edges) == 0 )
 		return(NA)
 	
@@ -444,15 +425,8 @@ ddg.json <- function()
 	# column names
 	col.names <- c("prov:entity", "prov:activity")
 	
-	# convert to json
-	json <- .ddg.json.dataframe( edges , col.names , 'dp' , comment = "data-to-procedure edges" )
-	
-	# add comma and newline to last node for combining, if there are f2p edges
-	# EDIT
-	#if( num.calls > 0 )
-	#	json <- sub( '\n$' , ',\n\n' , json )
-	
-	return( json )
+	# convert to json, return
+	return( .ddg.json.dataframe(edges ,col.names ,'dp' ,comment = "data-to-procedure edges") )
 }
 
 # forms and returns the json string for nodes representing function-to-procedure edges
@@ -468,10 +442,8 @@ ddg.json <- function()
 	# column names
 	col.names <- c( "prov:entity" , "prov:activity" )
 	
-	# convert to json
-	json <- .ddg.json.dataframe( edges , col.names , 'fp' , comment = "function-to-procedure edges" )
-	
-	return( json )
+	# convert to json, return
+	return( .ddg.json.dataframe(edges, col.names, 'fp', comment = "function-to-procedure edges") )
 }
 
 # forms and returns the json string for nodes linking functions to their libraries
@@ -497,62 +469,87 @@ ddg.json <- function()
 	# convert to json
 	json <- .ddg.json.dataframe( nodes , col.names , 'm' , comment = "groups function nodes with their library nodes" )
 	
-	# form hadMember node
-	json <- .ddg.json.formNode( "hadMember" , json , last.node = TRUE )
-	
-	return( json )
+	# form hadMember node, return
+	return( .ddg.json.formNode("hadMember", json) )
 }
 
 # combines all json parts into 1 complete prov-json string
 .ddg.json.combine <- function( json )
 {
-	# entity: merge content & wrap into node
-	entity.1 <- sub( '\n$' , json$entity.env , json$entity.data )
+	# ENTITY NODES
+	# extract entity node parts which do not contain na into new variable
+	entity.old <- json[3:6]
+	entity <- entity.old[ which(!is.na(entity.old)) ]
 	
-	if( is.na(json$entity.func) )
+	# for all sets of nodes but the last one, add comma and newline for appending
+	len <- length(entity)
+	entity[1:(len-1)] <- lapply( entity[1:(len-1)] , .ddg.json.addComma )
+	
+	# combine parts into entity node
+	entity <- .ddg.json.combine.rec( entity )
+	json[3] <- .ddg.json.formNode( "entity" , entity , last.node = FALSE )
+	
+	
+	# USED NODES
+	# extract used node parts which do not contain na into new variable
+	used.old <- json[9:10]
+	used <- used.old[ which(!is.na(used.old)) ]
+	
+	# form used node
+	if( length(used) == 0 )		# no nodes
 	{
-		entity <- sub( '\n$' , json$entity.lib , entity.1 )
+		json[9] <- NULL
 	}
-	else
+	else if( length(used) == 1 )	# 1 set of nodes
 	{
-		entity.2 <- sub( '\n$' , json$entity.func , json$entity.lib )
-		entity <- sub( '\n$' , entity.2 , entity.1 )
-	}
-	
-	entity <- .ddg.json.formNode( "entity" , entity , last.node = FALSE )
-	
-	# used: merge content & wrap into node
-	if( is.na(json$used.f2p) )
+		json[9] <- .ddg.json.formNode( "used" , used )
+	}	
+	else 	# both sets of nodes present
 	{
-		used <- .ddg.json.formNode( "used" , json$used.d2p , last.node = TRUE )
+		# add comma and newline to first set of nodes for appending
+		used[1] <- sub( '\n$' , ',\n\n' , used[[1]] )
+		used <- sub( '\n$' , used[[2]] , used[[1]] )
+		
+		json[9] <- .ddg.json.formNode( "used" , used )
 	}
-	else
-	{
-		used <- sub( '\n$' , json$used.f2p , json$used.d2p )
-		used <- .ddg.json.formNode( "used" , used , last.node = FALSE )
-	}
+	
+	# since entity and used nodes parts are merged into 1,
+	# remove other excess entity and used node slots in list
+	json[10] <- NULL
+	json[4:6] <- NULL
 	
 	
-	# combine: prefix & activity nodes
-	prefix.activity <- sub( '\n$' , json$activity , json$prefix )
+	# FINAL COMBINATION
+	# extract nodes which are not na into new variable
+	json.parts <- json[ which(!is.na(json)) ]
 	
-	# combine: wasInformedBy & wasGeneratedBy
-	informed.generated <- sub( '\n$' , json$wasGeneratedBy , json$wasInformedBy )
+	# for all sets of nodes but the last one, add comma and newline for appending
+	length <- length(json.parts)
+	json.parts[1:(length-1)] <- lapply( json.parts[1:(length-1)] , .ddg.json.addComma )
 	
-	# combine: used, hadMember
-	used.hadMember <- sub( '\n$' , json$hadMember , used )
+	# add final close brace to last element
+	json.parts[length] <- sub( '\n$' , '\n}' , json.parts[[length]] )
 	
+	# combine and return
+	return( .ddg.json.combine.rec(json.parts) )
+}
+
+# recursive function for combining all elements in the given list to 1 (divide and conquer)
+.ddg.json.combine.rec <- function( list )
+{
+	length <- length(list)
 	
-	# combine: prefix, activity, entity
-	combined.1 <- sub( '\n$' , entity , prefix.activity )
+	# base case
+	if( length == 1 )
+		return( list[[1]] )
 	
-	# combine: wasInformedBy, wasGeneratedBy, used, hadMember
-	combined.2 <- sub( '\n$' , used.hadMember , informed.generated )
+	# recursively merge left and right halves of the list
+	mid <- ceiling( length / 2 )
 	
+	left <- .ddg.json.combine.rec( list[1:mid] )
+	right <- .ddg.json.combine.rec( list[(mid+1):length] )
 	
-	# COMBINE ALL ELEMENTS & RETURN
-	combined <- sub( '\n$' , combined.2 , combined.1 )
-	return( combined )
+	return( sub('\n$', right, left) )
 }
 
 # ddg.installedpackages() returns information on packages installed 
@@ -636,10 +633,18 @@ ddg.json <- function()
 	node <- sub( '^\n' , node.name , node.content )
 	
 	# botton: wrap with close brace
-	if( ! last.node )
-		node <- sub( '\n$' , '\n\t},\n\n' , node )
-	else
-		node <- sub( '\n$' , '\n\t}\n}' , node )	# ends the json file
+	node <- sub( '\n$' , '\n\t}\n' , node )
+	
+	#if( ! last.node )
+	#	node <- sub( '\n$' , '\n\t},\n\n' , node )
+	#else
+	#	node <- sub( '\n$' , '\n\t}\n}' , node )	# ends the json file
 	
 	return( node )
+}
+
+# adds a comma and newline to the end of the given node for appending to other nodes
+.ddg.json.addComma <- function( node )
+{
+	return( sub('\n$', ',\n\n', node) )
 }
