@@ -633,14 +633,7 @@ ddg.json <- function()
 	node <- sub( '^\n' , node.name , node.content )
 	
 	# botton: wrap with close brace
-	node <- sub( '\n$' , '\n\t}\n' , node )
-	
-	#if( ! last.node )
-	#	node <- sub( '\n$' , '\n\t},\n\n' , node )
-	#else
-	#	node <- sub( '\n$' , '\n\t}\n}' , node )	# ends the json file
-	
-	return( node )
+	return( sub('\n$', '\n\t}\n', node) )
 }
 
 # adds a comma and newline to the end of the given node for appending to other nodes
