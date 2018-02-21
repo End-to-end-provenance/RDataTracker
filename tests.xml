@@ -245,7 +245,7 @@
 
     <!-- Delete all activity elapsed time occurrences  -->
     <replaceregexp flags="g">
-      <regexp pattern='("rdt:elapsedTime" : ("?[0-9]*\.?[0-9]+",)\r?\n)' />
+      <regexp pattern='(\t+"rdt:elapsedTime": ([0-9]*\.?[0-9]+,)\r?\n)' />
       <substitution expression=""/>
       <fileset dir="${local_dir}">
         <patternset id="local_files">
