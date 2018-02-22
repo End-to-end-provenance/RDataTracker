@@ -266,17 +266,6 @@
         </patternset>
       </fileset>
     </replaceregexp>
-    
-    <!-- lib version - put under travis!!! TMP-->
-    <replaceregexp flags="g">
-      <regexp pattern='(\t+"version": ("[0-9]+.?[0-9]*.?[0-9]*-?[0-9]*.?[0-9]*"),)' />
-      <substitution expression=""/>
-      <fileset dir="${local_dir}">
-        <patternset id="local_files">
-          <include name="*.local" />
-        </patternset>
-      </fileset>
-    </replaceregexp>
 
     <!-- Further edit the .local files if running tests on Travis -->
     <antcall target="travis-edits"/>
@@ -363,6 +352,23 @@
     <replaceregexp byline="false" flags="s">
       <regexp pattern='("environment" : \{)(.*)("entity":\{)' />
       <substitution expression='},${line.separator}"entity":\{' />
+      <fileset dir="${local_dir}">
+        <patternset id="local_files">
+          <include name="*.local" />
+        </patternset>
+      </fileset>
+    </replaceregexp>
+    
+    <!-- remove library versions
+      some examples of library version strings:
+      "version": "1.5",
+      "version": 0.3.0",
+      "version": "3.98-1.10",
+      "version": "2.41-3",
+    -->
+    <replaceregexp flags="g">
+      <regexp pattern='(\t+"version": ("[0-9]+.?[0-9]*.?[0-9]*-?[0-9]*.?[0-9]*"),\r?\n)' />
+      <substitution expression=""/>
       <fileset dir="${local_dir}">
         <patternset id="local_files">
           <include name="*.local" />
