@@ -9,7 +9,7 @@
 		"p1": {
 			"rdt:name": "Plot2Test.R",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 0.17,
+			"rdt:elapsedTime": 0.2,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -19,7 +19,7 @@
 		"p2": {
 			"rdt:name": "f1 <- function() {	nums <- c(1, 3, 6, 4, 9)	pdf(\"nums.",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.18,
+			"rdt:elapsedTime": 0.22,
 			"rdt:scriptNum": 0,
 			"rdt:startLine": 3,
 			"rdt:startCol": 1,
@@ -29,7 +29,7 @@
 		"p3": {
 			"rdt:name": "f1()",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 0.23,
+			"rdt:elapsedTime": 0.26,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -39,7 +39,7 @@
 		"p4": {
 			"rdt:name": "f1",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.23,
+			"rdt:elapsedTime": 0.26,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -49,7 +49,7 @@
 		"p5": {
 			"rdt:name": "nums <- c(1, 3, 6, 4, 9)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.35,
+			"rdt:elapsedTime": 0.4,
 			"rdt:scriptNum": 0,
 			"rdt:startLine": 4,
 			"rdt:startCol": 3,
@@ -59,7 +59,7 @@
 		"p6": {
 			"rdt:name": "pdf(\"nums.pdf\")",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.59,
+			"rdt:elapsedTime": 0.64,
 			"rdt:scriptNum": 0,
 			"rdt:startLine": 5,
 			"rdt:startCol": 3,
@@ -69,7 +69,7 @@
 		"p7": {
 			"rdt:name": "plot(nums)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.62,
+			"rdt:elapsedTime": 0.67,
 			"rdt:scriptNum": 0,
 			"rdt:startLine": 6,
 			"rdt:startCol": 3,
@@ -79,7 +79,7 @@
 		"p8": {
 			"rdt:name": "dev.off()",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.64,
+			"rdt:elapsedTime": 0.68,
 			"rdt:scriptNum": 0,
 			"rdt:startLine": 7,
 			"rdt:startCol": 3,
@@ -89,7 +89,7 @@
 		"p9": {
 			"rdt:name": "f1()",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 0.69,
+			"rdt:elapsedTime": 0.72,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -99,7 +99,7 @@
 		"p10": {
 			"rdt:name": "Plot2Test.R",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 0.69,
+			"rdt:elapsedTime": 0.72,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -126,10 +126,10 @@
 			"rdt:value": "data/2-nums.csv",
 			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[5], \"type\":[\"numeric\"]}",
 			"rdt:type": "Snapshot",
-			"rdt:scope": "0x00000000176d5970",
+			"rdt:scope": "0x0000000017703730",
 			"rdt:fromEnv": false,
 			"rdt:MD5hash": "",
-			"rdt:timestamp": "2018-02-20T16.09.05EST",
+			"rdt:timestamp": "2018-02-22T12.10.05EST",
 			"rdt:location": ""
 		},
 		"d3": {
@@ -161,8 +161,8 @@
 			"rdt:type": "File",
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
-			"rdt:MD5hash": "0a14d27b473de9f8144aa8bcd1c75645",
-			"rdt:timestamp": "2018-02-20T16.09.05EST",
+			"rdt:MD5hash": "9c2c57ba5cc87741d13177f813e0cafb",
+			"rdt:timestamp": "2018-02-22T12.10.05EST",
 			"rdt:location": "[DIR]/dev.off.5.pdf"
 		},
 		"d6": {
@@ -183,14 +183,14 @@
 			"rdt:architecture": "x86_64",
 			"rdt:operatingSystem": "windows",
 			"rdt:language": "R",
-			"rdt:rVersion": "R version 3.4.2 (2017-09-28)",
+			"rdt:rVersion": "R version 3.4.3 (2017-11-30)",
 			"rdt:script": "[DIR]/Plot2Test.R",
 			"rdt:scriptTimeStamp": "2018-01-11T06.29.25EST",
 			"rdt:sourcedScripts": "",
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:workingDirectory": "[DIR]",
 			"rdt:ddgDirectory": "[DIR]/ddg",
-			"rdt:ddgTimeStamp": "2018-02-20T16.09.04EST",
+			"rdt:ddgTimeStamp": "2018-02-22T12.10.04EST",
 			"rdt:rdatatrackerVersion": "2.27.0",
 			"rdt:hashAlgorithm": "md5"
 		},
@@ -198,7 +198,7 @@
 		// library nodes - prov collections
 		"l1": {
 			"name": "base",
-			"version": "3.4.2",
+			"version": "3.4.3",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -206,7 +206,7 @@
 		},
 		"l2": {
 			"name": "datasets",
-			"version": "3.4.2",
+			"version": "3.4.3",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -214,7 +214,7 @@
 		},
 		"l3": {
 			"name": "graphics",
-			"version": "3.4.2",
+			"version": "3.4.3",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -222,7 +222,7 @@
 		},
 		"l4": {
 			"name": "grDevices",
-			"version": "3.4.2",
+			"version": "3.4.3",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -238,7 +238,7 @@
 		},
 		"l6": {
 			"name": "methods",
-			"version": "3.4.2",
+			"version": "3.4.3",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -254,7 +254,7 @@
 		},
 		"l8": {
 			"name": "stats",
-			"version": "3.4.2",
+			"version": "3.4.3",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -262,7 +262,7 @@
 		},
 		"l9": {
 			"name": "utils",
-			"version": "3.4.2",
+			"version": "3.4.3",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"

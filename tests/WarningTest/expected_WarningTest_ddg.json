@@ -9,7 +9,7 @@
 		"p1": {
 			"rdt:name": "WarningTest.R",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 0.13,
+			"rdt:elapsedTime": 0.16,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -19,7 +19,7 @@
 		"p2": {
 			"rdt:name": "a <- 1",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.14,
+			"rdt:elapsedTime": 0.17,
 			"rdt:scriptNum": 0,
 			"rdt:startLine": 1,
 			"rdt:startCol": 1,
@@ -29,7 +29,7 @@
 		"p3": {
 			"rdt:name": "warning(\"foo\", call. = FALSE)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.21,
+			"rdt:elapsedTime": 0.28,
 			"rdt:scriptNum": 0,
 			"rdt:startLine": 2,
 			"rdt:startCol": 1,
@@ -39,7 +39,7 @@
 		"p4": {
 			"rdt:name": "b <- 2",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.33,
+			"rdt:elapsedTime": 0.44,
 			"rdt:scriptNum": 0,
 			"rdt:startLine": 3,
 			"rdt:startCol": 1,
@@ -49,7 +49,7 @@
 		"p5": {
 			"rdt:name": "WarningTest.R",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 0.36,
+			"rdt:elapsedTime": 0.45,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -100,14 +100,14 @@
 			"rdt:architecture": "x86_64",
 			"rdt:operatingSystem": "windows",
 			"rdt:language": "R",
-			"rdt:rVersion": "R version 3.4.2 (2017-09-28)",
+			"rdt:rVersion": "R version 3.4.3 (2017-11-30)",
 			"rdt:script": "[DIR]/WarningTest.R",
 			"rdt:scriptTimeStamp": "2018-01-11T06.29.26EST",
 			"rdt:sourcedScripts": "",
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:workingDirectory": "[DIR]",
 			"rdt:ddgDirectory": "[DIR]/ddg",
-			"rdt:ddgTimeStamp": "2018-02-20T16.02.52EST",
+			"rdt:ddgTimeStamp": "2018-02-22T12.08.07EST",
 			"rdt:rdatatrackerVersion": "2.27.0",
 			"rdt:hashAlgorithm": "md5"
 		},
@@ -115,7 +115,7 @@
 		// library nodes - prov collections
 		"l1": {
 			"name": "base",
-			"version": "3.4.2",
+			"version": "3.4.3",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -123,7 +123,7 @@
 		},
 		"l2": {
 			"name": "datasets",
-			"version": "3.4.2",
+			"version": "3.4.3",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -131,7 +131,7 @@
 		},
 		"l3": {
 			"name": "graphics",
-			"version": "3.4.2",
+			"version": "3.4.3",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -139,7 +139,7 @@
 		},
 		"l4": {
 			"name": "grDevices",
-			"version": "3.4.2",
+			"version": "3.4.3",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -155,7 +155,7 @@
 		},
 		"l6": {
 			"name": "methods",
-			"version": "3.4.2",
+			"version": "3.4.3",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -171,7 +171,7 @@
 		},
 		"l8": {
 			"name": "stats",
-			"version": "3.4.2",
+			"version": "3.4.3",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -179,7 +179,7 @@
 		},
 		"l9": {
 			"name": "utils",
-			"version": "3.4.2",
+			"version": "3.4.3",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
