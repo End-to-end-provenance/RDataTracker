@@ -59,7 +59,6 @@ before_script:
 script:
   - R CMD build .
   - R CMD check *tar.gz
-  - Rscript -e 'install.packages("nlme")'
   - ant -file build.xml install
   - ant -file tests.xml test-travis
 
