@@ -26,7 +26,7 @@
   		</copy>
     	<copy overwrite="true" todir="${builddir}/R">
     		<fileset dir="R"
-      			includes="RDataTracker.R DDGStatement.R DDGHash.R OutputJSON.R"/>
+      			includes="RDataTracker.R DDGStatement.R DDGCheckpoint.R DDGHash.R OutputJSON.R"/>
   		</copy>
   		<!-- copy overwrite="true" todir="${builddir}/vignettes">
 	        <fileset dir="vignettes"
