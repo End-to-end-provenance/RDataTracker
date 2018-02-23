@@ -290,10 +290,8 @@ ddg.json <- function()
 	
 	ss <- .ddg.sourced.scripts()
 	
-	ss <<- ss
-	
 	# first row: main script
-	if( nrow(ss) > 1 )
+	if( (! is.null(ss)) && (nrow(ss) > 1) )
 	{
 		ss <- ss[ ss$snum > 0 , ]
 		
