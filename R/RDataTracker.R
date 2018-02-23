@@ -5559,6 +5559,9 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
   .ddg.set (".ddg.save.hashtable", save.hashtable)
   .ddg.set (".ddg.hash.algorithm", hash.algorithm)
   
+  if( is.null(r.script.path) )
+    r.script.path <- getwd()
+  
   # Setting the path for the ddg
   if (is.null(ddgdir)) {
 
