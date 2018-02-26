@@ -39,6 +39,7 @@ ddg.MAX_HIST_LINES <- 2^14
 library(digest)
 library(tools)
 library(jsonlite)
+library(curl)
 
 #-------- FUNCTIONS TO MANAGE THE GLOBAL VARIABLES--------#
 
@@ -237,7 +238,13 @@ library(jsonlite)
 # w - the simplewarning object created by R
 
 .ddg.set.warning <- function(w) {
-  .ddg.set(".ddg.warning", w)
+  # Only save warnings if the warn level is set to report them at all.
+  # This is important because we do temporarily set the warning level
+  # to avoid warnings that RDT might cause that are safe to ignore.
+  # Search for calls to the option function to see where that happens.
+  if (getOption("warn") >= 0) {
+    .ddg.set(".ddg.warning", w)
+  }
 }
 
 .ddg.clear.warning <- function() {
@@ -700,6 +707,47 @@ library(jsonlite)
   return(is.function(value))
 }
 
+#' Returns true if the object passed in is a connection
+#'
+#' @param value an R object
+#'
+#' @return true if the R object is a connection used to do I/O
+.ddg.is.connection <- function (value) {
+  return ("connection" %in% class(value))
+}
+
+#' Returns true if the connection is open
+#'
+#' @param conn a connection object
+#'
+#' @return true if the connection is open
+.ddg.get.connection.isopen <- function (conn) { 
+  .ddg.get (".ddg.connections")[as.character(conn[1]), "isopen"] == "opened"
+}
+
+#' @return a matrix containing information about all open connections
+#' 
+.ddg.get.open.connections <- function () { 
+  conns <- .ddg.get (".ddg.connections")
+  openConns <- conns[conns [, "isopen"] == "opened",,drop=FALSE]
+  return (openConns)
+}
+
+#' Returns the name of the I/O item the connection communicates with.
+#' For example, this could be a file name, a URL, a host/port pair 
+#' from a socket connection, etc.
+#'
+#' @param conn This should be a connection object
+#' 
+#' @return a text description of what is connected to.
+#'
+.ddg.get.connection.description <- function (conn) { 
+  if (.ddg.is.connection(conn)) {
+    conn <- conn[1]
+  }
+  .ddg.get (".ddg.connections")[as.character(conn[1]), "description"]
+}
+
 # .ddg.dev.change determines whether or not a new graphic device
 # has become active and whether or not we should capture the
 # previous graphic device. It returns the device number we should
@@ -733,7 +781,7 @@ library(jsonlite)
 # scope - data node scope.
 
 .ddg.save.simple <- function(name, value, scope=NULL, from.env=FALSE) {
-  #print(paste("In .ddg.save.simple: name =", name))
+  #print(paste("In .ddg.save.simple: name =", name, "value =", value))
   #print(paste("In .ddg.save.simple: scope =", scope))
   # Save extra long strings as snapshot.
   if (is.character(value) && nchar(value) > 200) {
@@ -821,7 +869,8 @@ library(jsonlite)
   else if (.ddg.is.simple(value)) .ddg.save.simple(name, value, scope=scope, from.env=from.env)
   else if (.ddg.is.csv(value)) .ddg.write.csv(name, value, scope=scope, from.env=from.env)
   else if (is.list(value) || is.array(value)) .ddg.snapshot.node(name, "txt", value, save.object=TRUE, dscope=scope, from.env=from.env)
-  else if (.ddg.is.object(value)) .ddg.snapshot.node(name, "txt", value, dscope=scope, from.env=from.env)
+  else if (.ddg.is.connection(value)) {.ddg.save.simple(name, value, scope=scope, from.env=from.env)}
+  else if (.ddg.is.object(value)) {.ddg.snapshot.node(name, "txt", value, dscope=scope, from.env=from.env) }
   else if (.ddg.is.function(value)) .ddg.save.simple(name, "#ddg.function", scope=scope, from.env=from.env)
   else if (error) stop("Unable to create data (snapshot) node. Non-Object value to", fname, ".")
   else {
@@ -925,6 +974,9 @@ library(jsonlite)
 
 .ddg.record.data <- function(dtype, dname, dvalue, value, dscope, from.env=FALSE, dtime="", dloc="") {
   #print("In .ddg.record.data")
+  #print(paste("dvalue =", head(dvalue)))
+  #print(paste("value =", head(value)))
+  #print (sys.calls())
   # Increment data node counter.
   .ddg.inc("ddg.dnum")
   ddg.dnum <- .ddg.dnum()
@@ -985,14 +1037,15 @@ library(jsonlite)
   # Output data node.
   #print(".ddg.record.data outputting data node")
   if (dtype == "File") {
-    .ddg.add.to.hashtable(dname = dname, ddg.dnum = ddg.dnum, dscriptpath = dscriptpath, dloc = dloc, dvalue = dvalue, dtime = dtime)
+    ddg.data.nodes <- .ddg.add.to.hashtable(dname = dname, ddg.dnum = ddg.dnum, dscriptpath = dscriptpath, dloc = dloc, dvalue = dvalue, dtime = dtime)
   }
 
   if (.ddg.debug.lib()) {
     if (dtype != "File") {
       print(paste("Adding data node", ddg.dnum, "named", dname, "with scope", dscope, " and value ", ddg.data.nodes$ddg.value[ddg.dnum]))
     } else {
-      print(paste("Adding data node", ddg.dnum, "named", dname, "with scope", dscope, " and value ", ddg.data.nodes$ddg.value[ddg.dnum], " that hashes to ", dhash, " and performs a file ", drw))
+      print(paste("Adding data node", ddg.dnum, "named", dname, "with scope", dscope, " and value ", ddg.data.nodes$ddg.value[ddg.dnum], 
+                  " that hashes to ", ddg.data.nodes$ddg.hash[ddg.dnum], " and performs a file ", ddg.data.nodes$ddg.rw[ddg.dnum]))
     }
   }
 }
@@ -1353,6 +1406,7 @@ library(jsonlite)
     print(paste("data2proc: ", dname, " ", pname, sep=""))
     print(paste("DF ", node1, " ", node2, sep=""))
   }
+  
   invisible()
 }
 
@@ -1717,7 +1771,7 @@ library(jsonlite)
 
   for (var in vars.assigned) {
 
-    # print(paste(".ddg.create.data.set.edges.for.cmd: var = ", var))
+    #print(paste(".ddg.create.data.set.edges.for.cmd: var = ", var))
     whichRows <- which(vars.set$variable == var)
 
     # Only create a node edge for the last place that a variable is
@@ -1742,7 +1796,7 @@ library(jsonlite)
         )
 
         tryCatch(.ddg.save.data(var, val, fname=".ddg.create.data.set.edges.for.cmd", error=TRUE, scope=scope, stack=stack, env=env),
-               error = function(e){.ddg.data.node("Data", var, "complex", scope)})
+               error = function(e){.ddg.data.node("Data", var, "complex", scope); print(e)})
 
         .ddg.proc2data(cmd@abbrev, var, scope)
     }
@@ -1787,7 +1841,6 @@ library(jsonlite)
 
 }
 
-
 # Given a parse tree, this function returns a list containing
 # the expressions that correspond to the filename argument
 # of the calls to functions that read or write the files.  If there are
@@ -1826,6 +1879,7 @@ library(jsonlite)
         # Is this is file reading function?
         read.func.pos <- match (as.character(obj[[1]]), func.df$function.names)
         if (!is.na (read.func.pos)) {
+          #print(paste("Found function ", func.df$function.names[read.func.pos]))
           # Find the file argument.
           arg.name <- func.df$param.names[read.func.pos]
           # print (paste(".ddg.find.files: arg.name = ", arg.name))
@@ -1847,17 +1901,16 @@ library(jsonlite)
             file.name <- tryCatch (eval(obj[[match.pos]], environment),
                 error = function (e) NULL)
           }
-
+          
           # Recurse over the arguments to the function.  We can't just skip over the 2nd
           # element since the filename parameter is not necessarily there if it was passed
           # by name.
           funcs <- find.files.rec (obj[2:length(obj)])
 
           # Add this file name to the list of files being read.
-          # Make sure the file name could be evaluated and that it results in
-          # a name, not a connection.
-          if (!is.null(file.name) && is.character(file.name)) {
-            unique (c (file.name, funcs))
+          #print (paste(".ddg.find.files: checking ", file.name))
+          if (!is.null(file.name)) { 
+              unique (c (file.name, funcs))
           }
         }
 
@@ -1891,15 +1944,24 @@ library(jsonlite)
 .ddg.create.file.read.functions.df <- function () {
   # Functions that read files
   function.names <-
-    c ("source", "read.csv", "read.csv2", "read.delim", "read.delim2", "read.table", "read.xls", "file", "readLines")
+    c ("source", "read.csv", "read.csv2", "read.delim", "read.delim2", "read.table", 
+        "read_json", "read.00Index", "read.dcf", "read.DIF", "read.fortran", 
+        "read.ftable", "read.fwf", "readCitationFile", "readRDS",
+        "read.xls", "readLines", "readBin", "readChar", "scan", "load", "readRenviron")
 
   # The argument that represents the file name
   param.names <-
-    c ("file", "file", "file", "file", "file", "file", "xls", "description", "con")
+    c ("file", "file", "file", "file", "file", "file", 
+        "path","file", "file", "file", "file",
+        "file", "file", "file", "file",
+        "xls", "con", "con", "con", "file", "file", "path")
 
   # Position of the file parameter if it is passed by position
   param.pos <-
-    c (1, 1, 1, 1, 1, 1, 1, 1, 1)
+    c (1, 1, 1, 1, 1, 1, 
+       1, 1, 1, 1, 1,
+       1, 1, 1, 1,
+       1, 1, 1, 1, 1, 1, 1)
 
   return (data.frame (function.names, param.names, param.pos, stringsAsFactors=FALSE))
 }
@@ -1923,28 +1985,68 @@ library(jsonlite)
   # This may include files that are not actually read if the
   # read are within an if-statement, for example.
   files.read <- .ddg.find.files.read(cmd, env)
+  #print(paste("files.read =", files.read))
+  
   # Adds the files read to ddg.infilenodes for use in determining reads
   # and writes in the hashtable.
   .ddg.set("ddg.infilenodes", c(.ddg.get("ddg.infilenodes"), files.read))
   #print(paste("Adding", files.read, "to ddg.infilenodes"))
-  #print (".ddg.create.file.read.nodes.and.edges: Files read:")
-  # print (files.read)
 
   for (file in files.read) {
-
-    # Only create the node and edge if there actually is a file
-    # Even if the file exists, it is possible that it was not read here
-    if (file.exists(file))
-    {
-      # Create the file node and edge
-      ddg.file(file)
-      ddg.data.in(basename(file), pname=cmd@abbrev)
+    #print (paste("file =", file))
+    # Check for a connection.  It will be a number encoded as a string.
+    # Turn off warnings and try the coercion and then turn warnings back on
+    save.warn <- getOption("warn")
+    options(warn=-1)
+    #print("Checking for connection #")
+    conn <- as.numeric(file)
+    #print(paste("conn =", conn))
+    options (warn=save.warn)
+    if (!is.na (conn)) {
+      # If it is a connection, use the file it is connected to
+      file <- .ddg.get.connection.description(conn)
+      #print(paste("connection found, file =", file))
     }
-    else if (grepl ("^http", file) || grepl ("^ftp", file))
+    
+    #print(file)
+    
+    #print(paste(".ddg.create.file.read.nodes.and.edges: file =", file))
+	  # Use URL node for URLs and for socket connections
+    if (grepl ("://", file) || startsWith (file, "->"))
     {
-      scope <- environmentName(.GlobalEnv)
-      .ddg.data.node("URL", file, file, scope)
-      .ddg.data2proc(file, scope, cmd@abbrev)
+      #print ("Creating url node")
+      if (grepl ("://", file) ) {
+        # Save the Web page
+        url.copy <- .ddg.url.copy (file)
+        .ddg.url.node(file, url.copy)
+      }
+      else {
+        # Maybe we should change the node type to be "Remote" or something?
+        .ddg.url.node(file, file)
+      }
+      .ddg.data2proc(file, environmentName(.GlobalEnv), cmd@abbrev)
+      
+    }
+    else {
+      # Only create the node and edge if there actually is a file
+      if (file.exists(file)) {
+        #print ("Creating file node")
+        # Create the file node and edge
+        ddg.file(file)
+        ddg.data.in(basename(file), pname=cmd@abbrev)
+      }
+      
+      # If the filename contains a :, then it is referencing a file within 
+      # a zip file, so checck that the zip file exists.      
+      else if (grepl(":", file)) {
+        zipfile <- sub (":.*", "", file)
+        if (file.exists (zipfile)) {
+          #print ("Creating file node")
+          # Create the file node and edge
+          ddg.file(zipfile, file)
+          ddg.data.in(file, pname=cmd@abbrev)
+        }
+      }
     }
   }
 }
@@ -1953,15 +2055,21 @@ library(jsonlite)
 .ddg.create.file.write.functions.df <- function () {
   # Functions that read files
   function.names <-
-    c ("write.csv", "write.csv2", "write.table", "ggsave")
+    c ("write.csv", "write.csv2", "write.table", "write", "write.matrix", "writeLines",
+        "writeChar", "writeBin", "write_json", "write.dcf", "write.ftable", 
+        "saveRDS", "cat", "save", "dput", "dump", "ggsave")
 
   # The argument that represents the file name
   param.names <-
-    c ("file", "file", "file", "filename")
+    c ("file", "file", "file", "file", "file", "con", 
+        "con", "con", "path", "file", "file", 
+        "file", "file", "file", "file", "file", "filename")
 
   # Position of the file parameter if it is passed by position
   param.pos <-
-    c (2, 2, 2, 1)
+    c (2, 2, 2, 2, 2, 2, 
+       2, 2, 2, 2, 2,  
+       2, 0, 0, 2, 2, 1)
 
   return (data.frame (function.names, param.names, param.pos, stringsAsFactors=FALSE))
 }
@@ -1988,11 +2096,100 @@ library(jsonlite)
   #print (files.written)
 
   for (file in files.written) {
+    # Check for a connection.  It will be a number encoded as a string.
+    # Turn off warnings and try the coercion and then turn warnings back on
+    save.warn <- getOption("warn")
+    options(warn=-1)
+    conn <- as.numeric(file)
+    options (warn=save.warn)
+    if (!is.na (conn)) {
+      # If it is a closed connection, use the file it is connected to
+      # If it is still open, don't use it because the contents on disk won't
+      # be correct until it is closed.
+      if (.ddg.get.connection.isopen(conn)) {
+        next
+      }
+      file <- .ddg.get.connection.description(conn)
+    }
+    
     # Check that the file exists.  If it does, we will assume that
     # it was created by the write call that we just found.
     if (file.exists (file)) {
       # Create the file node and edge
       ddg.file.out (file, pname=cmd@abbrev)
+    }
+  }
+}
+
+# Initialize the information about functions that read from files
+.ddg.create.file.close.functions.df <- function () {
+  # Functions that read files
+  function.names <-
+      c ("close", "close.connection", "close.srcfile", "closeAllConnections")
+  
+  # The argument that represents the file name
+  param.names <-
+      c ("con", "con", "con", NA)
+  
+  # Position of the file parameter if it is passed by position
+  param.pos <-
+      c (1, 1, 1, NA)
+  
+  return (data.frame (function.names, param.names, param.pos, stringsAsFactors=FALSE))
+}
+
+.ddg.set (".ddg.file.close.functions.df", .ddg.create.file.close.functions.df ())
+
+# Given a parse tree, this function returns a list containing
+# the expressions that correspond to the filename argument
+# of the calls to functions that close files.  If there are
+# none, it returns NULL.
+.ddg.find.files.closed <- function(main.object, env) {
+  return (.ddg.find.files (main.object, .ddg.get(".ddg.file.close.functions.df"), env))
+}
+
+# Creates file nodes and data out edges for any files that are closed in this cmd
+# cmd - text command
+# cmd.expr - parsed command
+.ddg.create.file.close.nodes.and.edges <- function (cmd = NULL, env = NULL, allOpen = FALSE) {
+  # Find all the files potentially closed in this command.
+  # This may include files that are not actually closed if the
+  # close calls are within an if-statement, for example.
+  files.closed <- 
+      if (is.null(cmd)) character()
+      else .ddg.find.files.closed(cmd, env)
+  
+  # Check for closeAllConnections.  It is a special case because it takes no 
+  # parameters.  .ddg.find.files expects there to be a parameter identifying the
+  # connection to close.
+  if (allOpen || (!is.null(cmd) && .ddg.has.call.to (cmd@parsed, "closeAllConnections"))) {
+    #print ("Found closeAllConnections")
+    openConns <- .ddg.get.open.connections()
+    #print(paste("openConns =", openConns))
+    files.closed <- unique (c (files.closed, openConns[, "description"]))
+    #print(paste("files.closed =", files.closed))
+  }
+  
+  for (file in files.closed) {
+    #print(paste("Closed", file))
+    #print(str(file))
+    # Check for a connection.  It will be a number encoded as a string.
+    # Turn off warnings and try the coercion and then turn warnings back on
+    save.warn <- getOption("warn")
+    options(warn=-1)
+    conn <- as.numeric(file)
+    options (warn=save.warn)
+    if (!is.na (conn)) file <- .ddg.get.connection.description(conn)
+    
+    # Check that the file exists.  If it does, we will assume that
+    # it was created by the write call that we just found.
+    if (file.exists (file)) {
+      # Create the file node and edge
+      pname <-
+          if (is.null(cmd)) NULL
+          else cmd@abbrev
+      #print(paste("Calling ddg.file.out: file=", file, "  pname =", pname))
+      ddg.file.out (file, pname=pname)
     }
   }
 }
@@ -3051,6 +3248,7 @@ library(jsonlite)
           if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Adding output data nodes for", cmd@abbrev))
 
           if (cmd@writesFile) .ddg.create.file.write.nodes.and.edges (cmd, environ)
+          if (cmd@closesFile) .ddg.create.file.close.nodes.and.edges (cmd, environ)
           if (cmd@createsGraphics) .ddg.set.graphics.files (cmd, environ)
           if (cmd@updatesGraphics) .ddg.add.graphics.io (cmd)
 
@@ -3324,6 +3522,7 @@ library(jsonlite)
 # str - input string.
 
 .ddg.replace.quotes <- function(str) {
+  #print(paste(".ddg.replace.quotes start, str =", str))
   if (!is.character(str)) return (str)
 
   str <- paste("\"", str, "\"", sep="")
@@ -3333,6 +3532,8 @@ library(jsonlite)
   str <- gsub("\r", " ", str)
   str <- gsub("\n", " ", str)
   str <- gsub("\t", " ", str)
+  #print(paste(".ddg.replace.quotes end, str =", str))
+  return(str)
 }
 
 # .ddg.convert.list.to.string converts a list of values to a string
@@ -3365,6 +3566,7 @@ library(jsonlite)
 # from.env - if object is from initial environment
 
 .ddg.data.node <- function(dtype, dname, dvalue, dscope, from.env=FALSE) {
+  #print ("In .ddg.data.node")
   #print(paste(".ddg.data.node: dname =", dname))
   #print(paste(".ddg.data.node: typeof(dvalue) =", typeof(dvalue)))
   #print(paste(".ddg.data.node: dvalue =", dvalue))
@@ -3373,7 +3575,25 @@ library(jsonlite)
 
   if (is.object(dvalue)) {
     #print(".ddg.data.node: is object")
-    tryCatch(
+    
+    if (.ddg.is.connection(dvalue)) {
+      #print ("Found a connection")
+      
+      # Save the current connections so we have access to them if they are
+      # changed before we get the information we need.
+      .ddg.set (".ddg.connections", showConnections(TRUE))
+      val <- showConnections(TRUE)[as.character(dvalue[1]), "description"]
+      #print (paste(".ddg.data.node for connection: val =", val))
+      # Record in data node table
+      .ddg.record.data(dtype, dname, val, val, dscope, from.env=from.env)
+      
+      if (.ddg.debug.lib()) print(paste("data.node:", dtype, dname))
+      #print(paste("data.node:", dtype, dname))
+      return(NULL)
+    }
+    else {
+      #print ("Found an object that is not a connection")
+      tryCatch(
         {
           .ddg.snapshot.node (dname, "txt", dvalue, dscope=dscope, from.env=from.env)
           return(NULL)
@@ -3383,11 +3603,12 @@ library(jsonlite)
           .ddg.insert.error.message(error.msg)
           return (.ddg.data.node (dtype, dname, "complex", dscope, from.env=from.env))
         }
-    )
+     )
+    }
 
   }
 
-  else if (is.matrix(dvalue) || (is.vector(dvalue) && length(dvalue) > 20)) {
+  else if (is.matrix(dvalue) || (is.vector(dvalue) && !is.character(dvalue) && length(dvalue) > 20)) {
     #print(".ddg.data.node: saving as csv")
     .ddg.snapshot.node (dname, "csv", dvalue, dscope=dscope, from.env=from.env)
     return (NULL)
@@ -3584,7 +3805,7 @@ library(jsonlite)
   # Get path plus file name.
   dpfile <- paste(.ddg.path.data(), "/", dfile, sep="")
   if (.ddg.debug.lib()) print(paste("Saving snapshot in ", dpfile))
-
+  
   # Write to file .
   if (fext == "csv") write.csv(data, dpfile, row.names=FALSE)
 
@@ -3699,13 +3920,70 @@ library(jsonlite)
     file.copy(file.loc, dpfile.out, overwrite=TRUE)
   }
   else {
-    error.msg <- paste("File to copy does not exist:", fname)
-    .ddg.insert.error.message(error.msg)
-    return(NULL)
+    # For zipfiles, 
+    file.loc <- normalizePath(dname, winslash="/", mustWork = FALSE)
+    if (file.exists(file.loc)) {
+      # Create file node in DDG.
+      dpfile.out <- .ddg.file.node(dtype,fname,dname, dscope)
+      file.copy(file.loc, dpfile.out, overwrite=TRUE)
+    }
+    else {
+      error.msg <- paste("File to copy does not exist:", fname)
+      .ddg.insert.error.message(error.msg)
+      return(NULL)
+    }
   }
 
   if (.ddg.debug.lib()) print(paste("file.copy: ", dtype, " ", file.loc))
   return (dpfile.out)
+}
+
+#' Creates a node of type URL. URL nodes are used
+#' for URLs and also for server connections.
+#' 
+#' @param original the actual url or server connection description
+#' @param saved the name of the file where a copy has been saved
+#'
+#' @return the path where the file referenced by the node is stored.
+
+# fname - path and name of original file.
+# dname - name of data node.
+
+.ddg.url.node <- function(original, saved) {
+  dscope <- environmentName(.GlobalEnv)
+  
+  dtime <- .ddg.timestamp()
+  
+  # Not from environment.
+  from.env <- FALSE
+  
+  # Record in data node table
+  .ddg.record.data("URL", original, saved, saved, dscope, from.env=from.env, dtime)
+}
+
+#' Saves the contents of a web page referenced by a URL in the data
+#' directory
+#'
+#' @param url the URL as a string
+#'
+#' @return the name of the file where the copy is stored.  This is 
+#'   a relative path beginning with the data directory.
+#'
+.ddg.url.copy <- function (url) {
+  # Get last part of the url.
+  file.name <- basename(url)
+  
+  # Add number to file name.
+  dfile <- paste(.ddg.dnum()+1, "-", file.name, sep="")
+  
+  # Get path plus file name to where the file will be copied
+  dpath <- paste(.ddg.path.data(), "/", dfile, sep="")
+  
+  # Download and save the webpage
+  curl_download (url, dpath)
+    
+  if (.ddg.debug.lib()) print(paste("url.copy: ", url))
+  return (paste(.ddg.data.dir(), dfile, sep="/"))
 }
 
 # .ddg.insert.error.message issues a warning and inserts an
@@ -4866,7 +5144,8 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
   # Create nodes and edges dealing with reading and writing files
   .ddg.create.file.read.nodes.and.edges(return.stmt, env)
   .ddg.create.file.write.nodes.and.edges (return.stmt, env)
-    
+  .ddg.create.file.close.nodes.and.edges (return.stmt, env)
+  
     if (return.stmt@createsGraphics) {
   .ddg.set.graphics.files (return.stmt, env)
   }
@@ -5562,6 +5841,9 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
   if( is.null(r.script.path) )
     r.script.path <- getwd()
   
+  # Save initial connection table
+  .ddg.set (".ddg.connections", showConnections(TRUE))
+  
   # Setting the path for the ddg
   if (is.null(ddgdir)) {
 
@@ -5783,6 +6065,10 @@ ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE) {
     tryCatch (.ddg.capture.graphics(basename(.ddg.get("ddg.r.script.path")), called.from.save = TRUE),
         error = function (e) print(e))
    }
+   
+   # If there are any connections still open when the script ends,
+   # create nodes and edges for them.
+   .ddg.create.file.close.nodes.and.edges (allOpen = TRUE)
 
   # Delete temporary files.
   # .ddg.delete.temp()
