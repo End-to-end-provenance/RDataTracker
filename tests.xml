@@ -350,8 +350,8 @@
 
     <!-- Remove environment node -->
     <replaceregexp byline="false" flags="s">
-      <regexp pattern='("environment" : \{)(.*)("entity":\{)' />
-      <substitution expression='},${line.separator}"entity":\{' />
+      <regexp pattern='(\t+// environment\r?\n\t+"environment": \{\r?\n(.*)},(\r?\n)+\t+//)' />
+      <substitution expression='(\t\t//)' />
       <fileset dir="${local_dir}">
         <patternset id="local_files">
           <include name="*.local" />
