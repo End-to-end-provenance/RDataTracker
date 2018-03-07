@@ -32,7 +32,7 @@ male <- c(TRUE, TRUE)
 kids.df <- data.frame(year, name, male)
 
 # Test NA and NULL as values
-x<- NA
+x <- NA
 y <- NULL
 
 # Test function call
@@ -63,7 +63,7 @@ tryCatch (
 )
 
 # Test error
-data <- read.csv( './data/x.csv' , header = F )
+data <- read.csv( './data/x.csv' , header = FALSE )
 apply(data,2,sum)
 
 

@@ -1,174 +1,225 @@
 {
+	"prefix": {
+		"prov": "http://www.w3.org/ns/prov#",
+		"rdt": "http://rdatatracker.org/"
+	},
 
-"prefix" : {
-"prov" : "http://www.w3.org/ns/prov#",
-"rdt" : "http://rdatatracker.org/"
-},
-"activity":{
+	"activity" : {
+		// procedure nodes
+		"p1": {
+			"rdt:name": "WarningTest.R",
+			"rdt:type": "Start",
+			"rdt:elapsedTime": 0.16,
+			"rdt:scriptNum": "NA",
+			"rdt:startLine": "NA",
+			"rdt:startCol": "NA",
+			"rdt:endLine": "NA",
+			"rdt:endCol": "NA"
+		},
+		"p2": {
+			"rdt:name": "a <- 1",
+			"rdt:type": "Operation",
+			"rdt:elapsedTime": 0.17,
+			"rdt:scriptNum": 0,
+			"rdt:startLine": 1,
+			"rdt:startCol": 1,
+			"rdt:endLine": 1,
+			"rdt:endCol": 6
+		},
+		"p3": {
+			"rdt:name": "warning(\"foo\", call. = FALSE)",
+			"rdt:type": "Operation",
+			"rdt:elapsedTime": 0.28,
+			"rdt:scriptNum": 0,
+			"rdt:startLine": 2,
+			"rdt:startCol": 1,
+			"rdt:endLine": 2,
+			"rdt:endCol": 27
+		},
+		"p4": {
+			"rdt:name": "b <- 2",
+			"rdt:type": "Operation",
+			"rdt:elapsedTime": 0.44,
+			"rdt:scriptNum": 0,
+			"rdt:startLine": 3,
+			"rdt:startCol": 1,
+			"rdt:endLine": 3,
+			"rdt:endCol": 6
+		},
+		"p5": {
+			"rdt:name": "WarningTest.R",
+			"rdt:type": "Finish",
+			"rdt:elapsedTime": 0.45,
+			"rdt:scriptNum": "NA",
+			"rdt:startLine": "NA",
+			"rdt:startCol": "NA",
+			"rdt:endLine": "NA",
+			"rdt:endCol": "NA"
+		}
+	},
 
-"p1" : {
-"rdt:name" : "WarningTest.R",
-"rdt:type" : "Start",
-"rdt:elapsedTime" : "0.125",
-"rdt:scriptNum" : "NA",
-"rdt:startLine" : "NA",
-"rdt:startCol" : "NA",
-"rdt:endLine" : "NA",
-"rdt:endCol" : "NA",
-"rdt:functionsCalled" : NA,
-"rdt:packagesUsed" : NA
-} ,
+	"entity" : {
+		// data nodes
+		"d1": {
+			"rdt:name": "a",
+			"rdt:value": "1",
+			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}",
+			"rdt:type": "Data",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:MD5hash": "",
+			"rdt:timestamp": "",
+			"rdt:location": ""
+		},
+		"d2": {
+			"rdt:name": "warning.msg",
+			"rdt:value": "\" foo\"",
+			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}",
+			"rdt:type": "Exception",
+			"rdt:scope": "ddg.library",
+			"rdt:fromEnv": false,
+			"rdt:MD5hash": "",
+			"rdt:timestamp": "",
+			"rdt:location": ""
+		},
+		"d3": {
+			"rdt:name": "b",
+			"rdt:value": "2",
+			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}",
+			"rdt:type": "Data",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:MD5hash": "",
+			"rdt:timestamp": "",
+			"rdt:location": ""
+		},
 
-"p2" : {
-"rdt:name" : "a <- 1",
-"rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.144",
-"rdt:scriptNum" : "0",
-"rdt:startLine" : "1",
-"rdt:startCol" : "1",
-"rdt:endLine" : "1",
-"rdt:endCol" : "6",
-"rdt:functionsCalled" : NA,
-"rdt:packagesUsed" : NA
-} ,
+		// environment
+		"environment": {
+			"rdt:name": "environment",
+			"rdt:architecture": "x86_64",
+			"rdt:operatingSystem": "windows",
+			"rdt:language": "R",
+			"rdt:rVersion": "R version 3.4.3 (2017-11-30)",
+			"rdt:script": "[DIR]/WarningTest.R",
+			"rdt:scriptTimeStamp": "2018-01-11T06.29.26EST",
+			"rdt:sourcedScripts": "",
+			"rdt:sourcedScriptTimeStamps": "",
+			"rdt:workingDirectory": "[DIR]",
+			"rdt:ddgDirectory": "[DIR]/ddg",
+			"rdt:ddgTimeStamp": "2018-02-22T12.08.07EST",
+			"rdt:rdatatrackerVersion": "2.27.0",
+			"rdt:hashAlgorithm": "md5"
+		},
 
-"p3" : {
-"rdt:name" : "warning(\"foo\", call. = FALSE)",
-"rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.202",
-"rdt:scriptNum" : "0",
-"rdt:startLine" : "2",
-"rdt:startCol" : "1",
-"rdt:endLine" : "2",
-"rdt:endCol" : "27",
-"rdt:functionsCalled" : NA,
-"rdt:packagesUsed" : NA
-} ,
+		// library nodes - prov collections
+		"l1": {
+			"name": "base",
+			"version": "3.4.3",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"l2": {
+			"name": "datasets",
+			"version": "3.4.3",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"l3": {
+			"name": "graphics",
+			"version": "3.4.3",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"l4": {
+			"name": "grDevices",
+			"version": "3.4.3",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"l5": {
+			"name": "jsonlite",
+			"version": "1.5",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"l6": {
+			"name": "methods",
+			"version": "3.4.3",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"l7": {
+			"name": "RDataTracker",
+			"version": "2.27.0",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"l8": {
+			"name": "stats",
+			"version": "3.4.3",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"l9": {
+			"name": "utils",
+			"version": "3.4.3",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		}
+	},
 
-"p4" : {
-"rdt:name" : "b <- 2",
-"rdt:type" : "Operation",
-"rdt:elapsedTime" : "0.377",
-"rdt:scriptNum" : "0",
-"rdt:startLine" : "3",
-"rdt:startCol" : "1",
-"rdt:endLine" : "3",
-"rdt:endCol" : "6",
-"rdt:functionsCalled" : NA,
-"rdt:packagesUsed" : NA
-} ,
+	"wasInformedBy" : {
+		// procedure-to-procedure edges
+		"pp1": {
+			"prov:informant": "rdt:p1",
+			"prov:informed": "rdt:p2"
+		},
+		"pp2": {
+			"prov:informant": "rdt:p2",
+			"prov:informed": "rdt:p3"
+		},
+		"pp3": {
+			"prov:informant": "rdt:p3",
+			"prov:informed": "rdt:p4"
+		},
+		"pp4": {
+			"prov:informant": "rdt:p4",
+			"prov:informed": "rdt:p5"
+		}
+	},
 
-"p5" : {
-"rdt:name" : "WarningTest.R",
-"rdt:type" : "Finish",
-"rdt:elapsedTime" : "0.401",
-"rdt:scriptNum" : "NA",
-"rdt:startLine" : "NA",
-"rdt:startCol" : "NA",
-"rdt:endLine" : "NA",
-"rdt:endCol" : "NA",
-"rdt:functionsCalled" : NA,
-"rdt:packagesUsed" : NA
-} ,
-
-"environment" : {
-"rdt:name" : "environment",
-"rdt:architecture" : "x86_64",
-"rdt:operatingSystem" : "unix",
-"rdt:language" : "R",
-"rdt:rVersion" : "R version 3.4.2 (2017-09-28)",
-"rdt:script" : "[DIR]/WarningTest.R",
-"rdt:sourcedScripts" : "",
-"rdt:scriptTimeStamp" : "2017-08-01T13.22.54EDT",
-"rdt:workingDirectory" : "[DIR]",
-"rdt:ddgDirectory" : "[DIR]/ddg",
-"rdt:ddgTimeStamp" : "2018-01-03T15.38.38EST",
-"rdt:rdatatrackerVersion" : "2.27.0",
-"rdt:hashAlgorithm" : "md5",
-"rdt:installedPackages" : [
-	{"package" : "base", "version" : "3.4.2"},
-	{"package" : "datasets", "version" : "3.4.2"},
-	{"package" : "graphics", "version" : "3.4.2"},
-	{"package" : "grDevices", "version" : "3.4.2"},
-	{"package" : "methods", "version" : "3.4.2"},
-	{"package" : "RDataTracker", "version" : "2.27.0"},
-	{"package" : "stats", "version" : "3.4.2"},
-	{"package" : "utils", "version" : "3.4.2"}]
-}},
-"entity":{
-
-"d1" : {
-"rdt:name" : "a",
-"rdt:value" : "1",
-"rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
-"rdt:type" : "Data",
-"rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE",
-"rdt:hash" : "",
-"rdt:timestamp" : "",
-"rdt:location" : ""
-} ,
-
-"d2" : {
-"rdt:name" : "warning.msg",
-"rdt:value" : "\" foo\"",
-"rdt:valType" : {"container":"vector", "dimension":[1], "type":["character"]},
-"rdt:type" : "Exception",
-"rdt:scope" : "ddg.library",
-"rdt:fromEnv" : "FALSE",
-"rdt:hash" : "",
-"rdt:timestamp" : "",
-"rdt:location" : ""
-} ,
-
-"d3" : {
-"rdt:name" : "b",
-"rdt:value" : "2",
-"rdt:valType" : {"container":"vector", "dimension":[1], "type":["numeric"]},
-"rdt:type" : "Data",
-"rdt:scope" : "R_GlobalEnv",
-"rdt:fromEnv" : "FALSE",
-"rdt:hash" : "",
-"rdt:timestamp" : "",
-"rdt:location" : ""
-}},
-"wasInformedBy":{
-
-"e1" : {
-"prov:informant" : "p1",
-"prov:informed" : "p2"
-} ,
-
-"e3" : {
-"prov:informant" : "p2",
-"prov:informed" : "p3"
-} ,
-
-"e5" : {
-"prov:informant" : "p3",
-"prov:informed" : "p4"
-} ,
-
-"e7" : {
-"prov:informant" : "p4",
-"prov:informed" : "p5"
-}},
-"wasGeneratedBy":{
-
-"e2" : {
-"prov:entity" : "d1",
-"prov:activity" : "p2"
-} ,
-
-"e4" : {
-"prov:entity" : "d2",
-"prov:activity" : "p3"
-} ,
-
-"e6" : {
-"prov:entity" : "d3",
-"prov:activity" : "p4"
-}},
-"used":{
-}
+	"wasGeneratedBy" : {
+		// procedure-to-data edges
+		"pd1": {
+			"prov:activity": "rdt:p2",
+			"prov:entity": "rdt:d1"
+		},
+		"pd2": {
+			"prov:activity": "rdt:p3",
+			"prov:entity": "rdt:d2"
+		},
+		"pd3": {
+			"prov:activity": "rdt:p4",
+			"prov:entity": "rdt:d3"
+		}
+	}
 }

@@ -559,291 +559,6 @@ library(curl)
   }
 }
 
-# .ddg.sourced.script.names.json returns sourced script names,
-# numbers and timestamps for the JSON file.
-
-.ddg.sourced.script.names.json <- function() {
-  ss <- .ddg.sourced.scripts()
-  # First row is main script.
-  if (nrow(ss) == 1) {
-    output <- "\"\"\n"
-  } else {
-    ss <- ss[ss$snum > 0, ]
-    stimes <- file.info(ss$sname)$mtime
-    stimes <- .ddg.format.time(stimes)
-
-    scriptarray <- paste("\t{\"number\" : \"", ss[ , 1], "\",
-                             \"name\" : \"",ss[ , 2], "\",
-                             \"timestamp\" : \"",stimes, "\"}",
-                         sep = "", collapse =",\n")
-    output <- paste("[\n", scriptarray, " ]", sep = "")
-  }
-  return(output)
-}
-
-# ddg.installedpackages() returns information on packages installed at the time of execution
-# and their versions.
-.ddg.installedpackages <- function(){
-  packages <- devtools::session_info()
-  packages <- packages [[2]]
-  installed <- packages[packages[,2] == "*",]
-  installed <- installed[ ,c(1,3)]
-  return(installed)
-}
-
-.ddg.installedpackages.json <- function(){
-  installed <- .ddg.installedpackages()
-  output <- "\"rdt:installedPackages\" : [\n\t"
-  packagearray <- paste("{\"package\" : \"", installed[,1], "\", \"version\" : \"",installed[,2], "\"}", sep = "", collapse =",\n\t")
-  output <- paste(output, packagearray, "]", sep = "")
-  return(output)
-}
-
-# .ddg.json.nv returns a name-value pair for the ddg.json string.
-
-.ddg.json.nv <- function(name, value) {
-  jstr <- paste("\"", name, "\" : \"", value, "\",\n", sep="")
-  return(jstr)
-}
-
-.ddg.json.prefix <- function(){
-  # add json prefix
-  prefix <- "\"prefix\" : {\n\"prov\" : \"http://www.w3.org/ns/prov#\",\n\"rdt\" : \"http://rdatatracker.org/\"\n},\n"
-  return (prefix)
-}
-
-
-# .ddg.json.environ returns prefix and environment information
-# for the ddg.json string.
-
-.ddg.json.environ <- function() {
-  # add environment entities
-  environ <- ""
-  environ <- paste(environ, "\n\"environment\" : {\n", sep="")
-
-  environ <- paste(environ, .ddg.json.nv("rdt:name", "environment"), sep="")
-
-  architecture <- R.Version()$arch
-  environ <- paste(environ, .ddg.json.nv("rdt:architecture", architecture), sep="")
-
-  operating.system <- .Platform$OS.type
-  environ <- paste(environ, .ddg.json.nv("rdt:operatingSystem", operating.system), sep="")
-
-  language="R"
-  environ <- paste(environ, .ddg.json.nv("rdt:language", language), sep="")
-
-  r.version <- R.Version()$version
-  environ <- paste(environ, .ddg.json.nv("rdt:rVersion", r.version), sep="")
-
-  ddg.r.script.path <- .ddg.get("ddg.r.script.path")
-  if (!is.null(ddg.r.script.path)) {
-    script <- ddg.r.script.path
-    sourced.scripts <- .ddg.sourced.script.names.json()
-    script.timestamp <- .ddg.format.time(file.info(ddg.r.script.path)$mtime)
-  } else {
-    script <- ""
-    sourced.scripts <- ""
-    script.timestamp <- ""
-    sourced.scripts.timestamps <- ""
-  }
-
-  environ <- paste(environ, .ddg.json.nv("rdt:script", ddg.r.script.path), sep="")
-
-  environ <- paste(environ, "\"rdt:sourcedScripts\" : ", sourced.scripts, ",\n", sep="")
-
-  environ <- paste(environ, .ddg.json.nv("rdt:scriptTimeStamp", script.timestamp), sep="")
-
-  working.directory=getwd()
-  environ <- paste(environ, .ddg.json.nv("rdt:workingDirectory", working.directory), sep="")
-
-  ddg.directory=.ddg.path()
-  environ <- paste(environ, .ddg.json.nv("rdt:ddgDirectory", ddg.directory), sep="")
-
-  ddg.timestamp <- .ddg.get("ddg.start.time")
-  environ <- paste(environ, .ddg.json.nv("rdt:ddgTimeStamp", ddg.timestamp), sep="")
-
-  lib.version <- packageVersion("RDataTracker")
-  environ <- paste(environ, .ddg.json.nv("rdt:rdatatrackerVersion", lib.version), sep="")
-
-  environ <- paste(environ, .ddg.json.nv("rdt:hashAlgorithm", .ddg.get(".ddg.hash.algorithm")), sep="")
-
-  environ <- paste(environ, .ddg.installedpackages.json(), sep = "")
-  environ <- paste(environ, "\n}", sep = "")
-
-  return(environ)
-}
-
-
-# .ddg.json.procedure.node adds a procedure node to the ddg.json
-# string.
-
-.ddg.json.procedure.node <- function(id, pname, ptype, ptime, snum, pos, pfunctions, ppackages) {
-
-  if (is.object(pos)) {
-    jstr <- paste("\n\"p", id, "\" : {\n\"rdt:name\" : \"", pname, "\",\n\"rdt:type\" : \"", ptype,
-        "\",\n\"rdt:elapsedTime\" : \"", ptime, "\",\n\"rdt:scriptNum\" : \"", snum,
-        "\",\n\"rdt:startLine\" : \"", pos@startLine, "\"",
-        ",\n\"rdt:startCol\" : \"", pos@startCol, "\"",
-        ",\n\"rdt:endLine\" : \"", pos@endLine, "\"",
-        ",\n\"rdt:endCol\" : \"", pos@endCol, "\"",
-        ",\n\"rdt:functionsCalled\" : ", pfunctions,
-        ",\n\"rdt:packagesUsed\" : ", ppackages,
-        "\n}", sep="")
-  }
-  else {
-    jstr <- paste("\n\"p", id, "\" : {\n\"rdt:name\" : \"", pname, "\",\n\"rdt:type\" : \"", ptype,
-        "\",\n\"rdt:elapsedTime\" : \"", ptime, "\",\n\"rdt:scriptNum\" : \"", snum,
-        "\",\n\"rdt:startLine\" : \"NA\"",
-        ",\n\"rdt:startCol\" : \"NA\"",
-        ",\n\"rdt:endLine\" : \"NA\"",
-        ",\n\"rdt:endCol\" : \"NA\"",
-        ",\n\"rdt:functionsCalled\" : ", pfunctions,
-        ",\n\"rdt:packagesUsed\" : ", ppackages,
-        "\n}", sep="")
-  }
-
-  .ddg.append.activity(jstr)
-}
-
-
-# .ddg.json.data.node adds a data node to the ddg.json string.
-
-.ddg.json.data.node <- function(dnum, dname) {
-  ddg.data.nodes <- .ddg.data.nodes()
-  
-  jstr <- paste("\n\"d", dnum, 
-      "\" : {\n\"rdt:name\" : \"", dname, 
-      "\",\n\"rdt:value\" : \"", ddg.data.nodes$ddg.value[dnum], 
-      "\",\n\"rdt:valType\" : ", ddg.data.nodes$ddg.val.type[dnum], 
-      ",\n\"rdt:type\" : \"", ddg.data.nodes$ddg.type[dnum], 
-      "\",\n\"rdt:scope\" : \"", ddg.data.nodes$ddg.scope[dnum], 
-      "\",\n\"rdt:fromEnv\" : \"", ddg.data.nodes$ddg.from.env[dnum], 
-      "\",\n\"rdt:hash\" : \"", ddg.data.nodes$ddg.hash[dnum], 
-      "\",\n\"rdt:timestamp\" : \"", ddg.data.nodes$ddg.time[dnum], 
-      "\",\n\"rdt:location\" : \"", ddg.data.nodes$ddg.loc[dnum], 
-      "\"\n}", sep="")
-
-  .ddg.append.entity(jstr)
-}
-
-
-# .ddg.json.control.edge adds a control flow edge to the ddg.json
-# string.
-
-.ddg.json.control.edge <- function(id, node1, node2) {
-
-  jstr <- paste("\n\"e", id , "\" : {\n\"prov:informant\" : \"", node1, "\",\n\"prov:informed\" : \"", node2, "\"\n}", sep="")
-
-  .ddg.append.wasInformedBy(jstr)
-}
-
-
-# .ddg.json.data.out.edge adds an output data flow edge to the
-# ddg.json string.
-
-.ddg.json.data.out.edge <- function(id, node1, node2) {
-
-  jstr <- paste("\n\"e", id , "\" : {\n\"prov:entity\" : \"", node2, "\",\n\"prov:activity\" : \"", node1, "\"\n}", sep="")
-
-  .ddg.append.wasGeneratedBy(jstr)
-}
-
-
-# .ddg.json.data.in.edge adds an input data flow edge to the
-# ddg.json string.
-
-.ddg.json.data.in.edge <- function(id, node1, node2) {
-
-  jstr <- paste("\n\"e", id , "\" : {\n\"prov:activity\" : \"", node2, "\",\n\"prov:entity\" : \"", node1, "\"\n}", sep="")
-
-  .ddg.append.used(jstr)
-}
-
-
-# .ddg.json.current returns the current ddg.json string.
-
-.ddg.json.current <- function() {
-  prefix <- .ddg.json.prefix()
-  environ <- .ddg.json.environ()
-  .ddg.append.activity(environ)
-  activity <- .ddg.get("ddg.activity")
-  entity <- .ddg.get("ddg.entity")
-  wasInformedBy <- .ddg.get('ddg.wasInformedBy')
-  wasGeneratedBy <- .ddg.get('ddg.wasGeneratedBy')
-  used <- .ddg.get('ddg.used')
-  ddg.json <- paste("{\n\n", prefix, '"activity":{\n', activity, '},\n', '"entity":{\n', entity, '},\n', '"wasInformedBy":{\n', wasInformedBy, '},\n', '"wasGeneratedBy":{\n', wasGeneratedBy, '},\n', '"used":{\n', used, '}\n', "}", sep="")
-  return(ddg.json)
-}
-
-
-# .ddg.json.write writes the current ddg.json string to the file
-# ddg.json on the ddg directory.
-
-.ddg.json.write <- function() {
-  fileout <- paste(.ddg.path(), "/ddg.json", sep="")
-  #if (interactive()) print(paste("Saving DDG in ", fileout))
-  ddg.json <- .ddg.json.current()
-  write(ddg.json, fileout)
-}
-
-# .ddg.output.procedure.node outputs a procedure node.
-
-.ddg.output.procedure.node <- function(ptype, pname, pvalue, auto.created, ptime, snum, pos, pfunctions) {
-  # Get counter
-  ddg.pnum <- .ddg.get("ddg.pnum")
-
-  # Prepare values
-  pname <- gsub("\\\"", "\\\\\"", pname)
-  
-  if (pvalue !="") {
-    pvalue <- gsub("\\\"", "\\\\\"", pvalue)
-    value.str <- paste(" Value=\"", pvalue, "\"", sep="")
-  } else value.str <- ""
-  
-  # format values for pfunctions
-  if( is.null(pfunctions) || is.na(pfunctions) )
-  {
-    pfunctions <- NA
-    ppackages <- NA
-  }
-  else
-  {
-    ppackages <- jsonlite::toJSON( unique(pfunctions$ddg.lib) )
-    pfunctions <- jsonlite::toJSON(pfunctions$ddg.fun)
-  }
-  
-  # Record in ddg.json
-  .ddg.json.procedure.node(ddg.pnum, pname, ptype, ptime, snum, pos, pfunctions, ppackages)
-}
-
-
-# .ddg.output.data.node outputs a data node.
-
-.ddg.output.data.node <- function(ddg.dnum) {
-  ddg.data.nodes <- .ddg.data.nodes()
-  
-  # Prepare values
-  dname <-
-      if (ddg.data.nodes$ddg.from.env[ddg.dnum]) paste(ddg.data.nodes$ddg.name[ddg.dnum], " [ENV]", sep="")
-      else ddg.data.nodes$ddg.name[ddg.dnum]
-  
-  # Record in ddg.json
-  .ddg.json.data.node(ddg.dnum, dname)
-}
-
-
-# .ddg.output.edge outputs a control flow or data flow edge.
-
-.ddg.output.edge <- function(etype, node1, node2) {
-  # Get counter
-  ddg.enum <- .ddg.get("ddg.enum")
-
-  # Record in ddg.json
-  if (etype == "cf") .ddg.json.control.edge(ddg.enum, node1, node2)
-  else if (etype == "df.in") .ddg.json.data.in.edge(ddg.enum, node1, node2)
-  else .ddg.json.data.out.edge(ddg.enum, node1, node2)
-}
-
 
 # .ddg.data.objects returns a list of data objects used or created by
 # the script. The list includes node number, name, value, type, scope,
@@ -1239,9 +954,6 @@ library(curl)
     .ddg.set( "ddg.function.nodes" , ddg.function.nodes )
   }
   
-  # Output procedure node.
-  .ddg.output.procedure.node(ptype, pname, pvalue, auto.created, ptime, snum, pos, pfunctions)
-
   if (.ddg.debug.lib()) {
     print (paste("Adding procedure node", ddg.pnum, "named", pname))
   }
@@ -1327,8 +1039,6 @@ library(curl)
   if (dtype == "File") {
     ddg.data.nodes <- .ddg.add.to.hashtable(dname = dname, ddg.dnum = ddg.dnum, dscriptpath = dscriptpath, dloc = dloc, dvalue = dvalue, dtime = dtime)
   }
-  
-  .ddg.output.data.node(ddg.dnum)
 
   if (.ddg.debug.lib()) {
     if (dtype != "File") {
@@ -1474,9 +1184,6 @@ library(curl)
   ddg.edges$ddg.from[ddg.enum] <- node1
   ddg.edges$ddg.to[ddg.enum] <- node2
   .ddg.set("ddg.edges", ddg.edges)
-
-  # Output control flow or data flow edge.
-  .ddg.output.edge(etype, node1, node2)
 
   if (.ddg.debug.lib()) {
     if (etype == "cf") etype.long <- "control flow"
@@ -2997,7 +2704,7 @@ library(curl)
   }
 
   # Save ddg.
-  .ddg.json.write()
+  ddg.json.write()
 
   # Get user input from the keyboard.
   line <- "D"
@@ -6131,6 +5838,9 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
   .ddg.set (".ddg.save.hashtable", save.hashtable)
   .ddg.set (".ddg.hash.algorithm", hash.algorithm)
   
+  if( is.null(r.script.path) )
+    r.script.path <- getwd()
+  
   # Save initial connection table
   .ddg.set (".ddg.connections", showConnections(TRUE))
   
@@ -6289,7 +5999,7 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
 
 ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = NULL, enable.console = TRUE, annotate.inside.functions = TRUE, first.loop = 1, max.loops = 1, max.snapshot.size = 10, debug = FALSE, save.debug = FALSE, display = FALSE, 
                     save.hashtable = TRUE, hash.algorithm="md5") {
-
+  
   # Initiate ddg.
   ddg.init(r.script.path, ddgdir, overwrite, enable.console, annotate.inside.functions, first.loop, max.loops, max.snapshot.size, save.hashtable, hash.algorithm)
 
@@ -6327,7 +6037,7 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
         }
       }
   )
-
+  
   invisible()
 }
 
@@ -6364,7 +6074,7 @@ ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE) {
   # .ddg.delete.temp()
 
   # Save ddg.json to file.
-  .ddg.json.write()
+  ddg.json.write()
   if (interactive()) print(paste("Saving ddg.json in ", .ddg.path(), sep=""))
 
   # Save hashtable.json to file.
@@ -6674,7 +6384,7 @@ ddg.display <- function () {
   )
   tryCatch(
     if(is.element('CamFlow', installed.packages()[,1])){ # did we install the CamFlow visualiser?
-      json <- .ddg.json.current()
+      json <- ddg.json()
       CamFlowVisualiser(json)
     },
     error = function(e) {}
