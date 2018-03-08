@@ -199,6 +199,18 @@
       </fileset>
       <globmapper from="*" to="*.local"/>
     </copy>
+    
+    
+    <!-- EF EDITs -->
+    <!--<exec executable="RScript" dir="tests/ProvJsonTest">
+      <arg value="ProvJsonTest.r" />
+      <arg path="tests/ProvJsonTest/schema.json" />
+      <arg path="${local_dir}/ddg.json.local" />
+    </exec>
+    -->
+    
+    <!--<antcall target= -->
+    
 
     <!-- Delete all local environment information (except sourced scripts & installed packages) -->
     <replaceregexp flags="g">
@@ -1038,5 +1050,24 @@
   </target>
 
   <!--################################# END UTILIES #################################-->
-
+  
+  
+  <!-- EF EDITS -->
+  <target name="testing">
+    <exec executable="RScript" dir="tests/ProvJsonTest">
+      <arg value="ProvJsonTest.r" />
+      <arg path="tests/ProvJsonTest/schema.json" />
+      <arg path="${local_dir}/ddg.json.local" />
+    </exec>
+  </target>
+  
+  <target name="prov-json-compliance-test">
+    <exec executable="RScript" dir="tests/ProvJsonTest">
+      <arg value="ProvJsonTest.r" />
+      <arg path="tests/ProvJsonTest/schema.json" />
+      <arg path="${local_dir}/ddg.json.local" />
+    </exec>
+  </target>
+  
+  
 </project>
