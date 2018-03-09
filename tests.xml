@@ -1047,7 +1047,7 @@
   
   <!-- EF EDITS -->
   <target name="prov-json-compliance-test">
-    <exec executable="RScript" dir="tests/ProvJsonTest" resultproperty="compliant">
+    <exec executable="Rscript" dir="tests/ProvJsonTest" resultproperty="compliant">
       <arg value="ProvJsonTest.r" />
       <arg path="tests/ProvJsonTest/schema.json" />
       <arg path="${local_dir}/ddg.json.local" />
