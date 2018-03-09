@@ -202,14 +202,7 @@
     
     
     <!-- EF EDITs -->
-    <!--<exec executable="RScript" dir="tests/ProvJsonTest">
-      <arg value="ProvJsonTest.r" />
-      <arg path="tests/ProvJsonTest/schema.json" />
-      <arg path="${local_dir}/ddg.json.local" />
-    </exec>
-    -->
-    
-    <!--<antcall target= -->
+    <antcall target="prov-json-compliance-test" />
     
 
     <!-- Delete all local environment information (except sourced scripts & installed packages) -->
@@ -1053,20 +1046,21 @@
   
   
   <!-- EF EDITS -->
-  <target name="testing">
-    <exec executable="RScript" dir="tests/ProvJsonTest">
+  <target name="prov-json-compliance-test">
+    <exec executable="RScript" dir="tests/ProvJsonTest" resultproperty="compliant">
       <arg value="ProvJsonTest.r" />
       <arg path="tests/ProvJsonTest/schema.json" />
       <arg path="${local_dir}/ddg.json.local" />
     </exec>
+    <antcall target="prov-json-compliance-fail-check" />
   </target>
   
-  <target name="prov-json-compliance-test">
-    <exec executable="RScript" dir="tests/ProvJsonTest">
-      <arg value="ProvJsonTest.r" />
-      <arg path="tests/ProvJsonTest/schema.json" />
-      <arg path="${local_dir}/ddg.json.local" />
-    </exec>
+  <target name="prov-json-compliance-fail-check" if="using-travis">
+    <fail message="ddg.json is not prov-json compliant.">
+      <condition>
+        <equals arg1="${compliant}" arg2="1"/>
+      </condition>
+    </fail>
   </target>
   
   
