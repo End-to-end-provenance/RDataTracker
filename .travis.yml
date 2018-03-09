@@ -24,6 +24,7 @@ addons:
       r-cran-reshape2
       r-cran-rcurl
       r-cran-plyr
+      r-cran-v8
 
 r_packages:
   - akima
@@ -52,8 +53,6 @@ r_packages:
   - xkcd
   - zoo
   - jsonvalidate
-  - libv8-3.14-dev
-  - grid
 
 before_script:
   - "export DISPLAY=:99.0"
