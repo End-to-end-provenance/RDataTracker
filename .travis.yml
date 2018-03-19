@@ -41,6 +41,7 @@ r_packages:
   - gridExtra
   - gWidgets
   - jsonlite
+  - jsonvalidate
   - mgcv
   - mosaic
   - plyr
@@ -52,7 +53,6 @@ r_packages:
   - sysfonts
   - xkcd
   - zoo
-  - jsonvalidate
 
 before_script:
   - "export DISPLAY=:99.0"
