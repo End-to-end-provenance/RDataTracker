@@ -1,9 +1,10 @@
-
 library(jsonvalidate)
 
-args <- commandArgs(TRUE)
+schema <- "schema.json"
 
-schema <- args[1]
-json <- args[2]
+# pass cases
+stopifnot( json_validate("cases/pass1.json", schema) )
+stopifnot( json_validate("cases/empty.json", schema) )
 
-print( json_validate(schema, json, verbose=TRUE) )
+# fail cases
+stopifnot( ! json_validate("cases/fail1.json", schema) )
