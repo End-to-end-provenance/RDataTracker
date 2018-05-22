@@ -4777,53 +4777,58 @@ library(curl)
 # EF EDITS
 .ddg.exec.env <- function()
 {
-	# GET VALUES
+	env <- data.frame(	"architecture" = character(1), 
+						"os" = character(1), 
+						"language" = character(1), 
+						"rVersion" = character(1), 
+						"script" = character(1), 
+						"scriptTimeStamp" = character(1),
+						"workingDirectory" = character(1), 
+						"ddgDirectory" = character(1), 
+						"ddgTimeStamp" = character(1),
+						"rdtVersion" = character(1), 
+						"hashAlgorithm" = character(1),
+						stringsAsFactors = FALSE )
+	
 	# architecture, language, rVersion
 	r.version <- R.Version()
 	
-	architecture <- r.version$arch
-	language <- r.version$language
-	rVersion <- r.version$version
+	env$architecture[1] <- r.version$arch
+	env$language[1] <- r.version$language
+	env$rVersion[1] <- r.version$version
 	
 	# operating system
-	os <- .Platform$OS.type
+	env$os[1] <- .Platform$OS.type
 	
 	# script variables
 	script.path <- .ddg.get("ddg.r.script.path")
 	
 	if( ! is.null(script.path) )
 	{
-		script <- script.path
-		scriptTimeStamp <- .ddg.format.time( file.info(script.path)$mtime )
+		env$script[1] <- script.path
+		env$scriptTimeStamp[1] <- .ddg.format.time( file.info(script.path)$mtime )
 	}
 	else
 	{
-		script <- ""
-		scriptTimeStamp <- ""
+		env$script[1] <- ""
+		env$scriptTimeStamp[1] <- ""
 	}
 	
 	# working directory, ddg. directory
-	workingDirectory <- getwd()
-	ddgDirectory <- .ddg.path()
+	env$workingDirectory[1] <- getwd()
+	env$ddgDirectory[1] <- .ddg.path()
 	
 	# ddg timestamp
-	ddgTimeStamp <- .ddg.get("ddg.start.time")
+	env$ddgTimeStamp[1] <- .ddg.get("ddg.start.time")
 	
 	# rdt version
-	rdtVersion <- toString( packageVersion("RDataTracker") )
+	env$rdtVersion[1] <- toString( packageVersion("RDataTracker") )
 	
 	# hash algorithm
-	hashAlgorithm <- .ddg.get(".ddg.hash.algorithm")
+	env$hashAlgorithm[1] <- .ddg.get(".ddg.hash.algorithm")
 	
-	
-	# FORM TABLE
-	table <- data.frame("architecture", "os", 
-						"language", "rVersion", 
-						"script", "scriptTimeStamp",
-						"workingDirectory", "ddgDirectory", "ddgTimeStamp",
-						"rdtVersion", "hashAlgorithm",
-						stringsAsFactors = FALSE)
-	return(table)
+	# RETURN
+	return(env)
 }
 
 
