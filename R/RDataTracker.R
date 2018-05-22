@@ -6230,11 +6230,16 @@ ddg.source <- function (file,  ddgdir = NULL, local = FALSE, echo = verbose, pri
   # Store script number & name.
   snum <- .ddg.next.script.num()
   sname <- basename(file)
+  
+  # EF EDITS
+  stime <- .ddg.format.time( file.info(sname)$mtime )
 
   if (snum == 0) {
-    df <- data.frame(snum, sname, stringsAsFactors=FALSE)
+  	df <- data.frame(snum, sname, stime, stringsAsFactors=FALSE)
+    #df <- data.frame(snum, sname, stringsAsFactors=FALSE)
   } else {
-    df<- rbind(.ddg.sourced.scripts(), c(snum, sname))
+  	df<- rbind(.ddg.sourced.scripts(), c(snum, sname, stime))
+    #df<- rbind(.ddg.sourced.scripts(), c(snum, sname))
   }
   .ddg.set(".ddg.sourced.scripts", df)
 
