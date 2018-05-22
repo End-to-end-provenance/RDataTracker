@@ -4709,52 +4709,123 @@ library(curl)
   r.script.path
 }
 
+
+# EF EDITS
 # .ddg.save.debug.files saves debug files to the debug directory.
 
-.ddg.save.debug.files <- function() {
-  # Save initial environment table to file.
-  fileout <- paste(.ddg.path.debug(), "/initial-environment.csv", sep="")
-  ddg.initial.env <- .ddg.initial.env()
-  write.csv(ddg.initial.env, fileout, row.names=FALSE)
+.ddg.save.debug.files <- function() 
+{
+	# Save initial environment table to file.
+	fileout <- paste(.ddg.path.debug(), "/initial-environment.csv", sep="")
+	ddg.initial.env <- .ddg.initial.env()
+	write.csv(ddg.initial.env, fileout, row.names=FALSE)
 
-  # Save procedure nodes table to file.
-  fileout <- paste(.ddg.path.debug(), "/procedure-nodes.csv", sep="")
-  ddg.proc.nodes <- .ddg.proc.nodes()
-  ddg.proc.nodes <- ddg.proc.nodes[ddg.proc.nodes$ddg.num > 0, ]
-  write.csv(ddg.proc.nodes, fileout, row.names=FALSE)
+	# Save procedure nodes table to file.
+	fileout <- paste(.ddg.path.debug(), "/procedure-nodes.csv", sep="")
+	ddg.proc.nodes <- .ddg.proc.nodes()
+	ddg.proc.nodes <- ddg.proc.nodes[ddg.proc.nodes$ddg.num > 0, ]
+	write.csv(ddg.proc.nodes, fileout, row.names=FALSE)
 
-  # Save data nodes table to file.
-  fileout <- paste(.ddg.path.debug(), "/data-nodes.csv", sep="")
-  ddg.data.nodes <- .ddg.data.nodes()
-  ddg.data.nodes2 <- ddg.data.nodes[ddg.data.nodes$ddg.num > 0, ]
-  write.csv(ddg.data.nodes2, fileout, row.names=FALSE)
+	# Save data nodes table to file.
+	fileout <- paste(.ddg.path.debug(), "/data-nodes.csv", sep="")
+	ddg.data.nodes <- .ddg.data.nodes()
+	ddg.data.nodes2 <- ddg.data.nodes[ddg.data.nodes$ddg.num > 0, ]
+	write.csv(ddg.data.nodes2, fileout, row.names=FALSE)
 
-  # Save edges table to file.
-  fileout <- paste(.ddg.path.debug(), "/edges.csv", sep="")
-  ddg.edges <- .ddg.edges()
-  ddg.edges2 <- ddg.edges[ddg.edges$ddg.num > 0, ]
-  write.csv(ddg.edges2, fileout, row.names=FALSE)
+	# Save edges table to file.
+	fileout <- paste(.ddg.path.debug(), "/edges.csv", sep="")
+	ddg.edges <- .ddg.edges()
+	ddg.edges2 <- ddg.edges[ddg.edges$ddg.num > 0, ]
+	write.csv(ddg.edges2, fileout, row.names=FALSE)
+	
+	
+	
+	# EF EDITS
+	fileout <- paste(.ddg.path.debug(), "/function-nodes.csv", sep="")
+	write.csv(.ddg.function.nodes(), fileout, row.names=FALSE)
+	
+	fileout <- paste(.ddg.path.debug(), "/libraries.csv", sep="")
+	write.csv(.ddg.installedpackages(), fileout, row.names=FALSE)
+	
+	fileout <- paste(.ddg.path.debug(), "/environment.csv", sep="")
+	write.csv(.ddg.exec.env(), fileout, row.names=FALSE)
+	
+	
+	
+	# Save function return table to file.
+	fileout <- paste(.ddg.path.debug(), "/function-returns.csv", sep="")
+	ddg.returns <- .ddg.get(".ddg.return.values")
+	ddg.returns2 <- ddg.returns[ddg.returns$return.node.id > 0, ]
+	write.csv(ddg.returns2, fileout, row.names=FALSE)
 
-  # Save function return table to file.
-  fileout <- paste(.ddg.path.debug(), "/function-returns.csv", sep="")
-  ddg.returns <- .ddg.get(".ddg.return.values")
-  ddg.returns2 <- ddg.returns[ddg.returns$return.node.id > 0, ]
-  write.csv(ddg.returns2, fileout, row.names=FALSE)
+	# Save if script is sourced.
+	if (.ddg.is.sourced()) 
+	{
+		# Save sourced script table to file.
+		fileout <- paste(.ddg.path.debug(), "/sourced-scripts.csv", sep="")
+		ddg.sourced.scripts <- .ddg.get(".ddg.sourced.scripts")
+		ddg.sourced.scripts2 <- ddg.sourced.scripts[ddg.sourced.scripts$snum >= 0, ]
+		write.csv(ddg.sourced.scripts2, fileout, row.names=FALSE)
 
-  # Save if script is sourced.
-  if (.ddg.is.sourced()) {
-    # Save sourced script table to file.
-    fileout <- paste(.ddg.path.debug(), "/sourced-scripts.csv", sep="")
-    ddg.sourced.scripts <- .ddg.get(".ddg.sourced.scripts")
-    ddg.sourced.scripts2 <- ddg.sourced.scripts[ddg.sourced.scripts$snum >= 0, ]
-    write.csv(ddg.sourced.scripts2, fileout, row.names=FALSE)
-
-    # Save data object table to file.
-    fileout <- paste(.ddg.path.debug(), "/data-objects.csv", sep="")
-    ddg.data.objects <- .ddg.data.objects()
-    write.csv(ddg.data.objects, fileout, row.names=FALSE)
-  }
+		# Save data object table to file.
+		fileout <- paste(.ddg.path.debug(), "/data-objects.csv", sep="")
+		ddg.data.objects <- .ddg.data.objects()
+		write.csv(ddg.data.objects, fileout, row.names=FALSE)
+	}
 }
+
+# EF EDITS
+.ddg.exec.env <- function()
+{
+	# GET VALUES
+	# architecture, language, rVersion
+	r.version <- R.Version()
+	
+	architecture <- r.version$arch
+	language <- r.version$language
+	rVersion <- r.version$version
+	
+	# operating system
+	os <- .Platform$OS.type
+	
+	# script variables
+	script.path <- .ddg.get("ddg.r.script.path")
+	
+	if( ! is.null(script.path) )
+	{
+		script <- script.path
+		scriptTimeStamp <- .ddg.format.time( file.info(script.path)$mtime )
+	}
+	else
+	{
+		script <- ""
+		scriptTimeStamp <- ""
+	}
+	
+	# working directory, ddg. directory
+	workingDirectory <- getwd()
+	ddgDirectory <- .ddg.path()
+	
+	# ddg timestamp
+	ddgTimeStamp <- .ddg.get("ddg.start.time")
+	
+	# rdt version
+	rdtVersion <- toString( packageVersion("RDataTracker") )
+	
+	# hash algorithm
+	hashAlgorithm <- .ddg.get(".ddg.hash.algorithm")
+	
+	
+	# FORM TABLE
+	table <- data.frame("architecture", "os", 
+						"language", "rVersion", 
+						"script", "scriptTimeStamp",
+						"workingDirectory", "ddgDirectory", "ddgTimeStamp",
+						"rdtVersion", "hashAlgorithm",
+						stringsAsFactors = FALSE)
+	return(table)
+}
+
 
 #--------------------USER FUNCTIONS-----------------------#
 
