@@ -559,36 +559,6 @@ library(curl)
   }
 }
 
-
-# .ddg.data.objects returns a list of data objects used or created by
-# the script. The list includes node number, name, value, type, scope,
-# line number (if any) where the object was created, and line numbers(s)
-# (if any) where the object was used. The scope is set to ENV if the
-# object was not created by the script and was taken from the pre
-# -existing environment.
-
-.ddg.data.objects <- function() {
-  # Get data node, procedure node, and edge tables.
-  dnodes <- .ddg.data.nodes()
-  pnodes <- .ddg.proc.nodes()
-  edges <- .ddg.edges()
-
-  # Subset data node table
-  dnum <- .ddg.dnum()
-  dinv <- dnodes[1:dnum , c("ddg.num", "ddg.name", "ddg.value", "ddg.type", "ddg.scope")]
-
-  # Replace scope with ENV if from initial environment
-  index <- which(dnodes$ddg.from.env==TRUE)
-  if (length(index) > 0) {
-    dinv$ddg.scope[index] <- "ENV"
-  }
-
-  # Rename columns
-  colnames(dinv) <- c("node", "name", "value", "type", "scope")
-
-  return(dinv)
-}
-
 # .ddg.is.init is called at the beginning of all user accessible
 # functions. It verifies that a DDG has been initialized. If it
 # hasn't, it returns FALSE.
@@ -4766,11 +4736,6 @@ library(curl)
 		ddg.sourced.scripts <- .ddg.get(".ddg.sourced.scripts")
 		ddg.sourced.scripts2 <- ddg.sourced.scripts[ddg.sourced.scripts$snum >= 0, ]
 		write.csv(ddg.sourced.scripts2, fileout, row.names=FALSE)
-
-		# Save data object table to file.
-		fileout <- paste(.ddg.path.debug(), "/data-objects.csv", sep="")
-		ddg.data.objects <- .ddg.data.objects()
-		write.csv(ddg.data.objects, fileout, row.names=FALSE)
 	}
 }
 
