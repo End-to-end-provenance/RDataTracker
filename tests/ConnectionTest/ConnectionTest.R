@@ -17,8 +17,8 @@ writeLines(homepage, file.out)
 
 file.in <- unz("foo.zip", "foo.txt")
 unzipped <- readLines(file.in)
-file.out <- file("foo_copy.txt", "w+")
-writeLines(unzipped, file.out)
+file2.out <- file("foo_copy.txt", "w+")
+writeLines(unzipped, file2.out)
 #close(file.out)
 
 writeLines ("foobar", "foobar.txt")
@@ -29,6 +29,6 @@ closeAllConnections()
 # for this, but since the connection has not been closed, the
 # last write might not have been flushed to the file, so the copied
 # file may be empty.
-file.out <- file ("asdf.txt", "w+")
-writeLines ("asdf", file.out)
+file3.out <- file ("asdf.txt", "w+")
+writeLines ("asdf", file3.out)
 
