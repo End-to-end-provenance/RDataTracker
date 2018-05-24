@@ -296,9 +296,7 @@ ddg.json <- function()
 		ss <- ss[ ss$snum > 0 , ]
 		
 		script.names <- ss[ , 2]
-		
-		script.times <- file.info(script.names)$mtime
-		script.times <- .ddg.format.time(script.times)
+		script.times <- ss[ , 3]
 	}
 	
 	return( list(script.names, script.times) )

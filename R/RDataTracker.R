@@ -559,36 +559,6 @@ library(curl)
   }
 }
 
-
-# .ddg.data.objects returns a list of data objects used or created by
-# the script. The list includes node number, name, value, type, scope,
-# line number (if any) where the object was created, and line numbers(s)
-# (if any) where the object was used. The scope is set to ENV if the
-# object was not created by the script and was taken from the pre
-# -existing environment.
-
-.ddg.data.objects <- function() {
-  # Get data node, procedure node, and edge tables.
-  dnodes <- .ddg.data.nodes()
-  pnodes <- .ddg.proc.nodes()
-  edges <- .ddg.edges()
-
-  # Subset data node table
-  dnum <- .ddg.dnum()
-  dinv <- dnodes[1:dnum , c("ddg.num", "ddg.name", "ddg.value", "ddg.type", "ddg.scope")]
-
-  # Replace scope with ENV if from initial environment
-  index <- which(dnodes$ddg.from.env==TRUE)
-  if (length(index) > 0) {
-    dinv$ddg.scope[index] <- "ENV"
-  }
-
-  # Rename columns
-  colnames(dinv) <- c("node", "name", "value", "type", "scope")
-
-  return(dinv)
-}
-
 # .ddg.is.init is called at the beginning of all user accessible
 # functions. It verifies that a DDG has been initialized. If it
 # hasn't, it returns FALSE.
@@ -4709,52 +4679,120 @@ library(curl)
   r.script.path
 }
 
+
 # .ddg.save.debug.files saves debug files to the debug directory.
 
-.ddg.save.debug.files <- function() {
-  # Save initial environment table to file.
-  fileout <- paste(.ddg.path.debug(), "/initial-environment.csv", sep="")
-  ddg.initial.env <- .ddg.initial.env()
-  write.csv(ddg.initial.env, fileout, row.names=FALSE)
+.ddg.save.debug.files <- function() 
+{
+	# Save initial environment table to file.
+	fileout <- paste(.ddg.path.debug(), "/initial-environment.csv", sep="")
+	ddg.initial.env <- .ddg.initial.env()
+	write.csv(ddg.initial.env, fileout, row.names=FALSE)
 
-  # Save procedure nodes table to file.
-  fileout <- paste(.ddg.path.debug(), "/procedure-nodes.csv", sep="")
-  ddg.proc.nodes <- .ddg.proc.nodes()
-  ddg.proc.nodes <- ddg.proc.nodes[ddg.proc.nodes$ddg.num > 0, ]
-  write.csv(ddg.proc.nodes, fileout, row.names=FALSE)
+	# Save procedure nodes table to file.
+	fileout <- paste(.ddg.path.debug(), "/procedure-nodes.csv", sep="")
+	ddg.proc.nodes <- .ddg.proc.nodes()
+	ddg.proc.nodes <- ddg.proc.nodes[ddg.proc.nodes$ddg.num > 0, ]
+	write.csv(ddg.proc.nodes, fileout, row.names=FALSE)
 
-  # Save data nodes table to file.
-  fileout <- paste(.ddg.path.debug(), "/data-nodes.csv", sep="")
-  ddg.data.nodes <- .ddg.data.nodes()
-  ddg.data.nodes2 <- ddg.data.nodes[ddg.data.nodes$ddg.num > 0, ]
-  write.csv(ddg.data.nodes2, fileout, row.names=FALSE)
+	# Save data nodes table to file.
+	fileout <- paste(.ddg.path.debug(), "/data-nodes.csv", sep="")
+	ddg.data.nodes <- .ddg.data.nodes()
+	ddg.data.nodes2 <- ddg.data.nodes[ddg.data.nodes$ddg.num > 0, ]
+	write.csv(ddg.data.nodes2, fileout, row.names=FALSE)
 
-  # Save edges table to file.
-  fileout <- paste(.ddg.path.debug(), "/edges.csv", sep="")
-  ddg.edges <- .ddg.edges()
-  ddg.edges2 <- ddg.edges[ddg.edges$ddg.num > 0, ]
-  write.csv(ddg.edges2, fileout, row.names=FALSE)
+	# Save edges table to file.
+	fileout <- paste(.ddg.path.debug(), "/edges.csv", sep="")
+	ddg.edges <- .ddg.edges()
+	ddg.edges2 <- ddg.edges[ddg.edges$ddg.num > 0, ]
+	write.csv(ddg.edges2, fileout, row.names=FALSE)
+	
+	# save function nodes table to file
+	fileout <- paste(.ddg.path.debug(), "/function-nodes.csv", sep="")
+	write.csv(.ddg.function.nodes(), fileout, row.names=FALSE)
+	
+	# save library information to file
+	fileout <- paste(.ddg.path.debug(), "/libraries.csv", sep="")
+	write.csv(.ddg.installedpackages(), fileout, row.names=FALSE)
+	
+	# save execution environment information to file
+	fileout <- paste(.ddg.path.debug(), "/environment.csv", sep="")
+	write.csv(.ddg.exec.env(), fileout, row.names=FALSE)
+	
+	# Save function return table to file.
+	fileout <- paste(.ddg.path.debug(), "/function-returns.csv", sep="")
+	ddg.returns <- .ddg.get(".ddg.return.values")
+	ddg.returns2 <- ddg.returns[ddg.returns$return.node.id > 0, ]
+	write.csv(ddg.returns2, fileout, row.names=FALSE)
 
-  # Save function return table to file.
-  fileout <- paste(.ddg.path.debug(), "/function-returns.csv", sep="")
-  ddg.returns <- .ddg.get(".ddg.return.values")
-  ddg.returns2 <- ddg.returns[ddg.returns$return.node.id > 0, ]
-  write.csv(ddg.returns2, fileout, row.names=FALSE)
-
-  # Save if script is sourced.
-  if (.ddg.is.sourced()) {
-    # Save sourced script table to file.
-    fileout <- paste(.ddg.path.debug(), "/sourced-scripts.csv", sep="")
-    ddg.sourced.scripts <- .ddg.get(".ddg.sourced.scripts")
-    ddg.sourced.scripts2 <- ddg.sourced.scripts[ddg.sourced.scripts$snum >= 0, ]
-    write.csv(ddg.sourced.scripts2, fileout, row.names=FALSE)
-
-    # Save data object table to file.
-    fileout <- paste(.ddg.path.debug(), "/data-objects.csv", sep="")
-    ddg.data.objects <- .ddg.data.objects()
-    write.csv(ddg.data.objects, fileout, row.names=FALSE)
-  }
+	# Save if script is sourced.
+	if (.ddg.is.sourced()) 
+	{
+		# Save sourced script table to file.
+		fileout <- paste(.ddg.path.debug(), "/sourced-scripts.csv", sep="")
+		ddg.sourced.scripts <- .ddg.get(".ddg.sourced.scripts")
+		ddg.sourced.scripts2 <- ddg.sourced.scripts[ddg.sourced.scripts$snum >= 0, ]
+		write.csv(ddg.sourced.scripts2, fileout, row.names=FALSE)
+	}
 }
+
+# Returns a data frame of information about the current execution environment.
+.ddg.exec.env <- function()
+{
+	env <- data.frame(	"architecture" = character(1), 
+						"os" = character(1), 
+						"language" = character(1), 
+						"rVersion" = character(1), 
+						"script" = character(1), 
+						"scriptTimeStamp" = character(1),
+						"workingDirectory" = character(1), 
+						"ddgDirectory" = character(1), 
+						"ddgTimeStamp" = character(1),
+						"rdtVersion" = character(1), 
+						"hashAlgorithm" = character(1),
+						stringsAsFactors = FALSE )
+	
+	# architecture, language, rVersion
+	r.version <- R.Version()
+	
+	env$architecture[1] <- r.version$arch
+	env$language[1] <- r.version$language
+	env$rVersion[1] <- r.version$version
+	
+	# operating system
+	env$os[1] <- .Platform$OS.type
+	
+	# script variables
+	script.path <- .ddg.get("ddg.r.script.path")
+	
+	if( ! is.null(script.path) )
+	{
+		env$script[1] <- script.path
+		env$scriptTimeStamp[1] <- .ddg.format.time( file.info(script.path)$mtime )
+	}
+	else
+	{
+		env$script[1] <- ""
+		env$scriptTimeStamp[1] <- ""
+	}
+	
+	# working directory, ddg. directory
+	env$workingDirectory[1] <- getwd()
+	env$ddgDirectory[1] <- .ddg.path()
+	
+	# ddg timestamp
+	env$ddgTimeStamp[1] <- .ddg.get("ddg.start.time")
+	
+	# rdt version
+	env$rdtVersion[1] <- toString( packageVersion("RDataTracker") )
+	
+	# hash algorithm
+	env$hashAlgorithm[1] <- .ddg.get(".ddg.hash.algorithm")
+	
+	# RETURN
+	return(env)
+}
+
 
 #--------------------USER FUNCTIONS-----------------------#
 
@@ -6148,204 +6186,213 @@ ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE) {
 # force.console (optional) - if TRUE, turn console mode on.
 
 ddg.source <- function (file,  ddgdir = NULL, local = FALSE, echo = verbose, print.eval = echo,
-    verbose = getOption("verbose"), max.deparse.length = 150, chdir = FALSE, encoding = getOption("encoding"),
-    ignore.ddg.calls = TRUE, ignore.init = ignore.ddg.calls, force.console=ignore.init){
+	verbose = getOption("verbose"), max.deparse.length = 150, chdir = FALSE, encoding = getOption("encoding"),
+	ignore.ddg.calls = TRUE, ignore.init = ignore.ddg.calls, force.console=ignore.init){
 
-  # Store script number & name.
-  snum <- .ddg.next.script.num()
-  sname <- basename(file)
+	# Store script number & name.
+	snum <- .ddg.next.script.num()
+	sname <- basename(file)
+	stime <- .ddg.format.time( file.info(sname)$mtime )
 
-  if (snum == 0) {
-    df <- data.frame(snum, sname, stringsAsFactors=FALSE)
-  } else {
-    df<- rbind(.ddg.sourced.scripts(), c(snum, sname))
-  }
-  .ddg.set(".ddg.sourced.scripts", df)
+	if (snum == 0) {
+		df <- data.frame(snum, sname, stime, stringsAsFactors=FALSE)
+	} else {
+		df<- rbind(.ddg.sourced.scripts(), c(snum, sname, stime))
+	}
+	.ddg.set(".ddg.sourced.scripts", df)
 
-  # Increment script number.
-  .ddg.inc(".ddg.next.script.num")
+	# Increment script number.
+	.ddg.inc(".ddg.next.script.num")
 
-  ### CODE IN THIS SECTION IS BASICALLY REPLICATION OF source FUNCTION ###
+	### CODE IN THIS SECTION IS BASICALLY REPLICATION OF source FUNCTION ###
 
-  # Get the environment under which the script should be executed.
-  envir <- if (isTRUE(local)) {
-        parent.frame()
-      }
-      else if (identical(local, FALSE)) {
-        .GlobalEnv
-      }
-      else if (is.environment(local)) {
-        local
-      }
-      else stop("'local' must be TRUE, FALSE or an environment")
+	# Get the environment under which the script should be executed.
+	envir <- if (isTRUE(local)) {
+			parent.frame()
+		}
+		else if (identical(local, FALSE)) {
+			.GlobalEnv
+		}
+		else if (is.environment(local)) {
+			local
+		}
+		else stop("'local' must be TRUE, FALSE or an environment")
 
-  # Parse encoding information.
-  have_encoding <- !missing(encoding) && encoding != "unknown"
-  if (!missing(echo)) {
-    if (!is.logical(echo))
-      stop("'echo' must be logical")
-    if (!echo && verbose) {
-      warning("'verbose' is TRUE, 'echo' not; ... coercing 'echo <- TRUE'\n")
-      echo <- TRUE
-    }
-  }
+	# Parse encoding information.
+	have_encoding <- !missing(encoding) && encoding != "unknown"
+	if (!missing(echo)) 
+	{
+		if (!is.logical(echo))
+			stop("'echo' must be logical")
+		if (!echo && verbose) 
+		{
+			warning("'verbose' is TRUE, 'echo' not; ... coercing 'echo <- TRUE'\n")
+			echo <- TRUE
+		}
+	}
 
-  # Print extra information about environment.
-  if (verbose) {
-    cat("'envir' chosen:")
-    print(envir)
-  }
+	# Print extra information about environment.
+	if (verbose) 
+	{
+		cat("'envir' chosen:")
+		print(envir)
+	}
 
-  # Parse input file and figure out encoding.
-  ofile <- file
-  from_file <- FALSE
-  srcfile <- NULL
-  if (is.character(file)) {
-    if (identical(encoding, "unknown")) {
-      enc <- utils::localeToCharset()
-      encoding <- enc[length(enc)]
-    }
-    else enc <- encoding
-    if (length(enc) > 1L) {
-      encoding <- NA
-      owarn <- options("warn")
-      options(warn = 2)
-      for (e in enc) {
-        if (is.na(e))
-          next
-        zz <- file(file, encoding = e)
-        res <- tryCatch(readLines(zz, warn = FALSE),
-            error = identity)
-        close(zz)
-        if (!inherits(res, "error")) {
-          encoding <- e
-          break
-        }
-      }
-      options(owarn)
-    }
-    if (is.na(encoding))
-      stop("unable to find a plausible encoding")
-    if (verbose)
-      cat(gettextf("encoding = \"%s\" chosen", encoding),
-          "\n", sep = "")
-    if (file == "") {
-      filename <- "stdin"
-      file <- stdin()
-      srcfile <- "<stdin>"
-    }
-    else {
-      filename <- file
-      file <- file(filename, "r", encoding = encoding)
-      on.exit(close(file))
-      lines <- readLines(file, warn = FALSE)
+	# Parse input file and figure out encoding.
+	ofile <- file
+	from_file <- FALSE
+	srcfile <- NULL
+	if (is.character(file)) 
+	{
+		if (identical(encoding, "unknown")) 
+		{
+			enc <- utils::localeToCharset()
+			encoding <- enc[length(enc)]
+		}
+		else enc <- encoding
+		if (length(enc) > 1L) 
+		{
+			encoding <- NA
+			owarn <- options("warn")
+			options(warn = 2)
+			for (e in enc) 
+			{
+				if (is.na(e))
+					next
+				zz <- file(file, encoding = e)
+				res <- tryCatch(readLines(zz, warn = FALSE), error = identity)
+				close(zz)
+				if (!inherits(res, "error")) 
+				{
+					encoding <- e
+					break
+				}
+			}
+			options(owarn)
+		}
+		if (is.na(encoding))
+			stop("unable to find a plausible encoding")
+		if (verbose)
+			cat(gettextf("encoding = \"%s\" chosen", encoding), "\n", sep = "")
+		if (file == "") 
+		{
+			filename <- "stdin"
+			file <- stdin()
+			srcfile <- "<stdin>"
+		}
+		else 
+		{
+			filename <- file
+			file <- file(filename, "r", encoding = encoding)
+			on.exit(close(file))
+			lines <- readLines(file, warn = FALSE)
 
-      on.exit()
-      close(file)
-      srcfile <- srcfilecopy(filename, lines, file.info(filename)[1,
-              "mtime"], isFile = TRUE)
-    }
-    loc <- utils::localeToCharset()[1L]
-    encoding <- if (have_encoding)
-          switch(loc, `UTF-8` = "UTF-8", `ISO8859-1` = "latin1",
-              "unknown")
-        else "unknown"
-  }
+			on.exit()
+			close(file)
+			srcfile <- srcfilecopy(filename, lines, file.info(filename)[1, "mtime"], isFile = TRUE)
+		}
+		loc <- utils::localeToCharset()[1L]
+		encoding <- if (have_encoding)
+				switch(loc, `UTF-8` = "UTF-8", `ISO8859-1` = "latin1", "unknown")
+        	else "unknown"
+	}
 
-  else {
-    filename <- "Connection"
-    lines <- readLines(file, warn = FALSE)
+	else 
+	{
+		filename <- "Connection"
+		lines <- readLines(file, warn = FALSE)
 
-    srcfile <- srcfilecopy(deparse(substitute(file)), lines)
-  }
+		srcfile <- srcfilecopy(deparse(substitute(file)), lines)
+	}
 
-  # Parse the expressions from the file.
-  exprs <- if (!from_file) {
-        if (length(lines)) {
-          parse(stdin(), n = -1, lines, "?", srcfile,
-              encoding, keep.source=TRUE)
-        }
-        else expression()
-      }
-      else {
-        parse(file, n = -1, NULL, "?", srcfile, encoding, keep.source=TRUE)
-      }
+	# Parse the expressions from the file.
+	exprs <- if (!from_file) 
+		{
+			if (length(lines)) 
+				parse(stdin(), n = -1, lines, "?", srcfile, encoding, keep.source=TRUE)
+			else expression()
+		}
+		else {
+			parse(file, n = -1, NULL, "?", srcfile, encoding, keep.source=TRUE)
+		}
 
-  on.exit()
+	on.exit()
 
-  # Set the working directory for the current script and
-  # expressions.
-  if (from_file)
-    close(file)
+	# Set the working directory for the current script and
+	# expressions.
+	if (from_file)
+		close(file)
 
-  if (verbose)
-    cat("--> parsed", "expressions; now eval(.)ing them:\n")
-  if (chdir) {
-    if (is.character(ofile)) {
-      isURL <- length(grep("^(ftp|http|file)://", ofile)) >
-          0L
-      if (isURL)
-        warning("'chdir = TRUE' makes no sense for a URL")
-      if (!isURL && (path <- dirname(ofile)) != ".") {
-        owd <- getwd()
-        if (is.null(owd)) {
-          stop("cannot 'chdir' as current directory is unknown")
-          on.exit(setwd(owd), add = TRUE)
-          setwd(path)
-        }
-      }
-    }
-    else {
-      warning("'chdir = TRUE' makes no sense for a connection")
-    }
-  }
+	if (verbose)
+		cat("--> parsed", "expressions; now eval(.)ing them:\n")
+	if (chdir) 
+	{
+		if (is.character(ofile)) 
+		{
+			isURL <- length(grep("^(ftp|http|file)://", ofile)) > 0L
+			if (isURL)
+				warning("'chdir = TRUE' makes no sense for a URL")
+			if (!isURL && (path <- dirname(ofile)) != ".") 
+			{
+				owd <- getwd()
+				if (is.null(owd)) 
+				{
+					stop("cannot 'chdir' as current directory is unknown")
+					on.exit(setwd(owd), add = TRUE)
+					setwd(path)
+				}
+			}
+		}
+		else {
+			warning("'chdir = TRUE' makes no sense for a connection")
+		}
+	}
 
-  ### END OF MODIFIED source CODE SECTION ###
+	### END OF MODIFIED source CODE SECTION ###
 
-  # Calculate the regular expressions for what should be ignored
-  # and what shouldn't.
-  if (ignore.ddg.calls && !ignore.init) {
-    if(verbose) warning("'ignore.ddg.calls' is TRUE, 'ignore.int' not; ... coercion 'ignore.init <- TRUE'\n")
-    ignore.init <- TRUE
-  }
+	# Calculate the regular expressions for what should be ignored
+	# and what shouldn't.
+	if (ignore.ddg.calls && !ignore.init) {
+		if(verbose) warning("'ignore.ddg.calls' is TRUE, 'ignore.int' not; ... coercion 'ignore.init <- TRUE'\n")
+		ignore.init <- TRUE
+	}
 
-  # Ignore calculation of certain execution steps.
-  ignores <- c("^library[(]RDataTracker[)]$",
-      if(ignore.ddg.calls) "^ddg."
-          else if (ignore.init) c("^ddg.init", "^ddg.run")
-          else "a^")
+	# Ignore calculation of certain execution steps.
+	ignores <- c("^library[(]RDataTracker[)]$",
+		if(ignore.ddg.calls) "^ddg."
+		else if (ignore.init) c("^ddg.init", "^ddg.run")
+		else "a^")
 
-  # Now we can parse the commands as we normally would for a DDG.
-  if(length(exprs) > 0) {
+	# Now we can parse the commands as we normally would for a DDG.
+	if(length(exprs) > 0) 
+	{
+		# Turn on the console if forced to, keep track of previous
+		# setting, parse previous commands if necessary.
+		prev.on <- .ddg.is.init() && .ddg.enable.console()
+		if (prev.on && interactive()) .ddg.console.node()
+		if (force.console) ddg.console.on()
 
-    # Turn on the console if forced to, keep track of previous
-    # setting, parse previous commands if necessary.
-    prev.on <- .ddg.is.init() && .ddg.enable.console()
-    if (prev.on && interactive()) .ddg.console.node()
-    if (force.console) ddg.console.on()
+		# Let library know that we are sourcing a file.
+		prev.source <- .ddg.is.init() && .ddg.enable.source()
 
-    # Let library know that we are sourcing a file.
-    prev.source <- .ddg.is.init() && .ddg.enable.source()
+		# Initialize the tables for ddg.capture.
+		.ddg.set("from.source", TRUE)
 
-    # Initialize the tables for ddg.capture.
-    .ddg.set("from.source", TRUE)
+		# Parse the commands into a console node.
+		.ddg.parse.commands(exprs, sname, snum, environ=envir, ignore.patterns=ignores, node.name=sname,
+			echo = echo, print.eval = print.eval, max.deparse.length = max.deparse.length,
+			run.commands = TRUE)
 
-    # Parse the commands into a console node.
-    .ddg.parse.commands(exprs, sname, snum, environ=envir, ignore.patterns=ignores, node.name=sname,
-        echo = echo, print.eval = print.eval, max.deparse.length = max.deparse.length,
-        run.commands = TRUE)
+		# Save the DDG among other things, but don't return any
+		# values, TODO - should we do this?
+		# ddg.save()
+		.ddg.set("from.source", prev.source)
 
+		# Turn return console to previous state.
+		if (!prev.on) ddg.console.off() else ddg.console.on()
+	}
 
-    # Save the DDG among other things, but don't return any
-    # values, TODO - should we do this?
-    # ddg.save()
-    .ddg.set("from.source", prev.source)
-
-    # Turn return console to previous state.
-    if (!prev.on) ddg.console.off() else ddg.console.on()
-  }
-
-  invisible()
+	invisible()
 }
 
 .ddg.start.ddg.explorer <- function () {
