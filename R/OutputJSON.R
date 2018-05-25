@@ -14,13 +14,6 @@ ddg.json <- function()
 {
 	library(jsonlite)
 	
-	proc.nodes <<- .ddg.proc.nodes()
-	data.nodes <<- .ddg.data.nodes()
-	edge.nodes <<- .ddg.edges()
-	function.nodes <<- .ddg.function.nodes()
-	library.nodes <<- .ddg.installedpackages()
-	
-	
 	node.prefix <- "rdt:"
 	
 	# this list is a container for each separate part that forms the json string
@@ -162,6 +155,9 @@ ddg.json <- function()
 	# escape double quotes in ddg.name, if any
 	nodes$ddg.name <- sapply( nodes$ddg.name , .ddg.json.escape.quotes )
 	
+	# convert '    ' or \t to escaped tab characters, if any
+	nodes <- .ddg.json.df.escape.tabs( nodes )
+	
 	# column names
 	col.names <- c( "rdt:name", "rdt:type", "rdt:elapsedTime", 
 					"rdt:scriptNum", "rdt:startLine", "rdt:startCol", 
@@ -191,6 +187,9 @@ ddg.json <- function()
 	
 	# escape double quotes in ddg.val.type, if any
 	nodes$ddg.val.type <- sapply( nodes$ddg.val.type , .ddg.json.escape.quotes )
+	
+	# convert '    ' or \t to escaped tab characters, if any
+	nodes <- .ddg.json.df.escape.tabs( nodes )
 	
 	# column names
 	col.names <- c( "rdt:name", "rdt:value", "rdt:valType", 
@@ -252,9 +251,9 @@ ddg.json <- function()
 		fields$`rdt:sourcedScriptTimeStamps` <- ""
 	}
 	
-	# working directory, ddg directory
-	fields$`rdt:workingDirectory` <- getwd()
-	fields$`rdt:ddgDirectory` <- .ddg.path()
+	# working directory, ddg directory (escape any tab characters)
+	fields$`rdt:workingDirectory` <- .ddg.json.escape.tabs( getwd() )
+	fields$`rdt:ddgDirectory` <- .ddg.json.escape.tabs( .ddg.path() )
 	
 	# ddg timestamp
 	fields$`rdt:ddgTimeStamp` <- .ddg.get("ddg.start.time")
@@ -304,7 +303,7 @@ ddg.json <- function()
 	{
 		ss <- ss[ ss$snum > 0 , ]
 		
-		script.names <- ss[ , 2]
+		script.names <- sapply( ss[ , 2] , .ddg.json.escape.tabs )
 		script.times <- ss[ , 3]
 	}
 	
@@ -316,6 +315,9 @@ ddg.json <- function()
 {
 	# change col names
 	col.names <- c( "name" , "version" )
+	
+	# convert '    ' or \t to escaped tab characters, if any
+	nodes <- .ddg.json.df.escape.tabs( nodes )
 	
 	# convert to json
 	prefix <- paste( prefix , 'l' , sep='' )
@@ -363,6 +365,9 @@ ddg.json <- function()
 	
 	# convert to data frame
 	nodes <- data.frame( nodes , stringsAsFactors = FALSE )
+	
+	# convert '    ' or \t to escaped tab characters, if any
+	nodes <- .ddg.json.df.escape.tabs( nodes )
 	
 	# convert to json, return
 	prefix <- paste( prefix , 'f' , sep='' )
@@ -581,9 +586,42 @@ ddg.json <- function()
 # --- MULTIPLE-USE FUNCTIONS ------------------- #
 
 # adds escape characters to double quotes within strings
-.ddg.json.escape.quotes <- function( string )
+.ddg.json.escape.quotes <- function( str )
 {
-	return( gsub('\"', '\\\\"', string) )
+	return( gsub('\"', '\\\\"', str) )
+}
+
+# converts '    ' or \t to escaped tab characters in string
+.ddg.json.escape.tabs <- function( str )
+{
+	return( gsub('(    |\\t)', '\\\\t', str) )
+}
+
+# in a data frame, converts '    ' or \t to escaped tab characters in strings
+.ddg.json.df.escape.tabs <- function( dataframe )
+{
+	# get column numbers where the type is 'character'
+	colNums <- sapply( dataframe , typeof )
+	colNums <- which( colNums == "character" )
+	
+	# base case - none of the columns are of type 'character'
+	if( length(colNums) == 0 )
+		return( dataframe )
+	
+	# convert '    ' or \t into escaped tab characters, if any
+	dataframe <- lapply ( dataframe , 
+						  function(col)
+						  {
+							if( is.character(col) )
+								return( sapply(col, .ddg.json.escape.tabs) )
+							else
+								return(col)
+						  }
+						)
+	
+	# reform data frame, return
+	dataframe <- data.frame( dataframe , stringsAsFactors = FALSE )
+	return(dataframe)
 }
 
 # converts a data frame into a formatted json string
