@@ -665,7 +665,7 @@ ddg.json <- function()
 	json <- gsub( '\n\t\"' , '\n\t\t\"' , json )
 	
 	# remove row names in objects
-	json <- gsub( ',\n\t\t\t"_row": "[a-z]+[0-9]+"\n' , '\n' , json)
+	json <- gsub( ',\r?\n\t+"_row": "([0-9A-Za-z]|_|\\.)*"\n' , '\n' , json)
 	
 	# replace wrapping braces with newline characters
 	json <- sub( '^\\{' , '' , json )
