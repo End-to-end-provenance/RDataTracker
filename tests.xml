@@ -385,17 +385,6 @@
 	<!-- Travis: Further edits the .local files for tests -->
 	<target name="travis-edits" if="using-travis">
 
-		<!-- Remove environment node -->
-		<replaceregexp byline="false" flags="s">
-			<regexp pattern='(\t+// environment\r?\n\t+"environment": \{\r?\n(.*)},(\r?\n)+\t+//)' />
-			<substitution expression='(\t\t//)' />
-			<fileset dir="${local_dir}">
-				<patternset id="local_files">
-					<include name="*.local" />
-				</patternset>
-			</fileset>
-		</replaceregexp>
-		
 		<!-- remove library versions
 			some examples of library version strings:
 			"version": "1.5",
@@ -757,7 +746,7 @@
 		ControlConstructTest, WarningTest, PlotTest, Plot2Test, NoDevOffTest, DataTypeTest,
 		HigherOrderFuncTest, AssignmentOperatorsTest, FunctionOriginTest,
 		RMarkdownTest, DDGStatementTest, ConnectionTest">
-		
+
 		<echo>
 	##############################################
 	Finished Execution of Normal Tests. Nothing should have malfunctioned.
