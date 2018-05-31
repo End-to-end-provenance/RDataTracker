@@ -613,7 +613,7 @@ ddg.json <- function()
 						  function(col)
 						  {
 							if( is.character(col) )
-								return( sapply(col, .ddg.json.escape.tabs) )
+								return( .ddg.json.escape.tabs(col) )
 							else
 								return(col)
 						  }
