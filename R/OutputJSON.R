@@ -143,14 +143,14 @@ ddg.json <- function()
 {
 	nodes <- .ddg.proc.nodes()
 	
-	# base case: no procedure nodes 
-	if( nrow(nodes) == 0 )
-		return(NA)
-	
 	# extract and order required columns
 	nodes <- subset(nodes, ddg.num > 0, 
 					select = c(ddg.name, ddg.type, ddg.time, ddg.snum, 
 					ddg.startLine, ddg.startCol, ddg.endLine, ddg.endCol))
+	
+	# base case: no procedure nodes 
+	if( nrow(nodes) == 0 )
+		return(NA)
 	
 	# escape double quotes in ddg.name, if any
 	nodes$ddg.name <- sapply( nodes$ddg.name , .ddg.json.escape.quotes )
@@ -176,14 +176,14 @@ ddg.json <- function()
 {
 	nodes <- .ddg.data.nodes()
 	
-	# base case: no data nodes
-	if( nrow(nodes) == 0 )
-		return(NA)
-	
 	# extract and order required columns
 	nodes <- subset(nodes, ddg.num > 0,
 					select = c(ddg.name, ddg.value, ddg.val.type, ddg.type,
 					ddg.scope, ddg.from.env, ddg.hash, ddg.time, ddg.loc))
+	
+	# base case: no data nodes
+	if( nrow(nodes) == 0 )
+		return(NA)
 	
 	# escape double quotes in ddg.val.type, if any
 	nodes$ddg.val.type <- sapply( nodes$ddg.val.type , .ddg.json.escape.quotes )
