@@ -93,7 +93,26 @@
 	- script-tests is used for real R scripts that are short-running
 	- long-script-tests are used for real R scripts that are long-running
 	- bug-tests are tests that trigger a bug either in DDG Explorer or RDataTracker
-
+	
+	--------------------------------------------------------------------------------
+	
+	NOTE (for Windows users, specifically on Windows 10):
+	
+	This currently does not work on command-line interfaces such as Command Prompt
+	that do not have UNIX commands enabled as `diff` is a UNIX command.
+	Please use a UNIX-commands-enabled shell such as Git Bash and Cygwin.
+	
+	In Environment Variables, please also set the following:
+	
+		In the `Path` system variable, please add the paths to the bin folder for
+		Apache Ant and R. Please add the path to the bin folder for Java if you are
+		planning on running DDGExplorer as well.
+	
+		Please add an additional system variable called R_LIBS_USER, pointing to the
+		directory where user libraries are located.
+	
+	Please also note that paths that include version numbers in their names 
+	(such as those for R) need to be manually changed when the library is updated.
 -->
 
 <project
@@ -740,13 +759,13 @@
 			<param name="test-name" value="RMarkdownTest" />
 		</antcall>
 	</target>
-
+	
 	<target name="normal-tests" depends="basicTest, S4ObjectTest,
 		ScopeTest, ReturnTest, OddParameterTest, FunctionAnnotationTest,
 		ControlConstructTest, WarningTest, PlotTest, Plot2Test, NoDevOffTest, DataTypeTest,
 		HigherOrderFuncTest, AssignmentOperatorsTest, FunctionOriginTest,
 		RMarkdownTest, DDGStatementTest, ConnectionTest">
-
+	
 		<echo>
 	##############################################
 	Finished Execution of Normal Tests. Nothing should have malfunctioned.
