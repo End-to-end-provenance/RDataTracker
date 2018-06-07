@@ -561,75 +561,23 @@ ddg.json <- function()
 	
 	# combine and return
 	return( .ddg.json.combine.rec(json) )
-	
-	
-	
-	# ENTITY NODES
-	# extract entity node parts which do not contain na into new variable
-	#entity.old <- json[3:6]
-	#entity <- entity.old[ which(!is.na(entity.old)) ]
-	
-	# for all sets of nodes but the last one, add comma and newline for appending
-	#len <- length(entity)
-	#entity[1:(len-1)] <- lapply( entity[1:(len-1)] , .ddg.json.addComma )
-	
-	# combine parts into entity node
-	#entity <- .ddg.json.combine.rec( entity )
-	#json[3] <- .ddg.json.formNode( "entity" , entity )
-	
-	
-	# USED NODES
-	# extract used node parts which do not contain na into new variable
-	#used.old <- json[9:10]
-	#used <- used.old[ which(!is.na(used.old)) ]
-	
-	# form used node
-	#if( length(used) == 0 )		# no nodes
-	#{
-	#	json[9] <- NULL
-	#}
-	#else if( length(used) == 1 )	# 1 set of nodes
-	#{
-	#	json[9] <- .ddg.json.formNode( "used" , used )
-	#}	
-	#else 	# both sets of nodes present
-	#{
-		# add comma and newline to first set of nodes for appending
-	#	used[1] <- sub( '\n$' , ',\n\n' , used[[1]] )
-	#	used <- sub( '\n$' , used[[2]] , used[[1]] )
-		
-	#	json[9] <- .ddg.json.formNode( "used" , used )
-	#}
-	
-	# since entity and used nodes parts are merged into 1,
-	# remove other excess entity and used node slots in list
-	#json[10] <- NULL
-	#json[4:6] <- NULL
-	
-	
-	# FINAL COMBINATION
-	# extract nodes which are not na into new variable
-	#json.parts <- json[ which(!is.na(json)) ]
-	
-	# for all sets of nodes but the last one, add comma and newline for appending
-	#length <- length(json.parts)
-	#json.parts[1:(length-1)] <- lapply( json.parts[1:(length-1)] , .ddg.json.addComma )
-	
-	# add final close brace to last element
-	#json.parts[length] <- sub( '\n$' , '\n}' , json.parts[[length]] )
-	
-	# combine and return
-	#return( .ddg.json.combine.rec(json.parts) )
 }
 
+# extracts and combines the different parts of the given node, 
+# then puts it back into the json list
+# if there are more than 1 part to the node, it removes the extra slots in the list
+# previously assigned to those parts
 .ddg.json.combine.node <- function( json , node.name )
 {
+	# get the indices which the node parts reside in the json list
 	indices <- grep( node.name , names(json) )
 	num.parts <- length(indices)
 	
+	# base case
 	if( num.parts == 0 )
 		return(json)
 	
+	# if there are more than 1 part, append commas to all parts but the last one
 	if( num.parts > 1 )
 	{
 		parts <- json[ indices[1:(num.parts-1)] ]
@@ -637,13 +585,17 @@ ddg.json <- function()
 		json[ indices[1:(num.parts-1)] ] <- parts
 	}
 	
+	# combines parts recursively
 	node <- .ddg.json.combine.rec( json[indices] )
 	
+	# forms the json node
 	node <- .ddg.json.formNode( node.name , node )
 	
+	# reassign the combined node to the index previously assigned to the first part
 	json[ indices[1] ] <- node
 	names(json)[ indices[1] ] <- node.name
 	
+	# remove other parts, if any
 	if( num.parts > 1 )
 		json[ indices[2:num.parts] ] <- NULL
 	
