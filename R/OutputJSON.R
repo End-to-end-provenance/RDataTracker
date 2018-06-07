@@ -35,7 +35,8 @@ ddg.json <- function()
 						 "wasInformedBy.p2p" = "pp" ,
 						 "wasGeneratedBy.p2d" = "pd" ,
 						 "used.d2p" = "dp" ,
-						 "used.f2p" = "fp" )
+						 "used.f2p" = "fp" ,
+						 "hadMember" = "m" )
 	
 	
 	# this list is a container for each separate part that forms the json string
@@ -256,7 +257,7 @@ ddg.json <- function()
 					"workingDirectory" = NA ,
 					"ddgDirectory" = NA ,
 					"ddgTimeStamp" = NA ,
-					"rdt:rdatatrackerVersion" = NA ,
+					"rdatatrackerVersion" = NA ,
 					"hashAlgorithm" = NA )
 	
 	# architecture, language, rVersion
@@ -278,7 +279,7 @@ ddg.json <- function()
 		fields$scriptTimeStamp <- .ddg.format.time( file.info(script.path)$mtime )
 		
 		sourced.scripts <- .ddg.json.sourced.scripts()
-		fields$sourcedScript <- sourced.scripts[[1]]
+		fields$sourcedScripts <- sourced.scripts[[1]]
 		fields$sourcedScriptTimeStamps <- sourced.scripts[[2]]
 	}
 	else
@@ -298,7 +299,7 @@ ddg.json <- function()
 	fields$ddgTimeStamp <- .ddg.get("ddg.start.time")
 	
 	# rdt version
-	fields$`rdt:rdatatrackerVersion` <- toString( packageVersion("RDataTracker") )
+	fields$rdatatrackerVersion <- toString( packageVersion("RDataTracker") )
 	
 	# hash algorithm
 	fields$hashAlgorithm <- .ddg.get(".ddg.hash.algorithm")
