@@ -14,7 +14,12 @@ ddg.json <- function()
 {
 	library(jsonlite)
 	
-	node.prefix <- "rdt:"
+	# CONSTANTS
+	TOOL.NAME <- "RDataTracker"
+	JSON.VERSION <- 2.1
+	
+	NODE.PREFIX <- "rdt:"
+	
 	
 	# this list is a container for each separate part that forms the json string
 	json <- list( "prefix" = NA ,
@@ -33,23 +38,23 @@ ddg.json <- function()
 	json$prefix <- .ddg.json.prefix()
 	
 	# activity (proc nodes)
-	json$activity <- .ddg.json.proc( node.prefix )
+	json$activity <- .ddg.json.proc( NODE.PREFIX )
 	
 	# entity: data nodes
-	json$entity.data <- .ddg.json.data( node.prefix )
+	json$entity.data <- .ddg.json.data( NODE.PREFIX )
 	
 	# entity: environment
-	json$entity.env <- .ddg.json.env( node.prefix )
+	json$entity.env <- .ddg.json.env( NODE.PREFIX )
 	
 	
 	# EDGE TABLE NODES
 	edges <- subset( .ddg.edges() , ddg.num > 0 )
 	
 	# wasInformedBy (proc2proc)
-	json$wasInformedBy <- .ddg.json.proc2proc( edges , node.prefix )
+	json$wasInformedBy <- .ddg.json.proc2proc( edges , NODE.PREFIX )
 	
 	# wasGeneratedBy (proc2data)
-	json$wasGeneratedBy <- .ddg.json.proc2data( edges , node.prefix )
+	json$wasGeneratedBy <- .ddg.json.proc2data( edges , NODE.PREFIX )
 	
 	
 	# get function nodes
@@ -58,7 +63,7 @@ ddg.json <- function()
 	
 	
 	# used: data2proc
-	json$used.d2p <- .ddg.json.data2proc( edges , node.prefix )
+	json$used.d2p <- .ddg.json.data2proc( edges , NODE.PREFIX )
 	
 	
 	# LIBRARY NODES - change row numbers
@@ -66,7 +71,7 @@ ddg.json <- function()
 	rownames(libraries) <- c( 1 : nrow(libraries) )
 	
 	# PRINT TO JSON - LIBRARY NODES
-	json$entity.lib <- .ddg.json.lib( libraries , node.prefix )
+	json$entity.lib <- .ddg.json.lib( libraries , NODE.PREFIX )
 	
 	
 	# FUNCTION NODES - get function numbers if there are any function nodes
@@ -78,7 +83,7 @@ ddg.json <- function()
 		rownames(functions) <- c( 1 : nrow(functions) )
 		
 		# PRINT TO JSON - FUNCTION NODES
-		json$entity.func <- .ddg.json.func( functions , node.prefix )
+		json$entity.func <- .ddg.json.func( functions , NODE.PREFIX )
 		
 		
 		# MERGE TABLES: function calls, functions, libraries
@@ -102,10 +107,10 @@ ddg.json <- function()
 		
 		
 		# PRINT TO JSON: func2proc
-		json$used.f2p <- .ddg.json.func2proc( calls , node.prefix )
+		json$used.f2p <- .ddg.json.func2proc( calls , NODE.PREFIX )
 		
 		# PRINT TO JSON: func2lib
-		json$hadMember <- .ddg.json.lib2func( calls , node.prefix )
+		json$hadMember <- .ddg.json.lib2func( calls , NODE.PREFIX )
 	}	
 	
 	# COMBINE INTO COMPLETE JSON
