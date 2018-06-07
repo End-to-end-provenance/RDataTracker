@@ -16,7 +16,7 @@ ddg.json <- function()
 	
 	# CONSTANTS
 	TOOL.NAME <- "RDataTracker"
-	JSON.VERSION <- 2.1
+	JSON.VERSION <- "2.1"
 	
 	# contents of the prefix node
 	PREFIX.NODE <- list( "prov" = "http://www.w3.org/ns/prov#" ,
