@@ -41,7 +41,7 @@ ddg.json <- function()
 	
 	# this list is a container for each separate part that forms the json string
 	json <- list( "prefix" = NA ,
-				  #"agent" = NA ,
+				  "agent" = NA ,
 				  "activity.proc" = NA ,
 				  "entity.data" = NA , 
 				  "entity.env" = NA , 
@@ -57,7 +57,7 @@ ddg.json <- function()
 	json$prefix <- .ddg.json.prefix( PREFIX.NODE )
 	
 	# agent (about the tool that produced the json & the json version)
-	#json$agent <- .ddg.json.agent( TOOL.NAME , JSON.VERSION , LABEL.NAMES$agent , LABEL.PREFIX )
+	json$agent <- .ddg.json.agent( TOOL.NAME , JSON.VERSION , LABEL.NAMES$agent , LABEL.PREFIX )
 	
 	# activity (proc nodes)
 	json$activity.proc <- .ddg.json.proc( LABEL.NAMES$activity.proc , LABEL.PREFIX )
