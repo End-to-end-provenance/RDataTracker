@@ -138,7 +138,7 @@ ddg.json <- function()
 	}	
 	
 	# COMBINE INTO COMPLETE JSON
-	json <<- json
+	#json <<- json
 	return( .ddg.json.combine(json) )
 }
 
@@ -543,7 +543,7 @@ ddg.json <- function()
 .ddg.json.combine <- function( json.parts )
 {
 	# remove all NA slots
-	json <- json[ is.na(json) ]
+	json[ is.na(json) ] <- NULL
 	
 	# combine into json list: entity and used nodes
 	json <- .ddg.json.combine.node( json , "entity" )
@@ -625,10 +625,17 @@ ddg.json <- function()
 .ddg.json.combine.node <- function( json , node.name )
 {
 	indices <- grep( node.name , names(json) )
-	indices.len <- length(indices)
+	num.parts <- length(indices)
 	
-	if( indices.len == 0 )
+	if( num.parts == 0 )
 		return(json)
+	
+	if( num.parts > 1 )
+	{
+		parts <- json[ indices[1:(num.parts-1)] ]
+		parts <- lapply( parts , .ddg.json.addComma )
+		json[ indices[1:(num.parts-1)] ] <- parts
+	}
 	
 	node <- .ddg.json.combine.rec( json[indices] )
 	
@@ -637,8 +644,8 @@ ddg.json <- function()
 	json[ indices[1] ] <- node
 	names(json)[ indices[1] ] <- node.name
 	
-	if( indices.len > 1 )
-		json[ indices[2:indices.len] ] <- NULL
+	if( num.parts > 1 )
+		json[ indices[2:num.parts] ] <- NULL
 	
 	return( json )
 }
@@ -650,7 +657,7 @@ ddg.json <- function()
 	
 	# base case
 	if( length == 1 )
-		return( list[[1]] )
+		return( list[1] )
 	
 	# recursively merge left and right halves of the list
 	mid <- ceiling( length / 2 )
