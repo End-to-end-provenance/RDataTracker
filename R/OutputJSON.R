@@ -557,7 +557,7 @@ ddg.json <- function()
 		json[1:(num.parts-1)] <- lapply( json[1:(num.parts-1)] , .ddg.json.addComma )
 	
 	# add final close brace to last element
-	json[num.parts] <- sub( '\n$' , '\n}' , json[[num.parts]] )
+	json[num.parts] <- sub( '\n$' , '\n}' , json[num.parts] )
 	
 	# combine and return
 	return( .ddg.json.combine.rec(json) )
