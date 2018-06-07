@@ -540,7 +540,7 @@ ddg.json <- function()
 }
 
 # combines all json parts into 1 complete prov-json string
-.ddg.json.combine <- function( json.parts )
+.ddg.json.combine <- function( json )
 {
 	# remove all NA slots
 	json[ is.na(json) ] <- NULL
