@@ -2105,7 +2105,7 @@ ddg.trace.output <- function () {
 #  print (paste ("call[[3]]", call[[3]]))
 #  print (paste ("envir:", ls(envir=sys.frame(frame.number))))
   fname <- as.character(call[[1]])
-  #print (paste ("Output function traced: ", fname))
+  print (paste ("Output function traced: ", fname))
   #print (paste ("Called by: ", output.caller.name))
 #  args <- call[2:length(call)]
 #  print (paste ("args:", args))
@@ -2136,17 +2136,20 @@ ddg.trace.output <- function () {
   #output.file.name <- get (file.param.name, sys.frame(frame.number))
   output.file.argument <- call[[file.param.name]]
   if (is.null (output.file.argument)) {
+    #print("Looking up file argument by position")
     file.param.pos <- file.write.functions$param.pos[file.write.functions$function.names == fname]
-    output.file.name <- call[[file.param.pos + 1]]
+    output.file.argument <- call[[file.param.pos + 1]]
   }
-  else if (is.symbol (output.file.argument)) {
+  if (is.symbol (output.file.argument)) {
     #print(paste("Output file argument: ", output.file.argument))
+    #print ("Looking up argument value")
     output.file.name <- get (as.character(output.file.argument), sys.frame(frame.number-1))
   }
   else {
-     output.file.name <- output.file.argument
+    #print ("Argument is the file name")
+    output.file.name <- output.file.argument
   }
-  #print (paste ("Output file name:", output.file.name))
+  print (paste ("Output file name:", output.file.name))
   #print (paste ("str(output.file.name):", str(output.file.name)))
   # Create the nodes and edges for the file
   #.ddg.create.file.write.nodes.and.edges (output.file.name)
@@ -2245,6 +2248,9 @@ ddg.trace.output <- function () {
     # Check that the file exists.  If it does, we will assume that
     # it was created by the write call that we just found.
     #print(paste(".ddg.create.file.write.nodes.and.edges: file =", file))
+#    if (!is.character(file)) {
+#      print (paste (".ddg.create.file.write.nodes.and.edges: str(file) = ", str(file)))
+#    }
     if (file.exists (file)) {
       # Create the file node and edge
       #ddg.file.out (file, pname=cmd@abbrev)
@@ -6162,7 +6168,8 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
   # Start tracing of output functions
   ### Add call to get for f
   #trace.one <- function (f) {trace (as.name(f), tracer=quote(print("output call traced")))} 
-  trace.one <- function (f) {capture.output(capture.output(trace (as.name(f), exit=ddg.trace.output, print=FALSE), type="message"))} 
+  #trace.one <- function (f) {capture.output(capture.output(trace (as.name(f), exit=ddg.trace.output, print=FALSE), type="message"))} 
+  trace.one <- function (f) {capture.output(capture.output(trace (as.name(f), ddg.trace.output, print=FALSE), type="message"))} 
   lapply(.ddg.get(".ddg.file.write.functions.df")$function.names, trace.one)
   #trace(.ddg.get(".ddg.file.write.functions.df")$function.names, .ddg.trace.output)
 
