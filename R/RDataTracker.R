@@ -2023,242 +2023,6 @@ library(curl)
   }
 }
 
-# Initialize the information about functions that read from files
-.ddg.create.file.write.functions.df <- function () {
-  # Functions that read files
-  function.names <-
-    c ("write.table", "write", "writeLines",
-        "writeChar", "writeBin", 
-        "saveRDS", "save", "dput", "dump")
-#c ("write.csv", "write.csv2", "write.table", "write", "write.matrix", "writeLines",
-#    "writeChar", "writeBin", "write_json", "write.dcf", "write.ftable", 
-#    "saveRDS", "cat", "save", "dput", "dump", "ggsave")
-
-# write.csv, write.csv2 calls write.table
- # write.table calls writeLines and .External2(C_writetable)
-  # write, write.ftable (stats package) calls cat
-  # writeLines calls .Internal(writeLines)
-  # writeChar calls .Internal(writeChar)
-  # writeBin calls .Internal(writeBin)
-  # write.dcf calls writeLines
-  # saveRDS calls .Internal(serializeToConn)
-  # cat calls .Internal(cat) -- seems to cause problems
-  # save calls .Internal(save) and .Internal(saveToConn)
-  # dput calls cat and .Internal(dput)
-  # dump calls .Internal(dump)
-  # ggsave is not in base
-  
-  # The argument that represents the file name
-  param.names <-
-    c ("file", "file", "con", 
-        "con", "con", 
-        "file", "file", "file", "file")
-
-  # Position of the file parameter if it is passed by position
-  param.pos <-
-    c (2, 2, 2,
-       2, 2,
-       2, 0, 2, 2)
-
-  return (data.frame (function.names, param.names, param.pos, stringsAsFactors=FALSE))
-}
-
-.ddg.set (".ddg.file.write.functions.df", .ddg.create.file.write.functions.df ())
-
-#.ddg.trace.file.writes <- function() {
-#trace(.ddg.get(".ddg.file.write.functions.df")$function.names, function() {print ("output function traced")})
-#}
-
-#.ddg.output.trace <- function() {
-#  print ("output function traced")
-#}
-
-ddg.trace.output <- function () {
-  #print (sys.calls())
-  
-  # Get the frame corresponding to the output function being traced
-  frame.number <- .ddg.get.traced.function.frame.number()
-  
-  # Check if the function that called the output function is a ddg function.
-  # If it is, ignore this call.
-  output.caller.name <- as.character(sys.call (frame.number - 1)[[1]])
-  if (startsWith (output.caller.name, "ddg") || startsWith (output.caller.name, ".ddg")) {
-    return()
-  }
-  if (length (grep ("^.ddg.snapshot", sys.calls())) > 0) {
-    #print ("Trace while creating a snapshot.  Returning.")
-    return()
-  }
-  
-#  print (sys.calls())
-  
-  # Get the name of the output function
-  call <- match.call (sys.function(frame.number)@original, sys.call (frame.number), 
-                      expand.dots = TRUE, envir = sys.frame(frame.number))
-#  print ("function")
-#  print (sys.function(frame.number)@original)
-#  print ("Call") 
-#  print(str(call))
-#  print (call)
-#  print (paste ("call$file:", call$file))
-#  print (paste ("call[['file']]", call[["file"]]))
-#  print (paste ("call[[3]]", call[[3]]))
-#  print (paste ("envir:", ls(envir=sys.frame(frame.number))))
-  fname <- as.character(call[[1]])
-#  print (paste ("Output function traced: ", fname))
-  #print (paste ("Called by: ", output.caller.name))
-#  args <- call[2:length(call)]
-#  print (paste ("args:", args))
-  
-  # param,names contains the names of the parameters (this is
-  # what the variable is known as inside the function).
-  #print(paste(".ddg.create.function.nodes: full.call =", full.call))
-#  param.names <- names(call)
-#  param.names <- param.names[2:length(param.names)]
-#  print (paste("param.names:", param.names))
-#  
-#  print ("call[[2]]")
-#  print(str(call[[2]]))
-#  print (call[[2]])
-#  print ("call[['file']]")
-#  print (call["file"])
-#  print ("call$file")
-#  print (call$file)
-  
-  # Get the name of the file parameter for the output function
-  file.write.functions <- .ddg.get (".ddg.file.write.functions.df")
-  file.param.name <- file.write.functions$param.names[file.write.functions$function.names == fname]
-  #print (paste ("Output file parameter:", file.param.name))
-#  print ("Output function environment:")
-#  print (ls (envir=sys.frame(frame.number)))
-  
-  # Get the name of the file or connection being written to
-  #output.file.name <- get (file.param.name, sys.frame(frame.number))
-  output.file.argument <- call[[file.param.name]]
-  if (is.null (output.file.argument)) {
-    #print("Looking up file argument by position")
-    file.param.pos <- file.write.functions$param.pos[file.write.functions$function.names == fname]
-    if (file.param.pos >= length(call)) return()
-    output.file.argument <- call[[file.param.pos + 1]]
-  }
-  if (is.symbol (output.file.argument)) {
-    #print(paste("Output file argument: ", output.file.argument))
-    #print ("Looking up argument value")
-    output.file.name <- get (as.character(output.file.argument), sys.frame(frame.number-1))
-  }
-  else {
-    #print ("Argument is the file name")
-    output.file.name <- output.file.argument
-  }
-  #print (paste ("Output file name:", output.file.name))
-  #print (paste ("str(output.file.name):", str(output.file.name)))
-  # Create the nodes and edges for the file
-  #.ddg.create.file.write.nodes.and.edges (output.file.name)
-#  if (!is.symbol(output.file.name)) {
-#    # Check for a connection.  It will be a number encoded as a string.
-#    # Turn off warnings and try the coercion and then turn warnings back on
-#    save.warn <- getOption("warn")
-#    options(warn=-1)
-#    conn <- as.numeric(output.file.name)
-#    options (warn=save.warn)
-#    if (!is.na (conn)) {
-#      # If it is a closed connection, use the file it is connected to
-#      # If it is still open, don't use it because the contents on disk won't
-#      # be correct until it is closed.
-#      if (.ddg.get.connection.isopen(conn)) {
-#        #next
-#        return()
-#      }
-#      output.file.name <- .ddg.get.connection.description(conn)
-#    }
-#  }
-  .ddg.add.output.file (output.file.name)
-  
-}
-
-.ddg.clear.output.file <- function () {
-  .ddg.set ("output.files", character())
-}
-
-.ddg.add.output.file <- function (fname) {
-  output.files <- .ddg.get("output.files")
-  .ddg.set ("output.files", c(output.files, fname))
-}
-
-.ddg.get.traced.function.frame.number <- function() {
-  calls <- sys.calls()
-  calls <- mapply( `[[` , calls , 1 , SIMPLIFY = TRUE )
-  
-  doTrace.frame <- which( calls == ".doTrace" )
-  
-  if( length(doTrace.frame) > 0 )
-  {
-    return (doTrace.frame - 1)
-  }
-  else
-  {
-    return (NULL)
-  }
-  
-}
-
-
-# Given a parse tree, this function returns a list containing
-# the expressions that correspond to the filename argument
-# of the calls to functions that write files.  If there are
-# none, it returns NULL.
-.ddg.find.files.written <- function(main.object, env) {
-  return (.ddg.find.files (main.object, .ddg.get(".ddg.file.write.functions.df"), env))
-}
-
-# Creates file nodes and data in edges for any files that are written in this cmd
-# cmd - text command
-# cmd.expr - parsed command
-.ddg.create.file.write.nodes.and.edges <- function (cmd, env) {
-#.ddg.create.file.write.nodes.and.edges <- function (file) {
-  # Find all the files potentially written in this command.
-  # This may include files that are not actually written if the
-  # write calls are within an if-statement, for example.
-  #files.written <- .ddg.find.files.written(cmd, env)
-  #print (".ddg.create.file.read.nodes.and.edges: Files written:")
-  #print (files.written)
-  
-  files.written <- .ddg.get ("output.files")
-
-  #if (!is.symbol(file)) {
-  for (file in files.written) {
-    if (.ddg.is.connection(file)) {
-      # Check for a connection.  It will be a number encoded as a string.
-      # Turn off warnings and try the coercion and then turn warnings back on
-#      save.warn <- getOption("warn")
-#      options(warn=-1)
-      conn <- as.numeric(file)
- #     options (warn=save.warn)
- #     if (!is.na (conn)) {
-        # If it is a closed connection, use the file it is connected to
-        # If it is still open, don't use it because the contents on disk won't
-        # be correct until it is closed.
-        if (.ddg.get.connection.isopen(conn)) {
-          next
-          #return()
-        }
-        file <- .ddg.get.connection.description(conn)
- #     }
-    }
-    
-    # Check that the file exists.  If it does, we will assume that
-    # it was created by the write call that we just found.
-    #print(paste(".ddg.create.file.write.nodes.and.edges: file =", file))
-#    if (!is.character(file)) {
-#      print (paste (".ddg.create.file.write.nodes.and.edges: str(file) = ", str(file)))
-#    }
-    if (file.exists (file)) {
-      # Create the file node and edge
-      #ddg.file.out (file, pname=cmd@abbrev)
-      ddg.file.out (file)
-    }
-  }
-}
 
 # Initialize the information about functions that read from files
 .ddg.create.file.close.functions.df <- function () {
@@ -3386,9 +3150,7 @@ ddg.trace.output <- function () {
 
           if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Adding output data nodes for", cmd@abbrev))
 
-          #if (cmd@writesFile) .ddg.create.file.write.nodes.and.edges (cmd, environ)
-          .ddg.create.file.write.nodes.and.edges (cmd)
-          .ddg.clear.output.file()
+          .ddg.create.file.write.nodes.and.edges ()
           if (cmd@closesFile) .ddg.create.file.close.nodes.and.edges (cmd, environ)
           if (cmd@createsGraphics) .ddg.set.graphics.files (cmd, environ)
           if (cmd@updatesGraphics) .ddg.add.graphics.io (cmd)
@@ -6167,12 +5929,11 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
   .ddg.set("ddg.start.time", .ddg.timestamp())
   
   # Start tracing of output functions
-  ### Add call to get for f
-  #trace.one <- function (f) {trace (as.name(f), tracer=quote(print("output call traced")))} 
-  #trace.one <- function (f) {capture.output(capture.output(trace (as.name(f), exit=ddg.trace.output, print=FALSE), type="message"))} 
+  # capture.output is called twice to capture the output that is going to standard output and to
+  # standard error.  These are messages that say "Tracing..." and list each function being
+  # traced.
   trace.one <- function (f) {capture.output(capture.output(trace (as.name(f), ddg.trace.output, print=FALSE), type="message"))} 
   lapply(.ddg.get(".ddg.file.write.functions.df")$function.names, trace.one)
-  #trace(.ddg.get(".ddg.file.write.functions.df")$function.names, .ddg.trace.output)
 
   invisible()
 }
@@ -6294,9 +6055,9 @@ ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE) {
   # Delete temporary files.
   # .ddg.delete.temp()
   
-  # Stop tracing output functions.  Will this be a problem if run from the console?
+  # Stop tracing output functions.  Will this be a problem if ddg.save is called from the console?
+  # capture.output is used to prevent "Untracing" messages from appearing in the output
   capture.output (untrace(.ddg.get(".ddg.file.write.functions.df")$function.names), type="message")
-  
 
   # Save ddg.json to file.
   ddg.json.write()
