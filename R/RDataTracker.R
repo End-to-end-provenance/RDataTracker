@@ -2027,7 +2027,7 @@ library(curl)
 .ddg.create.file.write.functions.df <- function () {
   # Functions that read files
   function.names <-
-    c ("write.csv", "write.csv2", "write.table", "write", "writeLines",
+    c ("write.table", "write", "writeLines",
         "writeChar", "writeBin", 
         "saveRDS", "save", "dput", "dump")
 #c ("write.csv", "write.csv2", "write.table", "write", "write.matrix", "writeLines",
@@ -2050,13 +2050,13 @@ library(curl)
   
   # The argument that represents the file name
   param.names <-
-    c ("file", "file", "file", "file", "con", 
+    c ("file", "file", "con", 
         "con", "con", 
         "file", "file", "file", "file")
 
   # Position of the file parameter if it is passed by position
   param.pos <-
-    c (2, 2, 2, 2, 2,
+    c (2, 2, 2,
        2, 2,
        2, 0, 2, 2)
 
@@ -2105,7 +2105,7 @@ ddg.trace.output <- function () {
 #  print (paste ("call[[3]]", call[[3]]))
 #  print (paste ("envir:", ls(envir=sys.frame(frame.number))))
   fname <- as.character(call[[1]])
-  print (paste ("Output function traced: ", fname))
+#  print (paste ("Output function traced: ", fname))
   #print (paste ("Called by: ", output.caller.name))
 #  args <- call[2:length(call)]
 #  print (paste ("args:", args))
@@ -2138,6 +2138,7 @@ ddg.trace.output <- function () {
   if (is.null (output.file.argument)) {
     #print("Looking up file argument by position")
     file.param.pos <- file.write.functions$param.pos[file.write.functions$function.names == fname]
+    if (file.param.pos >= length(call)) return()
     output.file.argument <- call[[file.param.pos + 1]]
   }
   if (is.symbol (output.file.argument)) {
@@ -2149,7 +2150,7 @@ ddg.trace.output <- function () {
     #print ("Argument is the file name")
     output.file.name <- output.file.argument
   }
-  print (paste ("Output file name:", output.file.name))
+  #print (paste ("Output file name:", output.file.name))
   #print (paste ("str(output.file.name):", str(output.file.name)))
   # Create the nodes and edges for the file
   #.ddg.create.file.write.nodes.and.edges (output.file.name)
