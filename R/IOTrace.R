@@ -1,3 +1,22 @@
+# Copyright (C) President and Fellows of Harvard College and 
+# Trustees of Mount Holyoke College, 2014, 2015, 2016, 2017.
+
+# This program is free software: you can redistribute it and/or
+# modify it under the terms of the GNU General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU General Public License for more details.
+#
+#   You should have received a copy of the GNU General Public
+#   License along with this program.  If not, see
+#   <http://www.gnu.org/licenses/>.
+
+############################ IOTrace.R #############################
+
 # Contains the functions needed to trace input and output operations, including
 # the reading and writing of files, and the creation of plots.
 
@@ -31,7 +50,45 @@
   return (data.frame (function.names, param.names, param.pos, stringsAsFactors=FALSE))
 }
 
-.ddg.set (".ddg.file.write.functions.df", .ddg.create.file.write.functions.df ())
+#' Initialize the data needed to trace I/O functions
+.ddg.init.iotrace <- function () {
+  # Record the information about the output functions
+  .ddg.set (".ddg.file.write.functions.df", .ddg.create.file.write.functions.df ())
+  
+  # Create an empty list for the output files
+  .ddg.clear.output.file()
+  
+  # Start tracing of output functions
+  # capture.output is called twice to capture the output that is going to standard output and to
+  # standard error.  These are messages that say "Tracing..." and list each function being
+  # traced.
+  trace.one <- function (f) {capture.output(capture.output(trace (as.name(f), ddg.trace.output, print=FALSE), type="message"))} 
+  lapply(.ddg.get(".ddg.file.write.functions.df")$function.names, trace.one)
+}
+
+.ddg.stop.iotracing <- function () {
+  # Stop tracing output functions.  Will this be a problem if ddg.save is called from the console?
+  # capture.output is used to prevent "Untracing" messages from appearing in the output
+  capture.output (untrace(.ddg.get(".ddg.file.write.functions.df")$function.names), type="message")
+}
+
+#' Clears out the list of output files.  This should be 
+#' called on initialization and after the file nodes are created.
+#' 
+#' @return nothing
+.ddg.clear.output.file <- function () {
+  .ddg.set ("output.files", character())
+}
+
+#' Add a file name to the output list.
+#' 
+#' @param fname the name of the file to add to the list, or a connection object
+#' 
+#' @return nothing
+.ddg.add.output.file <- function (fname) {
+  output.files <- .ddg.get("output.files")
+  .ddg.set ("output.files", append(output.files, fname))
+}
 
 #' Called when one of the output functions is called in a script.
 #' This function saves the name of the file that is being written in 
@@ -99,24 +156,6 @@ ddg.trace.output <- function () {
   # we do not want to create the nodes because the procedure node to connect to does not
   # exist yet, and the file has not been written to yet.
   .ddg.add.output.file (output.file.name)
-}
-
-#' Clears out the list of output files.  This should be 
-#' called on initialization and after the file nodes are created.
-#' 
-#' @return nothing
-.ddg.clear.output.file <- function () {
-  .ddg.set ("output.files", character())
-}
-
-#' Add a file name to the output list.
-#' 
-#' @param fname the name of the file to add to the list, or a connection object
-#' 
-#' @return nothing
-.ddg.add.output.file <- function (fname) {
-  output.files <- .ddg.get("output.files")
-  .ddg.set ("output.files", append(output.files, fname))
 }
 
 #' Get the frame number for a function being traced

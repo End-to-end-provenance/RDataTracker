@@ -5815,9 +5815,6 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
   # Save initial connection table
   .ddg.set (".ddg.connections", showConnections(TRUE))
   
-  # Currently no files have been output
-  .ddg.clear.output.file()
-  
   # Setting the path for the ddg
   if (is.null(ddgdir)) {
 
@@ -5928,13 +5925,9 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
   # Store time when script begins execution.
   .ddg.set("ddg.start.time", .ddg.timestamp())
   
-  # Start tracing of output functions
-  # capture.output is called twice to capture the output that is going to standard output and to
-  # standard error.  These are messages that say "Tracing..." and list each function being
-  # traced.
-  trace.one <- function (f) {capture.output(capture.output(trace (as.name(f), ddg.trace.output, print=FALSE), type="message"))} 
-  lapply(.ddg.get(".ddg.file.write.functions.df")$function.names, trace.one)
-
+  # Initialize the I/O tracing code
+  .ddg.init.iotrace ()
+  
   invisible()
 }
 
@@ -6055,9 +6048,7 @@ ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE) {
   # Delete temporary files.
   # .ddg.delete.temp()
   
-  # Stop tracing output functions.  Will this be a problem if ddg.save is called from the console?
-  # capture.output is used to prevent "Untracing" messages from appearing in the output
-  capture.output (untrace(.ddg.get(".ddg.file.write.functions.df")$function.names), type="message")
+  .ddg.stop.iotracing()
 
   # Save ddg.json to file.
   ddg.json.write()
