@@ -1320,7 +1320,7 @@ library(curl)
 # dscope - data node scope.
 # pname - procedure node name.
 
-.ddg.data2proc <- function(dname, dscope, pname) {
+.ddg.data2proc <- function(dname, dscope, pname = NULL) {
   # Get data & procedure numbers.
   dn <- .ddg.data.number(dname, dscope)
   
@@ -2919,7 +2919,6 @@ library(curl)
 
           .ddg.create.data.use.edges.for.console.cmd(vars.set, cmd, i, for.caller=FALSE)
 
-          #if (cmd@readsFile) .ddg.create.file.read.nodes.and.edges(cmd, environ)
           .ddg.create.file.read.nodes.and.edges()
           .ddg.link.function.returns(cmd)
 
@@ -4889,8 +4888,8 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
 
 
   # Create nodes and edges dealing with reading and writing files
-  .ddg.create.file.read.nodes.and.edges(return.stmt, env)
-  .ddg.create.file.write.nodes.and.edges (return.stmt, env)
+  .ddg.create.file.read.nodes.and.edges()
+  .ddg.create.file.write.nodes.and.edges ()
   .ddg.create.file.close.nodes.and.edges (return.stmt, env)
   
     if (return.stmt@createsGraphics) {

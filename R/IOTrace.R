@@ -38,12 +38,14 @@
   # capture.output is called twice to capture the output that is going to standard output and to
   # standard error.  These are messages that say "Tracing..." and list each function being
   # traced.
+  #print ("Tracing input and output functions")
   trace.oneOutput <- function (f) {capture.output(capture.output(trace (as.name(f), ddg.trace.output, print=FALSE), type="message"))} 
   lapply(.ddg.get(".ddg.file.write.functions.df")$function.names, trace.oneOutput)
   trace.oneInput <- function (f) {capture.output(capture.output(trace (as.name(f), ddg.trace.input, print=FALSE), type="message"))} 
   lapply(.ddg.get(".ddg.file.read.functions.df")$function.names, trace.oneInput)
 #  trace.oneOpen <- function (f) {capture.output(capture.output(trace (as.name(f), exit = ddg.trace.open, print=FALSE), type="message"))} 
 #  lapply(.ddg.get(".ddg.file.open.functions.df")$function.names, trace.oneOpen)
+  #print ("Tracing is initialized")
   
 }
 
@@ -413,7 +415,7 @@ ddg.trace.output <- function () {
   input.files <- .ddg.get("input.files")
   
   if (.ddg.is.connection(fname)) {
-    print (paste ("Found connection", fname))
+    #print (paste ("Found connection", fname))
     fname <- showConnections(TRUE)[as.character(fname), "description"]
   }
   
@@ -421,7 +423,7 @@ ddg.trace.output <- function () {
   # there if there are multiple functions called indirectly in one R statement
   # that read from the same file, like readLines and scan.
   if (!(fname %in% input.files)) {
-    print (paste ("Adding input file: ", fname))
+    #print (paste ("Adding input file: ", fname))
     #print (class(fname))
     #print (str(fname))
     #print (paste ("Is a connection?", .ddg.is.connection(fname)))
@@ -433,7 +435,7 @@ ddg.trace.output <- function () {
 
 
 ddg.trace.input <- function () {
-  print ("Found input function")
+  #print ("Found input function")
   
   # Get the frame corresponding to the output function being traced
   frame.number <- .ddg.get.traced.function.frame.number()
@@ -449,7 +451,7 @@ ddg.trace.input <- function () {
   
   #print (sys.calls())
   #print (paste("frame.number =", frame.number))
-  print (sys.call(frame.number))
+  #print (sys.call(frame.number))
   #tryCatch (print (paste("function with tracing =", sys.function(frame.number))), error = function (e) {print (e)} )
   #tryCatch (print (paste("original function =", sys.function(frame.number)@original)), error = function (e) {print (e)})
 
@@ -458,16 +460,16 @@ ddg.trace.input <- function () {
 #      expand.dots = TRUE, envir = sys.frame(frame.number))
   call <- sys.call (frame.number)
   fname <- as.character(call[[1]])
-  print (paste ("Input function traced: ", fname))
+  #print (paste ("Input function traced: ", fname))
   
   # Get the name of the file parameter for the output function
   file.read.functions <- .ddg.get (".ddg.file.read.functions.df")
   file.param.name <- file.read.functions$param.names[file.read.functions$function.names == fname]
-  print (paste ("Input file parameter:", file.param.name))
+  #print (paste ("Input file parameter:", file.param.name))
   
   # Get the value of the file parameter  
   input.file.name <- eval (as.symbol(file.param.name), env = sys.frame(frame.number))
-  print (paste ("input.file.name =", input.file.name))
+  #print (paste ("input.file.name =", input.file.name))
   
 # Save the file name so the file node can be created when the statement is complete.
 # we do not want to create the nodes because the procedure node to connect to does not
@@ -482,7 +484,7 @@ ddg.trace.input <- function () {
   # Get the list of files that have been read by the last statement.
   files.read <- .ddg.get ("input.files")
   
-  print (paste ("files.read =", files.read))
+  #print (paste ("files.read =", files.read))
   
   # Adds the files read to ddg.infilenodes for use in determining reads
   # and writes in the hashtable.
@@ -490,7 +492,7 @@ ddg.trace.input <- function () {
   #print(paste("Adding", files.read, "to ddg.infilenodes"))
   
   for (file in files.read) {
-    print (paste("file =", file))
+    #print (paste("file =", file))
 #    # Check for a connection.  It will be a number encoded as a string.
 #    if (.ddg.is.connection(file)) {
 #      file <- .ddg.get.connection.description(file)
@@ -517,7 +519,7 @@ ddg.trace.input <- function () {
        .ddg.url.node(file, file)
      }
      #.ddg.data2proc(file, environmentName(.GlobalEnv), cmd@abbrev)
-     .ddg.data2proc(file)
+     .ddg.data2proc(file, environmentName(.GlobalEnv))
       
     }
     else {

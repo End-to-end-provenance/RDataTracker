@@ -90,8 +90,6 @@ setClass("DDGStatement",
                                           # like an if-statement might, for example, these are the
                                           # variables assigned within the statement.
         isDdgFunc = "logical",   # True if this is a call to a ddg function
-        readsFile = "logical",   # True if this statement contains a call to a function that
-                                 # reads from a file
         closesFile = "logical",  # True if this statement contains a call to the close function
         createsGraphics = "logical",  # True if this is a function that creates a graphics
                                       # object, like a call to pdf, for example
@@ -148,7 +146,6 @@ setMethod ("initialize",
       # we will execute the parameter as a command and want a node for it.
       .Object@isDdgFunc <- grepl("^ddg.", .Object@text) & !grepl("^ddg.eval", .Object@text)
 
-      .Object@readsFile <- .ddg.reads.file (.Object@parsed[[1]])
       .Object@closesFile <- .ddg.closes.file (.Object@parsed[[1]])
       .Object@createsGraphics <- .ddg.creates.graphics (.Object@parsed[[1]])
       .Object@updatesGraphics <- .ddg.updates.graphics (.Object@parsed[[1]])
@@ -1560,16 +1557,6 @@ null.pos <- function() {
     }
   }
   return (FALSE)
-}
-
-# Returns true if the statement contains a call to a function that read from a file
-#
-# parsed.statement - a parse tree
-#
-.ddg.reads.file <- function (parsed.statement) {
-  .ddg.file.read.functions.df <- .ddg.get (".ddg.file.read.functions.df")
-  reading.functions <- .ddg.file.read.functions.df$function.names
-  return (TRUE %in% (lapply (reading.functions, function(fun.name) {return (.ddg.has.call.to(parsed.statement, fun.name))})))
 }
 
 #' Returns true if the statement contains a call to a function that closes a file
