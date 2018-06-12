@@ -18,7 +18,197 @@
 ############################ IOTrace.R #############################
 
 # Contains the functions needed to trace input and output operations, including
-# the reading and writing of files, and the creation of plots.
+# the reading and writing of files, opening and closing of connections,
+# and the creation of plots.
+
+#' Initialize the data needed to trace I/O functions
+.ddg.init.iotrace <- function () {
+  # Record the information about the input and output functions
+  .ddg.set (".ddg.file.write.functions.df", .ddg.create.file.write.functions.df ())
+  .ddg.set (".ddg.file.read.functions.df", .ddg.create.file.read.functions.df ())
+#  .ddg.set (".ddg.file.open.functions.df", .ddg.create.file.open.functions.df ())
+  .ddg.set (".ddg.file.close.functions.df", .ddg.create.file.close.functions.df ())
+  
+  
+  # Create an empty list for the input and output files
+  .ddg.clear.input.file()
+  .ddg.clear.output.file()
+  
+  # Start tracing of input and output functions
+  # capture.output is called twice to capture the output that is going to standard output and to
+  # standard error.  These are messages that say "Tracing..." and list each function being
+  # traced.
+  trace.oneOutput <- function (f) {capture.output(capture.output(trace (as.name(f), ddg.trace.output, print=FALSE), type="message"))} 
+  lapply(.ddg.get(".ddg.file.write.functions.df")$function.names, trace.oneOutput)
+  trace.oneInput <- function (f) {capture.output(capture.output(trace (as.name(f), ddg.trace.input, print=FALSE), type="message"))} 
+  lapply(.ddg.get(".ddg.file.read.functions.df")$function.names, trace.oneInput)
+#  trace.oneOpen <- function (f) {capture.output(capture.output(trace (as.name(f), exit = ddg.trace.open, print=FALSE), type="message"))} 
+#  lapply(.ddg.get(".ddg.file.open.functions.df")$function.names, trace.oneOpen)
+  
+}
+
+.ddg.stop.iotracing <- function () {
+  # Stop tracing output functions.  Will this be a problem if ddg.save is called from the console?
+  # capture.output is used to prevent "Untracing" messages from appearing in the output
+  capture.output (untrace(.ddg.get(".ddg.file.write.functions.df")$function.names), type="message")
+  capture.output (untrace(.ddg.get(".ddg.file.read.functions.df")$function.names), type="message")
+  #capture.output (untrace(.ddg.get(".ddg.file.open.functions.df")$function.names), type="message")
+}
+
+#' Returns true if the object passed in is a connection
+#'
+#' @param value an R object
+#'
+#' @return true if the R object is a connection used to do I/O
+.ddg.is.connection <- function (value) {
+  return ("connection" %in% class(value))
+}
+
+.ddg.get.connection.description <- function (conn) {
+  return (showConnections(TRUE)[conn, "description"])
+}
+
+.ddg.is.connection.open <- function (conn) {
+  return (showConnections(TRUE)[conn, "isopen"] == "opened")
+}
+
+#.ddg.add.connection <- function (conn) {
+#  # Save the current connections so we have access to them if they are
+#  # changed before we get the information we need.
+#  .ddg.set (".ddg.connections", showConnections(TRUE))
+#}
+
+#' Returns true if the connection is open
+#'
+#' @param conn a connection object
+#'
+#' @return true if the connection is open
+#.ddg.get.connection.isopen <- function (conn) { 
+#  conns <- .ddg.get (".ddg.connections")
+#  if (nrow(conns) >= conn[1]) return (TRUE)
+#  return (conns[as.character(conn[1]), "isopen"] == "opened")
+#}
+
+#' @return a matrix containing information about all open connections
+#' 
+.ddg.get.open.connections <- function () { 
+#  conns <- .ddg.get (".ddg.connections")
+#  openConns <- conns[conns [, "isopen"] == "opened",,drop=FALSE]
+#  return (openConns)
+  conns <- showConnections(TRUE)
+  conns[conns[, "isopen"] == "opened", ]
+}
+
+#' Returns the name of the I/O item the connection communicates with.
+#' For example, this could be a file name, a URL, a host/port pair 
+#' from a socket connection, etc.
+#'
+#' @param conn This should be a connection object
+#' 
+#' @return a text description of what is connected to.
+#'
+#.ddg.get.connection.description <- function (conn) { 
+#  if (.ddg.is.connection(conn)) {
+#    conn <- conn[1]
+#  }
+#  .ddg.get (".ddg.connections")[as.character(conn[1]), "description"]
+#}
+
+#.ddg.create.file.open.functions.df <- function () {
+#  # Functions that open connections
+#  function.names <-
+#      c ("file", "url", "gzfile", "bzfile", "xzfile", 
+#          "unz", "pipe", "fifo", "socketConnection", "open")
+#  
+#  # The argument that represents the file name
+#  param.names <-
+#      c ("description", "description", "description", "description", "description", 
+#          "description", "description", "description", "host", "con")
+#  
+#  # Position of the file parameter if it is passed by position
+#  param.pos <-
+#      c (1, 1, 1, 1, 1, 1, 1, 1, 1, 1)
+#  
+#  return (data.frame (function.names, param.names, param.pos, stringsAsFactors=FALSE))
+#}
+#
+#ddg.trace.open <- function () {
+#  print ("ddg.trace.open called")
+#  .ddg.add.connection ()
+#}
+
+# Initialize the information about functions that read from files
+.ddg.create.file.close.functions.df <- function () {
+  # Functions that read files
+  function.names <-
+      c ("close", "close.connection", "close.srcfile", "closeAllConnections")
+  
+  # The argument that represents the file name
+  param.names <-
+      c ("con", "con", "con", NA)
+  
+  # Position of the file parameter if it is passed by position
+  param.pos <-
+      c (1, 1, 1, NA)
+  
+  return (data.frame (function.names, param.names, param.pos, stringsAsFactors=FALSE))
+}
+
+# Given a parse tree, this function returns a list containing
+# the expressions that correspond to the filename argument
+# of the calls to functions that close files.  If there are
+# none, it returns NULL.
+.ddg.find.files.closed <- function(main.object, env) {
+  return (.ddg.find.files (main.object, .ddg.get(".ddg.file.close.functions.df"), env))
+}
+
+# Creates file nodes and data out edges for any files that are closed in this cmd
+# cmd - text command
+# cmd.expr - parsed command
+.ddg.create.file.close.nodes.and.edges <- function (cmd = NULL, env = NULL, allOpen = FALSE) {
+  # Find all the files potentially closed in this command.
+  # This may include files that are not actually closed if the
+  # close calls are within an if-statement, for example.
+  files.closed <- 
+      if (is.null(cmd)) character()
+      else .ddg.find.files.closed(cmd, env)
+  
+  # Check for closeAllConnections.  It is a special case because it takes no 
+  # parameters.  .ddg.find.files expects there to be a parameter identifying the
+  # connection to close.
+  if (allOpen || (!is.null(cmd) && .ddg.has.call.to (cmd@parsed, "closeAllConnections"))) {
+    #print ("Found closeAllConnections")
+    openConns <- .ddg.get.open.connections()
+    #print(paste("openConns =", openConns))
+    files.closed <- unique (c (files.closed, openConns[, "description"]))
+    #print(paste("files.closed =", files.closed))
+  }
+  
+  for (file in files.closed) {
+    #print(paste("Closed", file))
+    #print(str(file))
+    # Check for a connection.  It will be a number encoded as a string.
+    # Turn off warnings and try the coercion and then turn warnings back on
+    save.warn <- getOption("warn")
+    options(warn=-1)
+    conn <- as.numeric(file)
+    options (warn=save.warn)
+    if (!is.na (conn)) file <- .ddg.get.connection.description(conn)
+    
+    # Check that the file exists.  If it does, we will assume that
+    # it was created by the write call that we just found.
+    if (file.exists (file)) {
+      # Create the file node and edge
+      pname <-
+          if (is.null(cmd)) NULL
+          else cmd@abbrev
+      #print(paste("Calling ddg.file.out: file=", file, "  pname =", pname))
+      ddg.file.out (file, pname=pname)
+    }
+  }
+}
+
+
 
 #' Initialize the information about functions that read from files
 #' 
@@ -82,33 +272,6 @@
 }
 
 
-#' Initialize the data needed to trace I/O functions
-.ddg.init.iotrace <- function () {
-  # Record the information about the input and output functions
-  .ddg.set (".ddg.file.write.functions.df", .ddg.create.file.write.functions.df ())
-  .ddg.set (".ddg.file.read.functions.df", .ddg.create.file.read.functions.df ())
-  
-  # Create an empty list for the output files
-  .ddg.clear.output.file()
-  
-  # Start tracing of input and output functions
-  # capture.output is called twice to capture the output that is going to standard output and to
-  # standard error.  These are messages that say "Tracing..." and list each function being
-  # traced.
-  trace.oneOutput <- function (f) {capture.output(capture.output(trace (as.name(f), ddg.trace.output, print=FALSE), type="message"))} 
-  lapply(.ddg.get(".ddg.file.write.functions.df")$function.names, trace.oneOutput)
-  trace.oneInput <- function (f) {capture.output(capture.output(trace (as.name(f), ddg.trace.input, print=FALSE), type="message"))} 
-  lapply(.ddg.get(".ddg.file.read.functions.df")$function.names, trace.oneInput)
-  
-}
-
-.ddg.stop.iotracing <- function () {
-  # Stop tracing output functions.  Will this be a problem if ddg.save is called from the console?
-  # capture.output is used to prevent "Untracing" messages from appearing in the output
-  capture.output (untrace(.ddg.get(".ddg.file.write.functions.df")$function.names), type="message")
-  capture.output (untrace(.ddg.get(".ddg.file.read.functions.df")$function.names), type="message")
-}
-
 #' Clears out the list of output files.  This should be 
 #' called on initialization and after the file nodes are created.
 #' 
@@ -124,7 +287,13 @@
 #' @return nothing
 .ddg.add.output.file <- function (fname) {
   output.files <- .ddg.get("output.files")
-  .ddg.set ("output.files", append(output.files, fname))
+  
+  # Only add the file to the list if it is not already there.  It could be 
+  # there if there are multiple functions called indirectly in one R statement
+  # that write to the same file.
+  if (!(fname %in% output.files)) {
+    .ddg.set ("output.files", append(output.files, fname))
+  }
 }
 
 #' Called when one of the output functions is called in a script.
@@ -227,12 +396,56 @@ ddg.trace.output <- function () {
   .ddg.clear.output.file ()
 }
 
+#' Clears out the list of input files.  This should be 
+#' called on initialization and after the file nodes are created.
+#' 
+#' @return nothing
+.ddg.clear.input.file <- function () {
+  .ddg.set ("input.files", character())
+}
+
+#' Add a file name to the input list.
+#' 
+#' @param fname the name of the file to add to the list, or a connection object
+#' 
+#' @return nothing
+.ddg.add.input.file <- function (fname) {
+  input.files <- .ddg.get("input.files")
+  
+  if (.ddg.is.connection(fname)) {
+    print (paste ("Found connection", fname))
+    fname <- showConnections(TRUE)[as.character(fname), "description"]
+  }
+  
+  # Only add the file to the list if it is not already there.  It could be 
+  # there if there are multiple functions called indirectly in one R statement
+  # that read from the same file, like readLines and scan.
+  if (!(fname %in% input.files)) {
+    print (paste ("Adding input file: ", fname))
+    #print (class(fname))
+    #print (str(fname))
+    #print (paste ("Is a connection?", .ddg.is.connection(fname)))
+    #.ddg.set ("input.files", append(input.files, fname))
+    .ddg.set ("input.files", c(input.files, list(fname)))
+  }
+}
+
+
 
 ddg.trace.input <- function () {
   print ("Found input function")
   
   # Get the frame corresponding to the output function being traced
   frame.number <- .ddg.get.traced.function.frame.number()
+  
+  # Check if the function that called the input function is a ddg function.
+  # If it is, ignore this call.
+  # .ddg.load.history is an example of a function that does input that we
+  # would want to ignore.
+  input.caller.name <- as.character(sys.call (frame.number - 1)[[1]])
+  if (startsWith (input.caller.name, "ddg") || startsWith (input.caller.name, ".ddg")) {
+    return()
+  }
   
   #print (sys.calls())
   #print (paste("frame.number =", frame.number))
@@ -247,52 +460,29 @@ ddg.trace.input <- function () {
   fname <- as.character(call[[1]])
   print (paste ("Input function traced: ", fname))
   
-#  # Get the name of the file parameter for the output function
-#  file.write.functions <- .ddg.get (".ddg.file.write.functions.df")
-#  file.param.name <- file.write.functions$param.names[file.write.functions$function.names == fname]
-#  # print (paste ("Output file parameter:", file.param.name))
-#  
-#  # Get the name of the file or connection being written to
-#  output.file.argument <- call[[file.param.name]]
-#  
-#  # If there is no binding for the parameter name, look for the 
-#  # parameter by position.
-#  if (is.null (output.file.argument)) {
-#    file.param.pos <- file.write.functions$param.pos[file.write.functions$function.names == fname]
-#    
-#    # If there is no parameter in that position, it must 
-#    # be using a default value, like stdout, so just return
-#    if (file.param.pos >= length(call)) return()
-#    
-#    output.file.argument <- call[[file.param.pos + 1]]
-#  }
-#  
-#  # If we have a name instead of a value, get the value
-#  if (is.symbol (output.file.argument)) {
-#    output.file.name <- get (as.character(output.file.argument), sys.frame(frame.number-1))
-#  }
-#  
-#  # We already have a value
-#  else {
-#    output.file.name <- output.file.argument
-#  }
-#  
-#  # Save the file name so the file node can be created when the statement is complete.
-#  # we do not want to create the nodes because the procedure node to connect to does not
-#  # exist yet, and the file has not been written to yet.
-#  .ddg.add.output.file (output.file.name)
+  # Get the name of the file parameter for the output function
+  file.read.functions <- .ddg.get (".ddg.file.read.functions.df")
+  file.param.name <- file.read.functions$param.names[file.read.functions$function.names == fname]
+  print (paste ("Input file parameter:", file.param.name))
+  
+  # Get the value of the file parameter  
+  input.file.name <- eval (as.symbol(file.param.name), env = sys.frame(frame.number))
+  print (paste ("input.file.name =", input.file.name))
+  
+# Save the file name so the file node can be created when the statement is complete.
+# we do not want to create the nodes because the procedure node to connect to does not
+# exist yet.
+  .ddg.add.input.file (input.file.name)
 }
 
 # Creates file nodes and data in edges for any files that are read in this cmd
 # cmd - text command
 # cmd.expr - parsed command
-.ddg.create.file.read.nodes.and.edges <- function (cmd, env) {
-  #print("In .ddg.create.file.read.nodes.and.edges")
-  # Find all the files potentially read in this command.
-  # This may include files that are not actually read if the
-  # read are within an if-statement, for example.
-  files.read <- .ddg.find.files.read(cmd, env)
-  #print(paste("files.read =", files.read))
+.ddg.create.file.read.nodes.and.edges <- function () {
+  # Get the list of files that have been read by the last statement.
+  files.read <- .ddg.get ("input.files")
+  
+  print (paste ("files.read =", files.read))
   
   # Adds the files read to ddg.infilenodes for use in determining reads
   # and writes in the hashtable.
@@ -300,38 +490,34 @@ ddg.trace.input <- function () {
   #print(paste("Adding", files.read, "to ddg.infilenodes"))
   
   for (file in files.read) {
-    #print (paste("file =", file))
-    # Check for a connection.  It will be a number encoded as a string.
-    # Turn off warnings and try the coercion and then turn warnings back on
-    save.warn <- getOption("warn")
-    options(warn=-1)
-    #print("Checking for connection #")
-    conn <- as.numeric(file)
-    #print(paste("conn =", conn))
-    options (warn=save.warn)
-    if (!is.na (conn)) {
-      # If it is a connection, use the file it is connected to
-      file <- .ddg.get.connection.description(conn)
-      #print(paste("connection found, file =", file))
-    }
+    print (paste("file =", file))
+#    # Check for a connection.  It will be a number encoded as a string.
+#    if (.ddg.is.connection(file)) {
+#      file <- .ddg.get.connection.description(file)
+#      print(paste("connected to", file))
+#    }
+#    else {
+#      print (class(file))
+#      print (paste ("Is a connection?", .ddg.is.connection(file)))
+#    }
+#    
     
-    #print(file)
-    
-    #print(paste(".ddg.create.file.read.nodes.and.edges: file =", file))
-    # Use URL node for URLs and for socket connections
-    if (grepl ("://", file) || startsWith (file, "->"))
-    {
-      #print ("Creating url node")
-      if (grepl ("://", file) ) {
-        # Save the Web page
-        url.copy <- .ddg.url.copy (file)
-        .ddg.url.node(file, url.copy)
-      }
-      else {
-        # Maybe we should change the node type to be "Remote" or something?
-        .ddg.url.node(file, file)
-      }
-      .ddg.data2proc(file, environmentName(.GlobalEnv), cmd@abbrev)
+   #print(paste(".ddg.create.file.read.nodes.and.edges: file =", file))
+   # Use URL node for URLs and for socket connections
+   if (grepl ("://", file) || startsWith (file, "->"))
+   {
+     #print ("Creating url node")
+     if (grepl ("://", file) ) {
+       # Save the Web page
+       url.copy <- .ddg.url.copy (file)
+       .ddg.url.node(file, url.copy)
+     }
+     else {
+       # Maybe we should change the node type to be "Remote" or something?
+       .ddg.url.node(file, file)
+     }
+     #.ddg.data2proc(file, environmentName(.GlobalEnv), cmd@abbrev)
+     .ddg.data2proc(file)
       
     }
     else {
@@ -340,7 +526,8 @@ ddg.trace.input <- function () {
         #print ("Creating file node")
         # Create the file node and edge
         ddg.file(file)
-        ddg.data.in(basename(file), pname=cmd@abbrev)
+        #ddg.data.in(basename(file), pname=cmd@abbrev)
+        ddg.data.in(basename(file))
       }
       
       # If the filename contains a :, then it is referencing a file within 
@@ -351,10 +538,15 @@ ddg.trace.input <- function () {
           #print ("Creating file node")
           # Create the file node and edge
           ddg.file(zipfile, file)
-          ddg.data.in(file, pname=cmd@abbrev)
+          #ddg.data.in(file, pname=cmd@abbrev)
+          ddg.data.in(file)
         }
       }
     }
   }
+
+  # Clear the list of input files now that they have been handled.
+  .ddg.clear.input.file ()
+
 }
 

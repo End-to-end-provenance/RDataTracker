@@ -677,49 +677,6 @@ library(curl)
   return(is.function(value))
 }
 
-#' Returns true if the object passed in is a connection
-#'
-#' @param value an R object
-#'
-#' @return true if the R object is a connection used to do I/O
-.ddg.is.connection <- function (value) {
-  return ("connection" %in% class(value))
-}
-
-#' Returns true if the connection is open
-#'
-#' @param conn a connection object
-#'
-#' @return true if the connection is open
-.ddg.get.connection.isopen <- function (conn) { 
-  conns <- .ddg.get (".ddg.connections")
-  if (nrow(conns) >= conn[1]) return (TRUE)
-  return (conns[as.character(conn[1]), "isopen"] == "opened")
-}
-
-#' @return a matrix containing information about all open connections
-#' 
-.ddg.get.open.connections <- function () { 
-  conns <- .ddg.get (".ddg.connections")
-  openConns <- conns[conns [, "isopen"] == "opened",,drop=FALSE]
-  return (openConns)
-}
-
-#' Returns the name of the I/O item the connection communicates with.
-#' For example, this could be a file name, a URL, a host/port pair 
-#' from a socket connection, etc.
-#'
-#' @param conn This should be a connection object
-#' 
-#' @return a text description of what is connected to.
-#'
-.ddg.get.connection.description <- function (conn) { 
-  if (.ddg.is.connection(conn)) {
-    conn <- conn[1]
-  }
-  .ddg.get (".ddg.connections")[as.character(conn[1]), "description"]
-}
-
 # .ddg.dev.change determines whether or not a new graphic device
 # has become active and whether or not we should capture the
 # previous graphic device. It returns the device number we should
@@ -1366,8 +1323,12 @@ library(curl)
 .ddg.data2proc <- function(dname, dscope, pname) {
   # Get data & procedure numbers.
   dn <- .ddg.data.number(dname, dscope)
-  pn <- .ddg.proc.number(pname)
-
+  
+  if(is.null(pname) || startsWith(pname,".ddg.") || startsWith(pname,"ddg"))
+    pn <- .ddg.last.proc.number()
+  else
+    pn <- .ddg.proc.number(pname)
+  
   # Record in edges table
   etype <- "df.in"
   node1 <- paste("d", dn, sep="")
@@ -1405,7 +1366,7 @@ library(curl)
     pn <- .ddg.last.proc.number()
   else
     pn <- .ddg.proc.number(pname, return.value)
-
+  
   # Create data flow edge from procedure node to data node.
   if (dn != 0 && pn != 0) {
 
@@ -1913,79 +1874,6 @@ library(curl)
 
 
 
-
-# Initialize the information about functions that read from files
-.ddg.create.file.close.functions.df <- function () {
-  # Functions that read files
-  function.names <-
-      c ("close", "close.connection", "close.srcfile", "closeAllConnections")
-  
-  # The argument that represents the file name
-  param.names <-
-      c ("con", "con", "con", NA)
-  
-  # Position of the file parameter if it is passed by position
-  param.pos <-
-      c (1, 1, 1, NA)
-  
-  return (data.frame (function.names, param.names, param.pos, stringsAsFactors=FALSE))
-}
-
-.ddg.set (".ddg.file.close.functions.df", .ddg.create.file.close.functions.df ())
-
-# Given a parse tree, this function returns a list containing
-# the expressions that correspond to the filename argument
-# of the calls to functions that close files.  If there are
-# none, it returns NULL.
-.ddg.find.files.closed <- function(main.object, env) {
-  return (.ddg.find.files (main.object, .ddg.get(".ddg.file.close.functions.df"), env))
-}
-
-# Creates file nodes and data out edges for any files that are closed in this cmd
-# cmd - text command
-# cmd.expr - parsed command
-.ddg.create.file.close.nodes.and.edges <- function (cmd = NULL, env = NULL, allOpen = FALSE) {
-  # Find all the files potentially closed in this command.
-  # This may include files that are not actually closed if the
-  # close calls are within an if-statement, for example.
-  files.closed <- 
-      if (is.null(cmd)) character()
-      else .ddg.find.files.closed(cmd, env)
-  
-  # Check for closeAllConnections.  It is a special case because it takes no 
-  # parameters.  .ddg.find.files expects there to be a parameter identifying the
-  # connection to close.
-  if (allOpen || (!is.null(cmd) && .ddg.has.call.to (cmd@parsed, "closeAllConnections"))) {
-    #print ("Found closeAllConnections")
-    openConns <- .ddg.get.open.connections()
-    #print(paste("openConns =", openConns))
-    files.closed <- unique (c (files.closed, openConns[, "description"]))
-    #print(paste("files.closed =", files.closed))
-  }
-  
-  for (file in files.closed) {
-    #print(paste("Closed", file))
-    #print(str(file))
-    # Check for a connection.  It will be a number encoded as a string.
-    # Turn off warnings and try the coercion and then turn warnings back on
-    save.warn <- getOption("warn")
-    options(warn=-1)
-    conn <- as.numeric(file)
-    options (warn=save.warn)
-    if (!is.na (conn)) file <- .ddg.get.connection.description(conn)
-    
-    # Check that the file exists.  If it does, we will assume that
-    # it was created by the write call that we just found.
-    if (file.exists (file)) {
-      # Create the file node and edge
-      pname <-
-          if (is.null(cmd)) NULL
-          else cmd@abbrev
-      #print(paste("Calling ddg.file.out: file=", file, "  pname =", pname))
-      ddg.file.out (file, pname=pname)
-    }
-  }
-}
 
 # Initialize the information about functions that initialize graphics devices
 .ddg.create.graphics.functions.df <- function () {
@@ -3031,7 +2919,8 @@ library(curl)
 
           .ddg.create.data.use.edges.for.console.cmd(vars.set, cmd, i, for.caller=FALSE)
 
-          if (cmd@readsFile) .ddg.create.file.read.nodes.and.edges(cmd, environ)
+          #if (cmd@readsFile) .ddg.create.file.read.nodes.and.edges(cmd, environ)
+          .ddg.create.file.read.nodes.and.edges()
           .ddg.link.function.returns(cmd)
 
           if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Adding input data nodes for", cmd@abbrev))
@@ -3372,9 +3261,6 @@ library(curl)
     if (.ddg.is.connection(dvalue)) {
       #print ("Found a connection")
       
-      # Save the current connections so we have access to them if they are
-      # changed before we get the information we need.
-      .ddg.set (".ddg.connections", showConnections(TRUE))
       val <- showConnections(TRUE)[as.character(dvalue[1]), "description"]
       #print (paste(".ddg.data.node for connection: val =", val))
       # Record in data node table
