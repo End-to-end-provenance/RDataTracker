@@ -313,10 +313,14 @@ ddg.trace.output <- function () {
   frame.number <- .ddg.get.traced.function.frame.number()
   
   # Check if the function that called the output function is a ddg function.
-  # If it is, ignore this call.
-  output.caller.name <- as.character(sys.call (frame.number - 1)[[1]])
-  if (startsWith (output.caller.name, "ddg") || startsWith (output.caller.name, ".ddg")) {
-    return()
+  # If it is, ignore this call.  The is.call check is here because it is
+  # possible that the caller is a closure and thus does not have a name.
+  output.caller <- sys.call (frame.number - 1)[[1]]
+  if (is.symbol (output.caller)) {
+    output.caller.name <- as.character(output.caller)
+    if (startsWith (output.caller.name, "ddg") || startsWith (output.caller.name, ".ddg")) {
+      return()
+    }
   }
   
   # Check that the function is not being called due to saving a snapshot file.
@@ -441,12 +445,16 @@ ddg.trace.input <- function () {
   frame.number <- .ddg.get.traced.function.frame.number()
   
   # Check if the function that called the input function is a ddg function.
-  # If it is, ignore this call.
-  # .ddg.load.history is an example of a function that does input that we
-  # would want to ignore.
-  input.caller.name <- as.character(sys.call (frame.number - 1)[[1]])
-  if (startsWith (input.caller.name, "ddg") || startsWith (input.caller.name, ".ddg")) {
-    return()
+  # If it is, ignore this call.  .ddg.load.history is an example of a 
+  # function that does input that we would want to ignore.  The is.call
+  # test is used because it is possible that the caller is a closure
+  # and thus does not have a name.
+  input.caller <- sys.call (frame.number - 1)[[1]]
+  if (is.symbol (input.caller)) {
+      input.caller.name <- as.character(input.caller)
+      if (startsWith (input.caller.name, "ddg") || startsWith (input.caller.name, ".ddg")) {
+        return()
+      }
   }
   
   #print (sys.calls())
@@ -462,7 +470,7 @@ ddg.trace.input <- function () {
   fname <- as.character(call[[1]])
   #print (paste ("Input function traced: ", fname))
   
-  # Get the name of the file parameter for the output function
+  # Get the name of the file parameter for the input function
   file.read.functions <- .ddg.get (".ddg.file.read.functions.df")
   file.param.name <- file.read.functions$param.names[file.read.functions$function.names == fname]
   #print (paste ("Input file parameter:", file.param.name))
