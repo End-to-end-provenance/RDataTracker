@@ -2929,7 +2929,7 @@ library(curl)
           if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Adding output data nodes for", cmd@abbrev))
 
           .ddg.create.file.write.nodes.and.edges ()
-          if (cmd@closesFile) .ddg.create.file.close.nodes.and.edges (cmd, environ)
+          #if (cmd@closesFile) .ddg.create.file.close.nodes.and.edges (cmd, environ)
           if (cmd@createsGraphics) .ddg.set.graphics.files (cmd, environ)
           if (cmd@updatesGraphics) .ddg.add.graphics.io (cmd)
 
@@ -5818,7 +5818,8 @@ ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE) {
    
    # If there are any connections still open when the script ends,
    # create nodes and edges for them.
-   .ddg.create.file.close.nodes.and.edges (allOpen = TRUE)
+   #.ddg.create.file.close.nodes.and.edges (allOpen = TRUE)
+   .ddg.created.file.nodes.for.open.connections ()
 
   # Delete temporary files.
   # .ddg.delete.temp()

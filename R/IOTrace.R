@@ -46,6 +46,8 @@
 #  trace.oneOpen <- function (f) {capture.output(capture.output(trace (as.name(f), exit = ddg.trace.open, print=FALSE), type="message"))} 
 #  lapply(.ddg.get(".ddg.file.open.functions.df")$function.names, trace.oneOpen)
   #print ("Tracing is initialized")
+  trace.oneClose <- function (f) {capture.output(capture.output(trace (as.name(f), ddg.trace.close, print=FALSE), type="message"))} 
+  lapply(.ddg.get(".ddg.file.close.functions.df")$function.names, trace.oneClose)
   
 }
 
@@ -55,6 +57,7 @@
   capture.output (untrace(.ddg.get(".ddg.file.write.functions.df")$function.names), type="message")
   capture.output (untrace(.ddg.get(".ddg.file.read.functions.df")$function.names), type="message")
   #capture.output (untrace(.ddg.get(".ddg.file.open.functions.df")$function.names), type="message")
+  capture.output (untrace(.ddg.get(".ddg.file.close.functions.df")$function.names), type="message")
 }
 
 #' Returns true if the object passed in is a connection
@@ -67,11 +70,16 @@
 }
 
 .ddg.get.connection.description <- function (conn) {
-  return (showConnections(TRUE)[conn, "description"])
+#  return (showConnections(TRUE)[as.numeric(conn)+1, "description"])
+#  return (showConnections(TRUE)[conn, "description"])
+  return (showConnections(TRUE)[as.character(conn), "description"])  
+  
 }
 
 .ddg.is.connection.open <- function (conn) {
-  return (showConnections(TRUE)[conn, "isopen"] == "opened")
+#  return (showConnections(TRUE)[as.numeric(conn)+1, "isopen"] == "opened")
+  return (showConnections(TRUE)[as.character(conn), "isopen"] == "opened")  
+  
 }
 
 #.ddg.add.connection <- function (conn) {
@@ -99,6 +107,22 @@
 #  return (openConns)
   conns <- showConnections(TRUE)
   conns[conns[, "isopen"] == "opened", ]
+}
+
+.ddg.can.read.connection <- function (conn) {
+#  conns <- showConnections(TRUE)
+#  return (conns[as.numeric(conn)+1, "can read"] == "yes")
+  return (showConnections(TRUE)[as.character(conn), "can read"] == "yes")  
+}
+
+.ddg.can.write.connection <- function (conn) {
+#  conns <- showConnections(TRUE)
+#  print(conns)
+#  return (conns[as.numeric(conn)+1, "can write"] == "yes")
+#  print (showConnections(TRUE))
+#  print (conn)
+#  print (as.character(conn))
+  return (showConnections(TRUE)[as.character(conn), "can write"] == "yes")  
 }
 
 #' Returns the name of the I/O item the connection communicates with.
@@ -143,25 +167,112 @@
 .ddg.create.file.close.functions.df <- function () {
   # Functions that read files
   function.names <-
-      c ("close", "close.connection", "close.srcfile", "closeAllConnections")
+ #     c ("close", "close.connection")
+      c ("close.connection")
   
   # The argument that represents the file name
   param.names <-
-      c ("con", "con", "con", NA)
+#      c ("con", "con")
+      c ("con")
   
   # Position of the file parameter if it is passed by position
   param.pos <-
-      c (1, 1, 1, NA)
+#      c (1, 1)
+      c (1)
   
   return (data.frame (function.names, param.names, param.pos, stringsAsFactors=FALSE))
 }
 
-# Given a parse tree, this function returns a list containing
-# the expressions that correspond to the filename argument
-# of the calls to functions that close files.  If there are
-# none, it returns NULL.
-.ddg.find.files.closed <- function(main.object, env) {
-  return (.ddg.find.files (main.object, .ddg.get(".ddg.file.close.functions.df"), env))
+.ddg.inside.call.to <- function (func) {
+  #print (paste ("Looking for call to", func))
+  is.call.to <- function (call) { 
+    if (is.symbol(call[[1]])) {
+      #print (paste ("Comparing to ", call[[1]]))
+      return (startsWith (as.character(call[[1]]), func))
+    }
+    return (FALSE)
+  }
+  calls.found <- sapply (sys.calls(), is.call.to )
+  #print (paste( "calls.found = ", calls.found))
+  return (any (calls.found))
+}
+
+ddg.trace.close <- function () {
+  
+  # Get the frame corresponding to the output function being traced
+  frame.number <- .ddg.get.traced.function.frame.number()
+  
+  # Check if the function that called the close function is a ddg function.
+  # If it is, ignore this call.  The is.symbol check is here because it is
+  # possible that the caller is a closure and thus does not have a name.
+  close.caller <- sys.call (frame.number - 1)[[1]]
+  if (is.symbol (close.caller)) {
+    close.caller.name <- as.character(close.caller)
+    if (startsWith (close.caller.name, "ddg") || startsWith (close.caller.name, ".ddg")) {  # 
+      return()
+    }
+   
+  }
+  
+  # Check that the function is not being called due to a call to capture output
+  #if (length (grep ("^capture.output", sys.calls())) > 0) {
+  if (.ddg.inside.call.to ("capture.output") || .ddg.inside.call.to ("parse") 
+      || .ddg.inside.call.to (".ddg.snapshot")) {
+    return()
+  }
+  
+  read.funs <- .ddg.get(".ddg.file.read.functions.df")$function.names
+  
+  if (any (sapply (read.funs, .ddg.inside.call.to))) {
+                   #function (read.fun) {return (grepl (read.fun, sys.calls())) }))) {
+     return()
+  }
+  
+  write.funs <- .ddg.get(".ddg.file.write.functions.df")$function.names
+  
+  if (any (sapply (write.funs, .ddg.inside.call.to))) {
+    #function (read.fun) {return (grepl (read.fun, sys.calls())) }))) {
+    return()
+  }
+  
+  #print ("Tracing close function")
+  #print(sys.calls())
+  
+  # Get the name of the close function
+  call <- sys.call (frame.number)
+  fname <- as.character(call[[1]])
+  #print (paste ("Close function traced: ", fname))
+  
+  # Get the name of the file parameter for the close function
+  file.close.functions <- .ddg.get (".ddg.file.close.functions.df")
+  file.param.name <- file.close.functions$param.names[file.close.functions$function.names == fname]
+  #print (paste ("Close file parameter:", file.param.name))
+  
+  # Get the value of the file parameter  
+  close.conn <- eval (as.symbol(file.param.name), env = sys.frame(frame.number))
+  #print (paste ("close.conn =", close.conn))
+
+  .ddg.add.closed.connection (close.conn)
+}
+
+.ddg.add.closed.connection <- function (close.conn) {
+  # Save the file name so the file node can be created when the statement is complete.
+  # we do not want to create the nodes because the procedure node to connect to does not
+  # exist yet, and the file has not been written to yet.
+  #print(showConnections(TRUE))
+  #print (close.conn)
+  #print (as.character(close.conn))
+  if (.ddg.can.write.connection (close.conn) && !(close.conn %in% c("stdin", "stderr"))) {
+    #print ("Adding as output")
+    .ddg.add.output.file (.ddg.get.connection.description(close.conn))
+  }
+  
+}
+
+.ddg.created.file.nodes.for.open.connections <- function () {
+  openConns <- .ddg.get.open.connections()
+  lapply (names(openConns[, "description"]), .ddg.add.closed.connection)
+  .ddg.create.file.write.nodes.and.edges ()
 }
 
 # Creates file nodes and data out edges for any files that are closed in this cmd
@@ -171,43 +282,43 @@
   # Find all the files potentially closed in this command.
   # This may include files that are not actually closed if the
   # close calls are within an if-statement, for example.
-  files.closed <- 
-      if (is.null(cmd)) character()
-      else .ddg.find.files.closed(cmd, env)
-  
-  # Check for closeAllConnections.  It is a special case because it takes no 
-  # parameters.  .ddg.find.files expects there to be a parameter identifying the
-  # connection to close.
-  if (allOpen || (!is.null(cmd) && .ddg.has.call.to (cmd@parsed, "closeAllConnections"))) {
-    #print ("Found closeAllConnections")
-    openConns <- .ddg.get.open.connections()
-    #print(paste("openConns =", openConns))
-    files.closed <- unique (c (files.closed, openConns[, "description"]))
-    #print(paste("files.closed =", files.closed))
-  }
-  
-  for (file in files.closed) {
-    #print(paste("Closed", file))
-    #print(str(file))
-    # Check for a connection.  It will be a number encoded as a string.
-    # Turn off warnings and try the coercion and then turn warnings back on
-    save.warn <- getOption("warn")
-    options(warn=-1)
-    conn <- as.numeric(file)
-    options (warn=save.warn)
-    if (!is.na (conn)) file <- .ddg.get.connection.description(conn)
-    
-    # Check that the file exists.  If it does, we will assume that
-    # it was created by the write call that we just found.
-    if (file.exists (file)) {
-      # Create the file node and edge
-      pname <-
-          if (is.null(cmd)) NULL
-          else cmd@abbrev
-      #print(paste("Calling ddg.file.out: file=", file, "  pname =", pname))
-      ddg.file.out (file, pname=pname)
-    }
-  }
+#  files.closed <- 
+#      if (is.null(cmd)) character()
+#      else .ddg.find.files.closed(cmd, env)
+#  
+#  # Check for closeAllConnections.  It is a special case because it takes no 
+#  # parameters.  .ddg.find.files expects there to be a parameter identifying the
+#  # connection to close.
+#  if (allOpen || (!is.null(cmd) && .ddg.has.call.to (cmd@parsed, "closeAllConnections"))) {
+#    #print ("Found closeAllConnections")
+#    openConns <- .ddg.get.open.connections()
+#    #print(paste("openConns =", openConns))
+#    files.closed <- unique (c (files.closed, openConns[, "description"]))
+#    #print(paste("files.closed =", files.closed))
+#  }
+#  
+#  for (file in files.closed) {
+#    #print(paste("Closed", file))
+#    #print(str(file))
+#    # Check for a connection.  It will be a number encoded as a string.
+#    # Turn off warnings and try the coercion and then turn warnings back on
+#    save.warn <- getOption("warn")
+#    options(warn=-1)
+#    conn <- as.numeric(file)
+#    options (warn=save.warn)
+#    if (!is.na (conn)) file <- .ddg.get.connection.description(conn)
+#    
+#    # Check that the file exists.  If it does, we will assume that
+#    # it was created by the write call that we just found.
+#    if (file.exists (file)) {
+#      # Create the file node and edge
+#      pname <-
+#          if (is.null(cmd)) NULL
+#          else cmd@abbrev
+#      #print(paste("Calling ddg.file.out: file=", file, "  pname =", pname))
+#      ddg.file.out (file, pname=pname)
+#    }
+#  }
 }
 
 
@@ -379,6 +490,7 @@ ddg.trace.output <- function () {
   files.written <- .ddg.get ("output.files")
   
   for (file in files.written) {
+    #print (paste ("file written: ", file))
     if (.ddg.is.connection(file)) {
       conn <- as.numeric(file)
       # If it is a closed connection, use the file it is connected to
@@ -388,14 +500,19 @@ ddg.trace.output <- function () {
         next
       }
       file <- .ddg.get.connection.description(conn)
+      #print (paste ("file connected: ", file))
     }
     
     # Check that the file exists.  If it does, we will assume that
     # it was created by the write call that just executed.
     if (file.exists (file)) {
+      #print("Creating file node")
       # Create the file node and edge
       ddg.file.out (file)
     }
+    #else {
+     # print ("File does not exist -- no node created")
+    #}
   }
 
   # Clear the list of output files now that they have been handled.
