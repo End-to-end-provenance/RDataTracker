@@ -12,7 +12,6 @@ export(ddg.max.snapshot.size, ddg.details.omitted, ddg.should.run.annotated)
 export(ddg.set.detail, ddg.get.detail, ddg.clear.detail)
 export(ddg.set.inside.loop, ddg.not.inside.loop)
 export(ddg.json.write, ddg.json)
-export(ddg.trace.output, ddg.trace.input, ddg.trace.close)
 
 importFrom(gtools, defmacro)
 importFrom(XML, saveXML)

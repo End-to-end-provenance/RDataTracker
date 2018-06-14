@@ -39,14 +39,17 @@
   # standard error.  These are messages that say "Tracing..." and list each function being
   # traced.
   #print ("Tracing input and output functions")
-  trace.oneOutput <- function (f) {capture.output(capture.output(trace (as.name(f), ddg.trace.output, print=FALSE), type="message"))} 
+  # Note that we need to use the RDataTracker::: notation for the functions for trace to call
+  # so that it can find those functions without making them publicly available in 
+  # the namespace.
+  trace.oneOutput <- function (f) {capture.output(capture.output(trace (as.name(f), RDataTracker:::.ddg.trace.output, print=FALSE), type="message"))} 
   lapply(.ddg.get(".ddg.file.write.functions.df")$function.names, trace.oneOutput)
-  trace.oneInput <- function (f) {capture.output(capture.output(trace (as.name(f), ddg.trace.input, print=FALSE), type="message"))} 
+  trace.oneInput <- function (f) {capture.output(capture.output(trace (as.name(f), RDataTracker:::.ddg.trace.input, print=FALSE), type="message"))} 
   lapply(.ddg.get(".ddg.file.read.functions.df")$function.names, trace.oneInput)
 #  trace.oneOpen <- function (f) {capture.output(capture.output(trace (as.name(f), exit = ddg.trace.open, print=FALSE), type="message"))} 
 #  lapply(.ddg.get(".ddg.file.open.functions.df")$function.names, trace.oneOpen)
   #print ("Tracing is initialized")
-  trace.oneClose <- function (f) {capture.output(capture.output(trace (as.name(f), ddg.trace.close, print=FALSE), type="message"))} 
+  trace.oneClose <- function (f) {capture.output(capture.output(trace (as.name(f), RDataTracker:::.ddg.trace.close, print=FALSE), type="message"))} 
   lapply(.ddg.get(".ddg.file.close.functions.df")$function.names, trace.oneClose)
   
 }
@@ -197,7 +200,7 @@
   return (any (calls.found))
 }
 
-ddg.trace.close <- function () {
+.ddg.trace.close <- function () {
   
   # Get the frame corresponding to the output function being traced
   frame.number <- .ddg.get.traced.function.frame.number()
@@ -418,7 +421,7 @@ ddg.trace.close <- function () {
 #' traced function executes.
 #' 
 #' @return nothing
-ddg.trace.output <- function () {
+.ddg.trace.output <- function () {
 
   # Get the frame corresponding to the output function being traced
   frame.number <- .ddg.get.traced.function.frame.number()
@@ -555,7 +558,7 @@ ddg.trace.output <- function () {
 
 
 
-ddg.trace.input <- function () {
+.ddg.trace.input <- function () {
   #print ("Found input function")
   
   # Get the frame corresponding to the output function being traced
