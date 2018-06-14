@@ -201,6 +201,8 @@
 }
 
 .ddg.trace.close <- function () {
+  #print ("In .ddg.trace.close")
+  #print(sys.calls())
   
   # Get the frame corresponding to the output function being traced
   frame.number <- .ddg.get.traced.function.frame.number()
@@ -265,7 +267,7 @@
   #print(showConnections(TRUE))
   #print (close.conn)
   #print (as.character(close.conn))
-  if (.ddg.can.write.connection (close.conn) && !(close.conn %in% c("stdin", "stderr"))) {
+  if (.ddg.can.write.connection (close.conn) && !(close.conn %in% c("stdout", "stderr"))) {
     #print ("Adding as output")
     .ddg.add.output.file (.ddg.get.connection.description(close.conn))
   }
@@ -422,7 +424,8 @@
 #' 
 #' @return nothing
 .ddg.trace.output <- function () {
-
+  #print ("In .ddg.trace.output")
+  
   # Get the frame corresponding to the output function being traced
   frame.number <- .ddg.get.traced.function.frame.number()
   
@@ -560,9 +563,11 @@
 
 .ddg.trace.input <- function () {
   #print ("Found input function")
+  #print (sys.calls())
   
   # Get the frame corresponding to the output function being traced
   frame.number <- .ddg.get.traced.function.frame.number()
+  
   
   # Check if the function that called the input function is a ddg function.
   # If it is, ignore this call.  .ddg.load.history is an example of a 
@@ -572,7 +577,23 @@
   input.caller <- sys.call (frame.number - 1)[[1]]
   if (is.symbol (input.caller)) {
       input.caller.name <- as.character(input.caller)
-      if (startsWith (input.caller.name, "ddg") || startsWith (input.caller.name, ".ddg")) {
+
+      # When ddg.source is called for the main script it is in frame 4, and
+      # the input function is in frame 5.
+      # If a script sources another script, we see ddg.source on the stack twice
+      # The second occurrence will be at a higher frame number.
+      if (input.caller.name == "ddg.source") {
+        # print (paste ("Found ddg.source at frame", frame.number))
+        if (frame.number == 5) {
+          return()
+        }
+      }
+      else if (startsWith (input.caller.name, "ddg") || startsWith (input.caller.name, ".ddg")) {
+        return()
+      }
+      
+      # Don't collect provenance when loading library packages
+      else if (.ddg.inside.call.to ("library")) {
         return()
       }
   }
