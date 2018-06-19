@@ -2816,477 +2816,403 @@ library(curl)
 
 .ddg.parse.commands <- function (exprs, script.name="", script.num=NA, environ, ignore.patterns=c('^ddg.'), node.name="Console", run.commands = FALSE, echo=FALSE, print.eval=echo, max.deparse.length=150, called.from.ddg.eval=FALSE, cmds=NULL) {
 
-  return.value <- NULL
-  
-  # Gather all the information that we need about the statements
-  if (is.null(cmds)) {
-    cmds <- .ddg.create.DDGStatements (exprs, script.name, script.num)
+	return.value <- NULL
+	
+	# Gather all the information that we need about the statements
+	if (is.null(cmds)) {
+		cmds <- .ddg.create.DDGStatements (exprs, script.name, script.num)
 
-    if (.ddg.save.debug()) {
-      .ddg.save.annotated.script(cmds, script.name)
-    }
-  }
-  num.cmds <- length(cmds)
+		if (.ddg.save.debug()) {
+			.ddg.save.annotated.script(cmds, script.name)
+		}
+	}
+	num.cmds <- length(cmds)
 
-  # Figure out if we will execute commands or not.
-  execute <- run.commands & !is.null(environ) & is.environment(environ)
+	# Figure out if we will execute commands or not.
+	execute <- run.commands & !is.null(environ) & is.environment(environ)
 
-  # print (paste("ddg.parse.commands: .ddg.func.depth =", .ddg.get(".ddg.func.depth")))
-  inside.func <- (.ddg.get(".ddg.func.depth") > 0)
+	# print (paste("ddg.parse.commands: .ddg.func.depth =", .ddg.get(".ddg.func.depth")))
+	inside.func <- (.ddg.get(".ddg.func.depth") > 0)
 
-  # Attempt to close the previous collapsible command node if a ddg
-  # exists
-  if (.ddg.is.init() && !inside.func) .ddg.close.last.command.node(environ, initial=TRUE)
+	# Attempt to close the previous collapsible command node if a ddg
+	# exists
+	if (.ddg.is.init() && !inside.func) .ddg.close.last.command.node(environ, initial=TRUE)
 
-  # Get the last command in the new commands and check to see if
-  # we need to create a new .ddg.last.cmd node for future reference.
-  if (!inside.func) {
-      .ddg.last.cmd <- cmds[[num.cmds]]
-    # print(paste(".ddg.parse.commands: setting .ddg.last.cmd to", .ddg.last.cmd$text))
-    if (.ddg.last.cmd@isDdgFunc) {
-      .ddg.last.cmd <- NULL
-      #print(".ddg.parse.commands: setting .ddg.last.cmd to null")
-    }
+	# Get the last command in the new commands and check to see if
+	# we need to create a new .ddg.last.cmd node for future reference.
+	if (!inside.func) {
+		.ddg.last.cmd <- cmds[[num.cmds]]
+		# print(paste(".ddg.parse.commands: setting .ddg.last.cmd to", .ddg.last.cmd$text))
+		if (.ddg.last.cmd@isDdgFunc) {
+			.ddg.last.cmd <- NULL
+			#print(".ddg.parse.commands: setting .ddg.last.cmd to null")
+		}
 
-    else if (!execute) {
-      cmds <- cmds[1:num.cmds-1]
-    }
-  }
+		else if (!execute) {
+			cmds <- cmds[1:num.cmds-1]
+		}
+	}
 
-  # Create start and end nodes to allow collapsing of consecutive
-  # console nodes. Don't bother doing this if there is only 1 new
-  # command in the history or execution.
-  named.node.set <- FALSE
-  start.node.created <- ""
+	# Create start and end nodes to allow collapsing of consecutive
+	# console nodes. Don't bother doing this if there is only 1 new
+	# command in the history or execution.
+	named.node.set <- FALSE
+	start.node.created <- ""
 
-  if (num.cmds > 0 && .ddg.is.init() && !inside.func && !called.from.ddg.eval) {
-    # print(paste("ddg.new.parse.commands: Creating Start for", node.name))
-    .ddg.add.abstract.node("Start", node.name = node.name, env = environ)
-    named.node.set <- TRUE
-    start.node.created <- node.name
-  }
+	if (num.cmds > 0 && .ddg.is.init() && !inside.func && !called.from.ddg.eval) {
+		# print(paste("ddg.new.parse.commands: Creating Start for", node.name))
+		.ddg.add.abstract.node("Start", node.name = node.name, env = environ)
+		named.node.set <- TRUE
+		start.node.created <- node.name
+	}
 
-  # Don't set .ddg.last.cmd.  We want it to have the value from
-  # the last call. We set it at the end of this function:
-  # .ddg.set(".ddg.last.cmd", .ddg.last.cmd)
+	# Don't set .ddg.last.cmd.  We want it to have the value from
+	# the last call. We set it at the end of this function:
+	# .ddg.set(".ddg.last.cmd", .ddg.last.cmd)
 
-  # Create an operation node for each command.  We can't use lapply
-  # here because we need to process the commands in order and
-  # lapply does not guarantee an order. Also decide which data nodes
-  # and edges to create. Only create a data node for the last
-  # write of a variable and only if that occurs after the last
-  # possible writer. Create an edge for a data use as long as the
-  # use happens before the first writer/possible writer or after
-  # the last writer/possible writer. Lastly, if execute is set to
-  # true, then execute each command immediately before attempting
-  # to create the DDG nodes.
+	# Create an operation node for each command.  We can't use lapply
+	# here because we need to process the commands in order and
+	# lapply does not guarantee an order. Also decide which data nodes
+	# and edges to create. Only create a data node for the last
+	# write of a variable and only if that occurs after the last
+	# possible writer. Create an edge for a data use as long as the
+	# use happens before the first writer/possible writer or after
+	# the last writer/possible writer. Lastly, if execute is set to
+	# true, then execute each command immediately before attempting
+	# to create the DDG nodes.
 
-  # Only go through this if  we have at least one command to parse.
-  if (num.cmds > 0) {
+	# Only go through this if  we have at least one command to parse.
+	if (num.cmds > 0) {
 
-    # Find where all the variables are assigned for non-environ
-    # files.
-    if (!execute) {
-      vars.set <- .ddg.find.var.assignments(cmds)
-    }
-    else {
-      vars.set <- .ddg.create.empty.vars.set()
-    }
+		# Find where all the variables are assigned for non-environ
+		# files.
+		if (!execute) {
+			vars.set <- .ddg.find.var.assignments(cmds)
+		}
+		else {
+			vars.set <- .ddg.create.empty.vars.set()
+		}
 
-    # Loop over the commands as well as their string representations.
-    for (i in 1:length(cmds)) {
-      cmd <- cmds[[i]]
+		# Loop over the commands as well as their string representations.
+		for (i in 1:length(cmds)) {
+			cmd <- cmds[[i]]
 
-      if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Processing", cmd@abbrev))
+			if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Processing", cmd@abbrev))
 
-      # Process breakpoint. We stop if there is a breakpoint set on this line or we are single-stepping.
-      # print("Checking for breakpoints")
-      if (.ddg.is.sourced() & (cmd@is.breakpoint | .ddg.get("ddg.break")) & !.ddg.break.ignore()) {
-        .ddg.process.breakpoint(cmd, inside.function=called.from.ddg.eval)
-      }
+			# Process breakpoint. We stop if there is a breakpoint set on this line or we are single-stepping.
+			# print("Checking for breakpoints")
+			if (.ddg.is.sourced() & (cmd@is.breakpoint | .ddg.get("ddg.break")) & !.ddg.break.ignore()) {
+				.ddg.process.breakpoint(cmd, inside.function=called.from.ddg.eval)
+			}
 
-      # print("Checking whether to set last.cmd")
-      if (.ddg.enable.source() && grepl("^ddg.eval", cmd@text) && .ddg.enable.console()) {
-        if (is.null(.ddg.last.cmd)) {
-          .ddg.last.cmd <- cmd
-        }
-      }
+			# print("Checking whether to set last.cmd")
+			if (.ddg.enable.source() && grepl("^ddg.eval", cmd@text) && .ddg.enable.console()) {
+				if (is.null(.ddg.last.cmd)) {
+					.ddg.last.cmd <- cmd
+				}
+			}
 
-      # Get environment for output data node.
-      d.environ <- environ
+			# Get environment for output data node.
+			d.environ <- environ
 
-      if ( .ddg.is.nonlocal.assign(cmd@parsed[[1]]) )
-      {
-        d.environ <- .ddg.get.env(cmd@vars.set, for.caller=TRUE)
+			if ( .ddg.is.nonlocal.assign(cmd@parsed[[1]]) )
+			{
+				d.environ <- .ddg.get.env(cmd@vars.set, for.caller=TRUE)
       
-        if( identical(d.environ,"undefined") )
-          d.environ <- globalenv()
-      }
+				if( identical(d.environ,"undefined") )
+					d.environ <- globalenv()
+			}
 
 
-      # Check for control & loop statements.
-      st.type <- .ddg.get.statement.type(cmd@parsed[[1]])
+			# Check for control & loop statements.
+			st.type <- .ddg.get.statement.type(cmd@parsed[[1]])
 
-      control.statement <- (st.type == "if" || st.type == "for" || st.type == "while" || st.type == "repeat" || st.type == "{")
+			control.statement <- (st.type == "if" || st.type == "for" || st.type == "while" || st.type == "repeat" || st.type == "{")
 
-      loop.statement <- (st.type == "for" || st.type == "while" || st.type == "repeat")
+			loop.statement <- (st.type == "for" || st.type == "while" || st.type == "repeat")
 
-      # Specifies whether or not a procedure node should be created
-      # for this command. Basically, if a ddg exists and the
-      # command is not a DDG command or a control statement, it should
-      # be created. Note that if control statements are annotated,
-      # a procedure node is created for each statement inside a control
-      # block, so there is no need to create additional nodes for the
-      # control statement itself.
+			# Specifies whether or not a procedure node should be created
+			# for this command. Basically, if a ddg exists and the
+			# command is not a DDG command or a control statement, it should
+			# be created. Note that if control statements are annotated,
+			# a procedure node is created for each statement inside a control
+			# block, so there is no need to create additional nodes for the
+			# control statement itself.
 
-      create <- !cmd@isDdgFunc && .ddg.is.init() && .ddg.enable.console() && !(control.statement && .ddg.loop.annotate() && ddg.max.loops() > 0)
-      # create <- !cmd@isDdgFunc && .ddg.is.init() && .ddg.enable.console()
-      start.finish.created <- FALSE
-      cur.cmd.closed <- FALSE
+			create <- !cmd@isDdgFunc && .ddg.is.init() && .ddg.enable.console() && !(control.statement && .ddg.loop.annotate() && ddg.max.loops() > 0)
+			# create <- !cmd@isDdgFunc && .ddg.is.init() && .ddg.enable.console()
+			start.finish.created <- FALSE
+			cur.cmd.closed <- FALSE
 
-      # If the command does not match one of the ignored patterns.
-      if (!any(sapply(ignore.patterns, function(pattern){grepl(pattern, cmd@text)}))) {
+			# If the command does not match one of the ignored patterns.
+			if (!any(sapply(ignore.patterns, function(pattern){grepl(pattern, cmd@text)}))) {
 
-        # If sourcing, we want to execute the command.
-        if (execute) {
-          # Print command.
-          if (echo) {
-            nd <- nchar(cmd@text)
-            do.trunc <- nd > max.deparse.length
-            cmd.show <- paste0(substr(cmd@text, 1L, if (do.trunc)
-                          max.deparse.length
-                        else nd), "\n")
-            cat(cmd.show)
-          }
+				# If sourcing, we want to execute the command.
+				if (execute) {
+				# Print command.
+					if (echo) {
+						nd <- nchar(cmd@text)
+						do.trunc <- nd > max.deparse.length
+						cmd.show <- paste0(substr(cmd@text, 1L, if (do.trunc)
+																	max.deparse.length
+																else nd), "\n")
+						cat(cmd.show)
+					}
 
-          # If we will create a node, then before execution, set
-          # this command as a possible abstraction node but only
-          # if it's not a call that itself creates abstract nodes.
-          if (!cmd@isDdgFunc && cmd@text != "next") {
-            .ddg.set(".ddg.possible.last.cmd", cmd)
-            .ddg.set (".ddg.cur.cmd", cmd)
+					# If we will create a node, then before execution, set
+					# this command as a possible abstraction node but only
+					# if it's not a call that itself creates abstract nodes.
+					if (!cmd@isDdgFunc && cmd@text != "next") {
+						.ddg.set(".ddg.possible.last.cmd", cmd)
+						.ddg.set (".ddg.cur.cmd", cmd)
 
-            #print(paste("Pushing onto the stack:", cmd@text))
+						#print(paste("Pushing onto the stack:", cmd@text))
             
-            # Remember the current statement on the stack so that we
-            # will be able to create a corresponding Finish node later
-            # if needed.
-            .ddg.cur.cmd.stack <- .ddg.get(".ddg.cur.cmd.stack")
+						# Remember the current statement on the stack so that we
+						# will be able to create a corresponding Finish node later
+						# if needed.
+						.ddg.cur.cmd.stack <- .ddg.get(".ddg.cur.cmd.stack")
 
-            if (length(.ddg.cur.cmd.stack) == 0) {
-              .ddg.cur.cmd.stack <- c(cmd, FALSE)
-            }
-            else {
-              .ddg.cur.cmd.stack <- c(.ddg.get(".ddg.cur.cmd.stack"), cmd, FALSE)
-            }
-            .ddg.set(".ddg.cur.cmd.stack", .ddg.cur.cmd.stack)
-          }
+						if (length(.ddg.cur.cmd.stack) == 0) {
+							.ddg.cur.cmd.stack <- c(cmd, FALSE)
+						}
+						else {
+							.ddg.cur.cmd.stack <- c(.ddg.get(".ddg.cur.cmd.stack"), cmd, FALSE)
+						}
+						.ddg.set(".ddg.cur.cmd.stack", .ddg.cur.cmd.stack)
+					}
 
-          else if (.ddg.is.procedure.cmd(cmd)) {
-            .ddg.set(".ddg.possible.last.cmd", NULL)
-          }
+					else if (.ddg.is.procedure.cmd(cmd)) {
+						.ddg.set(".ddg.possible.last.cmd", NULL)
+					}
 
-          # Need to get this number before evaluating the command so that 
-          # when we evaluate a dev.off call we know which device was closed
-          .ddg.set(".ddg.dev.number", dev.cur())
-          
-          if (cmd@has.dev.off && !cmd@createsGraphics && is.null(.ddg.get ("possible.graphics.files.open"))) {
-            dev.file.created <- .ddg.capture.current.graphics()
-          }
-          else {
-            dev.file.created <- NULL
-          }
-          
-          
-          # Before evaluating,
-          # keep track of variable types for common variables between vars.set and vars.used.
-          #common.vars <- intersect( cmd@vars.set , cmd@vars.used )
-          #num.vars <- length(common.vars)
+					# Need to get this number before evaluating the command so that 
+					# when we evaluate a dev.off call we know which device was closed
+					.ddg.set(".ddg.dev.number", dev.cur())
 
-          #if( num.vars > 0 )
-          #  used.types <- sapply( common.vars , .ddg.get.val.type.from.var )
+					if (cmd@has.dev.off && !cmd@createsGraphics && is.null(.ddg.get ("possible.graphics.files.open"))) {
+						dev.file.created <- .ddg.capture.current.graphics()
+					}
+					else {
+						dev.file.created <- NULL
+					}
 
-          # Capture any warnings that occur when an expression is evaluated.
-          # Note that we cannot just use a tryCatch here because it behaves
-          # slightly differently and we would lose the value that eval
-          # returns.  withCallingHandlers returns the value.
-          # withCallingHandlers also re-throws the error after it is caught.
+					# Capture any warnings that occur when an expression is evaluated.
+					# Note that we cannot just use a tryCatch here because it behaves
+					# slightly differently and we would lose the value that eval
+					# returns.  withCallingHandlers returns the value.
+					# withCallingHandlers also re-throws the error after it is caught.
 
-          # EVALUATE.
+					# EVALUATE.
 
-          if (.ddg.debug.lib()) print (paste (".ddg.parse.commands: Evaluating ", cmd@annotated))
-          #print (paste (".ddg.parse.commands: Evaluating ", cmd@annotated))
-          #print (paste ("length(cmd@annotated) =", length(cmd@annotated)))
+					if (.ddg.debug.lib()) print (paste (".ddg.parse.commands: Evaluating ", cmd@annotated))
+					#print (paste (".ddg.parse.commands: Evaluating ", cmd@annotated))
+					#print (paste ("length(cmd@annotated) =", length(cmd@annotated)))
 
-          result <- withCallingHandlers(
-          
-              {
-                for (annot in cmd@annotated) {
-                  #print (paste (".ddg.parse.commands: Evaluating ", paste(annot, collapse = " ")))
-                  # Don't set return.value if we are calling a ddg function or we are executing an if-statement
-                  if (grepl("^ddg", annot) || grepl("^.ddg", annot) || as.character(.ddg.get.statement.type(annot)) == "if") {
-                    eval(annot, environ, NULL)
-                  }
-                  else {
-                    return.value <- eval(annot, environ, NULL)
-                    #if (typeof(return.value) != "closure") {
-                    #  print (paste (".ddg.parse.commands: Done evaluating ", annot))
-                    #  print(paste(".ddg.parse.commands: setting .ddg.last.R.value to", return.value))
-                    #}
-                    .ddg.set (".ddg.last.R.value", return.value)
-                  }
-                }
-              },
-            warning = .ddg.set.warning ,
-            error = function(e)
-            {
-              # obtain function information for error-causing operation
-              funcs.called <- .ddg.get.function.info(cmd@functions.called)
-              
-              # create procedure node for the error-causing operation
-              .ddg.proc.node("Operation", cmd@abbrev, cmd@abbrev, env=environ, pfunctions=funcs.called, console=TRUE, cmd=cmd)
-              .ddg.proc2proc()
+					result <- withCallingHandlers(
+						{
+							for (annot in cmd@annotated) 
+							{
+								#print (paste (".ddg.parse.commands: Evaluating ", paste(annot, collapse = " ")))
+								
+								# Don't set return.value if we are calling a ddg function or we are executing an if-statement
+								if (grepl("^ddg", annot) || grepl("^.ddg", annot) || as.character(.ddg.get.statement.type(annot)) == "if") {
+									eval(annot, environ, NULL)
+								}
+								else {
+									return.value <- eval(annot, environ, NULL)
+									#if (typeof(return.value) != "closure") {
+									#  print (paste (".ddg.parse.commands: Done evaluating ", annot))
+									#  print(paste(".ddg.parse.commands: setting .ddg.last.R.value to", return.value))
+									#}
+									.ddg.set (".ddg.last.R.value", return.value)
+								}
+							}
+						},
+						warning = .ddg.set.warning ,
+						error = function(e)
+						{
+							# obtain function information for error-causing operation
+							funcs.called <- .ddg.get.function.info(cmd@functions.called)
 
-              # create input edges by adding variables to set
-              vars.set <- .ddg.add.to.vars.set(vars.set,cmd,i)
-              if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Adding", cmd@abbrev, "information to vars.set, for an error"))
-              .ddg.create.data.use.edges.for.console.cmd(vars.set, cmd, i, for.caller=FALSE)
+							# create procedure node for the error-causing operation
+							.ddg.proc.node("Operation", cmd@abbrev, cmd@abbrev, env=environ, pfunctions=funcs.called, console=TRUE, cmd=cmd)
+							.ddg.proc2proc()
 
-              # check for factors
-              #msg <- e[[1]]
-              #
-              #if( msg == "invalid 'type' (character) of argument" | msg == "only defined on a data frame with all numeric variables" )
-              #{ 
-              #  containsFactor <- sapply( cmd@vars.used , .ddg.var.contains.factor )
-              #  
-              #  if( is.element(TRUE , containsFactor) )
-              #  {
-              #    factors <- names(containsFactor)[which(containsFactor==TRUE)]
-              #
-              #    # form suggestion
-              #    cat( "The following input data contain(s) a factor:\n" )
-              #    cat( paste(shQuote(factors , type="cmd") , collapse = ", ") )
-              #    cat("\nThis website may be helpful:\n")
-              #
-              #    #if( msg == "invalid 'type' (character) of argument" )
-              #    #  cat("https://stat.ethz.ch/pipermail/r-help/2010-May/239461.html")
-              #    #else
-              #    #  cat("http://stackoverflow.com/questions/38032814/trying-to-understand-r-error-error-in-funxi-only-defined-on-a-data")
-              #    cat( "https://www.r-bloggers.com/using-r-common-errors-in-table-import/" )
-              #  }
-              #}
-              
-              # create and link to an error node
-              ddg.exception.out("error.msg", toString(e) , cmd@abbrev)
-            }
-          )
+							# create input edges by adding variables to set
+							vars.set <- .ddg.add.to.vars.set(vars.set,cmd,i)
+							if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Adding", cmd@abbrev, "information to vars.set, for an error"))
+							.ddg.create.data.use.edges.for.console.cmd(vars.set, cmd, i, for.caller=FALSE)
 
-          if (.ddg.debug.lib()) print (paste (".ddg.parse.commands: Done evaluating ", cmd@annotated))
+							# create and link to an error node
+							ddg.exception.out("error.msg", toString(e) , cmd@abbrev)
+						}
+					)
 
-          # After evaluating
-          # Check changes to variable type for common variables between vars.set and vars.used
-          #if( num.vars > 0 )
-          #{
-          #  set.types <- sapply( common.vars , .ddg.get.val.type.from.var )
-          #
-          #  # comparing type changes for variables set and variables used
-          #  # only 1 common variable between vars.set and vars.used
-          #  if( num.vars == 1 )
-          #  {
-          #    is.same <- identical( set.types , used.types )
-          #
-          #    # remember var names for vars whose types have changed, NULL otherwise
-          #    if(is.same)
-          #      changed.vars <- NULL
-          #    else
-          #      changed.vars <- common.vars
-          #  }
-          #
-          #  # multiple common variables between vars.set and vars.used
-          #  # currently untested since multiple variable assignment is not working!
-          #  else
-          #  {
-          #    is.same <- mapply( identical , set.types , used.types )
-          #    changed.vars <- names(is.same)[which(is.same==FALSE)]
-          #
-          #    # convert to string
-          #    if( ! is.null(changed.vars) )
-          #      changed.vars <- paste( changed.vars , collapse = "," )
-          #  }
-          #
-          #  # show warning message
-          #  if( ! is.null(changed.vars) )
-          #  {
-          #    msg <- paste( "For the statement \"" , cmd@text , "\", " , "in line " , cmd@pos@startLine , ",\n" , sep = "" )
-          #    msg <- paste( msg , "The type changed for the following variables: " , changed.vars , sep = "" )
-          #
-          #    warning( msg , call. = FALSE )
-          #  }
-          #}
+					if (.ddg.debug.lib()) print (paste (".ddg.parse.commands: Done evaluating ", cmd@annotated))
 
-          if (!cmd@isDdgFunc && cmd@text != "next") {
-            # Need to get the stack again because it could have been
-            # modified during the eval call.
-            .ddg.cur.cmd.stack <- .ddg.get(".ddg.cur.cmd.stack")
-            stack.length <- length(.ddg.cur.cmd.stack)
-            start.created <- .ddg.cur.cmd.stack[stack.length][[1]]
+					if (!cmd@isDdgFunc && cmd@text != "next") {
+						# Need to get the stack again because it could have been
+						# modified during the eval call.
+						.ddg.cur.cmd.stack <- .ddg.get(".ddg.cur.cmd.stack")
+						stack.length <- length(.ddg.cur.cmd.stack)
+						start.created <- .ddg.cur.cmd.stack[stack.length][[1]]
 
-            # Create a finish node if a start node was created
-            # start.created can have one of 3 values: "TRUE", "FALSE",
-            # "MATCHES_CALL". Only create the finish node if TRUE.
-            if (start.created == "TRUE") {
-              .ddg.add.abstract.node("Finish", cmd, environ)
-              start.finish.created <- TRUE
-              .ddg.link.function.returns(cmd)
+						# Create a finish node if a start node was created
+						# start.created can have one of 3 values: "TRUE", "FALSE",
+						# "MATCHES_CALL". Only create the finish node if TRUE.
+						if (start.created == "TRUE") {
+							.ddg.add.abstract.node("Finish", cmd, environ)
+							start.finish.created <- TRUE
+							.ddg.link.function.returns(cmd)
 
-              # If the number of loop iterations exceeds max.loops, add
-              # output data nodes containing final values to the finish node.
-              if (loop.statement && .ddg.were.details.omitted()) {
-                vars.set2 <- .ddg.add.to.vars.set(vars.set, cmd, i)
-                .ddg.create.data.node.for.possible.writes(vars.set2, cmd, environ)
-                .ddg.set.details.omitted(FALSE)
-              }
-            }
+							# If the number of loop iterations exceeds max.loops, add
+							# output data nodes containing final values to the finish node.
+							if (loop.statement && .ddg.were.details.omitted()) {
+								vars.set2 <- .ddg.add.to.vars.set(vars.set, cmd, i)
+								.ddg.create.data.node.for.possible.writes(vars.set2, cmd, environ)
+								.ddg.set.details.omitted(FALSE)
+							}
+						}
 
-            # Remove the last command & start.created values pushed
-            # onto the stack
-            cur.cmd.closed <- (.ddg.cur.cmd.stack[stack.length] == "MATCHES_CALL")
-            if (stack.length == 2) {
-              .ddg.set(".ddg.cur.cmd.stack", vector())
-            }
-            else {
-              .ddg.set(".ddg.cur.cmd.stack", .ddg.cur.cmd.stack[1:(stack.length-2)])
-            }
-          }
+						# Remove the last command & start.created values pushed
+						# onto the stack
+						cur.cmd.closed <- (.ddg.cur.cmd.stack[stack.length] == "MATCHES_CALL")
+						if (stack.length == 2) {
+							.ddg.set(".ddg.cur.cmd.stack", vector())
+						}
+						else {
+							.ddg.set(".ddg.cur.cmd.stack", .ddg.cur.cmd.stack[1:(stack.length-2)])
+						}
+					}
 
-          # Print evaluation.
-          if (print.eval) print(result)
-        }
+					# Print evaluation.
+					if (print.eval) print(result)
+				}
 
-        # Figure out if we should create a procedure node for this
-        # command. We don't create it if it matches a last command
-        # (because that last command has now become a collapsible
-        # node). Matching a last command means that the last command
-        # is set, is not NULL, and is equal to the current command.
+				# Figure out if we should create a procedure node for this
+				# command. We don't create it if it matches a last command
+				# (because that last command has now become a collapsible
+				# node). Matching a last command means that the last command
+				# is set, is not NULL, and is equal to the current command.
 
-        last.proc.node.created <-
-            if (.ddg.is.set (".ddg.last.proc.node.created")).ddg.get(".ddg.last.proc.node.created")
-            else ""
+				last.proc.node.created <-
+					if (.ddg.is.set (".ddg.last.proc.node.created")).ddg.get(".ddg.last.proc.node.created")
+					else ""
+
+				create.procedure <- create && (!cur.cmd.closed || !named.node.set) && !start.finish.created  && !grepl("^ddg.source", cmd@text)
         
-        create.procedure <- create && (!cur.cmd.closed || !named.node.set) && !start.finish.created  && !grepl("^ddg.source", cmd@text)
-        
-        # We want to create a procedure node for this command.
-        if (create.procedure) {
+				# We want to create a procedure node for this command.
+				if (create.procedure) {
+
+					# get function information
+					funcs.called <- .ddg.get.function.info(cmd@functions.called)
           
-          # get function information
-          funcs.called <- .ddg.get.function.info(cmd@functions.called)
-          
-          # Create the procedure node.
+					# Create the procedure node.
 
-          if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Adding operation node for", cmd@abbrev))
-          
-          .ddg.proc.node("Operation", cmd@abbrev, cmd@abbrev, env=environ, pfunctions=funcs.called, console=TRUE, cmd=cmd)
-          .ddg.proc2proc()
+					if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Adding operation node for", cmd@abbrev))
 
-          # If a warning occurred when cmd was evaluated,
-          # attach a warning node
-          if (.ddg.warning.occurred()) {
-            .ddg.record.warning()
-          }
-          # Store information on the last procedure node in this
-          # block.
-          last.proc.node <- cmd
+					.ddg.proc.node("Operation", cmd@abbrev, cmd@abbrev, env=environ, pfunctions=funcs.called, console=TRUE, cmd=cmd)
+					.ddg.proc2proc()
 
-          # We want to create the incoming data nodes (by updating
-          # the vars.set).
-          if (execute) {
-            # Add variables to set.
-            vars.set <- .ddg.add.to.vars.set(vars.set,cmd,i)
+					# If a warning occurred when cmd was evaluated,
+					# attach a warning node
+					if (.ddg.warning.occurred()) {
+						.ddg.record.warning()
+					}
+					# Store information on the last procedure node in this
+					# block.
+					last.proc.node <- cmd
 
-            if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Adding", cmd@abbrev, "information to vars.set"))
-          }
+					# We want to create the incoming data nodes (by updating
+					# the vars.set).
+					if (execute) {
+						# Add variables to set.
+						vars.set <- .ddg.add.to.vars.set(vars.set,cmd,i)
 
-          .ddg.create.data.use.edges.for.console.cmd(vars.set, cmd, i, for.caller=FALSE)
+						if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Adding", cmd@abbrev, "information to vars.set"))
+					}
 
-          if (cmd@readsFile) .ddg.create.file.read.nodes.and.edges(cmd, environ)
-          .ddg.link.function.returns(cmd)
+					.ddg.create.data.use.edges.for.console.cmd(vars.set, cmd, i, for.caller=FALSE)
 
-          if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Adding input data nodes for", cmd@abbrev))
+					if (cmd@readsFile) .ddg.create.file.read.nodes.and.edges(cmd, environ)
+					.ddg.link.function.returns(cmd)
 
-          .ddg.create.data.set.edges.for.cmd(vars.set, cmd, i, d.environ)
+					if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Adding input data nodes for", cmd@abbrev))
 
-          if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Adding output data nodes for", cmd@abbrev))
+					.ddg.create.data.set.edges.for.cmd(vars.set, cmd, i, d.environ)
 
-          if (cmd@writesFile) .ddg.create.file.write.nodes.and.edges (cmd, environ)
-          if (cmd@closesFile) .ddg.create.file.close.nodes.and.edges (cmd, environ)
-          if (cmd@createsGraphics) .ddg.set.graphics.files (cmd, environ)
-          if (cmd@updatesGraphics) .ddg.add.graphics.io (cmd)
+					if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Adding output data nodes for", cmd@abbrev))
 
-          if (cmd@has.dev.off) {
-            .ddg.capture.graphics(cmd)
-  
-            if (!is.null(dev.file.created)) {
-              file.remove(dev.file.created)
-            }
-          }
-        }
-        # We wanted to create it but it matched a last command node.
-        else if (create && execute) {
-          .ddg.close.last.command.node(environ, initial=TRUE)
-          if (execute) {
-            # Add variables to set.
-            vars.set <- .ddg.add.to.vars.set(vars.set,cmd, i)
-            if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Adding", cmd@abbrev, "information to vars.set"))
-            .ddg.create.data.set.edges.for.cmd(vars.set, cmd, i, environ)
-          }
-        }
+					if (cmd@writesFile) .ddg.create.file.write.nodes.and.edges (cmd, environ)
+					if (cmd@closesFile) .ddg.create.file.close.nodes.and.edges (cmd, environ)
+					if (cmd@createsGraphics) .ddg.set.graphics.files (cmd, environ)
+					if (cmd@updatesGraphics) .ddg.add.graphics.io (cmd)
 
-        if (create.procedure && execute) {
-          .ddg.create.data.node.for.possible.writes(vars.set, last.proc.node, env=environ)
+					if (cmd@has.dev.off) {
+						.ddg.capture.graphics(cmd)
 
-          # Update so we don't set these again.
-          vars.set$possible.last.writer <- vars.set$last.writer
-        }
-      }
-     }
+						if (!is.null(dev.file.created)) {
+							file.remove(dev.file.created)
+						}
+					}
+				}
+				# We wanted to create it but it matched a last command node.
+				else if (create && execute) {
+					.ddg.close.last.command.node(environ, initial=TRUE)
+					if (execute) {
+						# Add variables to set.
+						vars.set <- .ddg.add.to.vars.set(vars.set,cmd, i)
+						if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Adding", cmd@abbrev, "information to vars.set"))
+						.ddg.create.data.set.edges.for.cmd(vars.set, cmd, i, environ)
+					}
+				}
 
-     # Create a data node for each variable that might have been set in
-     # something other than a simple assignment, with an edge from the
-     # last node in the console block or source .
-     if (!execute) {
-       .ddg.create.data.node.for.possible.writes(vars.set, last.proc.node, env=environ)
-     }
-  }
+				if (create.procedure && execute) {
+					.ddg.create.data.node.for.possible.writes(vars.set, last.proc.node, env=environ)
 
-  #print("Done with ddg.parse.commands loop")
+					# Update so we don't set these again.
+					vars.set$possible.last.writer <- vars.set$last.writer
+				}
+			}
+		}
 
-  # Close any node left open during execution.
-  if (execute && !inside.func) .ddg.close.last.command.node(environ, initial=TRUE)
+		# Create a data node for each variable that might have been set in
+		# something other than a simple assignment, with an edge from the
+		# last node in the console block or source .
+		if (!execute) {
+			.ddg.create.data.node.for.possible.writes(vars.set, last.proc.node, env=environ)
+		}
+	}
 
-  # Close the console block if we processed anything and the DDG
-  # is initialized (also, save).
-  #
-  if (.ddg.is.init() && named.node.set && !inside.func) {
-      .ddg.add.abstract.node("Finish", node.name = node.name, env=environ)
-  }
+	#print("Done with ddg.parse.commands loop")
 
-  # Open up a new collapsible node in case we need to parse
-  # further later.
-  if (!execute) {
+	# Close any node left open during execution.
+	if (execute && !inside.func) .ddg.close.last.command.node(environ, initial=TRUE)
 
-    .ddg.set(".ddg.possible.last.cmd", .ddg.last.cmd)
-    .ddg.set(".ddg.last.cmd", .ddg.last.cmd)
-    .ddg.open.new.command.node(environ)
-  }
+	# Close the console block if we processed anything and the DDG
+	# is initialized (also, save).
+	#
+	if (.ddg.is.init() && named.node.set && !inside.func) {
+		.ddg.add.abstract.node("Finish", node.name = node.name, env=environ)
+	}
 
-  # Write time stamp to history.
-  if (.ddg.is.init() && !.ddg.is.sourced()) .ddg.write.timestamp.to.history()
+	# Open up a new collapsible node in case we need to parse
+	# further later.
+	if (!execute) {
+		.ddg.set(".ddg.possible.last.cmd", .ddg.last.cmd)
+		.ddg.set(".ddg.last.cmd", .ddg.last.cmd)
+		.ddg.open.new.command.node(environ)
+	}
 
-  return.value <- .ddg.get (".ddg.last.R.value")
-  #if (typeof(return.value) != "closure") {
-  #  print(paste(".ddg.parse.commands: returning ", return.value))
-  #}
-  return(return.value)
+	# Write time stamp to history.
+	if (.ddg.is.init() && !.ddg.is.sourced()) .ddg.write.timestamp.to.history()
+
+	return.value <- .ddg.get (".ddg.last.R.value")
+	#if (typeof(return.value) != "closure") {
+	#  print(paste(".ddg.parse.commands: returning ", return.value))
+	#}
+	return(return.value)
 }
 
 
@@ -3299,55 +3225,56 @@ library(curl)
 
 .ddg.get.function.info <- function( function.names )
 {
-  # edge case: no functions/potential function calls
-  if( all(sapply(function.names, is.null)) )
-    return(NA)
-  
-  # functions with unknown libraries
-  ddg.fun <- function.names[[1]]
-  ddg.lib <- NULL
-  
-  # identify which of the variable names are functions
-  if( ! is.null(function.names[[2]]) )
-  {
-    vars <- sapply( function.names[[2]] , 
-                    function(name) {
-                      if( ! .ddg.is.set(name) )
-                        return(NULL)
-                      else
-                        return( get(name) )
-                    } )
-    vars <- sapply( vars , is.function )
-    
-    # append to list of functions with unknown libraries
-    ddg.fun <- append( ddg.fun , names(vars[vars == TRUE]) )
-  }
-  
-  # obtain library information from functions
-  fn.frame <- function.names[[3]]
-  
-  if( length(ddg.fun) > 0 )
-  {
-    ddg.lib <- sapply( ddg.fun , .ddg.where )
-    ddg.lib <- sapply( ddg.lib , environmentName )
-    
-    ddg.lib <- ddg.lib[ grepl("package:", ddg.lib) ]
-    
-    # combine with functions with known library calls into data frame
-    if( length(ddg.lib) > 0 )
-    {
-      ddg.lib <- mapply( substring , ddg.lib , 9 )
-      
-      ddg.fun <- names(ddg.lib)
-      ddg.lib <- unname(ddg.lib)
-      
-      fn.frame <- rbind( fn.frame , data.frame(ddg.fun, ddg.lib, stringsAsFactors=FALSE) )
-    }
-  }
-  
-  # return
-  fn.frame <- unique(fn.frame)
-  return( fn.frame )
+	# edge case: no functions/potential function calls
+	if( all(sapply(function.names, is.null)) )
+		return(NA)
+
+	# functions with unknown libraries
+	ddg.fun <- function.names[[1]]
+	ddg.lib <- NULL
+
+	# identify which of the variable names are functions
+	if( ! is.null(function.names[[2]]) )
+	{
+		vars <- sapply( function.names[[2]] , 
+						function(name) {
+							if( ! .ddg.is.set(name) )
+								return(NULL)
+							else
+								return( get(name) )
+						}
+					  )
+		vars <- sapply( vars , is.function )
+
+		# append to list of functions with unknown libraries
+		ddg.fun <- append( ddg.fun , names(vars[vars == TRUE]) )
+	}
+
+	# obtain library information from functions
+	fn.frame <- function.names[[3]]
+
+	if( length(ddg.fun) > 0 )
+	{
+		ddg.lib <- sapply( ddg.fun , .ddg.where )
+		ddg.lib <- sapply( ddg.lib , environmentName )
+
+		ddg.lib <- ddg.lib[ grepl("package:", ddg.lib) ]
+
+		# combine with functions with known library calls into data frame
+		if( length(ddg.lib) > 0 )
+		{
+			ddg.lib <- mapply( substring , ddg.lib , 9 )
+
+			ddg.fun <- names(ddg.lib)
+			ddg.lib <- unname(ddg.lib)
+
+			fn.frame <- rbind( fn.frame , data.frame(ddg.fun, ddg.lib, stringsAsFactors=FALSE) )
+		}
+	}
+
+	# return
+	fn.frame <- unique(fn.frame)
+	return( fn.frame )
 }
 
 
@@ -4371,23 +4298,23 @@ library(curl)
 
 .ddg.where <- function( name , env = parent.frame() , warning = TRUE )
 {
-  stopifnot(is.character(name), length(name) == 1)
-  
-  if (identical(env, emptyenv()))
-  {
-    if(warning)
-      warning("Can't find ", name)
+	stopifnot(is.character(name), length(name) == 1)
 
-    return("undefined")
-  }
-  if (exists(name, env, inherits=FALSE))
-  {
-    env
-  }
-  else
-  {
-    .ddg.where(name, parent.env(env), warning)
-  }
+	if (identical(env, emptyenv()))
+	{
+		if(warning)
+			warning("Can't find ", name)
+
+		return("undefined")
+	}
+	if (exists(name, env, inherits=FALSE))
+	{
+		env
+	}
+	else
+	{
+		.ddg.where(name, parent.env(env), warning)
+	}
 }
 
 
