@@ -138,7 +138,6 @@ ddg.json <- function()
 	}	
 	
 	# COMBINE INTO COMPLETE JSON
-	#json <<- json
 	return( .ddg.json.combine(json) )
 }
 
@@ -197,7 +196,10 @@ ddg.json <- function()
 		return(NA)
 	
 	# escape double quotes in ddg.name, if any
-	nodes$ddg.name <- sapply( nodes$ddg.name , .ddg.json.escape.quotes )
+	nodes$ddg.name <- sapply( nodes$ddg.name , 
+							  function(str)
+								return( gsub('\"', '\\\\"', str) )
+							)
 	
 	# convert '    ' or \t to escaped tab characters, if any
 	nodes <- .ddg.json.df.escape.tabs( nodes )
@@ -229,11 +231,18 @@ ddg.json <- function()
 	if( nrow(nodes) == 0 )
 		return(NA)
 	
-	# escape double quotes in ddg.val.type, if any
-	nodes$ddg.val.type <- sapply( nodes$ddg.val.type , .ddg.json.escape.quotes )
-	
 	# convert '    ' or \t to escaped tab characters, if any
 	nodes <- .ddg.json.df.escape.tabs( nodes )
+	
+	# escape double quotes in ddg.val.type and ddg.value, if any
+	nodes$ddg.val.type <- sapply( nodes$ddg.val.type ,
+								  function(str)
+									return( gsub('\"', '\\\\\\\\"', str) )
+								)
+	nodes$ddg.value <- sapply(  nodes$ddg.value ,
+								function(str)
+									return( gsub('\"', '\\\\\\\\"', str) )
+							 )
 	
 	# column names
 	col.names <- c( "name", "value", "valType", "type", "scope", "fromEnv", 
@@ -633,12 +642,6 @@ ddg.json <- function()
 
 
 # --- MULTIPLE-USE FUNCTIONS ------------------- #
-
-# adds escape characters to double quotes within strings
-.ddg.json.escape.quotes <- function( str )
-{
-	return( gsub('\"', '\\\\"', str) )
-}
 
 # converts '    ' or \t to escaped tab characters in string
 .ddg.json.escape.tabs <- function( str )
