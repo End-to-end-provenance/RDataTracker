@@ -306,6 +306,20 @@
 			</fileset>
 		</replaceregexp>
 
+		<!-- Remove location attributes that use absolute paths.
+			 These will vary between architectures.  It is important
+			 that these follow the rule that replaces local file
+			 paths with [DIR] so we don't lose those.  -->
+		<replaceregexp flags="g">
+			<regexp pattern='(\t+"rdt:location": "/(.*)\r?\n)' />
+			<substitution expression=""/>
+			<fileset dir="${local_dir}">
+				<patternset id="local_files">
+					<include name="*.local" />
+				</patternset>
+			</fileset>
+		</replaceregexp>
+
 		<!-- Fix line endings on all local files so diff works well -->
 		<fixcrlf srcdir="${local_dir}"
 			includes="*.local"
