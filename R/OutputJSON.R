@@ -180,7 +180,7 @@ ddg.json <- function()
 	nodes <- subset(nodes, ddg.num > 0,
 					select = c(ddg.name, ddg.value, ddg.val.type, ddg.type,
 					ddg.scope, ddg.from.env, ddg.hash, ddg.time, ddg.loc))
-	
+  
 	# escape double quotes in ddg.val.type, if any
 	nodes$ddg.val.type <- sapply( nodes$ddg.val.type , .ddg.json.escape.quotes )
 	
