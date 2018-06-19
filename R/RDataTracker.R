@@ -388,6 +388,8 @@ library(curl)
           ddg.scope = character(size),
           ddg.from.env = logical(size),
           ddg.time = character(size),
+          ddg.hash = character(size),
+          ddg.rw = character(size),
           ddg.loc = character(size),
           ddg.current = logical(size), stringsAsFactors=FALSE))
 

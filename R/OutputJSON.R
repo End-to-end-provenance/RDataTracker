@@ -195,6 +195,7 @@ ddg.json <- function()
 	if( nrow(nodes) == 0 )
 		return(NA)
 	
+	# EF EDITS
 	# escape double quotes in ddg.name, if any
 	nodes$ddg.name <- sapply( nodes$ddg.name , 
 							  function(str)
@@ -234,15 +235,16 @@ ddg.json <- function()
 	# convert '    ' or \t to escaped tab characters, if any
 	nodes <- .ddg.json.df.escape.tabs( nodes )
 	
-	# escape double quotes in ddg.val.type and ddg.value, if any
+	# EF EDITS
+	# escape double quotes in ddg.value and ddg.val.type, if any
+	#nodes$ddg.value <- sapply(  nodes$ddg.value ,
+	#							function(str)
+	#								return( gsub('\"', '\\\\"', str) )
+	#						 )
 	nodes$ddg.val.type <- sapply( nodes$ddg.val.type ,
 								  function(str)
-									return( gsub('\"', '\\\\\\\\"', str) )
+									return( gsub('\"', '\\\\"', str) )
 								)
-	nodes$ddg.value <- sapply(  nodes$ddg.value ,
-								function(str)
-									return( gsub('\"', '\\\\\\\\"', str) )
-							 )
 	
 	# column names
 	col.names <- c( "name", "value", "valType", "type", "scope", "fromEnv", 
@@ -568,6 +570,11 @@ ddg.json <- function()
 	# add final close brace to last element
 	json[num.parts] <- sub( '\n$' , '\n}' , json[num.parts] )
 	
+	
+	# EF EDITS
+	json <<- json
+	
+	
 	# combine and return
 	return( .ddg.json.combine.rec(json) )
 }
@@ -618,7 +625,7 @@ ddg.json <- function()
 	
 	# base case
 	if( length == 1 )
-		return( list[1] )
+		return( list[[1]] )
 	
 	# recursively merge left and right halves of the list
 	mid <- ceiling( length / 2 )
