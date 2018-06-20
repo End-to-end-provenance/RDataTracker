@@ -197,10 +197,7 @@ ddg.json <- function()
 	
 	# EF EDITS
 	# escape double quotes in ddg.name, if any
-	nodes$ddg.name <- sapply( nodes$ddg.name , 
-							  function(str)
-								return( gsub('\"', '\\\\"', str) )
-							)
+	nodes$ddg.name <- sapply( nodes$ddg.name , .ddg.json.escape.quotes )
 	
 	# convert '    ' or \t to escaped tab characters, if any
 	nodes <- .ddg.json.df.escape.tabs( nodes )
@@ -236,15 +233,8 @@ ddg.json <- function()
 	nodes <- .ddg.json.df.escape.tabs( nodes )
 	
 	# EF EDITS
-	# escape double quotes in ddg.value and ddg.val.type, if any
-	#nodes$ddg.value <- sapply(  nodes$ddg.value ,
-	#							function(str)
-	#								return( gsub('\"', '\\\\"', str) )
-	#						 )
-	nodes$ddg.val.type <- sapply( nodes$ddg.val.type ,
-								  function(str)
-									return( gsub('\"', '\\\\"', str) )
-								)
+	# escape double quotes in ddg.val.type, if any		 )
+	nodes$ddg.val.type <- sapply( nodes$ddg.val.type , .ddg.json.escape.quotes )
 	
 	# column names
 	col.names <- c( "name", "value", "valType", "type", "scope", "fromEnv", 
@@ -633,7 +623,8 @@ ddg.json <- function()
 	left <- .ddg.json.combine.rec( list[1:mid] )
 	right <- .ddg.json.combine.rec( list[(mid+1):length] )
 	
-	return( sub('\n$', right, left) )
+	return( paste(left, right, sep="") )
+	#return( sub('\n$', right, left) )
 }
 
 # ddg.installedpackages() returns information on packages installed 
@@ -650,10 +641,16 @@ ddg.json <- function()
 
 # --- MULTIPLE-USE FUNCTIONS ------------------- #
 
+# adds escape characters to double quotes within strings
+.ddg.json.escape.quotes <- function( string )
+{
+	return( gsub('\"', '\\"', string) )
+}
+
 # converts '    ' or \t to escaped tab characters in string
 .ddg.json.escape.tabs <- function( str )
 {
-	return( gsub('(    |\\t)', '\\\\t', str) )
+	return( gsub('(    |\t)', '\\\t', str) )
 }
 
 # in a data frame, converts '    ' or \t to escaped tab characters in strings
