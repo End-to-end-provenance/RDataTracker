@@ -1878,22 +1878,6 @@ library(curl)
 
 
 
-# Captures what is on the current display to a file, creates a file node
-# and connects to the ddg.
-.ddg.capture.current.graphics <- function(proc.node.name, file=NULL) {
-  if (is.null(file)) {
-    file <- paste0("dev.off.", .ddg.dnum()+1, ".pdf")
-  }
-  #print(paste(".ddg.capture.graphics: writing to ", file))
-  
-  # Save the graphic to a file temporarily
-  #print(sys.calls())
-  dev.print(device=pdf, file=file)
-  .ddg.set ("possible.graphics.files.open", file)
-  return(file)
-  
-
-}
 
 # .ddg.loadhistory takes in the name of a history file, opens it,
 # scans it for the last occurrence of the string specified by
