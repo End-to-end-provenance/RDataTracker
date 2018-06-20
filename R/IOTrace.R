@@ -650,13 +650,20 @@
   # Get the name of the file parameter for the graphics function
   graphics.functions <- .ddg.get (".ddg.graphics.functions.df")
   file.param.name <- graphics.functions$param.names[graphics.functions$function.names == fname]
-  print(paste (".ddg.trace.graphics: file.param.name =", file.param.name))
+
+  # X11 device writes to the screen so there is no file parameter
+  if (is.na (file.param.name)) {
+    .ddg.set(".ddg.no.graphics.file", TRUE)
+  }
+  else {
+    print(paste (".ddg.trace.graphics: file.param.name =", file.param.name))
   
-  # Get the value of the file parameter  
-  file <- eval (as.symbol(file.param.name), env = sys.frame(frame.number))
-  print(paste (".ddg.trace.graphics: file =", file))
+    # Get the value of the file parameter  
+    file <- eval (as.symbol(file.param.name), env = sys.frame(frame.number))
+    print(paste (".ddg.trace.graphics: file =", file))
   
-  .ddg.add.graphics.file (file)
+    .ddg.add.graphics.file (file)
+  }
   .ddg.set (".ddg.add.device.output", TRUE)
 }
 
@@ -771,6 +778,12 @@
 .ddg.trace.graphics.close <- function () {
   print ("In .ddg.trace.graphics.close")
   .ddg.set (".ddg.add.device.close", TRUE)
+  
+  if (.ddg.get(".ddg.no.graphics.file")) {
+    file <- .ddg.capture.current.graphics()
+    .ddg.set(".ddg.no.graphics.file", FALSE)
+    .ddg.add.graphics.file (file)
+  }
 }
 
 .ddg.capture.graphics <- function(called.from.save = FALSE) {
@@ -791,7 +804,7 @@
   
   graphics.files <- .ddg.get ("graphics.files")
   print (paste ("graphics.files =", graphics.files))
-  if (length(graphics.files) == 0) {
+  if (length(graphics.files) == 0 && !.ddg.get(".ddg.no.graphics.file")) {
     print ("Returning - no graphics files found")
     return()
   }
@@ -801,15 +814,17 @@
   print (paste ("graphics.file.info =", graphics.file.info))
   print (paste ("graphics.file.info$mtime =", graphics.file.info$mtime))
   
-  if (is.na(graphics.file.info$mtime)) {
-    # The file no longer exists.  Create a temporary file.
-    graphics.file <- paste0("dev.off.", .ddg.dnum()+1, ".pdf")
-    print(paste(".ddg.capture.graphics: writing to ", graphics.file))
-    
-    # Save the graphic to a file temporarily
-    #print(sys.calls())
-    print (paste ("dev.cur =", dev.cur()))
-    dev.print(device=pdf, file=graphics.file)
+  if (.ddg.get(".ddg.no.graphics.file") || is.na(graphics.file.info$mtime)) {
+#  if (is.na(graphics.file.info$mtime)) {
+    graphics.file <- .ddg.capture.current.graphics()
+#    # The file no longer exists.  Create a temporary file.
+#    graphics.file <- paste0("dev.off.", .ddg.dnum()+1, ".pdf")
+#    print(paste(".ddg.capture.graphics: writing to ", graphics.file))
+#    
+#    # Save the graphic to a file temporarily
+#    #print(sys.calls())
+#    print (paste ("dev.cur =", dev.cur()))
+#    dev.print(device=pdf, file=graphics.file)
     
   }
   else {
@@ -846,7 +861,8 @@
   print (paste ("Setting graphics.files to", graphics.files))
   .ddg.set ("graphics.files =", graphics.files)
   .ddg.set (".ddg.add.device.close", FALSE)
-
+  .ddg.set(".ddg.no.graphics.file", FALSE)
+  
   return(graphics.file)
 
 
@@ -891,7 +907,7 @@
   }
   
   # Output is going to the display, so we need to make up a name
-  dev.file <- .ddg.capture.current.graphics(proc.node.name)
+  #dev.file <- .ddg.capture.current.graphics(proc.node.name)
   
   if (called.from.save) {
     #print(paste(".ddg.capture.graphics: dev.file =", dev.file))
@@ -916,14 +932,14 @@
 
 # Captures what is on the current display to a file, creates a file node
 # and connects to the ddg.
-#.ddg.capture.current.graphics <- function() {
-#  file <- paste0("dev.off.", .ddg.dnum()+1, ".pdf")
-#  #print(paste(".ddg.capture.graphics: writing to ", file))
-#  
-#  # Save the graphic to a file temporarily
-#  #print(sys.calls())
-#  dev.print(device=pdf, file=file)
-#  #.ddg.set ("possible.graphics.files.open", file)
-#  return(file)
-#}
+.ddg.capture.current.graphics <- function() {
+  file <- paste0("dev.off.", .ddg.dnum()+1, ".pdf")
+  #print(paste(".ddg.capture.graphics: writing to ", file))
+  
+  # Save the graphic to a file temporarily
+  #print(sys.calls())
+  dev.print(device=pdf, file=file)
+  #.ddg.set ("possible.graphics.files.open", file)
+  return(file)
+}
 
