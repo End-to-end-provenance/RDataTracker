@@ -768,7 +768,7 @@
 
 .ddg.capture.graphics <- function(called.from.save = FALSE) {
   print ("In .ddg.capture.graphics")
-  if (!.ddg.get (".ddg.add.device.close")) {
+  if (!.ddg.get (".ddg.add.device.close") && !called.from.save) {
     print ("Returning - .ddg.add.device.close is false")
     return()
   }
@@ -791,7 +791,10 @@
   
   print (paste ("Open graphics files =", graphics.files))
   graphics.file.info <- file.info(graphics.files)
+  print (paste ("graphics.file.info =", graphics.file.info))
+  print (paste ("graphics.file.info$mtime =", graphics.file.info$mtime))
   latest.file.date.row <- which.max (graphics.file.info$mtime)
+  print (paste ("latest.file.date.row =", latest.file.date.row))
   graphics.file <- graphics.files[latest.file.date.row]
   print (paste("Latest graphics file =", graphics.file))
   

@@ -22,11 +22,10 @@ mpg = c(mean(cars4Cyl.df$mpg), mean(cars6Cyl.df$mpg), mean(cars8Cyl.df$mpg))
 # dev.off()
 
 # Plot to a file.  Test when the plot is not explicitly closed.
+# Following works
 pdf ("plot.pdf")
-#ddg.debug.lib.on()
 plot(cylinders, mpg)
-#ddg.debug.lib.off()
-dev.off()
+#dev.off()
 
 # Should print out name of call being traced for now.  Don't know why 
 # I see 4 calls
