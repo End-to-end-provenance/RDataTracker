@@ -710,12 +710,15 @@
 #' @return nothing
 .ddg.add.graphics.file <- function (fname) {
   graphics.files <- .ddg.get("graphics.files")
+  print(paste("In .ddg.add.graphics.file"))
   
   # Only add the file to the list if it is not already there.  It could be 
   # there if there are multiple functions called indirectly in one R statement
   # that write to the same file.
   if (!(fname %in% graphics.files)) {
+    print(paste("Adding graphics file: ", fname))
     .ddg.set ("graphics.files", append(graphics.files, fname))
+    print (paste ("graphics.files =", .ddg.get("graphics.files")))
   }
 }
 
@@ -766,7 +769,7 @@
 .ddg.capture.graphics <- function(called.from.save = FALSE) {
   print ("In .ddg.capture.graphics")
   if (!.ddg.get (".ddg.add.device.close")) {
-    print ("Returning")
+    print ("Returning - .ddg.add.device.close is false")
     return()
   }
   
@@ -780,18 +783,45 @@
   print (paste ("Device closed: ", dev.number))
   
   graphics.files <- .ddg.get ("graphics.files")
-  if (length(graphics.files == 0)) {
+  print (paste ("graphics.files =", graphics.files))
+  if (length(graphics.files) == 0) {
+    print ("Returning - no graphics files found")
     return()
   }
   
-  print ("Open graphics files =", graphics.files)
+  print (paste ("Open graphics files =", graphics.files))
   graphics.file.info <- file.info(graphics.files)
   latest.file.date.row <- which.max (graphics.file.info$mtime)
-  print ("Latest graphics file =", graphics.files[latest.file.date.row])
+  graphics.file <- graphics.files[latest.file.date.row]
+  print (paste("Latest graphics file =", graphics.file))
   
+  # Check if the device is still open and close it if it is
+  # We need to do this so that the file.out call can
+  # copy the file.
+  if (dev.number %in% dev.list()) {
+    dev.off(dev.number)
+  }
+  
+  ddg.file.out (graphics.file)
+  
+  # Add an input edge from the current device
+  dev.node.name <- paste0("dev.", dev.number)
+  #print(paste(".ddg.capture.current.graphics: dev.node.name =", dev.node.name))
+  #print(".ddg.capture.graphics: creating in edge")
+  
+  # If the device was opened but never written to there will be no node.
+  if (.ddg.data.node.exists (dev.node.name)) {
+    .ddg.data2proc(dev.node.name, NULL)
+  }
+  #print(".ddg.capture.graphics: done creating in edge")
+  
+  #.ddg.capture.current.graphics(cmd, possible.graphics.files.open[latest.file.date.row])
+  #print(paste(".ddg.capture.graphics: writing to ", possible.graphics.files.open[latest.file.date.row]))
+  graphics.files <- graphics.files [graphics.files != graphics.file]
+  .ddg.set ("graphics.files =", graphics.files)
   .ddg.set (".ddg.add.device.close", FALSE)
-  return(NULL)
   
+  return(graphics.file)
   
   
   #print(paste(".ddg.capture.graphics: ", proc.node.name))
