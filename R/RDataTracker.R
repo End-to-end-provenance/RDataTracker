@@ -754,20 +754,25 @@ library(curl)
 # value - data node value.
 # scope - data node scope.
 
-.ddg.save.simple <- function(name, value, scope=NULL, from.env=FALSE) {
-  #print(paste("In .ddg.save.simple: name =", name, "value =", value))
-  #print(paste("In .ddg.save.simple: scope =", scope))
-  # Save extra long strings as snapshot.
-  if (is.character(value) && nchar(value) > 200) {
-    #print(".ddg.save.simple: saving snapshot")
-    #print(head(value))
-    .ddg.snapshot.node(name, "txt", value, dscope=scope, from.env=from.env)
-  } else {
-    # Save the true value.
-    #print(".ddg.save.simple: saving data")
-    #print(paste(".ddg.save.simple: saving value", value))
-    .ddg.data.node("Data", name, value, scope, from.env=from.env)
-  }
+.ddg.save.simple <- function(name, value, scope=NULL, from.env=FALSE) 
+{
+	#print(paste("In .ddg.save.simple: name =", name, "value =", value))
+	#print(paste("In .ddg.save.simple: scope =", scope))
+	# Save extra long strings as snapshot.
+	if (is.character(value) && nchar(value) > 200) {
+		#print(".ddg.save.simple: saving snapshot")
+		#print(head(value))
+		.ddg.snapshot.node(name, "txt", value, dscope=scope, from.env=from.env)
+	} else {
+		# Save the true value.
+		#print(".ddg.save.simple: saving data")
+		#print(paste(".ddg.save.simple: saving value", value))
+
+		# EF EDITS
+		#print(name)
+
+		.ddg.data.node("Data", name, value, scope, from.env=from.env)
+	}
 }
 
 # .ddg.write.graphic takes as input the name of a variable as well
@@ -829,30 +834,35 @@ library(curl)
 # scope (optional) - scope of node.
 # stack (optional) - stack to use in determing scope.
 
-.ddg.save.data <- function(name, value, fname=".ddg.save.data", graphic.fext='jpeg', error=FALSE, scope=NULL, from.env=FALSE, stack=NULL, env=NULL){
-  #print (paste (".ddg.save.data: looking for name =", name, "with scope", scope))
-  #print(paste(".ddg.save.data saving ", name, "with value structured as", str(value)))
-  #if (is.null(value)) print(".ddg.save.data: value is null")
-  if (is.null(scope)) {
-    scope <- .ddg.get.scope(name, calls=stack, env=env)
-  }
+.ddg.save.data <- function(name, value, fname=".ddg.save.data", graphic.fext='jpeg', error=FALSE, scope=NULL, from.env=FALSE, stack=NULL, env=NULL)
+{
+	#print (paste (".ddg.save.data: looking for name =", name, "with scope", scope))
+	#print(paste(".ddg.save.data saving ", name, "with value structured as", str(value)))
+	#if (is.null(value)) print(".ddg.save.data: value is null")
+	if (is.null(scope)) {
+		scope <- .ddg.get.scope(name, calls=stack, env=env)
+	}
+	
+	# EF EDITS
+	#print(name)
+	
 
-  #print (paste (".ddg.save.data: saving", name, "in scope", scope))
-  # Determine type for value, and save accordingly.
-  if (.ddg.is.graphic(value)) .ddg.write.graphic(name, value, graphic.fext, scope=scope, from.env=from.env)
-  else if (.ddg.is.simple(value)) .ddg.save.simple(name, value, scope=scope, from.env=from.env)
-  else if (.ddg.is.csv(value)) .ddg.write.csv(name, value, scope=scope, from.env=from.env)
-  else if (is.list(value) || is.array(value)) .ddg.snapshot.node(name, "txt", value, save.object=TRUE, dscope=scope, from.env=from.env)
-  else if (.ddg.is.connection(value)) {.ddg.save.simple(name, value, scope=scope, from.env=from.env)}
-  else if (.ddg.is.object(value)) {.ddg.snapshot.node(name, "txt", value, dscope=scope, from.env=from.env) }
-  else if (.ddg.is.function(value)) .ddg.save.simple(name, "#ddg.function", scope=scope, from.env=from.env)
-  else if (error) stop("Unable to create data (snapshot) node. Non-Object value to", fname, ".")
-  else {
-    error.msg <- paste("Unable to create data (snapshot) node. Non-Object value to", fname, ".")
-    .ddg.insert.error.message(error.msg)
-  }
-  #print(".ddg.save.data: Done saving data")
-  invisible()
+	#print (paste (".ddg.save.data: saving", name, "in scope", scope))
+	# Determine type for value, and save accordingly.
+	if (.ddg.is.graphic(value)) .ddg.write.graphic(name, value, graphic.fext, scope=scope, from.env=from.env)
+	else if (.ddg.is.simple(value)) .ddg.save.simple(name, value, scope=scope, from.env=from.env)
+	else if (.ddg.is.csv(value)) .ddg.write.csv(name, value, scope=scope, from.env=from.env)
+	else if (is.list(value) || is.array(value)) .ddg.snapshot.node(name, "txt", value, save.object=TRUE, dscope=scope, from.env=from.env)
+	else if (.ddg.is.connection(value)) {.ddg.save.simple(name, value, scope=scope, from.env=from.env)}
+	else if (.ddg.is.object(value)) {.ddg.snapshot.node(name, "txt", value, dscope=scope, from.env=from.env) }
+	else if (.ddg.is.function(value)) .ddg.save.simple(name, "#ddg.function", scope=scope, from.env=from.env)
+	else if (error) stop("Unable to create data (snapshot) node. Non-Object value to", fname, ".")
+	else {
+		error.msg <- paste("Unable to create data (snapshot) node. Non-Object value to", fname, ".")
+		.ddg.insert.error.message(error.msg)
+	}
+	#print(".ddg.save.data: Done saving data")
+	invisible()
 }
 
 # .ddg.record.proc records a procedure node in the procedure node
@@ -3401,6 +3411,9 @@ library(curl)
 
 .ddg.data.node <- function(dtype, dname, dvalue, dscope, from.env=FALSE) 
 {
+	# EF EDITS
+	#print(dname)
+	
 	#print ("In .ddg.data.node")
 	#print(paste(".ddg.data.node: dname =", dname))
 	#print(paste(".ddg.data.node: typeof(dvalue) =", typeof(dvalue)))
@@ -4959,7 +4972,13 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
   # the function that called the function that called ddg.return.
   call.text <- gsub(" ", "", deparse(call, nlines=1))
   return.node.name <- paste(call.text, "return")
-  return.node.name <- gsub("\"", "\\\\\"", return.node.name)
+  
+  # EF EDITS
+  #return.node.name <- gsub("\"", "\\\\\"", return.node.name)
+  
+  # EF EDITS
+  print(return.node.name)
+  
 
   #print(paste("ddg.return.value: sys.nframe =", sys.nframe()))
   #print(paste("ddg.return.value: caller.frame =", caller.frame))
