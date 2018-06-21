@@ -4,12 +4,21 @@
 		"rdt": "http://rdatatracker.org/"
 	},
 
+	"agent" : {
+		// agent: this json file and the tool that produced this
+		"rdt:a1": {
+			"rdt:tool.name": "RDataTracker",
+			"rdt:tool.version": "2.27.0",
+			"rdt:json.version": "2.1"
+		}
+	},
+
 	"activity" : {
 		// procedure nodes
 		"rdt:p1": {
 			"rdt:name": "CalculateSquareRoot.R",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 0.37,
+			"rdt:elapsedTime": 0.41,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -19,7 +28,7 @@
 		"rdt:p2": {
 			"rdt:name": "get.initial.values <- function() {\tnumber <<- 10\ttoler",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.37,
+			"rdt:elapsedTime": 0.41,
 			"rdt:scriptNum": 0,
 			"rdt:startLine": 11,
 			"rdt:startCol": 1,
@@ -29,7 +38,7 @@
 		"rdt:p3": {
 			"rdt:name": "get.random <- function(x) {\tz <- 3\treturn(z)}",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.37,
+			"rdt:elapsedTime": 0.41,
 			"rdt:scriptNum": 0,
 			"rdt:startLine": 16,
 			"rdt:startCol": 1,
@@ -39,7 +48,7 @@
 		"rdt:p4": {
 			"rdt:name": "calc.square.root <- function(n, x) {\ty <- n/x\tz <- (x ",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.39,
+			"rdt:elapsedTime": 0.41,
 			"rdt:scriptNum": 0,
 			"rdt:startLine": 26,
 			"rdt:startCol": 1,
@@ -49,7 +58,7 @@
 		"rdt:p5": {
 			"rdt:name": "get.difference <- function(n, x) {\tz <- abs(n - x^2)\tr",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.39,
+			"rdt:elapsedTime": 0.42,
 			"rdt:scriptNum": 0,
 			"rdt:startLine": 68,
 			"rdt:startCol": 1,
@@ -59,7 +68,7 @@
 		"rdt:p6": {
 			"rdt:name": "get.check.value <- function(d, t) {\tz <- d - t\treturn(",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.39,
+			"rdt:elapsedTime": 0.42,
 			"rdt:scriptNum": 0,
 			"rdt:startLine": 76,
 			"rdt:startCol": 1,
@@ -69,7 +78,7 @@
 		"rdt:p7": {
 			"rdt:name": "store.result <- function(n, x) {\tnum <- n\tsqrt <- x   ",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.39,
+			"rdt:elapsedTime": 0.42,
 			"rdt:scriptNum": 0,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -79,7 +88,7 @@
 		"rdt:p8": {
 			"rdt:name": "write.result <- function(fn, zz) {\tfile.out <- paste(getw",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.4,
+			"rdt:elapsedTime": 0.42,
 			"rdt:scriptNum": 0,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -89,7 +98,7 @@
 		"rdt:p9": {
 			"rdt:name": "get.initial.values()",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 0.4,
+			"rdt:elapsedTime": 0.44,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -99,7 +108,7 @@
 		"rdt:p10": {
 			"rdt:name": "get.initial.values",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.4,
+			"rdt:elapsedTime": 0.44,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -109,7 +118,7 @@
 		"rdt:p11": {
 			"rdt:name": "number <<- 10",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.4,
+			"rdt:elapsedTime": 0.44,
 			"rdt:scriptNum": 0,
 			"rdt:startLine": 12,
 			"rdt:startCol": 3,
@@ -119,7 +128,7 @@
 		"rdt:p12": {
 			"rdt:name": "tolerance <<- 1e-05",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.42,
+			"rdt:elapsedTime": 0.44,
 			"rdt:scriptNum": 0,
 			"rdt:startLine": 13,
 			"rdt:startCol": 3,
@@ -129,7 +138,7 @@
 		"rdt:p13": {
 			"rdt:name": "get.initial.values()",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 0.42,
+			"rdt:elapsedTime": 0.46,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -139,7 +148,7 @@
 		"rdt:p14": {
 			"rdt:name": "estimate <- get.random(number)",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 0.42,
+			"rdt:elapsedTime": 0.46,
 			"rdt:scriptNum": 0,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -149,7 +158,7 @@
 		"rdt:p15": {
 			"rdt:name": "get.random(number)",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 0.42,
+			"rdt:elapsedTime": 0.46,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -159,7 +168,7 @@
 		"rdt:p16": {
 			"rdt:name": "x  <-  number",
 			"rdt:type": "Binding",
-			"rdt:elapsedTime": 0.42,
+			"rdt:elapsedTime": 0.46,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -169,7 +178,7 @@
 		"rdt:p17": {
 			"rdt:name": "get.random",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.43,
+			"rdt:elapsedTime": 0.46,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -179,7 +188,7 @@
 		"rdt:p18": {
 			"rdt:name": "z <- 3",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.43,
+			"rdt:elapsedTime": 0.47,
 			"rdt:scriptNum": 0,
 			"rdt:startLine": 21,
 			"rdt:startCol": 3,
@@ -189,7 +198,7 @@
 		"rdt:p19": {
 			"rdt:name": "return(z)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.45,
+			"rdt:elapsedTime": 0.47,
 			"rdt:scriptNum": 0,
 			"rdt:startLine": 23,
 			"rdt:startCol": 3,
@@ -199,7 +208,7 @@
 		"rdt:p20": {
 			"rdt:name": "get.random(number)",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 0.45,
+			"rdt:elapsedTime": 0.47,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -209,7 +218,7 @@
 		"rdt:p21": {
 			"rdt:name": "estimate <- get.random(number)",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 0.45,
+			"rdt:elapsedTime": 0.47,
 			"rdt:scriptNum": 0,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -219,7 +228,7 @@
 		"rdt:p22": {
 			"rdt:name": "check <- number",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.45,
+			"rdt:elapsedTime": 0.49,
 			"rdt:scriptNum": 0,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -229,7 +238,7 @@
 		"rdt:p23": {
 			"rdt:name": "while (check > 0) {\testimate <- calc.square.root(number, ",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 0.46,
+			"rdt:elapsedTime": 0.49,
 			"rdt:scriptNum": 0,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -239,7 +248,7 @@
 		"rdt:p24": {
 			"rdt:name": "while loop",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 0.48,
+			"rdt:elapsedTime": 0.52,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -249,7 +258,7 @@
 		"rdt:p25": {
 			"rdt:name": "estimate <- calc.square.root(number, estimate)",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 0.5,
+			"rdt:elapsedTime": 0.52,
 			"rdt:scriptNum": 0,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -259,7 +268,7 @@
 		"rdt:p26": {
 			"rdt:name": "calc.square.root(number, estimate)",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 0.5,
+			"rdt:elapsedTime": 0.52,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -269,7 +278,7 @@
 		"rdt:p27": {
 			"rdt:name": "n  <-  number",
 			"rdt:type": "Binding",
-			"rdt:elapsedTime": 0.5,
+			"rdt:elapsedTime": 0.52,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -279,7 +288,7 @@
 		"rdt:p28": {
 			"rdt:name": "x  <-  estimate",
 			"rdt:type": "Binding",
-			"rdt:elapsedTime": 0.5,
+			"rdt:elapsedTime": 0.53,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -289,7 +298,7 @@
 		"rdt:p29": {
 			"rdt:name": "calc.square.root",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.51,
+			"rdt:elapsedTime": 0.53,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -299,7 +308,7 @@
 		"rdt:p30": {
 			"rdt:name": "y <- n/x",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.51,
+			"rdt:elapsedTime": 0.53,
 			"rdt:scriptNum": 0,
 			"rdt:startLine": 28,
 			"rdt:startCol": 3,
@@ -309,7 +318,7 @@
 		"rdt:p31": {
 			"rdt:name": "z <- (x + y)/2",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.53,
+			"rdt:elapsedTime": 0.55,
 			"rdt:scriptNum": 0,
 			"rdt:startLine": 29,
 			"rdt:startCol": 3,
@@ -319,7 +328,7 @@
 		"rdt:p32": {
 			"rdt:name": "return(z)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.54,
+			"rdt:elapsedTime": 0.55,
 			"rdt:scriptNum": 0,
 			"rdt:startLine": 31,
 			"rdt:startCol": 3,
@@ -329,7 +338,7 @@
 		"rdt:p33": {
 			"rdt:name": "calc.square.root(number, estimate)",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 0.54,
+			"rdt:elapsedTime": 0.56,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -339,7 +348,7 @@
 		"rdt:p34": {
 			"rdt:name": "estimate <- calc.square.root(number, estimate)",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 0.54,
+			"rdt:elapsedTime": 0.56,
 			"rdt:scriptNum": 0,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -349,7 +358,7 @@
 		"rdt:p35": {
 			"rdt:name": "difference <- get.difference(number, estimate)",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 0.54,
+			"rdt:elapsedTime": 0.56,
 			"rdt:scriptNum": 0,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -379,7 +388,7 @@
 		"rdt:p38": {
 			"rdt:name": "x  <-  estimate",
 			"rdt:type": "Binding",
-			"rdt:elapsedTime": 0.56,
+			"rdt:elapsedTime": 0.58,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -389,7 +398,7 @@
 		"rdt:p39": {
 			"rdt:name": "get.difference",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.56,
+			"rdt:elapsedTime": 0.58,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -399,7 +408,7 @@
 		"rdt:p40": {
 			"rdt:name": "z <- abs(n - x^2)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.57,
+			"rdt:elapsedTime": 0.58,
 			"rdt:scriptNum": 0,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -409,7 +418,7 @@
 		"rdt:p41": {
 			"rdt:name": "return(z)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.59,
+			"rdt:elapsedTime": 0.6,
 			"rdt:scriptNum": 0,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -419,7 +428,7 @@
 		"rdt:p42": {
 			"rdt:name": "get.difference(number, estimate)",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 0.59,
+			"rdt:elapsedTime": 0.6,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -429,7 +438,7 @@
 		"rdt:p43": {
 			"rdt:name": "difference <- get.difference(number, estimate)",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 0.59,
+			"rdt:elapsedTime": 0.6,
 			"rdt:scriptNum": 0,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -439,7 +448,7 @@
 		"rdt:p44": {
 			"rdt:name": "check <- get.check.value(difference, tolerance)",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 0.59,
+			"rdt:elapsedTime": 0.61,
 			"rdt:scriptNum": 0,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -449,7 +458,7 @@
 		"rdt:p45": {
 			"rdt:name": "get.check.value(difference, tolerance)",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 0.6,
+			"rdt:elapsedTime": 0.61,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -459,7 +468,7 @@
 		"rdt:p46": {
 			"rdt:name": "d  <-  difference",
 			"rdt:type": "Binding",
-			"rdt:elapsedTime": 0.6,
+			"rdt:elapsedTime": 0.61,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -469,7 +478,7 @@
 		"rdt:p47": {
 			"rdt:name": "t  <-  tolerance",
 			"rdt:type": "Binding",
-			"rdt:elapsedTime": 0.6,
+			"rdt:elapsedTime": 0.61,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -479,7 +488,7 @@
 		"rdt:p48": {
 			"rdt:name": "get.check.value",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.6,
+			"rdt:elapsedTime": 0.63,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -489,7 +498,7 @@
 		"rdt:p49": {
 			"rdt:name": "z <- d - t",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.62,
+			"rdt:elapsedTime": 0.63,
 			"rdt:scriptNum": 0,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -499,7 +508,7 @@
 		"rdt:p50": {
 			"rdt:name": "return(z)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.62,
+			"rdt:elapsedTime": 0.64,
 			"rdt:scriptNum": 0,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -539,7 +548,7 @@
 		"rdt:p54": {
 			"rdt:name": "Details Omitted",
 			"rdt:type": "Incomplete",
-			"rdt:elapsedTime": 0.64,
+			"rdt:elapsedTime": 0.66,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -549,7 +558,7 @@
 		"rdt:p55": {
 			"rdt:name": "while (check > 0) {\testimate <- calc.square.root(number, ",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 0.65,
+			"rdt:elapsedTime": 0.66,
 			"rdt:scriptNum": 0,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -559,7 +568,7 @@
 		"rdt:p56": {
 			"rdt:name": "sqr.root <- store.result(number, estimate)",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 0.65,
+			"rdt:elapsedTime": 0.66,
 			"rdt:scriptNum": 0,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -569,7 +578,7 @@
 		"rdt:p57": {
 			"rdt:name": "store.result(number, estimate)",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 0.65,
+			"rdt:elapsedTime": 0.67,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -579,7 +588,7 @@
 		"rdt:p58": {
 			"rdt:name": "n  <-  number",
 			"rdt:type": "Binding",
-			"rdt:elapsedTime": 0.65,
+			"rdt:elapsedTime": 0.67,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -619,7 +628,7 @@
 		"rdt:p62": {
 			"rdt:name": "sqrt <- x",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.68,
+			"rdt:elapsedTime": 0.69,
 			"rdt:scriptNum": 0,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -629,7 +638,7 @@
 		"rdt:p63": {
 			"rdt:name": "zz <- data.frame(num, sqrt)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.68,
+			"rdt:elapsedTime": 0.69,
 			"rdt:scriptNum": 0,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -639,7 +648,7 @@
 		"rdt:p64": {
 			"rdt:name": "return(zz)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.7,
+			"rdt:elapsedTime": 0.71,
 			"rdt:scriptNum": 0,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -649,7 +658,7 @@
 		"rdt:p65": {
 			"rdt:name": "store.result(number, estimate)",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 0.7,
+			"rdt:elapsedTime": 0.77,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -659,7 +668,7 @@
 		"rdt:p66": {
 			"rdt:name": "sqr.root <- store.result(number, estimate)",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 0.7,
+			"rdt:elapsedTime": 0.77,
 			"rdt:scriptNum": 0,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -669,7 +678,7 @@
 		"rdt:p67": {
 			"rdt:name": "write.result(\"sqr-root.csv\", sqr.root)",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 0.72,
+			"rdt:elapsedTime": 0.77,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -679,7 +688,7 @@
 		"rdt:p68": {
 			"rdt:name": "fn <- \"sqr-root.csv\"",
 			"rdt:type": "Binding",
-			"rdt:elapsedTime": 0.72,
+			"rdt:elapsedTime": 0.77,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -689,7 +698,7 @@
 		"rdt:p69": {
 			"rdt:name": "zz  <-  sqr.root",
 			"rdt:type": "Binding",
-			"rdt:elapsedTime": 0.72,
+			"rdt:elapsedTime": 0.77,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -699,7 +708,7 @@
 		"rdt:p70": {
 			"rdt:name": "write.result",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.72,
+			"rdt:elapsedTime": 0.79,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -709,7 +718,7 @@
 		"rdt:p71": {
 			"rdt:name": "file.out <- paste(getwd(), \"/\", fn, sep = \"\")",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.73,
+			"rdt:elapsedTime": 0.8,
 			"rdt:scriptNum": 0,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -719,7 +728,7 @@
 		"rdt:p72": {
 			"rdt:name": "write.csv(zz, file.out, row.names = FALSE)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.73,
+			"rdt:elapsedTime": 0.82,
 			"rdt:scriptNum": 0,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -729,7 +738,7 @@
 		"rdt:p73": {
 			"rdt:name": "write.result(\"sqr-root.csv\", sqr.root)",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 0.75,
+			"rdt:elapsedTime": 0.82,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -739,7 +748,7 @@
 		"rdt:p74": {
 			"rdt:name": "CalculateSquareRoot.R",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 0.75,
+			"rdt:elapsedTime": 0.82,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -865,7 +874,7 @@
 			"rdt:value": "10",
 			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}",
 			"rdt:type": "Data",
-			"rdt:scope": "0x000000001b822bd0",
+			"rdt:scope": "0x0000000015dcf8b0",
 			"rdt:fromEnv": false,
 			"rdt:MD5hash": "",
 			"rdt:timestamp": "",
@@ -876,7 +885,7 @@
 			"rdt:value": "3",
 			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}",
 			"rdt:type": "Data",
-			"rdt:scope": "0x000000001b822bd0",
+			"rdt:scope": "0x0000000015dcf8b0",
 			"rdt:fromEnv": false,
 			"rdt:MD5hash": "",
 			"rdt:timestamp": "",
@@ -920,7 +929,7 @@
 			"rdt:value": "10",
 			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}",
 			"rdt:type": "Data",
-			"rdt:scope": "0x0000000017907ac0",
+			"rdt:scope": "0x00000000197f7198",
 			"rdt:fromEnv": false,
 			"rdt:MD5hash": "",
 			"rdt:timestamp": "",
@@ -931,7 +940,7 @@
 			"rdt:value": "3",
 			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}",
 			"rdt:type": "Data",
-			"rdt:scope": "0x0000000017907ac0",
+			"rdt:scope": "0x00000000197f7198",
 			"rdt:fromEnv": false,
 			"rdt:MD5hash": "",
 			"rdt:timestamp": "",
@@ -942,7 +951,7 @@
 			"rdt:value": "3.33333333333333",
 			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}",
 			"rdt:type": "Data",
-			"rdt:scope": "0x0000000017907ac0",
+			"rdt:scope": "0x00000000197f7198",
 			"rdt:fromEnv": false,
 			"rdt:MD5hash": "",
 			"rdt:timestamp": "",
@@ -953,7 +962,7 @@
 			"rdt:value": "3.16666666666667",
 			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}",
 			"rdt:type": "Data",
-			"rdt:scope": "0x0000000017907ac0",
+			"rdt:scope": "0x00000000197f7198",
 			"rdt:fromEnv": false,
 			"rdt:MD5hash": "",
 			"rdt:timestamp": "",
@@ -986,7 +995,7 @@
 			"rdt:value": "10",
 			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}",
 			"rdt:type": "Data",
-			"rdt:scope": "0x0000000017fb85a8",
+			"rdt:scope": "0x000000001430db00",
 			"rdt:fromEnv": false,
 			"rdt:MD5hash": "",
 			"rdt:timestamp": "",
@@ -997,7 +1006,7 @@
 			"rdt:value": "3.16666666666667",
 			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}",
 			"rdt:type": "Data",
-			"rdt:scope": "0x0000000017fb85a8",
+			"rdt:scope": "0x000000001430db00",
 			"rdt:fromEnv": false,
 			"rdt:MD5hash": "",
 			"rdt:timestamp": "",
@@ -1008,7 +1017,7 @@
 			"rdt:value": "0.0277777777777803",
 			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}",
 			"rdt:type": "Data",
-			"rdt:scope": "0x0000000017fb85a8",
+			"rdt:scope": "0x000000001430db00",
 			"rdt:fromEnv": false,
 			"rdt:MD5hash": "",
 			"rdt:timestamp": "",
@@ -1041,7 +1050,7 @@
 			"rdt:value": "0.0277777777777803",
 			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}",
 			"rdt:type": "Data",
-			"rdt:scope": "0x0000000017edc3f0",
+			"rdt:scope": "0x0000000019c833f0",
 			"rdt:fromEnv": false,
 			"rdt:MD5hash": "",
 			"rdt:timestamp": "",
@@ -1052,7 +1061,7 @@
 			"rdt:value": "1e-05",
 			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}",
 			"rdt:type": "Data",
-			"rdt:scope": "0x0000000017edc3f0",
+			"rdt:scope": "0x0000000019c833f0",
 			"rdt:fromEnv": false,
 			"rdt:MD5hash": "",
 			"rdt:timestamp": "",
@@ -1063,7 +1072,7 @@
 			"rdt:value": "0.0277677777777803",
 			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}",
 			"rdt:type": "Data",
-			"rdt:scope": "0x0000000017edc3f0",
+			"rdt:scope": "0x0000000019c833f0",
 			"rdt:fromEnv": false,
 			"rdt:MD5hash": "",
 			"rdt:timestamp": "",
@@ -1129,7 +1138,7 @@
 			"rdt:value": "10",
 			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}",
 			"rdt:type": "Data",
-			"rdt:scope": "0x000000001af5f2d8",
+			"rdt:scope": "0x000000001298f930",
 			"rdt:fromEnv": false,
 			"rdt:MD5hash": "",
 			"rdt:timestamp": "",
@@ -1140,7 +1149,7 @@
 			"rdt:value": "3.16227766016984",
 			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}",
 			"rdt:type": "Data",
-			"rdt:scope": "0x000000001af5f2d8",
+			"rdt:scope": "0x000000001298f930",
 			"rdt:fromEnv": false,
 			"rdt:MD5hash": "",
 			"rdt:timestamp": "",
@@ -1151,7 +1160,7 @@
 			"rdt:value": "10",
 			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}",
 			"rdt:type": "Data",
-			"rdt:scope": "0x000000001af5f2d8",
+			"rdt:scope": "0x000000001298f930",
 			"rdt:fromEnv": false,
 			"rdt:MD5hash": "",
 			"rdt:timestamp": "",
@@ -1162,7 +1171,7 @@
 			"rdt:value": "3.16227766016984",
 			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}",
 			"rdt:type": "Data",
-			"rdt:scope": "0x000000001af5f2d8",
+			"rdt:scope": "0x000000001298f930",
 			"rdt:fromEnv": false,
 			"rdt:MD5hash": "",
 			"rdt:timestamp": "",
@@ -1173,10 +1182,10 @@
 			"rdt:value": "data/39-zz.csv",
 			"rdt:valType": "{\"container\":\"data_frame\", \"dimension\":[1,2], \"type\":[\"numeric\",\"numeric\"]}",
 			"rdt:type": "Snapshot",
-			"rdt:scope": "0x000000001af5f2d8",
+			"rdt:scope": "0x000000001298f930",
 			"rdt:fromEnv": false,
 			"rdt:MD5hash": "",
-			"rdt:timestamp": "2018-05-25T21.45.15EDT",
+			"rdt:timestamp": "2018-06-20T23.56.06EDT",
 			"rdt:location": ""
 		},
 		"rdt:d40": {
@@ -1187,7 +1196,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:MD5hash": "",
-			"rdt:timestamp": "2018-05-25T21.45.15EDT",
+			"rdt:timestamp": "2018-06-20T23.56.06EDT",
 			"rdt:location": ""
 		},
 		"rdt:d41": {
@@ -1198,15 +1207,15 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:MD5hash": "",
-			"rdt:timestamp": "2018-05-25T21.45.15EDT",
+			"rdt:timestamp": "2018-06-20T23.56.06EDT",
 			"rdt:location": ""
 		},
 		"rdt:d42": {
 			"rdt:name": "fn",
-			"rdt:value": "\"sqr-root.csv\"",
+			"rdt:value": "sqr-root.csv",
 			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}",
 			"rdt:type": "Data",
-			"rdt:scope": "0x000000001b093c90",
+			"rdt:scope": "0x00000000197e3d68",
 			"rdt:fromEnv": false,
 			"rdt:MD5hash": "",
 			"rdt:timestamp": "",
@@ -1217,18 +1226,18 @@
 			"rdt:value": "data/43-zz.csv",
 			"rdt:valType": "{\"container\":\"data_frame\", \"dimension\":[1,2], \"type\":[\"numeric\",\"numeric\"]}",
 			"rdt:type": "Snapshot",
-			"rdt:scope": "0x000000001b093c90",
+			"rdt:scope": "0x00000000197e3d68",
 			"rdt:fromEnv": false,
 			"rdt:MD5hash": "",
-			"rdt:timestamp": "2018-05-25T21.45.15EDT",
+			"rdt:timestamp": "2018-06-20T23.56.06EDT",
 			"rdt:location": ""
 		},
 		"rdt:d44": {
 			"rdt:name": "file.out",
-			"rdt:value": "\"[DIR]/sqr-root.csv\"",
+			"rdt:value": "[DIR]/sqr-root.csv",
 			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}",
 			"rdt:type": "Data",
-			"rdt:scope": "0x000000001b093c90",
+			"rdt:scope": "0x00000000197e3d68",
 			"rdt:fromEnv": false,
 			"rdt:MD5hash": "",
 			"rdt:timestamp": "",
@@ -1242,7 +1251,7 @@
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
 			"rdt:MD5hash": "24b99e6dcbc8d34e1663eff5c11ae822",
-			"rdt:timestamp": "2018-05-25T21.45.15EDT",
+			"rdt:timestamp": "2018-06-20T23.56.06EDT",
 			"rdt:location": "[DIR]/sqr-root.csv"
 		},
 		"rdt:d46": {
@@ -1270,7 +1279,7 @@
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:workingDirectory": "[DIR]",
 			"rdt:ddgDirectory": "[DIR]/ddg",
-			"rdt:ddgTimeStamp": "2018-05-25T21.45.15EDT",
+			"rdt:ddgTimeStamp": "2018-06-20T23.56.05EDT",
 			"rdt:rdatatrackerVersion": "2.27.0",
 			"rdt:hashAlgorithm": "md5"
 		},
