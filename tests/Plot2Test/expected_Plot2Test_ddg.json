@@ -4,12 +4,21 @@
 		"rdt": "http://rdatatracker.org/"
 	},
 
+	"agent" : {
+		// agent: this json file and the tool that produced this
+		"rdt:a1": {
+			"rdt:tool.name": "RDataTracker",
+			"rdt:tool.version": "2.27.0",
+			"rdt:json.version": "2.1"
+		}
+	},
+
 	"activity" : {
 		// procedure nodes
 		"rdt:p1": {
 			"rdt:name": "Plot2Test.R",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 0.17,
+			"rdt:elapsedTime": 0.24,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -19,7 +28,7 @@
 		"rdt:p2": {
 			"rdt:name": "f1 <- function() {\tnums <- c(1, 3, 6, 4, 9)\tpdf(\"nums.",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.17,
+			"rdt:elapsedTime": 0.24,
 			"rdt:scriptNum": 0,
 			"rdt:startLine": 3,
 			"rdt:startCol": 1,
@@ -29,7 +38,7 @@
 		"rdt:p3": {
 			"rdt:name": "f1()",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 0.17,
+			"rdt:elapsedTime": 0.24,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -39,7 +48,7 @@
 		"rdt:p4": {
 			"rdt:name": "f1",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.17,
+			"rdt:elapsedTime": 0.24,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -49,7 +58,7 @@
 		"rdt:p5": {
 			"rdt:name": "nums <- c(1, 3, 6, 4, 9)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.19,
+			"rdt:elapsedTime": 0.25,
 			"rdt:scriptNum": 0,
 			"rdt:startLine": 4,
 			"rdt:startCol": 3,
@@ -59,7 +68,7 @@
 		"rdt:p6": {
 			"rdt:name": "pdf(\"nums.pdf\")",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.24,
+			"rdt:elapsedTime": 0.3,
 			"rdt:scriptNum": 0,
 			"rdt:startLine": 5,
 			"rdt:startCol": 3,
@@ -69,7 +78,7 @@
 		"rdt:p7": {
 			"rdt:name": "plot(nums)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.25,
+			"rdt:elapsedTime": 0.31,
 			"rdt:scriptNum": 0,
 			"rdt:startLine": 6,
 			"rdt:startCol": 3,
@@ -79,7 +88,7 @@
 		"rdt:p8": {
 			"rdt:name": "dev.off()",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.27,
+			"rdt:elapsedTime": 0.33,
 			"rdt:scriptNum": 0,
 			"rdt:startLine": 7,
 			"rdt:startCol": 3,
@@ -89,7 +98,7 @@
 		"rdt:p9": {
 			"rdt:name": "f1()",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 0.28,
+			"rdt:elapsedTime": 0.36,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -99,7 +108,7 @@
 		"rdt:p10": {
 			"rdt:name": "Plot2Test.R",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 0.28,
+			"rdt:elapsedTime": 0.36,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -126,15 +135,15 @@
 			"rdt:value": "data/2-nums.csv",
 			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[5], \"type\":[\"numeric\"]}",
 			"rdt:type": "Snapshot",
-			"rdt:scope": "0x000000001ad56c10",
+			"rdt:scope": "0x0000000018f8b7a8",
 			"rdt:fromEnv": false,
 			"rdt:MD5hash": "",
-			"rdt:timestamp": "2018-05-25T20.55.24EDT",
+			"rdt:timestamp": "2018-06-20T23.22.12EDT",
 			"rdt:location": ""
 		},
 		"rdt:d3": {
 			"rdt:name": "dev.2",
-			"rdt:value": "\"graph\"",
+			"rdt:value": "graph",
 			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}",
 			"rdt:type": "Data",
 			"rdt:scope": "undefined",
@@ -145,7 +154,7 @@
 		},
 		"rdt:d4": {
 			"rdt:name": "dev.2",
-			"rdt:value": "\"graph\"",
+			"rdt:value": "graph",
 			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}",
 			"rdt:type": "Data",
 			"rdt:scope": "undefined",
@@ -162,7 +171,7 @@
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
 			"rdt:MD5hash": "b8cf881614c9443e7df0a55fec9b68c1",
-			"rdt:timestamp": "2018-05-25T20.55.25EDT",
+			"rdt:timestamp": "2018-06-20T23.22.12EDT",
 			"rdt:location": "[DIR]/dev.off.5.pdf"
 		},
 		"rdt:d6": {
@@ -190,7 +199,7 @@
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:workingDirectory": "[DIR]",
 			"rdt:ddgDirectory": "[DIR]/ddg",
-			"rdt:ddgTimeStamp": "2018-05-25T20.55.24EDT",
+			"rdt:ddgTimeStamp": "2018-06-20T23.22.12EDT",
 			"rdt:rdatatrackerVersion": "2.27.0",
 			"rdt:hashAlgorithm": "md5"
 		},
