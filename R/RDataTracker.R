@@ -945,81 +945,81 @@ library(curl)
 # dloc (optional) -  path and name of original file.
 
 .ddg.record.data <- function(dtype, dname, dvalue, value, dscope, from.env=FALSE, dtime="", dloc="") {
-  #print("In .ddg.record.data")
-  #print(paste("dvalue =", head(dvalue)))
-  #print(paste("value =", head(value)))
-  #print (sys.calls())
-  # Increment data node counter.
-  .ddg.inc("ddg.dnum")
-  ddg.dnum <- .ddg.dnum()
+	#print("In .ddg.record.data")
+	#print(paste("dvalue =", head(dvalue)))
+	#print(paste("value =", head(value)))
+	#print (sys.calls())
+	# Increment data node counter.
+	.ddg.inc("ddg.dnum")
+	ddg.dnum <- .ddg.dnum()
 
-  #Initialize dscriptpath
-  if (!is.null(.ddg.get("ddg.r.script.path"))) {
-    dscriptpath <- .ddg.get("ddg.r.script.path")
-  }
-  else {
-    dscriptpath <- ""
-  }
+	#Initialize dscriptpath
+	if (!is.null(.ddg.get("ddg.r.script.path"))) {
+		dscriptpath <- .ddg.get("ddg.r.script.path")
+	}
+	else {
+		dscriptpath <- ""
+	}
 
-  # If the table is full, make it bigger.
-  ddg.data.nodes <- .ddg.data.nodes()
-  if (nrow(ddg.data.nodes) < ddg.dnum) {
-    size = 100
-    new.rows <- data.frame(ddg.type = character(size),
-        ddg.num = numeric(size),
-        ddg.name = character(size),
-        ddg.path = character(size),
-        ddg.value = character(size),
-        ddg.val.type = character(size),
-        ddg.scope = character(size),
-        ddg.from.env = logical(size),
-        ddg.time = character(size),
-        ddg.hash = character(size),
-        ddg.rw = character(size),
-        ddg.loc = character(size),
-        ddg.current = logical(size), stringsAsFactors=FALSE)
-    .ddg.add.rows("ddg.data.nodes", new.rows)
-    ddg.data.nodes <- .ddg.data.nodes()
-  }
+	# If the table is full, make it bigger.
+	ddg.data.nodes <- .ddg.data.nodes()
+	if (nrow(ddg.data.nodes) < ddg.dnum) {
+		size = 100
+		new.rows <- data.frame(ddg.type = character(size),
+			ddg.num = numeric(size),
+			ddg.name = character(size),
+			ddg.path = character(size),
+			ddg.value = character(size),
+			ddg.val.type = character(size),
+			ddg.scope = character(size),
+			ddg.from.env = logical(size),
+			ddg.time = character(size),
+			ddg.hash = character(size),
+			ddg.rw = character(size),
+			ddg.loc = character(size),
+			ddg.current = logical(size), stringsAsFactors=FALSE)
+		.ddg.add.rows("ddg.data.nodes", new.rows)
+		ddg.data.nodes <- .ddg.data.nodes()
+	}
 
-  if (length(dvalue) > 1 || !is.atomic(dvalue)) dvalue2 <- "complex"
-  else if (!is.null(dvalue)) dvalue2 <- dvalue
-  else dvalue2 <- ""
+	if (length(dvalue) > 1 || !is.atomic(dvalue)) dvalue2 <- "complex"
+	else if (!is.null(dvalue)) dvalue2 <- dvalue
+	else dvalue2 <- ""
 
-  # get value type
-  val.type <- .ddg.get.val.type.string(value)
+	# get value type
+	val.type <- .ddg.get.val.type.string(value)
 
-  #print(".ddg.record.data: adding info")
-  ddg.data.nodes$ddg.type[ddg.dnum] <- dtype
-  ddg.data.nodes$ddg.num[ddg.dnum] <- ddg.dnum
-  ddg.data.nodes$ddg.path[ddg.dnum] <- dscriptpath
-  ddg.data.nodes$ddg.name[ddg.dnum] <- dname
-  ddg.data.nodes$ddg.value[ddg.dnum] <- dvalue2
-  ddg.data.nodes$ddg.val.type[ddg.dnum] <- val.type
-  ddg.data.nodes$ddg.scope[ddg.dnum] <- dscope
-  ddg.data.nodes$ddg.from.env[ddg.dnum] <- from.env
-  ddg.data.nodes$ddg.hash[ddg.dnum] <- ""
-  ddg.data.nodes$ddg.rw[ddg.dnum] <- ""
-  ddg.data.nodes$ddg.time[ddg.dnum] <- dtime
-  ddg.data.nodes$ddg.loc[ddg.dnum] <- dloc
+	#print(".ddg.record.data: adding info")
+	ddg.data.nodes$ddg.type[ddg.dnum] <- dtype
+	ddg.data.nodes$ddg.num[ddg.dnum] <- ddg.dnum
+	ddg.data.nodes$ddg.path[ddg.dnum] <- dscriptpath
+	ddg.data.nodes$ddg.name[ddg.dnum] <- dname
+	ddg.data.nodes$ddg.value[ddg.dnum] <- dvalue2
+	ddg.data.nodes$ddg.val.type[ddg.dnum] <- val.type
+	ddg.data.nodes$ddg.scope[ddg.dnum] <- dscope
+	ddg.data.nodes$ddg.from.env[ddg.dnum] <- from.env
+	ddg.data.nodes$ddg.hash[ddg.dnum] <- ""
+	ddg.data.nodes$ddg.rw[ddg.dnum] <- ""
+	ddg.data.nodes$ddg.time[ddg.dnum] <- dtime
+	ddg.data.nodes$ddg.loc[ddg.dnum] <- dloc
 
-  ddg.data.nodes$ddg.current[ddg.dnum] <- TRUE
-  .ddg.set("ddg.data.nodes", ddg.data.nodes)
+	ddg.data.nodes$ddg.current[ddg.dnum] <- TRUE
+	.ddg.set("ddg.data.nodes", ddg.data.nodes)
 
-  # Output data node.
-  #print(".ddg.record.data outputting data node")
-  if (dtype == "File") {
-    ddg.data.nodes <- .ddg.add.to.hashtable(dname = dname, ddg.dnum = ddg.dnum, dscriptpath = dscriptpath, dloc = dloc, dvalue = dvalue, dtime = dtime)
-  }
+	# Output data node.
+	#print(".ddg.record.data outputting data node")
+	if (dtype == "File") {
+		ddg.data.nodes <- .ddg.add.to.hashtable(dname = dname, ddg.dnum = ddg.dnum, dscriptpath = dscriptpath, dloc = dloc, dvalue = dvalue, dtime = dtime)
+	}
 
-  if (.ddg.debug.lib()) {
-    if (dtype != "File") {
-      print(paste("Adding data node", ddg.dnum, "named", dname, "with scope", dscope, " and value ", ddg.data.nodes$ddg.value[ddg.dnum]))
-    } else {
-      print(paste("Adding data node", ddg.dnum, "named", dname, "with scope", dscope, " and value ", ddg.data.nodes$ddg.value[ddg.dnum], 
-                  " that hashes to ", ddg.data.nodes$ddg.hash[ddg.dnum], " and performs a file ", ddg.data.nodes$ddg.rw[ddg.dnum]))
-    }
-  }
+	if (.ddg.debug.lib()) {
+		if (dtype != "File") {
+			print(paste("Adding data node", ddg.dnum, "named", dname, "with scope", dscope, " and value ", ddg.data.nodes$ddg.value[ddg.dnum]))
+		} else {
+			print(paste("Adding data node", ddg.dnum, "named", dname, "with scope", dscope, " and value ", ddg.data.nodes$ddg.value[ddg.dnum], 
+				" that hashes to ", ddg.data.nodes$ddg.hash[ddg.dnum], " and performs a file ", ddg.data.nodes$ddg.rw[ddg.dnum]))
+		}
+	}
 }
 
 # Returns a string representation of the type information of the given value.
@@ -3420,19 +3420,21 @@ library(curl)
 
 # str - input string.
 
-.ddg.replace.quotes <- function(str) {
-  #print(paste(".ddg.replace.quotes start, str =", str))
-  if (!is.character(str)) return (str)
-
-  str <- paste("\"", str, "\"", sep="")
-  str <- gsub("\"", "\\\\\"", str)
-
-  # Replace returns, new lines, and tabs with spaces.
-  str <- gsub("\r", " ", str)
-  str <- gsub("\n", " ", str)
-  str <- gsub("\t", " ", str)
-  #print(paste(".ddg.replace.quotes end, str =", str))
-  return(str)
+.ddg.replace.quotes <- function(str) 
+{
+	#print(paste(".ddg.replace.quotes start, str =", str))
+	if (!is.character(str)) return (str)
+	
+	# EF EDITS
+	#str <- paste("\"", str, "\"", sep="")
+	#str <- gsub("\"", "\\\\\"", str)
+	
+	# Replace returns, new lines, and tabs with spaces.
+	str <- gsub("\r", " ", str)
+	str <- gsub("\n", " ", str)
+	str <- gsub("\t", " ", str)
+	#print(paste(".ddg.replace.quotes end, str =", str))
+	return(str)
 }
 
 # .ddg.convert.list.to.string converts a list of values to a string
@@ -3464,109 +3466,118 @@ library(curl)
 # dscope - scope of data node.
 # from.env - if object is from initial environment
 
-.ddg.data.node <- function(dtype, dname, dvalue, dscope, from.env=FALSE) {
-  #print ("In .ddg.data.node")
-  #print(paste(".ddg.data.node: dname =", dname))
-  #print(paste(".ddg.data.node: typeof(dvalue) =", typeof(dvalue)))
-  #print(paste(".ddg.data.node: dvalue =", dvalue))
-  #print(paste(".ddg.data.node: dscope =", dscope))
-  # If object or a long list, try to create snapshot node.
+.ddg.data.node <- function(dtype, dname, dvalue, dscope, from.env=FALSE) 
+{
+	#print ("In .ddg.data.node")
+	#print(paste(".ddg.data.node: dname =", dname))
+	#print(paste(".ddg.data.node: typeof(dvalue) =", typeof(dvalue)))
+	#print(paste(".ddg.data.node: dvalue =", dvalue))
+	#print(paste(".ddg.data.node: dscope =", dscope))
+	# If object or a long list, try to create snapshot node.
+	
+	if (is.object(dvalue)) 
+	{
+		#print(".ddg.data.node: is object")
 
-  if (is.object(dvalue)) {
-    #print(".ddg.data.node: is object")
-    
-    if (.ddg.is.connection(dvalue)) {
-      #print ("Found a connection")
-      
-      # Save the current connections so we have access to them if they are
-      # changed before we get the information we need.
-      .ddg.set (".ddg.connections", showConnections(TRUE))
-      val <- showConnections(TRUE)[as.character(dvalue[1]), "description"]
-      #print (paste(".ddg.data.node for connection: val =", val))
-      # Record in data node table
-      .ddg.record.data(dtype, dname, val, val, dscope, from.env=from.env)
-      
-      if (.ddg.debug.lib()) print(paste("data.node:", dtype, dname))
-      #print(paste("data.node:", dtype, dname))
-      return(NULL)
-    }
-    else {
-      #print ("Found an object that is not a connection")
-      tryCatch(
-        {
-          .ddg.snapshot.node (dname, "txt", dvalue, dscope=dscope, from.env=from.env)
-          return(NULL)
-        },
-        error = function(e) {
-          error.msg <- paste("Unable to create snapshot node for", dname, "Details:", e)
-          .ddg.insert.error.message(error.msg)
-          return (.ddg.data.node (dtype, dname, "complex", dscope, from.env=from.env))
-        }
-     )
-    }
+		if (.ddg.is.connection(dvalue)) 
+		{
+			#print ("Found a connection")
 
-  }
+			# Save the current connections so we have access to them if they are
+			# changed before we get the information we need.
+			.ddg.set (".ddg.connections", showConnections(TRUE))
+			val <- showConnections(TRUE)[as.character(dvalue[1]), "description"]
+			#print (paste(".ddg.data.node for connection: val =", val))
+			# Record in data node table
+			.ddg.record.data(dtype, dname, val, val, dscope, from.env=from.env)
 
-  else if (is.matrix(dvalue) || (is.vector(dvalue) && !is.character(dvalue) && length(dvalue) > 20)) {
-    #print(".ddg.data.node: saving as csv")
-    .ddg.snapshot.node (dname, "csv", dvalue, dscope=dscope, from.env=from.env)
-    return (NULL)
-  }
+			if (.ddg.debug.lib()) print(paste("data.node:", dtype, dname))
+			#print(paste("data.node:", dtype, dname))
+			return(NULL)
+		}
+		else 
+		{
+			#print ("Found an object that is not a connection")
+			tryCatch(
+				{
+					.ddg.snapshot.node (dname, "txt", dvalue, dscope=dscope, from.env=from.env)
+					return(NULL)
+				},
+				error = function(e) 
+				{
+					error.msg <- paste("Unable to create snapshot node for", dname, "Details:", e)
+					.ddg.insert.error.message(error.msg)
+					return (.ddg.data.node (dtype, dname, "complex", dscope, from.env=from.env))
+				}
+			)
+		}
+	}
 
-  #print("Converting value to a string")
-  # Convert value to a string.
-  val <-
-      if (is.list(dvalue)) {
-        tryCatch(
-            {
-              .ddg.convert.list.to.string(dvalue)
-            },
-            error = function(e) {
-              error.msg <- paste("Unable to convert value of", dname, "to a string.")
-              .ddg.insert.error.message(error.msg)
-              "complex"
-            }
-        )
-      }
-      else if (typeof(dvalue) == "closure") "#ddg.function"
-      else if (length(dvalue) > 1 || !is.atomic(dvalue)) {
-        tryCatch(paste(.ddg.replace.quotes(dvalue), collapse=","),
-            error = function(e) {"complex"})
-      }
-      else if (is.null(dvalue)) "NULL"
-      else if (length(dvalue) == 0) "Empty"
-      else if (is.na(dvalue)) "NA"
-      else if (dvalue == "complex" || dvalue == "#ddg.function") dvalue
-      else if (is.character(dvalue) && dvalue == "") "NotRecorded"
-      else {
-         # Replace double quotes with single quotes.
-         .ddg.replace.quotes(dvalue)
-      }
+	else if (is.matrix(dvalue) || (is.vector(dvalue) && !is.character(dvalue) && length(dvalue) > 20)) 
+	{
+		#print(".ddg.data.node: saving as csv")
+		.ddg.snapshot.node (dname, "csv", dvalue, dscope=dscope, from.env=from.env)
+		return (NULL)
+	}
 
-  #print(paste(".ddg.data.node: converted value to string", val))
+	#print("Converting value to a string")
+	# Convert value to a string.
+	val <-
+		if (is.list(dvalue)) 
+		{
+			tryCatch(
+				{
+					.ddg.convert.list.to.string(dvalue)
+				},
+				error = function(e) 
+				{
+					error.msg <- paste("Unable to convert value of", dname, "to a string.")
+					.ddg.insert.error.message(error.msg)
+					"complex"
+				}
+			)
+		}
+		else if (typeof(dvalue) == "closure") "#ddg.function"
+		else if (length(dvalue) > 1 || !is.atomic(dvalue)) 
+		{
+			tryCatch(paste(.ddg.replace.quotes(dvalue), collapse=","),
+			error = function(e) {"complex"})
+		}
+		else if (is.null(dvalue)) "NULL"
+		else if (length(dvalue) == 0) "Empty"
+		else if (is.na(dvalue)) "NA"
+		else if (dvalue == "complex" || dvalue == "#ddg.function") dvalue
+		else if (is.character(dvalue) && dvalue == "") "NotRecorded"
+		else 
+		{
+			# Replace double quotes with single quotes.
+			.ddg.replace.quotes(dvalue)
+		}
 
+	#print(paste(".ddg.data.node: converted value to string", val))
 
-  if (grepl("\n", val)) {
-    #print(".ddg.data.node: saving as snapshot")
+	if (grepl("\n", val)) 
+	{
+		#print(".ddg.data.node: saving as snapshot")
+		# Create snapshot node.
+		.ddg.snapshot.node (dname, "txt", val, from.env=from.env)
+		return
+	}
 
-    # Create snapshot node.
-    .ddg.snapshot.node (dname, "txt", val, from.env=from.env)
-    return
-  }
+	else 
+	{
+		#print(".ddg.data.node: recording data")
 
-  else {
-    #print(".ddg.data.node: recording data")
+		# Get scope if necessary.
+		if (is.null(dscope)) dscope <- .ddg.get.scope(dname)
 
-    # Get scope if necessary.
-    if (is.null(dscope)) dscope <- .ddg.get.scope(dname)
+		# Record in data node table
+		.ddg.record.data(dtype, dname, val, val, dscope, from.env=from.env)
 
-    # Record in data node table
-    .ddg.record.data(dtype, dname, val, val, dscope, from.env=from.env)
+		if (.ddg.debug.lib()) print(paste("data.node:", dtype, dname))
+	}
 
-    if (.ddg.debug.lib()) print(paste("data.node:", dtype, dname))
-  }
-
-  invisible()
+	invisible()
 }
 
 # .ddg.supported.graphic - the sole purpose of this function is
