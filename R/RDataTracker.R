@@ -767,10 +767,6 @@ library(curl)
 		# Save the true value.
 		#print(".ddg.save.simple: saving data")
 		#print(paste(".ddg.save.simple: saving value", value))
-
-		# EF EDITS
-		#print(name)
-
 		.ddg.data.node("Data", name, value, scope, from.env=from.env)
 	}
 }
@@ -842,10 +838,6 @@ library(curl)
 	if (is.null(scope)) {
 		scope <- .ddg.get.scope(name, calls=stack, env=env)
 	}
-	
-	# EF EDITS
-	#print(name)
-	
 
 	#print (paste (".ddg.save.data: saving", name, "in scope", scope))
 	# Determine type for value, and save accordingly.
@@ -3358,8 +3350,7 @@ library(curl)
   if (.ddg.debug.lib()) print(paste("proc.node:", ptype, pname))
 }
 
-# .ddg.replace.quotes quotes quotation characters. It also replaces
-# return, newline and tab characters with spaces.
+# .ddg.replace.quotes replaces return, newline and tab characters with spaces.
 
 # str - input string.
 
@@ -3367,10 +3358,6 @@ library(curl)
 {
 	#print(paste(".ddg.replace.quotes start, str =", str))
 	if (!is.character(str)) return (str)
-	
-	# EF EDITS
-	#str <- paste("\"", str, "\"", sep="")
-	#str <- gsub("\"", "\\\\\"", str)
 	
 	# Replace returns, new lines, and tabs with spaces.
 	str <- gsub("\r", " ", str)
@@ -3411,9 +3398,6 @@ library(curl)
 
 .ddg.data.node <- function(dtype, dname, dvalue, dscope, from.env=FALSE) 
 {
-	# EF EDITS
-	#print(dname)
-	
 	#print ("In .ddg.data.node")
 	#print(paste(".ddg.data.node: dname =", dname))
 	#print(paste(".ddg.data.node: typeof(dvalue) =", typeof(dvalue)))
@@ -4975,13 +4959,6 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL)
 	# the function that called the function that called ddg.return.
 	call.text <- gsub(" ", "", deparse(call, nlines=1))
 	return.node.name <- paste(call.text, "return")
-
-	# EF EDITS
-	#return.node.name <- gsub("\"", "\\\\\"", return.node.name)
-
-	# EF EDITS
-	#print(return.node.name)
-
 
 	#print(paste("ddg.return.value: sys.nframe =", sys.nframe()))
 	#print(paste("ddg.return.value: caller.frame =", caller.frame))
