@@ -4,12 +4,21 @@
 		"rdt": "http://rdatatracker.org/"
 	},
 
+	"agent" : {
+		// agent: this json file and the tool that produced this
+		"rdt:a1": {
+			"rdt:tool.name": "RDataTracker",
+			"rdt:tool.version": "2.27.0",
+			"rdt:json.version": "2.1"
+		}
+	},
+
 	"activity" : {
 		// procedure nodes
 		"rdt:p1": {
 			"rdt:name": "WarningTest.R",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 0.11,
+			"rdt:elapsedTime": 0.16,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -19,7 +28,7 @@
 		"rdt:p2": {
 			"rdt:name": "a <- 1",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.11,
+			"rdt:elapsedTime": 0.16,
 			"rdt:scriptNum": 0,
 			"rdt:startLine": 1,
 			"rdt:startCol": 1,
@@ -29,7 +38,7 @@
 		"rdt:p3": {
 			"rdt:name": "warning(\"foo\", call. = FALSE)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.12,
+			"rdt:elapsedTime": 0.17,
 			"rdt:scriptNum": 0,
 			"rdt:startLine": 2,
 			"rdt:startCol": 1,
@@ -39,7 +48,7 @@
 		"rdt:p4": {
 			"rdt:name": "b <- 2",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.12,
+			"rdt:elapsedTime": 0.17,
 			"rdt:scriptNum": 0,
 			"rdt:startLine": 3,
 			"rdt:startCol": 1,
@@ -49,7 +58,7 @@
 		"rdt:p5": {
 			"rdt:name": "WarningTest.R",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 0.12,
+			"rdt:elapsedTime": 0.17,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -73,7 +82,7 @@
 		},
 		"rdt:d2": {
 			"rdt:name": "warning.msg",
-			"rdt:value": "\" foo\"",
+			"rdt:value": " foo",
 			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}",
 			"rdt:type": "Exception",
 			"rdt:scope": "ddg.library",
@@ -107,7 +116,7 @@
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:workingDirectory": "[DIR]",
 			"rdt:ddgDirectory": "[DIR]/ddg",
-			"rdt:ddgTimeStamp": "2018-05-25T20.50.41EDT",
+			"rdt:ddgTimeStamp": "2018-06-20T23.17.25EDT",
 			"rdt:rdatatrackerVersion": "2.27.0",
 			"rdt:hashAlgorithm": "md5"
 		},
