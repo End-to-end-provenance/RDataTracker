@@ -694,7 +694,9 @@ library(curl)
 #'
 #' @return true if the connection is open
 .ddg.get.connection.isopen <- function (conn) { 
-  .ddg.get (".ddg.connections")[as.character(conn[1]), "isopen"] == "opened"
+  conns <- .ddg.get (".ddg.connections")
+  if (nrow(conns) >= conn[1]) return (TRUE)
+  return (conns[as.character(conn[1]), "isopen"] == "opened")
 }
 
 #' @return a matrix containing information about all open connections
@@ -2023,75 +2025,6 @@ library(curl)
   }
 }
 
-# Initialize the information about functions that read from files
-.ddg.create.file.write.functions.df <- function () {
-  # Functions that read files
-  function.names <-
-    c ("write.csv", "write.csv2", "write.table", "write", "write.matrix", "writeLines",
-        "writeChar", "writeBin", "write_json", "write.dcf", "write.ftable", 
-        "saveRDS", "cat", "save", "dput", "dump", "ggsave")
-
-  # The argument that represents the file name
-  param.names <-
-    c ("file", "file", "file", "file", "file", "con", 
-        "con", "con", "path", "file", "file", 
-        "file", "file", "file", "file", "file", "filename")
-
-  # Position of the file parameter if it is passed by position
-  param.pos <-
-    c (2, 2, 2, 2, 2, 2, 
-       2, 2, 2, 2, 2,  
-       2, 0, 0, 2, 2, 1)
-
-  return (data.frame (function.names, param.names, param.pos, stringsAsFactors=FALSE))
-}
-
-.ddg.set (".ddg.file.write.functions.df", .ddg.create.file.write.functions.df ())
-
-# Given a parse tree, this function returns a list containing
-# the expressions that correspond to the filename argument
-# of the calls to functions that write files.  If there are
-# none, it returns NULL.
-.ddg.find.files.written <- function(main.object, env) {
-  return (.ddg.find.files (main.object, .ddg.get(".ddg.file.write.functions.df"), env))
-}
-
-# Creates file nodes and data in edges for any files that are written in this cmd
-# cmd - text command
-# cmd.expr - parsed command
-.ddg.create.file.write.nodes.and.edges <- function (cmd, env) {
-  # Find all the files potentially written in this command.
-  # This may include files that are not actually written if the
-  # write calls are within an if-statement, for example.
-  files.written <- .ddg.find.files.written(cmd, env)
-  #print (".ddg.create.file.read.nodes.and.edges: Files written:")
-  #print (files.written)
-
-  for (file in files.written) {
-    # Check for a connection.  It will be a number encoded as a string.
-    # Turn off warnings and try the coercion and then turn warnings back on
-    save.warn <- getOption("warn")
-    options(warn=-1)
-    conn <- as.numeric(file)
-    options (warn=save.warn)
-    if (!is.na (conn)) {
-      # If it is a closed connection, use the file it is connected to
-      # If it is still open, don't use it because the contents on disk won't
-      # be correct until it is closed.
-      if (.ddg.get.connection.isopen(conn)) {
-        next
-      }
-      file <- .ddg.get.connection.description(conn)
-    }
-    
-    # Check that the file exists.  If it does, we will assume that
-    # it was created by the write call that we just found.
-    if (file.exists (file)) {
-      # Create the file node and edge
-      ddg.file.out (file, pname=cmd@abbrev)
-    }
-  }
-}
 
 # Initialize the information about functions that read from files
 .ddg.create.file.close.functions.df <- function () {
@@ -3146,14 +3079,14 @@ library(curl)
 
 					if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Adding output data nodes for", cmd@abbrev))
 
-					if (cmd@writesFile) .ddg.create.file.write.nodes.and.edges (cmd, environ)
-					if (cmd@closesFile) .ddg.create.file.close.nodes.and.edges (cmd, environ)
-					if (cmd@createsGraphics) .ddg.set.graphics.files (cmd, environ)
-					if (cmd@updatesGraphics) .ddg.add.graphics.io (cmd)
+          .ddg.create.file.write.nodes.and.edges ()
+          if (cmd@closesFile) .ddg.create.file.close.nodes.and.edges (cmd, environ)
+          if (cmd@createsGraphics) .ddg.set.graphics.files (cmd, environ)
+          if (cmd@updatesGraphics) .ddg.add.graphics.io (cmd)
 
-					if (cmd@has.dev.off) {
-						.ddg.capture.graphics(cmd)
-
+          if (cmd@has.dev.off) {
+            .ddg.capture.graphics(cmd)
+            
 						if (!is.null(dev.file.created)) {
 							file.remove(dev.file.created)
 						}
@@ -5931,9 +5864,13 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
 
   # Store time when script begins execution.
   .ddg.set("ddg.start.time", .ddg.timestamp())
-
+  
+  # Initialize the I/O tracing code
+  .ddg.init.iotrace ()
+  
   invisible()
 }
+
 
 # ddg.run executes a script (r.script.path) or a function (f).
 # If an R error is generated, the error message is captured and
@@ -6050,6 +5987,8 @@ ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE) {
 
   # Delete temporary files.
   # .ddg.delete.temp()
+  
+  .ddg.stop.iotracing()
 
   # Save ddg.json to file.
   ddg.json.write()
