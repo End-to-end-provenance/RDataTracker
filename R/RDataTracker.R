@@ -4876,222 +4876,228 @@ ddg.procedure <- function(pname, ins=NULL, outs.graphic=NULL, outs.data=NULL, ou
 
 # expr - the value returned by the function.
 
-ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
-  if (!.ddg.is.init()) return(expr)
+ddg.return.value <- function (expr=NULL, cmd.func=NULL) 
+{
+	if (!.ddg.is.init()) return(expr)
+
+	#print("In ddg.return.value")
+
+	dev.file <- NULL
+	parsed.stmt <- NULL
+
+	# Capture graphics if dev.off is about to be called.
+	if (!is.null(cmd.func)) 
+	{
+		parsed.stmt <- cmd.func()
+		if (parsed.stmt@has.dev.off) 
+		{
+			if (.ddg.is.call.to(parsed.stmt@parsed[[1]], "dev.off") || !.ddg.loop.annotate()) 
+			{
+				dev.file <- .ddg.capture.graphics(NULL)
+				dev.node.name <- paste0("dev.", dev.cur())
+			}
+		}
+	}
+
+
+	# If expr is an assignment, create nodes and edges for the assignment.
+	orig.expr <- substitute(expr)
+	#print(paste("ddg.return.value: expr =", paste(deparse(orig.expr), collapse="\n")))
+
+	frame.num <- .ddg.get.frame.number(sys.calls())
+	env <- sys.frame(frame.num)
+
+	orig.return <- paste("return(", deparse(orig.expr), ")", sep="")
+
+	pname <- NULL
+	.ddg.lookup.function.name(pname)
+	#print(paste("ddg.return.value: pname =", pname))
   
-  #print("In ddg.return.value")
+	# If this is a recursive call to ddg.return.value, find
+	# the caller of the first ddg.return.value
+	if (grepl("(^ddg|.ddg)", pname)) {
+		#print("ddg.return.value: Found a recursive call")
+		caller.frame <- .ddg.find.ddg.return.value.caller.frame.number ()
+		pname <- as.character(sys.call(caller.frame)[[1]])
+		#print(paste("ddg.return.value: updated pname =", pname))
+	}
+	else {
+		#print("ddg.return.value: NOT a recursive call")
+		caller.frame <- -1
+	}
 
-  dev.file <- NULL
-  parsed.stmt <- NULL
-  
-  # Capture graphics if dev.off is about to be called.
-  if (!is.null(cmd.func)) {
-    parsed.stmt <- cmd.func()
-    if (parsed.stmt@has.dev.off) {
-      if (.ddg.is.call.to(parsed.stmt@parsed[[1]], "dev.off") || !.ddg.loop.annotate()) {
-        dev.file <- .ddg.capture.graphics(NULL)
-        dev.node.name <- paste0("dev.", dev.cur())
-      }
-    }
-  }
+	# Prints the call & arguments.
+	# expr forces evaluation of the function early.  I think that
+	# causes some examples to work with debugging on but not off.
+	# Checking.  (6/26/2015 - Barb).
+	# Yes, ReturnTest.R fails on the recursive f5 function
+	#print(paste("ddg.return.value:", sys.call(caller.frame))) #, "returns", expr))
 
+	ddg.return.values <- .ddg.get(".ddg.return.values")
+	ddg.num.returns <- .ddg.get(".ddg.num.returns")
+	if (nrow(ddg.return.values) == ddg.num.returns) {
+		size = 100
+		new.rows <- data.frame( ddg.call = character(size),
+								line = integer(size),
+								return.used = logical(size),
+								return.node.id = integer(size),
+								stringsAsFactors=FALSE)
+		.ddg.add.rows(".ddg.return.values", new.rows)
+		ddg.return.values <- .ddg.get(".ddg.return.values")
+	}
 
-  # If expr is an assignment, create nodes and edges for the assignment.
-  orig.expr <- substitute(expr)
-  #print(paste("ddg.return.value: expr =", paste(deparse(orig.expr), collapse="\n")))
+	# If this is not a recursive call to ddg.return.value and
+	# ddg.function was not called, create the function nodes that
+	# it would have created.
+	call <- sys.call(caller.frame)
+	if (!.ddg.proc.node.exists(pname)) {
+		#print("ddg.return.value creating function nodes")
+		full.call <- match.call(sys.function(caller.frame), call=call)
+		.ddg.create.function.nodes(pname, call, full.call, auto.created = TRUE, env = sys.frame(.ddg.get.frame.number(sys.calls())))
+	}
+	else {
+		#print("ddg.return.value decrementing func.depth")
+		.ddg.dec (".ddg.func.depth")
+	}
 
-  frame.num <- .ddg.get.frame.number(sys.calls())
-  env <- sys.frame(frame.num)
+	if (is.null(cmd.func)) {
+		#print("ddg.return.value constructing DDG statement for the return call")
+		return.stmt <- .ddg.construct.DDGStatement (parse(text=orig.return), pos=NA, script.num=NA, breakpoints=NA)
+	}
+	else {
+		#print("ddg.return.value using existing DDG statement for the return call")
+		return.stmt <- cmd.func()
+		parsed.statement <- return.stmt@parsed
+		#print(paste("ddg.return.value: parsed.statement =", deparse(parsed.statement)))
+	}
 
-  orig.return <- paste("return(", deparse(orig.expr), ")", sep="")
+	# Create a data node for the return value. We want the scope of
+	# the function that called the function that called ddg.return.
+	call.text <- gsub(" ", "", deparse(call, nlines=1))
+	return.node.name <- paste(call.text, "return")
 
-  pname <- NULL
-  .ddg.lookup.function.name(pname)
-  #print(paste("ddg.return.value: pname =", pname))
-  
-  # If this is a recursive call to ddg.return.value, find
-  # the caller of the first ddg.return.value
-  if (grepl("(^ddg|.ddg)", pname)) {
-    #print("ddg.return.value: Found a recursive call")
-    caller.frame <- .ddg.find.ddg.return.value.caller.frame.number ()
-    pname <- as.character(sys.call(caller.frame)[[1]])
-    #print(paste("ddg.return.value: updated pname =", pname))
-  }
-  else {
-    #print("ddg.return.value: NOT a recursive call")
-    caller.frame <- -1
-  }
+	# EF EDITS
+	#return.node.name <- gsub("\"", "\\\\\"", return.node.name)
 
-  # Prints the call & arguments.
-  # expr forces evaluation of the function early.  I think that
-  # causes some examples to work with debugging on but not off.
-  # Checking.  (6/26/2015 - Barb).
-  # Yes, ReturnTest.R fails on the recursive f5 function
-  #print(paste("ddg.return.value:", sys.call(caller.frame))) #, "returns", expr))
-
-  ddg.return.values <- .ddg.get(".ddg.return.values")
-  ddg.num.returns <- .ddg.get(".ddg.num.returns")
-  if (nrow(ddg.return.values) == ddg.num.returns) {
-    size = 100
-    new.rows <- data.frame(ddg.call = character(size),
-                           line = integer(size),
-                           return.used = logical(size),
-                           return.node.id = integer(size),
-                           stringsAsFactors=FALSE)
-    .ddg.add.rows(".ddg.return.values", new.rows)
-    ddg.return.values <- .ddg.get(".ddg.return.values")
-  }
-
-  # If this is not a recursive call to ddg.return.value and
-  # ddg.function was not called, create the function nodes that
-  # it would have created.
-  call <- sys.call(caller.frame)
-  if (!.ddg.proc.node.exists(pname)) {
-    #print("ddg.return.value creating function nodes")
-    full.call <- match.call(sys.function(caller.frame), call=call)
-    .ddg.create.function.nodes(pname, call, full.call, auto.created = TRUE, env = sys.frame(.ddg.get.frame.number(sys.calls()))
-    )
-  }
-  else {
-    #print("ddg.return.value decrementing func.depth")
-    .ddg.dec (".ddg.func.depth")
-  }
-
-  if (is.null(cmd.func)) {
-    #print("ddg.return.value constructing DDG statement for the return call")
-    return.stmt <- .ddg.construct.DDGStatement (parse(text=orig.return), pos=NA, script.num=NA, breakpoints=NA)
-  }
-  else {
-    #print("ddg.return.value using existing DDG statement for the return call")
-    return.stmt <- cmd.func()
-    parsed.statement <- return.stmt@parsed
-    #print(paste("ddg.return.value: parsed.statement =", deparse(parsed.statement)))
-  }
-  
-  # Create a data node for the return value. We want the scope of
-  # the function that called the function that called ddg.return.
-  call.text <- gsub(" ", "", deparse(call, nlines=1))
-  return.node.name <- paste(call.text, "return")
-  
-  # EF EDITS
-  #return.node.name <- gsub("\"", "\\\\\"", return.node.name)
-  
-  # EF EDITS
-  print(return.node.name)
-  
-
-  #print(paste("ddg.return.value: sys.nframe =", sys.nframe()))
-  #print(paste("ddg.return.value: caller.frame =", caller.frame))
-  return.node.scope <-
-    environmentName (if (sys.nframe() == 2) .GlobalEnv
-                     else parent.env(sys.frame(caller.frame)))
-  #print(paste("ddg.return.value: return.node.scope =", return.node.scope))
-  .ddg.save.data(return.node.name, expr, fname="ddg.return", scope=return.node.scope)
-
-  # Create a return proc node
-
-  # Process breakpoint. We stop if there is a breakpoint set on this line or we are single-stepping.
-  if (.ddg.is.sourced() & (return.stmt@is.breakpoint | .ddg.get("ddg.break")) & !.ddg.break.ignore()) {
-    .ddg.process.breakpoint(return.stmt, inside.function=TRUE)
-  }
-
-  caller.env = sys.frame(caller.frame)
-  
-  # Check if there is a return call within this call to ddg.return.
-  if (.ddg.has.call.to(parsed.stmt, "return")) {
-  .ddg.proc.node("Operation", return.stmt@abbrev, return.stmt@abbrev, console = TRUE, env=caller.env, cmd=return.stmt)
-
-  # Create control flow edge from preceding procedure node.
-  .ddg.proc2proc()
-
-  # Create an edge from the return statement to its return value.
-  .ddg.proc2data(return.stmt@abbrev, return.node.name, return.node.scope, return.value=TRUE)
-  
-    if (!is.null(dev.file)) {
-      ddg.file.out (dev.file, pname=return.stmt@abbrev)
-      
-      # Remove the temporary file
-      file.remove(dev.file)
-      
-      # Add an input edge from the current device
-      .ddg.data2proc(dev.node.name, NULL, return.stmt@abbrev)
-    }
-  }
-  else {
-    .ddg.lastproc2data(return.node.name, dscope=return.node.scope)
-  }
-
-  # Update the table.
-  ddg.num.returns <- ddg.num.returns + 1
-  ddg.return.values$ddg.call[ddg.num.returns] <- call.text
-  ddg.return.values$return.used[ddg.num.returns] <- FALSE
-  ddg.return.values$return.node.id[ddg.num.returns] <- .ddg.dnum()
-  ddg.cur.cmd.stack <- .ddg.get(".ddg.cur.cmd.stack")
-  ddg.return.values$line[ddg.num.returns] <- 
-      if (length(ddg.cur.cmd.stack) == 0) NA
-      else ddg.cur.cmd.stack[length(ddg.cur.cmd.stack) - 1][[1]]@pos@startLine
-  .ddg.set(".ddg.return.values", ddg.return.values)
-  .ddg.set(".ddg.num.returns", ddg.num.returns)
-
-  # If it does not have return, then its parameter was a call to ddg.eval
-  # and this stuff has been done already.
-  if (.ddg.has.call.to(parsed.stmt, "return")) {
-  # Create edges from variables used in the return statement
-  vars.used <- return.stmt@vars.used
-  for (var in vars.used) {
-    # Make sure there is a node we could connect to.
-    scope <- .ddg.get.scope(var)
-    if (.ddg.data.node.exists(var, scope)) {
-      .ddg.data2proc(var, scope, return.stmt@abbrev)
-    }
-  }
-
-  for (var in return.stmt@vars.set)
-  {
-    if (var != "")
-    {
-      # Create output data node.
-      dvalue <- eval(as.symbol(var), envir=env)
-
-      # Check for non-local assignment
-      if ( .ddg.is.nonlocal.assign(return.stmt@parsed[[1]]) )
-      {
-        env <- .ddg.where( var, env = parent.env(parent.frame()) , warning = FALSE )
-
-        if( identical(env,"undefined") )
-          env <- globalenv()
-      }
-
-      dscope <- .ddg.get.scope(var, env=env)
-      .ddg.save.data(var, dvalue, scope=dscope)
-
-      # Create an edge from procedure node to data node.
-      .ddg.proc2data(return.stmt@abbrev, var, dscope=dscope, return.value=FALSE)
-    }
-  }
+	# EF EDITS
+	#print(return.node.name)
 
 
-  # Create nodes and edges dealing with reading and writing files
-  .ddg.create.file.read.nodes.and.edges(return.stmt, env)
-  .ddg.create.file.write.nodes.and.edges (return.stmt, env)
-  .ddg.create.file.close.nodes.and.edges (return.stmt, env)
-  
-    if (return.stmt@createsGraphics) {
-  .ddg.set.graphics.files (return.stmt, env)
-  }
-  }
+	#print(paste("ddg.return.value: sys.nframe =", sys.nframe()))
+	#print(paste("ddg.return.value: caller.frame =", caller.frame))
+	return.node.scope <-
+		environmentName(if (sys.nframe() == 2) .GlobalEnv
+						else parent.env(sys.frame(caller.frame)))
+	#print(paste("ddg.return.value: return.node.scope =", return.node.scope))
+	.ddg.save.data(return.node.name, expr, fname="ddg.return", scope=return.node.scope)
 
-  # Create the finish node for the function
-  #print("ddg.return.value: creating finish node")
-  if (typeof(call[[1]]) == "closure") {
-    .ddg.add.abstract.node ("Finish", node.name=pname, env=caller.env)
-  }
-  else {
-    .ddg.add.abstract.node ("Finish", node.name=paste(deparse(call),collapse=""), env=caller.env)
-  }
+	# Create a return proc node
 
-  #print(paste ("ddg.return.value: returning", expr))
-  return(expr)
+	# Process breakpoint. We stop if there is a breakpoint set on this line or we are single-stepping.
+	if (.ddg.is.sourced() & (return.stmt@is.breakpoint | .ddg.get("ddg.break")) & !.ddg.break.ignore()) {
+		.ddg.process.breakpoint(return.stmt, inside.function=TRUE)
+	}
+
+	caller.env = sys.frame(caller.frame)
+
+	# Check if there is a return call within this call to ddg.return.
+	if (.ddg.has.call.to(parsed.stmt, "return")) 
+	{
+		.ddg.proc.node("Operation", return.stmt@abbrev, return.stmt@abbrev, console = TRUE, env=caller.env, cmd=return.stmt)
+
+		# Create control flow edge from preceding procedure node.
+		.ddg.proc2proc()
+
+		# Create an edge from the return statement to its return value.
+		.ddg.proc2data(return.stmt@abbrev, return.node.name, return.node.scope, return.value=TRUE)
+
+		if (!is.null(dev.file)) 
+		{
+			ddg.file.out (dev.file, pname=return.stmt@abbrev)
+
+			# Remove the temporary file
+			file.remove(dev.file)
+
+			# Add an input edge from the current device
+			.ddg.data2proc(dev.node.name, NULL, return.stmt@abbrev)
+		}
+	}
+	else {
+		.ddg.lastproc2data(return.node.name, dscope=return.node.scope)
+	}
+
+	# Update the table.
+	ddg.num.returns <- ddg.num.returns + 1
+	ddg.return.values$ddg.call[ddg.num.returns] <- call.text
+	ddg.return.values$return.used[ddg.num.returns] <- FALSE
+	ddg.return.values$return.node.id[ddg.num.returns] <- .ddg.dnum()
+	ddg.cur.cmd.stack <- .ddg.get(".ddg.cur.cmd.stack")
+	ddg.return.values$line[ddg.num.returns] <- 
+		if (length(ddg.cur.cmd.stack) == 0) NA
+		else ddg.cur.cmd.stack[length(ddg.cur.cmd.stack) - 1][[1]]@pos@startLine
+	.ddg.set(".ddg.return.values", ddg.return.values)
+	.ddg.set(".ddg.num.returns", ddg.num.returns)
+
+	# If it does not have return, then its parameter was a call to ddg.eval
+	# and this stuff has been done already.
+	if (.ddg.has.call.to(parsed.stmt, "return")) 
+	{
+		# Create edges from variables used in the return statement
+		vars.used <- return.stmt@vars.used
+		for (var in vars.used) {
+			# Make sure there is a node we could connect to.
+			scope <- .ddg.get.scope(var)
+			if (.ddg.data.node.exists(var, scope)) {
+				.ddg.data2proc(var, scope, return.stmt@abbrev)
+			}
+		}
+
+		for (var in return.stmt@vars.set)
+		{
+			if (var != "")
+			{
+				# Create output data node.
+				dvalue <- eval(as.symbol(var), envir=env)
+
+				# Check for non-local assignment
+				if ( .ddg.is.nonlocal.assign(return.stmt@parsed[[1]]) )
+				{
+					env <- .ddg.where( var, env = parent.env(parent.frame()) , warning = FALSE )
+
+					if( identical(env,"undefined") )
+						env <- globalenv()
+				}
+
+				dscope <- .ddg.get.scope(var, env=env)
+				.ddg.save.data(var, dvalue, scope=dscope)
+
+				# Create an edge from procedure node to data node.
+				.ddg.proc2data(return.stmt@abbrev, var, dscope=dscope, return.value=FALSE)
+			}
+		}
+
+
+		# Create nodes and edges dealing with reading and writing files
+		.ddg.create.file.read.nodes.and.edges(return.stmt, env)
+		.ddg.create.file.write.nodes.and.edges (return.stmt, env)
+		.ddg.create.file.close.nodes.and.edges (return.stmt, env)
+
+		if (return.stmt@createsGraphics) {
+			.ddg.set.graphics.files (return.stmt, env)
+		}
+	}
+
+	# Create the finish node for the function
+	#print("ddg.return.value: creating finish node")
+	if (typeof(call[[1]]) == "closure") {
+		.ddg.add.abstract.node ("Finish", node.name=pname, env=caller.env)
+	}
+	else {
+		.ddg.add.abstract.node ("Finish", node.name=paste(deparse(call),collapse=""), env=caller.env)
+	}
+
+	#print(paste ("ddg.return.value: returning", expr))
+	return(expr)
 }
 
 # ddg.annotate.inside returns the value of the parameter
