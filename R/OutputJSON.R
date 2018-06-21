@@ -159,8 +159,9 @@ ddg.json <- function()
 	# change '    ' into a tab (\t)
 	json <- gsub( '    ' , '\t' , json )
 	
+	# EF EDITS
 	# remove end close brace and return
-	return( sub('\n}\n$', '\n', json) )
+	return( sub('\n}\n$', '', json) )
 }
 
 # forms and returns the json string for the agent node
@@ -331,11 +332,13 @@ ddg.json <- function()
 	# remove bottom brace
 	json <- sub( '\n}\n$' , '' , json )
 	
-	# indent by 1 level
-	json <- gsub( '\n' , '\n\t' , json )
+	# EF EDITS
+	# indent by 1 level, return
+	return( gsub('\n', '\n\t', json) )
+	#json <- gsub( '\n' , '\n\t' , json )
 	
 	# add 1 newline to end of node for appending, return
-	return( sub('}$', '}\n', json) )
+	#return( sub('}$', '}\n', json) )
 }
 
 # return the names of other scripts that were sourced and their timestamps.
@@ -554,11 +557,22 @@ ddg.json <- function()
 	# FINAL COMBINATION
 	# for all sets of nodes but the last one, add comma and newline for appending
 	num.parts <- length(json)
-	if( num.parts > 1 )
-		json[1:(num.parts-1)] <- lapply( json[1:(num.parts-1)] , .ddg.json.addComma )
 	
+	# EF EDITS
+	if( num.parts > 1 )
+	{
+		json[1:(num.parts-1)] <- lapply ( json[1:(num.parts-1)] , 
+										  function(str)
+											return( paste(str, ',', sep="") )
+										)
+		#json[1:(num.parts-1)] <- lapply( json[1:(num.parts-1)] , .ddg.json.addComma )
+	}
+	
+	
+	# EF EDITS
 	# add final close brace to last element
-	json[num.parts] <- sub( '\n$' , '\n}' , json[num.parts] )
+	#json[num.parts] <- paste( json[num.parts] , '}' , sep="" )
+	json[num.parts] <- sub( '$' , '\n}' , json[num.parts] )
 	
 	# combine and return
 	return( .ddg.json.combine.rec(json) )
@@ -582,7 +596,15 @@ ddg.json <- function()
 	if( num.parts > 1 )
 	{
 		parts <- json[ indices[1:(num.parts-1)] ]
-		parts <- lapply( parts , .ddg.json.addComma )
+		
+		
+		# EF EDITS
+		parts <- lapply ( parts , 
+						  function(str) 
+							return( paste(str, ',', sep="") )
+						)
+		#parts <- lapply( parts , .ddg.json.addComma )
+		
 		json[ indices[1:(num.parts-1)] ] <- parts
 	}
 	
@@ -618,7 +640,7 @@ ddg.json <- function()
 	left <- .ddg.json.combine.rec( list[1:mid] )
 	right <- .ddg.json.combine.rec( list[(mid+1):length] )
 	
-	return( paste(left, right, sep="") )
+	return( paste(left, right, sep="\n") )
 	#return( sub('\n$', right, left) )
 }
 
@@ -719,9 +741,10 @@ ddg.json <- function()
 	# remove row names in objects
 	json <- gsub( ',\r?\n\t+"_row": "([0-9A-Za-z]|_|\\.|-|/)*"\n' , '\n' , json)
 	
-	# replace wrapping braces with newline characters
+	# EF EDITS
+	# remove wrapping braces
 	json <- sub( '^\\{' , '' , json )
-	json <- sub( '}\n$' , '' , json )
+	json <- sub( '\n}\n$' , '' , json )
 	
 	return( json )
 }
@@ -736,8 +759,9 @@ ddg.json <- function()
 	# top: wrap with name of node
 	node <- sub( '^\n' , node.name , node.content )
 	
+	# EF EDITS
 	# botton: wrap with close brace
-	return( sub('\n$', '\n\t}\n', node) )
+	return( sub('$', '\n\t}', node) )
 }
 
 # adds a comma and newline to the end of the given node for appending to other nodes
