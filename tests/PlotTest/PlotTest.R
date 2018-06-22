@@ -18,15 +18,15 @@ title("RStudio display")
 dev.off()
 
 # Plot to X11
-# X11()
-# plot(cylinders, mpg)
-# title ("X11 display")
-# dev.off()
+X11()
+plot(cylinders, mpg)
+title ("X11 display")
+dev.off()
 # 
 # # Plot to a file.  Test when the plot is not explicitly closed.
-# pdf ("plot.pdf")
-# plot(cylinders, mpg)
-# title ("pdf file")
+pdf ("plot.pdf")
+plot(cylinders, mpg)
+title ("pdf file")
 
 
 x <- 1

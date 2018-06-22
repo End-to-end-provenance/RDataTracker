@@ -57,6 +57,7 @@
   .ddg.clear.output.file()
   .ddg.clear.graphics.file()
   .ddg.clear.device.nodes ()
+  .ddg.create.device.table ()
   
   # Start tracing of input and output functions
   # capture.output is called twice to capture the output that is going to standard output and to
@@ -624,6 +625,37 @@
   .ddg.set (".ddg.new.device.nodes", append(device.nodes, new.device.node))
 }
 
+.ddg.create.device.table <- function() {
+  device.table <- 
+      data.frame(device.number = numeric(),
+                 file.name = character(),
+                 stringsAsFactors = FALSE)
+  .ddg.set (".ddg.device.table", device.table)
+}
+
+.ddg.add.to.device.table <- function (device.number, file.name) {
+  device.table <- .ddg.get (".ddg.device.table")
+  if (device.number %in% device.table$device.number) {
+    device.table$file.name[device.table$device.number == device.number] <- file.name
+  }
+  else {
+    device.table <- rbind (device.table, data.frame (device.number, file.name,
+            stringsAsFactors = FALSE))
+  }
+  .ddg.set (".ddg.device.table", device.table)
+}
+
+.ddg.get.file.for.device <- function (device.number) {
+  device.table <- .ddg.get (".ddg.device.table")
+  if (device.number %in% device.table$device.number) {
+    return (device.table$file.name[device.table$device.number == device.number])
+  }
+  else {
+    return ("")
+  }
+  
+}
+
 # Initialize the information about functions that initialize graphics devices
 .ddg.create.graphics.functions.df <- function () {
   # Functions that read files
@@ -700,7 +732,8 @@
 
   # Add the newly-opened graphics device to the list of open devices
   .ddg.set("ddg.open.devices", union(.ddg.get("ddg.open.devices"), dev.cur()))
-  
+
+    
 #  # Find all the graphics files that have potentially been opened.
 #  # Remember these file names until we find the dev.off call and then
 #  # determine which was written.
@@ -754,6 +787,8 @@
     print(paste("Adding graphics file: ", fname))
     .ddg.set ("graphics.files", append(graphics.files, fname))
     #print (paste ("graphics.files =", .ddg.get("graphics.files")))
+    
+    .ddg.add.to.device.table (dev.cur (), fname)
   }
 }
 
@@ -843,38 +878,40 @@
   }
   
   else {
+    
+    graphics.file <- .ddg.get.file.for.device (dev.number)
   
-    graphics.files <- .ddg.get ("graphics.files")
-    #print (paste ("ddg.capture.graphics: graphics.files =", graphics.files))
-    #if (length(graphics.files) == 0 && !.ddg.get(".ddg.no.graphics.file")) {
-    if (length(graphics.files) == 0 && !.ddg.get(".ddg.no.graphics.file") && names(dev.cur()) != "RStudioGD") {
-      print ("Returning - no graphics files found")
-      return()
-    }
-    
-    print (paste ("Open graphics files =", graphics.files))
-    graphics.file.info <- file.info(graphics.files)
-    print (paste ("graphics.file.info =", graphics.file.info))
-    print (paste ("graphics.file.info$mtime =", graphics.file.info$mtime))
-    print (paste ("is.na(graphics.file.info$mtime", is.na(graphics.file.info$mtime)))
-    
-    if (.ddg.get(".ddg.no.graphics.file") || all(is.na(graphics.file.info$mtime))) {
-  #  if (is.na(graphics.file.info$mtime)) {
-      graphics.file <- .ddg.capture.current.graphics()
-  #    # The file no longer exists.  Create a temporary file.
-  #    graphics.file <- paste0("dev.off.", .ddg.dnum()+1, ".pdf")
-  #    print(paste(".ddg.capture.graphics: writing to ", graphics.file))
-  #    
-  #    # Save the graphic to a file temporarily
-  #    #print(sys.calls())
-  #    print (paste ("dev.cur =", dev.cur()))
-  #    dev.print(device=pdf, file=graphics.file)
-      
-    }
-    else {
-      latest.file.date.row <- which.max (graphics.file.info$mtime)
-      #print (paste ("latest.file.date.row =", latest.file.date.row))
-      graphics.file <- graphics.files[latest.file.date.row]
+#    graphics.files <- .ddg.get ("graphics.files")
+#    #print (paste ("ddg.capture.graphics: graphics.files =", graphics.files))
+#    #if (length(graphics.files) == 0 && !.ddg.get(".ddg.no.graphics.file")) {
+#    if (length(graphics.files) == 0 && !.ddg.get(".ddg.no.graphics.file") && names(dev.cur()) != "RStudioGD") {
+#      print ("Returning - no graphics files found")
+#      return()
+#    }
+#    
+#    print (paste ("Open graphics files =", graphics.files))
+#    graphics.file.info <- file.info(graphics.files)
+#    print (paste ("graphics.file.info =", graphics.file.info))
+#    print (paste ("graphics.file.info$mtime =", graphics.file.info$mtime))
+#    print (paste ("is.na(graphics.file.info$mtime", is.na(graphics.file.info$mtime)))
+#    
+#    if (.ddg.get(".ddg.no.graphics.file") || all(is.na(graphics.file.info$mtime))) {
+#  #  if (is.na(graphics.file.info$mtime)) {
+#      graphics.file <- .ddg.capture.current.graphics()
+#  #    # The file no longer exists.  Create a temporary file.
+#  #    graphics.file <- paste0("dev.off.", .ddg.dnum()+1, ".pdf")
+#  #    print(paste(".ddg.capture.graphics: writing to ", graphics.file))
+#  #    
+#  #    # Save the graphic to a file temporarily
+#  #    #print(sys.calls())
+#  #    print (paste ("dev.cur =", dev.cur()))
+#  #    dev.print(device=pdf, file=graphics.file)
+#      
+#    }
+#    else {
+#      latest.file.date.row <- which.max (graphics.file.info$mtime)
+#      #print (paste ("latest.file.date.row =", latest.file.date.row))
+#      graphics.file <- graphics.files[latest.file.date.row]
       print (paste("ddg.capture.graphics: Latest graphics file =", graphics.file))
       
       # Check if the device is still open and close it if it is
@@ -884,11 +921,11 @@
         dev.off(dev.number)
       }
       
-    }
+ #   }
     
-    graphics.files <- graphics.files [graphics.files != graphics.file]
-    print (paste ("Setting graphics.files to", graphics.files))
-    .ddg.set ("graphics.files =", graphics.files)
+ #   graphics.files <- graphics.files [graphics.files != graphics.file]
+ #   print (paste ("Setting graphics.files to", graphics.files))
+ #   .ddg.set ("graphics.files =", graphics.files)
     
   }
 
