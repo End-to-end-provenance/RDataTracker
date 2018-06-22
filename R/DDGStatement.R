@@ -209,7 +209,7 @@ setMethod ("initialize",
       
       # find the list of the names of the function calls in the statement
 		.Object@functions.called <- .ddg.find.calls( .Object@parsed[[1]] )
-      
+
       return(.Object)
     }
 )
