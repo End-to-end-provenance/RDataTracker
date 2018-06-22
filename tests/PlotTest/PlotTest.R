@@ -15,17 +15,18 @@ mpg = c(mean(cars4Cyl.df$mpg), mean(cars6Cyl.df$mpg), mean(cars8Cyl.df$mpg))
 # Plot it to the default device
 plot(cylinders, mpg)
 title("RStudio display")
-
-# Plot to X11
-X11()
-plot(cylinders, mpg)
-title ("X11 display")
 dev.off()
 
-# Plot to a file.  Test when the plot is not explicitly closed.
-pdf ("plot.pdf")
-plot(cylinders, mpg)
-title ("pdf file")
+# Plot to X11
+# X11()
+# plot(cylinders, mpg)
+# title ("X11 display")
+# dev.off()
+# 
+# # Plot to a file.  Test when the plot is not explicitly closed.
+# pdf ("plot.pdf")
+# plot(cylinders, mpg)
+# title ("pdf file")
 
 
 x <- 1
