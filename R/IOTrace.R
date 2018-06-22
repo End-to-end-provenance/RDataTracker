@@ -1,3 +1,4 @@
+
 # Copyright (C) President and Fellows of Harvard College and 
 # Trustees of Mount Holyoke College, 2014, 2015, 2016, 2017.
 
@@ -642,11 +643,13 @@
     device.table <- rbind (device.table, data.frame (device.number, file.name,
             stringsAsFactors = FALSE))
   }
+  print (device.table)
   .ddg.set (".ddg.device.table", device.table)
 }
 
 .ddg.get.file.for.device <- function (device.number) {
   device.table <- .ddg.get (".ddg.device.table")
+  print (paste ("Getting file for device", device.number))
   if (device.number %in% device.table$device.number) {
     return (device.table$file.name[device.table$device.number == device.number])
   }
@@ -721,6 +724,8 @@
   
   #if (!.ddg.get (".ddg.no.graphics.file")) {
   if (names(dev.cur()) != "RStudioGD") {
+    .ddg.add.to.device.table (dev.cur (), .ddg.get (".ddg.last.graphics.file"))
+    
     tryCatch(
         # Allows dev.print to work when we want to save the plot.
         # Only do this if the graphics is going to a file.
@@ -788,7 +793,7 @@
     .ddg.set ("graphics.files", append(graphics.files, fname))
     #print (paste ("graphics.files =", .ddg.get("graphics.files")))
     
-    .ddg.add.to.device.table (dev.cur (), fname)
+    .ddg.set (".ddg.last.graphics.file", fname)
   }
 }
 
@@ -853,6 +858,7 @@
     file <- .ddg.capture.current.graphics()
     .ddg.set(".ddg.no.graphics.file", FALSE)
     .ddg.add.graphics.file (file)
+    .ddg.add.to.device.table (dev.cur (), file)
   }
 }
 
@@ -873,7 +879,9 @@
   .ddg.set("ddg.open.devices", setdiff(.ddg.get("ddg.open.devices"), dev.number))
   print (paste ("ddg.capture.graphics: Device closed: ", dev.number))
   
-  if (names(dev.cur()) == "RStudioGD") {
+  dev.name <- .ddg.get.file.for.device (dev.number)
+  #if (names(dev.cur()) == "RStudioGD") {
+  if (dev.name == "") { 
     graphics.file <- .ddg.capture.current.graphics()
   }
   
