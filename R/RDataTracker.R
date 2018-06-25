@@ -5271,8 +5271,7 @@ ddg.file.out <- function(filename, dname=NULL, pname=NULL) {
   }
   
   # Create output file node called filename and copy file.
-  print(paste("ddg.file.out copying ", filename))
-  print (sys.calls())
+  #print(paste("ddg.file.out copying ", filename))
   saved.file <- .ddg.file.copy("File", filename, dname, scope)
   #print(paste("ddg.file.out done copying ", filename))
   
@@ -5642,7 +5641,7 @@ ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE) {
 
   # If there is a display device open, grab what is on the display
   if (length(dev.list()) >= 1) {
-    print("ddg.save: Saving graphics open at end of script")
+    #print("ddg.save: Saving graphics open at end of script")
     tryCatch (.ddg.capture.graphics(called.from.save = TRUE),
         error = function (e) print(e))
   }
