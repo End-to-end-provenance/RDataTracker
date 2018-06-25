@@ -51,7 +51,7 @@
   .ddg.set (".ddg.add.device.io", FALSE)
   .ddg.set (".ddg.add.device.close", FALSE)
   .ddg.set (".ddg.no.graphics.file", FALSE)
-  
+  .ddg.set (".ddg.rplots.pdf.saved", FALSE)
   
   # Create an empty list for the input, output, and files
   .ddg.clear.input.file()
@@ -618,11 +618,13 @@
   .ddg.add.graphics.device.node()
   .ddg.add.graphics.io ()
   .ddg.capture.graphics()
+  print ("Returned from .ddg.capture.graphics")
   .ddg.clear.device.nodes ()
 }
 
 .ddg.clear.device.nodes <- function () {
   .ddg.set (".ddg.new.device.nodes", character())
+  .ddg.set (".ddg.rplots.pdf.saved", FALSE)
 }
 
 .ddg.add.device.node <- function (new.device.node) {
@@ -680,14 +682,14 @@
 }
 
 .ddg.trace.graphics.open <- function () {
-  #print ("Found graphics call")
+  #print ("Found graphics open")
   #print (sys.calls())
   
   if (.ddg.inside.call.to (".ddg.capture.graphics") || .ddg.inside.call.to (".ddg.trace.graphics.update")) {
     return()
   }
   
-  #print ("In .ddg.trace.graphics.open")
+  print ("In .ddg.trace.graphics.open")
   
   # Get the frame corresponding to the graphics function being traced
   frame.number <- .ddg.get.traced.function.frame.number()
@@ -700,7 +702,7 @@
   if (length(fname > 1)) {
     fname <- fname[length(fname)]
   }
-  #print(paste (".ddg.trace.graphics.open: fname =", fname))
+  print(paste (".ddg.trace.graphics.open: fname =", fname))
   
   # Get the name of the file parameter for the graphics function
   graphics.functions <- .ddg.get (".ddg.graphics.functions.df")
@@ -712,11 +714,11 @@
     .ddg.set(".ddg.last.graphics.file", "")
   }
   else {
-    #print(paste (".ddg.trace.graphics: file.param.name =", file.param.name))
+    print(paste (".ddg.trace.graphics: file.param.name =", file.param.name))
   
     # Get the value of the file parameter  
     file <- eval (as.symbol(file.param.name), env = sys.frame(frame.number))
-    #print(paste (".ddg.trace.graphics.open: file =", file))
+    print(paste (".ddg.trace.graphics.open: file =", file))
   
     .ddg.add.graphics.file (file)
   }
@@ -728,17 +730,25 @@
     return()
   } 
   
-  #print ("In .ddg.add.graphics.device.node")
+  print ("In .ddg.add.graphics.device.node")
+  print (paste ("dev.list =", dev.list(), names(dev.list()), collapse=", "))
+  print (paste ("dev.cur =", dev.cur()))
   
   #if (!.ddg.get (".ddg.no.graphics.file")) {
   if (names(dev.cur()) != "RStudioGD") {
     print (paste ("current device =", names(dev.cur())))
-    .ddg.add.to.device.table (dev.cur (), .ddg.get (".ddg.last.graphics.file"))
+    
+    if (.ddg.is.set (".ddg.last.graphics.file")) {
+      .ddg.add.to.device.table (dev.cur (), .ddg.get (".ddg.last.graphics.file"))
+    }
+    else {
+      .ddg.set(".ddg.no.graphics.file", TRUE)
+    }
     
     tryCatch(
         # Allows dev.print to work when we want to save the plot.
         # Only do this if the graphics is going to a file.
-        {#print (".ddg.add.graphics.device.node: calling dev.control")
+        {print (".ddg.add.graphics.device.node: calling dev.control")
         dev.control("enable")},
         error = function (e) return()
     )
@@ -746,7 +756,7 @@
 
   # Add the newly-opened graphics device to the list of open devices
   .ddg.set("ddg.open.devices", union(.ddg.get("ddg.open.devices"), dev.cur()))
-
+  print (.ddg.get ("ddg.open.devices"))
     
 #  # Find all the graphics files that have potentially been opened.
 #  # Remember these file names until we find the dev.off call and then
@@ -811,7 +821,7 @@
     return()
   }
   
-  #print ("In .ddg.trace.graphics.update")
+  print ("In .ddg.trace.graphics.update")
   .ddg.set (".ddg.add.device.io", TRUE)
 }
 
@@ -825,7 +835,7 @@
     return ()
   }
   
-  #print ("In .ddg.add.graphics.io")
+  print ("In .ddg.add.graphics.io")
   
   # Try adding the input edge.  It is not a problem if the node 
   # can't be found.  It means that the output is going to the
@@ -835,16 +845,20 @@
   
   if (!(dev.node.name %in% .ddg.get (".ddg.new.device.nodes"))) {
     if (dev.cur() %in% .ddg.get("ddg.open.devices")) {
-      #print (paste (".ddg.add.graphics.io: Creating input edge for", dev.node.name))
+      print (paste (".ddg.add.graphics.io: Creating input edge for", dev.node.name))
       .ddg.data2proc(dev.node.name, dscope = NULL)
     }
     else {
       # Add the newly-opened graphics device to the list of open devices
-      .ddg.set("ddg.open.devices", union(.ddg.get("ddg.open.devices"), dev.cur()))    
+      .ddg.set (".ddg.add.device.output", TRUE)
+      .ddg.add.graphics.device.node ()
+      return()
+      #print (paste (".ddg.add.graphics.io: Adding new open device ", dev.cur()))
+      #.ddg.set("ddg.open.devices", union(.ddg.get("ddg.open.devices"), dev.cur()))    
     }
     
     # Add an output node with the same name
-    #print (paste (".ddg.add.graphics.io: Creating node for output device", dev.node.name))
+    print (paste (".ddg.add.graphics.io: Creating node for output device", dev.node.name))
     .ddg.data.node("Data", dev.node.name, "graph", NULL)
     #print ("Creating edge to output device")
     .ddg.lastproc2data(dev.node.name)
@@ -852,6 +866,7 @@
   }
   
   .ddg.set (".ddg.add.device.io", FALSE)
+  print ("Done with .ddg.add.graphics.io")
 }
 
 .ddg.trace.graphics.close <- function () {
@@ -866,11 +881,15 @@
   .ddg.set (".ddg.add.device.close", TRUE)
   
   if (.ddg.get(".ddg.no.graphics.file") || names(dev.cur()) == "RStudioGD") {
+    print (".ddg.trace.graphics.close: no graphics file")
     file <- .ddg.capture.current.graphics()
     .ddg.set(".ddg.no.graphics.file", FALSE)
-    .ddg.add.graphics.file (file)
-    .ddg.add.to.device.table (dev.cur (), file)
+    if (!is.null(file)) {
+      .ddg.add.graphics.file (file)
+      .ddg.add.to.device.table (dev.cur (), file)
+    }
   }
+  print ("Done with .ddg.trace.graphics.close")
 }
 
 .ddg.capture.graphics <- function(called.from.save = FALSE) {
@@ -879,10 +898,10 @@
     return()
   }
   
-  #print ("In .ddg.capture.graphics")
+  print ("In .ddg.capture.graphics")
   
   if (called.from.save) {
-    #print (dev.list())
+    print (dev.list())
   }
 
 #  proc.node.name <- 
@@ -892,12 +911,13 @@
   
   dev.number <- .ddg.get(".ddg.dev.number")
   .ddg.set("ddg.open.devices", setdiff(.ddg.get("ddg.open.devices"), dev.number))
-  #print (paste ("ddg.capture.graphics: Device closed: ", dev.number))
+  print (paste ("ddg.capture.graphics: Device closed: ", dev.number))
   
   dev.name <- .ddg.get.file.for.device (dev.number)
   #if (names(dev.cur()) == "RStudioGD") {
   if (dev.name == "") { 
     graphics.file <- .ddg.capture.current.graphics()
+    print ("Done with .ddg.capture.current.graphics")
   }
   
   else {
@@ -959,20 +979,23 @@
     dev.off(dev.number)
   }
   
-
-  #print (paste (".ddg.capture.graphics: Creating file node for", graphics.file))
-  ddg.file.out (graphics.file)
-
-  # Add an input edge from the current device
-  dev.node.name <- paste0("dev.", dev.number)
-  #print(paste(".ddg.capture.current.graphics: dev.node.name =", dev.node.name))
-  #print(".ddg.capture.graphics: creating in edge")
-
-  # If the device was opened but never written to there will be no node.
-  if (.ddg.data.node.exists (dev.node.name)) {
-    .ddg.data2proc(dev.node.name, NULL)
+  if (!is.null (graphics.file)) {
+  
+  
+    print (paste (".ddg.capture.graphics: Creating file node for", graphics.file))
+    ddg.file.out (graphics.file)
+  
+    # Add an input edge from the current device
+    dev.node.name <- paste0("dev.", dev.number)
+    #print(paste(".ddg.capture.current.graphics: dev.node.name =", dev.node.name))
+    #print(".ddg.capture.graphics: creating in edge")
+  
+    # If the device was opened but never written to there will be no node.
+    if (.ddg.data.node.exists (dev.node.name)) {
+      .ddg.data2proc(dev.node.name, NULL)
+    }
+    #print(".ddg.capture.graphics: done creating in edge")
   }
-  #print(".ddg.capture.graphics: done creating in edge")
 
   #.ddg.capture.current.graphics(cmd, possible.graphics.files.open[latest.file.date.row])
   #print(paste(".ddg.capture.graphics: writing to ", possible.graphics.files.open[latest.file.date.row]))
@@ -1061,9 +1084,30 @@
   #print(sys.calls())
   print (paste ("dev.list =", dev.list(), names(dev.list()), collapse=", "))
   print (paste ("dev.cur =", dev.cur()))
-  dev.print(device=pdf, file=file)
-  #print ("dev.print complete")
+  file.written <- NULL
+  tryCatch (
+      {
+        dev.print(device=pdf, file=file)
+        file.written <- file
+      },
+      error = function(e) {
+        print ("dev.print failed; handling error")
+        print (paste ("names(dev.cur()) =", names(dev.cur())))
+        print (paste ("Rplots.pdf exists?", file.exists("Rplots.pdf")))
+        if (names(dev.cur()) == "pdf") {
+          print(".ddg.trace.graphics.close: found a pdf device but no graphics file")
+          if (file.exists ("Rplots.pdf") && !.ddg.get(".ddg.rplots.pdf.saved")) {
+            #dev.off()
+            print(".ddg.capture.current.graphic: found Rplots.pdf")
+            file.written <<- "Rplots.pdf"
+            .ddg.set (".ddg.rplots.pdf.saved", TRUE)
+          }
+        }
+        
+      }
+  )
+  print (paste ("dev.print complete: file =", file.written))
   #.ddg.set ("possible.graphics.files.open", file)
-  return(file)
+  return(file.written)
 }
 
