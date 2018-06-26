@@ -2520,9 +2520,9 @@ library(curl)
             .ddg.set(".ddg.possible.last.cmd", NULL)
           }
 
-          # Need to get this number before evaluating the command so that 
-          # when we evaluate a dev.off call we know which device was closed
-          .ddg.set(".ddg.dev.number", dev.cur())
+#          # Need to get this number before evaluating the command so that 
+#          # when we evaluate a dev.off call we know which device was closed
+#          .ddg.set(".ddg.dev.number", dev.cur())
           
           #if (cmd@has.dev.off && !cmd@createsGraphics && is.null(.ddg.get ("possible.graphics.files.open"))) {
 #          if (cmd@has.dev.off && is.null(.ddg.get ("possible.graphics.files.open"))) {
@@ -2564,10 +2564,10 @@ library(curl)
                   }
                   else {
                     return.value <- eval(annot, environ, NULL)
-                    #if (typeof(return.value) != "closure") {
-                    #  print (paste (".ddg.parse.commands: Done evaluating ", annot))
-                    #  print(paste(".ddg.parse.commands: setting .ddg.last.R.value to", return.value))
-                    #}
+                    if (typeof(return.value) != "closure") {
+                      #print (paste (".ddg.parse.commands: Done evaluating ", annot))
+                      #print(paste(".ddg.parse.commands: setting .ddg.last.R.value to", return.value))
+                    }
                     .ddg.set (".ddg.last.R.value", return.value)
                   }
                 }
@@ -3208,6 +3208,7 @@ library(curl)
     dev.copy(parseFun)
 
     # Turn it off (this switches back to prev device).
+    #print (paste ("dev.off called in .ddg.graphic.snapshot for device", dev.cur()))
     dev.off()
   }
 }
@@ -5413,8 +5414,13 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
   .ddg.set (".ddg.save.hashtable", save.hashtable)
   .ddg.set (".ddg.hash.algorithm", hash.algorithm)
   
-  if( is.null(r.script.path) )
+  if( is.null(r.script.path) ) {
     r.script.path <- getwd()
+    print (paste ("Copying RDataTracker-Ex.R to ~/tmp"))
+    file.copy("RDataTracker-Ex.R", paste0 ("~/tmp/RDataTracker-Ex.R"))
+    
+    
+  }
   
   # Setting the path for the ddg
   if (is.null(ddgdir)) {
@@ -5606,6 +5612,7 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
                 ignore.init = TRUE,
                 force.console = FALSE)
           else stop("r.script.path and f cannot both be NULL"),
+      #error = function(e) {print ("Error while executing script"); print (e)},
       finally={
         ddg.save(r.script.path)
         if(display==TRUE){
@@ -5629,6 +5636,8 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
 
 ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE) {
   if (!.ddg.is.init()) return(invisible())
+  
+  #print ("In ddg.save")
 
   if (interactive() && .ddg.enable.console()) {
     # Get the final commands
@@ -5637,19 +5646,27 @@ ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE) {
 
   # If there are any connections still open when the script ends,
   # create nodes and edges for them.
+  #print ("Calling .ddg.create.file.nodes.for.open.connections")
   .ddg.create.file.nodes.for.open.connections ()
+  #print ("Done with .ddg.create.file.nodes.for.open.connections")
 
   # If there is a display device open, grab what is on the display
+  #print ("About to capture graphics")
   if (length(dev.list()) >= 1) {
     #print("ddg.save: Saving graphics open at end of script")
+    #print (dev.list())
     tryCatch (.ddg.capture.graphics(called.from.save = TRUE),
         error = function (e) print(e))
+    #print ("ddg.save: Done saving graphics")
   }
+  #print ("Done capturing graphics")
   
   # Delete temporary files.
   # .ddg.delete.temp()
   
+  #print ("Stopping IO tracing")
   .ddg.stop.iotracing()
+  #print ("IO tracing stopped")
 
   # Save ddg.json to file.
   ddg.json.write()

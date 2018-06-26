@@ -33,7 +33,7 @@
 #    file nodes and edges.
 #
 # Note that we don't want to combine functions 2 & 3 above because function
-# 2 must be called while inside the read/write/close function.  Function 
+# 2 must be called while inside the read/write/close/graphics function.  Function 
 # 3 cannot be called until the R statement containing the call completes
 # so that the procedure node exists to connect the file node to.
 
@@ -51,12 +51,11 @@
   .ddg.set (".ddg.add.device.io", FALSE)
   .ddg.set (".ddg.add.device.close", FALSE)
   .ddg.set (".ddg.no.graphics.file", FALSE)
-  .ddg.set (".ddg.rplots.pdf.saved", FALSE)
+  .ddg.clear.device.nodes ()
   
   # Create an empty list for the input, output, and files
   .ddg.clear.input.file()
   .ddg.clear.output.file()
-  .ddg.clear.graphics.file()
   .ddg.clear.device.nodes ()
   .ddg.create.device.table ()
   
@@ -96,6 +95,7 @@
 
 #' Stop tracing I/O calls.  This should be called when RDT finishes.
 .ddg.stop.iotracing <- function () {
+  
   # Stop tracing output functions.  Will this be a problem if ddg.save is called from the console?
   # capture.output is used to prevent "Untracing" messages from appearing in the output
   capture.output (untrace(.ddg.get(".ddg.file.write.functions.df")$function.names), type="message")
@@ -551,6 +551,7 @@
   if (is.symbol (close.caller)) {
     close.caller.name <- as.character(close.caller)
     if (startsWith (close.caller.name, "ddg") || startsWith (close.caller.name, ".ddg")) {  # 
+      #print ("Returning - inside a ddg function")
       return()
     }
   }
@@ -560,6 +561,7 @@
   # (used to save copies of complex data values)
   if (.ddg.inside.call.to ("capture.output") || .ddg.inside.call.to ("parse") 
       || .ddg.inside.call.to (".ddg.snapshot")) {
+    #print ("Returning -- inside capture.ouput, parse or .ddg.snapshot")
     return()
   }
   
@@ -567,11 +569,13 @@
   # the appropriate nodes will be created by those functions
   read.funs <- .ddg.get(".ddg.file.read.functions.df")$function.names
   if (any (sapply (read.funs, .ddg.inside.call.to))) {
+    #print ("Returning -- inside a read function")
     return()
   }
   
   write.funs <- .ddg.get(".ddg.file.write.functions.df")$function.names
   if (any (sapply (write.funs, .ddg.inside.call.to))) {
+    #print ("Returning -- inside a write function")
     return()
   }
   
@@ -614,24 +618,41 @@
 
 ################ Functions to track graphics calls ####################
 
+#' Create all the nodes and edges associated with graphics functions executed
+#' in the last line of R code.
+#' 
+#' @return nothing
 .ddg.create.graphics.nodes.and.edges <- function () {
   .ddg.add.graphics.device.node()
   .ddg.add.graphics.io ()
   .ddg.capture.graphics()
-  #print ("Returned from .ddg.capture.graphics")
   .ddg.clear.device.nodes ()
 }
 
+#' Clear the information that we need to reset with each R statement executed.
+#' 
+#' @return nothing
 .ddg.clear.device.nodes <- function () {
   .ddg.set (".ddg.new.device.nodes", character())
   .ddg.set (".ddg.rplots.pdf.saved", FALSE)
+  .ddg.set (".ddg.captured.devices", numeric())
 }
 
+#' .ddg.new.device.nodes is the list of device nodes created in the previous
+#' R statement.  Since an R statement may result in multiple calls to graphics
+#' functions, we want to remember which dev nodes we have created so we don't
+#' end up with duplicates attached to the same node.
+#' 
+#' @return nothing
 .ddg.add.device.node <- function (new.device.node) {
   device.nodes <- .ddg.get (".ddg.new.device.nodes")
   .ddg.set (".ddg.new.device.nodes", append(device.nodes, new.device.node))
 }
 
+#' Create an empty device table to remember which file names are associated
+#' with each graphic device
+#' 
+#' @return nothing
 .ddg.create.device.table <- function() {
   device.table <- 
       data.frame(device.number = numeric(),
@@ -640,35 +661,47 @@
   .ddg.set (".ddg.device.table", device.table)
 }
 
+#' Add a binding between a device number and a file name to the device table.
+#' 
+#' @param device.number the number of the graphics device
+#' @param file.name the name of the file being written to
+#' 
+#' @return nothing
 .ddg.add.to.device.table <- function (device.number, file.name) {
   device.table <- .ddg.get (".ddg.device.table")
+  
+  # If the number is in the table, update the associated file name
   if (device.number %in% device.table$device.number) {
     device.table$file.name[device.table$device.number == device.number] <- file.name
   }
+  
+  # Add a new entry for the device number and file name
   else {
-    #print (paste (".ddg.add.to.device.table: device.number =", device.number))
-    #print (paste (".ddg.add.to.device.table: file.name =", file.name))
-    #print (sys.calls())
     device.table <- rbind (device.table, data.frame (device.number, file.name,
             stringsAsFactors = FALSE))
   }
-  #print (device.table)
+
   .ddg.set (".ddg.device.table", device.table)
 }
 
+#' Returns the file name associated with a graphics device
+#' 
+#' @param device.number the number of the graphics device to look up 
+#' 
+#' @return the name of the file associated with the device number.
+#' Returns an empty string if the device number is not in the table.
 .ddg.get.file.for.device <- function (device.number) {
   device.table <- .ddg.get (".ddg.device.table")
-  #print (paste ("Getting file for device", device.number))
+
   if (device.number %in% device.table$device.number) {
     return (device.table$file.name[device.table$device.number == device.number])
   }
   else {
     return ("")
   }
-  
 }
 
-# Initialize the information about functions that initialize graphics devices
+#' Initialize the information about functions that initialize graphics devices
 .ddg.create.graphics.functions.df <- function () {
   # Functions that read files
   function.names <-
@@ -681,9 +714,13 @@
   return (data.frame (function.names, param.names, stringsAsFactors=FALSE))
 }
 
+#' Called when a function that opens a graphics device is called.
+#' If this call was due to a call to .ddg.capture.graphics or .ddg.trace.graphics.update,
+#' the function returns without doing anything.
+#' Otherwise, if a file was created to hold the graphics, it records the file name.
+#' It also sets the .ddg.add.device.output flag so that when the current R statement completes
+#' the appropriate nodes and edges can be created.
 .ddg.trace.graphics.open <- function () {
-  #print ("Found graphics open")
-  #print (sys.calls())
   
   if (.ddg.inside.call.to (".ddg.capture.graphics") || .ddg.inside.call.to (".ddg.trace.graphics.update")) {
     return()
@@ -720,12 +757,23 @@
     file <- eval (as.symbol(file.param.name), env = sys.frame(frame.number))
     #print(paste (".ddg.trace.graphics.open: file =", file))
   
-    .ddg.add.graphics.file (file)
+    .ddg.set (".ddg.last.graphics.file", file)
   }
+  
+  # Set the flag to tell .ddg.add.graphics.device.node that it has work to do 
+  # when it gets called.  We cannot call that function here because we 
+  # need to wait until the R statement completes execution so that the 
+  # procedure node exists before we create the graphics data nodes and edges.
   .ddg.set (".ddg.add.device.output", TRUE)
 }
 
+#' Creates an output node for a graphics device and connects it 
+#' to the last procedural node.  Does nothing if the last R statement
+#' did not write to a graphics device.
+#' 
+#' @return nothing
 .ddg.add.graphics.device.node <- function() {
+  # Check if a graphics device was written to
   if (!.ddg.get (".ddg.add.device.output")) {
     return()
   } 
@@ -734,10 +782,9 @@
   #print (paste ("dev.list =", dev.list(), names(dev.list()), collapse=", "))
   #print (paste ("dev.cur =", dev.cur()))
   
-  #if (!.ddg.get (".ddg.no.graphics.file")) {
   if (names(dev.cur()) != "RStudioGD") {
-    #print (paste ("current device =", names(dev.cur())))
-    
+    # Record the binding between the current device and the graphics file, if
+    # a file is being used.
     if (.ddg.is.set (".ddg.last.graphics.file")) {
       .ddg.add.to.device.table (dev.cur (), .ddg.get (".ddg.last.graphics.file"))
     }
@@ -747,75 +794,33 @@
     
     tryCatch(
         # Allows dev.print to work when we want to save the plot.
-        # Only do this if the graphics is going to a file.
-        {#print (".ddg.add.graphics.device.node: calling dev.control")
-        dev.control("enable")},
+        # Only do this if the graphics is going to a file.  It seems
+        # that it should also work if the output is going to the screen, but
+        # it doesn't.
+        dev.control("enable"),
         error = function (e) return()
     )
   }
 
   # Add the newly-opened graphics device to the list of open devices
   .ddg.set("ddg.open.devices", union(.ddg.get("ddg.open.devices"), dev.cur()))
-  #print (.ddg.get ("ddg.open.devices"))
-    
-#  # Find all the graphics files that have potentially been opened.
-#  # Remember these file names until we find the dev.off call and then
-#  # determine which was written.
-#  new.possible.graphics.files.open <- .ddg.find.files (main.object, .ddg.get(".ddg.graphics.functions.df"), env)
-#  if (!is.null(new.possible.graphics.files.open)) {
-#    #print(paste(".ddg.set.grpahics.files: opened", new.possible.graphics.files.open))
-#    if (!is.null(.ddg.get ("possible.graphics.files.open"))) {
-#      possible.graphics.files.open <- .ddg.get ("possible.graphics.files.open")
-#      .ddg.set ("possible.graphics.files.open",
-#          c (new.possible.graphics.files.open, possible.graphics.files.open))
-#    }
-#    
-#    else {
-#      .ddg.set ("possible.graphics.files.open", new.possible.graphics.files.open)
-#    }
-#    #print (paste (".ddg.set.graphics.files: Found ", new.possible.graphics.files.open))
-#    
-#  }
-  
-  #print(paste(".ddg.add.graphics.device.node: dev.cur =", dev.cur()))
+
+  # Create a node for the grpahics device and connect it to the last procedural node.
   dev.node.name <- paste0("dev.", dev.cur())
   .ddg.data.node("Data", dev.node.name, "graph", NULL)
-#  .ddg.proc2data(main.object@abbrev, dev.node.name)
   .ddg.lastproc2data(dev.node.name)
+  
+  # Remember that the device node was created for this statement to avoid duplicates.
   .ddg.set (".ddg.add.device.output", FALSE)
   .ddg.add.device.node (dev.node.name)
 }
 
-
-#' Clears out the list of graphics files.  This should be 
-#' called on initialization and after the device nodes are created.
+#' This is called when a function that updates graphics is called.
+#' If the call is within a call to .ddg.capture.graphics, it does nothing.
+#' Otherwise, it sets a flag so that we create the device node with
+#' input and output edges when the R statement completes.
 #' 
 #' @return nothing
-.ddg.clear.graphics.file <- function () {
-  .ddg.set ("graphics.files", character())
-}
-
-#' Add a file name to the graphics list.
-#' 
-#' @param fname the name of the file to add to the list
-#' 
-#' @return nothing
-.ddg.add.graphics.file <- function (fname) {
-  graphics.files <- .ddg.get("graphics.files")
-  #print(paste("In .ddg.add.graphics.file"))
-  
-  # Only add the file to the list if it is not already there.  It could be 
-  # there if there are multiple functions called indirectly in one R statement
-  # that write to the same file.
-  if (!(fname %in% graphics.files)) {
-    #print(paste("Adding graphics file: ", fname))
-    .ddg.set ("graphics.files", append(graphics.files, fname))
-    #print (paste ("graphics.files =", .ddg.get("graphics.files")))
-    
-    .ddg.set (".ddg.last.graphics.file", fname)
-  }
-}
-
 .ddg.trace.graphics.update <- function () {
   if (.ddg.inside.call.to (".ddg.capture.graphics") ) { 
     return()
@@ -825,91 +830,109 @@
   .ddg.set (".ddg.add.device.io", TRUE)
 }
 
-# Add data in and data out nodes that represent the current device.
-#
-# cmd - Assumed to be a function that modifies the graphics device,
-# such as a function in the base graphics package.
-
+#' Add data in and data out nodes that represent the current device.
+#'
+#' @return nothing
 .ddg.add.graphics.io <- function () {
+  # Check if the last R statement updated graphics
   if (!.ddg.get (".ddg.add.device.io")) {
     return ()
   }
   
   #print ("In .ddg.add.graphics.io")
   
-  # Try adding the input edge.  It is not a problem if the node 
-  # can't be found.  It means that the output is going to the
-  # RStudio window, not a file, so there has been no call like pdf
-  # or jpg that would have created the data node.
   dev.node.name <- paste0("dev.", dev.cur())
   
+  # Make sure we did not already create the device node for this statement. 
   if (!(dev.node.name %in% .ddg.get (".ddg.new.device.nodes"))) {
+    
+    # Check if there is already a node for this device. 
     if (dev.cur() %in% .ddg.get("ddg.open.devices")) {
-      #print (paste (".ddg.add.graphics.io: Creating input edge for", dev.node.name))
+      # Create an input edge from that node to the last procedure node
       .ddg.data2proc(dev.node.name, dscope = NULL)
+
+      # Add an output node with the same name and make it an output from
+      # the last procedure node.
+      .ddg.data.node("Data", dev.node.name, "graph", NULL)
+      .ddg.lastproc2data(dev.node.name)
+      
+      # Remember that the node was created.
+      .ddg.add.device.node (dev.node.name)
     }
+    
+    # If there is no previous device node for this device, it means 
+    # that the output is going to the default graphics device, not a file, 
+    # so there has been no call like pdf or jpg that would have created the data node.
+    # In that case, treat this like a device creation, rather than an update.
     else {
       # Add the newly-opened graphics device to the list of open devices
       .ddg.set (".ddg.add.device.output", TRUE)
       .ddg.add.graphics.device.node ()
       return()
-      #print (paste (".ddg.add.graphics.io: Adding new open device ", dev.cur()))
-      #.ddg.set("ddg.open.devices", union(.ddg.get("ddg.open.devices"), dev.cur()))    
     }
     
-    # Add an output node with the same name
-    #print (paste (".ddg.add.graphics.io: Creating node for output device", dev.node.name))
-    .ddg.data.node("Data", dev.node.name, "graph", NULL)
-    #print ("Creating edge to output device")
-    .ddg.lastproc2data(dev.node.name)
-    .ddg.add.device.node (dev.node.name)
   }
   
+  # Clear the flag to prepare for the next statement.
   .ddg.set (".ddg.add.device.io", FALSE)
-  #print ("Done with .ddg.add.graphics.io")
 }
 
+#' This is called when a graphics device is closed.
+#' If the graphics is going to the screen, it saves it to a file,
+#' since we need to do that before the device closes.  If it is
+#' going to a file, we need to wait until after the device is
+#' closed to copy the file.
 .ddg.trace.graphics.close <- function () {
   if (.ddg.inside.call.to (".ddg.capture.graphics") ) { 
     return()
   }
   
   #print ("In .ddg.trace.graphics.close")
+  #print (sys.calls())
   #print (paste ("dev.list =", dev.list(), names(dev.list()), collapse=", "))
   #print (paste ("dev.cur =", dev.cur()))
   
+  # Set the flag so that .ddg.capture.graphics executes after the
+  # R statement completes.
   .ddg.set (".ddg.add.device.close", TRUE)
+  .ddg.set(".ddg.dev.number", dev.cur())
   
+  
+  # Output is going to the screen
   if (.ddg.get(".ddg.no.graphics.file") || names(dev.cur()) == "RStudioGD") {
-    #print (".ddg.trace.graphics.close: no graphics file")
+    # Write the graphics to a file and record the file name
+    # in the device table.
     file <- .ddg.capture.current.graphics()
     .ddg.set(".ddg.no.graphics.file", FALSE)
     if (!is.null(file)) {
-      .ddg.add.graphics.file (file)
+      .ddg.set (".ddg.last.graphics.file", file)
       .ddg.add.to.device.table (dev.cur (), file)
     }
   }
-  #print ("Done with .ddg.trace.graphics.close")
 }
 
+#' Capture the screen graphics to a file
+#' 
+#' @param called.from.save If true, it will recursively capture the graphics
+#' from all open devices.
+#' 
+#' @return nothing
 .ddg.capture.graphics <- function(called.from.save = FALSE) {
   if (!.ddg.get (".ddg.add.device.close") && !called.from.save) {
-    #print ("Returning - .ddg.add.device.close is false")
     return()
   }
   
   #print ("In .ddg.capture.graphics")
   
   if (called.from.save) {
-    #print (dev.list())
+    dev.number <- dev.cur()
+    if (dev.number == 1) {
+      return()
+    }
   }
-
-#  proc.node.name <- 
-#      if (is.null(cmd)) NULL
-#      else if (is.character(cmd)) cmd
-#      else cmd@abbrev
-  
-  dev.number <- .ddg.get(".ddg.dev.number")
+  else {
+    dev.number <- .ddg.get(".ddg.dev.number")
+  }
   .ddg.set("ddg.open.devices", setdiff(.ddg.get("ddg.open.devices"), dev.number))
   #print (paste ("ddg.capture.graphics: Device closed: ", dev.number))
   
@@ -923,6 +946,16 @@
   else {
     
     graphics.file <- .ddg.get.file.for.device (dev.number)
+    
+    # Check if the device is still open and close it if it is
+    # We need to do this so that the file.out call can
+    # copy the file.
+#    if (dev.number %in% dev.list() && !called.from.save) {
+    if (dev.number %in% dev.list()) {
+      #print(paste ("dev.off called in .ddg.capture.graphics for device", dev.number))
+      dev.off(dev.number)
+    }
+    
   
 #    graphics.files <- .ddg.get ("graphics.files")
 #    #print (paste ("ddg.capture.graphics: graphics.files =", graphics.files))
@@ -972,13 +1005,6 @@
     
   }
   
-  # Check if the device is still open and close it if it is
-  # We need to do this so that the file.out call can
-  # copy the file.
-  if (dev.number %in% dev.list()) {
-    dev.off(dev.number)
-  }
-  
   if (!is.null (graphics.file)) {
   
   
@@ -1002,9 +1028,16 @@
   .ddg.set (".ddg.add.device.close", FALSE)
   .ddg.set(".ddg.no.graphics.file", FALSE)
   
-  if (called.from.save && dev.cur() != 1) {
-    .ddg.set(".ddg.dev.number", dev.cur())
-    .ddg.capture.graphics (TRUE)
+ # if (called.from.save && dev.cur() != 1) {
+  if (called.from.save) {
+    .ddg.set (".ddg.captured.devices", c(.ddg.get(".ddg.captured.devices"), dev.number))
+    if (dev.number == dev.cur()) {
+      dev.set()
+    }
+    if (!(dev.cur() %in% .ddg.get(".ddg.captured.devices"))) {
+      .ddg.set(".ddg.dev.number", dev.cur())
+      .ddg.capture.graphics (TRUE)
+    }
   }
   
   return(graphics.file)
