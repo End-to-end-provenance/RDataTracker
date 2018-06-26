@@ -50,8 +50,7 @@
   .ddg.set (".ddg.add.device.output", FALSE)
   .ddg.set (".ddg.add.device.io", FALSE)
   .ddg.set (".ddg.add.device.close", FALSE)
-  .ddg.set (".ddg.no.graphics.file", FALSE)
-  .ddg.clear.device.nodes ()
+  .ddg.set (".ddg.no.graphics.file", TRUE)
   
   # Create an empty list for the input, output, and files
   .ddg.clear.input.file()
@@ -756,7 +755,7 @@
     # Get the value of the file parameter  
     file <- eval (as.symbol(file.param.name), env = sys.frame(frame.number))
     #print(paste (".ddg.trace.graphics.open: file =", file))
-  
+    .ddg.set(".ddg.no.graphics.file", FALSE)
     .ddg.set (".ddg.last.graphics.file", file)
   }
   
@@ -785,7 +784,7 @@
   if (names(dev.cur()) != "RStudioGD") {
     # Record the binding between the current device and the graphics file, if
     # a file is being used.
-    if (.ddg.is.set (".ddg.last.graphics.file")) {
+    if (.ddg.is.set (".ddg.last.graphics.file") && .ddg.get(".ddg.last.graphics.file") != "") {
       .ddg.add.to.device.table (dev.cur (), .ddg.get (".ddg.last.graphics.file"))
     }
     else {
@@ -888,7 +887,6 @@
   }
   
   #print ("In .ddg.trace.graphics.close")
-  #print (sys.calls())
   #print (paste ("dev.list =", dev.list(), names(dev.list()), collapse=", "))
   #print (paste ("dev.cur =", dev.cur()))
   
@@ -924,8 +922,13 @@
   
   #print ("In .ddg.capture.graphics")
   
+  # Determine which device to capture graphics for.  When called.from.save
+  # we will be capturing graphics from all open devices.
   if (called.from.save) {
     dev.number <- dev.cur()
+    
+    # Device 1 is standard output.  When this comes up as dev.cur, it
+    # means we are done capturing graphics.
     if (dev.number == 1) {
       return()
     }
@@ -933,205 +936,93 @@
   else {
     dev.number <- .ddg.get(".ddg.dev.number")
   }
-  .ddg.set("ddg.open.devices", setdiff(.ddg.get("ddg.open.devices"), dev.number))
-  #print (paste ("ddg.capture.graphics: Device closed: ", dev.number))
+  #print (paste ("ddg.capture.graphics: Device being captured: ", dev.number))
   
+  # Remove from the open.devices list so that we do not get a device node created
+  .ddg.set("ddg.open.devices", setdiff(.ddg.get("ddg.open.devices"), dev.number))
+  
+  # If graphics is going to a file, determine what file
   dev.name <- .ddg.get.file.for.device (dev.number)
-  #if (names(dev.cur()) == "RStudioGD") {
-  if (dev.name == "") { 
+  if (dev.name == "") {
+    # Capture screen graphics
     graphics.file <- .ddg.capture.current.graphics()
-    #print ("Done with .ddg.capture.current.graphics")
   }
   
   else {
-    
     graphics.file <- .ddg.get.file.for.device (dev.number)
     
     # Check if the device is still open and close it if it is
     # We need to do this so that the file.out call can
     # copy the file.
-#    if (dev.number %in% dev.list() && !called.from.save) {
     if (dev.number %in% dev.list()) {
-      #print(paste ("dev.off called in .ddg.capture.graphics for device", dev.number))
       dev.off(dev.number)
     }
-    
-  
-#    graphics.files <- .ddg.get ("graphics.files")
-#    #print (paste ("ddg.capture.graphics: graphics.files =", graphics.files))
-#    #if (length(graphics.files) == 0 && !.ddg.get(".ddg.no.graphics.file")) {
-#    if (length(graphics.files) == 0 && !.ddg.get(".ddg.no.graphics.file") && names(dev.cur()) != "RStudioGD") {
-#      print ("Returning - no graphics files found")
-#      return()
-#    }
-#    
-#    print (paste ("Open graphics files =", graphics.files))
-#    graphics.file.info <- file.info(graphics.files)
-#    print (paste ("graphics.file.info =", graphics.file.info))
-#    print (paste ("graphics.file.info$mtime =", graphics.file.info$mtime))
-#    print (paste ("is.na(graphics.file.info$mtime", is.na(graphics.file.info$mtime)))
-#    
-#    if (.ddg.get(".ddg.no.graphics.file") || all(is.na(graphics.file.info$mtime))) {
-#  #  if (is.na(graphics.file.info$mtime)) {
-#      graphics.file <- .ddg.capture.current.graphics()
-#  #    # The file no longer exists.  Create a temporary file.
-#  #    graphics.file <- paste0("dev.off.", .ddg.dnum()+1, ".pdf")
-#  #    print(paste(".ddg.capture.graphics: writing to ", graphics.file))
-#  #    
-#  #    # Save the graphic to a file temporarily
-#  #    #print(sys.calls())
-#  #    print (paste ("dev.cur =", dev.cur()))
-#  #    dev.print(device=pdf, file=graphics.file)
-#      
-#    }
-#    else {
-#      latest.file.date.row <- which.max (graphics.file.info$mtime)
-#      #print (paste ("latest.file.date.row =", latest.file.date.row))
-#      graphics.file <- graphics.files[latest.file.date.row]
-      #print (paste("ddg.capture.graphics: Latest graphics file =", graphics.file))
-      
-#      # Check if the device is still open and close it if it is
-#      # We need to do this so that the file.out call can
-#      # copy the file.
-#      if (dev.number %in% dev.list()) {
-#        dev.off(dev.number)
-#      }
-      
- #   }
-    
- #   graphics.files <- graphics.files [graphics.files != graphics.file]
- #   print (paste ("Setting graphics.files to", graphics.files))
- #   .ddg.set ("graphics.files =", graphics.files)
-    
   }
   
+  # If going to a file, copy the file and create a node for it.
   if (!is.null (graphics.file)) {
-  
-  
-    #print (paste (".ddg.capture.graphics: Creating file node for", graphics.file))
     ddg.file.out (graphics.file)
   
     # Add an input edge from the current device
     dev.node.name <- paste0("dev.", dev.number)
-    #print(paste(".ddg.capture.current.graphics: dev.node.name =", dev.node.name))
-    #print(".ddg.capture.graphics: creating in edge")
   
-    # If the device was opened but never written to there will be no node.
+    # If the device was opened but never written to there will be no previous node.
+    # so don't try to create the edge in that case.
     if (.ddg.data.node.exists (dev.node.name)) {
       .ddg.data2proc(dev.node.name, NULL)
     }
-    #print(".ddg.capture.graphics: done creating in edge")
+    
+    # Clear this flag to indicate that the graphics file has been saved.
+    .ddg.set (".ddg.no.graphics.file", TRUE)
   }
 
-  #.ddg.capture.current.graphics(cmd, possible.graphics.files.open[latest.file.date.row])
-  #print(paste(".ddg.capture.graphics: writing to ", possible.graphics.files.open[latest.file.date.row]))
-  .ddg.set (".ddg.add.device.close", FALSE)
-  .ddg.set(".ddg.no.graphics.file", FALSE)
-  
- # if (called.from.save && dev.cur() != 1) {
+  # If called from save, we should capture all the open graphics devices
   if (called.from.save) {
+    # Remember which devices have been captured
     .ddg.set (".ddg.captured.devices", c(.ddg.get(".ddg.captured.devices"), dev.number))
+    
+    # If the device just captured is still the current device, move on to the next
+    # open device.  If it is not the current device, use the current device.
     if (dev.number == dev.cur()) {
       dev.set()
     }
+    
+    # If the current device has not been captured yet, recurse to save the next one.
     if (!(dev.cur() %in% .ddg.get(".ddg.captured.devices"))) {
       .ddg.set(".ddg.dev.number", dev.cur())
       .ddg.capture.graphics (TRUE)
     }
   }
   
-  return(graphics.file)
-
-
-#  #print(paste(".ddg.capture.graphics: ", proc.node.name))
-#  if (!is.null(.ddg.get ("possible.graphics.files.open")) && !is.null(proc.node.name)) {
-#    possible.graphics.files.open <- .ddg.get ("possible.graphics.files.open")
-#  
-#    # Find the most recent file
-#    #print(paste(".ddg.capture.graphics: possible.graphics.files.open =", possible.graphics.files.open))
-#    #print(".ddg.capture.graphics: getting file info")
-#    graphics.file.info <- file.info(possible.graphics.files.open)
-#    #print(".ddg.capture.graphics: getting modification time")
-#    latest.file.date.row <- which.max (graphics.file.info$mtime)
-#    
-#    # Check if the device is still open and close it if it is
-#    # We need to do this so that the file.out call can
-#    # copy the file.
-#    if (dev.number %in% dev.list()) dev.off(dev.number)
-#    
-#    #print(".ddg.capture.graphics: creating file node")
-#    
-#    if (!is.null(proc.node.name)) {
-#      ddg.file.out (possible.graphics.files.open[latest.file.date.row], pname=proc.node.name)
-#      
-#      # Add an input edge from the current device
-#      dev.node.name <- paste0("dev.", dev.number)
-#      #print(paste(".ddg.capture.current.graphics: dev.node.name =", dev.node.name))
-#      #print(".ddg.capture.graphics: creating in edge")
-#      
-#      # If the device was opened but never written to there will be no node.
-#      if (.ddg.data.node.exists (dev.node.name)) {
-#        .ddg.data2proc(dev.node.name, NULL, proc.node.name)
-#      }
-#      #print(".ddg.capture.graphics: done creating in edge")
-#      
-#      #.ddg.capture.current.graphics(cmd, possible.graphics.files.open[latest.file.date.row])
-#      #print(paste(".ddg.capture.graphics: writing to ", possible.graphics.files.open[latest.file.date.row]))
-#      .ddg.set ("possible.graphics.files.open", NULL)
-#    }
-#    
-#    return(possible.graphics.files.open[latest.file.date.row])
-#  }
-#  
-#  # Output is going to the display, so we need to make up a name
-#  #dev.file <- .ddg.capture.current.graphics(proc.node.name)
-#  
-#  if (called.from.save) {
-#    #print(paste(".ddg.capture.graphics: dev.file =", dev.file))
-#    #print(paste(".ddg.capture.graphics: proc.node.name =", proc.node.name))
-#    ddg.file.out (dev.file, pname=proc.node.name)
-#    #print(paste(".ddg.capture.graphics: returned from ddg.file.out"))
-#    
-#    # Remove the temporary file
-#    file.remove(dev.file)
-#    
-#    # Add an input edge from the current device
-#    dev.node.name <- paste0("dev.", dev.cur())
-#    #print(paste(".ddg.capture.current.graphics: dev.node.name =", dev.node.name))
-#    # If the device was opened but never written to there will be no node.
-#    if (.ddg.data.node.exists (dev.node.name)) {
-#      .ddg.data2proc(dev.node.name, NULL, proc.node.name)
-#    }
-#  }
-#  
-#  return (dev.file)  
+  .ddg.set (".ddg.add.device.close", FALSE)
+  return()
 }
 
-# Captures what is on the current display to a file, creates a file node
-# and connects to the ddg.
+#' Captures what is on the current display to a file, creates a file node
+#' and connects to the ddg.
+#' 
+#' @return the name of the file containing the captured graphics
 .ddg.capture.current.graphics <- function() {
+  #print ("In .ddg.capture.current.graphics")
+  
+  # Create the file name to save the screen graphics to
   file <- paste0("dev.off.", .ddg.dnum()+1, ".pdf")
-  #print(paste(".ddg.capture.current.graphics: writing to ", file))
   
   # Save the graphic to a file temporarily
-  #print(sys.calls())
-  #print (paste ("dev.list =", dev.list(), names(dev.list()), collapse=", "))
-  #print (paste ("dev.cur =", dev.cur()))
   file.written <- NULL
   tryCatch (
       {
+        # Try to save the graphics to a file
         dev.print(device=pdf, file=file)
         file.written <- file
       },
       error = function(e) {
-        #print ("dev.print failed; handling error")
-        #print (paste ("names(dev.cur()) =", names(dev.cur())))
-        #print (paste ("Rplots.pdf exists?", file.exists("Rplots.pdf")))
+        # dev.print fails when running from the test scripts, or Rscript in general
+        # In that case, check for the existence of Rplots.pdf, which is 
+        # where Rscript places plots sent to the default graphics.
         if (names(dev.cur()) == "pdf") {
-          #print(".ddg.trace.graphics.close: found a pdf device but no graphics file")
           if (file.exists ("Rplots.pdf") && !.ddg.get(".ddg.rplots.pdf.saved")) {
-            #dev.off()
-            #print(".ddg.capture.current.graphic: found Rplots.pdf")
+            dev.off()
             file.written <<- "Rplots.pdf"
             .ddg.set (".ddg.rplots.pdf.saved", TRUE)
           }
@@ -1139,8 +1030,6 @@
         
       }
   )
-  #print (paste ("dev.print complete: file =", file.written))
-  #.ddg.set ("possible.graphics.files.open", file)
   return(file.written)
 }
 
