@@ -4,102 +4,111 @@
 		"rdt": "http://rdatatracker.org/"
 	},
 
+	"agent" : {
+		// agent: this json file and the tool that produced this
+		"rdt:a1": {
+			"rdt:tool.name": "RDataTracker",
+			"rdt:tool.version": "2.27.0",
+			"rdt:json.version": "2.1"
+		}
+	},
+
 	"activity" : {
 		// procedure nodes
-		"p1": {
+		"rdt:p1": {
 			"rdt:name": "Plot2Test.R",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 0.499,
+			"rdt:elapsedTime": 0.553,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
 			"rdt:endLine": "NA",
 			"rdt:endCol": "NA"
 		},
-		"p2": {
-			"rdt:name": "f1 <- function() {	nums <- c(1, 3, 6, 4, 9)	pdf(\"nums.",
+		"rdt:p2": {
+			"rdt:name": "f1 <- function() {\tnums <- c(1, 3, 6, 4, 9)\tpdf(\"nums.",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.501,
+			"rdt:elapsedTime": 0.556,
 			"rdt:scriptNum": 0,
 			"rdt:startLine": 3,
 			"rdt:startCol": 1,
 			"rdt:endLine": 8,
 			"rdt:endCol": 1
 		},
-		"p3": {
+		"rdt:p3": {
 			"rdt:name": "f1()",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 0.509,
+			"rdt:elapsedTime": 0.565,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
 			"rdt:endLine": "NA",
 			"rdt:endCol": "NA"
 		},
-		"p4": {
+		"rdt:p4": {
 			"rdt:name": "f1",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.51,
+			"rdt:elapsedTime": 0.566,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
 			"rdt:endLine": "NA",
 			"rdt:endCol": "NA"
 		},
-		"p5": {
+		"rdt:p5": {
 			"rdt:name": "nums <- c(1, 3, 6, 4, 9)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.515,
+			"rdt:elapsedTime": 0.571,
 			"rdt:scriptNum": 0,
 			"rdt:startLine": 4,
 			"rdt:startCol": 3,
 			"rdt:endLine": 4,
 			"rdt:endCol": 26
 		},
-		"p6": {
+		"rdt:p6": {
 			"rdt:name": "pdf(\"nums.pdf\")",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.576,
+			"rdt:elapsedTime": 0.644,
 			"rdt:scriptNum": 0,
 			"rdt:startLine": 5,
 			"rdt:startCol": 3,
 			"rdt:endLine": 5,
 			"rdt:endCol": 17
 		},
-		"p7": {
+		"rdt:p7": {
 			"rdt:name": "plot(nums)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.585,
+			"rdt:elapsedTime": 0.654,
 			"rdt:scriptNum": 0,
 			"rdt:startLine": 6,
 			"rdt:startCol": 3,
 			"rdt:endLine": 6,
 			"rdt:endCol": 12
 		},
-		"p8": {
+		"rdt:p8": {
 			"rdt:name": "dev.off()",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.6,
+			"rdt:elapsedTime": 0.668,
 			"rdt:scriptNum": 0,
 			"rdt:startLine": 7,
 			"rdt:startCol": 3,
 			"rdt:endLine": 7,
 			"rdt:endCol": 11
 		},
-		"p9": {
+		"rdt:p9": {
 			"rdt:name": "f1()",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 0.612,
+			"rdt:elapsedTime": 0.681,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
 			"rdt:endLine": "NA",
 			"rdt:endCol": "NA"
 		},
-		"p10": {
+		"rdt:p10": {
 			"rdt:name": "Plot2Test.R",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 0.612,
+			"rdt:elapsedTime": 0.681,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -110,7 +119,7 @@
 
 	"entity" : {
 		// data nodes
-		"d1": {
+		"rdt:d1": {
 			"rdt:name": "f1",
 			"rdt:value": "#ddg.function",
 			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}",
@@ -121,20 +130,20 @@
 			"rdt:timestamp": "",
 			"rdt:location": ""
 		},
-		"d2": {
+		"rdt:d2": {
 			"rdt:name": "nums",
 			"rdt:value": "data/2-nums.csv",
 			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[5], \"type\":[\"numeric\"]}",
 			"rdt:type": "Snapshot",
-			"rdt:scope": "0x7fc6d344c888",
+			"rdt:scope": "0x7ff208c39808",
 			"rdt:fromEnv": false,
 			"rdt:MD5hash": "",
-			"rdt:timestamp": "2018-06-25T15.40.58EDT",
+			"rdt:timestamp": "2018-06-26T13.41.14EDT",
 			"rdt:location": ""
 		},
-		"d3": {
+		"rdt:d3": {
 			"rdt:name": "dev.2",
-			"rdt:value": "\"graph\"",
+			"rdt:value": "graph",
 			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}",
 			"rdt:type": "Data",
 			"rdt:scope": "undefined",
@@ -143,9 +152,9 @@
 			"rdt:timestamp": "",
 			"rdt:location": ""
 		},
-		"d4": {
+		"rdt:d4": {
 			"rdt:name": "dev.2",
-			"rdt:value": "\"graph\"",
+			"rdt:value": "graph",
 			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}",
 			"rdt:type": "Data",
 			"rdt:scope": "undefined",
@@ -154,7 +163,7 @@
 			"rdt:timestamp": "",
 			"rdt:location": ""
 		},
-		"d5": {
+		"rdt:d5": {
 			"rdt:name": "nums.pdf",
 			"rdt:value": "data/5-nums.pdf",
 			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}",
@@ -162,10 +171,10 @@
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
 			"rdt:MD5hash": "9a0f8353fe7a69887210fe9725039b1b",
-			"rdt:timestamp": "2018-06-25T15.40.59EDT",
+			"rdt:timestamp": "2018-06-26T13.41.14EDT",
 			"rdt:location": "[DIR]/nums.pdf"
 		},
-		"d6": {
+		"rdt:d6": {
 			"rdt:name": "f1() return",
 			"rdt:value": "1",
 			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"integer\"]}",
@@ -178,7 +187,7 @@
 		},
 
 		// environment
-		"environment": {
+		"rdt:environment": {
 			"rdt:name": "environment",
 			"rdt:architecture": "x86_64",
 			"rdt:operatingSystem": "unix",
@@ -190,13 +199,13 @@
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:workingDirectory": "[DIR]",
 			"rdt:ddgDirectory": "[DIR]/ddg",
-			"rdt:ddgTimeStamp": "2018-06-25T15.40.58EDT",
+			"rdt:ddgTimeStamp": "2018-06-26T13.41.14EDT",
 			"rdt:rdatatrackerVersion": "2.27.0",
 			"rdt:hashAlgorithm": "md5"
 		},
 
 		// library nodes - prov collections
-		"l1": {
+		"rdt:l1": {
 			"name": "base",
 			"version": "3.5.0",
 			"prov:type": {
@@ -204,7 +213,7 @@
 				"type": "xsd:QName"
 			}
 		},
-		"l2": {
+		"rdt:l2": {
 			"name": "datasets",
 			"version": "3.5.0",
 			"prov:type": {
@@ -212,7 +221,7 @@
 				"type": "xsd:QName"
 			}
 		},
-		"l3": {
+		"rdt:l3": {
 			"name": "graphics",
 			"version": "3.5.0",
 			"prov:type": {
@@ -220,7 +229,7 @@
 				"type": "xsd:QName"
 			}
 		},
-		"l4": {
+		"rdt:l4": {
 			"name": "grDevices",
 			"version": "3.5.0",
 			"prov:type": {
@@ -228,7 +237,7 @@
 				"type": "xsd:QName"
 			}
 		},
-		"l5": {
+		"rdt:l5": {
 			"name": "jsonlite",
 			"version": "1.5",
 			"prov:type": {
@@ -236,7 +245,7 @@
 				"type": "xsd:QName"
 			}
 		},
-		"l6": {
+		"rdt:l6": {
 			"name": "methods",
 			"version": "3.5.0",
 			"prov:type": {
@@ -244,7 +253,7 @@
 				"type": "xsd:QName"
 			}
 		},
-		"l7": {
+		"rdt:l7": {
 			"name": "RDataTracker",
 			"version": "2.27.0",
 			"prov:type": {
@@ -252,7 +261,7 @@
 				"type": "xsd:QName"
 			}
 		},
-		"l8": {
+		"rdt:l8": {
 			"name": "stats",
 			"version": "3.5.0",
 			"prov:type": {
@@ -260,7 +269,7 @@
 				"type": "xsd:QName"
 			}
 		},
-		"l9": {
+		"rdt:l9": {
 			"name": "utils",
 			"version": "3.5.0",
 			"prov:type": {
@@ -270,52 +279,52 @@
 		},
 
 		// function nodes
-		"f1": {
+		"rdt:f1": {
 			"name": "pdf"
 		},
-		"f2": {
+		"rdt:f2": {
 			"name": "plot"
 		},
-		"f3": {
+		"rdt:f3": {
 			"name": "dev.off"
 		}
 	},
 
 	"wasInformedBy" : {
 		// procedure-to-procedure edges
-		"pp1": {
+		"rdt:pp1": {
 			"prov:informant": "rdt:p1",
 			"prov:informed": "rdt:p2"
 		},
-		"pp2": {
+		"rdt:pp2": {
 			"prov:informant": "rdt:p2",
 			"prov:informed": "rdt:p3"
 		},
-		"pp3": {
+		"rdt:pp3": {
 			"prov:informant": "rdt:p3",
 			"prov:informed": "rdt:p4"
 		},
-		"pp4": {
+		"rdt:pp4": {
 			"prov:informant": "rdt:p4",
 			"prov:informed": "rdt:p5"
 		},
-		"pp5": {
+		"rdt:pp5": {
 			"prov:informant": "rdt:p5",
 			"prov:informed": "rdt:p6"
 		},
-		"pp6": {
+		"rdt:pp6": {
 			"prov:informant": "rdt:p6",
 			"prov:informed": "rdt:p7"
 		},
-		"pp7": {
+		"rdt:pp7": {
 			"prov:informant": "rdt:p7",
 			"prov:informed": "rdt:p8"
 		},
-		"pp8": {
+		"rdt:pp8": {
 			"prov:informant": "rdt:p8",
 			"prov:informed": "rdt:p9"
 		},
-		"pp9": {
+		"rdt:pp9": {
 			"prov:informant": "rdt:p9",
 			"prov:informed": "rdt:p10"
 		}
@@ -323,27 +332,27 @@
 
 	"wasGeneratedBy" : {
 		// procedure-to-data edges
-		"pd1": {
+		"rdt:pd1": {
 			"prov:activity": "rdt:p2",
 			"prov:entity": "rdt:d1"
 		},
-		"pd2": {
+		"rdt:pd2": {
 			"prov:activity": "rdt:p5",
 			"prov:entity": "rdt:d2"
 		},
-		"pd3": {
+		"rdt:pd3": {
 			"prov:activity": "rdt:p6",
 			"prov:entity": "rdt:d3"
 		},
-		"pd4": {
+		"rdt:pd4": {
 			"prov:activity": "rdt:p7",
 			"prov:entity": "rdt:d4"
 		},
-		"pd5": {
+		"rdt:pd5": {
 			"prov:activity": "rdt:p8",
 			"prov:entity": "rdt:d5"
 		},
-		"pd6": {
+		"rdt:pd6": {
 			"prov:activity": "rdt:p8",
 			"prov:entity": "rdt:d6"
 		}
@@ -351,33 +360,33 @@
 
 	"used" : {
 		// data-to-procedure edges
-		"dp1": {
+		"rdt:dp1": {
 			"prov:entity": "rdt:d1",
 			"prov:activity": "rdt:p4"
 		},
-		"dp2": {
+		"rdt:dp2": {
 			"prov:entity": "rdt:d2",
 			"prov:activity": "rdt:p7"
 		},
-		"dp3": {
+		"rdt:dp3": {
 			"prov:entity": "rdt:d3",
 			"prov:activity": "rdt:p7"
 		},
-		"dp4": {
+		"rdt:dp4": {
 			"prov:entity": "rdt:d4",
 			"prov:activity": "rdt:p8"
 		},
 
 		// function-to-procedure edges
-		"fp1": {
+		"rdt:fp1": {
 			"prov:entity": "rdt:f1",
 			"prov:activity": "rdt:p6"
 		},
-		"fp2": {
+		"rdt:fp2": {
 			"prov:entity": "rdt:f2",
 			"prov:activity": "rdt:p7"
 		},
-		"fp3": {
+		"rdt:fp3": {
 			"prov:entity": "rdt:f3",
 			"prov:activity": "rdt:p8"
 		}
@@ -385,15 +394,15 @@
 
 	"hadMember" : {
 		// groups function nodes with their library nodes
-		"m1": {
+		"rdt:m1": {
 			"prov:collection": "rdt:l3",
 			"prov:entity": "rdt:f2"
 		},
-		"m2": {
+		"rdt:m2": {
 			"prov:collection": "rdt:l4",
 			"prov:entity": "rdt:f1"
 		},
-		"m3": {
+		"rdt:m3": {
 			"prov:collection": "rdt:l4",
 			"prov:entity": "rdt:f3"
 		}

@@ -1776,109 +1776,6 @@ library(curl)
 
 }
 
-# Given a parse tree, this function returns a list containing
-# the expressions that correspond to the filename argument
-# of the calls to functions that read or write the files.  If there are
-# none, it returns NULL.
-#
-# main.object - the parsed expression to search through
-# func.df - the data frame describing the functions with file arguments
-.ddg.find.files <- function(main.object, func.df, env=NULL) {
-  environment <- if (is.environment(env)) env else .GlobalEnv
-
-  # Recursive helper function.
-  find.files.rec <- function(obj) {
-    #print (obj)
-    # Base cases.
-    if (!is.recursive(obj)) {
-      return(NULL)
-    }
-
-    if (length(obj) == 0) {
-      return(NULL)
-    }
-    ## It might be useful to record somehow that this function
-    # reads a file, but we wouldn't actually do the reading
-    # until the function is called, not here where it is
-    # being declared.
-    if (.ddg.is.functiondecl(obj)) return(NULL)
-
-    if (is.call(obj)) {
-
-      # Call has no arguments, so it can't be reading a function.  Recurse
-      # on the first part, in case it is more than just a symbol.
-      if (length (obj) == 1) return (find.files.rec (obj[[1]]))
-
-      # Call with arguments
-      else if (is.symbol (obj[[1]])) {
-        # Is this is file reading function?
-        read.func.pos <- match (as.character(obj[[1]]), func.df$function.names)
-        if (!is.na (read.func.pos)) {
-          #print(paste("Found function ", func.df$function.names[read.func.pos]))
-          # Find the file argument.
-          arg.name <- func.df$param.names[read.func.pos]
-          # print (paste(".ddg.find.files: arg.name = ", arg.name))
-
-          # Find a matching parameter passed by name
-          file.name.arg.matches <- unlist(lapply (names(obj), function (arg) {return (pmatch (arg, arg.name))}))
-          match.pos <- match (1, file.name.arg.matches)
-          #print (paste(".ddg.find.files: match.pos = ", match.pos))
-
-
-          # If no argument qualified by the file parameter name, use the argument in the
-          # expected position
-          if (is.na (match.pos)) {
-            file.name <- tryCatch (eval(obj[[func.df$param.pos[read.func.pos]+1]], environment),
-                error = function (e) NULL)
-          }
-          else {
-            #print (paste(".ddg.find.files: obj[[match.pos]] = ", obj[[match.pos]]))
-            file.name <- tryCatch (eval(obj[[match.pos]], environment),
-                error = function (e) NULL)
-          }
-          
-          # Recurse over the arguments to the function.  We can't just skip over the 2nd
-          # element since the filename parameter is not necessarily there if it was passed
-          # by name.
-          funcs <- find.files.rec (obj[2:length(obj)])
-
-          # Add this file name to the list of files being read.
-          #print (paste(".ddg.find.files: checking ", file.name))
-          if (!is.null(file.name)) { 
-              unique (c (file.name, funcs))
-          }
-        }
-
-        # Not a file reading function.  Recurse over the arguments.
-        else {
-          find.files.rec (obj[2:length(obj)])
-        }
-      }
-
-      # Function call, but the first list element is not simply a function name.  Recurse
-      # over all the list elements.
-      else {
-        unique (append (find.files.rec (obj[[1]]), find.files.rec (obj[2:length(obj)])))
-      }
-    }
-
-    # A recursive structure that is not a call.  Not sure if there are any, but just in case...
-    else if (length(obj) == 1) {
-      unique (find.files.rec (obj[[1]]))
-    }
-    else {
-      unique (append (find.files.rec (obj[[1]]), find.files.rec (obj[2:length(obj)])))
-    }
-  }
-
-  return(find.files.rec(main.object@parsed))
-}
-
-
-
-
-
-
 # .ddg.loadhistory takes in the name of a history file, opens it,
 # scans it for the last occurrence of the string specified by
 # timestamp, and returns the lines from that point forward.
@@ -2520,27 +2417,7 @@ library(curl)
             .ddg.set(".ddg.possible.last.cmd", NULL)
           }
 
-#          # Need to get this number before evaluating the command so that 
-#          # when we evaluate a dev.off call we know which device was closed
-#          .ddg.set(".ddg.dev.number", dev.cur())
           
-          #if (cmd@has.dev.off && !cmd@createsGraphics && is.null(.ddg.get ("possible.graphics.files.open"))) {
-#          if (cmd@has.dev.off && is.null(.ddg.get ("possible.graphics.files.open"))) {
-#            dev.file.created <- .ddg.capture.current.graphics()
-#          }
-#          else {
-#            dev.file.created <- NULL
-#          }
-          
-          
-          # Before evaluating,
-          # keep track of variable types for common variables between vars.set and vars.used.
-          #common.vars <- intersect( cmd@vars.set , cmd@vars.used )
-          #num.vars <- length(common.vars)
-
-          #if( num.vars > 0 )
-          #  used.types <- sapply( common.vars , .ddg.get.val.type.from.var )
-
           # Capture any warnings that occur when an expression is evaluated.
           # Note that we cannot just use a tryCatch here because it behaves
           # slightly differently and we would lose the value that eval
@@ -2564,10 +2441,10 @@ library(curl)
                   }
                   else {
                     return.value <- eval(annot, environ, NULL)
-                    if (typeof(return.value) != "closure") {
+									#if (typeof(return.value) != "closure") {
                       #print (paste (".ddg.parse.commands: Done evaluating ", annot))
                       #print(paste(".ddg.parse.commands: setting .ddg.last.R.value to", return.value))
-                    }
+									#}
                     .ddg.set (".ddg.last.R.value", return.value)
                   }
                 }
@@ -2587,77 +2464,12 @@ library(curl)
               if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Adding", cmd@abbrev, "information to vars.set, for an error"))
               .ddg.create.data.use.edges.for.console.cmd(vars.set, cmd, i, for.caller=FALSE)
 
-              # check for factors
-              #msg <- e[[1]]
-              #
-              #if( msg == "invalid 'type' (character) of argument" | msg == "only defined on a data frame with all numeric variables" )
-              #{ 
-              #  containsFactor <- sapply( cmd@vars.used , .ddg.var.contains.factor )
-              #  
-              #  if( is.element(TRUE , containsFactor) )
-              #  {
-              #    factors <- names(containsFactor)[which(containsFactor==TRUE)]
-              #
-              #    # form suggestion
-              #    cat( "The following input data contain(s) a factor:\n" )
-              #    cat( paste(shQuote(factors , type="cmd") , collapse = ", ") )
-              #    cat("\nThis website may be helpful:\n")
-              #
-              #    #if( msg == "invalid 'type' (character) of argument" )
-              #    #  cat("https://stat.ethz.ch/pipermail/r-help/2010-May/239461.html")
-              #    #else
-              #    #  cat("http://stackoverflow.com/questions/38032814/trying-to-understand-r-error-error-in-funxi-only-defined-on-a-data")
-              #    cat( "https://www.r-bloggers.com/using-r-common-errors-in-table-import/" )
-              #  }
-              #}
-              
               # create and link to an error node
               ddg.exception.out("error.msg", toString(e) , cmd@abbrev)
             }
           )
 
           if (.ddg.debug.lib()) print (paste (".ddg.parse.commands: Done evaluating ", cmd@annotated))
-
-          # After evaluating
-          # Check changes to variable type for common variables between vars.set and vars.used
-          #if( num.vars > 0 )
-          #{
-          #  set.types <- sapply( common.vars , .ddg.get.val.type.from.var )
-          #
-          #  # comparing type changes for variables set and variables used
-          #  # only 1 common variable between vars.set and vars.used
-          #  if( num.vars == 1 )
-          #  {
-          #    is.same <- identical( set.types , used.types )
-          #
-          #    # remember var names for vars whose types have changed, NULL otherwise
-          #    if(is.same)
-          #      changed.vars <- NULL
-          #    else
-          #      changed.vars <- common.vars
-          #  }
-          #
-          #  # multiple common variables between vars.set and vars.used
-          #  # currently untested since multiple variable assignment is not working!
-          #  else
-          #  {
-          #    is.same <- mapply( identical , set.types , used.types )
-          #    changed.vars <- names(is.same)[which(is.same==FALSE)]
-          #
-          #    # convert to string
-          #    if( ! is.null(changed.vars) )
-          #      changed.vars <- paste( changed.vars , collapse = "," )
-          #  }
-          #
-          #  # show warning message
-          #  if( ! is.null(changed.vars) )
-          #  {
-          #    msg <- paste( "For the statement \"" , cmd@text , "\", " , "in line " , cmd@pos@startLine , ",\n" , sep = "" )
-          #    msg <- paste( msg , "The type changed for the following variables: " , changed.vars , sep = "" )
-          #
-          #    warning( msg , call. = FALSE )
-          #  }
-          #}
 
           if (!cmd@isDdgFunc && cmd@text != "next") {
             # Need to get the stack again because it could have been
@@ -2753,20 +2565,7 @@ library(curl)
           if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Adding output data nodes for", cmd@abbrev))
 
           .ddg.create.file.write.nodes.and.edges ()
-          #if (cmd@createsGraphics) .ddg.set.graphics.files (cmd, environ)
           .ddg.create.graphics.nodes.and.edges ()
-#.ddg.add.graphics.device.node()
-#.ddg.add.graphics.io ()
-#.ddg.capture.graphics()
-#          if (cmd@updatesGraphics) .ddg.add.graphics.io (cmd)
-#
-#          if (cmd@has.dev.off) {
-#            .ddg.capture.graphics(cmd)
-#  
-#            if (!is.null(dev.file.created)) {
-#              file.remove(dev.file.created)
-#            }
-#          }
         }
         # We wanted to create it but it matched a last command node.
         else if (create && execute) {
@@ -3033,9 +2832,6 @@ library(curl)
   #print(paste(".ddg.replace.quotes start, str =", str))
   if (!is.character(str)) return (str)
 
-  str <- paste("\"", str, "\"", sep="")
-  str <- gsub("\"", "\\\\\"", str)
-
   # Replace returns, new lines, and tabs with spaces.
   str <- gsub("\r", " ", str)
   str <- gsub("\n", " ", str)
@@ -3208,7 +3004,6 @@ library(curl)
     dev.copy(parseFun)
 
     # Turn it off (this switches back to prev device).
-    #print (paste ("dev.off called in .ddg.graphic.snapshot for device", dev.cur()))
     dev.off()
   }
 }
@@ -4537,12 +4332,6 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
   # Capture graphics if dev.off is about to be called.
   if (!is.null(cmd.func)) {
     parsed.stmt <- cmd.func()
-#    if (parsed.stmt@has.dev.off) {
-#      if (.ddg.is.call.to(parsed.stmt@parsed[[1]], "dev.off") || !.ddg.loop.annotate()) {
-#        dev.file <- .ddg.capture.graphics(NULL)
-#        dev.node.name <- paste0("dev.", dev.cur())
-#      }
-#    }
   }
 
 
@@ -4622,7 +4411,6 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
   # the function that called the function that called ddg.return.
   call.text <- gsub(" ", "", deparse(call, nlines=1))
   return.node.name <- paste(call.text, "return")
-  return.node.name <- gsub("\"", "\\\\\"", return.node.name)
 
   #print(paste("ddg.return.value: sys.nframe =", sys.nframe()))
   #print(paste("ddg.return.value: caller.frame =", caller.frame))
@@ -4719,12 +4507,7 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
   .ddg.create.file.read.nodes.and.edges()
   .ddg.create.file.write.nodes.and.edges ()
   .ddg.create.graphics.nodes.and.edges ()
-  #.ddg.add.graphics.device.node ()
-  #.ddg.add.graphics.io ()
   
-#    if (return.stmt@createsGraphics) {
-#  .ddg.set.graphics.files (return.stmt, env)
-#  }
   }
 
   # Create the finish node for the function
@@ -5416,10 +5199,6 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
   
   if( is.null(r.script.path) ) {
     r.script.path <- getwd()
-    print (paste ("Copying RDataTracker-Ex.R to ~/tmp"))
-    file.copy("RDataTracker-Ex.R", paste0 ("~/tmp/RDataTracker-Ex.R"))
-    
-    
   }
   
   # Setting the path for the ddg
@@ -5612,7 +5391,6 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
                 ignore.init = TRUE,
                 force.console = FALSE)
           else stop("r.script.path and f cannot both be NULL"),
-      #error = function(e) {print ("Error while executing script"); print (e)},
       finally={
         ddg.save(r.script.path)
         if(display==TRUE){
@@ -5637,8 +5415,6 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
 ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE) {
   if (!.ddg.is.init()) return(invisible())
   
-  #print ("In ddg.save")
-
   if (interactive() && .ddg.enable.console()) {
     # Get the final commands
     .ddg.console.node()
@@ -5646,27 +5422,19 @@ ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE) {
 
   # If there are any connections still open when the script ends,
   # create nodes and edges for them.
-  #print ("Calling .ddg.create.file.nodes.for.open.connections")
   .ddg.create.file.nodes.for.open.connections ()
-  #print ("Done with .ddg.create.file.nodes.for.open.connections")
 
   # If there is a display device open, grab what is on the display
-  #print ("About to capture graphics")
   if (length(dev.list()) >= 1) {
     #print("ddg.save: Saving graphics open at end of script")
-    #print (dev.list())
     tryCatch (.ddg.capture.graphics(called.from.save = TRUE),
         error = function (e) print(e))
-    #print ("ddg.save: Done saving graphics")
   }
-  #print ("Done capturing graphics")
   
   # Delete temporary files.
   # .ddg.delete.temp()
   
-  #print ("Stopping IO tracing")
   .ddg.stop.iotracing()
-  #print ("IO tracing stopped")
 
   # Save ddg.json to file.
   ddg.json.write()

@@ -32,11 +32,11 @@ ddg.restore(file.path)
 \author{Emery Boose and Barbara Lerner}
 \examples{
 \dontrun{source("DDGCheckpoint.R")}
-dir.create("ddg", showWarnings=FALSE)
-ddg.init()
+\dontrun{dir.create("ddg", showWarnings=FALSE)}
+\dontrun{ddg.init()}
 \dontrun{checkpoint <- ddg.checkpoint()}
 \dontshow{# Following results in a "cannot add bindings to a locked environment" error}
 \dontrun{ddg.restore(checkpoint)}
-ddg.save()
+\dontrun{ddg.save()}
 }
 \keyword{provenance}

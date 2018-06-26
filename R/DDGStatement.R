@@ -90,11 +90,6 @@ setClass("DDGStatement",
                                           # like an if-statement might, for example, these are the
                                           # variables assigned within the statement.
         isDdgFunc = "logical",   # True if this is a call to a ddg function
-#        createsGraphics = "logical",  # True if this is a function that creates a graphics
-#                                      # object, like a call to pdf, for example
-#        updatesGraphics = "logical",  # True if this is a function that updates a graphics
-#                                      # object, like a call to a function in the graphics package, for example
-#        has.dev.off = "logical",  # True if this statement contains a call to dev.off
         pos = "DDGStatementPos",  # The location of this statement in the source code.
                                   # Has the value null.pos() if it is not available.
         script.num = "numeric",   # The number for the script this statement comes from.
@@ -144,10 +139,6 @@ setMethod ("initialize",
       # ddg.eval is treated differently than other calls to ddg functions since
       # we will execute the parameter as a command and want a node for it.
       .Object@isDdgFunc <- grepl("^ddg.", .Object@text) & !grepl("^ddg.eval", .Object@text)
-
-      #.Object@createsGraphics <- .ddg.creates.graphics (.Object@parsed[[1]])
-      #.Object@updatesGraphics <- .ddg.updates.graphics (.Object@parsed[[1]])
-      #.Object@has.dev.off <- .ddg.has.call.to (.Object@parsed[[1]], "dev.off")
 
       .Object@pos <-
           if (is.object(pos)) {
@@ -204,7 +195,7 @@ setMethod ("initialize",
       
       # find the list of the names of the function calls in the statement
 		.Object@functions.called <- .ddg.find.calls( .Object@parsed[[1]] )
-      
+
       return(.Object)
     }
 )
@@ -1557,29 +1548,3 @@ null.pos <- function() {
   return (FALSE)
 }
 
-# Returns true if the statement contains a call to a function that creates a graphics object
-#
-# parsed.statement - a parse tree
-#
-#.ddg.creates.graphics <- function (parsed.statement) {
-#  .ddg.graphics.functions.df <- .ddg.get (".ddg.graphics.functions.df")
-#  graphics.functions <- .ddg.graphics.functions.df$function.names
-#  if (TRUE %in% (lapply (graphics.functions, function(fun.name) {return (.ddg.has.call.to(parsed.statement, fun.name))}))) {
-#    #print(paste("Setting @creates.graphics in", deparse(parsed.statement)))
-#    return(TRUE)
-#  }
-#  return (FALSE)
-#}
-
-# Returns true if the statement contains a call to a function that updates a graphics object
-#
-# parsed.statement - a parse tree
-#
-#.ddg.updates.graphics <- function (parsed.statement) {
-#  graphics.update.functions <- .ddg.get(".ddg.graphics.update.functions")
-#  if (TRUE %in% (lapply (graphics.update.functions, function(fun.name) {return (.ddg.has.call.to(parsed.statement, fun.name))}))) {
-#    #print("Found a graphics update function")
-#    return (TRUE)
-#  }
-#  return (FALSE)
-#}
