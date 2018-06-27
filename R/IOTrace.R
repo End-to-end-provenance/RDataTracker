@@ -36,6 +36,10 @@
 # 2 must be called while inside the read/write/close/graphics function.  Function 
 # 3 cannot be called until the R statement containing the call completes
 # so that the procedure node exists to connect the file node to.
+#
+# WARNING:  The tracing code filters out calls where specific ddg functions
+# are on the call stack.  If the names of those functions are changed, the
+# code here will need to change as well.  
 
 #' Initialize the data needed to trace I/O functions
 .ddg.init.iotrace <- function () {
@@ -987,6 +991,11 @@
   # If going to a file, copy the file and create a node for it.
   if (!is.null (graphics.file)) {
     ddg.file.out (graphics.file)
+    
+    # Delete files that were created by capturing the screen
+    if (startsWith (graphics.file, "dev.off")) {
+      file.remove (graphics.file)
+    }
   
     # Add an input edge from the current device
     dev.node.name <- paste0("dev.", dev.number)
@@ -1053,6 +1062,8 @@
           }
         }
         
+        # If the dev.off file was created, delete it.
+        file.remove(file)
       }
   )
   return(file.written)
