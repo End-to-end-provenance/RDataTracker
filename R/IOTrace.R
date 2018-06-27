@@ -66,25 +66,20 @@
   # so that it can find those functions without making them publicly available in 
   # the namespace.
   trace.oneOutput <- function (f) {capture.output(capture.output(trace (as.name(f), RDataTracker:::.ddg.trace.output, print=FALSE), type="message"))} 
-  #trace.oneOutput <- function (f) {capture.output(capture.output(trace (as.name(f), RDataTracker:::.ddg.trace.output), type="message"))} 
   lapply(.ddg.get(".ddg.file.write.functions.df")$function.names, trace.oneOutput)
 
   trace.oneInput <- function (f) {capture.output(capture.output(trace (as.name(f), RDataTracker:::.ddg.trace.input, print=FALSE), type="message"))} 
-  #trace.oneInput <- function (f) {capture.output(capture.output(trace (as.name(f), RDataTracker:::.ddg.trace.input), type="message"))} 
   lapply(.ddg.get(".ddg.file.read.functions.df")$function.names, trace.oneInput)
 
   trace.oneClose <- function (f) {capture.output(capture.output(trace (as.name(f), RDataTracker:::.ddg.trace.close, print=FALSE), type="message"))} 
-  #trace.oneClose <- function (f) {capture.output(capture.output(trace (as.name(f), RDataTracker:::.ddg.trace.close), type="message"))} 
   lapply(.ddg.get(".ddg.file.close.functions.df")$function.names, trace.oneClose)
 
   #print ("Tracing graphics open")
   trace.oneGraphicsOpen <- function (f) {capture.output(capture.output(trace (as.name(f), RDataTracker:::.ddg.trace.graphics.open, print=FALSE), type="message"))} 
-  #trace.oneGraphicsOpen <- function (f) {trace (as.name(f), RDataTracker:::.ddg.trace.graphics.open)} 
   lapply(.ddg.get(".ddg.graphics.functions.df")$function.names, trace.oneGraphicsOpen)
 
   #print ("Tracing graphics update")
   trace.oneGraphicsUpdate <- function (f) {capture.output(capture.output(trace (as.name(f), RDataTracker:::.ddg.trace.graphics.update, print=FALSE), type="message"))} 
-  #trace.oneGraphicsUpdate <- function (f) {trace (as.name(f), RDataTracker:::.ddg.trace.graphics.update)} 
   lapply(.ddg.get(".ddg.graphics.update.functions.df"), trace.oneGraphicsUpdate)
   
   #print ("Tracing dev.off")
@@ -243,6 +238,12 @@
   # Get the name of the input function
   call <- sys.call (frame.number)
   fname <- as.character(call[[1]])
+  
+  # Remove the package name if present
+  if (!is.symbol (fname) && length(fname > 1)) {
+    fname <- fname[length(fname)]
+  }
+  
   #print (paste ("Input function traced: ", fname))
   
   # Get the name of the file parameter for the input function
@@ -398,6 +399,12 @@
   # Get the name of the output function
   call <- sys.call (frame.number)
   fname <- as.character(call[[1]])
+
+  # Remove the package name if present
+  if (length(fname > 1)) {
+    fname <- fname[length(fname)]
+  }
+  
   # print (paste ("Output function traced: ", fname))
   
   # Get the name of the file parameter for the output function
@@ -583,6 +590,11 @@
   # Get the name of the close function
   call <- sys.call (frame.number)
   fname <- as.character(call[[1]])
+
+  # Remove the package name if present
+  if (length(fname > 1)) {
+    fname <- fname[length(fname)]
+  }
   #print (paste (".ddg.trace.close: fname = ", fname))
   
   # Get the name of the connection parameter for the close function
@@ -702,18 +714,26 @@
 
 #' Initialize the information about functions that initialize graphics devices
 .ddg.create.graphics.functions.df <- function () {
-  # Functions that read files
-  if (Sys.info()[["sysname"]] == "Windows") {
+  sysname <- Sys.info()[["sysname"]]
+  # Functions that read files and the names of the arguments that hold file names
+  if (sysname == "Windows") {
     function.names <-
         c ("pdf", "cairo_pdf", "postscript", "cairo_ps", "bmp", "jpeg", "png", "svg", "tiff", "x11", "X11", "windows")
+    param.names <-
+        c ("file", "filename", "file", "filename", "filename", "filename", "filename", "filename", "filename", NA, NA, NA)
   }
-  else if (Sys.info()[["sysname"]] == "Darwin") {
+  else if (sysname == "Darwin") {  # Running on a Mac
     function.names <-
         c ("pdf", "cairo_pdf", "postscript", "cairo_ps", "bmp", "jpeg", "png", "svg", "tiff", "x11", "X11", "quartz")
-  } 
-  # The argument that represents the file name
-  param.names <-
-      c ("file", "filename", "file", "filename", "filename", "filename", "filename", "filename", "filename", NA, NA, NA)
+    param.names <-
+        c ("file", "filename", "file", "filename", "filename", "filename", "filename", "filename", "filename", NA, NA, NA)
+  }
+  else {  # Running on Linux
+    function.names <-
+        c ("pdf", "cairo_pdf", "postscript", "cairo_ps", "bmp", "jpeg", "png", "svg", "tiff", "x11", "X11")
+    param.names <-
+        c ("file", "filename", "file", "filename", "filename", "filename", "filename", "filename", "filename", NA, NA)
+  }
   
   return (data.frame (function.names, param.names, stringsAsFactors=FALSE))
 }
