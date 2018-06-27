@@ -993,7 +993,7 @@
     ddg.file.out (graphics.file)
     
     # Delete files that were created by capturing the screen
-    if (startsWith (graphics.file, "dev.off")) {
+    if (startsWith (graphics.file, "dev.off") && file.exists(graphics.file)) {
       file.remove (graphics.file)
     }
   
