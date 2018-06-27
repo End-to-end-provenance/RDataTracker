@@ -703,12 +703,17 @@
 #' Initialize the information about functions that initialize graphics devices
 .ddg.create.graphics.functions.df <- function () {
   # Functions that read files
-  function.names <-
-      c ("pdf", "postscript", "bmp", "jpeg", "png", "tiff", "X11")
-  
+  if (Sys.info()[["sysname"]] == "Windows") {
+    function.names <-
+        c ("pdf", "cairo_pdf", "postscript", "cairo_ps", "bmp", "jpeg", "png", "svg", "tiff", "x11", "X11", "windows")
+  }
+  else if (Sys.info()[["sysname"]] == "Darwin") {
+    function.names <-
+        c ("pdf", "cairo_pdf", "postscript", "cairo_ps", "bmp", "jpeg", "png", "svg", "tiff", "x11", "X11", "quartz")
+  } 
   # The argument that represents the file name
   param.names <-
-      c ("file", "file", "filename", "filename", "filename", "filename", NA)
+      c ("file", "filename", "file", "filename", "filename", "filename", "filename", "filename", "filename", NA, NA, NA)
   
   return (data.frame (function.names, param.names, stringsAsFactors=FALSE))
 }
@@ -744,7 +749,7 @@
   graphics.functions <- .ddg.get (".ddg.graphics.functions.df")
   file.param.name <- graphics.functions$param.names[graphics.functions$function.names == fname]
 
-  # X11 device writes to the screen so there is no file parameter
+  # X11 and quartz device writes to the screen so there is no file parameter
   if (is.na (file.param.name)) {
     .ddg.set(".ddg.no.graphics.file", TRUE)
     .ddg.set(".ddg.last.graphics.file", "")
@@ -781,7 +786,7 @@
   #print (paste ("dev.list =", dev.list(), names(dev.list()), collapse=", "))
   #print (paste ("dev.cur =", dev.cur()))
   
-  if (names(dev.cur()) != "RStudioGD") {
+  if (!names(dev.cur()) %in% c("RStudioGD","quartz", "windows")) {
     # Record the binding between the current device and the graphics file, if
     # a file is being used.
     if (.ddg.is.set (".ddg.last.graphics.file") && .ddg.get(".ddg.last.graphics.file") != "") {
