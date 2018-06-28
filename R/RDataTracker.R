@@ -1,5 +1,5 @@
 # Copyright (C) President and Fellows of Harvard College and 
-# Trustees of Mount Holyoke College, 2014, 2015, 2016, 2017.
+# Trustees of Mount Holyoke College, 2014, 2015, 2016, 2017, 2018.
 
 # This program is free software: you can redistribute it and/or
 # modify it under the terms of the GNU General Public License as
@@ -120,20 +120,12 @@ library(curl)
   return (.ddg.get("ddg.dnum"))
 }
 
-.ddg.pnum <- function() {
-  return (.ddg.get("ddg.pnum"))
-}
-
 .ddg.enum <- function() {
   return (.ddg.get("ddg.enum"))
 }
 
 .ddg.data.nodes <- function() {
   return (.ddg.get("ddg.data.nodes"))
-}
-
-.ddg.proc.nodes <- function() {
-  return (.ddg.get("ddg.proc.nodes"))
 }
 
 .ddg.edges <- function() {
@@ -263,7 +255,7 @@ library(curl)
 
 .ddg.inc <- function(var) {
   value <- .ddg.get(var)
-  .ddg.set(var, value + 1)
+  return (.ddg.set(var, value + 1))
 }
 
 .ddg.dec <- function(var) {
@@ -313,7 +305,7 @@ library(curl)
 
 .ddg.add.rows <- function(df, new.rows) {
   table <- .ddg.get(df)
-  .ddg.set(df, rbind(table, new.rows))
+  return (.ddg.set(df, rbind(table, new.rows)))
 }
 
 .ddg.push <- function(x, value) {
@@ -365,20 +357,8 @@ library(curl)
   size <- 100
 
   .ddg.get.initial.env()
-
-  .ddg.set("ddg.proc.nodes", data.frame(ddg.type = character(size),
-          ddg.num = numeric(size),
-          ddg.name = character(size),
-          ddg.value = character(size),
-          ddg.return.linked = logical(size),
-          ddg.auto.created = logical(size),
-          ddg.time = numeric(size),
-          ddg.snum = numeric(size),
-          ddg.startLine = numeric(size),
-          ddg.startCol = numeric(size),
-          ddg.endLine = numeric(size),
-          ddg.endCol = numeric(size),
-          stringsAsFactors=FALSE))
+  
+  .ddg.init.proc.nodes()
 
   .ddg.set("ddg.data.nodes", data.frame(ddg.type = character(size),
           ddg.num = numeric(size),
@@ -403,7 +383,6 @@ library(curl)
           ddg.lib = character(), stringsAsFactors=FALSE))
 
   # Create node counters.
-  .ddg.set("ddg.pnum", 0)
   .ddg.set("ddg.dnum", 0)
   .ddg.set("ddg.enum", 0)
 
@@ -812,84 +791,6 @@ library(curl)
   invisible()
 }
 
-# .ddg.record.proc records a procedure node in the procedure node
-# table.
-# 
-# ptype - procedure node type.
-# pname - procedure node name.
-# pvalue - procedure node value.
-# auto.created - TRUE means the node is being created automatically
-#   when a return is found
-# ptime - elapsed time
-# pfunctions - functions called in the procedure
-# snum - number of sourced script (main script = 0)
-# pos - starting and ending lines and columns in source code (if available)
-
-.ddg.record.proc <- function(ptype, pname, pvalue, auto.created=FALSE, ptime, pfunctions=NULL, snum=NA, pos=NA) {
-  # Increment procedure node counter.
-  .ddg.inc("ddg.pnum")
-  ddg.pnum <- .ddg.pnum()
-
-  # If the table is full, make it bigger.
-  ddg.proc.nodes <- .ddg.proc.nodes()
-  if (nrow(ddg.proc.nodes) < ddg.pnum) {
-    size = 100
-    new.rows <- data.frame(ddg.type = character(size),
-        ddg.num = numeric(size),
-        ddg.name = character(size),
-        ddg.value = character(size),
-        ddg.return.linked = logical(size),
-        ddg.auto.created = logical(size),
-        ddg.time = numeric(size),
-        ddg.snum = numeric(size),
-        ddg.startLine = numeric(size),
-        ddg.startCol = numeric(size),
-        ddg.endLine = numeric(size),
-        ddg.endCol = numeric(size),
-        stringsAsFactors=FALSE)
-    .ddg.add.rows("ddg.proc.nodes", new.rows)
-    ddg.proc.nodes <- .ddg.proc.nodes()
-  }
-
-  ddg.proc.nodes$ddg.type[ddg.pnum] <- ptype
-  ddg.proc.nodes$ddg.num[ddg.pnum] <- ddg.pnum
-  ddg.proc.nodes$ddg.name[ddg.pnum] <- pname
-  ddg.proc.nodes$ddg.value[ddg.pnum] <- pvalue
-  ddg.proc.nodes$ddg.auto.created[ddg.pnum] <- auto.created
-  ddg.proc.nodes$ddg.time[ddg.pnum] <- ptime
-
-  ddg.proc.nodes$ddg.snum[ddg.pnum] <- snum
-  if (is.object(pos) && length(pos@startLine == 1)) {
-    ddg.proc.nodes$ddg.startLine[ddg.pnum] <- pos@startLine
-    ddg.proc.nodes$ddg.startCol[ddg.pnum] <- pos@startCol
-    ddg.proc.nodes$ddg.endLine[ddg.pnum] <- pos@endLine
-    ddg.proc.nodes$ddg.endCol[ddg.pnum] <- pos@endCol
-  }
-  else {
-    ddg.proc.nodes$ddg.startLine[ddg.pnum] <- NA
-    ddg.proc.nodes$ddg.startCol[ddg.pnum] <- NA
-    ddg.proc.nodes$ddg.endLine[ddg.pnum] <- NA
-    ddg.proc.nodes$ddg.endCol[ddg.pnum] <- NA
-  }
-  
-  .ddg.set("ddg.proc.nodes", ddg.proc.nodes)
-  
-  # append to function call information to function nodes
-  if( ! (is.null(pfunctions) || is.na(pfunctions)) )
-  {
-    pfunctions <- cbind( "ddg.pnum" = rep(ddg.pnum, nrow(pfunctions)) , pfunctions )
-    
-    ddg.function.nodes <- rbind( .ddg.function.nodes() , pfunctions )
-    row.names(ddg.function.nodes) <- c( 1 : nrow(ddg.function.nodes) )
-    
-    .ddg.set( "ddg.function.nodes" , ddg.function.nodes )
-  }
-  
-  if (.ddg.debug.lib()) {
-    print (paste("Adding procedure node", ddg.pnum, "named", pname))
-  }
-}
-
 # .ddg.record.data records a data node in the data node table.
 
 # dtype - data node type.
@@ -1124,90 +1025,6 @@ library(curl)
   }
 }
 
-# .ddg.is.proc.node returns TRUE if the specified type supports
-# input and output edges in an expanded DDG. Currently this
-# includes all procedure node types except Start.
-
-# type - procedure node type.
-
-.ddg.is.proc.node <- function(type) {
-  return(type == "Operation" |
-          type == "Checkpoint" |
-          type == "Restore" |
-          type == "Start" |
-          type == "Finish" |
-          type == "Binding")
-}
-
-# .ddg.proc.node.exists returns true if there is a
-# procedure node with the given name
-
-.ddg.proc.node.exists <- function(pname) {
-  ddg.proc.nodes <- .ddg.proc.nodes()
-  rows <- nrow(ddg.proc.nodes)
-  for (i in rows:1) {
-    type <- ddg.proc.nodes$ddg.type[i]
-    if (.ddg.is.proc.node(type) & ddg.proc.nodes$ddg.name[i] == pname & !ddg.proc.nodes$ddg.return.linked[i] & !ddg.proc.nodes$ddg.auto.created[i]) {
-      return(TRUE)
-    }
-  }
-
-  return(FALSE)
-}
-
-# .ddg.proc.number gets the number of the nearest preceding
-# matching Operation, Checkpoint, or Restore node. It returns
-# zero if no match is found.
-
-# pname - name of procedure node.
-# find.unreturned.function - if true, only return the number if the
-#    procedure has not previously been linked to a return value
-
-.ddg.proc.number <- function(pname, find.unreturned.function=FALSE) {
-  #print (paste0("Looking for function ", pname))
-  ddg.proc.nodes <- .ddg.proc.nodes()
-  rows <- nrow(ddg.proc.nodes)
-  for (i in rows:1) {
-    type <- ddg.proc.nodes$ddg.type[i]
-    if (.ddg.is.proc.node(type) & ddg.proc.nodes$ddg.name[i] == pname) {
-      #print (paste0("Found a matching function for ", pname))
-      if (!find.unreturned.function) {
-        #print (paste0("Returning ", ddg.proc.nodes$ddg.num[i]))
-        return(ddg.proc.nodes$ddg.num[i])
-      }
-
-      if (find.unreturned.function & !ddg.proc.nodes$ddg.return.linked[i]) {
-        #print (paste0("Returning ", ddg.proc.nodes$ddg.num[i]))
-        return(ddg.proc.nodes$ddg.num[i])
-      }
-    }
-  }
-
-  # Error message if no match is found.
-  #print ("Returning error!")
-  error.msg <- paste("No procedure node found for", pname)
-  if (.ddg.debug.lib()) print (sys.calls())
-  .ddg.insert.error.message(error.msg)
-  return(0)
-}
-
-# .ddg.last.proc.number returns the node number of the last
-# procedure node in the ddg procedure node table. Procedure nodes
-# are determined as defined in .ddg.is.proc.node above.
-
-.ddg.last.proc.number <- function() {
-  ddg.proc.nodes <- .ddg.proc.nodes()
-  rows <- nrow(ddg.proc.nodes)
-  for (i in rows:1) {
-    type <- ddg.proc.nodes$ddg.type[i]
-    if (.ddg.is.proc.node(type)) return(i)
-  }
-
-  error.msg <- paste("No final procedure nodes")
-  .ddg.insert.error.message(error.msg)
-  return(0)
-}
-
 # .ddg.data.node.exists searches the data node table for a matching
 # data node and returns TRUE if a match is found. Otherwise it searches
 # the initial environment table and, if a match is found, creates a
@@ -1276,21 +1093,6 @@ library(curl)
   return(0)
 }
 
-# .ddg.proc.name returns the name of a procedure node. It returns a
-# empty string if no match is found.
-
-# pnum - node number in procedure node table.
-
-.ddg.proc.name <- function(pnum) {
-  if (pnum < 1 || pnum > .ddg.pnum()) {
-    error.msg <- paste("No name found for procedure number", pnum)
-    .ddg.insert.error.message(error.msg)
-    return ("")
-  }
-
-  return(.ddg.proc.nodes()$ddg.name[pnum])
-}
-
 # .ddg.proc2proc creates a control flow edge from the preceding
 # procedure node to the current procedure node.
 
@@ -1327,7 +1129,7 @@ library(curl)
   dn <- .ddg.data.number(dname, dscope)
   
   if(is.null(pname) || startsWith(pname,".ddg.") || startsWith(pname,"ddg"))
-    pn <- .ddg.last.proc.number()
+    pn <- .ddg.pnum()
   else
     pn <- .ddg.proc.number(pname)
   
@@ -1365,7 +1167,7 @@ library(curl)
   
   # attach data node to the last procedure node if pname is NULL.
   if(is.null(pname) || startsWith(pname,".ddg.") || startsWith(pname,"ddg"))
-    pn <- .ddg.last.proc.number()
+    pn <- .ddg.pnum()
   else
     pn <- .ddg.proc.number(pname, return.value)
   
@@ -1382,10 +1184,7 @@ library(curl)
     # is necessary for recursive functions to get linked to their
     # return values correctly.
     if (return.value) {
-      ddg.proc.nodes <- .ddg.proc.nodes()
-      #print ("Marking return value as being used")
-      ddg.proc.nodes$ddg.return.linked[pn] <- TRUE
-      .ddg.set("ddg.proc.nodes", ddg.proc.nodes)
+      .ddg.proc.node.returned(pn)
     }
 
     if (.ddg.debug.lib()) {
@@ -1408,7 +1207,7 @@ library(curl)
 .ddg.lastproc2data <- function(dname, all=TRUE, dscope=NULL) {
   # Get data & procedure numbers.
   dn <- .ddg.data.number(dname, dscope)
-  pn <- if(all) .ddg.pnum() else .ddg.last.proc.number()
+  pn <- .ddg.pnum()
 
   # Record in edges table
   etype <- "df.out"
@@ -1929,7 +1728,7 @@ library(curl)
     }
   }
   if (.ddg.debug.lib()) print(paste(called, ":  Adding", node.name,  type, "node"))
-  .ddg.proc.node(type, node.name, node.name, auto.created=TRUE, env=env, cmd = cmd)
+  .ddg.proc.node(type, node.name, node.name, cmd = cmd)
   .ddg.proc2proc()
 
   return(node.name)
@@ -2456,7 +2255,7 @@ library(curl)
               funcs.called <- .ddg.get.function.info(cmd@functions.called)
               
               # create procedure node for the error-causing operation
-              .ddg.proc.node("Operation", cmd@abbrev, cmd@abbrev, env=environ, pfunctions=funcs.called, console=TRUE, cmd=cmd)
+              .ddg.proc.node("Operation", cmd@abbrev, cmd@abbrev, pfunctions=funcs.called, console=TRUE, cmd=cmd)
               .ddg.proc2proc()
 
               # create input edges by adding variables to set
@@ -2532,7 +2331,7 @@ library(curl)
 
           if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Adding operation node for", cmd@abbrev))
           
-          .ddg.proc.node("Operation", cmd@abbrev, cmd@abbrev, env=environ, pfunctions=funcs.called, console=TRUE, cmd=cmd)
+          .ddg.proc.node("Operation", cmd@abbrev, cmd@abbrev, pfunctions=funcs.called, console=TRUE, cmd=cmd)
           .ddg.proc2proc()
 
           # If a warning occurred when cmd was evaluated,
@@ -2740,87 +2539,6 @@ library(curl)
             })
 
   }
-}
-
-# .ddg.proc.node creates a procedure node.
-# 
-# ptype - type of procedure node.
-# pname - name of procedure node.
-# pvalue (optional) - value of procedure node.
-# pfunctions - functions called in the procedure
-# console (optional) - if TRUE, console mode is enabled.
-# auto.created - TRUE means that the node is being automatically
-#   created when a return call is found
-# ptime - elapsed time
-# env - the environment in which the procedure occurs
-
-# CHECK!  Looks like env parameter is not needed!
-.ddg.proc.node <- function(ptype, pname, pvalue="", pfunctions=NULL, console=FALSE,
-    auto.created=FALSE, env = sys.frame(.ddg.get.frame.number(sys.calls())),
-    cmd = NULL) {
-  if (.ddg.debug.lib()) {
-    if (length(pname) > 1) {
-      print(sys.calls())
-    }
-  }
-
-  # We're not in a console node but we're capturing data
-  # automatically.
-  if (.ddg.enable.console()) {
-
-    # Capture graphic output of previous procedure node.
-    # Comment out this function???
-    #.ddg.auto.graphic.node()
-
-    if (!console && !.ddg.enable.source() && interactive()) {
-      .ddg.console.node()
-    }
-  }
-
-  if (is.null(cmd)) {
-    snum <- NA
-    pos <- NA
-  }
-  else {
-    snum <- cmd@script.num
-    pos <- cmd@pos
-  }
-
-  # Record start & finish information
-  if (ptype == "Start") {
-    .ddg.starts.open <- .ddg.get (".ddg.starts.open")
-    .ddg.starts.open <- c(.ddg.starts.open, pname)
-    .ddg.set (".ddg.starts.open", .ddg.starts.open)
-  }
-  else if (ptype == "Finish") {
-    .ddg.starts.open <- .ddg.get (".ddg.starts.open")
-    num.starts.open <- length(.ddg.starts.open)
-    if (num.starts.open > 0) {
-      last.start.open <- .ddg.starts.open[num.starts.open]
-      if (num.starts.open > 1) {
-        .ddg.starts.open <- .ddg.starts.open[1:num.starts.open-1]
-      }
-      else {
-        .ddg.starts.open <- vector()
-      }
-      .ddg.set (".ddg.starts.open", .ddg.starts.open)
-      if (last.start.open != pname) {
-        .ddg.insert.error.message("Start and finish nodes do not match")
-      }
-    }
-    else {
-      .ddg.insert.error.message("Attempting to create a finish node when there are no open blocks")
-    }
-  }
-  .ddg.set(".ddg.last.proc.node.created", paste(ptype, pname))
-
-  ptime <- .ddg.elapsed.time()
-
-  # Record in procedure node table
-  .ddg.record.proc(ptype, pname, pvalue, auto.created, ptime, pfunctions, snum, pos)
-  
-  #if (ptype == "Finish") print(sys.calls())
-  if (.ddg.debug.lib()) print(paste("proc.node:", ptype, pname))
 }
 
 # .ddg.replace.quotes quotes quotation characters. It also replaces
@@ -3536,7 +3254,7 @@ library(curl)
 # when a return is found
 # env (optional) - the environment local to the function
 
-.ddg.create.function.nodes <- function(pname, call, full.call, outs.graphic=NULL, outs.data=NULL, outs.exception=NULL, outs.url=NULL, outs.file=NULL, graphic.fext="jpeg", auto.created=FALSE, env=NULL) {
+.ddg.create.function.nodes <- function(pname, call, full.call, outs.graphic=NULL, outs.data=NULL, outs.exception=NULL, outs.url=NULL, outs.file=NULL, graphic.fext="jpeg", env=NULL) {
   # Create the start node
   if (typeof(call[[1]]) == "closure") {
     #print(paste(".ddg.create.function.nodes: pname =", pname))
@@ -3593,7 +3311,7 @@ library(curl)
             #print(paste(".ddg.create.function.nodes: binding.node.name =", binding.node.name))
           }
 
-          .ddg.proc.node("Binding", binding.node.name, env=env)
+          .ddg.proc.node("Binding", binding.node.name)
           .ddg.proc2proc()
           for (var in vars.used) {
             param.scope <- .ddg.get.scope(var, for.caller = TRUE, calls=stack)
@@ -3619,7 +3337,7 @@ library(curl)
         })
   }
   #print (".ddg.create.function.nodes creating Operation node")
-  .ddg.proc.node("Operation", pname, pname, auto.created = auto.created, env=env)
+  .ddg.proc.node("Operation", pname, pname)
 
   # Link to the definition of the function if the function is defined in this script.
   if (.ddg.data.node.exists(pname, environmentName(.GlobalEnv))) {
@@ -4020,11 +3738,7 @@ library(curl)
 	ddg.initial.env <- .ddg.initial.env()
 	write.csv(ddg.initial.env, fileout, row.names=FALSE)
 
-	# Save procedure nodes table to file.
-	fileout <- paste(.ddg.path.debug(), "/procedure-nodes.csv", sep="")
-	ddg.proc.nodes <- .ddg.proc.nodes()
-	ddg.proc.nodes <- ddg.proc.nodes[ddg.proc.nodes$ddg.num > 0, ]
-	write.csv(ddg.proc.nodes, fileout, row.names=FALSE)
+  .ddg.save.debug.proc.nodes ()
 
 	# Save data nodes table to file.
 	fileout <- paste(.ddg.path.debug(), "/data-nodes.csv", sep="")
@@ -4182,114 +3896,6 @@ ddg.function <- function(outs.graphic=NULL, outs.data=NULL, outs.exception=NULL,
   invisible()
 }
 
-# ddg.procedure creates a procedure node of type Operation for
-# procedures not implemented as functions in the original R script.
-# For more details on outs parameters, see .ddg.create.output.nodes.
-
-# pname - the label for the node. Can be passed in as a string
-#    or as a name.
-# ins (optional) - a list of names of data nodes to be linked
-#    as inputs to this procedure node. These MUST be passed as
-#    as a list of strings, not names, unless the value is a
-#    file name.
-# outs (optional) - a list of names of data nodes to be created as
-#    outputs to this procedure node. These MUST be passed as
-#    a list of strings, not names, unless the value is a file name.
-# graphic.fext (optional) - file extension for graphics file.
-# env (optional) - the environment in which the procedure occurs.
-#    It defaults to the global environment.
-
-ddg.procedure <- function(pname, ins=NULL, outs.graphic=NULL, outs.data=NULL, outs.exception=NULL, outs.url=NULL, outs.file=NULL, graphic.fext="jpeg") {
-
-  if (!.ddg.is.init()) return(invisible())
-
-  .ddg.lookup.function.name(pname)
-
-  #print(paste("ddg.procedure: length(pname) =", length(pname)))
-  #print(paste("ddg.procedure: pname =", pname))
-
-  .ddg.proc.node("Operation", pname, pname)
-
-  # Create control flow edge from preceding procedure node.
-  .ddg.proc2proc()
-
-  # Create the input edges if ins list provided.
-  if (!is.null(ins)) {
-    # Get scope.  Cannot use lapply because that results in the
-    # creation of a new stack, while .ddg.get.scope assumes that
-    # it is called.
-    # scope <- .ddg.get.scope(ins[[1]], for.caller = TRUE)
-    stack <- sys.calls()
-    function.scope <- parent.frame()
-
-    lapply(ins,
-        function(param) {
-          # First see if param is defined in the function where
-          # ddg.procedure is called. If that does not find it,
-          # look in the scope of the function that calls the
-          # function that calls ddg.procedure.  The difference
-          # probably depends on whether ddg.procedure is used to
-          # annotate a chunk of code where param is really in the
-          # local scope but used in the annotated chunk (the first
-          # case) or to annotate an entire function and param is
-          # an actual funciton parameter (the second case).
-          scope <- .ddg.get.scope(param, calls=stack)
-          if (.ddg.is.local(param, function.scope)) {
-            if (.ddg.data.node.exists(param, scope)) {
-              .ddg.data2proc(param, scope, pname)
-              if (.ddg.debug.lib()) print(paste("param:", param))
-            }
-            else {
-              error.msg <- paste("No data node found for local", param)
-              .ddg.insert.error.message(error.msg)
-            }
-          }
-          else if (scope != "undefined" && .ddg.data.node.exists(param, scope)) {
-            .ddg.data2proc(param, scope, pname)
-            if (.ddg.debug.lib()) print(paste("param:", param))
-          }
-          else {
-            scope <- .ddg.get.scope(param, for.caller = TRUE, calls=stack)
-            if (scope != "undefined" && .ddg.data.node.exists(param, scope)) {
-              .ddg.data2proc(param, scope, pname)
-              if (.ddg.debug.lib()) print(paste("param:", param))
-            }
-
-            else if (.ddg.data.node.exists(param, "undefined")) {
-              # This could be the case if the parameter is the name
-              # of a file rather than a variable in the program.
-              .ddg.data2proc(param, "undefined", pname)
-              if (.ddg.debug.lib()) print(paste("param:", param))
-            }
-
-            else {
-              # Attempt to allow names, not strings. This does not
-              # work as written because what we get when we call
-              # substitute is the parameter provided by lapply, not
-              # the one provided to ddg.procedure.  We will have
-              # the same problem dealing with outs.
-
-              # arg <- substitute(param)
-              # if (!is.character(arg) && .ddg.data.node.exists(arg)) {
-              # .ddg.data2proc(deparse(arg), pname)
-              # if (.ddg.debug.lib()) print(paste("param:", deparse(arg)))
-              #   else {warning}
-              # }
-
-              error.msg <- paste("No data node found for", param)
-              .ddg.insert.error.message(error.msg)
-            }
-          }
-        })
-  }
-
-  # create output nodes
-
-  .ddg.create.output.nodes(fname="ddg.procedure", pname, outs.graphic, outs.data, outs.exception, outs.url, outs.file, graphic.fext, parent.frame())
-
-  invisible()
-}
-
 # .ddg.find.ddg.return.value.caller.frame.number returns the frame
 # number of the first caller to ddg.return.value.  If ddg.return.value
 # is called recursively, this will give us the position of the
@@ -4388,7 +3994,7 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
   if (!.ddg.proc.node.exists(pname)) {
     #print("ddg.return.value creating function nodes")
     full.call <- match.call(sys.function(caller.frame), call=call)
-    .ddg.create.function.nodes(pname, call, full.call, auto.created = TRUE, env = sys.frame(.ddg.get.frame.number(sys.calls()))
+    .ddg.create.function.nodes(pname, call, full.call, env = sys.frame(.ddg.get.frame.number(sys.calls()))
     )
   }
   else {
@@ -4431,7 +4037,7 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
   
   # Check if there is a return call within this call to ddg.return.
   if (.ddg.has.call.to(parsed.stmt, "return")) {
-  .ddg.proc.node("Operation", return.stmt@abbrev, return.stmt@abbrev, console = TRUE, env=caller.env, cmd=return.stmt)
+  .ddg.proc.node("Operation", return.stmt@abbrev, return.stmt@abbrev, console = TRUE, cmd=return.stmt)
 
   # Create control flow edge from preceding procedure node.
   .ddg.proc2proc()
