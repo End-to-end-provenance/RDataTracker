@@ -187,7 +187,7 @@ ddg.json <- function()
 	nodes <- .ddg.proc.nodes()
 	
 	# extract and order required columns
-	nodes <- subset( nodes, ddg.num > 0, 
+	nodes <- subset( nodes, 
 					 select = c(ddg.name, ddg.type, ddg.time, ddg.snum, 
 					 ddg.startLine, ddg.startCol, ddg.endLine, ddg.endCol) )
 	
@@ -217,7 +217,7 @@ ddg.json <- function()
 	nodes <- .ddg.data.nodes()
 	
 	# extract and order required columns
-	nodes <- subset( nodes, ddg.num > 0,
+	nodes <- subset( nodes, 
 					 select = c(ddg.name, ddg.value, ddg.val.type, ddg.type,
 					 ddg.scope, ddg.from.env, ddg.hash, ddg.time, ddg.loc) )
 	

@@ -33,7 +33,6 @@
 # startCol - the column of the script where the statement starts
 # endLine - the line on the script where the statement ends
 # endCol - the line on the script where the statement ends
-# @return a data frame with size rows, with all columns being empty vectors
 #
 # ddg.pnum is the number associated with the last procedure node created
 
@@ -47,19 +46,19 @@
   .ddg.set("ddg.pnum", 0)
 }
 
-#' .ddg.is.proc.node returns TRUE for any type of procedure node.
+#' .ddg.is.proc.type returns TRUE for any type of procedure node.
 #' This is used for type-checking.
 #' 
 #' @param type procedure node type.
 #' @returnType logical
 #' @return true for any type of procedure node
-.ddg.is.proc.node <- function(type) {
+.ddg.is.proc.type <- function(type) {
   return(type %in% c("Operation", "Start", "Finish", "Binding", "Incomplete"))
 }
 
 #' Return the counter used to assign procedure node ids
 #' @returnType integer 
-#' @return the current value of the procedure node id
+#' @return the data node id of the last procedure node created
 .ddg.pnum <- function() {
   return (.ddg.get("ddg.pnum"))
 }
@@ -68,9 +67,8 @@
 #' It is faster to add a bunch of empty rows and update them than to 
 #' add one row at a time
 #' @param size the number of rows to add
-#' @returnType a dataframe containing these columns:
-#' 
-#' @author blerner
+#' @returnType a dataframe 
+#' @return a data frame with size rows, with all columns being empty vectors
 .ddg.create.proc.node.rows <- function (size=100) {
   return (data.frame(
           ddg.type = character(size),
@@ -90,8 +88,16 @@
 #' Returns the procedure node table
 #' @returnType a data frame
 #' @return the procedure node table
-.ddg.proc.nodes <- function() {
+.ddg.proc.node.table <- function() {
   return (.ddg.get("ddg.proc.nodes"))
+}
+
+#' Returns the filled rows of the procedure node table
+#' @returnType a data frame
+#' @return the filled rows of the procedure node table
+.ddg.proc.nodes <- function() {
+  ddg.proc.nodes <- .ddg.get("ddg.proc.nodes")
+  return (ddg.proc.nodes [ddg.proc.nodes$ddg.num > 0, ])
 }
 
 #' Mark the procedure node as being linked to a return value
@@ -99,7 +105,7 @@
 #' @param pn the id of the procedure node to mark
 #' @return nothing
 .ddg.proc.node.returned <- function(pn) {
-  ddg.proc.nodes <- .ddg.proc.nodes()
+  ddg.proc.nodes <- .ddg.proc.node.table()
   ddg.proc.nodes$ddg.return.linked[pn] <- TRUE
   .ddg.set("ddg.proc.nodes", ddg.proc.nodes)
 }
@@ -112,7 +118,7 @@
 #' @returnType logical
 #' @return true if there is a node with the given name
 .ddg.proc.node.exists <- function(pname) {
-  ddg.proc.nodes <- .ddg.proc.nodes()
+  ddg.proc.nodes <- .ddg.proc.node.table()
   matching.nodes <- ddg.proc.nodes[ddg.proc.nodes$ddg.name == pname, ]
   return (nrow(matching.nodes) > 0)
 }
@@ -124,10 +130,10 @@
 #' @param find.unreturned.function if true, only return the number if the
 #'    procedure has not previously been linked to a return value
 #' @returnType integer
-#' @return the id of a procedure node matching the name
+#' @return the id of a procedure node matching the name, or 0 if none was found
 .ddg.proc.number <- function(pname, find.unreturned.function=FALSE) {
   #print (paste0("Looking for function ", pname))
-  ddg.proc.nodes <- .ddg.proc.nodes()
+  ddg.proc.nodes <- .ddg.proc.node.table()
   
   if (find.unreturned.function) {
     matching <- ddg.proc.nodes[ddg.proc.nodes$ddg.name == pname & !ddg.proc.nodes$ddg.return.linked, ]
@@ -162,7 +168,7 @@
     return ("")
   }
   
-  return(.ddg.proc.nodes()$ddg.name[pnum])
+  return(.ddg.proc.node.table()$ddg.name[pnum])
 }
 
 #' Write the procedure nodes to a csv table.  Useful for debugging.
@@ -171,7 +177,6 @@
   # Save procedure nodes table to file.
   fileout <- paste(.ddg.path.debug(), "/procedure-nodes.csv", sep="")
   ddg.proc.nodes <- .ddg.proc.nodes()
-  ddg.proc.nodes <- ddg.proc.nodes[ddg.proc.nodes$ddg.num > 0, ]
   write.csv(ddg.proc.nodes, fileout, row.names=FALSE)
 }
 
@@ -186,7 +191,7 @@
 #' 
 #' @return nothing
 .ddg.record.proc <- function(ptype, pname, pvalue, ptime, pfunctions=NULL, snum=NA, pos=NA) {
-  if (!.ddg.is.proc.node (ptype)) {
+  if (!.ddg.is.proc.type (ptype)) {
     print (paste (".ddg.record.proc: bad value for ptype - ", ptype))
   }
   
@@ -194,10 +199,9 @@
   ddg.pnum <- .ddg.inc("ddg.pnum")
   
   # If the table is full, make it bigger.
-  ddg.proc.nodes <- .ddg.proc.nodes()
+  ddg.proc.nodes <- .ddg.proc.node.table()
   if (nrow(ddg.proc.nodes) < ddg.pnum) {
-    new.rows <- .ddg.create.proc.node.rows()
-    ddg.proc.nodes <- .ddg.add.rows("ddg.proc.nodes", new.rows)
+    ddg.proc.nodes <- .ddg.add.rows("ddg.proc.nodes", .ddg.create.proc.node.rows())
   }
   
   # Fill in the next row
@@ -253,7 +257,7 @@
 .ddg.proc.node <- function(ptype, pname, pvalue="", pfunctions=NULL, console=FALSE,
     cmd = NULL) {
 
-  if (!.ddg.is.proc.node (ptype)) {
+  if (!.ddg.is.proc.type (ptype)) {
     print (paste (".ddg.proc.node: bad value for ptype - ", ptype))
   }
   

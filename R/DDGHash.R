@@ -26,13 +26,12 @@ library(jsonlite)
 #' 
 #' @param dname the name of the file
 #' @param ddg.dnum the number of the node in the data table
-#' @param dscriptpath the absolute path to the R script
 #' @param dloc the absolute path to the data file
 #' @param dvalue the relative path to the saved copy of the file
 #' @param dtime the timestamp on the file
 #' 
 #' @return None
-.ddg.add.to.hashtable <- function(dname, ddg.dnum, dscriptpath, dloc, dvalue, dtime) {
+.ddg.add.to.hashtable <- function(dname, ddg.dnum, dloc, dvalue, dtime) {
   if (!.ddg.get (".ddg.save.hashtable")) {
     return
   }
@@ -46,15 +45,13 @@ library(jsonlite)
   
   drw <- .ddg.calculate.rw(dname)
   
-  ddg.data.nodes <- .ddg.data.nodes()
-  ddg.data.nodes$ddg.hash[ddg.dnum] <- dhash
-  ddg.data.nodes$ddg.rw[ddg.dnum] <- drw
-  .ddg.set("ddg.data.nodes", ddg.data.nodes)
+  .ddg.set.hash (ddg.dnum, dhash, drw)
   
-  
+  dscriptpath <- 
+      if (!is.null(.ddg.get("ddg.r.script.path"))) .ddg.get("ddg.r.script.path")
+      else ""
   longpath <- paste0(getwd(), substring(.ddg.path(),2),"/ddg.json")
   .ddg.set("ddg.hashtable", rbind(.ddg.get("ddg.hashtable"), c(dscriptpath, dloc, longpath, paste(.ddg.path(), dvalue, sep="/"), ddg.dnum, dhash, dhash.algorithm, drw, dtime, dvalue), stringsAsFactors = FALSE))
-  return (ddg.data.nodes)
 }
 
 #' Calculate the hash value for the file
