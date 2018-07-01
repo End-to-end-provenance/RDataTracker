@@ -60,9 +60,10 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
   .ddg.set (".ddg.save.hashtable", save.hashtable)
   .ddg.set (".ddg.hash.algorithm", hash.algorithm)
   
-  if( is.null(r.script.path) ) {
-    r.script.path <- getwd()
-  }
+  # This results in the wrong ddg directory in console mode ERB 7/1/2018
+  # if (is.null(r.script.path) ) {
+  #   r.script.path <- getwd()
+  # }
   
   # Setting the path for the ddg
   if (is.null(ddgdir)) {
