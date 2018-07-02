@@ -15,41 +15,45 @@
 #   License along with this program.  If not, see
 #   <http://www.gnu.org/licenses/>.
 
-########################  Exported Functions ########################
+######################## Exported Functions ########################
+
+# The following functions are exported:
 
 # ddg.init - intializes a new provenance graph
 # ddg.save - saves the current provenance graph
 # ddg.run - initiates execution of a script
 # ddg.source - sources a script & collects provenance
-# ddg.json - gets the current provenance graph
+# ddg.json - returns the current provenance graph as a prov-json string
 
-# ddg.init intializes a new DDG.
-
-# r.script.path (optional) - the full path to the R script file
-#  that is being executed. If provided, a copy of the script will
-#  be saved with the DDG.
-# ddgdir (optional) - the directory where the DDG should be saved.
-#   If not provided, the DDG will be saved in a subdirectory called
-#   "ddg" in the current working directory.
-# enable.console (optional) - if TRUE, console mode is turned on.
-# annotate.inside.functions (optional) - if TRUE, functions are annotated.
-# first.loop (optional) - the first loop to annotate in a for, while, or
-#   repeat statement.
-# max.loops (optional) - the maximum number of loops to annotate in a for,
-#   while, or repeat statement. If max.loops = -1 there is no limit.
-#   If max.loops = 0, no loops are annotated.  If non-zero, if-statements
-#   are also annotated.
-# max.snapshot.size (optional) - the maximum size for objects that
-#   should be output to snapshot files. If 0, no snapshot files are saved.
-#   If -1, all snapshot files are saved. Size in kilobytes.  Note that
-#   this tests the size of the object that will be turned into a
-#   snapshot, not the size of the resulting snapshot.
-# Addition : overwrite (optional) - default TRUE, if FALSE, generates
-#   timestamp for ddg directory
-# save.hashtable (optional) - If TRUE, save ddg information to hashtable.json.
-# hash.algorithm (optional) - If save.hashtable is true, this allows the caller to 
-#    select the hash algorithm to use.  This uses the digest function from the digest package.
-#    The choices are md5, which is also the default, sha1, crc32, sha256, sha512, xxhash32, xxhash64 and murmur32.
+#' @export ddg.init intializes a new provenance graph
+#'
+#' @param r.script.path (optional) - the full path to the R script file
+#' that is being executed. If provided, a copy of the script will
+#' be saved with the DDG.
+#' @param ddgdir (optional) - the directory where the DDG should be saved.
+#' If not provided, the DDG will be saved in a subdirectory called
+#' "ddg" in the current working directory.
+#' @param enable.console (optional) - if TRUE, console mode is turned on.
+#' @param annotate.inside.functions (optional) - if TRUE, functions are annotated.
+#' @param first.loop (optional) - the first loop to annotate in a for, while, or
+#' repeat statement.
+#' @param max.loops (optional) - the maximum number of loops to annotate in a for,
+#' while, or repeat statement. If max.loops = -1 there is no limit.
+#' If max.loops = 0, no loops are annotated.  If non-zero, if-statements
+#' are also annotated.
+#' @param max.snapshot.size (optional) - the maximum size for objects that
+#' should be output to snapshot files. If 0, no snapshot files are saved.
+#' If -1, all snapshot files are saved. Size in kilobytes.  Note that
+#' this tests the size of the object that will be turned into a
+#' snapshot, not the size of the resulting snapshot.
+#' @paramoverwrite (optional) - default TRUE, if FALSE, generates
+#' timestamp for ddg directory
+#' @param save.hashtable (optional) - If TRUE, save ddg information to hashtable.json.
+#' @param hash.algorithm (optional) - If save.hashtable is true, this allows the caller to 
+#' select the hash algorithm to use.  This uses the digest function from the digest package.
+#' The choices are md5, which is also the default, sha1, crc32, sha256, sha512, xxhash32, xxhash64 and murmur32.
+#'
+#' @return nothing
 
 ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enable.console = TRUE, annotate.inside.functions = TRUE, first.loop = 1, max.loops = 1, max.snapshot.size = 10,
                      save.hashtable = TRUE, hash.algorithm="md5") {
@@ -181,15 +185,14 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
   invisible()
 }
 
-# ddg.save inserts attribute information and the number of
-# procedure steps at the top of the DDG. It writes the DDG and
-# the procedure nodes, data nodes, and function return tables
-# to the DDG directory.
-
-# r.script.path (optional) - Path to the R script.
-# save.debug (optional) - If TRUE, save debug files to debug directory.
-#   Used in console mode.
-# quit (optional) - If TRUE, remove all DDG files from memory.
+#' @export ddg.save saves the current provenance graph
+#'
+#' @param r.script.path (optional) - Path to the R script.
+#' @param save.debug (optional) - If TRUE, save debug files to debug directory.
+#' Used in console mode.
+#' @param quit (optional) - If TRUE, remove all DDG files from memory.
+#'
+#' @return nothing
 
 ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE) {
   if (!.ddg.is.init()) return(invisible())
@@ -264,45 +267,42 @@ ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE) {
   invisible()
 }
 
-# ddg.run executes a script (r.script.path) or a function (f).
-# If an R error is generated, the error message is captured and
-# saved in the DDG. This function includes calls to ddg.init and
-# ddg.save, so it is not necessary to call those functions from
-# an instrumented script if ddg.run is used. Note that one of f
-# and r.script.path must be given; otherwise an error is generated.
-
-# r.script.path (optional) - the full path to the R script.
-#   If provided, a copy of the script will be saved with the DDG.
-#   If only r.script.path is provided, the script is sourced using
-#   ddg.source and a DDG is created for the script.
-# ddgdir (optional) - the directory where the DDG will be saved.
-#   If not provided, the DDG will be saved in a directory called
-#   "ddg" in the current working directory.
-# overwrite (optional) - if TRUE, the ddg is overwritten each time
-#   the script is executed.
-# f (optional) - a function to run. If supplied, the function f
-#   is executed with calls to ddg.init and ddg.save so that
-#   provenance for the function is captured.
-# enable.console (optional) - if TRUE, console mode is turned on.
-# annotate.inside.functions (optional) - if TRUE, functions are annotated.
-# first.loop (optional) - the first loop to annotate in a for, while, or
-#   repeat statement.
-# max.loops (optional) - the maximum number of loops to annotate in a for,
-#   while, or repeat statement. If max.loops = -1 there is no limit.
-#   If max.loops = 0, no loops are annotated.  If non-zero, if-statements
-#   are also annotated.
-# max.snapshot.size (optional) - the maximum size for objects that
-#   should be output to snapshot files. If 0, no snapshot files are
-#   saved. If -1, all snapshot files are saved.  Size in kilobytes.
-#   Note that this tests the size of the object that will be turned
-#   into a snapshot, not the size of the resulting snapshot.
-# debug (optional) - If TRUE, enable script debugging. This has the
-#   same effect as inserting ddg.breakpoint() at the top of the script.
-# save.debug (optional) - If TRUE, save debug files to debug directory.
-# save.hashtable (optional) - If TRUE, save ddg information to hashtable.json.
-# hash.algorithm (optional) - If save.hashtable is true, this allows the caller to 
-#    select the hash algorithm to use.    This uses the digest function from the digest package.
-#    The choices are md5, which is also the default, sha1, crc32, sha256, sha512, xxhash32, xxhash64 and murmur32.
+#' @export ddg.run initiates execution of a script
+#'
+#' @param r.script.path (optional) - the full path to the R script.
+#' If provided, a copy of the script will be saved with the DDG.
+#' If only r.script.path is provided, the script is sourced using
+#' ddg.source and a DDG is created for the script.
+#' @param ddgdir (optional) - the directory where the DDG will be saved.
+#' If not provided, the DDG will be saved in a directory called
+#' "ddg" in the current working directory.
+#' @param overwrite (optional) - if TRUE, the ddg is overwritten each time
+#' the script is executed.
+#' @param f (optional) - a function to run. If supplied, the function f
+#' is executed with calls to ddg.init and ddg.save so that
+#' provenance for the function is captured.
+#' @param enable.console (optional) - if TRUE, console mode is turned on.
+#' @param annotate.inside.functions (optional) - if TRUE, functions are annotated.
+#' @param first.loop (optional) - the first loop to annotate in a for, while, or
+#' repeat statement.
+#' @param max.loops (optional) - the maximum number of loops to annotate in a for,
+#' while, or repeat statement. If max.loops = -1 there is no limit.
+#' If max.loops = 0, no loops are annotated.  If non-zero, if-statements
+#' are also annotated.
+#' @param max.snapshot.size (optional) - the maximum size for objects that
+#' should be output to snapshot files. If 0, no snapshot files are
+#' saved. If -1, all snapshot files are saved.  Size in kilobytes.
+#' Note that this tests the size of the object that will be turned
+#' into a snapshot, not the size of the resulting snapshot.
+#' @param debug (optional) - If TRUE, enable script debugging. This has the
+#' same effect as inserting ddg.breakpoint() at the top of the script.
+#' @param save.debug (optional) - If TRUE, save debug files to debug directory.
+#' @param save.hashtable (optional) - If TRUE, save ddg information to hashtable.json.
+#' @param hash.algorithm (optional) - If save.hashtable is true, this allows the caller to 
+#' select the hash algorithm to use. This uses the digest function from the digest package.
+#' The choices are md5, which is also the default, sha1, crc32, sha256, sha512, xxhash32, xxhash64 and murmur32.
+#'
+#' @return nothing
 
 ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = NULL, enable.console = TRUE, annotate.inside.functions = TRUE, first.loop = 1, max.loops = 1, max.snapshot.size = 10, debug = FALSE, save.debug = FALSE, display = FALSE, 
                     save.hashtable = TRUE, hash.algorithm="md5") {
@@ -348,30 +348,33 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
   invisible()
 }
 
-# ddg.source reads in an R script and executes it in the provided
-# enviroment. ddg.source essentially mimics the behaviour of the
-# R source command, having similar input parameters and results,
-# but with additional parameters ignore.ddg.calls and ignore.init.
-
-# file - the name of the R script file to source.
-# ddgdir (optional) - the directory where the DDG will be saved.
-#   If not provided, the DDG will be saved in a directory called "ddg"
-#   in the current working directory.
-# local (optional) - the environment in which to evaluate parsed
-#   expressions. If TRUE, the environment from which ddg.source is
-#   called. If FALSE, the user's workspace (global environment).
-# echo (optional) - print each expression after parsing.
-# print.eval (optional) - print result of each evaluation.
-# verbose (optional) - print extra diagnostics.
-# max.deparse.length (optional) - maximum number of characters
-#   output for deparse of a single expression.
-# chdir (optional) - change R working directory temporarily to
-#   the directory containing the file to be sourced.
-# encoding (optional) - encoding to be assumed when file is a
-#   character string.
-# ignore.ddg.calls (optional) - if TRUE, ignore DDG function calls.
-# ignore.init (optional) - if TRUE, ignore ddg.init and ddg.run.
-# force.console (optional) - if TRUE, turn console mode on.
+#' @export ddg.source sources a script & collects provenance
+#'
+#' @param ddg.source reads in an R script and executes it in the provided
+#' enviroment. ddg.source essentially mimics the behaviour of the
+# 'R source command, having similar input parameters and results,
+# 'but with additional parameters ignore.ddg.calls and ignore.init.
+#' @param file - the name of the R script file to source.
+#' @param ddgdir (optional) - the directory where the DDG will be saved.
+#' If not provided, the DDG will be saved in a directory called "ddg"
+#' in the current working directory.
+#' @param local (optional) - the environment in which to evaluate parsed
+#' expressions. If TRUE, the environment from which ddg.source is
+#' called. If FALSE, the user's workspace (global environment).
+#' @param echo (optional) - print each expression after parsing.
+#' @param print.eval (optional) - print result of each evaluation.
+#' @param verbose (optional) - print extra diagnostics.
+#' @parammax.deparse.length (optional) - maximum number of characters
+#' output for deparse of a single expression.
+#' @param chdir (optional) - change R working directory temporarily to
+#' the directory containing the file to be sourced.
+#' @param encoding (optional) - encoding to be assumed when file is a
+#' character string.
+#' @param ignore.ddg.calls (optional) - if TRUE, ignore DDG function calls.
+#' @param ignore.init (optional) - if TRUE, ignore ddg.init and ddg.run.
+#' @param force.console (optional) - if TRUE, turn console mode on.
+#'
+#' @return nothing
 
 ddg.source <- function (file,  ddgdir = NULL, local = FALSE, echo = verbose, print.eval = echo,
 	verbose = getOption("verbose"), max.deparse.length = 150, chdir = FALSE, encoding = getOption("encoding"),
@@ -583,7 +586,11 @@ ddg.source <- function (file,  ddgdir = NULL, local = FALSE, echo = verbose, pri
 	invisible()
 }
 
-# forms the prov-json string
+#' @export ddg.json returns the current provenance graph as a prov-json string
+#'
+#' @return the current provenance graph
+#' @returntype prov-json string
+
 ddg.json <- function()
 {
 	library(jsonlite)
@@ -712,6 +719,6 @@ ddg.json <- function()
 	}	
 	
 	# COMBINE INTO COMPLETE JSON
-	return( .ddg.json.combine(json) )
+	return(.ddg.json.combine(json) )
 }
 
