@@ -64,31 +64,72 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
   .ddg.set (".ddg.save.hashtable", save.hashtable)
   .ddg.set (".ddg.hash.algorithm", hash.algorithm)
   
+  # Set directory for provenance graph. If a directory is specified by the user in ddg.init
+  # or ddg.run, use that directory. Otherwise use the R session temporary directory.  
+  # Store provenance graph in a subdirectory called "prov_console" in console mode or
+  # "prov_[script name]" in script mode. If overwrite = FALSE, add a timestamp to the
+  # directory name.
+
+  # User-specified directory
+  if (!is.null(ddgdir)) {
+    # Remove final slash if present
+    if (substr(ddgdir, nchar(ddgdir), nchar(ddgdir)) == "/") ddgdir <- substr(ddgdir, 1, nchar(ddgdir)-1)
+  
+    # Console mode
+    if (is.null(r.script.path)) {
+      ddg.path <- paste(ddgdir, "/prov_console", sep="")
+ 
+    # Script mode
+    } else {
+      ddg.path <- paste(ddgdir, "/prov_", basename(tools::file_path_sans_ext(r.script.path)), sep="")
+    }
+  
+  # R session temporary directory
+  } else {
+    # Normalize path for R session temporary directory
+    temp.dir <- normalizePath(tempdir(), winslash = "/", mustWork = FALSE)
+
+    # Console mode
+    if (is.null(r.script.path)) {
+      ddg.path <- paste(temp.dir, "/prov_console", sep="")
+ 
+    # Script mode
+    } else {
+      ddg.path <- paste(temp.dir, "/prov_", basename(tools::file_path_sans_ext(r.script.path)), sep="")
+    }
+  }
+
+  # Add timestamp if overwrite = FALSE
+  if (!overwrite) ddg.path <- paste(ddg.path, "_", .ddg.timestamp(), sep="")
+
+  # Create directory if it does not exist
+  if (!dir.exists(ddg.path)) dir.create(ddg.path, recursive = TRUE)
+
   # This results in the wrong ddg directory in console mode ERB 7/1/2018
   # if (is.null(r.script.path) ) {
   #   r.script.path <- getwd()
   # }
   
   # Setting the path for the ddg
-  if (is.null(ddgdir)) {
+  # if (is.null(ddgdir)) {
 
     # Default is the file where the script is located
-    if (!is.null(r.script.path)){
-      ddg.path <- paste(dirname(r.script.path), "/", basename(tools::file_path_sans_ext(r.script.path)), "_ddg", sep="")
-    }
-    else {
-      ddg.path <- paste(getwd(), "/","ddg",sep = "")
-    }
-  } else ddg.path <- normalizePath(ddgdir, winslash="/", mustWork=FALSE)
+  #   if (!is.null(r.script.path)){
+  #     ddg.path <- paste(dirname(r.script.path), "/", basename(tools::file_path_sans_ext(r.script.path)), "_ddg", sep="")
+  #   }
+  #   else {
+  #     ddg.path <- paste(getwd(), "/","ddg",sep = "")
+  #   }
+  # } else ddg.path <- normalizePath(ddgdir, winslash="/", mustWork=FALSE)
 
   # Overwrite default is
-  if(!overwrite){
-    no.overwrite.folder <- paste(ddg.path, "_timestamps", sep = "")
-    if(!dir.exists(no.overwrite.folder)){
-      dir.create(no.overwrite.folder)
-    }
-    ddg.path <- paste(no.overwrite.folder, "/",  basename(tools::file_path_sans_ext(r.script.path)), "_ddg_", .ddg.timestamp(), sep = "")
-  }
+  # if(!overwrite){
+  #   no.overwrite.folder <- paste(ddg.path, "_timestamps", sep = "")
+  #   if(!dir.exists(no.overwrite.folder)){
+  #     dir.create(no.overwrite.folder)
+  #   }
+  #   ddg.path <- paste(no.overwrite.folder, "/",  basename(tools::file_path_sans_ext(r.script.path)), "_ddg_", .ddg.timestamp(), sep = "")
+  # }
 
   .ddg.set("ddg.path", ddg.path)
 

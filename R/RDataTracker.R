@@ -4051,7 +4051,8 @@ ddg.finish <- function(pname=NULL) {
   check.library.paths<- file.exists(paste(.libPaths(),jar.path,sep = ""))
   index<- min(which(check.library.paths == TRUE))
   ddgexplorer_path<- paste(.libPaths()[index],jar.path,sep = "")
-  ddgjson.path<- paste(getwd(), .ddg.path() ,"ddg.json",sep = "/")
+  ddgjson.path<- paste(.ddg.path() ,"ddg.json",sep = "/")
+  # ddgjson.path<- paste(getwd(), .ddg.path() ,"ddg.json",sep = "/")
 
   # -s flag starts DDG Explorer as a server.  This allows each new ddg to show
   # up in a new tab of an existing running DDG Explorer.
