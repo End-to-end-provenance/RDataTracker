@@ -28,7 +28,7 @@
 
 # Set maximum number of checkpoints in DDG.
 
-ddg.MAX_CHECKPOINTS <- 10
+# ddg.MAX_CHECKPOINTS <- 10
 
 # Set the number of lines the history file keeps (and therefore
 # can be analyzed). Note: this setting has no effect on some
@@ -385,13 +385,13 @@ library(curl)
   if (!.ddg.is.set("from.source")) .ddg.set("from.source", FALSE)
 
   # Set current number of checkpoints.
-  .ddg.set("ddg.checkpoint.num", 0)
+  # .ddg.set("ddg.checkpoint.num", 0)
 
   # Create table for checkpoints.
-  .ddg.set("ddg.checkpoints",
-          data.frame(filename=character(ddg.MAX_CHECKPOINTS),
-          checkpoint.name=character(ddg.MAX_CHECKPOINTS),
-          stringsAsFactors=FALSE))
+  # .ddg.set("ddg.checkpoints",
+  #         data.frame(filename=character(ddg.MAX_CHECKPOINTS),
+  #         checkpoint.name=character(ddg.MAX_CHECKPOINTS),
+  #         stringsAsFactors=FALSE))
 
   # Record last command from the preceding console block.
   .ddg.set(".ddg.last.cmd", NULL)
@@ -1522,7 +1522,8 @@ library(curl)
 # cmd.str - command string.
 
 .ddg.is.procedure.cmd <- function(cmd) {
-  return(grepl("^ddg.(procedure|start|finish|restore|checkpoint)", cmd@text))
+  return(grepl("^ddg.(procedure|start|finish)", cmd@text))
+  # return(grepl("^ddg.(procedure|start|finish|restore|checkpoint)", cmd@text))
 }
 
 # .ddg.parse.lines takes as input a set of lines corresponding to
@@ -4304,14 +4305,14 @@ ddg.flush.ddg <- function(ddg.path=NULL) {
 # checkpoint.name (optional) - the value associated with the checkpoint
 #   procedure node.
 
-ddg.checkpoint <- function(checkpoint.name=NULL) {
-  stop("Call source(DDGCheckpoint.R to load ddg.checkpoint and ddg.restore")
-}
+# ddg.checkpoint <- function(checkpoint.name=NULL) {
+#   stop("Call source(DDGCheckpoint.R to load ddg.checkpoint and ddg.restore")
+# }
 
 # ddg.restore prompts the user to source DDGCheckpoint.R.
 
 # file.path - the name of the checkpoint file to restore.
 
-ddg.restore <- function(file.path) {
-  stop("Call source(DDGCheckpoint.R to load ddg.checkpoint and ddg.restore")
-}
+# ddg.restore <- function(file.path) {
+#   stop("Call source(DDGCheckpoint.R to load ddg.checkpoint and ddg.restore")
+# }
