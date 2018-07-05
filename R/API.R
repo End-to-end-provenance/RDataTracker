@@ -61,7 +61,7 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
   .ddg.init.tables()
 
   # Save hash table related values
-  .ddg.set (".ddg.save.hashtable", save.hashtable)
+  # .ddg.set (".ddg.save.hashtable", save.hashtable)
   .ddg.set (".ddg.hash.algorithm", hash.algorithm)
   
   # Set directory for provenance graph. If a directory is specified by the user in ddg.init
@@ -264,7 +264,7 @@ ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE) {
   if (interactive()) print(paste("Saving ddg.json in ", .ddg.path(), sep=""))
 
   # Save hashtable.json to file.
-  .ddg.save.hashtable()
+  # .ddg.save.hashtable()
   
   # Save sourced scripts (if any). First row is main script.
   ddg.sourced.scripts <- .ddg.get(".ddg.sourced.scripts")

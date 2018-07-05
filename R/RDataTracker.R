@@ -489,7 +489,7 @@ library(curl)
   .ddg.set("ddg.outfilenodes", character())
 
   # Data frame containing file reads and writes
-  .ddg.init.hashtable()
+  # .ddg.init.hashtable()
   
   # Boolean of whether there are any file nodes
   .ddg.set("ddg.hasfilenodes", FALSE)
