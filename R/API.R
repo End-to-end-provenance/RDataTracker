@@ -64,39 +64,37 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
   # .ddg.set (".ddg.save.hashtable", save.hashtable)
   .ddg.set (".ddg.hash.algorithm", hash.algorithm)
   
-  # Set directory for provenance graph. If a directory is specified by the user in ddg.init
-  # or ddg.run, use that directory. Otherwise use the R session temporary directory.  
-  # Store provenance graph in a subdirectory called "prov_console" in console mode or
-  # "prov_[script name]" in script mode. If overwrite = FALSE, add a timestamp to the
-  # directory name.
+  # Set directory for provenance graph. The base directory is set as follows:
+  # (1) the directory specified by the user in the parameter ddgdir in ddg.init, or
+  # (2) the directory specified by the user as an option for the value of
+  # provdir, or (3) the R session temporary directory.  The provenance graph is stored
+  # in a subdirectory called "prov_console" in console mode or "prov_[script name]" 
+  # in script mode. If overwrite = FALSE, a timestamp is added to the directory name.
 
-  # User-specified directory
+  # Directory specified by ddgdir in ddg.init
   if (!is.null(ddgdir)) {
-    # Remove final slash if present
-    if (substr(ddgdir, nchar(ddgdir), nchar(ddgdir)) == "/") ddgdir <- substr(ddgdir, 1, nchar(ddgdir)-1)
+    base.dir <- ddgdir
   
-    # Console mode
-    if (is.null(r.script.path)) {
-      ddg.path <- paste(ddgdir, "/prov_console", sep="")
- 
-    # Script mode
-    } else {
-      ddg.path <- paste(ddgdir, "/prov_", basename(tools::file_path_sans_ext(r.script.path)), sep="")
-    }
-  
+  # Directory specified as an option for prov.dir
+  } else if (!is.null(getOption("prov.dir")) && getOption("prov.dir") != "") {
+    base.dir <- getOption("prov.dir")
+
   # R session temporary directory
   } else {
-    # Normalize path for R session temporary directory
-    temp.dir <- normalizePath(tempdir(), winslash = "/", mustWork = FALSE)
+    # Normalize path
+    base.dir <- normalizePath(tempdir(), winslash = "/", mustWork = FALSE)
+  }
 
-    # Console mode
-    if (is.null(r.script.path)) {
-      ddg.path <- paste(temp.dir, "/prov_console", sep="")
+  # Remove final slash if present
+  if (substr(base.dir, nchar(base.dir), nchar(base.dir)) == "/") base.dir <- substr(base.dir, 1, nchar(base.dir)-1)
+
+  # Console mode
+  if (is.null(r.script.path)) {
+    ddg.path <- paste(base.dir, "/prov_console", sep="")
  
-    # Script mode
-    } else {
-      ddg.path <- paste(temp.dir, "/prov_", basename(tools::file_path_sans_ext(r.script.path)), sep="")
-    }
+  # Script mode
+  } else {
+    ddg.path <- paste(base.dir, "/prov_", basename(tools::file_path_sans_ext(r.script.path)), sep="")
   }
 
   # Add timestamp if overwrite = FALSE
