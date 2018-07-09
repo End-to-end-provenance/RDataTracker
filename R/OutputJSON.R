@@ -70,7 +70,7 @@ ddg.json <- function()
 	
 	
 	# EDGE TABLE NODES
-	edges <- subset( .ddg.edges() , ddg.num > 0 )
+	edges <- .ddg.edges()
 	
 	# wasInformedBy (proc2proc)
 	json$wasInformedBy.p2p <- .ddg.json.proc2proc( edges , LABEL.NAMES$wasInformedBy.p2p , LABEL.PREFIX )

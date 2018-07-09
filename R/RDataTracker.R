@@ -116,14 +116,6 @@ library(curl)
   return(.ddg.get("ddg.save.debug"))
 }
 
-.ddg.enum <- function() {
-  return (.ddg.get("ddg.enum"))
-}
-
-.ddg.edges <- function() {
-  return (.ddg.get("ddg.edges"))
-}
-
 .ddg.function.nodes <- function() {
   return( .ddg.get("ddg.function.nodes") )
 }
@@ -352,18 +344,11 @@ library(curl)
   
   .ddg.init.proc.nodes()
   .ddg.init.data.nodes()
+  .ddg.init.edges()
 
-  .ddg.set("ddg.edges", data.frame(ddg.num = numeric(size),
-          ddg.type = character(size),
-          ddg.from = character(size),
-          ddg.to = character(size), stringsAsFactors=FALSE))
-  
   .ddg.set("ddg.function.nodes" , data.frame(ddg.pnum = numeric(),
           ddg.fun = character(),
           ddg.lib = character(), stringsAsFactors=FALSE))
-
-  # Create node counters.
-  .ddg.set("ddg.enum", 0)
 
   # Create strings used to generate the JSON file.
   .ddg.set("ddg.activity", "")
@@ -764,178 +749,11 @@ library(curl)
   return(NULL)
 }
 
-
-# .ddg.record.edge records a control flow edge or a data flow edge
-# in the edges table.
-
-# etype - type of edge
-# node1 - name of first node
-# node1 - name of second node
-
-.ddg.record.edge <- function(etype, node1, node2) {
-  # Increment edge counter.
-  .ddg.inc("ddg.enum")
-  ddg.enum <- .ddg.enum()
-
-  # If the table is full, make it bigger.
-  ddg.edges <- .ddg.edges()
-  if (nrow(ddg.edges) < ddg.enum) {
-    size = 100
-    new.rows <- data.frame(ddg.num = numeric(size),
-        ddg.type = character(size),
-        ddg.from = character(size),
-        ddg.to = character(size),
-        stringsAsFactors=FALSE)
-    .ddg.add.rows("ddg.edges", new.rows)
-    ddg.edges <- .ddg.edges()
-  }
-
-  ddg.edges$ddg.num[ddg.enum] <- ddg.enum
-  ddg.edges$ddg.type[ddg.enum] <- etype
-  ddg.edges$ddg.from[ddg.enum] <- node1
-  ddg.edges$ddg.to[ddg.enum] <- node2
-  .ddg.set("ddg.edges", ddg.edges)
-
-  if (.ddg.debug.lib()) {
-    if (etype == "cf") etype.long <- "control flow"
-    else if (etype == "df.in") etype.long <-"data flow in"
-    else etype.long <- "data flow out"
-    print (paste("Adding", etype.long, "edge", ddg.enum, "for", node1, "to", node2))
-  }
-}
-
-# .ddg.proc2proc creates a control flow edge from the preceding
-# procedure node to the current procedure node.
-
-.ddg.proc2proc <- function() {
-  ddg.pnum <- .ddg.pnum()
-
-  if (ddg.pnum > 1) {
-    # Record in edges table
-    etype <- "cf"
-    node1 <- paste("p", ddg.pnum-1, sep="")
-    node2 <- paste("p", ddg.pnum, sep="")
-    .ddg.record.edge(etype, node1, node2)
-
-    if (.ddg.debug.lib()) {
-      pname1 <- .ddg.proc.name(ddg.pnum-1)
-      pname2 <- .ddg.proc.name(ddg.pnum)
-      print(paste("proc2proc: ", pname1, " ", pname2))
-      print(paste("CF ", node1, " ", node2, sep=""))
-    }
-  }
-
-  invisible()
-}
-
-# .ddg.data2proc creates a data flow edge from a data node to a
-# procedure node.
-
-# dname - data node name.
-# dscope - data node scope.
-# pname - procedure node name.
-
-.ddg.data2proc <- function(dname, dscope, pname = NULL) {
-  # Get data & procedure numbers.
-  dn <- .ddg.data.number(dname, dscope)
-  
-  if(is.null(pname) || startsWith(pname,".ddg.") || startsWith(pname,"ddg"))
-    pn <- .ddg.pnum()
-  else
-    pn <- .ddg.proc.number(pname)
-  
-  # Record in edges table
-  etype <- "df.in"
-  node1 <- paste("d", dn, sep="")
-  node2 <- paste("p", pn, sep="")
-  .ddg.record.edge(etype, node1, node2)
-  
-  if (.ddg.debug.lib()) {
-    print(paste("data2proc: ", dname, " ", pname, sep=""))
-    print(paste("DF ", node1, " ", node2, sep=""))
-  }
-  
-  invisible()
-}
-
-# .ddg.proc2data creates a data flow edge from a procedure node to
-# a data node.
-
-# pname - procedure node name.
-# dname - data node name.
-# dscope (optional) - data node scope.
-# return.value (optional) - if true it means we are linking to a return
-# value. In this case, we need to be sure that there is not already a
-# return value linked.  This is necessary to manage recursive functions
-# correctly.
-
-.ddg.proc2data <- function(pname, dname, dscope=NULL, return.value=FALSE) {
-  # Get data & procedure numbers.
-  #print (paste(".ddg.proc2data: Looking for", dname, "in scope", dscope))
-  dn <- .ddg.data.number(dname, dscope)
-  
-  #print (paste(".ddg.proc2data: Found node", dn))
-  
-  # attach data node to the last procedure node if pname is NULL.
-  if(is.null(pname) || startsWith(pname,".ddg.") || startsWith(pname,"ddg"))
-    pn <- .ddg.pnum()
-  else
-    pn <- .ddg.proc.number(pname, return.value)
-  
-  # Create data flow edge from procedure node to data node.
-  if (dn != 0 && pn != 0) {
-
-    # Record in edges table
-    etype <- "df.out"
-    node1 <- paste("p", pn, sep="")
-    node2 <- paste("d", dn, sep="")
-    .ddg.record.edge(etype, node1, node2)
-
-    # Record that the function is linked to a return value.  This
-    # is necessary for recursive functions to get linked to their
-    # return values correctly.
-    if (return.value) {
-      .ddg.proc.node.returned(pn)
-    }
-
-    if (.ddg.debug.lib()) {
-      print(paste("proc2data: ", pname, " ", dname, sep=""))
-      print(paste("DF ", node1, " ", node2, sep=""))
-    }
-  }
-
-  invisible()
-}
-
-# .ddg.lastproc2data creates a data flow edge from the last
-# procedure node to a data node.
-
-# dname - data node name.
-# all (optional) - whether all nodes should be considered (TRUE)
-#   or only procedure nodes (FALSE).
-# dscope - the scope in which dname should be looked up
-
-.ddg.lastproc2data <- function(dname, all=TRUE, dscope=NULL) {
-  # Get data & procedure numbers.
-  dn <- .ddg.data.number(dname, dscope)
-  pn <- .ddg.pnum()
-
-  # Record in edges table
-  etype <- "df.out"
-  node1 <- paste("p", pn, sep="")
-  node2 <- paste("d", dn, sep="")
-  .ddg.record.edge(etype, node1, node2)
-
-  if (.ddg.debug.lib()) {
-    print(paste("lastproc2data:", dname))
-    print(paste("DF ", node1, " ", node2, sep=""))
-  }
-}
-
 # .ddg.is.nonlocal.assign returns TRUE if the object passed is an
 # expression object containing a non-local assignment.
 
 # expr - input expression.
+
 
 .ddg.is.nonlocal.assign <- function (expr)
 {
@@ -1120,7 +938,7 @@ library(curl)
     dev.set(prev.device)
 
     # We're done, so create the edge.
-    if(is.null(cmd.abbrev)) .ddg.lastproc2data(name, all=FALSE)
+    if(is.null(cmd.abbrev)) .ddg.lastproc2data(name)
     else .ddg.proc2data(cmd.abbrev, name)
   }
 }
@@ -1395,25 +1213,15 @@ library(curl)
   #print (paste (".ddg.link.function.returns: new.uses:", new.uses))
 
   # Create an edge from each of these to the last procedure node.
-  lapply (new.uses$return.node.id,
-      function(data.num) {
-        proc.num <- .ddg.pnum()
-
-        # Record in edges table
-        etype <- "df.in"
-        node1 <- paste("d", data.num, sep="")
-        node2 <- paste("p", proc.num, sep="")
-        .ddg.record.edge(etype, node1, node2)
-
-        if (.ddg.debug.lib()) {
-          print(paste(".ddg.link.function.returns:", command@abbrev))
-          print(paste("DF ", node1, " ", node2, sep=""))
-        }
-
+  lapply (new.uses$return.node.id, function (data.num) {
+        .ddg.datanum2lastproc (data.num)
+  
         # Set the return value as being used.
         returns$return.used[returns$return.node.id == data.num] <- TRUE
         .ddg.set(".ddg.return.values", returns)
       })
+  
+
   #print ("Returning from .ddg.link.function.returns")
 }
 
@@ -3085,13 +2893,8 @@ library(curl)
 
   .ddg.save.debug.proc.nodes ()
   .ddg.save.debug.data.nodes ()
+  .ddg.save.debug.edges()
 
-	# Save edges table to file.
-	fileout <- paste(.ddg.path.debug(), "/edges.csv", sep="")
-	ddg.edges <- .ddg.edges()
-	ddg.edges2 <- ddg.edges[ddg.edges$ddg.num > 0, ]
-	write.csv(ddg.edges2, fileout, row.names=FALSE)
-	
 	# save function nodes table to file
 	fileout <- paste(.ddg.path.debug(), "/function-nodes.csv", sep="")
 	write.csv(.ddg.function.nodes(), fileout, row.names=FALSE)
