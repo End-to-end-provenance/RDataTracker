@@ -1049,7 +1049,7 @@
   tryCatch (
       {
         # Try to save the graphics to a file
-        printDev <- dev.print(device=pdf, file=file)
+        dev.print(device=pdf, file=file)	# EF EDIT - this function failed!!
         file.written <- file
       },
       error = function(e) {
@@ -1060,9 +1060,7 @@
         {
         	# EF EDITS
         	print("in .ddg.capture.current.graphics")
-        	#file.remove(file)
-        	dev.off(printDev)
-        	unlink(file, force=TRUE)
+        	file.remove(file)
         }
       	
       	
