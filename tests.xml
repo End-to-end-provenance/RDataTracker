@@ -191,12 +191,12 @@
 		/>
 		<replaceregexp  file="${dir}/sourceTest.r"
 						match="\[DIR_DDG\]"
-						replace="${FILE.basedir}/${dir}/ddg"
+						replace="${FILE.basedir}/${dir}"
 						flags="g"
 		/>
 
 		<!-- Execute the R Script (delete ddg directory first) -->
-		<delete dir="${dir}/ddg" quiet="true" />
+		<delete dir="${dir}/prov_${test-name}" quiet="true" />
 		<exec executable="Rscript" dir="${dir}" output="${FILE.basedir}/${out}" >
 			<arg line="sourceTest.r" />
 		</exec>
@@ -210,7 +210,7 @@
 			 outputs for diff. Append .local to all files -->
 		<copy todir="${local_dir}" overwrite="true">
 			<!-- Executed ddg.json file -->
-			<fileset file="${dir}/ddg/ddg.json" />
+			<fileset file="${dir}/prov_${test-name}/ddg.json" />
 			<!-- all .out files and files ending in _ddg.json in the test directory -->
 			<fileset dir="${dir}">
 				<include name="*.out" />
@@ -474,7 +474,7 @@
 		<!-- Make copy of ddg.json and the .out file into the expected folder -->
 		<copy todir="${expected_dir}" overwrite="true">
 			<!-- Executed ddg.json file -->
-			<fileset file="${dir}/ddg/ddg.json" />
+			<fileset file="${dir}/prov_${test-name}/ddg.json" />
 			<fileset file="${FILE.basedir}/${out}" />
 		</copy>
 
