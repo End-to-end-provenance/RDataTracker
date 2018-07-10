@@ -1053,16 +1053,27 @@
         file.written <- file
       },
       error = function(e) {
+      	
+      	# EF EDITS
+      	# If the dev.off file was created, delete it.
+        if( file.exists(file) )
+        {
+        	# EF EDITS
+        	print("in .ddg.capture.current.graphics")
+        	file.remove(file)
+        }
+      	
+      	
         # dev.print fails when running from the test scripts, or Rscript in general
         # In that case, check for the existence of Rplots.pdf, which is 
         # where Rscript places plots sent to the default graphics.
         if (names(dev.cur()) == "pdf") {
         	# EF EDITS
-        	print( ".ddg.capture.current.graphics: outer loop")
+        	print( ".ddg.capture.current.graphics: outer if")
         	
           if (file.exists ("Rplots.pdf") && !.ddg.get(".ddg.rplots.pdf.saved")) {
           	# EF EDITS
-          	print( ".ddg.capture.current.graphics: inner loop")
+          	print( ".ddg.capture.current.graphics: inner if")
           	
             dev.off()
             file.written <<- "Rplots.pdf"
@@ -1070,13 +1081,14 @@
           }
         }
         
+        # EF EDITS - moved up
         # If the dev.off file was created, delete it.
-        if( file.exists(file) )
-        {
-        	# EF EDITS
-        	print("in .ddg.capture.current.graphics")
-        	file.remove(file)
-        }
+        #if( file.exists(file) )
+        #{
+        #	# EF EDITS
+        #	print("in .ddg.capture.current.graphics")
+        #	file.remove(file)
+        #}
       }
   )
   return(file.written)
