@@ -994,6 +994,8 @@
     
     # Delete files that were created by capturing the screen
     if (startsWith (graphics.file, "dev.off") && file.exists(graphics.file)) {
+    	# EF EDITS
+    	print("in .ddg.capture.graphics")
       file.remove (graphics.file)
     }
   
@@ -1064,7 +1066,11 @@
         
         # If the dev.off file was created, delete it.
         if( file.exists(file) )
+        {
+        	# EF EDITS
+        	print("in .ddg.capture.current.graphics")
         	file.remove(file)
+        }
       }
   )
   return(file.written)
