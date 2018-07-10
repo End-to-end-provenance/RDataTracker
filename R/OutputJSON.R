@@ -230,7 +230,7 @@ ddg.json <- function()
 	
 	# column names
 	col.names <- c( "name", "value", "valType", "type", "scope", "fromEnv", 
-					"MD5hash", "timestamp", "location" )
+					"hash", "timestamp", "location" )
 	col.names <- mapply( paste , prefix , col.names , sep='' , USE.NAMES = FALSE )
 	
 	# convert to json and return
