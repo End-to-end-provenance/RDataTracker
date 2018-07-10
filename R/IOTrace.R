@@ -1060,7 +1060,8 @@
         {
         	# EF EDITS
         	print("in .ddg.capture.current.graphics")
-        	file.remove(file)
+        	#file.remove(file)
+        	unlink(file)
         }
       	
       	
