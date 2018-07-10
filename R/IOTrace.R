@@ -1063,7 +1063,8 @@
         }
         
         # If the dev.off file was created, delete it.
-        file.remove(file)
+        if( file.exists(file) )
+        	file.remove(file)
       }
   )
   return(file.written)
