@@ -1046,6 +1046,30 @@
   
   # Save the graphic to a file temporarily
   file.written <- NULL
+  
+  
+  # EF EDITS
+  # dev.print fails when running from the test scripts, or Rscript in general
+        # In that case, check for the existence of Rplots.pdf, which is 
+        # where Rscript places plots sent to the default graphics.
+        if (names(dev.cur()) == "pdf") {
+        	# EF EDITS
+        	print( ".ddg.capture.current.graphics: outer if")
+        	
+          if (file.exists ("Rplots.pdf") && !.ddg.get(".ddg.rplots.pdf.saved")) {
+          	# EF EDITS
+          	print( ".ddg.capture.current.graphics: inner if")
+          	
+            dev.off()
+            file.written <<- "Rplots.pdf"
+            .ddg.set (".ddg.rplots.pdf.saved", TRUE)
+            
+            # EF EDITS
+            return(file.written)
+          }
+        }
+  
+  
   tryCatch (
       {
         # Try to save the graphics to a file
@@ -1063,23 +1087,23 @@
         	file.remove(file)
         }
       	
-      	
+      	# EF EDITS - moved up
         # dev.print fails when running from the test scripts, or Rscript in general
         # In that case, check for the existence of Rplots.pdf, which is 
         # where Rscript places plots sent to the default graphics.
-        if (names(dev.cur()) == "pdf") {
-        	# EF EDITS
-        	print( ".ddg.capture.current.graphics: outer if")
-        	
-          if (file.exists ("Rplots.pdf") && !.ddg.get(".ddg.rplots.pdf.saved")) {
-          	# EF EDITS
-          	print( ".ddg.capture.current.graphics: inner if")
-          	
-            dev.off()
-            file.written <<- "Rplots.pdf"
-            .ddg.set (".ddg.rplots.pdf.saved", TRUE)
-          }
-        }
+        #if (names(dev.cur()) == "pdf") {
+        #	# EF EDITS
+        #	print( ".ddg.capture.current.graphics: outer if")
+        #	
+         # if (file.exists ("Rplots.pdf") && !.ddg.get(".ddg.rplots.pdf.saved")) {
+         # 	# EF EDITS
+        #  	print( ".ddg.capture.current.graphics: inner if")
+        #  	
+        #    dev.off()
+        #    file.written <<- "Rplots.pdf"
+        #    .ddg.set (".ddg.rplots.pdf.saved", TRUE)
+        #  }
+        #}
         
         # EF EDITS - moved up
         # If the dev.off file was created, delete it.
