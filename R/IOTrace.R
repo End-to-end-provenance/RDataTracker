@@ -1057,7 +1057,13 @@
         # In that case, check for the existence of Rplots.pdf, which is 
         # where Rscript places plots sent to the default graphics.
         if (names(dev.cur()) == "pdf") {
+        	# EF EDITS
+        	print( ".ddg.capture.current.graphics: outer loop")
+        	
           if (file.exists ("Rplots.pdf") && !.ddg.get(".ddg.rplots.pdf.saved")) {
+          	# EF EDITS
+          	print( ".ddg.capture.current.graphics: inner loop")
+          	
             dev.off()
             file.written <<- "Rplots.pdf"
             .ddg.set (".ddg.rplots.pdf.saved", TRUE)
