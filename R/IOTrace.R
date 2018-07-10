@@ -1051,9 +1051,8 @@
 	if (names(dev.cur()) == "pdf") {
 		if (file.exists ("Rplots.pdf") && !.ddg.get(".ddg.rplots.pdf.saved")) {
 			dev.off()
-			file.written <<- "Rplots.pdf"
 			.ddg.set (".ddg.rplots.pdf.saved", TRUE)
-			return(file.written)
+			return("Rplots.pdf")
 		}
 	}
 
