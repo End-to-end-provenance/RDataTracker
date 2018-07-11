@@ -232,11 +232,7 @@
   if( ! (is.null(pfunctions) || is.na(pfunctions)) )
   {
     pfunctions <- cbind( "ddg.pnum" = rep(ddg.pnum, nrow(pfunctions)) , pfunctions )
-    
-    ddg.function.nodes <- rbind( .ddg.function.nodes() , pfunctions )
-    row.names(ddg.function.nodes) <- c( 1 : nrow(ddg.function.nodes) )
-    
-    .ddg.set( "ddg.function.nodes" , ddg.function.nodes )
+    .ddg.add.to.function.table (pfunctions)
   }
   
   if (.ddg.debug.lib()) {
@@ -252,8 +248,6 @@
 #' @param pfunctions functions called in the procedure
 #' @param console (optional) if TRUE, console mode is enabled.
 #' @param cmd the DDGStatement corresponding to this procedure node
-
-#' CHECK!  Looks like env parameter is not needed!
 .ddg.proc.node <- function(ptype, pname, pvalue="", pfunctions=NULL, console=FALSE,
     cmd = NULL) {
 
