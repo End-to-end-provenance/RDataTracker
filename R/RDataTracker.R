@@ -28,7 +28,7 @@
 
 # Set maximum number of checkpoints in DDG.
 
-ddg.MAX_CHECKPOINTS <- 10
+# ddg.MAX_CHECKPOINTS <- 10
 
 # Set the number of lines the history file keeps (and therefore
 # can be analyzed). Note: this setting has no effect on some
@@ -304,13 +304,13 @@ library(curl)
   if (!.ddg.is.set("from.source")) .ddg.set("from.source", FALSE)
 
   # Set current number of checkpoints.
-  .ddg.set("ddg.checkpoint.num", 0)
+  # .ddg.set("ddg.checkpoint.num", 0)
 
   # Create table for checkpoints.
-  .ddg.set("ddg.checkpoints",
-          data.frame(filename=character(ddg.MAX_CHECKPOINTS),
-          checkpoint.name=character(ddg.MAX_CHECKPOINTS),
-          stringsAsFactors=FALSE))
+  # .ddg.set("ddg.checkpoints",
+  #         data.frame(filename=character(ddg.MAX_CHECKPOINTS),
+  #         checkpoint.name=character(ddg.MAX_CHECKPOINTS),
+  #         stringsAsFactors=FALSE))
 
   # Record last command from the preceding console block.
   .ddg.set(".ddg.last.cmd", NULL)
@@ -408,7 +408,7 @@ library(curl)
   .ddg.set("ddg.outfilenodes", character())
 
   # Data frame containing file reads and writes
-  .ddg.init.hashtable()
+  # .ddg.init.hashtable()
   
   # Boolean of whether there are any file nodes
   .ddg.set("ddg.hasfilenodes", FALSE)
@@ -1264,7 +1264,8 @@ library(curl)
 # cmd.str - command string.
 
 .ddg.is.procedure.cmd <- function(cmd) {
-  return(grepl("^ddg.(procedure|start|finish|restore|checkpoint)", cmd@text))
+  return(grepl("^ddg.(procedure|start|finish)", cmd@text))
+  # return(grepl("^ddg.(procedure|start|finish|restore|checkpoint)", cmd@text))
 }
 
 # .ddg.parse.lines takes as input a set of lines corresponding to
@@ -4261,7 +4262,8 @@ ddg.source <- function (file,  ddgdir = NULL, local = FALSE, echo = verbose, pri
   check.library.paths<- file.exists(paste(.libPaths(),jar.path,sep = ""))
   index<- min(which(check.library.paths == TRUE))
   ddgexplorer_path<- paste(.libPaths()[index],jar.path,sep = "")
-  ddgjson.path<- paste(getwd(), .ddg.path() ,"ddg.json",sep = "/")
+  ddgjson.path<- paste(.ddg.path() ,"ddg.json",sep = "/")
+  # ddgjson.path<- paste(getwd(), .ddg.path() ,"ddg.json",sep = "/")
 
   # -s flag starts DDG Explorer as a server.  This allows each new ddg to show
   # up in a new tab of an existing running DDG Explorer.
@@ -4279,7 +4281,8 @@ ddg.display <- function () {
   tryCatch ({
         con <- socketConnection(host= "localhost", port = .ddg.get(".ddg.explorer.port"), blocking = FALSE,
             server=FALSE, open="w", timeout=1)
-        ddgjson.path<- paste(getwd(), .ddg.path() ,"ddg.json",sep = "/")
+        ddgjson.path<- paste(.ddg.path() ,"ddg.json",sep = "/")
+        # ddgjson.path<- paste(getwd(), .ddg.path() ,"ddg.json",sep = "/")
         # print ("Socket open; writing to socket")
         writeLines(ddgjson.path, con)
         # print ("Wrote to socket")
@@ -4473,14 +4476,14 @@ ddg.flush.ddg <- function(ddg.path=NULL) {
 # checkpoint.name (optional) - the value associated with the checkpoint
 #   procedure node.
 
-ddg.checkpoint <- function(checkpoint.name=NULL) {
-  stop("Call source(DDGCheckpoint.R to load ddg.checkpoint and ddg.restore")
-}
+# ddg.checkpoint <- function(checkpoint.name=NULL) {
+#   stop("Call source(DDGCheckpoint.R to load ddg.checkpoint and ddg.restore")
+# }
 
 # ddg.restore prompts the user to source DDGCheckpoint.R.
 
 # file.path - the name of the checkpoint file to restore.
 
-ddg.restore <- function(file.path) {
-  stop("Call source(DDGCheckpoint.R to load ddg.checkpoint and ddg.restore")
-}
+# ddg.restore <- function(file.path) {
+#   stop("Call source(DDGCheckpoint.R to load ddg.checkpoint and ddg.restore")
+# }

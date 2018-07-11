@@ -247,7 +247,11 @@
   # Output data node.
   #print(".ddg.record.data outputting data node")
   if (dtype == "File") {
-    .ddg.add.to.hashtable(dname = dname, ddg.dnum = ddg.dnum, dloc = dloc, dvalue = dvalue, dtime = dtime)
+    dhash <- .ddg.calculate.hash(dname)
+    drw <- .ddg.calculate.rw(dname)
+    .ddg.set.hash (ddg.dnum, dhash, drw)
+
+    # .ddg.add.to.hashtable(dname = dname, ddg.dnum = ddg.dnum, dloc = dloc, dvalue = dvalue, dtime = dtime)
   }
   
   if (.ddg.debug.lib()) {
