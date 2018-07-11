@@ -1329,7 +1329,7 @@ library(curl)
       cmds <- vector("list", (length(exprs)))
       for (i in 1:length(exprs)) {
         expr <- as.expression(exprs[i])
-        cmds[[i]] <- .ddg.construct.DDGStatement(expr, NA, script.name, script.num, NA, parseData)
+        cmds[[i]] <- .ddg.construct.DDGStatement(expr, NA, script.name, script.num, parseData)
       }
       return(cmds)
     }
