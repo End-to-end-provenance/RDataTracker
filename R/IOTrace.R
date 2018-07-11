@@ -127,19 +127,37 @@
   }
 }
 
+
+#' Determines if the call passed in is a call to the passed in function
+#' @param call a parse tree for a function call
+#' @param func the name of a function
+#' @returnType logical
+#' @return TRUE if the call passed in is a call to the function name passed in
+.ddg.is.call.to <- function (call, func) { 
+  if (is.symbol(call[[1]])) {
+    return (as.character(call[[1]]) == func)
+  }
+  return (FALSE)
+}
+
 #' Returns true if there is a call to the passed in function anywhere on
 #' the call stack.  
 #' 
 #' @param func The name of a function
 .ddg.inside.call.to <- function (func) {
-  is.call.to <- function (call) { 
-    if (is.symbol(call[[1]])) {
-      return (as.character(call[[1]]) == func)
-    }
-    return (FALSE)
-  }
-  calls.found <- sapply (sys.calls(), is.call.to )
+  calls.found <- sapply (sys.calls(), .ddg.is.call.to, func )
   return (any (calls.found))
+}
+
+#' Returns the number of times that a call to the passed in function
+#' appears on the current call stack.  
+#' 
+#' @param func the name of the function to look for
+#' @returnType numeric
+#' @return the number of times the function is called on the stack
+.ddg.num.calls.to <- function (func) {
+  calls.found <- sapply (sys.calls(), .ddg.is.call.to, func )
+  return (sum(calls.found))
 }
 
 ##################  Functions to handle tracing of read functions ##################
@@ -213,16 +231,16 @@
   if (is.symbol (input.caller)) {
     input.caller.name <- as.character(input.caller)
     
-    # When ddg.source is called for the main script it is in frame 4, and
-    # the input function is in frame 5.  
-    # If a script sources another script, we see ddg.source on the stack twice
-    # The second occurrence will be at a higher frame number.
-    # We do not want a file node for the main script, since is not an input 
-    # to the script, but we do for calls to source within the main script.
-    # These are translated to ddg.source when we execute.
     if (input.caller.name == "ddg.source") {
-      if (frame.number == 5) {
-        return()
+      # Determine if ddg.source is being used to load the main script, or
+      # to load a script specified by the programmer within another script.
+      # In the latter case, we would see ddg.source in the call stack twice
+      # (or more).
+      # We do not want a file node for the main script, since is not an input 
+      # to the script, but we do for calls to source within the main script.
+      # These are translated to ddg.source when we execute.
+      if (.ddg.num.calls.to ("ddg.source") == 1) {
+        return ()
       }
     }
     
