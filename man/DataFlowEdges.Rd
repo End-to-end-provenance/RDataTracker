@@ -49,8 +49,7 @@ ddg.graphic.out(dname, pname = NULL, graphic.fext = "jpeg")
   
   ddg.file.out behaves similarly to ddg.data.out, except that the node created is a File node.
   This should be used when the script writes a file and the user wants to save this version
-  of the file in the provenance graph.  Files saved in this way can be restored by using the
-  ddg.checkpoint and ddg.restore functions, described elsewhere.  If dname is omitted, the
+  of the file in the provenance graph.  If dname is omitted, the
   filename (minus the directory path) will be used as the label for the node.
 
   ddg.graphic.out behaves similary to ddg.data.out with an input variable of type

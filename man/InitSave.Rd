@@ -32,7 +32,7 @@ ddg.init(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enable.console =
     save.hashtable = TRUE, hash.algorithm="md5") 
 ddg.save(r.script.path = NULL, save.debug=FALSE, quit=FALSE)
 ddg.run(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = NULL, enable.console = TRUE, 
-    annotate.inside.functions = TRUE, first.loop = 1, max.loops = 1, max.snapshot.size = 10, debug = FALSE, 
+    annotate.inside.functions = TRUE, first.loop = 1, max.loops = 1, max.snapshot.size = 10, 
     save.debug=FALSE, display = FALSE, save.hashtable = TRUE, hash.algorithm="md5")
 ddg.set.detail(detail.level)
 ddg.get.detail()
@@ -71,7 +71,6 @@ ddg.set.inside.loop()
   \item{max.snapshot.size}{ The maximum size for objects that should be output in snapshot
     files.  If max.snapshot.size is -1, there is no limit. If max.snapshot.size is 0, snapshot nodes
     are created but no snapshot files are saved. }
-  \item{debug}{ If TRUE, enable script debugging. }
   \item{save.debug}{ If TRUE, save debug files to debug directory. }
   \item{display}{ If TRUE, display the DDG when the R script completes.}
   \item{f}{ A function to run.  Data provenance is collected within the function. }
@@ -116,8 +115,7 @@ ddg.set.inside.loop()
   provenance is collected for statements inside functions.  ddg.annotate.on and ddg.annotate.off may be 
   used to limit the functions that will be annotated or not annotated, respectively. The parameter max.loops 
   sets the maxiumum number of times that a for, while or repeat loop will be annotated.  If max.loops is not 0,
-  if-stateements are also annotated.  If break is set to TRUE, script debugging  is enabled. This has the same 
-  effect as inserting ddg.breakpoint() at the top of the script.  If display is set to TRUE, the DDG is 
+  if-stateements are also annotated.  If display is set to TRUE, the DDG is 
   displayed after the R script finished executing. If save.debug is set to TRUE, debug files are saved to the 
   debug directory.
   

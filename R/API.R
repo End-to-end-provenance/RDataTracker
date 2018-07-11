@@ -333,8 +333,6 @@ ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE) {
 #' saved. If -1, all snapshot files are saved.  Size in kilobytes.
 #' Note that this tests the size of the object that will be turned
 #' into a snapshot, not the size of the resulting snapshot.
-#' @param debug (optional) - If TRUE, enable script debugging. This has the
-#' same effect as inserting ddg.breakpoint() at the top of the script.
 #' @param save.debug (optional) - If TRUE, save debug files to debug directory.
 #' @param save.hashtable (optional) - If TRUE, save ddg information to hashtable.json.
 #' @param hash.algorithm (optional) - If save.hashtable is true, this allows the caller to 
@@ -343,7 +341,7 @@ ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE) {
 #'
 #' @return nothing
 
-ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = NULL, enable.console = TRUE, annotate.inside.functions = TRUE, first.loop = 1, max.loops = 1, max.snapshot.size = 10, debug = FALSE, save.debug = FALSE, display = FALSE, 
+ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = NULL, enable.console = TRUE, annotate.inside.functions = TRUE, first.loop = 1, max.loops = 1, max.snapshot.size = 10, save.debug = FALSE, display = FALSE, 
                     save.hashtable = TRUE, hash.algorithm="md5") {
   
   # Initiate ddg.
@@ -358,9 +356,6 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
 
   # Set .ddg.is.sourced to TRUE if script provided.
   if (!is.null(r.script.path)) .ddg.set(".ddg.is.sourced", TRUE)
-
-  # Set breakpoint if debug is TRUE.
-  if (debug) ddg.breakpoint()
 
   # Save debug files to debug directory.
   .ddg.set("ddg.save.debug", save.debug)

@@ -104,7 +104,7 @@ setClass("DDGStatement",
 # This is called when a new DDG Statement is created.  It initializes all of the slots.
 setMethod ("initialize",
   "DDGStatement",
-    function(.Object, parsed, pos, script.name, script.num, breakpoints, parseData){
+    function(.Object, parsed, pos, script.name, script.num, parseData){
       .Object@parsed <- parsed
 
       # deparse can return a vector of strings.  We convert that into
@@ -151,27 +151,6 @@ setMethod ("initialize",
       .Object@script.num <-
           if (is.na(script.num)) -1
           else script.num
-
-      .Object@is.breakpoint <-
-          if (is.object(breakpoints)) {
-            # If this statement is a function declaration, set a breakpoint on the declaration
-            # if the breakpoint is for the first line of the function.  Otherwise, we will
-            # want the breakpoint to be on one of the contained lines.
-            if (.ddg.is.assign(.Object@parsed[[1]]) && .ddg.is.functiondecl(.Object@parsed[[1]][[3]])) {
-              is.breakpoint <- any(breakpoints$lnum == .Object@pos@startLine)
-            }
-
-            # If this is not a function declaration, then set a breakpoint if it is on any line
-            # within the statement.
-            else {
-              is.breakpoint <- any(breakpoints$lnum >= .Object@pos@startLine & breakpoints$lnum <= .Object@pos@endLine)
-            }
-          }
-
-          # No breakpoints are set in the script.
-          else {
-            is.breakpoint <- FALSE
-          }
 
       .Object@contained <-
         # The contained field is a list of DDGStatements for all statements inside
@@ -335,15 +314,14 @@ null.pos <- function() {
 # pos - the DDGStatementPos object for this statement
 # script.name - the name of the script the statement is from
 # script.num - the script number used to find the script in the sourced script table
-# breakpoints - all the breakpoints currently set
 # parseData - the object created by the parser that gives us source position information
-.ddg.construct.DDGStatement <- function (expr, pos, script.name, script.num, breakpoints, parseData) {
+.ddg.construct.DDGStatement <- function (expr, pos, script.name, script.num, parseData) {
   #print(paste(".ddg.construct.DDGStatement: expr =", expr))
   # Surprisingly, if a statement is just a number, like 1 (which could be the last statement in a function, for example),
   # the parser returns a number, rather than a parse tree!
   if (is.numeric(expr)) expr <- parse(text=expr)
 
-  return (new (Class = "DDGStatement", parsed = expr, pos, script.name, script.num, breakpoints, parseData))
+  return (new (Class = "DDGStatement", parsed = expr, pos, script.name, script.num, parseData))
 }
 
 # .ddg.abbrev.cmd abbreviates a command to the specified length.
@@ -1110,7 +1088,7 @@ null.pos <- function() {
     # structure.  We cannot use this technique if there is a return call
     # because we if tried to eval a return call, we would end up returning
     # from some code inside RDT, instead of the user's function.
-    eval.cmd <- .ddg.construct.DDGStatement (parse(text=deparse(last.statement)), pos=NA, script.num=NA, breakpoints=NA, parseData=NULL)
+    eval.cmd <- .ddg.construct.DDGStatement (parse(text=deparse(last.statement)), pos=NA, script.num=NA, parseData=NULL)
     new.statement <- .ddg.create.ddg.eval.call(last.statement, parsed.stmt)
     return (call ("ddg.return.value", new.statement, function() parsed.stmt))
   }
