@@ -1037,35 +1037,37 @@
 #' 
 #' @return the name of the file containing the captured graphics
 .ddg.capture.current.graphics <- function() {
-  #print ("In .ddg.capture.current.graphics")
+	#print ("In .ddg.capture.current.graphics")
+	
+	# Create the file name to save the screen graphics to
+	file <- paste0("dev.off.", .ddg.dnum()+1, ".pdf")
   
-  # Create the file name to save the screen graphics to
-  file <- paste0("dev.off.", .ddg.dnum()+1, ".pdf")
+	# Save the graphic to a file temporarily
+	file.written <- NULL
   
-  # Save the graphic to a file temporarily
-  file.written <- NULL
-  tryCatch (
-      {
-        # Try to save the graphics to a file
-        dev.print(device=pdf, file=file)
-        file.written <- file
-      },
-      error = function(e) {
-        # dev.print fails when running from the test scripts, or Rscript in general
-        # In that case, check for the existence of Rplots.pdf, which is 
-        # where Rscript places plots sent to the default graphics.
-        if (names(dev.cur()) == "pdf") {
-          if (file.exists ("Rplots.pdf") && !.ddg.get(".ddg.rplots.pdf.saved")) {
-            dev.off()
-            file.written <<- "Rplots.pdf"
-            .ddg.set (".ddg.rplots.pdf.saved", TRUE)
-          }
-        }
-        
-        # If the dev.off file was created, delete it.
-        file.remove(file)
-      }
-  )
-  return(file.written)
+	# dev.print fails when running from the test scripts, or Rscript in general
+	# In that case, check for the existence of Rplots.pdf, which is 
+	# where Rscript places plots sent to the default graphics.
+	if (names(dev.cur()) == "pdf") {
+		if (file.exists ("Rplots.pdf") && !.ddg.get(".ddg.rplots.pdf.saved")) {
+			dev.off()
+			.ddg.set (".ddg.rplots.pdf.saved", TRUE)
+			return("Rplots.pdf")
+		}
+	}
+
+	tryCatch (
+		{
+			# Try to save the graphics to a file
+			dev.print(device=pdf, file=file)	# EF EDIT - this function failed!!
+			file.written <- file
+		},
+		error = function(e) {
+			# If the dev.off file was created, delete it.
+			if( file.exists(file) )
+				file.remove(file)
+		}
+	)
+	return(file.written)
 }
 

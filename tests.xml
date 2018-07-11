@@ -295,29 +295,8 @@
 		<!-- Further edit the .local files if running tests on Travis -->
 		<antcall target="travis-edits"/>
 
-		<!-- Replace quotes on all local files -->
-		<replaceregexp flags="g">
-			<regexp pattern='\‘' />
-			<substitution expression="\'" />
-			<fileset dir="${local_dir}">
-				<patternset id="local_files">
-					<include name="*.local" />
-				</patternset>
-			</fileset>
-		</replaceregexp>
-
-		<replaceregexp flags="g">
-			<regexp pattern='\’' />
-			<substitution expression="\'" />
-			<fileset dir="${local_dir}">
-				<patternset id="local_files">
-					<include name="*.local" />
-				</patternset>
-			</fileset>
-		</replaceregexp>
-
 		<!-- Replace local file paths with [DIR] -->
-		<replaceregexp flags="g">
+		<replaceregexp flags="gi">
 			<regexp pattern="${FILE.basedir}/${dir}" />
 			<substitution expression="\[DIR\]"/>
 			<fileset dir="${local_dir}">
@@ -330,7 +309,7 @@
 			 that these follow the rule that replaces local file
 			 paths with [DIR] so we don't lose those.  -->
 		<replaceregexp flags="g">
-			<regexp pattern='(\t+"rdt:location": "/(.*)\r?\n)' />
+			<regexp pattern='(\t+"rdt:location": "(.:)?/(.*)\r?\n)' />
 			<substitution expression=""/>
 			<fileset dir="${local_dir}">
 				<patternset id="local_files">
