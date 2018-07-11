@@ -57,12 +57,10 @@
 
 ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enable.console = TRUE, annotate.inside.functions = TRUE, first.loop = 1, max.loops = 1, max.snapshot.size = 10,
                      save.hashtable = TRUE, hash.algorithm="md5") {
-  #.ddg.DDGStatement.init()
-  .ddg.init.tables()
+   .ddg.init.tables()
 
-  # Save hash table related values
-  # .ddg.set (".ddg.save.hashtable", save.hashtable)
-  .ddg.set (".ddg.hash.algorithm", hash.algorithm)
+  # Save hash algorithm
+   .ddg.set (".ddg.hash.algorithm", hash.algorithm)
   
   # Set directory for provenance graph. The base directory is set as follows:
   # (1) the directory specified by the user in the parameter ddgdir in ddg.init, or
@@ -102,32 +100,6 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
 
   # Create directory if it does not exist
   if (!dir.exists(ddg.path)) dir.create(ddg.path, recursive = TRUE)
-
-  # This results in the wrong ddg directory in console mode ERB 7/1/2018
-  # if (is.null(r.script.path) ) {
-  #   r.script.path <- getwd()
-  # }
-  
-  # Setting the path for the ddg
-  # if (is.null(ddgdir)) {
-
-    # Default is the file where the script is located
-  #   if (!is.null(r.script.path)){
-  #     ddg.path <- paste(dirname(r.script.path), "/", basename(tools::file_path_sans_ext(r.script.path)), "_ddg", sep="")
-  #   }
-  #   else {
-  #     ddg.path <- paste(getwd(), "/","ddg",sep = "")
-  #   }
-  # } else ddg.path <- normalizePath(ddgdir, winslash="/", mustWork=FALSE)
-
-  # Overwrite default is
-  # if(!overwrite){
-  #   no.overwrite.folder <- paste(ddg.path, "_timestamps", sep = "")
-  #   if(!dir.exists(no.overwrite.folder)){
-  #     dir.create(no.overwrite.folder)
-  #   }
-  #   ddg.path <- paste(no.overwrite.folder, "/",  basename(tools::file_path_sans_ext(r.script.path)), "_ddg_", .ddg.timestamp(), sep = "")
-  # }
 
   .ddg.set("ddg.path", ddg.path)
 
@@ -252,18 +224,12 @@ ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE) {
         error = function (e) print(e))
   }
   
-  # Delete temporary files.
-  # .ddg.delete.temp()
-  
   .ddg.stop.iotracing()
 
   # Save ddg.json to file.
   ddg.json.write()
   if (interactive()) print(paste("Saving ddg.json in ", .ddg.path(), sep=""))
 
-  # Save hashtable.json to file.
-  # .ddg.save.hashtable()
-  
   # Save sourced scripts (if any). First row is main script.
   ddg.sourced.scripts <- .ddg.get(".ddg.sourced.scripts")
   if (!is.null(ddg.sourced.scripts)) {
@@ -347,13 +313,6 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
   # Initiate ddg.
   ddg.init(r.script.path, ddgdir, overwrite, enable.console, annotate.inside.functions, first.loop, max.loops, max.snapshot.size, save.hashtable, hash.algorithm)
   
-  # Create ddg directory.
-  # dir.create(.ddg.path(), showWarnings = FALSE)
-
-  # Remove existing files if ddg directory different from working
-  # directory.
-  # ddg.flush.ddg()
-
   # Set .ddg.is.sourced to TRUE if script provided.
   if (!is.null(r.script.path)) .ddg.set(".ddg.is.sourced", TRUE)
 

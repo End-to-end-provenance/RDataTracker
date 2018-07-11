@@ -84,7 +84,6 @@
           stringsAsFactors=FALSE))
 }
   
-
 #' Returns the data node table
 #' @returnType a data frame
 #' @return the data node table
@@ -100,9 +99,46 @@
   return (ddg.data.nodes [ddg.data.nodes$ddg.num > 0, ])
 }
 
+#' Calculates the hash value for the file
+#' @param dname the name of the file 
+#' @return the hash value based on the hash algorithm specified when ddg.run or ddg.init was called.
+#'   Returns "" if the digest cannot be computed, for example, if the file does not exist.
+.ddg.calculate.hash <- function(dname) {
+  .ddg.set("ddg.hasfilenodes", TRUE)
+  # This function will cause certain tests to fail if run with pdf files or
+  # other non-text files with internal timestamps. This could also cause these files
+  # to sync incorrectly in the workflow, but given that reading in a pdf file is unlikely,
+  # this should not be an overly large issue.
+  dhash <- digest(dname, algo=.ddg.get(".ddg.hash.algorithm"))
+  if (is.null(dhash)) {
+    dhash <- ""
+  }
+  return (dhash)
+}
 
-#' Sets the hash and rw fields for a data node
-#' 
+#' Determines whether to record this as a read or write operation
+#' @param dname the data file name 
+#' @return "read" if the file was read and "write" if the file was written
+.ddg.calculate.rw <- function(dname) {
+  infiles <- .ddg.get("ddg.infilenodes")
+  if (dname %in% infiles) {
+    .ddg.set("ddg.infilenodes", infiles[match(infiles, dname, 0) == 0])
+    #print (paste("Removing", dname, "from infilenodes"))
+    return ("read")
+  }
+  
+  outfiles <- .ddg.get("ddg.outfilenodes")
+  if (dname %in% outfiles) {
+    .ddg.set("ddg.outfilenodes", outfiles[match(outfiles, dname, 0) == 0])
+    #print (paste("Removing", dname, "from outfilenodes"))
+    return ("write")
+  }
+
+  #print(paste(".ddg.calculate.rw:", dname, "not found in infilenodes or outfilenodes!"))
+  return ("")
+}
+
+#' Sets the hash and rw fields for a data node 
 #' @param dnum the id of the node to set
 #' @param hash the hash value to use
 #' @param rw the rw value to use
@@ -113,7 +149,6 @@
   ddg.data.nodes$ddg.rw[dnum] <- rw
   .ddg.set("ddg.data.nodes", ddg.data.nodes)
 }
-
 
 #' .ddg.data.node.exists searches the data node table for a matching
 #' data node and returns TRUE if a match is found. If no match is found, it 
@@ -243,7 +278,7 @@
   ddg.data.nodes$ddg.loc[ddg.dnum] <- dloc
   
   .ddg.set("ddg.data.nodes", ddg.data.nodes)
-  
+
   # Output data node.
   #print(".ddg.record.data outputting data node")
   if (dtype == "File") {
