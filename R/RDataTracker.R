@@ -303,33 +303,10 @@ library(curl)
   # its value.
   if (!.ddg.is.set("from.source")) .ddg.set("from.source", FALSE)
 
-  # Set current number of checkpoints.
-  # .ddg.set("ddg.checkpoint.num", 0)
-
-  # Create table for checkpoints.
-  # .ddg.set("ddg.checkpoints",
-  #         data.frame(filename=character(ddg.MAX_CHECKPOINTS),
-  #         checkpoint.name=character(ddg.MAX_CHECKPOINTS),
-  #         stringsAsFactors=FALSE))
-
   # Record last command from the preceding console block.
   .ddg.set(".ddg.last.cmd", NULL)
-
-  # Record value returned by calls to ddg.return.
-  # ddg.call - the string representing the call, like "f(a)".
-  # line - the line where the function is called that is now returning
-  # return.used - remembers if this function return value has been
-  #   linked to the caller.
-  # return.node.id - the id of the data node that holds the return
-  #   value.
-  .ddg.set(".ddg.return.values",
-          data.frame(ddg.call=character(size),
-          line = integer(size),
-          return.used = logical(size),
-          return.node.id = integer(size),
-          stringsAsFactors=FALSE))
-
-  .ddg.set(".ddg.num.returns", 0)
+  
+  .ddg.init.return.values()
 
   # Record the current command to be opened during console execution
   # (used when executing a script using ddg.source).
@@ -1117,42 +1094,16 @@ library(curl)
 # command - input command.
 
 .ddg.link.function.returns <- function(command) {
-  # Find the functions that have completed but whose returns have
-  # not been used yet.
-  returns <- .ddg.get(".ddg.return.values")
-  if (!is.na(command@pos@startLine)) {
-    unused.returns <- returns[!returns$return.used & returns$return.node.id > 0 & !is.na(returns$line) & returns$line == command@pos@startLine, ]
-  }
-  else {
-    unused.returns <- returns[!returns$return.used & returns$return.node.id > 0, ]
-  }
-  if (nrow(unused.returns) == 0) return()
-  #print (paste(".ddg.link.function.returns: unused.returns:", unused.returns))
-
-  # See which of these are called from the command we are
-  # processing now.
-  unused.calls <- unused.returns$ddg.call
-  command.text <- gsub(" ", "", command@text)
-  uses <- sapply(unused.calls, function(call) {grepl(call, command.text, fixed=TRUE)})
-  #print (paste (".ddg.link.function.returns: uses:", uses))
-
-  # The following line is here to get around R CMD check, which
-  # otherwise reports:  no visible binding for global variable.
-  # Note that return.node.id is not a variable in the subset call,
-  # but the name of a column in the data frame being subsetted.
-  return.node.id <- NULL
-
-  # Extracts for the return value nodes.
-  new.uses <- subset(unused.returns, uses, return.node.id)
+  
+  new.uses <- .ddg.get.matching.return.value.nodes (command)
   #print (paste (".ddg.link.function.returns: new.uses:", new.uses))
-
+  
   # Create an edge from each of these to the last procedure node.
   lapply (new.uses$return.node.id, function (data.num) {
         .ddg.datanum2lastproc (data.num)
   
         # Set the return value as being used.
-        returns$return.used[returns$return.node.id == data.num] <- TRUE
-        .ddg.set(".ddg.return.values", returns)
+        .ddg.set.return.value.used (data.num)
       })
   
 
@@ -2765,11 +2716,7 @@ library(curl)
 	fileout <- paste(.ddg.path.debug(), "/environment.csv", sep="")
 	write.csv(.ddg.exec.env(), fileout, row.names=FALSE)
 	
-	# Save function return table to file.
-	fileout <- paste(.ddg.path.debug(), "/function-returns.csv", sep="")
-	ddg.returns <- .ddg.get(".ddg.return.values")
-	ddg.returns2 <- ddg.returns[ddg.returns$return.node.id > 0, ]
-	write.csv(ddg.returns2, fileout, row.names=FALSE)
+  .ddg.save.return.value.table ()
 
 	# Save if script is sourced.
 	if (.ddg.is.sourced()) 
@@ -2975,19 +2922,6 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
   # Yes, ReturnTest.R fails on the recursive f5 function
   #print(paste("ddg.return.value:", sys.call(caller.frame))) #, "returns", expr))
 
-  ddg.return.values <- .ddg.get(".ddg.return.values")
-  ddg.num.returns <- .ddg.get(".ddg.num.returns")
-  if (nrow(ddg.return.values) == ddg.num.returns) {
-    size = 100
-    new.rows <- data.frame(ddg.call = character(size),
-                           line = integer(size),
-                           return.used = logical(size),
-                           return.node.id = integer(size),
-                           stringsAsFactors=FALSE)
-    .ddg.add.rows(".ddg.return.values", new.rows)
-    ddg.return.values <- .ddg.get(".ddg.return.values")
-  }
-
   # If this is not a recursive call to ddg.return.value and
   # ddg.function was not called, create the function nodes that
   # it would have created.
@@ -3055,17 +2989,7 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
     .ddg.lastproc2data(return.node.name, dscope=return.node.scope)
   }
 
-  # Update the table.
-  ddg.num.returns <- ddg.num.returns + 1
-  ddg.return.values$ddg.call[ddg.num.returns] <- call.text
-  ddg.return.values$return.used[ddg.num.returns] <- FALSE
-  ddg.return.values$return.node.id[ddg.num.returns] <- .ddg.dnum()
-  ddg.cur.cmd.stack <- .ddg.get(".ddg.cur.cmd.stack")
-  ddg.return.values$line[ddg.num.returns] <- 
-      if (length(ddg.cur.cmd.stack) == 0) NA
-      else ddg.cur.cmd.stack[length(ddg.cur.cmd.stack) - 1][[1]]@pos@startLine
-  .ddg.set(".ddg.return.values", ddg.return.values)
-  .ddg.set(".ddg.num.returns", ddg.num.returns)
+  .ddg.add.to.return.values (call.text)
 
   # If it does not have return, then its parameter was a call to ddg.eval
   # and this stuff has been done already.
