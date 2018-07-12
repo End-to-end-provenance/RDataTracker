@@ -73,5 +73,13 @@
     <target name="clean">
         <delete dir="${builddir}" verbose="true"/>
     </target>
+	
+	<target name="prop">
+		<echoproperties>
+		  <propertyset>
+		    <propertyref prefix="ant."/>
+		  </propertyset>
+		</echoproperties>
+	</target>
 
 </project>
