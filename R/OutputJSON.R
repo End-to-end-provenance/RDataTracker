@@ -246,7 +246,7 @@ ddg.json.write <- function()
 					"architecture" = NA ,
 					"operatingSystem" = NA ,
 					"language" = NA ,
-					"rVersion" = NA ,
+					"langVersion" = NA ,
 					"script" = NA ,
 					"scriptTimeStamp" = NA ,
 					"sourcedScripts" = NA ,
@@ -256,12 +256,12 @@ ddg.json.write <- function()
 					"ddgTimeStamp" = NA ,
 					"hashAlgorithm" = NA )
 	
-	# architecture, language, rVersion
-	r.version <- R.Version()
+	# architecture, language, langVersion
+	lang.version <- R.Version()
 	
-	fields$architecture <- r.version$arch
-	fields$language <- r.version$language
-	fields$rVersion <- r.version$version
+	fields$architecture <- lang.version$arch
+	fields$language <- lang.version$language
+	fields$langVersion <- lang.version$version
 	
 	# operating system
 	fields$operatingSystem <- .Platform$OS.type
