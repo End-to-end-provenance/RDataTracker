@@ -2676,7 +2676,7 @@ ddg.MAX_HIST_LINES <- 2^14
   knitr::purl(r.script.path, documentation = 2L, quiet = TRUE)
 
   #moves file to ddg directory
-  file.rename(from = paste(getwd(), "/", basename(tools::file_path_sans_ext(r.script.path)), ".R", sep = ""), to = output.path)
+  file.rename(from = paste(getwd(), "/", basename(file_path_sans_ext(r.script.path)), ".R", sep = ""), to = output.path)
   script <- readLines(output.path)
 
   skip <- FALSE

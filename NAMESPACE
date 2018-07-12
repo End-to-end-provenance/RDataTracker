@@ -12,6 +12,8 @@ export(ddg.set.detail, ddg.get.detail, ddg.clear.detail)
 export(ddg.set.inside.loop, ddg.not.inside.loop)
 export(ddg.json.write, ddg.json)
 
+importFrom(tools, file_path_sans_ext)
+importFrom(tools, file_ext)
 importFrom(gtools, defmacro)
 importFrom(XML, saveXML)
 importFrom(knitr, purl)
