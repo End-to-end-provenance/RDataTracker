@@ -1037,11 +1037,11 @@ library(curl)
 
 .ddg.link.function.returns <- function(command) {
   
-  new.uses <- .ddg.get.matching.return.value.nodes (command)
+  return.value.nodes <- .ddg.get.matching.return.value.nodes (command)
   #print (paste (".ddg.link.function.returns: new.uses:", new.uses))
   
   # Create an edge from each of these to the last procedure node.
-  lapply (new.uses$return.node.id, function (data.num) {
+  lapply (return.value.nodes, function (data.num) {
         .ddg.datanum2lastproc (data.num)
   
         # Set the return value as being used.
@@ -1525,11 +1525,8 @@ library(curl)
             warning = .ddg.set.warning ,
             error = function(e)
             {
-              # obtain function information for error-causing operation
-              funcs.called <- .ddg.get.function.info(cmd@functions.called)
-              
               # create procedure node for the error-causing operation
-              .ddg.proc.node("Operation", cmd@abbrev, cmd@abbrev, pfunctions=funcs.called, console=TRUE, cmd=cmd)
+              .ddg.proc.node("Operation", cmd@abbrev, cmd@abbrev, functions.called=cmd@functions.called, console=TRUE, cmd=cmd)
               .ddg.proc2proc()
 
               # create input edges by adding variables to set
@@ -1598,14 +1595,11 @@ library(curl)
         # We want to create a procedure node for this command.
         if (create.procedure) {
           
-          # get function information
-          funcs.called <- .ddg.get.function.info(cmd@functions.called)
-          
           # Create the procedure node.
 
           if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Adding operation node for", cmd@abbrev))
           
-          .ddg.proc.node("Operation", cmd@abbrev, cmd@abbrev, pfunctions=funcs.called, console=TRUE, cmd=cmd)
+          .ddg.proc.node("Operation", cmd@abbrev, cmd@abbrev, functions.called=cmd@functions.called, console=TRUE, cmd=cmd)
           .ddg.proc2proc()
 
           # If a warning occurred when cmd was evaluated,
