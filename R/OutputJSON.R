@@ -254,7 +254,6 @@ ddg.json.write <- function()
 					"workingDirectory" = NA ,
 					"ddgDirectory" = NA ,
 					"ddgTimeStamp" = NA ,
-					"rdatatrackerVersion" = NA ,
 					"hashAlgorithm" = NA )
 	
 	# architecture, language, rVersion
@@ -294,9 +293,6 @@ ddg.json.write <- function()
 	
 	# ddg timestamp
 	fields$ddgTimeStamp <- .ddg.get("ddg.start.time")
-	
-	# rdt version
-	fields$rdatatrackerVersion <- toString( packageVersion("RDataTracker") )
 	
 	# hash algorithm
 	fields$hashAlgorithm <- .ddg.get(".ddg.hash.algorithm")
