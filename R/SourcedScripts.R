@@ -86,17 +86,4 @@
   return (snum)
 }
 
-#' Copy all the sourced scripts into the provenance directory in a scripts subdirectory
-#' @return nothing
-.ddg.copy.sourced.scripts <- function () {
-  ddg.sourced.scripts <- .ddg.get(".ddg.sourced.scripts")
-  if (!is.null(ddg.sourced.scripts)) {
-    if (nrow(ddg.sourced.scripts) > 1 ) {
-      for (i in 1:nrow(ddg.sourced.scripts)) {
-        sname <- ddg.sourced.scripts[i, "sname"]
-        file.copy(sname, paste(.ddg.path.scripts(), basename(sname), sep="/"))
-      }
-    }
-  }
-}
 

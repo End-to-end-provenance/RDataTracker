@@ -33,6 +33,41 @@
 # in our test cases or if a user uses RScript to run R files.
 library (methods)
 
+#' Initialize the data used to manage the statements
+#' @return nothing 
+.ddg.init.statements <- function() {
+  .ddg.set("ddg.statement.num", 0)
+  .ddg.set("ddg.statements", list())
+}
+
+#' @returnType numeric
+#' @return the number of DDG statements created
+.ddg.statement.num <- function() {
+  return(.ddg.get("ddg.statement.num"))
+}
+
+#' @returnType list of DDGStatement objects
+#' @return the list of DDG statements created
+.ddg.statements <- function() {
+  return(.ddg.get("ddg.statements"))
+}
+
+#' @param i the index of the statement to return
+#' @returnType a DDGStatement object
+#' @return the ith DDGStatement
+.ddg.statement <- function(i) {
+  ddg.statements <- .ddg.statements()
+  return(ddg.statements[[i]])
+}
+
+#' Add a DDGStatement to the end of the list
+#' @param stmt a DDGStatement object 
+#' @return nothing 
+.ddg.add.ddgstatement <- function(stmt) {
+  ddg.statements <- c(.ddg.statements(), stmt)
+  .ddg.set("ddg.statements", ddg.statements)
+}
+
 # Information about where in the source code this statement appears.
 setClass("DDGStatementPos",
     slots = list(

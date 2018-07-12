@@ -137,9 +137,6 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
   # Create DDG directories
   .ddg.init.environ()
 
-  # Save copy of original script.
-  file.copy(r.script.path, paste(.ddg.path.scripts(), "/", basename(r.script.path), sep = ""))
-
   # Reset r.script.path if RMarkdown file
 
   if (!is.null(r.script.path) && tools::file_ext(r.script.path) == "Rmd") {
@@ -263,17 +260,13 @@ ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE) {
   # Save hashtable.json to file.
   # .ddg.save.hashtable()
   
-  # Save sourced scripts (if any). First row is main script.
-  .ddg.copy.sourced.scripts ()
-
   # Save debug files to debug directory.
   if (save.debug | .ddg.save.debug()) {
     .ddg.save.debug.files()
   }
 
   # Clear DDGStatements from ddg environment.
-  .ddg.set("ddg.statement.num", 0)
-  .ddg.set("ddg.statements", list())
+  .ddg.init.statements ()
 
   # Clear loop information from ddg environment.
   .ddg.set("ddg.loop.num", 0)
@@ -410,6 +403,9 @@ ddg.source <- function (file,  ddgdir = NULL, local = FALSE, echo = verbose, pri
 	# Store script number & name.
   sname <- basename(file)
   snum <- .ddg.store.script.info (sname)
+  
+  # Save a copy of the script
+  file.copy(file, paste(.ddg.path.scripts(), basename(sname), sep="/"))
 
 	### CODE IN THIS SECTION IS BASICALLY REPLICATION OF source FUNCTION ###
 
