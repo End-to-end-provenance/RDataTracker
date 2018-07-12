@@ -170,7 +170,6 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
   .ddg.set(".ddg.initialized", TRUE)
 
   # Store the starting graphics device.
-  .ddg.set("prev.device", dev.cur())
   .ddg.set("possible.graphics.files.open", NULL)
   .ddg.set("ddg.open.devices", vector())
 
@@ -265,15 +264,7 @@ ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE) {
   # .ddg.save.hashtable()
   
   # Save sourced scripts (if any). First row is main script.
-  ddg.sourced.scripts <- .ddg.get(".ddg.sourced.scripts")
-  if (!is.null(ddg.sourced.scripts)) {
-    if (nrow(ddg.sourced.scripts) > 1 ) {
-      for (i in 1:nrow(ddg.sourced.scripts)) {
-        sname <- ddg.sourced.scripts[i, "sname"]
-        file.copy(sname, paste(.ddg.path.scripts(), basename(sname), sep="/"))
-      }
-    }
-  }
+  .ddg.copy.sourced.scripts ()
 
   # Save debug files to debug directory.
   if (save.debug | .ddg.save.debug()) {
@@ -357,7 +348,7 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
   # ddg.flush.ddg()
 
   # Set .ddg.is.sourced to TRUE if script provided.
-  if (!is.null(r.script.path)) .ddg.set(".ddg.is.sourced", TRUE)
+  .ddg.set(".ddg.is.sourced", !is.null(r.script.path))
 
   # Save debug files to debug directory.
   .ddg.set("ddg.save.debug", save.debug)
@@ -417,19 +408,8 @@ ddg.source <- function (file,  ddgdir = NULL, local = FALSE, echo = verbose, pri
 	ignore.ddg.calls = TRUE, ignore.init = ignore.ddg.calls, force.console=ignore.init){
 
 	# Store script number & name.
-	snum <- .ddg.next.script.num()
-	sname <- basename(file)
-	stime <- .ddg.format.time( file.info(sname)$mtime )
-
-	if (snum == 0) {
-		df <- data.frame(snum, sname, stime, stringsAsFactors=FALSE)
-	} else {
-		df<- rbind(.ddg.sourced.scripts(), c(snum, sname, stime))
-	}
-	.ddg.set(".ddg.sourced.scripts", df)
-
-	# Increment script number.
-	.ddg.inc(".ddg.next.script.num")
+  sname <- basename(file)
+  snum <- .ddg.store.script.info (sname)
 
 	### CODE IN THIS SECTION IS BASICALLY REPLICATION OF source FUNCTION ###
 

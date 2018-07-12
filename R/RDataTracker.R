@@ -124,28 +124,8 @@ library(curl)
   return (.ddg.get("ddg.annotate.off"))
 }
 
-.ddg.is.sourced <- function() {
-  return (.ddg.get(".ddg.is.sourced"))
-}
-
-.ddg.source.parsed <- function() {
-  return(.ddg.get(".ddg.source.parsed"))
-}
-
 .ddg.parsed.num <- function() {
   return(.ddg.get(".ddg.parsed.num"))
-}
-
-.ddg.sourced.scripts <- function() {
-  return(.ddg.get(".ddg.sourced.scripts"))
-}
-
-.ddg.next.script.num <- function() {
-  return(.ddg.get(".ddg.next.script.num"))
-}
-
-.ddg.script.num.stack <- function() {
-  return(.ddg.get(".ddg.script.num.stack"))
 }
 
 .ddg.enable.source <- function() {
@@ -311,12 +291,6 @@ library(curl)
   # (used when executing a script using ddg.source).
   .ddg.set(".ddg.possible.last.cmd", NULL)
 
-  # Keep track of history.
-  .ddg.set(".ddg.history.timestamp", NULL)
-
-  # Keep track of the last device seen (0 implies NULL).
-  .ddg.set("prev.device", 0)
-
   # Store path of current script.
   .ddg.set("ddg.r.script.path", NULL)
 
@@ -326,6 +300,9 @@ library(curl)
   # No ddg initialized.
   .ddg.set(".ddg.initialized", FALSE)
 
+  # Keep track of history.
+  .ddg.set(".ddg.history.timestamp", NULL)
+  
   # No history file.
   .ddg.set(".ddg.history.file", NULL)
 
@@ -338,23 +315,10 @@ library(curl)
   # Functions not to be annotated.
   .ddg.set("ddg.annotate.off", NULL)
 
-  # Script sourced with ddg.source
-  .ddg.set(".ddg.is.sourced", FALSE)
-
-  # Number of first sourced script (main script).
-  .ddg.set(".ddg.next.script.num", 0)
-
   # Number of first parsed command.
   .ddg.set(".ddg.parsed.num", 1)
-
-  # Stack for sourced files
-  .ddg.set(".ddg.script.num.stack", 0)
-
-  # Table of sourced scripts
-  .ddg.set(".ddg.sourced.scripts", NULL)
-
-  # Table of script, line & parsed command numbers
-  .ddg.set(".ddg.source.parsed", NULL)
+  
+  .ddg.init.sourced.scripts ()
 
   # Save debug files on debug directory
   .ddg.set("ddg.save.debug", FALSE)
@@ -2653,16 +2617,8 @@ library(curl)
 	write.csv(.ddg.exec.env(), fileout, row.names=FALSE)
 	
   .ddg.save.return.value.table ()
+  .ddg.save.sourced.script.table ()
 
-	# Save if script is sourced.
-	if (.ddg.is.sourced()) 
-	{
-		# Save sourced script table to file.
-		fileout <- paste(.ddg.path.debug(), "/sourced-scripts.csv", sep="")
-		ddg.sourced.scripts <- .ddg.get(".ddg.sourced.scripts")
-		ddg.sourced.scripts2 <- ddg.sourced.scripts[ddg.sourced.scripts$snum >= 0, ]
-		write.csv(ddg.sourced.scripts2, fileout, row.names=FALSE)
-	}
 }
 
 # Returns a data frame of information about the current execution environment.
