@@ -288,6 +288,11 @@ ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE) {
   .ddg.set("ddg.loop.num", 0)
   .ddg.set("ddg.loops", list())
 
+  # I don't think save is ever called with quit = TRUE, but we might want
+  # to distinguish between the final call to ddg.save and a call the user
+  # might make from the console.  Perhaps much of what is above should be
+  # inside the quit branch instead.  Reconsider this when working ong 
+  # console mode.
   # By convention, this is the final call to ddg.save.
   if (quit) {
     # Restore history settings.
@@ -295,9 +300,6 @@ ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE) {
 
     # Delete temporary files.
     .ddg.delete.temp()
-
-    # Capture current graphics device.
-    .ddg.auto.graphic.node(dev.to.capture=dev.cur)
 
     # Shut down the DDG.
     .ddg.clear()

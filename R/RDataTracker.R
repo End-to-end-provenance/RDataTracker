@@ -294,7 +294,8 @@ library(curl)
   .ddg.init.data.nodes()
   .ddg.init.edges()
   .ddg.init.function.table()
-
+  .ddg.init.return.values()
+  
   # Used to control debugging output.  If already defined, don't
   # change its value.
   if (!.ddg.is.set("ddg.debug.lib")) .ddg.set("ddg.debug.lib", FALSE)
@@ -306,8 +307,6 @@ library(curl)
   # Record last command from the preceding console block.
   .ddg.set(".ddg.last.cmd", NULL)
   
-  .ddg.init.return.values()
-
   # Record the current command to be opened during console execution
   # (used when executing a script using ddg.source).
   .ddg.set(".ddg.possible.last.cmd", NULL)
@@ -531,30 +530,6 @@ library(curl)
 
 .ddg.is.function <- function(value){
   return(is.function(value))
-}
-
-# .ddg.dev.change determines whether or not a new graphic device
-# has become active and whether or not we should capture the
-# previous graphic device. It returns the device number we should
-# capture (0 means we shouldn't capture any device).
-
-.ddg.dev.change <- function(){
-  prev.device <- .ddg.get("prev.device")
-  curr.device <- dev.cur()
-  device.list <- dev.list()
-
-  # We've switched devices .
-  if (prev.device != curr.device) {
-    # Update device.
-    .ddg.set("prev.device", curr.device)
-
-    # Previous device still accessible.
-    if (prev.device %in% device.list) return(prev.device)
-  }
-
-  # No switching, or previous is not accessible (NULL or removed).
-  return(0)
-
 }
 
 # Returns a string representation of the type information of the given value.
@@ -819,39 +794,6 @@ library(curl)
     vars.set <- .ddg.add.to.vars.set(vars.set,cmd.expr, i)
   }
   return (vars.set)
-}
-
-
-# .ddg.auto.graphic.node attempts to figure out if a new graphics
-# device has been created and take a snapshot of a previously active
-# device, setting the snapshot node to be the output of the
-# specified command.
-
-# cmd.abbrev (optional) - name of procedure node.
-# dev.to.capture (optional) - function specifying which device
-#   should be captured, where zero indicates no device and
-#   negative values are ignored.
-
-.ddg.auto.graphic.node <- function(cmd.abbrev=NULL, dev.to.capture=.ddg.dev.change) {
-
-  num.dev.to.capture <- dev.to.capture()
-  if (num.dev.to.capture > 1) {
-    # Make the capture device active (store info on previous
-    # device).
-    prev.device <- dev.cur()
-    dev.set(num.dev.to.capture)
-
-    # Capture it as a jpeg.
-    name <- if (!is.null(cmd.abbrev) && cmd.abbrev != "") paste0("graphic", substr(cmd.abbrev,1,10)) else "graphic"
-    .ddg.snapshot.node(name, fext="jpeg", data=NULL)
-
-    # Make the previous device active again.
-    dev.set(prev.device)
-
-    # We're done, so create the edge.
-    if(is.null(cmd.abbrev)) .ddg.lastproc2data(name)
-    else .ddg.proc2data(cmd.abbrev, name)
-  }
 }
 
 
