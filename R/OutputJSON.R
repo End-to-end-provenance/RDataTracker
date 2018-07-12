@@ -99,6 +99,7 @@ ddg.json.write <- function()
 	# FUNCTION NODES - get function numbers if there are any function nodes
 	if( num.calls > 0 )
 	{
+		# extract columns: ddg.fun, ddg.lib (function names and their library names)
 		functions <- calls[ , 2:3]
 		functions <- unique(functions)
 		
