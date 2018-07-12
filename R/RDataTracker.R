@@ -36,11 +36,6 @@
 
 ddg.MAX_HIST_LINES <- 2^14
 
-library(digest)
-library(tools)
-library(jsonlite)
-library(curl)
-
 #-------- FUNCTIONS TO MANAGE THE GLOBAL VARIABLES--------#
 
 # Global variables cannot be used directly in a library.  Instead,

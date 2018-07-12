@@ -23,6 +23,7 @@ importFrom(digest, digest)
 importFrom(jsonlite, read_json)
 importFrom(jsonlite, write_json)
 importFrom(jsonlite, toJSON)
+importFrom(jsonlite, prettify)
 importFrom(curl, curl_download)
 
 # CRAN check gives errors if these are not included.

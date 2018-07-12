@@ -586,8 +586,6 @@ ddg.source <- function (file,  ddgdir = NULL, local = FALSE, echo = verbose, pri
 
 ddg.json <- function()
 {
-	library(jsonlite)
-	
 	# CONSTANTS
 	TOOL.NAME <- "RDataTracker"
 	JSON.VERSION <- "2.1"

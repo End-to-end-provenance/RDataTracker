@@ -8,8 +8,6 @@
 # Updated by Barbara Lerner to allow for a variety of hash algorithms and refactored
 # to create the DDGHash.R file.
 
-library(jsonlite)
-
 #' Initialize the hashtable
 #'
 #' Initializes the hash table to be empty
