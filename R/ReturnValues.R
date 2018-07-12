@@ -100,14 +100,8 @@
   uses <- sapply(unused.calls, function(call) {grepl(call, command.text, fixed=TRUE)})
   #print (paste (".ddg.link.function.returns: uses:", uses))
   
-  # The following line is here to get around R CMD check, which
-  # otherwise reports:  no visible binding for global variable.
-  # Note that return.node.id is not a variable in the subset call,
-  # but the name of a column in the data frame being subsetted.
-  return.node.id <- NULL
-  
   # Extracts for the return value nodes.
-  return (subset(unused.returns, uses, return.node.id))
+  return (unused.returns[uses, ]$return.node.id)
 }
 
 #' Mark a return value as being used.
