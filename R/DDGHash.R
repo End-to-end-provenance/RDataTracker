@@ -107,7 +107,7 @@
 .ddg.hashtable.write <- function() {
   if (interactive()) print(paste("Saving DDG in ", fileout))
   
-  Determine where to put the hashtable file
+  # Determine where to put the hashtable file
   writedir <- paste0(path.expand("~"),"/.ddg/")
   if (!dir.exists(writedir)) {
     tryCatch({
