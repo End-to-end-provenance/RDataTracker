@@ -50,7 +50,7 @@
 	   	</exec>
     </target>
 
-    <target name="install" depends="check">
+    <target name="install" depends="check, prop">
     	<exec dir="${builddir}/.." executable="R" >
   			<arg line="CMD INSTALL ${tarfile}"/>
 		</exec>
