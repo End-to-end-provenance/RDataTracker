@@ -94,7 +94,6 @@ setClass("DDGStatement",
                                   # Has the value null.pos() if it is not available.
         script.num = "numeric",   # The number for the script this statement comes from.
                                   # Has the value -1 if it is not available
-        is.breakpoint = "logical", # True if a breakpoint has been set for this statement
         contained = "list",        # If this is a function declaration, this will be a list of
                                    # DDGStatement objects for the statements it contains.
 		functions.called = "list"	# A list of the statement's function calls and potential function calls.]

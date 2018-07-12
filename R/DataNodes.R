@@ -20,7 +20,7 @@
 # Data nodes are stored in a data frame, with one row for each node.
 # The columns of the data frame are:
 #
-# type - the type of node, like Data, File, Exception, URL
+# type - the type of node, one of Data, File, Exception, URL, Snapshot
 # num - a unique number
 # name - the label for the node
 # value - often this is the same as the name
