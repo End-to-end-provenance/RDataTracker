@@ -1,11 +1,15 @@
 \name{DataNodes}
 \alias{ddg.data}
 \alias{ddg.file}
+\alias{ddg.url}
+\alias{ddg.exception}
 \title{RDataTracker Data Nodes}
 \description{These functions create data nodes within a provenance graph created by RDataTracker.}
 \usage{
 ddg.data(dname, dvalue = NULL, graphic.fext = "jpeg")
 ddg.file(filename, dname = NULL)
+ddg.url(dname, dvalue = NULL)
+ddg.exception(dname, dvalue = NULL)
 }
 \arguments{
   \item{dname}{ the label for the node. }
@@ -28,6 +32,10 @@ ddg.file(filename, dname = NULL)
   If dname is omitted, the filename, minus the directory path, will be used as the label.
   Use to save a copy of an input file.
 
+  ddg.url creates a data node of type URL.  Use to save a URL that appears in the R script. 
+
+  ddg.exception creates a data node of type Exception.  Use to record an error that
+  occurs in the script.
 }
 
 \author{Emery Boose and Barbara Lerner}
@@ -44,6 +52,8 @@ name <- c("Sterling", "Smuggles", "Snickers")
 male <- c(FALSE, FALSE, FALSE) 
 pets.df <- data.frame(year, name, male)
 ddg.data("pets", "csv", pets.df)
+ddg.url("hf", "http://harvardforest.fas.harvard.edu")
+ddg.exception("FileNotFound", "File not found")
 ddg.save()
 }
 \keyword{provenance}

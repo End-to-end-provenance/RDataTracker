@@ -7,7 +7,7 @@
 	<loadproperties srcFile="DESCRIPTION" />
 	<property name="tarfile" value="RDataTracker_${Version}.tar.gz" />
 
-    <target name="build-directory" depends="clean">
+    <target name="build-directory">
     	<mkdir dir="${builddir}"/>
     </target>
 
@@ -26,7 +26,7 @@
   		</copy>
     	<copy overwrite="true" todir="${builddir}/R">
     		<fileset dir="R"
-      			excludes="DDGCheckpoint.R"/>
+      			includes="RDataTracker.R DDGStatement.R"/>
   		</copy>
   		<!-- copy overwrite="true" todir="${builddir}/vignettes">
 	        <fileset dir="vignettes"
@@ -73,5 +73,5 @@
     <target name="clean">
         <delete dir="${builddir}" verbose="true"/>
     </target>
-	
+
 </project>

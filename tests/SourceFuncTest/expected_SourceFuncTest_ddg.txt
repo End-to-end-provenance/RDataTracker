@@ -1,0 +1,452 @@
+Architecture="x86_64"
+OperatingSystem="windows"
+Language="R"
+LanguageVersion="R version 3.3.2 (2016-10-31)"
+RDataTrackerVersion="2.24.1"
+Script="[DIR]/SourceFuncTest.R"
+SourcedScripts="source1.r,source2.r,source3.r,source4.r"
+ProcessFileTimestamp="2016-12-18T11.26.01EST"
+SourcedScriptTimestamps="2016-12-18T11.26.01EST,2016-12-18T11.26.01EST,2016-12-18T11.26.01EST,2016-12-18T11.26.01EST"
+WorkingDirectory="[DIR]"
+DDGDirectory="[DIR]/ddg"
+DateTime="2016-12-19T13.00.23EST"
+InstalledPackages="RDataTracker 2.24.1"
+116
+Start p1 "1-SourceFuncTest.R" Value="SourceFuncTest.R" Time="0.0599999999999999" Script="NA" Pos="NA";
+Operation p2 "2-fun <- function(a, b) {    return(a + b)}" Value="fun <- function(a, b) {    return(a + b)}" Time="0.0599999999999999" Script="0" Pos="3,1,5,1";
+CF p1 p2
+Data d1 "1-fun" Value="#ddg.function";
+DF p2 d1
+Operation p3 "3-x <- 6" Value="x <- 6" Time="0.0599999999999999" Script="0" Pos="7,1,7,6";
+CF p2 p3
+Data d2 "2-x" Value="6";
+DF p3 d2
+Operation p4 "4-y <- 10" Value="y <- 10" Time="0.08" Script="0" Pos="8,1,8,7";
+CF p3 p4
+Data d3 "3-y" Value="10";
+DF p4 d3
+Start p5 "5-z <- fun(x, y)" Value="z <- fun(x, y)" Time="0.09" Script="0" Pos="9,1,9,13";
+CF p4 p5
+DF d1 p5
+DF d2 p5
+DF d3 p5
+Start p6 "6-fun(x, y)" Value="fun(x, y)" Time="0.12" Script="NA" Pos="NA";
+CF p5 p6
+Binding p7 "7-a  <-  x" Time="0.12" Script="NA" Pos="NA";
+CF p6 p7
+DF d2 p7
+Data d4 "4-a" Value="6";
+DF p7 d4
+Binding p8 "8-b  <-  y" Time="0.16" Script="NA" Pos="NA";
+CF p7 p8
+DF d3 p8
+Data d5 "5-b" Value="10";
+DF p8 d5
+Operation p9 "9-fun" Value="fun" Time="0.16" Script="NA" Pos="NA";
+DF d1 p9
+DF d4 p9
+DF d5 p9
+CF p8 p9
+Data d6 "6-fun(x,y) return" Value="16";
+Operation p10 "10-return(a + b)" Value="return(a + b)" Time="0.19" Script="0" Pos="NA,NA,NA,NA";
+CF p9 p10
+DF p10 d6
+DF d4 p10
+DF d5 p10
+Finish p11 "11-fun(x, y)" Value="fun(x, y)" Time="0.2" Script="NA" Pos="NA";
+CF p10 p11
+Finish p12 "12-z <- fun(x, y)" Value="z <- fun(x, y)" Time="0.2" Script="0" Pos="9,1,9,13";
+CF p11 p12
+DF d6 p12
+Data d7 "7-z" Value="16";
+DF p12 d7
+Start p13 "13-source1.r" Value="source1.r" Time="0.22" Script="NA" Pos="NA";
+CF p12 p13
+Operation p14 "14-w <- z + x" Value="w <- z + x" Time="0.22" Script="1" Pos="3,1,3,10";
+CF p13 p14
+DF d7 p14
+DF d2 p14
+Data d8 "8-w" Value="22";
+DF p14 d8
+Start p15 "15-w <- fun(w, y)" Value="w <- fun(w, y)" Time="0.23" Script="1" Pos="4,1,4,13";
+CF p14 p15
+DF d1 p15
+DF d8 p15
+DF d3 p15
+Start p16 "16-fun(w, y)" Value="fun(w, y)" Time="0.26" Script="NA" Pos="NA";
+CF p15 p16
+Binding p17 "17-a  <-  w" Time="0.26" Script="NA" Pos="NA";
+CF p16 p17
+DF d8 p17
+Data d9 "9-a" Value="22";
+DF p17 d9
+Binding p18 "18-b  <-  y" Time="0.26" Script="NA" Pos="NA";
+CF p17 p18
+DF d3 p18
+Data d10 "10-b" Value="10";
+DF p18 d10
+Operation p19 "19-fun" Value="fun" Time="0.28" Script="NA" Pos="NA";
+DF d1 p19
+DF d9 p19
+DF d10 p19
+CF p18 p19
+Data d11 "11-fun(w,y) return" Value="32";
+Operation p20 "20-return(a + b)" Value="return(a + b)" Time="0.3" Script="0" Pos="NA,NA,NA,NA";
+CF p19 p20
+DF p20 d11
+DF d9 p20
+DF d10 p20
+Finish p21 "21-fun(w, y)" Value="fun(w, y)" Time="0.33" Script="NA" Pos="NA";
+CF p20 p21
+Finish p22 "22-w <- fun(w, y)" Value="w <- fun(w, y)" Time="0.33" Script="1" Pos="4,1,4,13";
+CF p21 p22
+DF d11 p22
+Data d12 "12-w" Value="32";
+DF p22 d12
+Operation p23 "23-z <- 0" Value="z <- 0" Time="0.33" Script="1" Pos="7,1,7,6";
+CF p22 p23
+Data d13 "13-z" Value="0";
+DF p23 d13
+Finish p24 "24-source1.r" Value="source1.r" Time="0.33" Script="NA" Pos="NA";
+CF p23 p24
+Operation p25 "25-source(\"source1.r\")" Value="source(\"source1.r\")" Time="0.33" Script="0" Pos="12,1,12,19";
+CF p24 p25
+File d14 "14-source1.r" Value="data/14-source1.r" Time="2016-12-19T13.00.24EST" Location="[DIR]/source1.r";
+DF d14 p25
+Start p26 "26-v <- fun(w, z)" Value="v <- fun(w, z)" Time="0.34" Script="0" Pos="15,1,15,13";
+CF p25 p26
+DF d1 p26
+DF d12 p26
+DF d13 p26
+Start p27 "27-fun(w, z)" Value="fun(w, z)" Time="0.36" Script="NA" Pos="NA";
+CF p26 p27
+Binding p28 "28-a  <-  w" Time="0.37" Script="NA" Pos="NA";
+CF p27 p28
+DF d12 p28
+Data d15 "15-a" Value="32";
+DF p28 d15
+Binding p29 "29-b  <-  z" Time="0.37" Script="NA" Pos="NA";
+CF p28 p29
+DF d13 p29
+Data d16 "16-b" Value="0";
+DF p29 d16
+Operation p30 "30-fun" Value="fun" Time="0.39" Script="NA" Pos="NA";
+DF d1 p30
+DF d15 p30
+DF d16 p30
+CF p29 p30
+Data d17 "17-fun(w,z) return" Value="32";
+Operation p31 "31-return(a + b)" Value="return(a + b)" Time="0.41" Script="0" Pos="NA,NA,NA,NA";
+CF p30 p31
+DF p31 d17
+DF d15 p31
+DF d16 p31
+Finish p32 "32-fun(w, z)" Value="fun(w, z)" Time="0.42" Script="NA" Pos="NA";
+CF p31 p32
+Finish p33 "33-v <- fun(w, z)" Value="v <- fun(w, z)" Time="0.42" Script="0" Pos="15,1,15,13";
+CF p32 p33
+DF d17 p33
+Data d18 "18-v" Value="32";
+DF p33 d18
+Start p34 "34-source2.r" Value="source2.r" Time="0.45" Script="NA" Pos="NA";
+CF p33 p34
+Operation p35 "35-a <- 10" Value="a <- 10" Time="0.45" Script="2" Pos="8,1,8,7";
+CF p34 p35
+Data d19 "19-a" Value="10";
+DF p35 d19
+Operation p36 "36-c <- 100" Value="c <- 100" Time="0.45" Script="2" Pos="9,1,9,8";
+CF p35 p36
+Data d20 "20-c" Value="100";
+DF p36 d20
+Operation p37 "37-b <- a + c" Value="b <- a + c" Time="0.47" Script="2" Pos="12,1,12,10";
+CF p36 p37
+DF d19 p37
+DF d20 p37
+Data d21 "21-b" Value="110";
+DF p37 d21
+Operation p38 "38-a <- 20" Value="a <- 20" Time="0.48" Script="2" Pos="13,1,13,7";
+CF p37 p38
+Data d22 "22-a" Value="20";
+DF p38 d22
+Finish p39 "39-source2.r" Value="source2.r" Time="0.48" Script="NA" Pos="NA";
+CF p38 p39
+Operation p40 "40-source(\"source2.r\")" Value="source(\"source2.r\")" Time="0.48" Script="0" Pos="18,1,18,19";
+CF p39 p40
+File d23 "23-source2.r" Value="data/23-source2.r" Time="2016-12-19T13.00.24EST" Location="[DIR]/source2.r";
+DF d23 p40
+Start p41 "41-source3.r" Value="source3.r" Time="0.56" Script="NA" Pos="NA";
+CF p40 p41
+Operation p42 "42-f <- function(x) {    g(x)    h(x)    return(1)}" Value="f <- function(x) {    g(x)    h(x)    return(1)}" Time="0.56" Script="3" Pos="1,1,5,1";
+CF p41 p42
+Data d24 "24-f" Value="#ddg.function";
+DF p42 d24
+Operation p43 "43-g <- function(x) {    ddg.function()    return(ddg.return.va" Value="g <- function(x) {    ddg.function()    return(ddg.return.va" Time="0.58" Script="3" Pos="7,1,10,1";
+CF p42 p43
+Data d25 "25-g" Value="#ddg.function";
+DF p43 d25
+Operation p44 "44-h <- function(x) {    ddg.function()    return(ddg.return.va" Value="h <- function(x) {    ddg.function()    return(ddg.return.va" Time="0.58" Script="3" Pos="12,1,15,1";
+CF p43 p44
+Data d26 "26-h" Value="#ddg.function";
+DF p44 d26
+Operation p45 "45-someVector <- function() {    return(c(1, 3, 5))}" Value="someVector <- function() {    return(c(1, 3, 5))}" Time="0.58" Script="3" Pos="17,1,19,1";
+CF p44 p45
+Data d27 "27-someVector" Value="#ddg.function";
+DF p45 d27
+Operation p46 "46-x <- 10" Value="x <- 10" Time="0.58" Script="3" Pos="23,1,23,7";
+CF p45 p46
+Data d28 "28-x" Value="10";
+DF p46 d28
+Start p47 "47-f(x)" Value="f(x)" Time="0.59" Script="NA" Pos="NA";
+CF p46 p47
+Binding p48 "48-x  <-  x" Time="0.59" Script="NA" Pos="NA";
+CF p47 p48
+DF d28 p48
+Data d29 "29-x" Value="10";
+DF p48 d29
+Operation p49 "49-f" Value="f" Time="0.59" Script="NA" Pos="NA";
+DF d24 p49
+DF d29 p49
+CF p48 p49
+Start p50 "50-g(x)" Value="g(x)" Time="0.61" Script="NA" Pos="NA";
+CF p49 p50
+Binding p51 "51-x  <-  x" Time="0.61" Script="NA" Pos="NA";
+CF p50 p51
+DF d29 p51
+Data d30 "30-x" Value="10";
+DF p51 d30
+Operation p52 "52-g" Value="g" Time="0.62" Script="NA" Pos="NA";
+DF d25 p52
+DF d30 p52
+CF p51 p52
+Data d31 "31-g(x) return" Value="1";
+Operation p53 "53-return(1)" Value="return(1)" Time="0.64" Script="-1" Pos="-1,-1,-1,-1";
+CF p52 p53
+DF p53 d31
+Finish p54 "54-g(x)" Value="g(x)" Time="0.64" Script="NA" Pos="NA";
+CF p53 p54
+Operation p55 "55-g(x)" Value="g(x)" Time="0.64" Script="3" Pos="2,3,2,6";
+CF p54 p55
+DF d25 p55
+DF d29 p55
+DF d31 p55
+Start p56 "56-h(x)" Value="h(x)" Time="0.65" Script="NA" Pos="NA";
+CF p55 p56
+Binding p57 "57-x  <-  x" Time="0.67" Script="NA" Pos="NA";
+CF p56 p57
+DF d29 p57
+Data d32 "32-x" Value="10";
+DF p57 d32
+Operation p58 "58-h" Value="h" Time="0.67" Script="NA" Pos="NA";
+DF d26 p58
+DF d32 p58
+CF p57 p58
+Data d33 "33-h(x) return" Value="1";
+Operation p59 "59-return(1)" Value="return(1)" Time="0.69" Script="-1" Pos="-1,-1,-1,-1";
+CF p58 p59
+DF p59 d33
+Finish p60 "60-h(x)" Value="h(x)" Time="0.69" Script="NA" Pos="NA";
+CF p59 p60
+Operation p61 "61-h(x)" Value="h(x)" Time="0.69" Script="3" Pos="3,3,3,6";
+CF p60 p61
+DF d26 p61
+DF d29 p61
+DF d33 p61
+Data d34 "34-f(x) return" Value="1";
+Operation p62 "62-return(1)" Value="return(1)" Time="0.74" Script="3" Pos="4,3,4,11";
+CF p61 p62
+DF p62 d34
+Finish p63 "63-f(x)" Value="f(x)" Time="0.74" Script="NA" Pos="NA";
+CF p62 p63
+Start p64 "64-f(x)" Value="f(x)" Time="0.74" Script="NA" Pos="NA";
+CF p63 p64
+Binding p65 "65-x  <-  x" Time="0.74" Script="NA" Pos="NA";
+CF p64 p65
+DF d28 p65
+Data d35 "35-x" Value="10";
+DF p65 d35
+Operation p66 "66-f" Value="f" Time="0.75" Script="NA" Pos="NA";
+DF d24 p66
+DF d35 p66
+CF p65 p66
+Start p67 "67-g(x)" Value="g(x)" Time="0.75" Script="NA" Pos="NA";
+CF p66 p67
+Binding p68 "68-x  <-  x" Time="0.75" Script="NA" Pos="NA";
+CF p67 p68
+DF d35 p68
+Data d36 "36-x" Value="10";
+DF p68 d36
+Operation p69 "69-g" Value="g" Time="0.77" Script="NA" Pos="NA";
+DF d25 p69
+DF d36 p69
+CF p68 p69
+Data d37 "37-g(x) return" Value="1";
+Operation p70 "70-return(1)" Value="return(1)" Time="0.78" Script="-1" Pos="-1,-1,-1,-1";
+CF p69 p70
+DF p70 d37
+Finish p71 "71-g(x)" Value="g(x)" Time="0.78" Script="NA" Pos="NA";
+CF p70 p71
+Operation p72 "72-g(x)" Value="g(x)" Time="0.78" Script="3" Pos="2,3,2,6";
+CF p71 p72
+DF d25 p72
+DF d35 p72
+DF d37 p72
+Start p73 "73-h(x)" Value="h(x)" Time="0.8" Script="NA" Pos="NA";
+CF p72 p73
+Binding p74 "74-x  <-  x" Time="0.8" Script="NA" Pos="NA";
+CF p73 p74
+DF d35 p74
+Data d38 "38-x" Value="10";
+DF p74 d38
+Operation p75 "75-h" Value="h" Time="0.82" Script="NA" Pos="NA";
+DF d26 p75
+DF d38 p75
+CF p74 p75
+Data d39 "39-h(x) return" Value="1";
+Operation p76 "76-return(1)" Value="return(1)" Time="0.82" Script="-1" Pos="-1,-1,-1,-1";
+CF p75 p76
+DF p76 d39
+Finish p77 "77-h(x)" Value="h(x)" Time="0.82" Script="NA" Pos="NA";
+CF p76 p77
+Operation p78 "78-h(x)" Value="h(x)" Time="0.82" Script="3" Pos="3,3,3,6";
+CF p77 p78
+DF d26 p78
+DF d35 p78
+DF d39 p78
+Data d40 "40-f(x) return" Value="1";
+Operation p79 "79-return(1)" Value="return(1)" Time="0.83" Script="3" Pos="4,3,4,11";
+CF p78 p79
+DF p79 d40
+Finish p80 "80-f(x)" Value="f(x)" Time="0.83" Script="NA" Pos="NA";
+CF p79 p80
+Finish p81 "81-source3.r" Value="source3.r" Time="0.83" Script="NA" Pos="NA";
+CF p80 p81
+Operation p82 "82-source(\"source3.r\")" Value="source(\"source3.r\")" Time="0.83" Script="0" Pos="21,1,21,19";
+CF p81 p82
+File d41 "41-source3.r" Value="data/41-source3.r" Time="2016-12-19T13.00.24EST" Location="[DIR]/source3.r";
+DF d41 p82
+Start p83 "83-source4.r" Value="source4.r" Time="0.88" Script="NA" Pos="NA";
+CF p82 p83
+Operation p84 "84-x <- 5" Value="x <- 5" Time="0.88" Script="4" Pos="3,1,3,6";
+CF p83 p84
+Data d42 "42-x" Value="5";
+DF p84 d42
+Operation p85 "85-f <- function(w) {    ddg.function()    ddg.return.value(w +" Value="f <- function(w) {    ddg.function()    ddg.return.value(w +" Time="0.89" Script="4" Pos="4,1,7,1";
+CF p84 p85
+Data d43 "43-f" Value="#ddg.function";
+DF p85 d43
+Operation p86 "86-y <- 4" Value="y <- 4" Time="0.89" Script="4" Pos="10,1,10,6";
+CF p85 p86
+Data d44 "44-y" Value="4";
+DF p86 d44
+Start p87 "87-z <- f(x) + y" Value="z <- f(x) + y" Time="0.89" Script="4" Pos="11,1,11,13";
+CF p86 p87
+DF d43 p87
+DF d42 p87
+DF d44 p87
+Start p88 "88-f(x)" Value="f(x)" Time="0.91" Script="NA" Pos="NA";
+CF p87 p88
+Binding p89 "89-w  <-  x" Time="0.91" Script="NA" Pos="NA";
+CF p88 p89
+DF d42 p89
+Data d45 "45-w" Value="5";
+DF p89 d45
+Operation p90 "90-f" Value="f" Time="0.91" Script="NA" Pos="NA";
+DF d43 p90
+DF d45 p90
+CF p89 p90
+Data d46 "46-f(x) return" Value="6";
+Operation p91 "91-return(w + 1)" Value="return(w + 1)" Time="0.92" Script="-1" Pos="-1,-1,-1,-1";
+CF p90 p91
+DF p91 d46
+DF d45 p91
+Finish p92 "92-f(x)" Value="f(x)" Time="0.92" Script="NA" Pos="NA";
+CF p91 p92
+Finish p93 "93-z <- f(x) + y" Value="z <- f(x) + y" Time="0.92" Script="4" Pos="11,1,11,13";
+CF p92 p93
+DF d34 p93
+DF d40 p93
+DF d46 p93
+Data d47 "47-z" Value="10";
+DF p93 d47
+Start p94 "94-w <- f(x)" Value="w <- f(x)" Time="0.94" Script="4" Pos="14,1,14,9";
+CF p93 p94
+DF d43 p94
+DF d42 p94
+Start p95 "95-f(x)" Value="f(x)" Time="0.94" Script="NA" Pos="NA";
+CF p94 p95
+Binding p96 "96-w  <-  x" Time="0.94" Script="NA" Pos="NA";
+CF p95 p96
+DF d42 p96
+Data d48 "48-w" Value="5";
+DF p96 d48
+Operation p97 "97-f" Value="f" Time="0.96" Script="NA" Pos="NA";
+DF d43 p97
+DF d48 p97
+CF p96 p97
+Data d49 "49-f(x) return" Value="6";
+Operation p98 "98-return(w + 1)" Value="return(w + 1)" Time="0.96" Script="-1" Pos="-1,-1,-1,-1";
+CF p97 p98
+DF p98 d49
+DF d48 p98
+Finish p99 "99-f(x)" Value="f(x)" Time="0.97" Script="NA" Pos="NA";
+CF p98 p99
+Finish p100 "100-w <- f(x)" Value="w <- f(x)" Time="0.97" Script="4" Pos="14,1,14,9";
+CF p99 p100
+DF d34 p100
+DF d40 p100
+DF d49 p100
+Data d50 "50-w" Value="6";
+DF p100 d50
+Finish p101 "101-source4.r" Value="source4.r" Time="0.97" Script="NA" Pos="NA";
+CF p100 p101
+Operation p102 "102-source(\"source4.r\", local = T)" Value="source(\"source4.r\", local = T)" Time="0.97" Script="0" Pos="24,1,24,28";
+CF p101 p102
+File d51 "51-source4.r" Value="data/51-source4.r" Time="2016-12-19T13.00.24EST" Location="[DIR]/source4.r";
+DF d51 p102
+Start p103 "103-Stuff" Value="Stuff" Time="0.99" Script="NA" Pos="NA";
+CF p102 p103
+Operation p104 "104-m <- 10" Value="m <- 10" Time="0.99" Script="0" Pos="32,1,32,7";
+CF p103 p104
+Data d52 "52-m" Value="10";
+DF p104 d52
+Start p105 "105-f(m)" Value="f(m)" Time="0.99" Script="NA" Pos="NA";
+CF p104 p105
+Binding p106 "106-w  <-  m" Time="0.99" Script="NA" Pos="NA";
+CF p105 p106
+DF d52 p106
+Data d53 "53-w" Value="10";
+DF p106 d53
+Operation p107 "107-f" Value="f" Time="1" Script="NA" Pos="NA";
+DF d43 p107
+DF d53 p107
+CF p106 p107
+Data d54 "54-f(m) return" Value="11";
+Operation p108 "108-return(w + 1)" Value="return(w + 1)" Time="1.02" Script="-1" Pos="-1,-1,-1,-1";
+CF p107 p108
+DF p108 d54
+DF d53 p108
+Finish p109 "109-f(m)" Value="f(m)" Time="1.03" Script="NA" Pos="NA";
+CF p108 p109
+Start p110 "110-f(x)" Value="f(x)" Time="1.03" Script="NA" Pos="NA";
+CF p109 p110
+Binding p111 "111-w  <-  x" Time="1.06" Script="NA" Pos="NA";
+CF p110 p111
+DF d42 p111
+Data d55 "55-w" Value="5";
+DF p111 d55
+Operation p112 "112-f" Value="f" Time="1.08" Script="NA" Pos="NA";
+DF d43 p112
+DF d55 p112
+CF p111 p112
+Data d56 "56-f(x) return" Value="6";
+Operation p113 "113-return(w + 1)" Value="return(w + 1)" Time="1.1" Script="-1" Pos="-1,-1,-1,-1";
+CF p112 p113
+DF p113 d56
+DF d55 p113
+Finish p114 "114-f(x)" Value="f(x)" Time="1.1" Script="NA" Pos="NA";
+CF p113 p114
+Finish p115 "115-Stuff" Value="Stuff" Time="1.1" Script="NA" Pos="NA";
+CF p114 p115
+Finish p116 "116-SourceFuncTest.R" Value="SourceFuncTest.R" Time="1.1" Script="NA" Pos="NA";
+CF p115 p116
+

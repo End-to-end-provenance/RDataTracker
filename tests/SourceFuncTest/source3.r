@@ -5,11 +5,13 @@ f <- function(x) {
 }
 
 g <- function(x) {
-  return(1)
+  ddg.function()
+  return(ddg.return.value(1))
 }
 
 h <- function(x) {
-  return(1)
+  ddg.function()
+  return(ddg.return.value(1))
 }
 
 someVector <- function() {
