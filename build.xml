@@ -7,7 +7,7 @@
 	<loadproperties srcFile="DESCRIPTION" />
 	<property name="tarfile" value="RDataTracker_${Version}.tar.gz" />
 
-    <target name="build-directory">
+    <target name="build-directory" depends="clean">
     	<mkdir dir="${builddir}"/>
     </target>
 

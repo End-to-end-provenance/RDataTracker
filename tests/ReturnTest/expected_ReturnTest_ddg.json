@@ -18,7 +18,7 @@
 		"rdt:p1": {
 			"rdt:name": "ReturnTest.R",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 0.606,
+			"rdt:elapsedTime": 0.53,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -98,7 +98,7 @@
 		"rdt:p9": {
 			"rdt:name": "f9 <- function(p_a) {\tretValue <- f10(p_a)\treturn(retV",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.64,
+			"rdt:elapsedTime": 0.56,
 			"rdt:scriptNum": 0,
 			"rdt:startLine": 97,
 			"rdt:startCol": 1,
@@ -188,7 +188,7 @@
 		"rdt:p18": {
 			"rdt:name": "f2(a)",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 0.67,
+			"rdt:elapsedTime": 0.6,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -198,7 +198,7 @@
 		"rdt:p19": {
 			"rdt:name": "i <- f2(a)",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 0.67,
+			"rdt:elapsedTime": 0.6,
 			"rdt:scriptNum": 0,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -1738,7 +1738,7 @@
 		"rdt:p173": {
 			"rdt:name": "if (n == 0) {\treturn(0)} else {\tretValue <- f7(n - 1) ",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 1.23,
+			"rdt:elapsedTime": 1,
 			"rdt:scriptNum": 0,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -4451,12 +4451,12 @@
 			"rdt:language": "R",
 			"rdt:rVersion": "R version 3.5.0 (2018-04-23)",
 			"rdt:script": "[DIR]/ReturnTest.R",
-			"rdt:scriptTimeStamp": "2017-12-15T16.01.06EST",
+			"rdt:scriptTimeStamp": "2018-05-22T08.44.13EDT",
 			"rdt:sourcedScripts": "",
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:workingDirectory": "[DIR]",
 			"rdt:ddgDirectory": "[DIR]/prov_ReturnTest",
-			"rdt:ddgTimeStamp": "2018-07-11T15.53.20EDT",
+			"rdt:ddgTimeStamp": "2018-07-13T08.43.22EDT",
 			"rdt:rdatatrackerVersion": "2.27.0",
 			"rdt:hashAlgorithm": "md5"
 		},
@@ -4495,14 +4495,6 @@
 			}
 		},
 		"rdt:l5": {
-			"name": "jsonlite",
-			"version": "1.5",
-			"prov:type": {
-				"$": "prov:Collection",
-				"type": "xsd:QName"
-			}
-		},
-		"rdt:l6": {
 			"name": "methods",
 			"version": "3.5.0",
 			"prov:type": {
@@ -4510,7 +4502,7 @@
 				"type": "xsd:QName"
 			}
 		},
-		"rdt:l7": {
+		"rdt:l6": {
 			"name": "RDataTracker",
 			"version": "2.27.0",
 			"prov:type": {
@@ -4518,7 +4510,7 @@
 				"type": "xsd:QName"
 			}
 		},
-		"rdt:l8": {
+		"rdt:l7": {
 			"name": "stats",
 			"version": "3.5.0",
 			"prov:type": {
@@ -4526,7 +4518,7 @@
 				"type": "xsd:QName"
 			}
 		},
-		"rdt:l9": {
+		"rdt:l8": {
 			"name": "utils",
 			"version": "3.5.0",
 			"prov:type": {
