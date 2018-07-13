@@ -193,22 +193,13 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
 
     # Store maximum number of loops to annotate.
     if (max.loops < 0) max.loops <- 10^10
-    .ddg.set("ddg.max.loops", max.loops)
 
     # Store maximum snapshot size.
     .ddg.set("ddg.max.snapshot.size", max.snapshot.size)
   }
   
-  # If loops are not annotated, do not annotate functions called from inside a loop.
-  if (max.loops == 0) ddg.loop.annotate.off()
+  .ddg.init.loops (first.loop, max.loops)
   
-  # Initialize the counter that keeps track of nested levels
-  # of ifs and loops
-  ddg.set.inside.loop()
-
-  # Set number of first loop.
-  .ddg.set("ddg.first.loop", first.loop)
-
   .ddg.set(".ddg.proc.start.time", .ddg.elapsed.time())
 
   # Store time when script begins execution.
@@ -269,8 +260,7 @@ ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE) {
   .ddg.init.statements ()
 
   # Clear loop information from ddg environment.
-  .ddg.set("ddg.loop.num", 0)
-  .ddg.set("ddg.loops", list())
+  .ddg.clear.loops ()
 
   # I don't think save is ever called with quit = TRUE, but we might want
   # to distinguish between the final call to ddg.save and a call the user

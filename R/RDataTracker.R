@@ -137,14 +137,6 @@ library(curl)
   else return (0)
 }
 
-.ddg.loop.num <- function() {
-  return(.ddg.get("ddg.loop.num"))
-}
-
-.ddg.loops <- function() {
-  return(.ddg.get("ddg.loops"))
-}
-
 # value should be TRUE or FALSE
 # Keeps track of whether the last loop has all iterations
 # recorded or not.
@@ -155,7 +147,6 @@ library(curl)
 .ddg.were.details.omitted <- function () {
   .ddg.get ("details.omitted")
 }
-
 
 # Functions that allow us to save warnings when they occur
 # so that we can create the warning node after the node
@@ -215,10 +206,6 @@ library(curl)
   return(assign(as.character(substitute(x)), x[-length(x)], parent.frame()))
 }
 
-.ddg.add.loop <- function() {
-  ddg.loops <- c(.ddg.loops(), 0)
-  .ddg.set("ddg.loops", ddg.loops)
-}
 
 #-------------------BASIC FUNCTIONS-----------------------#
 
@@ -306,15 +293,6 @@ library(curl)
   .ddg.set("ddg.save.debug", FALSE)
   
   .ddg.init.statements ()
-
-  # Control loop number
-  .ddg.set("ddg.loop.num", 0)
-
-  # Control loop list
-  .ddg.set("ddg.loops", list())
-
-  # Loop annotation
-  .ddg.set("ddg.loop.annotate", TRUE)
 
   # Set max.snapshot.size for console mode.
   if (!.ddg.is.set("ddg.max.snapshot.size")) {
@@ -2945,94 +2923,25 @@ ddg.max.snapshot.size <- function() {
   return(.ddg.get("ddg.max.snapshot.size"))
 }
 
-# ddg.loop.annotate returns the value of the parameter ddg.loop.annotate.
-.ddg.loop.annotate <- function() {
-  return(.ddg.get("ddg.loop.annotate"))
-}
-
-# ddg.loop.annotate.on turns on loop annotation.
-ddg.loop.annotate.on <- function() {
-  .ddg.set("ddg.loop.annotate", TRUE)
-}
-
-# ddg.loop.annotate.off turns off loop annotation.
-ddg.loop.annotate.off <- function() {
-  .ddg.set("ddg.loop.annotate", FALSE)
-}
-
-.ddg.inside.loop <- function() {
-  return (.ddg.get("ddg.inside.loop"))
-}
-
-ddg.set.inside.loop <- function() {
-  if (!.ddg.is.set("ddg.inside.loop")) {
-    .ddg.set("ddg.inside.loop", 0)    
-  }
-  else {
-    .ddg.set("ddg.inside.loop", .ddg.get("ddg.inside.loop") + 1)    
-  }
-}
-
-ddg.not.inside.loop <- function() {
-  .ddg.set("ddg.inside.loop", .ddg.get("ddg.inside.loop") - 1)    
-}
-
-# ddg.loop.count returns the current count for the specified loop.
-
-ddg.loop.count <- function(loop.num) {
-  ddg.loops <- .ddg.loops()
-  return(ddg.loops[[loop.num]])
-}
-
-# ddg.loop.count.inc increments the current count for the specified loop
-# and returns the incremented value.
-
-ddg.loop.count.inc <- function(loop.num) {
-  ddg.loops <- .ddg.loops()
-  ddg.loops[[loop.num]] <- ddg.loops[[loop.num]] + 1
-  .ddg.set("ddg.loops", ddg.loops)
-  return(ddg.loops[[loop.num]])
-}
-
-# ddg.reset.loop.count sets the current count for the specified loop
-# to zero.
-
-ddg.reset.loop.count <- function(loop.num) {
-  ddg.loops <- .ddg.loops()
-  ddg.loops[loop.num] <- 0
-  .ddg.set("ddg.loops", ddg.loops)
-}
-
-# ddg.for.loop inserts a procedure node and a data node in a for loop,
-# indicating the value currently assigned to the index variable.
-
-ddg.forloop <- function(index.var) {
-  index.name <- as.character(deparse(substitute(index.var)))
-  pnode.name <- paste(index.name, "<-", index.var)
-  dscope <- .ddg.get.scope(index.name)
-
-  .ddg.proc.node("Operation", pnode.name, pnode.name)
-  .ddg.proc2proc()
-
-  .ddg.data.node("Data", index.name, index.var, dscope, from.env=FALSE)
-  .ddg.proc2data(pnode.name, index.name)
-}
-
-# ddg.details.omitted inserts an operational node called "Details Omitted"
-# in cases where not all iterations of a loop are annotated.  This may
-# happen if the number of the first loop to be annotaed (first.loop) is
-# greater than 1 and/or if the total number of loops to be annotated is
-# less than the actual number of iterations.
-#
-# It also sets a variable to remember that the last construct is incomplete
-# so that the right data nodes get created.
-
+#' Inserts an operational node called "Details Omitted"
+#' in cases where not all iterations of a loop are annotated.  This may
+#' happen if the number of the first loop to be annotaed (first.loop) is
+#' greater than 1 and/or if the total number of loops to be annotated is
+#' less than the actual number of iterations.
+#'
+#' It also sets a variable to remember that the last construct is incomplete
+#' so that the right data nodes get created.
+#' 
+#' NOTE:  This might be useful outside of the context of loops, but is
+#' currently only used within loops.
+#' 
+#' @return nothing 
 ddg.details.omitted <- function() {
   pnode.name <- "Details Omitted"
   .ddg.proc.node("Incomplete", pnode.name, pnode.name)
   .ddg.proc2proc()
   .ddg.set.details.omitted(TRUE)
-
+  
   if (.ddg.debug.lib()) {
     print("Adding Details Omitted node")
   }

@@ -1412,9 +1412,8 @@ null.pos <- function() {
     parsed.command <- command@parsed[[1]]
   
     # Add new loop & get loop number.
-    .ddg.add.loop()
-    .ddg.inc("ddg.loop.num")
-    ddg.loop.num <- .ddg.loop.num()
+    ddg.loop.num <- .ddg.add.loop()
+
   
     # Get statements in block.
     if (loop.type == "for") {
