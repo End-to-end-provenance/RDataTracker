@@ -21,12 +21,9 @@ setwd(testDir)
 startTime <- Sys.time()
 invisible(force(startTime))
 
-# turn off usage of fancy quotes
-options(useFancyQuotes=FALSE)
-
 # Run the script
 #ddg.run("[SCRIPT]", "[DIR_DDG]", ignore.ddg.calls = F)
-ddg.run("[SCRIPT]", "[DIR_DDG]", save.hashtable = FALSE)
+ddg.run("[SCRIPT]", "[DIR_DDG]")
 
 # Calculate total time of execution
 endTime <- Sys.time()

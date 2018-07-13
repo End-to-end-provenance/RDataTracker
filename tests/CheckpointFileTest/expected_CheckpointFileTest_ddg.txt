@@ -1,0 +1,19 @@
+Architecture="i386"
+OperatingSystem="windows"
+Language="R"
+LanguageVersion="R version 3.1.1 (2014-07-10)"
+RDataTrackerVersion="1.9"
+Script="[DIR]/CheckpointFileTest.R"
+ProcessFileTimestamp="2015-07-30T18.31.34EDT"
+WorkingDirectory="[DIR]"
+DDGDirectory="[DIR]/ddg"
+DateTime="2015-09-20T12.19.51EDT"
+3
+Start p1 "1-CheckpointFileTest.R" Value="CheckpointFileTest.R" Time="2015-09-20T12.19.51EDT";
+Operation p2 "2-rm(list = ls())" Value="rm(list = ls())" Time="2015-09-20T12.19.51EDT";
+CF p1 p2
+Operation p3 "3-tryCatch" Value="tryCatch" Time="2015-09-20T12.19.51EDT";
+CF p2 p3
+Exception d1 "1-error.msg" Value="\"Error in file(filename, \"r\", encoding = encoding): cannot open the connection \"";
+DF p3 d1
+

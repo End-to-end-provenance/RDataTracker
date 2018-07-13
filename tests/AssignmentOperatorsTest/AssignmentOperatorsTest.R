@@ -3,8 +3,6 @@
 #
 # @author Elizabeth Fong
 # @version December 2016
-#
-# edited December 11 2017: commented out nested function tests
 
 
 # --- THE '=' OPERATOR ------------------------------------------------- #
@@ -26,21 +24,21 @@ stopifnot( ! exists("b") )
 
 
 # nested function environment
-#fn2 <- function()
-#{
-#  d = 3
-#  
-#  fn <- function()
-#  {
-#    d = 4
-#  }
-#  
-#  fn()
-#  stopifnot( d == 3 )
-#}
-#
-#fn2()
-#stopifnot( ! exists("d") )
+fn2 <- function()
+{
+  d = 3
+  
+  fn <- function()
+  {
+    d = 4
+  }
+  
+  fn()
+  stopifnot( d == 3 )
+}
+
+fn2()
+stopifnot( ! exists("d") )
 
 
 # in a new environment
@@ -80,21 +78,21 @@ stopifnot( ! exists("h") )
 
 
 # nested function environment
-#fn4 <- function()
-#{
-#  i <- 9
-#  
-#  fn <- function()
-#  {
-#    i <- 10
-#  }
-#  
-#  fn()
-#  stopifnot( i == 9 )
-#}
+fn4 <- function()
+{
+  i <- 9
+  
+  fn <- function()
+  {
+    i <- 10
+  }
+  
+  fn()
+  stopifnot( i == 9 )
+}
 
-#fn4()
-#stopifnot( ! exists("i") )
+fn4()
+stopifnot( ! exists("i") )
 
 
 # in a new environment
@@ -167,21 +165,21 @@ stopifnot( m == 14 )
 # nested function environment - overriding existing variable
 # assignment statement in nested function is the last statement
 # tests ddg.return.value
-#fn8 <- function()
-#{
-#  o <- 17
-#  
-#  fn <- function()
-#  {
-#    o <<- 18
-#  }
-#  
-#  fn()
-#  stopifnot( o == 18 )
-#}
-#
-#fn8()
-#stopifnot( ! exists("o") )
+fn8 <- function()
+{
+  o <- 17
+  
+  fn <- function()
+  {
+    o <<- 18
+  }
+  
+  fn()
+  stopifnot( o == 18 )
+}
+
+fn8()
+stopifnot( ! exists("o") )
 
 
 # nested function environment - no existing variable
@@ -207,16 +205,16 @@ stopifnot( m == 14 )
 # nested function environment - no existing variable
 # assignment statement in nested function is the last statement
 # tests ddg.return.value
-#fn10 <- function()
-#{
-#  fn <- function()
-#  {
-#    r <<- 20
-#  }
-#  
-#  fn()
-#  stopifnot( r == 20 )
-#}
-#
-#fn10()
-#stopifnot( r == 20 )
+fn10 <- function()
+{
+  fn <- function()
+  {
+    r <<- 20
+  }
+  
+  fn()
+  stopifnot( r == 20 )
+}
+
+fn10()
+stopifnot( r == 20 )

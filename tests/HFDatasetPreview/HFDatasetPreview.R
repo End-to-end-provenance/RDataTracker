@@ -568,12 +568,12 @@ create.datafile.preview <- function(datafile.id) {
   dd <<- get.hf.datafile(datafile.id)  
 
   if (is.null(dd)) {
-   msg <- paste(datafile.id, ": unable to download data file", sep="")
-   warning(msg)
+    msg <- paste(datafile.id, ": unable to download data file", sep="")
+    warning(msg)
   } else {
-   # create PDF file
-     pdf.file <- paste(datafile.id, ".pdf", sep="")
-     pdf(pdf.file)
+    # create PDF file
+    pdf.file <- paste(datafile.id, ".pdf", sep="")
+    pdf(pdf.file)
   
     # create summary stats table
     create.summary.stats.table(dd)
@@ -585,10 +585,10 @@ create.datafile.preview <- function(datafile.id) {
     if (plot.type == "time-series") create.time.series.plot(dd)
     if (plot.type == "scatterplot-matrix") create.scatterplot.matrix(dd)
   
-     dev.off()
-     
-     xstr <- paste("\n*** ", toupper(datafile.id), " completed ***\n", sep="")
-     writeLines(xstr)
+    dev.off()
+    
+    xstr <- paste("\n*** ", toupper(datafile.id), " completed ***\n", sep="")
+    writeLines(xstr)
   }
 }
 
