@@ -19,6 +19,10 @@
   # List of files read and written
   .ddg.set("ddg.infilenodes", character())
   .ddg.set("ddg.outfilenodes", character())
+  
+  # Boolean of whether there are any file nodes
+  .ddg.set("ddg.hasfilenodes", FALSE)
+  
 }
 
 #' Adds files it the infile list to add to the hash table 

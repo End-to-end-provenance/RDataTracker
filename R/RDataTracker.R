@@ -200,9 +200,10 @@ ddg.MAX_HIST_LINES <- 2^14
 
 #-------------------BASIC FUNCTIONS-----------------------#
 
-# .ddg.get.initial.env creates a table of non-ddg objects present in the
-# R environment before the script is executed.
-
+#' .ddg.get.initial.env creates a table of non-ddg objects present in the
+#' R environment before the script is executed.  This is only used for 
+#' debugging.
+#' 
 .ddg.get.initial.env <- function() {
   e <- globalenv()
   e.ls <- ls(e, all.names=TRUE)
@@ -220,11 +221,13 @@ ddg.MAX_HIST_LINES <- 2^14
 }
 
 
-# .ddg.init.tables creates data frames to store the initial environment,
-# procedure nodes, data nodes, edges, function return values, and
-# checkpoints. It also initializes selected constants and variables.
-# Tables are saved as tab-delimited files in ddg.save.
-
+#' .ddg.init.tables creates data frames to store the initial environment,
+#' procedure nodes, data nodes, edges, and function return values. 
+#' It also initializes selected constants and variables.
+#' Tables are used throughout provenance collection and
+#' optionally saved as tab-delimited files in ddg.save.
+#' 
+#' @return nothing
 .ddg.init.tables <- function() {
   size <- 100
 
@@ -288,16 +291,13 @@ ddg.MAX_HIST_LINES <- 2^14
   }
   
   .ddg.init.hashtable ()
-
-  # Boolean of whether there are any file nodes
-  .ddg.set("ddg.hasfilenodes", FALSE)
 }
 
-# .ddg.set.history provides a wrapper to change the number of
-# history lines during execution of an R script.
-
-# lines - number of lines in history file.
-
+#' .ddg.set.history provides a wrapper to change the number of
+#' history lines during execution of an R script.
+#' 
+#' @param lines number of lines in history file.
+#' @return nothing
 .ddg.set.history <- function(lines=16384){
   Sys.setenv("R_HISTSIZE" = lines)
 }

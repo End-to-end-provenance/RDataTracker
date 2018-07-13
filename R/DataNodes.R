@@ -99,23 +99,6 @@
   return (ddg.data.nodes [ddg.data.nodes$ddg.num > 0, ])
 }
 
-#' Calculates the hash value for the file
-#' @param dname the name of the file 
-#' @return the hash value based on the hash algorithm specified when ddg.run or ddg.init was called.
-#'   Returns "" if the digest cannot be computed, for example, if the file does not exist.
-.ddg.calculate.hash <- function(dname) {
-  .ddg.set("ddg.hasfilenodes", TRUE)
-  # This function will cause certain tests to fail if run with pdf files or
-  # other non-text files with internal timestamps. This could also cause these files
-  # to sync incorrectly in the workflow, but given that reading in a pdf file is unlikely,
-  # this should not be an overly large issue.
-  dhash <- digest(dname, algo=.ddg.get(".ddg.hash.algorithm"))
-  if (is.null(dhash)) {
-    dhash <- ""
-  }
-  return (dhash)
-}
-
 #' Sets the hash and rw fields for a data node 
 #' @param dnum the id of the node to set
 #' @param hash the hash value to use
