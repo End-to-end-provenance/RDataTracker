@@ -137,19 +137,6 @@ library(curl)
   else return (0)
 }
 
-.ddg.statement.num <- function() {
-  return(.ddg.get("ddg.statement.num"))
-}
-
-.ddg.statements <- function() {
-  return(.ddg.get("ddg.statements"))
-}
-
-.ddg.statement <- function(i) {
-  ddg.statements <- .ddg.statements()
-  return(ddg.statements[[i]])
-}
-
 .ddg.loop.num <- function() {
   return(.ddg.get("ddg.loop.num"))
 }
@@ -226,11 +213,6 @@ library(curl)
 
 .ddg.pop <- function(x) {
   return(assign(as.character(substitute(x)), x[-length(x)], parent.frame()))
-}
-
-.ddg.add.ddgstatement <- function(parsed.stmt) {
-  ddg.statements <- c(.ddg.statements(), parsed.stmt)
-  .ddg.set("ddg.statements", ddg.statements)
 }
 
 .ddg.add.loop <- function() {
@@ -322,12 +304,8 @@ library(curl)
 
   # Save debug files on debug directory
   .ddg.set("ddg.save.debug", FALSE)
-
-  # DDGStatement number
-  .ddg.set("ddg.statement.num", 0)
-
-  # DDGStatements list
-  .ddg.set("ddg.statements", list())
+  
+  .ddg.init.statements ()
 
   # Control loop number
   .ddg.set("ddg.loop.num", 0)
