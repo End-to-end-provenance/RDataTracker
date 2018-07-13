@@ -12,6 +12,8 @@ export(ddg.set.detail, ddg.get.detail, ddg.clear.detail)
 export(ddg.set.inside.loop, ddg.not.inside.loop)
 export(ddg.json.write, ddg.json)
 
+importFrom(tools, file_path_sans_ext)
+importFrom(tools, file_ext)
 importFrom(gtools, defmacro)
 importFrom(XML, saveXML)
 importFrom(knitr, purl)
@@ -23,6 +25,7 @@ importFrom(digest, digest)
 importFrom(jsonlite, read_json)
 importFrom(jsonlite, write_json)
 importFrom(jsonlite, toJSON)
+importFrom(jsonlite, prettify)
 importFrom(curl, curl_download)
 
 # CRAN check gives errors if these are not included.
