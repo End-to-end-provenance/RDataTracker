@@ -7,7 +7,7 @@
 	<loadproperties srcFile="DESCRIPTION" />
 	<property name="tarfile" value="RDataTracker_${Version}.tar.gz" />
 
-    <target name="build-directory">
+    <target name="build-directory" depends="clean">
     	<mkdir dir="${builddir}"/>
     </target>
 
@@ -50,7 +50,7 @@
 	   	</exec>
     </target>
 
-    <target name="install" depends="check">
+    <target name="install" depends="check, prop">
     	<exec dir="${builddir}/.." executable="R" >
   			<arg line="CMD INSTALL ${tarfile}"/>
 		</exec>
@@ -73,5 +73,13 @@
     <target name="clean">
         <delete dir="${builddir}" verbose="true"/>
     </target>
+	
+	<target name="prop">
+		<echoproperties>
+		  <propertyset>
+		    <propertyref prefix="ant."/>
+		  </propertyset>
+		</echoproperties>
+	</target>
 
 </project>

@@ -185,12 +185,11 @@
 #' @param pname the name for the node
 #' @param pvalue ???
 #' @param ptime elapsed time
-#' @param pfunctions functions called in the procedure 
 #' @param snum the number the script is in (main script = 0)
 #' @param pos the starting and ending line and column location of the statement
 #' 
 #' @return nothing
-.ddg.record.proc <- function(ptype, pname, pvalue, ptime, pfunctions=NULL, snum=NA, pos=NA) {
+.ddg.record.proc <- function(ptype, pname, pvalue, ptime, snum=NA, pos=NA) {
   if (!.ddg.is.proc.type (ptype)) {
     print (paste (".ddg.record.proc: bad value for ptype - ", ptype))
   }
@@ -228,13 +227,6 @@
   # Save the table
   .ddg.set("ddg.proc.nodes", ddg.proc.nodes)
   
-  # append to function call information to function nodes
-  if( ! (is.null(pfunctions) || is.na(pfunctions)) )
-  {
-    pfunctions <- cbind( "ddg.pnum" = rep(ddg.pnum, nrow(pfunctions)) , pfunctions )
-    .ddg.add.to.function.table (pfunctions)
-  }
-  
   if (.ddg.debug.lib()) {
     print (paste("Adding procedure node", ddg.pnum, "named", pname))
   }
@@ -245,10 +237,10 @@
 #' @param ptype type of procedure node.
 #' @param pname name of procedure node.
 #' @param pvalue (optional) value of procedure node.
-#' @param pfunctions functions called in the procedure
+#' @param functions.called vector of names of functions called in this procedure node
 #' @param console (optional) if TRUE, console mode is enabled.
 #' @param cmd the DDGStatement corresponding to this procedure node
-.ddg.proc.node <- function(ptype, pname, pvalue="", pfunctions=NULL, console=FALSE,
+.ddg.proc.node <- function(ptype, pname, pvalue="", functions.called=NULL, console=FALSE,
     cmd = NULL) {
 
   if (!.ddg.is.proc.type (ptype)) {
@@ -305,8 +297,13 @@
   ptime <- .ddg.elapsed.time()
   
   # Record in procedure node table
-  .ddg.record.proc(ptype, pname, pvalue, ptime, pfunctions, snum, pos)
+  .ddg.record.proc(ptype, pname, pvalue, ptime, snum, pos)
   
+  # append the function call information to function nodes
+  if( !is.null(functions.called) && !is.na(functions.called)) {
+    pfunctions <- .ddg.get.function.info(functions.called)
+    .ddg.add.to.function.table (pfunctions)
+  }
   if (.ddg.debug.lib()) print(paste("proc.node:", ptype, pname))
 }
 
