@@ -226,7 +226,7 @@
 
 		<!-- Delete all local environment information (except sourced scripts & installed packages) -->
 		<replaceregexp flags="g">
-			<regexp pattern='(\t+("rdt:architecture"|"rdt:operatingSystem"|"rdt:language"|"rdt:rVersion"|"rdt:script"|"rdt:scriptTimeStamp"|"rdt:workingDirectory"|"rdt:ddgDirectory"|"rdt:SHA1hash"|"rdt:MD5hash"|"rdt:hash"|"rdt:ddgTimeStamp"|"rdt:rdatatrackerVersion"): (.*)\r?\n(,\r?\n)?)' />
+			<regexp pattern='(\t+("rdt:architecture"|"rdt:operatingSystem"|"rdt:language"|"rdt:langVersion"|"rdt:script"|"rdt:scriptTimeStamp"|"rdt:workingDirectory"|"rdt:ddgDirectory"|"rdt:ddgTimeStamp"): (.*)\r?\n(,\r?\n)?)' />
 			<substitution expression=""/>
 			<fileset dir="${local_dir}">
 				<patternset id="local_files">
