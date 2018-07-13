@@ -119,28 +119,8 @@ ddg.MAX_HIST_LINES <- 2^14
   return (.ddg.get("ddg.annotate.off"))
 }
 
-.ddg.is.sourced <- function() {
-  return (.ddg.get(".ddg.is.sourced"))
-}
-
-.ddg.source.parsed <- function() {
-  return(.ddg.get(".ddg.source.parsed"))
-}
-
 .ddg.parsed.num <- function() {
   return(.ddg.get(".ddg.parsed.num"))
-}
-
-.ddg.sourced.scripts <- function() {
-  return(.ddg.get(".ddg.sourced.scripts"))
-}
-
-.ddg.next.script.num <- function() {
-  return(.ddg.get(".ddg.next.script.num"))
-}
-
-.ddg.script.num.stack <- function() {
-  return(.ddg.get(".ddg.script.num.stack"))
 }
 
 .ddg.enable.source <- function() {
@@ -150,19 +130,6 @@ ddg.MAX_HIST_LINES <- 2^14
 .ddg.start.proc.time <- function() {
   if (.ddg.is.set(".ddg.proc.start.time")) return (.ddg.get(".ddg.proc.start.time"))
   else return (0)
-}
-
-.ddg.statement.num <- function() {
-  return(.ddg.get("ddg.statement.num"))
-}
-
-.ddg.statements <- function() {
-  return(.ddg.get("ddg.statements"))
-}
-
-.ddg.statement <- function(i) {
-  ddg.statements <- .ddg.statements()
-  return(ddg.statements[[i]])
 }
 
 .ddg.loop.num <- function() {
@@ -243,11 +210,6 @@ ddg.MAX_HIST_LINES <- 2^14
   return(assign(as.character(substitute(x)), x[-length(x)], parent.frame()))
 }
 
-.ddg.add.ddgstatement <- function(parsed.stmt) {
-  ddg.statements <- c(.ddg.statements(), parsed.stmt)
-  .ddg.set("ddg.statements", ddg.statements)
-}
-
 .ddg.add.loop <- function() {
   ddg.loops <- c(.ddg.loops(), 0)
   .ddg.set("ddg.loops", ddg.loops)
@@ -289,7 +251,8 @@ ddg.MAX_HIST_LINES <- 2^14
   .ddg.init.data.nodes()
   .ddg.init.edges()
   .ddg.init.function.table()
-
+  .ddg.init.return.values()
+  
   # Used to control debugging output.  If already defined, don't
   # change its value.
   if (!.ddg.is.set("ddg.debug.lib")) .ddg.set("ddg.debug.lib", FALSE)
@@ -298,43 +261,12 @@ ddg.MAX_HIST_LINES <- 2^14
   # its value.
   if (!.ddg.is.set("from.source")) .ddg.set("from.source", FALSE)
 
-  # Set current number of checkpoints.
-  # .ddg.set("ddg.checkpoint.num", 0)
-
-  # Create table for checkpoints.
-  # .ddg.set("ddg.checkpoints",
-  #         data.frame(filename=character(ddg.MAX_CHECKPOINTS),
-  #         checkpoint.name=character(ddg.MAX_CHECKPOINTS),
-  #         stringsAsFactors=FALSE))
-
   # Record last command from the preceding console block.
   .ddg.set(".ddg.last.cmd", NULL)
-
-  # Record value returned by calls to ddg.return.
-  # ddg.call - the string representing the call, like "f(a)".
-  # line - the line where the function is called that is now returning
-  # return.used - remembers if this function return value has been
-  #   linked to the caller.
-  # return.node.id - the id of the data node that holds the return
-  #   value.
-  .ddg.set(".ddg.return.values",
-          data.frame(ddg.call=character(size),
-          line = integer(size),
-          return.used = logical(size),
-          return.node.id = integer(size),
-          stringsAsFactors=FALSE))
-
-  .ddg.set(".ddg.num.returns", 0)
-
+  
   # Record the current command to be opened during console execution
   # (used when executing a script using ddg.source).
   .ddg.set(".ddg.possible.last.cmd", NULL)
-
-  # Keep track of history.
-  .ddg.set(".ddg.history.timestamp", NULL)
-
-  # Keep track of the last device seen (0 implies NULL).
-  .ddg.set("prev.device", 0)
 
   # Store path of current script.
   .ddg.set("ddg.r.script.path", NULL)
@@ -345,6 +277,9 @@ ddg.MAX_HIST_LINES <- 2^14
   # No ddg initialized.
   .ddg.set(".ddg.initialized", FALSE)
 
+  # Keep track of history.
+  .ddg.set(".ddg.history.timestamp", NULL)
+  
   # No history file.
   .ddg.set(".ddg.history.file", NULL)
 
@@ -357,32 +292,15 @@ ddg.MAX_HIST_LINES <- 2^14
   # Functions not to be annotated.
   .ddg.set("ddg.annotate.off", NULL)
 
-  # Script sourced with ddg.source
-  .ddg.set(".ddg.is.sourced", FALSE)
-
-  # Number of first sourced script (main script).
-  .ddg.set(".ddg.next.script.num", 0)
-
   # Number of first parsed command.
   .ddg.set(".ddg.parsed.num", 1)
-
-  # Stack for sourced files
-  .ddg.set(".ddg.script.num.stack", 0)
-
-  # Table of sourced scripts
-  .ddg.set(".ddg.sourced.scripts", NULL)
-
-  # Table of script, line & parsed command numbers
-  .ddg.set(".ddg.source.parsed", NULL)
+  
+  .ddg.init.sourced.scripts ()
 
   # Save debug files on debug directory
   .ddg.set("ddg.save.debug", FALSE)
-
-  # DDGStatement number
-  .ddg.set("ddg.statement.num", 0)
-
-  # DDGStatements list
-  .ddg.set("ddg.statements", list())
+  
+  .ddg.init.statements ()
 
   # Control loop number
   .ddg.set("ddg.loop.num", 0)
@@ -549,30 +467,6 @@ ddg.MAX_HIST_LINES <- 2^14
 
 .ddg.is.function <- function(value){
   return(is.function(value))
-}
-
-# .ddg.dev.change determines whether or not a new graphic device
-# has become active and whether or not we should capture the
-# previous graphic device. It returns the device number we should
-# capture (0 means we shouldn't capture any device).
-
-.ddg.dev.change <- function(){
-  prev.device <- .ddg.get("prev.device")
-  curr.device <- dev.cur()
-  device.list <- dev.list()
-
-  # We've switched devices .
-  if (prev.device != curr.device) {
-    # Update device.
-    .ddg.set("prev.device", curr.device)
-
-    # Previous device still accessible.
-    if (prev.device %in% device.list) return(prev.device)
-  }
-
-  # No switching, or previous is not accessible (NULL or removed).
-  return(0)
-
 }
 
 # Returns a string representation of the type information of the given value.
@@ -840,39 +734,6 @@ ddg.MAX_HIST_LINES <- 2^14
 }
 
 
-# .ddg.auto.graphic.node attempts to figure out if a new graphics
-# device has been created and take a snapshot of a previously active
-# device, setting the snapshot node to be the output of the
-# specified command.
-
-# cmd.abbrev (optional) - name of procedure node.
-# dev.to.capture (optional) - function specifying which device
-#   should be captured, where zero indicates no device and
-#   negative values are ignored.
-
-.ddg.auto.graphic.node <- function(cmd.abbrev=NULL, dev.to.capture=.ddg.dev.change) {
-
-  num.dev.to.capture <- dev.to.capture()
-  if (num.dev.to.capture > 1) {
-    # Make the capture device active (store info on previous
-    # device).
-    prev.device <- dev.cur()
-    dev.set(num.dev.to.capture)
-
-    # Capture it as a jpeg.
-    name <- if (!is.null(cmd.abbrev) && cmd.abbrev != "") paste0("graphic", substr(cmd.abbrev,1,10)) else "graphic"
-    .ddg.snapshot.node(name, fext="jpeg", data=NULL)
-
-    # Make the previous device active again.
-    dev.set(prev.device)
-
-    # We're done, so create the edge.
-    if(is.null(cmd.abbrev)) .ddg.lastproc2data(name)
-    else .ddg.proc2data(cmd.abbrev, name)
-  }
-}
-
-
 # .ddg.create.data.use.edges.for.console.cmd creates a data flow
 # edge from the node for each variable used in cmd.expr to the
 # procedural node labeled cmd, as long as the value would either
@@ -1112,42 +973,16 @@ ddg.MAX_HIST_LINES <- 2^14
 # command - input command.
 
 .ddg.link.function.returns <- function(command) {
-  # Find the functions that have completed but whose returns have
-  # not been used yet.
-  returns <- .ddg.get(".ddg.return.values")
-  if (!is.na(command@pos@startLine)) {
-    unused.returns <- returns[!returns$return.used & returns$return.node.id > 0 & !is.na(returns$line) & returns$line == command@pos@startLine, ]
-  }
-  else {
-    unused.returns <- returns[!returns$return.used & returns$return.node.id > 0, ]
-  }
-  if (nrow(unused.returns) == 0) return()
-  #print (paste(".ddg.link.function.returns: unused.returns:", unused.returns))
-
-  # See which of these are called from the command we are
-  # processing now.
-  unused.calls <- unused.returns$ddg.call
-  command.text <- gsub(" ", "", command@text)
-  uses <- sapply(unused.calls, function(call) {grepl(call, command.text, fixed=TRUE)})
-  #print (paste (".ddg.link.function.returns: uses:", uses))
-
-  # The following line is here to get around R CMD check, which
-  # otherwise reports:  no visible binding for global variable.
-  # Note that return.node.id is not a variable in the subset call,
-  # but the name of a column in the data frame being subsetted.
-  return.node.id <- NULL
-
-  # Extracts for the return value nodes.
-  new.uses <- subset(unused.returns, uses, return.node.id)
+  
+  return.value.nodes <- .ddg.get.matching.return.value.nodes (command)
   #print (paste (".ddg.link.function.returns: new.uses:", new.uses))
-
+  
   # Create an edge from each of these to the last procedure node.
-  lapply (new.uses$return.node.id, function (data.num) {
+  lapply (return.value.nodes, function (data.num) {
         .ddg.datanum2lastproc (data.num)
   
         # Set the return value as being used.
-        returns$return.used[returns$return.node.id == data.num] <- TRUE
-        .ddg.set(".ddg.return.values", returns)
+        .ddg.set.return.value.used (data.num)
       })
   
 
@@ -1627,11 +1462,8 @@ ddg.MAX_HIST_LINES <- 2^14
             warning = .ddg.set.warning ,
             error = function(e)
             {
-              # obtain function information for error-causing operation
-              funcs.called <- .ddg.get.function.info(cmd@functions.called)
-              
               # create procedure node for the error-causing operation
-              .ddg.proc.node("Operation", cmd@abbrev, cmd@abbrev, pfunctions=funcs.called, console=TRUE, cmd=cmd)
+              .ddg.proc.node("Operation", cmd@abbrev, cmd@abbrev, functions.called=cmd@functions.called, console=TRUE, cmd=cmd)
               .ddg.proc2proc()
 
               # create input edges by adding variables to set
@@ -1700,14 +1532,11 @@ ddg.MAX_HIST_LINES <- 2^14
         # We want to create a procedure node for this command.
         if (create.procedure) {
           
-          # get function information
-          funcs.called <- .ddg.get.function.info(cmd@functions.called)
-          
           # Create the procedure node.
 
           if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Adding operation node for", cmd@abbrev))
           
-          .ddg.proc.node("Operation", cmd@abbrev, cmd@abbrev, pfunctions=funcs.called, console=TRUE, cmd=cmd)
+          .ddg.proc.node("Operation", cmd@abbrev, cmd@abbrev, functions.called=cmd@functions.called, console=TRUE, cmd=cmd)
           .ddg.proc2proc()
 
           # If a warning occurred when cmd was evaluated,
@@ -2760,21 +2589,9 @@ ddg.MAX_HIST_LINES <- 2^14
 	fileout <- paste(.ddg.path.debug(), "/environment.csv", sep="")
 	write.csv(.ddg.exec.env(), fileout, row.names=FALSE)
 	
-	# Save function return table to file.
-	fileout <- paste(.ddg.path.debug(), "/function-returns.csv", sep="")
-	ddg.returns <- .ddg.get(".ddg.return.values")
-	ddg.returns2 <- ddg.returns[ddg.returns$return.node.id > 0, ]
-	write.csv(ddg.returns2, fileout, row.names=FALSE)
+  .ddg.save.return.value.table ()
+  .ddg.save.sourced.script.table ()
 
-	# Save if script is sourced.
-	if (.ddg.is.sourced()) 
-	{
-		# Save sourced script table to file.
-		fileout <- paste(.ddg.path.debug(), "/sourced-scripts.csv", sep="")
-		ddg.sourced.scripts <- .ddg.get(".ddg.sourced.scripts")
-		ddg.sourced.scripts2 <- ddg.sourced.scripts[ddg.sourced.scripts$snum >= 0, ]
-		write.csv(ddg.sourced.scripts2, fileout, row.names=FALSE)
-	}
 }
 
 # Returns a data frame of information about the current execution environment.
@@ -2970,19 +2787,6 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
   # Yes, ReturnTest.R fails on the recursive f5 function
   #print(paste("ddg.return.value:", sys.call(caller.frame))) #, "returns", expr))
 
-  ddg.return.values <- .ddg.get(".ddg.return.values")
-  ddg.num.returns <- .ddg.get(".ddg.num.returns")
-  if (nrow(ddg.return.values) == ddg.num.returns) {
-    size = 100
-    new.rows <- data.frame(ddg.call = character(size),
-                           line = integer(size),
-                           return.used = logical(size),
-                           return.node.id = integer(size),
-                           stringsAsFactors=FALSE)
-    .ddg.add.rows(".ddg.return.values", new.rows)
-    ddg.return.values <- .ddg.get(".ddg.return.values")
-  }
-
   # If this is not a recursive call to ddg.return.value and
   # ddg.function was not called, create the function nodes that
   # it would have created.
@@ -3050,17 +2854,7 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
     .ddg.lastproc2data(return.node.name, dscope=return.node.scope)
   }
 
-  # Update the table.
-  ddg.num.returns <- ddg.num.returns + 1
-  ddg.return.values$ddg.call[ddg.num.returns] <- call.text
-  ddg.return.values$return.used[ddg.num.returns] <- FALSE
-  ddg.return.values$return.node.id[ddg.num.returns] <- .ddg.dnum()
-  ddg.cur.cmd.stack <- .ddg.get(".ddg.cur.cmd.stack")
-  ddg.return.values$line[ddg.num.returns] <- 
-      if (length(ddg.cur.cmd.stack) == 0) NA
-      else ddg.cur.cmd.stack[length(ddg.cur.cmd.stack) - 1][[1]]@pos@startLine
-  .ddg.set(".ddg.return.values", ddg.return.values)
-  .ddg.set(".ddg.num.returns", ddg.num.returns)
+  .ddg.add.to.return.values (call.text)
 
   # If it does not have return, then its parameter was a call to ddg.eval
   # and this stuff has been done already.

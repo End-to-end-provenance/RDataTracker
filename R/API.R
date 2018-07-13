@@ -109,9 +109,6 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
   # Create DDG directories
   .ddg.init.environ()
 
-  # Save copy of original script.
-  file.copy(r.script.path, paste(.ddg.path.scripts(), "/", basename(r.script.path), sep = ""))
-
   # Reset r.script.path if RMarkdown file
 
   if (!is.null(r.script.path) && file_ext(r.script.path) == "Rmd") {
@@ -142,7 +139,6 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
   .ddg.set(".ddg.initialized", TRUE)
 
   # Store the starting graphics device.
-  .ddg.set("prev.device", dev.cur())
   .ddg.set("possible.graphics.files.open", NULL)
   .ddg.set("ddg.open.devices", vector())
 
@@ -247,13 +243,17 @@ ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE) {
   }
 
   # Clear DDGStatements from ddg environment.
-  .ddg.set("ddg.statement.num", 0)
-  .ddg.set("ddg.statements", list())
+  .ddg.init.statements ()
 
   # Clear loop information from ddg environment.
   .ddg.set("ddg.loop.num", 0)
   .ddg.set("ddg.loops", list())
 
+  # I don't think save is ever called with quit = TRUE, but we might want
+  # to distinguish between the final call to ddg.save and a call the user
+  # might make from the console.  Perhaps much of what is above should be
+  # inside the quit branch instead.  Reconsider this when working ong 
+  # console mode.
   # By convention, this is the final call to ddg.save.
   if (quit) {
     # Restore history settings.
@@ -261,9 +261,6 @@ ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE) {
 
     # Delete temporary files.
     .ddg.delete.temp()
-
-    # Capture current graphics device.
-    .ddg.auto.graphic.node(dev.to.capture=dev.cur)
 
     # Shut down the DDG.
     .ddg.clear()
@@ -314,7 +311,7 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
   ddg.init(r.script.path, ddgdir, overwrite, enable.console, annotate.inside.functions, first.loop, max.loops, max.snapshot.size, save.hashtable, hash.algorithm)
   
   # Set .ddg.is.sourced to TRUE if script provided.
-  if (!is.null(r.script.path)) .ddg.set(".ddg.is.sourced", TRUE)
+  .ddg.set(".ddg.is.sourced", !is.null(r.script.path))
 
   # Save debug files to debug directory.
   .ddg.set("ddg.save.debug", save.debug)
@@ -374,19 +371,11 @@ ddg.source <- function (file,  ddgdir = NULL, local = FALSE, echo = verbose, pri
 	ignore.ddg.calls = TRUE, ignore.init = ignore.ddg.calls, force.console=ignore.init){
 
 	# Store script number & name.
-	snum <- .ddg.next.script.num()
-	sname <- basename(file)
-	stime <- .ddg.format.time( file.info(sname)$mtime )
-
-	if (snum == 0) {
-		df <- data.frame(snum, sname, stime, stringsAsFactors=FALSE)
-	} else {
-		df<- rbind(.ddg.sourced.scripts(), c(snum, sname, stime))
-	}
-	.ddg.set(".ddg.sourced.scripts", df)
-
-	# Increment script number.
-	.ddg.inc(".ddg.next.script.num")
+  sname <- basename(file)
+  snum <- .ddg.store.script.info (sname)
+  
+  # Save a copy of the script
+  file.copy(file, paste(.ddg.path.scripts(), basename(sname), sep="/"))
 
 	### CODE IN THIS SECTION IS BASICALLY REPLICATION OF source FUNCTION ###
 

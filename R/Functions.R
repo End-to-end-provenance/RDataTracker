@@ -55,9 +55,14 @@
 }
 
 #' Add new functions to the function table
-#' @param pfunctions the rows to add
+#' @param pfunctions a data frame pairing functions with the libraries they come from
 #' @return nothing
 .ddg.add.to.function.table <- function (pfunctions) {
+  if( is.null(pfunctions) || is.na(pfunctions)) {
+    return()
+  } 
+    
+  pfunctions <- cbind( "ddg.pnum" = rep(.ddg.pnum(), nrow(pfunctions)) , pfunctions )
   ddg.function.nodes <- rbind( .ddg.function.nodes() , pfunctions )
   .ddg.set( "ddg.function.nodes" , ddg.function.nodes )
 }
