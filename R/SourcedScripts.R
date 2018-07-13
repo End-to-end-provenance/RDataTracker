@@ -1,0 +1,89 @@
+# Copyright (C) President and Fellows of Harvard College and 
+# Trustees of Mount Holyoke College, 2014, 2015, 2016, 2017, 2018.
+
+# This program is free software: you can redistribute it and/or
+# modify it under the terms of the GNU General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU General Public License for more details.
+#
+#   You should have received a copy of the GNU General Public
+#   License along with this program.  If not, see
+#   <http://www.gnu.org/licenses/>.
+
+####### Manages information about sourced scripts #########
+#
+# The script table contains these fields:
+# snum - the unique script id
+# sname - the name of the script file
+# stime - the timestamp of script file
+
+#' Initializes the data needed to manage sourced scripts
+#' @return nothing
+.ddg.init.sourced.scripts <- function () {
+  # Script sourced with ddg.source
+  .ddg.set(".ddg.is.sourced", FALSE)
+  
+  # Number of first sourced script (main script).
+  .ddg.set(".ddg.next.script.num", 0)
+  
+  # Table of sourced scripts
+  .ddg.set(".ddg.sourced.scripts", NULL)
+}
+
+#' @returnType logical
+#' @return TRUE if we are running a script from a file, as opposed to console commands
+.ddg.is.sourced <- function() {
+  return (.ddg.get(".ddg.is.sourced"))
+}
+
+#' @returnType numeric
+#' @return the value to use for the next script id
+.ddg.next.script.num <- function() {
+  return(.ddg.get(".ddg.next.script.num"))
+}
+
+#' @return a data frame containing the sourced script table
+.ddg.sourced.scripts <- function() {
+  return(.ddg.get(".ddg.sourced.scripts"))
+}
+
+#' Write the sourced script table to a csv file.  Useful for debugging.
+#' The file will be in the debug directory in a file called sourced-scripts.csv
+.ddg.save.sourced.script.table <- function () {
+  # Save if script is sourced.
+  if (.ddg.is.sourced()) 
+  {
+    # Save sourced script table to file.
+    fileout <- paste(.ddg.path.debug(), "/sourced-scripts.csv", sep="")
+    ddg.sourced.scripts <- .ddg.get(".ddg.sourced.scripts")
+    ddg.sourced.scripts2 <- ddg.sourced.scripts[ddg.sourced.scripts$snum >= 0, ]
+    write.csv(ddg.sourced.scripts2, fileout, row.names=FALSE)
+  }
+}
+
+#' Record a new script in the sourced scripts table
+#' @param sname the name of the script file, excluding the directory
+#' @returnType numeric
+#' @return the unique id of the script
+.ddg.store.script.info <- function (sname) {
+  snum <- .ddg.next.script.num()
+  stime <- .ddg.format.time( file.info(sname)$mtime )
+  
+  if (snum == 0) {
+    df <- data.frame(snum, sname, stime, stringsAsFactors=FALSE)
+  } else {
+    df<- rbind(.ddg.sourced.scripts(), c(snum, sname, stime))
+  }
+  .ddg.set(".ddg.sourced.scripts", df)
+  
+  # Increment script number.
+  .ddg.inc(".ddg.next.script.num")
+  return (snum)
+}
+
+
