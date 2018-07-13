@@ -116,28 +116,6 @@
   return (dhash)
 }
 
-#' Determines whether to record this as a read or write operation
-#' @param dname the data file name 
-#' @return "read" if the file was read and "write" if the file was written
-.ddg.calculate.rw <- function(dname) {
-  infiles <- .ddg.get("ddg.infilenodes")
-  if (dname %in% infiles) {
-    .ddg.set("ddg.infilenodes", infiles[match(infiles, dname, 0) == 0])
-    #print (paste("Removing", dname, "from infilenodes"))
-    return ("read")
-  }
-  
-  outfiles <- .ddg.get("ddg.outfilenodes")
-  if (dname %in% outfiles) {
-    .ddg.set("ddg.outfilenodes", outfiles[match(outfiles, dname, 0) == 0])
-    #print (paste("Removing", dname, "from outfilenodes"))
-    return ("write")
-  }
-
-  #print(paste(".ddg.calculate.rw:", dname, "not found in infilenodes or outfilenodes!"))
-  return ("")
-}
-
 #' Sets the hash and rw fields for a data node 
 #' @param dnum the id of the node to set
 #' @param hash the hash value to use

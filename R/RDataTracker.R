@@ -119,10 +119,6 @@ ddg.MAX_HIST_LINES <- 2^14
   return (.ddg.get("ddg.annotate.off"))
 }
 
-.ddg.parsed.num <- function() {
-  return(.ddg.get(".ddg.parsed.num"))
-}
-
 .ddg.enable.source <- function() {
   return(.ddg.is.set("from.source") && .ddg.get("from.source"))
 }
@@ -279,9 +275,6 @@ ddg.MAX_HIST_LINES <- 2^14
   # Functions not to be annotated.
   .ddg.set("ddg.annotate.off", NULL)
 
-  # Number of first parsed command.
-  .ddg.set(".ddg.parsed.num", 1)
-  
   .ddg.init.sourced.scripts ()
 
   # Save debug files on debug directory
@@ -293,14 +286,9 @@ ddg.MAX_HIST_LINES <- 2^14
   if (!.ddg.is.set("ddg.max.snapshot.size")) {
     .ddg.set("ddg.max.snapshot.size", 100)
   }
-
-  # List of files read and written
-  .ddg.set("ddg.infilenodes", character())
-  .ddg.set("ddg.outfilenodes", character())
-
-  # Data frame containing file reads and writes
-  # .ddg.init.hashtable()
   
+  .ddg.init.hashtable ()
+
   # Boolean of whether there are any file nodes
   .ddg.set("ddg.hasfilenodes", FALSE)
 }
@@ -3282,9 +3270,7 @@ ddg.file.out <- function(filename, dname=NULL, pname=NULL) {
   
   # Adds the files written to ddg.outfilenodes for use in determining reads
   # and writes in the hashtable.
-  .ddg.set("ddg.outfilenodes", c(.ddg.get("ddg.outfilenodes"), filename))
-  #print(paste("Adding", filename, "to outfilenodes"))
-  
+  .ddg.add.outfiles (filename)
   
   if (is.null(dname)) {
     dname <- basename(filename)
