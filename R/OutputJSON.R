@@ -12,8 +12,6 @@ ddg.json.write <- function()
 # creates and returns the prov-json string for the current provenance graph
 .ddg.json.string <- function()
 {
-	library(jsonlite)
-	
 	# CONSTANTS
 	TOOL.NAME <- "RDataTracker"
 	JSON.VERSION <- "2.1"
