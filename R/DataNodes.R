@@ -301,6 +301,55 @@
   return( paste('{"container":"', container, '", "dimension":[', dimension, '], "type":["' , type, '"]}', sep = "") )
 }
 
+#' @return the type information of the given value
+#' @returnType There are several return types possible.
+#'   For lists, objects, environments, functions and language values,
+#'   the return type is string.  For vectors, matrices, arrays 
+#'   and data frames, a list is returned.  The list contains 3 parts: a
+#'   string representation of the container, dimension information,
+#'   and the types of values in the structure.  If anything else
+#'   is found, it returns NULL.
+.ddg.get.val.type <- function(value)
+{
+  # vector: a 1-dimensional array (uniform typing)
+  if(is.vector(value))
+    return( list("vector", length(value), class(value)) )
+  
+  # matrix: a 2-dimensional array (uniform typing)
+  if(is.matrix(value))
+    return( list("matrix", dim(value), class(value[1])) )
+  
+  # array: n-dimensional (uniform typing)
+  if(is.array(value))
+    return( list("array", dim(value), class(value[1])) )
+  
+  # data frame: is a type of list
+  if(is.data.frame(value))
+  {
+    types <- unname(sapply(value,class))
+    return( unname(list("data_frame", dim(value), types)) )
+  }
+  
+  # a list
+  if(is.list(value))
+    return("list")
+  
+  # an object
+  if(is.object(value))
+    return("object")
+  
+  # envrionment, function, language
+  if(is.environment(value))
+    return("environment")
+  if(is.function(value))
+    return("function")
+  if(is.language(value))
+    return("language")
+  
+  # none of the above - null is a character, not NULL or NA
+  return(NULL)
+}
+
 
 #' .ddg.data.node creates a data node of type Data. Data nodes are
 #' used for single data values. The value (dvalue) is stored in the

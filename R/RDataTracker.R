@@ -336,71 +336,12 @@ ddg.MAX_HIST_LINES <- 2^14
   }
 }
 
-# Returns the type information of the value of the given variable.
-# Does not contain information on dimensions.
-
-.ddg.get.val.type.from.var <- function(var)
-{
-  val.type <- .ddg.get.val.type( get(var) )
-
-  # remove dimension information, if any
-  if( length(val.type) > 1 )
-  	val.type[2] <- NULL
-
-  return( val.type )
-}
-
-
-# Returns the type information of the given value,
-# broken into its parts and returned in a vecctor or a list.
-
-.ddg.get.val.type <- function(value)
-{
-  # vector: a 1-dimensional array (uniform typing)
-  if(is.vector(value))
-    return( list("vector", length(value), class(value)) )
-
-  # matrix: a 2-dimensional array (uniform typing)
-  if(is.matrix(value))
-    return( list("matrix", dim(value), class(value[1])) )
-
-  # array: n-dimensional (uniform typing)
-  if(is.array(value))
-  	return( list("array", dim(value), class(value[1])) )
-
-  # data frame: is a type of list
-  if(is.data.frame(value))
-  {
-    types <- unname(sapply(value,class))
-    return( unname(list("data_frame", dim(value), types)) )
- }
-
-  # a list
-  if(is.list(value))
-    return("list")
-
-  # an object
-  if(is.object(value))
-    return("object")
-
-  # envrionment, function, language
-  if(is.environment(value))
-    return("environment")
-  if(is.function(value))
-    return("function")
-  if(is.language(value))
-    return("language")
-
-  # none of the above - null is a character, not NULL or NA
-  return(NULL)
-}
-
-# .ddg.is.nonlocal.assign returns TRUE if the object passed is an
-# expression object containing a non-local assignment.
-
-# expr - input expression.
-
-
+#' .ddg.is.nonlocal.assign returns TRUE if the object passed is an
+#' expression object containing a non-local assignment.
+#' 
+#' @param expr input expression.
+#' @returnType logical
+#' @return TRUE if the expression is an assignment statement using the <<- operator.
 .ddg.is.nonlocal.assign <- function (expr)
 {
   # <<- or ->> means that the assignment is non-local
@@ -413,26 +354,26 @@ ddg.MAX_HIST_LINES <- 2^14
   return (FALSE)
 }
 
-
-# .ddg.create.empty.vars.set creates an empty data frame
-# initialized to contain information about variable assignments.
-# The difference between first.writer and possible.first.writer is
-# that first.writer is for simple assignments (like a <- 1), while
-# possible.first.writer is for situations where the assignment might
-# not have occurred, like "if (foo) a <- 1".
-
-# The data frame is structured as follows
-# - the variable name.
-# - the position of the statement that wrote the variable first.
-# - the position of the statement that wrote the variable last.
-# - the position of the first statement that may have assigned to a
-#   variable .
-# - the position of the last statement that may have assigned to a
-#   variable.
-
-# var.table.size - desired size of the data frame. Negative values
-#   and 0 are coerced to 1.
-
+#' .ddg.create.empty.vars.set creates an empty data frame
+#' initialized to contain information about variable assignments.
+#' The difference between first.writer and possible.first.writer is
+#' that first.writer is for simple assignments (like a <- 1), while
+#' possible.first.writer is for situations where the assignment might
+#' not have occurred, like "if (foo) a <- 1".
+#' 
+#' @returnType The data frame is structured as follows: \cr
+#' - the variable name.\cr
+#' - the position of the statement that wrote the variable first.\cr
+#' - the position of the statement that wrote the variable last.\cr
+#' - the position of the first statement that may have assigned to a
+#'   variable .\cr
+#' - the position of the last statement that may have assigned to a
+#'   variable.\cr
+#' 
+#' @param var.table.size desired size of the data frame. Negative values
+#'   and 0 are coerced to 1.
+#' 
+#' @return the data frame constructed
 .ddg.create.empty.vars.set <- function(var.table.size=1) {
 
   if (var.table.size <= 0) var.table.size <- 1
@@ -448,37 +389,44 @@ ddg.MAX_HIST_LINES <- 2^14
   vars.set$first.writer <- var.table.size + 1
   vars.set$possible.first.writer <- var.table.size + 1
 
-  #print(".ddg.create.empty.vars.set returning")
-  #print(vars.set)
   return(vars.set)
 }
 
-#.ddg.increase.vars.set simply doubles the size of a variable
-# assignment data frame and returns the new one.
-
-# vars.set - data frame containing variable assignments.
-# size (optional) - number of rows in data frame.
-
-.ddg.double.vars.set <- function(vars.set, size=nrow(vars.set)) {
+#'.ddg.double.vars.set doubles the size of a variable
+#' assignment data frame and returns the new one.
+#' 
+#' @param vars.set data frame containing variable assignments.
+#' @returnType same data frame type as the parameter
+#' @return a data frame that is twice the size as the original
+.ddg.double.vars.set <- function(vars.set) {
+  size=nrow(vars.set)
+  
   # Create the right size data frame from input frame.
   new.vars.set <- rbind(vars.set,.ddg.create.empty.vars.set(size))
 
   # Update first/last writer.
-  new.vars.set$first.writer <- ifelse(new.vars.set$first.writer == size + 1, size*2 + 1, new.vars.set$first.writer)
-  new.vars.set$possible.first.writer <- ifelse(new.vars.set$possible.first.writer == size + 1, size*2 + 1, new.vars.set$possible.first.writer)
+  new.vars.set$first.writer <- 
+      ifelse(new.vars.set$first.writer == size + 1, 
+             size*2 + 1, 
+             new.vars.set$first.writer)
+  new.vars.set$possible.first.writer <- 
+      ifelse(new.vars.set$possible.first.writer == size + 1, 
+             size*2 + 1, 
+             new.vars.set$possible.first.writer)
 
   return(new.vars.set)
 }
 
-# .ddg.add.to.vars.set parses a command and adds the new variable
-# information to the variable assignment data frame. Note that
-# var.num is a global variable! It should be intialized when
-# vars.set is first created.
-
-# vars.set - variable assignment data frame.
-# cmd.expr - command expression.
-# i - position of variable in data frame.
-
+#' .ddg.add.to.vars.set adds the variables set in the command
+#' to the variable assignment data frame. Note that
+#' var.num is a global variable! It should be intialized when
+#' vars.set is first created.
+#' 
+#' @param vars.set variable assignment data frame.
+#' @param cmd a DDGStatement object
+#' @param i position of command in the list of commands
+#' @returnType the same data frame type as vars.set
+#' @return an updated vars.set data frame with the information from the command
 .ddg.add.to.vars.set <- function(vars.set, cmd, i) {
   #print("In .ddg.add.to.vars.set")
 
@@ -508,7 +456,7 @@ ddg.MAX_HIST_LINES <- 2^14
       # Find the first empty row
       empty.rows <- which(vars.set$variable == "")
       if (length(empty.rows) == 0) {
-        vars.set <- .ddg.double.vars.set(vars.set,nrow(vars.set))
+        vars.set <- .ddg.double.vars.set(vars.set)
         empty.rows <- which(vars.set$variable == "")
       }
       var.num <- empty.rows[1]
@@ -532,14 +480,13 @@ ddg.MAX_HIST_LINES <- 2^14
 }
 
 
-## .ddg.find.var.assigments finds the possible variable assignments
-## for a fixed set of parsed commands. See .ddg.create.empty.vars.set
-## for more information on the structure of the returned data frame.
-#
-## parsed.commands - a list of parsed commands.
-#
+#' .ddg.find.var.assigments finds the possible variable assignments
+#' for a fixed set of parsed commands. 
+#'
+#' @param cmds a list of DDGStatement objects
+#' @returnType a data frame as described in .ddg.create.empty.vars.set
+#' @return the data frame filled in with the information from all of the commands
 .ddg.find.var.assignments <- function(cmds) {
-  #print("In .ddg.find.var.assignments")
   if (length(cmds) == 0) return (data.frame())
 
   # Make it big so we don't run out of space.
@@ -549,26 +496,26 @@ ddg.MAX_HIST_LINES <- 2^14
   # Build the table recording where variables are assigned to or may
   # be assigned to.
   for ( i in 1:length(cmds)) {
-    cmd.expr <- cmds[[i]]
     #print(paste("Looking for var assignments in", cmd.expr@abbrev))
-    vars.set <- .ddg.add.to.vars.set(vars.set,cmd.expr, i)
+    vars.set <- .ddg.add.to.vars.set(vars.set, cmds[[i]], i)
   }
   return (vars.set)
 }
 
 
-# .ddg.create.data.use.edges.for.console.cmd creates a data flow
-# edge from the node for each variable used in cmd.expr to the
-# procedural node labeled cmd, as long as the value would either
-# be one that exists prior to starting the console block, or
-# corresponds to the last setting of this variable in the console
-# block.
-
-# vars.set - variable assignment data frame.
-# cmd - name of procedure node.
-# cmd.expr - command expression.
-# cmd.pos - position of command.
-
+#' .ddg.create.data.use.edges.for.console.cmd creates a data flow
+#' edge from the node for each variable used in cmd to the
+#' procedural node labeled cmd, as long as the value would either
+#' be one that exists prior to starting the console block, or
+#' corresponds to the last setting of this variable in the console
+#' block.
+#' 
+#' @param vars.set variable assignment data frame.
+#' @param cmd name of procedure node.
+#' @param cmd.pos - position of command.
+#' @param for.caller whether the search for the variable's scope should start at the 
+#'   current stack frame, or start with its caller
+#' @return nothing
 .ddg.create.data.use.edges.for.console.cmd <- function (vars.set, cmd, cmd.pos, for.caller) {
   # Find all the variables used in this command.
   #print (paste(".ddg.create.data.use.edges.for.console.cmd: cmd = ", cmd@text))
@@ -623,27 +570,19 @@ ddg.MAX_HIST_LINES <- 2^14
 }
 
 
-# .ddg.create.data.set.edges.for.cmd creates edges that correspond
-# to a console command assigning to a variable.
-
-# vars.set - variable assignment data frame.
-# cmd.abbrev - name of procedure node.
-# cmd.expr - command expression.
-# cmd.pos - position of command.
-# env - environment to use for evaluating variable.
-# for.finish.node (optional) - if TRUE, data edge is for finish
-#   node.
-# scope (optional) - scope of variable.
-# stack (optional) - stack to use for evaluating variable.
-
-.ddg.create.data.set.edges.for.cmd <- function(vars.set, cmd, cmd.pos, env, for.finish.node = FALSE, scope=NULL, stack=NULL) {
+#' .ddg.create.data.set.edges.for.cmd creates data nodes for 
+#' variables being set, saves the data, and creates edges from the
+#' procedure node that set the variable to the new data node.  These
+#' nodes and edges correspond to the variables set in the command passed in.
+#' 
+#' @param vars.set variable assignment data frame.
+#' @param cmd the command to create edges for
+#' @param cmd.pos position of command in the list of commands
+#' @param env environment to use for evaluating variables set.
+#' @return nothing
+.ddg.create.data.set.edges.for.cmd <- function(vars.set, cmd, cmd.pos, env) {
   # print(paste("In .ddg.create.data.set.edges.for.cmd: cmd = ", cmd@abbrev))
-  #print(paste(".ddg.create.data.set.edges.for.cmd: env =", environmentName(env)))
   vars.assigned <- cmd@vars.set
-
-  # print(paste("In .ddg.create.data.set.edges.for.cmd: vars.assigned = ", vars.assigned))
-  # print("In .ddg.create.data.set.edges.for.cmd: vars.set = ")
-  # print(vars.set)
 
   for (var in vars.assigned) {
 
@@ -652,17 +591,18 @@ ddg.MAX_HIST_LINES <- 2^14
 
     # Only create a node edge for the last place that a variable is
     # set within a console block.
-    if ((length(whichRows) > 0 && vars.set$last.writer[whichRows] == cmd.pos && vars.set$possible.last.writer[whichRows] <= vars.set$last.writer[whichRows]) || for.finish.node) {
+    if ((length(whichRows) > 0 && vars.set$last.writer[whichRows] == cmd.pos && 
+          vars.set$possible.last.writer[whichRows] <= vars.set$last.writer[whichRows])) {
         if (is.null(env)) {
-          env <- .ddg.get.env(var, calls=stack)
+          env <- .ddg.get.env(var)
         }
-        scope <- .ddg.get.scope(var, calls=stack, env=env)
+        scope <- .ddg.get.scope(var, env=env)
 
         # Special operators are defined by enclosing the name in `.  However,
         # the R parser drops those characters when we deparse, so when we parse
         # here they are missing and we get an error about unexpected SPECIAL
         # characters.  The first tryCatch, puts the ` back in and parses again.
-        # The second tryCatch handles errors associated with evaluated the variable.
+        # The second tryCatch handles errors associated with evaluating the variable.
         parsed <- tryCatch(parse(text=var),
             error = function(e) parse(text=paste("`",var,"`",sep="")))
         val <- tryCatch(eval(parsed, env),
@@ -671,7 +611,7 @@ ddg.MAX_HIST_LINES <- 2^14
           }
         )
 
-        tryCatch(.ddg.save.data(var, val, error=TRUE, scope=scope, stack=stack, env=env),
+        tryCatch(.ddg.save.data(var, val, error=TRUE, scope=scope, env=env),
                error = function(e){.ddg.data.node("Data", var, "complex", scope); print(e)})
 
         .ddg.proc2data(cmd@abbrev, var, scope)
