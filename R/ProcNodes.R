@@ -44,6 +44,8 @@
   
   # Initialize the procedure node counter
   .ddg.set("ddg.pnum", 0)
+  
+  .ddg.set(".ddg.proc.start.time", .ddg.elapsed.time())
 }
 
 #' .ddg.is.proc.type returns TRUE for any type of procedure node.
@@ -61,6 +63,23 @@
 #' @return the data node id of the last procedure node created
 .ddg.pnum <- function() {
   return (.ddg.get("ddg.pnum"))
+}
+
+#' @returnType numeric 
+#' @return the time the process started, or 0 if it has not been set yet
+.ddg.start.proc.time <- function() {
+  if (.ddg.is.set(".ddg.proc.start.time")) return (.ddg.get(".ddg.proc.start.time"))
+  else return (0)
+}
+
+#' @returnType numeric 
+#' @return the time since the script began execution
+.ddg.elapsed.time <- function(){
+  time <- proc.time()
+  elapsed <- time[1] + time[2] - .ddg.start.proc.time()
+  # time[4] and time[5] are NA under Windows
+  # elapsed <- time[1] +time[2] +time[4] +time[5]
+  return(elapsed)
 }
 
 #' Create a data frame of empty rows to put in the procedure node table.

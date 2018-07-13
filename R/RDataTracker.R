@@ -123,11 +123,6 @@ ddg.MAX_HIST_LINES <- 2^14
   return(.ddg.is.set("from.source") && .ddg.get("from.source"))
 }
 
-.ddg.start.proc.time <- function() {
-  if (.ddg.is.set(".ddg.proc.start.time")) return (.ddg.get(".ddg.proc.start.time"))
-  else return (0)
-}
-
 # value should be TRUE or FALSE
 # Keeps track of whether the last loop has all iterations
 # recorded or not.
@@ -260,9 +255,6 @@ ddg.MAX_HIST_LINES <- 2^14
   # Store path of current ddg.
   .ddg.set("ddg.path", NULL)
 
-  # No ddg initialized.
-  .ddg.set(".ddg.initialized", FALSE)
-
   # Keep track of history.
   .ddg.set(".ddg.history.timestamp", NULL)
   
@@ -302,9 +294,10 @@ ddg.MAX_HIST_LINES <- 2^14
   Sys.setenv("R_HISTSIZE" = lines)
 }
 
-# .ddg.init.environ() sets up the filesystem and R environments
-# for use.
-
+#' .ddg.init.environ() sets up the filesystem and R environments
+#' for use.
+#' 
+#' @return nothing
 .ddg.init.environ <- function() {
   dir.create(.ddg.path(), showWarnings=FALSE)
   dir.create(.ddg.path.data(), showWarnings=FALSE)
@@ -317,167 +310,31 @@ ddg.MAX_HIST_LINES <- 2^14
   }
 }
 
-# .ddg.is.init is called at the beginning of all user accessible
-# functions. It verifies that a DDG has been initialized. If it
-# hasn't, it returns FALSE.
-
+#' .ddg.is.init is called at the beginning of all user accessible
+#' functions. It verifies that a DDG has been initialized. If it
+#' hasn't, it returns FALSE.
+#' 
+#' @return true if provenance has been initialized
 .ddg.is.init <- function() {
     # Short circuits evaluation.
     return(.ddg.is.set(".ddg.initialized") && .ddg.get(".ddg.initialized"))
 }
 
-# .ddg.format.time reformats time string. Input format is
-# yyyy-mm-dd hh:mm:ss. Output format is (yyyy-mm-ddThh.mm.ss).
-
-# time - input time string.
-
-.ddg.format.time <- function(time) {
-  formatted.time <- strftime(time, format="%Y-%m-%dT%H.%M.%S",usetz=TRUE)
-
-  # The strftime call leaves a space between time and time
-  # zone. We remove that here.
-  return (sub(" ", "", formatted.time))
-}
-
-# .ddg.timestamp gets the current date and time from the system.
-
-.ddg.timestamp <- function() {
-  ts <- Sys.time()
-  return (.ddg.format.time(ts))
-}
-
-.ddg.elapsed.time <- function(){
-  time <- proc.time()
-  elapsed <- time[1] +time[2] - .ddg.start.proc.time()
-  # time[4] and time[5] are NA under Windows
-  # elapsed <- time[1] +time[2] +time[4] +time[5]
-  return(elapsed)
-}
-
-# .ddg.write.timestamp.to.history writes the current timestamp to
-# the R history. The timestamp function does not work properly in
-# Windows from within RStudio (the arguments are ignored).  In this
-# case we create our own timestamp value and hope that the time
-# does not change between when we set .ddg.history.timestamp and
-# when the timestamp function inserts the timestamp in the history.
-
-# var - the variable name under which the timestamp is saved.
-
-.ddg.write.timestamp.to.history <- function(var=".ddg.history.timestamp") {
+#' .ddg.write.timestamp.to.history writes the current timestamp to
+#' the R history. The timestamp function does not work properly in
+#' Windows from within RStudio (the arguments are ignored).  In this
+#' case we create our own timestamp value and hope that the time
+#' does not change between when we set .ddg.history.timestamp and
+#' when the timestamp function inserts the timestamp in the history.
+.ddg.write.timestamp.to.history <- function() {
   if (Sys.getenv("RSTUDIO") != "" && Sys.info()['sysname'] == "Windows") {
-    .ddg.set(var, paste("##------", date(), "------##"))
+    .ddg.set(".ddg.history.timestamp", paste("##------", date(), "------##"))
     timestamp(quiet=TRUE)
   }
   else {
-    .ddg.set(var, timestamp(prefix = "##-ddg-- ", quiet=TRUE))
+    .ddg.set(".ddg.history.timestamp", timestamp(prefix = "##-ddg-- ", quiet=TRUE))
   }
 }
-
-# .ddg.is.graphic tries to decipher if the value snapshot should be
-# written to file directly from the data or if it is a graphic which
-# can be captured from the image device. This function, as written,
-# is basically a hack. There must be a better way to implement it.
-
-# value - input value.
-
-.ddg.is.graphic <- function(value){
-  # Matching any of these classes automatically classifies the
-  # object as a graphic.
-  graph.classes <- list("gg", "ggplot")
-  return(is.object(value) && any(class(value) %in% graph.classes))
-}
-
-# .ddg.is.simple returns TRUE if the value passed in is a simple
-# data value which should be saved locally as opposed to stored
-# in a separate file. The assumption is that the value passed in
-# has already been declared not to be a graphic.
-
-# value - input value.
-
-.ddg.is.simple <- function(value) {
-  # Note that is.vector returns TRUE for lists, so we need to check
-  # lists separately.  Since every value in a list can have a
-  # different type, if it is a list, we will assume the value is
-  # complex. We consider NULL values to be simple.
-  return((!.ddg.is.graphic(value) &&
-         !is.list(value) &&
-         is.vector(value) &&
-         length(value) == 1) ||
-         is.null(value))
-}
-
-# .ddg.is.csv returns TRUE if the value passed in should be saved
-# as a csv file, i.e. if it is a vector, matrix, or data frame.
-# Note that is.vector returns TRUE for lists.
-
-# value - input value.
-
-.ddg.is.csv <- function(value) {
-  return(!.ddg.is.simple(value) && ((is.vector(value) && !is.list(value)) || is.matrix(value) || is.data.frame(value)))
-}
-
-
-# .ddg.is.object returns TRUE if the value is determined to be an
-# object by our standards.
-
-# value - input value.
-
-.ddg.is.object <- function(value){
-  return(is.object(value) || is.environment(value))
-}
-
-# .ddg.is.function returns TRUE if the value is determined to be a
-# function or we want to save it as a function.
-
-# value - input value.
-
-.ddg.is.function <- function(value){
-  return(is.function(value))
-}
-
-# Returns a string representation of the type information of the given value.
-.ddg.get.val.type.string <- function(value)
-{
-  val.type <- .ddg.get.val.type(value)
-
-  if( is.null(val.type) )
-  	return( 'null' )
-
-  # list, object, environment, function, language
-  if( length(val.type) == 1 )
-  	return( paste('"',val.type,'"',sep="") )
-
-  # vector, matrix, array, data frame
-  # type information recorded in a list of 3 vectors (container,dimension,type)
-  container <- val.type[[1]]
-  dimension <- val.type[[2]]
-  type <- val.type[[3]]
-
-  # vector: a 1-dimensional array (uniform typing)
-  if( identical(container,"vector") )
-    return( paste('{"container":"vector", "dimension":[', dimension, '], "type":["' , type, '"]}', sep = "") )
-
-  # matrix: a 2-dimensional array (uniform typing)
-  if( identical(container,"matrix") )
-  {
-	dimension <- paste( dimension , collapse = "," )
-	return( paste('{"container":"matrix", "dimension":[', dimension, '], "type":["' , type, '"]}', sep = "") )
-  }
-
-  # array: n-dimensional (uniform typing)
-  if( identical(container,"array") )
-  {
-	dimension <- paste( dimension , collapse = "," )
-	return( paste('{"container":"array", "dimension":[', dimension, '], "type":["' , type, '"]}', sep = "") )
-  }
-
-  # data frame: is a type of list
-  dimension <- paste( dimension , collapse = "," )
-  type <- paste( type , collapse = '","' )
-
-  return( paste('{"container":"data_frame", "dimension":[', dimension, '], "type":["' , type, '"]}', sep = "") )
-}
-
 
 # Returns the type information of the value of the given variable.
 # Does not contain information on dimensions.

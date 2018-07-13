@@ -172,8 +172,6 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
   
   .ddg.init.loops (first.loop, max.loops)
   
-  .ddg.set(".ddg.proc.start.time", .ddg.elapsed.time())
-
   # Store time when script begins execution.
   .ddg.set("ddg.start.time", .ddg.timestamp())
   
