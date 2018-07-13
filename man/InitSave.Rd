@@ -24,6 +24,10 @@
 \alias{ddg.details.omitted}
 \alias{ddg.set.inside.loop}
 \alias{ddg.not.inside.loop}
+\alias{ddg.debug.lib.on}
+\alias{ddg.debug.lib.off}
+\alias{ddg.json}
+\alias{ddg.json.write}
 \title{Creating Provenance Graphs with RDataTracker}
 \description{These functions are needed to create provenance graphs.}
 \usage{
@@ -56,6 +60,10 @@ ddg.loop.annotate.off()
 ddg.details.omitted()
 ddg.not.inside.loop()
 ddg.set.inside.loop()
+ddg.debug.lib.on()
+ddg.debug.lib.off()
+ddg.json()
+ddg.json.write()
 }
 \arguments{
   \item{r.script.path}{ the full path to the file containing the R script that is being executed. }
@@ -142,6 +150,12 @@ ddg.set.inside.loop()
   The last DDG created (if any) can be displayed with ddg.display. This function starts DDG Explorer
   and loads the most recent ddg.txt file (if any). If the DDG path is not set or a ddg.txt file is not available,
   the function returns "DDG not available".
+
+  ddg.debug.lib.on and ddg.debug.lib.off turn on and off display of node and edge creation in
+  the console (for RDataTracker debugging).
+
+  ddg.json returns the current provenance graph as a prov-json string.  ddg.json.write saves the provenance
+  graph to the provenance directory.
   
   ddg.should.run.annotated, ddg.forloop, ddg.first.loop, ddg.loop.count, ddg.loop.count.inc, ddg.reset.loop.count, 
   ddg.loop.annotate.on, ddg.loop.annotate.off, ddg.details.omitted, 
