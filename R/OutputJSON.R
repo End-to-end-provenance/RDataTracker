@@ -1,5 +1,5 @@
 # @author Elizabeth Fong
-# @version 2.1 (June 2018)
+# @version 2.1 (July 2018)
 
 # writes json out to file
 ddg.json.write <- function() 
@@ -7,6 +7,137 @@ ddg.json.write <- function()
 	fileout <- paste(.ddg.path(), "/ddg.json", sep="")
 	json <- ddg.json()
 	write(json, fileout)
+}
+
+# creates and returns the prov-json string for the current provenance graph
+.ddg.json.string <- function()
+{
+	# CONSTANTS
+	TOOL.NAME <- "RDataTracker"
+	JSON.VERSION <- "2.1"
+	
+	# contents of the prefix node
+	PREFIX.NODE <- list( "prov" = "http://www.w3.org/ns/prov#" ,
+						 "rdt" = "http://rdatatracker.org/" )
+	
+	# the namespace prefix appended to the name for each node or edge
+	LABEL.PREFIX <- "rdt:"
+	
+	# the name/character denoting the type of node or edge
+	LABEL.NAMES <- list( "agent" = "a" ,
+						 "activity.proc" = "p" ,
+						 "entity.data" = "d" ,
+						 "entity.env" = "environment" ,
+						 "entity.lib" = "l" ,
+						 "entity.func" = "f" ,
+						 "wasInformedBy.p2p" = "pp" ,
+						 "wasGeneratedBy.p2d" = "pd" ,
+						 "used.d2p" = "dp" ,
+						 "used.f2p" = "fp" ,
+						 "hadMember" = "m" )
+	
+	
+	# this list is a container for each separate part that forms the json string
+	json <- list( "prefix" = NA ,
+				  "agent" = NA ,
+				  "activity.proc" = NA ,
+				  "entity.data" = NA , 
+				  "entity.env" = NA , 
+				  "entity.lib" = NA , 
+				  "entity.func" = NA ,
+				  "wasInformedBy.p2p" = NA ,
+				  "wasGeneratedBy.p2d" = NA ,
+				  "used.d2p" = NA , 
+				  "used.f2p" = NA ,
+				  "hadMember" = NA )
+	
+	# prefix
+	json$prefix <- .ddg.json.prefix( PREFIX.NODE )
+	
+	# agent (about the tool that produced the json & the json version)
+	json$agent <- .ddg.json.agent( TOOL.NAME , JSON.VERSION , LABEL.NAMES$agent , LABEL.PREFIX )
+	
+	# activity (proc nodes)
+	json$activity.proc <- .ddg.json.proc( LABEL.NAMES$activity.proc , LABEL.PREFIX )
+	
+	# entity: data nodes
+	json$entity.data <- .ddg.json.data( LABEL.NAMES$entity.data , LABEL.PREFIX )
+	
+	# entity: environment
+	json$entity.env <- .ddg.json.env( LABEL.NAMES$entity.env , LABEL.PREFIX )
+	
+	
+	# EDGE TABLE NODES
+	edges <- subset( .ddg.edges() , ddg.num > 0 )
+	
+	# wasInformedBy (proc2proc)
+	json$wasInformedBy.p2p <- .ddg.json.proc2proc( edges , LABEL.NAMES$wasInformedBy.p2p , LABEL.PREFIX )
+	
+	# wasGeneratedBy (proc2data)
+	json$wasGeneratedBy.p2d <- .ddg.json.proc2data( edges , LABEL.NAMES$wasGeneratedBy.p2d , LABEL.PREFIX )
+	
+	
+	# get function nodes
+	calls <- .ddg.function.nodes()
+	num.calls <- nrow(calls)
+	
+	
+	# used: data2proc
+	json$used.d2p <- .ddg.json.data2proc( edges , LABEL.NAMES$used.d2p , LABEL.PREFIX )
+	
+	
+	# LIBRARY NODES - change row numbers
+	libraries <- .ddg.installedpackages()
+	rownames(libraries) <- c( 1 : nrow(libraries) )
+	
+	# PRINT TO JSON - LIBRARY NODES
+	json$entity.lib <- .ddg.json.lib( libraries , LABEL.NAMES$entity.lib , LABEL.PREFIX )
+	
+	
+	# FUNCTION NODES - get function numbers if there are any function nodes
+	if( num.calls > 0 )
+	{
+		# extract columns: ddg.fun, ddg.lib (function names and their library names)
+		functions <- calls[ , 2:3]
+		functions <- unique(functions)
+		
+		rownames(functions) <- c( 1 : nrow(functions) )
+		
+		# PRINT TO JSON - FUNCTION NODES
+		json$entity.func <- .ddg.json.func( functions , LABEL.NAMES$entity.func , LABEL.PREFIX )
+		
+		
+		# MERGE TABLES: function calls, functions, libraries
+		# library nodes - change col names, add lnum column for merging
+		colnames(libraries) <- c( "ddg.lib" , "ddg.lib.version" )
+		libraries <- cbind( "ddg.lnum" = c(1:nrow(libraries)) , libraries )
+		
+		# function nodes - add fnum column for merging
+		functions <- cbind( "ddg.fnum" = c(1:nrow(functions)) , functions )
+		
+		# function calls - add cnum column for ordering
+		calls <- cbind( "ddg.cnum" = c(1:nrow(calls)) , calls )
+		
+		# merge tables
+		calls <- merge( calls , libraries , by.x = "ddg.lib" )
+		calls <- merge( calls , functions , by = c("ddg.fun","ddg.lib") )
+		
+		# order table by cnum
+		calls <- calls[ order(calls$ddg.cnum) , ]
+		rownames(calls) <- calls$ddg.cnum
+		
+		
+		# PRINT TO JSON: func2proc
+		json$used.f2p <- .ddg.json.func2proc( calls , LABEL.NAMES$used.f2p , LABEL.NAMES$entity.func , 
+											  LABEL.NAMES$activity.proc , LABEL.PREFIX )
+		
+		# PRINT TO JSON: func2lib
+		json$hadMember <- .ddg.json.lib2func( calls , LABEL.NAMES$hadMember , LABEL.NAMES$entity.lib , 
+											  LABEL.NAMES$entity.func , LABEL.PREFIX )
+	}	
+	
+	# COMBINE INTO COMPLETE JSON
+	return(.ddg.json.combine(json) )
 }
 
 # --- HELPER FUNCTIONS ------------------------- #
@@ -113,7 +244,7 @@ ddg.json.write <- function()
 					"architecture" = NA ,
 					"operatingSystem" = NA ,
 					"language" = NA ,
-					"rVersion" = NA ,
+					"langVersion" = NA ,
 					"script" = NA ,
 					"scriptTimeStamp" = NA ,
 					"sourcedScripts" = NA ,
@@ -121,15 +252,14 @@ ddg.json.write <- function()
 					"workingDirectory" = NA ,
 					"ddgDirectory" = NA ,
 					"ddgTimeStamp" = NA ,
-					"rdatatrackerVersion" = NA ,
 					"hashAlgorithm" = NA )
 	
-	# architecture, language, rVersion
-	r.version <- R.Version()
+	# architecture, language, langVersion
+	lang.version <- R.Version()
 	
-	fields$architecture <- r.version$arch
-	fields$language <- r.version$language
-	fields$rVersion <- r.version$version
+	fields$architecture <- lang.version$arch
+	fields$language <- lang.version$language
+	fields$langVersion <- lang.version$version
 	
 	# operating system
 	fields$operatingSystem <- .Platform$OS.type
@@ -161,9 +291,6 @@ ddg.json.write <- function()
 	
 	# ddg timestamp
 	fields$ddgTimeStamp <- .ddg.get("ddg.start.time")
-	
-	# rdt version
-	fields$rdatatrackerVersion <- toString( packageVersion("RDataTracker") )
 	
 	# hash algorithm
 	fields$hashAlgorithm <- .ddg.get(".ddg.hash.algorithm")

@@ -15,6 +15,28 @@
 #' @return None
 .ddg.init.hashtable <- function() {
   .ddg.set("ddg.hashtable", data.frame())
+  
+  # List of files read and written
+  .ddg.set("ddg.infilenodes", character())
+  .ddg.set("ddg.outfilenodes", character())
+  
+  # Boolean of whether there are any file nodes
+  .ddg.set("ddg.hasfilenodes", FALSE)
+  
+}
+
+#' Adds files it the infile list to add to the hash table 
+#' @param files files to add to the list of files read
+#' @return nothing 
+.ddg.add.infiles <- function (files) {
+  .ddg.set("ddg.infilenodes", c(.ddg.get("ddg.infilenodes"), files))
+}
+
+#' Adds files it the outfile list to add to the hash table 
+#' @param files files to add to the list of files written
+#' @return nothing 
+.ddg.add.outfiles <- function (files) {
+  .ddg.set("ddg.outfilenodes", c(.ddg.get("ddg.outfilenodes"), files))
 }
 
 #' Adds information about a file to the hash table.

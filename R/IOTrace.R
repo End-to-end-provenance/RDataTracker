@@ -275,7 +275,7 @@
   
   # Adds the files read to ddg.infilenodes for use in determining reads
   # and writes in the hashtable.
-  .ddg.set("ddg.infilenodes", c(.ddg.get("ddg.infilenodes"), files.read))
+  .ddg.add.infiles (files.read)
   
   for (file in files.read) {
     # Use URL node for URLs and for socket connections

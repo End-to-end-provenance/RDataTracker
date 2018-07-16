@@ -122,7 +122,7 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
   }
 
   # Set environment constants.
-  .ddg.set(".ddg.enable.console", enable.console)
+  .ddg.set.enable.console (enable.console)
   .ddg.set(".ddg.func.depth", 0)
   .ddg.set(".ddg.explorer.port", 6096)
   .ddg.set.details.omitted(FALSE)
@@ -142,20 +142,7 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
   .ddg.set("possible.graphics.files.open", NULL)
   .ddg.set("ddg.open.devices", vector())
 
-  if (interactive() && .ddg.enable.console()) {
-    ddg.history.file <- paste(.ddg.path.data(), "/.ddghistory", sep="")
-    .ddg.set(".ddg.history.file", ddg.history.file)
-
-    # Empty file if it already exists, do the same with tmp file.
-    file.create(ddg.history.file, showWarnings=FALSE)
-
-    # One timestamp keeps track of last ddg.save (the default).
-    .ddg.write.timestamp.to.history()
-
-    # Save the history if the platform supports it.
-    tryCatch (savehistory(ddg.history.file),
-              error = function(e) {})
-  }
+  .ddg.init.history.file ()
 
   # If ddg.detail is not set, use values of annotate.inside, max.loops
   # and max.snapshot.size.
@@ -165,24 +152,13 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
 
     # Store maximum number of loops to annotate.
     if (max.loops < 0) max.loops <- 10^10
-    .ddg.set("ddg.max.loops", max.loops)
 
     # Store maximum snapshot size.
     .ddg.set("ddg.max.snapshot.size", max.snapshot.size)
   }
   
-  # If loops are not annotated, do not annotate functions called from inside a loop.
-  if (max.loops == 0) ddg.loop.annotate.off()
+  .ddg.init.loops (first.loop, max.loops)
   
-  # Initialize the counter that keeps track of nested levels
-  # of ifs and loops
-  ddg.set.inside.loop()
-
-  # Set number of first loop.
-  .ddg.set("ddg.first.loop", first.loop)
-
-  .ddg.set(".ddg.proc.start.time", .ddg.elapsed.time())
-
   # Store time when script begins execution.
   .ddg.set("ddg.start.time", .ddg.timestamp())
   
@@ -204,10 +180,8 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
 ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE) {
   if (!.ddg.is.init()) return(invisible())
   
-  if (interactive() && .ddg.enable.console()) {
-    # Get the final commands
-    .ddg.console.node()
-  }
+  # Get the final commands
+  .ddg.console.node()
 
   # If there are any connections still open when the script ends,
   # create nodes and edges for them.
@@ -246,8 +220,7 @@ ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE) {
   .ddg.init.statements ()
 
   # Clear loop information from ddg environment.
-  .ddg.set("ddg.loop.num", 0)
-  .ddg.set("ddg.loops", list())
+  .ddg.clear.loops ()
 
   # I don't think save is ever called with quit = TRUE, but we might want
   # to distinguish between the final call to ddg.save and a call the user
@@ -257,7 +230,7 @@ ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE) {
   # By convention, this is the final call to ddg.save.
   if (quit) {
     # Restore history settings.
-    if (.ddg.is.set('ddg.original.hist.size')) Sys.setenv("R_HISTSIZE"=.ddg.get('ddg.original.hist.size'))
+    .ddg.restore.history.size()
 
     # Delete temporary files.
     .ddg.delete.temp()
@@ -542,7 +515,7 @@ ddg.source <- function (file,  ddgdir = NULL, local = FALSE, echo = verbose, pri
 		# Turn on the console if forced to, keep track of previous
 		# setting, parse previous commands if necessary.
 		prev.on <- .ddg.is.init() && .ddg.enable.console()
-		if (prev.on && interactive()) .ddg.console.node()
+		if (prev.on) .ddg.console.node()
 		if (force.console) ddg.console.on()
 
 		# Let library know that we are sourcing a file.
@@ -575,130 +548,8 @@ ddg.source <- function (file,  ddgdir = NULL, local = FALSE, echo = verbose, pri
 
 ddg.json <- function()
 {
-	# CONSTANTS
-	TOOL.NAME <- "RDataTracker"
-	JSON.VERSION <- "2.1"
-	
-	# contents of the prefix node
-	PREFIX.NODE <- list( "prov" = "http://www.w3.org/ns/prov#" ,
-						 "rdt" = "http://rdatatracker.org/" )
-	
-	# the namespace prefix appended to the name for each node or edge
-	LABEL.PREFIX <- "rdt:"
-	
-	# the name/character denoting the type of node or edge
-	LABEL.NAMES <- list( "agent" = "a" ,
-						 "activity.proc" = "p" ,
-						 "entity.data" = "d" ,
-						 "entity.env" = "environment" ,
-						 "entity.lib" = "l" ,
-						 "entity.func" = "f" ,
-						 "wasInformedBy.p2p" = "pp" ,
-						 "wasGeneratedBy.p2d" = "pd" ,
-						 "used.d2p" = "dp" ,
-						 "used.f2p" = "fp" ,
-						 "hadMember" = "m" )
-	
-	
-	# this list is a container for each separate part that forms the json string
-	json <- list( "prefix" = NA ,
-				  "agent" = NA ,
-				  "activity.proc" = NA ,
-				  "entity.data" = NA , 
-				  "entity.env" = NA , 
-				  "entity.lib" = NA , 
-				  "entity.func" = NA ,
-				  "wasInformedBy.p2p" = NA ,
-				  "wasGeneratedBy.p2d" = NA ,
-				  "used.d2p" = NA , 
-				  "used.f2p" = NA ,
-				  "hadMember" = NA )
-	
-	# prefix
-	json$prefix <- .ddg.json.prefix( PREFIX.NODE )
-	
-	# agent (about the tool that produced the json & the json version)
-	json$agent <- .ddg.json.agent( TOOL.NAME , JSON.VERSION , LABEL.NAMES$agent , LABEL.PREFIX )
-	
-	# activity (proc nodes)
-	json$activity.proc <- .ddg.json.proc( LABEL.NAMES$activity.proc , LABEL.PREFIX )
-	
-	# entity: data nodes
-	json$entity.data <- .ddg.json.data( LABEL.NAMES$entity.data , LABEL.PREFIX )
-	
-	# entity: environment
-	json$entity.env <- .ddg.json.env( LABEL.NAMES$entity.env , LABEL.PREFIX )
-	
-	
-	# EDGE TABLE NODES
-	edges <- subset( .ddg.edges() , ddg.num > 0 )
-	
-	# wasInformedBy (proc2proc)
-	json$wasInformedBy.p2p <- .ddg.json.proc2proc( edges , LABEL.NAMES$wasInformedBy.p2p , LABEL.PREFIX )
-	
-	# wasGeneratedBy (proc2data)
-	json$wasGeneratedBy.p2d <- .ddg.json.proc2data( edges , LABEL.NAMES$wasGeneratedBy.p2d , LABEL.PREFIX )
-	
-	
-	# get function nodes
-	calls <- .ddg.function.nodes()
-	num.calls <- nrow(calls)
-	
-	
-	# used: data2proc
-	json$used.d2p <- .ddg.json.data2proc( edges , LABEL.NAMES$used.d2p , LABEL.PREFIX )
-	
-	
-	# LIBRARY NODES - change row numbers
-	libraries <- .ddg.installedpackages()
-	rownames(libraries) <- c( 1 : nrow(libraries) )
-	
-	# PRINT TO JSON - LIBRARY NODES
-	json$entity.lib <- .ddg.json.lib( libraries , LABEL.NAMES$entity.lib , LABEL.PREFIX )
-	
-	
-	# FUNCTION NODES - get function numbers if there are any function nodes
-	if( num.calls > 0 )
-	{
-		functions <- calls[ , 2:3]
-		functions <- unique(functions)
-		
-		rownames(functions) <- c( 1 : nrow(functions) )
-		
-		# PRINT TO JSON - FUNCTION NODES
-		json$entity.func <- .ddg.json.func( functions , LABEL.NAMES$entity.func , LABEL.PREFIX )
-		
-		
-		# MERGE TABLES: function calls, functions, libraries
-		# library nodes - change col names, add lnum column for merging
-		colnames(libraries) <- c( "ddg.lib" , "ddg.lib.version" )
-		libraries <- cbind( "ddg.lnum" = c(1:nrow(libraries)) , libraries )
-		
-		# function nodes - add fnum column for merging
-		functions <- cbind( "ddg.fnum" = c(1:nrow(functions)) , functions )
-		
-		# function calls - add cnum column for ordering
-		calls <- cbind( "ddg.cnum" = c(1:nrow(calls)) , calls )
-		
-		# merge tables
-		calls <- merge( calls , libraries , by.x = "ddg.lib" )
-		calls <- merge( calls , functions , by = c("ddg.fun","ddg.lib") )
-		
-		# order table by cnum
-		calls <- calls[ order(calls$ddg.cnum) , ]
-		rownames(calls) <- calls$ddg.cnum
-		
-		
-		# PRINT TO JSON: func2proc
-		json$used.f2p <- .ddg.json.func2proc( calls , LABEL.NAMES$used.f2p , LABEL.NAMES$entity.func , 
-											  LABEL.NAMES$activity.proc , LABEL.PREFIX )
-		
-		# PRINT TO JSON: func2lib
-		json$hadMember <- .ddg.json.lib2func( calls , LABEL.NAMES$hadMember , LABEL.NAMES$entity.lib , 
-											  LABEL.NAMES$entity.func , LABEL.PREFIX )
-	}	
-	
-	# COMBINE INTO COMPLETE JSON
-	return(.ddg.json.combine(json) )
+	# This is a wrapper function.
+	# Calls and returns the function with the bulk of the code in OutputJSON.R
+	return( .ddg.json.string() )
 }
 
