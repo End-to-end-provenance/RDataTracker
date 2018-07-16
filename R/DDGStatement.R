@@ -213,6 +213,89 @@ setMethod ("initialize",
     }
 )
 
+# Create the DDGStatement list for a list of parsed expressions.
+
+# exprs - a list of parsed expressions
+# script.name - the name of the script the expressions come from
+# parseData - information provided by the parser that we use to find line numbers
+# enclosing.pos - if exprs are statements within a function definition, enclosing.pos
+#   is the source position information of the entire function declaration
+
+# Returns a list of DDGStatement objects
+
+.ddg.create.DDGStatements <- function (exprs, script.name, script.num, parseData = NULL, enclosing.pos = NULL) {
+  # The parse data gives us line number information
+  if (is.null(parseData)) {
+    parseData <- getParseData(exprs, includeText=TRUE)
+    
+    if (is.null(parseData)) {
+      # In this case there is no line number information available
+      cmds <- vector("list", (length(exprs)))
+      for (i in 1:length(exprs)) {
+        expr <- as.expression(exprs[i])
+        cmds[[i]] <- .ddg.construct.DDGStatement(expr, NA, script.name, script.num, parseData)
+      }
+      return(cmds)
+    }
+    
+    non.comment.parse.data <- parseData[parseData$token != "COMMENT", ]
+    if (nrow(non.comment.parse.data) == 0) {
+      return(list())
+    }
+    
+    # Start at the first non-comment expression in parseData
+    next.parseData <- 1
+  }
+  
+  else {
+    non.comment.parse.data <- parseData[parseData$token != "COMMENT", ]
+    
+    # Start at the first entry in parse data that begins after the enclosing function begins,
+    # ends before the enclosing function ends, and matches the text of the first expression.
+    next.parseData <- which(non.comment.parse.data$line1 >= enclosing.pos@startLine & non.comment.parse.data$line2 <= enclosing.pos@endLine & non.comment.parse.data$text == paste(deparse(exprs[[1]]), collapse="\n") )[1]
+  }
+  
+  # Create the DDGStatements
+  cmds <- vector("list", (length(exprs)))
+  next.cmd <- 1
+  for (i in 1:length(exprs)) {
+    expr <- as.expression(exprs[i][[1]])
+    next.expr.pos <- new (Class = "DDGStatementPos", non.comment.parse.data[next.parseData, ])
+    cmds[[next.cmd]] <- .ddg.construct.DDGStatement(expr, next.expr.pos, script.name, script.num, parseData)
+    next.cmd <- next.cmd + 1
+    
+    # If there are more expressions, determine where to look next in the parseData
+    if (i < length(exprs)) {
+      last.ending.line <- non.comment.parse.data[next.parseData,]$line2
+      last.parent <- non.comment.parse.data[next.parseData,"parent"]
+      last.id <- non.comment.parse.data[next.parseData,"id"]
+      
+      # Find the first entry in parseData that has the same parent as the
+      # previous expression and starts after the previous expression.
+      next.parseData <- which(non.comment.parse.data$parent == last.parent & non.comment.parse.data$line1 >= last.ending.line & non.comment.parse.data$id > last.id) [1]
+    }
+  }
+  
+  return (cmds)
+}
+
+# .ddg.save.annotated.script saves a copy of the annotated script to
+# the debug directory.
+
+.ddg.save.annotated.script <- function(cmds, script.name) {
+  for (i in 1:length(cmds)) {
+    expr <- cmds[[i]]@annotated
+    for (j in 1:length(expr)) {
+      line <- deparse(expr[[j]])
+      if (i == 1 && j == 1) script <- line else script <- append(script, line)
+    }
+  }
+  
+  fileout <- file(paste(.ddg.path.debug(), "/annotated-", script.name, sep=""))
+  write(script, fileout)
+  close(fileout)
+}
+
 # Finds the function calls and potential function calls in an expression.
 # This function wraps the last two vectors in the returned value of 
 # .ddg.find.calls.rec into a data frame, keeping the other two vectors the same,
@@ -583,8 +666,8 @@ null.pos <- function() {
 # parsed statement.
 
 .ddg.get.statement.type <- function(parsed.command) {
-  if (length(parsed.command) > 1) return(parsed.command[[1]])
-  return(0)
+  if (length(parsed.command) > 1) return(as.character(parsed.command[[1]]))
+  return("")
 }
 
 # .ddg.add.annotations accepts a DDGStatement and returns an expression.
@@ -610,7 +693,7 @@ null.pos <- function() {
       return(.ddg.add.function.annotations(command))
     }
   
-  statement.type <- as.character(.ddg.get.statement.type(parsed.command))
+  statement.type <- .ddg.get.statement.type(parsed.command)
   loop.types <- list("for", "while", "repeat")
   if (length(statement.type > 0) && !is.null(statement.type)) { # Move into funcs below && ddg.max.loops() > 0) {
 
@@ -663,7 +746,7 @@ null.pos <- function() {
   }
 
   # Control statements.
-  st.type <- as.character(.ddg.get.statement.type(parsed.cmd))
+  st.type <- .ddg.get.statement.type(parsed.cmd)
 
   # If statement.
   if (st.type == "if") {

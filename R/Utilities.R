@@ -39,3 +39,18 @@
   return (.ddg.format.time(ts))
 }
 
+#' @param str input string.
+#' @returnType string
+#' @return the same string but with tabs and end of line charcters
+#'    replaced with a single space
+#' .ddg.replace.quotes <- function(str) {
+.ddg.remove.tab.and.eol.chars <- function (str) {
+  if (!is.character(str)) return (str)
+  
+  # Replace returns, new lines, and tabs with spaces.
+  str <- gsub("\r", " ", str)
+  str <- gsub("\n", " ", str)
+  str <- gsub("\t", " ", str)
+  return(str)
+}
+
