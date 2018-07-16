@@ -398,13 +398,13 @@ ddg.MAX_HIST_LINES <- 2^14
 # var - the variable name under which the timestamp is saved.
 
 .ddg.write.timestamp.to.history <- function(var=".ddg.history.timestamp") {
-  if (Sys.getenv("RSTUDIO") != "" && Sys.info()['sysname'] == "Windows") {
-    .ddg.set(var, paste("##------", date(), "------##"))
-    timestamp(quiet=TRUE)
-  }
-  else {
+  # if (Sys.getenv("RSTUDIO") != "" && Sys.info()['sysname'] == "Windows") {
+  #   .ddg.set(var, paste("##------", date(), "------##"))
+  #   timestamp(quiet=TRUE)
+  # }
+  # else {
     .ddg.set(var, timestamp(prefix = "##-ddg-- ", quiet=TRUE))
-  }
+  # }
 }
 
 # .ddg.is.graphic tries to decipher if the value snapshot should be
@@ -1712,7 +1712,8 @@ ddg.MAX_HIST_LINES <- 2^14
 .ddg.console.node <- function() {
   # Don't do anything if sourcing, because history isn't necessary
   # in this case.
-  if(.ddg.enable.source()) return(NULL)
+  if(.ddg.is.sourced()) return(NULL)
+  # if(.ddg.enable.source()) return(NULL)
 
   ddg.history.file=.ddg.get(".ddg.history.file")
   ddg.history.timestamp=.ddg.get(".ddg.history.timestamp")
@@ -1949,7 +1950,7 @@ ddg.MAX_HIST_LINES <- 2^14
 
 .ddg.delete.temp <- function() {
   # Delete the temporary history file if we made it.
-  if (.ddg.is.set('ddg.history.file')) unlink(.ddg.get('ddg.history.file'))
+  if (.ddg.is.set('.ddg.history.file')) unlink(.ddg.get('.ddg.history.file'))
 
   # Clear the environment.
   .ddg.env <- new.env(parent=emptyenv())

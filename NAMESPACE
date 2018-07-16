@@ -12,29 +12,15 @@ export(ddg.set.detail, ddg.get.detail, ddg.clear.detail)
 export(ddg.set.inside.loop, ddg.not.inside.loop)
 export(ddg.json.write, ddg.json)
 
-importFrom(tools, file_path_sans_ext)
-importFrom(tools, file_ext)
-importFrom(gtools, defmacro)
-importFrom(XML, saveXML)
-importFrom(knitr, purl)
-importFrom(stringr, str_trim)
-importFrom(devtools, session_info)
-importFrom(methods, setMethod)
-importFrom(methods, setClass)
-importFrom(digest, digest)
-importFrom(jsonlite, read_json)
-importFrom(jsonlite, write_json)
-importFrom(jsonlite, toJSON)
-importFrom(jsonlite, prettify)
 importFrom(curl, curl_download)
-
-# CRAN check gives errors if these are not included.
-# However, if we include these, ddg.run crashes R when run
-# in RStudio on Windows.  It does not crash on Mac.  It
-# also does not crash on Windows using the standard R environment.
-#importFrom("grDevices", "dev.copy", "dev.copy2pdf", "dev.cur",
-#           "dev.list", "dev.off", "dev.print", "dev.set", "pdf")
-#importFrom("methods", "new")
-#importFrom("utils", "capture.output", "getParseData", "head",
-#           "object.size", "packageVersion", "savehistory", "tail",
-#           "timestamp", "write.csv")
+importFrom(devtools, session_info)
+importFrom(digest, digest)
+importFrom(grDevices, dev.control, dev.copy, dev.copy2pdf, dev.cur, dev.list, dev.off, dev.print, dev.set, pdf)
+importFrom(gtools, defmacro)
+importFrom(jsonlite, prettify, read_json, toJSON, write_json)
+importFrom(knitr, purl)
+importFrom(methods, new, setClass, setMethod)
+importFrom(stringr, str_trim)
+importFrom(tools, file_ext, file_path_sans_ext)
+importFrom(utils, capture.output, getParseData, head, installed.packages, object.size, packageVersion, savehistory, tail, timestamp, write.csv)
+importFrom(XML, saveXML)
