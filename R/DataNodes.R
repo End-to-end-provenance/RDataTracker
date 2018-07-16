@@ -99,45 +99,6 @@
   return (ddg.data.nodes [ddg.data.nodes$ddg.num > 0, ])
 }
 
-#' Calculates the hash value for the file
-#' @param dname the name of the file 
-#' @return the hash value based on the hash algorithm specified when ddg.run or ddg.init was called.
-#'   Returns "" if the digest cannot be computed, for example, if the file does not exist.
-.ddg.calculate.hash <- function(dname) {
-  .ddg.set("ddg.hasfilenodes", TRUE)
-  # This function will cause certain tests to fail if run with pdf files or
-  # other non-text files with internal timestamps. This could also cause these files
-  # to sync incorrectly in the workflow, but given that reading in a pdf file is unlikely,
-  # this should not be an overly large issue.
-  dhash <- digest(dname, algo=.ddg.get(".ddg.hash.algorithm"))
-  if (is.null(dhash)) {
-    dhash <- ""
-  }
-  return (dhash)
-}
-
-#' Determines whether to record this as a read or write operation
-#' @param dname the data file name 
-#' @return "read" if the file was read and "write" if the file was written
-.ddg.calculate.rw <- function(dname) {
-  infiles <- .ddg.get("ddg.infilenodes")
-  if (dname %in% infiles) {
-    .ddg.set("ddg.infilenodes", infiles[match(infiles, dname, 0) == 0])
-    #print (paste("Removing", dname, "from infilenodes"))
-    return ("read")
-  }
-  
-  outfiles <- .ddg.get("ddg.outfilenodes")
-  if (dname %in% outfiles) {
-    .ddg.set("ddg.outfilenodes", outfiles[match(outfiles, dname, 0) == 0])
-    #print (paste("Removing", dname, "from outfilenodes"))
-    return ("write")
-  }
-
-  #print(paste(".ddg.calculate.rw:", dname, "not found in infilenodes or outfilenodes!"))
-  return ("")
-}
-
 #' Sets the hash and rw fields for a data node 
 #' @param dnum the id of the node to set
 #' @param hash the hash value to use
@@ -300,6 +261,95 @@
     }
   }
 }
+
+#' @returnType string
+#' @return the type information of the given value.  "null" for null values.
+#'   For values of length 1, it is the type of the value.  For longer values,
+#'   the description includes the container (like vector, matrix, ...), the
+#'   dimensions, and the type of the members of the data structure
+.ddg.get.val.type.string <- function(value)
+{
+  val.type <- .ddg.get.val.type(value)
+  
+  if( is.null(val.type) )
+    return( 'null' )
+  
+  # list, object, environment, function, language
+  if( length(val.type) == 1 )
+    return( paste('"',val.type,'"',sep="") )
+  
+  # vector, matrix, array, data frame
+  # type information recorded in a list of 3 vectors (container,dimension,type)
+  container <- val.type[[1]]
+  dimension <- val.type[[2]]
+  type <- val.type[[3]]
+  
+  # matrix: a 2-dimensional array (uniform typing)
+  # array: n-dimensional (uniform typing)
+  # data frame: list of vectors
+  if( !identical(container,"vector"))
+  {
+    # Record size of each dimension
+    dimension <- paste( dimension , collapse = "," )
+
+    # data frame.  Record type of each column
+    if (identical(container,"data_frame")) {
+      type <- paste( type , collapse = '","' )
+    }
+  }
+  
+  return( paste('{"container":"', container, '", "dimension":[', dimension, '], "type":["' , type, '"]}', sep = "") )
+}
+
+#' @return the type information of the given value
+#' @returnType There are several return types possible.
+#'   For lists, objects, environments, functions and language values,
+#'   the return type is string.  For vectors, matrices, arrays 
+#'   and data frames, a list is returned.  The list contains 3 parts: a
+#'   string representation of the container, dimension information,
+#'   and the types of values in the structure.  If anything else
+#'   is found, it returns NULL.
+.ddg.get.val.type <- function(value)
+{
+  # vector: a 1-dimensional array (uniform typing)
+  if(is.vector(value))
+    return( list("vector", length(value), class(value)) )
+  
+  # matrix: a 2-dimensional array (uniform typing)
+  if(is.matrix(value))
+    return( list("matrix", dim(value), class(value[1])) )
+  
+  # array: n-dimensional (uniform typing)
+  if(is.array(value))
+    return( list("array", dim(value), class(value[1])) )
+  
+  # data frame: is a type of list
+  if(is.data.frame(value))
+  {
+    types <- unname(sapply(value,class))
+    return( unname(list("data_frame", dim(value), types)) )
+  }
+  
+  # a list
+  if(is.list(value))
+    return("list")
+  
+  # an object
+  if(is.object(value))
+    return("object")
+  
+  # envrionment, function, language
+  if(is.environment(value))
+    return("environment")
+  if(is.function(value))
+    return("function")
+  if(is.language(value))
+    return("language")
+  
+  # none of the above - null is a character, not NULL or NA
+  return(NULL)
+}
+
 
 #' .ddg.data.node creates a data node of type Data. Data nodes are
 #' used for single data values. The value (dvalue) is stored in the
@@ -629,6 +679,60 @@
       dscope=environmentName(.GlobalEnv), from.env=FALSE, dtime=.ddg.timestamp())
 }
 
+#' .ddg.is.graphic tries to decipher if the value snapshot should be
+#' written to file directly from the data or if it is a graphic which
+#' can be captured from the image device. This function, as written,
+#' is basically a hack. There must be a better way to implement it.
+#' 
+#' @param value value to test
+#' @returnType logical
+#' @return TRUE if the value is in the gg or ggplot class
+.ddg.is.graphic <- function(value){
+  # Matching any of these classes automatically classifies the
+  # object as a graphic.
+  graph.classes <- list("gg", "ggplot")
+  return(is.object(value) && any(class(value) %in% graph.classes))
+}
+
+#' .ddg.is.simple returns TRUE if the value passed in is a simple
+#' data value which should be saved locally as opposed to stored
+#' in a separate file. 
+#' 
+#' @param value value to test
+#' @returnType logical
+#' @return TRUE for NULL and for vectors of length 1
+.ddg.is.simple <- function(value) {
+  # Note that is.vector returns TRUE for lists, so we need to check
+  # lists separately.  Since every value in a list can have a
+  # different type, if it is a list, we will assume the value is
+  # complex. We consider NULL values to be simple.
+  return((!.ddg.is.graphic(value) &&
+            !is.list(value) &&
+            is.vector(value) &&
+            length(value) == 1) ||
+          is.null(value))
+}
+
+#' .ddg.is.csv returns TRUE if the value passed in should be saved
+#' as a csv file
+#' 
+#' @param value value to test
+#' @returnType logical
+#' @return TRUE for vectors longer than 1, and for all matrices and data frames
+.ddg.is.csv <- function(value) {
+  return(!.ddg.is.simple(value) && ((is.vector(value) && !is.list(value)) || is.matrix(value) || is.data.frame(value)))
+}
+
+#' .ddg.is.object returns TRUE if the value is determined to be an
+#' object by our standards.
+#' 
+#' @param value value to test
+#' @returnType logical
+#' @return TRUE for objects and environments
+.ddg.is.object <- function(value){
+  return(is.object(value) || is.environment(value))
+}
+
 #' .ddg.save.data takes as input the name and value of a data node
 #' that needs to be created. It determines how the data should be
 #' output (or saved) and saves it in that format.
@@ -655,7 +759,7 @@
   else if (is.list(value) || is.array(value)) .ddg.snapshot.node(name, "txt", value, save.object=TRUE, dscope=scope, from.env=from.env)
   else if (.ddg.is.connection(value)) {.ddg.save.simple(name, value, scope=scope, from.env=from.env)}
   else if (.ddg.is.object(value)) {.ddg.snapshot.node(name, "txt", value, dscope=scope, from.env=from.env) }
-  else if (.ddg.is.function(value)) .ddg.save.simple(name, "#ddg.function", scope=scope, from.env=from.env)
+  else if (is.function(value)) .ddg.save.simple(name, "#ddg.function", scope=scope, from.env=from.env)
   else if (error) stop("Unable to create data (snapshot) node.")
   else {
     error.msg <- paste("Unable to create data (snapshot) node.")

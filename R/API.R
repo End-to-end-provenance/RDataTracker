@@ -122,7 +122,7 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
   }
 
   # Set environment constants.
-  .ddg.set(".ddg.enable.console", enable.console)
+  .ddg.set.enable.console (enable.console)
   .ddg.set(".ddg.func.depth", 0)
   .ddg.set(".ddg.explorer.port", 6096)
   .ddg.set.details.omitted(FALSE)
@@ -142,20 +142,7 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
   .ddg.set("possible.graphics.files.open", NULL)
   .ddg.set("ddg.open.devices", vector())
 
-  if (interactive() && .ddg.enable.console()) {
-    ddg.history.file <- paste(.ddg.path.data(), "/.ddghistory", sep="")
-    .ddg.set(".ddg.history.file", ddg.history.file)
-
-    # Empty file if it already exists, do the same with tmp file.
-    file.create(ddg.history.file, showWarnings=FALSE)
-
-    # One timestamp keeps track of last ddg.save (the default).
-    .ddg.write.timestamp.to.history()
-
-    # Save the history if the platform supports it.
-    tryCatch (savehistory(ddg.history.file),
-              error = function(e) {})
-  }
+  .ddg.init.history.file ()
 
   # If ddg.detail is not set, use values of annotate.inside, max.loops
   # and max.snapshot.size.
@@ -165,24 +152,13 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
 
     # Store maximum number of loops to annotate.
     if (max.loops < 0) max.loops <- 10^10
-    .ddg.set("ddg.max.loops", max.loops)
 
     # Store maximum snapshot size.
     .ddg.set("ddg.max.snapshot.size", max.snapshot.size)
   }
   
-  # If loops are not annotated, do not annotate functions called from inside a loop.
-  if (max.loops == 0) ddg.loop.annotate.off()
+  .ddg.init.loops (first.loop, max.loops)
   
-  # Initialize the counter that keeps track of nested levels
-  # of ifs and loops
-  ddg.set.inside.loop()
-
-  # Set number of first loop.
-  .ddg.set("ddg.first.loop", first.loop)
-
-  .ddg.set(".ddg.proc.start.time", .ddg.elapsed.time())
-
   # Store time when script begins execution.
   .ddg.set("ddg.start.time", .ddg.timestamp())
   
@@ -204,10 +180,8 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
 ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE) {
   if (!.ddg.is.init()) return(invisible())
   
-  if (interactive() && .ddg.enable.console()) {
-    # Get the final commands
-    .ddg.console.node()
-  }
+  # Get the final commands
+  .ddg.console.node()
 
   # If there are any connections still open when the script ends,
   # create nodes and edges for them.
@@ -246,8 +220,7 @@ ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE) {
   .ddg.init.statements ()
 
   # Clear loop information from ddg environment.
-  .ddg.set("ddg.loop.num", 0)
-  .ddg.set("ddg.loops", list())
+  .ddg.clear.loops ()
 
   # I don't think save is ever called with quit = TRUE, but we might want
   # to distinguish between the final call to ddg.save and a call the user
@@ -257,7 +230,7 @@ ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE) {
   # By convention, this is the final call to ddg.save.
   if (quit) {
     # Restore history settings.
-    if (.ddg.is.set('ddg.original.hist.size')) Sys.setenv("R_HISTSIZE"=.ddg.get('ddg.original.hist.size'))
+    .ddg.restore.history.size()
 
     # Delete temporary files.
     .ddg.delete.temp()
@@ -542,7 +515,7 @@ ddg.source <- function (file,  ddgdir = NULL, local = FALSE, echo = verbose, pri
 		# Turn on the console if forced to, keep track of previous
 		# setting, parse previous commands if necessary.
 		prev.on <- .ddg.is.init() && .ddg.enable.console()
-		if (prev.on && interactive()) .ddg.console.node()
+		if (prev.on) .ddg.console.node()
 		if (force.console) ddg.console.on()
 
 		# Let library know that we are sourcing a file.

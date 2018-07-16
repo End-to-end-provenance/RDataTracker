@@ -50,7 +50,7 @@
 	   	</exec>
     </target>
 
-    <target name="install" depends="check, prop">
+    <target name="install" depends="check">
     	<exec dir="${builddir}/.." executable="R" >
   			<arg line="CMD INSTALL ${tarfile}"/>
 		</exec>
@@ -74,12 +74,4 @@
         <delete dir="${builddir}" verbose="true"/>
     </target>
 	
-	<target name="prop">
-		<echoproperties>
-		  <propertyset>
-		    <propertyref prefix="ant."/>
-		  </propertyset>
-		</echoproperties>
-	</target>
-
 </project>
