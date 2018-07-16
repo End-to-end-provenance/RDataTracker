@@ -268,12 +268,9 @@
   
   # We're not in a console node but we're capturing data
   # automatically.
-  if (.ddg.enable.console()) {
-    
-    # Capture graphic output of previous procedure node.
-    if (!console && !.ddg.enable.source() && interactive()) {
-      .ddg.console.node()
-    }
+  # Capture graphic output of previous procedure node.
+  if (!console && !.ddg.enable.source()) {
+    .ddg.console.node()
   }
   
   if (is.null(cmd)) {
