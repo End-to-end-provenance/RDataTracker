@@ -666,7 +666,7 @@ ddg.MAX_HIST_LINES <- 2^14
     }
   }
   if (.ddg.debug.lib()) print(paste(called, ":  Adding", node.name,  type, "node"))
-  .ddg.proc.node(type, node.name, node.name, cmd = cmd)
+  .ddg.proc.node(type, node.name, node.name, cmd = cmd, console=(node.name=="Console"))
   .ddg.proc2proc()
 
   return(node.name)
