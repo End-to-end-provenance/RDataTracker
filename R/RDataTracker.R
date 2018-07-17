@@ -913,7 +913,7 @@ ddg.MAX_HIST_LINES <- 2^14
       st.type <- .ddg.get.statement.type(cmd@parsed[[1]])
       loop.statement <- st.type %in% c("for", "while", "repeat")
       control.statement <- loop.statement || st.type %in% c("if", "{")
-
+      
       # Specifies whether or not a procedure node should be created
       # for this command. Basically, if a ddg exists and the
       # command is not a DDG command or a control statement, it should
@@ -1186,6 +1186,18 @@ ddg.MAX_HIST_LINES <- 2^14
     .ddg.set(".ddg.cur.cmd.stack", .ddg.cur.cmd.stack[1:(stack.length-2)])
   }
 }
+
+#' Change the value associated with the current command while keeping 
+#' the command at the top of the stack the same
+#' 
+#' @param value the new value
+#' @return nothing
+.ddg.change.cmd.top <- function (value) {
+  .ddg.cur.cmd.stack <- .ddg.get(".ddg.cur.cmd.stack")
+  stack.length <- length(.ddg.cur.cmd.stack)
+  .ddg.set (".ddg.cur.cmd.stack", c(.ddg.cur.cmd.stack[1:stack.length-1], value))
+}
+
 
 #' .ddg.lookup.function.name gets the name of the calling function
 #' and sets pname to that value. If pname is passed as a string,
@@ -1676,52 +1688,47 @@ ddg.MAX_HIST_LINES <- 2^14
   return(scope)
 }
 
-# .ddg.is.local returns TRUE if the specified name is local in the
-# specified scope.
+#' Creates a start node for the current command if one has not
+#' been created already.  Modifies the command stack by setting the 
+#' value to TRUE if the start node is created.  If the current command 
+#' matches the call, no node is created but the top of the stack is changed
+#' to "MATCHES_CALL".
+#' 
+#' @param call the parsed version of the function call
+#' @return nothing
+.ddg.create.start.for.cur.cmd <- function (call) {
+  if (!.ddg.is.set(".ddg.cur.cmd")) return ()
 
-# name of variable.
-# scope of variable.
+  .ddg.cur.cmd.stack <- .ddg.get(".ddg.cur.cmd.stack")
+  stack.length <- length(.ddg.cur.cmd.stack)
+  if (stack.length == 0) return ()
+  
+  last.created <- .ddg.cur.cmd.stack[stack.length]
+  # Only create a start node for the current command if we have not already
+  # created one and the command is more than just the call to this function
+  if (last.created[[1]] != "FALSE") return ()
+  
+  .ddg.cur.cmd <- .ddg.get(".ddg.cur.cmd")
+  if (.ddg.cur.cmd@text == paste(deparse(call), collapse="")) {
+    .ddg.change.cmd.top ("MATCHES_CALL")
+  }
+  
+  else {
+    cmd.abbrev <- .ddg.add.start.node (.ddg.cur.cmd)
+    .ddg.cur.expr.stack <- .ddg.get(".ddg.cur.expr.stack")
+    st.type <- .ddg.get.statement.type(.ddg.cur.cmd@parsed[[1]])
+    loop.statement <- st.type %in% c("for", "while", "repeat")
+    control.statement <- loop.statement || st.type %in% c("if", "{")
+    .ddg.create.data.use.edges.for.console.cmd(vars.set = data.frame(), .ddg.cur.cmd, 0, for.caller=!control.statement)
 
-.ddg.is.local <- function(name, scope) {
-  return(exists(name, scope, inherits=FALSE))
-}
-
-# Creates a start node for the current command if one has not
-# been created already.
-.ddg.create.start.for.cur.cmd <- function (call, caller.env) {
-  if (.ddg.is.set(".ddg.cur.cmd")) {
-    # print("In .ddg.create.start.for.cur.cmd")
-    .ddg.cur.cmd <- .ddg.get(".ddg.cur.cmd")
-    .ddg.cur.cmd.stack <- .ddg.get(".ddg.cur.cmd.stack")
-    stack.length <- length(.ddg.cur.cmd.stack)
-    if (stack.length >= 1) {
-      last.created <- .ddg.cur.cmd.stack[stack.length]
-      # Only create a start node for the current command if we have not already
-      # created one and the command is more than just the call to this function
-      if (last.created[[1]] == "FALSE") {
-        if (.ddg.cur.cmd@text != paste(deparse(call), collapse="")) {
-          cmd.abbrev <- .ddg.add.start.node (.ddg.cur.cmd)
-          .ddg.cur.expr.stack <- .ddg.get(".ddg.cur.expr.stack")
-          st.type <- .ddg.get.statement.type(.ddg.cur.cmd@parsed[[1]])
-          loop.statement <- (st.type == "for" || st.type == "while" || st.type == "repeat")
-          control.statement <- loop.statement || st.type == "if"
-          .ddg.create.data.use.edges.for.console.cmd(vars.set = data.frame(), .ddg.cur.cmd, 0, for.caller=!control.statement)
-
-          # Add Details Omitted node before annotated loops if needed.
-          if (loop.statement && ddg.first.loop() > 1) {
-            ddg.details.omitted()
-          }
-
-          # Mark the start node as created on the stack.  Mark it even if we did not
-          # create the abstract node above, because we will create it below.
-          .ddg.set (".ddg.cur.cmd.stack", c(.ddg.cur.cmd.stack[1:stack.length-1], TRUE))
-        }
-        else {
-          .ddg.set (".ddg.cur.cmd.stack", c(.ddg.cur.cmd.stack[1:stack.length-1], "MATCHES_CALL"))
-        }
-      }
+    # Add Details Omitted node before annotated loops if needed.
+    if (loop.statement && ddg.first.loop() > 1) {
+      ddg.details.omitted()
     }
-    #print("Done .ddg.create.start.for.cur.cmd")
+
+    # Mark the start node as created on the stack.  Mark it even if we did not
+    # create the abstract node above, because we will create it below.
+    .ddg.change.cmd.top (TRUE)
   }
 }
 
@@ -2041,7 +2048,7 @@ ddg.function <- function(outs.graphic=NULL, outs.data=NULL, outs.exception=NULL,
 
   # Create start node for the calling statement if one is not already created.
   #print("ddg.function creating start node")
-  .ddg.create.start.for.cur.cmd (call, sys.frame(-1))
+  .ddg.create.start.for.cur.cmd (call)
   #print ("ddg.function creating other nodes")
   .ddg.create.function.nodes(pname, call, full.call, outs.graphic, outs.data, outs.exception, outs.url, outs.file, graphic.fext,
       env = sys.frame(.ddg.get.frame.number(sys.calls())))
