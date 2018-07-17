@@ -590,6 +590,18 @@
   return(dpfile)
 }
 
+#' .ddg.supported.graphic - the sole purpose of this function is
+#' to verify that the input file extension is a supported graphic
+#' type. Currently supported graphics types inlude: jpg, jpeg,
+#' bmp, png, tiff.
+#' 
+#' @param ext file extension.
+#' @returnType logical
+#' @return TRUE if the extension passed in is a known graphics type
+.ddg.supported.graphic <- function(ext){
+  return(ext %in% c("jpeg", "jpg", "tiff", "png", "bmp", "pdf"))
+}
+
 #' .ddg.file.copy creates a data node of type File. File nodes are
 #' used for files written by the main script. A copy of the file is
 #' written to the DDG directory.
@@ -811,6 +823,32 @@
       })
 }
 
+#' Copies a graphics value into a snapshot file
+#' 
+#' @param fext file extension.
+#' @param dpfile path and name of file to copy
+#' @return nothing
+.ddg.graphic.snapshot <-function(fext, dpfile) {
+  # pdfs require a separate procedure.
+  if (fext == "pdf") dev.copy2pdf(file=dpfile)
+  
+  # At the moment, all other graphic types can be done by
+  # constructing a similar function.
+  else {
+    # If jpg, we need to change it to jpeg for the function call.
+    fext = ifelse(fext == "jpg", "jpeg", fext)
+    
+    # First, we create a string, then convert it to an actual R
+    # expression and use that as the function.
+    strFun <- paste(fext, "(filename=dpfile, width=800, height=500)", sep="")
+    parseFun <- function(){eval(parse(text=strFun))}
+    dev.copy(parseFun)
+    
+    # Turn it off (this switches back to prev device).
+    dev.off()
+  }
+}
+
 #' .ddg.write.csv takes as input a name-value pair for a
 #' variable and attempts to save the data as a csv file. It does
 #' not create any edges but does add the node to the DDG. Edge
@@ -840,6 +878,17 @@
   values <- .ddg.remove.tab.and.eol.chars(lapply(dvalue, .ddg.as.character))
   positions <- 1:length(values)
   return (paste("[[", positions, "]]", values, collapse="\n"))
+}
+
+#' .ddg.as.character wraps an exception handler around as.character
+#' The exception handler captures the print output for the value and
+#' returns that instead.
+#' @param value a value to convert to a string
+#' @returnType string
+#' @return the value represented as a string
+.ddg.as.character <- function (value) {
+  tryCatch (as.character(value),
+      error=function(e) {capture.output(print(value))})
 }
 
 

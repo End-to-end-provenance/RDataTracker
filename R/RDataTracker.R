@@ -1187,121 +1187,25 @@ ddg.MAX_HIST_LINES <- 2^14
   }
 }
 
-# .ddg.as.character wraps an exception handler around as.character
-# The exception handler captures the print output for the value and
-# returns that instead.
-.ddg.as.character <- function (value) {
-  tryCatch (as.character(value),
-            error=function(e) {capture.output(print(value))})
-}
-
-# .ddg.supported.graphic - the sole purpose of this function is
-# to verify that the input file extension is a supported graphic
-# type. Currently supported graphics types inlude: jpg, jpeg,
-# bmp, png, tiff.
-
-# ext - file extension.
-
-.ddg.supported.graphic <- function(ext){
-  return(ext %in% c("jpeg", "jpg", "tiff", "png", "bmp", "pdf"))
-}
-
-# .ddg.graphic.snapshot provides factoring of snapshot code.
-
-# fext - file extension.
-# dpfile - path and name of file.
-
-.ddg.graphic.snapshot <-function(fext, dpfile) {
-  # pdfs require a separate procedure.
-  if (fext == "pdf") dev.copy2pdf(file=dpfile)
-
-  # At the moment, all other graphic types can be done by
-  # constructing a similar function.
-  else {
-    # If jpg, we need to change it to jpeg for the function call.
-    fext = ifelse(fext == "jpg", "jpeg", fext)
-
-    # First, we create a string, then convert it to an actual R
-    # expression and use that as the function.
-    strFun <- paste(fext, "(filename=dpfile, width=800, height=500)", sep="")
-    parseFun <- function(){eval(parse(text=strFun))}
-    dev.copy(parseFun)
-
-    # Turn it off (this switches back to prev device).
-    dev.off()
-  }
-}
-
-#' Saves the contents of a web page referenced by a URL in the data
-#' directory
-#'
-#' @param url the URL as a string
-#'
-#' @return the name of the file where the copy is stored.  This is 
-#'   a relative path beginning with the data directory.
-#'
-.ddg.url.copy <- function (url) {
-  # Get last part of the url.
-  file.name <- basename(url)
-  
-  # Add number to file name.
-  dfile <- paste(.ddg.dnum()+1, "-", file.name, sep="")
-  
-  # Get path plus file name to where the file will be copied
-  dpath <- paste(.ddg.path.data(), "/", dfile, sep="")
-  
-  # Download and save the webpage
-  curl_download (url, dpath)
-    
-  if (.ddg.debug.lib()) print(paste("url.copy: ", url))
-  return (paste(.ddg.data.dir(), dfile, sep="/"))
-}
-
-# .ddg.insert.error.message issues a warning and inserts an
-# exception node after the last procedure step. The name of the node
-# is "error.msg" and the value is the error message passed to this
-# function.
-
-# msg - error message.
-# msg.type - error or warning
-# scope - scope for evaluating any data
-# doWarn - if true, this function displays a warning
-
-.ddg.insert.error.message <- function(msg, msg.type="error.msg", scope="ddg.library", doWarn = TRUE) {
-  if (doWarn) {
-    warning(msg)
-  }
-  .ddg.data.node("Exception", msg.type, msg, scope)
-  .ddg.lastproc2data(msg.type, dscope=scope)
-}
-
-# .ddg.lookup.function.name gets the name of the calling function
-# and returns it as a string. pname may be passed as a string or
-# a name. If NULL, pname is obtained from the calling environment.
-# Note that it is important that these be macros, not functions,
-# due to the use of the substitute function in the body.
-
-# pname - name of procedure node.
-
+#' .ddg.lookup.function.name gets the name of the calling function
+#' and sets pname to that value. If pname is passed as a string,
+#' pname is not changed.  If pname is not a string, it is deparsed.
+#' If pname is NULL when called, pname is obtained from the calling environment.
+#' 
+#' Note that it is important that this be a macro, not a function,
+#' due to the use of the substitute function in the body.  expr is
+#' the macro body.
+#' 
+#' @param pname - name of procedure node.
+#' 
 .ddg.lookup.function.name <- gtools::defmacro (pname,
     expr =
         # If pname is not provided, get from function call.
         if (is.null(pname)) {
           
-          #print(".ddg.lookup.function.name: sys.calls() =")
-          #print(sys.calls())
-
           # Look up function call.
           call <- sys.call(-4)
 
-          # Discard everything after left parenthesis to get
-          # function name.
-
-          # pname <- strsplit (as.character(call), "\\(")[[1]][1]
-          #print(paste(".ddg.lookup.function.name: typeof(call[[1]] =", typeof(call[[1]])))
-          #print(paste(".ddg.lookup.function.name: str(call[[1]] =", str(call[[1]])))
-          # If the call uses a closure rather than a function name, we will
-          # call the name FUN.
           if (typeof(call[[1]]) == "closure") {
             #print(".ddg.lookup.function.name:  Found a closure!")
             pname <- "FUN"
@@ -1317,37 +1221,38 @@ ddg.MAX_HIST_LINES <- 2^14
         }
 )
 
-# .ddg.lookup.value is used to determine what value to use when
-# creating data nodes.  Note that it is important that these be
-# macros, not functions, due to the use of the substitute function
-# in the body.
-
-# expr - the expression to be evaluted. This can be a string or
-#   a name.
-# value - the value that was passed in to the calling function.
-#   If value already exists, nothing happens. If value is NULL,
-#   the expression is evaluated to determine the value.
-# env - the environment in which the evaluation is done.
-# procname - the name of the calling procedure, used to produce
-#   an error message if necessary.
-# warn (optional) - if TRUE, warns user that the expression could
-#   not be evaluated.
-
-.ddg.lookup.value <- gtools::defmacro(expr, value, env, procname, warn=TRUE,
+#' .ddg.lookup.value is used to determine what value to use when
+#' creating data nodes.  
+#' 
+#' Note that it is important that this be a
+#' macro, not a function, due to the use of the substitute function
+#' in the body.  expr is the macro body.
+#' 
+#' @param expr.to.evaluate the expression to be evaluted. This can be a string or
+#'   a name.
+#' @param value the value that was passed in to the calling function.
+#'   If value already exists, nothing happens. If value is NULL,
+#'   the expression is evaluated to determine the value.
+#' @param env the environment in which the evaluation is done.
+#' @param procname the name of the calling procedure, used to produce
+#'   an error message if necessary.  Only needed if warn is TRUE.
+#' @param warn (optional) if TRUE, warns user that the expression could
+#'   not be evaluated if the evaluation failed
+#' 
+.ddg.lookup.value <- gtools::defmacro(expr.to.evaluate, value, env, procname = "", warn=FALSE,
     expr =
         if (is.null(value)) {
-          arg <- substitute(expr)
+          arg <- substitute(expr.to.evaluate)
           if (is.character(arg)) {
-            tryCatch (arg <- parse(text=expr),
+            tryCatch (arg <- parse(text=expr.to.evaluate),
             error = function(e) {})
           }
-          else expr <- deparse(arg)
+          else expr.to.evaluate <- deparse(arg)
           value <- tryCatch (
               eval(arg, env),
               error = function(e) {
-                # if (is.character(expr)) return (expr)
                 if (warn) {
-                  error.msg <- paste("Unable to evaluate", expr, "in call to", procname)
+                  error.msg <- paste("Unable to evaluate", expr.to.evaluate, "in call to", procname)
                   .ddg.insert.error.message(error.msg)
                 }
                 return ("")
@@ -1356,10 +1261,9 @@ ddg.MAX_HIST_LINES <- 2^14
         }
 )
 
-# .ddg.delete.temp deletes any temporary files created during
-# the processing of a script. These include the temporary
-# history file.
-
+#' .ddg.delete.temp deletes any temporary files created during
+#' the processing of a script. These include the temporary
+#' history file.
 .ddg.delete.temp <- function() {
   # Delete the temporary history file if we made it.
   if (.ddg.is.set('ddg.history.file')) unlink(.ddg.get('ddg.history.file'))
@@ -1409,7 +1313,7 @@ ddg.MAX_HIST_LINES <- 2^14
           # Get value in calling environment.
           name <- param
           value <- NULL
-          .ddg.lookup.value(name, value, env, fname, warn=FALSE)
+          .ddg.lookup.value(name, value, env)
 
           # Exception node.
           scope <- .ddg.get.scope(param, calls = stack)
@@ -1430,7 +1334,7 @@ ddg.MAX_HIST_LINES <- 2^14
           # Get value in calling environment.
           name <- param
           value <- NULL
-          .ddg.lookup.value(name, value, env, fname, warn=FALSE)
+          .ddg.lookup.value(name, value, env)
 
           # URL node.
           scope <- .ddg.get.scope(param, calls=stack)
@@ -1451,7 +1355,7 @@ ddg.MAX_HIST_LINES <- 2^14
           # Get value in calling environment.
           name <- param
           value <- NULL
-          .ddg.lookup.value(name, value, env, fname, warn=FALSE)
+          .ddg.lookup.value(name, value, env)
 
           tryCatch({
                 if (!is.character(name)) name <- deparse(substitute(name))
@@ -1478,7 +1382,7 @@ ddg.MAX_HIST_LINES <- 2^14
           # Get value in calling environment.
           name <- param
           value <- NULL
-          .ddg.lookup.value(name, value, env, fname, warn=FALSE)
+          .ddg.lookup.value(name, value, env)
           scope <- .ddg.get.scope(param, calls=stack)
 
           if (value == "") {
@@ -2514,7 +2418,7 @@ ddg.data <- function(dname, dvalue=NULL, graphic.fext = "jpeg") {
 
   # Look up the value if one was not provided.
   env <- parent.frame()
-  .ddg.lookup.value(dname, dvalue, env, "ddg.data")
+  .ddg.lookup.value(dname, dvalue, env, "ddg.data", warn=TRUE)
 
   # Save the value appropriately.  If the name is not a string,
   # use the argument instead of the value.
@@ -2614,7 +2518,7 @@ ddg.data.out <- function(dname, dvalue=NULL, pname=NULL, graphic.fext="jpeg") {
 
   # If no value is provided, get value in calling environment.
   env <- parent.frame()
-  .ddg.lookup.value(dname, dvalue, env, "ddg.data.out")
+  .ddg.lookup.value(dname, dvalue, env, "ddg.data.out", warn=TRUE)
 
   # Convert name to a string if necessary.
   if (!is.character(dname)) dname <- deparse(substitute(dname))
@@ -2647,7 +2551,7 @@ ddg.exception.out <- function(dname, dvalue=NULL, pname=NULL) {
 
   # If no value is provided, get value in calling environment.
   env <- parent.frame()
-  .ddg.lookup.value(dname, dvalue, env, "ddg.exception.out")
+  .ddg.lookup.value(dname, dvalue, env, "ddg.exception.out", warn=TRUE)
 
   # Create output exception node.
   .ddg.data.node("Exception", dname, dvalue, "ddg.library")
@@ -2676,7 +2580,7 @@ ddg.url.out <- function(dname, dvalue=NULL, pname=NULL) {
 
   # If no value is provided, get value in calling environment.
   env <- parent.frame()
-  .ddg.lookup.value(dname, dvalue, env, "ddg.url.out")
+  .ddg.lookup.value(dname, dvalue, env, "ddg.url.out", warn=TRUE)
 
   # URL labels are not necessarily variables, so make sure
   # it is a variable before trying to determine its scope.

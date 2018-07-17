@@ -319,6 +319,31 @@
   .ddg.clear.input.file ()
 }
 
+#' Saves the contents of a web page referenced by a URL in the data
+#' directory
+#'
+#' @param url the URL as a string
+#'
+#' @return the name of the file where the copy is stored.  This is 
+#'   a relative path beginning with the data directory.
+#'
+.ddg.url.copy <- function (url) {
+  # Get last part of the url.
+  file.name <- basename(url)
+  
+  # Add number to file name.
+  dfile <- paste(.ddg.dnum()+1, "-", file.name, sep="")
+  
+  # Get path plus file name to where the file will be copied
+  dpath <- paste(.ddg.path.data(), "/", dfile, sep="")
+  
+  # Download and save the webpage
+  curl_download (url, dpath)
+  
+  if (.ddg.debug.lib()) print(paste("url.copy: ", url))
+  return (paste(.ddg.data.dir(), dfile, sep="/"))
+}
+
 ##################  Functions to handle tracing of write functions ##################
 
 
