@@ -1187,6 +1187,15 @@ ddg.MAX_HIST_LINES <- 2^14
   }
 }
 
+#' .ddg.get.top.cmd returns the last command on the stack.
+#' @returnType DDGStatement
+#' @return the last command pushed to the stack
+.ddg.get.top.cmd <- function() {
+  .ddg.cur.cmd.stack <- .ddg.get(".ddg.cur.cmd.stack")
+  stack.length <- length(.ddg.cur.cmd.stack)
+  cmd <- .ddg.cur.cmd.stack[stack.length-1][[1]]
+}
+
 #' Change the value associated with the current command while keeping 
 #' the command at the top of the stack the same
 #' 
@@ -1730,107 +1739,6 @@ ddg.MAX_HIST_LINES <- 2^14
     # create the abstract node above, because we will create it below.
     .ddg.change.cmd.top (TRUE)
   }
-}
-
-# .ddg.get.last.cmd returns the last command on the stack.
-
-.ddg.get.last.cmd <- function() {
-  .ddg.cur.cmd.stack <- .ddg.get(".ddg.cur.cmd.stack")
-  stack.length <- length(.ddg.cur.cmd.stack)
-  cmd <- .ddg.cur.cmd.stack[stack.length-1][[1]]
-}
-
-# .ddg.remove.last.cmd.start.created removes the last command and
-# start.created from the stack.
-
-.ddg.remove.last.cmd.start.created <- function () {
-  .ddg.cur.cmd.stack <- .ddg.get(".ddg.cur.cmd.stack")
-  stack.length <- length(.ddg.cur.cmd.stack)
-  #print(paste(".ddg.remove.last.cmd.start.created: Popping from stack:", .ddg.cur.cmd.stack[stack.length-1]))
-
-  if (stack.length == 2) {
-    .ddg.set(".ddg.cur.cmd.stack", vector())
-  }
-  else {
-    .ddg.set(".ddg.cur.cmd.stack", .ddg.cur.cmd.stack[1:(stack.length-2)])
-  }
-}
-
-# .ddg.break.statement creates a procedure node for a break statement in
-# a for, repeat, or while statement. It also adds a finish node for the
-# if statement (if any) where the break occurs, adds a finish node
-# for the for, repeat, or while loop where the break occurs, and adds a
-# finish node for the for, repeat, or while statement.
-
-.ddg.break.statement <- function() {
-  # Create procedure node for break statement.
-  .ddg.proc.node("Operation", "break", "break")
-  .ddg.proc2proc()
-
-  # Get last command from stack.
-  cmd <- .ddg.get.last.cmd()
-  # Get loop type.
-  loop.type <- as.character(cmd@parsed[[1]][[1]])
-
-  # Create finish nodes if break occurs in if statement.
-  if (loop.type == "if") {
-    # Create finish node for if loop.
-    ddg.finish("if")
-    # Create finish node for if statement.
-    .ddg.add.finish.node(cmd)
-
-    # Remove last command & start.created from stack.
-    .ddg.remove.last.cmd.start.created()
-    # Get last command from stack.
-    cmd <- .ddg.get.last.cmd()
-    # Get loop type.
-    loop.type <- as.character(cmd@parsed[[1]][[1]])
-  }
-
-  # Create finish node for for, repeat, or while loop.
-  loop.name <- paste(loop.type, "loop")
-  ddg.finish(loop.name)
-
-  # Create finish node for for, while, or repeat statement.
-  .ddg.add.finish.node(cmd)
-
-  # Remove last command & start.created from stack.
-  .ddg.remove.last.cmd.start.created()
-}
-
-# .ddg.next.statement creates a procedure node for a next statement in
-# a for, repeat, or while statement. It also adds a finish node for the
-# if statement (if any) where the next occurs and adds a finish node for
-# the for, while, or repeat loop where the next occurs.
-
-.ddg.next.statement <- function() {
-  # Create procedure node for next statement.
-  .ddg.proc.node("Operation", "next", "next")
-  .ddg.proc2proc()
-
-  # Get last command from stack.
-  cmd <- .ddg.get.last.cmd()
-  # Get loop type.
-  loop.type <- as.character(cmd@parsed[[1]][[1]])
-
-  # Create finish nodes if break occurs in if statement.
-  if (loop.type == "if") {
-    # Create finish node for if loop.
-    ddg.finish("if")
-    # Create finish node for if statement.
-    .ddg.add.finish.node(cmd)
-
-    # Remove last command & start.created from stack.
-    .ddg.remove.last.cmd.start.created()
-    # Get last command from stack.
-    cmd <- .ddg.get.last.cmd()
-    # Get loop type.
-    loop.type <- as.character(cmd@parsed[[1]][[1]])
-  }
-
-  # Create finish node for for, repeat, or while loop.
-  loop.name <- paste(loop.type, "loop")
-  ddg.finish(loop.name)
 }
 
 # .ddg.markdown takes a Rmd file and extracts the R code and text through

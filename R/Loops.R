@@ -153,4 +153,53 @@ ddg.forloop <- function(index.var) {
   .ddg.proc2data(pnode.name, index.name)
 }
 
+#' .ddg.break.statement creates a procedure node for a break statement in
+#' a for, repeat, or while statement. It also adds a finish node for the
+#' if statement (if any) where the break occurs, adds a finish node
+#' for the for, repeat, or while loop where the break occurs, and adds a
+#' finish node for the for, repeat, or while statement.
+#' @return nothing
+.ddg.break.statement <- function() {
+  .ddg.end.loop ("break")
+}
 
+#' .ddg.next.statement creates a procedure node for a next statement in
+#' a for, repeat, or while statement. It also adds a finish node for the
+#' if statement (if any) where the next occurs and adds a finish node for
+#' the for, while, or repeat loop where the next occurs.
+.ddg.next.statement <- function() {
+  .ddg.end.loop ("next")
+}
+
+#' Creates the nodes necessary to end a loop
+#' @param op One of "break" or "next" which determines the operation node that is built
+#' @return nothing
+.ddg.end.loop <- function (op) {
+  .ddg.proc.node("Operation", op, op)
+  .ddg.proc2proc()
+  
+  # Get last command from stack.
+  cmd <- .ddg.get.top.cmd()
+  # Get loop type.
+  loop.type <- as.character(cmd@parsed[[1]][[1]])
+  
+  # Create finish nodes if break occurs in if statement.
+  while (loop.type == "if") {
+    # Create finish node for if loop.
+    ddg.finish("if")
+    # Create finish node for if statement.
+    .ddg.add.finish.node(cmd)
+    
+    # Remove last command & start.created from stack.
+    .ddg.pop.cmd()
+    
+    # Get preceding command from stack.
+    cmd <- .ddg.get.top.cmd()
+    # Get loop type.
+    loop.type <- as.character(cmd@parsed[[1]][[1]])
+  }
+  
+  # Create finish node for for, repeat, or while loop.
+  loop.name <- paste(loop.type, "loop")
+  ddg.finish(loop.name)
+}
