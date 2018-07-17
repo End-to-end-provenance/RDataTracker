@@ -1427,18 +1427,25 @@ ddg.MAX_HIST_LINES <- 2^14
   return ( Position( function (call) {return (!startsWith (call, "ddg") & !startsWith (call, ".ddg"))}, calls, right=TRUE ))
 }
 
-
-
-# .ddg.create.function.nodes creates the procedure node, input
-# binding nodes, and output nodes for the function.
-
-# pname - name of procedure node.
-# full.call - full function call.
-# outs.data, etc (optional) - output nodes.
-# auto.created - TRUE if the function node is created automatically
-# when a return is found
-# env (optional) - the environment local to the function
-
+#' .ddg.create.function.nodes creates the start node, procedure node, input
+#' binding nodes, and output nodes for the function.
+#' 
+#' @param pname name of procedure node.
+#' @param call call as made
+#' @param full.call full function call, with full parameter names
+#' @param outs.graphic - the name of a snapshot node to be used as a
+#'    file name.  A graphical snapshot is simply a captured image
+#'    of the graphic device active at the time of the call to
+#'    ddg.function or ddg.procedure.
+#' @param outs.data - a list of names of data nodes.
+#' @param outs.exception - a list of names of exception nodes.
+#' @param outs.url - a list of names of url nodes.
+#' @param outs.file - a list of names of file nodes. Supported file
+#'   extensions include: .csv, .jpg, .jpeg, .pdf, and .txt.
+#' @param graphic.fext - the file extension to be used when saving the
+#'   captured graphic. Supported extensions are .jpg, .jpeg, .pdf.
+#' @param env (optional) - the environment local to the function
+#' 
 .ddg.create.function.nodes <- function(pname, call, full.call, outs.graphic=NULL, outs.data=NULL, outs.exception=NULL, outs.url=NULL, outs.file=NULL, graphic.fext="jpeg", env=NULL) {
   # Create the start node
   if (typeof(call[[1]]) == "closure") {
@@ -1465,7 +1472,6 @@ ddg.MAX_HIST_LINES <- 2^14
     param.names <- names(full.call)
     param.names <- param.names[2:length(param.names)]
     stack <- sys.calls()
-    # scope <- .ddg.get.scope(args[[1]], for.caller = TRUE)
     bindings <- list()
     for (i in 1:length(args)) bindings[[i]] <-list(args[[i]], param.names[[i]])
     missing.params <- character()
@@ -1473,9 +1479,7 @@ ddg.MAX_HIST_LINES <- 2^14
     lapply(bindings,
         function(binding) {
           # Here, arg is the arguments passed IN.
-          #print(paste(".ddg.create.function.nodes: binding =", binding))
           arg <- binding[[1]]
-          #print(paste(".ddg.create.function.nodes: arg =", arg))
 
           # formal is the paramenter name of the function (what
           # is the variable known as inside?).
@@ -1498,13 +1502,15 @@ ddg.MAX_HIST_LINES <- 2^14
 
           .ddg.proc.node("Binding", binding.node.name)
           .ddg.proc2proc()
-          for (var in vars.used) {
-            param.scope <- .ddg.get.scope(var, for.caller = TRUE, calls=stack)
-            if (.ddg.data.node.exists(var, param.scope)) {
-              .ddg.data2proc(as.character(var), param.scope, binding.node.name)
-              if (.ddg.debug.lib()) print(paste("param:", var))
-            }
-          }
+          
+          # Add an input to the binding node for each variable referenced in the argument
+          sapply (vars.used, function (var) {
+                param.scope <- .ddg.get.scope(var, for.caller = TRUE, calls=stack)
+                if (.ddg.data.node.exists(var, param.scope)) {
+                  .ddg.data2proc(as.character(var), param.scope, binding.node.name)
+                  if (.ddg.debug.lib()) print(paste("param:", var))
+                }
+              })
           if (formal != "...") {
             formal.scope <- .ddg.get.scope(formal, calls=stack)
             formal.env <- .ddg.get.env(formal, calls=stack)
@@ -1521,7 +1527,7 @@ ddg.MAX_HIST_LINES <- 2^14
           }
         })
   }
-  #print (".ddg.create.function.nodes creating Operation node")
+
   .ddg.proc.node("Operation", pname, pname)
 
   # Link to the definition of the function if the function is defined in this script.
@@ -1529,6 +1535,7 @@ ddg.MAX_HIST_LINES <- 2^14
     .ddg.data2proc(pname, environmentName(.GlobalEnv), pname)
   }
 
+  # Create edges from the formal to the operation node for the function
   if (length(full.call) > 1) {
     lapply(bindings, function(binding) {
           formal <- binding[[2]][[1]]
@@ -1552,14 +1559,13 @@ ddg.MAX_HIST_LINES <- 2^14
 
 }
 
-# .ddg.get.frame.number gets the frame number of the closest
-# non-library calling function.
-
-# calls - system calls.
-# for.caller (optional) - if TRUE, go up one level before searching.
-
+#' .ddg.get.frame.number gets the frame number of the closest
+#' non-library calling function.
+#' 
+#' @param calls system calls.
+#' @param for.caller (optional) if TRUE, go up one level before searching.
+#' 
 .ddg.get.frame.number <- function(calls, for.caller=FALSE) {
-  #print (".ddg.get.frame.number: for.caller =", for.caller)
   if (is.null(calls)) calls <- sys.calls()
   script.func.found <- FALSE
   nframe <- length(calls)
@@ -1580,9 +1586,10 @@ ddg.MAX_HIST_LINES <- 2^14
       #print(paste(".ddg.get.frame.number: call.func =", call.func))
       # Ignore calls to ddg functions or to the functions that get called from the outermost tryCatch
       # to ddg code.
-      if (substr(call.func, 1, 4) != ".ddg" && substr(call.func, 1, 3) != "ddg"
-          && substr(call.func, 1, 10) != "doTryCatch" && substr(call.func, 1, 11) != "tryCatchOne"
-          && substr(call.func, 1, 12) != "tryCatchList" && substr(call.func, 1, 8) != "tryCatch") {
+      if (!any (startsWith (call.func, c (".ddg", "ddg", "doTryCatch", "tryCatch")))) {
+      #if (substr(call.func, 1, 4) != ".ddg" && substr(call.func, 1, 3) != "ddg"
+          #&& substr(call.func, 1, 10) != "doTryCatch" && substr(call.func, 1, 11) != "tryCatchOne"
+          #&& substr(call.func, 1, 12) != "tryCatchList" && substr(call.func, 1, 8) != "tryCatch") {
         if (for.caller && !script.func.found) {
           script.func.found <- TRUE
         }
