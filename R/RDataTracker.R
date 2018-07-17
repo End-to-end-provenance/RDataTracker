@@ -1204,6 +1204,10 @@ ddg.MAX_HIST_LINES <- 2^14
         if (is.null(pname)) {
           
           # Look up function call.
+          # Note: I tried to call .ddg.get.first.non.ddg.call instead
+          # of hardwiring the number here but it did not work.  The 
+          # call stack contains unexpected entries to eval before
+          # getting to the user's function.
           call <- sys.call(-4)
 
           if (typeof(call[[1]]) == "closure") {
@@ -1272,26 +1276,25 @@ ddg.MAX_HIST_LINES <- 2^14
   .ddg.env <- new.env(parent=emptyenv())
 }
 
-# .ddg.create.output.nodes creates output nodes for ddg.function
-# and ddg.procedure. Outs values must be passed as strings, not
-# names, unless the value is a file name.
-
-# fname - the name of the function calling .ddg.create.output.nodes.
-# pname - the name of the procedure node.
-# outs.graphic - the name of a snapshot node to be used as a
-#    file name.  A graphical snapshot is simply a captured image
-#    of the graphic device active at the time of the call to
-#    ddg.function or ddg.procedure.
-# outs.data - a list of names of data nodes.
-# outs.exception - a list of names of exception nodes.
-# outs.url - a list of names of url nodes.
-# outs.file - a list of names of file nodes. Supported file
-#   extensions include: .csv, .jpg, .jpeg, .pdf, and .txt.
-# graphic.fext - the file extension to be used when saving the
-#   captured graphic. Supported extensions are .jpg, .jpeg, .pdf.
-
-.ddg.create.output.nodes<- function(fname, pname, outs.graphic, outs.data, outs.exception, outs.url, outs.file, graphic.fext, env) {
-
+#' .ddg.create.output.nodes creates output nodes for ddg.function
+#' and ddg.procedure. Outs values must be passed as strings, not
+#' names, unless the value is a file name.
+#' 
+#' @param pname the name of the procedure node.
+#' @param outs.graphic - the name of a snapshot node to be used as a
+#'    file name.  A graphical snapshot is simply a captured image
+#'    of the graphic device active at the time of the call to
+#'    ddg.function or ddg.procedure.
+#' @param outs.data - a list of names of data nodes.
+#' @param outs.exception - a list of names of exception nodes.
+#' @param outs.url - a list of names of url nodes.
+#' @param outs.file - a list of names of file nodes. Supported file
+#'   extensions include: .csv, .jpg, .jpeg, .pdf, and .txt.
+#' @param graphic.fext - the file extension to be used when saving the
+#'   captured graphic. Supported extensions are .jpg, .jpeg, .pdf.
+.ddg.create.output.nodes<- function(pname, outs.graphic, outs.data, outs.exception, outs.url, outs.file, graphic.fext) {
+  env <- .ddg.get.first.non.ddg.env()
+  
   # Capture graphics device.
   if (is.character(outs.graphic)) {
     name <- outs.graphic
@@ -1399,6 +1402,32 @@ ddg.MAX_HIST_LINES <- 2^14
     )
   }
 }
+
+#' Get the environment for the function that called
+#' into ddg functions
+#'
+#' @returnType environment
+#' @return the environment of the innermost user's function
+.ddg.get.first.non.ddg.env <- function() {
+  non.ddg.frame <- .ddg.get.first.non.ddg.frame.number()
+  return (sys.frame(non.ddg.frame))
+}
+
+#' Get the frame number for the function that called
+#' into ddg functions
+#'
+#' @returnType integer
+#' @return the frame number of the innermost user function
+.ddg.get.first.non.ddg.frame.number <- function() {
+  calls <- sys.calls()
+  calls <- as.character (mapply( `[[` , calls , 1 , SIMPLIFY = TRUE ))
+  #print(paste("calls =", calls))
+  #print(summary(calls))
+  
+  return ( Position( function (call) {return (!startsWith (call, "ddg") & !startsWith (call, ".ddg"))}, calls, right=TRUE ))
+}
+
+
 
 # .ddg.create.function.nodes creates the procedure node, input
 # binding nodes, and output nodes for the function.
@@ -1519,7 +1548,7 @@ ddg.MAX_HIST_LINES <- 2^14
 
   # create output nodes
 
-  .ddg.create.output.nodes(fname="ddg.function", pname, outs.graphic, outs.data, outs.exception, outs.url, outs.file, graphic.fext, parent.frame(2))
+  .ddg.create.output.nodes(pname, outs.graphic, outs.data, outs.exception, outs.url, outs.file, graphic.fext)
 
 }
 

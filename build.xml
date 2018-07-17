@@ -56,6 +56,12 @@
 		</exec>
     </target>
     
+    <target name="install-no-check" depends="build">
+    	<exec dir="${builddir}/.." executable="R" >
+  			<arg line="CMD INSTALL --no-clean-on-error ${tarfile}"/>
+		</exec>
+    </target>
+
     <target name="cran-check" depends="build">
     	<exec dir="${builddir}/.." executable="R" >
     		<arg line="CMD check --as-cran --no-vignettes --no-build-vignettes ${tarfile}"/>
