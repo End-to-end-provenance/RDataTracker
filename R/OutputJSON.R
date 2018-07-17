@@ -68,7 +68,8 @@ ddg.json.write <- function()
 	
 	
 	# EDGE TABLE NODES
-	edges <- subset( .ddg.edges() , ddg.num > 0 )
+	edges <- .ddg.edges()
+	edges <- edges[edges$ddg.num > 0, ]
 	
 	# wasInformedBy (proc2proc)
 	json$wasInformedBy.p2p <- .ddg.json.proc2proc( edges , LABEL.NAMES$wasInformedBy.p2p , LABEL.PREFIX )
@@ -185,9 +186,8 @@ ddg.json.write <- function()
 	nodes <- .ddg.proc.nodes()
 	
 	# extract and order required columns
-	nodes <- subset( nodes, 
-					 select = c(ddg.name, ddg.type, ddg.time, ddg.snum, 
-					 ddg.startLine, ddg.startCol, ddg.endLine, ddg.endCol) )
+	nodes <- nodes[ , c("ddg.name", "ddg.type", "ddg.time", "ddg.snum", 
+					 "ddg.startLine", "ddg.startCol", "ddg.endLine", "ddg.endCol")]
 	
 	# base case: no procedure nodes 
 	if( nrow(nodes) == 0 )
@@ -215,9 +215,8 @@ ddg.json.write <- function()
 	nodes <- .ddg.data.nodes()
 	
 	# extract and order required columns
-	nodes <- subset( nodes, 
-					 select = c(ddg.name, ddg.value, ddg.val.type, ddg.type,
-					 ddg.scope, ddg.from.env, ddg.hash, ddg.time, ddg.loc) )
+	nodes <- nodes[ , c("ddg.name", "ddg.value", "ddg.val.type", "ddg.type",
+					 "ddg.scope", "ddg.from.env", "ddg.hash", "ddg.time", "ddg.loc")]
 	
 	# base case: no data nodes
 	if( nrow(nodes) == 0 )
@@ -409,7 +408,7 @@ ddg.json.write <- function()
 .ddg.json.proc2proc <- function( edges , label , prefix )
 {
 	# extract procedure-to-procedure edges, where ddg.type is 'cf' (control flow)
-	edges <- subset(edges, ddg.type == "cf", select = c(ddg.from, ddg.to))
+	edges <- edges[edges$ddg.type == "cf", c("ddg.from", "ddg.to")]
 	
 	# case: no proc-to-proc edges
 	if( nrow(edges) == 0 )
@@ -434,7 +433,7 @@ ddg.json.write <- function()
 .ddg.json.proc2data <- function( edges , label , prefix )
 {
 	# extract procedure-to-data edges, where ddg.type is 'df.out' (data flow out)
-	edges <- subset(edges, ddg.type == "df.out", select = c(ddg.from, ddg.to))
+	edges <- edges[edges$ddg.type == "df.out", c("ddg.from", "ddg.to")]
 	
 	# case: no procedure-to-data edges
 	if( nrow(edges) == 0 )
@@ -459,7 +458,7 @@ ddg.json.write <- function()
 .ddg.json.data2proc <- function( edges , label , prefix )
 {
 	# extract data-to-procedure edges, where ddg.type is 'df.in' (data flow in)
-	edges <- subset(edges, ddg.type == "df.in", select = c(ddg.from, ddg.to))
+	edges <- edges[edges$ddg.type == "df.in", c("ddg.from", "ddg.to")]
 	
 	# case: no data-to-procedure edges
 	if( nrow(edges) == 0 )

@@ -79,6 +79,7 @@
   lapply(.ddg.get(".ddg.file.close.functions.df")$function.names, trace.oneClose)
 
   #print ("Tracing graphics open")
+  # trace (grDevices::pdf, RDataTracker:::.ddg.trace.graphics.open, print=TRUE)
   trace.oneGraphicsOpen <- function (f) {capture.output(capture.output(trace (as.name(f), RDataTracker:::.ddg.trace.graphics.open, print=FALSE), type="message"))} 
   lapply(.ddg.get(".ddg.graphics.functions.df")$function.names, trace.oneGraphicsOpen)
 
@@ -441,7 +442,7 @@
       # If it is a closed connection, use the file it is connected to
       # If it is still open, don't use it because the contents on disk won't
       # be correct until it is closed.
-      if (.ddg.get.connection.isopen(conn)) {
+      if (.ddg.is.connection.open(conn)) {
         next
       }
       file <- .ddg.get.connection.description(conn)

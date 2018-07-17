@@ -3050,13 +3050,6 @@ ddg.display <- function () {
         .ddg.start.ddg.explorer()
       }
   )
-  tryCatch(
-    if(is.element('CamFlow', installed.packages()[,1])){ # did we install the CamFlow visualiser?
-      json <- ddg.json()
-      CamFlowVisualiser(json)
-    },
-    error = function(e) {}
-  )
 
   invisible()
 }
