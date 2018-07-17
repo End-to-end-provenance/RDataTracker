@@ -407,7 +407,7 @@
       if (is.list(dvalue)) {
         tryCatch(
             {
-              .ddg.convert.list.to.string(dvalue)
+              dvalue <- .ddg.convert.list.to.string(dvalue)
             },
             error = function(e) {
               error.msg <- paste("Unable to convert value of", dname, "to a string.")
@@ -418,7 +418,7 @@
       }
       else if (typeof(dvalue) == "closure") "#ddg.function"
       else if (length(dvalue) > 1 || !is.atomic(dvalue)) {
-        tryCatch(paste(.ddg.replace.quotes(dvalue), collapse=","),
+        tryCatch(paste(.ddg.remove.tab.and.eol.chars(dvalue), collapse=","),
             error = function(e) {"complex"})
       }
       else if (is.null(dvalue)) "NULL"
@@ -427,8 +427,7 @@
       else if (dvalue == "complex" || dvalue == "#ddg.function") dvalue
       else if (is.character(dvalue) && dvalue == "") "NotRecorded"
       else {
-        # Replace double quotes with single quotes.
-        .ddg.replace.quotes(dvalue)
+        .ddg.remove.tab.and.eol.chars(dvalue)
       }
   
   if (grepl("\n", val)) {
@@ -829,6 +828,18 @@
         # warning(paste("Attempted to write", name, "as .csv snapshot but failed. Out as RDataObject.", e))
         .ddg.snapshot.node(name, "txt", value, save.object = TRUE, dscope=scope, from.env=from.env)
       })
+}
+
+#' .ddg.convert.list.to.string converts a list of values to a string
+#' by calling as.character on each element in the list.
+#' 
+#' @param dvalue a list of values.
+#' @returnType string
+#' @return a string showing the position and value of each list member 
+.ddg.convert.list.to.string <- function (dvalue) {
+  values <- .ddg.remove.tab.and.eol.chars(lapply(dvalue, .ddg.as.character))
+  positions <- 1:length(values)
+  return (paste("[[", positions, "]]", values, collapse="\n"))
 }
 
 
