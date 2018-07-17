@@ -1609,7 +1609,8 @@ ddg.MAX_HIST_LINES <- 2^14
 #' @param env (optional) - environment in which to start looking for variable.
 #' @param warning (optional) - set to TRUE if a warning should be thrown when a variable is not found.
 #' @returnType an environment
-#' @return the environment in which the name is fond
+#' @return the environment in which the name is found.  Returns "undefined" if the
+#'   variable is not found.
 .ddg.where <- function( name , env = parent.frame() , warning = TRUE )
 {
   stopifnot(is.character(name), length(name) == 1)
@@ -1631,59 +1632,45 @@ ddg.MAX_HIST_LINES <- 2^14
   }
 }
 
-
-#.ddg.get.env gets the environment in which name is declared.
-
-# name - variable name.
-# for.caller (optional) - if TRUE, go up one level before searching.
-# calls (optional) - system calls.
-
+#'.ddg.get.env gets the environment in which name is declared.
+#' 
+#' @param name variable name.
+#' @param for.caller (optional) if TRUE, go up one level before searching.
+#' @param calls (optional) call stack to search
+#' 
 .ddg.get.env <- function(name, for.caller=FALSE, calls=NULL) {
-  #print (paste(".ddg.get.env: for.caller =", for.caller))
   if (is.null(calls)) calls <- sys.calls()
-  #print(".ddg.get.env getting the frame number")
+
   fnum <- .ddg.get.frame.number(calls, for.caller)
-  #print(paste(".ddg.get.env: fnum =", fnum))
   stopifnot(!is.null(fnum))
 
-  # This statement was broken into two statements so that we
-  # can add print statements to .ddg.where without breaking it.  If we don't do that
-  # the print output gets captured by capture.output and
-  # does not display to the user and also causes the subsequent
-  # grepl call in this function to fail.
-
-  # scope <- sub('<environment: (.*)>', '\\1', capture.output(.ddg.where(name, sys.frame(fnum))))
   tryCatch (
     if(!exists(name, sys.frame(fnum), inherits=TRUE)) return(NULL),
     error = function(e) {}
   )
-  #print(".ddg.get.env calling .ddg.where")
   env <- .ddg.where(name, sys.frame(fnum))
-  #print(".ddg.get.env Done")
   return(env)
 }
 
-# .ddg.get.scope gets the id of the closest non-library
-# environment.
-
-# name - name of variable.
-# for.caller (optional) - if TRUE, go up one level before searching.
-# calls (optional) - system calls.
-# env (optional) - the environment to get the scope for
-
-.ddg.get.scope <- function(name, for.caller=FALSE, calls=NULL, env=NULL) {
+#' .ddg.get.scope converts from an environment object to its name.  If no
+#' environment is passed in, it uses the name to find the environment.  One
+#' of name or env must be provided.
+#' 
+#' @param name name of variable.
+#' @param for.caller (optional) if TRUE, go up one level before searching.
+#' @param calls (optional) call stack to search
+#' @param env (optional) the environment to get the scope for
+#' 
+.ddg.get.scope <- function(name="", for.caller=FALSE, calls=NULL, env=NULL) {
   # Get the environment for the variable call.
   if (is.null(env)) {
-    #print (".ddg.get.scope getting the environment")
     env <- .ddg.get.env(name, for.caller, calls)
-    #print (".ddg.get.scope getting the environment got env")
   }
 
   # If no environment found, name does not exist, so scope is
   # undefined.
   if (is.null(env)) return ("undefined")
 
-  #
   scope <- sub('^<environment: (.*)>$', '\\1', capture.output(env)[1])
   if (grepl("undefined", scope)) scope <- "undefined"
   return(scope)
