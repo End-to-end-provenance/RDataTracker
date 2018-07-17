@@ -1562,15 +1562,18 @@ ddg.MAX_HIST_LINES <- 2^14
 #' .ddg.get.frame.number gets the frame number of the closest
 #' non-library calling function.
 #' 
-#' @param calls system calls.
-#' @param for.caller (optional) if TRUE, go up one level before searching.
-#' 
+#' @param calls call stack to search
+#' @param for.caller (optional) if TRUE, return the frame of the caller of the 
+#'    first non-ddg function
+#' @returnType integer
+#' @return If for.caller is FALSE, returns the top-most non-ddg function on the
+#'   call stack.  If for.caller is TRUE, returns the second one found.  If none
+#'   are found, returns 0. 
 .ddg.get.frame.number <- function(calls, for.caller=FALSE) {
-  if (is.null(calls)) calls <- sys.calls()
   script.func.found <- FALSE
   nframe <- length(calls)
   for (i in nframe:1) {
-    call <- sys.call(i)[[1]]
+    call <- calls[[i]][[1]]
     # Guess that if we have a closure it is a user-defined function and not a ddg function
     # Is this a good assumption ????
     if (typeof(call) == "closure") {
@@ -1583,13 +1586,9 @@ ddg.MAX_HIST_LINES <- 2^14
     }
     else {
       call.func <- as.character(call)
-      #print(paste(".ddg.get.frame.number: call.func =", call.func))
       # Ignore calls to ddg functions or to the functions that get called from the outermost tryCatch
       # to ddg code.
       if (!any (startsWith (call.func, c (".ddg", "ddg", "doTryCatch", "tryCatch")))) {
-      #if (substr(call.func, 1, 4) != ".ddg" && substr(call.func, 1, 3) != "ddg"
-          #&& substr(call.func, 1, 10) != "doTryCatch" && substr(call.func, 1, 11) != "tryCatchOne"
-          #&& substr(call.func, 1, 12) != "tryCatchList" && substr(call.func, 1, 8) != "tryCatch") {
         if (for.caller && !script.func.found) {
           script.func.found <- TRUE
         }
@@ -1603,13 +1602,14 @@ ddg.MAX_HIST_LINES <- 2^14
 }
 
 
-# .ddg.where looks up the environment for the variable specified
-# by name.  Adapted from Hadley Wickham, Advanced R programming.
-
-# name - name of variable.
-# env (optional) - environment in which to look for variable.
-# warning (optional) - set to TRUE if a warning should be thrown when a variable is not found.
-
+#' .ddg.where looks up the environment for the variable specified
+#' by name.  Adapted from Hadley Wickham, Advanced R programming.
+#' 
+#' @param name - name of variable.
+#' @param env (optional) - environment in which to start looking for variable.
+#' @param warning (optional) - set to TRUE if a warning should be thrown when a variable is not found.
+#' @returnType an environment
+#' @return the environment in which the name is fond
 .ddg.where <- function( name , env = parent.frame() , warning = TRUE )
 {
   stopifnot(is.character(name), length(name) == 1)
