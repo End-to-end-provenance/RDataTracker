@@ -81,13 +81,19 @@
   #print ("Tracing graphics open")
   trace.oneGraphicsOpen <- function (f) {capture.output(capture.output(trace (as.name(f), RDataTracker:::.ddg.trace.graphics.open, print=FALSE), type="message"))} 
   lapply(.ddg.get(".ddg.graphics.functions.df")$function.names, trace.oneGraphicsOpen)
-
+  
+#  trace.oneGraphicsOpen <- function (f) {capture.output(capture.output(trace (parse(text=paste("grDevices::",f)), RDataTracker:::.ddg.trace.graphics.open, print=TRUE), type="message"))}
+#  open.functions <- .ddg.get(".ddg.graphics.functions.df")$function.names
+#  lapply(open.functions[2:length(open.functions)], trace.oneGraphicsOpen)
+#  trace (grDevices::pdf, RDataTracker:::.ddg.trace.graphics.open, print=TRUE)
+  
   #print ("Tracing graphics update")
   trace.oneGraphicsUpdate <- function (f) {capture.output(capture.output(trace (as.name(f), RDataTracker:::.ddg.trace.graphics.update, print=FALSE), type="message"))} 
   lapply(.ddg.get(".ddg.graphics.update.functions.df"), trace.oneGraphicsUpdate)
   
   #print ("Tracing dev.off")
-  capture.output(capture.output(trace (dev.off, RDataTracker:::.ddg.trace.graphics.close, print=FALSE), type="message"))
+  capture.output(capture.output(trace (dev.off, RDataTracker:::.ddg.trace.graphics.close, print=FALSE), type="message"))  
+  #capture.output(capture.output(trace (grDevices::dev.off, RDataTracker:::.ddg.trace.graphics.close, print=TRUE), type="message"))
   #print ("Done initializing IO tracing")
 }
 
