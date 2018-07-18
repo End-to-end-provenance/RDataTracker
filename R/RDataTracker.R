@@ -26,16 +26,6 @@
 
 .ddg.env <- new.env(parent=emptyenv())
 
-# Set maximum number of checkpoints in DDG.
-
-# ddg.MAX_CHECKPOINTS <- 10
-
-# Set the number of lines the history file keeps (and therefore
-# can be analyzed). Note: this setting has no effect on some
-# systems.
-
-ddg.MAX_HIST_LINES <- 2^14
-
 #-------- FUNCTIONS TO MANAGE THE GLOBAL VARIABLES--------#
 
 # Global variables cannot be used directly in a library.  Instead,
@@ -46,28 +36,8 @@ ddg.MAX_HIST_LINES <- 2^14
   .ddg.init.tables()
 }
 
-.ddg.set <- function(var, value) {
-  .ddg.env[[var]] <- value
-  return(invisible(.ddg.env[[var]]))
-}
-
-.ddg.is.set <- function(var) {
-  return(exists(var, envir=.ddg.env))
-}
-
-.ddg.get <- function(var) {
-  if (!.ddg.is.set(var)) {
-    error.msg <- paste("No binding for", var, ". DDG may be incorrect!")
-    .ddg.insert.error.message(error.msg)
-    return(NULL)
-  }
-  else {
-    return(.ddg.env[[var]])
-  }
-}
-
-# .ddg.clear removes all objects from the .ddg.env environment.
-
+#' Reinitialize the ddg
+#' @return nothing
 .ddg.clear <- function() {
   # reinitialize tables
   .ddg.init.tables()
@@ -75,72 +45,53 @@ ddg.MAX_HIST_LINES <- 2^14
 
 ##### Getters for specific variables
 
-.ddg.debug.lib <- function() {
-  return (.ddg.get("ddg.debug.lib"))
-}
-
-.ddg.path <- function() {
-  return (.ddg.get("ddg.path"))
-}
-
-.ddg.data.dir <- function() {
-  return ("data")
-}
-
-.ddg.path.data <- function() {
-  return(paste(.ddg.path(), .ddg.data.dir() , sep="/"))
-}
-
-.ddg.path.debug <- function() {
-  return(paste(.ddg.path(), "/debug", sep=""))
-}
-
-.ddg.path.scripts <- function() {
-  return(paste(.ddg.path(), "/scripts", sep=""))
-}
-
+#' @return TRUE if debugging information should be saved to the file system
 .ddg.save.debug <- function() {
   return(.ddg.get("ddg.save.debug"))
 }
 
+#' @return an environment containing the names bound before
+#'   the script was executed
 .ddg.initial.env <- function() {
   return(.ddg.get("ddg.initial.env"))
 }
 
+#' @returnType vector of strings
+#' @return the names of functions that the user explicitly said should be annotated
 .ddg.annotate.on <- function() {
   return (.ddg.get("ddg.annotate.on"))
 }
 
+#' @returnType vector of strings
+#' @return the names of functions that user explicitly said should not be annotated
 .ddg.annotate.off <- function() {
   return (.ddg.get("ddg.annotate.off"))
 }
 
+#' @return TRUE if the commands are coming from a script file
 .ddg.enable.source <- function() {
   return(.ddg.is.set("from.source") && .ddg.get("from.source"))
 }
 
-# value should be TRUE or FALSE
-# Keeps track of whether the last loop has all iterations
-# recorded or not.
+#' Keeps track of whether the last loop has all iterations recorded or not.
+#' @param value if TRUE, it means that not all iterations are recorded
+#' @return nothing
 .ddg.set.details.omitted <- function (value) {
   .ddg.set ("details.omitted", value)
 }
 
+#' @return TRUE if provenance is incomplete at this point
 .ddg.were.details.omitted <- function () {
   .ddg.get ("details.omitted")
 }
 
-# Functions that allow us to save warnings when they occur
-# so that we can create the warning node after the node
-# that caused the warning is created.
-
-# .ddg.set.warning is attached as a handler when we evaluate
-# expressions.  It saves the warning so that a warning
-# node can be created after the procedural node that
-# corresponds to the expression that caused the warning
-#
-# w - the simplewarning object created by R
-
+#' .ddg.set.warning is attached as a handler when we evaluate
+#' expressions.  It saves the warning so that a warning
+#' node can be created after the procedural node that
+#' corresponds to the expression that caused the warning
+#'
+#' @param w the simplewarning object created by R
+#' @return nothing
 .ddg.set.warning <- function(w) {
   # Only save warnings if the warn level is set to report them at all.
   # This is important because we do temporarily set the warning level
@@ -151,41 +102,22 @@ ddg.MAX_HIST_LINES <- 2^14
   }
 }
 
+#' Clear the warning 
+#' @return nothing
 .ddg.clear.warning <- function() {
   .ddg.set(".ddg.warning", NA)
 }
 
+#' @returnType an R warning object
+#' @return the last saved warning
 .ddg.get.warning <- function () {
   return (.ddg.get(".ddg.warning"))
 }
 
+#' @returnType logical
+#' @return true if there is currently a saved warning
 .ddg.warning.occurred <- function() {
   return (.ddg.is.set(".ddg.warning") && !is.na(.ddg.get(".ddg.warning")))
-}
-
-##### Mutators for specific common actions
-
-.ddg.inc <- function(var) {
-  value <- .ddg.get(var)
-  return (.ddg.set(var, value + 1))
-}
-
-.ddg.dec <- function(var) {
-  value <- .ddg.get(var)
-  .ddg.set(var, value - 1)
-}
-
-.ddg.add.rows <- function(df, new.rows) {
-  table <- .ddg.get(df)
-  return (.ddg.set(df, rbind(table, new.rows)))
-}
-
-.ddg.push <- function(x, value) {
-  return(assign(as.character(substitute(x)), c(x, value), parent.frame()))
-}
-
-.ddg.pop <- function(x) {
-  return(assign(as.character(substitute(x)), x[-length(x)], parent.frame()))
 }
 
 

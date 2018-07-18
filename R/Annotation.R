@@ -585,7 +585,7 @@ ddg.annotate.on <- function (fnames=NULL){
   .ddg.set("ddg.annotate.on", on.list)
   
   # Remove from the off list
-  off.list <- .ddg.get("ddg.annotate.off")
+  off.list <- .ddg.annotate.off()
   off.list <- Filter (function(off) !(off %in% fnames), off.list)
   .ddg.set("ddg.annotate.off", off.list) 
   
@@ -606,12 +606,12 @@ ddg.annotate.off <- function (fnames=NULL) {
   }
   
   # Add to the off list
-  off.list <- .ddg.get("ddg.annotate.off")
+  off.list <- .ddg.annotate.off()
   off.list <- union (off.list, fnames)
   .ddg.set("ddg.annotate.off", off.list)
   
   # Remove from the on list
-  on.list <- .ddg.get("ddg.annotate.on")
+  on.list <- .ddg.annotate.on()
   on.list <- Filter (function(on) !(on %in% fnames), on.list)
   .ddg.set("ddg.annotate.on", on.list) 
   
