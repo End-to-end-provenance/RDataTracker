@@ -991,8 +991,12 @@ ddg.MAX_HIST_LINES <- 2^14
               if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Adding", cmd@abbrev, "information to vars.set, for an error"))
               .ddg.create.data.use.edges.for.console.cmd(vars.set, cmd, i, for.caller=FALSE)
 
-              # create and link to an error node
-              ddg.exception.out("error.msg", toString(e) , cmd@abbrev)
+              # Create output exception node.
+              .ddg.data.node("Exception", "error.msg", toString(e), "ddg.library")
+              
+              # Create data flow edge from procedure node to exception node.
+              .ddg.proc2data(cmd@abbrev, "error.msg")
+              
             }
           )
 

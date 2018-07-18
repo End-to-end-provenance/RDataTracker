@@ -315,7 +315,7 @@
       if (file.exists(file)) {
         # Create the file node and edge
         .ddg.file.copy(file)
-        ddg.data.in(basename(file))
+        .ddg.data2proc(basename(file), dscope="undefined")
       }
       
       # If the filename contains a :, then it is referencing a file within 
@@ -325,7 +325,7 @@
         if (file.exists (zipfile)) {
           # Create the file node and edge
           .ddg.file.copy(zipfile, file, NULL)
-          ddg.data.in(file)
+          .ddg.data2proc(file, dscope="undefined")
         }
       }
     }
@@ -495,12 +495,37 @@
     if (file.exists (file)) {
       # Create the file node and edge
       #print ("Copying file")
-      ddg.file.out (file)
+      .ddg.file.out (file)
     }
   }
 
   # Clear the list of output files now that they have been handled.
   .ddg.clear.output.file ()
+}
+
+#' .ddg.file.out creates a data node of type File.  The label
+#' is the filename with the directory removed.
+#' It copies the file to the DDG directory. A data flow edge
+#' is also created from creating procedure node pname to the new file node.
+#' 
+#' @param filename name of the file.  The name should include the path
+#'   to the file if it is not in the working directory.
+#' @return the full path to the file that is saved.
+#' 
+.ddg.file.out <- function(filename) {
+  # Adds the files written to ddg.outfilenodes for use in determining reads
+  # and writes in the hashtable.
+  .ddg.add.outfiles (filename)
+  
+  dname <- basename(filename)
+  
+  # Create output file node called filename and copy file.
+  saved.file <- .ddg.file.copy(filename, dname)
+  
+  # Create data flow edge from operation node to file node.
+  .ddg.lastproc2data (dname)
+  
+  return (saved.file)
 }
 
 
@@ -1034,7 +1059,7 @@
   
   # If going to a file, copy the file and create a node for it.
   if (!is.null (graphics.file)) {
-    ddg.file.out (graphics.file)
+    .ddg.file.out (graphics.file)
     
     # Delete files that were created by capturing the screen
     if (startsWith (graphics.file, "dev.off") && file.exists(graphics.file)) {

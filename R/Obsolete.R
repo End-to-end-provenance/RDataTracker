@@ -71,17 +71,23 @@ ddg.data.in <- function(dname, pname=NULL) {
   
   arg <- substitute(dname)
   if (!is.character(arg)) {
+    print("ddg.data.in: inside if")
     argname <- deparse(arg)
     dscope <- .ddg.get.scope(argname)
     if (.ddg.data.node.exists(argname, dscope)) {
+      print("ddg.data.in: inside inner if")
       dname <- argname
     }
     else {
+      print("ddg.data.in: inside inner else")
       dscope <- .ddg.get.scope(argname, for.caller=TRUE)
       if (.ddg.data.node.exists(argname, dscope)) {
+        print("ddg.data.in: inside inner inner if")
         dname <- argname
       }
       else {
+        print("ddg.data.in: inside inner inner else")
+        #### Path taken in FileNodesTest
         # This case is for file names.  The table records the file
         # name, using the scope "undefined".
         dscope <- "undefined"
@@ -94,12 +100,15 @@ ddg.data.in <- function(dname, pname=NULL) {
     }
   }
   else if (exists (arg, envir=parent.frame(), inherits=TRUE)) {
+    print("ddg.data.in: inside first else if")
     dscope <- .ddg.get.scope(dname)
   }
   else if (exists (arg, envir=parent.frame(2), inherits=TRUE)) {
+    print("ddg.data.in: inside second else if")
     dscope <- .ddg.get.scope(dname, for.caller=TRUE)
   }
   else {
+    print("ddg.data.in: inside else")
     dscope <- environmentName(.GlobalEnv)
   }
   
