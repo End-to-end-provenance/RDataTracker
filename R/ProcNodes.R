@@ -317,10 +317,11 @@
   
   # append the function call information to function nodes
   if( !is.null(functions.called) && !is.na(functions.called)) {
-    pfunctions <- .ddg.get.function.info(functions.called)
-    .ddg.add.to.function.table (pfunctions)
+    .ddg.add.to.function.table (functions.called)
   }
   if (.ddg.debug.lib()) print(paste("proc.node:", ptype, pname))
 }
+
+
 
 
