@@ -197,8 +197,14 @@
   .ddg.set("ddg.save.debug", FALSE)
   
   .ddg.init.statements ()
-
   .ddg.init.hashtable ()
+  
+  .ddg.set(".ddg.func.depth", 0)
+  .ddg.set(".ddg.explorer.port", 6096)
+  
+  # Initialize the stack of commands and environments being executed in active functions
+  .ddg.set(".ddg.cur.cmd.stack", vector())
+  .ddg.set(".ddg.cur.expr.stack", vector())
 }
 
 #' .ddg.init.environ() sets up the filesystem and R environments

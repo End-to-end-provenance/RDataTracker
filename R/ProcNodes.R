@@ -46,6 +46,9 @@
   .ddg.set("ddg.pnum", 0)
   
   .ddg.set(".ddg.proc.start.time", .ddg.elapsed.time())
+  
+  # Initialize the information about the open start-finish blocks
+  .ddg.set (".ddg.starts.open", vector())
 }
 
 #' .ddg.is.proc.type returns TRUE for any type of procedure node.

@@ -48,7 +48,6 @@
 #' snapshot, not the size of the resulting snapshot.
 #' @paramoverwrite (optional) - default TRUE, if FALSE, generates
 #' timestamp for ddg directory
-#' @param save.hashtable (optional) - If TRUE, save ddg information to hashtable.json.
 #' @param hash.algorithm (optional) - If save.hashtable is true, this allows the caller to 
 #' select the hash algorithm to use.  This uses the digest function from the digest package.
 #' The choices are md5, which is also the default, sha1, crc32, sha256, sha512, xxhash32, xxhash64 and murmur32.
@@ -56,64 +55,14 @@
 #' @return nothing
 
 ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enable.console = TRUE, annotate.inside.functions = TRUE, first.loop = 1, max.loops = 1, max.snapshot.size = 10,
-                     save.hashtable = TRUE, hash.algorithm="md5") {
-   .ddg.init.tables()
+                     hash.algorithm="md5") {
+  .ddg.init.tables()
 
   # Save hash algorithm
-   .ddg.set (".ddg.hash.algorithm", hash.algorithm)
+  .ddg.set (".ddg.hash.algorithm", hash.algorithm)
   
-  # Set directory for provenance graph. The base directory is set as follows:
-  # (1) the directory specified by the user in the parameter ddgdir in ddg.init, or
-  # (2) the directory specified by the user as the value of the option "prov.dir",
-  # or (3) the R session temporary directory. If the directory specified by the user
-  # is a period (.), the base directory is set to the current working directory.
-  #
-  # The provenance graph is stored in a subdirectory of the base directory called 
-  # "prov_console" in console mode or "prov_[script name]" in script mode. If overwrite = 
-  # FALSE, a timestamp is added to the directory name.
-
-  # Directory specified by ddgdir in ddg.init
-  if (!is.null(ddgdir)) {
-    if (ddgdir == ".") {
-      base.dir <- getwd()
-    } else {
-      base.dir <- ddgdir
-    }
+  .ddg.set.path (ddgdir, r.script.path, overwrite)
   
-  # Directory specified as an option for prov.dir
-  } else if (!is.null(getOption("prov.dir")) && getOption("prov.dir") != "") {
-    if (getOption("prov.dir") == ".") {
-      base.dir <- getwd()
-    } else {
-      base.dir <- getOption("prov.dir")
-    }
-
-  # R session temporary directory
-  } else {
-    # Normalize path
-    base.dir <- normalizePath(tempdir(), winslash = "/", mustWork = FALSE)
-  }
-
-  # Remove final slash if present
-  if (substr(base.dir, nchar(base.dir), nchar(base.dir)) == "/") base.dir <- substr(base.dir, 1, nchar(base.dir)-1)
-
-  # Console mode
-  if (is.null(r.script.path)) {
-    ddg.path <- paste(base.dir, "/prov_console", sep="")
- 
-  # Script mode
-  } else {
-    ddg.path <- paste(base.dir, "/prov_", basename(tools::file_path_sans_ext(r.script.path)), sep="")
-  }
-
-  # Add timestamp if overwrite = FALSE
-  if (!overwrite) ddg.path <- paste(ddg.path, "_", .ddg.timestamp(), sep="")
-
-  # Create directory if it does not exist
-  if (!dir.exists(ddg.path)) dir.create(ddg.path, recursive = TRUE)
-
-  .ddg.set("ddg.path", ddg.path)
-
   # Remove files from DDG directory
   ddg.flush.ddg()
 
@@ -134,24 +83,7 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
 
   # Set environment constants.
   .ddg.set.enable.console (enable.console)
-  .ddg.set(".ddg.func.depth", 0)
-  .ddg.set(".ddg.explorer.port", 6096)
   .ddg.set.details.omitted(FALSE)
-  # .ddg.init.environ()
-
-  # Initialize the information about the open start-finish blocks
-  .ddg.set (".ddg.starts.open", vector())
-
-  # Initialize the stack of commands and environments being executed in active functions
-  .ddg.set(".ddg.cur.cmd.stack", vector())
-  .ddg.set(".ddg.cur.expr.stack", vector())
-
-  # Mark graph as initilized.
-  .ddg.set(".ddg.initialized", TRUE)
-
-  # Store the starting graphics device.
-  .ddg.set("possible.graphics.files.open", NULL)
-  .ddg.set("ddg.open.devices", vector())
 
   .ddg.init.history.file ()
 
@@ -176,7 +108,78 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
   # Initialize the I/O tracing code
   .ddg.init.iotrace ()
   
+  # Mark graph as initilized.
+  .ddg.set(".ddg.initialized", TRUE)
+  
   invisible()
+}
+
+#' Sets the path where the DDG will be stored.  It creates the directory if it
+#' does not currently exist.
+#' 
+#' The base directory is set as follows:
+#' (1) the directory specified by the user in the parameter ddgdir, or
+#' (2) the directory specified by the user as the value of the option "prov.dir",
+#' or (3) the R session temporary directory. If the directory specified by the user
+#' is a period (.), the base directory is set to the current working directory.
+#'
+#' The provenance graph is stored in a subdirectory of the base directory called 
+#' "prov_console" in console mode or "prov_[script name]" in script mode. If overwrite = 
+#' FALSE, a timestamp is added to the directory name.
+#' 
+#' @param ddgdir name of directory.  This can be a directory name, ".", or NULL.
+#' @param r.script.path the path to the R script.  If NULL, we are running from the console.
+#' @param overwrite If FALSE, a timestamp is added to the directory name
+#' @returnType string
+#' @return the name of the directory where the ddg should be stored
+.ddg.set.path <- function (ddgdir, r.script.path, overwrite) {
+  
+  # Directory specified by ddgdir parameter
+  if (!is.null(ddgdir)) {
+    if (ddgdir == ".") {
+      base.dir <- getwd()
+    } else {
+      base.dir <- ddgdir
+    }
+  } 
+  
+  else {
+    # Directory specified as an option for prov.dir
+    prov.dir.option <- getOption("prov.dir")
+    if (!is.null(prov.dir.option) && prov.dir.option != "") {
+      if (prov.dir.option == ".") {
+        base.dir <- getwd()
+      } else {
+        base.dir <- getOption("prov.dir")
+      }
+    } 
+    
+    # R session temporary directory
+    else {
+      # Normalize path
+      base.dir <- normalizePath(tempdir(), winslash = "/", mustWork = FALSE)
+    }
+  }
+  
+  # Remove final slash if present
+  base.dir <- sub("/$", "", base.dir)
+  
+  # Console mode
+  if (is.null(r.script.path)) {
+    ddg.path <- paste(base.dir, "/prov_console", sep="")
+    
+    # Script mode
+  } else {
+    ddg.path <- paste(base.dir, "/prov_", basename(tools::file_path_sans_ext(r.script.path)), sep="")
+  }
+  
+  # Add timestamp if overwrite = FALSE
+  if (!overwrite) ddg.path <- paste(ddg.path, "_", .ddg.timestamp(), sep="")
+  
+  # Create directory if it does not exist
+  if (!dir.exists(ddg.path)) dir.create(ddg.path, recursive = TRUE)
+  
+  .ddg.set("ddg.path", ddg.path)
 }
 
 #' @export ddg.save saves the current provenance graph
@@ -292,7 +295,7 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
                     save.hashtable = TRUE, hash.algorithm="md5") {
   
   # Initiate ddg.
-  ddg.init(r.script.path, ddgdir, overwrite, enable.console, annotate.inside.functions, first.loop, max.loops, max.snapshot.size, save.hashtable, hash.algorithm)
+  ddg.init(r.script.path, ddgdir, overwrite, enable.console, annotate.inside.functions, first.loop, max.loops, max.snapshot.size, hash.algorithm)
   
   # Set .ddg.is.sourced to TRUE if script provided.
   .ddg.set(".ddg.is.sourced", !is.null(r.script.path))

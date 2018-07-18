@@ -63,6 +63,12 @@
   return (.ddg.get("ddg.path"))
 }
 
+#' @return the name of the folder where the data are stored in the
+#'   ddg.  This is just the folder name, not a path.
+.ddg.data.dir <- function() {
+  return ("data")
+}
+
 #' @return the path to the ddg directory where snapshots and copies of files are stored
 .ddg.path.data <- function() {
   return(paste(.ddg.path(), .ddg.data.dir() , sep="/"))

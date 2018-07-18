@@ -45,6 +45,9 @@
 .ddg.init.iotrace <- function () {
   #print ("Initializing io tracing")
   
+  # Store the starting graphics device.
+  .ddg.set("ddg.open.devices", vector())
+  
   # Record the information about the input and output functions
   .ddg.set (".ddg.file.write.functions.df", .ddg.create.file.write.functions.df ())
   .ddg.set (".ddg.file.read.functions.df", .ddg.create.file.read.functions.df ())
