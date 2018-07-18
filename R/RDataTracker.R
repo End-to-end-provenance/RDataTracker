@@ -1045,43 +1045,50 @@ library(curl)
 
 .ddg.get.val.type <- function(value)
 {
-  # vector: a 1-dimensional array (uniform typing)
-  if(is.vector(value))
-    return( list("vector", length(value), class(value)) )
+	# vector: a 1-dimensional array (uniform typing)
+	if(is.vector(value))
+		return( list("vector", length(value), .ddg.get.lowest.class(value)) )
 
-  # matrix: a 2-dimensional array (uniform typing)
-  if(is.matrix(value))
-    return( list("matrix", dim(value), class(value[1])) )
+	# matrix: a 2-dimensional array (uniform typing)
+	if(is.matrix(value))
+		return( list("matrix", dim(value), .ddg.get.lowest.class(value[1])) )
 
-  # array: n-dimensional (uniform typing)
-  if(is.array(value))
-  	return( list("array", dim(value), class(value[1])) )
+	# array: n-dimensional (uniform typing)
+	if(is.array(value))
+		return( list("array", dim(value), .ddg.get.lowest.class(value[1])) )
 
-  # data frame: is a type of list
-  if(is.data.frame(value))
-  {
-    types <- unname(sapply(value,class))
-    return( unname(list("data_frame", dim(value), types)) )
- }
+	# data frame: is a type of list
+	if(is.data.frame(value))
+	{
+		types <- unname(sapply(value,.ddg.get.lowest.class))
+		return( unname(list("data_frame", dim(value), types)) )
+	}
 
-  # a list
-  if(is.list(value))
-    return("list")
+	# a list
+	if(is.list(value))
+		return("list")
 
-  # an object
-  if(is.object(value))
-    return("object")
+	# an object
+	if(is.object(value))
+		return("object")
 
-  # envrionment, function, language
-  if(is.environment(value))
-    return("environment")
-  if(is.function(value))
-    return("function")
-  if(is.language(value))
-    return("language")
+	# envrionment, function, language
+	if(is.environment(value))
+		return("environment")
+	if(is.function(value))
+		return("function")
+	if(is.language(value))
+		return("language")
 
-  # none of the above - null is a character, not NULL or NA
-  return(NULL)
+	# none of the above - null is a character, not NULL or NA
+	return(NULL)
+}
+
+# returns the first element that the function class returns
+# when inheritance is used, this is the lowest type. 
+.ddg.get.lowest.class <- function( obj )
+{
+	return( class(obj)[1] )
 }
 
 

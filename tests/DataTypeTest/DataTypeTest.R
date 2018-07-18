@@ -1,6 +1,6 @@
 # Tests for various R data types.
 
-# Modified by Emery Boose 29-May-2016
+# Modified by Emery Boose 29-May-2016, Elizabeth Fong 19-Jul-2018
 
 x.number <- 10
 
@@ -20,23 +20,26 @@ x.chr0 <- character(0)
 
 x.log0 <- logical(0)
 
+x.posixct <- as.POSIXct("080406 10:11", format = "%y%m%d %H:%M")
+
 x.factor <- factor(c("red","green","blue","red","green","red"))
 
+# vectors
 x.vector.number <- c(1,2,3)
-
 x.vector.string <- c("one", "two", "three")
-
 x.vector.logical <- c(TRUE, FALSE, TRUE)
+x.vector.posixct <- rep(x.posixct, 3)
 
+# matrix, array
 x.matrix <- matrix(data=c(1,2,3,4,5,6), nrow=3, ncol=2)
-
 x.array <- array(data=c(1,2,3,4,5,6,7,8), dim=c(2,2,2))
 
-x.data.frame <- data.frame(x.vector.number, x.vector.string, x.vector.logical)
+# data frame
+x.data.frame1 <- data.frame(x.vector.number, x.vector.string, x.vector.logical)
+x.data.frame2 <- data.frame(x.vector.logical, x.vector.posixct, x.vector.number, x.vector.posixct)
 
+# list
 x.list1 <- list(x.number, x.string, x.logical, x.na, x.null)
-
 x.list2 <- list(x.vector.number, x.vector.string, x.vector.logical, x.matrix, x.data.frame)
-
 x.list3 <- list(x.list1, x.list2)
 
