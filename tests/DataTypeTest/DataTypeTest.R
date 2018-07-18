@@ -40,6 +40,6 @@ x.data.frame2 <- data.frame(x.vector.logical, x.vector.posixct, x.vector.number,
 
 # list
 x.list1 <- list(x.number, x.string, x.logical, x.na, x.null)
-x.list2 <- list(x.vector.number, x.vector.string, x.vector.logical, x.matrix, x.data.frame)
+x.list2 <- list(x.vector.number, x.vector.string, x.vector.logical, x.matrix, x.data.frame1)
 x.list3 <- list(x.list1, x.list2)
 

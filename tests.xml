@@ -317,7 +317,7 @@
 		</replaceregexp>
 
 		<!-- Replace local file paths with [DIR] -->
-		<replaceregexp flags="g">
+		<replaceregexp flags="gi">
 			<regexp pattern="${FILE.basedir}/${dir}" />
 			<substitution expression="\[DIR\]"/>
 			<fileset dir="${local_dir}">
@@ -330,7 +330,7 @@
 			 that these follow the rule that replaces local file
 			 paths with [DIR] so we don't lose those.  -->
 		<replaceregexp flags="g">
-			<regexp pattern='(\t+"rdt:location": "/(.*)\r?\n)' />
+			<regexp pattern='(\t+"rdt:location": "(.:)?/(.*)\r?\n)' />
 			<substitution expression=""/>
 			<fileset dir="${local_dir}">
 				<patternset id="local_files">
@@ -500,7 +500,7 @@
 		</copy>
 
 		<!-- Replace local file paths with [DIR] -->
-		<replaceregexp flags="g">
+		<replaceregexp flags="gi">
 			<regexp pattern="${FILE.basedir}/${dir}" />
 			<substitution expression="\[DIR\]"/>
 			<fileset dir="${expected_dir}" />
