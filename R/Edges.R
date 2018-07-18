@@ -77,10 +77,10 @@
 
 #' Write the edges to a csv table.  Useful for debugging.
 #' The file will be in the debug directory in a file called edges.csv
-.ddg.save.debug.data.nodes <- function () {
+.ddg.save.debug.edges <- function () {
   # Save edges table to file.
   fileout <- paste(.ddg.path.debug(), "/edges.csv", sep="")
-  write.csv(ddg.edges(), fileout, row.names=FALSE)
+  write.csv(.ddg.edges(), fileout, row.names=FALSE)
 }
 
 #' .ddg.record.edge records a control flow edge or a data flow edge

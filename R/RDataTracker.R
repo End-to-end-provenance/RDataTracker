@@ -1291,7 +1291,7 @@ ddg.MAX_HIST_LINES <- 2^14
 #' history file.
 .ddg.delete.temp <- function() {
   # Delete the temporary history file if we made it.
-  if (.ddg.is.set('ddg.history.file')) unlink(.ddg.get('ddg.history.file'))
+  if (.ddg.is.set('.ddg.history.file')) unlink(.ddg.get('.ddg.history.file'))
 
   # Clear the environment.
   .ddg.env <- new.env(parent=emptyenv())
@@ -2710,13 +2710,6 @@ ddg.display <- function () {
         # print("Warning!")
         .ddg.start.ddg.explorer()
       }
-  )
-  tryCatch(
-    if(is.element('CamFlow', installed.packages()[,1])){ # did we install the CamFlow visualiser?
-      json <- ddg.json()
-      CamFlowVisualiser(json)
-    },
-    error = function(e) {}
   )
 
   invisible()

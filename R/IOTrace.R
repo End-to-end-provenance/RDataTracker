@@ -79,6 +79,7 @@
   lapply(.ddg.get(".ddg.file.close.functions.df")$function.names, trace.oneClose)
 
   #print ("Tracing graphics open")
+  # trace (grDevices::pdf, RDataTracker:::.ddg.trace.graphics.open, print=TRUE)
   trace.oneGraphicsOpen <- function (f) {capture.output(capture.output(trace (as.name(f), RDataTracker:::.ddg.trace.graphics.open, print=FALSE), type="message"))} 
   lapply(.ddg.get(".ddg.graphics.functions.df")$function.names, trace.oneGraphicsOpen)
   
@@ -262,7 +263,7 @@
   #print (paste ("Input file parameter:", file.param.name))
   
   # Get the value of the file parameter  
-  input.file.name <- eval (as.symbol(file.param.name), env = sys.frame(frame.number))
+  input.file.name <- eval (as.symbol(file.param.name), envir = sys.frame(frame.number))
   #print (paste ("input.file.name =", input.file.name))
   
   # Save the file name so the file node can be created when the statement is complete.
@@ -448,7 +449,7 @@
   #print (paste ("Output file parameter:", file.param.name))
   
   # Get the value of the file parameter  
-  output.file.name <- eval (as.symbol(file.param.name), env = sys.frame(frame.number))
+  output.file.name <- eval (as.symbol(file.param.name), envir = sys.frame(frame.number))
   # print (paste ("output.file.name =", output.file.name))
 
   # Save the file name so the file node can be created when the statement is complete.
@@ -472,7 +473,7 @@
       # If it is a closed connection, use the file it is connected to
       # If it is still open, don't use it because the contents on disk won't
       # be correct until it is closed.
-      if (.ddg.get.connection.isopen(conn)) {
+      if (.ddg.is.connection.open(conn)) {
         next
       }
       file <- .ddg.get.connection.description(conn)
@@ -638,7 +639,7 @@
   #print (paste (".ddg.trace.close: file.param.name = ", file.param.name))
   
   # Get the value of the connection parameter  
-  close.conn <- eval (as.symbol(file.param.name), env = sys.frame(frame.number))
+  close.conn <- eval (as.symbol(file.param.name), envir = sys.frame(frame.number))
   
   # If the connection was opened for writing, then add the connection
   # to the list for which we create output file nodes.  We do not need 
@@ -813,7 +814,7 @@
     #print(paste (".ddg.trace.graphics: file.param.name =", file.param.name))
   
     # Get the value of the file parameter  
-    file <- eval (as.symbol(file.param.name), env = sys.frame(frame.number))
+    file <- eval (as.symbol(file.param.name), envir = sys.frame(frame.number))
     #print(paste (".ddg.trace.graphics.open: file =", file))
     .ddg.set(".ddg.no.graphics.file", FALSE)
     .ddg.set (".ddg.last.graphics.file", file)
