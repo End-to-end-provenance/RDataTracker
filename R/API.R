@@ -103,7 +103,7 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
  
   # Script mode
   } else {
-    ddg.path <- paste(base.dir, "/prov_", basename(file_path_sans_ext(r.script.path)), sep="")
+    ddg.path <- paste(base.dir, "/prov_", basename(tools::file_path_sans_ext(r.script.path)), sep="")
   }
 
   # Add timestamp if overwrite = FALSE
@@ -122,8 +122,8 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
 
   # Reset r.script.path if RMarkdown file
 
-  if (!is.null(r.script.path) && file_ext(r.script.path) == "Rmd") {
-    output.path <- paste(.ddg.path.scripts(), "/", basename(file_path_sans_ext(r.script.path)), ".R", sep = "")
+  if (!is.null(r.script.path) && tools::file_ext(r.script.path) == "Rmd") {
+    output.path <- paste(.ddg.path.scripts(), "/", basename(tools::file_path_sans_ext(r.script.path)), ".R", sep = "")
     .ddg.markdown(r.script.path, output.path)
     .ddg.set("ddg.r.script.path", output.path)
   } else {
@@ -199,7 +199,7 @@ ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE) {
   .ddg.create.file.nodes.for.open.connections ()
 
   # If there is a display device open, grab what is on the display
-  if (length(dev.list()) >= 1) {
+  if (length(grDevices::dev.list()) >= 1) {
     #print("ddg.save: Saving graphics open at end of script")
     tryCatch (.ddg.capture.graphics(called.from.save = TRUE),
         error = function (e) print(e))

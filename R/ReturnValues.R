@@ -70,7 +70,7 @@
   
   # Remove the empty rows from the table.
   ddg.returns2 <- ddg.returns[ddg.returns$return.node.id > 0, ]
-  write.csv(ddg.returns2, fileout, row.names=FALSE)
+  utils::write.csv(ddg.returns2, fileout, row.names=FALSE)
 }
 
 

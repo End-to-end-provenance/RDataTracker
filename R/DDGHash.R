@@ -87,7 +87,7 @@
   # other non-text files with internal timestamps. This could also cause these files
   # to sync incorrectly in the workflow, but given that reading in a pdf file is unlikely,
   # this should not be an overly large issue.
-  dhash <- digest(dname, algo=.ddg.get(".ddg.hash.algorithm"))
+  dhash <- digest::digest(dname, algo=.ddg.get(".ddg.hash.algorithm"))
   if (is.null(dhash)) {
     dhash <- ""
   }
@@ -158,7 +158,7 @@
   }
   
   # Write out the updated file
-  writejson <- toJSON(new_hashtable, simplifyVector = TRUE, pretty = TRUE)
+  writejson <- jsonlite::toJSON(new_hashtable, simplifyVector = TRUE, pretty = TRUE)
   writeLines(writejson, hashtable.json)
 }
 
@@ -171,7 +171,7 @@
 #' @return the dataframe containing the contents of the existing hashtable file with 
 #'    entries corresponding to overwritten files removed
 .ddg.hashtable.cleanup <- function(hashtable.json) {
-  old_hashtable <- read_json(hashtable.json, simplifyVector = TRUE)
+  old_hashtable <- jsonlite::read_json(hashtable.json, simplifyVector = TRUE)
   longpath <- paste0(getwd(), substring(.ddg.path(),2), "/ddg.json")
   old_hashtable <- old_hashtable[old_hashtable$DDGPath != longpath, ]
   # old_hashtable <- subset(old_hashtable, DDGPath != longpath)

@@ -196,7 +196,7 @@
   # Save procedure nodes table to file.
   fileout <- paste(.ddg.path.debug(), "/procedure-nodes.csv", sep="")
   ddg.proc.nodes <- .ddg.proc.nodes()
-  write.csv(ddg.proc.nodes, fileout, row.names=FALSE)
+  utils::write.csv(ddg.proc.nodes, fileout, row.names=FALSE)
 }
 
 #' Records a new procedure node in the procedure node table

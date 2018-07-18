@@ -54,3 +54,21 @@
   return(str)
 }
 
+#' .ddg.insert.error.message issues a warning and inserts an
+#' exception node after the last procedure step. The name of the node
+#' is "error.msg" and the value is the error message passed to this
+#' function.
+#' 
+#' @param msg error message to record
+#' @param msg.type label of the node, defaults to "error.msg"
+#' @param doWarn if true, this function displays a warning.  Defaults to TRUE
+#' 
+.ddg.insert.error.message <- function(msg, msg.type="error.msg", doWarn = TRUE) {
+  if (doWarn) {
+    warning(msg)
+  }
+  .ddg.data.node("Exception", msg.type, msg, "ddg.library")
+  .ddg.lastproc2data(msg.type, dscope="ddg.library")
+}
+
+

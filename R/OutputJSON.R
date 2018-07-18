@@ -152,8 +152,8 @@ ddg.json.write <- function()
 	
 	# format to json
 	# with proper indentation, without sq brackets around urls
-	json <- toJSON(node, auto_unbox = TRUE)
-	json <- prettify(json, indent = 4)
+	json <- jsonlite::toJSON(node, auto_unbox = TRUE)
+	json <- jsonlite::prettify(json, indent = 4)
 	
 	# change '    ' into a tab (\t)
 	json <- gsub( '    ' , '\t' , json )
@@ -167,7 +167,7 @@ ddg.json.write <- function()
 {
 	# get node content
 	node <- data.frame( "tool.name" = tool ,
-						"tool.version" = toString(packageVersion(tool)) ,
+						"tool.version" = toString(utils::packageVersion(tool)) ,
 						"json.version" = json.version ,
 						stringsAsFactors = FALSE )
 	names(node) <- mapply( paste , prefix , names(node) , sep='' , USE.NAMES=FALSE )
@@ -304,8 +304,8 @@ ddg.json.write <- function()
 	names(fields) <- paste( prefix , "environment" , sep = '' )
 	
 	# convert to json
-	json <- toJSON( fields , auto_unbox = TRUE )
-	json <- prettify( json , indent = 4 )
+	json <- jsonlite::toJSON( fields , auto_unbox = TRUE )
+	json <- jsonlite::prettify( json , indent = 4 )
 	
 	# convert '    ' into tab
 	json <- gsub( '    ' , '\t' , json )
@@ -371,8 +371,8 @@ ddg.json.write <- function()
 	names(prov.type) <- "prov:type"
 	
 	# convert  to json
-	json <- toJSON(prov.type, auto_unbox = TRUE)
-	json <- prettify(json, indent = 4)
+	json <- jsonlite::toJSON(prov.type, auto_unbox = TRUE)
+	json <- jsonlite::prettify(json, indent = 4)
 	
 	# convert '    ' to tab
 	json <- gsub( '    ' , '\t' , json )
@@ -687,8 +687,8 @@ ddg.json.write <- function()
 	names(dataframe) <- row.names
 	
 	# convert to json
-	json <- toJSON( dataframe , na = "string" )
-	json <- prettify( json , indent = 4 )
+	json <- jsonlite::toJSON( dataframe , na = "string" )
+	json <- jsonlite::prettify( json , indent = 4 )
 	
 	
 	# PROCESS JSON INTO CORRECT FORMAT
