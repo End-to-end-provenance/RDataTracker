@@ -52,6 +52,7 @@
 	- AnnotateOnOffTest
 	- ControlConstructTest
 	- WarningTest
+	- FileNodes
 	- PlotTest
 	- Plot2Test
 	- NoDevOffTest
@@ -633,6 +634,18 @@
 		</antcall>
 	</target>
 
+	<target name="FileNodesTest">
+		<antcall target="run-regression-test">
+			<param name="test-name" value="FileNodesTest" />
+		</antcall>
+	</target>
+
+	<target name="update-FileNodesTest">
+		<antcall target="update-regression-expected">
+			<param name="test-name" value="FileNodesTest" />
+		</antcall>
+	</target>
+
 	<target name="PlotTest">
 		<antcall target="run-regression-test">
 			<param name="test-name" value="PlotTest" />
@@ -755,7 +768,7 @@
 	
 	<target name="normal-tests" depends="basicTest, S4ObjectTest,
 		ScopeTest, ReturnTest, OddParameterTest, FunctionAnnotationTest,
-		ControlConstructTest, WarningTest, PlotTest, Plot2Test, NoDevOffTest, DataTypeTest,
+		ControlConstructTest, WarningTest, FileNodesTest, PlotTest, Plot2Test, NoDevOffTest, DataTypeTest,
 		HigherOrderFuncTest, AssignmentOperatorsTest, FunctionOriginTest,
 		RMarkdownTest, DDGStatementTest, ConnectionTest">
 	

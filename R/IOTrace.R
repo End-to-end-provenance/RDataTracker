@@ -314,7 +314,7 @@
       # Only create the node and edge if there actually is a file
       if (file.exists(file)) {
         # Create the file node and edge
-        ddg.file(file)
+        .ddg.file.copy(file)
         ddg.data.in(basename(file))
       }
       
@@ -324,7 +324,7 @@
         zipfile <- sub (":.*", "", file)
         if (file.exists (zipfile)) {
           # Create the file node and edge
-          ddg.file(zipfile, file)
+          .ddg.file.copy(zipfile, file, NULL)
           ddg.data.in(file)
         }
       }

@@ -42,6 +42,18 @@
 .ddg.init.data.nodes <- function () {
   .ddg.set("ddg.data.nodes", .ddg.create.data.node.rows()) 
   .ddg.set("ddg.dnum", 0)
+  
+  # Set max.snapshot.size.  Make sure it is not already set, as
+  # someone may have called ddg.set.detail.
+  if (!.ddg.is.set("ddg.max.snapshot.size")) {
+    .ddg.set("ddg.max.snapshot.size", 100)
+  }
+}
+
+#' @returnType integer
+#' @return the maximum size that snapshots should be, measured in KB
+ddg.max.snapshot.size <- function() {
+  return(.ddg.get("ddg.max.snapshot.size"))
 }
 
 #' .ddg.is.data.type returns TRUE for any type of data node.
@@ -602,6 +614,9 @@
   return(ext %in% c("jpeg", "jpg", "tiff", "png", "bmp", "pdf"))
 }
 
+# ddg.file creates a data node of type File by copying an existing
+# file to the DDG directory.
+
 #' .ddg.file.copy creates a data node of type File. File nodes are
 #' used for files written by the main script. A copy of the file is
 #' written to the DDG directory.
@@ -610,7 +625,7 @@
 #' @param dname name of data node.
 #' @param dscope scope of data node.
 #' @return nothing
-.ddg.file.copy <- function(fname, dname, dscope) {
+.ddg.file.copy <- function(fname, dname=NULL, dscope=NULL) {
   # Calculate location of original file.
   file.loc <- normalizePath(fname, winslash="/", mustWork = FALSE)
   
