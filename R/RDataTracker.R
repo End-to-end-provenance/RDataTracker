@@ -761,7 +761,7 @@ ddg.MAX_HIST_LINES <- 2^14
   # Create a message that looks like the one R creates
   callStr <-
       if (is.null (w$call)) ""
-      else paste ("In ", head (deparse(w$call)), ": ")
+      else paste ("In ", utils::head (deparse(w$call)), ": ")
   warningMessage <- paste (callStr, w$message)
 
   # Create the warning node
@@ -1692,7 +1692,7 @@ ddg.MAX_HIST_LINES <- 2^14
   # undefined.
   if (is.null(env)) return ("undefined")
 
-  scope <- sub('^<environment: (.*)>$', '\\1', capture.output(env)[1])
+  scope <- sub('^<environment: (.*)>$', '\\1', utils::capture.output(env)[1])
   if (grepl("undefined", scope)) scope <- "undefined"
   return(scope)
 }
@@ -1760,7 +1760,7 @@ ddg.MAX_HIST_LINES <- 2^14
   knitr::purl(r.script.path, documentation = 2L, quiet = TRUE)
 
   #moves file to ddg directory
-  file.rename(from = paste(getwd(), "/", basename(file_path_sans_ext(r.script.path)), ".R", sep = ""), to = output.path)
+  file.rename(from = paste(getwd(), "/", basename(tools::file_path_sans_ext(r.script.path)), ".R", sep = ""), to = output.path)
   script <- readLines(output.path)
 
   skip <- FALSE
@@ -1829,7 +1829,7 @@ ddg.MAX_HIST_LINES <- 2^14
 	# Save initial environment table to file.
 	fileout <- paste(.ddg.path.debug(), "/initial-environment.csv", sep="")
 	ddg.initial.env <- .ddg.initial.env()
-	write.csv(ddg.initial.env, fileout, row.names=FALSE)
+  utils::write.csv(ddg.initial.env, fileout, row.names=FALSE)
 
   .ddg.save.debug.proc.nodes ()
   .ddg.save.debug.data.nodes ()
@@ -1838,11 +1838,11 @@ ddg.MAX_HIST_LINES <- 2^14
 
 	# save library information to file
 	fileout <- paste(.ddg.path.debug(), "/libraries.csv", sep="")
-	write.csv(.ddg.installedpackages(), fileout, row.names=FALSE)
+  utils::write.csv(.ddg.installedpackages(), fileout, row.names=FALSE)
 	
 	# save execution environment information to file
 	fileout <- paste(.ddg.path.debug(), "/environment.csv", sep="")
-	write.csv(.ddg.exec.env(), fileout, row.names=FALSE)
+  utils::write.csv(.ddg.exec.env(), fileout, row.names=FALSE)
 	
   .ddg.save.return.value.table ()
   .ddg.save.sourced.script.table ()
@@ -1897,7 +1897,7 @@ ddg.MAX_HIST_LINES <- 2^14
 	env$ddgTimeStamp[1] <- .ddg.get("ddg.start.time")
 	
 	# rdt version
-	env$rdtVersion[1] <- toString( packageVersion("RDataTracker") )
+	env$rdtVersion[1] <- toString( utils::packageVersion("RDataTracker") )
 	
 	# hash algorithm
 	env$hashAlgorithm[1] <- .ddg.get(".ddg.hash.algorithm")
@@ -2000,7 +2000,6 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
   
   #print("In ddg.return.value")
 
-  dev.file <- NULL
   parsed.stmt <- NULL
   
   # Capture graphics if dev.off is about to be called.
@@ -2087,28 +2086,17 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
   
   # Check if there is a return call within this call to ddg.return.
   if (.ddg.has.call.to(parsed.stmt, "return")) {
-  .ddg.proc.node("Operation", return.stmt@abbrev, return.stmt@abbrev, console = TRUE, cmd=return.stmt)
-
-  # Create control flow edge from preceding procedure node.
-  .ddg.proc2proc()
-
-  # Create an edge from the return statement to its return value.
-  .ddg.proc2data(return.stmt@abbrev, return.node.name, return.node.scope, return.value=TRUE)
+    .ddg.proc.node("Operation", return.stmt@abbrev, return.stmt@abbrev, console = TRUE, cmd=return.stmt)
   
-    if (!is.null(dev.file)) {
-      ddg.file.out (dev.file, pname=return.stmt@abbrev)
-      
-      # Remove the temporary file
-      file.remove(dev.file)
-      
-      # Add an input edge from the current device
-      .ddg.data2proc(dev.node.name, NULL, return.stmt@abbrev)
-    }
+    # Create control flow edge from preceding procedure node.
+    .ddg.proc2proc()
+  
+    # Create an edge from the return statement to its return value.
+    .ddg.proc2data(return.stmt@abbrev, return.node.name, return.node.scope, return.value=TRUE)
   }
   else {
     .ddg.lastproc2data(return.node.name, dscope=return.node.scope)
   }
-
   .ddg.add.to.return.values (call.text)
 
   # If it does not have return, then its parameter was a call to ddg.eval

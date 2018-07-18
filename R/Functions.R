@@ -51,7 +51,7 @@
 .ddg.save.function.table <- function () {
   # save function nodes table to file
   fileout <- paste(.ddg.path.debug(), "/function-nodes.csv", sep="")
-  write.csv(.ddg.function.nodes(), fileout, row.names=FALSE)
+  utils::write.csv(.ddg.function.nodes(), fileout, row.names=FALSE)
 }
 
 #' Add new functions to the function table

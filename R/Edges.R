@@ -80,7 +80,7 @@
 .ddg.save.debug.edges <- function () {
   # Save edges table to file.
   fileout <- paste(.ddg.path.debug(), "/edges.csv", sep="")
-  write.csv(.ddg.edges(), fileout, row.names=FALSE)
+  utils::write.csv(.ddg.edges(), fileout, row.names=FALSE)
 }
 
 #' .ddg.record.edge records a control flow edge or a data flow edge

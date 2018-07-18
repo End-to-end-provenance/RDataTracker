@@ -181,7 +181,7 @@
   # Save data nodes table to file.
   fileout <- paste(.ddg.path.debug(), "/data-nodes.csv", sep="")
   ddg.data.nodes <- .ddg.data.nodes()
-  write.csv(ddg.data.nodes, fileout, row.names=FALSE)
+  utils::write.csv(ddg.data.nodes, fileout, row.names=FALSE)
 }
 
 
@@ -200,8 +200,8 @@
 #' @return nothing
 .ddg.record.data <- function(dtype, dname, dvalue, value, dscope, from.env=FALSE, dtime="", dloc="") {
   #print("In .ddg.record.data")
-  #print(paste("dvalue =", head(dvalue)))
-  #print(paste("value =", head(value)))
+  #print(paste("dvalue =", utils::head(dvalue)))
+  #print(paste("value =", utils::head(value)))
   #print (sys.calls())
   
   if (!.ddg.is.data.type (dtype)) {
@@ -483,17 +483,17 @@
   }
   
   # object.size returns bytes, but max.snapshot.size is in kilobytes
-  if (max.snapshot.size == -1 || object.size(data) < max.snapshot.size * 1024) {
+  if (max.snapshot.size == -1 || utils::object.size(data) < max.snapshot.size * 1024) {
     full.snapshot <- TRUE
   }
   
   else if (is.vector(data) || is.list(data) || is.data.frame(data) || is.matrix(data) || is.array(data)) {
     # Decide how much data to save
     
-    element.size <- object.size(head(data, 1))
+    element.size <- utils::object.size(utils::head(data, 1))
     num.elements.to.save <- ceiling(max.snapshot.size * 1024 / element.size)
     if (num.elements.to.save < length(data)) {
-      data <- head(data, num.elements.to.save)
+      data <- utils::head(data, num.elements.to.save)
       full.snapshot <- FALSE
     }
     else {
@@ -528,7 +528,7 @@
         error = function(e){
           # Not sure if str or summary will give us the most useful
           # information.
-          #data <- capture.output(str(data));
+          #data <- utils::capture.output(str(data));
           data <- summary(data)
         })
   }
@@ -543,9 +543,9 @@
   if (.ddg.debug.lib()) print(paste("Saving snapshot in ", dpfile))
   
   # Write to file .
-  if (fext == "csv") write.csv(data, dpfile, row.names=FALSE)
+  if (fext == "csv") utils::write.csv(data, dpfile, row.names=FALSE)
   
-  else if (fext == "xml") saveXML (data, dpfile)
+  else if (fext == "xml") XML::saveXML (data, dpfile)
   
   # Capture graphic.
   else if (.ddg.supported.graphic(fext)) .ddg.graphic.snapshot(fext, dpfile)
@@ -563,7 +563,7 @@
     else {
       tryCatch(write(as.character(data), dpfile),
           error = function(e){
-            capture.output(data, file=dpfile)
+            utils::capture.output(data, file=dpfile)
           })
     }
   }
@@ -830,7 +830,7 @@
 #' @return nothing
 .ddg.graphic.snapshot <-function(fext, dpfile) {
   # pdfs require a separate procedure.
-  if (fext == "pdf") dev.copy2pdf(file=dpfile)
+  if (fext == "pdf") grDevices::dev.copy2pdf(file=dpfile)
   
   # At the moment, all other graphic types can be done by
   # constructing a similar function.
@@ -842,10 +842,10 @@
     # expression and use that as the function.
     strFun <- paste(fext, "(filename=dpfile, width=800, height=500)", sep="")
     parseFun <- function(){eval(parse(text=strFun))}
-    dev.copy(parseFun)
+    grDevices::dev.copy(parseFun)
     
     # Turn it off (this switches back to prev device).
-    dev.off()
+    grDevices::dev.off()
   }
 }
 
@@ -888,7 +888,7 @@
 #' @return the value represented as a string
 .ddg.as.character <- function (value) {
   tryCatch (as.character(value),
-      error=function(e) {capture.output(print(value))})
+      error=function(e) {utils::capture.output(print(value))})
 }
 
 

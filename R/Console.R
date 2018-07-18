@@ -111,7 +111,7 @@ ddg.console.on <- function() {
   .ddg.write.timestamp.to.history()
   
   # Save the history if the platform supports it.
-  tryCatch (savehistory(ddg.history.file),
+  tryCatch (utils::savehistory(ddg.history.file),
       error = function(e) {})
 }
 
@@ -137,7 +137,7 @@ ddg.console.on <- function() {
   # Find the timestamp specified in the history.  There may be
   # more than one with the same timestamp, so pick the last of
   # these.
-  history.timestamp.line <- tail(which(history == timestamp), 1)
+  history.timestamp.line <- utils::tail(which(history == timestamp), 1)
   
   if (length(history.timestamp.line) == 0) {
     error.msg <- paste("Part of history is missing. DDG may be incomplete! Tried reading from",
@@ -171,7 +171,7 @@ ddg.console.on <- function() {
   if (.ddg.is.set(".ddg.history.file")) {
     history.file <- .ddg.get(".ddg.history.file")
     if (!is.null (history.file) && history.file == hist.file) {
-      savehistory(hist.file)
+      utils::savehistory(hist.file)
     }
   }
 }
@@ -252,7 +252,7 @@ ddg.console.on <- function() {
   #   timestamp(quiet=TRUE)
   # }
   # else {
-    .ddg.set(".ddg.history.timestamp", timestamp(prefix = "##-ddg-- ", quiet=TRUE))
+    .ddg.set(".ddg.history.timestamp", utils::timestamp(prefix = "##-ddg-- ", quiet=TRUE))
   # }
 }
 

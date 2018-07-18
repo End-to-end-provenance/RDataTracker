@@ -62,7 +62,7 @@
     fileout <- paste(.ddg.path.debug(), "/sourced-scripts.csv", sep="")
     ddg.sourced.scripts <- .ddg.get(".ddg.sourced.scripts")
     ddg.sourced.scripts2 <- ddg.sourced.scripts[ddg.sourced.scripts$snum >= 0, ]
-    write.csv(ddg.sourced.scripts2, fileout, row.names=FALSE)
+    utils::write.csv(ddg.sourced.scripts2, fileout, row.names=FALSE)
   }
 }
 

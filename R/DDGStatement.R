@@ -69,7 +69,7 @@ library (methods)
 }
 
 # Information about where in the source code this statement appears.
-setClass("DDGStatementPos",
+methods::setClass("DDGStatementPos",
     slots = list(
         startLine = "numeric",
         startCol = "numeric",
@@ -79,7 +79,7 @@ setClass("DDGStatementPos",
 
 # This is called automatically when there is a call to create a new
 # DDGStatementPos object.
-setMethod ("initialize",
+methods::setMethod ("initialize",
     "DDGStatementPos",
     function(.Object, parseData){
       # If the parse data is missing, we set all the fields to -1
@@ -106,7 +106,7 @@ setMethod ("initialize",
 # This class contains all the information that we need when building a ddg.
 # We create this when we parse the statement so that it is only done once
 # and then look up the information we need when the statement executes.
-setClass("DDGStatement",
+methods::setClass("DDGStatement",
     slots = list(
         text = "character",     # The original text in the file
         parsed = "expression",  # The parse tree for the statement
@@ -136,7 +136,7 @@ setClass("DDGStatement",
 )
 
 # This is called when a new DDG Statement is created.  It initializes all of the slots.
-setMethod ("initialize",
+methods::setMethod ("initialize",
   "DDGStatement",
     function(.Object, parsed, pos, script.name, script.num, parseData){
       .Object@parsed <- parsed
@@ -179,7 +179,7 @@ setMethod ("initialize",
             pos
           }
           else {
-            null.pos()
+            .ddg.null.pos()
           }
 
       .Object@script.num <-
@@ -226,7 +226,7 @@ setMethod ("initialize",
 .ddg.create.DDGStatements <- function (exprs, script.name, script.num, parseData = NULL, enclosing.pos = NULL) {
   # The parse data gives us line number information
   if (is.null(parseData)) {
-    parseData <- getParseData(exprs, includeText=TRUE)
+    parseData <- utils::getParseData(exprs, includeText=TRUE)
     
     if (is.null(parseData)) {
       # In this case there is no line number information available
@@ -260,7 +260,7 @@ setMethod ("initialize",
   next.cmd <- 1
   for (i in 1:length(exprs)) {
     expr <- as.expression(exprs[i][[1]])
-    next.expr.pos <- new (Class = "DDGStatementPos", non.comment.parse.data[next.parseData, ])
+    next.expr.pos <- methods::new (Class = "DDGStatementPos", non.comment.parse.data[next.parseData, ])
     cmds[[next.cmd]] <- .ddg.construct.DDGStatement(expr, next.expr.pos, script.name, script.num, parseData)
     next.cmd <- next.cmd + 1
     
@@ -421,8 +421,8 @@ setMethod ("initialize",
 }
 
 # A special null value for when source code position information is missing.
-null.pos <- function() {
-  return (new (Class = "DDGStatementPos", NA))
+.ddg.null.pos <- function() {
+  return (methods::new (Class = "DDGStatementPos", NA))
 }
 
 
@@ -438,7 +438,7 @@ null.pos <- function() {
   # the parser returns a number, rather than a parse tree!
   if (is.numeric(expr)) expr <- parse(text=expr)
 
-  return (new (Class = "DDGStatement", parsed = expr, pos, script.name, script.num, parseData))
+  return (methods::new (Class = "DDGStatement", parsed = expr, pos, script.name, script.num, parseData))
 }
 
 # .ddg.abbrev.cmd abbreviates a command to the specified length.
