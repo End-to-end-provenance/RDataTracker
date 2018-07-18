@@ -64,18 +64,29 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
   
   # Set directory for provenance graph. The base directory is set as follows:
   # (1) the directory specified by the user in the parameter ddgdir in ddg.init, or
-  # (2) the directory specified by the user as an option for the value of
-  # provdir, or (3) the R session temporary directory.  The provenance graph is stored
-  # in a subdirectory called "prov_console" in console mode or "prov_[script name]" 
-  # in script mode. If overwrite = FALSE, a timestamp is added to the directory name.
+  # (2) the directory specified by the user as the value of the option "prov.dir",
+  # or (3) the R session temporary directory. If the directory specified by the user
+  # is a period (.), the base directory is set to the current working directory.
+  #
+  # The provenance graph is stored in a subdirectory of the base directory called 
+  # "prov_console" in console mode or "prov_[script name]" in script mode. If overwrite = 
+  # FALSE, a timestamp is added to the directory name.
 
   # Directory specified by ddgdir in ddg.init
   if (!is.null(ddgdir)) {
-    base.dir <- ddgdir
+    if (ddgdir == ".") {
+      base.dir <- getwd()
+    } else {
+      base.dir <- ddgdir
+    }
   
   # Directory specified as an option for prov.dir
   } else if (!is.null(getOption("prov.dir")) && getOption("prov.dir") != "") {
-    base.dir <- getOption("prov.dir")
+    if (getOption("prov.dir") == ".") {
+      base.dir <- getwd()
+    } else {
+      base.dir <- getOption("prov.dir")
+    }
 
   # R session temporary directory
   } else {

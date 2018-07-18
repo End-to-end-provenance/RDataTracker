@@ -127,7 +127,7 @@
 #' 
 #' @return None
 .ddg.hashtable.write <- function() {
-  if (interactive()) print(paste("Saving DDG in ", fileout))
+  # if (interactive()) print(paste("Saving DDG in ", fileout))
   
   # Determine where to put the hashtable file
   writedir <- paste0(path.expand("~"),"/.ddg/")
@@ -173,7 +173,8 @@
 .ddg.hashtable.cleanup <- function(hashtable.json) {
   old_hashtable <- read_json(hashtable.json, simplifyVector = TRUE)
   longpath <- paste0(getwd(), substring(.ddg.path(),2), "/ddg.json")
-  old_hashtable <- subset(old_hashtable, DDGPath != longpath)
+  old_hashtable <- old_hashtable[old_hashtable$DDGPath != longpath, ]
+  # old_hashtable <- subset(old_hashtable, DDGPath != longpath)
   return(old_hashtable)
 }
 

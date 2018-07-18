@@ -182,6 +182,7 @@ ddg.console.on <- function() {
 .ddg.console.node <- function() {
   if (!interactive()) return()
   if (!.ddg.enable.console()) return()
+  if (.ddg.is.sourced()) return()
     
   # Don't do anything if sourcing, because history isn't necessary
   # in this case.
@@ -246,13 +247,13 @@ ddg.console.on <- function() {
 #' does not change between when we set .ddg.history.timestamp and
 #' when the timestamp function inserts the timestamp in the history.
 .ddg.write.timestamp.to.history <- function() {
-  if (Sys.getenv("RSTUDIO") != "" && Sys.info()['sysname'] == "Windows") {
-    .ddg.set(".ddg.history.timestamp", paste("##------", date(), "------##"))
-    timestamp(quiet=TRUE)
-  }
-  else {
+  # if (Sys.getenv("RSTUDIO") != "" && Sys.info()['sysname'] == "Windows") {
+  #   .ddg.set(".ddg.history.timestamp", paste("##------", date(), "------##"))
+  #   timestamp(quiet=TRUE)
+  # }
+  # else {
     .ddg.set(".ddg.history.timestamp", timestamp(prefix = "##-ddg-- ", quiet=TRUE))
-  }
+  # }
 }
 
 
