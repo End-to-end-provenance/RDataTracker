@@ -116,6 +116,17 @@
 
 ######### Other utility functions
 
+#' ddg.debug.lib.on turns on debugging of DDG construction.
+.ddg.debug.lib.on <- function () {
+  .ddg.set("ddg.debug.lib", TRUE)
+}
+
+#' ddg.debug.lib.off turns off debugging of DDG construction.
+.ddg.debug.lib.off <- function () {
+  .ddg.set("ddg.debug.lib", FALSE)
+}
+
+
 #' .ddg.format.time reformats time string.
 #' 
 #' @param time input time string formatted as yyyy-mm-dd hh:mm:ss
@@ -167,5 +178,17 @@
   .ddg.data.node("Exception", msg.type, msg, "ddg.library")
   .ddg.lastproc2data(msg.type, dscope="ddg.library")
 }
+
+#' @returnType data frame with 2 columns: package and version, both strings
+#' @return names and versions of packages installed
+.ddg.installedpackages <- function()
+{
+  packages <- devtools::session_info()
+  packages <- packages[[2]]
+  installed <- packages[packages[,2] == "*",]
+  installed <- installed[ ,c(1,3)]
+  return(installed)
+}
+
 
 
