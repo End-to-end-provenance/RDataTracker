@@ -19,6 +19,103 @@
 
 #  This file contains utility functions used through RDataTracker.
 
+########  Helpers to manage ddg variables
+
+#' Sets a variable in the ddg environment
+#' @param var the name of the variable
+#' @param value the value it should have
+#' @return the value set
+.ddg.set <- function(var, value) {
+  .ddg.env[[var]] <- value
+  return(invisible(.ddg.env[[var]]))
+}
+
+#' @param var the variable to check
+#' @return TRUE if the variable is set in the ddg environment
+.ddg.is.set <- function(var) {
+  return(exists(var, envir=.ddg.env))
+}
+
+#' @param var the variable to get
+#' @return the variable's value.  If the variable is not set, NULL is returned
+#'    and an error node is added to the DDG.  It likely indicates a 
+#'    bug within RDataTraker.
+.ddg.get <- function(var) {
+  if (!.ddg.is.set(var)) {
+    error.msg <- paste("No binding for", var, ". DDG may be incorrect!")
+    .ddg.insert.error.message(error.msg)
+    return(NULL)
+  }
+  else {
+    return(.ddg.env[[var]])
+  }
+}
+
+#############  Getters that are widely used
+
+#' @return TRUE if internal debugging output should be produced.
+.ddg.debug.lib <- function() {
+  return (.ddg.get("ddg.debug.lib"))
+}
+
+#' @return the path to the ddg directory
+.ddg.path <- function() {
+  return (.ddg.get("ddg.path"))
+}
+
+#' @return the name of the folder where the data are stored in the
+#'   ddg.  This is just the folder name, not a path.
+.ddg.data.dir <- function() {
+  return ("data")
+}
+
+#' @return the path to the ddg directory where snapshots and copies of files are stored
+.ddg.path.data <- function() {
+  return(paste(.ddg.path(), .ddg.data.dir() , sep="/"))
+}
+
+#' @return the path to the ddg directory where debugging information is stored
+.ddg.path.debug <- function() {
+  return(paste(.ddg.path(), "/debug", sep=""))
+}
+
+#' @return the path to the ddg directory where copies of scripts are stored
+.ddg.path.scripts <- function() {
+  return(paste(.ddg.path(), "/scripts", sep=""))
+}
+
+##### Mutators for specific common actions
+
+#' Increments a ddg counter
+#' @param var a counter variable
+#' @returnType integer
+#' @return the original value + 1
+.ddg.inc <- function(var) {
+  value <- .ddg.get(var)
+  return (.ddg.set(var, value + 1))
+}
+
+#' Decrements a ddg counter
+#' @param var a counter variable
+#' @returnType integer
+#' @return the original value - 1
+.ddg.dec <- function(var) {
+  value <- .ddg.get(var)
+  .ddg.set(var, value - 1)
+}
+
+#' Adds rows to a ddg data frame
+#' @param df the data frame variable
+#' @param new.rows the rows to add
+#' @returnType a data frame, same type as the one passed in
+#' @return the data frame with the new rows added to it
+.ddg.add.rows <- function(df, new.rows) {
+  table <- .ddg.get(df)
+  return (.ddg.set(df, rbind(table, new.rows)))
+}
+
+######### Other utility functions
+
 #' .ddg.format.time reformats time string.
 #' 
 #' @param time input time string formatted as yyyy-mm-dd hh:mm:ss

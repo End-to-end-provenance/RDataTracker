@@ -137,6 +137,18 @@ ddg.reset.loop.count <- function(loop.num) {
   .ddg.set("ddg.loops", ddg.loops)
 }
 
+#' @returnType integer
+#' @return the loop iteration at which we should start collecting provenance
+ddg.first.loop <- function() {
+  return(.ddg.get("ddg.first.loop"))
+}
+
+#' @returnType integer
+#' @return the maximum number of iterations of a loop to collect proveanance for
+ddg.max.loops <- function() {
+  return(.ddg.get("ddg.max.loops"))
+}
+
 #' Inserts a procedure node and a data node in a for loop,
 #' indicating the value currently assigned to the index variable.
 #' @param index.var a parsed expression containing the index variable
