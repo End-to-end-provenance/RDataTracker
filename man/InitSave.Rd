@@ -38,7 +38,7 @@ ddg.save(save.debug=FALSE, quit=FALSE)
 ddg.run(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = NULL, 
     enable.console = TRUE, annotate.inside.functions = TRUE, first.loop = 1, 
     max.loops = 1, max.snapshot.size = 10, save.debug=FALSE, display = FALSE, 
-    save.hashtable = TRUE, hash.algorithm="md5")
+    hash.algorithm="md5")
 ddg.set.detail(detail.level)
 ddg.get.detail()
 ddg.clear.detail()
@@ -90,7 +90,6 @@ ddg.json.write()
   \item{ddg.path}{ The path to the DDG directory which needs to be flushed. }
   \item{index.var}{ The index variable passed to ddg.forloop. }
   \item{loop.num}{ The loop number passed to ddg.loop.count and ddg.reset.loop.count. }
-  \item{save.hashtable}{ If TRUE, add file node information to a hashtable of file nodes. }
   \item{hash.algorithm}{ The hash algorithm to use when saving hash values for files read or written. }
 }
 \details{
@@ -170,6 +169,6 @@ ddg.save()
 myfunc <- function() {
   a <- 1
 }
-ddg.run(f = myfunc, save.hashtable=FALSE)
+ddg.run(f = myfunc)
 }
 \keyword{provenance}

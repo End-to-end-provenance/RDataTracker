@@ -246,20 +246,22 @@ ddg.save <- function(save.debug = FALSE, quit = FALSE) {
   invisible()
 }
 
-#' @export ddg.run initiates execution of a script
+#' ddg.run initiates execution of a script, collecting provenance as it executes
 #'
 #' @param r.script.path (optional) - the full path to the R script.
 #' If provided, a copy of the script will be saved with the DDG.
 #' If only r.script.path is provided, the script is sourced using
 #' ddg.source and a DDG is created for the script.
 #' @param ddgdir (optional) - the directory where the DDG will be saved.
-#' If not provided, the DDG will be saved in a directory called
-#' "ddg" in the current working directory.
+#' If not provided, the DDG will be saved in a directory inside R's
+#' temporary directory
 #' @param overwrite (optional) - if TRUE, the ddg is overwritten each time
-#' the script is executed.
+#' the script is executed.  If FALSE, a timestamp is attached to the ddg
+#' folder name so that the provenance of earlier runs is not overwritten.
 #' @param f (optional) - a function to run. If supplied, the function f
 #' is executed with calls to ddg.init and ddg.save so that
-#' provenance for the function is captured.
+#' provenance for the function is captured.  Exactly one of f and r.script.path
+#' should be provided.
 #' @param enable.console (optional) - if TRUE, console mode is turned on.
 #' @param annotate.inside.functions (optional) - if TRUE, functions are annotated.
 #' @param first.loop (optional) - the first loop to annotate in a for, while, or
@@ -274,17 +276,16 @@ ddg.save <- function(save.debug = FALSE, quit = FALSE) {
 #' Note that this tests the size of the object that will be turned
 #' into a snapshot, not the size of the resulting snapshot.
 #' @param save.debug (optional) - If TRUE, save debug files to debug directory.
-#' @param save.hashtable (optional) - If TRUE, save ddg information to hashtable.json.
 #' @param hash.algorithm (optional) - If save.hashtable is true, this allows the caller to 
 #' select the hash algorithm to use. This uses the digest function from the digest package.
 #' The choices are md5, which is also the default, sha1, crc32, sha256, sha512, xxhash32, xxhash64 and murmur32.
 #'
 #' @return nothing
-
+#' @export
 ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = NULL, enable.console = TRUE, annotate.inside.functions = TRUE, first.loop = 1, max.loops = 1, max.snapshot.size = 10, save.debug = FALSE, display = FALSE, 
-                    save.hashtable = TRUE, hash.algorithm="md5") {
+                    hash.algorithm="md5") {
   
-  # Initiate ddg.
+  # Initialize ddg.
   ddg.init(r.script.path, ddgdir, overwrite, enable.console, annotate.inside.functions, first.loop, max.loops, max.snapshot.size, hash.algorithm)
   
   # Set .ddg.is.sourced to TRUE if script provided.
@@ -296,35 +297,32 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
   # If an R error is generated, get the error message and close
   # the DDG.
   tryCatch(
-      if (!is.null(f)) f()
-          else if (!is.null(r.script.path)) ddg.source(
-               .ddg.get("ddg.r.script.path"),
-                ddgdir = ddgdir,
-                ignore.ddg.calls = FALSE,
-                ignore.init = TRUE,
-                force.console = FALSE)
-          else stop("r.script.path and f cannot both be NULL"),
-      finally={
-        ddg.save(quit=TRUE)
-        if(display==TRUE){
-          ddg.display()
-        }
+    if (!is.null(r.script.path)) ddg.source(
+         .ddg.get("ddg.r.script.path"),
+          ignore.ddg.calls = FALSE,
+          ignore.init = TRUE,
+          force.console = FALSE)
+    else if (!is.null(f)) f()
+    else stop("r.script.path and f cannot both be NULL"),
+
+    finally={
+      ddg.save(quit=TRUE)
+      if(display==TRUE){
+        ddg.display()
       }
+    }
   )
   
   invisible()
 }
 
-#' @export ddg.source sources a script & collects provenance
+#' ddg.source sources a script & collects provenance
 #'
 #' @param ddg.source reads in an R script and executes it in the provided
 #' enviroment. ddg.source essentially mimics the behaviour of the
 # 'R source command, having similar input parameters and results,
 # 'but with additional parameters ignore.ddg.calls and ignore.init.
 #' @param file - the name of the R script file to source.
-#' @param ddgdir (optional) - the directory where the DDG will be saved.
-#' If not provided, the DDG will be saved in a directory called "ddg"
-#' in the current working directory.
 #' @param local (optional) - the environment in which to evaluate parsed
 #' expressions. If TRUE, the environment from which ddg.source is
 #' called. If FALSE, the user's workspace (global environment).
@@ -342,10 +340,12 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
 #' @param force.console (optional) - if TRUE, turn console mode on.
 #'
 #' @return nothing
-
-ddg.source <- function (file,  ddgdir = NULL, local = FALSE, echo = verbose, print.eval = echo,
+#' @export
+ddg.source <- function (file,  local = FALSE, echo = verbose, print.eval = echo,
 	verbose = getOption("verbose"), max.deparse.length = 150, chdir = FALSE, encoding = getOption("encoding"),
 	ignore.ddg.calls = TRUE, ignore.init = ignore.ddg.calls, force.console=ignore.init){
+
+# TODO: ignore.init is always true, no matter where called.  Delete it?
 
 	# Store script number & name.
   sname <- basename(file)
@@ -354,13 +354,30 @@ ddg.source <- function (file,  ddgdir = NULL, local = FALSE, echo = verbose, pri
   # Save a copy of the script
   file.copy(file, paste(.ddg.path.scripts(), basename(sname), sep="/"))
 
-	### CODE IN THIS SECTION IS BASICALLY REPLICATION OF source FUNCTION ###
+	### CODE IN THIS SECTION IS A SLIGHT MODIFICATION OF A PORTION OF R's source FUNCTION ###
+  # To see the current version of the source function source code, say:
+  # getMethod("source", "ANY")
+  # I don't know how to see the functions called from source, though.
+  # An older version of the source code of R's source function can be found here:
+  # https://github.com/SurajGupta/r-source/blob/master/src/library/base/R/source.R
+  # Note that R's source function has more parameters than we allow.  This could
+  # conceivably cause problems when we replace calls to source with calls to ddg.source.
+  # The additional parameters are:
+  # exprs
+  # spaced
+  # prompt.echo
+  # width.cutoff
+  # deparseCtrl
+  # continue.echo
+  # skip.echo
+  # keep.source
+
 
 	# Get the environment under which the script should be executed.
 	envir <- if (isTRUE(local)) {
 			parent.frame()
 		}
-		else if (identical(local, FALSE)) {
+		else if (isFALSE(local)) {
 			.GlobalEnv
 		}
 		else if (is.environment(local)) {
@@ -403,8 +420,7 @@ ddg.source <- function (file,  ddgdir = NULL, local = FALSE, echo = verbose, pri
 		if (length(enc) > 1L) 
 		{
 			encoding <- NA
-			owarn <- options("warn")
-			options(warn = 2)
+			owarn <- options(warn = 2)
 			for (e in enc) 
 			{
 				if (is.na(e))
@@ -439,7 +455,7 @@ ddg.source <- function (file,  ddgdir = NULL, local = FALSE, echo = verbose, pri
 
 			on.exit()
 			close(file)
-			srcfile <- srcfilecopy(filename, lines, file.info(filename)[1, "mtime"], isFile = TRUE)
+			srcfile <- srcfilecopy(filename, lines, file.mtime(filename)[1], isFile = TRUE)
 		}
 		loc <- utils::localeToCharset()[1L]
 		encoding <- if (have_encoding)
@@ -479,10 +495,9 @@ ddg.source <- function (file,  ddgdir = NULL, local = FALSE, echo = verbose, pri
 	{
 		if (is.character(ofile)) 
 		{
-			isURL <- length(grep("^(ftp|http|file)://", ofile)) > 0L
-			if (isURL)
+      if (grepl("^(ftp|http|file)://", ofile))
 				warning("'chdir = TRUE' makes no sense for a URL")
-			if (!isURL && (path <- dirname(ofile)) != ".") 
+			else if ((path <- dirname(ofile)) != ".") 
 			{
 				owd <- getwd()
 				if (is.null(owd)) 
@@ -533,13 +548,9 @@ ddg.source <- function (file,  ddgdir = NULL, local = FALSE, echo = verbose, pri
 			echo = echo, print.eval = print.eval, max.deparse.length = max.deparse.length,
 			run.commands = TRUE)
 
-		# Save the DDG among other things, but don't return any
-		# values, TODO - should we do this?
-		# ddg.save()
-		.ddg.set("from.source", prev.source)
-
-		# Turn return console to previous state.
-		if (!prev.on) ddg.console.off() else ddg.console.on()
+		# Restore previous state
+    .ddg.set("from.source", prev.source)
+    if (!prev.on) ddg.console.off() else ddg.console.on()
 	}
 
 	invisible()

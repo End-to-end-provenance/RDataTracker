@@ -4,14 +4,13 @@
 \description{These functions replace commonly used R functions which retooled 
 versios which automatically capture provenance data. }
 \usage{
-ddg.source(file, ddgdir = NULL, local = FALSE, echo = verbose, print.eval = echo, 
+ddg.source(file, local = FALSE, echo = verbose, print.eval = echo, 
     verbose = getOption("verbose"), max.deparse.length = 150, chdir = FALSE, 
     encoding = getOption("encoding"), ignore.ddg.calls = TRUE, 
     ignore.init = ignore.ddg.calls, force.console=ignore.init)
 }
 \arguments{
   \item{file}{see \code{\link{source}}}
-  \item{ddgdir}{the directory where the DDG should be saved. }
   \item{local}{see \code{\link{source}}}
   \item{echo}{see \code{\link{source}}}
   \item{print.eval}{see \code{\link{source}}}
