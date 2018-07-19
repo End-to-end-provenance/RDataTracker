@@ -131,25 +131,37 @@
   }
 }
 
+#' Determines if the call passed in is a call to the passed in function
+#' @param call a parse tree for a function call
+#' @param func the name of a function
+#' @returnType logical
+#' @return TRUE if the call passed in is a call to the function name passed in
+.ddg.is.call.to <- function (call, func) { 
+  # Check for function name
+  if (is.symbol(call[[1]])) {
+    return (as.character(call[[1]]) == func)
+  }
+  
+  # Check for a function name qualified by its package
+  if (is.call(call[[1]]) && call[[1]][[1]] == "::") {
+    return (as.character(call[[1]][[3]]) == func)
+  }
+  
+  return (FALSE)
+}
+
+.ddg.num.calls.to <- function (func) {
+  calls.found <- sapply (sys.calls(), .ddg.is.call.to, func )
+  return (sum(calls.found))
+}
+
+
 #' Returns true if there is a call to the passed in function anywhere on
 #' the call stack.  
 #' 
 #' @param func The name of a function
 .ddg.inside.call.to <- function (func) {
-  is.call.to <- function (call) {
-    # Check for function name
-    if (is.symbol(call[[1]])) {
-      return (as.character(call[[1]]) == func)
-    }
-    
-    # Check for a function name qualified by its package
-    if (is.call(call[[1]]) && call[[1]][[1]] == "::") {
-      return (as.character(call[[1]][[3]]) == func)
-    }
-    
-    return (FALSE)
-  }
-  calls.found <- sapply (sys.calls(), is.call.to )
+  calls.found <- sapply (sys.calls(), .ddg.is.call.to, func )
   return (any (calls.found))
 }
 
@@ -280,12 +292,6 @@
   # we do not want to create the nodes because the procedure node to connect to does not
   # exist yet.
   .ddg.add.input.file (input.file.name)
-}
-
-.ddg.num.calls.to <- function (func) {
-  print (sys.calls())
-  calls.found <- sapply (sys.calls(), .ddg.is.call.to, func )
-  return (sum(calls.found))
 }
 
 
