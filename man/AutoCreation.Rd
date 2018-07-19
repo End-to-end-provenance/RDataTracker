@@ -7,7 +7,7 @@ versios which automatically capture provenance data. }
 ddg.source(file, local = FALSE, echo = verbose, print.eval = echo, 
     verbose = getOption("verbose"), max.deparse.length = 150, chdir = FALSE, 
     encoding = getOption("encoding"), ignore.ddg.calls = TRUE, 
-    ignore.init = ignore.ddg.calls, force.console=ignore.init)
+    force.console=TRUE)
 }
 \arguments{
   \item{file}{see \code{\link{source}}}
@@ -20,8 +20,6 @@ ddg.source(file, local = FALSE, echo = verbose, print.eval = echo,
   \item{encoding}{see \code{\link{source}}}
   \item{ignore.ddg.calls}{specifies whether commands in the source script 
   pertaining to DDGs should be ignored.}
-  \item{ignore.init}{specifies whether suppresion of source script DDG Initialization
-  should occur.}
   \item{force.console}{specifies whether console parsing should be forced on the source script. }
 } 
 \seealso{
@@ -46,14 +44,8 @@ ddg.source(file, local = FALSE, echo = verbose, print.eval = echo,
   causes the automatically created DDG to be incorporated into the current DDG
   (if one is already initialized).
 
-  Note that if ignore.ddg.calls is set to TRUE, then ignore.init must also be TRUE. 
-  If this is not the case, then ignore.init will be coerced to TRUE.
-
-  The parameter ignore.init is used when a sourced script is already annotated 
-  and (rather than create a new DDG), the annotated DDG of the source script 
-  should be incorporated into the current DDG. When ignore.ddg.calls is set to 
-  FALSE and ignore.init is set to TRUE, all calls beginning with "ddg.init" or "ddg.run" 
-  will be ignored but others will be executed. This prevents the initialization of a new DDG 
+  When ignore.ddg.calls is set to FALSE, all calls beginning with "ddg.init" or "ddg.run" 
+  will still be ignored but others will be executed. This prevents the initialization of a new DDG 
   and the provenance will be stored in the currently initialized DDG (if one exists).
 
   Note that all calls to "library(RDataTracker)" are ignored in the sourced file.

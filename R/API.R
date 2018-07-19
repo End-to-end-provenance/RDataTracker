@@ -300,7 +300,6 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
     if (!is.null(r.script.path)) ddg.source(
          .ddg.get("ddg.r.script.path"),
           ignore.ddg.calls = FALSE,
-          ignore.init = TRUE,
           force.console = FALSE)
     else if (!is.null(f)) f()
     else stop("r.script.path and f cannot both be NULL"),
@@ -321,7 +320,7 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
 #' @param ddg.source reads in an R script and executes it in the provided
 #' enviroment. ddg.source essentially mimics the behaviour of the
 # 'R source command, having similar input parameters and results,
-# 'but with additional parameters ignore.ddg.calls and ignore.init.
+# 'but with additional parameters ignore.ddg.calls and force.console.
 #' @param file - the name of the R script file to source.
 #' @param local (optional) - the environment in which to evaluate parsed
 #' expressions. If TRUE, the environment from which ddg.source is
@@ -336,16 +335,13 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
 #' @param encoding (optional) - encoding to be assumed when file is a
 #' character string.
 #' @param ignore.ddg.calls (optional) - if TRUE, ignore DDG function calls.
-#' @param ignore.init (optional) - if TRUE, ignore ddg.init and ddg.run.
 #' @param force.console (optional) - if TRUE, turn console mode on.
 #'
 #' @return nothing
 #' @export
 ddg.source <- function (file,  local = FALSE, echo = verbose, print.eval = echo,
 	verbose = getOption("verbose"), max.deparse.length = 150, chdir = FALSE, encoding = getOption("encoding"),
-	ignore.ddg.calls = TRUE, ignore.init = ignore.ddg.calls, force.console=ignore.init){
-
-# TODO: ignore.init is always true, no matter where called.  Delete it?
+	ignore.ddg.calls = TRUE, force.console=TRUE){
 
 	# Store script number & name.
   sname <- basename(file)
@@ -517,16 +513,10 @@ ddg.source <- function (file,  local = FALSE, echo = verbose, print.eval = echo,
 
 	# Calculate the regular expressions for what should be ignored
 	# and what shouldn't.
-	if (ignore.ddg.calls && !ignore.init) {
-		if(verbose) warning("'ignore.ddg.calls' is TRUE, 'ignore.int' not; ... coercion 'ignore.init <- TRUE'\n")
-		ignore.init <- TRUE
-	}
-
 	# Ignore calculation of certain execution steps.
 	ignores <- c("^library[(]RDataTracker[)]$",
 		if(ignore.ddg.calls) "^ddg."
-		else if (ignore.init) c("^ddg.init", "^ddg.run")
-		else "a^")
+		else c("^ddg.init", "^ddg.run"))
 
 	# Now we can parse the commands as we normally would for a DDG.
 	if(length(exprs) > 0) 
