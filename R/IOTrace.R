@@ -86,18 +86,12 @@
   trace.oneGraphicsOpen <- function (f) {utils::capture.output(utils::capture.output(trace (as.name(f), RDataTracker:::.ddg.trace.graphics.open, print=FALSE), type="message"))} 
   lapply(.ddg.get(".ddg.graphics.functions.df")$function.names, trace.oneGraphicsOpen)
   
-#  trace.oneGraphicsOpen <- function (f) {utils::capture.output(utils::capture.output(trace (parse(text=paste("grDevices::",f)), RDataTracker:::.ddg.trace.graphics.open, print=TRUE), type="message"))}
-#  open.functions <- .ddg.get(".ddg.graphics.functions.df")$function.names
-#  lapply(open.functions[2:length(open.functions)], trace.oneGraphicsOpen)
-#  trace (grDevices::pdf, RDataTracker:::.ddg.trace.graphics.open, print=TRUE)
-  
   #print ("Tracing graphics update")
   trace.oneGraphicsUpdate <- function (f) {utils::capture.output(utils::capture.output(trace (as.name(f), RDataTracker:::.ddg.trace.graphics.update, print=FALSE), type="message"))} 
   lapply(.ddg.get(".ddg.graphics.update.functions.df"), trace.oneGraphicsUpdate)
   
   #print ("Tracing dev.off")
   utils::capture.output(utils::capture.output(trace (grDevices::dev.off, RDataTracker:::.ddg.trace.graphics.close, print=FALSE), type="message"))  
-  #utils::capture.output(utils::capture.output(trace (grDevices::dev.off, RDataTracker:::.ddg.trace.graphics.close, print=TRUE), type="message"))
   #print ("Done initializing IO tracing")
 }
 
@@ -230,15 +224,15 @@
   if (is.symbol (input.caller)) {
     input.caller.name <- as.character(input.caller)
     
-    # When ddg.source is called for the main script it is in frame 4, and
-    # the input function is in frame 5.  
-    # If a script sources another script, we see ddg.source on the stack twice
-    # The second occurrence will be at a higher frame number.
+    if (input.caller.name == "ddg.source") {
+      # Determine if ddg.source is being used to load the main script, or
+      # to load a script specified by the programmer within another script.
+      # In the latter case, we would see ddg.source in the call stack twice
+      # (or more).
     # We do not want a file node for the main script, since is not an input 
     # to the script, but we do for calls to source within the main script.
     # These are translated to ddg.source when we execute.
-    if (input.caller.name == "ddg.source") {
-      if (frame.number == 5) {
+      if (.ddg.num.calls.to ("ddg.source") == 1) {
         return()
       }
     }
