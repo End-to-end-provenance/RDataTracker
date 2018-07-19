@@ -34,7 +34,7 @@
 ddg.init(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enable.console = TRUE, 
     annotate.inside.functions = TRUE, first.loop = 1, max.loops = 1, 
     max.snapshot.size = 10, hash.algorithm="md5") 
-ddg.save(r.script.path = NULL, save.debug=FALSE, quit=FALSE)
+ddg.save(save.debug=FALSE, quit=FALSE)
 ddg.run(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = NULL, 
     enable.console = TRUE, annotate.inside.functions = TRUE, first.loop = 1, 
     max.loops = 1, max.snapshot.size = 10, save.debug=FALSE, display = FALSE, 
@@ -106,7 +106,7 @@ ddg.json.write()
   timestamp to the directory to prevent overwriting, i.e. "ddg_script.name_2016-06-09T15.41.02EDT"
    
   ddg.save writes the provenance graph along with additional provenance information to a file named
-  ddg.txt.  The extra information includes the platform and operating system, the R version, the name
+  ddg.json.  The extra information includes the platform and operating system, the R version, the name
   of the R script, and a timestamp of the execution.  ddg.save can be called multiple times for a 
   single call to ddg.init, where each call will extend the previous provenance graph, overwriting the file
   containing the previous version. When the final save procedure is wanted, the parameter "quit" can 

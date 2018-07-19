@@ -182,67 +182,37 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
   .ddg.set("ddg.path", ddg.path)
 }
 
-#' @export ddg.save saves the current provenance graph
+#' ddg.save saves the current provenance graph
 #'
-#' @param r.script.path (optional) - Path to the R script.
 #' @param save.debug (optional) - If TRUE, save debug files to debug directory.
 #' Used in console mode.
 #' @param quit (optional) - If TRUE, remove all DDG files from memory.
 #'
 #' @return nothing
-
-ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE) {
+#' @export
+ddg.save <- function(save.debug = FALSE, quit = FALSE) {
   if (!.ddg.is.init()) return(invisible())
   
   # Get the final commands
   .ddg.console.node()
 
-  # If there are any connections still open when the script ends,
-  # create nodes and edges for them.
-  .ddg.create.file.nodes.for.open.connections ()
-
-  # If there is a display device open, grab what is on the display
-  if (length(grDevices::dev.list()) >= 1) {
-    #print("ddg.save: Saving graphics open at end of script")
-    tryCatch (.ddg.capture.graphics(called.from.save = TRUE),
-        error = function (e) print(e))
-  }
-  
-  .ddg.stop.iotracing()
-
-  # Save ddg.json to file.
-  ddg.json.write()
-  if (interactive()) print(paste("Saving ddg.json in ", .ddg.path(), sep=""))
-
-  # Save sourced scripts (if any). First row is main script.
-  ddg.sourced.scripts <- .ddg.get(".ddg.sourced.scripts")
-  if (!is.null(ddg.sourced.scripts)) {
-    if (nrow(ddg.sourced.scripts) > 1 ) {
-      for (i in 1:nrow(ddg.sourced.scripts)) {
-        sname <- ddg.sourced.scripts[i, "sname"]
-        file.copy(sname, paste(.ddg.path.scripts(), basename(sname), sep="/"))
-      }
-    }
-  }
-
-  # Save debug files to debug directory.
-  if (save.debug | .ddg.save.debug()) {
-    .ddg.save.debug.files()
-  }
-
-  # Clear DDGStatements from ddg environment.
-  .ddg.init.statements ()
-
-  # Clear loop information from ddg environment.
-  .ddg.clear.loops ()
-
-  # I don't think save is ever called with quit = TRUE, but we might want
-  # to distinguish between the final call to ddg.save and a call the user
-  # might make from the console.  Perhaps much of what is above should be
-  # inside the quit branch instead.  Reconsider this when working ong 
-  # console mode.
-  # By convention, this is the final call to ddg.save.
+  # By convention, this is the final call to ddg.save.  This is
+  # called at the end of ddg.run, and the user should call ddg.save
+  # with quit = true when they want to finalize a ddg run from
+  # the console
   if (quit) {
+    # If there are any connections still open when the script ends,
+    # create nodes and edges for them.
+    .ddg.create.file.nodes.for.open.connections ()
+    
+    # If there is a display device open, grab what is on the display
+    if (length(grDevices::dev.list()) >= 1) {
+      tryCatch (.ddg.capture.graphics(called.from.save = TRUE),
+          error = function (e) print(e))
+    }
+    
+    .ddg.stop.iotracing()
+    
     # Restore history settings.
     .ddg.restore.history.size()
 
@@ -250,8 +220,28 @@ ddg.save <- function(r.script.path = NULL, save.debug = FALSE, quit = FALSE) {
     .ddg.delete.temp()
 
     # Shut down the DDG.
-    .ddg.clear()
+    #.ddg.clear()
+    # Mark graph as initilized.
+    .ddg.set(".ddg.initialized", FALSE)
+    
   }
+  
+  # Save ddg.json to file.
+  ddg.json.write()
+  if (interactive()) print(paste("Saving ddg.json in ", .ddg.path(), sep=""))
+  
+  # Save debug files to debug directory.
+  if (save.debug || .ddg.save.debug()) {
+    .ddg.save.debug.files()
+  }
+  
+  # Clear DDGStatements from ddg environment.  
+  # Should this be only inside the quit if-statement?
+  .ddg.init.statements ()
+  
+  # Clear loop information from ddg environment.
+  # Should this be only inside the quit if-statement?
+  .ddg.clear.loops ()
 
   invisible()
 }
@@ -315,7 +305,7 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
                 force.console = FALSE)
           else stop("r.script.path and f cannot both be NULL"),
       finally={
-        ddg.save(r.script.path)
+        ddg.save(quit=TRUE)
         if(display==TRUE){
           ddg.display()
         }

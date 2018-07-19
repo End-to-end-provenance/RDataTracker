@@ -250,13 +250,17 @@
       return()
     }
     
-    # Don't collect provenance when loading library packages
-    else if (.ddg.inside.call.to ("library") || .ddg.inside.call.to ("loadNamespace")) {
-      return()
-    }
   }
   
-  #print (sys.calls())
+  # Don't collect provenance when loading library packages.  Also, when writing out the
+  # json, files get read in order to identify package version numbers.
+  if (.ddg.inside.call.to ("library") || 
+      .ddg.inside.call.to ("loadNamespace") ||
+      .ddg.inside.call.to ("ddg.json")) {
+    return()
+  }
+
+  # print (sys.calls())
   
   # Get the name of the input function
   call <- sys.call (frame.number)
