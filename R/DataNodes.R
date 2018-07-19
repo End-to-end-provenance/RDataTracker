@@ -279,6 +279,48 @@ ddg.max.snapshot.size <- function() {
 #'   For values of length 1, it is the type of the value.  For longer values,
 #'   the description includes the container (like vector, matrix, ...), the
 #'   dimensions, and the type of the members of the data structure
+.ddg.get.val.type.string <- function(value)
+{
+  val.type <- .ddg.get.val.type(value)
+  
+  if( is.null(val.type) )
+    return( 'null' )
+  
+  # list, object, environment, function, language
+  if( length(val.type) == 1 )
+    return( paste('"',val.type,'"',sep="") )
+  
+  # vector, matrix, array, data frame
+  # type information recorded in a list of 3 vectors (container,dimension,type)
+  container <- val.type[[1]]
+  dimension <- val.type[[2]]
+  type <- val.type[[3]]
+  
+  # matrix: a 2-dimensional array (uniform typing)
+  # array: n-dimensional (uniform typing)
+  # data frame: list of vectors
+  if( !identical(container,"vector"))
+  {
+    # Record size of each dimension
+    dimension <- paste( dimension , collapse = "," )
+
+    # data frame.  Record type of each column
+    if (identical(container,"data_frame")) {
+      type <- paste( type , collapse = '","' )
+    }
+  }
+  
+  return( paste('{"container":"', container, '", "dimension":[', dimension, '], "type":["' , type, '"]}', sep = "") )
+}
+
+#' @return the type information of the given value
+#' @returnType There are several return types possible.
+#'   For lists, objects, environments, functions and language values,
+#'   the return type is string.  For vectors, matrices, arrays 
+#'   and data frames, a list is returned.  The list contains 3 parts: a
+#'   string representation of the container, dimension information,
+#'   and the types of values in the structure.  If anything else
+#'   is found, it returns NULL.
 .ddg.get.val.type <- function(value)
 {
   # vector: a 1-dimensional array (uniform typing)
