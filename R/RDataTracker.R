@@ -1100,7 +1100,6 @@
 
 # expr - input expression.
 
->>>>>>> refs/remotes/origin/development
 .ddg.is.nonlocal.assign <- function (expr)
 {
   # <<- or ->> means that the assignment is non-local
