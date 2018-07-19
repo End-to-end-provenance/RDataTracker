@@ -179,4 +179,16 @@
   .ddg.lastproc2data(msg.type, dscope="ddg.library")
 }
 
+#' @returnType data frame with 2 columns: package and version, both strings
+#' @return names and versions of packages installed
+.ddg.installedpackages <- function()
+{
+  packages <- devtools::session_info()
+  packages <- packages[[2]]
+  installed <- packages[packages[,2] == "*",]
+  installed <- installed[ ,c(1,3)]
+  return(installed)
+}
+
+
 

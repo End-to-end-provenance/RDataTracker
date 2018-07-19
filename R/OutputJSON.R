@@ -615,18 +615,6 @@ ddg.json.write <- function()
 	#return( sub('\n$', right, left) )
 }
 
-# ddg.installedpackages() returns information on packages installed 
-# at the time of execution and their versions.
-.ddg.installedpackages <- function()
-{
-	packages <- devtools::session_info()
-	packages <- packages[[2]]
-	installed <- packages[packages[,2] == "*",]
-	installed <- installed[ ,c(1,3)]
-	return(installed)
-}
-
-
 # --- MULTIPLE-USE FUNCTIONS ------------------- #
 
 # adds escape characters to double quotes within strings
