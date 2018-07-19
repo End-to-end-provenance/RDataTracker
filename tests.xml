@@ -414,6 +414,17 @@
 			</fileset>
 		</replaceregexp>
 
+		<!-- remove tool.version and json.version strings from json.local files -->
+		<replaceregexp>
+			<regexp pattern='(\t+"rdt:tool.version": ("[0-9]+.?[0-9]*.?[0-9]*-?[0-9]*.?[0-9]*"),)\r?\n(\t+"rdt:json.version": ("[0-9]+.?[0-9]*.?[0-9]*-?[0-9]*.?[0-9]*"))\r?\n' />
+			<substitution expression=""/>
+			<fileset dir="${local_dir}">
+				<patternset id="local_files">
+					<include name="*.json.local" />
+				</patternset>
+			</fileset>
+		</replaceregexp>
+
 		<!-- remove execution time from .out.local files -->
 		<replaceregexp>
 			<regexp pattern='Execution Time = ([0-9]*\.[0-9]+)${line.separator}' />
