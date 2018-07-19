@@ -116,6 +116,17 @@
 
 ######### Other utility functions
 
+#' ddg.debug.lib.on turns on debugging of DDG construction.
+.ddg.debug.lib.on <- function () {
+  .ddg.set("ddg.debug.lib", TRUE)
+}
+
+#' ddg.debug.lib.off turns off debugging of DDG construction.
+.ddg.debug.lib.off <- function () {
+  .ddg.set("ddg.debug.lib", FALSE)
+}
+
+
 #' .ddg.format.time reformats time string.
 #' 
 #' @param time input time string formatted as yyyy-mm-dd hh:mm:ss

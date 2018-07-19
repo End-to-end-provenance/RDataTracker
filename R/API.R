@@ -182,6 +182,37 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
   .ddg.set("ddg.path", ddg.path)
 }
 
+#' ddg.flush.ddg removes all files from the DDG directories unless the
+#'   the DDG directory is the working directory. If no DDG directory is
+#'   specified, the current DDG directory is assumed.
+#' 
+#' @param ddg.path (optional) path to DDG directory.
+#' 
+.ddg.flush.ddg <- function(ddg.path=NULL) {
+  # TODO:  When ddg.flush.ddg is removed (from Obsolete.R, we
+  # can remove the ddg.path parameter and update the 
+  # code below to always look up the path.
+  
+  # Use current DDG directories if no directory is specified.
+  if (is.null(ddg.path)) {
+    ddg.path <- .ddg.path()
+    ddg.path.data <- .ddg.path.data()
+    ddg.path.debug <- .ddg.path.debug()
+    ddg.path.scripts <- .ddg.path.scripts()
+  }
+  
+  # Remove files unless the DDG directory is the working directory.
+  if (ddg.path != getwd()) {
+    unlink(paste(ddg.path, "*.*", sep="/"))
+    unlink(paste(ddg.path.data, "*.*", sep="/"))
+    unlink(paste(ddg.path.data, ".ddghistory", sep="/"))
+    unlink(paste(ddg.path.debug, "*.*", sep="/"))
+    unlink(paste(ddg.path.scripts, "*.*", sep="/"))
+  }
+  
+  invisible()
+}
+
 #' ddg.save saves the current provenance graph
 #'
 #' @param save.debug (optional) - If TRUE, save debug files to debug directory.
@@ -556,5 +587,45 @@ ddg.json <- function()
 	# This is a wrapper function.
 	# Calls and returns the function with the bulk of the code in OutputJSON.R
 	return( .ddg.json.string() )
+}
+
+.ddg.start.ddg.explorer <- function () {
+  jar.path<- "/RDataTracker/java/DDGExplorer.jar"
+  check.library.paths<- file.exists(paste(.libPaths(),jar.path,sep = ""))
+  index<- min(which(check.library.paths == TRUE))
+  ddgexplorer_path<- paste(.libPaths()[index],jar.path,sep = "")
+  ddgjson.path<- paste(.ddg.path() ,"ddg.json",sep = "/")
+  # ddgjson.path<- paste(getwd(), .ddg.path() ,"ddg.json",sep = "/")
+  
+  # -s flag starts DDG Explorer as a server.  This allows each new ddg to show
+  # up in a new tab of an existing running DDG Explorer.
+  # print("Starting DDG Explorer server")
+  systemResult <- system2("java", c("-jar", ddgexplorer_path, ddgjson.path, "-port", .ddg.get(".ddg.explorer.port")), wait = FALSE)
+  # print(paste("Starting java server return code:", systemResult))
+}
+
+# ddg.display loads & displays the current DDG.
+
+ddg.display <- function () {
+  
+  # See if the server is already running
+  # print("Opening socket connection")
+  tryCatch ({
+        con <- socketConnection(host= "localhost", port = .ddg.get(".ddg.explorer.port"), blocking = FALSE,
+            server=FALSE, open="w", timeout=1)
+        ddgjson.path<- paste(.ddg.path() ,"ddg.json",sep = "/")
+        # ddgjson.path<- paste(getwd(), .ddg.path() ,"ddg.json",sep = "/")
+        # print ("Socket open; writing to socket")
+        writeLines(ddgjson.path, con)
+        # print ("Wrote to socket")
+        close(con)
+      },
+      warning = function(e) {
+        # print("Warning!")
+        .ddg.start.ddg.explorer()
+      }
+  )
+  
+  invisible()
 }
 

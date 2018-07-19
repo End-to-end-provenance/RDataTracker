@@ -292,3 +292,76 @@ ddg.graphic.out <- function(dname, pname=NULL, graphic.fext="jpeg") {
   .ddg.proc2data(pname,dname)
 }
 
+# ddg.flush.ddg removes all files from the DDG directories unless the
+#   the DDG directory is the working directory. If no DDG directory is
+#   specified, the current DDG directory is assumed.
+
+# ddg.path (optional) - path to DDG directory.
+
+ddg.flush.ddg <- function(ddg.path=NULL) {
+  .ddg.flush.ddg (ddg.path)
+}
+
+# ddg.debug.lib.on turns on debugging of DDG construction.
+
+ddg.debug.lib.on <- function () {
+  .ddg.debug.lib.on ()
+}
+
+# ddg.debug.lib.off turns off debugging of DDG construction.
+
+ddg.debug.lib.off <- function () {
+  .ddg.debug.lib.off ()
+}
+
+# ddg.set.detail sets the level of provenance detail to be collected.
+# If ddg.detail is not set, the values of annotate.inside, max.loops,
+# and max.snapshot.size passed to ddg.run are used instead.
+
+#   0 = no internal annotation, no snapshots.
+#   1 = 1 loop, snapshots < 10k.
+#   2 = 10 loops, snapshots < 100k.
+#   3 = all loops, all snapshots.
+
+ddg.set.detail <- function(detail.level) {
+  if (detail.level == 0) {
+    .ddg.set("ddg.annotate.inside", FALSE)
+    .ddg.set("ddg.max.loops", 0)
+    .ddg.set("ddg.max.snapshot.size", 0)
+    .ddg.set("ddg.detail", 0)
+  } else if (detail.level == 1) {
+    .ddg.set("ddg.annotate.inside", TRUE)
+    .ddg.set("ddg.max.loops", 1)
+    .ddg.set("ddg.max.snapshot.size", 10)
+    .ddg.set("ddg.detail", 1)
+  } else if (detail.level == 2) {
+    .ddg.set("ddg.annotate.inside", TRUE)
+    .ddg.set("ddg.max.loops", 10)
+    .ddg.set("ddg.max.snapshot.size", 100)
+    .ddg.set("ddg.detail", 2)
+  } else if (detail.level == 3) {
+    .ddg.set("ddg.annotate.inside", TRUE)
+    .ddg.set("ddg.max.loops", 10^10)
+    .ddg.set("ddg.max.snapshot.size", -1)
+    .ddg.set("ddg.detail", 3)
+  } else {
+    print("0 = no internal annotation, no snapshots")
+    print("1 = 1 loop, snapshots < 10k")
+    print("2 = 10 loops, snapshots < 100k")
+    print("3 = all loops, all snapshots")
+  }
+}
+
+# ddg.detail returns the current level of provenance detail.
+
+ddg.get.detail <- function() {
+  if (!.ddg.is.set("ddg.detail")) .ddg.set("ddg.detail", NULL)
+  return(.ddg.get("ddg.detail"))
+}
+
+# ddg.clear.detail clears the current value of provenance detail.
+
+ddg.clear.detail <- function() {
+  .ddg.set("ddg.detail", NULL)
+}
+
