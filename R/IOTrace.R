@@ -282,6 +282,13 @@
   .ddg.add.input.file (input.file.name)
 }
 
+.ddg.num.calls.to <- function (func) {
+  print (sys.calls())
+  calls.found <- sapply (sys.calls(), .ddg.is.call.to, func )
+  return (sum(calls.found))
+}
+
+
 #' Creates file nodes and data in edges for any files that were read during 
 #' execution of the last R statement
 #' 
