@@ -34,10 +34,10 @@ ddg.graphic.out(dname, pname = NULL, graphic.fext = "jpeg")
 
   ddg.data.in creates a data flow edge from an existing data node (created by an earlier call
   to ddg.data, ddg.data.out, etc) to an existing procedure node (created by an earlier call 
-  to ddg.function or ddg.procedure).
+  to ddg.function).
   
   ddg.data.out creates a Data or Snapshot node (depending on the input) and a data flow edge from an 
-  existing procedure node (created by an earlier call to ddg.function or ddg.procedure).  Complex data 
+  existing procedure node (created by an earlier call to ddg.function).  Complex data 
   values are written to the file system in the DDG directory.
      
   ddg.exception.out behaves similarly to ddg.data.out, except that the node created is an
@@ -49,8 +49,7 @@ ddg.graphic.out(dname, pname = NULL, graphic.fext = "jpeg")
   
   ddg.file.out behaves similarly to ddg.data.out, except that the node created is a File node.
   This should be used when the script writes a file and the user wants to save this version
-  of the file in the provenance graph.  Files saved in this way can be restored by using the
-  ddg.checkpoint and ddg.restore functions, described elsewhere.  If dname is omitted, the
+  of the file in the provenance graph.  If dname is omitted, the
   filename (minus the directory path) will be used as the label for the node.
 
   ddg.graphic.out behaves similary to ddg.data.out with an input variable of type
@@ -68,38 +67,20 @@ number <- 3
 ddg.data("number")
 a <- number + 1
 
-# annotate procedure above
-ddg.procedure("f")
-
-# specify inputs to procedure
-ddg.data.in("number", "f")
-
-# specify simple data output to procedure 
-ddg.data.out("a", pname="f")
-
 # annoate conditional procedure
 if (a < 0) {
   warning ("a is negative!")
-  ddg.procedure("a < 0")
-  ddg.exception.out("negative", "a is negative!", "a < 0")
 }
 
 # file output example
 writeLines("Hello, world", "hello.txt")
-ddg.procedure("Say hello")
 
 # complex data example (note you use the same function ddg.data*. The library 
 # automatically determined complexity of input value)
-ddg.file.out("hello.txt", pname="Say hello")
 year <- c(1991, 1998, 2011)
 name <- c("Sterling", "Smuggles", "Snickers")
 male <- c(FALSE, FALSE, FALSE) 
 pets.df <- data.frame(year, name, male)
-ddg.procedure("data.frame(year, name, male)")
-ddg.data.in("year", pname="data.frame(year, name, male)")
-ddg.data.in("name", pname="data.frame(year, name, male)")
-ddg.data.in("male", pname="data.frame(year, name, male)")
-ddg.data.out("pets.df", pname="data.frame(year, name, male)")
 
 # save ddg
 ddg.save()

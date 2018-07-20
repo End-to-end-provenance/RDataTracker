@@ -1,5 +1,5 @@
 # @author Elizabeth Fong
-# @version 2.1 (June 2018)
+# @version 2.1 (July 2018)
 
 # writes json out to file
 ddg.json.write <- function() 
@@ -9,11 +9,9 @@ ddg.json.write <- function()
 	write(json, fileout)
 }
 
-# forms the prov-json string
-ddg.json <- function()
+# creates and returns the prov-json string for the current provenance graph
+.ddg.json.string <- function()
 {
-	library(jsonlite)
-	
 	# CONSTANTS
 	TOOL.NAME <- "RDataTracker"
 	JSON.VERSION <- "2.1"
@@ -70,7 +68,8 @@ ddg.json <- function()
 	
 	
 	# EDGE TABLE NODES
-	edges <- subset( .ddg.edges() , ddg.num > 0 )
+	edges <- .ddg.edges()
+	edges <- edges[edges$ddg.num > 0, ]
 	
 	# wasInformedBy (proc2proc)
 	json$wasInformedBy.p2p <- .ddg.json.proc2proc( edges , LABEL.NAMES$wasInformedBy.p2p , LABEL.PREFIX )
@@ -99,6 +98,7 @@ ddg.json <- function()
 	# FUNCTION NODES - get function numbers if there are any function nodes
 	if( num.calls > 0 )
 	{
+		# extract columns: ddg.fun, ddg.lib (function names and their library names)
 		functions <- calls[ , 2:3]
 		functions <- unique(functions)
 		
@@ -138,9 +138,8 @@ ddg.json <- function()
 	}	
 	
 	# COMBINE INTO COMPLETE JSON
-	return( .ddg.json.combine(json) )
+	return(.ddg.json.combine(json) )
 }
-
 
 # --- HELPER FUNCTIONS ------------------------- #
 
@@ -153,8 +152,8 @@ ddg.json <- function()
 	
 	# format to json
 	# with proper indentation, without sq brackets around urls
-	json <- toJSON(node, auto_unbox = TRUE)
-	json <- prettify(json, indent = 4)
+	json <- jsonlite::toJSON(node, auto_unbox = TRUE)
+	json <- jsonlite::prettify(json, indent = 4)
 	
 	# change '    ' into a tab (\t)
 	json <- gsub( '    ' , '\t' , json )
@@ -168,7 +167,7 @@ ddg.json <- function()
 {
 	# get node content
 	node <- data.frame( "tool.name" = tool ,
-						"tool.version" = toString(packageVersion(tool)) ,
+						"tool.version" = toString(utils::packageVersion(tool)) ,
 						"json.version" = json.version ,
 						stringsAsFactors = FALSE )
 	names(node) <- mapply( paste , prefix , names(node) , sep='' , USE.NAMES=FALSE )
@@ -187,9 +186,8 @@ ddg.json <- function()
 	nodes <- .ddg.proc.nodes()
 	
 	# extract and order required columns
-	nodes <- subset( nodes, ddg.num > 0, 
-					 select = c(ddg.name, ddg.type, ddg.time, ddg.snum, 
-					 ddg.startLine, ddg.startCol, ddg.endLine, ddg.endCol) )
+	nodes <- nodes[ , c("ddg.name", "ddg.type", "ddg.time", "ddg.snum", 
+					 "ddg.startLine", "ddg.startCol", "ddg.endLine", "ddg.endCol")]
 	
 	# base case: no procedure nodes 
 	if( nrow(nodes) == 0 )
@@ -217,9 +215,8 @@ ddg.json <- function()
 	nodes <- .ddg.data.nodes()
 	
 	# extract and order required columns
-	nodes <- subset( nodes, ddg.num > 0,
-					 select = c(ddg.name, ddg.value, ddg.val.type, ddg.type,
-					 ddg.scope, ddg.from.env, ddg.hash, ddg.time, ddg.loc) )
+	nodes <- nodes[ , c("ddg.name", "ddg.value", "ddg.val.type", "ddg.type",
+					 "ddg.scope", "ddg.from.env", "ddg.hash", "ddg.time", "ddg.loc")]
 	
 	# base case: no data nodes
 	if( nrow(nodes) == 0 )
@@ -230,7 +227,7 @@ ddg.json <- function()
 	
 	# column names
 	col.names <- c( "name", "value", "valType", "type", "scope", "fromEnv", 
-					"MD5hash", "timestamp", "location" )
+					"hash", "timestamp", "location" )
 	col.names <- mapply( paste , prefix , col.names , sep='' , USE.NAMES = FALSE )
 	
 	# convert to json and return
@@ -246,7 +243,7 @@ ddg.json <- function()
 					"architecture" = NA ,
 					"operatingSystem" = NA ,
 					"language" = NA ,
-					"rVersion" = NA ,
+					"langVersion" = NA ,
 					"script" = NA ,
 					"scriptTimeStamp" = NA ,
 					"sourcedScripts" = NA ,
@@ -254,15 +251,14 @@ ddg.json <- function()
 					"workingDirectory" = NA ,
 					"ddgDirectory" = NA ,
 					"ddgTimeStamp" = NA ,
-					"rdatatrackerVersion" = NA ,
 					"hashAlgorithm" = NA )
 	
-	# architecture, language, rVersion
-	r.version <- R.Version()
+	# architecture, language, langVersion
+	lang.version <- R.Version()
 	
-	fields$architecture <- r.version$arch
-	fields$language <- r.version$language
-	fields$rVersion <- r.version$version
+	fields$architecture <- lang.version$arch
+	fields$language <- lang.version$language
+	fields$langVersion <- lang.version$version
 	
 	# operating system
 	fields$operatingSystem <- .Platform$OS.type
@@ -295,9 +291,6 @@ ddg.json <- function()
 	# ddg timestamp
 	fields$ddgTimeStamp <- .ddg.get("ddg.start.time")
 	
-	# rdt version
-	fields$rdatatrackerVersion <- toString( packageVersion("RDataTracker") )
-	
 	# hash algorithm
 	fields$hashAlgorithm <- .ddg.get(".ddg.hash.algorithm")
 	
@@ -311,8 +304,8 @@ ddg.json <- function()
 	names(fields) <- paste( prefix , "environment" , sep = '' )
 	
 	# convert to json
-	json <- toJSON( fields , auto_unbox = TRUE )
-	json <- prettify( json , indent = 4 )
+	json <- jsonlite::toJSON( fields , auto_unbox = TRUE )
+	json <- jsonlite::prettify( json , indent = 4 )
 	
 	# convert '    ' into tab
 	json <- gsub( '    ' , '\t' , json )
@@ -378,8 +371,8 @@ ddg.json <- function()
 	names(prov.type) <- "prov:type"
 	
 	# convert  to json
-	json <- toJSON(prov.type, auto_unbox = TRUE)
-	json <- prettify(json, indent = 4)
+	json <- jsonlite::toJSON(prov.type, auto_unbox = TRUE)
+	json <- jsonlite::prettify(json, indent = 4)
 	
 	# convert '    ' to tab
 	json <- gsub( '    ' , '\t' , json )
@@ -415,7 +408,7 @@ ddg.json <- function()
 .ddg.json.proc2proc <- function( edges , label , prefix )
 {
 	# extract procedure-to-procedure edges, where ddg.type is 'cf' (control flow)
-	edges <- subset(edges, ddg.type == "cf", select = c(ddg.from, ddg.to))
+	edges <- edges[edges$ddg.type == "cf", c("ddg.from", "ddg.to")]
 	
 	# case: no proc-to-proc edges
 	if( nrow(edges) == 0 )
@@ -440,7 +433,7 @@ ddg.json <- function()
 .ddg.json.proc2data <- function( edges , label , prefix )
 {
 	# extract procedure-to-data edges, where ddg.type is 'df.out' (data flow out)
-	edges <- subset(edges, ddg.type == "df.out", select = c(ddg.from, ddg.to))
+	edges <- edges[edges$ddg.type == "df.out", c("ddg.from", "ddg.to")]
 	
 	# case: no procedure-to-data edges
 	if( nrow(edges) == 0 )
@@ -465,7 +458,7 @@ ddg.json <- function()
 .ddg.json.data2proc <- function( edges , label , prefix )
 {
 	# extract data-to-procedure edges, where ddg.type is 'df.in' (data flow in)
-	edges <- subset(edges, ddg.type == "df.in", select = c(ddg.from, ddg.to))
+	edges <- edges[edges$ddg.type == "df.in", c("ddg.from", "ddg.to")]
 	
 	# case: no data-to-procedure edges
 	if( nrow(edges) == 0 )
@@ -622,18 +615,6 @@ ddg.json <- function()
 	#return( sub('\n$', right, left) )
 }
 
-# ddg.installedpackages() returns information on packages installed 
-# at the time of execution and their versions.
-.ddg.installedpackages <- function()
-{
-	packages <- devtools::session_info()
-	packages <- packages[[2]]
-	installed <- packages[packages[,2] == "*",]
-	installed <- installed[ ,c(1,3)]
-	return(installed)
-}
-
-
 # --- MULTIPLE-USE FUNCTIONS ------------------- #
 
 # adds escape characters to double quotes within strings
@@ -694,8 +675,8 @@ ddg.json <- function()
 	names(dataframe) <- row.names
 	
 	# convert to json
-	json <- toJSON( dataframe , na = "string" )
-	json <- prettify( json , indent = 4 )
+	json <- jsonlite::toJSON( dataframe , na = "string" )
+	json <- jsonlite::prettify( json , indent = 4 )
 	
 	
 	# PROCESS JSON INTO CORRECT FORMAT

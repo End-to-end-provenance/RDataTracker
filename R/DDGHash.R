@@ -8,8 +8,6 @@
 # Updated by Barbara Lerner to allow for a variety of hash algorithms and refactored
 # to create the DDGHash.R file.
 
-library(jsonlite)
-
 #' Initialize the hashtable
 #'
 #' Initializes the hash table to be empty
@@ -17,6 +15,28 @@ library(jsonlite)
 #' @return None
 .ddg.init.hashtable <- function() {
   .ddg.set("ddg.hashtable", data.frame())
+  
+  # List of files read and written
+  .ddg.set("ddg.infilenodes", character())
+  .ddg.set("ddg.outfilenodes", character())
+  
+  # Boolean of whether there are any file nodes
+  .ddg.set("ddg.hasfilenodes", FALSE)
+  
+}
+
+#' Adds files it the infile list to add to the hash table 
+#' @param files files to add to the list of files read
+#' @return nothing 
+.ddg.add.infiles <- function (files) {
+  .ddg.set("ddg.infilenodes", c(.ddg.get("ddg.infilenodes"), files))
+}
+
+#' Adds files it the outfile list to add to the hash table 
+#' @param files files to add to the list of files written
+#' @return nothing 
+.ddg.add.outfiles <- function (files) {
+  .ddg.set("ddg.outfilenodes", c(.ddg.get("ddg.outfilenodes"), files))
 }
 
 #' Adds information about a file to the hash table.
@@ -26,13 +46,12 @@ library(jsonlite)
 #' 
 #' @param dname the name of the file
 #' @param ddg.dnum the number of the node in the data table
-#' @param dscriptpath the absolute path to the R script
 #' @param dloc the absolute path to the data file
 #' @param dvalue the relative path to the saved copy of the file
 #' @param dtime the timestamp on the file
 #' 
 #' @return None
-.ddg.add.to.hashtable <- function(dname, ddg.dnum, dscriptpath, dloc, dvalue, dtime) {
+.ddg.add.to.hashtable <- function(dname, ddg.dnum, dloc, dvalue, dtime) {
   if (!.ddg.get (".ddg.save.hashtable")) {
     return
   }
@@ -46,15 +65,13 @@ library(jsonlite)
   
   drw <- .ddg.calculate.rw(dname)
   
-  ddg.data.nodes <- .ddg.data.nodes()
-  ddg.data.nodes$ddg.hash[ddg.dnum] <- dhash
-  ddg.data.nodes$ddg.rw[ddg.dnum] <- drw
-  .ddg.set("ddg.data.nodes", ddg.data.nodes)
+  .ddg.set.hash (ddg.dnum, dhash, drw)
   
-  
+  dscriptpath <- 
+      if (!is.null(.ddg.get("ddg.r.script.path"))) .ddg.get("ddg.r.script.path")
+      else ""
   longpath <- paste0(getwd(), substring(.ddg.path(),2),"/ddg.json")
   .ddg.set("ddg.hashtable", rbind(.ddg.get("ddg.hashtable"), c(dscriptpath, dloc, longpath, paste(.ddg.path(), dvalue, sep="/"), ddg.dnum, dhash, dhash.algorithm, drw, dtime, dvalue), stringsAsFactors = FALSE))
-  return (ddg.data.nodes)
 }
 
 #' Calculate the hash value for the file
@@ -70,7 +87,7 @@ library(jsonlite)
   # other non-text files with internal timestamps. This could also cause these files
   # to sync incorrectly in the workflow, but given that reading in a pdf file is unlikely,
   # this should not be an overly large issue.
-  dhash <- digest(dname, algo=.ddg.get(".ddg.hash.algorithm"))
+  dhash <- digest::digest(dname, algo=.ddg.get(".ddg.hash.algorithm"))
   if (is.null(dhash)) {
     dhash <- ""
   }
@@ -141,7 +158,7 @@ library(jsonlite)
   }
   
   # Write out the updated file
-  writejson <- toJSON(new_hashtable, simplifyVector = TRUE, pretty = TRUE)
+  writejson <- jsonlite::toJSON(new_hashtable, simplifyVector = TRUE, pretty = TRUE)
   writeLines(writejson, hashtable.json)
 }
 
@@ -154,9 +171,10 @@ library(jsonlite)
 #' @return the dataframe containing the contents of the existing hashtable file with 
 #'    entries corresponding to overwritten files removed
 .ddg.hashtable.cleanup <- function(hashtable.json) {
-  old_hashtable <- read_json(hashtable.json, simplifyVector = TRUE)
+  old_hashtable <- jsonlite::read_json(hashtable.json, simplifyVector = TRUE)
   longpath <- paste0(getwd(), substring(.ddg.path(),2), "/ddg.json")
-  old_hashtable <- subset(old_hashtable, DDGPath != longpath)
+  old_hashtable <- old_hashtable[old_hashtable$DDGPath != longpath, ]
+  # old_hashtable <- subset(old_hashtable, DDGPath != longpath)
   return(old_hashtable)
 }
 

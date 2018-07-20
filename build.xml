@@ -7,7 +7,7 @@
 	<loadproperties srcFile="DESCRIPTION" />
 	<property name="tarfile" value="RDataTracker_${Version}.tar.gz" />
 
-    <target name="build-directory">
+    <target name="build-directory" depends="clean">
     	<mkdir dir="${builddir}"/>
     </target>
 
@@ -26,7 +26,7 @@
   		</copy>
     	<copy overwrite="true" todir="${builddir}/R">
     		<fileset dir="R"
-      			includes="RDataTracker.R DDGStatement.R DDGHash.R OutputJSON.R IOTrace.R"/>
+      			excludes="DDGCheckpoint.R"/>
   		</copy>
   		<!-- copy overwrite="true" todir="${builddir}/vignettes">
 	        <fileset dir="vignettes"
@@ -56,6 +56,12 @@
 		</exec>
     </target>
     
+    <target name="install-no-check" depends="build">
+    	<exec dir="${builddir}/.." executable="R" >
+  			<arg line="CMD INSTALL --no-clean-on-error ${tarfile}"/>
+		</exec>
+    </target>
+
     <target name="cran-check" depends="build">
     	<exec dir="${builddir}/.." executable="R" >
     		<arg line="CMD check --as-cran --no-vignettes --no-build-vignettes ${tarfile}"/>
@@ -73,5 +79,5 @@
     <target name="clean">
         <delete dir="${builddir}" verbose="true"/>
     </target>
-
+	
 </project>

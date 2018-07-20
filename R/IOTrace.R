@@ -45,6 +45,9 @@
 .ddg.init.iotrace <- function () {
   #print ("Initializing io tracing")
   
+  # Store the starting graphics device.
+  .ddg.set("ddg.open.devices", vector())
+  
   # Record the information about the input and output functions
   .ddg.set (".ddg.file.write.functions.df", .ddg.create.file.write.functions.df ())
   .ddg.set (".ddg.file.read.functions.df", .ddg.create.file.read.functions.df ())
@@ -69,25 +72,26 @@
   # Note that we need to use the RDataTracker::: notation for the functions for trace to call
   # so that it can find those functions without making them publicly available in 
   # the namespace.
-  trace.oneOutput <- function (f) {capture.output(capture.output(trace (as.name(f), RDataTracker:::.ddg.trace.output, print=FALSE), type="message"))} 
+  trace.oneOutput <- function (f) {utils::capture.output(utils::capture.output(trace (as.name(f), RDataTracker:::.ddg.trace.output, print=FALSE), type="message"))} 
   lapply(.ddg.get(".ddg.file.write.functions.df")$function.names, trace.oneOutput)
 
-  trace.oneInput <- function (f) {capture.output(capture.output(trace (as.name(f), RDataTracker:::.ddg.trace.input, print=FALSE), type="message"))} 
+  trace.oneInput <- function (f) {utils::capture.output(utils::capture.output(trace (as.name(f), RDataTracker:::.ddg.trace.input, print=FALSE), type="message"))} 
   lapply(.ddg.get(".ddg.file.read.functions.df")$function.names, trace.oneInput)
 
-  trace.oneClose <- function (f) {capture.output(capture.output(trace (as.name(f), RDataTracker:::.ddg.trace.close, print=FALSE), type="message"))} 
+  trace.oneClose <- function (f) {utils::capture.output(utils::capture.output(trace (as.name(f), RDataTracker:::.ddg.trace.close, print=FALSE), type="message"))} 
   lapply(.ddg.get(".ddg.file.close.functions.df")$function.names, trace.oneClose)
 
   #print ("Tracing graphics open")
-  trace.oneGraphicsOpen <- function (f) {capture.output(capture.output(trace (as.name(f), RDataTracker:::.ddg.trace.graphics.open, print=FALSE), type="message"))} 
+  # trace (grDevices::pdf, RDataTracker:::.ddg.trace.graphics.open, print=TRUE)
+  trace.oneGraphicsOpen <- function (f) {utils::capture.output(utils::capture.output(trace (as.name(f), RDataTracker:::.ddg.trace.graphics.open, print=FALSE), type="message"))} 
   lapply(.ddg.get(".ddg.graphics.functions.df")$function.names, trace.oneGraphicsOpen)
-
+  
   #print ("Tracing graphics update")
-  trace.oneGraphicsUpdate <- function (f) {capture.output(capture.output(trace (as.name(f), RDataTracker:::.ddg.trace.graphics.update, print=FALSE), type="message"))} 
+  trace.oneGraphicsUpdate <- function (f) {utils::capture.output(utils::capture.output(trace (as.name(f), RDataTracker:::.ddg.trace.graphics.update, print=FALSE), type="message"))} 
   lapply(.ddg.get(".ddg.graphics.update.functions.df"), trace.oneGraphicsUpdate)
   
   #print ("Tracing dev.off")
-  capture.output(capture.output(trace (dev.off, RDataTracker:::.ddg.trace.graphics.close, print=FALSE), type="message"))
+  utils::capture.output(utils::capture.output(trace (grDevices::dev.off, RDataTracker:::.ddg.trace.graphics.close, print=FALSE), type="message"))  
   #print ("Done initializing IO tracing")
 }
 
@@ -95,13 +99,13 @@
 .ddg.stop.iotracing <- function () {
   
   # Stop tracing output functions.  Will this be a problem if ddg.save is called from the console?
-  # capture.output is used to prevent "Untracing" messages from appearing in the output
-  capture.output (untrace(.ddg.get(".ddg.file.write.functions.df")$function.names), type="message")
-  capture.output (untrace(.ddg.get(".ddg.file.read.functions.df")$function.names), type="message")
-  capture.output (untrace(.ddg.get(".ddg.file.close.functions.df")$function.names), type="message")
-  capture.output (untrace(.ddg.get(".ddg.graphics.functions.df")$function.names), type="message")
-  capture.output (untrace(.ddg.get(".ddg.graphics.update.functions.df")), type="message")
-  capture.output (untrace(dev.off), type="message")
+  # utils::capture.output is used to prevent "Untracing" messages from appearing in the output
+  utils::capture.output (untrace(.ddg.get(".ddg.file.write.functions.df")$function.names), type="message")
+  utils::capture.output (untrace(.ddg.get(".ddg.file.read.functions.df")$function.names), type="message")
+  utils::capture.output (untrace(.ddg.get(".ddg.file.close.functions.df")$function.names), type="message")
+  utils::capture.output (untrace(.ddg.get(".ddg.graphics.functions.df")$function.names), type="message")
+  utils::capture.output (untrace(.ddg.get(".ddg.graphics.update.functions.df")), type="message")
+  utils::capture.output (untrace(grDevices::dev.off), type="message")
 }
 
 ################### Helper functions ######################3
@@ -127,18 +131,30 @@
   }
 }
 
-
 #' Determines if the call passed in is a call to the passed in function
 #' @param call a parse tree for a function call
 #' @param func the name of a function
 #' @returnType logical
 #' @return TRUE if the call passed in is a call to the function name passed in
 .ddg.is.call.to <- function (call, func) { 
+  # Check for function name
   if (is.symbol(call[[1]])) {
     return (as.character(call[[1]]) == func)
   }
+  
+  # Check for a function name qualified by its package
+  if (is.call(call[[1]]) && call[[1]][[1]] == "::") {
+    return (as.character(call[[1]][[3]]) == func)
+  }
+  
   return (FALSE)
 }
+
+.ddg.num.calls.to <- function (func) {
+  calls.found <- sapply (sys.calls(), .ddg.is.call.to, func )
+  return (sum(calls.found))
+}
+
 
 #' Returns true if there is a call to the passed in function anywhere on
 #' the call stack.  
@@ -147,17 +163,6 @@
 .ddg.inside.call.to <- function (func) {
   calls.found <- sapply (sys.calls(), .ddg.is.call.to, func )
   return (any (calls.found))
-}
-
-#' Returns the number of times that a call to the passed in function
-#' appears on the current call stack.  
-#' 
-#' @param func the name of the function to look for
-#' @returnType numeric
-#' @return the number of times the function is called on the stack
-.ddg.num.calls.to <- function (func) {
-  calls.found <- sapply (sys.calls(), .ddg.is.call.to, func )
-  return (sum(calls.found))
 }
 
 ##################  Functions to handle tracing of read functions ##################
@@ -236,11 +241,11 @@
       # to load a script specified by the programmer within another script.
       # In the latter case, we would see ddg.source in the call stack twice
       # (or more).
-      # We do not want a file node for the main script, since is not an input 
-      # to the script, but we do for calls to source within the main script.
-      # These are translated to ddg.source when we execute.
+    # We do not want a file node for the main script, since is not an input 
+    # to the script, but we do for calls to source within the main script.
+    # These are translated to ddg.source when we execute.
       if (.ddg.num.calls.to ("ddg.source") == 1) {
-        return ()
+        return()
       }
     }
     
@@ -251,11 +256,17 @@
       return()
     }
     
-    # Don't collect provenance when loading library packages
-    else if (.ddg.inside.call.to ("library")) {
-      return()
-    }
   }
+  
+  # Don't collect provenance when loading library packages.  Also, when writing out the
+  # json, files get read in order to identify package version numbers.
+  if (.ddg.inside.call.to ("library") || 
+      .ddg.inside.call.to ("loadNamespace") ||
+      .ddg.inside.call.to ("ddg.json")) {
+    return()
+  }
+
+  # print (sys.calls())
   
   # Get the name of the input function
   call <- sys.call (frame.number)
@@ -274,7 +285,7 @@
   #print (paste ("Input file parameter:", file.param.name))
   
   # Get the value of the file parameter  
-  input.file.name <- eval (as.symbol(file.param.name), env = sys.frame(frame.number))
+  input.file.name <- eval (as.symbol(file.param.name), envir = sys.frame(frame.number))
   #print (paste ("input.file.name =", input.file.name))
   
   # Save the file name so the file node can be created when the statement is complete.
@@ -282,6 +293,7 @@
   # exist yet.
   .ddg.add.input.file (input.file.name)
 }
+
 
 #' Creates file nodes and data in edges for any files that were read during 
 #' execution of the last R statement
@@ -293,7 +305,7 @@
   
   # Adds the files read to ddg.infilenodes for use in determining reads
   # and writes in the hashtable.
-  .ddg.set("ddg.infilenodes", c(.ddg.get("ddg.infilenodes"), files.read))
+  .ddg.add.infiles (files.read)
   
   for (file in files.read) {
     # Use URL node for URLs and for socket connections
@@ -316,8 +328,8 @@
       # Only create the node and edge if there actually is a file
       if (file.exists(file)) {
         # Create the file node and edge
-        ddg.file(file)
-        ddg.data.in(basename(file))
+        .ddg.file.copy(file)
+        .ddg.data2proc(basename(file), dscope="undefined")
       }
       
       # If the filename contains a :, then it is referencing a file within 
@@ -326,8 +338,8 @@
         zipfile <- sub (":.*", "", file)
         if (file.exists (zipfile)) {
           # Create the file node and edge
-          ddg.file(zipfile, file)
-          ddg.data.in(file)
+          .ddg.file.copy(zipfile, file, NULL)
+          .ddg.data2proc(file, dscope="undefined")
         }
       }
     }
@@ -335,6 +347,31 @@
   
   # Clear the list of input files now that they have been handled.
   .ddg.clear.input.file ()
+}
+
+#' Saves the contents of a web page referenced by a URL in the data
+#' directory
+#'
+#' @param url the URL as a string
+#'
+#' @return the name of the file where the copy is stored.  This is 
+#'   a relative path beginning with the data directory.
+#'
+.ddg.url.copy <- function (url) {
+  # Get last part of the url.
+  file.name <- basename(url)
+  
+  # Add number to file name.
+  dfile <- paste(.ddg.dnum()+1, "-", file.name, sep="")
+  
+  # Get path plus file name to where the file will be copied
+  dpath <- paste(.ddg.path.data(), "/", dfile, sep="")
+  
+  # Download and save the webpage
+  curl::curl_download (url, dpath)
+  
+  if (.ddg.debug.lib()) print(paste("url.copy: ", url))
+  return (paste(.ddg.data.dir(), dfile, sep="/"))
 }
 
 ##################  Functions to handle tracing of write functions ##################
@@ -418,6 +455,8 @@
     return()
   }
   
+  #print(sys.calls())
+  
   # Get the name of the output function
   call <- sys.call (frame.number)
   fname <- as.character(call[[1]])
@@ -427,7 +466,7 @@
     fname <- fname[length(fname)]
   }
   
-  # print (paste ("Output function traced: ", fname))
+  #print (paste ("Output function traced: ", fname))
   
   # Get the name of the file parameter for the output function
   file.write.functions <- .ddg.get (".ddg.file.write.functions.df")
@@ -435,8 +474,8 @@
   #print (paste ("Output file parameter:", file.param.name))
   
   # Get the value of the file parameter  
-  output.file.name <- eval (as.symbol(file.param.name), env = sys.frame(frame.number))
-  # print (paste ("output.file.name =", output.file.name))
+  output.file.name <- eval (as.symbol(file.param.name), envir = sys.frame(frame.number))
+  #print (paste ("output.file.name =", output.file.name))
 
   # Save the file name so the file node can be created when the statement is complete.
   # we do not want to create the nodes because the procedure node to connect to does not
@@ -459,7 +498,7 @@
       # If it is a closed connection, use the file it is connected to
       # If it is still open, don't use it because the contents on disk won't
       # be correct until it is closed.
-      if (.ddg.get.connection.isopen(conn)) {
+      if (.ddg.is.connection.open(conn)) {
         next
       }
       file <- .ddg.get.connection.description(conn)
@@ -469,12 +508,38 @@
     # it was created by the write call that just executed.
     if (file.exists (file)) {
       # Create the file node and edge
-      ddg.file.out (file)
+      #print ("Copying file")
+      .ddg.file.out (file)
     }
   }
 
   # Clear the list of output files now that they have been handled.
   .ddg.clear.output.file ()
+}
+
+#' .ddg.file.out creates a data node of type File.  The label
+#' is the filename with the directory removed.
+#' It copies the file to the DDG directory. A data flow edge
+#' is also created from creating procedure node pname to the new file node.
+#' 
+#' @param filename name of the file.  The name should include the path
+#'   to the file if it is not in the working directory.
+#' @return the full path to the file that is saved.
+#' 
+.ddg.file.out <- function(filename) {
+  # Adds the files written to ddg.outfilenodes for use in determining reads
+  # and writes in the hashtable.
+  .ddg.add.outfiles (filename)
+  
+  dname <- basename(filename)
+  
+  # Create output file node called filename and copy file.
+  saved.file <- .ddg.file.copy(filename, dname)
+  
+  # Create data flow edge from operation node to file node.
+  .ddg.lastproc2data (dname)
+  
+  return (saved.file)
 }
 
 
@@ -625,7 +690,7 @@
   #print (paste (".ddg.trace.close: file.param.name = ", file.param.name))
   
   # Get the value of the connection parameter  
-  close.conn <- eval (as.symbol(file.param.name), env = sys.frame(frame.number))
+  close.conn <- eval (as.symbol(file.param.name), envir = sys.frame(frame.number))
   
   # If the connection was opened for writing, then add the connection
   # to the list for which we create output file nodes.  We do not need 
@@ -800,7 +865,7 @@
     #print(paste (".ddg.trace.graphics: file.param.name =", file.param.name))
   
     # Get the value of the file parameter  
-    file <- eval (as.symbol(file.param.name), env = sys.frame(frame.number))
+    file <- eval (as.symbol(file.param.name), envir = sys.frame(frame.number))
     #print(paste (".ddg.trace.graphics.open: file =", file))
     .ddg.set(".ddg.no.graphics.file", FALSE)
     .ddg.set (".ddg.last.graphics.file", file)
@@ -825,14 +890,14 @@
   } 
   
   #print ("In .ddg.add.graphics.device.node")
-  #print (paste ("dev.list =", dev.list(), names(dev.list()), collapse=", "))
-  #print (paste ("dev.cur =", dev.cur()))
+  #print (paste ("dev.list =", grDevices::dev.list(), names(grDevices::dev.list()), collapse=", "))
+  #print (paste ("dev.cur =", grDevices::dev.cur()))
   
-  if (!names(dev.cur()) %in% c("RStudioGD","quartz", "windows")) {
+  if (!names(grDevices::dev.cur()) %in% c("RStudioGD","quartz", "windows")) {
     # Record the binding between the current device and the graphics file, if
     # a file is being used.
     if (.ddg.is.set (".ddg.last.graphics.file") && .ddg.get(".ddg.last.graphics.file") != "") {
-      .ddg.add.to.device.table (dev.cur (), .ddg.get (".ddg.last.graphics.file"))
+      .ddg.add.to.device.table (grDevices::dev.cur (), .ddg.get (".ddg.last.graphics.file"))
     }
     else {
       .ddg.set(".ddg.no.graphics.file", TRUE)
@@ -843,16 +908,16 @@
         # Only do this if the graphics is going to a file.  It seems
         # that it should also work if the output is going to the screen, but
         # it doesn't.
-        dev.control("enable"),
+        grDevices::dev.control("enable"),
         error = function (e) return()
     )
   }
 
   # Add the newly-opened graphics device to the list of open devices
-  .ddg.set("ddg.open.devices", union(.ddg.get("ddg.open.devices"), dev.cur()))
+  .ddg.set("ddg.open.devices", union(.ddg.get("ddg.open.devices"), grDevices::dev.cur()))
 
   # Create a node for the grpahics device and connect it to the last procedural node.
-  dev.node.name <- paste0("dev.", dev.cur())
+  dev.node.name <- paste0("dev.", grDevices::dev.cur())
   .ddg.data.node("Data", dev.node.name, "graph", NULL)
   .ddg.lastproc2data(dev.node.name)
   
@@ -887,13 +952,13 @@
   
   #print ("In .ddg.add.graphics.io")
   
-  dev.node.name <- paste0("dev.", dev.cur())
+  dev.node.name <- paste0("dev.", grDevices::dev.cur())
   
   # Make sure we did not already create the device node for this statement. 
   if (!(dev.node.name %in% .ddg.get (".ddg.new.device.nodes"))) {
     
     # Check if there is already a node for this device. 
-    if (dev.cur() %in% .ddg.get("ddg.open.devices")) {
+    if (grDevices::dev.cur() %in% .ddg.get("ddg.open.devices")) {
       # Create an input edge from that node to the last procedure node
       .ddg.data2proc(dev.node.name, dscope = NULL)
 
@@ -934,24 +999,24 @@
   }
   
   #print ("In .ddg.trace.graphics.close")
-  #print (paste ("dev.list =", dev.list(), names(dev.list()), collapse=", "))
-  #print (paste ("dev.cur =", dev.cur()))
+  #print (paste ("dev.list =", grDevices::dev.list(), names(grDevices::dev.list()), collapse=", "))
+  #print (paste ("dev.cur =", grDevices::dev.cur()))
   
   # Set the flag so that .ddg.capture.graphics executes after the
   # R statement completes.
   .ddg.set (".ddg.add.device.close", TRUE)
-  .ddg.set(".ddg.dev.number", dev.cur())
+  .ddg.set(".ddg.dev.number", grDevices::dev.cur())
   
   
   # Output is going to the screen
-  if (.ddg.get(".ddg.no.graphics.file") || names(dev.cur()) == "RStudioGD") {
+  if (.ddg.get(".ddg.no.graphics.file") || names(grDevices::dev.cur()) == "RStudioGD") {
     # Write the graphics to a file and record the file name
     # in the device table.
     file <- .ddg.capture.current.graphics()
     .ddg.set(".ddg.no.graphics.file", FALSE)
     if (!is.null(file)) {
       .ddg.set (".ddg.last.graphics.file", file)
-      .ddg.add.to.device.table (dev.cur (), file)
+      .ddg.add.to.device.table (grDevices::dev.cur (), file)
     }
   }
 }
@@ -972,7 +1037,7 @@
   # Determine which device to capture graphics for.  When called.from.save
   # we will be capturing graphics from all open devices.
   if (called.from.save) {
-    dev.number <- dev.cur()
+    dev.number <- grDevices::dev.cur()
     
     # Device 1 is standard output.  When this comes up as dev.cur, it
     # means we are done capturing graphics.
@@ -1001,14 +1066,14 @@
     # Check if the device is still open and close it if it is
     # We need to do this so that the file.out call can
     # copy the file.
-    if (dev.number %in% dev.list()) {
-      dev.off(dev.number)
+    if (dev.number %in% grDevices::dev.list()) {
+      grDevices::dev.off(dev.number)
     }
   }
   
   # If going to a file, copy the file and create a node for it.
   if (!is.null (graphics.file)) {
-    ddg.file.out (graphics.file)
+    .ddg.file.out (graphics.file)
     
     # Delete files that were created by capturing the screen
     if (startsWith (graphics.file, "dev.off") && file.exists(graphics.file)) {
@@ -1035,13 +1100,13 @@
     
     # If the device just captured is still the current device, move on to the next
     # open device.  If it is not the current device, use the current device.
-    if (dev.number == dev.cur()) {
-      dev.set()
+    if (dev.number == grDevices::dev.cur()) {
+      grDevices::dev.set()
     }
     
     # If the current device has not been captured yet, recurse to save the next one.
-    if (!(dev.cur() %in% .ddg.get(".ddg.captured.devices"))) {
-      .ddg.set(".ddg.dev.number", dev.cur())
+    if (!(grDevices::dev.cur() %in% .ddg.get(".ddg.captured.devices"))) {
+      .ddg.set(".ddg.dev.number", grDevices::dev.cur())
       .ddg.capture.graphics (TRUE)
     }
   }
@@ -1066,9 +1131,9 @@
 	# dev.print fails when running from the test scripts, or Rscript in general
 	# In that case, check for the existence of Rplots.pdf, which is 
 	# where Rscript places plots sent to the default graphics.
-	if (names(dev.cur()) == "pdf") {
+	if (names(grDevices::dev.cur()) == "pdf") {
 		if (file.exists ("Rplots.pdf") && !.ddg.get(".ddg.rplots.pdf.saved")) {
-			dev.off()
+      grDevices::dev.off()
 			.ddg.set (".ddg.rplots.pdf.saved", TRUE)
 			return("Rplots.pdf")
 		}
@@ -1077,7 +1142,7 @@
 	tryCatch (
 		{
 			# Try to save the graphics to a file
-			dev.print(device=pdf, file=file)
+			grDevices::dev.print(device=grDevices::pdf, file=file)	
 			file.written <- file
 		},
 		error = function(e) {

@@ -24,16 +24,21 @@
 \alias{ddg.details.omitted}
 \alias{ddg.set.inside.loop}
 \alias{ddg.not.inside.loop}
+\alias{ddg.debug.lib.on}
+\alias{ddg.debug.lib.off}
+\alias{ddg.json}
+\alias{ddg.json.write}
 \title{Creating Provenance Graphs with RDataTracker}
 \description{These functions are needed to create provenance graphs.}
 \usage{
 ddg.init(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enable.console = TRUE, 
-    annotate.inside.functions = TRUE, first.loop = 1, max.loops = 1, max.snapshot.size = 10,
-    save.hashtable = TRUE, hash.algorithm="md5") 
-ddg.save(r.script.path = NULL, save.debug=FALSE, quit=FALSE)
-ddg.run(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = NULL, enable.console = TRUE, 
-    annotate.inside.functions = TRUE, first.loop = 1, max.loops = 1, max.snapshot.size = 10, debug = FALSE, 
-    save.debug=FALSE, display = FALSE, save.hashtable = TRUE, hash.algorithm="md5")
+    annotate.inside.functions = TRUE, first.loop = 1, max.loops = 1, 
+    max.snapshot.size = 10, hash.algorithm="md5") 
+ddg.save(save.debug=FALSE, quit=FALSE)
+ddg.run(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = NULL, 
+    enable.console = TRUE, annotate.inside.functions = TRUE, first.loop = 1, 
+    max.loops = 1, max.snapshot.size = 10, save.debug=FALSE, display = FALSE, 
+    hash.algorithm="md5")
 ddg.set.detail(detail.level)
 ddg.get.detail()
 ddg.clear.detail()
@@ -56,6 +61,10 @@ ddg.loop.annotate.off()
 ddg.details.omitted()
 ddg.not.inside.loop()
 ddg.set.inside.loop()
+ddg.debug.lib.on()
+ddg.debug.lib.off()
+ddg.json()
+ddg.json.write()
 }
 \arguments{
   \item{r.script.path}{ the full path to the file containing the R script that is being executed. }
@@ -71,7 +80,6 @@ ddg.set.inside.loop()
   \item{max.snapshot.size}{ The maximum size for objects that should be output in snapshot
     files.  If max.snapshot.size is -1, there is no limit. If max.snapshot.size is 0, snapshot nodes
     are created but no snapshot files are saved. }
-  \item{debug}{ If TRUE, enable script debugging. }
   \item{save.debug}{ If TRUE, save debug files to debug directory. }
   \item{display}{ If TRUE, display the DDG when the R script completes.}
   \item{f}{ A function to run.  Data provenance is collected within the function. }
@@ -82,7 +90,6 @@ ddg.set.inside.loop()
   \item{ddg.path}{ The path to the DDG directory which needs to be flushed. }
   \item{index.var}{ The index variable passed to ddg.forloop. }
   \item{loop.num}{ The loop number passed to ddg.loop.count and ddg.reset.loop.count. }
-  \item{save.hashtable}{ If TRUE, add file node information to a hashtable of file nodes. }
   \item{hash.algorithm}{ The hash algorithm to use when saving hash values for files read or written. }
 }
 \details{
@@ -98,7 +105,7 @@ ddg.set.inside.loop()
   timestamp to the directory to prevent overwriting, i.e. "ddg_script.name_2016-06-09T15.41.02EDT"
    
   ddg.save writes the provenance graph along with additional provenance information to a file named
-  ddg.txt.  The extra information includes the platform and operating system, the R version, the name
+  ddg.json.  The extra information includes the platform and operating system, the R version, the name
   of the R script, and a timestamp of the execution.  ddg.save can be called multiple times for a 
   single call to ddg.init, where each call will extend the previous provenance graph, overwriting the file
   containing the previous version. When the final save procedure is wanted, the parameter "quit" can 
@@ -116,8 +123,7 @@ ddg.set.inside.loop()
   provenance is collected for statements inside functions.  ddg.annotate.on and ddg.annotate.off may be 
   used to limit the functions that will be annotated or not annotated, respectively. The parameter max.loops 
   sets the maxiumum number of times that a for, while or repeat loop will be annotated.  If max.loops is not 0,
-  if-stateements are also annotated.  If break is set to TRUE, script debugging  is enabled. This has the same 
-  effect as inserting ddg.breakpoint() at the top of the script.  If display is set to TRUE, the DDG is 
+  if-stateements are also annotated.  If display is set to TRUE, the DDG is 
   displayed after the R script finished executing. If save.debug is set to TRUE, debug files are saved to the 
   debug directory.
   
@@ -144,6 +150,12 @@ ddg.set.inside.loop()
   The last DDG created (if any) can be displayed with ddg.display. This function starts DDG Explorer
   and loads the most recent ddg.txt file (if any). If the DDG path is not set or a ddg.txt file is not available,
   the function returns "DDG not available".
+
+  ddg.debug.lib.on and ddg.debug.lib.off turn on and off display of node and edge creation in
+  the console (for RDataTracker debugging).
+
+  ddg.json returns the current provenance graph as a prov-json string.  ddg.json.write saves the provenance
+  graph to the provenance directory.
   
   ddg.should.run.annotated, ddg.forloop, ddg.first.loop, ddg.loop.count, ddg.loop.count.inc, ddg.reset.loop.count, 
   ddg.loop.annotate.on, ddg.loop.annotate.off, ddg.details.omitted, 
@@ -157,6 +169,6 @@ ddg.save()
 myfunc <- function() {
   a <- 1
 }
-ddg.run(f = myfunc, save.hashtable=FALSE)
+ddg.run(f = myfunc)
 }
 \keyword{provenance}

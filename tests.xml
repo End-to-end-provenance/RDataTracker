@@ -191,12 +191,12 @@
 		/>
 		<replaceregexp  file="${dir}/sourceTest.r"
 						match="\[DIR_DDG\]"
-						replace="${FILE.basedir}/${dir}/ddg"
+						replace="${FILE.basedir}/${dir}"
 						flags="g"
 		/>
 
 		<!-- Execute the R Script (delete ddg directory first) -->
-		<delete dir="${dir}/ddg" quiet="true" />
+		<delete dir="${dir}/prov_${test-name}" quiet="true" />
 		<exec executable="Rscript" dir="${dir}" output="${FILE.basedir}/${out}" >
 			<arg line="sourceTest.r" />
 		</exec>
@@ -210,7 +210,7 @@
 			 outputs for diff. Append .local to all files -->
 		<copy todir="${local_dir}" overwrite="true">
 			<!-- Executed ddg.json file -->
-			<fileset file="${dir}/ddg/ddg.json" />
+			<fileset file="${dir}/prov_${test-name}/ddg.json" />
 			<!-- all .out files and files ending in _ddg.json in the test directory -->
 			<fileset dir="${dir}">
 				<include name="*.out" />
@@ -226,7 +226,7 @@
 
 		<!-- Delete all local environment information (except sourced scripts & installed packages) -->
 		<replaceregexp flags="g">
-			<regexp pattern='(\t+("rdt:architecture"|"rdt:operatingSystem"|"rdt:language"|"rdt:rVersion"|"rdt:script"|"rdt:scriptTimeStamp"|"rdt:workingDirectory"|"rdt:ddgDirectory"|"rdt:SHA1hash"|"rdt:MD5hash"|"rdt:hash"|"rdt:ddgTimeStamp"|"rdt:rdatatrackerVersion"): (.*)\r?\n(,\r?\n)?)' />
+			<regexp pattern='(\t+("rdt:architecture"|"rdt:operatingSystem"|"rdt:language"|"rdt:langVersion"|"rdt:script"|"rdt:scriptTimeStamp"|"rdt:workingDirectory"|"rdt:ddgDirectory"|"rdt:ddgTimeStamp"): (.*)\r?\n(,\r?\n)?)' />
 			<substitution expression=""/>
 			<fileset dir="${local_dir}">
 				<patternset id="local_files">
@@ -414,6 +414,17 @@
 			</fileset>
 		</replaceregexp>
 
+		<!-- remove tool.version and json.version strings from json.local files -->
+		<replaceregexp>
+			<regexp pattern='(\t+"rdt:tool.version": ("[0-9]+.?[0-9]*.?[0-9]*-?[0-9]*.?[0-9]*"),)\r?\n(\t+"rdt:json.version": ("[0-9]+.?[0-9]*.?[0-9]*-?[0-9]*.?[0-9]*"))\r?\n' />
+			<substitution expression=""/>
+			<fileset dir="${local_dir}">
+				<patternset id="local_files">
+					<include name="*.json.local" />
+				</patternset>
+			</fileset>
+		</replaceregexp>
+
 		<!-- remove execution time from .out.local files -->
 		<replaceregexp>
 			<regexp pattern='Execution Time = ([0-9]*\.[0-9]+)${line.separator}' />
@@ -474,7 +485,7 @@
 		<!-- Make copy of ddg.json and the .out file into the expected folder -->
 		<copy todir="${expected_dir}" overwrite="true">
 			<!-- Executed ddg.json file -->
-			<fileset file="${dir}/ddg/ddg.json" />
+			<fileset file="${dir}/prov_${test-name}/ddg.json" />
 			<fileset file="${FILE.basedir}/${out}" />
 		</copy>
 
