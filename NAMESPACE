@@ -1,13 +1,18 @@
-export(ddg.function, ddg.start, ddg.finish, ddg.return.value, ddg.eval)
-export(ddg.data, ddg.file)
-export(ddg.data.in, ddg.data.out, ddg.exception.out, ddg.url.out, ddg.file.out, ddg.graphic.out)
-export(ddg.init, ddg.run, ddg.save, ddg.console.on, ddg.console.off, ddg.annotate.on, ddg.annotate.off)
-export(ddg.debug.lib.on, ddg.debug.lib.off, ddg.display)
-export(ddg.flush.ddg)
-export(ddg.source)
+# API
+export(ddg.init, ddg.save, ddg.run, ddg.source, ddg.json, ddg.display)
+
+# Start / finish nodes
+export(ddg.start, ddg.finish)
+
+# Console mode
+export(ddg.console.on, ddg.console.off)
+
+# Function annotation
+export(ddg.function, ddg.eval, ddg.return.value, ddg.annotate.on, ddg.annotate.off, ddg.should.run.annotated)
+
+# Loop annotation
 export(ddg.forloop, ddg.first.loop, ddg.max.loops, ddg.loop.count, ddg.loop.count.inc, ddg.reset.loop.count)
-export(ddg.loop.annotate.on, ddg.loop.annotate.off)
-export(ddg.max.snapshot.size, ddg.details.omitted, ddg.should.run.annotated)
+export(ddg.set.inside.loop, ddg.not.inside.loop, ddg.loop.annotate.on, ddg.loop.annotate.off, ddg.details.omitted)
+
+# Level of detail
 export(ddg.set.detail, ddg.get.detail, ddg.clear.detail)
-export(ddg.set.inside.loop, ddg.not.inside.loop)
-export(ddg.json.write, ddg.json)
