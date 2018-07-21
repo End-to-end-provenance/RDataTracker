@@ -35,8 +35,7 @@
           stringsAsFactors=FALSE))
 }
 
-#' Return the function table
-#' @returnType a data frame with 3 columns:  \cr
+#' Return the function table as a data frame with 3 columns:  \cr
 #' - ddg.pnum - the procedure node id where the call happened \cr
 #' - ddg.fun - the name of the function \cr
 #' - ddg.lib - the library the function comes from

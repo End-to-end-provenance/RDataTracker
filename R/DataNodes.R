@@ -50,8 +50,9 @@
   }
 }
 
-#' @returnType integer
-#' @return the maximum size that snapshots should be, measured in KB
+#' ddg.max.snapshot.size returns the maximum size for snapshots in KB
+#' @return maximum snapshot size in KB
+#' @export
 ddg.max.snapshot.size <- function() {
   return(.ddg.get("ddg.max.snapshot.size"))
 }
@@ -60,14 +61,12 @@ ddg.max.snapshot.size <- function() {
 #' This is used for type-checking.
 #' 
 #' @param type data node type.
-#' @returnType logical
 #' @return true for any type of data node
 .ddg.is.data.type <- function(type) {
   return(type %in% c("Data", "Snapshot", "File", "URL", "Exception"))
 }
 
 #' Return the counter used to assign data node ids
-#' @returnType integer 
 #' @return the data node id of the last data node created
 .ddg.dnum <- function() {
   return (.ddg.get("ddg.dnum"))
@@ -77,7 +76,6 @@ ddg.max.snapshot.size <- function() {
 #' It is faster to add a bunch of empty rows and update them than to 
 #' add one row at a time
 #' @param size the number of rows to add
-#' @returnType a dataframe 
 #' @return a data frame with size rows, with all columns being empty vectors
 .ddg.create.data.node.rows <- function (size=100) {
   return (      
@@ -97,14 +95,12 @@ ddg.max.snapshot.size <- function() {
 }
   
 #' Returns the data node table
-#' @returnType a data frame
 #' @return the data node table
 .ddg.data.node.table <- function() {
   return (.ddg.get("ddg.data.nodes"))
 }
 
 #' Returns the filled rows of the data node table
-#' @returnType a data frame
 #' @return the filled rows of the data node table
 .ddg.data.nodes <- function() {
   ddg.data.nodes <- .ddg.get("ddg.data.nodes")
@@ -132,7 +128,6 @@ ddg.max.snapshot.size <- function() {
 #' @param dname data node name
 #' @param dscope data node scope.  If NULL, uses the closest scope in which
 #'   dname is defined
-#' @returnType logical
 #' @return true if a node with the given name exists
 .ddg.data.node.exists <- function(dname, dscope=NULL) {
   if (is.null(dscope)) dscope <- .ddg.get.scope(dname)
@@ -169,7 +164,6 @@ ddg.max.snapshot.size <- function() {
 #' @param dname data node name.
 #' @param dscope (optional) data node scope.  If not provided, it uses
 #'   the closest scope in which dname is found
-#' @returnType integer
 #' @return the id of the matching data node, or 0 if none was found
 .ddg.data.number <- function(dname, dscope=NULL) {
   if (is.null(dscope)) dscope <- .ddg.get.scope(dname)
@@ -274,7 +268,6 @@ ddg.max.snapshot.size <- function() {
   }
 }
 
-#' @returnType string
 #' @return the type information of the given value.  "null" for null values.
 #'   For values of length 1, it is the type of the value.  For longer values,
 #'   the description includes the container (like vector, matrix, ...), the
@@ -314,7 +307,7 @@ ddg.max.snapshot.size <- function() {
 }
 
 #' @return the type information of the given value
-#' @returnType There are several return types possible.
+#'   There are several return types possible.
 #'   For lists, objects, environments, functions and language values,
 #'   the return type is string.  For vectors, matrices, arrays 
 #'   and data frames, a list is returned.  The list contains 3 parts: a
@@ -608,7 +601,6 @@ ddg.max.snapshot.size <- function() {
 #' bmp, png, tiff.
 #' 
 #' @param ext file extension.
-#' @returnType logical
 #' @return TRUE if the extension passed in is a known graphics type
 .ddg.supported.graphic <- function(ext){
   return(ext %in% c("jpeg", "jpg", "tiff", "png", "bmp", "pdf"))
@@ -663,7 +655,6 @@ ddg.max.snapshot.size <- function() {
 #' @param fname - path and name of original file.
 #' @param dname - name of data node.
 #' @param dscope (optional) - scope of data node.
-#' @returnType string
 #' @return the full path to the saved file
 .ddg.file.node <- function(dtype, fname, dname, dscope=NULL) {
   
@@ -711,7 +702,6 @@ ddg.max.snapshot.size <- function() {
 #' is basically a hack. There must be a better way to implement it.
 #' 
 #' @param value value to test
-#' @returnType logical
 #' @return TRUE if the value is in the gg or ggplot class
 .ddg.is.graphic <- function(value){
   # Matching any of these classes automatically classifies the
@@ -725,7 +715,6 @@ ddg.max.snapshot.size <- function() {
 #' in a separate file. 
 #' 
 #' @param value value to test
-#' @returnType logical
 #' @return TRUE for NULL and for vectors of length 1
 .ddg.is.simple <- function(value) {
   # Note that is.vector returns TRUE for lists, so we need to check
@@ -743,7 +732,6 @@ ddg.max.snapshot.size <- function() {
 #' as a csv file
 #' 
 #' @param value value to test
-#' @returnType logical
 #' @return TRUE for vectors longer than 1, and for all matrices and data frames
 .ddg.is.csv <- function(value) {
   return(!.ddg.is.simple(value) && ((is.vector(value) && !is.list(value)) || is.matrix(value) || is.data.frame(value)))
@@ -753,7 +741,6 @@ ddg.max.snapshot.size <- function() {
 #' object by our standards.
 #' 
 #' @param value value to test
-#' @returnType logical
 #' @return TRUE for objects and environments
 .ddg.is.object <- function(value){
   return(is.object(value) || is.environment(value))
@@ -887,7 +874,6 @@ ddg.max.snapshot.size <- function() {
 #' by calling as.character on each element in the list.
 #' 
 #' @param dvalue a list of values.
-#' @returnType string
 #' @return a string showing the position and value of each list member 
 .ddg.convert.list.to.string <- function (dvalue) {
   values <- .ddg.remove.tab.and.eol.chars(lapply(dvalue, .ddg.as.character))
@@ -899,7 +885,6 @@ ddg.max.snapshot.size <- function() {
 #' The exception handler captures the print output for the value and
 #' returns that instead.
 #' @param value a value to convert to a string
-#' @returnType string
 #' @return the value represented as a string
 .ddg.as.character <- function (value) {
   tryCatch (as.character(value),

@@ -25,7 +25,7 @@
 # ddg.source - sources a script & collects provenance
 # ddg.json - returns the current provenance graph as a prov-json string
 
-#' @export ddg.init intializes a new provenance graph
+#' ddg.init intializes a new provenance graph
 #'
 #' @param r.script.path (optional) - the full path to the R script file
 #' that is being executed. If provided, a copy of the script will
@@ -46,13 +46,14 @@
 #' If -1, all snapshot files are saved. Size in kilobytes.  Note that
 #' this tests the size of the object that will be turned into a
 #' snapshot, not the size of the resulting snapshot.
-#' @paramoverwrite (optional) - default TRUE, if FALSE, generates
+#' @param overwrite (optional) - default TRUE, if FALSE, generates
 #' timestamp for ddg directory
 #' @param hash.algorithm (optional) - If save.hashtable is true, this allows the caller to 
 #' select the hash algorithm to use.  This uses the digest function from the digest package.
 #' The choices are md5, which is also the default, sha1, crc32, sha256, sha512, xxhash32, xxhash64 and murmur32.
 #'
 #' @return nothing
+#' @export
 
 ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enable.console = TRUE, annotate.inside.functions = TRUE, first.loop = 1, max.loops = 1, max.snapshot.size = 10,
                      hash.algorithm="md5") {
@@ -130,7 +131,6 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
 #' @param ddgdir name of directory.  This can be a directory name, ".", or NULL.
 #' @param r.script.path the path to the R script.  If NULL, we are running from the console.
 #' @param overwrite If FALSE, a timestamp is added to the directory name
-#' @returnType string
 #' @return the name of the directory where the ddg should be stored
 .ddg.set.path <- function (ddgdir, r.script.path, overwrite) {
   
@@ -307,12 +307,14 @@ ddg.save <- function(save.debug = FALSE, quit = FALSE) {
 #' Note that this tests the size of the object that will be turned
 #' into a snapshot, not the size of the resulting snapshot.
 #' @param save.debug (optional) - If TRUE, save debug files to debug directory.
+#' @param display (optional) - if TRUE, display provenance graph in DDG Explorer
 #' @param hash.algorithm (optional) - If save.hashtable is true, this allows the caller to 
 #' select the hash algorithm to use. This uses the digest function from the digest package.
 #' The choices are md5, which is also the default, sha1, crc32, sha256, sha512, xxhash32, xxhash64 and murmur32.
 #'
 #' @return nothing
 #' @export
+
 ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = NULL, enable.console = TRUE, annotate.inside.functions = TRUE, first.loop = 1, max.loops = 1, max.snapshot.size = 10, save.debug = FALSE, display = FALSE, 
                     hash.algorithm="md5") {
   
@@ -359,7 +361,7 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
 #' @param echo (optional) - print each expression after parsing.
 #' @param print.eval (optional) - print result of each evaluation.
 #' @param verbose (optional) - print extra diagnostics.
-#' @parammax.deparse.length (optional) - maximum number of characters
+#' @param max.deparse.length (optional) - maximum number of characters
 #' output for deparse of a single expression.
 #' @param chdir (optional) - change R working directory temporarily to
 #' the directory containing the file to be sourced.
@@ -370,6 +372,7 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
 #'
 #' @return nothing
 #' @export
+
 ddg.source <- function (file,  local = FALSE, echo = verbose, print.eval = echo,
 	verbose = getOption("verbose"), max.deparse.length = 150, chdir = FALSE, encoding = getOption("encoding"),
 	ignore.ddg.calls = TRUE, force.console=TRUE){
@@ -577,10 +580,10 @@ ddg.source <- function (file,  local = FALSE, echo = verbose, print.eval = echo,
 	invisible()
 }
 
-#' @export ddg.json returns the current provenance graph as a prov-json string
+#' ddg.json returns the current provenance graph as a prov-json string
 #'
 #' @return the current provenance graph
-#' @returntype prov-json string
+#' @export
 
 ddg.json <- function()
 {
@@ -604,7 +607,9 @@ ddg.json <- function()
   # print(paste("Starting java server return code:", systemResult))
 }
 
-# ddg.display loads & displays the current DDG.
+#' ddg.display loads & displays the current provenance graph in DDG Explorer
+#' @return nothing
+#' @export 
 
 ddg.display <- function () {
   

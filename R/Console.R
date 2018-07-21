@@ -54,7 +54,6 @@
   .ddg.set (".ddg.enable.console", enable.console)
 }
 
-#' @returnType logical
 #' @return whether console nodes are being constructed
 .ddg.enable.console <- function() {
   return (.ddg.get(".ddg.enable.console"))
@@ -64,6 +63,7 @@
 #' turns off the console mode.  If we are not in console mode,
 #' it does nothing.
 #' @return nothing
+#' @export
 ddg.console.off <- function() {
   if (!.ddg.is.init()) return(invisible())
   
@@ -80,6 +80,7 @@ ddg.console.off <- function() {
 #' If it was not already on, it writes a timestamp to the history
 #' file.
 #' @return nothing
+#' @export
 ddg.console.on <- function() {
   if (!.ddg.is.init()) return(invisible())
   
@@ -127,7 +128,6 @@ ddg.console.on <- function() {
 #' 
 #' @param hist.file name of history file.
 #' @param timestamp timestamp string.
-#' @returnType a vector of strings
 #' @return lines in the history file since the last timestamp
 .ddg.loadhistory <- function(hist.file, timestamp) {
   # Read from specified file.
@@ -227,7 +227,6 @@ ddg.console.on <- function() {
 #' multiple lines. 
 #' 
 #' @param lines set of lines from command history or R script.
-#' @returnType list of expression objects
 #' @return the parsed version of the R text passed in.  Calls to ddg.eval
 #'    are not included in the returned list.
 .ddg.parse.lines <- function(lines) {

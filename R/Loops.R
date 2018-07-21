@@ -55,7 +55,6 @@
 #' Each loop has a unique id.  The vector returned contains an entry
 #' for each loop.  The value is the number of times the loop has been 
 #' executed.
-#' @returnType  a vector of integers
 #' @return the vector contains the number of iterations of each loop
 .ddg.loops <- function() {
   return(.ddg.get("ddg.loops"))
@@ -63,7 +62,6 @@
 
 #' Adds an entry to the ddg.loops vector that tracks the 
 #' number of iterations of each loop, initializing it to 0. 
-#' @returnType integer
 #' @return the unique id for the new loop
 .ddg.add.loop <- function() {
   ddg.loops <- c(.ddg.loops(), 0)
@@ -71,54 +69,61 @@
   return (.ddg.inc("ddg.loop.num"))
 }
 
-#' @returnType logical 
 #' @return TRUE if the loop should be annotated
 .ddg.loop.annotate <- function() {
   return(.ddg.get("ddg.loop.annotate"))
 }
 
-#' Turns on loop annotation.
+#' ddg.loop.annotate.on turns on loop annotation (internal use only)
 #' @return nothing
+#' @export
 ddg.loop.annotate.on <- function() {
   .ddg.set("ddg.loop.annotate", TRUE)
 }
 
-#' Turns off loop annotation.
+#' ddg.loop.annotate.off turns off loop annotation (internal use only)
 #' @return nothing
+#' @export
 ddg.loop.annotate.off <- function() {
   .ddg.set("ddg.loop.annotate", FALSE)
 }
 
-#' @returnType integer
 #' @return the level of loop nesting
 .ddg.inside.loop <- function() {
   return (.ddg.get("ddg.inside.loop"))
 }
 
-#' Increase the counter of the level of nesting of loops
+#' ddg.set.inside.loop increases the counter of the level of nesting of loops
+#' (internal use only)
 #' @return nothing 
+#' @export
 ddg.set.inside.loop <- function() {
   .ddg.set("ddg.inside.loop", .ddg.get("ddg.inside.loop") + 1)    
 }
 
-#' Decrease the counter of the level of nesting of loops
-#' @return nothing 
+#' ddg.not.inside.loop decreases the counter of the level of nesting of loops
+#' (internal use only)
+#' @return nothing
+#' @export
 ddg.not.inside.loop <- function() {
   .ddg.set("ddg.inside.loop", .ddg.get("ddg.inside.loop") - 1)
 }
 
+#' ddg.loop.count returns the number of times a loop has iterated so far
+#' (internal use only)
 #' @param loop.num the id of the loop to look up
-#' @returnType integer
-#' @return the number of times the loop has iterated thus far
+#' @return the number of times the loop has iterated
+#' @export
 ddg.loop.count <- function(loop.num) {
   ddg.loops <- .ddg.loops()
   return(ddg.loops[loop.num])
 }
 
-#' Increments the current count for the specified loop
+#' ddg.loop.count.inc increments the current count for the specified loop
+#' (internal use only)
 #' @param loop.num the id of the loop being executed
-#' @returnType integer
 #' @return the updated value of the counter.
+#' @export
 ddg.loop.count.inc <- function(loop.num) {
   ddg.loops <- .ddg.loops()
   ddg.loops[loop.num] <- ddg.loops[loop.num] + 1
@@ -126,33 +131,39 @@ ddg.loop.count.inc <- function(loop.num) {
   return(ddg.loops[loop.num])
 }
 
-# ddg.reset.loop.count 
-
-#' Sets the current count for the specified loop to zero.
+#' ddg.reset.loop.count sets the current count for the specified loop to zero
+#' (internal use only)
 #' @param loop.num the id of the loop to reset
-#' @return nothing 
+#' @return nothing
+#' @export
 ddg.reset.loop.count <- function(loop.num) {
   ddg.loops <- .ddg.loops()
   ddg.loops[loop.num] <- 0
   .ddg.set("ddg.loops", ddg.loops)
 }
 
-#' @returnType integer
-#' @return the loop iteration at which we should start collecting provenance
+#' ddg.first.loop returns the loop iteration at which we should start
+#' collecting provenance (internal use only)
+#' @return the first iteration to collect provenance 
+#' @export
 ddg.first.loop <- function() {
   return(.ddg.get("ddg.first.loop"))
 }
 
-#' @returnType integer
-#' @return the maximum number of iterations of a loop to collect proveanance for
+#' ddg.max.loops returns the maximum number of iterations of a loop for
+#' which provenance should be collected
+#' @return the maximum number of iterations to collect provenance
+#' @export
 ddg.max.loops <- function() {
   return(.ddg.get("ddg.max.loops"))
 }
 
-#' Inserts a procedure node and a data node in a for loop,
-#' indicating the value currently assigned to the index variable.
+#' ddg.forloop inserts a procedure node and a data node in a for loop,
+#' indicating the value currently assigned to the index variable
+#' (internal use only)
 #' @param index.var a parsed expression containing the index variable
-#' @return nothing 
+#' @return nothing
+#' @export 
 ddg.forloop <- function(index.var) {
   index.name <- as.character(deparse(substitute(index.var)))
   pnode.name <- paste(index.name, "<-", index.var)

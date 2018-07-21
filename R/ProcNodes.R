@@ -55,27 +55,23 @@
 #' This is used for type-checking.
 #' 
 #' @param type procedure node type.
-#' @returnType logical
 #' @return true for any type of procedure node
 .ddg.is.proc.type <- function(type) {
   return(type %in% c("Operation", "Start", "Finish", "Binding", "Incomplete"))
 }
 
 #' Return the counter used to assign procedure node ids
-#' @returnType integer 
 #' @return the data node id of the last procedure node created
 .ddg.pnum <- function() {
   return (.ddg.get("ddg.pnum"))
 }
 
-#' @returnType numeric 
 #' @return the time the process started, or 0 if it has not been set yet
 .ddg.start.proc.time <- function() {
   if (.ddg.is.set(".ddg.proc.start.time")) return (.ddg.get(".ddg.proc.start.time"))
   else return (0)
 }
 
-#' @returnType numeric 
 #' @return the time since the script began execution
 .ddg.elapsed.time <- function(){
   time <- proc.time()
@@ -89,7 +85,6 @@
 #' It is faster to add a bunch of empty rows and update them than to 
 #' add one row at a time
 #' @param size the number of rows to add
-#' @returnType a dataframe 
 #' @return a data frame with size rows, with all columns being empty vectors
 .ddg.create.proc.node.rows <- function (size=100) {
   return (data.frame(
@@ -108,14 +103,12 @@
 }
 
 #' Returns the procedure node table
-#' @returnType a data frame
 #' @return the procedure node table
 .ddg.proc.node.table <- function() {
   return (.ddg.get("ddg.proc.nodes"))
 }
 
 #' Returns the filled rows of the procedure node table
-#' @returnType a data frame
 #' @return the filled rows of the procedure node table
 .ddg.proc.nodes <- function() {
   ddg.proc.nodes <- .ddg.get("ddg.proc.nodes")
@@ -137,7 +130,6 @@
 #' procedure node with the given name
 #' 
 #' @param pname the name of a procedure node to look up
-#' @returnType logical
 #' @return true if there is a node with the given name
 .ddg.proc.node.exists <- function(pname) {
   ddg.proc.nodes <- .ddg.proc.node.table()
@@ -151,7 +143,6 @@
 #' @param pname name of procedure node to look for
 #' @param find.unreturned.function if true, only return the number if the
 #'    procedure has not previously been linked to a return value
-#' @returnType integer
 #' @return the id of a procedure node matching the name, or 0 if none was found
 .ddg.proc.number <- function(pname, find.unreturned.function=FALSE) {
   #print (paste0("Looking for function ", pname))
@@ -180,7 +171,6 @@
 #' empty string if no match is found.
 #' 
 #' @param pnum node number in procedure node table.
-#' @returnType string
 #' @return name of the procedure node with the given id.  Returns an empty
 #' string if there is no node with the given id.
 .ddg.proc.name <- function(pnum) {

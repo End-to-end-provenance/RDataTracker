@@ -31,14 +31,12 @@
 #' This is used for type-checking.
 #' 
 #' @param type edge type.
-#' @returnType logical
 #' @return true for any type of edge
 .ddg.is.edge.type <- function(type) {
   return(type %in% c("cf", "df.in", "df.out"))
 }
 
 #' Return the counter used to assign edge ids
-#' @returnType integer 
 #' @return the edge id of the last edge created
 .ddg.enum <- function() {
   return (.ddg.get("ddg.enum"))
@@ -48,7 +46,6 @@
 #' It is faster to add a bunch of empty rows and update them than to 
 #' add one row at a time
 #' @param size the number of rows to add
-#' @returnType a dataframe 
 #' @return a data frame with size rows, with all columns being empty vectors
 .ddg.create.edge.rows <- function (size=100) {
   return (      
@@ -61,14 +58,12 @@
 }
 
 #' Returns the edge table
-#' @returnType a data frame
 #' @return the edge table
 .ddg.edge.table <- function() {
   return (.ddg.get("ddg.edges"))
 }
 
 #' Returns the filled rows of the edge table
-#' @returnType a data frame
 #' @return the filled rows of the edge table
 .ddg.edges <- function() {
   ddg.edges <- .ddg.get("ddg.edges")

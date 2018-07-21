@@ -35,10 +35,10 @@
 #' Users can right-click on the procedure node in DDG Explorer to
 #' see the code for the function in the original script. For more
 #' details on outs parameters, see .ddg.create.output.nodes.
-#' 
 #' The outs parameters should be a list of names of data nodes to be created as
 #' outputs to this procedure node. These MUST be passed as
-#' a list of strings, not names, unless the value is a file name.
+#' a list of strings, not names, unless the value is a file name
+#' (internal use only)
 #' 
 #' @param outs.graphic (optional) the name of a snapshot node to be used as a
 #'    file name.  A graphical snapshot is simply a captured image
@@ -52,6 +52,7 @@
 #' @param graphic.fext (optional) the file extension for a graphics file, defaults to jpeg.
 #' @return nothing
 #' @export
+
 ddg.function <- function(outs.graphic=NULL, outs.data=NULL, outs.exception=NULL, outs.url=NULL, outs.file=NULL, graphic.fext="jpeg") {
   #print("In ddg.function")
   if (!.ddg.is.init()) return(invisible())
@@ -89,12 +90,14 @@ ddg.function <- function(outs.graphic=NULL, outs.data=NULL, outs.exception=NULL,
 #' function's normal return statement(s) if it is the last statement
 #' in the function.  Otherwise, it should be a parameter to return,
 #' as in return(ddg.return.value(expr)). If expr is an assignment, nodes
-#' and edges are created for the assignment.
+#' and edges are created for the assignment (internal use only)
 #' 
 #' @param expr the value returned by the function.
 #' @param cmd.func the DDGStatement object for the return statement
 #' @return the value that the function whose return value we are capturing 
 #'    returns
+#' @export
+
 ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
   if (!.ddg.is.init()) return(expr)
   
@@ -260,7 +263,6 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
 #' is called recursively, this will give us the position of the
 #' earliest one called.
 #' 
-#' @returnType integer
 #' @return the frame number of the user function that called ddg.return.value 
 .ddg.find.ddg.return.value.caller.frame.number <- function() {
   # Get the stack
@@ -276,25 +278,23 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
   return (which.frame)
 }
 
-#' @returnType logical
 #' @return true if we should be annotating inside control constructs
 .ddg.annotate.inside <- function() {
   return(.ddg.get("ddg.annotate.inside"))
 }
 
-#' Inserts an operational node called "Details Omitted"
+#' ddg.details.omitted inserts an operational node called "Details Omitted"
 #' in cases where not all iterations of a loop are annotated.  This may
 #' happen if the number of the first loop to be annotaed (first.loop) is
 #' greater than 1 and/or if the total number of loops to be annotated is
 #' less than the actual number of iterations.
-#'
 #' It also sets a variable to remember that the last construct is incomplete
 #' so that the right data nodes get created.
-#' 
 #' NOTE:  This might be useful outside of the context of loops, but is
-#' currently only used within loops.
+#' currently only used within loops (internal use only)
 #' 
-#' @return nothing 
+#' @return nothing
+#' @export
 ddg.details.omitted <- function() {
   pnode.name <- "Details Omitted"
   .ddg.proc.node("Incomplete", pnode.name, pnode.name)
@@ -306,10 +306,11 @@ ddg.details.omitted <- function() {
   }
 }
 
-#' @returnType logical
-#' @return true if we should run the annotated version of a function and
-#' false if we should run the unannotated version.
-#' 
+#' ddg.should.run.annotated returns True if we should run the annotated
+#' version of a function (internal use only)
+#' @param func.name name of function
+#' @return True if we should run annotated version
+#' @export
 ddg.should.run.annotated <- function (func.name) {
   
   # Check if we are in a loop and loop annotations are off
@@ -335,12 +336,14 @@ ddg.should.run.annotated <- function (func.name) {
 #' is a function that returns the corresponding DDGStatement object.
 #' If ddg.eval is called from inside a control block, cmd.func is an
 #' integer that points to the corresponding DDGStatement object stored
-#' in the list .ddg.statements.
+#' in the list .ddg.statements (internal use only)
 #' 
 #' @param statement a string version of the statement to evaluate.
 #' @param cmd.func the corresponding DDGStatement if inside a function,
 #'    or an integer identifying the position of the statement in a list
 #'    if inside a control construct
+#' @export
+
 ddg.eval <- function(statement, cmd.func=NULL) {
   
   # Statement at top level.
@@ -396,14 +399,12 @@ ddg.eval <- function(statement, cmd.func=NULL) {
   return (return.value)
 }
 
-# ddg.start creates a procedure node of type Start called pname.
-# Users can right-click on a start node in DDG Explorer and see
-# the code between start and finish nodes in the original script.
-
-# pname (optional) - the label for the node.  This can be passed as
-#   a string or as a name. It can be omitted if ddg.start is called
-#   by a function, in which case the name of the function will be
-#   used.
+#' ddg.start creates a procedure node of type Start called pname.
+#' Users can right-click on a start node in DDG Explorer and see
+#' the code between start and finish nodes in the original script.
+#' @param pname the label for the node.  This can be passed as
+#' a string or as a name.
+#' @export
 
 ddg.start <- function(pname=NULL) {
   if (!.ddg.is.init()) return(invisible())
@@ -431,14 +432,13 @@ ddg.start <- function(pname=NULL) {
   
 }
 
-# ddg.finish creates a procedure node of type Finish called pname.
-# Users can right-click on a finish node in DDG Explorer and see
-# the code between start and finish nodes in the original script.
-
-# pname (optional) - the label for the node. This can be passed as
-#   a string or as a name. It can be omitted if ddg.finish is called
-#   by a function, in which case the name of the function will be
-#   used.
+#' ddg.finish creates a procedure node of type Finish called pname.
+#' Users can right-click on a finish node in DDG Explorer and see
+#' the code between start and finish nodes in the original script.
+#' @param pname the label for the node. This can be passed as
+#' a string or as a name. It can be omitted if ddg.finish is called
+#' by a function, in which case the name of the function will be used.
+#' @export
 
 ddg.finish <- function(pname=NULL) {
   if (!.ddg.is.init()) return(invisible())
@@ -462,12 +462,10 @@ ddg.finish <- function(pname=NULL) {
   return(.ddg.get (".ddg.last.R.value"))
 }
 
-# ddg.annotate.on enables annotation for the specified functions. Functions
-# not on this list are not annotated.
-# 
-# If fnames is NULL, all functions will be annotated
-
-# fnames - a list of one or more function names passed in as strings.
+#' ddg.annotate.on enables annotation for the specified functions. Functions not on
+#' this list are not annotated. If fnames is NULL, all functions will be annotated.
+#' @param fnames - a list of one or more function names passed in as strings.
+#' @export
 
 ddg.annotate.on <- function (fnames=NULL){
   if (is.null(fnames)) {
@@ -488,12 +486,10 @@ ddg.annotate.on <- function (fnames=NULL){
   
 }
 
-# ddg.annotate.off disables annotation for the specified functions.
-# Functions not on this list are annotated.
-# 
-# If fnames is NULL, no functions will be annotated
-#
-# fnames - a list of one or more function names passed in as strings.
+#' ddg.annotate.off disables annotation for the specified functions. Functions not on 
+#' this list are annotated. If fnames is NULL, no functions will be annotated.
+#' @param fnames a list of one or more function names passed in as strings.
+#' @export
 
 ddg.annotate.off <- function (fnames=NULL) {
   if (is.null(fnames)) {
@@ -1331,14 +1327,16 @@ ddg.annotate.off <- function (fnames=NULL) {
   }
 }
 
-# ddg.set.detail sets the level of provenance detail to be collected.
-# If ddg.detail is not set, the values of annotate.inside, max.loops,
-# and max.snapshot.size passed to ddg.run are used instead.
-
-#   0 = no internal annotation, no snapshots.
-#   1 = 1 loop, snapshots < 10k.
-#   2 = 10 loops, snapshots < 100k.
-#   3 = all loops, all snapshots.
+#' ddg.set.detail sets the level of provenance detail to be collected.
+#' If ddg.detail is not set, the values of annotate.inside, max.loops,
+#' and max.snapshot.size passed to ddg.run are used instead.
+#' 0 = no internal annotation, no snapshots.
+#' 1 = 1 loop, snapshots < 10k.
+#' 2 = 10 loops, snapshots < 100k.
+#' 3 = all loops, all snapshots.
+#' @param detail.level level of detail to set (0-3)
+#' @return nothing
+#' @export
 
 ddg.set.detail <- function(detail.level) {
   if (detail.level == 0) {
@@ -1369,14 +1367,18 @@ ddg.set.detail <- function(detail.level) {
   }
 }
 
-# ddg.detail returns the current level of provenance detail.
+#' ddg.detail returns the current level of provenance detail.
+#' @return the current level of detail (0-3)
+#' @export 
 
 ddg.get.detail <- function() {
   if (!.ddg.is.set("ddg.detail")) .ddg.set("ddg.detail", NULL)
   return(.ddg.get("ddg.detail"))
 }
 
-# ddg.clear.detail clears the current value of provenance detail.
+#' ddg.clear.detail clears the current value of provenance detail.
+#' @return nothing
+#' @export
 
 ddg.clear.detail <- function() {
   .ddg.set("ddg.detail", NULL)

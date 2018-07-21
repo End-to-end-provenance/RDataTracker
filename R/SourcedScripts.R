@@ -35,13 +35,11 @@
   .ddg.set(".ddg.sourced.scripts", NULL)
 }
 
-#' @returnType logical
 #' @return TRUE if we are running a script from a file, as opposed to console commands
 .ddg.is.sourced <- function() {
   return (.ddg.get(".ddg.is.sourced"))
 }
 
-#' @returnType numeric
 #' @return the value to use for the next script id
 .ddg.next.script.num <- function() {
   return(.ddg.get(".ddg.next.script.num"))
@@ -68,7 +66,6 @@
 
 #' Record a new script in the sourced scripts table
 #' @param sname the name of the script file, excluding the directory
-#' @returnType numeric
 #' @return the unique id of the script
 .ddg.store.script.info <- function (sname) {
   snum <- .ddg.next.script.num()
