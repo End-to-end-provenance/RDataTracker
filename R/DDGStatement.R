@@ -40,20 +40,17 @@ library (methods)
   .ddg.set("ddg.statements", list())
 }
 
-#' @returnType numeric
 #' @return the number of DDG statements created
 .ddg.statement.num <- function() {
   return(.ddg.get("ddg.statement.num"))
 }
 
-#' @returnType list of DDGStatement objects
 #' @return the list of DDG statements created
 .ddg.statements <- function() {
   return(.ddg.get("ddg.statements"))
 }
 
 #' @param i the index of the statement to return
-#' @returnType a DDGStatement object
 #' @return the ith DDGStatement
 .ddg.statement <- function(i) {
   ddg.statements <- .ddg.statements()
