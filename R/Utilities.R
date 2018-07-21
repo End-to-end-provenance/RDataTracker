@@ -88,7 +88,6 @@
 
 #' Increments a ddg counter
 #' @param var a counter variable
-#' @returnType integer
 #' @return the original value + 1
 .ddg.inc <- function(var) {
   value <- .ddg.get(var)
@@ -97,7 +96,6 @@
 
 #' Decrements a ddg counter
 #' @param var a counter variable
-#' @returnType integer
 #' @return the original value - 1
 .ddg.dec <- function(var) {
   value <- .ddg.get(var)
@@ -107,7 +105,6 @@
 #' Adds rows to a ddg data frame
 #' @param df the data frame variable
 #' @param new.rows the rows to add
-#' @returnType a data frame, same type as the one passed in
 #' @return the data frame with the new rows added to it
 .ddg.add.rows <- function(df, new.rows) {
   table <- .ddg.get(df)
@@ -130,7 +127,6 @@
 #' .ddg.format.time reformats time string.
 #' 
 #' @param time input time string formatted as yyyy-mm-dd hh:mm:ss
-#' @returnType string
 #' @return time formatted as yyyy-mm-ddThh.mm.ss
 .ddg.format.time <- function(time) {
   formatted.time <- strftime(time, format="%Y-%m-%dT%H.%M.%S",usetz=TRUE)
@@ -140,7 +136,6 @@
   return (sub(" ", "", formatted.time))
 }
 
-#' @returnType string formatted as yyyy-mm-ddThh.mm.ss
 #' @return the current date and time from the system.
 .ddg.timestamp <- function() {
   ts <- Sys.time()
@@ -148,10 +143,8 @@
 }
 
 #' @param str input string.
-#' @returnType string
 #' @return the same string but with tabs and end of line charcters
 #'    replaced with a single space
-#' .ddg.replace.quotes <- function(str) {
 .ddg.remove.tab.and.eol.chars <- function (str) {
   if (!is.character(str)) return (str)
   
@@ -179,8 +172,7 @@
   .ddg.lastproc2data(msg.type, dscope="ddg.library")
 }
 
-#' @returnType data frame with 2 columns: package and version, both strings
-#' @return names and versions of packages installed
+#' @return A data frame with 2 columns: package and version, both strings
 .ddg.installedpackages <- function()
 {
   packages <- devtools::session_info()
