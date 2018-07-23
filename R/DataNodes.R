@@ -860,7 +860,9 @@ ddg.max.snapshot.size <- function() {
     grDevices::dev.copy(parseFun)
     
     # Turn it off (this switches back to prev device).
-    grDevices::dev.off()
+    if (grDevices::dev.cur() != 1) { 
+      grDevices::dev.off()
+    }
   }
 }
 
