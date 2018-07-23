@@ -1045,7 +1045,7 @@
 #' going to a file, we need to wait until after the device is
 #' closed to copy the file.
 .ddg.trace.graphics.close <- function () {
-  if (.ddg.inside.call.to (".ddg.capture.graphics") ) { 
+  if (.ddg.inside.call.to (".ddg.capture.graphics") || .ddg.inside.call.to ("ggsave")) { 
     return()
   }
   
