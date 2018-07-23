@@ -59,6 +59,7 @@
   .ddg.set (".ddg.add.device.close", FALSE)
   .ddg.set (".ddg.no.graphics.file", TRUE)
   .ddg.set (".ddg.implicit.plot", FALSE)
+  .ddg.set (".ddg.ggplot.created", FALSE)
   
   
   # Create an empty list for the input, output, and files
@@ -76,14 +77,15 @@
   # the namespace.
   trace.oneOutput <- function (f) {utils::capture.output(utils::capture.output(trace (as.name(f), RDataTracker:::.ddg.trace.output, print=FALSE), type="message"))} 
   lapply(.ddg.get(".ddg.file.write.functions.df")$function.names, trace.oneOutput)
-
+  utils::capture.output(utils::capture.output(trace (ggplot2::ggplot, RDataTracker:::.ddg.trace.output, print=FALSE), type="message"))
+  
   trace.oneInput <- function (f) {utils::capture.output(utils::capture.output(trace (as.name(f), RDataTracker:::.ddg.trace.input, print=FALSE), type="message"))} 
   lapply(.ddg.get(".ddg.file.read.functions.df")$function.names, trace.oneInput)
 
   trace.oneClose <- function (f) {utils::capture.output(utils::capture.output(trace (as.name(f), RDataTracker:::.ddg.trace.close, print=FALSE), type="message"))} 
   lapply(.ddg.get(".ddg.file.close.functions.df")$function.names, trace.oneClose)
   utils::capture.output(utils::capture.output(trace (ggplot2::ggsave, RDataTracker:::.ddg.trace.close, print=FALSE), type="message"))
-
+  
   print ("Tracing graphics open")
   # trace (grDevices::pdf, RDataTracker:::.ddg.trace.graphics.open, print=TRUE)
   trace.oneGraphicsOpen <- function (f) {utils::capture.output(utils::capture.output(trace (as.name(f), RDataTracker:::.ddg.trace.graphics.open, print=FALSE), type="message"))} 
@@ -119,6 +121,7 @@
   utils::capture.output (untrace(.ddg.get(".ddg.graphics.update.functions.df")), type="message")
   utils::capture.output (untrace(grDevices::dev.off), type="message")
   
+  utils::capture.output (untrace(ggplot2::ggplot), type="message")
   utils::capture.output (untrace(ggplot2::ggsave), type="message")
 }
 
@@ -482,21 +485,28 @@
     fname <- fname[length(fname)]
   }
   
-  #print (paste ("Output function traced: ", fname))
+  print (paste ("Output function traced: ", fname))
   
-  # Get the name of the file parameter for the output function
-  file.write.functions <- .ddg.get (".ddg.file.write.functions.df")
-  file.param.name <- file.write.functions$param.names[file.write.functions$function.names == fname]
-  #print (paste ("Output file parameter:", file.param.name))
+  if (fname == "ggplot") {
+    .ddg.set (".ddg.ggplot.created", TRUE)
+    .ddg.set (".ddg.last.ggplot", "")
+  }
   
-  # Get the value of the file parameter  
-  output.file.name <- eval (as.symbol(file.param.name), envir = sys.frame(frame.number))
-  #print (paste ("output.file.name =", output.file.name))
-
-  # Save the file name so the file node can be created when the statement is complete.
-  # we do not want to create the nodes because the procedure node to connect to does not
-  # exist yet, and the file has not been written to yet.
-  .ddg.add.output.file (output.file.name)
+  else {
+    # Get the name of the file parameter for the output function
+    file.write.functions <- .ddg.get (".ddg.file.write.functions.df")
+    file.param.name <- file.write.functions$param.names[file.write.functions$function.names == fname]
+    #print (paste ("Output file parameter:", file.param.name))
+    
+    # Get the value of the file parameter  
+    output.file.name <- eval (as.symbol(file.param.name), envir = sys.frame(frame.number))
+    #print (paste ("output.file.name =", output.file.name))
+  
+    # Save the file name so the file node can be created when the statement is complete.
+    # we do not want to create the nodes because the procedure node to connect to does not
+    # exist yet, and the file has not been written to yet.
+    .ddg.add.output.file (output.file.name)
+  }
 }
 
 #' Creates file nodes and data out edges for any files that are written by

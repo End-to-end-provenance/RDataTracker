@@ -475,10 +475,26 @@
 .ddg.create.data.set.edges.for.cmd <- function(vars.set, cmd, cmd.pos, env) {
   # print(paste("In .ddg.create.data.set.edges.for.cmd: cmd = ", cmd@abbrev))
   vars.assigned <- cmd@vars.set
-
+  
   for (var in vars.assigned) {
 
     #print(paste(".ddg.create.data.set.edges.for.cmd: var = ", var))
+    
+    # Check for a new ggplot that was not assigned to a variable
+    if (.ddg.get (".ddg.ggplot.created")) {
+      if (var == "") {      
+        print ("Found ggplot not saved to a variable")
+        # GETTING HERE.  NEED TO DO WHAT NEXT 2 COMMENT LINES SAY!
+        # Add a data node for the plot and link it in.
+        # Set .ddg.last.ggplot to the name of this node
+        .ddg.data.node("Data", ".ggplot", "graph", NULL)
+        .ddg.lastproc2data(".ggplot")
+        .ddg.set(".ddg.last.ggplot", ".ggplot")
+      }
+      .ddg.set (".ddg.ggplot.created", FALSE)
+    }
+    
+    
     whichRows <- which(vars.set$variable == var)
 
     # Only create a node edge for the last place that a variable is
@@ -509,6 +525,7 @@
         .ddg.proc2data(cmd@abbrev, var, scope)
     }
   }
+  
 
 }
 
