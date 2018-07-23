@@ -42,6 +42,8 @@
 .ddg.init.data.nodes <- function () {
   .ddg.set("ddg.data.nodes", .ddg.create.data.node.rows()) 
   .ddg.set("ddg.dnum", 0)
+  
+  # Name of the last variable that was a plot created by ggplot
   .ddg.set (".ddg.last.ggplot", "")
   
   # Set max.snapshot.size.  Make sure it is not already set, as
@@ -832,6 +834,7 @@ ddg.max.snapshot.size <- function() {
 #' @param from.env If TRUE, means the value was assigned outside the script
 #' @return nothing
 .ddg.write.graphic <- function(name, value=NULL, fext="jpeg", scope=NULL, from.env=FALSE){
+  # Remember the name of the variable so that we can link to it if ggsave is called later without a plot parameter.
   .ddg.set (".ddg.last.ggplot", name)
   
   # Try to output graphic value.

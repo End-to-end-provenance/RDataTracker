@@ -483,8 +483,6 @@
     # Check for a new ggplot that was not assigned to a variable
     if (.ddg.get (".ddg.ggplot.created")) {
       if (var == "") {      
-        print ("Found ggplot not saved to a variable")
-        # GETTING HERE.  NEED TO DO WHAT NEXT 2 COMMENT LINES SAY!
         # Add a data node for the plot and link it in.
         # Set .ddg.last.ggplot to the name of this node
         .ddg.data.node("Data", ".ggplot", "graph", NULL)
@@ -493,7 +491,6 @@
       }
       .ddg.set (".ddg.ggplot.created", FALSE)
     }
-    
     
     whichRows <- which(vars.set$variable == var)
 
