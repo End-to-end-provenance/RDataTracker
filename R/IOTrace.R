@@ -1118,6 +1118,7 @@
     # We need to do this so that the file.out call can
     # copy the file.
     if (dev.number %in% grDevices::dev.list() && dev.number != 1) {
+      print (paste (".ddg.capture.graphics calling dev.off for device ", dev.number))
       grDevices::dev.off(dev.number)
     }
   }
@@ -1185,6 +1186,7 @@
 	if (names(grDevices::dev.cur()) == "pdf") {
 		if (file.exists ("Rplots.pdf") && !.ddg.get(".ddg.rplots.pdf.saved")) {
       if (grDevices::dev.cur() != 1) { 
+        print (paste (".ddg.capture.current.graphics calling dev.off for device", grDevices::dev.cur()))
         grDevices::dev.off()
       }
 			.ddg.set (".ddg.rplots.pdf.saved", TRUE)

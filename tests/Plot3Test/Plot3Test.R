@@ -26,7 +26,10 @@ ggsave ("plot1.pdf", p1)
  
 # ggsave when the last plot created is saved implicitly
 p2 <- ggplot(df, aes(xVals, yVals)) + geom_point() + labs(title="ggsave with implicit last plot")
-ggsave ("plot2.pdf")
+tryCatch (
+    ggsave ("plot2.pdf"), 
+    error = sys.calls
+)
 
 # plot created by ggplot not saved to a variable
 ggplot(df, aes(xVals, yVals)) + geom_point() + labs(title="ggsave with implicit last plot and not plot variable")
