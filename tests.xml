@@ -54,6 +54,7 @@
 	- WarningTest
 	- PlotTest
 	- Plot2Test
+	- Plot3Test
 	- NoDevOffTest
 	- DataTypeTest
 	- HigherOrderFuncTest
@@ -668,6 +669,18 @@
 		</antcall>
 	</target>
 
+	<target name="Plot3Test">
+		<antcall target="run-regression-test">
+			<param name="test-name" value="Plot3Test" />
+		</antcall>
+	</target>
+
+	<target name="update-Plot3Test">
+		<antcall target="update-regression-expected">
+			<param name="test-name" value="Plot3Test" />
+		</antcall>
+	</target>
+
 	<target name="NoDevOffTest">
 		<antcall target="run-regression-test">
 			<param name="test-name" value="NoDevOffTest" />
@@ -766,7 +779,7 @@
 	
 	<target name="normal-tests" depends="basicTest, S4ObjectTest,
 		ScopeTest, ReturnTest, OddParameterTest, FunctionAnnotationTest,
-		ControlConstructTest, WarningTest, PlotTest, Plot2Test, NoDevOffTest, DataTypeTest,
+		ControlConstructTest, WarningTest, PlotTest, Plot2Test, Plot3Test, NoDevOffTest, DataTypeTest,
 		HigherOrderFuncTest, AssignmentOperatorsTest, FunctionOriginTest,
 		RMarkdownTest, DDGStatementTest, ConnectionTest">
 	

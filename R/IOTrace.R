@@ -58,6 +58,8 @@
   .ddg.set (".ddg.add.device.io", FALSE)
   .ddg.set (".ddg.add.device.close", FALSE)
   .ddg.set (".ddg.no.graphics.file", TRUE)
+  .ddg.set (".ddg.implicit.plot", FALSE)
+  
   
   # Create an empty list for the input, output, and files
   .ddg.clear.input.file()
@@ -225,7 +227,9 @@
   # Only add the file to the list if it is not already there.  It could be 
   # there if there are multiple functions called indirectly in one R statement
   # that read from the same file, like readLines and scan.
+  print(paste(".ddg.add.input.file: fname =", fname))
   if (!(fname %in% input.files)) {
+    print ("Adding to input list")
     .ddg.set ("input.files", c(input.files, list(fname)))
   }
 }
@@ -278,7 +282,7 @@
     return()
   }
 
-  # print (sys.calls())
+  print (sys.calls())
   
   # Get the name of the input function
   call <- sys.call (frame.number)
@@ -532,6 +536,18 @@
 
   # Clear the list of output files now that they have been handled.
   .ddg.clear.output.file ()
+  
+  # If this file is written by ggsave and the plot was implicit, 
+  # add an input edge for the last plot.
+  if (.ddg.get (".ddg.implicit.plot")) {
+    print ("Adding edge for implicit plot")
+
+    # Create data flow edge from last plot to procedure node.
+    .ddg.data2proc (.ddg.get(".ddg.last.ggplot"), dscope=NULL)
+    
+    # Clear the flag
+    .ddg.set (".ddg.implicit.plot", FALSE)
+  }
 }
 
 #' .ddg.file.out creates a data node of type File.  The label
@@ -704,6 +720,14 @@
   # Get the name of the connection parameter for the close function
   if (fname == "ggsave") {
     .ddg.add.output.file (eval (as.symbol("filename"), envir=sys.frame(frame.number)))
+    full.call <- match.call (ggplot2::ggsave, call, envir=sys.frame(frame.number))
+    print(paste("str(full.call) =", str(full.call)))
+    print(paste("ggsave full call =", full.call))
+    param.names <- names(full.call)
+    if (!("plot" %in% param.names)) {
+      print ("ggsave plot is implicit")
+      .ddg.set(".ddg.implicit.plot", TRUE)
+    }
   }
   else {
     file.close.functions <- .ddg.get (".ddg.file.close.functions.df")

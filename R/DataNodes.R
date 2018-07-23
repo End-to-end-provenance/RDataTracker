@@ -42,6 +42,7 @@
 .ddg.init.data.nodes <- function () {
   .ddg.set("ddg.data.nodes", .ddg.create.data.node.rows()) 
   .ddg.set("ddg.dnum", 0)
+  .ddg.set (".ddg.last.ggplot", "")
   
   # Set max.snapshot.size.  Make sure it is not already set, as
   # someone may have called ddg.set.detail.
@@ -831,6 +832,8 @@ ddg.max.snapshot.size <- function() {
 #' @param from.env If TRUE, means the value was assigned outside the script
 #' @return nothing
 .ddg.write.graphic <- function(name, value=NULL, fext="jpeg", scope=NULL, from.env=FALSE){
+  .ddg.set (".ddg.last.ggplot", name)
+  
   # Try to output graphic value.
   tryCatch({
         .ddg.snapshot.node(name, fext, NULL, dscope=scope, from.env=from.env)
@@ -912,5 +915,4 @@ ddg.max.snapshot.size <- function() {
   tryCatch (as.character(value),
       error=function(e) {utils::capture.output(print(value))})
 }
-
 
