@@ -861,7 +861,6 @@ ddg.max.snapshot.size <- function() {
     
     # Turn it off (this switches back to prev device).
     if (grDevices::dev.cur() != 1) { 
-      print (paste (".ddg.graphic.snapshot calling dev.off for devcie", dev.cur()))
       grDevices::dev.off()
     }
   }

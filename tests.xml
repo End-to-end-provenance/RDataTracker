@@ -777,7 +777,7 @@
 		</antcall>
 	</target>
 	
-	<target name="normal-tests" depends="Plot3Test, basicTest, S4ObjectTest,
+	<target name="normal-tests" depends="basicTest, S4ObjectTest,
 		ScopeTest, ReturnTest, OddParameterTest, FunctionAnnotationTest,
 		ControlConstructTest, WarningTest, PlotTest, Plot2Test, Plot3Test, NoDevOffTest, DataTypeTest,
 		HigherOrderFuncTest, AssignmentOperatorsTest, FunctionOriginTest,
