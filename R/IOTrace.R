@@ -1117,7 +1117,7 @@
     # Check if the device is still open and close it if it is
     # We need to do this so that the file.out call can
     # copy the file.
-    if (dev.number %in% grDevices::dev.list()) {
+    if (dev.number %in% grDevices::dev.list() && dev.number != 1) {
       grDevices::dev.off(dev.number)
     }
   }
@@ -1184,7 +1184,9 @@
 	# where Rscript places plots sent to the default graphics.
 	if (names(grDevices::dev.cur()) == "pdf") {
 		if (file.exists ("Rplots.pdf") && !.ddg.get(".ddg.rplots.pdf.saved")) {
-      grDevices::dev.off()
+      if (grDevices::dev.cur() != 1) { 
+        grDevices::dev.off()
+      }
 			.ddg.set (".ddg.rplots.pdf.saved", TRUE)
 			return("Rplots.pdf")
 		}
