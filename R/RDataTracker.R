@@ -56,13 +56,11 @@
   return(.ddg.get("ddg.initial.env"))
 }
 
-#' @returnType vector of strings
 #' @return the names of functions that the user explicitly said should be annotated
 .ddg.annotate.on <- function() {
   return (.ddg.get("ddg.annotate.on"))
 }
 
-#' @returnType vector of strings
 #' @return the names of functions that user explicitly said should not be annotated
 .ddg.annotate.off <- function() {
   return (.ddg.get("ddg.annotate.off"))
@@ -108,13 +106,11 @@
   .ddg.set(".ddg.warning", NA)
 }
 
-#' @returnType an R warning object
 #' @return the last saved warning
 .ddg.get.warning <- function () {
   return (.ddg.get(".ddg.warning"))
 }
 
-#' @returnType logical
 #' @return true if there is currently a saved warning
 .ddg.warning.occurred <- function() {
   return (.ddg.is.set(".ddg.warning") && !is.na(.ddg.get(".ddg.warning")))
@@ -232,7 +228,6 @@
 #' expression object containing a non-local assignment.
 #' 
 #' @param expr input expression.
-#' @returnType logical
 #' @return TRUE if the expression is an assignment statement using the <<- operator.
 .ddg.is.nonlocal.assign <- function (expr)
 {
@@ -253,7 +248,7 @@
 #' possible.first.writer is for situations where the assignment might
 #' not have occurred, like "if (foo) a <- 1".
 #' 
-#' @returnType The data frame is structured as follows: \cr
+#' @return The data frame is structured as follows: \cr
 #' - the variable name.\cr
 #' - the position of the statement that wrote the variable first.\cr
 #' - the position of the statement that wrote the variable last.\cr
@@ -265,7 +260,6 @@
 #' @param var.table.size desired size of the data frame. Negative values
 #'   and 0 are coerced to 1.
 #' 
-#' @return the data frame constructed
 .ddg.create.empty.vars.set <- function(var.table.size=1) {
 
   if (var.table.size <= 0) var.table.size <- 1
@@ -288,7 +282,6 @@
 #' assignment data frame and returns the new one.
 #' 
 #' @param vars.set data frame containing variable assignments.
-#' @returnType same data frame type as the parameter
 #' @return a data frame that is twice the size as the original
 .ddg.double.vars.set <- function(vars.set) {
   size=nrow(vars.set)
@@ -317,7 +310,6 @@
 #' @param vars.set variable assignment data frame.
 #' @param cmd a DDGStatement object
 #' @param i position of command in the list of commands
-#' @returnType the same data frame type as vars.set
 #' @return an updated vars.set data frame with the information from the command
 .ddg.add.to.vars.set <- function(vars.set, cmd, i) {
   #print("In .ddg.add.to.vars.set")
@@ -376,7 +368,6 @@
 #' for a fixed set of parsed commands. 
 #'
 #' @param cmds a list of DDGStatement objects
-#' @returnType a data frame as described in .ddg.create.empty.vars.set
 #' @return the data frame filled in with the information from all of the commands
 .ddg.find.var.assignments <- function(cmds) {
   if (length(cmds) == 0) return (data.frame())
@@ -595,7 +586,6 @@
 #' @param cmd The DDGStatement object for the command being started
 #' @param node.name The label to put on the node.  If node.name is not passed in,
 #'   the abbreviated label in cmd is used.
-#' @returnType string
 #' @return the label of the node created, excluding "Start"
 .ddg.add.start.node <- function(cmd = NULL, node.name = "") {
   return (.ddg.add.abstract.node ("Start", cmd, node.name))
@@ -605,7 +595,6 @@
 #' @param cmd The DDGStatement object for the command being finished
 #' @param node.name The label to put on the node.  If node.name is not passed in,
 #'   the abbreviated label in cmd is used.
-#' @returnType string
 #' @return the label of the node created, excluding "Finish"
 .ddg.add.finish.node <- function(cmd = NULL, node.name = "") {
   return (.ddg.add.abstract.node ("Finish", cmd, node.name))
@@ -616,7 +605,6 @@
 #' @param cmd The DDGStatement object for the command being finished
 #' @param node.name The label to put on the node.  If node.name is not passed in,
 #'   the abbreviated label in cmd is used.
-#' @returnType string
 #' @return the label of the node created, excluding "Start" or "Finish"
 .ddg.add.abstract.node <- function(type, cmd = NULL, node.name = "") {
   #print("In .ddg.add.abstract.node")
@@ -692,7 +680,6 @@
 #' initiate the creation of a collapsible console node.
 #' 
 #' cmd - A DDGStatement object
-#' @returnType logical
 #' @return true if cmd is a call to ddg.procedure, ddg.start or ddg.finish
 .ddg.is.procedure.cmd <- function(cmd) {
   return(grepl("^ddg.(procedure|start|finish)", cmd@text))
@@ -1139,7 +1126,6 @@
 }
 
 #' .ddg.get.top.cmd returns the last command on the stack.
-#' @returnType DDGStatement
 #' @return the last command pushed to the stack
 .ddg.get.top.cmd <- function() {
   .ddg.cur.cmd.stack <- .ddg.get(".ddg.cur.cmd.stack")
@@ -1378,7 +1364,6 @@
 #' Get the environment for the function that called
 #' into ddg functions
 #'
-#' @returnType environment
 #' @return the environment of the innermost user's function
 .ddg.get.first.non.ddg.env <- function() {
   non.ddg.frame <- .ddg.get.first.non.ddg.frame.number()
@@ -1388,7 +1373,6 @@
 #' Get the frame number for the function that called
 #' into ddg functions
 #'
-#' @returnType integer
 #' @return the frame number of the innermost user function
 .ddg.get.first.non.ddg.frame.number <- function() {
   calls <- sys.calls()
@@ -1537,7 +1521,6 @@
 #' @param calls call stack to search
 #' @param for.caller (optional) if TRUE, return the frame of the caller of the 
 #'    first non-ddg function
-#' @returnType integer
 #' @return If for.caller is FALSE, returns the top-most non-ddg function on the
 #'   call stack.  If for.caller is TRUE, returns the second one found.  If none
 #'   are found, returns 0. 
@@ -1580,7 +1563,6 @@
 #' @param name - name of variable.
 #' @param env (optional) - environment in which to start looking for variable.
 #' @param warning (optional) - set to TRUE if a warning should be thrown when a variable is not found.
-#' @returnType an environment
 #' @return the environment in which the name is found.  Returns "undefined" if the
 #'   variable is not found.
 .ddg.where <- function( name , env = parent.frame() , warning = TRUE )
@@ -1704,7 +1686,6 @@
 #'
 #' @param r.script.path the path of the original Rmd file
 #' @param output.path the path of the generated R script
-#' @returnType string
 #' @return the path to the original Rmd file
 .ddg.markdown <- function(r.script.path, output.path){
 

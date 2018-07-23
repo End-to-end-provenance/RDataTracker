@@ -38,13 +38,12 @@
 #' It is faster to add a bunch of empty rows and update them than to 
 #' add one row at a time
 #' @param size the number of rows to create
-#' @returnType a data frame with 4 columns: \cr
+#' @return A data frame with 4 columns: \cr
 #' ddg.call - the text of the function call that was made, like f7(n) \cr
 #' line - the start line of the statement that contained the function call \cr
 #' return.used - if TRUE, it means that the value that was returned by this call
 #'    is already linked to.  This is important to be able to distinguish recursive calls \cr
 #' return.node.id - the id of the data node that holds the return value
-#' @return empty rows
 .ddg.create.return.value.rows <- function (size=100) {
   return (data.frame(
           ddg.call=character(size),
@@ -77,7 +76,6 @@
 #' Find the return value nodes that match the function calls made on the 
 #' line that is passed in
 #' @param command a DDGStatement object containing one or more function calls
-#' @returnType a data frame containing numeric return node ids
 #' @return the return node ids of the data nodes that
 #'   correspond to the values returned by the function calls passed in
 .ddg.get.matching.return.value.nodes <- function (command) {
