@@ -134,7 +134,6 @@
 #' Determines if the call passed in is a call to the passed in function
 #' @param call a parse tree for a function call
 #' @param func the name of a function
-#' @returnType logical
 #' @return TRUE if the call passed in is a call to the function name passed in
 .ddg.is.call.to <- function (call, func) { 
   # Check for function name

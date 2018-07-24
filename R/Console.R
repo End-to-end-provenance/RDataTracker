@@ -31,9 +31,10 @@
 #
 # Nodes collected in console mode will appear in a start-finish block.
 
-#' Initialize the variables used for dealing with console commands.
-#' Initially, the console is disabled.
+#' .ddg.init.console.vars initialize the variables used for dealing with 
+#' console commands. Initially, the console is disabled.
 #' @return nothing
+
 .ddg.init.console.vars <- function () {
   # Keep track of history.
   .ddg.set(".ddg.history.timestamp", NULL)
@@ -45,16 +46,18 @@
   .ddg.set(".ddg.enable.console", FALSE)
 }
 
-#' Set the enable console flag according to the parameter
-#' passed in.
-#' 
+#' .ddg.set.enable.console sets the enable console flag according to 
+#' the parameter passed in.
 #' @param enable.console If TRUE, console nodes will be created.
 #' @return nothing
+
 .ddg.set.enable.console <- function (enable.console) {
   .ddg.set (".ddg.enable.console", enable.console)
 }
 
-#' @return whether console nodes are being constructed
+#' .ddg.enable.console returns True if console nodes are being constructed
+#' @return True if console nodes are being constructed
+
 .ddg.enable.console <- function() {
   return (.ddg.get(".ddg.enable.console"))
 }
@@ -64,6 +67,7 @@
 #' it does nothing.
 #' @return nothing
 #' @export
+
 ddg.console.off <- function() {
   if (!.ddg.is.init()) return(invisible())
   
@@ -81,6 +85,7 @@ ddg.console.off <- function() {
 #' file.
 #' @return nothing
 #' @export
+
 ddg.console.on <- function() {
   if (!.ddg.is.init()) return(invisible())
   
@@ -90,10 +95,10 @@ ddg.console.on <- function() {
   .ddg.set(".ddg.enable.console", TRUE)
 }
 
-#' Initializes the history file.  It does nothing if we are not
-#' in console mode.
-#' 
+#' .ddg.init.history.file initializes the history file.  It does nothing 
+#' if we are not in console mode.
 #' @return nothing
+
 .ddg.init.history.file <- function () {
   if (!interactive()) return()
   if (!.ddg.enable.console()) return()
@@ -116,8 +121,10 @@ ddg.console.on <- function() {
       error = function(e) {})
 }
 
-#' Restore the size of the history file.  Should be called when we 
-#' exit.
+#' .ddg.restore.history.file restores the size of the history file.
+#' It should be called when we exit.
+#' @return nothing
+
 .ddg.restore.history.size <- function() {
   if (.ddg.is.set('ddg.original.hist.size')) Sys.setenv("R_HISTSIZE"=.ddg.get('ddg.original.hist.size'))
 }
@@ -125,10 +132,10 @@ ddg.console.on <- function() {
 #' .ddg.loadhistory takes in the name of a history file, opens it,
 #' scans it for the last occurrence of the string specified by
 #' timestamp, and returns the lines from that point forward.
-#' 
 #' @param hist.file name of history file.
 #' @param timestamp timestamp string.
 #' @return lines in the history file since the last timestamp
+
 .ddg.loadhistory <- function(hist.file, timestamp) {
   # Read from specified file.
   history <- readLines(hist.file)
@@ -159,13 +166,11 @@ ddg.console.on <- function() {
 #' .ddg.savehistory saves the current and unsaved R command history
 #' to the specified file if that file matches the DDG history file.
 #' Note: the commented section of code appends the information to
-#' this file.
-#' 
-#' savehistory is not supported on all R platforms.  If it is not supported,
-#' this will fail silently.
-#' 
+#' this file. Note: savehistory is not supported on all R platforms.
+#' If it is not supported, this will fail silently.
 #' @param hist.file name of history file.
 #' @return nothing
+
 .ddg.savehistory <- function(hist.file) {
   
   if (.ddg.is.set(".ddg.history.file")) {
@@ -179,6 +184,7 @@ ddg.console.on <- function() {
 #' .ddg.console.node creates a console node.  It does nothing if we
 #' are not in console mode.
 #' @return nothing
+
 .ddg.console.node <- function() {
   if (!interactive()) return()
   if (!.ddg.enable.console()) return()
@@ -222,13 +228,12 @@ ddg.console.on <- function() {
 }
 
 #' .ddg.parse.lines takes as input a vector of lines corresponding to
-#' the history of an R script. It parses
-#' and converts them to expression objects. Each expression might span
-#' multiple lines. 
-#' 
+#' the history of an R script. It parses and converts them to expression objects. 
+#' Each expression might span multiple lines.
 #' @param lines set of lines from command history or R script.
 #' @return the parsed version of the R text passed in.  Calls to ddg.eval
-#'    are not included in the returned list.
+#' are not included in the returned list.
+
 .ddg.parse.lines <- function(lines) {
   # No new lines passed in, so return an empty vector.
   if (length(lines) == 0) return(vector())
@@ -245,6 +250,8 @@ ddg.console.on <- function() {
 #' case we create our own timestamp value and hope that the time
 #' does not change between when we set .ddg.history.timestamp and
 #' when the timestamp function inserts the timestamp in the history.
+#' @return nothing
+
 .ddg.write.timestamp.to.history <- function() {
   # if (Sys.getenv("RSTUDIO") != "" && Sys.info()['sysname'] == "Windows") {
   #   .ddg.set(".ddg.history.timestamp", paste("##------", date(), "------##"))
@@ -254,5 +261,4 @@ ddg.console.on <- function() {
     .ddg.set(".ddg.history.timestamp", utils::timestamp(prefix = "##-ddg-- ", quiet=TRUE))
   # }
 }
-
 
