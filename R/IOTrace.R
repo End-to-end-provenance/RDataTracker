@@ -558,7 +558,7 @@
   
   # If Rplots was surprisingly created by Travis, delete it!
   if (.ddg.get (".ddg.remove.Rplots") && file.exists("Rplots.pdf")) {
-    print ("Removing Rplots.pdf")
+    #print ("Removing Rplots.pdf")
     unlink ("Rplots.pdf")
     .ddg.set (".ddg.remove.Rplots", FALSE)
   }
@@ -1192,7 +1192,7 @@
 #' @return the name of the file containing the captured graphics
 .ddg.capture.current.graphics <- function() {
 	#print ("In .ddg.capture.current.graphics")
-  print(sys.calls())
+  #print(sys.calls())
 	
 	# Create the file name to save the screen graphics to
 	file <- paste0("dev.off.", .ddg.dnum()+1, ".pdf")
