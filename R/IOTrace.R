@@ -67,6 +67,12 @@
   # a new plot.
   .ddg.set (".ddg.ggplot.created", FALSE)
   
+  # On Travis, calling ggsave creates Rplots.pdf, while it does not
+  # on the Mac.  Maybe it is because Travis runs headless???  In 
+  # any case, if ggsave creates it, we will delete it so it
+  # does not show up in the ddg, causing regression tests to fail.
+  .ddg.set (".ddg.remove.Rplots", FALSE)
+  
   
   # Create an empty list for the input, output, and files
   .ddg.clear.input.file()
@@ -549,6 +555,13 @@
     # Clear the flag
     .ddg.set (".ddg.implicit.plot", FALSE)
   }
+  
+  # If Rplots was surprisingly created by Travis, delete it!
+  if (.ddg.get (".ddg.remove.Rplots") && file.exists("Rplots.pdf")) {
+    print ("Removing Rplots.pdf")
+    file.unlink ("Rplots.pdf")
+    .ddg.set (".ddg.remove.Rplots", FALSE)
+  }
 }
 
 #' .ddg.file.out creates a data node of type File.  The label
@@ -719,7 +732,8 @@
   #print (paste (".ddg.trace.close: fname = ", fname))
 
   if (fname == "ggsave") {
-    .ddg.add.output.file (eval (as.symbol("filename"), envir=sys.frame(frame.number)))
+    filename <- eval (as.symbol("filename"), envir=sys.frame(frame.number))
+    .ddg.add.output.file (filename)
     full.call <- match.call (ggplot2::ggsave, call, envir=sys.frame(frame.number))
     param.names <- names(full.call)
     
@@ -728,6 +742,10 @@
     # that is done after the statement completes.
     if (!("plot" %in% param.names)) {
       .ddg.set(".ddg.implicit.plot", TRUE)
+    }
+    
+    if (filename != "Rplots.pdf" && !file.exists("Rplots.pdf")) {
+      .ddg.set (".ddg.remove.Rplots", TRUE)
     }
   }
   else {
