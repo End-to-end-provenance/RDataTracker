@@ -907,7 +907,7 @@
   }
   
   #print ("In .ddg.trace.graphics.open")
-  print (sys.calls())
+  #print (sys.calls())
   
   # Get the frame corresponding to the graphics function being traced
   frame.number <- .ddg.get.traced.function.frame.number()
@@ -1008,7 +1008,7 @@
   }
   
   #print ("In .ddg.trace.graphics.update")
-  print (sys.calls())
+  #print (sys.calls())
   .ddg.set (".ddg.add.device.io", TRUE)
 }
 
