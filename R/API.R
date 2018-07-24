@@ -65,7 +65,7 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
   .ddg.set.path (ddgdir, r.script.path, overwrite)
   
   # Remove files from DDG directory
-  ddg.flush.ddg()
+  .ddg.flush.ddg()
 
   # Create DDG directories
   .ddg.init.environ()
@@ -180,7 +180,7 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
   .ddg.set("ddg.path", ddg.path)
 }
 
-#' ddg.flush.ddg removes all files from the DDG directories unless the
+#' .ddg.flush.ddg removes all files from the DDG directories unless the
 #'   the DDG directory is the working directory. If no DDG directory is
 #'   specified, the current DDG directory is assumed. 
 #' @param ddg.path (optional) path to DDG directory.

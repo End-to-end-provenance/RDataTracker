@@ -24,8 +24,9 @@
 # - ddg.lib - the library the function comes from
 
 
-#' Initializes the function table
-#' @return nothing 
+#' .ddg.init.function.table initializes the function table
+#' @return nothing
+
 .ddg.init.function.table <- function () {
   .ddg.set("ddg.function.nodes" , 
       data.frame(
@@ -35,27 +36,30 @@
           stringsAsFactors=FALSE))
 }
 
-#' Return the function table as a data frame with 3 columns:  \cr
-#' - ddg.pnum - the procedure node id where the call happened \cr
-#' - ddg.fun - the name of the function \cr
-#' - ddg.lib - the library the function comes from
+#' .ddg.function.nodes returns the function table as a data frame with 3 columns:
+#' ddg.pnum - the procedure node id where the call happened
+#' ddg.fun - the name of the function
+#' ddg.lib - the library the function comes from
 #' @return the function table
+
 .ddg.function.nodes <- function() {
   return( .ddg.get("ddg.function.nodes") )
 }
 
-#' Save the function table to a file for debugging purposes.
+#' .ddg.save.function.table saves the function table to a file for debugging purposes.
 #' The name of the file is function-nodes.csv
 #' @return nothing
+
 .ddg.save.function.table <- function () {
   # save function nodes table to file
   fileout <- paste(.ddg.path.debug(), "/function-nodes.csv", sep="")
   utils::write.csv(.ddg.function.nodes(), fileout, row.names=FALSE)
 }
 
-#' Add new functions to the function table
+#' .ddg.add.to.function.table adds new functions to the function table
 #' @param functions.called vector of names of functions called
 #' @return nothing
+
 .ddg.add.to.function.table <- function (functions.called) {
   pfunctions <- .ddg.get.function.info(functions.called)
   
@@ -68,11 +72,11 @@
   .ddg.set( "ddg.function.nodes" , ddg.function.nodes )
 }
 
-#' Finds and returns the names of function calls to external packages,
-#' as well as the names of the packages used.
-#'
+#' .ddg.get.function.info finds and returns the names of function calls to external
+#' packages as well as the names of the packages used.
 #' @param function.names 
 #' @return a data frame pairing functions with the libraries they come from
+
 .ddg.get.function.info <- function( function.names )
 {
   # edge case: no functions/potential function calls
