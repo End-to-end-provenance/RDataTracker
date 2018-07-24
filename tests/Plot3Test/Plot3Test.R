@@ -21,7 +21,9 @@ yVals <- 10:1
 df <- data.frame(xVals, yVals)
 
 # ggsave when the plot is specified explicitly
+print (paste ("Before ggplot call, Rplots.pdf exists?", file.exists("Rplots.pdf"))) 
 p1 <- ggplot(df, aes(xVals, yVals)) + geom_point() + labs(title="ggsave with explicit plot")
+print (paste ("Before ggsave call, Rplots.pdf exists?", file.exists("Rplots.pdf"))) 
 ggsave ("plot1.pdf", p1)
 print (paste ("After plot1, Rplots.pdf exists?", file.exists("Rplots.pdf"))) 
 
