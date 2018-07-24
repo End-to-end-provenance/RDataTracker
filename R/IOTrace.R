@@ -559,7 +559,7 @@
   # If Rplots was surprisingly created by Travis, delete it!
   if (.ddg.get (".ddg.remove.Rplots") && file.exists("Rplots.pdf")) {
     print ("Removing Rplots.pdf")
-    file.unlink ("Rplots.pdf")
+    unlink ("Rplots.pdf")
     .ddg.set (".ddg.remove.Rplots", FALSE)
   }
 }
