@@ -985,7 +985,7 @@
 #' 
 #' @return nothing
 .ddg.trace.graphics.update <- function () {
-  if (.ddg.inside.call.to (".ddg.capture.graphics") ) { 
+  if (.ddg.inside.call.to (".ddg.capture.graphics") || .ddg.inside.call.to ("ggsave")) { 
     return()
   }
   
