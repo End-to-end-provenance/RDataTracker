@@ -7,11 +7,17 @@
 	<loadproperties srcFile="DESCRIPTION" />
 	<property name="tarfile" value="RDataTracker_${Version}.tar.gz" />
 
+    <target name="roxygen">
+		<exec executable="Rscript" >
+			<arg line="-e roxygen2::roxygenise()" />
+		</exec>
+    </target>
+
     <target name="build-directory" depends="clean">
     	<mkdir dir="${builddir}"/>
     </target>
 
-    <target name="copy-to-directory" depends="build-directory">
+    <target name="copy-to-directory" depends="build-directory, roxygen">
     	<copy overwrite="true" todir="${builddir}/inst">
     		<fileset dir="inst"
       			excludes="\.* doc/*.pages doc/*.docx doc/*.pdf"/>
