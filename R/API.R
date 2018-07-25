@@ -83,14 +83,14 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
   }
   else {
     f <- function (task, result, success, printed) {
-       print(task)
-       print (paste ("is.expression(task)?", is.expression(task)))
-       print (paste ("is.language(task)?", is.expression(task)))
-       print (paste ("str(task)?", str(task)))
-       print (paste ("str(task[[1]])?", str(task[[1]])))
-       print (paste ("class(task)?", class(task)))
-       print (paste("result =", result))
-       print (paste("success =", success))
+       #print(task)
+       #print (paste ("is.expression(task)?", is.expression(task)))
+       #print (paste ("is.language(task)?", is.expression(task)))
+       #print (paste ("str(task)?", str(task)))
+       #print (paste ("str(task[[1]])?", str(task[[1]])))
+       #print (paste ("class(task)?", class(task)))
+       #print (paste("result =", result))
+       #print (paste("success =", success))
        
        
        # Create the provenance for the new command
