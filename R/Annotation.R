@@ -60,9 +60,7 @@ ddg.function <- function(outs.graphic=NULL, outs.data=NULL, outs.exception=NULL,
   .ddg.inc(".ddg.func.depth")
   pname <- NULL
   .ddg.lookup.function.name(pname)
-  
-  #.ddg.console.node()
-  
+    
   # Look up input parameters from calling environment.
   call <- sys.call(-1)
   
@@ -187,7 +185,7 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
   
   # Check if there is a return call within this call to ddg.return.
   if (.ddg.has.call.to(parsed.stmt, "return")) {
-    .ddg.proc.node("Operation", return.stmt@abbrev, return.stmt@abbrev, console = TRUE, cmd=return.stmt)
+    .ddg.proc.node("Operation", return.stmt@abbrev, return.stmt@abbrev, cmd=return.stmt)
     
     # Create control flow edge from preceding procedure node.
     .ddg.proc2proc()
@@ -373,10 +371,6 @@ ddg.eval <- function(statement, cmd.func=NULL) {
   if (!.ddg.is.init()) {
     return(eval(parsed.statement, env))
   }
-  
-  #if (!.ddg.enable.source()) {
-  #  .ddg.console.node()
-  #}
   
   # If break statement, create procedure node and close open start nodes.
   if (!is.null(cmd) && cmd@text == "break") {

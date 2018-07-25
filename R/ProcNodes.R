@@ -250,21 +250,13 @@
 #' @param pname name of procedure node.
 #' @param pvalue (optional) value of procedure node.
 #' @param functions.called vector of names of functions called in this procedure node
-#' @param console (optional) if TRUE, console mode is enabled.
 #' @param cmd the DDGStatement corresponding to this procedure node
-.ddg.proc.node <- function(ptype, pname, pvalue="", functions.called=NULL, console=FALSE,
+.ddg.proc.node <- function(ptype, pname, pvalue="", functions.called=NULL, 
     cmd = NULL) {
 
   if (!.ddg.is.proc.type (ptype)) {
     print (paste (".ddg.proc.node: bad value for ptype - ", ptype))
   }
-  
-  # We're not in a console node but we're capturing data
-  # automatically.
-  # Capture graphic output of previous procedure node.
-  #if (!console && !.ddg.enable.source()) {
-  #  .ddg.console.node()
-  #}
   
   if (is.null(cmd)) {
     snum <- NA

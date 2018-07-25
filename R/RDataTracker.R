@@ -179,8 +179,6 @@
   # Store path of current ddg.
   .ddg.set("ddg.path", NULL)
   
-  #.ddg.init.console.vars ()
-
   # Functions to be annotated.
   .ddg.set("ddg.annotate.on", NULL)
 
@@ -613,7 +611,7 @@
       node.name <- cmd@abbrev
   }
   if (.ddg.debug.lib()) print(paste("Adding", node.name,  type, "node"))
-  .ddg.proc.node(type, node.name, node.name, cmd = cmd, console=(node.name=="Console"))
+  .ddg.proc.node(type, node.name, node.name, cmd = cmd)
   .ddg.proc2proc()
 
   return(node.name)
@@ -829,7 +827,6 @@
       if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Processing", cmd@abbrev))
 
       # print("Checking whether to set last.cmd")
-      #if (.ddg.enable.source() && grepl("^ddg.eval", cmd@text) && .ddg.enable.console()) {
       if (grepl("^ddg.eval", cmd@text)) {
         if (is.null(.ddg.last.cmd)) {
           .ddg.last.cmd <- cmd
@@ -861,7 +858,6 @@
       # block, so there is no need to create additional nodes for the
       # control statement itself.
 
-      #create <- !cmd@isDdgFunc && .ddg.is.init() && .ddg.enable.console() && 
       create <- !cmd@isDdgFunc && .ddg.is.init() &&  
           (!(control.statement && .ddg.loop.annotate() && ddg.max.loops() > 0) || from.console)
       start.finish.created <- FALSE
@@ -929,7 +925,7 @@
             error = function(e)
             {
               # create procedure node for the error-causing operation
-              .ddg.proc.node("Operation", cmd@abbrev, cmd@abbrev, functions.called=cmd@functions.called, console=TRUE, cmd=cmd)
+              .ddg.proc.node("Operation", cmd@abbrev, cmd@abbrev, functions.called=cmd@functions.called, cmd=cmd)
               .ddg.proc2proc()
 
               # create input edges by adding variables to set
@@ -1001,7 +997,7 @@
 
           if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Adding operation node for", cmd@abbrev))
           
-          .ddg.proc.node("Operation", cmd@abbrev, cmd@abbrev, functions.called=cmd@functions.called, console=TRUE, cmd=cmd)
+          .ddg.proc.node("Operation", cmd@abbrev, cmd@abbrev, functions.called=cmd@functions.called, cmd=cmd)
           .ddg.proc2proc()
 
           # If a warning occurred when cmd was evaluated,
@@ -1084,9 +1080,6 @@
     .ddg.set(".ddg.last.cmd", .ddg.last.cmd)
     .ddg.open.new.command.node()
   }
-
-  # Write time stamp to history.
-  #if (.ddg.is.init() && !.ddg.is.sourced()) .ddg.write.timestamp.to.history()
 
   if (.ddg.is.set(".ddg.last.R.value")) return (.ddg.get (".ddg.last.R.value"))
   else return ("")

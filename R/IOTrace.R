@@ -88,6 +88,7 @@
   # so that it can find those functions without making them publicly available in 
   # the namespace.
   # ggplot2 functions are traced individually because the package name needs to be included.
+  
   trace.oneOutput <- function (f) {utils::capture.output(utils::capture.output(trace (as.name(f), RDataTracker:::.ddg.trace.output, print=FALSE), type="message"))} 
   lapply(.ddg.get(".ddg.file.write.functions.df")$function.names, trace.oneOutput)
   utils::capture.output(utils::capture.output(trace (ggplot2::ggplot, RDataTracker:::.ddg.trace.output, print=FALSE), type="message"))

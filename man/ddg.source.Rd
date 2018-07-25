@@ -6,8 +6,7 @@
 \usage{
 ddg.source(file, local = FALSE, echo = verbose, print.eval = echo,
   verbose = getOption("verbose"), max.deparse.length = 150, chdir = FALSE,
-  encoding = getOption("encoding"), ignore.ddg.calls = TRUE,
-  force.console = TRUE)
+  encoding = getOption("encoding"), ignore.ddg.calls = TRUE)
 }
 \arguments{
 \item{file}{- the name of the R script file to source.}
@@ -32,8 +31,6 @@ the directory containing the file to be sourced.}
 character string.}
 
 \item{ignore.ddg.calls}{(optional) - if TRUE, ignore DDG function calls.}
-
-\item{force.console}{(optional) - if TRUE, turn console mode on.}
 
 \item{ddg.source}{reads in an R script and executes it in the provided
 enviroment. ddg.source essentially mimics the behaviour of the}

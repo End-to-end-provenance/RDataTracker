@@ -100,10 +100,7 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
   }
 
   # Set environment constants.
-  #.ddg.set.enable.console (enable.console)
   .ddg.set.details.omitted(FALSE)
-
-  #.ddg.init.history.file ()
 
   # If ddg.detail is not set, use values of annotate.inside, max.loops
   # and max.snapshot.size.
@@ -246,9 +243,6 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
 ddg.save <- function(save.debug = FALSE, quit = FALSE) {
   if (!.ddg.is.init()) return(invisible())
   
-  # Get the final commands
-  #.ddg.console.node()
-  
   # If running from the console create a Console finish node.
   # If not quitting, also create a start node for the next
   # segment.
@@ -280,10 +274,6 @@ ddg.save <- function(save.debug = FALSE, quit = FALSE) {
       removeTaskCallback (.ddg.get (".ddg.taskCallBack.id"))
     }
     
-    
-    # Restore history settings.
-    #.ddg.restore.history.size()
-
     # Delete temporary files.
     .ddg.delete.temp()
 
@@ -369,8 +359,7 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
   tryCatch(
     if (!is.null(r.script.path)) ddg.source(
          .ddg.get("ddg.r.script.path"),
-          ignore.ddg.calls = FALSE,
-          force.console = FALSE)
+          ignore.ddg.calls = FALSE)
     else if (!is.null(f)) f()
     else stop("r.script.path and f cannot both be NULL"),
 
@@ -405,14 +394,13 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
 #' @param encoding (optional) - encoding to be assumed when file is a
 #' character string.
 #' @param ignore.ddg.calls (optional) - if TRUE, ignore DDG function calls.
-#' @param force.console (optional) - if TRUE, turn console mode on.
 #'
 #' @return nothing
 #' @export
 
 ddg.source <- function (file,  local = FALSE, echo = verbose, print.eval = echo,
 	verbose = getOption("verbose"), max.deparse.length = 150, chdir = FALSE, encoding = getOption("encoding"),
-	ignore.ddg.calls = TRUE, force.console=TRUE){
+	ignore.ddg.calls = TRUE){
 
 	# Store script number & name.
   sname <- basename(file)
@@ -592,14 +580,6 @@ ddg.source <- function (file,  local = FALSE, echo = verbose, print.eval = echo,
 	# Now we can parse the commands as we normally would for a DDG.
 	if(length(exprs) > 0) 
 	{
-		# Turn on the console if forced to, keep track of previous
-		# setting, parse previous commands if necessary.
-		#prev.on <- .ddg.is.init() && .ddg.enable.console()
-		#if (prev.on) .ddg.console.node()
-		#if (force.console) ddg.console.on()
-
-		# Let library know that we are sourcing a file.
-		#prev.source <- .ddg.is.init() && .ddg.enable.source()
 
 		# Initialize the tables for ddg.capture.
 		.ddg.set("from.source", TRUE)
@@ -609,9 +589,6 @@ ddg.source <- function (file,  local = FALSE, echo = verbose, print.eval = echo,
 			echo = echo, print.eval = print.eval, max.deparse.length = max.deparse.length,
 			run.commands = TRUE)
 
-		# Restore previous state
-    #.ddg.set("from.source", prev.source)
-    #if (!prev.on) ddg.console.off() else ddg.console.on()
 	}
 
 	invisible()
