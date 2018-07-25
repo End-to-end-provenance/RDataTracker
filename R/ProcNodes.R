@@ -262,9 +262,9 @@
   # We're not in a console node but we're capturing data
   # automatically.
   # Capture graphic output of previous procedure node.
-  if (!console && !.ddg.enable.source()) {
-    .ddg.console.node()
-  }
+  #if (!console && !.ddg.enable.source()) {
+  #  .ddg.console.node()
+  #}
   
   if (is.null(cmd)) {
     snum <- NA

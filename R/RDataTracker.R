@@ -179,7 +179,7 @@
   # Store path of current ddg.
   .ddg.set("ddg.path", NULL)
   
-  .ddg.init.console.vars ()
+  #.ddg.init.console.vars ()
 
   # Functions to be annotated.
   .ddg.set("ddg.annotate.on", NULL)
@@ -829,7 +829,8 @@
       if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Processing", cmd@abbrev))
 
       # print("Checking whether to set last.cmd")
-      if (.ddg.enable.source() && grepl("^ddg.eval", cmd@text) && .ddg.enable.console()) {
+      #if (.ddg.enable.source() && grepl("^ddg.eval", cmd@text) && .ddg.enable.console()) {
+      if (grepl("^ddg.eval", cmd@text)) {
         if (is.null(.ddg.last.cmd)) {
           .ddg.last.cmd <- cmd
         }
@@ -860,7 +861,8 @@
       # block, so there is no need to create additional nodes for the
       # control statement itself.
 
-      create <- !cmd@isDdgFunc && .ddg.is.init() && .ddg.enable.console() && 
+      #create <- !cmd@isDdgFunc && .ddg.is.init() && .ddg.enable.console() && 
+      create <- !cmd@isDdgFunc && .ddg.is.init() &&  
           (!(control.statement && .ddg.loop.annotate() && ddg.max.loops() > 0) || from.console)
       start.finish.created <- FALSE
       cur.cmd.closed <- FALSE
@@ -1084,7 +1086,7 @@
   }
 
   # Write time stamp to history.
-  if (.ddg.is.init() && !.ddg.is.sourced()) .ddg.write.timestamp.to.history()
+  #if (.ddg.is.init() && !.ddg.is.sourced()) .ddg.write.timestamp.to.history()
 
   if (.ddg.is.set(".ddg.last.R.value")) return (.ddg.get (".ddg.last.R.value"))
   else return ("")

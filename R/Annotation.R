@@ -61,7 +61,7 @@ ddg.function <- function(outs.graphic=NULL, outs.data=NULL, outs.exception=NULL,
   pname <- NULL
   .ddg.lookup.function.name(pname)
   
-  .ddg.console.node()
+  #.ddg.console.node()
   
   # Look up input parameters from calling environment.
   call <- sys.call(-1)
@@ -374,9 +374,9 @@ ddg.eval <- function(statement, cmd.func=NULL) {
     return(eval(parsed.statement, env))
   }
   
-  if (!.ddg.enable.source()) {
-    .ddg.console.node()
-  }
+  #if (!.ddg.enable.source()) {
+  #  .ddg.console.node()
+  #}
   
   # If break statement, create procedure node and close open start nodes.
   if (!is.null(cmd) && cmd@text == "break") {

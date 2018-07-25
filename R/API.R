@@ -100,10 +100,10 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
   }
 
   # Set environment constants.
-  .ddg.set.enable.console (enable.console)
+  #.ddg.set.enable.console (enable.console)
   .ddg.set.details.omitted(FALSE)
 
-  .ddg.init.history.file ()
+  #.ddg.init.history.file ()
 
   # If ddg.detail is not set, use values of annotate.inside, max.loops
   # and max.snapshot.size.
@@ -247,7 +247,7 @@ ddg.save <- function(save.debug = FALSE, quit = FALSE) {
   if (!.ddg.is.init()) return(invisible())
   
   # Get the final commands
-  .ddg.console.node()
+  #.ddg.console.node()
   
   # If running from the console create a Console finish node.
   # If not quitting, also create a start node for the next
@@ -282,7 +282,7 @@ ddg.save <- function(save.debug = FALSE, quit = FALSE) {
     
     
     # Restore history settings.
-    .ddg.restore.history.size()
+    #.ddg.restore.history.size()
 
     # Delete temporary files.
     .ddg.delete.temp()
@@ -594,12 +594,12 @@ ddg.source <- function (file,  local = FALSE, echo = verbose, print.eval = echo,
 	{
 		# Turn on the console if forced to, keep track of previous
 		# setting, parse previous commands if necessary.
-		prev.on <- .ddg.is.init() && .ddg.enable.console()
-		if (prev.on) .ddg.console.node()
-		if (force.console) ddg.console.on()
+		#prev.on <- .ddg.is.init() && .ddg.enable.console()
+		#if (prev.on) .ddg.console.node()
+		#if (force.console) ddg.console.on()
 
 		# Let library know that we are sourcing a file.
-		prev.source <- .ddg.is.init() && .ddg.enable.source()
+		#prev.source <- .ddg.is.init() && .ddg.enable.source()
 
 		# Initialize the tables for ddg.capture.
 		.ddg.set("from.source", TRUE)
@@ -610,8 +610,8 @@ ddg.source <- function (file,  local = FALSE, echo = verbose, print.eval = echo,
 			run.commands = TRUE)
 
 		# Restore previous state
-    .ddg.set("from.source", prev.source)
-    if (!prev.on) ddg.console.off() else ddg.console.on()
+    #.ddg.set("from.source", prev.source)
+    #if (!prev.on) ddg.console.off() else ddg.console.on()
 	}
 
 	invisible()
