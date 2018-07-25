@@ -196,6 +196,9 @@
 						flags="g"
 		/>
 
+		<!-- Delete any Rplots file created by a prior execution -->
+		<delete file="${dir}/Rplots.pdf"/>
+
 		<!-- Execute the R Script (delete ddg directory first) -->
 		<delete dir="${dir}/prov_${test-name}" quiet="true" />
 		<exec executable="Rscript" dir="${dir}" output="${FILE.basedir}/${out}" >
