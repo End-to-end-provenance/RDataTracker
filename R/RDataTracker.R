@@ -442,6 +442,7 @@
       }
     }
     else {
+      # print ("Did not find data node")
       # TODO - add some sort of warning that the data node was NOT
       # found.
 
@@ -743,7 +744,7 @@
 #' @param cmds list of DDG Statements that correspond to the exprs passed in.  This is
 #'   currently only used when called from ddg.eval.  Normally, ddg.parse.commands
 #'   creates the DDG Statement objects.
-
+#' @param from.console If TRUE, commands are coming from the console
 .ddg.parse.commands <- function (exprs, script.name="", script.num=NA, environ, 
     ignore.patterns=c('^ddg.'), node.name="Console", run.commands = FALSE, echo=FALSE, 
     print.eval=echo, max.deparse.length=150, called.from.ddg.eval=FALSE, cmds=NULL,
@@ -753,17 +754,13 @@
   
   # Gather all the information that we need about the statements
   if (is.null(cmds)) {
-    #print ("Creating DDG Statements")
     cmds <- .ddg.create.DDGStatements (exprs, script.name, script.num)
-    #print ("Done creating DDG Statements")
-    #print (paste ("cmds =", cmds))
     
     if (.ddg.save.debug()) {
       .ddg.save.annotated.script(cmds, script.name)
     }
   }
   num.cmds <- length(cmds)
-  #print (paste ("num.cmds =", num.cmds))
 
   # Figure out if we will execute commands or not.
   execute <- run.commands & !is.null(environ) & is.environment(environ)
@@ -779,16 +776,14 @@
     
     # Get the last command in the new commands and check to see if
     # we need to create a new .ddg.last.cmd node for future reference.
-    #print ("Getting last cmd")
     .ddg.last.cmd <- cmds[[num.cmds]]
-    #print(paste(".ddg.parse.commands: setting .ddg.last.cmd to", .ddg.last.cmd@text))
+    # print(paste(".ddg.parse.commands: setting .ddg.last.cmd to", .ddg.last.cmd$text))
 
     if (.ddg.last.cmd@isDdgFunc) {
       .ddg.last.cmd <- NULL
       #print(".ddg.parse.commands: setting .ddg.last.cmd to null")
     }
     else if (!execute && !from.console) {
-      #print ("Removing last command")
       cmds <- cmds[1:num.cmds-1]
     }
   }
@@ -821,9 +816,7 @@
     # Find where all the variables are assigned for non-environ
     # files.
     if (!execute) {
-      #print ("Getting var assignments")
       vars.set <- .ddg.find.var.assignments(cmds)
-      #print ("Done getting var assignments")
     }
     else {
       vars.set <- .ddg.create.empty.vars.set()
@@ -831,8 +824,6 @@
 
     # Loop over the commands as well as their string representations.
     for (i in 1:length(cmds)) {
-      #print (paste ("Getting cmd", i))
-      #print (paste ("cmds =", cmds))
       cmd <- cmds[[i]]
 
       if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Processing", cmd@abbrev))
@@ -1018,7 +1009,6 @@
           }
           # Store information on the last procedure node in this
           # block.
-          #print (paste ("Setting last.proc.node to", cmd@abbrev))
           last.proc.node <- cmd
 
           # We want to create the incoming data nodes (by updating

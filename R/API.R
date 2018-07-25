@@ -82,16 +82,10 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
              else normalizePath(r.script.path, winslash="/"))
   }
   else {
-    f <- function (task, result, success, printed) {
-       #print(task)
-       #print (paste ("is.expression(task)?", is.expression(task)))
-       #print (paste ("is.language(task)?", is.expression(task)))
-       #print (paste ("str(task)?", str(task)))
-       #print (paste ("str(task[[1]])?", str(task[[1]])))
-       #print (paste ("class(task)?", class(task)))
-       #print (paste("result =", result))
-       #print (paste("success =", success))
-       
+    # If running from the console, set up a callback to be notified
+    # after each statement completes execution and build the 
+    # corresponding portions of the ddg.
+    .ddg.trace.task <- function (task, result, success, printed) {
        
        # Create the provenance for the new command
        .ddg.parse.commands(as.expression(task),
@@ -102,7 +96,7 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
        return(TRUE)
          
     }
-    .ddg.set (".ddg.taskCallBack.id", addTaskCallback(f))
+    .ddg.set (".ddg.taskCallBack.id", addTaskCallback(.ddg.trace.task))
   }
 
   # Set environment constants.
@@ -135,6 +129,7 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
   # Mark graph as initilized.
   .ddg.set(".ddg.initialized", TRUE)
   
+  # Add a Console start node if running from the console.
   if (is.null (r.script.path)) {
     .ddg.add.start.node (node.name = "Console")
   }
@@ -254,6 +249,9 @@ ddg.save <- function(save.debug = FALSE, quit = FALSE) {
   # Get the final commands
   .ddg.console.node()
   
+  # If running from the console create a Console finish node.
+  # If not quitting, also create a start node for the next
+  # segment.
   if (is.null (.ddg.get ("ddg.r.script.path"))) {
     .ddg.add.finish.node (node.name = "Console")
     if (!quit) {
@@ -276,6 +274,7 @@ ddg.save <- function(save.debug = FALSE, quit = FALSE) {
           error = function (e) print(e))
     }
     
+    # Turn off the I/O tracing and console tracing.
     .ddg.stop.iotracing()
     if (.ddg.is.set (".ddg.taskCallBack.id")) {
       removeTaskCallback (.ddg.get (".ddg.taskCallBack.id"))

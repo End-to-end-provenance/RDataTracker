@@ -825,7 +825,7 @@ ddg.max.snapshot.size <- function() {
   .ddg.set (".ddg.last.ggplot", name)
   
   # Try to output graphic value.
-              .ddg.snapshot.node(name, "txt", value, save.object = TRUE, dscope=scope, from.env=from.env)
+  .ddg.snapshot.node(name, "txt", value, save.object = TRUE, dscope=scope, from.env=from.env)
 }
 
 #' Copies a graphics value into a snapshot file
