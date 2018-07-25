@@ -43,6 +43,9 @@
   .ddg.set("ddg.data.nodes", .ddg.create.data.node.rows()) 
   .ddg.set("ddg.dnum", 0)
   
+  # Name of the last variable that was a plot created by ggplot
+  .ddg.set (".ddg.last.ggplot", "")
+  
   # Set max.snapshot.size.  Make sure it is not already set, as
   # someone may have called ddg.set.detail.
   if (!.ddg.is.set("ddg.max.snapshot.size")) {
@@ -830,18 +833,21 @@ ddg.max.snapshot.size <- function() {
 #' @return nothing
 
 .ddg.write.graphic <- function(name, value=NULL, fext="jpeg", scope=NULL, from.env=FALSE){
+  # Remember the name of the variable so that we can link to it if ggsave is called later without a plot parameter.
+  .ddg.set (".ddg.last.ggplot", name)
+  
   # Try to output graphic value.
-  tryCatch({
-        .ddg.snapshot.node(name, fext, NULL, dscope=scope, from.env=from.env)
-      }, error = function(e) {
-        # warning(paste("Attempted to write", name, "as", fext, "snapshot. Trying jpeg", ".", e))
-        tryCatch({
-              .ddg.snapshot.node(name, "jpeg", NULL, dscope=scope, from.env=from.env)
-            }, error = function(e) {
-              # warning(paste("Attempted to write", name, "as jpeg snapshot. Failed.", e, "Defaulting to saving RObject and .txt file."))
+#  tryCatch({
+#        .ddg.snapshot.node(name, fext, NULL, dscope=scope, from.env=from.env)
+#      }, error = function(e) {
+#        # warning(paste("Attempted to write", name, "as", fext, "snapshot. Trying jpeg", ".", e))
+#        tryCatch({
+#              .ddg.snapshot.node(name, "jpeg", NULL, dscope=scope, from.env=from.env)
+#            }, error = function(e) {
+#              # warning(paste("Attempted to write", name, "as jpeg snapshot. Failed.", e, "Defaulting to saving RObject and .txt file."))
               .ddg.snapshot.node(name, "txt", value, save.object = TRUE, dscope=scope, from.env=from.env)
-            })
-      })
+#            })
+#      })
 }
 
 #' .ddg.graphic.snapshot copies a graphics value into a snapshot file 
@@ -866,7 +872,9 @@ ddg.max.snapshot.size <- function() {
     grDevices::dev.copy(parseFun)
     
     # Turn it off (this switches back to prev device).
-    grDevices::dev.off()
+    if (grDevices::dev.cur() != 1) { 
+      grDevices::dev.off()
+    }
   }
 }
 

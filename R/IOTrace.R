@@ -61,6 +61,25 @@
   .ddg.set (".ddg.add.device.close", FALSE)
   .ddg.set (".ddg.no.graphics.file", TRUE)
   
+  # When true, it means that ggsave was called without
+  # a plot parameter.
+  .ddg.set (".ddg.implicit.plot", FALSE)
+  
+  # When true, it means that ggplot was called to start
+  # a new plot.
+  .ddg.set (".ddg.ggplot.created", FALSE)
+  
+  # On Travis, calling ggsave creates Rplots.pdf, while it does not
+  # on the Mac.  Maybe it is because Travis runs headless???  In 
+  # any case, if ggsave creates it, we will delete it so it
+  # does not show up in the ddg, causing regression tests to fail.
+  .ddg.set (".ddg.remove.Rplots", FALSE)
+  
+  # If Rplots.pdf is created by ggsave and we are unable to delete it,
+  # this flag will prevent an Rplots.pdf node from being added to the
+  # end of the DDG.
+  .ddg.set(".ddg.ignore.rplots", FALSE)
+  
   # Create an empty list for the input, output, and files
   .ddg.clear.input.file()
   .ddg.clear.output.file()
@@ -74,15 +93,18 @@
   # Note that we need to use the RDataTracker::: notation for the functions for trace to call
   # so that it can find those functions without making them publicly available in 
   # the namespace.
+  # ggplot2 functions are traced individually because the package name needs to be included.
   trace.oneOutput <- function (f) {utils::capture.output(utils::capture.output(trace (as.name(f), RDataTracker:::.ddg.trace.output, print=FALSE), type="message"))} 
   lapply(.ddg.get(".ddg.file.write.functions.df")$function.names, trace.oneOutput)
-
+  utils::capture.output(utils::capture.output(trace (ggplot2::ggplot, RDataTracker:::.ddg.trace.output, print=FALSE), type="message"))
+  
   trace.oneInput <- function (f) {utils::capture.output(utils::capture.output(trace (as.name(f), RDataTracker:::.ddg.trace.input, print=FALSE), type="message"))} 
   lapply(.ddg.get(".ddg.file.read.functions.df")$function.names, trace.oneInput)
 
   trace.oneClose <- function (f) {utils::capture.output(utils::capture.output(trace (as.name(f), RDataTracker:::.ddg.trace.close, print=FALSE), type="message"))} 
   lapply(.ddg.get(".ddg.file.close.functions.df")$function.names, trace.oneClose)
-
+  utils::capture.output(utils::capture.output(trace (ggplot2::ggsave, RDataTracker:::.ddg.trace.close, print=FALSE), type="message"))
+  
   #print ("Tracing graphics open")
   # trace (grDevices::pdf, RDataTracker:::.ddg.trace.graphics.open, print=TRUE)
   trace.oneGraphicsOpen <- function (f) {utils::capture.output(utils::capture.output(trace (as.name(f), RDataTracker:::.ddg.trace.graphics.open, print=FALSE), type="message"))} 
@@ -93,7 +115,7 @@
   lapply(.ddg.get(".ddg.graphics.update.functions.df"), trace.oneGraphicsUpdate)
   
   #print ("Tracing dev.off")
-  utils::capture.output(utils::capture.output(trace (grDevices::dev.off, RDataTracker:::.ddg.trace.graphics.close, print=FALSE), type="message"))  
+  utils::capture.output(utils::capture.output(trace (grDevices::dev.off, RDataTracker:::.ddg.trace.graphics.close, print=FALSE), type="message"))
   #print ("Done initializing IO tracing")
 }
 
@@ -110,6 +132,9 @@
   utils::capture.output (untrace(.ddg.get(".ddg.graphics.functions.df")$function.names), type="message")
   utils::capture.output (untrace(.ddg.get(".ddg.graphics.update.functions.df")), type="message")
   utils::capture.output (untrace(grDevices::dev.off), type="message")
+  
+  utils::capture.output (untrace(ggplot2::ggplot), type="message")
+  utils::capture.output (untrace(ggplot2::ggsave), type="message")
 }
 
 ################### Helper functions ######################3
@@ -156,8 +181,8 @@
 }
 
 #' .ddg.num.calls.to returns the number of calls to the passed in function
-#' @param func the name of a function
-#' @return the number of calls found
+#' @param func the name of a function to look for
+#' @return the number of calls to the function on the stack
 
 .ddg.num.calls.to <- function (func) {
   calls.found <- sapply (sys.calls(), .ddg.is.call.to, func )
@@ -476,19 +501,28 @@
   
   #print (paste ("Output function traced: ", fname))
   
-  # Get the name of the file parameter for the output function
-  file.write.functions <- .ddg.get (".ddg.file.write.functions.df")
-  file.param.name <- file.write.functions$param.names[file.write.functions$function.names == fname]
-  #print (paste ("Output file parameter:", file.param.name))
+  # Set a flag to indicate that a new plot is started but
+  # its name is not known yet.
+  if (fname == "ggplot") {
+    .ddg.set (".ddg.ggplot.created", TRUE)
+    .ddg.set (".ddg.last.ggplot", "")
+  }
   
-  # Get the value of the file parameter  
-  output.file.name <- eval (as.symbol(file.param.name), envir = sys.frame(frame.number))
-  #print (paste ("output.file.name =", output.file.name))
-
-  # Save the file name so the file node can be created when the statement is complete.
-  # we do not want to create the nodes because the procedure node to connect to does not
-  # exist yet, and the file has not been written to yet.
-  .ddg.add.output.file (output.file.name)
+  else {
+    # Get the name of the file parameter for the output function
+    file.write.functions <- .ddg.get (".ddg.file.write.functions.df")
+    file.param.name <- file.write.functions$param.names[file.write.functions$function.names == fname]
+    #print (paste ("Output file parameter:", file.param.name))
+    
+    # Get the value of the file parameter  
+    output.file.name <- eval (as.symbol(file.param.name), envir = sys.frame(frame.number))
+    #print (paste ("output.file.name =", output.file.name))
+  
+    # Save the file name so the file node can be created when the statement is complete.
+    # we do not want to create the nodes because the procedure node to connect to does not
+    # exist yet, and the file has not been written to yet.
+    .ddg.add.output.file (output.file.name)
+  }
 }
 
 #' .ddg.create.file.write.nodes.and.edges creates file nodes and data out edges for any files
@@ -524,6 +558,26 @@
 
   # Clear the list of output files now that they have been handled.
   .ddg.clear.output.file ()
+  
+  # If this file is written by ggsave and the plot was implicit, 
+  # add an input edge for the last plot.
+  if (.ddg.get (".ddg.implicit.plot")) {
+    .ddg.data2proc (.ddg.get(".ddg.last.ggplot"), dscope=NULL)
+    
+    # Clear the flag
+    .ddg.set (".ddg.implicit.plot", FALSE)
+  }
+  
+  # If Rplots was surprisingly created by Travis, delete it!
+  if (.ddg.get (".ddg.remove.Rplots") && file.exists("Rplots.pdf")) {
+    unlink ("Rplots.pdf")
+
+    if (file.exists("Rplots.pdf")) {
+      .ddg.set(".ddg.ignore.rplots", TRUE)
+    }
+
+    .ddg.set (".ddg.remove.Rplots", FALSE)
+  }
 }
 
 #' .ddg.file.out creates a data node of type File.  The label
@@ -686,22 +740,41 @@
   if (length(fname > 1)) {
     fname <- fname[length(fname)]
   }
-  #print (paste (".ddg.trace.close: fname = ", fname))
+  # print (paste (".ddg.trace.close: fname = ", fname))
+
+  if (fname == "ggsave") {
+    filename <- eval (as.symbol("filename"), envir=sys.frame(frame.number))
+    .ddg.add.output.file (filename)
+    full.call <- match.call (ggplot2::ggsave, call, envir=sys.frame(frame.number))
+    param.names <- names(full.call)
+    
+    # The plot parameter is optional in ggsave.  If not provided,
+    # we need to link to the last plot created.  Set a flag so 
+    # that is done after the statement completes.
+    if (!("plot" %in% param.names)) {
+      .ddg.set(".ddg.implicit.plot", TRUE)
+    }
+    
+    if (filename != "Rplots.pdf" && !file.exists("Rplots.pdf")) {
+      .ddg.set (".ddg.remove.Rplots", TRUE)
+    }
+  }
+  else {
+    # Get the name of the connection parameter for the close function
+    file.close.functions <- .ddg.get (".ddg.file.close.functions.df")
+    file.param.name <- file.close.functions$param.names[file.close.functions$function.names == fname]
+    #print (paste (".ddg.trace.close: file.param.name = ", file.param.name))
   
-  # Get the name of the connection parameter for the close function
-  file.close.functions <- .ddg.get (".ddg.file.close.functions.df")
-  file.param.name <- file.close.functions$param.names[file.close.functions$function.names == fname]
-  #print (paste (".ddg.trace.close: file.param.name = ", file.param.name))
+    # Get the value of the connection parameter  
+    close.conn <- eval (as.symbol(file.param.name), envir = sys.frame(frame.number))
   
-  # Get the value of the connection parameter  
-  close.conn <- eval (as.symbol(file.param.name), envir = sys.frame(frame.number))
-  
-  # If the connection was opened for writing, then add the connection
-  # to the list for which we create output file nodes.  We do not need 
-  # to do anything if the connection was only open for reading because the
-  # read code will have already created the node.
-  if (.ddg.can.write.connection (close.conn)) {
-    .ddg.add.output.file (.ddg.get.connection.description(close.conn))
+    # If the connection was opened for writing, then add the connection
+    # to the list for which we create output file nodes.  We do not need 
+    # to do anything if the connection was only open for reading because the
+    # read code will have already created the node.
+    if (.ddg.can.write.connection (close.conn)) {
+      .ddg.add.output.file (.ddg.get.connection.description(close.conn))
+    }
   }
 }
 
@@ -844,11 +917,15 @@
 
 .ddg.trace.graphics.open <- function () {
   
-  if (.ddg.inside.call.to (".ddg.capture.graphics") || .ddg.inside.call.to (".ddg.trace.graphics.update")) {
+  if (.ddg.inside.call.to (".ddg.capture.graphics") || 
+      .ddg.inside.call.to (".ddg.trace.graphics.update") ||
+      .ddg.inside.call.to (".ddg.graphic.snapshot") ||
+      .ddg.inside.call.to ("ggsave")) {
     return()
   }
   
   #print ("In .ddg.trace.graphics.open")
+  #print (sys.calls())
   
   # Get the frame corresponding to the graphics function being traced
   frame.number <- .ddg.get.traced.function.frame.number()
@@ -944,11 +1021,12 @@
 #' @return nothing
 
 .ddg.trace.graphics.update <- function () {
-  if (.ddg.inside.call.to (".ddg.capture.graphics") ) { 
+  if (.ddg.inside.call.to (".ddg.capture.graphics") || .ddg.inside.call.to ("ggsave")) { 
     return()
   }
   
   #print ("In .ddg.trace.graphics.update")
+  #print (sys.calls())
   .ddg.set (".ddg.add.device.io", TRUE)
 }
 
@@ -1008,7 +1086,7 @@
 #' @return nothing
 
 .ddg.trace.graphics.close <- function () {
-  if (.ddg.inside.call.to (".ddg.capture.graphics") ) { 
+  if (.ddg.inside.call.to (".ddg.capture.graphics") || .ddg.inside.call.to ("ggsave")) { 
     return()
   }
   
@@ -1079,7 +1157,7 @@
     # Check if the device is still open and close it if it is
     # We need to do this so that the file.out call can
     # copy the file.
-    if (dev.number %in% grDevices::dev.list()) {
+    if (dev.number %in% grDevices::dev.list() && dev.number != 1) {
       grDevices::dev.off(dev.number)
     }
   }
@@ -1134,6 +1212,7 @@
 
 .ddg.capture.current.graphics <- function() {
 	#print ("In .ddg.capture.current.graphics")
+  #print(sys.calls())
 	
 	# Create the file name to save the screen graphics to
 	file <- paste0("dev.off.", .ddg.dnum()+1, ".pdf")
@@ -1144,9 +1223,13 @@
 	# dev.print fails when running from the test scripts, or Rscript in general
 	# In that case, check for the existence of Rplots.pdf, which is 
 	# where Rscript places plots sent to the default graphics.
-	if (names(grDevices::dev.cur()) == "pdf") {
-		if (file.exists ("Rplots.pdf") && !.ddg.get(".ddg.rplots.pdf.saved")) {
-      grDevices::dev.off()
+	if (names(grDevices::dev.cur()) == "pdf" && !.ddg.get(".ddg.ignore.rplots")) {
+    if (file.exists ("Rplots.pdf") && !.ddg.get(".ddg.rplots.pdf.saved")) {
+
+      if (grDevices::dev.cur() != 1) { 
+        grDevices::dev.off()
+      }
+
 			.ddg.set (".ddg.rplots.pdf.saved", TRUE)
 			return("Rplots.pdf")
 		}
