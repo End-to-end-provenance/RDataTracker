@@ -135,6 +135,10 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
   # Mark graph as initilized.
   .ddg.set(".ddg.initialized", TRUE)
   
+  if (is.null (r.script.path)) {
+    .ddg.add.start.node (node.name = "Console")
+  }
+  
   invisible()
 }
 
@@ -249,6 +253,13 @@ ddg.save <- function(save.debug = FALSE, quit = FALSE) {
   
   # Get the final commands
   .ddg.console.node()
+  
+  if (is.null (.ddg.get ("ddg.r.script.path"))) {
+    .ddg.add.finish.node (node.name = "Console")
+    if (!quit) {
+      .ddg.add.start.node (node.name = "Console")
+    }
+  }
 
   # By convention, this is the final call to ddg.save.  This is
   # called at the end of ddg.run, and the user should call ddg.save
