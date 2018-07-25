@@ -557,6 +557,7 @@
   }
   
   # If Rplots was surprisingly created by Travis, delete it!
+  # This seems to happen because Travis runs headless.
   if (.ddg.get (".ddg.remove.Rplots") && file.exists("Rplots.pdf")) {
     #print ("Removing Rplots.pdf")
     unlink ("Rplots.pdf")
@@ -744,6 +745,12 @@
       .ddg.set(".ddg.implicit.plot", TRUE)
     }
     
+    # Remember that Rplots.pdf did not exist and was not
+    # explicitly requested.  If ggsave creates it, we 
+    # will delete it after ggsave completes so the node
+    # does not appear in the ddg.  This is a Travis issue,
+    # which I believe happens because Travis runs headless, resulting
+    # in an extra node in the ddg.
     if (filename != "Rplots.pdf" && !file.exists("Rplots.pdf")) {
       .ddg.set (".ddg.remove.Rplots", TRUE)
     }
