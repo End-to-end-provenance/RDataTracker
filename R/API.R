@@ -255,7 +255,7 @@ ddg.save <- function(save.debug = FALSE, quit = FALSE) {
   }
   
   # Save ddg.json to file.
-  ddg.json.write()
+  .ddg.json.write()
   if (interactive()) print(paste("Saving ddg.json in ", .ddg.path(), sep=""))
   
   # Save debug files to debug directory.

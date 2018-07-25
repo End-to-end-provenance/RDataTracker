@@ -1,15 +1,20 @@
 # @author Elizabeth Fong
 # @version 2.1 (July 2018)
 
-# writes json out to file
-ddg.json.write <- function() 
+#' .ddg.json.write writes the prov-json string to file
+#' @return nothing
+
+.ddg.json.write <- function() 
 {
 	fileout <- paste(.ddg.path(), "/ddg.json", sep="")
 	json <- ddg.json()
 	write(json, fileout)
 }
 
-# creates and returns the prov-json string for the current provenance graph
+#' .ddg.json.string creates and returns the prov-json string for the current 
+#' provenance graph
+#' @return the prov-json string
+
 .ddg.json.string <- function()
 {
 	# CONSTANTS
@@ -143,7 +148,10 @@ ddg.json.write <- function()
 
 # --- HELPER FUNCTIONS ------------------------- #
 
-# forms and returns the json string for the prefix node
+#' .ddg.json.prefix forms and returns the json string for the prefix node
+#' @param node prefix node
+#' @return the json string for the prefix node
+
 .ddg.json.prefix <- function( node )
 {
 	# let the prefix node be named
@@ -162,7 +170,13 @@ ddg.json.write <- function()
 	return( sub('\n}\n$', '', json) )
 }
 
-# forms and returns the json string for the agent node
+#' .ddg.json.agent forms and returns the json string for the agent node
+#' @param tool name of provenance collection tool
+#' @param json.version json version number
+#' @param label node label
+#' @param prefix node prefix
+#' @return the json string for the agent node
+
 .ddg.json.agent <- function( tool , json.version , label , prefix )
 {
 	# get node content
@@ -180,7 +194,11 @@ ddg.json.write <- function()
 	return( .ddg.json.formNode("agent", json) )
 }
 
-# forms and returns the json string for the procedure nodes
+#' .ddg.json.proc forms and returns the json string for the procedure nodes
+#' @param label node label
+#' @param prefix node prefix
+#' @return the json string for the procedure node
+
 .ddg.json.proc <- function( label , prefix )
 {
 	nodes <- .ddg.proc.nodes()
@@ -209,7 +227,11 @@ ddg.json.write <- function()
 	return( .ddg.json.formNode("activity", json) )
 }
 
-# forms and returns the json string for the data nodes
+#' .ddg.json.data forms and returns the json string for the data nodes
+#' @param label node label
+#' @param prefix node prefix
+#' @return the json string for the data node
+
 .ddg.json.data <- function( label , prefix )
 {
 	nodes <- .ddg.data.nodes()
@@ -235,7 +257,11 @@ ddg.json.write <- function()
 	return( .ddg.json.dataframe(nodes, col.names, prefix, comment = "data nodes") )
 }
 
-# forms and returns the json string for the environment node
+#' .ddg.json.env forms and returns the json string for the environment node
+#' @param label node label
+#' @param prefix node prefix
+#' @return the json string for the environment node
+
 .ddg.json.env <- function( label , prefix )
 {
 	# GET CONTENT FOR NODE
@@ -320,7 +346,10 @@ ddg.json.write <- function()
 	return( gsub('\n', '\n\t', json) )
 }
 
-# return the names of other scripts that were sourced and their timestamps.
+# .ddg.json.sourced.scripts return the names of other scripts that were sourced 
+#' and their timestamps.
+#' @return the names and timestamps of other sourced scripts
+
 .ddg.json.sourced.scripts <- function() 
 {
 	script.names <- ""
@@ -340,7 +369,12 @@ ddg.json.write <- function()
 	return( list(script.names, script.times) )
 }
 
-# forms and returns the json string for the library nodes
+#' .ddg.json.lib forms and returns the json string for the library nodes
+#' @param nodes library nodes
+#' @param label node label
+#' @param prefix node prefix
+#' @return the json string for the library nodes
+
 .ddg.json.lib <- function( nodes , label , prefix )
 {
 	# change col names
@@ -360,7 +394,10 @@ ddg.json.write <- function()
 	return( json )
 }
 
-# forms and returns the json string for the type node for a collection
+#' .ddg.json.collection forms and returns the json string for the type node 
+#' for a collection
+#' @return the json string for the type node for a collection
+
 .ddg.json.collection <- function()
 {
 	prov.type <- list("prov:Collection", "xsd:QName")
@@ -387,7 +424,12 @@ ddg.json.write <- function()
 	return( sub('^\\{', ',', json) )
 }
 
-# forms and returns the json string for function nodes
+#' .ddg.json.func forms and returns the json string for function nodes
+#' @param nodes function nodes
+#' @param label node label
+#' @param prefix node prefix
+#' @return the json string for function nodes
+
 .ddg.json.func <- function( nodes , label , prefix )
 {
 	# extract names of functions
@@ -404,7 +446,13 @@ ddg.json.write <- function()
 	return( .ddg.json.dataframe(nodes, "name", prefix, comment = "function nodes") )
 }
 
-# forms and returns the json string for nodes representing procedure-to-procedure edges
+#' .ddg.json.proc2proc forms and returns the json string for nodes representing 
+#' procedure-to-procedure edges
+#' @param edges edge nodes
+#' @param label node label
+#' @param prefix node prefix
+#' @return the json string for procedure-to-procedure edges
+
 .ddg.json.proc2proc <- function( edges , label , prefix )
 {
 	# extract procedure-to-procedure edges, where ddg.type is 'cf' (control flow)
@@ -429,7 +477,13 @@ ddg.json.write <- function()
 	return( .ddg.json.formNode("wasInformedBy", json) )
 }
 
-# forms and returns the json string for nodes representing procedure-to-data edges
+# .ddg.json.proc2data forms and returns the json string for nodes representing 
+#' procedure-to-data edges
+#' @param edges edge nodes
+#' @param label node label
+#' @param prefix node prefix
+#' @return the json string for procedure-to-data edges
+
 .ddg.json.proc2data <- function( edges , label , prefix )
 {
 	# extract procedure-to-data edges, where ddg.type is 'df.out' (data flow out)
@@ -454,7 +508,13 @@ ddg.json.write <- function()
 	return( .ddg.json.formNode("wasGeneratedBy", json) )
 }
 
-# forms and returns the json string for nodes representing data-to-procedure edges
+# .ddg.json.data2proc forms and returns the json string for nodes representing 
+#' data-to-procedure edges
+#' @param edges edge nodes
+#' @param label node label
+#' @param prefix node prefix
+#' @return the json string for data-to-procedure edges
+
 .ddg.json.data2proc <- function( edges , label , prefix )
 {
 	# extract data-to-procedure edges, where ddg.type is 'df.in' (data flow in)
@@ -476,7 +536,15 @@ ddg.json.write <- function()
 	return( .ddg.json.dataframe(edges, col.names, prefix, comment = "data-to-procedure edges") )
 }
 
-# forms and returns the json string for nodes representing function-to-procedure edges
+# .ddg.json.func2proc forms and returns the json string for nodes representing 
+#' function-to-procedure edges
+#' @param nodes edge nodes
+#' @param label.edge edge label
+#' @param label.func function label
+#' @param label.proc procedure label
+#' @param prefix node prefix
+#' @return the json string for function-to-procedure edges
+
 .ddg.json.func2proc <- function( nodes , label.edge , label.func , label.proc , prefix )
 {
 	# extract columns
@@ -494,7 +562,15 @@ ddg.json.write <- function()
 	return( .ddg.json.dataframe(edges, col.names, prefix, comment = "function-to-procedure edges") )
 }
 
-# forms and returns the json string for nodes linking functions to their libraries
+# .ddg.json.lib2func forms and returns the json string for nodes linking functions 
+#' to their libraries
+#' @param nodes linking nodes
+#' @param label.edge edge label
+#' @param label.lib library label
+#' @param label.func function label
+#' @param prefix node prefix
+#' @return the json string for nodes linking functions to their libraries
+
 .ddg.json.lib2func <- function( nodes , label.edge , label.lib , label.func , prefix )
 {
 	# extract columns
@@ -522,7 +598,10 @@ ddg.json.write <- function()
 	return( .ddg.json.formNode("hadMember", json) )
 }
 
-# combines all json parts into 1 complete prov-json string
+#' .ddg.json.combine combines all json parts into 1 complete prov-json string
+#' @param json list of json parts
+#' @return the complete prov-json string
+
 .ddg.json.combine <- function( json )
 {
 	# remove all NA slots
@@ -552,10 +631,14 @@ ddg.json.write <- function()
 	return( .ddg.json.combine.rec(json) )
 }
 
-# extracts and combines the different parts of the given node, 
-# then puts it back into the json list
-# if there are more than 1 part to the node, it removes the extra slots in the list
-# previously assigned to those parts
+#' .ddg.json.combine.node extracts and combines the different parts of the given node, 
+#' then puts it back into the json list.
+#' If there is more than 1 part to the node, it removes the extra slots in the list
+#' previously assigned to those parts
+#' @param json list of json parts
+#' @param node.name node name
+#' @return list of combined json parts
+
 .ddg.json.combine.node <- function( json , node.name )
 {
 	# get the indices which the node parts reside in the json list
@@ -596,7 +679,11 @@ ddg.json.write <- function()
 	return( json )
 }
 
-# recursive function for combining all elements in the given list to 1 (divide and conquer)
+# .ddg.json.combine.rec is a recursive function for combining all elements 
+#' in the given list to 1 (divide and conquer)
+#' @param list list of json parts
+#' @return list of combined json parts
+
 .ddg.json.combine.rec <- function( list )
 {
 	length <- length(list)
@@ -617,19 +704,29 @@ ddg.json.write <- function()
 
 # --- MULTIPLE-USE FUNCTIONS ------------------- #
 
-# adds escape characters to double quotes within strings
+#' .ddg.json.escape.quotes adds escape characters to double quotes within strings
+#' @param string input string
+#' @return string with double quotes escaped
+
 .ddg.json.escape.quotes <- function( string )
 {
 	return( gsub('\"', '\\"', string) )
 }
 
-# converts '    ' or \t to escaped tab characters in string
+#' .ddg.json.escape.tabs converts '    ' or \t to escaped tab characters in string
+#' @param str input string
+#' @return string with tabs escaped
+
 .ddg.json.escape.tabs <- function( str )
 {
 	return( gsub('(    |\t)', '\\\t', str) )
 }
 
-# in a data frame, converts '    ' or \t to escaped tab characters in strings
+# .ddg.json.df.escape.tabs in a data frame, converts '    ' or \t to escaped tab 
+#' characters in strings
+#' @param dataframe input dataframe
+#' @return dataframe with tabs escaped in strings
+
 .ddg.json.df.escape.tabs <- function( dataframe )
 {
 	# get column numbers where the type is 'character'
@@ -656,7 +753,13 @@ ddg.json.write <- function()
 	return(dataframe)
 }
 
-# converts a data frame into a formatted json string
+#' .ddg.json.dataframe converts a data frame into a formatted json string
+#' @param dataframe input dataframe
+#' @param col.names column names
+#' @param obj.prefix object prefix
+#' @param comment optional comment
+#' @return a formatted json string
+
 .ddg.json.dataframe <- function( dataframe , col.names , obj.prefix , comment = NULL )
 {
 	# PROCESS TABLE TO PREPARE FOR PRINTING
@@ -707,8 +810,12 @@ ddg.json.write <- function()
 	return( json )
 }
 
-# forms a first-level prov-json node
-# e.g. activity, entity, used, etc.
+#' .ddg.json.formNode forms a first-level prov-json node
+#' e.g. activity, entity, used, etc.
+#' @param node.name node name
+#' @param node.content node content
+#' @return a first-level prov-json node
+
 .ddg.json.formNode <- function( node.name , node.content )
 {
 	# form node name string

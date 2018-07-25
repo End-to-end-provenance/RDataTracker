@@ -34,16 +34,17 @@
 # ddg.num.returns is the number of return values in the table
 
 
-#' Create a data frame of empty rows to put in the return value table.
-#' It is faster to add a bunch of empty rows and update them than to 
-#' add one row at a time
+#' .ddg.create.return.value.rows creates a data frame of empty rows to put in 
+#' the return value table. It is faster to add a bunch of empty rows and update 
+#' them than to add one row at a time.
 #' @param size the number of rows to create
-#' @return A data frame with 4 columns: \cr
-#' ddg.call - the text of the function call that was made, like f7(n) \cr
-#' line - the start line of the statement that contained the function call \cr
+#' @return A data frame with 4 columns:
+#' ddg.call - the text of the function call that was made, like f7(n)
+#' line - the start line of the statement that contained the function call
 #' return.used - if TRUE, it means that the value that was returned by this call
-#'    is already linked to.  This is important to be able to distinguish recursive calls \cr
+#'    is already linked to.  This is important to be able to distinguish recursive calls
 #' return.node.id - the id of the data node that holds the return value
+
 .ddg.create.return.value.rows <- function (size=100) {
   return (data.frame(
           ddg.call=character(size),
@@ -53,15 +54,19 @@
           stringsAsFactors=FALSE))
 }
 
-#' Initializes the data used to manage return values
+#' .ddg.init.return.values initializes the data used to manage return values
 #' @return nothing
+
 .ddg.init.return.values <- function () {
   .ddg.set(".ddg.return.values", .ddg.create.return.value.rows(100))
   .ddg.set(".ddg.num.returns", 0)
 }
 
-#' Write the return value information to a csv table.  Useful for debugging.
-#' The file will be in the debug directory in a file called function-returns.csv
+#' .ddg.save.return.value.table writes the return value information to a csv table.
+#' Useful for debugging. The file will be in the debug directory in a file called
+#'  function-returns.csv
+#' @return nothing
+
 .ddg.save.return.value.table <- function () {
   # Save function return table to file.
   fileout <- paste(.ddg.path.debug(), "/function-returns.csv", sep="")
@@ -73,11 +78,12 @@
 }
 
 
-#' Find the return value nodes that match the function calls made on the 
-#' line that is passed in
+#' .ddg.get.matching.return.value.nodes finds the return value nodes that match 
+#' the function calls made on the line that is passed in.
 #' @param command a DDGStatement object containing one or more function calls
 #' @return the return node ids of the data nodes that
-#'   correspond to the values returned by the function calls passed in
+#' correspond to the values returned by the function calls passed in
+
 .ddg.get.matching.return.value.nodes <- function (command) {
   # Find the return values that have not been used yet.  If the start line of
   # the function call is known, only keep entries for that line.
@@ -102,19 +108,20 @@
   return (unused.returns[uses, ]$return.node.id)
 }
 
-#' Mark a return value as being used.
+#' .ddg.set.return.value.used marks a return value as being used.
 #' @param data.num the data node id for the return value being used
-#' @return nothing 
+#' @return nothing
+
 .ddg.set.return.value.used <- function(data.num) {
   returns <- .ddg.get(".ddg.return.values")
   returns$return.used[returns$return.node.id == data.num] <- TRUE
   .ddg.set(".ddg.return.values", returns)
 }
 
-
-#' Add a new entry to the return value table
+#' .ddg.add.to.return.values adds a new entry to the return value table
 #' @param call.text the text of the function call
 #' @return nothing
+
 .ddg.add.to.return.values <- function (call.text) {
   ddg.return.values <- .ddg.get(".ddg.return.values")
   ddg.num.returns <- .ddg.get(".ddg.num.returns")
