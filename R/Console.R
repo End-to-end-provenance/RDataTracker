@@ -180,6 +180,7 @@ ddg.console.on <- function() {
 #' are not in console mode.
 #' @return nothing
 .ddg.console.node <- function() {
+  return ()
   if (!interactive()) return()
   if (!.ddg.enable.console()) return()
   if (.ddg.is.sourced()) return()

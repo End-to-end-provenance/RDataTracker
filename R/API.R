@@ -76,10 +76,33 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
     output.path <- paste(.ddg.path.scripts(), "/", basename(tools::file_path_sans_ext(r.script.path)), ".R", sep = "")
     .ddg.markdown(r.script.path, output.path)
     .ddg.set("ddg.r.script.path", output.path)
-  } else {
+  } else if (!is.null (r.script.path)) {
     .ddg.set("ddg.r.script.path",
              if (is.null(r.script.path)) NULL
              else normalizePath(r.script.path, winslash="/"))
+  }
+  else {
+    f <- function (task, result, success, printed) {
+       print(task)
+       print (paste ("is.expression(task)?", is.expression(task)))
+       print (paste ("is.language(task)?", is.expression(task)))
+       print (paste ("str(task)?", str(task)))
+       print (paste ("str(task[[1]])?", str(task[[1]])))
+       print (paste ("class(task)?", class(task)))
+       print (paste("result =", result))
+       print (paste("success =", success))
+       
+       
+       # Create the provenance for the new command
+       .ddg.parse.commands(as.expression(task),
+             environ = .GlobalEnv,
+             run.commands=FALSE,
+             from.console = TRUE)
+         
+       return(TRUE)
+         
+    }
+    .ddg.set (".ddg.taskCallBack.id", addTaskCallback(f))
   }
 
   # Set environment constants.
@@ -243,6 +266,10 @@ ddg.save <- function(save.debug = FALSE, quit = FALSE) {
     }
     
     .ddg.stop.iotracing()
+    if (.ddg.is.set (".ddg.taskCallBack.id")) {
+      removeTaskCallback (.ddg.get (".ddg.taskCallBack.id"))
+    }
+    
     
     # Restore history settings.
     .ddg.restore.history.size()
