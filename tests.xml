@@ -67,7 +67,6 @@
 	The target "source-tests" will run the following tests cases:
 
 	- SourceFuncTest
-	- OnOffTest <- temporarily removed
 
 	The target "bug-tests" will run the following test cases:
 
@@ -843,19 +842,6 @@
 		</antcall>
 	</target>
 
-	<target name="OnOffTest">
-		<antcall target="run-regression-test">
-			<param name="test-name" value="OnOffTest" />
-		</antcall>
-	</target>
-
-	<target name="update-OnOffTest">
-		<antcall target="update-regression-expected">
-			<param name="test-name" value="OnOffTest" />
-		</antcall>
-	</target>
-
-	<!--<target name="source-tests" depends="SourceFuncTest, OnOffTest">-->
 	<target name="source-tests" depends="SourceFuncTest">
 		<echo>Finished Execution of Source Tests.</echo>
 	</target>
