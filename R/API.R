@@ -232,58 +232,75 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
   invisible()
 }
 
-#' ddg.save saves the current provenance graph
+#' ddg.save saves the current provenance graph.  If more R statements
+#' are executed, they will be added to this ddg.  To finalize the ddg,
+#' call ddg.quit, which will save and finalize the ddg.
 #'
 #' @param save.debug (optional) - If TRUE, save debug files to debug directory.
-#' Used in console mode.
-#' @param quit (optional) - If TRUE, remove all DDG files from memory.
 #'
 #' @return nothing
 #' @export
-ddg.save <- function(save.debug = FALSE, quit = FALSE) {
+ddg.save <- function(save.debug = FALSE) {
   if (!.ddg.is.init()) return(invisible())
   
   # If running from the console create a Console finish node.
-  # If not quitting, also create a start node for the next
-  # segment.
+  # Also create a start node for the next segment.
   if (is.null (.ddg.get ("ddg.r.script.path"))) {
     .ddg.add.finish.node (node.name = "Console")
-    if (!quit) {
-      .ddg.add.start.node (node.name = "Console")
-    }
+    .ddg.add.start.node (node.name = "Console")
   }
 
-  # By convention, this is the final call to ddg.save.  This is
-  # called at the end of ddg.run, and the user should call ddg.save
-  # with quit = true when they want to finalize a ddg run from
-  # the console
-  if (quit) {
-    # If there are any connections still open when the script ends,
-    # create nodes and edges for them.
-    .ddg.create.file.nodes.for.open.connections ()
-    
-    # If there is a display device open, grab what is on the display
-    if (length(grDevices::dev.list()) >= 1) {
-      tryCatch (.ddg.capture.graphics(called.from.save = TRUE),
-          error = function (e) print(e))
-    }
-    
-    # Turn off the I/O tracing and console tracing.
-    .ddg.stop.iotracing()
-    if (.ddg.is.set (".ddg.taskCallBack.id")) {
-      removeTaskCallback (.ddg.get (".ddg.taskCallBack.id"))
-    }
-    
-    # Delete temporary files.
-    .ddg.delete.temp()
+  # Save ddg.json to file.
+  ddg.json.write()
+  if (interactive()) print(paste("Saving ddg.json in ", .ddg.path(), sep=""))
+  
+  # Save debug files to debug directory.
+  if (save.debug || .ddg.save.debug()) {
+    .ddg.save.debug.files()
+  }
 
-    # Shut down the DDG.
-    #.ddg.clear()
-    # Mark graph as initilized.
-    .ddg.set(".ddg.initialized", FALSE)
-    
+  invisible()
+}
+
+#' ddg.quit saves the current provenance graph and closes the current ddg
+#'
+#' @param save.debug (optional) - If TRUE, save debug files to debug directory.
+#' Used in console mode.
+#'
+#' @return nothing
+#' @export
+ddg.quit <- function(save.debug = FALSE) {
+  if (!.ddg.is.init()) return(invisible())
+  
+  # If running from the console create a Console finish node.
+  if (is.null (.ddg.get ("ddg.r.script.path"))) {
+    .ddg.add.finish.node (node.name = "Console")
   }
   
+  # If there are any connections still open when the script ends,
+  # create nodes and edges for them.
+  .ddg.create.file.nodes.for.open.connections ()
+  
+  # If there is a display device open, grab what is on the display
+  if (length(grDevices::dev.list()) >= 1) {
+    tryCatch (.ddg.capture.graphics(called.from.save = TRUE),
+        error = function (e) print(e))
+  }
+  
+  # Turn off the I/O tracing and console tracing.
+  .ddg.stop.iotracing()
+  if (.ddg.is.set (".ddg.taskCallBack.id")) {
+    removeTaskCallback (.ddg.get (".ddg.taskCallBack.id"))
+  }
+  
+  # Delete temporary files.
+  .ddg.delete.temp()
+  
+  # Shut down the DDG.
+  #.ddg.clear()
+  # Mark graph as initilized.
+  .ddg.set(".ddg.initialized", FALSE)
+    
   # Save ddg.json to file.
   ddg.json.write()
   if (interactive()) print(paste("Saving ddg.json in ", .ddg.path(), sep=""))
@@ -295,12 +312,12 @@ ddg.save <- function(save.debug = FALSE, quit = FALSE) {
   
   # Clear DDGStatements from ddg environment.  
   # Should this be only inside the quit if-statement?
-  .ddg.init.statements ()
+  #.ddg.init.statements ()
   
   # Clear loop information from ddg environment.
   # Should this be only inside the quit if-statement?
-  .ddg.clear.loops ()
-
+  #.ddg.clear.loops ()
+  
   invisible()
 }
 
@@ -364,7 +381,7 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
     else stop("r.script.path and f cannot both be NULL"),
 
     finally={
-      ddg.save(quit=TRUE)
+      ddg.quit()
       if(display==TRUE){
         ddg.display()
       }
