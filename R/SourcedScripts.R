@@ -22,8 +22,9 @@
 # sname - the name of the script file
 # stime - the timestamp of script file
 
-#' Initializes the data needed to manage sourced scripts
+#' .ddg.init.sourced.scripts initializes the data needed to manage sourced scripts
 #' @return nothing
+
 .ddg.init.sourced.scripts <- function () {
   # Script sourced with ddg.source
   .ddg.set(".ddg.is.sourced", FALSE)
@@ -35,23 +36,33 @@
   .ddg.set(".ddg.sourced.scripts", NULL)
 }
 
-#' @return TRUE if we are running a script from a file, as opposed to console commands
+#' .ddg.is.sourced returns True if we are running a script from a file,
+#' as opposed to console commands.
+#' @return TRUE if we are running a script from file
+
 .ddg.is.sourced <- function() {
   return (.ddg.get(".ddg.is.sourced"))
 }
 
-#' @return the value to use for the next script id
+#' .ddg.next.script.num returns the value to use for the next script id
+#' @return the value of the next script id
+
 .ddg.next.script.num <- function() {
   return(.ddg.get(".ddg.next.script.num"))
 }
 
+#' .ddg.sourced.scripts returns a dataframe containing the sourced script table
 #' @return a data frame containing the sourced script table
+
 .ddg.sourced.scripts <- function() {
   return(.ddg.get(".ddg.sourced.scripts"))
 }
 
-#' Write the sourced script table to a csv file.  Useful for debugging.
-#' The file will be in the debug directory in a file called sourced-scripts.csv
+#' .ddg.save.sourced.script.table writes the sourced script table to a csv file.
+#' Useful for debugging. The file will be in the debug directory in a file called 
+#' sourced-scripts.csv.
+#' @return nothing
+
 .ddg.save.sourced.script.table <- function () {
   # Save if script is sourced.
   if (.ddg.is.sourced()) 
@@ -64,9 +75,10 @@
   }
 }
 
-#' Record a new script in the sourced scripts table
+#' .ddg.store.script.info records a new script in the sourced scripts table.
 #' @param sname the name of the script file, excluding the directory
 #' @return the unique id of the script
+
 .ddg.store.script.info <- function (sname) {
   snum <- .ddg.next.script.num()
   stime <- .ddg.format.time( file.info(sname)$mtime )

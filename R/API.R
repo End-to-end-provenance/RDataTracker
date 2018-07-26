@@ -64,7 +64,7 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, anno
   .ddg.set.path (ddgdir, r.script.path, overwrite)
   
   # Remove files from DDG directory
-  ddg.flush.ddg()
+  .ddg.flush.ddg()
 
   # Create DDG directories
   .ddg.init.environ()
@@ -132,19 +132,16 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, anno
   invisible()
 }
 
-#' Sets the path where the DDG will be stored.  It creates the directory if it
-#' does not currently exist.
-#' 
+#' .ddg.set.path sets the path where the DDG will be stored.  It creates the 
+#' directory if it does not currently exist.
 #' The base directory is set as follows:
 #' (1) the directory specified by the user in the parameter ddgdir, or
-#' (2) the directory specified by the user as the value of the option "prov.dir",
-#' or (3) the R session temporary directory. If the directory specified by the user
+#' (2) the directory specified by the user as the value of the option "prov.dir", or
+#' (3) the R session temporary directory. If the directory specified by the user
 #' is a period (.), the base directory is set to the current working directory.
-#'
 #' The provenance graph is stored in a subdirectory of the base directory called 
 #' "prov_console" in console mode or "prov_[script name]" in script mode. If overwrite = 
 #' FALSE, a timestamp is added to the directory name.
-#' 
 #' @param ddgdir name of directory.  This can be a directory name, ".", or NULL.
 #' @param r.script.path the path to the R script.  If NULL, we are running from the console.
 #' @param overwrite If FALSE, a timestamp is added to the directory name
@@ -199,12 +196,12 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, anno
   .ddg.set("ddg.path", ddg.path)
 }
 
-#' ddg.flush.ddg removes all files from the DDG directories unless the
+#' .ddg.flush.ddg removes all files from the DDG directories unless the
 #'   the DDG directory is the working directory. If no DDG directory is
 #'   specified, the current DDG directory is assumed.
-#' 
 #' @param ddg.path (optional) path to DDG directory.
-#' 
+#' @return nothing
+
 .ddg.flush.ddg <- function(ddg.path=NULL) {
   # TODO:  When ddg.flush.ddg is removed (from Obsolete.R, we
   # can remove the ddg.path parameter and update the 
@@ -233,9 +230,7 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, anno
 #' ddg.save saves the current provenance graph.  If more R statements
 #' are executed, they will be added to this ddg.  To finalize the ddg,
 #' call ddg.quit, which will save and finalize the ddg.
-#'
 #' @param save.debug (optional) - If TRUE, save debug files to debug directory.
-#'
 #' @return nothing
 #' @export
 ddg.save <- function(save.debug = FALSE) {
@@ -249,7 +244,7 @@ ddg.save <- function(save.debug = FALSE) {
   }
 
   # Save ddg.json to file.
-  ddg.json.write()
+  .ddg.json.write()
   if (interactive()) print(paste("Saving ddg.json in ", .ddg.path(), sep=""))
   
   # Save debug files to debug directory.
@@ -300,22 +295,14 @@ ddg.quit <- function(save.debug = FALSE) {
   .ddg.set(".ddg.initialized", FALSE)
     
   # Save ddg.json to file.
-  ddg.json.write()
+  .ddg.json.write()
   if (interactive()) print(paste("Saving ddg.json in ", .ddg.path(), sep=""))
   
   # Save debug files to debug directory.
   if (save.debug || .ddg.save.debug()) {
     .ddg.save.debug.files()
   }
-  
-  # Clear DDGStatements from ddg environment.  
-  # Should this be only inside the quit if-statement?
-  #.ddg.init.statements ()
-  
-  # Clear loop information from ddg environment.
-  # Should this be only inside the quit if-statement?
-  #.ddg.clear.loops ()
-  
+   
   invisible()
 }
 
@@ -609,7 +596,6 @@ ddg.source <- function (file,  local = FALSE, echo = verbose, print.eval = echo,
 }
 
 #' ddg.json returns the current provenance graph as a prov-json string
-#'
 #' @return the current provenance graph
 #' @export
 
@@ -619,6 +605,9 @@ ddg.json <- function()
 	# Calls and returns the function with the bulk of the code in OutputJSON.R
 	return( .ddg.json.string() )
 }
+
+#' .ddg.start.ddg.explorer starts DDG Explorer
+#' @return nothing
 
 .ddg.start.ddg.explorer <- function () {
   jar.path<- "/RDataTracker/java/DDGExplorer.jar"

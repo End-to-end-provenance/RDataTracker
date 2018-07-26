@@ -8,11 +8,9 @@
 # Updated by Barbara Lerner to allow for a variety of hash algorithms and refactored
 # to create the DDGHash.R file.
 
-#' Initialize the hashtable
-#'
-#' Initializes the hash table to be empty
-#'
-#' @return None
+#' .ddg.init.hashtable initializes the hashtable to be empty
+#' @return nothing
+
 .ddg.init.hashtable <- function() {
   .ddg.set("ddg.hashtable", data.frame())
   
@@ -22,35 +20,34 @@
   
   # Boolean of whether there are any file nodes
   .ddg.set("ddg.hasfilenodes", FALSE)
-  
 }
 
-#' Adds files it the infile list to add to the hash table 
+#' .ddg.add.infiles adds the infile list to the hash table 
 #' @param files files to add to the list of files read
-#' @return nothing 
+#' @return nothing
+
 .ddg.add.infiles <- function (files) {
   .ddg.set("ddg.infilenodes", c(.ddg.get("ddg.infilenodes"), files))
 }
 
-#' Adds files it the outfile list to add to the hash table 
+#' .ddg.add.outfiles adds files it the outfile list to add to the hash table 
 #' @param files files to add to the list of files written
 #' @return nothing 
+
 .ddg.add.outfiles <- function (files) {
   .ddg.set("ddg.outfilenodes", c(.ddg.get("ddg.outfilenodes"), files))
 }
 
-#' Adds information about a file to the hash table.
-#' 
+#' .ddg.add.to.hashtable adds information about a file to the hash table.
 #' If the flag is set to save hashing information, this calculates the hash value
 #' and whether the file is read or written and saves it in the hash table.  
-#' 
 #' @param dname the name of the file
 #' @param ddg.dnum the number of the node in the data table
 #' @param dloc the absolute path to the data file
 #' @param dvalue the relative path to the saved copy of the file
 #' @param dtime the timestamp on the file
-#' 
-#' @return None
+#' @return nothing
+
 .ddg.add.to.hashtable <- function(dname, ddg.dnum, dloc, dvalue, dtime) {
   if (!.ddg.get (".ddg.save.hashtable")) {
     return
@@ -74,12 +71,11 @@
   .ddg.set("ddg.hashtable", rbind(.ddg.get("ddg.hashtable"), c(dscriptpath, dloc, longpath, paste(.ddg.path(), dvalue, sep="/"), ddg.dnum, dhash, dhash.algorithm, drw, dtime, dvalue), stringsAsFactors = FALSE))
 }
 
-#' Calculate the hash value for the file
-#' 
+#' .ddg.calculate.hash calculates the hash value for the file
 #' @param dname the name of the file
-#' 
 #' @return the hash value based on the hash algorithm specified when ddg.run or ddg.init was called.
-#'   Returns "" if the digest cannot be computed, for example, if the file does not exist.
+#' Returns "" if the digest cannot be computed, for example, if the file does not exist.
+
 .ddg.calculate.hash <- function(dname) {
   .ddg.set("ddg.hasfilenodes", TRUE)
   
@@ -95,11 +91,10 @@
   
 }
 
-#' Determines whether to record this as a read or write operation in the hash table
-#' 
+#' .ddg.calculate.rw determines whether to record this as a read or write operation in the hash table
 #' @param dname the data file name
-#' 
 #' @return "read" if the file was read and "write" if the file was written
+
 .ddg.calculate.rw <- function(dname) {
   infiles <- .ddg.get("ddg.infilenodes")
   if (dname %in% infiles) {
@@ -119,13 +114,12 @@
   return ("")
 }
 
-
 #' .ddg.hashtable.write writes relevant information about the ddg
 #' to the .ddg directory in the user's home directory. If the
 #' function is unable to access or create this directory, then 
-#' it will write to the working directory.
-#' 
-#' @return None
+#' it will write to the working directory. 
+#' @return nothing
+
 .ddg.hashtable.write <- function() {
   # if (interactive()) print(paste("Saving DDG in ", fileout))
   
@@ -164,12 +158,11 @@
 
 #' .ddg.hashtable.cleanup removes entries in the hashtable that have been
 #' overwritten by more recent iterations. It does this by removing entries
-#' with matching DDGPaths.
-#' 
+#' with matching DDGPaths. 
 #' @param hashtable.json the full path to the hashtable file already saved to the file system
-#' 
 #' @return the dataframe containing the contents of the existing hashtable file with 
-#'    entries corresponding to overwritten files removed
+#' entries corresponding to overwritten files removed
+
 .ddg.hashtable.cleanup <- function(hashtable.json) {
   old_hashtable <- jsonlite::read_json(hashtable.json, simplifyVector = TRUE)
   longpath <- paste0(getwd(), substring(.ddg.path(),2), "/ddg.json")
@@ -178,10 +171,10 @@
   return(old_hashtable)
 }
 
-#' Saves the hashtable to a file if the script has any file information to save and
-#' the save hashtable flag was set when ddg.run/init was called.
-#' 
-#' @return None
+#' .ddg.save.hashtable saves the hashtable to a file if the script has any file information 
+#' to save and the save hashtable flag was set when ddg.run/init was called.
+#' @return nothing
+
 .ddg.save.hashtable <- function() {
   if (.ddg.get (".ddg.save.hashtable") && .ddg.get("ddg.hasfilenodes")) {
     if (interactive()) {

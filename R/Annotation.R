@@ -262,6 +262,7 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
 #' earliest one called.
 #' 
 #' @return the frame number of the user function that called ddg.return.value 
+
 .ddg.find.ddg.return.value.caller.frame.number <- function() {
   # Get the stack
   calls <- sys.calls()
@@ -276,7 +277,10 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
   return (which.frame)
 }
 
-#' @return true if we should be annotating inside control constructs
+#' .ddg.annotate.inside returns True if we should be annotating inside 
+#' control constructs
+#' @return true if annotating inside control constructs
+
 .ddg.annotate.inside <- function() {
   return(.ddg.get("ddg.annotate.inside"))
 }
@@ -293,6 +297,7 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
 #' 
 #' @return nothing
 #' @export
+
 ddg.details.omitted <- function() {
   pnode.name <- "Details Omitted"
   .ddg.proc.node("Incomplete", pnode.name, pnode.name)
@@ -309,6 +314,7 @@ ddg.details.omitted <- function() {
 #' @param func.name name of function
 #' @return True if we should run annotated version
 #' @export
+
 ddg.should.run.annotated <- function (func.name) {
   
   # Check if we are in a loop and loop annotations are off
@@ -504,8 +510,11 @@ ddg.annotate.off <- function (fnames=NULL) {
   
 }
 
-# .ddg.save.annotated.script saves a copy of the annotated script to
-# the debug directory.
+#' .ddg.save.annotated.script saves a copy of the annotated script to
+#' the debug directory.
+#' @param cmds set of parsed commands
+#' @param script.name name of script
+#' @return nothing
 
 .ddg.save.annotated.script <- function(cmds, script.name) {
   for (i in 1:length(cmds)) {
@@ -521,8 +530,10 @@ ddg.annotate.off <- function (fnames=NULL) {
   close(fileout)
 }
 
-# .ddg.add.annotations accepts a DDGStatement and returns an expression.
-# The returned expression is annotated as needed.
+#' .ddg.add.annotations accepts a DDGStatement and returns an expression.
+#' The returned expression is annotated as needed.
+#' @param command a DDGStatement
+#' @return an expression with annotations
 
 .ddg.add.annotations <- function(command) {
   #print("In .ddg.add.annotations")
@@ -568,10 +579,9 @@ ddg.annotate.off <- function (fnames=NULL) {
   return(command@parsed)
 }
 
-# .ddg.add.ddg.source replaces source with ddg.source.
-#
-# parsed.command must be a parsed expression that is a call
-# to the source function.
+#' .ddg.add.ddg.source replaces source with ddg.source.
+#' @param parsed.command a parsed expression that is a call to the source function.
+#' @return a parsed expression with source replaced by ddg.source
 
 .ddg.add.ddg.source <- function(parsed.command) {
   script.name <- deparse(parsed.command[[2]])
@@ -579,15 +589,15 @@ ddg.annotate.off <- function (fnames=NULL) {
   return(parse(text=parsed.command.txt))
 }
 
-# .ddg.add.function.annotations is passed a command that corresponds
-# to a function declaration.  It returns a parsed command corresponding
-# to the same function declaration but with calls to ddg.function,
-# ddg.eval and ddg.return.value inserted if they are not already present.
-# The functions ddg.annotate.on and ddg.annotate.off may be used to provide
-# a list of functions to annotate or not to annotate, respectively.
-#
-# function.decl should be a command that contains an assignment statement where the value
-# being bound is a function declaration
+#' .ddg.add.function.annotations is passed a command that corresponds
+#' to a function declaration.  It returns a parsed command corresponding
+#' to the same function declaration but with calls to ddg.function,
+#' ddg.eval and ddg.return.value inserted if they are not already present.
+#' The functions ddg.annotate.on and ddg.annotate.off may be used to provide
+#' a list of functions to annotate or not to annotate, respectively.
+#' @param function.decl a command that contains an assignment statement where the value
+#' being bound is a function declaration
+#' @return a parsed command with annotations added
 
 .ddg.add.function.annotations <- function(function.decl) {
   #print("In .ddg.add.function.annotations")
@@ -638,13 +648,11 @@ ddg.annotate.off <- function (fnames=NULL) {
   return (as.expression (call ("<-", as.name(func.name), func.definition)))
 }
 
-# .ddg.create.function.block creates a function block.
-#
-# func.definition is a parsed expression for a function declaration (not
-#   the full assignment statement in which it is declared)
-#
-# Returns a parse tree for the same function declaration but with
-# the function statements inside a block.
+#' .ddg.create.function.block creates a function block.
+#' @param func.definition a parsed expression for a function declaration (not
+#'   the full assignment statement in which it is declared)
+#' @return a parse tree for the same function declaration but with
+#' the function statements inside a block.
 
 .ddg.create.function.block <- function(func.definition) {
   # Get the function parameters.
@@ -658,10 +666,10 @@ ddg.annotate.off <- function (fnames=NULL) {
   return(call("function", func.params, as.call(new.func.body)))
 }
 
-# .ddg.add.conditional.statement creates a new function definition
-# containing an if-then statement used to control annotation.
-#
-# func.definition - original function definition.
+#' .ddg.add.conditional.statement creates a new function definition
+#' containing an if-then statement used to control annotation.
+#' @param func.definition the original function definition.
+#' @return the function definition with annotations added
 
 .ddg.add.conditional.statement <- function(func.definition, func.name) {
   # Get the function parameters.
@@ -689,14 +697,12 @@ ddg.annotate.off <- function (fnames=NULL) {
   return(call("function", func.params, call("{", new.func.body)))
 }
 
-# .ddg.insert.ddg.function inserts ddg.function before the first line
-# in the annotated block of a function body.
-#
-# func.definition is a parsed expression for a function declaration (not
-#   the full assignment statement in which it is declared)
-#
-# Returns a parse tree for the same function declaration but with
-# a call to ddg.function() as the first statement.
+#' .ddg.insert.ddg.function inserts ddg.function before the first line
+#' in the annotated block of a function body.
+#' @param func.definition a parsed expression for a function declaration (not
+#'   the full assignment statement in which it is declared)
+#' @return a parse tree for the same function declaration but with
+#' a call to ddg.function() as the first statement.
 
 .ddg.insert.ddg.function <- function(func.definition) {
   # Get the function parameters.
@@ -719,17 +725,16 @@ ddg.annotate.off <- function (fnames=NULL) {
   return(call("function", func.params, as.call(func.body)))
 }
 
-# .ddg.wrap.return.parameters wraps parameters of return functions
-# with ddg.return.value in the annotated block of a function body.
-#
-# block is the parse tree corresponding to the statements within
-#   the annotated block of a function
-# parsed.stmts is the list of DDGStatement objects contained in the
-#   function
-#
-# Returns a parse tree for the same function body but with
-# a call to ddg.return.value wrapped around all expressions that are
-# returned.
+#' .ddg.wrap.return.parameters wraps parameters of return functions
+#' with ddg.return.value in the annotated block of a function body.
+#'
+#' @param block the parse tree corresponding to the statements within
+#'   the annotated block of a function
+#' @param parsed.stmts the list of DDGStatement objects contained in the
+#'   function
+#' @return a parse tree for the same function body but with
+#' a call to ddg.return.value wrapped around all expressions that are
+#' returned.
 
 .ddg.wrap.return.parameters <- function(block, parsed.stmts) {
   # Check each statement in the annotated block to see if it
@@ -809,18 +814,16 @@ ddg.annotate.off <- function (fnames=NULL) {
   return(block)
 }
 
-# .ddg.wrap.all.return.parameters wraps parameters of all return
-# functions with ddg.return.value in the annotated block of a function
-# definition.
-#
-# func.definition is a parsed expression for a function declaration (not
-#   the full assignment statement in which it is declared)
-# parsed.stmts is the list of DDGStatement objects contained in the
-#   function
-#
-# Returns a parse tree for the same function declaration but with
-# a call to ddg.return.value wrapped around all expressions that are
-# returned.
+#' .ddg.wrap.all.return.parameters wraps parameters of all return
+#' functions with ddg.return.value in the annotated block of a function
+#' definition.
+#' @param func.definition a parsed expression for a function declaration (not
+#'   the full assignment statement in which it is declared)
+#' @param parsed.stmts the list of DDGStatement objects contained in the
+#'   function
+#' @return a parse tree for the same function declaration but with
+#' a call to ddg.return.value wrapped around all expressions that are
+#' returned.
 
 .ddg.wrap.all.return.parameters <- function(func.definition, parsed.stmts) {
   # Get function parameters.
@@ -843,14 +846,12 @@ ddg.annotate.off <- function (fnames=NULL) {
   return(call("function", func.params, as.call(func.body)))
 }
 
-# .ddg.find.last.statement finds the last statement in the annotated
-# block of a function.
-#
-# func.definition is a parsed expression for a function declaration (not
-#   the full assignment statement in which it is declared)
-#
-# Returns the parse tree corresponding to the last statement in the
-# function definition.
+#' .ddg.find.last.statement finds the last statement in the annotated
+#' block of a function.
+#' @param func.definition a parsed expression for a function declaration (not
+#'   the full assignment statement in which it is declared)
+#' @return the parse tree corresponding to the last statement in the
+#' function definition.
 
 .ddg.find.last.statement <- function (func.definition) {
   # Get function body.
@@ -864,17 +865,14 @@ ddg.annotate.off <- function (fnames=NULL) {
   return(block[[pos]])
 }
 
-# .ddg.wrap.last.line wraps the last line of the annotated block of a
-# function with ddg.return.value.
-#
-# func.definition is a parsed expression for a function declaration (not
-#   the full assignment statement in which it is declared)
-# parsed.stmts is the list of DDGStatement objects contained in the
-#   function
-#
-# Returns a parse tree for the same function declaration but with
-# a call to ddg.return.value wrapped around the last line in the
-# body.
+#' .ddg.wrap.last.line wraps the last line of the annotated block of a
+#' function with ddg.return.value.
+#' @param func.definition a parsed expression for a function declaration (not
+#'   the full assignment statement in which it is declared)
+#' @param parsed.stmts the list of DDGStatement objects contained in the
+#'   function
+#' @return a parse tree for the same function declaration but with
+#' a call to ddg.return.value wrapped around the last line in the body.
 
 .ddg.wrap.last.line <- function(func.definition, parsed.stmts) {
   # Get function parameters.
@@ -896,15 +894,13 @@ ddg.annotate.off <- function (fnames=NULL) {
   return(call("function", func.params, as.call(func.body)))
 }
 
-# Creates a call to ddg.return.value using a closure so that we
-# will be able to refer to the correct DDGStatement object when the
-# return call is executed.
-#
-# last.statement is the parse tree for the expression being returned
-# parsed.stmt is the DDGStatement object corresponding to the last statement
-#
-# Returns a parse tree with a call to ddg.return.value.  The arguments to
-# ddg.return.value are the parsed statement and the DDGStatement object.
+#' Creates a call to ddg.return.value using a closure so that we
+#' will be able to refer to the correct DDGStatement object when the
+#' return call is executed.
+#' @param last.statement the parse tree for the expression being returned
+#' @param parsed.stmt the DDGStatement object corresponding to the last statement
+#' @return a parse tree with a call to ddg.return.value.  The arguments to
+#' ddg.return.value are the parsed statement and the DDGStatement object.
 
 .ddg.create.ddg.return.call <- function (last.statement, parsed.stmt) {
   # We need to force the evaluation of parsed.stmt for the closure to
@@ -931,18 +927,16 @@ ddg.annotate.off <- function (fnames=NULL) {
   }
 }
 
-# .ddg.wrap.with.ddg.eval wraps each statement in the annotated block
-# of a function body with ddg.eval if the statement is not a call to a ddg
-# function and does not contain a call to ddg.return.value. The statement
-# is enclosed in quotation marks.
-#
-# func.definition is a parsed expression for a function declaration (not
-#   the full assignment statement in which it is declared)
-# parsed.stmts is the list of DDGStatement objects contained in the
-#   function
-#
-# Returns a parse tree for the same function declaration but with
-# the calls to ddg.eval inserted.
+#' .ddg.wrap.with.ddg.eval wraps each statement in the annotated block
+#' of a function body with ddg.eval if the statement is not a call to a ddg
+#' function and does not contain a call to ddg.return.value. The statement
+#' is enclosed in quotation marks.
+#' @param func.definition a parsed expression for a function declaration (not
+#'   the full assignment statement in which it is declared)
+#' @param parsed.stmts the list of DDGStatement objects contained in the
+#'   function
+#' @return a parse tree for the same function declaration but with
+#' the calls to ddg.eval inserted.
 
 .ddg.wrap.with.ddg.eval <- function(func.definition, parsed.stmts) {
   # Get the function parameters.
@@ -971,7 +965,9 @@ ddg.annotate.off <- function (fnames=NULL) {
   return(call("function", func.params, as.call(func.body)))
 }
 
-# .ddg.annotate.if.statement adds annotations to if statements.
+#' .ddg.annotate.if.statement adds annotations to if statements.
+#' @param command original parsed command
+#' @return parsed command with annotations added
 
 .ddg.annotate.if.statement <- function(command) {
   #print(paste(".ddg.annotate.if.statement annotating", command@text))
@@ -1075,11 +1071,14 @@ ddg.annotate.off <- function (fnames=NULL) {
   return(parse(text=parsed.command.txt))
 }
 
-# .ddg.annotate.loop.statement adds annotations to for, while and repeat
-# statements. Provenance is collected for the number of iterations
-# specified in the parameter max.loops, beginning with the iteration
-# specified in the parameter first.loop. A Details Omitted node may be
-# added before and after the annotated section, as needed.
+#' .ddg.annotate.loop.statement adds annotations to for, while and repeat
+#' statements. Provenance is collected for the number of iterations
+#' specified in the parameter max.loops, beginning with the iteration
+#' specified in the parameter first.loop. A Details Omitted node may be
+#' added before and after the annotated section, as needed.
+#' @param command original parsed command
+#' @param loop.type loop type (for, while, repeat)
+#' @return parsed command with annotationa added
 
 .ddg.annotate.loop.statement <- function(command, loop.type) {
   if (ddg.max.loops() == 0) {
@@ -1162,7 +1161,9 @@ ddg.annotate.off <- function (fnames=NULL) {
   return(parse(text=parsed.command.txt))
 }
 
-# .ddg.annotate.simple.block adds annotations to simple blocks.
+#' .ddg.annotate.simple.block adds annotations to simple blocks.
+#' @param command original parsed command
+#' @return parsed command with annotations added
 
 .ddg.annotate.simple.block <- function(command) {
   # Get parsed command
@@ -1183,10 +1184,10 @@ ddg.annotate.off <- function (fnames=NULL) {
   return(parse(text=block.txt))
 }
 
-# .ddg.is.call.to.ddg.function returns TRUE if the parsed expression
-# passed in is a call to a ddg function.
-#
-# parsed.expr - a parse tree
+#' .ddg.is.call.to.ddg.function returns TRUE if the parsed expression
+#' passed in is a call to a ddg function.
+#' @param parsed.expr a parse tree
+#' @return True if a call to a ddg function
 
 .ddg.is.call.to.ddg.function <- function(parsed.expr) {
   # Check if a function call.
@@ -1199,15 +1200,13 @@ ddg.annotate.off <- function (fnames=NULL) {
   return (FALSE)
 }
 
-# Creates a call to ddg.eval using a closure so that we
-# will be able to refer to the correct DDGStatement object when the
-# return call is executed.
-#
-# statement is the parse tree for the expression being returned
-# parsed.stmt is the DDGStatement object corresponding to the last statement
-#
-# Returns a parse tree with a call to ddg.eval.  The arguments to
-# ddg.eval are the original statement and the DDGStatement object.
+#' Creates a call to ddg.eval using a closure so that we
+#' will be able to refer to the correct DDGStatement object when the
+#' return call is executed.
+#' @param statement the parse tree for the expression being returned
+#' @param parsed.stmt the DDGStatement object corresponding to the last statement
+#' @return a parse tree with a call to ddg.eval.  The arguments to
+#' ddg.eval are the original statement and the DDGStatement object.
 
 .ddg.create.ddg.eval.call <- function (statement, parsed.stmt) {
   # We need to force the evaluation of parsed.stmt for the closure to
@@ -1218,14 +1217,12 @@ ddg.annotate.off <- function (fnames=NULL) {
   return (call("ddg.eval", paste(deparse(statement), collapse=""), function() parsed.stmt))
 }
 
-# Creates a call to ddg.eval using the number of the DDGStatement
-# stored in the list ddg.statements in the ddg environment.
-#
-# statement is the parse tree for the expression being returned and
-# parsed.stmt is the corresponding DDGStatement object.
-#
-# Returns a parse tree with a call to ddg.eval.  The arguments to
-# ddg.eval are the original statement and the number of the DDGStatement object.
+#' Creates a call to ddg.eval using the number of the DDGStatement
+#' stored in the list ddg.statements in the ddg environment.
+#' @param statement the parse tree for the expression being returned and
+#' @param parsed.stmt the corresponding DDGStatement object.
+#' @return a parse tree with a call to ddg.eval.  The arguments to
+#' ddg.eval are the original statement and the number of the DDGStatement object.
 
 .ddg.create.block.ddg.eval.call <- function (statement, parsed.stmt) {
   # Get the next DDGStatement number and store parsed.stmt at this location.
@@ -1236,9 +1233,12 @@ ddg.annotate.off <- function (fnames=NULL) {
   return (call("ddg.eval", paste(deparse(statement), collapse=""), num))
 }
 
-#.ddg.wrap.block.with.ddg.eval wraps each statement in a block with
-# ddg.eval unless the statement is a ddg function or contains a call
-# to ddg.return.value.
+#'.ddg.wrap.block.with.ddg.eval wraps each statement in a block with
+#' ddg.eval unless the statement is a ddg function or contains a call
+#' to ddg.return.value.
+#' @param block original block
+#' @param parsed.stmts parsed statements in block
+#' @return block with annotations added
 
 .ddg.wrap.block.with.ddg.eval <- function(block, parsed.stmts) {
   # Ignore initial brace.
@@ -1257,8 +1257,11 @@ ddg.annotate.off <- function (fnames=NULL) {
   return(block)
 }
 
-# .ddg.add.block.start.finish adds start and finish nodes to blocks in control
-# statements.
+#' .ddg.add.block.start.finish adds start and finish nodes to blocks in control
+#' statements.
+#' @param block original block
+#' @param pname label for start and finish nodes
+#' @return block with annotations added
 
 .ddg.add.block.start.finish <- function(block, pname) {
   # Create ddg.start & ddg.finish statements.
@@ -1281,7 +1284,10 @@ ddg.annotate.off <- function (fnames=NULL) {
   return(block.parsed[[1]])
 }
 
-# .ddg.insert.ddg.forloop inserts a ddg.forloop statement at the top of a block.
+#' .ddg.insert.ddg.forloop inserts a ddg.forloop statement at the top of a block.
+#' @param block original block
+#' @param index.var index variable
+#' @return block with annotations added
 
 .ddg.insert.ddg.forloop <- function(block, index.var) {
   pos <- length(block)
@@ -1300,8 +1306,11 @@ ddg.annotate.off <- function (fnames=NULL) {
   }
 }
 
-# .ddg.insert.ddg.loop.annotate inserts a ddg.loop.annotate.on or
-# ddg.loop.annotate.off statement at the beginning of a block.
+#' .ddg.insert.ddg.loop.annotate inserts a ddg.loop.annotate.on or
+#' ddg.loop.annotate.off statement at the beginning of a block.
+#' @param block original block
+#' @param var whether loop annotation is on or off
+#' @return block with annotations added
 
 .ddg.insert.ddg.loop.annotate <- function(block, var) {
   pos <- length(block)

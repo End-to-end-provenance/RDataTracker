@@ -36,7 +36,7 @@
   .ddg.init.tables()
 }
 
-#' Reinitialize the ddg
+#' .ddg.clear reinitializes the ddg
 #' @return nothing
 .ddg.clear <- function() {
   # reinitialize tables
@@ -45,39 +45,54 @@
 
 ##### Getters for specific variables
 
-#' @return TRUE if debugging information should be saved to the file system
+#' .ddg.save.debug returns True if debugging information should be saved
+#' to the file system
+#' @return TRUE if saving debugging information
+
 .ddg.save.debug <- function() {
   return(.ddg.get("ddg.save.debug"))
 }
 
-#' @return an environment containing the names bound before
+#' .ddg.initial.env returns an environment containing names bound before
 #'   the script was executed
+#' @return an environment containing names previously bound
+
 .ddg.initial.env <- function() {
   return(.ddg.get("ddg.initial.env"))
 }
 
-#' @return the names of functions that the user explicitly said should be annotated
+#' .ddg.annotate.on returns the names of functions that the user explicity said
+#' should be annotated
+#' @return the names of functions to be annotated
+
 .ddg.annotate.on <- function() {
   return (.ddg.get("ddg.annotate.on"))
 }
 
-#' @return the names of functions that user explicitly said should not be annotated
+#' .ddg.annotate.off returns the names of functions that the user explicitly said
+#' should not be annotaed
+#' @return the names of functions not be annotated
+
 .ddg.annotate.off <- function() {
   return (.ddg.get("ddg.annotate.off"))
 }
 
-#' @return TRUE if the commands are coming from a script file
+#' .ddg.enable.source returns True if the commands are coming from a script file
+#' @return TRUE if commands are from a script
+
 .ddg.enable.source <- function() {
   return(.ddg.is.set("from.source") && .ddg.get("from.source"))
 }
 
-#' Keeps track of whether the last loop has all iterations recorded or not.
+#' .ddg.set.details.omitted keeps track of whether the last loop has all iterations 
+#' recorded or not.
 #' @param value if TRUE, it means that not all iterations are recorded
 #' @return nothing
 .ddg.set.details.omitted <- function (value) {
   .ddg.set ("details.omitted", value)
 }
 
+#' .ddg.were.details.omitted returns True if provenance is incomplete at this point
 #' @return TRUE if provenance is incomplete at this point
 .ddg.were.details.omitted <- function () {
   .ddg.get ("details.omitted")
@@ -87,7 +102,6 @@
 #' expressions.  It saves the warning so that a warning
 #' node can be created after the procedural node that
 #' corresponds to the expression that caused the warning
-#'
 #' @param w the simplewarning object created by R
 #' @return nothing
 .ddg.set.warning <- function(w) {
@@ -100,17 +114,19 @@
   }
 }
 
-#' Clear the warning 
+#' .ddg.clear.warning clears the warning 
 #' @return nothing
 .ddg.clear.warning <- function() {
   .ddg.set(".ddg.warning", NA)
 }
 
+#' .ddg.get.warning returns the last saved warning
 #' @return the last saved warning
 .ddg.get.warning <- function () {
   return (.ddg.get(".ddg.warning"))
 }
 
+#' .ddg.warning.occurred returns True if there is a currrently saved warning
 #' @return true if there is currently a saved warning
 .ddg.warning.occurred <- function() {
   return (.ddg.is.set(".ddg.warning") && !is.na(.ddg.get(".ddg.warning")))
@@ -122,7 +138,8 @@
 #' .ddg.get.initial.env creates a table of non-ddg objects present in the
 #' R environment before the script is executed.  This is only used for 
 #' debugging.
-#' 
+#' @return nothing
+
 .ddg.get.initial.env <- function() {
   e <- globalenv()
   e.ls <- ls(e, all.names=TRUE)
@@ -145,7 +162,6 @@
 #' It also initializes selected constants and variables.
 #' Tables are used throughout provenance collection and
 #' optionally saved as tab-delimited files in ddg.save.
-#' 
 #' @return nothing
 .ddg.init.tables <- function() {
   size <- 100
@@ -201,9 +217,7 @@
   .ddg.set(".ddg.cur.expr.stack", vector())
 }
 
-#' .ddg.init.environ() sets up the filesystem and R environments
-#' for use.
-#' 
+#' .ddg.init.environ() sets up the filesystem and R environments for use. 
 #' @return nothing
 .ddg.init.environ <- function() {
   dir.create(.ddg.path(), showWarnings=FALSE)
@@ -215,7 +229,6 @@
 #' .ddg.is.init is called at the beginning of all user accessible
 #' functions. It verifies that a DDG has been initialized. If it
 #' hasn't, it returns FALSE.
-#' 
 #' @return true if provenance has been initialized
 .ddg.is.init <- function() {
     # Short circuits evaluation.
@@ -224,7 +237,6 @@
 
 #' .ddg.is.nonlocal.assign returns TRUE if the object passed is an
 #' expression object containing a non-local assignment.
-#' 
 #' @param expr input expression.
 #' @return TRUE if the expression is an assignment statement using the <<- operator.
 .ddg.is.nonlocal.assign <- function (expr)
@@ -265,7 +277,6 @@
 
 #'.ddg.double.vars.set doubles the size of a variable
 #' assignment data frame and returns the new one.
-#' 
 #' @param vars.set data frame containing variable assignments.
 #' @return a data frame that is twice the size as the original
 .ddg.double.vars.set <- function(vars.set) {
@@ -281,7 +292,6 @@
 #' to the variable assignment data frame. Note that
 #' var.num is a global variable! It should be intialized when
 #' vars.set is first created.
-#' 
 #' @param vars.set variable assignment data frame.
 #' @param cmd a DDGStatement object
 #' @param i position of command in the list of commands
@@ -339,7 +349,6 @@
 
 #' .ddg.find.var.assigments finds the possible variable assignments
 #' for a fixed set of parsed commands. 
-#'
 #' @param cmds a list of DDGStatement objects
 #' @return the data frame filled in with the information from all of the commands
 .ddg.find.var.assignments <- function(cmds) {
@@ -362,7 +371,6 @@
 #' .ddg.create.data.use.edges creates a data flow
 #' edge from the node for each variable used in cmd to the
 #' procedural node labeled cmd.
-#' 
 #' @param cmd name of procedure node.
 #' @param for.caller whether the search for the variable's scope should start at the 
 #'   current stack frame, or start with its caller
@@ -381,7 +389,7 @@
 
     if (.ddg.data.node.exists(var, scope)) {
       # print(".ddg.create.data.use.edges found data node")
-        .ddg.data2proc(var, scope, cmd@abbrev)
+      .ddg.data2proc(var, scope, cmd@abbrev)
     }
     else {
       # print ("Did not find data node")
@@ -400,7 +408,6 @@
 #' variables being set, saves the data, and creates edges from the
 #' procedure node that set the variable to the new data node.  These
 #' nodes and edges correspond to the variables set in the command passed in.
-#' 
 #' @param vars.set variable assignment data frame.
 #' @param cmd the command to create edges for
 #' @param env environment to use for evaluating variables set.
@@ -459,12 +466,11 @@
 #' each variable that might have been set in something other than a
 #' simple assignment.  An edge is created from the last node in the
 #' console block.
-#' 
 #' @param vars.set variable assignment data frame.
 #' @param last.command last command in console block.
 #' @param env the environment that the command was executed in
 #' @return nothing
-#' 
+
 .ddg.create.data.node.for.possible.writes <- function (vars.set, last.command, env= NULL) {
   #print("In .ddg.create.data.node.for.possible.writes")
   environment <- if (is.environment(env)) env else .GlobalEnv
@@ -499,7 +505,6 @@
 #' data node to the finish node for the command.  Note that if the
 #' assignment is an expression, like "d <- f(a) + f(b)", there may
 #' be multiple return value nodes to link to.
-#' 
 #' @param command input command.
 #' @return nothing
 .ddg.link.function.returns <- function(command) {
@@ -519,7 +524,7 @@
   #print ("Returning from .ddg.link.function.returns")
 }
 
-#' Creates a start node and its incoming control flow edge.  
+#' .ddg.add.start.node creates a start node and its incoming control flow edge.  
 #' @param cmd The DDGStatement object for the command being started
 #' @param node.name The label to put on the node.  If node.name is not passed in,
 #'   the abbreviated label in cmd is used.
@@ -528,7 +533,7 @@
   return (.ddg.add.abstract.node ("Start", cmd, node.name))
 }
   
-#' Creates a finish node and its incoming control flow edge.  
+#' .ddg.add.finish.node creates a finish node and its incoming control flow edge.  
 #' @param cmd The DDGStatement object for the command being finished
 #' @param node.name The label to put on the node.  If node.name is not passed in,
 #'   the abbreviated label in cmd is used.
@@ -537,8 +542,8 @@
   return (.ddg.add.abstract.node ("Finish", cmd, node.name))
 }
 
-#' Creates a start or finish node and its incoming control flow edge.
-#' 
+#' .ddg.add.abstract.node creates a start or finish node and its 
+#' incoming control flow edge.
 #' @param cmd The DDGStatement object for the command being finished
 #' @param node.name The label to put on the node.  If node.name is not passed in,
 #'   the abbreviated label in cmd is used.
@@ -557,7 +562,6 @@
 
 #' .ddg.open.new.command.node opens a new collapsible command
 #' node depending on the information stored in .ddg.possible.last.cmd.
-#' 
 #' @return nothing
 .ddg.open.new.command.node <- function() {
   new.command <- .ddg.get(".ddg.possible.last.cmd")
@@ -616,14 +620,14 @@
 #' These will create a procedure node and therefore
 #' initiate the creation of a collapsible console node.
 #' 
-#' cmd - A DDGStatement object
+#' @param cmd - A DDGStatement object
 #' @return true if cmd is a call to ddg.procedure, ddg.start or ddg.finish
 .ddg.is.procedure.cmd <- function(cmd) {
   return(grepl("^ddg.(procedure|start|finish)", cmd@text))
 }
 
-#' Create the warning node for the saved warning and attach it to the node
-#' that created the warning
+#' .ddg.record.warning creates the warning node for the saved warning and 
+#' attaches it to the node that created the warning
 #' @return nothing
 .ddg.record.warning <- function () {
   # Get the saved warning
@@ -655,7 +659,6 @@
 #' changes to the script are saved in the ddg/debug directory.
 #' ddg.annotate.on and ddg.annotate.off may be used to limit the
 #' functions that are annotated or not annotated, respectively.
-#'
 #' If run.commands is false, the commands are not executed.  This allows
 #' us to build ddgs for commands run from the console as those commands
 #' have already been executed.
@@ -680,6 +683,7 @@
 #' @param cmds list of DDG Statements that correspond to the exprs passed in.  This is
 #'   currently only used when called from ddg.eval.  Normally, ddg.parse.commands
 #'   creates the DDG Statement objects.
+#' @return nothing
 .ddg.parse.commands <- function (exprs, script.name="", script.num=NA, environ, 
     ignore.patterns=c('^ddg.'), node.name="Console", run.commands = FALSE, echo=FALSE, 
     print.eval=echo, max.deparse.length=150, called.from.ddg.eval=FALSE, cmds=NULL) {
@@ -1009,9 +1013,9 @@
   #}
 }
 
-#' Push a command onto the command stack.  The command stack remembers the 
-#' command about to be executed.  It also puts FALSE on the stack to indicate
-#' that no start node has (yet) been created for the command.
+#' .ddg.push.cmd pushes a command onto the command stack.  The command stack 
+#' remembers the command about to be executed.  It also puts FALSE on the stack 
+#' to indicate that no start node has (yet) been created for the command.
 #' @param cmd The DDGStatement about to be executed
 #' @return nothing
 .ddg.push.cmd <- function (cmd) {
@@ -1032,8 +1036,10 @@
   .ddg.set(".ddg.cur.cmd.stack", .ddg.cur.cmd.stack)
 }
 
-#' Remove the top of the command stack, along with the boolean that remembers
-#' if the start / finish nodes have been created.
+#' .ddg.pop.cmd removes the top of the command stack, along with the boolean 
+#' that remembers if the start / finish nodes have been created.
+#' @return nothing
+
 .ddg.pop.cmd <- function () {
   .ddg.cur.cmd.stack <- .ddg.get(".ddg.cur.cmd.stack")
   stack.length <- length(.ddg.cur.cmd.stack)
@@ -1053,9 +1059,8 @@
   cmd <- .ddg.cur.cmd.stack[stack.length-1][[1]]
 }
 
-#' Change the value associated with the current command while keeping 
-#' the command at the top of the stack the same
-#' 
+#' .ddg.change.cmd.top changes the value associated with the current command 
+#' while keeping the command at the top of the stack the same
 #' @param value the new value
 #' @return nothing
 .ddg.change.cmd.top <- function (value) {
@@ -1069,13 +1074,12 @@
 #' and sets pname to that value. If pname is passed as a string,
 #' pname is not changed.  If pname is not a string, it is deparsed.
 #' If pname is NULL when called, pname is obtained from the calling environment.
-#' 
 #' Note that it is important that this be a macro, not a function,
 #' due to the use of the substitute function in the body.  expr is
 #' the macro body.
 #' 
 #' @param pname - name of procedure node.
-#' 
+
 .ddg.lookup.function.name <- gtools::defmacro (pname,
     expr =
         # If pname is not provided, get from function call.
@@ -1105,11 +1109,8 @@
 
 #' .ddg.lookup.value is used to determine what value to use when
 #' creating data nodes.  
-#' 
-#' Note that it is important that this be a
-#' macro, not a function, due to the use of the substitute function
-#' in the body.  expr is the macro body.
-#' 
+#' Note that it is important that this be a macro, not a function, 
+#' due to the use of the substitute function in the body. expr is the macro body. 
 #' @param expr.to.evaluate the expression to be evaluted. This can be a string or
 #'   a name.
 #' @param value the value that was passed in to the calling function.
@@ -1120,7 +1121,7 @@
 #'   an error message if necessary.  Only needed if warn is TRUE.
 #' @param warn (optional) if TRUE, warns user that the expression could
 #'   not be evaluated if the evaluation failed
-#' 
+ 
 .ddg.lookup.value <- gtools::defmacro(expr.to.evaluate, value, env, procname = "", warn=FALSE,
     expr =
         if (is.null(value)) {
@@ -1146,6 +1147,8 @@
 #' .ddg.delete.temp deletes any temporary files created during
 #' the processing of a script. These include the temporary
 #' history file.
+#' @return nothing
+
 .ddg.delete.temp <- function() {
   # Delete the temporary history file if we made it.
   if (.ddg.is.set('.ddg.history.file')) unlink(.ddg.get('.ddg.history.file'))
@@ -1157,7 +1160,6 @@
 #' .ddg.create.output.nodes creates output nodes for ddg.function
 #' and ddg.procedure. Outs values must be passed as strings, not
 #' names, unless the value is a file name.
-#' 
 #' @param pname the name of the procedure node.
 #' @param outs.graphic - the name of a snapshot node to be used as a
 #'    file name.  A graphical snapshot is simply a captured image
@@ -1170,6 +1172,8 @@
 #'   extensions include: .csv, .jpg, .jpeg, .pdf, and .txt.
 #' @param graphic.fext - the file extension to be used when saving the
 #'   captured graphic. Supported extensions are .jpg, .jpeg, .pdf.
+#' @return nothing
+
 .ddg.create.output.nodes<- function(pname, outs.graphic, outs.data, outs.exception, outs.url, outs.file, graphic.fext) {
   env <- .ddg.get.first.non.ddg.env()
   
@@ -1281,18 +1285,16 @@
   }
 }
 
-#' Get the environment for the function that called
+#' .ddg.get.first.non.ddg.env gets the environment for the function that called
 #' into ddg functions
-#'
 #' @return the environment of the innermost user's function
 .ddg.get.first.non.ddg.env <- function() {
   non.ddg.frame <- .ddg.get.first.non.ddg.frame.number()
   return (sys.frame(non.ddg.frame))
 }
 
-#' Get the frame number for the function that called
-#' into ddg functions
-#'
+#' .ddg.get.first.non.ddg.frame.number gets the frame number for the function 
+#' that called into ddg functions
 #' @return the frame number of the innermost user function
 .ddg.get.first.non.ddg.frame.number <- function() {
   calls <- sys.calls()
@@ -1305,7 +1307,6 @@
 
 #' .ddg.create.function.nodes creates the start node, procedure node, input
 #' binding nodes, and output nodes for the function.
-#' 
 #' @param pname name of procedure node.
 #' @param call call as made
 #' @param full.call full function call, with full parameter names
@@ -1321,7 +1322,8 @@
 #' @param graphic.fext - the file extension to be used when saving the
 #'   captured graphic. Supported extensions are .jpg, .jpeg, .pdf.
 #' @param env (optional) - the environment local to the function
-#' 
+#' @return nothing
+
 .ddg.create.function.nodes <- function(pname, call, full.call, outs.graphic=NULL, outs.data=NULL, outs.exception=NULL, outs.url=NULL, outs.file=NULL, graphic.fext="jpeg", env=NULL) {
   # Create the start node
   if (typeof(call[[1]]) == "closure") {
@@ -1437,7 +1439,6 @@
 
 #' .ddg.get.frame.number gets the frame number of the closest
 #' non-library calling function.
-#' 
 #' @param calls call stack to search
 #' @param for.caller (optional) if TRUE, return the frame of the caller of the 
 #'    first non-ddg function
@@ -1479,7 +1480,6 @@
 
 #' .ddg.where looks up the environment for the variable specified
 #' by name.  Adapted from Hadley Wickham, Advanced R programming.
-#' 
 #' @param name - name of variable.
 #' @param env (optional) - environment in which to start looking for variable.
 #' @param warning (optional) - set to TRUE if a warning should be thrown when a variable is not found.
@@ -1507,11 +1507,11 @@
 }
 
 #'.ddg.get.env gets the environment in which name is declared.
-#' 
 #' @param name variable name.
 #' @param for.caller (optional) if TRUE, go up one level before searching.
 #' @param calls (optional) call stack to search
-#' 
+#' @return the environment in which name is declated
+
 .ddg.get.env <- function(name, for.caller=FALSE, calls=NULL) {
   if (is.null(calls)) calls <- sys.calls()
 
@@ -1529,12 +1529,12 @@
 #' .ddg.get.scope converts from an environment object to its name.  If no
 #' environment is passed in, it uses the name to find the environment.  One
 #' of name or env must be provided.
-#' 
 #' @param name name of variable.
 #' @param for.caller (optional) if TRUE, go up one level before searching.
 #' @param calls (optional) call stack to search
 #' @param env (optional) the environment to get the scope for
-#' 
+#' @return the scope of the variable
+
 .ddg.get.scope <- function(name="", for.caller=FALSE, calls=NULL, env=NULL) {
   # Get the environment for the variable call.
   if (is.null(env)) {
@@ -1550,12 +1550,11 @@
   return(scope)
 }
 
-#' Creates a start node for the current command if one has not
-#' been created already.  Modifies the command stack by setting the 
-#' value to TRUE if the start node is created.  If the current command 
+#' .ddg.create.start.for.cur.cmd creates a start node for the current command 
+#' if one has not been created already.  Modifies the command stack by setting 
+#' the value to TRUE if the start node is created.  If the current command 
 #' matches the call, no node is created but the top of the stack is changed
 #' to "MATCHES_CALL".
-#' 
 #' @param call the parsed version of the function call
 #' @return nothing
 .ddg.create.start.for.cur.cmd <- function (call) {
@@ -1600,10 +1599,8 @@
 #' created. If eval = false, then the chunk will not be added to the DDG. If
 #' the user has a name for the chunk, then that name will be used, else a chunk
 #' name "ddg.chunk_1" and higher numbers will be generated.
-#'
 #' Important: If in a code chunk, there is an empty line followed by "#' ----"
 #' or "#''", then an extra finish node will be inserted, causing an error.
-#'
 #' @param r.script.path the path of the original Rmd file
 #' @param output.path the path of the generated R script
 #' @return the path to the original Rmd file
@@ -1701,7 +1698,10 @@
   .ddg.save.sourced.script.table ()
 }
 
-#' @return a data frame of information about the current execution environment.
+#' .ddg.exec.env returns a dataframe of information about the current
+#' execution environment
+#' @return a data frame of information about the current environment.
+
 .ddg.exec.env <- function()
 {
 	env <- data.frame(	"architecture" = character(1), 

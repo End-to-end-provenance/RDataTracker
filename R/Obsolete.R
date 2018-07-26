@@ -11,13 +11,14 @@
 # written out to a csv if possible. Otherwise, the data are
 # written out as a .txt file if the variable is determined to
 # be an object.
-
-# dname - the label for the node. This can be passed as a string, name,
+#
+# @param dname - the label for the node. This can be passed as a string, name,
 #   or expression.
-# dvalue (optional) - the value of the node.
-# graphic.fext (optional) - the file extention to be used for
+# @param dvalue (optional) - the value of the node.
+# @param graphic.fext (optional) - the file extention to be used for
 #   saving the variable if it is a graphical output. Otherwise
 #   ignored. Default is jpeg.
+# @return nothing
 #
 # TODO:  This should be deleted when we remove calls that used
 # to be made manually by the user.
@@ -38,10 +39,11 @@ ddg.data <- function(dname, dvalue=NULL, graphic.fext = "jpeg") {
 # ddg.file creates a data node of type File by copying an existing
 # file to the DDG directory.
 
-# filename - the name of the file to copy, including path to the file
+# @param filename - the name of the file to copy, including path to the file
 #   if it is not in the working directory.
-# dname (optional) - the label for the node. If omitted, the filename,
+# @param dname (optional) - the label for the node. If omitted, the filename,
 #   minus the directory path, is used as the label.
+# @return nothing
 
 # TODO:  This should be deleted when we remove calls that used
 # to be made manually by the user.
@@ -57,12 +59,13 @@ ddg.file <- function(filename, dname=NULL) {
 # ddg.data.in creates a data flow edge from data node dname to
 # procedure node pname.
 
-# dname - the name of the data node.  This can be passed as
+# @param dname - the name of the data node.  This can be passed as
 #   a string, name, or expression.
-# pname (optional) - the name of the procedure that created
+# @oaram pname (optional) - the name of the procedure that created
 #   this data value.  This can be passed as a string or as
 #   a name. It may be omitted if ddg.data.in is called by a function,
 #   in which case the name of the function will be used.
+# @return nothing
 
 ddg.data.in <- function(dname, pname=NULL) {
   if (!.ddg.is.init()) return(invisible())
@@ -120,19 +123,20 @@ ddg.data.in <- function(dname, pname=NULL) {
 # It also creates a data flow edge from procedure node pname
 # to the output node. Used for simple or complex data values.
 
-# dname - the label for the data node being created. This can
+# @param dname - the label for the data node being created. This can
 #   be passed as a string, name, or expression. Complex data
 #   are written to the file dname.
-# dvalue (optional) - the value to associate with the node.
+# @param dvalue (optional) - the value to associate with the node.
 #   If no value is given, the argument passed in for dname is
 #   evaluated in the calling environment.
-# pname (optional) - the name of the procedure that created the
+# @param pname (optional) - the name of the procedure that created the
 #   data. This can be passed as a string or name. It may be
 #   omitted if ddg.data.out is called by a function, in which
 #   case the name of the function will be used.
-# graphic.fext (optional) - the file extension that should be
+# @param graphic.fext (optional) - the file extension that should be
 #   used when saving a graphics file. Ignored unless the value
 #   to be saved is determined to be a graphic.
+# @return nothing
 
 ddg.data.out <- function(dname, dvalue=NULL, pname=NULL, graphic.fext="jpeg") {
   if (!.ddg.is.init()) return(invisible())
@@ -157,15 +161,16 @@ ddg.data.out <- function(dname, dvalue=NULL, pname=NULL, graphic.fext="jpeg") {
 # also creates a data flow edge from the procedure node pname
 # to this node.
 
-# dname - the label for the exception node being created.
+# @param dname - the label for the exception node being created.
 #   This can be passed as a string or name.
-# dvalue (optional) - the value to associate  with the node.
+# @param dvalue (optional) - the value to associate  with the node.
 #   If no value is given, the argument passed in for dname is
 #   evaluated in the calling environment.
-# pname (optional) - the name of the procedure that created this
+# @param pname (optional) - the name of the procedure that created this
 #   exception. This can be passed as a string or as name. It
 #   may be ommited if ddg.exception.out is called by a function,
 #   in which case the name of the function will be used.
+# @return nothing
 
 ddg.exception.out <- function(dname, dvalue=NULL, pname=NULL) {
   if (!.ddg.is.init()) return(invisible())
@@ -187,14 +192,15 @@ ddg.exception.out <- function(dname, dvalue=NULL, pname=NULL) {
 # address dvalue. It also creates a data flow edge from procedure
 # node pname to the URL node dname. Use for URL addresses.
 
-# dname - the label for the data node being created.
-# dvalue (optional) - the full URL. If a value is not provided,
+# @param dname - the label for the data node being created.
+# @param dvalue (optional) - the full URL. If a value is not provided,
 #   the argument passed in for dname is evaluated in the calling
 #   environment to determine the value.
-# pname (optional) - the name of the procedure that created this
+# @param pname (optional) - the name of the procedure that created this
 #   URL node. This can be passed as a string or as a name. It may
 #   be omitted if ddg.url.out is called by a function, in which
 #   case the name of the function will be used.
+# @return nothing
 
 ddg.url.out <- function(dname, dvalue=NULL, pname=NULL) {
   if (!.ddg.is.init()) return(invisible())
@@ -227,15 +233,16 @@ ddg.url.out <- function(dname, dvalue=NULL, pname=NULL) {
 # Use for output files already created by the main script. Returns
 # the full path to the file that is saved.
 
-# filename - name of the file.  The name should include the path
+# @param filename - name of the file.  The name should include the path
 #   to the file if it is not in the working directory.
-# dname (optional) - the label for the node being created. If
+# @param dname (optional) - the label for the node being created. If
 #   omitted, the filename, minus the directory path, is used as
 #   the label.
-# pname (optional) - the name of the procedure that created this
+# @param pname (optional) - the name of the procedure that created this
 #   node. This can be passed as a string or as a name. It may be
 #   omitted if ddg.file.out is called by a function, in which
 #   case the name of the function is used.
+# @return nothing
 
 ddg.file.out <- function(filename, dname=NULL, pname=NULL) {
   if (!.ddg.is.init()) return(invisible())
@@ -273,13 +280,14 @@ ddg.file.out <- function(filename, dname=NULL, pname=NULL) {
 # A data flow edge is also created from procedure pname to the
 # data node dname.
 
-# dname - the label for the node being created.
-# pname (optional) - the name of the procedure that created this
+# @param dname - the label for the node being created.
+# @param pname (optional) - the name of the procedure that created this
 #   node. This can be passed as a string or as a name. It may be
 #   omitted if ddg.graphic.out is called by a function, in which
 #   case the name of the function is used.
-# fext (optional) - the file extention to be used for the captured
+# @param graphic.fext (optional) - the file extention to be used for the captured
 #   image file. If omitted, this value defaults to jpeg.
+# @return nothing
 
 ddg.graphic.out <- function(dname, pname=NULL, graphic.fext="jpeg") {
   if(!.ddg.is.init()) return
@@ -296,19 +304,22 @@ ddg.graphic.out <- function(dname, pname=NULL, graphic.fext="jpeg") {
 #   the DDG directory is the working directory. If no DDG directory is
 #   specified, the current DDG directory is assumed.
 
-# ddg.path (optional) - path to DDG directory.
+# @param ddg.path (optional) - path to DDG directory.
+# @return nothing
 
 ddg.flush.ddg <- function(ddg.path=NULL) {
   .ddg.flush.ddg (ddg.path)
 }
 
 # ddg.debug.lib.on turns on debugging of DDG construction.
+# @return nothing
 
 ddg.debug.lib.on <- function () {
   .ddg.debug.lib.on ()
 }
 
 # ddg.debug.lib.off turns off debugging of DDG construction.
+# @return nothing
 
 ddg.debug.lib.off <- function () {
   .ddg.debug.lib.off ()
