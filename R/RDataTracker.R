@@ -241,17 +241,10 @@
 
 #' .ddg.create.empty.vars.set creates an empty data frame
 #' initialized to contain information about variable assignments.
-#' The difference between first.writer and possible.first.writer is
-#' that first.writer is for simple assignments (like a <- 1), while
-#' possible.first.writer is for situations where the assignment might
-#' not have occurred, like "if (foo) a <- 1".
 #' 
 #' @return The data frame is structured as follows: \cr
 #' - the variable name.\cr
-#' - the position of the statement that wrote the variable first.\cr
 #' - the position of the statement that wrote the variable last.\cr
-#' - the position of the first statement that may have assigned to a
-#'   variable .\cr
 #' - the position of the last statement that may have assigned to a
 #'   variable.\cr
 #' 
@@ -263,15 +256,9 @@
   if (var.table.size <= 0) var.table.size <- 1
 
   vars.set <- data.frame(variable=character(var.table.size),
-      first.writer=numeric(var.table.size),
       last.writer=numeric(var.table.size),
-      possible.first.writer=numeric(var.table.size),
       possible.last.writer=numeric(var.table.size),
       stringsAsFactors=FALSE)
-
-  # Initialize first writer.
-  vars.set$first.writer <- var.table.size + 1
-  vars.set$possible.first.writer <- var.table.size + 1
 
   return(vars.set)
 }
@@ -286,16 +273,6 @@
   
   # Create the right size data frame from input frame.
   new.vars.set <- rbind(vars.set,.ddg.create.empty.vars.set(size))
-
-  # Update first/last writer.
-  new.vars.set$first.writer <- 
-      ifelse(new.vars.set$first.writer == size + 1, 
-             size*2 + 1, 
-             new.vars.set$first.writer)
-  new.vars.set$possible.first.writer <- 
-      ifelse(new.vars.set$possible.first.writer == size + 1, 
-             size*2 + 1, 
-             new.vars.set$possible.first.writer)
 
   return(new.vars.set)
 }
@@ -346,11 +323,9 @@
       # Set the variable.
       vars.set$variable[var.num] <- var
       if (!is.null(main.var.assigned) && var == main.var.assigned) {
-        vars.set$first.writer[var.num] <- i
         vars.set$last.writer[var.num] <- i
       }
       else {
-        vars.set$possible.first.writer[var.num] <- i
         vars.set$possible.last.writer[var.num] <- i
       }
     }
@@ -450,9 +425,7 @@
       .ddg.set (".ddg.ggplot.created", FALSE)
     }
     
-    whichRows <- which(vars.set$variable == var)
-
-    if (length (whichRows) > 0 && var != "") {
+    if (var != "") {
         if (is.null(env)) {
           env <- .ddg.get.env(var)
         }
@@ -514,7 +487,7 @@
         .ddg.data.node("Data", vars.set$variable[i], value, envName)
         .ddg.proc2data(last.command@abbrev, vars.set$variable[i], envName)
       }
-      }
+    }
   }
   #print("Done with .ddg.create.data.node.for.possible.writes")
 
@@ -782,7 +755,7 @@
       cmd <- cmds[[i]]
 
       if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Processing", cmd@abbrev))
-
+      
       # print("Checking whether to set last.cmd")
       if (grepl("^ddg.eval", cmd@text)) {
         if (is.null(.ddg.last.cmd)) {
