@@ -204,23 +204,10 @@
 		<antcall target="prepare-to-compare"/>
 		<antcall target="compare-out"/>
 		
-		<basename property="ddg_name" file="${expected_ddg}" />
 		<antcall target="compare-json">
 		</antcall>
 
 
-		<!-- Travis: Fails if a test does not pass -->
-		<fail message="Does not match expected output.">
-			<condition>
-				<and>
-					<equals arg1="${using-travis}" arg2="true" />
-					<or>
-						<equals arg1="${return.code.out}" arg2="1"/>
-						<equals arg1="${return.code.json}" arg2="1"/>
-					</or>
-				</and>
-			</condition>
-		</fail>
 
 
 	</target>
@@ -369,9 +356,20 @@
 			<arg value="${local_dir}/${expected_out_name}.local" />
 		</exec>
 
+		<!-- Travis: Fails if a test does not pass -->
+		<fail message="Does not match expected output.">
+			<condition>
+				<and>
+					<equals arg1="${using-travis}" arg2="true" />
+					<equals arg1="${return.code.out}" arg2="1"/>
+				</and>
+			</condition>
+		</fail>
 	</target>
 				
 	<target name="compare-json">
+		<basename property="ddg_name" file="${expected_ddg}" />
+
 		<!-- Exectute diff on .json files -->
 		<echo>
 			Diff of (1) ddg.json.local and (2) ${ddg_name}.local:
@@ -388,6 +386,15 @@
 			<arg value="${local_dir}/${ddg_name}.local" />
 		</exec>
 
+		<!-- Travis: Fails if a test does not pass -->
+		<fail message="Does not match expected output.">
+			<condition>
+				<and>
+					<equals arg1="${using-travis}" arg2="true" />
+					<equals arg1="${return.code.json}" arg2="1"/>
+				</and>
+			</condition>
+		</fail>
 	</target>
 
 
@@ -487,7 +494,7 @@
 		</antcall>
 		<antcall target="compare-json">
 			<param name="local_dir" value="tests/console/local" />
-			<param name="ddg_name" value="ddg.json" />
+			<param name="expected_ddg" value="tests/console/expected_console_ddg.json" />
 		</antcall>
 	</target>
 
