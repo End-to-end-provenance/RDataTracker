@@ -200,11 +200,33 @@
 		<exec executable="Rscript" dir="${dir}" output="${FILE.basedir}/${out}" >
 			<arg line="sourceTest.r" />
 		</exec>
-
-		<!-- Obtain name of expected ddg.json, expected *.out, and actual *.out -->
+		
+		<antcall target="prepare-to-compare"/>
+		<antcall target="compare-out"/>
+		
 		<basename property="ddg_name" file="${expected_ddg}" />
-		<basename property="expected_out_name" file="${expected_out}" />
-		<basename property="out_name" file="${out}" />
+		<antcall target="compare-json">
+		</antcall>
+
+
+		<!-- Travis: Fails if a test does not pass -->
+		<fail message="Does not match expected output.">
+			<condition>
+				<and>
+					<equals arg1="${using-travis}" arg2="true" />
+					<or>
+						<equals arg1="${return.code.out}" arg2="1"/>
+						<equals arg1="${return.code.json}" arg2="1"/>
+					</or>
+				</and>
+			</condition>
+		</fail>
+
+
+	</target>
+
+
+	<target name="prepare-to-compare">
 
 		<!-- Make copy of output files (.out and ddg.json) as well as expected
 			 outputs for diff. Append .local to all files -->
@@ -327,6 +349,12 @@
 			tablength="2"
 		/>
 
+		</target>
+			
+	<target name="compare-out">
+		<basename property="expected_out_name" file="${expected_out}" />
+		<basename property="out_name" file="${out}" />
+
 		<!-- Execute diff on .out files (always)-->
     	<echo>
 	Diff of (1) ${out_name}.local and (2) ${expected_out_name}.local:
@@ -336,9 +364,17 @@
 			<arg line="--strip-trailing-cr ${local_dir}/${out_name}.local ${local_dir}/${expected_out_name}.local" />
 		</exec>
 
+		<exec executable="cmp" failonerror="false" resultproperty="return.code.out">
+			<arg value="${local_dir}/${out_name}.local" />
+			<arg value="${local_dir}/${expected_out_name}.local" />
+		</exec>
+
+	</target>
+				
+	<target name="compare-json">
 		<!-- Exectute diff on .json files -->
 		<echo>
-	Diff of (1) ddg.json.local and (2) ${ddg_name}.local:
+			Diff of (1) ddg.json.local and (2) ${ddg_name}.local:
 		</echo>
 
 		<exec executable="diff">
@@ -347,28 +383,10 @@
 
 		<echo>cmp (1) ddg.json.local and (2) ${ddg_name}.local:</echo>
 
-		<exec executable="cmp" failonerror="false" resultproperty="return.code.out">
-			<arg value="${local_dir}/${out_name}.local" />
-			<arg value="${local_dir}/${expected_out_name}.local" />
-		</exec>
-
 		<exec executable="cmp" failonerror="false" resultproperty="return.code.json">
 			<arg value="${local_dir}/ddg.json.local" />
 			<arg value="${local_dir}/${ddg_name}.local" />
 		</exec>
-
-		<!-- Travis: Fails if a test does not pass -->
-		<fail message="Does not match expected output.">
-			<condition>
-				<and>
-					<equals arg1="${using-travis}" arg2="true" />
-					<or>
-						<equals arg1="${return.code.out}" arg2="1"/>
-						<equals arg1="${return.code.json}" arg2="1"/>
-					</or>
-				</and>
-			</condition>
-		</fail>
 
 	</target>
 
@@ -459,6 +477,19 @@
 			<param name="expected_ddg" value="tests/${test-name}/expected_${test-name}_ddg.json" />
 		</antcall>
 	</target>
+	
+	<target name = "run-regression-test-console">
+		<echo message="Remember to run the console test in RStudio."/>
+		<antcall target="prepare-to-compare">
+			<param name="test-name" value="console" />
+			<param name="dir" value="tests/console" />
+			<param name="local_dir" value="tests/console/local" />
+		</antcall>
+		<antcall target="compare-json">
+			<param name="local_dir" value="tests/console/local" />
+			<param name="ddg_name" value="ddg.json" />
+		</antcall>
+	</target>
 
 
 	<!-- Updates the expected result files for a test case. -->
@@ -486,9 +517,8 @@
 		<copy todir="${expected_dir}" overwrite="true">
 			<!-- Executed ddg.json file -->
 			<fileset file="${dir}/prov_${test-name}/ddg.json" />
-			<fileset file="${FILE.basedir}/${out}" />
 		</copy>
-
+		
 		<!-- Replace local file paths with [DIR] -->
 		<replaceregexp flags="gi">
 			<regexp pattern="${FILE.basedir}/${dir}" />
@@ -498,17 +528,33 @@
 
 		<!-- Move the edited files up to become the new expected results -->
 		<copy file="${expected_dir}/ddg.json" tofile="${expected_ddg}" overwrite="true" />
+	</target>
+
+	<target name = "update-expected-out">
+		<copy todir="${expected_dir}" overwrite="true">
+			<fileset file="${FILE.basedir}/${out}" />
+		</copy>
+		
 		<basename property="out_name" file="${out}" />
 		<copy file="${expected_dir}/${out_name}" tofile="${expected_out}" overwrite="true" />
 	</target>
-
 
 	<!-- Task to update the expected results using the standard naming scheme -->
 	<target name = "update-regression-expected">
 		<antcall target="update-expected">
 			<param name="dir" value="tests/${test-name}"/>
+			<param name="expected_ddg" value="tests/${test-name}/expected_${test-name}_ddg.json"/>
+		</antcall>
+		
+		<antcall target="update-expected-out">
 			<param name="out" value="tests/${test-name}/${test-name}.out"/>
 			<param name="expected_out" value="tests/${test-name}/expected_${test-name}.out"/>
+		</antcall>
+	</target>
+
+	<target name = "update-console-expected">
+		<antcall target="update-expected">
+			<param name="dir" value="tests/${test-name}"/>
 			<param name="expected_ddg" value="tests/${test-name}/expected_${test-name}_ddg.json"/>
 		</antcall>
 	</target>
@@ -773,6 +819,17 @@
 	<target name="update-RMarkdownTest">
 		<antcall target="update-regression-expected">
 			<param name="test-name" value="RMarkdownTest" />
+		</antcall>
+	</target>
+	
+	<target name="console">
+		<antcall target="run-regression-test-console">
+		</antcall>
+	</target>
+
+	<target name="update-console">
+		<antcall target="update-console-expected">
+			<param name="test-name" value="console" />
 		</antcall>
 	</target>
 	

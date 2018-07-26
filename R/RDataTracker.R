@@ -742,11 +742,9 @@
 #' @param cmds list of DDG Statements that correspond to the exprs passed in.  This is
 #'   currently only used when called from ddg.eval.  Normally, ddg.parse.commands
 #'   creates the DDG Statement objects.
-#' @param from.console If TRUE, commands are coming from the console
 .ddg.parse.commands <- function (exprs, script.name="", script.num=NA, environ, 
     ignore.patterns=c('^ddg.'), node.name="Console", run.commands = FALSE, echo=FALSE, 
-    print.eval=echo, max.deparse.length=150, called.from.ddg.eval=FALSE, cmds=NULL,
-    from.console = FALSE) {
+    print.eval=echo, max.deparse.length=150, called.from.ddg.eval=FALSE, cmds=NULL) {
 
   return.value <- NULL
   
@@ -781,7 +779,7 @@
       .ddg.last.cmd <- NULL
       #print(".ddg.parse.commands: setting .ddg.last.cmd to null")
     }
-    else if (!execute && !from.console) {
+    else if (!execute && num.cmds > 1) {
       cmds <- cmds[1:num.cmds-1]
     }
   }
@@ -859,7 +857,7 @@
       # control statement itself.
 
       create <- !cmd@isDdgFunc && .ddg.is.init() &&  
-          (!(control.statement && .ddg.loop.annotate() && ddg.max.loops() > 0) || from.console)
+          (!(control.statement && .ddg.loop.annotate() && ddg.max.loops() > 0) || !run.commands)
       start.finish.created <- FALSE
       cur.cmd.closed <- FALSE
 
@@ -1074,7 +1072,7 @@
 
   # Open up a new collapsible node in case we need to parse
   # further later.
-  if (!execute && !from.console) {
+  if (!execute && run.commands) {
 
     .ddg.set(".ddg.possible.last.cmd", .ddg.last.cmd)
     .ddg.set(".ddg.last.cmd", .ddg.last.cmd)

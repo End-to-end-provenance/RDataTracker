@@ -33,7 +33,6 @@
 #' @param ddgdir (optional) - the directory where the DDG should be saved.
 #' If not provided, the DDG will be saved in a subdirectory called
 #' "ddg" in the current working directory.
-#' @param enable.console (optional) - if TRUE, console mode is turned on.
 #' @param annotate.inside.functions (optional) - if TRUE, functions are annotated.
 #' @param first.loop (optional) - the first loop to annotate in a for, while, or
 #' repeat statement.
@@ -55,7 +54,7 @@
 #' @return nothing
 #' @export
 
-ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enable.console = TRUE, annotate.inside.functions = TRUE, first.loop = 1, max.loops = 1, max.snapshot.size = 10,
+ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, annotate.inside.functions = TRUE, first.loop = 1, max.loops = 1, max.snapshot.size = 10,
                      hash.algorithm="md5") {
   .ddg.init.tables()
 
@@ -90,8 +89,7 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
        # Create the provenance for the new command
        .ddg.parse.commands(as.expression(task),
              environ = .GlobalEnv,
-             run.commands=FALSE,
-             from.console = TRUE)
+             run.commands=FALSE)
          
        return(TRUE)
          
@@ -337,7 +335,6 @@ ddg.quit <- function(save.debug = FALSE) {
 #' is executed with calls to ddg.init and ddg.save so that
 #' provenance for the function is captured.  Exactly one of f and r.script.path
 #' should be provided.
-#' @param enable.console (optional) - if TRUE, console mode is turned on.
 #' @param annotate.inside.functions (optional) - if TRUE, functions are annotated.
 #' @param first.loop (optional) - the first loop to annotate in a for, while, or
 #' repeat statement.
@@ -359,11 +356,11 @@ ddg.quit <- function(save.debug = FALSE) {
 #' @return nothing
 #' @export
 
-ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = NULL, enable.console = TRUE, annotate.inside.functions = TRUE, first.loop = 1, max.loops = 1, max.snapshot.size = 10, save.debug = FALSE, display = FALSE, 
+ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = NULL, annotate.inside.functions = TRUE, first.loop = 1, max.loops = 1, max.snapshot.size = 10, save.debug = FALSE, display = FALSE, 
                     hash.algorithm="md5") {
   
   # Initialize ddg.
-  ddg.init(r.script.path, ddgdir, overwrite, enable.console, annotate.inside.functions, first.loop, max.loops, max.snapshot.size, hash.algorithm)
+  ddg.init(r.script.path, ddgdir, overwrite, annotate.inside.functions, first.loop, max.loops, max.snapshot.size, hash.algorithm)
   
   # Set .ddg.is.sourced to TRUE if script provided.
   .ddg.set(".ddg.is.sourced", !is.null(r.script.path))
@@ -396,7 +393,7 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
 #' @param ddg.source reads in an R script and executes it in the provided
 #' enviroment. ddg.source essentially mimics the behaviour of the
 # 'R source command, having similar input parameters and results,
-# 'but with additional parameters ignore.ddg.calls and force.console.
+# 'but with additional parameter ignore.ddg.calls.
 #' @param file - the name of the R script file to source.
 #' @param local (optional) - the environment in which to evaluate parsed
 #' expressions. If TRUE, the environment from which ddg.source is
@@ -601,7 +598,7 @@ ddg.source <- function (file,  local = FALSE, echo = verbose, print.eval = echo,
 		# Initialize the tables for ddg.capture.
 		.ddg.set("from.source", TRUE)
 
-		# Parse the commands into a console node.
+		# Parse and execute the commands, collecting provenance along the way.
 		.ddg.parse.commands(exprs, sname, snum, environ=envir, ignore.patterns=ignores, node.name=sname,
 			echo = echo, print.eval = print.eval, max.deparse.length = max.deparse.length,
 			run.commands = TRUE)

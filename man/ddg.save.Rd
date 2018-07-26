@@ -2,19 +2,20 @@
 % Please edit documentation in R/API.R
 \name{ddg.save}
 \alias{ddg.save}
-\title{ddg.save saves the current provenance graph}
+\title{ddg.save saves the current provenance graph.  If more R statements
+are executed, they will be added to this ddg.  To finalize the ddg,
+call ddg.quit, which will save and finalize the ddg.}
 \usage{
-ddg.save(save.debug = FALSE, quit = FALSE)
+ddg.save(save.debug = FALSE)
 }
 \arguments{
-\item{save.debug}{(optional) - If TRUE, save debug files to debug directory.
-Used in console mode.}
-
-\item{quit}{(optional) - If TRUE, remove all DDG files from memory.}
+\item{save.debug}{(optional) - If TRUE, save debug files to debug directory.}
 }
 \value{
 nothing
 }
 \description{
-ddg.save saves the current provenance graph
+ddg.save saves the current provenance graph.  If more R statements
+are executed, they will be added to this ddg.  To finalize the ddg,
+call ddg.quit, which will save and finalize the ddg.
 }

@@ -5,8 +5,8 @@
 \title{ddg.init intializes a new provenance graph}
 \usage{
 ddg.init(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE,
-  enable.console = TRUE, annotate.inside.functions = TRUE, first.loop = 1,
-  max.loops = 1, max.snapshot.size = 10, hash.algorithm = "md5")
+  annotate.inside.functions = TRUE, first.loop = 1, max.loops = 1,
+  max.snapshot.size = 10, hash.algorithm = "md5")
 }
 \arguments{
 \item{r.script.path}{(optional) - the full path to the R script file
@@ -19,8 +19,6 @@ If not provided, the DDG will be saved in a subdirectory called
 
 \item{overwrite}{(optional) - default TRUE, if FALSE, generates
 timestamp for ddg directory}
-
-\item{enable.console}{(optional) - if TRUE, console mode is turned on.}
 
 \item{annotate.inside.functions}{(optional) - if TRUE, functions are annotated.}
 

@@ -117,7 +117,7 @@
 #' Stop tracing I/O calls.  This should be called when RDT finishes.
 .ddg.stop.iotracing <- function () {
   
-  # Stop tracing output functions.  Will this be a problem if ddg.save is called from the console?
+  # Stop tracing output functions.  
   # utils::capture.output is used to prevent "Untracing" messages from appearing in the output
   utils::capture.output (untrace(.ddg.get(".ddg.file.write.functions.df")$function.names), type="message")
   utils::capture.output (untrace(.ddg.get(".ddg.file.read.functions.df")$function.names), type="message")
