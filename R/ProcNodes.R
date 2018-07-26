@@ -38,7 +38,6 @@
 
 #' .ddg.init.proc.nodes initializes the information needed to manage procedure nodes. 
 #' @return nothing
-
 .ddg.init.proc.nodes <- function () {
   .ddg.set("ddg.proc.nodes", .ddg.create.proc.node.rows())
   
@@ -55,21 +54,18 @@
 #' This is used for type-checking.
 #' @param type procedure node type.
 #' @return true for any type of procedure node
-
 .ddg.is.proc.type <- function(type) {
   return(type %in% c("Operation", "Start", "Finish", "Binding", "Incomplete"))
 }
 
 #' .ddg.pnum returns the counter used to assign procedure node ids
 #' @return the data node id of the last procedure node created
-
 .ddg.pnum <- function() {
   return (.ddg.get("ddg.pnum"))
 }
 
 #' .ddg.start.proc.time returns the time when the process started
 #' @return the time the process started, or 0 if it has not been set yet
-
 .ddg.start.proc.time <- function() {
   if (.ddg.is.set(".ddg.proc.start.time")) return (.ddg.get(".ddg.proc.start.time"))
   else return (0)
@@ -77,7 +73,6 @@
 
 #' .ddg.elapsed.time returns the time since the script began execution
 #' @return the time since the script began execution
-
 .ddg.elapsed.time <- function(){
   time <- proc.time()
   elapsed <- time[1] + time[2] - .ddg.start.proc.time()
@@ -91,7 +86,6 @@
 #' than to add one row at a time.
 #' @param size the number of rows to add
 #' @return a data frame with size rows, with all columns being empty vectors
-
 .ddg.create.proc.node.rows <- function (size=100) {
   return (data.frame(
           ddg.type = character(size),
@@ -110,14 +104,12 @@
 
 #' .ddg.proc.node.table returns the procedure node table
 #' @return the procedure node table
-
 .ddg.proc.node.table <- function() {
   return (.ddg.get("ddg.proc.nodes"))
 }
 
 #' .ddg.proc.nodes returns the filled rows of the procedure node table
 #' @return the filled rows of the procedure node table
-
 .ddg.proc.nodes <- function() {
   ddg.proc.nodes <- .ddg.get("ddg.proc.nodes")
   return (ddg.proc.nodes [ddg.proc.nodes$ddg.num > 0, ])
@@ -127,7 +119,6 @@
 #' to a return value
 #' @param pn the id of the procedure node to mark
 #' @return nothing
-
 .ddg.proc.node.returned <- function(pn) {
   ddg.proc.nodes <- .ddg.proc.node.table()
   ddg.proc.nodes$ddg.return.linked[pn] <- TRUE
@@ -139,7 +130,6 @@
 #' procedure node with the given name
 #' @param pname the name of a procedure node to look up
 #' @return true if there is a node with the given name
-
 .ddg.proc.node.exists <- function(pname) {
   ddg.proc.nodes <- .ddg.proc.node.table()
   matching.nodes <- ddg.proc.nodes[ddg.proc.nodes$ddg.name == pname, ]
@@ -147,12 +137,11 @@
 }
 
 #' .ddg.proc.number gets the number of the nearest preceding
-#' procedure node with the matching name 
+#' procedure node with the matching name
 #' @param pname name of procedure node to look for
 #' @param find.unreturned.function if true, only return the number if the
 #'    procedure has not previously been linked to a return value
 #' @return the id of a procedure node matching the name, or 0 if none was found
-
 .ddg.proc.number <- function(pname, find.unreturned.function=FALSE) {
   #print (paste0("Looking for function ", pname))
   ddg.proc.nodes <- .ddg.proc.node.table()
@@ -177,11 +166,10 @@
 }
 
 #' .ddg.proc.name returns the name of a procedure node. It returns a
-#' empty string if no match is found. 
+#' empty string if no match is found.
 #' @param pnum node number in procedure node table.
 #' @return name of the procedure node with the given id.  Returns an empty
 #' string if there is no node with the given id.
-
 .ddg.proc.name <- function(pnum) {
   if (pnum < 1 || pnum > .ddg.pnum()) {
     error.msg <- paste("No name found for procedure number", pnum)
@@ -212,7 +200,6 @@
 #' @param snum the number the script is in (main script = 0)
 #' @param pos the starting and ending line and column location of the statement
 #' @return nothing
-
 .ddg.record.proc <- function(ptype, pname, pvalue, ptime, snum=NA, pos=NA) {
   if (!.ddg.is.proc.type (ptype)) {
     print (paste (".ddg.record.proc: bad value for ptype - ", ptype))
@@ -261,22 +248,14 @@
 #' @param pname name of procedure node.
 #' @param pvalue (optional) value of procedure node.
 #' @param functions.called vector of names of functions called in this procedure node
-#' @param console (optional) if TRUE, console mode is enabled.
 #' @param cmd the DDGStatement corresponding to this procedure node
 #' @return nothing
 
-.ddg.proc.node <- function(ptype, pname, pvalue="", functions.called=NULL, console=FALSE,
+.ddg.proc.node <- function(ptype, pname, pvalue="", functions.called=NULL, 
     cmd = NULL) {
 
   if (!.ddg.is.proc.type (ptype)) {
     print (paste (".ddg.proc.node: bad value for ptype - ", ptype))
-  }
-  
-  # We're not in a console node but we're capturing data
-  # automatically.
-  # Capture graphic output of previous procedure node.
-  if (!console && !.ddg.enable.source()) {
-    .ddg.console.node()
   }
   
   if (is.null(cmd)) {
@@ -327,5 +306,7 @@
   }
   if (.ddg.debug.lib()) print(paste("proc.node:", ptype, pname))
 }
+
+
 
 

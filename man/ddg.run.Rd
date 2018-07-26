@@ -5,9 +5,9 @@
 \title{ddg.run initiates execution of a script, collecting provenance as it executes}
 \usage{
 ddg.run(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = NULL,
-  enable.console = TRUE, annotate.inside.functions = TRUE, first.loop = 1,
-  max.loops = 1, max.snapshot.size = 10, save.debug = FALSE,
-  display = FALSE, hash.algorithm = "md5")
+  annotate.inside.functions = TRUE, first.loop = 1, max.loops = 1,
+  max.snapshot.size = 10, save.debug = FALSE, display = FALSE,
+  hash.algorithm = "md5")
 }
 \arguments{
 \item{r.script.path}{(optional) - the full path to the R script.
@@ -27,8 +27,6 @@ folder name so that the provenance of earlier runs is not overwritten.}
 is executed with calls to ddg.init and ddg.save so that
 provenance for the function is captured.  Exactly one of f and r.script.path
 should be provided.}
-
-\item{enable.console}{(optional) - if TRUE, console mode is turned on.}
 
 \item{annotate.inside.functions}{(optional) - if TRUE, functions are annotated.}
 

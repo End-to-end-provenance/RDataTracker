@@ -94,6 +94,7 @@
   # so that it can find those functions without making them publicly available in 
   # the namespace.
   # ggplot2 functions are traced individually because the package name needs to be included.
+  
   trace.oneOutput <- function (f) {utils::capture.output(utils::capture.output(trace (as.name(f), RDataTracker:::.ddg.trace.output, print=FALSE), type="message"))} 
   lapply(.ddg.get(".ddg.file.write.functions.df")$function.names, trace.oneOutput)
   utils::capture.output(utils::capture.output(trace (ggplot2::ggplot, RDataTracker:::.ddg.trace.output, print=FALSE), type="message"))
@@ -124,7 +125,7 @@
 
 .ddg.stop.iotracing <- function () {
   
-  # Stop tracing output functions.  Will this be a problem if ddg.save is called from the console?
+  # Stop tracing output functions.  
   # utils::capture.output is used to prevent "Untracing" messages from appearing in the output
   utils::capture.output (untrace(.ddg.get(".ddg.file.write.functions.df")$function.names), type="message")
   utils::capture.output (untrace(.ddg.get(".ddg.file.read.functions.df")$function.names), type="message")
@@ -569,6 +570,7 @@
   }
   
   # If Rplots was surprisingly created by Travis, delete it!
+  # This seems to happen because Travis runs headless.
   if (.ddg.get (".ddg.remove.Rplots") && file.exists("Rplots.pdf")) {
     unlink ("Rplots.pdf")
 
@@ -755,6 +757,12 @@
       .ddg.set(".ddg.implicit.plot", TRUE)
     }
     
+    # Remember that Rplots.pdf did not exist and was not
+    # explicitly requested.  If ggsave creates it, we 
+    # will delete it after ggsave completes so the node
+    # does not appear in the ddg.  This is a Travis issue,
+    # which I believe happens because Travis runs headless, resulting
+    # in an extra node in the ddg.
     if (filename != "Rplots.pdf" && !file.exists("Rplots.pdf")) {
       .ddg.set (".ddg.remove.Rplots", TRUE)
     }

@@ -33,7 +33,6 @@
 #' @param ddgdir (optional) - the directory where the DDG should be saved.
 #' If not provided, the DDG will be saved in a subdirectory called
 #' "ddg" in the current working directory.
-#' @param enable.console (optional) - if TRUE, console mode is turned on.
 #' @param annotate.inside.functions (optional) - if TRUE, functions are annotated.
 #' @param first.loop (optional) - the first loop to annotate in a for, while, or
 #' repeat statement.
@@ -55,7 +54,7 @@
 #' @return nothing
 #' @export
 
-ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enable.console = TRUE, annotate.inside.functions = TRUE, first.loop = 1, max.loops = 1, max.snapshot.size = 10,
+ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, annotate.inside.functions = TRUE, first.loop = 1, max.loops = 1, max.snapshot.size = 10,
                      hash.algorithm="md5") {
   .ddg.init.tables()
 
@@ -76,17 +75,30 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
     output.path <- paste(.ddg.path.scripts(), "/", basename(tools::file_path_sans_ext(r.script.path)), ".R", sep = "")
     .ddg.markdown(r.script.path, output.path)
     .ddg.set("ddg.r.script.path", output.path)
-  } else {
+  } else if (!is.null (r.script.path)) {
     .ddg.set("ddg.r.script.path",
              if (is.null(r.script.path)) NULL
              else normalizePath(r.script.path, winslash="/"))
   }
+  else {
+    # If running from the console, set up a callback to be notified
+    # after each statement completes execution and build the 
+    # corresponding portions of the ddg.
+    .ddg.trace.task <- function (task, result, success, printed) {
+       
+       # Create the provenance for the new command
+       .ddg.parse.commands(as.expression(task),
+             environ = .GlobalEnv,
+             run.commands=FALSE)
+         
+       return(TRUE)
+         
+    }
+    .ddg.set (".ddg.taskCallBack.id", addTaskCallback(.ddg.trace.task))
+  }
 
   # Set environment constants.
-  .ddg.set.enable.console (enable.console)
   .ddg.set.details.omitted(FALSE)
-
-  .ddg.init.history.file ()
 
   # If ddg.detail is not set, use values of annotate.inside, max.loops
   # and max.snapshot.size.
@@ -112,6 +124,11 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
   # Mark graph as initilized.
   .ddg.set(".ddg.initialized", TRUE)
   
+  # Add a Console start node if running from the console.
+  if (is.null (r.script.path)) {
+    .ddg.add.start.node (node.name = "Console")
+  }
+  
   invisible()
 }
 
@@ -129,7 +146,6 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
 #' @param r.script.path the path to the R script.  If NULL, we are running from the console.
 #' @param overwrite If FALSE, a timestamp is added to the directory name
 #' @return the name of the directory where the ddg should be stored
-
 .ddg.set.path <- function (ddgdir, r.script.path, overwrite) {
   
   # Directory specified by ddgdir parameter
@@ -182,7 +198,7 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
 
 #' .ddg.flush.ddg removes all files from the DDG directories unless the
 #'   the DDG directory is the working directory. If no DDG directory is
-#'   specified, the current DDG directory is assumed. 
+#'   specified, the current DDG directory is assumed.
 #' @param ddg.path (optional) path to DDG directory.
 #' @return nothing
 
@@ -211,49 +227,22 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, enab
   invisible()
 }
 
-#' ddg.save saves the current provenance graph
+#' ddg.save saves the current provenance graph.  If more R statements
+#' are executed, they will be added to this ddg.  To finalize the ddg,
+#' call ddg.quit, which will save and finalize the ddg.
 #' @param save.debug (optional) - If TRUE, save debug files to debug directory.
-#' Used in console mode.
-#' @param quit (optional) - If TRUE, remove all DDG files from memory.
 #' @return nothing
 #' @export
-
-ddg.save <- function(save.debug = FALSE, quit = FALSE) {
+ddg.save <- function(save.debug = FALSE) {
   if (!.ddg.is.init()) return(invisible())
   
-  # Get the final commands
-  .ddg.console.node()
-
-  # By convention, this is the final call to ddg.save.  This is
-  # called at the end of ddg.run, and the user should call ddg.save
-  # with quit = true when they want to finalize a ddg run from
-  # the console
-  if (quit) {
-    # If there are any connections still open when the script ends,
-    # create nodes and edges for them.
-    .ddg.create.file.nodes.for.open.connections ()
-    
-    # If there is a display device open, grab what is on the display
-    if (length(grDevices::dev.list()) >= 1) {
-      tryCatch (.ddg.capture.graphics(called.from.save = TRUE),
-          error = function (e) print(e))
-    }
-    
-    .ddg.stop.iotracing()
-    
-    # Restore history settings.
-    .ddg.restore.history.size()
-
-    # Delete temporary files.
-    .ddg.delete.temp()
-
-    # Shut down the DDG.
-    #.ddg.clear()
-    # Mark graph as initilized.
-    .ddg.set(".ddg.initialized", FALSE)
-    
+  # If running from the console create a Console finish node.
+  # Also create a start node for the next segment.
+  if (is.null (.ddg.get ("ddg.r.script.path"))) {
+    .ddg.add.finish.node (node.name = "Console")
+    .ddg.add.start.node (node.name = "Console")
   }
-  
+
   # Save ddg.json to file.
   .ddg.json.write()
   if (interactive()) print(paste("Saving ddg.json in ", .ddg.path(), sep=""))
@@ -262,15 +251,58 @@ ddg.save <- function(save.debug = FALSE, quit = FALSE) {
   if (save.debug || .ddg.save.debug()) {
     .ddg.save.debug.files()
   }
-  
-  # Clear DDGStatements from ddg environment.  
-  # Should this be only inside the quit if-statement?
-  .ddg.init.statements ()
-  
-  # Clear loop information from ddg environment.
-  # Should this be only inside the quit if-statement?
-  .ddg.clear.loops ()
 
+  invisible()
+}
+
+#' ddg.quit saves the current provenance graph and closes the current ddg
+#'
+#' @param save.debug (optional) - If TRUE, save debug files to debug directory.
+#' Used in console mode.
+#'
+#' @return nothing
+#' @export
+ddg.quit <- function(save.debug = FALSE) {
+  if (!.ddg.is.init()) return(invisible())
+  
+  # If running from the console create a Console finish node.
+  if (is.null (.ddg.get ("ddg.r.script.path"))) {
+    .ddg.add.finish.node (node.name = "Console")
+  }
+  
+  # If there are any connections still open when the script ends,
+  # create nodes and edges for them.
+  .ddg.create.file.nodes.for.open.connections ()
+  
+  # If there is a display device open, grab what is on the display
+  if (length(grDevices::dev.list()) >= 1) {
+    tryCatch (.ddg.capture.graphics(called.from.save = TRUE),
+        error = function (e) print(e))
+  }
+  
+  # Turn off the I/O tracing and console tracing.
+  .ddg.stop.iotracing()
+  if (.ddg.is.set (".ddg.taskCallBack.id")) {
+    removeTaskCallback (.ddg.get (".ddg.taskCallBack.id"))
+  }
+  
+  # Delete temporary files.
+  .ddg.delete.temp()
+  
+  # Shut down the DDG.
+  #.ddg.clear()
+  # Mark graph as initilized.
+  .ddg.set(".ddg.initialized", FALSE)
+    
+  # Save ddg.json to file.
+  .ddg.json.write()
+  if (interactive()) print(paste("Saving ddg.json in ", .ddg.path(), sep=""))
+  
+  # Save debug files to debug directory.
+  if (save.debug || .ddg.save.debug()) {
+    .ddg.save.debug.files()
+  }
+   
   invisible()
 }
 
@@ -290,7 +322,6 @@ ddg.save <- function(save.debug = FALSE, quit = FALSE) {
 #' is executed with calls to ddg.init and ddg.save so that
 #' provenance for the function is captured.  Exactly one of f and r.script.path
 #' should be provided.
-#' @param enable.console (optional) - if TRUE, console mode is turned on.
 #' @param annotate.inside.functions (optional) - if TRUE, functions are annotated.
 #' @param first.loop (optional) - the first loop to annotate in a for, while, or
 #' repeat statement.
@@ -312,11 +343,11 @@ ddg.save <- function(save.debug = FALSE, quit = FALSE) {
 #' @return nothing
 #' @export
 
-ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = NULL, enable.console = TRUE, annotate.inside.functions = TRUE, first.loop = 1, max.loops = 1, max.snapshot.size = 10, save.debug = FALSE, display = FALSE, 
+ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = NULL, annotate.inside.functions = TRUE, first.loop = 1, max.loops = 1, max.snapshot.size = 10, save.debug = FALSE, display = FALSE, 
                     hash.algorithm="md5") {
   
   # Initialize ddg.
-  ddg.init(r.script.path, ddgdir, overwrite, enable.console, annotate.inside.functions, first.loop, max.loops, max.snapshot.size, hash.algorithm)
+  ddg.init(r.script.path, ddgdir, overwrite, annotate.inside.functions, first.loop, max.loops, max.snapshot.size, hash.algorithm)
   
   # Set .ddg.is.sourced to TRUE if script provided.
   .ddg.set(".ddg.is.sourced", !is.null(r.script.path))
@@ -329,13 +360,12 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
   tryCatch(
     if (!is.null(r.script.path)) ddg.source(
          .ddg.get("ddg.r.script.path"),
-          ignore.ddg.calls = FALSE,
-          force.console = FALSE)
+          ignore.ddg.calls = FALSE)
     else if (!is.null(f)) f()
     else stop("r.script.path and f cannot both be NULL"),
 
     finally={
-      ddg.save(quit=TRUE)
+      ddg.quit()
       if(display==TRUE){
         ddg.display()
       }
@@ -350,7 +380,7 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
 #' @param ddg.source reads in an R script and executes it in the provided
 #' enviroment. ddg.source essentially mimics the behaviour of the
 # 'R source command, having similar input parameters and results,
-# 'but with additional parameters ignore.ddg.calls and force.console.
+# 'but with additional parameter ignore.ddg.calls.
 #' @param file - the name of the R script file to source.
 #' @param local (optional) - the environment in which to evaluate parsed
 #' expressions. If TRUE, the environment from which ddg.source is
@@ -365,14 +395,13 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
 #' @param encoding (optional) - encoding to be assumed when file is a
 #' character string.
 #' @param ignore.ddg.calls (optional) - if TRUE, ignore DDG function calls.
-#' @param force.console (optional) - if TRUE, turn console mode on.
 #'
 #' @return nothing
 #' @export
 
 ddg.source <- function (file,  local = FALSE, echo = verbose, print.eval = echo,
 	verbose = getOption("verbose"), max.deparse.length = 150, chdir = FALSE, encoding = getOption("encoding"),
-	ignore.ddg.calls = TRUE, force.console=TRUE){
+	ignore.ddg.calls = TRUE){
 
 	# Store script number & name.
   sname <- basename(file)
@@ -552,26 +581,15 @@ ddg.source <- function (file,  local = FALSE, echo = verbose, print.eval = echo,
 	# Now we can parse the commands as we normally would for a DDG.
 	if(length(exprs) > 0) 
 	{
-		# Turn on the console if forced to, keep track of previous
-		# setting, parse previous commands if necessary.
-		prev.on <- .ddg.is.init() && .ddg.enable.console()
-		if (prev.on) .ddg.console.node()
-		if (force.console) ddg.console.on()
-
-		# Let library know that we are sourcing a file.
-		prev.source <- .ddg.is.init() && .ddg.enable.source()
 
 		# Initialize the tables for ddg.capture.
 		.ddg.set("from.source", TRUE)
 
-		# Parse the commands into a console node.
+		# Parse and execute the commands, collecting provenance along the way.
 		.ddg.parse.commands(exprs, sname, snum, environ=envir, ignore.patterns=ignores, node.name=sname,
 			echo = echo, print.eval = print.eval, max.deparse.length = max.deparse.length,
 			run.commands = TRUE)
 
-		# Restore previous state
-    .ddg.set("from.source", prev.source)
-    if (!prev.on) ddg.console.off() else ddg.console.on()
 	}
 
 	invisible()
