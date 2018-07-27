@@ -598,7 +598,7 @@ ddg.source <- function (file,  local = FALSE, echo = verbose, print.eval = echo,
       .ddg.add.start.node (node.name=sname)
     }
     else {
-      .ddg.add.start.node (node.name=paste0 ("source (", sname, ")"), script.num=calling.script,
+      .ddg.add.start.node (node.name=paste0 ("source (\"", sname, "\")"), script.num=calling.script,
           startLine=startLine, startCol=startCol, endLine=endLine, endCol=endCol)
     }
 		.ddg.parse.commands(exprs, sname, snum, environ=envir, ignore.patterns=ignores,
