@@ -740,8 +740,6 @@
 #' @param ignore.patterns (optional) a vector of regular expressions.
 #'   Any commands matching these expressions will not be parsed
 #'   (i.e. no nodes will be created for them).
-#' @param node.name (optional) name for the collapsible node under which
-#'   this DDG should be stored.
 #' @param run.commands (optional) commands are executed only when environ
 #'   is an environment and run.commands is TRUE.
 #' @param echo (optional) print each expression after parsing
@@ -754,7 +752,7 @@
 #'   creates the DDG Statement objects.
 #' @return nothing
 .ddg.parse.commands <- function (exprs, script.name="", script.num=NA, environ, 
-    ignore.patterns=c('^ddg.'), node.name="Console", run.commands = FALSE, echo=FALSE, 
+    ignore.patterns=c('^ddg.'), run.commands = FALSE, echo=FALSE, 
     print.eval=echo, max.deparse.length=150, called.from.ddg.eval=FALSE, cmds=NULL) {
 
   return.value <- NULL

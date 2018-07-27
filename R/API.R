@@ -399,7 +399,11 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
 #' @param encoding (optional) - encoding to be assumed when file is a
 #' character string.
 #' @param ignore.ddg.calls (optional) - if TRUE, ignore DDG function calls.
-#'
+#' @param calling.script (optional) - the number of the script that source was called in
+#' @param startLine (optional) - the line that the source call starts on
+#' @param startCol (optional) - the column that the source call starts on
+#' @param endLine (optional) - the line that the source call ends on
+#' @param endCol (optional) - the column that the source call ends on
 #' @return nothing
 #' @export
 
@@ -590,13 +594,23 @@ ddg.source <- function (file,  local = FALSE, echo = verbose, print.eval = echo,
 		.ddg.set("from.source", TRUE)
 
 		# Parse and execute the commands, collecting provenance along the way.
-    .ddg.add.start.node (node.name=paste0 ("source (", sname, ")"), script.num=calling.script,
-        startLine=startLine, startCol=startCol, endLine=endLine, endCol=endCol)
-		.ddg.parse.commands(exprs, sname, snum, environ=envir, ignore.patterns=ignores, node.name=sname,
+    if (is.na(calling.script)) {
+      .ddg.add.start.node (node.name=sname)
+    }
+    else {
+      .ddg.add.start.node (node.name=paste0 ("source (", sname, ")"), script.num=calling.script,
+          startLine=startLine, startCol=startCol, endLine=endLine, endCol=endCol)
+    }
+		.ddg.parse.commands(exprs, sname, snum, environ=envir, ignore.patterns=ignores,
 			echo = echo, print.eval = print.eval, max.deparse.length = max.deparse.length,
 			run.commands = TRUE)
-    .ddg.add.finish.node (script.num=calling.script,
-        startLine=startLine, startCol=startCol, endLine=endLine, endCol=endCol)
+    if (is.na(calling.script)) {
+      .ddg.add.finish.node ()
+    }
+    else {
+      .ddg.add.finish.node (script.num=calling.script,
+          startLine=startLine, startCol=startCol, endLine=endLine, endCol=endCol)
+    }
 
 	}
 
