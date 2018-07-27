@@ -21,6 +21,7 @@
 
 # ddg.init - intializes a new provenance graph
 # ddg.save - saves the current provenance graph
+# ddg.quit - saves the current provenance graph and finalizes it
 # ddg.run - initiates execution of a script
 # ddg.source - sources a script & collects provenance
 # ddg.json - returns the current provenance graph as a prov-json string
@@ -239,7 +240,7 @@ ddg.save <- function(save.debug = FALSE) {
   # If running from the console create a Console finish node.
   # Also create a start node for the next segment.
   if (is.null (.ddg.get ("ddg.r.script.path"))) {
-    .ddg.add.finish.node (node.name = "Console")
+    .ddg.add.finish.node ()
     .ddg.add.start.node (node.name = "Console")
   }
 
@@ -267,7 +268,7 @@ ddg.quit <- function(save.debug = FALSE) {
   
   # If running from the console create a Console finish node.
   if (is.null (.ddg.get ("ddg.r.script.path"))) {
-    .ddg.add.finish.node (node.name = "Console")
+    .ddg.add.finish.node ()
   }
   
   # If there are any connections still open when the script ends,
@@ -365,6 +366,8 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
     else stop("r.script.path and f cannot both be NULL"),
 
     finally={
+      # Add finish nodes for anything left open due to errors
+      .ddg.close.blocks()
       ddg.quit()
       if(display==TRUE){
         ddg.display()
@@ -395,13 +398,17 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
 #' @param encoding (optional) - encoding to be assumed when file is a
 #' character string.
 #' @param ignore.ddg.calls (optional) - if TRUE, ignore DDG function calls.
-#'
+#' @param calling.script (optional) - the number of the script that source was called in
+#' @param startLine (optional) - the line that the source call starts on
+#' @param startCol (optional) - the column that the source call starts on
+#' @param endLine (optional) - the line that the source call ends on
+#' @param endCol (optional) - the column that the source call ends on
 #' @return nothing
 #' @export
 
 ddg.source <- function (file,  local = FALSE, echo = verbose, print.eval = echo,
 	verbose = getOption("verbose"), max.deparse.length = 150, chdir = FALSE, encoding = getOption("encoding"),
-	ignore.ddg.calls = TRUE){
+	ignore.ddg.calls = TRUE, calling.script=NA, startLine=NA, startCol=NA, endLine=NA, endCol=NA){
 
 	# Store script number & name.
   sname <- basename(file)
@@ -586,9 +593,25 @@ ddg.source <- function (file,  local = FALSE, echo = verbose, print.eval = echo,
 		.ddg.set("from.source", TRUE)
 
 		# Parse and execute the commands, collecting provenance along the way.
-		.ddg.parse.commands(exprs, sname, snum, environ=envir, ignore.patterns=ignores, node.name=sname,
+	  # If called from ddg.run, there is no position information.  Otherwise,
+	  # record script number and posiiton in the start and finish nodes.
+    if (is.na(calling.script)) {
+      .ddg.add.start.node (node.name=sname)
+    }
+    else {
+      .ddg.add.start.node (node.name=paste0 ("source (\"", sname, "\")"), script.num=calling.script,
+          startLine=startLine, startCol=startCol, endLine=endLine, endCol=endCol)
+    }
+		.ddg.parse.commands(exprs, sname, snum, environ=envir, ignore.patterns=ignores,
 			echo = echo, print.eval = print.eval, max.deparse.length = max.deparse.length,
 			run.commands = TRUE)
+    if (is.na(calling.script)) {
+      .ddg.add.finish.node ()
+    }
+    else {
+      .ddg.add.finish.node (script.num=calling.script,
+          startLine=startLine, startCol=startCol, endLine=endLine, endCol=endCol)
+    }
 
 	}
 

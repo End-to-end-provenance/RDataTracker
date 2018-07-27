@@ -245,12 +245,7 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
   
   # Create the finish node for the function
   #print("ddg.return.value: creating finish node")
-  if (typeof(call[[1]]) == "closure") {
-    .ddg.add.finish.node (node.name=pname)
-  }
-  else {
-    .ddg.add.finish.node (node.name=paste(deparse(call),collapse=""))
-  }
+  .ddg.add.finish.node()
   
   #print(paste ("ddg.return.value: returning", expr))
   return(expr)
@@ -388,7 +383,7 @@ ddg.eval <- function(statement, cmd.func=NULL) {
     .ddg.next.statement()
   }
   
-  return.value <- .ddg.parse.commands(parsed.statement, environ=env, run.commands = TRUE, node.name=statement, called.from.ddg.eval=TRUE, cmds=list(cmd))
+  return.value <- .ddg.parse.commands(parsed.statement, environ=env, run.commands = TRUE, called.from.ddg.eval=TRUE, cmds=list(cmd))
   
   if (.ddg.get(".ddg.func.depth")) {
     if (!is.null(cmd)) {
@@ -545,7 +540,7 @@ ddg.annotate.off <- function (fnames=NULL) {
   
   # Replace source with ddg.source.
   if (is.call(parsed.command) && parsed.command[[1]] == "source") {
-    return(.ddg.add.ddg.source(parsed.command))
+    return(.ddg.add.ddg.source(parsed.command, command))
   }
   
   # Annotate user-defined functions.
@@ -581,11 +576,13 @@ ddg.annotate.off <- function (fnames=NULL) {
 
 #' .ddg.add.ddg.source replaces source with ddg.source.
 #' @param parsed.command a parsed expression that is a call to the source function.
+#' @param command the DDGStatement object for the source call
 #' @return a parsed expression with source replaced by ddg.source
 
-.ddg.add.ddg.source <- function(parsed.command) {
+.ddg.add.ddg.source <- function(parsed.command, cmd) {
   script.name <- deparse(parsed.command[[2]])
-  parsed.command.txt <- paste("ddg.source(", script.name, ")", sep="")
+  parsed.command.txt <- paste("ddg.source(", script.name, ", calling.script =", cmd@script.num, ", startLine=", cmd@pos@startLine,
+      ", startCol=", cmd@pos@startCol, ", endLine=", cmd@pos@endLine, ",endCol=", cmd@pos@endCol, ")", sep="")
   return(parse(text=parsed.command.txt))
 }
 

@@ -578,6 +578,7 @@
 	</target>
 
 	<target name = "update-expected-out">
+		<property name="expected_dir" value="${dir}/expected" />
 		<copy todir="${expected_dir}" overwrite="true">
 			<fileset file="${FILE.basedir}/${out}" />
 		</copy>
@@ -594,17 +595,18 @@
 		</antcall>
 		
 		<antcall target="update-expected-out">
+			<param name="dir" value="tests/${test-name}"/>
 			<param name="out" value="tests/${test-name}/${test-name}.out"/>
 			<param name="expected_out" value="tests/${test-name}/expected_${test-name}.out"/>
 		</antcall>
 	</target>
 
-	<target name = "update-console-expected">
+<!--	<target name = "update-console-expected">
 		<antcall target="update-expected">
 			<param name="dir" value="tests/${test-name}"/>
 			<param name="expected_ddg" value="tests/${test-name}/expected_${test-name}_ddg.json"/>
 		</antcall>
-	</target>
+	</target>-->
 
 	<!--############################ End FUNCTIONS ############################-->
 	
@@ -876,7 +878,7 @@
 	</target>
 
 	<target name="update-console">
-		<antcall target="update-console-expected">
+		<antcall target="update-regression-expected">
 			<param name="test-name" value="console" />
 		</antcall>
 	</target>
