@@ -534,17 +534,21 @@
 #' @param node.name The label to put on the node.  If node.name is not passed in,
 #'   the abbreviated label in cmd is used.
 #' @return the label of the node created, excluding "Start"
-.ddg.add.start.node <- function(cmd = NULL, node.name = "") {
-  node.name <- .ddg.add.abstract.node ("Start", cmd, node.name)
+.ddg.add.start.node <- function(cmd = NULL, node.name = "",
+    script.num=NA, startLine=NA, startCol=NA, endLine=NA, endCol=NA) {
+  node.name <- .ddg.add.abstract.node ("Start", cmd, node.name,
+      script.num, startLine, startCol, endLine, endCol)
   .ddg.push.start (node.name)
   return (node.name)
 }
   
 #' .ddg.add.finish.node creates a finish node and its incoming control flow edge.  
 #' @return the label of the node created, excluding "Finish"
-.ddg.add.finish.node <- function(cmd = NULL) {
+.ddg.add.finish.node <- function(cmd = NULL,
+    script.num=NA, startLine=NA, startCol=NA, endLine=NA, endCol=NA) {
   popped <- .ddg.pop.start ()
-  node.name <- .ddg.add.abstract.node ("Finish", cmd, node.name = popped)
+  node.name <- .ddg.add.abstract.node ("Finish", cmd, node.name = popped,
+      script.num, startLine, startCol, endLine, endCol)
   return (node.name)
 }
 
@@ -609,13 +613,16 @@
 #' @param node.name The label to put on the node.  If node.name is not passed in,
 #'   the abbreviated label in cmd is used.
 #' @return the label of the node created, excluding "Start" or "Finish"
-.ddg.add.abstract.node <- function(type, cmd = NULL, node.name = "") {
+.ddg.add.abstract.node <- function(type, cmd = NULL, node.name = "",
+    scriptNum=NA, startLine=NA, startCol=NA, endLine=NA, endCol=NA) {
   #print("In .ddg.add.abstract.node")
+  
   if (node.name == "") {
       node.name <- cmd@abbrev
   }
   if (.ddg.debug.lib()) print(paste("Adding", node.name,  type, "node"))
-  .ddg.proc.node(type, node.name, node.name, cmd = cmd)
+  .ddg.proc.node(type, node.name, node.name, cmd = cmd, 
+      scriptNum=scriptNum, startLine=startLine, startCol=startCol, endLine=endLine, endCol=endCol)
   .ddg.proc2proc()
 
   return(node.name)
@@ -991,7 +998,7 @@
             else ""
         
         #create.procedure <- create && (!cur.cmd.closed || !named.node.set) && !start.finish.created  && !grepl("^ddg.source", cmd@text)
-        create.procedure <- create && !cur.cmd.closed && !start.finish.created  && !grepl("^ddg.source", cmd@text)
+        create.procedure <- create && !cur.cmd.closed && !start.finish.created  && !grepl("^ddg.source", cmd@annotated)
         
         # We want to create a procedure node for this command.
         if (create.procedure) {

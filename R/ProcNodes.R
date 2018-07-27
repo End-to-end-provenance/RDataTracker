@@ -228,6 +228,12 @@
     ddg.proc.nodes$ddg.endLine[ddg.pnum] <- pos@endLine
     ddg.proc.nodes$ddg.endCol[ddg.pnum] <- pos@endCol
   }
+  else if (is.vector(pos) && length(pos) == 4) {
+    ddg.proc.nodes$ddg.startLine[ddg.pnum] <- pos[1]
+    ddg.proc.nodes$ddg.startCol[ddg.pnum] <- pos[2]
+    ddg.proc.nodes$ddg.endLine[ddg.pnum] <- pos[3]
+    ddg.proc.nodes$ddg.endCol[ddg.pnum] <- pos[4]
+  }
   else {
     ddg.proc.nodes$ddg.startLine[ddg.pnum] <- NA
     ddg.proc.nodes$ddg.startCol[ddg.pnum] <- NA
@@ -252,19 +258,23 @@
 #' @return nothing
 
 .ddg.proc.node <- function(ptype, pname, pvalue="", functions.called=NULL, 
-    cmd = NULL) {
-
+    cmd = NULL, scriptNum=NA, startLine=NA, startCol=NA, endLine=NA, endCol=NA) {
+  
   if (!.ddg.is.proc.type (ptype)) {
     print (paste (".ddg.proc.node: bad value for ptype - ", ptype))
   }
   
-  if (is.null(cmd)) {
-    snum <- NA
-    pos <- NA
-  }
-  else {
+  if (!is.null(cmd)) {
     snum <- cmd@script.num
     pos <- cmd@pos
+  }
+  else if (!is.na(scriptNum)){
+    snum <- scriptNum
+    pos <- c(startLine, startCol, endLine, endCol)
+  }
+  else {
+    snum <- NA
+    pos <- NA
   }
   
   # Record start & finish information

@@ -405,7 +405,7 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
 
 ddg.source <- function (file,  local = FALSE, echo = verbose, print.eval = echo,
 	verbose = getOption("verbose"), max.deparse.length = 150, chdir = FALSE, encoding = getOption("encoding"),
-	ignore.ddg.calls = TRUE){
+	ignore.ddg.calls = TRUE, calling.script=NA, startLine=NA, startCol=NA, endLine=NA, endCol=NA){
 
 	# Store script number & name.
   sname <- basename(file)
@@ -590,11 +590,13 @@ ddg.source <- function (file,  local = FALSE, echo = verbose, print.eval = echo,
 		.ddg.set("from.source", TRUE)
 
 		# Parse and execute the commands, collecting provenance along the way.
-    .ddg.add.start.node (node.name=sname)
+    .ddg.add.start.node (node.name=paste0 ("source (", sname, ")"), script.num=calling.script,
+        startLine=startLine, startCol=startCol, endLine=endLine, endCol=endCol)
 		.ddg.parse.commands(exprs, sname, snum, environ=envir, ignore.patterns=ignores, node.name=sname,
 			echo = echo, print.eval = print.eval, max.deparse.length = max.deparse.length,
 			run.commands = TRUE)
-    .ddg.add.finish.node ()
+    .ddg.add.finish.node (script.num=calling.script,
+        startLine=startLine, startCol=startCol, endLine=endLine, endCol=endCol)
 
 	}
 
