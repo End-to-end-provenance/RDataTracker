@@ -245,12 +245,13 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
   
   # Create the finish node for the function
   #print("ddg.return.value: creating finish node")
-  if (typeof(call[[1]]) == "closure") {
-    .ddg.add.finish.node (node.name=pname)
-  }
-  else {
-    .ddg.add.finish.node (node.name=paste(deparse(call),collapse=""))
-  }
+  .ddg.add.finish.node()
+#  if (typeof(call[[1]]) == "closure") {
+#    .ddg.add.finish.node (node.name=pname)
+#  }
+#  else {
+#    .ddg.add.finish.node (node.name=paste(deparse(call),collapse=""))
+#  }
   
   #print(paste ("ddg.return.value: returning", expr))
   return(expr)

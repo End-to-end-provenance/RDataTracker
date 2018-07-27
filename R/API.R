@@ -21,6 +21,7 @@
 
 # ddg.init - intializes a new provenance graph
 # ddg.save - saves the current provenance graph
+# ddg.quit - saves the current provenance graph and finalizes it
 # ddg.run - initiates execution of a script
 # ddg.source - sources a script & collects provenance
 # ddg.json - returns the current provenance graph as a prov-json string
@@ -239,7 +240,8 @@ ddg.save <- function(save.debug = FALSE) {
   # If running from the console create a Console finish node.
   # Also create a start node for the next segment.
   if (is.null (.ddg.get ("ddg.r.script.path"))) {
-    .ddg.add.finish.node (node.name = "Console")
+    #.ddg.add.finish.node (node.name = "Console")
+    .ddg.add.finish.node ()
     .ddg.add.start.node (node.name = "Console")
   }
 
@@ -267,7 +269,8 @@ ddg.quit <- function(save.debug = FALSE) {
   
   # If running from the console create a Console finish node.
   if (is.null (.ddg.get ("ddg.r.script.path"))) {
-    .ddg.add.finish.node (node.name = "Console")
+    #.ddg.add.finish.node (node.name = "Console")
+    .ddg.add.finish.node ()
   }
   
   # If there are any connections still open when the script ends,
@@ -365,6 +368,7 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
     else stop("r.script.path and f cannot both be NULL"),
 
     finally={
+      .ddg.close.blocks()
       ddg.quit()
       if(display==TRUE){
         ddg.display()

@@ -215,6 +215,9 @@
   # Initialize the stack of commands and environments being executed in active functions
   .ddg.set(".ddg.cur.cmd.stack", vector())
   .ddg.set(".ddg.cur.expr.stack", vector())
+  
+  # Initialize the stack corresponding to the names of start/finish nodes.
+  .ddg.set(".ddg.start.stack", vector())
 }
 
 #' .ddg.init.environ() sets up the filesystem and R environments for use. 
@@ -530,17 +533,73 @@
 #'   the abbreviated label in cmd is used.
 #' @return the label of the node created, excluding "Start"
 .ddg.add.start.node <- function(cmd = NULL, node.name = "") {
-  return (.ddg.add.abstract.node ("Start", cmd, node.name))
+  node.name <- .ddg.add.abstract.node ("Start", cmd, node.name)
+  .ddg.push.start (node.name)
+  return (node.name)
 }
   
 #' .ddg.add.finish.node creates a finish node and its incoming control flow edge.  
-#' @param cmd The DDGStatement object for the command being finished
-#' @param node.name The label to put on the node.  If node.name is not passed in,
-#'   the abbreviated label in cmd is used.
 #' @return the label of the node created, excluding "Finish"
-.ddg.add.finish.node <- function(cmd = NULL, node.name = "") {
-  return (.ddg.add.abstract.node ("Finish", cmd, node.name))
+.ddg.add.finish.node <- function(cmd = NULL) {
+  popped <- .ddg.pop.start ()
+  node.name <- .ddg.add.abstract.node ("Finish", cmd, node.name = popped)
+  return (node.name)
 }
+
+.ddg.close.blocks <- function () {
+  .ddg.start.stack <- .ddg.get(".ddg.start.stack")
+  #print (paste ("start.stack =", .ddg.start.stack))
+  stack.length <- length(.ddg.start.stack)
+  if (stack.length == 0) {
+    return()
+  }
+  
+  for (i in stack.length:1) {
+    .ddg.add.finish.node ()
+  }
+}
+
+.ddg.push.start <- function (node.name) {
+  .ddg.start.stack <- .ddg.get(".ddg.start.stack")
+  
+  if (length(.ddg.start.stack) == 0) {
+    .ddg.start.stack <- node.name
+  }
+  else {
+    .ddg.start.stack <- c(.ddg.start.stack, node.name)
+  }
+  .ddg.set(".ddg.start.stack", .ddg.start.stack)
+}
+
+.ddg.pop.start <- function () {
+  .ddg.start.stack <- .ddg.get(".ddg.start.stack")
+  #print (paste ("Before pop, start.stack =", .ddg.start.stack))
+  stack.length <- length(.ddg.start.stack)
+  top <- 
+      if (stack.length == 0) NULL
+      else .ddg.start.stack[stack.length]
+
+  if (stack.length == 1) {
+    .ddg.set(".ddg.start.stack", vector())
+  }
+  else if (stack.length > 1){
+    .ddg.set(".ddg.start.stack", .ddg.start.stack[1:(stack.length-1)])
+  }
+  #print (paste ("pop returning", top))
+  return (top)
+}
+
+.ddg.top.start <- function () {
+  .ddg.start.stack <- .ddg.get(".ddg.start.stack")
+  stack.length <- length(.ddg.start.stack)
+  if (stack.length == 0) {
+    return (NULL)
+  }
+  else {
+    return (.ddg.start.stack[stack.length])
+  }
+}
+
 
 #' .ddg.add.abstract.node creates a start or finish node and its 
 #' incoming control flow edge.
@@ -605,7 +664,8 @@
   # parsed some lines of code).
   # TODO: Do we need to check .ddg.possible.last.cmd?  We don't use it here.
   if (!is.null(.ddg.last.cmd) && (!is.null(.ddg.possible.last.cmd))) {
-    cmd.abbrev <- .ddg.add.finish.node(.ddg.last.cmd)
+    #cmd.abbrev <- .ddg.add.finish.node(.ddg.last.cmd)
+    cmd.abbrev <- .ddg.add.finish.node()
 
     # Add link from a function return node if there is one.
     .ddg.link.function.returns(.ddg.last.cmd)
@@ -1002,7 +1062,8 @@
   # is initialized (also, save).
   #
   if (.ddg.is.init() && named.node.set && !inside.func) {
-      .ddg.add.finish.node(node.name = node.name)
+      #.ddg.add.finish.node(node.name = node.name)
+      .ddg.add.finish.node()
   }
 
   if (.ddg.is.set(".ddg.last.R.value")) return (.ddg.get (".ddg.last.R.value"))
@@ -1756,5 +1817,4 @@
 	
   return(env)
 }
-
 
