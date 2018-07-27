@@ -255,6 +255,11 @@
 #' @param pvalue (optional) value of procedure node.
 #' @param functions.called vector of names of functions called in this procedure node
 #' @param cmd the DDGStatement corresponding to this procedure node
+#' @param scriptNum (optional) - the number of the script that the operation is in
+#' @param startLine (optional) - the line that the operation starts on
+#' @param startCol (optional) - the column that the operation starts on
+#' @param endLine (optional) - the line that the operation ends on
+#' @param endCol (optional) - the column that the operation ends on
 #' @return nothing
 
 .ddg.proc.node <- function(ptype, pname, pvalue="", functions.called=NULL, 

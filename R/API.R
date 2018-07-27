@@ -240,7 +240,6 @@ ddg.save <- function(save.debug = FALSE) {
   # If running from the console create a Console finish node.
   # Also create a start node for the next segment.
   if (is.null (.ddg.get ("ddg.r.script.path"))) {
-    #.ddg.add.finish.node (node.name = "Console")
     .ddg.add.finish.node ()
     .ddg.add.start.node (node.name = "Console")
   }
@@ -269,7 +268,6 @@ ddg.quit <- function(save.debug = FALSE) {
   
   # If running from the console create a Console finish node.
   if (is.null (.ddg.get ("ddg.r.script.path"))) {
-    #.ddg.add.finish.node (node.name = "Console")
     .ddg.add.finish.node ()
   }
   
@@ -368,6 +366,7 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
     else stop("r.script.path and f cannot both be NULL"),
 
     finally={
+      # Add finish nodes for anything left open due to errors
       .ddg.close.blocks()
       ddg.quit()
       if(display==TRUE){
@@ -594,6 +593,8 @@ ddg.source <- function (file,  local = FALSE, echo = verbose, print.eval = echo,
 		.ddg.set("from.source", TRUE)
 
 		# Parse and execute the commands, collecting provenance along the way.
+	  # If called from ddg.run, there is no position information.  Otherwise,
+	  # record script number and posiiton in the start and finish nodes.
     if (is.na(calling.script)) {
       .ddg.add.start.node (node.name=sname)
     }

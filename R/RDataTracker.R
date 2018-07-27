@@ -219,6 +219,8 @@
   # Initialize the stack corresponding to the names of start/finish nodes.
   .ddg.set(".ddg.start.stack", vector())
   
+  # Remember if an error node has been created during the processing
+  # of the last statement so we only create one.
   .ddg.set (".ddg.error.node.created", FALSE)
 }
 
@@ -533,6 +535,11 @@
 #' @param cmd The DDGStatement object for the command being started
 #' @param node.name The label to put on the node.  If node.name is not passed in,
 #'   the abbreviated label in cmd is used.
+#' @param script.num (optional) - the number of the script that the operation is in
+#' @param startLine (optional) - the line that the operation starts on
+#' @param startCol (optional) - the column that the operation starts on
+#' @param endLine (optional) - the line that the operation ends on
+#' @param endCol (optional) - the column that the operation ends on
 #' @return the label of the node created, excluding "Start"
 .ddg.add.start.node <- function(cmd = NULL, node.name = "",
     script.num=NA, startLine=NA, startCol=NA, endLine=NA, endCol=NA) {
@@ -543,6 +550,11 @@
 }
   
 #' .ddg.add.finish.node creates a finish node and its incoming control flow edge.  
+#' @param script.num (optional) - the number of the script that the operation is in
+#' @param startLine (optional) - the line that the operation starts on
+#' @param startCol (optional) - the column that the operation starts on
+#' @param endLine (optional) - the line that the operation ends on
+#' @param endCol (optional) - the column that the operation ends on
 #' @return the label of the node created, excluding "Finish"
 .ddg.add.finish.node <- function(cmd = NULL,
     script.num=NA, startLine=NA, startCol=NA, endLine=NA, endCol=NA) {
@@ -612,6 +624,11 @@
 #' @param cmd The DDGStatement object for the command being finished
 #' @param node.name The label to put on the node.  If node.name is not passed in,
 #'   the abbreviated label in cmd is used.
+#' @param scriptNum (optional) - the number of the script that the operation is in
+#' @param startLine (optional) - the line that the operation starts on
+#' @param startCol (optional) - the column that the operation starts on
+#' @param endLine (optional) - the line that the operation ends on
+#' @param endCol (optional) - the column that the operation ends on
 #' @return the label of the node created, excluding "Start" or "Finish"
 .ddg.add.abstract.node <- function(type, cmd = NULL, node.name = "",
     scriptNum=NA, startLine=NA, startCol=NA, endLine=NA, endCol=NA) {
@@ -673,7 +690,6 @@
   # parsed some lines of code).
   # TODO: Do we need to check .ddg.possible.last.cmd?  We don't use it here.
   if (!is.null(.ddg.last.cmd) && (!is.null(.ddg.possible.last.cmd))) {
-    #cmd.abbrev <- .ddg.add.finish.node(.ddg.last.cmd)
     cmd.abbrev <- .ddg.add.finish.node()
 
     # Add link from a function return node if there is one.
@@ -786,17 +802,6 @@
       #print(".ddg.parse.commands: setting .ddg.last.cmd to null")
     }
   }
-
-  # Create start and end nodes to allow collapsing of consecutive
-  # console nodes. Don't bother doing this if there is only 1 new
-  # command in the history or execution.
-#  named.node.set <- FALSE
-#
-#  if (num.cmds > 1 && .ddg.is.init() && !inside.func && !called.from.ddg.eval) {
-#    #print(paste("ddg.parse.commands: Creating Start for", node.name))
-#    .ddg.add.start.node(node.name = node.name)
-#    named.node.set <- TRUE
-#  }
 
   # Create an operation node for each command.  We can't use lapply
   # here because we need to process the commands in order and
@@ -927,9 +932,12 @@
             warning = .ddg.set.warning ,
             error = function(e)
             {
+              # Only create an error node if there has not been one created
+              # for the statement.  Since the error is re-thrown by withCallingHandlers,
+              # we will see this for every recursive call to ddg.parse.commands unless
+              # the error gets handled, but we only want to record it the
+              # first time.
               if (!.ddg.get(".ddg.error.node.created")) {
-                #print ("Adding node for error in main print.commands loop")
-                #print (paste ("e =", e))
                 # create procedure node for the error-causing operation
                 .ddg.proc.node("Operation", cmd@abbrev, cmd@abbrev, functions.called=cmd@functions.called, cmd=cmd)
                 .ddg.proc2proc()
@@ -995,7 +1003,6 @@
             if (.ddg.is.set (".ddg.last.proc.node.created")).ddg.get(".ddg.last.proc.node.created")
             else ""
         
-        #create.procedure <- create && (!cur.cmd.closed || !named.node.set) && !start.finish.created  && !grepl("^ddg.source", cmd@text)
         create.procedure <- create && !cur.cmd.closed && !start.finish.created  && !grepl("^ddg.source", cmd@annotated)
         
         # We want to create a procedure node for this command.
@@ -1072,14 +1079,6 @@
 
   # Close any node left open during execution.
   if (run.commands && !inside.func) .ddg.close.last.command.node()
-
-  # Close the console block if we processed anything and the DDG
-  # is initialized (also, save).
-  #
-#  if (.ddg.is.init() && named.node.set && !inside.func) {
-#      #.ddg.add.finish.node(node.name = node.name)
-#      .ddg.add.finish.node()
-#  }
 
   if (.ddg.is.set(".ddg.last.R.value")) return (.ddg.get (".ddg.last.R.value"))
   else return ("")

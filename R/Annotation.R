@@ -246,12 +246,6 @@ ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
   # Create the finish node for the function
   #print("ddg.return.value: creating finish node")
   .ddg.add.finish.node()
-#  if (typeof(call[[1]]) == "closure") {
-#    .ddg.add.finish.node (node.name=pname)
-#  }
-#  else {
-#    .ddg.add.finish.node (node.name=paste(deparse(call),collapse=""))
-#  }
   
   #print(paste ("ddg.return.value: returning", expr))
   return(expr)
@@ -582,6 +576,7 @@ ddg.annotate.off <- function (fnames=NULL) {
 
 #' .ddg.add.ddg.source replaces source with ddg.source.
 #' @param parsed.command a parsed expression that is a call to the source function.
+#' @param command the DDGStatement object for the source call
 #' @return a parsed expression with source replaced by ddg.source
 
 .ddg.add.ddg.source <- function(parsed.command, cmd) {
