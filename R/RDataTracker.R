@@ -218,6 +218,8 @@
   
   # Initialize the stack corresponding to the names of start/finish nodes.
   .ddg.set(".ddg.start.stack", vector())
+  
+  .ddg.set (".ddg.error.node.created", FALSE)
 }
 
 #' .ddg.init.environ() sets up the filesystem and R environments for use. 
@@ -783,13 +785,13 @@
   # Create start and end nodes to allow collapsing of consecutive
   # console nodes. Don't bother doing this if there is only 1 new
   # command in the history or execution.
-  named.node.set <- FALSE
-
-  if (num.cmds > 1 && .ddg.is.init() && !inside.func && !called.from.ddg.eval) {
-    #print(paste("ddg.parse.commands: Creating Start for", node.name))
-    .ddg.add.start.node(node.name = node.name)
-    named.node.set <- TRUE
-  }
+#  named.node.set <- FALSE
+#
+#  if (num.cmds > 1 && .ddg.is.init() && !inside.func && !called.from.ddg.eval) {
+#    #print(paste("ddg.parse.commands: Creating Start for", node.name))
+#    .ddg.add.start.node(node.name = node.name)
+#    named.node.set <- TRUE
+#  }
 
   # Create an operation node for each command.  We can't use lapply
   # here because we need to process the commands in order and
@@ -904,6 +906,7 @@
                   # Don't set return.value if we are calling a ddg function or we are executing an if-statement
                   if (grepl("^ddg", annot) || grepl("^.ddg", annot) || .ddg.get.statement.type(annot) == "if") {
                     eval(annot, environ, NULL)
+                    .ddg.set (".ddg.error.node.created", FALSE)
                   }
                   else {
                     return.value <- eval(annot, environ, NULL)
@@ -912,26 +915,32 @@
                       #print(paste(".ddg.parse.commands: setting .ddg.last.R.value to", return.value))
 									  #}
                     .ddg.set (".ddg.last.R.value", return.value)
+                    .ddg.set (".ddg.error.node.created", FALSE)
                   }
                 }
               },
             warning = .ddg.set.warning ,
             error = function(e)
             {
-              # create procedure node for the error-causing operation
-              .ddg.proc.node("Operation", cmd@abbrev, cmd@abbrev, functions.called=cmd@functions.called, cmd=cmd)
-              .ddg.proc2proc()
-
-              # create input edges by adding variables to set
-              if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Adding", cmd@abbrev, "information to vars.set, for an error"))
-              .ddg.create.data.use.edges(cmd, for.caller=FALSE)
-
-              # Create output exception node.
-              .ddg.data.node("Exception", "error.msg", toString(e), "ddg.library")
-              
-              # Create data flow edge from procedure node to exception node.
-              .ddg.proc2data(cmd@abbrev, "error.msg")
-              
+              if (!.ddg.get(".ddg.error.node.created")) {
+                #print ("Adding node for error in main print.commands loop")
+                #print (paste ("e =", e))
+                # create procedure node for the error-causing operation
+                .ddg.proc.node("Operation", cmd@abbrev, cmd@abbrev, functions.called=cmd@functions.called, cmd=cmd)
+                .ddg.proc2proc()
+  
+                # create input edges by adding variables to set
+                if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Adding", cmd@abbrev, "information to vars.set, for an error"))
+                .ddg.create.data.use.edges(cmd, for.caller=FALSE)
+  
+                # Create output exception node.
+        
+                .ddg.data.node("Exception", "error.msg", toString(e), "ddg.library")
+                
+                # Create data flow edge from procedure node to exception node.
+                .ddg.proc2data(cmd@abbrev, "error.msg")
+                .ddg.set (".ddg.error.node.created", TRUE)
+              }
             }
           )
 
@@ -981,7 +990,8 @@
             if (.ddg.is.set (".ddg.last.proc.node.created")).ddg.get(".ddg.last.proc.node.created")
             else ""
         
-        create.procedure <- create && (!cur.cmd.closed || !named.node.set) && !start.finish.created  && !grepl("^ddg.source", cmd@text)
+        #create.procedure <- create && (!cur.cmd.closed || !named.node.set) && !start.finish.created  && !grepl("^ddg.source", cmd@text)
+        create.procedure <- create && !cur.cmd.closed && !start.finish.created  && !grepl("^ddg.source", cmd@text)
         
         # We want to create a procedure node for this command.
         if (create.procedure) {
@@ -1061,10 +1071,10 @@
   # Close the console block if we processed anything and the DDG
   # is initialized (also, save).
   #
-  if (.ddg.is.init() && named.node.set && !inside.func) {
-      #.ddg.add.finish.node(node.name = node.name)
-      .ddg.add.finish.node()
-  }
+#  if (.ddg.is.init() && named.node.set && !inside.func) {
+#      #.ddg.add.finish.node(node.name = node.name)
+#      .ddg.add.finish.node()
+#  }
 
   if (.ddg.is.set(".ddg.last.R.value")) return (.ddg.get (".ddg.last.R.value"))
   else return ("")

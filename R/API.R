@@ -590,9 +590,11 @@ ddg.source <- function (file,  local = FALSE, echo = verbose, print.eval = echo,
 		.ddg.set("from.source", TRUE)
 
 		# Parse and execute the commands, collecting provenance along the way.
+    .ddg.add.start.node (node.name=sname)
 		.ddg.parse.commands(exprs, sname, snum, environ=envir, ignore.patterns=ignores, node.name=sname,
 			echo = echo, print.eval = print.eval, max.deparse.length = max.deparse.length,
 			run.commands = TRUE)
+    .ddg.add.finish.node ()
 
 	}
 
