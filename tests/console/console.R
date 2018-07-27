@@ -7,6 +7,7 @@
 #
 # You should examine console output in RStudio manually for errors.
 
+library(RDataTracker)
 ddg.init(ddgdir=".")
 a <- 1
 b <- a + 2
