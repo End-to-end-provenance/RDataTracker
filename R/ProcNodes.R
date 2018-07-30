@@ -147,7 +147,8 @@
   ddg.proc.nodes <- .ddg.proc.node.table()
   
   if (find.unreturned.function) {
-    matching <- ddg.proc.nodes[ddg.proc.nodes$ddg.name == pname & !ddg.proc.nodes$ddg.return.linked, ]
+    matching <- ddg.proc.nodes[ddg.proc.nodes$ddg.name == pname & 
+                                 !ddg.proc.nodes$ddg.return.linked, ]
   }
   else {
     matching <- ddg.proc.nodes[ddg.proc.nodes$ddg.name == pname, ]
@@ -305,7 +306,8 @@
       }
     }
     else {
-      .ddg.insert.error.message("Attempting to create a finish node when there are no open blocks")
+      .ddg.insert.error.message(
+        "Attempting to create a finish node when there are no open blocks")
     }
   }
   .ddg.set(".ddg.last.proc.node.created", paste(ptype, pname))
@@ -321,7 +323,3 @@
   }
   if (.ddg.debug.lib()) print(paste("proc.node:", ptype, pname))
 }
-
-
-
-

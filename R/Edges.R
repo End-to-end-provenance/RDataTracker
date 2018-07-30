@@ -157,7 +157,7 @@
   # Get data & procedure numbers.
   dn <- .ddg.data.number(dname, dscope)
   
-  if(is.null(pname) || startsWith(pname,".ddg.") || startsWith(pname,"ddg"))
+  if(is.null(pname) || startsWith(pname, ".ddg.") || startsWith(pname, "ddg"))
     pn <- .ddg.pnum()
   else
     pn <- .ddg.proc.number(pname)
@@ -213,7 +213,7 @@
   dn <- .ddg.data.number(dname, dscope)
   
   # attach data node to the last procedure node if pname is NULL.
-  if(is.null(pname) || startsWith(pname,".ddg.") || startsWith(pname,"ddg"))
+  if(is.null(pname) || startsWith(pname, ".ddg.") || startsWith(pname, "ddg"))
     pn <- .ddg.pnum()
   else
     pn <- .ddg.proc.number(pname, return.value)
@@ -252,4 +252,3 @@
 .ddg.lastproc2data <- function(dname, dscope=NULL) {
   .ddg.proc2data (NULL, dname, dscope)
 }
-

@@ -85,7 +85,7 @@
 #' @return the path to the snapshot and file copy directory
 
 .ddg.path.data <- function() {
-  return(paste(.ddg.path(), .ddg.data.dir() , sep="/"))
+  return(paste(.ddg.path(), .ddg.data.dir(), sep="/"))
 }
 
 #' .ddg.path.debug returns the path to the directory where debugging information
@@ -155,7 +155,7 @@
 #' @return time formatted as yyyy-mm-ddThh.mm.ss
 
 .ddg.format.time <- function(time) {
-  formatted.time <- strftime(time, format="%Y-%m-%dT%H.%M.%S",usetz=TRUE)
+  formatted.time <- strftime(time, format="%Y-%m-%dT%H.%M.%S", usetz=TRUE)
   
   # The strftime call leaves a space between time and time
   # zone. We remove that here.
@@ -209,8 +209,7 @@
 {
   packages <- devtools::session_info()
   packages <- packages[[2]]
-  installed <- packages[packages[,2] == "*",]
-  installed <- installed[ ,c(1,3)]
+  installed <- packages[packages[, 2] == "*", ]
+  installed <- installed[, c(1, 3)]
   return(installed)
 }
-

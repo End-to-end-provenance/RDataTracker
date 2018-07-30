@@ -32,7 +32,7 @@
   		</copy>
     	<copy overwrite="true" todir="${builddir}/R">
     		<fileset dir="R"
-      			excludes="DDGCheckpoint.R"/>
+      			excludes="DDGCheckpoint.R, Obsolete.R"/>
   		</copy>
   		<!-- copy overwrite="true" todir="${builddir}/vignettes">
 	        <fileset dir="vignettes"
@@ -42,6 +42,7 @@
   		<copy overwrite="true" file="LICENSE" todir="${builddir}"/>
   		<copy overwrite="true" file="NAMESPACE" todir="${builddir}"/>
   		<copy overwrite="true" file="README.md" todir="${builddir}"/>
+  		<copy overwrite="true" file=".lintr" todir="${builddir}"/>
     </target>
     
     <target name="build" depends="copy-to-directory">
@@ -56,7 +57,13 @@
 	   	</exec>
     </target>
 
-    <target name="install" depends="check">
+    <target name="lint" depends="build">
+		<exec dir="${builddir}" executable="Rscript" >
+			<arg line="-e lintr::lint_package()" />
+		</exec>
+    </target>
+
+    <target name="install" depends="check, lint">
     	<exec dir="${builddir}/.." executable="R" >
   			<arg line="CMD INSTALL ${tarfile}"/>
 		</exec>

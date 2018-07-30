@@ -87,36 +87,84 @@
   .ddg.create.device.table ()
   
   # Start tracing of input and output functions
-  # capture.output is called twice to capture the output that is going to standard output and to
-  # standard error.  These are messages that say "Tracing..." and list each function being
-  # traced.
-  # Note that we need to use the RDataTracker::: notation for the functions for trace to call
-  # so that it can find those functions without making them publicly available in 
-  # the namespace.
-  # ggplot2 functions are traced individually because the package name needs to be included.
+  # capture.output is called twice to capture the output that is going to 
+  # standard output and to standard error.  These are messages that say 
+  # "Tracing..." and list each function being traced.
+  # Note that we need to use the RDataTracker::: notation for the functions for 
+  # trace to call so that it can find those functions without making them 
+  # publicly available in the namespace.
+  # ggplot2 functions are traced individually because the package name needs to 
+  # be included.
   
-  trace.oneOutput <- function (f) {utils::capture.output(utils::capture.output(trace (as.name(f), RDataTracker:::.ddg.trace.output, print=FALSE), type="message"))} 
+  trace.oneOutput <- 
+    function (f) {
+      utils::capture.output(
+        utils::capture.output(trace (as.name(f), 
+                                     RDataTracker:::.ddg.trace.output, 
+                                     print=FALSE), 
+                              type="message"))
+    } 
   lapply(.ddg.get(".ddg.file.write.functions.df")$function.names, trace.oneOutput)
-  utils::capture.output(utils::capture.output(trace (ggplot2::ggplot, RDataTracker:::.ddg.trace.output, print=FALSE), type="message"))
+  utils::capture.output(
+    utils::capture.output(trace (ggplot2::ggplot, 
+                                 RDataTracker:::.ddg.trace.output, 
+                                 print=FALSE), 
+                          type="message"))
   
-  trace.oneInput <- function (f) {utils::capture.output(utils::capture.output(trace (as.name(f), RDataTracker:::.ddg.trace.input, print=FALSE), type="message"))} 
+  trace.oneInput <- 
+    function (f) {
+      utils::capture.output(
+        utils::capture.output(trace (as.name(f), 
+                                     RDataTracker:::.ddg.trace.input, 
+                                     print=FALSE), 
+                              type="message"))
+    } 
   lapply(.ddg.get(".ddg.file.read.functions.df")$function.names, trace.oneInput)
 
-  trace.oneClose <- function (f) {utils::capture.output(utils::capture.output(trace (as.name(f), RDataTracker:::.ddg.trace.close, print=FALSE), type="message"))} 
+  trace.oneClose <- 
+    function (f) {
+      utils::capture.output(
+        utils::capture.output(trace (as.name(f), 
+                                     RDataTracker:::.ddg.trace.close, 
+                                     print=FALSE), 
+                              type="message"))
+    } 
   lapply(.ddg.get(".ddg.file.close.functions.df")$function.names, trace.oneClose)
-  utils::capture.output(utils::capture.output(trace (ggplot2::ggsave, RDataTracker:::.ddg.trace.close, print=FALSE), type="message"))
+  utils::capture.output(
+    utils::capture.output(trace (ggplot2::ggsave, 
+                                 RDataTracker:::.ddg.trace.close, 
+                                 print=FALSE), 
+                          type="message"))
   
   #print ("Tracing graphics open")
   # trace (grDevices::pdf, RDataTracker:::.ddg.trace.graphics.open, print=TRUE)
-  trace.oneGraphicsOpen <- function (f) {utils::capture.output(utils::capture.output(trace (as.name(f), RDataTracker:::.ddg.trace.graphics.open, print=FALSE), type="message"))} 
+  trace.oneGraphicsOpen <- 
+    function (f) {
+      utils::capture.output(
+        utils::capture.output(trace (as.name(f), 
+                                     RDataTracker:::.ddg.trace.graphics.open, 
+                                     print=FALSE), 
+                              type="message"))
+    } 
   lapply(.ddg.get(".ddg.graphics.functions.df")$function.names, trace.oneGraphicsOpen)
   
   #print ("Tracing graphics update")
-  trace.oneGraphicsUpdate <- function (f) {utils::capture.output(utils::capture.output(trace (as.name(f), RDataTracker:::.ddg.trace.graphics.update, print=FALSE), type="message"))} 
+  trace.oneGraphicsUpdate <- 
+    function (f) {
+      utils::capture.output(
+        utils::capture.output(trace (as.name(f), 
+                                     RDataTracker:::.ddg.trace.graphics.update, 
+                                     print=FALSE), 
+                              type="message"))
+    } 
   lapply(.ddg.get(".ddg.graphics.update.functions.df"), trace.oneGraphicsUpdate)
   
   #print ("Tracing dev.off")
-  utils::capture.output(utils::capture.output(trace (grDevices::dev.off, RDataTracker:::.ddg.trace.graphics.close, print=FALSE), type="message"))
+  utils::capture.output(
+    utils::capture.output(trace (grDevices::dev.off, 
+                                 RDataTracker:::.ddg.trace.graphics.close, 
+                                 print=FALSE), 
+                          type="message"))
   #print ("Done initializing IO tracing")
 }
 
@@ -126,12 +174,20 @@
 .ddg.stop.iotracing <- function () {
   
   # Stop tracing output functions.  
-  # utils::capture.output is used to prevent "Untracing" messages from appearing in the output
-  utils::capture.output (untrace(.ddg.get(".ddg.file.write.functions.df")$function.names), type="message")
-  utils::capture.output (untrace(.ddg.get(".ddg.file.read.functions.df")$function.names), type="message")
-  utils::capture.output (untrace(.ddg.get(".ddg.file.close.functions.df")$function.names), type="message")
-  utils::capture.output (untrace(.ddg.get(".ddg.graphics.functions.df")$function.names), type="message")
-  utils::capture.output (untrace(.ddg.get(".ddg.graphics.update.functions.df")), type="message")
+  # utils::capture.output is used to prevent "Untracing" messages from appearing 
+  # in the output
+  utils::capture.output (
+    untrace(.ddg.get(".ddg.file.write.functions.df")$function.names), 
+    type="message")
+  utils::capture.output (untrace(.ddg.get(".ddg.file.read.functions.df")$function.names), 
+                         type="message")
+  utils::capture.output (
+    untrace(.ddg.get(".ddg.file.close.functions.df")$function.names), 
+    type="message")
+  utils::capture.output (untrace(.ddg.get(".ddg.graphics.functions.df")$function.names), 
+                         type="message")
+  utils::capture.output (untrace(.ddg.get(".ddg.graphics.update.functions.df")), 
+                         type="message")
   utils::capture.output (untrace(grDevices::dev.off), type="message")
   
   utils::capture.output (untrace(ggplot2::ggplot), type="message")
@@ -148,7 +204,7 @@
 
 .ddg.get.traced.function.frame.number <- function() {
   calls <- sys.calls()
-  calls <- mapply( `[[` , calls , 1 , SIMPLIFY = TRUE )
+  calls <- mapply( `[[`, calls, 1, SIMPLIFY = TRUE )
   
   doTrace.frame <- which( calls == ".doTrace" )
   
@@ -288,7 +344,8 @@
     # Check if the function that called the input function is any other ddg function.
     # If it is, ignore this call.  .ddg.load.history is an example of a 
     # function that does input that we would want to ignore.  
-    else if (startsWith (input.caller.name, "ddg") || startsWith (input.caller.name, ".ddg")) {
+    else if (startsWith (input.caller.name, "ddg") || 
+             startsWith (input.caller.name, ".ddg")) {
       return()
     }
     
@@ -317,7 +374,8 @@
   
   # Get the name of the file parameter for the input function
   file.read.functions <- .ddg.get (".ddg.file.read.functions.df")
-  file.param.name <- file.read.functions$param.names[file.read.functions$function.names == fname]
+  file.param.name <- 
+    file.read.functions$param.names[file.read.functions$function.names == fname]
   #print (paste ("Input file parameter:", file.param.name))
   
   # Get the value of the file parameter  
@@ -454,7 +512,8 @@
   # Only add the file to the list if it is not already there.  It could be 
   # there if there are multiple functions called indirectly in one R statement
   # that write to the same file.
-  if (!(fname %in% output.files) && is.character(fname) && !endsWith (fname, ".snapshot")) {
+  if (!(fname %in% output.files) && is.character(fname) && 
+      !endsWith (fname, ".snapshot")) {
     #print (paste ("Adding output file", fname))
     #print (sys.calls())
     .ddg.set ("output.files", append(output.files, fname))
@@ -479,7 +538,8 @@
   output.caller <- sys.call (frame.number - 1)[[1]]
   if (is.symbol (output.caller)) {
     output.caller.name <- as.character(output.caller)
-    if (startsWith (output.caller.name, "ddg") || startsWith (output.caller.name, ".ddg")) {
+    if (startsWith (output.caller.name, "ddg") || 
+        startsWith (output.caller.name, ".ddg")) {
       return()
     }
   }
@@ -512,7 +572,8 @@
   else {
     # Get the name of the file parameter for the output function
     file.write.functions <- .ddg.get (".ddg.file.write.functions.df")
-    file.param.name <- file.write.functions$param.names[file.write.functions$function.names == fname]
+    file.param.name <- 
+      file.write.functions$param.names[file.write.functions$function.names == fname]
     #print (paste ("Output file parameter:", file.param.name))
     
     # Get the value of the file parameter  
@@ -703,15 +764,16 @@
   close.caller <- sys.call (frame.number - 1)[[1]]
   if (is.symbol (close.caller)) {
     close.caller.name <- as.character(close.caller)
-    if (startsWith (close.caller.name, "ddg") || startsWith (close.caller.name, ".ddg")) {  # 
+    if (startsWith (close.caller.name, "ddg") || 
+        startsWith (close.caller.name, ".ddg")) {  # 
       #print ("Returning - inside a ddg function")
       return()
     }
   }
   
   # Check that the function is not being called due to a call to capture output (used to 
-  # hide standard output), parse (used to read the script being executed), or .ddg.snapshot
-  # (used to save copies of complex data values)
+  # hide standard output), parse (used to read the script being executed), or 
+  # .ddg.snapshot (used to save copies of complex data values)
   if (.ddg.inside.call.to ("capture.output") || .ddg.inside.call.to ("parse") 
       || .ddg.inside.call.to (".ddg.snapshot")) {
     #print ("Returning -- inside capture.ouput, parse or .ddg.snapshot")
@@ -770,7 +832,8 @@
   else {
     # Get the name of the connection parameter for the close function
     file.close.functions <- .ddg.get (".ddg.file.close.functions.df")
-    file.param.name <- file.close.functions$param.names[file.close.functions$function.names == fname]
+    file.param.name <- 
+      file.close.functions$param.names[file.close.functions$function.names == fname]
     #print (paste (".ddg.trace.close: file.param.name = ", file.param.name))
   
     # Get the value of the connection parameter  
@@ -793,7 +856,8 @@
 
 .ddg.create.file.nodes.for.open.connections <- function () {
   openConns <- .ddg.get.open.connections()
-  lapply (openConns[openConns[, 'can write'] == "yes", "description"], .ddg.add.output.file)
+  lapply (openConns[openConns[, "can write"] == "yes", "description"], 
+          .ddg.add.output.file)
   .ddg.create.file.write.nodes.and.edges ()
 }
 
@@ -895,21 +959,27 @@
   # Functions that read files and the names of the arguments that hold file names
   if (sysname == "Windows") {
     function.names <-
-        c ("pdf", "cairo_pdf", "postscript", "cairo_ps", "bmp", "jpeg", "png", "svg", "tiff", "x11", "X11", "windows")
+        c ("pdf", "cairo_pdf", "postscript", "cairo_ps", "bmp", "jpeg", 
+           "png", "svg", "tiff", "x11", "X11", "windows")
     param.names <-
-        c ("file", "filename", "file", "filename", "filename", "filename", "filename", "filename", "filename", NA, NA, NA)
+        c ("file", "filename", "file", "filename", "filename", "filename", 
+           "filename", "filename", "filename", NA, NA, NA)
   }
   else if (sysname == "Darwin") {  # Running on a Mac
     function.names <-
-        c ("pdf", "cairo_pdf", "postscript", "cairo_ps", "bmp", "jpeg", "png", "svg", "tiff", "x11", "X11", "quartz")
+        c ("pdf", "cairo_pdf", "postscript", "cairo_ps", "bmp", "jpeg", 
+           "png", "svg", "tiff", "x11", "X11", "quartz")
     param.names <-
-        c ("file", "filename", "file", "filename", "filename", "filename", "filename", "filename", "filename", NA, NA, NA)
+        c ("file", "filename", "file", "filename", "filename", "filename", 
+           "filename", "filename", "filename", NA, NA, NA)
   }
   else {  # Running on Linux
     function.names <-
-        c ("pdf", "cairo_pdf", "postscript", "cairo_ps", "bmp", "jpeg", "png", "svg", "tiff", "x11", "X11")
+        c ("pdf", "cairo_pdf", "postscript", "cairo_ps", "bmp", "jpeg", 
+           "png", "svg", "tiff", "x11", "X11")
     param.names <-
-        c ("file", "filename", "file", "filename", "filename", "filename", "filename", "filename", "filename", NA, NA)
+        c ("file", "filename", "file", "filename", "filename", "filename", 
+           "filename", "filename", "filename", NA, NA)
   }
   
   return (data.frame (function.names, param.names, stringsAsFactors=FALSE))
@@ -950,7 +1020,8 @@
   
   # Get the name of the file parameter for the graphics function
   graphics.functions <- .ddg.get (".ddg.graphics.functions.df")
-  file.param.name <- graphics.functions$param.names[graphics.functions$function.names == fname]
+  file.param.name <- 
+    graphics.functions$param.names[graphics.functions$function.names == fname]
 
   # X11 and quartz device writes to the screen so there is no file parameter
   if (is.na (file.param.name)) {
@@ -986,14 +1057,17 @@
   } 
   
   #print ("In .ddg.add.graphics.device.node")
-  #print (paste ("dev.list =", grDevices::dev.list(), names(grDevices::dev.list()), collapse=", "))
+  #print (paste ("dev.list =", grDevices::dev.list(), 
+  #              names(grDevices::dev.list()), collapse=", "))
   #print (paste ("dev.cur =", grDevices::dev.cur()))
   
-  if (!names(grDevices::dev.cur()) %in% c("RStudioGD","quartz", "windows")) {
+  if (!names(grDevices::dev.cur()) %in% c("RStudioGD", "quartz", "windows")) {
     # Record the binding between the current device and the graphics file, if
     # a file is being used.
-    if (.ddg.is.set (".ddg.last.graphics.file") && .ddg.get(".ddg.last.graphics.file") != "") {
-      .ddg.add.to.device.table (grDevices::dev.cur (), .ddg.get (".ddg.last.graphics.file"))
+    if (.ddg.is.set (".ddg.last.graphics.file") && 
+        .ddg.get(".ddg.last.graphics.file") != "") {
+      .ddg.add.to.device.table (grDevices::dev.cur (), 
+                                .ddg.get (".ddg.last.graphics.file"))
     }
     else {
       .ddg.set(".ddg.no.graphics.file", TRUE)
@@ -1099,7 +1173,8 @@
   }
   
   #print ("In .ddg.trace.graphics.close")
-  #print (paste ("dev.list =", grDevices::dev.list(), names(grDevices::dev.list()), collapse=", "))
+  #print (paste ("dev.list =", grDevices::dev.list(), 
+  #              names(grDevices::dev.list()), collapse=", "))
   #print (paste ("dev.cur =", grDevices::dev.cur()))
   
   # Set the flag so that .ddg.capture.graphics executes after the
@@ -1257,4 +1332,3 @@
 	)
 	return(file.written)
 }
-

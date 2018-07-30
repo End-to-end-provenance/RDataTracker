@@ -67,8 +67,13 @@
   dscriptpath <- 
       if (!is.null(.ddg.get("ddg.r.script.path"))) .ddg.get("ddg.r.script.path")
       else ""
-  longpath <- paste0(getwd(), substring(.ddg.path(),2),"/ddg.json")
-  .ddg.set("ddg.hashtable", rbind(.ddg.get("ddg.hashtable"), c(dscriptpath, dloc, longpath, paste(.ddg.path(), dvalue, sep="/"), ddg.dnum, dhash, dhash.algorithm, drw, dtime, dvalue), stringsAsFactors = FALSE))
+  longpath <- paste0(getwd(), substring(.ddg.path(), 2), "/ddg.json")
+  .ddg.set("ddg.hashtable", 
+           rbind(.ddg.get("ddg.hashtable"), 
+                 c(dscriptpath, dloc, longpath, 
+                   paste(.ddg.path(), dvalue, sep="/"), 
+                   ddg.dnum, dhash, dhash.algorithm, drw, dtime, dvalue), 
+                 stringsAsFactors = FALSE))
 }
 
 #' .ddg.calculate.hash calculates the hash value for the file
@@ -124,13 +129,13 @@
   # if (interactive()) print(paste("Saving DDG in ", fileout))
   
   # Determine where to put the hashtable file
-  writedir <- paste0(path.expand("~"),"/.ddg/")
+  writedir <- paste0(path.expand("~"), "/.ddg/")
   if (!dir.exists(writedir)) {
     tryCatch({
           dir.create(writedir)
         },
         error = function(c){
-          writedir <- paste0(getwd(),"/.ddg/")
+          writedir <- paste0(getwd(), "/.ddg/")
           if (!dir.exists(writedir)) {
             dir.create(writedir)
           }
@@ -138,9 +143,10 @@
   }
   
   # Add column names to the table
-  hashtable.json <- paste0(writedir,"/hashtable.json")
+  hashtable.json <- paste0(writedir, "/hashtable.json")
   new_hashtable <- .ddg.get("ddg.hashtable")
-  columns <- c("ScriptPath", "FilePath","DDGPath","NodePath","NodeNumber","Hash", "HashAlgo", "ReadWrite","Timestamp","Value")
+  columns <- c("ScriptPath", "FilePath", "DDGPath", "NodePath", "NodeNumber", 
+               "Hash", "HashAlgo", "ReadWrite", "Timestamp", "Value")
   if (length(new_hashtable) == length(columns)) {
     colnames(new_hashtable) <- columns
   }
@@ -165,7 +171,7 @@
 
 .ddg.hashtable.cleanup <- function(hashtable.json) {
   old_hashtable <- jsonlite::read_json(hashtable.json, simplifyVector = TRUE)
-  longpath <- paste0(getwd(), substring(.ddg.path(),2), "/ddg.json")
+  longpath <- paste0(getwd(), substring(.ddg.path(), 2), "/ddg.json")
   old_hashtable <- old_hashtable[old_hashtable$DDGPath != longpath, ]
   # old_hashtable <- subset(old_hashtable, DDGPath != longpath)
   return(old_hashtable)
@@ -178,10 +184,11 @@
 .ddg.save.hashtable <- function() {
   if (.ddg.get (".ddg.save.hashtable") && .ddg.get("ddg.hasfilenodes")) {
     if (interactive()) {
-      if (dir.exists(paste0(path.expand("~"),"/.ddg/"))) {
+      if (dir.exists(paste0(path.expand("~"), "/.ddg/"))) {
         print("Saving hashtable.json in .ddg directory.")
       } else {
-        print("No .ddg directory found in home directory, saving hashtable.json in local directory.")
+        print("No .ddg directory found in home directory,",
+              "saving hashtable.json in local directory.")
       }
     }
     .ddg.hashtable.write()

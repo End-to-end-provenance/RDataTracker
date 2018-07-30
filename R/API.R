@@ -55,7 +55,9 @@
 #' @return nothing
 #' @export
 
-ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, annotate.inside.functions = TRUE, first.loop = 1, max.loops = 1, max.snapshot.size = 10,
+ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, 
+                     annotate.inside.functions = TRUE, first.loop = 1, 
+                     max.loops = 1, max.snapshot.size = 10,
                      hash.algorithm="md5") {
   .ddg.init.tables()
 
@@ -73,13 +75,15 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, anno
   # Reset r.script.path if RMarkdown file
 
   if (!is.null(r.script.path) && tools::file_ext(r.script.path) == "Rmd") {
-    output.path <- paste(.ddg.path.scripts(), "/", basename(tools::file_path_sans_ext(r.script.path)), ".R", sep = "")
+    output.path <- paste(.ddg.path.scripts(), "/", 
+                         basename(tools::file_path_sans_ext(r.script.path)), ".R", 
+                         sep = "")
     .ddg.markdown(r.script.path, output.path)
     .ddg.set("ddg.r.script.path", output.path)
   } else if (!is.null (r.script.path)) {
     .ddg.set("ddg.r.script.path",
              if (is.null(r.script.path)) NULL
-             else normalizePath(r.script.path, winslash="/"))
+             else normalizePath(r.script.path, winslash = "/"))
   }
   else {
     # If running from the console, set up a callback to be notified
@@ -90,7 +94,7 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, anno
        # Create the provenance for the new command
        .ddg.parse.commands(as.expression(task),
              environ = .GlobalEnv,
-             run.commands=FALSE)
+             run.commands = FALSE)
          
        return(TRUE)
          
@@ -185,7 +189,8 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, anno
     
     # Script mode
   } else {
-    ddg.path <- paste(base.dir, "/prov_", basename(tools::file_path_sans_ext(r.script.path)), sep="")
+    ddg.path <- paste(base.dir, "/prov_", 
+                      basename(tools::file_path_sans_ext(r.script.path)), sep="")
   }
   
   # Add timestamp if overwrite = FALSE
@@ -344,11 +349,14 @@ ddg.quit <- function(save.debug = FALSE) {
 #' @return nothing
 #' @export
 
-ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = NULL, annotate.inside.functions = TRUE, first.loop = 1, max.loops = 1, max.snapshot.size = 10, save.debug = FALSE, display = FALSE, 
-                    hash.algorithm="md5") {
+ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, 
+                    f = NULL, annotate.inside.functions = TRUE, first.loop = 1, 
+                    max.loops = 1, max.snapshot.size = 10, save.debug = FALSE, 
+                    display = FALSE, hash.algorithm="md5") {
   
   # Initialize ddg.
-  ddg.init(r.script.path, ddgdir, overwrite, annotate.inside.functions, first.loop, max.loops, max.snapshot.size, hash.algorithm)
+  ddg.init(r.script.path, ddgdir, overwrite, annotate.inside.functions, 
+           first.loop, max.loops, max.snapshot.size, hash.algorithm)
   
   # Set .ddg.is.sourced to TRUE if script provided.
   .ddg.set(".ddg.is.sourced", !is.null(r.script.path))
@@ -359,9 +367,11 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
   # If an R error is generated, get the error message and close
   # the DDG.
   tryCatch(
-    if (!is.null(r.script.path)) ddg.source(
+    if (!is.null(r.script.path)) {
+      ddg.source(
          .ddg.get("ddg.r.script.path"),
           ignore.ddg.calls = FALSE)
+    }
     else if (!is.null(f)) f()
     else stop("r.script.path and f cannot both be NULL"),
 
@@ -369,7 +379,7 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
       # Add finish nodes for anything left open due to errors
       .ddg.close.blocks()
       ddg.quit()
-      if(display==TRUE){
+      if (display==TRUE){
         ddg.display()
       }
     }
@@ -407,8 +417,9 @@ ddg.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, f = N
 #' @export
 
 ddg.source <- function (file,  local = FALSE, echo = verbose, print.eval = echo,
-	verbose = getOption("verbose"), max.deparse.length = 150, chdir = FALSE, encoding = getOption("encoding"),
-	ignore.ddg.calls = TRUE, calling.script=NA, startLine=NA, startCol=NA, endLine=NA, endCol=NA){
+	verbose = getOption("verbose"), max.deparse.length = 150, chdir = FALSE, 
+	encoding = getOption("encoding"), ignore.ddg.calls = TRUE, calling.script=NA, 
+	startLine=NA, startCol=NA, endLine=NA, endCol=NA){
 
 	# Store script number & name.
   sname <- basename(file)
@@ -437,7 +448,8 @@ ddg.source <- function (file,  local = FALSE, echo = verbose, print.eval = echo,
 
 
 	# Get the environment under which the script should be executed.
-	envir <- if (isTRUE(local)) {
+	envir <- 
+	  if (isTRUE(local)) {
 			parent.frame()
 		}
 		else if (isFALSE(local)) {
@@ -453,7 +465,7 @@ ddg.source <- function (file,  local = FALSE, echo = verbose, print.eval = echo,
 	if (!missing(echo)) 
 	{
 		if (!is.logical(echo))
-			stop("'echo' must be logical")
+			stop ("'echo' must be logical")
 		if (!echo && verbose) 
 		{
 			warning("'verbose' is TRUE, 'echo' not; ... coercing 'echo <- TRUE'\n")
@@ -556,11 +568,11 @@ ddg.source <- function (file,  local = FALSE, echo = verbose, print.eval = echo,
 		cat("--> parsed", "expressions; now eval(.)ing them:\n")
 	if (chdir) 
 	{
-		if (is.character(ofile)) 
+		if (is.character (ofile)) 
 		{
       if (grepl("^(ftp|http|file)://", ofile))
 				warning("'chdir = TRUE' makes no sense for a URL")
-			else if ((path <- dirname(ofile)) != ".") 
+			else if ( (path <- dirname (ofile)) != ".") 
 			{
 				owd <- getwd()
 				if (is.null(owd)) 
@@ -582,11 +594,11 @@ ddg.source <- function (file,  local = FALSE, echo = verbose, print.eval = echo,
 	# and what shouldn't.
 	# Ignore calculation of certain execution steps.
 	ignores <- c("^library[(]RDataTracker[)]$",
-		if(ignore.ddg.calls) "^ddg."
+		if (ignore.ddg.calls) "^ddg."
 		else c("^ddg.init", "^ddg.run"))
 
 	# Now we can parse the commands as we normally would for a DDG.
-	if(length(exprs) > 0) 
+	if (length(exprs) > 0) 
 	{
 
 		# Initialize the tables for ddg.capture.
@@ -599,8 +611,10 @@ ddg.source <- function (file,  local = FALSE, echo = verbose, print.eval = echo,
       .ddg.add.start.node (node.name=sname)
     }
     else {
-      .ddg.add.start.node (node.name=paste0 ("source (\"", sname, "\")"), script.num=calling.script,
-          startLine=startLine, startCol=startCol, endLine=endLine, endCol=endCol)
+      .ddg.add.start.node (node.name=paste0 ("source (\"", sname, "\")"), 
+                           script.num=calling.script,
+                           startLine=startLine, startCol=startCol, 
+                           endLine=endLine, endCol=endCol)
     }
 		.ddg.parse.commands(exprs, sname, snum, environ=envir, ignore.patterns=ignores,
 			echo = echo, print.eval = print.eval, max.deparse.length = max.deparse.length,
@@ -634,17 +648,19 @@ ddg.json <- function()
 
 .ddg.start.ddg.explorer <- function () {
   jar.path<- "/RDataTracker/java/DDGExplorer.jar"
-  check.library.paths<- file.exists(paste(.libPaths(),jar.path,sep = ""))
+  check.library.paths<- file.exists(paste(.libPaths(), jar.path, sep = ""))
   index<- min(which(check.library.paths == TRUE))
-  ddgexplorer_path<- paste(.libPaths()[index],jar.path,sep = "")
-  ddgjson.path<- paste(.ddg.path() ,"ddg.json",sep = "/")
+  ddgexplorer_path<- paste(.libPaths()[index], jar.path, sep = "")
+  ddgjson.path<- paste(.ddg.path(), "ddg.json", sep = "/")
   # ddgjson.path<- paste(getwd(), .ddg.path() ,"ddg.json",sep = "/")
   
   # -s flag starts DDG Explorer as a server.  This allows each new ddg to show
   # up in a new tab of an existing running DDG Explorer.
   # print("Starting DDG Explorer server")
-  systemResult <- system2("java", c("-jar", ddgexplorer_path, ddgjson.path, "-port", .ddg.get(".ddg.explorer.port")), wait = FALSE)
-  # print(paste("Starting java server return code:", systemResult))
+  system2("java", 
+          c("-jar", ddgexplorer_path, ddgjson.path, "-port", 
+            .ddg.get(".ddg.explorer.port")), 
+          wait = FALSE)
 }
 
 #' ddg.display loads & displays the current provenance graph in DDG Explorer
@@ -656,9 +672,11 @@ ddg.display <- function () {
   # See if the server is already running
   # print("Opening socket connection")
   tryCatch ({
-        con <- socketConnection(host= "localhost", port = .ddg.get(".ddg.explorer.port"), blocking = FALSE,
-            server=FALSE, open="w", timeout=1)
-        ddgjson.path<- paste(.ddg.path() ,"ddg.json",sep = "/")
+        con <- socketConnection(host= "localhost", 
+                                port = .ddg.get(".ddg.explorer.port"), 
+                                blocking = FALSE,
+                                server=FALSE, open="w", timeout=1)
+        ddgjson.path<- paste(.ddg.path(), "ddg.json", sep = "/")
         # ddgjson.path<- paste(getwd(), .ddg.path() ,"ddg.json",sep = "/")
         # print ("Socket open; writing to socket")
         writeLines(ddgjson.path, con)
@@ -673,4 +691,3 @@ ddg.display <- function () {
   
   invisible()
 }
-

@@ -94,5 +94,3 @@
   .ddg.inc(".ddg.next.script.num")
   return (snum)
 }
-
-
