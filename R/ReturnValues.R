@@ -89,7 +89,9 @@
   # the function call is known, only keep entries for that line.
   returns <- .ddg.get(".ddg.return.values")
   if (!is.na(command@pos@startLine)) {
-    unused.returns <- returns[!returns$return.used & returns$return.node.id > 0 & !is.na(returns$line) & returns$line == command@pos@startLine, ]
+    unused.returns <- 
+      returns[!returns$return.used & returns$return.node.id > 0 & 
+              !is.na(returns$line) & returns$line == command@pos@startLine, ]
   }
   else {
     unused.returns <- returns[!returns$return.used & returns$return.node.id > 0, ]

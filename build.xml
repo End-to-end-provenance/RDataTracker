@@ -32,7 +32,7 @@
   		</copy>
     	<copy overwrite="true" todir="${builddir}/R">
     		<fileset dir="R"
-      			excludes="DDGCheckpoint.R"/>
+      			excludes="DDGCheckpoint.R, Obsolete.R"/>
   		</copy>
   		<!-- copy overwrite="true" todir="${builddir}/vignettes">
 	        <fileset dir="vignettes"
@@ -54,6 +54,13 @@
 	   	<exec dir="${builddir}/.." executable="R" >
   			<arg line="CMD check --no-vignettes --no-build-vignettes ${tarfile}"/>
 	   	</exec>
+    </target>
+
+    <target name="lint" depends="copy-to-directory">
+  		<copy overwrite="true" file=".lintr" todir="${builddir}"/>
+		<exec dir="${builddir}" executable="Rscript" >
+			<arg line="-e lintr::lint_package()" />
+		</exec>
     </target>
 
     <target name="install" depends="check">

@@ -28,7 +28,7 @@
 #' @return nothing
 
 .ddg.init.function.table <- function () {
-  .ddg.set("ddg.function.nodes" , 
+  .ddg.set("ddg.function.nodes", 
       data.frame(
           ddg.pnum = numeric(),
           ddg.fun = character(),
@@ -67,9 +67,9 @@
     return()
   } 
     
-  pfunctions <- cbind( "ddg.pnum" = rep(.ddg.pnum(), nrow(pfunctions)) , pfunctions )
-  ddg.function.nodes <- rbind( .ddg.function.nodes() , pfunctions )
-  .ddg.set( "ddg.function.nodes" , ddg.function.nodes )
+  pfunctions <- cbind( "ddg.pnum" = rep(.ddg.pnum(), nrow(pfunctions)), pfunctions )
+  ddg.function.nodes <- rbind( .ddg.function.nodes(), pfunctions )
+  .ddg.set( "ddg.function.nodes", ddg.function.nodes )
 }
 
 #' .ddg.get.function.info finds and returns the names of function calls to external
@@ -90,15 +90,15 @@
   # identify which of the variable names are functions
   if( ! is.null(function.names[[2]]) )
   {
-    vars <- sapply( function.names[[2]] , 
+    vars <- sapply( function.names[[2]], 
         function(name) {
           if( ! .ddg.is.set(name) ) return(NULL)
           else return( get(name) )
         } )
-    vars <- sapply( vars , is.function )
+    vars <- sapply( vars, is.function )
     
     # append to list of functions with unknown libraries
-    ddg.fun <- append( ddg.fun , names(vars[vars == TRUE]) )
+    ddg.fun <- append( ddg.fun, names(vars[vars == TRUE]) )
   }
   
   # obtain library information from functions
@@ -106,20 +106,20 @@
   
   if( length(ddg.fun) > 0 )
   {
-    ddg.lib <- sapply( ddg.fun , .ddg.where )
-    ddg.lib <- sapply( ddg.lib , environmentName )
+    ddg.lib <- sapply( ddg.fun, .ddg.where )
+    ddg.lib <- sapply( ddg.lib, environmentName )
     
     ddg.lib <- ddg.lib[ grepl("package:", ddg.lib) ]
     
     # combine with functions with known library calls into data frame
     if( length(ddg.lib) > 0 )
     {
-      ddg.lib <- mapply( substring , ddg.lib , 9 )
+      ddg.lib <- mapply( substring, ddg.lib, 9 )
       
       ddg.fun <- names(ddg.lib)
       ddg.lib <- unname(ddg.lib)
       
-      fn.frame <- rbind( fn.frame , data.frame(ddg.fun, ddg.lib, stringsAsFactors=FALSE) )
+      fn.frame <- rbind( fn.frame, data.frame(ddg.fun, ddg.lib, stringsAsFactors=FALSE) )
     }
   }
   

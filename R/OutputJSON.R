@@ -60,7 +60,8 @@
 	json$prefix <- .ddg.json.prefix( PREFIX.NODE )
 	
 	# agent (about the tool that produced the json & the json version)
-	json$agent <- .ddg.json.agent( TOOL.NAME , JSON.VERSION , LABEL.NAMES$agent , LABEL.PREFIX )
+	json$agent <- .ddg.json.agent( TOOL.NAME , JSON.VERSION , LABEL.NAMES$agent , 
+	                               LABEL.PREFIX )
 	
 	# activity (proc nodes)
 	json$activity.proc <- .ddg.json.proc( LABEL.NAMES$activity.proc , LABEL.PREFIX )
@@ -77,10 +78,14 @@
 	edges <- edges[edges$ddg.num > 0, ]
 	
 	# wasInformedBy (proc2proc)
-	json$wasInformedBy.p2p <- .ddg.json.proc2proc( edges , LABEL.NAMES$wasInformedBy.p2p , LABEL.PREFIX )
+	json$wasInformedBy.p2p <- .ddg.json.proc2proc( edges , 
+	                                               LABEL.NAMES$wasInformedBy.p2p , 
+	                                               LABEL.PREFIX )
 	
 	# wasGeneratedBy (proc2data)
-	json$wasGeneratedBy.p2d <- .ddg.json.proc2data( edges , LABEL.NAMES$wasGeneratedBy.p2d , LABEL.PREFIX )
+	json$wasGeneratedBy.p2d <- .ddg.json.proc2data( edges , 
+	                                                LABEL.NAMES$wasGeneratedBy.p2d , 
+	                                                LABEL.PREFIX )
 	
 	
 	# get function nodes
@@ -134,12 +139,14 @@
 		
 		
 		# PRINT TO JSON: func2proc
-		json$used.f2p <- .ddg.json.func2proc( calls , LABEL.NAMES$used.f2p , LABEL.NAMES$entity.func , 
-											  LABEL.NAMES$activity.proc , LABEL.PREFIX )
+		json$used.f2p <- .ddg.json.func2proc( calls , LABEL.NAMES$used.f2p , 
+		                                      LABEL.NAMES$entity.func , 
+		                                      LABEL.NAMES$activity.proc , LABEL.PREFIX )
 		
 		# PRINT TO JSON: func2lib
-		json$hadMember <- .ddg.json.lib2func( calls , LABEL.NAMES$hadMember , LABEL.NAMES$entity.lib , 
-											  LABEL.NAMES$entity.func , LABEL.PREFIX )
+		json$hadMember <- .ddg.json.lib2func( calls , LABEL.NAMES$hadMember , 
+		                                      LABEL.NAMES$entity.lib ,  
+		                                      LABEL.NAMES$entity.func , LABEL.PREFIX )
 	}	
 	
 	# COMBINE INTO COMPLETE JSON
@@ -164,7 +171,7 @@
 	json <- jsonlite::prettify(json, indent = 4)
 	
 	# change '    ' into a tab (\t)
-	json <- gsub( '    ' , '\t' , json )
+	json <- gsub( '    ' , '\t', json )
 	
 	# remove end close brace and return
 	return( sub('\n}\n$', '', json) )
@@ -177,7 +184,7 @@
 #' @param prefix node prefix
 #' @return the json string for the agent node
 
-.ddg.json.agent <- function( tool , json.version , label , prefix )
+.ddg.json.agent <- function( tool, json.version, label, prefix )
 {
 	# get node content
 	node <- data.frame( "tool.name" = tool ,
@@ -188,7 +195,8 @@
 	
 	# convert to json
 	prefix <- paste( prefix , label , sep='' )
-	json <- .ddg.json.dataframe( node , NA , prefix , comment = "agent: this json file and the tool that produced this" )
+	json <- .ddg.json.dataframe( node, NA, prefix, 
+	               comment = "agent: this json file and the tool that produced this" )
 	
 	# form agent node and return
 	return( .ddg.json.formNode("agent", json) )
@@ -199,7 +207,7 @@
 #' @param prefix node prefix
 #' @return the json string for the procedure node
 
-.ddg.json.proc <- function( label , prefix )
+.ddg.json.proc <- function( label, prefix )
 {
 	nodes <- .ddg.proc.nodes()
 	
@@ -232,7 +240,7 @@
 #' @param prefix node prefix
 #' @return the json string for the data node
 
-.ddg.json.data <- function( label , prefix )
+.ddg.json.data <- function( label, prefix )
 {
 	nodes <- .ddg.data.nodes()
 	
@@ -262,7 +270,7 @@
 #' @param prefix node prefix
 #' @return the json string for the environment node
 
-.ddg.json.env <- function( label , prefix )
+.ddg.json.env <- function( label, prefix )
 {
 	# GET CONTENT FOR NODE
 	fields <- list( "name" = "environment" ,
@@ -334,7 +342,7 @@
 	json <- jsonlite::prettify( json , indent = 4 )
 	
 	# convert '    ' into tab
-	json <- gsub( '    ' , '\t' , json )
+	json <- gsub( '    ' , '\t', json )
 	
 	# remove top brace, add comment
 	json <- sub( '^\\{' , '\n\t// environment' , json )
@@ -375,7 +383,7 @@
 #' @param prefix node prefix
 #' @return the json string for the library nodes
 
-.ddg.json.lib <- function( nodes , label , prefix )
+.ddg.json.lib <- function( nodes, label, prefix )
 {
 	# change col names
 	col.names <- c( "name" , "version" )
@@ -385,7 +393,8 @@
 	
 	# convert to json
 	prefix <- paste( prefix , label , sep='' )
-	json <- .ddg.json.dataframe( nodes , col.names , prefix , comment = "library nodes - prov collections" )
+	json <- .ddg.json.dataframe( nodes , col.names , prefix , 
+	                             comment = "library nodes - prov collections" )
 	
 	# append prov:type to json
 	prov.type <- .ddg.json.collection()
@@ -412,7 +421,7 @@
 	json <- jsonlite::prettify(json, indent = 4)
 	
 	# convert '    ' to tab
-	json <- gsub( '    ' , '\t' , json )
+	json <- gsub( '    ' , '\t', json )
 	
 	# remove newline at the end
 	json <- sub( '\n$' , '' , json )
@@ -430,7 +439,7 @@
 #' @param prefix node prefix
 #' @return the json string for function nodes
 
-.ddg.json.func <- function( nodes , label , prefix )
+.ddg.json.func <- function( nodes, label, prefix )
 {
 	# extract names of functions
 	nodes <- nodes[ , "ddg.fun"]
@@ -453,7 +462,7 @@
 #' @param prefix node prefix
 #' @return the json string for procedure-to-procedure edges
 
-.ddg.json.proc2proc <- function( edges , label , prefix )
+.ddg.json.proc2proc <- function( edges, label, prefix )
 {
 	# extract procedure-to-procedure edges, where ddg.type is 'cf' (control flow)
 	edges <- edges[edges$ddg.type == "cf", c("ddg.from", "ddg.to")]
@@ -471,7 +480,8 @@
 	
 	# convert to json
 	prefix <- paste( prefix , label , sep='' )
-	json <- .ddg.json.dataframe( edges , col.names , prefix , comment = "procedure-to-procedure edges" )
+	json <- .ddg.json.dataframe( edges, col.names, prefix, 
+	                             comment = "procedure-to-procedure edges" )
 	
 	# form wasInformedBy node, return
 	return( .ddg.json.formNode("wasInformedBy", json) )
@@ -484,7 +494,7 @@
 #' @param prefix node prefix
 #' @return the json string for procedure-to-data edges
 
-.ddg.json.proc2data <- function( edges , label , prefix )
+.ddg.json.proc2data <- function( edges, label, prefix )
 {
 	# extract procedure-to-data edges, where ddg.type is 'df.out' (data flow out)
 	edges <- edges[edges$ddg.type == "df.out", c("ddg.from", "ddg.to")]
@@ -502,7 +512,8 @@
 	
 	# convert to json
 	prefix <- paste( prefix , label , sep='' )
-	json <- .ddg.json.dataframe( edges , col.names , prefix , comment = "procedure-to-data edges" )
+	json <- .ddg.json.dataframe( edges , col.names , prefix , 
+	                             comment = "procedure-to-data edges" )
 	
 	# form wasGeneratedBy node, return
 	return( .ddg.json.formNode("wasGeneratedBy", json) )
@@ -515,7 +526,7 @@
 #' @param prefix node prefix
 #' @return the json string for data-to-procedure edges
 
-.ddg.json.data2proc <- function( edges , label , prefix )
+.ddg.json.data2proc <- function( edges, label, prefix )
 {
 	# extract data-to-procedure edges, where ddg.type is 'df.in' (data flow in)
 	edges <- edges[edges$ddg.type == "df.in", c("ddg.from", "ddg.to")]
@@ -533,7 +544,8 @@
 	
 	# convert to json, return
 	prefix <- paste( prefix , label , sep='' )
-	return( .ddg.json.dataframe(edges, col.names, prefix, comment = "data-to-procedure edges") )
+	return( .ddg.json.dataframe(edges, col.names, prefix, 
+	                            comment = "data-to-procedure edges") )
 }
 
 # .ddg.json.func2proc forms and returns the json string for nodes representing 
@@ -545,21 +557,24 @@
 #' @param prefix node prefix
 #' @return the json string for function-to-procedure edges
 
-.ddg.json.func2proc <- function( nodes , label.edge , label.func , label.proc , prefix )
+.ddg.json.func2proc <- function( nodes, label.edge, label.func, label.proc, prefix )
 {
 	# extract columns
 	edges <- subset( nodes , select = c("ddg.fnum", "ddg.pnum") )
 	
 	# add prefix to node numbers
-	edges$ddg.fnum <- mapply( paste , prefix , label.func , edges$ddg.fnum , sep='' , USE.NAMES=FALSE )
-	edges$ddg.pnum <- mapply( paste , prefix , label.proc , edges$ddg.pnum , sep='' , USE.NAMES=FALSE )
+	edges$ddg.fnum <- mapply( paste , prefix , label.func , edges$ddg.fnum , 
+	                          sep='' , USE.NAMES=FALSE )
+	edges$ddg.pnum <- mapply( paste , prefix , label.proc , edges$ddg.pnum , 
+	                          sep='' , USE.NAMES=FALSE )
 	
 	# column names
 	col.names <- c( "prov:entity" , "prov:activity" )
 	
 	# convert to json, return
 	prefix <- paste( prefix , label.edge , sep='' )
-	return( .ddg.json.dataframe(edges, col.names, prefix, comment = "function-to-procedure edges") )
+	return( .ddg.json.dataframe(edges, col.names, prefix, 
+	                            comment = "function-to-procedure edges") )
 }
 
 # .ddg.json.lib2func forms and returns the json string for nodes linking functions 
@@ -571,7 +586,7 @@
 #' @param prefix node prefix
 #' @return the json string for nodes linking functions to their libraries
 
-.ddg.json.lib2func <- function( nodes , label.edge , label.lib , label.func , prefix )
+.ddg.json.lib2func <- function( nodes, label.edge, label.lib, label.func, prefix )
 {
 	# extract columns
 	nodes <- subset( nodes , select = c("ddg.lnum", "ddg.fnum") )
@@ -584,15 +599,18 @@
 	nodes <- nodes[ order(nodes$ddg.lnum) , ]
 	
 	# add prefix to node numbers
-	nodes$ddg.lnum <- mapply( paste , prefix , label.lib , nodes$ddg.lnum , sep='' , USE.NAMES=FALSE )
-	nodes$ddg.fnum <- mapply( paste , prefix , label.func , nodes$ddg.fnum , sep='' , USE.NAMES=FALSE )
+	nodes$ddg.lnum <- mapply( paste , prefix , label.lib , nodes$ddg.lnum , 
+	                          sep='' , USE.NAMES=FALSE )
+	nodes$ddg.fnum <- mapply( paste , prefix , label.func , nodes$ddg.fnum , 
+	                          sep='' , USE.NAMES=FALSE )
 	
 	# column names
 	col.names <- c( "prov:collection" , "prov:entity" )
 	
 	# convert to json
 	prefix <- paste( prefix , label.edge , sep='' )
-	json <- .ddg.json.dataframe( nodes , col.names , prefix , comment = "groups function nodes with their library nodes" )
+	json <- .ddg.json.dataframe( nodes , col.names , prefix , 
+	                     comment = "groups function nodes with their library nodes" )
 	
 	# form hadMember node, return
 	return( .ddg.json.formNode("hadMember", json) )
@@ -639,7 +657,7 @@
 #' @param node.name node name
 #' @return list of combined json parts
 
-.ddg.json.combine.node <- function( json , node.name )
+.ddg.json.combine.node <- function( json, node.name )
 {
 	# get the indices which the node parts reside in the json list
 	indices <- grep( node.name , names(json) )
@@ -760,7 +778,7 @@
 #' @param comment optional comment
 #' @return a formatted json string
 
-.ddg.json.dataframe <- function( dataframe , col.names , obj.prefix , comment = NULL )
+.ddg.json.dataframe <- function( dataframe, col.names, obj.prefix, comment = NULL )
 {
 	# PROCESS TABLE TO PREPARE FOR PRINTING
 	# change column names, if applicable
@@ -784,7 +802,7 @@
 	
 	# PROCESS JSON INTO CORRECT FORMAT
 	# convert '    ' into tab
-	json <- gsub( '    ' , '\t' , json )
+	json <- gsub( '    ' , '\t', json )
 	
 	# add comment line to top of block, if any
 	if( ! is.null(comment) )
@@ -801,7 +819,7 @@
 	json <- gsub( '\n\t\"' , '\n\t\t\"' , json )
 	
 	# remove row names in objects
-	json <- gsub( ',\r?\n\t+"_row": "([0-9A-Za-z]|_|\\.|-|/)*"\n' , '\n' , json)
+	json <- gsub( ',\r?\n\t+"_row": "([0-9A-Za-z]|_|\\.|-|/)*"\n' , '\n', json)
 	
 	# remove wrapping braces
 	json <- sub( '^\\{' , '' , json )
@@ -816,7 +834,7 @@
 #' @param node.content node content
 #' @return a first-level prov-json node
 
-.ddg.json.formNode <- function( node.name , node.content )
+.ddg.json.formNode <- function( node.name, node.content )
 {
 	# form node name string
 	node.name <- paste( '\n\t"' , node.name , '" : \\{\n' , sep = '' )

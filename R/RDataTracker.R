@@ -164,8 +164,6 @@
 #' optionally saved as tab-delimited files in ddg.save.
 #' @return nothing
 .ddg.init.tables <- function() {
-  size <- 100
-
   .ddg.get.initial.env()
   
   .ddg.init.proc.nodes()
@@ -287,10 +285,10 @@
 #' @param vars.set data frame containing variable assignments.
 #' @return a data frame that is twice the size as the original
 .ddg.double.vars.set <- function(vars.set) {
-  size=nrow(vars.set)
+  size <- nrow(vars.set)
   
   # Create the right size data frame from input frame.
-  new.vars.set <- rbind(vars.set,.ddg.create.empty.vars.set(size))
+  new.vars.set <- rbind(vars.set, .ddg.create.empty.vars.set(size))
 
   return(new.vars.set)
 }
@@ -403,7 +401,9 @@
       # TODO - add some sort of warning that the data node was NOT
       # found.
 
-      # error.msg <- paste("Unable to find data node for",var, ". Command", parse(text=cmd.expr), "appears to use it for procedure node", cmd, ".")
+      # error.msg <- paste("Unable to find data node for",var, ". Command", 
+      #                    parse(text=cmd.expr), 
+      #                    "appears to use it for procedure node", cmd, ".")
       # .ddg.insert.error.message(error.msg)
     }
   }
@@ -451,7 +451,7 @@
         # characters.  The first tryCatch, puts the ` back in and parses again.
         # The second tryCatch handles errors associated with evaluating the variable.
         parsed <- tryCatch(parse(text=var),
-            error = function(e) parse(text=paste("`",var,"`",sep="")))
+            error = function(e) parse(text=paste("`", var, "`", sep="")))
         val <- tryCatch(eval(parsed, env),
           error = function(e) {
             eval (parse(text=var), parent.env(env))
@@ -459,7 +459,12 @@
         )
 
         tryCatch(.ddg.save.data(var, val, error=TRUE, scope=scope, env=env),
-               error = function(e){.ddg.data.node("Data", var, "complex", scope); print(e)})
+               error = 
+                 function(e){
+                   .ddg.data.node("Data", var, "complex", scope); 
+                   print(e)
+                 }
+               )
 
         .ddg.proc2data(cmd@abbrev, var, scope)
     }
@@ -478,7 +483,8 @@
 #' @param env the environment that the command was executed in
 #' @return nothing
 
-.ddg.create.data.node.for.possible.writes <- function (vars.set, last.command, env= NULL) {
+.ddg.create.data.node.for.possible.writes <- function (vars.set, last.command, 
+                                                       env= NULL) {
   #print("In .ddg.create.data.node.for.possible.writes")
   environment <- if (is.environment(env)) env else .GlobalEnv
 
@@ -487,7 +493,8 @@
     if (vars.set$possible.last.writer[i] > vars.set$last.writer[i]) {
       value <- tryCatch(eval(parse(text=vars.set$variable[i]), environment),
           error = function(e) {
-            #print(paste("Could not find value for", vars.set$variable[i], "in environment", environment))
+            #print(paste("Could not find value for", vars.set$variable[i], 
+            #            "in environment", environment))
             NULL
           }
       )
@@ -639,7 +646,8 @@
   }
   if (.ddg.debug.lib()) print(paste("Adding", node.name,  type, "node"))
   .ddg.proc.node(type, node.name, node.name, cmd = cmd, 
-      scriptNum=scriptNum, startLine=startLine, startCol=startCol, endLine=endLine, endCol=endCol)
+      scriptNum=scriptNum, startLine=startLine, startCol=startCol, 
+      endLine=endLine, endCol=endCol)
   .ddg.proc2proc()
 
   return(node.name)
@@ -684,13 +692,14 @@
     }
 
   #print (paste (".ddg.close.last.command.node: .ddg.last.cmd =", .ddg.last.cmd))
-  #print (paste (".ddg.close.last.command.node: .ddg.possible.last.cmd =", .ddg.possible.last.cmd))
+  #print (paste (".ddg.close.last.command.node: .ddg.possible.last.cmd =", 
+  #              .ddg.possible.last.cmd))
 
   # Only create a finish node if a new command exists (i.e., we've
   # parsed some lines of code).
   # TODO: Do we need to check .ddg.possible.last.cmd?  We don't use it here.
   if (!is.null(.ddg.last.cmd) && (!is.null(.ddg.possible.last.cmd))) {
-    cmd.abbrev <- .ddg.add.finish.node()
+    .ddg.add.finish.node()
 
     # Add link from a function return node if there is one.
     .ddg.link.function.returns(.ddg.last.cmd)
@@ -846,7 +855,7 @@
       {
         d.environ <- .ddg.get.env(cmd@vars.set, for.caller=TRUE)
       
-        if( identical(d.environ,"undefined") )
+        if( identical(d.environ, "undefined") )
           d.environ <- globalenv()
       }
 
@@ -865,7 +874,8 @@
       # control statement itself.
 
       create <- !cmd@isDdgFunc && .ddg.is.init() &&  
-          (!(control.statement && .ddg.loop.annotate() && ddg.max.loops() > 0) || !run.commands)
+          (!(control.statement && .ddg.loop.annotate() && ddg.max.loops() > 0) || 
+             !run.commands)
       start.finish.created <- FALSE
       cur.cmd.closed <- FALSE
 
@@ -906,15 +916,20 @@
 
           # EVALUATE.
 
-          if (.ddg.debug.lib()) print (paste (".ddg.parse.commands: Evaluating ", cmd@annotated))
+          if (.ddg.debug.lib()) {
+            print (paste (".ddg.parse.commands: Evaluating ", cmd@annotated))
+          }
 
           result <- withCallingHandlers(
           
               {
                 for (annot in cmd@annotated) {
-                  #print (paste (".ddg.parse.commands: Evaluating ", paste(annot, collapse = " ")))
-                  # Don't set return.value if we are calling a ddg function or we are executing an if-statement
-                  if (grepl("^ddg", annot) || grepl("^.ddg", annot) || .ddg.get.statement.type(annot) == "if") {
+                  #print (paste (".ddg.parse.commands: Evaluating ", 
+                  #             paste(annot, collapse = " ")))
+                  # Don't set return.value if we are calling a ddg function or we 
+                  # are executing an if-statement
+                  if (grepl("^ddg", annot) || grepl("^.ddg", annot) || 
+                      .ddg.get.statement.type(annot) == "if") {
                     eval(annot, environ, NULL)
                     .ddg.set (".ddg.error.node.created", FALSE)
                   }
@@ -922,14 +937,15 @@
                     return.value <- eval(annot, environ, NULL)
 									  #if (typeof(return.value) != "closure") {
                       #print (paste (".ddg.parse.commands: Done evaluating ", annot))
-                      #print(paste(".ddg.parse.commands: setting .ddg.last.R.value to", return.value))
+                      #print(paste(".ddg.parse.commands: setting .ddg.last.R.value to", 
+                      #            return.value))
 									  #}
                     .ddg.set (".ddg.last.R.value", return.value)
                     .ddg.set (".ddg.error.node.created", FALSE)
                   }
                 }
               },
-            warning = .ddg.set.warning ,
+            warning = .ddg.set.warning,
             error = function(e)
             {
               # Only create an error node if there has not been one created
@@ -939,11 +955,15 @@
               # first time.
               if (!.ddg.get(".ddg.error.node.created")) {
                 # create procedure node for the error-causing operation
-                .ddg.proc.node("Operation", cmd@abbrev, cmd@abbrev, functions.called=cmd@functions.called, cmd=cmd)
+                .ddg.proc.node("Operation", cmd@abbrev, cmd@abbrev, 
+                               functions.called=cmd@functions.called, cmd=cmd)
                 .ddg.proc2proc()
   
                 # create input edges by adding variables to set
-                if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Adding", cmd@abbrev, "information to vars.set, for an error"))
+                if (.ddg.debug.lib()) {
+                  print(paste(".ddg.parse.commands: Adding", cmd@abbrev, 
+                              "information to vars.set, for an error"))
+                }
                 .ddg.create.data.use.edges(cmd, for.caller=FALSE)
   
                 # Create output exception node.
@@ -957,7 +977,9 @@
             }
           )
 
-          if (.ddg.debug.lib()) print (paste (".ddg.parse.commands: Done evaluating ", cmd@annotated))
+          if (.ddg.debug.lib()) {
+            print (paste (".ddg.parse.commands: Done evaluating ", cmd@annotated))
+          }
 
           if (!cmd@isDdgFunc && cmd@text != "next") {
             # Need to get the stack again because it could have been
@@ -1000,19 +1022,26 @@
         # is set, is not NULL, and is equal to the current command.
 
         last.proc.node.created <-
-            if (.ddg.is.set (".ddg.last.proc.node.created")).ddg.get(".ddg.last.proc.node.created")
+            if (.ddg.is.set (".ddg.last.proc.node.created"))
+              .ddg.get(".ddg.last.proc.node.created")
             else ""
         
-        create.procedure <- create && !cur.cmd.closed && !start.finish.created  && !grepl("^ddg.source", cmd@annotated)
+        create.procedure <- create && !cur.cmd.closed && 
+                            !start.finish.created  && 
+                            !grepl("^ddg.source", cmd@annotated)
         
         # We want to create a procedure node for this command.
         if (create.procedure) {
           
           # Create the procedure node.
 
-          if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Adding operation node for", cmd@abbrev))
+          if (.ddg.debug.lib()) {
+            print(paste(".ddg.parse.commands: Adding operation node for", 
+                        cmd@abbrev))
+          }
           
-          .ddg.proc.node("Operation", cmd@abbrev, cmd@abbrev, functions.called=cmd@functions.called, cmd=cmd)
+          .ddg.proc.node("Operation", cmd@abbrev, cmd@abbrev, 
+                         functions.called=cmd@functions.called, cmd=cmd)
           .ddg.proc2proc()
 
           # If a warning occurred when cmd was evaluated,
@@ -1028,9 +1057,12 @@
           # the vars.set).
           if (run.commands) {
             # Add variables to set.
-            vars.set <- .ddg.add.to.vars.set(vars.set,cmd,i)
+            vars.set <- .ddg.add.to.vars.set(vars.set, cmd, i)
 
-            if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Adding", cmd@abbrev, "information to vars.set"))
+            if (.ddg.debug.lib()) {
+              print(paste(".ddg.parse.commands: Adding", cmd@abbrev, 
+                          "information to vars.set"))
+            }
           }
 
           .ddg.create.data.use.edges(cmd, for.caller=FALSE)
@@ -1038,11 +1070,17 @@
           .ddg.create.file.read.nodes.and.edges()
           .ddg.link.function.returns(cmd)
 
-          if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Adding input data nodes for", cmd@abbrev))
+          if (.ddg.debug.lib()) {
+            print(paste(".ddg.parse.commands: Adding input data nodes for", 
+                        cmd@abbrev))
+          }
 
           .ddg.create.data.set.edges(vars.set, cmd, d.environ)
 
-          if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Adding output data nodes for", cmd@abbrev))
+          if (.ddg.debug.lib()) {
+            print(paste(".ddg.parse.commands: Adding output data nodes for", 
+                        cmd@abbrev))
+          }
 
           .ddg.create.file.write.nodes.and.edges ()
           .ddg.create.graphics.nodes.and.edges ()
@@ -1052,8 +1090,11 @@
           .ddg.close.last.command.node()
           if (run.commands) {
             # Add variables to set.
-            vars.set <- .ddg.add.to.vars.set(vars.set,cmd, i)
-            if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Adding", cmd@abbrev, "information to vars.set"))
+            vars.set <- .ddg.add.to.vars.set(vars.set, cmd, i)
+            if (.ddg.debug.lib()) {
+              print(paste(".ddg.parse.commands: Adding", cmd@abbrev, 
+                          "information to vars.set"))
+            }
             .ddg.create.data.set.edges(vars.set, cmd, environ)
           }
         }
@@ -1131,7 +1172,7 @@
 .ddg.get.top.cmd <- function() {
   .ddg.cur.cmd.stack <- .ddg.get(".ddg.cur.cmd.stack")
   stack.length <- length(.ddg.cur.cmd.stack)
-  cmd <- .ddg.cur.cmd.stack[stack.length-1][[1]]
+  return (.ddg.cur.cmd.stack[stack.length-1][[1]])
 }
 
 #' .ddg.change.cmd.top changes the value associated with the current command 
@@ -1197,7 +1238,8 @@
 #' @param warn (optional) if TRUE, warns user that the expression could
 #'   not be evaluated if the evaluation failed
  
-.ddg.lookup.value <- gtools::defmacro(expr.to.evaluate, value, env, procname = "", warn=FALSE,
+.ddg.lookup.value <- gtools::defmacro(expr.to.evaluate, value, env, 
+                                      procname = "", warn=FALSE,
     expr =
         if (is.null(value)) {
           arg <- substitute(expr.to.evaluate)
@@ -1210,7 +1252,8 @@
               eval(arg, env),
               error = function(e) {
                 if (warn) {
-                  error.msg <- paste("Unable to evaluate", expr.to.evaluate, "in call to", procname)
+                  error.msg <- paste("Unable to evaluate", expr.to.evaluate, 
+                                     "in call to", procname)
                   .ddg.insert.error.message(error.msg)
                 }
                 return ("")
@@ -1227,9 +1270,6 @@
 .ddg.delete.temp <- function() {
   # Delete the temporary history file if we made it.
   if (.ddg.is.set('.ddg.history.file')) unlink(.ddg.get('.ddg.history.file'))
-
-  # Clear the environment.
-  .ddg.env <- new.env(parent=emptyenv())
 }
 
 #' .ddg.create.output.nodes creates output nodes for ddg.function
@@ -1249,15 +1289,19 @@
 #'   captured graphic. Supported extensions are .jpg, .jpeg, .pdf.
 #' @return nothing
 
-.ddg.create.output.nodes<- function(pname, outs.graphic, outs.data, outs.exception, outs.url, outs.file, graphic.fext) {
+.ddg.create.output.nodes<- function(pname, outs.graphic, outs.data, 
+                                    outs.exception, outs.url, outs.file, 
+                                    graphic.fext) {
   env <- .ddg.get.first.non.ddg.env()
   
   # Capture graphics device.
   if (is.character(outs.graphic)) {
     name <- outs.graphic
     gfext <- as.character(graphic.fext)
-    .ddg.write.graphic(name,"Graphical Plot. Not saved in script.",fext=gfext) # value is ignored
-    .ddg.proc2data(pname,name)
+
+    # value is ignored
+    .ddg.write.graphic(name, "Graphical Plot. Not saved in script.", fext=gfext) 
+    .ddg.proc2data(pname, name)
   }
 
   # Create output nodes and edges if outs list provided.
@@ -1319,11 +1363,11 @@
 
           tryCatch({
                 if (!is.character(name)) name <- deparse(substitute(name))
-                envName <- environmentName(env)
                 scope <- .ddg.get.scope(param, calls=stack)
                 .ddg.save.data(name, value, error=TRUE, scope=scope)
                 .ddg.proc2data(pname, name, scope)
-              }, error = function(e) {
+              }
+              , error = function(e) {
                 .ddg.insert.error.message(e)
               }
           )
@@ -1373,11 +1417,15 @@
 #' @return the frame number of the innermost user function
 .ddg.get.first.non.ddg.frame.number <- function() {
   calls <- sys.calls()
-  calls <- as.character (mapply( `[[` , calls , 1 , SIMPLIFY = TRUE ))
+  calls <- as.character (mapply( `[[`, calls, 1, SIMPLIFY = TRUE ))
   #print(paste("calls =", calls))
   #print(summary(calls))
   
-  return ( Position( function (call) {return (!startsWith (call, "ddg") & !startsWith (call, ".ddg"))}, calls, right=TRUE ))
+  return ( Position( 
+    function (call) {
+      return (!startsWith (call, "ddg") & !startsWith (call, ".ddg"))
+    }
+    , calls, right=TRUE ))
 }
 
 #' .ddg.create.function.nodes creates the start node, procedure node, input
@@ -1399,7 +1447,10 @@
 #' @param env (optional) - the environment local to the function
 #' @return nothing
 
-.ddg.create.function.nodes <- function(pname, call, full.call, outs.graphic=NULL, outs.data=NULL, outs.exception=NULL, outs.url=NULL, outs.file=NULL, graphic.fext="jpeg", env=NULL) {
+.ddg.create.function.nodes <- function(pname, call, full.call, outs.graphic=NULL, 
+                                       outs.data=NULL, outs.exception=NULL, 
+                                       outs.url=NULL, outs.file=NULL, 
+                                       graphic.fext="jpeg", env=NULL) {
   # Create the start node
   if (typeof(call[[1]]) == "closure") {
     #print(paste(".ddg.create.function.nodes: pname =", pname))
@@ -1427,7 +1478,6 @@
     stack <- sys.calls()
     bindings <- list()
     for (i in 1:length(args)) bindings[[i]] <-list(args[[i]], param.names[[i]])
-    missing.params <- character()
 
     lapply(bindings,
         function(binding) {
@@ -1450,7 +1500,8 @@
           else {
             vars.used <- .ddg.find.var.uses(arg)
             binding.node.name <- paste(formal, " <- ", paste(deparse(arg), collapse=" "))
-            #print(paste(".ddg.create.function.nodes: binding.node.name =", binding.node.name))
+            #print(paste(".ddg.create.function.nodes: binding.node.name =", 
+            #            binding.node.name))
           }
 
           .ddg.proc.node("Binding", binding.node.name)
@@ -1473,8 +1524,10 @@
             # the value as it's possible that the function never
             # actually uses it.
             tryCatch ({
-                  .ddg.save.data(formal, eval(parse(text=formal), formal.env), scope=formal.scope, stack=stack)
-                  .ddg.proc2data(binding.node.name, formal, formal.scope)},
+                  .ddg.save.data(formal, eval(parse(text=formal), formal.env), 
+                                 scope=formal.scope, stack=stack)
+                  .ddg.proc2data(binding.node.name, formal, formal.scope)
+                  },
                 error = function(e) {})
 
           }
@@ -1493,7 +1546,8 @@
     lapply(bindings, function(binding) {
           formal <- binding[[2]][[1]]
 
-          # Formal will be NULL if declared as ...  Don't create the data node in that case.
+          # Formal will be NULL if declared as ...  Don't create the data node in 
+          # that case.
           if (!is.null(formal) && formal != "") {
             formal.scope <- .ddg.get.scope(formal, calls=stack)
             if (.ddg.data.node.exists (formal, formal.scope)) {
@@ -1508,7 +1562,8 @@
 
   # create output nodes
 
-  .ddg.create.output.nodes(pname, outs.graphic, outs.data, outs.exception, outs.url, outs.file, graphic.fext)
+  .ddg.create.output.nodes(pname, outs.graphic, outs.data, outs.exception, 
+                           outs.url, outs.file, graphic.fext)
 
 }
 
@@ -1537,8 +1592,8 @@
     }
     else {
       call.func <- as.character(call)
-      # Ignore calls to ddg functions or to the functions that get called from the outermost tryCatch
-      # to ddg code.
+      # Ignore calls to ddg functions or to the functions that get called from 
+      # the outermost tryCatch to ddg code.
       if (!any (startsWith (call.func, c (".ddg", "ddg", "doTryCatch", "tryCatch")))) {
         if (for.caller && !script.func.found) {
           script.func.found <- TRUE
@@ -1560,7 +1615,7 @@
 #' @param warning (optional) - set to TRUE if a warning should be thrown when a variable is not found.
 #' @return the environment in which the name is found.  Returns "undefined" if the
 #'   variable is not found.
-.ddg.where <- function( name , env = parent.frame() , warning = TRUE )
+.ddg.where <- function( name, env = parent.frame(), warning = TRUE )
 {
   stopifnot(is.character(name), length(name) == 1)
   
@@ -1650,8 +1705,7 @@
   }
   
   else {
-    cmd.abbrev <- .ddg.add.start.node (.ddg.cur.cmd)
-    .ddg.cur.expr.stack <- .ddg.get(".ddg.cur.expr.stack")
+    .ddg.add.start.node (.ddg.cur.cmd)
     st.type <- .ddg.get.statement.type(.ddg.cur.cmd@parsed[[1]])
     loop.statement <- st.type %in% c("for", "while", "repeat")
     control.statement <- loop.statement || st.type %in% c("if", "{")
@@ -1685,7 +1739,10 @@
   knitr::purl(r.script.path, documentation = 2L, quiet = TRUE)
 
   #moves file to ddg directory
-  file.rename(from = paste(getwd(), "/", basename(tools::file_path_sans_ext(r.script.path)), ".R", sep = ""), to = output.path)
+  file.rename(from = paste(getwd(), "/", 
+                           basename(tools::file_path_sans_ext(r.script.path)), 
+                           ".R", sep = ""), 
+              to = output.path)
   script <- readLines(output.path)
 
   skip <- FALSE
@@ -1728,8 +1785,9 @@
       name <- stringr::str_trim(name, side = "both")
       annotated <- append(annotated, paste("ddg.start(\"", name, "\")", sep = ""))
     }
-    else if(nchar(script[i]) == 0 && (regexpr("#'", script[i + 1]) != -1 ||
-                                      i == length(script) || regexpr("## ----", script[i + 1]) != -1 )){
+    else if(nchar(script[i]) == 0 && 
+            (regexpr("#'", script[i + 1]) != -1 || 
+             i == length(script) || regexpr("## ----", script[i + 1]) != -1 )){
       if(skip){
         annotated <- append(annotated, script[i])
         skip <- FALSE
@@ -1831,4 +1889,3 @@
 	
   return(env)
 }
-
