@@ -42,7 +42,6 @@
   		<copy overwrite="true" file="LICENSE" todir="${builddir}"/>
   		<copy overwrite="true" file="NAMESPACE" todir="${builddir}"/>
   		<copy overwrite="true" file="README.md" todir="${builddir}"/>
-  		<copy overwrite="true" file=".lintr" todir="${builddir}"/>
     </target>
     
     <target name="build" depends="copy-to-directory">
@@ -57,13 +56,14 @@
 	   	</exec>
     </target>
 
-    <target name="lint" depends="build">
+    <target name="lint" depends="copy-to-directory">
+  		<copy overwrite="true" file=".lintr" todir="${builddir}"/>
 		<exec dir="${builddir}" executable="Rscript" >
 			<arg line="-e lintr::lint_package()" />
 		</exec>
     </target>
 
-    <target name="install" depends="check, lint">
+    <target name="install" depends="check">
     	<exec dir="${builddir}/.." executable="R" >
   			<arg line="CMD INSTALL ${tarfile}"/>
 		</exec>

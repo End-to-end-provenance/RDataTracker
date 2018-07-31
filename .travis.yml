@@ -44,15 +44,13 @@ r_packages:
   - plyr
   - RCurl
   - reshape2
+  - roxygen2
   - shiny
   - stringi
   - stringr
   - sysfonts
   - xkcd
   - zoo
-
-r_github_packages:
-  - jimhester/lintr
 
 before_script:
   - "export DISPLAY=:99.0"
@@ -64,9 +62,6 @@ script:
   - R CMD check *tar.gz
   - ant -file build.xml install
   - ant -file tests.xml test-travis
-
-after_success:
-  - Rscript -e 'lintr::lint_package()'
 
 notifications:
   slack: endtoendprovenance:WxevOs6n66eZRbCn9HcW2mGD
