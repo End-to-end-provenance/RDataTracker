@@ -152,7 +152,7 @@
 
 #' .ddg.format.time reformats time string.
 #' @param time input time string formatted as yyyy-mm-dd hh:mm:ss
-#' @return time formatted as yyyy-mm-ddThh.mm.ss
+#' @return time formatted as yyyy-mm-ddThh.mm.ss.TZ
 
 .ddg.format.time <- function(time) {
   formatted.time <- strftime(time, format="%Y-%m-%dT%H.%M.%S", usetz=TRUE)
