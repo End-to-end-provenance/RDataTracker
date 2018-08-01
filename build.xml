@@ -30,6 +30,10 @@
     		<fileset dir="man"
       			excludes="\.*"/>
   		</copy>
+    	<copy overwrite="true" todir="${builddir}/tests">
+    		<fileset dir="tests"
+      			excludes="\.*"/>
+  		</copy>
     	<copy overwrite="true" todir="${builddir}/R">
     		<fileset dir="R"
       			excludes="DDGCheckpoint.R, Obsolete.R"/>
@@ -75,7 +79,7 @@
 		</exec>
     </target>
 
-    <target name="cran-check" depends="build">
+    <target name="cran-check" depends="build, lint">
     	<exec dir="${builddir}/.." executable="R" >
     		<arg line="CMD check --as-cran --no-vignettes --no-build-vignettes ${tarfile}"/>
     	</exec>
