@@ -18,13 +18,8 @@
     </target>
 
     <target name="copy-to-directory" depends="build-directory, roxygen">
-      <copy overwrite="true" todir="${builddir}/inst">
-        <fileset dir="inst"
-            excludes="\.* doc/*.pages doc/*.docx doc/*.pdf"/>
-      </copy>
-        <copy overwrite="true" todir="${builddir}/inst" >
-          <fileset dir="inst"
-          excludes="doc/*.pdf" />
+        <copy overwrite="true" todir="${builddir}/inst">
+          <fileset dir="inst" />
         </copy>
     	<copy overwrite="true" todir="${builddir}/man">
     		<fileset dir="man"
