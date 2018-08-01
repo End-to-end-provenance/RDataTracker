@@ -6,11 +6,11 @@ test_that("var uses",
           "b")
       expect_equal(.ddg.find.var.uses (parse (text = "a <- b + c")),
           c("b", "c"))
-      #expect_equal(.ddg.find.var.uses (parse (text = "if (x > 1 ) a <- b + c else d <- e + f")),
-      #    c("x", "b", "c", "e", "f"))
+      expect_equal(.ddg.find.var.uses (parse (text = "if (x > 1 ) a <- b + c else d <- e + f")),
+          c("x", "b", "c", "e", "f"))
       expect_equal(.ddg.find.var.uses (parse (text = "f <- function (a) return (b)")), character())
-      #expect_equal(.ddg.find.var.uses (parse (text = "a[[b]] <- 3")), "b")
-      #expect_equal(.ddg.find.var.uses (parse (text = "a[b] <- 'abc'")), "b")
+      expect_equal(.ddg.find.var.uses (parse (text = "a[[b]] <- 3")), c("a","b"))
+      expect_equal(.ddg.find.var.uses (parse (text = "a[b] <- 'abc'")), c("a","b"))
       expect_equal(.ddg.find.var.uses (parse (text = "a <- c[d]")), c("c","d"))
     })
 
