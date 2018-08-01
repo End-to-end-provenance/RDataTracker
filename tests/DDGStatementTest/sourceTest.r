@@ -14,16 +14,19 @@ library(methods)
 library(RDataTracker)
 
 ## Directories
-testDir <- "/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/tests/DDGStatementTest/"
+testDir <- "C:/github/rdatatracker/tests/DDGStatementTest/"
 setwd(testDir)
 
 # get initial time
 startTime <- Sys.time()
 invisible(force(startTime))
 
+# turn off usage of fancy quotes
+options(useFancyQuotes=FALSE)
+
 # Run the script
-#ddg.run("DDGStatementTest.R", "/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/tests/DDGStatementTest/ddg", ignore.ddg.calls = F)
-ddg.run("DDGStatementTest.R", "/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/tests/DDGStatementTest/ddg")
+#ddg.run("DDGStatementTest.R", "C:/github/rdatatracker/tests/DDGStatementTest", ignore.ddg.calls = F)
+ddg.run("DDGStatementTest.R", "C:/github/rdatatracker/tests/DDGStatementTest")
 
 # Calculate total time of execution
 endTime <- Sys.time()

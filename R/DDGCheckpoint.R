@@ -1,17 +1,6 @@
-########### Checkpoint/Restore functions for DDGs #############
+# Copyright (C) President and Fellows of Harvard College and 
+# Trustees of Mount Holyoke College, 2014, 2015, 2016, 2017.
 
-# The functions in this file can be used to save the state of
-# an R environment to a file and restore it at a later time.
-# The DDG is updated to reflect the actions of the checkpoint
-# and restore operations so that data derivations are shown
-# accurately.
-
-# These functions cannot be included in RDataTracker because
-# libraries are not allowed to change the user's environment,
-# which the ddg.restore function needs to do.  To use these
-# functions, the user must "source" this file.
-
-# Copyright (C) 2014 Emery R. Boose & Barbara S. Lerner
 # This program is free software: you can redistribute it and/or 
 # modify it under the terms of the GNU General Public License as 
 # published by the Free Software Foundation, either version 3 of the 
@@ -26,8 +15,25 @@
 #   License along with this program.  If not, see 
 #   <http://www.gnu.org/licenses/>.
 
+########### Checkpoint/Restore functions for DDGs #############
+
+# The functions in this file can be used to save the state of
+# an R environment to a file and restore it at a later time.
+# The DDG is updated to reflect the actions of the checkpoint
+# and restore operations so that data derivations are shown
+# accurately.
+
+# These functions cannot be included in RDataTracker because
+# libraries are not allowed to change the user's environment,
+# which the ddg.restore function needs to do.  To use these
+# functions, the user must "source" this file.
+
 
 # .ddg.checkpoint.file.node creates a checkpoint file node.
+# @param fname name of checkpoint file
+# @param dname not used
+# @param checkpoint.name not used
+# @return path and name of checkpoint file
 
 .ddg.checkpoint.file.node <- function(fname, dname, checkpoint.name) {
 	# Increment data counter.
@@ -69,6 +75,9 @@
 }
 
 # .ddg.checkpoint.out creates a checkpoint node and data flow edge.
+# @param checkpoint.name name of checkpoint
+# @param filename name of checkpoint file
+# @return path and name of checkpoint file
 
 .ddg.checkpoint.out <- function(checkpoint.name, filename) {
 	dname <- basename(filename)
@@ -84,6 +93,9 @@
 
 # .ddg.record.checkpoint records the procedure node information for 
 # a checkpoint.
+# @param filename name of checkpoint file
+# @param checkpoint.name name of checkpoint
+# @return nothing
 
 .ddg.record.checkpoint <- function(filename, checkpoint.name) {
 	ddg.checkpoint.num <- RDataTracker:::.ddg.get("ddg.checkpoint.num")
@@ -100,6 +112,8 @@
 # file that the checkpoint is saved in.
 # checkpoint.name (optional) - the value associated with the 
 #   checkpoint procedure node.
+# @param checkpoint.name name of checkpoint
+# @return path and name of checkpoint file
 
 ddg.checkpoint <- function(checkpoint.name=NULL) {
 	if (!RDataTracker:::.ddg.is.init()) return(invisible())
@@ -120,6 +134,8 @@ ddg.checkpoint <- function(checkpoint.name=NULL) {
 }
 
 # .ddg.lookup.checkpoint.name looks up the name of a checkpoint.
+# @param filename name of checkpoint file
+# @return name of checkpoint
 
 .ddg.lookup.checkpoint.name <- function(filename) {
 	ddg.checkpoints <- RDataTracker:::.ddg.get("ddg.checkpoints")
@@ -131,16 +147,17 @@ ddg.checkpoint <- function(checkpoint.name=NULL) {
 # nodes. The current attribute is used to determine which value in 
 # the data node table corresponds to the use of a data item. We want 
 # the latest value before the checkpoint to be found.
-
 # For data that was in the table when the checkpoint was made, the 
 # current attribute should be the same as in the checkpointed table. 
 # For data that was created after the checkpoint was made, the 
 # current attribute should be FALSE.
-
 # The entries for files are examined to determine which was the 
 # current version of each file at the time the checkpoint was taken. 
 # If that file no longer exists, or has been modified, the version 
 # of the file current at the time of the checkpoint is restored.
+# @param saved.env name of saved environment
+# @param checkpointed.env name of checkpoint environment
+# @return nothing
 
 .ddg.mark.stale.data <- function(saved.env, checkpointed.env) {
 	ddg.files.to.restore <- matrix('', nrow=0, ncol=2, dimnames=list(NULL, c("filename", "original")))
@@ -220,8 +237,11 @@ ddg.checkpoint <- function(checkpoint.name=NULL) {
 	}
 }
 
-# .ddg.restore.ddg.state replaces the current informatin with the 
+# .ddg.restore.ddg.state replaces the current information with the 
 # saved DDG information.
+# @param saved.env name of saved environment
+# @param ddg.env name of ddg environment
+# @return ddg environment
 
 .ddg.restore.ddg.state <- function(saved.env, ddg.env) {	
 	
@@ -241,6 +261,8 @@ ddg.checkpoint <- function(checkpoint.name=NULL) {
 # but the data flow edges will link to the data that existed when 
 # the checkpoint was made. file.path - the name of the checkpoint 
 # file to restore.
+# @param file.path path and name of checkpoint file
+# @return nothing
 
 ddg.restore <- function(file.path) {
 	if (!RDataTracker:::.ddg.is.init()) return(invisible())
