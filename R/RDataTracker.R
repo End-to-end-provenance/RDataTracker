@@ -935,11 +935,11 @@
                   }
                   else {
                     return.value <- eval(annot, environ, NULL)
-									  #if (typeof(return.value) != "closure") {
+                    #if (typeof(return.value) != "closure") {
                       #print (paste (".ddg.parse.commands: Done evaluating ", annot))
                       #print(paste(".ddg.parse.commands: setting .ddg.last.R.value to", 
                       #            return.value))
-									  #}
+                    #}
                     .ddg.set (".ddg.last.R.value", return.value)
                     .ddg.set (".ddg.error.node.created", FALSE)
                   }
@@ -1809,9 +1809,9 @@
 #' @return nothing
 .ddg.save.debug.files <- function() 
 {
-	# Save initial environment table to file.
-	fileout <- paste(.ddg.path.debug(), "/initial-environment.csv", sep="")
-	ddg.initial.env <- .ddg.initial.env()
+  # Save initial environment table to file.
+  fileout <- paste(.ddg.path.debug(), "/initial-environment.csv", sep="")
+  ddg.initial.env <- .ddg.initial.env()
   utils::write.csv(ddg.initial.env, fileout, row.names=FALSE)
 
   .ddg.save.debug.proc.nodes ()
@@ -1819,14 +1819,14 @@
   .ddg.save.debug.edges()
   .ddg.save.function.table ()
 
-	# save library information to file
-	fileout <- paste(.ddg.path.debug(), "/libraries.csv", sep="")
+  # save library information to file
+  fileout <- paste(.ddg.path.debug(), "/libraries.csv", sep="")
   utils::write.csv(.ddg.installedpackages(), fileout, row.names=FALSE)
-	
-	# save execution environment information to file
-	fileout <- paste(.ddg.path.debug(), "/environment.csv", sep="")
+  
+  # save execution environment information to file
+  fileout <- paste(.ddg.path.debug(), "/environment.csv", sep="")
   utils::write.csv(.ddg.exec.env(), fileout, row.names=FALSE)
-	
+  
   .ddg.save.return.value.table ()
   .ddg.save.sourced.script.table ()
 }
@@ -1837,55 +1837,55 @@
 
 .ddg.exec.env <- function()
 {
-	env <- data.frame(	"architecture" = character(1), 
-						"os" = character(1), 
-						"language" = character(1), 
-						"rVersion" = character(1), 
-						"script" = character(1), 
-						"scriptTimeStamp" = character(1),
-						"workingDirectory" = character(1), 
-						"ddgDirectory" = character(1), 
-						"ddgTimeStamp" = character(1),
-						"rdtVersion" = character(1), 
-						"hashAlgorithm" = character(1),
-						stringsAsFactors = FALSE )
-	
-	# architecture, language, rVersion
-	r.version <- R.Version()
-	
-	env$architecture[1] <- r.version$arch
-	env$language[1] <- r.version$language
-	env$rVersion[1] <- r.version$version
-	
-	# operating system
-	env$os[1] <- .Platform$OS.type
-	
-	# script variables
-	script.path <- .ddg.get("ddg.r.script.path")
-	
-	if( ! is.null(script.path) )
-	{
-		env$script[1] <- script.path
-		env$scriptTimeStamp[1] <- .ddg.format.time( file.info(script.path)$mtime )
-	}
-	else
-	{
-		env$script[1] <- ""
-		env$scriptTimeStamp[1] <- ""
-	}
-	
-	# working directory, ddg. directory
-	env$workingDirectory[1] <- getwd()
-	env$ddgDirectory[1] <- .ddg.path()
-	
-	# ddg timestamp
-	env$ddgTimeStamp[1] <- .ddg.get("ddg.start.time")
-	
-	# rdt version
-	env$rdtVersion[1] <- toString( utils::packageVersion("RDataTracker") )
-	
-	# hash algorithm
-	env$hashAlgorithm[1] <- .ddg.get(".ddg.hash.algorithm")
-	
+  env <- data.frame(  "architecture" = character(1), 
+            "os" = character(1), 
+            "language" = character(1), 
+            "rVersion" = character(1), 
+            "script" = character(1), 
+            "scriptTimeStamp" = character(1),
+            "workingDirectory" = character(1), 
+            "ddgDirectory" = character(1), 
+            "ddgTimeStamp" = character(1),
+            "rdtVersion" = character(1), 
+            "hashAlgorithm" = character(1),
+            stringsAsFactors = FALSE )
+  
+  # architecture, language, rVersion
+  r.version <- R.Version()
+  
+  env$architecture[1] <- r.version$arch
+  env$language[1] <- r.version$language
+  env$rVersion[1] <- r.version$version
+  
+  # operating system
+  env$os[1] <- .Platform$OS.type
+  
+  # script variables
+  script.path <- .ddg.get("ddg.r.script.path")
+  
+  if( ! is.null(script.path) )
+  {
+    env$script[1] <- script.path
+    env$scriptTimeStamp[1] <- .ddg.format.time( file.info(script.path)$mtime )
+  }
+  else
+  {
+    env$script[1] <- ""
+    env$scriptTimeStamp[1] <- ""
+  }
+  
+  # working directory, ddg. directory
+  env$workingDirectory[1] <- getwd()
+  env$ddgDirectory[1] <- .ddg.path()
+  
+  # ddg timestamp
+  env$ddgTimeStamp[1] <- .ddg.get("ddg.start.time")
+  
+  # rdt version
+  env$rdtVersion[1] <- toString( utils::packageVersion("RDataTracker") )
+  
+  # hash algorithm
+  env$hashAlgorithm[1] <- .ddg.get(".ddg.hash.algorithm")
+  
   return(env)
 }

@@ -327,8 +327,8 @@ ddg.max.snapshot.size <- function() {
   }
   
   return( paste('{"container":"', container, 
-  						  '", "dimension":[', dimension, 
-  						  '], "type":["', type, '"]}', sep = "") )
+                '", "dimension":[', dimension, 
+                '], "type":["', type, '"]}', sep = "") )
 }
 
 #' .ddg.get.val.type returns the type information for a given value
