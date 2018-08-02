@@ -18,24 +18,23 @@
     </target>
 
     <target name="copy-to-directory" depends="build-directory, roxygen">
-      <copy overwrite="true" todir="${builddir}/inst">
-        <fileset dir="inst"
-            excludes="\.* doc/*.pages doc/*.docx doc/*.pdf"/>
-      </copy>
-        <copy overwrite="true" todir="${builddir}/inst" >
-          <fileset dir="inst"
-          excludes="doc/*.pdf" />
+        <copy overwrite="true" todir="${builddir}/inst">
+          <fileset dir="inst" />
         </copy>
-      <copy overwrite="true" todir="${builddir}/man">
-        <fileset dir="man"
-            excludes="\.*"/>
-      </copy>
-      <copy overwrite="true" todir="${builddir}/R">
-        <fileset dir="R"
-            excludes="DDGCheckpoint.R, Obsolete.R"/>
-      </copy>
-      <!-- copy overwrite="true" todir="${builddir}/vignettes">
-          <fileset dir="vignettes"
+    	<copy overwrite="true" todir="${builddir}/man">
+    		<fileset dir="man"
+      			excludes="\.*"/>
+  		</copy>
+    	<copy overwrite="true" todir="${builddir}/tests">
+    		<fileset dir="tests"
+      			excludes="\.*"/>
+  		</copy>
+    	<copy overwrite="true" todir="${builddir}/R">
+    		<fileset dir="R"
+      			excludes="DDGCheckpoint.R, Obsolete.R"/>
+  		</copy>
+  		<!-- copy overwrite="true" todir="${builddir}/vignettes">
+	        <fileset dir="vignettes"
             includes="*.Rnw *-img/"/>
        </copy-->
       <copy overwrite="true" file="DESCRIPTION" todir="${builddir}"/>
@@ -75,10 +74,10 @@
     </exec>
     </target>
 
-    <target name="cran-check" depends="build">
-      <exec dir="${builddir}/.." executable="R" >
-        <arg line="CMD check --as-cran --no-vignettes --no-build-vignettes ${tarfile}"/>
-      </exec>
+    <target name="cran-check" depends="build, lint">
+    	<exec dir="${builddir}/.." executable="R" >
+    		<arg line="CMD check --as-cran --no-vignettes --no-build-vignettes ${tarfile}"/>
+    	</exec>
     </target>
 
     <!-- target name="dropbox" depends="build">
