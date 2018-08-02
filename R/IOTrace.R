@@ -1,4 +1,3 @@
-
 # Copyright (C) President and Fellows of Harvard College and 
 # Trustees of Mount Holyoke College, 2014, 2015, 2016, 2017.
 
@@ -1294,41 +1293,41 @@
 #' @return the name of the file containing the captured graphics
 
 .ddg.capture.current.graphics <- function() {
-	#print ("In .ddg.capture.current.graphics")
+  #print ("In .ddg.capture.current.graphics")
   #print(sys.calls())
-	
-	# Create the file name to save the screen graphics to
-	file <- paste0("dev.off.", .ddg.dnum()+1, ".pdf")
   
-	# Save the graphic to a file temporarily
-	file.written <- NULL
+  # Create the file name to save the screen graphics to
+  file <- paste0("dev.off.", .ddg.dnum()+1, ".pdf")
   
-	# dev.print fails when running from the test scripts, or Rscript in general
-	# In that case, check for the existence of Rplots.pdf, which is 
-	# where Rscript places plots sent to the default graphics.
-	if (names(grDevices::dev.cur()) == "pdf" && !.ddg.get(".ddg.ignore.rplots")) {
+  # Save the graphic to a file temporarily
+  file.written <- NULL
+  
+  # dev.print fails when running from the test scripts, or Rscript in general
+  # In that case, check for the existence of Rplots.pdf, which is 
+  # where Rscript places plots sent to the default graphics.
+  if (names(grDevices::dev.cur()) == "pdf" && !.ddg.get(".ddg.ignore.rplots")) {
     if (file.exists ("Rplots.pdf") && !.ddg.get(".ddg.rplots.pdf.saved")) {
 
       if (grDevices::dev.cur() != 1) { 
         grDevices::dev.off()
       }
 
-			.ddg.set (".ddg.rplots.pdf.saved", TRUE)
-			return("Rplots.pdf")
-		}
-	}
+      .ddg.set (".ddg.rplots.pdf.saved", TRUE)
+      return("Rplots.pdf")
+    }
+  }
 
-	tryCatch (
-		{
-			# Try to save the graphics to a file
-			grDevices::dev.print(device=grDevices::pdf, file=file)	
-			file.written <- file
-		},
-		error = function(e) {
-			# If the dev.off file was created, delete it.
-			if( file.exists(file) )
-				file.remove(file)
-		}
-	)
-	return(file.written)
+  tryCatch (
+    {
+      # Try to save the graphics to a file
+      grDevices::dev.print(device=grDevices::pdf, file=file)  
+      file.written <- file
+    },
+    error = function(e) {
+      # If the dev.off file was created, delete it.
+      if( file.exists(file) )
+        file.remove(file)
+    }
+  )
+  return(file.written)
 }

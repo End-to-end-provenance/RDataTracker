@@ -1,30 +1,25 @@
 <project
-	xmlns:if="ant:if"
+  xmlns:if="ant:if"
     xmlns:unless="ant:unless">
     
-	<property name="builddir" value="${user.home}/Documents/Process/DataProvenance/RDataTracker"/>
+  <property name="builddir" value="${user.home}/Documents/Process/DataProvenance/RDataTracker"/>
     <!-- property name="dropbox" value="${user.home}/Dropbox/HarvardForest/RDataTracker/" / --> 
-	<loadproperties srcFile="DESCRIPTION" />
-	<property name="tarfile" value="RDataTracker_${Version}.tar.gz" />
+  <loadproperties srcFile="DESCRIPTION" />
+  <property name="tarfile" value="RDataTracker_${Version}.tar.gz" />
 
     <target name="roxygen">
-		<exec executable="Rscript" >
-			<arg line="-e roxygen2::roxygenise()" />
-		</exec>
+    <exec executable="Rscript" >
+      <arg line="-e roxygen2::roxygenise()" />
+    </exec>
     </target>
 
     <target name="build-directory" depends="clean">
-    	<mkdir dir="${builddir}"/>
+      <mkdir dir="${builddir}"/>
     </target>
 
     <target name="copy-to-directory" depends="build-directory, roxygen">
-    	<copy overwrite="true" todir="${builddir}/inst">
-    		<fileset dir="inst"
-      			excludes="\.* doc/*.pages doc/*.docx doc/*.pdf"/>
-  		</copy>
-      	<copy overwrite="true" todir="${builddir}/inst" >
-        	<fileset dir="inst"
-          excludes="doc/*.pdf" />
+        <copy overwrite="true" todir="${builddir}/inst">
+          <fileset dir="inst" />
         </copy>
     	<copy overwrite="true" todir="${builddir}/man">
     		<fileset dir="man"
@@ -41,42 +36,42 @@
   		<!-- copy overwrite="true" todir="${builddir}/vignettes">
 	        <fileset dir="vignettes"
             includes="*.Rnw *-img/"/>
-	     </copy-->
+       </copy-->
       <copy overwrite="true" file="DESCRIPTION" todir="${builddir}"/>
-  		<copy overwrite="true" file="LICENSE" todir="${builddir}"/>
-  		<copy overwrite="true" file="NAMESPACE" todir="${builddir}"/>
-  		<copy overwrite="true" file="README.md" todir="${builddir}"/>
+      <copy overwrite="true" file="LICENSE" todir="${builddir}"/>
+      <copy overwrite="true" file="NAMESPACE" todir="${builddir}"/>
+      <copy overwrite="true" file="README.md" todir="${builddir}"/>
     </target>
     
     <target name="build" depends="copy-to-directory">
-    	<exec dir="${builddir}/.." executable="R" >
-    		<arg line="CMD build --no-build-vignettes ${builddir}"/>
-    	</exec>
+      <exec dir="${builddir}/.." executable="R" >
+        <arg line="CMD build --no-build-vignettes ${builddir}"/>
+      </exec>
     </target>
 
     <target name="check" depends="build">
-	   	<exec dir="${builddir}/.." executable="R" >
-  			<arg line="CMD check --no-vignettes --no-build-vignettes ${tarfile}"/>
-	   	</exec>
+      <exec dir="${builddir}/.." executable="R" >
+        <arg line="CMD check --no-vignettes --no-build-vignettes ${tarfile}"/>
+      </exec>
     </target>
 
     <target name="lint" depends="copy-to-directory">
-  		<copy overwrite="true" file=".lintr" todir="${builddir}"/>
-		<exec dir="${builddir}" executable="Rscript" >
-			<arg line="-e lintr::lint_package()" />
-		</exec>
+      <copy overwrite="true" file=".lintr" todir="${builddir}"/>
+    <exec dir="${builddir}" executable="Rscript" >
+      <arg line="-e lintr::lint_package()" />
+    </exec>
     </target>
 
     <target name="install" depends="check">
-    	<exec dir="${builddir}/.." executable="R" >
-  			<arg line="CMD INSTALL ${tarfile}"/>
-		</exec>
+      <exec dir="${builddir}/.." executable="R" >
+        <arg line="CMD INSTALL ${tarfile}"/>
+    </exec>
     </target>
     
     <target name="install-no-check" depends="build">
-    	<exec dir="${builddir}/.." executable="R" >
-  			<arg line="CMD INSTALL --no-clean-on-error ${tarfile}"/>
-		</exec>
+      <exec dir="${builddir}/.." executable="R" >
+        <arg line="CMD INSTALL --no-clean-on-error ${tarfile}"/>
+    </exec>
     </target>
 
     <target name="cran-check" depends="build, lint">
@@ -86,15 +81,15 @@
     </target>
 
     <!-- target name="dropbox" depends="build">
-	   <loadproperties srcFile="${builddir}/DESCRIPTION" />
-  	   <copy file="${builddir}/../${tarfile}" todir="${dropbox}"/>
-	   <chmod file="${dropbox}/${tarfile}" perm="ugo-w"/>
+     <loadproperties srcFile="${builddir}/DESCRIPTION" />
+       <copy file="${builddir}/../${tarfile}" todir="${dropbox}"/>
+     <chmod file="${dropbox}/${tarfile}" perm="ugo-w"/>
        <copy file="R/DDGCheckpoint.R" tofile="${dropbox}/DDGCheckpoint_${CheckpointVersion}.R" />
-   	   <chmod file="${dropbox}/DDGCheckpoint_${CheckpointVersion}.R" perm="ugo-w"/>
+       <chmod file="${dropbox}/DDGCheckpoint_${CheckpointVersion}.R" perm="ugo-w"/>
     </target -->
 
     <target name="clean">
         <delete dir="${builddir}" verbose="true"/>
     </target>
-	
+  
 </project>
