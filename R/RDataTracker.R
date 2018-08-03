@@ -710,12 +710,12 @@
 }
 
 #' .ddg.is.procedure.cmd returns TRUE if the command passed in
-#' is a call to ddg.procedure, ddg.start, or ddg.finish.
+#' is a call to .ddg.procedure, ddg.start, or ddg.finish.
 #' These will create a procedure node and therefore
 #' initiate the creation of a collapsible console node.
 #' 
 #' @param cmd - A DDGStatement object
-#' @return true if cmd is a call to ddg.procedure, ddg.start or ddg.finish
+#' @return true if cmd is a call to .ddg.procedure, ddg.start or ddg.finish
 .ddg.is.procedure.cmd <- function(cmd) {
   return(grepl("^ddg.(procedure|start|finish)", cmd@text))
 }
@@ -747,8 +747,8 @@
 #' command, and then creates the data nodes based on the information
 #' available in the environment. If environ is not NULL, calls to
 #' ddg.* are not executed so only the clean script is processed.
-#' If annotate.inside is TRUE, ddg.function, ddg.eval and ddg.return.value
-#' are added to each function definition and ddg.eval is added to control
+#' If annotate.inside is TRUE, .ddg.function, .ddg.eval and .ddg.return.value
+#' are added to each function definition and .ddg.eval is added to control
 #' statements before commands are processed. If save.debug is TRUE,
 #' changes to the script are saved in the ddg/debug directory.
 #' ddg.annotate.on and ddg.annotate.off may be used to limit the
@@ -771,9 +771,9 @@
 #' @param print.eval (optional) print result of each evaluation.
 #' @param max.deparse.length (optional) maximum number of characters
 #'   output for deparse of a single expression.
-#' @param called.from.ddg.eval(optional) whether called from ddg.eval
+#' @param called.from.ddg.eval(optional) whether called from .ddg.eval
 #' @param cmds list of DDG Statements that correspond to the exprs passed in.  This is
-#'   currently only used when called from ddg.eval.  Normally, ddg.parse.commands
+#'   currently only used when called from .ddg.eval.  Normally, ddg.parse.commands
 #'   creates the DDG Statement objects.
 #' @return nothing
 .ddg.parse.commands <- function (exprs, script.name="", script.num=NA, environ, 
@@ -842,7 +842,7 @@
       if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Processing", cmd@abbrev))
       
       # print("Checking whether to set last.cmd")
-      if (grepl("^ddg.eval", cmd@text)) {
+      if (grepl("^.ddg.eval", cmd@text)) {
         if (is.null(.ddg.last.cmd)) {
           .ddg.last.cmd <- cmd
         }
@@ -1272,14 +1272,14 @@
   if (.ddg.is.set('.ddg.history.file')) unlink(.ddg.get('.ddg.history.file'))
 }
 
-#' .ddg.create.output.nodes creates output nodes for ddg.function
-#' and ddg.procedure. Outs values must be passed as strings, not
+#' .ddg.create.output.nodes creates output nodes for .ddg.function
+#' and .ddg.procedure. Outs values must be passed as strings, not
 #' names, unless the value is a file name.
 #' @param pname the name of the procedure node.
 #' @param outs.graphic - the name of a snapshot node to be used as a
 #'    file name.  A graphical snapshot is simply a captured image
 #'    of the graphic device active at the time of the call to
-#'    ddg.function or ddg.procedure.
+#'    .ddg.function or .ddg.procedure.
 #' @param outs.data - a list of names of data nodes.
 #' @param outs.exception - a list of names of exception nodes.
 #' @param outs.url - a list of names of url nodes.
@@ -1436,7 +1436,7 @@
 #' @param outs.graphic - the name of a snapshot node to be used as a
 #'    file name.  A graphical snapshot is simply a captured image
 #'    of the graphic device active at the time of the call to
-#'    ddg.function or ddg.procedure.
+#'    .ddg.function or .ddg.procedure.
 #' @param outs.data - a list of names of data nodes.
 #' @param outs.exception - a list of names of exception nodes.
 #' @param outs.url - a list of names of url nodes.
@@ -1712,8 +1712,8 @@
     .ddg.create.data.use.edges(.ddg.cur.cmd, for.caller=!control.statement)
 
     # Add Details Omitted node before annotated loops if needed.
-    if (loop.statement && ddg.first.loop() > 1) {
-      ddg.details.omitted()
+    if (loop.statement && .ddg.first.loop() > 1) {
+      .ddg.details.omitted()
     }
 
     # Mark the start node as created on the stack.  Mark it even if we did not

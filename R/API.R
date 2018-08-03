@@ -134,6 +134,8 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE,
     .ddg.add.start.node (node.name = "Console")
   }
   
+  .ddg.set.annotation.functions()
+
   invisible()
 }
 
@@ -151,6 +153,7 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE,
 #' @param r.script.path the path to the R script.  If NULL, we are running from the console.
 #' @param overwrite If FALSE, a timestamp is added to the directory name
 #' @return the name of the directory where the ddg should be stored
+
 .ddg.set.path <- function (ddgdir, r.script.path, overwrite) {
   
   # Directory specified by ddgdir parameter
@@ -233,12 +236,36 @@ ddg.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE,
   invisible()
 }
 
+#' .ddg.set.annotation.functions sets the names of the functions used for script
+#' annotation in the user's environment.  This is a workaround to exporting
+#' these functions and would not be allowed by CRAN.
+#' @return nothing
+
+.ddg.set.annotation.functions <- function () {
+  assign(".ddg.details.omitted", RDataTracker:::.ddg.details.omitted, envir = globalenv())
+  assign(".ddg.eval", RDataTracker:::.ddg.eval, envir = globalenv())
+  assign(".ddg.first.loop", RDataTracker:::.ddg.first.loop, envir = globalenv())
+  assign(".ddg.forloop", RDataTracker:::.ddg.forloop, envir = globalenv())
+  assign(".ddg.function", RDataTracker:::.ddg.function, envir = globalenv())
+  assign(".ddg.loop.annotate.off", RDataTracker:::.ddg.loop.annotate.off, envir = globalenv())
+  assign(".ddg.loop.annotate.on", RDataTracker:::.ddg.loop.annotate.on, envir = globalenv())
+  assign(".ddg.loop.count", RDataTracker:::.ddg.loop.count, envir = globalenv())
+  assign(".ddg.loop.count.inc", RDataTracker:::.ddg.loop.count.inc, envir = globalenv())
+  assign(".ddg.not.inside.loop", RDataTracker:::.ddg.not.inside.loop, envir = globalenv())
+  assign(".ddg.reset.loop.count", RDataTracker:::.ddg.reset.loop.count, envir = globalenv())
+  assign(".ddg.return.value", RDataTracker:::.ddg.return.value, envir = globalenv())
+  assign(".ddg.set.inside.loop", RDataTracker:::.ddg.set.inside.loop, envir = globalenv())
+  assign(".ddg.should.run.annotated", RDataTracker:::.ddg.should.run.annotated, envir = globalenv())
+  invisible()
+}
+
 #' ddg.save saves the current provenance graph.  If more R statements
 #' are executed, they will be added to this ddg.  To finalize the ddg,
 #' call ddg.quit, which will save and finalize the ddg.
 #' @param save.debug (optional) - If TRUE, save debug files to debug directory.
 #' @return nothing
 #' @export
+
 ddg.save <- function(save.debug = FALSE) {
   if (!.ddg.is.init()) return(invisible())
   
@@ -268,6 +295,7 @@ ddg.save <- function(save.debug = FALSE) {
 #'
 #' @return nothing
 #' @export
+
 ddg.quit <- function(save.debug = FALSE) {
   if (!.ddg.is.init()) return(invisible())
   

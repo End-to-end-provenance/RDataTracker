@@ -157,9 +157,9 @@ methods::setMethod ("initialize",
       #print(.Object@text)
 
       .Object@abbrev <-
-          # If this is a call to ddg.eval, we only want the argument to ddg.eval
+          # If this is a call to .ddg.eval, we only want the argument to .ddg.eval
           # (which is a string) to appear in the node label
-          if (grepl("^ddg.eval", .Object@text)) {
+          if (grepl("^.ddg.eval", .Object@text)) {
             .ddg.abbrev.cmd(.Object@parsed[[1]][[2]])
           }
           else {
@@ -168,7 +168,7 @@ methods::setMethod ("initialize",
 
       vars.used <- .ddg.find.var.uses(.Object@parsed[[1]])
 
-      # Remove index variable in for statement (handled separately in ddg.forloop).
+      # Remove index variable in for statement (handled separately in .ddg.forloop).
       if (length(parsed) > 0 && !is.symbol(parsed[[1]]) && parsed[[1]][[1]] == "for") {
         index.var <- c(parsed[[1]][[2]])
         vars.used <- vars.used[! vars.used %in% index.var]
@@ -180,10 +180,10 @@ methods::setMethod ("initialize",
 
       .Object@vars.possibly.set <- .ddg.find.assign(.Object@parsed[[1]])
 
-      # ddg.eval is treated differently than other calls to ddg functions since
+      # .ddg.eval is treated differently than other calls to ddg functions since
       # we will execute the parameter as a command and want a node for it.
       .Object@isDdgFunc <- grepl("^ddg.", .Object@text) & 
-                           !grepl("^ddg.eval", .Object@text)
+                           !grepl("^.ddg.eval", .Object@text)
 
       .Object@pos <-
           if (is.object(pos)) {
@@ -205,9 +205,9 @@ methods::setMethod ("initialize",
         .ddg.parse.contained(.Object, script.name, parseData)
 
       .Object@annotated <-
-          # If this is a call to ddg.eval, we only want to execute
-          # the argument to ddg.eval
-          if (grepl("^ddg.eval", .Object@text)) {
+          # If this is a call to .ddg.eval, we only want to execute
+          # the argument to .ddg.eval
+          if (grepl("^.ddg.eval", .Object@text)) {
              parse(text=.Object@parsed[[1]][[2]])
           }
 
