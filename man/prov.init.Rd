@@ -2,47 +2,52 @@
 % Please edit documentation in R/API.R
 \name{prov.init}
 \alias{prov.init}
-\title{prov.init intializes a new provenance graph}
+\title{prov.init intializes a new provenance graph. Called by the user
+in console mode.}
 \usage{
-prov.init(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE,
+prov.init(r.script.path = NULL, prov.dir = NULL, overwrite = TRUE,
   annotate.inside.functions = FALSE, first.loop = 1, max.loops = 0,
   max.snapshot.size = 0, hash.algorithm = "md5")
 }
 \arguments{
-\item{r.script.path}{(optional) - the full path to the R script file
+\item{r.script.path}{the full path to the R script file
 that is being executed. If provided, a copy of the script will
-be saved with the DDG.}
+be saved with the provenance graph.}
 
-\item{ddgdir}{(optional) - the directory where the DDG should be saved.
-If not provided, the DDG will be saved in a subdirectory called
-"ddg" in the current working directory.}
+\item{prov.dir}{the directory where the provenance graph will be 
+saved. If not provided, the directory specified by the prov.dir 
+option is used. Otherwise the R session temporary directory
+is used.}
 
-\item{overwrite}{(optional) - default TRUE, if FALSE, generates
-timestamp for ddg directory}
+\item{overwrite}{if TRUE, generates a time stamp for the provenance
+graph directory.}
 
-\item{annotate.inside.functions}{(optional) - if TRUE, functions are annotated.}
+\item{annotate.inside.functions}{if TRUE, provenance is collected 
+inside functions.}
 
-\item{first.loop}{(optional) - the first loop to annotate in a for, while, or
-repeat statement.}
+\item{first.loop}{the first loop to collect provenance in a for, 
+while, or repeat statement.}
 
-\item{max.loops}{(optional) - the maximum number of loops to annotate in a for,
-while, or repeat statement. If max.loops = -1 there is no limit.
-If max.loops = 0, no loops are annotated.  If non-zero, if-statements
-are also annotated.}
+\item{max.loops}{the maximum number of loops to collect
+provenance in a for, while, or repeat statement. If max.loops = -1,
+there is no limit. If max.loops = 0, no loops are annotated. 
+If non-zero, if-statements are also annotated.}
 
-\item{max.snapshot.size}{(optional) - the maximum size for objects that
-should be output to snapshot files. If 0, no snapshot files are saved.
-If -1, all snapshot files are saved. Size in kilobytes.  Note that
+\item{max.snapshot.size}{the maximum size for objects that should
+be output to snapshot files. If 0, no snapshot files are saved.
+If -1, all snapshot files are saved. Size in kilobytes. Note that
 this tests the size of the object that will be turned into a
 snapshot, not the size of the resulting snapshot.}
 
-\item{hash.algorithm}{(optional) - If save.hashtable is true, this allows the caller to 
-select the hash algorithm to use.  This uses the digest function from the digest package.
-The choices are md5, which is also the default, sha1, crc32, sha256, sha512, xxhash32, xxhash64 and murmur32.}
+\item{hash.algorithm}{the hash algorithm to use for files.
+Choices are md5 (default), sha1, crc32, sha256, sha512, xxhash32, 
+xxhash64 and murmur32. This feature uses the digest function from 
+the digest package.}
 }
 \value{
 nothing
 }
 \description{
-prov.init intializes a new provenance graph
+prov.init intializes a new provenance graph. Called by the user
+in console mode.
 }

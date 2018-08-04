@@ -53,7 +53,8 @@
   }
 }
 
-#' prov.max.snapshot.size returns the maximum size for snapshots in KB
+#' prov.max.snapshot.size returns the current maximum size for snapshots 
+#' in kilobytes.
 #' @return maximum snapshot size in KB
 #' @export
 

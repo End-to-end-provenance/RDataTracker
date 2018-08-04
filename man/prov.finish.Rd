@@ -3,18 +3,24 @@
 \name{prov.finish}
 \alias{prov.finish}
 \title{prov.finish creates a procedure node of type Finish called pname.
-Users can right-click on a finish node in DDG Explorer and see
-the code between start and finish nodes in the original script.}
+In DDG Explorer, the section of the provenance graph between
+matching Start and Finish nodes can be expanded and collapsed. 
+Users can also right-click on a Start or Finish node to see the 
+intervening code in the original script.}
 \usage{
 prov.finish(pname = NULL)
 }
 \arguments{
 \item{pname}{the label for the node. This can be passed as
-a string or as a name. It can be omitted if prov.finish is called
-by a function, in which case the name of the function will be used.}
+a string or as a name.}
+}
+\value{
+nothing
 }
 \description{
 prov.finish creates a procedure node of type Finish called pname.
-Users can right-click on a finish node in DDG Explorer and see
-the code between start and finish nodes in the original script.
+In DDG Explorer, the section of the provenance graph between
+matching Start and Finish nodes can be expanded and collapsed. 
+Users can also right-click on a Start or Finish node to see the 
+intervening code in the original script.
 }

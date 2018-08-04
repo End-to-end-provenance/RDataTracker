@@ -2,17 +2,19 @@
 % Please edit documentation in R/API.R
 \name{prov.quit}
 \alias{prov.quit}
-\title{prov.quit saves and closes the current provenance graph.}
+\title{prov.quit saves and closes the current provenance graph.
+Called by the user in console mode.}
 \usage{
 prov.quit(save.debug = FALSE)
 }
 \arguments{
-\item{save.debug}{(optional) - If TRUE, save debug files to debug directory.
-Used in console mode.}
+\item{save.debug}{if TRUE, debug files are saved to the 
+debug directory.}
 }
 \value{
 nothing
 }
 \description{
 prov.quit saves and closes the current provenance graph.
+Called by the user in console mode.
 }

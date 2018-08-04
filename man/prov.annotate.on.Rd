@@ -2,15 +2,20 @@
 % Please edit documentation in R/Annotation.R
 \name{prov.annotate.on}
 \alias{prov.annotate.on}
-\title{prov.annotate.on enables annotation for the specified functions. Functions not on
-this list are not annotated. If fnames is NULL, all functions will be annotated.}
+\title{prov.annotate.on enables provenance collection for the functions specified
+by the parameter fnames. Provenance is not collected for other functions. 
+If fnames is NULL, provenance is collected for all functions.}
 \usage{
 prov.annotate.on(fnames = NULL)
 }
 \arguments{
 \item{fnames}{- a list of one or more function names passed in as strings.}
 }
+\value{
+nothing
+}
 \description{
-prov.annotate.on enables annotation for the specified functions. Functions not on
-this list are not annotated. If fnames is NULL, all functions will be annotated.
+prov.annotate.on enables provenance collection for the functions specified
+by the parameter fnames. Provenance is not collected for other functions. 
+If fnames is NULL, provenance is collected for all functions.
 }

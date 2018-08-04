@@ -2,8 +2,8 @@
 % Please edit documentation in R/Loops.R
 \name{prov.max.loops}
 \alias{prov.max.loops}
-\title{prov.max.loops returns the maximum number of iterations of a loop for
-which provenance should be collected}
+\title{prov.max.loops returns the current maximum number of iterations of 
+a loop for which provenance should be collected.}
 \usage{
 prov.max.loops()
 }
@@ -11,6 +11,6 @@ prov.max.loops()
 the maximum number of iterations to collect provenance
 }
 \description{
-prov.max.loops returns the maximum number of iterations of a loop for
-which provenance should be collected
+prov.max.loops returns the current maximum number of iterations of 
+a loop for which provenance should be collected.
 }

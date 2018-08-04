@@ -2,7 +2,7 @@
 % Please edit documentation in R/API.R
 \name{prov.display}
 \alias{prov.display}
-\title{prov.display loads & displays the current provenance graph in DDG Explorer}
+\title{prov.display loads and displays the current provenance graph in DDG Explorer.}
 \usage{
 prov.display()
 }
@@ -10,5 +10,5 @@ prov.display()
 nothing
 }
 \description{
-prov.display loads & displays the current provenance graph in DDG Explorer
+prov.display loads and displays the current provenance graph in DDG Explorer.
 }

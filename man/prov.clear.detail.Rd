@@ -2,7 +2,9 @@
 % Please edit documentation in R/Annotation.R
 \name{prov.clear.detail}
 \alias{prov.clear.detail}
-\title{prov.clear.detail clears the current value of provenance detail.}
+\title{prov.clear.detail clears the current value of provenance detail.
+The level of detail is then determined by parameters of prov.run
+or prov.init.}
 \usage{
 prov.clear.detail()
 }
@@ -11,4 +13,6 @@ nothing
 }
 \description{
 prov.clear.detail clears the current value of provenance detail.
+The level of detail is then determined by parameters of prov.run
+or prov.init.
 }

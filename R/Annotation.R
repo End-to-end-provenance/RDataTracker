@@ -400,10 +400,13 @@
 }
 
 #' prov.start creates a procedure node of type Start called pname.
-#' Users can right-click on a start node in DDG Explorer and see
-#' the code between start and finish nodes in the original script.
+#' In DDG Explorer, the section of the provenance graph between
+#' matching Start and Finish nodes can be expanded and collapsed. 
+#' Users can also right-click on a Start or Finish node to see the 
+#' intervening code in the original script.
 #' @param pname the label for the node.  This can be passed as
 #' a string or as a name.
+#' @return nothing
 #' @export
 
 prov.start <- function(pname=NULL) {
@@ -432,11 +435,13 @@ prov.start <- function(pname=NULL) {
 }
 
 #' prov.finish creates a procedure node of type Finish called pname.
-#' Users can right-click on a finish node in DDG Explorer and see
-#' the code between start and finish nodes in the original script.
+#' In DDG Explorer, the section of the provenance graph between
+#' matching Start and Finish nodes can be expanded and collapsed. 
+#' Users can also right-click on a Start or Finish node to see the 
+#' intervening code in the original script.
 #' @param pname the label for the node. This can be passed as
-#' a string or as a name. It can be omitted if prov.finish is called
-#' by a function, in which case the name of the function will be used.
+#' a string or as a name.
+#' @return nothing
 #' @export
 
 prov.finish <- function(pname=NULL) {
@@ -461,9 +466,11 @@ prov.finish <- function(pname=NULL) {
   return(.ddg.get (".ddg.last.R.value"))
 }
 
-#' prov.annotate.on enables annotation for the specified functions. Functions not on
-#' this list are not annotated. If fnames is NULL, all functions will be annotated.
+#' prov.annotate.on enables provenance collection for the functions specified
+#' by the parameter fnames. Provenance is not collected for other functions. 
+#' If fnames is NULL, provenance is collected for all functions.
 #' @param fnames - a list of one or more function names passed in as strings.
+#' @return nothing
 #' @export
 
 prov.annotate.on <- function (fnames=NULL){
@@ -485,9 +492,11 @@ prov.annotate.on <- function (fnames=NULL){
   
 }
 
-#' prov.annotate.off disables annotation for the specified functions. Functions not on 
-#' this list are annotated. If fnames is NULL, no functions will be annotated.
+#' prov.annotate.off disables provenance collection for the functions specified
+#' by the parameter fnames. Provenance is collected for other functions. If fnames
+#' is NULL, provenance is not collected for any function.
 #' @param fnames a list of one or more function names passed in as strings.
+#' @return nothing
 #' @export
 
 prov.annotate.off <- function (fnames=NULL) {
@@ -1360,12 +1369,12 @@ prov.annotate.off <- function (fnames=NULL) {
   }
 }
 
-#' prov.set.detail sets the level of provenance detail to be collected.
-#' If ddg.detail is not set, the values of annotate.inside, max.loops,
-#' and max.snapshot.size passed to prov.run are used instead.
-#' 0 = no internal annotation, no snapshots.
-#' 1 = 1 loop, snapshots < 10k.
-#' 2 = 10 loops, snapshots < 100k.
+#' prov.set.detail sets the level of detail for the provenance to be 
+#' collected. If this value is not set, the level of detail is determined by the 
+#' parameters of prov.run or prov.init.\cr
+#' 0 = no internal provenance, no snapshots.\cr
+#' 1 = 1 loop, snapshots < 10k.\cr
+#' 2 = 10 loops, snapshots < 100k.\cr
 #' 3 = all loops, all snapshots.
 #' @param detail.level level of detail to set (0-3)
 #' @return nothing
@@ -1400,7 +1409,7 @@ prov.set.detail <- function(detail.level) {
   }
 }
 
-#' ddg.detail returns the current level of provenance detail.
+#' prov.get.detail returns the current level of provenance detail.
 #' @return the current level of detail (0-3)
 #' @export 
 
@@ -1410,6 +1419,8 @@ prov.get.detail <- function() {
 }
 
 #' prov.clear.detail clears the current value of provenance detail.
+#' The level of detail is then determined by parameters of prov.run
+#' or prov.init.
 #' @return nothing
 #' @export
 

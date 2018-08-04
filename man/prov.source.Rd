@@ -2,8 +2,10 @@
 % Please edit documentation in R/API.R
 \name{prov.source}
 \alias{prov.source}
-\title{prov.source reads in an R script and executes it in the provided
-enviroment. prov.source essentially mimics the behaviour of the}
+\title{prov.source reads and executes an R script in the specified
+environment. prov.source mimics the behaviour of the R source command, 
+with similar input parameters and results, but with the additional 
+parameter ignore.ddg.calls.}
 \usage{
 prov.source(file, local = FALSE, echo = verbose, print.eval = echo,
   verbose = getOption("verbose"), max.deparse.length = 150, chdir = FALSE,
@@ -12,43 +14,45 @@ prov.source(file, local = FALSE, echo = verbose, print.eval = echo,
   endCol = NA)
 }
 \arguments{
-\item{file}{- the name of the R script file to source.}
+\item{file}{the name of the R script file to source.}
 
-\item{local}{(optional) - the environment in which to evaluate parsed
+\item{local}{the environment in which to evaluate parsed
 expressions. If TRUE, the environment from which prov.source is
 called. If FALSE, the user's workspace (global environment).}
 
-\item{echo}{(optional) - print each expression after parsing.}
+\item{echo}{print each expression after parsing}
 
-\item{print.eval}{(optional) - print result of each evaluation.}
+\item{print.eval}{print the result of each evaluation}
 
-\item{verbose}{(optional) - print extra diagnostics.}
+\item{verbose}{print extra diagnostics}
 
-\item{max.deparse.length}{(optional) - maximum number of characters
-output for deparse of a single expression.}
+\item{max.deparse.length}{the maximum number of characters in output
+for deparse of a single expression}
 
-\item{chdir}{(optional) - change R working directory temporarily to
-the directory containing the file to be sourced.}
+\item{chdir}{change the R working directory temporarily to
+the directory containing the file to be sourced}
 
-\item{encoding}{(optional) - encoding to be assumed when file is a
-character string.}
+\item{encoding}{encoding to be assumed when file is a
+character string}
 
-\item{ignore.ddg.calls}{(optional) - if TRUE, ignore DDG function calls.}
+\item{ignore.ddg.calls}{if TRUE, ignore DDG function calls}
 
-\item{calling.script}{(optional) - the number of the script that source was called in}
+\item{calling.script}{the number of the calling script}
 
-\item{startLine}{(optional) - the line that the source call starts on}
+\item{startLine}{the line that the source call starts on}
 
-\item{startCol}{(optional) - the column that the source call starts on}
+\item{startCol}{the column that the source call starts on}
 
-\item{endLine}{(optional) - the line that the source call ends on}
+\item{endLine}{the line that the source call ends on}
 
-\item{endCol}{(optional) - the column that the source call ends on}
+\item{endCol}{the column that the source call ends on}
 }
 \value{
 nothing
 }
 \description{
-prov.source reads in an R script and executes it in the provided
-enviroment. prov.source essentially mimics the behaviour of the
+prov.source reads and executes an R script in the specified
+environment. prov.source mimics the behaviour of the R source command, 
+with similar input parameters and results, but with the additional 
+parameter ignore.ddg.calls.
 }

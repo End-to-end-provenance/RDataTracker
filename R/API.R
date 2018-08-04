@@ -26,45 +26,50 @@
 # prov.source - sources a script & collects provenance
 # prov.json - returns the current provenance graph as a prov-json string
 
-#' prov.init intializes a new provenance graph
+#' prov.init intializes a new provenance graph. Called by the user
+#' in console mode.
 #'
-#' @param r.script.path (optional) - the full path to the R script file
+#' @param r.script.path  the full path to the R script file
 #' that is being executed. If provided, a copy of the script will
-#' be saved with the DDG.
-#' @param ddgdir (optional) - the directory where the DDG should be saved.
-#' If not provided, the DDG will be saved in a subdirectory called
-#' "ddg" in the current working directory.
-#' @param annotate.inside.functions (optional) - if TRUE, functions are annotated.
-#' @param first.loop (optional) - the first loop to annotate in a for, while, or
-#' repeat statement.
-#' @param max.loops (optional) - the maximum number of loops to annotate in a for,
-#' while, or repeat statement. If max.loops = -1 there is no limit.
-#' If max.loops = 0, no loops are annotated.  If non-zero, if-statements
-#' are also annotated.
-#' @param max.snapshot.size (optional) - the maximum size for objects that
-#' should be output to snapshot files. If 0, no snapshot files are saved.
-#' If -1, all snapshot files are saved. Size in kilobytes.  Note that
+#' be saved with the provenance graph.
+#' @param prov.dir the directory where the provenance graph will be 
+#' saved. If not provided, the directory specified by the prov.dir 
+#' option is used. Otherwise the R session temporary directory
+#' is used.
+#' @param overwrite if TRUE, generates a time stamp for the provenance
+#' graph directory.
+#' @param annotate.inside.functions if TRUE, provenance is collected 
+#' inside functions.
+#' @param first.loop the first loop to collect provenance in a for, 
+#' while, or repeat statement.
+#' @param max.loops the maximum number of loops to collect
+#' provenance in a for, while, or repeat statement. If max.loops = -1,
+#' there is no limit. If max.loops = 0, no loops are annotated. 
+#' If non-zero, if-statements are also annotated.
+#' @param max.snapshot.size the maximum size for objects that should
+#' be output to snapshot files. If 0, no snapshot files are saved.
+#' If -1, all snapshot files are saved. Size in kilobytes. Note that
 #' this tests the size of the object that will be turned into a
 #' snapshot, not the size of the resulting snapshot.
-#' @param overwrite (optional) - default TRUE, if FALSE, generates
-#' timestamp for ddg directory
-#' @param hash.algorithm (optional) - If save.hashtable is true, this allows the caller to 
-#' select the hash algorithm to use.  This uses the digest function from the digest package.
-#' The choices are md5, which is also the default, sha1, crc32, sha256, sha512, xxhash32, xxhash64 and murmur32.
-#'
+#' @param hash.algorithm the hash algorithm to use for files.
+#' Choices are md5 (default), sha1, crc32, sha256, sha512, xxhash32, 
+#' xxhash64 and murmur32. This feature uses the digest function from 
+#' the digest package.
 #' @return nothing
 #' @export
 
-prov.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, 
+prov.init <- function(r.script.path = NULL, prov.dir = NULL, overwrite = TRUE, 
                      annotate.inside.functions = FALSE, first.loop = 1, 
                      max.loops = 0, max.snapshot.size = 0,
                      hash.algorithm="md5") {
+  # Initialize tables
   .ddg.init.tables()
 
   # Save hash algorithm
   .ddg.set (".ddg.hash.algorithm", hash.algorithm)
   
-  .ddg.set.path (ddgdir, r.script.path, overwrite)
+  # Set path for provenance graph
+  .ddg.set.path (prov.dir, r.script.path, overwrite)
   
   # Remove files from DDG directory
   .ddg.flush.ddg()
@@ -118,6 +123,7 @@ prov.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE,
     .ddg.set("ddg.max.snapshot.size", max.snapshot.size)
   }
   
+  # Intialize loops
   .ddg.init.loops (first.loop, max.loops)
   
   # Store time when script begins execution.
@@ -134,6 +140,7 @@ prov.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE,
     .ddg.add.start.node (node.name = "Console")
   }
   
+  # Set functions to be used for script annotation
   .ddg.set.annotation.functions()
 
   invisible()
@@ -142,26 +149,26 @@ prov.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE,
 #' .ddg.set.path sets the path where the DDG will be stored.  It creates the 
 #' directory if it does not currently exist.
 #' The base directory is set as follows:
-#' (1) the directory specified by the user in the parameter ddgdir, or
+#' (1) the directory specified by the user in the parameter prov.dir, or
 #' (2) the directory specified by the user as the value of the option "prov.dir", or
 #' (3) the R session temporary directory. If the directory specified by the user
 #' is a period (.), the base directory is set to the current working directory.
 #' The provenance graph is stored in a subdirectory of the base directory called 
 #' "prov_console" in console mode or "prov_[script name]" in script mode. If overwrite = 
 #' FALSE, a timestamp is added to the directory name.
-#' @param ddgdir name of directory.  This can be a directory name, ".", or NULL.
+#' @param prov.dir name of directory.  This can be a directory name, ".", or NULL.
 #' @param r.script.path the path to the R script.  If NULL, we are running from the console.
 #' @param overwrite If FALSE, a timestamp is added to the directory name
 #' @return the name of the directory where the ddg should be stored
 
-.ddg.set.path <- function (ddgdir, r.script.path, overwrite) {
+.ddg.set.path <- function (prov.dir, r.script.path, overwrite) {
   
-  # Directory specified by ddgdir parameter
-  if (!is.null(ddgdir)) {
-    if (ddgdir == ".") {
+  # Directory specified by prov.dir parameter
+  if (!is.null(prov.dir)) {
+    if (prov.dir == ".") {
       base.dir <- getwd()
     } else {
-      base.dir <- ddgdir
+      base.dir <- prov.dir
     }
   } 
   
@@ -208,7 +215,7 @@ prov.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE,
 #' .ddg.flush.ddg removes all files from the DDG directories unless the
 #'   the DDG directory is the working directory. If no DDG directory is
 #'   specified, the current DDG directory is assumed.
-#' @param ddg.path (optional) path to DDG directory.
+#' @param ddg.path path to DDG directory.
 #' @return nothing
 
 .ddg.flush.ddg <- function(ddg.path=NULL) {
@@ -259,10 +266,11 @@ prov.init <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE,
   invisible()
 }
 
-#' prov.save saves the current provenance graph.  If more R statements
-#' are executed, they will be added to this ddg.  To finalize ddg,
-#' call prov.quit, which will save and finalize the ddg.
-#' @param save.debug (optional) - If TRUE, save debug files to debug directory.
+#' prov.save saves the current provenance graph to a prov-json file.
+#' If more R statements are executed, the provenance for these statements
+#' is added to the graph. The graph is finalized with prov.quit.
+#' Called by the user in console mode.
+#' @param save.debug If TRUE, debug files are saved to the debug directory
 #' @return nothing
 #' @export
 
@@ -289,10 +297,9 @@ prov.save <- function(save.debug = FALSE) {
 }
 
 #' prov.quit saves and closes the current provenance graph.
-#'
-#' @param save.debug (optional) - If TRUE, save debug files to debug directory.
-#' Used in console mode.
-#'
+#' Called by the user in console mode.
+#' @param save.debug if TRUE, debug files are saved to the 
+#' debug directory.
 #' @return nothing
 #' @export
 
@@ -340,50 +347,51 @@ prov.quit <- function(save.debug = FALSE) {
   invisible()
 }
 
-#' prov.run initiates execution of a script, collecting provenance as it executes
+#' prov.run initiates execution of a script and collects provenance as 
+#' the script executes.
 #'
-#' @param r.script.path (optional) - the full path to the R script.
-#' If provided, a copy of the script will be saved with the DDG.
-#' If only r.script.path is provided, the script is sourced using
-#' prov.source and a DDG is created for the script.
-#' @param ddgdir (optional) - the directory where the DDG will be saved.
-#' If not provided, the DDG will be saved in a directory inside R's
-#' temporary directory
-#' @param overwrite (optional) - if TRUE, the ddg is overwritten each time
-#' the script is executed.  If FALSE, a timestamp is attached to the ddg
-#' folder name so that the provenance of earlier runs is not overwritten.
-#' @param f (optional) - a function to run. If supplied, the function f
-#' is executed with calls to prov.init and prov.save so that
-#' provenance for the function is captured.  Exactly one of f and r.script.path
-#' should be provided.
-#' @param annotate.inside.functions (optional) - if TRUE, functions are annotated.
-#' @param first.loop (optional) - the first loop to annotate in a for, while, or
-#' repeat statement.
-#' @param max.loops (optional) - the maximum number of loops to annotate in a for,
-#' while, or repeat statement. If max.loops = -1 there is no limit.
-#' If max.loops = 0, no loops are annotated.  If non-zero, if-statements
-#' are also annotated.
-#' @param max.snapshot.size (optional) - the maximum size for objects that
-#' should be output to snapshot files. If 0, no snapshot files are
-#' saved. If -1, all snapshot files are saved.  Size in kilobytes.
-#' Note that this tests the size of the object that will be turned
-#' into a snapshot, not the size of the resulting snapshot.
-#' @param save.debug (optional) - If TRUE, save debug files to debug directory.
-#' @param display (optional) - if TRUE, display provenance graph in DDG Explorer
-#' @param hash.algorithm (optional) - If save.hashtable is true, this allows the caller to 
-#' select the hash algorithm to use. This uses the digest function from the digest package.
-#' The choices are md5, which is also the default, sha1, crc32, sha256, sha512, xxhash32, xxhash64 and murmur32.
+#' @param r.script.path the full path to the R script file
+#' that is being executed. If provided, a copy of the script will
+#' be saved with the provenance graph.
+#' @param prov.dir the directory where the provenance graph will be saved. 
+#' If not provided, the directory specified by the prov.dir option is used. 
+#' Otherwise the R session temporary directory is used.
+#' @param overwrite if TRUE, generates a time stamp for the provenance 
+#' graph directory.
+#' @param f a function to run. If supplied, the function f is executed 
+#' with calls to prov.init and prov.save so that provenance for the 
+#' function is captured.  Exactly one of f and r.script.path should be provided.
+#' @param annotate.inside.functions if TRUE, provenance is collected 
+#' inside functions.
+#' @param first.loop the first loop to collect provenance in a for, 
+#' while, or repeat statement.
+#' @param max.loops the maximum number of loops to collect provenance 
+#' in a for, while, or repeat statement. If max.loops = -1,
+#' there is no limit. If max.loops = 0, no loops are annotated. 
+#' If non-zero, if-statements are also annotated.
+#' @param max.snapshot.size the maximum size for objects that should 
+#' be output to snapshot files. If 0, no snapshot files are saved.
+#' If -1, all snapshot files are saved. Size in kilobytes. Note that
+#' this tests the size of the object that will be turned into a
+#' snapshot, not the size of the resulting snapshot.
+#' @param save.debug if TRUE, debug files are saved to the debug 
+#' directory.
+#' @param display if TRUE, the provenance graph is displayed in DDG Explorer
+#' @param hash.algorithm the hash algorithm to use for files.
+#' Choices are md5 (default), sha1, crc32, sha256, sha512, xxhash32, 
+#' xxhash64 and murmur32. This feature uses the digest function from 
+#' the digest package.
 #'
 #' @return nothing
 #' @export
 
-prov.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE, 
+prov.run <- function(r.script.path = NULL, prov.dir = NULL, overwrite = TRUE, 
                     f = NULL, annotate.inside.functions = FALSE, first.loop = 1, 
                     max.loops = 0, max.snapshot.size = 0, save.debug = FALSE, 
                     display = FALSE, hash.algorithm="md5") {
   
   # Initialize ddg.
-  prov.init(r.script.path, ddgdir, overwrite, annotate.inside.functions, 
+  prov.init(r.script.path, prov.dir, overwrite, annotate.inside.functions, 
            first.loop, max.loops, max.snapshot.size, hash.algorithm)
   
   # Set .ddg.is.sourced to TRUE if script provided.
@@ -416,29 +424,29 @@ prov.run <- function(r.script.path = NULL, ddgdir = NULL, overwrite = TRUE,
   invisible()
 }
 
-#' prov.source reads in an R script and executes it in the provided
-#' enviroment. prov.source essentially mimics the behaviour of the
-# 'R source command, having similar input parameters and results,
-# 'but with additional parameter ignore.ddg.calls.
-#' @param file - the name of the R script file to source.
-#' @param local (optional) - the environment in which to evaluate parsed
+#' prov.source reads and executes an R script in the specified
+#' environment. prov.source mimics the behaviour of the R source command, 
+#' with similar input parameters and results, but with the additional 
+#' parameter ignore.ddg.calls.
+#' @param file the name of the R script file to source.
+#' @param local the environment in which to evaluate parsed
 #' expressions. If TRUE, the environment from which prov.source is
 #' called. If FALSE, the user's workspace (global environment).
-#' @param echo (optional) - print each expression after parsing.
-#' @param print.eval (optional) - print result of each evaluation.
-#' @param verbose (optional) - print extra diagnostics.
-#' @param max.deparse.length (optional) - maximum number of characters
-#' output for deparse of a single expression.
-#' @param chdir (optional) - change R working directory temporarily to
-#' the directory containing the file to be sourced.
-#' @param encoding (optional) - encoding to be assumed when file is a
-#' character string.
-#' @param ignore.ddg.calls (optional) - if TRUE, ignore DDG function calls.
-#' @param calling.script (optional) - the number of the script that source was called in
-#' @param startLine (optional) - the line that the source call starts on
-#' @param startCol (optional) - the column that the source call starts on
-#' @param endLine (optional) - the line that the source call ends on
-#' @param endCol (optional) - the column that the source call ends on
+#' @param echo print each expression after parsing
+#' @param print.eval print the result of each evaluation
+#' @param verbose print extra diagnostics
+#' @param max.deparse.length the maximum number of characters in output
+#' for deparse of a single expression
+#' @param chdir change the R working directory temporarily to
+#' the directory containing the file to be sourced
+#' @param encoding encoding to be assumed when file is a
+#' character string
+#' @param ignore.ddg.calls if TRUE, ignore DDG function calls
+#' @param calling.script the number of the calling script
+#' @param startLine the line that the source call starts on
+#' @param startCol the column that the source call starts on
+#' @param endLine the line that the source call ends on
+#' @param endCol the column that the source call ends on
 #' @return nothing
 #' @export
 
@@ -689,7 +697,7 @@ prov.json <- function()
           wait = FALSE)
 }
 
-#' prov.display loads & displays the current provenance graph in DDG Explorer
+#' prov.display loads and displays the current provenance graph in DDG Explorer.
 #' @return nothing
 #' @export 
 

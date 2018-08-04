@@ -2,7 +2,7 @@
 % Please edit documentation in R/Annotation.R
 \name{prov.get.detail}
 \alias{prov.get.detail}
-\title{ddg.detail returns the current level of provenance detail.}
+\title{prov.get.detail returns the current level of provenance detail.}
 \usage{
 prov.get.detail()
 }
@@ -10,5 +10,5 @@ prov.get.detail()
 the current level of detail (0-3)
 }
 \description{
-ddg.detail returns the current level of provenance detail.
+prov.get.detail returns the current level of provenance detail.
 }

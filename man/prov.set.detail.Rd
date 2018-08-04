@@ -2,12 +2,12 @@
 % Please edit documentation in R/Annotation.R
 \name{prov.set.detail}
 \alias{prov.set.detail}
-\title{prov.set.detail sets the level of provenance detail to be collected.
-If ddg.detail is not set, the values of annotate.inside, max.loops,
-and max.snapshot.size passed to prov.run are used instead.
-0 = no internal annotation, no snapshots.
-1 = 1 loop, snapshots < 10k.
-2 = 10 loops, snapshots < 100k.
+\title{prov.set.detail sets the level of detail for the provenance to be 
+collected. If this value is not set, the level of detail is determined by the 
+parameters of prov.run or prov.init.\cr
+0 = no internal provenance, no snapshots.\cr
+1 = 1 loop, snapshots < 10k.\cr
+2 = 10 loops, snapshots < 100k.\cr
 3 = all loops, all snapshots.}
 \usage{
 prov.set.detail(detail.level)
@@ -19,11 +19,11 @@ prov.set.detail(detail.level)
 nothing
 }
 \description{
-prov.set.detail sets the level of provenance detail to be collected.
-If ddg.detail is not set, the values of annotate.inside, max.loops,
-and max.snapshot.size passed to prov.run are used instead.
-0 = no internal annotation, no snapshots.
-1 = 1 loop, snapshots < 10k.
-2 = 10 loops, snapshots < 100k.
+prov.set.detail sets the level of detail for the provenance to be 
+collected. If this value is not set, the level of detail is determined by the 
+parameters of prov.run or prov.init.\cr
+0 = no internal provenance, no snapshots.\cr
+1 = 1 loop, snapshots < 10k.\cr
+2 = 10 loops, snapshots < 100k.\cr
 3 = all loops, all snapshots.
 }

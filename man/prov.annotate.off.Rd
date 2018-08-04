@@ -2,15 +2,20 @@
 % Please edit documentation in R/Annotation.R
 \name{prov.annotate.off}
 \alias{prov.annotate.off}
-\title{prov.annotate.off disables annotation for the specified functions. Functions not on 
-this list are annotated. If fnames is NULL, no functions will be annotated.}
+\title{prov.annotate.off disables provenance collection for the functions specified
+by the parameter fnames. Provenance is collected for other functions. If fnames
+is NULL, provenance is not collected for any function.}
 \usage{
 prov.annotate.off(fnames = NULL)
 }
 \arguments{
 \item{fnames}{a list of one or more function names passed in as strings.}
 }
+\value{
+nothing
+}
 \description{
-prov.annotate.off disables annotation for the specified functions. Functions not on 
-this list are annotated. If fnames is NULL, no functions will be annotated.
+prov.annotate.off disables provenance collection for the functions specified
+by the parameter fnames. Provenance is collected for other functions. If fnames
+is NULL, provenance is not collected for any function.
 }

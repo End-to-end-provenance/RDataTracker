@@ -1,38 +1,45 @@
 What is RDataTracker?
 =====================
 
-RDataTracker is a library of R functions that can be used to collect
-data provenance in the form of a Data Derivation Graph (DDG) as
-an R script executes. The DDG is saved in PROV-JSON format to
-the file ddg.json. The DDG can be viewed and queried with DDG
-Explorer, a separate visualizing tool written in Java, which is 
-currently included in the RDataTracker install package.
+RDataTracker is an R package that collects provenance as an R script 
+executes. The resulting provenance provides a detailed record of the 
+execution of the script and includes information on the steps that were 
+performed and the intermediate data values that were created. The 
+resulting provenance can be used for a wide variety of applications
+that include debugging scripts, cleaning code, and reproducing results.
+RDataTracker can also be used to collect provenance during console sessions.
 
-What is a DDG?
-==============
+The provenance is stored in PROV-JSON format. For immediate use it may
+be retrieved from memory using the prov.json function. For later use
+the provenance is also written to the file prov.json. This file and
+associated files are written by default to the R session temporary
+directory. The user may change this location by (1) using the optional
+parameter prov.dir in the prov.run or prov.init functions, or (2) setting
+the prov.dir option (e.g. by using the R options command or editing the
+Rprofile.site file). If prov.dir is set to ".", the current working
+directory is used.
 
-A Data Derivation Graph (DDG) is a mathematical graph that captures the
-detailed history of a data analysis. The DDG consists of nodes and edges
-that represent steps or operations (procedural nodes), intermediate data
-values (data nodes), the order in which steps are executed (control flow
-edges), and how data values are used or created (data flow edges). Note
-that the DDG always records a particular execution and a new DDG is 
-created every time an R script is run.
+RDataTracker provides two modes of operation. In script mode, the prov.run
+function is used to execute a script and collect provenance as the script 
+executes. In console mode, provenance is collected during a console session.
+Here the prov.init function is used to initiate provenance collection,
+prov.save is used to save provenance collected since the last time prov.save
+was used, and prov.quit is used to save and close the provenance file.
 
-In DDG Explorer, nodes and edges are shown as ovals and arrows
-(respectively), with the node or edge type indicated in different colors
-(as explained in the legend). Collapsible and expandable nodes provide
-a level of abstraction by allowing sections of the DDG to be expanded
-or collapsed. Clicking on a procedural node displays the corresponding 
-lines in the source code while clicking on a data node displays the 
-intermediate data value. Warnings and errors from the R interpreter are
-captured in error nodes at the point in the execution where they occur.
+The level of detail collected by RDataTracker may be set using parameters
+of the prov.run and prov.init functions. Options include collecting
+provenance inside functions and inside control constructs and saving
+snapshots of large intermediate values as separate files. These
+features are turned off by default to optimize performance. Common
+settings for the level of detail can also be set and managed using the 
+prov.set.detail and related functions.
 
 Installing RDataTracker
 =======================
 
-RDataTracker currently requires the following R packages: gtools, XML, 
-knitr, stringr, utils, devtools, and methods.
+RDataTracker currently requires R version 3.5.0 (or later) and the 
+following R packages: curl, devtools, digest, ggplot2, grDevices, 
+gtools, jsonlite, knitr, methods, stringr, tools, utils, XML.
 
 RDataTracker is easily installed from GitHub using devtools:
 
@@ -43,87 +50,45 @@ Once installed, use the R library command to load RDataTracker:
 
 > library(RDataTracker)
 
-Note that all RDataTracker functions begin with "ddg." to avoid confusion
-with variable or function names in the main script or other libraries.
+Note that all exported RDataTracker functions begin with "prov." to 
+avoid confusion with variable or function names in the main script 
+or other libraries.
 
 Using RDataTracker
 ==================
 
-To capture data provenance for an R script, set the working directory, 
-load the RDataTracker package (as above), and enter the following command:
+To capture provenance for an R script, set the working directory, 
+load the RDataTracker package (as above), and enter the following:
 
-> ddg.run("script.R")
+> prov.run("my-script.R")
 
-where "script.R" is an an R script on the working directory. The ddg.run
-command will execute the script and save the provenance information in
-a subdirectory called "script_ddg" under the working directory.
+where "my-script.R" is an R script on the working directory. The 
+prov.run command will execute the script and save the provenance in 
+a subdirectory called "prov_my-script" under the current provenance
+directory (as above).
 
-To view the DDG, enter the following command:
+To capture provenance for a console session, enter the following:
 
-> ddg.display()
+> prov.init()
 
-This command will call up DDG Explorer and display the last DDG created.
+and enter commands at the R console. To save the provenance collected 
+so far to a subdirectory called "prov_console" under the currrent
+provenance directory (as above), enter the following:
 
-The ddg.run command has numerous parameters that can be used to control
-how it works. For example:
+> prov.save()
 
-- r.script.path = the full path to the R script (if not in the working directory)
+To save the provenance and quit provenance collection, enter the 
+following:
 
-- annotate.inside =  whether to collect provenance for statements inside functions 
-and control constructs (default = TRUE)
-   
-- first.loop = the number of the first iteration of a loop to annotate (default = 1)
+> prov.quit()
 
-- max.loops = the maximum number of iterations of a loop to annotate (default = 1)
+To view the last provenance collected in DDG Explorer, enter the 
+following:
 
-- max.snapshot.size = the maximum size (in kilobytes) for objects saved in 
-snapshot files (default = 10)
+> prov.display()
 
-- debug = execute the script one line at a time with an option to view the DDG
-(default = FALSE)
+Note that various parameters of the prov.run and prov.init functions
+may be used to control where the provenance is stored, the level of 
+detail collected, and whether earlier provenance at the same location 
+should be overwritten.
 
-- display = display the DDG in DDG Explorer once the script completes
-execution (default = FALSE)
-
-For example, to collect provenance for the first 10 iterations of control construct
-loops and display the DDG immediately after the script completes execution, enter:
-
-> ddg.run("script.R", max.loops=10, display=TRUE)
-
-For more information on ddg.run, see the help pages for RDataTracker.
-
-Additional Features
-==================
-
-RDataTracker includes numerous other features, several of which are outlined
-below.  For more details, see the help pages for RDataTracker.
-
-Level of Detail Collected
-
-The following commands may be used at the R command line to set 
-level of detail collected by RDataTracker:
-
-> ddg.set.detail(n) = sets the level of detail from no annotation of internal statements
-and no snapshot files (n = 0) to annotation of all loop iterations and creation of
-snapshot files of any size (n = 3).
-
-> ddg.get.detail() = returns the current level of detail
-
-> ddg.clear.detail() = clears the current level of detail
-
-These commands provide an alternative to setting individual parameters in ddg.run.
-
-Breakpoints
-
-The following commands can be used at the R command line to set one or more
-breakpoints in a script (or sourced script):
-
-> ddg.set.breakpoint(script.name, line.num) =  set a breakpoint at the specified line
-number of the specified script
-
-> ddg.list.breakpoints() = display all current breakpoints
-
-> ddg.clear.breakpoints() = clear all current breakponts
-
-When the script is run with ddg.run, execution is paused at the breakpoint with an
-option to view the DDG created up to that point.

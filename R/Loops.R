@@ -157,8 +157,8 @@
   return(.ddg.get("ddg.first.loop"))
 }
 
-#' prov.max.loops returns the maximum number of iterations of a loop for
-#' which provenance should be collected
+#' prov.max.loops returns the current maximum number of iterations of 
+#' a loop for which provenance should be collected.
 #' @return the maximum number of iterations to collect provenance
 #' @export
 

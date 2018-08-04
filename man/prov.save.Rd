@@ -2,20 +2,22 @@
 % Please edit documentation in R/API.R
 \name{prov.save}
 \alias{prov.save}
-\title{prov.save saves the current provenance graph.  If more R statements
-are executed, they will be added to this ddg.  To finalize ddg,
-call prov.quit, which will save and finalize the ddg.}
+\title{prov.save saves the current provenance graph to a prov-json file.
+If more R statements are executed, the provenance for these statements
+is added to the graph. The graph is finalized with prov.quit.
+Called by the user in console mode.}
 \usage{
 prov.save(save.debug = FALSE)
 }
 \arguments{
-\item{save.debug}{(optional) - If TRUE, save debug files to debug directory.}
+\item{save.debug}{If TRUE, debug files are saved to the debug directory}
 }
 \value{
 nothing
 }
 \description{
-prov.save saves the current provenance graph.  If more R statements
-are executed, they will be added to this ddg.  To finalize ddg,
-call prov.quit, which will save and finalize the ddg.
+prov.save saves the current provenance graph to a prov-json file.
+If more R statements are executed, the provenance for these statements
+is added to the graph. The graph is finalized with prov.quit.
+Called by the user in console mode.
 }

@@ -2,7 +2,8 @@
 % Please edit documentation in R/DataNodes.R
 \name{prov.max.snapshot.size}
 \alias{prov.max.snapshot.size}
-\title{prov.max.snapshot.size returns the maximum size for snapshots in KB}
+\title{prov.max.snapshot.size returns the current maximum size for snapshots 
+in kilobytes.}
 \usage{
 prov.max.snapshot.size()
 }
@@ -10,5 +11,6 @@ prov.max.snapshot.size()
 maximum snapshot size in KB
 }
 \description{
-prov.max.snapshot.size returns the maximum size for snapshots in KB
+prov.max.snapshot.size returns the current maximum size for snapshots 
+in kilobytes.
 }
