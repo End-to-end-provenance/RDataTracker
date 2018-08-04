@@ -26,8 +26,8 @@ options(useFancyQuotes=FALSE)
 
 # Run the script
 #ddg.run("[SCRIPT]", "[DIR_DDG]", ignore.ddg.calls = F)
-ddg.run("[SCRIPT]", "[DIR_DDG]")
+prov.run("[SCRIPT]", "[DIR_DDG]", annotate.inside.functions=TRUE, max.loops=1, max.snapshot.size=10)
 
 # Calculate total time of execution
 endTime <- Sys.time()
-cat("Execution Time =", difftime(endTime, startTime,units="secs"))
+cat("Execution Time =", difftime(endTime, startTime, units="secs"))

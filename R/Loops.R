@@ -157,12 +157,12 @@
   return(.ddg.get("ddg.first.loop"))
 }
 
-#' ddg.max.loops returns the maximum number of iterations of a loop for
+#' prov.max.loops returns the maximum number of iterations of a loop for
 #' which provenance should be collected
 #' @return the maximum number of iterations to collect provenance
 #' @export
 
-ddg.max.loops <- function() {
+prov.max.loops <- function() {
   return(.ddg.get("ddg.max.loops"))
 }
 
@@ -220,7 +220,7 @@ ddg.max.loops <- function() {
   # Create finish nodes if break occurs in if statement.
   while (loop.type == "if") {
     # Create finish node for if loop.
-    ddg.finish("if")
+    prov.finish("if")
     # Create finish node for if statement.
     .ddg.add.finish.node(cmd)
     
@@ -235,5 +235,5 @@ ddg.max.loops <- function() {
   
   # Create finish node for for, repeat, or while loop.
   loop.name <- paste(loop.type, "loop")
-  ddg.finish(loop.name)
+  prov.finish(loop.name)
 }

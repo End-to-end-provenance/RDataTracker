@@ -8,20 +8,20 @@
 # You should examine console output in RStudio manually for errors.
 
 library(RDataTracker)
-ddg.init(ddgdir=".")
+prov.init(ddgdir=".")
 a <- 1
 b <- a + 2
 a <- 5
-ddg.save()
+prov.save()
 if (a == 1) {
   b = 10
 } else if (a == 5) {
   d = 50
 }
-ddg.save()
+prov.save()
 f <- function () {
   return (1)
 }
 
 x <- f()
-ddg.quit()
+prov.quit()

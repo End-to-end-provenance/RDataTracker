@@ -124,7 +124,7 @@
   
   # If this is a recursive call to .ddg.return.value, find
   # the caller of the first .ddg.return.value
-  if (grepl("(^ddg|.ddg)", pname)) {
+  if (grepl("^ddg|^.ddg|^prov", pname)) {
     #print(".ddg.return.value: Found a recursive call")
     caller.frame <- .ddg.find.ddg.return.value.caller.frame.number ()
     pname <- as.character(sys.call(caller.frame)[[1]])
@@ -264,7 +264,7 @@
   
   # Find the calls to .ddg.return.value
   ddg.funcs <- unlist(lapply (calls, 
-    function (call) return (grepl("^ddg|.ddg", deparse(call)[[1]]))))
+    function (call) return (grepl("^ddg|^.ddg|^prov", deparse(call)[[1]]))))
   calls.to.ddg.return.value <- unlist(lapply(calls, 
     function (call) 
       return(.ddg.is.call.to(call, as.name(".ddg.return.value")))))
@@ -399,21 +399,21 @@
   return (return.value)
 }
 
-#' ddg.start creates a procedure node of type Start called pname.
+#' prov.start creates a procedure node of type Start called pname.
 #' Users can right-click on a start node in DDG Explorer and see
 #' the code between start and finish nodes in the original script.
 #' @param pname the label for the node.  This can be passed as
 #' a string or as a name.
 #' @export
 
-ddg.start <- function(pname=NULL) {
+prov.start <- function(pname=NULL) {
   if (!.ddg.is.init()) return(invisible())
   
   .ddg.lookup.function.name(pname)
   
   # Check for NULL.
   if (is.null(pname)) {
-    msg <- "Cannot call ddg.start with NULL value from top-level."
+    msg <- "Cannot call prov.start with NULL value from top-level."
     .ddg.insert.error.message(msg)
     return
   }
@@ -431,22 +431,22 @@ ddg.start <- function(pname=NULL) {
   
 }
 
-#' ddg.finish creates a procedure node of type Finish called pname.
+#' prov.finish creates a procedure node of type Finish called pname.
 #' Users can right-click on a finish node in DDG Explorer and see
 #' the code between start and finish nodes in the original script.
 #' @param pname the label for the node. This can be passed as
-#' a string or as a name. It can be omitted if ddg.finish is called
+#' a string or as a name. It can be omitted if prov.finish is called
 #' by a function, in which case the name of the function will be used.
 #' @export
 
-ddg.finish <- function(pname=NULL) {
+prov.finish <- function(pname=NULL) {
   if (!.ddg.is.init()) return(invisible())
   
   .ddg.lookup.function.name(pname)
   
   # Check for NULL.
   if (is.null(pname)) {
-    msg <- "Cannot call ddg.finish with NULL value from top-level."
+    msg <- "Cannot call prov.finish with NULL value from top-level."
     .ddg.insert.error.message (msg)
   }
   
@@ -456,17 +456,17 @@ ddg.finish <- function(pname=NULL) {
   # Create control flow edge from preceding procedure node.
   .ddg.proc2proc()
   
-  # ddg.finish is added to the end of blocks.  We want the block to
+  # prov.finish is added to the end of blocks.  We want the block to
   # return the value of the last R statement.
   return(.ddg.get (".ddg.last.R.value"))
 }
 
-#' ddg.annotate.on enables annotation for the specified functions. Functions not on
+#' prov.annotate.on enables annotation for the specified functions. Functions not on
 #' this list are not annotated. If fnames is NULL, all functions will be annotated.
 #' @param fnames - a list of one or more function names passed in as strings.
 #' @export
 
-ddg.annotate.on <- function (fnames=NULL){
+prov.annotate.on <- function (fnames=NULL){
   if (is.null(fnames)) {
     .ddg.set("ddg.annotate.off", vector())
     .ddg.set("ddg.annotate.inside", TRUE)
@@ -485,12 +485,12 @@ ddg.annotate.on <- function (fnames=NULL){
   
 }
 
-#' ddg.annotate.off disables annotation for the specified functions. Functions not on 
+#' prov.annotate.off disables annotation for the specified functions. Functions not on 
 #' this list are annotated. If fnames is NULL, no functions will be annotated.
 #' @param fnames a list of one or more function names passed in as strings.
 #' @export
 
-ddg.annotate.off <- function (fnames=NULL) {
+prov.annotate.off <- function (fnames=NULL) {
   if (is.null(fnames)) {
     .ddg.set("ddg.annotate.on", vector())
     .ddg.set("ddg.annotate.inside", FALSE)
@@ -542,9 +542,9 @@ ddg.annotate.off <- function (fnames=NULL) {
   # Return if statement is empty.
   if (length(parsed.command) == 0) return(command@parsed)
   
-  # Replace source with ddg.source.
+  # Replace source with prov.source.
   if (is.call(parsed.command) && parsed.command[[1]] == "source") {
-    return(.ddg.add.ddg.source(parsed.command, command))
+    return(.ddg.add.prov.source(parsed.command, command))
   }
   
   # Annotate user-defined functions.
@@ -557,7 +557,7 @@ ddg.annotate.off <- function (fnames=NULL) {
   statement.type <- .ddg.get.statement.type(parsed.command)
   loop.types <- list("for", "while", "repeat")
   
-  # Move into funcs below && ddg.max.loops() > 0) {
+  # Move into funcs below && prov.max.loops() > 0) {
   if (length(statement.type > 0) && !is.null(statement.type)) { 
     
     # Annotate if statement.
@@ -580,14 +580,14 @@ ddg.annotate.off <- function (fnames=NULL) {
   return(command@parsed)
 }
 
-#' .ddg.add.ddg.source replaces source with ddg.source.
+#' .ddg.add.prov.source replaces source with prov.source.
 #' @param parsed.command a parsed expression that is a call to the source function.
 #' @param command the DDGStatement object for the source call
-#' @return a parsed expression with source replaced by ddg.source
+#' @return a parsed expression with source replaced by prov.source
 
-.ddg.add.ddg.source <- function(parsed.command, cmd) {
+.ddg.add.prov.source <- function(parsed.command, cmd) {
   script.name <- deparse(parsed.command[[2]])
-  parsed.command.txt <- paste("ddg.source(", script.name, 
+  parsed.command.txt <- paste("prov.source(", script.name, 
                               ", calling.script =", cmd@script.num, 
                               ", startLine=", cmd@pos@startLine,
                               ", startCol=", cmd@pos@startCol, 
@@ -600,7 +600,7 @@ ddg.annotate.off <- function (fnames=NULL) {
 #' to a function declaration.  It returns a parsed command corresponding
 #' to the same function declaration but with calls to .ddg.function,
 #' .ddg.eval and .ddg.return.value inserted if they are not already present.
-#' The functions ddg.annotate.on and ddg.annotate.off may be used to provide
+#' The functions prov.annotate.on and prov.annotate.off may be used to provide
 #' a list of functions to annotate or not to annotate, respectively.
 #' @param function.decl a command that contains an assignment statement where the value
 #' being bound is a function declaration
@@ -966,7 +966,7 @@ ddg.annotate.off <- function (fnames=NULL) {
     # does not contain a call to .ddg.return.value. Enclose statement in
     # quotation marks.
     statement <- block[[i]]
-    if (!grepl("^ddg.", statement[1]) & !grepl("^.ddg.", statement[1]) & 
+    if (!grepl("^ddg", statement[1]) && !grepl("^.ddg", statement[1]) && !grepl("^prov", statement[1]) &&
         !.ddg.has.call.to(statement, ".ddg.return.value")) {
       parsed.stmt <- parsed.stmts[[i-2]]
       new.statement <- .ddg.create.ddg.eval.call(statement, parsed.stmt)
@@ -983,7 +983,7 @@ ddg.annotate.off <- function (fnames=NULL) {
 
 .ddg.annotate.if.statement <- function(command) {
   #print(paste(".ddg.annotate.if.statement annotating", command@text))
-  if (ddg.max.loops() == 0) {
+  if (prov.max.loops() == 0) {
     parsed.command.txt <- deparse(command@parsed[[1]])
   }
   
@@ -1095,7 +1095,7 @@ ddg.annotate.off <- function (fnames=NULL) {
 #' @return parsed command with annotationa added
 
 .ddg.annotate.loop.statement <- function(command, loop.type) {
-  if (ddg.max.loops() == 0) {
+  if (prov.max.loops() == 0) {
     # Note that I can't just use command@text because it does not separate 
     # statements with newlines
     parsed.command.txt <- deparse(command@parsed[[1]])
@@ -1159,18 +1159,18 @@ ddg.annotate.off <- function (fnames=NULL) {
     parsed.command.txt <- paste(c(firstLine,
             paste("if (.ddg.loop.count.inc(", ddg.loop.num, 
                   ") >= .ddg.first.loop() && .ddg.loop.count(", ddg.loop.num, 
-                  ") <= .ddg.first.loop() + ddg.max.loops() - 1)", sep=""),
+                  ") <= .ddg.first.loop() + prov.max.loops() - 1)", sep=""),
             annotated.block.txt,
             paste("else", sep = ""),
             block.txt,
             paste("}", sep=""),
             paste("if (.ddg.loop.count(", ddg.loop.num, 
-                  ") > .ddg.first.loop() + ddg.max.loops() - 1)",
+                  ") > .ddg.first.loop() + prov.max.loops() - 1)",
                   " .ddg.details.omitted()", sep=""),
             paste(".ddg.reset.loop.count(", ddg.loop.num, ")", sep=""),
             
             # Turn loop annotations back on in case we reached the max.
-            paste("if (ddg.max.loops() != 0) .ddg.loop.annotate.on()"),  
+            paste("if (prov.max.loops() != 0) .ddg.loop.annotate.on()"),  
             collapse="\n"))
   }
   
@@ -1216,7 +1216,7 @@ ddg.annotate.off <- function (fnames=NULL) {
   # Check if a function call.
   if (is.call(parsed.expr)) {
     # Check if the function called is a ddg function.
-    if (grepl("^ddg.", parsed.expr[1]) || grepl("^.ddg.", parsed.expr[1])) {
+    if (grepl("^ddg|^.ddg|^prov", parsed.expr[1])) {
       return (TRUE)
     }
   }
@@ -1269,7 +1269,7 @@ ddg.annotate.off <- function (fnames=NULL) {
   for (i in 2:length(block)) {
     # Enclose statement in quotation marks and wrap with .ddg.eval.
     statement <- block[[i]]
-    if (!grepl("^ddg.", statement) && !grepl("^.ddg.", statement) && 
+    if (!grepl("^ddg", statement) && !grepl("^.ddg", statement) && !grepl("^prov", statement) &&
       !.ddg.has.call.to(statement, ".ddg.return.value")) {
       parsed.stmt <- parsed.stmts[[i-1]]
       # print(statement)
@@ -1289,9 +1289,9 @@ ddg.annotate.off <- function (fnames=NULL) {
 #' @return block with annotations added
 
 .ddg.add.block.start.finish <- function(block, pname) {
-  # Create ddg.start & ddg.finish statements.
-  start.statement <- deparse(call("ddg.start", pname))
-  finish.statement <- deparse(call("ddg.finish", pname))
+  # Create prov.start & prov.finish statements.
+  start.statement <- deparse(call("prov.start", pname))
+  finish.statement <- deparse(call("prov.finish", pname))
   
   # Get internal statements.
   pos <- length(block)
@@ -1360,9 +1360,9 @@ ddg.annotate.off <- function (fnames=NULL) {
   }
 }
 
-#' ddg.set.detail sets the level of provenance detail to be collected.
+#' prov.set.detail sets the level of provenance detail to be collected.
 #' If ddg.detail is not set, the values of annotate.inside, max.loops,
-#' and max.snapshot.size passed to ddg.run are used instead.
+#' and max.snapshot.size passed to prov.run are used instead.
 #' 0 = no internal annotation, no snapshots.
 #' 1 = 1 loop, snapshots < 10k.
 #' 2 = 10 loops, snapshots < 100k.
@@ -1371,7 +1371,7 @@ ddg.annotate.off <- function (fnames=NULL) {
 #' @return nothing
 #' @export
 
-ddg.set.detail <- function(detail.level) {
+prov.set.detail <- function(detail.level) {
   if (detail.level == 0) {
     .ddg.set("ddg.annotate.inside", FALSE)
     .ddg.set("ddg.max.loops", 0)
@@ -1404,15 +1404,15 @@ ddg.set.detail <- function(detail.level) {
 #' @return the current level of detail (0-3)
 #' @export 
 
-ddg.get.detail <- function() {
+prov.get.detail <- function() {
   if (!.ddg.is.set("ddg.detail")) .ddg.set("ddg.detail", NULL)
   return(.ddg.get("ddg.detail"))
 }
 
-#' ddg.clear.detail clears the current value of provenance detail.
+#' prov.clear.detail clears the current value of provenance detail.
 #' @return nothing
 #' @export
 
-ddg.clear.detail <- function() {
+prov.clear.detail <- function() {
   .ddg.set("ddg.detail", NULL)
 }

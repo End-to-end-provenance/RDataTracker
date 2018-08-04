@@ -20,7 +20,7 @@
 # The functions in this library may be used to annotate an R script
 # in order to collect provenance in the form of a data derivation
 # graph (DDG) as the script executes. The DDG is saved as a JSON file
-# (ddg.json) that may be viewed and queried using DDG Explorer.
+# (prov.json) that may be viewed and queried using DDG Explorer.
 
 # Create DDG environment variable.
 
@@ -145,7 +145,7 @@
   e.ls <- ls(e, all.names=TRUE)
 
   not.ddg.func <- function (name) {
-    return (!grepl("ddg", name) && name != ".onLoad")
+    return (!grepl("^ddg", name) && !grepl("^.ddg", name) && !grepl("^prov", name)&& name != ".onLoad")
   }
 
   x <- Filter (not.ddg.func, e.ls)
@@ -161,7 +161,7 @@
 #' procedure nodes, data nodes, edges, and function return values. 
 #' It also initializes selected constants and variables.
 #' Tables are used throughout provenance collection and
-#' optionally saved as tab-delimited files in ddg.save.
+#' optionally saved as tab-delimited files in prov.save.
 #' @return nothing
 .ddg.init.tables <- function() {
   .ddg.get.initial.env()
@@ -184,7 +184,7 @@
   .ddg.set(".ddg.last.cmd", NULL)
   
   # Record the current command to be opened during console execution
-  # (used when executing a script using ddg.source).
+  # (used when executing a script using prov.source).
   .ddg.set(".ddg.possible.last.cmd", NULL)
 
   # Store path of current script.
@@ -710,14 +710,14 @@
 }
 
 #' .ddg.is.procedure.cmd returns TRUE if the command passed in
-#' is a call to .ddg.procedure, ddg.start, or ddg.finish.
+#' is a call to .ddg.procedure, prov.start, or prov.finish.
 #' These will create a procedure node and therefore
 #' initiate the creation of a collapsible console node.
 #' 
 #' @param cmd - A DDGStatement object
-#' @return true if cmd is a call to .ddg.procedure, ddg.start or ddg.finish
+#' @return true if cmd is a call to .ddg.procedure, prov.start or prov.finish
 .ddg.is.procedure.cmd <- function(cmd) {
-  return(grepl("^ddg.(procedure|start|finish)", cmd@text))
+  return(grepl("^ddg.procedure", cmd@text) || grepl("^prov.start", cmd@text) || grepl("^prov.finish", cmd@text))
 }
 
 #' .ddg.record.warning creates the warning node for the saved warning and 
@@ -751,7 +751,7 @@
 #' are added to each function definition and .ddg.eval is added to control
 #' statements before commands are processed. If save.debug is TRUE,
 #' changes to the script are saved in the ddg/debug directory.
-#' ddg.annotate.on and ddg.annotate.off may be used to limit the
+#' prov.annotate.on and prov.annotate.off may be used to limit the
 #' functions that are annotated or not annotated, respectively.
 #' If run.commands is false, the commands are not executed.  This allows
 #' us to build ddgs for commands run from the console as those commands
@@ -874,7 +874,7 @@
       # control statement itself.
 
       create <- !cmd@isDdgFunc && .ddg.is.init() &&  
-          (!(control.statement && .ddg.loop.annotate() && ddg.max.loops() > 0) || 
+          (!(control.statement && .ddg.loop.annotate() && prov.max.loops() > 0) || 
              !run.commands)
       start.finish.created <- FALSE
       cur.cmd.closed <- FALSE
@@ -928,8 +928,7 @@
                   #             paste(annot, collapse = " ")))
                   # Don't set return.value if we are calling a ddg function or we 
                   # are executing an if-statement
-                  if (grepl("^ddg", annot) || grepl("^.ddg", annot) || 
-                      .ddg.get.statement.type(annot) == "if") {
+                  if (grepl("^ddg|^.ddg|^prov", annot) || .ddg.get.statement.type(annot) == "if") {
                     eval(annot, environ, NULL)
                     .ddg.set (".ddg.error.node.created", FALSE)
                   }
@@ -1028,7 +1027,7 @@
         
         create.procedure <- create && !cur.cmd.closed && 
                             !start.finish.created  && 
-                            !grepl("^ddg.source", cmd@annotated)
+                            !grepl("^prov.source", cmd@annotated)
         
         # We want to create a procedure node for this command.
         if (create.procedure) {
@@ -1594,7 +1593,7 @@
       call.func <- as.character(call)
       # Ignore calls to ddg functions or to the functions that get called from 
       # the outermost tryCatch to ddg code.
-      if (!any (startsWith (call.func, c (".ddg", "ddg", "doTryCatch", "tryCatch")))) {
+      if (!any (startsWith (call.func, c (".ddg", "ddg", "prov", "doTryCatch", "tryCatch")))) {
         if (for.caller && !script.func.found) {
           script.func.found <- TRUE
         }
@@ -1783,7 +1782,7 @@
         index <- index + 1
       }
       name <- stringr::str_trim(name, side = "both")
-      annotated <- append(annotated, paste("ddg.start(\"", name, "\")", sep = ""))
+      annotated <- append(annotated, paste("prov.start(\"", name, "\")", sep = ""))
     }
     else if(nchar(script[i]) == 0 && 
             (regexpr("#'", script[i + 1]) != -1 || 
@@ -1793,7 +1792,7 @@
         skip <- FALSE
       }
       else{
-        annotated <- append(annotated, paste("ddg.finish(\"", name, "\")", sep = ""))
+        annotated <- append(annotated, paste("prov.finish(\"", name, "\")", sep = ""))
       }
     }
     else{

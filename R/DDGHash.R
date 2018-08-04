@@ -67,7 +67,7 @@
   dscriptpath <- 
       if (!is.null(.ddg.get("ddg.r.script.path"))) .ddg.get("ddg.r.script.path")
       else ""
-  longpath <- paste0(getwd(), substring(.ddg.path(), 2), "/ddg.json")
+  longpath <- paste0(getwd(), substring(.ddg.path(), 2), "/prov.json")
   .ddg.set("ddg.hashtable", 
            rbind(.ddg.get("ddg.hashtable"), 
                  c(dscriptpath, dloc, longpath, 
@@ -78,7 +78,7 @@
 
 #' .ddg.calculate.hash calculates the hash value for the file
 #' @param dname the name of the file
-#' @return the hash value based on the hash algorithm specified when ddg.run or ddg.init was called.
+#' @return the hash value based on the hash algorithm specified when prov.run or prov.init was called.
 #' Returns "" if the digest cannot be computed, for example, if the file does not exist.
 
 .ddg.calculate.hash <- function(dname) {
@@ -171,14 +171,14 @@
 
 .ddg.hashtable.cleanup <- function(hashtable.json) {
   old_hashtable <- jsonlite::read_json(hashtable.json, simplifyVector = TRUE)
-  longpath <- paste0(getwd(), substring(.ddg.path(), 2), "/ddg.json")
+  longpath <- paste0(getwd(), substring(.ddg.path(), 2), "/prov.json")
   old_hashtable <- old_hashtable[old_hashtable$DDGPath != longpath, ]
   # old_hashtable <- subset(old_hashtable, DDGPath != longpath)
   return(old_hashtable)
 }
 
 #' .ddg.save.hashtable saves the hashtable to a file if the script has any file information 
-#' to save and the save hashtable flag was set when ddg.run/init was called.
+#' to save and the save hashtable flag was set when prov.run/init was called.
 #' @return nothing
 
 .ddg.save.hashtable <- function() {

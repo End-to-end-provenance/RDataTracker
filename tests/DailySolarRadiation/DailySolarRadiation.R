@@ -174,31 +174,31 @@ plot.data <- function(xx,v) {
 
 ### Main Program
 
-ddg.start("get.data")
+prov.start("get.data")
 
 raw.data <- read.data()
 plot.data(raw.data,"R")
 
-ddg.finish("get.data")
+prov.finish("get.data")
 
-ddg.start("analyze.data")
+prov.start("analyze.data")
 
-ddg.start("calibrate.data")
+prov.start("calibrate.data")
 calibrated.data <- calibrate(raw.data)
 plot.data(calibrated.data,"C")
-ddg.finish("calibrate.data")
+prov.finish("calibrate.data")
 
-ddg.start("quality.control.data")
+prov.start("quality.control.data")
 quality.controlled.data <- quality.control(calibrated.data)
 plot.data(quality.controlled.data,"Q")
-ddg.finish("quality.control.data")
+prov.finish("quality.control.data")
 
-ddg.start("gap.fill.data")
+prov.start("gap.fill.data")
 gap.filled.data <- gap.fill(quality.controlled.data)
 plot.data(gap.filled.data,"G")
-ddg.finish("gap.fill.data")
+prov.finish("gap.fill.data")
 
-ddg.finish("analyze.data")
+prov.finish("analyze.data")
 
 write.result("processed-data.csv",gap.filled.data)
 

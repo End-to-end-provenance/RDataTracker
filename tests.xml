@@ -1,7 +1,7 @@
 <!--
 	This file supports testing of RDataTracker.  Each test case runs
 	RDataTracker and compares both its standard output and the created
-	ddg.json file to an expected result.  The comparison ignores differences
+	prov.json file to an expected result.  The comparison ignores differences
 	related to file paths, platform executed on and timestamps.  For each
 	test case, there is also a separate update task that can be used to
 	update the expected results.
@@ -17,9 +17,9 @@
 	When you run a test, it will create several files with names like:
 
 	<target>.out - standard output from executing the test
-	ddg/ddg.json - ddg from executing the test
+	prov.json - ddg from executing the test
 
-	After a test is run, the .out files and the ddg.json files are compared
+	After a test is run, the .out files and the prov.json files are compared
 	to expected_ files with the same names.  The differences are displayed
 	on standard output.  If the tests work as before, the only differences
 	you should see are in the execution time.
@@ -167,8 +167,8 @@
 		@param expected_out : the location and name of the expected output for this test.
 							  If sourcing, the expected source output is in the same location
 							  with the prefix "source_" attached
-		@param expected_ddg : the location and name of the expected ddg.json for this test.
-							  If sourcing, the expected source ddg.json is in the same directory
+		@param expected_ddg : the location and name of the expected prov.json for this test.
+							  If sourcing, the expected source prov.json is in the same directory
 							  with the prefix "source_" attached
 	-->
 	<target name="run-test">
@@ -258,15 +258,15 @@
 
 	<target name="prepare-to-compare">
 
-		<!-- Make copy of output files (.out and ddg.json) as well as expected
+		<!-- Make copy of output files (.out and prov.json) as well as expected
 			 outputs for diff. Append .local to all files -->
 		<copy todir="${local_dir}" overwrite="true">
-			<!-- Executed ddg.json file -->
-			<fileset file="${dir}/prov_${test-name}/ddg.json" />
-			<!-- all .out files and files ending in _ddg.json in the test directory -->
+			<!-- Executed prov.json file -->
+			<fileset file="${dir}/prov_${test-name}/prov.json" />
+			<!-- all .out files and files ending in _prov.json in the test directory -->
 			<fileset dir="${dir}">
 				<include name="*.out" />
-				<include name="*_ddg.json" />
+				<include name="*_prov.json" />
 			</fileset>
 			<globmapper from="*" to="*.local"/>
 		</copy>
@@ -415,17 +415,17 @@
 
 		<!-- Exectute diff on .json files -->
 		<echo>
-			Diff of (1) ddg.json.local and (2) ${ddg_name}.local:
+			Diff of (1) prov.json.local and (2) ${ddg_name}.local:
 		</echo>
 
 		<exec executable="diff">
-			<arg line="--strip-trailing-cr ${local_dir}/ddg.json.local ${local_dir}/${ddg_name}.local" />
+			<arg line="--strip-trailing-cr ${local_dir}/prov.json.local ${local_dir}/${ddg_name}.local" />
 		</exec>
 
-		<echo>cmp (1) ddg.json.local and (2) ${ddg_name}.local:</echo>
+		<echo>cmp (1) prov.json.local and (2) ${ddg_name}.local:</echo>
 
 		<exec executable="cmp" failonerror="false" resultproperty="return.code.json">
-			<arg value="${local_dir}/ddg.json.local" />
+			<arg value="${local_dir}/prov.json.local" />
 			<arg value="${local_dir}/${ddg_name}.local" />
 		</exec>
 
@@ -449,9 +449,9 @@
 		<exec executable="Rscript" dir="tests/ProvJsonTest" resultproperty="compliant">
 			<arg value="ProvJsonTest.r" />
 			<arg path="tests/ProvJsonTest/schema.json" />
-			<arg path="${local_dir}/ddg.json.local" />
+			<arg path="${local_dir}/prov.json.local" />
 		</exec>
-		<fail message="ddg.json is not prov-json compliant.">
+		<fail message="prov.json is not prov-json compliant.">
 			<condition>
 				<and>
 					<equals arg1="${using-travis}" arg2="true" />
@@ -514,7 +514,7 @@
 			<param name="out" value="tests/${test-name}/${test-name}.out" />
 			<param name="script-file" value="${test-name}.R" />
 			<param name="expected_out" value="tests/${test-name}/expected_${test-name}.out" />
-			<param name="expected_ddg" value="tests/${test-name}/expected_${test-name}_ddg.json" />
+			<param name="expected_ddg" value="tests/${test-name}/expected_${test-name}_prov.json" />
 		</antcall>
 	</target>
 
@@ -524,7 +524,7 @@
 			<param name="out" value="tests/${test-name}/${test-name}.out" />
 			<param name="script-file" value="${test-name}.Rmd" />
 			<param name="expected_out" value="tests/${test-name}/expected_${test-name}.out" />
-			<param name="expected_ddg" value="tests/${test-name}/expected_${test-name}_ddg.json" />
+			<param name="expected_ddg" value="tests/${test-name}/expected_${test-name}_prov.json" />
 		</antcall>
 	</target>
 	
@@ -534,7 +534,7 @@
 			<param name="out" value="tests/${test-name}/${test-name}.out" />
 			<param name="script-file" value="${test-name}.R" />
 			<param name="expected_out" value="tests/${test-name}/expected_${test-name}.out" />
-			<param name="expected_ddg" value="tests/${test-name}/expected_${test-name}_ddg.json" />
+			<param name="expected_ddg" value="tests/${test-name}/expected_${test-name}_prov.json" />
 		</antcall>
 	</target>
 
@@ -560,10 +560,10 @@
 		<delete dir="${expected_dir}" quiet="true" />
 		<mkdir dir="${expected_dir}" />
 
-		<!-- Make copy of ddg.json and the .out file into the expected folder -->
+		<!-- Make copy of prov.json and the .out file into the expected folder -->
 		<copy todir="${expected_dir}" overwrite="true">
-			<!-- Executed ddg.json file -->
-			<fileset file="${dir}/prov_${test-name}/ddg.json" />
+			<!-- Executed prov.json file -->
+			<fileset file="${dir}/prov_${test-name}/prov.json" />
 		</copy>
 		
 		<!-- Replace local file paths with [DIR] -->
@@ -574,7 +574,7 @@
 		</replaceregexp>
 
 		<!-- Move the edited files up to become the new expected results -->
-		<copy file="${expected_dir}/ddg.json" tofile="${expected_ddg}" overwrite="true" />
+		<copy file="${expected_dir}/prov.json" tofile="${expected_ddg}" overwrite="true" />
 	</target>
 
 	<target name = "update-expected-out">
@@ -591,7 +591,7 @@
 	<target name = "update-regression-expected">
 		<antcall target="update-expected">
 			<param name="dir" value="tests/${test-name}"/>
-			<param name="expected_ddg" value="tests/${test-name}/expected_${test-name}_ddg.json"/>
+			<param name="expected_ddg" value="tests/${test-name}/expected_${test-name}_prov.json"/>
 		</antcall>
 		
 		<antcall target="update-expected-out">
@@ -604,7 +604,7 @@
 <!--	<target name = "update-console-expected">
 		<antcall target="update-expected">
 			<param name="dir" value="tests/${test-name}"/>
-			<param name="expected_ddg" value="tests/${test-name}/expected_${test-name}_ddg.json"/>
+			<param name="expected_ddg" value="tests/${test-name}/expected_${test-name}_prov.json"/>
 		</antcall>
 	</target>-->
 

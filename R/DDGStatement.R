@@ -182,8 +182,7 @@ methods::setMethod ("initialize",
 
       # .ddg.eval is treated differently than other calls to ddg functions since
       # we will execute the parameter as a command and want a node for it.
-      .Object@isDdgFunc <- grepl("^ddg.", .Object@text) & 
-                           !grepl("^.ddg.eval", .Object@text)
+      .Object@isDdgFunc <- (grepl("^ddg|^.ddg|^prov", .Object@text) && !grepl("^.ddg.eval", .Object@text))
 
       .Object@pos <-
           if (is.object(pos)) {
@@ -707,7 +706,7 @@ methods::setMethod ("initialize",
   }
   
   # Check if we want to go inside loop and if-statements
-  else if (ddg.max.loops() == 0) {
+  else if (prov.max.loops() == 0) {
     return (list())
   }
 
