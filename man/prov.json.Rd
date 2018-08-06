@@ -2,7 +2,7 @@
 % Please edit documentation in R/API.R
 \name{prov.json}
 \alias{prov.json}
-\title{prov.json returns the current provenance graph as a prov-json string}
+\title{prov.json}
 \usage{
 prov.json()
 }

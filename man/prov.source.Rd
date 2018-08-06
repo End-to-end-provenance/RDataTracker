@@ -2,10 +2,7 @@
 % Please edit documentation in R/API.R
 \name{prov.source}
 \alias{prov.source}
-\title{prov.source reads and executes an R script in the specified
-environment. prov.source mimics the behaviour of the R source command, 
-with similar input parameters and results, but with the additional 
-parameter ignore.ddg.calls.}
+\title{prov.source}
 \usage{
 prov.source(file, local = FALSE, echo = verbose, print.eval = echo,
   verbose = getOption("verbose"), max.deparse.length = 150, chdir = FALSE,
