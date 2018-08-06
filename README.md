@@ -16,7 +16,7 @@ associated files are written by default to the R session temporary
 directory. The user may change this location by (1) using the optional
 parameter prov.dir in the prov.run or prov.init functions, or (2) setting
 the prov.dir option (e.g. by using the R options command or editing the
-Rprofile.site file). If prov.dir is set to ".", the current working
+Rprofile.site or .Rprofile file). If prov.dir is set to ".", the current working
 directory is used.
 
 RDataTracker provides two modes of operation. In script mode, the prov.run
@@ -42,13 +42,15 @@ following R packages: curl, devtools, digest, ggplot2, grDevices,
 gtools, jsonlite, knitr, methods, stringr, tools, utils, XML.
 
 RDataTracker is easily installed from GitHub using devtools:
-
-> library(devtools)
-> install_github("End-to-end-provenance/RDataTracker")
+'''
+library(devtools)
+install_github("End-to-end-provenance/RDataTracker")
+'''
 
 Once installed, use the R library command to load RDataTracker:
-
-> library(RDataTracker)
+'''
+library(RDataTracker)
+'''
 
 Note that all exported RDataTracker functions begin with "prov." to 
 avoid confusion with variable or function names in the main script 
@@ -59,34 +61,35 @@ Using RDataTracker
 
 To capture provenance for an R script, set the working directory, 
 load the RDataTracker package (as above), and enter the following:
+'''
+prov.run("my-script.R")
+'''
 
-> prov.run("my-script.R")
-
-where "my-script.R" is an R script on the working directory. The 
+where "my-script.R" is an R script in the working directory. The 
 prov.run command will execute the script and save the provenance in 
 a subdirectory called "prov_my-script" under the current provenance
 directory (as above).
 
 To capture provenance for a console session, enter the following:
-
-> prov.init()
-
+'''
+prov.init()
+'''
 and enter commands at the R console. To save the provenance collected 
-so far to a subdirectory called "prov_console" under the currrent
+so far to a subdirectory called "prov_console" under the current
 provenance directory (as above), enter the following:
-
-> prov.save()
-
+'''
+prov.save()
+'''
 To save the provenance and quit provenance collection, enter the 
 following:
-
-> prov.quit()
-
-To view the last provenance collected in DDG Explorer, enter the 
+'''
+prov.quit()
+'''
+To view a graphical representation of the last provenance collected in DDG Explorer, enter the 
 following:
-
-> prov.display()
-
+'''
+prov.display()
+'''
 Note that various parameters of the prov.run and prov.init functions
 may be used to control where the provenance is stored, the level of 
 detail collected, and whether earlier provenance at the same location 
