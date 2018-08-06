@@ -23,7 +23,6 @@
 # prov.save - saves the current provenance graph
 # prov.quit - saves the current provenance graph and finalizes it
 # prov.run - initiates execution of a script
-# prov.source - sources a script & collects provenance
 # prov.json - returns the current provenance graph as a prov-json string
 
 #' Provenance Collection Functions
@@ -102,10 +101,10 @@
 #' @export
 #' @rdname prov.run
 #' @seealso \code{\link{prov.json}} for access to the JSON text of the provenance, 
-#'   \code{\link{prov.display ()}} to view the provenance graphically. 
-#'   \code{\link{prov.set.detail ()}} to see an alternative way to set the amount of
+#'   \code{\link{prov.display}} to view the provenance graphically. 
+#'   \code{\link{prov.set.detail}} to see an alternative way to set the amount of
 #'     provenance collected.
-#'   \code{\link{prov.annotate.on ()}} and \code{\link{prov.annoate.off ()}} to see how to control
+#'   \code{\link{prov.annotate.on}} and \code{\link{prov.annotate.off}} to see how to control
 #'     annotation of individual functions
 
 prov.init <- function(r.script.path = NULL, prov.dir = NULL, overwrite = TRUE, 
@@ -301,6 +300,7 @@ prov.init <- function(r.script.path = NULL, prov.dir = NULL, overwrite = TRUE,
 .ddg.set.annotation.functions <- function () {
   assign(".ddg.details.omitted", RDataTracker:::.ddg.details.omitted, envir = globalenv())
   assign(".ddg.eval", RDataTracker:::.ddg.eval, envir = globalenv())
+  assign(".ddg.finish", RDataTracker:::.ddg.finish, envir = globalenv())
   assign(".ddg.first.loop", RDataTracker:::.ddg.first.loop, envir = globalenv())
   assign(".ddg.forloop", RDataTracker:::.ddg.forloop, envir = globalenv())
   assign(".ddg.function", RDataTracker:::.ddg.function, envir = globalenv())
@@ -308,10 +308,14 @@ prov.init <- function(r.script.path = NULL, prov.dir = NULL, overwrite = TRUE,
   assign(".ddg.loop.annotate.on", RDataTracker:::.ddg.loop.annotate.on, envir = globalenv())
   assign(".ddg.loop.count", RDataTracker:::.ddg.loop.count, envir = globalenv())
   assign(".ddg.loop.count.inc", RDataTracker:::.ddg.loop.count.inc, envir = globalenv())
+  assign(".ddg.max.loops", RDataTracker:::.ddg.max.loops, envir = globalenv())
+  assign(".ddg.max.snapshot.size", RDataTracker:::.ddg.max.snapshot.size, envir = globalenv())
   assign(".ddg.not.inside.loop", RDataTracker:::.ddg.not.inside.loop, envir = globalenv())
   assign(".ddg.reset.loop.count", RDataTracker:::.ddg.reset.loop.count, envir = globalenv())
   assign(".ddg.return.value", RDataTracker:::.ddg.return.value, envir = globalenv())
   assign(".ddg.set.inside.loop", RDataTracker:::.ddg.set.inside.loop, envir = globalenv())
+  assign(".ddg.source", RDataTracker:::.ddg.source, envir = globalenv())
+  assign(".ddg.start", RDataTracker:::.ddg.start, envir = globalenv())
   assign(".ddg.should.run.annotated", RDataTracker:::.ddg.should.run.annotated, envir = globalenv())
   invisible()
 }
@@ -446,7 +450,7 @@ prov.run <- function(r.script.path = NULL, prov.dir = NULL, overwrite = TRUE,
   # the DDG.
   tryCatch(
     if (!is.null(r.script.path)) {
-      prov.source(
+      .ddg.source(
          .ddg.get("ddg.r.script.path"),
           ignore.ddg.calls = FALSE)
     }
@@ -466,15 +470,15 @@ prov.run <- function(r.script.path = NULL, prov.dir = NULL, overwrite = TRUE,
   invisible()
 }
 
-#' prov.source
+#' .ddg.source
 #' 
-#' prov.source reads and executes an R script in the specified
-#' environment. prov.source mimics the behaviour of the R source command, 
+#' .ddg.source reads and executes an R script in the specified
+#' environment. .ddg.source mimics the behaviour of the R source command, 
 #' with similar input parameters and results, but with the additional 
 #' parameter ignore.ddg.calls.
 #' @param file the name of the R script file to source.
 #' @param local the environment in which to evaluate parsed
-#' expressions. If TRUE, the environment from which prov.source is
+#' expressions. If TRUE, the environment from which .ddg.source is
 #' called. If FALSE, the user's workspace (global environment).
 #' @param echo print each expression after parsing
 #' @param print.eval print the result of each evaluation
@@ -492,9 +496,8 @@ prov.run <- function(r.script.path = NULL, prov.dir = NULL, overwrite = TRUE,
 #' @param endLine the line that the source call ends on
 #' @param endCol the column that the source call ends on
 #' @return nothing
-#' @export
 
-prov.source <- function (file,  local = FALSE, echo = verbose, print.eval = echo,
+.ddg.source <- function (file,  local = FALSE, echo = verbose, print.eval = echo,
   verbose = getOption("verbose"), max.deparse.length = 150, chdir = FALSE, 
   encoding = getOption("encoding"), ignore.ddg.calls = TRUE, calling.script=NA, 
   startLine=NA, startCol=NA, endLine=NA, endCol=NA){
@@ -513,7 +516,7 @@ prov.source <- function (file,  local = FALSE, echo = verbose, print.eval = echo
   # An older version of the source code of R's source function can be found here:
   # https://github.com/SurajGupta/r-source/blob/master/src/library/base/R/source.R
   # Note that R's source function has more parameters than we allow.  This could
-  # conceivably cause problems when we replace calls to source with calls to prov.source.
+  # conceivably cause problems when we replace calls to source with calls to .ddg.source.
   # The additional parameters are:
   # exprs
   # spaced
@@ -710,11 +713,13 @@ prov.source <- function (file,  local = FALSE, echo = verbose, print.eval = echo
   invisible()
 }
 
-#' prov.json
+#' Applications
 #' 
 #' prov.json returns the current provenance graph as a prov-json string
-#' @return the current provenance graph
+#' @return prov.json returns the current provenance graph as a prov-json
+#' string
 #' @export
+#' @rdname prov.json
 
 prov.json <- function()
 {
@@ -746,8 +751,13 @@ prov.json <- function()
 #' prov.display
 #' 
 #' prov.display loads and displays the current provenance graph in DDG Explorer.
-#' @return nothing
+#' @return prov.display loads and displays the current provenance graph
+#' in DDG Explorer. The prov.display function does not return a value.
 #' @export 
+#' @rdname prov.json
+#' @examples
+#' \dontrun{prov.display()} 
+#' str <- prov.json()
 
 prov.display <- function () {
   

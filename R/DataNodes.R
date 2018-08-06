@@ -49,16 +49,15 @@
   # Set max.snapshot.size.  Make sure it is not already set, as
   # someone may have called prov.set.detail.
   if (!.ddg.is.set("ddg.max.snapshot.size")) {
-    .ddg.set("ddg.max.snapshot.size", 100)
+    .ddg.set("ddg.max.snapshot.size", 0)
   }
 }
 
-#' prov.max.snapshot.size returns the current maximum size for snapshots 
+#' .ddg.max.snapshot.size returns the current maximum size for snapshots 
 #' in kilobytes.
 #' @return maximum snapshot size in KB
-#' @export
 
-prov.max.snapshot.size <- function() {
+.ddg.max.snapshot.size <- function() {
   return(.ddg.get("ddg.max.snapshot.size"))
 }
 
@@ -524,7 +523,7 @@ prov.max.snapshot.size <- function() {
   orig.data <- data
   
   # Determine if we should save the entire data
-  max.snapshot.size <- prov.max.snapshot.size()
+  max.snapshot.size <- .ddg.max.snapshot.size()
   
   # Don't save the data
   if (max.snapshot.size == 0) {

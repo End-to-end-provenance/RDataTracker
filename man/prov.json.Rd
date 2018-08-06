@@ -2,13 +2,26 @@
 % Please edit documentation in R/API.R
 \name{prov.json}
 \alias{prov.json}
-\title{prov.json}
+\alias{prov.display}
+\title{Applications}
 \usage{
 prov.json()
+
+prov.display()
 }
 \value{
-the current provenance graph
+prov.json returns the current provenance graph as a prov-json
+string
+
+prov.display loads and displays the current provenance graph
+in DDG Explorer. The prov.display function does not return a value.
 }
 \description{
 prov.json returns the current provenance graph as a prov-json string
+
+prov.display loads and displays the current provenance graph in DDG Explorer.
+}
+\examples{
+\dontrun{prov.display()} 
+str <- prov.json()
 }

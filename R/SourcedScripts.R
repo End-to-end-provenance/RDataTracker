@@ -26,7 +26,7 @@
 #' @return nothing
 
 .ddg.init.sourced.scripts <- function () {
-  # Script sourced with prov.source
+  # Script sourced with .ddg.source
   .ddg.set(".ddg.is.sourced", FALSE)
   
   # Number of first sourced script (main script).

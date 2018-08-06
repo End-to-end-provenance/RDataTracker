@@ -144,9 +144,9 @@ prov.quit ()
 }
 \seealso{
 \code{\link{prov.json}} for access to the JSON text of the provenance, 
-  \code{\link{prov.display ()}} to view the provenance graphically. 
-  \code{\link{prov.set.detail ()}} to see an alternative way to set the amount of
+  \code{\link{prov.display}} to view the provenance graphically. 
+  \code{\link{prov.set.detail}} to see an alternative way to set the amount of
     provenance collected.
-  \code{\link{prov.annotate.on ()}} and \code{\link{prov.annoate.off ()}} to see how to control
+  \code{\link{prov.annotate.on}} and \code{\link{prov.annotate.off}} to see how to control
     annotation of individual functions
 }

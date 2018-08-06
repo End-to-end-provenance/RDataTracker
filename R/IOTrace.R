@@ -327,15 +327,15 @@
   if (is.symbol (input.caller)) {
     input.caller.name <- as.character(input.caller)
     
-    if (input.caller.name == "prov.source") {
-      # Determine if prov.source is being used to load the main script, or
+    if (input.caller.name == ".ddg.source") {
+      # Determine if .ddg.source is being used to load the main script, or
       # to load a script specified by the programmer within another script.
-      # In the latter case, we would see prov.source in the call stack twice
+      # In the latter case, we would see .ddg.source in the call stack twice
       # (or more).
     # We do not want a file node for the main script, since is not an input 
     # to the script, but we do for calls to source within the main script.
-    # These are translated to prov.source when we execute.
-      if (.ddg.num.calls.to ("prov.source") == 1) {
+    # These are translated to .ddg.source when we execute.
+      if (.ddg.num.calls.to (".ddg.source") == 1) {
         return()
       }
     }

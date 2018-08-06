@@ -2,20 +2,73 @@
 % Please edit documentation in R/Annotation.R
 \name{prov.annotate.on}
 \alias{prov.annotate.on}
-\title{prov.annotate.on enables provenance collection for the functions specified
-by the parameter fnames. Provenance is not collected for other functions. 
-If fnames is NULL, provenance is collected for all functions.}
+\alias{prov.annotate.off}
+\alias{prov.set.detail}
+\alias{prov.get.detail}
+\alias{prov.clear.detail}
+\title{Level of Detail}
 \usage{
-prov.annotate.on(fnames = NULL)
+prov.annotate.on(fnames.on = NULL)
+
+prov.annotate.off(fnames.off = NULL)
+
+prov.set.detail(detail.level)
+
+prov.get.detail()
+
+prov.clear.detail()
 }
 \arguments{
-\item{fnames}{- a list of one or more function names passed in as strings.}
+\item{fnames.on}{a list of one or more function names passed in as strings.}
+
+\item{fnames.off}{a list of one or more function names passed in as strings.}
+
+\item{detail.level}{level of detail to set (0-3)}
 }
 \value{
-nothing
+prov.annotate.on enables provenance collection for the specified 
+functions. The prov.annotate.on function does not return a value.
+
+prov.annotate.off disables provenance collection for the specified 
+functions. The prov.annotate.off function does not return a value.
+
+prov.set.detail sets the level of detail for the provenance
+to be collected (0-3). The prov.set.detail function does not return
+a value.
+
+prov.get.detail returns the current level of provenance 
+detail (0-3).
+
+prov.clear.detail clears the current value of provenance
+detail. The prov.clear.detail function does not return a value.
 }
 \description{
 prov.annotate.on enables provenance collection for the functions specified
-by the parameter fnames. Provenance is not collected for other functions. 
-If fnames is NULL, provenance is collected for all functions.
+by the parameter fnames.on. Provenance is not collected for other functions. 
+If fnames.on is NULL, provenance is collected for all functions.
+
+prov.annotate.off disables provenance collection for the functions specified
+by the parameter fnames.off. Provenance is collected for other functions. If 
+fnames.off is NULL, provenance is not collected for any function.
+
+prov.set.detail sets the level of detail for the provenance to be 
+collected. If this value is not set, the level of detail is determined by the 
+parameters of prov.run or prov.init.\cr
+0 = no internal provenance, no snapshots.\cr
+1 = 1 loop, snapshots < 10k.\cr
+2 = 10 loops, snapshots < 100k.\cr
+3 = all loops, all snapshots.
+
+prov.get.detail returns the current level of provenance detail.
+
+prov.clear.detail clears the current value of provenance detail.
+The level of detail is then determined by parameters of prov.run
+or prov.init.
+}
+\examples{
+prov.annotate.on("f")
+prov.annotate.off("g")
+prov.set.detail(1)
+prov.get.detail()
+prov.clear.detail()
 }

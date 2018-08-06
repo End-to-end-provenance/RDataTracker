@@ -399,7 +399,7 @@
   return (return.value)
 }
 
-#' prov.start creates a procedure node of type Start called pname.
+#' .ddg.start creates a procedure node of type Start called pname.
 #' In DDG Explorer, the section of the provenance graph between
 #' matching Start and Finish nodes can be expanded and collapsed. 
 #' Users can also right-click on a Start or Finish node to see the 
@@ -407,16 +407,15 @@
 #' @param pname the label for the node.  This can be passed as
 #' a string or as a name.
 #' @return nothing
-#' @export
 
-prov.start <- function(pname=NULL) {
+.ddg.start <- function(pname=NULL) {
   if (!.ddg.is.init()) return(invisible())
   
   .ddg.lookup.function.name(pname)
   
   # Check for NULL.
   if (is.null(pname)) {
-    msg <- "Cannot call prov.start with NULL value from top-level."
+    msg <- "Cannot call .ddg.start with NULL value from top-level."
     .ddg.insert.error.message(msg)
     return
   }
@@ -434,7 +433,7 @@ prov.start <- function(pname=NULL) {
   
 }
 
-#' prov.finish creates a procedure node of type Finish called pname.
+#' .ddg.finish creates a procedure node of type Finish called pname.
 #' In DDG Explorer, the section of the provenance graph between
 #' matching Start and Finish nodes can be expanded and collapsed. 
 #' Users can also right-click on a Start or Finish node to see the 
@@ -442,16 +441,15 @@ prov.start <- function(pname=NULL) {
 #' @param pname the label for the node. This can be passed as
 #' a string or as a name.
 #' @return nothing
-#' @export
 
-prov.finish <- function(pname=NULL) {
+.ddg.finish <- function(pname=NULL) {
   if (!.ddg.is.init()) return(invisible())
   
   .ddg.lookup.function.name(pname)
   
   # Check for NULL.
   if (is.null(pname)) {
-    msg <- "Cannot call prov.finish with NULL value from top-level."
+    msg <- "Cannot call .ddg.finish with NULL value from top-level."
     .ddg.insert.error.message (msg)
   }
   
@@ -461,20 +459,24 @@ prov.finish <- function(pname=NULL) {
   # Create control flow edge from preceding procedure node.
   .ddg.proc2proc()
   
-  # prov.finish is added to the end of blocks.  We want the block to
+  # .ddg.finish is added to the end of blocks.  We want the block to
   # return the value of the last R statement.
   return(.ddg.get (".ddg.last.R.value"))
 }
 
+#' Level of Detail
+#'
 #' prov.annotate.on enables provenance collection for the functions specified
-#' by the parameter fnames. Provenance is not collected for other functions. 
-#' If fnames is NULL, provenance is collected for all functions.
-#' @param fnames - a list of one or more function names passed in as strings.
-#' @return nothing
+#' by the parameter fnames.on. Provenance is not collected for other functions. 
+#' If fnames.on is NULL, provenance is collected for all functions.
+#' @param fnames.on a list of one or more function names passed in as strings.
+#' @return prov.annotate.on enables provenance collection for the specified 
+#' functions. The prov.annotate.on function does not return a value.
 #' @export
+#' @rdname prov.annotate.on
 
-prov.annotate.on <- function (fnames=NULL){
-  if (is.null(fnames)) {
+prov.annotate.on <- function (fnames.on=NULL){
+  if (is.null(fnames.on)) {
     .ddg.set("ddg.annotate.off", vector())
     .ddg.set("ddg.annotate.inside", TRUE)
     return()
@@ -482,25 +484,27 @@ prov.annotate.on <- function (fnames=NULL){
   
   # Add to the on list
   on.list <- .ddg.get("ddg.annotate.on")
-  on.list <- union (on.list, fnames)
+  on.list <- union (on.list, fnames.on)
   .ddg.set("ddg.annotate.on", on.list)
   
   # Remove from the off list
   off.list <- .ddg.annotate.off()
-  off.list <- Filter (function(off) !(off %in% fnames), off.list)
+  off.list <- Filter (function(off) !(off %in% fnames.on), off.list)
   .ddg.set("ddg.annotate.off", off.list) 
   
 }
 
 #' prov.annotate.off disables provenance collection for the functions specified
-#' by the parameter fnames. Provenance is collected for other functions. If fnames
-#' is NULL, provenance is not collected for any function.
-#' @param fnames a list of one or more function names passed in as strings.
-#' @return nothing
+#' by the parameter fnames.off. Provenance is collected for other functions. If 
+#' fnames.off is NULL, provenance is not collected for any function.
+#' @param fnames.off a list of one or more function names passed in as strings.
+#' @return prov.annotate.off disables provenance collection for the specified 
+#' functions. The prov.annotate.off function does not return a value.
 #' @export
+#' @rdname prov.annotate.on
 
-prov.annotate.off <- function (fnames=NULL) {
-  if (is.null(fnames)) {
+prov.annotate.off <- function (fnames.off=NULL) {
+  if (is.null(fnames.off)) {
     .ddg.set("ddg.annotate.on", vector())
     .ddg.set("ddg.annotate.inside", FALSE)
     return()
@@ -508,12 +512,12 @@ prov.annotate.off <- function (fnames=NULL) {
   
   # Add to the off list
   off.list <- .ddg.annotate.off()
-  off.list <- union (off.list, fnames)
+  off.list <- union (off.list, fnames.off)
   .ddg.set("ddg.annotate.off", off.list)
   
   # Remove from the on list
   on.list <- .ddg.annotate.on()
-  on.list <- Filter (function(on) !(on %in% fnames), on.list)
+  on.list <- Filter (function(on) !(on %in% fnames.off), on.list)
   .ddg.set("ddg.annotate.on", on.list) 
   
 }
@@ -551,9 +555,9 @@ prov.annotate.off <- function (fnames=NULL) {
   # Return if statement is empty.
   if (length(parsed.command) == 0) return(command@parsed)
   
-  # Replace source with prov.source.
+  # Replace source with .ddg.source.
   if (is.call(parsed.command) && parsed.command[[1]] == "source") {
-    return(.ddg.add.prov.source(parsed.command, command))
+    return(.ddg.add.ddg.source(parsed.command, command))
   }
   
   # Annotate user-defined functions.
@@ -566,7 +570,7 @@ prov.annotate.off <- function (fnames=NULL) {
   statement.type <- .ddg.get.statement.type(parsed.command)
   loop.types <- list("for", "while", "repeat")
   
-  # Move into funcs below && prov.max.loops() > 0) {
+  # Move into funcs below && .ddg.max.loops() > 0) {
   if (length(statement.type > 0) && !is.null(statement.type)) { 
     
     # Annotate if statement.
@@ -589,14 +593,14 @@ prov.annotate.off <- function (fnames=NULL) {
   return(command@parsed)
 }
 
-#' .ddg.add.prov.source replaces source with prov.source.
+#' .ddg.add.ddg.source replaces source with .ddg.source.
 #' @param parsed.command a parsed expression that is a call to the source function.
 #' @param command the DDGStatement object for the source call
-#' @return a parsed expression with source replaced by prov.source
+#' @return a parsed expression with source replaced by .ddg.source
 
-.ddg.add.prov.source <- function(parsed.command, cmd) {
+.ddg.add.ddg.source <- function(parsed.command, cmd) {
   script.name <- deparse(parsed.command[[2]])
-  parsed.command.txt <- paste("prov.source(", script.name, 
+  parsed.command.txt <- paste(".ddg.source(", script.name, 
                               ", calling.script =", cmd@script.num, 
                               ", startLine=", cmd@pos@startLine,
                               ", startCol=", cmd@pos@startCol, 
@@ -992,7 +996,7 @@ prov.annotate.off <- function (fnames=NULL) {
 
 .ddg.annotate.if.statement <- function(command) {
   #print(paste(".ddg.annotate.if.statement annotating", command@text))
-  if (prov.max.loops() == 0) {
+  if (.ddg.max.loops() == 0) {
     parsed.command.txt <- deparse(command@parsed[[1]])
   }
   
@@ -1104,7 +1108,7 @@ prov.annotate.off <- function (fnames=NULL) {
 #' @return parsed command with annotationa added
 
 .ddg.annotate.loop.statement <- function(command, loop.type) {
-  if (prov.max.loops() == 0) {
+  if (.ddg.max.loops() == 0) {
     # Note that I can't just use command@text because it does not separate 
     # statements with newlines
     parsed.command.txt <- deparse(command@parsed[[1]])
@@ -1168,18 +1172,18 @@ prov.annotate.off <- function (fnames=NULL) {
     parsed.command.txt <- paste(c(firstLine,
             paste("if (.ddg.loop.count.inc(", ddg.loop.num, 
                   ") >= .ddg.first.loop() && .ddg.loop.count(", ddg.loop.num, 
-                  ") <= .ddg.first.loop() + prov.max.loops() - 1)", sep=""),
+                  ") <= .ddg.first.loop() + .ddg.max.loops() - 1)", sep=""),
             annotated.block.txt,
             paste("else", sep = ""),
             block.txt,
             paste("}", sep=""),
             paste("if (.ddg.loop.count(", ddg.loop.num, 
-                  ") > .ddg.first.loop() + prov.max.loops() - 1)",
+                  ") > .ddg.first.loop() + .ddg.max.loops() - 1)",
                   " .ddg.details.omitted()", sep=""),
             paste(".ddg.reset.loop.count(", ddg.loop.num, ")", sep=""),
             
             # Turn loop annotations back on in case we reached the max.
-            paste("if (prov.max.loops() != 0) .ddg.loop.annotate.on()"),  
+            paste("if (.ddg.max.loops() != 0) .ddg.loop.annotate.on()"),  
             collapse="\n"))
   }
   
@@ -1298,9 +1302,9 @@ prov.annotate.off <- function (fnames=NULL) {
 #' @return block with annotations added
 
 .ddg.add.block.start.finish <- function(block, pname) {
-  # Create prov.start & prov.finish statements.
-  start.statement <- deparse(call("prov.start", pname))
-  finish.statement <- deparse(call("prov.finish", pname))
+  # Create .ddg.start & .ddg.finish statements.
+  start.statement <- deparse(call(".ddg.start", pname))
+  finish.statement <- deparse(call(".ddg.finish", pname))
   
   # Get internal statements.
   pos <- length(block)
@@ -1377,8 +1381,11 @@ prov.annotate.off <- function (fnames=NULL) {
 #' 2 = 10 loops, snapshots < 100k.\cr
 #' 3 = all loops, all snapshots.
 #' @param detail.level level of detail to set (0-3)
-#' @return nothing
+#' @return prov.set.detail sets the level of detail for the provenance
+#' to be collected (0-3). The prov.set.detail function does not return
+#' a value.
 #' @export
+#' @rdname prov.annotate.on
 
 prov.set.detail <- function(detail.level) {
   if (detail.level == 0) {
@@ -1410,8 +1417,10 @@ prov.set.detail <- function(detail.level) {
 }
 
 #' prov.get.detail returns the current level of provenance detail.
-#' @return the current level of detail (0-3)
+#' @return prov.get.detail returns the current level of provenance 
+#' detail (0-3).
 #' @export 
+#' @rdname prov.annotate.on
 
 prov.get.detail <- function() {
   if (!.ddg.is.set("ddg.detail")) .ddg.set("ddg.detail", NULL)
@@ -1421,8 +1430,16 @@ prov.get.detail <- function() {
 #' prov.clear.detail clears the current value of provenance detail.
 #' The level of detail is then determined by parameters of prov.run
 #' or prov.init.
-#' @return nothing
+#' @return prov.clear.detail clears the current value of provenance
+#' detail. The prov.clear.detail function does not return a value.
 #' @export
+#' @rdname prov.annotate.on
+#' @examples
+#' prov.annotate.on("f")
+#' prov.annotate.off("g")
+#' prov.set.detail(1)
+#' prov.get.detail()
+#' prov.clear.detail()
 
 prov.clear.detail <- function() {
   .ddg.set("ddg.detail", NULL)

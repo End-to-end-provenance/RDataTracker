@@ -706,7 +706,7 @@ methods::setMethod ("initialize",
   }
   
   # Check if we want to go inside loop and if-statements
-  else if (prov.max.loops() == 0) {
+  else if (.ddg.max.loops() == 0) {
     return (list())
   }
 

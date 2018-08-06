@@ -184,7 +184,7 @@
   .ddg.set(".ddg.last.cmd", NULL)
   
   # Record the current command to be opened during console execution
-  # (used when executing a script using prov.source).
+  # (used when executing a script using .ddg.source).
   .ddg.set(".ddg.possible.last.cmd", NULL)
 
   # Store path of current script.
@@ -710,14 +710,14 @@
 }
 
 #' .ddg.is.procedure.cmd returns TRUE if the command passed in
-#' is a call to .ddg.procedure, prov.start, or prov.finish.
+#' is a call to .ddg.procedure, .ddg.start, or .ddg.finish.
 #' These will create a procedure node and therefore
 #' initiate the creation of a collapsible console node.
 #' 
 #' @param cmd - A DDGStatement object
-#' @return true if cmd is a call to .ddg.procedure, prov.start or prov.finish
+#' @return true if cmd is a call to .ddg.procedure, .ddg.start or .ddg.finish
 .ddg.is.procedure.cmd <- function(cmd) {
-  return(grepl("^ddg.procedure", cmd@text) || grepl("^prov.start", cmd@text) || grepl("^prov.finish", cmd@text))
+  return(grepl("^ddg.procedure", cmd@text) || grepl("^.ddg.start", cmd@text) || grepl("^.ddg.finish", cmd@text))
 }
 
 #' .ddg.record.warning creates the warning node for the saved warning and 
@@ -874,7 +874,7 @@
       # control statement itself.
 
       create <- !cmd@isDdgFunc && .ddg.is.init() &&  
-          (!(control.statement && .ddg.loop.annotate() && prov.max.loops() > 0) || 
+          (!(control.statement && .ddg.loop.annotate() && .ddg.max.loops() > 0) || 
              !run.commands)
       start.finish.created <- FALSE
       cur.cmd.closed <- FALSE
@@ -1027,7 +1027,7 @@
         
         create.procedure <- create && !cur.cmd.closed && 
                             !start.finish.created  && 
-                            !grepl("^prov.source", cmd@annotated)
+                            !grepl("^.ddg.source", cmd@annotated)
         
         # We want to create a procedure node for this command.
         if (create.procedure) {
@@ -1782,7 +1782,7 @@
         index <- index + 1
       }
       name <- stringr::str_trim(name, side = "both")
-      annotated <- append(annotated, paste("prov.start(\"", name, "\")", sep = ""))
+      annotated <- append(annotated, paste(".ddg.start(\"", name, "\")", sep = ""))
     }
     else if(nchar(script[i]) == 0 && 
             (regexpr("#'", script[i + 1]) != -1 || 
@@ -1792,7 +1792,7 @@
         skip <- FALSE
       }
       else{
-        annotated <- append(annotated, paste("prov.finish(\"", name, "\")", sep = ""))
+        annotated <- append(annotated, paste(".ddg.finish(\"", name, "\")", sep = ""))
       }
     }
     else{
