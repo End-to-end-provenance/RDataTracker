@@ -17,9 +17,9 @@
 
 ############################ IOTrace.R #############################
 
-# Contains the functions needed to trace input and output operations, including
-# the reading and writing of files, opening and closing of connections,
-# and the creation of plots.
+# This file contains the functions needed to trace input and output 
+# operations, including the reading and writing of files, opening and 
+# closing of connections, and the creation of plots.
 #
 # In each case, there are a number of standard functions defined:
 # 1. Make a data frame containing the names of functions to trace, and the 
@@ -39,6 +39,7 @@
 # WARNING:  The tracing code filters out calls where specific ddg functions
 # are on the call stack.  If the names of those functions are changed, the
 # code here will need to change as well.  
+
 
 #' .ddg.init.iotrace initialize the data needed to trace I/O functions
 #' @return nothing

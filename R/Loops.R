@@ -15,10 +15,10 @@
 #   License along with this program.  If not, see
 #   <http://www.gnu.org/licenses/>.
 
-######## Loops.R ##############
+########################### Loops.R ###########################
 
-# This file contains code related to collecting provenance inside of loops
-#
+# This file contains code related to collecting provenance inside of loops.
+
 
 #' .ddg.init.loops initialize the variables used to manage loop annotation
 #' @param first.loop the first loop iteration to collect

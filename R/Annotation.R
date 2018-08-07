@@ -15,7 +15,7 @@
 #   License along with this program.  If not, see
 #   <http://www.gnu.org/licenses/>.
 
-######################## Annotation.R ########################
+###################### Annotation.R ########################
 
 # This file contains functions that are called within annotations
 # that are added to collect provenance within functions and 
@@ -23,6 +23,7 @@
 #
 # It also contains helper functions that are used only for
 # annotations internal to functions and control constructs.
+
 
 #--------------------USER FUNCTIONS-----------------------#
 

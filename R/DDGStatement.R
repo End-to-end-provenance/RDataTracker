@@ -15,18 +15,13 @@
 #   License along with this program.  If not, see
 #   <http://www.gnu.org/licenses/>.
 
-############################ DDGStatement.R #############################
+########################## DDGStatement.R ############################
 
 # This file contains definitions of S4 classes to manage information about
 # individual R statements and functions that operate on individual statements
 #
 # All of these functions are internal to the RDataTracker library and
 # not called from user code.
-#
-# Author: blerner
-# August 2016
-#
-#########################################################################
 
 # Needed to work with S4 classes.  Normally, this library is automatically
 # loaded.  However, it is not loaded when running non-interactively, as

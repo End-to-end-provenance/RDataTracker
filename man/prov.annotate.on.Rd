@@ -6,7 +6,7 @@
 \alias{prov.set.detail}
 \alias{prov.get.detail}
 \alias{prov.clear.detail}
-\title{Level of Detail}
+\title{Controlling Provenance Detail}
 \usage{
 prov.annotate.on(fnames.on = NULL)
 
@@ -26,38 +26,17 @@ prov.clear.detail()
 \item{detail.level}{level of detail to set (0-3)}
 }
 \value{
-prov.annotate.on enables provenance collection for the specified 
-functions. The prov.annotate.on function does not return a value.
-
-prov.annotate.off disables provenance collection for the specified 
-functions. The prov.annotate.off function does not return a value.
-
-prov.set.detail sets the level of detail for the provenance
-to be collected (0-3). The prov.set.detail function does not return
-a value.
-
 prov.get.detail returns the current level of provenance 
-detail (0-3).
-
-prov.clear.detail clears the current value of provenance
-detail. The prov.clear.detail function does not return a value.
+detail (0-3).  Returns NULL if prov.set.detail was not previously
+called, or has been cleared.
 }
 \description{
-prov.annotate.on enables provenance collection for the functions specified
-by the parameter fnames.on. Provenance is not collected for other functions. 
-If fnames.on is NULL, provenance is collected for all functions.
+prov.annotate.on enables provenance collection for specific functions.
 
-prov.annotate.off disables provenance collection for the functions specified
-by the parameter fnames.off. Provenance is collected for other functions. If 
-fnames.off is NULL, provenance is not collected for any function.
+prov.annotate.off disables provenance collection for specified functions.
 
 prov.set.detail sets the level of detail for the provenance to be 
-collected. If this value is not set, the level of detail is determined by the 
-parameters of prov.run or prov.init.\cr
-0 = no internal provenance, no snapshots.\cr
-1 = 1 loop, snapshots < 10k.\cr
-2 = 10 loops, snapshots < 100k.\cr
-3 = all loops, all snapshots.
+collected.
 
 prov.get.detail returns the current level of provenance detail.
 
@@ -65,10 +44,53 @@ prov.clear.detail clears the current value of provenance detail.
 The level of detail is then determined by parameters of prov.run
 or prov.init.
 }
+\details{
+To allow provenance to be collected inside functions initially, the
+user calls prov.init or prov.run with TRUE for the annotate.inside.functions
+parameter.  This results in provenance being collected inside all functions.
+
+To get finer control over which functions are annotated, the user can 
+call prov.annotate.on and prov.annotate.off.  In prov.annotate.on, the user passes in 
+a list of function names that should be annotated.  Functions not listed
+are not annotated.  If the user passes in NULL, all functions are annotated.
+
+prov.annotate.on can be called multiple times.  Each call adds more names
+to the list of annotated functions, continuing to annotate the previous
+functions in the list.
+
+In prov.annotate.off, the user passes in 
+a list of function names that should not be annotated.  Functions not listed
+are not annotated.  If the user passes in NULL, all functions are annotated.
+
+prov.annotate.off can be called multiple times.  Each call adds more names
+to the list of unannotated functions.
+
+The level of detail of provenance can be set using the annotate.inside.functions,
+max.loops, and max.snapshot.size parameters of prov.run and prov.init.
+It can also be set using prov.set.detail, which will impact the
+future executions of prov.run and prov.init.  The detail level can
+take on the following values:\cr
+0 = no internal provenance, no snapshots (the prov.init and prov.run defaults).\cr
+1 = provenance inside functions and if-statements and 1 iteration of each loop, snapshots limited to 10k each.\cr
+2 = provenance inside functions and if-statements and up to 10 iterations of each loop, snapshots limited to 100k each.\cr
+3 = provenance inside functions and if-statements and all iterations of each loop, complete snapshots.
+}
 \examples{
+prov.set.detail(1)
+prov.init()
 prov.annotate.on("f")
 prov.annotate.off("g")
-prov.set.detail(1)
-prov.get.detail()
-prov.clear.detail()
+f <- function (x) {
+  if (x < 0) return (0)
+  else return (x - 1)
+}
+g <- function (x) {
+  return (x - 1)
+}
+f (3)
+g (-3)
+prov.quit()
+}
+\seealso{
+\code{\link{prov.init}} and \code{\link{prov.run}}
 }

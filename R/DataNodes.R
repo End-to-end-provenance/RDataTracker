@@ -15,8 +15,9 @@
 #   License along with this program.  If not, see
 #   <http://www.gnu.org/licenses/>.
 
-################  Functions involved in managing the data nodes ################
+########################## DataNodes.R ###########################
 #
+# This file contains functions involved in managing data nodes.
 # Data nodes are stored in a data frame, with one row for each node.
 # The columns of the data frame are:
 #
@@ -35,6 +36,7 @@
 # ddg.pnum is the number associated with the last procedure node created
 #
 # This file also contains functions that create data nodes of various types.
+
 
 #' .ddg.init.data.nodes initializes the information needed to manage data nodes.
 #' @return nothing
