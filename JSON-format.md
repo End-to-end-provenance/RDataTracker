@@ -310,7 +310,7 @@ source("file3.R")
 A library node is a node representing a library or package loaded at the time of execution. It contains the following fields:
 * _name_: The name of the loaded library.
 * _version_: The version number of the library.
-* _prov\:type_: This indicates that this node is a [collection](https://www.w3.org/TR/2013/REC-prov-dm-20130430/#term-collection). This is used in grouping function nodes with their library nodes in the [`hadMember`](https://github.com/End-to-end-provenance/RDataTracker/blob/export/JSON-format.md#h-hadMember) section. 
+* _prov\:type_: This indicates that this node is a [collection](https://www.w3.org/TR/2013/REC-prov-dm-20130430/#term-collection). This is used in grouping function nodes with their library nodes in the [`hadMember`](https://github.com/End-to-end-provenance/RDataTracker/blob/export/JSON-format.md#h-hadmember) section. 
   
 ```
 "rdt:l1": {
@@ -325,7 +325,7 @@ A library node is a node representing a library or package loaded at the time of
 
 #### - function nodes
 
-A function node is a node representing a function called from a library that is neither user-defined, nor from the base R library. It contains one field showing the name of the function. Functions originating from the same library are grouped together using edges in the [`hadMember`](https://github.com/End-to-end-provenance/RDataTracker/blob/export/JSON-format.md#h-hadMember) section, described below.
+A function node is a node representing a function called from a library that is neither user-defined, nor from the base R library. It contains one field showing the name of the function. Functions originating from the same library are grouped together using edges in the [`hadMember`](https://github.com/End-to-end-provenance/RDataTracker/blob/export/JSON-format.md#h-hadmember) section, described below.
 
 ```
 "rdt:f1": {
