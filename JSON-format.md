@@ -166,29 +166,29 @@ Below is the json representation of a few activity nodes from the json file gene
 
 ### d. entity
 
-The PROV data model defines an entity as follows:
-“An entity is a physical, digital, conceptual, or other kind of thing with some fixed aspects; entities may be real or imaginary.”
+The [PROV data model](https://www.w3.org/TR/2013/REC-prov-dm-20130430/) defines an [entity](https://www.w3.org/TR/2013/REC-prov-dm-20130430/#term-entity) as follows:  
+_“An entity is a physical, digital, conceptual, or other kind of thing with some fixed aspects; entities may be real or imaginary.”_
+
 We use this section for data nodes, the environment, library nodes, and function nodes.
 
-Data nodes contain the following fields:
-* name: The name of the node. In most cases, this is the variable name.
-* value: The value of the data. For large values such as lists and data frames, the data are stored as snapshots, normally either as R objects or csv files. This value will then be the path to that snapshot. If in the case where snapshots are not being saved (by setting the max.snapshot.size parameter to 0 when calling prov.run), this value will be “NotRecorded”.
-* valType: This is a json-object expressed as a string as the Prov-Json standard does not allow json objects at this level of nesting. It contains the following fields:
-   - container: The container type. Examples are vector, matrix, and data frame.
-   - dimension: The size of the object.
-   - type: The types contained within the container. In containers such as lists and data frames where the types may differ between elements, this will list the type of each element (in lists) or the type of each column (for data frames).
-* type: The type of data. The different values it can be are:
-   - Data: The most common type. This is data stored in memory. This is also the type of data node for snapshots whose values are not saved.
-   - Snapshot: Data that is larger than a predetermined size are stored as snapshots. 
-   - File: A file. 
-   - URL: A url.
-   - Exception, Warning: Exceptions and warnings thrown by a procedure.
-* scope: The scope, or environment, where this data resides in.
-* fromEnv: This value is set to TRUE if the variable was set in the Global Environment before the script was run, FALSE otherwise.
-* hash: The hash number for this node if the data node is for a file.
-* timestamp: If applicable, this records the timestamp of the original file.
-* location: If applicable, this records the name and path of the original file. 
-
+__Data__ nodes contain the following fields:
+* _name_: The name of the node. In most cases, this is the variable name.
+* _value_: The value of the data. For large values such as lists and data frames, the data are stored as snapshots, normally either as R objects or csv files. This value will then be the path to that snapshot. If in the case where snapshots are not being saved (by setting the max.snapshot.size parameter to 0 when calling prov.run), this value will be “NotRecorded”.
+* _valType_: This is a json-object expressed as a string as the Prov-Json standard does not allow json objects at this level of nesting. It contains the following fields:
+   - _container_: The container type. Examples are vector, matrix, and data frame.
+   - _dimension_: The size of the object.
+   - _type_: The types contained within the container. In containers such as lists and data frames where the types may differ between elements, this will list the type of each element (in lists) or the type of each column (for data frames).
+* _type_: The type of data. The different values it can be are:
+   - _Data_: The most common type. This is data stored in memory. This is also the type of data node for snapshots whose values are not saved.
+   - _Snapshot_: Data that is larger than a predetermined size are stored as snapshots. 
+   - _File_: A file. 
+   - _URL_: A url.
+   - _Exception, Warning_: Exceptions and warnings thrown by a procedure.
+* _scope_: The scope, or environment, where this data resides in.
+* _fromEnv_: This value is set to TRUE if the variable was set in the Global Environment before the script was run, FALSE otherwise.
+* _hash_: The hash number for this node if the data node is for a file.
+* _timestamp_: If applicable, this records the timestamp of the original file.
+* _location_: If applicable, this records the name and path of the original file. 
 
 Below is the json representation of the data nodes from the json file generated when running RDataTracker on the very first example in this document:
   
