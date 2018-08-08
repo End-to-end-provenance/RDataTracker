@@ -228,20 +228,20 @@ Below is the json representation of the data nodes from the json file generated 
 }
 ```
 
-The environment node contains information about the execution environment. It contains the following fields:
-* name: Contains the value “environment”. Shows that this is the environment node.
-* architecture: The computer’’s architecture.
-* operatingSystem: The operating system.
-* language: The language the script is in.
-* langVersion: The version of the language the script is in.
-* script: The full path of the executed script.
-* scriptTimeStamp: The timestamp of the executed script.
-* sourcedScripts: If the source function is called, this stores the names of the scripts sourced in a list.
-* sourcedScriptTimeStamps: The timestamps of scripts run using the source function, if any.  This list has the same length as sourcedScripts. We initially tried to express this information as a list of sourcedScript and timestamp pairs, but the prov-json standard does not allow json objects at that level of nesting.
-* workingDirectory: The directory where the script was executed.
-* ddgDirectory: The directory where the json file is stored.
-* ddgTimeStamp: The timestamp of the json file.
-* hashAlgorithm: The name of the algorithm used to produce hash values for nodes.
+The __environment__ node contains information about the execution environment. It contains the following fields:
+* '_name_: Contains the value “environment”. Shows that this is the environment node.
+* _architecture_: The computer’’s architecture.
+* _operatingSystem_: The operating system.
+* _language_: The language the script is in.
+* _langVersion_: The version of the language the script is in.
+* _script_: The full path of the executed script.
+* _scriptTimeStamp_: The timestamp of the executed script.
+* _sourcedScripts_: If the source function is called, this stores the names of the scripts sourced in a list.
+* _sourcedScriptTimeStamps_: The timestamps of scripts run using the source function, if any.  This list has the same length as sourcedScripts. We initially tried to express this information as a list of sourcedScript and timestamp pairs, but the prov-json standard does not allow json objects at that level of nesting.
+* _workingDirectory_: The directory where the script was executed.
+* _ddgDirectory_: The directory where the json file is stored.
+* _ddgTimeStamp_: The timestamp of the json file.
+* _hashAlgorithm_: The name of the algorithm used to produce hash values for nodes.
 
 Below is the environment node from the json file generated when running RDataTracker on the very first example in this document:
   
