@@ -386,17 +386,17 @@ This section represents the concept of generation, where an activity produces an
 
 ### g. used
 
-The opposite of generation, this section represents the concept usage, where an activity utilises an entity.
+The opposite of [generation](https://www.w3.org/TR/2013/REC-prov-dm-20130430/#term-Generation), this section represents the concept [usage](https://www.w3.org/TR/2013/REC-prov-dm-20130430/#term-Usage), where an activity utilises an entity.
 We use this section for data-to-procedure (data input) edges, as well as function-to-procedure (function usage) edges.
   
-An example of a data-to-procedure edge.
+An example of a data-to-procedure edge:
 ```
 "rdt:dp1": {
 	"prov:entity": "rdt:d1",
 	"prov:activity": "rdt:p3"
 }
 ```
-An example of a function-to-procedure edge.
+An example of a function-to-procedure edge:
 ```
 "rdt:fp1": {
 	"prov:entity": "rdt:f1",
