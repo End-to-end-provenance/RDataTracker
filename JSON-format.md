@@ -174,7 +174,9 @@ _“An entity is a physical, digital, conceptual, or other kind of thing with so
 
 We use this section for data nodes, the environment, library nodes, and function nodes.
 
-__Data__ nodes contain the following fields:
+#### data nodes
+
+Data nodes contain the following fields:
 * _name_: The name of the node. In most cases, this is the variable name.
 * _value_: The value of the data. For large values such as lists and data frames, the data are stored as snapshots, normally either as R objects or csv files. This value will then be the path to that snapshot. If in the case where snapshots are not being saved (by setting the max.snapshot.size parameter to 0 when calling prov.run), this value will be “NotRecorded”.
 * _valType_: This is a json-object expressed as a string as the Prov-Json standard does not allow json objects at this level of nesting. It contains the following fields:
@@ -231,7 +233,9 @@ Below is the json representation of the data nodes from the json file generated 
 }
 ```
 
-The __environment__ node contains information about the execution environment. It contains the following fields:
+#### environment
+
+The environment node contains information about the execution environment. It contains the following fields:
 * _name_: Contains the value “environment”. Shows that this is the environment node.
 * _architecture_: The computer’’s architecture.
 * _operatingSystem_: The operating system.
@@ -301,10 +305,12 @@ source("file3.R")
 }
 ```
 
-A __library__ node is a node representing a library or package loaded at the time of execution. It contains the following fields:
+#### library nodes
+
+A library node is a node representing a library or package loaded at the time of execution. It contains the following fields:
 * _name_: The name of the loaded library.
 * _version_: The version number of the library.
-* _prov:type_: This indicates that this node is a [collection](https://www.w3.org/TR/2013/REC-prov-dm-20130430/#term-collection). This is used in grouping function nodes with their library nodes in the hasMember section. 
+* _prov\:type_: This indicates that this node is a [collection](https://www.w3.org/TR/2013/REC-prov-dm-20130430/#term-collection). This is used in grouping function nodes with their library nodes in the [`hadMember`](https://github.com/End-to-end-provenance/RDataTracker/blob/export/JSON-format.md#h-hadMember) section. 
   
 ```
 "rdt:l1": {
@@ -317,7 +323,9 @@ A __library__ node is a node representing a library or package loaded at the tim
 }
 ```
 
-A __function__ node is a node representing a function called from a library that is neither user-defined, nor from the base R library. It contains one field showing the name of the function. Functions originating from the same library are grouped together using edges in the `hadMember` section, described in [section 2f](https://github.com/End-to-end-provenance/RDataTracker/blob/export/JSON-format.md#f-wasgeneratedby) below.
+#### function nodes
+
+A function node is a node representing a function called from a library that is neither user-defined, nor from the base R library. It contains one field showing the name of the function. Functions originating from the same library are grouped together using edges in the [`hadMember`](https://github.com/End-to-end-provenance/RDataTracker/blob/export/JSON-format.md#h-hadMember) section, described below.
 
 ```
 "rdt:f1": {
