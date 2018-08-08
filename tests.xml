@@ -67,6 +67,7 @@
 	The target "source-tests" will run the following tests cases:
 
 	- SourceFuncTest
+	- console
 
 	The target "bug-tests" will run the following test cases:
 
@@ -151,7 +152,7 @@
 
 	<!-- Check for libraries needed by the tests -->
 	<target name="dependencies">
-		<exec executable="Rscript" dir="tests/" >
+		<exec executable="Rscript" dir="scriptTests/" >
 			<arg line="depends.r" />
 		</exec>
 	</target>
@@ -178,7 +179,7 @@
 		<mkdir dir="${local_dir}" />
 
 		<!-- Copy the source test file to this directory, and replace with correct script name and directory -->
-		<copy file="${FILE.basedir}/tests/sourceTest.r" todir="${dir}" overwrite="true"/>
+		<copy file="${FILE.basedir}/scriptTests/sourceTest.r" todir="${dir}" overwrite="true"/>
 		<replaceregexp  file="${dir}/sourceTest.r"
 						match="\[DIR_LOCAL\]"
 						replace="${FILE.basedir}/${dir}"
@@ -220,9 +221,9 @@
 		<!-- Build the console test file by concatenating the pre-template, the script
 		     being tested, and the post-template  -->
 		<concat destfile="${dir}/consoleTest.r">
-			<fileset file="${FILE.basedir}/tests/consoleTest-pre.r"/>
+			<fileset file="${FILE.basedir}/scriptTests/consoleTest-pre.r"/>
 			<fileset file="${dir}/${script-file}"/>
-			<fileset file="${FILE.basedir}/tests/consoleTest-post.r"/>
+			<fileset file="${FILE.basedir}/scriptTests/consoleTest-post.r"/>
 		</concat>
 		<replaceregexp  file="${dir}/consoleTest.r"
 						match="\[DIR_LOCAL\]"
@@ -446,9 +447,9 @@
 		Tests the produced .json file for prov-json compliance.
 	-->
 	<target name="prov-json-compliance-test">
-		<exec executable="Rscript" dir="tests/ProvJsonTest" resultproperty="compliant">
+		<exec executable="Rscript" dir="scriptTests/ProvJsonTest" resultproperty="compliant">
 			<arg value="ProvJsonTest.r" />
-			<arg path="tests/ProvJsonTest/schema.json" />
+			<arg path="scriptTests/ProvJsonTest/schema.json" />
 			<arg path="${local_dir}/prov.json.local" />
 		</exec>
 		<fail message="prov.json is not prov-json compliant.">
@@ -510,31 +511,31 @@
 	<!-- Runs a test using a standard file naming scheme. -->
 	<target name = "run-regression-test">
 		<antcall target="run-test">
-			<param name="dir" value="tests/${test-name}" />
-			<param name="out" value="tests/${test-name}/${test-name}.out" />
+			<param name="dir" value="scriptTests/${test-name}" />
+			<param name="out" value="scriptTests/${test-name}/${test-name}.out" />
 			<param name="script-file" value="${test-name}.R" />
-			<param name="expected_out" value="tests/${test-name}/expected_${test-name}.out" />
-			<param name="expected_ddg" value="tests/${test-name}/expected_${test-name}_prov.json" />
+			<param name="expected_out" value="scriptTests/${test-name}/expected_${test-name}.out" />
+			<param name="expected_ddg" value="scriptTests/${test-name}/expected_${test-name}_prov.json" />
 		</antcall>
 	</target>
 
 	<target name = "run-regression-test-Rmd">
 		<antcall target="run-test">
-			<param name="dir" value="tests/${test-name}" />
-			<param name="out" value="tests/${test-name}/${test-name}.out" />
+			<param name="dir" value="scriptTests/${test-name}" />
+			<param name="out" value="scriptTests/${test-name}/${test-name}.out" />
 			<param name="script-file" value="${test-name}.Rmd" />
-			<param name="expected_out" value="tests/${test-name}/expected_${test-name}.out" />
-			<param name="expected_ddg" value="tests/${test-name}/expected_${test-name}_prov.json" />
+			<param name="expected_out" value="scriptTests/${test-name}/expected_${test-name}.out" />
+			<param name="expected_ddg" value="scriptTests/${test-name}/expected_${test-name}_prov.json" />
 		</antcall>
 	</target>
 	
 	<target name = "run-regression-test-console">
 		<antcall target="run-console-test">
-			<param name="dir" value="tests/${test-name}" />
-			<param name="out" value="tests/${test-name}/${test-name}.out" />
+			<param name="dir" value="scriptTests/${test-name}" />
+			<param name="out" value="scriptTests/${test-name}/${test-name}.out" />
 			<param name="script-file" value="${test-name}.R" />
-			<param name="expected_out" value="tests/${test-name}/expected_${test-name}.out" />
-			<param name="expected_ddg" value="tests/${test-name}/expected_${test-name}_prov.json" />
+			<param name="expected_out" value="scriptTests/${test-name}/expected_${test-name}.out" />
+			<param name="expected_ddg" value="scriptTests/${test-name}/expected_${test-name}_prov.json" />
 		</antcall>
 	</target>
 
@@ -590,23 +591,16 @@
 	<!-- Task to update the expected results using the standard naming scheme -->
 	<target name = "update-regression-expected">
 		<antcall target="update-expected">
-			<param name="dir" value="tests/${test-name}"/>
-			<param name="expected_ddg" value="tests/${test-name}/expected_${test-name}_prov.json"/>
+			<param name="dir" value="scriptTests/${test-name}"/>
+			<param name="expected_ddg" value="scriptTests/${test-name}/expected_${test-name}_prov.json"/>
 		</antcall>
 		
 		<antcall target="update-expected-out">
-			<param name="dir" value="tests/${test-name}"/>
-			<param name="out" value="tests/${test-name}/${test-name}.out"/>
-			<param name="expected_out" value="tests/${test-name}/expected_${test-name}.out"/>
+			<param name="dir" value="scriptTests/${test-name}"/>
+			<param name="out" value="scriptTests/${test-name}/${test-name}.out"/>
+			<param name="expected_out" value="scriptTests/${test-name}/expected_${test-name}.out"/>
 		</antcall>
 	</target>
-
-<!--	<target name = "update-console-expected">
-		<antcall target="update-expected">
-			<param name="dir" value="tests/${test-name}"/>
-			<param name="expected_ddg" value="tests/${test-name}/expected_${test-name}_prov.json"/>
-		</antcall>
-	</target>-->
 
 	<!--############################ End FUNCTIONS ############################-->
 	
@@ -616,7 +610,7 @@
 		This runs before basicTest when test-travis and test-all are called. 
 	-->
 	<target name="ProvJsonTest">
-		<exec executable="Rscript" dir="tests/ProvJsonTest" resultproperty="passed">
+		<exec executable="Rscript" dir="scriptTests/ProvJsonTest" resultproperty="passed">
 			<arg value="ProvJsonTest.r" />
 		</exec>
 		<fail message="Test failed.">
@@ -1137,7 +1131,7 @@
 
 	<!-- Test interactive() function when calling from command line -->
 	<target name="interactive-test">
-		<exec executable="Rscript" dir="tests" >
+		<exec executable="Rscript" dir="scriptTests" >
 			<arg line="RscriptTest.r" />
 		</exec>
 	</target>
