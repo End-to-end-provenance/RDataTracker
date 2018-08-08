@@ -294,8 +294,8 @@ source("file3.R")
 		"file3.R"
 	],
 	"rdt:sourcedScriptTimeStamps": [
-		"2018-06-22T12.07.45EDT"
-		"2018-06-22T12.07.58EDT"
+		"2018-06-22T12.07.45EDT",
+		"2018-06-22T12.07.58EDT",
 		"2018-06-22T12.08.09EDT"
 	],
 	"rdt:workingDirectory": "C:/Users/fong22e/Documents/provjson/examples",
