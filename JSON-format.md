@@ -94,6 +94,7 @@ Attributes within this section defines the namespaces (prefixes) used in the fil
 Prefixes used:
 * _[prov](https://www.w3.org/ns/prov#)_: The prov namespace defined by W3 containing a set of reserved keywords.
 * _rdt_: The set of keywords defined by our prov-json extension.
+
 The [xsd](http://www.w3.org/2000/10/XMLSchema#) prefix is also used, but it is implicitly defined by the prov-json standard.
   
 ```
@@ -106,7 +107,7 @@ The [xsd](http://www.w3.org/2000/10/XMLSchema#) prefix is also used, but it is i
 ### b. agent
 
 The [PROV data model](https://www.w3.org/TR/2013/REC-prov-dm-20130430/) defines an [agent](https://www.w3.org/TR/2013/REC-prov-dm-20130430/#term-agent) as follows:  
-“An agent is something that bears some form of responsibility for an activity taking place, for the existence of an entity, or for another agent's activity.”
+_“An agent is something that bears some form of responsibility for an activity taking place, for the existence of an entity, or for another agent's activity.”_
 
 We adapted this to contain a node with the following information:
 * The name of the tool which produced the json file.
