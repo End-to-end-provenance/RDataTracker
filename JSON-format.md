@@ -314,17 +314,17 @@ A library node is a node representing a library or package loaded at the time of
 }
 ```
 
-A function node is a node representing a function called from a library that is neither user-defined, nor from the base R library. It contains one field showing the name of the function. Functions originating from the same library are grouped together using edges in the hadMember section, described in 2f below.
-  
+A __function__ node is a node representing a function called from a library that is neither user-defined, nor from the base R library. It contains one field showing the name of the function. Functions originating from the same library are grouped together using edges in the `hadMember` section, described in [section 2f](https://github.com/End-to-end-provenance/RDataTracker/blob/export/JSON-format.md#f-wasgeneratedby) below.
+
 ```
 "rdt:f1": {
 	"name": "read.csv"
 }
 ```
 
-Sometimes, multiple libraries will have functions with the same name. In this case, there will be multiple functions with the same name attribute. These are grouped with their respective libraries with edges in the hadMember section. For example:
-  
-  ```
+Sometimes, multiple libraries will have functions with the same name. In this case, there will be multiple functions with the same name attribute. These are grouped with their respective libraries with edges in the `hadMember` section. For example:
+
+```
 "rdt:f1": {
 	"name": "a.function"
 },
@@ -349,6 +349,7 @@ Sometimes, multiple libraries will have functions with the same name. In this ca
 ### e. wasInformedBy
 
 This section represents the concept of [communication](https://www.w3.org/TR/2013/REC-prov-dm-20130430/#concept-communication), where an activity is related to another activity.
+
 We use this section for procedure-to-procedure edges as they denote control flow moving from a procedure to the next, from the informant to the informed.
   
 ```
@@ -364,7 +365,9 @@ We use this section for procedure-to-procedure edges as they denote control flow
 
 ### f. wasGeneratedBy
 
-This section represents the concept of [generation](https://www.w3.org/TR/2013/REC-prov-dm-20130430/#term-Generation), where an activity produces an entity. We use this section for procedure-to-data (data output) edges.
+This section represents the concept of [generation](https://www.w3.org/TR/2013/REC-prov-dm-20130430/#term-Generation), where an activity produces an entity.
+
+We use this section for procedure-to-data (data output) edges.
   
 ```
 "wasGeneratedBy" : {
@@ -387,6 +390,7 @@ This section represents the concept of [generation](https://www.w3.org/TR/2013/R
 ### g. used
 
 The opposite of [generation](https://www.w3.org/TR/2013/REC-prov-dm-20130430/#term-Generation), this section represents the concept [usage](https://www.w3.org/TR/2013/REC-prov-dm-20130430/#term-Usage), where an activity utilises an entity.
+
 We use this section for data-to-procedure (data input) edges, as well as function-to-procedure (function usage) edges.
   
 An example of a data-to-procedure edge:
@@ -406,7 +410,9 @@ An example of a function-to-procedure edge:
 
 ### h. hadMember
 
-This represents the concept of [membership](https://www.w3.org/TR/2013/REC-prov-dm-20130430/#term-membership), grouping each member entity with their respective collection entity. We use this section to group each function node with their library node, indicating which library a function is from.
+This represents the concept of [membership](https://www.w3.org/TR/2013/REC-prov-dm-20130430/#term-membership), grouping each member entity with their respective collection entity.
+
+We use this section to group each function node with their library node, indicating which library a function is from.
 ```
 "hadMember" : {
 	// groups function nodes with their library nodes
