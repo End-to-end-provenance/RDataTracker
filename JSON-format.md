@@ -232,7 +232,7 @@ Below is the json representation of the data nodes from the json file generated 
 ```
 
 The __environment__ node contains information about the execution environment. It contains the following fields:
-* '_name_: Contains the value “environment”. Shows that this is the environment node.
+* _name_: Contains the value “environment”. Shows that this is the environment node.
 * _architecture_: The computer’’s architecture.
 * _operatingSystem_: The operating system.
 * _language_: The language the script is in.
