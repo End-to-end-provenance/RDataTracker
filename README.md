@@ -9,10 +9,10 @@ resulting provenance can be used for a wide variety of applications
 that include debugging scripts, cleaning code, and reproducing results.
 RDataTracker can also be used to collect provenance during console sessions.
 
-The provenance is stored in PROV-JSON format. For immediate use it may
-be retrieved from memory using the prov.json function. For later use
-the provenance is also written to the file prov.json. This file and
-associated files are written by default to the R session temporary
+The provenance is stored in PROV-JSON format (for details see JSON-format.md).
+For immediate use it maybe retrieved from memory using the prov.json function. 
+For later use the provenance is also written to the file prov.json. This file 
+and associated files are written by default to the R session temporary
 directory. The user may change this location by (1) using the optional
 parameter prov.dir in the prov.run or prov.init functions, or (2) setting
 the prov.dir option (e.g. by using the R options command or editing the

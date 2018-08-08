@@ -10,7 +10,7 @@ prov.json()
 prov.display()
 }
 \value{
-prov.json returns the current provenance graph as a prov-json.
+prov.json returns the current provenance graph as a prov-json
 string
 
 prov.display loads and displays the current provenance graph
@@ -49,6 +49,8 @@ str <- prov.json()
 }
 \references{
 PROV-JSON standard: \url{https://www.w3.org/Submission/2013/SUBM-prov-json-20130424/}
+
+RDataTracker PROV-JSON output: \url{https://github.com/End-to-end-provenance/RDataTracker/blob/export/JSON-format.md}
 }
 \seealso{
 \code{\link{prov.init}} and \code{\link{prov.run}} for functions to collect provenance
