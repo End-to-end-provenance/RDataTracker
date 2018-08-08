@@ -298,10 +298,10 @@ source("file3.R")
 }
 ```
 
-A library node is a node representing a library or package loaded at the time of execution. It contains the following fields:
-* name: The name of the loaded library.
-* version: The version number of the library.
-* prov:type: This indicates that this node is a collection. This is used in grouping function nodes with their library nodes in the hasMember section. 
+A __library__ node is a node representing a library or package loaded at the time of execution. It contains the following fields:
+* _name_: The name of the loaded library.
+* _version_: The version number of the library.
+* _prov:type_: This indicates that this node is a [collection](https://www.w3.org/TR/2013/REC-prov-dm-20130430/#term-collection). This is used in grouping function nodes with their library nodes in the hasMember section. 
   
 ```
 "rdt:l1": {
@@ -393,14 +393,14 @@ The opposite of [generation](https://www.w3.org/TR/2013/REC-prov-dm-20130430/#te
 
 We use this section for data-to-procedure (data input) edges, as well as function-to-procedure (function usage) edges.
   
-An example of a data-to-procedure edge:
+_An example of a data-to-procedure edge:_
 ```
 "rdt:dp1": {
 	"prov:entity": "rdt:d1",
 	"prov:activity": "rdt:p3"
 }
 ```
-An example of a function-to-procedure edge:
+_An example of a function-to-procedure edge:_
 ```
 "rdt:fp1": {
 	"prov:entity": "rdt:f1",
