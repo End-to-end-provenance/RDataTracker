@@ -174,7 +174,7 @@ _“An entity is a physical, digital, conceptual, or other kind of thing with so
 
 We use this section for data nodes, the environment, library nodes, and function nodes.
 
-#### data nodes
+#### - data nodes
 
 Data nodes contain the following fields:
 * _name_: The name of the node. In most cases, this is the variable name.
@@ -233,7 +233,7 @@ Below is the json representation of the data nodes from the json file generated 
 }
 ```
 
-#### environment
+#### - environment
 
 The environment node contains information about the execution environment. It contains the following fields:
 * _name_: Contains the value “environment”. Shows that this is the environment node.
@@ -305,7 +305,7 @@ source("file3.R")
 }
 ```
 
-#### library nodes
+#### - library nodes
 
 A library node is a node representing a library or package loaded at the time of execution. It contains the following fields:
 * _name_: The name of the loaded library.
@@ -323,7 +323,7 @@ A library node is a node representing a library or package loaded at the time of
 }
 ```
 
-#### function nodes
+#### - function nodes
 
 A function node is a node representing a function called from a library that is neither user-defined, nor from the base R library. It contains one field showing the name of the function. Functions originating from the same library are grouped together using edges in the [`hadMember`](https://github.com/End-to-end-provenance/RDataTracker/blob/export/JSON-format.md#h-hadMember) section, described below.
 
