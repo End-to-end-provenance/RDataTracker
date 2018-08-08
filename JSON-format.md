@@ -1,6 +1,8 @@
-Understanding RDataTracker’s Prov-Json Output        
-=============================================
+# Understanding RDataTracker’s Prov-Json Output        
+
 _json ver. 2.1_
+
+---
 
 ## 1. The Provenance Graph
 
@@ -34,6 +36,8 @@ Different types of edges connect the different nodes in the graph:
 * _Procedure-to-procedure (control flow)_: Links procedure nodes to indicate control flow.
 * _Procedure-to-data (data output)_: Links a procedure node to a data node to indicate data produced.
 * _Data-to-procedure (data input)_: Links a data node to a procedure node to indicate data used.
+
+---
 
 ## 2. The JSON file
 ----------------
