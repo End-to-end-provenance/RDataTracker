@@ -348,7 +348,7 @@ Sometimes, multiple libraries will have functions with the same name. In this ca
 
 ### e. wasInformedBy
 
-This section represents the concept of communication, where an activity is related to another activity.
+This section represents the concept of [communication](https://www.w3.org/TR/2013/REC-prov-dm-20130430/#concept-communication), where an activity is related to another activity.
 We use this section for procedure-to-procedure edges as they denote control flow moving from a procedure to the next, from the informant to the informed.
   
 ```
@@ -364,7 +364,7 @@ We use this section for procedure-to-procedure edges as they denote control flow
 
 ### f. wasGeneratedBy
 
-This section represents the concept of generation, where an activity produces an entity. We use this section for procedure-to-data (data output) edges.
+This section represents the concept of [generation](https://www.w3.org/TR/2013/REC-prov-dm-20130430/#term-Generation), where an activity produces an entity. We use this section for procedure-to-data (data output) edges.
   
 ```
 "wasGeneratedBy" : {
