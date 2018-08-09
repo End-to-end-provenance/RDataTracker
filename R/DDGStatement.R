@@ -177,7 +177,8 @@ methods::setMethod ("initialize",
 
       # .ddg.eval is treated differently than other calls to ddg functions since
       # we will execute the parameter as a command and want a node for it.
-      .Object@isDdgFunc <- (grepl("^ddg|^.ddg|^prov", .Object@text) && !grepl("^.ddg.eval", .Object@text))
+      .Object@isDdgFunc <- (grepl("^ddg|^.ddg|^prov", .Object@text) 
+        && !grepl("^.ddg.eval", .Object@text))
 
       .Object@pos <-
           if (is.object(pos)) {
@@ -323,8 +324,8 @@ methods::setMethod ("initialize",
   
   # wraps [3] and [4] into a data frame, changing the column names to match
   # the column names for ddg.function.nodes to enable rbind.
-  fn.known.lib <- data.frame( result[[3]] , result[[4]] , stringsAsFactors = FALSE)
-  names(fn.known.lib) <- c("ddg.fun","ddg.lib")
+  fn.known.lib <- data.frame(result[[3]], result[[4]], stringsAsFactors = FALSE)
+  names(fn.known.lib) <- c("ddg.fun", "ddg.lib")
   
   return( list(result[[1]], result[[2]], unique(fn.known.lib)) )
 }

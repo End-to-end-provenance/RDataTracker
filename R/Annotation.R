@@ -1020,11 +1020,12 @@ prov.annotate.off <- function (fnames.off=NULL) {
     # does not contain a call to .ddg.return.value. Enclose statement in
     # quotation marks.
     statement <- block[[i]]
-    if (!grepl("^ddg", statement[1]) && !grepl("^.ddg", statement[1]) && !grepl("^prov", statement[1]) &&
-        !.ddg.has.call.to(statement, ".ddg.return.value")) {
-      parsed.stmt <- parsed.stmts[[i-2]]
-      new.statement <- .ddg.create.ddg.eval.call(statement, parsed.stmt)
-      func.body[[2]][[3]][[i]] <- new.statement
+    if (!grepl("^ddg", statement[1]) && !grepl("^.ddg", statement[1]) 
+      && !grepl("^prov", statement[1]) 
+      && !.ddg.has.call.to(statement, ".ddg.return.value")) {
+        parsed.stmt <- parsed.stmts[[i-2]]
+        new.statement <- .ddg.create.ddg.eval.call(statement, parsed.stmt)
+        func.body[[2]][[3]][[i]] <- new.statement
     }
   }
   
@@ -1323,14 +1324,15 @@ prov.annotate.off <- function (fnames.off=NULL) {
   for (i in 2:length(block)) {
     # Enclose statement in quotation marks and wrap with .ddg.eval.
     statement <- block[[i]]
-    if (!grepl("^ddg", statement) && !grepl("^.ddg", statement) && !grepl("^prov", statement) &&
-      !.ddg.has.call.to(statement, ".ddg.return.value")) {
-      parsed.stmt <- parsed.stmts[[i-1]]
-      # print(statement)
-      # print(parsed.stmt@text)
+    if (!grepl("^ddg", statement) && !grepl("^.ddg", statement) 
+      && !grepl("^prov", statement) 
+      && !.ddg.has.call.to(statement, ".ddg.return.value")) {
+        parsed.stmt <- parsed.stmts[[i-1]]
+        # print(statement)
+        # print(parsed.stmt@text)
       
-      new.statement <- .ddg.create.block.ddg.eval.call(statement, parsed.stmt)
-      block[[i]] <- new.statement
+        new.statement <- .ddg.create.block.ddg.eval.call(statement, parsed.stmt)
+        block[[i]] <- new.statement
     }
   }
   return(block)

@@ -299,25 +299,44 @@ prov.init <- function(r.script.path = NULL, prov.dir = NULL, overwrite = TRUE,
 #' @return nothing
 
 .ddg.set.annotation.functions <- function () {
-  assign(".ddg.details.omitted", RDataTracker:::.ddg.details.omitted, envir = globalenv())
-  assign(".ddg.eval", RDataTracker:::.ddg.eval, envir = globalenv())
-  assign(".ddg.finish", RDataTracker:::.ddg.finish, envir = globalenv())
-  assign(".ddg.first.loop", RDataTracker:::.ddg.first.loop, envir = globalenv())
-  assign(".ddg.forloop", RDataTracker:::.ddg.forloop, envir = globalenv())
-  assign(".ddg.function", RDataTracker:::.ddg.function, envir = globalenv())
-  assign(".ddg.loop.annotate.off", RDataTracker:::.ddg.loop.annotate.off, envir = globalenv())
-  assign(".ddg.loop.annotate.on", RDataTracker:::.ddg.loop.annotate.on, envir = globalenv())
-  assign(".ddg.loop.count", RDataTracker:::.ddg.loop.count, envir = globalenv())
-  assign(".ddg.loop.count.inc", RDataTracker:::.ddg.loop.count.inc, envir = globalenv())
-  assign(".ddg.max.loops", RDataTracker:::.ddg.max.loops, envir = globalenv())
-  assign(".ddg.max.snapshot.size", RDataTracker:::.ddg.max.snapshot.size, envir = globalenv())
-  assign(".ddg.not.inside.loop", RDataTracker:::.ddg.not.inside.loop, envir = globalenv())
-  assign(".ddg.reset.loop.count", RDataTracker:::.ddg.reset.loop.count, envir = globalenv())
-  assign(".ddg.return.value", RDataTracker:::.ddg.return.value, envir = globalenv())
-  assign(".ddg.set.inside.loop", RDataTracker:::.ddg.set.inside.loop, envir = globalenv())
-  assign(".ddg.source", RDataTracker:::.ddg.source, envir = globalenv())
-  assign(".ddg.start", RDataTracker:::.ddg.start, envir = globalenv())
-  assign(".ddg.should.run.annotated", RDataTracker:::.ddg.should.run.annotated, envir = globalenv())
+  assign(".ddg.details.omitted", RDataTracker:::.ddg.details.omitted, 
+    envir = globalenv())
+  assign(".ddg.eval", RDataTracker:::.ddg.eval, 
+    envir = globalenv())
+  assign(".ddg.finish", RDataTracker:::.ddg.finish, 
+    envir = globalenv())
+  assign(".ddg.first.loop", RDataTracker:::.ddg.first.loop, 
+    envir = globalenv())
+  assign(".ddg.forloop", RDataTracker:::.ddg.forloop, 
+    envir = globalenv())
+  assign(".ddg.function", RDataTracker:::.ddg.function, 
+    envir = globalenv())
+  assign(".ddg.loop.annotate.off", RDataTracker:::.ddg.loop.annotate.off, 
+    envir = globalenv())
+  assign(".ddg.loop.annotate.on", RDataTracker:::.ddg.loop.annotate.on, 
+    envir = globalenv())
+  assign(".ddg.loop.count", RDataTracker:::.ddg.loop.count, 
+    envir = globalenv())
+  assign(".ddg.loop.count.inc", RDataTracker:::.ddg.loop.count.inc, 
+    envir = globalenv())
+  assign(".ddg.max.loops", RDataTracker:::.ddg.max.loops, 
+    envir = globalenv())
+  assign(".ddg.max.snapshot.size", RDataTracker:::.ddg.max.snapshot.size, 
+    envir = globalenv())
+  assign(".ddg.not.inside.loop", RDataTracker:::.ddg.not.inside.loop, 
+    envir = globalenv())
+  assign(".ddg.reset.loop.count", RDataTracker:::.ddg.reset.loop.count, 
+    envir = globalenv())
+  assign(".ddg.return.value", RDataTracker:::.ddg.return.value, 
+    envir = globalenv())
+  assign(".ddg.set.inside.loop", RDataTracker:::.ddg.set.inside.loop, 
+    envir = globalenv())
+  assign(".ddg.source", RDataTracker:::.ddg.source, 
+    envir = globalenv())
+  assign(".ddg.start", RDataTracker:::.ddg.start, 
+    envir = globalenv())
+  assign(".ddg.should.run.annotated", RDataTracker:::.ddg.should.run.annotated, 
+    envir = globalenv())
   invisible()
 }
 
@@ -510,7 +529,9 @@ prov.run <- function(r.script.path = NULL, prov.dir = NULL, overwrite = TRUE,
   # Save a copy of the script
   file.copy(file, paste(.ddg.path.scripts(), basename(sname), sep="/"))
 
-  ### CODE IN THIS SECTION IS A SLIGHT MODIFICATION OF A PORTION OF R's source FUNCTION ###
+  ### CODE IN THIS SECTION IS A SLIGHT MODIFICATION OF A PORTION OF ###
+  ### R's source FUNCTION ###
+  
   # To see the current version of the source function source code, say:
   # getMethod("source", "ANY")
   # I don't know how to see the functions called from source, though.

@@ -150,7 +150,8 @@
   e.ls <- ls(e, all.names=TRUE)
 
   not.ddg.func <- function (name) {
-    return (!grepl("^ddg", name) && !grepl("^.ddg", name) && !grepl("^prov", name)&& name != ".onLoad")
+    return (!grepl("^ddg", name) && !grepl("^.ddg", name) && !grepl("^prov", name) 
+      && name != ".onLoad")
   }
 
   x <- Filter (not.ddg.func, e.ls)
@@ -753,7 +754,8 @@
 #' @return true if cmd is a call to .ddg.procedure, .ddg.start or .ddg.finish
 
 .ddg.is.procedure.cmd <- function(cmd) {
-  return(grepl("^ddg.procedure", cmd@text) || grepl("^.ddg.start", cmd@text) || grepl("^.ddg.finish", cmd@text))
+  return(grepl("^ddg.procedure", cmd@text) || grepl("^.ddg.start", cmd@text) 
+    || grepl("^.ddg.finish", cmd@text))
 }
 
 #' .ddg.record.warning creates the warning node for the saved warning and 
@@ -966,9 +968,10 @@
                   #             paste(annot, collapse = " ")))
                   # Don't set return.value if we are calling a ddg function or we 
                   # are executing an if-statement
-                  if (grepl("^ddg|^.ddg|^prov", annot) || .ddg.get.statement.type(annot) == "if") {
-                    eval(annot, environ, NULL)
-                    .ddg.set (".ddg.error.node.created", FALSE)
+                  if (grepl("^ddg|^.ddg|^prov", annot) 
+                    || .ddg.get.statement.type(annot) == "if") {
+                      eval(annot, environ, NULL)
+                      .ddg.set (".ddg.error.node.created", FALSE)
                   }
                   else {
                     return.value <- eval(annot, environ, NULL)
@@ -1637,12 +1640,13 @@
       call.func <- as.character(call)
       # Ignore calls to ddg functions or to the functions that get called from 
       # the outermost tryCatch to ddg code.
-      if (!any (startsWith (call.func, c (".ddg", "ddg", "prov", "doTryCatch", "tryCatch")))) {
-        if (for.caller && !script.func.found) {
-          script.func.found <- TRUE
-        }
-        else {
-          return(i)
+      if (!any (startsWith (call.func, c (".ddg", "ddg", "prov", "doTryCatch", 
+        "tryCatch")))) {
+          if (for.caller && !script.func.found) {
+            script.func.found <- TRUE
+          }
+          else {
+            return(i)
         }
       }
     }
