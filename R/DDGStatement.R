@@ -15,18 +15,13 @@
 #   License along with this program.  If not, see
 #   <http://www.gnu.org/licenses/>.
 
-############################ DDGStatement.R #############################
+########################## DDGStatement.R ############################
 
 # This file contains definitions of S4 classes to manage information about
 # individual R statements and functions that operate on individual statements
 #
 # All of these functions are internal to the RDataTracker library and
 # not called from user code.
-#
-# Author: blerner
-# August 2016
-#
-#########################################################################
 
 # Needed to work with S4 classes.  Normally, this library is automatically
 # loaded.  However, it is not loaded when running non-interactively, as
@@ -157,9 +152,9 @@ methods::setMethod ("initialize",
       #print(.Object@text)
 
       .Object@abbrev <-
-          # If this is a call to ddg.eval, we only want the argument to ddg.eval
+          # If this is a call to .ddg.eval, we only want the argument to .ddg.eval
           # (which is a string) to appear in the node label
-          if (grepl("^ddg.eval", .Object@text)) {
+          if (grepl("^.ddg.eval", .Object@text)) {
             .ddg.abbrev.cmd(.Object@parsed[[1]][[2]])
           }
           else {
@@ -168,7 +163,7 @@ methods::setMethod ("initialize",
 
       vars.used <- .ddg.find.var.uses(.Object@parsed[[1]])
 
-      # Remove index variable in for statement (handled separately in ddg.forloop).
+      # Remove index variable in for statement (handled separately in .ddg.forloop).
       if (length(parsed) > 0 && !is.symbol(parsed[[1]]) && parsed[[1]][[1]] == "for") {
         index.var <- c(parsed[[1]][[2]])
         vars.used <- vars.used[! vars.used %in% index.var]
@@ -180,10 +175,10 @@ methods::setMethod ("initialize",
 
       .Object@vars.possibly.set <- .ddg.find.assign(.Object@parsed[[1]])
 
-      # ddg.eval is treated differently than other calls to ddg functions since
+      # .ddg.eval is treated differently than other calls to ddg functions since
       # we will execute the parameter as a command and want a node for it.
-      .Object@isDdgFunc <- grepl("^ddg.", .Object@text) & 
-                           !grepl("^ddg.eval", .Object@text)
+      .Object@isDdgFunc <- (grepl("^ddg|^.ddg|^prov", .Object@text) 
+        && !grepl("^.ddg.eval", .Object@text))
 
       .Object@pos <-
           if (is.object(pos)) {
@@ -205,9 +200,9 @@ methods::setMethod ("initialize",
         .ddg.parse.contained(.Object, script.name, parseData)
 
       .Object@annotated <-
-          # If this is a call to ddg.eval, we only want to execute
-          # the argument to ddg.eval
-          if (grepl("^ddg.eval", .Object@text)) {
+          # If this is a call to .ddg.eval, we only want to execute
+          # the argument to .ddg.eval
+          if (grepl("^.ddg.eval", .Object@text)) {
              parse(text=.Object@parsed[[1]][[2]])
           }
 
@@ -329,8 +324,8 @@ methods::setMethod ("initialize",
   
   # wraps [3] and [4] into a data frame, changing the column names to match
   # the column names for ddg.function.nodes to enable rbind.
-  fn.known.lib <- data.frame( result[[3]] , result[[4]] , stringsAsFactors = FALSE)
-  names(fn.known.lib) <- c("ddg.fun","ddg.lib")
+  fn.known.lib <- data.frame(result[[3]], result[[4]], stringsAsFactors = FALSE)
+  names(fn.known.lib) <- c("ddg.fun", "ddg.lib")
   
   return( list(result[[1]], result[[2]], unique(fn.known.lib)) )
 }
@@ -491,7 +486,7 @@ methods::setMethod ("initialize",
       # Operators also pass the is.name test.  Make sure that if it is a
       # single character, then it is alpha-numeric.
       if (nchar(obj) == 1 && !grepl("[[:alpha:]]", obj)) return (character())
-      #print(paste(".ddg.find.var.uses found", deparse(obj)))
+      # print(paste(".ddg.find.var.uses found name", deparse(obj)))
       return (deparse(obj))
     }
 
@@ -523,9 +518,10 @@ methods::setMethod ("initialize",
 
             # for array index cases like a[b] <- 3,
             # where there could be a variable in the brackets
-            if( obj[[2]][[1]] == "[" )
-              append( variables, .ddg.find.var.uses.rec(obj[[2]][[3]]) )
-
+            if( obj[[2]][[1]] == "[" || obj[[2]][[1]] == "[[" ) {
+              variables <- c( variables, unlist (.ddg.find.var.uses.rec(obj[[2]][[3]]) ))
+            }
+            
             unique( variables )
           }
 
@@ -546,12 +542,13 @@ methods::setMethod ("initialize",
         # Not an assignment.  Recurse on all parts of the expression
         # except the operator.
         else {
-          unique(unlist(lapply(obj[1:length(obj)], .ddg.find.var.uses.rec)))
+          unique(unlist(lapply(obj[2:length(obj)], .ddg.find.var.uses.rec)))
         }
       },
       error = function(e)
       {
         print (paste(".ddg.find.var.uses.rec:  Error analyzing", deparse(obj)))
+        print (e)
         character()
       }
     )
@@ -707,7 +704,7 @@ methods::setMethod ("initialize",
   }
   
   # Check if we want to go inside loop and if-statements
-  else if (ddg.max.loops() == 0) {
+  else if (.ddg.max.loops() == 0) {
     return (list())
   }
 

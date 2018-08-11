@@ -15,8 +15,9 @@
 #   License along with this program.  If not, see 
 #   <http://www.gnu.org/licenses/>.
 
-########### Checkpoint/Restore functions for DDGs #############
+###################### DDGCheckpoint.R #######################
 
+# This file contains functions that manage checkpoints.
 # The functions in this file can be used to save the state of
 # an R environment to a file and restore it at a later time.
 # The DDG is updated to reflect the actions of the checkpoint

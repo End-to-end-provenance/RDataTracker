@@ -15,18 +15,22 @@
 #   License along with this program.  If not, see
 #   <http://www.gnu.org/licenses/>.
 
-####### Manages information about sourced scripts #########
-#
+######################### SourcedScripts.R ########################
+
+# This file contains functions used to manage information about sourced
+# scripts.
+
 # The script table contains these fields:
 # snum - the unique script id
 # sname - the name of the script file
 # stime - the timestamp of script file
 
+
 #' .ddg.init.sourced.scripts initializes the data needed to manage sourced scripts
 #' @return nothing
 
 .ddg.init.sourced.scripts <- function () {
-  # Script sourced with ddg.source
+  # Script sourced with .ddg.source
   .ddg.set(".ddg.is.sourced", FALSE)
   
   # Number of first sourced script (main script).
