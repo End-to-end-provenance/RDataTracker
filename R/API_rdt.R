@@ -19,7 +19,7 @@
 
 #' Provenance Collection Functions
 #' 
-#' rdt.init intializes a new provenance graph. Called by the user
+#' prov.init intializes a new provenance graph. Called by the user
 #' in console mode.
 #' 
 #' RDataTracker is an R package that collects provenance as an R script 
@@ -91,7 +91,7 @@
 #' @return prov.init initializes the provenance collector.  The prov.init
 #'   function does not return a value.
 #' @export
-#' @rdname rdt.run
+#' @rdname prov.run
 #' @seealso \code{\link{prov.json}} for access to the JSON text of the provenance, 
 #'   \code{\link{prov.display}} to view the provenance graphically. 
 #'   \code{\link{prov.set.detail}} to see an alternative way to set the amount of
@@ -99,7 +99,7 @@
 #'   \code{\link{prov.annotate.on}} and \code{\link{prov.annotate.off}} to see how to control
 #'     annotation of individual functions
 
-rdt.init <- function(r.script.path = NULL, prov.dir = NULL, overwrite = TRUE, 
+prov.init <- function(r.script.path = NULL, prov.dir = NULL, overwrite = TRUE, 
     annotate.inside.functions = FALSE, first.loop = 1, 
     max.loops = 0, max.snapshot.size = 0,
     hash.algorithm="md5") {
@@ -151,7 +151,7 @@ rdt.init <- function(r.script.path = NULL, prov.dir = NULL, overwrite = TRUE,
   
 }
 
-#' rdt.save saves the current provenance graph to a prov-json file.
+#' prov.save saves the current provenance graph to a prov-json file.
 #' If more R statements are executed, the provenance for these statements
 #' is added to the graph. The graph is finalized with prov.quit.
 #' Called by the user in console mode.
@@ -160,26 +160,26 @@ rdt.init <- function(r.script.path = NULL, prov.dir = NULL, overwrite = TRUE,
 #' @return prov.save writes the current provenance to a file but does not 
 #'   return a value.
 #' @export
-#' @rdname rdt.run
+#' @rdname prov.run
 
-rdt.save <- function(save.debug = FALSE) {
+prov.save <- function(save.debug = FALSE) {
   .ddg.save (save.debug)
 }
 
-#' rdt.quit saves and closes the current provenance graph.
+#' prov.quit saves and closes the current provenance graph.
 #' Called by the user in console mode.
 #' @return prov.quit writes the current provenance to a file but does not 
 #'   return a value.
 #' @export
-#' @rdname rdt.run
+#' @rdname prov.run
 
-rdt.quit <- function(save.debug = FALSE) {
+prov.quit <- function(save.debug = FALSE) {
   .ddg.quit (save.debug)
 }
 
-#' rdt.run
+#' prov.run
 #' 
-#' rdt.run initiates execution of a script and collects provenance as 
+#' prov.run initiates execution of a script and collects provenance as 
 #' the script executes.
 #'
 #' @param f a function to run. If supplied, the function f is executed 
@@ -190,36 +190,36 @@ rdt.quit <- function(save.debug = FALSE) {
 #' @return prov.run runs a script, collecting provenance as it does so.  
 #'   It does not return a value. 
 #' @export
-#' @rdname rdt.run
+#' @rdname prov.run
 #' @examples 
-#' \dontrun{rdt.run ("script.R")}
-#' rdt.init ()
+#' \dontrun{prov.run ("script.R")}
+#' prov.init ()
 #' a <- 1
 #' b <- 2
-#' rdt.save ()
+#' prov.save ()
 #' ab <- a + b
-#' rdt.quit ()
+#' prov.quit ()
 
-rdt.run <- function(r.script.path = NULL, prov.dir = NULL, overwrite = TRUE, 
+prov.run <- function(r.script.path = NULL, prov.dir = NULL, overwrite = TRUE, 
     f = NULL, annotate.inside.functions = FALSE, first.loop = 1, 
     max.loops = 0, max.snapshot.size = 0, save.debug = FALSE, 
     display = FALSE, hash.algorithm="md5") {
   
   # Initialize ddg.
-  rdt.init(r.script.path, prov.dir, overwrite, annotate.inside.functions, 
+  prov.init(r.script.path, prov.dir, overwrite, annotate.inside.functions, 
       first.loop, max.loops, max.snapshot.size, hash.algorithm)
   
   .ddg.run (r.script.path, save.debug, f)
   
   if (display==TRUE){
-    rdt.display()
+    prov.display()
   }
   
 }
 
 #' Provenance Access Functions
 #' 
-#' rdt.json returns the current provenance graph as a prov-json string.
+#' prov.json returns the current provenance graph as a prov-json string.
 #' 
 #' RDataTracker collects provenance as a script executes.  Once collected,
 #' prov.json can be called to access the provenance as a JSON string.  
@@ -240,19 +240,19 @@ rdt.run <- function(r.script.path = NULL, prov.dir = NULL, overwrite = TRUE,
 #' @return prov.json returns the current provenance graph as a prov-json
 #' string
 #' @export
-#' @rdname rdt.json
+#' @rdname prov.json
 #' @seealso \code{\link{prov.init}} and \code{\link{prov.run}} for functions to collect provenance
 #' @references PROV-JSON standard: \url{https://www.w3.org/Submission/2013/SUBM-prov-json-20130424/}
 #' @references RDataTracker PROV-JSON output: \url{https://github.com/End-to-end-provenance/RDataTracker/blob/export/JSON-format.md}
 #' @examples
-#' rdt.init ()
+#' prov.init ()
 #' a <- 1
 #' b <- 2
 #' ab <- a + b
-#' rdt.quit ()
-#' str <- rdt.json()
+#' prov.quit ()
+#' str <- prov.json()
 
-rdt.json <- function()
+prov.json <- function()
 {
   # This is a wrapper function.
   # Calls and returns the function with the bulk of the code in OutputJSON.R
@@ -279,17 +279,17 @@ rdt.json <- function()
       wait = FALSE)
 }
 
-#' rdt.display
+#' prov.display
 #' 
-#' rdt.display displays the current provenance as a graph.
+#' prov.display displays the current provenance as a graph.
 #' @return prov.display loads and displays the current provenance graph
 #' in DDG Explorer. The prov.display function does not return a value.
 #' @export 
-#' @rdname rdt.json
+#' @rdname prov.json
 #' @examples
-#' \dontrun{rdt.display()} 
+#' \dontrun{prov.display()} 
 
-rdt.display <- function () {
+prov.display <- function () {
   
   # See if the server is already running
   # print("Opening socket connection")
