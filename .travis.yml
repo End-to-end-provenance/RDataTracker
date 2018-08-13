@@ -52,7 +52,7 @@ r_packages:
   - xkcd
   - zoo
 
-install: ./travis-install.sh
+install: true
 
 before_script:
   - "export DISPLAY=:99.0"
