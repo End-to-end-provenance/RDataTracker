@@ -4,7 +4,7 @@
     
   <property name="builddir" value="${user.home}/Documents/Process/DataProvenance/RDataTracker"/>
     <!-- property name="dropbox" value="${user.home}/Dropbox/HarvardForest/RDataTracker/" / --> 
-  <loadproperties srcFile="DESCRIPTION" />
+  <loadproperties srcFile="DESCRIPTION_rdt" />
   <property name="tarfile" value="RDataTracker_${Version}.tar.gz" />
 
     <target name="roxygen" depends="copy-to-directory">
@@ -32,7 +32,7 @@
 	        <fileset dir="vignettes"
             includes="*.Rnw *-img/"/>
        </copy-->
-      <copy overwrite="true" file="DESCRIPTION" todir="${builddir}"/>
+      <copy overwrite="true" file="DESCRIPTION_rdt" tofile="${builddir}/DESCRIPTION"/>
       <copy overwrite="true" file="LICENSE" todir="${builddir}"/>
       <copy overwrite="true" file="README.md" todir="${builddir}"/>
     </target>

@@ -79,7 +79,6 @@
 #' @export
 #' @rdname prov.run
 #' @seealso \code{\link{prov.json}} for access to the JSON text of the provenance, 
-#'   \code{\link{prov.display}} to view the provenance graphically. 
 #'   \code{\link{prov.set.detail}} to see an alternative way to set the amount of
 #'     provenance collected.
 #'   \code{\link{prov.annotate.on}} and \code{\link{prov.annotate.off}} to see how to control
@@ -132,7 +131,6 @@ prov.quit <- function(save.debug = FALSE) {
 #' @param f a function to run. If supplied, the function f is executed 
 #' with calls to prov.init and prov.save so that provenance for the 
 #' function is captured.  Exactly one of f and r.script.path should be provided.
-#' @param display if TRUE, the provenance graph is displayed in DDG Explorer
 #'
 #' @return prov.run runs a script, collecting provenance as it does so.  
 #'   It does not return a value. 
@@ -164,24 +162,14 @@ prov.run <- function(r.script.path = NULL, prov.dir = NULL, overwrite = TRUE,
 #' This is useful for applications that operate on the provenance.  The
 #' JSON is consistent with the PROV-JSON standard.
 #' 
-#' One such application is a graphic visualizer built into RDataTracker.
-#' To view the provenance graphically, call prov.display.  In the provenance
-#' graph, the nodes
-#' are data values and operations, with edges connecting them to show 
-#' data and control flow dependencies.  The visualizer also
-#' allows the user to view intermediate
-#' values of variables, and to graphically view the lineage of how a value
-#' was computed, or to look at how a value is used moving forward in the computation.
-#' The user can also search for specific
-#' data or operation nodes, files, or error messages in the provenance.
-#' 
 #' @return prov.json returns the current provenance graph as a prov-json
 #' string
 #' @export
 #' @rdname prov.json
 #' @seealso \code{\link{prov.init}} and \code{\link{prov.run}} for functions to collect provenance
 #' @references PROV-JSON standard: \url{https://www.w3.org/Submission/2013/SUBM-prov-json-20130424/}
-#' @references RDataTracker PROV-JSON output: \url{https://github.com/End-to-end-provenance/RDataTracker/blob/export/JSON-format.md}
+#' @references PROV-JSON output produced by prov: \url{https://github.com/End-to-end-provenance/RDataTracker/blob/export/JSON-format.md}
+#' @references Applications that use the provenance:  \url{http://provtools.org/analyzes/}
 #' @examples
 #' prov.init ()
 #' a <- 1

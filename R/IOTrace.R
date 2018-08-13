@@ -100,14 +100,14 @@
     function (f) {
       utils::capture.output(
         utils::capture.output(trace (as.name(f), 
-                                     RDataTracker:::.ddg.trace.output, 
+                                     function () .ddg.trace.output(), 
                                      print=FALSE), 
                               type="message"))
     } 
   lapply(.ddg.get(".ddg.file.write.functions.df")$function.names, trace.oneOutput)
   utils::capture.output(
     utils::capture.output(trace (ggplot2::ggplot, 
-                                 RDataTracker:::.ddg.trace.output, 
+            function () .ddg.trace.output (), 
                                  print=FALSE), 
                           type="message"))
   
@@ -115,7 +115,7 @@
     function (f) {
       utils::capture.output(
         utils::capture.output(trace (as.name(f), 
-                                     RDataTracker:::.ddg.trace.input, 
+                function () .ddg.trace.input (), 
                                      print=FALSE), 
                               type="message"))
     } 
@@ -125,14 +125,14 @@
     function (f) {
       utils::capture.output(
         utils::capture.output(trace (as.name(f), 
-                                     RDataTracker:::.ddg.trace.close, 
+                function () .ddg.trace.close (), 
                                      print=FALSE), 
                               type="message"))
     } 
   lapply(.ddg.get(".ddg.file.close.functions.df")$function.names, trace.oneClose)
   utils::capture.output(
     utils::capture.output(trace (ggplot2::ggsave, 
-                                 RDataTracker:::.ddg.trace.close, 
+            function () .ddg.trace.close (), 
                                  print=FALSE), 
                           type="message"))
   
@@ -142,7 +142,7 @@
     function (f) {
       utils::capture.output(
         utils::capture.output(trace (as.name(f), 
-                                     RDataTracker:::.ddg.trace.graphics.open, 
+                function () .ddg.trace.graphics.open (), 
                                      print=FALSE), 
                               type="message"))
     } 
@@ -153,7 +153,7 @@
     function (f) {
       utils::capture.output(
         utils::capture.output(trace (as.name(f), 
-                                     RDataTracker:::.ddg.trace.graphics.update, 
+                function () .ddg.trace.graphics.update (), 
                                      print=FALSE), 
                               type="message"))
     } 
@@ -162,7 +162,7 @@
   #print ("Tracing dev.off")
   utils::capture.output(
     utils::capture.output(trace (grDevices::dev.off, 
-                                 RDataTracker:::.ddg.trace.graphics.close, 
+            function () .ddg.trace.graphics.close (), 
                                  print=FALSE), 
                           type="message"))
   #print ("Done initializing IO tracing")
