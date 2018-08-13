@@ -140,6 +140,7 @@ prov.init <- function(r.script.path = NULL, prov.dir = NULL, overwrite = TRUE,
   # Functions not to be annotated.
   .ddg.set("ddg.annotate.off", NULL)
   
+  .ddg.init.return.values()
   .ddg.set(".ddg.func.depth", 0)
   .ddg.set(".ddg.explorer.port", 6096)
   

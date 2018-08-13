@@ -356,12 +356,10 @@
   # json, files get read in order to identify package version numbers.
   if (.ddg.inside.call.to ("library") || 
       .ddg.inside.call.to ("loadNamespace") ||
-      .ddg.inside.call.to ("prov.json")) {
+      .ddg.inside.call.to (".ddg.json.string")) {
     return()
   }
 
-  # print (sys.calls())
-  
   # Get the name of the input function
   call <- sys.call (frame.number)
   fname <- as.character(call[[1]])

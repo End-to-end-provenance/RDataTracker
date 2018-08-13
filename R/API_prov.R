@@ -52,14 +52,6 @@
 #' Rprofile.site or .Rprofile file). If prov.dir is set to ".", the current working
 #' directory is used.
 #' 
-#' The level of detail collected by RDataTracker may be set using parameters
-#' of the prov.run and prov.init functions. Options include collecting
-#' provenance inside functions and inside control constructs and saving
-#' snapshots of large intermediate values as separate files. These
-#' features are turned off by default to optimize performance. Common
-#' settings for the level of detail can also be set and managed using the 
-#' prov.set.detail and related functions.
-
 #' @param r.script.path  the full path to the R script file
 #' that is being executed. If provided, a copy of the script will
 #' be saved with the provenance graph.
@@ -79,10 +71,6 @@
 #' @export
 #' @rdname prov.run
 #' @seealso \code{\link{prov.json}} for access to the JSON text of the provenance, 
-#'   \code{\link{prov.set.detail}} to see an alternative way to set the amount of
-#'     provenance collected.
-#'   \code{\link{prov.annotate.on}} and \code{\link{prov.annotate.off}} to see how to control
-#'     annotation of individual functions
 
 prov.init <- function(r.script.path = NULL, prov.dir = NULL, overwrite = TRUE, 
     max.snapshot.size = 0) {

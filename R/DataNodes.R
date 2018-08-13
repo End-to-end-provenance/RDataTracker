@@ -117,19 +117,6 @@
   return (ddg.data.nodes [ddg.data.nodes$ddg.num > 0, ])
 }
 
-#' .ddg.set.hash sets the hash and rw fields for a data node 
-#' @param dnum the id of the node to set
-#' @param hash the hash value to use
-#' @param rw the rw value to use
-#' @return nothing 
-
-.ddg.set.hash <- function (dnum, hash, rw) {
-  ddg.data.nodes <- .ddg.data.node.table()
-  ddg.data.nodes$ddg.hash[dnum] <- hash
-  ddg.data.nodes$ddg.rw[dnum] <- rw
-  .ddg.set("ddg.data.nodes", ddg.data.nodes)
-}
-
 #' .ddg.data.node.exists searches the data node table for a matching
 #' data node and returns TRUE if a match is found. If no match is found, it 
 #' checks if a variable with that name exists in the global environment.
@@ -265,12 +252,7 @@
   # Output data node.
   #print(".ddg.record.data outputting data node")
   if (dtype == "File") {
-    dhash <- .ddg.calculate.hash(dname)
-    drw <- .ddg.calculate.rw(dname)
-    .ddg.set.hash (ddg.dnum, dhash, drw)
-
-    # .ddg.add.to.hashtable(dname = dname, ddg.dnum = ddg.dnum, dloc = dloc, 
-    #     dvalue = dvalue, dtime = dtime)
+    .ddg.set.hash (dname, ddg.dnum, dloc, dvalue, dtime)
   }
   
   if (.ddg.debug.lib()) {

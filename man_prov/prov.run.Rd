@@ -101,14 +101,6 @@ parameter prov.dir in the prov.run or prov.init functions, or (2) setting
 the prov.dir option (e.g. by using the R options command or editing the
 Rprofile.site or .Rprofile file). If prov.dir is set to ".", the current working
 directory is used.
-
-The level of detail collected by RDataTracker may be set using parameters
-of the prov.run and prov.init functions. Options include collecting
-provenance inside functions and inside control constructs and saving
-snapshots of large intermediate values as separate files. These
-features are turned off by default to optimize performance. Common
-settings for the level of detail can also be set and managed using the 
-prov.set.detail and related functions.
 }
 \examples{
 \dontrun{prov.run ("script.R")}
@@ -120,9 +112,5 @@ ab <- a + b
 prov.quit ()
 }
 \seealso{
-\code{\link{prov.json}} for access to the JSON text of the provenance, 
-  \code{\link{prov.set.detail}} to see an alternative way to set the amount of
-    provenance collected.
-  \code{\link{prov.annotate.on}} and \code{\link{prov.annotate.off}} to see how to control
-    annotation of individual functions
+\code{\link{prov.json}} for access to the JSON text of the provenance,
 }

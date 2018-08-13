@@ -19,12 +19,10 @@
     </target>
 
     <target name="copy-to-directory" depends="build-directory">
-        <copy overwrite="true" todir="${builddir}/inst">
-          <fileset dir="inst" />
-        </copy>
+        <copy overwrite="true" file="inst/CITATION" todir="${builddir}/inst"/>
     	<copy overwrite="true" todir="${builddir}/R">
     		<fileset dir="R"
-      			excludes="DDGCheckpoint.R, API_rdt.R"/>
+      			excludes="DDGCheckpoint.R, *_rdt.R"/>
   		</copy>
         <copy overwrite="true" file="DESCRIPTION_prov" tofile="${builddir}/DESCRIPTION"/>
         <copy overwrite="true" file="LICENSE" todir="${builddir}"/>

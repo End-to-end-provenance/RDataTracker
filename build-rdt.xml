@@ -24,7 +24,7 @@
         </copy>
     	<copy overwrite="true" todir="${builddir}/R">
     		<fileset dir="R"
-      			excludes="DDGCheckpoint.R, API_prov.R"/>
+      			excludes="DDGCheckpoint.R, *_prov.R"/>
   		</copy>
         <copy overwrite="true" file="DESCRIPTION_rdt" tofile="${builddir}/DESCRIPTION"/>
         <copy overwrite="true" file="LICENSE" todir="${builddir}"/>

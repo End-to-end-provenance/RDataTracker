@@ -63,21 +63,12 @@
 #' @param dtime the timestamp on the file
 #' @return nothing
 
-.ddg.add.to.hashtable <- function(dname, ddg.dnum, dloc, dvalue, dtime) {
-  if (!.ddg.get (".ddg.save.hashtable")) {
-    return
-  }
-  
-  dhash <- .ddg.calculate.hash(dname)
+.ddg.add.to.hashtable <- function(dname, ddg.dnum, dloc, dvalue, dtime, dhash, drw) {
   if (dhash == "") {
     return()
   }
   
   dhash.algorithm <- .ddg.get(".ddg.hash.algorithm")
-  
-  drw <- .ddg.calculate.rw(dname)
-  
-  .ddg.set.hash (ddg.dnum, dhash, drw)
   
   dscriptpath <- 
       if (!is.null(.ddg.get("ddg.r.script.path"))) .ddg.get("ddg.r.script.path")
@@ -132,6 +123,25 @@
 
   #print(paste(".ddg.calculate.rw:", dname, "not found in infilenodes or outfilenodes!"))
   return ("")
+}
+
+#' .ddg.set.hash sets the hash and rw fields for a data node 
+#' @param dnum the id of the node to set
+#' @param hash the hash value to use
+#' @param rw the rw value to use
+#' @return nothing 
+
+.ddg.set.hash <- function (dname, dnum, dloc, dvalue, dtime) {
+  
+  ddg.data.nodes <- .ddg.data.node.table()
+  dhash <- .ddg.calculate.hash(dname)
+  ddg.data.nodes$ddg.hash[dnum] <- dhash
+  drw <- .ddg.calculate.rw(dname)
+  ddg.data.nodes$ddg.rw[dnum] <- drw
+  .ddg.set("ddg.data.nodes", ddg.data.nodes)
+  
+  .ddg.add.to.hashtable(dname = dname, ddg.dnum = dnum, dloc = dloc, 
+      dvalue = dvalue, dtime = dtime, dhash, drw)
 }
 
 #' .ddg.hashtable.write writes relevant information about the ddg
@@ -197,7 +207,7 @@
 #' @return nothing
 
 .ddg.save.hashtable <- function() {
-  if (.ddg.get (".ddg.save.hashtable") && .ddg.get("ddg.hasfilenodes")) {
+  if (.ddg.get("ddg.hasfilenodes")) {
     if (interactive()) {
       if (dir.exists(paste0(path.expand("~"), "/.ddg/"))) {
         print("Saving hashtable.json in .ddg directory.")
