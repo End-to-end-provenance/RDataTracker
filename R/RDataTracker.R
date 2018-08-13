@@ -200,26 +200,12 @@
   # Store path of current ddg.
   .ddg.set("ddg.path", NULL)
   
-  # Functions to be annotated.
-  .ddg.set("ddg.annotate.on", NULL)
-
-  # Functions not to be annotated.
-  .ddg.set("ddg.annotate.off", NULL)
-
   .ddg.init.sourced.scripts ()
 
   # Save debug files on debug directory
   .ddg.set("ddg.save.debug", FALSE)
   
   .ddg.init.statements ()
-  .ddg.init.hashtable ()
-  
-  .ddg.set(".ddg.func.depth", 0)
-  .ddg.set(".ddg.explorer.port", 6096)
-  
-  # Initialize the stack of commands and environments being executed in active functions
-  .ddg.set(".ddg.cur.cmd.stack", vector())
-  .ddg.set(".ddg.cur.expr.stack", vector())
   
   # Initialize the stack corresponding to the names of start/finish nodes.
   .ddg.set(".ddg.start.stack", vector())

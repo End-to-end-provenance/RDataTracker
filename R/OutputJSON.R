@@ -26,7 +26,7 @@
 .ddg.json.write <- function() 
 {
 	fileout <- paste(.ddg.path(), "/prov.json", sep="")
-	json <- prov.json()
+	json <- .ddg.json.string()
 	write(json, fileout)
 }
 

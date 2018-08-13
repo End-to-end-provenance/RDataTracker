@@ -2,16 +2,24 @@
 % Please edit documentation in R/API_rdt.R
 \name{rdt.json}
 \alias{rdt.json}
+\alias{rdt.display}
 \title{Provenance Access Functions}
 \usage{
 rdt.json()
+
+rdt.display()
 }
 \value{
 prov.json returns the current provenance graph as a prov-json
 string
+
+prov.display loads and displays the current provenance graph
+in DDG Explorer. The prov.display function does not return a value.
 }
 \description{
 rdt.json returns the current provenance graph as a prov-json string.
+
+rdt.display displays the current provenance as a graph.
 }
 \details{
 RDataTracker collects provenance as a script executes.  Once collected,
@@ -37,6 +45,7 @@ b <- 2
 ab <- a + b
 rdt.quit ()
 str <- rdt.json()
+\dontrun{rdt.display()} 
 }
 \references{
 PROV-JSON standard: \url{https://www.w3.org/Submission/2013/SUBM-prov-json-20130424/}
