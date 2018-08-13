@@ -303,8 +303,7 @@
 					"sourcedScriptTimeStamps" = NA ,
 					"workingDirectory" = NA ,
 					"ddgDirectory" = NA ,
-					"ddgTimeStamp" = NA ,
-					"hashAlgorithm" = NA )
+					"ddgTimeStamp" = NA )
 	
 	# architecture, language, langVersion
 	lang.version <- R.Version()
@@ -345,7 +344,9 @@
 	fields$ddgTimeStamp <- .ddg.get("ddg.start.time")
 	
 	# hash algorithm
-	fields$hashAlgorithm <- .ddg.get(".ddg.hash.algorithm")
+  if (.ddg.is.set (".ddg.hash.algorithm")) {
+    fields <- append (fields, list (hashAlgorithm = .ddg.get(".ddg.hash.algorithm")))
+  }
 	
 	# add prefix to names of the list
 	names(fields) <- mapply( paste , prefix , names(fields) , sep='' , USE.NAMES = FALSE )

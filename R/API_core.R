@@ -86,6 +86,9 @@
     .ddg.add.start.node (node.name = "Console")
   }
   
+  .ddg.set(".ddg.func.depth", 0)
+  .ddg.set(".ddg.cur.cmd.stack", vector())
+  
   invisible()
 }
 

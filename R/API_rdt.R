@@ -141,11 +141,9 @@ prov.init <- function(r.script.path = NULL, prov.dir = NULL, overwrite = TRUE,
   .ddg.set("ddg.annotate.off", NULL)
   
   .ddg.init.return.values()
-  .ddg.set(".ddg.func.depth", 0)
   .ddg.set(".ddg.explorer.port", 6096)
   
   # Initialize the stack of commands and environments being executed in active functions
-  .ddg.set(".ddg.cur.cmd.stack", vector())
   .ddg.set(".ddg.cur.expr.stack", vector())
   
   .ddg.init (r.script.path, prov.dir, overwrite)
