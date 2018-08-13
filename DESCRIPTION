@@ -1,0 +1,48 @@
+Package: provR
+Title: Provenance Collector for R
+Version: 1.0.0
+Date: 2018-08-13
+Authors@R: c( person( "Emery", "Boose", role = c("aut", "cre"),
+                      email = "boose@fas.harvard.edu"),
+              person("Barbara", "Lerner", role = "aut",
+                      email = "blerner@mtholyoke.edu"),
+              person( "Elizabeth", "Fong", role = "aut",
+                      email = "fong22e@mtholyoke.edu"),
+              person( "Luis", "Perez", role = "aut",
+                      email = "luis.perez.live@gmail.com"),
+              person( "Thomas", "Pasquier", role = "ctb",
+                      email = "thomas.francis.pasquier@gmail.com"),
+              person( "Matthew", "Lau", role = "ctb",
+                      email = "matthewklau@fas.harvard.edu"),
+              person( "Yada", "Pruksachatkun", role = "ctb",
+                      email = "pruks22y@mtholyoke.edu"),
+              person( "Alex", "Liu", role = "ctb",
+                      email = "uilxela7@gmail.com"),
+              person( "Moe Pwint Phyu", role = "ctb",
+                      email = "phyu22m@mtholyoke.edu"),
+              person( "Connor", "Gregorich-Trevor", role = "ctb",
+                      email = "gregoric@grinnell.edu"),
+              person( "Aaron", "Ellison", role = "res",
+                      email = "aellison@fas.harvard.edu"),
+              person( "Margo", "Seltzer", role = "res",
+                      email = "margo@eecs.harvard.edu"),
+              person( "Joe", "Wonsil", role = "res",
+                      email = "jwonsil@carthage.edu"),
+              person( "Orenna", "Brand", role = "res",
+                      email = "o.brand@columbia.edu")
+                      )
+Author: Emery Boose [aut, cre], Barbara Lerner [aut], Elizabeth Fong [aut],
+  Luis Perez [aut], Thomas Pasquier [ctb], Matthew Lau [ctb], Yada Pruksachatkun [ctb], 
+  Alex Liu [ctb], Moe Pwint Phyu [ctb], Connor Gregorich-Trevor [ctb], 
+  Aaron Ellison [res], Margo Seltzer [res], Joe Wonsil [res], Orenna Brand [res]  
+Maintainer: Emery Boose <boose@fas.harvard.edu>
+Copyright: President and Fellows of Harvard College, Trustees of Mount Holyoke College
+Depends: R (>= 3.5.0)
+Description: Defines functions that can be used to collect provenance as
+  an R script executes or during a console session. The output is a text 
+  file in PROV-JSON format.
+License: GPL-3 | file LICENSE
+URL: https://github.com/End-to-end-provenance/RDataTracker
+BugReports: https://github.com/End-to-end-provenance/RDataTracker/issues
+Imports: curl, devtools, ggplot2, grDevices, jsonlite, knitr, methods, stringr, tools, utils, XML
+RoxygenNote: 6.0.1
