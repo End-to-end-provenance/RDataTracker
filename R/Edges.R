@@ -15,7 +15,11 @@
 #   License along with this program.  If not, see
 #   <http://www.gnu.org/licenses/>.
 
-############ Functions to manage the edge table and create edges.
+########################### Edges.R ###########################
+
+# This file contains functions used to manage the edge table and
+# create edges.
+
 
 #' .ddg.init.edges initializes the information needed to manage edges
 #' @return nothing

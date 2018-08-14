@@ -25,10 +25,10 @@
     		<fileset dir="man"
       			excludes="\.*"/>
   		</copy>
-    	<copy overwrite="true" todir="${builddir}/tests">
-    		<fileset dir="tests"
+    	<!--copy overwrite="true" todir="${builddir}/scriptTests">
+    		<fileset dir="scriptTests"
       			excludes="\.*"/>
-  		</copy>
+  		</copy-->
     	<copy overwrite="true" todir="${builddir}/R">
     		<fileset dir="R"
       			excludes="DDGCheckpoint.R, Obsolete.R"/>

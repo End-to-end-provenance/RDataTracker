@@ -35,7 +35,7 @@ h <- function (a, b) {
   return (sum)
 }
 
-ddg.start("foo")
+.ddg.start("foo")
 
 exprs <- parse("DDGStatementTest.R")
 
@@ -45,5 +45,5 @@ constructDDGStatement <- function (expr) {
   return (new (Class = "DDGStatement", parsed = expr))
 }
 
-ddg.finish("foo")
+.ddg.finish("foo")
 
