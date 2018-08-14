@@ -1,27 +1,12 @@
-# Copyright (C) President and Fellows of Harvard College and 
-# Trustees of Mount Holyoke College, 2014, 2015, 2016, 2017.
-
-# This program is free software: you can redistribute it and/or 
-# modify it under the terms of the GNU General Public License as 
-# published by the Free Software Foundation, either version 3 of the 
-# License, or (at your option) any later version.
+# This file contains the functions that manipulate the table that records hash function values
+# for files read or written by the script.  These hash values enable us to detect when a file
+# written by one script is read by another script, so that we can link script executions into
+# a larger workflow.
 #
-#   This program is distributed in the hope that it will be useful,
-#   but WITHOUT ANY WARRANTY; without even the implied warranty of
-#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#   GNU General Public License for more details.
-#
-#   You should have received a copy of the GNU General Public 
-#   License along with this program.  If not, see 
-#   <http://www.gnu.org/licenses/>.
-
-########################### DDGHash.R ###########################
-
-# This file contains the functions that manipulate the table that records 
-# hash function values for files read or written by the script. These hash 
-# values enable us to detect when a file written by one script is read by 
-# another script, so that we can link script executions into a larger workflow.
-
+# This code was originally written by Connor Gregorich-Trevor, summer REU student, 2017
+# 
+# Updated by Barbara Lerner to allow for a variety of hash algorithms and refactored
+# to create the DDGHash.R file.
 
 #' .ddg.init.hashtable initializes the hashtable to be empty
 #' @return nothing
@@ -82,7 +67,7 @@
   dscriptpath <- 
       if (!is.null(.ddg.get("ddg.r.script.path"))) .ddg.get("ddg.r.script.path")
       else ""
-  longpath <- paste0(getwd(), substring(.ddg.path(), 2), "/prov.json")
+  longpath <- paste0(getwd(), substring(.ddg.path(), 2), "/ddg.json")
   .ddg.set("ddg.hashtable", 
            rbind(.ddg.get("ddg.hashtable"), 
                  c(dscriptpath, dloc, longpath, 
@@ -93,7 +78,7 @@
 
 #' .ddg.calculate.hash calculates the hash value for the file
 #' @param dname the name of the file
-#' @return the hash value based on the hash algorithm specified when prov.run or prov.init was called.
+#' @return the hash value based on the hash algorithm specified when ddg.run or ddg.init was called.
 #' Returns "" if the digest cannot be computed, for example, if the file does not exist.
 
 .ddg.calculate.hash <- function(dname) {
@@ -186,14 +171,14 @@
 
 .ddg.hashtable.cleanup <- function(hashtable.json) {
   old_hashtable <- jsonlite::read_json(hashtable.json, simplifyVector = TRUE)
-  longpath <- paste0(getwd(), substring(.ddg.path(), 2), "/prov.json")
+  longpath <- paste0(getwd(), substring(.ddg.path(), 2), "/ddg.json")
   old_hashtable <- old_hashtable[old_hashtable$DDGPath != longpath, ]
   # old_hashtable <- subset(old_hashtable, DDGPath != longpath)
   return(old_hashtable)
 }
 
 #' .ddg.save.hashtable saves the hashtable to a file if the script has any file information 
-#' to save and the save hashtable flag was set when prov.run/init was called.
+#' to save and the save hashtable flag was set when ddg.run/init was called.
 #' @return nothing
 
 .ddg.save.hashtable <- function() {

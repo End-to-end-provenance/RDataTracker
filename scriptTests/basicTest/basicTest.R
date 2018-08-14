@@ -8,7 +8,7 @@
 
 ## Directories
 
-prov.annotate.on("f")
+ddg.annotate.on("f")
 
 ### Functions
 f <- function (a, b, yy, d, e, f) {
@@ -44,8 +44,8 @@ z <- 5
 a <- "character"
 storage.mode(z) <- a
 
-# Test .ddg.start and .ddg.finish
-.ddg.start("File tests")
+# Test ddg.start and ddg.finish
+ddg.start("File tests")
 # Test files and URLs
 data.df <- read.csv ("http://harvardforest.fas.harvard.edu/data/p00/hf000/hf000-01-daily-m.csv")
 if (FALSE) read.csv ("foo.csv")
@@ -54,7 +54,7 @@ write.csv (shortdata.df, "shortdata.csv")
 pdf("airt-vs-prec.pdf")
 plot (shortdata.df$airt, shortdata.df$prec)
 dev.off()
-.ddg.finish("File tests")
+ddg.finish("File tests")
 
 # Test try-catch
 tryCatch (

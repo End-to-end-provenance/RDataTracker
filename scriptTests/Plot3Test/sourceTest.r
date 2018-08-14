@@ -14,7 +14,7 @@ library(methods)
 library(RDataTracker)
 
 ## Directories
-testDir <- "C:/github/rdatatracker/scriptTests/Plot3Test/"
+testDir <- "/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/scriptTests/Plot3Test/"
 setwd(testDir)
 
 # get initial time
@@ -25,9 +25,9 @@ invisible(force(startTime))
 options(useFancyQuotes=FALSE)
 
 # Run the script
-#ddg.run("Plot3Test.R", "C:/github/rdatatracker/scriptTests/Plot3Test", ignore.ddg.calls = F)
-prov.run("Plot3Test.R", "C:/github/rdatatracker/scriptTests/Plot3Test", annotate.inside.functions=TRUE, max.loops=1, max.snapshot.size=10)
+#ddg.run("Plot3Test.R", "/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/scriptTests/Plot3Test", ignore.ddg.calls = F)
+ddg.run("Plot3Test.R", "/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/scriptTests/Plot3Test")
 
 # Calculate total time of execution
 endTime <- Sys.time()
-cat("Execution Time =", difftime(endTime, startTime, units="secs"))
+cat("Execution Time =", difftime(endTime, startTime,units="secs"))
