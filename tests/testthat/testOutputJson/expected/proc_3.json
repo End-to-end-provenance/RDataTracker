@@ -1,0 +1,32 @@
+
+		// procedure nodes
+		"rdt:p1": {
+			"rdt:name": "ReturnTest.R",
+			"rdt:type": "Start",
+			"rdt:elapsedTime": 1.42,
+			"rdt:scriptNum": "NA",
+			"rdt:startLine": "NA",
+			"rdt:startCol": "NA",
+			"rdt:endLine": "NA",
+			"rdt:endCol": "NA"
+		},
+		"rdt:p2": {
+			"rdt:name": "f <- function(aa, bb) {\tretValue <- f2(aa) + f2(bb)\tre",
+			"rdt:type": "Operation",
+			"rdt:elapsedTime": 1.42,
+			"rdt:scriptNum": 0,
+			"rdt:startLine": 1,
+			"rdt:startCol": 1,
+			"rdt:endLine": 4,
+			"rdt:endCol": 1
+		},
+		"rdt:p3": {
+			"rdt:name": "f2 <- function(p_a) {\treturn(10)}",
+			"rdt:type": "Operation",
+			"rdt:elapsedTime": 1.43,
+			"rdt:scriptNum": 0,
+			"rdt:startLine": 6,
+			"rdt:startCol": 1,
+			"rdt:endLine": 8,
+			"rdt:endCol": 1
+		}
