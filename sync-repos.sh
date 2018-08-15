@@ -68,14 +68,16 @@ function copy_provR_files {
   echo "*** Copying files to provR" 
   
   # Copy the files we want to provR
-  rsync -tv --perms inst/CITATION ../provR_test/inst/CITATION
-  rsync -tv --perms DESCRIPTION_prov ../provR_test/DESCRIPTION
-  rsync -tv --perms NAMESPACE_prov ../provR_test/NAMESPACE
-  rsync -tv --perms LICENSE ../provR_test/LICENSE
-  rsync -tv --perms README_prov.md ../provR_test/README.md
-  rsync -tv --perms .Rbuildignore ../provR_test/.Rbuildignore
-  rsync -rtv --del --exclude "*_rdt.R" --exclude "DDGCheckpoint.R" --perms R ../provR_test/R
-  rsync -rtv --del --exclude "*_rdt*" --perms man_prov ../provR_test/man
+  rsync -tv --perms inst/CITATION ../provR_test/inst/
+  rsync -tv --perms DESCRIPTION_prov ../provR_test/
+  mv ../rdt_test/DESCRIPTION_prov ../rdt_test/DESCRIPTION
+  rsync -tv --perms NAMESPACE_prov ../provR_test/
+  mv ../rdt_test/NAMESPACE_prov ../rdt_test/NAMESPACE
+  rsync -tv --perms LICENSE ../provR_test/
+  rsync -tv --perms README_prov.md ../provR_test/
+  rsync -tv --perms .Rbuildignore ../provR_test/
+  rsync -rtv --del --exclude "*_rdt.R" --exclude "DDGCheckpoint.R" --perms R ../provR_test/
+  rsync -rtv --del --perms man_prov/* ../provR_test/man
   rsync -rtv --del --exclude "*_rdt*" --perms tests ../provR_test/tests
 }
 
@@ -86,14 +88,16 @@ function copy_rdt_files {
   echo "*** Copying files to rdt" 
 
   # Copy the files we want to rdt
-  rsync -tv --perms inst/CITATION ../rdt_test/inst/CITATION
-  rsync -tv --perms DESCRIPTION_rdt ../rdt_test/DESCRIPTION
-  rsync -tv --perms NAMESPACE_rdt ../rdt_test/NAMESPACE
-  rsync -tv --perms LICENSE ../rdt_test/LICENSE
-  rsync -tv --perms README_rdt.md ../rdt_test/README.md
-  rsync -tv --perms .Rbuildignore ../rdt_test/.Rbuildignore
-  rsync -rtv --del --exclude "*_prov.R" --exclude "DDGCheckpoint.R" --perms R ../rdt_test/R
-  rsync -rtv --del --exclude "*_prov*" --perms man_prov ../rdt_test/man
+  rsync -tv --perms inst/CITATION ../rdt_test/inst/
+  rsync -tv --perms DESCRIPTION_rdt ../rdt_test/
+  mv ../rdt_test/DESCRIPTION_RDT ../rdt_test/DESCRIPTION
+  rsync -tv --perms NAMESPACE_rdt ../rdt_test/
+  mv ../rdt_test/NAMESPACE_RDT ../rdt_test/NAMESPACE
+  rsync -tv --perms LICENSE ../rdt_test/
+  rsync -tv --perms README_rdt.md ../rdt_test/
+  rsync -tv --perms .Rbuildignore ../rdt_test/
+  rsync -rtv --del --exclude "*_prov.R" --exclude "DDGCheckpoint.R" --perms R ../rdt_test/
+  rsync -rtv --del --perms man_prov/* ../rdt_test/man
   rsync -rtv --del --exclude "*_prov*" --perms tests ../rdt_test/tests
 }
 
@@ -120,7 +124,7 @@ function commit_repo {
   if [ "$NUM_MOD" != "1" -o "$NUM_DEL" != "0" -o "$NUM_NEW" = "0" ]
     then
       echo "*** Committing and pushing the changes."
-      git commit -m "Commit"
+      git commit -m "$COMMIT"
       git push
   else 
   	  echo "*** Nothing to push."
@@ -143,7 +147,7 @@ if is_current "provR_test" "master"
     echo "***provR master is current"
 else 
     echo "***Updating provR master"
-    copy_test1_files
+    copy_provR_files
     commit_repo "provR_test"
 fi
 
@@ -153,7 +157,7 @@ if is_current "provR_test" "development"
     echo "provR development is current"
 else 
     echo "Updating provR development"
-    copy_test1_files
+    copy_provR_files
     commit_repo "provR_test"
 fi
 
@@ -163,7 +167,7 @@ if is_current "rdt_test" "master"
     echo "rdt master is current"
 else 
     echo "Updating rdt master"
-    copy_test2_files
+    copy_rdt_files
     commit_repo "rdt_test"
 fi
 
@@ -173,7 +177,7 @@ if is_current "rdt_test" "development"
     echo "rdt development is current"
 else 
     echo "Updating rdt development"
-    copy_test2_files
+    copy_rdt_files
     commit_repo "rdt_test"
 fi
 
