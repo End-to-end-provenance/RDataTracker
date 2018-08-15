@@ -16,6 +16,7 @@
       	<copy overwrite="true" todir="man_rdt">
       		<fileset dir="${builddir}/man" />
       	</copy>
+      	<copy overwrite="true" file="${builddir}/NAMESPACE" tofile="NAMESPACE_rdt"/>
     </target>
 
     <target name="copy-to-directory" depends="build-directory">

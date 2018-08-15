@@ -11,11 +11,12 @@
 
     <target name="roxygen" depends="copy-to-directory">
     	<exec dir="${builddir}" executable="Rscript" >
-      <arg line="-e roxygen2::roxygenise()" />
-    </exec>
+          <arg line="-e roxygen2::roxygenise()" />
+        </exec>
       	<copy overwrite="true" todir="man_prov">
       		<fileset dir="${builddir}/man" />
       	</copy>
+      	<copy overwrite="true" file="${builddir}/NAMESPACE" tofile="NAMESPACE_prov"/>
     </target>
 
     <target name="copy-to-directory" depends="build-directory">
