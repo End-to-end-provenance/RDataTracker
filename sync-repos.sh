@@ -198,6 +198,16 @@ else
 fi
 
 echo ""
+if is_current "provR_test" "split-refactor"
+  then
+    echo "provR split-refactor is current"
+else 
+    echo "Updating provR split-refactor"
+    copy_provR_files
+    commit_repo "provR_test"
+fi
+
+echo ""
 if is_current "rdt_test" "master"
   then
     echo "rdt master is current"
@@ -208,11 +218,11 @@ else
 fi
 
 echo ""
-if is_current "rdt_test" "development"
+if is_current "rdt_test" "split-refactor"
   then
-    echo "rdt development is current"
+    echo "rdt split-refactor is current"
 else 
-    echo "Updating rdt development"
+    echo "Updating rdt split-refactor"
     copy_rdt_files
     commit_repo "rdt_test"
 fi
