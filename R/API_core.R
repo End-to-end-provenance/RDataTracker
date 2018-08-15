@@ -26,8 +26,27 @@
 # prov.json - returns the current provenance graph as a prov-json string
 
 
+#' .ddg.init intializes a new provenance graph.
+#' @param r.script.path the full path to the R script file
+#' that is being executed. If provided, a copy of the script will
+#' be saved with the provenance graph.
+#' @param prov.dir the directory where the provenance graph will be 
+#' saved. If not provided, the directory specified by the prov.dir 
+#' option is used. Otherwise the R session temporary directory
+#' is used.
+#' @param overwrite if FALSE, includes a time stamp in the provenance
+#' graph directory name.
+#' @param max.snapshot.size the maximum size for snapshot files. 
+#' If 0, no snapshot files are saved.
+#' If -1, the complete state of an object is stored in the snapshot
+#' file. For other values, the head of the object, truncated to a size near
+#' the specified limit, is saved.  The size is in kilobytes. 
+#' @return .ddg.init initializes the provenance collector.  The .ddg.init
+#' function does not return a value.
 
-.ddg.init <- function(r.script.path = NULL, prov.dir = NULL, overwrite = TRUE, max.snapshot.size = 0) {
+.ddg.init <- function(r.script.path = NULL, prov.dir = NULL, overwrite = TRUE, 
+  max.snapshot.size = 0) {
+  
   # Initialize tables
   .ddg.init.tables()
 
@@ -189,6 +208,14 @@
   invisible()
 }
 
+#' .ddg.save saves the current provenance graph to a prov-json file.
+#' If more R statements are executed, the provenance for these statements
+#' is added to the graph.
+#' @param save.debug If TRUE, debug files are saved to the debug directory.
+#'   This is intended for developers of the RDataTracker package.
+#' @return .ddg.save writes the current provenance to a file but does not 
+#'   return a value.
+
 .ddg.save <- function(save.debug = FALSE) {
   if (!.ddg.is.init()) return(invisible())
   
@@ -210,6 +237,12 @@
 
   invisible()
 }
+
+#' .ddg.quit saves and closes the current provenance graph.
+#' @param save.debug If TRUE, debug files are saved to the debug directory.
+#'   This is intended for developers of the RDataTracker package.
+#' @return .ddg.quit writes the current provenance to a file but does not 
+#'   return a value.
 
 .ddg.quit <- function(save.debug = FALSE) {
   if (!.ddg.is.init()) return(invisible())
@@ -255,6 +288,45 @@
   invisible()
 }
 
+#' .ddg.run initiates execution of a script and collects provenance as 
+#' the script executes.
+#' @param r.script.path the full path to the R script file
+#' that is being executed. If provided, a copy of the script will
+#' be saved with the provenance graph.
+#' @param prov.dir the directory where the provenance graph will be 
+#' saved. If not provided, the directory specified by the prov.dir 
+#' option is used. Otherwise the R session temporary directory
+#' is used.
+#' @param overwrite if FALSE, includes a time stamp in the provenance
+#'   graph directory name.
+#' @param f a function to run. If supplied, the function f is executed 
+#' with calls to prov.init and prov.save so that provenance for the 
+#' function is captured.  Exactly one of f and r.script.path should be provided.
+#' @param annotate.inside.functions if TRUE, provenance is collected 
+#' inside functions.
+#' @param first.loop the first loop to collect provenance in a for, 
+#' while, or repeat statement.
+#' @param max.loops the maximum number of loops to collect
+#' provenance in a for, while, or repeat statement. If max.loops = -1,
+#' there is no limit. If max.loops = 0, no loops are annotated. 
+#' If non-zero, it indicates the number of iterations of each loop for
+#' which provenance should be collected.  If max.loops is non-zero, provenance
+#' is also collected inside if-statements.
+#' @param max.snapshot.size the maximum size for snapshot files. 
+#' If 0, no snapshot files are saved. If -1, the complete state of an object
+#' is stored in the snapshot file. For other values, the head of the object, 
+#' truncated to a size near the specified limit, is saved.  The size is 
+#' in kilobytes. 
+#' @param save.debug If TRUE, debug files are saved to the debug directory.
+#' This is intended for developers of the RDataTracker package.
+#' @param display if TRUE, the provenance graph is displayed in DDG Explorer
+#' @param hash.algorithm the hash algorithm to use for files.
+#' Choices are md5 (default), sha1, crc32, sha256, sha512, xxhash32, 
+#' xxhash64 and murmur32. This feature uses the digest function from 
+#' the digest package.
+#' @return .ddg.run runs a script, collecting provenance as it does so.  
+#' It does not return a value. 
+
 .ddg.run <- function(r.script.path = NULL, prov.dir = NULL, overwrite = TRUE, 
                     f = NULL, annotate.inside.functions = FALSE, first.loop = 1, 
                     max.loops = 0, max.snapshot.size = 0, save.debug = FALSE, 
@@ -287,8 +359,6 @@
   invisible()
 }
 
-#' .ddg.source
-#' 
 #' .ddg.source reads and executes an R script in the specified
 #' environment. .ddg.source mimics the behaviour of the R source command, 
 #' with similar input parameters and results, but with the additional 
@@ -531,5 +601,3 @@
 
   invisible()
 }
-
-
