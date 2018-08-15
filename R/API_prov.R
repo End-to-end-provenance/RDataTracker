@@ -52,7 +52,7 @@
 #' Rprofile.site or .Rprofile file). If prov.dir is set to ".", the current working
 #' directory is used.
 #' 
-#' @param r.script.path  the full path to the R script file
+#' @param r.script.path the full path to the R script file
 #' that is being executed. If provided, a copy of the script will
 #' be saved with the provenance graph.
 #' @param prov.dir the directory where the provenance graph will be 
@@ -66,6 +66,10 @@
 #' If -1, the complete state of an object is stored in the snapshot
 #' file. For other values, the head of the object, truncated to a size near
 #' the specified limit, is saved.  The size is in kilobytes. 
+#' @param hash.algorithm the hash algorithm to use for files.
+#' Choices are md5 (default), sha1, crc32, sha256, sha512, xxhash32, 
+#' xxhash64 and murmur32. This feature uses the digest function from 
+#' the digest package.
 #' @return prov.init initializes the provenance collector.  The prov.init
 #'   function does not return a value.
 #' @export
@@ -73,8 +77,11 @@
 #' @seealso \code{\link{prov.json}} for access to the JSON text of the provenance, 
 
 prov.init <- function(r.script.path = NULL, prov.dir = NULL, overwrite = TRUE, 
-    max.snapshot.size = 0) {
+    max.snapshot.size = 0, hash.algorithm="md5") {
   
+  # Save hash algorithm
+  .ddg.set (".ddg.hash.algorithm", hash.algorithm)
+
   # Store maximum snapshot size.
   .ddg.set("ddg.max.snapshot.size", max.snapshot.size)
   
@@ -98,7 +105,7 @@ prov.save <- function(save.debug = FALSE) {
   .ddg.save (save.debug)
 }
 
-#' prov.auit
+#' prov.quit
 #' 
 #' prov.quit saves and closes the current provenance graph.
 #' Called by the user in console mode.
@@ -110,22 +117,21 @@ prov.save <- function(save.debug = FALSE) {
 prov.quit <- function(save.debug = FALSE) {
   .ddg.quit (save.debug)
 }
-
+ 
 #' prov.run
-#' 
-#' prov.run initiates execution of a script and collects provenance as 
-#' the script executes.
 #'
+#' prov.run initiates execution of a script and collects provenance as
+#' the script executes.
 #' @param f a function to run. If supplied, the function f is executed 
 #' with calls to prov.init and prov.save so that provenance for the 
 #' function is captured.  Exactly one of f and r.script.path should be provided.
-#'
 #' @return prov.run runs a script, collecting provenance as it does so.  
 #'   It does not return a value. 
 #' @export
 #' @rdname prov.run
 #' @examples 
 #' \dontrun{prov.run ("script.R")}
+#' \dontrun{prov.source ("script.R")}
 #' prov.init ()
 #' a <- 1
 #' b <- 2
@@ -134,18 +140,32 @@ prov.quit <- function(save.debug = FALSE) {
 #' prov.quit ()
 
 prov.run <- function(r.script.path = NULL, prov.dir = NULL, overwrite = TRUE, 
-    f = NULL, max.snapshot.size = 0, save.debug = FALSE) {
+    f = NULL, max.snapshot.size = 0, save.debug = FALSE, hash.algorithm="md5") {
   
-  prov.init(r.script.path, prov.dir, overwrite, max.snapshot.size)
+  prov.init(r.script.path, prov.dir, overwrite, max.snapshot.size, hash.algorithm)
   .ddg.run (r.script.path, save.debug, f)
 }
-  
+
+#' prov.source
+#'
+#' prov.source reads and executes an R script. To collect provenance
+#' for scripts sourced by the main script, replace "source" in the
+#' main script with "prov.source" before executing the main script
+#' with prov.run.
+#' @param file the name of the R script file to source.
+#' @return The prov.source function does not return a value.
+#' @export
+#' @rdname prov.run
+
+prov.source <- function(file) {
+  .ddg.source(file)
+}
 
 #' Provenance Access Functions
 #' 
 #' prov.json returns the current provenance graph as a prov-json string.
 #' 
-#' RDataTracker collects provenance as a script executes.  Once collected,
+#' ProvR collects provenance as a script executes.  Once collected,
 #' prov.json can be called to access the provenance as a JSON string.  
 #' This is useful for applications that operate on the provenance.  The
 #' JSON is consistent with the PROV-JSON standard.

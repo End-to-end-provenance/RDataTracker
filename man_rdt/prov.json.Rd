@@ -29,13 +29,11 @@ JSON is consistent with the PROV-JSON standard.
 
 One such application is a graphic visualizer built into RDataTracker.
 To view the provenance graphically, call prov.display.  In the provenance
-graph, the nodes
-are data values and operations, with edges connecting them to show 
-data and control flow dependencies.  The visualizer also
-allows the user to view intermediate
-values of variables, and to graphically view the lineage of how a value
-was computed, or to look at how a value is used moving forward in the computation.
-The user can also search for specific
+graph, the nodes are data values and operations, with edges connecting 
+them to show data and control flow dependencies.  The visualizer also
+allows the user to view intermediate values of variables, and to graphically
+view the lineage of how a value was computed, or to look at how a value 
+is used moving forward in the computation. The user can also search for specific
 data or operation nodes, files, or error messages in the provenance.
 }
 \examples{

@@ -159,4 +159,3 @@
   if (is.symbol(block) || block[[1]] != "{") call("{", block)
   else block
 }
-

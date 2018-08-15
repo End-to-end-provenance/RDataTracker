@@ -5,6 +5,7 @@
 \alias{prov.save}
 \alias{prov.quit}
 \alias{prov.run}
+\alias{prov.source}
 \title{Provenance Collection Functions}
 \usage{
 prov.init(r.script.path = NULL, prov.dir = NULL, overwrite = TRUE,
@@ -19,6 +20,8 @@ prov.run(r.script.path = NULL, prov.dir = NULL, overwrite = TRUE,
   f = NULL, annotate.inside.functions = FALSE, first.loop = 1,
   max.loops = 0, max.snapshot.size = 0, save.debug = FALSE,
   display = FALSE, hash.algorithm = "md5")
+
+prov.source(file)
 }
 \arguments{
 \item{r.script.path}{the full path to the R script file
@@ -65,6 +68,8 @@ with calls to prov.init and prov.save so that provenance for the
 function is captured.  Exactly one of f and r.script.path should be provided.}
 
 \item{display}{if TRUE, the provenance graph is displayed in DDG Explorer}
+
+\item{file}{the name of the R script file to source.}
 }
 \value{
 prov.init initializes the provenance collector.  The prov.init
@@ -78,6 +83,8 @@ prov.quit writes the current provenance to a file but does not
 
 prov.run runs a script, collecting provenance as it does so.  
   It does not return a value.
+
+The prov.source function does not return a value.
 }
 \description{
 prov.init intializes a new provenance graph. Called by the user
@@ -93,6 +100,11 @@ Called by the user in console mode.
 
 prov.run initiates execution of a script and collects provenance as 
 the script executes.
+
+prov.source reads and executes an R script. RDataTracker
+automatically collects provenance for sourced scripts.
+This function is provided for compatibility with scripts
+that have been annotated for use with provR.
 }
 \details{
 RDataTracker is an R package that collects provenance as an R script 

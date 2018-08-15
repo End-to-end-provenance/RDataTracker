@@ -100,10 +100,8 @@
 #'     annotation of individual functions
 
 prov.init <- function(r.script.path = NULL, prov.dir = NULL, overwrite = TRUE, 
-    annotate.inside.functions = FALSE, first.loop = 1, 
-    max.loops = 0, max.snapshot.size = 0,
-    hash.algorithm="md5") {
-  
+    annotate.inside.functions = FALSE, first.loop = 1, max.loops = 0, 
+    max.snapshot.size = 0, hash.algorithm="md5") {
   
   #TODO: Would like to remove r.script.path parameter.  run should be 
   # used for scripts, and init for console.
@@ -150,6 +148,8 @@ prov.init <- function(r.script.path = NULL, prov.dir = NULL, overwrite = TRUE,
   
 }
 
+#' prov.save
+#'
 #' prov.save saves the current provenance graph to a prov-json file.
 #' If more R statements are executed, the provenance for these statements
 #' is added to the graph. The graph is finalized with prov.quit.
@@ -165,6 +165,8 @@ prov.save <- function(save.debug = FALSE) {
   .ddg.save (save.debug)
 }
 
+#' prov.quit
+#'
 #' prov.quit saves and closes the current provenance graph.
 #' Called by the user in console mode.
 #' @return prov.quit writes the current provenance to a file but does not 
@@ -177,15 +179,13 @@ prov.quit <- function(save.debug = FALSE) {
 }
 
 #' prov.run
-#' 
+#'
 #' prov.run initiates execution of a script and collects provenance as 
 #' the script executes.
-#'
 #' @param f a function to run. If supplied, the function f is executed 
 #' with calls to prov.init and prov.save so that provenance for the 
 #' function is captured.  Exactly one of f and r.script.path should be provided.
 #' @param display if TRUE, the provenance graph is displayed in DDG Explorer
-#'
 #' @return prov.run runs a script, collecting provenance as it does so.  
 #'   It does not return a value. 
 #' @export
@@ -200,9 +200,8 @@ prov.quit <- function(save.debug = FALSE) {
 #' prov.quit ()
 
 prov.run <- function(r.script.path = NULL, prov.dir = NULL, overwrite = TRUE, 
-    f = NULL, annotate.inside.functions = FALSE, first.loop = 1, 
-    max.loops = 0, max.snapshot.size = 0, save.debug = FALSE, 
-    display = FALSE, hash.algorithm="md5") {
+    f = NULL, annotate.inside.functions = FALSE, first.loop = 1, max.loops = 0,
+    max.snapshot.size = 0, save.debug = FALSE, display = FALSE, hash.algorithm="md5") {
   
   # Initialize ddg.
   prov.init(r.script.path, prov.dir, overwrite, annotate.inside.functions, 
@@ -216,6 +215,21 @@ prov.run <- function(r.script.path = NULL, prov.dir = NULL, overwrite = TRUE,
   
 }
 
+#' prov.source
+#'
+#' prov.source reads and executes an R script. RDataTracker
+#' automatically collects provenance for sourced scripts.
+#' This function is provided for compatibility with scripts
+#' that have been annotated for use with provR.
+#' @param file the name of the R script file to source.
+#' @return The prov.source function does not return a value.
+#' @export
+#' @rdname prov.run
+
+prov.source <- function(file) {
+  .ddg.source(file)
+}
+
 #' Provenance Access Functions
 #' 
 #' prov.json returns the current provenance graph as a prov-json string.
@@ -227,13 +241,11 @@ prov.run <- function(r.script.path = NULL, prov.dir = NULL, overwrite = TRUE,
 #' 
 #' One such application is a graphic visualizer built into RDataTracker.
 #' To view the provenance graphically, call prov.display.  In the provenance
-#' graph, the nodes
-#' are data values and operations, with edges connecting them to show 
-#' data and control flow dependencies.  The visualizer also
-#' allows the user to view intermediate
-#' values of variables, and to graphically view the lineage of how a value
-#' was computed, or to look at how a value is used moving forward in the computation.
-#' The user can also search for specific
+#' graph, the nodes are data values and operations, with edges connecting 
+#' them to show data and control flow dependencies.  The visualizer also
+#' allows the user to view intermediate values of variables, and to graphically
+#' view the lineage of how a value was computed, or to look at how a value 
+#' is used moving forward in the computation. The user can also search for specific
 #' data or operation nodes, files, or error messages in the provenance.
 #' 
 #' @return prov.json returns the current provenance graph as a prov-json
@@ -277,9 +289,9 @@ prov.json <- function()
           .ddg.get(".ddg.explorer.port")), 
       wait = FALSE)
 }
-
+ 
 #' prov.display
-#' 
+#'
 #' prov.display displays the current provenance as a graph.
 #' @return prov.display loads and displays the current provenance graph
 #' in DDG Explorer. The prov.display function does not return a value.
@@ -359,4 +371,3 @@ prov.display <- function () {
       envir = globalenv())
   invisible()
 }
-
