@@ -37,8 +37,10 @@
 .ddg.json.string <- function()
 {
 	# CONSTANTS
-	TOOL.NAME <- "RDataTracker"
 	JSON.VERSION <- "2.1"
+
+	# tool name
+	tool.name <- .ddg.tool.name()
 	
 	# contents of the prefix node
 	PREFIX.NODE <- list( "prov" = "http://www.w3.org/ns/prov#" ,
@@ -79,7 +81,7 @@
 	json$prefix <- .ddg.json.prefix( PREFIX.NODE )
 	
 	# agent (about the tool that produced the json & the json version)
-	json$agent <- .ddg.json.agent( TOOL.NAME , JSON.VERSION , LABEL.NAMES$agent , 
+	json$agent <- .ddg.json.agent( tool.name , JSON.VERSION , LABEL.NAMES$agent , 
 	                               LABEL.PREFIX )
 	
 	# activity (proc nodes)

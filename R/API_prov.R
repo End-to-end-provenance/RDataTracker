@@ -79,6 +79,9 @@
 prov.init <- function(r.script.path = NULL, prov.dir = NULL, overwrite = TRUE, 
     max.snapshot.size = 0, hash.algorithm="md5") {
   
+  # Store name of provenance collection tool.
+  .ddg.set ("ddg.tool.name", "provR")
+
   # Save hash algorithm
   .ddg.set (".ddg.hash.algorithm", hash.algorithm)
 

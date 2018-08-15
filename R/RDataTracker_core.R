@@ -36,6 +36,13 @@
 
 ##### Getters for specific variables
 
+#' .ddg.tool.name returns the name of the provenance collection tool.
+#' @return the name of the provenance collection tool
+
+.ddg.tool.name <- function() {
+  return(.ddg.get("ddg.tool.name"))
+}
+
 #' .ddg.save.debug returns True if debugging information should be saved
 #' to the file system
 #' @return TRUE if saving debugging information
@@ -1531,8 +1538,9 @@
   # ddg timestamp
   env$ddgTimeStamp[1] <- .ddg.get("ddg.start.time")
   
-  # rdt version
-  env$rdtVersion[1] <- toString( utils::packageVersion("RDataTracker") )
+  # tool version
+  tool.name <- .ddg.tool.name()
+  env$rdtVersion[1] <- toString( utils::packageVersion(tool.name) )
   
   # hash algorithm
   env$hashAlgorithm[1] <- .ddg.get(".ddg.hash.algorithm")

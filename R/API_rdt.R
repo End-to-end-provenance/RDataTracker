@@ -106,6 +106,9 @@ prov.init <- function(r.script.path = NULL, prov.dir = NULL, overwrite = TRUE,
   #TODO: Would like to remove r.script.path parameter.  run should be 
   # used for scripts, and init for console.
   
+  # Store name of provenance collection tool.
+  .ddg.set ("ddg.tool.name", "RDataTracker")
+
   # Save hash algorithm
   .ddg.set (".ddg.hash.algorithm", hash.algorithm)
   .ddg.init.hashtable ()
