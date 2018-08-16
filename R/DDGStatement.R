@@ -113,7 +113,7 @@ methods::setClass("DDGStatement",
         abbrev = "character",   # A shortened version of the text to use in node names
         annotated = "expression",  # An annotated version of the statement.  This is
                                    # what we actually execute.
-
+        
         # Note that vars.used through has.dev.off do not apply to a situation where
         # the statement is a function declaration, since declaring the statement
         # does not read from files, etc.  That happens when the function is called,
@@ -132,9 +132,6 @@ methods::setClass("DDGStatement",
                                   # Has the value null.pos() if it is not available.
         script.num = "numeric",   # The number for the script this statement comes from.
                                   # Has the value -1 if it is not available
-        contained = "list",        # If this is a function declaration, this will 
-                                   # be a list of DDGStatement objects for the 
-                                   # statements it contains.
         functions.called = "list" # A list of the statement's function calls and 
                                   # potential function calls.]
       )
@@ -143,7 +140,7 @@ methods::setClass("DDGStatement",
 # This is called when a new DDG Statement is created.  It initializes all of the slots.
 methods::setMethod ("initialize",
   "DDGStatement",
-    function(.Object, parsed, pos, script.name, script.num, parseData){
+    function(.Object, parsed, pos, script.num){
       .Object@parsed <- parsed
 
       # deparse can return a vector of strings.  We convert that into
@@ -161,6 +158,8 @@ methods::setMethod ("initialize",
             .ddg.abbrev.cmd(.Object@text)
           }
 
+      .Object@annotated <- parsed
+      
       vars.used <- .ddg.find.var.uses(.Object@parsed[[1]])
 
       # Remove index variable in for statement (handled separately in .ddg.forloop).
@@ -192,26 +191,6 @@ methods::setMethod ("initialize",
           if (is.na(script.num)) -1
           else script.num
 
-      .Object@contained <-
-        # The contained field is a list of DDGStatements for all statements inside
-        # the function or control statement.  If we are collecting
-        # provenance inside functions or control statements, we will execute
-        # annotated versions of these statements.
-        .ddg.parse.contained(.Object, script.name, parseData)
-
-      .Object@annotated <-
-          # If this is a call to .ddg.eval, we only want to execute
-          # the argument to .ddg.eval
-          if (grepl("^.ddg.eval", .Object@text)) {
-             parse(text=.Object@parsed[[1]][[2]])
-          }
-
-          else {
-            .ddg.add.annotations(.Object)
-          }
-
-      #print(paste ("annotated statement", .Object@annotated))
-      
       # find the list of the names of the function calls in the statement
     .Object@functions.called <- .ddg.find.calls( .Object@parsed[[1]] )
 
@@ -426,25 +405,6 @@ methods::setMethod ("initialize",
   return (methods::new (Class = "DDGStatementPos", NA))
 }
 
-
-#' .ddg.construct.DDGStatement creates a DDGStatement.
-#' @param expr - the parsed expression
-#' @param pos - the DDGStatementPos object for this statement
-#' @param script.name - the name of the script the statement is from
-#' @param script.num - the script number used to find the script in the sourced script table
-#' @param parseData - the object created by the parser that gives us source position information
-#' @return a DDG statement
-
-.ddg.construct.DDGStatement <- function (expr, pos, script.name, script.num, parseData) {
-  #print(paste(".ddg.construct.DDGStatement: expr =", expr))
-  # Surprisingly, if a statement is just a number, like 1 (which could be the last 
-  # statement in a function, for example), the parser returns a number, rather 
-  # than a parse tree!
-  if (is.numeric(expr)) expr <- parse(text=expr)
-
-  return (methods::new (Class = "DDGStatement", parsed = expr, pos, script.name, 
-                        script.num, parseData))
-}
 
 #' .ddg.abbrev.cmd abbreviates a command to the specified length.
 #' Default is 60 characters.
