@@ -8,6 +8,6 @@ test_that("console prov dir", {
     })
 
 test_that("specified prov dir", {
-      expect_warning (actual.path <- .ddg.set.path ("/x/y/z", NULL, FALSE))
+	  actual.path <- .ddg.set.path ("/x/y/z", NULL, FALSE)
       expect_true(startsWith (actual.path, "/x/y/z/prov_console"))
     })
