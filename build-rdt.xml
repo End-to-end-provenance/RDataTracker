@@ -11,7 +11,7 @@
 
     <target name="roxygen" depends="copy-to-directory">
     	<exec dir="${builddir}" executable="Rscript" >
-      		<arg line="-e roxygen2::roxygenise()" />
+       		<arg line="-e devtools::document()" />
     	</exec>
       	<copy overwrite="true" todir="man_rdt">
       		<fileset dir="${builddir}/man" />

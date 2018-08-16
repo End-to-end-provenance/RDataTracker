@@ -1,3 +1,62 @@
+# Extension of DDGStatement that keeps track of individual statements
+# within functions.
+setClass("RDTStatement",
+    slots = list(
+        contained = "list"         # If this is a function declaration, this will 
+                                   # be a list of DDGStatement objects for the 
+                                   # statements it contains.
+        ),
+    contains = "DDGStatement")
+
+# This is called when a new RDTStatement is created.  It initializes all of the slots.
+methods::setMethod ("initialize",
+    "RDTStatement",
+    function(.Object, parsed, pos, script.name, script.num, parseData){
+      .Object <- methods::callNextMethod(.Object, parsed, pos, script.num)
+      .Object@contained <-
+          # The contained field is a list of DDGStatements for all statements inside
+          # the function or control statement.  If we are collecting
+          # provenance inside functions or control statements, we will execute
+          # annotated versions of these statements.
+          .ddg.parse.contained(.Object, script.name, parseData)
+      
+      .Object@annotated <-
+          # If this is a call to .ddg.eval, we only want to execute
+          # the argument to .ddg.eval
+          if (grepl("^.ddg.eval", .Object@text)) {
+            parse(text=.Object@parsed[[1]][[2]])
+          }
+          
+          else {
+            .ddg.add.annotations(.Object)
+          }
+      
+      #print(paste ("annotated statement", .Object@annotated))
+      
+      # find the list of the names of the function calls in the statement
+      return(.Object)
+    }
+)
+
+#' .ddg.construct.DDGStatement creates a DDGStatement.
+#' @param expr - the parsed expression
+#' @param pos - the DDGStatementPos object for this statement
+#' @param script.name - the name of the script the statement is from
+#' @param script.num - the script number used to find the script in the sourced script table
+#' @param parseData - the object created by the parser that gives us source position information
+#' @return a DDG statement
+
+.ddg.construct.DDGStatement <- function (expr, pos, script.name, script.num, parseData) {
+  #print(paste(".ddg.construct.DDGStatement: expr =", expr))
+  # Surprisingly, if a statement is just a number, like 1 (which could be the last 
+  # statement in a function, for example), the parser returns a number, rather 
+  # than a parse tree!
+  if (is.numeric(expr)) expr <- parse(text=expr)
+  
+  return (methods::new (Class = "RDTStatement", parsed = expr, pos, script.name, 
+          script.num, parseData))
+}
+
 #' .ddg.parse.contained creates the DDGStatement objects that correspond to
 #' statements inside a function or control block (or blocks).
 #' @param cmd - the DDGStatement being considered

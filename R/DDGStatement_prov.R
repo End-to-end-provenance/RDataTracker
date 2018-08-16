@@ -1,10 +1,18 @@
-# TODO: After getting other things working, should figure out S4 inheritance so
-# I can delete this file.
+#' .ddg.construct.DDGStatement creates a DDGStatement.
+#' @param expr - the parsed expression
+#' @param pos - the DDGStatementPos object for this statement
+#' @param script.name - the name of the script the statement is from
+#' @param script.num - the script number used to find the script in the sourced script table
+#' @param parseData - the object created by the parser that gives us source position information
+#' @return a DDG statement
 
-.ddg.add.annotations <- function (command) {
-  return(command@parsed)
+.ddg.construct.DDGStatement <- function (expr, pos, script.name, script.num, parseData) {
+  #print(paste(".ddg.construct.DDGStatement: expr =", expr))
+  # Surprisingly, if a statement is just a number, like 1 (which could be the last 
+  # statement in a function, for example), the parser returns a number, rather 
+  # than a parse tree!
+  if (is.numeric(expr)) expr <- parse(text=expr)
+  
+  return (methods::new (Class = "DDGStatement", parsed = expr, pos, script.num))
 }
 
-.ddg.parse.contained <- function (cmd, script.name, parseData) {
-  return(list())
-}
