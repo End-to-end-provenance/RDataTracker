@@ -27,7 +27,7 @@
   		</copy>
         <copy overwrite="true" file="DESCRIPTION_prov" tofile="${builddir}/DESCRIPTION"/>
         <copy overwrite="true" file="LICENSE" todir="${builddir}"/>
-        <copy overwrite="true" file="README.md" todir="${builddir}"/>
+        <copy overwrite="true" file="README_prov.md" tofile="${builddir}/README.md"/>
     </target>
     
 	&build-core;
