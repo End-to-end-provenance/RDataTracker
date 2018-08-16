@@ -142,8 +142,16 @@ function copy_rdt_files {
 # we are done.  If not, we will commit the changes and
 # push them.
 function commit_repo {
-  cd ../$TO_REPO
+  # Get the header of the latest commit
+  if [ "$(git show | grep "Merge:" | wc | awk '{print $1;}')" = "1" ]
+	then
+  	  COMMIT_MSG=$(git show | head -n 6 | tail -n 1)
+  else
+  	 COMMIT_MSG=$(git show | head -n 5 | tail -n 1)
+  fi
 
+  # Update the .commit file
+  cd ../$TO_REPO
   echo $COMMIT > .commit
   git add -A
   echo "git status for $TO_REPO"
@@ -160,7 +168,7 @@ function commit_repo {
   if [ "$NUM_MOD" != "1" -o "$NUM_DEL" != "0" -o "$NUM_NEW" = "0" ]
     then
       echo "*** Committing and pushing the changes."
-      git commit -m "$COMMIT"
+      git commit -m "$COMMIT_MSG"
       git push
   else 
   	  echo "*** Nothing to push."
