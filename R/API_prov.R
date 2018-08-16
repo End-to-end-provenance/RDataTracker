@@ -146,7 +146,7 @@ prov.run <- function(r.script.path = NULL, prov.dir = NULL, overwrite = TRUE,
     f = NULL, max.snapshot.size = 0, save.debug = FALSE, hash.algorithm="md5") {
   
   prov.init(r.script.path, prov.dir, overwrite, max.snapshot.size, hash.algorithm)
-  .ddg.run (r.script.path, save.debug, f)
+  .ddg.run (r.script.path, f = f, save.debug = save.debug)
 }
 
 #' prov.source

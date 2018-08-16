@@ -210,7 +210,7 @@ prov.run <- function(r.script.path = NULL, prov.dir = NULL, overwrite = TRUE,
   prov.init(r.script.path, prov.dir, overwrite, annotate.inside.functions, 
       first.loop, max.loops, max.snapshot.size, hash.algorithm)
   
-  .ddg.run (r.script.path, save.debug, f)
+  .ddg.run (r.script.path, f = f, save.debug = save.debug)
   
   if (display==TRUE){
     prov.display()

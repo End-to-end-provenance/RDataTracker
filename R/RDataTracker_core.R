@@ -1486,6 +1486,8 @@
   
   .ddg.save.return.value.table ()
   .ddg.save.sourced.script.table ()
+
+  if (interactive()) print(paste("Saving debug files in ", .ddg.path.debug(), sep=""))
 }
 
 #' .ddg.exec.env returns a dataframe of information about the current
