@@ -17,10 +17,10 @@
 
 ########################### DDGHash.R ###########################
 
-# This file contains the functions that manipulate the table that records 
-# hash function values for files read or written by the script. These hash 
-# values enable us to detect when a file written by one script is read by 
-# another script, so that we can link script executions into a larger workflow.
+# This file contains the functions that create and manage the hash table.
+# The hash values enable us to detect when a file written by one script 
+# is read by another script, so that we can link script executions into 
+# a larger workflow.
 
 
 #' .ddg.init.hashtable initializes the hashtable to be empty
@@ -28,29 +28,6 @@
 
 .ddg.init.hashtable <- function() {
   .ddg.set("ddg.hashtable", data.frame())
-  
-  # List of files read and written
-  .ddg.set("ddg.infilenodes", character())
-  .ddg.set("ddg.outfilenodes", character())
-  
-  # Boolean of whether there are any file nodes
-  .ddg.set("ddg.hasfilenodes", FALSE)
-}
-
-#' .ddg.add.infiles adds the infile list to the hash table 
-#' @param files files to add to the list of files read
-#' @return nothing
-
-.ddg.add.infiles <- function (files) {
-  .ddg.set("ddg.infilenodes", c(.ddg.get("ddg.infilenodes"), files))
-}
-
-#' .ddg.add.outfiles adds files it the outfile list to add to the hash table 
-#' @param files files to add to the list of files written
-#' @return nothing 
-
-.ddg.add.outfiles <- function (files) {
-  .ddg.set("ddg.outfilenodes", c(.ddg.get("ddg.outfilenodes"), files))
 }
 
 #' .ddg.add.to.hashtable adds information about a file to the hash table.
@@ -82,53 +59,13 @@
                  stringsAsFactors = FALSE))
 }
 
-#' .ddg.calculate.hash calculates the hash value for the file
-#' @param dname the name of the file
-#' @return the hash value based on the hash algorithm specified when prov.run or prov.init was called.
-#' Returns "" if the digest cannot be computed, for example, if the file does not exist.
-
-.ddg.calculate.hash <- function(dname) {
-  .ddg.set("ddg.hasfilenodes", TRUE)
-  
-  # This function will cause certain tests to fail if run with pdf files or
-  # other non-text files with internal timestamps. This could also cause these files
-  # to sync incorrectly in the workflow, but given that reading in a pdf file is unlikely,
-  # this should not be an overly large issue.
-  dhash <- digest::digest(dname, algo=.ddg.get(".ddg.hash.algorithm"))
-  if (is.null(dhash)) {
-    dhash <- ""
-  }
-  return (dhash)
-  
-}
-
-#' .ddg.calculate.rw determines whether to record this as a read or write operation in the hash table
-#' @param dname the data file name
-#' @return "read" if the file was read and "write" if the file was written
-
-.ddg.calculate.rw <- function(dname) {
-  infiles <- .ddg.get("ddg.infilenodes")
-  if (dname %in% infiles) {
-    .ddg.set("ddg.infilenodes", infiles[match(infiles, dname, 0) == 0])
-    #print (paste("Removing", dname, "from infilenodes"))
-    return ("read")
-  }
-  
-  outfiles <- .ddg.get("ddg.outfilenodes")
-  if (dname %in% outfiles) {
-    .ddg.set("ddg.outfilenodes", outfiles[match(outfiles, dname, 0) == 0])
-    #print (paste("Removing", dname, "from outfilenodes"))
-    return ("write")
-  }
-
-  #print(paste(".ddg.calculate.rw:", dname, "not found in infilenodes or outfilenodes!"))
-  return ("")
-}
-
-#' .ddg.set.hash sets the hash and rw fields for a data node 
+#' .ddg.set.hash sets the hash and rw fields for a data node
+#' and adds this information to the hash table. 
+#' @param dname data node name.
 #' @param dnum the id of the node to set
-#' @param hash the hash value to use
-#' @param rw the rw value to use
+#' @param dloc path and name of original file.
+#' @param dvalue data node value.
+#' @param dtime timestamp of original file.
 #' @return nothing 
 
 .ddg.set.hash <- function (dname, dnum, dloc, dvalue, dtime) {

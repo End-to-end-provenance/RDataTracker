@@ -84,6 +84,7 @@ prov.init <- function(r.script.path = NULL, prov.dir = NULL, overwrite = TRUE,
 
   # Save hash algorithm
   .ddg.set (".ddg.hash.algorithm", hash.algorithm)
+  .ddg.init.filenodes ()
 
   # Store maximum snapshot size.
   .ddg.set("ddg.max.snapshot.size", max.snapshot.size)

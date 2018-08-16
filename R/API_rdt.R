@@ -111,6 +111,7 @@ prov.init <- function(r.script.path = NULL, prov.dir = NULL, overwrite = TRUE,
 
   # Save hash algorithm
   .ddg.set (".ddg.hash.algorithm", hash.algorithm)
+  .ddg.init.filenodes ()
   .ddg.init.hashtable ()
   
   # Set environment constants.
