@@ -28,6 +28,7 @@
 
 #' .ddg.init.sourced.scripts initializes the data needed to manage sourced scripts
 #' @return nothing
+#' @noRd
 
 .ddg.init.sourced.scripts <- function () {
   # Script sourced with .ddg.source
@@ -43,6 +44,7 @@
 #' .ddg.is.sourced returns True if we are running a script from a file,
 #' as opposed to console commands.
 #' @return TRUE if we are running a script from file
+#' @noRd
 
 .ddg.is.sourced <- function() {
   return (.ddg.get(".ddg.is.sourced"))
@@ -50,6 +52,7 @@
 
 #' .ddg.next.script.num returns the value to use for the next script id
 #' @return the value of the next script id
+#' @noRd
 
 .ddg.next.script.num <- function() {
   return(.ddg.get(".ddg.next.script.num"))
@@ -57,6 +60,7 @@
 
 #' .ddg.sourced.scripts returns a dataframe containing the sourced script table
 #' @return a data frame containing the sourced script table
+#' @noRd
 
 .ddg.sourced.scripts <- function() {
   return(.ddg.get(".ddg.sourced.scripts"))
@@ -66,6 +70,7 @@
 #' Useful for debugging. The file will be in the debug directory in a file called 
 #' sourced-scripts.csv.
 #' @return nothing
+#' @noRd
 
 .ddg.save.sourced.script.table <- function () {
   # Save if script is sourced.
@@ -82,6 +87,7 @@
 #' .ddg.store.script.info records a new script in the sourced scripts table.
 #' @param sname the name of the script file, excluding the directory
 #' @return the unique id of the script
+#' @noRd
 
 .ddg.store.script.info <- function (sname) {
   snum <- .ddg.next.script.num()

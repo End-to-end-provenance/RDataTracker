@@ -25,6 +25,7 @@
 
 #' .ddg.init.hashtable initializes the hashtable to be empty
 #' @return nothing
+#' @noRd
 
 .ddg.init.hashtable <- function() {
   .ddg.set("ddg.hashtable", data.frame())
@@ -39,6 +40,7 @@
 #' @param dvalue the relative path to the saved copy of the file
 #' @param dtime the timestamp on the file
 #' @return nothing
+#' @noRd
 
 .ddg.add.to.hashtable <- function(dname, ddg.dnum, dloc, dvalue, dtime, dhash, drw) {
   if (dhash == "") {
@@ -67,6 +69,7 @@
 #' @param dvalue data node value.
 #' @param dtime timestamp of original file.
 #' @return nothing 
+#' @noRd
 
 .ddg.set.hash <- function (dname, dnum, dloc, dvalue, dtime) {
   
@@ -86,6 +89,7 @@
 #' function is unable to access or create this directory, then 
 #' it will write to the working directory. 
 #' @return nothing
+#' @noRd
 
 .ddg.hashtable.write <- function() {
   # if (interactive()) print(paste("Saving DDG in ", fileout))
@@ -130,6 +134,7 @@
 #' @param hashtable.json the full path to the hashtable file already saved to the file system
 #' @return the dataframe containing the contents of the existing hashtable file with 
 #' entries corresponding to overwritten files removed
+#' @noRd
 
 .ddg.hashtable.cleanup <- function(hashtable.json) {
   old_hashtable <- jsonlite::read_json(hashtable.json, simplifyVector = TRUE)
@@ -142,6 +147,7 @@
 #' .ddg.save.hashtable saves the hashtable to a file if the script has any file information 
 #' to save and the save hashtable flag was set when prov.run/init was called.
 #' @return nothing
+#' @noRd
 
 .ddg.save.hashtable <- function() {
   if (.ddg.get("ddg.hasfilenodes")) {

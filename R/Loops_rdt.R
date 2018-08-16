@@ -24,6 +24,7 @@
 #' @param first.loop the first loop iteration to collect
 #' @param max.loops the maximum number of iterations to collect
 #' @return nothing
+#' @noRd
 
 .ddg.init.loops <- function (first.loop, max.loops) {
   # Control loop number
@@ -47,6 +48,7 @@
 
 #' .ddg.clear.loops reinitialize some variables.  (Not sure why this is needed.)
 #' @return nothing
+#' @noRd
 
 .ddg.clear.loops <- function () {
   .ddg.set("ddg.loop.num", 0)
@@ -57,6 +59,7 @@
 #' Each loop has a unique id.  The vector returned contains an entry
 #' for each loop.
 #' @return the vector contains the number of iterations of each loop
+#' @noRd
 
 .ddg.loops <- function() {
   return(.ddg.get("ddg.loops"))
@@ -65,6 +68,7 @@
 #' .ddg.add.loop adds an entry to the ddg.loops vector that tracks the 
 #' number of iterations of each loop, initializing it to 0. 
 #' @return the unique id for the new loop
+#' @noRd
 
 .ddg.add.loop <- function() {
   ddg.loops <- c(.ddg.loops(), 0)
@@ -74,6 +78,7 @@
 
 #' .ddg.loop.annotate returns True if the loop should be annotated
 #' @return TRUE if the loop should be annotated
+#' @noRd
 
 .ddg.loop.annotate <- function() {
   return(.ddg.get("ddg.loop.annotate"))
@@ -81,6 +86,7 @@
 
 #' .ddg.loop.annotate.on turns on loop annotation (internal use only)
 #' @return nothing
+#' @noRd
 
 .ddg.loop.annotate.on <- function() {
   .ddg.set("ddg.loop.annotate", TRUE)
@@ -88,6 +94,7 @@
 
 #' .ddg.loop.annotate.off turns off loop annotation (internal use only)
 #' @return nothing
+#' @noRd
 
 .ddg.loop.annotate.off <- function() {
   .ddg.set("ddg.loop.annotate", FALSE)
@@ -95,6 +102,7 @@
 
 #' .ddg.inside.loop returns the level of loop nesting
 #' @return the level of loop nesting
+#' @noRd
 
 .ddg.inside.loop <- function() {
   return (.ddg.get("ddg.inside.loop"))
@@ -103,6 +111,7 @@
 #' .ddg.set.inside.loop increases the counter of the level of nesting of loops
 #' (internal use only)
 #' @return nothing 
+#' @noRd
 
 .ddg.set.inside.loop <- function() {
   .ddg.set("ddg.inside.loop", .ddg.get("ddg.inside.loop") + 1)    
@@ -111,6 +120,7 @@
 #' .ddg.not.inside.loop decreases the counter of the level of nesting of loops
 #' (internal use only)
 #' @return nothing
+#' @noRd
 
 .ddg.not.inside.loop <- function() {
   .ddg.set("ddg.inside.loop", .ddg.get("ddg.inside.loop") - 1)
@@ -120,6 +130,7 @@
 #' (internal use only)
 #' @param loop.num the id of the loop to look up
 #' @return the number of times the loop has iterated
+#' @noRd
 
 .ddg.loop.count <- function(loop.num) {
   ddg.loops <- .ddg.loops()
@@ -130,6 +141,7 @@
 #' (internal use only)
 #' @param loop.num the id of the loop being executed
 #' @return the updated value of the counter.
+#' @noRd
 
 .ddg.loop.count.inc <- function(loop.num) {
   ddg.loops <- .ddg.loops()
@@ -142,6 +154,7 @@
 #' (internal use only)
 #' @param loop.num the id of the loop to reset
 #' @return nothing
+#' @noRd
 
 .ddg.reset.loop.count <- function(loop.num) {
   ddg.loops <- .ddg.loops()
@@ -152,6 +165,7 @@
 #' .ddg.first.loop returns the loop iteration at which we should start
 #' collecting provenance (internal use only)
 #' @return the first iteration to collect provenance
+#' @noRd
 
 .ddg.first.loop <- function() {
   return(.ddg.get("ddg.first.loop"))
@@ -160,6 +174,7 @@
 #' .ddg.max.loops returns the current maximum number of iterations of 
 #' a loop for which provenance should be collected.
 #' @return the maximum number of iterations to collect provenance
+#' @noRd
 
 .ddg.max.loops <- function() {
   return(.ddg.get("ddg.max.loops"))
@@ -170,6 +185,7 @@
 #' (internal use only)
 #' @param index.var a parsed expression containing the index variable
 #' @return nothing
+#' @noRd
 
 .ddg.forloop <- function(index.var) {
   index.name <- as.character(deparse(substitute(index.var)))
@@ -189,6 +205,7 @@
 #' for the for, repeat, or while loop where the break occurs, and adds a
 #' finish node for the for, repeat, or while statement.
 #' @return nothing
+#' @noRd
 
 .ddg.break.statement <- function() {
   .ddg.end.loop ("break")
@@ -198,6 +215,8 @@
 #' a for, repeat, or while statement. It also adds a finish node for the
 #' if statement (if any) where the next occurs and adds a finish node for
 #' the for, while, or repeat loop where the next occurs.
+#' @return nothing
+#' @noRd
 
 .ddg.next.statement <- function() {
   .ddg.end.loop ("next")
@@ -206,6 +225,7 @@
 #' .ddg.end.loop creates the nodes necessary to end a loop
 #' @param op One of "break" or "next" which determines the operation node that is built
 #' @return nothing
+#' @noRd
 
 .ddg.end.loop <- function (op) {
   .ddg.proc.node("Operation", op, op)

@@ -5,6 +5,7 @@
 #' @param script.num - the script number used to find the script in the sourced script table
 #' @param parseData - the object created by the parser that gives us source position information
 #' @return a DDG statement
+#' @noRd
 
 .ddg.construct.DDGStatement <- function (expr, pos, script.name, script.num, parseData) {
   #print(paste(".ddg.construct.DDGStatement: expr =", expr))

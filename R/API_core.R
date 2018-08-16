@@ -43,6 +43,7 @@
 #' the specified limit, is saved.  The size is in kilobytes. 
 #' @return .ddg.init initializes the provenance collector.  The .ddg.init
 #' function does not return a value.
+#' @noRd
 
 .ddg.init <- function(r.script.path = NULL, prov.dir = NULL, overwrite = TRUE, 
   max.snapshot.size = 0) {
@@ -125,6 +126,7 @@
 #' @param r.script.path the path to the R script.  If NULL, we are running from the console.
 #' @param overwrite If FALSE, a timestamp is added to the directory name
 #' @return the name of the directory where the ddg should be stored
+#' @noRd
 
 .ddg.set.path <- function (prov.dir, r.script.path, overwrite) {
   
@@ -182,6 +184,7 @@
 #'   specified, the current DDG directory is assumed.
 #' @param ddg.path path to DDG directory.
 #' @return nothing
+#' @noRd
 
 .ddg.flush.ddg <- function(ddg.path=NULL) {
   # TODO:  When ddg.flush.ddg is removed (from Obsolete.R, we
@@ -215,6 +218,7 @@
 #'   This is intended for developers of the RDataTracker package.
 #' @return .ddg.save writes the current provenance to a file but does not 
 #'   return a value.
+#' @noRd
 
 .ddg.save <- function(save.debug = FALSE) {
   if (!.ddg.is.init()) return(invisible())
@@ -243,6 +247,7 @@
 #'   This is intended for developers of the RDataTracker package.
 #' @return .ddg.quit writes the current provenance to a file but does not 
 #'   return a value.
+#' @noRd
 
 .ddg.quit <- function(save.debug = FALSE) {
   if (!.ddg.is.init()) return(invisible())
@@ -326,6 +331,7 @@
 #' the digest package.
 #' @return .ddg.run runs a script, collecting provenance as it does so.  
 #' It does not return a value. 
+#' @noRd
 
 .ddg.run <- function(r.script.path = NULL, prov.dir = NULL, overwrite = TRUE, 
                     f = NULL, annotate.inside.functions = FALSE, first.loop = 1, 
@@ -383,6 +389,7 @@
 #' @param endLine the line that the source call ends on
 #' @param endCol the column that the source call ends on
 #' @return nothing
+#' @noRd
 
 .ddg.source <- function (file,  local = FALSE, echo = verbose, print.eval = echo,
   verbose = getOption("verbose"), max.deparse.length = 150, chdir = FALSE, 

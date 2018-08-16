@@ -24,6 +24,7 @@
 #' .ddg.init.filenodes initializes the list of input and output
 #' file nodes.
 #' @return nothing
+#' @noRd
 
 .ddg.init.filenodes <- function() {
   # List of files read and written
@@ -37,6 +38,7 @@
 #' .ddg.add.infiles adds the infile list to the list of files read
 #' @param files files to add to the list of files read
 #' @return nothing
+#' @noRd
 
 .ddg.add.infiles <- function (files) {
   .ddg.set("ddg.infilenodes", c(.ddg.get("ddg.infilenodes"), files))
@@ -45,6 +47,7 @@
 #' .ddg.add.outfiles adds the outfile list to the list of files written
 #' @param files files to add to the list of files written
 #' @return nothing 
+#' @noRd
 
 .ddg.add.outfiles <- function (files) {
   .ddg.set("ddg.outfilenodes", c(.ddg.get("ddg.outfilenodes"), files))
@@ -55,6 +58,7 @@
 #' @return the hash value based on the hash algorithm specified when 
 #' prov.run or prov.init was called. Returns "" if the digest cannot 
 #' be computed, for example, if the file does not exist.
+#' @noRd
 
 .ddg.calculate.hash <- function(dname) {
  	.ddg.set("ddg.hasfilenodes", TRUE)
@@ -73,6 +77,7 @@
 #' operation.
 #' @param dname the data file name
 #' @return "read" if the file was read and "write" if the file was written
+#' @noRd
 
 .ddg.calculate.rw <- function(dname) {
   infiles <- .ddg.get("ddg.infilenodes")

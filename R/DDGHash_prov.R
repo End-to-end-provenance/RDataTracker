@@ -25,6 +25,7 @@
 #' @param dvalue data node value.
 #' @param dtime timestamp of original file.
 #' @return nothing 
+#' @noRd
 
 .ddg.set.hash <- function (dname, dnum, dloc, dvalue, dtime) {
   

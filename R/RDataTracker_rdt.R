@@ -1,3 +1,23 @@
+# Copyright (C) President and Fellows of Harvard College and 
+# Trustees of Mount Holyoke College, 2014, 2015, 2016, 2017, 2018.
+
+# This program is free software: you can redistribute it and/or
+# modify it under the terms of the GNU General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU General Public License for more details.
+#
+#   You should have received a copy of the GNU General Public
+#   License along with this program.  If not, see
+#   <http://www.gnu.org/licenses/>.
+
+######################### RDataTracker.R #########################
+
+
 #' .ddg.create.start.for.cur.cmd creates a start node for the current command 
 #' if one has not been created already.  Modifies the command stack by setting 
 #' the value to TRUE if the start node is created.  If the current command 
@@ -5,6 +25,7 @@
 #' to "MATCHES_CALL".
 #' @param call the parsed version of the function call
 #' @return nothing
+#' @noRd
 
 .ddg.create.start.for.cur.cmd <- function (call) {
   if (!.ddg.is.set(".ddg.cur.cmd")) return ()
@@ -49,6 +70,7 @@
 #' be multiple return value nodes to link to.
 #' @param command input command.
 #' @return nothing
+#' @noRd
 
 .ddg.link.function.returns <- function(command) {
   
@@ -71,6 +93,7 @@
 #' while keeping the command at the top of the stack the same
 #' @param value the new value
 #' @return nothing
+#' @noRd
 
 .ddg.change.cmd.top <- function (value) {
   .ddg.cur.cmd.stack <- .ddg.get(".ddg.cur.cmd.stack")
@@ -96,6 +119,7 @@
 #'   captured graphic. Supported extensions are .jpg, .jpeg, .pdf.
 #' @param env (optional) - the environment local to the function
 #' @return nothing
+#' @noRd
 
 .ddg.create.function.nodes <- function(pname, call, full.call, outs.graphic=NULL, 
     outs.data=NULL, outs.exception=NULL, 
@@ -233,6 +257,7 @@
 #' @param graphic.fext - the file extension to be used when saving the
 #'   captured graphic. Supported extensions are .jpg, .jpeg, .pdf.
 #' @return nothing
+#' @noRd
 
 .ddg.create.output.nodes<- function(pname, outs.graphic, outs.data, 
     outs.exception, outs.url, outs.file, 
@@ -352,6 +377,7 @@
 #' .ddg.get.first.non.ddg.env gets the environment for the function that called
 #' into ddg functions
 #' @return the environment of the innermost user's function
+#' @noRd
 
 .ddg.get.first.non.ddg.env <- function() {
   non.ddg.frame <- .ddg.get.first.non.ddg.frame.number()
@@ -361,6 +387,7 @@
 #' .ddg.get.first.non.ddg.frame.number gets the frame number for the function 
 #' that called into ddg functions
 #' @return the frame number of the innermost user function
+#' @noRd
 
 .ddg.get.first.non.ddg.frame.number <- function() {
   calls <- sys.calls()

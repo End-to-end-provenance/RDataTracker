@@ -276,6 +276,7 @@ prov.json <- function()
 
 #' .ddg.start.ddg.explorer starts DDG Explorer
 #' @return nothing
+#' @noRd
 
 .ddg.start.ddg.explorer <- function () {
   jar.path<- "/RDataTracker/java/DDGExplorer.jar"
@@ -333,6 +334,7 @@ prov.display <- function () {
 #' annotation in the user's environment.  This is a workaround to exporting
 #' these functions and would not be allowed by CRAN.
 #' @return nothing
+#' @noRd
 
 .ddg.set.annotation.functions <- function () {
   assign(".ddg.details.omitted", RDataTracker:::.ddg.details.omitted, 

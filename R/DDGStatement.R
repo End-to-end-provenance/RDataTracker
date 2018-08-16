@@ -30,6 +30,7 @@
 
 #' .ddg.init.statements initialize the data used to manage the statements
 #' @return nothing
+#' @noRd
 
 .ddg.init.statements <- function() {
   .ddg.set("ddg.statement.num", 0)
@@ -38,6 +39,7 @@
 
 #' .ddg.statement.num returns the number of DDG Statements created
 #' @return the number of DDG statements created
+#' @noRd
 
 .ddg.statement.num <- function() {
   return(.ddg.get("ddg.statement.num"))
@@ -45,6 +47,7 @@
 
 #' .ddg.statements returns a list of DDG Statements created
 #' @return the list of DDG statements created
+#' @noRd
 
 .ddg.statements <- function() {
   return(.ddg.get("ddg.statements"))
@@ -53,6 +56,7 @@
 #' .ddg.statement returns the ith DDG Statement
 #' @param i the index of the statement to return
 #' @return the ith DDGStatement
+#' @noRd
 
 .ddg.statement <- function(i) {
   ddg.statements <- .ddg.statements()
@@ -62,6 +66,7 @@
 #' .ddg.add.ddgstatement adds a DDGStatement to the end of the list
 #' @param stmt a DDGStatement object 
 #' @return nothing
+#' @noRd
 
 .ddg.add.ddgstatement <- function(stmt) {
   ddg.statements <- c(.ddg.statements(), stmt)
@@ -206,6 +211,7 @@ methods::setMethod ("initialize",
 #' @param enclosing.pos - if exprs are statements within a function definition, enclosing.pos
 #' is the source position information of the entire function declaration
 #' @return a list of DDGStatement objects
+#' @noRd
 
 .ddg.create.DDGStatements <- function (exprs, script.name, script.num, 
                                        parseData = NULL, enclosing.pos = NULL) {
@@ -283,6 +289,7 @@ methods::setMethod ("initialize",
 #' [1]: functions from unknown libraries (character vector)
 #' [2]: variable names, which may refer to functions (character vector)
 #' [3]: known function calls with their respective libraries (data frame)
+#' @noRd
 
 .ddg.find.calls <- function(expr) 
 {
@@ -318,6 +325,7 @@ methods::setMethod ("initialize",
 #' [2]: variable names, which may refer to functions
 #' [3]: functions with known libraries
 #' [4]: libraries which the functions in [3] are from
+#' @noRd
 
 .ddg.find.calls.rec <- function(expr)
 {
@@ -400,6 +408,7 @@ methods::setMethod ("initialize",
 # .ddg.null.pos provides a special null value for when source code position 
 #' information is missing.
 #' @return a special null value
+#' @noRd
 
 .ddg.null.pos <- function() {
   return (methods::new (Class = "DDGStatementPos", NA))
@@ -411,6 +420,7 @@ methods::setMethod ("initialize",
 #' @param cmd - command string.
 #' @param len (optional) - number of characters.
 #' @return abbreviated command
+#' @noRd
 
 .ddg.abbrev.cmd <- function(cmd, len=60) {
   if (length(cmd) > 1) {
@@ -430,6 +440,7 @@ methods::setMethod ("initialize",
 #' only appears once.
 #' @param main.object - input expression.
 #' @return vector of variables used in the expression
+#' @noRd
 
 .ddg.find.var.uses <- function(main.object) {
   # Recursive helper function.
@@ -523,6 +534,7 @@ methods::setMethod ("initialize",
 #' assignment statement.  Otherwise, it returns NULL.
 #' @param obj - input expression.
 #' @return name of variable assigned to
+#' @noRd
 
 .ddg.find.simple.assign <- function(obj)
 {
@@ -539,6 +551,7 @@ methods::setMethod ("initialize",
 #' object containing an assignment statement.
 #' @param expr - a parsed expression.
 #' @return True if an expression object containing an assignment
+#' @noRd
 
 .ddg.is.assign <- function (expr)
 {
@@ -569,6 +582,7 @@ methods::setMethod ("initialize",
 #' these examples, it would return "a".
 #' @param lvalue - a parsed expression.
 #' @return name of variable referenced in the expression
+#' @noRd
 
 .ddg.get.var <- function(lvalue)
 {
@@ -592,6 +606,7 @@ methods::setMethod ("initialize",
 #' both a and b.
 #' @param obj - a parsed expression.
 #' @return a vector containing all variables assigned in the expression
+#' @noRd
 
 .ddg.find.assign <- function(obj) {
   # Base case.
@@ -624,6 +639,7 @@ methods::setMethod ("initialize",
 #' declaration.
 #' @param expr - a parsed expression.
 #' @return True if expression is a function declaration
+#' @noRd
 
 .ddg.is.functiondecl <- function(expr) {
   if (is.symbol(expr) || !is.language(expr)) return (FALSE)
@@ -635,6 +651,7 @@ methods::setMethod ("initialize",
 #' parsed statement.
 #' @param parsed.command a parsed statement
 #' @return the control type of the statement
+#' @noRd
 
 .ddg.get.statement.type <- function(parsed.command) {
   if (length(parsed.command) > 1) return(as.character(parsed.command[[1]]))
@@ -646,6 +663,7 @@ methods::setMethod ("initialize",
 #' @param parsed.expr - a parse tree
 #' @param func.name - the name of a function
 #' @return True if the expression is a call to the specified function
+#' @noRd
 
 .ddg.is.call.to <- function(parsed.expr, func.name) {
   # Check if a function call.
@@ -663,6 +681,7 @@ methods::setMethod ("initialize",
 #' @param parsed.expr - a parse tree
 #' @param func.name - the name of a function
 #' @return True if the parsed expression contains a call to the specified function
+#' @noRd
 
 .ddg.has.call.to <- function(parsed.expr, func.name) {
   # Base case.
