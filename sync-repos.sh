@@ -7,6 +7,11 @@
 # The provR repository contains only code used in provR, while the
 # rdt repository contains only code used in RDataTracker.
 
+echo ""
+echo "----------------------------------------------------------------"
+echo ""
+date
+
 # Determines if the repository is already current with respect
 # to the RDataTracker repository.  The first parameter is the 
 # repository to copy to, the second is the branch to copy.
