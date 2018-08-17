@@ -52,6 +52,7 @@
 #'   extensions include: .csv, .jpg, .jpeg, .pdf, and .txt.
 #' @param graphic.fext (optional) the file extension for a graphics file, defaults to jpeg.
 #' @return nothing
+#' @noRd
 
 .ddg.function <- function(outs.graphic=NULL, outs.data=NULL, 
                          outs.exception=NULL, outs.url=NULL, outs.file=NULL, 
@@ -97,6 +98,7 @@
 #' @param cmd.func the DDGStatement object for the return statement
 #' @return the value that the function whose return value we are capturing 
 #'    returns
+#' @noRd
 
 .ddg.return.value <- function (expr=NULL, cmd.func=NULL) {
   if (!.ddg.is.init()) return(expr)
@@ -258,6 +260,7 @@
 #' earliest one called.
 #' 
 #' @return the frame number of the user function that called .ddg.return.value 
+#' @noRd
 
 .ddg.find.ddg.return.value.caller.frame.number <- function() {
   # Get the stack
@@ -281,6 +284,7 @@
 #' .ddg.annotate.inside returns True if we should be annotating inside 
 #' control constructs
 #' @return true if annotating inside control constructs
+#' @noRd
 
 .ddg.annotate.inside <- function() {
   return(.ddg.get("ddg.annotate.inside"))
@@ -297,6 +301,7 @@
 #' currently only used within loops (internal use only)
 #' 
 #' @return nothing
+#' @noRd
 
 .ddg.details.omitted <- function() {
   pnode.name <- "Details Omitted"
@@ -313,6 +318,7 @@
 #' version of a function (internal use only)
 #' @param func.name name of function
 #' @return True if we should run annotated version
+#' @noRd
 
 .ddg.should.run.annotated <- function (func.name) {
   
@@ -345,6 +351,7 @@
 #' @param cmd.func the corresponding DDGStatement if inside a function,
 #'    or an integer identifying the position of the statement in a list
 #'    if inside a control construct
+#' @noRd
 
 .ddg.eval <- function(statement, cmd.func=NULL) {
   
@@ -408,6 +415,7 @@
 #' @param pname the label for the node.  This can be passed as
 #' a string or as a name.
 #' @return nothing
+#' @noRd
 
 .ddg.start <- function(pname=NULL) {
   if (!.ddg.is.init()) return(invisible())
@@ -442,6 +450,7 @@
 #' @param pname the label for the node. This can be passed as
 #' a string or as a name.
 #' @return nothing
+#' @noRd
 
 .ddg.finish <- function(pname=NULL) {
   if (!.ddg.is.init()) return(invisible())
@@ -568,6 +577,7 @@ prov.annotate.off <- function (fnames.off=NULL) {
 #' @param cmds set of parsed commands
 #' @param script.name name of script
 #' @return nothing
+#' @noRd
 
 .ddg.save.annotated.script <- function(cmds, script.name) {
   for (i in 1:length(cmds)) {
@@ -587,6 +597,7 @@ prov.annotate.off <- function (fnames.off=NULL) {
 #' The returned expression is annotated as needed.
 #' @param command a DDGStatement
 #' @return an expression with annotations
+#' @noRd
 
 .ddg.add.annotations <- function(command) {
   #print("In .ddg.add.annotations")
@@ -638,6 +649,7 @@ prov.annotate.off <- function (fnames.off=NULL) {
 #' @param parsed.command a parsed expression that is a call to the source function.
 #' @param command the DDGStatement object for the source call
 #' @return a parsed expression with source replaced by .ddg.source
+#' @noRd
 
 .ddg.add.ddg.source <- function(parsed.command, cmd) {
   script.name <- deparse(parsed.command[[2]])
@@ -659,6 +671,7 @@ prov.annotate.off <- function (fnames.off=NULL) {
 #' @param function.decl a command that contains an assignment statement where the value
 #' being bound is a function declaration
 #' @return a parsed command with annotations added
+#' @noRd
 
 .ddg.add.function.annotations <- function(function.decl) {
   #print("In .ddg.add.function.annotations")
@@ -717,6 +730,7 @@ prov.annotate.off <- function (fnames.off=NULL) {
 #'   the full assignment statement in which it is declared)
 #' @return a parse tree for the same function declaration but with
 #' the function statements inside a block.
+#' @noRd
 
 .ddg.create.function.block <- function(func.definition) {
   # Get the function parameters.
@@ -734,6 +748,7 @@ prov.annotate.off <- function (fnames.off=NULL) {
 #' containing an if-then statement used to control annotation.
 #' @param func.definition the original function definition.
 #' @return the function definition with annotations added
+#' @noRd
 
 .ddg.add.conditional.statement <- function(func.definition, func.name) {
   # Get the function parameters.
@@ -767,6 +782,7 @@ prov.annotate.off <- function (fnames.off=NULL) {
 #'   the full assignment statement in which it is declared)
 #' @return a parse tree for the same function declaration but with
 #' a call to .ddg.function as the first statement.
+#' @noRd
 
 .ddg.insert.ddg.function <- function(func.definition) {
   # Get the function parameters.
@@ -800,6 +816,7 @@ prov.annotate.off <- function (fnames.off=NULL) {
 #' @return a parse tree for the same function body but with
 #' a call to .ddg.return.value wrapped around all expressions that are
 #' returned.
+#' @noRd
 
 .ddg.wrap.return.parameters <- function(block, parsed.stmts) {
   # Check each statement in the annotated block to see if it
@@ -891,6 +908,7 @@ prov.annotate.off <- function (fnames.off=NULL) {
 #' @return a parse tree for the same function declaration but with
 #' a call to .ddg.return.value wrapped around all expressions that are
 #' returned.
+#' @noRd
 
 .ddg.wrap.all.return.parameters <- function(func.definition, parsed.stmts) {
   # Get function parameters.
@@ -918,6 +936,7 @@ prov.annotate.off <- function (fnames.off=NULL) {
 #'   the full assignment statement in which it is declared)
 #' @return the parse tree corresponding to the last statement in the
 #' function definition.
+#' @noRd
 
 .ddg.find.last.statement <- function (func.definition) {
   # Get function body.
@@ -939,6 +958,7 @@ prov.annotate.off <- function (fnames.off=NULL) {
 #'   function
 #' @return a parse tree for the same function declaration but with
 #' a call to .ddg.return.value wrapped around the last line in the body.
+#' @noRd
 
 .ddg.wrap.last.line <- function(func.definition, parsed.stmts) {
   # Get function parameters.
@@ -967,6 +987,7 @@ prov.annotate.off <- function (fnames.off=NULL) {
 #' @param parsed.stmt the DDGStatement object corresponding to the last statement
 #' @return a parse tree with a call to .ddg.return.value.  The arguments to
 #' .ddg.return.value are the parsed statement and the DDGStatement object.
+#' @noRd
 
 .ddg.create.ddg.return.call <- function (last.statement, parsed.stmt) {
   # We need to force the evaluation of parsed.stmt for the closure to
@@ -1002,6 +1023,7 @@ prov.annotate.off <- function (fnames.off=NULL) {
 #'   function
 #' @return a parse tree for the same function declaration but with
 #' the calls to .ddg.eval inserted.
+#' @noRd
 
 .ddg.wrap.with.ddg.eval <- function(func.definition, parsed.stmts) {
   # Get the function parameters.
@@ -1035,6 +1057,7 @@ prov.annotate.off <- function (fnames.off=NULL) {
 #' .ddg.annotate.if.statement adds annotations to if statements.
 #' @param command original parsed command
 #' @return parsed command with annotations added
+#' @noRd
 
 .ddg.annotate.if.statement <- function(command) {
   #print(paste(".ddg.annotate.if.statement annotating", command@text))
@@ -1148,6 +1171,7 @@ prov.annotate.off <- function (fnames.off=NULL) {
 #' @param command original parsed command
 #' @param loop.type loop type (for, while, repeat)
 #' @return parsed command with annotationa added
+#' @noRd
 
 .ddg.annotate.loop.statement <- function(command, loop.type) {
   if (.ddg.max.loops() == 0) {
@@ -1242,6 +1266,7 @@ prov.annotate.off <- function (fnames.off=NULL) {
 #' .ddg.annotate.simple.block adds annotations to simple blocks.
 #' @param command original parsed command
 #' @return parsed command with annotations added
+#' @noRd
 
 .ddg.annotate.simple.block <- function(command) {
   # Get parsed command
@@ -1266,6 +1291,7 @@ prov.annotate.off <- function (fnames.off=NULL) {
 #' passed in is a call to a ddg function.
 #' @param parsed.expr a parse tree
 #' @return True if a call to a ddg function
+#' @noRd
 
 .ddg.is.call.to.ddg.function <- function(parsed.expr) {
   # Check if a function call.
@@ -1285,6 +1311,7 @@ prov.annotate.off <- function (fnames.off=NULL) {
 #' @param parsed.stmt the DDGStatement object corresponding to the last statement
 #' @return a parse tree with a call to .ddg.eval.  The arguments to
 #' .ddg.eval are the original statement and the DDGStatement object.
+#' @noRd
 
 .ddg.create.ddg.eval.call <- function (statement, parsed.stmt) {
   # We need to force the evaluation of parsed.stmt for the closure to
@@ -1302,6 +1329,7 @@ prov.annotate.off <- function (fnames.off=NULL) {
 #' @param parsed.stmt the corresponding DDGStatement object.
 #' @return a parse tree with a call to .ddg.eval.  The arguments to
 #' .ddg.eval are the original statement and the number of the DDGStatement object.
+#' @noRd
 
 .ddg.create.block.ddg.eval.call <- function (statement, parsed.stmt) {
   # Get the next DDGStatement number and store parsed.stmt at this location.
@@ -1318,6 +1346,7 @@ prov.annotate.off <- function (fnames.off=NULL) {
 #' @param block original block
 #' @param parsed.stmts parsed statements in block
 #' @return block with annotations added
+#' @noRd
 
 .ddg.wrap.block.with.ddg.eval <- function(block, parsed.stmts) {
   # Ignore initial brace.
@@ -1343,6 +1372,7 @@ prov.annotate.off <- function (fnames.off=NULL) {
 #' @param block original block
 #' @param pname label for start and finish nodes
 #' @return block with annotations added
+#' @noRd
 
 .ddg.add.block.start.finish <- function(block, pname) {
   # Create .ddg.start & .ddg.finish statements.
@@ -1370,6 +1400,7 @@ prov.annotate.off <- function (fnames.off=NULL) {
 #' @param block original block
 #' @param index.var index variable
 #' @return block with annotations added
+#' @noRd
 
 .ddg.insert.ddg.forloop <- function(block, index.var) {
   pos <- length(block)
@@ -1395,6 +1426,7 @@ prov.annotate.off <- function (fnames.off=NULL) {
 #' @param block original block
 #' @param var whether loop annotation is on or off
 #' @return block with annotations added
+#' @noRd
 
 .ddg.insert.ddg.loop.annotate <- function(block, var) {
   pos <- length(block)

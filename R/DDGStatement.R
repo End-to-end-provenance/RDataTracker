@@ -30,6 +30,7 @@
 
 #' .ddg.init.statements initialize the data used to manage the statements
 #' @return nothing
+#' @noRd
 
 .ddg.init.statements <- function() {
   .ddg.set("ddg.statement.num", 0)
@@ -38,6 +39,7 @@
 
 #' .ddg.statement.num returns the number of DDG Statements created
 #' @return the number of DDG statements created
+#' @noRd
 
 .ddg.statement.num <- function() {
   return(.ddg.get("ddg.statement.num"))
@@ -45,6 +47,7 @@
 
 #' .ddg.statements returns a list of DDG Statements created
 #' @return the list of DDG statements created
+#' @noRd
 
 .ddg.statements <- function() {
   return(.ddg.get("ddg.statements"))
@@ -53,6 +56,7 @@
 #' .ddg.statement returns the ith DDG Statement
 #' @param i the index of the statement to return
 #' @return the ith DDGStatement
+#' @noRd
 
 .ddg.statement <- function(i) {
   ddg.statements <- .ddg.statements()
@@ -62,6 +66,7 @@
 #' .ddg.add.ddgstatement adds a DDGStatement to the end of the list
 #' @param stmt a DDGStatement object 
 #' @return nothing
+#' @noRd
 
 .ddg.add.ddgstatement <- function(stmt) {
   ddg.statements <- c(.ddg.statements(), stmt)
@@ -113,7 +118,7 @@ methods::setClass("DDGStatement",
         abbrev = "character",   # A shortened version of the text to use in node names
         annotated = "expression",  # An annotated version of the statement.  This is
                                    # what we actually execute.
-
+        
         # Note that vars.used through has.dev.off do not apply to a situation where
         # the statement is a function declaration, since declaring the statement
         # does not read from files, etc.  That happens when the function is called,
@@ -132,9 +137,6 @@ methods::setClass("DDGStatement",
                                   # Has the value null.pos() if it is not available.
         script.num = "numeric",   # The number for the script this statement comes from.
                                   # Has the value -1 if it is not available
-        contained = "list",        # If this is a function declaration, this will 
-                                   # be a list of DDGStatement objects for the 
-                                   # statements it contains.
         functions.called = "list" # A list of the statement's function calls and 
                                   # potential function calls.]
       )
@@ -143,7 +145,7 @@ methods::setClass("DDGStatement",
 # This is called when a new DDG Statement is created.  It initializes all of the slots.
 methods::setMethod ("initialize",
   "DDGStatement",
-    function(.Object, parsed, pos, script.name, script.num, parseData){
+    function(.Object, parsed, pos, script.num){
       .Object@parsed <- parsed
 
       # deparse can return a vector of strings.  We convert that into
@@ -161,6 +163,8 @@ methods::setMethod ("initialize",
             .ddg.abbrev.cmd(.Object@text)
           }
 
+      .Object@annotated <- parsed
+      
       vars.used <- .ddg.find.var.uses(.Object@parsed[[1]])
 
       # Remove index variable in for statement (handled separately in .ddg.forloop).
@@ -192,26 +196,6 @@ methods::setMethod ("initialize",
           if (is.na(script.num)) -1
           else script.num
 
-      .Object@contained <-
-        # The contained field is a list of DDGStatements for all statements inside
-        # the function or control statement.  If we are collecting
-        # provenance inside functions or control statements, we will execute
-        # annotated versions of these statements.
-        .ddg.parse.contained(.Object, script.name, parseData)
-
-      .Object@annotated <-
-          # If this is a call to .ddg.eval, we only want to execute
-          # the argument to .ddg.eval
-          if (grepl("^.ddg.eval", .Object@text)) {
-             parse(text=.Object@parsed[[1]][[2]])
-          }
-
-          else {
-            .ddg.add.annotations(.Object)
-          }
-
-      #print(paste ("annotated statement", .Object@annotated))
-      
       # find the list of the names of the function calls in the statement
     .Object@functions.called <- .ddg.find.calls( .Object@parsed[[1]] )
 
@@ -227,6 +211,7 @@ methods::setMethod ("initialize",
 #' @param enclosing.pos - if exprs are statements within a function definition, enclosing.pos
 #' is the source position information of the entire function declaration
 #' @return a list of DDGStatement objects
+#' @noRd
 
 .ddg.create.DDGStatements <- function (exprs, script.name, script.num, 
                                        parseData = NULL, enclosing.pos = NULL) {
@@ -304,6 +289,7 @@ methods::setMethod ("initialize",
 #' [1]: functions from unknown libraries (character vector)
 #' [2]: variable names, which may refer to functions (character vector)
 #' [3]: known function calls with their respective libraries (data frame)
+#' @noRd
 
 .ddg.find.calls <- function(expr) 
 {
@@ -339,6 +325,7 @@ methods::setMethod ("initialize",
 #' [2]: variable names, which may refer to functions
 #' [3]: functions with known libraries
 #' [4]: libraries which the functions in [3] are from
+#' @noRd
 
 .ddg.find.calls.rec <- function(expr)
 {
@@ -421,36 +408,19 @@ methods::setMethod ("initialize",
 # .ddg.null.pos provides a special null value for when source code position 
 #' information is missing.
 #' @return a special null value
+#' @noRd
 
 .ddg.null.pos <- function() {
   return (methods::new (Class = "DDGStatementPos", NA))
 }
 
 
-#' .ddg.construct.DDGStatement creates a DDGStatement.
-#' @param expr - the parsed expression
-#' @param pos - the DDGStatementPos object for this statement
-#' @param script.name - the name of the script the statement is from
-#' @param script.num - the script number used to find the script in the sourced script table
-#' @param parseData - the object created by the parser that gives us source position information
-#' @return a DDG statement
-
-.ddg.construct.DDGStatement <- function (expr, pos, script.name, script.num, parseData) {
-  #print(paste(".ddg.construct.DDGStatement: expr =", expr))
-  # Surprisingly, if a statement is just a number, like 1 (which could be the last 
-  # statement in a function, for example), the parser returns a number, rather 
-  # than a parse tree!
-  if (is.numeric(expr)) expr <- parse(text=expr)
-
-  return (methods::new (Class = "DDGStatement", parsed = expr, pos, script.name, 
-                        script.num, parseData))
-}
-
 #' .ddg.abbrev.cmd abbreviates a command to the specified length.
 #' Default is 60 characters.
 #' @param cmd - command string.
 #' @param len (optional) - number of characters.
 #' @return abbreviated command
+#' @noRd
 
 .ddg.abbrev.cmd <- function(cmd, len=60) {
   if (length(cmd) > 1) {
@@ -470,6 +440,7 @@ methods::setMethod ("initialize",
 #' only appears once.
 #' @param main.object - input expression.
 #' @return vector of variables used in the expression
+#' @noRd
 
 .ddg.find.var.uses <- function(main.object) {
   # Recursive helper function.
@@ -563,6 +534,7 @@ methods::setMethod ("initialize",
 #' assignment statement.  Otherwise, it returns NULL.
 #' @param obj - input expression.
 #' @return name of variable assigned to
+#' @noRd
 
 .ddg.find.simple.assign <- function(obj)
 {
@@ -579,6 +551,7 @@ methods::setMethod ("initialize",
 #' object containing an assignment statement.
 #' @param expr - a parsed expression.
 #' @return True if an expression object containing an assignment
+#' @noRd
 
 .ddg.is.assign <- function (expr)
 {
@@ -609,6 +582,7 @@ methods::setMethod ("initialize",
 #' these examples, it would return "a".
 #' @param lvalue - a parsed expression.
 #' @return name of variable referenced in the expression
+#' @noRd
 
 .ddg.get.var <- function(lvalue)
 {
@@ -632,6 +606,7 @@ methods::setMethod ("initialize",
 #' both a and b.
 #' @param obj - a parsed expression.
 #' @return a vector containing all variables assigned in the expression
+#' @noRd
 
 .ddg.find.assign <- function(obj) {
   # Base case.
@@ -664,6 +639,7 @@ methods::setMethod ("initialize",
 #' declaration.
 #' @param expr - a parsed expression.
 #' @return True if expression is a function declaration
+#' @noRd
 
 .ddg.is.functiondecl <- function(expr) {
   if (is.symbol(expr) || !is.language(expr)) return (FALSE)
@@ -675,172 +651,11 @@ methods::setMethod ("initialize",
 #' parsed statement.
 #' @param parsed.command a parsed statement
 #' @return the control type of the statement
+#' @noRd
 
 .ddg.get.statement.type <- function(parsed.command) {
   if (length(parsed.command) > 1) return(as.character(parsed.command[[1]]))
   return("")
-}
-
-#' .ddg.parse.contained creates the DDGStatement objects that correspond to
-#' statements inside a function or control block (or blocks).
-#' @param cmd - the DDGStatement being considered
-#' @param script.name - the name of the script the statement is from
-#' @param parseData - the data returned by the parser that is used to extract
-#' source position information
-#' @return a list of DDTStatements or an empty list if this is not a function
-#' declaration or a control construct.
-
-.ddg.parse.contained <- function (cmd, script.name, parseData) {
-  # print("In .ddg.parse.contained")
-  parsed.cmd <- cmd@parsed[[1]]
-  #print(paste(".ddg.parse.contained: cmd@parsed =", deparse(cmd@parsed)))
-  #print(paste(".ddg.parse.contained: parsed.cmd =", deparse(parsed.cmd)))
-
-  # Function declaration
-  if (.ddg.is.assign(parsed.cmd) && .ddg.is.functiondecl(parsed.cmd[[3]])) {
-      # Create the DDGStatement objects for the statements in the function
-      return (.ddg.parse.contained.function(cmd, script.name, parseData, 
-                                            parsed.cmd[[3]][[3]]))
-  }
-  
-  # Check if we want to go inside loop and if-statements
-  else if (.ddg.max.loops() == 0) {
-    return (list())
-  }
-
-  # Control statements.
-  st.type <- .ddg.get.statement.type(parsed.cmd)
-
-  # If statement.
-  if (st.type == "if") {
-    return (.ddg.parse.contained.if(cmd, script.name, parseData, parsed.cmd))
-  }
-
-  # Other control statements
-  else {
-    control.types <- list("for", "while", "repeat", "{")
-    if (length(st.type) > 0 && !is.null(st.type) && (st.type %in% control.types)) {
-      return (.ddg.parse.contained.control(cmd, script.name, parseData, 
-                                           parsed.cmd, st.type))
-    }
-  }
-
-  # Not a function declaration or control construct.
-  return(list())
-}
-
-#' .ddg.parse.contained.function creates DDG statement objects for statements
-#' contained in a function
-#' @param cmd a list of parsed expressions
-#' @param script.name name of script
-#' @param parseData information from the parser used to find line numbers
-#' @param func.body body of function
-#' @return DDG statement objects for statements in the function
-
-.ddg.parse.contained.function <- function (cmd, script.name, parseData, func.body) {
-  #print(paste(".ddg.parse.contained.function: func.body =", deparse(func.body)))
-  # The function body is a block.  Extract the statements inside the block
-  if (func.body[[1]] == "{") {
-    func.stmts <- func.body[2:length(func.body)]
-  }
-
-  # The function body is a single statement.
-  else {
-    func.stmts <- list(func.body)
-  }
-
-  # Create the DDGStatement objects for the statements in the function
-  return (.ddg.create.DDGStatements (func.stmts, script.name, cmd@script.num, 
-                                     parseData, cmd@pos))
-}
-
-#' .ddg.parse.contained.if creates DDG statement objects for statements in an
-#' if statement
-#' @param cmd a list of parsed expressions
-#' @param script.name name of script
-#' @param parseData information from the parser used to find line numbers
-#' @param parent parent statement
-#' @return DDG statement objects for statements in if statement
-
-.ddg.parse.contained.if <- function (cmd, script.name, parseData, parent) {
-  block.stmts <- list()
-
-  # If and else if blocks.
-  while(!is.symbol(parent) && parent[[1]] == "if") {
-    # Get block
-    block <- parent[[3]]
-    block <- .ddg.ensure.in.block(block)
-
-    # Get statements for this block.
-    for (i in 2:(length(block))) {
-      block.stmts <- c(block.stmts, block[[i]])
-    }
-
-    # Check for possible final else.
-    if (length(parent) == 4) {
-      final.else <- TRUE
-    } else {
-      final.else <- FALSE
-    }
-
-    # Get next parent
-    parent <- parent[[(length(parent))]]
-  }
-
-  # Final else block (if any).
-  if (final.else) {
-    # Get block.
-    block <- parent
-    block <- .ddg.ensure.in.block(block)
-
-    # Get statements for this block.
-    for (i in 2:(length(block))) {
-      block.stmts <- c(block.stmts, block[[i]])
-    }
-  }
-
-  # Create the DDGStatement objects for statements in block
-  return (.ddg.create.DDGStatements (block.stmts, script.name, cmd@script.num, 
-                                     parseData, cmd@pos))
-}
-
-#' .ddg.ensure.in.block ensures that if there is a singleton statement inside a control 
-#' construct it is enclosed in a block
-#' @param block input statement(s)
-#' @return a block containing the statement(s)
-
-.ddg.ensure.in.block <- function(block) {
-  if (is.symbol(block) || block[[1]] != "{") call("{", block)
-  else block
-}
-
-#' .ddg.parse.contained.control creates DDG statements for statements contained in a
-#' control construct.
-#' @param cmd a list of parsed expressions
-#' @param script.name name of script
-#' @param parseData information from the parser used to find line numbers
-#' @param parsed.cmd control construct statement
-#' @param st.type statement type (for, while, repeat, simple block)
-#' @return DDG statement objects for statements in the control construct
-
-.ddg.parse.contained.control <- function(cmd, script.name, parseData, parsed.cmd, 
-                                         st.type) {
-  block.stmts <- list()
-
-  if (st.type == "for") block <- parsed.cmd[[4]]
-  else if (st.type == "while") block <- parsed.cmd[[3]]
-  else if (st.type == "repeat") block <- parsed.cmd[[2]]
-  else if (st.type == "{") block <- parsed.cmd
-
-  block <- .ddg.ensure.in.block(block)
-
-  for (i in 2:length(block)) {
-    block.stmts <- c(block.stmts, block[[i]])
-  }
-
-  # Create the DDGStatement objects for statements in block
-  return (.ddg.create.DDGStatements (block.stmts, script.name, cmd@script.num, 
-                                     parseData, cmd@pos))
 }
 
 #' .ddg.is.call.to returns TRUE if the parsed expression passed
@@ -848,6 +663,7 @@ methods::setMethod ("initialize",
 #' @param parsed.expr - a parse tree
 #' @param func.name - the name of a function
 #' @return True if the expression is a call to the specified function
+#' @noRd
 
 .ddg.is.call.to <- function(parsed.expr, func.name) {
   # Check if a function call.
@@ -865,6 +681,7 @@ methods::setMethod ("initialize",
 #' @param parsed.expr - a parse tree
 #' @param func.name - the name of a function
 #' @return True if the parsed expression contains a call to the specified function
+#' @noRd
 
 .ddg.has.call.to <- function(parsed.expr, func.name) {
   # Base case.
