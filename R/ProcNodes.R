@@ -15,8 +15,9 @@
 #   License along with this program.  If not, see
 #   <http://www.gnu.org/licenses/>.
 
-################  Functions involved in managing the procedure nodes ################
-#
+########################### ProcNodes.R ############################
+
+# This file contains functions used to manage procedure nodes.
 # Procedure nodes are stored in a data frame, with one row for each node.
 # The columns of the data frame are:
 #
@@ -36,8 +37,11 @@
 #
 # ddg.pnum is the number associated with the last procedure node created
 
+
 #' .ddg.init.proc.nodes initializes the information needed to manage procedure nodes. 
 #' @return nothing
+#' @noRd
+
 .ddg.init.proc.nodes <- function () {
   .ddg.set("ddg.proc.nodes", .ddg.create.proc.node.rows())
   
@@ -54,18 +58,24 @@
 #' This is used for type-checking.
 #' @param type procedure node type.
 #' @return true for any type of procedure node
+#' @noRd
+
 .ddg.is.proc.type <- function(type) {
   return(type %in% c("Operation", "Start", "Finish", "Binding", "Incomplete"))
 }
 
 #' .ddg.pnum returns the counter used to assign procedure node ids
 #' @return the data node id of the last procedure node created
+#' @noRd
+
 .ddg.pnum <- function() {
   return (.ddg.get("ddg.pnum"))
 }
 
 #' .ddg.start.proc.time returns the time when the process started
 #' @return the time the process started, or 0 if it has not been set yet
+#' @noRd
+
 .ddg.start.proc.time <- function() {
   if (.ddg.is.set(".ddg.proc.start.time")) return (.ddg.get(".ddg.proc.start.time"))
   else return (0)
@@ -73,6 +83,8 @@
 
 #' .ddg.elapsed.time returns the time since the script began execution
 #' @return the time since the script began execution
+#' @noRd
+
 .ddg.elapsed.time <- function(){
   time <- proc.time()
   elapsed <- time[1] + time[2] - .ddg.start.proc.time()
@@ -86,6 +98,8 @@
 #' than to add one row at a time.
 #' @param size the number of rows to add
 #' @return a data frame with size rows, with all columns being empty vectors
+#' @noRd
+
 .ddg.create.proc.node.rows <- function (size=100) {
   return (data.frame(
           ddg.type = character(size),
@@ -104,12 +118,16 @@
 
 #' .ddg.proc.node.table returns the procedure node table
 #' @return the procedure node table
+#' @noRd
+
 .ddg.proc.node.table <- function() {
   return (.ddg.get("ddg.proc.nodes"))
 }
 
 #' .ddg.proc.nodes returns the filled rows of the procedure node table
 #' @return the filled rows of the procedure node table
+#' @noRd
+
 .ddg.proc.nodes <- function() {
   ddg.proc.nodes <- .ddg.get("ddg.proc.nodes")
   return (ddg.proc.nodes [ddg.proc.nodes$ddg.num > 0, ])
@@ -119,6 +137,8 @@
 #' to a return value
 #' @param pn the id of the procedure node to mark
 #' @return nothing
+#' @noRd
+
 .ddg.proc.node.returned <- function(pn) {
   ddg.proc.nodes <- .ddg.proc.node.table()
   ddg.proc.nodes$ddg.return.linked[pn] <- TRUE
@@ -130,6 +150,8 @@
 #' procedure node with the given name
 #' @param pname the name of a procedure node to look up
 #' @return true if there is a node with the given name
+#' @noRd
+
 .ddg.proc.node.exists <- function(pname) {
   ddg.proc.nodes <- .ddg.proc.node.table()
   matching.nodes <- ddg.proc.nodes[ddg.proc.nodes$ddg.name == pname, ]
@@ -142,6 +164,8 @@
 #' @param find.unreturned.function if true, only return the number if the
 #'    procedure has not previously been linked to a return value
 #' @return the id of a procedure node matching the name, or 0 if none was found
+#' @noRd
+
 .ddg.proc.number <- function(pname, find.unreturned.function=FALSE) {
   #print (paste0("Looking for function ", pname))
   ddg.proc.nodes <- .ddg.proc.node.table()
@@ -171,6 +195,8 @@
 #' @param pnum node number in procedure node table.
 #' @return name of the procedure node with the given id.  Returns an empty
 #' string if there is no node with the given id.
+#' @noRd
+
 .ddg.proc.name <- function(pnum) {
   if (pnum < 1 || pnum > .ddg.pnum()) {
     error.msg <- paste("No name found for procedure number", pnum)
@@ -185,6 +211,7 @@
 #' Useful for debugging. The file will be in the debug directory in a file 
 #' called procedure-nodes.csv
 #' @return nothing
+#' @noRd
 
 .ddg.save.debug.proc.nodes <- function () {
   # Save procedure nodes table to file.
@@ -201,6 +228,8 @@
 #' @param snum the number the script is in (main script = 0)
 #' @param pos the starting and ending line and column location of the statement
 #' @return nothing
+#' @noRd
+
 .ddg.record.proc <- function(ptype, pname, pvalue, ptime, snum=NA, pos=NA) {
   if (!.ddg.is.proc.type (ptype)) {
     print (paste (".ddg.record.proc: bad value for ptype - ", ptype))
@@ -262,6 +291,7 @@
 #' @param endLine (optional) - the line that the operation ends on
 #' @param endCol (optional) - the column that the operation ends on
 #' @return nothing
+#' @noRd
 
 .ddg.proc.node <- function(ptype, pname, pvalue="", functions.called=NULL, 
     cmd = NULL, scriptNum=NA, startLine=NA, startCol=NA, endLine=NA, endCol=NA) {

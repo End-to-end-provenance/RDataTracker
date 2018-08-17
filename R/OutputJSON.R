@@ -1,25 +1,48 @@
-# @author Elizabeth Fong
-# @version 2.1 (July 2018)
+# Copyright (C) President and Fellows of Harvard College and 
+# Trustees of Mount Holyoke College, 2014, 2015, 2016, 2017, 2018.
+
+# This program is free software: you can redistribute it and/or
+# modify it under the terms of the GNU General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU General Public License for more details.
+#
+#   You should have received a copy of the GNU General Public
+#   License along with this program.  If not, see
+#   <http://www.gnu.org/licenses/>.
+#
+########################### OutputJSON.R ############################
+
+# This file contains the functions that prepare the prov-json string.
+
 
 #' .ddg.json.write writes the prov-json string to file
 #' @return nothing
+#' @noRd
 
 .ddg.json.write <- function() 
 {
-	fileout <- paste(.ddg.path(), "/ddg.json", sep="")
-	json <- ddg.json()
+	fileout <- paste(.ddg.path(), "/prov.json", sep="")
+	json <- .ddg.json.string()
 	write(json, fileout)
 }
 
 #' .ddg.json.string creates and returns the prov-json string for the current 
 #' provenance graph
 #' @return the prov-json string
+#' @noRd
 
 .ddg.json.string <- function()
 {
 	# CONSTANTS
-	TOOL.NAME <- "RDataTracker"
 	JSON.VERSION <- "2.1"
+
+	# tool name
+	tool.name <- .ddg.tool.name()
 	
 	# contents of the prefix node
 	PREFIX.NODE <- list( "prov" = "http://www.w3.org/ns/prov#" ,
@@ -60,7 +83,7 @@
 	json$prefix <- .ddg.json.prefix( PREFIX.NODE )
 	
 	# agent (about the tool that produced the json & the json version)
-	json$agent <- .ddg.json.agent( TOOL.NAME , JSON.VERSION , LABEL.NAMES$agent , 
+	json$agent <- .ddg.json.agent( tool.name , JSON.VERSION , LABEL.NAMES$agent , 
 	                               LABEL.PREFIX )
 	
 	# activity (proc nodes)
@@ -158,6 +181,7 @@
 #' .ddg.json.prefix forms and returns the json string for the prefix node
 #' @param node prefix node
 #' @return the json string for the prefix node
+#' @noRd
 
 .ddg.json.prefix <- function( node )
 {
@@ -183,6 +207,7 @@
 #' @param label node label
 #' @param prefix node prefix
 #' @return the json string for the agent node
+#' @noRd
 
 .ddg.json.agent <- function( tool, json.version, label, prefix )
 {
@@ -206,6 +231,7 @@
 #' @param label node label
 #' @param prefix node prefix
 #' @return the json string for the procedure node
+#' @noRd
 
 .ddg.json.proc <- function( label, prefix )
 {
@@ -239,6 +265,7 @@
 #' @param label node label
 #' @param prefix node prefix
 #' @return the json string for the data node
+#' @noRd
 
 .ddg.json.data <- function( label, prefix )
 {
@@ -269,6 +296,7 @@
 #' @param label node label
 #' @param prefix node prefix
 #' @return the json string for the environment node
+#' @noRd
 
 .ddg.json.env <- function( label, prefix )
 {
@@ -284,8 +312,7 @@
 					"sourcedScriptTimeStamps" = NA ,
 					"workingDirectory" = NA ,
 					"ddgDirectory" = NA ,
-					"ddgTimeStamp" = NA ,
-					"hashAlgorithm" = NA )
+					"ddgTimeStamp" = NA )
 	
 	# architecture, language, langVersion
 	lang.version <- R.Version()
@@ -326,7 +353,9 @@
 	fields$ddgTimeStamp <- .ddg.get("ddg.start.time")
 	
 	# hash algorithm
-	fields$hashAlgorithm <- .ddg.get(".ddg.hash.algorithm")
+  if (.ddg.is.set (".ddg.hash.algorithm")) {
+    fields <- append (fields, list (hashAlgorithm = .ddg.get(".ddg.hash.algorithm")))
+  }
 	
 	# add prefix to names of the list
 	names(fields) <- mapply( paste , prefix , names(fields) , sep='' , USE.NAMES = FALSE )
@@ -357,6 +386,7 @@
 # .ddg.json.sourced.scripts return the names of other scripts that were sourced 
 #' and their timestamps.
 #' @return the names and timestamps of other sourced scripts
+#' @noRd
 
 .ddg.json.sourced.scripts <- function() 
 {
@@ -382,6 +412,7 @@
 #' @param label node label
 #' @param prefix node prefix
 #' @return the json string for the library nodes
+#' @noRd
 
 .ddg.json.lib <- function( nodes, label, prefix )
 {
@@ -406,6 +437,7 @@
 #' .ddg.json.collection forms and returns the json string for the type node 
 #' for a collection
 #' @return the json string for the type node for a collection
+#' @noRd
 
 .ddg.json.collection <- function()
 {
@@ -438,6 +470,7 @@
 #' @param label node label
 #' @param prefix node prefix
 #' @return the json string for function nodes
+#' @noRd
 
 .ddg.json.func <- function( nodes, label, prefix )
 {
@@ -461,6 +494,7 @@
 #' @param label node label
 #' @param prefix node prefix
 #' @return the json string for procedure-to-procedure edges
+#' @noRd
 
 .ddg.json.proc2proc <- function( edges, label, prefix )
 {
@@ -493,6 +527,7 @@
 #' @param label node label
 #' @param prefix node prefix
 #' @return the json string for procedure-to-data edges
+#' @noRd
 
 .ddg.json.proc2data <- function( edges, label, prefix )
 {
@@ -525,6 +560,7 @@
 #' @param label node label
 #' @param prefix node prefix
 #' @return the json string for data-to-procedure edges
+#' @noRd
 
 .ddg.json.data2proc <- function( edges, label, prefix )
 {
@@ -556,6 +592,7 @@
 #' @param label.proc procedure label
 #' @param prefix node prefix
 #' @return the json string for function-to-procedure edges
+#' @noRd
 
 .ddg.json.func2proc <- function( nodes, label.edge, label.func, label.proc, prefix )
 {
@@ -585,6 +622,7 @@
 #' @param label.func function label
 #' @param prefix node prefix
 #' @return the json string for nodes linking functions to their libraries
+#' @noRd
 
 .ddg.json.lib2func <- function( nodes, label.edge, label.lib, label.func, prefix )
 {
@@ -619,6 +657,7 @@
 #' .ddg.json.combine combines all json parts into 1 complete prov-json string
 #' @param json list of json parts
 #' @return the complete prov-json string
+#' @noRd
 
 .ddg.json.combine <- function( json )
 {
@@ -656,6 +695,7 @@
 #' @param json list of json parts
 #' @param node.name node name
 #' @return list of combined json parts
+#' @noRd
 
 .ddg.json.combine.node <- function( json, node.name )
 {
@@ -701,6 +741,7 @@
 #' in the given list to 1 (divide and conquer)
 #' @param list list of json parts
 #' @return list of combined json parts
+#' @noRd
 
 .ddg.json.combine.rec <- function( list )
 {
@@ -725,6 +766,7 @@
 #' .ddg.json.escape.quotes adds escape characters to double quotes within strings
 #' @param string input string
 #' @return string with double quotes escaped
+#' @noRd
 
 .ddg.json.escape.quotes <- function( string )
 {
@@ -734,6 +776,7 @@
 #' .ddg.json.escape.tabs converts '    ' or \t to escaped tab characters in string
 #' @param str input string
 #' @return string with tabs escaped
+#' @noRd
 
 .ddg.json.escape.tabs <- function( str )
 {
@@ -744,6 +787,7 @@
 #' characters in strings
 #' @param dataframe input dataframe
 #' @return dataframe with tabs escaped in strings
+#' @noRd
 
 .ddg.json.df.escape.tabs <- function( dataframe )
 {
@@ -777,6 +821,7 @@
 #' @param obj.prefix object prefix
 #' @param comment optional comment
 #' @return a formatted json string
+#' @noRd
 
 .ddg.json.dataframe <- function( dataframe, col.names, obj.prefix, comment = NULL )
 {
@@ -833,6 +878,7 @@
 #' @param node.name node name
 #' @param node.content node content
 #' @return a first-level prov-json node
+#' @noRd
 
 .ddg.json.formNode <- function( node.name, node.content )
 {

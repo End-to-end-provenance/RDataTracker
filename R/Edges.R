@@ -19,6 +19,7 @@
 
 #' .ddg.init.edges initializes the information needed to manage edges
 #' @return nothing
+#' @noRd
 
 .ddg.init.edges <- function () {
   #.ddg.set("ddg.data.nodes", .ddg.create.data.node.rows())
@@ -31,6 +32,7 @@
 #' This is used for type-checking.
 #' @param type edge type.
 #' @return true for any type of edge
+#' @noRd
 
 .ddg.is.edge.type <- function(type) {
   return(type %in% c("cf", "df.in", "df.out"))
@@ -38,6 +40,7 @@
 
 #' .ddg.enum returns the counter used to assign edge ids
 #' @return the edge id of the last edge created
+#' @noRd
 
 .ddg.enum <- function() {
   return (.ddg.get("ddg.enum"))
@@ -48,6 +51,7 @@
 #' than to add one row at a time
 #' @param size the number of rows to add
 #' @return a data frame with size rows, with all columns being empty vectors
+#' @noRd
 
 .ddg.create.edge.rows <- function (size=100) {
   return (      
@@ -61,6 +65,7 @@
 
 #' .ddg.edge.table returns the edge table
 #' @return the edge table
+#' @noRd
 
 .ddg.edge.table <- function() {
   return (.ddg.get("ddg.edges"))
@@ -68,6 +73,7 @@
 
 #' .ddg.edges returns the filled rows of the edge table
 #' @return the filled rows of the edge table
+#' @noRd
 
 .ddg.edges <- function() {
   ddg.edges <- .ddg.get("ddg.edges")
@@ -77,6 +83,7 @@
 #' .ddg.save.debug.edges writes the edges to a csv table.  Useful for debugging.
 #' The file will be in the debug directory in a file called edges.csv
 #' @return nothing
+#' @noRd
 
 .ddg.save.debug.edges <- function () {
   # Save edges table to file.
@@ -90,6 +97,7 @@
 #' @param node1 name of first node
 #' @param node2 name of second node
 #' @return nothing
+#' @noRd
 
 .ddg.record.edge <- function(etype, node1, node2) {
   if (!.ddg.is.edge.type (etype)) {
@@ -123,6 +131,7 @@
 #' .ddg.proc2proc creates a control flow edge from the preceding
 #' procedure node to the current procedure node.
 #' @return nothing
+#' @noRd
 
 .ddg.proc2proc <- function() {
   ddg.pnum <- .ddg.pnum()
@@ -152,6 +161,7 @@
 #' @param pname procedure node name.  If it is NULL or a ddg function, 
 #'   the last procedure node is used.
 #' @return nothing
+#' @noRd
 
 .ddg.data2proc <- function(dname, dscope, pname = NULL) {
   # Get data & procedure numbers.
@@ -180,6 +190,7 @@
 #' last procedure node created.
 #' @param data.num the id of the data node
 #' @return nothing
+#' @noRd
 
 .ddg.datanum2lastproc <- function(data.num) {
   proc.num <- .ddg.pnum()
@@ -207,6 +218,7 @@
 #'   return value linked.  This is necessary to manage recursive functions
 #'   correctly.
 #' @return nothing
+#' @noRd
 
 .ddg.proc2data <- function(pname, dname, dscope=NULL, return.value=FALSE) {
   # Get data & procedure numbers.
@@ -248,6 +260,7 @@
 #' @param dname data node name.
 #' @param dscope (optional) the scope in which dname should be looked up
 #' @return nothing
+#' @noRd
 
 .ddg.lastproc2data <- function(dname, dscope=NULL) {
   .ddg.proc2data (NULL, dname, dscope)

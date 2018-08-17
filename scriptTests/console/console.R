@@ -24,4 +24,4 @@ f <- function () {
 }
 
 x <- f()
-ddg.quit()
+prov.quit()

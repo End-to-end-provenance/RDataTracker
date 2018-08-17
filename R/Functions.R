@@ -26,6 +26,7 @@
 
 #' .ddg.init.function.table initializes the function table
 #' @return nothing
+#' @noRd
 
 .ddg.init.function.table <- function () {
   .ddg.set("ddg.function.nodes", 
@@ -41,6 +42,7 @@
 #' ddg.fun - the name of the function
 #' ddg.lib - the library the function comes from
 #' @return the function table
+#' @noRd
 
 .ddg.function.nodes <- function() {
   return( .ddg.get("ddg.function.nodes") )
@@ -49,6 +51,7 @@
 #' .ddg.save.function.table saves the function table to a file for debugging purposes.
 #' The name of the file is function-nodes.csv
 #' @return nothing
+#' @noRd
 
 .ddg.save.function.table <- function () {
   # save function nodes table to file
@@ -59,6 +62,7 @@
 #' .ddg.add.to.function.table adds new functions to the function table
 #' @param functions.called vector of names of functions called
 #' @return nothing
+#' @noRd
 
 .ddg.add.to.function.table <- function (functions.called) {
   pfunctions <- .ddg.get.function.info(functions.called)
@@ -76,6 +80,7 @@
 #' packages as well as the names of the packages used.
 #' @param function.names 
 #' @return a data frame pairing functions with the libraries they come from
+#' @noRd
 
 .ddg.get.function.info <- function( function.names )
 {

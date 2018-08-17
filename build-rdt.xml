@@ -1,0 +1,37 @@
+<!DOCTYPE project [
+       <!ENTITY build-core SYSTEM "build-core.xml">
+]>
+<project
+  xmlns:if="ant:if"
+    xmlns:unless="ant:unless">
+    
+  <property name="builddir" value="${user.home}/Documents/Process/DataProvenance/RDataTracker"/>
+  <loadproperties srcFile="DESCRIPTION_rdt" />
+  <property name="tarfile" value="RDataTracker_${Version}.tar.gz" />
+
+    <target name="roxygen" depends="copy-to-directory">
+    	<exec dir="${builddir}" executable="Rscript" >
+       		<arg line="-e devtools::document()" />
+    	</exec>
+      	<copy overwrite="true" todir="man_rdt">
+      		<fileset dir="${builddir}/man" />
+      	</copy>
+      	<copy overwrite="true" file="${builddir}/NAMESPACE" tofile="NAMESPACE_rdt"/>
+    </target>
+
+    <target name="copy-to-directory" depends="build-directory">
+        <copy overwrite="true" todir="${builddir}/inst">
+          <fileset dir="inst" />
+        </copy>
+    	<copy overwrite="true" todir="${builddir}/R">
+    		<fileset dir="R"
+      			excludes="DDGCheckpoint.R, *_prov.R"/>
+  		</copy>
+        <copy overwrite="true" file="DESCRIPTION_rdt" tofile="${builddir}/DESCRIPTION"/>
+        <copy overwrite="true" file="LICENSE" todir="${builddir}"/>
+        <copy overwrite="true" file="README_rdt.md" tofile="${builddir}/README.md"/>
+    </target>
+    
+	&build-core;
+      	
+</project>
