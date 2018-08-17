@@ -15,9 +15,9 @@
 #   License along with this program.  If not, see
 #   <http://www.gnu.org/licenses/>.
 
-#########################################################
+######################### ReturnValues.R ###########################
 
-# Contains functions used to manage the table of return values.
+# This file contains functions used to manage the table of return values.
 #
 # Information about return values are stored in a table, with 1
 # row for each return statement executed

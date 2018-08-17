@@ -27,10 +27,10 @@ source("source4.r", local=T)
 
 # another script, we ignore everything but do it all on a new environment
 
-ddg.start("Stuff")
+.ddg.start("Stuff")
 # we use some of the variables set in source3.r
 m <- 10
 f(m)
 f(x)
-ddg.finish("Stuff")
+.ddg.finish("Stuff")
 

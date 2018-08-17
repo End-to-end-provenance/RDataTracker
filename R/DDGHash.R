@@ -61,7 +61,7 @@
 #' @noRd
 
 .ddg.calculate.hash <- function(dname) {
-  .ddg.set("ddg.hasfilenodes", TRUE)
+ 	.ddg.set("ddg.hasfilenodes", TRUE)
   # This function will cause certain tests to fail if run with pdf files
   # or other non-text files with internal timestamps. This could also cause 
   # these files to sync incorrectly in the workflow, but given that reading 

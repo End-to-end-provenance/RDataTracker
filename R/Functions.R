@@ -15,10 +15,10 @@
 #   License along with this program.  If not, see
 #   <http://www.gnu.org/licenses/>.
 
-################  Functions involved in dealing with functions declared in an R script ################
-#
-# The function table contains an entry for each function called in the script.
-# The columns of the table are:
+######################### Functions.R ###########################
+
+# The function table contains an entry for each function called 
+# in the script. The columns of the table are:
 # - ddg.pnum - the procedure node id where the call happened
 # - ddg.fun - the name of the function
 # - ddg.lib - the library the function comes from
