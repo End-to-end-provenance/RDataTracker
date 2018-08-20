@@ -35,6 +35,7 @@ function is_current {
   if [ ! "$STATUS" = "On branch $BRANCH" ]
     then
       echo "Can't switch to $BRANCH of RDataTracker"
+      cleanup
       exit 1
   fi
   cd ../$TO_REPO
@@ -43,7 +44,7 @@ function is_current {
   if [ ! "$STATUS" = "On branch $BRANCH" ]
     then
       echo "Can't switch to $BRANCH of $TO_REPO"
-      cd ../RDataTracker
+      cleanup
       exit 1
   fi
   
@@ -66,7 +67,7 @@ function is_current {
   return 1
 }
 
-# Copyz just the files that we want in the provR repository.  Some
+# Copy just the files that we want in the provR repository.  Some
 # files need to be renamed when they are copied to remove _prov
 # from the name. 
 function copy_provR_files {
@@ -183,6 +184,11 @@ function commit_repo {
   cd ../RDataTracker
 }
 
+function cleanup {
+	cd ..
+	rm -rf RDataTracker provR_test rdt_test
+}
+
 # Should first clone the three repositories
 echo "*** Cloning the repositories"
 git clone https://github.com/End-to-end-provenance/RDataTracker.git
@@ -240,8 +246,7 @@ else
     commit_repo "rdt_test"
 fi
 
-# Delete test repo
-cd ..
-rm -rf RDataTracker provR_test rdt_test
+# Delete test repos
+cleanup
 
 echo "*** Done!"
