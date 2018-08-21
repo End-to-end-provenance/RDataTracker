@@ -92,7 +92,6 @@
 
 	- normal-tests is used for basic R tests.
 	- script-tests is used for real R scripts that are short-running
-	- long-script-tests are used for real R scripts that are long-running
 	- bug-tests are tests that trigger a bug either in DDG Explorer or RDataTracker
 	
 	================================================================================
@@ -124,9 +123,6 @@
 	>
 
 	<!--############################# Start Setup #############################-->
-
-	<!-- So we can build RDataTracker -->
-	<import file="build.xml" />
 
 	<!-- Get the base directory -->
 	<dirname
@@ -893,42 +889,6 @@
 	<!--########################## End Basic TESTS ##########################-->
 
 
-	<!--########################## Start Checkpoint TESTS ##########################-->
-
-	<target name="CheckpointTest">
-		<antcall target="run-regression-test">
-			<param name="test-name" value="CheckpointTest" />
-		</antcall>
-	</target>
-
-	<target name="update-CheckpointTest">
-		<antcall target="update-regression-expected">
-			<param name="test-name" value="CheckpointTest" />
-		</antcall>
-	</target>
-
-	<target name="CheckpointFileTest">
-		<antcall target="run-regression-test">
-			<param name="test-name" value="CheckpointFileTest" />
-		</antcall>
-	</target>
-
-	<target name="update-CheckpointFileTest">
-		<antcall target="update-regression-expected">
-			<param name="test-name" value="CheckpointFileTest" />
-		</antcall>
-	</target>
-
-	<target name="checkpoint-tests" depends="CheckpointTest, CheckpointFileTest">
-		<echo>
-	##############################################
-	Finished Execution of Checkpoint Tests. Expect differences in output for checkpoint-file-test due to directory creation in Windows (using : and spaces).
-	##############################################
-		</echo>
-	</target>
-
-	<!--########################## End Checkpoint TESTS ##########################-->
-
 	<!--########################## Start Source & Console Tests ##########################-->
 
 	<target name="SourceFuncTest">
@@ -989,87 +949,11 @@
 		</antcall>
 	</target>
 
-	<target name="SivanSamplingSmaller">
-		<antcall target="run-regression-test">
-			<param name="test-name" value="SivanSamplingSmaller" />
-		</antcall>
-		<echo>This script uses randomization.</echo>
-	</target>
-
-	<target name="update-SivanSamplingSmaller">
-		<antcall target="update-regression-expected">
-			<param name="test-name" value="SivanSamplingSmaller" />
-		</antcall>
-	</target>
-
-	<!-- SivanSampling is not currently included in the test suites because it collects too much data -->
-	<target name="SivanSampling">
-		<antcall target="run-regression-test">
-			<param name="test-name" value="SivanSampling" />
-		</antcall>
-		<echo>This script uses randomization.</echo>
-	</target>
-
-	<target name="update-SivanSampling">
-		<antcall target="update-regression-expected">
-			<param name="test-name" value="SivanSampling" />
-		</antcall>
-	</target>
-
 	<target name="script-tests" depends="CalculateSquareRoot, DailySolarRadiation, HFDatasetPreview">
 		<echo>Script tests for which output should not differ </echo>
 	</target>
 
 	<!--########################## End Script Tests ##########################-->
-
-
-	<!--########################## Start Interactive Tests ##########################-->
-
-	<target name="RealTime15MinMET">
-		<antcall target="run-regression-test">
-			<param name="test-name" value="RealTime15MinMET" />
-		</antcall>
-	</target>
-
-	<target name="update-RealTime15MinMET">
-		<antcall target="update-regression-expected">
-			<param name="test-name" value="RealTime15MinMET" />
-		</antcall>
-	</target>
-
-	<target name="QualityControl15Min">
-		<antcall target="run-regression-test">
-			<param name="test-name" value="QualityControl15Min" />
-		</antcall>
-	</target>
-
-	<target name="update-QualityControl15Min">
-		<antcall target="update-regression-expected">
-			<param name="test-name" value="QualityControl15Min" />
-		</antcall>
-	</target>
-
-	<target name="interactive-tests" depends="RealTime15MinMET, QualityControl15Min">
-		<echo>Script tests for which the user needs to provide input </echo>
-	</target>
-
-	<target name="AaronSimesDendrochronology">
-		<antcall target="run-regression-test">
-			<param name="test-name" value="AaronSimesDendrochronology" />
-		</antcall>
-	</target>
-
-	<target name="update-AaronSimesDendrochronology">
-		<antcall target="update-regression-expected">
-			<param name="test-name" value="AaronSimesDendrochronology" />
-		</antcall>
-	</target>
-
-	<target name="long-script-tests" depends="AaronSimesDendrochronology" >
-		<echo>Long tests derived from real-world scripts. </echo>
-	</target>
-
-	<!--########################## End Interactive Tests ##########################-->
 
 
 	<!--########################## Start Bug Tests ##########################-->
@@ -1128,13 +1012,6 @@
 
 
 	<!--################################# UTILIES #################################-->
-
-	<!-- Test interactive() function when calling from command line -->
-	<target name="interactive-test">
-		<exec executable="Rscript" dir="scriptTests" >
-			<arg line="RscriptTest.r" />
-		</exec>
-	</target>
 
 	<!-- Execute the script timer, which looks in the examples/ directory for all
 		files with a (-clear.r) suffix and a (template_)*(-annotated.r) pattern and

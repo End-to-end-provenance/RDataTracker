@@ -25,3 +25,4 @@ f <- function () {
 
 x <- f()
 prov.quit()
+
