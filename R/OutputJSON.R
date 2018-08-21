@@ -38,6 +38,12 @@
 
 .ddg.json.string <- function()
 {
+	# edge case - prov collection not initialised
+	if( ! .ddg.is.set("ddg.tool.name") )
+		stop( "There is no provenance to be displayed.
+Please call prov.run or prov.init to begin collecting provenance.",
+			  call. = FALSE)
+	
 	# CONSTANTS
 	JSON.VERSION <- "2.1"
 
