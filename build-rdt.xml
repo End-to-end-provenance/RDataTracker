@@ -5,7 +5,7 @@
   xmlns:if="ant:if"
     xmlns:unless="ant:unless">
     
-  <property name="builddir" value="${user.home}/Documents/Process/DataProvenance/RDataTracker"/>
+  <property name="builddir" value="build_rdt"/>
   <loadproperties srcFile="DESCRIPTION_rdt" />
   <property name="tarfile" value="RDataTracker_${Version}.tar.gz" />
 
