@@ -271,7 +271,6 @@ prov.json <- function()
 {
   # This is a wrapper function.
   # Calls and returns the function with the bulk of the code in OutputJSON.R
-  print ("In RDT's prov.json")
   return( .ddg.json.string() )
 }
 
