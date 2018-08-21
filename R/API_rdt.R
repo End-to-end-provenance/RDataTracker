@@ -79,9 +79,9 @@
 #' If non-zero, it indicates the number of iterations of each loop for
 #' which provenance should be collected.  If max.loops is non-zero, provenance
 #' is also collected inside if-statements.
+#' @param snapshots if TRUE, snapshots are saved for complex data values.
 #' @param max.snapshot.size the maximum size for snapshot files. 
-#' If 0, no snapshot files are saved.
-#' If -1, the complete state of an object is stored in the snapshot
+#' If Inf, the complete state of an object is stored in the snapshot
 #' file. For other values, the head of the object, truncated to a size near
 #' the specified limit, is saved.  The size is in kilobytes. 
 #' @param hash.algorithm the hash algorithm to use for files.
@@ -101,7 +101,7 @@
 
 prov.init <- function(r.script.path = NULL, prov.dir = NULL, overwrite = TRUE, 
     annotate.inside.functions = FALSE, first.loop = 1, max.loops = 0, 
-    max.snapshot.size = 0, hash.algorithm="md5") {
+    snapshots = FALSE, max.snapshot.size = 10, hash.algorithm = "md5") {
   
   #TODO: Would like to remove r.script.path parameter.  run should be 
   # used for scripts, and init for console.
@@ -126,6 +126,9 @@ prov.init <- function(r.script.path = NULL, prov.dir = NULL, overwrite = TRUE,
     # Store maximum number of loops to annotate.
     if (max.loops < 0) max.loops <- 10^10
     
+    # Store snapshot option
+    .ddg.set("ddg.snapshots", snapshots)
+ 
     # Store maximum snapshot size.
     .ddg.set("ddg.max.snapshot.size", max.snapshot.size)
   }
@@ -205,11 +208,12 @@ prov.quit <- function(save.debug = FALSE) {
 
 prov.run <- function(r.script.path = NULL, prov.dir = NULL, overwrite = TRUE, 
     f = NULL, annotate.inside.functions = FALSE, first.loop = 1, max.loops = 0,
-    max.snapshot.size = 0, save.debug = FALSE, display = FALSE, hash.algorithm="md5") {
+    snapshots = FALSE, max.snapshot.size = 10, save.debug = FALSE, display = FALSE, 
+    hash.algorithm = "md5") {
   
   # Initialize ddg.
   prov.init(r.script.path, prov.dir, overwrite, annotate.inside.functions, 
-      first.loop, max.loops, max.snapshot.size, hash.algorithm)
+      first.loop, max.loops, snapshots, max.snapshot.size, hash.algorithm)
   
   .ddg.run (r.script.path, f = f, save.debug = save.debug)
   

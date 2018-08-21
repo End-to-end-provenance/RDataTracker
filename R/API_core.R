@@ -36,9 +36,9 @@
 #' is used.
 #' @param overwrite if FALSE, includes a time stamp in the provenance
 #' graph directory name.
+#' @param snapshots if TRUE, snapshots are saved for complex data values.
 #' @param max.snapshot.size the maximum size for snapshot files. 
-#' If 0, no snapshot files are saved.
-#' If -1, the complete state of an object is stored in the snapshot
+#' If Inf, the complete state of an object is stored in the snapshot
 #' file. For other values, the head of the object, truncated to a size near
 #' the specified limit, is saved.  The size is in kilobytes. 
 #' @return .ddg.init initializes the provenance collector.  The .ddg.init
@@ -46,7 +46,7 @@
 #' @noRd
 
 .ddg.init <- function(r.script.path = NULL, prov.dir = NULL, overwrite = TRUE, 
-  max.snapshot.size = 0) {
+  snapshots = FALSE, max.snapshot.size = 10) {
   
   # Initialize tables
   .ddg.init.tables()
@@ -317,11 +317,11 @@
 #' If non-zero, it indicates the number of iterations of each loop for
 #' which provenance should be collected.  If max.loops is non-zero, provenance
 #' is also collected inside if-statements.
+#' @param snapshots if TRUE, snapshots are saved for complex data values.
 #' @param max.snapshot.size the maximum size for snapshot files. 
-#' If 0, no snapshot files are saved. If -1, the complete state of an object
-#' is stored in the snapshot file. For other values, the head of the object, 
-#' truncated to a size near the specified limit, is saved.  The size is 
-#' in kilobytes. 
+#' If Inf, the complete state of an object is stored in the snapshot
+#' file. For other values, the head of the object, truncated to a size near
+#' the specified limit, is saved.  The size is in kilobytes. 
 #' @param save.debug If TRUE, debug files are saved to the debug directory.
 #' This is intended for developers of the RDataTracker package.
 #' @param display if TRUE, the provenance graph is displayed in DDG Explorer
@@ -334,9 +334,9 @@
 #' @noRd
 
 .ddg.run <- function(r.script.path = NULL, prov.dir = NULL, overwrite = TRUE, 
-                    f = NULL, annotate.inside.functions = FALSE, first.loop = 1, 
-                    max.loops = 0, max.snapshot.size = 0, save.debug = FALSE, 
-                    display = FALSE, hash.algorithm="md5") {
+  f = NULL, annotate.inside.functions = FALSE, first.loop = 1, max.loops = 0, 
+  snapshots = FALSE, max.snapshot.size = 10, save.debug = FALSE, 
+  display = FALSE, hash.algorithm = "md5") {
   
   # Set .ddg.is.sourced to TRUE if script provided.
   .ddg.set(".ddg.is.sourced", !is.null(r.script.path))

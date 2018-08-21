@@ -61,9 +61,9 @@
 #' is used.
 #' @param overwrite if FALSE, includes a time stamp in the provenance
 #'   graph directory name.
+#' @param snapshots if TRUE, snapshots are saved for complex data values.
 #' @param max.snapshot.size the maximum size for snapshot files. 
-#' If 0, no snapshot files are saved.
-#' If -1, the complete state of an object is stored in the snapshot
+#' If Inf, the complete state of an object is stored in the snapshot
 #' file. For other values, the head of the object, truncated to a size near
 #' the specified limit, is saved.  The size is in kilobytes. 
 #' @param hash.algorithm the hash algorithm to use for files.
@@ -77,7 +77,7 @@
 #' @seealso \code{\link{prov.json}} for access to the JSON text of the provenance, 
 
 prov.init <- function(r.script.path = NULL, prov.dir = NULL, overwrite = TRUE, 
-    max.snapshot.size = 0, hash.algorithm="md5") {
+    snapshots = FALSE, max.snapshot.size = 10, hash.algorithm="md5") {
   
   # Store name of provenance collection tool.
   .ddg.set ("ddg.tool.name", "provR")
@@ -85,6 +85,9 @@ prov.init <- function(r.script.path = NULL, prov.dir = NULL, overwrite = TRUE,
   # Save hash algorithm
   .ddg.set (".ddg.hash.algorithm", hash.algorithm)
   .ddg.init.filenodes ()
+
+  # Store snapshot option
+  .ddg.set("ddg.snapshots", snapshots)
 
   # Store maximum snapshot size.
   .ddg.set("ddg.max.snapshot.size", max.snapshot.size)
@@ -144,9 +147,12 @@ prov.quit <- function(save.debug = FALSE) {
 #' prov.quit ()
 
 prov.run <- function(r.script.path = NULL, prov.dir = NULL, overwrite = TRUE, 
-    f = NULL, max.snapshot.size = 0, save.debug = FALSE, hash.algorithm="md5") {
+    f = NULL, snapshots = FALSE, max.snapshot.size = 10, save.debug = FALSE, 
+    hash.algorithm="md5") {
   
-  prov.init(r.script.path, prov.dir, overwrite, max.snapshot.size, hash.algorithm)
+  prov.init(r.script.path, prov.dir, overwrite, snapshots, max.snapshot.size, 
+    hash.algorithm)
+  
   .ddg.run (r.script.path, f = f, save.debug = save.debug)
 }
 

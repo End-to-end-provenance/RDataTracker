@@ -9,15 +9,15 @@
 \title{Provenance Collection Functions}
 \usage{
 prov.init(r.script.path = NULL, prov.dir = NULL, overwrite = TRUE,
-  max.snapshot.size = 0, hash.algorithm = "md5")
+  snapshots = FALSE, max.snapshot.size = 10, hash.algorithm = "md5")
 
 prov.save(save.debug = FALSE)
 
 prov.quit(save.debug = FALSE)
 
 prov.run(r.script.path = NULL, prov.dir = NULL, overwrite = TRUE,
-  f = NULL, max.snapshot.size = 0, save.debug = FALSE,
-  hash.algorithm = "md5")
+  f = NULL, snapshots = FALSE, max.snapshot.size = 10,
+  save.debug = FALSE, hash.algorithm = "md5")
 
 prov.source(file)
 }
@@ -34,9 +34,10 @@ is used.}
 \item{overwrite}{if FALSE, includes a time stamp in the provenance
 graph directory name.}
 
+\item{snapshots}{if TRUE, snapshots are saved for complex data values.}
+
 \item{max.snapshot.size}{the maximum size for snapshot files. 
-If 0, no snapshot files are saved.
-If -1, the complete state of an object is stored in the snapshot
+If Inf, the complete state of an object is stored in the snapshot
 file. For other values, the head of the object, truncated to a size near
 the specified limit, is saved.  The size is in kilobytes.}
 
