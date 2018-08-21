@@ -26,6 +26,14 @@ read.as.string <- function( url )
 
 context( "Unit Test for OutputJson.R" )
 
+# edge case: when prov.json is run without initialising provenance capture
+test_that( "provenance capture not initialised",
+	{
+		expect_that( .ddg.json.write(), throws_error() )
+		expect_that( .ddg.json.string(), throws_error() )
+	}
+)
+
 # prefix
 test_that("prefix",
 	{
