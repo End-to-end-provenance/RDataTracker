@@ -354,8 +354,9 @@
     nonlocals.set <- .ddg.get.nonlocals.set (pfunctions)
     if (!is.null (nonlocals.set) && length (nonlocals.set) > 0) {
       nonlocals.set[sapply(nonlocals.set, is.null)] <- NULL
+      nonlocals.set <- unique(unlist(nonlocals.set))
       
-      # Taken from .ddg.create.data.set.edges -- should refactor
+      # TODO: Taken from .ddg.create.data.set.edges -- should refactor
     f <- function (var) {
       env <- .ddg.get.env(var)
       scope <- .ddg.get.scope(var, env=env)

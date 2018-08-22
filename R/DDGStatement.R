@@ -179,8 +179,6 @@ methods::setMethod ("initialize",
 
       .Object@vars.possibly.set <- .ddg.find.assign(.Object@parsed[[1]])
       
-      print(paste (".Object@parsed[[1]] =", .Object@parsed[[1]]))
-      print(paste ("length (.Object@parsed[[1]]) =", length(.Object@parsed[[1]])))
       if (length (.Object@parsed[[1]]) >= 3 && .ddg.is.functiondecl (.Object@parsed[[1]][[3]])) {
         .ddg.save.func.decl.info(.Object@parsed[[1]][[2]], .Object@parsed[[1]][[3]])
       }
