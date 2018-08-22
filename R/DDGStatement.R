@@ -151,7 +151,7 @@ methods::setMethod ("initialize",
       # deparse can return a vector of strings.  We convert that into
       # one long string.
       .Object@text <- paste(deparse(.Object@parsed[[1]]), collapse="")
-      #print(.Object@text)
+      if (.ddg.debug.lib()) print(paste ("Parsing", .Object@text))
 
       .Object@abbrev <-
           # If this is a call to .ddg.eval, we only want the argument to .ddg.eval
@@ -178,7 +178,13 @@ methods::setMethod ("initialize",
       .Object@vars.set <- .ddg.find.simple.assign(.Object@parsed[[1]])
 
       .Object@vars.possibly.set <- .ddg.find.assign(.Object@parsed[[1]])
-
+      
+      print(paste (".Object@parsed[[1]] =", .Object@parsed[[1]]))
+      print(paste ("length (.Object@parsed[[1]]) =", length(.Object@parsed[[1]])))
+      if (length (.Object@parsed[[1]]) >= 3 && .ddg.is.functiondecl (.Object@parsed[[1]][[3]])) {
+        .ddg.save.func.decl.info(.Object@parsed[[1]][[2]], .Object@parsed[[1]][[3]])
+      }
+        
       # .ddg.eval is treated differently than other calls to ddg functions since
       # we will execute the parameter as a command and want a node for it.
       .Object@isDdgFunc <- (grepl("^ddg|^.ddg|^prov", .Object@text) 
@@ -553,19 +559,19 @@ methods::setMethod ("initialize",
 #' @return True if an expression object containing an assignment
 #' @noRd
 
-.ddg.is.assign <- function (expr)
+.ddg.is.assign <- function (expr, globals.only = FALSE)
 {
   if (is.call(expr))
   {
     # This also finds uses of ->.
-    if (identical(expr[[1]], as.name("<-")))
+    if (!globals.only && identical(expr[[1]], as.name("<-")))
       return (TRUE)
 
     # This also finds uses of ->>.
     else if (identical(expr[[1]], as.name("<<-")))
       return (TRUE)
 
-    else if (identical(expr[[1]], as.name("=")))
+    else if (!globals.only && identical(expr[[1]], as.name("=")))
       return (TRUE)
 
     else if (identical(expr[[1]], as.name("assign")))
@@ -608,13 +614,13 @@ methods::setMethod ("initialize",
 #' @return a vector containing all variables assigned in the expression
 #' @noRd
 
-.ddg.find.assign <- function(obj) {
+.ddg.find.assign <- function(obj, globals.only = FALSE) {
   # Base case.
   if (!is.recursive(obj)) return(character())
 
   # Assignment statement.  Add the variable being assigned to the
   # vector and recurse on the expression being assigned.
-  if (.ddg.is.assign(obj)) {
+  if (.ddg.is.assign(obj, globals.only)) {
     var <- .ddg.get.var(obj[[2]])
 
     # Don't look for assignments in the body of a function as those
@@ -622,7 +628,7 @@ methods::setMethod ("initialize",
     # Don't recurse on NULL.
     if (!(is.null(obj[[3]]))) {
       if (.ddg.is.functiondecl(obj[[3]])) var
-      else c(var, unlist(lapply(obj[[3]], .ddg.find.assign)))
+      else c(var, unlist(lapply(obj[[3]], .ddg.find.assign, globals.only)))
     }
     else var
   }
@@ -630,10 +636,9 @@ methods::setMethod ("initialize",
   # Not an assignment statement.  Recurse on the parts of the
   # expression.
   else {
-    unique(unlist(lapply(obj, .ddg.find.assign)))
+    unique(unlist(lapply(obj, .ddg.find.assign, globals.only)))
   }
 }
-
 
 #' ddg.is.functiondecl tests to see if an expression is a function
 #' declaration.

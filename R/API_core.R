@@ -109,6 +109,8 @@
   .ddg.set(".ddg.func.depth", 0)
   .ddg.set(".ddg.cur.cmd.stack", vector())
   
+  .ddg.init.function.def.table ()
+  
   invisible()
 }
 

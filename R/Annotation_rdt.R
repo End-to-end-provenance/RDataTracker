@@ -620,23 +620,24 @@ prov.annotate.off <- function (fnames.off=NULL) {
   }
   
   statement.type <- .ddg.get.statement.type(parsed.command)
+  print (paste (".ddg.add.annotations: statement.type =", statement.type))
   loop.types <- list("for", "while", "repeat")
   
   # Move into funcs below && .ddg.max.loops() > 0) {
   if (length(statement.type > 0) && !is.null(statement.type)) { 
     
     # Annotate if statement.
-    if (statement.type == "if"){
+    if (statement.type[1] == "if"){
       return(.ddg.annotate.if.statement(command))
     }
     
     # Annotate for, while, repeat statement.
-    else if (statement.type %in% loop.types) {
+    else if (statement.type[1] %in% loop.types) {
       return(.ddg.annotate.loop.statement(command, statement.type))
     }
     
     # Annotate simple block.
-    else if (statement.type == "{") {
+    else if (statement.type[1] == "{") {
       return(.ddg.annotate.simple.block(command))
     }
   }

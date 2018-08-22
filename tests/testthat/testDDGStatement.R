@@ -46,3 +46,4 @@ test_that ("functions called",
       expected.lib.calls <- data.frame(ddg.fun, ddg.lib, stringsAsFactors=FALSE)
       expect_equal(calls[[3]], expected.lib.calls )
     })
+
