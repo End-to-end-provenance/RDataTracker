@@ -66,7 +66,7 @@ prov.annotate.off can be called multiple times.  Each call adds more names
 to the list of unannotated functions.
 
 The level of detail of provenance can be set using the annotate.inside.functions,
-max.loops, snapshots, and max.snapshot.size parameters of prov.run and prov.init.
+max.loops and snapshot.size parameters of prov.run and prov.init.
 It can also be set using prov.set.detail, which will impact the
 future executions of prov.run and prov.init.  The detail level can
 take on the following values:\cr
