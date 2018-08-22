@@ -20,8 +20,7 @@ r_github_packages:
   End-to-end-provenance/provViz
 
 
-install: 
-  - Rscript -e 'if(!"provViz" %in% rownames(installed.packages())) { devtools::install_github("End-to-end-provenance/provViz") }'
+install: true
 
 before_script:
   - "export DISPLAY=:99.0"

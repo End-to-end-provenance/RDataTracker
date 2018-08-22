@@ -191,9 +191,9 @@ function cleanup {
 
 # Should first clone the three repositories
 echo "*** Cloning the repositories"
-git clone https://github.com/End-to-end-provenance/RDataTracker.git
-git clone https://github.com/End-to-end-provenance/provR_test.git
-git clone https://github.com/End-to-end-provenance/rdt_test.git
+git clone git@github.com:End-to-end-provenance/RDataTracker.git
+git clone git@github.com:End-to-end-provenance/provR_test.git
+git clone git@github.com:End-to-end-provenance/rdt_test.git
 cd RDataTracker
 
 echo ""
