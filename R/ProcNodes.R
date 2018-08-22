@@ -349,7 +349,34 @@
   
   # append the function call information to function nodes
   if( !is.null(functions.called) && !is.na(functions.called)) {
-    .ddg.add.to.function.table (functions.called)
+    pfunctions <- .ddg.get.function.info(functions.called)
+    .ddg.add.to.function.table (pfunctions)
+    nonlocals.set <- .ddg.get.nonlocals.set (pfunctions)
+    if (!is.null (nonlocals.set) && length (nonlocals.set) > 0) {
+      nonlocals.set[sapply(nonlocals.set, is.null)] <- NULL
+      
+      # Taken from .ddg.create.data.set.edges -- should refactor
+    f <- function (var) {
+      env <- .ddg.get.env(var)
+      scope <- .ddg.get.scope(var, env=env)
+      val <- tryCatch(eval(var, env),
+          error = function(e) {
+            eval (parse(text=var), parent.env(env))
+          }
+      )
+      
+      tryCatch(.ddg.save.data(var, val, error=TRUE, scope=scope, env=env),
+          error = 
+              function(e){
+            .ddg.data.node("Data", var, "complex", scope); 
+            print(e)
+          }
+      )
+    }
+      # End taken from .ddg.create.data.set.edges -- should refactor
+      sapply (nonlocals.set, f)
+      sapply (nonlocals.set, .ddg.lastproc2data)
+    }
   }
   if (.ddg.debug.lib()) print(paste("proc.node:", ptype, pname))
 }

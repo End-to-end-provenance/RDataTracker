@@ -6,6 +6,7 @@
     xmlns:unless="ant:unless">
     
   <property name="builddir" value="build_rdt"/>
+  <property name="checkdir" value="RDataTracker.Rcheck"/>
   <loadproperties srcFile="DESCRIPTION_rdt" />
   <property name="tarfile" value="RDataTracker_${Version}.tar.gz" />
 

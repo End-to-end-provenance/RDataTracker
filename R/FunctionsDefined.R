@@ -8,10 +8,6 @@
 
 .ddg.save.func.decl.info <- function (funcname, funcdecl) {
   globals.set <- .ddg.find.globals.set (funcdecl)
-  print ("globals.set =")
-  print (globals.set)
-  print ("str(globals.set)")
-  print (str(globals.set))
   
   # Add to the table
   ddg.func.defs <- .ddg.get ("ddg.function.defs")
@@ -25,23 +21,27 @@
   ddg.func.defs <- rbind( ddg.func.defs, new.row)
   .ddg.set( "ddg.function.defs", ddg.func.defs )
   
-  #print (paste ("number of rows =", nrow(ddg.func.defs)))
-  #print (paste ("number of cols =", ncol(ddg.func.defs)))
-  print ("ddg.function.defs =")
-  print (.ddg.get("ddg.function.defs"))
 }
 
 .ddg.find.globals.set <- function (funcdecl) {
   return (.ddg.find.assign (funcdecl[[3]], globals.only = TRUE))
 }
 
+.ddg.get.nonlocals.set <- function (pfunctions) {
+  if( is.null(pfunctions) || is.na(pfunctions) || nrow(pfunctions) == 0) {
+    return()
+  } 
+  
+  localfunctions <- pfunctions [!grepl ("package:", pfunctions$ddg.lib), ]
+  localfunctions <- localfunctions [localfunctions$ddg.lib != "base", ]
+  localfunctions <- localfunctions$ddg.fun
+  return (sapply (localfunctions, .ddg.get.globals.set))
+}
+
+
 .ddg.get.globals.set <- function (funcname) {
   ddg.func.defs <- .ddg.get ("ddg.function.defs")
   globals <- ddg.func.defs [ddg.func.defs$func.name == funcname, "globals.set"][[1]]
-  print ("globals =")
-  print (globals)
-  print ("str(globals) =")
-  print (str(globals))
   return (globals)
 }
 
