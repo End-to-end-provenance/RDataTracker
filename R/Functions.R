@@ -66,54 +66,35 @@
 
 .ddg.add.to.function.table <- function (functions.called) {
   pfunctions <- .ddg.get.function.info(functions.called)
-  print (paste ("str(pfunctions) =", str(pfunctions)))
+  #print (paste ("str(pfunctions) =", str(pfunctions)))
   
-  print (paste (".ddg.add.to.function.table: pfunctions =", pfunctions))
+  #print (".ddg.add.to.function.table: pfunctions =")
+  #print (pfunctions)
   
   if( is.null(pfunctions) || is.na(pfunctions) || nrow(pfunctions) == 0) {
     return()
   } 
   
   libfunctions <- pfunctions [grepl ("package:", pfunctions$ddg.lib), ]
-  print (paste ("str(libfunctions) =", str(libfunctions)))
+  #print (paste ("str(libfunctions) =", str(libfunctions)))
   if ( nrow(libfunctions) > 0 )
   #if (!is.null(nrow(libfunctions)))
   {
-    print (paste (".ddg.add.to.function.table: nrow(libfunctions) =", nrow(libfunctions)))
-    print (paste (".ddg.add.to.function.table: libfunctions before sub =", libfunctions))
+    #print (paste (".ddg.add.to.function.table: nrow(libfunctions) =", nrow(libfunctions)))
+    #print (".ddg.add.to.function.table: libfunctions before sub =")
+    #print (libfunctions)
     libfunctions$ddg.lib <- sub("package:", "", libfunctions$ddg.lib)
-    print (paste (".ddg.add.to.function.table: libfunctions after sub =", libfunctions))
-  }
-  print (paste ("libfunctions =", libfunctions))
-  if( is.null(libfunctions) || is.na(libfunctions)) {
-    return()
+    print (".ddg.add.to.function.table: libfunctions =")
+    print (libfunctions)
+    libfunctions <- cbind( "ddg.pnum" = rep(.ddg.pnum(), nrow(libfunctions)), libfunctions )
+    ddg.function.nodes <- rbind( .ddg.function.nodes(), libfunctions )
+    .ddg.set( "ddg.function.nodes", ddg.function.nodes )
   } 
   
-#  if( length(ddg.fun) > 0 )
-#  {
-#    ddg.lib <- sapply( ddg.fun, .ddg.where )
-#    ddg.lib <- sapply( ddg.lib, environmentName )
-#    print (paste (".ddg.get.function.info before package grep: ddg.lib =", ddg.lib))
-#    
-#    # ddg.lib <- ddg.lib[ grepl("package:", ddg.lib) ]
-#    print (paste (".ddg.get.function.info before inner if: ddg.lib =", ddg.lib))
-#    
-#    # combine with functions with known library calls into data frame
-#    # if( length(ddg.lib) > 0 )
-#    # {
-#    #   ddg.lib <- mapply( substring, ddg.lib, 9 )
-#    
-#    ddg.fun <- names(ddg.lib)
-#    ddg.lib <- unname(ddg.lib)
-#    
-#    fn.frame <- rbind( fn.frame, data.frame(ddg.fun, ddg.lib, stringsAsFactors=FALSE) )
-#    #}
-#  }
-  
-    
-  libfunctions <- cbind( "ddg.pnum" = rep(.ddg.pnum(), nrow(libfunctions)), libfunctions )
-  ddg.function.nodes <- rbind( .ddg.function.nodes(), libfunctions )
-  .ddg.set( "ddg.function.nodes", ddg.function.nodes )
+  localfunctions <- pfunctions [!grepl ("package:", pfunctions$ddg.lib), ]
+  localfunctions <- localfunctions [localfunctions$ddg.lib != "base", ]
+  print ("localfunctions:")
+  print (localfunctions)
 }
 
 #' .ddg.get.function.info finds and returns the names of function calls to external
@@ -130,7 +111,7 @@
   
   # functions with unknown libraries
   ddg.fun <- function.names[[1]]
-  print (paste (".ddg.get.function.info initially: ddg.fun =", ddg.fun))
+  #print (paste (".ddg.get.function.info initially: ddg.fun =", ddg.fun))
   ddg.lib <- NULL
   
   # identify which of the variable names are functions
@@ -146,21 +127,26 @@
     # append to list of functions with unknown libraries
     ddg.fun <- append( ddg.fun, names(vars[vars == TRUE]) )
   }
-  print (paste (".ddg.get.function.info after first if: ddg.fun =", ddg.fun))
+  #print (paste (".ddg.get.function.info after first if: ddg.fun =", ddg.fun))
   
   # obtain library information from functions
   fn.frame <- function.names[[3]]
-  fn.frame[2] <- paste0 ("package:", fn.frame[2])
-  print (paste (".ddg.get.function.info after first if: fn.frame =", fn.frame))
+  #print (".ddg.get.function.info after first if: fn.frame =")
+  #print (fn.frame)
+  if (!is.null (fn.frame)) {
+    fn.frame[2] <- paste0 ("package:", fn.frame[2], collapse="")
+    #print (".ddg.get.function.info after appending package: fn.frame =")
+    #print (fn.frame)
+  }
   
   if( length(ddg.fun) > 0 )
   {
     ddg.lib <- sapply( ddg.fun, .ddg.where )
     ddg.lib <- sapply( ddg.lib, environmentName )
-    print (paste (".ddg.get.function.info before package grep: ddg.lib =", ddg.lib))
+    #print (paste (".ddg.get.function.info before package grep: ddg.lib =", ddg.lib))
     
    # ddg.lib <- ddg.lib[ grepl("package:", ddg.lib) ]
-    print (paste (".ddg.get.function.info before inner if: ddg.lib =", ddg.lib))
+    #print (paste (".ddg.get.function.info before inner if: ddg.lib =", ddg.lib))
     
     # combine with functions with known library calls into data frame
    # if( length(ddg.lib) > 0 )
@@ -173,11 +159,13 @@
       fn.frame <- rbind( fn.frame, data.frame(ddg.fun, ddg.lib, stringsAsFactors=FALSE) )
     #}
   }
-  print (paste (".ddg.get.function.info after second if: ddg.fun =", ddg.fun))
-  print (paste (".ddg.get.function.info returning: fn.frame =", fn.frame))
+  #print (paste (".ddg.get.function.info after second if: ddg.fun =", ddg.fun))
+  #print (".ddg.get.function.info returning: fn.frame =")
+  #print (fn.frame)
   
   # return
   fn.frame <- unique(fn.frame)
-  print (paste (".ddg.get.function.info returning: fn.frame =", fn.frame))
+  print (".ddg.get.function.info returning: ")
+  print (fn.frame)
   return( fn.frame )
 }
