@@ -7,3 +7,9 @@ test_that ("function globals set",
       expect_equal (.ddg.find.globals.set (parse (text = "function () { a <<- 1; b <<- 2}")[[1]]), c("a", "b"))
     }
 )
+
+test_that ("getting globals",
+    {
+      .ddg.save.func.decl.info ("f", parse (text = "function () { a <<- 1; b <<- 2}")[[1]])
+      expect_equal (.ddg.get.globals.set ("f"), c ("a", "b"))
+    })
