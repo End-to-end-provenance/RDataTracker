@@ -113,7 +113,7 @@
   # obtain library information from functions
   fn.frame <- function.names[[3]]
   if (!is.null (fn.frame)) {
-    fn.frame[2] <- paste0 ("package:", fn.frame[2], collapse="")
+    fn.frame$ddg.lib <- paste0 ("package:", fn.frame$ddg.lib)
   }
   
   if( length(ddg.fun) > 0 )
