@@ -497,6 +497,32 @@
   invisible()
 }
 
+#' .ddg.get.element.size estimates the size in memory of the first 
+#' row (data frame or matrix) or first element (vector, array, or list)
+#' of a complex data object.
+#' @param data a complex data object (data frame, matrix, vector, array,
+#' or list)
+#' @return size in memory of first row or first element
+#' @noRd
+
+.ddg.get.element.size <- function(data) {
+  element <- list()  
+  
+  # data frame or matrix
+  if (is.data.frame(data) || is.matrix(data)) {
+    for (i in 1:ncol(data)) {
+      element[[i]] <- data[1, i, drop=TRUE]
+      if (is.factor(element[[i]])) element[[i]] <- factor(element[[i]])
+    } 
+
+  # vector, list, or array
+  } else {
+    element <- data[1]
+  }
+
+  return(utils::object.size(element))
+}
+
 #' .ddg.snapshot.node creates a data node of type Snapshot. Snapshots
 #' are used for complex data values not written to file by the main
 #' script. The contents of data are written to the file dname.fext
@@ -538,11 +564,18 @@
   
   else if (is.vector(data) || is.list(data) || is.data.frame(data) || 
            is.matrix(data) || is.array(data)) {
-    # Decide how much data to save
     
-    element.size <- utils::object.size(utils::head(data, 1))
+    # Decide how much data to save
+    element.size <- .ddg.get.element.size(data)
     num.elements.to.save <- ceiling(snapshot.size * 1024 / element.size)
-    if (num.elements.to.save < length(data)) {
+
+    if (is.data.frame(data) || is.matrix(data) || is.array(data)) {
+      total.length <- nrow(data)
+    } else {
+      total.length <- length(data)
+    }
+
+    if (num.elements.to.save < total.length) {
       data <- utils::head(data, num.elements.to.save)
       full.snapshot <- FALSE
     }
