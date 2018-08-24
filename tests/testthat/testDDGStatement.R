@@ -22,7 +22,6 @@ test_that ("vars set",
       expect_equal(.ddg.find.simple.assign (parse (text = "a ->> b")[[1]]), "b")
       expect_equal(.ddg.find.simple.assign (parse (text = "a = b")[[1]]), "a")
       expect_equal(.ddg.find.simple.assign (parse (text = "a (b)")[[1]]), "")
-      expect_equal(.ddg.find.simple.assign (parse (text = "a <<- b")[[1]], locals.only = TRUE), "")
     })
 
 test_that ("vars possibly set",
