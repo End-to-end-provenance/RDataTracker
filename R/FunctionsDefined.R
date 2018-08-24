@@ -29,6 +29,9 @@
   ddg.func.defs <- rbind( ddg.func.defs, new.row)
   .ddg.set( "ddg.function.defs", ddg.func.defs )
   
+  print ("ddg.func.defs:")
+  print (ddg.func.defs)
+  
 }
 
 .ddg.find.nonlocals.set <- function (funcdecl) {
@@ -60,15 +63,15 @@
   print (funcdecl)
   
   funcparams <- funcdecl[[2]]
-  print ("funcfuncparams:")
+  print ("funcparams:")
   print (funcparams)
   if (is.null (funcparams)) {
-    locals <- character()
+    vars.assigned <- character()
   }
   else {
     print ("names(funcparams):")
     print (names(funcparams))
-    locals <- names (funcparams)
+    vars.assigned <- names (funcparams)
   }
   
   funcbody <- funcdecl[[3]]
@@ -77,14 +80,23 @@
     nonlocal.uses <- character()
     for (i in 2:length(funcbody)) {
       var.uses <- .ddg.find.var.uses (funcbody[[i]])
-      nonlocal.uses <- unique (c (nonlocal.uses, setdiff (var.uses, locals)))
-      var.assigned <- .ddg.find.simple.assign (funcbody[[i]], locals.only = TRUE)
-      if (var.assigned != "" && !var.assigned %in% locals) {
-        locals <- c(locals, var.assigned)
+      nonlocal.uses <- unique (c (nonlocal.uses, setdiff (var.uses, vars.assigned)))
+      var.assigned <- .ddg.find.simple.assign (funcbody[[i]])
+      
+      # Only add a variable as a local if it is not already a local and we have
+      # not already seen the same name used as a non-local.
+      if (var.assigned != "" && !(var.assigned %in% vars.assigned) && !(var.assigned%in% nonlocal.uses)) {
+        vars.assigned <- c(vars.assigned, var.assigned)
       }
+      
+      print (paste ("After", funcbody[[i]]))
+      print (paste ("var.uses =", var.uses))
+      print (paste ("var.assigned =", var.assigned))
+      print (paste ("vars.assigned =", vars.assigned))
+      print (paste ("nonlocal.uses =", nonlocal.uses))
     }
-    print ("locals set")
-    print (locals)
+    print ("vars.assigned set")
+    print (vars.assigned)
     print ("nonlocal.uses")
     print (nonlocal.uses)
   }
@@ -93,11 +105,29 @@
     var.uses <- .ddg.find.var.uses (funcbody)
     print ("var.uses:")
     print (var.uses)
-    nonlocal.uses <- setdiff (var.uses, locals)
+    nonlocal.uses <- setdiff (var.uses, vars.assigned)
     print ("nonlocal.uses")
     print (nonlocal.uses)
   }
   
   return (nonlocal.uses)
+}
+
+.ddg.get.nonlocals.used <- function (pfunctions) {
+  if( is.null(pfunctions) || is.na(pfunctions) || nrow(pfunctions) == 0) {
+    return()
+  } 
+  
+  localfunctions <- pfunctions [!grepl ("package:", pfunctions$ddg.lib), ]
+  localfunctions <- localfunctions [localfunctions$ddg.lib != "base", ]
+  localfunctions <- localfunctions$ddg.fun
+  return (sapply (localfunctions, .ddg.lookup.nonlocals.used))
+}
+
+.ddg.lookup.nonlocals.used <- function (funcname) {
+  ddg.func.defs <- .ddg.get ("ddg.function.defs")
+  nonlocals <- ddg.func.defs [ddg.func.defs$func.name == funcname, "nonlocals.used"]
+  if (length(nonlocals) == 0) return (character())
+  return (nonlocals[[1]])
 }
 

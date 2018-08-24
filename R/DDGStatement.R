@@ -542,10 +542,9 @@ methods::setMethod ("initialize",
 #' @return name of variable assigned to
 #' @noRd
 
-.ddg.find.simple.assign <- function(obj, locals.only = FALSE)
+.ddg.find.simple.assign <- function(obj)
 {
-  print (paste ("In .ddg.find.simple.assign, locals.only =", locals.only))
-  if (.ddg.is.assign(obj, locals.only = locals.only)) {
+  if (.ddg.is.assign(obj)) {
     .ddg.get.var(obj[[2]])
   }
   else {
@@ -560,35 +559,29 @@ methods::setMethod ("initialize",
 #' @return True if an expression object containing an assignment
 #' @noRd
 
-.ddg.is.assign <- function (expr, globals.only = FALSE, locals.only = FALSE)
+.ddg.is.assign <- function (expr, globals.only = FALSE)
 {
-  print (paste ("In .ddg.is.assign, locals.only =", locals.only))
   if (is.call(expr))
   {
     # This also finds uses of ->.
     if (!globals.only && identical(expr[[1]], as.name("<-"))) {
-      print ("Found <-")
       return (TRUE)
     }
 
     # This also finds uses of ->>.
-    else if (!locals.only && identical(expr[[1]], as.name("<<-"))) {
-      print ("Found <<- and locals.only is false")
+    else if (identical(expr[[1]], as.name("<<-"))) {
       return (TRUE)
     }
 
     else if (!globals.only && identical(expr[[1]], as.name("="))) {
-      print ("Found =")
       return (TRUE)
     }
 
-    else if (!locals.only && identical(expr[[1]], as.name("assign"))) {
-      print ("Found assign")
+    else if (identical(expr[[1]], as.name("assign"))) {
       return (TRUE)
     }
   }
 
-  print ("Returning false")
   return (FALSE)
 }
 
