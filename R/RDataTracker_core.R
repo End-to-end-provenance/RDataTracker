@@ -460,39 +460,52 @@
     }
     
     if (var != "") {
-        if (is.null(env)) {
-          env <- .ddg.get.env(var)
-        }
-        scope <- .ddg.get.scope(var, env=env)
-
-        # Special operators are defined by enclosing the name in `.  However,
-        # the R parser drops those characters when we deparse, so when we parse
-        # here they are missing and we get an error about unexpected SPECIAL
-        # characters.  The first tryCatch, puts the ` back in and parses again.
-        # The second tryCatch handles errors associated with evaluating the variable.
-        parsed <- tryCatch(parse(text=var),
-            error = function(e) parse(text=paste("`", var, "`", sep="")))
-        val <- tryCatch(eval(parsed, env),
-          error = function(e) {
-            eval (parse(text=var), parent.env(env))
-          }
-        )
-
-        tryCatch(.ddg.save.data(var, val, error=TRUE, scope=scope, env=env),
-               error = 
-                 function(e){
-                   .ddg.data.node("Data", var, "complex", scope); 
-                   print(e)
-                 }
-               )
-
-        .ddg.proc2data(cmd@abbrev, var, scope)
+      scope <- .ddg.get.scope(var, env=env)
+      .ddg.save.var(var, env, scope)
+      .ddg.proc2data(cmd@abbrev, var, scope)
     }
   }
-  
-
 }
 
+#' .ddg.save.var
+#' 
+#' Creates a node for a variable
+#' 
+#' @param var the variable to create a node for
+#' @param env the environment in which the variable lives.  If NULL, it
+#'   finds the closest environment with that variable
+#' @param scope the scope for the environment.  If NULL, it looks it up.
+#' @return nothing
+#' @noRd
+.ddg.save.var <- function(var, env=NULL, scope=NULL) {
+  if (is.null(env)) {
+    env <- .ddg.get.env(var)
+  }
+  if (is.null(scope)) {
+    scope <- .ddg.get.scope(var, env=env)
+  }
+  
+  # Special operators are defined by enclosing the name in `.  However,
+  # the R parser drops those characters when we deparse, so when we parse
+  # here they are missing and we get an error about unexpected SPECIAL
+  # characters.  The first tryCatch, puts the ` back in and parses again.
+  # The second tryCatch handles errors associated with evaluating the variable.
+  parsed <- tryCatch(parse(text=var),
+      error = function(e) parse(text=paste("`", var, "`", sep="")))
+  val <- tryCatch(eval(parsed, env),
+      error = function(e) {
+        eval (parse(text=var), parent.env(env))
+      }
+  )
+  
+  tryCatch(.ddg.save.data(var, val, error=TRUE, scope=scope, env=env),
+      error = 
+          function(e){
+        .ddg.data.node("Data", var, "complex", scope); 
+        print(e)
+      }
+  )
+}
 
 #' .ddg.create.data.node.for.possible.writes creates a data node for
 #' each variable that might have been set in something other than a

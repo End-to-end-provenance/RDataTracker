@@ -194,6 +194,7 @@ echo "*** Cloning the repositories"
 git clone git@github.com:End-to-end-provenance/RDataTracker.git
 git clone git@github.com:End-to-end-provenance/provR_test.git
 git clone git@github.com:End-to-end-provenance/rdt_test.git
+
 cd RDataTracker
 
 echo ""
@@ -232,6 +233,16 @@ if is_current "rdt_test" "master"
     echo "rdt master is current"
 else 
     echo "Updating rdt master"
+    copy_rdt_files
+    commit_repo "rdt_test"
+fi
+
+echo ""
+if is_current "rdt_test" "development"
+  then
+    echo "rdt development is current"
+else 
+    echo "Updating rdt development"
     copy_rdt_files
     commit_repo "rdt_test"
 fi

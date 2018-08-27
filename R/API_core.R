@@ -107,6 +107,10 @@
   .ddg.set(".ddg.func.depth", 0)
   .ddg.set(".ddg.cur.cmd.stack", vector())
   
+  # Initialize the table used to track use of non-locals
+  # within functions
+  .ddg.init.function.def.table ()
+  
   invisible()
 }
 

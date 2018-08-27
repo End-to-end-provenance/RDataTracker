@@ -134,7 +134,7 @@
 		# extract columns: ddg.fun, ddg.lib (function names and their library names)
 		functions <- calls[ , 2:3]
 		functions <- unique(functions)
-		
+    
 		rownames(functions) <- c( 1 : nrow(functions) )
 		
 		# PRINT TO JSON - FUNCTION NODES
