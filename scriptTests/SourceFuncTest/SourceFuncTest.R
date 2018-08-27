@@ -21,7 +21,7 @@ source("source2.r")
 source("source3.r")
 
 # a script which we call with a local environment
-source("source4.r", local=T)
+source("source4.r")
 
 # source which tets the local aspect of this thing!
 

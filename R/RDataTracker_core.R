@@ -44,6 +44,15 @@
   return(.ddg.get("ddg.tool.name"))
 }
 
+#' .ddg.r.script.path returns the path to the R script that is being
+#' executed (script mode) or NULL (console mode).
+#' @return the R script path (script mode) or NULL (console mode)
+#' @noRd
+
+.ddg.r.script.path <- function() {
+  return(.ddg.get("ddg.r.script.path"))
+}
+
 #' .ddg.save.debug returns True if debugging information should be saved
 #' to the file system
 #' @return TRUE if saving debugging information
@@ -206,17 +215,19 @@
   # (used when executing a script using .ddg.source).
   .ddg.set(".ddg.possible.last.cmd", NULL)
 
-  # Store path of current script.
+  # Store R script path
   .ddg.set("ddg.r.script.path", NULL)
 
-  # Store path of current ddg.
+  # Store path of current ddg
   .ddg.set("ddg.path", NULL)
   
+  # Initialize sourced scripts information
   .ddg.init.sourced.scripts ()
 
   # Save debug files on debug directory
   .ddg.set("ddg.save.debug", FALSE)
   
+  # Initialize DDG Statements
   .ddg.init.statements ()
   
   # Initialize the stack corresponding to the names of start/finish nodes.
@@ -1566,7 +1577,7 @@
   env$os[1] <- .Platform$OS.type
   
   # script variables
-  script.path <- .ddg.get("ddg.r.script.path")
+  script.path <- .ddg.r.script.path()
   
   if( ! is.null(script.path) )
   {

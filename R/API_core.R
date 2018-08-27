@@ -27,66 +27,74 @@
 
 
 #' .ddg.init intializes a new provenance graph.
-#' @param r.script.path the full path to the R script file
-#' that is being executed. If provided, a copy of the script will
-#' be saved with the provenance graph.
 #' @param prov.dir the directory where the provenance graph will be 
 #' saved. If not provided, the directory specified by the prov.dir 
 #' option is used. Otherwise the R session temporary directory
 #' is used.
 #' @param overwrite if FALSE, includes a time stamp in the provenance
-#' @param snapshot.size the maximum size for snapshot files. If 0,
-#' no snapshots are saved. If Inf, the complete state of an object is stored
-#' in the snapshot file. For other values, the head of the object, truncated
-#' to a size near the specified limit, is saved.  The size is in kilobytes. 
+#' @param save.debug If TRUE, debug files are saved to the debug directory.
+#' This is intended for developers of the RDataTracker package.
 #' @return .ddg.init initializes the provenance collector.  The .ddg.init
 #' function does not return a value.
 #' @noRd
 
-.ddg.init <- function(r.script.path = NULL, prov.dir = NULL, overwrite = TRUE, 
-  snapshot.size = 0) {
+.ddg.init <- function(prov.dir = NULL, overwrite = TRUE, save.debug = FALSE) {
   
   # Initialize tables
   .ddg.init.tables()
 
+  # Store R script path if ddg.new.r.script path is set in prov.run 
+  # (script mode). Otherwise R script path is NULL (console mode). Note 
+  # that ddg.new.r.script.path is set to NULL in .ddg.quit.
+  if (.ddg.is.set("ddg.new.r.script.path")) {
+    if (!is.null(.ddg.get("ddg.new.r.script.path"))) {
+      .ddg.set("ddg.r.script.path", .ddg.get("ddg.new.r.script.path"))
+    }
+  }
+
+  # Get R script path
+  r.script.path <- .ddg.r.script.path()
+
   # Set path for provenance graph
   .ddg.set.path (prov.dir, r.script.path, overwrite)
   
+  # Save value of save.debug
+  .ddg.set("ddg.save.debug", save.debug)
+
   # Remove files from DDG directory
   .ddg.flush.ddg()
 
   # Create DDG directories
   .ddg.init.environ()
 
-  # Reset r.script.path if RMarkdown file
-  if (!is.null(r.script.path) && tools::file_ext(r.script.path) == "Rmd") {
-    output.path <- paste(.ddg.path.scripts(), "/", 
-                         basename(tools::file_path_sans_ext(r.script.path)), ".R", 
-                         sep = "")
-    .ddg.markdown(r.script.path, output.path)
-    .ddg.set("ddg.r.script.path", output.path)
-  } 
+  # Script mode: adjust & store R script path
+  if (!is.null(r.script.path)) {
+
+    # RMarkdown script
+    if (tools::file_ext(r.script.path) == "Rmd") {
+      output.path <- paste(.ddg.path.scripts(), "/", 
+          basename(tools::file_path_sans_ext(r.script.path)), ".R", sep = "")
+      .ddg.markdown(r.script.path, output.path)
+      .ddg.set("ddg.r.script.path", output.path)
   
-  else if (!is.null (r.script.path)) {
-    .ddg.set("ddg.r.script.path",
-             if (is.null(r.script.path)) NULL
-             else normalizePath(r.script.path, winslash = "/"))
-  }
-  
-  else {
-    # If running from the console, set up a callback to be notified
-    # after each statement completes execution and build the 
-    # corresponding portions of the ddg.
-    .ddg.trace.task <- function (task, result, success, printed) {
-       
-       # Create the provenance for the new command
-       .ddg.parse.commands(as.expression(task),
-             environ = .GlobalEnv,
-             run.commands = FALSE)
-         
-       return(TRUE)
-         
+    # R script
+    } else {
+      .ddg.set("ddg.r.script.path",
+          normalizePath(r.script.path, winslash = "/", mustWork = FALSE))
     }
+
+  # Console mode: Set up a callback to be notified after each statement
+  # completes execution and build the corresponding portions of the 
+  # provenance graph.
+  } else {
+
+    .ddg.trace.task <- function (task, result, success, printed) {  
+      # Create the provenance for the new command
+      .ddg.parse.commands(as.expression(task), environ = .GlobalEnv, 
+          run.commands = FALSE)
+      return(TRUE)    
+    }
+    
     .ddg.set (".ddg.taskCallBack.id", addTaskCallback(.ddg.trace.task))
   }
 
@@ -100,7 +108,7 @@
   .ddg.set(".ddg.initialized", TRUE)
   
   # Add a Console start node if running from the console.
-  if (is.null (r.script.path)) {
+  if (is.null(.ddg.r.script.path())) {
     .ddg.add.start.node (node.name = "Console")
   }
   
@@ -121,12 +129,13 @@
 #' "prov_console" in console mode or "prov_[script name]" in script mode. If overwrite = 
 #' FALSE, a timestamp is added to the directory name.
 #' @param prov.dir name of directory.  This can be a directory name, ".", or NULL.
-#' @param r.script.path the path to the R script.  If NULL, we are running from the console.
+#' @param r.script.path the full path to the R script file
+#' that is being executed.
 #' @param overwrite If FALSE, a timestamp is added to the directory name
 #' @return the name of the directory where the ddg should be stored
 #' @noRd
 
-.ddg.set.path <- function (prov.dir, r.script.path, overwrite) {
+.ddg.set.path <- function(prov.dir, r.script.path, overwrite) {
   
   # Directory specified by prov.dir parameter
   if (!is.null(prov.dir)) {
@@ -165,7 +174,7 @@
     # Script mode
   } else {
     ddg.path <- paste(base.dir, "/prov_", 
-                      basename(tools::file_path_sans_ext(r.script.path)), sep="")
+       basename(tools::file_path_sans_ext(r.script.path)), sep="")
   }
   
   # Add timestamp if overwrite = FALSE
@@ -177,35 +186,17 @@
   .ddg.set("ddg.path", ddg.path)
 }
 
-#' .ddg.flush.ddg removes all files from the DDG directories unless the
-#'   the DDG directory is the working directory. If no DDG directory is
-#'   specified, the current DDG directory is assumed.
-#' @param ddg.path path to DDG directory.
+#' .ddg.flush.ddg removes all files from the current DDG directories. 
 #' @return nothing
 #' @noRd
 
-.ddg.flush.ddg <- function(ddg.path=NULL) {
-  # TODO:  When ddg.flush.ddg is removed (from Obsolete.R, we
-  # can remove the ddg.path parameter and update the 
-  # code below to always look up the path.
-  
-  # Use current DDG directories if no directory is specified.
-  if (is.null(ddg.path)) {
-    ddg.path <- .ddg.path()
-    ddg.path.data <- .ddg.path.data()
-    ddg.path.debug <- .ddg.path.debug()
-    ddg.path.scripts <- .ddg.path.scripts()
-  }
-  
-  # Remove files unless the DDG directory is the working directory.
-  if (ddg.path != getwd()) {
-    unlink(paste(ddg.path, "*.*", sep="/"))
-    unlink(paste(ddg.path.data, "*.*", sep="/"))
-    unlink(paste(ddg.path.data, ".ddghistory", sep="/"))
-    unlink(paste(ddg.path.debug, "*.*", sep="/"))
-    unlink(paste(ddg.path.scripts, "*.*", sep="/"))
-  }
-  
+.ddg.flush.ddg <- function() {
+  # Remove all files
+  unlink(paste(.ddg.path(), "*.*", sep="/"))
+  unlink(paste(.ddg.path.data(), "*.*", sep="/"))
+  unlink(paste(.ddg.path.debug(), "*.*", sep="/"))
+  unlink(paste(.ddg.path.scripts(), "*.*", sep="/"))
+   
   invisible()
 }
 
@@ -223,7 +214,7 @@
   
   # If running from the console create a Console finish node.
   # Also create a start node for the next segment.
-  if (is.null (.ddg.get ("ddg.r.script.path"))) {
+  if (is.null (.ddg.r.script.path())) {
     .ddg.add.finish.node ()
     .ddg.add.start.node (node.name = "Console")
   }
@@ -251,7 +242,7 @@
   if (!.ddg.is.init()) return(invisible())
   
   # If running from the console create a Console finish node.
-  if (is.null (.ddg.get ("ddg.r.script.path"))) {
+  if (is.null (.ddg.r.script.path())) {
     .ddg.add.finish.node ()
   }
   
@@ -274,11 +265,9 @@
   # Delete temporary files.
   .ddg.delete.temp()
   
-  # Shut down the DDG.
-  #.ddg.clear()
-  # Mark graph as initilized.
+  # Mark graph as not initialized.
   .ddg.set(".ddg.initialized", FALSE)
-    
+
   # Save prov.json to file.
   .ddg.json.write()
   if (interactive()) print(paste("Saving prov.json in ", .ddg.path(), sep=""))
@@ -288,73 +277,30 @@
     .ddg.save.debug.files()
   }
    
+  # Set new R script path to NULL for subsequent sessions
+  .ddg.set("ddg.new.r.script.path", NULL)
+
   invisible()
 }
 
 #' .ddg.run initiates execution of a script and collects provenance as 
 #' the script executes.
 #' @param r.script.path the full path to the R script file
-#' that is being executed. If provided, a copy of the script will
-#' be saved with the provenance graph.
-#' @param prov.dir the directory where the provenance graph will be 
-#' saved. If not provided, the directory specified by the prov.dir 
-#' option is used. Otherwise the R session temporary directory
-#' is used.
-#' @param overwrite if FALSE, includes a time stamp in the provenance
-#'   graph directory name.
-#' @param f a function to run. If supplied, the function f is executed 
-#' with calls to prov.init and prov.save so that provenance for the 
-#' function is captured.  Exactly one of f and r.script.path should be provided.
-#' @param annotate.inside.functions if TRUE, provenance is collected 
-#' inside functions.
-#' @param first.loop the first loop to collect provenance in a for, 
-#' while, or repeat statement.
-#' @param max.loops the maximum number of loops to collect
-#' provenance in a for, while, or repeat statement. If max.loops = -1,
-#' there is no limit. If max.loops = 0, no loops are annotated. 
-#' If non-zero, it indicates the number of iterations of each loop for
-#' which provenance should be collected.  If max.loops is non-zero, provenance
-#' is also collected inside if-statements.
-#' @param snapshot.size the maximum size for snapshot files. If 0,
-#' no snapshots are saved. If Inf, the complete state of an object is stored
-#' in the snapshot file. For other values, the head of the object, truncated
-#' to a size near the specified limit, is saved.  The size is in kilobytes. 
-#' @param save.debug If TRUE, debug files are saved to the debug directory.
-#' This is intended for developers of the RDataTracker package.
-#' @param display if TRUE, the provenance graph is displayed in DDG Explorer
-#' @param hash.algorithm the hash algorithm to use for files.
-#' Choices are md5 (default), sha1, crc32, sha256, sha512, xxhash32, 
-#' xxhash64 and murmur32. This feature uses the digest function from 
-#' the digest package.
+#' that is being executed.
 #' @return .ddg.run runs a script, collecting provenance as it does so.  
 #' It does not return a value. 
 #' @noRd
 
-.ddg.run <- function(r.script.path = NULL, prov.dir = NULL, overwrite = TRUE, 
-  f = NULL, annotate.inside.functions = FALSE, first.loop = 1, max.loops = 0, 
-  snapshot.size = 10, save.debug = FALSE, display = FALSE, hash.algorithm = "md5") {
+.ddg.run <- function(r.script.path) {
   
-  # Set .ddg.is.sourced to TRUE if script provided.
-  .ddg.set(".ddg.is.sourced", !is.null(r.script.path))
+  # Execute script and catch any error messages
+  tryCatch({
+      .ddg.source(.ddg.r.script.path(), ignore.ddg.calls = FALSE)
 
-  # Save debug files to debug directory.
-  .ddg.set("ddg.save.debug", save.debug)
-
-  # If an R error is generated, get the error message and close
-  # the DDG.
-  tryCatch(
-    if (!is.null(r.script.path)) {
-      .ddg.source(
-         .ddg.get("ddg.r.script.path"),
-          ignore.ddg.calls = FALSE)
-    }
-    else if (!is.null(f)) f()
-    else stop("r.script.path and f cannot both be NULL"),
-
-    finally={
-      # Add finish nodes for anything left open due to errors
+    # Add finish nodes for anything left open due to errors
+    }, finally = {
       .ddg.close.blocks()
-      .ddg.quit(save.debug)
+      .ddg.quit(.ddg.save.debug())
     }
   )
   

@@ -325,7 +325,7 @@
 	fields$operatingSystem <- .Platform$OS.type
 	
 	# script variables
-	script.path <- .ddg.get("ddg.r.script.path")
+	script.path <- .ddg.r.script.path()
 	
 	if( ! is.null(script.path) )
 	{

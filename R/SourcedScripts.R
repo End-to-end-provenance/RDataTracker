@@ -31,23 +31,11 @@
 #' @noRd
 
 .ddg.init.sourced.scripts <- function () {
-  # Script sourced with .ddg.source
-  .ddg.set(".ddg.is.sourced", FALSE)
-  
   # Number of first sourced script (main script).
   .ddg.set(".ddg.next.script.num", 0)
   
   # Table of sourced scripts
   .ddg.set(".ddg.sourced.scripts", NULL)
-}
-
-#' .ddg.is.sourced returns True if we are running a script from a file,
-#' as opposed to console commands.
-#' @return TRUE if we are running a script from file
-#' @noRd
-
-.ddg.is.sourced <- function() {
-  return (.ddg.get(".ddg.is.sourced"))
 }
 
 #' .ddg.next.script.num returns the value to use for the next script id
@@ -74,7 +62,7 @@
 
 .ddg.save.sourced.script.table <- function () {
   # Save if script is sourced.
-  if (.ddg.is.sourced()) 
+  if (!is.null(.ddg.r.script.path()))
   {
     # Save sourced script table to file.
     fileout <- paste(.ddg.path.debug(), "/sourced-scripts.csv", sep="")
