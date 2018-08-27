@@ -179,6 +179,8 @@ methods::setMethod ("initialize",
 
       .Object@vars.possibly.set <- .ddg.find.assign(.Object@parsed[[1]])
       
+      # If this is a function declaration, record information
+      # about non-locals used or set in the function.
       if (length (.Object@parsed[[1]]) >= 3 && 
           .ddg.is.assign (.Object@parsed[[1]]) &&
           .ddg.is.functiondecl (.Object@parsed[[1]][[3]])) {
@@ -556,6 +558,8 @@ methods::setMethod ("initialize",
 #' .ddg.is.assign returns TRUE if the object passed is an expression
 #' object containing an assignment statement.
 #' @param expr - a parsed expression.
+#' @param globals.only If TRUE only return TRUE if the assignment
+#'    is non-local.
 #' @return True if an expression object containing an assignment
 #' @noRd
 
@@ -615,6 +619,7 @@ methods::setMethod ("initialize",
 #' expression "a <- (b <- 2) * 3", the vector returned will contain
 #' both a and b.
 #' @param obj - a parsed expression.
+#' @param globals.only If TRUE, only look for assignments to non-locals.
 #' @return a vector containing all variables assigned in the expression
 #' @noRd
 

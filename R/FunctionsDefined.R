@@ -135,26 +135,37 @@
   return (nonlocals[[1]])
 }
 
+#' .ddg.find.nonlocals.used
+#' 
+#' Find all the nonlocal variables used in a function declaration.  This function
+#' is passed a function declaration.  It examines the function line-by-line looking
+#' for variables being set and being used.  On each line where a variable is
+#' used that has not previously been assigned as a local, it remembers this as
+#' a use of a non-local.
+#' 
+#' The result is approximate and conservative.  That is, if it is possible the
+#' variable is non-local, it will be recorded as non-local.  The results are
+#' approximate since static analysis of control constructs can not determine
+#' which statements will be executed. 
+#' 
+#' @param funcdecl the parsed declaration of the function.  This should be
+#'   everything from "function" to the closing }
+#' @return a vector containing all non-local variables use in the function
+#' @noRd 
 .ddg.find.nonlocals.used <- function (funcdecl) {
-#  print ("In .ddg.find.nonlocals.used")
-#  print ("funcdecl:")
-#  print (funcdecl)
-  
+  # Parameters are locals  
   funcparams <- funcdecl[[2]]
-#  print ("funcparams:")
-#  print (funcparams)
   if (is.null (funcparams)) {
     vars.assigned <- character()
   }
   else {
-#    print ("names(funcparams):")
-#    print (names(funcparams))
     vars.assigned <- names (funcparams)
   }
   
   funcbody <- funcdecl[[3]]
+  
+  # If the body is a block, repeat for each statement in order.
   if (funcbody [[1]] == "{" && length(funcbody) > 1) {
-#    print (paste ("Found block containing", length(funcbody) - 1, "statements"))
     nonlocal.uses <- character()
     for (i in 2:length(funcbody)) {
       var.uses <- .ddg.find.var.uses (funcbody[[i]])
@@ -166,31 +177,31 @@
       if (var.assigned != "" && !(var.assigned %in% vars.assigned) && !(var.assigned%in% nonlocal.uses)) {
         vars.assigned <- c(vars.assigned, var.assigned)
       }
-      
-#      print (paste ("After", funcbody[[i]]))
-#      print (paste ("var.uses =", var.uses))
-#      print (paste ("var.assigned =", var.assigned))
-#      print (paste ("vars.assigned =", vars.assigned))
-#      print (paste ("nonlocal.uses =", nonlocal.uses))
     }
-#    print ("vars.assigned set")
-#    print (vars.assigned)
-#    print ("nonlocal.uses")
-#    print (nonlocal.uses)
   }
+  
+  # The function body consists of a single statement.  In this case,
+  # we just need to exclude parameters.
   else {
-#    print ("Found single statement")
     var.uses <- .ddg.find.var.uses (funcbody)
-#    print ("var.uses:")
-#    print (var.uses)
     nonlocal.uses <- setdiff (var.uses, vars.assigned)
-#    print ("nonlocal.uses")
-#    print (nonlocal.uses)
   }
   
   return (nonlocal.uses)
 }
 
+#' .ddg.get.nonlocals.used
+#' 
+#' Get the nonlocals used by calls to user-defined functions.  This function
+#' is given a table that includes function names.  It looks up information
+#' previously stored about the function to identify the nonlocals used.
+#' @param pfunctions a table of functions called.  The table contains a column
+#'    for the function name and the library the function is defined inside of.
+#'    When processing the table, functions from libraries or the base package
+#'    are ignored.
+#' @return a vector containing the names of non-local variables used by 
+#'    a call to a function
+#' @noRd
 .ddg.get.nonlocals.used <- function (pfunctions) {
   if( is.null(pfunctions) || is.na(pfunctions) || nrow(pfunctions) == 0) {
     return()
@@ -202,6 +213,13 @@
   return (sapply (localfunctions, .ddg.lookup.nonlocals.used))
 }
 
+#' .ddg.lookup.nonlocals.used
+#' 
+#' Get the nonlocals used by calls to a function
+#' @param funcname the name of the function
+#' @return a vector containing the names of non-local variables used by 
+#'    a call to the function whose name is passed in
+#' @noRd
 .ddg.lookup.nonlocals.used <- function (funcname) {
   ddg.func.defs <- .ddg.get ("ddg.function.defs")
   nonlocals <- ddg.func.defs [ddg.func.defs$func.name == funcname, "nonlocals.used"]

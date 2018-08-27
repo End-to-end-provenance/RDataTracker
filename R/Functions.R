@@ -60,7 +60,7 @@
 }
 
 #' .ddg.add.to.function.table adds new functions to the function table
-#' @param functions.called vector of names of functions called
+#' @param pfunctions table of functions called and libraries they come from
 #' @return nothing
 #' @noRd
 
@@ -70,6 +70,9 @@
     return()
   } 
   
+  # Look for functions that come from library packages and
+  # record information about the procedure node that calls
+  # the function.
   libfunctions <- pfunctions [grepl ("package:", pfunctions$ddg.lib), ]
   if ( nrow(libfunctions) > 0 )
   {
@@ -80,8 +83,8 @@
   } 
 }
 
-#' .ddg.get.function.info finds and returns the names of function calls to external
-#' packages as well as the names of the packages used.
+#' .ddg.get.function.info finds and returns the names of function calls 
+#' as well as the names of the packages used.
 #' @param function.names 
 #' @return a data frame pairing functions with the libraries they come from
 #' @noRd
@@ -110,7 +113,9 @@
     ddg.fun <- append( ddg.fun, names(vars[vars == TRUE]) )
   }
   
-  # obtain library information from functions
+  # obtain library information from functions.  Add "package:" to 
+  # ones coming from libraries to make it easy to distinguish
+  # them from user-defined functions.
   fn.frame <- function.names[[3]]
   if (!is.null (fn.frame)) {
     fn.frame$ddg.lib <- paste0 ("package:", fn.frame$ddg.lib)
