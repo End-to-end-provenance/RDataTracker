@@ -2,10 +2,13 @@
 % Please edit documentation in R/API_rdt.R
 \name{prov.json}
 \alias{prov.json}
+\alias{prov.dir}
 \alias{prov.display}
 \title{Provenance Access Functions}
 \usage{
 prov.json()
+
+prov.dir()
 
 prov.display()
 }
@@ -13,11 +16,15 @@ prov.display()
 prov.json returns the current provenance graph as a prov-json
 string
 
+prov.dir returns the current provenance directory.
+
 prov.display loads and displays the current provenance graph
 in DDG Explorer. The prov.display function does not return a value.
 }
 \description{
 prov.json returns the current provenance graph as a prov-json string.
+
+prov.dir returns the current provenance directory.
 
 prov.display displays the current provenance as a graph.
 }
@@ -37,12 +44,13 @@ is used moving forward in the computation. The user can also search for specific
 data or operation nodes, files, or error messages in the provenance.
 }
 \examples{
-prov.init ()
+prov.init()
 a <- 1
 b <- 2
 ab <- a + b
-prov.quit ()
+prov.quit()
 str <- prov.json()
+pdir <- prov.dir()
 \dontrun{prov.display()} 
 }
 \references{

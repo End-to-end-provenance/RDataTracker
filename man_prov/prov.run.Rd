@@ -89,7 +89,7 @@ main script with "prov.source" before executing the main script
 with prov.run.
 }
 \details{
-RDataTracker is an R package that collects provenance as an R script 
+provR is an R package that collects provenance as an R script 
 executes. The resulting provenance provides a detailed record of the 
 execution of the script and includes information on the steps that were 
 performed and the intermediate data values that were created. The 
@@ -122,12 +122,12 @@ directory is used.
 \examples{
 \dontrun{prov.run ("script.R")}
 \dontrun{prov.source ("script.R")}
-prov.init ()
+prov.init()
 a <- 1
 b <- 2
-prov.save ()
+prov.save()
 ab <- a + b
-prov.quit ()
+prov.quit()
 }
 \seealso{
 \code{\link{prov.json}} for access to the JSON text of the provenance,

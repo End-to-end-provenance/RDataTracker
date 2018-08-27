@@ -195,12 +195,12 @@ prov.quit <- function(save.debug = FALSE) {
 #' @rdname prov.run
 #' @examples 
 #' \dontrun{prov.run ("script.R")}
-#' prov.init ()
+#' prov.init()
 #' a <- 1
 #' b <- 2
-#' prov.save ()
+#' prov.save()
 #' ab <- a + b
-#' prov.quit ()
+#' prov.quit()
 
 prov.run <- function(r.script.path = NULL, prov.dir = NULL, overwrite = TRUE, 
   f = NULL, annotate.inside.functions = FALSE, first.loop = 1, max.loops = 0,
@@ -259,18 +259,29 @@ prov.source <- function(file) {
 #' @references PROV-JSON standard: \url{https://www.w3.org/Submission/2013/SUBM-prov-json-20130424/}
 #' @references RDataTracker PROV-JSON output: \url{https://github.com/End-to-end-provenance/RDataTracker/blob/export/JSON-format.md}
 #' @examples
-#' prov.init ()
+#' prov.init()
 #' a <- 1
 #' b <- 2
 #' ab <- a + b
-#' prov.quit ()
+#' prov.quit()
 #' str <- prov.json()
+#' pdir <- prov.dir()
+#' \dontrun{prov.display()} 
 
-prov.json <- function()
-{
+prov.json <- function() {
   # This is a wrapper function.
   # Calls and returns the function with the bulk of the code in OutputJSON.R
-  return( .ddg.json.string() )
+  return(.ddg.json.string())
+}
+
+#' prov.dir returns the current provenance directory.
+#' @return prov.dir returns the current provenance directory.
+#' @export
+#' @rdname prov.json
+
+prov.dir <- function() {
+  # This is a wrapper function.
+  return(.ddg.path())
 }
 
 #' prov.display
@@ -280,8 +291,6 @@ prov.json <- function()
 #' in DDG Explorer. The prov.display function does not return a value.
 #' @export 
 #' @rdname prov.json
-#' @examples
-#' \dontrun{prov.display()} 
 
 prov.display <- function () {
   provViz::prov.visualize(tool="RDataTracker")
