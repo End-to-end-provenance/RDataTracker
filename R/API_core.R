@@ -97,7 +97,7 @@
       return(TRUE)    
     }
     
-    .ddg.set (".ddg.taskCallBack.id", addTaskCallback(.ddg.trace.task))
+    .ddg.set ("ddg.taskCallBack.id", addTaskCallback(.ddg.trace.task))
   }
 
   # Store time when script begins execution.
@@ -107,15 +107,15 @@
   .ddg.init.iotrace ()
   
   # Mark graph as initilized.
-  .ddg.set(".ddg.initialized", TRUE)
+  .ddg.set("ddg.initialized", TRUE)
   
   # Add a Console start node if running from the console.
   if (is.null(.ddg.r.script.path())) {
     .ddg.add.start.node (node.name = "Console")
   }
   
-  .ddg.set(".ddg.func.depth", 0)
-  .ddg.set(".ddg.cur.cmd.stack", vector())
+  .ddg.set("ddg.func.depth", 0)
+  .ddg.set("ddg.cur.cmd.stack", vector())
   
   invisible()
 }
@@ -260,15 +260,15 @@
   
   # Turn off the I/O tracing and console tracing.
   .ddg.stop.iotracing()
-  if (.ddg.is.set (".ddg.taskCallBack.id")) {
-    removeTaskCallback (.ddg.get (".ddg.taskCallBack.id"))
+  if (.ddg.is.set ("ddg.taskCallBack.id")) {
+    removeTaskCallback (.ddg.get ("ddg.taskCallBack.id"))
   }
   
   # Delete temporary files.
   .ddg.delete.temp()
   
   # Mark graph as not initialized.
-  .ddg.set(".ddg.initialized", FALSE)
+  .ddg.set("ddg.initialized", FALSE)
 
   # Save prov.json to file.
   .ddg.json.write()

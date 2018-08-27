@@ -129,7 +129,7 @@
   # to avoid warnings that RDT might cause that are safe to ignore.
   # Search for calls to the option function to see where that happens.
   if (getOption("warn") >= 0) {
-    .ddg.set(".ddg.warning", w)
+    .ddg.set("ddg.warning", w)
   }
 }
 
@@ -138,7 +138,7 @@
 #' @noRd
 
 .ddg.clear.warning <- function() {
-  .ddg.set(".ddg.warning", NA)
+  .ddg.set("ddg.warning", NA)
 }
 
 #' .ddg.get.warning returns the last saved warning
@@ -146,7 +146,7 @@
 #' @noRd
 
 .ddg.get.warning <- function () {
-  return (.ddg.get(".ddg.warning"))
+  return (.ddg.get("ddg.warning"))
 }
 
 #' .ddg.warning.occurred returns True if there is a currrently saved warning
@@ -154,7 +154,7 @@
 #' @noRd
 
 .ddg.warning.occurred <- function() {
-  return (.ddg.is.set(".ddg.warning") && !is.na(.ddg.get(".ddg.warning")))
+  return (.ddg.is.set("ddg.warning") && !is.na(.ddg.get("ddg.warning")))
 }
 
 
@@ -209,11 +209,11 @@
   if (!.ddg.is.set("from.source")) .ddg.set("from.source", FALSE)
 
   # Record last command from the preceding console block.
-  .ddg.set(".ddg.last.cmd", NULL)
+  .ddg.set("ddg.last.cmd", NULL)
   
   # Record the current command to be opened during console execution
   # (used when executing a script using .ddg.source).
-  .ddg.set(".ddg.possible.last.cmd", NULL)
+  .ddg.set("ddg.possible.last.cmd", NULL)
 
   # Store R script path
   .ddg.set("ddg.r.script.path", NULL)
@@ -231,11 +231,11 @@
   .ddg.init.statements ()
   
   # Initialize the stack corresponding to the names of start/finish nodes.
-  .ddg.set(".ddg.start.stack", vector())
+  .ddg.set("ddg.start.stack", vector())
   
   # Remember if an error node has been created during the processing
   # of the last statement so we only create one.
-  .ddg.set (".ddg.error.node.created", FALSE)
+  .ddg.set ("ddg.error.node.created", FALSE)
 }
 
 #' .ddg.init.environ() sets up the filesystem and R environments for use. 
@@ -257,7 +257,7 @@
 
 .ddg.is.init <- function() {
     # Short circuits evaluation.
-    return(.ddg.is.set(".ddg.initialized") && .ddg.get(".ddg.initialized"))
+    return(.ddg.is.set("ddg.initialized") && .ddg.get("ddg.initialized"))
 }
 
 #' .ddg.is.nonlocal.assign returns TRUE if the object passed is an
@@ -458,15 +458,15 @@
     #print(paste(".ddg.create.data.set.edges.for.cmd: var = ", var))
     
     # Check for a new ggplot that was not assigned to a variable
-    if (.ddg.get (".ddg.ggplot.created")) {
+    if (.ddg.get ("ddg.ggplot.created")) {
       if (var == "") {      
         # Add a data node for the plot and link it in.
-        # Set .ddg.last.ggplot to the name of this node
+        # Set ddg.last.ggplot to the name of this node
         .ddg.data.node("Data", ".ggplot", "graph", NULL)
         .ddg.lastproc2data(".ggplot")
-        .ddg.set(".ddg.last.ggplot", ".ggplot")
+        .ddg.set("ddg.last.ggplot", ".ggplot")
       }
-      .ddg.set (".ddg.ggplot.created", FALSE)
+      .ddg.set ("ddg.ggplot.created", FALSE)
     }
     
     if (var != "") {
@@ -587,9 +587,9 @@
 #' @noRd
 
 .ddg.close.blocks <- function () {
-  .ddg.start.stack <- .ddg.get(".ddg.start.stack")
+  ddg.start.stack <- .ddg.get("ddg.start.stack")
   #print (paste ("start.stack =", .ddg.start.stack))
-  stack.length <- length(.ddg.start.stack)
+  stack.length <- length(ddg.start.stack)
   if (stack.length == 0) {
     return()
   }
@@ -605,15 +605,15 @@
 #' @noRd
 
 .ddg.push.start <- function (node.name) {
-  .ddg.start.stack <- .ddg.get(".ddg.start.stack")
+  ddg.start.stack <- .ddg.get("ddg.start.stack")
   
-  if (length(.ddg.start.stack) == 0) {
-    .ddg.start.stack <- node.name
+  if (length(ddg.start.stack) == 0) {
+    ddg.start.stack <- node.name
   }
   else {
-    .ddg.start.stack <- c(.ddg.start.stack, node.name)
+    ddg.start.stack <- c(ddg.start.stack, node.name)
   }
-  .ddg.set(".ddg.start.stack", .ddg.start.stack)
+  .ddg.set("ddg.start.stack", ddg.start.stack)
 }
 
 #' .ddg.pop.start pops a node from the start/finish stack.
@@ -621,18 +621,18 @@
 #' @noRd
 
 .ddg.pop.start <- function () {
-  .ddg.start.stack <- .ddg.get(".ddg.start.stack")
-  #print (paste ("Before pop, start.stack =", .ddg.start.stack))
-  stack.length <- length(.ddg.start.stack)
+  ddg.start.stack <- .ddg.get("ddg.start.stack")
+  #print (paste ("Before pop, start.stack =", ddg.start.stack))
+  stack.length <- length(ddg.start.stack)
   top <- 
       if (stack.length == 0) NULL
-      else .ddg.start.stack[stack.length]
+      else ddg.start.stack[stack.length]
 
   if (stack.length == 1) {
-    .ddg.set(".ddg.start.stack", vector())
+    .ddg.set("ddg.start.stack", vector())
   }
   else if (stack.length > 1){
-    .ddg.set(".ddg.start.stack", .ddg.start.stack[1:(stack.length-1)])
+    .ddg.set("ddg.start.stack", ddg.start.stack[1:(stack.length-1)])
   }
   #print (paste ("pop returning", top))
   return (top)
@@ -644,13 +644,13 @@
 #' @noRd
 
 .ddg.top.start <- function () {
-  .ddg.start.stack <- .ddg.get(".ddg.start.stack")
-  stack.length <- length(.ddg.start.stack)
+  ddg.start.stack <- .ddg.get("ddg.start.stack")
+  stack.length <- length(ddg.start.stack)
   if (stack.length == 0) {
     return (NULL)
   }
   else {
-    return (.ddg.start.stack[stack.length])
+    return (ddg.start.stack[stack.length])
   }
 }
 
@@ -684,25 +684,25 @@
 }
 
 #' .ddg.open.new.command.node opens a new collapsible command
-#' node depending on the information stored in .ddg.possible.last.cmd.
+#' node depending on the information stored in ddg.possible.last.cmd.
 #' @return nothing
 #' @noRd
 
 .ddg.open.new.command.node <- function() {
-  new.command <- .ddg.get(".ddg.possible.last.cmd")
+  new.command <- .ddg.get("ddg.possible.last.cmd")
   if (!is.null(new.command)) {
     .ddg.add.start.node(new.command)
     
     # Now the new command becomes the last command, and new command
     # is null.
-    #print (paste (".ddg.open.new.command.node: saving .ddg.last.cmd as", new.command))
-    .ddg.set(".ddg.last.cmd", new.command)
-    .ddg.set(".ddg.possible.last.cmd", NULL)
+    #print (paste (".ddg.open.new.command.node: saving ddg.last.cmd as", new.command))
+    .ddg.set("ddg.last.cmd", new.command)
+    .ddg.set("ddg.possible.last.cmd", NULL)
   }
 }
 
 #' .ddg.close.last.command.node closes the last created collapsible
-#' node stored in .ddg.last.cmd properly by creating the finish node
+#' node stored in ddg.last.cmd properly by creating the finish node
 #' and linking it in.
 #' @return nothing
 #' @noRd
@@ -710,26 +710,26 @@
 .ddg.close.last.command.node <- function(){
 
   # Get last command
-  .ddg.last.cmd <-
-    if (.ddg.is.set(".ddg.last.cmd")) {
-      .ddg.get(".ddg.last.cmd")
+  ddg.last.cmd <-
+    if (.ddg.is.set("ddg.last.cmd")) {
+      .ddg.get("ddg.last.cmd")
     }
     else {
       NULL
     }
 
-  # print (paste (".ddg.close.last.command.node: .ddg.last.cmd =", .ddg.last.cmd))
+  # print (paste (".ddg.close.last.command.node: ddg.last.cmd =", ddg.last.cmd))
   
   # Only create a finish node if a new command exists (i.e., we've
   # parsed some lines of code).
-  if (!is.null(.ddg.last.cmd)) {
+  if (!is.null(ddg.last.cmd)) {
     .ddg.add.finish.node()
 
     # Add link from a function return node if there is one.
-    .ddg.link.function.returns(.ddg.last.cmd)
+    .ddg.link.function.returns(ddg.last.cmd)
 
     # No previous command.
-    .ddg.set(".ddg.last.cmd", NULL)
+    .ddg.set("ddg.last.cmd", NULL)
   }
 }
 
@@ -823,8 +823,8 @@
   }
   num.cmds <- length(cmds)
 
-  # print (paste("ddg.parse.commands: .ddg.func.depth =", .ddg.get(".ddg.func.depth")))
-  inside.func <- (.ddg.get(".ddg.func.depth") > 0)
+  # print (paste("ddg.parse.commands: ddg.func.depth =", .ddg.get("ddg.func.depth")))
+  inside.func <- (.ddg.get("ddg.func.depth") > 0)
 
   if (!inside.func) {
     # Attempt to close the previous collapsible command node if a ddg exists
@@ -833,13 +833,13 @@
     }
     
     # Get the last command in the new commands and check to see if
-    # we need to create a new .ddg.last.cmd node for future reference.
-    .ddg.last.cmd <- cmds[[num.cmds]]
-    # print(paste(".ddg.parse.commands: setting .ddg.last.cmd to", .ddg.last.cmd$text))
+    # we need to create a new ddg.last.cmd node for future reference.
+    ddg.last.cmd <- cmds[[num.cmds]]
+    # print(paste(".ddg.parse.commands: setting ddg.last.cmd to", ddg.last.cmd$text))
 
-    if (.ddg.last.cmd@isDdgFunc) {
-      .ddg.last.cmd <- NULL
-      #print(".ddg.parse.commands: setting .ddg.last.cmd to null")
+    if (ddg.last.cmd@isDdgFunc) {
+      ddg.last.cmd <- NULL
+      #print(".ddg.parse.commands: setting ddg.last.cmd to null")
     }
   }
 
@@ -874,8 +874,8 @@
       
       # print("Checking whether to set last.cmd")
       if (grepl("^.ddg.eval", cmd@text)) {
-        if (is.null(.ddg.last.cmd)) {
-          .ddg.last.cmd <- cmd
+        if (is.null(ddg.last.cmd)) {
+          ddg.last.cmd <- cmd
         }
       }
 
@@ -929,13 +929,13 @@
           # this command as a possible abstraction node but only
           # if it's not a call that itself creates abstract nodes.
           if (!cmd@isDdgFunc && cmd@text != "next") {
-            .ddg.set(".ddg.possible.last.cmd", cmd)
-            .ddg.set (".ddg.cur.cmd", cmd)
+            .ddg.set("ddg.possible.last.cmd", cmd)
+            .ddg.set ("ddg.cur.cmd", cmd)
             .ddg.push.cmd (cmd)
           }
 
           else if (.ddg.is.procedure.cmd(cmd)) {
-            .ddg.set(".ddg.possible.last.cmd", NULL)
+            .ddg.set("ddg.possible.last.cmd", NULL)
           }
 
           
@@ -962,17 +962,17 @@
                   if (grepl("^ddg|^.ddg|^prov", annot) 
                     || .ddg.get.statement.type(annot) == "if") {
                       eval(annot, environ, NULL)
-                      .ddg.set (".ddg.error.node.created", FALSE)
+                      .ddg.set ("ddg.error.node.created", FALSE)
                   }
                   else {
                     return.value <- eval(annot, environ, NULL)
                     #if (typeof(return.value) != "closure") {
                       #print (paste (".ddg.parse.commands: Done evaluating ", annot))
-                      #print(paste(".ddg.parse.commands: setting .ddg.last.R.value to", 
+                      #print(paste(".ddg.parse.commands: setting ddg.last.R.value to", 
                       #            return.value))
                     #}
-                    .ddg.set (".ddg.last.R.value", return.value)
-                    .ddg.set (".ddg.error.node.created", FALSE)
+                    .ddg.set ("ddg.last.R.value", return.value)
+                    .ddg.set ("ddg.error.node.created", FALSE)
                   }
                 }
               },
@@ -984,7 +984,7 @@
               # we will see this for every recursive call to ddg.parse.commands unless
               # the error gets handled, but we only want to record it the
               # first time.
-              if (!.ddg.get(".ddg.error.node.created")) {
+              if (!.ddg.get("ddg.error.node.created")) {
                 # create procedure node for the error-causing operation
                 .ddg.proc.node("Operation", cmd@abbrev, cmd@abbrev, 
                                functions.called=cmd@functions.called, cmd=cmd)
@@ -1003,7 +1003,7 @@
                 
                 # Create data flow edge from procedure node to exception node.
                 .ddg.proc2data(cmd@abbrev, "error.msg")
-                .ddg.set (".ddg.error.node.created", TRUE)
+                .ddg.set ("ddg.error.node.created", TRUE)
               }
             }
           )
@@ -1015,9 +1015,9 @@
           if (!cmd@isDdgFunc && cmd@text != "next") {
             # Need to get the stack again because it could have been
             # modified during the eval call.
-            .ddg.cur.cmd.stack <- .ddg.get(".ddg.cur.cmd.stack")
-            stack.length <- length(.ddg.cur.cmd.stack)
-            start.created <- .ddg.cur.cmd.stack[stack.length][[1]]
+            ddg.cur.cmd.stack <- .ddg.get("ddg.cur.cmd.stack")
+            stack.length <- length(ddg.cur.cmd.stack)
+            start.created <- ddg.cur.cmd.stack[stack.length][[1]]
 
             # Create a finish node if a start node was created
             # start.created can have one of 3 values: "TRUE", "FALSE",
@@ -1038,7 +1038,7 @@
 
             # Remove the last command & start.created values pushed
             # onto the stack
-            cur.cmd.closed <- (.ddg.cur.cmd.stack[stack.length] == "MATCHES_CALL")
+            cur.cmd.closed <- (ddg.cur.cmd.stack[stack.length] == "MATCHES_CALL")
             .ddg.pop.cmd ()
           }
 
@@ -1053,8 +1053,8 @@
         # is set, is not NULL, and is equal to the current command.
 
         last.proc.node.created <-
-            if (.ddg.is.set (".ddg.last.proc.node.created"))
-              .ddg.get(".ddg.last.proc.node.created")
+            if (.ddg.is.set ("ddg.last.proc.node.created"))
+              .ddg.get("ddg.last.proc.node.created")
             else ""
         
         create.procedure <- create && !cur.cmd.closed && 
@@ -1152,9 +1152,9 @@
   # Close any node left open during execution.
   if (run.commands && !inside.func) .ddg.close.last.command.node()
 
-  if (.ddg.is.set(".ddg.last.R.value")) return (.ddg.get (".ddg.last.R.value"))
+  if (.ddg.is.set("ddg.last.R.value")) return (.ddg.get ("ddg.last.R.value"))
   else return ("")
-  #return.value <- .ddg.get (".ddg.last.R.value")
+  #return.value <- .ddg.get ("ddg.last.R.value")
   #if (typeof(return.value) != "closure") {
   #  print(paste(".ddg.parse.commands: returning ", return.value))
   #}
@@ -1174,15 +1174,15 @@
   # Remember the current statement on the stack so that we
   # will be able to create a corresponding Finish node later
   # if needed.
-  .ddg.cur.cmd.stack <- .ddg.get(".ddg.cur.cmd.stack")
+  ddg.cur.cmd.stack <- .ddg.get("ddg.cur.cmd.stack")
   
-  if (length(.ddg.cur.cmd.stack) == 0) {
-    .ddg.cur.cmd.stack <- c(cmd, FALSE)
+  if (length(ddg.cur.cmd.stack) == 0) {
+    ddg.cur.cmd.stack <- c(cmd, FALSE)
   }
   else {
-    .ddg.cur.cmd.stack <- c(.ddg.get(".ddg.cur.cmd.stack"), cmd, FALSE)
+    ddg.cur.cmd.stack <- c(.ddg.get("ddg.cur.cmd.stack"), cmd, FALSE)
   }
-  .ddg.set(".ddg.cur.cmd.stack", .ddg.cur.cmd.stack)
+  .ddg.set("ddg.cur.cmd.stack", ddg.cur.cmd.stack)
 }
 
 #' .ddg.pop.cmd removes the top of the command stack, along with the boolean 
@@ -1191,13 +1191,13 @@
 #' @noRd
 
 .ddg.pop.cmd <- function () {
-  .ddg.cur.cmd.stack <- .ddg.get(".ddg.cur.cmd.stack")
-  stack.length <- length(.ddg.cur.cmd.stack)
+  ddg.cur.cmd.stack <- .ddg.get("ddg.cur.cmd.stack")
+  stack.length <- length(ddg.cur.cmd.stack)
   if (stack.length == 2) {
-    .ddg.set(".ddg.cur.cmd.stack", vector())
+    .ddg.set("ddg.cur.cmd.stack", vector())
   }
   else {
-    .ddg.set(".ddg.cur.cmd.stack", .ddg.cur.cmd.stack[1:(stack.length-2)])
+    .ddg.set("ddg.cur.cmd.stack", ddg.cur.cmd.stack[1:(stack.length-2)])
   }
 }
 
@@ -1206,9 +1206,9 @@
 #' @noRd
 
 .ddg.get.top.cmd <- function() {
-  .ddg.cur.cmd.stack <- .ddg.get(".ddg.cur.cmd.stack")
-  stack.length <- length(.ddg.cur.cmd.stack)
-  return (.ddg.cur.cmd.stack[stack.length-1][[1]])
+  ddg.cur.cmd.stack <- .ddg.get("ddg.cur.cmd.stack")
+  stack.length <- length(ddg.cur.cmd.stack)
+  return (ddg.cur.cmd.stack[stack.length-1][[1]])
 }
 
 #' .ddg.lookup.function.name gets the name of the calling function
@@ -1297,7 +1297,7 @@
 
 .ddg.delete.temp <- function() {
   # Delete the temporary history file if we made it.
-  if (.ddg.is.set('.ddg.history.file')) unlink(.ddg.get('.ddg.history.file'))
+  if (.ddg.is.set('ddg.history.file')) unlink(.ddg.get('ddg.history.file'))
 }
 
 #' .ddg.get.frame.number gets the frame number of the closest
@@ -1591,7 +1591,7 @@
   env$rdtVersion[1] <- toString( utils::packageVersion(tool.name) )
   
   # hash algorithm
-  env$hashAlgorithm[1] <- .ddg.get(".ddg.hash.algorithm")
+  env$hashAlgorithm[1] <- .ddg.get("ddg.hash.algorithm")
   
   return(env)
 }

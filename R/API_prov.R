@@ -84,7 +84,7 @@ prov.init <- function(prov.dir = NULL, overwrite = TRUE, snapshot.size = 0,
   .ddg.set("ddg.snapshot.size", snapshot.size)
   
   # Save hash algorithm
-  .ddg.set(".ddg.hash.algorithm", hash.algorithm)
+  .ddg.set("ddg.hash.algorithm", hash.algorithm)
   
   # Initialize list of input & output file nodes
   .ddg.init.filenodes ()

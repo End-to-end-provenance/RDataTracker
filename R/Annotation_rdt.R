@@ -60,7 +60,7 @@
   #print("In .ddg.function")
   if (!.ddg.is.init()) return(invisible())
   
-  .ddg.inc(".ddg.func.depth")
+  .ddg.inc("ddg.func.depth")
   pname <- NULL
   .ddg.lookup.function.name(pname)
     
@@ -159,7 +159,7 @@
   }
   else {
     #print(".ddg.return.value decrementing func.depth")
-    .ddg.dec (".ddg.func.depth")
+    .ddg.dec ("ddg.func.depth")
   }
   
   if (is.null(cmd.func)) {
@@ -398,7 +398,7 @@
                                       called.from.ddg.eval=TRUE, 
                                       cmds=list(cmd))
   
-  if (.ddg.get(".ddg.func.depth")) {
+  if (.ddg.get("ddg.func.depth")) {
     if (!is.null(cmd)) {
       .ddg.link.function.returns(cmd)
     }
@@ -471,7 +471,7 @@
   
   # .ddg.finish is added to the end of blocks.  We want the block to
   # return the value of the last R statement.
-  return(.ddg.get (".ddg.last.R.value"))
+  return(.ddg.get ("ddg.last.R.value"))
 }
 
 #' Controlling Provenance Detail
@@ -1460,7 +1460,7 @@ prov.set.detail <- function(detail.level) {
     .ddg.set("ddg.annotate.inside", FALSE)
     .ddg.set("ddg.max.loops", 0)
     .ddg.set("ddg.snapshot.size", 0)
-   .ddg.set("ddg.detail", 0)
+    .ddg.set("ddg.detail", 0)
   } else if (detail.level == 1) {
     .ddg.set("ddg.annotate.inside", TRUE)
     .ddg.set("ddg.max.loops", 1)

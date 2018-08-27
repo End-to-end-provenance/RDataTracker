@@ -353,8 +353,8 @@
 	fields$ddgTimeStamp <- .ddg.get("ddg.start.time")
 	
 	# hash algorithm
-  if (.ddg.is.set (".ddg.hash.algorithm")) {
-    fields <- append (fields, list (hashAlgorithm = .ddg.get(".ddg.hash.algorithm")))
+  if (.ddg.is.set ("ddg.hash.algorithm")) {
+    fields <- append (fields, list (hashAlgorithm = .ddg.get("ddg.hash.algorithm")))
   }
 	
 	# add prefix to names of the list

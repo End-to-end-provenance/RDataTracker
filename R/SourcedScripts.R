@@ -32,10 +32,10 @@
 
 .ddg.init.sourced.scripts <- function () {
   # Number of first sourced script (main script).
-  .ddg.set(".ddg.next.script.num", 0)
+  .ddg.set("ddg.next.script.num", 0)
   
   # Table of sourced scripts
-  .ddg.set(".ddg.sourced.scripts", NULL)
+  .ddg.set("ddg.sourced.scripts", NULL)
 }
 
 #' .ddg.next.script.num returns the value to use for the next script id
@@ -43,7 +43,7 @@
 #' @noRd
 
 .ddg.next.script.num <- function() {
-  return(.ddg.get(".ddg.next.script.num"))
+  return(.ddg.get("ddg.next.script.num"))
 }
 
 #' .ddg.sourced.scripts returns a dataframe containing the sourced script table
@@ -51,7 +51,7 @@
 #' @noRd
 
 .ddg.sourced.scripts <- function() {
-  return(.ddg.get(".ddg.sourced.scripts"))
+  return(.ddg.get("ddg.sourced.scripts"))
 }
 
 #' .ddg.save.sourced.script.table writes the sourced script table to a csv file.
@@ -66,7 +66,7 @@
   {
     # Save sourced script table to file.
     fileout <- paste(.ddg.path.debug(), "/sourced-scripts.csv", sep="")
-    ddg.sourced.scripts <- .ddg.get(".ddg.sourced.scripts")
+    ddg.sourced.scripts <- .ddg.get("ddg.sourced.scripts")
     ddg.sourced.scripts2 <- ddg.sourced.scripts[ddg.sourced.scripts$snum >= 0, ]
     utils::write.csv(ddg.sourced.scripts2, fileout, row.names=FALSE)
   }
@@ -86,9 +86,9 @@
   } else {
     df<- rbind(.ddg.sourced.scripts(), c(snum, sname, stime))
   }
-  .ddg.set(".ddg.sourced.scripts", df)
+  .ddg.set("ddg.sourced.scripts", df)
   
   # Increment script number.
-  .ddg.inc(".ddg.next.script.num")
+  .ddg.inc("ddg.next.script.num")
   return (snum)
 }

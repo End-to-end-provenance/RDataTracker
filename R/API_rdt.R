@@ -105,7 +105,7 @@ prov.init <- function(prov.dir = NULL, overwrite = TRUE, annotate.inside.functio
   .ddg.set("ddg.tool.name", "RDataTracker")
 
   # Save hash algorithm
-  .ddg.set(".ddg.hash.algorithm", hash.algorithm)
+  .ddg.set("ddg.hash.algorithm", hash.algorithm)
   
   # Initialize list of input & output file nodes
   .ddg.init.filenodes()
@@ -145,10 +145,10 @@ prov.init <- function(prov.dir = NULL, overwrite = TRUE, annotate.inside.functio
   .ddg.init.return.values()
   
   # Set DGD Explorer port
-  .ddg.set(".ddg.explorer.port", 6096)
+  .ddg.set("ddg.explorer.port", 6096)
   
   # Initialize the stack of commands and environments being executed in active functions
-  .ddg.set(".ddg.cur.expr.stack", vector())
+  .ddg.set("ddg.cur.expr.stack", vector())
   
   .ddg.init (prov.dir, overwrite, save.debug)
 }
