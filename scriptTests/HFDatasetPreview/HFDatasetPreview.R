@@ -225,6 +225,9 @@ get.all.variable.format.strings <- function(ns) {
   num <- xmlSize(ns)
   for (i in 1:num) {
     var.format.string <- get.variable.format.string(ns[[i]])
+    print ("var.format.string:")
+    print (var.format.string)
+    print (str(var.format.string))
     if (i==1) var.format.strings <- var.format.string
     else var.format.strings <- append(var.format.strings, var.format.string, after=length(var.format.strings))
   }

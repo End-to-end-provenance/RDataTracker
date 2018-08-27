@@ -538,7 +538,12 @@
       if (!is.null(value)) {
         envName <- environmentName(environment)
         if (envName == "") envName <- .ddg.get.scope(vars.set$variable[i])
-        .ddg.data.node("Data", vars.set$variable[i], value, envName)
+        if (length (value) == 1 && value == "") {
+          .ddg.data.node("Data", vars.set$variable[i], value, envName, print.value = "")
+        }
+        else {
+          .ddg.data.node("Data", vars.set$variable[i], value, envName)
+        }
         .ddg.proc2data(last.command@abbrev, vars.set$variable[i], envName)
       }
     }

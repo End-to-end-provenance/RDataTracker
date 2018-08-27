@@ -400,10 +400,11 @@
 #' @param dvalue value of data node.
 #' @param dscope scope of data node.
 #' @param from.env if object is from initial environment
+#' @param print.value if non-null, this is the value that should be recorded
 #' @return nothing
 #' @noRd
 
-.ddg.data.node <- function(dtype, dname, dvalue, dscope, from.env=FALSE) {
+.ddg.data.node <- function(dtype, dname, dvalue, dscope, from.env=FALSE, print.value=NULL) {
   #print ("In .ddg.data.node")
   #print(paste(".ddg.data.node: dname =", dname))
   #print(paste(".ddg.data.node: typeof(dvalue) =", typeof(dvalue)))
@@ -447,7 +448,10 @@
   #print("Converting value to a string")
   # Convert value to a string.
   val <-
-      if (is.list(dvalue)) {
+      if (!is.null(print.value)) {
+        print.value
+      }
+      else if (is.list(dvalue)) {
         tryCatch(
             {
               dvalue <- .ddg.convert.list.to.string(dvalue)
@@ -472,7 +476,10 @@
       else if (length(dvalue) == 0) "Empty"
       else if (is.na(dvalue)) "NA"
       else if (dvalue == "complex" || dvalue == "#ddg.function") dvalue
-      else if (is.character(dvalue) && dvalue == "") "NotRecorded"
+      else if (is.character(dvalue) && dvalue == "") {
+        print (sys.calls())
+        "NotRecorded"
+      }
       else {
         .ddg.remove.tab.and.eol.chars(dvalue)
       }
@@ -828,11 +835,28 @@
   # Determine type for value, and save accordingly.
   if (.ddg.is.graphic(value)) {
     .ddg.write.graphic(name, value, graphic.fext, scope=scope, from.env=from.env)
+    return(invisible())
   }
-  else if (.ddg.is.simple(value)) {
+  
+  if (.ddg.is.simple(value)) {
     .ddg.save.simple(name, value, scope=scope, from.env=from.env)
+    return(invisible())
   }
-  else if (.ddg.is.csv(value)) .ddg.write.csv(name, value, scope=scope, from.env=from.env)
+  
+  if (is.vector (value) && length(vector) < 20) {
+    tryCatch (
+        {
+          print.value <- capture.output(print (value))
+          if (nchar(print.value) < 80) {
+            .ddg.save.simple(name, value, print.value=print.value, scope=scope, from.env=from.env)            
+          }
+          return(invisible())
+        },
+        error = function (e) {}
+    )
+  }
+  
+  if (.ddg.is.csv(value)) .ddg.write.csv(name, value, scope=scope, from.env=from.env)
   else if (is.list(value) || is.array(value)) {
     .ddg.snapshot.node(name, "txt", value, save.object=TRUE, dscope=scope, 
                        from.env=from.env)
@@ -859,16 +883,21 @@
 #' @param name data node name.
 #' @param value data node value.
 #' @param scope data node scope.
+#' @param print.value If non-null, this is the value that should be placed in 
+#'    the node.
 #' @return nothing
 #' @noRd
 
-.ddg.save.simple <- function(name, value, scope=NULL, from.env=FALSE) {
+.ddg.save.simple <- function(name, value, scope=NULL, from.env=FALSE, print.value=NULL) {
   # Save extra long strings as snapshot.
   if (is.character(value) && nchar(value) > 200) {
     .ddg.snapshot.node(name, "txt", value, dscope=scope, from.env=from.env)
   } else {
     # Save the true value.
-    .ddg.data.node("Data", name, value, scope, from.env=from.env)
+    if (length(value) == 1 && value == "") {
+      print.value <- ""
+    }
+    .ddg.data.node("Data", name, value, scope, from.env=from.env, print.value)
   }
 }
 
