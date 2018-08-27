@@ -426,13 +426,12 @@
       .ddg.data2proc(var, scope, cmd@abbrev)
     }
     else {
-      # print ("Did not find data node")
-      # TODO - add some sort of warning that the data node was NOT
-      # found.
+      # Note: This generates lots of error nodes of limited value.
+      # Turn off for now.
 
-      # error.msg <- paste("Unable to find data node for",var, ". Command", 
-      #                    parse(text=cmd.expr), 
-      #                    "appears to use it for procedure node", cmd, ".")
+      # error.msg <- paste("Unable to find data node for ", var , " used by
+      #   procedure node ", cmd@text, sep="")
+
       # .ddg.insert.error.message(error.msg)
     }
   }
@@ -710,7 +709,7 @@
 
 .ddg.close.last.command.node <- function(){
 
-  # Get both the last command and new commands.
+  # Get last command
   .ddg.last.cmd <-
     if (.ddg.is.set(".ddg.last.cmd")) {
       .ddg.get(".ddg.last.cmd")
@@ -718,22 +717,12 @@
     else {
       NULL
     }
-  .ddg.possible.last.cmd <-
-    if (.ddg.is.set(".ddg.possible.last.cmd")) {
-      .ddg.get(".ddg.possible.last.cmd")
-    }
-    else {
-      NULL
-    }
 
-  #print (paste (".ddg.close.last.command.node: .ddg.last.cmd =", .ddg.last.cmd))
-  #print (paste (".ddg.close.last.command.node: .ddg.possible.last.cmd =", 
-  #              .ddg.possible.last.cmd))
-
+  # print (paste (".ddg.close.last.command.node: .ddg.last.cmd =", .ddg.last.cmd))
+  
   # Only create a finish node if a new command exists (i.e., we've
   # parsed some lines of code).
-  # TODO: Do we need to check .ddg.possible.last.cmd?  We don't use it here.
-  if (!is.null(.ddg.last.cmd) && (!is.null(.ddg.possible.last.cmd))) {
+  if (!is.null(.ddg.last.cmd)) {
     .ddg.add.finish.node()
 
     # Add link from a function return node if there is one.

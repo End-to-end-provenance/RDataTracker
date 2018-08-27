@@ -43,9 +43,11 @@
   # Initialize tables
   .ddg.init.tables()
 
-  # Store R script path if ddg.new.r.script path is set in prov.run 
-  # (script mode). Otherwise R script path is NULL (console mode). Note 
-  # that ddg.new.r.script.path is set to NULL in .ddg.quit.
+  # R script path is set to NULL in .ddg.init.tables. Reset R script path 
+  # to ddg.new.r.script path if using prov.run (script mode). Otherwise
+  # leave R script path = NULL (console mode). Note that ddg.new.r.script.path
+  # is set to NULL in .ddg.quit so its value does not carry forward to 
+  # future sessions.
   if (.ddg.is.set("ddg.new.r.script.path")) {
     if (!is.null(.ddg.get("ddg.new.r.script.path"))) {
       .ddg.set("ddg.r.script.path", .ddg.get("ddg.new.r.script.path"))
