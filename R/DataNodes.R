@@ -207,10 +207,10 @@
 #' .ddg.record.data records a data node in the data node table. 
 #' @param dtype data node type.
 #' @param dname data node name.
-#' @param dvalue data node value.
+#' @param dvalue value to store in the data node
 #' @param value the value of the data.  For some node types, this will be the same as dvalue;
-#' sometimes it is different.  For example, for snapshot nodes, dvalue is the location
-#' of the snapshot file, while value is the data itself.
+#' sometimes it is different.  value is used to calculate the val type, so it should be the original
+#' data, while dvalue is the string representation to place directly in the node.
 #' @param dscope data node scope.
 #' @param from.env (optional) if object is from initial environment.  Default is FALSE.
 #' @param dtime (optional) timestamp of original file.
@@ -238,13 +238,13 @@
     ddg.data.nodes <- .ddg.add.rows("ddg.data.nodes", .ddg.create.data.node.rows ())
   }
   
-  dvalue2 <- 
-      if (length(dvalue) > 1 || !is.atomic(dvalue)) {
-        print (sys.calls())
-        "complex"
-      }
-      else if (!is.null(dvalue)) dvalue
-      else ""
+#  dvalue2 <- 
+#      if (length(dvalue) > 1 || !is.atomic(dvalue)) {
+#        print (sys.calls())
+#        "complex"
+#      }
+#      else if (!is.null(dvalue)) dvalue
+#      else ""
   
   # get value type
   val.type <- .ddg.get.val.type.string(value)
@@ -253,7 +253,8 @@
   ddg.data.nodes$ddg.type[ddg.dnum] <- dtype
   ddg.data.nodes$ddg.num[ddg.dnum] <- ddg.dnum
   ddg.data.nodes$ddg.name[ddg.dnum] <- dname
-  ddg.data.nodes$ddg.value[ddg.dnum] <- dvalue2
+  #ddg.data.nodes$ddg.value[ddg.dnum] <- dvalue2
+  ddg.data.nodes$ddg.value[ddg.dnum] <- dvalue
   ddg.data.nodes$ddg.val.type[ddg.dnum] <- val.type
   ddg.data.nodes$ddg.scope[ddg.dnum] <- dscope
   ddg.data.nodes$ddg.from.env[ddg.dnum] <- from.env
@@ -370,7 +371,7 @@
   
   # an object
   if(is.object(value))
-    return("object")
+    return(paste(class(value), collapse=", "))
   
   # envrionment, function, language
   if(is.environment(value))
@@ -409,56 +410,58 @@
 #' @noRd
 
 .ddg.data.node <- function(dtype, dname, dvalue, dscope, from.env=FALSE, print.value=NULL) {
-  #print ("In .ddg.data.node")
-  #print(paste(".ddg.data.node: dname =", dname))
-  #print(paste(".ddg.data.node: str(dvalue) =", str(dvalue)))
-  #print(paste(".ddg.data.node: dvalue =", dvalue))
+  print (sys.calls())
+  print ("In .ddg.data.node")
+  print(paste(".ddg.data.node: dname =", dname))
+  print(paste(".ddg.data.node: str(dvalue) =", str(dvalue)))
+  print(paste(".ddg.data.node: dvalue =", dvalue))
   #print(paste(".ddg.data.node: dscope =", dscope))
   # If object or a long list, try to create snapshot node.
   
-  if (is.object(dvalue)) {
-    #print ("Found an object")
-    if (.ddg.is.connection(dvalue)) {
-      val <- showConnections(TRUE)[as.character(dvalue[1]), "description"]
-
-      # Record in data node table
-      .ddg.record.data(dtype, dname, val, val, dscope, from.env=from.env)
-      
-      if (.ddg.debug.lib()) print(paste("data.node:", dtype, dname))
-      return()
-    }
-    else {
-      tryCatch(
-          {
-            .ddg.snapshot.node (dname, "txt", dvalue, dscope=dscope, from.env=from.env)
-            return()
-          },
-          error = function(e) {
-            error.msg <- paste("Unable to create snapshot node for", dname, "Details:", e)
-            .ddg.insert.error.message(error.msg)
-            .ddg.data.node (dtype, dname, "complex", dscope, from.env=from.env)
-            return ()
-          }
-      )
-    }
-    
-  }
-  
-  else if (is.matrix(dvalue) || 
-           (is.vector(dvalue) && !is.character(dvalue) && length(dvalue) > 20)) {
-    .ddg.snapshot.node (dname, "csv", dvalue, dscope=dscope, from.env=from.env)
-    return ()
-  }
+#  if (is.object(dvalue)) {
+#    print ("Found an object")
+#    if (.ddg.is.connection(dvalue)) {
+#      val <- showConnections(TRUE)[as.character(dvalue[1]), "description"]
+#
+#      # Record in data node table
+#      #.ddg.record.data(dtype, dname, val, val, dscope, from.env=from.env)
+#      .ddg.record.data(dtype, dname, val, dvalue, dscope, from.env=from.env)
+#      
+#      if (.ddg.debug.lib()) print(paste("data.node:", dtype, dname))
+#      return()
+#    }
+#    else {
+#      tryCatch(
+#          {
+#            .ddg.snapshot.node (dname, "txt", dvalue, dscope=dscope, from.env=from.env)
+#            return()
+#          },
+#          error = function(e) {
+#            error.msg <- paste("Unable to create snapshot node for", dname, "Details:", e)
+#            .ddg.insert.error.message(error.msg)
+#            .ddg.data.node (dtype, dname, "complex", dscope, from.env=from.env)
+#            return ()
+#          }
+#      )
+#    }
+#    
+#  }
+#  
+#  else if (is.matrix(dvalue) || 
+#           (is.vector(dvalue) && !is.character(dvalue) && length(dvalue) > 20)) {
+#    .ddg.snapshot.node (dname, "csv", dvalue, dscope=dscope, from.env=from.env)
+#    return ()
+#  }
   
   #print("Converting value to a string")
   # Convert value to a string.
   val <-
       if (!is.null(print.value)) {
-        #print ("Using print.value")
+        print ("Using print.value")
         print.value
       }
       else if (is.list(dvalue)) {
-        #print ("Found a list")
+        print ("Found a list")
         tryCatch(
             {
               dvalue <- .ddg.convert.list.to.string(dvalue)
@@ -471,11 +474,11 @@
         )
       }
       else if (typeof(dvalue) == "closure") {
-        #print ("Found a closure")
+        print ("Found a closure")
         "#ddg.function"
       }
       else if (length(dvalue) > 1 || !is.atomic(dvalue)) {
-        #print ("Found non-atomic longer than 1")
+        print ("Found non-atomic longer than 1")
         tryCatch(paste(.ddg.remove.tab.and.eol.chars(dvalue), collapse=","),
             error = 
               function(e) {
@@ -484,32 +487,32 @@
             )
       }
       else if (is.null(dvalue)) {
-        #print ("Found null")
+        print ("Found null")
         "NULL"
       }
       else if (length(dvalue) == 0) {
-        #print ("Found empty value")
+        print ("Found empty value")
         "Empty"
       }
       else if (is.na(dvalue)) {
-        #print ("Found NA")
+        print ("Found NA")
         "NA"
       }
       else if (dvalue == "complex" || dvalue == "#ddg.function") {
-        #print ("Found complex or function")
+        print ("Found complex or function")
         dvalue
       }
       else if (is.character(dvalue) && dvalue == "") {
-        #print ("Found NotRecorded")
+        print ("Found NotRecorded")
         "NotRecorded"
       }
       else {
-        #print ("Removing tabs")
+        print ("Removing tabs")
         .ddg.remove.tab.and.eol.chars(dvalue)
       }
   
-  #print ("val")
-  #print (val)
+  print ("val")
+  print (val)
   #print ("Checking for newlines")
   if (grepl("\n", val)) {
     # Create snapshot node.
@@ -522,7 +525,8 @@
     if (is.null(dscope)) dscope <- .ddg.get.scope(dname)
     
     # Record in data node table
-    .ddg.record.data(dtype, dname, val, val, dscope, from.env=from.env)
+    #.ddg.record.data(dtype, dname, val, val, dscope, from.env=from.env)
+    .ddg.record.data(dtype, dname, val, dvalue, dscope, from.env=from.env)
     
     if (.ddg.debug.lib()) print(paste("data.node:", dtype, dname))
   }
@@ -587,7 +591,11 @@
   
   # Don't save the data
   if (snapshot.size == 0) {
-    return(.ddg.data.node ("Data", dname, "", dscope, from.env=from.env))
+    print.value <- paste (utils::capture.output(print (orig.data)), collapse = " ")
+    if (nchar(print.value) > 80) {
+      print.value <- paste0 (substring (print.value, 1, 77), "...")
+    }
+    return(.ddg.data.node ("Data", dname, orig.data, dscope, from.env=from.env, print.value = print.value))
   }
   
   # object.size returns bytes, but snapshot.size is in kilobytes
@@ -906,11 +914,11 @@
   if (is.vector (value) && length(vector) < 20) {
     tryCatch (
         {
-          print.value <- paste (capture.output(print (value)), collapse = " ")
+          print.value <- paste (utils::capture.output(print (value)), collapse = " ")
           if (nchar(print.value) < 80) {
             .ddg.save.simple(name, value, print.value=print.value, scope=scope, from.env=from.env)            
+            return(invisible())
           }
-          return(invisible())
         },
         error = function (e) {}
     )
@@ -950,11 +958,26 @@
 
 .ddg.save.simple <- function(name, value, scope=NULL, from.env=FALSE, print.value=NULL) {
   # Save extra long strings as snapshot.
+  print ("In .ddg.save.simple")
+  print (paste ("name =", name))
+  print ("value:")
+  print (value)
   if (is.character(value) && nchar(value) > 200) {
+    print ("Found a long string")
     .ddg.snapshot.node(name, "txt", value, dscope=scope, from.env=from.env)
   } else {
+    print ("Did not find a string")
     # Save the true value.
-    if (length(value) == 1 && value == "") {
+    if (is.null(value)) {
+      print ("Found null")
+      print.value <- "null"
+    }
+    else if (is.na(value)) {
+      print ("Found NA")
+      print.value <- "NA"
+    }
+    else if (length(value) == 1 && value == "") {
+      print ("Found empty string")
       print.value <- ""
     }
     .ddg.data.node("Data", name, value, scope, from.env=from.env, print.value)
