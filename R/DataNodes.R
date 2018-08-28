@@ -369,6 +369,10 @@
   if(is.list(value))
     return("list")
   
+  if (is.factor (value)) {
+    return (paste("Factor levels: ", paste (levels (value), collapse=", ")))
+  }
+  
   # an object
   if(is.object(value))
     return(paste(class(value), collapse=", "))
