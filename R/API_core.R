@@ -298,9 +298,10 @@
   # Execute script and catch any error messages
   tryCatch({
       .ddg.source(.ddg.r.script.path(), ignore.ddg.calls = FALSE)
+    }
 
     # Add finish nodes for anything left open due to errors
-    }, finally = {
+    , finally = {
       .ddg.close.blocks()
       .ddg.quit(.ddg.save.debug())
     }

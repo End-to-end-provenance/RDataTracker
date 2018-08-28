@@ -44,15 +44,6 @@
   return(.ddg.get("ddg.tool.name"))
 }
 
-#' .ddg.r.script.path returns the path to the R script that is being
-#' executed (script mode) or NULL (console mode).
-#' @return the R script path (script mode) or NULL (console mode)
-#' @noRd
-
-.ddg.r.script.path <- function() {
-  return(.ddg.get("ddg.r.script.path"))
-}
-
 #' .ddg.save.debug returns True if debugging information should be saved
 #' to the file system
 #' @return TRUE if saving debugging information
@@ -1568,7 +1559,7 @@
   # script variables
   script.path <- .ddg.r.script.path()
   
-  if( ! is.null(script.path) )
+  if(!is.null(script.path) )
   {
     env$script[1] <- script.path
     env$scriptTimeStamp[1] <- .ddg.format.time( file.info(script.path)$mtime )

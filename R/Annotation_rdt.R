@@ -224,7 +224,7 @@
         # Check for non-local assignment
         if ( .ddg.is.nonlocal.assign(return.stmt@parsed[[1]]) )
         {
-          env <- .ddg.where( var, env = parent.env(parent.frame()), warning = FALSE )
+          env <- .ddg.where(var, env = parent.env(parent.frame()), warning = FALSE)
           
           if ( identical(env, "undefined") )
             env <- globalenv()
