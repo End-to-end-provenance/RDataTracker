@@ -17,7 +17,7 @@
 
 ########################## Utilities.R #############################
 
-#  This file contains utility functions used through RDataTracker.
+# This file contains utility functions used through RDataTracker / provR.
 
 ########  Helpers to manage ddg variables
 

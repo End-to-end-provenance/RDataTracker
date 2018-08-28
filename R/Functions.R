@@ -77,8 +77,9 @@
   if ( nrow(libfunctions) > 0 )
   {
     libfunctions$ddg.lib <- sub("package:", "", libfunctions$ddg.lib)
-    libfunctions <- cbind( "ddg.pnum" = rep(.ddg.pnum(), nrow(libfunctions)), libfunctions )
-    ddg.function.nodes <- rbind( .ddg.function.nodes(), libfunctions )
+    libfunctions <- cbind("ddg.pnum" = rep(.ddg.pnum(), nrow(libfunctions)),
+      libfunctions)
+    ddg.function.nodes <- rbind(.ddg.function.nodes(), libfunctions)
     .ddg.set( "ddg.function.nodes", ddg.function.nodes )
   } 
 }

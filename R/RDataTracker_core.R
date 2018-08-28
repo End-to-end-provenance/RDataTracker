@@ -17,7 +17,7 @@
 
 ######################### RDataTracker.R #########################
 
-# This file contains core functions for RDataTracker.
+# This file contains core functions for RDataTracker / provR.
 
 
 # Create DDG environment variable.

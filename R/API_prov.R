@@ -67,7 +67,7 @@
 #' xxhash64 and murmur32. This feature uses the digest function from 
 #' the digest package.
 #' @param save.debug If TRUE, debug files are saved to the debug directory.
-#' This is intended for developers of the RDataTracker package.
+#' This is intended for developers of the RDataTracker / provR package.
 #' @return prov.init initializes the provenance collector.  The prov.init
 #' function does not return a value.
 #' @export
@@ -174,7 +174,7 @@ prov.source <- function(file) {
 #' 
 #' prov.json returns the current provenance graph as a prov-json string.
 #' 
-#' ProvR collects provenance as a script executes.  Once collected,
+#' provR collects provenance as a script executes.  Once collected,
 #' prov.json can be called to access the provenance as a JSON string.  
 #' This is useful for applications that operate on the provenance.  The
 #' JSON is consistent with the PROV-JSON standard.

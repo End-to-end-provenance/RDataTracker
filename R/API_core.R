@@ -33,7 +33,7 @@
 #' is used.
 #' @param overwrite if FALSE, includes a time stamp in the provenance
 #' @param save.debug If TRUE, debug files are saved to the debug directory.
-#' This is intended for developers of the RDataTracker package.
+#' This is intended for developers of the RDataTracker / provR package.
 #' @return .ddg.init initializes the provenance collector.  The .ddg.init
 #' function does not return a value.
 #' @noRd
@@ -210,7 +210,7 @@
 #' If more R statements are executed, the provenance for these statements
 #' is added to the graph.
 #' @param save.debug If TRUE, debug files are saved to the debug directory.
-#'   This is intended for developers of the RDataTracker package.
+#'   This is intended for developers of the RDataTracker / provR package.
 #' @return .ddg.save writes the current provenance to a file but does not 
 #'   return a value.
 #' @noRd
@@ -239,7 +239,7 @@
 
 #' .ddg.quit saves and closes the current provenance graph.
 #' @param save.debug If TRUE, debug files are saved to the debug directory.
-#'   This is intended for developers of the RDataTracker package.
+#'   This is intended for developers of the RDataTracker / provR package.
 #' @return .ddg.quit writes the current provenance to a file but does not 
 #'   return a value.
 #' @noRd
@@ -519,7 +519,7 @@
   # Calculate the regular expressions for what should be ignored
   # and what shouldn't.
   # Ignore calculation of certain execution steps.
-  ignores <- c("^library[(]RDataTracker[)]$",
+  ignores <- c("^library[(]RDataTracker[)]$", "^library[(]provR[)]$",
     if (ignore.ddg.calls) "^ddg."
     else c("^prov.init", "^prov.run"))
 
