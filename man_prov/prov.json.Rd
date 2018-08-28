@@ -2,16 +2,23 @@
 % Please edit documentation in R/API_prov.R
 \name{prov.json}
 \alias{prov.json}
+\alias{prov.dir}
 \title{Provenance Access Functions}
 \usage{
 prov.json()
+
+prov.dir()
 }
 \value{
 prov.json returns the current provenance graph as a prov-json
 string
+
+prov.dir returns the current provenance directory.
 }
 \description{
 prov.json returns the current provenance graph as a prov-json string.
+
+prov.dir returns the current provenance directory.
 }
 \details{
 ProvR collects provenance as a script executes.  Once collected,
@@ -20,17 +27,18 @@ This is useful for applications that operate on the provenance.  The
 JSON is consistent with the PROV-JSON standard.
 }
 \examples{
-prov.init ()
+prov.init()
 a <- 1
 b <- 2
 ab <- a + b
-prov.quit ()
+prov.quit()
 str <- prov.json()
+pdir <- prov.dir()
 }
 \references{
 PROV-JSON standard: \url{https://www.w3.org/Submission/2013/SUBM-prov-json-20130424/}
 
-PROV-JSON output produced by prov: \url{https://github.com/End-to-end-provenance/RDataTracker/blob/export/JSON-format.md}
+PROV-JSON output produced by provR: \url{https://github.com/End-to-end-provenance/RDataTracker/blob/export/JSON-format.md}
 
 Applications that use the provenance:  \url{http://provtools.org/analyzes/}
 }

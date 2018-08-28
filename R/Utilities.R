@@ -69,6 +69,15 @@
   return (.ddg.get("ddg.debug.lib"))
 }
 
+#' .ddg.r.script.path returns the path to the R script that is being
+#' executed (script mode) or NULL (console mode).
+#' @return the R script path (script mode) or NULL (console mode)
+#' @noRd
+
+.ddg.r.script.path <- function() {
+  return(.ddg.get("ddg.r.script.path"))
+}
+
 #' .ddg.path returns the path to the ddg directory
 #' @return the path to the ddg directory
 #' @noRd
