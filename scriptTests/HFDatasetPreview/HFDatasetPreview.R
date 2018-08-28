@@ -79,7 +79,7 @@ parse.time.series.string <- function(st) {
 # get time series ids from EML
 get.time.series.ids <- function(dataset.id) {
   xpath <- paste("//additionalMetadata/metadata/additionalClassifications/timeSeries", sep="")
-  ns <- getNodeSet(eml, xpath, fun=xmlValue)   
+  ns <- getNodeSet(eml, xpath, fun=xmlValue) 
   if (length(ns) == 0) {
     time.series.ids <- NULL
   } else {
@@ -225,9 +225,6 @@ get.all.variable.format.strings <- function(ns) {
   num <- xmlSize(ns)
   for (i in 1:num) {
     var.format.string <- get.variable.format.string(ns[[i]])
-    print ("var.format.string:")
-    print (var.format.string)
-    print (str(var.format.string))
     if (i==1) var.format.strings <- var.format.string
     else var.format.strings <- append(var.format.strings, var.format.string, after=length(var.format.strings))
   }
@@ -631,6 +628,7 @@ if (datafile.num != 0) {
     }
   }
 }
+
 
 ############################ DONE ##############################
 

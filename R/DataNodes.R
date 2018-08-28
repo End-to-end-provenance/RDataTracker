@@ -239,7 +239,10 @@
   }
   
   dvalue2 <- 
-      if (length(dvalue) > 1 || !is.atomic(dvalue)) "complex"
+      if (length(dvalue) > 1 || !is.atomic(dvalue)) {
+        print (sys.calls())
+        "complex"
+      }
       else if (!is.null(dvalue)) dvalue
       else ""
   
@@ -408,12 +411,13 @@
 .ddg.data.node <- function(dtype, dname, dvalue, dscope, from.env=FALSE, print.value=NULL) {
   #print ("In .ddg.data.node")
   #print(paste(".ddg.data.node: dname =", dname))
-  #print(paste(".ddg.data.node: typeof(dvalue) =", typeof(dvalue)))
+  #print(paste(".ddg.data.node: str(dvalue) =", str(dvalue)))
   #print(paste(".ddg.data.node: dvalue =", dvalue))
   #print(paste(".ddg.data.node: dscope =", dscope))
   # If object or a long list, try to create snapshot node.
   
   if (is.object(dvalue)) {
+    #print ("Found an object")
     if (.ddg.is.connection(dvalue)) {
       val <- showConnections(TRUE)[as.character(dvalue[1]), "description"]
 
@@ -450,9 +454,11 @@
   # Convert value to a string.
   val <-
       if (!is.null(print.value)) {
+        #print ("Using print.value")
         print.value
       }
       else if (is.list(dvalue)) {
+        #print ("Found a list")
         tryCatch(
             {
               dvalue <- .ddg.convert.list.to.string(dvalue)
@@ -464,8 +470,12 @@
             }
         )
       }
-      else if (typeof(dvalue) == "closure") "#ddg.function"
+      else if (typeof(dvalue) == "closure") {
+        #print ("Found a closure")
+        "#ddg.function"
+      }
       else if (length(dvalue) > 1 || !is.atomic(dvalue)) {
+        #print ("Found non-atomic longer than 1")
         tryCatch(paste(.ddg.remove.tab.and.eol.chars(dvalue), collapse=","),
             error = 
               function(e) {
@@ -473,18 +483,34 @@
               }
             )
       }
-      else if (is.null(dvalue)) "NULL"
-      else if (length(dvalue) == 0) "Empty"
-      else if (is.na(dvalue)) "NA"
-      else if (dvalue == "complex" || dvalue == "#ddg.function") dvalue
+      else if (is.null(dvalue)) {
+        #print ("Found null")
+        "NULL"
+      }
+      else if (length(dvalue) == 0) {
+        #print ("Found empty value")
+        "Empty"
+      }
+      else if (is.na(dvalue)) {
+        #print ("Found NA")
+        "NA"
+      }
+      else if (dvalue == "complex" || dvalue == "#ddg.function") {
+        #print ("Found complex or function")
+        dvalue
+      }
       else if (is.character(dvalue) && dvalue == "") {
-        print (sys.calls())
+        #print ("Found NotRecorded")
         "NotRecorded"
       }
       else {
+        #print ("Removing tabs")
         .ddg.remove.tab.and.eol.chars(dvalue)
       }
   
+  #print ("val")
+  #print (val)
+  #print ("Checking for newlines")
   if (grepl("\n", val)) {
     # Create snapshot node.
     .ddg.snapshot.node (dname, "txt", val, from.env=from.env)
@@ -880,7 +906,7 @@
   if (is.vector (value) && length(vector) < 20) {
     tryCatch (
         {
-          print.value <- capture.output(print (value))
+          print.value <- paste (capture.output(print (value)), collapse = " ")
           if (nchar(print.value) < 80) {
             .ddg.save.simple(name, value, print.value=print.value, scope=scope, from.env=from.env)            
           }
