@@ -22,7 +22,7 @@
 #' prov.init intializes a new provenance graph. Called by the user
 #' in console mode.
 #' 
-#' RDataTracker is an R package that collects provenance as an R script 
+#' provR is an R package that collects provenance as an R script 
 #' executes. The resulting provenance provides a detailed record of the 
 #' execution of the script and includes information on the steps that were 
 #' performed and the intermediate data values that were created. The 
@@ -135,12 +135,12 @@ prov.quit <- function(save.debug = FALSE) {
 #' @examples 
 #' \dontrun{prov.run ("script.R")}
 #' \dontrun{prov.source ("script.R")}
-#' prov.init ()
+#' prov.init()
 #' a <- 1
 #' b <- 2
-#' prov.save ()
+#' prov.save()
 #' ab <- a + b
-#' prov.quit ()
+#' prov.quit()
 
 prov.run <- function(r.script.path, prov.dir = NULL, overwrite = TRUE, 
   snapshot.size = 0, hash.algorithm = "md5", save.debug = FALSE) {
@@ -185,19 +185,29 @@ prov.source <- function(file) {
 #' @rdname prov.json
 #' @seealso \code{\link{prov.init}} and \code{\link{prov.run}} for functions to collect provenance
 #' @references PROV-JSON standard: \url{https://www.w3.org/Submission/2013/SUBM-prov-json-20130424/}
-#' @references PROV-JSON output produced by prov: \url{https://github.com/End-to-end-provenance/RDataTracker/blob/export/JSON-format.md}
+#' @references PROV-JSON output produced by provR: \url{https://github.com/End-to-end-provenance/RDataTracker/blob/export/JSON-format.md}
 #' @references Applications that use the provenance:  \url{http://provtools.org/analyzes/}
 #' @examples
-#' prov.init ()
+#' prov.init()
 #' a <- 1
 #' b <- 2
 #' ab <- a + b
-#' prov.quit ()
+#' prov.quit()
 #' str <- prov.json()
+#' pdir <- prov.dir()
 
-prov.json <- function()
-{
+prov.json <- function() {
   # This is a wrapper function.
   # Calls and returns the function with the bulk of the code in OutputJSON.R
   return(.ddg.json.string())
+}
+
+#' prov.dir returns the current provenance directory.
+#' @return prov.dir returns the current provenance directory.
+#' @export
+#' @rdname prov.json
+
+prov.dir <- function() {
+  # This is a wrapper function.
+  return(.ddg.path())
 }

@@ -347,9 +347,44 @@
   # Record in procedure node table
   .ddg.record.proc(ptype, pname, pvalue, ptime, snum, pos)
   
-  # append the function call information to function nodes
+  # If any functions are called in this procedure node, process them.
   if( !is.null(functions.called) && !is.na(functions.called)) {
-    .ddg.add.to.function.table (functions.called)
+    pfunctions <- .ddg.get.function.info(functions.called)
+
+    # append the function call information to function nodes
+    .ddg.add.to.function.table (pfunctions)
+    
+    # Create input data edges for non-locals used.
+    nonlocals.used <- .ddg.get.nonlocals.used (pfunctions)
+    if (!is.null (nonlocals.used) && length (nonlocals.used) > 0) {
+      nonlocals.used[sapply(nonlocals.used, is.null)] <- NULL
+
+      create.use.edge <- function (var) {
+        if (is.null(var) || length(var) == 0) return ()
+        
+        # Make sure there is a node we could connect to.
+        scope <- .ddg.get.scope(var)
+        
+        # Only create an edge if a matching data node exists.
+        # If there is no matching data node, then we will 
+        # assume this was actually a local.
+        if (.ddg.data.node.exists(var, scope)) {
+          .ddg.data2proc(var, scope)
+        }
+      }
+      sapply (nonlocals.used, create.use.edge)
+    }
+    
+    # Create a data node and output data edge for each
+    # non-local set in the function.
+    nonlocals.set <- .ddg.get.nonlocals.set (pfunctions)
+    if (!is.null (nonlocals.set) && length (nonlocals.set) > 0) {
+      nonlocals.set[sapply(nonlocals.set, is.null)] <- NULL
+      nonlocals.set <- unique(unlist(nonlocals.set))
+      
+      sapply (nonlocals.set, .ddg.save.var)
+      sapply (nonlocals.set, .ddg.lastproc2data)
+    }
   }
   if (.ddg.debug.lib()) print(paste("proc.node:", ptype, pname))
 }

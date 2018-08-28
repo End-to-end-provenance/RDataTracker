@@ -6,6 +6,7 @@
     xmlns:unless="ant:unless">
     
   <property name="builddir" value="build_prov"/>
+  <property name="checkdir" value="provR.Rcheck"/>
   <loadproperties srcFile="DESCRIPTION_prov" />
   <property name="tarfile" value="provR_${Version}.tar.gz" />
 

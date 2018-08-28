@@ -49,6 +49,7 @@
 	- ReturnTest
 	- OddParameterTest
 	- FunctionAnnotationTest
+	- FunctionNonlocalsTest
 	- AnnotateOnOffTest
 	- ControlConstructTest
 	- WarningTest
@@ -693,6 +694,18 @@
 		</antcall>
 	</target>
 
+	<target name="FunctionNonlocalsTest">
+		<antcall target="run-regression-test">
+			<param name="test-name" value="FunctionNonlocalsTest" />
+		</antcall>
+	</target>
+
+	<target name="update-FunctionNonlocalsTest">
+		<antcall target="update-regression-expected">
+			<param name="test-name" value="FunctionNonlocalsTest" />
+		</antcall>
+	</target>
+
 	<target name="AnnotateOnOffTest">
 		<antcall target="run-regression-test">
 			<param name="test-name" value="AnnotateOnOffTest" />
@@ -874,7 +887,7 @@
 	</target>
 	
 	<target name="normal-tests" depends="basicTest, S4ObjectTest,
-		ScopeTest, ReturnTest, OddParameterTest, FunctionAnnotationTest,
+		ScopeTest, ReturnTest, OddParameterTest, FunctionAnnotationTest, FunctionNonlocalsTest,
 		ControlConstructTest, WarningTest, PlotTest, Plot2Test, Plot3Test, NoDevOffTest, DataTypeTest,
 		HigherOrderFuncTest, AssignmentOperatorsTest, FunctionOriginTest,
 		RMarkdownTest, DDGStatementTest, ConnectionTest">

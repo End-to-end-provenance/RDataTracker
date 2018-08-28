@@ -142,12 +142,12 @@ prov.set.detail and related functions.
 }
 \examples{
 \dontrun{prov.run ("script.R")}
-prov.init ()
+prov.init()
 a <- 1
 b <- 2
-prov.save ()
+prov.save()
 ab <- a + b
-prov.quit ()
+prov.quit()
 }
 \seealso{
 \code{\link{prov.json}} for access to the JSON text of the provenance, 
