@@ -59,8 +59,8 @@
 #' @noRd
 
 .ddg.init.return.values <- function () {
-  .ddg.set(".ddg.return.values", .ddg.create.return.value.rows(100))
-  .ddg.set(".ddg.num.returns", 0)
+  .ddg.set("ddg.return.values", .ddg.create.return.value.rows(100))
+  .ddg.set("ddg.num.returns", 0)
 }
 
 #' .ddg.save.return.value.table writes the return value information to a csv table.
@@ -72,7 +72,7 @@
 .ddg.save.return.value.table <- function () {
   # Save function return table to file.
   fileout <- paste(.ddg.path.debug(), "/function-returns.csv", sep="")
-  ddg.returns <- .ddg.get(".ddg.return.values")
+  ddg.returns <- .ddg.get("ddg.return.values")
   
   # Remove the empty rows from the table.
   ddg.returns2 <- ddg.returns[ddg.returns$return.node.id > 0, ]
@@ -90,7 +90,7 @@
 .ddg.get.matching.return.value.nodes <- function (command) {
   # Find the return values that have not been used yet.  If the start line of
   # the function call is known, only keep entries for that line.
-  returns <- .ddg.get(".ddg.return.values")
+  returns <- .ddg.get("ddg.return.values")
   if (!is.na(command@pos@startLine)) {
     unused.returns <- 
       returns[!returns$return.used & returns$return.node.id > 0 & 
@@ -119,9 +119,9 @@
 #' @noRd
 
 .ddg.set.return.value.used <- function(data.num) {
-  returns <- .ddg.get(".ddg.return.values")
+  returns <- .ddg.get("ddg.return.values")
   returns$return.used[returns$return.node.id == data.num] <- TRUE
-  .ddg.set(".ddg.return.values", returns)
+  .ddg.set("ddg.return.values", returns)
 }
 
 #' .ddg.add.to.return.values adds a new entry to the return value table
@@ -130,14 +130,14 @@
 #' @noRd
 
 .ddg.add.to.return.values <- function (call.text) {
-  ddg.return.values <- .ddg.get(".ddg.return.values")
-  ddg.num.returns <- .ddg.get(".ddg.num.returns")
+  ddg.return.values <- .ddg.get("ddg.return.values")
+  ddg.num.returns <- .ddg.get("ddg.num.returns")
   
   # Make the table bigger if necessary
   if (nrow(ddg.return.values) == ddg.num.returns) {
     new.rows <- .ddg.create.return.value.rows (100)
-    .ddg.add.rows(".ddg.return.values", new.rows)
-    ddg.return.values <- .ddg.get(".ddg.return.values")
+    .ddg.add.rows("ddg.return.values", new.rows)
+    ddg.return.values <- .ddg.get("ddg.return.values")
   }
   
   # Update the table.
@@ -147,12 +147,12 @@
   ddg.return.values$return.node.id[ddg.num.returns] <- .ddg.dnum()
   
   # Determine the line number of the call
-  ddg.cur.cmd.stack <- .ddg.get(".ddg.cur.cmd.stack")
+  ddg.cur.cmd.stack <- .ddg.get("ddg.cur.cmd.stack")
   ddg.return.values$line[ddg.num.returns] <- 
       if (length(ddg.cur.cmd.stack) == 0) NA
       else ddg.cur.cmd.stack[length(ddg.cur.cmd.stack) - 1][[1]]@pos@startLine
   
   # Save the values
-  .ddg.set(".ddg.return.values", ddg.return.values)
-  .ddg.set(".ddg.num.returns", ddg.num.returns)
+  .ddg.set("ddg.return.values", ddg.return.values)
+  .ddg.set("ddg.num.returns", ddg.num.returns)
 }

@@ -8,26 +8,22 @@
 \alias{prov.source}
 \title{Provenance Collection Functions}
 \usage{
-prov.init(r.script.path = NULL, prov.dir = NULL, overwrite = TRUE,
+prov.init(prov.dir = NULL, overwrite = TRUE,
   annotate.inside.functions = FALSE, first.loop = 1, max.loops = 0,
-  snapshot.size = 0, hash.algorithm = "md5")
+  snapshot.size = 0, hash.algorithm = "md5", save.debug = FALSE)
 
 prov.save(save.debug = FALSE)
 
 prov.quit(save.debug = FALSE)
 
-prov.run(r.script.path = NULL, prov.dir = NULL, overwrite = TRUE,
-  f = NULL, annotate.inside.functions = FALSE, first.loop = 1,
-  max.loops = 0, snapshot.size = 0, save.debug = FALSE, display = FALSE,
-  hash.algorithm = "md5")
+prov.run(r.script.path, prov.dir = NULL, overwrite = TRUE,
+  annotate.inside.functions = FALSE, first.loop = 1, max.loops = 0,
+  snapshot.size = 0, hash.algorithm = "md5", save.debug = FALSE,
+  display = FALSE)
 
 prov.source(file)
 }
 \arguments{
-\item{r.script.path}{the full path to the R script file
-that is being executed. If provided, a copy of the script will
-be saved with the provenance graph.}
-
 \item{prov.dir}{the directory where the provenance graph will be 
 saved. If not provided, the directory specified by the prov.dir 
 option is used. Otherwise the R session temporary directory
@@ -62,9 +58,9 @@ the digest package.}
 \item{save.debug}{If TRUE, debug files are saved to the debug directory.
 This is intended for developers of the RDataTracker package.}
 
-\item{f}{a function to run. If supplied, the function f is executed 
-with calls to prov.init and prov.save so that provenance for the 
-function is captured.  Exactly one of f and r.script.path should be provided.}
+\item{r.script.path}{the full path to the R script file
+that is being executed. If provided, a copy of the script will
+be saved with the provenance graph.}
 
 \item{display}{if TRUE, the provenance graph is displayed in DDG Explorer}
 
@@ -72,7 +68,7 @@ function is captured.  Exactly one of f and r.script.path should be provided.}
 }
 \value{
 prov.init initializes the provenance collector.  The prov.init
-  function does not return a value.
+function does not return a value.
 
 prov.save writes the current provenance to a file but does not 
   return a value.

@@ -122,7 +122,7 @@
 	
 	# LIBRARY NODES - change row numbers
 	libraries <- .ddg.installedpackages()
-	rownames(libraries) <- c( 1 : nrow(libraries) )
+	rownames(libraries) <- c(1 : nrow(libraries))
 	
 	# PRINT TO JSON - LIBRARY NODES
 	json$entity.lib <- .ddg.json.lib( libraries , LABEL.NAMES$entity.lib , LABEL.PREFIX )
@@ -134,8 +134,8 @@
 		# extract columns: ddg.fun, ddg.lib (function names and their library names)
 		functions <- calls[ , 2:3]
 		functions <- unique(functions)
-    
-		rownames(functions) <- c( 1 : nrow(functions) )
+		
+		rownames(functions) <- c(1 : nrow(functions))
 		
 		# PRINT TO JSON - FUNCTION NODES
 		json$entity.func <- .ddg.json.func( functions , LABEL.NAMES$entity.func , LABEL.PREFIX )
@@ -325,7 +325,7 @@
 	fields$operatingSystem <- .Platform$OS.type
 	
 	# script variables
-	script.path <- .ddg.get("ddg.r.script.path")
+	script.path <- .ddg.r.script.path()
 	
 	if( ! is.null(script.path) )
 	{
@@ -353,8 +353,8 @@
 	fields$ddgTimeStamp <- .ddg.get("ddg.start.time")
 	
 	# hash algorithm
-  if (.ddg.is.set (".ddg.hash.algorithm")) {
-    fields <- append (fields, list (hashAlgorithm = .ddg.get(".ddg.hash.algorithm")))
+  if (.ddg.is.set ("ddg.hash.algorithm")) {
+    fields <- append (fields, list (hashAlgorithm = .ddg.get("ddg.hash.algorithm")))
   }
 	
 	# add prefix to names of the list
