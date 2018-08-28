@@ -375,7 +375,7 @@
   
   # an object
   if(is.object(value))
-    return(paste(class(value), collapse=", "))
+    return(.ddg.get.lowest.class(value))
   
   # envrionment, function, language
   if(is.environment(value))
@@ -976,13 +976,15 @@
       print ("Found null")
       print.value <- "null"
     }
-    else if (is.na(value)) {
-      print ("Found NA")
-      print.value <- "NA"
-    }
-    else if (length(value) == 1 && value == "") {
-      print ("Found empty string")
-      print.value <- ""
+    else if (length(value) == 1) {
+      if (is.na(value)) {
+        print ("Found NA")
+        print.value <- "NA"
+      }
+      else if (value == "") {
+        print ("Found empty string")
+        print.value <- ""
+      }
     }
     .ddg.data.node("Data", name, value, scope, from.env=from.env, print.value)
   }
