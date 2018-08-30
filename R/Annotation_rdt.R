@@ -1456,6 +1456,9 @@ prov.annotate.off <- function (fnames.off=NULL) {
 #' @rdname prov.annotate.on
 
 prov.set.detail <- function(detail.level) {
+  # If argument is missing, display help message.
+  if (missing(detail.level)) detail.level <- 4
+
   if (detail.level == 0) {
     .ddg.set("ddg.annotate.inside", FALSE)
     .ddg.set("ddg.max.loops", 0)
@@ -1477,6 +1480,7 @@ prov.set.detail <- function(detail.level) {
     .ddg.set("ddg.snapshot.size", Inf)
     .ddg.set("ddg.detail", 3)
   } else {
+    print("Please enter one of the following values:")
     print("0 = no internal annotation, no snapshots")
     print("1 = 1 loop, snapshots < 10k")
     print("2 = 10 loops, snapshots < 100k")

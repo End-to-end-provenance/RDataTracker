@@ -62,8 +62,7 @@
 
 .ddg.save.sourced.script.table <- function () {
   # Save if script is sourced.
-  if (!is.null(.ddg.r.script.path()))
-  {
+  if (.ddg.script.mode()) {
     # Save sourced script table to file.
     fileout <- paste(.ddg.path.debug(), "/sourced-scripts.csv", sep="")
     ddg.sourced.scripts <- .ddg.get("ddg.sourced.scripts")

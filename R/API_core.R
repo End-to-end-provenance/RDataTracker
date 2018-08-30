@@ -43,16 +43,8 @@
   # Initialize tables
   .ddg.init.tables()
 
-  # R script path is set to NULL in .ddg.init.tables. Reset R script path 
-  # to ddg.new.r.script path if using prov.run (script mode). Otherwise
-  # leave R script path = NULL (console mode). Note that ddg.new.r.script.path
-  # is set to NULL in .ddg.quit so its value does not carry forward to 
-  # future sessions.
-  if (.ddg.is.set("ddg.new.r.script.path")) {
-    if (!is.null(.ddg.get("ddg.new.r.script.path"))) {
-      .ddg.set("ddg.r.script.path", .ddg.get("ddg.new.r.script.path"))
-    }
-  }
+  # Set R script path to NULL if in console mode.
+  if (!.ddg.script.mode()) .ddg.set("ddg.r.script.path", NULL)
 
   # Get R script path
   r.script.path <- .ddg.r.script.path()
@@ -110,7 +102,7 @@
   .ddg.set("ddg.initialized", TRUE)
   
   # Add a Console start node if running from the console.
-  if (is.null(.ddg.r.script.path())) {
+  if (!.ddg.script.mode()) {
     .ddg.add.start.node (node.name = "Console")
   }
   
@@ -135,8 +127,8 @@
 #' "prov_console" in console mode or "prov_[script name]" in script mode. If overwrite = 
 #' FALSE, a timestamp is added to the directory name.
 #' @param prov.dir name of directory.  This can be a directory name, ".", or NULL.
-#' @param r.script.path the full path to the R script file
-#' that is being executed.
+#' @param r.script.path the full path to the R script file that is being 
+#' executed.
 #' @param overwrite If FALSE, a timestamp is added to the directory name
 #' @return the name of the directory where the ddg should be stored
 #' @noRd
@@ -220,7 +212,7 @@
   
   # If running from the console create a Console finish node.
   # Also create a start node for the next segment.
-  if (is.null (.ddg.r.script.path())) {
+  if (!.ddg.script.mode()) {
     .ddg.add.finish.node ()
     .ddg.add.start.node (node.name = "Console")
   }
@@ -248,7 +240,7 @@
   if (!.ddg.is.init()) return(invisible())
   
   # If running from the console create a Console finish node.
-  if (is.null (.ddg.r.script.path())) {
+  if (!.ddg.script.mode()) {
     .ddg.add.finish.node ()
   }
   
@@ -283,16 +275,16 @@
     .ddg.save.debug.files()
   }
    
-  # Set new R script path to NULL for subsequent sessions
-  .ddg.set("ddg.new.r.script.path", NULL)
+  # Set script mode to FALSE
+  .ddg.set("ddg.script.mode", FALSE)
 
   invisible()
 }
 
 #' .ddg.run initiates execution of a script and collects provenance as 
 #' the script executes.
-#' @param r.script.path the full path to the R script file
-#' that is being executed.
+#' @param r.script.path the full path to the R script file that is being
+#' executed.
 #' @return .ddg.run runs a script, collecting provenance as it does so.  
 #' It does not return a value. 
 #' @noRd
