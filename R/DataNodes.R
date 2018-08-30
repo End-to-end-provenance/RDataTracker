@@ -985,13 +985,15 @@
   print (paste ("name =", name))
   print ("value:")
   print (value)
-  if (is.character(value) && nchar(value) > 200) {
+  if (length(value) == 1 && is.character(value) && nchar(value) > 200) {
     print ("Found a long string")
     .ddg.snapshot.node(name, "txt", value, dscope=scope, from.env=from.env)
   } else {
-    print ("Did not find a string")
-    # Save the true value.
-    if (is.null(value)) {
+    print ("Did not find a long string")
+    if (length(value) == 0) {
+      print.value <- utils::capture.output(value)
+    }
+    else if (is.null(value)) {
       print ("Found null")
       print.value <- "null"
     }
