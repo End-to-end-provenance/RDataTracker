@@ -206,9 +206,6 @@
   # (used when executing a script using .ddg.source).
   .ddg.set("ddg.possible.last.cmd", NULL)
 
-  # Store R script path
-  .ddg.set("ddg.r.script.path", NULL)
-
   # Store path of current ddg
   .ddg.set("ddg.path", NULL)
   

@@ -38,6 +38,12 @@
 
 .ddg.json.string <- function()
 {
+	# Display message & return NULL if no provenance graph is available
+	if (is.null(.ddg.path())) {
+		cat("No provenance graph is available.\n")
+		return(NULL)
+	}
+
 	# CONSTANTS
 	JSON.VERSION <- "2.1"
 
