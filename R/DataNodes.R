@@ -303,9 +303,16 @@
   if( is.null(val.type) )
     return( "null" )
   
-  # list, object, environment, function, language
+  # object, environment, function, language
   if( length(val.type) == 1 )
     return( paste('"', val.type, '"', sep="") )
+  
+  # list
+  if (length (val.type) == 2) {
+    return (paste ('{"container":"', val.type[[1]], 
+        '", "dimension":[', val.type[[2]], 
+        ']}', sep = ""))
+  }
   
   # vector, matrix, array, data frame
   # type information recorded in a list of 3 vectors (container,dimension,type)
@@ -346,7 +353,19 @@
 
 .ddg.get.val.type <- function(value)
 {
-  # vector: a 1-dimensional array (uniform typing)
+  # data frame: is a type of list
+  if(is.data.frame(value))
+  {
+    types <- unname(sapply(value, .ddg.get.lowest.class))
+    return( unname(list("data_frame", dim(value), types)) )
+  }
+  
+  # a list
+  if(is.list(value))
+    return(list ("list", length(value)))
+  
+  # vector: a 1-dimensional array (uniform typing).  is.vector also returns
+  # true for lists
   if(is.vector(value))
     return( list("vector", length(value), .ddg.get.lowest.class(value)) )
   
@@ -357,17 +376,6 @@
   # array: n-dimensional (uniform typing)
   if(is.array(value))
     return( list("array", dim(value), .ddg.get.lowest.class(value[1])) )
-  
-  # data frame: is a type of list
-  if(is.data.frame(value))
-  {
-    types <- unname(sapply(value, .ddg.get.lowest.class))
-    return( unname(list("data_frame", dim(value), types)) )
-  }
-  
-  # a list
-  if(is.list(value))
-    return("list")
   
   if (is.factor (value)) {
     return (paste("Factor levels: ", paste (levels (value), collapse=", ")))
@@ -900,17 +908,20 @@
 
 .ddg.save.data <- function(name, value, graphic.fext="jpeg", error=FALSE, 
                            scope=NULL, from.env=FALSE, stack=NULL, env=NULL){
+  print ("In .ddg.save.data")
   if (is.null(scope)) {
     scope <- .ddg.get.scope(name, calls=stack, env=env)
   }
   
   # Determine type for value, and save accordingly.
   if (.ddg.is.graphic(value)) {
+    print ("Found graphic")
     .ddg.write.graphic(name, value, graphic.fext, scope=scope, from.env=from.env)
     return(invisible())
   }
   
   if (.ddg.is.simple(value)) {
+    print ("Found simple value")
     .ddg.save.simple(name, value, scope=scope, from.env=from.env)
     return(invisible())
   }
@@ -920,6 +931,7 @@
         {
           print.value <- paste (utils::capture.output(print (value)), collapse = " ")
           if (nchar(print.value) < 80) {
+            print ("Found short vector")
             .ddg.save.simple(name, value, print.value=print.value, scope=scope, from.env=from.env)            
             return(invisible())
           }
@@ -928,18 +940,25 @@
     )
   }
   
-  if (.ddg.is.csv(value)) .ddg.write.csv(name, value, scope=scope, from.env=from.env)
+  if (.ddg.is.csv(value)) {
+    print ("Found csv")
+    .ddg.write.csv(name, value, scope=scope, from.env=from.env)
+  }
   else if (is.list(value) || is.array(value)) {
+    print ("Found list or array")
     .ddg.snapshot.node(name, "txt", value, save.object=TRUE, dscope=scope, 
                        from.env=from.env)
   }
   else if (.ddg.is.connection(value)) {
+    print ("Found connection")
     .ddg.save.simple(name, value, scope=scope, from.env=from.env)
   }
   else if (.ddg.is.object(value)) {
+    print ("Found object")
     .ddg.snapshot.node(name, "txt", value, dscope=scope, from.env=from.env) 
   }
   else if (is.function(value)) {
+    print ("Found function")
     .ddg.save.simple(name, "#ddg.function", scope=scope, from.env=from.env)
   }
   else if (error) stop("Unable to create data (snapshot) node.")
