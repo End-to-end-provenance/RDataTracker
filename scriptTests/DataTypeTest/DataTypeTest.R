@@ -28,7 +28,11 @@ x.factor <- factor(c("red","green","blue","red","green","red"))
 x.vector.number <- c(1,2,3)
 x.vector.string <- c("one", "two", "three")
 x.vector.logical <- c(TRUE, FALSE, TRUE)
-x.vector.posixct <- rep(x.posixct, 3)
+
+# Surprisingly, is.vector returns false for the following (as do all other is. 
+# functions except for is.object).  Length returns 3.
+# What should we record for valtype?
+x.vector.posixct <- c(x.posixct, x.posixct, x.posixct)
 
 # matrix, array
 x.matrix <- matrix(data=c(1,2,3,4,5,6), nrow=3, ncol=2)
