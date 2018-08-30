@@ -40,9 +40,12 @@
 {
 	# edge case - prov collection not initialised
 	if( ! .ddg.is.set("ddg.tool.name") )
-		stop( "There is no provenance to be displayed.
+	{
+		warning( "There is no provenance to be displayed.
 Please call prov.run or prov.init to begin collecting provenance.",
 			  call. = FALSE)
+		return(NULL)
+	}
 	
 	# CONSTANTS
 	JSON.VERSION <- "2.1"

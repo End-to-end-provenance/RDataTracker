@@ -29,8 +29,11 @@ context( "Unit Test for OutputJson.R" )
 # edge case: when prov.json is run without initialising provenance capture
 test_that( "provenance capture not initialised",
 	{
-		expect_that( .ddg.json.write(), throws_error() )
-		expect_that( .ddg.json.string(), throws_error() )
+		expect_warning( .ddg.json.write() )
+		expect_true( is.null(.ddg.json.write()) )
+		
+		expect_warning( .ddg.json.string() )
+		expect_true( is.null(.ddg.json.string()) )
 	}
 )
 
