@@ -30,7 +30,7 @@
 # from.env - if the value was set globally before the script ran
 # time - a timestamp
 # hash - hash value for files
-# rw - either "read" or "write", only used for files
+# rw - either "read" or "write", only used for files - EF EDITS: to remove
 # loc - absolute path to the original file
 #
 # ddg.pnum is the number associated with the last procedure node created
@@ -102,7 +102,7 @@
           ddg.from.env = logical(size),
           ddg.time = character(size),
           ddg.hash = character(size),
-          ddg.rw = character(size),
+          #ddg.rw = character(size), # EF EDITS
           ddg.loc = character(size),
           stringsAsFactors=FALSE))
 }
@@ -254,7 +254,11 @@
   ddg.data.nodes$ddg.scope[ddg.dnum] <- dscope
   ddg.data.nodes$ddg.from.env[ddg.dnum] <- from.env
   ddg.data.nodes$ddg.hash[ddg.dnum] <- ""
-  ddg.data.nodes$ddg.rw[ddg.dnum] <- ""
+  
+  # EF EDITS - remove from table
+  #ddg.data.nodes$ddg.rw[ddg.dnum] <- ""
+  
+  
   ddg.data.nodes$ddg.time[ddg.dnum] <- dtime
   ddg.data.nodes$ddg.loc[ddg.dnum] <- dloc
   
@@ -274,11 +278,17 @@
     } else {
       # Get the table again because .ddg.add.to.hashtable changed it.
       ddg.data.nodes <- .ddg.data.node.table()
+      
+      # EF EDITS
+      #print(paste("Adding data node", ddg.dnum, "named", dname, 
+      #            "with scope", dscope, 
+      #            " and value ", ddg.data.nodes$ddg.value[ddg.dnum], 
+      #            " that hashes to ", ddg.data.nodes$ddg.hash[ddg.dnum], 
+      #            " and performs a file ", ddg.data.nodes$ddg.rw[ddg.dnum]))
       print(paste("Adding data node", ddg.dnum, "named", dname, 
                   "with scope", dscope, 
                   " and value ", ddg.data.nodes$ddg.value[ddg.dnum], 
-                  " that hashes to ", ddg.data.nodes$ddg.hash[ddg.dnum], 
-                  " and performs a file ", ddg.data.nodes$ddg.rw[ddg.dnum]))
+                  " that hashes to ", ddg.data.nodes$ddg.hash[ddg.dnum]))
     }
   }
 }

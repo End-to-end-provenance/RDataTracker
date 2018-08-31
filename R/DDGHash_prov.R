@@ -32,7 +32,10 @@
   ddg.data.nodes <- .ddg.data.node.table()
   dhash <- .ddg.calculate.hash(dname)
   ddg.data.nodes$ddg.hash[dnum] <- dhash
-  drw <- .ddg.calculate.rw(dname)
-  ddg.data.nodes$ddg.rw[dnum] <- drw
+  
+  # EF EDITS
+  #drw <- .ddg.calculate.rw(dname)
+  #ddg.data.nodes$ddg.rw[dnum] <- drw
+  
   .ddg.set("ddg.data.nodes", ddg.data.nodes)
 }
