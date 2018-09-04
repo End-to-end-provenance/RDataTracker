@@ -67,10 +67,15 @@ test_that ("large data structures - with snapshots",
       bool.vector <- c (TRUE, FALSE, TRUE)
       df <- data.frame (char.vector, int.vector, bool.vector)
       expect_equal (.ddg.get.node.val (df), NULL)
-      expect_equal (.ddg.get.node.val (matrix(data=c(1,2,3,4,5,6), nrow=3, ncol=2)), NULL)
+      m <- matrix(data=c(1,2,3,4,5,6), nrow=3, ncol=2)
+      expect_equal (.ddg.get.node.val (m), NULL)
       expect_equal (.ddg.get.node.val (x.array <- array(data=c(1,2,3,4,5,6,7,8), dim=c(2,2,2))), NULL)
-      list2 <- list(int.vector, char.vector, bool.vector, df)
+      list1 <- list(10, "abc", TRUE, NA, NULL)
+      list2 <- list(int.vector, char.vector, bool.vector, m, df)
       expect_equal (.ddg.get.node.val (list2), NULL)
+      
+      list3 <- list(list1, list2)
+      expect_equal (.ddg.get.node.val (list3), NULL)
     }
 )
 
