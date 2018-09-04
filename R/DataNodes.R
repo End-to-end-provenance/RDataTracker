@@ -246,6 +246,9 @@
 #      else if (!is.null(dvalue)) dvalue
 #      else ""
   
+  # get the value to store
+  node.val <- .ddg.get.node.val (value)
+  
   # get value type
   val.type <- .ddg.get.val.type.string(value)
   
@@ -284,6 +287,96 @@
                   " and value ", ddg.data.nodes$ddg.value[ddg.dnum], 
                   " that hashes to ", ddg.data.nodes$ddg.hash[ddg.dnum], 
                   " and performs a file ", ddg.data.nodes$ddg.rw[ddg.dnum]))
+    }
+  }
+}
+
+#' .ddg.get.node.val
+#' 
+#' Calculates the string value to store in the data node.  
+#' 
+#' @return If the value is a short value, it returns the value.  
+#' If it is a long value and snapshots are not being saved, it is a 
+#' 1-line value that is truncated.  If it is a long value
+#' and snapshots are being saved, it returns NULL.
+#' 
+#' @param value the actual data value
+#' @noRd
+.ddg.get.node.val <- function (value) {
+  if (is.null (value)) {
+    return ("NULL")
+  }
+  
+  # No snapshots, so we want to save a value, perhaps truncated
+  if (.ddg.snapshot.size() == 0) {
+    
+    # Get a string version of the value
+    if (is.data.frame (value)) {
+      print.value <- utils::capture.output (print (value[1,]))
+      print.value <- paste ("Row", print.value[[2]])
+    }
+    else if (is.array(value) && length (dim(value)) > 1) {
+      print.value <- utils::capture.output (print (value))
+      print.value <- Find (function (line) return (startsWith (line, "[1,")), print.value)
+    }
+    else if (is.list (value)) {
+      print.value <- paste (utils::capture.output (print (unlist (value))), collapse="")
+      
+      # Remove leading spaces
+      print.value <- sub ("^ *", "", print.value)
+    }
+    else {
+      print.value <- utils::capture.output (print (value))
+    }
+    
+    # Strip off the index 
+    if (!is.array (value)) {
+      print.value <- sub ("^.*?] ", "", print.value)
+    }
+    
+    # Truncate it if it is long
+    if (nchar(print.value) > 80) {
+      print.value <- paste0 (substring (print.value, 1, 80), "...")
+    } 
+    
+    # Keep just the first line
+    if (grepl ("\n", print.value)) {
+      print.value <- paste0 (sub ("\\n.*", "", print.value), "...")
+    }
+    
+    return (print.value)
+  }
+  
+  # Saving snapshots
+  else {
+    if (is.list (value)) {
+      print.value <- paste (utils::capture.output (print (unlist (value))), collapse="")
+      
+      # Remove leading spaces
+      print.value <- sub ("^ *", "", print.value)
+    }
+    else {
+      print.value <- utils::capture.output (print (value))
+    }
+    
+    # If it is not a 1-liner, we should save the value in a snapshot file
+    if (length (print.value) > 1 || grepl ("\n", print.value)) {
+      return (NULL)
+    }
+    
+    # Strip off the index 
+    if (!is.array (value)) {
+      print.value <- sub ("^.*?] ", "", print.value)
+    }
+    
+    # If it is a short 1-line value, store the value
+    if (nchar (print.value) <= 80) {
+      return (print.value)
+    }
+    
+    # If long, value should go in a snapshot file
+    else {
+      return (NULL)
     }
   }
 }
