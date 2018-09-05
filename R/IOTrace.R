@@ -1175,7 +1175,7 @@
 
       # Add an output node with the same name and make it an output from
       # the last procedure node.
-      .ddg.data.node("Data", dev.node.name, "graph", NULL)
+      .ddg.device.node(dev.node.name)
       .ddg.lastproc2data(dev.node.name)
       
       # Remember that the node was created.
