@@ -561,7 +561,7 @@
   }
   
   # Check that the function is not being called due to saving a snapshot file.
-  if (length (grep ("^.ddg.snapshot", sys.calls())) > 0) {
+  if (length (grep ("^.ddg.save.snapshot", sys.calls())) > 0) {
     return()
   }
   

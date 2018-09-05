@@ -223,7 +223,6 @@
   #print("In .ddg.record.data")
   #print(paste("dvalue =", utils::head(dvalue)))
   #print(paste("value =", utils::head(value)))
-  #print (sys.calls())
   
   if (!.ddg.is.data.type (dtype)) {
     print (paste (".ddg.record.data: bad value for dtype - ", dtype))
@@ -836,7 +835,7 @@
 #                   orig.data, dscope, from.env=from.env, dtime)
 #  
 #  if (.ddg.debug.lib()) print(paste("snapshot.node: ", dname))
-  return(dpfile)
+  return(paste(.ddg.data.dir(), dfile, sep="/"))
 }
 
 #' .ddg.supported.graphic - the sole purpose of this function is
@@ -1077,15 +1076,15 @@
   invisible()
 }
 
-#' .ddg.save.simple takes in a simple name-value pair and creates
-#' a data node. Extra long strings are saved as snapshots. 
-#' @param name data node name.
-#' @param value data node value.
-#' @param scope data node scope.
-#' @param print.value If non-null, this is the value that should be placed in 
-#'    the node.
-#' @return nothing
-#' @noRd
+## .ddg.save.simple takes in a simple name-value pair and creates
+## a data node. Extra long strings are saved as snapshots. 
+## @param name data node name.
+## @param value data node value.
+## @param scope data node scope.
+## @param print.value If non-null, this is the value that should be placed in 
+##    the node.
+## @return nothing
+## @noRd
 
 #.ddg.save.simple <- function(name, value, scope=NULL, from.env=FALSE, print.value=NULL) {
 #  # Save extra long strings as snapshot.
@@ -1175,16 +1174,16 @@
   }
 }
 
-#' .ddg.write.csv takes as input a name-value pair for a
-#' variable and attempts to save the data as a csv file. It does
-#' not create any edges but does add the node to the DDG. Edge
-#' creation should occur from wherever this function is called. 
-#' @param name data node name.
-#' @param value data node value.
-#' @param scope data node scope.
-#' @param from.env TRUE if defined outside the script
-#' @return nothing
-#' @noRd
+## .ddg.write.csv takes as input a name-value pair for a
+## variable and attempts to save the data as a csv file. It does
+## not create any edges but does add the node to the DDG. Edge
+## creation should occur from wherever this function is called. 
+## @param name data node name.
+## @param value data node value.
+## @param scope data node scope.
+## @param from.env TRUE if defined outside the script
+## @return nothing
+## @noRd
 
 #.ddg.write.csv <- function(name, value, scope=NULL, from.env=FALSE) {
 #  tryCatch(
