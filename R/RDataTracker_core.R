@@ -453,7 +453,7 @@
       if (var == "") {      
         # Add a data node for the plot and link it in.
         # Set ddg.last.ggplot to the name of this node
-        .ddg.data.node("Data", ".ggplot", "graph", NULL)
+        .ddg.data.node("Data", ".ggplot", ggplot2::last_plot(), NULL)
         .ddg.lastproc2data(".ggplot")
         .ddg.set("ddg.last.ggplot", ".ggplot")
       }

@@ -450,6 +450,10 @@
     return( unname(list("data_frame", dim(value), types)) )
   }
   
+  # an object
+  if(is.object(value))
+    return(.ddg.get.lowest.class(value))
+  
   # a list
   if(is.list(value))
     return(list ("list", length(value)))
@@ -470,10 +474,6 @@
   if (is.factor (value)) {
     return (paste("Factor levels: ", paste (levels (value), collapse=", ")))
   }
-  
-  # an object
-  if(is.object(value))
-    return(.ddg.get.lowest.class(value))
   
   # envrionment, function, language
   if(is.environment(value))
@@ -693,7 +693,12 @@
   # Write out text file for txt or empty fext.
   else if (fext == "txt" || fext == "" || fext == "R") {
     file.create(dpfile, showWarnings=FALSE)
-    write(utils::capture.output(data), dpfile)
+    if ("ggplot" %in% class(data)) {
+      write(utils::capture.output(unlist(data)), dpfile)
+    }
+    else {
+      write(utils::capture.output(data), dpfile)
+    }
   }
   
   # Write out text file for txt or empty fext.
