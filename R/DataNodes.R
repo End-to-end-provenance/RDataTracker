@@ -73,7 +73,7 @@
 #' @noRd
 
 .ddg.is.data.type <- function(type) {
-  return(type %in% c("Data", "Snapshot", "File", "URL", "Exception"))
+  return(type %in% c("Data", "Device", "Snapshot", "File", "URL", "Exception"))
 }
 
 #' .ddg.dnum returns the counter used to assign data node ids
@@ -241,7 +241,9 @@
   node.val <- .ddg.get.node.val (value)
   
   # get value type
-  val.type <- .ddg.get.val.type.string(value)
+  val.type <- 
+      if (dtype == "Device") "Device"
+      else .ddg.get.val.type.string(value)
   
   #print(".ddg.record.data: adding info")
   ddg.data.nodes$ddg.type[ddg.dnum] <- dtype
@@ -326,7 +328,12 @@
     
     # Keep just the first line
     if (length (print.value) > 1) {
-      print.value <- print.value[1]
+      print.value <- paste0 (print.value[1], "...")
+    }
+    
+    # Keep just the first line
+    if (grepl ("\n", print.value)) {
+      print.value <- paste0 (sub ("\\n.*", "", print.value), "...")
     }
     
     # Truncate it if it is long
@@ -334,17 +341,12 @@
       print.value <- paste0 (substring (print.value, 1, 80), "...")
     } 
     
-    # Keep just the first line
-    if (grepl ("\n", print.value)) {
-      print.value <- paste0 (sub ("\\n.*", "", print.value), "...")
-    }
-    
     return (print.value)
   }
   
   # Saving snapshots
   else {
-    if (is.list (value)) {
+    if (is.list (value) && length(value) > 0) {
       print.value <- paste (utils::capture.output (print (unlist (value))), collapse="")
       
       # Remove leading spaces
@@ -541,6 +543,22 @@
   invisible()
 }
 
+#' .ddg.device.node creates a node to represent a graphics device
+#' There is no value associated with this node.  It allows us
+#' to chain together the lineage of plotting calls.
+#' @param dname name of the device node.
+#' @return nothing
+#' @noRd
+
+.ddg.device.node <- function(dname) {
+  # TODO: Need to update DDG Explorer to display these.  Use a new color?
+  # Record in data node table
+  .ddg.record.data("Device", dname, "", "", "undefined")
+  if (.ddg.debug.lib()) print(paste("device.node:", dname))
+  
+  invisible()
+}
+
 #' .ddg.get.element.size estimates the size in memory of the first 
 #' row (data frame or matrix) or first element (vector, array, or list)
 #' of a complex data object.
@@ -627,22 +645,26 @@
   
   # If the object is an environment, update the data to be the environment's
   # name followed by a list of the variables bound in the environment.
-  if (is.environment (data)) {
-    envHeader <- paste0 ("<environemnt: ", environmentName (data), ">")
-    data <- c (envHeader, ls(data), recursive=TRUE)
-    fext <- "txt"
-  }
-  else if ("XMLInternalDocument" %in% class(data)) {
+#  if (is.environment (data)) {
+#    envHeader <- paste0 ("<environemnt: ", environmentName (data), ">")
+#    data <- c (envHeader, ls(data), recursive=TRUE)
+#    fext <- "txt"
+#  }
+#  else if ("XMLInternalDocument" %in% class(data)) { 
+  if ("XMLInternalDocument" %in% class(data)) {
     fext <- "xml"
   }
   else if (is.data.frame(data) || is.matrix(data)) {
     fext <- "csv"
   }
-  else if (is.character(data)) {
-    fext <- "txt"
+  else if (is.function (data)) {
+    fext <- "R"
   }
+#  else if (is.character(data)) {
+#    fext <- "txt"
+#  }
   else {
-    data <- utils::capture.output (print (data))
+#    data <- utils::capture.output (print (data))
     fext <- "txt"
   }
   
@@ -669,9 +691,15 @@
   }
   
   # Write out text file for txt or empty fext.
-  else if (fext == "txt" || fext == "") {
+  else if (fext == "txt" || fext == "" || fext == "R") {
     file.create(dpfile, showWarnings=FALSE)
     write(utils::capture.output(data), dpfile)
+  }
+  
+  # Write out text file for txt or empty fext.
+  else if (fext == "R") {
+    file.create(dpfile, showWarnings=FALSE)
+    write(deparse (data), dpfile)
   }
   
   # Write out data node object if the file format is unsupported.

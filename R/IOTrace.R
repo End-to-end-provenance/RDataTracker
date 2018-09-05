@@ -1125,7 +1125,7 @@
 
   # Create a node for the grpahics device and connect it to the last procedural node.
   dev.node.name <- paste0("dev.", grDevices::dev.cur())
-  .ddg.data.node("Data", dev.node.name, "graph", NULL)
+  .ddg.device.node(dev.node.name)
   .ddg.lastproc2data(dev.node.name)
   
   # Remember that the device node was created for this statement to avoid duplicates.

@@ -8,7 +8,7 @@
 		// agent: this json file and the tool that produced this
 		"rdt:a1": {
 			"rdt:tool.name": "RDataTracker",
-			"rdt:tool.version": "2.27.0",
+			"rdt:tool.version": "3.0.0",
 			"rdt:json.version": "2.1"
 		}
 	},
@@ -18,7 +18,7 @@
 		"rdt:p1": {
 			"rdt:name": "WarningTest.R",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 0.901,
+			"rdt:elapsedTime": 0.738,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -28,7 +28,7 @@
 		"rdt:p2": {
 			"rdt:name": "a <- 1",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.902,
+			"rdt:elapsedTime": 0.793,
 			"rdt:scriptNum": 0,
 			"rdt:startLine": 1,
 			"rdt:startCol": 1,
@@ -38,7 +38,7 @@
 		"rdt:p3": {
 			"rdt:name": "warning(\"foo\", call. = FALSE)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.909,
+			"rdt:elapsedTime": 0.803,
 			"rdt:scriptNum": 0,
 			"rdt:startLine": 2,
 			"rdt:startCol": 1,
@@ -48,7 +48,7 @@
 		"rdt:p4": {
 			"rdt:name": "b <- 2",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.913,
+			"rdt:elapsedTime": 0.807,
 			"rdt:scriptNum": 0,
 			"rdt:startLine": 3,
 			"rdt:startCol": 1,
@@ -58,7 +58,7 @@
 		"rdt:p5": {
 			"rdt:name": "WarningTest.R",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 0.918,
+			"rdt:elapsedTime": 0.812,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -82,7 +82,7 @@
 		},
 		"rdt:d2": {
 			"rdt:name": "warning.msg",
-			"rdt:value": " foo",
+			"rdt:value": "\" foo\"",
 			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}",
 			"rdt:type": "Exception",
 			"rdt:scope": "ddg.library",
@@ -111,12 +111,12 @@
 			"rdt:language": "R",
 			"rdt:langVersion": "R version 3.5.0 (2018-04-23)",
 			"rdt:script": "[DIR]/WarningTest.R",
-			"rdt:scriptTimeStamp": "2017-08-01T13.22.54EDT",
+			"rdt:scriptTimeStamp": "2018-08-10T14.24.37EDT",
 			"rdt:sourcedScripts": "",
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:workingDirectory": "[DIR]",
 			"rdt:ddgDirectory": "[DIR]/prov_WarningTest",
-			"rdt:ddgTimeStamp": "2018-07-23T14.26.14EDT",
+			"rdt:ddgTimeStamp": "2018-09-05T15.24.00EDT",
 			"rdt:hashAlgorithm": "md5"
 		},
 
@@ -139,7 +139,7 @@
 		},
 		"rdt:l3": {
 			"name": "ggplot2",
-			"version": "2.2.1",
+			"version": "3.0.0",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -171,7 +171,7 @@
 		},
 		"rdt:l7": {
 			"name": "RDataTracker",
-			"version": "2.27.0",
+			"version": "3.0.0",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
