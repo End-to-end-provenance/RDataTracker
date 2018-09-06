@@ -98,6 +98,7 @@ methods::setMethod ("initialize",
       # If we have parseData, we extract the information into oure
       # object.
       else {
+        # print (paste ("pos =", parseData$line1, parseData$col1, parseData$line2, parseData$col2))
         .Object@startLine <- parseData$line1
         .Object@startCol <- parseData$col1
         .Object@endLine <- parseData$line2

@@ -395,7 +395,7 @@
   
   # object, environment, function, language
   if( length(val.type) == 1 )
-    return( paste('"', val.type, '"', sep="") )
+    return( val.type )
   
   # list
   if (length (val.type) == 2) {
