@@ -237,9 +237,6 @@
     ddg.data.nodes <- .ddg.add.rows("ddg.data.nodes", .ddg.create.data.node.rows ())
   }
   
-  # get the value to store
-  node.val <- .ddg.get.node.val (value)
-  
   # get value type
   val.type <- 
       if (dtype == "Device") "Device"
@@ -316,6 +313,9 @@
       
       # Remove leading spaces
       print.value <- sub ("^ *", "", print.value)
+    }
+    else if (.ddg.is.connection(value)) {
+      print.value <- showConnections(TRUE)[as.character(value[1]), "description"]
     }
     else {
       print.value <- utils::capture.output (print (value))
@@ -521,7 +521,9 @@
   # Get scope if necessary.
   if (is.null(dscope)) dscope <- .ddg.get.scope(dname)
   
-  val <- .ddg.get.node.val (dvalue)
+  val <- 
+      if (dtype == "Exception") dvalue
+      else .ddg.get.node.val (dvalue)
   
   # .ddg.get.node.val returns NULL if we should store the value in a snapshot.
   # Otherwise, it returns a string representation of the value to store
@@ -602,6 +604,23 @@
 
 .ddg.save.snapshot <- function (dname, data, dscope, from.env) {  
   
+  # Determine what type of file to create.  We do this before checking
+  # the size, because for functions, the type of the data will
+  # change from function to text when we determine whether to
+  # truncate it.
+  if ("XMLInternalDocument" %in% class(data)) {
+    fext <- "xml"
+  }
+  else if (is.data.frame(data) || is.matrix(data)) {
+    fext <- "csv"
+  }
+  else if (is.function (data)) {
+    fext <- "R"
+  }
+  else {
+    fext <- "txt"
+  }
+  
   # Determine if we should save the entire data
   snapshot.size <- .ddg.snapshot.size()
   
@@ -632,6 +651,18 @@
     }
   }
   
+  else if (is.function (data)) {
+    func.text <- deparse (data)
+    if (utils::object.size(func.text) < snapshot.size * 1024) {
+      data <- func.text
+      full.snapshot <- TRUE
+    }
+    else {
+      data <- substr (func.text, 1, snapshot.size * 1024)
+      full.snapshot <- FALSE
+    }
+  }
+  
   else {
     full.snapshot <- FALSE
   }
@@ -642,31 +673,6 @@
   
   # Snapshot type
   dtype <- "Snapshot"
-  
-  # If the object is an environment, update the data to be the environment's
-  # name followed by a list of the variables bound in the environment.
-#  if (is.environment (data)) {
-#    envHeader <- paste0 ("<environemnt: ", environmentName (data), ">")
-#    data <- c (envHeader, ls(data), recursive=TRUE)
-#    fext <- "txt"
-#  }
-#  else if ("XMLInternalDocument" %in% class(data)) { 
-  if ("XMLInternalDocument" %in% class(data)) {
-    fext <- "xml"
-  }
-  else if (is.data.frame(data) || is.matrix(data)) {
-    fext <- "csv"
-  }
-  else if (is.function (data)) {
-    fext <- "R"
-  }
-#  else if (is.character(data)) {
-#    fext <- "txt"
-#  }
-  else {
-#    data <- utils::capture.output (print (data))
-    fext <- "txt"
-  }
   
   # Default file extensions.
   dfile <- paste(.ddg.dnum()+1, "-", snapname, ".", fext, sep="")
@@ -704,7 +710,7 @@
   # Write out text file for txt or empty fext.
   else if (fext == "R") {
     file.create(dpfile, showWarnings=FALSE)
-    write(deparse (data), dpfile)
+    write(data, dpfile)
   }
   
   # Write out data node object if the file format is unsupported.
