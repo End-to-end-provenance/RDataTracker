@@ -184,6 +184,7 @@
           # Add an input to the binding node for each variable referenced in the argument
           sapply (vars.used, function (var) {
                 param.scope <- .ddg.get.scope(var, for.caller = TRUE, calls=stack)
+                
                 if (.ddg.data.node.exists(var, param.scope)) {
                   .ddg.data2proc(as.character(var), param.scope, binding.node.name)
                   if (.ddg.debug.lib()) print(paste("param:", var))

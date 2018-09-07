@@ -42,7 +42,6 @@
 #' @return nothing
 #' @noRd
 
-# EF EDITS - remove drw parameter
 .ddg.add.to.hashtable <- function(dname, ddg.dnum, dloc, dvalue, dtime, dhash) {
   if (dhash == "") {
     return()
@@ -55,13 +54,6 @@
       else ""
   longpath <- paste0(getwd(), substring(.ddg.path(), 2), "/prov.json")
   
-  # EF EDITS
-  #.ddg.set("ddg.hashtable", 
-  #         rbind(.ddg.get("ddg.hashtable"), 
-  #               c(dscriptpath, dloc, longpath, 
-  #                 paste(.ddg.path(), dvalue, sep="/"), 
-  #                 ddg.dnum, dhash, dhash.algorithm, drw, dtime, dvalue), 
-  #               stringsAsFactors = FALSE))
   .ddg.set("ddg.hashtable", 
            rbind(.ddg.get("ddg.hashtable"), 
                  c(dscriptpath, dloc, longpath, 
@@ -85,14 +77,8 @@
   ddg.data.nodes <- .ddg.data.node.table()
   dhash <- .ddg.calculate.hash(dname)
   ddg.data.nodes$ddg.hash[dnum] <- dhash
-  
-  # EF EDITS
-  #drw <- .ddg.calculate.rw(dname)
-  #ddg.data.nodes$ddg.rw[dnum] <- drw
-  
   .ddg.set("ddg.data.nodes", ddg.data.nodes)
   
-  # EF EDITS - remove drw parameter
   .ddg.add.to.hashtable(dname = dname, ddg.dnum = dnum, dloc = dloc, 
       dvalue = dvalue, dtime = dtime, dhash)
 }
