@@ -328,7 +328,7 @@
 	fields$langVersion <- lang.version$version
 	
 	# operating system
-	fields$operatingSystem <- .Platform$OS.type
+	fields$operatingSystem <- version$os
 	
 	# script variables
 	script.path <- .ddg.r.script.path()
