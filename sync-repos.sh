@@ -94,6 +94,7 @@ function copy_provR_files {
   else
     rsync -tv --perms README.md ../provR_test/README.md
   fi
+  rsync -tv --perms NEWS_prov.md ../provR_test/NEWS.md
   rsync -tv --perms .Rbuildignore ../provR_test/
   rsync -rtv --del --exclude "*_rdt.R" --exclude "DDGCheckpoint.R" --perms R ../provR_test/
   if [ -e man_prov ] 
@@ -132,6 +133,7 @@ function copy_rdt_files {
   else
     rsync -tv --perms README.md ../rdt_test/README.md
   fi
+  rsync -tv --perms NEWS_rdt.md ../provR_test/NEWS.md
   rsync -tv --perms .Rbuildignore ../rdt_test/
   rsync -rtv --del --exclude "*_prov.R" --exclude "DDGCheckpoint.R" --perms R ../rdt_test/
   if [ -e man_rdt ] 
