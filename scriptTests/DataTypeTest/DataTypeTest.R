@@ -20,7 +20,7 @@ x.chr0 <- character(0)
 
 x.log0 <- logical(0)
 
-x.posixct <- as.POSIXct("080406 10:11", format = "%y%m%d %H:%M")
+x.posixct <- as.POSIXct("080406 10:11", tz = "UTC", format = "%y%m%d %H:%M")
 
 x.factor <- factor(c("red","green","blue","red","green","red"))
 
