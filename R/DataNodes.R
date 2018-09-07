@@ -73,7 +73,7 @@
 #' @noRd
 
 .ddg.is.data.type <- function(type) {
-  return(type %in% c("Data", "Snapshot", "File", "URL", "Exception"))
+  return(type %in% c("Data", "Device", "Snapshot", "File", "URL", "Exception"))
 }
 
 #' .ddg.dnum returns the counter used to assign data node ids
@@ -207,10 +207,10 @@
 #' .ddg.record.data records a data node in the data node table. 
 #' @param dtype data node type.
 #' @param dname data node name.
-#' @param dvalue data node value.
+#' @param dvalue value to store in the data node
 #' @param value the value of the data.  For some node types, this will be the same as dvalue;
-#' sometimes it is different.  For example, for snapshot nodes, dvalue is the location
-#' of the snapshot file, while value is the data itself.
+#' sometimes it is different.  value is used to calculate the val type, so it should be the original
+#' data, while dvalue is the string representation to place directly in the node.
 #' @param dscope data node scope.
 #' @param from.env (optional) if object is from initial environment.  Default is FALSE.
 #' @param dtime (optional) timestamp of original file.
@@ -223,7 +223,6 @@
   #print("In .ddg.record.data")
   #print(paste("dvalue =", utils::head(dvalue)))
   #print(paste("value =", utils::head(value)))
-  #print (sys.calls())
   
   if (!.ddg.is.data.type (dtype)) {
     print (paste (".ddg.record.data: bad value for dtype - ", dtype))
@@ -238,19 +237,16 @@
     ddg.data.nodes <- .ddg.add.rows("ddg.data.nodes", .ddg.create.data.node.rows ())
   }
   
-  dvalue2 <- 
-      if (length(dvalue) > 1 || !is.atomic(dvalue)) "complex"
-      else if (!is.null(dvalue)) dvalue
-      else ""
-  
   # get value type
-  val.type <- .ddg.get.val.type.string(value)
+  val.type <- 
+      if (dtype == "Device") "Device"
+      else .ddg.get.val.type.string(value)
   
   #print(".ddg.record.data: adding info")
   ddg.data.nodes$ddg.type[ddg.dnum] <- dtype
   ddg.data.nodes$ddg.num[ddg.dnum] <- ddg.dnum
   ddg.data.nodes$ddg.name[ddg.dnum] <- dname
-  ddg.data.nodes$ddg.value[ddg.dnum] <- dvalue2
+  ddg.data.nodes$ddg.value[ddg.dnum] <- dvalue
   ddg.data.nodes$ddg.val.type[ddg.dnum] <- val.type
   ddg.data.nodes$ddg.scope[ddg.dnum] <- dscope
   ddg.data.nodes$ddg.from.env[ddg.dnum] <- from.env
@@ -284,6 +280,104 @@
   }
 }
 
+#' .ddg.get.node.val
+#' 
+#' Calculates the string value to store in the data node.  
+#' 
+#' @return If the value is a short value, it returns the value.  
+#' If it is a long value and snapshots are not being saved, it is a 
+#' 1-line value that is truncated.  If it is a long value
+#' and snapshots are being saved, it returns NULL.
+#' 
+#' @param value the actual data value
+#' @noRd
+.ddg.get.node.val <- function (value) {
+  if (is.null (value)) {
+    return ("NULL")
+  }
+  
+  # No snapshots, so we want to save a value, perhaps truncated
+  if (.ddg.snapshot.size() == 0) {
+    
+    # Get a string version of the value
+    if (is.data.frame (value)) {
+      print.value <- utils::capture.output (print (value[1,]))
+      print.value <- paste ("Row", print.value[[2]])
+    }
+    else if (is.array(value) && length (dim(value)) > 1) {
+      print.value <- utils::capture.output (print (value))
+      print.value <- Find (function (line) return (startsWith (line, "[1,")), print.value)
+    }
+    else if (is.list (value)) {
+      print.value <- paste (utils::capture.output (print (unlist (value))), collapse="")
+      
+      # Remove leading spaces
+      print.value <- sub ("^ *", "", print.value)
+    }
+    else if (.ddg.is.connection(value)) {
+      print.value <- showConnections(TRUE)[as.character(value[1]), "description"]
+    }
+    else {
+      print.value <- utils::capture.output (print (value))
+    }
+    
+    # Strip off the index 
+    if (!is.array (value)) {
+      print.value <- sub ("^.*?] ", "", print.value)
+    }
+    
+    # Keep just the first line
+    if (length (print.value) > 1) {
+      print.value <- paste0 (print.value[1], "...")
+    }
+    
+    # Keep just the first line
+    if (grepl ("\n", print.value)) {
+      print.value <- paste0 (sub ("\\n.*", "", print.value), "...")
+    }
+    
+    # Truncate it if it is long
+    if (nchar(print.value) > 80) {
+      print.value <- paste0 (substring (print.value, 1, 80), "...")
+    } 
+    
+    return (print.value)
+  }
+  
+  # Saving snapshots
+  else {
+    if (is.list (value) && length(value) > 0) {
+      print.value <- paste (utils::capture.output (print (unlist (value))), collapse="")
+      
+      # Remove leading spaces
+      print.value <- sub ("^ *", "", print.value)
+    }
+    else {
+      print.value <- utils::capture.output (print (value))
+    }
+    
+    # If it is not a 1-liner, we should save the value in a snapshot file
+    if (length (print.value) > 1 || grepl ("\n", print.value)) {
+      return (NULL)
+    }
+    
+    # Strip off the index 
+    if (!is.array (value)) {
+      print.value <- sub ("^.*?] ", "", print.value)
+    }
+    
+    # If it is a short 1-line value, store the value
+    if (nchar (print.value) <= 80) {
+      return (print.value)
+    }
+    
+    # If long, value should go in a snapshot file
+    else {
+      return (NULL)
+    }
+  }
+}
+
 #' .ddg.get.val.type.string returns the type information for a given value as a string.
 #' "null" for null values. For values of length 1, it is the type of the value.
 #' For longer values, the description includes the container (like vector, matrix, ...),
@@ -299,9 +393,16 @@
   if( is.null(val.type) )
     return( "null" )
   
-  # list, object, environment, function, language
+  # object, environment, function, language
   if( length(val.type) == 1 )
-    return( paste('"', val.type, '"', sep="") )
+    return( val.type )
+  
+  # list
+  if (length (val.type) == 2) {
+    return (paste ('{"container":"', val.type[[1]], 
+        '", "dimension":[', val.type[[2]], 
+        ']}', sep = ""))
+  }
   
   # vector, matrix, array, data frame
   # type information recorded in a list of 3 vectors (container,dimension,type)
@@ -342,7 +443,23 @@
 
 .ddg.get.val.type <- function(value)
 {
-  # vector: a 1-dimensional array (uniform typing)
+  # data frame: is a type of list
+  if(is.data.frame(value))
+  {
+    types <- unname(sapply(value, .ddg.get.lowest.class))
+    return( unname(list("data_frame", dim(value), types)) )
+  }
+  
+  # an object
+  if(is.object(value))
+    return(.ddg.get.lowest.class(value))
+  
+  # a list
+  if(is.list(value))
+    return(list ("list", length(value)))
+  
+  # vector: a 1-dimensional array (uniform typing).  is.vector also returns
+  # true for lists
   if(is.vector(value))
     return( list("vector", length(value), .ddg.get.lowest.class(value)) )
   
@@ -354,20 +471,9 @@
   if(is.array(value))
     return( list("array", dim(value), .ddg.get.lowest.class(value[1])) )
   
-  # data frame: is a type of list
-  if(is.data.frame(value))
-  {
-    types <- unname(sapply(value, .ddg.get.lowest.class))
-    return( unname(list("data_frame", dim(value), types)) )
+  if (is.factor (value)) {
+    return (paste("Factor levels: ", paste (levels (value), collapse=", ")))
   }
-  
-  # a list
-  if(is.list(value))
-    return("list")
-  
-  # an object
-  if(is.object(value))
-    return("object")
   
   # envrionment, function, language
   if(is.environment(value))
@@ -405,94 +511,52 @@
 #' @noRd
 
 .ddg.data.node <- function(dtype, dname, dvalue, dscope, from.env=FALSE) {
+  #print (sys.calls())
   #print ("In .ddg.data.node")
   #print(paste(".ddg.data.node: dname =", dname))
-  #print(paste(".ddg.data.node: typeof(dvalue) =", typeof(dvalue)))
+  #print(paste(".ddg.data.node: str(dvalue) =", utils::str(dvalue)))
   #print(paste(".ddg.data.node: dvalue =", dvalue))
   #print(paste(".ddg.data.node: dscope =", dscope))
-  # If object or a long list, try to create snapshot node.
   
-  if (is.object(dvalue)) {
-    if (.ddg.is.connection(dvalue)) {
-      val <- showConnections(TRUE)[as.character(dvalue[1]), "description"]
-
-      # Record in data node table
-      .ddg.record.data(dtype, dname, val, val, dscope, from.env=from.env)
-      
-      if (.ddg.debug.lib()) print(paste("data.node:", dtype, dname))
-      return()
-    }
-    else {
-      tryCatch(
-          {
-            .ddg.snapshot.node (dname, "txt", dvalue, dscope=dscope, from.env=from.env)
-            return()
-          },
-          error = function(e) {
-            error.msg <- paste("Unable to create snapshot node for", dname, "Details:", e)
-            .ddg.insert.error.message(error.msg)
-            .ddg.data.node (dtype, dname, "complex", dscope, from.env=from.env)
-            return ()
-          }
-      )
-    }
-    
-  }
+  # Get scope if necessary.
+  if (is.null(dscope)) dscope <- .ddg.get.scope(dname)
   
-  else if (is.matrix(dvalue) || 
-           (is.vector(dvalue) && !is.character(dvalue) && length(dvalue) > 20)) {
-    .ddg.snapshot.node (dname, "csv", dvalue, dscope=dscope, from.env=from.env)
-    return ()
-  }
+  val <- 
+      if (dtype == "Exception") dvalue
+      else .ddg.get.node.val (dvalue)
   
-  #print("Converting value to a string")
-  # Convert value to a string.
-  val <-
-      if (is.list(dvalue)) {
-        tryCatch(
-            {
-              dvalue <- .ddg.convert.list.to.string(dvalue)
-            },
-            error = function(e) {
-              error.msg <- paste("Unable to convert value of", dname, "to a string.")
-              .ddg.insert.error.message(error.msg)
-              "complex"
-            }
-        )
-      }
-      else if (typeof(dvalue) == "closure") "#ddg.function"
-      else if (length(dvalue) > 1 || !is.atomic(dvalue)) {
-        tryCatch(paste(.ddg.remove.tab.and.eol.chars(dvalue), collapse=","),
-            error = 
-              function(e) {
-                "complex"
-              }
-            )
-      }
-      else if (is.null(dvalue)) "NULL"
-      else if (length(dvalue) == 0) "Empty"
-      else if (is.na(dvalue)) "NA"
-      else if (dvalue == "complex" || dvalue == "#ddg.function") dvalue
-      else if (is.character(dvalue) && dvalue == "") "NotRecorded"
-      else {
-        .ddg.remove.tab.and.eol.chars(dvalue)
-      }
-  
-  if (grepl("\n", val)) {
-    # Create snapshot node.
-    .ddg.snapshot.node (dname, "txt", val, from.env=from.env)
-    return ()
+  # .ddg.get.node.val returns NULL if we should store the value in a snapshot.
+  # Otherwise, it returns a string representation of the value to store
+  # in the node.
+  if (is.null(val)) {
+    snapfile <- .ddg.save.snapshot (dname, dvalue, 
+                                    dscope, from.env=from.env)
+    dtime <- .ddg.timestamp()
+    .ddg.record.data("Snapshot", dname, snapfile, dvalue, dscope, from.env=from.env, dtime)
   }
   
   else {
-    # Get scope if necessary.
-    if (is.null(dscope)) dscope <- .ddg.get.scope(dname)
-    
     # Record in data node table
-    .ddg.record.data(dtype, dname, val, val, dscope, from.env=from.env)
+    .ddg.record.data(dtype, dname, val, dvalue, dscope, from.env=from.env)
     
     if (.ddg.debug.lib()) print(paste("data.node:", dtype, dname))
   }
+  
+  invisible()
+}
+
+#' .ddg.device.node creates a node to represent a graphics device
+#' There is no value associated with this node.  It allows us
+#' to chain together the lineage of plotting calls.
+#' @param dname name of the device node.
+#' @return nothing
+#' @noRd
+
+.ddg.device.node <- function(dname) {
+  # TODO: Need to update DDG Explorer to display these.  Use a new color?
+  # Record in data node table
+  .ddg.record.data("Device", dname, "", "", "undefined")
+  if (.ddg.debug.lib()) print(paste("device.node:", dname))
   
   invisible()
 }
@@ -523,39 +587,42 @@
   return(utils::object.size(element))
 }
 
-#' .ddg.snapshot.node creates a data node of type Snapshot. Snapshots
-#' are used for complex data values not written to file by the main
-#' script. The contents of data are written to the file dname.fext
-#' in the DDG directory. Snapshots are also used to capture output
-#' plots and other graphics generated by the R script. The user 
+#' .ddg.save.snapshot saves the contents of data to a file
+#' in the DDG data directory. The user 
 #' can control whether snapshots are saved and the size of snapshot
 #' files by setting the parameters snapshots and snapshot.size
-#' when calling prov.init or prov.run.  If snapshots are not saved,
-#' a data node will be created instead.  If the user passes in Inf,
+#' when calling prov.init or prov.run.  If the user passes in Inf,
 #' there is no limit on the snapshot size.  If the user passes a value > 0,
 #' if the R value is larger than this size, only the head of the data will
 #' be saved.
 #' @param dname name of data node.
-#' @param fext file extension.
 #' @param data value of data node.
-#' @param save.object (optional) if TRUE, also save as an R object.  Default FALSE
 #' @param dscope (optional) scope of data node.  Default NULL
 #' @param from.env (optional) true if a value set outside the script.  Default FALSE
-#' @return path and name of snapshot file
+#' @return path and name of snapshot file, relative to the ddg directory
 #' @noRd
 
-.ddg.snapshot.node <- function(dname, fext, data, save.object = FALSE, 
-                               dscope=NULL, from.env=FALSE) {
+.ddg.save.snapshot <- function (dname, data, dscope, from.env) {  
   
-  orig.data <- data
+  # Determine what type of file to create.  We do this before checking
+  # the size, because for functions, the type of the data will
+  # change from function to text when we determine whether to
+  # truncate it.
+  if ("XMLInternalDocument" %in% class(data)) {
+    fext <- "xml"
+  }
+  else if (is.data.frame(data) || is.matrix(data)) {
+    fext <- "csv"
+  }
+  else if (is.function (data)) {
+    fext <- "R"
+  }
+  else {
+    fext <- "txt"
+  }
   
   # Determine if we should save the entire data
   snapshot.size <- .ddg.snapshot.size()
-  
-  # Don't save the data
-  if (snapshot.size == 0) {
-    return(.ddg.data.node ("Data", dname, "", dscope, from.env=from.env))
-  }
   
   # object.size returns bytes, but snapshot.size is in kilobytes
   if (snapshot.size == Inf || utils::object.size(data) < snapshot.size * 1024) {
@@ -584,6 +651,18 @@
     }
   }
   
+  else if (is.function (data)) {
+    func.text <- deparse (data)
+    if (utils::object.size(func.text) < snapshot.size * 1024) {
+      data <- func.text
+      full.snapshot <- TRUE
+    }
+    else {
+      data <- substr (func.text, 1, snapshot.size * 1024)
+      full.snapshot <- FALSE
+    }
+  }
+  
   else {
     full.snapshot <- FALSE
   }
@@ -595,39 +674,17 @@
   # Snapshot type
   dtype <- "Snapshot"
   
-  # If the object is an environment, update the data to be the environment's
-  # name followed by a list of the variables bound in the environment.
-  if (is.environment (data)) {
-    envHeader <- paste0 ("<environemnt: ", environmentName (data), ">")
-    data <- c (envHeader, ls(data), recursive=TRUE)
-  }
-  else if ("XMLInternalDocument" %in% class(data)) {
-    fext <- "xml"
-  }
-  else if (is.vector(data) || is.data.frame(data) || is.matrix(data) || 
-           is.array(data) || is.list(data)) {
-  }
-  else if (!is.character(data)) {
-    tryCatch(data <- as.character(data),
-        error = function(e){
-          # Not sure if str or summary will give us the most useful
-          # information.
-          #data <- utils::capture.output(str(data));
-          data <- summary(data)
-        })
-  }
-  
   # Default file extensions.
-  dfile <-
-      if (fext == "" || is.null(fext)) paste(.ddg.dnum()+1, "-", snapname, sep="")
-      else paste(.ddg.dnum()+1, "-", snapname, ".", fext, sep="")
+  dfile <- paste(.ddg.dnum()+1, "-", snapname, ".", fext, sep="")
   
   # Get path plus file name.
   dpfile <- paste(.ddg.path.data(), "/", dfile, sep="")
   if (.ddg.debug.lib()) print(paste("Saving snapshot in ", dpfile))
   
   # Write to file .
-  if (fext == "csv") utils::write.csv(data, dpfile, row.names=FALSE)
+  if (fext == "csv") {
+    utils::write.csv(data, dpfile, row.names=FALSE)
+  }
   
   else if (fext == "xml") XML::saveXML (data, dpfile)
   
@@ -640,18 +697,20 @@
   }
   
   # Write out text file for txt or empty fext.
-  else if (fext == "txt" || fext == "") {
+  else if (fext == "txt" || fext == "" || fext == "R") {
     file.create(dpfile, showWarnings=FALSE)
-    if (is.list(data) && length(data) > 0) {
-      list.as.string <- .ddg.convert.list.to.string(data)
-      write(list.as.string, dpfile)
+    if ("ggplot" %in% class(data)) {
+      write(utils::capture.output(unlist(data)), dpfile)
     }
     else {
-      tryCatch(write(as.character(data), dpfile),
-          error = function(e){
-            utils::capture.output(data, file=dpfile)
-          })
+      write(utils::capture.output(data), dpfile)
     }
+  }
+  
+  # Write out text file for txt or empty fext.
+  else if (fext == "R") {
+    file.create(dpfile, showWarnings=FALSE)
+    write(data, dpfile)
   }
   
   # Write out data node object if the file format is unsupported.
@@ -662,22 +721,12 @@
   }
   
   # Check to see if we want to save the object.
-  if (save.object && full.snapshot) {
+  if (full.snapshot) {
     save(data, file = paste(.ddg.path.data(), "/", .ddg.dnum()+1, "-", snapname, 
                             ".RObject", sep=""), ascii = TRUE)
   }
   
-  dtime <- .ddg.timestamp()
-  
-  # Get scope if necessary.
-  if (is.null(dscope)) dscope <- .ddg.get.scope(dname)
-  
-  # Record in data node table
-  .ddg.record.data(dtype, dname, paste(.ddg.data.dir(), dfile, sep="/"), 
-                   orig.data, dscope, from.env=from.env, dtime)
-  
-  if (.ddg.debug.lib()) print(paste("snapshot.node: ", dname))
-  return(dpfile)
+  return(paste(.ddg.data.dir(), dfile, sep="/"))
 }
 
 #' .ddg.supported.graphic - the sole purpose of this function is
@@ -797,47 +846,6 @@
   return(is.object(value) && any(class(value) %in% graph.classes))
 }
 
-#' .ddg.is.simple returns TRUE if the value passed in is a simple
-#' data value which should be saved locally as opposed to stored
-#' in a separate file. 
-#' @param value value to test
-#' @return TRUE for NULL and for vectors of length 1
-#' @noRd
-
-.ddg.is.simple <- function(value) {
-  # Note that is.vector returns TRUE for lists, so we need to check
-  # lists separately.  Since every value in a list can have a
-  # different type, if it is a list, we will assume the value is
-  # complex. We consider NULL values to be simple.
-  return((!.ddg.is.graphic(value) &&
-            !is.list(value) &&
-            is.vector(value) &&
-            length(value) == 1) ||
-          is.null(value))
-}
-
-#' .ddg.is.csv returns TRUE if the value passed in should be saved
-#' as a csv file 
-#' @param value value to test
-#' @return TRUE for vectors longer than 1, and for all matrices and data frames
-#' @noRd
-
-.ddg.is.csv <- function(value) {
-  return(!.ddg.is.simple(value) && 
-         ((is.vector(value) && !is.list(value)) || is.matrix(value) || 
-            is.data.frame(value)))
-}
-
-#' .ddg.is.object returns TRUE if the value is determined to be an
-#' object by our standards.
-#' @param value value to test
-#' @return TRUE for objects and environments
-#' @noRd
-
-.ddg.is.object <- function(value){
-  return(is.object(value) || is.environment(value))
-}
-
 #' .ddg.save.data takes as input the name and value of a data node
 #' that needs to be created. It determines how the data should be
 #' output (or saved) and saves it in that format. 
@@ -862,48 +870,14 @@
   # Determine type for value, and save accordingly.
   if (.ddg.is.graphic(value)) {
     .ddg.write.graphic(name, value, graphic.fext, scope=scope, from.env=from.env)
+    return(invisible())
   }
-  else if (.ddg.is.simple(value)) {
-    .ddg.save.simple(name, value, scope=scope, from.env=from.env)
-  }
-  else if (.ddg.is.csv(value)) .ddg.write.csv(name, value, scope=scope, from.env=from.env)
-  else if (is.list(value) || is.array(value)) {
-    .ddg.snapshot.node(name, "txt", value, save.object=TRUE, dscope=scope, 
-                       from.env=from.env)
-  }
-  else if (.ddg.is.connection(value)) {
-    .ddg.save.simple(name, value, scope=scope, from.env=from.env)
-  }
-  else if (.ddg.is.object(value)) {
-    .ddg.snapshot.node(name, "txt", value, dscope=scope, from.env=from.env) 
-  }
-  else if (is.function(value)) {
-    .ddg.save.simple(name, "#ddg.function", scope=scope, from.env=from.env)
-  }
-  else if (error) stop("Unable to create data (snapshot) node.")
+  
   else {
-    error.msg <- paste("Unable to create data (snapshot) node.")
-    .ddg.insert.error.message(error.msg)
+    .ddg.data.node ("Data", name, value, dscope=scope, from.env=from.env)
   }
+  
   invisible()
-}
-
-#' .ddg.save.simple takes in a simple name-value pair and creates
-#' a data node. Extra long strings are saved as snapshots. 
-#' @param name data node name.
-#' @param value data node value.
-#' @param scope data node scope.
-#' @return nothing
-#' @noRd
-
-.ddg.save.simple <- function(name, value, scope=NULL, from.env=FALSE) {
-  # Save extra long strings as snapshot.
-  if (is.character(value) && nchar(value) > 200) {
-    .ddg.snapshot.node(name, "txt", value, dscope=scope, from.env=from.env)
-  } else {
-    # Save the true value.
-    .ddg.data.node("Data", name, value, scope, from.env=from.env)
-  }
 }
 
 #' .ddg.write.graphic takes as input the name of a variable as well
@@ -925,8 +899,9 @@
   .ddg.set ("ddg.last.ggplot", name)
   
   # Try to output graphic value.
-  .ddg.snapshot.node(name, "txt", value, save.object = TRUE, dscope=scope, 
-                     from.env=from.env)
+  #.ddg.snapshot.node(name, "txt", value, save.object = TRUE, dscope=scope, 
+  #                   from.env=from.env)
+  .ddg.data.node("Data", name, value, dscope=scope, from.env=from.env)
 }
 
 #' .ddg.graphic.snapshot copies a graphics value into a snapshot file 
@@ -959,56 +934,4 @@
       grDevices::dev.off()
     }
   }
-}
-
-#' .ddg.write.csv takes as input a name-value pair for a
-#' variable and attempts to save the data as a csv file. It does
-#' not create any edges but does add the node to the DDG. Edge
-#' creation should occur from wherever this function is called. 
-#' @param name data node name.
-#' @param value data node value.
-#' @param scope data node scope.
-#' @param from.env TRUE if defined outside the script
-#' @return nothing
-#' @noRd
-
-.ddg.write.csv <- function(name, value, scope=NULL, from.env=FALSE) {
-  tryCatch(
-      {
-        .ddg.snapshot.node(name, "csv", value, dscope=scope, from.env=from.env)
-      }
-      , error = function(e) {
-        # warning(paste("Attempted to write", name, 
-        #         "as .csv snapshot but failed. Out as RDataObject.", e))
-        .ddg.snapshot.node(name, "txt", value, save.object = TRUE, 
-                           dscope=scope, from.env=from.env)
-      }
-      )
-}
-
-#' .ddg.convert.list.to.string converts a list of values to a string
-#' by calling as.character on each element in the list. 
-#' @param dvalue a list of values.
-#' @return a string showing the position and value of each list member 
-#' @noRd
-
-.ddg.convert.list.to.string <- function (dvalue) {
-  values <- .ddg.remove.tab.and.eol.chars(lapply(dvalue, .ddg.as.character))
-  positions <- 1:length(values)
-  return (paste("[[", positions, "]]", values, collapse="\n"))
-}
-
-#' .ddg.as.character wraps an exception handler around as.character
-#' The exception handler captures the print output for the value and
-#' returns that instead.
-#' @param value a value to convert to a string
-#' @return the value represented as a string
-#' @noRd
-
-.ddg.as.character <- function (value) {
-  tryCatch (as.character(value),
-            error=function(e) {
-              utils::capture.output(print(value))
-            }
-            )
 }

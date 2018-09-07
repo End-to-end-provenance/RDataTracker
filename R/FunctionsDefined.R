@@ -49,7 +49,7 @@
 #' 
 #' @param funcname the name of the function
 #' @param funcdecl the parsed declaration of the function.  This should be
-#'    everything from "function" to the closing curly bracket.
+#'   everything from "function" to the closing curly brace
 #' @return nothing
 #' @noRd 
 .ddg.save.func.decl.info <- function (funcname, funcdecl) {
@@ -90,7 +90,7 @@
 #' that a non-local is being set. 
 #' 
 #' @param funcdecl the parsed declaration of the function.  This should be
-#'   everything from "function" to the closing curly bracket.
+#'   everything from "function" to the closing curly brace
 #' @return a vector containing all non-local variables assigned in the function
 #' @noRd 
 .ddg.find.nonlocals.set <- function (funcdecl) {
@@ -149,7 +149,7 @@
 #' which statements will be executed. 
 #' 
 #' @param funcdecl the parsed declaration of the function.  This should be
-#'   everything from "function" to the closing curly bracket.
+#'   everything from "function" to the closing curly brace
 #' @return a vector containing all non-local variables use in the function
 #' @noRd 
 .ddg.find.nonlocals.used <- function (funcdecl) {
