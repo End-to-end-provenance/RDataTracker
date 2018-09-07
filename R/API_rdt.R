@@ -85,7 +85,7 @@
 #' xxhash64 and murmur32. This feature uses the digest function from 
 #' the digest package.
 #' @param save.debug If TRUE, debug files are saved to the debug directory.
-#' This is intended for developers of the RDataTracker package.
+#' This is intended for developers of the RDataTracker / provR package.
 #' @return prov.init initializes the provenance collector.  The prov.init
 #' function does not return a value.
 #' @export
@@ -185,9 +185,8 @@ prov.quit <- function(save.debug = FALSE) {
 #'
 #' prov.run initiates execution of a script and collects provenance as 
 #' the script executes.
-#' @param r.script.path  the full path to the R script file
-#' that is being executed. If provided, a copy of the script will
-#' be saved with the provenance graph.
+#' @param r.script.path the full path to the R script file that is being 
+#' executed. A copy of the script will be saved with the provenance graph.
 #' @param display if TRUE, the provenance graph is displayed in DDG Explorer
 #' @return prov.run runs a script, collecting provenance as it does so.  
 #'   It does not return a value. 
@@ -205,9 +204,23 @@ prov.quit <- function(save.debug = FALSE) {
 prov.run <- function(r.script.path, prov.dir = NULL, overwrite = TRUE, 
   annotate.inside.functions = FALSE, first.loop = 1, max.loops = 0,
   snapshot.size = 0, hash.algorithm = "md5", save.debug = FALSE, display = FALSE) {
-  
-  # Store new R script path
-  .ddg.set("ddg.new.r.script.path", r.script.path)
+
+  # Stop & display message if R script path is missing
+  if (missing(r.script.path)) {
+    stop("Please provide the name of the R script to execute. If the script
+      is not in the working directory, please include the full path.")
+  }
+
+  # Stop & display message if R script file is not found
+  if (!file.exists(r.script.path)) {
+    stop("R script file not found.")
+  }
+
+  # Store R script path
+  .ddg.set("ddg.r.script.path", r.script.path)
+
+  # Set script mode to True
+  .ddg.set("ddg.script.mode", TRUE)
 
   # Initialize the provenance graph
   prov.init(prov.dir, overwrite, annotate.inside.functions, first.loop, max.loops, 
@@ -232,6 +245,13 @@ prov.run <- function(r.script.path, prov.dir = NULL, overwrite = TRUE,
 #' @rdname prov.run
 
 prov.source <- function(file) {
+  
+  # Stop & display message if argument is missing or not in script mode
+  if (missing(file) || !.ddg.script.mode()) {
+    stop("The prov.source function is for script annotation only.
+      Please use prov.run to execute a script and collect provenance.")
+  }
+  
   .ddg.source(file)
 }
 
@@ -282,7 +302,13 @@ prov.json <- function() {
 #' @rdname prov.json
 
 prov.dir <- function() {
-  # This is a wrapper function.
+
+  # Display a message if the provenance directory has not been not set
+  if (is.null(.ddg.path())) {
+    cat("The provenance directory has not been set. It will be 
+      set when prov.init or prov.run is called.\n")
+  }
+
   return(.ddg.path())
 }
 

@@ -17,7 +17,7 @@
 
 ######################### RDataTracker.R #########################
 
-# This file contains core functions for RDataTracker.
+# This file contains core functions for RDataTracker / provR.
 
 
 # Create DDG environment variable.
@@ -205,9 +205,6 @@
   # Record the current command to be opened during console execution
   # (used when executing a script using .ddg.source).
   .ddg.set("ddg.possible.last.cmd", NULL)
-
-  # Store R script path
-  .ddg.set("ddg.r.script.path", NULL)
 
   # Store path of current ddg
   .ddg.set("ddg.path", NULL)

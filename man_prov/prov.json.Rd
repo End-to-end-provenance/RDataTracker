@@ -21,7 +21,7 @@ prov.json returns the current provenance graph as a prov-json string.
 prov.dir returns the current provenance directory.
 }
 \details{
-ProvR collects provenance as a script executes.  Once collected,
+provR collects provenance as a script executes.  Once collected,
 prov.json can be called to access the provenance as a JSON string.  
 This is useful for applications that operate on the provenance.  The
 JSON is consistent with the PROV-JSON standard.

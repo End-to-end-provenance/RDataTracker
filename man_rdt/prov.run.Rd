@@ -56,11 +56,10 @@ xxhash64 and murmur32. This feature uses the digest function from
 the digest package.}
 
 \item{save.debug}{If TRUE, debug files are saved to the debug directory.
-This is intended for developers of the RDataTracker package.}
+This is intended for developers of the RDataTracker / provR package.}
 
-\item{r.script.path}{the full path to the R script file
-that is being executed. If provided, a copy of the script will
-be saved with the provenance graph.}
+\item{r.script.path}{the full path to the R script file that is being 
+executed. A copy of the script will be saved with the provenance graph.}
 
 \item{display}{if TRUE, the provenance graph is displayed in DDG Explorer}
 

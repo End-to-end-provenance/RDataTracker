@@ -75,7 +75,7 @@
   ddg.func.defs <- .ddg.get ("ddg.function.defs")
   if (nrow (ddg.func.defs [ddg.func.defs$func.name == funcname, ]) > 0) {
     warning (paste ("Multiple functions defined with name", funcname, 
-            ".  Provenance about use of non-locals inside these functions may be incorrect."))
+      ".  Provenance about use of non-locals inside these functions may be incorrect."))
   }
   else {
     ddg.func.defs <- rbind( ddg.func.defs, new.row)
@@ -174,8 +174,9 @@
       
       # Only add a variable as a local if it is not already a local and we have
       # not already seen the same name used as a non-local.
-      if (var.assigned != "" && !(var.assigned %in% vars.assigned) && !(var.assigned%in% nonlocal.uses)) {
-        vars.assigned <- c(vars.assigned, var.assigned)
+      if (var.assigned != "" && !(var.assigned %in% vars.assigned) 
+        && !(var.assigned%in% nonlocal.uses)) {
+          vars.assigned <- c(vars.assigned, var.assigned)
       }
     }
   }
@@ -226,4 +227,3 @@
   if (length(nonlocals) == 0) return (character())
   return (nonlocals[[1]])
 }
-
