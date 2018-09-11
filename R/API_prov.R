@@ -77,7 +77,13 @@
 prov.init <- function(prov.dir = NULL, overwrite = TRUE, snapshot.size = 0, 
   hash.algorithm = "md5", save.debug = FALSE) {
   
-  # Save name of provenance collection tool
+  if (.ddg.is.set("ddg.initialized") && .ddg.get ("ddg.initialized") == TRUE) {
+    stop ("Provenance collection is already started.  
+          Call prov.quit() to stop the current collection before starting a new one.")
+    return()
+  }
+
+# Save name of provenance collection tool
   .ddg.set("ddg.tool.name", "provR")
 
   # Save maximum snapshot size

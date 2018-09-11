@@ -638,7 +638,7 @@ methods::setMethod ("initialize",
     # Don't recurse on NULL.
     if (!(is.null(obj[[3]]))) {
       if (.ddg.is.functiondecl(obj[[3]])) var
-      else c(var, unlist(lapply(obj[[3]], .ddg.find.assign, globals.only)))
+      else c(var, unlist(.ddg.find.assign (obj[[3]], globals.only)))
     }
     else var
   }

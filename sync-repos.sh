@@ -103,7 +103,8 @@ function copy_provR_files {
   else 
     rsync -rtv --del --perms man/* ../provR_test/man
   fi
-  rsync -rtv --del --exclude "*_rdt*" --perms tests ../provR_test/tests
+  rsync -rtv --del --perms tests/test-all-prov.R ../provR_test/tests/test-all.R
+  rsync -rtv --del --exclude "*_rdt*" --perms tests/testthat ../provR_test/testthat
 }
 
 # Copy just the files that we want in the rdt repository.  Some
@@ -142,7 +143,8 @@ function copy_rdt_files {
   else
     rsync -rtv --del --perms man/* ../rdt_test/man
   fi
-  rsync -rtv --del --exclude "*_prov*" --perms tests ../rdt_test/tests
+  rsync -rtv --del --perms tests/test-all-rdt.R ../provR_test/tests/test-all.R
+  rsync -rtv --del --exclude "*_prov*" --perms tests/testthat ../rdt_test/tests/testthat
 }
 
 # Save the current commit number in the .commit file.
