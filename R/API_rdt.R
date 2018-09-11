@@ -100,6 +100,12 @@
 prov.init <- function(prov.dir = NULL, overwrite = TRUE, annotate.inside.functions = 
   FALSE, first.loop = 1, max.loops = 0, snapshot.size = 0, hash.algorithm = "md5",
   save.debug = FALSE) {
+
+  if (.ddg.is.set("ddg.initialized") && .ddg.get ("ddg.initialized") == TRUE) {
+    stop ("Provenance collection is already started.  
+			Call prov.quit() to stop the current collection before starting a new one.")
+    return()
+  }
   
   # Save name of provenance collection tool.
   .ddg.set("ddg.tool.name", "RDataTracker")
