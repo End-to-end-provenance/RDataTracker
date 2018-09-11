@@ -28,6 +28,11 @@
     		<fileset dir="R"
       			excludes="DDGCheckpoint.R, *_rdt.R"/>
   		</copy>
+        <mkdir dir="${builddir}/tests"/>
+        <copy overwrite="true" file="tests/test-all-prov.R" tofile="${builddir}/tests/test-all.R"/>
+    	<copy overwrite="true" todir="${builddir}/tests/testthat">
+    		<fileset dir="tests/testthat" />
+  		</copy>
         <copy overwrite="true" file="DESCRIPTION_prov" tofile="${builddir}/DESCRIPTION"/>
         <copy overwrite="true" file="LICENSE" todir="${builddir}"/>
         <copy overwrite="true" file="README_prov.md" tofile="${builddir}/README.md"/>
