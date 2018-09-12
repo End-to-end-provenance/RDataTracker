@@ -16,8 +16,27 @@ addons:
       r-cran-rcurl
       r-cran-v8
  
+r_packages:
+  curl
+  devtools
+  digest
+  ggplot2
+  grDevices
+  gtools
+  jsonlite 
+  knitr
+  methods
+  stringr
+  tools
+  utils
+  XML
+  testthat
+
+
 r_github_packages: 
   End-to-end-provenance/provViz
+
+install: true
 
 before_script:
   - "export DISPLAY=:99.0"
