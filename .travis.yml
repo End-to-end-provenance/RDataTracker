@@ -16,12 +16,12 @@ addons:
       r-cran-rcurl
       r-cran-v8
  
-r_packages:
-  - ggplot2
-  - jsonvalidate
-  
 r_github_packages: 
   End-to-end-provenance/provViz
+
+
+install: 
+  - Rscript -e 'if(!"provViz" %in% rownames(installed.packages())) { devtools::install_github("End-to-end-provenance/provViz") }'
 
 before_script:
   - "export DISPLAY=:99.0"
