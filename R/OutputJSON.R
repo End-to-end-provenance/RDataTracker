@@ -41,8 +41,8 @@
 	# edge case - prov collection not initialised
 	if( ! .ddg.is.set("ddg.tool.name") )
 	{
-		warning( "There is no provenance to be displayed.
-Please call prov.run or prov.init to begin collecting provenance.",
+		warning( "No provenance graph is available.
+Please use prov.run or prov.init to begin collecting provenance.",
 			  call. = FALSE)
 		return(NULL)
 	}
