@@ -48,10 +48,10 @@
   # Initialize the procedure node counter
   .ddg.set("ddg.pnum", 0)
   
-  .ddg.set(".ddg.proc.start.time", .ddg.elapsed.time())
+  .ddg.set("ddg.proc.start.time", .ddg.elapsed.time())
   
   # Initialize the information about the open start-finish blocks
-  .ddg.set (".ddg.starts.open", vector())
+  .ddg.set ("ddg.starts.open", vector())
 }
 
 #' .ddg.is.proc.type returns TRUE for any type of procedure node.
@@ -77,7 +77,7 @@
 #' @noRd
 
 .ddg.start.proc.time <- function() {
-  if (.ddg.is.set(".ddg.proc.start.time")) return (.ddg.get(".ddg.proc.start.time"))
+  if (.ddg.is.set("ddg.proc.start.time")) return (.ddg.get("ddg.proc.start.time"))
   else return (0)
 }
 
@@ -315,22 +315,22 @@
   
   # Record start & finish information
   if (ptype == "Start") {
-    .ddg.starts.open <- .ddg.get (".ddg.starts.open")
-    .ddg.starts.open <- c(.ddg.starts.open, pname)
-    .ddg.set (".ddg.starts.open", .ddg.starts.open)
+    ddg.starts.open <- .ddg.get ("ddg.starts.open")
+    ddg.starts.open <- c(ddg.starts.open, pname)
+    .ddg.set ("ddg.starts.open", ddg.starts.open)
   }
   else if (ptype == "Finish") {
-    .ddg.starts.open <- .ddg.get (".ddg.starts.open")
-    num.starts.open <- length(.ddg.starts.open)
+    ddg.starts.open <- .ddg.get ("ddg.starts.open")
+    num.starts.open <- length(ddg.starts.open)
     if (num.starts.open > 0) {
-      last.start.open <- .ddg.starts.open[num.starts.open]
+      last.start.open <- ddg.starts.open[num.starts.open]
       if (num.starts.open > 1) {
-        .ddg.starts.open <- .ddg.starts.open[1:num.starts.open-1]
+        ddg.starts.open <- ddg.starts.open[1:num.starts.open-1]
       }
       else {
-        .ddg.starts.open <- vector()
+        ddg.starts.open <- vector()
       }
-      .ddg.set (".ddg.starts.open", .ddg.starts.open)
+      .ddg.set ("ddg.starts.open", ddg.starts.open)
       if (last.start.open != pname) {
         .ddg.insert.error.message("Start and finish nodes do not match")
       }
@@ -340,16 +340,51 @@
         "Attempting to create a finish node when there are no open blocks")
     }
   }
-  .ddg.set(".ddg.last.proc.node.created", paste(ptype, pname))
+  .ddg.set("ddg.last.proc.node.created", paste(ptype, pname))
   
   ptime <- .ddg.elapsed.time()
   
   # Record in procedure node table
   .ddg.record.proc(ptype, pname, pvalue, ptime, snum, pos)
   
-  # append the function call information to function nodes
+  # If any functions are called in this procedure node, process them.
   if( !is.null(functions.called) && !is.na(functions.called)) {
-    .ddg.add.to.function.table (functions.called)
+    pfunctions <- .ddg.get.function.info(functions.called)
+
+    # append the function call information to function nodes
+    .ddg.add.to.function.table (pfunctions)
+    
+    # Create input data edges for non-locals used.
+    nonlocals.used <- .ddg.get.nonlocals.used (pfunctions)
+    if (!is.null (nonlocals.used) && length (nonlocals.used) > 0) {
+      nonlocals.used[sapply(nonlocals.used, is.null)] <- NULL
+
+      create.use.edge <- function (var) {
+        if (is.null(var) || length(var) == 0) return ()
+        
+        # Make sure there is a node we could connect to.
+        scope <- .ddg.get.scope(var)
+        
+        # Only create an edge if a matching data node exists.
+        # If there is no matching data node, then we will 
+        # assume this was actually a local.
+        if (.ddg.data.node.exists(var, scope)) {
+          .ddg.data2proc(var, scope)
+        }
+      }
+      sapply (nonlocals.used, create.use.edge)
+    }
+    
+    # Create a data node and output data edge for each
+    # non-local set in the function.
+    nonlocals.set <- .ddg.get.nonlocals.set (pfunctions)
+    if (!is.null (nonlocals.set) && length (nonlocals.set) > 0) {
+      nonlocals.set[sapply(nonlocals.set, is.null)] <- NULL
+      nonlocals.set <- unique(unlist(nonlocals.set))
+      
+      sapply (nonlocals.set, .ddg.save.var)
+      sapply (nonlocals.set, .ddg.lastproc2data)
+    }
   }
   if (.ddg.debug.lib()) print(paste("proc.node:", ptype, pname))
 }

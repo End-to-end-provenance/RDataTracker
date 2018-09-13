@@ -8,7 +8,7 @@
 		// agent: this json file and the tool that produced this
 		"rdt:a1": {
 			"rdt:tool.name": "RDataTracker",
-			"rdt:tool.version": "2.27.0",
+			"rdt:tool.version": "3.0.0",
 			"rdt:json.version": "2.1"
 		}
 	},
@@ -18,7 +18,7 @@
 		"rdt:p1": {
 			"rdt:name": "Console",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 0.866,
+			"rdt:elapsedTime": 0.705,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -28,7 +28,7 @@
 		"rdt:p2": {
 			"rdt:name": "a <- 1",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.921,
+			"rdt:elapsedTime": 0.766,
 			"rdt:scriptNum": -1,
 			"rdt:startLine": -1,
 			"rdt:startCol": -1,
@@ -38,7 +38,7 @@
 		"rdt:p3": {
 			"rdt:name": "b <- a + 2",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.928,
+			"rdt:elapsedTime": 0.777,
 			"rdt:scriptNum": -1,
 			"rdt:startLine": -1,
 			"rdt:startCol": -1,
@@ -48,7 +48,7 @@
 		"rdt:p4": {
 			"rdt:name": "a <- 5",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.935,
+			"rdt:elapsedTime": 0.785,
 			"rdt:scriptNum": -1,
 			"rdt:startLine": -1,
 			"rdt:startCol": -1,
@@ -58,7 +58,7 @@
 		"rdt:p5": {
 			"rdt:name": "Console",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 0.938,
+			"rdt:elapsedTime": 0.789,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -68,7 +68,7 @@
 		"rdt:p6": {
 			"rdt:name": "Console",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 0.939,
+			"rdt:elapsedTime": 0.79,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -78,7 +78,7 @@
 		"rdt:p7": {
 			"rdt:name": "if (a == 1) {\tb = 10} else if (a == 5) {\td = 50}",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.463,
+			"rdt:elapsedTime": 1.199,
 			"rdt:scriptNum": -1,
 			"rdt:startLine": -1,
 			"rdt:startCol": -1,
@@ -88,7 +88,7 @@
 		"rdt:p8": {
 			"rdt:name": "Console",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 1.473,
+			"rdt:elapsedTime": 1.21,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -98,7 +98,7 @@
 		"rdt:p9": {
 			"rdt:name": "Console",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 1.473,
+			"rdt:elapsedTime": 1.21,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -108,7 +108,7 @@
 		"rdt:p10": {
 			"rdt:name": "f <- function() {\treturn(1)}",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.679,
+			"rdt:elapsedTime": 1.344,
 			"rdt:scriptNum": -1,
 			"rdt:startLine": -1,
 			"rdt:startCol": -1,
@@ -118,7 +118,7 @@
 		"rdt:p11": {
 			"rdt:name": "x <- f()",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.684,
+			"rdt:elapsedTime": 1.35,
 			"rdt:scriptNum": -1,
 			"rdt:startLine": -1,
 			"rdt:startCol": -1,
@@ -128,7 +128,7 @@
 		"rdt:p12": {
 			"rdt:name": "Console",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 1.69,
+			"rdt:elapsedTime": 1.359,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -196,8 +196,8 @@
 		},
 		"rdt:d6": {
 			"rdt:name": "f",
-			"rdt:value": "#ddg.function",
-			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}",
+			"rdt:value": "function () ...",
+			"rdt:valType": "function",
 			"rdt:type": "Data",
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
@@ -230,7 +230,7 @@
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:workingDirectory": "[DIR]",
 			"rdt:ddgDirectory": "[DIR]/prov_console",
-			"rdt:ddgTimeStamp": "2018-07-27T10.37.51EDT",
+			"rdt:ddgTimeStamp": "2018-09-06T16.55.29EDT",
 			"rdt:hashAlgorithm": "md5"
 		},
 
@@ -253,7 +253,7 @@
 		},
 		"rdt:l3": {
 			"name": "ggplot2",
-			"version": "2.2.1",
+			"version": "3.0.0",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -285,7 +285,7 @@
 		},
 		"rdt:l7": {
 			"name": "RDataTracker",
-			"version": "2.27.0",
+			"version": "3.0.0",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"

@@ -47,10 +47,10 @@
     return()
   }
   
-  dhash.algorithm <- .ddg.get(".ddg.hash.algorithm")
+  dhash.algorithm <- .ddg.get("ddg.hash.algorithm")
   
   dscriptpath <- 
-      if (!is.null(.ddg.get("ddg.r.script.path"))) .ddg.get("ddg.r.script.path")
+      if (!is.null(.ddg.r.script.path())) .ddg.r.script.path()
       else ""
   longpath <- paste0(getwd(), substring(.ddg.path(), 2), "/prov.json")
   

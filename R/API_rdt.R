@@ -60,9 +60,6 @@
 #' settings for the level of detail can also be set and managed using the 
 #' prov.set.detail and related functions.
 
-#' @param r.script.path  the full path to the R script file
-#' that is being executed. If provided, a copy of the script will
-#' be saved with the provenance graph.
 #' @param prov.dir the directory where the provenance graph will be 
 #' saved. If not provided, the directory specified by the prov.dir 
 #' option is used. Otherwise the R session temporary directory
@@ -79,17 +76,18 @@
 #' If non-zero, it indicates the number of iterations of each loop for
 #' which provenance should be collected.  If max.loops is non-zero, provenance
 #' is also collected inside if-statements.
-#' @param max.snapshot.size the maximum size for snapshot files. 
-#' If 0, no snapshot files are saved.
-#' If -1, the complete state of an object is stored in the snapshot
-#' file. For other values, the head of the object, truncated to a size near
-#' the specified limit, is saved.  The size is in kilobytes. 
+#' @param snapshot.size the maximum size for snapshot files. If 0,
+#' no snapshots are saved. If Inf, the complete state of an object is stored
+#' in the snapshot file. For other values, the head of the object, truncated
+#' to a size near the specified limit, is saved.  The size is in kilobytes. 
 #' @param hash.algorithm the hash algorithm to use for files.
 #' Choices are md5 (default), sha1, crc32, sha256, sha512, xxhash32, 
 #' xxhash64 and murmur32. This feature uses the digest function from 
 #' the digest package.
+#' @param save.debug If TRUE, debug files are saved to the debug directory.
+#' This is intended for developers of the RDataTracker / provR package.
 #' @return prov.init initializes the provenance collector.  The prov.init
-#'   function does not return a value.
+#' function does not return a value.
 #' @export
 #' @rdname prov.run
 #' @seealso \code{\link{prov.json}} for access to the JSON text of the provenance, 
@@ -99,26 +97,33 @@
 #'   \code{\link{prov.annotate.on}} and \code{\link{prov.annotate.off}} to see how to control
 #'     annotation of individual functions
 
-prov.init <- function(r.script.path = NULL, prov.dir = NULL, overwrite = TRUE, 
-    annotate.inside.functions = FALSE, first.loop = 1, max.loops = 0, 
-    max.snapshot.size = 0, hash.algorithm="md5") {
+prov.init <- function(prov.dir = NULL, overwrite = TRUE, annotate.inside.functions = 
+  FALSE, first.loop = 1, max.loops = 0, snapshot.size = 0, hash.algorithm = "md5",
+  save.debug = FALSE) {
+
+  if (.ddg.is.set("ddg.initialized") && .ddg.get ("ddg.initialized") == TRUE) {
+    stop ("Provenance collection is already started.  
+			Call prov.quit() to stop the current collection before starting a new one.")
+    return()
+  }
   
-  #TODO: Would like to remove r.script.path parameter.  run should be 
-  # used for scripts, and init for console.
-  
-  # Store name of provenance collection tool.
-  .ddg.set ("ddg.tool.name", "RDataTracker")
+  # Save name of provenance collection tool.
+  .ddg.set("ddg.tool.name", "RDataTracker")
 
   # Save hash algorithm
-  .ddg.set (".ddg.hash.algorithm", hash.algorithm)
-  .ddg.init.filenodes ()
-  .ddg.init.hashtable ()
+  .ddg.set("ddg.hash.algorithm", hash.algorithm)
+  
+  # Initialize list of input & output file nodes
+  .ddg.init.filenodes()
+  
+  # Initialize hash table
+  .ddg.init.hashtable()
   
   # Set environment constants.
   .ddg.set.details.omitted(FALSE)
   
   # If ddg.detail is not set, use values of annotate.inside, max.loops
-  # and max.snapshot.size.
+  # and snapshot.size.
   if (is.null(prov.get.detail())) {
     # Store value of annotate.inside.
     .ddg.set("ddg.annotate.inside", annotate.inside.functions)
@@ -127,7 +132,7 @@ prov.init <- function(r.script.path = NULL, prov.dir = NULL, overwrite = TRUE,
     if (max.loops < 0) max.loops <- 10^10
     
     # Store maximum snapshot size.
-    .ddg.set("ddg.max.snapshot.size", max.snapshot.size)
+    .ddg.set("ddg.snapshot.size", snapshot.size)
   }
   
   # Intialize loops
@@ -136,20 +141,22 @@ prov.init <- function(r.script.path = NULL, prov.dir = NULL, overwrite = TRUE,
   # Set functions to be used for script annotation
   .ddg.set.annotation.functions()
   
-  # Functions to be annotated.
+  # Functions to be annotated
   .ddg.set("ddg.annotate.on", NULL)
   
-  # Functions not to be annotated.
+  # Functions not to be annotated
   .ddg.set("ddg.annotate.off", NULL)
   
+  # Intialize return values
   .ddg.init.return.values()
-  .ddg.set(".ddg.explorer.port", 6096)
+  
+  # Set DGD Explorer port
+  .ddg.set("ddg.explorer.port", 6096)
   
   # Initialize the stack of commands and environments being executed in active functions
-  .ddg.set(".ddg.cur.expr.stack", vector())
+  .ddg.set("ddg.cur.expr.stack", vector())
   
-  .ddg.init (r.script.path, prov.dir, overwrite)
-  
+  .ddg.init (prov.dir, overwrite, save.debug)
 }
 
 #' prov.save
@@ -158,8 +165,6 @@ prov.init <- function(r.script.path = NULL, prov.dir = NULL, overwrite = TRUE,
 #' If more R statements are executed, the provenance for these statements
 #' is added to the graph. The graph is finalized with prov.quit.
 #' Called by the user in console mode.
-#' @param save.debug If TRUE, debug files are saved to the debug directory.
-#'   This is intended for developers of the RDataTracker package.
 #' @return prov.save writes the current provenance to a file but does not 
 #'   return a value.
 #' @export
@@ -186,9 +191,8 @@ prov.quit <- function(save.debug = FALSE) {
 #'
 #' prov.run initiates execution of a script and collects provenance as 
 #' the script executes.
-#' @param f a function to run. If supplied, the function f is executed 
-#' with calls to prov.init and prov.save so that provenance for the 
-#' function is captured.  Exactly one of f and r.script.path should be provided.
+#' @param r.script.path the full path to the R script file that is being 
+#' executed. A copy of the script will be saved with the provenance graph.
 #' @param display if TRUE, the provenance graph is displayed in DDG Explorer
 #' @return prov.run runs a script, collecting provenance as it does so.  
 #'   It does not return a value. 
@@ -196,27 +200,43 @@ prov.quit <- function(save.debug = FALSE) {
 #' @rdname prov.run
 #' @examples 
 #' \dontrun{prov.run ("script.R")}
-#' prov.init ()
+#' prov.init()
 #' a <- 1
 #' b <- 2
-#' prov.save ()
+#' prov.save()
 #' ab <- a + b
-#' prov.quit ()
+#' prov.quit()
 
-prov.run <- function(r.script.path = NULL, prov.dir = NULL, overwrite = TRUE, 
-    f = NULL, annotate.inside.functions = FALSE, first.loop = 1, max.loops = 0,
-    max.snapshot.size = 0, save.debug = FALSE, display = FALSE, hash.algorithm="md5") {
-  
-  # Initialize ddg.
-  prov.init(r.script.path, prov.dir, overwrite, annotate.inside.functions, 
-      first.loop, max.loops, max.snapshot.size, hash.algorithm)
-  
-  .ddg.run (r.script.path, f = f, save.debug = save.debug)
-  
-  if (display==TRUE){
-    prov.display()
+prov.run <- function(r.script.path, prov.dir = NULL, overwrite = TRUE, 
+  annotate.inside.functions = FALSE, first.loop = 1, max.loops = 0,
+  snapshot.size = 0, hash.algorithm = "md5", save.debug = FALSE, display = FALSE) {
+
+  # Stop & display message if R script path is missing
+  if (missing(r.script.path)) {
+    stop("Please provide the name of the R script to execute. If the script
+      is not in the working directory, please include the full path.")
   }
+
+  # Stop & display message if R script file is not found
+  if (!file.exists(r.script.path)) {
+    stop("R script file not found.")
+  }
+
+  # Store R script path
+  .ddg.set("ddg.r.script.path", r.script.path)
+
+  # Set script mode to True
+  .ddg.set("ddg.script.mode", TRUE)
+
+  # Initialize the provenance graph
+  prov.init(prov.dir, overwrite, annotate.inside.functions, first.loop, max.loops, 
+    snapshot.size, hash.algorithm, save.debug)
   
+  # Execute the script
+  .ddg.run(r.script.path)
+  
+  # Display the graph in DDG Explorer
+  if (display == TRUE) prov.display()
 }
 
 #' prov.source
@@ -231,6 +251,13 @@ prov.run <- function(r.script.path = NULL, prov.dir = NULL, overwrite = TRUE,
 #' @rdname prov.run
 
 prov.source <- function(file) {
+  
+  # Stop & display message if argument is missing or not in script mode
+  if (missing(file) || !.ddg.script.mode()) {
+    stop("The prov.source function is for script annotation only.
+      Please use prov.run to execute a script and collect provenance.")
+  }
+  
   .ddg.source(file)
 }
 
@@ -260,19 +287,35 @@ prov.source <- function(file) {
 #' @references PROV-JSON standard: \url{https://www.w3.org/Submission/2013/SUBM-prov-json-20130424/}
 #' @references RDataTracker PROV-JSON output: \url{https://github.com/End-to-end-provenance/RDataTracker/blob/export/JSON-format.md}
 #' @examples
-#' prov.init ()
+#' prov.init()
 #' a <- 1
 #' b <- 2
 #' ab <- a + b
-#' prov.quit ()
+#' prov.quit()
 #' str <- prov.json()
+#' pdir <- prov.dir()
+#' \dontrun{prov.display()} 
 
-prov.json <- function()
-{
+prov.json <- function() {
   # This is a wrapper function.
   # Calls and returns the function with the bulk of the code in OutputJSON.R
-  print ("In RDT's prov.json")
-  return( .ddg.json.string() )
+  return(.ddg.json.string())
+}
+
+#' prov.dir returns the current provenance directory.
+#' @return prov.dir returns the current provenance directory.
+#' @export
+#' @rdname prov.json
+
+prov.dir <- function() {
+
+  # Display a message if the provenance directory has not been not set
+  if (is.null(.ddg.path())) {
+    cat("The provenance directory has not been set. It will be 
+      set when prov.init or prov.run is called.\n")
+  }
+
+  return(.ddg.path())
 }
 
 #' prov.display
@@ -282,8 +325,6 @@ prov.json <- function()
 #' in DDG Explorer. The prov.display function does not return a value.
 #' @export 
 #' @rdname prov.json
-#' @examples
-#' \dontrun{prov.display()} 
 
 prov.display <- function () {
   provViz::prov.visualize(tool="RDataTracker")
@@ -319,7 +360,7 @@ prov.display <- function () {
       envir = globalenv())
   assign(".ddg.max.loops", RDataTracker:::.ddg.max.loops, 
       envir = globalenv())
-  assign(".ddg.max.snapshot.size", RDataTracker:::.ddg.max.snapshot.size, 
+  assign(".ddg.snapshot.size", RDataTracker:::.ddg.snapshot.size, 
       envir = globalenv())
   assign(".ddg.not.inside.loop", RDataTracker:::.ddg.not.inside.loop, 
       envir = globalenv())

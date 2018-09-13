@@ -20,7 +20,7 @@ x.chr0 <- character(0)
 
 x.log0 <- logical(0)
 
-x.posixct <- as.POSIXct("080406 10:11", format = "%y%m%d %H:%M")
+x.posixct <- as.POSIXct("080406 10:11", tz = "UTC", format = "%y%m%d %H:%M")
 
 x.factor <- factor(c("red","green","blue","red","green","red"))
 
@@ -28,6 +28,10 @@ x.factor <- factor(c("red","green","blue","red","green","red"))
 x.vector.number <- c(1,2,3)
 x.vector.string <- c("one", "two", "three")
 x.vector.logical <- c(TRUE, FALSE, TRUE)
+
+# Surprisingly, is.vector returns false for the following (as do all other is. 
+# functions except for is.object).  Length returns 3.
+# What should we record for valtype?
 x.vector.posixct <- rep(x.posixct, 3)
 
 # matrix, array

@@ -60,7 +60,7 @@
   #print("In .ddg.function")
   if (!.ddg.is.init()) return(invisible())
   
-  .ddg.inc(".ddg.func.depth")
+  .ddg.inc("ddg.func.depth")
   pname <- NULL
   .ddg.lookup.function.name(pname)
     
@@ -159,7 +159,7 @@
   }
   else {
     #print(".ddg.return.value decrementing func.depth")
-    .ddg.dec (".ddg.func.depth")
+    .ddg.dec ("ddg.func.depth")
   }
   
   if (is.null(cmd.func)) {
@@ -224,7 +224,7 @@
         # Check for non-local assignment
         if ( .ddg.is.nonlocal.assign(return.stmt@parsed[[1]]) )
         {
-          env <- .ddg.where( var, env = parent.env(parent.frame()), warning = FALSE )
+          env <- .ddg.where(var, env = parent.env(parent.frame()), warning = FALSE)
           
           if ( identical(env, "undefined") )
             env <- globalenv()
@@ -398,7 +398,7 @@
                                       called.from.ddg.eval=TRUE, 
                                       cmds=list(cmd))
   
-  if (.ddg.get(".ddg.func.depth")) {
+  if (.ddg.get("ddg.func.depth")) {
     if (!is.null(cmd)) {
       .ddg.link.function.returns(cmd)
     }
@@ -471,7 +471,7 @@
   
   # .ddg.finish is added to the end of blocks.  We want the block to
   # return the value of the last R statement.
-  return(.ddg.get (".ddg.last.R.value"))
+  return(.ddg.get ("ddg.last.R.value"))
 }
 
 #' Controlling Provenance Detail
@@ -499,7 +499,7 @@
 #' to the list of unannotated functions. 
 #' 
 #' The level of detail of provenance can be set using the annotate.inside.functions,
-#' max.loops, and max.snapshot.size parameters of prov.run and prov.init.
+#' max.loops and snapshot.size parameters of prov.run and prov.init.
 #' It can also be set using prov.set.detail, which will impact the
 #' future executions of prov.run and prov.init.  The detail level can
 #' take on the following values:\cr
@@ -1456,27 +1456,31 @@ prov.annotate.off <- function (fnames.off=NULL) {
 #' @rdname prov.annotate.on
 
 prov.set.detail <- function(detail.level) {
+  # If argument is missing, display help message.
+  if (missing(detail.level)) detail.level <- 4
+
   if (detail.level == 0) {
     .ddg.set("ddg.annotate.inside", FALSE)
     .ddg.set("ddg.max.loops", 0)
-    .ddg.set("ddg.max.snapshot.size", 0)
+    .ddg.set("ddg.snapshot.size", 0)
     .ddg.set("ddg.detail", 0)
   } else if (detail.level == 1) {
     .ddg.set("ddg.annotate.inside", TRUE)
     .ddg.set("ddg.max.loops", 1)
-    .ddg.set("ddg.max.snapshot.size", 10)
+    .ddg.set("ddg.snapshot.size", 10)
     .ddg.set("ddg.detail", 1)
   } else if (detail.level == 2) {
     .ddg.set("ddg.annotate.inside", TRUE)
     .ddg.set("ddg.max.loops", 10)
-    .ddg.set("ddg.max.snapshot.size", 100)
+    .ddg.set("ddg.snapshot.size", 100)
     .ddg.set("ddg.detail", 2)
   } else if (detail.level == 3) {
     .ddg.set("ddg.annotate.inside", TRUE)
     .ddg.set("ddg.max.loops", 10^10)
-    .ddg.set("ddg.max.snapshot.size", -1)
+    .ddg.set("ddg.snapshot.size", Inf)
     .ddg.set("ddg.detail", 3)
   } else {
+    print("Please enter one of the following values:")
     print("0 = no internal annotation, no snapshots")
     print("1 = 1 loop, snapshots < 10k")
     print("2 = 10 loops, snapshots < 100k")

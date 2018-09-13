@@ -94,6 +94,7 @@ function copy_provR_files {
   else
     rsync -tv --perms README.md ../provR_test/README.md
   fi
+  rsync -tv --perms NEWS_prov.md ../provR_test/NEWS.md
   rsync -tv --perms .Rbuildignore ../provR_test/
   rsync -rtv --del --exclude "*_rdt.R" --exclude "DDGCheckpoint.R" --perms R ../provR_test/
   if [ -e man_prov ] 
@@ -102,7 +103,8 @@ function copy_provR_files {
   else 
     rsync -rtv --del --perms man/* ../provR_test/man
   fi
-  rsync -rtv --del --exclude "*_rdt*" --perms tests ../provR_test/tests
+  rsync -rtv --del --perms tests/test-all-prov.R ../provR_test/tests/test-all.R
+  rsync -rtv --del --exclude "*_rdt*" --perms tests/testthat ../provR_test/testthat
 }
 
 # Copy just the files that we want in the rdt repository.  Some
@@ -132,6 +134,7 @@ function copy_rdt_files {
   else
     rsync -tv --perms README.md ../rdt_test/README.md
   fi
+  rsync -tv --perms NEWS_rdt.md ../provR_test/NEWS.md
   rsync -tv --perms .Rbuildignore ../rdt_test/
   rsync -rtv --del --exclude "*_prov.R" --exclude "DDGCheckpoint.R" --perms R ../rdt_test/
   if [ -e man_rdt ] 
@@ -140,7 +143,8 @@ function copy_rdt_files {
   else
     rsync -rtv --del --perms man/* ../rdt_test/man
   fi
-  rsync -rtv --del --exclude "*_prov*" --perms tests ../rdt_test/tests
+  rsync -rtv --del --perms tests/test-all-rdt.R ../provR_test/tests/test-all.R
+  rsync -rtv --del --exclude "*_prov*" --perms tests/testthat ../rdt_test/tests/testthat
 }
 
 # Save the current commit number in the .commit file.
@@ -191,9 +195,10 @@ function cleanup {
 
 # Should first clone the three repositories
 echo "*** Cloning the repositories"
-git clone https://github.com/End-to-end-provenance/RDataTracker.git
-git clone https://github.com/End-to-end-provenance/provR_test.git
-git clone https://github.com/End-to-end-provenance/rdt_test.git
+git clone git@github.com:End-to-end-provenance/RDataTracker.git
+git clone git@github.com:End-to-end-provenance/provR_test.git
+git clone git@github.com:End-to-end-provenance/rdt_test.git
+
 cd RDataTracker
 
 echo ""
@@ -232,6 +237,16 @@ if is_current "rdt_test" "master"
     echo "rdt master is current"
 else 
     echo "Updating rdt master"
+    copy_rdt_files
+    commit_repo "rdt_test"
+fi
+
+echo ""
+if is_current "rdt_test" "development"
+  then
+    echo "rdt development is current"
+else 
+    echo "Updating rdt development"
     copy_rdt_files
     commit_repo "rdt_test"
 fi

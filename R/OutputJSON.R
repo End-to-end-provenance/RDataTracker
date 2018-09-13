@@ -38,15 +38,15 @@
 
 .ddg.json.string <- function()
 {
-	# edge case - prov collection not initialised
-	if( ! .ddg.is.set("ddg.tool.name") )
+	# Display message & return NULL if no provenance graph is available
+	if( is.null(.ddg.path()) )
 	{
 		warning( "No provenance graph is available.
 Please use prov.run or prov.init to begin collecting provenance.",
 			  call. = FALSE)
 		return(NULL)
 	}
-	
+
 	# CONSTANTS
 	JSON.VERSION <- "2.1"
 
@@ -131,7 +131,7 @@ Please use prov.run or prov.init to begin collecting provenance.",
 	
 	# LIBRARY NODES - change row numbers
 	libraries <- .ddg.installedpackages()
-	rownames(libraries) <- c( 1 : nrow(libraries) )
+	rownames(libraries) <- c(1 : nrow(libraries))
 	
 	# PRINT TO JSON - LIBRARY NODES
 	json$entity.lib <- .ddg.json.lib( libraries , LABEL.NAMES$entity.lib , LABEL.PREFIX )
@@ -144,7 +144,7 @@ Please use prov.run or prov.init to begin collecting provenance.",
 		functions <- calls[ , 2:3]
 		functions <- unique(functions)
 		
-		rownames(functions) <- c( 1 : nrow(functions) )
+		rownames(functions) <- c(1 : nrow(functions))
 		
 		# PRINT TO JSON - FUNCTION NODES
 		json$entity.func <- .ddg.json.func( functions , LABEL.NAMES$entity.func , LABEL.PREFIX )
@@ -331,10 +331,10 @@ Please use prov.run or prov.init to begin collecting provenance.",
 	fields$langVersion <- lang.version$version
 	
 	# operating system
-	fields$operatingSystem <- .Platform$OS.type
+	fields$operatingSystem <- version$os
 	
 	# script variables
-	script.path <- .ddg.get("ddg.r.script.path")
+	script.path <- .ddg.r.script.path()
 	
 	if( ! is.null(script.path) )
 	{
@@ -362,8 +362,8 @@ Please use prov.run or prov.init to begin collecting provenance.",
 	fields$ddgTimeStamp <- .ddg.get("ddg.start.time")
 	
 	# hash algorithm
-  if (.ddg.is.set (".ddg.hash.algorithm")) {
-    fields <- append (fields, list (hashAlgorithm = .ddg.get(".ddg.hash.algorithm")))
+  if (.ddg.is.set ("ddg.hash.algorithm")) {
+    fields <- append (fields, list (hashAlgorithm = .ddg.get("ddg.hash.algorithm")))
   }
 	
 	# add prefix to names of the list

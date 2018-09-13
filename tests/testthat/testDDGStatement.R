@@ -27,6 +27,7 @@ test_that ("vars set",
 test_that ("vars possibly set",
     {
       expect_equal(.ddg.find.assign (parse (text = "a <- b")[[1]]), "a")
+      expect_equal(.ddg.find.assign (parse (text = "a <- b <- 5")[[1]]), c("a", "b"))
       expect_equal(.ddg.find.assign (parse (text = "a <- (b <- 2) * 3")[[1]]), c("a", "b"))
       expect_equal(.ddg.find.assign (parse (text = "f <- function () a <- 1")), "f")
       expect_equal(.ddg.find.assign (parse (text = "if (x > 1 ) a <- b + c else d <- e + f")),
@@ -46,3 +47,4 @@ test_that ("functions called",
       expected.lib.calls <- data.frame(ddg.fun, ddg.lib, stringsAsFactors=FALSE)
       expect_equal(calls[[3]], expected.lib.calls )
     })
+

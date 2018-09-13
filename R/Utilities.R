@@ -17,7 +17,7 @@
 
 ########################## Utilities.R #############################
 
-#  This file contains utility functions used through RDataTracker.
+# This file contains utility functions used through RDataTracker / provR.
 
 ########  Helpers to manage ddg variables
 
@@ -69,11 +69,43 @@
   return (.ddg.get("ddg.debug.lib"))
 }
 
-#' .ddg.path returns the path to the ddg directory
-#' @return the path to the ddg directory
+#' .ddg.script.mode returns True if in script mode
+#' @return True if in script mode
+#' @noRd
+
+.ddg.script.mode <- function() {
+  # Set to FALSE if not set
+  if (!.ddg.is.set("ddg.script.mode")) {
+    .ddg.set("ddg.script.mode", FALSE)
+  }
+
+  return(.ddg.get("ddg.script.mode"))
+}
+
+#' .ddg.r.script.path returns the path to the R script that is being
+#' executed (script mode) or NULL (console mode).
+#' @return the R script path (script mode) or NULL (console mode)
+#' @noRd
+
+.ddg.r.script.path <- function() {
+  # Set to NULL if not set
+  if (!.ddg.is.set("ddg.r.script.path")) {
+    .ddg.set("ddg.r.script.path", NULL)
+  }
+
+  return(.ddg.get("ddg.r.script.path"))
+}
+
+#' .ddg.path returns the current provenance graph directory
+#' @return the current provenance graph directory
 #' @noRd
 
 .ddg.path <- function() {
+  # Set to NULL if not set
+  if (!.ddg.is.set("ddg.path")) {
+    .ddg.set("ddg.path", NULL)
+  }
+
   return (.ddg.get("ddg.path"))
 }
 

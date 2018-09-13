@@ -28,28 +28,28 @@
 #' @noRd
 
 .ddg.create.start.for.cur.cmd <- function (call) {
-  if (!.ddg.is.set(".ddg.cur.cmd")) return ()
+  if (!.ddg.is.set("ddg.cur.cmd")) return ()
   
-  .ddg.cur.cmd.stack <- .ddg.get(".ddg.cur.cmd.stack")
-  stack.length <- length(.ddg.cur.cmd.stack)
+  ddg.cur.cmd.stack <- .ddg.get("ddg.cur.cmd.stack")
+  stack.length <- length(ddg.cur.cmd.stack)
   if (stack.length == 0) return ()
   
-  last.created <- .ddg.cur.cmd.stack[stack.length]
+  last.created <- ddg.cur.cmd.stack[stack.length]
   # Only create a start node for the current command if we have not already
   # created one and the command is more than just the call to this function
   if (last.created[[1]] != "FALSE") return ()
   
-  .ddg.cur.cmd <- .ddg.get(".ddg.cur.cmd")
-  if (.ddg.cur.cmd@text == paste(deparse(call), collapse="")) {
+  ddg.cur.cmd <- .ddg.get("ddg.cur.cmd")
+  if (ddg.cur.cmd@text == paste(deparse(call), collapse="")) {
     .ddg.change.cmd.top ("MATCHES_CALL")
   }
   
   else {
-    .ddg.add.start.node (.ddg.cur.cmd)
-    st.type <- .ddg.get.statement.type(.ddg.cur.cmd@parsed[[1]])
+    .ddg.add.start.node (ddg.cur.cmd)
+    st.type <- .ddg.get.statement.type(ddg.cur.cmd@parsed[[1]])
     loop.statement <- st.type %in% c("for", "while", "repeat")
     control.statement <- loop.statement || st.type %in% c("if", "{")
-    .ddg.create.data.use.edges(.ddg.cur.cmd, for.caller=!control.statement)
+    .ddg.create.data.use.edges(ddg.cur.cmd, for.caller=!control.statement)
     
     # Add Details Omitted node before annotated loops if needed.
     if (loop.statement && .ddg.first.loop() > 1) {
@@ -96,9 +96,9 @@
 #' @noRd
 
 .ddg.change.cmd.top <- function (value) {
-  .ddg.cur.cmd.stack <- .ddg.get(".ddg.cur.cmd.stack")
-  stack.length <- length(.ddg.cur.cmd.stack)
-  .ddg.set (".ddg.cur.cmd.stack", c(.ddg.cur.cmd.stack[1:stack.length-1], value))
+  ddg.cur.cmd.stack <- .ddg.get("ddg.cur.cmd.stack")
+  stack.length <- length(ddg.cur.cmd.stack)
+  .ddg.set ("ddg.cur.cmd.stack", c(ddg.cur.cmd.stack[1:stack.length-1], value))
 }
 
 #' .ddg.create.function.nodes creates the start node, procedure node, input

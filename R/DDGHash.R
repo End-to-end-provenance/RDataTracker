@@ -66,7 +66,7 @@
   # or other non-text files with internal timestamps. This could also cause 
   # these files to sync incorrectly in the workflow, but given that reading 
   # in a pdf file is unlikely, this should not be an overly large issue.
-  dhash <- digest::digest(dname, algo=.ddg.get(".ddg.hash.algorithm"))
+  dhash <- digest::digest(dname, algo=.ddg.get("ddg.hash.algorithm"))
   if (is.null(dhash)) {
     dhash <- ""
   }

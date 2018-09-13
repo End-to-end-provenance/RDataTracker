@@ -5,7 +5,8 @@
   xmlns:if="ant:if"
     xmlns:unless="ant:unless">
     
-  <property name="builddir" value="${user.home}/Documents/Process/DataProvenance/RDataTracker"/>
+  <property name="builddir" value="build_prov"/>
+  <property name="checkdir" value="provR.Rcheck"/>
   <loadproperties srcFile="DESCRIPTION_prov" />
   <property name="tarfile" value="provR_${Version}.tar.gz" />
 
@@ -26,6 +27,11 @@
     	<copy overwrite="true" todir="${builddir}/R">
     		<fileset dir="R"
       			excludes="DDGCheckpoint.R, *_rdt.R"/>
+  		</copy>
+        <mkdir dir="${builddir}/tests"/>
+        <copy overwrite="true" file="tests/test-all-prov.R" tofile="${builddir}/tests/test-all.R"/>
+    	<copy overwrite="true" todir="${builddir}/tests/testthat">
+    		<fileset dir="tests/testthat" />
   		</copy>
         <copy overwrite="true" file="DESCRIPTION_prov" tofile="${builddir}/DESCRIPTION"/>
         <copy overwrite="true" file="LICENSE" todir="${builddir}"/>
