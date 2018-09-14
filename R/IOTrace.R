@@ -369,7 +369,7 @@
       .ddg.inside.call.to (".ddg.json.string")) {
     return()
   }
-
+  
   # Get the name of the input function
   call <- sys.call (frame.number)
   fname <- as.character(call[[1]])
@@ -564,8 +564,6 @@
   if (length (grep ("^.ddg.save.snapshot", sys.calls())) > 0) {
     return()
   }
-  
-  #print(sys.calls())
   
   # Get the name of the output function
   call <- sys.call (frame.number)
@@ -802,7 +800,8 @@
   # hide standard output), parse (used to read the script being executed), or 
   # .ddg.snapshot (used to save copies of complex data values)
   if (.ddg.inside.call.to ("capture.output") || .ddg.inside.call.to ("parse") 
-      || .ddg.inside.call.to (".ddg.snapshot")) {
+      || .ddg.inside.call.to (".ddg.snapshot") 
+      || .ddg.inside.call.to(".ddg.save.annotated.script")) {
     #print ("Returning -- inside capture.ouput, parse or .ddg.snapshot")
     return()
   }

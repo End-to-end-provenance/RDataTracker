@@ -175,7 +175,7 @@ function commit_repo {
   echo "Num deleted = $NUM_DEL"
   echo "Num new = $NUM_NEW"
 
-  if [ "$NUM_MOD" != "1" -o "$NUM_DEL" != "0" -o "$NUM_NEW" = "0" ]
+  if [ "$NUM_MOD" != "1" -o "$NUM_DEL" != "0" -o "$NUM_NEW" != "0" ]
     then
       echo "*** Committing and pushing the changes."
       git commit -m "$COMMIT_MSG"
@@ -197,7 +197,7 @@ function cleanup {
 echo "*** Cloning the repositories"
 git clone git@github.com:End-to-end-provenance/RDataTracker.git
 git clone git@github.com:End-to-end-provenance/provR_test.git
-git clone git@github.com:End-to-end-provenance/rdt_test.git
+git clone git@github.com:ProvTools/RDataTracker.git rdt_test
 
 cd RDataTracker
 
@@ -222,16 +222,6 @@ else
 fi
 
 echo ""
-if is_current "provR_test" "split-refactor"
-  then
-    echo "provR split-refactor is current"
-else 
-    echo "Updating provR split-refactor"
-    copy_provR_files
-    commit_repo "provR_test"
-fi
-
-echo ""
 if is_current "rdt_test" "master"
   then
     echo "rdt master is current"
@@ -247,16 +237,6 @@ if is_current "rdt_test" "development"
     echo "rdt development is current"
 else 
     echo "Updating rdt development"
-    copy_rdt_files
-    commit_repo "rdt_test"
-fi
-
-echo ""
-if is_current "rdt_test" "split-refactor"
-  then
-    echo "rdt split-refactor is current"
-else 
-    echo "Updating rdt split-refactor"
     copy_rdt_files
     commit_repo "rdt_test"
 fi

@@ -791,7 +791,7 @@
 #' @noRd
 
 .ddg.file.node <- function(dtype, fname, dname, dscope=NULL) {
-  
+
   # Get original file location.
   file.name <- basename(fname)
   file.loc <- normalizePath(fname, winslash="/", mustWork = FALSE)
