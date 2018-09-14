@@ -21,6 +21,7 @@ r_github_packages:
 
 
 install: 
+  - Rscript -e 'print (installed.packages())'
   - Rscript -e 'if(!"provViz" %in% rownames(installed.packages())) { devtools::install_github("End-to-end-provenance/provViz") }'
 
 before_script:
