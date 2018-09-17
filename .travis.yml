@@ -20,7 +20,7 @@ before-install:
   - .libPaths ("/home/travis/R/Library")
 
 install: 
-  - Rscript -e 'install.packages (c("roxygen2", "knitr", "jsonvalidate", "XML", "testthat", "gplots", "ggplot2", "stringi", "RCurl"))'
+  - Rscript -e 'install.packages (c("devtools", "roxygen2", "knitr", "jsonvalidate", "XML", "testthat", "gplots", "ggplot2", "stringi", "RCurl"))'
   - Rscript -e 'if(!"provViz" %in% rownames(installed.packages())) { devtools::install_github("End-to-end-provenance/provViz") }'
   - Rscript -e 'print (installed.packages())'
 
