@@ -19,10 +19,10 @@ addons:
 r_github_packages: 
   End-to-end-provenance/provViz
 
+before-install:
+  - .libPaths ("/home/travis/R/Library")
 
 install: 
-  - Rscript -e 'install.packages("devtools", repos = "http://cran.rstudio.com")'
-  - Rscript -e 'print (installed.packages())'
   - Rscript -e 'if(!"provViz" %in% rownames(installed.packages())) { devtools::install_github("End-to-end-provenance/provViz") }'
 
 before_script:
