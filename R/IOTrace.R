@@ -550,13 +550,16 @@
   # Check if the function that called the output function is a ddg function.
   # If it is, ignore this call.  The is.call check is here because it is
   # possible that the caller is a closure and thus does not have a name.
-  output.caller <- sys.call (frame.number - 1)[[1]]
-  if (is.symbol (output.caller)) {
-    output.caller.name <- as.character(output.caller)
-    if (startsWith (output.caller.name, "ddg") || 
-        startsWith (output.caller.name, ".ddg") || 
-        startsWith (output.caller.name, "prov")) {
-      return()
+  # The frame.number might be 1 if we are in console mode.
+  if (frame.number > 1) {
+    output.caller <- sys.call (frame.number - 1)[[1]]
+    if (is.symbol (output.caller)) {
+      output.caller.name <- as.character(output.caller)
+      if (startsWith (output.caller.name, "ddg") || 
+          startsWith (output.caller.name, ".ddg") || 
+          startsWith (output.caller.name, "prov")) {
+        return()
+      }
     }
   }
   
