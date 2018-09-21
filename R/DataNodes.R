@@ -317,7 +317,9 @@
     # Get a string version of the value
     if (is.data.frame (value)) {
       print.value <- utils::capture.output (print (value[1,]))
-      print.value <- paste ("Row", print.value[[2]])
+      if (length(print.value) > 1) {
+        print.value <- paste ("Row", print.value[[2]])
+      }
     }
     else if (is.array(value) && length (dim(value)) > 1) {
       print.value <- utils::capture.output (print (value))
@@ -806,7 +808,7 @@
 #' @noRd
 
 .ddg.file.node <- function(dtype, fname, dname, dscope=NULL) {
-  
+
   # Get original file location.
   file.name <- basename(fname)
   file.loc <- normalizePath(fname, winslash="/", mustWork = FALSE)

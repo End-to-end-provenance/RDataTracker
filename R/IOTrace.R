@@ -369,7 +369,7 @@
       .ddg.inside.call.to (".ddg.json.string")) {
     return()
   }
-
+  
   # Get the name of the input function
   call <- sys.call (frame.number)
   fname <- as.character(call[[1]])
@@ -552,13 +552,16 @@
   # Check if the function that called the output function is a ddg function.
   # If it is, ignore this call.  The is.call check is here because it is
   # possible that the caller is a closure and thus does not have a name.
-  output.caller <- sys.call (frame.number - 1)[[1]]
-  if (is.symbol (output.caller)) {
-    output.caller.name <- as.character(output.caller)
-    if (startsWith (output.caller.name, "ddg") || 
-        startsWith (output.caller.name, ".ddg") || 
-        startsWith (output.caller.name, "prov")) {
-      return()
+  # The frame.number might be 1 if we are in console mode.
+  if (frame.number > 1) {
+    output.caller <- sys.call (frame.number - 1)[[1]]
+    if (is.symbol (output.caller)) {
+      output.caller.name <- as.character(output.caller)
+      if (startsWith (output.caller.name, "ddg") || 
+          startsWith (output.caller.name, ".ddg") || 
+          startsWith (output.caller.name, "prov")) {
+        return()
+      }
     }
   }
   
@@ -566,8 +569,6 @@
   if (length (grep ("^.ddg.save.snapshot", sys.calls())) > 0) {
     return()
   }
-  
-  #print(sys.calls())
   
   # Get the name of the output function
   call <- sys.call (frame.number)
@@ -804,7 +805,8 @@
   # hide standard output), parse (used to read the script being executed), or 
   # .ddg.snapshot (used to save copies of complex data values)
   if (.ddg.inside.call.to ("capture.output") || .ddg.inside.call.to ("parse") 
-      || .ddg.inside.call.to (".ddg.snapshot")) {
+      || .ddg.inside.call.to (".ddg.snapshot") 
+      || .ddg.inside.call.to(".ddg.save.annotated.script")) {
     #print ("Returning -- inside capture.ouput, parse or .ddg.snapshot")
     return()
   }

@@ -9,19 +9,20 @@ cache: packages
 addons:
   apt:
     packages:
-      libicu-dev
-      ant
-      r-cran-ggplot2
-      r-cran-gdata
-      r-cran-rcurl
-      r-cran-v8
+      - libicu-dev
+      - ant
+      - r-cran-ggplot2
+      - r-cran-gdata
+      - r-cran-rcurl
+      - r-cran-v8
  
-r_github_packages: 
-  End-to-end-provenance/provViz
-
+before-install:
+  - .libPaths ("/home/travis/R/Library")
 
 install: 
+  - Rscript -e 'install.packages (c("devtools", "roxygen2", "knitr", "jsonvalidate", "XML", "testthat", "gplots", "ggplot2", "stringi", "RCurl"))'
   - Rscript -e 'if(!"provViz" %in% rownames(installed.packages())) { devtools::install_github("End-to-end-provenance/provViz") }'
+  - Rscript -e 'print (installed.packages())'
 
 before_script:
   - "export DISPLAY=:99.0"
