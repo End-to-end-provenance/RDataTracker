@@ -40,7 +40,7 @@
     </target>
 
     <target name="clean">
-        <delete dir="${builddir}" verbose="true"/>
-        <delete dir="${checkdir}" verbose="true"/>
+        <delete dir="${builddir}" verbose="false"/>
+        <delete dir="${checkdir}" verbose="false"/>
     </target>
   
