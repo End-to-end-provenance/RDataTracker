@@ -14,7 +14,7 @@ library(methods)
 library(RDataTracker)
 
 ## Directories
-testDir <- "/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/tests/FileNodesTest/"
+testDir <- "C:/Users/fong22e/Documents/HarvardForest/RDataTracker_filenodes/scriptTests/FileNodesTest/"
 setwd(testDir)
 
 # get initial time
@@ -25,9 +25,10 @@ invisible(force(startTime))
 options(useFancyQuotes=FALSE)
 
 # Run the script
-#ddg.run("FileNodesTest.R", "/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/tests/FileNodesTest", ignore.ddg.calls = F)
-ddg.run("FileNodesTest.R", "/Users/blerner/Documents/Process/DataProvenance/github/RDataTracker/tests/FileNodesTest", save.hashtable = FALSE)
+#ddg.run("FileNodesTest.R", "C:/Users/fong22e/Documents/HarvardForest/RDataTracker_filenodes/scriptTests/FileNodesTest", ignore.ddg.calls = F)
+prov.run("FileNodesTest.R", "C:/Users/fong22e/Documents/HarvardForest/RDataTracker_filenodes/scriptTests/FileNodesTest", annotate.inside.functions=TRUE, max.loops=1, 
+	snapshot.size=10)
 
 # Calculate total time of execution
 endTime <- Sys.time()
-cat("Execution Time =", difftime(endTime, startTime,units="secs"))
+cat("Execution Time =", difftime(endTime, startTime, units="secs"))
