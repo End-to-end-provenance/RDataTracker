@@ -320,8 +320,8 @@ Please use prov.run or prov.init to begin collecting provenance.",
 					"sourcedScripts" = NA ,
 					"sourcedScriptTimeStamps" = NA ,
 					"workingDirectory" = NA ,
-					"ddgDirectory" = NA ,
-					"ddgTimeStamp" = NA )
+					"provDirectory" = NA ,
+					"provTimestamp" = NA )
 	
 	# architecture, language, langVersion
 	lang.version <- R.Version()
@@ -356,15 +356,15 @@ Please use prov.run or prov.init to begin collecting provenance.",
 	
 	# working directory, ddg directory (escape any tab characters)
 	fields$workingDirectory <- .ddg.json.escape.tabs( getwd() )
-	fields$ddgDirectory <- .ddg.json.escape.tabs( .ddg.path() )
+	fields$provDirectory <- .ddg.json.escape.tabs( .ddg.path() )
 	
 	# ddg timestamp
-	fields$ddgTimeStamp <- .ddg.get("ddg.start.time")
+	fields$provTimestamp <- .ddg.get("ddg.start.time")
 	
 	# hash algorithm
-  if (.ddg.is.set ("ddg.hash.algorithm")) {
-    fields <- append (fields, list (hashAlgorithm = .ddg.get("ddg.hash.algorithm")))
-  }
+	if (.ddg.is.set ("ddg.hash.algorithm")) {
+		fields <- append (fields, list (hashAlgorithm = .ddg.get("ddg.hash.algorithm")))
+	}
 	
 	# add prefix to names of the list
 	names(fields) <- mapply( paste , prefix , names(fields) , sep='' , USE.NAMES = FALSE )
@@ -610,7 +610,7 @@ Please use prov.run or prov.init to begin collecting provenance.",
 	
 	# add prefix to node numbers
 	edges$ddg.fnum <- mapply( paste , prefix , label.func , edges$ddg.fnum , 
-	                          sep='' , USE.NAMES=FALSE )
+							  sep='' , USE.NAMES=FALSE )
 	edges$ddg.pnum <- mapply( paste , prefix , label.proc , edges$ddg.pnum , 
 	                          sep='' , USE.NAMES=FALSE )
 	
@@ -620,7 +620,7 @@ Please use prov.run or prov.init to begin collecting provenance.",
 	# convert to json, return
 	prefix <- paste( prefix , label.edge , sep='' )
 	return( .ddg.json.dataframe(edges, col.names, prefix, 
-	                            comment = "function-to-procedure edges") )
+								comment = "function-to-procedure edges") )
 }
 
 # .ddg.json.lib2func forms and returns the json string for nodes linking functions 
