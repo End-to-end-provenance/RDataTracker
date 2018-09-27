@@ -56,6 +56,7 @@
 	- PlotTest
 	- Plot2Test
 	- Plot3Test
+	- FileNodesTest
 	- NoDevOffTest
 	- DataTypeTest
 	- HigherOrderFuncTest
@@ -789,6 +790,18 @@
 		</antcall>
 	</target>
 
+	<target name="FileNodesTest">
+		<antcall target="run-regression-test">
+			<param name="test-name" value="FileNodesTest" />
+		</antcall>
+	</target>
+
+	<target name="update-FileNodesTest">
+		<antcall target="update-regression-expected">
+			<param name="test-name" value="FileNodesTest" />
+		</antcall>
+	</target>
+
 	<target name="NoDevOffTest">
 		<antcall target="run-regression-test">
 			<param name="test-name" value="NoDevOffTest" />
@@ -899,7 +912,8 @@
 	
 	<target name="normal-tests" depends="basicTest, S4ObjectTest,
 		ScopeTest, ReturnTest, OddParameterTest, FunctionAnnotationTest, FunctionNonlocalsTest,
-		ControlConstructTest, WarningTest, PlotTest, Plot2Test, Plot3Test, NoDevOffTest, DataTypeTest,
+		ControlConstructTest, WarningTest, PlotTest, Plot2Test, Plot3Test, 
+		FileNodesTest, NoDevOffTest, DataTypeTest,
 		HigherOrderFuncTest, AssignmentOperatorsTest, FunctionOriginTest,
 		RMarkdownTest, DDGStatementTest, ConnectionTest">
 	
@@ -973,7 +987,9 @@
 		</antcall>
 	</target>
 
-	<target name="script-tests" depends="CalculateSquareRoot, DailySolarRadiation, HFDatasetPreview">
+	<!-- EF EDITS: TMP - remove DailySolarRadiation, HFDatasetPreview -->
+	<target name="script-tests" depends="CalculateSquareRoot, HFDatasetPreview">
+	<!--<target name="script-tests" depends="CalculateSquareRoot, DailySolarRadiation, HFDatasetPreview">-->
 		<echo>Script tests for which output should not differ </echo>
 	</target>
 
