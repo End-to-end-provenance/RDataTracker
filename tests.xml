@@ -961,10 +961,11 @@
 	</target>
 
 	<target name="HFDatasetPreview">
-		<antcall target="run-regression-test">
+		<!--<antcall target="run-regression-test">
 			<param name="test-name" value="HFDatasetPreview" />
 		</antcall>
-		<echo>The test requires RCurl and gplots (+ dependencies) to be installed.</echo>
+		<echo>The test requires RCurl and gplots (+ dependencies) to be installed.</echo>-->
+		<echo>Skipping HFDatasetPreview test until Harvard Forest website is working again.</echo>
 	</target>
 
 	<target name="update-HFDatasetPreview">

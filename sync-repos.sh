@@ -99,9 +99,9 @@ function copy_provR_files {
   rsync -rtv --del --exclude "*_rdt.R" --exclude "DDGCheckpoint.R" --perms R ../provR_test/
   if [ -e man_prov ] 
   then
-    rsync -rtv --del --perms man_prov/* ../provR_test/man
+    rsync -rtv --del --perms man_prov/ ../provR_test/man
   else 
-    rsync -rtv --del --perms man/* ../provR_test/man
+    rsync -rtv --del --perms man/ ../provR_test/man
   fi
   rsync -rtv --del --perms tests/test-all-prov.R ../provR_test/tests/test-all.R
   rsync -rtv --del --exclude "*_rdt*" --perms tests/testthat ../provR_test/
@@ -134,16 +134,16 @@ function copy_rdt_files {
   else
     rsync -tv --perms README.md ../rdt_test/README.md
   fi
-  rsync -tv --perms NEWS_rdt.md ../provR_test/NEWS.md
+  rsync -tv --perms NEWS_rdt.md ../rdt_test/NEWS.md
   rsync -tv --perms .Rbuildignore ../rdt_test/
   rsync -rtv --del --exclude "*_prov.R" --exclude "DDGCheckpoint.R" --perms R ../rdt_test/
   if [ -e man_rdt ] 
   then
-    rsync -rtv --del --perms man_rdt/* ../rdt_test/man
+    rsync -rtv --del --perms man_rdt/ ../rdt_test/man
   else
-    rsync -rtv --del --perms man/* ../rdt_test/man
+    rsync -rtv --del --perms man/ ../rdt_test/man
   fi
-  rsync -rtv --del --perms tests/test-all-rdt.R ../provR_test/tests/test-all.R
+  rsync -rtv --del --perms tests/test-all-rdt.R ../rdt_test/tests/test-all.R
   rsync -rtv --del --exclude "*_prov*" --perms tests/testthat ../rdt_test/tests/
 }
 
