@@ -1,0 +1,29 @@
+---
+output: pdf_document
+---
+---
+title: "Data Provenance will save the world!"
+author: "A.M. Turing"
+output: html_document
+---
+
+Here is the first chunk.
+
+```{r }
+x <- 2+2
+y <- x+2
+x
+y
+
+```
+
+Here's another chunk!
+
+
+```{r }
+data(iris)
+x <- iris[,1]
+y <- iris[,2]
+summary(lm(y~x))
+
+```
