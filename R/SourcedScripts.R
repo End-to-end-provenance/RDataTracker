@@ -28,52 +28,44 @@
 
 #' .ddg.init.sourced.scripts initializes the data needed to manage sourced scripts
 #' @return nothing
+#' @noRd
 
 .ddg.init.sourced.scripts <- function () {
-  # Script sourced with .ddg.source
-  .ddg.set(".ddg.is.sourced", FALSE)
-  
   # Number of first sourced script (main script).
-  .ddg.set(".ddg.next.script.num", 0)
+  .ddg.set("ddg.next.script.num", 0)
   
   # Table of sourced scripts
-  .ddg.set(".ddg.sourced.scripts", NULL)
-}
-
-#' .ddg.is.sourced returns True if we are running a script from a file,
-#' as opposed to console commands.
-#' @return TRUE if we are running a script from file
-
-.ddg.is.sourced <- function() {
-  return (.ddg.get(".ddg.is.sourced"))
+  .ddg.set("ddg.sourced.scripts", NULL)
 }
 
 #' .ddg.next.script.num returns the value to use for the next script id
 #' @return the value of the next script id
+#' @noRd
 
 .ddg.next.script.num <- function() {
-  return(.ddg.get(".ddg.next.script.num"))
+  return(.ddg.get("ddg.next.script.num"))
 }
 
 #' .ddg.sourced.scripts returns a dataframe containing the sourced script table
 #' @return a data frame containing the sourced script table
+#' @noRd
 
 .ddg.sourced.scripts <- function() {
-  return(.ddg.get(".ddg.sourced.scripts"))
+  return(.ddg.get("ddg.sourced.scripts"))
 }
 
 #' .ddg.save.sourced.script.table writes the sourced script table to a csv file.
 #' Useful for debugging. The file will be in the debug directory in a file called 
 #' sourced-scripts.csv.
 #' @return nothing
+#' @noRd
 
 .ddg.save.sourced.script.table <- function () {
   # Save if script is sourced.
-  if (.ddg.is.sourced()) 
-  {
+  if (.ddg.script.mode()) {
     # Save sourced script table to file.
     fileout <- paste(.ddg.path.debug(), "/sourced-scripts.csv", sep="")
-    ddg.sourced.scripts <- .ddg.get(".ddg.sourced.scripts")
+    ddg.sourced.scripts <- .ddg.get("ddg.sourced.scripts")
     ddg.sourced.scripts2 <- ddg.sourced.scripts[ddg.sourced.scripts$snum >= 0, ]
     utils::write.csv(ddg.sourced.scripts2, fileout, row.names=FALSE)
   }
@@ -82,6 +74,7 @@
 #' .ddg.store.script.info records a new script in the sourced scripts table.
 #' @param sname the name of the script file, excluding the directory
 #' @return the unique id of the script
+#' @noRd
 
 .ddg.store.script.info <- function (sname) {
   snum <- .ddg.next.script.num()
@@ -92,9 +85,9 @@
   } else {
     df<- rbind(.ddg.sourced.scripts(), c(snum, sname, stime))
   }
-  .ddg.set(".ddg.sourced.scripts", df)
+  .ddg.set("ddg.sourced.scripts", df)
   
   # Increment script number.
-  .ddg.inc(".ddg.next.script.num")
+  .ddg.inc("ddg.next.script.num")
   return (snum)
 }

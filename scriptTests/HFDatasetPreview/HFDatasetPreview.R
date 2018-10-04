@@ -41,10 +41,10 @@ library(XML)
 library(gplots)
 
 # HF web server EML directory
-hf.eml.dir <- "http://harvardforest.fas.harvard.edu/sites/harvardforest.fas.harvard.edu/files/data/eml/"
+hf.eml.dir <- "https://harvardforest.fas.harvard.edu/sites/harvardforest.fas.harvard.edu/files/data/eml/"
 
 # HF web server data directory
-hf.data.dir <- "http://harvardforest.fas.harvard.edu/sites/harvardforest.fas.harvard.edu/files/data/"
+hf.data.dir <- "https://harvardforest.fas.harvard.edu/sites/harvardforest.fas.harvard.edu/files/data/"
 
 #------------------------DOWNLOAD FILES----------------------------#
 
@@ -79,7 +79,7 @@ parse.time.series.string <- function(st) {
 # get time series ids from EML
 get.time.series.ids <- function(dataset.id) {
   xpath <- paste("//additionalMetadata/metadata/additionalClassifications/timeSeries", sep="")
-  ns <- getNodeSet(eml, xpath, fun=xmlValue)   
+  ns <- getNodeSet(eml, xpath, fun=xmlValue) 
   if (length(ns) == 0) {
     time.series.ids <- NULL
   } else {
@@ -628,6 +628,7 @@ if (datafile.num != 0) {
     }
   }
 }
+
 
 ############################ DONE ##############################
 

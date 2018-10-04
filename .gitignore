@@ -18,18 +18,6 @@ NUL
 # IGNORE other non-essential files
 *.pages
 *.docx
-examples/**/*.md
-examples/**/*.Rmd
-
-# IGNORE local ddg directories
-examples/**/ddg*/
-examples/**/local*/
-examples/checkPointTest/testfile*.txt
-
-# INCLUDE a few tests we named impropertly
-!examples/DDGHangBug
-!examples/ddgChangesBehavior
-!examples/ddgTest
 
 # IGNORE files beginning with '_'
 _*
@@ -64,20 +52,6 @@ vignettes/*.dvi
 !testDocs/*/*.jpg
 !testDocs/*/*.png
 
-# INCLUDE .txt files under checkpoint test
-!examples/checkpointTest/*.txt
-
-# IGNORE specific test files
-examples/CalculateSquareRoot/*.csv
-examples/checkpointTest/testfile3.txt
-examples/RealTime15MinMET/*.csv
-examples/SivanSampling/*.csv
-examples/seminars/seminar1/*.csv
-
-# INCLUDE files needed for tests
-!examples/RealTime15MinMET/archive-15min.csv
-!examples/seminars/seminar1/reu_r_data1.csv
-
 # INCLUDE PDF in /inst/doc
 !inst/doc/*.pdf
 
@@ -91,12 +65,20 @@ Java/
 /ddg/*
 
 # IGNORE local copies of sourceTest.r
-examples-no-instrumentation/*/sourceTest.r
 tests/*/sourceTest.r
 
 # IGNORE generated ddg folder
 *_ddg
 /.DS_Store
-/example-prov.json~
 /tmp.ddg.json
 /${out}
+
+# IGNORE build directories
+build_prov
+build_rdt
+
+/RDataTracker.Rcheck/
+RDataTracker*.tar.gz
+/provR.Rcheck/
+provR*.tar.gz
+/test-all.Rout

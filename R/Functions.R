@@ -26,6 +26,7 @@
 
 #' .ddg.init.function.table initializes the function table
 #' @return nothing
+#' @noRd
 
 .ddg.init.function.table <- function () {
   .ddg.set("ddg.function.nodes", 
@@ -41,6 +42,7 @@
 #' ddg.fun - the name of the function
 #' ddg.lib - the library the function comes from
 #' @return the function table
+#' @noRd
 
 .ddg.function.nodes <- function() {
   return( .ddg.get("ddg.function.nodes") )
@@ -49,6 +51,7 @@
 #' .ddg.save.function.table saves the function table to a file for debugging purposes.
 #' The name of the file is function-nodes.csv
 #' @return nothing
+#' @noRd
 
 .ddg.save.function.table <- function () {
   # save function nodes table to file
@@ -57,25 +60,35 @@
 }
 
 #' .ddg.add.to.function.table adds new functions to the function table
-#' @param functions.called vector of names of functions called
+#' @param pfunctions table of functions called and libraries they come from
 #' @return nothing
+#' @noRd
 
-.ddg.add.to.function.table <- function (functions.called) {
-  pfunctions <- .ddg.get.function.info(functions.called)
+.ddg.add.to.function.table <- function (pfunctions) {
   
-  if( is.null(pfunctions) || is.na(pfunctions)) {
+  if( is.null(pfunctions) || is.na(pfunctions) || nrow(pfunctions) == 0) {
     return()
   } 
-    
-  pfunctions <- cbind( "ddg.pnum" = rep(.ddg.pnum(), nrow(pfunctions)), pfunctions )
-  ddg.function.nodes <- rbind( .ddg.function.nodes(), pfunctions )
-  .ddg.set( "ddg.function.nodes", ddg.function.nodes )
+  
+  # Look for functions that come from library packages and
+  # record information about the procedure node that calls
+  # the function.
+  libfunctions <- pfunctions [grepl ("package:", pfunctions$ddg.lib), ]
+  if ( nrow(libfunctions) > 0 )
+  {
+    libfunctions$ddg.lib <- sub("package:", "", libfunctions$ddg.lib)
+    libfunctions <- cbind("ddg.pnum" = rep(.ddg.pnum(), nrow(libfunctions)),
+      libfunctions)
+    ddg.function.nodes <- rbind(.ddg.function.nodes(), libfunctions)
+    .ddg.set( "ddg.function.nodes", ddg.function.nodes )
+  } 
 }
 
-#' .ddg.get.function.info finds and returns the names of function calls to external
-#' packages as well as the names of the packages used.
+#' .ddg.get.function.info finds and returns the names of function calls 
+#' as well as the names of the packages used.
 #' @param function.names 
 #' @return a data frame pairing functions with the libraries they come from
+#' @noRd
 
 .ddg.get.function.info <- function( function.names )
 {
@@ -101,26 +114,23 @@
     ddg.fun <- append( ddg.fun, names(vars[vars == TRUE]) )
   }
   
-  # obtain library information from functions
+  # obtain library information from functions.  Add "package:" to 
+  # ones coming from libraries to make it easy to distinguish
+  # them from user-defined functions.
   fn.frame <- function.names[[3]]
+  if (!is.null (fn.frame)) {
+    fn.frame$ddg.lib <- paste0 ("package:", fn.frame$ddg.lib)
+  }
   
   if( length(ddg.fun) > 0 )
   {
     ddg.lib <- sapply( ddg.fun, .ddg.where )
     ddg.lib <- sapply( ddg.lib, environmentName )
-    
-    ddg.lib <- ddg.lib[ grepl("package:", ddg.lib) ]
-    
-    # combine with functions with known library calls into data frame
-    if( length(ddg.lib) > 0 )
-    {
-      ddg.lib <- mapply( substring, ddg.lib, 9 )
+        
+    ddg.fun <- names(ddg.lib)
+    ddg.lib <- unname(ddg.lib)
       
-      ddg.fun <- names(ddg.lib)
-      ddg.lib <- unname(ddg.lib)
-      
-      fn.frame <- rbind( fn.frame, data.frame(ddg.fun, ddg.lib, stringsAsFactors=FALSE) )
-    }
+    fn.frame <- rbind( fn.frame, data.frame(ddg.fun, ddg.lib, stringsAsFactors=FALSE) )
   }
   
   # return

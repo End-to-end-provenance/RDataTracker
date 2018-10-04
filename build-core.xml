@@ -1,0 +1,46 @@
+    <target name="build-directory" depends="clean">
+      <mkdir dir="${builddir}"/>
+    </target>
+
+    <target name="build" depends="roxygen">
+      <exec dir="${builddir}/.." executable="R" >
+        <arg line="CMD build --no-build-vignettes ${builddir}"/>
+      </exec>
+    </target>
+
+    <target name="check" depends="build">
+      <exec dir="${builddir}/.." executable="R" >
+        <arg line="CMD check --no-vignettes --no-build-vignettes ${tarfile}"/>
+      </exec>
+    </target>
+
+    <target name="lint" depends="copy-to-directory">
+      <copy overwrite="true" file=".lintr" todir="${builddir}"/>
+    <exec dir="${builddir}" executable="Rscript" >
+      <arg line="-e lintr::lint_package()" />
+    </exec>
+    </target>
+
+    <target name="install" depends="check">
+      <exec dir="${builddir}/.." executable="R" >
+        <arg line="CMD INSTALL ${tarfile}"/>
+    </exec>
+    </target>
+    
+    <target name="install-no-check" depends="build">
+      <exec dir="${builddir}/.." executable="R" >
+        <arg line="CMD INSTALL --no-clean-on-error ${tarfile}"/>
+    </exec>
+    </target>
+
+    <target name="cran-check" depends="build, lint">
+    	<exec dir="${builddir}/.." executable="R" >
+    		<arg line="CMD check --as-cran --no-vignettes --no-build-vignettes ${tarfile}"/>
+    	</exec>
+    </target>
+
+    <target name="clean">
+        <delete dir="${builddir}" verbose="false"/>
+        <delete dir="${checkdir}" verbose="false"/>
+    </target>
+  

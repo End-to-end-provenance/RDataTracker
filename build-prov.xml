@@ -1,0 +1,43 @@
+<!DOCTYPE project [
+       <!ENTITY build-core SYSTEM "build-core.xml">
+]>
+<project
+  xmlns:if="ant:if"
+    xmlns:unless="ant:unless">
+    
+  <property name="builddir" value="build_prov"/>
+  <property name="checkdir" value="provR.Rcheck"/>
+  <loadproperties srcFile="DESCRIPTION_prov" />
+  <property name="tarfile" value="provR_${Version}.tar.gz" />
+
+    <target name="roxygen" depends="copy-to-directory">
+    	<exec dir="${builddir}" executable="Rscript" >
+       		<arg line="-e devtools::document()" />
+        </exec>
+      	<copy overwrite="true" todir="man_prov">
+      		<fileset dir="${builddir}/man" />
+      	</copy>
+      	<copy overwrite="true" file="${builddir}/NAMESPACE" tofile="NAMESPACE_prov"/>
+    </target>
+
+    <target name="copy-to-directory" depends="build-directory">
+        <copy overwrite="true" todir="${builddir}/inst">
+          <fileset dir="inst" />
+        </copy>
+    	<copy overwrite="true" todir="${builddir}/R">
+    		<fileset dir="R"
+      			excludes="DDGCheckpoint.R, *_rdt.R"/>
+  		</copy>
+        <mkdir dir="${builddir}/tests"/>
+        <copy overwrite="true" file="tests/test-all-prov.R" tofile="${builddir}/tests/test-all.R"/>
+    	<copy overwrite="true" todir="${builddir}/tests/testthat">
+    		<fileset dir="tests/testthat" />
+  		</copy>
+        <copy overwrite="true" file="DESCRIPTION_prov" tofile="${builddir}/DESCRIPTION"/>
+        <copy overwrite="true" file="LICENSE" todir="${builddir}"/>
+        <copy overwrite="true" file="README_prov.md" tofile="${builddir}/README.md"/>
+    </target>
+    
+	&build-core;
+	
+</project>
