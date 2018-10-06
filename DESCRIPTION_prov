@@ -1,10 +1,10 @@
 Package: provR
 Title: Provenance Collector for R
 Version: 1.0.1
-Date: 2018-08-13
-Authors@R: c( person("Emery", "Boose", role = c("aut", "cre"),
+Date: 2018-10-04
+Authors@R: c( person("Emery", "Boose", role = "aut",
                       email = "boose@fas.harvard.edu"),
-              person("Barbara", "Lerner", role = "aut",
+              person("Barbara", "Lerner", role = c("aut", "cre"),
                       email = "blerner@mtholyoke.edu"),
               person("Elizabeth", "Fong", role = "aut",
                       email = "fong22e@mtholyoke.edu"),
@@ -31,7 +31,7 @@ Authors@R: c( person("Emery", "Boose", role = c("aut", "cre"),
               person("Orenna", "Brand", role = "res",
                       email = "o.brand@columbia.edu")
                       )
-Author: Emery Boose [aut, cre], Barbara Lerner [aut], Elizabeth Fong [aut],
+Author: Emery Boose [aut], Barbara Lerner [aut, cre], Elizabeth Fong [aut],
   Luis Perez [aut], Thomas Pasquier [ctb], Matthew Lau [ctb], Yada Pruksachatkun [ctb], 
   Alex Liu [ctb], Moe Pwint Phyu [ctb], Connor Gregorich-Trevor [ctb], 
   Aaron Ellison [res], Margo Seltzer [res], Joe Wonsil [res], Orenna Brand [res]  

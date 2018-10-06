@@ -41,10 +41,10 @@ library(XML)
 library(gplots)
 
 # HF web server EML directory
-hf.eml.dir <- "http://harvardforest.fas.harvard.edu/sites/harvardforest.fas.harvard.edu/files/data/eml/"
+hf.eml.dir <- "https://harvardforest.fas.harvard.edu/sites/harvardforest.fas.harvard.edu/files/data/eml/"
 
 # HF web server data directory
-hf.data.dir <- "http://harvardforest.fas.harvard.edu/sites/harvardforest.fas.harvard.edu/files/data/"
+hf.data.dir <- "https://harvardforest.fas.harvard.edu/sites/harvardforest.fas.harvard.edu/files/data/"
 
 #------------------------DOWNLOAD FILES----------------------------#
 
