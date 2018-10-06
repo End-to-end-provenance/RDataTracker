@@ -277,7 +277,7 @@
 
 		<!-- Delete all local environment information (except sourced scripts & installed packages) -->
 		<replaceregexp flags="g">
-			<regexp pattern='(\t+("rdt:architecture"|"rdt:operatingSystem"|"rdt:language"|"rdt:langVersion"|"rdt:script"|"rdt:scriptTimeStamp"|"rdt:workingDirectory"|"rdt:ddgDirectory"|"rdt:ddgTimeStamp"): (.*)\r?\n(,\r?\n)?)' />
+			<regexp pattern='(\t+("rdt:architecture"|"rdt:operatingSystem"|"rdt:language"|"rdt:langVersion"|"rdt:script"|"rdt:scriptTimeStamp"|"rdt:workingDirectory"|"rdt:provDirectory"|"rdt:provTimestamp"): (.*)\r?\n(,\r?\n)?)' />
 			<substitution expression=""/>
 			<fileset dir="${local_dir}">
 				<patternset id="local_files">
@@ -298,8 +298,8 @@
 				"2018-01-11T06.29.26EST",
 				"2018-01-11T06.29.26EST",
 				"2018-01-11T06.29.26EST",
-			],    
-    	-->
+			],
+		-->
 		<replaceregexp flags="g">
 			<regexp pattern='(\t+"rdt:sourcedScriptTimeStamps": (""|\[\r?\n?(\t*"?([0-9]{4}-[0-9]{2}-[0-9]{2}(T| )[0-9]{2}(.|:)[0-9]{2}(.|:)[0-9]{2}[A-Z]{0,3}[+|-]?[0-9]{0,2})?"?,?\r?\n?)+\]),)' />
 			<substitution expression=""/>
@@ -389,16 +389,16 @@
 			tablength="2"
 		/>
 
-		</target>
+	</target>
 			
 	<target name="compare-out">
 		<basename property="expected_out_name" file="${expected_out}" />
 		<basename property="out_name" file="${out}" />
 
 		<!-- Execute diff on .out files (always)-->
-    	<echo>
+		<echo>
 	Diff of (1) ${out_name}.local and (2) ${expected_out_name}.local:
-    	</echo>
+		</echo>
 
 		<exec executable="diff">
 			<arg line="--strip-trailing-cr ${local_dir}/${out_name}.local ${local_dir}/${expected_out_name}.local" />
@@ -457,7 +457,7 @@
 	-->
 	<target name="prov-json-compliance-test">
 		<exec executable="Rscript" dir="scriptTests/ProvJsonTest" resultproperty="compliant">
-			<arg value="ProvJsonTest.r" />
+			<arg value="complianceTest.r" />
 			<arg path="scriptTests/ProvJsonTest/schema.json" />
 			<arg path="${local_dir}/prov.json.local" />
 		</exec>
@@ -1011,7 +1011,7 @@
 	</target>
 
 	<target name="bug-tests" depends="ddgDeepNesting" >
-		<echo>Tests which were added to check for specific bug fixes </echo>
+		<echo>Tests which were added to check for specific bug fixes.</echo>
 	</target>
 
 	<!--########################## End Bug Tests ##########################-->
