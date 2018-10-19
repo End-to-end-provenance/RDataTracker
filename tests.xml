@@ -2061,7 +2061,6 @@
 	
 	<!-- 
 		EF EDITS: TODO
-		default values if these tests are run on their own
 		rdt and prov values for running these tests on their own
 	-->
 	
@@ -2086,14 +2085,18 @@
 	
 	<target name="bug-tests" depends="ddgDeepNesting">
 		<echo></echo>
-		<echo>	### Finished Execution of Bug Tests. These tests are added to check for specific bug fixes. ###</echo>
+		<echo>	### Finished Execution of Bug Tests. ###</echo>
+		<echo>These tests are added to check for specific bug fixes.</echo>
 		<echo></echo>
 	</target>
 	
 	<target name="quick-test"
 			depends="normal-tests, source-tests, bug-tests"
 			description="Run quick regressions tests.">
+		<echo></echo>
+		<echo>	### Finished Execution of Quick Tests. ###</echo>
 		<echo>This batch of tests is quick to execute, but not as extensive.</echo>
+		<echo></echo>
 	</target>
 	
 	
@@ -2106,7 +2109,8 @@
 			depends="CalculateSqrt, DailySolarRadiation, HFDatasetPreview"
 			description="Runs long regression tests.">-->
 		<echo></echo>
-		<echo>	### Finished Execution of Script Tests. This set of tests takes longer, but is a bit more real-world. ###</echo>
+		<echo>	### Finished Execution of Script Tests. ###</echo>
+		<echo>This set of tests takes longer, but is a bit more real-world.</echo>
 		<echo></echo>
 	</target>
 	
@@ -2115,14 +2119,14 @@
 	
 	<!-- ========== Targets for Running All Tests ========== -->
 	
-	<!-- EF EDITS: TODO - target echo strings -->
-	
 	<!-- test all -->
 	<target name="test-all-prov" description="">
 		<antcall target="run-tests">
 			<param name="travis" value="false"/>
 			<param name="tool" value="prov"/>
 		</antcall>
+		<echo></echo>
+		<echo>All tests makes calls to the RDataTracker Library. You might need to restart RStudio to correctly run the scripts with the updated library installed.</echo>
 		<echo></echo>
 	</target>
 	
@@ -2131,6 +2135,8 @@
 			<param name="travis" value="false"/>
 			<param name="tool" value="rdt"/>
 		</antcall>
+		<echo></echo>
+		<echo>All tests makes calls to the RDataTracker Library. You might need to restart RStudio to correctly run the scripts with the updated library installed.</echo>
 		<echo></echo>
 	</target>
 	
@@ -2142,6 +2148,8 @@
 			<param name="tool" value="prov"/>
 		</antcall>
 		<echo></echo>
+		<echo>All tests makes calls to the RDataTracker Library. You might need to restart RStudio to correctly run the scripts with the updated library installed.</echo>
+		<echo></echo>
 	</target>
 	
 	<target name="test-travis-rdt" description="">
@@ -2150,10 +2158,12 @@
 			<param name="tool" value="rdt"/>
 		</antcall>
 		<echo></echo>
+		<echo>All tests makes calls to the RDataTracker Library. You might need to restart RStudio to correctly run the scripts with the updated library installed.</echo>
+		<echo></echo>
 	</target>
 	
 	
-	<!-- helper target --> <!-- EF EDITS: TODO - default values for when run on its own -->
+	<!-- helper target -->
 	<target name="run-tests">
 		<antcall target="ProvJson"/>
 		<antcall target="quick-test"/>
