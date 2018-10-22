@@ -1779,6 +1779,27 @@
 	</target>
 	
 	
+	<!-- rdt only tests -->
+	<target name="rdtOnly">
+		<condition property="travis" value="false">    <!-- default value -->
+			<not>
+				<isset property="travis"/>
+			</not>
+		</condition>
+		<antcall target="run-test">
+			<param name="test-name" value="rdtOnly"/>
+			<param name="tool" value="rdt"/>
+		</antcall>
+	</target>
+	
+	<target name="update-rdtOnly">
+		<antcall target="update-expected">
+			<param name="test-name" value="rdtOnly"/>
+			<param name="tool" value="rdt"/>
+		</antcall>
+	</target>
+	
+	
 	<!-- RMarkdownTest -->
 	<target name="RMarkdown">    <!-- helper -->
 		<condition property="travis" value="false">    <!-- default value -->
@@ -2059,22 +2080,40 @@
 	
 	<!-- ========== Targets for Running A Set of Tests ========== -->
 	
-	<!-- 
-		EF EDITS: TODO
-		rdt and prov values for running these tests on their own
-	-->
-	
-	<!-- quick test -->
+	<!-- normal tests -->
 	<target name="normal-tests"
 			depends="basic, S4Object, Scope, Return, OddParameter, FunctionAnnotation, 
 					 FunctionNonlocals, ControlConstruct, Warning, Plot1, Plot2, Plot3, 
 					 FileNodes, NoDevOff, DataType, HigherOrderFunc, AssignOperators, 
 					 FunctionOrigin, RMarkdown, DDGStatement, Connection">
+		
+		<!-- rdt only tests -->
+		<condition property="isRDT" value="true">
+			<equals arg1="${tool}" arg2="rdt"/>
+		</condition>
+		<antcall if:true="${isRDT}" target="rdtOnly"/>
+		
 		<echo></echo>
 		<echo>	### Finished Execution of Normal Tests. ###</echo>
 		<echo></echo>
 	</target>
 	
+	<target name="normal-tests-prov">
+		<antcall target="normal-tests">
+			<param name="travis" value="false"/>
+			<param name="tool" value="prov"/>
+		</antcall>
+	</target>
+	
+	<target name="normal-tests-rdt">
+		<antcall target="normal-tests">
+			<param name="travis" value="false"/>
+			<param name="tool" value="rdt"/>
+		</antcall>
+	</target>
+	
+	
+	<!-- source tests -->
 	<!-- EF EDITS: tmp: remove SourceFunc -->
 	<target name="source-tests" depends="console">
 	<!--<target name="source-tests" depends="SourceFunc, console">-->
@@ -2083,6 +2122,22 @@
 		<echo></echo>
 	</target>
 	
+	<target name="source-tests-prov">
+		<antcall target="source-tests">
+			<param name="travis" value="false"/>
+			<param name="tool" value="prov"/>
+		</antcall>
+	</target>
+	
+	<target name="source-tests-rdt">
+		<antcall target="source-tests">
+			<param name="travis" value="false"/>
+			<param name="tool" value="rdt"/>
+		</antcall>
+	</target>
+	
+	
+	<!-- bug tests -->
 	<target name="bug-tests" depends="ddgDeepNesting">
 		<echo></echo>
 		<echo>	### Finished Execution of Bug Tests. ###</echo>
@@ -2090,6 +2145,22 @@
 		<echo></echo>
 	</target>
 	
+	<target name="bug-tests-prov">
+		<antcall target="bug-tests">
+			<param name="travis" value="false"/>
+			<param name="tool" value="prov"/>
+		</antcall>
+	</target>
+	
+	<target name="bug-tests-rdt">
+		<antcall target="bug-tests">
+			<param name="travis" value="false"/>
+			<param name="tool" value="rdt"/>
+		</antcall>
+	</target>
+	
+	
+	<!-- quick test -->
 	<target name="quick-test"
 			depends="normal-tests, source-tests, bug-tests"
 			description="Run quick regressions tests.">
@@ -2099,8 +2170,22 @@
 		<echo></echo>
 	</target>
 	
+	<target name="quick-test-prov">
+		<antcall target="quick-test">
+			<param name="travis" value="false"/>
+			<param name="tool" value="prov"/>
+		</antcall>
+	</target>
 	
-	<!-- long test -->
+	<target name="quick-test-rdt">
+		<antcall target="quick-test">
+			<param name="travis" value="false"/>
+			<param name="tool" value="rdt"/>
+		</antcall>
+	</target>
+	
+	
+	<!-- long test (script tests) -->
 	<!-- EF EDITS: tmp: remove DailySolarRadiation -->
 	<target name="script-tests" 
 			depends="CalculateSqrt, HFDatasetPreview"
@@ -2112,6 +2197,20 @@
 		<echo>	### Finished Execution of Script Tests. ###</echo>
 		<echo>This set of tests takes longer, but is a bit more real-world.</echo>
 		<echo></echo>
+	</target>
+	
+	<target name="script-tests-prov">
+		<antcall target="script-tests">
+			<param name="travis" value="false"/>
+			<param name="tool" value="prov"/>
+		</antcall>
+	</target>
+	
+	<target name="script-tests-rdt">
+		<antcall target="script-tests">
+			<param name="travis" value="false"/>
+			<param name="tool" value="rdt"/>
+		</antcall>
 	</target>
 	
 	<!-- ========== End: Targets for Running A Set of Tests ========== -->

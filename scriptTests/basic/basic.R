@@ -6,10 +6,6 @@
 # Modified by Luis Perez 7-Jul-2014
 # Modified by Luis PErez 17-Jul-2014
 
-## Directories
-
-prov.annotate.on("f")
-
 ### Functions
 f <- function (a, b, yy, d, e, f) {
   return (a+1)
