@@ -86,19 +86,24 @@
 				  "hadMember" = NA )
 	
 	# prefix
+print ("Creating prefix")
 	json$prefix <- .ddg.json.prefix( PREFIX.NODE )
 	
 	# agent (about the tool that produced the json & the json version)
+print ("Creating agent")
 	json$agent <- .ddg.json.agent( tool.name , JSON.VERSION , LABEL.NAMES$agent , 
 	                               LABEL.PREFIX )
 	
 	# activity (proc nodes)
+print ("Creating proc nodes")
 	json$activity.proc <- .ddg.json.proc( LABEL.NAMES$activity.proc , LABEL.PREFIX )
 	
 	# entity: data nodes
+print ("Creating activity nodes")
 	json$entity.data <- .ddg.json.data( LABEL.NAMES$entity.data , LABEL.PREFIX )
 	
 	# entity: environment
+print ("Creating environment")
 	json$entity.env <- .ddg.json.env( LABEL.NAMES$entity.env , LABEL.PREFIX )
 	
 	
@@ -107,11 +112,13 @@
 	edges <- edges[edges$ddg.num > 0, ]
 	
 	# wasInformedBy (proc2proc)
+print ("Creating proc2proc")
 	json$wasInformedBy.p2p <- .ddg.json.proc2proc( edges , 
 	                                               LABEL.NAMES$wasInformedBy.p2p , 
 	                                               LABEL.PREFIX )
 	
 	# wasGeneratedBy (proc2data)
+print ("Creating proc2data")
 	json$wasGeneratedBy.p2d <- .ddg.json.proc2data( edges , 
 	                                                LABEL.NAMES$wasGeneratedBy.p2d , 
 	                                                LABEL.PREFIX )
@@ -123,6 +130,7 @@
 	
 	
 	# used: data2proc
+print ("Creating data2proc")
 	json$used.d2p <- .ddg.json.data2proc( edges , LABEL.NAMES$used.d2p , LABEL.PREFIX )
 	
 	
@@ -131,6 +139,7 @@
 	rownames(libraries) <- c(1 : nrow(libraries))
 	
 	# PRINT TO JSON - LIBRARY NODES
+print ("Creating library nodes")
 	json$entity.lib <- .ddg.json.lib( libraries , LABEL.NAMES$entity.lib , LABEL.PREFIX )
 	
 	
@@ -144,6 +153,7 @@
 		rownames(functions) <- c(1 : nrow(functions))
 		
 		# PRINT TO JSON - FUNCTION NODES
+  print ("Creating function nodes")
 		json$entity.func <- .ddg.json.func( functions , LABEL.NAMES$entity.func , LABEL.PREFIX )
 		
 		
@@ -168,17 +178,20 @@
 		
 		
 		# PRINT TO JSON: func2proc
+  print ("Creating func2proc")
 		json$used.f2p <- .ddg.json.func2proc( calls , LABEL.NAMES$used.f2p , 
 		                                      LABEL.NAMES$entity.func , 
 		                                      LABEL.NAMES$activity.proc , LABEL.PREFIX )
 		
 		# PRINT TO JSON: func2lib
+  print ("Creating func2lib")
 		json$hadMember <- .ddg.json.lib2func( calls , LABEL.NAMES$hadMember , 
 		                                      LABEL.NAMES$entity.lib ,  
 		                                      LABEL.NAMES$entity.func , LABEL.PREFIX )
 	}	
 	
 	# COMBINE INTO COMPLETE JSON
+print ("Combining json")
 	return(.ddg.json.combine(json) )
 }
 
