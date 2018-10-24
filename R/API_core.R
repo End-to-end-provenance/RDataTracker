@@ -267,7 +267,9 @@
   .ddg.set("ddg.initialized", FALSE)
 
   # Save prov.json to file.
+  print ("Calling .ddg.json.write")
   .ddg.json.write()
+  print ("Returned from .ddg.json.write")
   if (interactive()) print(paste("Saving prov.json in ", .ddg.path(), sep=""))
   
   # Save debug files to debug directory.
