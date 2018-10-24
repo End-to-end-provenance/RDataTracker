@@ -132,11 +132,14 @@ print ("Creating proc2data")
 	# used: data2proc
 print ("Creating data2proc")
 	json$used.d2p <- .ddg.json.data2proc( edges , LABEL.NAMES$used.d2p , LABEL.PREFIX )
-	
+	print ("Returned from .ddg.json.data2proc")
 	
 	# LIBRARY NODES - change row numbers
 	libraries <- .ddg.installedpackages()
+  print ("Set libraries")
+  print (libraries)
 	rownames(libraries) <- c(1 : nrow(libraries))
+  print ("Set rownames of libraries")
 	
 	# PRINT TO JSON - LIBRARY NODES
 print ("Creating library nodes")
@@ -588,11 +591,12 @@ print ("Combining json")
   print (edges)
 	edges <- edges[edges$ddg.type == "df.in", c("ddg.from", "ddg.to")]
   print ("After")
-  print (edges)
 	
 	# case: no data-to-procedure edges
-	if( nrow(edges) == 0 )
+	if( nrow(edges) == 0 ) {
+    print ("Returning NA")
 		return(NA)
+  }
 	
 	# add prefix to node numbers
   print ("Adding prefix")
