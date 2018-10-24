@@ -585,6 +585,7 @@ print ("Combining json")
 {
 	# extract data-to-procedure edges, where ddg.type is 'df.in' (data flow in)
   print ("Extracting df.in edges")
+  print (edges)
 	edges <- edges[edges$ddg.type == "df.in", c("ddg.from", "ddg.to")]
 	
 	# case: no data-to-procedure edges
