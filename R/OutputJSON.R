@@ -584,6 +584,7 @@ print ("Combining json")
 .ddg.json.data2proc <- function( edges, label, prefix )
 {
 	# extract data-to-procedure edges, where ddg.type is 'df.in' (data flow in)
+  print ("Extracting df.in edges")
 	edges <- edges[edges$ddg.type == "df.in", c("ddg.from", "ddg.to")]
 	
 	# case: no data-to-procedure edges
@@ -591,13 +592,16 @@ print ("Combining json")
 		return(NA)
 	
 	# add prefix to node numbers
+  print ("Adding prefix")
 	edges$ddg.from <- mapply( paste , prefix , edges$ddg.from , sep='' , USE.NAMES=FALSE )
 	edges$ddg.to <- mapply( paste , prefix , edges$ddg.to , sep='' , USE.NAMES=FALSE )
 	
 	# column names
+  print ("Adding column names")
 	col.names <- c("prov:entity", "prov:activity")
 	
 	# convert to json, return
+  print ("Converting to json")
 	prefix <- paste( prefix , label , sep='' )
 	return( .ddg.json.dataframe(edges, col.names, prefix, 
 	                            comment = "data-to-procedure edges") )
