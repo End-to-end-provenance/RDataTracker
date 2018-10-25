@@ -302,6 +302,8 @@ prov.json <- function() {
   return(.ddg.json.string())
 }
 
+#' prov.dir
+#' 
 #' prov.dir returns the current provenance directory.
 #' @return prov.dir returns the current provenance directory.
 #' @export

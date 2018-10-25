@@ -258,17 +258,13 @@
 
 .ddg.installedpackages <- function()
 {
-  packages <- devtools::session_info()
-  print ("devtools::session_info() returned:")
-  print (packages)
+  packages <- sessioninfo::session_info(include_base = TRUE)
   packages <- packages[[2]]
-  print ("Extracted packages")
-  print (packages)
-  installed <- packages[packages[, 2] == "*", ]
-  print ("Installed packages")
-  print (installed)
-  installed <- installed[, c(1, 3)]
-  print ("Keeping columns 1 & 3")
-  print (installed)
+  installed <- packages[packages$attached, ]
+  
+  # We need to create a new data frame
+  package <- installed$package
+  version <- installed$loadedversion
+  installed <- data.frame (package, version)
   return(installed)
 }

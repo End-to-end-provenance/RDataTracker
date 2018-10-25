@@ -531,6 +531,8 @@ prov.annotate.on <- function (fnames.on=NULL){
   
 }
 
+#' prov.annotate.off
+#' 
 #' prov.annotate.off disables provenance collection for specified functions.
 #' 
 #' @param fnames.off a list of one or more function names passed in as strings.
@@ -1448,6 +1450,8 @@ prov.annotate.off <- function (fnames.off=NULL) {
   }
 }
 
+#' prov.set.detail
+#' 
 #' prov.set.detail sets the level of detail for the provenance to be 
 #' collected. 
 #' 
@@ -1488,6 +1492,8 @@ prov.set.detail <- function(detail.level) {
   }
 }
 
+#' prov.get.detail
+#' 
 #' prov.get.detail returns the current level of provenance detail.
 #' @return prov.get.detail returns the current level of provenance 
 #' detail (0-3).  Returns NULL if prov.set.detail was not previously
@@ -1500,6 +1506,8 @@ prov.get.detail <- function() {
   return(.ddg.get("ddg.detail"))
 }
 
+#' prov.clear.detail
+#' 
 #' prov.clear.detail clears the current value of provenance detail.
 #' The level of detail is then determined by parameters of prov.run
 #' or prov.init.

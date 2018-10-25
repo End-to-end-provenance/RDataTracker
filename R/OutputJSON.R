@@ -86,24 +86,19 @@
 				  "hadMember" = NA )
 	
 	# prefix
-print ("Creating prefix")
 	json$prefix <- .ddg.json.prefix( PREFIX.NODE )
 	
 	# agent (about the tool that produced the json & the json version)
-print ("Creating agent")
 	json$agent <- .ddg.json.agent( tool.name , JSON.VERSION , LABEL.NAMES$agent , 
 	                               LABEL.PREFIX )
 	
 	# activity (proc nodes)
-print ("Creating proc nodes")
 	json$activity.proc <- .ddg.json.proc( LABEL.NAMES$activity.proc , LABEL.PREFIX )
 	
 	# entity: data nodes
-print ("Creating activity nodes")
 	json$entity.data <- .ddg.json.data( LABEL.NAMES$entity.data , LABEL.PREFIX )
 	
 	# entity: environment
-print ("Creating environment")
 	json$entity.env <- .ddg.json.env( LABEL.NAMES$entity.env , LABEL.PREFIX )
 	
 	
@@ -112,13 +107,11 @@ print ("Creating environment")
 	edges <- edges[edges$ddg.num > 0, ]
 	
 	# wasInformedBy (proc2proc)
-print ("Creating proc2proc")
 	json$wasInformedBy.p2p <- .ddg.json.proc2proc( edges , 
 	                                               LABEL.NAMES$wasInformedBy.p2p , 
 	                                               LABEL.PREFIX )
 	
 	# wasGeneratedBy (proc2data)
-print ("Creating proc2data")
 	json$wasGeneratedBy.p2d <- .ddg.json.proc2data( edges , 
 	                                                LABEL.NAMES$wasGeneratedBy.p2d , 
 	                                                LABEL.PREFIX )
@@ -130,19 +123,13 @@ print ("Creating proc2data")
 	
 	
 	# used: data2proc
-print ("Creating data2proc")
 	json$used.d2p <- .ddg.json.data2proc( edges , LABEL.NAMES$used.d2p , LABEL.PREFIX )
-	print ("Returned from .ddg.json.data2proc")
 	
 	# LIBRARY NODES - change row numbers
 	libraries <- .ddg.installedpackages()
-  print ("Set libraries")
-  print (libraries)
 	rownames(libraries) <- c(1 : nrow(libraries))
-  print ("Set rownames of libraries")
 	
 	# PRINT TO JSON - LIBRARY NODES
-print ("Creating library nodes")
 	json$entity.lib <- .ddg.json.lib( libraries , LABEL.NAMES$entity.lib , LABEL.PREFIX )
 	
 	
@@ -156,7 +143,6 @@ print ("Creating library nodes")
 		rownames(functions) <- c(1 : nrow(functions))
 		
 		# PRINT TO JSON - FUNCTION NODES
-  print ("Creating function nodes")
 		json$entity.func <- .ddg.json.func( functions , LABEL.NAMES$entity.func , LABEL.PREFIX )
 		
 		
@@ -181,20 +167,17 @@ print ("Creating library nodes")
 		
 		
 		# PRINT TO JSON: func2proc
-  print ("Creating func2proc")
 		json$used.f2p <- .ddg.json.func2proc( calls , LABEL.NAMES$used.f2p , 
 		                                      LABEL.NAMES$entity.func , 
 		                                      LABEL.NAMES$activity.proc , LABEL.PREFIX )
 		
 		# PRINT TO JSON: func2lib
-  print ("Creating func2lib")
 		json$hadMember <- .ddg.json.lib2func( calls , LABEL.NAMES$hadMember , 
 		                                      LABEL.NAMES$entity.lib ,  
 		                                      LABEL.NAMES$entity.func , LABEL.PREFIX )
 	}	
 	
 	# COMBINE INTO COMPLETE JSON
-print ("Combining json")
 	return(.ddg.json.combine(json) )
 }
 
@@ -587,28 +570,20 @@ print ("Combining json")
 .ddg.json.data2proc <- function( edges, label, prefix )
 {
 	# extract data-to-procedure edges, where ddg.type is 'df.in' (data flow in)
-  print ("Extracting df.in edges")
-  print (edges)
 	edges <- edges[edges$ddg.type == "df.in", c("ddg.from", "ddg.to")]
-  print ("After")
 	
 	# case: no data-to-procedure edges
-	if( nrow(edges) == 0 ) {
-    print ("Returning NA")
+	if( nrow(edges) == 0 )
 		return(NA)
-  }
 	
 	# add prefix to node numbers
-  print ("Adding prefix")
 	edges$ddg.from <- mapply( paste , prefix , edges$ddg.from , sep='' , USE.NAMES=FALSE )
 	edges$ddg.to <- mapply( paste , prefix , edges$ddg.to , sep='' , USE.NAMES=FALSE )
 	
 	# column names
-  print ("Adding column names")
 	col.names <- c("prov:entity", "prov:activity")
 	
 	# convert to json, return
-  print ("Converting to json")
 	prefix <- paste( prefix , label , sep='' )
 	return( .ddg.json.dataframe(edges, col.names, prefix, 
 	                            comment = "data-to-procedure edges") )
