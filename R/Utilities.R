@@ -259,6 +259,8 @@
 .ddg.installedpackages <- function()
 {
   packages <- devtools::session_info()
+  print ("devtools::session_info() returned:")
+  print (packages)
   packages <- packages[[2]]
   installed <- packages[packages[, 2] == "*", ]
   installed <- installed[, c(1, 3)]
