@@ -147,6 +147,7 @@ function copy_rdt_files {
   fi
   rsync -rtv --del --perms tests/test-all-rdt.R ../rdt_test/tests/test-all.R
   rsync -rtv --del --exclude "*_prov*" --perms tests/testthat ../rdt_test/tests/
+  rsync -rtv --del --perms scriptTests ../rdt_test/
 }
 
 # Save the current commit number in the .commit file.
