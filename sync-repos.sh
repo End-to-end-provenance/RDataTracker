@@ -136,6 +136,7 @@ function copy_rdt_files {
   fi
   rsync -tv --perms NEWS_rdt.md ../rdt_test/NEWS.md
   rsync -tv --perms .Rbuildignore ../rdt_test/
+  rsync -tv --perms .travis-rdt.yml ../rdt_test/.travis.yml
   rsync -rtv --del --exclude "*_prov.R" --exclude "DDGCheckpoint.R" --perms R ../rdt_test/
   if [ -e man_rdt ] 
   then
@@ -242,6 +243,6 @@ else
 fi
 
 # Delete test repos
-cleanup
+#cleanup
 
 echo "*** Done!"
