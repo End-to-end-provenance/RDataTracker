@@ -258,9 +258,13 @@
 
 .ddg.installedpackages <- function()
 {
-  packages <- devtools::session_info()
+  packages <- sessioninfo::session_info(include_base = TRUE)
   packages <- packages[[2]]
-  installed <- packages[packages[, 2] == "*", ]
-  installed <- installed[, c(1, 3)]
+  installed <- packages[packages$attached, ]
+  
+  # We need to create a new data frame
+  package <- installed$package
+  version <- installed$loadedversion
+  installed <- data.frame (package, version)
   return(installed)
 }
