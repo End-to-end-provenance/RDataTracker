@@ -262,7 +262,13 @@
   print ("devtools::session_info() returned:")
   print (packages)
   packages <- packages[[2]]
+  print ("Extracted packages")
+  print (packages)
   installed <- packages[packages[, 2] == "*", ]
+  print ("Installed packages")
+  print (installed)
   installed <- installed[, c(1, 3)]
+  print ("Keeping columns 1 & 3")
+  print (installed)
   return(installed)
 }
