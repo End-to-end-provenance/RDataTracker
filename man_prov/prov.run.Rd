@@ -63,24 +63,32 @@ prov.run runs a script, collecting provenance as it does so.
 The prov.source function does not return a value.
 }
 \description{
-prov.init intializes a new provenance graph. Called by the user
-in console mode.
+prov.init intializes a new provenance graph. This function can be
+executed in the console or placed inside an R script.
 
 prov.save saves the current provenance graph to a prov-json file.
 If more R statements are executed, the provenance for these statements
 is added to the graph. The graph is finalized with prov.quit.
-Called by the user in console mode.
+This function can be
+executed in the console or placed inside an R script.
 
 prov.quit saves and closes the current provenance graph.
-Called by the user in console mode.
+This function can be
+executed in the console or placed inside an R script.
 
 prov.run initiates execution of a script and collects provenance as
-the script executes.
+the script executes.  This function should be used if you want to 
+collect provenance for a script that is in an R file and you do not
+want to modify the R script directly to include calls to prov.init, 
+prov.save and prov.quit.  It essentially wraps the execution of the 
+script with calls to prov.init and prov.quit.
 
-prov.source reads and executes an R script. To collect provenance
-for scripts sourced by the main script, replace "source" in the
-main script with "prov.source" before executing the main script
-with prov.run.
+prov.source loads an R script and executes it, collecting provenance
+as it does so.  It assumes that provenance has already been initialized,
+either via a call to prov.init, or because the R script was executed
+using prov.run.  If you want to collect provenance inside scripts
+that are loaded with R's source function, you should replace calls 
+to source with calls to prov.source.
 }
 \details{
 provR is an R package that collects provenance as an R script 
