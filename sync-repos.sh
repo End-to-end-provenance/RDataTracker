@@ -136,6 +136,8 @@ function copy_rdt_files {
   fi
   rsync -tv --perms NEWS_rdt.md ../rdt_test/NEWS.md
   rsync -tv --perms .Rbuildignore ../rdt_test/
+  rsync -tv --perms .travis-rdt.yml ../rdt_test/.travis.yml
+  rsync -tv --perms tests.xml ../rdt_test/
   rsync -rtv --del --exclude "*_prov.R" --exclude "DDGCheckpoint.R" --perms R ../rdt_test/
   if [ -e man_rdt ] 
   then
@@ -145,6 +147,7 @@ function copy_rdt_files {
   fi
   rsync -rtv --del --perms tests/test-all-rdt.R ../rdt_test/tests/test-all.R
   rsync -rtv --del --exclude "*_prov*" --perms tests/testthat ../rdt_test/tests/
+  rsync -rtv --del --perms scriptTests ../rdt_test/
 }
 
 # Save the current commit number in the .commit file.
@@ -237,6 +240,16 @@ if is_current "rdt_test" "development"
     echo "rdt development is current"
 else 
     echo "Updating rdt development"
+    copy_rdt_files
+    commit_repo "rdt_test"
+fi
+
+echo ""
+if is_current "rdt_test" "sync2"
+  then
+    echo "rdt sync2 is current"
+else 
+    echo "Updating rdt sync2"
     copy_rdt_files
     commit_repo "rdt_test"
 fi
