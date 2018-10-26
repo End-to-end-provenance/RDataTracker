@@ -8,7 +8,7 @@
 		// agent: this json file and the tool that produced this
 		"rdt:a1": {
 			"rdt:tool.name": "RDataTracker",
-			"rdt:tool.version": "3.0.0",
+			"rdt:tool.version": "3.0.1",
 			"rdt:json.version": "2.1"
 		}
 	},
@@ -18,7 +18,7 @@
 		"rdt:p1": {
 			"rdt:name": "WarningTest.R",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 0.73,
+			"rdt:elapsedTime": 0.703,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -28,8 +28,8 @@
 		"rdt:p2": {
 			"rdt:name": "a <- 1",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.786,
-			"rdt:scriptNum": 0,
+			"rdt:elapsedTime": 0.764,
+			"rdt:scriptNum": 1,
 			"rdt:startLine": 1,
 			"rdt:startCol": 1,
 			"rdt:endLine": 1,
@@ -38,8 +38,8 @@
 		"rdt:p3": {
 			"rdt:name": "warning(\"foo\", call. = FALSE)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.794,
-			"rdt:scriptNum": 0,
+			"rdt:elapsedTime": 0.771,
+			"rdt:scriptNum": 1,
 			"rdt:startLine": 2,
 			"rdt:startCol": 1,
 			"rdt:endLine": 2,
@@ -48,8 +48,8 @@
 		"rdt:p4": {
 			"rdt:name": "b <- 2",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.797,
-			"rdt:scriptNum": 0,
+			"rdt:elapsedTime": 0.774,
+			"rdt:scriptNum": 1,
 			"rdt:startLine": 3,
 			"rdt:startCol": 1,
 			"rdt:endLine": 3,
@@ -58,7 +58,7 @@
 		"rdt:p5": {
 			"rdt:name": "WarningTest.R",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 0.801,
+			"rdt:elapsedTime": 0.778,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -107,23 +107,23 @@
 		"rdt:environment": {
 			"rdt:name": "environment",
 			"rdt:architecture": "x86_64",
-			"rdt:operatingSystem": "unix",
+			"rdt:operatingSystem": "darwin15.6.0",
 			"rdt:language": "R",
-			"rdt:langVersion": "R version 3.5.0 (2018-04-23)",
+			"rdt:langVersion": "R version 3.5.1 (2018-07-02)",
 			"rdt:script": "[DIR]/WarningTest.R",
-			"rdt:scriptTimeStamp": "2018-08-10T14.24.37EDT",
+			"rdt:scriptTimeStamp": "2018-10-26T14.26.54EDT",
 			"rdt:sourcedScripts": "",
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:workingDirectory": "[DIR]",
 			"rdt:ddgDirectory": "[DIR]/prov_WarningTest",
-			"rdt:ddgTimeStamp": "2018-09-06T16.50.29EDT",
+			"rdt:ddgTimeStamp": "2018-10-26T16.46.07EDT",
 			"rdt:hashAlgorithm": "md5"
 		},
 
 		// library nodes - prov collections
 		"rdt:l1": {
 			"name": "base",
-			"version": "3.5.0",
+			"version": "3.5.1",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -131,7 +131,7 @@
 		},
 		"rdt:l2": {
 			"name": "datasets",
-			"version": "3.5.0",
+			"version": "3.5.1",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -147,7 +147,7 @@
 		},
 		"rdt:l4": {
 			"name": "graphics",
-			"version": "3.5.0",
+			"version": "3.5.1",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -155,7 +155,7 @@
 		},
 		"rdt:l5": {
 			"name": "grDevices",
-			"version": "3.5.0",
+			"version": "3.5.1",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -163,7 +163,7 @@
 		},
 		"rdt:l6": {
 			"name": "methods",
-			"version": "3.5.0",
+			"version": "3.5.1",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -171,7 +171,7 @@
 		},
 		"rdt:l7": {
 			"name": "RDataTracker",
-			"version": "3.0.0",
+			"version": "3.0.1",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -179,7 +179,7 @@
 		},
 		"rdt:l8": {
 			"name": "stats",
-			"version": "3.5.0",
+			"version": "3.5.1",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -187,7 +187,7 @@
 		},
 		"rdt:l9": {
 			"name": "utils",
-			"version": "3.5.0",
+			"version": "3.5.1",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"

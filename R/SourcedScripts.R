@@ -32,7 +32,7 @@
 
 .ddg.init.sourced.scripts <- function () {
   # Number of first sourced script (main script).
-  .ddg.set("ddg.next.script.num", 0)
+  .ddg.set("ddg.next.script.num", 1)
   
   # Table of sourced scripts
   .ddg.set("ddg.sourced.scripts", NULL)
@@ -80,7 +80,7 @@
   snum <- .ddg.next.script.num()
   stime <- .ddg.format.time( file.info(sname)$mtime )
   
-  if (snum == 0) {
+  if (snum == 1) {
     df <- data.frame(snum, sname, stime, stringsAsFactors=FALSE)
   } else {
     df<- rbind(.ddg.sourced.scripts(), c(snum, sname, stime))
