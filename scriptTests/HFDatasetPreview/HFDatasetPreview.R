@@ -41,10 +41,10 @@ library(XML)
 library(gplots)
 
 # HF web server EML directory
-hf.eml.dir <- "https://harvardforest.fas.harvard.edu/sites/harvardforest.fas.harvard.edu/files/data/eml/"
+hf.eml.dir <- "https://harvardforest.fas.harvard.edu/data/eml/"
 
 # HF web server data directory
-hf.data.dir <- "https://harvardforest.fas.harvard.edu/sites/harvardforest.fas.harvard.edu/files/data/"
+hf.data.dir <- "https://harvardforest.fas.harvard.edu/data/"
 
 #------------------------DOWNLOAD FILES----------------------------#
 
@@ -52,13 +52,10 @@ hf.data.dir <- "https://harvardforest.fas.harvard.edu/sites/harvardforest.fas.ha
 get.parsed.eml <- function(dataset.id) {
   # get URL (GLOBAL)
   eml.url <<- paste(hf.eml.dir, dataset.id, ".xml", sep="")
-  if (!url.exists(eml.url)) {
-    msg <- paste(dataset.id, ": EML file does not exist", sep="")
-    warning(msg)
-    eml <- NULL
-  } else {
-    eml <- xmlTreeParse(eml.url, useInternalNodes=TRUE)
-  }
+  eml.file <- file(eml.url)
+  eml.data <- readLines(eml.file, warn=FALSE)
+  eml <- xmlTreeParse(eml.data, useInternalNodes=TRUE)
+  close(eml.file)
   return(eml)
 }
 
@@ -157,9 +154,7 @@ get.data.url <- function(eml, datafile.id) {
   ns <- getNodeSet(eml, xpath1, fun=xmlValue)
   if (length(ns) == 0) ns <- getNodeSet(eml, xpath2, fun=xmlValue)
   data.url <- ns[[1]]
-  if (!url.exists(data.url)) {
-    data.url <- NULL
-  }
+  if (data.url == "") data.url <- NULL
   return(data.url)
 }
 
@@ -242,16 +237,16 @@ get.data.file <- function(data.url, var.types) {
 get.hf.datafile <- function(datafile.id) {  
   # get data file name (GLOBAL)
   datafile.name <<- get.datafile.name(eml, datafile.id)
-
+  
   # get URL for data file (GLOBAL)
   data.url <<- get.data.url(eml, datafile.id)
-
+  
   # get node set for data table
   ns <- get.data.table.node.set(eml, datafile.id)
-      
+  
   # get variable types (GLOBAL)
   var.types <<- get.all.variable.types(ns)
-      
+  
   # get format strings (GLOBAL)
   var.format.strings <<- get.all.variable.format.strings(ns) 
   
@@ -385,35 +380,35 @@ create.summary.stats.table <- function(xx) {
   } else {
     xstr <- paste(xstr, "Variable         Min         Median      Mean        Max         NAs\n", sep="")
     xstr <- paste(xstr, "------------------------------------------------------------------------\n", sep="")
-  
+    
     for (i in 1:length(xx.sum)) {
       # variable name
       xstr <- paste(xstr, substr(paste(names(xx.sum[i]), "               ", sep=""), 1, 12), sep="")
-  
+      
       # all values missing
       if (all(is.na(xx.sum[ , i]))) {
         xnas <- sum(is.na(xx.sum[ , i]))
         xstr <- paste(xstr,"                                                     ", xnas, "\n", sep="")            
-      
-      # datetime variable
+        
+        # datetime variable
       } else if (var.format.strings[i] == "YYYY-MM-DDThh:mm") {
         # get min & max only
         xmin <- min(xx[ , i], na.rm=TRUE)
         xmax <- max(xx[ , i], na.rm=TRUE)      
         xstr <- paste(xstr, xmin, "                    ", xmax, "\n", sep="")
-    
-      # get all stats  
+        
+        # get all stats  
       } else {
         xmin <- min(xx.sum[ , i], na.rm=TRUE)
         xmedian <- median(xx.sum[ , i], na.rm=TRUE)
         xmean <- mean(xx.sum[ , i], na.rm=TRUE)
         xmax <- max(xx.sum[ , i], na.rm=TRUE)
         xnas <- sum(is.na(xx.sum[ , i]))
-      
+        
         # date variable
         if (sum.types[i] == "Date") {
           xstr <- paste(xstr, "  ", xmin, "  ", xmedian, "  ", xmean, "  ", xmax, formatC(xnas,0,8,"f"), "\n", sep="")
-        
+          
           # numeric variable
         } else {
           if (xmin < -1000000 | xmax > 1000000) {
@@ -422,12 +417,12 @@ create.summary.stats.table <- function(xx) {
             d <- 3
           }    
           xstr <- paste(xstr,
-          formatC(xmin,d,12,"f"),
-          formatC(xmedian,d,12,"f"),
-          formatC(xmean,d,12,"f"),
-          formatC(xmax,d,12,"f"),
-          formatC(xnas,0,8,"f"),
-          "\n", sep="")
+              formatC(xmin,d,12,"f"),
+              formatC(xmedian,d,12,"f"),
+              formatC(xmean,d,12,"f"),
+              formatC(xmax,d,12,"f"),
+              formatC(xnas,0,8,"f"),
+              "\n", sep="")
         }
       }
     }
@@ -442,56 +437,56 @@ create.summary.stats.table <- function(xx) {
 create.time.series.plot <- function(xx) {
   # get plot data frame
   xx.plt <- get.plot.dataframe(xx, max.rows=10000)
-
+  
   # check for variables to plot (at least one)
   if (is.null(xx.plt)) {
     msg <- paste(datafile.id, ": no variables to plot", sep="")
     warning(msg)
-   } else {
-     # max number of variables per plot
-     max.var <- 4
-     
-     # get number of plots
-     var.num <- length(xx.plt)
-     if (var.num <= max.var) {
-       plot.num <- 1
-       plot.last <- 0
-     } else {
-       plot.num <- var.num %/% max.var
-       plot.last <- var.num %% max.var
-       if (plot.last > 0) plot.num <- plot.num + 1
-     }  
+  } else {
+    # max number of variables per plot
+    max.var <- 4
+    
+    # get number of plots
+    var.num <- length(xx.plt)
+    if (var.num <= max.var) {
+      plot.num <- 1
+      plot.last <- 0
+    } else {
+      plot.num <- var.num %/% max.var
+      plot.last <- var.num %% max.var
+      if (plot.last > 0) plot.num <- plot.num + 1
+    }  
     
     # create each plot
-     for (i in 1:plot.num) {
-       first.col <- (i-1)*max.var + 1
-       if (plot.num == 1) {
-         last.col <- first.col + var.num - 1
-       } else if (i < plot.num | plot.last == 0) {
-         last.col <- first.col + max.var - 1
-       } else {
-         last.col <- first.col + plot.last - 1
-       }
-       
-       # subset for variables to plot and create time series
-       if (first.col == last.col ) {
-         zz <- as.data.frame(xx.plt[ , c(first.col:last.col)])
-         colnames(zz) <- names(xx.plt[first.col])
-       } else {
-         zz <- xx.plt[ , c(first.col:last.col)]
-       }    
-       
-       # create time series
-       xx.ts <- ts(zz)
-       
-       # create plot
-       plot.title <- paste(toupper(datafile.id), " Plot ", i, sep="")     
-       plot(xx.ts, main=plot.title, col="blue")
-     }
-     
-     # display number of plots
-     xstr <- paste("\nTime-series plots = ", plot.num, "\n", sep="")
-     writeLines(xstr)
+    for (i in 1:plot.num) {
+      first.col <- (i-1)*max.var + 1
+      if (plot.num == 1) {
+        last.col <- first.col + var.num - 1
+      } else if (i < plot.num | plot.last == 0) {
+        last.col <- first.col + max.var - 1
+      } else {
+        last.col <- first.col + plot.last - 1
+      }
+      
+      # subset for variables to plot and create time series
+      if (first.col == last.col ) {
+        zz <- as.data.frame(xx.plt[ , c(first.col:last.col)])
+        colnames(zz) <- names(xx.plt[first.col])
+      } else {
+        zz <- xx.plt[ , c(first.col:last.col)]
+      }    
+      
+      # create time series
+      xx.ts <- ts(zz)
+      
+      # create plot
+      plot.title <- paste(toupper(datafile.id), " Plot ", i, sep="")     
+      plot(xx.ts, main=plot.title, col="blue")
+    }
+    
+    # display number of plots
+    xstr <- paste("\nTime-series plots = ", plot.num, "\n", sep="")
+    writeLines(xstr)
   }
 }
 
@@ -509,7 +504,7 @@ create.scatterplot.matrix <- function(xx) {
   } else {
     # max number of variables to plot
     max.var <- 6
-  
+    
     # get number of plots
     var.num <- length(xx.plt)
     if (var.num <= max.var) {
@@ -528,7 +523,7 @@ create.scatterplot.matrix <- function(xx) {
         last.col <- first.col + var.num - 1
       } else if (i < plot.num | plot.last == 0) {
         last.col <- first.col + max.var - 1
-      # plots must contain at least 2 variables
+        # plots must contain at least 2 variables
       } else if (plot.last == 1) {
         last.col <- first.col + max.var
       } else {
@@ -537,12 +532,12 @@ create.scatterplot.matrix <- function(xx) {
       
       # subset for variables to plot
       xx.sp <- xx.plt[ , c(first.col:last.col)]
-    
+      
       # create plot
       plot.title <- paste(toupper(datafile.id), " Plot ", i, sep="")
       pairs(xx.sp, main=plot.title, col="blue")
     }
-  
+    
     # number of plots
     xstr <- paste("\nScatterplot matrices = ", plot.num, "\n", sep="")
     writeLines(xstr)
@@ -566,29 +561,29 @@ get.plot.type <- function(datafile.id) {
 create.datafile.preview <- function(datafile.id) {
   # read HF Data Archive file into data frame (GLOBAL)
   dd <<- get.hf.datafile(datafile.id)  
-
-  if (is.null(dd)) {
-   msg <- paste(datafile.id, ": unable to download data file", sep="")
-   warning(msg)
-  } else {
-   # create PDF file
-     pdf.file <- paste(datafile.id, ".pdf", sep="")
-     pdf(pdf.file)
   
+  if (is.null(dd)) {
+    msg <- paste(datafile.id, ": unable to download data file", sep="")
+    warning(msg)
+  } else {
+    # create PDF file
+    pdf.file <- paste(datafile.id, ".pdf", sep="")
+    pdf(pdf.file)
+    
     # create summary stats table
     create.summary.stats.table(dd)
-  
+    
     # get plot type (GLOBAL)
     plot.type <<- get.plot.type(datafile.id)
-
+    
     # create plot
     if (plot.type == "time-series") create.time.series.plot(dd)
     if (plot.type == "scatterplot-matrix") create.scatterplot.matrix(dd)
-  
-     dev.off()
-     
-     xstr <- paste("\n*** ", toupper(datafile.id), " completed ***\n", sep="")
-     writeLines(xstr)
+    
+    dev.off()
+    
+    xstr <- paste("\n*** ", toupper(datafile.id), " completed ***\n", sep="")
+    writeLines(xstr)
   }
 }
 
