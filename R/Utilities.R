@@ -266,6 +266,7 @@
   package <- installed$package
   version <- installed$loadedversion
   installed <- data.frame (package, version)
+  print ("installed:")
   print (installed)
   return(installed)
 }
