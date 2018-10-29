@@ -348,43 +348,43 @@ prov.display <- function () {
 #' @noRd
 
 .ddg.set.annotation.functions <- function () {
-  assign(".ddg.details.omitted", RDataTracker:::.ddg.details.omitted, 
+  assign(".ddg.details.omitted", rdt:::.ddg.details.omitted, 
       envir = globalenv())
-  assign(".ddg.eval", RDataTracker:::.ddg.eval, 
+  assign(".ddg.eval", rdt:::.ddg.eval, 
       envir = globalenv())
-  assign(".ddg.finish", RDataTracker:::.ddg.finish, 
+  assign(".ddg.finish", rdt:::.ddg.finish, 
       envir = globalenv())
-  assign(".ddg.first.loop", RDataTracker:::.ddg.first.loop, 
+  assign(".ddg.first.loop", rdt:::.ddg.first.loop, 
       envir = globalenv())
-  assign(".ddg.forloop", RDataTracker:::.ddg.forloop, 
+  assign(".ddg.forloop", rdt:::.ddg.forloop, 
       envir = globalenv())
-  assign(".ddg.function", RDataTracker:::.ddg.function, 
+  assign(".ddg.function", rdt:::.ddg.function, 
       envir = globalenv())
-  assign(".ddg.loop.annotate.off", RDataTracker:::.ddg.loop.annotate.off, 
+  assign(".ddg.loop.annotate.off", rdt:::.ddg.loop.annotate.off, 
       envir = globalenv())
-  assign(".ddg.loop.annotate.on", RDataTracker:::.ddg.loop.annotate.on, 
+  assign(".ddg.loop.annotate.on", rdt:::.ddg.loop.annotate.on, 
       envir = globalenv())
-  assign(".ddg.loop.count", RDataTracker:::.ddg.loop.count, 
+  assign(".ddg.loop.count", rdt:::.ddg.loop.count, 
       envir = globalenv())
-  assign(".ddg.loop.count.inc", RDataTracker:::.ddg.loop.count.inc, 
+  assign(".ddg.loop.count.inc", rdt:::.ddg.loop.count.inc, 
       envir = globalenv())
-  assign(".ddg.max.loops", RDataTracker:::.ddg.max.loops, 
+  assign(".ddg.max.loops", rdt:::.ddg.max.loops, 
       envir = globalenv())
-  assign(".ddg.snapshot.size", RDataTracker:::.ddg.snapshot.size, 
+  assign(".ddg.snapshot.size", rdt:::.ddg.snapshot.size, 
       envir = globalenv())
-  assign(".ddg.not.inside.loop", RDataTracker:::.ddg.not.inside.loop, 
+  assign(".ddg.not.inside.loop", rdt:::.ddg.not.inside.loop, 
       envir = globalenv())
-  assign(".ddg.reset.loop.count", RDataTracker:::.ddg.reset.loop.count, 
+  assign(".ddg.reset.loop.count", rdt:::.ddg.reset.loop.count, 
       envir = globalenv())
-  assign(".ddg.return.value", RDataTracker:::.ddg.return.value, 
+  assign(".ddg.return.value", rdt:::.ddg.return.value, 
       envir = globalenv())
-  assign(".ddg.set.inside.loop", RDataTracker:::.ddg.set.inside.loop, 
+  assign(".ddg.set.inside.loop", rdt:::.ddg.set.inside.loop, 
       envir = globalenv())
-  assign(".ddg.source", RDataTracker:::.ddg.source, 
+  assign(".ddg.source", rdt:::.ddg.source, 
       envir = globalenv())
-  assign(".ddg.start", RDataTracker:::.ddg.start, 
+  assign(".ddg.start", rdt:::.ddg.start, 
       envir = globalenv())
-  assign(".ddg.should.run.annotated", RDataTracker:::.ddg.should.run.annotated, 
+  assign(".ddg.should.run.annotated", rdt:::.ddg.should.run.annotated, 
       envir = globalenv())
   invisible()
 }

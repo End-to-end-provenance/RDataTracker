@@ -91,7 +91,7 @@
   # capture.output is called twice to capture the output that is going to 
   # standard output and to standard error.  These are messages that say 
   # "Tracing..." and list each function being traced.
-  # Note that we need to use the RDataTracker::: notation for the functions for 
+  # Note that we need to use the rdt::: notation for the functions for 
   # trace to call so that it can find those functions without making them 
   # publicly available in the namespace.
   # ggplot2 functions are traced individually because the package name needs to 
@@ -138,7 +138,7 @@
                           type="message"))
   
   #print ("Tracing graphics open")
-  # trace (grDevices::pdf, RDataTracker:::.ddg.trace.graphics.open, print=TRUE)
+  # trace (grDevices::pdf, rdt:::.ddg.trace.graphics.open, print=TRUE)
   trace.oneGraphicsOpen <- 
     function (f) {
       utils::capture.output(

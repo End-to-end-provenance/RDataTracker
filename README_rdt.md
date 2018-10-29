@@ -1,13 +1,13 @@
-What is RDataTracker?
+What is rdt?
 =====================
 
-RDataTracker is an R package that collects provenance as an R script 
+rdt is an R package that collects provenance as an R script 
 executes. The resulting provenance provides a detailed record of the 
 execution of the script and includes information on the steps that were 
 performed and the intermediate data values that were created. The 
 resulting provenance can be used for a wide variety of applications
 that include debugging scripts, cleaning code, and reproducing results.
-RDataTracker can also be used to collect provenance during console sessions.
+rdt can also be used to collect provenance during console sessions.
 
 The provenance is stored in PROV-JSON format (for details see JSON-format.md).
 For immediate use it maybe retrieved from memory using the prov.json function. 
@@ -19,14 +19,14 @@ the prov.dir option (e.g. by using the R options command or editing the
 Rprofile.site or .Rprofile file). If prov.dir is set to ".", the current working
 directory is used.
 
-RDataTracker provides two modes of operation. In script mode, the prov.run
+rdt provides two modes of operation. In script mode, the prov.run
 function is used to execute a script and collect provenance as the script 
 executes. In console mode, provenance is collected during a console session.
 Here the prov.init function is used to initiate provenance collection,
 prov.save is used to save provenance collected since the last time prov.save
 was used, and prov.quit is used to save and close the provenance file.
 
-The level of detail collected by RDataTracker may be set using parameters
+The level of detail collected by rdt may be set using parameters
 of the prov.run and prov.init functions. Options include collecting
 provenance inside functions and inside control constructs and saving
 snapshots of large intermediate values as separate files. These
@@ -34,33 +34,33 @@ features are turned off by default to optimize performance. Common
 settings for the level of detail can also be set and managed using the 
 prov.set.detail and related functions.
 
-Installing RDataTracker
+Installing rdt
 =======================
 
-RDataTracker currently requires R version 3.5.0 (or later) and the 
+rdt currently requires R version 3.5.0 (or later) and the 
 following R packages: curl, devtools, digest, ggplot2, grDevices, 
 gtools, jsonlite, knitr, methods, stringr, tools, utils, XML.
 
-RDataTracker is easily installed from GitHub using devtools:
+rdt is easily installed from GitHub using devtools:
 ```
 library(devtools)
-install_github("End-to-end-provenance/RDataTracker")
+install_github("End-to-end-provenance/rdt")
 ```
 
-Once installed, use the R library command to load RDataTracker:
+Once installed, use the R library command to load rdt:
 ```
-library(RDataTracker)
+library(rdt)
 ```
 
-Note that all exported RDataTracker functions begin with "prov." to 
+Note that all exported rdt functions begin with "prov." to 
 avoid confusion with variable or function names in the main script 
 or other libraries.
 
-Using RDataTracker
+Using rdt
 ==================
 
 To capture provenance for an R script, set the working directory, 
-load the RDataTracker package (as above), and enter the following:
+load the rdt package (as above), and enter the following:
 ```
 prov.run("my-script.R")
 ```
