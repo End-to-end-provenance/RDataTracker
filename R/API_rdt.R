@@ -108,7 +108,7 @@ prov.init <- function(prov.dir = NULL, overwrite = TRUE, annotate.inside.functio
   }
   
   # Save name of provenance collection tool.
-  .ddg.set("ddg.tool.name", "RDataTracker")
+  .ddg.set("ddg.tool.name", "rdt")
 
   # Save hash algorithm
   .ddg.set("ddg.hash.algorithm", hash.algorithm)
@@ -216,7 +216,6 @@ prov.quit <- function(save.debug = FALSE) {
 prov.run <- function(r.script.path, prov.dir = NULL, overwrite = TRUE, 
   annotate.inside.functions = FALSE, first.loop = 1, max.loops = 0,
   snapshot.size = 0, hash.algorithm = "md5", save.debug = FALSE, display = FALSE) {
-  print ("In prov.run")
 
   # Stop & display message if R script path is missing
   if (missing(r.script.path)) {
@@ -236,12 +235,10 @@ prov.run <- function(r.script.path, prov.dir = NULL, overwrite = TRUE,
   .ddg.set("ddg.script.mode", TRUE)
 
   # Initialize the provenance graph
-  print ("Calling prov.init")
   prov.init(prov.dir, overwrite, annotate.inside.functions, first.loop, max.loops, 
     snapshot.size, hash.algorithm, save.debug)
   
   # Execute the script
-  print ("Calling .ddg.run")
   .ddg.run(r.script.path)
   
   # Display the graph in DDG Explorer

@@ -258,7 +258,6 @@
 
 .ddg.installedpackages <- function()
 {
-  print ("In .ddg.installedpackages")
   packages <- sessioninfo::session_info(include_base = TRUE)
   packages <- packages[[2]]
   installed <- packages[packages$attached, ]
@@ -267,7 +266,5 @@
   package <- installed$package
   version <- installed$loadedversion
   installed <- data.frame (package, version)
-  print ("installed:")
-  print (installed)
   return(installed)
 }
