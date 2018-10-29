@@ -11,7 +11,7 @@
 # Author @Luis Perez
 
 library(methods)
-library(RDataTracker)
+library(rdt)
 
 ## Directories
 testDir <- "[DIR_LOCAL]/"

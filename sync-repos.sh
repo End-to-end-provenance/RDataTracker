@@ -1,10 +1,10 @@
 #!/bin/bash
 
-# This script keeps the provR and rdt repositories in sync with RDataTracker.
-# RDataTracker contains code used by both provR and rdt.  It also does 
+# This script keeps the rdtLite and rdt repositories in sync with RDataTracker.
+# RDataTracker contains code used by both rdtLite and rdt.  It also does 
 # extensive system-level testing using scripts.
 #
-# The provR repository contains only code used in provR, while the
+# The rdtLite repository contains only code used in rdtLite, while the
 # rdt repository contains only code used in RDataTracker.
 
 echo ""
@@ -15,7 +15,7 @@ date
 # Determines if the repository is already current with respect
 # to the RDataTracker repository.  The first parameter is the 
 # repository to copy to, the second is the branch to copy.
-# The provR and rdt repositories have a file called .commit.
+# The rdtLite and rdt repositories have a file called .commit.
 # The file contains the commit number of the last update.  If this
 # number is the same as RDataTracker's current commit,
 # then the repository is already current and we do not need
@@ -67,44 +67,28 @@ function is_current {
   return 1
 }
 
-# Copy just the files that we want in the provR repository.  Some
-# files need to be renamed when they are copied to remove _prov
+# Copy just the files that we want in the rdtLite repository.  Some
+# files need to be renamed when they are copied to remove _rdtLite
 # from the name. 
-function copy_provR_files {
-  echo "*** Copying files to provR" 
+function copy_rdtLite_files {
+  echo "*** Copying files to rdtLite" 
   
-  # Copy the files we want to provR
-  rsync -tv --perms inst/CITATION ../provR_test/inst/
-  if [ -e DESCRIPTION_prov ] 
-  then
-    rsync -tv --perms DESCRIPTION_prov ../provR_test/DESCRIPTION
-  else 
-    rsync -tv --perms DESCRIPTION ../provR_test/DESCRIPTION
-  fi
-  if [ -e NAMESPACE_prov ] 
-  then
-    rsync -tv --perms NAMESPACE_prov ../provR_test/NAMESPACE
-  else
-    rsync -tv --perms NAMESPACE ../provR_test/NAMESPACE
-  fi
-  rsync -tv --perms LICENSE ../provR_test/
-  if [ -e README_prov.MD ] 
-  then
-    rsync -tv --perms README_prov.md ../provR_test/README.md
-  else
-    rsync -tv --perms README.md ../provR_test/README.md
-  fi
-  rsync -tv --perms NEWS_prov.md ../provR_test/NEWS.md
-  rsync -tv --perms .Rbuildignore ../provR_test/
-  rsync -rtv --del --exclude "*_rdt.R" --exclude "DDGCheckpoint.R" --perms R ../provR_test/
-  if [ -e man_prov ] 
-  then
-    rsync -rtv --del --perms man_prov/ ../provR_test/man
-  else 
-    rsync -rtv --del --perms man/ ../provR_test/man
-  fi
-  rsync -rtv --del --perms tests/test-all-prov.R ../provR_test/tests/test-all.R
-  rsync -rtv --del --exclude "*_rdt*" --perms tests/testthat ../provR_test/
+  # Copy the shared files to rdtLite
+  rsync -tv --perms inst/CITATION ../rdtLite/inst/
+  rsync -tv --perms LICENSE ../rdtLite/
+  rsync -tv --perms .Rbuildignore ../rdtLite/
+  
+  # Copy rdtLite versions of files
+  rsync -tv --perms DESCRIPTION_rdtLite ../rdtLite/DESCRIPTION
+  rsync -tv --perms NAMESPACE_rdtLite ../rdtLite/NAMESPACE
+  rsync -tv --perms README_rdtLite.md ../rdtLite/README.md
+  rsync -tv --perms NEWS_rdtLite.md ../rdtLite/NEWS.md
+  rsync -rtv --del --perms man_rdtLite/ ../rdtLite/man
+  rsync -rt --perms tests/test-all-rdtLite.R ../rdtLite/tests/test-all.R
+  
+  # Copy directories containing a mix of files 
+  rsync -rtv --del --exclude "*_rdt.R" --perms R ../rdtLite/
+  rsync -rtv --del --exclude "*_rdt*" --perms tests/testthat ../rdtLite/
 }
 
 # Copy just the files that we want in the rdt repository.  Some
@@ -113,41 +97,25 @@ function copy_provR_files {
 function copy_rdt_files {
   echo "*** Copying files to rdt" 
 
-  # Copy the files we want to rdt
-  rsync -tv --perms inst/CITATION ../rdt_test/inst/
-  if [ -e DESCRIPTION_rdt ] 
-  then
-    rsync -tv --perms DESCRIPTION_rdt ../rdt_test/DESCRIPTION
-  else 
-    rsync -tv --perms DESCRIPTION ../rdt_test/DESCRIPTION
-  fi
-  if [ -e NAMESPACE_rdt ] 
-  then
-    rsync -tv --perms NAMESPACE_rdt ../rdt_test/NAMESPACE
-  else 
-    rsync -tv --perms NAMESPACE ../rdt_test/NAMESPACE
-  fi
-  rsync -tv --perms LICENSE ../rdt_test/
-  if [ -e README_rdt.MD ] 
-  then
-    rsync -tv --perms README_rdt.md ../rdt_test/README.md
-  else
-    rsync -tv --perms README.md ../rdt_test/README.md
-  fi
-  rsync -tv --perms NEWS_rdt.md ../rdt_test/NEWS.md
-  rsync -tv --perms .Rbuildignore ../rdt_test/
-  rsync -tv --perms .travis-rdt.yml ../rdt_test/.travis.yml
-  rsync -tv --perms tests.xml ../rdt_test/
-  rsync -rtv --del --exclude "*_prov.R" --exclude "DDGCheckpoint.R" --perms R ../rdt_test/
-  if [ -e man_rdt ] 
-  then
-    rsync -rtv --del --perms man_rdt/ ../rdt_test/man
-  else
-    rsync -rtv --del --perms man/ ../rdt_test/man
-  fi
-  rsync -rtv --del --perms tests/test-all-rdt.R ../rdt_test/tests/test-all.R
-  rsync -rtv --del --exclude "*_prov*" --perms tests/testthat ../rdt_test/tests/
-  rsync -rtv --del --perms scriptTests ../rdt_test/
+  # Copy the shared files
+  rsync -tv --perms inst/CITATION ../rdt/inst/
+  rsync -tv --perms LICENSE ../rdt/
+  rsync -tv --perms .Rbuildignore ../rdt/
+  rsync -tv --perms tests.xml ../rdt/
+  rsync -rtv --del --perms scriptTests ../rdt/
+  
+  # Copy the rdt versions of files
+  rsync -tv --perms DESCRIPTION_rdt ../rdt/DESCRIPTION
+  rsync -tv --perms NAMESPACE_rdt ../rdt/NAMESPACE
+  rsync -tv --perms README_rdt.md ../rdt/README.md
+  rsync -tv --perms NEWS_rdt.md ../rdt/NEWS.md
+  rsync -tv --perms .travis-rdt.yml ../rdt/.travis.yml
+  rsync -rtv --del --perms man_rdt/ ../rdt/man
+  rsync -rt --perms tests/test-all-rdt.R ../rdt/tests/test-all.R
+  
+  # Copy files from directories that have a mix of files
+  rsync -rtv --del --exclude "*_rdtLite.R" --perms R ../rdt/
+  rsync -rtv --del --exclude "*_rdtLite*" --perms tests/testthat ../rdt/tests/
 }
 
 # Save the current commit number in the .commit file.
@@ -193,65 +161,75 @@ function commit_repo {
 
 function cleanup {
 	cd ..
-	rm -rf RDataTracker provR_test rdt_test
+	rm -rf RDataTracker rdtLite rdt
 }
 
 # Should first clone the three repositories
 echo "*** Cloning the repositories"
 git clone git@github.com:End-to-end-provenance/RDataTracker.git
-git clone git@github.com:End-to-end-provenance/provR_test.git
-git clone git@github.com:ProvTools/RDataTracker.git rdt_test
+git clone git@github.com:End-to-end-provenance/rdtLite.git
+git clone git@github.com:End-to-end-provenance/rdt.git
 
 cd RDataTracker
 
 echo ""
-if is_current "provR_test" "master"
+if is_current "rdtLite" "master"
   then
-    echo "***provR master is current"
+    echo "***rdtLite master is current"
 else 
-    echo "***Updating provR master"
-    copy_provR_files
-    commit_repo "provR_test"
+    echo "***Updating rdtLite master"
+    copy_rdtLite_files
+    commit_repo "rdtLite"
 fi
 
 echo ""
-if is_current "provR_test" "development"
+if is_current "rdtLite" "development"
   then
-    echo "provR development is current"
+    echo "rdtLite development is current"
 else 
-    echo "Updating provR development"
-    copy_provR_files
-    commit_repo "provR_test"
+    echo "Updating rdtLite development"
+    copy_rdtLite_files
+    commit_repo "rdtLite"
 fi
 
 echo ""
-if is_current "rdt_test" "master"
+if is_current "rdtLite" "rdtLite"
+  then
+    echo "rdtLite rdtLite is current"
+else 
+    echo "Updating rdtLite rdtLite"
+    copy_rdtLite_files
+    commit_repo "rdtLite"
+fi
+
+echo ""
+if is_current "rdt" "master"
   then
     echo "rdt master is current"
 else 
     echo "Updating rdt master"
     copy_rdt_files
-    commit_repo "rdt_test"
+    commit_repo "rdt"
 fi
 
 echo ""
-if is_current "rdt_test" "development"
+if is_current "rdt" "development"
   then
     echo "rdt development is current"
 else 
     echo "Updating rdt development"
     copy_rdt_files
-    commit_repo "rdt_test"
+    commit_repo "rdt"
 fi
 
 echo ""
-if is_current "rdt_test" "sync2"
+if is_current "rdt" "rdtLite"
   then
-    echo "rdt sync2 is current"
+    echo "rdt rdtLite is current"
 else 
-    echo "Updating rdt sync2"
+    echo "Updating rdt rdtLite"
     copy_rdt_files
-    commit_repo "rdt_test"
+    commit_repo "rdt"
 fi
 
 # Delete test repos
