@@ -1,1 +1,3 @@
-testthat::test_check("provR")
+library(testthat)
+
+testthat::test_check("rdtLite")

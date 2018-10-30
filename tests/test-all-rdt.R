@@ -1,1 +1,3 @@
-testthat::test_check("RDataTracker")
+library(testthat)
+
+testthat::test_check("rdt")
