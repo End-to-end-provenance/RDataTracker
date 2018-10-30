@@ -6,9 +6,9 @@
     xmlns:unless="ant:unless">
     
   <property name="builddir" value="build_rdt"/>
-  <property name="checkdir" value="RDataTracker.Rcheck"/>
+  <property name="checkdir" value="rdt.Rcheck"/>
   <loadproperties srcFile="DESCRIPTION_rdt" />
-  <property name="tarfile" value="RDataTracker_${Version}.tar.gz" />
+  <property name="tarfile" value="rdt_${Version}.tar.gz" />
 
     <target name="roxygen" depends="copy-to-directory">
     	<exec dir="${builddir}" executable="Rscript" >
@@ -24,9 +24,9 @@
         <copy overwrite="true" todir="${builddir}/inst">
           <fileset dir="inst" />
         </copy>
-    	<copy overwrite="true" todir="${builddir}/R">
+    	<copy overwrite="true" todir="${builddir}/R" >
     		<fileset dir="R"
-      			excludes="DDGCheckpoint.R, *_prov.R"/>
+      			excludes="*_rdtLite.R"/>
   		</copy>
         <mkdir dir="${builddir}/tests"/>
         <copy overwrite="true" file="tests/test-all-rdt.R" tofile="${builddir}/tests/test-all.R"/>

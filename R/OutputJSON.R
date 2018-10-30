@@ -125,7 +125,6 @@
 	# used: data2proc
 	json$used.d2p <- .ddg.json.data2proc( edges , LABEL.NAMES$used.d2p , LABEL.PREFIX )
 	
-	
 	# LIBRARY NODES - change row numbers
 	libraries <- .ddg.installedpackages()
 	rownames(libraries) <- c(1 : nrow(libraries))

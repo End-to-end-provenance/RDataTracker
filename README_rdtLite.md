@@ -1,13 +1,13 @@
-What is provR?
+What is rdtLite?
 ==============
 
-provR is an R package that collects provenance as an R script 
+rdtLite is an R package that collects provenance as an R script 
 executes. The resulting provenance provides a detailed record of the 
 execution of the script and includes information on the steps that were 
 performed and the intermediate data values that were created. The 
 resulting provenance can be used for a wide variety of applications
 that include debugging scripts, cleaning code, and reproducing results.
-provR can also be used to collect provenance during console sessions.
+rdtLite can also be used to collect provenance during console sessions.
 
 The provenance is stored in PROV-JSON format (for details see JSON-format.md).
 For immediate use it maybe retrieved from memory using the prov.json function. 
@@ -19,7 +19,7 @@ the prov.dir option (e.g. by using the R options command or editing the
 Rprofile.site or .Rprofile file). If prov.dir is set to ".", the current working
 directory is used.
 
-provR provides two modes of operation. In script mode, the prov.run
+rdtLite provides two modes of operation. In script mode, the prov.run
 function is used to execute a script and collect provenance as the script 
 executes. In console mode, provenance is collected during a console session.
 Here the prov.init function is used to initiate provenance collection,
@@ -30,33 +30,33 @@ Simple data values are stored in the PROV-JSON file. "Snapshots" of complex
 data values (e.g. data frames) are optionally stored by adjusting
 the value of the parameter max.snapshot.size in prov.run or prov.init.
 
-Installing provR
+Installing rdtLite
 ================
 
-provR currently requires R version 3.5.0 (or later) and the 
+rdtLite currently requires R version 3.5.0 (or later) and the 
 following R packages: curl, devtools, digest, ggplot2, grDevices, 
 gtools, jsonlite, knitr, methods, stringr, tools, utils, XML.
 
-provR is easily installed from GitHub using devtools:
+rdtLite is easily installed from GitHub using devtools:
 ```
 library(devtools)
-install_github("End-to-end-provenance/provR")
+install_github("End-to-end-provenance/rdtLite")
 ```
 
-Once installed, use the R library command to load provR:
+Once installed, use the R library command to load rdtLite:
 ```
-library(provR)
+library(rdtLite)
 ```
 
-Note that all exported provR functions begin with "prov." to 
+Note that all exported rdtLite functions begin with "prov." to 
 avoid confusion with variable or function names in the main script 
 or other libraries.
 
-Using provR
+Using rdtLite
 ===========
 
 To capture provenance for an R script, set the working directory, 
-load the provR package (as above), and enter the following:
+load the rdtLite package (as above), and enter the following:
 ```
 prov.run("my-script.R")
 ```
