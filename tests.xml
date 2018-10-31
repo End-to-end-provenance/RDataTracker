@@ -1329,11 +1329,11 @@
 				<isset property="prov"/>
 			</not>
 		</condition>
-		<!--<antcall target="run-test">
+		<antcall target="run-test">
 			<param name="test-name" value="HFDatasetPreview"/>
 		</antcall>
-		<echo>The test requires RCurl and gplots (+ dependencies) to be installed.</echo>-->
-		<echo>Skipping HFDatasetPreview test until Harvard Forest website is working again.</echo>
+		<echo>The test requires RCurl and gplots (+ dependencies) to be installed.</echo>
+		<!--<echo>Skipping HFDatasetPreview test until Harvard Forest website is working again.</echo>-->
 	</target>
 	
 	<target name="update-HFDatasetPreview">    <!-- helper -->

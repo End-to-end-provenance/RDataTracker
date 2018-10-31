@@ -41,10 +41,10 @@ library(XML)
 library(gplots)
 
 # HF web server EML directory
-hf.eml.dir <- "https://harvardforest.fas.harvard.edu/sites/harvardforest.fas.harvard.edu/files/data/eml/"
+hf.eml.dir <- "https://harvardforest.fas.harvard.edu/data/eml/"
 
 # HF web server data directory
-hf.data.dir <- "https://harvardforest.fas.harvard.edu/sites/harvardforest.fas.harvard.edu/files/data/"
+hf.data.dir <- "https://harvardforest.fas.harvard.edu/data/"
 
 #------------------------DOWNLOAD FILES----------------------------#
 
@@ -52,13 +52,10 @@ hf.data.dir <- "https://harvardforest.fas.harvard.edu/sites/harvardforest.fas.ha
 get.parsed.eml <- function(dataset.id) {
   # get URL (GLOBAL)
   eml.url <<- paste(hf.eml.dir, dataset.id, ".xml", sep="")
-  if (!url.exists(eml.url)) {
-    msg <- paste(dataset.id, ": EML file does not exist", sep="")
-    warning(msg)
-    eml <- NULL
-  } else {
-    eml <- xmlTreeParse(eml.url, useInternalNodes=TRUE)
-  }
+  eml.file <- file(eml.url)
+  eml.data <- readLines(eml.file, warn=FALSE)
+  eml <- xmlTreeParse(eml.data, useInternalNodes=TRUE)
+  close(eml.file)
   return(eml)
 }
 
@@ -157,9 +154,7 @@ get.data.url <- function(eml, datafile.id) {
   ns <- getNodeSet(eml, xpath1, fun=xmlValue)
   if (length(ns) == 0) ns <- getNodeSet(eml, xpath2, fun=xmlValue)
   data.url <- ns[[1]]
-  if (!url.exists(data.url)) {
-    data.url <- NULL
-  }
+  if (data.url == "") data.url <- NULL
   return(data.url)
 }
 
