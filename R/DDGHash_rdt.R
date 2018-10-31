@@ -57,7 +57,7 @@
            rbind(.ddg.get("ddg.hashtable"), 
                  c(dscriptpath, dloc, longpath, 
                    paste(.ddg.path(), dvalue, sep="/"), 
-                   ddg.dnum, dhash, dhash.algorithm, drw, dtime, dvalue), 
+                   ddg.dnum, dhash, dhash.algorithm, dtime, dvalue), 
                  stringsAsFactors = FALSE))
 }
 
