@@ -85,7 +85,7 @@
 #' xxhash64 and murmur32. This feature uses the digest function from 
 #' the digest package.
 #' @param save.debug If TRUE, debug files are saved to the debug directory.
-#' This is intended for developers of the RDataTracker / provR package.
+#' This is intended for developers of the RDataTracker / rdtLite package.
 #' @return prov.init initializes the provenance collector.  The prov.init
 #' function does not return a value.
 #' @export
