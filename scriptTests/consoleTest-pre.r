@@ -15,7 +15,7 @@
 # Author @Barabara Lerner - adapted from sourceTest.r
 
 library(methods)
-library(RDataTracker)
+library(rdt)
 
 ## Directories
 testDir <- "[DIR_LOCAL]/"

@@ -39,11 +39,8 @@
 .ddg.json.string <- function()
 {
 	# Display message & return NULL if no provenance graph is available
-	if( is.null(.ddg.path()) )
-	{
-		warning( "No provenance graph is available.
-Please use prov.run or prov.init to begin collecting provenance.",
-			  call. = FALSE)
+	if (is.null(.ddg.path())) {
+		cat("No provenance graph is available.\n")
 		return(NULL)
 	}
 
@@ -127,7 +124,6 @@ Please use prov.run or prov.init to begin collecting provenance.",
 	
 	# used: data2proc
 	json$used.d2p <- .ddg.json.data2proc( edges , LABEL.NAMES$used.d2p , LABEL.PREFIX )
-	
 	
 	# LIBRARY NODES - change row numbers
 	libraries <- .ddg.installedpackages()
@@ -362,9 +358,9 @@ Please use prov.run or prov.init to begin collecting provenance.",
 	fields$provTimestamp <- .ddg.get("ddg.start.time")
 	
 	# hash algorithm
-	if (.ddg.is.set ("ddg.hash.algorithm")) {
-		fields <- append (fields, list (hashAlgorithm = .ddg.get("ddg.hash.algorithm")))
-	}
+  if (.ddg.is.set ("ddg.hash.algorithm")) {
+    fields <- append (fields, list (hashAlgorithm = .ddg.get("ddg.hash.algorithm")))
+  }
 	
 	# add prefix to names of the list
 	names(fields) <- mapply( paste , prefix , names(fields) , sep='' , USE.NAMES = FALSE )
@@ -610,7 +606,7 @@ Please use prov.run or prov.init to begin collecting provenance.",
 	
 	# add prefix to node numbers
 	edges$ddg.fnum <- mapply( paste , prefix , label.func , edges$ddg.fnum , 
-							  sep='' , USE.NAMES=FALSE )
+	                          sep='' , USE.NAMES=FALSE )
 	edges$ddg.pnum <- mapply( paste , prefix , label.proc , edges$ddg.pnum , 
 	                          sep='' , USE.NAMES=FALSE )
 	
@@ -620,7 +616,7 @@ Please use prov.run or prov.init to begin collecting provenance.",
 	# convert to json, return
 	prefix <- paste( prefix , label.edge , sep='' )
 	return( .ddg.json.dataframe(edges, col.names, prefix, 
-								comment = "function-to-procedure edges") )
+	                            comment = "function-to-procedure edges") )
 }
 
 # .ddg.json.lib2func forms and returns the json string for nodes linking functions 

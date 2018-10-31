@@ -42,5 +42,6 @@
     <target name="clean">
         <delete dir="${builddir}" verbose="false"/>
         <delete dir="${checkdir}" verbose="false"/>
+        <delete file="${tarfile}" verbose="false"/>
     </target>
   

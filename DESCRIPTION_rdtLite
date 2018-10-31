@@ -1,8 +1,8 @@
-Package: rdt
+Package: rdtLite
 Title: Provenance Collector for R
-Version: 3.0.2
+Version: 1.0.1
 Date: 2018-10-30
-Authors@R: c( person( "Emery", "Boose", role = "aut",
+Authors@R: c( person("Emery", "Boose", role = "aut",
                       email = "boose@fas.harvard.edu"),
               person("Barbara", "Lerner", role = c("aut", "cre"),
                       email = "blerner@mtholyoke.edu"),
@@ -44,13 +44,13 @@ Description: Defines functions that can be used to collect provenance as
 License: GPL-3 | file LICENSE
 URL: https://github.com/End-to-end-provenance/RDataTracker
 BugReports: https://github.com/End-to-end-provenance/RDataTracker/issues
-Imports: 
+Imports:
   curl,
   digest,
   ggplot2,
-  grDevices,
+  grDevices, 
   gtools,
-  jsonlite, 
+  jsonlite,
   knitr,
   methods,
   sessioninfo,
@@ -59,6 +59,6 @@ Imports:
   utils,
   XML
 Suggests: 
-  testthat,
-  provViz
+  roxygen2, 
+  testthat
 RoxygenNote: 6.0.1

@@ -42,7 +42,7 @@
 #' @return nothing
 #' @noRd
 
-.ddg.add.to.hashtable <- function(dname, ddg.dnum, dloc, dvalue, dtime, dhash) {
+.ddg.add.to.hashtable <- function(dname, ddg.dnum, dloc, dvalue, dtime, dhash, drw) {
   if (dhash == "") {
     return()
   }
@@ -53,12 +53,11 @@
       if (!is.null(.ddg.r.script.path())) .ddg.r.script.path()
       else ""
   longpath <- paste0(getwd(), substring(.ddg.path(), 2), "/prov.json")
-  
   .ddg.set("ddg.hashtable", 
            rbind(.ddg.get("ddg.hashtable"), 
                  c(dscriptpath, dloc, longpath, 
                    paste(.ddg.path(), dvalue, sep="/"), 
-                   ddg.dnum, dhash, dhash.algorithm, dtime, dvalue), 
+                   ddg.dnum, dhash, dhash.algorithm, drw, dtime, dvalue), 
                  stringsAsFactors = FALSE))
 }
 
@@ -77,10 +76,12 @@
   ddg.data.nodes <- .ddg.data.node.table()
   dhash <- .ddg.calculate.hash(dname)
   ddg.data.nodes$ddg.hash[dnum] <- dhash
+  drw <- .ddg.calculate.rw(dname)
+  ddg.data.nodes$ddg.rw[dnum] <- drw
   .ddg.set("ddg.data.nodes", ddg.data.nodes)
   
   .ddg.add.to.hashtable(dname = dname, ddg.dnum = dnum, dloc = dloc, 
-      dvalue = dvalue, dtime = dtime, dhash)
+      dvalue = dvalue, dtime = dtime, dhash, drw)
 }
 
 #' .ddg.hashtable.write writes relevant information about the ddg

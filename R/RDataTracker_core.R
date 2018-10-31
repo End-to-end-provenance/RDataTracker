@@ -408,7 +408,7 @@
     scope <- .ddg.get.scope(var, for.caller)
 
     #print(paste(".ddg.create.data.use.edges: scope =", scope))
-    
+
     if (.ddg.data.node.exists(var, scope)) {
       # print(".ddg.create.data.use.edges found data node")
       .ddg.data2proc(var, scope, cmd@abbrev)

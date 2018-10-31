@@ -15,10 +15,10 @@ library(methods)
 # determine which prov-collection library to run
 tool <- commandArgs(TRUE)[1]
 
-if( identical(tool, "prov") ) {
-	library(provR)
-} else if( identical(tool, "rdt") ) {
-	library(RDataTracker)
+if( identical(tool, "rdt") ) {
+	library(rdt)
+} else if( identical(tool, "rdtLite") ) {
+	library(rdt)
 } else {
 	stop("Provenance collection library is not specified.", call. = FALSE)
 }
@@ -35,11 +35,11 @@ invisible(force(startTime))
 options(useFancyQuotes=FALSE)
 
 # Run the script
-if( identical(tool, "prov") ) {
-	prov.run("[SCRIPT]", "[DIR_DDG]", snapshot.size=10)
-} else if( identical(tool, "rdt") ) {
+if( identical(tool, "rdt") ) {
 	prov.run("[SCRIPT]", "[DIR_DDG]", annotate.inside.functions=TRUE, 
 		max.loops=1, snapshot.size=10)
+} else if( identical(tool, "rdtLite") ) {
+	prov.run("[SCRIPT]", "[DIR_DDG]", snapshot.size=10)
 } else {
 	stop("Provenance collection library is not found.", call. = FALSE)
 }

@@ -19,8 +19,8 @@
 
 #' Provenance Collection Functions
 #' 
-#' prov.init intializes a new provenance graph. Called by the user
-#' in console mode.
+#' prov.init intializes a new provenance graph. This function can be
+#' executed in the console or placed inside an R script.
 #' 
 #' RDataTracker is an R package that collects provenance as an R script 
 #' executes. The resulting provenance provides a detailed record of the 
@@ -108,7 +108,7 @@ prov.init <- function(prov.dir = NULL, overwrite = TRUE, annotate.inside.functio
   }
   
   # Save name of provenance collection tool.
-  .ddg.set("ddg.tool.name", "RDataTracker")
+  .ddg.set("ddg.tool.name", "rdt")
 
   # Save hash algorithm
   .ddg.set("ddg.hash.algorithm", hash.algorithm)
@@ -164,7 +164,8 @@ prov.init <- function(prov.dir = NULL, overwrite = TRUE, annotate.inside.functio
 #' prov.save saves the current provenance graph to a prov-json file.
 #' If more R statements are executed, the provenance for these statements
 #' is added to the graph. The graph is finalized with prov.quit.
-#' Called by the user in console mode.
+#' This function can be
+#' executed in the console or placed inside an R script.
 #' @return prov.save writes the current provenance to a file but does not 
 #'   return a value.
 #' @export
@@ -177,7 +178,8 @@ prov.save <- function(save.debug = FALSE) {
 #' prov.quit
 #'
 #' prov.quit saves and closes the current provenance graph.
-#' Called by the user in console mode.
+#' This function can be
+#' executed in the console or placed inside an R script.
 #' @return prov.quit writes the current provenance to a file but does not 
 #'   return a value.
 #' @export
@@ -190,7 +192,11 @@ prov.quit <- function(save.debug = FALSE) {
 #' prov.run
 #'
 #' prov.run initiates execution of a script and collects provenance as 
-#' the script executes.
+#' the script executes.  This function should be used if you want to 
+#' collect provenance for a script that is in an R file and you do not
+#' want to modify the R script directly to include calls to prov.init, 
+#' prov.save and prov.quit.  It essentially wraps the execution of the 
+#' script with calls to prov.init and prov.quit.  
 #' @param r.script.path the full path to the R script file that is being 
 #' executed. A copy of the script will be saved with the provenance graph.
 #' @param display if TRUE, the provenance graph is displayed in DDG Explorer
@@ -241,10 +247,12 @@ prov.run <- function(r.script.path, prov.dir = NULL, overwrite = TRUE,
 
 #' prov.source
 #'
-#' prov.source reads and executes an R script. RDataTracker
-#' automatically collects provenance for sourced scripts.
-#' This function is provided for compatibility with scripts
-#' that have been annotated for use with provR.
+#' prov.source loads an R script and executes it, collecting provenance
+#' as it does so.  It assumes that provenance has already been initialized,
+#' either via a call to prov.init, or because the R script was executed
+#' using prov.run.  If you want to collect provenance inside scripts
+#' that are loaded with R's source function, you should replace calls 
+#' to source with calls to prov.source.
 #' @param file the name of the R script file to source.
 #' @return The prov.source function does not return a value.
 #' @export
@@ -302,6 +310,8 @@ prov.json <- function() {
   return(.ddg.json.string())
 }
 
+#' prov.dir
+#' 
 #' prov.dir returns the current provenance directory.
 #' @return prov.dir returns the current provenance directory.
 #' @export
@@ -338,43 +348,43 @@ prov.display <- function () {
 #' @noRd
 
 .ddg.set.annotation.functions <- function () {
-  assign(".ddg.details.omitted", RDataTracker:::.ddg.details.omitted, 
+  assign(".ddg.details.omitted", rdt:::.ddg.details.omitted, 
       envir = globalenv())
-  assign(".ddg.eval", RDataTracker:::.ddg.eval, 
+  assign(".ddg.eval", rdt:::.ddg.eval, 
       envir = globalenv())
-  assign(".ddg.finish", RDataTracker:::.ddg.finish, 
+  assign(".ddg.finish", rdt:::.ddg.finish, 
       envir = globalenv())
-  assign(".ddg.first.loop", RDataTracker:::.ddg.first.loop, 
+  assign(".ddg.first.loop", rdt:::.ddg.first.loop, 
       envir = globalenv())
-  assign(".ddg.forloop", RDataTracker:::.ddg.forloop, 
+  assign(".ddg.forloop", rdt:::.ddg.forloop, 
       envir = globalenv())
-  assign(".ddg.function", RDataTracker:::.ddg.function, 
+  assign(".ddg.function", rdt:::.ddg.function, 
       envir = globalenv())
-  assign(".ddg.loop.annotate.off", RDataTracker:::.ddg.loop.annotate.off, 
+  assign(".ddg.loop.annotate.off", rdt:::.ddg.loop.annotate.off, 
       envir = globalenv())
-  assign(".ddg.loop.annotate.on", RDataTracker:::.ddg.loop.annotate.on, 
+  assign(".ddg.loop.annotate.on", rdt:::.ddg.loop.annotate.on, 
       envir = globalenv())
-  assign(".ddg.loop.count", RDataTracker:::.ddg.loop.count, 
+  assign(".ddg.loop.count", rdt:::.ddg.loop.count, 
       envir = globalenv())
-  assign(".ddg.loop.count.inc", RDataTracker:::.ddg.loop.count.inc, 
+  assign(".ddg.loop.count.inc", rdt:::.ddg.loop.count.inc, 
       envir = globalenv())
-  assign(".ddg.max.loops", RDataTracker:::.ddg.max.loops, 
+  assign(".ddg.max.loops", rdt:::.ddg.max.loops, 
       envir = globalenv())
-  assign(".ddg.snapshot.size", RDataTracker:::.ddg.snapshot.size, 
+  assign(".ddg.snapshot.size", rdt:::.ddg.snapshot.size, 
       envir = globalenv())
-  assign(".ddg.not.inside.loop", RDataTracker:::.ddg.not.inside.loop, 
+  assign(".ddg.not.inside.loop", rdt:::.ddg.not.inside.loop, 
       envir = globalenv())
-  assign(".ddg.reset.loop.count", RDataTracker:::.ddg.reset.loop.count, 
+  assign(".ddg.reset.loop.count", rdt:::.ddg.reset.loop.count, 
       envir = globalenv())
-  assign(".ddg.return.value", RDataTracker:::.ddg.return.value, 
+  assign(".ddg.return.value", rdt:::.ddg.return.value, 
       envir = globalenv())
-  assign(".ddg.set.inside.loop", RDataTracker:::.ddg.set.inside.loop, 
+  assign(".ddg.set.inside.loop", rdt:::.ddg.set.inside.loop, 
       envir = globalenv())
-  assign(".ddg.source", RDataTracker:::.ddg.source, 
+  assign(".ddg.source", rdt:::.ddg.source, 
       envir = globalenv())
-  assign(".ddg.start", RDataTracker:::.ddg.start, 
+  assign(".ddg.start", rdt:::.ddg.start, 
       envir = globalenv())
-  assign(".ddg.should.run.annotated", RDataTracker:::.ddg.should.run.annotated, 
+  assign(".ddg.should.run.annotated", rdt:::.ddg.should.run.annotated, 
       envir = globalenv())
   invisible()
 }
