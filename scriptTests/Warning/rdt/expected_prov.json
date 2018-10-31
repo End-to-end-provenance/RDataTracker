@@ -7,8 +7,8 @@
 	"agent" : {
 		// agent: this json file and the tool that produced this
 		"rdt:a1": {
-			"rdt:tool.name": "RDataTracker",
-			"rdt:tool.version": "3.0.1",
+			"rdt:tool.name": "rdt",
+			"rdt:tool.version": "3.0.2",
 			"rdt:json.version": "2.1"
 		}
 	},
@@ -18,7 +18,7 @@
 		"rdt:p1": {
 			"rdt:name": "Warning.R",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 0.98,
+			"rdt:elapsedTime": 0.88,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -28,8 +28,8 @@
 		"rdt:p2": {
 			"rdt:name": "a <- 1",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.01,
-			"rdt:scriptNum": 0,
+			"rdt:elapsedTime": 0.91,
+			"rdt:scriptNum": 1,
 			"rdt:startLine": 1,
 			"rdt:startCol": 1,
 			"rdt:endLine": 1,
@@ -38,8 +38,8 @@
 		"rdt:p3": {
 			"rdt:name": "warning(\"foo\", call. = FALSE)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.03,
-			"rdt:scriptNum": 0,
+			"rdt:elapsedTime": 0.91,
+			"rdt:scriptNum": 1,
 			"rdt:startLine": 2,
 			"rdt:startCol": 1,
 			"rdt:endLine": 2,
@@ -48,8 +48,8 @@
 		"rdt:p4": {
 			"rdt:name": "b <- 2",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.03,
-			"rdt:scriptNum": 0,
+			"rdt:elapsedTime": 0.92,
+			"rdt:scriptNum": 1,
 			"rdt:startLine": 3,
 			"rdt:startCol": 1,
 			"rdt:endLine": 3,
@@ -58,7 +58,7 @@
 		"rdt:p5": {
 			"rdt:name": "Warning.R",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 1.03,
+			"rdt:elapsedTime": 0.92,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -116,7 +116,7 @@
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:workingDirectory": "[DIR]/rdt",
 			"rdt:provDirectory": "[DIR]/rdt/prov_Warning",
-			"rdt:provTimestamp": "2018-10-05T02.42.30EDT",
+			"rdt:provTimestamp": "2018-10-31T02.40.04EDT",
 			"rdt:hashAlgorithm": "md5"
 		},
 
@@ -170,8 +170,8 @@
 			}
 		},
 		"rdt:l7": {
-			"name": "RDataTracker",
-			"version": "3.0.1",
+			"name": "rdt",
+			"version": "3.0.2",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"

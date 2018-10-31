@@ -7,8 +7,8 @@
 	"agent" : {
 		// agent: this json file and the tool that produced this
 		"rdt:a1": {
-			"rdt:tool.name": "RDataTracker",
-			"rdt:tool.version": "3.0.1",
+			"rdt:tool.name": "rdt",
+			"rdt:tool.version": "3.0.2",
 			"rdt:json.version": "2.1"
 		}
 	},
@@ -18,7 +18,7 @@
 		"rdt:p1": {
 			"rdt:name": "Plot3.R",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 0.94,
+			"rdt:elapsedTime": 0.84,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -28,8 +28,8 @@
 		"rdt:p2": {
 			"rdt:name": "library(ggplot2)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1,
-			"rdt:scriptNum": 0,
+			"rdt:elapsedTime": 0.9,
+			"rdt:scriptNum": 1,
 			"rdt:startLine": 1,
 			"rdt:startCol": 1,
 			"rdt:endLine": 1,
@@ -38,8 +38,8 @@
 		"rdt:p3": {
 			"rdt:name": "xVals <- 1:10",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1,
-			"rdt:scriptNum": 0,
+			"rdt:elapsedTime": 0.9,
+			"rdt:scriptNum": 1,
 			"rdt:startLine": 19,
 			"rdt:startCol": 1,
 			"rdt:endLine": 19,
@@ -48,8 +48,8 @@
 		"rdt:p4": {
 			"rdt:name": "yVals <- 10:1",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.01,
-			"rdt:scriptNum": 0,
+			"rdt:elapsedTime": 0.9,
+			"rdt:scriptNum": 1,
 			"rdt:startLine": 20,
 			"rdt:startCol": 1,
 			"rdt:endLine": 20,
@@ -58,8 +58,8 @@
 		"rdt:p5": {
 			"rdt:name": "df <- data.frame(xVals, yVals)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.01,
-			"rdt:scriptNum": 0,
+			"rdt:elapsedTime": 0.9,
+			"rdt:scriptNum": 1,
 			"rdt:startLine": 21,
 			"rdt:startCol": 1,
 			"rdt:endLine": 21,
@@ -68,8 +68,8 @@
 		"rdt:p6": {
 			"rdt:name": "p1 <- ggplot(df, aes(xVals, yVals)) + geom_point() + labs(ti",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.05,
-			"rdt:scriptNum": 0,
+			"rdt:elapsedTime": 0.93,
+			"rdt:scriptNum": 1,
 			"rdt:startLine": 24,
 			"rdt:startCol": 1,
 			"rdt:endLine": 24,
@@ -78,8 +78,8 @@
 		"rdt:p7": {
 			"rdt:name": "ggsave(\"plot1.pdf\", p1)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.36,
-			"rdt:scriptNum": 0,
+			"rdt:elapsedTime": 1.16,
+			"rdt:scriptNum": 1,
 			"rdt:startLine": 25,
 			"rdt:startCol": 1,
 			"rdt:endLine": 25,
@@ -88,8 +88,8 @@
 		"rdt:p8": {
 			"rdt:name": "p2 <- ggplot(df, aes(xVals, yVals)) + geom_point() + labs(ti",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.39,
-			"rdt:scriptNum": 0,
+			"rdt:elapsedTime": 1.17,
+			"rdt:scriptNum": 1,
 			"rdt:startLine": 43,
 			"rdt:startCol": 1,
 			"rdt:endLine": 43,
@@ -98,8 +98,8 @@
 		"rdt:p9": {
 			"rdt:name": "ggsave(\"plot2.pdf\")",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.62,
-			"rdt:scriptNum": 0,
+			"rdt:elapsedTime": 1.33,
+			"rdt:scriptNum": 1,
 			"rdt:startLine": 45,
 			"rdt:startCol": 1,
 			"rdt:endLine": 45,
@@ -108,8 +108,8 @@
 		"rdt:p10": {
 			"rdt:name": "ggplot(df, aes(xVals, yVals)) + geom_point() + labs(title = ",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.64,
-			"rdt:scriptNum": 0,
+			"rdt:elapsedTime": 1.35,
+			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
 			"rdt:endLine": "NA",
@@ -118,8 +118,8 @@
 		"rdt:p11": {
 			"rdt:name": "ggsave(\"plot3.pdf\")",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.79,
-			"rdt:scriptNum": 0,
+			"rdt:elapsedTime": 1.48,
+			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
 			"rdt:endLine": "NA",
@@ -128,8 +128,8 @@
 		"rdt:p12": {
 			"rdt:name": "p4a <- ggplot(df, aes(xVals, yVals))",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.79,
-			"rdt:scriptNum": 0,
+			"rdt:elapsedTime": 1.49,
+			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
 			"rdt:endLine": "NA",
@@ -138,8 +138,8 @@
 		"rdt:p13": {
 			"rdt:name": "p4b <- p4a + geom_point()",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.87,
-			"rdt:scriptNum": 0,
+			"rdt:elapsedTime": 1.54,
+			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
 			"rdt:endLine": "NA",
@@ -148,8 +148,8 @@
 		"rdt:p14": {
 			"rdt:name": "p4c <- p4b + labs(title = \"plot built up over multiple state",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.92,
-			"rdt:scriptNum": 0,
+			"rdt:elapsedTime": 1.57,
+			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
 			"rdt:endLine": "NA",
@@ -158,8 +158,8 @@
 		"rdt:p15": {
 			"rdt:name": "ggsave(\"plot4.pdf\", p4c)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 2.06,
-			"rdt:scriptNum": 0,
+			"rdt:elapsedTime": 1.71,
+			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
 			"rdt:endLine": "NA",
@@ -168,8 +168,8 @@
 		"rdt:p16": {
 			"rdt:name": "p5a <- ggplot(df, aes(xVals, yVals))",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 2.08,
-			"rdt:scriptNum": 0,
+			"rdt:elapsedTime": 1.71,
+			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
 			"rdt:endLine": "NA",
@@ -178,8 +178,8 @@
 		"rdt:p17": {
 			"rdt:name": "p5b <- p5a + geom_point()",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 2.15,
-			"rdt:scriptNum": 0,
+			"rdt:elapsedTime": 1.74,
+			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
 			"rdt:endLine": "NA",
@@ -188,8 +188,8 @@
 		"rdt:p18": {
 			"rdt:name": "p5c <- p5b + labs(title = \"plot built up over multiple state",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 2.2,
-			"rdt:scriptNum": 0,
+			"rdt:elapsedTime": 1.77,
+			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
 			"rdt:endLine": "NA",
@@ -198,8 +198,8 @@
 		"rdt:p19": {
 			"rdt:name": "ggsave(\"plot5.pdf\")",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 2.34,
-			"rdt:scriptNum": 0,
+			"rdt:elapsedTime": 1.9,
+			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
 			"rdt:endLine": "NA",
@@ -208,7 +208,7 @@
 		"rdt:p20": {
 			"rdt:name": "Plot3.R",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 2.36,
+			"rdt:elapsedTime": 1.9,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -249,7 +249,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2018-10-05T02.22.34EDT",
+			"rdt:timestamp": "2018-10-31T02.28.30EDT",
 			"rdt:location": ""
 		},
 		"rdt:d4": {
@@ -260,7 +260,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2018-10-05T02.22.34EDT",
+			"rdt:timestamp": "2018-10-31T02.28.31EDT",
 			"rdt:location": ""
 		},
 		"rdt:d5": {
@@ -271,7 +271,7 @@
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
 			"rdt:hash": "717c877af6504ba3ea7e2dc8510bcf53",
-			"rdt:timestamp": "2018-10-05T02.22.35EDT",
+			"rdt:timestamp": "2018-10-31T02.28.31EDT",
 			"rdt:location": "[DIR]/rdt/plot1.pdf"
 		},
 		"rdt:d6": {
@@ -282,7 +282,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2018-10-05T02.22.35EDT",
+			"rdt:timestamp": "2018-10-31T02.28.31EDT",
 			"rdt:location": ""
 		},
 		"rdt:d7": {
@@ -293,7 +293,7 @@
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
 			"rdt:hash": "37c38832d72312598071c2af7fda802a",
-			"rdt:timestamp": "2018-10-05T02.22.35EDT",
+			"rdt:timestamp": "2018-10-31T02.28.31EDT",
 			"rdt:location": "[DIR]/rdt/plot2.pdf"
 		},
 		"rdt:d8": {
@@ -304,7 +304,7 @@
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2018-10-05T02.22.35EDT",
+			"rdt:timestamp": "2018-10-31T02.28.31EDT",
 			"rdt:location": ""
 		},
 		"rdt:d9": {
@@ -315,7 +315,7 @@
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
 			"rdt:hash": "d7d05e7ff450a662a25b43df66991ec0",
-			"rdt:timestamp": "2018-10-05T02.22.35EDT",
+			"rdt:timestamp": "2018-10-31T02.28.31EDT",
 			"rdt:location": "[DIR]/rdt/plot3.pdf"
 		},
 		"rdt:d10": {
@@ -326,7 +326,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2018-10-05T02.22.35EDT",
+			"rdt:timestamp": "2018-10-31T02.28.31EDT",
 			"rdt:location": ""
 		},
 		"rdt:d11": {
@@ -337,7 +337,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2018-10-05T02.22.35EDT",
+			"rdt:timestamp": "2018-10-31T02.28.31EDT",
 			"rdt:location": ""
 		},
 		"rdt:d12": {
@@ -348,7 +348,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2018-10-05T02.22.35EDT",
+			"rdt:timestamp": "2018-10-31T02.28.31EDT",
 			"rdt:location": ""
 		},
 		"rdt:d13": {
@@ -359,7 +359,7 @@
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
 			"rdt:hash": "33fbc0c04a4be4adf0eac7273d32036b",
-			"rdt:timestamp": "2018-10-05T02.22.35EDT",
+			"rdt:timestamp": "2018-10-31T02.28.31EDT",
 			"rdt:location": "[DIR]/rdt/plot4.pdf"
 		},
 		"rdt:d14": {
@@ -370,7 +370,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2018-10-05T02.22.35EDT",
+			"rdt:timestamp": "2018-10-31T02.28.31EDT",
 			"rdt:location": ""
 		},
 		"rdt:d15": {
@@ -381,7 +381,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2018-10-05T02.22.35EDT",
+			"rdt:timestamp": "2018-10-31T02.28.31EDT",
 			"rdt:location": ""
 		},
 		"rdt:d16": {
@@ -392,7 +392,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2018-10-05T02.22.35EDT",
+			"rdt:timestamp": "2018-10-31T02.28.31EDT",
 			"rdt:location": ""
 		},
 		"rdt:d17": {
@@ -403,7 +403,7 @@
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
 			"rdt:hash": "2fb71b41fc00796e66e991d76156c7b3",
-			"rdt:timestamp": "2018-10-05T02.22.36EDT",
+			"rdt:timestamp": "2018-10-31T02.28.32EDT",
 			"rdt:location": "[DIR]/rdt/plot5.pdf"
 		},
 
@@ -420,7 +420,7 @@
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:workingDirectory": "[DIR]/rdt",
 			"rdt:provDirectory": "[DIR]/rdt/prov_Plot3",
-			"rdt:provTimestamp": "2018-10-05T02.22.33EDT",
+			"rdt:provTimestamp": "2018-10-31T02.28.30EDT",
 			"rdt:hashAlgorithm": "md5"
 		},
 
@@ -474,8 +474,8 @@
 			}
 		},
 		"rdt:l7": {
-			"name": "RDataTracker",
-			"version": "3.0.1",
+			"name": "rdt",
+			"version": "3.0.2",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"

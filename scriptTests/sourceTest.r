@@ -18,7 +18,7 @@ tool <- commandArgs(TRUE)[1]
 if( identical(tool, "rdt") ) {
 	library(rdt)
 } else if( identical(tool, "rdtLite") ) {
-	library(rdt)
+	library(rdtLite)
 } else {
 	stop("Provenance collection library is not specified.", call. = FALSE)
 }

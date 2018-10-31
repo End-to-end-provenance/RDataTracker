@@ -7,8 +7,8 @@
 	"agent" : {
 		// agent: this json file and the tool that produced this
 		"rdt:a1": {
-			"rdt:tool.name": "RDataTracker",
-			"rdt:tool.version": "3.0.1",
+			"rdt:tool.name": "rdt",
+			"rdt:tool.version": "3.0.2",
 			"rdt:json.version": "2.1"
 		}
 	},
@@ -18,7 +18,7 @@
 		"rdt:p1": {
 			"rdt:name": "Plot2.R",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 0.89,
+			"rdt:elapsedTime": 0.83,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -28,8 +28,8 @@
 		"rdt:p2": {
 			"rdt:name": "f1 <- function() {\tnums <- c(1, 3, 6, 4, 9)\tpdf(\"nums.",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.93,
-			"rdt:scriptNum": 0,
+			"rdt:elapsedTime": 0.87,
+			"rdt:scriptNum": 1,
 			"rdt:startLine": 3,
 			"rdt:startCol": 1,
 			"rdt:endLine": 8,
@@ -38,7 +38,7 @@
 		"rdt:p3": {
 			"rdt:name": "f1()",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 0.97,
+			"rdt:elapsedTime": 0.9,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -48,7 +48,7 @@
 		"rdt:p4": {
 			"rdt:name": "f1",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.97,
+			"rdt:elapsedTime": 0.9,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -58,8 +58,8 @@
 		"rdt:p5": {
 			"rdt:name": "nums <- c(1, 3, 6, 4, 9)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.97,
-			"rdt:scriptNum": 0,
+			"rdt:elapsedTime": 0.9,
+			"rdt:scriptNum": 1,
 			"rdt:startLine": 4,
 			"rdt:startCol": 3,
 			"rdt:endLine": 4,
@@ -68,8 +68,8 @@
 		"rdt:p6": {
 			"rdt:name": "pdf(\"nums.pdf\")",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.01,
-			"rdt:scriptNum": 0,
+			"rdt:elapsedTime": 0.95,
+			"rdt:scriptNum": 1,
 			"rdt:startLine": 5,
 			"rdt:startCol": 3,
 			"rdt:endLine": 5,
@@ -78,8 +78,8 @@
 		"rdt:p7": {
 			"rdt:name": "plot(nums)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.01,
-			"rdt:scriptNum": 0,
+			"rdt:elapsedTime": 0.97,
+			"rdt:scriptNum": 1,
 			"rdt:startLine": 6,
 			"rdt:startCol": 3,
 			"rdt:endLine": 6,
@@ -88,8 +88,8 @@
 		"rdt:p8": {
 			"rdt:name": "dev.off()",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.03,
-			"rdt:scriptNum": 0,
+			"rdt:elapsedTime": 0.97,
+			"rdt:scriptNum": 1,
 			"rdt:startLine": 7,
 			"rdt:startCol": 3,
 			"rdt:endLine": 7,
@@ -98,7 +98,7 @@
 		"rdt:p9": {
 			"rdt:name": "f1()",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 1.12,
+			"rdt:elapsedTime": 1.01,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -108,7 +108,7 @@
 		"rdt:p10": {
 			"rdt:name": "Plot2.R",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 1.12,
+			"rdt:elapsedTime": 1.01,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -127,7 +127,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2018-10-05T02.18.17EDT",
+			"rdt:timestamp": "2018-10-31T02.26.23EDT",
 			"rdt:location": ""
 		},
 		"rdt:d2": {
@@ -135,7 +135,7 @@
 			"rdt:value": "1 3 6 4 9",
 			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[5], \"type\":[\"numeric\"]}",
 			"rdt:type": "Data",
-			"rdt:scope": "0x0000000015f8cdd0",
+			"rdt:scope": "0x0000000015c02208",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
 			"rdt:timestamp": "",
@@ -171,7 +171,7 @@
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
 			"rdt:hash": "9a0f8353fe7a69887210fe9725039b1b",
-			"rdt:timestamp": "2018-10-05T02.18.17EDT",
+			"rdt:timestamp": "2018-10-31T02.26.23EDT",
 			"rdt:location": "[DIR]/rdt/nums.pdf"
 		},
 		"rdt:d6": {
@@ -182,7 +182,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2018-10-05T02.18.17EDT",
+			"rdt:timestamp": "2018-10-31T02.26.23EDT",
 			"rdt:location": ""
 		},
 
@@ -199,7 +199,7 @@
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:workingDirectory": "[DIR]/rdt",
 			"rdt:provDirectory": "[DIR]/rdt/prov_Plot2",
-			"rdt:provTimestamp": "2018-10-05T02.18.16EDT",
+			"rdt:provTimestamp": "2018-10-31T02.26.22EDT",
 			"rdt:hashAlgorithm": "md5"
 		},
 
@@ -253,8 +253,8 @@
 			}
 		},
 		"rdt:l7": {
-			"name": "RDataTracker",
-			"version": "3.0.1",
+			"name": "rdt",
+			"version": "3.0.2",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"

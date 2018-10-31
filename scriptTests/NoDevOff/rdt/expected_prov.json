@@ -7,8 +7,8 @@
 	"agent" : {
 		// agent: this json file and the tool that produced this
 		"rdt:a1": {
-			"rdt:tool.name": "RDataTracker",
-			"rdt:tool.version": "3.0.1",
+			"rdt:tool.name": "rdt",
+			"rdt:tool.version": "3.0.2",
 			"rdt:json.version": "2.1"
 		}
 	},
@@ -28,8 +28,8 @@
 		"rdt:p2": {
 			"rdt:name": "data(mtcars)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.95,
-			"rdt:scriptNum": 0,
+			"rdt:elapsedTime": 0.94,
+			"rdt:scriptNum": 1,
 			"rdt:startLine": 4,
 			"rdt:startCol": 1,
 			"rdt:endLine": 4,
@@ -38,8 +38,8 @@
 		"rdt:p3": {
 			"rdt:name": "allCars.df <- mtcars",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1,
-			"rdt:scriptNum": 0,
+			"rdt:elapsedTime": 0.97,
+			"rdt:scriptNum": 1,
 			"rdt:startLine": 7,
 			"rdt:startCol": 1,
 			"rdt:endLine": 7,
@@ -48,8 +48,8 @@
 		"rdt:p4": {
 			"rdt:name": "cars4Cyl.df <- allCars.df[allCars.df$cyl == 4, ]",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.1,
-			"rdt:scriptNum": 0,
+			"rdt:elapsedTime": 1.08,
+			"rdt:scriptNum": 1,
 			"rdt:startLine": 10,
 			"rdt:startCol": 1,
 			"rdt:endLine": 10,
@@ -58,8 +58,8 @@
 		"rdt:p5": {
 			"rdt:name": "cars6Cyl.df <- allCars.df[allCars.df$cyl == 6, ]",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.12,
-			"rdt:scriptNum": 0,
+			"rdt:elapsedTime": 1.09,
+			"rdt:scriptNum": 1,
 			"rdt:startLine": 11,
 			"rdt:startCol": 1,
 			"rdt:endLine": 11,
@@ -68,8 +68,8 @@
 		"rdt:p6": {
 			"rdt:name": "cars8Cyl.df <- allCars.df[allCars.df$cyl == 8, ]",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.12,
-			"rdt:scriptNum": 0,
+			"rdt:elapsedTime": 1.11,
+			"rdt:scriptNum": 1,
 			"rdt:startLine": 12,
 			"rdt:startCol": 1,
 			"rdt:endLine": 12,
@@ -78,8 +78,8 @@
 		"rdt:p7": {
 			"rdt:name": "cylinders = c(4, 6, 8)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.13,
-			"rdt:scriptNum": 0,
+			"rdt:elapsedTime": 1.12,
+			"rdt:scriptNum": 1,
 			"rdt:startLine": 15,
 			"rdt:startCol": 1,
 			"rdt:endLine": 15,
@@ -88,8 +88,8 @@
 		"rdt:p8": {
 			"rdt:name": "mpg = c(mean(cars4Cyl.df$mpg), mean(cars6Cyl.df$mpg), mean(c",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.15,
-			"rdt:scriptNum": 0,
+			"rdt:elapsedTime": 1.12,
+			"rdt:scriptNum": 1,
 			"rdt:startLine": 15,
 			"rdt:startCol": 13,
 			"rdt:endLine": 15,
@@ -99,7 +99,7 @@
 			"rdt:name": "plot(cylinders, mpg)",
 			"rdt:type": "Operation",
 			"rdt:elapsedTime": 1.19,
-			"rdt:scriptNum": 0,
+			"rdt:scriptNum": 1,
 			"rdt:startLine": 16,
 			"rdt:startCol": 1,
 			"rdt:endLine": 16,
@@ -108,8 +108,8 @@
 		"rdt:p10": {
 			"rdt:name": "X11()",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.2,
-			"rdt:scriptNum": 0,
+			"rdt:elapsedTime": 1.24,
+			"rdt:scriptNum": 1,
 			"rdt:startLine": 16,
 			"rdt:startCol": 7,
 			"rdt:endLine": 16,
@@ -118,8 +118,8 @@
 		"rdt:p11": {
 			"rdt:name": "plot(cylinders, mpg)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.22,
-			"rdt:scriptNum": 0,
+			"rdt:elapsedTime": 1.27,
+			"rdt:scriptNum": 1,
 			"rdt:startLine": 19,
 			"rdt:startCol": 1,
 			"rdt:endLine": 19,
@@ -128,8 +128,8 @@
 		"rdt:p12": {
 			"rdt:name": "plot(cylinders, mpg)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.24,
-			"rdt:scriptNum": 0,
+			"rdt:elapsedTime": 1.28,
+			"rdt:scriptNum": 1,
 			"rdt:startLine": 26,
 			"rdt:startCol": 1,
 			"rdt:endLine": 26,
@@ -138,8 +138,8 @@
 		"rdt:p13": {
 			"rdt:name": "x <- 1",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.24,
-			"rdt:scriptNum": 0,
+			"rdt:elapsedTime": 1.28,
+			"rdt:scriptNum": 1,
 			"rdt:startLine": 28,
 			"rdt:startCol": 1,
 			"rdt:endLine": 28,
@@ -148,7 +148,7 @@
 		"rdt:p14": {
 			"rdt:name": "NoDevOff.R",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 1.24,
+			"rdt:elapsedTime": 1.3,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -167,7 +167,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": true,
 			"rdt:hash": "",
-			"rdt:timestamp": "2018-10-05T12.49.20EDT",
+			"rdt:timestamp": "2018-10-31T02.20.20EDT",
 			"rdt:location": ""
 		},
 		"rdt:d2": {
@@ -178,7 +178,7 @@
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
 			"rdt:hash": "afe1c92ec693931a928a7577a2f0bc03",
-			"rdt:timestamp": "2018-10-05T12.49.20EDT",
+			"rdt:timestamp": "2018-10-31T02.20.20EDT",
 			"rdt:location": "C:/Users/fong22e/Documents/Libraries/R/win-library/ggplot2/data/Rdata.rds"
 		},
 		"rdt:d3": {
@@ -189,7 +189,7 @@
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
 			"rdt:hash": "afe1c92ec693931a928a7577a2f0bc03",
-			"rdt:timestamp": "2018-10-05T12.49.20EDT",
+			"rdt:timestamp": "2018-10-31T02.20.20EDT",
 			"rdt:location": "C:/Program Files/R/R-3.5.1/library/datasets/data/Rdata.rds"
 		},
 		"rdt:d4": {
@@ -200,7 +200,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2018-10-05T12.49.21EDT",
+			"rdt:timestamp": "2018-10-31T02.20.21EDT",
 			"rdt:location": ""
 		},
 		"rdt:d5": {
@@ -211,7 +211,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2018-10-05T12.49.21EDT",
+			"rdt:timestamp": "2018-10-31T02.20.21EDT",
 			"rdt:location": ""
 		},
 		"rdt:d6": {
@@ -222,7 +222,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2018-10-05T12.49.21EDT",
+			"rdt:timestamp": "2018-10-31T02.20.21EDT",
 			"rdt:location": ""
 		},
 		"rdt:d7": {
@@ -233,7 +233,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2018-10-05T12.49.21EDT",
+			"rdt:timestamp": "2018-10-31T02.20.21EDT",
 			"rdt:location": ""
 		},
 		"rdt:d8": {
@@ -332,7 +332,7 @@
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
 			"rdt:hash": "de972f9aeed5a58b619bf796d650b72d",
-			"rdt:timestamp": "2018-10-05T12.49.21EDT",
+			"rdt:timestamp": "2018-10-31T02.20.21EDT",
 			"rdt:location": "[DIR]/rdt/dev.off.16.pdf"
 		},
 		"rdt:d17": {
@@ -343,7 +343,7 @@
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
 			"rdt:hash": "5dbcf8e3ad076c9eb4b81222033f5763",
-			"rdt:timestamp": "2018-10-05T12.49.21EDT",
+			"rdt:timestamp": "2018-10-31T02.20.21EDT",
 			"rdt:location": "[DIR]/rdt/Rplots.pdf"
 		},
 
@@ -360,7 +360,7 @@
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:workingDirectory": "[DIR]/rdt",
 			"rdt:provDirectory": "[DIR]/rdt/prov_NoDevOff",
-			"rdt:provTimestamp": "2018-10-05T12.49.20EDT",
+			"rdt:provTimestamp": "2018-10-31T02.20.20EDT",
 			"rdt:hashAlgorithm": "md5"
 		},
 
@@ -414,8 +414,8 @@
 			}
 		},
 		"rdt:l7": {
-			"name": "RDataTracker",
-			"version": "3.0.1",
+			"name": "rdt",
+			"version": "3.0.2",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"

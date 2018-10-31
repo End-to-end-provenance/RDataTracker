@@ -15,7 +15,17 @@
 # Author @Barabara Lerner - adapted from sourceTest.r
 
 library(methods)
-library(rdt)
+
+# determine which prov-collection library to run
+tool <- commandArgs(TRUE)[1]
+
+if( identical(tool, "rdt") ) {
+	library(rdt)
+} else if( identical(tool, "rdtLite") ) {
+	library(rdtLite)
+} else {
+	stop("Provenance collection library is not specified.", call. = FALSE)
+}
 
 ## Directories
 testDir <- "[DIR_LOCAL]/"

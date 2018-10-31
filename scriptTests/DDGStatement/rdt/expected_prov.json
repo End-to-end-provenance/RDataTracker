@@ -7,8 +7,8 @@
 	"agent" : {
 		// agent: this json file and the tool that produced this
 		"rdt:a1": {
-			"rdt:tool.name": "RDataTracker",
-			"rdt:tool.version": "3.0.1",
+			"rdt:tool.name": "rdt",
+			"rdt:tool.version": "3.0.2",
 			"rdt:json.version": "2.1"
 		}
 	},
@@ -18,7 +18,7 @@
 		"rdt:p1": {
 			"rdt:name": "DDGStatement.R",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 1.09,
+			"rdt:elapsedTime": 0.94,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -28,8 +28,8 @@
 		"rdt:p2": {
 			"rdt:name": "a <- 1",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.16,
-			"rdt:scriptNum": 0,
+			"rdt:elapsedTime": 1.03,
+			"rdt:scriptNum": 1,
 			"rdt:startLine": 6,
 			"rdt:startCol": 1,
 			"rdt:endLine": 6,
@@ -38,8 +38,8 @@
 		"rdt:p3": {
 			"rdt:name": "if (TRUE) {\ta <- 1}",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 1.2,
-			"rdt:scriptNum": 0,
+			"rdt:elapsedTime": 1.05,
+			"rdt:scriptNum": 1,
 			"rdt:startLine": 8,
 			"rdt:startCol": 1,
 			"rdt:endLine": 10,
@@ -48,7 +48,7 @@
 		"rdt:p4": {
 			"rdt:name": "if",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 1.2,
+			"rdt:elapsedTime": 1.05,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -58,8 +58,8 @@
 		"rdt:p5": {
 			"rdt:name": "a <- 1",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.2,
-			"rdt:scriptNum": 0,
+			"rdt:elapsedTime": 1.05,
+			"rdt:scriptNum": 1,
 			"rdt:startLine": 9,
 			"rdt:startCol": 3,
 			"rdt:endLine": 9,
@@ -68,7 +68,7 @@
 		"rdt:p6": {
 			"rdt:name": "if",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 1.2,
+			"rdt:elapsedTime": 1.05,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -78,8 +78,8 @@
 		"rdt:p7": {
 			"rdt:name": "if (TRUE) {\ta <- 1}",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 1.2,
-			"rdt:scriptNum": 0,
+			"rdt:elapsedTime": 1.05,
+			"rdt:scriptNum": 1,
 			"rdt:startLine": 8,
 			"rdt:startCol": 1,
 			"rdt:endLine": 10,
@@ -88,8 +88,8 @@
 		"rdt:p8": {
 			"rdt:name": "ddddd <- 0",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.2,
-			"rdt:scriptNum": 0,
+			"rdt:elapsedTime": 1.05,
+			"rdt:scriptNum": 1,
 			"rdt:startLine": 12,
 			"rdt:startCol": 1,
 			"rdt:endLine": 12,
@@ -98,8 +98,8 @@
 		"rdt:p9": {
 			"rdt:name": "repeat {\tddddd <- ddddd + 1\tif (ddddd == 7) {\t\tb",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 1.21,
-			"rdt:scriptNum": 0,
+			"rdt:elapsedTime": 1.06,
+			"rdt:scriptNum": 1,
 			"rdt:startLine": 13,
 			"rdt:startCol": 1,
 			"rdt:endLine": 18,
@@ -108,7 +108,7 @@
 		"rdt:p10": {
 			"rdt:name": "repeat loop",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 1.21,
+			"rdt:elapsedTime": 1.06,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -118,8 +118,8 @@
 		"rdt:p11": {
 			"rdt:name": "ddddd <- ddddd + 1",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.21,
-			"rdt:scriptNum": 0,
+			"rdt:elapsedTime": 1.06,
+			"rdt:scriptNum": 1,
 			"rdt:startLine": 14,
 			"rdt:startCol": 3,
 			"rdt:endLine": 14,
@@ -128,7 +128,7 @@
 		"rdt:p12": {
 			"rdt:name": "repeat loop",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 1.21,
+			"rdt:elapsedTime": 1.06,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -138,7 +138,7 @@
 		"rdt:p13": {
 			"rdt:name": "Details Omitted",
 			"rdt:type": "Incomplete",
-			"rdt:elapsedTime": 1.21,
+			"rdt:elapsedTime": 1.06,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -148,8 +148,8 @@
 		"rdt:p14": {
 			"rdt:name": "repeat {\tddddd <- ddddd + 1\tif (ddddd == 7) {\t\tb",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 1.21,
-			"rdt:scriptNum": 0,
+			"rdt:elapsedTime": 1.06,
+			"rdt:scriptNum": 1,
 			"rdt:startLine": 13,
 			"rdt:startCol": 1,
 			"rdt:endLine": 18,
@@ -158,8 +158,8 @@
 		"rdt:p15": {
 			"rdt:name": "f <- function(a) {\treturn(a + 1)}",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.21,
-			"rdt:scriptNum": 0,
+			"rdt:elapsedTime": 1.08,
+			"rdt:scriptNum": 1,
 			"rdt:startLine": 20,
 			"rdt:startCol": 1,
 			"rdt:endLine": 22,
@@ -168,8 +168,8 @@
 		"rdt:p16": {
 			"rdt:name": "g <- function() 1",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.24,
-			"rdt:scriptNum": 0,
+			"rdt:elapsedTime": 1.08,
+			"rdt:scriptNum": 1,
 			"rdt:startLine": 24,
 			"rdt:startCol": 1,
 			"rdt:endLine": 24,
@@ -178,8 +178,8 @@
 		"rdt:p17": {
 			"rdt:name": "h <- function(a, b) {\tif (a > b)\t\t return(1)\tsum",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.32,
-			"rdt:scriptNum": 0,
+			"rdt:elapsedTime": 1.12,
+			"rdt:scriptNum": 1,
 			"rdt:startLine": 38,
 			"rdt:startCol": 1,
 			"rdt:endLine": 38,
@@ -188,8 +188,8 @@
 		"rdt:p18": {
 			"rdt:name": "exprs <- parse(\"../DDGStatement.R\")",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.34,
-			"rdt:scriptNum": 0,
+			"rdt:elapsedTime": 1.13,
+			"rdt:scriptNum": 1,
 			"rdt:startLine": 40,
 			"rdt:startCol": 1,
 			"rdt:endLine": 44,
@@ -198,8 +198,8 @@
 		"rdt:p19": {
 			"rdt:name": "constructDDGStatement <- function(expr) {\tprint(expr)\t",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.36,
-			"rdt:scriptNum": 0,
+			"rdt:elapsedTime": 1.13,
+			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
 			"rdt:endLine": "NA",
@@ -208,7 +208,7 @@
 		"rdt:p20": {
 			"rdt:name": "DDGStatement.R",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 1.36,
+			"rdt:elapsedTime": 1.15,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -282,7 +282,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2018-10-18T22.14.45EDT",
+			"rdt:timestamp": "2018-10-31T01.16.40EDT",
 			"rdt:location": ""
 		},
 		"rdt:d7": {
@@ -293,7 +293,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2018-10-18T22.14.45EDT",
+			"rdt:timestamp": "2018-10-31T01.16.40EDT",
 			"rdt:location": ""
 		},
 		"rdt:d8": {
@@ -304,7 +304,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2018-10-18T22.14.45EDT",
+			"rdt:timestamp": "2018-10-31T01.16.40EDT",
 			"rdt:location": ""
 		},
 		"rdt:d9": {
@@ -315,7 +315,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2018-10-18T22.14.45EDT",
+			"rdt:timestamp": "2018-10-31T01.16.40EDT",
 			"rdt:location": ""
 		},
 		"rdt:d10": {
@@ -326,7 +326,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2018-10-18T22.14.45EDT",
+			"rdt:timestamp": "2018-10-31T01.16.40EDT",
 			"rdt:location": ""
 		},
 
@@ -343,7 +343,7 @@
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:workingDirectory": "[DIR]/rdt",
 			"rdt:provDirectory": "[DIR]/rdt/prov_DDGStatement",
-			"rdt:provTimestamp": "2018-10-18T22.14.44EDT",
+			"rdt:provTimestamp": "2018-10-31T01.16.39EDT",
 			"rdt:hashAlgorithm": "md5"
 		},
 
@@ -397,8 +397,8 @@
 			}
 		},
 		"rdt:l7": {
-			"name": "RDataTracker",
-			"version": "3.0.1",
+			"name": "rdt",
+			"version": "3.0.2",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"

@@ -7,7 +7,6 @@
 #
 # You should examine console output in RStudio manually for errors.
 
-library(RDataTracker)
 prov.init(prov.dir=".")
 a <- 1
 b <- a + 2
