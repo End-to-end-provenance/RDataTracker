@@ -32,7 +32,7 @@ before_script:
 script:
   - Rscript -e "devtools::check()" 
   - Rscript -e "devtools::install()" 
-  - ant -file tests.xml test-travis
+  - ant -file tests.xml test-travis-rdt
 
 notifications:
   slack: endtoendprovenance:WxevOs6n66eZRbCn9HcW2mGD
