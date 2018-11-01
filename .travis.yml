@@ -31,7 +31,7 @@ before_script:
 
 script:
   - ant -file build-rdt.xml install
-  - ant -file tests.xml test-travis
+  - ant -file tests.xml test-travis-rdt
 
 notifications:
   slack: endtoendprovenance:WxevOs6n66eZRbCn9HcW2mGD
