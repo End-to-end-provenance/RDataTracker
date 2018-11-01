@@ -2107,9 +2107,7 @@
 	
 	
 	<!-- source tests -->
-	<!-- EF EDITS: tmp: remove SourceFunc -->
-	<target name="source-tests" depends="console">
-	<!--<target name="source-tests" depends="SourceFunc, console">-->
+	<target name="source-tests" depends="SourceFunc, console">
 		<echo></echo>
 		<echo>	### Finished Execution of Source Tests. ###</echo>
 		<echo></echo>
