@@ -338,11 +338,11 @@
   startLine=NA, startCol=NA, endLine=NA, endCol=NA){
 
   # Store script number & name.
-  sname <- basename(file)
-  snum <- .ddg.store.script.info (sname)
+  snum <- .ddg.store.script.info (file)
   
   # Save a copy of the script
-  file.copy(file, paste(.ddg.path.scripts(), basename(sname), sep="/"))
+  sname <- basename(file)
+  file.copy(file, paste(.ddg.path.scripts(), sname, sep="/"))
 
   ### CODE IN THIS SECTION IS A SLIGHT MODIFICATION OF A PORTION OF ###
   ### R's source FUNCTION ###

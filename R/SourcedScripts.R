@@ -81,9 +81,9 @@
   stime <- .ddg.format.time( file.info(sname)$mtime )
   
   if (snum == 1) {
-    df <- data.frame(snum, sname, stime, stringsAsFactors=FALSE)
+    df <- data.frame(snum, basename(sname), stime, stringsAsFactors=FALSE)
   } else {
-    df<- rbind(.ddg.sourced.scripts(), c(snum, sname, stime))
+    df<- rbind(.ddg.sourced.scripts(), c(snum, basename(sname), stime))
   }
   .ddg.set("ddg.sourced.scripts", df)
   
