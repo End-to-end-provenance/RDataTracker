@@ -403,7 +403,7 @@
 	# first row: main script
 	if( (! is.null(ss)) && (nrow(ss) > 1) )
 	{
-		ss <- ss[ ss$snum > 0 , ]
+		ss <- ss[ ss$snum > 1 , ]
 		
 		script.names <- sapply( ss[ , 2] , .ddg.json.escape.tabs )
 		script.times <- ss[ , 3]
