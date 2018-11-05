@@ -6,7 +6,7 @@
 	name="TESTS"
 	xmlns:if="ant:if"
 	xmlns:unless="ant:unless"
-	default="install-and-test"
+	default="test-travis-rdtLite"
 	>
 	
 	<!-- ========== Setup ========== -->
@@ -2261,8 +2261,5 @@
 	</target>
 	
 	<!-- ========== End: Targets for Running All Tests ========== -->	
-	
-	
-	<!-- ========== EF EDITS TODO: install and test ========== -->
 	
 </project>
