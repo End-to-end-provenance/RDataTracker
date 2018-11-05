@@ -29,12 +29,12 @@ prov.dir returns the current provenance directory.
 prov.display displays the current provenance as a graph.
 }
 \details{
-RDataTracker collects provenance as a script executes.  Once collected,
+rdt collects provenance as a script executes.  Once collected,
 prov.json can be called to access the provenance as a JSON string.  
 This is useful for applications that operate on the provenance.  The
 JSON is consistent with the PROV-JSON standard.
 
-One such application is a graphic visualizer built into RDataTracker.
+One such application is a graphic visualizer built into rdt.
 To view the provenance graphically, call prov.display.  In the provenance
 graph, the nodes are data values and operations, with edges connecting 
 them to show data and control flow dependencies.  The visualizer also
@@ -56,7 +56,7 @@ pdir <- prov.dir()
 \references{
 PROV-JSON standard: \url{https://www.w3.org/Submission/2013/SUBM-prov-json-20130424/}
 
-RDataTracker PROV-JSON output: \url{https://github.com/End-to-end-provenance/RDataTracker/blob/export/JSON-format.md}
+rdt PROV-JSON output: \url{https://github.com/End-to-end-provenance/RDataTracker/blob/export/JSON-format.md}
 }
 \seealso{
 \code{\link{prov.init}} and \code{\link{prov.run}} for functions to collect provenance
