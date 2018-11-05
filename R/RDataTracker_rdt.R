@@ -401,3 +401,89 @@
           }
           , calls, right=TRUE ))
 }
+
+#' .ddg.markdown takes a Rmd file and extracts the R code and text through
+#' the purl function in the knitr library. It then annotates the R script
+#' to insert start and finish nodes based on the chunks the user already
+#' created. If eval = false, then the chunk will not be added to the DDG. If
+#' the user has a name for the chunk, then that name will be used, else a chunk
+#' name "ddg.chunk_1" and higher numbers will be generated.
+#' Important: If in a code chunk, there is an empty line followed by "#' ----"
+#' or "#''", then an extra finish node will be inserted, causing an error.
+#' @param r.script.path the path of the original Rmd file
+#' @param output.path the path of the generated R script
+#' @return the path to the original Rmd file
+#' @noRd
+
+.ddg.markdown <- function(r.script.path, output.path){
+  
+  #generates R script file from markdown file
+  knitr::purl(r.script.path, documentation = 2L, quiet = TRUE)
+  
+  #moves file to ddg directory
+  file.rename(from = paste(getwd(), "/", 
+          basename(tools::file_path_sans_ext(r.script.path)), 
+          ".R", sep = ""), 
+      to = output.path)
+  script <- readLines(output.path)
+  
+  skip <- FALSE
+  name <- "ddg.chunk"
+  annotated <- character(0)
+  index <- 1
+  
+  
+  # This for loop goes through the script line by line and searches for patterns
+  # to insert the start and finish nodes
+  for(i in 1:length(script)){
+    
+    #eval = false means we skip this code chunk, therefore skip = TRUE
+    if(regexpr("eval+(\\s*)+=+(\\s*)+FALSE", script[i]) != -1){
+      skip <- TRUE
+      annotated <- append(annotated, script[i])
+    }
+    
+    else if(regexpr("## ----", script[i]) != -1){
+      
+      #if no options in the line, then generate default name.
+      if(regexpr("## -----", script[i]) == -1){
+        if(regexpr("=", script[i]) == -1){
+          end <- regexpr("-----", script[i])
+          name <- substring(script[i], 8, last = end -1)
+        }
+        else if(regexpr(",", script[i]) != -1){
+          comma <- regexpr(",", script[i])
+          name <- substring(script[i], 8, last = comma -1)
+        }
+        else{
+          name <- paste("ddg.chunk_", index, sep = "")
+          index <- index + 1
+        }
+      }
+      else{
+        name <- paste("ddg.chunk_", index, sep = "")
+        index <- index + 1
+      }
+      name <- stringr::str_trim(name, side = "both")
+      annotated <- append(annotated, paste(".ddg.start(\"", name, "\")", sep = ""))
+    }
+    else if(nchar(script[i]) == 0 && 
+        (regexpr("#'", script[i + 1]) != -1 || 
+          i == length(script) || regexpr("## ----", script[i + 1]) != -1 )){
+      if(skip){
+        annotated <- append(annotated, script[i])
+        skip <- FALSE
+      }
+      else{
+        annotated <- append(annotated, paste(".ddg.finish(\"", name, "\")", sep = ""))
+      }
+    }
+    else{
+      annotated <- append(annotated, script[i])
+    }
+  }
+  writeLines(annotated, output.path)
+  r.script.path
+}
+
+
