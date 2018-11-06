@@ -9,28 +9,31 @@
 	
 	To run a test, use:
 	
-		> ant -file tests.xml <testName>_<rdt|rdtLite>
+		> ant -file tests.xml <testName>-<rdt|rdtLite>
 	
 	To update a test, use:
 	
-		> ant -file tests.xml update_<testName>_<rdt|rdtLite>
+		> ant -file tests.xml update-<testName>-<rdt|rdtLite>
 	
 	For example, to run and update basic test on rdt, use:
 	
-		> ant -file tests.xml basic_rdt
-		> ant -file tests.xml update_basic_rdt
+		> ant -file tests.xml basic-rdt
+		> ant -file tests.xml update-basic-rdt
 	
+	When you run a test, it will create serveral files and subdirectories
+	in either the rdt or rdtLite subdirectory for the test, such as:
 	
+	test.out - standard output from executing the test
+	prov_<testName>/prov.json - ddg from executing the test
 	
+	After a test is run, the .out files and the prov.json files are compared
+	to expected_ files with the same names.  The differences are displayed
+	on standard output. If the tests work as before, the only differences
+	you should see are in the execution time. If either test-travis-rdt or
+	test-travis-rdtLite target is run, there will be no differences displayed.
 	
-	--------------------------------------------------------------------------
+	========================================================================
 	
-
-	When you run a test, it will create several files with names like:
-
-	<target>.out - standard output from executing the test
-	prov.json - ddg from executing the test
-
 	After a test is run, the .out files and the prov.json files are compared
 	to expected_ files with the same names.  The differences are displayed
 	on standard output.  If the tests work as before, the only differences
