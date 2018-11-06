@@ -1,7 +1,7 @@
 {
 	"prefix": {
 		"prov": "http://www.w3.org/ns/prov#",
-		"rdt": "http://rdatatracker.org/"
+		"rdt": "https://github.com/End-to-end-provenance/ExtendedProvJson/blob/master/JSON-format.md"
 	},
 
 	"agent" : {
@@ -18,7 +18,7 @@
 		"rdt:p1": {
 			"rdt:name": "RMarkdown.R",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 0.781,
+			"rdt:elapsedTime": 1.3,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -28,7 +28,7 @@
 		"rdt:p2": {
 			"rdt:name": "x <- 2 + 2",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.839,
+			"rdt:elapsedTime": 1.33,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 13,
 			"rdt:startCol": 1,
@@ -38,7 +38,7 @@
 		"rdt:p3": {
 			"rdt:name": "y <- x + 2",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.847,
+			"rdt:elapsedTime": 1.34,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 14,
 			"rdt:startCol": 1,
@@ -48,7 +48,7 @@
 		"rdt:p4": {
 			"rdt:name": "x",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.853,
+			"rdt:elapsedTime": 1.34,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 15,
 			"rdt:startCol": 1,
@@ -58,7 +58,7 @@
 		"rdt:p5": {
 			"rdt:name": "y",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.855,
+			"rdt:elapsedTime": 1.34,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 16,
 			"rdt:startCol": 1,
@@ -68,7 +68,7 @@
 		"rdt:p6": {
 			"rdt:name": "data(iris)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.864,
+			"rdt:elapsedTime": 1.36,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 24,
 			"rdt:startCol": 1,
@@ -78,7 +78,7 @@
 		"rdt:p7": {
 			"rdt:name": "x <- iris[, 1]",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.906,
+			"rdt:elapsedTime": 1.41,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 25,
 			"rdt:startCol": 1,
@@ -88,7 +88,7 @@
 		"rdt:p8": {
 			"rdt:name": "y <- iris[, 2]",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.951,
+			"rdt:elapsedTime": 1.46,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 26,
 			"rdt:startCol": 1,
@@ -98,7 +98,7 @@
 		"rdt:p9": {
 			"rdt:name": "summary(lm(y ~ x))",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.965,
+			"rdt:elapsedTime": 1.49,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 27,
 			"rdt:startCol": 1,
@@ -108,7 +108,7 @@
 		"rdt:p10": {
 			"rdt:name": "RMarkdown.R",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 0.971,
+			"rdt:elapsedTime": 1.5,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -149,7 +149,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": true,
 			"rdt:hash": "",
-			"rdt:timestamp": "2018-11-02T13.56.22EDT",
+			"rdt:timestamp": "2018-11-06T17.04.16EST",
 			"rdt:location": ""
 		},
 		"rdt:d4": {
@@ -160,8 +160,8 @@
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
 			"rdt:hash": "afe1c92ec693931a928a7577a2f0bc03",
-			"rdt:timestamp": "2018-11-02T13.56.22EDT",
-			"rdt:location": "/Library/Frameworks/R.framework/Versions/3.5/Resources/library/ggplot2/data/Rdata.rds"
+			"rdt:timestamp": "2018-11-06T17.04.16EST",
+			"rdt:location": "C:/Users/fong22e/Documents/Libraries/R/win-library/ggplot2/data/Rdata.rds"
 		},
 		"rdt:d5": {
 			"rdt:name": "Rdata.rds",
@@ -171,8 +171,8 @@
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
 			"rdt:hash": "afe1c92ec693931a928a7577a2f0bc03",
-			"rdt:timestamp": "2018-11-02T13.56.22EDT",
-			"rdt:location": "/Library/Frameworks/R.framework/Versions/3.5/Resources/library/datasets/data/Rdata.rds"
+			"rdt:timestamp": "2018-11-06T17.04.16EST",
+			"rdt:location": "C:/Program Files/R/R-3.5.1/library/datasets/data/Rdata.rds"
 		},
 		"rdt:d6": {
 			"rdt:name": "x",
@@ -182,7 +182,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2018-11-02T13.56.22EDT",
+			"rdt:timestamp": "2018-11-06T17.04.16EST",
 			"rdt:location": ""
 		},
 		"rdt:d7": {
@@ -193,7 +193,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2018-11-02T13.56.22EDT",
+			"rdt:timestamp": "2018-11-06T17.04.16EST",
 			"rdt:location": ""
 		},
 
@@ -201,16 +201,16 @@
 		"rdt:environment": {
 			"rdt:name": "environment",
 			"rdt:architecture": "x86_64",
-			"rdt:operatingSystem": "darwin15.6.0",
+			"rdt:operatingSystem": "mingw32",
 			"rdt:language": "R",
 			"rdt:langVersion": "R version 3.5.1 (2018-07-02)",
 			"rdt:script": "[DIR]/rdtLite/prov_RMarkdown/scripts/RMarkdown.R",
-			"rdt:scriptTimeStamp": "2018-11-02T13.56.21EDT",
+			"rdt:scriptTimeStamp": "2018-11-06T17.04.15EST",
 			"rdt:sourcedScripts": "",
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:workingDirectory": "[DIR]/rdtLite",
 			"rdt:provDirectory": "[DIR]/rdtLite/prov_RMarkdown",
-			"rdt:provTimestamp": "2018-11-02T13.56.21EDT",
+			"rdt:provTimestamp": "2018-11-06T17.04.15EST",
 			"rdt:hashAlgorithm": "md5"
 		},
 

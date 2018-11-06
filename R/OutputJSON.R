@@ -52,7 +52,7 @@
 	
 	# contents of the prefix node
 	PREFIX.NODE <- list( "prov" = "http://www.w3.org/ns/prov#" ,
-						 "rdt" = "http://rdatatracker.org/" )
+						 "rdt" = "https://github.com/End-to-end-provenance/ExtendedProvJson/blob/master/JSON-format.md" )
 	
 	# the namespace prefix appended to the name for each node or edge
 	LABEL.PREFIX <- "rdt:"

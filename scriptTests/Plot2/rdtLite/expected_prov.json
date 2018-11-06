@@ -1,7 +1,7 @@
 {
 	"prefix": {
 		"prov": "http://www.w3.org/ns/prov#",
-		"rdt": "http://rdatatracker.org/"
+		"rdt": "https://github.com/End-to-end-provenance/ExtendedProvJson/blob/master/JSON-format.md"
 	},
 
 	"agent" : {
@@ -18,7 +18,7 @@
 		"rdt:p1": {
 			"rdt:name": "Plot2.R",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 0.87,
+			"rdt:elapsedTime": 1.29,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -28,7 +28,7 @@
 		"rdt:p2": {
 			"rdt:name": "f1 <- function() {\tnums <- c(1, 3, 6, 4, 9)\tpdf(\"nums.",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.9,
+			"rdt:elapsedTime": 1.32,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 3,
 			"rdt:startCol": 1,
@@ -38,7 +38,7 @@
 		"rdt:p3": {
 			"rdt:name": "f1()",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.96,
+			"rdt:elapsedTime": 1.39,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 10,
 			"rdt:startCol": 1,
@@ -48,7 +48,7 @@
 		"rdt:p4": {
 			"rdt:name": "Plot2.R",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 0.96,
+			"rdt:elapsedTime": 1.39,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -67,7 +67,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2018-10-31T02.26.56EDT",
+			"rdt:timestamp": "2018-11-06T17.00.39EST",
 			"rdt:location": ""
 		},
 		"rdt:d2": {
@@ -95,7 +95,7 @@
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:workingDirectory": "[DIR]/rdtLite",
 			"rdt:provDirectory": "[DIR]/rdtLite/prov_Plot2",
-			"rdt:provTimestamp": "2018-10-31T02.26.55EDT",
+			"rdt:provTimestamp": "2018-11-06T17.00.38EST",
 			"rdt:hashAlgorithm": "md5"
 		},
 
