@@ -22,7 +22,7 @@
 #' prov.init intializes a new provenance graph. This function can be
 #' executed in the console or placed inside an R script.
 #' 
-#' provR is an R package that collects provenance as an R script 
+#' rdtLite is an R package that collects provenance as an R script 
 #' executes. The resulting provenance provides a detailed record of the 
 #' execution of the script and includes information on the steps that were 
 #' performed and the intermediate data values that were created. The 
@@ -67,7 +67,7 @@
 #' xxhash64 and murmur32. This feature uses the digest function from 
 #' the digest package.
 #' @param save.debug If TRUE, debug files are saved to the debug directory.
-#' This is intended for developers of the RDataTracker / rdtLite package.
+#' This is intended for developers of the rdt / rdtLite package.
 #' @return prov.init initializes the provenance collector.  The prov.init
 #' function does not return a value.
 #' @export
@@ -208,7 +208,7 @@ prov.source <- function(file) {
 #' 
 #' prov.json returns the current provenance graph as a prov-json string.
 #' 
-#' provR collects provenance as a script executes.  Once collected,
+#' rdtLite collects provenance as a script executes.  Once collected,
 #' prov.json can be called to access the provenance as a JSON string.  
 #' This is useful for applications that operate on the provenance.  The
 #' JSON is consistent with the PROV-JSON standard.
@@ -219,7 +219,7 @@ prov.source <- function(file) {
 #' @rdname prov.json
 #' @seealso \code{\link{prov.init}} and \code{\link{prov.run}} for functions to collect provenance
 #' @references PROV-JSON standard: \url{https://www.w3.org/Submission/2013/SUBM-prov-json-20130424/}
-#' @references PROV-JSON output produced by provR: \url{https://github.com/End-to-end-provenance/RDataTracker/blob/export/JSON-format.md}
+#' @references PROV-JSON output produced by rdtLite: \url{https://github.com/End-to-end-provenance/RDataTracker/blob/export/JSON-format.md}
 #' @references Applications that use the provenance:  \url{http://provtools.org/analyzes/}
 #' @examples
 #' prov.init()

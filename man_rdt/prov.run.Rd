@@ -56,7 +56,7 @@ xxhash64 and murmur32. This feature uses the digest function from
 the digest package.}
 
 \item{save.debug}{If TRUE, debug files are saved to the debug directory.
-This is intended for developers of the RDataTracker / rdtLite package.}
+This is intended for developers of the rdt / rdtLite package.}
 
 \item{r.script.path}{the full path to the R script file that is being 
 executed. A copy of the script will be saved with the provenance graph.}
@@ -109,7 +109,7 @@ that are loaded with R's source function, you should replace calls
 to source with calls to prov.source.
 }
 \details{
-RDataTracker is an R package that collects provenance as an R script 
+rdt is an R package that collects provenance as an R script 
 executes. The resulting provenance provides a detailed record of the 
 execution of the script and includes information on the steps that were 
 performed and the intermediate data values that were created. The 
@@ -139,7 +139,7 @@ the prov.dir option (e.g. by using the R options command or editing the
 Rprofile.site or .Rprofile file). If prov.dir is set to ".", the current working
 directory is used.
 
-The level of detail collected by RDataTracker may be set using parameters
+The level of detail collected by rdt may be set using parameters
 of the prov.run and prov.init functions. Options include collecting
 provenance inside functions and inside control constructs and saving
 snapshots of large intermediate values as separate files. These

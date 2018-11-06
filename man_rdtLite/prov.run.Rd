@@ -40,7 +40,7 @@ xxhash64 and murmur32. This feature uses the digest function from
 the digest package.}
 
 \item{save.debug}{If TRUE, debug files are saved to the debug directory.
-This is intended for developers of the RDataTracker / rdtLite package.}
+This is intended for developers of the rdt / rdtLite package.}
 
 \item{r.script.path}{the full path to the R script file that is being 
 executed. A copy of the script will be saved with the provenance graph.}
@@ -91,7 +91,7 @@ that are loaded with R's source function, you should replace calls
 to source with calls to prov.source.
 }
 \details{
-provR is an R package that collects provenance as an R script 
+rdtLite is an R package that collects provenance as an R script 
 executes. The resulting provenance provides a detailed record of the 
 execution of the script and includes information on the steps that were 
 performed and the intermediate data values that were created. The 

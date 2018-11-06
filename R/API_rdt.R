@@ -22,7 +22,7 @@
 #' prov.init intializes a new provenance graph. This function can be
 #' executed in the console or placed inside an R script.
 #' 
-#' RDataTracker is an R package that collects provenance as an R script 
+#' rdt is an R package that collects provenance as an R script 
 #' executes. The resulting provenance provides a detailed record of the 
 #' execution of the script and includes information on the steps that were 
 #' performed and the intermediate data values that were created. The 
@@ -52,7 +52,7 @@
 #' Rprofile.site or .Rprofile file). If prov.dir is set to ".", the current working
 #' directory is used.
 #' 
-#' The level of detail collected by RDataTracker may be set using parameters
+#' The level of detail collected by rdt may be set using parameters
 #' of the prov.run and prov.init functions. Options include collecting
 #' provenance inside functions and inside control constructs and saving
 #' snapshots of large intermediate values as separate files. These
@@ -85,7 +85,7 @@
 #' xxhash64 and murmur32. This feature uses the digest function from 
 #' the digest package.
 #' @param save.debug If TRUE, debug files are saved to the debug directory.
-#' This is intended for developers of the RDataTracker / rdtLite package.
+#' This is intended for developers of the rdt / rdtLite package.
 #' @return prov.init initializes the provenance collector.  The prov.init
 #' function does not return a value.
 #' @export
@@ -273,12 +273,12 @@ prov.source <- function(file) {
 #' 
 #' prov.json returns the current provenance graph as a prov-json string.
 #' 
-#' RDataTracker collects provenance as a script executes.  Once collected,
+#' rdt collects provenance as a script executes.  Once collected,
 #' prov.json can be called to access the provenance as a JSON string.  
 #' This is useful for applications that operate on the provenance.  The
 #' JSON is consistent with the PROV-JSON standard.
 #' 
-#' One such application is a graphic visualizer built into RDataTracker.
+#' One such application is a graphic visualizer built into rdt.
 #' To view the provenance graphically, call prov.display.  In the provenance
 #' graph, the nodes are data values and operations, with edges connecting 
 #' them to show data and control flow dependencies.  The visualizer also
@@ -293,7 +293,7 @@ prov.source <- function(file) {
 #' @rdname prov.json
 #' @seealso \code{\link{prov.init}} and \code{\link{prov.run}} for functions to collect provenance
 #' @references PROV-JSON standard: \url{https://www.w3.org/Submission/2013/SUBM-prov-json-20130424/}
-#' @references RDataTracker PROV-JSON output: \url{https://github.com/End-to-end-provenance/RDataTracker/blob/export/JSON-format.md}
+#' @references rdt PROV-JSON output: \url{https://github.com/End-to-end-provenance/RDataTracker/blob/export/JSON-format.md}
 #' @examples
 #' prov.init()
 #' a <- 1
@@ -337,7 +337,7 @@ prov.dir <- function() {
 #' @rdname prov.json
 
 prov.display <- function () {
-  provViz::prov.visualize(tool="RDataTracker")
+  provViz::prov.visualize(tool="rdt")
   invisible()
 }
 
