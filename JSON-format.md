@@ -93,14 +93,14 @@ Attributes within this section defines the namespaces (prefixes) used in the fil
 
 Prefixes used:
 * _[prov](https://www.w3.org/ns/prov#)_: The prov namespace defined by W3 containing a set of reserved keywords.
-* _rdt_: The set of keywords defined by our prov-json extension.
+* _rdt_: The set of keywords defined by our prov-json extension. Links to this file.
 
 The [xsd](http://www.w3.org/2000/10/XMLSchema#) prefix is also used, but it is implicitly defined by the prov-json standard.
   
 ```
 "prefix": {
 	"prov": "http://www.w3.org/ns/prov#",
-	"rdt": "http://rdatatracker.org/"
+	"rdt": "https://github.com/End-to-end-provenance/ExtendedProvJson/blob/master/JSON-format.md"
 }
 ```
  
