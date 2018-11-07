@@ -305,7 +305,7 @@
 		<fail message="prov.json is not prov-json compliant.">
 			<condition>
 				<and>
-					<equals arg1="${using-travis}" arg2="true" />
+					<equals arg1="${travis}" arg2="true" />
 					<equals arg1="${compliant}" arg2="1"/>
 				</and>
 			</condition>
@@ -511,7 +511,7 @@
 		<fail message="Does not match expected output.">
 			<condition>
 				<and>
-					<equals arg1="${using-travis}" arg2="true" />
+					<equals arg1="${travis}" arg2="true" />
 					<equals arg1="${return.code.out}" arg2="1"/>
 				</and>
 			</condition>
@@ -542,7 +542,7 @@
 		<fail message="Does not match expected output.">
 			<condition>
 				<and>
-					<equals arg1="${using-travis}" arg2="true" />
+					<equals arg1="${travis}" arg2="true" />
 					<equals arg1="${return.code.json}" arg2="1"/>
 				</and>
 			</condition>
