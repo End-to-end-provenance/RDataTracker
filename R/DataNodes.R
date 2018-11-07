@@ -128,7 +128,7 @@
 #' checks if a variable with that name exists in the global environment.
 #' If a match is found, it creates a data node for the global and returns TRUE. 
 #' If no node exists and it is not a global, it returns FALSE.
-#' @param dname @param dname data node name. For files, this is the entire file name.
+#' @param dname data node name. For files, this is the entire file name.
 #' @param dscope data node scope.  If NULL, uses the closest scope in which
 #' dname is defined
 #' @param dtype - type of data node.
