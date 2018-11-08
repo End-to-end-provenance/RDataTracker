@@ -1,0 +1,627 @@
+{
+	"prefix": {
+		"prov": "http://www.w3.org/ns/prov#",
+		"rdt": "https://github.com/End-to-end-provenance/ExtendedProvJson/blob/master/JSON-format.md"
+	},
+
+	"agent" : {
+		// agent: this json file and the tool that produced this
+		"rdt:a1": {
+			"rdt:tool.name": "rdtLite",
+			"rdt:tool.version": "1.0.1",
+			"rdt:json.version": "2.1"
+		}
+	},
+
+	"activity" : {
+		// procedure nodes
+		"rdt:p1": {
+			"rdt:name": "CalculateSqrt.R",
+			"rdt:type": "Start",
+			"rdt:elapsedTime": 1.45,
+			"rdt:scriptNum": "NA",
+			"rdt:startLine": "NA",
+			"rdt:startCol": "NA",
+			"rdt:endLine": "NA",
+			"rdt:endCol": "NA"
+		},
+		"rdt:p2": {
+			"rdt:name": "get.initial.values <- function() {\tnumber <<- 10\ttoler",
+			"rdt:type": "Operation",
+			"rdt:elapsedTime": 1.55,
+			"rdt:scriptNum": 1,
+			"rdt:startLine": 11,
+			"rdt:startCol": 1,
+			"rdt:endLine": 14,
+			"rdt:endCol": 1
+		},
+		"rdt:p3": {
+			"rdt:name": "get.random <- function(x) {\tz <- 3\treturn(z)}",
+			"rdt:type": "Operation",
+			"rdt:elapsedTime": 1.56,
+			"rdt:scriptNum": 1,
+			"rdt:startLine": 16,
+			"rdt:startCol": 1,
+			"rdt:endLine": 24,
+			"rdt:endCol": 1
+		},
+		"rdt:p4": {
+			"rdt:name": "calc.square.root <- function(n, x) {\ty <- n/x\tz <- (x ",
+			"rdt:type": "Operation",
+			"rdt:elapsedTime": 1.64,
+			"rdt:scriptNum": 1,
+			"rdt:startLine": 26,
+			"rdt:startCol": 1,
+			"rdt:endLine": 32,
+			"rdt:endCol": 1
+		},
+		"rdt:p5": {
+			"rdt:name": "get.difference <- function(n, x) {\tz <- abs(n - x^2)\tr",
+			"rdt:type": "Operation",
+			"rdt:elapsedTime": 1.65,
+			"rdt:scriptNum": 1,
+			"rdt:startLine": 68,
+			"rdt:startCol": 1,
+			"rdt:endLine": 73,
+			"rdt:endCol": 1
+		},
+		"rdt:p6": {
+			"rdt:name": "get.check.value <- function(d, t) {\tz <- d - t\treturn(",
+			"rdt:type": "Operation",
+			"rdt:elapsedTime": 1.67,
+			"rdt:scriptNum": 1,
+			"rdt:startLine": 76,
+			"rdt:startCol": 1,
+			"rdt:endLine": 76,
+			"rdt:endCol": 37
+		},
+		"rdt:p7": {
+			"rdt:name": "store.result <- function(n, x) {\tnum <- n\tsqrt <- x   ",
+			"rdt:type": "Operation",
+			"rdt:elapsedTime": 1.7,
+			"rdt:scriptNum": 1,
+			"rdt:startLine": "NA",
+			"rdt:startCol": "NA",
+			"rdt:endLine": "NA",
+			"rdt:endCol": "NA"
+		},
+		"rdt:p8": {
+			"rdt:name": "write.result <- function(fn, zz) {\tfile.out <- paste(getw",
+			"rdt:type": "Operation",
+			"rdt:elapsedTime": 1.75,
+			"rdt:scriptNum": 1,
+			"rdt:startLine": "NA",
+			"rdt:startCol": "NA",
+			"rdt:endLine": "NA",
+			"rdt:endCol": "NA"
+		},
+		"rdt:p9": {
+			"rdt:name": "get.initial.values()",
+			"rdt:type": "Operation",
+			"rdt:elapsedTime": 1.79,
+			"rdt:scriptNum": 1,
+			"rdt:startLine": "NA",
+			"rdt:startCol": "NA",
+			"rdt:endLine": "NA",
+			"rdt:endCol": "NA"
+		},
+		"rdt:p10": {
+			"rdt:name": "estimate <- get.random(number)",
+			"rdt:type": "Operation",
+			"rdt:elapsedTime": 1.81,
+			"rdt:scriptNum": 1,
+			"rdt:startLine": "NA",
+			"rdt:startCol": "NA",
+			"rdt:endLine": "NA",
+			"rdt:endCol": "NA"
+		},
+		"rdt:p11": {
+			"rdt:name": "check <- number",
+			"rdt:type": "Operation",
+			"rdt:elapsedTime": 1.83,
+			"rdt:scriptNum": 1,
+			"rdt:startLine": "NA",
+			"rdt:startCol": "NA",
+			"rdt:endLine": "NA",
+			"rdt:endCol": "NA"
+		},
+		"rdt:p12": {
+			"rdt:name": "while (check > 0) {\testimate <- calc.square.root(number, ",
+			"rdt:type": "Operation",
+			"rdt:elapsedTime": 1.86,
+			"rdt:scriptNum": 1,
+			"rdt:startLine": "NA",
+			"rdt:startCol": "NA",
+			"rdt:endLine": "NA",
+			"rdt:endCol": "NA"
+		},
+		"rdt:p13": {
+			"rdt:name": "sqr.root <- store.result(number, estimate)",
+			"rdt:type": "Operation",
+			"rdt:elapsedTime": 1.87,
+			"rdt:scriptNum": 1,
+			"rdt:startLine": "NA",
+			"rdt:startCol": "NA",
+			"rdt:endLine": "NA",
+			"rdt:endCol": "NA"
+		},
+		"rdt:p14": {
+			"rdt:name": "write.result(\"sqr-root.csv\", sqr.root)",
+			"rdt:type": "Operation",
+			"rdt:elapsedTime": 1.89,
+			"rdt:scriptNum": 1,
+			"rdt:startLine": "NA",
+			"rdt:startCol": "NA",
+			"rdt:endLine": "NA",
+			"rdt:endCol": "NA"
+		},
+		"rdt:p15": {
+			"rdt:name": "CalculateSqrt.R",
+			"rdt:type": "Finish",
+			"rdt:elapsedTime": 1.9,
+			"rdt:scriptNum": "NA",
+			"rdt:startLine": "NA",
+			"rdt:startCol": "NA",
+			"rdt:endLine": "NA",
+			"rdt:endCol": "NA"
+		}
+	},
+
+	"entity" : {
+		// data nodes
+		"rdt:d1": {
+			"rdt:name": "get.initial.values",
+			"rdt:value": "data/1-get.initial.values.R",
+			"rdt:valType": "function",
+			"rdt:type": "Snapshot",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:hash": "",
+			"rdt:timestamp": "2018-11-06T16.35.23EST",
+			"rdt:location": ""
+		},
+		"rdt:d2": {
+			"rdt:name": "get.random",
+			"rdt:value": "data/2-get.random.R",
+			"rdt:valType": "function",
+			"rdt:type": "Snapshot",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:hash": "",
+			"rdt:timestamp": "2018-11-06T16.35.23EST",
+			"rdt:location": ""
+		},
+		"rdt:d3": {
+			"rdt:name": "calc.square.root",
+			"rdt:value": "data/3-calc.square.root.R",
+			"rdt:valType": "function",
+			"rdt:type": "Snapshot",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:hash": "",
+			"rdt:timestamp": "2018-11-06T16.35.23EST",
+			"rdt:location": ""
+		},
+		"rdt:d4": {
+			"rdt:name": "get.difference",
+			"rdt:value": "data/4-get.difference.R",
+			"rdt:valType": "function",
+			"rdt:type": "Snapshot",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:hash": "",
+			"rdt:timestamp": "2018-11-06T16.35.23EST",
+			"rdt:location": ""
+		},
+		"rdt:d5": {
+			"rdt:name": "get.check.value",
+			"rdt:value": "data/5-get.check.value.R",
+			"rdt:valType": "function",
+			"rdt:type": "Snapshot",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:hash": "",
+			"rdt:timestamp": "2018-11-06T16.35.23EST",
+			"rdt:location": ""
+		},
+		"rdt:d6": {
+			"rdt:name": "store.result",
+			"rdt:value": "data/6-store.result.R",
+			"rdt:valType": "function",
+			"rdt:type": "Snapshot",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:hash": "",
+			"rdt:timestamp": "2018-11-06T16.35.23EST",
+			"rdt:location": ""
+		},
+		"rdt:d7": {
+			"rdt:name": "write.result",
+			"rdt:value": "data/7-write.result.R",
+			"rdt:valType": "function",
+			"rdt:type": "Snapshot",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:hash": "",
+			"rdt:timestamp": "2018-11-06T16.35.23EST",
+			"rdt:location": ""
+		},
+		"rdt:d8": {
+			"rdt:name": "number",
+			"rdt:value": "10",
+			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}",
+			"rdt:type": "Data",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:hash": "",
+			"rdt:timestamp": "",
+			"rdt:location": ""
+		},
+		"rdt:d9": {
+			"rdt:name": "tolerance",
+			"rdt:value": "1e-05",
+			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}",
+			"rdt:type": "Data",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:hash": "",
+			"rdt:timestamp": "",
+			"rdt:location": ""
+		},
+		"rdt:d10": {
+			"rdt:name": "estimate",
+			"rdt:value": "3",
+			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}",
+			"rdt:type": "Data",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:hash": "",
+			"rdt:timestamp": "",
+			"rdt:location": ""
+		},
+		"rdt:d11": {
+			"rdt:name": "check",
+			"rdt:value": "10",
+			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}",
+			"rdt:type": "Data",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:hash": "",
+			"rdt:timestamp": "",
+			"rdt:location": ""
+		},
+		"rdt:d12": {
+			"rdt:name": "difference",
+			"rdt:value": "9.24949e-12",
+			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}",
+			"rdt:type": "Data",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": true,
+			"rdt:hash": "",
+			"rdt:timestamp": "",
+			"rdt:location": ""
+		},
+		"rdt:d13": {
+			"rdt:name": "estimate",
+			"rdt:value": "3.162278",
+			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}",
+			"rdt:type": "Data",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:hash": "",
+			"rdt:timestamp": "",
+			"rdt:location": ""
+		},
+		"rdt:d14": {
+			"rdt:name": "check",
+			"rdt:value": "-9.999991e-06",
+			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}",
+			"rdt:type": "Data",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:hash": "",
+			"rdt:timestamp": "",
+			"rdt:location": ""
+		},
+		"rdt:d15": {
+			"rdt:name": "difference",
+			"rdt:value": "9.24949e-12",
+			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}",
+			"rdt:type": "Data",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:hash": "",
+			"rdt:timestamp": "",
+			"rdt:location": ""
+		},
+		"rdt:d16": {
+			"rdt:name": "sqr.root",
+			"rdt:value": "num\t  sqrt 10.000000  3.162278 ",
+			"rdt:valType": "{\"container\":\"data_frame\", \"dimension\":[1,2], \"type\":[\"numeric\",\"numeric\"]}",
+			"rdt:type": "Data",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:hash": "",
+			"rdt:timestamp": "",
+			"rdt:location": ""
+		},
+		"rdt:d17": {
+			"rdt:name": "sqr-root.csv",
+			"rdt:value": "data/17-sqr-root.csv",
+			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}",
+			"rdt:type": "File",
+			"rdt:scope": "undefined",
+			"rdt:fromEnv": false,
+			"rdt:hash": "24b99e6dcbc8d34e1663eff5c11ae822",
+			"rdt:timestamp": "2018-11-06T16.35.24EST",
+			"rdt:location": "[DIR]/rdtLite/sqr-root.csv"
+		},
+
+		// environment
+		"rdt:environment": {
+			"rdt:name": "environment",
+			"rdt:architecture": "x86_64",
+			"rdt:operatingSystem": "mingw32",
+			"rdt:language": "R",
+			"rdt:langVersion": "R version 3.5.1 (2018-07-02)",
+			"rdt:script": "[DIR]/CalculateSqrt.R",
+			"rdt:scriptTimeStamp": "2018-08-21T13.20.30EDT",
+			"rdt:sourcedScripts": "",
+			"rdt:sourcedScriptTimeStamps": "",
+			"rdt:workingDirectory": "[DIR]/rdtLite",
+			"rdt:provDirectory": "[DIR]/rdtLite/prov_CalculateSqrt",
+			"rdt:provTimestamp": "2018-11-06T16.35.22EST",
+			"rdt:hashAlgorithm": "md5"
+		},
+
+		// library nodes - prov collections
+		"rdt:l1": {
+			"name": "base",
+			"version": "3.5.1",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l2": {
+			"name": "datasets",
+			"version": "3.5.1",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l3": {
+			"name": "ggplot2",
+			"version": "3.0.0",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l4": {
+			"name": "graphics",
+			"version": "3.5.1",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l5": {
+			"name": "grDevices",
+			"version": "3.5.1",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l6": {
+			"name": "methods",
+			"version": "3.5.1",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l7": {
+			"name": "rdtLite",
+			"version": "1.0.1",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l8": {
+			"name": "stats",
+			"version": "3.5.1",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l9": {
+			"name": "utils",
+			"version": "3.5.1",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		}
+	},
+
+	"wasInformedBy" : {
+		// procedure-to-procedure edges
+		"rdt:pp1": {
+			"prov:informant": "rdt:p1",
+			"prov:informed": "rdt:p2"
+		},
+		"rdt:pp2": {
+			"prov:informant": "rdt:p2",
+			"prov:informed": "rdt:p3"
+		},
+		"rdt:pp3": {
+			"prov:informant": "rdt:p3",
+			"prov:informed": "rdt:p4"
+		},
+		"rdt:pp4": {
+			"prov:informant": "rdt:p4",
+			"prov:informed": "rdt:p5"
+		},
+		"rdt:pp5": {
+			"prov:informant": "rdt:p5",
+			"prov:informed": "rdt:p6"
+		},
+		"rdt:pp6": {
+			"prov:informant": "rdt:p6",
+			"prov:informed": "rdt:p7"
+		},
+		"rdt:pp7": {
+			"prov:informant": "rdt:p7",
+			"prov:informed": "rdt:p8"
+		},
+		"rdt:pp8": {
+			"prov:informant": "rdt:p8",
+			"prov:informed": "rdt:p9"
+		},
+		"rdt:pp9": {
+			"prov:informant": "rdt:p9",
+			"prov:informed": "rdt:p10"
+		},
+		"rdt:pp10": {
+			"prov:informant": "rdt:p10",
+			"prov:informed": "rdt:p11"
+		},
+		"rdt:pp11": {
+			"prov:informant": "rdt:p11",
+			"prov:informed": "rdt:p12"
+		},
+		"rdt:pp12": {
+			"prov:informant": "rdt:p12",
+			"prov:informed": "rdt:p13"
+		},
+		"rdt:pp13": {
+			"prov:informant": "rdt:p13",
+			"prov:informed": "rdt:p14"
+		},
+		"rdt:pp14": {
+			"prov:informant": "rdt:p14",
+			"prov:informed": "rdt:p15"
+		}
+	},
+
+	"wasGeneratedBy" : {
+		// procedure-to-data edges
+		"rdt:pd1": {
+			"prov:activity": "rdt:p2",
+			"prov:entity": "rdt:d1"
+		},
+		"rdt:pd2": {
+			"prov:activity": "rdt:p3",
+			"prov:entity": "rdt:d2"
+		},
+		"rdt:pd3": {
+			"prov:activity": "rdt:p4",
+			"prov:entity": "rdt:d3"
+		},
+		"rdt:pd4": {
+			"prov:activity": "rdt:p5",
+			"prov:entity": "rdt:d4"
+		},
+		"rdt:pd5": {
+			"prov:activity": "rdt:p6",
+			"prov:entity": "rdt:d5"
+		},
+		"rdt:pd6": {
+			"prov:activity": "rdt:p7",
+			"prov:entity": "rdt:d6"
+		},
+		"rdt:pd7": {
+			"prov:activity": "rdt:p8",
+			"prov:entity": "rdt:d7"
+		},
+		"rdt:pd8": {
+			"prov:activity": "rdt:p9",
+			"prov:entity": "rdt:d8"
+		},
+		"rdt:pd9": {
+			"prov:activity": "rdt:p9",
+			"prov:entity": "rdt:d9"
+		},
+		"rdt:pd10": {
+			"prov:activity": "rdt:p10",
+			"prov:entity": "rdt:d10"
+		},
+		"rdt:pd11": {
+			"prov:activity": "rdt:p11",
+			"prov:entity": "rdt:d11"
+		},
+		"rdt:pd12": {
+			"prov:activity": "rdt:p12",
+			"prov:entity": "rdt:d13"
+		},
+		"rdt:pd13": {
+			"prov:activity": "rdt:p12",
+			"prov:entity": "rdt:d14"
+		},
+		"rdt:pd14": {
+			"prov:activity": "rdt:p12",
+			"prov:entity": "rdt:d15"
+		},
+		"rdt:pd15": {
+			"prov:activity": "rdt:p13",
+			"prov:entity": "rdt:d16"
+		},
+		"rdt:pd16": {
+			"prov:activity": "rdt:p14",
+			"prov:entity": "rdt:d17"
+		}
+	},
+
+	"used" : {
+		// data-to-procedure edges
+		"rdt:dp1": {
+			"prov:entity": "rdt:d1",
+			"prov:activity": "rdt:p9"
+		},
+		"rdt:dp2": {
+			"prov:entity": "rdt:d8",
+			"prov:activity": "rdt:p10"
+		},
+		"rdt:dp3": {
+			"prov:entity": "rdt:d8",
+			"prov:activity": "rdt:p11"
+		},
+		"rdt:dp4": {
+			"prov:entity": "rdt:d11",
+			"prov:activity": "rdt:p12"
+		},
+		"rdt:dp5": {
+			"prov:entity": "rdt:d8",
+			"prov:activity": "rdt:p12"
+		},
+		"rdt:dp6": {
+			"prov:entity": "rdt:d10",
+			"prov:activity": "rdt:p12"
+		},
+		"rdt:dp7": {
+			"prov:entity": "rdt:d12",
+			"prov:activity": "rdt:p12"
+		},
+		"rdt:dp8": {
+			"prov:entity": "rdt:d9",
+			"prov:activity": "rdt:p12"
+		},
+		"rdt:dp9": {
+			"prov:entity": "rdt:d8",
+			"prov:activity": "rdt:p13"
+		},
+		"rdt:dp10": {
+			"prov:entity": "rdt:d13",
+			"prov:activity": "rdt:p13"
+		},
+		"rdt:dp11": {
+			"prov:entity": "rdt:d16",
+			"prov:activity": "rdt:p14"
+		}
+	}
+}

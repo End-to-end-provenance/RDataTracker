@@ -83,7 +83,7 @@
   if (snum == 1) {
     df <- data.frame(snum, sname, stime, stringsAsFactors=FALSE)
   } else {
-    df<- rbind(.ddg.sourced.scripts(), c(snum, sname, stime))
+    df<- rbind(.ddg.sourced.scripts(), c(snum, basename(sname), stime))
   }
   .ddg.set("ddg.sourced.scripts", df)
   

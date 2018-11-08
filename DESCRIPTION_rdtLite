@@ -1,11 +1,11 @@
 Package: rdtLite
 Title: Provenance Collector for R
-Version: 1.0.1
-Date: 2018-10-30
-Authors@R: c( person("Emery", "Boose", role = "aut",
-                      email = "boose@fas.harvard.edu"),
-              person("Barbara", "Lerner", role = c("aut", "cre"),
+Version: 1.0.2
+Date: 2018-11-08
+Authors@R: c( person("Barbara", "Lerner", role = c("aut", "cre"),
                       email = "blerner@mtholyoke.edu"),
+              person("Emery", "Boose", role = "aut",
+                      email = "boose@fas.harvard.edu"),
               person("Elizabeth", "Fong", role = "aut",
                       email = "fong22e@mtholyoke.edu"),
               person("Luis", "Perez", role = "aut",
@@ -31,30 +31,23 @@ Authors@R: c( person("Emery", "Boose", role = "aut",
               person("Orenna", "Brand", role = "res",
                       email = "o.brand@columbia.edu")
                       )
-Author: Emery Boose [aut], Barbara Lerner [aut, cre], Elizabeth Fong [aut],
-  Luis Perez [aut], Thomas Pasquier [ctb], Matthew Lau [ctb], Yada Pruksachatkun [ctb], 
-  Alex Liu [ctb], Moe Pwint Phyu [ctb], Connor Gregorich-Trevor [ctb], 
-  Aaron Ellison [res], Margo Seltzer [res], Joe Wonsil [res], Orenna Brand [res]  
-Maintainer: Emery Boose <boose@fas.harvard.edu>
 Copyright: President and Fellows of Harvard College, Trustees of Mount Holyoke College
 Depends: R (>= 3.5.0)
 Description: Defines functions that can be used to collect provenance as
   an R script executes or during a console session. The output is a text 
   file in PROV-JSON format.
 License: GPL-3 | file LICENSE
-URL: https://github.com/End-to-end-provenance/RDataTracker
-BugReports: https://github.com/End-to-end-provenance/RDataTracker/issues
+URL: https://github.com/End-to-end-provenance/rdtLite
+BugReports: https://github.com/End-to-end-provenance/rdtLite/issues
 Imports:
   curl,
   digest,
   ggplot2,
   grDevices, 
-  gtools,
   jsonlite,
   knitr,
   methods,
   sessioninfo,
-  stringr,
   tools,
   utils,
   XML

@@ -52,7 +52,7 @@
 	
 	# contents of the prefix node
 	PREFIX.NODE <- list( "prov" = "http://www.w3.org/ns/prov#" ,
-						 "rdt" = "http://rdatatracker.org/" )
+						 "rdt" = "https://github.com/End-to-end-provenance/ExtendedProvJson/blob/master/JSON-format.md" )
 	
 	# the namespace prefix appended to the name for each node or edge
 	LABEL.PREFIX <- "rdt:"
@@ -316,8 +316,8 @@
 					"sourcedScripts" = NA ,
 					"sourcedScriptTimeStamps" = NA ,
 					"workingDirectory" = NA ,
-					"ddgDirectory" = NA ,
-					"ddgTimeStamp" = NA )
+					"provDirectory" = NA ,
+					"provTimestamp" = NA )
 	
 	# architecture, language, langVersion
 	lang.version <- R.Version()
@@ -352,10 +352,10 @@
 	
 	# working directory, ddg directory (escape any tab characters)
 	fields$workingDirectory <- .ddg.json.escape.tabs( getwd() )
-	fields$ddgDirectory <- .ddg.json.escape.tabs( .ddg.path() )
+	fields$provDirectory <- .ddg.json.escape.tabs( .ddg.path() )
 	
 	# ddg timestamp
-	fields$ddgTimeStamp <- .ddg.get("ddg.start.time")
+	fields$provTimestamp <- .ddg.get("ddg.start.time")
 	
 	# hash algorithm
   if (.ddg.is.set ("ddg.hash.algorithm")) {
@@ -403,7 +403,7 @@
 	# first row: main script
 	if( (! is.null(ss)) && (nrow(ss) > 1) )
 	{
-		ss <- ss[ ss$snum > 0 , ]
+		ss <- ss[ ss$snum > 1 , ]
 		
 		script.names <- sapply( ss[ , 2] , .ddg.json.escape.tabs )
 		script.times <- ss[ , 3]

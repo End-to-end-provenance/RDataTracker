@@ -11,7 +11,17 @@
 # Author @Luis Perez
 
 library(methods)
-library(rdt)
+
+# determine which prov-collection library to run
+tool <- commandArgs(TRUE)[1]
+
+if( identical(tool, "rdt") ) {
+	library(rdt)
+} else if( identical(tool, "rdtLite") ) {
+	library(rdtLite)
+} else {
+	stop("Provenance collection library is not specified.", call. = FALSE)
+}
 
 ## Directories
 testDir <- "[DIR_LOCAL]/"
@@ -25,9 +35,14 @@ invisible(force(startTime))
 options(useFancyQuotes=FALSE)
 
 # Run the script
-#ddg.run("[SCRIPT]", "[DIR_DDG]", ignore.ddg.calls = F)
-prov.run("[SCRIPT]", "[DIR_DDG]", annotate.inside.functions=TRUE, max.loops=1, 
-	snapshot.size=10)
+if( identical(tool, "rdt") ) {
+	prov.run("[SCRIPT]", "[DIR_DDG]", annotate.inside.functions=TRUE, 
+		max.loops=1, snapshot.size=10)
+} else if( identical(tool, "rdtLite") ) {
+	prov.run("[SCRIPT]", "[DIR_DDG]", snapshot.size=10)
+} else {
+	stop("Provenance collection library is not found.", call. = FALSE)
+}
 
 # Calculate total time of execution
 endTime <- Sys.time()
