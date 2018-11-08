@@ -36,6 +36,7 @@
         <copy overwrite="true" file="DESCRIPTION_rdt" tofile="${builddir}/DESCRIPTION"/>
         <copy overwrite="true" file="LICENSE" todir="${builddir}"/>
         <copy overwrite="true" file="README_rdt.md" tofile="${builddir}/README.md"/>
+        <copy overwrite="true" file="NEWS_rdt.md" tofile="${builddir}/NEWS.md"/>
     </target>
     
 	&build-core;
