@@ -57,7 +57,7 @@
            rbind(.ddg.get("ddg.hashtable"), 
                  c(dscriptpath, dloc, longpath, 
                    paste(.ddg.path(), dvalue, sep="/"), 
-                   ddg.dnum, dhash, dhash.algorithm, drw, dtime, dvalue), 
+                   ddg.dnum, dhash, dhash.algorithm, dtime, dvalue), 
                  stringsAsFactors = FALSE))
 }
 
@@ -76,8 +76,6 @@
   ddg.data.nodes <- .ddg.data.node.table()
   dhash <- .ddg.calculate.hash(dname)
   ddg.data.nodes$ddg.hash[dnum] <- dhash
-  drw <- .ddg.calculate.rw(dname)
-  ddg.data.nodes$ddg.rw[dnum] <- drw
   .ddg.set("ddg.data.nodes", ddg.data.nodes)
   
   .ddg.add.to.hashtable(dname = dname, ddg.dnum = dnum, dloc = dloc, 

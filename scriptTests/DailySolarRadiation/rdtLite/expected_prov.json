@@ -1,0 +1,920 @@
+{
+	"prefix": {
+		"prov": "http://www.w3.org/ns/prov#",
+		"rdt": "https://github.com/End-to-end-provenance/ExtendedProvJson/blob/master/JSON-format.md"
+	},
+
+	"agent" : {
+		// agent: this json file and the tool that produced this
+		"rdt:a1": {
+			"rdt:tool.name": "rdtLite",
+			"rdt:tool.version": "1.0.1",
+			"rdt:json.version": "2.1"
+		}
+	},
+
+	"activity" : {
+		// procedure nodes
+		"rdt:p1": {
+			"rdt:name": "DailySolarRadiation.R",
+			"rdt:type": "Start",
+			"rdt:elapsedTime": 1.37,
+			"rdt:scriptNum": "NA",
+			"rdt:startLine": "NA",
+			"rdt:startCol": "NA",
+			"rdt:endLine": "NA",
+			"rdt:endCol": "NA"
+		},
+		"rdt:p2": {
+			"rdt:name": "read.data <- function() {\tdata.file <<- \"../met-daily.csv",
+			"rdt:type": "Operation",
+			"rdt:elapsedTime": 1.54,
+			"rdt:scriptNum": 1,
+			"rdt:startLine": 14,
+			"rdt:startCol": 1,
+			"rdt:endLine": 46,
+			"rdt:endCol": 1
+		},
+		"rdt:p3": {
+			"rdt:name": "calibrate <- function(xx) {\tdate.start <- as.Date(calibra",
+			"rdt:type": "Operation",
+			"rdt:elapsedTime": 1.56,
+			"rdt:scriptNum": 1,
+			"rdt:startLine": "NA",
+			"rdt:startCol": "NA",
+			"rdt:endLine": "NA",
+			"rdt:endCol": "NA"
+		},
+		"rdt:p4": {
+			"rdt:name": "quality.control <- function(xx) {\trepeats <- quality.cont",
+			"rdt:type": "Operation",
+			"rdt:elapsedTime": 1.62,
+			"rdt:scriptNum": 1,
+			"rdt:startLine": "NA",
+			"rdt:startCol": "NA",
+			"rdt:endLine": "NA",
+			"rdt:endCol": "NA"
+		},
+		"rdt:p5": {
+			"rdt:name": "gap.fill <- function(xx) {\tslope <- gap.fill.parameters$s",
+			"rdt:type": "Operation",
+			"rdt:elapsedTime": 1.64,
+			"rdt:scriptNum": 1,
+			"rdt:startLine": "NA",
+			"rdt:startCol": "NA",
+			"rdt:endLine": "NA",
+			"rdt:endCol": "NA"
+		},
+		"rdt:p6": {
+			"rdt:name": "write.result <- function(fn, xx) {\tfile.out <- paste(getw",
+			"rdt:type": "Operation",
+			"rdt:elapsedTime": 1.65,
+			"rdt:scriptNum": 1,
+			"rdt:startLine": "NA",
+			"rdt:startCol": "NA",
+			"rdt:endLine": "NA",
+			"rdt:endCol": "NA"
+		},
+		"rdt:p7": {
+			"rdt:name": "plot.data <- function(xx, v) {\tif (v == \"R\")\t\t name",
+			"rdt:type": "Operation",
+			"rdt:elapsedTime": 1.71,
+			"rdt:scriptNum": 1,
+			"rdt:startLine": "NA",
+			"rdt:startCol": "NA",
+			"rdt:endLine": "NA",
+			"rdt:endCol": "NA"
+		},
+		"rdt:p8": {
+			"rdt:name": "raw.data <- read.data()",
+			"rdt:type": "Operation",
+			"rdt:elapsedTime": 2.03,
+			"rdt:scriptNum": 1,
+			"rdt:startLine": "NA",
+			"rdt:startCol": "NA",
+			"rdt:endLine": "NA",
+			"rdt:endCol": "NA"
+		},
+		"rdt:p9": {
+			"rdt:name": "plot.data(raw.data, \"R\")",
+			"rdt:type": "Operation",
+			"rdt:elapsedTime": 2.48,
+			"rdt:scriptNum": 1,
+			"rdt:startLine": "NA",
+			"rdt:startCol": "NA",
+			"rdt:endLine": "NA",
+			"rdt:endCol": "NA"
+		},
+		"rdt:p10": {
+			"rdt:name": "calibrated.data <- calibrate(raw.data)",
+			"rdt:type": "Operation",
+			"rdt:elapsedTime": 2.56,
+			"rdt:scriptNum": 1,
+			"rdt:startLine": "NA",
+			"rdt:startCol": "NA",
+			"rdt:endLine": "NA",
+			"rdt:endCol": "NA"
+		},
+		"rdt:p11": {
+			"rdt:name": "plot.data(calibrated.data, \"C\")",
+			"rdt:type": "Operation",
+			"rdt:elapsedTime": 2.78,
+			"rdt:scriptNum": 1,
+			"rdt:startLine": "NA",
+			"rdt:startCol": "NA",
+			"rdt:endLine": "NA",
+			"rdt:endCol": "NA"
+		},
+		"rdt:p12": {
+			"rdt:name": "quality.controlled.data <- quality.control(calibrated.data)",
+			"rdt:type": "Operation",
+			"rdt:elapsedTime": 2.83,
+			"rdt:scriptNum": 1,
+			"rdt:startLine": "NA",
+			"rdt:startCol": "NA",
+			"rdt:endLine": "NA",
+			"rdt:endCol": "NA"
+		},
+		"rdt:p13": {
+			"rdt:name": "plot.data(quality.controlled.data, \"Q\")",
+			"rdt:type": "Operation",
+			"rdt:elapsedTime": 2.92,
+			"rdt:scriptNum": 1,
+			"rdt:startLine": "NA",
+			"rdt:startCol": "NA",
+			"rdt:endLine": "NA",
+			"rdt:endCol": "NA"
+		},
+		"rdt:p14": {
+			"rdt:name": "gap.filled.data <- gap.fill(quality.controlled.data)",
+			"rdt:type": "Operation",
+			"rdt:elapsedTime": 2.99,
+			"rdt:scriptNum": 1,
+			"rdt:startLine": "NA",
+			"rdt:startCol": "NA",
+			"rdt:endLine": "NA",
+			"rdt:endCol": "NA"
+		},
+		"rdt:p15": {
+			"rdt:name": "plot.data(gap.filled.data, \"G\")",
+			"rdt:type": "Operation",
+			"rdt:elapsedTime": 3.05,
+			"rdt:scriptNum": 1,
+			"rdt:startLine": "NA",
+			"rdt:startCol": "NA",
+			"rdt:endLine": "NA",
+			"rdt:endCol": "NA"
+		},
+		"rdt:p16": {
+			"rdt:name": "write.result(\"processed-data.csv\", gap.filled.data)",
+			"rdt:type": "Operation",
+			"rdt:elapsedTime": 3.08,
+			"rdt:scriptNum": 1,
+			"rdt:startLine": "NA",
+			"rdt:startCol": "NA",
+			"rdt:endLine": "NA",
+			"rdt:endCol": "NA"
+		},
+		"rdt:p17": {
+			"rdt:name": "DailySolarRadiation.R",
+			"rdt:type": "Finish",
+			"rdt:elapsedTime": 3.11,
+			"rdt:scriptNum": "NA",
+			"rdt:startLine": "NA",
+			"rdt:startCol": "NA",
+			"rdt:endLine": "NA",
+			"rdt:endCol": "NA"
+		}
+	},
+
+	"entity" : {
+		// data nodes
+		"rdt:d1": {
+			"rdt:name": "read.data",
+			"rdt:value": "data/1-read.data.R",
+			"rdt:valType": "function",
+			"rdt:type": "Snapshot",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:hash": "",
+			"rdt:timestamp": "2018-11-06T16.25.19EST",
+			"rdt:location": ""
+		},
+		"rdt:d2": {
+			"rdt:name": "calibrate",
+			"rdt:value": "data/2-calibrate.R",
+			"rdt:valType": "function",
+			"rdt:type": "Snapshot",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:hash": "",
+			"rdt:timestamp": "2018-11-06T16.25.19EST",
+			"rdt:location": ""
+		},
+		"rdt:d3": {
+			"rdt:name": "quality.control",
+			"rdt:value": "data/3-quality.control.R",
+			"rdt:valType": "function",
+			"rdt:type": "Snapshot",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:hash": "",
+			"rdt:timestamp": "2018-11-06T16.25.19EST",
+			"rdt:location": ""
+		},
+		"rdt:d4": {
+			"rdt:name": "gap.fill",
+			"rdt:value": "data/4-gap.fill.R",
+			"rdt:valType": "function",
+			"rdt:type": "Snapshot",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:hash": "",
+			"rdt:timestamp": "2018-11-06T16.25.19EST",
+			"rdt:location": ""
+		},
+		"rdt:d5": {
+			"rdt:name": "write.result",
+			"rdt:value": "data/5-write.result.R",
+			"rdt:valType": "function",
+			"rdt:type": "Snapshot",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:hash": "",
+			"rdt:timestamp": "2018-11-06T16.25.19EST",
+			"rdt:location": ""
+		},
+		"rdt:d6": {
+			"rdt:name": "plot.data",
+			"rdt:value": "data/6-plot.data.R",
+			"rdt:valType": "function",
+			"rdt:type": "Snapshot",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:hash": "",
+			"rdt:timestamp": "2018-11-06T16.25.19EST",
+			"rdt:location": ""
+		},
+		"rdt:d7": {
+			"rdt:name": "data.file",
+			"rdt:value": "\"../met-daily.csv\"",
+			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}",
+			"rdt:type": "Data",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:hash": "",
+			"rdt:timestamp": "",
+			"rdt:location": ""
+		},
+		"rdt:d8": {
+			"rdt:name": "cal.file",
+			"rdt:value": "\"../par-cal.csv\"",
+			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}",
+			"rdt:type": "Data",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:hash": "",
+			"rdt:timestamp": "",
+			"rdt:location": ""
+		},
+		"rdt:d9": {
+			"rdt:name": "qc.file",
+			"rdt:value": "\"../par-qc.csv\"",
+			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}",
+			"rdt:type": "Data",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:hash": "",
+			"rdt:timestamp": "",
+			"rdt:location": ""
+		},
+		"rdt:d10": {
+			"rdt:name": "gf.file",
+			"rdt:value": "\"../par-gf.csv\"",
+			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}",
+			"rdt:type": "Data",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:hash": "",
+			"rdt:timestamp": "",
+			"rdt:location": ""
+		},
+		"rdt:d11": {
+			"rdt:name": "start.date",
+			"rdt:value": "\"2012-01-01\"",
+			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}",
+			"rdt:type": "Data",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:hash": "",
+			"rdt:timestamp": "",
+			"rdt:location": ""
+		},
+		"rdt:d12": {
+			"rdt:name": "end.date",
+			"rdt:value": "\"2012-03-31\"",
+			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}",
+			"rdt:type": "Data",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:hash": "",
+			"rdt:timestamp": "",
+			"rdt:location": ""
+		},
+		"rdt:d13": {
+			"rdt:name": "variable",
+			"rdt:value": "\"slrt\"",
+			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}",
+			"rdt:type": "Data",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:hash": "",
+			"rdt:timestamp": "",
+			"rdt:location": ""
+		},
+		"rdt:d14": {
+			"rdt:name": "all.data",
+			"rdt:value": "data/14-all.data-PARTIAL.csv",
+			"rdt:valType": "{\"container\":\"data_frame\", \"dimension\":[91,24], \"type\":[\"Date\",\"integer\",\"numeric\",\"numeric\",\"numeric\",\"integer\",\"integer\",\"integer\",\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"integer\",\"numeric\",\"numeric\",\"integer\",\"integer\",\"numeric\",\"numeric\",\"numeric\",\"numeric\"]}",
+			"rdt:type": "Snapshot",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:hash": "",
+			"rdt:timestamp": "2018-11-06T16.25.20EST",
+			"rdt:location": ""
+		},
+		"rdt:d15": {
+			"rdt:name": "raw.data",
+			"rdt:value": "data/15-raw.data.csv",
+			"rdt:valType": "{\"container\":\"data_frame\", \"dimension\":[91,8], \"type\":[\"Date\",\"numeric\",\"numeric\",\"character\",\"numeric\",\"character\",\"numeric\",\"character\"]}",
+			"rdt:type": "Snapshot",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:hash": "",
+			"rdt:timestamp": "2018-11-06T16.25.20EST",
+			"rdt:location": ""
+		},
+		"rdt:d16": {
+			"rdt:name": "data.rows",
+			"rdt:value": "91",
+			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"integer\"]}",
+			"rdt:type": "Data",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:hash": "",
+			"rdt:timestamp": "",
+			"rdt:location": ""
+		},
+		"rdt:d17": {
+			"rdt:name": "calibration.parameters",
+			"rdt:value": "start\t finish correction\t\t1.0\t\t1.0\t\t0.1 ",
+			"rdt:valType": "{\"container\":\"data_frame\", \"dimension\":[1,3], \"type\":[\"factor\",\"factor\",\"numeric\"]}",
+			"rdt:type": "Data",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:hash": "",
+			"rdt:timestamp": "",
+			"rdt:location": ""
+		},
+		"rdt:d18": {
+			"rdt:name": "quality.control.parameters",
+			"rdt:value": "repeats\t   3 ",
+			"rdt:valType": "{\"container\":\"data_frame\", \"dimension\":[1,1], \"type\":[\"integer\"]}",
+			"rdt:type": "Data",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:hash": "",
+			"rdt:timestamp": "",
+			"rdt:location": ""
+		},
+		"rdt:d19": {
+			"rdt:name": "gap.fill.parameters",
+			"rdt:value": "slope intercept\t   0.5\t   0.0 ",
+			"rdt:valType": "{\"container\":\"data_frame\", \"dimension\":[1,2], \"type\":[\"numeric\",\"integer\"]}",
+			"rdt:type": "Data",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:hash": "",
+			"rdt:timestamp": "",
+			"rdt:location": ""
+		},
+		"rdt:d20": {
+			"rdt:name": "met-daily.csv",
+			"rdt:value": "data/20-met-daily.csv",
+			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}",
+			"rdt:type": "File",
+			"rdt:scope": "undefined",
+			"rdt:fromEnv": false,
+			"rdt:hash": "b40e073758ed7513f719647191ba88e1",
+			"rdt:timestamp": "2018-11-06T16.25.20EST",
+			"rdt:location": "[DIR]/met-daily.csv"
+		},
+		"rdt:d21": {
+			"rdt:name": "par-cal.csv",
+			"rdt:value": "data/21-par-cal.csv",
+			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}",
+			"rdt:type": "File",
+			"rdt:scope": "undefined",
+			"rdt:fromEnv": false,
+			"rdt:hash": "8869c0a6b5837354fa1ae8f9849e71f0",
+			"rdt:timestamp": "2018-11-06T16.25.20EST",
+			"rdt:location": "[DIR]/par-cal.csv"
+		},
+		"rdt:d22": {
+			"rdt:name": "par-qc.csv",
+			"rdt:value": "data/22-par-qc.csv",
+			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}",
+			"rdt:type": "File",
+			"rdt:scope": "undefined",
+			"rdt:fromEnv": false,
+			"rdt:hash": "0b9a6fc7d7c5e19da4c10ad1d2035040",
+			"rdt:timestamp": "2018-11-06T16.25.20EST",
+			"rdt:location": "[DIR]/par-qc.csv"
+		},
+		"rdt:d23": {
+			"rdt:name": "par-gf.csv",
+			"rdt:value": "data/23-par-gf.csv",
+			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}",
+			"rdt:type": "File",
+			"rdt:scope": "undefined",
+			"rdt:fromEnv": false,
+			"rdt:hash": "126d0252324b3c48554bbc50526e3d3d",
+			"rdt:timestamp": "2018-11-06T16.25.20EST",
+			"rdt:location": "[DIR]/par-gf.csv"
+		},
+		"rdt:d24": {
+			"rdt:name": "raw.data",
+			"rdt:value": "data/24-raw.data.csv",
+			"rdt:valType": "{\"container\":\"data_frame\", \"dimension\":[91,8], \"type\":[\"Date\",\"numeric\",\"numeric\",\"character\",\"numeric\",\"character\",\"numeric\",\"character\"]}",
+			"rdt:type": "Snapshot",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:hash": "",
+			"rdt:timestamp": "2018-11-06T16.25.20EST",
+			"rdt:location": ""
+		},
+		"rdt:d25": {
+			"rdt:name": "dev.1",
+			"rdt:value": "",
+			"rdt:valType": "Device",
+			"rdt:type": "Device",
+			"rdt:scope": "undefined",
+			"rdt:fromEnv": false,
+			"rdt:hash": "",
+			"rdt:timestamp": "",
+			"rdt:location": ""
+		},
+		"rdt:d26": {
+			"rdt:name": "calibrated.data",
+			"rdt:value": "data/26-calibrated.data.csv",
+			"rdt:valType": "{\"container\":\"data_frame\", \"dimension\":[91,8], \"type\":[\"Date\",\"numeric\",\"numeric\",\"character\",\"numeric\",\"character\",\"numeric\",\"character\"]}",
+			"rdt:type": "Snapshot",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:hash": "",
+			"rdt:timestamp": "2018-11-06T16.25.20EST",
+			"rdt:location": ""
+		},
+		"rdt:d27": {
+			"rdt:name": "dev.1",
+			"rdt:value": "",
+			"rdt:valType": "Device",
+			"rdt:type": "Device",
+			"rdt:scope": "undefined",
+			"rdt:fromEnv": false,
+			"rdt:hash": "",
+			"rdt:timestamp": "",
+			"rdt:location": ""
+		},
+		"rdt:d28": {
+			"rdt:name": "quality.controlled.data",
+			"rdt:value": "data/28-quality.controlled.data.csv",
+			"rdt:valType": "{\"container\":\"data_frame\", \"dimension\":[91,8], \"type\":[\"Date\",\"numeric\",\"numeric\",\"character\",\"numeric\",\"character\",\"numeric\",\"character\"]}",
+			"rdt:type": "Snapshot",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:hash": "",
+			"rdt:timestamp": "2018-11-06T16.25.21EST",
+			"rdt:location": ""
+		},
+		"rdt:d29": {
+			"rdt:name": "dev.1",
+			"rdt:value": "",
+			"rdt:valType": "Device",
+			"rdt:type": "Device",
+			"rdt:scope": "undefined",
+			"rdt:fromEnv": false,
+			"rdt:hash": "",
+			"rdt:timestamp": "",
+			"rdt:location": ""
+		},
+		"rdt:d30": {
+			"rdt:name": "gap.filled.data",
+			"rdt:value": "data/30-gap.filled.data.csv",
+			"rdt:valType": "{\"container\":\"data_frame\", \"dimension\":[91,8], \"type\":[\"Date\",\"numeric\",\"numeric\",\"character\",\"numeric\",\"character\",\"numeric\",\"character\"]}",
+			"rdt:type": "Snapshot",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:hash": "",
+			"rdt:timestamp": "2018-11-06T16.25.21EST",
+			"rdt:location": ""
+		},
+		"rdt:d31": {
+			"rdt:name": "dev.1",
+			"rdt:value": "",
+			"rdt:valType": "Device",
+			"rdt:type": "Device",
+			"rdt:scope": "undefined",
+			"rdt:fromEnv": false,
+			"rdt:hash": "",
+			"rdt:timestamp": "",
+			"rdt:location": ""
+		},
+		"rdt:d32": {
+			"rdt:name": "processed-data.csv",
+			"rdt:value": "data/32-processed-data.csv",
+			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}",
+			"rdt:type": "File",
+			"rdt:scope": "undefined",
+			"rdt:fromEnv": false,
+			"rdt:hash": "6f631582a4aeebc3e382043324cdd0e0",
+			"rdt:timestamp": "2018-11-06T16.25.21EST",
+			"rdt:location": "[DIR]/rdtLite/processed-data.csv"
+		},
+
+		// environment
+		"rdt:environment": {
+			"rdt:name": "environment",
+			"rdt:architecture": "x86_64",
+			"rdt:operatingSystem": "mingw32",
+			"rdt:language": "R",
+			"rdt:langVersion": "R version 3.5.1 (2018-07-02)",
+			"rdt:script": "[DIR]/DailySolarRadiation.R",
+			"rdt:scriptTimeStamp": "2018-10-18T21.45.19EDT",
+			"rdt:sourcedScripts": "",
+			"rdt:sourcedScriptTimeStamps": "",
+			"rdt:workingDirectory": "[DIR]/rdtLite",
+			"rdt:provDirectory": "[DIR]/rdtLite/prov_DailySolarRadiation",
+			"rdt:provTimestamp": "2018-11-06T16.25.18EST",
+			"rdt:hashAlgorithm": "md5"
+		},
+
+		// library nodes - prov collections
+		"rdt:l1": {
+			"name": "base",
+			"version": "3.5.1",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l2": {
+			"name": "datasets",
+			"version": "3.5.1",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l3": {
+			"name": "ggplot2",
+			"version": "3.0.0",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l4": {
+			"name": "graphics",
+			"version": "3.5.1",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l5": {
+			"name": "grDevices",
+			"version": "3.5.1",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l6": {
+			"name": "methods",
+			"version": "3.5.1",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l7": {
+			"name": "rdtLite",
+			"version": "1.0.1",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l8": {
+			"name": "stats",
+			"version": "3.5.1",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l9": {
+			"name": "utils",
+			"version": "3.5.1",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		}
+	},
+
+	"wasInformedBy" : {
+		// procedure-to-procedure edges
+		"rdt:pp1": {
+			"prov:informant": "rdt:p1",
+			"prov:informed": "rdt:p2"
+		},
+		"rdt:pp2": {
+			"prov:informant": "rdt:p2",
+			"prov:informed": "rdt:p3"
+		},
+		"rdt:pp3": {
+			"prov:informant": "rdt:p3",
+			"prov:informed": "rdt:p4"
+		},
+		"rdt:pp4": {
+			"prov:informant": "rdt:p4",
+			"prov:informed": "rdt:p5"
+		},
+		"rdt:pp5": {
+			"prov:informant": "rdt:p5",
+			"prov:informed": "rdt:p6"
+		},
+		"rdt:pp6": {
+			"prov:informant": "rdt:p6",
+			"prov:informed": "rdt:p7"
+		},
+		"rdt:pp7": {
+			"prov:informant": "rdt:p7",
+			"prov:informed": "rdt:p8"
+		},
+		"rdt:pp8": {
+			"prov:informant": "rdt:p8",
+			"prov:informed": "rdt:p9"
+		},
+		"rdt:pp9": {
+			"prov:informant": "rdt:p9",
+			"prov:informed": "rdt:p10"
+		},
+		"rdt:pp10": {
+			"prov:informant": "rdt:p10",
+			"prov:informed": "rdt:p11"
+		},
+		"rdt:pp11": {
+			"prov:informant": "rdt:p11",
+			"prov:informed": "rdt:p12"
+		},
+		"rdt:pp12": {
+			"prov:informant": "rdt:p12",
+			"prov:informed": "rdt:p13"
+		},
+		"rdt:pp13": {
+			"prov:informant": "rdt:p13",
+			"prov:informed": "rdt:p14"
+		},
+		"rdt:pp14": {
+			"prov:informant": "rdt:p14",
+			"prov:informed": "rdt:p15"
+		},
+		"rdt:pp15": {
+			"prov:informant": "rdt:p15",
+			"prov:informed": "rdt:p16"
+		},
+		"rdt:pp16": {
+			"prov:informant": "rdt:p16",
+			"prov:informed": "rdt:p17"
+		}
+	},
+
+	"wasGeneratedBy" : {
+		// procedure-to-data edges
+		"rdt:pd1": {
+			"prov:activity": "rdt:p2",
+			"prov:entity": "rdt:d1"
+		},
+		"rdt:pd2": {
+			"prov:activity": "rdt:p3",
+			"prov:entity": "rdt:d2"
+		},
+		"rdt:pd3": {
+			"prov:activity": "rdt:p4",
+			"prov:entity": "rdt:d3"
+		},
+		"rdt:pd4": {
+			"prov:activity": "rdt:p5",
+			"prov:entity": "rdt:d4"
+		},
+		"rdt:pd5": {
+			"prov:activity": "rdt:p6",
+			"prov:entity": "rdt:d5"
+		},
+		"rdt:pd6": {
+			"prov:activity": "rdt:p7",
+			"prov:entity": "rdt:d6"
+		},
+		"rdt:pd7": {
+			"prov:activity": "rdt:p8",
+			"prov:entity": "rdt:d7"
+		},
+		"rdt:pd8": {
+			"prov:activity": "rdt:p8",
+			"prov:entity": "rdt:d8"
+		},
+		"rdt:pd9": {
+			"prov:activity": "rdt:p8",
+			"prov:entity": "rdt:d9"
+		},
+		"rdt:pd10": {
+			"prov:activity": "rdt:p8",
+			"prov:entity": "rdt:d10"
+		},
+		"rdt:pd11": {
+			"prov:activity": "rdt:p8",
+			"prov:entity": "rdt:d11"
+		},
+		"rdt:pd12": {
+			"prov:activity": "rdt:p8",
+			"prov:entity": "rdt:d12"
+		},
+		"rdt:pd13": {
+			"prov:activity": "rdt:p8",
+			"prov:entity": "rdt:d13"
+		},
+		"rdt:pd14": {
+			"prov:activity": "rdt:p8",
+			"prov:entity": "rdt:d14"
+		},
+		"rdt:pd15": {
+			"prov:activity": "rdt:p8",
+			"prov:entity": "rdt:d15"
+		},
+		"rdt:pd16": {
+			"prov:activity": "rdt:p8",
+			"prov:entity": "rdt:d16"
+		},
+		"rdt:pd17": {
+			"prov:activity": "rdt:p8",
+			"prov:entity": "rdt:d17"
+		},
+		"rdt:pd18": {
+			"prov:activity": "rdt:p8",
+			"prov:entity": "rdt:d18"
+		},
+		"rdt:pd19": {
+			"prov:activity": "rdt:p8",
+			"prov:entity": "rdt:d19"
+		},
+		"rdt:pd20": {
+			"prov:activity": "rdt:p8",
+			"prov:entity": "rdt:d24"
+		},
+		"rdt:pd21": {
+			"prov:activity": "rdt:p9",
+			"prov:entity": "rdt:d25"
+		},
+		"rdt:pd22": {
+			"prov:activity": "rdt:p10",
+			"prov:entity": "rdt:d26"
+		},
+		"rdt:pd23": {
+			"prov:activity": "rdt:p11",
+			"prov:entity": "rdt:d27"
+		},
+		"rdt:pd24": {
+			"prov:activity": "rdt:p12",
+			"prov:entity": "rdt:d28"
+		},
+		"rdt:pd25": {
+			"prov:activity": "rdt:p13",
+			"prov:entity": "rdt:d29"
+		},
+		"rdt:pd26": {
+			"prov:activity": "rdt:p14",
+			"prov:entity": "rdt:d30"
+		},
+		"rdt:pd27": {
+			"prov:activity": "rdt:p15",
+			"prov:entity": "rdt:d31"
+		},
+		"rdt:pd28": {
+			"prov:activity": "rdt:p16",
+			"prov:entity": "rdt:d32"
+		}
+	},
+
+	"used" : {
+		// data-to-procedure edges
+		"rdt:dp1": {
+			"prov:entity": "rdt:d1",
+			"prov:activity": "rdt:p8"
+		},
+		"rdt:dp2": {
+			"prov:entity": "rdt:d20",
+			"prov:activity": "rdt:p8"
+		},
+		"rdt:dp3": {
+			"prov:entity": "rdt:d21",
+			"prov:activity": "rdt:p8"
+		},
+		"rdt:dp4": {
+			"prov:entity": "rdt:d22",
+			"prov:activity": "rdt:p8"
+		},
+		"rdt:dp5": {
+			"prov:entity": "rdt:d23",
+			"prov:activity": "rdt:p8"
+		},
+		"rdt:dp6": {
+			"prov:entity": "rdt:d16",
+			"prov:activity": "rdt:p9"
+		},
+		"rdt:dp7": {
+			"prov:entity": "rdt:d24",
+			"prov:activity": "rdt:p9"
+		},
+		"rdt:dp8": {
+			"prov:entity": "rdt:d17",
+			"prov:activity": "rdt:p10"
+		},
+		"rdt:dp9": {
+			"prov:entity": "rdt:d16",
+			"prov:activity": "rdt:p10"
+		},
+		"rdt:dp10": {
+			"prov:entity": "rdt:d24",
+			"prov:activity": "rdt:p10"
+		},
+		"rdt:dp11": {
+			"prov:entity": "rdt:d16",
+			"prov:activity": "rdt:p11"
+		},
+		"rdt:dp12": {
+			"prov:entity": "rdt:d26",
+			"prov:activity": "rdt:p11"
+		},
+		"rdt:dp13": {
+			"prov:entity": "rdt:d18",
+			"prov:activity": "rdt:p12"
+		},
+		"rdt:dp14": {
+			"prov:entity": "rdt:d16",
+			"prov:activity": "rdt:p12"
+		},
+		"rdt:dp15": {
+			"prov:entity": "rdt:d26",
+			"prov:activity": "rdt:p12"
+		},
+		"rdt:dp16": {
+			"prov:entity": "rdt:d16",
+			"prov:activity": "rdt:p13"
+		},
+		"rdt:dp17": {
+			"prov:entity": "rdt:d28",
+			"prov:activity": "rdt:p13"
+		},
+		"rdt:dp18": {
+			"prov:entity": "rdt:d19",
+			"prov:activity": "rdt:p14"
+		},
+		"rdt:dp19": {
+			"prov:entity": "rdt:d16",
+			"prov:activity": "rdt:p14"
+		},
+		"rdt:dp20": {
+			"prov:entity": "rdt:d14",
+			"prov:activity": "rdt:p14"
+		},
+		"rdt:dp21": {
+			"prov:entity": "rdt:d28",
+			"prov:activity": "rdt:p14"
+		},
+		"rdt:dp22": {
+			"prov:entity": "rdt:d16",
+			"prov:activity": "rdt:p15"
+		},
+		"rdt:dp23": {
+			"prov:entity": "rdt:d30",
+			"prov:activity": "rdt:p15"
+		},
+		"rdt:dp24": {
+			"prov:entity": "rdt:d30",
+			"prov:activity": "rdt:p16"
+		}
+	}
+}

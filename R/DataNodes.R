@@ -30,7 +30,6 @@
 # from.env - if the value was set globally before the script ran
 # time - a timestamp
 # hash - hash value for files
-# rw - either "read" or "write", only used for files
 # loc - absolute path to the original file
 #
 # ddg.pnum is the number associated with the last procedure node created
@@ -103,7 +102,6 @@
           ddg.from.env = logical(size),
           ddg.time = character(size),
           ddg.hash = character(size),
-          ddg.rw = character(size),
           ddg.loc = character(size),
           stringsAsFactors=FALSE))
 }
@@ -130,22 +128,40 @@
 #' checks if a variable with that name exists in the global environment.
 #' If a match is found, it creates a data node for the global and returns TRUE. 
 #' If no node exists and it is not a global, it returns FALSE.
-#' @param dname data node name
+#' @param dname data node name. For files, this is the entire file name.
 #' @param dscope data node scope.  If NULL, uses the closest scope in which
 #' dname is defined
+#' @param dtype - type of data node.
 #' @return true if a node with the given name exists
 #' @noRd
 
-.ddg.data.node.exists <- function(dname, dscope=NULL) {
-  if (is.null(dscope)) dscope <- .ddg.get.scope(dname)
+.ddg.data.node.exists <- function(dname, dscope=NULL, dtype=NULL) {
+  if (is.null(dscope))
+    dscope <- .ddg.get.scope(dname)
   
   # Search data nodes table.
   #print (paste (".ddg.data.node.exists: Looking for", dname, "in scope", dscope))
   ddg.data.nodes <- .ddg.data.node.table()
   
-  matching <- ddg.data.nodes [ddg.data.nodes$ddg.name == dname & 
-          (ddg.data.nodes$ddg.scope == "ddg.library" | 
-           ddg.data.nodes$ddg.scope == dscope), ]
+  if( identical(dtype, "File") )
+  {
+    filepath <- normalizePath(dname, winslash="/", mustWork = FALSE)
+    
+    matching <- ddg.data.nodes[
+                  (ddg.data.nodes$ddg.type == "File" &
+                  ddg.data.nodes$ddg.name == dname &
+                  ddg.data.nodes$ddg.scope == "undefined" &
+                  ddg.data.nodes$ddg.hash == .ddg.calculate.hash(basename(dname)) &
+                  ddg.data.nodes$ddg.loc == filepath),
+                ]
+  }
+  else
+  {
+    matching <- ddg.data.nodes [ddg.data.nodes$ddg.name == dname & 
+            (ddg.data.nodes$ddg.scope == "ddg.library" | 
+             ddg.data.nodes$ddg.scope == dscope), ]
+  }
+  
   if (nrow (matching) > 0) {
     return(TRUE)
   }
@@ -251,7 +267,6 @@
   ddg.data.nodes$ddg.scope[ddg.dnum] <- dscope
   ddg.data.nodes$ddg.from.env[ddg.dnum] <- from.env
   ddg.data.nodes$ddg.hash[ddg.dnum] <- ""
-  ddg.data.nodes$ddg.rw[ddg.dnum] <- ""
   ddg.data.nodes$ddg.time[ddg.dnum] <- dtime
   ddg.data.nodes$ddg.loc[ddg.dnum] <- dloc
   
@@ -273,9 +288,7 @@
       ddg.data.nodes <- .ddg.data.node.table()
       print(paste("Adding data node", ddg.dnum, "named", dname, 
                   "with scope", dscope, 
-                  " and value ", ddg.data.nodes$ddg.value[ddg.dnum], 
-                  " that hashes to ", ddg.data.nodes$ddg.hash[ddg.dnum], 
-                  " and performs a file ", ddg.data.nodes$ddg.rw[ddg.dnum]))
+                  " and value ", ddg.data.nodes$ddg.value[ddg.dnum]))
     }
   }
 }

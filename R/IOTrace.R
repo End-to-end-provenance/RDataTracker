@@ -432,7 +432,9 @@
       # Only create the node and edge if there actually is a file
       if (file.exists(file)) {
         # Create the file node and edge
-        .ddg.file.copy(file)
+        if( ! .ddg.data.node.exists(file, dscope="undefined", dtype="File") )
+          .ddg.file.copy(file)
+        
         .ddg.data2proc(basename(file), dscope="undefined")
       }
       
