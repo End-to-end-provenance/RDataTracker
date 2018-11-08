@@ -34,6 +34,8 @@ features are turned off by default to optimize performance. Common
 settings for the level of detail can also be set and managed using the 
 prov.set.detail and related functions.
 
+rdt belongs to a collection of [R Tools](https://github.com/End-to-end-provenance/End-to-end-provenance.github.io/blob/master/RTools.md) developed as part of a larger project on [End-to-end-provenance](https://github.com/End-to-end-provenance/End-to-end-provenance.github.io/blob/master/README.md).
+
 Installing rdt
 =======================
 

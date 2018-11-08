@@ -30,6 +30,9 @@ Simple data values are stored in the PROV-JSON file. "Snapshots" of complex
 data values (e.g. data frames) are optionally stored by adjusting
 the value of the parameter max.snapshot.size in prov.run or prov.init.
 
+rdtLite belongs to a collection of [R Tools](https://github.com/End-to-end-provenance/End-to-end-provenance.github.io/blob/master/RTools.md) developed as part of a larger project on [End-to-end-provenance](https://github.com/End-to-end-provenance/End-to-end-provenance.github.io/blob/master/README.md).
+
+
 Installing rdtLite
 ================
 
