@@ -77,12 +77,15 @@ function copy_rdtLite_files {
   rsync -tv --perms inst/CITATION ../rdtLite/inst/
   rsync -tv --perms LICENSE ../rdtLite/
   rsync -tv --perms .Rbuildignore ../rdtLite/
+  rsync -tv --perms tests.xml ../rdtLite/
+  rsync -rtv --del --exclude */rdt/ --perms scriptTests ../rdtLite/
   
   # Copy rdtLite versions of files
   rsync -tv --perms DESCRIPTION_rdtLite ../rdtLite/DESCRIPTION
   rsync -tv --perms NAMESPACE_rdtLite ../rdtLite/NAMESPACE
   rsync -tv --perms README_rdtLite.md ../rdtLite/README.md
   rsync -tv --perms NEWS_rdtLite.md ../rdtLite/NEWS.md
+  rsync -tv --perms .travis-rdtLite.yml ../rdtLite/.travis.yml
   rsync -rtv --del --perms man_rdtLite/ ../rdtLite/man
   rsync -rt --perms tests/test-all-rdtLite.R ../rdtLite/tests/test-all.R
   
@@ -102,7 +105,7 @@ function copy_rdt_files {
   rsync -tv --perms LICENSE ../rdt/
   rsync -tv --perms .Rbuildignore ../rdt/
   rsync -tv --perms tests.xml ../rdt/
-  rsync -rtv --del --perms scriptTests ../rdt/
+  rsync -rtv --del --exclude */rdtLite/ --perms scriptTests ../rdt/
   
   # Copy the rdt versions of files
   rsync -tv --perms DESCRIPTION_rdt ../rdt/DESCRIPTION
@@ -146,7 +149,7 @@ function commit_repo {
   echo "Num deleted = $NUM_DEL"
   echo "Num new = $NUM_NEW"
 
-  if [ "$NUM_MOD" != "1" -o "$NUM_DEL" != "0" -o "$NUM_NEW" != "0" ]
+  if [ "$NUM_MOD" != "0" -o "$NUM_DEL" != "0" -o "$NUM_NEW" != "0" ]
     then
       echo "*** Committing and pushing the changes."
       git commit -m "$COMMIT_MSG"
@@ -183,14 +186,14 @@ else
 fi
 
 echo ""
-if is_current "rdtLite" "development"
-  then
-    echo "rdtLite development is current"
-else 
+#if is_current "rdtLite" "development"
+#  then
+#    echo "rdtLite development is current"
+#else 
     echo "Updating rdtLite development"
     copy_rdtLite_files
     commit_repo "rdtLite"
-fi
+#fi
 
 echo ""
 if is_current "rdtLite" "rdtLite"

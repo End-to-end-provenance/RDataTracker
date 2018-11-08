@@ -4,6 +4,7 @@
 * Updated man pages
 * Changed script numbers to start at 1 instead of 0
 * Changed package name from provR to rdtLite
+* Added support for RMarkdown files
 
 # provR 1.0.1
 

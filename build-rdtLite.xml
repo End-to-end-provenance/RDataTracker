@@ -26,7 +26,7 @@
         </copy>
     	<copy overwrite="true" todir="${builddir}/R">
     		<fileset dir="R"
-      			excludes="DDGCheckpoint.R, *_rdt.R"/>
+      			excludes="*_rdt.R"/>
   		</copy>
         <mkdir dir="${builddir}/tests"/>
         <copy overwrite="true" file="tests/test-all-rdtLite.R" tofile="${builddir}/tests/test-all.R"/>
@@ -36,6 +36,7 @@
         <copy overwrite="true" file="DESCRIPTION_rdtLite" tofile="${builddir}/DESCRIPTION"/>
         <copy overwrite="true" file="LICENSE" todir="${builddir}"/>
         <copy overwrite="true" file="README_rdtLite.md" tofile="${builddir}/README.md"/>
+        <copy overwrite="true" file="NEWS_rdtLite.md" tofile="${builddir}/NEWS.md"/>
     </target>
     
 	&build-core;
