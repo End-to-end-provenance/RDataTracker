@@ -1,5 +1,5 @@
 Package: rdtLite
-Title: Provenance Collector for R
+Title: Provenance Collector
 Version: 1.0.2
 Date: 2018-11-08
 Authors@R: c( person("Barbara", "Lerner", role = c("aut", "cre"),
@@ -44,6 +44,7 @@ Imports:
   digest,
   ggplot2,
   grDevices, 
+  gtools,
   jsonlite,
   knitr,
   methods,
