@@ -91,7 +91,7 @@ function copy_rdtLite_files {
   
   # Copy directories containing a mix of files 
   rsync -rtv --del --exclude "*_rdt.R" --perms R ../rdtLite/
-  rsync -rtv --del --exclude "*_rdt*" --perms tests/testthat ../rdtLite/
+  rsync -rtv --del --exclude "*_rdt*" --perms tests/testthat ../rdtLite/tests
 }
 
 # Copy just the files that we want in the rdt repository.  Some
@@ -196,16 +196,6 @@ echo ""
 #fi
 
 echo ""
-if is_current "rdtLite" "rdtLite"
-  then
-    echo "rdtLite rdtLite is current"
-else 
-    echo "Updating rdtLite rdtLite"
-    copy_rdtLite_files
-    commit_repo "rdtLite"
-fi
-
-echo ""
 if is_current "rdt" "master"
   then
     echo "rdt master is current"
@@ -225,17 +215,7 @@ else
     commit_repo "rdt"
 fi
 
-echo ""
-if is_current "rdt" "rdtLite"
-  then
-    echo "rdt rdtLite is current"
-else 
-    echo "Updating rdt rdtLite"
-    copy_rdt_files
-    commit_repo "rdt"
-fi
-
 # Delete test repos
-cleanup
+#cleanup
 
 echo "*** Done!"
