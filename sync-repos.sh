@@ -216,6 +216,6 @@ else
 fi
 
 # Delete test repos
-#cleanup
+cleanup
 
 echo "*** Done!"
