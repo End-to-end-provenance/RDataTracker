@@ -3,28 +3,45 @@
 \name{prov.json}
 \alias{prov.json}
 \alias{prov.dir}
+\alias{prov.display}
 \title{Provenance Access Functions}
 \usage{
 prov.json()
 
 prov.dir()
+
+prov.display()
 }
 \value{
 prov.json returns the current provenance graph as a prov-json
 string
 
 prov.dir returns the current provenance directory.
+
+prov.display loads and displays the current provenance graph
+in DDG Explorer. The prov.display function does not return a value.
 }
 \description{
 prov.json returns the current provenance graph as a prov-json string.
 
 prov.dir returns the current provenance directory.
+
+prov.display displays the current provenance as a graph.
 }
 \details{
 rdtLite collects provenance as a script executes.  Once collected,
 prov.json can be called to access the provenance as a JSON string.  
 This is useful for applications that operate on the provenance.  The
 JSON is consistent with the PROV-JSON standard.
+
+One such application is a graphic visualizer built into rdt.
+To view the provenance graphically, call prov.display.  In the provenance
+graph, the nodes are data values and operations, with edges connecting 
+them to show data and control flow dependencies.  The visualizer also
+allows the user to view intermediate values of variables, and to graphically
+view the lineage of how a value was computed, or to look at how a value 
+is used moving forward in the computation. The user can also search for specific
+data or operation nodes, files, or error messages in the provenance.
 }
 \examples{
 prov.init()
@@ -34,6 +51,7 @@ ab <- a + b
 prov.quit()
 str <- prov.json()
 pdir <- prov.dir()
+\dontrun{prov.display()} 
 }
 \references{
 PROV-JSON standard: \url{https://www.w3.org/Submission/2013/SUBM-prov-json-20130424/}

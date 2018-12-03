@@ -1,3 +1,8 @@
+# rdt 3.0.3
+
+* Modified prov.source so that it can be called even when provenance is not initialized.  In
+that case it just sources the script.
+
 # rdt 3.0.2
 
 * Updated .ddg.installedpackages to work with the new type of return value from devtools::session_info

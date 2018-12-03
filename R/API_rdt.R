@@ -253,6 +253,10 @@ prov.run <- function(r.script.path, prov.dir = NULL, overwrite = TRUE,
 #' using prov.run.  If you want to collect provenance inside scripts
 #' that are loaded with R's source function, you should replace calls 
 #' to source with calls to prov.source.
+#' 
+#' If prov.source is called when provenance is not initialized, it
+#' will just source the file.  No provenance will be collected.
+#' 
 #' @param file the name of the R script file to source.
 #' @return The prov.source function does not return a value.
 #' @export
@@ -260,13 +264,18 @@ prov.run <- function(r.script.path, prov.dir = NULL, overwrite = TRUE,
 
 prov.source <- function(file) {
   
-  # Stop & display message if argument is missing or not in script mode
-  if (missing(file) || !.ddg.script.mode()) {
-    stop("The prov.source function is for script annotation only.
-      Please use prov.run to execute a script and collect provenance.")
+  # Stop & display message if argument is missing or in console mode
+  if (missing(file)) {
+    stop("Please provide the name of an R script file in the call to prov.source.")
   }
   
-  .ddg.source(file)
+  if (.ddg.is.init()) {
+    .ddg.source(file)
+  }
+  else {
+    source (file)
+  }
+  
 }
 
 #' Provenance Access Functions
