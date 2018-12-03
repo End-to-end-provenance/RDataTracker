@@ -188,20 +188,29 @@ prov.run <- function(r.script.path, prov.dir = NULL, overwrite = TRUE,
 #' using prov.run.  If you want to collect provenance inside scripts
 #' that are loaded with R's source function, you should replace calls 
 #' to source with calls to prov.source.
+#' 
+#' If prov.source is called when provenance is not initialized, it
+#' will just source the file.  No provenance will be collected.
+#' 
 #' @param file the name of the R script file to source.
 #' @return The prov.source function does not return a value.
 #' @export
 #' @rdname prov.run
 
 prov.source <- function(file) {
-
+  
   # Stop & display message if argument is missing or in console mode
-  if (missing(file) || !.ddg.script.mode()) {
-    stop("The prov.source function is for script annotation only.
-      Please use prov.run to execute a script and collect provenance.")
+  if (missing(file)) {
+    stop("Please provide the name of an R script file in the call to prov.source.")
   }
-
-  .ddg.source(file)
+  
+  if (.ddg.is.init()) {
+    .ddg.source(file)
+  }
+  else {
+    source (file)
+  }
+  
 }
 
 #' Provenance Access Functions
@@ -212,6 +221,15 @@ prov.source <- function(file) {
 #' prov.json can be called to access the provenance as a JSON string.  
 #' This is useful for applications that operate on the provenance.  The
 #' JSON is consistent with the PROV-JSON standard.
+#' 
+#' One such application is a graphic visualizer built into rdt.
+#' To view the provenance graphically, call prov.display.  In the provenance
+#' graph, the nodes are data values and operations, with edges connecting 
+#' them to show data and control flow dependencies.  The visualizer also
+#' allows the user to view intermediate values of variables, and to graphically
+#' view the lineage of how a value was computed, or to look at how a value 
+#' is used moving forward in the computation. The user can also search for specific
+#' data or operation nodes, files, or error messages in the provenance.
 #' 
 #' @return prov.json returns the current provenance graph as a prov-json
 #' string
@@ -229,6 +247,7 @@ prov.source <- function(file) {
 #' prov.quit()
 #' str <- prov.json()
 #' pdir <- prov.dir()
+#' \dontrun{prov.display()} 
 
 prov.json <- function() {
   # This is a wrapper function.
@@ -253,3 +272,18 @@ prov.dir <- function() {
 
   return(.ddg.path())
 }
+
+#' prov.display
+#'
+#' prov.display displays the current provenance as a graph.
+#' @return prov.display loads and displays the current provenance graph
+#' in DDG Explorer. The prov.display function does not return a value.
+#' @export 
+#' @rdname prov.json
+
+prov.display <- function () {
+  provViz::prov.visualize(tool="rdtLite")
+  invisible()
+}
+
+

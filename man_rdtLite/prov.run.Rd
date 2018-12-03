@@ -120,6 +120,9 @@ parameter prov.dir in the prov.run or prov.init functions, or (2) setting
 the prov.dir option (e.g. by using the R options command or editing the
 Rprofile.site or .Rprofile file). If prov.dir is set to ".", the current working
 directory is used.
+
+If prov.source is called when provenance is not initialized, it
+will just source the file.  No provenance will be collected.
 }
 \examples{
 \dontrun{prov.run ("script.R")}
