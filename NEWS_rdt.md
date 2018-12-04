@@ -1,5 +1,7 @@
 # rdt 3.0.3
 
+* Renamed prov.display to prov.visualize
+* Added prov.summarize function
 * Modified prov.source so that it can be called even when provenance is not initialized.  In
 that case it just sources the script.
 

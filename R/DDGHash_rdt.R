@@ -42,7 +42,7 @@
 #' @return nothing
 #' @noRd
 
-.ddg.add.to.hashtable <- function(dname, ddg.dnum, dloc, dvalue, dtime, dhash, drw) {
+.ddg.add.to.hashtable <- function(dname, ddg.dnum, dloc, dvalue, dtime, dhash) {
   if (dhash == "") {
     return()
   }
@@ -79,7 +79,7 @@
   .ddg.set("ddg.data.nodes", ddg.data.nodes)
   
   .ddg.add.to.hashtable(dname = dname, ddg.dnum = dnum, dloc = dloc, 
-      dvalue = dvalue, dtime = dtime, dhash, drw)
+      dvalue = dvalue, dtime = dtime, dhash)
 }
 
 #' .ddg.hashtable.write writes relevant information about the ddg
