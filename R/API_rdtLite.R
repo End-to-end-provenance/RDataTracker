@@ -223,7 +223,7 @@ prov.source <- function(file) {
 #' JSON is consistent with the PROV-JSON standard.
 #' 
 #' One such application is a graphic visualizer built into rdt.
-#' To view the provenance graphically, call prov.display.  In the provenance
+#' To view the provenance graphically, call prov.visualize.  In the provenance
 #' graph, the nodes are data values and operations, with edges connecting 
 #' them to show data and control flow dependencies.  The visualizer also
 #' allows the user to view intermediate values of variables, and to graphically
@@ -247,7 +247,7 @@ prov.source <- function(file) {
 #' prov.quit()
 #' str <- prov.json()
 #' pdir <- prov.dir()
-#' \dontrun{prov.display()} 
+#' \dontrun{prov.visualize()} 
 
 prov.json <- function() {
   # This is a wrapper function.
@@ -273,16 +273,38 @@ prov.dir <- function() {
   return(.ddg.path())
 }
 
-#' prov.display
+#' prov.visualize
 #'
-#' prov.display displays the current provenance as a graph.
-#' @return prov.display loads and displays the current provenance graph
-#' in DDG Explorer. The prov.display function does not return a value.
+#' prov.visualize displays the current provenance as a graph.
+#' @return prov.visualize loads and displays the current provenance graph
+#' in DDG Explorer. The prov.visualize function does not return a value.
 #' @export 
 #' @rdname prov.json
 
-prov.display <- function () {
-  provViz::prov.visualize(tool="rdtLite")
+prov.visualize <- function () {
+  provViz::prov.visualize()
+  invisible()
+}
+
+#' prov.summarize
+#'
+#' prov.summarize outputs a text summary to the R console
+#' 
+#' Creating a zip file depends on a zip executable being on the search path.
+#' By default, it looks for a program named zip.  To use a program with 
+#' a different name, set the value of the R_ZIPCMD environment variable.  This
+#' code has been tested with Unix zip and with 7-zip on Windows.  
+#' 
+#' @param save if true saves the summary to the file prov-summary.txt in the 
+#' provenance directory
+#' @param create.zip if true all of the provenance data will be packaged up
+#'   into a zip file stored in the current working directory.
+#' 
+#' @export
+#' @rdname prov.json
+
+prov.summarize <- function (save=FALSE, create.zip=FALSE) {
+  provSummarizeR::prov.summarize(save, create.zip)
   invisible()
 }
 

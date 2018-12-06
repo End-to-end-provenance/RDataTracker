@@ -146,6 +146,9 @@ snapshots of large intermediate values as separate files. These
 features are turned off by default to optimize performance. Common
 settings for the level of detail can also be set and managed using the 
 prov.set.detail and related functions.
+
+If prov.source is called when provenance is not initialized, it
+will just source the file.  No provenance will be collected.
 }
 \examples{
 \dontrun{prov.run ("script.R")}
@@ -158,7 +161,7 @@ prov.quit()
 }
 \seealso{
 \code{\link{prov.json}} for access to the JSON text of the provenance, 
-  \code{\link{prov.display}} to view the provenance graphically. 
+  \code{\link{prov.visualize}} to view the provenance graphically. 
   \code{\link{prov.set.detail}} to see an alternative way to set the amount of
     provenance collected.
   \code{\link{prov.annotate.on}} and \code{\link{prov.annotate.off}} to see how to control
