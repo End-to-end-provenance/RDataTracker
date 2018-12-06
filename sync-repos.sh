@@ -186,14 +186,14 @@ else
 fi
 
 echo ""
-#if is_current "rdtLite" "development"
-#  then
-#    echo "rdtLite development is current"
-#else 
+if is_current "rdtLite" "development"
+  then
+    echo "rdtLite development is current"
+else 
     echo "Updating rdtLite development"
     copy_rdtLite_files
     commit_repo "rdtLite"
-#fi
+fi
 
 echo ""
 if is_current "rdt" "master"
