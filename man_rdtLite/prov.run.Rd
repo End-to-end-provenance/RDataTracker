@@ -8,15 +8,16 @@
 \alias{prov.source}
 \title{Provenance Collection Functions}
 \usage{
-prov.init(prov.dir = NULL, overwrite = TRUE, snapshot.size = 0,
-  hash.algorithm = "md5", save.debug = FALSE)
+prov.init(prov.dir = NULL, overwrite = TRUE, details = TRUE,
+  snapshot.size = 0, hash.algorithm = "md5", save.debug = FALSE)
 
 prov.save(save.debug = FALSE)
 
 prov.quit(save.debug = FALSE)
 
 prov.run(r.script.path, prov.dir = NULL, overwrite = TRUE,
-  snapshot.size = 0, hash.algorithm = "md5", save.debug = FALSE)
+  details = TRUE, snapshot.size = 0, hash.algorithm = "md5",
+  save.debug = FALSE)
 
 prov.source(file)
 }
@@ -28,6 +29,9 @@ is used.}
 
 \item{overwrite}{if FALSE, includes a time stamp in the provenance
 graph directory name.}
+
+\item{details}{if TRUE, provenance is collected for each top-level
+statement.}
 
 \item{snapshot.size}{the maximum size for snapshot files. If 0,
 no snapshots are saved. If Inf, the complete state of an object is stored

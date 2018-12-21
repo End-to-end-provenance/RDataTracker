@@ -522,29 +522,39 @@
     # Initialize the tables for ddg.capture.
     .ddg.set("from.source", TRUE)
 
-    # Parse and execute the commands, collecting provenance along the way.
-    # If called from prov.run, there is no position information.  Otherwise,
-    # record script number and posiiton in the start and finish nodes.
-    if (is.na(calling.script)) {
-      .ddg.add.start.node (node.name=sname)
-    }
-    else {
-      .ddg.add.start.node (node.name=paste0 ("source (\"", sname, "\")"), 
-                           script.num=calling.script,
-                           startLine=startLine, startCol=startCol, 
-                           endLine=endLine, endCol=endCol)
-    }
-    .ddg.parse.commands(exprs, sname, snum, environ=envir, ignore.patterns=ignores,
-      echo = echo, print.eval = print.eval, max.deparse.length = max.deparse.length,
-      run.commands = TRUE)
-    if (is.na(calling.script)) {
-      .ddg.add.finish.node ()
-    }
-    else {
-      .ddg.add.finish.node (script.num=calling.script,
-          startLine=startLine, startCol=startCol, endLine=endLine, endCol=endCol)
-    }
+    # If ddg.details is True, parse and execute the commands, collecting provenance
+    # along the way. If called from prov.run, there is no position information.
+    # Otherwise, record script number and position in the start and finish nodes.
+    if (.ddg.details()) {
+      if (is.na(calling.script)) {
+        .ddg.add.start.node (node.name=sname)
+      }
+      else {
+        .ddg.add.start.node (node.name=paste0 ("source (\"", sname, "\")"), 
+                            script.num=calling.script,
+                            startLine=startLine, startCol=startCol, 
+                            endLine=endLine, endCol=endCol)
+      }
+    
+      .ddg.parse.commands(exprs, sname, snum, environ=envir, ignore.patterns=ignores,
+        echo = echo, print.eval = print.eval, max.deparse.length = max.deparse.length,
+        run.commands = TRUE)
+    
+      if (is.na(calling.script)) {
+        .ddg.add.finish.node ()
+      }
+      else {
+        .ddg.add.finish.node (script.num=calling.script,
+        startLine=startLine, startCol=startCol, endLine=endLine, endCol=endCol)
+      }
+    } 
 
+    # If ddg.details is False, create a single procedural node for the main script
+    # and evaluate commands without collecting provenance.
+    else {
+      if (is.na(calling.script)) .ddg.proc.node("Operation", sname)
+      .ddg.evaluate(exprs, environ=envir)
+    }
   }
 
   invisible()

@@ -66,6 +66,8 @@
 #' is used.
 #' @param overwrite if FALSE, includes a time stamp in the provenance
 #'   graph directory name.
+#' @param details if TRUE, provenance is collected for each top-level
+#' statement.
 #' @param annotate.inside.functions if TRUE, provenance is collected 
 #' inside functions.
 #' @param first.loop the first loop to collect provenance in a for, 
@@ -97,9 +99,9 @@
 #'   \code{\link{prov.annotate.on}} and \code{\link{prov.annotate.off}} to see how to control
 #'     annotation of individual functions
 
-prov.init <- function(prov.dir = NULL, overwrite = TRUE, annotate.inside.functions = 
-  FALSE, first.loop = 1, max.loops = 0, snapshot.size = 0, hash.algorithm = "md5",
-  save.debug = FALSE) {
+prov.init <- function(prov.dir = NULL, overwrite = TRUE, details = TRUE, 
+  annotate.inside.functions = FALSE, first.loop = 1, max.loops = 0, snapshot.size = 0, 
+  hash.algorithm = "md5", save.debug = FALSE) {
 
   if (.ddg.is.set("ddg.initialized") && .ddg.get ("ddg.initialized") == TRUE) {
     stop ("Provenance collection is already started.  
@@ -109,6 +111,9 @@ prov.init <- function(prov.dir = NULL, overwrite = TRUE, annotate.inside.functio
   
   # Save name of provenance collection tool.
   .ddg.set("ddg.tool.name", "rdt")
+
+  # Save details value
+  .ddg.set("ddg.details", details)
 
   # Save hash algorithm
   .ddg.set("ddg.hash.algorithm", hash.algorithm)
@@ -213,9 +218,9 @@ prov.quit <- function(save.debug = FALSE) {
 #' ab <- a + b
 #' prov.quit()
 
-prov.run <- function(r.script.path, prov.dir = NULL, overwrite = TRUE, 
-  annotate.inside.functions = FALSE, first.loop = 1, max.loops = 0,
-  snapshot.size = 0, hash.algorithm = "md5", save.debug = FALSE, display = FALSE) {
+prov.run <- function(r.script.path, prov.dir = NULL, overwrite = TRUE, details = TRUE, 
+  annotate.inside.functions = FALSE, first.loop = 1, max.loops = 0, snapshot.size = 0, 
+  hash.algorithm = "md5", save.debug = FALSE, display = FALSE) {
 
   # Stop & display message if R script path is missing
   if (missing(r.script.path)) {
@@ -235,7 +240,7 @@ prov.run <- function(r.script.path, prov.dir = NULL, overwrite = TRUE,
   .ddg.set("ddg.script.mode", TRUE)
 
   # Initialize the provenance graph
-  prov.init(prov.dir, overwrite, annotate.inside.functions, first.loop, max.loops, 
+  prov.init(prov.dir, overwrite, details, annotate.inside.functions, first.loop, max.loops, 
     snapshot.size, hash.algorithm, save.debug)
   
   # Execute the script

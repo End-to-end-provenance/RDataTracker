@@ -8,7 +8,7 @@
 \alias{prov.source}
 \title{Provenance Collection Functions}
 \usage{
-prov.init(prov.dir = NULL, overwrite = TRUE,
+prov.init(prov.dir = NULL, overwrite = TRUE, details = TRUE,
   annotate.inside.functions = FALSE, first.loop = 1, max.loops = 0,
   snapshot.size = 0, hash.algorithm = "md5", save.debug = FALSE)
 
@@ -17,9 +17,9 @@ prov.save(save.debug = FALSE)
 prov.quit(save.debug = FALSE)
 
 prov.run(r.script.path, prov.dir = NULL, overwrite = TRUE,
-  annotate.inside.functions = FALSE, first.loop = 1, max.loops = 0,
-  snapshot.size = 0, hash.algorithm = "md5", save.debug = FALSE,
-  display = FALSE)
+  details = TRUE, annotate.inside.functions = FALSE, first.loop = 1,
+  max.loops = 0, snapshot.size = 0, hash.algorithm = "md5",
+  save.debug = FALSE, display = FALSE)
 
 prov.source(file)
 }
@@ -31,6 +31,9 @@ is used.}
 
 \item{overwrite}{if FALSE, includes a time stamp in the provenance
 graph directory name.}
+
+\item{details}{if TRUE, provenance is collected for each top-level
+statement.}
 
 \item{annotate.inside.functions}{if TRUE, provenance is collected 
 inside functions.}

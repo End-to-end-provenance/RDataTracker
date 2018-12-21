@@ -412,6 +412,7 @@
   .ddg.add.infiles (files.read)
   
   for (file in files.read) {
+    # print (paste ("file read: ", file))
     # Use URL node for URLs and for socket connections
     if (grepl ("://", file) || startsWith (file, "->"))
     {
@@ -617,7 +618,7 @@
   files.written <- .ddg.get ("output.files")
   
   for (file in files.written) {
-    #print (paste ("file written: ", file))
+    # print (paste ("file written: ", file))
     if (.ddg.is.connection(file)) {
       conn <- as.numeric(file)
       # If it is a closed connection, use the file it is connected to
@@ -1127,11 +1128,15 @@
   # Add the newly-opened graphics device to the list of open devices
   .ddg.set("ddg.open.devices", union(.ddg.get("ddg.open.devices"), grDevices::dev.cur()))
 
-  # Create a node for the grpahics device and connect it to the last procedural node.
-  dev.node.name <- paste0("dev.", grDevices::dev.cur())
-  .ddg.device.node(dev.node.name)
-  .ddg.lastproc2data(dev.node.name)
-  
+  # Create a node for the graphics device and connect it to the last procedural node.
+    dev.node.name <- paste0("dev.", grDevices::dev.cur())
+
+    # Create graphics device node and edge if ddg.details is True.
+    if (.ddg.details()) {
+      .ddg.device.node(dev.node.name)
+      .ddg.lastproc2data(dev.node.name)
+    }
+
   # Remember that the device node was created for this statement to avoid duplicates.
   .ddg.set ("ddg.add.device.output", FALSE)
   .ddg.add.device.node (dev.node.name)
@@ -1174,14 +1179,18 @@
     
     # Check if there is already a node for this device. 
     if (grDevices::dev.cur() %in% .ddg.get("ddg.open.devices")) {
-      # Create an input edge from that node to the last procedure node
-      .ddg.data2proc(dev.node.name, dscope = NULL)
 
-      # Add an output node with the same name and make it an output from
-      # the last procedure node.
-      .ddg.device.node(dev.node.name)
-      .ddg.lastproc2data(dev.node.name)
-      
+      # Create graphics device node and edges if ddg.details is True
+      if (.ddg.details()) {
+        # Create an input edge from that node to the last procedure node
+        .ddg.data2proc(dev.node.name, dscope = NULL)
+
+        # Add an output node with the same name and make it an output from
+        # the last procedure node.
+        .ddg.device.node(dev.node.name)
+        .ddg.lastproc2data(dev.node.name)
+      }
+
       # Remember that the node was created.
       .ddg.add.device.node (dev.node.name)
     }
@@ -1292,6 +1301,7 @@
   
   # If going to a file, copy the file and create a node for it.
   if (!is.null (graphics.file)) {
+    # print (paste ("graphics file: ", graphics.file))
     .ddg.file.out (graphics.file)
     
     # Delete files that were created by capturing the screen

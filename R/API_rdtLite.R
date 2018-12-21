@@ -58,6 +58,8 @@
 #' is used.
 #' @param overwrite if FALSE, includes a time stamp in the provenance
 #' graph directory name.
+#' @param details if TRUE, provenance is collected for each top-level
+#' statement.
 #' @param snapshot.size the maximum size for snapshot files. If 0,
 #' no snapshots are saved. If Inf, the complete state of an object is stored
 #' in the snapshot file. For other values, the head of the object, truncated
@@ -74,7 +76,7 @@
 #' @rdname prov.run
 #' @seealso \code{\link{prov.json}} for access to the JSON text of the provenance, 
 
-prov.init <- function(prov.dir = NULL, overwrite = TRUE, snapshot.size = 0, 
+prov.init <- function(prov.dir = NULL, overwrite = TRUE, details = TRUE, snapshot.size = 0, 
   hash.algorithm = "md5", save.debug = FALSE) {
   
   if (.ddg.is.set("ddg.initialized") && .ddg.get ("ddg.initialized") == TRUE) {
@@ -83,8 +85,11 @@ prov.init <- function(prov.dir = NULL, overwrite = TRUE, snapshot.size = 0,
     return()
   }
 
-# Save name of provenance collection tool
+  # Save name of provenance collection tool
   .ddg.set("ddg.tool.name", "rdtLite")
+
+  # Save details value
+  .ddg.set("ddg.details", details)
 
   # Save maximum snapshot size
   .ddg.set("ddg.snapshot.size", snapshot.size)
@@ -153,7 +158,7 @@ prov.quit <- function(save.debug = FALSE) {
 #' ab <- a + b
 #' prov.quit()
 
-prov.run <- function(r.script.path, prov.dir = NULL, overwrite = TRUE, 
+prov.run <- function(r.script.path, prov.dir = NULL, overwrite = TRUE, details = TRUE, 
   snapshot.size = 0, hash.algorithm = "md5", save.debug = FALSE) {
   
   # Stop & display message if R script path is missing
@@ -174,7 +179,7 @@ prov.run <- function(r.script.path, prov.dir = NULL, overwrite = TRUE,
   .ddg.set("ddg.script.mode", TRUE)
 
   # Intialize the provenance graph
-  prov.init(prov.dir, overwrite, snapshot.size, hash.algorithm, save.debug)
+  prov.init(prov.dir, overwrite, details, snapshot.size, hash.algorithm, save.debug)
   
   # Execute the script
   .ddg.run(r.script.path)
