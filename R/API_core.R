@@ -553,7 +553,7 @@
     # and evaluate commands without collecting provenance.
     else {
       if (is.na(calling.script)) .ddg.proc.node("Operation", sname)
-      .ddg.evaluate(exprs, environ=envir)
+      .ddg.evaluate.commands(exprs, environ=envir)
     }
   }
 

@@ -1161,19 +1161,19 @@
   #}
 }
 
-#' .ddg.evaluate evaluates a list of parsed R statements. Provenance is collected
-#' for inputs and outputs only.
+#' .ddg.evaluate.commands evaluates a list of parsed R statements. Provenance is 
+#' collected for inputs and outputs only.
 
 #' @param exprs list of parsed R statements
 #' @noRd
 
-.ddg.evaluate <- function (exprs, environ) {
+.ddg.evaluate.commands <- function (exprs, environ) {
   for (expr in exprs) {
     eval(expr, environ, NULL)
     .ddg.create.file.read.nodes.and.edges ()
     .ddg.create.file.write.nodes.and.edges ()
     .ddg.create.graphics.nodes.and.edges ()
- }
+  }
 }
 
 #' .ddg.push.cmd pushes a command onto the command stack.  The command stack 
