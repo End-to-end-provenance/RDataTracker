@@ -1162,14 +1162,32 @@
 }
 
 #' .ddg.evaluate.commands evaluates a list of parsed R statements. Provenance is 
-#' collected for inputs and outputs only.
+#' collected for inputs and outputs only. If an error is generated, an output
+#' exception node is created containing the error message.
 
 #' @param exprs list of parsed R statements
 #' @noRd
 
 .ddg.evaluate.commands <- function (exprs, environ) {
   for (expr in exprs) {
-    eval(expr, environ, NULL)
+    # Evaluate statement. If an error is generated, create an output exception node.
+    result <- withCallingHandlers(
+      {
+        return.value <- eval(expr, environ, NULL)
+        .ddg.set ("ddg.error.node.created", FALSE)
+      },
+      error = function(e)
+        {
+          # Create output exception node if not already created.
+          if (!.ddg.get("ddg.error.node.created")) {
+            .ddg.data.node("Exception", "error.msg", toString(e), "ddg.library")
+            .ddg.lastproc2data ("error.msg")
+            .ddg.set ("ddg.error.node.created", TRUE)
+          }
+        }
+    )
+
+    # Create nodes & edges for inputs & outputs
     .ddg.create.file.read.nodes.and.edges ()
     .ddg.create.file.write.nodes.and.edges ()
     .ddg.create.graphics.nodes.and.edges ()
