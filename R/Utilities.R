@@ -145,7 +145,7 @@
   return(paste(.ddg.path(), "/scripts", sep=""))
 }
 
-#' .ddg.details returns True if collecting provenance for top-level statments
+#' .ddg.details returns True if collecting provenance for top-level statements
 #' @return True if collecting top-level provenance
 #' @noRd
 

@@ -58,8 +58,8 @@
 #' is used.
 #' @param overwrite if FALSE, includes a time stamp in the provenance
 #' graph directory name.
-#' @param details if TRUE, provenance is collected for each top-level
-#' statement.
+#' @param details if FALSE, provenance is not collected for top-level
+#' statements in script mode.
 #' @param snapshot.size the maximum size for snapshot files. If 0,
 #' no snapshots are saved. If Inf, the complete state of an object is stored
 #' in the snapshot file. For other values, the head of the object, truncated
@@ -88,8 +88,12 @@ prov.init <- function(prov.dir = NULL, overwrite = TRUE, details = TRUE, snapsho
   # Save name of provenance collection tool
   .ddg.set("ddg.tool.name", "rdtLite")
 
-  # Save details value
-  .ddg.set("ddg.details", details)
+  # Save details value if in script mode. Otherwise set ddg.details to True.
+  if (.ddg.script.mode()) {
+    .ddg.set("ddg.details", details)
+  } else {
+    .ddg.set("ddg.details", TRUE)
+  }
 
   # Save maximum snapshot size
   .ddg.set("ddg.snapshot.size", snapshot.size)

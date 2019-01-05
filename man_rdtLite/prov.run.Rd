@@ -30,8 +30,8 @@ is used.}
 \item{overwrite}{if FALSE, includes a time stamp in the provenance
 graph directory name.}
 
-\item{details}{if TRUE, provenance is collected for each top-level
-statement.}
+\item{details}{if FALSE, provenance is not collected for top-level
+statements in script mode.}
 
 \item{snapshot.size}{the maximum size for snapshot files. If 0,
 no snapshots are saved. If Inf, the complete state of an object is stored

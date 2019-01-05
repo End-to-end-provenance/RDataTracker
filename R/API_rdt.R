@@ -66,8 +66,8 @@
 #' is used.
 #' @param overwrite if FALSE, includes a time stamp in the provenance
 #'   graph directory name.
-#' @param details if TRUE, provenance is collected for each top-level
-#' statement.
+#' @param details if FALSE, provenance is not collected for top-level
+#' statements in script mode.
 #' @param annotate.inside.functions if TRUE, provenance is collected 
 #' inside functions.
 #' @param first.loop the first loop to collect provenance in a for, 
@@ -112,8 +112,12 @@ prov.init <- function(prov.dir = NULL, overwrite = TRUE, details = TRUE,
   # Save name of provenance collection tool.
   .ddg.set("ddg.tool.name", "rdt")
 
-  # Save details value
-  .ddg.set("ddg.details", details)
+  # Save details value if in script mode. Otherwise set ddg.details to True.
+  if (.ddg.script.mode()) {
+    .ddg.set("ddg.details", details)
+  } else {
+    .ddg.set("ddg.details", TRUE)
+  }
 
   # Save hash algorithm
   .ddg.set("ddg.hash.algorithm", hash.algorithm)

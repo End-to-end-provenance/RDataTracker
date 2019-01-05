@@ -522,7 +522,7 @@
     # Initialize the tables for ddg.capture.
     .ddg.set("from.source", TRUE)
 
-    # If ddg.details is True, parse and execute the commands, collecting provenance
+    # If ddg.details is True, execute the commands and collect provenance
     # along the way. If called from prov.run, there is no position information.
     # Otherwise, record script number and position in the start and finish nodes.
     if (.ddg.details()) {
@@ -550,7 +550,7 @@
     } 
 
     # If ddg.details is False, create a single procedural node for the main script
-    # and evaluate commands without collecting provenance.
+    # and evaluate commands without collecting provenance for each command.
     else {
       if (is.na(calling.script)) .ddg.proc.node("Operation", sname)
       .ddg.evaluate.commands(exprs, environ=envir)

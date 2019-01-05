@@ -32,8 +32,8 @@ is used.}
 \item{overwrite}{if FALSE, includes a time stamp in the provenance
 graph directory name.}
 
-\item{details}{if TRUE, provenance is collected for each top-level
-statement.}
+\item{details}{if FALSE, provenance is not collected for top-level
+statements in script mode.}
 
 \item{annotate.inside.functions}{if TRUE, provenance is collected 
 inside functions.}

@@ -1167,6 +1167,8 @@
 #' the error or warning message.
 
 #' @param exprs list of parsed R statements
+#' @param environ environment in which commands should be executed.
+#' @return nothing
 #' @noRd
 
 .ddg.evaluate.commands <- function (exprs, environ) {
