@@ -145,6 +145,19 @@
   return(paste(.ddg.path(), "/scripts", sep=""))
 }
 
+#' .ddg.details returns True if collecting provenance for top-level statements
+#' @return True if collecting top-level provenance
+#' @noRd
+
+.ddg.details <- function() {
+  # Set to TRUE if not set
+  if (!.ddg.is.set("ddg.details")) {
+    .ddg.set("ddg.details", TRUE)
+  }
+
+  return(.ddg.get("ddg.details"))
+}
+
 ##### Mutators for specific common actions
 
 #' .ddg.inc increments a ddg counter

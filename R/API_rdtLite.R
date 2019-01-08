@@ -83,7 +83,7 @@ prov.init <- function(prov.dir = NULL, overwrite = TRUE, snapshot.size = 0,
     return()
   }
 
-# Save name of provenance collection tool
+  # Save name of provenance collection tool
   .ddg.set("ddg.tool.name", "rdtLite")
 
   # Save maximum snapshot size
@@ -139,6 +139,8 @@ prov.quit <- function(save.debug = FALSE) {
 #' script with calls to prov.init and prov.quit.  
 #' @param r.script.path the full path to the R script file that is being 
 #' executed. A copy of the script will be saved with the provenance graph.
+#' @param details if FALSE, provenance is not collected for top-level
+#' statements.
 #' @return prov.run runs a script, collecting provenance as it does so.  
 #'   It does not return a value. 
 #' @export
@@ -153,7 +155,7 @@ prov.quit <- function(save.debug = FALSE) {
 #' ab <- a + b
 #' prov.quit()
 
-prov.run <- function(r.script.path, prov.dir = NULL, overwrite = TRUE, 
+prov.run <- function(r.script.path, prov.dir = NULL, overwrite = TRUE, details = TRUE, 
   snapshot.size = 0, hash.algorithm = "md5", save.debug = FALSE) {
   
   # Stop & display message if R script path is missing
@@ -170,7 +172,10 @@ prov.run <- function(r.script.path, prov.dir = NULL, overwrite = TRUE,
   # Store R script path
   .ddg.set("ddg.r.script.path", r.script.path)
 
-  # Set script mode to True.
+  # Store details value
+  .ddg.set("ddg.details", details)
+
+  # Set script mode to True
   .ddg.set("ddg.script.mode", TRUE)
 
   # Intialize the provenance graph

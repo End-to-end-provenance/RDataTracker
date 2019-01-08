@@ -17,9 +17,9 @@ prov.save(save.debug = FALSE)
 prov.quit(save.debug = FALSE)
 
 prov.run(r.script.path, prov.dir = NULL, overwrite = TRUE,
-  annotate.inside.functions = FALSE, first.loop = 1, max.loops = 0,
-  snapshot.size = 0, hash.algorithm = "md5", save.debug = FALSE,
-  display = FALSE)
+  details = TRUE, annotate.inside.functions = FALSE, first.loop = 1,
+  max.loops = 0, snapshot.size = 0, hash.algorithm = "md5",
+  save.debug = FALSE, display = FALSE)
 
 prov.source(file)
 }
@@ -60,6 +60,9 @@ This is intended for developers of the rdt / rdtLite package.}
 
 \item{r.script.path}{the full path to the R script file that is being 
 executed. A copy of the script will be saved with the provenance graph.}
+
+\item{details}{if FALSE, provenance is not collected for top-level
+statements.}
 
 \item{display}{if TRUE, the provenance graph is displayed in DDG Explorer}
 

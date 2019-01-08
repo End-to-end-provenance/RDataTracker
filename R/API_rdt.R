@@ -97,9 +97,8 @@
 #'   \code{\link{prov.annotate.on}} and \code{\link{prov.annotate.off}} to see how to control
 #'     annotation of individual functions
 
-prov.init <- function(prov.dir = NULL, overwrite = TRUE, annotate.inside.functions = 
-  FALSE, first.loop = 1, max.loops = 0, snapshot.size = 0, hash.algorithm = "md5",
-  save.debug = FALSE) {
+prov.init <- function(prov.dir = NULL, overwrite = TRUE, annotate.inside.functions = FALSE, 
+  first.loop = 1, max.loops = 0, snapshot.size = 0, hash.algorithm = "md5", save.debug = FALSE) {
 
   if (.ddg.is.set("ddg.initialized") && .ddg.get ("ddg.initialized") == TRUE) {
     stop ("Provenance collection is already started.  
@@ -199,6 +198,8 @@ prov.quit <- function(save.debug = FALSE) {
 #' script with calls to prov.init and prov.quit.  
 #' @param r.script.path the full path to the R script file that is being 
 #' executed. A copy of the script will be saved with the provenance graph.
+#' @param details if FALSE, provenance is not collected for top-level
+#' statements.
 #' @param display if TRUE, the provenance graph is displayed in DDG Explorer
 #' @return prov.run runs a script, collecting provenance as it does so.  
 #'   It does not return a value. 
@@ -213,9 +214,9 @@ prov.quit <- function(save.debug = FALSE) {
 #' ab <- a + b
 #' prov.quit()
 
-prov.run <- function(r.script.path, prov.dir = NULL, overwrite = TRUE, 
-  annotate.inside.functions = FALSE, first.loop = 1, max.loops = 0,
-  snapshot.size = 0, hash.algorithm = "md5", save.debug = FALSE, display = FALSE) {
+prov.run <- function(r.script.path, prov.dir = NULL, overwrite = TRUE, details = TRUE, 
+  annotate.inside.functions = FALSE, first.loop = 1, max.loops = 0, snapshot.size = 0, 
+  hash.algorithm = "md5", save.debug = FALSE, display = FALSE) {
 
   # Stop & display message if R script path is missing
   if (missing(r.script.path)) {
@@ -230,6 +231,9 @@ prov.run <- function(r.script.path, prov.dir = NULL, overwrite = TRUE,
 
   # Store R script path
   .ddg.set("ddg.r.script.path", r.script.path)
+
+  # Store details value
+  .ddg.set("ddg.details", details)
 
   # Set script mode to True
   .ddg.set("ddg.script.mode", TRUE)
