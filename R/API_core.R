@@ -49,6 +49,9 @@
   # Get R script path
   r.script.path <- .ddg.r.script.path()
 
+  # Set ddg.details to True if in console mode.
+  if (!.ddg.script.mode()) .ddg.set("ddg.details", TRUE)
+
   # Set path for provenance graph
   .ddg.set.path (prov.dir, r.script.path, overwrite)
   

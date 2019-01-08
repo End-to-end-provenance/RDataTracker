@@ -58,8 +58,6 @@
 #' is used.
 #' @param overwrite if FALSE, includes a time stamp in the provenance
 #' graph directory name.
-#' @param details if FALSE, provenance is not collected for top-level
-#' statements in script mode.
 #' @param snapshot.size the maximum size for snapshot files. If 0,
 #' no snapshots are saved. If Inf, the complete state of an object is stored
 #' in the snapshot file. For other values, the head of the object, truncated
@@ -76,7 +74,7 @@
 #' @rdname prov.run
 #' @seealso \code{\link{prov.json}} for access to the JSON text of the provenance, 
 
-prov.init <- function(prov.dir = NULL, overwrite = TRUE, details = TRUE, snapshot.size = 0, 
+prov.init <- function(prov.dir = NULL, overwrite = TRUE, snapshot.size = 0, 
   hash.algorithm = "md5", save.debug = FALSE) {
   
   if (.ddg.is.set("ddg.initialized") && .ddg.get ("ddg.initialized") == TRUE) {
@@ -87,13 +85,6 @@ prov.init <- function(prov.dir = NULL, overwrite = TRUE, details = TRUE, snapsho
 
   # Save name of provenance collection tool
   .ddg.set("ddg.tool.name", "rdtLite")
-
-  # Save details value if in script mode. Otherwise set ddg.details to True.
-  if (.ddg.script.mode()) {
-    .ddg.set("ddg.details", details)
-  } else {
-    .ddg.set("ddg.details", TRUE)
-  }
 
   # Save maximum snapshot size
   .ddg.set("ddg.snapshot.size", snapshot.size)
@@ -148,6 +139,8 @@ prov.quit <- function(save.debug = FALSE) {
 #' script with calls to prov.init and prov.quit.  
 #' @param r.script.path the full path to the R script file that is being 
 #' executed. A copy of the script will be saved with the provenance graph.
+#' @param details if FALSE, provenance is not collected for top-level
+#' statements.
 #' @return prov.run runs a script, collecting provenance as it does so.  
 #'   It does not return a value. 
 #' @export
@@ -179,11 +172,14 @@ prov.run <- function(r.script.path, prov.dir = NULL, overwrite = TRUE, details =
   # Store R script path
   .ddg.set("ddg.r.script.path", r.script.path)
 
-  # Set script mode to True.
+  # Store details value
+  .ddg.set("ddg.details", details)
+
+  # Set script mode to True
   .ddg.set("ddg.script.mode", TRUE)
 
   # Intialize the provenance graph
-  prov.init(prov.dir, overwrite, details, snapshot.size, hash.algorithm, save.debug)
+  prov.init(prov.dir, overwrite, snapshot.size, hash.algorithm, save.debug)
   
   # Execute the script
   .ddg.run(r.script.path)

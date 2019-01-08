@@ -8,8 +8,8 @@
 \alias{prov.source}
 \title{Provenance Collection Functions}
 \usage{
-prov.init(prov.dir = NULL, overwrite = TRUE, details = TRUE,
-  snapshot.size = 0, hash.algorithm = "md5", save.debug = FALSE)
+prov.init(prov.dir = NULL, overwrite = TRUE, snapshot.size = 0,
+  hash.algorithm = "md5", save.debug = FALSE)
 
 prov.save(save.debug = FALSE)
 
@@ -30,9 +30,6 @@ is used.}
 \item{overwrite}{if FALSE, includes a time stamp in the provenance
 graph directory name.}
 
-\item{details}{if FALSE, provenance is not collected for top-level
-statements in script mode.}
-
 \item{snapshot.size}{the maximum size for snapshot files. If 0,
 no snapshots are saved. If Inf, the complete state of an object is stored
 in the snapshot file. For other values, the head of the object, truncated
@@ -48,6 +45,9 @@ This is intended for developers of the rdt / rdtLite package.}
 
 \item{r.script.path}{the full path to the R script file that is being 
 executed. A copy of the script will be saved with the provenance graph.}
+
+\item{details}{if FALSE, provenance is not collected for top-level
+statements.}
 
 \item{file}{the name of the R script file to source.}
 }

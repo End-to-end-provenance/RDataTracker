@@ -8,7 +8,7 @@
 \alias{prov.source}
 \title{Provenance Collection Functions}
 \usage{
-prov.init(prov.dir = NULL, overwrite = TRUE, details = TRUE,
+prov.init(prov.dir = NULL, overwrite = TRUE,
   annotate.inside.functions = FALSE, first.loop = 1, max.loops = 0,
   snapshot.size = 0, hash.algorithm = "md5", save.debug = FALSE)
 
@@ -31,9 +31,6 @@ is used.}
 
 \item{overwrite}{if FALSE, includes a time stamp in the provenance
 graph directory name.}
-
-\item{details}{if FALSE, provenance is not collected for top-level
-statements in script mode.}
 
 \item{annotate.inside.functions}{if TRUE, provenance is collected 
 inside functions.}
@@ -63,6 +60,9 @@ This is intended for developers of the rdt / rdtLite package.}
 
 \item{r.script.path}{the full path to the R script file that is being 
 executed. A copy of the script will be saved with the provenance graph.}
+
+\item{details}{if FALSE, provenance is not collected for top-level
+statements.}
 
 \item{display}{if TRUE, the provenance graph is displayed in DDG Explorer}
 
