@@ -8,7 +8,7 @@
 		// agent: this json file and the tool that produced this
 		"rdt:a1": {
 			"rdt:tool.name": "rdtLite",
-			"rdt:tool.version": "1.0.1",
+			"rdt:tool.version": "1.0.3",
 			"rdt:json.version": "2.1"
 		}
 	},
@@ -18,7 +18,7 @@
 		"rdt:p1": {
 			"rdt:name": "DDGStatement.R",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 1.36,
+			"rdt:elapsedTime": 0.78,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -28,7 +28,7 @@
 		"rdt:p2": {
 			"rdt:name": "a <- 1",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.41,
+			"rdt:elapsedTime": 0.82,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 6,
 			"rdt:startCol": 1,
@@ -38,7 +38,7 @@
 		"rdt:p3": {
 			"rdt:name": "if (TRUE) {\ta <- 1}",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.42,
+			"rdt:elapsedTime": 0.83,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 8,
 			"rdt:startCol": 1,
@@ -48,7 +48,7 @@
 		"rdt:p4": {
 			"rdt:name": "ddddd <- 0",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.42,
+			"rdt:elapsedTime": 0.83,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 12,
 			"rdt:startCol": 1,
@@ -58,7 +58,7 @@
 		"rdt:p5": {
 			"rdt:name": "repeat {\tddddd <- ddddd + 1\tif (ddddd == 7) {\t\tb",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.42,
+			"rdt:elapsedTime": 0.83,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 13,
 			"rdt:startCol": 1,
@@ -68,7 +68,7 @@
 		"rdt:p6": {
 			"rdt:name": "f <- function(a) {\treturn(a + 1)}",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.44,
+			"rdt:elapsedTime": 0.83,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 20,
 			"rdt:startCol": 1,
@@ -78,7 +78,7 @@
 		"rdt:p7": {
 			"rdt:name": "g <- function() 1",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.44,
+			"rdt:elapsedTime": 0.85,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 24,
 			"rdt:startCol": 1,
@@ -88,37 +88,37 @@
 		"rdt:p8": {
 			"rdt:name": "h <- function(a, b) {\tif (a > b)\t\t return(1)\tsum",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.44,
+			"rdt:elapsedTime": 0.85,
+			"rdt:scriptNum": 1,
+			"rdt:startLine": 26,
+			"rdt:startCol": 1,
+			"rdt:endLine": 36,
+			"rdt:endCol": 1
+		},
+		"rdt:p9": {
+			"rdt:name": "exprs <- parse(\"../DDGStatement.R\")",
+			"rdt:type": "Operation",
+			"rdt:elapsedTime": 0.88,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 38,
 			"rdt:startCol": 1,
 			"rdt:endLine": 38,
 			"rdt:endCol": 35
 		},
-		"rdt:p9": {
-			"rdt:name": "exprs <- parse(\"../DDGStatement.R\")",
+		"rdt:p10": {
+			"rdt:name": "constructDDGStatement <- function(expr) {\tprint(expr)\t",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.52,
+			"rdt:elapsedTime": 0.88,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 40,
 			"rdt:startCol": 1,
 			"rdt:endLine": 44,
 			"rdt:endCol": 1
 		},
-		"rdt:p10": {
-			"rdt:name": "constructDDGStatement <- function(expr) {\tprint(expr)\t",
-			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.54,
-			"rdt:scriptNum": 1,
-			"rdt:startLine": "NA",
-			"rdt:startCol": "NA",
-			"rdt:endLine": "NA",
-			"rdt:endCol": "NA"
-		},
 		"rdt:p11": {
 			"rdt:name": "DDGStatement.R",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 1.55,
+			"rdt:elapsedTime": 0.89,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -181,7 +181,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2018-11-06T16.45.37EST",
+			"rdt:timestamp": "2019-01-08T00.59.27EST",
 			"rdt:location": ""
 		},
 		"rdt:d6": {
@@ -203,7 +203,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2018-11-06T16.45.37EST",
+			"rdt:timestamp": "2019-01-08T00.59.27EST",
 			"rdt:location": ""
 		},
 		"rdt:d8": {
@@ -214,7 +214,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2018-11-06T16.45.37EST",
+			"rdt:timestamp": "2019-01-08T00.59.27EST",
 			"rdt:location": ""
 		},
 		"rdt:d9": {
@@ -225,7 +225,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2018-11-06T16.45.37EST",
+			"rdt:timestamp": "2019-01-08T00.59.27EST",
 			"rdt:location": ""
 		},
 
@@ -235,21 +235,21 @@
 			"rdt:architecture": "x86_64",
 			"rdt:operatingSystem": "mingw32",
 			"rdt:language": "R",
-			"rdt:langVersion": "R version 3.5.1 (2018-07-02)",
+			"rdt:langVersion": "R version 3.5.2 (2018-12-20)",
 			"rdt:script": "[DIR]/DDGStatement.R",
-			"rdt:scriptTimeStamp": "2018-10-18T22.14.29EDT",
+			"rdt:scriptTimeStamp": "2019-01-07T21.36.29EST",
 			"rdt:sourcedScripts": "",
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:workingDirectory": "[DIR]/rdtLite",
 			"rdt:provDirectory": "[DIR]/rdtLite/prov_DDGStatement",
-			"rdt:provTimestamp": "2018-11-06T16.45.36EST",
+			"rdt:provTimestamp": "2019-01-08T00.59.26EST",
 			"rdt:hashAlgorithm": "md5"
 		},
 
 		// library nodes - prov collections
 		"rdt:l1": {
 			"name": "base",
-			"version": "3.5.1",
+			"version": "3.5.2",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -257,7 +257,7 @@
 		},
 		"rdt:l2": {
 			"name": "datasets",
-			"version": "3.5.1",
+			"version": "3.5.2",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -265,7 +265,7 @@
 		},
 		"rdt:l3": {
 			"name": "ggplot2",
-			"version": "3.0.0",
+			"version": "3.1.0",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -273,7 +273,7 @@
 		},
 		"rdt:l4": {
 			"name": "graphics",
-			"version": "3.5.1",
+			"version": "3.5.2",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -281,7 +281,7 @@
 		},
 		"rdt:l5": {
 			"name": "grDevices",
-			"version": "3.5.1",
+			"version": "3.5.2",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -289,7 +289,7 @@
 		},
 		"rdt:l6": {
 			"name": "methods",
-			"version": "3.5.1",
+			"version": "3.5.2",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -297,7 +297,7 @@
 		},
 		"rdt:l7": {
 			"name": "rdtLite",
-			"version": "1.0.1",
+			"version": "1.0.3",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -305,7 +305,7 @@
 		},
 		"rdt:l8": {
 			"name": "stats",
-			"version": "3.5.1",
+			"version": "3.5.2",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -313,7 +313,7 @@
 		},
 		"rdt:l9": {
 			"name": "utils",
-			"version": "3.5.1",
+			"version": "3.5.2",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
