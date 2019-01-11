@@ -8,7 +8,7 @@
 		// agent: this json file and the tool that produced this
 		"rdt:a1": {
 			"rdt:tool.name": "rdtLite",
-			"rdt:tool.version": "1.0.1",
+			"rdt:tool.version": "1.0.3",
 			"rdt:json.version": "2.1"
 		}
 	},
@@ -18,7 +18,7 @@
 		"rdt:p1": {
 			"rdt:name": "ddgDeepNesting.R",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 1.5,
+			"rdt:elapsedTime": 0.972,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -28,7 +28,7 @@
 		"rdt:p2": {
 			"rdt:name": "increment.value <- function(a) {\ta <- a + 1}",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.53,
+			"rdt:elapsedTime": 1.046,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 7,
 			"rdt:startCol": 1,
@@ -38,7 +38,7 @@
 		"rdt:p3": {
 			"rdt:name": "a <- 0",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.53,
+			"rdt:elapsedTime": 1.06,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 11,
 			"rdt:startCol": 1,
@@ -48,7 +48,7 @@
 		"rdt:p4": {
 			"rdt:name": "n <- 5",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.53,
+			"rdt:elapsedTime": 1.066,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 13,
 			"rdt:startCol": 1,
@@ -58,7 +58,7 @@
 		"rdt:p5": {
 			"rdt:name": "for (i in 1:n) {\tfor (j in 1:n) {\t\tfor (k in 1:n) {",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.54,
+			"rdt:elapsedTime": 1.077,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 17,
 			"rdt:startCol": 1,
@@ -68,7 +68,7 @@
 		"rdt:p6": {
 			"rdt:name": "ddgDeepNesting.R",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 1.54,
+			"rdt:elapsedTime": 1.093,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -87,7 +87,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2018-11-06T16.44.28EST",
+			"rdt:timestamp": "2019-01-11T14.16.12EST",
 			"rdt:location": ""
 		},
 		"rdt:d2": {
@@ -150,23 +150,23 @@
 		"rdt:environment": {
 			"rdt:name": "environment",
 			"rdt:architecture": "x86_64",
-			"rdt:operatingSystem": "mingw32",
+			"rdt:operatingSystem": "darwin15.6.0",
 			"rdt:language": "R",
-			"rdt:langVersion": "R version 3.5.1 (2018-07-02)",
+			"rdt:langVersion": "R version 3.5.2 (2018-12-20)",
 			"rdt:script": "[DIR]/ddgDeepNesting.R",
-			"rdt:scriptTimeStamp": "2018-08-21T13.20.30EDT",
+			"rdt:scriptTimeStamp": "2018-10-26T14.26.54EDT",
 			"rdt:sourcedScripts": "",
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:workingDirectory": "[DIR]/rdtLite",
 			"rdt:provDirectory": "[DIR]/rdtLite/prov_ddgDeepNesting",
-			"rdt:provTimestamp": "2018-11-06T16.44.27EST",
+			"rdt:provTimestamp": "2019-01-11T14.16.11EST",
 			"rdt:hashAlgorithm": "md5"
 		},
 
 		// library nodes - prov collections
 		"rdt:l1": {
 			"name": "base",
-			"version": "3.5.1",
+			"version": "3.5.2",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -174,7 +174,7 @@
 		},
 		"rdt:l2": {
 			"name": "datasets",
-			"version": "3.5.1",
+			"version": "3.5.2",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -190,7 +190,7 @@
 		},
 		"rdt:l4": {
 			"name": "graphics",
-			"version": "3.5.1",
+			"version": "3.5.2",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -198,7 +198,7 @@
 		},
 		"rdt:l5": {
 			"name": "grDevices",
-			"version": "3.5.1",
+			"version": "3.5.2",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -206,7 +206,7 @@
 		},
 		"rdt:l6": {
 			"name": "methods",
-			"version": "3.5.1",
+			"version": "3.5.2",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -214,7 +214,7 @@
 		},
 		"rdt:l7": {
 			"name": "rdtLite",
-			"version": "1.0.1",
+			"version": "1.0.3",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -222,7 +222,7 @@
 		},
 		"rdt:l8": {
 			"name": "stats",
-			"version": "3.5.1",
+			"version": "3.5.2",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -230,7 +230,7 @@
 		},
 		"rdt:l9": {
 			"name": "utils",
-			"version": "3.5.1",
+			"version": "3.5.2",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -297,6 +297,10 @@
 			"prov:activity": "rdt:p5"
 		},
 		"rdt:dp4": {
+			"prov:entity": "rdt:d1",
+			"prov:activity": "rdt:p5"
+		},
+		"rdt:dp5": {
 			"prov:entity": "rdt:d2",
 			"prov:activity": "rdt:p5"
 		}

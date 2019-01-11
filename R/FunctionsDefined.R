@@ -211,7 +211,7 @@
   localfunctions <- pfunctions [!grepl ("package:", pfunctions$ddg.lib), ]
   localfunctions <- localfunctions [localfunctions$ddg.lib != "base", ]
   localfunctions <- localfunctions$ddg.fun
-  return (sapply (localfunctions, .ddg.lookup.nonlocals.used))
+  return (unlist (lapply (localfunctions, .ddg.lookup.nonlocals.used)))
 }
 
 #' .ddg.lookup.nonlocals.used

@@ -108,12 +108,19 @@
     print (paste (".ddg.record.edge: bad value for etype - ", etype))
   }
   
+  ddg.edges <- .ddg.edge.table()
+  
+  # Don't add the edge if it already exists.
+  if (nrow (ddg.edges[ddg.edges$ddg.type == etype & ddg.edges$ddg.from == node1 & ddg.edges$ddg.to == node2, ]) > 0) {
+    #print (paste ("Found existing edge ", etype, node1, node2))
+    return()
+  }
+  
   # Increment edge counter.
   .ddg.inc("ddg.enum")
   ddg.enum <- .ddg.enum()
   
   # If the table is full, make it bigger.
-  ddg.edges <- .ddg.edge.table()
   if (nrow(ddg.edges) < ddg.enum) {
     ddg.edges <- .ddg.add.rows("ddg.edges", .ddg.create.edge.rows())
   }
@@ -185,6 +192,7 @@
   if (.ddg.debug.lib()) {
     print(paste("data2proc: ", dname, " ", pname, sep=""))
     print(paste("DF ", node1, " ", node2, sep=""))
+    print (sys.calls())
   }
   
   invisible()

@@ -454,7 +454,7 @@ methods::setMethod ("initialize",
 .ddg.find.var.uses <- function(main.object) {
   # Recursive helper function.
   .ddg.find.var.uses.rec <- function(obj) {
-
+    
     # Base cases.
     if (is.atomic(obj)) {
       return(character())  # A name is not atomic!
@@ -522,7 +522,7 @@ methods::setMethod ("initialize",
         # Not an assignment.  Recurse on all parts of the expression
         # except the operator.
         else {
-          unique(unlist(lapply(obj[2:length(obj)], .ddg.find.var.uses.rec)))
+          unique(unlist(lapply(obj[1:length(obj)], .ddg.find.var.uses.rec)))
         }
       },
       error = function(e)
