@@ -4,6 +4,8 @@
 * Added prov.summarize function
 * Modified prov.source so that it can be called even when provenance is not initialized.  In
 that case it just sources the script.
+* Fixed a bug that prevented creation of data->proc edges for calls to locally-defined 
+functions that take no parameters.
 
 # rdtLite 1.0.2
 
