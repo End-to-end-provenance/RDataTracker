@@ -12,15 +12,26 @@
 
 library(methods)
 
-# determine which prov-collection library to run
-tool <- commandArgs(TRUE)[1]
+# command arguments
+args <- commandArgs(TRUE)
 
+tool <- args[1]
+detailLevel <- args[2]
+
+# determine library
 if( identical(tool, "rdt") ) {
 	library(rdt)
 } else if( identical(tool, "rdtLite") ) {
 	library(rdtLite)
 } else {
 	stop("Provenance collection library is not specified.", call. = FALSE)
+}
+
+# determine detail level
+if( identical(detailLevel, "true") ) {
+	detailLevel <- TRUE
+} else {
+	detailLevel <- FALSE
 }
 
 ## Directories
@@ -36,10 +47,13 @@ options(useFancyQuotes=FALSE)
 
 # Run the script
 if( identical(tool, "rdt") ) {
-	prov.run("[SCRIPT]", "[DIR_DDG]", annotate.inside.functions=TRUE, 
+	prov.run("[SCRIPT]", "[DIR_DDG]", 
+		details=detailLevel,
+		annotate.inside.functions=TRUE, 
 		max.loops=1, snapshot.size=10)
 } else if( identical(tool, "rdtLite") ) {
-	prov.run("[SCRIPT]", "[DIR_DDG]", snapshot.size=10)
+	prov.run("[SCRIPT]", "[DIR_DDG]", 
+		details=detailLevel, snapshot.size=10)
 } else {
 	stop("Provenance collection library is not found.", call. = FALSE)
 }
