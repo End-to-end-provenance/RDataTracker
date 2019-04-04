@@ -1,5 +1,7 @@
 # rdtLite 1.0.3
 
+* Added optional parameter to prov.run to collect provenance for inputs/outputs only
+and not for individual statements
 * Added prov.visualize function
 * Added prov.summarize function
 * Modified prov.source so that it can be called even when provenance is not initialized.  In
