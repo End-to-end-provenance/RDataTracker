@@ -16,7 +16,8 @@ prov.save(save.debug = FALSE)
 prov.quit(save.debug = FALSE)
 
 prov.run(r.script.path, prov.dir = NULL, overwrite = TRUE,
-  snapshot.size = 0, hash.algorithm = "md5", save.debug = FALSE)
+  details = TRUE, snapshot.size = 0, hash.algorithm = "md5",
+  save.debug = FALSE)
 
 prov.source(file)
 }
@@ -44,6 +45,9 @@ This is intended for developers of the rdt / rdtLite package.}
 
 \item{r.script.path}{the full path to the R script file that is being 
 executed. A copy of the script will be saved with the provenance graph.}
+
+\item{details}{if FALSE, provenance is not collected for top-level
+statements.}
 
 \item{file}{the name of the R script file to source.}
 }
@@ -120,6 +124,9 @@ parameter prov.dir in the prov.run or prov.init functions, or (2) setting
 the prov.dir option (e.g. by using the R options command or editing the
 Rprofile.site or .Rprofile file). If prov.dir is set to ".", the current working
 directory is used.
+
+If prov.source is called when provenance is not initialized, it
+will just source the file.  No provenance will be collected.
 }
 \examples{
 \dontrun{prov.run ("script.R")}

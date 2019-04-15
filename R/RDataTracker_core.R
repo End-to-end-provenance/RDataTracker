@@ -1161,6 +1161,48 @@
   #}
 }
 
+#' .ddg.evaluate.commands evaluates a list of parsed R statements. Provenance is 
+#' collected for inputs and outputs only. If an error or warning is generated 
+#' when a statement is evaluated, an output exception node is created containing 
+#' the error or warning message.
+
+#' @param exprs list of parsed R statements
+#' @param environ environment in which commands should be executed.
+#' @return nothing
+#' @noRd
+
+.ddg.evaluate.commands <- function (exprs, environ) {
+  for (expr in exprs) {
+    # Evaluate each statement in turn.
+    result <- withCallingHandlers(
+      {
+        return.value <- eval(expr, environ, NULL)
+        .ddg.set ("ddg.error.node.created", FALSE)
+      },
+      warning = .ddg.set.warning,
+      error = function(e)
+        {
+          # If an error occurred, create an error node if not already created.
+          if (!.ddg.get("ddg.error.node.created")) {
+            .ddg.data.node("Exception", "error.msg", toString(e), "ddg.library")
+            .ddg.lastproc2data ("error.msg")
+            .ddg.set ("ddg.error.node.created", TRUE)
+          }
+        }
+    )
+
+    # If a warning occurred, create a warning node.
+    if (.ddg.warning.occurred()) {
+      .ddg.record.warning()
+    }
+
+    # Create nodes & edges for inputs & outputs.
+    .ddg.create.file.read.nodes.and.edges ()
+    .ddg.create.file.write.nodes.and.edges ()
+    .ddg.create.graphics.nodes.and.edges ()
+  }
+}
+
 #' .ddg.push.cmd pushes a command onto the command stack.  The command stack 
 #' remembers the command about to be executed.  It also puts FALSE on the stack 
 #' to indicate that no start node has (yet) been created for the command.

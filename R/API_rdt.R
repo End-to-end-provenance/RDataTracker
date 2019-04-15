@@ -91,15 +91,14 @@
 #' @export
 #' @rdname prov.run
 #' @seealso \code{\link{prov.json}} for access to the JSON text of the provenance, 
-#'   \code{\link{prov.display}} to view the provenance graphically. 
+#'   \code{\link{prov.visualize}} to view the provenance graphically. 
 #'   \code{\link{prov.set.detail}} to see an alternative way to set the amount of
 #'     provenance collected.
 #'   \code{\link{prov.annotate.on}} and \code{\link{prov.annotate.off}} to see how to control
 #'     annotation of individual functions
 
-prov.init <- function(prov.dir = NULL, overwrite = TRUE, annotate.inside.functions = 
-  FALSE, first.loop = 1, max.loops = 0, snapshot.size = 0, hash.algorithm = "md5",
-  save.debug = FALSE) {
+prov.init <- function(prov.dir = NULL, overwrite = TRUE, annotate.inside.functions = FALSE, 
+  first.loop = 1, max.loops = 0, snapshot.size = 0, hash.algorithm = "md5", save.debug = FALSE) {
 
   if (.ddg.is.set("ddg.initialized") && .ddg.get ("ddg.initialized") == TRUE) {
     stop ("Provenance collection is already started.  
@@ -199,6 +198,8 @@ prov.quit <- function(save.debug = FALSE) {
 #' script with calls to prov.init and prov.quit.  
 #' @param r.script.path the full path to the R script file that is being 
 #' executed. A copy of the script will be saved with the provenance graph.
+#' @param details if FALSE, provenance is not collected for top-level
+#' statements.
 #' @param display if TRUE, the provenance graph is displayed in DDG Explorer
 #' @return prov.run runs a script, collecting provenance as it does so.  
 #'   It does not return a value. 
@@ -213,9 +214,9 @@ prov.quit <- function(save.debug = FALSE) {
 #' ab <- a + b
 #' prov.quit()
 
-prov.run <- function(r.script.path, prov.dir = NULL, overwrite = TRUE, 
-  annotate.inside.functions = FALSE, first.loop = 1, max.loops = 0,
-  snapshot.size = 0, hash.algorithm = "md5", save.debug = FALSE, display = FALSE) {
+prov.run <- function(r.script.path, prov.dir = NULL, overwrite = TRUE, details = TRUE, 
+  annotate.inside.functions = FALSE, first.loop = 1, max.loops = 0, snapshot.size = 0, 
+  hash.algorithm = "md5", save.debug = FALSE, display = FALSE) {
 
   # Stop & display message if R script path is missing
   if (missing(r.script.path)) {
@@ -231,6 +232,9 @@ prov.run <- function(r.script.path, prov.dir = NULL, overwrite = TRUE,
   # Store R script path
   .ddg.set("ddg.r.script.path", r.script.path)
 
+  # Store details value
+  .ddg.set("ddg.details", details)
+
   # Set script mode to True
   .ddg.set("ddg.script.mode", TRUE)
 
@@ -242,7 +246,7 @@ prov.run <- function(r.script.path, prov.dir = NULL, overwrite = TRUE,
   .ddg.run(r.script.path)
   
   # Display the graph in DDG Explorer
-  if (display == TRUE) prov.display()
+  if (display == TRUE) prov.visualize()
 }
 
 #' prov.source
@@ -253,6 +257,10 @@ prov.run <- function(r.script.path, prov.dir = NULL, overwrite = TRUE,
 #' using prov.run.  If you want to collect provenance inside scripts
 #' that are loaded with R's source function, you should replace calls 
 #' to source with calls to prov.source.
+#' 
+#' If prov.source is called when provenance is not initialized, it
+#' will just source the file.  No provenance will be collected.
+#' 
 #' @param file the name of the R script file to source.
 #' @return The prov.source function does not return a value.
 #' @export
@@ -260,13 +268,18 @@ prov.run <- function(r.script.path, prov.dir = NULL, overwrite = TRUE,
 
 prov.source <- function(file) {
   
-  # Stop & display message if argument is missing or not in script mode
-  if (missing(file) || !.ddg.script.mode()) {
-    stop("The prov.source function is for script annotation only.
-      Please use prov.run to execute a script and collect provenance.")
+  # Stop & display message if argument is missing or in console mode
+  if (missing(file)) {
+    stop("Please provide the name of an R script file in the call to prov.source.")
   }
   
-  .ddg.source(file)
+  if (.ddg.is.init()) {
+    .ddg.source(file)
+  }
+  else {
+    source (file)
+  }
+  
 }
 
 #' Provenance Access Functions
@@ -279,7 +292,7 @@ prov.source <- function(file) {
 #' JSON is consistent with the PROV-JSON standard.
 #' 
 #' One such application is a graphic visualizer built into rdt.
-#' To view the provenance graphically, call prov.display.  In the provenance
+#' To view the provenance graphically, call prov.visualize.  In the provenance
 #' graph, the nodes are data values and operations, with edges connecting 
 #' them to show data and control flow dependencies.  The visualizer also
 #' allows the user to view intermediate values of variables, and to graphically
@@ -302,7 +315,7 @@ prov.source <- function(file) {
 #' prov.quit()
 #' str <- prov.json()
 #' pdir <- prov.dir()
-#' \dontrun{prov.display()} 
+#' \dontrun{prov.visualize()} 
 
 prov.json <- function() {
   # This is a wrapper function.
@@ -328,18 +341,41 @@ prov.dir <- function() {
   return(.ddg.path())
 }
 
-#' prov.display
+#' prov.visualize
 #'
-#' prov.display displays the current provenance as a graph.
-#' @return prov.display loads and displays the current provenance graph
-#' in DDG Explorer. The prov.display function does not return a value.
+#' prov.visualize displays the current provenance as a graph.
+#' @return prov.visualize loads and displays the current provenance graph
+#' in DDG Explorer. The prov.visualize function does not return a value.
 #' @export 
 #' @rdname prov.json
 
-prov.display <- function () {
-  provViz::prov.visualize(tool="rdt")
+prov.visualize <- function () {
+  provViz::prov.visualize()
   invisible()
 }
+
+#' prov.summarize
+#'
+#' prov.summarize outputs a text summary to the R console
+#' 
+#' Creating a zip file depends on a zip executable being on the search path.
+#' By default, it looks for a program named zip.  To use a program with 
+#' a different name, set the value of the R_ZIPCMD environment variable.  This
+#' code has been tested with Unix zip and with 7-zip on Windows.  
+#' 
+#' @param save if true saves the summary to the file prov-summary.txt in the 
+#' provenance directory
+#' @param create.zip if true all of the provenance data will be packaged up
+#'   into a zip file stored in the current working directory.
+#' 
+#' @export
+#' @rdname prov.json
+
+prov.summarize <- function (save=FALSE, create.zip=FALSE) {
+  provSummarizeR::prov.summarize(save, create.zip)
+  invisible()
+}
+
 
 #' .ddg.set.annotation.functions sets the names of the functions used for script
 #' annotation in the user's environment.  This is a workaround to exporting

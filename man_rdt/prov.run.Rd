@@ -17,9 +17,9 @@ prov.save(save.debug = FALSE)
 prov.quit(save.debug = FALSE)
 
 prov.run(r.script.path, prov.dir = NULL, overwrite = TRUE,
-  annotate.inside.functions = FALSE, first.loop = 1, max.loops = 0,
-  snapshot.size = 0, hash.algorithm = "md5", save.debug = FALSE,
-  display = FALSE)
+  details = TRUE, annotate.inside.functions = FALSE, first.loop = 1,
+  max.loops = 0, snapshot.size = 0, hash.algorithm = "md5",
+  save.debug = FALSE, display = FALSE)
 
 prov.source(file)
 }
@@ -60,6 +60,9 @@ This is intended for developers of the rdt / rdtLite package.}
 
 \item{r.script.path}{the full path to the R script file that is being 
 executed. A copy of the script will be saved with the provenance graph.}
+
+\item{details}{if FALSE, provenance is not collected for top-level
+statements.}
 
 \item{display}{if TRUE, the provenance graph is displayed in DDG Explorer}
 
@@ -146,6 +149,9 @@ snapshots of large intermediate values as separate files. These
 features are turned off by default to optimize performance. Common
 settings for the level of detail can also be set and managed using the 
 prov.set.detail and related functions.
+
+If prov.source is called when provenance is not initialized, it
+will just source the file.  No provenance will be collected.
 }
 \examples{
 \dontrun{prov.run ("script.R")}
@@ -158,7 +164,7 @@ prov.quit()
 }
 \seealso{
 \code{\link{prov.json}} for access to the JSON text of the provenance, 
-  \code{\link{prov.display}} to view the provenance graphically. 
+  \code{\link{prov.visualize}} to view the provenance graphically. 
   \code{\link{prov.set.detail}} to see an alternative way to set the amount of
     provenance collected.
   \code{\link{prov.annotate.on}} and \code{\link{prov.annotate.off}} to see how to control

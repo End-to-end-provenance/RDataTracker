@@ -29,6 +29,8 @@ was used, and prov.quit is used to save and close the provenance file.
 Simple data values are stored in the PROV-JSON file. "Snapshots" of complex
 data values (e.g. data frames) are optionally stored by adjusting
 the value of the parameter max.snapshot.size in prov.run or prov.init.
+To collect provenance for inputs/outputs only and not for individual statements,
+set the parameter details to FALSE in prov.run.
 
 rdtLite belongs to a collection of [R Tools](https://github.com/End-to-end-provenance/End-to-end-provenance.github.io/blob/master/RTools.md) developed as part of a larger project on [End-to-end-provenance](https://github.com/End-to-end-provenance/End-to-end-provenance.github.io/blob/master/README.md).
 

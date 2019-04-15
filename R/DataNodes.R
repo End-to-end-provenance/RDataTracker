@@ -773,7 +773,7 @@
   if (file.exists(file.loc)) {
     # Create file node in DDG.
     dpfile.out <- .ddg.file.node("File", fname, dname, dscope)
-    file.copy(file.loc, dpfile.out, overwrite=TRUE)
+    file.copy(file.loc, dpfile.out, overwrite=TRUE, copy.date=TRUE)
   }
   else {
     # For zipfiles, 
@@ -781,7 +781,7 @@
     if (file.exists(file.loc)) {
       # Create file node in DDG.
       dpfile.out <- .ddg.file.node("File", fname, dname, dscope)
-      file.copy(file.loc, dpfile.out, overwrite=TRUE)
+      file.copy(file.loc, dpfile.out, overwrite=TRUE, copy.date=TRUE)
     }
     else {
       error.msg <- paste("File to copy does not exist:", fname)
