@@ -5,7 +5,6 @@
 	},
 
 	"agent" : {
-		// agent: this json file and the tool that produced this
 		"rdt:a1": {
 			"rdt:tool.name": "rdtLite",
 			"rdt:tool.version": "1.0.3",
@@ -14,11 +13,10 @@
 	},
 
 	"activity" : {
-		// procedure nodes
 		"rdt:p1": {
 			"rdt:name": "NoDevOff.R",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 0.95,
+			"rdt:elapsedTime": 0.88,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -28,7 +26,7 @@
 		"rdt:p2": {
 			"rdt:name": "data(mtcars)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1,
+			"rdt:elapsedTime": 0.94,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 4,
 			"rdt:startCol": 1,
@@ -38,7 +36,7 @@
 		"rdt:p3": {
 			"rdt:name": "allCars.df <- mtcars",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.05,
+			"rdt:elapsedTime": 1,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 7,
 			"rdt:startCol": 1,
@@ -48,7 +46,7 @@
 		"rdt:p4": {
 			"rdt:name": "cars4Cyl.df <- allCars.df[allCars.df$cyl == 4, ]",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.13,
+			"rdt:elapsedTime": 1.07,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 10,
 			"rdt:startCol": 1,
@@ -58,7 +56,7 @@
 		"rdt:p5": {
 			"rdt:name": "cars6Cyl.df <- allCars.df[allCars.df$cyl == 6, ]",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.15,
+			"rdt:elapsedTime": 1.07,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 11,
 			"rdt:startCol": 1,
@@ -68,7 +66,7 @@
 		"rdt:p6": {
 			"rdt:name": "cars8Cyl.df <- allCars.df[allCars.df$cyl == 8, ]",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.16,
+			"rdt:elapsedTime": 1.09,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 12,
 			"rdt:startCol": 1,
@@ -78,7 +76,7 @@
 		"rdt:p7": {
 			"rdt:name": "cylinders = c(4, 6, 8)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.18,
+			"rdt:elapsedTime": 1.12,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 15,
 			"rdt:startCol": 1,
@@ -88,7 +86,7 @@
 		"rdt:p8": {
 			"rdt:name": "mpg = c(mean(cars4Cyl.df$mpg), mean(cars6Cyl.df$mpg), mean(c",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.18,
+			"rdt:elapsedTime": 1.12,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 15,
 			"rdt:startCol": 13,
@@ -98,7 +96,7 @@
 		"rdt:p9": {
 			"rdt:name": "plot(cylinders, mpg)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.25,
+			"rdt:elapsedTime": 1.17,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 16,
 			"rdt:startCol": 1,
@@ -108,7 +106,7 @@
 		"rdt:p10": {
 			"rdt:name": "X11()",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.28,
+			"rdt:elapsedTime": 1.22,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 16,
 			"rdt:startCol": 7,
@@ -118,7 +116,7 @@
 		"rdt:p11": {
 			"rdt:name": "plot(cylinders, mpg)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.3,
+			"rdt:elapsedTime": 1.23,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 19,
 			"rdt:startCol": 1,
@@ -128,7 +126,7 @@
 		"rdt:p12": {
 			"rdt:name": "plot(cylinders, mpg)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.3,
+			"rdt:elapsedTime": 1.24,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 22,
 			"rdt:startCol": 1,
@@ -138,7 +136,7 @@
 		"rdt:p13": {
 			"rdt:name": "x <- 1",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.3,
+			"rdt:elapsedTime": 1.24,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 23,
 			"rdt:startCol": 1,
@@ -148,7 +146,7 @@
 		"rdt:p14": {
 			"rdt:name": "NoDevOff.R",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 1.3,
+			"rdt:elapsedTime": 1.24,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -158,7 +156,6 @@
 	},
 
 	"entity" : {
-		// data nodes
 		"rdt:d1": {
 			"rdt:name": "mtcars",
 			"rdt:value": "data/1-mtcars.csv",
@@ -167,7 +164,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": true,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-01-07T23.58.21EST",
+			"rdt:timestamp": "2019-05-07T12.47.39EDT",
 			"rdt:location": ""
 		},
 		"rdt:d2": {
@@ -178,7 +175,7 @@
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
 			"rdt:hash": "afe1c92ec693931a928a7577a2f0bc03",
-			"rdt:timestamp": "2019-01-07T23.58.21EST",
+			"rdt:timestamp": "2019-05-07T12.47.39EDT",
 			"rdt:location": "C:/Users/fong22e/Documents/Libraries/R/win-library/ggplot2/data/Rdata.rds"
 		},
 		"rdt:d3": {
@@ -189,7 +186,7 @@
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
 			"rdt:hash": "afe1c92ec693931a928a7577a2f0bc03",
-			"rdt:timestamp": "2019-01-07T23.58.21EST",
+			"rdt:timestamp": "2019-05-07T12.47.39EDT",
 			"rdt:location": "C:/Program Files/R/R-3.5.2/library/datasets/data/Rdata.rds"
 		},
 		"rdt:d4": {
@@ -200,7 +197,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-01-07T23.58.21EST",
+			"rdt:timestamp": "2019-05-07T12.47.39EDT",
 			"rdt:location": ""
 		},
 		"rdt:d5": {
@@ -211,7 +208,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-01-07T23.58.21EST",
+			"rdt:timestamp": "2019-05-07T12.47.39EDT",
 			"rdt:location": ""
 		},
 		"rdt:d6": {
@@ -222,7 +219,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-01-07T23.58.21EST",
+			"rdt:timestamp": "2019-05-07T12.47.39EDT",
 			"rdt:location": ""
 		},
 		"rdt:d7": {
@@ -233,7 +230,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-01-07T23.58.21EST",
+			"rdt:timestamp": "2019-05-07T12.47.39EDT",
 			"rdt:location": ""
 		},
 		"rdt:d8": {
@@ -332,7 +329,7 @@
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
 			"rdt:hash": "de972f9aeed5a58b619bf796d650b72d",
-			"rdt:timestamp": "2019-01-07T23.58.21EST",
+			"rdt:timestamp": "2019-05-07T12.47.39EDT",
 			"rdt:location": "[DIR]/rdtLite/dev.off.16.pdf"
 		},
 		"rdt:d17": {
@@ -343,11 +340,10 @@
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
 			"rdt:hash": "5dbcf8e3ad076c9eb4b81222033f5763",
-			"rdt:timestamp": "2019-01-07T23.58.21EST",
+			"rdt:timestamp": "2019-05-07T12.47.39EDT",
 			"rdt:location": "[DIR]/rdtLite/Rplots.pdf"
 		},
 
-		// environment
 		"rdt:environment": {
 			"rdt:name": "environment",
 			"rdt:architecture": "x86_64",
@@ -355,16 +351,15 @@
 			"rdt:language": "R",
 			"rdt:langVersion": "R version 3.5.2 (2018-12-20)",
 			"rdt:script": "[DIR]/NoDevOff.R",
-			"rdt:scriptTimeStamp": "2019-01-07T21.36.29EST",
+			"rdt:scriptTimeStamp": "2019-04-25T17.09.17EDT",
 			"rdt:sourcedScripts": "",
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:workingDirectory": "[DIR]/rdtLite",
 			"rdt:provDirectory": "[DIR]/rdtLite/prov_NoDevOff",
-			"rdt:provTimestamp": "2019-01-07T23.58.20EST",
+			"rdt:provTimestamp": "2019-05-07T12.47.38EDT",
 			"rdt:hashAlgorithm": "md5"
 		},
 
-		// library nodes - prov collections
 		"rdt:l1": {
 			"name": "base",
 			"version": "3.5.2",
@@ -438,7 +433,6 @@
 			}
 		},
 
-		// function nodes
 		"rdt:f1": {
 			"name": "data"
 		},
@@ -451,7 +445,6 @@
 	},
 
 	"wasInformedBy" : {
-		// procedure-to-procedure edges
 		"rdt:pp1": {
 			"prov:informant": "rdt:p1",
 			"prov:informed": "rdt:p2"
@@ -507,7 +500,6 @@
 	},
 
 	"wasGeneratedBy" : {
-		// procedure-to-data edges
 		"rdt:pd1": {
 			"prov:activity": "rdt:p3",
 			"prov:entity": "rdt:d4"
@@ -563,7 +555,6 @@
 	},
 
 	"used" : {
-		// data-to-procedure edges
 		"rdt:dp1": {
 			"prov:entity": "rdt:d1",
 			"prov:activity": "rdt:p2"
@@ -649,7 +640,6 @@
 			"prov:activity": "rdt:p14"
 		},
 
-		// function-to-procedure edges
 		"rdt:fp1": {
 			"prov:entity": "rdt:f1",
 			"prov:activity": "rdt:p2"
@@ -673,7 +663,6 @@
 	},
 
 	"hadMember" : {
-		// groups function nodes with their library nodes
 		"rdt:m1": {
 			"prov:collection": "rdt:l4",
 			"prov:entity": "rdt:f2"
