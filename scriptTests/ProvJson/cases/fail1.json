@@ -5,7 +5,6 @@
 	},
 
 	"activity" : {
-		// procedure nodes
 		"p1": {
 			"rdt:name": "SourceFuncTest.R",
 			"rdt:type": "Start",
@@ -39,7 +38,6 @@
 	},
 
 	"entity" : {
-		// data nodes
 		"d1": {
 			"rdt:name": "fun",
 			"rdt:value": "#ddg.function",
@@ -85,7 +83,6 @@
 			"rdt:location": ""
 		},
 
-		// environment
 		"environment": {
 			"rdt:name": "environment",
 			"rdt:architecture": "x86_64",
@@ -129,7 +126,6 @@
 			"rdt:hashAlgorithm": "md5"
 		},
 
-		// library nodes - prov collections
 		"l1": {
 			"name": "base",
 			"version": "3.4.3",
@@ -205,7 +201,6 @@
 	},
 
 	"wasInformedBy" : {
-		// procedure-to-procedure edges
 		"pp1": {
 			"prov:informant": "rdt:p1",
 			"prov:informed": "rdt:p2"
@@ -229,7 +224,6 @@
 	},
 
 	"wasGeneratedBy" : {
-		// procedure-to-data edges
 		"pd1": {
 			"prov:activity": "rdt:p2",
 			"prov:entity": "rdt:d1"
@@ -257,7 +251,6 @@
 	},
 
 	"used" : {
-		// data-to-procedure edges
 		"dp1": {
 			"prov:entity": "rdt:d1",
 			"prov:activity": "rdt:p5"
