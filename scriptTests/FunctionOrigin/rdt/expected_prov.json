@@ -5,7 +5,6 @@
 	},
 
 	"agent" : {
-		// agent: this json file and the tool that produced this
 		"rdt:a1": {
 			"rdt:tool.name": "rdt",
 			"rdt:tool.version": "3.0.3",
@@ -14,11 +13,10 @@
 	},
 
 	"activity" : {
-		// procedure nodes
 		"rdt:p1": {
 			"rdt:name": "FunctionOrigin.R",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 0.873,
+			"rdt:elapsedTime": 1.25,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -28,7 +26,7 @@
 		"rdt:p2": {
 			"rdt:name": "stopifnot(is.double(10))",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.055,
+			"rdt:elapsedTime": 1.39,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 8,
 			"rdt:startCol": 1,
@@ -38,7 +36,7 @@
 		"rdt:p3": {
 			"rdt:name": "stopifnot(identical(stringr::str_to_upper(\"apple\"), \"APPLE\")",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.108,
+			"rdt:elapsedTime": 1.42,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 12,
 			"rdt:startCol": 1,
@@ -48,7 +46,7 @@
 		"rdt:p4": {
 			"rdt:name": "stopifnot(identical(stringr:::str_to_lower(\"BAGEL\"), \"bagel\"",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.115,
+			"rdt:elapsedTime": 1.42,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 13,
 			"rdt:startCol": 1,
@@ -58,7 +56,7 @@
 		"rdt:p5": {
 			"rdt:name": "stopifnot(as.numeric(utils::as.roman(stringi::stri_reverse(s",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.124,
+			"rdt:elapsedTime": 1.44,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 15,
 			"rdt:startCol": 1,
@@ -68,7 +66,7 @@
 		"rdt:p6": {
 			"rdt:name": "a <- c(1:10)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.135,
+			"rdt:elapsedTime": 1.44,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 19,
 			"rdt:startCol": 1,
@@ -78,7 +76,7 @@
 		"rdt:p7": {
 			"rdt:name": "stopifnot(identical(mapply(`+`, a, 1), as.double(c(2:11))))",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.143,
+			"rdt:elapsedTime": 1.44,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 20,
 			"rdt:startCol": 1,
@@ -88,7 +86,7 @@
 		"rdt:p8": {
 			"rdt:name": "a <- c(\"a\", \"b\")",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.156,
+			"rdt:elapsedTime": 1.45,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 22,
 			"rdt:startCol": 1,
@@ -98,7 +96,7 @@
 		"rdt:p9": {
 			"rdt:name": "identical(stringi::stri_flatten(sapply(a, stringr::str_to_up",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.161,
+			"rdt:elapsedTime": 1.45,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 23,
 			"rdt:startCol": 1,
@@ -108,7 +106,7 @@
 		"rdt:p10": {
 			"rdt:name": "vector()",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.169,
+			"rdt:elapsedTime": 1.47,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 27,
 			"rdt:startCol": 1,
@@ -118,7 +116,7 @@
 		"rdt:p11": {
 			"rdt:name": "a <- data.frame(c(1:3), c(11:13))",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.172,
+			"rdt:elapsedTime": 1.47,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 31,
 			"rdt:startCol": 1,
@@ -128,7 +126,7 @@
 		"rdt:p12": {
 			"rdt:name": "a[2, ]",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.189,
+			"rdt:elapsedTime": 1.49,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 32,
 			"rdt:startCol": 1,
@@ -138,7 +136,7 @@
 		"rdt:p13": {
 			"rdt:name": "1",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.193,
+			"rdt:elapsedTime": 1.49,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 36,
 			"rdt:startCol": 1,
@@ -148,7 +146,7 @@
 		"rdt:p14": {
 			"rdt:name": "a",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.194,
+			"rdt:elapsedTime": 1.49,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 37,
 			"rdt:startCol": 1,
@@ -158,7 +156,7 @@
 		"rdt:p15": {
 			"rdt:name": "library(stringi)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.207,
+			"rdt:elapsedTime": 1.5,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 41,
 			"rdt:startCol": 1,
@@ -168,7 +166,7 @@
 		"rdt:p16": {
 			"rdt:name": "stopifnot(identical(stri_join(\"ab\", \"cde\"), \"abcde\"))",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.211,
+			"rdt:elapsedTime": 1.5,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 42,
 			"rdt:startCol": 1,
@@ -178,7 +176,7 @@
 		"rdt:p17": {
 			"rdt:name": "stopifnot(as.numeric(stri_flatten(stri_sort(stri_reverse(str",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.22,
+			"rdt:elapsedTime": 1.5,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 46,
 			"rdt:startCol": 1,
@@ -188,7 +186,7 @@
 		"rdt:p18": {
 			"rdt:name": "stopifnot(identical(stri_reverse(stri_reverse((\"cat\"))), \"ca",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.236,
+			"rdt:elapsedTime": 1.5,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 54,
 			"rdt:startCol": 1,
@@ -198,7 +196,7 @@
 		"rdt:p19": {
 			"rdt:name": "library(stringr)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.253,
+			"rdt:elapsedTime": 1.52,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 58,
 			"rdt:startCol": 1,
@@ -208,7 +206,7 @@
 		"rdt:p20": {
 			"rdt:name": "stopifnot(as.numeric(stri_flatten(stri_sort(stri_trim(stri_r",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.258,
+			"rdt:elapsedTime": 1.53,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 59,
 			"rdt:startCol": 1,
@@ -218,7 +216,7 @@
 		"rdt:p21": {
 			"rdt:name": "stopifnot(identical(format(as.person(\"a\")), \"a\"))",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.274,
+			"rdt:elapsedTime": 1.53,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 69,
 			"rdt:startCol": 1,
@@ -228,7 +226,7 @@
 		"rdt:p22": {
 			"rdt:name": "as.person <- function(obj) {\treturn(5)}",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.281,
+			"rdt:elapsedTime": 1.55,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 71,
 			"rdt:startCol": 1,
@@ -238,7 +236,7 @@
 		"rdt:p23": {
 			"rdt:name": "stopifnot(identical(as.person(\"a\"), 5))",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 1.349,
+			"rdt:elapsedTime": 1.58,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 76,
 			"rdt:startCol": 1,
@@ -248,7 +246,7 @@
 		"rdt:p24": {
 			"rdt:name": "as.person(\"a\")",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 1.354,
+			"rdt:elapsedTime": 1.58,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -258,7 +256,7 @@
 		"rdt:p25": {
 			"rdt:name": "obj <- \"a\"",
 			"rdt:type": "Binding",
-			"rdt:elapsedTime": 1.355,
+			"rdt:elapsedTime": 1.58,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -268,7 +266,7 @@
 		"rdt:p26": {
 			"rdt:name": "as.person",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.359,
+			"rdt:elapsedTime": 1.58,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -278,7 +276,7 @@
 		"rdt:p27": {
 			"rdt:name": "return(5)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.364,
+			"rdt:elapsedTime": 1.58,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 73,
 			"rdt:startCol": 3,
@@ -288,7 +286,7 @@
 		"rdt:p28": {
 			"rdt:name": "as.person(\"a\")",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 1.372,
+			"rdt:elapsedTime": 1.58,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -298,7 +296,7 @@
 		"rdt:p29": {
 			"rdt:name": "stopifnot(identical(as.person(\"a\"), 5))",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 1.372,
+			"rdt:elapsedTime": 1.58,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 76,
 			"rdt:startCol": 1,
@@ -308,7 +306,7 @@
 		"rdt:p30": {
 			"rdt:name": "fn <- function(a) {\tstopifnot(is.double(a))\tif (a < 10",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.375,
+			"rdt:elapsedTime": 1.58,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 80,
 			"rdt:startCol": 1,
@@ -318,7 +316,7 @@
 		"rdt:p31": {
 			"rdt:name": "stopifnot(identical(as.double(fn(1)), 1))",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 1.394,
+			"rdt:elapsedTime": 1.6,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 90,
 			"rdt:startCol": 1,
@@ -328,7 +326,7 @@
 		"rdt:p32": {
 			"rdt:name": "fn(1)",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 1.401,
+			"rdt:elapsedTime": 1.6,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -338,7 +336,7 @@
 		"rdt:p33": {
 			"rdt:name": "a  <-  1",
 			"rdt:type": "Binding",
-			"rdt:elapsedTime": 1.402,
+			"rdt:elapsedTime": 1.6,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -348,7 +346,7 @@
 		"rdt:p34": {
 			"rdt:name": "fn",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.404,
+			"rdt:elapsedTime": 1.6,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -358,7 +356,7 @@
 		"rdt:p35": {
 			"rdt:name": "stopifnot(is.double(a))",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.407,
+			"rdt:elapsedTime": 1.6,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -368,7 +366,7 @@
 		"rdt:p36": {
 			"rdt:name": "if (a < 10) return(as.roman(a)) else return(is.leaf(a))",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 1.417,
+			"rdt:elapsedTime": 1.61,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -378,7 +376,7 @@
 		"rdt:p37": {
 			"rdt:name": "if",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 1.424,
+			"rdt:elapsedTime": 1.63,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -388,7 +386,7 @@
 		"rdt:p38": {
 			"rdt:name": "return(as.roman(a))",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.425,
+			"rdt:elapsedTime": 1.63,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -398,7 +396,7 @@
 		"rdt:p39": {
 			"rdt:name": "if",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 1.433,
+			"rdt:elapsedTime": 1.63,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -408,7 +406,7 @@
 		"rdt:p40": {
 			"rdt:name": "if (a < 10) return(as.roman(a)) else return(is.leaf(a))",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 1.433,
+			"rdt:elapsedTime": 1.63,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -418,7 +416,7 @@
 		"rdt:p41": {
 			"rdt:name": "fn(1)",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 1.435,
+			"rdt:elapsedTime": 1.63,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -428,7 +426,7 @@
 		"rdt:p42": {
 			"rdt:name": "stopifnot(identical(as.double(fn(1)), 1))",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 1.436,
+			"rdt:elapsedTime": 1.63,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 90,
 			"rdt:startCol": 1,
@@ -438,7 +436,7 @@
 		"rdt:p43": {
 			"rdt:name": "stopifnot(!fn(11))",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 1.443,
+			"rdt:elapsedTime": 1.63,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 91,
 			"rdt:startCol": 1,
@@ -448,7 +446,7 @@
 		"rdt:p44": {
 			"rdt:name": "fn(11)",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 1.446,
+			"rdt:elapsedTime": 1.63,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -458,7 +456,7 @@
 		"rdt:p45": {
 			"rdt:name": "a  <-  11",
 			"rdt:type": "Binding",
-			"rdt:elapsedTime": 1.446,
+			"rdt:elapsedTime": 1.63,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -468,7 +466,7 @@
 		"rdt:p46": {
 			"rdt:name": "fn",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.448,
+			"rdt:elapsedTime": 1.65,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -478,7 +476,7 @@
 		"rdt:p47": {
 			"rdt:name": "stopifnot(is.double(a))",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.451,
+			"rdt:elapsedTime": 1.65,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -488,7 +486,7 @@
 		"rdt:p48": {
 			"rdt:name": "if (a < 10) return(as.roman(a)) else return(is.leaf(a))",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 1.461,
+			"rdt:elapsedTime": 1.65,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -498,7 +496,7 @@
 		"rdt:p49": {
 			"rdt:name": "if",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 1.471,
+			"rdt:elapsedTime": 1.65,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -508,7 +506,7 @@
 		"rdt:p50": {
 			"rdt:name": "return(is.leaf(a))",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.472,
+			"rdt:elapsedTime": 1.65,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -518,7 +516,7 @@
 		"rdt:p51": {
 			"rdt:name": "if",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 1.479,
+			"rdt:elapsedTime": 1.66,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -528,7 +526,7 @@
 		"rdt:p52": {
 			"rdt:name": "if (a < 10) return(as.roman(a)) else return(is.leaf(a))",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 1.48,
+			"rdt:elapsedTime": 1.66,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -538,7 +536,7 @@
 		"rdt:p53": {
 			"rdt:name": "fn(11)",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 1.483,
+			"rdt:elapsedTime": 1.66,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -548,7 +546,7 @@
 		"rdt:p54": {
 			"rdt:name": "stopifnot(!fn(11))",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 1.483,
+			"rdt:elapsedTime": 1.66,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 91,
 			"rdt:startCol": 1,
@@ -558,7 +556,7 @@
 		"rdt:p55": {
 			"rdt:name": "fn1 <- function(b) {\tstopifnot(is.double(b))\tif (b < 1",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.484,
+			"rdt:elapsedTime": 1.66,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 95,
 			"rdt:startCol": 1,
@@ -568,7 +566,7 @@
 		"rdt:p56": {
 			"rdt:name": "stopifnot(identical(as.double(fn1(1)), 1))",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 1.496,
+			"rdt:elapsedTime": 1.67,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 105,
 			"rdt:startCol": 1,
@@ -578,7 +576,7 @@
 		"rdt:p57": {
 			"rdt:name": "fn1(1)",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 1.501,
+			"rdt:elapsedTime": 1.67,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -588,7 +586,7 @@
 		"rdt:p58": {
 			"rdt:name": "b  <-  1",
 			"rdt:type": "Binding",
-			"rdt:elapsedTime": 1.501,
+			"rdt:elapsedTime": 1.67,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -598,7 +596,7 @@
 		"rdt:p59": {
 			"rdt:name": "fn1",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.503,
+			"rdt:elapsedTime": 1.67,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -608,7 +606,7 @@
 		"rdt:p60": {
 			"rdt:name": "stopifnot(is.double(b))",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.506,
+			"rdt:elapsedTime": 1.67,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -618,7 +616,7 @@
 		"rdt:p61": {
 			"rdt:name": "if (b < 10) as.roman(b) else is.leaf(b)",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 1.516,
+			"rdt:elapsedTime": 1.69,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -628,7 +626,7 @@
 		"rdt:p62": {
 			"rdt:name": "if",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 1.522,
+			"rdt:elapsedTime": 1.69,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -638,7 +636,7 @@
 		"rdt:p63": {
 			"rdt:name": "as.roman(b)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.523,
+			"rdt:elapsedTime": 1.69,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -648,7 +646,7 @@
 		"rdt:p64": {
 			"rdt:name": "if",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 1.528,
+			"rdt:elapsedTime": 1.69,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -658,7 +656,7 @@
 		"rdt:p65": {
 			"rdt:name": "if (b < 10) as.roman(b) else is.leaf(b)",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 1.529,
+			"rdt:elapsedTime": 1.69,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -668,7 +666,7 @@
 		"rdt:p66": {
 			"rdt:name": "fn1(1)",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 1.53,
+			"rdt:elapsedTime": 1.69,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -678,7 +676,7 @@
 		"rdt:p67": {
 			"rdt:name": "stopifnot(identical(as.double(fn1(1)), 1))",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 1.531,
+			"rdt:elapsedTime": 1.69,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 105,
 			"rdt:startCol": 1,
@@ -688,7 +686,7 @@
 		"rdt:p68": {
 			"rdt:name": "stopifnot(!fn1(11))",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 1.539,
+			"rdt:elapsedTime": 1.69,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 106,
 			"rdt:startCol": 1,
@@ -698,7 +696,7 @@
 		"rdt:p69": {
 			"rdt:name": "fn1(11)",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 1.541,
+			"rdt:elapsedTime": 1.7,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -708,7 +706,7 @@
 		"rdt:p70": {
 			"rdt:name": "b  <-  11",
 			"rdt:type": "Binding",
-			"rdt:elapsedTime": 1.541,
+			"rdt:elapsedTime": 1.7,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -718,7 +716,7 @@
 		"rdt:p71": {
 			"rdt:name": "fn1",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.544,
+			"rdt:elapsedTime": 1.7,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -728,7 +726,7 @@
 		"rdt:p72": {
 			"rdt:name": "stopifnot(is.double(b))",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.547,
+			"rdt:elapsedTime": 1.7,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -738,7 +736,7 @@
 		"rdt:p73": {
 			"rdt:name": "if (b < 10) as.roman(b) else is.leaf(b)",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 1.554,
+			"rdt:elapsedTime": 1.7,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -748,7 +746,7 @@
 		"rdt:p74": {
 			"rdt:name": "if",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 1.561,
+			"rdt:elapsedTime": 1.72,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -758,7 +756,7 @@
 		"rdt:p75": {
 			"rdt:name": "is.leaf(b)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.562,
+			"rdt:elapsedTime": 1.72,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -768,7 +766,7 @@
 		"rdt:p76": {
 			"rdt:name": "if",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 1.568,
+			"rdt:elapsedTime": 1.72,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -778,7 +776,7 @@
 		"rdt:p77": {
 			"rdt:name": "if (b < 10) as.roman(b) else is.leaf(b)",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 1.568,
+			"rdt:elapsedTime": 1.72,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -788,7 +786,7 @@
 		"rdt:p78": {
 			"rdt:name": "fn1(11)",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 1.571,
+			"rdt:elapsedTime": 1.72,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -798,7 +796,7 @@
 		"rdt:p79": {
 			"rdt:name": "stopifnot(!fn1(11))",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 1.571,
+			"rdt:elapsedTime": 1.72,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 106,
 			"rdt:startCol": 1,
@@ -808,7 +806,7 @@
 		"rdt:p80": {
 			"rdt:name": "fn2 <- function(d) {\tstopifnot(is.double(d))\tas.roman(",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.572,
+			"rdt:elapsedTime": 1.72,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 110,
 			"rdt:startCol": 1,
@@ -818,7 +816,7 @@
 		"rdt:p81": {
 			"rdt:name": "stopifnot(identical(as.double(fn2(15)), 15))",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 1.583,
+			"rdt:elapsedTime": 1.75,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 116,
 			"rdt:startCol": 1,
@@ -828,7 +826,7 @@
 		"rdt:p82": {
 			"rdt:name": "fn2(15)",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 1.587,
+			"rdt:elapsedTime": 1.75,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -838,7 +836,7 @@
 		"rdt:p83": {
 			"rdt:name": "d  <-  15",
 			"rdt:type": "Binding",
-			"rdt:elapsedTime": 1.588,
+			"rdt:elapsedTime": 1.75,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -848,7 +846,7 @@
 		"rdt:p84": {
 			"rdt:name": "fn2",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.59,
+			"rdt:elapsedTime": 1.75,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -858,7 +856,7 @@
 		"rdt:p85": {
 			"rdt:name": "stopifnot(is.double(d))",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.593,
+			"rdt:elapsedTime": 1.75,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -868,7 +866,7 @@
 		"rdt:p86": {
 			"rdt:name": "as.roman(d)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.602,
+			"rdt:elapsedTime": 1.75,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -878,7 +876,7 @@
 		"rdt:p87": {
 			"rdt:name": "fn2(15)",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 1.623,
+			"rdt:elapsedTime": 1.76,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -888,7 +886,7 @@
 		"rdt:p88": {
 			"rdt:name": "stopifnot(identical(as.double(fn2(15)), 15))",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 1.624,
+			"rdt:elapsedTime": 1.76,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 116,
 			"rdt:startCol": 1,
@@ -898,7 +896,7 @@
 		"rdt:p89": {
 			"rdt:name": "fn3 <- function(e) {\tstopifnot(is.double(e))\treturn(as",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.625,
+			"rdt:elapsedTime": 1.76,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 120,
 			"rdt:startCol": 1,
@@ -908,7 +906,7 @@
 		"rdt:p90": {
 			"rdt:name": "stopifnot(identical(as.double(fn3(15)), 15))",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 1.638,
+			"rdt:elapsedTime": 1.76,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 126,
 			"rdt:startCol": 1,
@@ -918,7 +916,7 @@
 		"rdt:p91": {
 			"rdt:name": "fn3(15)",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 1.642,
+			"rdt:elapsedTime": 1.76,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -928,7 +926,7 @@
 		"rdt:p92": {
 			"rdt:name": "e  <-  15",
 			"rdt:type": "Binding",
-			"rdt:elapsedTime": 1.642,
+			"rdt:elapsedTime": 1.76,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -938,7 +936,7 @@
 		"rdt:p93": {
 			"rdt:name": "fn3",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.645,
+			"rdt:elapsedTime": 1.76,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -948,7 +946,7 @@
 		"rdt:p94": {
 			"rdt:name": "stopifnot(is.double(e))",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.647,
+			"rdt:elapsedTime": 1.76,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -958,7 +956,7 @@
 		"rdt:p95": {
 			"rdt:name": "return(as.roman(e))",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.654,
+			"rdt:elapsedTime": 1.78,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -968,7 +966,7 @@
 		"rdt:p96": {
 			"rdt:name": "fn3(15)",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 1.662,
+			"rdt:elapsedTime": 1.78,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -978,7 +976,7 @@
 		"rdt:p97": {
 			"rdt:name": "stopifnot(identical(as.double(fn3(15)), 15))",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 1.662,
+			"rdt:elapsedTime": 1.78,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 126,
 			"rdt:startCol": 1,
@@ -988,7 +986,7 @@
 		"rdt:p98": {
 			"rdt:name": "fn4 <- function(f) {\tstopifnot(is.double(f))\tfor (i in",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.663,
+			"rdt:elapsedTime": 1.78,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 130,
 			"rdt:startCol": 1,
@@ -998,7 +996,7 @@
 		"rdt:p99": {
 			"rdt:name": "stopifnot(is.null(fn4(20)))",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 1.678,
+			"rdt:elapsedTime": 1.8,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 140,
 			"rdt:startCol": 1,
@@ -1008,7 +1006,7 @@
 		"rdt:p100": {
 			"rdt:name": "fn4(20)",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 1.681,
+			"rdt:elapsedTime": 1.82,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -1018,7 +1016,7 @@
 		"rdt:p101": {
 			"rdt:name": "f  <-  20",
 			"rdt:type": "Binding",
-			"rdt:elapsedTime": 1.682,
+			"rdt:elapsedTime": 1.82,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -1028,7 +1026,7 @@
 		"rdt:p102": {
 			"rdt:name": "fn4",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.685,
+			"rdt:elapsedTime": 1.82,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -1038,7 +1036,7 @@
 		"rdt:p103": {
 			"rdt:name": "stopifnot(is.double(f))",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.691,
+			"rdt:elapsedTime": 1.82,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -1048,7 +1046,7 @@
 		"rdt:p104": {
 			"rdt:name": "for (i in 1:10) {\tas.roman(f + i)}",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 1.698,
+			"rdt:elapsedTime": 1.82,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -1058,7 +1056,7 @@
 		"rdt:p105": {
 			"rdt:name": "for loop",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 1.703,
+			"rdt:elapsedTime": 1.83,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -1068,7 +1066,7 @@
 		"rdt:p106": {
 			"rdt:name": "i <- 1",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.704,
+			"rdt:elapsedTime": 1.83,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -1078,7 +1076,7 @@
 		"rdt:p107": {
 			"rdt:name": "as.roman(f + i)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.706,
+			"rdt:elapsedTime": 1.83,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -1088,7 +1086,7 @@
 		"rdt:p108": {
 			"rdt:name": "for loop",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 1.713,
+			"rdt:elapsedTime": 1.85,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -1098,7 +1096,7 @@
 		"rdt:p109": {
 			"rdt:name": "Details Omitted",
 			"rdt:type": "Incomplete",
-			"rdt:elapsedTime": 1.713,
+			"rdt:elapsedTime": 1.85,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -1108,7 +1106,7 @@
 		"rdt:p110": {
 			"rdt:name": "for (i in 1:10) {\tas.roman(f + i)}",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 1.714,
+			"rdt:elapsedTime": 1.85,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -1118,7 +1116,7 @@
 		"rdt:p111": {
 			"rdt:name": "fn4(20)",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 1.715,
+			"rdt:elapsedTime": 1.85,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -1128,7 +1126,7 @@
 		"rdt:p112": {
 			"rdt:name": "stopifnot(is.null(fn4(20)))",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 1.715,
+			"rdt:elapsedTime": 1.85,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 140,
 			"rdt:startCol": 1,
@@ -1138,7 +1136,7 @@
 		"rdt:p113": {
 			"rdt:name": "as.roman(z)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.716,
+			"rdt:elapsedTime": 1.85,
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 144,
 			"rdt:startCol": 1,
@@ -1148,7 +1146,7 @@
 		"rdt:p114": {
 			"rdt:name": "FunctionOrigin.R",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 1.72,
+			"rdt:elapsedTime": 1.85,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -1158,7 +1156,6 @@
 	},
 
 	"entity" : {
-		// data nodes
 		"rdt:d1": {
 			"rdt:name": "a",
 			"rdt:value": " 1  2  3  4  5  6  7  8  9 10",
@@ -1189,7 +1186,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-01-10T15.13.05EST",
+			"rdt:timestamp": "2019-05-07T12.23.36EDT",
 			"rdt:location": ""
 		},
 		"rdt:d4": {
@@ -1200,7 +1197,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-01-10T15.13.05EST",
+			"rdt:timestamp": "2019-05-07T12.23.36EDT",
 			"rdt:location": ""
 		},
 		"rdt:d5": {
@@ -1208,7 +1205,7 @@
 			"rdt:value": "\"a\"",
 			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}",
 			"rdt:type": "Data",
-			"rdt:scope": "0x7fe5347bce88",
+			"rdt:scope": "0x00000000155d46c8",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
 			"rdt:timestamp": "",
@@ -1233,7 +1230,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-01-10T15.13.05EST",
+			"rdt:timestamp": "2019-05-07T12.23.36EDT",
 			"rdt:location": ""
 		},
 		"rdt:d8": {
@@ -1241,7 +1238,7 @@
 			"rdt:value": "1",
 			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}",
 			"rdt:type": "Data",
-			"rdt:scope": "0x7fe53920da80",
+			"rdt:scope": "0x00000000177952e0",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
 			"rdt:timestamp": "",
@@ -1263,7 +1260,7 @@
 			"rdt:value": "11",
 			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}",
 			"rdt:type": "Data",
-			"rdt:scope": "0x7fe5388570e8",
+			"rdt:scope": "0x0000000015c69370",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
 			"rdt:timestamp": "",
@@ -1288,7 +1285,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-01-10T15.13.05EST",
+			"rdt:timestamp": "2019-05-07T12.23.36EDT",
 			"rdt:location": ""
 		},
 		"rdt:d13": {
@@ -1296,7 +1293,7 @@
 			"rdt:value": "1",
 			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}",
 			"rdt:type": "Data",
-			"rdt:scope": "0x7fe537ad0fa8",
+			"rdt:scope": "0x00000000155abce0",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
 			"rdt:timestamp": "",
@@ -1318,7 +1315,7 @@
 			"rdt:value": "11",
 			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}",
 			"rdt:type": "Data",
-			"rdt:scope": "0x7fe538b26dc8",
+			"rdt:scope": "0x0000000017568770",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
 			"rdt:timestamp": "",
@@ -1343,7 +1340,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-01-10T15.13.05EST",
+			"rdt:timestamp": "2019-05-07T12.23.36EDT",
 			"rdt:location": ""
 		},
 		"rdt:d18": {
@@ -1351,7 +1348,7 @@
 			"rdt:value": "15",
 			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}",
 			"rdt:type": "Data",
-			"rdt:scope": "0x7fe534ad95d8",
+			"rdt:scope": "0x0000000015d73dc0",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
 			"rdt:timestamp": "",
@@ -1376,7 +1373,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-01-10T15.13.05EST",
+			"rdt:timestamp": "2019-05-07T12.23.36EDT",
 			"rdt:location": ""
 		},
 		"rdt:d21": {
@@ -1384,7 +1381,7 @@
 			"rdt:value": "15",
 			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}",
 			"rdt:type": "Data",
-			"rdt:scope": "0x7fe534644b20",
+			"rdt:scope": "0x0000000017d6e568",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
 			"rdt:timestamp": "",
@@ -1409,7 +1406,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-01-10T15.13.05EST",
+			"rdt:timestamp": "2019-05-07T12.23.36EDT",
 			"rdt:location": ""
 		},
 		"rdt:d24": {
@@ -1417,7 +1414,7 @@
 			"rdt:value": "20",
 			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}",
 			"rdt:type": "Data",
-			"rdt:scope": "0x7fe534ef68d8",
+			"rdt:scope": "0x0000000016f8e000",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
 			"rdt:timestamp": "",
@@ -1428,7 +1425,7 @@
 			"rdt:value": "1",
 			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"integer\"]}",
 			"rdt:type": "Data",
-			"rdt:scope": "0x7fe534ef68d8",
+			"rdt:scope": "0x0000000016f8e000",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
 			"rdt:timestamp": "",
@@ -1457,24 +1454,22 @@
 			"rdt:location": ""
 		},
 
-		// environment
 		"rdt:environment": {
 			"rdt:name": "environment",
 			"rdt:architecture": "x86_64",
-			"rdt:operatingSystem": "darwin15.6.0",
+			"rdt:operatingSystem": "mingw32",
 			"rdt:language": "R",
 			"rdt:langVersion": "R version 3.5.2 (2018-12-20)",
 			"rdt:script": "[DIR]/FunctionOrigin.R",
-			"rdt:scriptTimeStamp": "2019-01-10T13.56.36EST",
+			"rdt:scriptTimeStamp": "2019-04-25T17.09.17EDT",
 			"rdt:sourcedScripts": "",
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:workingDirectory": "[DIR]/rdt",
 			"rdt:provDirectory": "[DIR]/rdt/prov_FunctionOrigin",
-			"rdt:provTimestamp": "2019-01-10T15.13.04EST",
+			"rdt:provTimestamp": "2019-05-07T12.23.34EDT",
 			"rdt:hashAlgorithm": "md5"
 		},
 
-		// library nodes - prov collections
 		"rdt:l1": {
 			"name": "base",
 			"version": "3.5.2",
@@ -1493,7 +1488,7 @@
 		},
 		"rdt:l3": {
 			"name": "ggplot2",
-			"version": "3.0.0",
+			"version": "3.1.0",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -1541,7 +1536,7 @@
 		},
 		"rdt:l9": {
 			"name": "stringi",
-			"version": "1.2.2",
+			"version": "1.2.4",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -1564,7 +1559,6 @@
 			}
 		},
 
-		// function nodes
 		"rdt:f1": {
 			"name": "str_to_upper"
 		},
@@ -1598,7 +1592,6 @@
 	},
 
 	"wasInformedBy" : {
-		// procedure-to-procedure edges
 		"rdt:pp1": {
 			"prov:informant": "rdt:p1",
 			"prov:informed": "rdt:p2"
@@ -2054,7 +2047,6 @@
 	},
 
 	"wasGeneratedBy" : {
-		// procedure-to-data edges
 		"rdt:pd1": {
 			"prov:activity": "rdt:p6",
 			"prov:entity": "rdt:d1"
@@ -2166,7 +2158,6 @@
 	},
 
 	"used" : {
-		// data-to-procedure edges
 		"rdt:dp1": {
 			"prov:entity": "rdt:d1",
 			"prov:activity": "rdt:p7"
@@ -2392,7 +2383,6 @@
 			"prov:activity": "rdt:p112"
 		},
 
-		// function-to-procedure edges
 		"rdt:fp1": {
 			"prov:entity": "rdt:f1",
 			"prov:activity": "rdt:p3"
@@ -2508,7 +2498,6 @@
 	},
 
 	"hadMember" : {
-		// groups function nodes with their library nodes
 		"rdt:m1": {
 			"prov:collection": "rdt:l8",
 			"prov:entity": "rdt:f10"

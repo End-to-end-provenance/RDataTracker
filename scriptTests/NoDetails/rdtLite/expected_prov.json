@@ -5,7 +5,6 @@
 	},
 
 	"agent" : {
-		// agent: this json file and the tool that produced this
 		"rdt:a1": {
 			"rdt:tool.name": "rdtLite",
 			"rdt:tool.version": "1.0.3",
@@ -14,11 +13,10 @@
 	},
 
 	"activity" : {
-		// procedure nodes
 		"rdt:p1": {
 			"rdt:name": "NoDetails.R",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 1.4,
+			"rdt:elapsedTime": 1.07,
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -28,7 +26,6 @@
 	},
 
 	"entity" : {
-		// data nodes
 		"rdt:d1": {
 			"rdt:name": "Rdata.rds",
 			"rdt:value": "data/1-Rdata.rds",
@@ -37,7 +34,7 @@
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
 			"rdt:hash": "afe1c92ec693931a928a7577a2f0bc03",
-			"rdt:timestamp": "2019-01-11T19.02.16EST",
+			"rdt:timestamp": "2019-05-07T12.30.15EDT",
 			"rdt:location": "C:/Users/fong22e/Documents/Libraries/R/win-library/ggplot2/data/Rdata.rds"
 		},
 		"rdt:d2": {
@@ -48,7 +45,7 @@
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
 			"rdt:hash": "afe1c92ec693931a928a7577a2f0bc03",
-			"rdt:timestamp": "2019-01-11T19.02.16EST",
+			"rdt:timestamp": "2019-05-07T12.30.15EDT",
 			"rdt:location": "C:/Program Files/R/R-3.5.2/library/datasets/data/Rdata.rds"
 		},
 		"rdt:d3": {
@@ -59,7 +56,7 @@
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
 			"rdt:hash": "82a037e8a2cac42de7f803fa15a34e57",
-			"rdt:timestamp": "2019-01-11T19.02.16EST",
+			"rdt:timestamp": "2019-05-07T12.30.15EDT",
 			"rdt:location": "[DIR]/rdtLite/plot.pdf"
 		},
 		"rdt:d4": {
@@ -74,7 +71,6 @@
 			"rdt:location": ""
 		},
 
-		// environment
 		"rdt:environment": {
 			"rdt:name": "environment",
 			"rdt:architecture": "x86_64",
@@ -82,16 +78,15 @@
 			"rdt:language": "R",
 			"rdt:langVersion": "R version 3.5.2 (2018-12-20)",
 			"rdt:script": "[DIR]/NoDetails.R",
-			"rdt:scriptTimeStamp": "2019-01-11T18.57.25EST",
+			"rdt:scriptTimeStamp": "2019-04-25T17.09.17EDT",
 			"rdt:sourcedScripts": "",
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:workingDirectory": "[DIR]/rdtLite",
 			"rdt:provDirectory": "[DIR]/rdtLite/prov_NoDetails",
-			"rdt:provTimestamp": "2019-01-11T19.02.15EST",
+			"rdt:provTimestamp": "2019-05-07T12.30.14EDT",
 			"rdt:hashAlgorithm": "md5"
 		},
 
-		// library nodes - prov collections
 		"rdt:l1": {
 			"name": "base",
 			"version": "3.5.2",
@@ -167,7 +162,6 @@
 	},
 
 	"wasGeneratedBy" : {
-		// procedure-to-data edges
 		"rdt:pd1": {
 			"prov:activity": "rdt:p1",
 			"prov:entity": "rdt:d3"
@@ -179,7 +173,6 @@
 	},
 
 	"used" : {
-		// data-to-procedure edges
 		"rdt:dp1": {
 			"prov:entity": "rdt:d1",
 			"prov:activity": "rdt:p1"
