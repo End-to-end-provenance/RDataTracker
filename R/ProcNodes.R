@@ -348,7 +348,7 @@
   .ddg.record.proc(ptype, pname, pvalue, ptime, snum, pos)
   
   # If any functions are called in this procedure node, process them.
-  if( !is.null(functions.called) && !is.na(functions.called)) {
+  if( !.ddg.is.null.or.na (functions.called)) {
     pfunctions <- .ddg.get.function.info(functions.called)
 
     # append the function call information to function nodes

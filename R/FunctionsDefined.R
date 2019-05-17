@@ -110,7 +110,7 @@
 #'    a call to a function
 #' @noRd
 .ddg.get.nonlocals.set <- function (pfunctions) {
-  if( is.null(pfunctions) || is.na(pfunctions) || nrow(pfunctions) == 0) {
+  if (.ddg.is.null.or.na (pfunctions) || nrow(pfunctions) == 0) {
     return(vector())
   } 
   
@@ -204,7 +204,11 @@
 #'    a call to a function
 #' @noRd
 .ddg.get.nonlocals.used <- function (pfunctions) {
-  if( is.null(pfunctions) || is.na(pfunctions) || nrow(pfunctions) == 0) {
+  if (.ddg.is.null.or.na (pfunctions)) {
+    return ()
+  }
+
+  else if( nrow(pfunctions) == 0) {
     return()
   } 
   
