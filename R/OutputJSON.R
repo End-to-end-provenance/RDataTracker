@@ -252,6 +252,9 @@
 	# convert '    ' or \t to escaped tab characters, if any
 	nodes <- .ddg.json.df.escape.tabs( nodes )
 	
+	# convert elapsedTime to strings
+	nodes["ddg.time"] <- sapply( nodes["ddg.time"][[1]] , as.character )
+	
 	# column names
 	col.names <- c( "name", "type", "elapsedTime", "scriptNum", 
 					"startLine", "startCol", "endLine", "endCol" )
