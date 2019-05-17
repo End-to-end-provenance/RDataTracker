@@ -65,8 +65,11 @@
 #' @noRd
 
 .ddg.add.to.function.table <- function (pfunctions) {
+  if ( .ddg.is.null.or.na (pfunctions)) {
+    return()
+  }
   
-  if( is.null(pfunctions) || is.na(pfunctions) || nrow(pfunctions) == 0) {
+  if( nrow(pfunctions) == 0 ) {
     return()
   } 
   
