@@ -253,7 +253,7 @@
 	nodes <- .ddg.json.df.escape.tabs( nodes )
 	
 	# convert elapsedTime to strings
-	nodes["ddg.time"] <- sapply( nodes["ddg.time"][[1]] , as.character )
+	nodes["ddg.time"] <- mapply( format , nodes["ddg.time"][[1]] , nsmall = 1L )
 	
 	# column names
 	col.names <- c( "name", "type", "elapsedTime", "scriptNum", 

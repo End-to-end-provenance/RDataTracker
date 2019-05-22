@@ -107,7 +107,7 @@
           ddg.name = character(size),
           ddg.value = character(size),
           ddg.return.linked = logical(size),
-          ddg.time = numeric(size),
+          ddg.time = double(size),
           ddg.snum = numeric(size),
           ddg.startLine = numeric(size),
           ddg.startCol = numeric(size),
