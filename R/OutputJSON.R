@@ -45,7 +45,7 @@
 	}
 
 	# CONSTANTS
-	JSON.VERSION <- "2.1"
+	JSON.VERSION <- "2.2"
 
 	# tool name
 	tool.name <- .ddg.tool.name()
