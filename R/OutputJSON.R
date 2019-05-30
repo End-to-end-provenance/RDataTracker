@@ -339,7 +339,7 @@
 	{
 		fields$script <- script.path 
 		fields$scriptTimeStamp <- .ddg.format.time( file.info(script.path)$mtime )
-		fields$totalElapsedTime <- format(.ddg.total.elapsed.time, nsmall = 1L)
+		fields$totalElapsedTime <- format(.ddg.total.elapsed.time(), nsmall = 1L)
 		
 		sourced.scripts <- .ddg.json.sourced.scripts()
 		fields$sourcedScripts <- sourced.scripts[[1]]
