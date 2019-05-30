@@ -48,10 +48,12 @@
   # Initialize the procedure node counter
   .ddg.set("ddg.pnum", 0)
   
+  # elapsed times
+  .ddg.set("ddg.total.elapsed.time", 0)
   .ddg.set("ddg.proc.start.time", .ddg.elapsed.time())
   
   # Initialize the information about the open start-finish blocks
-  .ddg.set ("ddg.starts.open", vector())
+  .ddg.set("ddg.starts.open", vector())
 }
 
 #' .ddg.is.proc.type returns TRUE for any type of procedure node.
@@ -72,6 +74,14 @@
   return (.ddg.get("ddg.pnum"))
 }
 
+#' .ddg.total.elapsed.time returns the total time the procedures took to execute
+#' @return the total time the procedures took to execute
+#' @noRd
+
+.ddg.total.elapsed.time <- function() {
+  return (.ddg.get("ddg.total.elapsed.time"))
+}
+
 #' .ddg.start.proc.time returns the time when the process started
 #' @return the time the process started, or 0 if it has not been set yet
 #' @noRd
@@ -81,13 +91,19 @@
   else return (0)
 }
 
-#' .ddg.elapsed.time returns the time since the script began execution
-#' @return the time since the script began execution
+#' .ddg.elapsed.time returns the amount of time the procedure took to execute
+#' @return the amount of time the procedure took to execute
 #' @noRd
 
 .ddg.elapsed.time <- function(){
   time <- proc.time()
-  elapsed <- time[1] + time[2] - .ddg.start.proc.time()
+  total.elapsed <- .ddg.total.elapsed.time()
+  
+  elapsed <- time[1] + time[2] - total.elapsed - .ddg.start.proc.time()
+  
+  total.elapsed <- total.elapsed + elapsed
+  .ddg.set("ddg.total.elapsed.time", total.elapsed)
+  
   # time[4] and time[5] are NA under Windows
   # elapsed <- time[1] +time[2] +time[4] +time[5]
   return(elapsed)
