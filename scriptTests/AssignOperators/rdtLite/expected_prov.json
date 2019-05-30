@@ -16,7 +16,7 @@
 		"rdt:p1": {
 			"rdt:name": "AssignOperators.R",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": "1.17",
+			"rdt:elapsedTime": "0.84",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -36,7 +36,7 @@
 		"rdt:p3": {
 			"rdt:name": "stopifnot(a == 1)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.02",
+			"rdt:elapsedTime": "0.0",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 14,
 			"rdt:startCol": 1,
@@ -46,7 +46,7 @@
 		"rdt:p4": {
 			"rdt:name": "fn1 <- function() {\tb = 2\tstopifnot(b == 2)}",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.0",
+			"rdt:elapsedTime": "0.02",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 18,
 			"rdt:startCol": 1,
@@ -56,7 +56,7 @@
 		"rdt:p5": {
 			"rdt:name": "fn1()",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.04",
+			"rdt:elapsedTime": "0.02",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 24,
 			"rdt:startCol": 1,
@@ -76,7 +76,7 @@
 		"rdt:p7": {
 			"rdt:name": "env1 <- new.env()",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.01",
+			"rdt:elapsedTime": "0.0",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 47,
 			"rdt:startCol": 1,
@@ -106,7 +106,7 @@
 		"rdt:p10": {
 			"rdt:name": "stopifnot(!exists(\"e\"))",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.02",
+			"rdt:elapsedTime": "0.01",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 51,
 			"rdt:startCol": 1,
@@ -126,7 +126,7 @@
 		"rdt:p12": {
 			"rdt:name": "env2$env <- new.env(parent = env2)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.01",
+			"rdt:elapsedTime": "0.0",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 56,
 			"rdt:startCol": 1,
@@ -196,7 +196,7 @@
 		"rdt:p19": {
 			"rdt:name": "fn3 <- function() {\th <- 8\tstopifnot(h == 8)}",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.01",
+			"rdt:elapsedTime": "0.0",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 72,
 			"rdt:startCol": 1,
@@ -236,7 +236,7 @@
 		"rdt:p23": {
 			"rdt:name": "env3$j <- 11",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.0",
+			"rdt:elapsedTime": "0.02",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 102,
 			"rdt:startCol": 1,
@@ -256,7 +256,7 @@
 		"rdt:p25": {
 			"rdt:name": "stopifnot(!exists(\"j\"))",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.01",
+			"rdt:elapsedTime": "0.0",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 105,
 			"rdt:startCol": 1,
@@ -266,7 +266,7 @@
 		"rdt:p26": {
 			"rdt:name": "env4 <- new.env()",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.02",
+			"rdt:elapsedTime": "0.0",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 109,
 			"rdt:startCol": 1,
@@ -286,7 +286,7 @@
 		"rdt:p28": {
 			"rdt:name": "env4$env$k <- 12",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.0",
+			"rdt:elapsedTime": "0.02",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 111,
 			"rdt:startCol": 1,
@@ -336,7 +336,7 @@
 		"rdt:p33": {
 			"rdt:name": "fn5()",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.02",
+			"rdt:elapsedTime": "0.0",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 130,
 			"rdt:startCol": 1,
@@ -346,7 +346,7 @@
 		"rdt:p34": {
 			"rdt:name": "stopifnot(l == 13)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.0",
+			"rdt:elapsedTime": "0.02",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 131,
 			"rdt:startCol": 1,
@@ -386,7 +386,7 @@
 		"rdt:p38": {
 			"rdt:name": "AssignOperators.R",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": "0.01",
+			"rdt:elapsedTime": "0.0",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -415,12 +415,12 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-05-30T13.16.41EDT",
+			"rdt:timestamp": "2019-05-30T16.08.21EDT",
 			"rdt:location": ""
 		},
 		"rdt:d3": {
 			"rdt:name": "env1",
-			"rdt:value": "<environment: 0x00000000124a5530>",
+			"rdt:value": "<environment: 0x0000000013ca1278>",
 			"rdt:valType": "environment",
 			"rdt:type": "Data",
 			"rdt:scope": "R_GlobalEnv",
@@ -431,7 +431,7 @@
 		},
 		"rdt:d4": {
 			"rdt:name": "env1",
-			"rdt:value": "<environment: 0x00000000124a5530>",
+			"rdt:value": "<environment: 0x0000000013ca1278>",
 			"rdt:valType": "environment",
 			"rdt:type": "Data",
 			"rdt:scope": "R_GlobalEnv",
@@ -442,7 +442,7 @@
 		},
 		"rdt:d5": {
 			"rdt:name": "env2",
-			"rdt:value": "<environment: 0x0000000016043498>",
+			"rdt:value": "<environment: 0x0000000015955b40>",
 			"rdt:valType": "environment",
 			"rdt:type": "Data",
 			"rdt:scope": "R_GlobalEnv",
@@ -453,7 +453,7 @@
 		},
 		"rdt:d6": {
 			"rdt:name": "env2",
-			"rdt:value": "<environment: 0x0000000016043498>",
+			"rdt:value": "<environment: 0x0000000015955b40>",
 			"rdt:valType": "environment",
 			"rdt:type": "Data",
 			"rdt:scope": "R_GlobalEnv",
@@ -464,7 +464,7 @@
 		},
 		"rdt:d7": {
 			"rdt:name": "env2",
-			"rdt:value": "<environment: 0x0000000016043498>",
+			"rdt:value": "<environment: 0x0000000015955b40>",
 			"rdt:valType": "environment",
 			"rdt:type": "Data",
 			"rdt:scope": "R_GlobalEnv",
@@ -492,12 +492,12 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-05-30T13.16.42EDT",
+			"rdt:timestamp": "2019-05-30T16.08.21EDT",
 			"rdt:location": ""
 		},
 		"rdt:d10": {
 			"rdt:name": "env3",
-			"rdt:value": "<environment: 0x0000000016153af8>",
+			"rdt:value": "<environment: 0x0000000015b16c78>",
 			"rdt:valType": "environment",
 			"rdt:type": "Data",
 			"rdt:scope": "R_GlobalEnv",
@@ -508,7 +508,7 @@
 		},
 		"rdt:d11": {
 			"rdt:name": "env3",
-			"rdt:value": "<environment: 0x0000000016153af8>",
+			"rdt:value": "<environment: 0x0000000015b16c78>",
 			"rdt:valType": "environment",
 			"rdt:type": "Data",
 			"rdt:scope": "R_GlobalEnv",
@@ -519,7 +519,7 @@
 		},
 		"rdt:d12": {
 			"rdt:name": "env4",
-			"rdt:value": "<environment: 0x0000000015f2cb98>",
+			"rdt:value": "<environment: 0x00000000151f2070>",
 			"rdt:valType": "environment",
 			"rdt:type": "Data",
 			"rdt:scope": "R_GlobalEnv",
@@ -530,7 +530,7 @@
 		},
 		"rdt:d13": {
 			"rdt:name": "env4",
-			"rdt:value": "<environment: 0x0000000015f2cb98>",
+			"rdt:value": "<environment: 0x00000000151f2070>",
 			"rdt:valType": "environment",
 			"rdt:type": "Data",
 			"rdt:scope": "R_GlobalEnv",
@@ -541,7 +541,7 @@
 		},
 		"rdt:d14": {
 			"rdt:name": "env4",
-			"rdt:value": "<environment: 0x0000000015f2cb98>",
+			"rdt:value": "<environment: 0x00000000151f2070>",
 			"rdt:valType": "environment",
 			"rdt:type": "Data",
 			"rdt:scope": "R_GlobalEnv",
@@ -558,7 +558,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-05-30T13.16.42EDT",
+			"rdt:timestamp": "2019-05-30T16.08.21EDT",
 			"rdt:location": ""
 		},
 		"rdt:d16": {
@@ -580,7 +580,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-05-30T13.16.42EDT",
+			"rdt:timestamp": "2019-05-30T16.08.21EDT",
 			"rdt:location": ""
 		},
 		"rdt:d18": {
@@ -603,12 +603,12 @@
 			"rdt:langVersion": "R version 3.6.0 (2019-04-26)",
 			"rdt:script": "[DIR]/AssignOperators.R",
 			"rdt:scriptTimeStamp": "2019-05-15T13.04.44EDT",
-			"rdt:totalElapsedTime": "1.47",
+			"rdt:totalElapsedTime": "1.08",
 			"rdt:sourcedScripts": "",
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:workingDirectory": "[DIR]/rdtLite",
 			"rdt:provDirectory": "[DIR]/rdtLite/prov_AssignOperators",
-			"rdt:provTimestamp": "2019-05-30T13.16.40EDT",
+			"rdt:provTimestamp": "2019-05-30T16.08.20EDT",
 			"rdt:hashAlgorithm": "md5"
 		},
 

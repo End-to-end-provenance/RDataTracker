@@ -339,7 +339,6 @@
 	{
 		fields$script <- script.path 
 		fields$scriptTimeStamp <- .ddg.format.time( file.info(script.path)$mtime )
-		fields$totalElapsedTime <- format(.ddg.total.elapsed.time(), nsmall = 1L)
 		
 		sourced.scripts <- .ddg.json.sourced.scripts()
 		fields$sourcedScripts <- sourced.scripts[[1]]
@@ -349,11 +348,13 @@
 	{
 		fields$script <- ""
 		fields$scriptTimeStamp <- ""
-		fields$totalElapsedTime <- ""
 		
 		fields$sourcedScripts <- ""
 		fields$sourcedScriptTimeStamps <- ""
 	}
+	
+	# record total elapsed time
+	fields$totalElapsedTime <- format(.ddg.total.elapsed.time(), nsmall = 1L)
 	
 	# working directory, ddg directory (escape any tab characters)
 	fields$workingDirectory <- .ddg.json.escape.tabs( getwd() )
