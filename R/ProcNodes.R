@@ -48,9 +48,15 @@
   # Initialize the procedure node counter
   .ddg.set("ddg.pnum", 0)
   
-  # elapsed times
+  # Initialise total elapsed time
   .ddg.set("ddg.total.elapsed.time", 0)
-  .ddg.set("ddg.proc.start.time", .ddg.elapsed.time())
+  
+  # Initialise start time. 
+  # proc.time() returns the time since the start of the R process.
+  # This is important if calling prov.run multiple times in a given R session.
+  time <- proc.time()
+  time <- time[1] + time[2]  # time[4] and time[5] are NA under Windows
+  .ddg.set("ddg.proc.start.time", time)
   
   # Initialize the information about the open start-finish blocks
   .ddg.set("ddg.starts.open", vector())
@@ -87,8 +93,7 @@
 #' @noRd
 
 .ddg.start.proc.time <- function() {
-  if (.ddg.is.set("ddg.proc.start.time")) return (.ddg.get("ddg.proc.start.time"))
-  else return (0)
+  return(.ddg.get("ddg.proc.start.time"))
 }
 
 #' .ddg.elapsed.time returns the amount of time the procedure took to execute
@@ -97,15 +102,15 @@
 
 .ddg.elapsed.time <- function(){
   time <- proc.time()
-  total.elapsed <- .ddg.total.elapsed.time()
+  orig.total.elapsed <- .ddg.total.elapsed.time()
   
-  elapsed <- time[1] + time[2] - total.elapsed - .ddg.start.proc.time()
+  # proc.time() returns the time since the start of the R process.
+  # calculate total time since the proc nodes table's initialisation
+  # before calculating elapsed time of the proc node itself.
+  total.elapsed <- time[1] + time[2] - .ddg.start.proc.time()
+  elapsed <- total.elapsed - orig.total.elapsed
   
-  total.elapsed <- total.elapsed + elapsed
   .ddg.set("ddg.total.elapsed.time", total.elapsed)
-  
-  # time[4] and time[5] are NA under Windows
-  # elapsed <- time[1] +time[2] +time[4] +time[5]
   return(elapsed)
 }
 
