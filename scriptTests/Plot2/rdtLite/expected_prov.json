@@ -7,8 +7,8 @@
 	"agent" : {
 		"rdt:a1": {
 			"rdt:tool.name": "rdtLite",
-			"rdt:tool.version": "1.0.3",
-			"rdt:json.version": "2.1"
+			"rdt:tool.version": "1.1.0",
+			"rdt:json.version": "2.2"
 		}
 	},
 
@@ -16,7 +16,7 @@
 		"rdt:p1": {
 			"rdt:name": "Plot2.R",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": "1.06",
+			"rdt:elapsedTime": "0.76",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -26,7 +26,7 @@
 		"rdt:p2": {
 			"rdt:name": "f1 <- function() {\tnums <- c(1, 3, 6, 4, 9)\tpdf(\"nums.",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "1.09",
+			"rdt:elapsedTime": "0.04",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 3,
 			"rdt:startCol": 1,
@@ -36,7 +36,7 @@
 		"rdt:p3": {
 			"rdt:name": "f1()",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "1.13",
+			"rdt:elapsedTime": "0.06",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 10,
 			"rdt:startCol": 1,
@@ -46,7 +46,7 @@
 		"rdt:p4": {
 			"rdt:name": "Plot2.R",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": "1.15",
+			"rdt:elapsedTime": "0.0",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -64,7 +64,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-05-22T14.46.12EDT",
+			"rdt:timestamp": "2019-05-30T16.54.07EDT",
 			"rdt:location": ""
 		},
 		"rdt:d2": {
@@ -87,11 +87,12 @@
 			"rdt:langVersion": "R version 3.6.0 (2019-04-26)",
 			"rdt:script": "[DIR]/Plot2.R",
 			"rdt:scriptTimeStamp": "2019-05-15T13.04.44EDT",
+			"rdt:totalElapsedTime": "0.86",
 			"rdt:sourcedScripts": "",
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:workingDirectory": "[DIR]/rdtLite",
 			"rdt:provDirectory": "[DIR]/rdtLite/prov_Plot2",
-			"rdt:provTimestamp": "2019-05-22T14.46.11EDT",
+			"rdt:provTimestamp": "2019-05-30T16.54.06EDT",
 			"rdt:hashAlgorithm": "md5"
 		},
 
@@ -145,7 +146,7 @@
 		},
 		"rdt:l7": {
 			"name": "rdtLite",
-			"version": "1.0.3",
+			"version": "1.1.0",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
