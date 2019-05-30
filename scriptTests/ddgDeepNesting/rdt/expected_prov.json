@@ -7,8 +7,8 @@
 	"agent" : {
 		"rdt:a1": {
 			"rdt:tool.name": "rdt",
-			"rdt:tool.version": "3.0.3",
-			"rdt:json.version": "2.1"
+			"rdt:tool.version": "3.1.0",
+			"rdt:json.version": "2.2"
 		}
 	},
 
@@ -16,7 +16,7 @@
 		"rdt:p1": {
 			"rdt:name": "ddgDeepNesting.R",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": "1.01",
+			"rdt:elapsedTime": "0.79",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -26,7 +26,7 @@
 		"rdt:p2": {
 			"rdt:name": "increment.value <- function(a) {\ta <- a + 1}",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "1.06",
+			"rdt:elapsedTime": "0.05",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 7,
 			"rdt:startCol": 1,
@@ -36,7 +36,7 @@
 		"rdt:p3": {
 			"rdt:name": "a <- 0",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "1.08",
+			"rdt:elapsedTime": "0.02",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 11,
 			"rdt:startCol": 1,
@@ -46,7 +46,7 @@
 		"rdt:p4": {
 			"rdt:name": "n <- 5",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "1.09",
+			"rdt:elapsedTime": "0.0",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 13,
 			"rdt:startCol": 1,
@@ -56,7 +56,7 @@
 		"rdt:p5": {
 			"rdt:name": "for (i in 1:n) {\tfor (j in 1:n) {\t\tfor (k in 1:n) {",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": "1.11",
+			"rdt:elapsedTime": "0.03",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 17,
 			"rdt:startCol": 1,
@@ -66,7 +66,7 @@
 		"rdt:p6": {
 			"rdt:name": "for loop",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": "1.11",
+			"rdt:elapsedTime": "0.0",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -76,7 +76,7 @@
 		"rdt:p7": {
 			"rdt:name": "i <- 1",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "1.11",
+			"rdt:elapsedTime": "0.02",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -86,7 +86,7 @@
 		"rdt:p8": {
 			"rdt:name": "for (j in 1:n) {\tfor (k in 1:n) {\t\ta <- increment.v",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": "1.13",
+			"rdt:elapsedTime": "0.0",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -96,7 +96,7 @@
 		"rdt:p9": {
 			"rdt:name": "for loop",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": "1.13",
+			"rdt:elapsedTime": "0.0",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -106,7 +106,7 @@
 		"rdt:p10": {
 			"rdt:name": "j <- 1",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "1.13",
+			"rdt:elapsedTime": "0.0",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -116,7 +116,7 @@
 		"rdt:p11": {
 			"rdt:name": "for (k in 1:n) {\ta <- increment.value(a)\tinvisible(a)}",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": "1.13",
+			"rdt:elapsedTime": "0.01",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -126,7 +126,7 @@
 		"rdt:p12": {
 			"rdt:name": "for loop",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": "1.14",
+			"rdt:elapsedTime": "0.0",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -136,7 +136,7 @@
 		"rdt:p13": {
 			"rdt:name": "k <- 1",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "1.14",
+			"rdt:elapsedTime": "0.0",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -146,7 +146,7 @@
 		"rdt:p14": {
 			"rdt:name": "a <- increment.value(a)",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": "1.14",
+			"rdt:elapsedTime": "0.0",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -156,7 +156,7 @@
 		"rdt:p15": {
 			"rdt:name": "increment.value(a)",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": "1.14",
+			"rdt:elapsedTime": "0.0",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -166,7 +166,7 @@
 		"rdt:p16": {
 			"rdt:name": "a  <-  a",
 			"rdt:type": "Binding",
-			"rdt:elapsedTime": "1.14",
+			"rdt:elapsedTime": "0.0",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -176,7 +176,7 @@
 		"rdt:p17": {
 			"rdt:name": "increment.value",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "1.14",
+			"rdt:elapsedTime": "0.0",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -186,7 +186,7 @@
 		"rdt:p18": {
 			"rdt:name": "a <- a + 1",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "1.14",
+			"rdt:elapsedTime": "0.02",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 8,
 			"rdt:startCol": 9,
@@ -196,7 +196,7 @@
 		"rdt:p19": {
 			"rdt:name": "increment.value(a)",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": "1.16",
+			"rdt:elapsedTime": "0.0",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -206,7 +206,7 @@
 		"rdt:p20": {
 			"rdt:name": "a <- increment.value(a)",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": "1.16",
+			"rdt:elapsedTime": "0.0",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -216,7 +216,7 @@
 		"rdt:p21": {
 			"rdt:name": "invisible(a)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "1.16",
+			"rdt:elapsedTime": "0.0",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -226,7 +226,7 @@
 		"rdt:p22": {
 			"rdt:name": "for loop",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": "1.16",
+			"rdt:elapsedTime": "0.0",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -236,7 +236,7 @@
 		"rdt:p23": {
 			"rdt:name": "Details Omitted",
 			"rdt:type": "Incomplete",
-			"rdt:elapsedTime": "1.17",
+			"rdt:elapsedTime": "0.02",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -246,7 +246,7 @@
 		"rdt:p24": {
 			"rdt:name": "for (k in 1:n) {\ta <- increment.value(a)\tinvisible(a)}",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": "1.17",
+			"rdt:elapsedTime": "0.0",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -256,7 +256,7 @@
 		"rdt:p25": {
 			"rdt:name": "for loop",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": "1.17",
+			"rdt:elapsedTime": "0.0",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -266,7 +266,7 @@
 		"rdt:p26": {
 			"rdt:name": "Details Omitted",
 			"rdt:type": "Incomplete",
-			"rdt:elapsedTime": "1.17",
+			"rdt:elapsedTime": "0.0",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -276,7 +276,7 @@
 		"rdt:p27": {
 			"rdt:name": "for (j in 1:n) {\tfor (k in 1:n) {\t\ta <- increment.v",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": "1.17",
+			"rdt:elapsedTime": "0.0",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -286,7 +286,7 @@
 		"rdt:p28": {
 			"rdt:name": "for loop",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": "1.17",
+			"rdt:elapsedTime": "0.0",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -296,7 +296,7 @@
 		"rdt:p29": {
 			"rdt:name": "Details Omitted",
 			"rdt:type": "Incomplete",
-			"rdt:elapsedTime": "1.17",
+			"rdt:elapsedTime": "0.0",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -306,7 +306,7 @@
 		"rdt:p30": {
 			"rdt:name": "for (i in 1:n) {\tfor (j in 1:n) {\t\tfor (k in 1:n) {",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": "1.17",
+			"rdt:elapsedTime": "0.0",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 17,
 			"rdt:startCol": 1,
@@ -316,7 +316,7 @@
 		"rdt:p31": {
 			"rdt:name": "ddgDeepNesting.R",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": "1.17",
+			"rdt:elapsedTime": "0.0",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -334,7 +334,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-05-22T14.31.11EDT",
+			"rdt:timestamp": "2019-05-30T16.36.41EDT",
 			"rdt:location": ""
 		},
 		"rdt:d2": {
@@ -397,7 +397,7 @@
 			"rdt:value": "0",
 			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}",
 			"rdt:type": "Data",
-			"rdt:scope": "0x0000000017cce1c8",
+			"rdt:scope": "0x0000000018b5ea70",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
 			"rdt:timestamp": "",
@@ -408,7 +408,7 @@
 			"rdt:value": "1",
 			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}",
 			"rdt:type": "Data",
-			"rdt:scope": "0x0000000017cce1c8",
+			"rdt:scope": "0x0000000018b5ea70",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
 			"rdt:timestamp": "",
@@ -478,11 +478,12 @@
 			"rdt:langVersion": "R version 3.6.0 (2019-04-26)",
 			"rdt:script": "[DIR]/ddgDeepNesting.R",
 			"rdt:scriptTimeStamp": "2019-05-15T13.04.45EDT",
+			"rdt:totalElapsedTime": "0.96",
 			"rdt:sourcedScripts": "",
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:workingDirectory": "[DIR]/rdt",
 			"rdt:provDirectory": "[DIR]/rdt/prov_ddgDeepNesting",
-			"rdt:provTimestamp": "2019-05-22T14.31.10EDT",
+			"rdt:provTimestamp": "2019-05-30T16.36.40EDT",
 			"rdt:hashAlgorithm": "md5"
 		},
 
@@ -536,7 +537,7 @@
 		},
 		"rdt:l7": {
 			"name": "rdt",
-			"version": "3.0.3",
+			"version": "3.1.0",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"

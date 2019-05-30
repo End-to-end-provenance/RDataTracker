@@ -7,8 +7,8 @@
 	"agent" : {
 		"rdt:a1": {
 			"rdt:tool.name": "rdtLite",
-			"rdt:tool.version": "1.0.3",
-			"rdt:json.version": "2.1"
+			"rdt:tool.version": "1.1.0",
+			"rdt:json.version": "2.2"
 		}
 	},
 
@@ -16,7 +16,7 @@
 		"rdt:p1": {
 			"rdt:name": "DDGStatement.R",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": "0.95",
+			"rdt:elapsedTime": "0.75",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -26,7 +26,7 @@
 		"rdt:p2": {
 			"rdt:name": "a <- 1",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "1.0",
+			"rdt:elapsedTime": "0.04",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 6,
 			"rdt:startCol": 1,
@@ -36,7 +36,7 @@
 		"rdt:p3": {
 			"rdt:name": "if (TRUE) {\ta <- 1}",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "1.0",
+			"rdt:elapsedTime": "0.0",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 8,
 			"rdt:startCol": 1,
@@ -46,7 +46,7 @@
 		"rdt:p4": {
 			"rdt:name": "ddddd <- 0",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "1.01",
+			"rdt:elapsedTime": "0.0",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 12,
 			"rdt:startCol": 1,
@@ -56,7 +56,7 @@
 		"rdt:p5": {
 			"rdt:name": "repeat {\tddddd <- ddddd + 1\tif (ddddd == 7) {\t\tb",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "1.01",
+			"rdt:elapsedTime": "0.02",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 13,
 			"rdt:startCol": 1,
@@ -66,7 +66,7 @@
 		"rdt:p6": {
 			"rdt:name": "f <- function(a) {\treturn(a + 1)}",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "1.01",
+			"rdt:elapsedTime": "0.0",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 20,
 			"rdt:startCol": 1,
@@ -76,7 +76,7 @@
 		"rdt:p7": {
 			"rdt:name": "g <- function() 1",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "1.04",
+			"rdt:elapsedTime": "0.0",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 24,
 			"rdt:startCol": 1,
@@ -86,7 +86,7 @@
 		"rdt:p8": {
 			"rdt:name": "h <- function(a, b) {\tif (a > b)\t\t return(1)\tsum",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "1.04",
+			"rdt:elapsedTime": "0.0",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 26,
 			"rdt:startCol": 1,
@@ -96,7 +96,7 @@
 		"rdt:p9": {
 			"rdt:name": "exprs <- parse(\"../DDGStatement.R\")",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "1.08",
+			"rdt:elapsedTime": "0.03",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 38,
 			"rdt:startCol": 1,
@@ -106,7 +106,7 @@
 		"rdt:p10": {
 			"rdt:name": "constructDDGStatement <- function(expr) {\tprint(expr)\t",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "1.08",
+			"rdt:elapsedTime": "0.01",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 40,
 			"rdt:startCol": 1,
@@ -116,7 +116,7 @@
 		"rdt:p11": {
 			"rdt:name": "DDGStatement.R",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": "1.09",
+			"rdt:elapsedTime": "0.02",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -178,7 +178,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-05-22T14.31.43EDT",
+			"rdt:timestamp": "2019-05-30T16.37.39EDT",
 			"rdt:location": ""
 		},
 		"rdt:d6": {
@@ -200,7 +200,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-05-22T14.31.43EDT",
+			"rdt:timestamp": "2019-05-30T16.37.39EDT",
 			"rdt:location": ""
 		},
 		"rdt:d8": {
@@ -211,7 +211,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-05-22T14.31.43EDT",
+			"rdt:timestamp": "2019-05-30T16.37.39EDT",
 			"rdt:location": ""
 		},
 		"rdt:d9": {
@@ -222,7 +222,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-05-22T14.31.43EDT",
+			"rdt:timestamp": "2019-05-30T16.37.39EDT",
 			"rdt:location": ""
 		},
 
@@ -234,11 +234,12 @@
 			"rdt:langVersion": "R version 3.6.0 (2019-04-26)",
 			"rdt:script": "[DIR]/DDGStatement.R",
 			"rdt:scriptTimeStamp": "2019-05-15T13.04.44EDT",
+			"rdt:totalElapsedTime": "0.87",
 			"rdt:sourcedScripts": "",
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:workingDirectory": "[DIR]/rdtLite",
 			"rdt:provDirectory": "[DIR]/rdtLite/prov_DDGStatement",
-			"rdt:provTimestamp": "2019-05-22T14.31.42EDT",
+			"rdt:provTimestamp": "2019-05-30T16.37.38EDT",
 			"rdt:hashAlgorithm": "md5"
 		},
 
@@ -292,7 +293,7 @@
 		},
 		"rdt:l7": {
 			"name": "rdtLite",
-			"version": "1.0.3",
+			"version": "1.1.0",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
