@@ -45,7 +45,7 @@
 	}
 
 	# CONSTANTS
-	JSON.VERSION <- "2.1"
+	JSON.VERSION <- "2.2"
 
 	# tool name
 	tool.name <- .ddg.tool.name()
@@ -252,6 +252,9 @@
 	# convert '    ' or \t to escaped tab characters, if any
 	nodes <- .ddg.json.df.escape.tabs( nodes )
 	
+	# convert elapsedTime to strings
+	nodes["ddg.time"] <- mapply( format , nodes["ddg.time"][[1]] , nsmall = 1L )
+	
 	# column names
 	col.names <- c( "name", "type", "elapsedTime", "scriptNum", 
 					"startLine", "startCol", "endLine", "endCol" )
@@ -312,6 +315,7 @@
 					"langVersion" = NA ,
 					"script" = NA ,
 					"scriptTimeStamp" = NA ,
+					"totalElapsedTime" = NA ,
 					"sourcedScripts" = NA ,
 					"sourcedScriptTimeStamps" = NA ,
 					"workingDirectory" = NA ,
@@ -348,6 +352,9 @@
 		fields$sourcedScripts <- ""
 		fields$sourcedScriptTimeStamps <- ""
 	}
+	
+	# record total elapsed time
+	fields$totalElapsedTime <- format(.ddg.total.elapsed.time(), nsmall = 1L)
 	
 	# working directory, ddg directory (escape any tab characters)
 	fields$workingDirectory <- .ddg.json.escape.tabs( getwd() )

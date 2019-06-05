@@ -26,14 +26,6 @@
 
 #-------- FUNCTIONS TO MANAGE THE GLOBAL VARIABLES--------#
 
-# Global variables cannot be used directly in a library.  Instead,
-# we need to place the variables in our own environment.  These
-# functions make that environment easier to use.
-
-.onLoad <- function(libname, pkgname) {
-  .ddg.init.tables()
-}
-
 ##### Getters for specific variables
 
 #' .ddg.tool.name returns the name of the provenance collection tool.
