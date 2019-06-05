@@ -1,3 +1,11 @@
+# rdt 3.1.0
+
+* With R 3.6.0, line numbers are correctly calculated and displayed.
+* The elapsedTime field in procedure nodes now displays the time it took for the procedure itself to execute,
+rather than the time taken to execute that procedure since the start of the script's execution.
+* A new field is added in the environment node, totalElapsedTime, which displays the total amount of time all
+procedures in the script took to execute.
+
 # rdt 3.0.3
 
 * Added optional parameter to prov.run to collect provenance for inputs/outputs only

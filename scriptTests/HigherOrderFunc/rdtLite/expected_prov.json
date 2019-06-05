@@ -5,20 +5,18 @@
 	},
 
 	"agent" : {
-		// agent: this json file and the tool that produced this
 		"rdt:a1": {
 			"rdt:tool.name": "rdtLite",
-			"rdt:tool.version": "1.0.3",
-			"rdt:json.version": "2.1"
+			"rdt:tool.version": "1.1.0",
+			"rdt:json.version": "2.2"
 		}
 	},
 
 	"activity" : {
-		// procedure nodes
 		"rdt:p1": {
 			"rdt:name": "HigherOrderFunc.R",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": 0.81,
+			"rdt:elapsedTime": "0.75",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -28,7 +26,7 @@
 		"rdt:p2": {
 			"rdt:name": "d <- c(1, 2, 3, 4)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.84,
+			"rdt:elapsedTime": "0.03",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 5,
 			"rdt:startCol": 1,
@@ -38,7 +36,7 @@
 		"rdt:p3": {
 			"rdt:name": "inc <- function(num) {\tnum + 1}",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.84,
+			"rdt:elapsedTime": "0.02",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 7,
 			"rdt:startCol": 1,
@@ -48,7 +46,7 @@
 		"rdt:p4": {
 			"rdt:name": "e <- sapply(d, inc)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.86,
+			"rdt:elapsedTime": "0.01",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 11,
 			"rdt:startCol": 1,
@@ -58,7 +56,7 @@
 		"rdt:p5": {
 			"rdt:name": "print(e)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.87,
+			"rdt:elapsedTime": "0.0",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 12,
 			"rdt:startCol": 1,
@@ -68,7 +66,7 @@
 		"rdt:p6": {
 			"rdt:name": "is.even <- function(num) {\tnum%%2 == 0}",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.87,
+			"rdt:elapsedTime": "0.0",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 14,
 			"rdt:startCol": 1,
@@ -78,7 +76,7 @@
 		"rdt:p7": {
 			"rdt:name": "evens <- Filter(is.even, d)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.9,
+			"rdt:elapsedTime": "0.03",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 18,
 			"rdt:startCol": 1,
@@ -88,7 +86,7 @@
 		"rdt:p8": {
 			"rdt:name": "print(evens)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.9,
+			"rdt:elapsedTime": "0.0",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 19,
 			"rdt:startCol": 1,
@@ -98,7 +96,7 @@
 		"rdt:p9": {
 			"rdt:name": "add <- function(x, y) {\tx + y}",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.9,
+			"rdt:elapsedTime": "0.02",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 21,
 			"rdt:startCol": 1,
@@ -108,7 +106,7 @@
 		"rdt:p10": {
 			"rdt:name": "sum <- Reduce(add, d, 0)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.92,
+			"rdt:elapsedTime": "0.0",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 25,
 			"rdt:startCol": 1,
@@ -118,7 +116,7 @@
 		"rdt:p11": {
 			"rdt:name": "print(sum)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.92,
+			"rdt:elapsedTime": "0.01",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 26,
 			"rdt:startCol": 1,
@@ -128,7 +126,7 @@
 		"rdt:p12": {
 			"rdt:name": "sum2 <- mapply(add, d, e)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.92,
+			"rdt:elapsedTime": "0.0",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 28,
 			"rdt:startCol": 1,
@@ -138,7 +136,7 @@
 		"rdt:p13": {
 			"rdt:name": "print(sum2)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": 0.93,
+			"rdt:elapsedTime": "0.0",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 29,
 			"rdt:startCol": 1,
@@ -148,7 +146,7 @@
 		"rdt:p14": {
 			"rdt:name": "HigherOrderFunc.R",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": 0.93,
+			"rdt:elapsedTime": "0.0",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -158,7 +156,6 @@
 	},
 
 	"entity" : {
-		// data nodes
 		"rdt:d1": {
 			"rdt:name": "d",
 			"rdt:value": "1 2 3 4",
@@ -178,7 +175,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-01-08T00.32.09EST",
+			"rdt:timestamp": "2019-05-30T16.48.31EDT",
 			"rdt:location": ""
 		},
 		"rdt:d3": {
@@ -200,7 +197,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-01-08T00.32.09EST",
+			"rdt:timestamp": "2019-05-30T16.48.31EDT",
 			"rdt:location": ""
 		},
 		"rdt:d5": {
@@ -222,7 +219,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-01-08T00.32.09EST",
+			"rdt:timestamp": "2019-05-30T16.48.31EDT",
 			"rdt:location": ""
 		},
 		"rdt:d7": {
@@ -248,27 +245,26 @@
 			"rdt:location": ""
 		},
 
-		// environment
 		"rdt:environment": {
 			"rdt:name": "environment",
 			"rdt:architecture": "x86_64",
 			"rdt:operatingSystem": "mingw32",
 			"rdt:language": "R",
-			"rdt:langVersion": "R version 3.5.2 (2018-12-20)",
+			"rdt:langVersion": "R version 3.6.0 (2019-04-26)",
 			"rdt:script": "[DIR]/HigherOrderFunc.R",
-			"rdt:scriptTimeStamp": "2019-01-07T21.36.29EST",
+			"rdt:scriptTimeStamp": "2019-05-15T13.04.44EDT",
+			"rdt:totalElapsedTime": "0.87",
 			"rdt:sourcedScripts": "",
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:workingDirectory": "[DIR]/rdtLite",
 			"rdt:provDirectory": "[DIR]/rdtLite/prov_HigherOrderFunc",
-			"rdt:provTimestamp": "2019-01-08T00.32.08EST",
+			"rdt:provTimestamp": "2019-05-30T16.48.30EDT",
 			"rdt:hashAlgorithm": "md5"
 		},
 
-		// library nodes - prov collections
 		"rdt:l1": {
 			"name": "base",
-			"version": "3.5.2",
+			"version": "3.6.0",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -276,7 +272,7 @@
 		},
 		"rdt:l2": {
 			"name": "datasets",
-			"version": "3.5.2",
+			"version": "3.6.0",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -284,7 +280,7 @@
 		},
 		"rdt:l3": {
 			"name": "ggplot2",
-			"version": "3.1.0",
+			"version": "3.1.1",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -292,7 +288,7 @@
 		},
 		"rdt:l4": {
 			"name": "graphics",
-			"version": "3.5.2",
+			"version": "3.6.0",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -300,7 +296,7 @@
 		},
 		"rdt:l5": {
 			"name": "grDevices",
-			"version": "3.5.2",
+			"version": "3.6.0",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -308,7 +304,7 @@
 		},
 		"rdt:l6": {
 			"name": "methods",
-			"version": "3.5.2",
+			"version": "3.6.0",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -316,7 +312,7 @@
 		},
 		"rdt:l7": {
 			"name": "rdtLite",
-			"version": "1.0.3",
+			"version": "1.1.0",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -324,7 +320,7 @@
 		},
 		"rdt:l8": {
 			"name": "stats",
-			"version": "3.5.2",
+			"version": "3.6.0",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -332,7 +328,7 @@
 		},
 		"rdt:l9": {
 			"name": "utils",
-			"version": "3.5.2",
+			"version": "3.6.0",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -341,7 +337,6 @@
 	},
 
 	"wasInformedBy" : {
-		// procedure-to-procedure edges
 		"rdt:pp1": {
 			"prov:informant": "rdt:p1",
 			"prov:informed": "rdt:p2"
@@ -397,7 +392,6 @@
 	},
 
 	"wasGeneratedBy" : {
-		// procedure-to-data edges
 		"rdt:pd1": {
 			"prov:activity": "rdt:p2",
 			"prov:entity": "rdt:d1"
@@ -433,7 +427,6 @@
 	},
 
 	"used" : {
-		// data-to-procedure edges
 		"rdt:dp1": {
 			"prov:entity": "rdt:d1",
 			"prov:activity": "rdt:p4"

@@ -45,7 +45,7 @@
 	}
 
 	# CONSTANTS
-	JSON.VERSION <- "2.1"
+	JSON.VERSION <- "2.2"
 
 	# tool name
 	tool.name <- .ddg.tool.name()
@@ -225,8 +225,7 @@
 	
 	# convert to json
 	prefix <- paste( prefix , label , sep='' )
-	json <- .ddg.json.dataframe( node, NA, prefix, 
-	               comment = "agent: this json file and the tool that produced this" )
+	json <- .ddg.json.dataframe( node, NA, prefix )
 	
 	# form agent node and return
 	return( .ddg.json.formNode("agent", json) )
@@ -253,6 +252,9 @@
 	# convert '    ' or \t to escaped tab characters, if any
 	nodes <- .ddg.json.df.escape.tabs( nodes )
 	
+	# convert elapsedTime to strings
+	nodes["ddg.time"] <- mapply( format , nodes["ddg.time"][[1]] , nsmall = 1L )
+	
 	# column names
 	col.names <- c( "name", "type", "elapsedTime", "scriptNum", 
 					"startLine", "startCol", "endLine", "endCol" )
@@ -260,7 +262,7 @@
 	
 	# convert to json
 	prefix <- paste( prefix , label , sep='' )
-	json <- .ddg.json.dataframe( nodes , col.names , prefix , comment = "procedure nodes" )
+	json <- .ddg.json.dataframe( nodes , col.names , prefix )
 	
 	# form activity node and return
 	return( .ddg.json.formNode("activity", json) )
@@ -294,7 +296,7 @@
 	
 	# convert to json and return
 	prefix <- paste( prefix , label , sep='' )
-	return( .ddg.json.dataframe(nodes, col.names, prefix, comment = "data nodes") )
+	return( .ddg.json.dataframe(nodes, col.names, prefix) )
 }
 
 #' .ddg.json.env forms and returns the json string for the environment node
@@ -313,6 +315,7 @@
 					"langVersion" = NA ,
 					"script" = NA ,
 					"scriptTimeStamp" = NA ,
+					"totalElapsedTime" = NA ,
 					"sourcedScripts" = NA ,
 					"sourcedScriptTimeStamps" = NA ,
 					"workingDirectory" = NA ,
@@ -350,6 +353,9 @@
 		fields$sourcedScriptTimeStamps <- ""
 	}
 	
+	# record total elapsed time
+	fields$totalElapsedTime <- format(.ddg.total.elapsed.time(), nsmall = 1L)
+	
 	# working directory, ddg directory (escape any tab characters)
 	fields$workingDirectory <- .ddg.json.escape.tabs( getwd() )
 	fields$provDirectory <- .ddg.json.escape.tabs( .ddg.path() )
@@ -378,8 +384,8 @@
 	# convert '    ' into tab
 	json <- gsub( '    ' , '\t', json )
 	
-	# remove top brace, add comment
-	json <- sub( '^\\{' , '\n\t// environment' , json )
+	# remove top brace
+	json <- sub( '^\\{' , '' , json )
 	
 	# remove bottom brace
 	json <- sub( '\n}\n$' , '' , json )
@@ -429,8 +435,7 @@
 	
 	# convert to json
 	prefix <- paste( prefix , label , sep='' )
-	json <- .ddg.json.dataframe( nodes , col.names , prefix , 
-	                             comment = "library nodes - prov collections" )
+	json <- .ddg.json.dataframe( nodes , col.names , prefix )
 	
 	# append prov:type to json
 	prov.type <- .ddg.json.collection()
@@ -490,7 +495,7 @@
 	
 	# convert to json, return
 	prefix <- paste( prefix , label , sep='' )
-	return( .ddg.json.dataframe(nodes, "name", prefix, comment = "function nodes") )
+	return( .ddg.json.dataframe(nodes, "name", prefix) )
 }
 
 #' .ddg.json.proc2proc forms and returns the json string for nodes representing 
@@ -519,8 +524,7 @@
 	
 	# convert to json
 	prefix <- paste( prefix , label , sep='' )
-	json <- .ddg.json.dataframe( edges, col.names, prefix, 
-	                             comment = "procedure-to-procedure edges" )
+	json <- .ddg.json.dataframe( edges, col.names, prefix )
 	
 	# form wasInformedBy node, return
 	return( .ddg.json.formNode("wasInformedBy", json) )
@@ -552,8 +556,7 @@
 	
 	# convert to json
 	prefix <- paste( prefix , label , sep='' )
-	json <- .ddg.json.dataframe( edges , col.names , prefix , 
-	                             comment = "procedure-to-data edges" )
+	json <- .ddg.json.dataframe( edges , col.names , prefix )
 	
 	# form wasGeneratedBy node, return
 	return( .ddg.json.formNode("wasGeneratedBy", json) )
@@ -585,8 +588,7 @@
 	
 	# convert to json, return
 	prefix <- paste( prefix , label , sep='' )
-	return( .ddg.json.dataframe(edges, col.names, prefix, 
-	                            comment = "data-to-procedure edges") )
+	return( .ddg.json.dataframe(edges, col.names, prefix) )
 }
 
 # .ddg.json.func2proc forms and returns the json string for nodes representing 
@@ -615,8 +617,7 @@
 	
 	# convert to json, return
 	prefix <- paste( prefix , label.edge , sep='' )
-	return( .ddg.json.dataframe(edges, col.names, prefix, 
-	                            comment = "function-to-procedure edges") )
+	return( .ddg.json.dataframe(edges, col.names, prefix) )
 }
 
 # .ddg.json.lib2func forms and returns the json string for nodes linking functions 
@@ -652,8 +653,7 @@
 	
 	# convert to json
 	prefix <- paste( prefix , label.edge , sep='' )
-	json <- .ddg.json.dataframe( nodes , col.names , prefix , 
-	                     comment = "groups function nodes with their library nodes" )
+	json <- .ddg.json.dataframe( nodes , col.names , prefix )
 	
 	# form hadMember node, return
 	return( .ddg.json.formNode("hadMember", json) )
@@ -763,7 +763,6 @@
 	right <- .ddg.json.combine.rec( list[(mid+1):length] )
 	
 	return( paste(left, right, sep="\n") )
-	#return( sub('\n$', right, left) )
 }
 
 # --- MULTIPLE-USE FUNCTIONS ------------------- #
@@ -824,11 +823,10 @@
 #' @param dataframe input dataframe
 #' @param col.names column names
 #' @param obj.prefix object prefix
-#' @param comment optional comment
 #' @return a formatted json string
 #' @noRd
 
-.ddg.json.dataframe <- function( dataframe, col.names, obj.prefix, comment = NULL )
+.ddg.json.dataframe <- function( dataframe, col.names, obj.prefix )
 {
 	# PROCESS TABLE TO PREPARE FOR PRINTING
 	# change column names, if applicable
@@ -853,13 +851,6 @@
 	# PROCESS JSON INTO CORRECT FORMAT
 	# convert '    ' into tab
 	json <- gsub( '    ' , '\t', json )
-	
-	# add comment line to top of block, if any
-	if( ! is.null(comment) )
-	{
-		comment <- paste( '{\n\t\t//' , comment )
-		json <- sub( '^\\{' , comment , json )
-	}
 	
 	# remove square brackets
 	json <- gsub( '\\[\n\t\t\\{' , '\\{' , json )

@@ -48,10 +48,18 @@
   # Initialize the procedure node counter
   .ddg.set("ddg.pnum", 0)
   
-  .ddg.set("ddg.proc.start.time", .ddg.elapsed.time())
+  # Initialise total elapsed time
+  .ddg.set("ddg.total.elapsed.time", 0)
+  
+  # Initialise start time. 
+  # proc.time() returns the time since the start of the R process.
+  # This is important if calling prov.run multiple times in a given R session.
+  time <- proc.time()
+  time <- time[1] + time[2]  # time[4] and time[5] are NA under Windows
+  .ddg.set("ddg.proc.start.time", time)
   
   # Initialize the information about the open start-finish blocks
-  .ddg.set ("ddg.starts.open", vector())
+  .ddg.set("ddg.starts.open", vector())
 }
 
 #' .ddg.is.proc.type returns TRUE for any type of procedure node.
@@ -72,24 +80,37 @@
   return (.ddg.get("ddg.pnum"))
 }
 
+#' .ddg.total.elapsed.time returns the total time the procedures took to execute
+#' @return the total time the procedures took to execute
+#' @noRd
+
+.ddg.total.elapsed.time <- function() {
+  return (.ddg.get("ddg.total.elapsed.time"))
+}
+
 #' .ddg.start.proc.time returns the time when the process started
 #' @return the time the process started, or 0 if it has not been set yet
 #' @noRd
 
 .ddg.start.proc.time <- function() {
-  if (.ddg.is.set("ddg.proc.start.time")) return (.ddg.get("ddg.proc.start.time"))
-  else return (0)
+  return(.ddg.get("ddg.proc.start.time"))
 }
 
-#' .ddg.elapsed.time returns the time since the script began execution
-#' @return the time since the script began execution
+#' .ddg.elapsed.time returns the amount of time the procedure took to execute
+#' @return the amount of time the procedure took to execute
 #' @noRd
 
 .ddg.elapsed.time <- function(){
   time <- proc.time()
-  elapsed <- time[1] + time[2] - .ddg.start.proc.time()
-  # time[4] and time[5] are NA under Windows
-  # elapsed <- time[1] +time[2] +time[4] +time[5]
+  orig.total.elapsed <- .ddg.total.elapsed.time()
+  
+  # proc.time() returns the time since the start of the R process.
+  # calculate total time since the proc nodes table's initialisation
+  # before calculating elapsed time of the proc node itself.
+  total.elapsed <- time[1] + time[2] - .ddg.start.proc.time()
+  elapsed <- total.elapsed - orig.total.elapsed
+  
+  .ddg.set("ddg.total.elapsed.time", total.elapsed)
   return(elapsed)
 }
 
@@ -107,7 +128,7 @@
           ddg.name = character(size),
           ddg.value = character(size),
           ddg.return.linked = logical(size),
-          ddg.time = numeric(size),
+          ddg.time = double(size),
           ddg.snum = numeric(size),
           ddg.startLine = numeric(size),
           ddg.startCol = numeric(size),
@@ -348,7 +369,7 @@
   .ddg.record.proc(ptype, pname, pvalue, ptime, snum, pos)
   
   # If any functions are called in this procedure node, process them.
-  if( !is.null(functions.called) && !is.na(functions.called)) {
+  if( !.ddg.is.null.or.na (functions.called)) {
     pfunctions <- .ddg.get.function.info(functions.called)
 
     # append the function call information to function nodes
