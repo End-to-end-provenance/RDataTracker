@@ -74,6 +74,7 @@
 		DataType
 		ddgDeepNesting
 		DDGStatement
+		Empty
 		FileNodes
 		FunctionAnnotation
 		FunctionNonlocals
@@ -98,6 +99,7 @@
 	"normal-tests-rdtLite" will run the following tests using rdtLite:
 	
 		basic
+		Empty
 		NoDetails
 		S4Object
 		Scope
@@ -1238,6 +1240,62 @@
 	</target>
 	
 	
+	<!-- Empty Test -->
+	<target name="Empty">    <!-- helper -->
+		<condition property="travis" value="false">    <!-- default value -->
+			<not>
+				<isset property="travis"/>
+			</not>
+		</condition>
+		<condition property="tool" value="rdtLite">    <!-- default value -->
+			<not>
+				<isset property="tool"/>
+			</not>
+		</condition>
+		<antcall target="run-test">
+			<param name="test-name" value="Empty"/>
+			<param name="details" value="true"/>
+		</antcall>
+	</target>
+	
+	<target name="update-Empty">    <!-- helper -->
+		<condition property="tool" value="rdtLite">    <!-- default value -->
+			<not>
+				<isset property="tool"/>
+			</not>
+		</condition>
+		<antcall target="update-expected">
+			<param name="test-name" value="Empty"/>
+		</antcall>
+	</target>
+	
+	<target name="Empty-rdt">
+		<antcall target="Empty">
+			<param name="travis" value="false"/>
+			<param name="tool" value="rdt"/>
+		</antcall>
+	</target>
+	
+	<target name="Empty-rdtLite">
+		<antcall target="Empty">
+			<param name="travis" value="false"/>
+			<param name="tool" value="rdtLite"/>
+		</antcall>
+	</target>
+	
+	<target name="update-Empty-rdt">
+		<antcall target="update-Empty">
+			<param name="tool" value="rdt"/>
+		</antcall>
+	</target>
+	
+	<target name="update-Empty-rdtLite">
+		<antcall target="update-Empty">
+			<param name="tool" value="rdtLite"/>
+		</antcall>
+	</target>
+	
+	
 	<!-- FileNodesTest -->
 	<target name="FileNodes">    <!-- helper -->
 		<condition property="travis" value="false">    <!-- default value -->
@@ -2296,11 +2354,11 @@
 	
 	<!-- normal tests -->
 	<target name="normal-tests"
-			depends="basic, NoDetails, S4Object, Scope, Return, OddParameter, 
-					 FunctionAnnotation, FunctionNonlocals, ControlConstruct, 
-					 Warning, Plot1, Plot2, Plot3, FileNodes, NoDevOff, 
-					 DataType, HigherOrderFunc, AssignOperators, FunctionOrigin, 
-					 RMarkdown, DDGStatement, Connection">
+			depends="basic, Empty, NoDetails, S4Object, Scope, Return, 
+					 OddParameter, FunctionAnnotation, FunctionNonlocals, 
+					 ControlConstruct, Warning, Plot1, Plot2, Plot3, FileNodes, 
+					 NoDevOff, DataType, HigherOrderFunc, AssignOperators, 
+					 FunctionOrigin, RMarkdown, DDGStatement, Connection">
 		
 		<!-- rdt only tests -->
 		<condition property="isRDT" value="true">
