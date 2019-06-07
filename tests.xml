@@ -2298,11 +2298,11 @@
 	
 	<!-- normal tests -->
 	<target name="normal-tests"
-			depends="basic, NoDetails, S4Object, Scope, Return, OddParameter, 
-					 FunctionAnnotation, FunctionNonlocals, ControlConstruct, 
-					 Warning, Plot1, Plot2, Plot3, FileNodes, NoDevOff, 
-					 DataType, HigherOrderFunc, AssignOperators, FunctionOrigin, 
-					 RMarkdown, DDGStatement, Connection">
+			depends="basic, Empty, NoDetails, S4Object, Scope, Return, 
+					 OddParameter, FunctionAnnotation, FunctionNonlocals, 
+					 ControlConstruct, Warning, Plot1, Plot2, Plot3, FileNodes, 
+					 NoDevOff, DataType, HigherOrderFunc, AssignOperators, 
+					 FunctionOrigin, RMarkdown, DDGStatement, Connection">
 		
 		<!-- rdt only tests -->
 		<condition property="isRDT" value="true">
