@@ -1,3 +1,7 @@
+# rdt 3.1.1
+
+* Fixed problem with sourced scripts so they show up in the sourced script list, not the input file list.
+
 # rdt 3.1.0
 
 * With R 3.6.0, line numbers are correctly calculated and displayed.
