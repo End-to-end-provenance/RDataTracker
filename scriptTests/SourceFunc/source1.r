@@ -5,3 +5,5 @@ w <- fun(w,y)
 
 # WILL REMOVE THIS ONCE BARBARA'S CODE TO FIX COLLAPSIBLE NODE DATA NDOES IS FIXED
 z <- 0
+
+source("../source2.r")
