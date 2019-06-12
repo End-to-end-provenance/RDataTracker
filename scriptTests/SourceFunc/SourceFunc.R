@@ -14,9 +14,6 @@ source("../source1.r")
 # use w and new z value
 v <- fun(w,z)
 
-# source other scripts, first script with collapsible nodes
-source("../source2.r")
-
 # then script without them
 source("../source3.r")
 
