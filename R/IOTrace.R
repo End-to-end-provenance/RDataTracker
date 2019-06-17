@@ -223,7 +223,8 @@
   
   if( length(func.frame) > 0 )
   {
-    return (func.frame)
+    # Return the last one
+    return (func.frame[length(func.frame)])
   }
   else
   {
@@ -273,13 +274,13 @@
   return (any (calls.found))
 }
 
-#' .ddg.get.call.to returns the first call on the stack that 
+#' .ddg.get.call.to returns the most recent call on the stack that 
 #' is to the named function.
 #' @param func The name of a function
 #' @return The call to that function
 #' @noRd
 .ddg.get.call.to <- function (func) {
-  return (Find(function(call).ddg.is.call.to(call, func), sys.calls()))
+  return (Find(function(call).ddg.is.call.to(call, func), sys.calls(), right=TRUE))
 }
 
 ##################  Functions to handle tracing of read functions ##################
@@ -297,14 +298,19 @@
       c ("read.table", 
           "read.dcf", 
           "readRDS",
-          "readLines", "readBin", "readChar", "scan", "load", "readRenviron")
+          "readLines", "readBin", "readChar", "scan", "load", "readRenviron",
+          
+          # Sometimes source calls readLines but not always.  readLines is called
+          # when called from RStudio, but not when called from Rscript.
+          "source")
   
   # The argument that represents the file name
   param.names <-
       c ("file", 
           "file", 
           "file",
-          "con", "con", "con", "file", "file", "path")
+          "con", "con", "con", "file", "file", "path",
+          "file")
   
   return (data.frame (function.names, param.names, stringsAsFactors=FALSE))
 }
@@ -379,6 +385,10 @@
   # If we are sourcing a script, record the file as a sourced script instead of
   # as an input file.
   if (.ddg.inside.call.to ("source")) {
+    if (.ddg.inside.call.to ("readLines")) {
+      # The information was recorded when the call to source was found.
+      return()
+    }
     source.call <- .ddg.get.call.to ("source")
     frame.number <- .ddg.get.frame.number.for.func ("source")
     sourced.file.name <- eval (as.symbol ("file"), envir=sys.frame(frame.number))
