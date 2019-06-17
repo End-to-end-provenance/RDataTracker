@@ -16,7 +16,7 @@
 		"rdt:p1": {
 			"rdt:name": "SourceFunc.R",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": "0.772",
+			"rdt:elapsedTime": "0.876",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -36,7 +36,7 @@
 		"rdt:p3": {
 			"rdt:name": "x <- 6",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.016",
+			"rdt:elapsedTime": "0.017",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 7,
 			"rdt:startCol": 1,
@@ -66,7 +66,7 @@
 		"rdt:p6": {
 			"rdt:name": "source(\"../source1.r\")",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.094",
+			"rdt:elapsedTime": "0.116",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 12,
 			"rdt:startCol": 1,
@@ -86,7 +86,7 @@
 		"rdt:p8": {
 			"rdt:name": "source(\"../source3.r\")",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.051",
+			"rdt:elapsedTime": "0.015",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 18,
 			"rdt:startCol": 1,
@@ -96,7 +96,7 @@
 		"rdt:p9": {
 			"rdt:name": "source(\"../source4.r\")",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.039",
+			"rdt:elapsedTime": "0.008",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 21,
 			"rdt:startCol": 1,
@@ -116,7 +116,7 @@
 		"rdt:p11": {
 			"rdt:name": "f(m)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.003",
+			"rdt:elapsedTime": "0.004",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 29,
 			"rdt:startCol": 1,
@@ -126,7 +126,7 @@
 		"rdt:p12": {
 			"rdt:name": "f(x)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.003",
+			"rdt:elapsedTime": "0.004",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 30,
 			"rdt:startCol": 1,
@@ -154,7 +154,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-06-12T13.14.02EDT",
+			"rdt:timestamp": "2019-06-17T13.57.58EDT",
 			"rdt:location": ""
 		},
 		"rdt:d2": {
@@ -232,12 +232,22 @@
 			"rdt:langVersion": "R version 3.6.0 (2019-04-26)",
 			"rdt:script": "[DIR]/SourceFunc.R",
 			"rdt:scriptTimeStamp": "2019-06-12T13.08.39EDT",
-			"rdt:totalElapsedTime": "1.054",
-			"rdt:sourcedScripts": "",
-			"rdt:sourcedScriptTimeStamps": "",
+			"rdt:totalElapsedTime": "1.116",
+			"rdt:sourcedScripts": [
+				"source1.r",
+				"source2.r",
+				"source3.r",
+				"source4.r"
+			],
+			"rdt:sourcedScriptTimeStamps": [
+				"2019-06-12T13.08.46EDT",
+				"2019-01-10T13.56.36EST",
+				"2019-01-10T13.56.36EST",
+				"2019-01-10T13.56.36EST"
+			],
 			"rdt:workingDirectory": "[DIR]/rdtLite",
 			"rdt:provDirectory": "[DIR]/rdtLite/prov_SourceFunc",
-			"rdt:provTimestamp": "2019-06-12T13.14.01EDT",
+			"rdt:provTimestamp": "2019-06-17T13.57.57EDT",
 			"rdt:hashAlgorithm": "md5"
 		},
 
