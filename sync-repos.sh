@@ -11,7 +11,7 @@
 # Running on athena.cs.mtholyoke.edu.  This is what is in the cron job:
 #
 # MAILTO=blerner@mtholyoke.edu
-# 20 14 * * * /mnt/pool1/userhomes/MS/blerner/sync-repos.sh | tee -a /mnt/pool1/userhomes/MS/blerner/sync.log | mail -s 'athena rdt rsync' log $MAILTO
+# 20 14 * * * /mnt/pool1/userhomes/MS/blerner/sync-repos.sh | tee -a /mnt/pool1/userhomes/MS/blerner/sync.log  mail -s 'athena rdt rsync' $MAILTO
 #
 # This runs every day at 2:20 PM.  The output is appended to the sync.log file and 
 # also emailed to me.
