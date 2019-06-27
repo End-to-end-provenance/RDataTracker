@@ -277,6 +277,9 @@
   if (dtype == "File") {
     .ddg.set.hash (ddg.dnum, dloc, dvalue, dtime)
   }
+  else if (dtype == "URL") {
+    .ddg.set.hash (ddg.dnum, paste0(.ddg.get("ddg.path"), "/", dvalue), dvalue, dtime)
+  }
   
   if (.ddg.debug.lib()) {
     if (dtype != "File") {

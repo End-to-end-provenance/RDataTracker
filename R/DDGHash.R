@@ -66,7 +66,12 @@
   # or other non-text files with internal timestamps. This could also cause 
   # these files to sync incorrectly in the workflow, but given that reading 
   # in a pdf file is unlikely, this should not be an overly large issue.
-  dhash <- digest::digest(file=filepath, algo=.ddg.get("ddg.hash.algorithm"))
+  # 
+  # Also, sockets currently use URL as their type and there will be no
+  # file in that case, so we need to check if the file exists.
+  dhash <- 
+      if (file.exists (filepath)) digest::digest(file=filepath, algo=.ddg.get("ddg.hash.algorithm"))
+      else ""
   if (is.null(dhash)) {
     dhash <- ""
   }
