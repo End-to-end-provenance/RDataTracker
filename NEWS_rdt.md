@@ -1,6 +1,8 @@
 # rdt 3.1.1
 
 * Fixed problem with sourced scripts so they show up in the sourced script list, not the input file list.
+* Fixed bug in how hash values are computed
+* Save hash values for URLs
 
 # rdt 3.1.0
 

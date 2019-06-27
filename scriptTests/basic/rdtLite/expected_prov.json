@@ -7,7 +7,7 @@
 	"agent" : {
 		"rdt:a1": {
 			"rdt:tool.name": "rdtLite",
-			"rdt:tool.version": "1.1.0",
+			"rdt:tool.version": "1.1.1",
 			"rdt:json.version": "2.2"
 		}
 	},
@@ -16,7 +16,7 @@
 		"rdt:p1": {
 			"rdt:name": "basic.R",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": "0.75",
+			"rdt:elapsedTime": "0.831",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -26,7 +26,7 @@
 		"rdt:p2": {
 			"rdt:name": "f <- function(a, b, yy, d, e, f) {\treturn(a + 1)}",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.04",
+			"rdt:elapsedTime": "0.08",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 10,
 			"rdt:startCol": 1,
@@ -36,7 +36,7 @@
 		"rdt:p3": {
 			"rdt:name": "g <- function(x) {\treturn(x^2)}",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.0",
+			"rdt:elapsedTime": "0.018",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 14,
 			"rdt:startCol": 1,
@@ -46,7 +46,7 @@
 		"rdt:p4": {
 			"rdt:name": "x <- 1 + 2",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.04",
+			"rdt:elapsedTime": "0.041",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 19,
 			"rdt:startCol": 1,
@@ -56,7 +56,7 @@
 		"rdt:p5": {
 			"rdt:name": "y <- paste(\"a\", \"b\", \"c\")",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.01",
+			"rdt:elapsedTime": "0.005",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 20,
 			"rdt:startCol": 1,
@@ -66,7 +66,7 @@
 		"rdt:p6": {
 			"rdt:name": "z <- x + 2",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.0",
+			"rdt:elapsedTime": "0.005",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 21,
 			"rdt:startCol": 1,
@@ -76,7 +76,7 @@
 		"rdt:p7": {
 			"rdt:name": "w <- x + 3",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.0",
+			"rdt:elapsedTime": "0.006",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 22,
 			"rdt:startCol": 1,
@@ -86,7 +86,7 @@
 		"rdt:p8": {
 			"rdt:name": "year <- c(1992, 1995)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.0",
+			"rdt:elapsedTime": "0.004",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 25,
 			"rdt:startCol": 1,
@@ -96,7 +96,7 @@
 		"rdt:p9": {
 			"rdt:name": "name <- c(\"Ben\", \"Greg\")",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.02",
+			"rdt:elapsedTime": "0.005",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 26,
 			"rdt:startCol": 1,
@@ -106,7 +106,7 @@
 		"rdt:p10": {
 			"rdt:name": "male <- c(TRUE, TRUE)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.0",
+			"rdt:elapsedTime": "0.004",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 27,
 			"rdt:startCol": 1,
@@ -116,7 +116,7 @@
 		"rdt:p11": {
 			"rdt:name": "kids.df <- data.frame(year, name, male)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.0",
+			"rdt:elapsedTime": "0.009",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 28,
 			"rdt:startCol": 1,
@@ -126,7 +126,7 @@
 		"rdt:p12": {
 			"rdt:name": "x <- NA",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.0",
+			"rdt:elapsedTime": "0.007",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 31,
 			"rdt:startCol": 1,
@@ -136,7 +136,7 @@
 		"rdt:p13": {
 			"rdt:name": "y <- NULL",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.01",
+			"rdt:elapsedTime": "0.005",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 32,
 			"rdt:startCol": 1,
@@ -146,7 +146,7 @@
 		"rdt:p14": {
 			"rdt:name": "val <- f(w, x, y, z, x + 1, vector())",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.0",
+			"rdt:elapsedTime": "0.004",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 35,
 			"rdt:startCol": 1,
@@ -156,7 +156,7 @@
 		"rdt:p15": {
 			"rdt:name": "x <- g(10)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.0",
+			"rdt:elapsedTime": "0.013",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 36,
 			"rdt:startCol": 1,
@@ -166,7 +166,7 @@
 		"rdt:p16": {
 			"rdt:name": "z <- 5",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.0",
+			"rdt:elapsedTime": "0.005",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 39,
 			"rdt:startCol": 1,
@@ -176,7 +176,7 @@
 		"rdt:p17": {
 			"rdt:name": "a <- \"character\"",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.02",
+			"rdt:elapsedTime": "0.004",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 40,
 			"rdt:startCol": 1,
@@ -186,7 +186,7 @@
 		"rdt:p18": {
 			"rdt:name": "storage.mode(z) <- a",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.0",
+			"rdt:elapsedTime": "0.004",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 41,
 			"rdt:startCol": 1,
@@ -196,7 +196,7 @@
 		"rdt:p19": {
 			"rdt:name": "data.df <- read.csv(\"http://harvardforest.fas.harvard.edu/da",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.69",
+			"rdt:elapsedTime": "0.299",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 44,
 			"rdt:startCol": 1,
@@ -206,7 +206,7 @@
 		"rdt:p20": {
 			"rdt:name": "if (FALSE) read.csv(\"foo.csv\")",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "4.48",
+			"rdt:elapsedTime": "10.262",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 45,
 			"rdt:startCol": 1,
@@ -216,7 +216,7 @@
 		"rdt:p21": {
 			"rdt:name": "shortdata.df <- data.df[1:100, ]",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.0",
+			"rdt:elapsedTime": "0.004",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 46,
 			"rdt:startCol": 1,
@@ -226,7 +226,7 @@
 		"rdt:p22": {
 			"rdt:name": "write.csv(shortdata.df, \"shortdata.csv\")",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.06",
+			"rdt:elapsedTime": "0.086",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 47,
 			"rdt:startCol": 1,
@@ -236,7 +236,7 @@
 		"rdt:p23": {
 			"rdt:name": "pdf(\"airt-vs-prec.pdf\")",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.07",
+			"rdt:elapsedTime": "0.069",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 48,
 			"rdt:startCol": 1,
@@ -246,7 +246,7 @@
 		"rdt:p24": {
 			"rdt:name": "plot(shortdata.df$airt, shortdata.df$prec)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.01",
+			"rdt:elapsedTime": "0.019",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 49,
 			"rdt:startCol": 1,
@@ -256,7 +256,7 @@
 		"rdt:p25": {
 			"rdt:name": "dev.off()",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.0",
+			"rdt:elapsedTime": "0.006",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 50,
 			"rdt:startCol": 1,
@@ -266,7 +266,7 @@
 		"rdt:p26": {
 			"rdt:name": "tryCatch(foo_val <- foo(), error = function(e) {})",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.0",
+			"rdt:elapsedTime": "0.007",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 53,
 			"rdt:startCol": 1,
@@ -276,7 +276,7 @@
 		"rdt:p27": {
 			"rdt:name": "data <- read.csv(\"../data/x.csv\", header = FALSE)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.31",
+			"rdt:elapsedTime": "0.358",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 59,
 			"rdt:startCol": 1,
@@ -286,7 +286,7 @@
 		"rdt:p28": {
 			"rdt:name": "apply(data, 2, sum)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.02",
+			"rdt:elapsedTime": "0.015",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 60,
 			"rdt:startCol": 1,
@@ -296,7 +296,7 @@
 		"rdt:p29": {
 			"rdt:name": "basic.R",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": "0.02",
+			"rdt:elapsedTime": "0.005",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -314,7 +314,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-05-30T16.11.09EDT",
+			"rdt:timestamp": "2019-06-27T14.48.04EDT",
 			"rdt:location": ""
 		},
 		"rdt:d2": {
@@ -325,7 +325,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-05-30T16.11.09EDT",
+			"rdt:timestamp": "2019-06-27T14.48.04EDT",
 			"rdt:location": ""
 		},
 		"rdt:d3": {
@@ -501,7 +501,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-05-30T16.11.11EDT",
+			"rdt:timestamp": "2019-06-27T14.48.06EDT",
 			"rdt:location": ""
 		},
 		"rdt:d19": {
@@ -512,7 +512,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-05-30T16.11.16EDT",
+			"rdt:timestamp": "2019-06-27T14.48.16EDT",
 			"rdt:location": ""
 		},
 		"rdt:d20": {
@@ -523,7 +523,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-05-30T16.11.16EDT",
+			"rdt:timestamp": "2019-06-27T14.48.16EDT",
 			"rdt:location": ""
 		},
 		"rdt:d21": {
@@ -533,8 +533,8 @@
 			"rdt:type": "File",
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
-			"rdt:hash": "4b82f577cb42f6c1f803644b7a2e7edc",
-			"rdt:timestamp": "2019-05-30T16.11.16EDT",
+			"rdt:hash": "7e1f4ad307b267f1d8137314f7ed807d",
+			"rdt:timestamp": "2019-06-27T14.48.16EDT",
 			"rdt:location": "[DIR]/rdtLite/shortdata.csv"
 		},
 		"rdt:d22": {
@@ -566,8 +566,8 @@
 			"rdt:type": "File",
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
-			"rdt:hash": "125a3810b6c7168dc1be2532026ddeb8",
-			"rdt:timestamp": "2019-05-30T16.11.16EDT",
+			"rdt:hash": "1166460c6f3ab7ae420e659dd854c83b",
+			"rdt:timestamp": "2019-06-27T14.48.16EDT",
 			"rdt:location": "[DIR]/rdtLite/airt-vs-prec.pdf"
 		},
 		"rdt:d25": {
@@ -577,8 +577,8 @@
 			"rdt:type": "File",
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
-			"rdt:hash": "91fd573a32f9ce88515c7de21cf0506c",
-			"rdt:timestamp": "2019-05-30T16.11.16EDT",
+			"rdt:hash": "b19871babe985920881db72f3ca0e824",
+			"rdt:timestamp": "2019-06-27T14.48.17EDT",
 			"rdt:location": "[DIR]/data/x.csv"
 		},
 		"rdt:d26": {
@@ -589,7 +589,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-05-30T16.11.16EDT",
+			"rdt:timestamp": "2019-06-27T14.48.17EDT",
 			"rdt:location": ""
 		},
 		"rdt:d27": {
@@ -607,17 +607,17 @@
 		"rdt:environment": {
 			"rdt:name": "environment",
 			"rdt:architecture": "x86_64",
-			"rdt:operatingSystem": "mingw32",
+			"rdt:operatingSystem": "darwin15.6.0",
 			"rdt:language": "R",
 			"rdt:langVersion": "R version 3.6.0 (2019-04-26)",
 			"rdt:script": "[DIR]/basic.R",
-			"rdt:scriptTimeStamp": "2019-05-15T13.04.45EDT",
-			"rdt:totalElapsedTime": "6.55",
+			"rdt:scriptTimeStamp": "2019-01-10T13.56.36EST",
+			"rdt:totalElapsedTime": "12.18",
 			"rdt:sourcedScripts": "",
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:workingDirectory": "[DIR]/rdtLite",
 			"rdt:provDirectory": "[DIR]/rdtLite/prov_basic",
-			"rdt:provTimestamp": "2019-05-30T16.11.09EDT",
+			"rdt:provTimestamp": "2019-06-27T14.48.03EDT",
 			"rdt:hashAlgorithm": "md5"
 		},
 
@@ -671,7 +671,7 @@
 		},
 		"rdt:l7": {
 			"name": "rdtLite",
-			"version": "1.1.0",
+			"version": "1.1.1",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"

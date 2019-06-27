@@ -54,19 +54,24 @@
 }
 
 #' .ddg.calculate.hash calculates the hash value for the file
-#' @param dname the name of the file
+#' @param filepath the full path to the file
 #' @return the hash value based on the hash algorithm specified when 
 #' prov.run or prov.init was called. Returns "" if the digest cannot 
 #' be computed, for example, if the file does not exist.
 #' @noRd
 
-.ddg.calculate.hash <- function(dname) {
+.ddg.calculate.hash <- function(filepath) {
  	.ddg.set("ddg.hasfilenodes", TRUE)
   # This function will cause certain tests to fail if run with pdf files
   # or other non-text files with internal timestamps. This could also cause 
   # these files to sync incorrectly in the workflow, but given that reading 
   # in a pdf file is unlikely, this should not be an overly large issue.
-  dhash <- digest::digest(dname, algo=.ddg.get("ddg.hash.algorithm"))
+  # 
+  # Also, sockets currently use URL as their type and there will be no
+  # file in that case, so we need to check if the file exists.
+  dhash <- 
+      if (file.exists (filepath)) digest::digest(file=filepath, algo=.ddg.get("ddg.hash.algorithm"))
+      else ""
   if (is.null(dhash)) {
     dhash <- ""
   }

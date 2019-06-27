@@ -19,7 +19,6 @@
 
 
 #' .ddg.set.hash sets the hash and rw fields for a data node 
-#' @param dname data node name.
 #' @param dnum the id of the node to set
 #' @param dloc path and name of original file.
 #' @param dvalue data node value.
@@ -27,10 +26,10 @@
 #' @return nothing 
 #' @noRd
 
-.ddg.set.hash <- function (dname, dnum, dloc, dvalue, dtime) {
+.ddg.set.hash <- function (dnum, dloc, dvalue, dtime) {
   
   ddg.data.nodes <- .ddg.data.node.table()
-  dhash <- .ddg.calculate.hash(dname)
+  dhash <- .ddg.calculate.hash(dloc)
   ddg.data.nodes$ddg.hash[dnum] <- dhash
   .ddg.set("ddg.data.nodes", ddg.data.nodes)
 }

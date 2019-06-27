@@ -413,6 +413,17 @@
 			</fileset>
 		</replaceregexp>
 		
+		<!-- Delete all hash values.  pdf files include creation dates, so these will not match.  -->
+		<replaceregexp flags="g">
+			<regexp pattern='(\t+"rdt:hash": ("[0-9a-f]*"?,)\r?\n)'/>
+			<substitution expression=""/>
+			<fileset dir="${local-dir}">
+				<patternset id="local_files">
+					<include name="*.local"/>
+				</patternset>
+			</fileset>
+		</replaceregexp>
+		
 		<!-- TRAVIS: Further edit the .local files if running tests on Travis -->
 		<antcall if:true="${travis}" target="travis-edits"/>
 		

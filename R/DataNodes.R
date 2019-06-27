@@ -151,7 +151,7 @@
                   (ddg.data.nodes$ddg.type == "File" &
                   ddg.data.nodes$ddg.name == dname &
                   ddg.data.nodes$ddg.scope == "undefined" &
-                  ddg.data.nodes$ddg.hash == .ddg.calculate.hash(basename(dname)) &
+                  ddg.data.nodes$ddg.hash == .ddg.calculate.hash(dname) &
                   ddg.data.nodes$ddg.loc == filepath),
                 ]
   }
@@ -275,7 +275,10 @@
   # Output data node.
   #print(".ddg.record.data outputting data node")
   if (dtype == "File") {
-    .ddg.set.hash (dname, ddg.dnum, dloc, dvalue, dtime)
+    .ddg.set.hash (ddg.dnum, dloc, dvalue, dtime)
+  }
+  else if (dtype == "URL") {
+    .ddg.set.hash (ddg.dnum, paste0(.ddg.get("ddg.path"), "/", dvalue), dvalue, dtime)
   }
   
   if (.ddg.debug.lib()) {
