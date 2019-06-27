@@ -2,6 +2,7 @@
 
 * Fixed problem with sourced scripts so they show up in the sourced script list, not the input file list.
 * Fixed bug in how hash values are computed
+* Save hash values for URLs
 
 # rdtLite 1.1.0
 
