@@ -1,5 +1,5 @@
-# URL input
-file.in <- url ("http://www.mtholyoke.edu/index.html")
+# URL input -- changed to a page that won't change unexpectedly causing our tests to fail
+file.in <- url ("http://www.mtholyoke.edu/~blerner/test.html")
 df <- readLines(file.in, warn=FALSE)
 close (file.in)
 
