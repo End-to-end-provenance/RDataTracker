@@ -406,6 +406,7 @@
       .ddg.data2proc(var, scope, cmd@abbrev)
     }
     else {
+      # print (".ddg.create.data.use.edges DID NOT FIND data node")
       # Note: This generates lots of error nodes of limited value.
       # Turn off for now.
 
@@ -1363,9 +1364,12 @@
     else {
       call.func <- as.character(call)
       # Ignore calls to ddg functions or to the functions that get called from 
-      # the outermost tryCatch to ddg code.
+      # the outermost tryCatch to ddg code.  Seems like a hack.  If provenance
+      # tools call prov.run, we need to add them to the list (like debug.init).
+      # We also could capture functions that actually are defined in a script if
+      # they start with "prov"!  
       if (!any (startsWith (call.func, c (".ddg", "ddg", "prov", "doTryCatch", 
-        "tryCatch")))) {
+        "tryCatch", "debug.init")))) {
           if (for.caller && !script.func.found) {
             script.func.found <- TRUE
           }
