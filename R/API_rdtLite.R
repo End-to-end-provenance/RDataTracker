@@ -156,7 +156,7 @@ prov.quit <- function(save.debug = FALSE) {
 #' prov.quit()
 
 prov.run <- function(r.script.path, prov.dir = NULL, overwrite = TRUE, details = TRUE, 
-  snapshot.size = 0, hash.algorithm = "md5", save.debug = FALSE) {
+  snapshot.size = 0, hash.algorithm = "md5", save.debug = FALSE, ...) {
   
   # Stop & display message if R script path is missing
   if (missing(r.script.path)) {
@@ -182,7 +182,7 @@ prov.run <- function(r.script.path, prov.dir = NULL, overwrite = TRUE, details =
   prov.init(prov.dir, overwrite, snapshot.size, hash.algorithm, save.debug)
   
   # Execute the script
-  .ddg.run(r.script.path)
+  .ddg.run(..., r.script.path)
 }
 
 #' prov.source
@@ -198,11 +198,12 @@ prov.run <- function(r.script.path, prov.dir = NULL, overwrite = TRUE, details =
 #' will just source the file.  No provenance will be collected.
 #' 
 #' @param file the name of the R script file to source.
+#' @param ... parameters passed on to the source function
 #' @return The prov.source function does not return a value.
 #' @export
 #' @rdname prov.run
 
-prov.source <- function(file) {
+prov.source <- function(file, ...) {
   
   # Stop & display message if argument is missing or in console mode
   if (missing(file)) {
@@ -210,10 +211,10 @@ prov.source <- function(file) {
   }
   
   if (.ddg.is.init()) {
-    .ddg.source(file)
+    .ddg.source(file, ...)
   }
   else {
-    source (file)
+    source (file, ...)
   }
   
 }

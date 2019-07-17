@@ -803,8 +803,11 @@
 
 .ddg.parse.commands <- function (exprs, script.name="", script.num=NA, environ, 
     ignore.patterns=c('^ddg.'), run.commands = FALSE, echo=FALSE, 
-    print.eval=echo, max.deparse.length=150, called.from.ddg.eval=FALSE, cmds=NULL) {
+    print.eval, 
+    max.deparse.length=150, called.from.ddg.eval=FALSE, cmds=NULL, 
+    continue.echo, prompt.echo, spaced) {
 
+  #print (paste ("In .ddg.parse.commands, exprs =", exprs))
   return.value <- NULL
   
   # Gather all the information that we need about the statements
@@ -911,12 +914,13 @@
         if (run.commands) {
           # Print command.
           if (echo) {
-            cmd.show <- 
-                paste0(substr(cmd@text, 
-                              1L, 
-                              min (max.deparse.length, nchar(cmd@text))), 
-                       "\n")
-            cat(cmd.show)
+#            cmd.show <- 
+ #               paste0(substr(cmd@text, 
+#                              1L, 
+#                              min (max.deparse.length, nchar(cmd@text))), 
+#                       "\n")
+#            cat(cmd.show)
+             .ddg.echo (cmd@text, max.deparse.length, continue.echo, prompt.echo, spaced)
           }
 
           # If we will create a node, then before execution, set
@@ -1037,7 +1041,13 @@
           }
 
           # Print evaluation.
-          if (print.eval) print(result)
+          #if (print.eval) print(result)
+          if (print.eval && withVisible(result)$visible) {
+            if (isS4(result))
+              methods::show(result)
+            else print(result)
+          }
+
         }
 
         # Figure out if we should create a procedure node for this
@@ -1153,6 +1163,74 @@
   #  print(paste(".ddg.parse.commands: returning ", return.value))
   #}
 }
+
+.ddg.echo <- function (cmdText, max.deparse.length, continue.echo, prompt.echo, spaced) {
+  #cat (".ddg.echo called\n")
+  #cat ("cmdText =", cmdText)
+  #  nd <- 0
+#  srcref <- if (tail) 
+#        attr(exprs, "wholeSrcref")
+#      else if (i <= length(srcrefs)) 
+#        srcrefs[[i]]
+#  if (!is.null(srcref)) {
+#    if (i == 1) 
+#      lastshown <- min(skip.echo, srcref[3L] - 1)
+#    if (lastshown < srcref[3L]) {
+#      srcfile <- attr(srcref, "srcfile")
+#      dep <- trySrcLines(srcfile, lastshown + 1, 
+#          srcref[3L])
+#      if (length(dep)) {
+#        leading <- if (tail) 
+#              length(dep)
+#            else srcref[1L] - lastshown
+#        lastshown <- srcref[3L]
+#        while (length(dep) && grepl("^[[:blank:]]*$", 
+#            dep[1L])) {
+#          #dep <- dep[-1L]
+#          dep <- cmdText
+#          leading <- leading - 1L
+#        }
+#        dep <- paste0(rep.int(c(prompt.echo, continue.echo), 
+#                c(leading, length(dep) - leading)), dep, 
+#            collapse = "\n")
+#        nd <- nchar(dep, "c")
+#      }
+#      else srcref <- NULL
+#    }
+#  }
+#  if (is.null(srcref)) {
+#    if (!tail) {
+      #dep <- substr(paste(deparse(ei, width.cutoff = width.cutoff, 
+      #            control = deparseCtrl), collapse = "\n"), 
+      #    12L, 1000000L)
+  
+      dep <- cmdText
+      dep <- paste0(prompt.echo, gsub("\n", paste0("\n", 
+                  continue.echo), dep))
+      #cat ("dep =", dep)
+      nd <- nchar(dep, "c")
+#    }
+#  }
+  if (nd) {
+    do.trunc <- nd > max.deparse.length
+    dep <- substr(dep, 1L, if (do.trunc) 
+              max.deparse.length
+            else nd)
+    sd <- "\""
+    nos <- "[^\"]*"
+    oddsd <- paste0("^", nos, sd, "(", nos, sd, nos, sd, 
+        ")*", nos, "$")
+    #cat ("dep =", dep)
+    
+    cat(if (spaced) 
+          "\n", dep, if (do.trunc) 
+          paste(if (grepl(sd, dep) && grepl(oddsd, dep)) 
+                    " ...\" ..."
+                  else " ....", "[TRUNCATED] "), "\n", sep = "")
+    #cat(if (spaced) "\n" else "", dep, "\n", sep = "")
+  }
+  #cat (".ddg.echo returned\n")
+} 
 
 #' .ddg.evaluate.commands evaluates a list of parsed R statements. Provenance is 
 #' collected for inputs and outputs only. If an error or warning is generated 
