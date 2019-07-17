@@ -17,9 +17,9 @@ prov.quit(save.debug = FALSE)
 
 prov.run(r.script.path, prov.dir = NULL, overwrite = TRUE,
   details = TRUE, snapshot.size = 0, hash.algorithm = "md5",
-  save.debug = FALSE)
+  save.debug = FALSE, ...)
 
-prov.source(file)
+prov.source(file, ...)
 }
 \arguments{
 \item{prov.dir}{the directory where the provenance graph will be 
@@ -48,6 +48,8 @@ executed. A copy of the script will be saved with the provenance graph.}
 
 \item{details}{if FALSE, provenance is not collected for top-level
 statements.}
+
+\item{...}{parameters passed on to the source function}
 
 \item{file}{the name of the R script file to source.}
 }

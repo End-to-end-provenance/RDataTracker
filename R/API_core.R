@@ -442,6 +442,7 @@
         }
         else parse(file, n = -1, NULL, "?", srcfile, 
                   encoding)
+
     on.exit()
     if (from_file) 
       close(file)
@@ -472,10 +473,6 @@
   }
   Ne <- length(exprs)
   if (echo) {
-    sd <- "\""
-    nos <- "[^\"]*"
-    oddsd <- paste0("^", nos, sd, "(", nos, sd, nos, sd, 
-        ")*", nos, "$")
     trySrcLines <- function(srcfile, showfrom, showto) {
       tryCatch(suppressWarnings(getSrcLines(srcfile, showfrom, 
                   showto)), error = function(e) character())
@@ -506,7 +503,7 @@
           ignore.patterns = ignores, echo = echo, print.eval = print.eval, 
           max.deparse.length = max.deparse.length, run.commands = TRUE, 
           continue.echo = continue.echo, prompt.echo = prompt.echo, 
-          spaced = spaced)
+          spaced = spaced, verbose = verbose, deparseCtrl = deparseCtrl)
       if (is.na(calling.script)) {
         .ddg.add.finish.node()
       }

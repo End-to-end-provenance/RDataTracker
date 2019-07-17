@@ -805,7 +805,9 @@
     ignore.patterns=c('^ddg.'), run.commands = FALSE, echo=FALSE, 
     print.eval, 
     max.deparse.length=150, called.from.ddg.eval=FALSE, cmds=NULL, 
-    continue.echo, prompt.echo, spaced) {
+    continue.echo=getOption("continue"), prompt.echo=getOption("prompt"), 
+    spaced = use_file, verbose=getOption("verbose"),
+    deparseCtrl = "showAttributes") {
 
   #print (paste ("In .ddg.parse.commands, exprs =", exprs))
   return.value <- NULL
@@ -865,6 +867,9 @@
 
     # Loop over the commands as well as their string representations.
     for (i in 1:length(cmds)) {
+      if (verbose) 
+        cat("\n>>>> eval(expression_nr.", i, ")\n\t\t =================\n")
+
       cmd <- cmds[[i]]
 
       if (.ddg.debug.lib()) print(paste(".ddg.parse.commands: Processing", cmd@abbrev))
@@ -959,20 +964,45 @@
                   # are executing an if-statement
                   if (grepl("^ddg|^.ddg|^prov", annot) 
                     || .ddg.get.statement.type(annot) == "if") {
-                      eval(annot, environ, NULL)
+                      returnWithVisible <- withVisible (eval(annot, environ, NULL))
                       .ddg.set ("ddg.error.node.created", FALSE)
                   }
                   else {
-                    return.value <- eval(annot, environ, NULL)
+                    returnWithVisible <- withVisible (eval(annot, environ, NULL))
                     #if (typeof(return.value) != "closure") {
                       #print (paste (".ddg.parse.commands: Done evaluating ", annot))
                       #print(paste(".ddg.parse.commands: setting ddg.last.R.value to", 
                       #            return.value))
                     #}
-                    .ddg.set ("ddg.last.R.value", return.value)
+                    .ddg.set ("ddg.last.R.value", returnWithVisible$value)
                     .ddg.set ("ddg.error.node.created", FALSE)
                   }
+                  i.symbol <- mode(annot) == "name"
+                  if (!i.symbol) {
+                    curr.fun <- annot[[1L]]
+                    if (verbose) {
+                      cat("curr.fun:")
+                      utils::str(curr.fun)
+                    }
+                  }
+                  if (verbose >= 2) {
+                    cat(".... mode(ei[[1L]])=", mode(annot), "; paste(curr.fun)=")
+                    utils::str(paste(curr.fun))
+                  }
+                  # Print evaluation.
+                  #if (print.eval) print(result)
+                  if (print.eval && returnWithVisible$visible) {
+                    if (isS4(returnWithVisible$value))
+                      methods::show(returnWithVisible$value)
+                    else print(returnWithVisible$value)
+                  }
+                  if (verbose) 
+                    cat(" .. after ", sQuote(deparse(cmd@annotated, control = unique(c(deparseCtrl, 
+                                        "useSource")))), "\n", sep = "")
+                  
                 }
+                
+                returnWithVisible
               },
             warning = .ddg.set.warning,
             error = function(e)
@@ -1039,16 +1069,7 @@
             cur.cmd.closed <- (ddg.cur.cmd.stack[stack.length] == "MATCHES_CALL")
             .ddg.pop.cmd ()
           }
-
-          # Print evaluation.
-          #if (print.eval) print(result)
-          if (print.eval && withVisible(result)$visible) {
-            if (isS4(result))
-              methods::show(result)
-            else print(result)
-          }
-
-        }
+        }  
 
         # Figure out if we should create a procedure node for this
         # command. We don't create it if it matches a last command
