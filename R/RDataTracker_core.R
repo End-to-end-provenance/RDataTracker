@@ -805,10 +805,11 @@
     ignore.patterns=c('^ddg.'), run.commands = FALSE, echo=FALSE, 
     print.eval, 
     max.deparse.length=150, called.from.ddg.eval=FALSE, cmds=NULL, 
-    continue.echo=getOption("continue"), prompt.echo=getOption("prompt"), 
-    spaced = use_file, verbose=getOption("verbose"),
+    continue.echo=getOption("continue"), skip.echo = 0, prompt.echo=getOption("prompt"), 
+    spaced=FALSE, verbose=getOption("verbose"),
     deparseCtrl = "showAttributes") {
 
+  
   #print (paste ("In .ddg.parse.commands, exprs =", exprs))
   return.value <- NULL
   
@@ -867,6 +868,7 @@
 
     # Loop over the commands as well as their string representations.
     for (i in 1:length(cmds)) {
+      # if-statement taken from R's source function
       if (verbose) 
         cat("\n>>>> eval(expression_nr.", i, ")\n\t\t =================\n")
 
@@ -917,15 +919,25 @@
 
         # If sourcing, we want to execute the command.
         if (run.commands) {
-          # Print command.
+          # Print command.  The echo code is adapted from R's source function.
           if (echo) {
-#            cmd.show <- 
- #               paste0(substr(cmd@text, 
-#                              1L, 
-#                              min (max.deparse.length, nchar(cmd@text))), 
-#                       "\n")
-#            cat(cmd.show)
-             .ddg.echo (cmd@text, max.deparse.length, continue.echo, prompt.echo, spaced)
+            # lastshown holds the last line number shown to the user.
+            # When executing the first command, we can skip the number
+            # of lines at the beginning of the file, as specified
+            # by skip.echo.  This allows skipping over header comments.
+            if (i == 1) 
+              lastshown <- min(skip.echo, cmd@pos@startLine - 1)
+            if (lastshown < cmd@pos@endLine) {
+              # Look up the lines to display in the source file
+              srcrefs <- attr(exprs, "srcref")
+              srcref <- srcrefs[[i]]
+              srcfile <- attr(srcref, "srcfile")
+              dep <- getSrcLines(srcfile, lastshown + 1, cmd@pos@endLine)
+              lastshown <- cmd@pos@endLine
+            
+             .ddg.echo (dep, max.deparse.length, continue.echo, prompt.echo, spaced,
+                     cmd@pos@endLine - cmd@pos@startLine + 1)
+           }
           }
 
           # If we will create a node, then before execution, set
@@ -977,6 +989,8 @@
                     .ddg.set ("ddg.last.R.value", returnWithVisible$value)
                     .ddg.set ("ddg.error.node.created", FALSE)
                   }
+                  
+                  #### Start code taken from R's source function. ####
                   i.symbol <- mode(annot) == "name"
                   if (!i.symbol) {
                     curr.fun <- annot[[1L]]
@@ -990,7 +1004,6 @@
                     utils::str(paste(curr.fun))
                   }
                   # Print evaluation.
-                  #if (print.eval) print(result)
                   if (print.eval && returnWithVisible$visible) {
                     if (isS4(returnWithVisible$value))
                       methods::show(returnWithVisible$value)
@@ -999,7 +1012,7 @@
                   if (verbose) 
                     cat(" .. after ", sQuote(deparse(cmd@annotated, control = unique(c(deparseCtrl, 
                                         "useSource")))), "\n", sep = "")
-                  
+                  #### End code taken from R's source function ####
                 }
                 
                 returnWithVisible
@@ -1163,6 +1176,17 @@
         }
       }
      }
+     
+     if (echo) {
+       # Output any extra lines from the file that are after the last line executed
+	     # This code is adapted from R's source function.  In the source function
+	     # they use the tail variable to identify statements done
+	     # after the last line of code is executed.
+       srcref <- attr(exprs, "wholeSrcref")
+       srcfile <- attr(srcref, "srcfile")
+        dep <- getSrcLines(srcfile, lastshown + 1, srcref[3])
+        .ddg.echo (dep, max.deparse.length, continue.echo, prompt.echo, spaced, 0)
+     }
 
      # Create a data node for each variable that might have been set in
      # something other than a simple assignment, with an edge from the
@@ -1185,54 +1209,47 @@
   #}
 }
 
-.ddg.echo <- function (cmdText, max.deparse.length, continue.echo, prompt.echo, spaced) {
-  #cat (".ddg.echo called\n")
-  #cat ("cmdText =", cmdText)
-  #  nd <- 0
-#  srcref <- if (tail) 
-#        attr(exprs, "wholeSrcref")
-#      else if (i <= length(srcrefs)) 
-#        srcrefs[[i]]
-#  if (!is.null(srcref)) {
-#    if (i == 1) 
-#      lastshown <- min(skip.echo, srcref[3L] - 1)
-#    if (lastshown < srcref[3L]) {
-#      srcfile <- attr(srcref, "srcfile")
-#      dep <- trySrcLines(srcfile, lastshown + 1, 
-#          srcref[3L])
-#      if (length(dep)) {
-#        leading <- if (tail) 
-#              length(dep)
-#            else srcref[1L] - lastshown
-#        lastshown <- srcref[3L]
-#        while (length(dep) && grepl("^[[:blank:]]*$", 
-#            dep[1L])) {
-#          #dep <- dep[-1L]
-#          dep <- cmdText
-#          leading <- leading - 1L
-#        }
-#        dep <- paste0(rep.int(c(prompt.echo, continue.echo), 
-#                c(leading, length(dep) - leading)), dep, 
-#            collapse = "\n")
-#        nd <- nchar(dep, "c")
-#      }
-#      else srcref <- NULL
-#    }
-#  }
-#  if (is.null(srcref)) {
-#    if (!tail) {
-      #dep <- substr(paste(deparse(ei, width.cutoff = width.cutoff, 
-      #            control = deparseCtrl), collapse = "\n"), 
-      #    12L, 1000000L)
+#' .ddg.echo prints the command to the screen
+#' 
+#' @param cmdText the lines to display.  This can include blank lines and comments that
+#'    preceded the command itself.
+#' @param max.deparse.length the maximum length to display
+#' @param continue.echo the prompt to put at the start of the condinuation lines of a multi-line statement
+#' @param prompt.echo the prompt to put at the start of the first line of a statement
+#' @param spaced if true, blank lines are inserted between statements executed
+#' @param curCmdLength the number of lines in the statement being executed.  This is the
+#'     length of the command itself, not including leading blank lines or comments.
+.ddg.echo <- function (cmdText, max.deparse.length, continue.echo, prompt.echo, spaced, curCmdLength) {
+  # This function is extracted and adapted from R's source function.
+  dep <- cmdText
   
-      dep <- cmdText
-      dep <- paste0(prompt.echo, gsub("\n", paste0("\n", 
-                  continue.echo), dep))
-      #cat ("dep =", dep)
-      nd <- nchar(dep, "c")
-#    }
-#  }
+  # Remove leading blank lines
+  while (length(dep) && grepl("^[[:blank:]]*$", dep[1])) {
+    dep <- dep[-1]
+  }
+  
+  # No actual command.  This happens if we have reached the end of the file
+  # and there is a trailing comment.
+  if (curCmdLength == 0) {
+    # Print the trailing comments, with each line beginning with 
+    # the prompt character.
+    dep <- paste0(rep.int(prompt.echo, length(dep)), dep, 
+      collapse = "\n")
+  }
+  
+  else {
+    # Print the comments and first line of the command beginning with the
+    # prompt character.  If there is more than one line to the command,
+    # begin each of those with the continue character.
+    dep <- paste0(rep.int(c(prompt.echo, continue.echo), 
+            c(length(dep) - curCmdLength + 1, curCmdLength - 1)), dep, 
+            collapse = "\n")
+  }
+  
+  nd <- nchar(dep, "c")
+  
   if (nd) {
+    # Truncate the output if it is too long
     do.trunc <- nd > max.deparse.length
     dep <- substr(dep, 1L, if (do.trunc) 
               max.deparse.length
@@ -1241,16 +1258,18 @@
     nos <- "[^\"]*"
     oddsd <- paste0("^", nos, sd, "(", nos, sd, nos, sd, 
         ")*", nos, "$")
-    #cat ("dep =", dep)
     
-    cat(if (spaced) 
-          "\n", dep, if (do.trunc) 
+    # Insert blank line if spaced is true
+    cat(if (spaced) "\n", 
+        dep, 
+        if (do.trunc) 
+          # Make sure any open quotes are closed if the string
+          # is truncated.
           paste(if (grepl(sd, dep) && grepl(oddsd, dep)) 
                     " ...\" ..."
-                  else " ....", "[TRUNCATED] "), "\n", sep = "")
-    #cat(if (spaced) "\n" else "", dep, "\n", sep = "")
+                else " ....", 
+                "[TRUNCATED] "), "\n", sep = "")
   }
-  #cat (".ddg.echo returned\n")
 } 
 
 #' .ddg.evaluate.commands evaluates a list of parsed R statements. Provenance is 

@@ -24,15 +24,16 @@
 #' @param script.name - the name of the script the statement is from
 #' @param script.num - the script number used to find the script in the sourced script table
 #' @param parseData - the object created by the parser that gives us source position information
+#' @param cmdText - the R source code for the statement
 #' @return a DDG statement
 #' @noRd
 
-.ddg.construct.DDGStatement <- function (expr, pos, script.name, script.num, parseData) {
+.ddg.construct.DDGStatement <- function (expr, pos, script.name, script.num, parseData, cmdText) {
   #print(paste(".ddg.construct.DDGStatement: expr =", expr))
   # Surprisingly, if a statement is just a number, like 1 (which could be the last 
   # statement in a function, for example), the parser returns a number, rather 
   # than a parse tree!
   if (is.numeric(expr)) expr <- parse(text=expr)
   
-  return (methods::new (Class = "DDGStatement", parsed = expr, pos, script.num))
+  return (methods::new (Class = "DDGStatement", parsed = expr, pos, script.num, cmdText))
 }

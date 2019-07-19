@@ -141,6 +141,10 @@ prov.quit <- function(save.debug = FALSE) {
 #' executed. A copy of the script will be saved with the provenance graph.
 #' @param details if FALSE, provenance is not collected for top-level
 #' statements.
+#' @param exprs Instead of specifying file, an expression, call, or list of call's, 
+#'   can be passed in to be executed.
+#' @param ... parameters passed on to the source function.  See documentation
+#'   of source for details.
 #' @return prov.run runs a script, collecting provenance as it does so.  
 #'   It does not return a value. 
 #' @export
@@ -156,12 +160,28 @@ prov.quit <- function(save.debug = FALSE) {
 #' prov.quit()
 
 prov.run <- function(r.script.path, prov.dir = NULL, overwrite = TRUE, details = TRUE, 
-  snapshot.size = 0, hash.algorithm = "md5", save.debug = FALSE, ...) {
+  snapshot.size = 0, hash.algorithm = "md5", save.debug = FALSE, exprs, ...) {
   
   # Stop & display message if R script path is missing
-  if (missing(r.script.path)) {
-    stop("Please provide the name of the R script to execute. If the script
+  if (missing(r.script.path) && missing(exprs)) {
+    stop("Please provide the name of the R script or a list of expressions to execute. If the script
       is not in the working directory, please include the full path.")
+  }
+  
+  if (!missing(r.script.path) && !missing(exprs)) {
+    stop("Please provide either the name of the R script or a list of expressions to execute, but not both.")
+  }
+  
+  # If expressions were passed in rather than a script file,
+  # save the expressions in a file.
+  if (missing(r.script.path)) {
+    r.script.path <- paste0(tempdir(), "/exprs.R")
+    source <- sapply (exprs, deparse)
+    writeLines(source, r.script.path)
+    use_file <- FALSE
+  }
+  else {
+    use_file <- TRUE
   }
 
   # Stop & display message if R script file is not found
@@ -182,7 +202,7 @@ prov.run <- function(r.script.path, prov.dir = NULL, overwrite = TRUE, details =
   prov.init(prov.dir, overwrite, snapshot.size, hash.algorithm, save.debug)
   
   # Execute the script
-  .ddg.run(..., r.script.path)
+  .ddg.run(r.script.path, exprs, ...)
 }
 
 #' prov.source
@@ -198,23 +218,26 @@ prov.run <- function(r.script.path, prov.dir = NULL, overwrite = TRUE, details =
 #' will just source the file.  No provenance will be collected.
 #' 
 #' @param file the name of the R script file to source.
-#' @param ... parameters passed on to the source function
 #' @return The prov.source function does not return a value.
 #' @export
 #' @rdname prov.run
 
-prov.source <- function(file, ...) {
+prov.source <- function(file, exprs, ...) {
   
   # Stop & display message if argument is missing or in console mode
-  if (missing(file)) {
-    stop("Please provide the name of an R script file in the call to prov.source.")
+  if (missing(file) && missing (exprs)) {
+    stop("Please provide the name of an R script file or a list of parsed expressions in the call to prov.source.")
+  }
+  
+  if (!missing(file) && !missing (exprs)) {
+    stop("Please provide the name of an R script file or a list of parsed expressions, but not both")
   }
   
   if (.ddg.is.init()) {
-    .ddg.source(file, ...)
+    .ddg.source(file, exprs = exprs, ...)
   }
   else {
-    source (file, ...)
+    source (file, exprs = exprs, ...)
   }
   
 }
