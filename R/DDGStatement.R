@@ -151,7 +151,9 @@ methods::setMethod ("initialize",
 
       # deparse can return a vector of strings.  We convert that into
       # one long string.
-      .Object@text <- cmdText
+      .Object@text <- 
+        if (is.na(cmdText)) paste(deparse(.Object@parsed[[1]]), collapse="")
+        else cmdText
       if (.ddg.debug.lib()) print(paste ("Parsing", .Object@text))
 
       .Object@abbrev <-

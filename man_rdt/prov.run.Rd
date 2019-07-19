@@ -19,9 +19,9 @@ prov.quit(save.debug = FALSE)
 prov.run(r.script.path, prov.dir = NULL, overwrite = TRUE,
   details = TRUE, annotate.inside.functions = FALSE, first.loop = 1,
   max.loops = 0, snapshot.size = 0, hash.algorithm = "md5",
-  save.debug = FALSE, display = FALSE)
+  save.debug = FALSE, display = FALSE, exprs, ...)
 
-prov.source(file)
+prov.source(file, exprs, ...)
 }
 \arguments{
 \item{prov.dir}{the directory where the provenance graph will be 
@@ -65,6 +65,12 @@ executed. A copy of the script will be saved with the provenance graph.}
 statements.}
 
 \item{display}{if TRUE, the provenance graph is displayed in DDG Explorer}
+
+\item{exprs}{Instead of specifying file, an expression, call, or list of call's, 
+can be passed in to be executed.}
+
+\item{...}{parameters passed on to the source function.  See documentation
+of source for details.}
 
 \item{file}{the name of the R script file to source.}
 }

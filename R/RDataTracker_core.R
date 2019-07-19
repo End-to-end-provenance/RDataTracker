@@ -803,7 +803,7 @@
 
 .ddg.parse.commands <- function (exprs, script.name="", script.num=NA, environ, 
     ignore.patterns=c('^ddg.'), run.commands = FALSE, echo=FALSE, 
-    print.eval, 
+    print.eval = echo, 
     max.deparse.length=150, called.from.ddg.eval=FALSE, cmds=NULL, 
     continue.echo=getOption("continue"), skip.echo = 0, prompt.echo=getOption("prompt"), 
     spaced=FALSE, verbose=getOption("verbose"),
