@@ -292,11 +292,11 @@
 #' It does not return a value. 
 #' @noRd
 
-.ddg.run <- function(r.script.path) {
+.ddg.run <- function(r.script.path, exprs, ...) {
   
   # Execute script and catch any error messages
   tryCatch({
-      .ddg.source(.ddg.r.script.path(), ignore.ddg.calls = FALSE)
+      .ddg.source(.ddg.r.script.path(), exprs = exprs, ignore.ddg.calls = FALSE, ...)
     }
 
     # Add finish nodes for anything left open due to errors
@@ -335,230 +335,440 @@
 #' @return nothing
 #' @noRd
 
-.ddg.source <- function (file,  local = FALSE, echo = verbose, print.eval = echo,
-  verbose = getOption("verbose"), max.deparse.length = 150, chdir = FALSE, 
-  encoding = getOption("encoding"), ignore.ddg.calls = TRUE, calling.script=NA, 
-  startLine=NA, startCol=NA, endLine=NA, endCol=NA){
-
-  # Store script number & name.
-  snum <- .ddg.store.script.info (file)
+.ddg.source <- function (file, local = FALSE, echo = verbose, print.eval = echo, 
+    exprs, spaced = use_file, verbose = getOption("verbose"), 
+    prompt.echo = getOption("prompt"), max.deparse.length = 150, 
+    width.cutoff = 60L, deparseCtrl = "showAttributes", chdir = FALSE, 
+    encoding = getOption("encoding"), continue.echo = getOption("continue"), 
+    skip.echo = 0, 
+    ignore.ddg.calls = TRUE, calling.script = NA, startLine = NA, startCol = NA,
+    endLine = NA, endCol = NA) 
+{
+  # This function is largely derived from R's source function.  Part of R's
+  # source function also appears in .ddg.parse.commands and .ddg.echo.  To
+  # simply future maintenance the current version of R's source function is
+  # at the bottom of this file in a comment.
   
-  # Save a copy of the script
+  # Save provenance information about the script.
+  snum <- .ddg.store.script.info(file)
   sname <- basename(file)
-  file.copy(file, paste(.ddg.path.scripts(), sname, sep="/"))
-
-  ### CODE IN THIS SECTION IS A SLIGHT MODIFICATION OF A PORTION OF ###
-  ### R's source FUNCTION ###
+  file.copy(file, paste(.ddg.path.scripts(), sname, sep = "/"))
   
-  # To see the current version of the source function source code, say:
-  # getMethod("source", "ANY")
-  # I don't know how to see the functions called from source, though.
-  # An older version of the source code of R's source function can be found here:
-  # https://github.com/SurajGupta/r-source/blob/master/src/library/base/R/source.R
-  # Note that R's source function has more parameters than we allow.  This could
-  # conceivably cause problems when we replace calls to source with calls to .ddg.source.
-  # The additional parameters are:
-  # exprs
-  # spaced
-  # prompt.echo
-  # width.cutoff
-  # deparseCtrl
-  # continue.echo
-  # skip.echo
-  # keep.source
-
-
-  # Get the environment under which the script should be executed.
-  envir <- 
-    if (isTRUE(local)) {
-      parent.frame()
-    }
-    else if (isFALSE(local)) {
-      .GlobalEnv
-    }
-    else if (is.environment(local)) {
-      local
-    }
-    else stop("'local' must be TRUE, FALSE or an environment")
-
-  # Parse encoding information.
-  have_encoding <- !missing(encoding) && encoding != "unknown"
-  if (!missing(echo)) 
-  {
-    if (!is.logical(echo))
-      stop ("'echo' must be logical")
-    if (!echo && verbose) 
-    {
-      warning("'verbose' is TRUE, 'echo' not; ... coercing 'echo <- TRUE'\n")
+  # We always want to keep the source when we collect provenance,
+  # so this is not a parameter of .ddg.source.
+  keep.source <- TRUE
+  
+  #### Start section taken from R's source function ####
+  envir <- if (isTRUE(local)) 
+        parent.frame()
+      else if (isFALSE(local)) 
+        .GlobalEnv
+      else if (is.environment(local)) 
+        local
+      else stop("'local' must be TRUE, FALSE or an environment")
+  if (!missing(echo)) {
+    if (!is.logical(echo)) 
+      stop("'echo' must be logical")
+    if (!echo && verbose) {
+      warning("'verbose' is TRUE, 'echo' not; ... coercing 'echo <- TRUE'")
       echo <- TRUE
     }
   }
-
-  # Print extra information about environment.
-  if (verbose) 
-  {
+  if (verbose) {
     cat("'envir' chosen:")
     print(envir)
   }
-
-  # Parse input file and figure out encoding.
-  ofile <- file
-  from_file <- FALSE
-  srcfile <- NULL
-  if (is.character(file)) 
-  {
-    if (identical(encoding, "unknown")) 
-    {
-      enc <- utils::localeToCharset()
-      encoding <- enc[length(enc)]
-    }
-    else enc <- encoding
-    if (length(enc) > 1L) 
-    {
-      encoding <- NA
-      owarn <- options(warn = 2)
-      for (e in enc) 
-      {
-        if (is.na(e))
-          next
-        zz <- file(file, encoding = e)
-        res <- tryCatch(readLines(zz, warn = FALSE), error = identity)
-        close(zz)
-        if (!inherits(res, "error")) 
-        {
-          encoding <- e
-          break
-        }
+  if (use_file <- missing(exprs)) {
+    ofile <- file
+    from_file <- FALSE
+    srcfile <- NULL
+    if (is.character(file)) {
+      have_encoding <- !missing(encoding) && encoding != 
+          "unknown"
+      if (identical(encoding, "unknown")) {
+        enc <- utils::localeToCharset()
+        encoding <- enc[length(enc)]
       }
-      options(owarn)
-    }
-    if (is.na(encoding))
-      stop("unable to find a plausible encoding")
-    if (verbose)
-      cat(gettextf("encoding = \"%s\" chosen", encoding), "\n", sep = "")
-    if (file == "") 
-    {
-      filename <- "stdin"
-      file <- stdin()
-      srcfile <- "<stdin>"
-    }
-    else 
-    {
-      filename <- file
-      file <- file(filename, "r", encoding = encoding)
-      on.exit(close(file))
-      lines <- readLines(file, warn = FALSE)
+      else enc <- encoding
+      if (length(enc) > 1L) {
+        encoding <- NA
+        owarn <- options(warn = 2)
+        for (e in enc) {
+          if (is.na(e)) 
+            next
+          zz <- file(file, encoding = e)
+          res <- tryCatch(readLines(zz, warn = FALSE), 
+              error = identity)
+          close(zz)
+          if (!inherits(res, "error")) {
+            encoding <- e
+            break
+          }
+        }
+        options(owarn)
+      }
+      if (is.na(encoding)) 
+        stop("unable to find a plausible encoding")
+      if (verbose) 
+        cat(gettextf("encoding = \"%s\" chosen", encoding), 
+            "\n", sep = "")
+      if (file == "") {
+        filename <- "stdin"  # Line added for provenance
+        file <- stdin()
+        srcfile <- "<stdin>"
+      }
+      else {
+        filename <- file
+        file <- file(filename, "r", encoding = encoding)
+        on.exit(close(file))
+        lines <- readLines(file, warn = FALSE)
+        on.exit()
+        close(file)
+        srcfile <- srcfilecopy(filename, lines, file.mtime(filename)[1], 
+              isFile = TRUE)
 
-      on.exit()
-      close(file)
-      srcfile <- srcfilecopy(filename, lines, file.mtime(filename)[1], isFile = TRUE)
-    }
-    loc <- utils::localeToCharset()[1L]
-    encoding <- if (have_encoding)
-        switch(loc, `UTF-8` = "UTF-8", `ISO8859-1` = "latin1", "unknown")
-          else "unknown"
-  }
-
-  else 
-  {
-    filename <- "Connection"
-    lines <- readLines(file, warn = FALSE)
-
-    srcfile <- srcfilecopy(deparse(substitute(file)), lines)
-  }
-
-  # Parse the expressions from the file.
-  exprs <- if (!from_file) 
-    {
-      if (length(lines)) 
-        parse(stdin(), n = -1, lines, "?", srcfile, encoding, keep.source=TRUE)
-      else expression()
+        loc <- utils::localeToCharset()[1L]
+        encoding <- if (have_encoding) 
+              switch(loc, `UTF-8` = "UTF-8", `ISO8859-1` = "latin1", 
+                  "unknown")
+            else "unknown"
+      }
     }
     else {
-      parse(file, n = -1, NULL, "?", srcfile, encoding, keep.source=TRUE)
+      filename <- "Connection"  # Line added for provenance
+      lines <- readLines(file, warn = FALSE)
+      srcfile <- srcfilecopy(deparse(substitute(file)), lines)
     }
 
-  on.exit()
-
-  # Set the working directory for the current script and
-  # expressions.
-  if (from_file)
-    close(file)
-
-  if (verbose)
-    cat("--> parsed", "expressions; now eval(.)ing them:\n")
-  if (chdir) 
-  {
-    if (is.character (ofile)) 
-    {
-      if (grepl("^(ftp|http|file)://", ofile))
-        warning("'chdir = TRUE' makes no sense for a URL")
-      else if ( (path <- dirname (ofile)) != ".") 
-      {
-        owd <- getwd()
-        if (is.null(owd)) 
-        {
-          stop("cannot 'chdir' as current directory is unknown")
+    # parse calls are changed.  .Internal is not allowed to be called from
+    # packages.  This appears to behave the same.
+    exprs <- if (!from_file) {
+          if (length(lines)) 
+             parse(file=stdin(), n = -1, text=lines, prompt="?", 
+                  keep.source=TRUE, srcfile = srcfile, encoding = encoding)
+          
+          else expression()
+        }
+        else parse(file=file, n = -1, text=NULL, prompt="?", 
+                  keep.source=TRUE, srcfile = srcfile, 
+                  encoding = encoding)
+    on.exit()
+    if (from_file) 
+      close(file)
+    if (verbose) 
+      cat("--> parsed", length(exprs), "expressions; now eval(.)ing them:\n")
+    if (chdir) {
+      if (is.character(ofile)) {
+        if (grepl("^(ftp|http|file)://", ofile)) 
+          warning("'chdir = TRUE' makes no sense for a URL")
+        else if ((path <- dirname(ofile)) != ".") {
+          owd <- getwd()
+          if (is.null(owd)) 
+            stop("cannot 'chdir' as current directory is unknown")
           on.exit(setwd(owd), add = TRUE)
           setwd(path)
         }
       }
-    }
-    else {
-      warning("'chdir = TRUE' makes no sense for a connection")
+      else {
+        warning("'chdir = TRUE' makes no sense for a connection")
+      }
     }
   }
-
-  ### END OF MODIFIED source CODE SECTION ###
-
-  # Calculate the regular expressions for what should be ignored
-  # and what shouldn't.
-  # Ignore calculation of certain execution steps.
-  ignores <- c("^library[(]RDataTracker[)]$", "^library[(]provR[)]$",
-    if (ignore.ddg.calls) "^ddg."
-    else c("^prov.init", "^prov.run"))
-
-  # Now we can parse the commands as we normally would for a DDG.
-  if (length(exprs) > 0) 
-  {
-
-    # Initialize the tables for ddg.capture.
+  else {
+#    Commented out for provenance because if a user passes in expressions
+#    rather than a file to prov.run, we save the expressions in a file and
+#    pass both to .ddg.source.  We report this error in prov.run if the
+#    user calls that function incorrectly.
+#    if (!missing(file)) 
+#      stop("specify either 'file' or 'exprs' but not both")
+    if (!is.expression(exprs)) 
+      exprs <- as.expression(exprs)
+  }
+  Ne <- length(exprs)
+  yy <- NULL
+  lastshown <- 0
+  srcrefs <- attr(exprs, "srcref")
+  if (verbose && !is.null(srcrefs)) {
+    cat("has srcrefs:\n")
+    utils::str(srcrefs)
+  }
+  #### End section copied from R's source function ####
+  
+  ignores <- c("^library[(]RDataTracker[)]$", "^library[(]provR[)]$", 
+      if (ignore.ddg.calls) "^ddg." else c("^prov.init", "^prov.run"))
+  if (length(exprs) > 0) {
     .ddg.set("from.source", TRUE)
-
-    # If ddg.details is True, execute the commands and collect provenance
-    # along the way. If called from prov.run, there is no position information.
-    # Otherwise, record script number and position in the start and finish nodes.
     if (.ddg.details()) {
       if (is.na(calling.script)) {
-        .ddg.add.start.node (node.name=sname)
+        .ddg.add.start.node(node.name = sname)
       }
       else {
-        .ddg.add.start.node (node.name=paste0 ("source (\"", sname, "\")"), 
-                            script.num=calling.script,
-                            startLine=startLine, startCol=startCol, 
-                            endLine=endLine, endCol=endCol)
+        .ddg.add.start.node(node.name = paste0("source (\"", 
+                sname, "\")"), script.num = calling.script, 
+            startLine = startLine, startCol = startCol, 
+            endLine = endLine, endCol = endCol)
       }
-    
-      .ddg.parse.commands(exprs, sname, snum, environ=envir, ignore.patterns=ignores,
-        echo = echo, print.eval = print.eval, max.deparse.length = max.deparse.length,
-        run.commands = TRUE)
-    
+      
+      # We have pulled the evaluation and echo code that is in R's
+      # source function into .ddg.parse.commands.
+      yy <- .ddg.parse.commands(exprs, sname, snum, environ = envir, 
+          ignore.patterns = ignores, echo = echo, print.eval = print.eval, 
+          max.deparse.length = max.deparse.length, run.commands = TRUE, 
+          continue.echo = continue.echo, skip.echo = skip.echo, prompt.echo = prompt.echo, 
+          spaced = spaced, verbose = verbose, deparseCtrl = deparseCtrl)
       if (is.na(calling.script)) {
-        .ddg.add.finish.node ()
+        .ddg.add.finish.node()
       }
       else {
-        .ddg.add.finish.node (script.num=calling.script,
-        startLine=startLine, startCol=startCol, endLine=endLine, endCol=endCol)
+        .ddg.add.finish.node(script.num = calling.script, 
+            startLine = startLine, startCol = startCol, 
+            endLine = endLine, endCol = endCol)
       }
-    } 
-
-    # If ddg.details is False, create a single procedural node for the main script
-    # and evaluate commands without collecting provenance for each command.
+    }
     else {
-      if (is.na(calling.script)) .ddg.proc.node("Operation", sname)
-      .ddg.evaluate.commands(exprs, environ=envir)
+      if (is.na(calling.script)) 
+        .ddg.proc.node("Operation", sname)
+      yy <- .ddg.evaluate.commands(exprs, environ = envir)
     }
   }
-
-  invisible()
+  invisible(yy)
 }
+
+# To simplify future maintenance, here is the definition of R's source function
+# in R 3.6.0.  We should compare this code with the source function in new
+# released of R to determine what is changed so we can figure out what we
+# need to update.
+#
+#function (file, local = FALSE, echo = verbose, print.eval = echo, 
+#    exprs, spaced = use_file, verbose = getOption("verbose"), 
+#    prompt.echo = getOption("prompt"), max.deparse.length = 150, 
+#    width.cutoff = 60L, deparseCtrl = "showAttributes", chdir = FALSE, 
+#    encoding = getOption("encoding"), continue.echo = getOption("continue"), 
+#    skip.echo = 0, keep.source = getOption("keep.source")) 
+#{
+#  envir <- if (isTRUE(local)) 
+#        parent.frame()
+#      else if (isFALSE(local)) 
+#        .GlobalEnv
+#      else if (is.environment(local)) 
+#        local
+#      else stop("'local' must be TRUE, FALSE or an environment")
+#  if (!missing(echo)) {
+#    if (!is.logical(echo)) 
+#      stop("'echo' must be logical")
+#    if (!echo && verbose) {
+#      warning("'verbose' is TRUE, 'echo' not; ... coercing 'echo <- TRUE'")
+#      echo <- TRUE
+#    }
+#  }
+#  if (verbose) {
+#    cat("'envir' chosen:")
+#    print(envir)
+#  }
+#  if (use_file <- missing(exprs)) {
+#    ofile <- file
+#    from_file <- FALSE
+#    srcfile <- NULL
+#    if (is.character(file)) {
+#      have_encoding <- !missing(encoding) && encoding != 
+#          "unknown"
+#      if (identical(encoding, "unknown")) {
+#        enc <- utils::localeToCharset()
+#        encoding <- enc[length(enc)]
+#      }
+#      else enc <- encoding
+#      if (length(enc) > 1L) {
+#        encoding <- NA
+#        owarn <- options(warn = 2)
+#        for (e in enc) {
+#          if (is.na(e)) 
+#            next
+#          zz <- file(file, encoding = e)
+#          res <- tryCatch(readLines(zz, warn = FALSE), 
+#              error = identity)
+#          close(zz)
+#          if (!inherits(res, "error")) {
+#            encoding <- e
+#            break
+#          }
+#        }
+#        options(owarn)
+#      }
+#      if (is.na(encoding)) 
+#        stop("unable to find a plausible encoding")
+#      if (verbose) 
+#        cat(gettextf("encoding = \"%s\" chosen", encoding), 
+#            "\n", sep = "")
+#      if (file == "") {
+#        file <- stdin()
+#        srcfile <- "<stdin>"
+#      }
+#      else {
+#        filename <- file
+#        file <- file(filename, "r", encoding = encoding)
+#        on.exit(close(file))
+#        if (isTRUE(keep.source)) {
+#          lines <- readLines(file, warn = FALSE)
+#          on.exit()
+#          close(file)
+#          srcfile <- srcfilecopy(filename, lines, file.mtime(filename)[1], 
+#              isFile = TRUE)
+#        }
+#        else {
+#          from_file <- TRUE
+#          srcfile <- filename
+#        }
+#        loc <- utils::localeToCharset()[1L]
+#        encoding <- if (have_encoding) 
+#              switch(loc, `UTF-8` = "UTF-8", `ISO8859-1` = "latin1", 
+#                  "unknown")
+#            else "unknown"
+#      }
+#    }
+#    else {
+#      lines <- readLines(file, warn = FALSE)
+#      srcfile <- if (isTRUE(keep.source)) 
+#            srcfilecopy(deparse(substitute(file)), lines)
+#          else deparse(substitute(file))
+#    }
+#    exprs <- if (!from_file) {
+#          if (length(lines)) 
+#            .Internal(parse(stdin(), n = -1, lines, "?", 
+#                    srcfile, encoding))
+#          else expression()
+#        }
+#        else .Internal(parse(file, n = -1, NULL, "?", srcfile, 
+#                  encoding))
+#    on.exit()
+#    if (from_file) 
+#      close(file)
+#    if (verbose) 
+#      cat("--> parsed", length(exprs), "expressions; now eval(.)ing them:\n")
+#    if (chdir) {
+#      if (is.character(ofile)) {
+#        if (grepl("^(ftp|http|file)://", ofile)) 
+#          warning("'chdir = TRUE' makes no sense for a URL")
+#        else if ((path <- dirname(ofile)) != ".") {
+#          owd <- getwd()
+#          if (is.null(owd)) 
+#            stop("cannot 'chdir' as current directory is unknown")
+#          on.exit(setwd(owd), add = TRUE)
+#          setwd(path)
+#        }
+#      }
+#      else {
+#        warning("'chdir = TRUE' makes no sense for a connection")
+#      }
+#    }
+#  }
+#  else {
+#    if (!missing(file)) 
+#      stop("specify either 'file' or 'exprs' but not both")
+#    if (!is.expression(exprs)) 
+#      exprs <- as.expression(exprs)
+#  }
+#  Ne <- length(exprs)
+#  if (echo) {
+#    sd <- "\""
+#    nos <- "[^\"]*"
+#    oddsd <- paste0("^", nos, sd, "(", nos, sd, nos, sd, 
+#        ")*", nos, "$")
+#    trySrcLines <- function(srcfile, showfrom, showto) {
+#      tryCatch(suppressWarnings(getSrcLines(srcfile, showfrom, 
+#                  showto)), error = function(e) character())
+#    }
+#  }
+#  yy <- NULL
+#  lastshown <- 0
+#  srcrefs <- attr(exprs, "srcref")
+#  if (verbose && !is.null(srcrefs)) {
+#    cat("has srcrefs:\n")
+#    utils::str(srcrefs)
+#  }
+#  for (i in seq_len(Ne + echo)) {
+#    tail <- i > Ne
+#    if (!tail) {
+#      if (verbose) 
+#        cat("\n>>>> eval(expression_nr.", i, ")\n\t\t =================\n")
+#      ei <- exprs[i]
+#    }
+#    if (echo) {
+#      nd <- 0
+#      srcref <- if (tail) 
+#            attr(exprs, "wholeSrcref")
+#          else if (i <= length(srcrefs)) 
+#            srcrefs[[i]]
+#      if (!is.null(srcref)) {
+#        if (i == 1) 
+#          lastshown <- min(skip.echo, srcref[3L] - 1)
+#        if (lastshown < srcref[3L]) {
+#          srcfile <- attr(srcref, "srcfile")
+#          dep <- trySrcLines(srcfile, lastshown + 1, 
+#              srcref[3L])
+#          if (length(dep)) {
+#            leading <- if (tail) 
+#                  length(dep)
+#                else srcref[1L] - lastshown
+#            lastshown <- srcref[3L]
+#            while (length(dep) && grepl("^[[:blank:]]*$", 
+#                dep[1L])) {
+#              dep <- dep[-1L]
+#              leading <- leading - 1L
+#            }
+#            dep <- paste0(rep.int(c(prompt.echo, continue.echo), 
+#                    c(leading, length(dep) - leading)), dep, 
+#                collapse = "\n")
+#            nd <- nchar(dep, "c")
+#          }
+#          else srcref <- NULL
+#        }
+#      }
+#      if (is.null(srcref)) {
+#        if (!tail) {
+#          dep <- substr(paste(deparse(ei, width.cutoff = width.cutoff, 
+#                      control = deparseCtrl), collapse = "\n"), 
+#              12L, 1000000L)
+#          dep <- paste0(prompt.echo, gsub("\n", paste0("\n", 
+#                      continue.echo), dep))
+#          nd <- nchar(dep, "c") - 1L
+#        }
+#      }
+#      if (nd) {
+#        do.trunc <- nd > max.deparse.length
+#        dep <- substr(dep, 1L, if (do.trunc) 
+#                  max.deparse.length
+#                else nd)
+#        cat(if (spaced) 
+#              "\n", dep, if (do.trunc) 
+#              paste(if (grepl(sd, dep) && grepl(oddsd, dep)) 
+#                        " ...\" ..."
+#                      else " ....", "[TRUNCATED] "), "\n", sep = "")
+#      }
+#    }
+#    if (!tail) {
+#      yy <- withVisible(eval(ei, envir))
+#      i.symbol <- mode(ei[[1L]]) == "name"
+#      if (!i.symbol) {
+#        curr.fun <- ei[[1L]][[1L]]
+#        if (verbose) {
+#          cat("curr.fun:")
+#          utils::str(curr.fun)
+#        }
+#      }
+#      if (verbose >= 2) {
+#        cat(".... mode(ei[[1L]])=", mode(ei[[1L]]), "; paste(curr.fun)=")
+#        utils::str(paste(curr.fun))
+#      }
+#      if (print.eval && yy$visible) {
+#        if (isS4(yy$value)) 
+#          methods::show(yy$value)
+#        else print(yy$value)
+#      }
+#      if (verbose) 
+#        cat(" .. after ", sQuote(deparse(ei, control = unique(c(deparseCtrl, 
+#                            "useSource")))), "\n", sep = "")
+#    }
+#  }
+#  invisible(yy)
+#}
+

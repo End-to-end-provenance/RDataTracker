@@ -146,12 +146,14 @@ methods::setClass("DDGStatement",
 # This is called when a new DDG Statement is created.  It initializes all of the slots.
 methods::setMethod ("initialize",
   "DDGStatement",
-    function(.Object, parsed, pos, script.num){
+    function(.Object, parsed, pos, script.num, cmdText){
       .Object@parsed <- parsed
 
       # deparse can return a vector of strings.  We convert that into
       # one long string.
-      .Object@text <- paste(deparse(.Object@parsed[[1]]), collapse="")
+      .Object@text <- 
+        if (is.na(cmdText)) paste(deparse(.Object@parsed[[1]]), collapse="")
+        else cmdText
       if (.ddg.debug.lib()) print(paste ("Parsing", .Object@text))
 
       .Object@abbrev <-
@@ -233,8 +235,12 @@ methods::setMethod ("initialize",
       cmds <- vector("list", (length(exprs)))
       for (i in 1:length(exprs)) {
         expr <- as.expression(exprs[i])
+        cmdText <- parseData[i, "text"]
+        if (is.null(cmdText)) {
+          cmdText <- paste(deparse(expr[[1]]), collapse="")
+        }
         cmds[[i]] <- .ddg.construct.DDGStatement(expr, NA, script.name, 
-                                                 script.num, parseData)
+                                                 script.num, parseData, cmdText)
       }
       return(cmds)
     }
@@ -267,9 +273,13 @@ methods::setMethod ("initialize",
     expr <- as.expression(exprs[i][[1]])
     next.expr.pos <- methods::new (Class = "DDGStatementPos", 
                                    non.comment.parse.data[next.parseData, ])
+    cmdText <- non.comment.parse.data[next.parseData, "text"]
+    if (is.null(cmdText)) {
+      cmdText <- paste(deparse(expr[[1]]), collapse="")
+    }
     cmds[[next.cmd]] <- .ddg.construct.DDGStatement(expr, next.expr.pos, 
                                                     script.name, script.num, 
-                                                    parseData)
+                                                    parseData, cmdText)
     next.cmd <- next.cmd + 1
     
     # If there are more expressions, determine where to look next in the parseData

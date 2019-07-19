@@ -31,8 +31,8 @@ setClass("RDTStatement",
 # This is called when a new RDTStatement is created.  It initializes all of the slots.
 methods::setMethod ("initialize",
     "RDTStatement",
-    function(.Object, parsed, pos, script.name, script.num, parseData){
-      .Object <- methods::callNextMethod(.Object, parsed, pos, script.num)
+    function(.Object, parsed, pos, script.name, script.num, parseData, cmdText){
+      .Object <- methods::callNextMethod(.Object, parsed, pos, script.num, cmdText)
       .Object@contained <-
           # The contained field is a list of DDGStatements for all statements inside
           # the function or control statement.  If we are collecting
@@ -64,10 +64,11 @@ methods::setMethod ("initialize",
 #' @param script.name - the name of the script the statement is from
 #' @param script.num - the script number used to find the script in the sourced script table
 #' @param parseData - the object created by the parser that gives us source position information
+#' @param cmdText - the R source code for the statement
 #' @return a DDG statement
 #' @noRd
 
-.ddg.construct.DDGStatement <- function (expr, pos, script.name, script.num, parseData) {
+.ddg.construct.DDGStatement <- function (expr, pos, script.name, script.num, parseData, cmdText) {
   #print(paste(".ddg.construct.DDGStatement: expr =", expr))
   # Surprisingly, if a statement is just a number, like 1 (which could be the last 
   # statement in a function, for example), the parser returns a number, rather 
@@ -75,7 +76,7 @@ methods::setMethod ("initialize",
   if (is.numeric(expr)) expr <- parse(text=expr)
   
   return (methods::new (Class = "RDTStatement", parsed = expr, pos, script.name, 
-          script.num, parseData))
+          script.num, parseData, cmdText))
 }
 
 #' .ddg.parse.contained creates the DDGStatement objects that correspond to

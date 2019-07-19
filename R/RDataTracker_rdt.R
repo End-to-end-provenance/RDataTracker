@@ -40,7 +40,7 @@
   if (last.created[[1]] != "FALSE") return ()
   
   ddg.cur.cmd <- .ddg.get("ddg.cur.cmd")
-  if (ddg.cur.cmd@text == paste(deparse(call), collapse="")) {
+  if (.ddg.remove.whitespace(ddg.cur.cmd@text) == paste(.ddg.remove.whitespace(deparse(call)), collapse="")) {
     .ddg.change.cmd.top ("MATCHES_CALL")
   }
   
@@ -60,6 +60,10 @@
     # create the abstract node above, because we will create it below.
     .ddg.change.cmd.top (TRUE)
   }
+}
+
+.ddg.remove.whitespace <- function(text) {
+  return (gsub("[[:space:]]", "", text))
 }
 
 #' .ddg.link.function.returns determines if the command calls a

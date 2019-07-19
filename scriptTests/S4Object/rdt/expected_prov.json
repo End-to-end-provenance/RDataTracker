@@ -7,7 +7,7 @@
 	"agent" : {
 		"rdt:a1": {
 			"rdt:tool.name": "rdt",
-			"rdt:tool.version": "3.1.0",
+			"rdt:tool.version": "3.1.1",
 			"rdt:json.version": "2.2"
 		}
 	},
@@ -16,7 +16,7 @@
 		"rdt:p1": {
 			"rdt:name": "S4Object.R",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": "0.77",
+			"rdt:elapsedTime": "0.808",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -26,7 +26,7 @@
 		"rdt:p2": {
 			"rdt:name": "require(methods)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.07",
+			"rdt:elapsedTime": "0.109",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 9,
 			"rdt:startCol": 1,
@@ -34,9 +34,9 @@
 			"rdt:endCol": 16
 		},
 		"rdt:p3": {
-			"rdt:name": "setClass(\"SampleObj\", slots = c(sampleCode = \"integer\", nInd",
+			"rdt:name": "setClass(\"SampleObj\",\n\t\tslots = c(\n\t\t\t\tsampleCode = \"integer",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.0",
+			"rdt:elapsedTime": "0.01",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 15,
 			"rdt:startCol": 1,
@@ -44,9 +44,9 @@
 			"rdt:endCol": 54
 		},
 		"rdt:p4": {
-			"rdt:name": "as.character.SampleObj <- function(x) {\tstr <- paste(\"sam",
+			"rdt:name": "as.character.SampleObj <- function(x) {\n#toString.SampleObj ",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.0",
+			"rdt:elapsedTime": "0.005",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 21,
 			"rdt:startCol": 1,
@@ -54,9 +54,9 @@
 			"rdt:endCol": 1
 		},
 		"rdt:p5": {
-			"rdt:name": "setMethod(\"as.character\", signature(x = \"SampleObj\"), as.cha",
+			"rdt:name": "setMethod(\"as.character\", \n\t\tsignature(x = \"SampleObj\"),\n\t\ta",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.03",
+			"rdt:elapsedTime": "0.017",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 39,
 			"rdt:startCol": 1,
@@ -64,9 +64,9 @@
 			"rdt:endCol": 39
 		},
 		"rdt:p6": {
-			"rdt:name": "generateSamples <- function(n) {\tsamplesArr <- list()\t",
+			"rdt:name": "generateSamples <- function (n) {\n\tsamplesArr <- list()\n\tfor",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.0",
+			"rdt:elapsedTime": "0.006",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 43,
 			"rdt:startCol": 1,
@@ -74,9 +74,9 @@
 			"rdt:endCol": 1
 		},
 		"rdt:p7": {
-			"rdt:name": "generate1Sample <- function() {\tnewSample <- new(\"SampleO",
+			"rdt:name": "generate1Sample <- function () {\n\tnewSample <- new (\"SampleO",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.03",
+			"rdt:elapsedTime": "0.048",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 56,
 			"rdt:startCol": 1,
@@ -86,7 +86,7 @@
 		"rdt:p8": {
 			"rdt:name": "totalNumOfSample <- 5",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.01",
+			"rdt:elapsedTime": "0.011",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 65,
 			"rdt:startCol": 1,
@@ -96,7 +96,7 @@
 		"rdt:p9": {
 			"rdt:name": "newSample <- generate1Sample()",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": "0.02",
+			"rdt:elapsedTime": "0.022",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 66,
 			"rdt:startCol": 1,
@@ -106,7 +106,7 @@
 		"rdt:p10": {
 			"rdt:name": "generate1Sample()",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": "0.0",
+			"rdt:elapsedTime": "0.002",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -126,7 +126,7 @@
 		"rdt:p12": {
 			"rdt:name": "newSample <- new(\"SampleObj\", sampleCode = as.integer(1), nI",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.0",
+			"rdt:elapsedTime": "0.003",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -136,7 +136,7 @@
 		"rdt:p13": {
 			"rdt:name": "return(newSample)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.02",
+			"rdt:elapsedTime": "0.017",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -146,7 +146,7 @@
 		"rdt:p14": {
 			"rdt:name": "generate1Sample()",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": "0.01",
+			"rdt:elapsedTime": "0.012",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -166,7 +166,7 @@
 		"rdt:p16": {
 			"rdt:name": "samplesArr <- generateSamples(totalNumOfSample)",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": "0.0",
+			"rdt:elapsedTime": "0.011",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 67,
 			"rdt:startCol": 1,
@@ -176,7 +176,7 @@
 		"rdt:p17": {
 			"rdt:name": "generateSamples(totalNumOfSample)",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": "0.01",
+			"rdt:elapsedTime": "0.002",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -186,7 +186,7 @@
 		"rdt:p18": {
 			"rdt:name": "n  <-  totalNumOfSample",
 			"rdt:type": "Binding",
-			"rdt:elapsedTime": "0.0",
+			"rdt:elapsedTime": "0.001",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -196,7 +196,7 @@
 		"rdt:p19": {
 			"rdt:name": "generateSamples",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.0",
+			"rdt:elapsedTime": "0.003",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -206,7 +206,7 @@
 		"rdt:p20": {
 			"rdt:name": "samplesArr <- list()",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.0",
+			"rdt:elapsedTime": "0.003",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 44,
 			"rdt:startCol": 9,
@@ -214,9 +214,9 @@
 			"rdt:endCol": 28
 		},
 		"rdt:p21": {
-			"rdt:name": "for (ix in 1:n) {\tnewSample <- new(\"SampleObj\", sampleCod",
+			"rdt:name": "for (ix in 1:n) {\n\t\tnewSample <- new (\"SampleObj\", \n\t\t\t\tsamp",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": "0.0",
+			"rdt:elapsedTime": "0.006",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 45,
 			"rdt:startCol": 9,
@@ -226,7 +226,7 @@
 		"rdt:p22": {
 			"rdt:name": "for loop",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": "0.02",
+			"rdt:elapsedTime": "0.007",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -236,7 +236,7 @@
 		"rdt:p23": {
 			"rdt:name": "ix <- 1",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.0",
+			"rdt:elapsedTime": "0.001",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -246,7 +246,7 @@
 		"rdt:p24": {
 			"rdt:name": "newSample <- new(\"SampleObj\", sampleCode = ix, nIndividuals ",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.0",
+			"rdt:elapsedTime": "0.003",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -256,7 +256,7 @@
 		"rdt:p25": {
 			"rdt:name": "samplesArr = c(samplesArr, newSample)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.01",
+			"rdt:elapsedTime": "0.02",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -266,7 +266,7 @@
 		"rdt:p26": {
 			"rdt:name": "for loop",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": "0.0",
+			"rdt:elapsedTime": "0.008",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -276,7 +276,7 @@
 		"rdt:p27": {
 			"rdt:name": "Details Omitted",
 			"rdt:type": "Incomplete",
-			"rdt:elapsedTime": "0.0",
+			"rdt:elapsedTime": "0.001",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -284,9 +284,9 @@
 			"rdt:endCol": "NA"
 		},
 		"rdt:p28": {
-			"rdt:name": "for (ix in 1:n) {\tnewSample <- new(\"SampleObj\", sampleCod",
+			"rdt:name": "for (ix in 1:n) {\n\t\tnewSample <- new (\"SampleObj\", \n\t\t\t\tsamp",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": "0.0",
+			"rdt:elapsedTime": "0.001",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 45,
 			"rdt:startCol": 9,
@@ -294,9 +294,9 @@
 			"rdt:endCol": 9
 		},
 		"rdt:p29": {
-			"rdt:name": "return(samplesArr)",
+			"rdt:name": "return (samplesArr)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.02",
+			"rdt:elapsedTime": "0.023",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 53,
 			"rdt:startCol": 9,
@@ -306,7 +306,7 @@
 		"rdt:p30": {
 			"rdt:name": "generateSamples(totalNumOfSample)",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": "0.01",
+			"rdt:elapsedTime": "0.016",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -326,7 +326,7 @@
 		"rdt:p32": {
 			"rdt:name": "S4Object.R",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": "0.02",
+			"rdt:elapsedTime": "0.014",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -344,7 +344,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-05-30T17.01.33EDT",
+			"rdt:timestamp": "2019-07-19T11.44.04EDT",
 			"rdt:location": ""
 		},
 		"rdt:d2": {
@@ -355,7 +355,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-05-30T17.01.33EDT",
+			"rdt:timestamp": "2019-07-19T11.44.04EDT",
 			"rdt:location": ""
 		},
 		"rdt:d3": {
@@ -366,7 +366,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-05-30T17.01.33EDT",
+			"rdt:timestamp": "2019-07-19T11.44.04EDT",
 			"rdt:location": ""
 		},
 		"rdt:d4": {
@@ -385,10 +385,10 @@
 			"rdt:value": "data/5-newSample.txt",
 			"rdt:valType": "SampleObj",
 			"rdt:type": "Snapshot",
-			"rdt:scope": "0x0000000015c72938",
+			"rdt:scope": "0x7fdc53032388",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-05-30T17.01.33EDT",
+			"rdt:timestamp": "2019-07-19T11.44.04EDT",
 			"rdt:location": ""
 		},
 		"rdt:d6": {
@@ -399,7 +399,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-05-30T17.01.33EDT",
+			"rdt:timestamp": "2019-07-19T11.44.04EDT",
 			"rdt:location": ""
 		},
 		"rdt:d7": {
@@ -410,7 +410,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-05-30T17.01.33EDT",
+			"rdt:timestamp": "2019-07-19T11.44.04EDT",
 			"rdt:location": ""
 		},
 		"rdt:d8": {
@@ -418,7 +418,7 @@
 			"rdt:value": "5",
 			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}",
 			"rdt:type": "Data",
-			"rdt:scope": "0x0000000015008140",
+			"rdt:scope": "0x7fdc525f55b8",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
 			"rdt:timestamp": "",
@@ -429,7 +429,7 @@
 			"rdt:value": "list()",
 			"rdt:valType": "{\"container\":\"list\", \"dimension\":[0]}",
 			"rdt:type": "Data",
-			"rdt:scope": "0x0000000015008140",
+			"rdt:scope": "0x7fdc525f55b8",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
 			"rdt:timestamp": "",
@@ -440,7 +440,7 @@
 			"rdt:value": "1",
 			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"integer\"]}",
 			"rdt:type": "Data",
-			"rdt:scope": "0x0000000015008140",
+			"rdt:scope": "0x7fdc525f55b8",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
 			"rdt:timestamp": "",
@@ -451,10 +451,10 @@
 			"rdt:value": "data/11-newSample.txt",
 			"rdt:valType": "SampleObj",
 			"rdt:type": "Snapshot",
-			"rdt:scope": "0x0000000015008140",
+			"rdt:scope": "0x7fdc525f55b8",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-05-30T17.01.33EDT",
+			"rdt:timestamp": "2019-07-19T11.44.04EDT",
 			"rdt:location": ""
 		},
 		"rdt:d12": {
@@ -462,7 +462,7 @@
 			"rdt:value": "1Slot \"nIndividuals\":[1] 10Slot \"areaCode\":[1] 100",
 			"rdt:valType": "{\"container\":\"list\", \"dimension\":[1]}",
 			"rdt:type": "Data",
-			"rdt:scope": "0x0000000015008140",
+			"rdt:scope": "0x7fdc525f55b8",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
 			"rdt:timestamp": "",
@@ -473,10 +473,10 @@
 			"rdt:value": "data/13-newSample.txt",
 			"rdt:valType": "SampleObj",
 			"rdt:type": "Snapshot",
-			"rdt:scope": "0x0000000015008140",
+			"rdt:scope": "0x7fdc525f55b8",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-05-30T17.01.33EDT",
+			"rdt:timestamp": "2019-07-19T11.44.04EDT",
 			"rdt:location": ""
 		},
 		"rdt:d14": {
@@ -484,10 +484,10 @@
 			"rdt:value": "data/14-samplesArr.txt",
 			"rdt:valType": "{\"container\":\"list\", \"dimension\":[5]}",
 			"rdt:type": "Snapshot",
-			"rdt:scope": "0x0000000015008140",
+			"rdt:scope": "0x7fdc525f55b8",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-05-30T17.01.33EDT",
+			"rdt:timestamp": "2019-07-19T11.44.04EDT",
 			"rdt:location": ""
 		},
 		"rdt:d15": {
@@ -498,7 +498,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-05-30T17.01.33EDT",
+			"rdt:timestamp": "2019-07-19T11.44.04EDT",
 			"rdt:location": ""
 		},
 		"rdt:d16": {
@@ -509,24 +509,24 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-05-30T17.01.33EDT",
+			"rdt:timestamp": "2019-07-19T11.44.04EDT",
 			"rdt:location": ""
 		},
 
 		"rdt:environment": {
 			"rdt:name": "environment",
 			"rdt:architecture": "x86_64",
-			"rdt:operatingSystem": "mingw32",
+			"rdt:operatingSystem": "darwin15.6.0",
 			"rdt:language": "R",
 			"rdt:langVersion": "R version 3.6.0 (2019-04-26)",
 			"rdt:script": "[DIR]/S4Object.R",
-			"rdt:scriptTimeStamp": "2019-05-15T13.04.45EDT",
-			"rdt:totalElapsedTime": "1.05",
+			"rdt:scriptTimeStamp": "2019-01-10T13.56.36EST",
+			"rdt:totalElapsedTime": "1.19",
 			"rdt:sourcedScripts": "",
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:workingDirectory": "[DIR]/rdt",
 			"rdt:provDirectory": "[DIR]/rdt/prov_S4Object",
-			"rdt:provTimestamp": "2019-05-30T17.01.32EDT",
+			"rdt:provTimestamp": "2019-07-19T11.44.03EDT",
 			"rdt:hashAlgorithm": "md5"
 		},
 
@@ -580,7 +580,7 @@
 		},
 		"rdt:l7": {
 			"name": "rdt",
-			"version": "3.1.0",
+			"version": "3.1.1",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
