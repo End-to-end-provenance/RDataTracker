@@ -1219,6 +1219,7 @@
 #' @param spaced if true, blank lines are inserted between statements executed
 #' @param curCmdLength the number of lines in the statement being executed.  This is the
 #'     length of the command itself, not including leading blank lines or comments.
+#' @noRd 
 .ddg.echo <- function (cmdText, max.deparse.length, continue.echo, prompt.echo, spaced, curCmdLength) {
   # This function is extracted and adapted from R's source function.
   dep <- cmdText
