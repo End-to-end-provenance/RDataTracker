@@ -2,9 +2,7 @@
 # Tests the '=', '<-' and '<<-' operators
 #
 # @author Elizabeth Fong
-# @version December 2016
-#
-# edited December 11 2017: commented out nested function tests
+# @version July 2019
 
 
 # --- THE '=' OPERATOR ------------------------------------------------- #
@@ -26,21 +24,22 @@ stopifnot( ! exists("b") )
 
 
 # nested function environment
-#fn2 <- function()
-#{
-#  d = 3
-#  
-#  fn <- function()
-#  {
-#    d = 4
-#  }
-#  
-#  fn()
-#  stopifnot( d == 3 )
-#}
-#
-#fn2()
-#stopifnot( ! exists("d") )
+# this is section of the ddg is incorrect on rdt
+fn2 <- function()
+{
+  d = 3
+  
+  fn <- function()
+  {
+    d = 4
+  }
+  
+  fn()
+  stopifnot( d == 3 )
+}
+
+fn2()
+stopifnot( ! exists("d") )
 
 
 # in a new environment
@@ -80,21 +79,22 @@ stopifnot( ! exists("h") )
 
 
 # nested function environment
-#fn4 <- function()
-#{
-#  i <- 9
-#  
-#  fn <- function()
-#  {
-#    i <- 10
-#  }
-#  
-#  fn()
-#  stopifnot( i == 9 )
-#}
+# this is section of the ddg is incorrect on rdt
+fn4 <- function()
+{
+  i <- 9
+  
+  fn <- function()
+  {
+    i <- 10
+  }
+  
+  fn()
+  stopifnot( i == 9 )
+}
 
-#fn4()
-#stopifnot( ! exists("i") )
+fn4()
+stopifnot( ! exists("i") )
 
 
 # in a new environment
