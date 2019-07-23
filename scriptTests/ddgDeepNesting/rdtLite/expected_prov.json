@@ -16,7 +16,7 @@
 		"rdt:p1": {
 			"rdt:name": "ddgDeepNesting.R",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": "0.779",
+			"rdt:elapsedTime": "0.851",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -26,7 +26,7 @@
 		"rdt:p2": {
 			"rdt:name": "increment.value <- function(a) {\n\ta <- a + 1\n}",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.047",
+			"rdt:elapsedTime": "0.053",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 7,
 			"rdt:startCol": 1,
@@ -36,7 +36,7 @@
 		"rdt:p3": {
 			"rdt:name": "a <- 0",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.014",
+			"rdt:elapsedTime": "0.018",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 11,
 			"rdt:startCol": 1,
@@ -56,7 +56,7 @@
 		"rdt:p5": {
 			"rdt:name": "for (i in 1:n) {\n\t# ddg.start(\"iteration j\")\t\n\tfor (j in ",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.009",
+			"rdt:elapsedTime": "0.011",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 17,
 			"rdt:startCol": 1,
@@ -66,7 +66,7 @@
 		"rdt:p6": {
 			"rdt:name": "ddgDeepNesting.R",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": "0.019",
+			"rdt:elapsedTime": "0.013",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -84,7 +84,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-07-18T16.53.45EDT",
+			"rdt:timestamp": "2019-07-19T16.42.38EDT",
 			"rdt:location": ""
 		},
 		"rdt:d2": {
@@ -110,28 +110,6 @@
 			"rdt:location": ""
 		},
 		"rdt:d4": {
-			"rdt:name": "j",
-			"rdt:value": "5",
-			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"integer\"]}",
-			"rdt:type": "Data",
-			"rdt:scope": "R_GlobalEnv",
-			"rdt:fromEnv": true,
-			"rdt:hash": "",
-			"rdt:timestamp": "",
-			"rdt:location": ""
-		},
-		"rdt:d5": {
-			"rdt:name": "k",
-			"rdt:value": "5",
-			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"integer\"]}",
-			"rdt:type": "Data",
-			"rdt:scope": "R_GlobalEnv",
-			"rdt:fromEnv": true,
-			"rdt:hash": "",
-			"rdt:timestamp": "",
-			"rdt:location": ""
-		},
-		"rdt:d6": {
 			"rdt:name": "a",
 			"rdt:value": "125",
 			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}",
@@ -151,12 +129,12 @@
 			"rdt:langVersion": "R version 3.6.0 (2019-04-26)",
 			"rdt:script": "[DIR]/ddgDeepNesting.R",
 			"rdt:scriptTimeStamp": "2018-10-26T14.26.54EDT",
-			"rdt:totalElapsedTime": "0.872",
+			"rdt:totalElapsedTime": "0.95",
 			"rdt:sourcedScripts": "",
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:workingDirectory": "[DIR]/rdtLite",
 			"rdt:provDirectory": "[DIR]/rdtLite/prov_ddgDeepNesting",
-			"rdt:provTimestamp": "2019-07-18T16.53.44EDT",
+			"rdt:provTimestamp": "2019-07-19T16.42.37EDT",
 			"rdt:hashAlgorithm": "md5"
 		},
 
@@ -272,7 +250,7 @@
 		},
 		"rdt:pd4": {
 			"prov:activity": "rdt:p5",
-			"prov:entity": "rdt:d6"
+			"prov:entity": "rdt:d4"
 		}
 	},
 
@@ -282,18 +260,10 @@
 			"prov:activity": "rdt:p5"
 		},
 		"rdt:dp2": {
-			"prov:entity": "rdt:d4",
-			"prov:activity": "rdt:p5"
-		},
-		"rdt:dp3": {
-			"prov:entity": "rdt:d5",
-			"prov:activity": "rdt:p5"
-		},
-		"rdt:dp4": {
 			"prov:entity": "rdt:d1",
 			"prov:activity": "rdt:p5"
 		},
-		"rdt:dp5": {
+		"rdt:dp3": {
 			"prov:entity": "rdt:d2",
 			"prov:activity": "rdt:p5"
 		}

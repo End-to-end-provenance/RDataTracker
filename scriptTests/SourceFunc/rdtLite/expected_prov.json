@@ -16,7 +16,7 @@
 		"rdt:p1": {
 			"rdt:name": "SourceFunc.R",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": "0.774",
+			"rdt:elapsedTime": "0.803",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -26,7 +26,7 @@
 		"rdt:p2": {
 			"rdt:name": "fun <- function(a,b){\n  return(a+b)\n}",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.052",
+			"rdt:elapsedTime": "0.055",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 3,
 			"rdt:startCol": 1,
@@ -36,7 +36,7 @@
 		"rdt:p3": {
 			"rdt:name": "x <- 6",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.017",
+			"rdt:elapsedTime": "0.016",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 7,
 			"rdt:startCol": 1,
@@ -46,7 +46,7 @@
 		"rdt:p4": {
 			"rdt:name": "y <- 10",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.004",
+			"rdt:elapsedTime": "0.005",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 8,
 			"rdt:startCol": 1,
@@ -66,7 +66,7 @@
 		"rdt:p6": {
 			"rdt:name": "source(\"../source1.r\")",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.102",
+			"rdt:elapsedTime": "0.113",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 12,
 			"rdt:startCol": 1,
@@ -86,7 +86,7 @@
 		"rdt:p8": {
 			"rdt:name": "source(\"../source3.r\")",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.018",
+			"rdt:elapsedTime": "0.014",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 18,
 			"rdt:startCol": 1,
@@ -96,7 +96,7 @@
 		"rdt:p9": {
 			"rdt:name": "source(\"../source4.r\")",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.007",
+			"rdt:elapsedTime": "0.006",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 21,
 			"rdt:startCol": 1,
@@ -106,7 +106,7 @@
 		"rdt:p10": {
 			"rdt:name": "m <- 10",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.003",
+			"rdt:elapsedTime": "0.004",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 28,
 			"rdt:startCol": 1,
@@ -126,7 +126,7 @@
 		"rdt:p12": {
 			"rdt:name": "f(x)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.003",
+			"rdt:elapsedTime": "0.004",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 30,
 			"rdt:startCol": 1,
@@ -154,7 +154,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-07-18T16.47.18EDT",
+			"rdt:timestamp": "2019-07-19T16.29.52EDT",
 			"rdt:location": ""
 		},
 		"rdt:d2": {
@@ -191,17 +191,6 @@
 			"rdt:location": ""
 		},
 		"rdt:d5": {
-			"rdt:name": "w",
-			"rdt:value": "32",
-			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}",
-			"rdt:type": "Data",
-			"rdt:scope": "R_GlobalEnv",
-			"rdt:fromEnv": true,
-			"rdt:hash": "",
-			"rdt:timestamp": "",
-			"rdt:location": ""
-		},
-		"rdt:d6": {
 			"rdt:name": "v",
 			"rdt:value": "32",
 			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}",
@@ -212,7 +201,7 @@
 			"rdt:timestamp": "",
 			"rdt:location": ""
 		},
-		"rdt:d7": {
+		"rdt:d6": {
 			"rdt:name": "m",
 			"rdt:value": "10",
 			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}",
@@ -232,7 +221,7 @@
 			"rdt:langVersion": "R version 3.6.0 (2019-04-26)",
 			"rdt:script": "[DIR]/SourceFunc.R",
 			"rdt:scriptTimeStamp": "2019-06-24T10.15.55EDT",
-			"rdt:totalElapsedTime": "0.994",
+			"rdt:totalElapsedTime": "1.034",
 			"rdt:sourcedScripts": [
 				"source1.r",
 				"source2.r",
@@ -247,7 +236,7 @@
 			],
 			"rdt:workingDirectory": "[DIR]/rdtLite",
 			"rdt:provDirectory": "[DIR]/rdtLite/prov_SourceFunc",
-			"rdt:provTimestamp": "2019-07-18T16.47.17EDT",
+			"rdt:provTimestamp": "2019-07-19T16.29.51EDT",
 			"rdt:hashAlgorithm": "md5"
 		},
 
@@ -395,11 +384,11 @@
 		},
 		"rdt:pd5": {
 			"prov:activity": "rdt:p7",
-			"prov:entity": "rdt:d6"
+			"prov:entity": "rdt:d5"
 		},
 		"rdt:pd6": {
 			"prov:activity": "rdt:p10",
-			"prov:entity": "rdt:d7"
+			"prov:entity": "rdt:d6"
 		}
 	},
 
@@ -421,18 +410,14 @@
 			"prov:activity": "rdt:p7"
 		},
 		"rdt:dp5": {
-			"prov:entity": "rdt:d5",
-			"prov:activity": "rdt:p7"
-		},
-		"rdt:dp6": {
 			"prov:entity": "rdt:d4",
 			"prov:activity": "rdt:p7"
 		},
-		"rdt:dp7": {
-			"prov:entity": "rdt:d7",
+		"rdt:dp6": {
+			"prov:entity": "rdt:d6",
 			"prov:activity": "rdt:p11"
 		},
-		"rdt:dp8": {
+		"rdt:dp7": {
 			"prov:entity": "rdt:d2",
 			"prov:activity": "rdt:p12"
 		}
