@@ -471,10 +471,19 @@
 .ddg.save.var <- function(var, env=NULL, scope=NULL) {
   if (is.null(env)) {
     env <- .ddg.get.env(var)
+    
+    # If no environment is found defining this variable, do not 
+    # save it.  It means that the variable is from a scope that
+    # is not available at the current line of code, such as a 
+    # non-local, yet not global scope.
+    if (is.null(env)) {
+      return()
+    }
   }
   if (is.null(scope)) {
     scope <- .ddg.get.scope(var, env=env)
   }
+
   
   # Special operators are defined by enclosing the name in `.  However,
   # the R parser drops those characters when we deparse, so when we parse

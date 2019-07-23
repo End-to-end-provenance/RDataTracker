@@ -145,23 +145,26 @@ stopifnot( m == 14 )
 # nested function environment - overriding exising variable
 # assignment statement in nested function is not the last statement 
 # tests .ddg.parse.commands
-# DOES NOT WORK!!!
-#fn7 <- function()
-#{
-#  n <- 15
-#  
-#  fn <- function()
-#  {
-#    n <<- 16
-#    stopifnot( n == 16 )
-#  }
-#  
-#  fn()
-#  stopifnot( n == 16 )
-#}
+#
+# Works with rdtLite.  
+# ***ERROR: With rdt, there should be an edge from the definition of fn7a to where
+# it is called but that edge is missing.
+fn7 <- function()
+{
+  n <- 15
+  
+  fn7a <- function()
+  {
+    n <<- 16
+    stopifnot( n == 16 )
+  }
+  
+  fn7a()
+  stopifnot( n == 16 )
+}
 
-#fn7()
-#stopifnot( ! exists("n") )
+fn7()
+stopifnot( ! exists("n") )
 
 
 # nested function environment - overriding existing variable
