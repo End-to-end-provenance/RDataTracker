@@ -184,6 +184,8 @@
 
 #' .ddg.data.number retrieves the number of the nearest preceding
 #' current matching data node. It returns zero if no match is found.
+#' This occurs if the variable is in a scope that is not visible at
+#' the current line of code.
 #' @param dname data node name.
 #' @param dscope (optional) data node scope.  If not provided, it uses
 #' the closest scope in which dname is found
@@ -201,9 +203,6 @@
     return (matching$ddg.num[nrow(matching)])
   }
   
-  # Error message if no match found.
-  error.msg <- paste("No data node found for", dname)
-  .ddg.insert.error.message(error.msg)
   return(0)
 }
 
