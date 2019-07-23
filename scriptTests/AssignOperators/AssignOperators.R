@@ -145,6 +145,10 @@ stopifnot( m == 14 )
 # nested function environment - overriding exising variable
 # assignment statement in nested function is not the last statement 
 # tests .ddg.parse.commands
+#
+# Works with rdtLite.  
+# ***ERROR: With rdt, there should be an edge from the definition of fn7a to where
+# it is called but that edge is missing.
 fn7 <- function()
 {
   n <- 15
