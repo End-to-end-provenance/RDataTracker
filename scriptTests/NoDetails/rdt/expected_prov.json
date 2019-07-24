@@ -7,7 +7,7 @@
 	"agent" : {
 		"rdt:a1": {
 			"rdt:tool.name": "rdt",
-			"rdt:tool.version": "3.1.0",
+			"rdt:tool.version": "3.1.1",
 			"rdt:json.version": "2.2"
 		}
 	},
@@ -16,7 +16,7 @@
 		"rdt:p1": {
 			"rdt:name": "NoDetails.R",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.73",
+			"rdt:elapsedTime": "0.785",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -33,9 +33,9 @@
 			"rdt:type": "File",
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
-			"rdt:hash": "afe1c92ec693931a928a7577a2f0bc03",
-			"rdt:timestamp": "2019-05-30T16.49.51EDT",
-			"rdt:location": "C:/Users/fong22e/Documents/Libraries/R/win-library/ggplot2/data/Rdata.rds"
+			"rdt:hash": "04c7cdf249b34249e9c792b6d7e04e35",
+			"rdt:timestamp": "2019-07-24T11.57.59EDT",
+			"rdt:location": "/Library/Frameworks/R.framework/Versions/3.6/Resources/library/ggplot2/data/Rdata.rds"
 		},
 		"rdt:d2": {
 			"rdt:name": "Rdata.rds",
@@ -44,22 +44,33 @@
 			"rdt:type": "File",
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
-			"rdt:hash": "afe1c92ec693931a928a7577a2f0bc03",
-			"rdt:timestamp": "2019-05-30T16.49.51EDT",
-			"rdt:location": "C:/Program Files/R/R-3.6.0/library/datasets/data/Rdata.rds"
+			"rdt:hash": "92ed1f49a5075408be2336c7cee7381f",
+			"rdt:timestamp": "2019-07-24T11.57.59EDT",
+			"rdt:location": "/Library/Frameworks/R.framework/Versions/3.6/Resources/library/datasets/data/Rdata.rds"
 		},
 		"rdt:d3": {
+			"rdt:name": "mtcars",
+			"rdt:value": "data/3-mtcars.csv",
+			"rdt:valType": "{\"container\":\"data_frame\", \"dimension\":[32,11], \"type\":[\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\"]}",
+			"rdt:type": "Snapshot",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:hash": "",
+			"rdt:timestamp": "2019-07-24T11.57.59EDT",
+			"rdt:location": ""
+		},
+		"rdt:d4": {
 			"rdt:name": "plot.pdf",
-			"rdt:value": "data/3-plot.pdf",
+			"rdt:value": "data/4-plot.pdf",
 			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}",
 			"rdt:type": "File",
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
-			"rdt:hash": "82a037e8a2cac42de7f803fa15a34e57",
-			"rdt:timestamp": "2019-05-30T16.49.51EDT",
+			"rdt:hash": "f45387dcc50128bff76881d6bc38586c",
+			"rdt:timestamp": "2019-07-24T11.58.00EDT",
 			"rdt:location": "[DIR]/rdt/plot.pdf"
 		},
-		"rdt:d4": {
+		"rdt:d5": {
 			"rdt:name": "error.msg",
 			"rdt:value": "Error in .as.roman(x, check.range = TRUE): object 'z' not found\n",
 			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}",
@@ -74,17 +85,17 @@
 		"rdt:environment": {
 			"rdt:name": "environment",
 			"rdt:architecture": "x86_64",
-			"rdt:operatingSystem": "mingw32",
+			"rdt:operatingSystem": "darwin15.6.0",
 			"rdt:language": "R",
 			"rdt:langVersion": "R version 3.6.0 (2019-04-26)",
 			"rdt:script": "[DIR]/NoDetails.R",
-			"rdt:scriptTimeStamp": "2019-05-15T13.04.44EDT",
-			"rdt:totalElapsedTime": "0.73",
+			"rdt:scriptTimeStamp": "2019-06-03T11.38.19EDT",
+			"rdt:totalElapsedTime": "0.785",
 			"rdt:sourcedScripts": "",
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:workingDirectory": "[DIR]/rdt",
 			"rdt:provDirectory": "[DIR]/rdt/prov_NoDetails",
-			"rdt:provTimestamp": "2019-05-30T16.49.50EDT",
+			"rdt:provTimestamp": "2019-07-24T11.57.59EDT",
 			"rdt:hashAlgorithm": "md5"
 		},
 
@@ -138,7 +149,7 @@
 		},
 		"rdt:l7": {
 			"name": "rdt",
-			"version": "3.1.0",
+			"version": "3.1.1",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -170,6 +181,10 @@
 		"rdt:pd2": {
 			"prov:activity": "rdt:p1",
 			"prov:entity": "rdt:d4"
+		},
+		"rdt:pd3": {
+			"prov:activity": "rdt:p1",
+			"prov:entity": "rdt:d5"
 		}
 	},
 

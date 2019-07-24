@@ -1,0 +1,535 @@
+{
+	"prefix": {
+		"prov": "http://www.w3.org/ns/prov#",
+		"rdt": "https://github.com/End-to-end-provenance/ExtendedProvJson/blob/master/JSON-format.md"
+	},
+
+	"agent" : {
+		"rdt:a1": {
+			"rdt:tool.name": "rdtLite",
+			"rdt:tool.version": "1.1.1",
+			"rdt:json.version": "2.2"
+		}
+	},
+
+	"activity" : {
+		"rdt:p1": {
+			"rdt:name": "DataFunction.R",
+			"rdt:type": "Start",
+			"rdt:elapsedTime": "0.795",
+			"rdt:scriptNum": "NA",
+			"rdt:startLine": "NA",
+			"rdt:startCol": "NA",
+			"rdt:endLine": "NA",
+			"rdt:endCol": "NA"
+		},
+		"rdt:p2": {
+			"rdt:name": "data (mtcars)",
+			"rdt:type": "Operation",
+			"rdt:elapsedTime": "0.058",
+			"rdt:scriptNum": 1,
+			"rdt:startLine": 2,
+			"rdt:startCol": 1,
+			"rdt:endLine": 2,
+			"rdt:endCol": 13
+		},
+		"rdt:p3": {
+			"rdt:name": "cars.df <- mtcars",
+			"rdt:type": "Operation",
+			"rdt:elapsedTime": "0.042",
+			"rdt:scriptNum": 1,
+			"rdt:startLine": 3,
+			"rdt:startCol": 1,
+			"rdt:endLine": 3,
+			"rdt:endCol": 17
+		},
+		"rdt:p4": {
+			"rdt:name": "data(diamonds, economics)",
+			"rdt:type": "Operation",
+			"rdt:elapsedTime": "0.19",
+			"rdt:scriptNum": 1,
+			"rdt:startLine": 6,
+			"rdt:startCol": 1,
+			"rdt:endLine": 6,
+			"rdt:endCol": 25
+		},
+		"rdt:p5": {
+			"rdt:name": "diamonds.df <- diamonds",
+			"rdt:type": "Operation",
+			"rdt:elapsedTime": "6.422",
+			"rdt:scriptNum": 1,
+			"rdt:startLine": 7,
+			"rdt:startCol": 1,
+			"rdt:endLine": 7,
+			"rdt:endCol": 23
+		},
+		"rdt:p6": {
+			"rdt:name": "economics.df <- economics",
+			"rdt:type": "Operation",
+			"rdt:elapsedTime": "6.414",
+			"rdt:scriptNum": 1,
+			"rdt:startLine": 8,
+			"rdt:startCol": 1,
+			"rdt:endLine": 8,
+			"rdt:endCol": 25
+		},
+		"rdt:p7": {
+			"rdt:name": "data()",
+			"rdt:type": "Operation",
+			"rdt:elapsedTime": "0.066",
+			"rdt:scriptNum": 1,
+			"rdt:startLine": 11,
+			"rdt:startCol": 1,
+			"rdt:endLine": 11,
+			"rdt:endCol": 6
+		},
+		"rdt:p8": {
+			"rdt:name": "f2 <- function() {\n  data(pets)\n  pets.df <- pets\n}",
+			"rdt:type": "Operation",
+			"rdt:elapsedTime": "0.007",
+			"rdt:scriptNum": 1,
+			"rdt:startLine": 14,
+			"rdt:startCol": 1,
+			"rdt:endLine": 17,
+			"rdt:endCol": 1
+		},
+		"rdt:p9": {
+			"rdt:name": "f2()",
+			"rdt:type": "Operation",
+			"rdt:elapsedTime": "0.195",
+			"rdt:scriptNum": 1,
+			"rdt:startLine": 18,
+			"rdt:startCol": 1,
+			"rdt:endLine": 18,
+			"rdt:endCol": 4
+		},
+		"rdt:p10": {
+			"rdt:name": "DataFunction.R",
+			"rdt:type": "Finish",
+			"rdt:elapsedTime": "0.01",
+			"rdt:scriptNum": "NA",
+			"rdt:startLine": "NA",
+			"rdt:startCol": "NA",
+			"rdt:endLine": "NA",
+			"rdt:endCol": "NA"
+		}
+	},
+
+	"entity" : {
+		"rdt:d1": {
+			"rdt:name": "Rdata.rds",
+			"rdt:value": "data/1-Rdata.rds",
+			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}",
+			"rdt:type": "File",
+			"rdt:scope": "undefined",
+			"rdt:fromEnv": false,
+			"rdt:hash": "04c7cdf249b34249e9c792b6d7e04e35",
+			"rdt:timestamp": "2019-07-24T13.13.25EDT",
+			"rdt:location": "/Library/Frameworks/R.framework/Versions/3.6/Resources/library/ggplot2/data/Rdata.rds"
+		},
+		"rdt:d2": {
+			"rdt:name": "Rdata.rds",
+			"rdt:value": "data/2-Rdata.rds",
+			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}",
+			"rdt:type": "File",
+			"rdt:scope": "undefined",
+			"rdt:fromEnv": false,
+			"rdt:hash": "92ed1f49a5075408be2336c7cee7381f",
+			"rdt:timestamp": "2019-07-24T13.13.25EDT",
+			"rdt:location": "/Library/Frameworks/R.framework/Versions/3.6/Resources/library/datasets/data/Rdata.rds"
+		},
+		"rdt:d3": {
+			"rdt:name": "mtcars",
+			"rdt:value": "data/3-mtcars.csv",
+			"rdt:valType": "{\"container\":\"data_frame\", \"dimension\":[32,11], \"type\":[\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\"]}",
+			"rdt:type": "Snapshot",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:hash": "",
+			"rdt:timestamp": "2019-07-24T13.13.25EDT",
+			"rdt:location": ""
+		},
+		"rdt:d4": {
+			"rdt:name": "cars.df",
+			"rdt:value": "data/4-cars.df.csv",
+			"rdt:valType": "{\"container\":\"data_frame\", \"dimension\":[32,11], \"type\":[\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\"]}",
+			"rdt:type": "Snapshot",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:hash": "",
+			"rdt:timestamp": "2019-07-24T13.13.25EDT",
+			"rdt:location": ""
+		},
+		"rdt:d5": {
+			"rdt:name": "Rdata.rds",
+			"rdt:value": "data/5-Rdata.rds",
+			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}",
+			"rdt:type": "File",
+			"rdt:scope": "undefined",
+			"rdt:fromEnv": false,
+			"rdt:hash": "04c7cdf249b34249e9c792b6d7e04e35",
+			"rdt:timestamp": "2019-07-24T13.13.25EDT",
+			"rdt:location": "/Library/Frameworks/R.framework/Versions/3.6/Resources/library/ggplot2/data/Rdata.rds"
+		},
+		"rdt:d6": {
+			"rdt:name": "diamonds",
+			"rdt:value": "data/6-diamonds-PARTIAL.csv",
+			"rdt:valType": "{\"container\":\"data_frame\", \"dimension\":[53940,10], \"type\":[\"numeric\",\"ordered\",\"ordered\",\"ordered\",\"numeric\",\"numeric\",\"integer\",\"numeric\",\"numeric\",\"numeric\"]}",
+			"rdt:type": "Snapshot",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:hash": "",
+			"rdt:timestamp": "2019-07-24T13.13.31EDT",
+			"rdt:location": ""
+		},
+		"rdt:d7": {
+			"rdt:name": "economics",
+			"rdt:value": "data/7-economics-PARTIAL.csv",
+			"rdt:valType": "{\"container\":\"data_frame\", \"dimension\":[574,6], \"type\":[\"Date\",\"numeric\",\"integer\",\"numeric\",\"numeric\",\"integer\"]}",
+			"rdt:type": "Snapshot",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:hash": "",
+			"rdt:timestamp": "2019-07-24T13.13.31EDT",
+			"rdt:location": ""
+		},
+		"rdt:d8": {
+			"rdt:name": "diamonds.df",
+			"rdt:value": "data/8-diamonds.df-PARTIAL.csv",
+			"rdt:valType": "{\"container\":\"data_frame\", \"dimension\":[53940,10], \"type\":[\"numeric\",\"ordered\",\"ordered\",\"ordered\",\"numeric\",\"numeric\",\"integer\",\"numeric\",\"numeric\",\"numeric\"]}",
+			"rdt:type": "Snapshot",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:hash": "",
+			"rdt:timestamp": "2019-07-24T13.13.38EDT",
+			"rdt:location": ""
+		},
+		"rdt:d9": {
+			"rdt:name": "economics.df",
+			"rdt:value": "data/9-economics.df-PARTIAL.csv",
+			"rdt:valType": "{\"container\":\"data_frame\", \"dimension\":[574,6], \"type\":[\"Date\",\"numeric\",\"integer\",\"numeric\",\"numeric\",\"integer\"]}",
+			"rdt:type": "Snapshot",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:hash": "",
+			"rdt:timestamp": "2019-07-24T13.13.38EDT",
+			"rdt:location": ""
+		},
+		"rdt:d10": {
+			"rdt:name": "data.rds",
+			"rdt:value": "data/10-data.rds",
+			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}",
+			"rdt:type": "File",
+			"rdt:scope": "undefined",
+			"rdt:fromEnv": false,
+			"rdt:hash": "21dfbacc7e16a78112071586d0c6d2e3",
+			"rdt:timestamp": "2019-07-24T13.13.38EDT",
+			"rdt:location": "/Library/Frameworks/R.framework/Versions/3.6/Resources/library/ggplot2/Meta/data.rds"
+		},
+		"rdt:d11": {
+			"rdt:name": "data.rds",
+			"rdt:value": "data/11-data.rds",
+			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}",
+			"rdt:type": "File",
+			"rdt:scope": "undefined",
+			"rdt:fromEnv": false,
+			"rdt:hash": "9c276cc776340ccfe8960d9ae1c6ba6f",
+			"rdt:timestamp": "2019-07-24T13.13.38EDT",
+			"rdt:location": "/Library/Frameworks/R.framework/Versions/3.6/Resources/library/datasets/Meta/data.rds"
+		},
+		"rdt:d12": {
+			"rdt:name": "f2",
+			"rdt:value": "data/12-f2.R",
+			"rdt:valType": "function",
+			"rdt:type": "Snapshot",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:hash": "",
+			"rdt:timestamp": "2019-07-24T13.13.38EDT",
+			"rdt:location": ""
+		},
+		"rdt:d13": {
+			"rdt:name": "Rdata.rds",
+			"rdt:value": "data/13-Rdata.rds",
+			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}",
+			"rdt:type": "File",
+			"rdt:scope": "undefined",
+			"rdt:fromEnv": false,
+			"rdt:hash": "04c7cdf249b34249e9c792b6d7e04e35",
+			"rdt:timestamp": "2019-07-24T13.13.38EDT",
+			"rdt:location": "/Library/Frameworks/R.framework/Versions/3.6/Resources/library/ggplot2/data/Rdata.rds"
+		},
+		"rdt:d14": {
+			"rdt:name": "Rdata.rds",
+			"rdt:value": "data/14-Rdata.rds",
+			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}",
+			"rdt:type": "File",
+			"rdt:scope": "undefined",
+			"rdt:fromEnv": false,
+			"rdt:hash": "92ed1f49a5075408be2336c7cee7381f",
+			"rdt:timestamp": "2019-07-24T13.13.38EDT",
+			"rdt:location": "/Library/Frameworks/R.framework/Versions/3.6/Resources/library/datasets/data/Rdata.rds"
+		},
+		"rdt:d15": {
+			"rdt:name": "pets.csv",
+			"rdt:value": "data/15-pets.csv",
+			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}",
+			"rdt:type": "File",
+			"rdt:scope": "undefined",
+			"rdt:fromEnv": false,
+			"rdt:hash": "cac41b58a0969b386219a4be4362ec92",
+			"rdt:timestamp": "2019-07-24T13.13.38EDT",
+			"rdt:location": "[DIR]/rdtLite/data/pets.csv"
+		},
+		"rdt:d16": {
+			"rdt:name": "pets",
+			"rdt:value": "Snickers.dog   Katama,cat Levels: Katama,cat",
+			"rdt:valType": "{\"container\":\"data_frame\", \"dimension\":[1,1], \"type\":[\"factor\"]}",
+			"rdt:type": "Data",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:hash": "",
+			"rdt:timestamp": "",
+			"rdt:location": ""
+		},
+
+		"rdt:environment": {
+			"rdt:name": "environment",
+			"rdt:architecture": "x86_64",
+			"rdt:operatingSystem": "darwin15.6.0",
+			"rdt:language": "R",
+			"rdt:langVersion": "R version 3.6.0 (2019-04-26)",
+			"rdt:script": "[DIR]/DataFunction.R",
+			"rdt:scriptTimeStamp": "2019-07-24T13.08.54EDT",
+			"rdt:totalElapsedTime": "14.199",
+			"rdt:sourcedScripts": "",
+			"rdt:sourcedScriptTimeStamps": "",
+			"rdt:workingDirectory": "[DIR]/rdtLite",
+			"rdt:provDirectory": "[DIR]/rdtLite/prov_DataFunction",
+			"rdt:provTimestamp": "2019-07-24T13.13.24EDT",
+			"rdt:hashAlgorithm": "md5"
+		},
+
+		"rdt:l1": {
+			"name": "base",
+			"version": "3.6.0",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l2": {
+			"name": "datasets",
+			"version": "3.6.0",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l3": {
+			"name": "ggplot2",
+			"version": "3.1.1",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l4": {
+			"name": "graphics",
+			"version": "3.6.0",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l5": {
+			"name": "grDevices",
+			"version": "3.6.0",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l6": {
+			"name": "methods",
+			"version": "3.6.0",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l7": {
+			"name": "rdtLite",
+			"version": "1.1.1",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l8": {
+			"name": "stats",
+			"version": "3.6.0",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l9": {
+			"name": "utils",
+			"version": "3.6.0",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+
+		"rdt:f1": {
+			"name": "data"
+		}
+	},
+
+	"wasInformedBy" : {
+		"rdt:pp1": {
+			"prov:informant": "rdt:p1",
+			"prov:informed": "rdt:p2"
+		},
+		"rdt:pp2": {
+			"prov:informant": "rdt:p2",
+			"prov:informed": "rdt:p3"
+		},
+		"rdt:pp3": {
+			"prov:informant": "rdt:p3",
+			"prov:informed": "rdt:p4"
+		},
+		"rdt:pp4": {
+			"prov:informant": "rdt:p4",
+			"prov:informed": "rdt:p5"
+		},
+		"rdt:pp5": {
+			"prov:informant": "rdt:p5",
+			"prov:informed": "rdt:p6"
+		},
+		"rdt:pp6": {
+			"prov:informant": "rdt:p6",
+			"prov:informed": "rdt:p7"
+		},
+		"rdt:pp7": {
+			"prov:informant": "rdt:p7",
+			"prov:informed": "rdt:p8"
+		},
+		"rdt:pp8": {
+			"prov:informant": "rdt:p8",
+			"prov:informed": "rdt:p9"
+		},
+		"rdt:pp9": {
+			"prov:informant": "rdt:p9",
+			"prov:informed": "rdt:p10"
+		}
+	},
+
+	"wasGeneratedBy" : {
+		"rdt:pd1": {
+			"prov:activity": "rdt:p2",
+			"prov:entity": "rdt:d3"
+		},
+		"rdt:pd2": {
+			"prov:activity": "rdt:p3",
+			"prov:entity": "rdt:d4"
+		},
+		"rdt:pd3": {
+			"prov:activity": "rdt:p4",
+			"prov:entity": "rdt:d6"
+		},
+		"rdt:pd4": {
+			"prov:activity": "rdt:p4",
+			"prov:entity": "rdt:d7"
+		},
+		"rdt:pd5": {
+			"prov:activity": "rdt:p5",
+			"prov:entity": "rdt:d8"
+		},
+		"rdt:pd6": {
+			"prov:activity": "rdt:p6",
+			"prov:entity": "rdt:d9"
+		},
+		"rdt:pd7": {
+			"prov:activity": "rdt:p8",
+			"prov:entity": "rdt:d12"
+		},
+		"rdt:pd8": {
+			"prov:activity": "rdt:p9",
+			"prov:entity": "rdt:d16"
+		}
+	},
+
+	"used" : {
+		"rdt:dp1": {
+			"prov:entity": "rdt:d1",
+			"prov:activity": "rdt:p2"
+		},
+		"rdt:dp2": {
+			"prov:entity": "rdt:d2",
+			"prov:activity": "rdt:p2"
+		},
+		"rdt:dp3": {
+			"prov:entity": "rdt:d3",
+			"prov:activity": "rdt:p3"
+		},
+		"rdt:dp4": {
+			"prov:entity": "rdt:d5",
+			"prov:activity": "rdt:p4"
+		},
+		"rdt:dp5": {
+			"prov:entity": "rdt:d6",
+			"prov:activity": "rdt:p5"
+		},
+		"rdt:dp6": {
+			"prov:entity": "rdt:d7",
+			"prov:activity": "rdt:p6"
+		},
+		"rdt:dp7": {
+			"prov:entity": "rdt:d10",
+			"prov:activity": "rdt:p7"
+		},
+		"rdt:dp8": {
+			"prov:entity": "rdt:d11",
+			"prov:activity": "rdt:p7"
+		},
+		"rdt:dp9": {
+			"prov:entity": "rdt:d12",
+			"prov:activity": "rdt:p9"
+		},
+		"rdt:dp10": {
+			"prov:entity": "rdt:d13",
+			"prov:activity": "rdt:p9"
+		},
+		"rdt:dp11": {
+			"prov:entity": "rdt:d14",
+			"prov:activity": "rdt:p9"
+		},
+		"rdt:dp12": {
+			"prov:entity": "rdt:d15",
+			"prov:activity": "rdt:p9"
+		},
+
+		"rdt:fp1": {
+			"prov:entity": "rdt:f1",
+			"prov:activity": "rdt:p2"
+		},
+		"rdt:fp2": {
+			"prov:entity": "rdt:f1",
+			"prov:activity": "rdt:p4"
+		},
+		"rdt:fp3": {
+			"prov:entity": "rdt:f1",
+			"prov:activity": "rdt:p7"
+		}
+	},
+
+	"hadMember" : {
+		"rdt:m1": {
+			"prov:collection": "rdt:l9",
+			"prov:entity": "rdt:f1"
+		}
+	}
+}

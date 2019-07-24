@@ -14,9 +14,9 @@
 
 	"activity" : {
 		"rdt:p1": {
-			"rdt:name": "NoDevOff.R",
+			"rdt:name": "DataFunction.R",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": "0.82",
+			"rdt:elapsedTime": "0.844",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -26,127 +26,127 @@
 		"rdt:p2": {
 			"rdt:name": "data (mtcars)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.079",
+			"rdt:elapsedTime": "0.081",
 			"rdt:scriptNum": 1,
-			"rdt:startLine": 4,
+			"rdt:startLine": 2,
 			"rdt:startCol": 1,
-			"rdt:endLine": 4,
+			"rdt:endLine": 2,
 			"rdt:endCol": 13
 		},
 		"rdt:p3": {
-			"rdt:name": "allCars.df <- mtcars",
+			"rdt:name": "cars.df <- mtcars",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.048",
+			"rdt:elapsedTime": "0.058",
+			"rdt:scriptNum": 1,
+			"rdt:startLine": 3,
+			"rdt:startCol": 1,
+			"rdt:endLine": 3,
+			"rdt:endCol": 17
+		},
+		"rdt:p4": {
+			"rdt:name": "data(diamonds, economics)",
+			"rdt:type": "Operation",
+			"rdt:elapsedTime": "0.196",
+			"rdt:scriptNum": 1,
+			"rdt:startLine": 6,
+			"rdt:startCol": 1,
+			"rdt:endLine": 6,
+			"rdt:endCol": 25
+		},
+		"rdt:p5": {
+			"rdt:name": "diamonds.df <- diamonds",
+			"rdt:type": "Operation",
+			"rdt:elapsedTime": "6.414",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 7,
 			"rdt:startCol": 1,
 			"rdt:endLine": 7,
-			"rdt:endCol": 20
+			"rdt:endCol": 23
 		},
-		"rdt:p4": {
-			"rdt:name": "cars4Cyl.df <- allCars.df[allCars.df$cyl == 4, ]",
+		"rdt:p6": {
+			"rdt:name": "economics.df <- economics",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.114",
+			"rdt:elapsedTime": "6.35",
 			"rdt:scriptNum": 1,
-			"rdt:startLine": 10,
+			"rdt:startLine": 8,
 			"rdt:startCol": 1,
-			"rdt:endLine": 10,
-			"rdt:endCol": 48
+			"rdt:endLine": 8,
+			"rdt:endCol": 25
 		},
-		"rdt:p5": {
-			"rdt:name": "cars6Cyl.df <- allCars.df[allCars.df$cyl == 6, ]",
+		"rdt:p7": {
+			"rdt:name": "data()",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.019",
+			"rdt:elapsedTime": "0.047",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 11,
 			"rdt:startCol": 1,
 			"rdt:endLine": 11,
-			"rdt:endCol": 48
-		},
-		"rdt:p6": {
-			"rdt:name": "cars8Cyl.df <- allCars.df[allCars.df$cyl == 8, ]",
-			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.017",
-			"rdt:scriptNum": 1,
-			"rdt:startLine": 12,
-			"rdt:startCol": 1,
-			"rdt:endLine": 12,
-			"rdt:endCol": 48
-		},
-		"rdt:p7": {
-			"rdt:name": "cylinders = c(4, 6, 8)",
-			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.019",
-			"rdt:scriptNum": 1,
-			"rdt:startLine": 15,
-			"rdt:startCol": 1,
-			"rdt:endLine": 15,
-			"rdt:endCol": 22
+			"rdt:endCol": 6
 		},
 		"rdt:p8": {
-			"rdt:name": "mpg = c(mean(cars4Cyl.df$mpg), mean(cars6Cyl.df$mpg), mean(c",
+			"rdt:name": "f2 <- function() {\n  data(pets)\n  pets.df <- pets\n}",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.006",
+			"rdt:elapsedTime": "0.008",
 			"rdt:scriptNum": 1,
-			"rdt:startLine": 16,
+			"rdt:startLine": 14,
 			"rdt:startCol": 1,
-			"rdt:endLine": 16,
-			"rdt:endCol": 76
+			"rdt:endLine": 17,
+			"rdt:endCol": 1
 		},
 		"rdt:p9": {
-			"rdt:name": "plot(cylinders, mpg)",
-			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.055",
-			"rdt:scriptNum": 1,
-			"rdt:startLine": 19,
-			"rdt:startCol": 1,
-			"rdt:endLine": 19,
-			"rdt:endCol": 20
+			"rdt:name": "f2()",
+			"rdt:type": "Start",
+			"rdt:elapsedTime": "0.036",
+			"rdt:scriptNum": "NA",
+			"rdt:startLine": "NA",
+			"rdt:startCol": "NA",
+			"rdt:endLine": "NA",
+			"rdt:endCol": "NA"
 		},
 		"rdt:p10": {
-			"rdt:name": "X11()",
+			"rdt:name": "f2",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.016",
-			"rdt:scriptNum": 1,
-			"rdt:startLine": 22,
-			"rdt:startCol": 1,
-			"rdt:endLine": 22,
-			"rdt:endCol": 5
+			"rdt:elapsedTime": "0.0",
+			"rdt:scriptNum": "NA",
+			"rdt:startLine": "NA",
+			"rdt:startCol": "NA",
+			"rdt:endLine": "NA",
+			"rdt:endCol": "NA"
 		},
 		"rdt:p11": {
-			"rdt:name": "plot(cylinders, mpg)",
+			"rdt:name": "data(pets)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.018",
+			"rdt:elapsedTime": "0.19",
 			"rdt:scriptNum": 1,
-			"rdt:startLine": 23,
-			"rdt:startCol": 1,
-			"rdt:endLine": 23,
-			"rdt:endCol": 20
+			"rdt:startLine": 15,
+			"rdt:startCol": 3,
+			"rdt:endLine": 15,
+			"rdt:endCol": 12
 		},
 		"rdt:p12": {
-			"rdt:name": "plot(cylinders, mpg)",
+			"rdt:name": "pets.df <- pets",
 			"rdt:type": "Operation",
 			"rdt:elapsedTime": "0.012",
 			"rdt:scriptNum": 1,
-			"rdt:startLine": 26,
-			"rdt:startCol": 1,
-			"rdt:endLine": 26,
-			"rdt:endCol": 20
+			"rdt:startLine": 16,
+			"rdt:startCol": 3,
+			"rdt:endLine": 16,
+			"rdt:endCol": 17
 		},
 		"rdt:p13": {
-			"rdt:name": "x <- 1",
-			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.007",
-			"rdt:scriptNum": 1,
-			"rdt:startLine": 28,
-			"rdt:startCol": 1,
-			"rdt:endLine": 28,
-			"rdt:endCol": 6
+			"rdt:name": "f2()",
+			"rdt:type": "Finish",
+			"rdt:elapsedTime": "0.006",
+			"rdt:scriptNum": "NA",
+			"rdt:startLine": "NA",
+			"rdt:startCol": "NA",
+			"rdt:endLine": "NA",
+			"rdt:endCol": "NA"
 		},
 		"rdt:p14": {
-			"rdt:name": "NoDevOff.R",
+			"rdt:name": "DataFunction.R",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": "0.004",
+			"rdt:elapsedTime": "0.001",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -164,7 +164,7 @@
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
 			"rdt:hash": "04c7cdf249b34249e9c792b6d7e04e35",
-			"rdt:timestamp": "2019-07-24T12.17.59EDT",
+			"rdt:timestamp": "2019-07-24T13.16.20EDT",
 			"rdt:location": "/Library/Frameworks/R.framework/Versions/3.6/Resources/library/ggplot2/data/Rdata.rds"
 		},
 		"rdt:d2": {
@@ -175,7 +175,7 @@
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
 			"rdt:hash": "92ed1f49a5075408be2336c7cee7381f",
-			"rdt:timestamp": "2019-07-24T12.17.59EDT",
+			"rdt:timestamp": "2019-07-24T13.16.20EDT",
 			"rdt:location": "/Library/Frameworks/R.framework/Versions/3.6/Resources/library/datasets/data/Rdata.rds"
 		},
 		"rdt:d3": {
@@ -186,123 +186,145 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-07-24T12.17.59EDT",
+			"rdt:timestamp": "2019-07-24T13.16.20EDT",
 			"rdt:location": ""
 		},
 		"rdt:d4": {
-			"rdt:name": "allCars.df",
-			"rdt:value": "data/4-allCars.df.csv",
+			"rdt:name": "cars.df",
+			"rdt:value": "data/4-cars.df.csv",
 			"rdt:valType": "{\"container\":\"data_frame\", \"dimension\":[32,11], \"type\":[\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\"]}",
 			"rdt:type": "Snapshot",
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-07-24T12.17.59EDT",
+			"rdt:timestamp": "2019-07-24T13.16.20EDT",
 			"rdt:location": ""
 		},
 		"rdt:d5": {
-			"rdt:name": "cars4Cyl.df",
-			"rdt:value": "data/5-cars4Cyl.df.csv",
-			"rdt:valType": "{\"container\":\"data_frame\", \"dimension\":[11,11], \"type\":[\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\"]}",
-			"rdt:type": "Snapshot",
-			"rdt:scope": "R_GlobalEnv",
+			"rdt:name": "Rdata.rds",
+			"rdt:value": "data/5-Rdata.rds",
+			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}",
+			"rdt:type": "File",
+			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
-			"rdt:hash": "",
-			"rdt:timestamp": "2019-07-24T12.17.59EDT",
-			"rdt:location": ""
+			"rdt:hash": "04c7cdf249b34249e9c792b6d7e04e35",
+			"rdt:timestamp": "2019-07-24T13.16.20EDT",
+			"rdt:location": "/Library/Frameworks/R.framework/Versions/3.6/Resources/library/ggplot2/data/Rdata.rds"
 		},
 		"rdt:d6": {
-			"rdt:name": "cars6Cyl.df",
-			"rdt:value": "data/6-cars6Cyl.df.csv",
-			"rdt:valType": "{\"container\":\"data_frame\", \"dimension\":[7,11], \"type\":[\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\"]}",
+			"rdt:name": "diamonds",
+			"rdt:value": "data/6-diamonds-PARTIAL.csv",
+			"rdt:valType": "{\"container\":\"data_frame\", \"dimension\":[53940,10], \"type\":[\"numeric\",\"ordered\",\"ordered\",\"ordered\",\"numeric\",\"numeric\",\"integer\",\"numeric\",\"numeric\",\"numeric\"]}",
 			"rdt:type": "Snapshot",
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-07-24T12.17.59EDT",
+			"rdt:timestamp": "2019-07-24T13.16.26EDT",
 			"rdt:location": ""
 		},
 		"rdt:d7": {
-			"rdt:name": "cars8Cyl.df",
-			"rdt:value": "data/7-cars8Cyl.df.csv",
-			"rdt:valType": "{\"container\":\"data_frame\", \"dimension\":[14,11], \"type\":[\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\"]}",
+			"rdt:name": "economics",
+			"rdt:value": "data/7-economics-PARTIAL.csv",
+			"rdt:valType": "{\"container\":\"data_frame\", \"dimension\":[574,6], \"type\":[\"Date\",\"numeric\",\"integer\",\"numeric\",\"numeric\",\"integer\"]}",
 			"rdt:type": "Snapshot",
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-07-24T12.17.59EDT",
+			"rdt:timestamp": "2019-07-24T13.16.26EDT",
 			"rdt:location": ""
 		},
 		"rdt:d8": {
-			"rdt:name": "cylinders",
-			"rdt:value": "4 6 8",
-			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[3], \"type\":[\"numeric\"]}",
-			"rdt:type": "Data",
+			"rdt:name": "diamonds.df",
+			"rdt:value": "data/8-diamonds.df-PARTIAL.csv",
+			"rdt:valType": "{\"container\":\"data_frame\", \"dimension\":[53940,10], \"type\":[\"numeric\",\"ordered\",\"ordered\",\"ordered\",\"numeric\",\"numeric\",\"integer\",\"numeric\",\"numeric\",\"numeric\"]}",
+			"rdt:type": "Snapshot",
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "",
+			"rdt:timestamp": "2019-07-24T13.16.33EDT",
 			"rdt:location": ""
 		},
 		"rdt:d9": {
-			"rdt:name": "mpg",
-			"rdt:value": "26.66364 19.74286 15.10000",
-			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[3], \"type\":[\"numeric\"]}",
-			"rdt:type": "Data",
+			"rdt:name": "economics.df",
+			"rdt:value": "data/9-economics.df-PARTIAL.csv",
+			"rdt:valType": "{\"container\":\"data_frame\", \"dimension\":[574,6], \"type\":[\"Date\",\"numeric\",\"integer\",\"numeric\",\"numeric\",\"integer\"]}",
+			"rdt:type": "Snapshot",
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "",
+			"rdt:timestamp": "2019-07-24T13.16.33EDT",
 			"rdt:location": ""
 		},
 		"rdt:d10": {
-			"rdt:name": "dev.2",
-			"rdt:value": "",
-			"rdt:valType": "Device",
-			"rdt:type": "Device",
+			"rdt:name": "data.rds",
+			"rdt:value": "data/10-data.rds",
+			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}",
+			"rdt:type": "File",
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
-			"rdt:hash": "",
-			"rdt:timestamp": "",
-			"rdt:location": ""
+			"rdt:hash": "21dfbacc7e16a78112071586d0c6d2e3",
+			"rdt:timestamp": "2019-07-24T13.16.33EDT",
+			"rdt:location": "/Library/Frameworks/R.framework/Versions/3.6/Resources/library/ggplot2/Meta/data.rds"
 		},
 		"rdt:d11": {
-			"rdt:name": "dev.3",
-			"rdt:value": "",
-			"rdt:valType": "Device",
-			"rdt:type": "Device",
+			"rdt:name": "data.rds",
+			"rdt:value": "data/11-data.rds",
+			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}",
+			"rdt:type": "File",
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
-			"rdt:hash": "",
-			"rdt:timestamp": "",
-			"rdt:location": ""
+			"rdt:hash": "9c276cc776340ccfe8960d9ae1c6ba6f",
+			"rdt:timestamp": "2019-07-24T13.16.33EDT",
+			"rdt:location": "/Library/Frameworks/R.framework/Versions/3.6/Resources/library/datasets/Meta/data.rds"
 		},
 		"rdt:d12": {
-			"rdt:name": "dev.3",
-			"rdt:value": "",
-			"rdt:valType": "Device",
-			"rdt:type": "Device",
-			"rdt:scope": "undefined",
+			"rdt:name": "f2",
+			"rdt:value": "data/12-f2.R",
+			"rdt:valType": "function",
+			"rdt:type": "Snapshot",
+			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "",
+			"rdt:timestamp": "2019-07-24T13.16.33EDT",
 			"rdt:location": ""
 		},
 		"rdt:d13": {
-			"rdt:name": "dev.3",
-			"rdt:value": "",
-			"rdt:valType": "Device",
-			"rdt:type": "Device",
+			"rdt:name": "Rdata.rds",
+			"rdt:value": "data/13-Rdata.rds",
+			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}",
+			"rdt:type": "File",
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
-			"rdt:hash": "",
-			"rdt:timestamp": "",
-			"rdt:location": ""
+			"rdt:hash": "04c7cdf249b34249e9c792b6d7e04e35",
+			"rdt:timestamp": "2019-07-24T13.16.33EDT",
+			"rdt:location": "/Library/Frameworks/R.framework/Versions/3.6/Resources/library/ggplot2/data/Rdata.rds"
 		},
 		"rdt:d14": {
-			"rdt:name": "x",
-			"rdt:value": "1",
-			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}",
+			"rdt:name": "Rdata.rds",
+			"rdt:value": "data/14-Rdata.rds",
+			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}",
+			"rdt:type": "File",
+			"rdt:scope": "undefined",
+			"rdt:fromEnv": false,
+			"rdt:hash": "92ed1f49a5075408be2336c7cee7381f",
+			"rdt:timestamp": "2019-07-24T13.16.33EDT",
+			"rdt:location": "/Library/Frameworks/R.framework/Versions/3.6/Resources/library/datasets/data/Rdata.rds"
+		},
+		"rdt:d15": {
+			"rdt:name": "pets.csv",
+			"rdt:value": "data/15-pets.csv",
+			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}",
+			"rdt:type": "File",
+			"rdt:scope": "undefined",
+			"rdt:fromEnv": false,
+			"rdt:hash": "cac41b58a0969b386219a4be4362ec92",
+			"rdt:timestamp": "2019-07-24T13.16.33EDT",
+			"rdt:location": "[DIR]/rdt/data/pets.csv"
+		},
+		"rdt:d16": {
+			"rdt:name": "pets",
+			"rdt:value": "Snickers.dog   Katama,cat Levels: Katama,cat",
+			"rdt:valType": "{\"container\":\"data_frame\", \"dimension\":[1,1], \"type\":[\"factor\"]}",
 			"rdt:type": "Data",
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
@@ -310,27 +332,27 @@
 			"rdt:timestamp": "",
 			"rdt:location": ""
 		},
-		"rdt:d15": {
-			"rdt:name": "dev.off.15.pdf",
-			"rdt:value": "data/15-dev.off.15.pdf",
-			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}",
-			"rdt:type": "File",
-			"rdt:scope": "undefined",
+		"rdt:d17": {
+			"rdt:name": "pets.df",
+			"rdt:value": "Snickers.dog   Katama,cat Levels: Katama,cat",
+			"rdt:valType": "{\"container\":\"data_frame\", \"dimension\":[1,1], \"type\":[\"factor\"]}",
+			"rdt:type": "Data",
+			"rdt:scope": "0x7fd0ffdb2840",
 			"rdt:fromEnv": false,
-			"rdt:hash": "c1b95df0ed884c934e98d1ad73c22bd7",
-			"rdt:timestamp": "2019-07-24T12.18.00EDT",
-			"rdt:location": "[DIR]/rdt/dev.off.15.pdf"
+			"rdt:hash": "",
+			"rdt:timestamp": "",
+			"rdt:location": ""
 		},
-		"rdt:d16": {
-			"rdt:name": "Rplots.pdf",
-			"rdt:value": "data/16-Rplots.pdf",
-			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}",
-			"rdt:type": "File",
-			"rdt:scope": "undefined",
+		"rdt:d18": {
+			"rdt:name": "f2() return",
+			"rdt:value": "Snickers.dog   Katama,cat Levels: Katama,cat",
+			"rdt:valType": "{\"container\":\"data_frame\", \"dimension\":[1,1], \"type\":[\"factor\"]}",
+			"rdt:type": "Data",
+			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
-			"rdt:hash": "d6a2baed9d806dd0ffed51dee37126f5",
-			"rdt:timestamp": "2019-07-24T12.18.00EDT",
-			"rdt:location": "[DIR]/rdt/Rplots.pdf"
+			"rdt:hash": "",
+			"rdt:timestamp": "",
+			"rdt:location": ""
 		},
 
 		"rdt:environment": {
@@ -339,14 +361,14 @@
 			"rdt:operatingSystem": "darwin15.6.0",
 			"rdt:language": "R",
 			"rdt:langVersion": "R version 3.6.0 (2019-04-26)",
-			"rdt:script": "[DIR]/NoDevOff.R",
-			"rdt:scriptTimeStamp": "2019-01-10T13.56.36EST",
-			"rdt:totalElapsedTime": "1.234",
+			"rdt:script": "[DIR]/DataFunction.R",
+			"rdt:scriptTimeStamp": "2019-07-24T13.08.54EDT",
+			"rdt:totalElapsedTime": "14.243",
 			"rdt:sourcedScripts": "",
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:workingDirectory": "[DIR]/rdt",
-			"rdt:provDirectory": "[DIR]/rdt/prov_NoDevOff",
-			"rdt:provTimestamp": "2019-07-24T12.17.58EDT",
+			"rdt:provDirectory": "[DIR]/rdt/prov_DataFunction",
+			"rdt:provTimestamp": "2019-07-24T13.16.19EDT",
 			"rdt:hashAlgorithm": "md5"
 		},
 
@@ -425,12 +447,6 @@
 
 		"rdt:f1": {
 			"name": "data"
-		},
-		"rdt:f2": {
-			"name": "plot"
-		},
-		"rdt:f3": {
-			"name": "X11"
 		}
 	},
 
@@ -500,51 +516,35 @@
 		},
 		"rdt:pd3": {
 			"prov:activity": "rdt:p4",
-			"prov:entity": "rdt:d5"
-		},
-		"rdt:pd4": {
-			"prov:activity": "rdt:p5",
 			"prov:entity": "rdt:d6"
 		},
-		"rdt:pd5": {
-			"prov:activity": "rdt:p6",
+		"rdt:pd4": {
+			"prov:activity": "rdt:p4",
 			"prov:entity": "rdt:d7"
 		},
-		"rdt:pd6": {
-			"prov:activity": "rdt:p7",
+		"rdt:pd5": {
+			"prov:activity": "rdt:p5",
 			"prov:entity": "rdt:d8"
+		},
+		"rdt:pd6": {
+			"prov:activity": "rdt:p6",
+			"prov:entity": "rdt:d9"
 		},
 		"rdt:pd7": {
 			"prov:activity": "rdt:p8",
-			"prov:entity": "rdt:d9"
-		},
-		"rdt:pd8": {
-			"prov:activity": "rdt:p9",
-			"prov:entity": "rdt:d10"
-		},
-		"rdt:pd9": {
-			"prov:activity": "rdt:p10",
-			"prov:entity": "rdt:d11"
-		},
-		"rdt:pd10": {
-			"prov:activity": "rdt:p11",
 			"prov:entity": "rdt:d12"
 		},
-		"rdt:pd11": {
-			"prov:activity": "rdt:p12",
-			"prov:entity": "rdt:d13"
-		},
-		"rdt:pd12": {
-			"prov:activity": "rdt:p13",
-			"prov:entity": "rdt:d14"
-		},
-		"rdt:pd13": {
-			"prov:activity": "rdt:p14",
-			"prov:entity": "rdt:d15"
-		},
-		"rdt:pd14": {
-			"prov:activity": "rdt:p14",
+		"rdt:pd8": {
+			"prov:activity": "rdt:p11",
 			"prov:entity": "rdt:d16"
+		},
+		"rdt:pd9": {
+			"prov:activity": "rdt:p12",
+			"prov:entity": "rdt:d17"
+		},
+		"rdt:pd10": {
+			"prov:activity": "rdt:p12",
+			"prov:entity": "rdt:d18"
 		}
 	},
 
@@ -562,68 +562,44 @@
 			"prov:activity": "rdt:p3"
 		},
 		"rdt:dp4": {
-			"prov:entity": "rdt:d4",
+			"prov:entity": "rdt:d5",
 			"prov:activity": "rdt:p4"
 		},
 		"rdt:dp5": {
-			"prov:entity": "rdt:d4",
+			"prov:entity": "rdt:d6",
 			"prov:activity": "rdt:p5"
 		},
 		"rdt:dp6": {
-			"prov:entity": "rdt:d4",
+			"prov:entity": "rdt:d7",
 			"prov:activity": "rdt:p6"
 		},
 		"rdt:dp7": {
-			"prov:entity": "rdt:d5",
-			"prov:activity": "rdt:p8"
+			"prov:entity": "rdt:d10",
+			"prov:activity": "rdt:p7"
 		},
 		"rdt:dp8": {
-			"prov:entity": "rdt:d6",
-			"prov:activity": "rdt:p8"
+			"prov:entity": "rdt:d11",
+			"prov:activity": "rdt:p7"
 		},
 		"rdt:dp9": {
-			"prov:entity": "rdt:d7",
-			"prov:activity": "rdt:p8"
+			"prov:entity": "rdt:d12",
+			"prov:activity": "rdt:p10"
 		},
 		"rdt:dp10": {
-			"prov:entity": "rdt:d8",
-			"prov:activity": "rdt:p9"
+			"prov:entity": "rdt:d13",
+			"prov:activity": "rdt:p11"
 		},
 		"rdt:dp11": {
-			"prov:entity": "rdt:d9",
-			"prov:activity": "rdt:p9"
+			"prov:entity": "rdt:d14",
+			"prov:activity": "rdt:p11"
 		},
 		"rdt:dp12": {
-			"prov:entity": "rdt:d8",
+			"prov:entity": "rdt:d15",
 			"prov:activity": "rdt:p11"
 		},
 		"rdt:dp13": {
-			"prov:entity": "rdt:d9",
-			"prov:activity": "rdt:p11"
-		},
-		"rdt:dp14": {
-			"prov:entity": "rdt:d11",
-			"prov:activity": "rdt:p11"
-		},
-		"rdt:dp15": {
-			"prov:entity": "rdt:d8",
+			"prov:entity": "rdt:d16",
 			"prov:activity": "rdt:p12"
-		},
-		"rdt:dp16": {
-			"prov:entity": "rdt:d9",
-			"prov:activity": "rdt:p12"
-		},
-		"rdt:dp17": {
-			"prov:entity": "rdt:d12",
-			"prov:activity": "rdt:p12"
-		},
-		"rdt:dp18": {
-			"prov:entity": "rdt:d13",
-			"prov:activity": "rdt:p14"
-		},
-		"rdt:dp19": {
-			"prov:entity": "rdt:d10",
-			"prov:activity": "rdt:p14"
 		},
 
 		"rdt:fp1": {
@@ -631,33 +607,21 @@
 			"prov:activity": "rdt:p2"
 		},
 		"rdt:fp2": {
-			"prov:entity": "rdt:f2",
-			"prov:activity": "rdt:p9"
+			"prov:entity": "rdt:f1",
+			"prov:activity": "rdt:p4"
 		},
 		"rdt:fp3": {
-			"prov:entity": "rdt:f3",
-			"prov:activity": "rdt:p10"
+			"prov:entity": "rdt:f1",
+			"prov:activity": "rdt:p7"
 		},
 		"rdt:fp4": {
-			"prov:entity": "rdt:f2",
+			"prov:entity": "rdt:f1",
 			"prov:activity": "rdt:p11"
-		},
-		"rdt:fp5": {
-			"prov:entity": "rdt:f2",
-			"prov:activity": "rdt:p12"
 		}
 	},
 
 	"hadMember" : {
 		"rdt:m1": {
-			"prov:collection": "rdt:l4",
-			"prov:entity": "rdt:f2"
-		},
-		"rdt:m2": {
-			"prov:collection": "rdt:l5",
-			"prov:entity": "rdt:f3"
-		},
-		"rdt:m3": {
 			"prov:collection": "rdt:l9",
 			"prov:entity": "rdt:f1"
 		}

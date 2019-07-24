@@ -71,6 +71,7 @@
 		console
 		ControlConstruct
 		DailySolarRadiation
+		DataFunction
 		DataType
 		ddgDeepNesting
 		DDGStatement
@@ -108,6 +109,7 @@
 		FunctionAnnotation
 		FuncctionNonlocals
 		ControlConstruct
+		DataFunction
 		Warning
 		Plot1
 		Plot2
@@ -1022,6 +1024,62 @@
 	
 	<target name="update-ControlConstruct-rdtLite">
 		<antcall target="update-ControlConstruct">
+			<param name="tool" value="rdtLite"/>
+		</antcall>
+	</target>
+	
+	
+	<!-- DataFunctionTest -->
+	<target name="DataFunction">    <!-- helper -->
+		<condition property="travis" value="false">    <!-- default value -->
+			<not>
+				<isset property="travis"/>
+			</not>
+		</condition>
+		<condition property="tool" value="rdtLite">    <!-- default value -->
+			<not>
+				<isset property="tool"/>
+			</not>
+		</condition>
+		<antcall target="run-test">
+			<param name="test-name" value="DataFunction"/>
+			<param name="details" value="true"/>
+		</antcall>
+	</target>
+	
+	<target name="update-DataFunction">    <!-- helper -->
+		<condition property="tool" value="rdtLite">    <!-- default value -->
+			<not>
+				<isset property="tool"/>
+			</not>
+		</condition>
+		<antcall target="update-expected">
+			<param name="test-name" value="DataFunction"/>
+		</antcall>
+	</target>
+	
+	<target name="DataFunction-rdt">
+		<antcall target="DataFunction">
+			<param name="travis" value="false"/>
+			<param name="tool" value="rdt"/>
+		</antcall>
+	</target>
+	
+	<target name="DataFunction-rdtLite">
+		<antcall target="DataFunction">
+			<param name="travis" value="false"/>
+			<param name="tool" value="rdtLite"/>
+		</antcall>
+	</target>
+	
+	<target name="update-DataFunction-rdt">
+		<antcall target="update-DataFunction">
+			<param name="tool" value="rdt"/>
+		</antcall>
+	</target>
+	
+	<target name="update-DataFunction-rdtLite">
+		<antcall target="update-DataFunction">
 			<param name="tool" value="rdtLite"/>
 		</antcall>
 	</target>
@@ -2367,7 +2425,7 @@
 	<target name="normal-tests"
 			depends="basic, Empty, NoDetails, S4Object, Scope, Return, 
 					 OddParameter, FunctionAnnotation, FunctionNonlocals, 
-					 ControlConstruct, Warning, Plot1, Plot2, Plot3, FileNodes, 
+					 ControlConstruct, DataFunction, Warning, Plot1, Plot2, Plot3, FileNodes, 
 					 NoDevOff, DataType, HigherOrderFunc, AssignOperators, 
 					 FunctionOrigin, RMarkdown, DDGStatement, Connection">
 		
