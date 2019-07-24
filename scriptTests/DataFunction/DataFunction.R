@@ -3,9 +3,9 @@ data (mtcars)
 cars.df <- mtcars
 
 # Loading multiple data sets
-data(diamonds, economics)
+data(diamonds, AirPassengers)
 diamonds.df <- diamonds
-economics.df <- economics
+airPassengers.df <- AirPassengers
 
 # Used to list data sets
 data()
