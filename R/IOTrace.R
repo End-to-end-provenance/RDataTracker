@@ -533,13 +533,15 @@
   function.names <-
       c ("write.table", "write", "writeLines",
           "writeChar", "writeBin", 
-          "saveRDS", "save", "dput", "dump")
+          "saveRDS", "save", "dput", "dump",
+          "data")
   
   # The argument that represents the file name
   param.names <-
       c ("file", "file", "con", 
           "con", "con", 
-          "file", "file", "file", "file")
+          "file", "file", "file", "file",
+          "...")
   
   return (data.frame (function.names, param.names, stringsAsFactors=FALSE))
 }
@@ -552,6 +554,7 @@
 
 .ddg.clear.output.file <- function () {
   .ddg.set ("output.files", character())
+  .ddg.set ("ddg.output.data", character())
 }
 
 #' .ddg.add.output.file adds a file name to the output list.
@@ -570,6 +573,26 @@
     #print (paste ("Adding output file", fname))
     #print (sys.calls())
     .ddg.set ("output.files", append(output.files, fname))
+  }
+}
+
+#' .ddg.add.output.data adds a name to the output list.
+#' @param fname the name of the dataset to add to the list
+#' @return nothing
+#' @noRd
+
+.ddg.add.output.data <- function (dname) {
+  if (length(dname) == 0) return()
+
+  output.data <- .ddg.get("ddg.output.data")
+  
+  # Only add the file to the list if it is not already there.  It could be 
+  # there if there are multiple functions called indirectly in one R statement
+  # that write to the same file.
+  if (!(dname %in% output.data) && is.character(dname)) {
+    #print (paste ("Adding output file", fname))
+    #print (sys.calls())
+    .ddg.set ("ddg.output.data", append(output.data, dname))
   }
 }
 
@@ -625,6 +648,13 @@
     .ddg.set ("ddg.last.ggplot", "")
   }
   
+  else if (fname == "data") {
+    # The as.character gives us a vector that includes "vector" as its first element
+    # The [-1] removes that element.
+    output.data <- as.character(substitute(vector (...), env = sys.frame(frame.number)))[-1]
+    .ddg.add.output.data (output.data)
+  }
+  
   else {
     # Get the name of the file parameter for the output function
     file.write.functions <- .ddg.get ("ddg.file.write.functions.df")
@@ -640,7 +670,7 @@
     # we do not want to create the nodes because the procedure node to connect to does not
     # exist yet, and the file has not been written to yet.
     .ddg.add.output.file (output.file.name)
-  }
+   }
 }
 
 #' .ddg.create.file.write.nodes.and.edges creates file nodes and data out edges for any files
@@ -675,9 +705,6 @@
     }
   }
 
-  # Clear the list of output files now that they have been handled.
-  .ddg.clear.output.file ()
-  
   # If this file is written by ggsave and the plot was implicit, 
   # add an input edge for the last plot.
   if (.ddg.get ("ddg.implicit.plot")) {
@@ -698,6 +725,18 @@
 
     .ddg.set ("ddg.remove.Rplots", FALSE)
   }
+  
+  # Handle data sets loaded with the data function.
+  datasets <- .ddg.get ("ddg.output.data")
+  sapply (datasets, 
+          function (dataset) {
+            .ddg.data.node ("Data", dataset, eval(as.name(dataset), envir=globalenv()), environmentName(globalenv()))
+            .ddg.lastproc2data (dataset)    
+          }
+  )
+
+  # Clear the list of output files now that they have been handled.
+  .ddg.clear.output.file ()
 }
 
 #' .ddg.file.out creates a data node of type File.  The label
