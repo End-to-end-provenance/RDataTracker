@@ -393,17 +393,6 @@
 			</fileset>
 		</replaceregexp>
 
-		<!-- Delete the hex value associated with any environment values in data nodes  -->
-		<replaceregexp flags="g">
-			<regexp pattern='(\t+"rdt:value": "\074environment: 0x(.*)>",\r?\n)'/>
-			<substitution expression='            "rdt:value": "\\074environment>",\n'/>
-			<fileset dir="${local-dir}">
-				<patternset id="local_files">
-					<include name="*.local"/>
-				</patternset>
-			</fileset>
-		</replaceregexp>
-
 		<!-- Delete all elapsed time occurrences  -->
 		<replaceregexp flags="g">
 			<regexp pattern='(\t+"rdt:(total)?(e|E)lapsedTime": ("?[0-9]*\.?[0-9]+"?,)\r?\n)'/>

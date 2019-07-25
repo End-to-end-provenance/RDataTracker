@@ -334,6 +334,14 @@
     else if (.ddg.is.connection(value)) {
       print.value <- showConnections(TRUE)[as.character(value[1]), "description"]
     }
+    else   if (is.environment(value)) {
+      env.vars <- ls (value)
+      env.name <- environmentName(value)
+      if (length (env.vars) == 0) {
+        return (paste0 ("Environment ", env.name, ": Empty environment"))
+      }
+      print.value <- paste0 ("Environment ", env.name, ": ", .ddg.get.node.val (env.vars))
+    }  
     else {
       print.value <- utils::capture.output (print (value))
     }
@@ -369,6 +377,18 @@
       # Remove leading spaces
       print.value <- sub ("^ *", "", print.value)
     }
+    else if (is.environment(value)) {
+      env.vars <- ls (value)
+      env.name <- environmentName(value)
+      if (length (env.vars) == 0) {
+        return (paste0 ("Environment ", env.name, ": Empty environment"))
+      }
+      env.vars.string <- .ddg.get.node.val (env.vars)
+      if (is.null (env.vars.string)) {
+        return (NULL)
+      }
+      print.value <- paste0 ("Environment ", env.name, ": ", env.vars.string)
+    }  
     else {
       print.value <- utils::capture.output (print (value))
     }
@@ -640,6 +660,11 @@
   # Determine if we should save the entire data
   snapshot.size <- .ddg.snapshot.size()
   
+  orig.data <- data
+  if (is.environment(data)) {
+    data <- ls(data)
+  }
+  
   # object.size returns bytes, but snapshot.size is in kilobytes
   if (snapshot.size == Inf || utils::object.size(data) < snapshot.size * 1024) {
     full.snapshot <- TRUE
@@ -717,6 +742,9 @@
     file.create(dpfile, showWarnings=FALSE)
     if ("ggplot" %in% class(data)) {
       write(utils::capture.output(unlist(data)), dpfile)
+    }
+    else if (is.environment(orig.data)) {
+      write(paste0 ("Environment ", environmentName(orig.data), ":\n  ", paste (utils::capture.output(data), collapse="\n  ")), dpfile)
     }
     else {
       write(utils::capture.output(data), dpfile)

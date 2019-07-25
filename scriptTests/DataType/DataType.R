@@ -47,3 +47,9 @@ x.list1 <- list(x.number, x.string, x.logical, x.na, x.null)
 x.list2 <- list(x.vector.number, x.vector.string, x.vector.logical, x.matrix, x.data.frame1)
 x.list3 <- list(x.list1, x.list2)
 
+x.env <- new.env()
+x.env$var1 <- 1
+x.env$var2 <- x.list1
+
+x.env2 <- globalenv()
+
