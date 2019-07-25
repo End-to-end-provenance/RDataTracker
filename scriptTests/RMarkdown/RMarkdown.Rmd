@@ -27,3 +27,10 @@ y <- iris[,2]
 summary(lm(y~x))
 
 ```
+
+Here is a random number.
+
+```{r}
+random <- runif(3)
+random
+```
