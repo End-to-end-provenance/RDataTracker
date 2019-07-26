@@ -142,6 +142,7 @@
   # Search data nodes table.
   #print (paste (".ddg.data.node.exists: Looking for", dname, "in scope", dscope))
   ddg.data.nodes <- .ddg.data.node.table()
+  #print (ddg.data.nodes)
   
   if( identical(dtype, "File") )
   {
@@ -292,6 +293,7 @@
                   "with scope", dscope, 
                   " and value ", ddg.data.nodes$ddg.value[ddg.dnum]))
     }
+    #print(sys.calls())
   }
 }
 

@@ -389,24 +389,28 @@
 #' @return nothing
 #' @noRd
 
-.ddg.create.data.use.edges <- function (cmd, for.caller) {
+.ddg.create.data.use.edges <- function (cmd, for.caller, env=NULL) {
   # Find all the variables used in this command.
   #print (paste(".ddg.create.data.use.edges: cmd = ", cmd@text))
   vars.used <- cmd@vars.used
 
   for (var in vars.used) {
+    #print(paste("Before extraction, var =", var))
+    var <- .ddg.extract.var (var, env)
+    #print(paste("After extraction, var =", var))
+    
     #print(paste(".ddg.create.data.use.edges: var =", var))
     # Make sure there is a node we could connect to.
-    scope <- .ddg.get.scope(var, for.caller)
+    scope <- .ddg.get.scope(var, for.caller, env=env)
 
     #print(paste(".ddg.create.data.use.edges: scope =", scope))
 
     if (.ddg.data.node.exists(var, scope)) {
-      # print(".ddg.create.data.use.edges found data node")
+      #print(".ddg.create.data.use.edges found data node")
       .ddg.data2proc(var, scope, cmd@abbrev)
     }
     else {
-      # print (".ddg.create.data.use.edges DID NOT FIND data node")
+      #print (".ddg.create.data.use.edges DID NOT FIND data node")
       # Note: This generates lots of error nodes of limited value.
       # Turn off for now.
 
@@ -417,6 +421,31 @@
     }
   }
   #print (".ddg.create.data.use.edges Done")
+}
+
+.ddg.extract.var <- function (var, env=NULL) {
+  # $ is used both to access variables in an environment and 
+  # columns in a data frame.  In the former case, we want the 
+  # qualified name env$var to be the thing being used.  For a 
+  # dataframe, we want to note that the data frame is being used.
+  #print (paste ("In .ddg.extract.var, var =", var))
+  if (stringi::stri_detect_fixed(var, "$")) {
+    #print ("Found $ in var")
+    parsed <- parse (text=var)[[1]]
+    if (parsed[[1]] == "$") {
+      #print ("First operator is $")
+      if (is.null(env)) {
+        env <- .ddg.get.env(deparse(parsed[[2]]))
+      }
+      
+      if (!is.environment(eval(parsed[[2]], env))) {
+        #print ("Not an environment")
+        var = deparse(parsed[[2]])
+      }
+    }
+  }
+  return(var)
+
 }
 
 
@@ -431,8 +460,11 @@
 #' @noRd
 
 .ddg.create.data.set.edges <- function(vars.set, cmd, env) {
-  # print(paste("In .ddg.create.data.set.edges.for.cmd: cmd = ", cmd@abbrev))
+  #print(paste("In .ddg.create.data.set.edges.for.cmd: cmd = ", cmd@abbrev))
+  #print ("env:")
+  #print (env)
   vars.assigned <- cmd@vars.set
+  #print (paste ("vars.assigned =", vars.assigned))
   
   for (var in vars.assigned) {
 
@@ -451,6 +483,7 @@
     }
     
     if (var != "") {
+      var <- .ddg.extract.var (var, env)
       scope <- .ddg.get.scope(var, env=env)
       .ddg.save.var(var, env, scope)
       .ddg.proc2data(cmd@abbrev, var, scope)
@@ -1143,7 +1176,7 @@
             }
           }
 
-          .ddg.create.data.use.edges(cmd, for.caller=FALSE)
+          .ddg.create.data.use.edges(cmd, for.caller=FALSE, d.environ)
 
           .ddg.create.file.read.nodes.and.edges()
           .ddg.link.function.returns(cmd)
@@ -1153,6 +1186,8 @@
                         cmd@abbrev))
           }
 
+          #print ("vars.set")
+          #print (vars.set)
           .ddg.create.data.set.edges(vars.set, cmd, d.environ)
 
           if (.ddg.debug.lib()) {
@@ -1549,16 +1584,24 @@
 #' @noRd
 
 .ddg.get.env <- function(name, for.caller=FALSE, calls=NULL) {
+  #print (paste ("Getting env for", name))
   if (is.null(calls)) calls <- sys.calls()
 
   fnum <- .ddg.get.frame.number(calls, for.caller)
+  #print (paste ("fnum =", fnum))
   stopifnot(!is.null(fnum))
 
   tryCatch (
-    if(!exists(name, sys.frame(fnum), inherits=TRUE)) return(NULL),
+    if(!exists(name, sys.frame(fnum), inherits=TRUE)) {
+      #print(sys.calls())
+      #print ("Returning null") 
+      return(NULL)
+    },
     error = function(e) {}
   )
   env <- .ddg.where(name, sys.frame(fnum))
+  #print ("Returning")
+  #print (env)
   return(env)
 }
 
