@@ -395,9 +395,7 @@
   vars.used <- cmd@vars.used
 
   for (var in vars.used) {
-    #print(paste("Before extraction, var =", var))
     var <- .ddg.extract.var (var, env)
-    #print(paste("After extraction, var =", var))
     
     #print(paste(".ddg.create.data.use.edges: var =", var))
     # Make sure there is a node we could connect to.
@@ -409,27 +407,28 @@
       #print(".ddg.create.data.use.edges found data node")
       .ddg.data2proc(var, scope, cmd@abbrev)
     }
-    else if (!is.null(env)) {
-      var.env <- .ddg.where (var, env = env, warning = FALSE )
-      scope <- .ddg.get.scope(var, for.caller, env=var.env)
+    else {
+      scope <- .ddg.get.scope(var, for.caller)
       if (.ddg.data.node.exists(var, scope)) {
-        #print(".ddg.create.data.use.edges found data node")
         .ddg.data2proc(var, scope, cmd@abbrev)
       }
-      #else {
-        #print (".ddg.create.data.use.edges DID NOT FIND data node")
-        # Note: This generates lots of error nodes of limited value.
-        # Turn off for now.
-
-        # error.msg <- paste("Unable to find data node for ", var , " used by
-        #   procedure node ", cmd@text, sep="")
-
-        # .ddg.insert.error.message(error.msg)
-      #}
     }
   }
   #print (".ddg.create.data.use.edges Done")
 }
+
+#' .ddg.extract.var is given an expression that is either a variable
+#' or an expression with $ in it, like env$var or df$col and finds the part
+#' of it that represents a variable, returning the variable as
+#' a string.  If the $ operator is being used with an environment, like
+#' env$var, "env$var" is returned.  If it is the column of a data frame,
+#' like df$col, df is returned.
+#' @param var a string holding either a variable or an expression including
+#'   the $ operator
+#' @param env the environment in which var could be evaluated.  If NULL,
+#'   the environment is searched for.
+#' @return the portion of var that actually represents the variable
+#' @noRd 
 
 .ddg.extract.var <- function (var, env=NULL) {
   # $ is used both to access variables in an environment and 
@@ -469,10 +468,7 @@
 
 .ddg.create.data.set.edges <- function(vars.set, cmd, env) {
   #print(paste("In .ddg.create.data.set.edges.for.cmd: cmd = ", cmd@abbrev))
-  #print ("env:")
-  #print (env)
   vars.assigned <- cmd@vars.set
-  #print (paste ("vars.assigned =", vars.assigned))
   
   for (var in vars.assigned) {
 
@@ -1194,8 +1190,6 @@
                         cmd@abbrev))
           }
 
-          #print ("vars.set")
-          #print (vars.set)
           .ddg.create.data.set.edges(vars.set, cmd, d.environ)
 
           if (.ddg.debug.lib()) {
@@ -1592,24 +1586,18 @@
 #' @noRd
 
 .ddg.get.env <- function(name, for.caller=FALSE, calls=NULL) {
-  #print (paste ("Getting env for", name))
   if (is.null(calls)) calls <- sys.calls()
 
   fnum <- .ddg.get.frame.number(calls, for.caller)
-  #print (paste ("fnum =", fnum))
   stopifnot(!is.null(fnum))
 
   tryCatch (
     if(!exists(name, sys.frame(fnum), inherits=TRUE)) {
-      #print(sys.calls())
-      #print ("Returning null") 
       return(NULL)
     },
     error = function(e) {}
   )
   env <- .ddg.where(name, sys.frame(fnum))
-  #print ("Returning")
-  #print (env)
   return(env)
 }
 
