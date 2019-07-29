@@ -409,15 +409,23 @@
       #print(".ddg.create.data.use.edges found data node")
       .ddg.data2proc(var, scope, cmd@abbrev)
     }
-    else {
-      #print (".ddg.create.data.use.edges DID NOT FIND data node")
-      # Note: This generates lots of error nodes of limited value.
-      # Turn off for now.
+    else if (!is.null(env)) {
+      var.env <- .ddg.where (var, env = env, warning = FALSE )
+      scope <- .ddg.get.scope(var, for.caller, env=var.env)
+      if (.ddg.data.node.exists(var, scope)) {
+        #print(".ddg.create.data.use.edges found data node")
+        .ddg.data2proc(var, scope, cmd@abbrev)
+      }
+      #else {
+        #print (".ddg.create.data.use.edges DID NOT FIND data node")
+        # Note: This generates lots of error nodes of limited value.
+        # Turn off for now.
 
-      # error.msg <- paste("Unable to find data node for ", var , " used by
-      #   procedure node ", cmd@text, sep="")
+        # error.msg <- paste("Unable to find data node for ", var , " used by
+        #   procedure node ", cmd@text, sep="")
 
-      # .ddg.insert.error.message(error.msg)
+        # .ddg.insert.error.message(error.msg)
+      #}
     }
   }
   #print (".ddg.create.data.use.edges Done")
