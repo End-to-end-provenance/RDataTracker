@@ -382,6 +382,7 @@
 
       create.use.edge <- function (var) {
         if (is.null(var) || length(var) == 0) return ()
+        var <- .ddg.extract.var (var)
         
         # Make sure there is a node we could connect to.
         scope <- .ddg.get.scope(var)
@@ -402,7 +403,11 @@
     if (!is.null (nonlocals.set) && length (nonlocals.set) > 0) {
       nonlocals.set[sapply(nonlocals.set, is.null)] <- NULL
       nonlocals.set <- unique(unlist(nonlocals.set))
-      
+      nonlocals.set <- unique(sapply (nonlocals.set,
+                          function (var) {
+                            return(.ddg.extract.var (var))
+                          }))
+                      
       sapply (nonlocals.set, .ddg.save.var)
       sapply (nonlocals.set, .ddg.lastproc2data)
     }

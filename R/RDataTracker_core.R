@@ -389,34 +389,70 @@
 #' @return nothing
 #' @noRd
 
-.ddg.create.data.use.edges <- function (cmd, for.caller) {
+.ddg.create.data.use.edges <- function (cmd, for.caller, env=NULL) {
   # Find all the variables used in this command.
   #print (paste(".ddg.create.data.use.edges: cmd = ", cmd@text))
   vars.used <- cmd@vars.used
 
   for (var in vars.used) {
+    var <- .ddg.extract.var (var, env)
+    
     #print(paste(".ddg.create.data.use.edges: var =", var))
     # Make sure there is a node we could connect to.
-    scope <- .ddg.get.scope(var, for.caller)
+    scope <- .ddg.get.scope(var, for.caller, env=env)
 
     #print(paste(".ddg.create.data.use.edges: scope =", scope))
 
     if (.ddg.data.node.exists(var, scope)) {
-      # print(".ddg.create.data.use.edges found data node")
+      #print(".ddg.create.data.use.edges found data node")
       .ddg.data2proc(var, scope, cmd@abbrev)
     }
     else {
-      # print (".ddg.create.data.use.edges DID NOT FIND data node")
-      # Note: This generates lots of error nodes of limited value.
-      # Turn off for now.
-
-      # error.msg <- paste("Unable to find data node for ", var , " used by
-      #   procedure node ", cmd@text, sep="")
-
-      # .ddg.insert.error.message(error.msg)
+      scope <- .ddg.get.scope(var, for.caller)
+      if (.ddg.data.node.exists(var, scope)) {
+        .ddg.data2proc(var, scope, cmd@abbrev)
+      }
     }
   }
   #print (".ddg.create.data.use.edges Done")
+}
+
+#' .ddg.extract.var is given an expression that is either a variable
+#' or an expression with $ in it, like env$var or df$col and finds the part
+#' of it that represents a variable, returning the variable as
+#' a string.  If the $ operator is being used with an environment, like
+#' env$var, "env$var" is returned.  If it is the column of a data frame,
+#' like df$col, df is returned.
+#' @param var a string holding either a variable or an expression including
+#'   the $ operator
+#' @param env the environment in which var could be evaluated.  If NULL,
+#'   the environment is searched for.
+#' @return the portion of var that actually represents the variable
+#' @noRd 
+
+.ddg.extract.var <- function (var, env=NULL) {
+  # $ is used both to access variables in an environment and 
+  # columns in a data frame.  In the former case, we want the 
+  # qualified name env$var to be the thing being used.  For a 
+  # dataframe, we want to note that the data frame is being used.
+  #print (paste ("In .ddg.extract.var, var =", var))
+  if (stringi::stri_detect_fixed(var, "$")) {
+    #print ("Found $ in var")
+    parsed <- parse (text=var)[[1]]
+    if (parsed[[1]] == "$") {
+      #print ("First operator is $")
+      if (is.null(env)) {
+        env <- .ddg.get.env(deparse(parsed[[2]]))
+      }
+      
+      if (!is.environment(eval(parsed[[2]], env))) {
+        #print ("Not an environment")
+        var = deparse(parsed[[2]])
+      }
+    }
+  }
+  return(var)
+
 }
 
 
@@ -431,7 +467,7 @@
 #' @noRd
 
 .ddg.create.data.set.edges <- function(vars.set, cmd, env) {
-  # print(paste("In .ddg.create.data.set.edges.for.cmd: cmd = ", cmd@abbrev))
+  #print(paste("In .ddg.create.data.set.edges.for.cmd: cmd = ", cmd@abbrev))
   vars.assigned <- cmd@vars.set
   
   for (var in vars.assigned) {
@@ -451,6 +487,7 @@
     }
     
     if (var != "") {
+      var <- .ddg.extract.var (var, env)
       scope <- .ddg.get.scope(var, env=env)
       .ddg.save.var(var, env, scope)
       .ddg.proc2data(cmd@abbrev, var, scope)
@@ -1143,7 +1180,7 @@
             }
           }
 
-          .ddg.create.data.use.edges(cmd, for.caller=FALSE)
+          .ddg.create.data.use.edges(cmd, for.caller=FALSE, d.environ)
 
           .ddg.create.file.read.nodes.and.edges()
           .ddg.link.function.returns(cmd)
@@ -1555,7 +1592,9 @@
   stopifnot(!is.null(fnum))
 
   tryCatch (
-    if(!exists(name, sys.frame(fnum), inherits=TRUE)) return(NULL),
+    if(!exists(name, sys.frame(fnum), inherits=TRUE)) {
+      return(NULL)
+    },
     error = function(e) {}
   )
   env <- .ddg.where(name, sys.frame(fnum))
