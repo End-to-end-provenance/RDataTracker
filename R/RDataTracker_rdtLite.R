@@ -41,7 +41,10 @@
   
   # Generate the formatted output
   # print(paste("Rendering ", r.script.path))
-  rmarkdown::render(r.script.path, quiet=TRUE)
+  tryCatch (
+    rmarkdown::render(r.script.path, quiet=TRUE),
+    error = function (e) {}
+  )
   
   #moves file to ddg directory
   file.rename(from = r.file, to = output.path)
