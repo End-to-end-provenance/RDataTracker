@@ -2216,14 +2216,14 @@
 	
 	<target name="RMarkdown-rdt">
 		<antcall target="RMarkdown">
-			<param name="travis" value="false"/>
+			<param name="travis" value="true"/>
 			<param name="tool" value="rdt"/>
 		</antcall>
 	</target>
 	
 	<target name="RMarkdown-rdtLite">
 		<antcall target="RMarkdown">
-			<param name="travis" value="false"/>
+			<param name="travis" value="true"/>
 			<param name="tool" value="rdtLite"/>
 		</antcall>
 	</target>
