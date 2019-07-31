@@ -6,6 +6,7 @@ schema <- args[1]
 json <- args[2]
 print(schema)
 print(json)
+print (dir(dirname(json)))
 
 options (error=function() traceback(2))
 tryCatch (json_validate(json, schema, verbose=TRUE),
