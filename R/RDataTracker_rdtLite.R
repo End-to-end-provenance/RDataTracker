@@ -37,11 +37,11 @@
   
   #generates R script file from markdown file.
   r.file <- knitr::purl(r.script.path, documentation = 2L, quiet = TRUE)
-  print(paste("purl output in ", r.file))
+  # print(paste("purl output in ", r.file))
   
   # Generate the formatted output
-  print(paste("Rendering ", r.script.path))
-  rmarkdown::render(r.script.path)
+  # print(paste("Rendering ", r.script.path))
+  rmarkdown::render(r.script.path, quiet=TRUE)
   
   #moves file to ddg directory
   file.rename(from = r.file, to = output.path)
