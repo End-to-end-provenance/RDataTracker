@@ -56,6 +56,10 @@
   # Gather the information
   nonlocals.set <- .ddg.find.nonlocals.set (funcdecl)
   nonlocals.used <- .ddg.find.nonlocals.used (funcdecl)
+  #print ("In .ddg.save.func.decl.info, nonlocals.used =")
+  #print (nonlocals.used)
+  #print ("In .ddg.save.func.decl.info, nonlocals.set =")
+  #print (nonlocals.set)
   
   # Create the row for this function
   new.row <- data.frame (func.name=character(1), stringsAsFactors=FALSE )
@@ -168,7 +172,7 @@
   if (funcbody [[1]] == "{" && length(funcbody) > 1) {
     nonlocal.uses <- character()
     for (i in 2:length(funcbody)) {
-      var.uses <- .ddg.find.var.uses (funcbody[[i]])
+      var.uses <- .ddg.find.var.uses (funcbody[[i]], leftmost=TRUE)
       nonlocal.uses <- unique (c (nonlocal.uses, setdiff (var.uses, vars.assigned)))
       var.assigned <- .ddg.find.simple.assign (funcbody[[i]])
       
@@ -184,7 +188,7 @@
   # The function body consists of a single statement.  In this case,
   # we just need to exclude parameters.
   else {
-    var.uses <- .ddg.find.var.uses (funcbody)
+    var.uses <- .ddg.find.var.uses (funcbody, leftmost=TRUE)
     nonlocal.uses <- setdiff (var.uses, vars.assigned)
   }
   
