@@ -7,5 +7,5 @@ json <- args[2]
 print(schema)
 print(json)
 
-tryCatch (json_validate(json, schema, verbose=TRUE),
-    error = function (e) {print (sys.calls())})
+options (error=function() traceback(2))
+json_validate(json, schema, verbose=TRUE)
