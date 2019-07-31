@@ -8,4 +8,8 @@ print(schema)
 print(json)
 
 options (error=function() traceback(2))
-json_validate(json, schema, verbose=TRUE)
+tryCatch (json_validate(json, schema, verbose=TRUE),
+    error = function (e) {
+      lines <- readLines(json)
+      writeLines(lines)
+    })
