@@ -10,6 +10,7 @@ print(json)
 options (error=function() traceback(2))
 tryCatch (json_validate(json, schema, verbose=TRUE),
     error = function (e) {
+      print (dir(dirname(json)))
       lines <- readLines(json)
       writeLines(lines)
     })
