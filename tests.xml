@@ -304,11 +304,14 @@
 		Tests the produced .json file for prov-json compliance.
 	-->
 	<target name="prov-json-compliance-test">
+	    <echo> "${travis}" </echo>
+	    <echo> "${prov-dir}" </echo>
 		<exec executable="Rscript" dir="scriptTests/ProvJson" resultproperty="compliant">
 			<arg value="complianceTest.r" />
 			<arg path="scriptTests/ProvJson/schema.json" />
 			<arg path="${prov-dir}/prov.json" />
 		</exec>
+		<echo> "${compliant}" </echo>
 		<fail message="prov.json is not prov-json compliant.">
 			<condition>
 				<and>
