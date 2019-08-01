@@ -20,7 +20,7 @@ before-install:
   - .libPaths ("/home/travis/R/Library")
 
 install: 
-  - Rscript -e 'install.packages (c("devtools", "roxygen2", "knitr", "jsonvalidate", "XML", "testthat", "gplots", "ggplot2", "stringi", "RCurl", "provSummarizeR", "provViz"))'
+  - Rscript -e 'install.packages (c("devtools", "roxygen2", "knitr", "rmarkdown", "jsonvalidate", "XML", "testthat", "gplots", "ggplot2", "stringi", "RCurl", "provSummarizeR", "provViz"))'
   - Rscript -e 'print (installed.packages())'
 
 before_script:

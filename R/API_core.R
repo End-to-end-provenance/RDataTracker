@@ -71,6 +71,9 @@
     if (tools::file_ext(r.script.path) == "Rmd") {
       output.path <- paste(.ddg.path.scripts(), "/", 
           basename(tools::file_path_sans_ext(r.script.path)), ".R", sep = "")
+      print(paste("Please note: if your RMarkdown script is not deterministic (that is,",
+					"if it does not always produce the same result as is the case when it relies on random number generation),", 
+					"then the provenance collected may not exactly match the PDF document produced by RMarkdown."))
       .ddg.markdown(r.script.path, output.path)
       .ddg.set("ddg.r.script.path", output.path)
   

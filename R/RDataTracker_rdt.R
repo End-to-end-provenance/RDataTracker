@@ -422,13 +422,14 @@
 .ddg.markdown <- function(r.script.path, output.path){
   
   #generates R script file from markdown file
-  knitr::purl(r.script.path, documentation = 2L, quiet = TRUE)
+  r.file <- knitr::purl(r.script.path, documentation = 2L, quiet = TRUE)
+  
+  # Generate the formatted output
+  rmarkdown::render(r.script.path, quiet=TRUE)
+  
   
   #moves file to ddg directory
-  file.rename(from = paste(getwd(), "/", 
-          basename(tools::file_path_sans_ext(r.script.path)), 
-          ".R", sep = ""), 
-      to = output.path)
+  file.rename(from = r.file, to = output.path)
   script <- readLines(output.path)
   
   skip <- FALSE
