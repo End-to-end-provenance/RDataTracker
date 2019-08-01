@@ -29,10 +29,10 @@ before_script:
   - sleep 3
 
 script:
-  - ant -file build-rdtLite.xml install
-  - ant -file tests.xml RMarkdown-rdtLite
   - ant -file build-rdt.xml install
-  - ant -file tests.xml RMarkdown-rdt
+  - ant -file tests.xml test-travis-rdt
+  - ant -file build-rdtLite.xml install
+  - ant -file tests.xml test-travis-rdtLite
 
 notifications:
   slack: endtoendprovenance:WxevOs6n66eZRbCn9HcW2mGD

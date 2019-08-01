@@ -304,14 +304,11 @@
 		Tests the produced .json file for prov-json compliance.
 	-->
 	<target name="prov-json-compliance-test">
-	    <echo> "${travis}" </echo>
-	    <echo> "${prov-dir}" </echo>
 		<exec executable="Rscript" dir="scriptTests/ProvJson" resultproperty="compliant">
 			<arg value="complianceTest.r" />
 			<arg path="scriptTests/ProvJson/schema.json" />
 			<arg path="${prov-dir}/prov.json" />
 		</exec>
-		<echo> "${compliant}" </echo>
 		<fail message="prov.json is not prov-json compliant.">
 			<condition>
 				<and>
@@ -2216,14 +2213,14 @@
 	
 	<target name="RMarkdown-rdt">
 		<antcall target="RMarkdown">
-			<param name="travis" value="true"/>
+			<param name="travis" value="false"/>
 			<param name="tool" value="rdt"/>
 		</antcall>
 	</target>
 	
 	<target name="RMarkdown-rdtLite">
 		<antcall target="RMarkdown">
-			<param name="travis" value="true"/>
+			<param name="travis" value="false"/>
 			<param name="tool" value="rdtLite"/>
 		</antcall>
 	</target>
