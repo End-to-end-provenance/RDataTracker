@@ -16,6 +16,9 @@ addons:
       - r-cran-rcurl
       - r-cran-v8
  
+r_packages:
+  - rmarkdown
+
 before-install:
   - .libPaths ("/home/travis/R/Library")
 
