@@ -304,6 +304,13 @@
 		Tests the produced .json file for prov-json compliance.
 	-->
 	<target name="prov-json-compliance-test">
+	    <available file="${prov-dir}/prov.json" property="json.exists"/>
+	    
+	    <fail message="prov.json does not exist.">
+	    	<condition>
+    			<not><isset property="json.exists"/></not>
+	    	</condition>
+	    </fail>
 		<exec executable="Rscript" dir="scriptTests/ProvJson" resultproperty="compliant">
 			<arg value="complianceTest.r" />
 			<arg path="scriptTests/ProvJson/schema.json" />
