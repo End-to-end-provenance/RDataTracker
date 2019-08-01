@@ -31,6 +31,8 @@ before_script:
 script:
   - ant -file build-rdtLite.xml install
   - ant -file tests.xml RMarkdown-rdtLite
+  - ant -file build-rdt.xml install
+  - ant -file tests.xml RMarkdown-rdt
 
 notifications:
   slack: endtoendprovenance:WxevOs6n66eZRbCn9HcW2mGD
