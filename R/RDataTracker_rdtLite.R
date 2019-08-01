@@ -40,11 +40,7 @@
   # print(paste("purl output in ", r.file))
   
   # Generate the formatted output
-  # print(paste("Rendering ", r.script.path))
-  tryCatch (
-    rmarkdown::render(r.script.path, quiet=TRUE),
-    error = function (e) {}
-  )
+  rmarkdown::render(r.script.path, quiet=TRUE)
   
   #moves file to ddg directory
   file.rename(from = r.file, to = output.path)
