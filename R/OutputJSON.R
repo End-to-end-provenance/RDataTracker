@@ -28,7 +28,7 @@
 {
 	fileout <- paste(.ddg.path(), "/prov.json", sep="")
 	json <- .ddg.json.string()
-  print (json)
+  #print (json)
 	write(json, fileout)
 }
 
