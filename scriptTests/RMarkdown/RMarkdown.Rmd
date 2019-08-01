@@ -10,6 +10,7 @@ output: html_document
 Here is the first chunk.
 
 ```{r }
+rdtLite:::.ddg.debug.lib.on()
 x <- 2+2
 y <- x+2
 x
