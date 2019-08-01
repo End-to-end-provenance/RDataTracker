@@ -323,7 +323,7 @@
     }
     else if (is.array(value) && length (dim(value)) > 1) {
       print.value <- utils::capture.output (print (value))
-      print.value <- Find (function (line) return (startsWith (line, "[1,")), print.value)
+      print.value <- Find (function (line) return (startsWith (stringi::stri_trim_left(line), "[1,")), print.value)
     }
     else if (is.list (value)) {
       print.value <- paste (utils::capture.output (print (unlist (value))), collapse="")

@@ -36,6 +36,7 @@ x.vector.posixct <- rep(x.posixct, 3)
 
 # matrix, array
 x.matrix <- matrix(data=c(1,2,3,4,5,6), nrow=3, ncol=2)
+x.longmatrix <- matrix(c(1:10),10,10)
 x.array <- array(data=c(1,2,3,4,5,6,7,8), dim=c(2,2,2))
 
 # data frame
