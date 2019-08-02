@@ -119,6 +119,11 @@
   # within functions
   .ddg.init.function.def.table ()
   
+  # A named list, where the name is a variable of type environment
+  # Associated with each environment name is a vector of the variables
+  # in that environment. 
+  .ddg.set ("ddg.envList", list())
+  
   invisible()
 }
 

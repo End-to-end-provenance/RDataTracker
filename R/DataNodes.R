@@ -305,8 +305,9 @@
 #' and snapshots are being saved, it returns NULL.
 #' 
 #' @param value the actual data value
+#' @param dname the name of the object we are getting the value of
 #' @noRd
-.ddg.get.node.val <- function (value) {
+.ddg.get.node.val <- function (value, dname=NULL) {
   if (is.null (value)) {
     return ("NULL")
   }
@@ -341,6 +342,7 @@
         return (paste0 ("Environment ", env.name, ": Empty environment"))
       }
       print.value <- paste0 ("Environment ", env.name, ": ", .ddg.get.node.val (env.vars))
+      .ddg.remember.env (dname, env.vars)
     }  
     else {
       print.value <- utils::capture.output (print (value))
@@ -388,6 +390,7 @@
         return (NULL)
       }
       print.value <- paste0 ("Environment ", env.name, ": ", env.vars.string)
+      .ddg.remember.env (dname, env.vars)
     }  
     else {
       print.value <- utils::capture.output (print (value))
@@ -414,6 +417,17 @@
     }
   }
 }
+
+#' .ddg.remember.env remembers what variables are in an environment
+#' @param env.var.name the name of the environment variable
+#' @param env.vars the variables within the environment
+#' @noRd
+.ddg.remember.env <- function (env.var.name, env.vars) {
+  ddg.envList <- .ddg.get ("ddg.envList")
+  ddg.envList[[env.var.name]] <- env.vars
+  .ddg.set("ddg.envList", ddg.envList)
+}
+
 
 #' .ddg.get.val.type.string returns the type information for a given value as a string.
 #' "null" for null values. For values of length 1, it is the type of the value.
@@ -559,7 +573,7 @@
   
   val <- 
       if (dtype == "Exception") dvalue
-      else .ddg.get.node.val (dvalue)
+      else .ddg.get.node.val (dvalue, dname)
   
   # .ddg.get.node.val returns NULL if we should store the value in a snapshot.
   # Otherwise, it returns a string representation of the value to store

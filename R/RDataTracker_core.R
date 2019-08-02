@@ -455,6 +455,71 @@
 
 }
 
+#' .ddg.extract.env is given an expression that is either a variable
+#' or an expression with $ in it, like env$var or df$col and finds the part
+#' of it that represents the environment, returning it as
+#' a string.  If the $ operator is being used with an environment, like
+#' env$var, "env" is returned.  Otherwise NULL is returned.
+#' @param var a string holding either a variable or an expression including
+#'   the $ operator
+#' @param env the environment in which var could be evaluated.  If NULL,
+#'   the environment is searched for.
+#' @return the portion of var that actually represents the environment, or 
+#'   NULL if no environment is involved
+#' @noRd 
+
+.ddg.extract.env <- function (var, env=NULL) {
+  if (stringi::stri_detect_fixed(var, "$")) {
+    parsed <- parse (text=var)[[1]]
+    if (parsed[[1]] == "$") {
+      if (is.null(env)) {
+        env <- .ddg.get.env(deparse(parsed[[2]]))
+      }
+      
+      if (is.environment(eval(parsed[[2]], env))) {
+        return(deparse(parsed[[2]]))
+      }
+    }
+  }
+  return(NULL)
+}
+
+
+#.ddg.changing.env <- function (cmd, env) {
+#  print ("In .ddg.changing.env")
+#  vars.assigned <- cmd@vars.set
+#  env.to.set <- character()
+#  
+#  for (var in vars.assigned) {
+#    
+#    if (stringi::stri_detect_fixed(var, "$")) {
+#      print (paste ("Found $ in var", var))
+#      parsed <- parse (text=var)[[1]]
+#      if (parsed[[1]] == "$") {
+#        print ("First operator is $")
+#        arg2String <- deparse(parsed[[2]])
+#        if (is.null(env)) {
+#          env <- .ddg.get.env(arg2String)
+#        }
+#        
+#        arg2 <- eval(parsed[[2]], env)
+#        
+#        if (is.environment(arg2)) {
+#          print ("Found environment")
+#          if (!exists (deparse(parsed[[3]]), envir = arg2)) {
+#            print (paste (deparse(parsed[[3]], "is a new var in the environment")))
+#             env.to.set <- c(env.to.set, arg2String)  
+#          } 
+#        }
+#      }
+#    }
+#  }
+#  
+#  print (".ddg.changing.env is returning")
+#  print (env.to.set)
+#  return (env.to.set)
+#  
+#}
 
 #' .ddg.create.data.set.edges creates data nodes for 
 #' variables being set, saves the data, and creates edges from the
@@ -487,10 +552,34 @@
     }
     
     if (var != "") {
+      # Create the nodes and edges for setting the variable
       var <- .ddg.extract.var (var, env)
       scope <- .ddg.get.scope(var, env=env)
       .ddg.save.var(var, env, scope)
       .ddg.proc2data(cmd@abbrev, var, scope)
+      
+      # If the variable is inside an environment, like env$var
+      # and var was not previously in the environment, we also
+      # create nodes and edges for change env.
+      var.env <- .ddg.extract.env (var, env)
+      if (!is.null(var.env)){
+        envList <- .ddg.get ("ddg.envList")
+        oldEnvContents <- envList[[var.env]]
+        
+        # Checks if this is the first variable set
+        if (is.null(oldEnvContents)) {
+          .ddg.save.var(var.env, env, scope)
+          .ddg.proc2data(cmd@abbrev, var.env, scope)
+        }
+        else {
+          # Checks if the variable being set was already in the environment
+          internal.var <- substring (var, stringi::stri_locate_first_fixed(var, "$")[1,"start"]+1)
+          if (!(internal.var %in% oldEnvContents)) {
+            .ddg.save.var(var.env, env, scope)
+            .ddg.proc2data(cmd@abbrev, var.env, scope)
+          }
+        }
+      }
     }
   }
 }
@@ -1011,7 +1100,7 @@
           if (.ddg.debug.lib()) {
             print (paste (".ddg.parse.commands: Evaluating ", cmd@annotated))
           }
-
+          
           result <- withCallingHandlers(
           
               {
