@@ -413,6 +413,23 @@
         .ddg.data2proc(var, scope, cmd@abbrev)
       }
     }
+    
+    # If the variable is inside an environment, like env$var, we also
+    # create nodes and edges for using the env.
+    var.env <- .ddg.extract.env (var, env)
+    if (!is.null(var.env)){
+      if (.ddg.data.node.exists(var.env, scope)) {
+        #print(".ddg.create.data.use.edges found data node for the environment")
+        .ddg.data2proc(var.env, scope, cmd@abbrev)
+      }
+      else {
+        scope <- .ddg.get.scope(var.env, for.caller)
+        if (.ddg.data.node.exists(var.env, scope)) {
+          .ddg.data2proc(var.env, scope, cmd@abbrev)
+        }
+      }
+    }
+    
   }
   #print (".ddg.create.data.use.edges Done")
 }
