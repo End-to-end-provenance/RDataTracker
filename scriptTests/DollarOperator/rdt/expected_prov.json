@@ -16,7 +16,7 @@
 		"rdt:p1": {
 			"rdt:name": "DollarOperator.R",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": "0.823",
+			"rdt:elapsedTime": "0.81",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -26,7 +26,7 @@
 		"rdt:p2": {
 			"rdt:name": "myEnv <- new.env()",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.071",
+			"rdt:elapsedTime": "0.072",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 2,
 			"rdt:startCol": 1,
@@ -36,7 +36,7 @@
 		"rdt:p3": {
 			"rdt:name": "myEnv$var <- 1",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.033",
+			"rdt:elapsedTime": "0.031",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 3,
 			"rdt:startCol": 1,
@@ -66,7 +66,7 @@
 		"rdt:p6": {
 			"rdt:name": "b <- (11:20)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.005",
+			"rdt:elapsedTime": "0.006",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 8,
 			"rdt:startCol": 1,
@@ -76,7 +76,7 @@
 		"rdt:p7": {
 			"rdt:name": "df <- data.frame (a, b)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.005",
+			"rdt:elapsedTime": "0.006",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 9,
 			"rdt:startCol": 1,
@@ -86,7 +86,7 @@
 		"rdt:p8": {
 			"rdt:name": "df$c <- (21:30)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.018",
+			"rdt:elapsedTime": "0.021",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 10,
 			"rdt:startCol": 1,
@@ -96,7 +96,7 @@
 		"rdt:p9": {
 			"rdt:name": "f <- function() {\n  plot (df$a, df$b)\n  df$d <- (31:40)\n}",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.113",
+			"rdt:elapsedTime": "0.122",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 13,
 			"rdt:startCol": 1,
@@ -106,7 +106,7 @@
 		"rdt:p10": {
 			"rdt:name": "f()",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": "0.032",
+			"rdt:elapsedTime": "0.03",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -126,7 +126,7 @@
 		"rdt:p12": {
 			"rdt:name": "plot(df$a, df$b)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.049",
+			"rdt:elapsedTime": "0.052",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -146,7 +146,7 @@
 		"rdt:p14": {
 			"rdt:name": "f()",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": "0.02",
+			"rdt:elapsedTime": "0.027",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -156,7 +156,7 @@
 		"rdt:p15": {
 			"rdt:name": "DollarOperator.R",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": "0.001",
+			"rdt:elapsedTime": "0.0",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -240,7 +240,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-08-02T15.32.36EDT",
+			"rdt:timestamp": "2019-08-05T11.37.37EDT",
 			"rdt:location": ""
 		},
 		"rdt:d8": {
@@ -251,7 +251,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-08-02T15.32.36EDT",
+			"rdt:timestamp": "2019-08-05T11.37.37EDT",
 			"rdt:location": ""
 		},
 		"rdt:d9": {
@@ -262,7 +262,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-08-02T15.32.36EDT",
+			"rdt:timestamp": "2019-08-05T11.37.37EDT",
 			"rdt:location": ""
 		},
 		"rdt:d10": {
@@ -281,10 +281,10 @@
 			"rdt:value": "data/11-df.csv",
 			"rdt:valType": "{\"container\":\"data_frame\", \"dimension\":[10,4], \"type\":[\"integer\",\"integer\",\"integer\",\"integer\"]}",
 			"rdt:type": "Snapshot",
-			"rdt:scope": "0x7f804f07d5e8",
+			"rdt:scope": "0x7fa298f20038",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-08-02T15.32.36EDT",
+			"rdt:timestamp": "2019-08-05T11.37.37EDT",
 			"rdt:location": ""
 		},
 		"rdt:d12": {
@@ -316,8 +316,8 @@
 			"rdt:type": "File",
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
-			"rdt:hash": "823a2d35c96440af05673c336e4afcb8",
-			"rdt:timestamp": "2019-08-02T15.32.36EDT",
+			"rdt:hash": "38186271bd2ff62154d3a2bdc21b0aca",
+			"rdt:timestamp": "2019-08-05T11.37.37EDT",
 			"rdt:location": "[DIR]/rdt/Rplots.pdf"
 		},
 
@@ -329,12 +329,12 @@
 			"rdt:langVersion": "R version 3.6.0 (2019-04-26)",
 			"rdt:script": "[DIR]/DollarOperator.R",
 			"rdt:scriptTimeStamp": "2019-07-31T11.19.48EDT",
-			"rdt:totalElapsedTime": "1.194",
+			"rdt:totalElapsedTime": "1.201",
 			"rdt:sourcedScripts": "",
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:workingDirectory": "[DIR]/rdt",
 			"rdt:provDirectory": "[DIR]/rdt/prov_DollarOperator",
-			"rdt:provTimestamp": "2019-08-02T15.32.35EDT",
+			"rdt:provTimestamp": "2019-08-05T11.37.36EDT",
 			"rdt:hashAlgorithm": "md5"
 		},
 
@@ -544,30 +544,34 @@
 			"prov:activity": "rdt:p4"
 		},
 		"rdt:dp3": {
+			"prov:entity": "rdt:d3",
+			"prov:activity": "rdt:p4"
+		},
+		"rdt:dp4": {
 			"prov:entity": "rdt:d5",
 			"prov:activity": "rdt:p7"
 		},
-		"rdt:dp4": {
+		"rdt:dp5": {
 			"prov:entity": "rdt:d6",
 			"prov:activity": "rdt:p7"
 		},
-		"rdt:dp5": {
+		"rdt:dp6": {
 			"prov:entity": "rdt:d7",
 			"prov:activity": "rdt:p8"
 		},
-		"rdt:dp6": {
+		"rdt:dp7": {
 			"prov:entity": "rdt:d9",
 			"prov:activity": "rdt:p11"
 		},
-		"rdt:dp7": {
+		"rdt:dp8": {
 			"prov:entity": "rdt:d8",
 			"prov:activity": "rdt:p12"
 		},
-		"rdt:dp8": {
+		"rdt:dp9": {
 			"prov:entity": "rdt:d10",
 			"prov:activity": "rdt:p13"
 		},
-		"rdt:dp9": {
+		"rdt:dp10": {
 			"prov:entity": "rdt:d12",
 			"prov:activity": "rdt:p15"
 		},
