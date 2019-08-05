@@ -16,7 +16,7 @@
 		"rdt:p1": {
 			"rdt:name": "DataType.R",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": "0.863",
+			"rdt:elapsedTime": "0.833",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -26,7 +26,7 @@
 		"rdt:p2": {
 			"rdt:name": "x.number <- 10",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.082",
+			"rdt:elapsedTime": "0.075",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 5,
 			"rdt:startCol": 1,
@@ -36,7 +36,7 @@
 		"rdt:p3": {
 			"rdt:name": "x.string <- \"one two three\"",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.032",
+			"rdt:elapsedTime": "0.035",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 7,
 			"rdt:startCol": 1,
@@ -46,7 +46,7 @@
 		"rdt:p4": {
 			"rdt:name": "x.long.string <- \" Four score and seven years ago our father",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.006",
+			"rdt:elapsedTime": "0.005",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 9,
 			"rdt:startCol": 1,
@@ -56,7 +56,7 @@
 		"rdt:p5": {
 			"rdt:name": "x.logical <- TRUE",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.015",
+			"rdt:elapsedTime": "0.013",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 11,
 			"rdt:startCol": 1,
@@ -66,7 +66,7 @@
 		"rdt:p6": {
 			"rdt:name": "x.na <- NA",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.005",
+			"rdt:elapsedTime": "0.004",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 13,
 			"rdt:startCol": 1,
@@ -96,7 +96,7 @@
 		"rdt:p9": {
 			"rdt:name": "x.chr0 <- character(0)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.007",
+			"rdt:elapsedTime": "0.008",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 19,
 			"rdt:startCol": 1,
@@ -106,7 +106,7 @@
 		"rdt:p10": {
 			"rdt:name": "x.log0 <- logical(0)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.007",
+			"rdt:elapsedTime": "0.006",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 21,
 			"rdt:startCol": 1,
@@ -136,7 +136,7 @@
 		"rdt:p13": {
 			"rdt:name": "x.vector.number <- c(1,2,3)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.046",
+			"rdt:elapsedTime": "0.05",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 28,
 			"rdt:startCol": 1,
@@ -156,7 +156,7 @@
 		"rdt:p15": {
 			"rdt:name": "x.vector.logical <- c(TRUE, FALSE, TRUE)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.007",
+			"rdt:elapsedTime": "0.005",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 30,
 			"rdt:startCol": 1,
@@ -166,7 +166,7 @@
 		"rdt:p16": {
 			"rdt:name": "x.vector.posixct <- rep(x.posixct, 3)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.005",
+			"rdt:elapsedTime": "0.008",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 35,
 			"rdt:startCol": 1,
@@ -176,7 +176,7 @@
 		"rdt:p17": {
 			"rdt:name": "x.matrix <- matrix(data=c(1,2,3,4,5,6), nrow=3, ncol=2)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.016",
+			"rdt:elapsedTime": "0.013",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 38,
 			"rdt:startCol": 1,
@@ -186,7 +186,7 @@
 		"rdt:p18": {
 			"rdt:name": "x.longmatrix <- matrix(c(1:10),10,10)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.018",
+			"rdt:elapsedTime": "0.019",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 39,
 			"rdt:startCol": 1,
@@ -196,7 +196,7 @@
 		"rdt:p19": {
 			"rdt:name": "x.array <- array(data=c(1,2,3,4,5,6,7,8), dim=c(2,2,2))",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.086",
+			"rdt:elapsedTime": "0.083",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 40,
 			"rdt:startCol": 1,
@@ -226,7 +226,7 @@
 		"rdt:p22": {
 			"rdt:name": "x.list1 <- list(x.number, x.string, x.logical, x.na, x.null)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.019",
+			"rdt:elapsedTime": "0.018",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 47,
 			"rdt:startCol": 1,
@@ -236,7 +236,7 @@
 		"rdt:p23": {
 			"rdt:name": "x.list2 <- list(x.vector.number, x.vector.string, x.vector.l",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.012",
+			"rdt:elapsedTime": "0.01",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 48,
 			"rdt:startCol": 1,
@@ -246,7 +246,7 @@
 		"rdt:p24": {
 			"rdt:name": "x.list3 <- list(x.list1, x.list2)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.023",
+			"rdt:elapsedTime": "0.026",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 49,
 			"rdt:startCol": 1,
@@ -256,7 +256,7 @@
 		"rdt:p25": {
 			"rdt:name": "x.env <- new.env()",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.015",
+			"rdt:elapsedTime": "0.018",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 51,
 			"rdt:startCol": 1,
@@ -266,7 +266,7 @@
 		"rdt:p26": {
 			"rdt:name": "x.env$var1 <- 1",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.004",
+			"rdt:elapsedTime": "0.006",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 52,
 			"rdt:startCol": 1,
@@ -336,7 +336,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-08-01T16.40.16EDT",
+			"rdt:timestamp": "2019-08-02T15.19.00EDT",
 			"rdt:location": ""
 		},
 		"rdt:d4": {
@@ -424,7 +424,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-08-01T16.40.16EDT",
+			"rdt:timestamp": "2019-08-02T15.19.00EDT",
 			"rdt:location": ""
 		},
 		"rdt:d12": {
@@ -468,7 +468,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-08-01T16.40.16EDT",
+			"rdt:timestamp": "2019-08-02T15.19.00EDT",
 			"rdt:location": ""
 		},
 		"rdt:d16": {
@@ -479,7 +479,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-08-01T16.40.16EDT",
+			"rdt:timestamp": "2019-08-02T15.19.00EDT",
 			"rdt:location": ""
 		},
 		"rdt:d17": {
@@ -490,7 +490,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-08-01T16.40.16EDT",
+			"rdt:timestamp": "2019-08-02T15.19.00EDT",
 			"rdt:location": ""
 		},
 		"rdt:d18": {
@@ -501,7 +501,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-08-01T16.40.16EDT",
+			"rdt:timestamp": "2019-08-02T15.19.00EDT",
 			"rdt:location": ""
 		},
 		"rdt:d19": {
@@ -512,7 +512,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-08-01T16.40.16EDT",
+			"rdt:timestamp": "2019-08-02T15.19.00EDT",
 			"rdt:location": ""
 		},
 		"rdt:d20": {
@@ -523,7 +523,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-08-01T16.40.16EDT",
+			"rdt:timestamp": "2019-08-02T15.19.00EDT",
 			"rdt:location": ""
 		},
 		"rdt:d21": {
@@ -545,7 +545,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-08-01T16.40.16EDT",
+			"rdt:timestamp": "2019-08-02T15.19.00EDT",
 			"rdt:location": ""
 		},
 		"rdt:d23": {
@@ -556,7 +556,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-08-01T16.40.17EDT",
+			"rdt:timestamp": "2019-08-02T15.19.00EDT",
 			"rdt:location": ""
 		},
 		"rdt:d24": {
@@ -582,6 +582,17 @@
 			"rdt:location": ""
 		},
 		"rdt:d26": {
+			"rdt:name": "x.env",
+			"rdt:value": "Environment : \"var1\"",
+			"rdt:valType": "environment",
+			"rdt:type": "Data",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:hash": "",
+			"rdt:timestamp": "",
+			"rdt:location": ""
+		},
+		"rdt:d27": {
 			"rdt:name": "x.env$var2",
 			"rdt:value": "\"10\"\t\t\t\"one two three\" \"TRUE\"\t\t  NA\t\t\t ",
 			"rdt:valType": "{\"container\":\"list\", \"dimension\":[5]}",
@@ -592,15 +603,26 @@
 			"rdt:timestamp": "",
 			"rdt:location": ""
 		},
-		"rdt:d27": {
+		"rdt:d28": {
+			"rdt:name": "x.env",
+			"rdt:value": "Environment : \"var1\" \"var2\"",
+			"rdt:valType": "environment",
+			"rdt:type": "Data",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:hash": "",
+			"rdt:timestamp": "",
+			"rdt:location": ""
+		},
+		"rdt:d29": {
 			"rdt:name": "x.env2",
-			"rdt:value": "data/27-x.env2.txt",
+			"rdt:value": "data/29-x.env2.txt",
 			"rdt:valType": "environment",
 			"rdt:type": "Snapshot",
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-08-01T16.40.17EDT",
+			"rdt:timestamp": "2019-08-02T15.19.00EDT",
 			"rdt:location": ""
 		},
 
@@ -611,13 +633,13 @@
 			"rdt:language": "R",
 			"rdt:langVersion": "R version 3.6.0 (2019-04-26)",
 			"rdt:script": "[DIR]/DataType.R",
-			"rdt:scriptTimeStamp": "2019-08-01T16.36.24EDT",
-			"rdt:totalElapsedTime": "1.354",
+			"rdt:scriptTimeStamp": "2019-08-01T17.36.05EDT",
+			"rdt:totalElapsedTime": "1.321",
 			"rdt:sourcedScripts": "",
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:workingDirectory": "[DIR]/rdtLite",
 			"rdt:provDirectory": "[DIR]/rdtLite/prov_DataType",
-			"rdt:provTimestamp": "2019-08-01T16.40.15EDT",
+			"rdt:provTimestamp": "2019-08-02T15.18.59EDT",
 			"rdt:hashAlgorithm": "md5"
 		},
 
@@ -912,12 +934,20 @@
 			"prov:entity": "rdt:d25"
 		},
 		"rdt:pd26": {
-			"prov:activity": "rdt:p27",
+			"prov:activity": "rdt:p26",
 			"prov:entity": "rdt:d26"
 		},
 		"rdt:pd27": {
-			"prov:activity": "rdt:p28",
+			"prov:activity": "rdt:p27",
 			"prov:entity": "rdt:d27"
+		},
+		"rdt:pd28": {
+			"prov:activity": "rdt:p27",
+			"prov:entity": "rdt:d28"
+		},
+		"rdt:pd29": {
+			"prov:activity": "rdt:p28",
+			"prov:entity": "rdt:d29"
 		}
 	},
 
@@ -1003,7 +1033,7 @@
 			"prov:activity": "rdt:p26"
 		},
 		"rdt:dp21": {
-			"prov:entity": "rdt:d24",
+			"prov:entity": "rdt:d26",
 			"prov:activity": "rdt:p27"
 		},
 		"rdt:dp22": {
