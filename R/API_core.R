@@ -79,6 +79,7 @@
   
     # R script
     } else {
+      .ddg.set("ddg.markdown.output", NULL)
       .ddg.set("ddg.r.script.path",
           normalizePath(r.script.path, winslash = "/", mustWork = FALSE))
     }
@@ -87,7 +88,8 @@
   # completes execution and build the corresponding portions of the 
   # provenance graph.
   } else {
-
+    .ddg.set("ddg.markdown.output", NULL)
+    
     .ddg.trace.task <- function (task, result, success, printed) {  
       # Create the provenance for the new command
       .ddg.parse.commands(as.expression(task), environ = .GlobalEnv, 
@@ -265,6 +267,14 @@
         error = function (e) print(e))
   }
   
+  # If we ran an RMarkdown script, save a copy of the formatted output
+  rmarkdown.output <- .ddg.get("ddg.markdown.output")
+  if (! is.null (rmarkdown.output)) {
+    if (file.exists (rmarkdown.output)) {
+      .ddg.file.out (rmarkdown.output)
+    }
+  }
+  
   # Turn off the I/O tracing and console tracing.
   .ddg.stop.iotracing()
   if (.ddg.is.set ("ddg.taskCallBack.id")) {
@@ -313,6 +323,7 @@
       .ddg.quit(.ddg.save.debug())
     }
   )
+  
   
   invisible()
 }

@@ -424,8 +424,10 @@
   #generates R script file from markdown file
   r.file <- knitr::purl(r.script.path, documentation = 2L, quiet = TRUE)
   
-  # Generate the formatted output
-  rmarkdown::render(r.script.path, quiet=TRUE)
+  # Generate the formatted output.  Remember where it is so that it
+  # can be connected to the ddg.
+  markdown.output <- rmarkdown::render(r.script.path, quiet=TRUE)
+  .ddg.set("ddg.markdown.output", markdown.output)
   
   
   #moves file to ddg directory
