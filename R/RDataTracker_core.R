@@ -548,7 +548,7 @@
 #' @return nothing
 #' @noRd
 
-.ddg.create.data.set.edges <- function(vars.set, cmd, env) {
+.ddg.create.data.set.edges <- function(vars.set, cmd, env, captured.output = NULL) {
   #print(paste("In .ddg.create.data.set.edges.for.cmd: cmd = ", cmd@abbrev))
   vars.assigned <- cmd@vars.set
   
@@ -598,6 +598,13 @@
         }
       }
     }
+  }
+  
+  if (!is.null(captured.output) && length(captured.output) > 0) {
+    #cat(captured.output)
+    #print(paste("length(captured.output)",length(captured.output)))
+    .ddg.data.node("StandardOutput", "output", captured.output, "Standard output");
+    .ddg.proc2data(cmd@abbrev, "output", "Standard output")
   }
 }
 
@@ -1068,6 +1075,8 @@
 
       # If the command does not match one of the ignored patterns.
       if (!any(sapply(ignore.patterns, function(pattern){grepl(pattern, cmd@text)}))) {
+        # Set to NULL so it is bound even if we are in console mode.
+        captured.output <- NULL
 
         # If sourcing, we want to execute the command.
         if (run.commands) {
@@ -1128,11 +1137,11 @@
                   # are executing an if-statement
                   if (grepl("^ddg|^.ddg|^prov", annot) 
                     || .ddg.get.statement.type(annot) == "if") {
-                      returnWithVisible <- withVisible (eval(annot, environ, NULL))
+                      captured.output <- .ddg.capture.output (returnWithVisible <- withVisible (eval(annot, environ, NULL)))
                       .ddg.set ("ddg.error.node.created", FALSE)
                   }
                   else {
-                    returnWithVisible <- withVisible (eval(annot, environ, NULL))
+                    captured.output <- .ddg.capture.output (returnWithVisible <- withVisible (eval(annot, environ, NULL)))
                     #if (typeof(return.value) != "closure") {
                       #print (paste (".ddg.parse.commands: Done evaluating ", annot))
                       #print(paste(".ddg.parse.commands: setting ddg.last.R.value to", 
@@ -1295,8 +1304,7 @@
             print(paste(".ddg.parse.commands: Adding input data nodes for", 
                         cmd@abbrev))
           }
-
-          .ddg.create.data.set.edges(vars.set, cmd, d.environ)
+          .ddg.create.data.set.edges(vars.set, cmd, d.environ, captured.output)
 
           if (.ddg.debug.lib()) {
             print(paste(".ddg.parse.commands: Adding output data nodes for", 
@@ -1359,6 +1367,45 @@
   #if (typeof(return.value) != "closure") {
   #  print(paste(".ddg.parse.commands: returning ", return.value))
   #}
+}
+
+#' .ddg.capture.output is a simple re-write of R's capture.output
+#'  that allows us to capture the exception that occurs if the 
+#' connection is closed by the code whose output is being captured
+#' as is the case if that code includes a call to closeAllConnections.
+#' See capture.output for more details.
+#' @noRd 
+.ddg.capture.output <- function (...) 
+{
+  args <- substitute(list(...))[-1L]
+  type <- c("output", "message")
+  rval <- NULL
+  file <- textConnection("rval", "w", local = TRUE)
+  sink(file, type = type, split = TRUE)
+  on.exit({
+        sink(type = type, split = TRUE)
+        close(file)
+      })
+  pf <- parent.frame()
+  evalVis <- function(expr) withVisible(eval(expr, pf))
+  for (i in seq_along(args)) {
+    expr <- args[[i]]
+    tmp <- switch(mode(expr), expression = lapply(expr, evalVis), 
+        call = , name = list(evalVis(expr)), stop("bad argument"))
+    for (item in tmp) if (item$visible) 
+        print(item$value)
+  }
+  on.exit()
+  tryCatch(
+      {
+        sink(type = type, split = TRUE)
+        close(file)
+      },
+      warning = function (e) {}
+  )
+  if (is.null(rval)) 
+    invisible(NULL)
+  else rval
 }
 
 #' .ddg.echo prints the command to the screen

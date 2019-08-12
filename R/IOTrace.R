@@ -884,8 +884,8 @@
       || .ddg.inside.call.to (".ddg.snapshot") 
       || .ddg.inside.call.to(".ddg.save.annotated.script")) {
     #print ("Returning -- inside capture.ouput, parse or .ddg.snapshot")
-    return()
-  }
+      return()
+    }
   
   # Check that we are not inside any read or write functions.  If we are,
   # the appropriate nodes will be created by those functions
@@ -941,6 +941,7 @@
     file.close.functions <- .ddg.get ("ddg.file.close.functions.df")
     file.param.name <- 
       file.close.functions$param.names[file.close.functions$function.names == fname]
+    #print (paste (".ddg.trace.close: fname = ", fname))
     #print (paste (".ddg.trace.close: file.param.name = ", file.param.name))
   
     # Get the value of the connection parameter  
