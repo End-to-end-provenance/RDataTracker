@@ -72,7 +72,8 @@
 #' @noRd
 
 .ddg.is.data.type <- function(type) {
-  return(type %in% c("Data", "Device", "Snapshot", "File", "URL", "Exception"))
+  return(type %in% c("Data", "Device", "Snapshot", "File", "URL", "Exception", 
+          "StandardOutput", "StandardOutputSnapshot"))
 }
 
 #' .ddg.dnum returns the counter used to assign data node ids
@@ -307,7 +308,7 @@
 #' @param value the actual data value
 #' @param dname the name of the object we are getting the value of
 #' @noRd
-.ddg.get.node.val <- function (value, dname=NULL) {
+.ddg.get.node.val <- function (value, dname=NULL, dtype = "") {
   if (is.null (value)) {
     return ("NULL")
   }
@@ -316,7 +317,10 @@
   if (.ddg.snapshot.size() == 0) {
     
     # Get a string version of the value
-    if (is.data.frame (value)) {
+    if (dtype == "StandardOutput") {
+      print.value <- value
+    }
+    else if (is.data.frame (value)) {
       print.value <- utils::capture.output (print (value[1,]))
       if (length(print.value) > 1) {
         print.value <- paste ("Row", print.value[[2]])
@@ -373,7 +377,10 @@
   
   # Saving snapshots
   else {
-    if (is.list (value) && length(value) > 0) {
+    if (dtype == "StandardOutput") {
+      print.value <- value
+    }
+    else if (is.list (value) && length(value) > 0) {
       print.value <- paste (utils::capture.output (print (unlist (value))), collapse="")
       
       # Remove leading spaces
@@ -573,16 +580,21 @@
   
   val <- 
       if (dtype == "Exception") dvalue
-      else .ddg.get.node.val (dvalue, dname)
+      else .ddg.get.node.val (dvalue, dname, dtype)
   
   # .ddg.get.node.val returns NULL if we should store the value in a snapshot.
   # Otherwise, it returns a string representation of the value to store
   # in the node.
   if (is.null(val)) {
     snapfile <- .ddg.save.snapshot (dname, dvalue, 
-                                    dscope, from.env=from.env)
+                                    dscope, from.env=from.env, dtype)
     dtime <- .ddg.timestamp()
-    .ddg.record.data("Snapshot", dname, snapfile, dvalue, dscope, from.env=from.env, dtime)
+    if (dtype == "Data") {
+      .ddg.record.data("Snapshot", dname, snapfile, dvalue, dscope, from.env=from.env, dtime)
+    }
+    else {
+      .ddg.record.data("StandardOutputSnapshot", dname, snapfile, dvalue, dscope, from.env=from.env, dtime)
+    }
   }
   
   else {
@@ -652,7 +664,7 @@
 #' @return path and name of snapshot file, relative to the ddg directory
 #' @noRd
 
-.ddg.save.snapshot <- function (dname, data, dscope, from.env) {  
+.ddg.save.snapshot <- function (dname, data, dscope, from.env, dtype) {  
   
   # Determine what type of file to create.  We do this before checking
   # the size, because for functions, the type of the data will
@@ -727,7 +739,7 @@
       else paste(dname, "-PARTIAL", sep="")
   
   # Snapshot type
-  dtype <- "Snapshot"
+  # dtype <- "Snapshot"
   
   # Default file extensions.
   dfile <- paste(.ddg.dnum()+1, "-", snapname, ".", fext, sep="")
@@ -759,6 +771,9 @@
     }
     else if (is.environment(orig.data)) {
       write(paste0 ("Environment ", environmentName(orig.data), ":\n  ", paste (utils::capture.output(data), collapse="\n  ")), dpfile)
+    }
+    else if (dtype == "StandardOutput") {
+      writeLines(data, dpfile)
     }
     else {
       write(utils::capture.output(data), dpfile)
