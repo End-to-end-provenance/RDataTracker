@@ -72,7 +72,7 @@
 }
 
 #' .ddg.store.script.info records a new script in the sourced scripts table.
-#' @param sname the name of the script file, excluding the directory
+#' @param sname the name of the script file
 #' @return the unique id of the script
 #' @noRd
 
@@ -83,7 +83,8 @@
   if (snum == 1) {
     df <- data.frame(snum, sname, stime, stringsAsFactors=FALSE)
   } else {
-    df<- rbind(.ddg.sourced.scripts(), c(snum, basename(sname), stime))
+    df<- rbind(.ddg.sourced.scripts(), 
+               c(snum, normalizePath(sname, winslash = "/"), stime))
   }
   .ddg.set("ddg.sourced.scripts", df)
   
