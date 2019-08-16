@@ -112,6 +112,18 @@ prov.init <- function(prov.dir = NULL, overwrite = TRUE, annotate.inside.functio
   # Save hash algorithm
   .ddg.set("ddg.hash.algorithm", hash.algorithm)
   
+  # If this function was not called from prov.run,
+  # save arguments in a named list
+  if(!.ddg.is.set("ddg.run.args")) {
+    .ddg.set("ddg.run.args",
+             list(overwrite = overwrite,
+                  annotate.inside.functions = annotate.inside.functions,
+                  first.loop = first.loop,
+                  max.loops = max.loops,
+                  snapshot.size = snapshot.size,
+                  save.debug = save.debug))
+  }
+  
   # Initialize list of input & output file nodes
   .ddg.init.filenodes()
   
@@ -171,7 +183,15 @@ prov.init <- function(prov.dir = NULL, overwrite = TRUE, annotate.inside.functio
 #' @rdname prov.run
 
 prov.save <- function(save.debug = FALSE) {
-  .ddg.save (save.debug)
+  
+  # update the value of save.debug in ddg.run.args
+  if(.ddg.is.init()) {
+    args <- .ddg.get("ddg.run.args")
+    args$save.debug <- save.debug
+    .ddg.set("ddg.run.args", args)
+  }
+  
+  .ddg.save(save.debug)
 }
 
 #' prov.quit
@@ -185,7 +205,15 @@ prov.save <- function(save.debug = FALSE) {
 #' @rdname prov.run
 
 prov.quit <- function(save.debug = FALSE) {
-  .ddg.quit (save.debug)
+  
+  # update the value of save.debug in ddg.run.args
+  if(.ddg.is.init()) {
+    args <- .ddg.get("ddg.run.args")
+    args$save.debug <- save.debug
+    .ddg.set("ddg.run.args", args)
+  }
+  
+  .ddg.quit(save.debug)
 }
 
 #' prov.run
@@ -248,6 +276,16 @@ prov.run <- function(r.script.path, prov.dir = NULL, overwrite = TRUE, details =
   if (!file.exists(r.script.path)) {
     stop("R script file not found.")
   }
+
+  # Store arguments in a named list
+  .ddg.set("ddg.run.args",
+           list(overwrite = overwrite,
+                details = details,
+                annotate.inside.functions = annotate.inside.functions,
+                first.loop = first.loop,
+                max.loops = max.loops,
+                snapshot.size = snapshot.size,
+                save.debug = save.debug))
 
   # Store R script path
   .ddg.set("ddg.r.script.path", r.script.path)

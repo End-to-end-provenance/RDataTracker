@@ -45,7 +45,7 @@
 	}
 
 	# CONSTANTS
-	JSON.VERSION <- "2.2"
+	JSON.VERSION <- "2.3"
 
 	# tool name
 	tool.name <- .ddg.tool.name()
@@ -216,16 +216,20 @@
 
 .ddg.json.agent <- function( tool, json.version, label, prefix )
 {
-	# get node content
-	node <- data.frame( "tool.name" = tool ,
-						"tool.version" = toString(utils::packageVersion(tool)) ,
-						"json.version" = json.version ,
-						stringsAsFactors = FALSE )
-	names(node) <- mapply( paste , prefix , names(node) , sep='' , USE.NAMES=FALSE )
+	# GET CONTENT FOR NODE
+	node <- list("tool.name" = tool ,
+				 "tool.version" = toString(utils::packageVersion(tool)) ,
+				 "json.version" = json.version ,
+				 "args.names" = NA ,
+				 "args.values" = NA)
 	
-	# convert to json
-	prefix <- paste( prefix , label , sep='' )
-	json <- .ddg.json.dataframe( node, NA, prefix )
+	# run arguments: names and values
+	run.args <- .ddg.get("ddg.run.args")
+	node$args.names <- names(run.args)
+	node$args.values <- as.character(unname(run.args))
+	
+	# CONVERT TO JSON
+	json <- .ddg.json.list(node, "a1", prefix)
 	
 	# form agent node and return
 	return( .ddg.json.formNode("agent", json) )
@@ -364,34 +368,12 @@
 	fields$provTimestamp <- .ddg.get("ddg.start.time")
 	
 	# hash algorithm
-  if (.ddg.is.set ("ddg.hash.algorithm")) {
-    fields <- append (fields, list (hashAlgorithm = .ddg.get("ddg.hash.algorithm")))
-  }
+	if (.ddg.is.set ("ddg.hash.algorithm")) {
+		fields <- append (fields, list (hashAlgorithm = .ddg.get("ddg.hash.algorithm")))
+	}
 	
-	# add prefix to names of the list
-	names(fields) <- mapply( paste , prefix , names(fields) , sep='' , USE.NAMES = FALSE )
-	
-	
-	# TO JSON
-	# let the node be named
-	fields <- list(fields)
-	names(fields) <- paste( prefix , "environment" , sep = '' )
-	
-	# convert to json
-	json <- jsonlite::toJSON( fields , auto_unbox = TRUE )
-	json <- jsonlite::prettify( json , indent = 4 )
-	
-	# convert '    ' into tab
-	json <- gsub( '    ' , '\t', json )
-	
-	# remove top brace
-	json <- sub( '^\\{' , '' , json )
-	
-	# remove bottom brace
-	json <- sub( '\n}\n$' , '' , json )
-	
-	# indent by 1 level, return
-	return( gsub('\n', '\n\t', json) )
+	# CONVERT TO JSON
+	return( .ddg.json.list(fields, "environment", prefix) )
 }
 
 # .ddg.json.sourced.scripts return the names of other scripts that were sourced 
@@ -866,6 +848,39 @@
 	json <- sub( '^\\{' , '' , json )
 	json <- sub( '\n}\n$' , '' , json )
 	
+	return( json )
+}
+
+#' .ddg.json.list converts a list into a formatted json string
+#' @param list the list to be converted
+#' @param node.name the name of the node
+#' @param obj.prefix object prefix
+#' @return a formatted json string
+#' @noRd
+
+.ddg.json.list <- function( list, node.name, obj.prefix )
+{
+	names(list) <- mapply( paste , obj.prefix , names(list) , sep='' , USE.NAMES = FALSE )
+	
+	# name the node before converting
+	list <- list(list)
+	names(list) <- paste( obj.prefix, node.name, sep = '' )
+	
+	# convert to json
+	json <- jsonlite::toJSON( list , auto_unbox = TRUE )
+	json <- jsonlite::prettify( json , indent = 4 )
+	
+	# convert '    ' into tab
+	json <- gsub( '    ' , '\t', json )
+	
+	# remove top brace
+	json <- sub( '^\\{' , '' , json )
+	
+	# remove bottom brace
+	json <- sub( '\n}\n$' , '' , json )
+	
+	# indent by 1 level, return
+	json <- gsub('\n', '\n\t', json)
 	return( json )
 }
 

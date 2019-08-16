@@ -92,6 +92,15 @@ prov.init <- function(prov.dir = NULL, overwrite = TRUE, snapshot.size = 0,
   # Save hash algorithm
   .ddg.set("ddg.hash.algorithm", hash.algorithm)
   
+  # If this function was not called from prov.run,
+  # save arguments in a named list
+  if(!.ddg.is.set("ddg.run.args")) {
+    .ddg.set("ddg.run.args",
+             list(overwrite = overwrite,
+                  snapshot.size = snapshot.size,
+                  save.debug = save.debug))
+  }
+  
   # Initialize list of input & output file nodes
   .ddg.init.filenodes ()
 
@@ -112,6 +121,14 @@ prov.init <- function(prov.dir = NULL, overwrite = TRUE, snapshot.size = 0,
 #' @rdname prov.run
 
 prov.save <- function(save.debug = FALSE) {
+  
+  # update the value of save.debug in ddg.run.args
+  if(.ddg.is.init()) {
+    args <- .ddg.get("ddg.run.args")
+    args$save.debug <- save.debug
+    .ddg.set("ddg.run.args", args)
+  }
+
   .ddg.save (save.debug)
 }
 
@@ -126,6 +143,14 @@ prov.save <- function(save.debug = FALSE) {
 #' @rdname prov.run
 
 prov.quit <- function(save.debug = FALSE) {
+
+  # update the value of save.debug in ddg.run.args
+  if(.ddg.is.init()) {
+    args <- .ddg.get("ddg.run.args")
+    args$save.debug <- save.debug
+    .ddg.set("ddg.run.args", args)
+  }
+
   .ddg.quit (save.debug)
 }
  
@@ -188,6 +213,13 @@ prov.run <- function(r.script.path, prov.dir = NULL, overwrite = TRUE, details =
   if (!file.exists(r.script.path)) {
     stop("R script file not found.")
   }
+
+  # Store arguments in a named list
+  .ddg.set("ddg.run.args",
+           list(overwrite = overwrite,
+                details = details,
+                snapshot.size = snapshot.size,
+                save.debug = save.debug))
 
   # Store R script path
   .ddg.set("ddg.r.script.path", r.script.path)
