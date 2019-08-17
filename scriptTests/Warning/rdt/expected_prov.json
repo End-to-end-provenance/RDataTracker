@@ -8,7 +8,25 @@
 		"rdt:a1": {
 			"rdt:tool.name": "rdt",
 			"rdt:tool.version": "3.1.1",
-			"rdt:json.version": "2.2"
+			"rdt:json.version": "2.3",
+			"rdt:args.names": [
+				"overwrite",
+				"details",
+				"annotate.inside.functions",
+				"first.loop",
+				"max.loops",
+				"snapshot.size",
+				"save.debug"
+			],
+			"rdt:args.values": [
+				"TRUE",
+				"TRUE",
+				"TRUE",
+				"1",
+				"1",
+				"10",
+				"FALSE"
+			]
 		}
 	},
 
@@ -16,7 +34,7 @@
 		"rdt:p1": {
 			"rdt:name": "Warning.R",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": "0.818",
+			"rdt:elapsedTime": "0.81",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -26,7 +44,7 @@
 		"rdt:p2": {
 			"rdt:name": "a <- 1",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.061",
+			"rdt:elapsedTime": "0.11",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 1,
 			"rdt:startCol": 1,
@@ -36,7 +54,7 @@
 		"rdt:p3": {
 			"rdt:name": "warning(\"foo\", call.=FALSE)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.009",
+			"rdt:elapsedTime": "0.12",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 2,
 			"rdt:startCol": 1,
@@ -46,7 +64,7 @@
 		"rdt:p4": {
 			"rdt:name": "b <- 2",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.003",
+			"rdt:elapsedTime": "0.06",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 3,
 			"rdt:startCol": 1,
@@ -56,7 +74,7 @@
 		"rdt:p5": {
 			"rdt:name": "Warning.R",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": "0.007",
+			"rdt:elapsedTime": "0.01",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -103,17 +121,17 @@
 		"rdt:environment": {
 			"rdt:name": "environment",
 			"rdt:architecture": "x86_64",
-			"rdt:operatingSystem": "darwin15.6.0",
+			"rdt:operatingSystem": "mingw32",
 			"rdt:language": "R",
 			"rdt:langVersion": "R version 3.6.0 (2019-04-26)",
 			"rdt:script": "[DIR]/Warning.R",
-			"rdt:scriptTimeStamp": "2019-01-10T13.56.36EST",
-			"rdt:totalElapsedTime": "0.898",
+			"rdt:scriptTimeStamp": "2019-08-15T18.21.19EDT",
+			"rdt:totalElapsedTime": "1.11",
 			"rdt:sourcedScripts": "",
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:workingDirectory": "[DIR]/rdt",
 			"rdt:provDirectory": "[DIR]/rdt/prov_Warning",
-			"rdt:provTimestamp": "2019-07-19T13.05.29EDT",
+			"rdt:provTimestamp": "2019-08-16T20.17.36EDT",
 			"rdt:hashAlgorithm": "md5"
 		},
 

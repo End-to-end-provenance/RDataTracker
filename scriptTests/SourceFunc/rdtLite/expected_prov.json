@@ -8,7 +8,19 @@
 		"rdt:a1": {
 			"rdt:tool.name": "rdtLite",
 			"rdt:tool.version": "1.1.1",
-			"rdt:json.version": "2.2"
+			"rdt:json.version": "2.3",
+			"rdt:args.names": [
+				"overwrite",
+				"details",
+				"snapshot.size",
+				"save.debug"
+			],
+			"rdt:args.values": [
+				"TRUE",
+				"TRUE",
+				"10",
+				"FALSE"
+			]
 		}
 	},
 
@@ -16,7 +28,7 @@
 		"rdt:p1": {
 			"rdt:name": "SourceFunc.R",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": "0.74",
+			"rdt:elapsedTime": "0.84",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -26,7 +38,7 @@
 		"rdt:p2": {
 			"rdt:name": "fun <- function(a,b){\n  return(a+b)\n}",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.09",
+			"rdt:elapsedTime": "0.11",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 3,
 			"rdt:startCol": 1,
@@ -56,7 +68,7 @@
 		"rdt:p5": {
 			"rdt:name": "z <- fun(x,y)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.08",
+			"rdt:elapsedTime": "0.06",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 9,
 			"rdt:startCol": 1,
@@ -66,7 +78,7 @@
 		"rdt:p6": {
 			"rdt:name": "source(\"../source1.r\")",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.16",
+			"rdt:elapsedTime": "0.17",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 12,
 			"rdt:startCol": 1,
@@ -76,7 +88,7 @@
 		"rdt:p7": {
 			"rdt:name": "v <- fun(w,z)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.07",
+			"rdt:elapsedTime": "0.08",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 15,
 			"rdt:startCol": 1,
@@ -86,7 +98,7 @@
 		"rdt:p8": {
 			"rdt:name": "source(\"../source3.r\")",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.09",
+			"rdt:elapsedTime": "0.08",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 18,
 			"rdt:startCol": 1,
@@ -96,7 +108,7 @@
 		"rdt:p9": {
 			"rdt:name": "source(\"../source4.r\")",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.09",
+			"rdt:elapsedTime": "0.08",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 21,
 			"rdt:startCol": 1,
@@ -106,7 +118,7 @@
 		"rdt:p10": {
 			"rdt:name": "m <- 10",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.08",
+			"rdt:elapsedTime": "0.06",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 28,
 			"rdt:startCol": 1,
@@ -116,7 +128,7 @@
 		"rdt:p11": {
 			"rdt:name": "f(m)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.06",
+			"rdt:elapsedTime": "0.08",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 29,
 			"rdt:startCol": 1,
@@ -154,7 +166,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-08-14T16.23.43EDT",
+			"rdt:timestamp": "2019-08-16T20.16.08EDT",
 			"rdt:location": ""
 		},
 		"rdt:d2": {
@@ -220,8 +232,8 @@
 			"rdt:language": "R",
 			"rdt:langVersion": "R version 3.6.0 (2019-04-26)",
 			"rdt:script": "[DIR]/SourceFunc.R",
-			"rdt:scriptTimeStamp": "2019-08-14T15.59.24EDT",
-			"rdt:totalElapsedTime": "1.73",
+			"rdt:scriptTimeStamp": "2019-08-15T18.21.19EDT",
+			"rdt:totalElapsedTime": "1.83",
 			"rdt:sourcedScripts": [
 				"[DIR]/source1.r",
 				"[DIR]/source2.r",
@@ -229,14 +241,14 @@
 				"[DIR]/source4.r"
 			],
 			"rdt:sourcedScriptTimeStamps": [
-				"2019-08-14T15.19.57EDT",
-				"2019-08-14T15.19.57EDT",
-				"2019-08-14T15.19.57EDT",
-				"2019-08-14T15.19.57EDT"
+				"2019-08-15T18.21.19EDT",
+				"2019-08-15T18.21.19EDT",
+				"2019-08-15T18.21.19EDT",
+				"2019-08-15T18.21.19EDT"
 			],
 			"rdt:workingDirectory": "[DIR]/rdtLite",
 			"rdt:provDirectory": "[DIR]/rdtLite/prov_SourceFunc",
-			"rdt:provTimestamp": "2019-08-14T16.23.42EDT",
+			"rdt:provTimestamp": "2019-08-16T20.16.07EDT",
 			"rdt:hashAlgorithm": "md5"
 		},
 
