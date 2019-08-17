@@ -8,7 +8,19 @@
 		"rdt:a1": {
 			"rdt:tool.name": "rdtLite",
 			"rdt:tool.version": "1.1.1",
-			"rdt:json.version": "2.2"
+			"rdt:json.version": "2.3",
+			"rdt:args.names": [
+				"overwrite",
+				"details",
+				"snapshot.size",
+				"save.debug"
+			],
+			"rdt:args.values": [
+				"TRUE",
+				"TRUE",
+				"10",
+				"FALSE"
+			]
 		}
 	},
 
@@ -16,7 +28,7 @@
 		"rdt:p1": {
 			"rdt:name": "Plot2.R",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": "0.759",
+			"rdt:elapsedTime": "0.81",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -26,7 +38,7 @@
 		"rdt:p2": {
 			"rdt:name": "f1 <- function() {\n  nums <- c(1, 3, 6, 4, 9)\n  pdf(\"nums.pd",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.044",
+			"rdt:elapsedTime": "0.09",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 3,
 			"rdt:startCol": 1,
@@ -36,7 +48,7 @@
 		"rdt:p3": {
 			"rdt:name": "f1()",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.059",
+			"rdt:elapsedTime": "0.14",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 10,
 			"rdt:startCol": 1,
@@ -46,7 +58,7 @@
 		"rdt:p4": {
 			"rdt:name": "Plot2.R",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": "0.01",
+			"rdt:elapsedTime": "0.02",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -64,7 +76,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-07-18T16.21.12EDT",
+			"rdt:timestamp": "2019-08-16T20.06.30EDT",
 			"rdt:location": ""
 		},
 		"rdt:d2": {
@@ -82,17 +94,17 @@
 		"rdt:environment": {
 			"rdt:name": "environment",
 			"rdt:architecture": "x86_64",
-			"rdt:operatingSystem": "darwin15.6.0",
+			"rdt:operatingSystem": "mingw32",
 			"rdt:language": "R",
 			"rdt:langVersion": "R version 3.6.0 (2019-04-26)",
 			"rdt:script": "[DIR]/Plot2.R",
-			"rdt:scriptTimeStamp": "2019-01-10T13.56.36EST",
-			"rdt:totalElapsedTime": "0.872",
+			"rdt:scriptTimeStamp": "2019-08-15T18.21.19EDT",
+			"rdt:totalElapsedTime": "1.06",
 			"rdt:sourcedScripts": "",
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:workingDirectory": "[DIR]/rdtLite",
 			"rdt:provDirectory": "[DIR]/rdtLite/prov_Plot2",
-			"rdt:provTimestamp": "2019-07-18T16.21.11EDT",
+			"rdt:provTimestamp": "2019-08-16T20.06.29EDT",
 			"rdt:hashAlgorithm": "md5"
 		},
 

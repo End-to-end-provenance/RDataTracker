@@ -8,7 +8,19 @@
 		"rdt:a1": {
 			"rdt:tool.name": "rdtLite",
 			"rdt:tool.version": "1.1.1",
-			"rdt:json.version": "2.2"
+			"rdt:json.version": "2.3",
+			"rdt:args.names": [
+				"overwrite",
+				"details",
+				"snapshot.size",
+				"save.debug"
+			],
+			"rdt:args.values": [
+				"TRUE",
+				"TRUE",
+				"10",
+				"FALSE"
+			]
 		}
 	},
 
@@ -16,7 +28,7 @@
 		"rdt:p1": {
 			"rdt:name": "DataFunction.R",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": "0.871",
+			"rdt:elapsedTime": "0.8",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -26,7 +38,7 @@
 		"rdt:p2": {
 			"rdt:name": "data (mtcars)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.063",
+			"rdt:elapsedTime": "0.1",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 2,
 			"rdt:startCol": 1,
@@ -36,7 +48,7 @@
 		"rdt:p3": {
 			"rdt:name": "cars.df <- mtcars",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.048",
+			"rdt:elapsedTime": "0.12",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 3,
 			"rdt:startCol": 1,
@@ -46,7 +58,7 @@
 		"rdt:p4": {
 			"rdt:name": "data(diamonds, AirPassengers)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.199",
+			"rdt:elapsedTime": "0.23",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 6,
 			"rdt:startCol": 1,
@@ -56,7 +68,7 @@
 		"rdt:p5": {
 			"rdt:name": "diamonds.df <- diamonds",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "6.395",
+			"rdt:elapsedTime": "3.68",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 7,
 			"rdt:startCol": 1,
@@ -66,7 +78,7 @@
 		"rdt:p6": {
 			"rdt:name": "airPassengers.df <- AirPassengers",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "6.357",
+			"rdt:elapsedTime": "3.03",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 8,
 			"rdt:startCol": 1,
@@ -76,7 +88,7 @@
 		"rdt:p7": {
 			"rdt:name": "data()",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.021",
+			"rdt:elapsedTime": "0.11",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 11,
 			"rdt:startCol": 1,
@@ -86,7 +98,7 @@
 		"rdt:p8": {
 			"rdt:name": "f2 <- function() {\n  data(pets)\n  pets.df <- pets\n}",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.007",
+			"rdt:elapsedTime": "0.07",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 14,
 			"rdt:startCol": 1,
@@ -96,7 +108,7 @@
 		"rdt:p9": {
 			"rdt:name": "f2()",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.195",
+			"rdt:elapsedTime": "0.25",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 18,
 			"rdt:startCol": 1,
@@ -106,7 +118,7 @@
 		"rdt:p10": {
 			"rdt:name": "DataFunction.R",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": "0.01",
+			"rdt:elapsedTime": "0.03",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -123,9 +135,9 @@
 			"rdt:type": "File",
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
-			"rdt:hash": "04c7cdf249b34249e9c792b6d7e04e35",
-			"rdt:timestamp": "2019-07-24T14.07.14EDT",
-			"rdt:location": "/Library/Frameworks/R.framework/Versions/3.6/Resources/library/ggplot2/data/Rdata.rds"
+			"rdt:hash": "e5ae11f1cd325fc84e233ee135b142a7",
+			"rdt:timestamp": "2019-08-16T19.48.25EDT",
+			"rdt:location": "C:/Users/fong22e/Documents/Libraries/R/win-library/ggplot2/data/Rdata.rds"
 		},
 		"rdt:d2": {
 			"rdt:name": "Rdata.rds",
@@ -134,9 +146,9 @@
 			"rdt:type": "File",
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
-			"rdt:hash": "92ed1f49a5075408be2336c7cee7381f",
-			"rdt:timestamp": "2019-07-24T14.07.14EDT",
-			"rdt:location": "/Library/Frameworks/R.framework/Versions/3.6/Resources/library/datasets/data/Rdata.rds"
+			"rdt:hash": "b47eb345b7aa137efec4516dd8a328be",
+			"rdt:timestamp": "2019-08-16T19.48.25EDT",
+			"rdt:location": "C:/Program Files/R/R-3.6.0/library/datasets/data/Rdata.rds"
 		},
 		"rdt:d3": {
 			"rdt:name": "mtcars",
@@ -146,7 +158,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-07-24T14.07.14EDT",
+			"rdt:timestamp": "2019-08-16T19.48.25EDT",
 			"rdt:location": ""
 		},
 		"rdt:d4": {
@@ -157,7 +169,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-07-24T14.07.14EDT",
+			"rdt:timestamp": "2019-08-16T19.48.25EDT",
 			"rdt:location": ""
 		},
 		"rdt:d5": {
@@ -167,9 +179,9 @@
 			"rdt:type": "File",
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
-			"rdt:hash": "04c7cdf249b34249e9c792b6d7e04e35",
-			"rdt:timestamp": "2019-07-24T14.07.14EDT",
-			"rdt:location": "/Library/Frameworks/R.framework/Versions/3.6/Resources/library/ggplot2/data/Rdata.rds"
+			"rdt:hash": "e5ae11f1cd325fc84e233ee135b142a7",
+			"rdt:timestamp": "2019-08-16T19.48.25EDT",
+			"rdt:location": "C:/Users/fong22e/Documents/Libraries/R/win-library/ggplot2/data/Rdata.rds"
 		},
 		"rdt:d6": {
 			"rdt:name": "Rdata.rds",
@@ -178,9 +190,9 @@
 			"rdt:type": "File",
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
-			"rdt:hash": "92ed1f49a5075408be2336c7cee7381f",
-			"rdt:timestamp": "2019-07-24T14.07.14EDT",
-			"rdt:location": "/Library/Frameworks/R.framework/Versions/3.6/Resources/library/datasets/data/Rdata.rds"
+			"rdt:hash": "b47eb345b7aa137efec4516dd8a328be",
+			"rdt:timestamp": "2019-08-16T19.48.25EDT",
+			"rdt:location": "C:/Program Files/R/R-3.6.0/library/datasets/data/Rdata.rds"
 		},
 		"rdt:d7": {
 			"rdt:name": "diamonds",
@@ -190,7 +202,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-07-24T14.07.20EDT",
+			"rdt:timestamp": "2019-08-16T19.48.29EDT",
 			"rdt:location": ""
 		},
 		"rdt:d8": {
@@ -201,7 +213,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-07-24T14.07.20EDT",
+			"rdt:timestamp": "2019-08-16T19.48.29EDT",
 			"rdt:location": ""
 		},
 		"rdt:d9": {
@@ -212,7 +224,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-07-24T14.07.27EDT",
+			"rdt:timestamp": "2019-08-16T19.48.32EDT",
 			"rdt:location": ""
 		},
 		"rdt:d10": {
@@ -223,7 +235,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-07-24T14.07.27EDT",
+			"rdt:timestamp": "2019-08-16T19.48.32EDT",
 			"rdt:location": ""
 		},
 		"rdt:d11": {
@@ -233,9 +245,9 @@
 			"rdt:type": "File",
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
-			"rdt:hash": "21dfbacc7e16a78112071586d0c6d2e3",
-			"rdt:timestamp": "2019-07-24T14.07.27EDT",
-			"rdt:location": "/Library/Frameworks/R.framework/Versions/3.6/Resources/library/ggplot2/Meta/data.rds"
+			"rdt:hash": "b530ebe0d3a05ba841f32471b1af587d",
+			"rdt:timestamp": "2019-08-16T19.48.32EDT",
+			"rdt:location": "C:/Users/fong22e/Documents/Libraries/R/win-library/ggplot2/Meta/data.rds"
 		},
 		"rdt:d12": {
 			"rdt:name": "data.rds",
@@ -244,9 +256,9 @@
 			"rdt:type": "File",
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
-			"rdt:hash": "9c276cc776340ccfe8960d9ae1c6ba6f",
-			"rdt:timestamp": "2019-07-24T14.07.27EDT",
-			"rdt:location": "/Library/Frameworks/R.framework/Versions/3.6/Resources/library/datasets/Meta/data.rds"
+			"rdt:hash": "12ef8a0aa77a40e3188465761d316954",
+			"rdt:timestamp": "2019-08-16T19.48.32EDT",
+			"rdt:location": "C:/Program Files/R/R-3.6.0/library/datasets/Meta/data.rds"
 		},
 		"rdt:d13": {
 			"rdt:name": "f2",
@@ -256,7 +268,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-07-24T14.07.27EDT",
+			"rdt:timestamp": "2019-08-16T19.48.32EDT",
 			"rdt:location": ""
 		},
 		"rdt:d14": {
@@ -266,9 +278,9 @@
 			"rdt:type": "File",
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
-			"rdt:hash": "04c7cdf249b34249e9c792b6d7e04e35",
-			"rdt:timestamp": "2019-07-24T14.07.27EDT",
-			"rdt:location": "/Library/Frameworks/R.framework/Versions/3.6/Resources/library/ggplot2/data/Rdata.rds"
+			"rdt:hash": "e5ae11f1cd325fc84e233ee135b142a7",
+			"rdt:timestamp": "2019-08-16T19.48.32EDT",
+			"rdt:location": "C:/Users/fong22e/Documents/Libraries/R/win-library/ggplot2/data/Rdata.rds"
 		},
 		"rdt:d15": {
 			"rdt:name": "Rdata.rds",
@@ -277,9 +289,9 @@
 			"rdt:type": "File",
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
-			"rdt:hash": "92ed1f49a5075408be2336c7cee7381f",
-			"rdt:timestamp": "2019-07-24T14.07.27EDT",
-			"rdt:location": "/Library/Frameworks/R.framework/Versions/3.6/Resources/library/datasets/data/Rdata.rds"
+			"rdt:hash": "b47eb345b7aa137efec4516dd8a328be",
+			"rdt:timestamp": "2019-08-16T19.48.32EDT",
+			"rdt:location": "C:/Program Files/R/R-3.6.0/library/datasets/data/Rdata.rds"
 		},
 		"rdt:d16": {
 			"rdt:name": "pets.csv",
@@ -289,7 +301,7 @@
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
 			"rdt:hash": "cac41b58a0969b386219a4be4362ec92",
-			"rdt:timestamp": "2019-07-24T14.07.27EDT",
+			"rdt:timestamp": "2019-08-16T19.48.32EDT",
 			"rdt:location": "[DIR]/rdtLite/data/pets.csv"
 		},
 		"rdt:d17": {
@@ -307,17 +319,17 @@
 		"rdt:environment": {
 			"rdt:name": "environment",
 			"rdt:architecture": "x86_64",
-			"rdt:operatingSystem": "darwin15.6.0",
+			"rdt:operatingSystem": "mingw32",
 			"rdt:language": "R",
 			"rdt:langVersion": "R version 3.6.0 (2019-04-26)",
 			"rdt:script": "[DIR]/DataFunction.R",
-			"rdt:scriptTimeStamp": "2019-07-24T14.07.03EDT",
-			"rdt:totalElapsedTime": "14.166",
+			"rdt:scriptTimeStamp": "2019-08-15T18.21.18EDT",
+			"rdt:totalElapsedTime": "8.42",
 			"rdt:sourcedScripts": "",
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:workingDirectory": "[DIR]/rdtLite",
 			"rdt:provDirectory": "[DIR]/rdtLite/prov_DataFunction",
-			"rdt:provTimestamp": "2019-07-24T14.07.13EDT",
+			"rdt:provTimestamp": "2019-08-16T19.48.24EDT",
 			"rdt:hashAlgorithm": "md5"
 		},
 

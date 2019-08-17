@@ -8,7 +8,25 @@
 		"rdt:a1": {
 			"rdt:tool.name": "rdt",
 			"rdt:tool.version": "3.1.1",
-			"rdt:json.version": "2.2"
+			"rdt:json.version": "2.3",
+			"rdt:args.names": [
+				"overwrite",
+				"details",
+				"annotate.inside.functions",
+				"first.loop",
+				"max.loops",
+				"snapshot.size",
+				"save.debug"
+			],
+			"rdt:args.values": [
+				"TRUE",
+				"FALSE",
+				"TRUE",
+				"1",
+				"1",
+				"10",
+				"FALSE"
+			]
 		}
 	},
 
@@ -16,7 +34,7 @@
 		"rdt:p1": {
 			"rdt:name": "NoDetails.R",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.785",
+			"rdt:elapsedTime": "0.8",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -33,9 +51,9 @@
 			"rdt:type": "File",
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
-			"rdt:hash": "04c7cdf249b34249e9c792b6d7e04e35",
-			"rdt:timestamp": "2019-07-24T11.57.59EDT",
-			"rdt:location": "/Library/Frameworks/R.framework/Versions/3.6/Resources/library/ggplot2/data/Rdata.rds"
+			"rdt:hash": "e5ae11f1cd325fc84e233ee135b142a7",
+			"rdt:timestamp": "2019-08-16T20.03.15EDT",
+			"rdt:location": "C:/Users/fong22e/Documents/Libraries/R/win-library/ggplot2/data/Rdata.rds"
 		},
 		"rdt:d2": {
 			"rdt:name": "Rdata.rds",
@@ -44,9 +62,9 @@
 			"rdt:type": "File",
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
-			"rdt:hash": "92ed1f49a5075408be2336c7cee7381f",
-			"rdt:timestamp": "2019-07-24T11.57.59EDT",
-			"rdt:location": "/Library/Frameworks/R.framework/Versions/3.6/Resources/library/datasets/data/Rdata.rds"
+			"rdt:hash": "b47eb345b7aa137efec4516dd8a328be",
+			"rdt:timestamp": "2019-08-16T20.03.15EDT",
+			"rdt:location": "C:/Program Files/R/R-3.6.0/library/datasets/data/Rdata.rds"
 		},
 		"rdt:d3": {
 			"rdt:name": "mtcars",
@@ -56,7 +74,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-07-24T11.57.59EDT",
+			"rdt:timestamp": "2019-08-16T20.03.15EDT",
 			"rdt:location": ""
 		},
 		"rdt:d4": {
@@ -66,8 +84,8 @@
 			"rdt:type": "File",
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
-			"rdt:hash": "f45387dcc50128bff76881d6bc38586c",
-			"rdt:timestamp": "2019-07-24T11.58.00EDT",
+			"rdt:hash": "2d33026155031513e0b83d08287a7845",
+			"rdt:timestamp": "2019-08-16T20.03.15EDT",
 			"rdt:location": "[DIR]/rdt/plot.pdf"
 		},
 		"rdt:d5": {
@@ -85,17 +103,17 @@
 		"rdt:environment": {
 			"rdt:name": "environment",
 			"rdt:architecture": "x86_64",
-			"rdt:operatingSystem": "darwin15.6.0",
+			"rdt:operatingSystem": "mingw32",
 			"rdt:language": "R",
 			"rdt:langVersion": "R version 3.6.0 (2019-04-26)",
 			"rdt:script": "[DIR]/NoDetails.R",
-			"rdt:scriptTimeStamp": "2019-06-03T11.38.19EDT",
-			"rdt:totalElapsedTime": "0.785",
+			"rdt:scriptTimeStamp": "2019-08-15T18.21.18EDT",
+			"rdt:totalElapsedTime": "0.8",
 			"rdt:sourcedScripts": "",
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:workingDirectory": "[DIR]/rdt",
 			"rdt:provDirectory": "[DIR]/rdt/prov_NoDetails",
-			"rdt:provTimestamp": "2019-07-24T11.57.59EDT",
+			"rdt:provTimestamp": "2019-08-16T20.03.14EDT",
 			"rdt:hashAlgorithm": "md5"
 		},
 

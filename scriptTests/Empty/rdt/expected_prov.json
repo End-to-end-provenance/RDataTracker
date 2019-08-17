@@ -7,8 +7,26 @@
 	"agent" : {
 		"rdt:a1": {
 			"rdt:tool.name": "rdt",
-			"rdt:tool.version": "3.1.0",
-			"rdt:json.version": "2.2"
+			"rdt:tool.version": "3.1.1",
+			"rdt:json.version": "2.3",
+			"rdt:args.names": [
+				"overwrite",
+				"details",
+				"annotate.inside.functions",
+				"first.loop",
+				"max.loops",
+				"snapshot.size",
+				"save.debug"
+			],
+			"rdt:args.values": [
+				"TRUE",
+				"TRUE",
+				"TRUE",
+				"1",
+				"1",
+				"10",
+				"FALSE"
+			]
 		}
 	},
 
@@ -20,13 +38,13 @@
 			"rdt:language": "R",
 			"rdt:langVersion": "R version 3.6.0 (2019-04-26)",
 			"rdt:script": "[DIR]/Empty.R",
-			"rdt:scriptTimeStamp": "2019-06-07T10.11.11EDT",
+			"rdt:scriptTimeStamp": "2019-08-15T18.21.18EDT",
 			"rdt:totalElapsedTime": "0.0",
 			"rdt:sourcedScripts": "",
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:workingDirectory": "[DIR]/rdt",
 			"rdt:provDirectory": "[DIR]/rdt/prov_Empty",
-			"rdt:provTimestamp": "2019-06-07T10.24.29EDT",
+			"rdt:provTimestamp": "2019-08-16T19.53.39EDT",
 			"rdt:hashAlgorithm": "md5"
 		},
 
@@ -80,7 +98,7 @@
 		},
 		"rdt:l7": {
 			"name": "rdt",
-			"version": "3.1.0",
+			"version": "3.1.1",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"

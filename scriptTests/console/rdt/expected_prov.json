@@ -7,8 +7,24 @@
 	"agent" : {
 		"rdt:a1": {
 			"rdt:tool.name": "rdt",
-			"rdt:tool.version": "3.1.0",
-			"rdt:json.version": "2.2"
+			"rdt:tool.version": "3.1.1",
+			"rdt:json.version": "2.3",
+			"rdt:args.names": [
+				"overwrite",
+				"annotate.inside.functions",
+				"first.loop",
+				"max.loops",
+				"snapshot.size",
+				"save.debug"
+			],
+			"rdt:args.values": [
+				"TRUE",
+				"FALSE",
+				"1",
+				"0",
+				"0",
+				"FALSE"
+			]
 		}
 	},
 
@@ -16,7 +32,7 @@
 		"rdt:p1": {
 			"rdt:name": "Console",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": "0.71",
+			"rdt:elapsedTime": "0.9",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -46,7 +62,7 @@
 		"rdt:p4": {
 			"rdt:name": "a <- 5",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.0",
+			"rdt:elapsedTime": "0.02",
 			"rdt:scriptNum": -1,
 			"rdt:startLine": -1,
 			"rdt:startCol": -1,
@@ -76,7 +92,7 @@
 		"rdt:p7": {
 			"rdt:name": "if (a == 1) {\tb = 10} else if (a == 5) {\td = 50}",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.46",
+			"rdt:elapsedTime": "0.62",
 			"rdt:scriptNum": -1,
 			"rdt:startLine": -1,
 			"rdt:startCol": -1,
@@ -106,7 +122,7 @@
 		"rdt:p10": {
 			"rdt:name": "f <- function() {\treturn(1)}",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.39",
+			"rdt:elapsedTime": "0.52",
 			"rdt:scriptNum": -1,
 			"rdt:startLine": -1,
 			"rdt:startCol": -1,
@@ -116,7 +132,7 @@
 		"rdt:p11": {
 			"rdt:name": "x <- f()",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.0",
+			"rdt:elapsedTime": "0.02",
 			"rdt:scriptNum": -1,
 			"rdt:startLine": -1,
 			"rdt:startCol": -1,
@@ -126,7 +142,7 @@
 		"rdt:p12": {
 			"rdt:name": "Console",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": "0.02",
+			"rdt:elapsedTime": "0.0",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -222,12 +238,12 @@
 			"rdt:langVersion": "R version 3.6.0 (2019-04-26)",
 			"rdt:script": "",
 			"rdt:scriptTimeStamp": "",
-			"rdt:totalElapsedTime": "1.63",
+			"rdt:totalElapsedTime": "2.13",
 			"rdt:sourcedScripts": "",
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:workingDirectory": "[DIR]/rdt",
 			"rdt:provDirectory": "[DIR]/rdt/prov_console",
-			"rdt:provTimestamp": "2019-05-30T16.30.26EDT",
+			"rdt:provTimestamp": "2019-08-16T19.43.49EDT",
 			"rdt:hashAlgorithm": "md5"
 		},
 
@@ -281,7 +297,7 @@
 		},
 		"rdt:l7": {
 			"name": "rdt",
-			"version": "3.1.0",
+			"version": "3.1.1",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
