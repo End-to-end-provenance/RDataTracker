@@ -75,6 +75,7 @@
 		DataType
 		ddgDeepNesting
 		DDGStatement
+		DollarOperator
 		Empty
 		FileNodes
 		FunctionAnnotation
@@ -110,6 +111,7 @@
 		FuncctionNonlocals
 		ControlConstruct
 		DataFunction
+		DollarOperator
 		Warning
 		Plot1
 		Plot2
@@ -1025,62 +1027,6 @@
 	</target>
 	
 	
-	<!-- DataFunctionTest -->
-	<target name="DataFunction">    <!-- helper -->
-		<condition property="travis" value="false">    <!-- default value -->
-			<not>
-				<isset property="travis"/>
-			</not>
-		</condition>
-		<condition property="tool" value="rdtLite">    <!-- default value -->
-			<not>
-				<isset property="tool"/>
-			</not>
-		</condition>
-		<antcall target="run-test">
-			<param name="test-name" value="DataFunction"/>
-			<param name="details" value="true"/>
-		</antcall>
-	</target>
-	
-	<target name="update-DataFunction">    <!-- helper -->
-		<condition property="tool" value="rdtLite">    <!-- default value -->
-			<not>
-				<isset property="tool"/>
-			</not>
-		</condition>
-		<antcall target="update-expected">
-			<param name="test-name" value="DataFunction"/>
-		</antcall>
-	</target>
-	
-	<target name="DataFunction-rdt">
-		<antcall target="DataFunction">
-			<param name="travis" value="false"/>
-			<param name="tool" value="rdt"/>
-		</antcall>
-	</target>
-	
-	<target name="DataFunction-rdtLite">
-		<antcall target="DataFunction">
-			<param name="travis" value="false"/>
-			<param name="tool" value="rdtLite"/>
-		</antcall>
-	</target>
-	
-	<target name="update-DataFunction-rdt">
-		<antcall target="update-DataFunction">
-			<param name="tool" value="rdt"/>
-		</antcall>
-	</target>
-	
-	<target name="update-DataFunction-rdtLite">
-		<antcall target="update-DataFunction">
-			<param name="tool" value="rdtLite"/>
-		</antcall>
-	</target>
-	
-	
 	<!-- DailySolarRadiation -->
 	<target name="DailySolarRadiation">    <!-- helper -->
 		<condition property="travis" value="false">    <!-- default value -->
@@ -1132,6 +1078,62 @@
 	
 	<target name="update-DailySolarRadiation-rdtLite">
 		<antcall target="update-DailySolarRadiation">
+			<param name="tool" value="rdtLite"/>
+		</antcall>
+	</target>
+	
+	
+	<!-- DataFunctionTest -->
+	<target name="DataFunction">    <!-- helper -->
+		<condition property="travis" value="false">    <!-- default value -->
+			<not>
+				<isset property="travis"/>
+			</not>
+		</condition>
+		<condition property="tool" value="rdtLite">    <!-- default value -->
+			<not>
+				<isset property="tool"/>
+			</not>
+		</condition>
+		<antcall target="run-test">
+			<param name="test-name" value="DataFunction"/>
+			<param name="details" value="true"/>
+		</antcall>
+	</target>
+	
+	<target name="update-DataFunction">    <!-- helper -->
+		<condition property="tool" value="rdtLite">    <!-- default value -->
+			<not>
+				<isset property="tool"/>
+			</not>
+		</condition>
+		<antcall target="update-expected">
+			<param name="test-name" value="DataFunction"/>
+		</antcall>
+	</target>
+	
+	<target name="DataFunction-rdt">
+		<antcall target="DataFunction">
+			<param name="travis" value="false"/>
+			<param name="tool" value="rdt"/>
+		</antcall>
+	</target>
+	
+	<target name="DataFunction-rdtLite">
+		<antcall target="DataFunction">
+			<param name="travis" value="false"/>
+			<param name="tool" value="rdtLite"/>
+		</antcall>
+	</target>
+	
+	<target name="update-DataFunction-rdt">
+		<antcall target="update-DataFunction">
+			<param name="tool" value="rdt"/>
+		</antcall>
+	</target>
+	
+	<target name="update-DataFunction-rdtLite">
+		<antcall target="update-DataFunction">
 			<param name="tool" value="rdtLite"/>
 		</antcall>
 	</target>
@@ -1300,6 +1302,62 @@
 	
 	<target name="update-DDGStatement-rdtLite">
 		<antcall target="update-DDGStatement">
+			<param name="tool" value="rdtLite"/>
+		</antcall>
+	</target>
+	
+	
+	<!-- DollarOperator Test -->
+	<target name="DollarOperator">    <!-- helper -->
+		<condition property="travis" value="false">    <!-- default value -->
+			<not>
+				<isset property="travis"/>
+			</not>
+		</condition>
+		<condition property="tool" value="rdtLite">    <!-- default value -->
+			<not>
+				<isset property="tool"/>
+			</not>
+		</condition>
+		<antcall target="run-test">
+			<param name="test-name" value="DollarOperator"/>
+			<param name="details" value="true"/>
+		</antcall>
+	</target>
+	
+	<target name="update-DollarOperator">    <!-- helper -->
+		<condition property="tool" value="rdtLite">    <!-- default value -->
+			<not>
+				<isset property="tool"/>
+			</not>
+		</condition>
+		<antcall target="update-expected">
+			<param name="test-name" value="DollarOperator"/>
+		</antcall>
+	</target>
+	
+	<target name="DollarOperator-rdt">
+		<antcall target="DollarOperator">
+			<param name="travis" value="false"/>
+			<param name="tool" value="rdt"/>
+		</antcall>
+	</target>
+	
+	<target name="DollarOperator-rdtLite">
+		<antcall target="DollarOperator">
+			<param name="travis" value="false"/>
+			<param name="tool" value="rdtLite"/>
+		</antcall>
+	</target>
+	
+	<target name="update-DollarOperator-rdt">
+		<antcall target="update-DollarOperator">
+			<param name="tool" value="rdt"/>
+		</antcall>
+	</target>
+	
+	<target name="update-DollarOperator-rdtLite">
+		<antcall target="update-DollarOperator">
 			<param name="tool" value="rdtLite"/>
 		</antcall>
 	</target>
