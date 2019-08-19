@@ -1924,62 +1924,6 @@
 	</target>
 	
 	
-	<!-- DollarOperatorTest -->
-	<target name="DollarOperator">    <!-- helper -->
-		<condition property="travis" value="false">    <!-- default value -->
-			<not>
-				<isset property="travis"/>
-			</not>
-		</condition>
-		<condition property="tool" value="rdtLite">    <!-- default value -->
-			<not>
-				<isset property="tool"/>
-			</not>
-		</condition>
-		<antcall target="run-test">
-			<param name="test-name" value="DollarOperator"/>
-			<param name="details" value="true"/>
-		</antcall>
-	</target>
-	
-	<target name="update-DollarOperator">    <!-- helper -->
-		<condition property="tool" value="rdtLite">    <!-- default value -->
-			<not>
-				<isset property="tool"/>
-			</not>
-		</condition>
-		<antcall target="update-expected">
-			<param name="test-name" value="DollarOperator"/>
-		</antcall>
-	</target>
-	
-	<target name="DollarOperator-rdt">
-		<antcall target="DollarOperator">
-			<param name="travis" value="false"/>
-			<param name="tool" value="rdt"/>
-		</antcall>
-	</target>
-	
-	<target name="DollarOperator-rdtLite">
-		<antcall target="DollarOperator">
-			<param name="travis" value="false"/>
-			<param name="tool" value="rdtLite"/>
-		</antcall>
-	</target>
-	
-	<target name="update-DollarOperator-rdt">
-		<antcall target="update-DollarOperator">
-			<param name="tool" value="rdt"/>
-		</antcall>
-	</target>
-	
-	<target name="update-DollarOperator-rdtLite">
-		<antcall target="update-DollarOperator">
-			<param name="tool" value="rdtLite"/>
-		</antcall>
-	</target>
-	
-	
 	<!-- Plot1Test -->
 	<target name="Plot1">    <!-- helper -->
 		<condition property="travis" value="false">    <!-- default value -->
