@@ -101,7 +101,7 @@
 #' .ddg.run.args returns the run arguments for this provenance in a named list.
 #' These are the arguments from prov.run, prov.init, prov.save, prov.quit.
 #' @return The run arguments for this provenance.
-#' noRd
+#' @noRd
 
 .ddg.run.args <- function() {
   .ddg.get("ddg.run.args")
