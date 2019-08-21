@@ -28,6 +28,9 @@
     		<fileset dir="R"
       			excludes="*_rdt.R"/>
   		</copy>
+    	<copy overwrite="true" todir="${builddir}/vignettes">
+            <fileset dir="vignettes" />
+  		</copy>
         <mkdir dir="${builddir}/tests"/>
         <copy overwrite="true" file="tests/test-all-rdtLite.R" tofile="${builddir}/tests/test-all.R"/>
     	<copy overwrite="true" todir="${builddir}/tests/testthat">
