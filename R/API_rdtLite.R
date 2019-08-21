@@ -92,13 +92,16 @@ prov.init <- function(prov.dir = NULL, overwrite = TRUE, snapshot.size = 0,
   # Save hash algorithm
   .ddg.set("ddg.hash.algorithm", hash.algorithm)
   
-  # If this function was not called from prov.run,
-  # save arguments in a named list
+  # If this function was not called from prov.run, save arguments
   if(!.ddg.is.set("ddg.run.args")) {
-    .ddg.set("ddg.run.args",
-             list(overwrite = overwrite,
-                  snapshot.size = snapshot.size,
-                  save.debug = save.debug))
+    args.names <- c("overwrite", "snapshot.size", "save.debug")
+    args.types <- c("logical", "numeric", "logical")
+    
+    args.values <- list(overwrite, snapshot.size, save.debug)
+    args.values <- as.character(args.values)
+    
+    ddg.run.args <- data.frame(args.names, args.values, args.types, stringsAsFactors = FALSE)
+    .ddg.set("ddg.run.args", ddg.run.args)
   }
   
   # Initialize list of input & output file nodes
@@ -125,7 +128,7 @@ prov.save <- function(save.debug = FALSE) {
   # update the value of save.debug in ddg.run.args
   if(.ddg.is.init()) {
     args <- .ddg.get("ddg.run.args")
-    args$save.debug <- save.debug
+    args$args.values[args$args.names %in% "save.debug"] <- save.debug
     .ddg.set("ddg.run.args", args)
   }
 
@@ -143,11 +146,11 @@ prov.save <- function(save.debug = FALSE) {
 #' @rdname prov.run
 
 prov.quit <- function(save.debug = FALSE) {
-
+  
   # update the value of save.debug in ddg.run.args
   if(.ddg.is.init()) {
     args <- .ddg.get("ddg.run.args")
-    args$save.debug <- save.debug
+    args$args.values[args$args.names %in% "save.debug"] <- save.debug
     .ddg.set("ddg.run.args", args)
   }
 
@@ -214,13 +217,16 @@ prov.run <- function(r.script.path, prov.dir = NULL, overwrite = TRUE, details =
     stop("R script file not found.")
   }
 
-  # Store arguments in a named list
-  .ddg.set("ddg.run.args",
-           list(overwrite = overwrite,
-                details = details,
-                snapshot.size = snapshot.size,
-                save.debug = save.debug))
-
+  # Store arguments
+  args.names <- c("overwrite", "details", "snapshot.size", "save.debug")
+  args.types <- c("logical", "logical", "numeric", "logical")
+  
+  args.values <- list(overwrite, details, snapshot.size, save.debug)
+  args.values <- as.character(args.values)
+  
+  ddg.run.args <- data.frame(args.names, args.values, args.types, stringsAsFactors = FALSE)
+  .ddg.set("ddg.run.args", ddg.run.args)
+  
   # Store R script path
   .ddg.set("ddg.r.script.path", r.script.path)
 

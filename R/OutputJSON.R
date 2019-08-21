@@ -216,17 +216,20 @@
 
 .ddg.json.agent <- function( tool, json.version, label, prefix )
 {
+	# EF EDITS
 	# GET CONTENT FOR NODE
 	node <- list("tool.name" = tool ,
 				 "tool.version" = toString(utils::packageVersion(tool)) ,
 				 "json.version" = json.version ,
 				 "args.names" = NA ,
-				 "args.values" = NA)
+				 "args.values" = NA ,
+				 "args.types" = NA)
 	
 	# run arguments: names and values
 	run.args <- .ddg.get("ddg.run.args")
-	node$args.names <- names(run.args)
-	node$args.values <- as.character(unname(run.args))
+	node$args.names <- run.args$arts.names
+	node$args.values <- run.args$args.values
+	node$args.types <- run.args$args.types
 	
 	# CONVERT TO JSON
 	json <- .ddg.json.list(node, "a1", prefix)
