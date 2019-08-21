@@ -227,7 +227,7 @@
 	
 	# run arguments: names and values
 	run.args <- .ddg.get("ddg.run.args")
-	node$args.names <- run.args$arts.names
+	node$args.names <- run.args$args.names
 	node$args.values <- run.args$args.values
 	node$args.types <- run.args$args.types
 	
