@@ -9,6 +9,14 @@
 			"rdt:tool.name": "rdt",
 			"rdt:tool.version": "3.1.1",
 			"rdt:json.version": "2.3",
+			"rdt:args.names": [
+				"overwrite",
+				"annotate.inside.functions",
+				"first.loop",
+				"max.loops",
+				"snapshot.size",
+				"save.debug"
+			],
 			"rdt:args.values": [
 				"TRUE",
 				"FALSE",
@@ -32,7 +40,7 @@
 		"rdt:p1": {
 			"rdt:name": "Console",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": "0.85",
+			"rdt:elapsedTime": "0.9",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -52,7 +60,7 @@
 		"rdt:p3": {
 			"rdt:name": "b <- a + 2",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.02",
+			"rdt:elapsedTime": "0.07",
 			"rdt:scriptNum": -1,
 			"rdt:startLine": -1,
 			"rdt:startCol": -1,
@@ -62,7 +70,7 @@
 		"rdt:p4": {
 			"rdt:name": "a <- 5",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.0",
+			"rdt:elapsedTime": "0.02",
 			"rdt:scriptNum": -1,
 			"rdt:startLine": -1,
 			"rdt:startCol": -1,
@@ -72,7 +80,7 @@
 		"rdt:p5": {
 			"rdt:name": "Console",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": "0.02",
+			"rdt:elapsedTime": "0.01",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -92,7 +100,7 @@
 		"rdt:p7": {
 			"rdt:name": "if (a == 1) {\tb = 10} else if (a == 5) {\td = 50}",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.51",
+			"rdt:elapsedTime": "0.61",
 			"rdt:scriptNum": -1,
 			"rdt:startLine": -1,
 			"rdt:startCol": -1,
@@ -122,7 +130,7 @@
 		"rdt:p10": {
 			"rdt:name": "f <- function() {\treturn(1)}",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.45",
+			"rdt:elapsedTime": "0.39",
 			"rdt:scriptNum": -1,
 			"rdt:startLine": -1,
 			"rdt:startCol": -1,
@@ -238,12 +246,12 @@
 			"rdt:langVersion": "R version 3.6.1 (2019-07-05)",
 			"rdt:script": "",
 			"rdt:scriptTimeStamp": "",
-			"rdt:totalElapsedTime": "1.89",
+			"rdt:totalElapsedTime": "2.04",
 			"rdt:sourcedScripts": "",
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:workingDirectory": "[DIR]/rdt",
 			"rdt:provDirectory": "[DIR]/rdt/prov_console",
-			"rdt:provTimestamp": "2019-08-21T17.39.19EDT",
+			"rdt:provTimestamp": "2019-08-21T18.50.39EDT",
 			"rdt:hashAlgorithm": "md5"
 		},
 

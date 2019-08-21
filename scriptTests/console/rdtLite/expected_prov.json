@@ -9,6 +9,11 @@
 			"rdt:tool.name": "rdtLite",
 			"rdt:tool.version": "1.1.1",
 			"rdt:json.version": "2.3",
+			"rdt:args.names": [
+				"overwrite",
+				"snapshot.size",
+				"save.debug"
+			],
 			"rdt:args.values": [
 				"TRUE",
 				"0",
@@ -26,7 +31,7 @@
 		"rdt:p1": {
 			"rdt:name": "Console",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": "0.94",
+			"rdt:elapsedTime": "0.91",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -36,7 +41,7 @@
 		"rdt:p2": {
 			"rdt:name": "a <- 1",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.03",
+			"rdt:elapsedTime": "0.02",
 			"rdt:scriptNum": -1,
 			"rdt:startLine": -1,
 			"rdt:startCol": -1,
@@ -46,7 +51,7 @@
 		"rdt:p3": {
 			"rdt:name": "b <- a + 2",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.03",
+			"rdt:elapsedTime": "0.06",
 			"rdt:scriptNum": -1,
 			"rdt:startLine": -1,
 			"rdt:startCol": -1,
@@ -86,7 +91,7 @@
 		"rdt:p7": {
 			"rdt:name": "if (a == 1) {\tb = 10} else if (a == 5) {\td = 50}",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.49",
+			"rdt:elapsedTime": "0.56",
 			"rdt:scriptNum": -1,
 			"rdt:startLine": -1,
 			"rdt:startCol": -1,
@@ -116,7 +121,7 @@
 		"rdt:p10": {
 			"rdt:name": "f <- function() {\treturn(1)}",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.4",
+			"rdt:elapsedTime": "0.58",
 			"rdt:scriptNum": -1,
 			"rdt:startLine": -1,
 			"rdt:startCol": -1,
@@ -232,12 +237,12 @@
 			"rdt:langVersion": "R version 3.6.1 (2019-07-05)",
 			"rdt:script": "",
 			"rdt:scriptTimeStamp": "",
-			"rdt:totalElapsedTime": "1.9",
+			"rdt:totalElapsedTime": "2.14",
 			"rdt:sourcedScripts": "",
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:workingDirectory": "[DIR]/rdtLite",
 			"rdt:provDirectory": "[DIR]/rdtLite/prov_console",
-			"rdt:provTimestamp": "2019-08-21T17.38.54EDT",
+			"rdt:provTimestamp": "2019-08-21T18.49.54EDT",
 			"rdt:hashAlgorithm": "md5"
 		},
 
