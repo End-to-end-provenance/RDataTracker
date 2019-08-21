@@ -20,6 +20,12 @@
 				"TRUE",
 				"10",
 				"FALSE"
+			],
+			"rdt:args.types": [
+				"logical",
+				"logical",
+				"numeric",
+				"logical"
 			]
 		}
 	},
@@ -28,7 +34,7 @@
 		"rdt:p1": {
 			"rdt:name": "DollarOperator.R",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": "0.862",
+			"rdt:elapsedTime": "0.98",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -38,7 +44,7 @@
 		"rdt:p2": {
 			"rdt:name": "myEnv <- new.env()",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.145",
+			"rdt:elapsedTime": "0.14",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 2,
 			"rdt:startCol": 1,
@@ -48,7 +54,7 @@
 		"rdt:p3": {
 			"rdt:name": "myEnv$var <- 1",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.12",
+			"rdt:elapsedTime": "0.13",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 3,
 			"rdt:startCol": 1,
@@ -58,7 +64,7 @@
 		"rdt:p4": {
 			"rdt:name": "myVar <- myEnv$var",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.078",
+			"rdt:elapsedTime": "0.06",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 4,
 			"rdt:startCol": 1,
@@ -68,7 +74,7 @@
 		"rdt:p5": {
 			"rdt:name": "a <- (1:10)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.077",
+			"rdt:elapsedTime": "0.08",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 7,
 			"rdt:startCol": 1,
@@ -78,7 +84,7 @@
 		"rdt:p6": {
 			"rdt:name": "b <- (11:20)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.072",
+			"rdt:elapsedTime": "0.09",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 8,
 			"rdt:startCol": 1,
@@ -88,7 +94,7 @@
 		"rdt:p7": {
 			"rdt:name": "df <- data.frame (a, b)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.076",
+			"rdt:elapsedTime": "0.07",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 9,
 			"rdt:startCol": 1,
@@ -98,7 +104,7 @@
 		"rdt:p8": {
 			"rdt:name": "df$c <- (21:30)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.085",
+			"rdt:elapsedTime": "0.09",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 10,
 			"rdt:startCol": 1,
@@ -108,7 +114,7 @@
 		"rdt:p9": {
 			"rdt:name": "f <- function() {\n  plot (df$a, df$b)\n  df$d <- (31:40)\n}",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.204",
+			"rdt:elapsedTime": "0.19",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 13,
 			"rdt:startCol": 1,
@@ -118,7 +124,7 @@
 		"rdt:p10": {
 			"rdt:name": "f()",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.135",
+			"rdt:elapsedTime": "0.13",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 17,
 			"rdt:startCol": 1,
@@ -128,7 +134,7 @@
 		"rdt:p11": {
 			"rdt:name": "DollarOperator.R",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": "0.004",
+			"rdt:elapsedTime": "0.01",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -212,7 +218,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-08-19T10.59.57EDT",
+			"rdt:timestamp": "2019-08-21T19.08.47EDT",
 			"rdt:location": ""
 		},
 		"rdt:d8": {
@@ -223,7 +229,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-08-19T10.59.57EDT",
+			"rdt:timestamp": "2019-08-21T19.08.48EDT",
 			"rdt:location": ""
 		},
 		"rdt:d9": {
@@ -234,7 +240,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-08-19T10.59.58EDT",
+			"rdt:timestamp": "2019-08-21T19.08.48EDT",
 			"rdt:location": ""
 		},
 		"rdt:d10": {
@@ -255,31 +261,31 @@
 			"rdt:type": "File",
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
-			"rdt:hash": "345602e7e72bcd9c91126a6c663e3fdb",
-			"rdt:timestamp": "2019-08-19T10.59.58EDT",
+			"rdt:hash": "478dfbd445466c30cd1f3a286a1235e2",
+			"rdt:timestamp": "2019-08-21T19.08.48EDT",
 			"rdt:location": "[DIR]/rdtLite/Rplots.pdf"
 		},
 
 		"rdt:environment": {
 			"rdt:name": "environment",
 			"rdt:architecture": "x86_64",
-			"rdt:operatingSystem": "darwin15.6.0",
+			"rdt:operatingSystem": "mingw32",
 			"rdt:language": "R",
-			"rdt:langVersion": "R version 3.6.0 (2019-04-26)",
+			"rdt:langVersion": "R version 3.6.1 (2019-07-05)",
 			"rdt:script": "[DIR]/DollarOperator.R",
-			"rdt:scriptTimeStamp": "2019-07-31T11.19.48EDT",
-			"rdt:totalElapsedTime": "1.858",
+			"rdt:scriptTimeStamp": "2019-08-15T18.21.18EDT",
+			"rdt:totalElapsedTime": "1.97",
 			"rdt:sourcedScripts": "",
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:workingDirectory": "[DIR]/rdtLite",
 			"rdt:provDirectory": "[DIR]/rdtLite/prov_DollarOperator",
-			"rdt:provTimestamp": "2019-08-19T10.59.56EDT",
+			"rdt:provTimestamp": "2019-08-21T19.08.46EDT",
 			"rdt:hashAlgorithm": "md5"
 		},
 
 		"rdt:l1": {
 			"name": "base",
-			"version": "3.6.0",
+			"version": "3.6.1",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -287,7 +293,7 @@
 		},
 		"rdt:l2": {
 			"name": "datasets",
-			"version": "3.6.0",
+			"version": "3.6.1",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -295,7 +301,7 @@
 		},
 		"rdt:l3": {
 			"name": "ggplot2",
-			"version": "3.1.1",
+			"version": "3.2.1",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -303,7 +309,7 @@
 		},
 		"rdt:l4": {
 			"name": "graphics",
-			"version": "3.6.0",
+			"version": "3.6.1",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -311,7 +317,7 @@
 		},
 		"rdt:l5": {
 			"name": "grDevices",
-			"version": "3.6.0",
+			"version": "3.6.1",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -319,7 +325,7 @@
 		},
 		"rdt:l6": {
 			"name": "methods",
-			"version": "3.6.0",
+			"version": "3.6.1",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -335,7 +341,7 @@
 		},
 		"rdt:l8": {
 			"name": "stats",
-			"version": "3.6.0",
+			"version": "3.6.1",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -343,7 +349,7 @@
 		},
 		"rdt:l9": {
 			"name": "utils",
-			"version": "3.6.0",
+			"version": "3.6.1",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
