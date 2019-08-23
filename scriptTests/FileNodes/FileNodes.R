@@ -21,6 +21,12 @@ close(file.in)
 print(df)
 
 # Using the same file for both writing and reading
+file <- "x.csv"
+
 x <- 1
-write(x, "x.csv")
-y <- read.table("x.csv")
+write(x, file)
+y <- read.table(file)
+
+# also tests referencing the same file but given the full path instead
+z <- read.table(normalizePath(file, winslash="/", mustWork=FALSE))
+stopifnot(identical(y,z))
