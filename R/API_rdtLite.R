@@ -92,6 +92,18 @@ prov.init <- function(prov.dir = NULL, overwrite = TRUE, snapshot.size = 0,
   # Save hash algorithm
   .ddg.set("ddg.hash.algorithm", hash.algorithm)
   
+  # If this function was not called from prov.run, save arguments
+  if(!.ddg.is.set("ddg.run.args")) {
+    args.names <- c("overwrite", "snapshot.size", "save.debug")
+    args.types <- c("logical", "numeric", "logical")
+    
+    args.values <- list(overwrite, snapshot.size, save.debug)
+    args.values <- as.character(args.values)
+    
+    ddg.run.args <- data.frame(args.names, args.values, args.types, stringsAsFactors = FALSE)
+    .ddg.set("ddg.run.args", ddg.run.args)
+  }
+  
   # Initialize list of input & output file nodes
   .ddg.init.filenodes ()
 
@@ -112,6 +124,14 @@ prov.init <- function(prov.dir = NULL, overwrite = TRUE, snapshot.size = 0,
 #' @rdname prov.run
 
 prov.save <- function(save.debug = FALSE) {
+  
+  # update the value of save.debug in ddg.run.args
+  if(.ddg.is.init()) {
+    args <- .ddg.get("ddg.run.args")
+    args$args.values[args$args.names %in% "save.debug"] <- save.debug
+    .ddg.set("ddg.run.args", args)
+  }
+
   .ddg.save (save.debug)
 }
 
@@ -126,6 +146,14 @@ prov.save <- function(save.debug = FALSE) {
 #' @rdname prov.run
 
 prov.quit <- function(save.debug = FALSE) {
+  
+  # update the value of save.debug in ddg.run.args
+  if(.ddg.is.init()) {
+    args <- .ddg.get("ddg.run.args")
+    args$args.values[args$args.names %in% "save.debug"] <- save.debug
+    .ddg.set("ddg.run.args", args)
+  }
+
   .ddg.quit (save.debug)
 }
  
@@ -189,6 +217,16 @@ prov.run <- function(r.script.path, prov.dir = NULL, overwrite = TRUE, details =
     stop("R script file not found.")
   }
 
+  # Store arguments
+  args.names <- c("overwrite", "details", "snapshot.size", "save.debug")
+  args.types <- c("logical", "logical", "numeric", "logical")
+  
+  args.values <- list(overwrite, details, snapshot.size, save.debug)
+  args.values <- as.character(args.values)
+  
+  ddg.run.args <- data.frame(args.names, args.values, args.types, stringsAsFactors = FALSE)
+  .ddg.set("ddg.run.args", ddg.run.args)
+  
   # Store R script path
   .ddg.set("ddg.r.script.path", r.script.path)
 

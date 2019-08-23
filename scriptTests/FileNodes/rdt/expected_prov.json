@@ -8,7 +8,34 @@
 		"rdt:a1": {
 			"rdt:tool.name": "rdt",
 			"rdt:tool.version": "3.1.1",
-			"rdt:json.version": "2.2"
+			"rdt:json.version": "2.3",
+			"rdt:args.names": [
+				"overwrite",
+				"details",
+				"annotate.inside.functions",
+				"first.loop",
+				"max.loops",
+				"snapshot.size",
+				"save.debug"
+			],
+			"rdt:args.values": [
+				"TRUE",
+				"TRUE",
+				"TRUE",
+				"1",
+				"1",
+				"10",
+				"FALSE"
+			],
+			"rdt:args.types": [
+				"logical",
+				"logical",
+				"logical",
+				"integer",
+				"integer",
+				"numeric",
+				"logical"
+			]
 		}
 	},
 
@@ -16,7 +43,7 @@
 		"rdt:p1": {
 			"rdt:name": "FileNodes.R",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": "0.758",
+			"rdt:elapsedTime": "0.75",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -26,7 +53,7 @@
 		"rdt:p2": {
 			"rdt:name": "file.in <- url (\"http://www.mtholyoke.edu/~blerner/test.html",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.157",
+			"rdt:elapsedTime": "0.13",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 2,
 			"rdt:startCol": 1,
@@ -36,7 +63,7 @@
 		"rdt:p3": {
 			"rdt:name": "df <- readLines(file.in, warn=FALSE)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.152",
+			"rdt:elapsedTime": "0.16",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 3,
 			"rdt:startCol": 1,
@@ -46,7 +73,7 @@
 		"rdt:p4": {
 			"rdt:name": "close (file.in)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.204",
+			"rdt:elapsedTime": "0.21",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 4,
 			"rdt:startCol": 1,
@@ -56,7 +83,7 @@
 		"rdt:p5": {
 			"rdt:name": "file.out <- file(\"test.dat\", \"w\")",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.071",
+			"rdt:elapsedTime": "0.1",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 7,
 			"rdt:startCol": 1,
@@ -66,7 +93,7 @@
 		"rdt:p6": {
 			"rdt:name": "writeLines(df, file.out)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.087",
+			"rdt:elapsedTime": "0.08",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 8,
 			"rdt:startCol": 1,
@@ -76,7 +103,7 @@
 		"rdt:p7": {
 			"rdt:name": "close (file.out)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.156",
+			"rdt:elapsedTime": "0.15",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 9,
 			"rdt:startCol": 1,
@@ -86,7 +113,7 @@
 		"rdt:p8": {
 			"rdt:name": "file.in <- pipe (\"echo foo\")",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.079",
+			"rdt:elapsedTime": "0.08",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 12,
 			"rdt:startCol": 1,
@@ -96,7 +123,7 @@
 		"rdt:p9": {
 			"rdt:name": "df <- readLines(file.in)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.128",
+			"rdt:elapsedTime": "0.13",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 13,
 			"rdt:startCol": 1,
@@ -106,7 +133,7 @@
 		"rdt:p10": {
 			"rdt:name": "close (file.in)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.12",
+			"rdt:elapsedTime": "0.1",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 14,
 			"rdt:startCol": 1,
@@ -116,7 +143,7 @@
 		"rdt:p11": {
 			"rdt:name": "print(df)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.077",
+			"rdt:elapsedTime": "0.07",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 15,
 			"rdt:startCol": 1,
@@ -126,7 +153,7 @@
 		"rdt:p12": {
 			"rdt:name": "file.in <- unz (\"../ab.zip\", \"a.txt\")",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.077",
+			"rdt:elapsedTime": "0.08",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 18,
 			"rdt:startCol": 1,
@@ -136,7 +163,7 @@
 		"rdt:p13": {
 			"rdt:name": "df <- readLines (file.in)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.121",
+			"rdt:elapsedTime": "0.12",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 19,
 			"rdt:startCol": 1,
@@ -146,7 +173,7 @@
 		"rdt:p14": {
 			"rdt:name": "close(file.in)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.115",
+			"rdt:elapsedTime": "0.14",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 20,
 			"rdt:startCol": 1,
@@ -156,7 +183,7 @@
 		"rdt:p15": {
 			"rdt:name": "print(df)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.074",
+			"rdt:elapsedTime": "0.08",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 21,
 			"rdt:startCol": 1,
@@ -164,39 +191,69 @@
 			"rdt:endCol": 9
 		},
 		"rdt:p16": {
-			"rdt:name": "x <- 1",
+			"rdt:name": "file <- \"x.csv\"",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.085",
+			"rdt:elapsedTime": "0.08",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 24,
 			"rdt:startCol": 1,
 			"rdt:endLine": 24,
-			"rdt:endCol": 6
+			"rdt:endCol": 15
 		},
 		"rdt:p17": {
-			"rdt:name": "write(x, \"x.csv\")",
+			"rdt:name": "x <- 1",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.088",
-			"rdt:scriptNum": 1,
-			"rdt:startLine": 25,
-			"rdt:startCol": 1,
-			"rdt:endLine": 25,
-			"rdt:endCol": 17
-		},
-		"rdt:p18": {
-			"rdt:name": "y <- read.table(\"x.csv\")",
-			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.17",
+			"rdt:elapsedTime": "0.08",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 26,
 			"rdt:startCol": 1,
 			"rdt:endLine": 26,
-			"rdt:endCol": 24
+			"rdt:endCol": 6
+		},
+		"rdt:p18": {
+			"rdt:name": "write(x, file)",
+			"rdt:type": "Operation",
+			"rdt:elapsedTime": "0.07",
+			"rdt:scriptNum": 1,
+			"rdt:startLine": 27,
+			"rdt:startCol": 1,
+			"rdt:endLine": 27,
+			"rdt:endCol": 14
 		},
 		"rdt:p19": {
+			"rdt:name": "y <- read.table(file)",
+			"rdt:type": "Operation",
+			"rdt:elapsedTime": "0.18",
+			"rdt:scriptNum": 1,
+			"rdt:startLine": 28,
+			"rdt:startCol": 1,
+			"rdt:endLine": 28,
+			"rdt:endCol": 21
+		},
+		"rdt:p20": {
+			"rdt:name": "z <- read.table(normalizePath(file, winslash=\"/\", mustWork=F",
+			"rdt:type": "Operation",
+			"rdt:elapsedTime": "0.23",
+			"rdt:scriptNum": 1,
+			"rdt:startLine": 31,
+			"rdt:startCol": 1,
+			"rdt:endLine": 31,
+			"rdt:endCol": 66
+		},
+		"rdt:p21": {
+			"rdt:name": "stopifnot(identical(y,z))",
+			"rdt:type": "Operation",
+			"rdt:elapsedTime": "0.09",
+			"rdt:scriptNum": 1,
+			"rdt:startLine": 32,
+			"rdt:startCol": 1,
+			"rdt:endLine": 32,
+			"rdt:endCol": 25
+		},
+		"rdt:p22": {
 			"rdt:name": "FileNodes.R",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": "0.006",
+			"rdt:elapsedTime": "0.0",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -214,7 +271,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-08-12T16.26.23EDT",
+			"rdt:timestamp": "2019-08-23T15.33.01EDT",
 			"rdt:location": ""
 		},
 		"rdt:d2": {
@@ -225,7 +282,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "d1ae722a785905ccae4a7f4a36aaf8dc",
-			"rdt:timestamp": "2019-08-12T16.26.23EDT",
+			"rdt:timestamp": "2019-08-23T15.33.02EDT",
 			"rdt:location": ""
 		},
 		"rdt:d3": {
@@ -236,7 +293,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-08-12T16.26.23EDT",
+			"rdt:timestamp": "2019-08-23T15.33.02EDT",
 			"rdt:location": ""
 		},
 		"rdt:d4": {
@@ -247,7 +304,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-08-12T16.26.23EDT",
+			"rdt:timestamp": "2019-08-23T15.33.02EDT",
 			"rdt:location": ""
 		},
 		"rdt:d5": {
@@ -257,8 +314,8 @@
 			"rdt:type": "File",
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
-			"rdt:hash": "d1ae722a785905ccae4a7f4a36aaf8dc",
-			"rdt:timestamp": "2019-08-12T16.26.24EDT",
+			"rdt:hash": "f4bb8632e29e396057c046c50e4941ab",
+			"rdt:timestamp": "2019-08-23T15.33.02EDT",
 			"rdt:location": "[DIR]/rdt/test.dat"
 		},
 		"rdt:d6": {
@@ -269,7 +326,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-08-12T16.26.24EDT",
+			"rdt:timestamp": "2019-08-23T15.33.02EDT",
 			"rdt:location": ""
 		},
 		"rdt:d7": {
@@ -302,7 +359,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-08-12T16.26.24EDT",
+			"rdt:timestamp": "2019-08-23T15.33.03EDT",
 			"rdt:location": ""
 		},
 		"rdt:d10": {
@@ -313,7 +370,7 @@
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
 			"rdt:hash": "c40893ce7cc7e06efa9105028e9c5a4d",
-			"rdt:timestamp": "2019-08-12T16.26.24EDT",
+			"rdt:timestamp": "2019-08-23T15.33.03EDT",
 			"rdt:location": "[DIR]/ab.zip"
 		},
 		"rdt:d11": {
@@ -339,6 +396,17 @@
 			"rdt:location": ""
 		},
 		"rdt:d13": {
+			"rdt:name": "file",
+			"rdt:value": "\"x.csv\"",
+			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}",
+			"rdt:type": "Data",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:hash": "",
+			"rdt:timestamp": "",
+			"rdt:location": ""
+		},
+		"rdt:d14": {
 			"rdt:name": "x",
 			"rdt:value": "1",
 			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}",
@@ -349,19 +417,30 @@
 			"rdt:timestamp": "",
 			"rdt:location": ""
 		},
-		"rdt:d14": {
+		"rdt:d15": {
 			"rdt:name": "x.csv",
-			"rdt:value": "data/14-x.csv",
+			"rdt:value": "data/15-x.csv",
 			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}",
 			"rdt:type": "File",
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
-			"rdt:hash": "b026324c6904b2a9cb4b88d6d61c81d1",
-			"rdt:timestamp": "2019-08-12T16.26.25EDT",
+			"rdt:hash": "a5ea0ad9260b1550a14cc58d2c39b03d",
+			"rdt:timestamp": "2019-08-23T15.33.03EDT",
 			"rdt:location": "[DIR]/rdt/x.csv"
 		},
-		"rdt:d15": {
+		"rdt:d16": {
 			"rdt:name": "y",
+			"rdt:value": "V1  1 ",
+			"rdt:valType": "{\"container\":\"data_frame\", \"dimension\":[1,1], \"type\":[\"integer\"]}",
+			"rdt:type": "Data",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:hash": "",
+			"rdt:timestamp": "",
+			"rdt:location": ""
+		},
+		"rdt:d17": {
+			"rdt:name": "z",
 			"rdt:value": "V1  1 ",
 			"rdt:valType": "{\"container\":\"data_frame\", \"dimension\":[1,1], \"type\":[\"integer\"]}",
 			"rdt:type": "Data",
@@ -375,23 +454,23 @@
 		"rdt:environment": {
 			"rdt:name": "environment",
 			"rdt:architecture": "x86_64",
-			"rdt:operatingSystem": "darwin15.6.0",
+			"rdt:operatingSystem": "mingw32",
 			"rdt:language": "R",
-			"rdt:langVersion": "R version 3.6.0 (2019-04-26)",
+			"rdt:langVersion": "R version 3.6.1 (2019-07-05)",
 			"rdt:script": "[DIR]/FileNodes.R",
-			"rdt:scriptTimeStamp": "2019-08-02T11.40.34EDT",
-			"rdt:totalElapsedTime": "2.725",
+			"rdt:scriptTimeStamp": "2019-08-23T15.31.35EDT",
+			"rdt:totalElapsedTime": "3.11",
 			"rdt:sourcedScripts": "",
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:workingDirectory": "[DIR]/rdt",
 			"rdt:provDirectory": "[DIR]/rdt/prov_FileNodes",
-			"rdt:provTimestamp": "2019-08-12T16.26.22EDT",
+			"rdt:provTimestamp": "2019-08-23T15.33.00EDT",
 			"rdt:hashAlgorithm": "md5"
 		},
 
 		"rdt:l1": {
 			"name": "base",
-			"version": "3.6.0",
+			"version": "3.6.1",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -399,7 +478,7 @@
 		},
 		"rdt:l2": {
 			"name": "datasets",
-			"version": "3.6.0",
+			"version": "3.6.1",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -407,7 +486,7 @@
 		},
 		"rdt:l3": {
 			"name": "ggplot2",
-			"version": "3.1.1",
+			"version": "3.2.1",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -415,7 +494,7 @@
 		},
 		"rdt:l4": {
 			"name": "graphics",
-			"version": "3.6.0",
+			"version": "3.6.1",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -423,7 +502,7 @@
 		},
 		"rdt:l5": {
 			"name": "grDevices",
-			"version": "3.6.0",
+			"version": "3.6.1",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -431,7 +510,7 @@
 		},
 		"rdt:l6": {
 			"name": "methods",
-			"version": "3.6.0",
+			"version": "3.6.1",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -447,7 +526,7 @@
 		},
 		"rdt:l8": {
 			"name": "stats",
-			"version": "3.6.0",
+			"version": "3.6.1",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -455,7 +534,7 @@
 		},
 		"rdt:l9": {
 			"name": "utils",
-			"version": "3.6.0",
+			"version": "3.6.1",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -539,6 +618,18 @@
 		"rdt:pp18": {
 			"prov:informant": "rdt:p18",
 			"prov:informed": "rdt:p19"
+		},
+		"rdt:pp19": {
+			"prov:informant": "rdt:p19",
+			"prov:informed": "rdt:p20"
+		},
+		"rdt:pp20": {
+			"prov:informant": "rdt:p20",
+			"prov:informed": "rdt:p21"
+		},
+		"rdt:pp21": {
+			"prov:informant": "rdt:p21",
+			"prov:informed": "rdt:p22"
 		}
 	},
 
@@ -594,6 +685,14 @@
 		"rdt:pd13": {
 			"prov:activity": "rdt:p18",
 			"prov:entity": "rdt:d15"
+		},
+		"rdt:pd14": {
+			"prov:activity": "rdt:p19",
+			"prov:entity": "rdt:d16"
+		},
+		"rdt:pd15": {
+			"prov:activity": "rdt:p20",
+			"prov:entity": "rdt:d17"
 		}
 	},
 
@@ -651,17 +750,45 @@
 			"prov:activity": "rdt:p15"
 		},
 		"rdt:dp14": {
-			"prov:entity": "rdt:d13",
-			"prov:activity": "rdt:p17"
-		},
-		"rdt:dp15": {
 			"prov:entity": "rdt:d14",
 			"prov:activity": "rdt:p18"
+		},
+		"rdt:dp15": {
+			"prov:entity": "rdt:d13",
+			"prov:activity": "rdt:p18"
+		},
+		"rdt:dp16": {
+			"prov:entity": "rdt:d13",
+			"prov:activity": "rdt:p19"
+		},
+		"rdt:dp17": {
+			"prov:entity": "rdt:d15",
+			"prov:activity": "rdt:p19"
+		},
+		"rdt:dp18": {
+			"prov:entity": "rdt:d13",
+			"prov:activity": "rdt:p20"
+		},
+		"rdt:dp19": {
+			"prov:entity": "rdt:d15",
+			"prov:activity": "rdt:p20"
+		},
+		"rdt:dp20": {
+			"prov:entity": "rdt:d16",
+			"prov:activity": "rdt:p21"
+		},
+		"rdt:dp21": {
+			"prov:entity": "rdt:d17",
+			"prov:activity": "rdt:p21"
 		},
 
 		"rdt:fp1": {
 			"prov:entity": "rdt:f1",
-			"prov:activity": "rdt:p18"
+			"prov:activity": "rdt:p19"
+		},
+		"rdt:fp2": {
+			"prov:entity": "rdt:f1",
+			"prov:activity": "rdt:p20"
 		}
 	},
 

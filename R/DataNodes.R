@@ -144,20 +144,21 @@
   #print (paste (".ddg.data.node.exists: Looking for", dname, "in scope", dscope))
   ddg.data.nodes <- .ddg.data.node.table()
   
-  if( identical(dtype, "File") )
-  {
-    filepath <- normalizePath(dname, winslash="/", mustWork = FALSE)
+  if( identical(dtype, "File") ) {
+  	
+  	# get basename and full path to file
+  	full.path <- normalizePath(dname, winslash="/", mustWork = FALSE)
+  	basename <- basename(dname)
     
     matching <- ddg.data.nodes[
                   (ddg.data.nodes$ddg.type == "File" &
-                  ddg.data.nodes$ddg.name == dname &
+                  ddg.data.nodes$ddg.name == basename &
                   ddg.data.nodes$ddg.scope == "undefined" &
-                  ddg.data.nodes$ddg.hash == .ddg.calculate.hash(dname) &
-                  ddg.data.nodes$ddg.loc == filepath),
+                  ddg.data.nodes$ddg.hash == .ddg.calculate.hash(full.path) &
+                  ddg.data.nodes$ddg.loc == full.path),
                 ]
   }
-  else
-  {
+  else {
     matching <- ddg.data.nodes [ddg.data.nodes$ddg.name == dname & 
             (ddg.data.nodes$ddg.scope == "ddg.library" | 
              ddg.data.nodes$ddg.scope == dscope), ]

@@ -98,6 +98,15 @@
   .ddg.get ("details.omitted")
 }
 
+#' .ddg.run.args returns the run arguments for this provenance in a named list.
+#' These are the arguments from prov.run, prov.init, prov.save, prov.quit.
+#' @return The run arguments for this provenance.
+#' @noRd
+
+.ddg.run.args <- function() {
+  .ddg.get("ddg.run.args")
+}
+
 #' .ddg.set.warning is attached as a handler when we evaluate
 #' expressions.  It saves the warning so that a warning
 #' node can be created after the procedural node that
@@ -1794,7 +1803,7 @@
   .ddg.save.debug.data.nodes ()
   .ddg.save.debug.edges()
   .ddg.save.function.table ()
-
+  
   # save library information to file
   fileout <- paste(.ddg.path.debug(), "/libraries.csv", sep="")
   utils::write.csv(.ddg.installedpackages(), fileout, row.names=FALSE)
@@ -1805,7 +1814,11 @@
   
   .ddg.save.return.value.table ()
   .ddg.save.sourced.script.table ()
-
+  
+  # save run arguments to file
+  fileout <- paste(.ddg.path.debug(), "/run-args.csv", sep="")
+  utils::write.csv(.ddg.run.args(), fileout, row.names=FALSE)
+  
   if (interactive()) print(paste("Saving debug files in ", .ddg.path.debug(), sep=""))
 }
 
