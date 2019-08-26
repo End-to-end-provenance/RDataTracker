@@ -73,7 +73,7 @@ pdir <- prov.dir()
 \references{
 PROV-JSON standard: \url{https://www.w3.org/Submission/2013/SUBM-prov-json-20130424/}
 
-PROV-JSON output produced by rdtLite: \url{https://github.com/End-to-end-provenance/RDataTracker/blob/export/JSON-format.md}
+PROV-JSON output produced by rdtLite: \url{https://github.com/End-to-end-provenance/ExtendedProvJson/blob/master/JSON-format.md}
 
 Applications that use the provenance:  \url{http://provtools.org/analyzes/}
 }
