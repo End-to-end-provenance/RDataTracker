@@ -84,7 +84,6 @@ function copy_rdtLite_files {
   
   # Copy the shared files to rdtLite
   rsync -tv --perms inst/CITATION ../rdtLite/inst/
-  rsync -rtv --del --perms doc ../rdtLite/
   rsync -tv --del --perms vignettes ../rdtLite/
   rsync -tv --perms LICENSE ../rdtLite/
   rsync -tv --perms .Rbuildignore ../rdtLite/
@@ -113,7 +112,6 @@ function copy_rdt_files {
 
   # Copy the shared files
   rsync -tv --perms inst/CITATION ../rdt/inst/
-  rsync -rtv --del --perms doc ../rdtLite/
   rsync -tv --perms LICENSE ../rdt/
   rsync -tv --perms .Rbuildignore ../rdt/
   rsync -tv --perms tests.xml ../rdt/
