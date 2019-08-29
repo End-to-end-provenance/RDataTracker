@@ -1,3 +1,16 @@
+# rdtLite 3.2
+
+* Save hash values for URLs
+* Added a vignette
+* Added support for RMarkdown
+* Save standard output in the provenance
+* Store arguments passed to prov.run in the provenance
+* prov.run now accepts all the parameters of R's source function
+* Improved support for environments
+* Fixed problem with sourced scripts so they show up in the sourced script list, not the input file list.
+* Fixed bug in how hash values are computed
+* Fixed bug in matching up files that are both read and written by the same script
+
 # rdt 3.1.1
 
 * Fixed problem with sourced scripts so they show up in the sourced script list, not the input file list.
