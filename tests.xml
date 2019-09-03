@@ -185,7 +185,7 @@
 	/>
 	
 	<!-- Determines which regex package to use -->
-	<property name="ant.regexp.regexpimpl" value="org.apache.tools.ant.util.regexp.Jdk14RegexpRegexp"/>
+	<!--<property name="ant.regexp.regexpimpl" value="org.apache.tools.ant.util.regexp.Jdk14RegexpRegexp"/>-->
 	
 	<!-- Replace \ (backslashes) with / (forwardslashes) on Windows -->
 	<loadresource property="FILE.basedir">
@@ -483,7 +483,8 @@
 
 		<!-- remove tool.version and json.version strings from json.local files -->
 		<replaceregexp>
-			<regexp pattern='(\t+"rdt:tool.version": ("[0-9]+.?[0-9]*.?[0-9]*-?[0-9]*.?[0-9]*"),)\r?\n(\t+"rdt:json.version": ("[0-9]+.?[0-9]*.?[0-9]*-?[0-9]*.?[0-9]*"))\r?\n' />
+			<!--<regexp pattern='(\t+"rdt:tool.version": ("[0-9]+.?[0-9]*.?[0-9]*-?[0-9]*.?[0-9]*"),)\r?\n(\t+"rdt:json.version": ("[0-9]+.?[0-9]*.?[0-9]*-?[0-9]*.?[0-9]*"))\r?\n' />-->
+			<regexp pattern='("rdt:tool.version": ("[0-9]+.?[0-9]*.?[0-9]*-?[0-9]*.?[0-9]*"),)${line.separator}(.+"rdt:json.version": ("[0-9]+.?[0-9]*.?[0-9]*-?[0-9]*.?[0-9]*"))${line.separator}' />
 			<substitution expression=""/>
 			<fileset dir="${local-dir}">
 				<patternset id="local_files">
