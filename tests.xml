@@ -480,8 +480,10 @@
 
 		<!-- remove tool.version and json.version strings from json.local files -->
 		<replaceregexp>
+		    <!-- The next 2 work locally and on Travis push, but not on Travis pull request -->
 			<!--<regexp pattern='\t+"rdt:tool.version": "[0-9]+\.[0-9]+(\.[0-9]+)?",${line.separator}\t+"rdt:json.version": "[0-9]+\.[0-9]+(\.[0-9]+)?"${line.separator}' />-->
-			<regexp pattern='\t+"rdt:tool.version": "[0-9.]+",${line.separator}\t+"rdt:json.version": "[0-9.]*"${line.separator}' />
+			<!--<regexp pattern='\t+"rdt:tool.version": "[0-9.]+",${line.separator}\t+"rdt:json.version": "[0-9.]*"${line.separator}' />-->
+			<regexp pattern='"rdt:tool.version"' />-->
 			<substitution expression=""/>
 			<fileset dir="${local-dir}">
 				<patternset id="local_files">
