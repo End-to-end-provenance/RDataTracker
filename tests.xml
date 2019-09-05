@@ -485,7 +485,9 @@
 			<!--<regexp pattern='\t+"rdt:tool.version": "[0-9.]",${line.separator}\t+"rdt:json.version": "[0-9.]*"${line.separator}' />-->
 			<!-- On Travis, removes just the word as expected -->
 			<!--<regexp pattern='"rdt:tool.version"' />-->
-			<regexp pattern='"rdt:tool.version".*${line.separator}' />
+			<!-- This one also works -->
+			<!--<regexp pattern='"rdt:tool.version".*${line.separator}' />-->
+			<regexp pattern='\t+"rdt:tool.version".*${line.separator}' />
 			<substitution expression=""/>
 			<fileset dir="${local-dir}">
 				<patternset id="local_files">
