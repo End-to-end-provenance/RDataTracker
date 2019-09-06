@@ -480,19 +480,10 @@
 
 		<!-- remove tool.version and json.version strings from json.local files -->
 		<replaceregexp>
-		    <!-- The next 2 work locally and on Travis push, but not on Travis pull request -->
-			<!--<regexp pattern='\t+"rdt:tool.version": "[0-9]+\.[0-9]+(\.[0-9]+)?",${line.separator}\t+"rdt:json.version": "[0-9]+\.[0-9]+(\.[0-9]+)?"${line.separator}' />-->
-			<!--<regexp pattern='\t+"rdt:tool.version": "[0-9.]",${line.separator}\t+"rdt:json.version": "[0-9.]*"${line.separator}' />-->
-			<!-- On Travis, removes just the word as expected -->
-			<!--<regexp pattern='"rdt:tool.version"' />-->
-			<!-- This one also works -->
-			<!--<regexp pattern='"rdt:tool.version".*${line.separator}' />-->
-			<!-- This does not work with the leading \t.  Will try with \s.  -->
-			<!--<regexp pattern='\t+"rdt:tool.version".*${line.separator}' />-->
-			<!-- This works!!!! -->
-			<!--<regexp pattern='\s+"rdt:tool.version".*${line.separator}' />-->
 			<!-- Putting the json version back in -->
-			<regexp pattern='\s+"rdt:tool.version".*${line.separator}\s+"rdt:json.version": .*${line.separator}' />
+			<!--<regexp pattern='\s+"rdt:tool.version".*${line.separator}\s+"rdt:json.version": .*${line.separator}' />-->
+			<!-- Making more specific to avoid false matches -->
+			<regexp pattern='\s+"rdt:tool.version": "(\.|[0-9])*",${line.separator}\s+"rdt:json.version": "(\.|[0-9])*"${line.separator}' />
 			<substitution expression=""/>
 			<fileset dir="${local-dir}">
 				<patternset id="local_files">
