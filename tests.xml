@@ -481,11 +481,7 @@
 		<!-- remove tool.version and json.version strings from json.local files -->
 		<replaceregexp>
 			<!-- Putting the json version back in -->
-			<!--<regexp pattern='\s+"rdt:tool.version".*${line.separator}\s+"rdt:json.version": .*${line.separator}' />-->
-			<!-- Making more specific to avoid false matches.  Does not work -->
-			<!-- Added in more optional whitespace -->
-			<!--<regexp pattern='\s+"rdt:tool.version": "(\.|[0-9])*",${line.separator}\s+"rdt:json.version": "(\.|[0-9])*"${line.separator}' />-->
-			<regexp pattern='\s+"rdt:tool.version":\s*"(\.|[0-9])*",\s*${line.separator}\s+"rdt:json.version":\s*"(\.|[0-9])*"\s*${line.separator}' />
+			<regexp pattern='\s+"rdt:tool.version".*${line.separator}\s+"rdt:json.version": .*${line.separator}' />
 			<substitution expression=""/>
 			<fileset dir="${local-dir}">
 				<patternset id="local_files">
