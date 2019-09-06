@@ -487,7 +487,9 @@
 			<!--<regexp pattern='"rdt:tool.version"' />-->
 			<!-- This one also works -->
 			<!--<regexp pattern='"rdt:tool.version".*${line.separator}' />-->
-			<regexp pattern='\t+"rdt:tool.version".*${line.separator}' />
+			<!-- This does not work with the leading \t.  Will try with \s.  -->
+			<!--<regexp pattern='\t+"rdt:tool.version".*${line.separator}' />-->
+			<regexp pattern='\s+"rdt:tool.version".*${line.separator}' />
 			<substitution expression=""/>
 			<fileset dir="${local-dir}">
 				<patternset id="local_files">
