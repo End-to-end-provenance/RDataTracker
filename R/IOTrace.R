@@ -206,14 +206,25 @@
 #' @noRd
 
 .ddg.get.traced.function.frame.number <- function() {
+  .ddg.get.frame.number.for.func (".doTrace") - 1
+}
+
+#' .ddg.get.frame.number.for.func gets the frame number for a function 
+#' being called
+#' @return the frame number of the function being called.  
+#' Returns NULL if there is no occurrence of the function
+#' on the stack.
+#' @noRd
+.ddg.get.frame.number.for.func <- function (func.name) {
   calls <- sys.calls()
   calls <- mapply( `[[`, calls, 1, SIMPLIFY = TRUE )
   
-  doTrace.frame <- which( calls == ".doTrace" )
+  func.frame <- which( calls == func.name )
   
-  if( length(doTrace.frame) > 0 )
+  if( length(func.frame) > 0 )
   {
-    return (doTrace.frame - 1)
+    # Return the last one
+    return (func.frame[length(func.frame)])
   }
   else
   {
@@ -263,6 +274,15 @@
   return (any (calls.found))
 }
 
+#' .ddg.get.call.to returns the most recent call on the stack that 
+#' is to the named function.
+#' @param func The name of a function
+#' @return The call to that function
+#' @noRd
+.ddg.get.call.to <- function (func) {
+  return (Find(function(call).ddg.is.call.to(call, func), sys.calls(), right=TRUE))
+}
+
 ##################  Functions to handle tracing of read functions ##################
 
 #' .ddg.create.file.read.functions.df initialize the information about functions 
@@ -278,14 +298,19 @@
       c ("read.table", 
           "read.dcf", 
           "readRDS",
-          "readLines", "readBin", "readChar", "scan", "load", "readRenviron")
+          "readLines", "readBin", "readChar", "scan", "load", "readRenviron",
+          
+          # Sometimes source calls readLines but not always.  readLines is called
+          # when called from RStudio, but not when called from Rscript.
+          "source")
   
   # The argument that represents the file name
   param.names <-
       c ("file", 
           "file", 
           "file",
-          "con", "con", "con", "file", "file", "path")
+          "con", "con", "con", "file", "file", "path",
+          "file")
   
   return (data.frame (function.names, param.names, stringsAsFactors=FALSE))
 }
@@ -338,23 +363,10 @@
   if (is.symbol (input.caller)) {
     input.caller.name <- as.character(input.caller)
     
-    if (input.caller.name == ".ddg.source") {
-      # Determine if .ddg.source is being used to load the main script, or
-      # to load a script specified by the programmer within another script.
-      # In the latter case, we would see .ddg.source in the call stack twice
-      # (or more).
-    # We do not want a file node for the main script, since is not an input 
-    # to the script, but we do for calls to source within the main script.
-    # These are translated to .ddg.source when we execute.
-      if (.ddg.num.calls.to (".ddg.source") == 1) {
-        return()
-      }
-    }
-    
-    # Check if the function that called the input function is any other ddg function.
+    # Check if the function that called the input function is any ddg function.
     # If it is, ignore this call.  .ddg.load.history is an example of a 
     # function that does input that we would want to ignore.  
-    else if (startsWith (input.caller.name, "ddg") || 
+    if (startsWith (input.caller.name, "ddg") || 
               startsWith (input.caller.name, ".ddg") || 
               startsWith (input.caller.name, "prov")) {
       return()
@@ -368,6 +380,30 @@
       .ddg.inside.call.to ("loadNamespace") ||
       .ddg.inside.call.to (".ddg.json.string")) {
     return()
+  }
+  
+  # If we are sourcing a script, record the file as a sourced script instead of
+  # as an input file.
+  if (.ddg.inside.call.to ("source")) {
+    if (.ddg.inside.call.to ("readLines")) {
+      # The information was recorded when the call to source was found.
+      return()
+    }
+    source.call <- .ddg.get.call.to ("source")
+    frame.number <- .ddg.get.frame.number.for.func ("source")
+    sourced.file.name <- eval (as.symbol ("file"), envir=sys.frame(frame.number))
+    
+    if (.ddg.is.connection(sourced.file.name)) {
+      sourced.file.name <- showConnections(TRUE)[as.character(sourced.file.name), "description"]
+    }
+        
+    # Store script number & name.
+    snum <- .ddg.store.script.info (sourced.file.name)
+    
+    # Save a copy of the script
+    sname <- basename(sourced.file.name)
+    file.copy(sourced.file.name, paste(.ddg.path.scripts(), sname, sep="/"))
+    return ()
   }
   
   # Get the name of the input function
@@ -390,7 +426,7 @@
   # Get the value of the file parameter  
   input.file.name <- eval (as.symbol(file.param.name), envir = sys.frame(frame.number))
   #print (paste ("input.file.name =", input.file.name))
-  
+
   # Save the file name so the file node can be created when the statement is complete.
   # we do not want to create the nodes because the procedure node to connect to does not
   # exist yet.
@@ -497,13 +533,15 @@
   function.names <-
       c ("write.table", "write", "writeLines",
           "writeChar", "writeBin", 
-          "saveRDS", "save", "dput", "dump")
+          "saveRDS", "save", "dput", "dump",
+          "data")
   
   # The argument that represents the file name
   param.names <-
       c ("file", "file", "con", 
           "con", "con", 
-          "file", "file", "file", "file")
+          "file", "file", "file", "file",
+          "...")
   
   return (data.frame (function.names, param.names, stringsAsFactors=FALSE))
 }
@@ -516,6 +554,7 @@
 
 .ddg.clear.output.file <- function () {
   .ddg.set ("output.files", character())
+  .ddg.set ("ddg.output.data", character())
 }
 
 #' .ddg.add.output.file adds a file name to the output list.
@@ -534,6 +573,26 @@
     #print (paste ("Adding output file", fname))
     #print (sys.calls())
     .ddg.set ("output.files", append(output.files, fname))
+  }
+}
+
+#' .ddg.add.output.data adds a name to the output list.
+#' @param fname the name of the dataset to add to the list
+#' @return nothing
+#' @noRd
+
+.ddg.add.output.data <- function (dname) {
+  if (length(dname) == 0) return()
+
+  output.data <- .ddg.get("ddg.output.data")
+  
+  # Only add the file to the list if it is not already there.  It could be 
+  # there if there are multiple functions called indirectly in one R statement
+  # that write to the same file.
+  if (!(dname %in% output.data) && is.character(dname)) {
+    #print (paste ("Adding output file", fname))
+    #print (sys.calls())
+    .ddg.set ("ddg.output.data", append(output.data, dname))
   }
 }
 
@@ -589,6 +648,13 @@
     .ddg.set ("ddg.last.ggplot", "")
   }
   
+  else if (fname == "data") {
+    # The as.character gives us a vector that includes "vector" as its first element
+    # The [-1] removes that element.
+    output.data <- as.character(substitute(vector (...), env = sys.frame(frame.number)))[-1]
+    .ddg.add.output.data (output.data)
+  }
+  
   else {
     # Get the name of the file parameter for the output function
     file.write.functions <- .ddg.get ("ddg.file.write.functions.df")
@@ -604,7 +670,7 @@
     # we do not want to create the nodes because the procedure node to connect to does not
     # exist yet, and the file has not been written to yet.
     .ddg.add.output.file (output.file.name)
-  }
+   }
 }
 
 #' .ddg.create.file.write.nodes.and.edges creates file nodes and data out edges for any files
@@ -639,9 +705,6 @@
     }
   }
 
-  # Clear the list of output files now that they have been handled.
-  .ddg.clear.output.file ()
-  
   # If this file is written by ggsave and the plot was implicit, 
   # add an input edge for the last plot.
   if (.ddg.get ("ddg.implicit.plot")) {
@@ -662,6 +725,18 @@
 
     .ddg.set ("ddg.remove.Rplots", FALSE)
   }
+  
+  # Handle data sets loaded with the data function.
+  datasets <- .ddg.get ("ddg.output.data")
+  sapply (datasets, 
+          function (dataset) {
+            .ddg.data.node ("Data", dataset, eval(as.name(dataset), envir=globalenv()), environmentName(globalenv()))
+            .ddg.lastproc2data (dataset)    
+          }
+  )
+
+  # Clear the list of output files now that they have been handled.
+  .ddg.clear.output.file ()
 }
 
 #' .ddg.file.out creates a data node of type File.  The label
@@ -809,8 +884,8 @@
       || .ddg.inside.call.to (".ddg.snapshot") 
       || .ddg.inside.call.to(".ddg.save.annotated.script")) {
     #print ("Returning -- inside capture.ouput, parse or .ddg.snapshot")
-    return()
-  }
+      return()
+    }
   
   # Check that we are not inside any read or write functions.  If we are,
   # the appropriate nodes will be created by those functions
@@ -866,6 +941,7 @@
     file.close.functions <- .ddg.get ("ddg.file.close.functions.df")
     file.param.name <- 
       file.close.functions$param.names[file.close.functions$function.names == fname]
+    #print (paste (".ddg.trace.close: fname = ", fname))
     #print (paste (".ddg.trace.close: file.param.name = ", file.param.name))
   
     # Get the value of the connection parameter  

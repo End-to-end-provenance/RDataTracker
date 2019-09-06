@@ -19,10 +19,24 @@ file.in <- unz("../foo.zip", "foo.txt")
 unzipped <- readLines(file.in)
 file2.out <- file("foo_copy.txt", "w+")
 writeLines(unzipped, file2.out)
-#close(file.out)
+close(file.out)
 
 writeLines ("foobar", "foobar.txt")
 
+# Commenting out this test for now.  We use capture.output to 
+# save standard output, but closeAllConnections closes the 
+# connection that capture.output uses, leading to an error
+# when capture.output later tries to close it.  This was
+# reported to R as a bug on Aug. 7, 2019:
+#> capture.output(closeAllConnections())
+#Error in close.connection(file) : invalid connection
+#In addition: Warning message:
+#    In sink(type = type, split = split) : no sink to remove
+#> traceback()
+#3: close.connection(file)
+#2: close(file)
+#1: capture.output(closeAllConnections())
+#
 closeAllConnections()
 
 # Note that we will create a file node at the end of the script
@@ -31,4 +45,3 @@ closeAllConnections()
 # file may be empty.
 file3.out <- file ("asdf.txt", "w+")
 writeLines ("asdf", file3.out)
-

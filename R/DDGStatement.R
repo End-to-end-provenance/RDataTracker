@@ -146,12 +146,14 @@ methods::setClass("DDGStatement",
 # This is called when a new DDG Statement is created.  It initializes all of the slots.
 methods::setMethod ("initialize",
   "DDGStatement",
-    function(.Object, parsed, pos, script.num){
+    function(.Object, parsed, pos, script.num, cmdText){
       .Object@parsed <- parsed
 
       # deparse can return a vector of strings.  We convert that into
       # one long string.
-      .Object@text <- paste(deparse(.Object@parsed[[1]]), collapse="")
+      .Object@text <- 
+        if (is.na(cmdText)) paste(deparse(.Object@parsed[[1]]), collapse="")
+        else cmdText
       if (.ddg.debug.lib()) print(paste ("Parsing", .Object@text))
 
       .Object@abbrev <-
@@ -177,6 +179,8 @@ methods::setMethod ("initialize",
       .Object@vars.used <- vars.used
 
       .Object@vars.set <- .ddg.find.simple.assign(.Object@parsed[[1]])
+      #print ("Initializing DDGStatement, .Object@vars.set")
+      #print (.Object@vars.set)
 
       .Object@vars.possibly.set <- .ddg.find.assign(.Object@parsed[[1]])
       
@@ -233,8 +237,12 @@ methods::setMethod ("initialize",
       cmds <- vector("list", (length(exprs)))
       for (i in 1:length(exprs)) {
         expr <- as.expression(exprs[i])
+        cmdText <- parseData[i, "text"]
+        if (is.null(cmdText)) {
+          cmdText <- paste(deparse(expr[[1]]), collapse="")
+        }
         cmds[[i]] <- .ddg.construct.DDGStatement(expr, NA, script.name, 
-                                                 script.num, parseData)
+                                                 script.num, parseData, cmdText)
       }
       return(cmds)
     }
@@ -267,9 +275,13 @@ methods::setMethod ("initialize",
     expr <- as.expression(exprs[i][[1]])
     next.expr.pos <- methods::new (Class = "DDGStatementPos", 
                                    non.comment.parse.data[next.parseData, ])
+    cmdText <- non.comment.parse.data[next.parseData, "text"]
+    if (is.null(cmdText)) {
+      cmdText <- paste(deparse(expr[[1]]), collapse="")
+    }
     cmds[[next.cmd]] <- .ddg.construct.DDGStatement(expr, next.expr.pos, 
                                                     script.name, script.num, 
-                                                    parseData)
+                                                    parseData, cmdText)
     next.cmd <- next.cmd + 1
     
     # If there are more expressions, determine where to look next in the parseData
@@ -451,16 +463,20 @@ methods::setMethod ("initialize",
 #' @return vector of variables used in the expression
 #' @noRd
 
-.ddg.find.var.uses <- function(main.object) {
+.ddg.find.var.uses <- function(main.object, leftmost=FALSE) {
   # Recursive helper function.
   .ddg.find.var.uses.rec <- function(obj) {
+    #print ("In .ddg.find.var.uses.rec")
+    #print (deparse(obj))
     
     # Base cases.
     if (is.atomic(obj)) {
+      #print ("Atomic")
       return(character())  # A name is not atomic!
     }
 
     if (is.name(obj)) {
+      #print("Name")
       if (nchar(obj) == 0) return (character())
 
       # Operators also pass the is.name test.  Make sure that if it is a
@@ -470,13 +486,31 @@ methods::setMethod ("initialize",
       return (deparse(obj))
     }
 
-    if (!is.recursive(obj)) return(character())
+    if (!is.recursive(obj)) {
+      #print ("Not recursive")
+      return(character())
+    }
 
-    if (.ddg.is.functiondecl(obj)) return(character())
+    if (.ddg.is.functiondecl(obj)) {
+      #print ("Function decl")
+      return(character())
+    }
 
+    if (obj[[1]] == "$") {
+      if (leftmost) {
+        return (.ddg.find.var.uses.rec (obj[[2]]))
+      }
+      else {
+        #print ("In .ddg.find.var.uses, found $")
+        #print (deparse(obj))
+        return (deparse(obj))
+      }
+    }
+    
     tryCatch(
       {
         if (.ddg.is.assign(obj)) {
+          #print ("Assignment")
 
           # If assigning to a simple variable, recurse on the right
           # hand side of the assignment.
@@ -484,6 +518,7 @@ methods::setMethod ("initialize",
           # covers cases: '=', '<-', '<<-' for simple variable assignments
           # e.g.  a <- 2
           if (is.symbol(obj[[2]])) {
+            #print ("obj[[2]] is a symbol")
             unique(unlist(.ddg.find.var.uses.rec(obj[[3]])))
           }
 
@@ -493,6 +528,7 @@ methods::setMethod ("initialize",
           # storage.mode(z)
           # a[1] <- 2, a[b] <- 3
           else if (is.call(obj[[2]])) {
+            #print ("obj[[2]] is a call")
             variables <- c( .ddg.find.var.uses.rec(obj[[2]][[2]]), 
                             unlist(.ddg.find.var.uses.rec(obj[[3]])) )
 
@@ -504,16 +540,18 @@ methods::setMethod ("initialize",
             
             unique( variables )
           }
-
+          
           # covers cases where there is a string literal.
           # for assign function
           else if (is.character(obj[[2]])) {
+            #print ("obj[[2]] is a character vector")
             unique( c(unlist(.ddg.find.var.uses.rec(parse(text = obj[[2]])[[1]])), 
                       unlist(.ddg.find.var.uses.rec(parse(text = obj[[3]])[[1]]))) )
           }
 
           # not entirely sure what this catches
           else {
+            #print ("obj[[2]] is something else!")
             unique(c (.ddg.find.var.uses.rec(obj[[2]]), 
                       unlist(.ddg.find.var.uses.rec(obj[[3]]))))
           }
@@ -522,6 +560,7 @@ methods::setMethod ("initialize",
         # Not an assignment.  Recurse on all parts of the expression
         # except the operator.
         else {
+          #print ("Not an assignment")
           unique(unlist(lapply(obj[1:length(obj)], .ddg.find.var.uses.rec)))
         }
       },
@@ -548,6 +587,8 @@ methods::setMethod ("initialize",
 .ddg.find.simple.assign <- function(obj)
 {
   if (.ddg.is.assign(obj)) {
+    #print("In .ddg.find.simple.assign, obj[[2]] =")
+    #print (obj[[2]])
     .ddg.get.var(obj[[2]])
   }
   else {
@@ -608,6 +649,9 @@ methods::setMethod ("initialize",
   # e.g. when the assign function is used
   else if ( is.character(lvalue) )
     .ddg.get.var( parse(text = lvalue)[[1]] )
+  
+  else if (lvalue[[1]] == "$") 
+    deparse (lvalue)
 
   else
     .ddg.get.var(lvalue[[2]])

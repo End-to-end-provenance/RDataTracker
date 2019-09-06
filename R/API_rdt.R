@@ -112,6 +112,20 @@ prov.init <- function(prov.dir = NULL, overwrite = TRUE, annotate.inside.functio
   # Save hash algorithm
   .ddg.set("ddg.hash.algorithm", hash.algorithm)
   
+  # If this function was not called from prov.run, save arguments
+  if(!.ddg.is.set("ddg.run.args")) {
+    args.names <- c("overwrite", "annotate.inside.functions", "first.loop", 
+                    "max.loops", "snapshot.size", "save.debug")
+    args.types <- c("logical", "logical", "integer", "integer", "numeric", "logical")
+  
+    args.values <- list(overwrite, annotate.inside.functions, first.loop, 
+                        max.loops, snapshot.size, save.debug)
+    args.values <- as.character(args.values)
+    
+    ddg.run.args <- data.frame(args.names, args.values, args.types, stringsAsFactors = FALSE)
+    .ddg.set("ddg.run.args", ddg.run.args)
+  }
+  
   # Initialize list of input & output file nodes
   .ddg.init.filenodes()
   
@@ -171,7 +185,15 @@ prov.init <- function(prov.dir = NULL, overwrite = TRUE, annotate.inside.functio
 #' @rdname prov.run
 
 prov.save <- function(save.debug = FALSE) {
-  .ddg.save (save.debug)
+  
+  # update the value of save.debug in ddg.run.args
+  if(.ddg.is.init()) {
+    args <- .ddg.get("ddg.run.args")
+    args$args.values[args$args.names %in% "save.debug"] <- save.debug
+    .ddg.set("ddg.run.args", args)
+  }
+  
+  .ddg.save(save.debug)
 }
 
 #' prov.quit
@@ -185,7 +207,15 @@ prov.save <- function(save.debug = FALSE) {
 #' @rdname prov.run
 
 prov.quit <- function(save.debug = FALSE) {
-  .ddg.quit (save.debug)
+  
+  # update the value of save.debug in ddg.run.args
+  if(.ddg.is.init()) {
+    args <- .ddg.get("ddg.run.args")
+    args$args.values[args$args.names %in% "save.debug"] <- save.debug
+    .ddg.set("ddg.run.args", args)
+  }
+  
+  .ddg.quit(save.debug)
 }
 
 #' prov.run
@@ -201,6 +231,10 @@ prov.quit <- function(save.debug = FALSE) {
 #' @param details if FALSE, provenance is not collected for top-level
 #' statements.
 #' @param display if TRUE, the provenance graph is displayed in DDG Explorer
+#' @param exprs Instead of specifying file, an expression, call, or list of call's, 
+#'   can be passed in to be executed.
+#' @param ... parameters passed on to the source function.  See documentation
+#'   of source for details.
 #' @return prov.run runs a script, collecting provenance as it does so.  
 #'   It does not return a value. 
 #' @export
@@ -216,19 +250,48 @@ prov.quit <- function(save.debug = FALSE) {
 
 prov.run <- function(r.script.path, prov.dir = NULL, overwrite = TRUE, details = TRUE, 
   annotate.inside.functions = FALSE, first.loop = 1, max.loops = 0, snapshot.size = 0, 
-  hash.algorithm = "md5", save.debug = FALSE, display = FALSE) {
+  hash.algorithm = "md5", save.debug = FALSE, display = FALSE, exprs, ...) {
 
   # Stop & display message if R script path is missing
-  if (missing(r.script.path)) {
-    stop("Please provide the name of the R script to execute. If the script
-      is not in the working directory, please include the full path.")
+  if (missing(r.script.path) && missing(exprs)) {
+    stop("Please provide the name of the R script or a list of expressions to execute. If the script
+            is not in the working directory, please include the full path.")
   }
 
+  if (!missing(r.script.path) && !missing(exprs)) {
+    stop("Please provide either the name of the R script or a list of expressions to execute, but not both.")
+  }
+  
+  # If expressions were passed in rather than a script file,
+  # save the expressions in a file.
+  if (missing(r.script.path)) {
+    r.script.path <- paste0(tempdir(), "/exprs.R")
+    source <- sapply (exprs, deparse)
+    writeLines(source, r.script.path)
+    use_file <- FALSE
+  }
+  else {
+    use_file <- TRUE
+  }
+  
   # Stop & display message if R script file is not found
   if (!file.exists(r.script.path)) {
     stop("R script file not found.")
   }
 
+  # Store arguments
+  args.names <- c("overwrite", "details", "annotate.inside.functions",
+                  "first.loop", "max.loops", "snapshot.size", "save.debug")
+  args.types <- c("logical", "logical", "logical", 
+                  "integer", "integer", "numeric", "logical")
+  
+  args.values <- list(overwrite, details, annotate.inside.functions,
+                      first.loop, max.loops, snapshot.size, save.debug)
+  args.values <- as.character(args.values)
+  
+  ddg.run.args <- data.frame(args.names, args.values, args.types, stringsAsFactors = FALSE)
+  .ddg.set("ddg.run.args", ddg.run.args)
+  
   # Store R script path
   .ddg.set("ddg.r.script.path", r.script.path)
 
@@ -243,8 +306,8 @@ prov.run <- function(r.script.path, prov.dir = NULL, overwrite = TRUE, details =
     snapshot.size, hash.algorithm, save.debug)
   
   # Execute the script
-  .ddg.run(r.script.path)
-  
+  .ddg.run(r.script.path, exprs, ...)
+
   # Display the graph in DDG Explorer
   if (display == TRUE) prov.visualize()
 }
@@ -266,18 +329,22 @@ prov.run <- function(r.script.path, prov.dir = NULL, overwrite = TRUE, details =
 #' @export
 #' @rdname prov.run
 
-prov.source <- function(file) {
+prov.source <- function(file, exprs, ...) {
   
   # Stop & display message if argument is missing or in console mode
-  if (missing(file)) {
-    stop("Please provide the name of an R script file in the call to prov.source.")
+  if (missing(file) && missing (exprs)) {
+    stop("Please provide the name of an R script file or a list of parsed expressions in the call to prov.source.")
+  }
+    
+  if (!missing(file) && !missing (exprs)) {
+    stop("Please provide the name of an R script file or a list of parsed expressions, but not both")
   }
   
   if (.ddg.is.init()) {
-    .ddg.source(file)
+    .ddg.source(file, exprs = exprs, ...)
   }
   else {
-    source (file)
+    source (file, exprs = exprs, ...)
   }
   
 }
@@ -306,7 +373,7 @@ prov.source <- function(file) {
 #' @rdname prov.json
 #' @seealso \code{\link{prov.init}} and \code{\link{prov.run}} for functions to collect provenance
 #' @references PROV-JSON standard: \url{https://www.w3.org/Submission/2013/SUBM-prov-json-20130424/}
-#' @references rdt PROV-JSON output: \url{https://github.com/End-to-end-provenance/RDataTracker/blob/export/JSON-format.md}
+#' @references PROV-JSON output produced by rdt: \url{https://github.com/End-to-end-provenance/ExtendedProvJson/blob/master/JSON-format.md}
 #' @examples
 #' prov.init()
 #' a <- 1

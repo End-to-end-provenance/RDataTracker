@@ -36,6 +36,7 @@ x.vector.posixct <- rep(x.posixct, 3)
 
 # matrix, array
 x.matrix <- matrix(data=c(1,2,3,4,5,6), nrow=3, ncol=2)
+x.longmatrix <- matrix(c(1:10),10,10)
 x.array <- array(data=c(1,2,3,4,5,6,7,8), dim=c(2,2,2))
 
 # data frame
@@ -46,4 +47,10 @@ x.data.frame2 <- data.frame(x.vector.logical, x.vector.posixct, x.vector.number,
 x.list1 <- list(x.number, x.string, x.logical, x.na, x.null)
 x.list2 <- list(x.vector.number, x.vector.string, x.vector.logical, x.matrix, x.data.frame1)
 x.list3 <- list(x.list1, x.list2)
+
+x.env <- new.env()
+x.env$var1 <- 1
+x.env$var2 <- x.list1
+
+x.env2 <- globalenv()
 

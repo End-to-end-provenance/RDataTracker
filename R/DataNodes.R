@@ -72,7 +72,8 @@
 #' @noRd
 
 .ddg.is.data.type <- function(type) {
-  return(type %in% c("Data", "Device", "Snapshot", "File", "URL", "Exception"))
+  return(type %in% c("Data", "Device", "Snapshot", "File", "URL", "Exception", 
+          "StandardOutput", "StandardOutputSnapshot"))
 }
 
 #' .ddg.dnum returns the counter used to assign data node ids
@@ -143,20 +144,21 @@
   #print (paste (".ddg.data.node.exists: Looking for", dname, "in scope", dscope))
   ddg.data.nodes <- .ddg.data.node.table()
   
-  if( identical(dtype, "File") )
-  {
-    filepath <- normalizePath(dname, winslash="/", mustWork = FALSE)
+  if( identical(dtype, "File") ) {
+  	
+  	# get basename and full path to file
+  	full.path <- normalizePath(dname, winslash="/", mustWork = FALSE)
+  	basename <- basename(dname)
     
     matching <- ddg.data.nodes[
                   (ddg.data.nodes$ddg.type == "File" &
-                  ddg.data.nodes$ddg.name == dname &
+                  ddg.data.nodes$ddg.name == basename &
                   ddg.data.nodes$ddg.scope == "undefined" &
-                  ddg.data.nodes$ddg.hash == .ddg.calculate.hash(basename(dname)) &
-                  ddg.data.nodes$ddg.loc == filepath),
+                  ddg.data.nodes$ddg.hash == .ddg.calculate.hash(full.path) &
+                  ddg.data.nodes$ddg.loc == full.path),
                 ]
   }
-  else
-  {
+  else {
     matching <- ddg.data.nodes [ddg.data.nodes$ddg.name == dname & 
             (ddg.data.nodes$ddg.scope == "ddg.library" | 
              ddg.data.nodes$ddg.scope == dscope), ]
@@ -169,8 +171,8 @@
   # Search initial environment table.
   if (dscope == "R_GlobalEnv") {
     #print("Searching global environment")
-    if (exists(dname, globalenv())) {
-      dvalue <- get(dname, envir = globalenv())
+    if (exists(dname, .ddg.get("ddg.initial.env"))) {
+      dvalue <- get(dname, envir = .ddg.get("ddg.initial.env"))
       if (!is.function(dvalue)) {
         .ddg.save.data(dname, dvalue, scope=dscope, from.env=TRUE)
         return (TRUE)
@@ -184,6 +186,8 @@
 
 #' .ddg.data.number retrieves the number of the nearest preceding
 #' current matching data node. It returns zero if no match is found.
+#' This occurs if the variable is in a scope that is not visible at
+#' the current line of code.
 #' @param dname data node name.
 #' @param dscope (optional) data node scope.  If not provided, it uses
 #' the closest scope in which dname is found
@@ -201,9 +205,6 @@
     return (matching$ddg.num[nrow(matching)])
   }
   
-  # Error message if no match found.
-  error.msg <- paste("No data node found for", dname)
-  .ddg.insert.error.message(error.msg)
   return(0)
 }
 
@@ -275,7 +276,10 @@
   # Output data node.
   #print(".ddg.record.data outputting data node")
   if (dtype == "File") {
-    .ddg.set.hash (dname, ddg.dnum, dloc, dvalue, dtime)
+    .ddg.set.hash (ddg.dnum, dloc, dvalue, dtime)
+  }
+  else if (dtype == "URL") {
+    .ddg.set.hash (ddg.dnum, paste0(.ddg.get("ddg.path"), "/", dvalue), dvalue, dtime)
   }
   
   if (.ddg.debug.lib()) {
@@ -303,8 +307,9 @@
 #' and snapshots are being saved, it returns NULL.
 #' 
 #' @param value the actual data value
+#' @param dname the name of the object we are getting the value of
 #' @noRd
-.ddg.get.node.val <- function (value) {
+.ddg.get.node.val <- function (value, dname=NULL, dtype = "") {
   if (is.null (value)) {
     return ("NULL")
   }
@@ -313,7 +318,10 @@
   if (.ddg.snapshot.size() == 0) {
     
     # Get a string version of the value
-    if (is.data.frame (value)) {
+    if (dtype == "StandardOutput") {
+      print.value <- value
+    }
+    else if (is.data.frame (value)) {
       print.value <- utils::capture.output (print (value[1,]))
       if (length(print.value) > 1) {
         print.value <- paste ("Row", print.value[[2]])
@@ -321,7 +329,7 @@
     }
     else if (is.array(value) && length (dim(value)) > 1) {
       print.value <- utils::capture.output (print (value))
-      print.value <- Find (function (line) return (startsWith (line, "[1,")), print.value)
+      print.value <- Find (function (line) return (startsWith (stringi::stri_trim_left(line), "[1,")), print.value)
     }
     else if (is.list (value)) {
       print.value <- paste (utils::capture.output (print (unlist (value))), collapse="")
@@ -332,6 +340,15 @@
     else if (.ddg.is.connection(value)) {
       print.value <- showConnections(TRUE)[as.character(value[1]), "description"]
     }
+    else   if (is.environment(value)) {
+      env.vars <- ls (value)
+      env.name <- environmentName(value)
+      if (length (env.vars) == 0) {
+        return (paste0 ("Environment ", env.name, ": Empty environment"))
+      }
+      print.value <- paste0 ("Environment ", env.name, ": ", .ddg.get.node.val (env.vars))
+      .ddg.remember.env (dname, env.vars)
+    }  
     else {
       print.value <- utils::capture.output (print (value))
     }
@@ -361,12 +378,28 @@
   
   # Saving snapshots
   else {
-    if (is.list (value) && length(value) > 0) {
+    if (dtype == "StandardOutput") {
+      print.value <- value
+    }
+    else if (is.list (value) && length(value) > 0) {
       print.value <- paste (utils::capture.output (print (unlist (value))), collapse="")
       
       # Remove leading spaces
       print.value <- sub ("^ *", "", print.value)
     }
+    else if (is.environment(value)) {
+      env.vars <- ls (value)
+      env.name <- environmentName(value)
+      if (length (env.vars) == 0) {
+        return (paste0 ("Environment ", env.name, ": Empty environment"))
+      }
+      env.vars.string <- .ddg.get.node.val (env.vars)
+      if (is.null (env.vars.string)) {
+        return (NULL)
+      }
+      print.value <- paste0 ("Environment ", env.name, ": ", env.vars.string)
+      .ddg.remember.env (dname, env.vars)
+    }  
     else {
       print.value <- utils::capture.output (print (value))
     }
@@ -392,6 +425,17 @@
     }
   }
 }
+
+#' .ddg.remember.env remembers what variables are in an environment
+#' @param env.var.name the name of the environment variable
+#' @param env.vars the variables within the environment
+#' @noRd
+.ddg.remember.env <- function (env.var.name, env.vars) {
+  ddg.envList <- .ddg.get ("ddg.envList")
+  ddg.envList[[env.var.name]] <- env.vars
+  .ddg.set("ddg.envList", ddg.envList)
+}
+
 
 #' .ddg.get.val.type.string returns the type information for a given value as a string.
 #' "null" for null values. For values of length 1, it is the type of the value.
@@ -526,7 +570,6 @@
 #' @noRd
 
 .ddg.data.node <- function(dtype, dname, dvalue, dscope, from.env=FALSE) {
-  #print (sys.calls())
   #print ("In .ddg.data.node")
   #print(paste(".ddg.data.node: dname =", dname))
   #print(paste(".ddg.data.node: str(dvalue) =", utils::str(dvalue)))
@@ -538,16 +581,21 @@
   
   val <- 
       if (dtype == "Exception") dvalue
-      else .ddg.get.node.val (dvalue)
+      else .ddg.get.node.val (dvalue, dname, dtype)
   
   # .ddg.get.node.val returns NULL if we should store the value in a snapshot.
   # Otherwise, it returns a string representation of the value to store
   # in the node.
   if (is.null(val)) {
     snapfile <- .ddg.save.snapshot (dname, dvalue, 
-                                    dscope, from.env=from.env)
+                                    dscope, from.env=from.env, dtype)
     dtime <- .ddg.timestamp()
-    .ddg.record.data("Snapshot", dname, snapfile, dvalue, dscope, from.env=from.env, dtime)
+    if (dtype == "Data") {
+      .ddg.record.data("Snapshot", dname, snapfile, dvalue, dscope, from.env=from.env, dtime)
+    }
+    else {
+      .ddg.record.data("StandardOutputSnapshot", dname, snapfile, dvalue, dscope, from.env=from.env, dtime)
+    }
   }
   
   else {
@@ -617,7 +665,7 @@
 #' @return path and name of snapshot file, relative to the ddg directory
 #' @noRd
 
-.ddg.save.snapshot <- function (dname, data, dscope, from.env) {  
+.ddg.save.snapshot <- function (dname, data, dscope, from.env, dtype) {  
   
   # Determine what type of file to create.  We do this before checking
   # the size, because for functions, the type of the data will
@@ -638,6 +686,11 @@
   
   # Determine if we should save the entire data
   snapshot.size <- .ddg.snapshot.size()
+  
+  orig.data <- data
+  if (is.environment(data)) {
+    data <- ls(data)
+  }
   
   # object.size returns bytes, but snapshot.size is in kilobytes
   if (snapshot.size == Inf || utils::object.size(data) < snapshot.size * 1024) {
@@ -687,7 +740,7 @@
       else paste(dname, "-PARTIAL", sep="")
   
   # Snapshot type
-  dtype <- "Snapshot"
+  # dtype <- "Snapshot"
   
   # Default file extensions.
   dfile <- paste(.ddg.dnum()+1, "-", snapname, ".", fext, sep="")
@@ -716,6 +769,12 @@
     file.create(dpfile, showWarnings=FALSE)
     if ("ggplot" %in% class(data)) {
       write(utils::capture.output(unlist(data)), dpfile)
+    }
+    else if (is.environment(orig.data)) {
+      write(paste0 ("Environment ", environmentName(orig.data), ":\n  ", paste (utils::capture.output(data), collapse="\n  ")), dpfile)
+    }
+    else if (dtype == "StandardOutput") {
+      writeLines(data, dpfile)
     }
     else {
       write(utils::capture.output(data), dpfile)

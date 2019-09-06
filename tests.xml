@@ -71,9 +71,12 @@
 		console
 		ControlConstruct
 		DailySolarRadiation
+		DataFunction
 		DataType
 		ddgDeepNesting
 		DDGStatement
+		DollarOperator
+		Empty
 		FileNodes
 		FunctionAnnotation
 		FunctionNonlocals
@@ -98,6 +101,7 @@
 	"normal-tests-rdtLite" will run the following tests using rdtLite:
 	
 		basic
+		Empty
 		NoDetails
 		S4Object
 		Scope
@@ -106,6 +110,8 @@
 		FunctionAnnotation
 		FuncctionNonlocals
 		ControlConstruct
+		DataFunction
+		DollarOperator
 		Warning
 		Plot1
 		Plot2
@@ -154,12 +160,15 @@
 	
 	In Environment Variables, please also set the following:
 	
-		In the `Path` system variable, please add the paths to the bin folder for
-		Apache Ant and R. Please add the path to the bin folder for Java if you are
-		planning on running DDGExplorer as well.
+		To the `Path` system variable, please add the following:
+		- path to the `bin` folder for Apache Ant
+		- path to the `bin` folder for R
+		- path to RStudio\bin\pandoc. 
+		- path to the `bin` folder for Java to use DDGExplorer/provViz
 	
-		Please add an additional system variable called R_LIBS_USER, pointing to the
-		directory where user libraries are located.
+		Additional System Variables:
+		- R_LIBS_USER : path to the directory where user libraries are located.
+		- ANT_HOME : path to Apache Ant (the general directory, not the bin folder)
 	
 	Please also note that paths that include version numbers in their names 
 	(such as those for R) need to be manually changed when the library is updated.
@@ -300,6 +309,13 @@
 		Tests the produced .json file for prov-json compliance.
 	-->
 	<target name="prov-json-compliance-test">
+	    <available file="${prov-dir}/prov.json" property="json.exists"/>
+	    
+	    <fail message="prov.json does not exist.">
+	    	<condition>
+    			<not><isset property="json.exists"/></not>
+	    	</condition>
+	    </fail>
 		<exec executable="Rscript" dir="scriptTests/ProvJson" resultproperty="compliant">
 			<arg value="complianceTest.r" />
 			<arg path="scriptTests/ProvJson/schema.json" />
@@ -389,20 +405,20 @@
 			</fileset>
 		</replaceregexp>
 
-		<!-- Delete the hex value associated with any environment values in data nodes  -->
+		<!-- Delete all elapsed time occurrences  -->
 		<replaceregexp flags="g">
-			<regexp pattern='(\t+"rdt:value": "\074environment: 0x(.*)>",\r?\n)'/>
-			<substitution expression='            "rdt:value": "\\074environment>",\n'/>
+			<regexp pattern='(\t+"rdt:(total)?(e|E)lapsedTime": ("?[0-9]*\.?[0-9]+"?,)\r?\n)'/>
+			<substitution expression=""/>
 			<fileset dir="${local-dir}">
 				<patternset id="local_files">
 					<include name="*.local"/>
 				</patternset>
 			</fileset>
 		</replaceregexp>
-
-		<!-- Delete all elapsed time occurrences  -->
+		
+		<!-- Delete all hash values.  pdf files include creation dates, so these will not match.  -->
 		<replaceregexp flags="g">
-			<regexp pattern='(\t+"rdt:(total)?(e|E)lapsedTime": ("?[0-9]*\.?[0-9]+"?,)\r?\n)'/>
+			<regexp pattern='(\t+"rdt:hash": ("[0-9a-f]*"?,)\r?\n)'/>
 			<substitution expression=""/>
 			<fileset dir="${local-dir}">
 				<patternset id="local_files">
@@ -469,7 +485,8 @@
 
 		<!-- remove tool.version and json.version strings from json.local files -->
 		<replaceregexp>
-			<regexp pattern='(\t+"rdt:tool.version": ("[0-9]+.?[0-9]*.?[0-9]*-?[0-9]*.?[0-9]*"),)\r?\n(\t+"rdt:json.version": ("[0-9]+.?[0-9]*.?[0-9]*-?[0-9]*.?[0-9]*"))\r?\n' />
+			<!-- Putting the json version back in -->
+			<regexp pattern='\s+"rdt:tool.version".*${line.separator}\s+"rdt:json.version": .*${line.separator}' />
 			<substitution expression=""/>
 			<fileset dir="${local-dir}">
 				<patternset id="local_files">
@@ -1070,6 +1087,62 @@
 	</target>
 	
 	
+	<!-- DataFunctionTest -->
+	<target name="DataFunction">    <!-- helper -->
+		<condition property="travis" value="false">    <!-- default value -->
+			<not>
+				<isset property="travis"/>
+			</not>
+		</condition>
+		<condition property="tool" value="rdtLite">    <!-- default value -->
+			<not>
+				<isset property="tool"/>
+			</not>
+		</condition>
+		<antcall target="run-test">
+			<param name="test-name" value="DataFunction"/>
+			<param name="details" value="true"/>
+		</antcall>
+	</target>
+	
+	<target name="update-DataFunction">    <!-- helper -->
+		<condition property="tool" value="rdtLite">    <!-- default value -->
+			<not>
+				<isset property="tool"/>
+			</not>
+		</condition>
+		<antcall target="update-expected">
+			<param name="test-name" value="DataFunction"/>
+		</antcall>
+	</target>
+	
+	<target name="DataFunction-rdt">
+		<antcall target="DataFunction">
+			<param name="travis" value="false"/>
+			<param name="tool" value="rdt"/>
+		</antcall>
+	</target>
+	
+	<target name="DataFunction-rdtLite">
+		<antcall target="DataFunction">
+			<param name="travis" value="false"/>
+			<param name="tool" value="rdtLite"/>
+		</antcall>
+	</target>
+	
+	<target name="update-DataFunction-rdt">
+		<antcall target="update-DataFunction">
+			<param name="tool" value="rdt"/>
+		</antcall>
+	</target>
+	
+	<target name="update-DataFunction-rdtLite">
+		<antcall target="update-DataFunction">
+			<param name="tool" value="rdtLite"/>
+		</antcall>
+	</target>
+	
+	
 	<!-- DataTypeTest -->
 	<target name="DataType">    <!-- helper -->
 		<condition property="travis" value="false">    <!-- default value -->
@@ -1233,6 +1306,118 @@
 	
 	<target name="update-DDGStatement-rdtLite">
 		<antcall target="update-DDGStatement">
+			<param name="tool" value="rdtLite"/>
+		</antcall>
+	</target>
+	
+	
+	<!-- DollarOperator Test -->
+	<target name="DollarOperator">    <!-- helper -->
+		<condition property="travis" value="false">    <!-- default value -->
+			<not>
+				<isset property="travis"/>
+			</not>
+		</condition>
+		<condition property="tool" value="rdtLite">    <!-- default value -->
+			<not>
+				<isset property="tool"/>
+			</not>
+		</condition>
+		<antcall target="run-test">
+			<param name="test-name" value="DollarOperator"/>
+			<param name="details" value="true"/>
+		</antcall>
+	</target>
+	
+	<target name="update-DollarOperator">    <!-- helper -->
+		<condition property="tool" value="rdtLite">    <!-- default value -->
+			<not>
+				<isset property="tool"/>
+			</not>
+		</condition>
+		<antcall target="update-expected">
+			<param name="test-name" value="DollarOperator"/>
+		</antcall>
+	</target>
+	
+	<target name="DollarOperator-rdt">
+		<antcall target="DollarOperator">
+			<param name="travis" value="false"/>
+			<param name="tool" value="rdt"/>
+		</antcall>
+	</target>
+	
+	<target name="DollarOperator-rdtLite">
+		<antcall target="DollarOperator">
+			<param name="travis" value="false"/>
+			<param name="tool" value="rdtLite"/>
+		</antcall>
+	</target>
+	
+	<target name="update-DollarOperator-rdt">
+		<antcall target="update-DollarOperator">
+			<param name="tool" value="rdt"/>
+		</antcall>
+	</target>
+	
+	<target name="update-DollarOperator-rdtLite">
+		<antcall target="update-DollarOperator">
+			<param name="tool" value="rdtLite"/>
+		</antcall>
+	</target>
+	
+	
+	<!-- Empty Test -->
+	<target name="Empty">    <!-- helper -->
+		<condition property="travis" value="false">    <!-- default value -->
+			<not>
+				<isset property="travis"/>
+			</not>
+		</condition>
+		<condition property="tool" value="rdtLite">    <!-- default value -->
+			<not>
+				<isset property="tool"/>
+			</not>
+		</condition>
+		<antcall target="run-test">
+			<param name="test-name" value="Empty"/>
+			<param name="details" value="true"/>
+		</antcall>
+	</target>
+	
+	<target name="update-Empty">    <!-- helper -->
+		<condition property="tool" value="rdtLite">    <!-- default value -->
+			<not>
+				<isset property="tool"/>
+			</not>
+		</condition>
+		<antcall target="update-expected">
+			<param name="test-name" value="Empty"/>
+		</antcall>
+	</target>
+	
+	<target name="Empty-rdt">
+		<antcall target="Empty">
+			<param name="travis" value="false"/>
+			<param name="tool" value="rdt"/>
+		</antcall>
+	</target>
+	
+	<target name="Empty-rdtLite">
+		<antcall target="Empty">
+			<param name="travis" value="false"/>
+			<param name="tool" value="rdtLite"/>
+		</antcall>
+	</target>
+	
+	<target name="update-Empty-rdt">
+		<antcall target="update-Empty">
+			<param name="tool" value="rdt"/>
+		</antcall>
+	</target>
+	
+	<target name="update-Empty-rdtLite">
+		<antcall target="update-Empty">
 			<param name="tool" value="rdtLite"/>
 		</antcall>
 	</target>
@@ -2296,11 +2481,11 @@
 	
 	<!-- normal tests -->
 	<target name="normal-tests"
-			depends="basic, NoDetails, S4Object, Scope, Return, OddParameter, 
-					 FunctionAnnotation, FunctionNonlocals, ControlConstruct, 
-					 Warning, Plot1, Plot2, Plot3, FileNodes, NoDevOff, 
-					 DataType, HigherOrderFunc, AssignOperators, FunctionOrigin, 
-					 RMarkdown, DDGStatement, Connection">
+			depends="basic, Empty, NoDetails, S4Object, Scope, Return, 
+					 OddParameter, DollarOperator, FunctionAnnotation, FunctionNonlocals, 
+					 ControlConstruct, DataFunction, Warning, Plot1, Plot2, Plot3, FileNodes, 
+					 NoDevOff, DataType, HigherOrderFunc, AssignOperators, 
+					 FunctionOrigin, RMarkdown, DDGStatement, Connection">
 		
 		<!-- rdt only tests -->
 		<condition property="isRDT" value="true">

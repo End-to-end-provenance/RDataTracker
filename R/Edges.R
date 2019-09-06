@@ -192,7 +192,6 @@
   if (.ddg.debug.lib()) {
     print(paste("data2proc: ", dname, " ", pname, sep=""))
     print(paste("DF ", node1, " ", node2, sep=""))
-    print (sys.calls())
   }
   
   invisible()

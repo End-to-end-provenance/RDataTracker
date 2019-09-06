@@ -7,8 +7,26 @@
 	"agent" : {
 		"rdt:a1": {
 			"rdt:tool.name": "rdtLite",
-			"rdt:tool.version": "1.1.0",
-			"rdt:json.version": "2.2"
+			"rdt:tool.version": "1.1.1",
+			"rdt:json.version": "2.3",
+			"rdt:args.names": [
+				"overwrite",
+				"details",
+				"snapshot.size",
+				"save.debug"
+			],
+			"rdt:args.values": [
+				"TRUE",
+				"TRUE",
+				"10",
+				"FALSE"
+			],
+			"rdt:args.types": [
+				"logical",
+				"logical",
+				"numeric",
+				"logical"
+			]
 		}
 	},
 
@@ -16,7 +34,7 @@
 		"rdt:p1": {
 			"rdt:name": "ddgDeepNesting.R",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": "0.78",
+			"rdt:elapsedTime": "1.15",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -24,9 +42,9 @@
 			"rdt:endCol": "NA"
 		},
 		"rdt:p2": {
-			"rdt:name": "increment.value <- function(a) {\ta <- a + 1}",
+			"rdt:name": "increment.value <- function(a) {\n\ta <- a + 1\n}",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.03",
+			"rdt:elapsedTime": "0.13",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 7,
 			"rdt:startCol": 1,
@@ -36,7 +54,7 @@
 		"rdt:p3": {
 			"rdt:name": "a <- 0",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.02",
+			"rdt:elapsedTime": "0.12",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 11,
 			"rdt:startCol": 1,
@@ -46,7 +64,7 @@
 		"rdt:p4": {
 			"rdt:name": "n <- 5",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.0",
+			"rdt:elapsedTime": "0.08",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 13,
 			"rdt:startCol": 1,
@@ -54,9 +72,9 @@
 			"rdt:endCol": 6
 		},
 		"rdt:p5": {
-			"rdt:name": "for (i in 1:n) {\tfor (j in 1:n) {\t\tfor (k in 1:n) {",
+			"rdt:name": "for (i in 1:n) {\n\t# ddg.start(\"iteration j\")\t\n\tfor (j in ",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.0",
+			"rdt:elapsedTime": "0.08",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 17,
 			"rdt:startCol": 1,
@@ -84,7 +102,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-05-30T16.36.05EDT",
+			"rdt:timestamp": "2019-08-21T19.05.11EDT",
 			"rdt:location": ""
 		},
 		"rdt:d2": {
@@ -110,28 +128,6 @@
 			"rdt:location": ""
 		},
 		"rdt:d4": {
-			"rdt:name": "j",
-			"rdt:value": "5",
-			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"integer\"]}",
-			"rdt:type": "Data",
-			"rdt:scope": "R_GlobalEnv",
-			"rdt:fromEnv": true,
-			"rdt:hash": "",
-			"rdt:timestamp": "",
-			"rdt:location": ""
-		},
-		"rdt:d5": {
-			"rdt:name": "k",
-			"rdt:value": "5",
-			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"integer\"]}",
-			"rdt:type": "Data",
-			"rdt:scope": "R_GlobalEnv",
-			"rdt:fromEnv": true,
-			"rdt:hash": "",
-			"rdt:timestamp": "",
-			"rdt:location": ""
-		},
-		"rdt:d6": {
 			"rdt:name": "a",
 			"rdt:value": "125",
 			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"numeric\"]}",
@@ -148,21 +144,21 @@
 			"rdt:architecture": "x86_64",
 			"rdt:operatingSystem": "mingw32",
 			"rdt:language": "R",
-			"rdt:langVersion": "R version 3.6.0 (2019-04-26)",
+			"rdt:langVersion": "R version 3.6.1 (2019-07-05)",
 			"rdt:script": "[DIR]/ddgDeepNesting.R",
-			"rdt:scriptTimeStamp": "2019-05-15T13.04.45EDT",
-			"rdt:totalElapsedTime": "0.84",
+			"rdt:scriptTimeStamp": "2019-08-15T18.21.19EDT",
+			"rdt:totalElapsedTime": "1.57",
 			"rdt:sourcedScripts": "",
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:workingDirectory": "[DIR]/rdtLite",
 			"rdt:provDirectory": "[DIR]/rdtLite/prov_ddgDeepNesting",
-			"rdt:provTimestamp": "2019-05-30T16.36.04EDT",
+			"rdt:provTimestamp": "2019-08-21T19.05.10EDT",
 			"rdt:hashAlgorithm": "md5"
 		},
 
 		"rdt:l1": {
 			"name": "base",
-			"version": "3.6.0",
+			"version": "3.6.1",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -170,7 +166,7 @@
 		},
 		"rdt:l2": {
 			"name": "datasets",
-			"version": "3.6.0",
+			"version": "3.6.1",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -178,7 +174,7 @@
 		},
 		"rdt:l3": {
 			"name": "ggplot2",
-			"version": "3.1.1",
+			"version": "3.2.1",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -186,7 +182,7 @@
 		},
 		"rdt:l4": {
 			"name": "graphics",
-			"version": "3.6.0",
+			"version": "3.6.1",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -194,7 +190,7 @@
 		},
 		"rdt:l5": {
 			"name": "grDevices",
-			"version": "3.6.0",
+			"version": "3.6.1",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -202,7 +198,7 @@
 		},
 		"rdt:l6": {
 			"name": "methods",
-			"version": "3.6.0",
+			"version": "3.6.1",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -210,7 +206,7 @@
 		},
 		"rdt:l7": {
 			"name": "rdtLite",
-			"version": "1.1.0",
+			"version": "1.1.1",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -218,7 +214,7 @@
 		},
 		"rdt:l8": {
 			"name": "stats",
-			"version": "3.6.0",
+			"version": "3.6.1",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -226,7 +222,7 @@
 		},
 		"rdt:l9": {
 			"name": "utils",
-			"version": "3.6.0",
+			"version": "3.6.1",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -272,7 +268,7 @@
 		},
 		"rdt:pd4": {
 			"prov:activity": "rdt:p5",
-			"prov:entity": "rdt:d6"
+			"prov:entity": "rdt:d4"
 		}
 	},
 
@@ -282,18 +278,10 @@
 			"prov:activity": "rdt:p5"
 		},
 		"rdt:dp2": {
-			"prov:entity": "rdt:d4",
-			"prov:activity": "rdt:p5"
-		},
-		"rdt:dp3": {
-			"prov:entity": "rdt:d5",
-			"prov:activity": "rdt:p5"
-		},
-		"rdt:dp4": {
 			"prov:entity": "rdt:d1",
 			"prov:activity": "rdt:p5"
 		},
-		"rdt:dp5": {
+		"rdt:dp3": {
 			"prov:entity": "rdt:d2",
 			"prov:activity": "rdt:p5"
 		}

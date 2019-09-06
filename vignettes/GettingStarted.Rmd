@@ -1,0 +1,142 @@
+---
+title: "Introduction to Provenance Collection with rdtLite"
+date: "August 21, 2019"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction to Provenance Collection with rdtLite}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+Provenance is the history of an item of data from its creation to its present state. It includes details about the steps that were executed and the intermediate values that were created in order to produce the data in its current form. For scientists, provenance can help to facilitate reproduction and validation of scientific results. But in most computer systems today, provenance is an after-thought, implemented as an auxiliary indexing structure that parallels the actual data. Our goal in this project is to design, build, and study an end-to-end system that extends all the way from original data analyses by real scientists to management and analysis of the resulting provenance in a common framework with common tools.
+
+rdtLite is a light-weight provenance collection tool that collects provenance as an R script executes (or during a console session) and saves it in a file.  The resulting provenance can be used for a wide variety of applications that include debugging scripts, cleaning code, and reproducing results.
+
+Installing rdtLite
+--------------
+
+rdtLite currently requires R version 3.6.0 (or later).  rdtLite is easily installed from GitHub using devtools:
+```
+devtools::install_github("End-to-end-provenance/rdtLite")
+```
+
+Once installed, use the R library command to load rdtLite:
+```
+library(rdtLite)
+```
+
+Using rdtLite
+--------------
+
+To capture provenance for an R script named "my-script.R", set the working directory to the directory conaining my-script.R, 
+load the rdtLite package (as above), and enter the following:
+```
+prov.run("my-script.R", prov.dir=".")
+```
+
+where "my-script.R" is an R script in the working directory. The prov.run command will execute the script and save the provenance in a subdirectory called "prov_my-script" in the working directory.
+
+rdtLite can also be used to capture provenance for commands entered in the console.  To do so, enter the following:
+```
+prov.init(prov.dir=".")
+```
+and enter commands at the R console. To save the provenance, enter the following:
+```
+prov.save()
+```
+This will save the provenance collected so far to a subdirectory called "prov_console" in the working directory. To save the provenance and stop further provenance collection, enter the following:
+```
+prov.quit()
+```
+prov.save can be called many times before calling prov.quit.
+
+
+Changing where provenance is stored
+--------------
+
+In the examples above, we used the prov.dir parameter to specify where provenance should be stored.  Another way to specify where to save the provenance is to add an option in your .Rprofile or Rprofile.site file.  For example:
+```
+options (prov.dir="~/prov")
+options (prov.dir="C:/prov")
+```
+
+We recommend this approach and either setting one directory to hold all provenance, or using "." to store provenance in the same directory as the associated script.  In any case, the provenance will be saved in a subdirectory named prov_script (where script is replaced with the script's name) or prov_console (if the provenance is for console commands).
+
+Saving provenance from repeated executions
+--------------
+
+By default, when you collect provenance, the provenance is saved in a directory based on the name of the script (or console).  This means that if you run the same script repeatedly, the provenance will be overwritten.  To prevent this from happening, use the overwrite parameter in either prov.run or prov.init:
+```
+prov.run("my-script.R", overwrite = FALSE)
+prov.init(overwrite = FALSE)
+```
+In this case, the provenance directory will include a timestamp; for example:
+```
+prov_my-script_2019-08-21T14.06.02EDT/
+prov_console_2019-08-21T14.06.02EDT/
+```
+
+Saving intermediate data values
+--------------
+When a variable is assigned in your script or in a console command, the value can be saved as part of the provenance.  This can be very helpful if you use the provenance to debug your script.  By default, only simple data values such as numerics, logicals, and strings are saved.  To save larger values, such as data frames, tibbles, or matrices, you need to set the snapshot.size parameter:
+```
+prov.run("my-script.R", snapshot.size=1)
+prov.init(snapshot.size=1)
+```
+If snapshot.size is set to something other than 0, larger data values will be saved in snapshot files.  The size of each snapshot file is limited to the value specified in snapshot.size, where the units are kilobytes.  Thus, setting snapshot.size to 1 will save the head of the data value, truncating the value if it is more than 1K in size.  Snapshots are not truncated if snapshot.size is set to Inf.
+
+Increasing the snapshot size will allow for more thorough debugging.  However, if your script makes many updates to large data structures, the slowdown may be significant.
+
+
+Collecting only file-level provenance
+--------------
+If you are only interested in collecting provenance about the computing environment, input and output files and plots, and the script source code, you can set the details parameter of prov.run to FALSE.  (This parameter is not available in prov.init.)
+```
+prov.run("my-script.R", details = FALSE)
+```
+This type of provenance is useful for creating provenance summaries, but not for other purposes, such as debugging.  The main advantage is that there should be minimal slowdown when executing your script.
+
+For information on additional parameters to prov.run and prov.init, please refer to the Help page for these functions.
+
+Working with R Markdown
+--------------
+rdtLite can collect provenance on both R files and R Markdown files.  Invoke prov.run in the same way:
+```
+prov.run("my-script.Rmd")
+```
+This will run R Markdown to create the formatted document and collect provenance.
+
+Alternatively, you can use prov.init, and run your R Markdown interactively, using Run Next Chunk in RStudio, for example.
+
+There are two caveats to using prov.run with R Markdown files:
+
+* If you use random numbers, you should set the seed initially, using R's set.seed function.  If you do not do this, the provenance will not exactly match the document produced by R Markdown.
+
+* You should avoid using R Markdown's caching feature.
+
+Including files with the source function
+--------------
+
+If you use the source function in your code, we recommend that you replace those calls to source with a call to prov.source instead.  This will allow provenance collection to occur within the sourced file.  Otherwise the source call will appear as a single statement in the provenance.
+
+Tools that use provenance
+--------------
+Having collected provenance, you may wonder what you can do with it.  We have some tools that use provenance and are available at <https://github.com/End-to-end-provenance>:
+
+* provSummarizeR provides a textual summary of the provenance identifying input and output files, libraries used, the version of R, the computing platform, error and warning messages, and other useful information.
+
+* provViz provides a visualization of the provenance that allows you to move through the history of your script to see how values were computed and what the intermediate values are.  provViz requires Java to be installed.
+
+* provExplainR compares provenance from two executions of a script to see what has changed.  This can be helpful if a script mysteriously stops working, or if you share a script with a colleague and it does not work for them.  Script results may differ, for example, if you are using different library versions, the input data has changed, or the script itself has changed.
+
+Problems, questions and suggestions
+---------------
+
+If you have any problems, questions, or suggestions, please let us know at <https://github.com/End-to-end-provenance/rdtLite/issues>.

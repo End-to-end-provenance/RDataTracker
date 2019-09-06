@@ -40,7 +40,7 @@
   if (last.created[[1]] != "FALSE") return ()
   
   ddg.cur.cmd <- .ddg.get("ddg.cur.cmd")
-  if (ddg.cur.cmd@text == paste(deparse(call), collapse="")) {
+  if (.ddg.remove.whitespace(ddg.cur.cmd@text) == paste(.ddg.remove.whitespace(deparse(call)), collapse="")) {
     .ddg.change.cmd.top ("MATCHES_CALL")
   }
   
@@ -60,6 +60,10 @@
     # create the abstract node above, because we will create it below.
     .ddg.change.cmd.top (TRUE)
   }
+}
+
+.ddg.remove.whitespace <- function(text) {
+  return (gsub("[[:space:]]", "", text))
 }
 
 #' .ddg.link.function.returns determines if the command calls a
@@ -418,13 +422,22 @@
 .ddg.markdown <- function(r.script.path, output.path){
   
   #generates R script file from markdown file
-  knitr::purl(r.script.path, documentation = 2L, quiet = TRUE)
+  r.file <- knitr::purl(r.script.path, documentation = 2L, quiet = TRUE)
+  
+  # Generate the formatted output.  Remember where it is so that it
+  # can be connected to the ddg.
+  tryCatch(
+  {
+    markdown.output <- rmarkdown::render(r.script.path, quiet=TRUE)
+    .ddg.set("ddg.markdown.output", markdown.output)
+  },
+  error=function(x)
+  {
+    print(x)
+  })
   
   #moves file to ddg directory
-  file.rename(from = paste(getwd(), "/", 
-          basename(tools::file_path_sans_ext(r.script.path)), 
-          ".R", sep = ""), 
-      to = output.path)
+  file.rename(from = r.file, to = output.path)
   script <- readLines(output.path)
   
   skip <- FALSE

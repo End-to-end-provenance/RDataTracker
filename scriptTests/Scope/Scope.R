@@ -64,6 +64,11 @@ i()
 # Issue 68 on github.
 k(10)
 k(a, b)
+
+# There is an error in rdt (but not rdtLite).  There is a data node
+# for xx set inside the call to k(a) that gets used in the next call to
+# k.  I have not been able to reproduce this in a smaller test case.
+# This is issue 573 on github.
 k(a)
 k(yy = b)
 k()

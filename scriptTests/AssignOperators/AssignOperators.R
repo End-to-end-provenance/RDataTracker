@@ -2,9 +2,7 @@
 # Tests the '=', '<-' and '<<-' operators
 #
 # @author Elizabeth Fong
-# @version December 2016
-#
-# edited December 11 2017: commented out nested function tests
+# @version July 2019
 
 
 # --- THE '=' OPERATOR ------------------------------------------------- #
@@ -26,21 +24,22 @@ stopifnot( ! exists("b") )
 
 
 # nested function environment
-#fn2 <- function()
-#{
-#  d = 3
-#  
-#  fn <- function()
-#  {
-#    d = 4
-#  }
-#  
-#  fn()
-#  stopifnot( d == 3 )
-#}
-#
-#fn2()
-#stopifnot( ! exists("d") )
+# this is section of the ddg is incorrect on rdt
+fn2 <- function()
+{
+  d = 3
+  
+  fn <- function()
+  {
+    d = 4
+  }
+  
+  fn()
+  stopifnot( d == 3 )
+}
+
+fn2()
+stopifnot( ! exists("d") )
 
 
 # in a new environment
@@ -80,21 +79,22 @@ stopifnot( ! exists("h") )
 
 
 # nested function environment
-#fn4 <- function()
-#{
-#  i <- 9
-#  
-#  fn <- function()
-#  {
-#    i <- 10
-#  }
-#  
-#  fn()
-#  stopifnot( i == 9 )
-#}
+# this is section of the ddg is incorrect on rdt
+fn4 <- function()
+{
+  i <- 9
+  
+  fn <- function()
+  {
+    i <- 10
+  }
+  
+  fn()
+  stopifnot( i == 9 )
+}
 
-#fn4()
-#stopifnot( ! exists("i") )
+fn4()
+stopifnot( ! exists("i") )
 
 
 # in a new environment
@@ -145,23 +145,26 @@ stopifnot( m == 14 )
 # nested function environment - overriding exising variable
 # assignment statement in nested function is not the last statement 
 # tests .ddg.parse.commands
-# DOES NOT WORK!!!
-#fn7 <- function()
-#{
-#  n <- 15
-#  
-#  fn <- function()
-#  {
-#    n <<- 16
-#    stopifnot( n == 16 )
-#  }
-#  
-#  fn()
-#  stopifnot( n == 16 )
-#}
+#
+# Works with rdtLite.  
+# ***ERROR: With rdt, there should be an edge from the definition of fn7a to where
+# it is called but that edge is missing.
+fn7 <- function()
+{
+  n <- 15
+  
+  fn7a <- function()
+  {
+    n <<- 16
+    stopifnot( n == 16 )
+  }
+  
+  fn7a()
+  stopifnot( n == 16 )
+}
 
-#fn7()
-#stopifnot( ! exists("n") )
+fn7()
+stopifnot( ! exists("n") )
 
 
 # nested function environment - overriding existing variable
@@ -187,36 +190,37 @@ stopifnot( m == 14 )
 # nested function environment - no existing variable
 # assignment statement in nested function is not the last statement
 # tests .ddg.parse.commands
-# DOES NOT WORK!!!
-#fn9 <- function()
-#{
-#  fn <- function()
-#  {
-#    p <<- 19
-#    stopifnot( p == 19 )
-#  }
-#
-#  fn()
-#  stopifnot( p == 19 )
-#}
-#
-#fn9()
-#stopifnot( p == 19 )
+# Note: This does not work on RDT
+fn9 <- function()
+{
+  fn <- function()
+  {
+    p <<- 19
+    stopifnot( p == 19 )
+  }
+
+  fn()
+  stopifnot( p == 19 )
+}
+
+fn9()
+stopifnot( p == 19 )
 
 
 # nested function environment - no existing variable
 # assignment statement in nested function is the last statement
 # tests ddg.return.value
-#fn10 <- function()
-#{
-#  fn <- function()
-#  {
-#    r <<- 20
-#  }
-#  
-#  fn()
-#  stopifnot( r == 20 )
-#}
-#
-#fn10()
-#stopifnot( r == 20 )
+# Note: This does not work on RDT
+fn10 <- function()
+{
+  fn <- function()
+  {
+    r <<- 20
+  }
+  
+  fn()
+  stopifnot( r == 20 )
+}
+
+fn10()
+stopifnot( r == 20 )

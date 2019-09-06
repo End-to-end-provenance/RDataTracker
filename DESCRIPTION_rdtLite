@@ -1,7 +1,7 @@
 Package: rdtLite
 Title: Provenance Collector
-Version: 1.1.0
-Date: 2019-05-30
+Version: 1.2
+Date: 2019-09-03
 Authors@R: c( person("Barbara", "Lerner", role = c("aut", "cre"),
                       email = "blerner@mtholyoke.edu"),
               person("Emery", "Boose", role = "aut",
@@ -48,13 +48,16 @@ Imports:
   jsonlite,
   knitr,
   methods,
+  rmarkdown,
   sessioninfo,
+  stringi,
   tools,
   utils,
   XML
 Suggests: 
   roxygen2, 
   provSummarizeR,
-  provViz,
+  provViz (>= 1.0.6),
   testthat
+VignetteBuilder: knitr
 RoxygenNote: 6.0.1
