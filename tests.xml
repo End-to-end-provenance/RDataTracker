@@ -2662,9 +2662,18 @@
 	
 	<!-- helper target -->
 	<target name="run-tests">
+	    <!-- Display version info -->
+		<echo message = "ant version is ${ant.version}" />
+		<echo message = "java version is ${ant.java.version}" />
+	
 		<antcall target="ProvJson"/>
 		<antcall target="quick-test"/>
 		<antcall target="script-tests"/>
+		
+		<!-- Repeat version info at the end so it is easy to find. -->
+		<echo message = "ant version is ${ant.version}" />
+		<echo message = "java version is ${ant.java.version}" />
+		
 	</target>
 	
 	<!-- ========== End: Targets for Running All Tests ========== -->	
