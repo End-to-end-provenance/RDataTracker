@@ -1,3 +1,8 @@
+# rdtLite 1.2.1
+
+* Minor changes to documentation
+* Moved provSummarizeR and provViz from the Suggests list to the Imports list
+
 # rdtLite 1.2
 
 * Save hash values for URLs
