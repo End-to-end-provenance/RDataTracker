@@ -305,7 +305,7 @@ prov.source <- function(file, exprs, ...) {
 #' @seealso \code{\link{prov.init}} and \code{\link{prov.run}} for functions to collect provenance
 #' @references PROV-JSON standard: \url{https://www.w3.org/Submission/2013/SUBM-prov-json-20130424/}
 #' @references PROV-JSON output produced by rdtLite: \url{https://github.com/End-to-end-provenance/ExtendedProvJson/blob/master/JSON-format.md}
-#' @references Applications that use the provenance:  \url{http://provtools.org/analyzes/}
+#' @references Applications that use the provenance:  \url{https://github.com/End-to-end-provenance/End-to-end-provenance.github.io/blob/master/RTools.md}
 #' @examples
 #' prov.init()
 #' a <- 1

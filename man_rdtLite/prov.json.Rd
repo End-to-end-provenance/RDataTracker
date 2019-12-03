@@ -75,7 +75,7 @@ PROV-JSON standard: \url{https://www.w3.org/Submission/2013/SUBM-prov-json-20130
 
 PROV-JSON output produced by rdtLite: \url{https://github.com/End-to-end-provenance/ExtendedProvJson/blob/master/JSON-format.md}
 
-Applications that use the provenance:  \url{http://provtools.org/analyzes/}
+Applications that use the provenance:  \url{https://github.com/End-to-end-provenance/End-to-end-provenance.github.io/blob/master/RTools.md}
 }
 \seealso{
 \code{\link{prov.init}} and \code{\link{prov.run}} for functions to collect provenance

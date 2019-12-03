@@ -53,6 +53,8 @@ Imports:
   jsonlite, 
   knitr,
   methods,
+  provSummarizeR,
+  provViz (>= 1.0.6),
   rmarkdown,
   sessioninfo,
   stringi,
@@ -61,8 +63,6 @@ Imports:
   utils,
   XML
 Suggests: 
-  testthat,
-  provSummarizeR,
-  provViz (>= 1.0.6)
+  testthat
 VignetteBuilder: knitr
 RoxygenNote: 6.0.1
