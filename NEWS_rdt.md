@@ -1,4 +1,9 @@
-# rdtLite 3.2
+# rdt 3.2.1
+
+* Minor changes to documentation
+* Moved provSummarizeR and provViz from the Suggests list to the Imports list
+
+# rdt 3.2
 
 * Save hash values for URLs
 * Added a vignette
