@@ -111,7 +111,7 @@
             function () .ddg.trace.output (), 
                                  print=FALSE), 
                           type="message"))
-  
+                  
   trace.oneInput <- 
     function (f) {
       utils::capture.output(
@@ -744,8 +744,16 @@
   datasets <- .ddg.get ("ddg.output.data")
   sapply (datasets, 
           function (dataset) {
-            .ddg.data.node ("Data", dataset, eval(as.name(dataset), envir=globalenv()), environmentName(globalenv()))
-            .ddg.lastproc2data (dataset)    
+            #print (paste ("Handling dataset", dataset))
+            # Only create the node if we can find the dataset in memory.  It might not be in the 
+            # global environment.
+             tryCatch (
+                 {
+                   .ddg.data.node ("Data", dataset, eval(as.name(dataset), envir=globalenv()), environmentName(globalenv()))
+                   .ddg.lastproc2data (dataset)
+                 },
+                 error = function(e) {}
+              )
           }
   )
 
