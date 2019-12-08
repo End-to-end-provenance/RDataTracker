@@ -425,12 +425,15 @@
   
   # Get the value of the file parameter  
   input.file.name <- eval (as.symbol(file.param.name), envir = sys.frame(frame.number))
+  #print (paste ("type of input.file.name is ", .ddg.get.val.type.string(input.file.name)))
   #print (paste ("input.file.name =", input.file.name))
 
   # Save the file name so the file node can be created when the statement is complete.
   # we do not want to create the nodes because the procedure node to connect to does not
-  # exist yet.
-  .ddg.add.input.file (input.file.name)
+  # exist yet.  If it is a raw vector rather than a file name, do not save it.
+  if (!is.raw(input.file.name)) {
+    .ddg.add.input.file (input.file.name)
+  }
 }
 
 
