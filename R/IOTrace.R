@@ -355,13 +355,17 @@
   
   # Get the frame corresponding to the output function being traced
   frame.number <- .ddg.get.traced.function.frame.number()
+  #print ("Got frame number")
   
   # Filter out some calls based on what function called the input function.
   # The is.symbol test is used because it is possible that the caller is a 
   # closure and thus does not have a name.
   input.caller <- sys.call (frame.number - 1)[[1]]
+  #print ("Got input.caller")
   if (is.symbol (input.caller)) {
+    #print ("input.caller is symbol")
     input.caller.name <- as.character(input.caller)
+    #print ("got input.caller.name")
     
     # Check if the function that called the input function is any ddg function.
     # If it is, ignore this call.  .ddg.load.history is an example of a 
@@ -374,6 +378,7 @@
     
   }
   
+  #print ("Checking for library, loadNamespace, .ddg.json.string")
   # Don't collect provenance when loading library packages.  Also, when writing out the
   # json, files get read in order to identify package version numbers.
   if (.ddg.inside.call.to ("library") || 
@@ -382,6 +387,7 @@
     return()
   }
   
+  #print ("Checking for source")
   # If we are sourcing a script, record the file as a sourced script instead of
   # as an input file.
   if (.ddg.inside.call.to ("source")) {
@@ -406,8 +412,13 @@
     return ()
   }
   
+  #print ("Getting ready to save input info")
   # Get the name of the input function
   call <- sys.call (frame.number)
+  if (typeof(call[[1]]) == "closure") {
+    #print (sys.calls())
+    return()
+  }
   fname <- as.character(call[[1]])
   
   # Remove the package name if present
