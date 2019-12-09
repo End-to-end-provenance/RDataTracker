@@ -259,7 +259,12 @@
   
   # If there are any connections still open when the script ends,
   # create nodes and edges for them.
-  .ddg.create.file.nodes.for.open.connections ()
+  tryCatch(.ddg.create.file.nodes.for.open.connections (),
+      error = function(e) {
+        if (.ddg.debug.lib()) {
+          print ("Error creating file nodes for open connections when quitting")
+        }
+      })
   
   # If there is a display device open, grab what is on the display
   if (length(grDevices::dev.list()) >= 1) {
