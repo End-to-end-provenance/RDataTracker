@@ -164,13 +164,13 @@
 
   not.ddg.func <- function (name) {
     return (!grepl("^ddg", name) && !grepl("^.ddg", name) && !grepl("^prov", name) 
-      && name != ".onLoad")
+      && name != ".onLoad" && name != ".Random.seed" && name != "e")
   }
 
-  x <- Filter (not.ddg.func, e.ls)
+  dname <- Filter (not.ddg.func, e.ls)
+  dvalue <- sapply(dname, get, dname, envir = e)
 
-  ddg.initial.env <- data.frame(x)
-  colnames(ddg.initial.env) <- "ddg.name"
+  ddg.initial.env <- data.frame(dname, dvalue, stringsAsFactors=FALSE)
 
   .ddg.set("ddg.initial.env", ddg.initial.env)
 }
