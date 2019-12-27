@@ -45,13 +45,22 @@
   return(.ddg.get("ddg.save.debug"))
 }
 
-#' .ddg.initial.env returns a data frame containing names bound before
+#' .ddg.initial.env returns an environment containing names bound before
 #'   the script was executed
-#' @return a data frame containing names previously bound
+#' @return an environment containing names previously bound
 #' @noRd
 
 .ddg.initial.env <- function() {
   return(.ddg.get("ddg.initial.env"))
+}
+
+#' .ddg.initial.var returns a data frame containing names bound before
+#'   the script was executed
+#' @return a data frame containing names previously bound
+#' @noRd
+
+.ddg.initial.var <- function() {
+  return(.ddg.get("ddg.initial.var"))
 }
 
 #' .ddg.annotate.on returns the names of functions that the user explicity said
@@ -168,13 +177,11 @@
   }
 
   dname <- Filter (not.ddg.func, ddg.e.ls)
-  dvalue <- sapply(dname, get, dname, envir = ddg.e)
+  ddg.initial.var <- data.frame(dname, stringsAsFactors=FALSE)
 
-  ddg.initial.env <- data.frame(dname, dvalue, stringsAsFactors=FALSE)
-
-  .ddg.set("ddg.initial.env", ddg.initial.env)
+  .ddg.set("ddg.initial.env", ddg.e)
+  .ddg.set("ddg.initial.var", ddg.initial.var)
 }
-
 
 #' .ddg.init.tables creates data frames to store the initial environment,
 #' procedure nodes, data nodes, edges, and function return values. 
@@ -1796,8 +1803,8 @@
 {
   # Save initial environment table to file.
   fileout <- paste(.ddg.path.debug(), "/initial-environment.csv", sep="")
-  ddg.initial.env <- .ddg.initial.env()
-  utils::write.csv(ddg.initial.env, fileout, row.names=FALSE)
+  ddg.initial.var <- .ddg.initial.var()
+  utils::write.csv(ddg.initial.var, fileout, row.names=FALSE)
 
   .ddg.save.debug.proc.nodes ()
   .ddg.save.debug.data.nodes ()
