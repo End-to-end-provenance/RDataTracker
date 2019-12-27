@@ -176,8 +176,8 @@
       && (name != ".onLoad") && (name != ".Random.seed"))
   }
 
-  dname <- Filter (not.ddg.func, ddg.e.ls)
-  ddg.initial.var <- data.frame(dname, stringsAsFactors=FALSE)
+  ddg.name <- Filter (not.ddg.func, ddg.e.ls)
+  ddg.initial.var <- data.frame(ddg.name, stringsAsFactors=FALSE)
 
   .ddg.set("ddg.initial.env", ddg.e)
   .ddg.set("ddg.initial.var", ddg.initial.var)

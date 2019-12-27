@@ -172,7 +172,7 @@
   if (dscope == "R_GlobalEnv") {
     #print("Searching global environment")
     ddg.initial.var <- .ddg.initial.var()
-    index <- which(ddg.initial.var$dname == dname)
+    index <- which(ddg.initial.var$ddg.name == dname)
 
     if (length(index) > 0) {
       ddg.initial.env <- .ddg.initial.env()
