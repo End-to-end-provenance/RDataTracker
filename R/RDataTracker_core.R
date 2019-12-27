@@ -45,9 +45,9 @@
   return(.ddg.get("ddg.save.debug"))
 }
 
-#' .ddg.initial.env returns an environment containing names bound before
+#' .ddg.initial.env returns a data frame containing names bound before
 #'   the script was executed
-#' @return an environment containing names previously bound
+#' @return a data frame containing names previously bound
 #' @noRd
 
 .ddg.initial.env <- function() {
@@ -159,16 +159,16 @@
 #' @noRd
 
 .ddg.get.initial.env <- function() {
-  e <- globalenv()
-  e.ls <- ls(e, all.names=TRUE)
+  ddg.e <- globalenv()
+  ddg.e.ls <- ls(ddg.e, all.names=TRUE)
 
   not.ddg.func <- function (name) {
     return (!grepl("^ddg", name) && !grepl("^.ddg", name) && !grepl("^prov", name) 
-      && name != ".onLoad" && name != ".Random.seed" && name != "e")
+      && (name != ".onLoad") && (name != ".Random.seed"))
   }
 
-  dname <- Filter (not.ddg.func, e.ls)
-  dvalue <- sapply(dname, get, dname, envir = e)
+  dname <- Filter (not.ddg.func, ddg.e.ls)
+  dvalue <- sapply(dname, get, dname, envir = ddg.e)
 
   ddg.initial.env <- data.frame(dname, dvalue, stringsAsFactors=FALSE)
 
