@@ -78,6 +78,7 @@
 		DollarOperator
 		Empty
 		FileNodes
+		fromEnv
 		FunctionAnnotation
 		FunctionNonlocals
 		FunctionOrigin
@@ -107,6 +108,7 @@
 		Scope
 		Return
 		OddParameter
+		fromEnv
 		FunctionAnnotation
 		FuncctionNonlocals
 		ControlConstruct
@@ -1479,6 +1481,63 @@
 	</target>
 	
 	
+	<!-- fromEnv -->
+	<target name="fromEnv">    <!-- helper -->
+		<condition property="travis" value="false">    <!-- default value -->
+			<not>
+				<isset property="travis"/>
+			</not>
+		</condition>
+		<condition property="tool" value="rdtLite">    <!-- default value -->
+			<not>
+				<isset property="tool"/>
+			</not>
+		</condition>
+		<antcall target="run-test">
+			<param name="test-name" value="fromEnv"/>
+			<param name="console-mode" value="true"/>
+			<param name="details" value="true"/>
+		</antcall>
+	</target>
+	
+	<target name="update-fromEnv">    <!-- helper -->
+		<condition property="tool" value="rdtLite">    <!-- default value -->
+			<not>
+				<isset property="tool"/>
+			</not>
+		</condition>
+		<antcall target="update-expected">
+			<param name="test-name" value="console"/>
+		</antcall>
+	</target>
+	
+	<target name="fromEnv-rdt">
+		<antcall target="fromEnv">
+			<param name="travis" value="false"/>
+			<param name="tool" value="rdt"/>
+		</antcall>
+	</target>
+	
+	<target name="fromEnv-rdtLite">
+		<antcall target="fromEnv">
+			<param name="travis" value="false"/>
+			<param name="tool" value="rdtLite"/>
+		</antcall>
+	</target>
+	
+	<target name="update-fromEnv-rdt">
+		<antcall target="update-fromEnv">
+			<param name="tool" value="rdt"/>
+		</antcall>
+	</target>
+	
+	<target name="update-fromEnv-rdtLite">
+		<antcall target="update-fromEnv">
+			<param name="tool" value="rdtLite"/>
+		</antcall>
+	</target>
+	
+	
 	<!-- FunctionAnnotationTest -->
 	<target name="FunctionAnnotation">    <!-- helper -->
 		<condition property="travis" value="false">    <!-- default value -->
@@ -2481,8 +2540,8 @@
 	
 	<!-- normal tests -->
 	<target name="normal-tests"
-			depends="basic, Empty, NoDetails, S4Object, Scope, Return, 
-					 OddParameter, DollarOperator, FunctionAnnotation, FunctionNonlocals, 
+			depends="basic, Empty, NoDetails, S4Object, Scope, Return, OddParameter, 
+					 DollarOperator, fromEnv, FunctionAnnotation, FunctionNonlocals, 
 					 ControlConstruct, DataFunction, Warning, Plot1, Plot2, Plot3, FileNodes, 
 					 NoDevOff, DataType, HigherOrderFunc, AssignOperators, 
 					 FunctionOrigin, RMarkdown, DDGStatement, Connection">
