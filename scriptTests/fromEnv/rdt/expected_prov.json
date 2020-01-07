@@ -1,0 +1,187 @@
+{
+	"prefix": {
+		"prov": "http://www.w3.org/ns/prov#",
+		"rdt": "https://github.com/End-to-end-provenance/ExtendedProvJson/blob/master/JSON-format.md"
+	},
+
+	"agent" : {
+		"rdt:a1": {
+			"rdt:tool.name": "rdt",
+			"rdt:tool.version": "3.1.1",
+			"rdt:json.version": "2.2"
+		}
+	},
+
+	"activity" : {
+		"rdt:p1": {
+			"rdt:name": "Console",
+			"rdt:type": "Start",
+			"rdt:elapsedTime": "0.78",
+			"rdt:scriptNum": "NA",
+			"rdt:startLine": "NA",
+			"rdt:startCol": "NA",
+			"rdt:endLine": "NA",
+			"rdt:endCol": "NA"
+		},
+		"rdt:p2": {
+			"rdt:name": "a <- rep(x, 5)",
+			"rdt:type": "Operation",
+			"rdt:elapsedTime": "0.03",
+			"rdt:scriptNum": -1,
+			"rdt:startLine": -1,
+			"rdt:startCol": -1,
+			"rdt:endLine": -1,
+			"rdt:endCol": -1
+		},
+		"rdt:p3": {
+			"rdt:name": "Console",
+			"rdt:type": "Finish",
+			"rdt:elapsedTime": "0.03",
+			"rdt:scriptNum": "NA",
+			"rdt:startLine": "NA",
+			"rdt:startCol": "NA",
+			"rdt:endLine": "NA",
+			"rdt:endCol": "NA"
+		}
+	},
+
+	"entity" : {
+		"rdt:d1": {
+			"rdt:name": "x",
+			"rdt:value": "data/1-x.csv",
+			"rdt:valType": "{\"container\":\"matrix\", \"dimension\":[5,20], \"type\":[\"integer\"]}",
+			"rdt:type": "Snapshot",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": true,
+			"rdt:hash": "",
+			"rdt:timestamp": "2020-01-07T15.54.58EST",
+			"rdt:location": ""
+		},
+		"rdt:d2": {
+			"rdt:name": "a",
+			"rdt:value": "data/2-a.txt",
+			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[500], \"type\":[\"integer\"]}",
+			"rdt:type": "Snapshot",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:hash": "",
+			"rdt:timestamp": "2020-01-07T15.54.58EST",
+			"rdt:location": ""
+		},
+
+		"rdt:environment": {
+			"rdt:name": "environment",
+			"rdt:architecture": "x86_64",
+			"rdt:operatingSystem": "mingw32",
+			"rdt:language": "R",
+			"rdt:langVersion": "R version 3.6.1 (2019-07-05)",
+			"rdt:script": "",
+			"rdt:scriptTimeStamp": "",
+			"rdt:totalElapsedTime": "0.84",
+			"rdt:sourcedScripts": "",
+			"rdt:sourcedScriptTimeStamps": "",
+			"rdt:workingDirectory": "C:/github/rdatatracker/scriptTests/fromEnv/rdt",
+			"rdt:provDirectory": "C:/github/rdatatracker/scriptTests/fromEnv/rdt/prov_console",
+			"rdt:provTimestamp": "2020-01-07T15.54.57EST",
+			"rdt:hashAlgorithm": "md5"
+		},
+
+		"rdt:l1": {
+			"name": "base",
+			"version": "3.6.1",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l2": {
+			"name": "datasets",
+			"version": "3.6.1",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l3": {
+			"name": "ggplot2",
+			"version": "3.2.1",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l4": {
+			"name": "graphics",
+			"version": "3.6.1",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l5": {
+			"name": "grDevices",
+			"version": "3.6.1",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l6": {
+			"name": "methods",
+			"version": "3.6.1",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l7": {
+			"name": "rdt",
+			"version": "3.1.1",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l8": {
+			"name": "stats",
+			"version": "3.6.1",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l9": {
+			"name": "utils",
+			"version": "3.6.1",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		}
+	},
+
+	"wasInformedBy" : {
+		"rdt:pp1": {
+			"prov:informant": "rdt:p1",
+			"prov:informed": "rdt:p2"
+		},
+		"rdt:pp2": {
+			"prov:informant": "rdt:p2",
+			"prov:informed": "rdt:p3"
+		}
+	},
+
+	"wasGeneratedBy" : {
+		"rdt:pd1": {
+			"prov:activity": "rdt:p2",
+			"prov:entity": "rdt:d2"
+		}
+	},
+
+	"used" : {
+		"rdt:dp1": {
+			"prov:entity": "rdt:d1",
+			"prov:activity": "rdt:p2"
+		}
+	}
+}
