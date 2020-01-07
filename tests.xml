@@ -221,7 +221,6 @@
 		<!-- additional properties -->
 		<property name="test-dir" value="scriptTests/${test-name}"/>
 		<property name="working-dir" value="${test-dir}/${tool}"/>
-		<property name="prov-dir" value="${working-dir}/prov_${test-name}"/>
 		<property name="local-dir" value="${working-dir}/local"/>
 		
 		<!--
@@ -236,6 +235,17 @@
 		</condition>
 		<property name="test-script" value="${FILE.basedir}/${test-dir}/${test-name}.R"/>
 		
+		<!-- Set the value of prov-dir.  If this is a test simulating running from
+		     the console, the provenance is in a directory named prov_console.  Otherwise,
+		     the provenance directory is named after the test. (the conditional for the 
+		     setting test-script to a .r file is unnecessary as the value for properties 
+		     can not be changed once set)
+		-->
+		<condition property="prov-dir" value="${working-dir}/prov_console">
+			<istrue value="${console-mode}"/>
+		</condition>
+		<property name="prov-dir" value="${working-dir}/prov_${test-name}"/>
+
 		<!--
 			Set the value of run-script. This is the file that actually runs the test.
 			If the property console-mode is true, then we are testing on console mode (console test).
@@ -295,7 +305,7 @@
 		</exec>
 		
 		<!-- PROV-JSON COMPLIANCE TEST -->
-		<antcall target="prov-json-compliance-test"/>
+		<antcall target="prov-json-compliance-test" />
 		
 		<!-- process output and expected files to prepare for comparison -->
 		<antcall target="prepare-to-compare"/>
@@ -313,7 +323,7 @@
 	<target name="prov-json-compliance-test">
 	    <available file="${prov-dir}/prov.json" property="json.exists"/>
 	    
-	    <fail message="prov.json does not exist.">
+	    <fail message="${prov-dir}/prov.json does not exist.">
 	    	<condition>
     			<not><isset property="json.exists"/></not>
 	    	</condition>
