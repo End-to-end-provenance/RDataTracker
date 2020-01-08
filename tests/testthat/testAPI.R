@@ -8,6 +8,8 @@ test_that("console prov dir", {
     })
 
 test_that("specified prov dir", {
-	  actual.path <- .ddg.set.path ("/x/y/z", NULL, FALSE)
-      expect_true(startsWith (actual.path, "/x/y/z/prov_console"))
+    dir.create("foo")
+	  actual.path <- .ddg.set.path ("foo", NULL, FALSE)
+      expect_true(startsWith (actual.path, 
+              paste (getwd(), "foo/prov_console", sep="/")))
     })
