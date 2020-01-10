@@ -78,6 +78,7 @@
 		DollarOperator
 		Empty
 		FileNodes
+		fromEnv
 		FunctionAnnotation
 		FunctionNonlocals
 		FunctionOrigin
@@ -107,6 +108,7 @@
 		Scope
 		Return
 		OddParameter
+		fromEnv
 		FunctionAnnotation
 		FuncctionNonlocals
 		ControlConstruct
@@ -219,7 +221,6 @@
 		<!-- additional properties -->
 		<property name="test-dir" value="scriptTests/${test-name}"/>
 		<property name="working-dir" value="${test-dir}/${tool}"/>
-		<property name="prov-dir" value="${working-dir}/prov_${test-name}"/>
 		<property name="local-dir" value="${working-dir}/local"/>
 		
 		<!--
@@ -234,6 +235,17 @@
 		</condition>
 		<property name="test-script" value="${FILE.basedir}/${test-dir}/${test-name}.R"/>
 		
+		<!-- Set the value of prov-dir.  If this is a test simulating running from
+		     the console, the provenance is in a directory named prov_console.  Otherwise,
+		     the provenance directory is named after the test. (the conditional for the 
+		     setting test-script to a .r file is unnecessary as the value for properties 
+		     can not be changed once set)
+		-->
+		<condition property="prov-dir" value="${working-dir}/prov_console">
+			<istrue value="${console-mode}"/>
+		</condition>
+		<property name="prov-dir" value="${working-dir}/prov_${test-name}"/>
+
 		<!--
 			Set the value of run-script. This is the file that actually runs the test.
 			If the property console-mode is true, then we are testing on console mode (console test).
@@ -293,7 +305,7 @@
 		</exec>
 		
 		<!-- PROV-JSON COMPLIANCE TEST -->
-		<antcall target="prov-json-compliance-test"/>
+		<antcall target="prov-json-compliance-test" />
 		
 		<!-- process output and expected files to prepare for comparison -->
 		<antcall target="prepare-to-compare"/>
@@ -311,7 +323,7 @@
 	<target name="prov-json-compliance-test">
 	    <available file="${prov-dir}/prov.json" property="json.exists"/>
 	    
-	    <fail message="prov.json does not exist.">
+	    <fail message="${prov-dir}/prov.json does not exist.">
 	    	<condition>
     			<not><isset property="json.exists"/></not>
 	    	</condition>
@@ -1479,6 +1491,63 @@
 	</target>
 	
 	
+	<!-- fromEnv -->
+	<target name="fromEnv">    <!-- helper -->
+		<condition property="travis" value="false">    <!-- default value -->
+			<not>
+				<isset property="travis"/>
+			</not>
+		</condition>
+		<condition property="tool" value="rdtLite">    <!-- default value -->
+			<not>
+				<isset property="tool"/>
+			</not>
+		</condition>
+		<antcall target="run-test">
+			<param name="test-name" value="fromEnv"/>
+			<param name="console-mode" value="true"/>
+			<param name="details" value="true"/>
+		</antcall>
+	</target>
+	
+	<target name="update-fromEnv">    <!-- helper -->
+		<condition property="tool" value="rdtLite">    <!-- default value -->
+			<not>
+				<isset property="tool"/>
+			</not>
+		</condition>
+		<antcall target="update-expected">
+			<param name="test-name" value="fromEnv"/>
+		</antcall>
+	</target>
+	
+	<target name="fromEnv-rdt">
+		<antcall target="fromEnv">
+			<param name="travis" value="false"/>
+			<param name="tool" value="rdt"/>
+		</antcall>
+	</target>
+	
+	<target name="fromEnv-rdtLite">
+		<antcall target="fromEnv">
+			<param name="travis" value="false"/>
+			<param name="tool" value="rdtLite"/>
+		</antcall>
+	</target>
+	
+	<target name="update-fromEnv-rdt">
+		<antcall target="update-fromEnv">
+			<param name="tool" value="rdt"/>
+		</antcall>
+	</target>
+	
+	<target name="update-fromEnv-rdtLite">
+		<antcall target="update-fromEnv">
+			<param name="tool" value="rdtLite"/>
+		</antcall>
+	</target>
+	
+	
 	<!-- FunctionAnnotationTest -->
 	<target name="FunctionAnnotation">    <!-- helper -->
 		<condition property="travis" value="false">    <!-- default value -->
@@ -2481,8 +2550,8 @@
 	
 	<!-- normal tests -->
 	<target name="normal-tests"
-			depends="basic, Empty, NoDetails, S4Object, Scope, Return, 
-					 OddParameter, DollarOperator, FunctionAnnotation, FunctionNonlocals, 
+			depends="basic, Empty, NoDetails, S4Object, Scope, Return, OddParameter, 
+					 DollarOperator, fromEnv, FunctionAnnotation, FunctionNonlocals, 
 					 ControlConstruct, DataFunction, Warning, Plot1, Plot2, Plot3, FileNodes, 
 					 NoDevOff, DataType, HigherOrderFunc, AssignOperators, 
 					 FunctionOrigin, RMarkdown, DDGStatement, Connection">

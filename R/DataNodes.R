@@ -171,8 +171,13 @@
   # Search initial environment table.
   if (dscope == "R_GlobalEnv") {
     #print("Searching global environment")
-    if (exists(dname, .ddg.get("ddg.initial.env"))) {
-      dvalue <- get(dname, envir = .ddg.get("ddg.initial.env"))
+    ddg.initial.var <- .ddg.initial.var()
+    index <- which(ddg.initial.var$ddg.name == dname)
+
+    if (length(index) > 0) {
+      ddg.initial.env <- .ddg.initial.env()
+      dvalue <- get(dname, envir = ddg.initial.env)
+
       if (!is.function(dvalue)) {
         .ddg.save.data(dname, dvalue, scope=dscope, from.env=TRUE)
         return (TRUE)
