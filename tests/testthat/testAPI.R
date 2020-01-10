@@ -7,9 +7,3 @@ test_that("console prov dir", {
       unlink (actual.path, recursive=TRUE)
     })
 
-test_that("specified prov dir", {
-    dir.create("foo")
-	  actual.path <- .ddg.set.path ("foo", NULL, FALSE)
-      expect_true(startsWith (actual.path, 
-              paste (getwd(), "foo/prov_console", sep="/")))
-    })
