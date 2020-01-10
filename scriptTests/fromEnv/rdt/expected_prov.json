@@ -7,8 +7,32 @@
 	"agent" : {
 		"rdt:a1": {
 			"rdt:tool.name": "rdt",
-			"rdt:tool.version": "3.1.1",
-			"rdt:json.version": "2.2"
+			"rdt:tool.version": "3.2.1",
+			"rdt:json.version": "2.3",
+			"rdt:args.names": [
+				"overwrite",
+				"annotate.inside.functions",
+				"first.loop",
+				"max.loops",
+				"snapshot.size",
+				"save.debug"
+			],
+			"rdt:args.values": [
+				"TRUE",
+				"FALSE",
+				"1",
+				"0",
+				"10",
+				"FALSE"
+			],
+			"rdt:args.types": [
+				"logical",
+				"logical",
+				"integer",
+				"integer",
+				"numeric",
+				"logical"
+			]
 		}
 	},
 
@@ -16,7 +40,7 @@
 		"rdt:p1": {
 			"rdt:name": "Console",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": "0.78",
+			"rdt:elapsedTime": "0.81",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -26,7 +50,7 @@
 		"rdt:p2": {
 			"rdt:name": "a <- rep(x, 5)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.03",
+			"rdt:elapsedTime": "0.05",
 			"rdt:scriptNum": -1,
 			"rdt:startLine": -1,
 			"rdt:startCol": -1,
@@ -36,7 +60,7 @@
 		"rdt:p3": {
 			"rdt:name": "Console",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": "0.03",
+			"rdt:elapsedTime": "0.09",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -54,7 +78,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": true,
 			"rdt:hash": "",
-			"rdt:timestamp": "2020-01-07T15.54.58EST",
+			"rdt:timestamp": "2020-01-10T16.19.39EST",
 			"rdt:location": ""
 		},
 		"rdt:d2": {
@@ -65,7 +89,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2020-01-07T15.54.58EST",
+			"rdt:timestamp": "2020-01-10T16.19.39EST",
 			"rdt:location": ""
 		},
 
@@ -77,12 +101,12 @@
 			"rdt:langVersion": "R version 3.6.1 (2019-07-05)",
 			"rdt:script": "",
 			"rdt:scriptTimeStamp": "",
-			"rdt:totalElapsedTime": "0.84",
+			"rdt:totalElapsedTime": "0.95",
 			"rdt:sourcedScripts": "",
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:workingDirectory": "C:/github/rdatatracker/scriptTests/fromEnv/rdt",
 			"rdt:provDirectory": "C:/github/rdatatracker/scriptTests/fromEnv/rdt/prov_console",
-			"rdt:provTimestamp": "2020-01-07T15.54.57EST",
+			"rdt:provTimestamp": "2020-01-10T16.19.38EST",
 			"rdt:hashAlgorithm": "md5"
 		},
 
@@ -136,7 +160,7 @@
 		},
 		"rdt:l7": {
 			"name": "rdt",
-			"version": "3.1.1",
+			"version": "3.2.1",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
