@@ -929,7 +929,7 @@
   callStr <-
       if (is.null (w$call)) ""
       else paste ("In ", utils::head (deparse(w$call)), ": ")
-  warningMessage <- paste (callStr, w$message)
+  warningMessage <- paste (callStr[1], w$message)
 
   # Create the warning node
   .ddg.insert.error.message(warningMessage, "warning.msg", doWarn = FALSE)
