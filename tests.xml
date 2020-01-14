@@ -593,11 +593,23 @@
 		Parameters passed in are:
 			@param tool : the name of the provenance collection tool
 			@param test-name : the name of the test run
+			@param console-mode : true if on console mode (console test), unset otherwise
 	-->
 	<target name="update-expected">
 		<!-- additional properties -->
 		<property name="test-dir" value="scriptTests/${test-name}"/>
 		<property name="working-dir" value="${test-dir}/${tool}"/>
+
+		<!-- Set the value of prov-dir.  If this is a test simulating running from
+		     the console, the provenance is in a directory named prov_console.  Otherwise,
+		     the provenance directory is named after the test. (the conditional for the 
+		     setting test-script to a .r file is unnecessary as the value for properties 
+		     can not be changed once set)
+		-->
+		<condition property="prov-dir" value="${working-dir}/prov_console">
+			<istrue value="${console-mode}"/>
+		</condition>
+		<property name="prov-dir" value="${working-dir}/prov_${test-name}"/>
 		
 		<!-- Confirm that the user wants to update the expected results.  -->
 		<input
@@ -619,7 +631,7 @@
 		<!-- copy .out and prov.json file into tmp folder -->
 		<copy todir="${expected-dir}" overwrite="true">
 			<fileset file="${working-dir}/test.out"/>
-			<fileset file="${working-dir}/prov_${test-name}/prov.json"/>
+			<fileset file="${prov-dir}/prov.json"/>
 		</copy>
 		
 		<!-- replace file paths to test directory with [DIR] -->
@@ -1518,6 +1530,7 @@
 		</condition>
 		<antcall target="update-expected">
 			<param name="test-name" value="fromEnv"/>
+			<param name="console-mode" value="true"/>
 		</antcall>
 	</target>
 	
