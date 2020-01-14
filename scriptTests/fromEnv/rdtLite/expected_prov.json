@@ -31,7 +31,7 @@
 		"rdt:p1": {
 			"rdt:name": "Console",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": "0.766",
+			"rdt:elapsedTime": "0.677",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -41,7 +41,7 @@
 		"rdt:p2": {
 			"rdt:name": "a <- rep(x, 5)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.045",
+			"rdt:elapsedTime": "0.043",
 			"rdt:scriptNum": -1,
 			"rdt:startLine": -1,
 			"rdt:startCol": -1,
@@ -51,7 +51,7 @@
 		"rdt:p3": {
 			"rdt:name": "Console",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": "0.058",
+			"rdt:elapsedTime": "0.089",
 			"rdt:scriptNum": "NA",
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -62,14 +62,25 @@
 
 	"entity" : {
 		"rdt:d1": {
+			"rdt:name": "x",
+			"rdt:value": "data/1-x.csv",
+			"rdt:valType": "{\"container\":\"matrix\", \"dimension\":[5,20], \"type\":[\"integer\"]}",
+			"rdt:type": "Snapshot",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": true,
+			"rdt:hash": "",
+			"rdt:timestamp": "2020-01-14T15.16.02EST",
+			"rdt:location": ""
+		},
+		"rdt:d2": {
 			"rdt:name": "a",
-			"rdt:value": "data/1-a.txt",
+			"rdt:value": "data/2-a.txt",
 			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[500], \"type\":[\"integer\"]}",
 			"rdt:type": "Snapshot",
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2020-01-14T14.35.09EST",
+			"rdt:timestamp": "2020-01-14T15.16.02EST",
 			"rdt:location": ""
 		},
 
@@ -81,12 +92,12 @@
 			"rdt:langVersion": "R version 3.6.0 (2019-04-26)",
 			"rdt:script": "",
 			"rdt:scriptTimeStamp": "",
-			"rdt:totalElapsedTime": "0.869",
+			"rdt:totalElapsedTime": "0.809",
 			"rdt:sourcedScripts": "",
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:workingDirectory": "[DIR]/rdtLite",
 			"rdt:provDirectory": "[DIR]/rdtLite/prov_console",
-			"rdt:provTimestamp": "2020-01-14T14.35.08EST",
+			"rdt:provTimestamp": "2020-01-14T15.16.01EST",
 			"rdt:hashAlgorithm": "md5"
 		},
 
@@ -178,7 +189,14 @@
 	"wasGeneratedBy" : {
 		"rdt:pd1": {
 			"prov:activity": "rdt:p2",
-			"prov:entity": "rdt:d1"
+			"prov:entity": "rdt:d2"
+		}
+	},
+
+	"used" : {
+		"rdt:dp1": {
+			"prov:entity": "rdt:d1",
+			"prov:activity": "rdt:p2"
 		}
 	}
 }
