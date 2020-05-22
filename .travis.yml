@@ -12,20 +12,18 @@ r:
 addons:
   apt:
     packages:
-#      - libicu-dev
-#      - libv8-dev
+      - libicu-dev
       - ant
-#      - r-cran-ggplot2
-#      - r-cran-gdata
-#      - r-cran-rcurl
-#      - r-cran-v8
+      - r-cran-ggplot2
+      - r-cran-gdata
+      - r-cran-rcurl
+      - r-cran-v8
  
 before-install:
-  - sudo apt-get install -y libv8-dev
-#  - .libPaths ("/home/travis/R/Library")
+  - .libPaths ("/home/travis/R/Library")
 
 install: 
-  - Rscript -e 'install.packages (c("devtools", "roxygen2", "knitr", "rmarkdown", "jsonvalidate", "XML", "testthat", "gplots", "ggplot2", "stringi", "RCurl", "provSummarizeR", "provViz", "V8"))'
+  - Rscript -e 'install.packages (c("devtools", "roxygen2", "knitr", "rmarkdown", "jsonvalidate", "XML", "testthat", "gplots", "ggplot2", "stringi", "RCurl", "provSummarizeR", "provViz"))'
   - Rscript -e 'print (installed.packages())'
 
 before_script:
