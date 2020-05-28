@@ -358,14 +358,13 @@
 #' @param endCol the column that the source call ends on
 #' @return nothing
 #' @noRd
-
 .ddg.source <- function (file, local = FALSE, echo = verbose, print.eval = echo, 
     exprs, spaced = use_file, verbose = getOption("verbose"), 
     prompt.echo = getOption("prompt"), max.deparse.length = 150, 
     width.cutoff = 60L, deparseCtrl = "showAttributes", chdir = FALSE, 
     encoding = getOption("encoding"), continue.echo = getOption("continue"), 
     skip.echo = 0, 
-    ignore.ddg.calls = TRUE, calling.script = NA, startLine = NA, startCol = NA,
+    ignore.ddg.calls = TRUE, calling.script = 1, startLine = NA, startCol = NA,
     endLine = NA, endCol = NA) 
 {
   # This function is largely derived from R's source function.  Part of R's
@@ -523,7 +522,7 @@
   if (length(exprs) > 0) {
     .ddg.set("from.source", TRUE)
     if (.ddg.details()) {
-      if (is.na(calling.script)) {
+      if(calling.script == 1) {
         .ddg.add.start.node(node.name = sname)
       }
       else {
@@ -540,7 +539,8 @@
           max.deparse.length = max.deparse.length, run.commands = TRUE, 
           continue.echo = continue.echo, skip.echo = skip.echo, prompt.echo = prompt.echo, 
           spaced = spaced, verbose = verbose, deparseCtrl = deparseCtrl)
-      if (is.na(calling.script)) {
+      
+      if(calling.script == 1) {
         .ddg.add.finish.node()
       }
       else {
@@ -550,7 +550,7 @@
       }
     }
     else {
-      if (is.na(calling.script)) 
+      if(calling.script == 1)
         .ddg.proc.node("Operation", sname)
       yy <- .ddg.evaluate.commands(exprs, environ = envir)
     }

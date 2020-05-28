@@ -56,14 +56,14 @@ are not annotated.  If the user passes in NULL, all functions are annotated.
 
 prov.annotate.on can be called multiple times.  Each call adds more names
 to the list of annotated functions, continuing to annotate the previous
-functions in the list.
+functions in the list. 
 
 In prov.annotate.off, the user passes in 
 a list of function names that should not be annotated.  Functions not listed
 are not annotated.  If the user passes in NULL, all functions are annotated.
 
 prov.annotate.off can be called multiple times.  Each call adds more names
-to the list of unannotated functions.
+to the list of unannotated functions. 
 
 The level of detail of provenance can be set using the annotate.inside.functions,
 max.loops and snapshot.size parameters of prov.run and prov.init.

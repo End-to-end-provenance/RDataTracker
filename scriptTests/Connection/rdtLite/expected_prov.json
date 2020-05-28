@@ -7,7 +7,7 @@
 	"agent" : {
 		"rdt:a1": {
 			"rdt:tool.name": "rdtLite",
-			"rdt:tool.version": "1.1.1",
+			"rdt:tool.version": "1.2.1",
 			"rdt:json.version": "2.3",
 			"rdt:args.names": [
 				"overwrite",
@@ -34,8 +34,8 @@
 		"rdt:p1": {
 			"rdt:name": "Connection.R",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": "1.12",
-			"rdt:scriptNum": "NA",
+			"rdt:elapsedTime": "0.76",
+			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
 			"rdt:endLine": "NA",
@@ -44,7 +44,7 @@
 		"rdt:p2": {
 			"rdt:name": "file.in <- url(\"http://harvardforest.fas.harvard.edu/data/p0",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.16",
+			"rdt:elapsedTime": "0.13",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 1,
 			"rdt:startCol": 1,
@@ -54,7 +54,7 @@
 		"rdt:p3": {
 			"rdt:name": "df <- read.csv(file.in)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.94",
+			"rdt:elapsedTime": "1.19",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 2,
 			"rdt:startCol": 1,
@@ -64,7 +64,7 @@
 		"rdt:p4": {
 			"rdt:name": "file.out <- file(\"test.csv\", \"w+\")",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "9.15",
+			"rdt:elapsedTime": "4.8",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 3,
 			"rdt:startCol": 1,
@@ -74,7 +74,7 @@
 		"rdt:p5": {
 			"rdt:name": "write.csv(df, file.out)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.44",
+			"rdt:elapsedTime": "0.26",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 4,
 			"rdt:startCol": 1,
@@ -84,7 +84,7 @@
 		"rdt:p6": {
 			"rdt:name": "close(file.out)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.25",
+			"rdt:elapsedTime": "0.17",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 5,
 			"rdt:startCol": 1,
@@ -94,7 +94,7 @@
 		"rdt:p7": {
 			"rdt:name": "socket <- socketConnection(\"harvardforest.fas.harvard.edu\", ",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.15",
+			"rdt:elapsedTime": "0.12",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 9,
 			"rdt:startCol": 1,
@@ -104,7 +104,7 @@
 		"rdt:p8": {
 			"rdt:name": "writeLines(\"GET / HTTP/1.1\", socket)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.15",
+			"rdt:elapsedTime": "0.12",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 10,
 			"rdt:startCol": 1,
@@ -114,7 +114,7 @@
 		"rdt:p9": {
 			"rdt:name": "writeLines(\"Host: harvardforest.fas.harvard.edu\", socket)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.11",
+			"rdt:elapsedTime": "0.09",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 11,
 			"rdt:startCol": 1,
@@ -124,7 +124,7 @@
 		"rdt:p10": {
 			"rdt:name": "writeLines(\"\", socket)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.13",
+			"rdt:elapsedTime": "0.06",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 12,
 			"rdt:startCol": 1,
@@ -134,7 +134,7 @@
 		"rdt:p11": {
 			"rdt:name": "homepage <- readLines(socket)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.2",
+			"rdt:elapsedTime": "0.14",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 13,
 			"rdt:startCol": 1,
@@ -144,7 +144,7 @@
 		"rdt:p12": {
 			"rdt:name": "file.out <- file(\"home.html\", \"w+\")",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.12",
+			"rdt:elapsedTime": "0.08",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 14,
 			"rdt:startCol": 1,
@@ -154,7 +154,7 @@
 		"rdt:p13": {
 			"rdt:name": "writeLines(homepage, file.out)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.12",
+			"rdt:elapsedTime": "0.16",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 15,
 			"rdt:startCol": 1,
@@ -164,7 +164,7 @@
 		"rdt:p14": {
 			"rdt:name": "file.in <- unz(\"../foo.zip\", \"foo.txt\")",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.11",
+			"rdt:elapsedTime": "0.06",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 18,
 			"rdt:startCol": 1,
@@ -174,7 +174,7 @@
 		"rdt:p15": {
 			"rdt:name": "unzipped <- readLines(file.in)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.24",
+			"rdt:elapsedTime": "0.15",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 19,
 			"rdt:startCol": 1,
@@ -184,7 +184,7 @@
 		"rdt:p16": {
 			"rdt:name": "file2.out <- file(\"foo_copy.txt\", \"w+\")",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.14",
+			"rdt:elapsedTime": "0.11",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 20,
 			"rdt:startCol": 1,
@@ -194,7 +194,7 @@
 		"rdt:p17": {
 			"rdt:name": "writeLines(unzipped, file2.out)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.11",
+			"rdt:elapsedTime": "0.08",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 21,
 			"rdt:startCol": 1,
@@ -204,7 +204,7 @@
 		"rdt:p18": {
 			"rdt:name": "close(file.out)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.25",
+			"rdt:elapsedTime": "0.18",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 22,
 			"rdt:startCol": 1,
@@ -214,7 +214,7 @@
 		"rdt:p19": {
 			"rdt:name": "writeLines (\"foobar\", \"foobar.txt\")",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.14",
+			"rdt:elapsedTime": "0.06",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 24,
 			"rdt:startCol": 1,
@@ -224,7 +224,7 @@
 		"rdt:p20": {
 			"rdt:name": "closeAllConnections()",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.45",
+			"rdt:elapsedTime": "0.34",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 40,
 			"rdt:startCol": 1,
@@ -234,7 +234,7 @@
 		"rdt:p21": {
 			"rdt:name": "file3.out <- file (\"asdf.txt\", \"w+\")",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.13",
+			"rdt:elapsedTime": "0.1",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 46,
 			"rdt:startCol": 1,
@@ -244,7 +244,7 @@
 		"rdt:p22": {
 			"rdt:name": "writeLines (\"asdf\", file3.out)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.14",
+			"rdt:elapsedTime": "0.09",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 47,
 			"rdt:startCol": 1,
@@ -255,7 +255,7 @@
 			"rdt:name": "Connection.R",
 			"rdt:type": "Finish",
 			"rdt:elapsedTime": "0.0",
-			"rdt:scriptNum": "NA",
+			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
 			"rdt:endLine": "NA",
@@ -272,7 +272,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-08-21T18.45.56EDT",
+			"rdt:timestamp": "2020-05-22T00.13.26EDT",
 			"rdt:location": ""
 		},
 		"rdt:d2": {
@@ -283,7 +283,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "76551e9b09d96eb70bba9ae7a16aab9a",
-			"rdt:timestamp": "2019-08-21T18.45.57EDT",
+			"rdt:timestamp": "2020-05-22T00.13.29EDT",
 			"rdt:location": ""
 		},
 		"rdt:d3": {
@@ -294,7 +294,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-08-21T18.46.06EDT",
+			"rdt:timestamp": "2020-05-22T00.13.33EDT",
 			"rdt:location": ""
 		},
 		"rdt:d4": {
@@ -305,7 +305,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-08-21T18.46.07EDT",
+			"rdt:timestamp": "2020-05-22T00.13.33EDT",
 			"rdt:location": ""
 		},
 		"rdt:d5": {
@@ -316,7 +316,7 @@
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
 			"rdt:hash": "e5ae49cf8c38c993955b9f24f1d1f0d3",
-			"rdt:timestamp": "2019-08-21T18.46.07EDT",
+			"rdt:timestamp": "2020-05-22T00.13.34EDT",
 			"rdt:location": "[DIR]/rdtLite/test.csv"
 		},
 		"rdt:d6": {
@@ -327,7 +327,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-08-21T18.46.07EDT",
+			"rdt:timestamp": "2020-05-22T00.13.34EDT",
 			"rdt:location": ""
 		},
 		"rdt:d7": {
@@ -338,18 +338,18 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-08-21T18.47.11EDT",
+			"rdt:timestamp": "2020-05-22T00.14.36EDT",
 			"rdt:location": ""
 		},
 		"rdt:d8": {
 			"rdt:name": "homepage",
 			"rdt:value": "data/8-homepage.txt",
-			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[15], \"type\":[\"character\"]}",
+			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[26], \"type\":[\"character\"]}",
 			"rdt:type": "Snapshot",
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-08-21T18.47.11EDT",
+			"rdt:timestamp": "2020-05-22T00.14.36EDT",
 			"rdt:location": ""
 		},
 		"rdt:d9": {
@@ -360,7 +360,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-08-21T18.47.11EDT",
+			"rdt:timestamp": "2020-05-22T00.14.36EDT",
 			"rdt:location": ""
 		},
 		"rdt:d10": {
@@ -371,7 +371,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-08-21T18.47.11EDT",
+			"rdt:timestamp": "2020-05-22T00.14.37EDT",
 			"rdt:location": ""
 		},
 		"rdt:d11": {
@@ -382,7 +382,7 @@
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
 			"rdt:hash": "704a3b29fc7f6ef92401830aacf7eee1",
-			"rdt:timestamp": "2019-08-21T18.47.11EDT",
+			"rdt:timestamp": "2020-05-22T00.14.37EDT",
 			"rdt:location": "[DIR]/foo.zip"
 		},
 		"rdt:d12": {
@@ -404,7 +404,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-08-21T18.47.11EDT",
+			"rdt:timestamp": "2020-05-22T00.14.37EDT",
 			"rdt:location": ""
 		},
 		"rdt:d14": {
@@ -414,8 +414,8 @@
 			"rdt:type": "File",
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
-			"rdt:hash": "d3019fd3144692e0eac1889b2dede5bd",
-			"rdt:timestamp": "2019-08-21T18.47.12EDT",
+			"rdt:hash": "2494762a9aba0f843be0f74edfd3a31d",
+			"rdt:timestamp": "2020-05-22T00.14.37EDT",
 			"rdt:location": "[DIR]/rdtLite/home.html"
 		},
 		"rdt:d15": {
@@ -426,7 +426,7 @@
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
 			"rdt:hash": "d881b69b0aca33bcf5dbc7dc5c448cc2",
-			"rdt:timestamp": "2019-08-21T18.47.12EDT",
+			"rdt:timestamp": "2020-05-22T00.14.37EDT",
 			"rdt:location": "[DIR]/rdtLite/foobar.txt"
 		},
 		"rdt:d16": {
@@ -437,7 +437,7 @@
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
 			"rdt:hash": "2145971cf82058b108229a3a2e3bff35",
-			"rdt:timestamp": "2019-08-21T18.47.12EDT",
+			"rdt:timestamp": "2020-05-22T00.14.38EDT",
 			"rdt:location": "[DIR]/rdtLite/foo_copy.txt"
 		},
 		"rdt:d17": {
@@ -448,7 +448,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2019-08-21T18.47.13EDT",
+			"rdt:timestamp": "2020-05-22T00.14.38EDT",
 			"rdt:location": ""
 		},
 		"rdt:d18": {
@@ -459,7 +459,7 @@
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
 			"rdt:hash": "d41d8cd98f00b204e9800998ecf8427e",
-			"rdt:timestamp": "2019-08-21T18.47.13EDT",
+			"rdt:timestamp": "2020-05-22T00.14.38EDT",
 			"rdt:location": "[DIR]/rdtLite/asdf.txt"
 		},
 
@@ -468,21 +468,21 @@
 			"rdt:architecture": "x86_64",
 			"rdt:operatingSystem": "mingw32",
 			"rdt:language": "R",
-			"rdt:langVersion": "R version 3.6.1 (2019-07-05)",
+			"rdt:langVersion": "R version 3.6.3 (2020-02-29)",
 			"rdt:script": "[DIR]/Connection.R",
-			"rdt:scriptTimeStamp": "2019-08-15T18.21.18EDT",
-			"rdt:totalElapsedTime": "14.75",
+			"rdt:scriptTimeStamp": "2020-05-20T11.26.11EDT",
+			"rdt:totalElapsedTime": "9.25",
 			"rdt:sourcedScripts": "",
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:workingDirectory": "[DIR]/rdtLite",
-			"rdt:provDirectory": "[DIR]/rdtLite/prov_Connection",
-			"rdt:provTimestamp": "2019-08-21T18.45.54EDT",
+			"rdt:provDirectory": "C:\\Users\\fong22e\\Documents\\HarvardForest\\RDataTracker_scriptNum\\scriptTests\\Connection\\rdtLite/prov_Connection",
+			"rdt:provTimestamp": "2020-05-22T00.13.25EDT",
 			"rdt:hashAlgorithm": "md5"
 		},
 
 		"rdt:l1": {
 			"name": "base",
-			"version": "3.6.1",
+			"version": "3.6.3",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -490,7 +490,7 @@
 		},
 		"rdt:l2": {
 			"name": "datasets",
-			"version": "3.6.1",
+			"version": "3.6.3",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -506,7 +506,7 @@
 		},
 		"rdt:l4": {
 			"name": "graphics",
-			"version": "3.6.1",
+			"version": "3.6.3",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -514,7 +514,7 @@
 		},
 		"rdt:l5": {
 			"name": "grDevices",
-			"version": "3.6.1",
+			"version": "3.6.3",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -522,7 +522,7 @@
 		},
 		"rdt:l6": {
 			"name": "methods",
-			"version": "3.6.1",
+			"version": "3.6.3",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -530,7 +530,7 @@
 		},
 		"rdt:l7": {
 			"name": "rdtLite",
-			"version": "1.1.1",
+			"version": "1.2.1",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -538,7 +538,7 @@
 		},
 		"rdt:l8": {
 			"name": "stats",
-			"version": "3.6.1",
+			"version": "3.6.3",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -546,7 +546,7 @@
 		},
 		"rdt:l9": {
 			"name": "utils",
-			"version": "3.6.1",
+			"version": "3.6.3",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"

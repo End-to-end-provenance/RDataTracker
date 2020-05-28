@@ -724,9 +724,8 @@
 #' @param endCol (optional) - the column that the operation ends on
 #' @return the label of the node created, excluding "Start"
 #' @noRd
-
 .ddg.add.start.node <- function(cmd = NULL, node.name = "",
-    script.num=NA, startLine=NA, startCol=NA, endLine=NA, endCol=NA) {
+    script.num=1, startLine=NA, startCol=NA, endLine=NA, endCol=NA) {
   node.name <- .ddg.add.abstract.node ("Start", cmd, node.name,
       script.num, startLine, startCol, endLine, endCol)
   .ddg.push.start (node.name)
@@ -741,9 +740,8 @@
 #' @param endCol (optional) - the column that the operation ends on
 #' @return the label of the node created, excluding "Finish"
 #' @noRd
-
 .ddg.add.finish.node <- function(cmd = NULL,
-    script.num=NA, startLine=NA, startCol=NA, endLine=NA, endCol=NA) {
+    script.num=1, startLine=NA, startCol=NA, endLine=NA, endCol=NA) {
   popped <- .ddg.pop.start ()
   node.name <- .ddg.add.abstract.node ("Finish", cmd, node.name = popped,
       script.num, startLine, startCol, endLine, endCol)
