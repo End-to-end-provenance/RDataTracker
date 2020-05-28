@@ -8,18 +8,36 @@
 \alias{prov.source}
 \title{Provenance Collection Functions}
 \usage{
-prov.init(prov.dir = NULL, overwrite = TRUE,
-  annotate.inside.functions = FALSE, first.loop = 1, max.loops = 0,
-  snapshot.size = 0, hash.algorithm = "md5", save.debug = FALSE)
+prov.init(
+  prov.dir = NULL,
+  overwrite = TRUE,
+  annotate.inside.functions = FALSE,
+  first.loop = 1,
+  max.loops = 0,
+  snapshot.size = 0,
+  hash.algorithm = "md5",
+  save.debug = FALSE
+)
 
 prov.save(save.debug = FALSE)
 
 prov.quit(save.debug = FALSE)
 
-prov.run(r.script.path, prov.dir = NULL, overwrite = TRUE,
-  details = TRUE, annotate.inside.functions = FALSE, first.loop = 1,
-  max.loops = 0, snapshot.size = 0, hash.algorithm = "md5",
-  save.debug = FALSE, display = FALSE, exprs, ...)
+prov.run(
+  r.script.path,
+  prov.dir = NULL,
+  overwrite = TRUE,
+  details = TRUE,
+  annotate.inside.functions = FALSE,
+  first.loop = 1,
+  max.loops = 0,
+  snapshot.size = 0,
+  hash.algorithm = "md5",
+  save.debug = FALSE,
+  display = FALSE,
+  exprs,
+  ...
+)
 
 prov.source(file, exprs, ...)
 }
