@@ -30,7 +30,7 @@ read.data <- function() {
   data.rows <<- nrow(raw.data)
 
   # read parameter files
-  calibration.parameters <<- read.csv(cal.file)
+  calibration.parameters <<- read.csv(cal.file, stringsAsFactors=TRUE)
   quality.control.parameters <<- read.csv(qc.file)
   gap.fill.parameters <<- read.csv(gf.file)
 

@@ -1,8 +1,9 @@
-file.in <- url("http://harvardforest.fas.harvard.edu/data/p00/hf000/hf000-01-daily-m.csv")
-df <- read.csv(file.in)
-file.out <- file("test.csv", "w+")
-write.csv(df, file.out)
-close(file.out)
+# Commented out for now because there is an expired certiricate (June 2, 2020)
+#file.in <- url("http://harvardforest.fas.harvard.edu/data/p00/hf000/hf000-01-daily-m.csv")
+#df <- read.csv(file.in)
+#file.out <- file("test.csv", "w+")
+#write.csv(df, file.out)
+#close(file.out)
 
 # Note that there is something wrong with the protocol here.  I get a Bad Request page
 # but that is ok.  The point is that we can read from a socket and get the right ddg.

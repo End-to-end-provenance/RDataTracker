@@ -41,7 +41,8 @@ a <- "character"
 storage.mode(z) <- a
 
 # Test files and URLs
-data.df <- read.csv ("http://harvardforest.fas.harvard.edu/data/p00/hf000/hf000-01-daily-m.csv")
+#data.df <- read.csv ("http://harvardforest.fas.harvard.edu/data/p00/hf000/hf000-01-daily-m.csv")
+data.df <- read.csv ("http://harvardforest1.fas.harvard.edu/sites/harvardforest.fas.harvard.edu/files/data/p00/hf000/hf000-01-daily-m.csv")
 if (FALSE) read.csv ("foo.csv")
 shortdata.df <- data.df[1:100, ]
 write.csv (shortdata.df, "shortdata.csv")
