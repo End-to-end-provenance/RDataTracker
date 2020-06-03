@@ -16,11 +16,8 @@ addons:
       - r-cran-rcurl
 #      - r-cran-v8
  
-before-install:
-  - .libPaths ("/home/travis/R/Library")
-
-install: 
-  - Rscript -e 'install.packages (c("devtools", "roxygen2", "knitr", "rmarkdown", "jsonvalidate", "XML", "testthat", "gplots", "ggplot2", "stringi", "RCurl", "provSummarizeR", "provViz"))'
+before_install:
+  - Rscript -e 'install.packages(c("devtools", "roxygen2", "knitr", "rmarkdown", "jsonvalidate", "XML", "testthat", "gplots", "ggplot2", "stringi", "RCurl", "provSummarizeR", "provViz"), lib="/home/travis/R-bin/lib/R/library/")'
   - Rscript -e 'print (installed.packages())'
 
 before_script:
