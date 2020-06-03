@@ -6,11 +6,11 @@ language: R
 sudo: false
 cache: packages
 
-#addons:
-#  apt:
-#    packages:
+addons:
+  apt:
+    packages:
 #      - libicu-dev
-#      - ant
+      - ant
 #      - r-cran-ggplot2
 #      - r-cran-gdata
 #      - r-cran-rcurl
