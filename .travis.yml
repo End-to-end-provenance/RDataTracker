@@ -16,8 +16,8 @@ addons:
       - r-cran-rcurl
 #      - r-cran-v8
  
-#before-install:
-#  - .libPaths ("/home/travis/R/Library")
+before-install:
+  - .libPaths ("/home/travis/R/Library")
 
 install: 
   - Rscript -e 'install.packages (c("devtools", "roxygen2", "knitr", "rmarkdown", "jsonvalidate", "XML", "testthat", "gplots", "ggplot2", "stringi", "RCurl", "provSummarizeR", "provViz"))'
@@ -29,8 +29,8 @@ before_script:
   - sleep 3
 
 script:
-  - ant -file build-rdt.xml install
-  - ant -file tests.xml test-travis-rdt
+#  - ant -file build-rdt.xml install
+#  - ant -file tests.xml test-travis-rdt
   - ant -file build-rdtLite.xml install
   - ant -file tests.xml test-travis-rdtLite
 
