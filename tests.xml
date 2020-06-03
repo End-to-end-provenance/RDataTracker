@@ -786,10 +786,12 @@
 				<isset property="tool"/>
 			</not>
 		</condition>
-		<antcall target="run-test">
+	    <echo> "WARNING: The basic test is not being run currently."</echo>
+	    <echo> "The URL it connects to has an expired certificate."</echo>
+		<!--<antcall target="run-test">
 			<param name="test-name" value="basic"/>
 			<param name="details" value="true"/>
-		</antcall>
+		</antcall>-->
 	</target>
 	
 	<target name="update-basic">    <!-- helper -->
@@ -1741,11 +1743,13 @@
 				<isset property="tool"/>
 			</not>
 		</condition>
-		<antcall target="run-test">
+	    <echo> "WARNING: The HFDatasetPreview test is not being run currently."</echo>
+	    <echo> "The URL it connects to has an expired certificate."</echo>
+		<!--<antcall target="run-test">
 			<param name="test-name" value="HFDatasetPreview"/>
 			<param name="details" value="true"/>
 		</antcall>
-		<echo>The test requires RCurl and gplots (+ dependencies) to be installed.</echo>
+		<echo>The test requires RCurl and gplots (+ dependencies) to be installed.</echo>-->
 	</target>
 	
 	<target name="update-HFDatasetPreview">    <!-- helper -->
@@ -2739,6 +2743,12 @@
 		<echo></echo>
 		<echo>All tests makes calls to the RDataTracker Library. You might need to restart RStudio to correctly run the scripts with the updated library installed.</echo>
 		<echo></echo>
+	    <echo> "WARNING: The basic test and HFDatasetPreview tests are not"</echo>
+	    <echo> "being run currently."</echo>
+	    <echo> "The URL they connect to have an expired certificate."</echo>
+	    <echo> "Also, the first few lines of the Connection test are"</echo>
+	    <echo> "commented out for the same reason."</echo>
+
 	</target>
 	
 	
