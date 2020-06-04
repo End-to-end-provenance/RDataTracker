@@ -1173,8 +1173,10 @@
     # Get the value of the file parameter  
     file <- eval (as.symbol(file.param.name), envir = sys.frame(frame.number))
     #print(paste (".ddg.trace.graphics.open: file =", file))
-    .ddg.set("ddg.no.graphics.file", FALSE)
-    .ddg.set ("ddg.last.graphics.file", file)
+    if (!is.null(file)) {
+      .ddg.set("ddg.no.graphics.file", FALSE)
+      .ddg.set ("ddg.last.graphics.file", file)
+    }
   }
   
   # Set the flag to tell .ddg.add.graphics.device.node that it has work to do 
@@ -1204,7 +1206,7 @@
   if (!names(grDevices::dev.cur()) %in% c("RStudioGD", "quartz", "windows")) {
     # Record the binding between the current device and the graphics file, if
     # a file is being used.
-    if (.ddg.is.set ("ddg.last.graphics.file") && !is.null(.ddg.get("ddg.last.graphics.file")) &&
+    if (.ddg.is.set ("ddg.last.graphics.file") && 
         .ddg.get("ddg.last.graphics.file") != "") {
       .ddg.add.to.device.table (grDevices::dev.cur (), 
                                 .ddg.get ("ddg.last.graphics.file"))
