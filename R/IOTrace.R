@@ -1204,7 +1204,7 @@
   if (!names(grDevices::dev.cur()) %in% c("RStudioGD", "quartz", "windows")) {
     # Record the binding between the current device and the graphics file, if
     # a file is being used.
-    if (.ddg.is.set ("ddg.last.graphics.file") && 
+    if (.ddg.is.set ("ddg.last.graphics.file") && !is.null(.ddg.get("ddg.last.graphics.file")) &&
         .ddg.get("ddg.last.graphics.file") != "") {
       .ddg.add.to.device.table (grDevices::dev.cur (), 
                                 .ddg.get ("ddg.last.graphics.file"))
