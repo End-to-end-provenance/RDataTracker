@@ -1173,8 +1173,10 @@
     # Get the value of the file parameter  
     file <- eval (as.symbol(file.param.name), envir = sys.frame(frame.number))
     #print(paste (".ddg.trace.graphics.open: file =", file))
-    .ddg.set("ddg.no.graphics.file", FALSE)
-    .ddg.set ("ddg.last.graphics.file", file)
+    if (!is.null(file)) {
+      .ddg.set("ddg.no.graphics.file", FALSE)
+      .ddg.set ("ddg.last.graphics.file", file)
+    }
   }
   
   # Set the flag to tell .ddg.add.graphics.device.node that it has work to do 
