@@ -1147,12 +1147,26 @@
   # Get the frame corresponding to the graphics function being traced
   frame.number <- .ddg.get.traced.function.frame.number()
   
-  # Get the name of the graphics function
   call <- sys.call (frame.number)
+  
+  # Normally, we would expect to be tracing a function that we have asked
+  # to trace.  However, if this inside an R Markdown file that the user
+  # is running from console mode, we end up getting a closure instead.
+  # In that case, the plot is going into the on-screen R Markdown display,
+  # We will capture the output the same way as if it was going to an 
+  # X11 window or something similar.
+  if (rlang::is_closure (call[[1]])) {
+    .ddg.set("ddg.no.graphics.file", TRUE)
+    .ddg.set("ddg.last.graphics.file", "")
+    .ddg.set ("ddg.add.device.output", TRUE)
+    return()
+  }
+  
+  # Get the name of the graphics function
   fname <- as.character(call[[1]])
   
   # Remove the package name if present
-  if (length(fname > 1)) {
+  if (length(fname) > 1) {
     fname <- fname[length(fname)]
   }
   #print(paste (".ddg.trace.graphics.open: fname =", fname))
@@ -1203,7 +1217,7 @@
   #              names(grDevices::dev.list()), collapse=", "))
   #print (paste ("dev.cur =", grDevices::dev.cur()))
   
-  if (!names(grDevices::dev.cur()) %in% c("RStudioGD", "quartz", "windows")) {
+  if (!names(grDevices::dev.cur()) %in% c("RStudioGD", "quartz", "quartz_off_screen", "windows")) {
     # Record the binding between the current device and the graphics file, if
     # a file is being used.
     if (.ddg.is.set ("ddg.last.graphics.file") && 
