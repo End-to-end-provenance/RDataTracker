@@ -12,9 +12,9 @@ addons:
       - ant
       - libv8-dev
 
-install: 
-  - Rscript -e 'install.packages(c("devtools", "jsonvalidate", "roxygen2", "testthat", "curl", "digest", "ggplot2",  "gtools", "jsonlite", "knitr", "provSummarizeR", "provViz", "rmarkdown", "sessioninfo", "stringi", "XML"))'
-  - Rscript -e 'print (installed.packages())'
+#install:
+#  - Rscript -e 'install.packages(c("devtools", "jsonvalidate", "roxygen2", "testthat", "curl", "digest", "ggplot2",  "gtools", "jsonlite", "knitr", "provSummarizeR", "provViz", "rmarkdown", "sessioninfo", "stringi", "XML"))'
+#  - Rscript -e 'print (installed.packages())'
 
 before_script:
   - "export DISPLAY=:99.0"
@@ -22,6 +22,7 @@ before_script:
   - sleep 3
 
 script:
+  - Rscript -e 'print (installed.packages())'
   - Rscript -e "devtools::check()" 
   - Rscript -e "devtools::install()" 
   - ant -file tests.xml test-travis-rdtLite
