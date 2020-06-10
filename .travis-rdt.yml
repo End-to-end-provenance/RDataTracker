@@ -9,18 +9,11 @@ cache: packages
 addons:
   apt:
     packages:
-      - libicu-dev
       - ant
-      - r-cran-ggplot2
-      - r-cran-gdata
-      - r-cran-rcurl
-      - r-cran-v8
- 
-before-install:
-  - .libPaths ("/home/travis/R/Library")
+      - libv8-dev
 
 install: 
-  - Rscript -e 'install.packages (c("devtools", "roxygen2", "knitr", "rmarkdown", "jsonvalidate", "XML", "testthat", "gplots", "ggplot2", "stringi", "RCurl", "provSummarizeR", "provViz"))'
+  - Rscript -e 'install.packages(c("devtools", "jsonvalidate", "roxygen2", "testthat", "curl", "digest", "ggplot2",  "gtools", "jsonlite", "knitr", "provSummarizeR", "provViz", "rmarkdown", "sessioninfo", "stringi", "XML"))'
   - Rscript -e 'print (installed.packages())'
 
 before_script:
