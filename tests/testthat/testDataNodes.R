@@ -53,7 +53,12 @@ test_that ("large data structures - no snapshots",
       expect_equal (.ddg.get.node.val (x.array <- array(data=c(1,2,3,4,5,6,7,8), dim=c(2,2,2))), "[1,]    1    3")
       list2 <- list(int.vector, char.vector, bool.vector, df)
       expect_equal (.ddg.get.node.val (list2), "\"1\"          \"2\"          \"3\"          \"a\"          \"b\"          \"c\"            ...")
-    }
+
+      n <- c("foo", "bar", "bat")
+      z <- c("hello", "world,","R","is","fun",".", "Watch out", "for","the R", "Inferno")
+      complex.array <- array(NA,c(2,length(n),length(z)), dimnames=list(c("1998","1999"),n,z))
+      expect_equal (.ddg.get.node.val (complex.array), "[1,]   NA   NA   NA")
+   }
 )
 
 test_that ("large data structures - with snapshots",

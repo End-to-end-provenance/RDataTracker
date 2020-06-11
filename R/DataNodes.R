@@ -321,31 +321,41 @@
   
   # No snapshots, so we want to save a value, perhaps truncated
   if (.ddg.snapshot.size() == 0) {
+    #print (".ddg.get.node.val: no snapshots")
     
     # Get a string version of the value
     if (dtype == "StandardOutput") {
+      #print (".ddg.get.node.val: StandardOutput")
       print.value <- value
     }
     else if (is.data.frame (value)) {
+      #print (".ddg.get.node.val: data frame")
       print.value <- utils::capture.output (print (value[1,]))
       if (length(print.value) > 1) {
         print.value <- paste ("Row", print.value[[2]])
       }
     }
     else if (is.array(value) && length (dim(value)) > 1) {
-      print.value <- utils::capture.output (print (value))
+      #print (".ddg.get.node.val: multi-dimensional array ")
+      # Remove dimension names if they exist
+      value.copy <- value
+      dimnames(value.copy) <- NULL
+      print.value <- utils::capture.output (print (value.copy))
       print.value <- Find (function (line) return (startsWith (stringi::stri_trim_left(line), "[1,")), print.value)
     }
     else if (is.list (value)) {
+      #print (".ddg.get.node.val: list")
       print.value <- paste (utils::capture.output (print (unlist (value))), collapse="")
       
       # Remove leading spaces
       print.value <- sub ("^ *", "", print.value)
     }
     else if (.ddg.is.connection(value)) {
+      #print (".ddg.get.node.val: connection")
       print.value <- showConnections(TRUE)[as.character(value[1]), "description"]
     }
     else   if (is.environment(value)) {
+      #print (".ddg.get.node.val: environment")
       env.vars <- ls (value)
       env.name <- environmentName(value)
       if (length (env.vars) == 0) {
@@ -355,6 +365,8 @@
       .ddg.remember.env (dname, env.vars)
     }  
     else {
+      #print (".ddg.get.node.val: else")
+      #print(value)
       print.value <- utils::capture.output (print (value))
     }
     
@@ -942,6 +954,7 @@
 
 .ddg.save.data <- function(name, value, graphic.fext="jpeg", error=FALSE, 
                            scope=NULL, from.env=FALSE, stack=NULL, env=NULL){
+  #print (paste (".ddg.save.data: name = ", name))
   if (is.null(scope)) {
     scope <- .ddg.get.scope(name, calls=stack, env=env)
   }

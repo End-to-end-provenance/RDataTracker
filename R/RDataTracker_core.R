@@ -667,6 +667,9 @@
   tryCatch(.ddg.save.data(var, val, error=TRUE, scope=scope, env=env),
       error = 
           function(e){
+        if (.ddg.debug.lib()) {
+        	print (paste (".ddg.data.save.var failed for", var))
+        }
         .ddg.data.node("Data", var, "complex", scope); 
         print(e)
       }
