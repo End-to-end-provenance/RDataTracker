@@ -645,7 +645,9 @@
 #' @return nothing
 #' @noRd
 .ddg.save.var <- function(var, env=NULL, scope=NULL) {
+  print ("In .ddg.save.var")
   if (is.null(env)) {
+    print (".ddg.save.var: getting env")
     env <- .ddg.get.env(var)
     
     # If no environment is found defining this variable, do not 
@@ -657,6 +659,7 @@
     }
   }
   if (is.null(scope)) {
+    print (".ddg.save.var: getting scope")
     scope <- .ddg.get.scope(var, env=env)
   }
 
@@ -666,14 +669,26 @@
   # here they are missing and we get an error about unexpected SPECIAL
   # characters.  The first tryCatch, puts the ` back in and parses again.
   # The second tryCatch handles errors associated with evaluating the variable.
+  print (paste (".ddg.save.var: parsing", var))
   parsed <- tryCatch(parse(text=var),
-      error = function(e) parse(text=paste("`", var, "`", sep="")))
+      error = function(e) {
+        if (.ddg.debug.lib()) {
+          print (".ddg.save.var: parsing failed")
+        }
+        parse(text=paste("`", var, "`", sep=""))
+        })
+  
+  print (paste (".ddg.save.var: evaluating", var))
   val <- tryCatch(eval(parsed, env),
       error = function(e) {
+        if (.ddg.debug.lib()) {
+          print (".ddg.save.var: evaluation failed")
+        }
         eval (parse(text=var), parent.env(env))
       }
   )
   
+  print (".ddg.save.var: saving data")
   tryCatch(.ddg.save.data(var, val, error=TRUE, scope=scope, env=env),
       error = 
           function(e){
