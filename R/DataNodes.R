@@ -321,22 +321,22 @@
   
   # No snapshots, so we want to save a value, perhaps truncated
   if (.ddg.snapshot.size() == 0) {
-    #print (".ddg.get.node.val: no snapshots")
+    print (".ddg.get.node.val: no snapshots")
     
     # Get a string version of the value
     if (dtype == "StandardOutput") {
-      #print (".ddg.get.node.val: StandardOutput")
+      print (".ddg.get.node.val: StandardOutput")
       print.value <- value
     }
     else if (is.data.frame (value)) {
-      #print (".ddg.get.node.val: data frame")
+      print (".ddg.get.node.val: data frame")
       print.value <- utils::capture.output (print (value[1,]))
       if (length(print.value) > 1) {
         print.value <- paste ("Row", print.value[[2]])
       }
     }
     else if (is.array(value) && length (dim(value)) > 1) {
-      #print (".ddg.get.node.val: multi-dimensional array ")
+      print (".ddg.get.node.val: multi-dimensional array ")
       # Remove dimension names if they exist
       value.copy <- value
       dimnames(value.copy) <- NULL
@@ -344,18 +344,18 @@
       print.value <- Find (function (line) return (startsWith (stringi::stri_trim_left(line), "[1,")), print.value)
     }
     else if (is.list (value)) {
-      #print (".ddg.get.node.val: list")
+      print (".ddg.get.node.val: list")
       print.value <- paste (utils::capture.output (print (unlist (value))), collapse="")
       
       # Remove leading spaces
       print.value <- sub ("^ *", "", print.value)
     }
     else if (.ddg.is.connection(value)) {
-      #print (".ddg.get.node.val: connection")
+      print (".ddg.get.node.val: connection")
       print.value <- showConnections(TRUE)[as.character(value[1]), "description"]
     }
     else   if (is.environment(value)) {
-      #print (".ddg.get.node.val: environment")
+      print (".ddg.get.node.val: environment")
       env.vars <- ls (value)
       env.name <- environmentName(value)
       if (length (env.vars) == 0) {
@@ -365,36 +365,42 @@
       .ddg.remember.env (dname, env.vars)
     }  
     else {
-      #print (".ddg.get.node.val: else")
-      #print(value)
+      print (".ddg.get.node.val: else")
+      print(value)
       print.value <- utils::capture.output (print (value))
     }
     
     # Strip off the index 
     if (!is.array (value)) {
+      print (".ddg.get.node.val: stripping index")
       print.value <- sub ("^.*?] ", "", print.value)
     }
     
     # Keep just the first line
     if (length (print.value) > 1) {
+      print (".ddg.get.node.val: keeping first line")
       print.value <- paste0 (print.value[1], "...")
     }
     
     # Keep just the first line
     if (grepl ("\n", print.value)) {
+      print (".ddg.get.node.val: removing newline")
       print.value <- paste0 (sub ("\\n.*", "", print.value), "...")
     }
     
     # Truncate it if it is long
     if (nchar(print.value) > 80) {
+      print (".ddg.get.node.val: truncating")
       print.value <- paste0 (substring (print.value, 1, 80), "...")
     } 
     
+    print (paste (".ddg.get.node.val returning", print.value))
     return (print.value)
   }
   
   # Saving snapshots
   else {
+    print (".ddg.get.node.val: Snapshots")
     if (dtype == "StandardOutput") {
       print.value <- value
     }
@@ -587,11 +593,11 @@
 #' @noRd
 
 .ddg.data.node <- function(dtype, dname, dvalue, dscope, from.env=FALSE) {
-  #print ("In .ddg.data.node")
-  #print(paste(".ddg.data.node: dname =", dname))
-  #print(paste(".ddg.data.node: str(dvalue) =", utils::str(dvalue)))
-  #print(paste(".ddg.data.node: dvalue =", dvalue))
-  #print(paste(".ddg.data.node: dscope =", dscope))
+  print ("In .ddg.data.node")
+  print(paste(".ddg.data.node: dname =", dname))
+  print(paste(".ddg.data.node: str(dvalue) =", utils::str(dvalue)))
+  print(paste(".ddg.data.node: dvalue =", dvalue))
+  print(paste(".ddg.data.node: dscope =", dscope))
   
   # Get scope if necessary.
   if (is.null(dscope)) dscope <- .ddg.get.scope(dname)
