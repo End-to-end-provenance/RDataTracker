@@ -387,32 +387,6 @@
     return()
   }
   
-  #print ("Checking for source")
-  # If we are sourcing a script, record the file as a sourced script instead of
-  # as an input file.
-  if (.ddg.inside.call.to ("source")) {
-    if (.ddg.inside.call.to ("readLines")) {
-      # The information was recorded when the call to source was found.
-      return()
-    }
-    source.call <- .ddg.get.call.to ("source")
-    frame.number <- .ddg.get.frame.number.for.func ("source")
-    sourced.file.name <- eval (as.symbol ("file"), envir=sys.frame(frame.number))
-    
-    if (.ddg.is.connection(sourced.file.name)) {
-      sourced.file.name <- showConnections(TRUE)[as.character(sourced.file.name), "description"]
-    }
-        
-    # Store script number & name.
-    snum <- .ddg.store.script.info (sourced.file.name)
-    
-    # Save a copy of the script
-    sname <- basename(sourced.file.name)
-    file.copy(sourced.file.name, paste(.ddg.path.scripts(), sname, sep="/"))
-    return ()
-  }
-  
-  #print ("Getting ready to save input info")
   # Get the name of the input function
   call <- sys.call (frame.number)
   if (typeof(call[[1]]) == "closure") {
@@ -428,6 +402,37 @@
   
   #print (paste ("Input function traced: ", fname))
   
+  #print ("Checking for source")
+  # If we are sourcing a script, record the file as a sourced script instead of
+  # as an input file.
+  if (fname == "source") {
+    #print ("Tracing source")
+    sourced.file.name <- eval (as.symbol ("file"), envir=sys.frame(frame.number))
+    
+    if (.ddg.is.connection(sourced.file.name)) {
+      sourced.file.name <- showConnections(TRUE)[as.character(sourced.file.name), "description"]
+    }
+        
+    # Store script number & name.
+    snum <- .ddg.store.script.info (sourced.file.name)
+    
+    # Save a copy of the script
+    sname <- basename(sourced.file.name)
+    file.copy(sourced.file.name, paste(.ddg.path.scripts(), sname, sep="/"))
+    return ()
+  }
+  
+  if (.ddg.inside.call.to ("source")) {
+    #print("Reading sourced file")
+    source.frame.number <- .ddg.get.frame.number.for.func ("source")
+    if (source.frame.number == frame.number - 1) {
+      # This read call is what is actually reading the sourced file.
+      # The information was recorded when the call to source was found.
+      return()
+    }
+  } 
+  
+  #print ("Getting ready to save input info")
   # Get the name of the file parameter for the input function
   file.read.functions <- .ddg.get ("ddg.file.read.functions.df")
   file.param.name <- 
