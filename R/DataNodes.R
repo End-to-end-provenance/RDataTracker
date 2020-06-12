@@ -331,8 +331,11 @@
     else if (is.data.frame (value)) {
       print (".ddg.get.node.val: data frame")
       print.value <- utils::capture.output (print (value[1,]))
+      print (paste (".ddg.get.node.val: print.value =", print.value))
       if (length(print.value) > 1) {
+        print (".ddg.get.node.val: print.value length > 1")
         print.value <- paste ("Row", print.value[[2]])
+        print (paste (".ddg.get.node.val: print.value =", print.value))
       }
     }
     else if (is.array(value) && length (dim(value)) > 1) {
@@ -374,24 +377,28 @@
     if (!is.array (value)) {
       print (".ddg.get.node.val: stripping index")
       print.value <- sub ("^.*?] ", "", print.value)
+      print (paste (".ddg.get.node.val: print.value =", print.value))
     }
     
     # Keep just the first line
     if (length (print.value) > 1) {
       print (".ddg.get.node.val: keeping first line")
       print.value <- paste0 (print.value[1], "...")
+      print (paste (".ddg.get.node.val: print.value =", print.value))
     }
     
     # Keep just the first line
     if (grepl ("\n", print.value)) {
       print (".ddg.get.node.val: removing newline")
       print.value <- paste0 (sub ("\\n.*", "", print.value), "...")
+      print (paste (".ddg.get.node.val: print.value =", print.value))
     }
     
     # Truncate it if it is long
     if (nchar(print.value) > 80) {
       print (".ddg.get.node.val: truncating")
       print.value <- paste0 (substring (print.value, 1, 80), "...")
+      print (paste (".ddg.get.node.val: print.value =", print.value))
     } 
     
     print (paste (".ddg.get.node.val returning", print.value))
@@ -596,8 +603,8 @@
   print ("In .ddg.data.node")
   print(paste(".ddg.data.node: dname =", dname))
   print(paste(".ddg.data.node: str(dvalue) =", utils::str(dvalue)))
-  print(paste(".ddg.data.node: dvalue =", dvalue))
-  print(paste(".ddg.data.node: dscope =", dscope))
+#  print(paste(".ddg.data.node: dvalue =", dvalue))
+#  print(paste(".ddg.data.node: dscope =", dscope))
   
   # Get scope if necessary.
   if (is.null(dscope)) dscope <- .ddg.get.scope(dname)
