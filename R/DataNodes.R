@@ -954,20 +954,24 @@
 
 .ddg.save.data <- function(name, value, graphic.fext="jpeg", error=FALSE, 
                            scope=NULL, from.env=FALSE, stack=NULL, env=NULL){
-  #print (paste (".ddg.save.data: name = ", name))
+  print (paste (".ddg.save.data: name = ", name))
   if (is.null(scope)) {
+    print (".ddg.save.data: getting scope")
     scope <- .ddg.get.scope(name, calls=stack, env=env)
   }
   
   # Determine type for value, and save accordingly.
   if (.ddg.is.graphic(value)) {
+    print (".ddg.save.data: writing graphic")
     .ddg.write.graphic(name, value, graphic.fext, scope=scope, from.env=from.env)
     return(invisible())
   }
   
   else {
+    print (".ddg.save.data: creating data node")
     .ddg.data.node ("Data", name, value, dscope=scope, from.env=from.env)
   }
+  print (".ddg.save.data returning")
   
   invisible()
 }

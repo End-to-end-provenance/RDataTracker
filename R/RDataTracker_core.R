@@ -699,6 +699,7 @@
         print(e)
       }
   )
+  print (".ddg.save.var: done saving data")
 }
 
 #' .ddg.create.data.node.for.possible.writes creates a data node for
