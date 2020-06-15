@@ -590,8 +590,8 @@
   #print ("In .ddg.data.node")
   #print(paste(".ddg.data.node: dname =", dname))
   #print(paste(".ddg.data.node: str(dvalue) =", utils::str(dvalue)))
-  #print(paste(".ddg.data.node: dvalue =", dvalue))
-  #print(paste(".ddg.data.node: dscope =", dscope))
+#  print(paste(".ddg.data.node: dvalue =", dvalue))
+#  print(paste(".ddg.data.node: dscope =", dscope))
   
   # Get scope if necessary.
   if (is.null(dscope)) dscope <- .ddg.get.scope(dname)

@@ -17,6 +17,13 @@ y
 
 ```
 
+Testing ggplot with RDataTracker
+```{r pressure, echo=FALSE}
+library(ggplot2)
+p<- ggplot(pressure, aes(x=temperature, y=pressure))
+p
+
+```
 Here's another chunk!
 
 

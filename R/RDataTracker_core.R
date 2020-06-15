@@ -657,9 +657,18 @@
   # characters.  The first tryCatch, puts the ` back in and parses again.
   # The second tryCatch handles errors associated with evaluating the variable.
   parsed <- tryCatch(parse(text=var),
-      error = function(e) parse(text=paste("`", var, "`", sep="")))
+      error = function(e) {
+        if (.ddg.debug.lib()) {
+          print (".ddg.save.var: parsing failed")
+        }
+        parse(text=paste("`", var, "`", sep=""))
+        })
+  
   val <- tryCatch(eval(parsed, env),
       error = function(e) {
+        if (.ddg.debug.lib()) {
+          print (".ddg.save.var: evaluation failed")
+        }
         eval (parse(text=var), parent.env(env))
       }
   )
