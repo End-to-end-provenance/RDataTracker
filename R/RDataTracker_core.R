@@ -565,16 +565,15 @@
 #' @noRd
 
 .ddg.create.data.set.edges <- function(vars.set, cmd, env, captured.output = NULL) {
-  print(paste("In .ddg.create.data.set.edges.for.cmd: cmd = ", cmd@abbrev))
+  #print(paste("In .ddg.create.data.set.edges.for.cmd: cmd = ", cmd@abbrev))
   vars.assigned <- cmd@vars.set
   
   for (var in vars.assigned) {
 
-    print(paste(".ddg.create.data.set.edges.for.cmd: var = ", var))
+    #print(paste(".ddg.create.data.set.edges.for.cmd: var = ", var))
     
     # Check for a new ggplot that was not assigned to a variable
     if (.ddg.get ("ddg.ggplot.created")) {
-      print (".ddg.create.data.set.edges ddg.ggplot.created")
       if (var == "") {      
         # Add a data node for the plot and link it in.
         # Set ddg.last.ggplot to the name of this node
@@ -587,28 +586,21 @@
     
     if (var != "") {
       # Create the nodes and edges for setting the variable
-      print (".ddg.create.data.set.edges extracting var")
       var <- .ddg.extract.var (var, env)
-      print (".ddg.create.data.set.edges getting scope")
       scope <- .ddg.get.scope(var, env=env)
-      print (".ddg.create.data.set.edges saving var")
       .ddg.save.var(var, env, scope)
-      print (".ddg.create.data.set.edges creating proc 2 data edge")
       .ddg.proc2data(cmd@abbrev, var, scope)
       
       # If the variable is inside an environment, like env$var
       # and var was not previously in the environment, we also
       # create nodes and edges for change env.
-      print (".ddg.create.data.set.edges extracting env")
       var.env <- .ddg.extract.env (var, env)
       if (!is.null(var.env)){
-        print (".ddg.create.data.set.edges found var")
         envList <- .ddg.get ("ddg.envList")
         oldEnvContents <- envList[[var.env]]
         
         # Checks if this is the first variable set
         if (is.null(oldEnvContents)) {
-          print (".ddg.create.data.set.edges first var")
           .ddg.save.var(var.env, env, scope)
           .ddg.proc2data(cmd@abbrev, var.env, scope)
         }
@@ -616,7 +608,6 @@
           # Checks if the variable being set was already in the environment
           internal.var <- substring (var, stringi::stri_locate_first_fixed(var, "$")[1,"start"]+1)
           if (!(internal.var %in% oldEnvContents)) {
-             print (".ddg.create.data.set.edges updating var")
             .ddg.save.var(var.env, env, scope)
             .ddg.proc2data(cmd@abbrev, var.env, scope)
           }
@@ -626,7 +617,6 @@
   }
   
   if (!is.null(captured.output) && length(captured.output) > 0) {
-    print (".ddg.create.data.set.edges has captured output")
     #cat(captured.output)
     #print(paste("length(captured.output)",length(captured.output)))
     .ddg.data.node("StandardOutput", "output", captured.output, "Standard output");
@@ -645,9 +635,7 @@
 #' @return nothing
 #' @noRd
 .ddg.save.var <- function(var, env=NULL, scope=NULL) {
-  print ("In .ddg.save.var")
   if (is.null(env)) {
-    print (".ddg.save.var: getting env")
     env <- .ddg.get.env(var)
     
     # If no environment is found defining this variable, do not 
@@ -659,7 +647,6 @@
     }
   }
   if (is.null(scope)) {
-    print (".ddg.save.var: getting scope")
     scope <- .ddg.get.scope(var, env=env)
   }
 
@@ -669,7 +656,6 @@
   # here they are missing and we get an error about unexpected SPECIAL
   # characters.  The first tryCatch, puts the ` back in and parses again.
   # The second tryCatch handles errors associated with evaluating the variable.
-  print (paste (".ddg.save.var: parsing", var))
   parsed <- tryCatch(parse(text=var),
       error = function(e) {
         if (.ddg.debug.lib()) {
@@ -678,7 +664,6 @@
         parse(text=paste("`", var, "`", sep=""))
         })
   
-  print (paste (".ddg.save.var: evaluating", var))
   val <- tryCatch(eval(parsed, env),
       error = function(e) {
         if (.ddg.debug.lib()) {
@@ -688,7 +673,6 @@
       }
   )
   
-  print (".ddg.save.var: saving data")
   tryCatch(.ddg.save.data(var, val, error=TRUE, scope=scope, env=env),
       error = 
           function(e){
@@ -699,7 +683,6 @@
         print(e)
       }
   )
-  print (".ddg.save.var: done saving data")
 }
 
 #' .ddg.create.data.node.for.possible.writes creates a data node for
