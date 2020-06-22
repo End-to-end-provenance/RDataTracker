@@ -573,7 +573,7 @@
     #print(paste(".ddg.create.data.set.edges.for.cmd: var = ", var))
     
     # Check for a new ggplot that was not assigned to a variable
-    if (.ddg.get ("ddg.ggplot.created")) {
+    if ("ggplot2" %in% .ddg.get("ddg.installed.package.names") && .ddg.get ("ddg.ggplot.created")) {
       if (var == "") {      
         # Add a data node for the plot and link it in.
         # Set ddg.last.ggplot to the name of this node
