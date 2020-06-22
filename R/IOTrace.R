@@ -48,6 +48,9 @@
 .ddg.init.iotrace <- function () {
   #print ("Initializing io tracing")
   
+  # Find out what packages are installed
+  .ddg.set("ddg.installed.package.names", utils::installed.packages()[,1])
+  
   # Store the starting graphics device.
   .ddg.set("ddg.open.devices", vector())
   
@@ -94,8 +97,6 @@
   # Note that we need to use the rdt::: notation for the functions for 
   # trace to call so that it can find those functions without making them 
   # publicly available in the namespace.
-  # ggplot2 functions are traced individually because the package name needs to 
-  # be included.
   
   trace.oneOutput <- 
     function (f) {
@@ -106,12 +107,6 @@
                               type="message"))
     } 
   lapply(.ddg.get("ddg.file.write.functions.df")$function.names, trace.oneOutput)
-  utils::capture.output(
-    utils::capture.output(trace (ggplot2::ggplot, 
-            function () .ddg.trace.output (), 
-                                 print=FALSE), 
-                          type="message"))
-                  
   trace.oneInput <- 
     function (f) {
       utils::capture.output(
@@ -131,11 +126,6 @@
                               type="message"))
     } 
   lapply(.ddg.get("ddg.file.close.functions.df")$function.names, trace.oneClose)
-  utils::capture.output(
-    utils::capture.output(trace (ggplot2::ggsave, 
-            function () .ddg.trace.close (), 
-                                 print=FALSE), 
-                          type="message"))
   
   #print ("Tracing graphics open")
   # trace (grDevices::pdf, rdt:::.ddg.trace.graphics.open, print=TRUE)
@@ -166,6 +156,21 @@
             function () .ddg.trace.graphics.close (), 
                                  print=FALSE), 
                           type="message"))
+                          
+  # Trace ggplot2 functions if ggplot2 is installed.
+  if ("ggplot2" %in% .ddg.get("ddg.installed.package.names")) {
+  	utils::capture.output(
+    	utils::capture.output(trace (ggplot2::ggplot, 
+            function () .ddg.trace.output (), 
+                                 print=FALSE), 
+                          type="message"))
+    utils::capture.output(
+      utils::capture.output(trace (ggplot2::ggsave, 
+            function () .ddg.trace.close (), 
+                                 print=FALSE), 
+                          type="message"))
+  }          
+
   #print ("Done initializing IO tracing")
 }
 
@@ -192,8 +197,10 @@
                          type="message")
   utils::capture.output (untrace(grDevices::dev.off), type="message")
   
-  utils::capture.output (untrace(ggplot2::ggplot), type="message")
-  utils::capture.output (untrace(ggplot2::ggsave), type="message")
+  if ("ggplot2" %in% .ddg.get("ddg.installed.package.names")) {
+    utils::capture.output (untrace(ggplot2::ggplot), type="message")
+    utils::capture.output (untrace(ggplot2::ggsave), type="message")
+  }
 }
 
 ################### Helper functions ######################3
