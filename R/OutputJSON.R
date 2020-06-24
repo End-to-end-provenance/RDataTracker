@@ -332,12 +332,15 @@
 	# architecture, language, langVersion
 	lang.version <- R.Version()
 	
-	fields$architecture <- lang.version$arch
+	fields$architecture <- utils::sessionInfo()$platform
 	fields$language <- lang.version$language
 	fields$langVersion <- lang.version$version
 	
 	# operating system
-	fields$operatingSystem <- version$os
+	fields$operatingSystem <- 
+		if (.Platform$OS.type == "unix") utils::sessionInfo()$running
+		else if (.Platform$OS.type == "windows") utils::win.version()
+		else version$os
 	
 	# script variables
 	script.path <- .ddg.r.script.path()
