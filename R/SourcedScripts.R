@@ -92,3 +92,17 @@
   .ddg.inc("ddg.next.script.num")
   return (snum)
 }
+
+#' .ddg.store.console.info records that the R code came from the console.
+#' @return the unique id for the console
+#' @noRd
+
+.ddg.store.console.info <- function () {
+  df <- data.frame(1, "console", NA, stringsAsFactors=FALSE)
+  colnames(df) <- c("snum", "sname", "stime")
+  .ddg.set("ddg.sourced.scripts", df)
+  
+  # Increment script number.
+  .ddg.inc("ddg.next.script.num")
+  return (1)
+}
