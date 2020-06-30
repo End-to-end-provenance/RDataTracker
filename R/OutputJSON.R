@@ -345,15 +345,15 @@
 	# script variables
 	script.path <- .ddg.r.script.path()
 	
-	if( ! is.null(script.path) )
+	if( .ddg.script.mode() )
 	{
 		fields$script <- script.path 
 		fields$scriptTimeStamp <- .ddg.format.time( file.info(script.path)$mtime )
 	}
-	else
+	else  # Console mode
 	{
-		fields$script <- ""
-		fields$scriptTimeStamp <- ""
+		fields$script <- script.path
+		fields$scriptTimeStamp <- .ddg.format.time(Sys.time())
 	}
 	
 	sourced.scripts <- .ddg.json.sourced.scripts()

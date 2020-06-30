@@ -317,3 +317,14 @@
   else if (.ddg.is.na(var)) return (TRUE)
   return (FALSE)
 }
+
+.ddg.add.to.console <- function(cmd) {
+	console.commands <- .ddg.get("ddg.console.commands")
+    .ddg.set("ddg.console.startline", length(console.commands) + 1)
+    .ddg.set("ddg.console.startcolumn", 1)
+    console.commands <- c(console.commands, cmd)
+    .ddg.set("ddg.console.endline", length(console.commands))
+    .ddg.set("ddg.console.endcolumn", nchar(console.commands[length(console.commands)]))
+	.ddg.set("ddg.console.commands", console.commands)
+}
+

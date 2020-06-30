@@ -45,7 +45,7 @@
 
   # Set up for console mode
   if (!.ddg.script.mode()) {
-    .ddg.set("ddg.r.script.path", NULL)
+    .ddg.set("ddg.r.script.path", "console.R")
     .ddg.set("ddg.details", TRUE)
     .ddg.store.console.info ()
   }
@@ -66,7 +66,7 @@
   .ddg.init.environ()
 
   # Script mode: adjust & store R script path
-  if (!is.null(r.script.path)) {
+  if (.ddg.script.mode()) {
 
     # RMarkdown script
     if (tools::file_ext(r.script.path) == "Rmd") {
@@ -90,10 +90,17 @@
   # provenance graph.
   } else {
     .ddg.set("ddg.markdown.output", NULL)
+    .ddg.set("ddg.console.commands", vector())
     
     .ddg.trace.task <- function (task, result, success, printed) {  
       # Create the provenance for the new command
-      .ddg.parse.commands(as.expression(task), environ = .GlobalEnv, 
+      command <- deparse(task)
+      trimmed <- trimws(command[1])
+      if (!startsWith(trimmed, "prov.init") && !startsWith(trimmed, "prov.save")) {
+      	.ddg.add.to.console(deparse(task))
+      	#print(deparse(task))
+      }
+      .ddg.parse.commands(as.expression(task), script.name="Console", script.num=1, environ = .GlobalEnv, 
           run.commands = FALSE)
       return(TRUE)    
     }
@@ -229,6 +236,10 @@
   if (!.ddg.script.mode()) {
     .ddg.add.finish.node ()
     .ddg.add.start.node (node.name = "Console")
+    #print ("Console commands")
+    #writeLines(.ddg.get("ddg.console.commands"))
+    #print(paste("Writing console commands to", paste (.ddg.path.scripts(), "console.R", sep="/")))
+    writeLines(.ddg.get("ddg.console.commands"), paste (.ddg.path.scripts(), "console.R", sep="/"))
   }
 
   # Save prov.json to file.
@@ -256,6 +267,11 @@
   # If running from the console create a Console finish node.
   if (!.ddg.script.mode()) {
     .ddg.add.finish.node ()
+    #print (paste ("# of lines of console commands = ", length(.ddg.get("ddg.console.commands"))))
+    #print ("Console commands")
+    #writeLines(.ddg.get("ddg.console.commands"))
+    #print(paste("Writing console commands to", paste (.ddg.path.scripts(), "console.R", sep="/")))
+    writeLines(.ddg.get("ddg.console.commands"), paste (.ddg.path.scripts(), "console.R", sep="/"))
   }
   
   # If there are any connections still open when the script ends,
