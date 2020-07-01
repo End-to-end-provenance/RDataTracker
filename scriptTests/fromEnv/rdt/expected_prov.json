@@ -40,7 +40,7 @@
 		"rdt:p1": {
 			"rdt:name": "Console",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": "0.75",
+			"rdt:elapsedTime": "0.801",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -50,17 +50,17 @@
 		"rdt:p2": {
 			"rdt:name": "a <- rep(x, 5)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.03",
-			"rdt:scriptNum": -1,
-			"rdt:startLine": -1,
-			"rdt:startCol": -1,
-			"rdt:endLine": -1,
-			"rdt:endCol": -1
+			"rdt:elapsedTime": "0.063",
+			"rdt:scriptNum": 1,
+			"rdt:startLine": 1,
+			"rdt:startCol": 1,
+			"rdt:endLine": 1,
+			"rdt:endCol": 14
 		},
 		"rdt:p3": {
 			"rdt:name": "Console",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": "0.09",
+			"rdt:elapsedTime": "0.091",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -78,7 +78,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": true,
 			"rdt:hash": "",
-			"rdt:timestamp": "2020-05-22T00.35.34EDT",
+			"rdt:timestamp": "2020-06-30T15.07.13EDT",
 			"rdt:location": ""
 		},
 		"rdt:d2": {
@@ -89,30 +89,30 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2020-05-22T00.35.34EDT",
+			"rdt:timestamp": "2020-06-30T15.07.13EDT",
 			"rdt:location": ""
 		},
 
 		"rdt:environment": {
 			"rdt:name": "environment",
-			"rdt:architecture": "x86_64",
-			"rdt:operatingSystem": "mingw32",
+			"rdt:architecture": "x86_64-apple-darwin17.0 (64-bit)",
+			"rdt:operatingSystem": "macOS Catalina 10.15.5",
 			"rdt:language": "R",
-			"rdt:langVersion": "R version 3.6.3 (2020-02-29)",
-			"rdt:script": "",
-			"rdt:scriptTimeStamp": "",
-			"rdt:totalElapsedTime": "0.87",
+			"rdt:langVersion": "R version 4.0.0 (2020-04-24)",
+			"rdt:script": "console.R",
+			"rdt:scriptTimeStamp": "2020-06-30T15.07.13EDT",
+			"rdt:totalElapsedTime": "0.955",
 			"rdt:sourcedScripts": "",
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:workingDirectory": "[DIR]/rdt",
 			"rdt:provDirectory": "[DIR]/rdt/prov_console",
-			"rdt:provTimestamp": "2020-05-22T00.35.33EDT",
+			"rdt:provTimestamp": "2020-06-30T15.07.12EDT",
 			"rdt:hashAlgorithm": "md5"
 		},
 
 		"rdt:l1": {
 			"name": "base",
-			"version": "3.6.3",
+			"version": "4.0.0",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -120,7 +120,7 @@
 		},
 		"rdt:l2": {
 			"name": "datasets",
-			"version": "3.6.3",
+			"version": "4.0.0",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -128,7 +128,7 @@
 		},
 		"rdt:l3": {
 			"name": "ggplot2",
-			"version": "3.2.1",
+			"version": "3.3.2",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -136,7 +136,7 @@
 		},
 		"rdt:l4": {
 			"name": "graphics",
-			"version": "3.6.3",
+			"version": "4.0.0",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -144,7 +144,7 @@
 		},
 		"rdt:l5": {
 			"name": "grDevices",
-			"version": "3.6.3",
+			"version": "4.0.0",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -152,7 +152,7 @@
 		},
 		"rdt:l6": {
 			"name": "methods",
-			"version": "3.6.3",
+			"version": "4.0.0",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -168,7 +168,7 @@
 		},
 		"rdt:l8": {
 			"name": "stats",
-			"version": "3.6.3",
+			"version": "4.0.0",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -176,7 +176,7 @@
 		},
 		"rdt:l9": {
 			"name": "utils",
-			"version": "3.6.3",
+			"version": "4.0.0",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
