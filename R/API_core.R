@@ -172,7 +172,7 @@
       if (prov.dir.option == ".") {
         base.dir <- getwd()
       } else {
-        base.dir <- getOption("prov.dir")
+        base.dir <- normalizePath(getOption("prov.dir"))
       }
     } 
     
