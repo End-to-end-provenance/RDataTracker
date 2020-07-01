@@ -187,8 +187,11 @@
   base.dir <- sub("/$", "", base.dir)
   
   # Console mode
-  if (is.null(r.script.path)) {
+  if (!.ddg.script.mode()) {
     ddg.path <- paste(base.dir, "/prov_console", sep="")
+    console.dir <- paste(base.dir, "/console", sep="")
+    .ddg.set("ddg.console.dir", console.dir)
+    if (!dir.exists(console.dir)) dir.create(console.dir, recursive = TRUE)
     
     # Script mode
   } else {
@@ -236,10 +239,7 @@
   if (!.ddg.script.mode()) {
     .ddg.add.finish.node ()
     .ddg.add.start.node (node.name = "Console")
-    #print ("Console commands")
-    #writeLines(.ddg.get("ddg.console.commands"))
-    #print(paste("Writing console commands to", paste (.ddg.path.scripts(), "console.R", sep="/")))
-    writeLines(.ddg.get("ddg.console.commands"), paste (.ddg.path.scripts(), "console.R", sep="/"))
+     writeLines(.ddg.get("ddg.console.commands"), paste (.ddg.path.scripts(), "console.R", sep="/"))
   }
 
   # Save prov.json to file.
@@ -265,13 +265,18 @@
   if (!.ddg.is.init()) return(invisible())
   
   # If running from the console create a Console finish node.
+  # Save the console commands in the provenance directory and also
+  # in the console folder.
   if (!.ddg.script.mode()) {
     .ddg.add.finish.node ()
-    #print (paste ("# of lines of console commands = ", length(.ddg.get("ddg.console.commands"))))
-    #print ("Console commands")
-    #writeLines(.ddg.get("ddg.console.commands"))
-    #print(paste("Writing console commands to", paste (.ddg.path.scripts(), "console.R", sep="/")))
-    writeLines(.ddg.get("ddg.console.commands"), paste (.ddg.path.scripts(), "console.R", sep="/"))
+    console.commands <- .ddg.get("ddg.console.commands")
+    
+    # Save the console commands inside the provenance directory.
+    writeLines(console.commands, paste (.ddg.path.scripts(), "console.R", sep="/"))
+    
+    # Also save the console commands in the console directory, not within the provenance directory
+    # for this session.  This is saved in a timestamped file.
+    writeLines(console.commands, paste (.ddg.get("ddg.console.dir"), paste0("console_", .ddg.timestamp(), ".R"), sep="/"))
   }
   
   # If there are any connections still open when the script ends,
