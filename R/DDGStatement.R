@@ -228,6 +228,24 @@ methods::setMethod ("initialize",
 
 .ddg.create.DDGStatements <- function (exprs, script.name, script.num, 
                                        parseData = NULL, enclosing.pos = NULL) {
+      
+  # Collecting provenance from console                                 
+  if (!.ddg.script.mode() && .ddg.is.set("ddg.console.startline")) {
+     startline <- .ddg.get("ddg.console.startline")
+     startcol <- .ddg.get("ddg.console.startcolumn")
+     endline <- .ddg.get("ddg.console.endline")
+     endcol <- .ddg.get("ddg.console.endcolumn")
+  	 cmds <- vector("list", (1))
+  	 parseData <- list(startline, startcol, endline, endcol)
+  	 names(parseData) <- c("line1", "col1", "line2", "col2")
+  	 next.expr.pos <- methods::new (Class = "DDGStatementPos", parseData)
+  	 cmdText <- paste(deparse(exprs[[1]]), collapse="\n")
+  	 #print(paste(".ddg.create.DDGStatements: cmdText =", cmdText))
+  	 cmds[[1]] <- .ddg.construct.DDGStatement(exprs, next.expr.pos,
+  	  	"Console", 1, parseData, cmdText)
+  	 return (cmds)
+  }
+
   # The parse data gives us line number information
   if (is.null(parseData)) {
     parseData <- utils::getParseData(exprs, includeText=TRUE)

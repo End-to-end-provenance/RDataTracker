@@ -45,7 +45,7 @@
 
   # Set up for console mode
   if (!.ddg.script.mode()) {
-    .ddg.set("ddg.r.script.path", NULL)
+    .ddg.set("ddg.r.script.path", "console.R")
     .ddg.set("ddg.details", TRUE)
     .ddg.store.console.info ()
   }
@@ -66,7 +66,7 @@
   .ddg.init.environ()
 
   # Script mode: adjust & store R script path
-  if (!is.null(r.script.path)) {
+  if (.ddg.script.mode()) {
 
     # RMarkdown script
     if (tools::file_ext(r.script.path) == "Rmd") {
@@ -90,10 +90,17 @@
   # provenance graph.
   } else {
     .ddg.set("ddg.markdown.output", NULL)
+    .ddg.set("ddg.console.commands", vector())
     
     .ddg.trace.task <- function (task, result, success, printed) {  
       # Create the provenance for the new command
-      .ddg.parse.commands(as.expression(task), environ = .GlobalEnv, 
+      command <- deparse(task)
+      trimmed <- trimws(command[1])
+      if (!startsWith(trimmed, "prov.init") && !startsWith(trimmed, "prov.save")) {
+      	.ddg.add.to.console(deparse(task))
+      	#print(deparse(task))
+      }
+      .ddg.parse.commands(as.expression(task), script.name="Console", script.num=1, environ = .GlobalEnv, 
           run.commands = FALSE)
       return(TRUE)    
     }
@@ -165,7 +172,7 @@
       if (prov.dir.option == ".") {
         base.dir <- getwd()
       } else {
-        base.dir <- getOption("prov.dir")
+        base.dir <- normalizePath(getOption("prov.dir"))
       }
     } 
     
@@ -180,8 +187,11 @@
   base.dir <- sub("/$", "", base.dir)
   
   # Console mode
-  if (is.null(r.script.path)) {
+  if (!.ddg.script.mode()) {
     ddg.path <- paste(base.dir, "/prov_console", sep="")
+    console.dir <- paste(base.dir, "/console", sep="")
+    .ddg.set("ddg.console.dir", console.dir)
+    if (!dir.exists(console.dir)) dir.create(console.dir, recursive = TRUE)
     
     # Script mode
   } else {
@@ -229,6 +239,7 @@
   if (!.ddg.script.mode()) {
     .ddg.add.finish.node ()
     .ddg.add.start.node (node.name = "Console")
+     writeLines(.ddg.get("ddg.console.commands"), paste (.ddg.path.scripts(), "console.R", sep="/"))
   }
 
   # Save prov.json to file.
@@ -254,8 +265,18 @@
   if (!.ddg.is.init()) return(invisible())
   
   # If running from the console create a Console finish node.
+  # Save the console commands in the provenance directory and also
+  # in the console folder.
   if (!.ddg.script.mode()) {
     .ddg.add.finish.node ()
+    console.commands <- .ddg.get("ddg.console.commands")
+    
+    # Save the console commands inside the provenance directory.
+    writeLines(console.commands, paste (.ddg.path.scripts(), "console.R", sep="/"))
+    
+    # Also save the console commands in the console directory, not within the provenance directory
+    # for this session.  This is saved in a timestamped file.
+    writeLines(console.commands, paste (.ddg.get("ddg.console.dir"), paste0("console_", .ddg.timestamp(), ".R"), sep="/"))
   }
   
   # If there are any connections still open when the script ends,

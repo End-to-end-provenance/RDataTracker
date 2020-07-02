@@ -98,7 +98,7 @@
 #' @noRd
 
 .ddg.store.console.info <- function () {
-  df <- data.frame(1, "console", NA, stringsAsFactors=FALSE)
+  df <- data.frame(1, "console", Sys.time(), stringsAsFactors=FALSE)
   colnames(df) <- c("snum", "sname", "stime")
   .ddg.set("ddg.sourced.scripts", df)
   
