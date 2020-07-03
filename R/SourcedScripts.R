@@ -79,12 +79,13 @@
 .ddg.store.script.info <- function (sname) {
   snum <- .ddg.next.script.num()
   stime <- .ddg.format.time( file.info(sname)$mtime )
+  shash <- .ddg.calculate.hash (sname) 
   
   if (snum == 1) {
-    df <- data.frame(snum, sname, stime, stringsAsFactors=FALSE)
+    df <- data.frame(snum, sname, stime, shash, stringsAsFactors=FALSE)
   } else {
     df<- rbind(.ddg.sourced.scripts(), 
-               c(snum, normalizePath(sname, winslash = "/"), stime))
+               c(snum, normalizePath(sname, winslash = "/"), stime, shash))
   }
   .ddg.set("ddg.sourced.scripts", df)
   
@@ -98,8 +99,8 @@
 #' @noRd
 
 .ddg.store.console.info <- function () {
-  df <- data.frame(1, "console", Sys.time(), stringsAsFactors=FALSE)
-  colnames(df) <- c("snum", "sname", "stime")
+  df <- data.frame(1, "console", Sys.time(), "NA", stringsAsFactors=FALSE)
+  colnames(df) <- c("snum", "sname", "stime", "shash")
   .ddg.set("ddg.sourced.scripts", df)
   
   # Increment script number.
