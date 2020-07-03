@@ -1736,7 +1736,7 @@
 #'   variable is not found.
 #' @noRd
 
-.ddg.where <- function( name, env = parent.frame(), warning = TRUE )
+.ddg.where <- function( name, env = parent.frame(), warning = FALSE )
 {
   stopifnot(is.character(name), length(name) == 1)
   
@@ -1776,7 +1776,7 @@
     },
     error = function(e) {}
   )
-  env <- .ddg.where(name, sys.frame(fnum))
+  env <- .ddg.where(name, sys.frame(fnum), TRUE)
   return(env)
 }
 
