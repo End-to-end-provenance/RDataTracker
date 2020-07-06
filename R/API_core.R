@@ -161,7 +161,7 @@
     if (prov.dir == ".") {
       base.dir <- getwd()
     } else {
-      base.dir <- normalizePath(prov.dir)
+      base.dir <- normalizePath(prov.dir, winslash = "/", mustWork = TRUE)
     }
   } 
   
@@ -172,14 +172,14 @@
       if (prov.dir.option == ".") {
         base.dir <- getwd()
       } else {
-        base.dir <- normalizePath(getOption("prov.dir"))
+        base.dir <- normalizePath(getOption("prov.dir"), winslash = "/", mustWork = TRUE)
       }
     } 
     
     # R session temporary directory
     else {
       # Normalize path
-      base.dir <- normalizePath(tempdir(), winslash = "/", mustWork = FALSE)
+      base.dir <- normalizePath(tempdir(), winslash = "/", mustWork = TRUE)
     }
   }
   
