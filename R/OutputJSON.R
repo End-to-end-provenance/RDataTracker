@@ -322,9 +322,11 @@
 					"langVersion" = NA ,
 					"script" = NA ,
 					"scriptTimeStamp" = NA ,
+					"scriptHash" = NA ,
 					"totalElapsedTime" = NA ,
 					"sourcedScripts" = NA ,
 					"sourcedScriptTimeStamps" = NA ,
+					"sourcedScriptHashes" = NA ,
 					"workingDirectory" = NA ,
 					"provDirectory" = NA ,
 					"provTimestamp" = NA )
@@ -344,21 +346,22 @@
 	
 	# script variables
 	script.path <- .ddg.r.script.path()
+	fields$script <- script.path 
+	fields$scriptHash <- .ddg.calculate.hash (script.path) 
 	
 	if( .ddg.script.mode() )
 	{
-		fields$script <- script.path 
 		fields$scriptTimeStamp <- .ddg.format.time( file.info(script.path)$mtime )
 	}
 	else  # Console mode
 	{
-		fields$script <- script.path
 		fields$scriptTimeStamp <- .ddg.format.time(Sys.time())
 	}
 	
 	sourced.scripts <- .ddg.json.sourced.scripts()
 	fields$sourcedScripts <- sourced.scripts[[1]]
 	fields$sourcedScriptTimeStamps <- sourced.scripts[[2]]
+	fields$sourcedScriptHashes <- sourced.scripts[[3]]
 	
 	# record total elapsed time
 	fields$totalElapsedTime <- format(.ddg.total.elapsed.time(), nsmall = 1L)
@@ -388,6 +391,7 @@
 {
 	script.names <- ""
 	script.times <- ""
+	script.hashes <- ""
 	
 	ss <- .ddg.sourced.scripts()
 	
@@ -398,9 +402,10 @@
 		
 		script.names <- sapply( ss[ , 2] , .ddg.json.escape.tabs )
 		script.times <- ss[ , 3]
+		script.hashes <- ss[ , 4]
 	}
 	
-	return( list(script.names, script.times) )
+	return( list(script.names, script.times, script.hashes) )
 }
 
 #' .ddg.json.lib forms and returns the json string for the library nodes
