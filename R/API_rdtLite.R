@@ -68,6 +68,7 @@
 #' the digest package.
 #' @param save.debug If TRUE, debug files are saved to the debug directory.
 #' This is intended for developers of the rdt / rdtLite package.
+#' @param foo
 #' @return prov.init initializes the provenance collector.  The prov.init
 #' function does not return a value.
 #' @export
