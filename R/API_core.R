@@ -47,7 +47,6 @@
   if (!.ddg.script.mode()) {
     .ddg.set("ddg.r.script.path", "console.R")
     .ddg.set("ddg.details", TRUE)
-    .ddg.store.console.info ()
   }
 
   # Get R script path
@@ -89,6 +88,7 @@
   # completes execution and build the corresponding portions of the 
   # provenance graph.
   } else {
+    .ddg.store.console.info ()
     .ddg.set("ddg.markdown.output", NULL)
     .ddg.set("ddg.console.commands", vector())
     

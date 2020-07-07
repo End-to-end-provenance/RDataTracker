@@ -99,7 +99,8 @@
 #' @noRd
 
 .ddg.store.console.info <- function () {
-  df <- data.frame(1, "console", Sys.time(), "NA", stringsAsFactors=FALSE)
+  console.file <- paste (.ddg.path.scripts(), "console.R", sep="/")
+  df <- data.frame(1, console.file, .ddg.format.time(Sys.time()), "", stringsAsFactors=FALSE)
   colnames(df) <- c("snum", "sname", "stime", "shash")
   .ddg.set("ddg.sourced.scripts", df)
   
