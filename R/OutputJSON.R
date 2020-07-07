@@ -345,19 +345,12 @@
 		else version$os
 	
 	# script variables
-	script.path <- .ddg.r.script.path()
-	fields$script <- script.path 
-	fields$scriptHash <- .ddg.calculate.hash (script.path) 
-	
-	if( .ddg.script.mode() )
-	{
-		fields$scriptTimeStamp <- .ddg.format.time( file.info(script.path)$mtime )
-	}
-	else  # Console mode
-	{
-		fields$scriptTimeStamp <- .ddg.format.time(Sys.time())
-	}
-	
+	scripts <- .ddg.sourced.scripts()
+	script.path <- scripts$sname[1]
+	fields$script <- script.path
+	fields$scriptHash <- scripts$shash[1]
+	fields$scriptTimeStamp <- scripts$stime[1]
+		
 	sourced.scripts <- .ddg.json.sourced.scripts()
 	fields$sourcedScripts <- sourced.scripts[[1]]
 	fields$sourcedScriptTimeStamps <- sourced.scripts[[2]]
