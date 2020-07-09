@@ -1,3 +1,20 @@
+# rdt 3.3
+* Save the modification time of files that are used by the script in the provenance
+* Save absolute path to the provenance directory in the JSON.
+* Store hash values of the main and sourced scripts in the provenance.
+* When run in console mode (that is, interactively), the commands are
+saved in a file called Console.R in the provenance scripts directory.
+They are also saved in a separate console folder where they are saved in a file that includes the timestamp.
+* Record in the provenance variables that are defined before the script starts but used within the script as being "from the environment".
+* Updated for R 4.0
+* Stops gracefully if there is an error when exiting
+* Fixed several bugs
+    * Fixed a problem when a sourced script reads a file.
+    * Fixed a problem with creating plots when running R Markdown in console mode.
+    * Fixed a problem with creating error nodes with long error messages.
+    * Added error checking to I/O tracing    
+
+
 # rdt 3.2.1
 
 * Minor changes to documentation
