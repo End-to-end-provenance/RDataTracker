@@ -43,14 +43,14 @@
   # Initialize tables
   .ddg.init.tables()
 
-  # Set R script path to NULL if in console mode.
-  if (!.ddg.script.mode()) .ddg.set("ddg.r.script.path", NULL)
+  # Set up for console mode
+  if (!.ddg.script.mode()) {
+    .ddg.set("ddg.r.script.path", "console.R")
+    .ddg.set("ddg.details", TRUE)
+  }
 
   # Get R script path
   r.script.path <- .ddg.r.script.path()
-
-  # Set ddg.details to True if in console mode.
-  if (!.ddg.script.mode()) .ddg.set("ddg.details", TRUE)
 
   # Set path for provenance graph
   .ddg.set.path (prov.dir, r.script.path, overwrite)
@@ -65,7 +65,7 @@
   .ddg.init.environ()
 
   # Script mode: adjust & store R script path
-  if (!is.null(r.script.path)) {
+  if (.ddg.script.mode()) {
 
     # RMarkdown script
     if (tools::file_ext(r.script.path) == "Rmd") {
@@ -88,11 +88,19 @@
   # completes execution and build the corresponding portions of the 
   # provenance graph.
   } else {
+    .ddg.store.console.info ()
     .ddg.set("ddg.markdown.output", NULL)
+    .ddg.set("ddg.console.commands", vector())
     
     .ddg.trace.task <- function (task, result, success, printed) {  
       # Create the provenance for the new command
-      .ddg.parse.commands(as.expression(task), environ = .GlobalEnv, 
+      command <- deparse(task)
+      trimmed <- trimws(command[1])
+      if (!startsWith(trimmed, "prov.init") && !startsWith(trimmed, "prov.save")) {
+      	.ddg.add.to.console(deparse(task))
+      	#print(deparse(task))
+      }
+      .ddg.parse.commands(as.expression(task), script.name="Console", script.num=1, environ = .GlobalEnv, 
           run.commands = FALSE)
       return(TRUE)    
     }
@@ -153,7 +161,7 @@
     if (prov.dir == ".") {
       base.dir <- getwd()
     } else {
-      base.dir <- prov.dir
+      base.dir <- normalizePath(prov.dir, winslash = "/", mustWork = TRUE)
     }
   } 
   
@@ -164,14 +172,14 @@
       if (prov.dir.option == ".") {
         base.dir <- getwd()
       } else {
-        base.dir <- getOption("prov.dir")
+        base.dir <- normalizePath(getOption("prov.dir"), winslash = "/", mustWork = TRUE)
       }
     } 
     
     # R session temporary directory
     else {
       # Normalize path
-      base.dir <- normalizePath(tempdir(), winslash = "/", mustWork = FALSE)
+      base.dir <- normalizePath(tempdir(), winslash = "/", mustWork = TRUE)
     }
   }
   
@@ -179,8 +187,11 @@
   base.dir <- sub("/$", "", base.dir)
   
   # Console mode
-  if (is.null(r.script.path)) {
+  if (!.ddg.script.mode()) {
     ddg.path <- paste(base.dir, "/prov_console", sep="")
+    console.dir <- paste(base.dir, "/console", sep="")
+    .ddg.set("ddg.console.dir", console.dir)
+    if (!dir.exists(console.dir)) dir.create(console.dir, recursive = TRUE)
     
     # Script mode
   } else {
@@ -228,6 +239,7 @@
   if (!.ddg.script.mode()) {
     .ddg.add.finish.node ()
     .ddg.add.start.node (node.name = "Console")
+     writeLines(.ddg.get("ddg.console.commands"), paste (.ddg.path.scripts(), "console.R", sep="/"))
   }
 
   # Save prov.json to file.
@@ -253,8 +265,18 @@
   if (!.ddg.is.init()) return(invisible())
   
   # If running from the console create a Console finish node.
+  # Save the console commands in the provenance directory and also
+  # in the console folder.
   if (!.ddg.script.mode()) {
     .ddg.add.finish.node ()
+    console.commands <- .ddg.get("ddg.console.commands")
+    
+    # Save the console commands inside the provenance directory.
+    writeLines(console.commands, paste (.ddg.path.scripts(), "console.R", sep="/"))
+    
+    # Also save the console commands in the console directory, not within the provenance directory
+    # for this session.  This is saved in a timestamped file.
+    writeLines(console.commands, paste (.ddg.get("ddg.console.dir"), paste0("console_", .ddg.timestamp(), ".R"), sep="/"))
   }
   
   # If there are any connections still open when the script ends,
@@ -358,14 +380,13 @@
 #' @param endCol the column that the source call ends on
 #' @return nothing
 #' @noRd
-
 .ddg.source <- function (file, local = FALSE, echo = verbose, print.eval = echo, 
     exprs, spaced = use_file, verbose = getOption("verbose"), 
     prompt.echo = getOption("prompt"), max.deparse.length = 150, 
     width.cutoff = 60L, deparseCtrl = "showAttributes", chdir = FALSE, 
     encoding = getOption("encoding"), continue.echo = getOption("continue"), 
     skip.echo = 0, 
-    ignore.ddg.calls = TRUE, calling.script = NA, startLine = NA, startCol = NA,
+    ignore.ddg.calls = TRUE, calling.script = 1, startLine = NA, startCol = NA,
     endLine = NA, endCol = NA) 
 {
   # This function is largely derived from R's source function.  Part of R's
@@ -523,7 +544,7 @@
   if (length(exprs) > 0) {
     .ddg.set("from.source", TRUE)
     if (.ddg.details()) {
-      if (is.na(calling.script)) {
+      if(calling.script == 1) {
         .ddg.add.start.node(node.name = sname)
       }
       else {
@@ -540,7 +561,8 @@
           max.deparse.length = max.deparse.length, run.commands = TRUE, 
           continue.echo = continue.echo, skip.echo = skip.echo, prompt.echo = prompt.echo, 
           spaced = spaced, verbose = verbose, deparseCtrl = deparseCtrl)
-      if (is.na(calling.script)) {
+      
+      if(calling.script == 1) {
         .ddg.add.finish.node()
       }
       else {
@@ -550,7 +572,7 @@
       }
     }
     else {
-      if (is.na(calling.script)) 
+      if(calling.script == 1)
         .ddg.proc.node("Operation", sname)
       yy <- .ddg.evaluate.commands(exprs, environ = envir)
     }

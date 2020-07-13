@@ -322,9 +322,11 @@
 					"langVersion" = NA ,
 					"script" = NA ,
 					"scriptTimeStamp" = NA ,
+					"scriptHash" = NA ,
 					"totalElapsedTime" = NA ,
 					"sourcedScripts" = NA ,
 					"sourcedScriptTimeStamps" = NA ,
+					"sourcedScriptHashes" = NA ,
 					"workingDirectory" = NA ,
 					"provDirectory" = NA ,
 					"provTimestamp" = NA )
@@ -332,33 +334,27 @@
 	# architecture, language, langVersion
 	lang.version <- R.Version()
 	
-	fields$architecture <- lang.version$arch
+	fields$architecture <- utils::sessionInfo()$platform
 	fields$language <- lang.version$language
 	fields$langVersion <- lang.version$version
 	
 	# operating system
-	fields$operatingSystem <- version$os
+	fields$operatingSystem <- 
+		if (.Platform$OS.type == "unix") utils::sessionInfo()$running
+		else if (.Platform$OS.type == "windows") utils::win.version()
+		else version$os
 	
 	# script variables
-	script.path <- .ddg.r.script.path()
-	
-	if( ! is.null(script.path) )
-	{
-		fields$script <- script.path 
-		fields$scriptTimeStamp <- .ddg.format.time( file.info(script.path)$mtime )
+	scripts <- .ddg.sourced.scripts()
+	script.path <- scripts$sname[1]
+	fields$script <- script.path
+	fields$scriptHash <- scripts$shash[1]
+	fields$scriptTimeStamp <- scripts$stime[1]
 		
-		sourced.scripts <- .ddg.json.sourced.scripts()
-		fields$sourcedScripts <- sourced.scripts[[1]]
-		fields$sourcedScriptTimeStamps <- sourced.scripts[[2]]
-	}
-	else
-	{
-		fields$script <- ""
-		fields$scriptTimeStamp <- ""
-		
-		fields$sourcedScripts <- ""
-		fields$sourcedScriptTimeStamps <- ""
-	}
+	sourced.scripts <- .ddg.json.sourced.scripts()
+	fields$sourcedScripts <- sourced.scripts[[1]]
+	fields$sourcedScriptTimeStamps <- sourced.scripts[[2]]
+	fields$sourcedScriptHashes <- sourced.scripts[[3]]
 	
 	# record total elapsed time
 	fields$totalElapsedTime <- format(.ddg.total.elapsed.time(), nsmall = 1L)
@@ -388,6 +384,7 @@
 {
 	script.names <- ""
 	script.times <- ""
+	script.hashes <- ""
 	
 	ss <- .ddg.sourced.scripts()
 	
@@ -398,9 +395,10 @@
 		
 		script.names <- sapply( ss[ , 2] , .ddg.json.escape.tabs )
 		script.times <- ss[ , 3]
+		script.hashes <- ss[ , 4]
 	}
 	
-	return( list(script.names, script.times) )
+	return( list(script.names, script.times, script.hashes) )
 }
 
 #' .ddg.json.lib forms and returns the json string for the library nodes

@@ -54,6 +54,15 @@
   return(.ddg.get("ddg.initial.env"))
 }
 
+#' .ddg.initial.var returns a data frame containing names bound before
+#'   the script was executed
+#' @return a data frame containing names previously bound
+#' @noRd
+
+.ddg.initial.var <- function() {
+  return(.ddg.get("ddg.initial.var"))
+}
+
 #' .ddg.annotate.on returns the names of functions that the user explicity said
 #' should be annotated
 #' @return the names of functions to be annotated
@@ -159,22 +168,20 @@
 #' @noRd
 
 .ddg.get.initial.env <- function() {
-  e <- globalenv()
-  e.ls <- ls(e, all.names=TRUE)
+  ddg.e <- globalenv()
+  ddg.e.ls <- ls(ddg.e, all.names=TRUE)
 
   not.ddg.func <- function (name) {
     return (!grepl("^ddg", name) && !grepl("^.ddg", name) && !grepl("^prov", name) 
-      && name != ".onLoad")
+      && (name != ".onLoad") && (name != ".Random.seed"))
   }
 
-  x <- Filter (not.ddg.func, e.ls)
+  ddg.name <- Filter (not.ddg.func, ddg.e.ls)
+  ddg.initial.var <- data.frame(ddg.name, stringsAsFactors=FALSE)
 
-  ddg.initial.env <- data.frame(x)
-  colnames(ddg.initial.env) <- "ddg.name"
-
-  .ddg.set("ddg.initial.env", ddg.initial.env)
+  .ddg.set("ddg.initial.env", ddg.e)
+  .ddg.set("ddg.initial.var", ddg.initial.var)
 }
-
 
 #' .ddg.init.tables creates data frames to store the initial environment,
 #' procedure nodes, data nodes, edges, and function return values. 
@@ -566,7 +573,7 @@
     #print(paste(".ddg.create.data.set.edges.for.cmd: var = ", var))
     
     # Check for a new ggplot that was not assigned to a variable
-    if (.ddg.get ("ddg.ggplot.created")) {
+    if ("ggplot2" %in% .ddg.get("ddg.installed.package.names") && .ddg.get ("ddg.ggplot.created")) {
       if (var == "") {      
         # Add a data node for the plot and link it in.
         # Set ddg.last.ggplot to the name of this node
@@ -650,9 +657,18 @@
   # characters.  The first tryCatch, puts the ` back in and parses again.
   # The second tryCatch handles errors associated with evaluating the variable.
   parsed <- tryCatch(parse(text=var),
-      error = function(e) parse(text=paste("`", var, "`", sep="")))
+      error = function(e) {
+        if (.ddg.debug.lib()) {
+          print (".ddg.save.var: parsing failed")
+        }
+        parse(text=paste("`", var, "`", sep=""))
+        })
+  
   val <- tryCatch(eval(parsed, env),
       error = function(e) {
+        if (.ddg.debug.lib()) {
+          print (".ddg.save.var: evaluation failed")
+        }
         eval (parse(text=var), parent.env(env))
       }
   )
@@ -660,6 +676,9 @@
   tryCatch(.ddg.save.data(var, val, error=TRUE, scope=scope, env=env),
       error = 
           function(e){
+        if (.ddg.debug.lib()) {
+        	print (paste (".ddg.data.save.var failed for", var))
+        }
         .ddg.data.node("Data", var, "complex", scope); 
         print(e)
       }
@@ -717,9 +736,8 @@
 #' @param endCol (optional) - the column that the operation ends on
 #' @return the label of the node created, excluding "Start"
 #' @noRd
-
 .ddg.add.start.node <- function(cmd = NULL, node.name = "",
-    script.num=NA, startLine=NA, startCol=NA, endLine=NA, endCol=NA) {
+    script.num=1, startLine=NA, startCol=NA, endLine=NA, endCol=NA) {
   node.name <- .ddg.add.abstract.node ("Start", cmd, node.name,
       script.num, startLine, startCol, endLine, endCol)
   .ddg.push.start (node.name)
@@ -734,9 +752,8 @@
 #' @param endCol (optional) - the column that the operation ends on
 #' @return the label of the node created, excluding "Finish"
 #' @noRd
-
 .ddg.add.finish.node <- function(cmd = NULL,
-    script.num=NA, startLine=NA, startCol=NA, endLine=NA, endCol=NA) {
+    script.num=1, startLine=NA, startCol=NA, endLine=NA, endCol=NA) {
   popped <- .ddg.pop.start ()
   node.name <- .ddg.add.abstract.node ("Finish", cmd, node.name = popped,
       script.num, startLine, startCol, endLine, endCol)
@@ -922,7 +939,7 @@
   callStr <-
       if (is.null (w$call)) ""
       else paste ("In ", utils::head (deparse(w$call)), ": ")
-  warningMessage <- paste (callStr, w$message)
+  warningMessage <- paste (callStr[1], w$message)
 
   # Create the warning node
   .ddg.insert.error.message(warningMessage, "warning.msg", doWarn = FALSE)
@@ -1719,7 +1736,7 @@
 #'   variable is not found.
 #' @noRd
 
-.ddg.where <- function( name, env = parent.frame(), warning = TRUE )
+.ddg.where <- function( name, env = parent.frame(), warning = FALSE )
 {
   stopifnot(is.character(name), length(name) == 1)
   
@@ -1759,7 +1776,7 @@
     },
     error = function(e) {}
   )
-  env <- .ddg.where(name, sys.frame(fnum))
+  env <- .ddg.where(name, sys.frame(fnum), TRUE)
   return(env)
 }
 
@@ -1796,8 +1813,8 @@
 {
   # Save initial environment table to file.
   fileout <- paste(.ddg.path.debug(), "/initial-environment.csv", sep="")
-  ddg.initial.env <- .ddg.initial.env()
-  utils::write.csv(ddg.initial.env, fileout, row.names=FALSE)
+  ddg.initial.var <- .ddg.initial.var()
+  utils::write.csv(ddg.initial.var, fileout, row.names=FALSE)
 
   .ddg.save.debug.proc.nodes ()
   .ddg.save.debug.data.nodes ()

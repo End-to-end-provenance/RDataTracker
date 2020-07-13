@@ -40,7 +40,7 @@ x.longmatrix <- matrix(c(1:10),10,10)
 x.array <- array(data=c(1,2,3,4,5,6,7,8), dim=c(2,2,2))
 
 # data frame
-x.data.frame1 <- data.frame(x.vector.number, x.vector.string, x.vector.logical)
+x.data.frame1 <- data.frame(x.vector.number, x.vector.string, x.vector.logical, stringsAsFactors=TRUE)
 x.data.frame2 <- data.frame(x.vector.logical, x.vector.posixct, x.vector.number, x.vector.posixct)
 
 # list

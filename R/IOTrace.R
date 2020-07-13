@@ -48,6 +48,9 @@
 .ddg.init.iotrace <- function () {
   #print ("Initializing io tracing")
   
+  # Find out what packages are installed
+  .ddg.set("ddg.installed.package.names", utils::installed.packages()[,1])
+  
   # Store the starting graphics device.
   .ddg.set("ddg.open.devices", vector())
   
@@ -94,8 +97,6 @@
   # Note that we need to use the rdt::: notation for the functions for 
   # trace to call so that it can find those functions without making them 
   # publicly available in the namespace.
-  # ggplot2 functions are traced individually because the package name needs to 
-  # be included.
   
   trace.oneOutput <- 
     function (f) {
@@ -106,12 +107,6 @@
                               type="message"))
     } 
   lapply(.ddg.get("ddg.file.write.functions.df")$function.names, trace.oneOutput)
-  utils::capture.output(
-    utils::capture.output(trace (ggplot2::ggplot, 
-            function () .ddg.trace.output (), 
-                                 print=FALSE), 
-                          type="message"))
-                  
   trace.oneInput <- 
     function (f) {
       utils::capture.output(
@@ -131,11 +126,6 @@
                               type="message"))
     } 
   lapply(.ddg.get("ddg.file.close.functions.df")$function.names, trace.oneClose)
-  utils::capture.output(
-    utils::capture.output(trace (ggplot2::ggsave, 
-            function () .ddg.trace.close (), 
-                                 print=FALSE), 
-                          type="message"))
   
   #print ("Tracing graphics open")
   # trace (grDevices::pdf, rdt:::.ddg.trace.graphics.open, print=TRUE)
@@ -166,6 +156,21 @@
             function () .ddg.trace.graphics.close (), 
                                  print=FALSE), 
                           type="message"))
+                          
+  # Trace ggplot2 functions if ggplot2 is installed.
+  if ("ggplot2" %in% .ddg.get("ddg.installed.package.names")) {
+  	utils::capture.output(
+    	utils::capture.output(trace (ggplot2::ggplot, 
+            function () .ddg.trace.output (), 
+                                 print=FALSE), 
+                          type="message"))
+    utils::capture.output(
+      utils::capture.output(trace (ggplot2::ggsave, 
+            function () .ddg.trace.close (), 
+                                 print=FALSE), 
+                          type="message"))
+  }          
+
   #print ("Done initializing IO tracing")
 }
 
@@ -192,8 +197,10 @@
                          type="message")
   utils::capture.output (untrace(grDevices::dev.off), type="message")
   
-  utils::capture.output (untrace(ggplot2::ggplot), type="message")
-  utils::capture.output (untrace(ggplot2::ggsave), type="message")
+  if ("ggplot2" %in% .ddg.get("ddg.installed.package.names")) {
+    utils::capture.output (untrace(ggplot2::ggplot), type="message")
+    utils::capture.output (untrace(ggplot2::ggsave), type="message")
+  }
 }
 
 ################### Helper functions ######################3
@@ -387,32 +394,6 @@
     return()
   }
   
-  #print ("Checking for source")
-  # If we are sourcing a script, record the file as a sourced script instead of
-  # as an input file.
-  if (.ddg.inside.call.to ("source")) {
-    if (.ddg.inside.call.to ("readLines")) {
-      # The information was recorded when the call to source was found.
-      return()
-    }
-    source.call <- .ddg.get.call.to ("source")
-    frame.number <- .ddg.get.frame.number.for.func ("source")
-    sourced.file.name <- eval (as.symbol ("file"), envir=sys.frame(frame.number))
-    
-    if (.ddg.is.connection(sourced.file.name)) {
-      sourced.file.name <- showConnections(TRUE)[as.character(sourced.file.name), "description"]
-    }
-        
-    # Store script number & name.
-    snum <- .ddg.store.script.info (sourced.file.name)
-    
-    # Save a copy of the script
-    sname <- basename(sourced.file.name)
-    file.copy(sourced.file.name, paste(.ddg.path.scripts(), sname, sep="/"))
-    return ()
-  }
-  
-  #print ("Getting ready to save input info")
   # Get the name of the input function
   call <- sys.call (frame.number)
   if (typeof(call[[1]]) == "closure") {
@@ -428,6 +409,37 @@
   
   #print (paste ("Input function traced: ", fname))
   
+  #print ("Checking for source")
+  # If we are sourcing a script, record the file as a sourced script instead of
+  # as an input file.
+  if (fname == "source") {
+    #print ("Tracing source")
+    sourced.file.name <- eval (as.symbol ("file"), envir=sys.frame(frame.number))
+    
+    if (.ddg.is.connection(sourced.file.name)) {
+      sourced.file.name <- showConnections(TRUE)[as.character(sourced.file.name), "description"]
+    }
+        
+    # Store script number & name.
+    snum <- .ddg.store.script.info (sourced.file.name)
+    
+    # Save a copy of the script
+    sname <- basename(sourced.file.name)
+    file.copy(sourced.file.name, paste(.ddg.path.scripts(), sname, sep="/"))
+    return ()
+  }
+  
+  if (.ddg.inside.call.to ("source")) {
+    #print("Reading sourced file")
+    source.frame.number <- .ddg.get.frame.number.for.func ("source")
+    if (source.frame.number == frame.number - 1) {
+      # This read call is what is actually reading the sourced file.
+      # The information was recorded when the call to source was found.
+      return()
+    }
+  } 
+  
+  #print ("Getting ready to save input info")
   # Get the name of the file parameter for the input function
   file.read.functions <- .ddg.get ("ddg.file.read.functions.df")
   file.param.name <- 
@@ -1147,12 +1159,26 @@
   # Get the frame corresponding to the graphics function being traced
   frame.number <- .ddg.get.traced.function.frame.number()
   
-  # Get the name of the graphics function
   call <- sys.call (frame.number)
+  
+  # Normally, we would expect to be tracing a function that we have asked
+  # to trace.  However, if this inside an R Markdown file that the user
+  # is running from console mode, we end up getting a closure instead.
+  # In that case, the plot is going into the on-screen R Markdown display,
+  # We will capture the output the same way as if it was going to an 
+  # X11 window or something similar.
+  if (rlang::is_closure (call[[1]])) {
+    .ddg.set("ddg.no.graphics.file", TRUE)
+    .ddg.set("ddg.last.graphics.file", "")
+    .ddg.set ("ddg.add.device.output", TRUE)
+    return()
+  }
+  
+  # Get the name of the graphics function
   fname <- as.character(call[[1]])
   
   # Remove the package name if present
-  if (length(fname > 1)) {
+  if (length(fname) > 1) {
     fname <- fname[length(fname)]
   }
   #print(paste (".ddg.trace.graphics.open: fname =", fname))
@@ -1173,8 +1199,10 @@
     # Get the value of the file parameter  
     file <- eval (as.symbol(file.param.name), envir = sys.frame(frame.number))
     #print(paste (".ddg.trace.graphics.open: file =", file))
-    .ddg.set("ddg.no.graphics.file", FALSE)
-    .ddg.set ("ddg.last.graphics.file", file)
+    if (!is.null(file)) {
+      .ddg.set("ddg.no.graphics.file", FALSE)
+      .ddg.set ("ddg.last.graphics.file", file)
+    }
   }
   
   # Set the flag to tell .ddg.add.graphics.device.node that it has work to do 
@@ -1201,7 +1229,7 @@
   #              names(grDevices::dev.list()), collapse=", "))
   #print (paste ("dev.cur =", grDevices::dev.cur()))
   
-  if (!names(grDevices::dev.cur()) %in% c("RStudioGD", "quartz", "windows")) {
+  if (!names(grDevices::dev.cur()) %in% c("RStudioGD", "quartz", "quartz_off_screen", "windows")) {
     # Record the binding between the current device and the graphics file, if
     # a file is being used.
     if (.ddg.is.set ("ddg.last.graphics.file") && 

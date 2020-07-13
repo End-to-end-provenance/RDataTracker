@@ -1,7 +1,7 @@
 Package: rdt
 Title: Provenance Collector
-Version: 3.2.1
-Date: 2019-12-02
+Version: 3.3
+Date: 2020-07-09
 Authors@R: c( person( "Emery", "Boose", role = "aut",
                       email = "boose@fas.harvard.edu"),
               person("Barbara", "Lerner", role = c("aut", "cre"),
@@ -47,7 +47,6 @@ BugReports: https://github.com/End-to-end-provenance/RDataTracker/issues
 Imports: 
   curl,
   digest,
-  ggplot2,
   grDevices,
   gtools,
   jsonlite, 
@@ -55,6 +54,7 @@ Imports:
   methods,
   provSummarizeR,
   provViz (>= 1.0.6),
+  rlang,
   rmarkdown,
   sessioninfo,
   stringi,
@@ -63,6 +63,7 @@ Imports:
   utils,
   XML
 Suggests: 
+  ggplot2,
   testthat
 VignetteBuilder: knitr
 RoxygenNote: 6.0.1

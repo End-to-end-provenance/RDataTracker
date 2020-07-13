@@ -9,18 +9,12 @@ cache: packages
 addons:
   apt:
     packages:
-      - libicu-dev
       - ant
-      - r-cran-ggplot2
-      - r-cran-gdata
-      - r-cran-rcurl
-      - r-cran-v8
+      - libv8-dev
+      - ghostscript
  
-before-install:
-  - .libPaths ("/home/travis/R/Library")
-
-install: 
-  - Rscript -e 'install.packages (c("devtools", "roxygen2", "knitr", "rmarkdown", "jsonvalidate", "XML", "testthat", "gplots", "ggplot2", "stringi", "RCurl", "provSummarizeR", "provViz"))'
+install:
+  - Rscript -e 'install.packages(c("devtools", "jsonvalidate", "roxygen2", "testthat", "curl", "digest", "ggplot2",  "gtools", "jsonlite", "knitr", "provSummarizeR", "provViz", "rmarkdown", "sessioninfo", "stringi", "XML"))'
   - Rscript -e 'print (installed.packages())'
 
 before_script:
@@ -29,10 +23,10 @@ before_script:
   - sleep 3
 
 script:
-  - ant -file build-rdt.xml install
-  - ant -file tests.xml test-travis-rdt
   - ant -file build-rdtLite.xml install
   - ant -file tests.xml test-travis-rdtLite
+  - ant -file build-rdt.xml install
+  - ant -file tests.xml test-travis-rdt
 
 notifications:
   slack: endtoendprovenance:WxevOs6n66eZRbCn9HcW2mGD

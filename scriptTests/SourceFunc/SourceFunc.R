@@ -1,5 +1,3 @@
-#library(RDataTracker)
-
 fun <- function(a,b){
   return(a+b)
 }
@@ -9,16 +7,16 @@ y <- 10
 z <- fun(x,y)
 
 # source a script which actually used z and sets w in the global environment
-source("../source1.r")
+prov.source("../source1.r")
 
 # use w and new z value
 v <- fun(w,z)
 
 # then script without them
-source("../source3.r")
+prov.source("../source3.r")
 
 # a script which we call with a local environment
-source("../source4.r")
+prov.source("../source4.r")
 
 # source which tets the local aspect of this thing!
 
@@ -26,6 +24,6 @@ source("../source4.r")
 
 # we use some of the variables set in source3.r
 m <- 10
-f(m)
-f(x)
+f1(m)
+f1(x)
 

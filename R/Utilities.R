@@ -1,5 +1,6 @@
 # Copyright (C) President and Fellows of Harvard College and 
-# Trustees of Mount Holyoke College, 2014, 2015, 2016, 2017, 2018.
+# Trustees of Mount Holyoke College, 2014, 2015, 2016, 2017, 2018
+# 2019, 2020.
 
 # This program is free software: you can redistribute it and/or
 # modify it under the terms of the GNU General Public License as
@@ -317,3 +318,18 @@
   else if (.ddg.is.na(var)) return (TRUE)
   return (FALSE)
 }
+
+#' Adds the command to the list of console commands.  It also updates the 
+#' starting and ending line number.
+#' @param cmd text of an R command entered by the user in the console
+#' @noRd
+.ddg.add.to.console <- function(cmd) {
+	console.commands <- .ddg.get("ddg.console.commands")
+    .ddg.set("ddg.console.startline", length(console.commands) + 1)
+    .ddg.set("ddg.console.startcolumn", 1)
+    console.commands <- c(console.commands, cmd)
+    .ddg.set("ddg.console.endline", length(console.commands))
+    .ddg.set("ddg.console.endcolumn", nchar(console.commands[length(console.commands)]))
+	.ddg.set("ddg.console.commands", console.commands)
+}
+

@@ -79,16 +79,32 @@
 .ddg.store.script.info <- function (sname) {
   snum <- .ddg.next.script.num()
   stime <- .ddg.format.time( file.info(sname)$mtime )
+  shash <- .ddg.calculate.hash (sname) 
   
   if (snum == 1) {
-    df <- data.frame(snum, sname, stime, stringsAsFactors=FALSE)
+    df <- data.frame(snum, sname, stime, shash, stringsAsFactors=FALSE)
   } else {
     df<- rbind(.ddg.sourced.scripts(), 
-               c(snum, normalizePath(sname, winslash = "/"), stime))
+               c(snum, normalizePath(sname, winslash = "/", mustWork = FALSE), stime, shash))
   }
   .ddg.set("ddg.sourced.scripts", df)
   
   # Increment script number.
   .ddg.inc("ddg.next.script.num")
   return (snum)
+}
+
+#' .ddg.store.console.info records that the R code came from the console.
+#' @return the unique id for the console
+#' @noRd
+
+.ddg.store.console.info <- function () {
+  console.file <- paste (.ddg.path.scripts(), "console.R", sep="/")
+  df <- data.frame(1, console.file, .ddg.format.time(Sys.time()), "", stringsAsFactors=FALSE)
+  colnames(df) <- c("snum", "sname", "stime", "shash")
+  .ddg.set("ddg.sourced.scripts", df)
+  
+  # Increment script number.
+  .ddg.inc("ddg.next.script.num")
+  return (1)
 }
