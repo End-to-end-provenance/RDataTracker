@@ -13,9 +13,9 @@ addons:
       - libv8-dev
       - ghostscript
 
-#install:
-#  - Rscript -e 'install.packages(c("devtools", "jsonvalidate", "roxygen2", "testthat", "curl", "digest", "ggplot2",  "gtools", "jsonlite", "knitr", "provSummarizeR", "provViz", "rmarkdown", "sessioninfo", "stringi", "XML"))'
-#  - Rscript -e 'print (installed.packages())'
+install:
+  - Rscript -e 'install.packages(c("devtools", "jsonvalidate", "roxygen2", "testthat", "curl", "digest", "ggplot2",  "gtools", "jsonlite", "knitr", "provSummarizeR", "provViz", "rmarkdown", "sessioninfo", "stringi", "XML"))'
+  - Rscript -e 'print (installed.packages())'
 
 before_script:
   - "export DISPLAY=:99.0"
