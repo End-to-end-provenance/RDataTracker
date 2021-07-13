@@ -303,6 +303,7 @@ methods::setMethod ("initialize",
                                                     parseData, cmdText)
     next.cmd <- next.cmd + 1
     
+
     # If there are more expressions, determine where to look next in the parseData
     if (i < length(exprs)) {
       last.ending.line <- non.comment.parse.data[next.parseData, ]$line2
