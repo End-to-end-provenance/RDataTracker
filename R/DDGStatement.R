@@ -281,9 +281,10 @@ methods::setMethod ("initialize",
     # function begins, ends before the enclosing function ends, and matches the 
     # text of the first expression.
     next.parseData <- 
-      which(non.comment.parse.data$line1 >= enclosing.pos@startLine & 
+		which(non.comment.parse.data$line1 >= enclosing.pos@startLine & 
             non.comment.parse.data$line2 <= enclosing.pos@endLine & 
-            non.comment.parse.data$text == paste(deparse(exprs[[1]]), collapse="\n") )[1]
+            gsub("[[:space:]]", "", non.comment.parse.data$text) == 
+            gsub("[[:space:]]", "", paste(deparse(exprs[[1]]), collapse = "\n")) )[1]
   }
   
   # Create the DDGStatements
@@ -312,7 +313,8 @@ methods::setMethod ("initialize",
       # previous expression and starts after the previous expression.
       next.parseData <- which(non.comment.parse.data$parent == last.parent & 
                               non.comment.parse.data$line1 >= last.ending.line & 
-                              non.comment.parse.data$id > last.id) [1]
+                              non.comment.parse.data$id > last.id  ) [1]
+
     }
   }
   
