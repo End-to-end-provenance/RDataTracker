@@ -43,23 +43,23 @@ setMethod("as.character",
 generateSamples <- function (n) {
 	samplesArr <- list()
 	for (ix in 1:n) {
-		newSample <- new ("SampleObj", 
+        newSample <- new ("SampleObj", 
 				sampleCode = ix, 
 				nIndividuals = as.integer(ix * 10), 
-				areaCode = as.integer(ix * 100))
-		samplesArr = c(samplesArr, newSample)
+                areaCode = as.integer(ix * 100))
+        samplesArr = c(samplesArr, newSample)
 				
 	}
 	return (samplesArr)
 }
 
 generate1Sample <- function () {
-	newSample <- new ("SampleObj", 
+    newSample <- new ("SampleObj", 
 				sampleCode = as.integer(1), 
 				nIndividuals = as.integer(10), 
-				areaCode = as.integer(100))
+                areaCode = as.integer(100))
 		
-	return (newSample)
+    return (newSample)
 }
 
 totalNumOfSample <- 5

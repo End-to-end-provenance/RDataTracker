@@ -67,9 +67,9 @@ check <- number
 	
 while (check > 0) {
 	  # repeat calculation until tests OK
-	  estimate <- calc.square.root(number,estimate)
-	  difference <- get.difference(number,estimate)
-	  check <- get.check.value(difference,tolerance)
+      estimate <- calc.square.root(number,estimate)
+      difference <- get.difference(number,estimate)
+      check <- get.check.value(difference,tolerance)
 }
 	
 sqr.root <- store.result(number,estimate)
