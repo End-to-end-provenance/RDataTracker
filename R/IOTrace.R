@@ -309,7 +309,11 @@
           
           # Sometimes source calls readLines but not always.  readLines is called
           # when called from RStudio, but not when called from Rscript.
-          "source")
+          "source",
+          
+          # From the vroom package
+          "vroom",
+          "vroom_lines")
   
   # The argument that represents the file name
   param.names <-
@@ -317,6 +321,8 @@
           "file", 
           "file",
           "con", "con", "con", "file", "file", "path",
+          "file",
+          "file",
           "file")
   
   return (data.frame (function.names, param.names, stringsAsFactors=FALSE))
@@ -389,6 +395,9 @@
   # Don't collect provenance when loading library packages.  Also, when writing out the
   # json, files get read in order to identify package version numbers.
   if (.ddg.inside.call.to ("library") || 
+  #    .ddg.inside.call.to ("packageDescription") ||
+  #   .ddg.inside.call.to ("packageVersion") ||
+  #   .ddg.inside.call.to ("packageDate") ||
       .ddg.inside.call.to ("loadNamespace") ||
       .ddg.inside.call.to (".ddg.json.string")) {
     return()
@@ -397,7 +406,7 @@
   # Get the name of the input function
   call <- sys.call (frame.number)
   if (typeof(call[[1]]) == "closure") {
-    #print (sys.calls())
+    # print (sys.calls())
     return()
   }
   fname <- as.character(call[[1]])
@@ -560,14 +569,18 @@
       c ("write.table", "write", "writeLines",
           "writeChar", "writeBin", 
           "saveRDS", "save", "dput", "dump",
-          "data")
+          "data",
+          "vroom_write",
+          "vroom_write_lines")
   
   # The argument that represents the file name
   param.names <-
       c ("file", "file", "con", 
           "con", "con", 
           "file", "file", "file", "file",
-          "...")
+          "...",
+          "file",
+          "file")
   
   return (data.frame (function.names, param.names, stringsAsFactors=FALSE))
 }
