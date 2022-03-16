@@ -309,21 +309,22 @@
           
           # Sometimes source calls readLines but not always.  readLines is called
           # when called from RStudio, but not when called from Rscript.
-          "source",
+          "source")
           
-          # From the vroom package
-          "vroom",
-          "vroom_lines")
-  
   # The argument that represents the file name
   param.names <-
       c ("file", 
           "file", 
           "file",
           "con", "con", "con", "file", "file", "path",
-          "file",
-          "file",
           "file")
+  
+
+  if ("vroom" %in% .ddg.get("ddg.installed.package.names")) {
+      append (function.names, c("vroom", "vroom_lines"))
+      append (param.names, c("file", "file"))
+  }
+  
   
   return (data.frame (function.names, param.names, stringsAsFactors=FALSE))
 }
@@ -586,18 +587,19 @@
       c ("write.table", "write", "writeLines",
           "writeChar", "writeBin", 
           "saveRDS", "save", "dput", "dump",
-          "data",
-          "vroom_write",
-          "vroom_write_lines")
+          "data")
   
   # The argument that represents the file name
   param.names <-
       c ("file", "file", "con", 
           "con", "con", 
           "file", "file", "file", "file",
-          "...",
-          "file",
-          "file")
+          "...")
+          
+  if ("vroom" %in% .ddg.get("ddg.installed.package.names")) {
+      append (function.names, c("vroom_write", "vroom_write_lines"))
+      append (param.names, c("file", "file"))
+   }
   
   return (data.frame (function.names, param.names, stringsAsFactors=FALSE))
 }
