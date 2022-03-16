@@ -455,17 +455,34 @@
     file.read.functions$param.names[file.read.functions$function.names == fname]
   #print (paste ("Input file parameter:", file.param.name))
   
-  # Get the value of the file parameter  
-  input.file.name <- eval (as.symbol(file.param.name), envir = sys.frame(frame.number))
-  #print (paste ("type of input.file.name is ", .ddg.get.val.type.string(input.file.name)))
-  #print (paste ("input.file.name =", input.file.name))
+#  calling.env <- sys.frame(frame.number)
+#  print (ls (calling.env))
+#  cat ("file.param.name = ", file.param.name)
+#  file.param.value = calling.env[[file.param.name]]
+#  if (is.null (file.param.value)) {
+#  	cat ("value is NULL")
+#  }
+#  else {
+#    cat ("value is ", file.param.value)
+#  }
 
-  # Save the file name so the file node can be created when the statement is complete.
-  # we do not want to create the nodes because the procedure node to connect to does not
-  # exist yet.  If it is a raw vector rather than a file name, do not save it.
-  if (!is.raw(input.file.name)) {
-    .ddg.add.input.file (input.file.name)
-  }
+  tryCatch (
+    {
+    	# Get the value of the file parameter  
+		input.file.name <- eval (as.symbol(file.param.name), sys.frame(frame.number))
+  		#print (paste ("type of input.file.name is ", .ddg.get.val.type.string(input.file.name)))
+  		#print (paste ("input.file.name =", input.file.name))
+
+    	# Save the file name so the file node can be created when the statement is complete.
+    	# we do not want to create the nodes because the procedure node to connect to does not
+    	# exist yet.  If it is a raw vector rather than a file name, do not save it.
+    	if (!is.raw(input.file.name)) {
+      		.ddg.add.input.file (input.file.name)
+    	}
+    },
+    error = function (e) {  }  # If the file parameter is missing, there is nothing to save.
+  )
+
 }
 
 
