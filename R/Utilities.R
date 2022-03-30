@@ -259,6 +259,8 @@
 #' @noRd
 
 .ddg.insert.error.message <- function(msg, msg.type="error.msg", doWarn = TRUE) {
+  print(msg)
+  print(sys.calls())
   if (doWarn) {
     warning(msg)
   }

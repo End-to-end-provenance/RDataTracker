@@ -146,13 +146,13 @@
   
   if( identical(dtype, "File") ) {
   	
-  	# get basename and full path to file
+  	# get label and full path to file
   	full.path <- normalizePath(dname, winslash="/", mustWork = FALSE)
-  	basename <- basename(dname)
+  	label <- .ddg.calculate.file.node.label(dname)
     
     matching <- ddg.data.nodes[
                   (ddg.data.nodes$ddg.type == "File" &
-                  ddg.data.nodes$ddg.name == basename &
+                  ddg.data.nodes$ddg.name == label &
                   ddg.data.nodes$ddg.scope == "undefined" &
                   ddg.data.nodes$ddg.hash == .ddg.calculate.hash(full.path) &
                   ddg.data.nodes$ddg.loc == full.path),
@@ -861,6 +861,8 @@
     }
     else {
       error.msg <- paste("File to copy does not exist:", fname)
+      print (error.msg)
+      print (sys.calls())
       .ddg.insert.error.message(error.msg)
       return()
     }
@@ -869,6 +871,21 @@
   if (.ddg.debug.lib()) print(paste("file.copy: FILE ", file.loc))
   return ()
 }
+
+.ddg.calculate.file.node.label <- function (fname) {
+  # For libraries and data sets, use their name for the file node label
+  # instead of the name of the file.
+  if (endsWith (fname, "/data/Rdata.rds")) {
+  	return (basename (sub ("/data/Rdata.rds", "", fname)))
+  }
+  
+  if (endsWith (fname, "/Meta/package.rds")) {
+    return (basename (sub ("/Meta/package.rds", "", fname)))
+  }
+  
+  return (basename(fname))
+}
+
 
 #' .ddg.file.node creates a node of type File. File nodes are used
 #' for files written to the DDG directory by capturing output from
@@ -882,6 +899,7 @@
 #' @noRd
 
 .ddg.file.node <- function(dtype, fname, dname, dscope=NULL) {
+  cat (".ddg.file.node: fname = ", fname, "\n")
 
   # Get original file location.
   file.name <- basename(fname)
@@ -895,7 +913,7 @@
   dpfile <- paste(.ddg.data.dir(), dfile, sep="/")
   
   # Set the node label.
-  if (is.null(dname)) dname <- file.name
+  if (is.null(dname)) dname <- .ddg.calculate.file.node.label (fname)
   
   # Get scope if necessary.
   if (is.null(dscope)) dscope <- .ddg.get.scope(dname)

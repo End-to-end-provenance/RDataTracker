@@ -995,7 +995,7 @@
     deparseCtrl = "showAttributes") {
 
   
-  #print (paste ("In .ddg.parse.commands, exprs =", exprs))
+  print (paste ("In .ddg.parse.commands, exprs =", exprs))
   return.value <- NULL
   
   # Gather all the information that we need about the statements
@@ -1008,7 +1008,7 @@
   }
   num.cmds <- length(cmds)
 
-  # print (paste("ddg.parse.commands: ddg.func.depth =", .ddg.get("ddg.func.depth")))
+  print (paste("ddg.parse.commands: ddg.func.depth =", .ddg.get("ddg.func.depth")))
   inside.func <- (.ddg.get("ddg.func.depth") > 0)
 
   if (!inside.func) {

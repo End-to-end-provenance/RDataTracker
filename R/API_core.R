@@ -41,6 +41,7 @@
 .ddg.init <- function(prov.dir = NULL, overwrite = TRUE, save.debug = FALSE) {
   
   # Initialize tables
+  print ("Initiailzing tables")
   .ddg.init.tables()
 
   # Set up for console mode
@@ -50,22 +51,27 @@
   }
 
   # Get R script path
+  print ("Getting R script path")
   r.script.path <- .ddg.r.script.path()
 
   # Set path for provenance graph
+  print ("Setting provenance path")
   .ddg.set.path (prov.dir, r.script.path, overwrite)
   
   # Save value of save.debug
   .ddg.set("ddg.save.debug", save.debug)
 
   # Remove files from DDG directory
+  print ("Removing ddg files")
   .ddg.flush.ddg()
 
   # Create DDG directories
+  print ("Creating directories")
   .ddg.init.environ()
 
   # Script mode: adjust & store R script path
   if (.ddg.script.mode()) {
+    print ("Setting up script mode")
 
     # RMarkdown script
     if (tools::file_ext(r.script.path) == "Rmd") {
@@ -88,6 +94,7 @@
   # completes execution and build the corresponding portions of the 
   # provenance graph.
   } else {
+    print ("Setting up console mode")
     .ddg.store.console.info ()
     .ddg.set("ddg.markdown.output", NULL)
     .ddg.set("ddg.console.commands", vector())
@@ -112,6 +119,7 @@
   .ddg.set("ddg.start.time", .ddg.timestamp())
   
   # Initialize the I/O tracing code
+  print ("Init io tracing")
   .ddg.init.iotrace ()
   
   # Mark graph as initilized.
@@ -127,12 +135,15 @@
   
   # Initialize the table used to track use of non-locals
   # within functions
+  print ("init func def table")
   .ddg.init.function.def.table ()
   
   # A named list, where the name is a variable of type environment
   # Associated with each environment name is a vector of the variables
   # in that environment. 
   .ddg.set ("ddg.envList", list())
+  
+  print ("returning from .ddg.init")
   
   invisible()
 }
