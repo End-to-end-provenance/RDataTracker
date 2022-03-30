@@ -167,6 +167,12 @@
                                  print=FALSE), 
                           type="message"))
         
+  print ("Tracing loadNamespace")
+  utils::capture.output(
+    utils::capture.output(trace (loadNamespace, 
+            function () .ddg.trace.loadNamespace(), 
+                                 print=FALSE), 
+                          type="message"))
 
   print ("Done initializing IO tracing")
 }
@@ -209,7 +215,7 @@ trace.oneInput <- function (f) {
   utils::capture.output (untrace(.ddg.get("ddg.graphics.update.functions.df")), 
                          type="message")
   utils::capture.output (untrace(grDevices::dev.off), type="message")
-  #utils::capture.output (untrace(loadNamespace), type="message")
+  utils::capture.output (untrace(loadNamespace), type="message")
   utils::capture.output (untrace(library), type="message")
   
   if ("ggplot2" %in% .ddg.get("ddg.installed.package.names")) {
@@ -334,10 +340,10 @@ trace.oneInput <- function (f) {
           "con", "con", "con", "file", "file", "path",
           "file")
   
-#  if ("vroom" %in% .ddg.get("ddg.installed.package.names")) {
-#      function.names <- append (function.names, c("vroom::vroom", "vroom::vroom_lines"))
-#      param.names <- append (param.names, c("file", "file"))
-#  }
+  if ("vroom" %in% loadedNamespaces()) {
+      function.names <- append (function.names, c("vroom", "vroom_lines"))
+      param.names <- append (param.names, c("file", "file"))
+  }
   
   
   return (data.frame (function.names, param.names, stringsAsFactors=FALSE))
@@ -610,11 +616,10 @@ trace.oneInput <- function (f) {
           "file", "file", "file", "file",
           "...")
           
-  #library(vroom)
-  #if ("vroom" %in% .ddg.get("ddg.installed.package.names")) {
-  #    function.names <- append (function.names, c("vroom_write", "vroom_write_lines"))
-  #    param.names <- append (param.names, c("file", "file"))
-  #}
+  if ("vroom" %in% loadedNamespaces()) {
+      function.names <- append (function.names, c("vroom_write", "vroom_write_lines"))
+      param.names <- append (param.names, c("file", "file"))
+  }
    
   return (data.frame (function.names, param.names, stringsAsFactors=FALSE))
 }
@@ -1568,7 +1573,83 @@ trace.oneInput <- function (f) {
   # Get the frame corresponding to the output function being traced
   frame.number <- .ddg.get.traced.function.frame.number()
   print ("Got frame number")
-  # print (sys.calls())
+  print (sys.calls())
+  
+  # Get the name of the input function
+  call <- sys.call (frame.number)
+  if (typeof(call[[1]]) == "closure") {
+    print (sys.calls())
+    return()
+  }
+  fname <- as.character(call[[1]])
+  
+  # Remove the package name if present
+  if (!is.symbol (fname) && length(fname > 1)) {
+    fname <- fname[length(fname)]
+  }
+  
+  print (paste ("Function traced: ", fname))
+  print (ls(sys.frame(frame.number)))
+  print (paste ("call[[1]]", call[[1]]))
+  print (paste ("call[[2]]", call[[2]]))
+  print (paste ("typeof(call[[2]]", typeof(call[[2]])))
+  
+  tryCatch (
+    {
+    	# Get the value of the package parameter  
+    	print ("Getting the package name")
+    	# These work for library("vroom") but not library(vroom)
+		#package.name <- eval (as.symbol("package"), sys.frame(frame.number))
+		#package.name <- eval (expression(package), sys.frame(frame.number))
+		# package.name <- eval (quote(package), sys.frame(frame.number))
+
+		#package.name <- deparse(substitute(as.symbol("package"), sys.frame(frame.number)))
+		if (is.character(call[[2]]) || is.symbol(call[[2]])) {
+			package.name = call[[2]]
+		}
+		else {
+			package.name <- deparse(call[[2]])
+		}
+		
+  		#print (paste ("type of input.file.name is ", .ddg.get.val.type.string(input.file.name)))
+  		print (paste ("package.name =", package.name))
+  		
+  		if (package.name == "vroom") {
+  		    print ("Adding vroom write functions")
+  		    write.functions.df <- .ddg.get("ddg.file.write.functions.df")
+  		    if (!("vroom_write" %in% write.functions.df$function.names)) {
+  		    	function.names <- c("vroom_write", "vroom_write_lines")
+  		    	param.names <- c("file", "file")
+  		    	vroom.write.funcs <- data.frame(function.names, param.names)
+  		    	lapply(function.names, trace.oneOutput)
+  		    	write.functions.df <- rbind (write.functions.df, vroom.write.funcs)
+  		    	print (write.functions.df)
+  		    	.ddg.set("ddg.file.write.functions.df", write.functions.df)
+
+  		    	read.functions.df <- .ddg.get("ddg.file.read.functions.df")
+		        function.names <- c("vroom", "vroom_lines")
+			    param.names <- c("file", "file")
+  		    	vroom.read.funcs <- data.frame(function.names, param.names)
+  		    	lapply(function.names, trace.oneInput)
+  		    	read.functions.df <- rbind (read.functions.df, vroom.read.funcs)
+  		    	print (read.functions.df)
+  		    	.ddg.set("ddg.file.read.functions.df", read.functions.df)
+			}
+  		 }
+  		
+
+    },
+    error = function (e) { print (e) }  # If the file parameter is missing, there is nothing to save.
+  )
+
+}
+
+.ddg.trace.loadNamespace <- function () {
+  
+  # Get the frame corresponding to the output function being traced
+  frame.number <- .ddg.get.traced.function.frame.number()
+  print ("Got frame number")
+  print (sys.calls())
   
   # Get the name of the input function
   call <- sys.call (frame.number)
@@ -1602,6 +1683,9 @@ trace.oneInput <- function (f) {
 		if (is.character(call[[2]])) {
 			package.name = call[[2]]
 		}
+		else if (is.symbol(call[[2]])) {
+			package.name <- eval(as.symbol("package"), sys.frame(frame.number))
+		}
 		else {
 			package.name <- deparse(call[[2]])
 		}
@@ -1613,6 +1697,8 @@ trace.oneInput <- function (f) {
   		    print ("Adding vroom write functions")
   		    write.functions.df <- .ddg.get("ddg.file.write.functions.df")
   		    if (!("vroom_write" %in% write.functions.df$function.names)) {
+  		    	library(vroom)
+  		    	return
   		    	function.names <- c("vroom_write", "vroom_write_lines")
   		    	param.names <- c("file", "file")
   		    	vroom.write.funcs <- data.frame(function.names, param.names)
