@@ -242,7 +242,8 @@
 
 .ddg.record.data <- function(dtype, dname, dvalue, value, dscope, from.env=FALSE, 
                              dtime="", dloc="") {
-  #print("In .ddg.record.data")
+  #print(paste("In .ddg.record.data: ", dname))
+  #print (sys.calls())
   #print(paste("dvalue =", utils::head(dvalue)))
   #print(paste("value =", utils::head(value)))
   
@@ -862,7 +863,7 @@
     else {
       error.msg <- paste("File to copy does not exist:", fname)
       print (error.msg)
-      print (sys.calls())
+      #print (sys.calls())
       .ddg.insert.error.message(error.msg)
       return()
     }
@@ -899,7 +900,7 @@
 #' @noRd
 
 .ddg.file.node <- function(dtype, fname, dname, dscope=NULL) {
-  cat (".ddg.file.node: fname = ", fname, "\n")
+  #cat (".ddg.file.node: fname = ", fname, "\n")
 
   # Get original file location.
   file.name <- basename(fname)

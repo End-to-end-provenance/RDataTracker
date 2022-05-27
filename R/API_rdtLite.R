@@ -1,5 +1,6 @@
 # Copyright (C) President and Fellows of Harvard College and 
-# Trustees of Mount Holyoke College, 2014, 2015, 2016, 2017, 2018.
+# Trustees of Mount Holyoke College, 2014, 2015, 2016, 2017, 2018,
+# 2019, 2020, 2021, 2022.
 
 # This program is free software: you can redistribute it and/or
 # modify it under the terms of the GNU General Public License as
@@ -77,7 +78,7 @@
 prov.init <- function(prov.dir = NULL, overwrite = TRUE, snapshot.size = 0, 
   hash.algorithm = "md5", save.debug = FALSE) {
   
-  print ("In prov.init")
+  #print ("In prov.init")
   
   if (.ddg.is.set("ddg.initialized") && .ddg.get ("ddg.initialized") == TRUE) {
     stop ("Provenance collection is already started.  
@@ -96,7 +97,7 @@ prov.init <- function(prov.dir = NULL, overwrite = TRUE, snapshot.size = 0,
   
   # If this function was not called from prov.run, save arguments
   if(!.ddg.is.set("ddg.run.args")) {
-    print ("Saving arguments")
+    #print ("Saving arguments")
     args.names <- c("overwrite", "snapshot.size", "save.debug")
     args.types <- c("logical", "numeric", "logical")
     
@@ -108,14 +109,14 @@ prov.init <- function(prov.dir = NULL, overwrite = TRUE, snapshot.size = 0,
   }
   
   # Initialize list of input & output file nodes
-  print ("Initializing file nodes")
+  #print ("Initializing file nodes")
   .ddg.init.filenodes ()
 
   # Intialize provenance graph
-  print ("initializing prov graph")
+  #print ("initializing prov graph")
   .ddg.init(prov.dir, overwrite, save.debug)
   
-  print ("prov.init returning")
+  #print ("prov.init returning")
 }
 
 #' prov.save

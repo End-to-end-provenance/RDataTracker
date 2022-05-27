@@ -34,3 +34,12 @@ stopifnot(identical(y,z))
 # This one shold not create a file node since it is reading from text.
 table="1,2\n3,4"
 read.table(text=table)
+
+# Test that vroom functions get traced.
+data (mtcars)
+vroom::vroom_write(mtcars, "./mtcars.dat")
+mtcars <- vroom::vroom("./mtcars.dat")
+library(vroom)
+vroom_write(mtcars, "./mtcars.dat")
+mtcars <- vroom("./mtcars.dat")
+

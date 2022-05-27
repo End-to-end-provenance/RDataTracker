@@ -46,7 +46,7 @@
 #' @noRd
 
 .ddg.init.iotrace <- function () {
-  print ("Initializing io tracing")
+  #print ("Initializing io tracing")
   
   # Find out what packages are installed
   .ddg.set("ddg.installed.package.names", utils::installed.packages()[,1])
@@ -98,12 +98,16 @@
   # trace to call so that it can find those functions without making them 
   # publicly available in the namespace.
   
-  print ("Tracing write functions")
-    
-  lapply(.ddg.get("ddg.file.write.functions.df")$function.names, trace.oneOutput)
+  #print ("Tracing write functions")
+  write.functions.df <- .ddg.get("ddg.file.write.functions.df")
+  tryCatch (
+  	  mapply(trace.oneOutput, write.functions.df$function.names, write.functions.df$package.names),
+  	  error = function (e) print (e)
+  )
 
-  print ("Tracing read functions")
-  lapply(.ddg.get("ddg.file.read.functions.df")$function.names, trace.oneInput)
+  #print ("Tracing read functions")
+  read.functions.df <- .ddg.get("ddg.file.read.functions.df")
+  mapply(trace.oneInput, read.functions.df$function.names, read.functions.df$package.names)
 
   trace.oneClose <- 
     function (f) {
@@ -115,7 +119,7 @@
     } 
   lapply(.ddg.get("ddg.file.close.functions.df")$function.names, trace.oneClose)
   
-  print ("Tracing graphics open")
+  #print ("Tracing graphics open")
   # trace (grDevices::pdf, rdt:::.ddg.trace.graphics.open, print=TRUE)
   trace.oneGraphicsOpen <- 
     function (f) {
@@ -127,7 +131,7 @@
     } 
   lapply(.ddg.get("ddg.graphics.functions.df")$function.names, trace.oneGraphicsOpen)
   
-  print ("Tracing graphics update")
+  #print ("Tracing graphics update")
   trace.oneGraphicsUpdate <- 
     function (f) {
       utils::capture.output(
@@ -138,16 +142,17 @@
     } 
   lapply(.ddg.get("ddg.graphics.update.functions.df"), trace.oneGraphicsUpdate)
   
-  print ("Tracing dev.off")
+  #print ("Tracing dev.off")
   utils::capture.output(
     utils::capture.output(trace (grDevices::dev.off, 
             function () .ddg.trace.graphics.close (), 
                                  print=FALSE), 
                           type="message"))
                           
-  # Trace ggplot2 functions if ggplot2 is installed.
-  if ("ggplot2" %in% .ddg.get("ddg.installed.package.names")) {
-    print ("Tracing ggplot2")
+  # Trace ggplot2 functions if ggplot2 is loaded.
+  if ("ggplot2" %in% loadedNamespaces()) {
+    .ddg.trace.ggplot2.functions()
+    #print ("Tracing ggplot2")
   	utils::capture.output(
     	utils::capture.output(trace (ggplot2::ggplot, 
             function () .ddg.trace.output (), 
@@ -160,37 +165,156 @@
                           type="message"))
   }    
   
-  print ("Tracing library")
+  #print ("Tracing library")
   utils::capture.output(
     utils::capture.output(trace (library, 
-            function () .ddg.trace.library(), 
+#    		 function () .ddg.trace.library(), 
+#            exit = function () .ddg.trace.library(), 
+#			 exit = .ddg.trace.library,
+			 exit = rdtLite:::.ddg.trace.library,
                                  print=FALSE), 
                           type="message"))
         
-  print ("Tracing loadNamespace")
-  utils::capture.output(
-    utils::capture.output(trace (loadNamespace, 
-            function () .ddg.trace.loadNamespace(), 
-                                 print=FALSE), 
-                          type="message"))
+  #print ("Tracing loadNamespace")
+#  utils::capture.output(
+#    utils::capture.output(trace (loadNamespace, 
+#            function () .ddg.trace.loadNamespace(),
+##			 exit = rdtLite:::.ddg.trace.loadNamespace, 
+#                                 print=FALSE), 
+#                          type="message"))
+#
+#  setHook(packageEvent("vroom", "onLoad"),
+#    function (...) {
+#      print ("onLoad hook called for vroom")
+#      .ddg.trace.vroom.functions()
+#	}
+#  )
 
-  print ("Done initializing IO tracing")
+  #print ("Setting onLoad hook for vroom")
+  setHook(packageEvent("vroom", "onLoad"),
+        function (...) {
+          #print ("onLoad hook called for vroom")
+          .ddg.trace.vroom.functions()
+#          tryCatch (trace("vroom_write", .ddg.trace.output(), where = asNamespace("vroom")),
+#                        error = function (e) {
+#                          print (e)
+#                          print(sys.calls())
+#                          })
+        },
+        "replace"
+  )
+
+#  print ("Setting attach hook for vroom")
+  setHook(packageEvent("vroom", "attach"),
+        function (...) {
+          #print ("attach hook called for vroom")
+          .ddg.trace.vroom.functions()
+#          tryCatch (trace("vroom_write", .ddg.trace.output(), where = asNamespace("vroom")),
+#                        error = function (e) {
+#                          print (e)
+#                          print(sys.calls())
+#                          })
+        },
+        "replace"
+  )
+
+  setHook(packageEvent("ggplot2", "onLoad"),
+        function (...) {
+          #print ("onLoad hook called for vroom")
+          .ddg.trace.ggplot2.functions()
+#          tryCatch (trace("vroom_write", .ddg.trace.output(), where = asNamespace("vroom")),
+#                        error = function (e) {
+#                          print (e)
+#                          print(sys.calls())
+#                          })
+        },
+        "replace"
+  )
+
+#  print ("Setting attach hook for vroom")
+  setHook(packageEvent("ggplot2", "attach"),
+        function (...) {
+          #print ("attach hook called for vroom")
+          .ddg.trace.ggplot2.functions()
+#          tryCatch (trace("vroom_write", .ddg.trace.output(), where = asNamespace("vroom")),
+#                        error = function (e) {
+#                          print (e)
+#                          print(sys.calls())
+#                          })
+        },
+        "replace"
+  )
+
+  #print ("Done initializing IO tracing")
 }
 
-trace.oneOutput <- function (f) {
+
+
+trace.oneOutput <- function (f, pkg) {
+    #print (paste ("Adding tracing for ", f))
+	if (pkg == "") {
+      # If vroom is loaded, and "" is passed in for the package,
+      # this gives: <simpleError in getFunction(what, where = whereF): no function 'vroom_write' found>
       utils::capture.output(
         utils::capture.output(trace (as.expression(f), 
-                                     function () .ddg.trace.output(), 
+                                     #function () .ddg.trace.output(),
+                                     quote(rdtLite:::.ddg.trace.output()), 
                                      print=FALSE), 
                               type="message"))
+    }
+    else {
+      # If vroom is loaded, and "vroom" is passed in for the package, this gives:
+      # <simpleError in as.environment(where): no item called "vroom" on the search list>
+      # It needs to be attached to be on the search list.  But if it is already loaded,
+      # the load hook won't get called.  And if it is called as vroom::vroom_write, 
+      # it will never get attached.  Is there a different parameter to pass to where?
+      utils::capture.output(
+        utils::capture.output(trace (as.expression(f), 
+                                     #function () .ddg.trace.output(),
+                                     quote(rdtLite:::.ddg.trace.output()), 
+                                     where = pkg,
+                                     print=FALSE), 
+                              type="message"))
+    }
+                                 
 } 
 
-trace.oneInput <- function (f) {
+untrace.oneOutput <- function (f, pkg) {
+	#cat ("Untracing", f, "in package", pkg)
+	if (pkg == "") {
+      utils::capture.output(
+        utils::capture.output(
+		untrace (as.expression(f)) ,
+                              type="message"))
+    }
+    else {
+      utils::capture.output(
+        utils::capture.output(
+	   untrace (as.expression(f), where = asNamespace(pkg)), 
+                              type="message"))
+    }
+                                 
+} 
+
+
+
+trace.oneInput <- function (f, pkg) {
+	if (pkg == "") {
       utils::capture.output(
         utils::capture.output(trace (as.expression(f), 
-                function () .ddg.trace.input (), 
+                                     function () .ddg.trace.input(), 
                                      print=FALSE), 
                               type="message"))
+    }
+    else {
+      utils::capture.output(
+        utils::capture.output(trace (as.expression(f), 
+                                     function () .ddg.trace.input(), 
+                                     where = pkg,
+                                     print=FALSE), 
+                              type="message"))
+    }
+
 } 
 
 #' .ddg.stop.iotracing stops tracing I/O calls.  This should be called when RDT finishes.
@@ -202,9 +326,23 @@ trace.oneInput <- function (f) {
   # Stop tracing output functions.  
   # utils::capture.output is used to prevent "Untracing" messages from appearing 
   # in the output
-  utils::capture.output (
-    untrace(.ddg.get("ddg.file.write.functions.df")$function.names), 
-    type="message")
+  #print ("Untracing file write functions")
+#  utils::capture.output (
+#    untrace(.ddg.get("ddg.file.write.functions.df")$function.names), 
+#    type="message")
+#  if ("vroom" %in% loadedNamespaces()) {
+#    .ddg.untrace.vroom.functions()
+#  }
+  file.write.functions.df <- .ddg.get("ddg.file.write.functions.df")
+  mapply(untrace.oneOutput, file.write.functions.df$function.names, file.write.functions.df$package.names)
+  
+  #print ("Removing vroom and ggplot2 hooks")
+  setHook (packageEvent("vroom", "onLoad"), NULL, "replace")
+  setHook (packageEvent("vroom", "attach"), NULL, "replace")
+  setHook (packageEvent("ggplot2", "onLoad"), NULL, "replace")
+  setHook (packageEvent("ggplot2", "attach"), NULL, "replace")
+  
+  #print ("Untracing file read functions")
   utils::capture.output (untrace(.ddg.get("ddg.file.read.functions.df")$function.names), 
                          type="message")
   utils::capture.output (
@@ -215,13 +353,24 @@ trace.oneInput <- function (f) {
   utils::capture.output (untrace(.ddg.get("ddg.graphics.update.functions.df")), 
                          type="message")
   utils::capture.output (untrace(grDevices::dev.off), type="message")
+  
+  #print ("Untracing loadNamespace")
   utils::capture.output (untrace(loadNamespace), type="message")
+  
+  #print ("Untracing library")
   utils::capture.output (untrace(library), type="message")
   
-  if ("ggplot2" %in% .ddg.get("ddg.installed.package.names")) {
-    utils::capture.output (untrace(ggplot2::ggplot), type="message")
-    utils::capture.output (untrace(ggplot2::ggsave), type="message")
-  }
+#  if ("ggplot2" %in% loadedNamespaces()) {
+#    utils::capture.output (untrace(ggplot2::ggplot), type="message")
+#    utils::capture.output (untrace(ggplot2::ggsave), type="message")
+#  }
+  
+  #print ("Untracing vroom functions")
+  .ddg.untrace.vroom.functions()
+  #print ("Untracing ggplot2 functions")
+  .ddg.untrace.ggplot2.functions()
+  #print ("Done untracing")
+  
 }
 
 ################### Helper functions ######################3
@@ -339,14 +488,22 @@ trace.oneInput <- function (f) {
           "file",
           "con", "con", "con", "file", "file", "path",
           "file")
+          
+  package.names <- 
+  	  c ("", 
+  	     "", 
+  	     "", 
+         "", "", "", "", "", "",
+         "")
   
-  if ("vroom" %in% loadedNamespaces()) {
-      function.names <- append (function.names, c("vroom", "vroom_lines"))
-      param.names <- append (param.names, c("file", "file"))
-  }
   
+#  if ("vroom" %in% loadedNamespaces()) {
+#      function.names <- append (function.names, c("vroom", "vroom_lines"))
+#      param.names <- append (param.names, c("file", "file"))
+#      package.names <- append (package.names, c("vroom", "vroom"))
+#  }
   
-  return (data.frame (function.names, param.names, stringsAsFactors=FALSE))
+  return (data.frame (function.names, param.names, package.names, stringsAsFactors=FALSE))
 }
 
 #' .ddg.clear.input.file clears out the list of input files.  This should be 
@@ -616,12 +773,23 @@ trace.oneInput <- function (f) {
           "file", "file", "file", "file",
           "...")
           
-  if ("vroom" %in% loadedNamespaces()) {
-      function.names <- append (function.names, c("vroom_write", "vroom_write_lines"))
-      param.names <- append (param.names, c("file", "file"))
-  }
+  package.names <- 
+  	c ("", "", "", 
+          "", "", 
+          "", "", "", "",
+          "")
+          
+#  if ("vroom" %in% loadedNamespaces()) {
+#      print ("vroom is loaded")
+#      function.names <- append (function.names, c("vroom_write", "vroom_write_lines"))
+#      param.names <- append (param.names, c("file", "file"))
+      
+      # Both of these result in it hanging in trace.oneOutput when adding tracing for vroom_write
+#      package.names <- append (package.names, c("vroom", "vroom"))
+      #package.names <- append (package.names, c("", ""))
+#  }
    
-  return (data.frame (function.names, param.names, stringsAsFactors=FALSE))
+  return (data.frame (function.names, param.names, package.names, stringsAsFactors=FALSE))
 }
 
 
@@ -648,7 +816,7 @@ trace.oneInput <- function (f) {
   # that write to the same file.
   if (!(fname %in% output.files) && is.character(fname) && 
       !endsWith (fname, ".snapshot")) {
-    print (paste ("Adding output file", fname))
+    #print (paste ("Adding output file", fname))
     #print (sys.calls())
     .ddg.set ("output.files", append(output.files, fname))
   }
@@ -717,7 +885,7 @@ trace.oneInput <- function (f) {
     fname <- fname[length(fname)]
   }
   
-  print (paste ("Output function traced: ", fname))
+  #print (paste ("Output function traced: ", fname))
   
   # Set a flag to indicate that a new plot is started but
   # its name is not known yet.
@@ -738,11 +906,11 @@ trace.oneInput <- function (f) {
     file.write.functions <- .ddg.get ("ddg.file.write.functions.df")
     file.param.name <- 
       file.write.functions$param.names[file.write.functions$function.names == fname]
-    print (paste ("Output file parameter:", file.param.name))
+    #print (paste ("Output file parameter:", file.param.name))
     
     # Get the value of the file parameter  
     output.file.name <- eval (as.symbol(file.param.name), envir = sys.frame(frame.number))
-    print (paste ("output.file.name =", output.file.name))
+    #print (paste ("output.file.name =", output.file.name))
   
     # Save the file name so the file node can be created when the statement is complete.
     # we do not want to create the nodes because the procedure node to connect to does not
@@ -762,7 +930,7 @@ trace.oneInput <- function (f) {
   files.written <- .ddg.get ("output.files")
   
   for (file in files.written) {
-    print (paste (".ddg.create.file.write.nodes.and.edges file written: ", file))
+    #print (paste (".ddg.create.file.write.nodes.and.edges file written: ", file))
     if (.ddg.is.connection(file)) {
       conn <- as.numeric(file)
       # If it is a closed connection, use the file it is connected to
@@ -836,7 +1004,7 @@ trace.oneInput <- function (f) {
 #' @noRd
  
 .ddg.file.out <- function(filename) {
-  cat (".ddg.file.out: filename = ", filename, "\n")
+  #cat (".ddg.file.out: filename = ", filename, "\n")
   # Adds the files written to ddg.outfilenodes for use in determining reads
   # and writes in the hashtable.
   .ddg.add.outfiles (filename)
@@ -1028,8 +1196,8 @@ trace.oneInput <- function (f) {
     file.close.functions <- .ddg.get ("ddg.file.close.functions.df")
     file.param.name <- 
       file.close.functions$param.names[file.close.functions$function.names == fname]
-    print (paste (".ddg.trace.close: fname = ", fname))
-    print (paste (".ddg.trace.close: file.param.name = ", file.param.name))
+    #print (paste (".ddg.trace.close: fname = ", fname))
+    #print (paste (".ddg.trace.close: file.param.name = ", file.param.name))
   
     # Get the value of the connection parameter  
     close.conn <- eval (as.symbol(file.param.name), envir = sys.frame(frame.number))
@@ -1569,16 +1737,18 @@ trace.oneInput <- function (f) {
 }
 
 .ddg.trace.library <- function () {
+  #print ("In .ddg.trace.library, returning")
+  return()
   
   # Get the frame corresponding to the output function being traced
   frame.number <- .ddg.get.traced.function.frame.number()
-  print ("Got frame number")
-  print (sys.calls())
+  #print ("Got frame number")
+  #print (sys.calls())
   
   # Get the name of the input function
   call <- sys.call (frame.number)
   if (typeof(call[[1]]) == "closure") {
-    print (sys.calls())
+    #print (sys.calls())
     return()
   }
   fname <- as.character(call[[1]])
@@ -1588,16 +1758,16 @@ trace.oneInput <- function (f) {
     fname <- fname[length(fname)]
   }
   
-  print (paste ("Function traced: ", fname))
-  print (ls(sys.frame(frame.number)))
-  print (paste ("call[[1]]", call[[1]]))
-  print (paste ("call[[2]]", call[[2]]))
-  print (paste ("typeof(call[[2]]", typeof(call[[2]])))
+  #print (paste ("Function traced: ", fname))
+  #print (ls(sys.frame(frame.number)))
+  #print (paste ("call[[1]]", call[[1]]))
+  #print (paste ("call[[2]]", call[[2]]))
+  #print (paste ("typeof(call[[2]]", typeof(call[[2]])))
   
   tryCatch (
     {
     	# Get the value of the package parameter  
-    	print ("Getting the package name")
+    	#print ("Getting the package name")
     	# These work for library("vroom") but not library(vroom)
 		#package.name <- eval (as.symbol("package"), sys.frame(frame.number))
 		#package.name <- eval (expression(package), sys.frame(frame.number))
@@ -1612,29 +1782,46 @@ trace.oneInput <- function (f) {
 		}
 		
   		#print (paste ("type of input.file.name is ", .ddg.get.val.type.string(input.file.name)))
-  		print (paste ("package.name =", package.name))
+  		#print (paste ("package.name =", package.name))
   		
   		if (package.name == "vroom") {
-  		    print ("Adding vroom write functions")
-  		    write.functions.df <- .ddg.get("ddg.file.write.functions.df")
-  		    if (!("vroom_write" %in% write.functions.df$function.names)) {
-  		    	function.names <- c("vroom_write", "vroom_write_lines")
-  		    	param.names <- c("file", "file")
-  		    	vroom.write.funcs <- data.frame(function.names, param.names)
-  		    	lapply(function.names, trace.oneOutput)
-  		    	write.functions.df <- rbind (write.functions.df, vroom.write.funcs)
-  		    	print (write.functions.df)
-  		    	.ddg.set("ddg.file.write.functions.df", write.functions.df)
+  		    #print ("Adding vroom functions")
+  		    .ddg.trace.vroom.functions()
+#  		    write.functions.df <- .ddg.get("ddg.file.write.functions.df")
+#  		    if (!("vroom_write" %in% write.functions.df$function.names)) {
+#  		    	function.names <- c("vroom::vroom_write", "vroom::vroom_write_lines")
+#  		    	param.names <- c("file", "file")
+#  		    	vroom.write.funcs <- data.frame(function.names, param.names)
+#  		    	print ("Tracing vroom write functions")
+#  		    	lapply(function.names, trace.oneOutput)
+#  		    	write.functions.df <- rbind (write.functions.df, vroom.write.funcs)
+#  		    	#print (write.functions.df)
+#  		    	.ddg.set("ddg.file.write.functions.df", write.functions.df)
 
-  		    	read.functions.df <- .ddg.get("ddg.file.read.functions.df")
-		        function.names <- c("vroom", "vroom_lines")
-			    param.names <- c("file", "file")
-  		    	vroom.read.funcs <- data.frame(function.names, param.names)
-  		    	lapply(function.names, trace.oneInput)
-  		    	read.functions.df <- rbind (read.functions.df, vroom.read.funcs)
-  		    	print (read.functions.df)
-  		    	.ddg.set("ddg.file.read.functions.df", read.functions.df)
-			}
+#  		    	read.functions.df <- .ddg.get("ddg.file.read.functions.df")
+#		        function.names <- c("vroom::vroom", "vroom::vroom_lines")
+#			    param.names <- c("file", "file")
+#  		    	vroom.read.funcs <- data.frame(function.names, param.names)
+#  		    	print ("Tracing vroom read functions")
+#  		    	lapply(function.names, trace.oneInput)
+#  		    	read.functions.df <- rbind (read.functions.df, vroom.read.funcs)
+  		    	#print (read.functions.df)
+#  		    	.ddg.set("ddg.file.read.functions.df", read.functions.df)
+  		    	
+#  		    	print ("vroom tracing set up")
+#			}
+  		 }
+  		 else if (package.name == "ggplot2") {
+  		 	utils::capture.output(
+    			utils::capture.output(trace (ggplot2::ggplot, 
+            		function () .ddg.trace.output (), 
+                                 print=FALSE), 
+                          type="message"))
+    		utils::capture.output(
+      		utils::capture.output(trace (ggplot2::ggsave, 
+            		function () .ddg.trace.close (), 
+                                 print=FALSE), 
+                          type="message"))
   		 }
   		
 
@@ -1644,17 +1831,115 @@ trace.oneInput <- function (f) {
 
 }
 
+#in_vroom <- function () {
+#   print ("In vroom_write")
+#}
+
+.ddg.trace.vroom.functions <- function () {
+    #print ("In .ddg.trace.vroom.functions")
+	function.names <- c("vroom_write", "vroom_write_lines")
+  	param.names <- c("file", "file")
+  	package.names <- c("vroom", "vroom")
+  	vroom.write.funcs <- data.frame(function.names, param.names, package.names)
+  	write.functions.df <- .ddg.get("ddg.file.write.functions.df")
+  	write.functions.df <- rbind (write.functions.df, vroom.write.funcs)
+  	#print (write.functions.df)
+  	.ddg.set("ddg.file.write.functions.df", write.functions.df)
+  	#print ("Adding tracing for vroom write function")
+  	
+  	# Error in tracer() : could not find function "tracer"
+    # tryCatch (trace(function.names, function () .ddg.trace.output(), where = asNamespace("vroom")),
+    # tryCatch (trace(function.names, tracer = .ddg.trace.output, where = asNamespace("vroom")),
+    # tryCatch (trace(function.names, tracer = rdtLite:::.ddg.trace.output, where = asNamespace("vroom")),
+    # tryCatch (trace(function.names, tracer = browser, where = asNamespace("vroom")),
+    
+    # This one does not give an error
+    # tryCatch (trace(function.names, tracer = quote(print ("I am in a vroom function!")), where = asNamespace("vroom")),
+    
+    # Error in .ddg.trace.output() : 
+    # could not find function ".ddg.trace.output"
+    # tryCatch (trace(function.names, tracer = quote(.ddg.trace.output ()), where = asNamespace("vroom")),
+    
+    # Works when vroom is not initially loaded!!!
+    tryCatch (utils::capture.output(
+                  utils::capture.output(
+                      trace(function.names, 
+                            tracer = quote(rdtLite:::.ddg.trace.output ()), 
+                            where = asNamespace("vroom"), 
+                            print=FALSE),
+                      type="message")),
+              error = function (e) {
+                           print (e)
+                           print(sys.calls())
+                      })
+  	#lapply(function.names, trace.oneOutput)
+  	#print ("Back from adding vroom output tracing")
+
+	function.names <- c("vroom", "vroom_lines")
+	param.names <- c("file", "file")
+  	package.names <- c("vroom", "vroom")
+  	vroom.read.funcs <- data.frame(function.names, param.names, package.names)
+  	#print ("Calling trace.oneIntput for vroom read functions")
+  	#lapply(function.names, trace.oneInput)
+  	#print ("Back from trace.oneInput")
+  	read.functions.df <- .ddg.get("ddg.file.read.functions.df")
+  	read.functions.df <- rbind (read.functions.df, vroom.read.funcs)
+  	#print (read.functions.df)
+  	.ddg.set("ddg.file.read.functions.df", read.functions.df)
+    tryCatch (utils::capture.output(utils::capture.output(trace(function.names, tracer = quote(rdtLite:::.ddg.trace.input ()), where = asNamespace("vroom"), print=FALSE),type="message")),
+                     error = function (e) {
+                       print (e)
+                       print(sys.calls())
+                     })
+}
+
+.ddg.untrace.vroom.functions <- function () {
+    tryCatch({
+				utils::capture.output(untrace ("vroom_write", where = asNamespace("vroom")), type="message") 
+				utils::capture.output(untrace ("vroom_write_lines", where = asNamespace("vroom")), type="message") 
+				utils::capture.output(untrace ("vroom", where = asNamespace("vroom")), type="message")
+				utils::capture.output(untrace ("vroom_lines", where = asNamespace("vroom")), type="message")
+			  },
+			  error = function (e) { })
+}
+
+.ddg.untrace.ggplot2.functions <- function () {
+    tryCatch ({
+				utils::capture.output(untrace ("ggplot", where = asNamespace("ggplot2")), type="message") 
+				utils::capture.output(untrace ("ggsave", where = asNamespace("ggplot2")), type="message")
+			   },
+			   error = function (e) { }) 
+}
+
+
+.ddg.trace.ggplot2.functions <- function () {
+    #print ("Tracing ggplot2")
+  	utils::capture.output(
+    	utils::capture.output(trace ("ggplot", 
+            function () .ddg.trace.output (), 
+                                 print=FALSE,
+                                 where = asNamespace("ggplot2")), 
+                          type="message"))
+    utils::capture.output(
+      utils::capture.output(trace ("ggsave", 
+            function () .ddg.trace.close (), 
+                                 print=FALSE,
+                                 where = asNamespace("ggplot2")), 
+                          type="message"))
+}
+
 .ddg.trace.loadNamespace <- function () {
+  print ("In .ddg.trace.loadNamespace")
   
   # Get the frame corresponding to the output function being traced
   frame.number <- .ddg.get.traced.function.frame.number()
-  print ("Got frame number")
-  print (sys.calls())
+  #print ("Got frame number")
+  #print (sys.calls())
   
   # Get the name of the input function
   call <- sys.call (frame.number)
   if (typeof(call[[1]]) == "closure") {
-    print (sys.calls())
+    #print (sys.calls())
     return()
   }
   fname <- as.character(call[[1]])
@@ -1665,59 +1950,58 @@ trace.oneInput <- function (f) {
   }
   
   print (paste ("Function traced: ", fname))
-  print (ls(sys.frame(frame.number)))
-  print (paste ("call[[1]]", call[[1]]))
-  print (paste ("call[[2]]", call[[2]]))
-  print (paste ("typeof(call[[2]]", typeof(call[[2]])))
+  #print (ls(sys.frame(frame.number)))
+  #print (paste ("call[[1]]", call[[1]]))
+  #print (paste ("call[[2]]", call[[2]]))
+  #print (paste ("typeof(call[[2]]", typeof(call[[2]])))
   
   tryCatch (
     {
     	# Get the value of the package parameter  
-    	print ("Getting the package name")
+    	#print ("Getting the package name")
     	# These work for library("vroom") but not library(vroom)
-		#package.name <- eval (as.symbol("package"), sys.frame(frame.number))
+		package.name <- eval (as.symbol("package"), sys.frame(frame.number))
 		#package.name <- eval (expression(package), sys.frame(frame.number))
 		# package.name <- eval (quote(package), sys.frame(frame.number))
 
 		#package.name <- deparse(substitute(as.symbol("package"), sys.frame(frame.number)))
-		if (is.character(call[[2]])) {
-			package.name = call[[2]]
-		}
-		else if (is.symbol(call[[2]])) {
-			package.name <- eval(as.symbol("package"), sys.frame(frame.number))
-		}
-		else {
-			package.name <- deparse(call[[2]])
-		}
+		#if (is.character(call[[2]])) {
+		#	package.name = call[[2]]
+		#}
+		#else if (is.symbol(call[[2]])) {
+		#	package.name <- eval(as.symbol("package"), sys.frame(frame.number))
+		#}
+		#else {
+		#	package.name <- deparse(call[[2]])
+		#}
 		
   		#print (paste ("type of input.file.name is ", .ddg.get.val.type.string(input.file.name)))
   		print (paste ("package.name =", package.name))
   		
   		if (package.name == "vroom") {
-  		    print ("Adding vroom write functions")
+  		    print ("In .ddg.trace.loadNamespace: Adding vroom functions")
+  		    #print(sys.calls())
   		    write.functions.df <- .ddg.get("ddg.file.write.functions.df")
   		    if (!("vroom_write" %in% write.functions.df$function.names)) {
-  		    	library(vroom)
-  		    	return
-  		    	function.names <- c("vroom_write", "vroom_write_lines")
-  		    	param.names <- c("file", "file")
-  		    	vroom.write.funcs <- data.frame(function.names, param.names)
-  		    	lapply(function.names, trace.oneOutput)
-  		    	write.functions.df <- rbind (write.functions.df, vroom.write.funcs)
-  		    	print (write.functions.df)
-  		    	.ddg.set("ddg.file.write.functions.df", write.functions.df)
-
-  		    	read.functions.df <- .ddg.get("ddg.file.read.functions.df")
-		        function.names <- c("vroom", "vroom_lines")
-			    param.names <- c("file", "file")
-  		    	vroom.read.funcs <- data.frame(function.names, param.names)
-  		    	lapply(function.names, trace.oneInput)
-  		    	read.functions.df <- rbind (read.functions.df, vroom.read.funcs)
-  		    	print (read.functions.df)
-  		    	.ddg.set("ddg.file.read.functions.df", read.functions.df)
+  		    	#requireNamespace("vroom", quietly=TRUE)
+  		    	#library(vroom)
+  		    	#return
+  		    	.ddg.trace.vroom.functions()
 			}
   		 }
-  		
+  		 else if (package.name == "ggplot2") {
+  		 	utils::capture.output(
+    			utils::capture.output(trace (ggplot2::ggplot, 
+            		function () .ddg.trace.output (), 
+                                 print=FALSE), 
+                          type="message"))
+    		utils::capture.output(
+      			utils::capture.output(trace (ggplot2::ggsave, 
+            		function () .ddg.trace.close (), 
+                                 print=FALSE), 
+                          type="message"))
+         }
+  		 	
 
     },
     error = function (e) { print (e) }  # If the file parameter is missing, there is nothing to save.

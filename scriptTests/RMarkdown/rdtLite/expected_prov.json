@@ -7,7 +7,7 @@
 	"agent" : {
 		"rdt:a1": {
 			"rdt:tool.name": "rdtLite",
-			"rdt:tool.version": "1.2.1",
+			"rdt:tool.version": "1.3",
 			"rdt:json.version": "2.3",
 			"rdt:args.names": [
 				"overwrite",
@@ -34,7 +34,7 @@
 		"rdt:p1": {
 			"rdt:name": "RMarkdown.R",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": "1.46",
+			"rdt:elapsedTime": "1.176",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -44,7 +44,7 @@
 		"rdt:p2": {
 			"rdt:name": "x <- 2+2",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.168",
+			"rdt:elapsedTime": "0.132",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 13,
 			"rdt:startCol": 1,
@@ -54,7 +54,7 @@
 		"rdt:p3": {
 			"rdt:name": "y <- x+2",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.101",
+			"rdt:elapsedTime": "0.112",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 14,
 			"rdt:startCol": 1,
@@ -64,7 +64,7 @@
 		"rdt:p4": {
 			"rdt:name": "x",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.095",
+			"rdt:elapsedTime": "0.11",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 15,
 			"rdt:startCol": 1,
@@ -74,7 +74,7 @@
 		"rdt:p5": {
 			"rdt:name": "y",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.095",
+			"rdt:elapsedTime": "0.101",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 16,
 			"rdt:startCol": 1,
@@ -84,7 +84,7 @@
 		"rdt:p6": {
 			"rdt:name": "library(ggplot2)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.089",
+			"rdt:elapsedTime": "0.101",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 22,
 			"rdt:startCol": 1,
@@ -94,7 +94,7 @@
 		"rdt:p7": {
 			"rdt:name": "p<- ggplot(pressure, aes(x=temperature, y=pressure))",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.094",
+			"rdt:elapsedTime": "0.111",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 23,
 			"rdt:startCol": 1,
@@ -104,7 +104,7 @@
 		"rdt:p8": {
 			"rdt:name": "p",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.157",
+			"rdt:elapsedTime": "0.139",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 24,
 			"rdt:startCol": 1,
@@ -114,7 +114,7 @@
 		"rdt:p9": {
 			"rdt:name": "data(iris)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.096",
+			"rdt:elapsedTime": "0.114",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 31,
 			"rdt:startCol": 1,
@@ -124,7 +124,7 @@
 		"rdt:p10": {
 			"rdt:name": "x <- iris[,1]",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.168",
+			"rdt:elapsedTime": "0.147",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 32,
 			"rdt:startCol": 1,
@@ -134,7 +134,7 @@
 		"rdt:p11": {
 			"rdt:name": "y <- iris[,2]",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.098",
+			"rdt:elapsedTime": "0.12",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 33,
 			"rdt:startCol": 1,
@@ -144,7 +144,7 @@
 		"rdt:p12": {
 			"rdt:name": "summary(lm(y~x))",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.115",
+			"rdt:elapsedTime": "0.114",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 34,
 			"rdt:startCol": 1,
@@ -154,7 +154,7 @@
 		"rdt:p13": {
 			"rdt:name": "RMarkdown.R",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": "0.008",
+			"rdt:elapsedTime": "0.007",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -194,30 +194,30 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2020-07-03T16.01.57EDT",
+			"rdt:timestamp": "2022-05-27T15.40.07EDT",
 			"rdt:location": ""
 		},
 		"rdt:d4": {
-			"rdt:name": "Rdata.rds",
+			"rdt:name": "ggplot2",
 			"rdt:value": "data/4-Rdata.rds",
 			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}",
 			"rdt:type": "File",
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
-			"rdt:hash": "efd21902af0ed975f027a023d00cc2c2",
-			"rdt:timestamp": "2020-07-03T16.01.57EDT",
-			"rdt:location": "/Library/Frameworks/R.framework/Versions/4.0/Resources/library/ggplot2/data/Rdata.rds"
+			"rdt:hash": "04256121fe57472a9fbcd0c939f0ad8e",
+			"rdt:timestamp": "2021-06-26T08.07.36EDT",
+			"rdt:location": "/Library/Frameworks/R.framework/Versions/4.1/Resources/library/ggplot2/data/Rdata.rds"
 		},
 		"rdt:d5": {
-			"rdt:name": "Rdata.rds",
+			"rdt:name": "datasets",
 			"rdt:value": "data/5-Rdata.rds",
 			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}",
 			"rdt:type": "File",
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
-			"rdt:hash": "baf0b689f0068825062c137a3372e1eb",
-			"rdt:timestamp": "2020-07-03T16.01.57EDT",
-			"rdt:location": "/Library/Frameworks/R.framework/Versions/4.0/Resources/library/datasets/data/Rdata.rds"
+			"rdt:hash": "78b26bb3474842962acb48d91d07261b",
+			"rdt:timestamp": "2021-11-01T17.03.12EDT",
+			"rdt:location": "/Library/Frameworks/R.framework/Versions/4.1/Resources/library/datasets/data/Rdata.rds"
 		},
 		"rdt:d6": {
 			"rdt:name": "iris",
@@ -227,7 +227,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2020-07-03T16.01.57EDT",
+			"rdt:timestamp": "2022-05-27T15.40.07EDT",
 			"rdt:location": ""
 		},
 		"rdt:d7": {
@@ -238,7 +238,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2020-07-03T16.01.57EDT",
+			"rdt:timestamp": "2022-05-27T15.40.07EDT",
 			"rdt:location": ""
 		},
 		"rdt:d8": {
@@ -249,7 +249,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2020-07-03T16.01.57EDT",
+			"rdt:timestamp": "2022-05-27T15.40.08EDT",
 			"rdt:location": ""
 		},
 		"rdt:d9": {
@@ -259,33 +259,33 @@
 			"rdt:type": "File",
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
-			"rdt:hash": "440d10b7b7d122691f163990a7b6e960",
-			"rdt:timestamp": "2020-07-03T16.01.58EDT",
+			"rdt:hash": "56ccd4d71dd7dea68e2d9596004b5192",
+			"rdt:timestamp": "2022-05-27T15.40.06EDT",
 			"rdt:location": "[DIR]/RMarkdown.pdf"
 		},
 
 		"rdt:environment": {
 			"rdt:name": "environment",
 			"rdt:architecture": "x86_64-apple-darwin17.0 (64-bit)",
-			"rdt:operatingSystem": "macOS Catalina 10.15.5",
+			"rdt:operatingSystem": "macOS Catalina 10.15.7",
 			"rdt:language": "R",
-			"rdt:langVersion": "R version 4.0.0 (2020-04-24)",
+			"rdt:langVersion": "R version 4.1.2 (2021-11-01)",
 			"rdt:script": "[DIR]/rdtLite/prov_RMarkdown/scripts/RMarkdown.R",
-			"rdt:scriptTimeStamp": "2020-07-03T16.01.52EDT",
+			"rdt:scriptTimeStamp": "2022-05-27T15.40.02EDT",
 			"rdt:scriptHash": "26f1e3a27b9dfd8558a638a6c9ff9385",
-			"rdt:totalElapsedTime": "2.744",
+			"rdt:totalElapsedTime": "2.484",
 			"rdt:sourcedScripts": "",
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:sourcedScriptHashes": "",
 			"rdt:workingDirectory": "[DIR]/rdtLite",
 			"rdt:provDirectory": "[DIR]/rdtLite/prov_RMarkdown",
-			"rdt:provTimestamp": "2020-07-03T16.01.56EDT",
+			"rdt:provTimestamp": "2022-05-27T15.40.06EDT",
 			"rdt:hashAlgorithm": "md5"
 		},
 
 		"rdt:l1": {
 			"name": "base",
-			"version": "4.0.0",
+			"version": "4.1.2",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -293,7 +293,7 @@
 		},
 		"rdt:l2": {
 			"name": "datasets",
-			"version": "4.0.0",
+			"version": "4.1.2",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -301,7 +301,7 @@
 		},
 		"rdt:l3": {
 			"name": "ggplot2",
-			"version": "3.3.2",
+			"version": "3.3.5",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -309,7 +309,7 @@
 		},
 		"rdt:l4": {
 			"name": "graphics",
-			"version": "4.0.0",
+			"version": "4.1.2",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -317,7 +317,7 @@
 		},
 		"rdt:l5": {
 			"name": "grDevices",
-			"version": "4.0.0",
+			"version": "4.1.2",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -325,7 +325,7 @@
 		},
 		"rdt:l6": {
 			"name": "methods",
-			"version": "4.0.0",
+			"version": "4.1.2",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -333,7 +333,7 @@
 		},
 		"rdt:l7": {
 			"name": "rdtLite",
-			"version": "1.2.1",
+			"version": "1.3",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -341,7 +341,7 @@
 		},
 		"rdt:l8": {
 			"name": "stats",
-			"version": "4.0.0",
+			"version": "4.1.2",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -349,7 +349,7 @@
 		},
 		"rdt:l9": {
 			"name": "utils",
-			"version": "4.0.0",
+			"version": "4.1.2",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"

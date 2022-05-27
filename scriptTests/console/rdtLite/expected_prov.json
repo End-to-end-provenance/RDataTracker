@@ -7,7 +7,7 @@
 	"agent" : {
 		"rdt:a1": {
 			"rdt:tool.name": "rdtLite",
-			"rdt:tool.version": "1.2.1",
+			"rdt:tool.version": "1.3",
 			"rdt:json.version": "2.3",
 			"rdt:args.names": [
 				"overwrite",
@@ -31,7 +31,7 @@
 		"rdt:p1": {
 			"rdt:name": "Console",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": "0.82",
+			"rdt:elapsedTime": "0.258",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -41,7 +41,7 @@
 		"rdt:p2": {
 			"rdt:name": "a <- 1",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.052",
+			"rdt:elapsedTime": "0.04",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 1,
 			"rdt:startCol": 1,
@@ -51,7 +51,7 @@
 		"rdt:p3": {
 			"rdt:name": "b <- a + 2",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.034",
+			"rdt:elapsedTime": "0.02",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 2,
 			"rdt:startCol": 1,
@@ -61,7 +61,7 @@
 		"rdt:p4": {
 			"rdt:name": "a <- 5",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.007",
+			"rdt:elapsedTime": "0.005",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 3,
 			"rdt:startCol": 1,
@@ -71,7 +71,7 @@
 		"rdt:p5": {
 			"rdt:name": "Console",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": "0.005",
+			"rdt:elapsedTime": "0.002",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -81,7 +81,7 @@
 		"rdt:p6": {
 			"rdt:name": "Console",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": "0.0",
+			"rdt:elapsedTime": "0.001",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -91,7 +91,7 @@
 		"rdt:p7": {
 			"rdt:name": "if (a == 1) {\n\tb = 10\n} else if (a == 5) {\n\td = 50\n}",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.673",
+			"rdt:elapsedTime": "0.297",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 4,
 			"rdt:startCol": 1,
@@ -101,7 +101,7 @@
 		"rdt:p8": {
 			"rdt:name": "Console",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": "0.014",
+			"rdt:elapsedTime": "0.007",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -121,7 +121,7 @@
 		"rdt:p10": {
 			"rdt:name": "f <- function() {\n\treturn(1)\n}",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.552",
+			"rdt:elapsedTime": "0.149",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 9,
 			"rdt:startCol": 1,
@@ -131,7 +131,7 @@
 		"rdt:p11": {
 			"rdt:name": "x <- f()",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.007",
+			"rdt:elapsedTime": "0.003",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 12,
 			"rdt:startCol": 1,
@@ -141,7 +141,7 @@
 		"rdt:p12": {
 			"rdt:name": "Console",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": "0.01",
+			"rdt:elapsedTime": "0.004",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -232,25 +232,25 @@
 		"rdt:environment": {
 			"rdt:name": "environment",
 			"rdt:architecture": "x86_64-apple-darwin17.0 (64-bit)",
-			"rdt:operatingSystem": "macOS Catalina 10.15.5",
+			"rdt:operatingSystem": "macOS Catalina 10.15.7",
 			"rdt:language": "R",
-			"rdt:langVersion": "R version 4.0.0 (2020-04-24)",
-			"rdt:script": "console.R",
-			"rdt:scriptTimeStamp": "2020-07-03T16.04.45EDT",
+			"rdt:langVersion": "R version 4.1.2 (2021-11-01)",
+			"rdt:script": "[DIR]/rdtLite/prov_console/scripts/console.R",
+			"rdt:scriptTimeStamp": "2022-05-27T15.54.39EDT",
 			"rdt:scriptHash": "",
-			"rdt:totalElapsedTime": "2.174",
+			"rdt:totalElapsedTime": "0.786",
 			"rdt:sourcedScripts": "",
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:sourcedScriptHashes": "",
 			"rdt:workingDirectory": "[DIR]/rdtLite",
 			"rdt:provDirectory": "[DIR]/rdtLite/prov_console",
-			"rdt:provTimestamp": "2020-07-03T16.04.43EDT",
+			"rdt:provTimestamp": "2022-05-27T15.54.39EDT",
 			"rdt:hashAlgorithm": "md5"
 		},
 
 		"rdt:l1": {
 			"name": "base",
-			"version": "4.0.0",
+			"version": "4.1.2",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -258,63 +258,55 @@
 		},
 		"rdt:l2": {
 			"name": "datasets",
-			"version": "4.0.0",
+			"version": "4.1.2",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
 			}
 		},
 		"rdt:l3": {
-			"name": "ggplot2",
-			"version": "3.3.2",
+			"name": "graphics",
+			"version": "4.1.2",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
 			}
 		},
 		"rdt:l4": {
-			"name": "graphics",
-			"version": "4.0.0",
+			"name": "grDevices",
+			"version": "4.1.2",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
 			}
 		},
 		"rdt:l5": {
-			"name": "grDevices",
-			"version": "4.0.0",
+			"name": "methods",
+			"version": "4.1.2",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
 			}
 		},
 		"rdt:l6": {
-			"name": "methods",
-			"version": "4.0.0",
+			"name": "rdtLite",
+			"version": "1.3",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
 			}
 		},
 		"rdt:l7": {
-			"name": "rdtLite",
-			"version": "1.2.1",
+			"name": "stats",
+			"version": "4.1.2",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
 			}
 		},
 		"rdt:l8": {
-			"name": "stats",
-			"version": "4.0.0",
-			"prov:type": {
-				"$": "prov:Collection",
-				"type": "xsd:QName"
-			}
-		},
-		"rdt:l9": {
 			"name": "utils",
-			"version": "4.0.0",
+			"version": "4.1.2",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
