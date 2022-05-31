@@ -1,3 +1,6 @@
+# rdtLite 1.3.1
+* Fixed minor bugs uncovered by extra checking done in R 4.2.0
+
 # rdtLite 1.3
 * Save the modification time of files that are used by the script in the provenance
 * Save absolute path to the provenance directory in the JSON.
