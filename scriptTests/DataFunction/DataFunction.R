@@ -12,7 +12,7 @@ data()
 
 # Loading a local data set
 f2 <- function() {
-  data(pets)
+  data("pets")
   pets.df <- pets
 }
 f2()
