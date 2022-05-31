@@ -155,7 +155,7 @@
 #' @noRd
 
 .ddg.warning.occurred <- function() {
-  return (.ddg.is.set("ddg.warning") && !is.na(.ddg.get("ddg.warning")))
+  return (.ddg.is.set("ddg.warning") && any(!is.na(.ddg.get("ddg.warning"))))
 }
 
 
@@ -1161,7 +1161,7 @@
                   #             paste(annot, collapse = " ")))
                   # Don't set return.value if we are calling a ddg function or we 
                   # are executing an if-statement
-                  if (grepl("^ddg|^.ddg|^prov", annot) 
+                  if (grepl("^ddg|^.ddg|^prov", cmd@text) 
                     || .ddg.get.statement.type(annot) == "if") {
                       captured.output <- .ddg.capture.output (returnWithVisible <- withVisible (eval(annot, environ, NULL)))
                       .ddg.set ("ddg.error.node.created", FALSE)

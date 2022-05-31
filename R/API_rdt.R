@@ -439,7 +439,12 @@ prov.visualize <- function () {
 #' @rdname prov.json
 
 prov.summarize <- function (save=FALSE, create.zip=FALSE) {
-  provSummarizeR::prov.summarize(save, create.zip)
+  if (require (provSummarizeR, quietly=TRUE)) {
+  	provSummarizeR::prov.summarize(save, create.zip)
+  }
+  else {
+  	cat ("You need to install the provSummarizeR package to use this function.")
+  }
   invisible()
 }
 

@@ -678,7 +678,7 @@
     # The as.character gives us a vector that includes "vector" as its first element
     # The [-1] removes that element.
     output.data <- as.character(substitute(vector (...), env = sys.frame(frame.number)))[-1]
-    .ddg.add.output.data (output.data)
+    lapply (output.data, .ddg.add.output.data)
   }
   
   else {
