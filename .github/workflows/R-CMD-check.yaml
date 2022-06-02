@@ -39,10 +39,25 @@ jobs:
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
 
-      - uses: r-lib/actions/setup-r-dependencies@v2
-        with:
-          extra-packages: any::rcmdcheck
-          needs: check
+      - name: Install dependencies
+        run: |
+          install.packages('devtools')
+          install.packages('jsonvalidate')
+          install.packages('roxygen2')
+          install.packages('testthat')
+          install.packages('curl')
+          install.packages('digest')
+          install.packages('ggplot2')
+          install.packages('gtools')
+          install.packages('jsonlite')
+          install.packages('knitr')
+          install.packages('provViz')
+          install.packages('rmarkdown')
+          install.packages('sessioninfo')
+          install.packages('stringi')
+          install.packages('XML')
+          install.packages('remotes')
+          remotes::install_github("End-to-end-provenance/provSummarizeR")
 
       - uses: r-lib/actions/check-r-package@v2
         with:
