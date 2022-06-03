@@ -46,7 +46,7 @@ jobs:
       - name: Install dependencies for script tests
         run: |
           install.packages("jsonvalidate")
-
+        shell: Rscript {0}
 
       - name: Run script tests
         run: ant -file tests.xml test-travis-rdtLite
