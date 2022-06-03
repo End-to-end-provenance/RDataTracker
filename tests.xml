@@ -430,7 +430,22 @@
 		
 		<!-- Delete all hash values.  pdf files include creation dates, so these will not match.  -->
 		<replaceregexp flags="g">
-			<regexp pattern='(\t+"rdt:hash": ("[0-9a-f]*"?,)\r?\n)'/>
+			<regexp pattern='(\t+"rdt:(script)?(h|H)ash": ("[0-9a-f]*"?,)\r?\n)'/>
+			<substitution expression=""/>
+			<fileset dir="${local-dir}">
+				<patternset id="local_files">
+					<include name="*.local"/>
+				</patternset>
+			</fileset>
+		</replaceregexp>
+		
+		
+
+		
+		<!-- Delete hash values of sourced scripts -->
+		<replaceregexp flags="g">
+			<!--<regexp pattern='(\t+"rdt:sourcedScriptHashes": (""|\[\r?\n?(\t*"?([0-9a-f]*)?"?,)?\r?\n?)+\]),)'/>-->
+			<regexp pattern='(\t+"rdt:sourcedScriptHashes": (""|\[\r?\n?(\t*"?[0-9a-f]*"?,?\r?\n?)+\],))'/>
 			<substitution expression=""/>
 			<fileset dir="${local-dir}">
 				<patternset id="local_files">
@@ -2585,9 +2600,9 @@
 	<target name="normal-tests"
 			depends="basic, Empty, NoDetails, S4Object, Scope, Return, OddParameter, 
 					 DollarOperator, fromEnv, FunctionAnnotation, FunctionNonlocals, 
-					 ControlConstruct, DataFunction, Warning, Plot1, Plot2, Plot3, FileNodes, 
-					 NoDevOff, DataType, HigherOrderFunc, AssignOperators, 
-					 FunctionOrigin, RMarkdown, DDGStatement, Connection">
+					 ControlConstruct, DataFunction, Warning, FileNodes, 
+					 DataType, HigherOrderFunc, AssignOperators, 
+					 FunctionOrigin, DDGStatement, Connection">
 		
 		<!-- rdt only tests -->
 		<condition property="isRDT" value="true">
@@ -2597,6 +2612,21 @@
 		
 		<echo></echo>
 		<echo>	### Finished Execution of Normal Tests. ###</echo>
+		<echo></echo>
+	</target>
+	
+	<target name="display-tests"
+			depends="Plot1, Plot2, Plot3, NoDevOff, RMarkdown">
+		<!-- RMarkdown is not a display test, but it requires installing pdflatex, so harder to 
+		     run on GitHub -->
+		<!-- rdt only tests -->
+		<condition property="isRDT" value="true">
+			<equals arg1="${tool}" arg2="rdt"/>
+		</condition>
+		<antcall if:true="${isRDT}" target="rdtOnly"/>
+		
+		<echo></echo>
+		<echo>	### Finished Execution of Display Tests. ###</echo>
 		<echo></echo>
 	</target>
 	
@@ -2776,6 +2806,7 @@
 	
 		<antcall target="ProvJson"/>
 		<antcall target="quick-test"/>
+		<antcall target="display-tests"/>
 		<antcall target="script-tests"/>
 		
 		<!-- Repeat version info at the end so it is easy to find. -->
@@ -2783,6 +2814,50 @@
 		<echo message = "java version is ${ant.java.version}" />
 		
 	</target>
+	
+	<target name="run-github-tests">
+	    <!-- Like run-tests but does not do tests requiring a display -->
+	    <!-- Display version info -->
+		<echo message = "ant version is ${ant.version}" />
+		<echo message = "java version is ${ant.java.version}" />
+	
+		<antcall target="ProvJson"/>
+		<antcall target="quick-test"/>
+		<antcall target="script-tests"/>
+		
+		<!-- Repeat version info at the end so it is easy to find. -->
+		<echo message = "ant version is ${ant.version}" />
+		<echo message = "java version is ${ant.java.version}" />
+		
+	</target>
+
+	<!-- GitHub tests - these do not run the plot tests since there is no display -->
+	<target name="test-github-rdt" description="">
+		<antcall target="run-github-tests">
+			<param name="travis" value="true"/>
+			<param name="tool" value="rdt"/>
+		</antcall>
+		<echo></echo>
+		<echo>All tests makes calls to the RDataTracker Library. You might need to restart RStudio to correctly run the scripts with the updated library installed.</echo>
+		<echo></echo>
+	</target>
+	
+	<target name="test-github-rdtLite" description="">
+		<antcall target="run-github-tests">
+			<param name="travis" value="true"/>
+			<param name="tool" value="rdtLite"/>
+		</antcall>
+		<echo></echo>
+		<echo>All tests makes calls to the RDataTracker Library. You might need to restart RStudio to correctly run the scripts with the updated library installed.</echo>
+		<echo></echo>
+	    <echo> "WARNING: The basic test and HFDatasetPreview tests are not"</echo>
+	    <echo> "being run currently."</echo>
+	    <echo> "The URL they connect to have an expired certificate."</echo>
+	    <echo> "Also, the first few lines of the Connection test are"</echo>
+	    <echo> "commented out for the same reason."</echo>
+
+	</target>
+	
 	
 	<!-- ========== End: Targets for Running All Tests ========== -->	
 	
