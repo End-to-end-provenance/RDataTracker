@@ -49,6 +49,12 @@ jobs:
           install.packages("devtools")
         shell: Rscript {0}
 
+      - name: Set up display
+        run: |
+          export DISPLAY=:99.0
+          sh -e /etc/init.d/xvfb start
+          sleep 3
+
       - name: Run script tests
         run: |
           ant -file build-rdtLite.xml install-no-check
