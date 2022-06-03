@@ -2587,7 +2587,7 @@
 					 DollarOperator, fromEnv, FunctionAnnotation, FunctionNonlocals, 
 					 ControlConstruct, DataFunction, Warning, FileNodes, 
 					 DataType, HigherOrderFunc, AssignOperators, 
-					 FunctionOrigin, RMarkdown, DDGStatement, Connection">
+					 FunctionOrigin, DDGStatement, Connection">
 		
 		<!-- rdt only tests -->
 		<condition property="isRDT" value="true">
@@ -2601,8 +2601,9 @@
 	</target>
 	
 	<target name="display-tests"
-			depends="Plot1, Plot2, Plot3, NoDevOff">
-		
+			depends="Plot1, Plot2, Plot3, NoDevOff, RMarkdown">
+		<!-- RMarkdown is not a display test, but it requires installing pdflatex, so harder to 
+		     run on GitHub -->
 		<!-- rdt only tests -->
 		<condition property="isRDT" value="true">
 			<equals arg1="${tool}" arg2="rdt"/>
