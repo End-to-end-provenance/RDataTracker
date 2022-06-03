@@ -43,5 +43,10 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
 
+      - name: Install dependencies for script tests
+        run: |
+          install.packages("jsonvalidate")
+
+
       - name: Run script tests
         run: ant -file tests.xml test-travis-rdtLite
