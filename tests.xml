@@ -439,6 +439,17 @@
 			</fileset>
 		</replaceregexp>
 		
+		<!-- Delete hash values of sourced scripts -->
+		<replaceregexp>
+			<regexp pattern='(\t+"rdt:sourcedScriptHashes": \[.*\],)${line.separator}' />
+			<substitution expression='' />
+			<fileset dir="${local-dir}">
+				<patternset id="local_files">
+					<include name="*.local" />
+				</patternset>
+			</fileset>
+		</replaceregexp>
+		
 		<!-- TRAVIS: Further edit the .local files if running tests on Travis -->
 		<antcall if:true="${travis}" target="travis-edits"/>
 		
