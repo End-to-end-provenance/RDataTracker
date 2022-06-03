@@ -39,32 +39,10 @@ jobs:
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
 
-      - name: Query dependencies
-        run: |
-          install.packages('remotes')
-          saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
-          writeLines(sprintf("R-%i.%i", getRversion()$major, getRversion()$minor), ".github/R-version")
-        shell: Rscript {0}
-
-      - name: Install dependencies
-        run: |
-          install.packages("devtools")
-          install.packages("jsonvalidate")
-          install.packages("roxygen2")
-          install.packages("testthat")
-          install.packages("curl")
-          install.packages("digest")
-          install.packages("ggplot2")
-          install.packages("gtools")
-          install.packages("jsonlite")
-          install.packages("knitr")
-          install.packages("provViz")
-          install.packages("rmarkdown")
-          install.packages("sessioninfo")
-          install.packages("stringi")
-          install.packages("XML")
-          install.packages("remotes")
-          remotes::install_github("End-to-end-provenance/provSummarizeR")
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: any::rcmdcheck
+          needs: check
 
       - uses: r-lib/actions/check-r-package@v2
         with:
