@@ -54,4 +54,4 @@ jobs:
       - name: Run script tests
         run: |
           ant -file build-rdtLite.xml install-no-check
-          ant -file tests.xml test-travis-rdtLite
+          ant -file tests.xml test-github-rdtLite

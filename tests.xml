@@ -2586,7 +2586,7 @@
 			depends="basic, Empty, NoDetails, S4Object, Scope, Return, OddParameter, 
 					 DollarOperator, fromEnv, FunctionAnnotation, FunctionNonlocals, 
 					 ControlConstruct, DataFunction, Warning, FileNodes, 
-					 NoDevOff, DataType, HigherOrderFunc, AssignOperators, 
+					 DataType, HigherOrderFunc, AssignOperators, 
 					 FunctionOrigin, RMarkdown, DDGStatement, Connection">
 		
 		<!-- rdt only tests -->
@@ -2601,7 +2601,7 @@
 	</target>
 	
 	<target name="display-tests"
-			depends="Plot1, Plot2, Plot3">
+			depends="Plot1, Plot2, Plot3, NoDevOff">
 		
 		<!-- rdt only tests -->
 		<condition property="isRDT" value="true">
