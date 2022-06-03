@@ -439,13 +439,17 @@
 			</fileset>
 		</replaceregexp>
 		
+		
+
+		
 		<!-- Delete hash values of sourced scripts -->
-		<replaceregexp>
-			<regexp pattern='(\t+"rdt:sourcedScriptHashes": \[.*\],)${line.separator}' />
-			<substitution expression='' />
+		<replaceregexp flags="g">
+			<!--<regexp pattern='(\t+"rdt:sourcedScriptHashes": (""|\[\r?\n?(\t*"?([0-9a-f]*)?"?,)?\r?\n?)+\]),)'/>-->
+			<regexp pattern='(\t+"rdt:sourcedScriptHashes": (""|\[\r?\n?(\t*"?[0-9a-f]*"?,?\r?\n?)+\],))'/>
+			<substitution expression=""/>
 			<fileset dir="${local-dir}">
 				<patternset id="local_files">
-					<include name="*.local" />
+					<include name="*.local"/>
 				</patternset>
 			</fileset>
 		</replaceregexp>
