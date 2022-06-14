@@ -732,7 +732,7 @@ methods::setMethod ("initialize",
 #' @noRd
 
 .ddg.get.statement.type <- function(parsed.command) {
-  if (length(parsed.command) > 1) return(as.character(parsed.command[[1]]))
+  if (length(parsed.command) > 1) return(as.character(unlist(parsed.command)[1]))
   return("")
 }
 
