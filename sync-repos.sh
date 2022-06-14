@@ -95,7 +95,6 @@ function copy_rdtLite_files {
   rsync -tv --perms NAMESPACE_rdtLite ../rdtLite/NAMESPACE
   rsync -tv --perms README_rdtLite.md ../rdtLite/README.md
   rsync -tv --perms NEWS_rdtLite.md ../rdtLite/NEWS.md
-  rsync -tv --perms .travis-rdtLite.yml ../rdtLite/.travis.yml
   rsync -rtv --del --perms man_rdtLite/ ../rdtLite/man
   rsync -rt --perms tests/test-all-rdtLite.R ../rdtLite/tests/test-all.R
   
@@ -122,7 +121,6 @@ function copy_rdt_files {
   rsync -tv --perms NAMESPACE_rdt ../rdt/NAMESPACE
   rsync -tv --perms README_rdt.md ../rdt/README.md
   rsync -tv --perms NEWS_rdt.md ../rdt/NEWS.md
-  rsync -tv --perms .travis-rdt.yml ../rdt/.travis.yml
   rsync -rtv --del --perms man_rdt/ ../rdt/man
   rsync -rt --perms tests/test-all-rdt.R ../rdt/tests/test-all.R
   

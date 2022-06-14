@@ -284,7 +284,8 @@ methods::setMethod ("initialize",
     next.parseData <- 
       which(non.comment.parse.data$line1 >= enclosing.pos@startLine & 
             non.comment.parse.data$line2 <= enclosing.pos@endLine & 
-            non.comment.parse.data$text == paste(deparse(exprs[[1]]), collapse="\n") )[1]
+            gsub("[[:space:]]", "", non.comment.parse.data$text) == 
+            gsub("[[:space:]]", "", paste(deparse(exprs[[1]]), collapse = "\n")) )[1]
   }
   
   # Create the DDGStatements
