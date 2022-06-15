@@ -149,6 +149,7 @@
   	# get label and full path to file
   	full.path <- normalizePath(dname, winslash="/", mustWork = FALSE)
   	label <- .ddg.calculate.file.node.label(dname)
+  	#print (paste ("File node label", label))
     
     matching <- ddg.data.nodes[
                   (ddg.data.nodes$ddg.type == "File" &
@@ -877,11 +878,11 @@
   # For libraries and data sets, use their name for the file node label
   # instead of the name of the file.
   if (endsWith (fname, "/data/Rdata.rds")) {
-  	return (basename (sub ("/data/Rdata.rds", "", fname)))
+  	return (paste (basename (sub ("/data/Rdata.rds", "", fname)), "Rdata.rds"))
   }
   
   if (endsWith (fname, "/Meta/package.rds")) {
-    return (basename (sub ("/Meta/package.rds", "", fname)))
+    return (paste (basename (sub ("/Meta/package.rds", "", fname)), "package.rds"))
   }
   
   return (basename(fname))

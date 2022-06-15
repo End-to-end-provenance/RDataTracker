@@ -359,8 +359,10 @@ trace.oneInput <- function (f, pkg) {
   }
   
   # Check for a function name qualified by its package
-  if (is.call(call[[1]]) && call[[1]][[1]] == "::") {
-    return (as.character(call[[1]][[3]]) == func)
+  if (is.call(call[[1]])) {
+    if (call[[1]][[1]] == "::" || call[[1]][[1]] == ":::") {
+      return (as.character(call[[1]][[3]]) == func)
+    }
   }
   
   return (FALSE)
@@ -511,10 +513,11 @@ trace.oneInput <- function (f, pkg) {
   # Don't collect provenance when loading library packages.  Also, when writing out the
   # json, files get read in order to identify package version numbers.
   if (.ddg.inside.call.to ("library") || 
-  #    .ddg.inside.call.to ("packageDescription") ||
-  #   .ddg.inside.call.to ("packageVersion") ||
-  #   .ddg.inside.call.to ("packageDate") ||
+      .ddg.inside.call.to ("packageDescription") ||
+      .ddg.inside.call.to ("packageVersion") ||
+      .ddg.inside.call.to ("packageDate") ||
       .ddg.inside.call.to ("loadNamespace") ||
+      .ddg.inside.call.to ("readCitationFile") ||
       .ddg.inside.call.to (".ddg.json.string")) {
     return()
   }
