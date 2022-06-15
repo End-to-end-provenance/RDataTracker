@@ -7,7 +7,7 @@
 	"agent" : {
 		"rdt:a1": {
 			"rdt:tool.name": "rdtLite",
-			"rdt:tool.version": "1.3",
+			"rdt:tool.version": "1.3.1",
 			"rdt:json.version": "2.3",
 			"rdt:args.names": [
 				"overwrite",
@@ -34,7 +34,7 @@
 		"rdt:p1": {
 			"rdt:name": "DailySolarRadiation.R",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": "0.285",
+			"rdt:elapsedTime": "0.316",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -44,7 +44,7 @@
 		"rdt:p2": {
 			"rdt:name": "read.data <- function() {\n  # get initial values\n  data.file",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.146",
+			"rdt:elapsedTime": "0.179",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 14,
 			"rdt:startCol": 1,
@@ -54,7 +54,7 @@
 		"rdt:p3": {
 			"rdt:name": "calibrate <- function(xx) {\n  # correct for sensor drift usi",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.08",
+			"rdt:elapsedTime": "0.092",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 48,
 			"rdt:startCol": 1,
@@ -74,7 +74,7 @@
 		"rdt:p5": {
 			"rdt:name": "gap.fill <- function(xx) {\n  # estimate missing values from ",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.06",
+			"rdt:elapsedTime": "0.065",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 89,
 			"rdt:startCol": 1,
@@ -84,7 +84,7 @@
 		"rdt:p6": {
 			"rdt:name": "write.result <- function(fn,xx) {\n  file.out <- paste(getwd(",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.065",
+			"rdt:elapsedTime": "0.064",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 103,
 			"rdt:startCol": 1,
@@ -94,7 +94,7 @@
 		"rdt:p7": {
 			"rdt:name": "plot.data <- function(xx,v) {\n  # create plot as jpeg file\n ",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.071",
+			"rdt:elapsedTime": "0.076",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 108,
 			"rdt:startCol": 1,
@@ -104,7 +104,7 @@
 		"rdt:p8": {
 			"rdt:name": "raw.data <- read.data()",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.618",
+			"rdt:elapsedTime": "0.673",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 177,
 			"rdt:startCol": 1,
@@ -114,7 +114,7 @@
 		"rdt:p9": {
 			"rdt:name": "plot.data(raw.data,\"R\")",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.391",
+			"rdt:elapsedTime": "0.424",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 178,
 			"rdt:startCol": 1,
@@ -124,7 +124,7 @@
 		"rdt:p10": {
 			"rdt:name": "calibrated.data <- calibrate(raw.data)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.102",
+			"rdt:elapsedTime": "0.1",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 180,
 			"rdt:startCol": 1,
@@ -134,7 +134,7 @@
 		"rdt:p11": {
 			"rdt:name": "plot.data(calibrated.data,\"C\")",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.288",
+			"rdt:elapsedTime": "0.335",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 181,
 			"rdt:startCol": 1,
@@ -144,7 +144,7 @@
 		"rdt:p12": {
 			"rdt:name": "quality.controlled.data <- quality.control(calibrated.data)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.097",
+			"rdt:elapsedTime": "0.109",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 183,
 			"rdt:startCol": 1,
@@ -154,7 +154,7 @@
 		"rdt:p13": {
 			"rdt:name": "plot.data(quality.controlled.data,\"Q\")",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.122",
+			"rdt:elapsedTime": "0.132",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 184,
 			"rdt:startCol": 1,
@@ -164,7 +164,7 @@
 		"rdt:p14": {
 			"rdt:name": "gap.filled.data <- gap.fill(quality.controlled.data)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.09",
+			"rdt:elapsedTime": "0.103",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 186,
 			"rdt:startCol": 1,
@@ -174,7 +174,7 @@
 		"rdt:p15": {
 			"rdt:name": "plot.data(gap.filled.data,\"G\")",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.118",
+			"rdt:elapsedTime": "0.13",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 187,
 			"rdt:startCol": 1,
@@ -184,7 +184,7 @@
 		"rdt:p16": {
 			"rdt:name": "write.result(\"processed-data.csv\",gap.filled.data)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.083",
+			"rdt:elapsedTime": "0.094",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 189,
 			"rdt:startCol": 1,
@@ -194,7 +194,7 @@
 		"rdt:p17": {
 			"rdt:name": "DailySolarRadiation.R",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": "0.007",
+			"rdt:elapsedTime": "0.009",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -212,7 +212,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2022-05-27T16.04.58EDT",
+			"rdt:timestamp": "2022-06-15T10.57.14EDT",
 			"rdt:location": ""
 		},
 		"rdt:d2": {
@@ -223,7 +223,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2022-05-27T16.04.59EDT",
+			"rdt:timestamp": "2022-06-15T10.57.14EDT",
 			"rdt:location": ""
 		},
 		"rdt:d3": {
@@ -234,7 +234,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2022-05-27T16.04.59EDT",
+			"rdt:timestamp": "2022-06-15T10.57.14EDT",
 			"rdt:location": ""
 		},
 		"rdt:d4": {
@@ -245,7 +245,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2022-05-27T16.04.59EDT",
+			"rdt:timestamp": "2022-06-15T10.57.14EDT",
 			"rdt:location": ""
 		},
 		"rdt:d5": {
@@ -256,7 +256,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2022-05-27T16.04.59EDT",
+			"rdt:timestamp": "2022-06-15T10.57.14EDT",
 			"rdt:location": ""
 		},
 		"rdt:d6": {
@@ -267,7 +267,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2022-05-27T16.04.59EDT",
+			"rdt:timestamp": "2022-06-15T10.57.14EDT",
 			"rdt:location": ""
 		},
 		"rdt:d7": {
@@ -355,7 +355,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2022-05-27T16.05.00EDT",
+			"rdt:timestamp": "2022-06-15T10.57.15EDT",
 			"rdt:location": ""
 		},
 		"rdt:d15": {
@@ -366,7 +366,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2022-05-27T16.05.00EDT",
+			"rdt:timestamp": "2022-06-15T10.57.15EDT",
 			"rdt:location": ""
 		},
 		"rdt:d16": {
@@ -465,7 +465,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2022-05-27T16.05.00EDT",
+			"rdt:timestamp": "2022-06-15T10.57.15EDT",
 			"rdt:location": ""
 		},
 		"rdt:d25": {
@@ -487,7 +487,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2022-05-27T16.05.03EDT",
+			"rdt:timestamp": "2022-06-15T10.57.15EDT",
 			"rdt:location": ""
 		},
 		"rdt:d27": {
@@ -509,7 +509,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2022-05-27T16.05.03EDT",
+			"rdt:timestamp": "2022-06-15T10.57.16EDT",
 			"rdt:location": ""
 		},
 		"rdt:d29": {
@@ -531,7 +531,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2022-05-27T16.05.03EDT",
+			"rdt:timestamp": "2022-06-15T10.57.16EDT",
 			"rdt:location": ""
 		},
 		"rdt:d31": {
@@ -553,7 +553,7 @@
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
 			"rdt:hash": "736fb5d678899d79feb5f05b03d2234d",
-			"rdt:timestamp": "2022-05-27T16.05.04EDT",
+			"rdt:timestamp": "2022-06-15T10.57.16EDT",
 			"rdt:location": "[DIR]/rdtLite/processed-data.csv"
 		},
 
@@ -562,79 +562,351 @@
 			"rdt:architecture": "x86_64-apple-darwin17.0 (64-bit)",
 			"rdt:operatingSystem": "macOS Catalina 10.15.7",
 			"rdt:language": "R",
-			"rdt:langVersion": "R version 4.1.2 (2021-11-01)",
+			"rdt:langVersion": "R version 4.2.0 (2022-04-22)",
 			"rdt:script": "[DIR]/DailySolarRadiation.R",
-			"rdt:scriptTimeStamp": "2020-07-01T15.15.09EDT",
+			"rdt:scriptTimeStamp": "2022-05-31T16.06.31EDT",
 			"rdt:scriptHash": "77643e89ad819024f27cb6daad28adde",
-			"rdt:totalElapsedTime": "2.72",
+			"rdt:totalElapsedTime": "2.998",
 			"rdt:sourcedScripts": "",
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:sourcedScriptHashes": "",
 			"rdt:workingDirectory": "[DIR]/rdtLite",
 			"rdt:provDirectory": "[DIR]/rdtLite/prov_DailySolarRadiation",
-			"rdt:provTimestamp": "2022-05-27T16.04.58EDT",
+			"rdt:provTimestamp": "2022-06-15T10.57.13EDT",
 			"rdt:hashAlgorithm": "md5"
 		},
 
 		"rdt:l1": {
 			"name": "base",
-			"version": "4.1.2",
+			"version": "4.2.0",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
 			}
 		},
 		"rdt:l2": {
-			"name": "datasets",
-			"version": "4.1.2",
+			"name": "bit",
+			"version": "4.0.4",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
 			}
 		},
 		"rdt:l3": {
-			"name": "graphics",
-			"version": "4.1.2",
+			"name": "bit64",
+			"version": "4.0.5",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
 			}
 		},
 		"rdt:l4": {
-			"name": "grDevices",
-			"version": "4.1.2",
+			"name": "cli",
+			"version": "3.3.0",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
 			}
 		},
 		"rdt:l5": {
-			"name": "methods",
-			"version": "4.1.2",
+			"name": "colorspace",
+			"version": "2.0-3",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
 			}
 		},
 		"rdt:l6": {
-			"name": "rdtLite",
-			"version": "1.3",
+			"name": "compiler",
+			"version": "4.2.0",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
 			}
 		},
 		"rdt:l7": {
-			"name": "stats",
-			"version": "4.1.2",
+			"name": "crayon",
+			"version": "1.5.1",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
 			}
 		},
 		"rdt:l8": {
+			"name": "datasets",
+			"version": "4.2.0",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l9": {
+			"name": "digest",
+			"version": "0.6.29",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l10": {
+			"name": "dplyr",
+			"version": "1.0.9",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l11": {
+			"name": "ellipsis",
+			"version": "0.3.2",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l12": {
+			"name": "fansi",
+			"version": "1.0.3",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l13": {
+			"name": "generics",
+			"version": "0.1.2",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l14": {
+			"name": "ggplot2",
+			"version": "3.3.6",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l15": {
+			"name": "glue",
+			"version": "1.6.2",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l16": {
+			"name": "graphics",
+			"version": "4.2.0",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l17": {
+			"name": "grDevices",
+			"version": "4.2.0",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l18": {
+			"name": "grid",
+			"version": "4.2.0",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l19": {
+			"name": "gtable",
+			"version": "0.3.0",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l20": {
+			"name": "jsonlite",
+			"version": "1.8.0",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l21": {
+			"name": "lifecycle",
+			"version": "1.0.1",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l22": {
+			"name": "magrittr",
+			"version": "2.0.3",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l23": {
+			"name": "methods",
+			"version": "4.2.0",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l24": {
+			"name": "munsell",
+			"version": "0.5.0",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l25": {
+			"name": "pillar",
+			"version": "1.7.0",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l26": {
+			"name": "pkgconfig",
+			"version": "2.0.3",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l27": {
+			"name": "purrr",
+			"version": "0.3.4",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l28": {
+			"name": "R6",
+			"version": "2.5.1",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l29": {
+			"name": "rdtLite",
+			"version": "1.3.1",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l30": {
+			"name": "rlang",
+			"version": "1.0.2",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l31": {
+			"name": "scales",
+			"version": "1.2.0",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l32": {
+			"name": "sessioninfo",
+			"version": "1.2.2",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l33": {
+			"name": "stats",
+			"version": "4.2.0",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l34": {
+			"name": "stringi",
+			"version": "1.7.6",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l35": {
+			"name": "tibble",
+			"version": "3.1.7",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l36": {
+			"name": "tidyselect",
+			"version": "1.1.2",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l37": {
+			"name": "tools",
+			"version": "4.2.0",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l38": {
+			"name": "tzdb",
+			"version": "0.3.0",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l39": {
+			"name": "utf8",
+			"version": "1.2.2",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l40": {
 			"name": "utils",
-			"version": "4.1.2",
+			"version": "4.2.0",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l41": {
+			"name": "vctrs",
+			"version": "0.4.1",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l42": {
+			"name": "vroom",
+			"version": "1.5.7",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"

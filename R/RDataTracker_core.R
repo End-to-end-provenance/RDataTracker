@@ -1825,7 +1825,7 @@
   
   # save library information to file
   fileout <- paste(.ddg.path.debug(), "/libraries.csv", sep="")
-  utils::write.csv(.ddg.installedpackages(), fileout, row.names=FALSE)
+  utils::write.csv(.ddg.loadedpackages(), fileout, row.names=FALSE)
   
   # save execution environment information to file
   fileout <- paste(.ddg.path.debug(), "/environment.csv", sep="")

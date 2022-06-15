@@ -268,21 +268,20 @@
   .ddg.lastproc2data(msg.type, dscope="ddg.library")
 }
 
-#' .ddg.installedpackages returns a dataframe with information on installed packages
+#' .ddg.loadedpackages returns a dataframe with information on loaded packages.
 #' @return A data frame with 2 columns: package and version, both strings
 #' @noRd
 
-.ddg.installedpackages <- function()
+.ddg.loadedpackages <- function()
 {
   packages <- sessioninfo::session_info(include_base = TRUE)
   packages <- packages[[2]]
-  installed <- packages[packages$attached, ]
   
   # We need to create a new data frame
-  package <- installed$package
-  version <- installed$loadedversion
-  installed <- data.frame (package, version)
-  return(installed)
+  package <- packages$package
+  version <- packages$loadedversion
+  loaded <- data.frame (package, version)
+  return(loaded)
 }
 
 #' .ddg.is.null returns true if the variable itself is null.  is.null is a
