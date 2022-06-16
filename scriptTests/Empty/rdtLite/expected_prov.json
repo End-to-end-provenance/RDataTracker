@@ -7,7 +7,7 @@
 	"agent" : {
 		"rdt:a1": {
 			"rdt:tool.name": "rdtLite",
-			"rdt:tool.version": "1.3.1",
+			"rdt:tool.version": "1.4",
 			"rdt:json.version": "2.3",
 			"rdt:args.names": [
 				"overwrite",
@@ -33,10 +33,12 @@
 	"entity" : {
 		"rdt:environment": {
 			"rdt:name": "environment",
-			"rdt:architecture": "x86_64-apple-darwin17.0 (64-bit)",
+			"rdt:architecture": "x86_64, darwin17.0",
 			"rdt:operatingSystem": "macOS Catalina 10.15.7",
 			"rdt:language": "R",
 			"rdt:langVersion": "R version 4.2.0 (2022-04-22)",
+			"rdt:ui": "X11",
+			"rdt:pandoc": "2.2.1 @ /usr/local/bin/pandoc",
 			"rdt:script": "[DIR]/Empty.R",
 			"rdt:scriptTimeStamp": "2019-12-02T17.47.18EST",
 			"rdt:scriptHash": "d41d8cd98f00b204e9800998ecf8427e",
@@ -46,7 +48,7 @@
 			"rdt:sourcedScriptHashes": "",
 			"rdt:workingDirectory": "[DIR]/rdtLite",
 			"rdt:provDirectory": "[DIR]/rdtLite/prov_Empty",
-			"rdt:provTimestamp": "2022-06-15T10.33.21EDT",
+			"rdt:provTimestamp": "2022-06-16T15.44.38EDT",
 			"rdt:hashAlgorithm": "md5"
 		},
 
@@ -276,7 +278,7 @@
 		},
 		"rdt:l29": {
 			"name": "rdtLite",
-			"version": "1.3.1",
+			"version": "1.4",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"

@@ -7,7 +7,7 @@
 	"agent" : {
 		"rdt:a1": {
 			"rdt:tool.name": "rdtLite",
-			"rdt:tool.version": "1.3.1",
+			"rdt:tool.version": "1.4",
 			"rdt:json.version": "2.3",
 			"rdt:args.names": [
 				"overwrite",
@@ -34,7 +34,7 @@
 		"rdt:p1": {
 			"rdt:name": "OddParameter.R",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": "0.286",
+			"rdt:elapsedTime": "0.291",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -44,7 +44,7 @@
 		"rdt:p2": {
 			"rdt:name": "f <- function(x) {\n\treturn(1)\n}",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.111",
+			"rdt:elapsedTime": "0.118",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 5,
 			"rdt:startCol": 1,
@@ -54,7 +54,7 @@
 		"rdt:p3": {
 			"rdt:name": "f3 <- function() {\n\tstop(\"f3 stopped execution\")\n}",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.089",
+			"rdt:elapsedTime": "0.091",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 9,
 			"rdt:startCol": 1,
@@ -64,7 +64,7 @@
 		"rdt:p4": {
 			"rdt:name": "a <- 3",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.093",
+			"rdt:elapsedTime": "0.098",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 13,
 			"rdt:startCol": 1,
@@ -74,7 +74,7 @@
 		"rdt:p5": {
 			"rdt:name": "f(a)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.055",
+			"rdt:elapsedTime": "0.061",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 14,
 			"rdt:startCol": 1,
@@ -84,7 +84,7 @@
 		"rdt:p6": {
 			"rdt:name": "b <- 1/0",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.056",
+			"rdt:elapsedTime": "0.062",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 17,
 			"rdt:startCol": 1,
@@ -94,7 +94,7 @@
 		"rdt:p7": {
 			"rdt:name": "f(b)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.056",
+			"rdt:elapsedTime": "0.061",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 18,
 			"rdt:startCol": 1,
@@ -104,7 +104,7 @@
 		"rdt:p8": {
 			"rdt:name": "f(d)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.055",
+			"rdt:elapsedTime": "0.064",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 21,
 			"rdt:startCol": 1,
@@ -114,7 +114,7 @@
 		"rdt:p9": {
 			"rdt:name": "d <- 1",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.057",
+			"rdt:elapsedTime": "0.062",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 22,
 			"rdt:startCol": 1,
@@ -124,7 +124,7 @@
 		"rdt:p10": {
 			"rdt:name": "f(d)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.059",
+			"rdt:elapsedTime": "0.062",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 23,
 			"rdt:startCol": 1,
@@ -134,7 +134,7 @@
 		"rdt:p11": {
 			"rdt:name": "d <- 6",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.058",
+			"rdt:elapsedTime": "0.062",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 25,
 			"rdt:startCol": 1,
@@ -144,7 +144,7 @@
 		"rdt:p12": {
 			"rdt:name": "f(d[[2]])",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.059",
+			"rdt:elapsedTime": "0.062",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 26,
 			"rdt:startCol": 1,
@@ -154,7 +154,7 @@
 		"rdt:p13": {
 			"rdt:name": "f(f3)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.058",
+			"rdt:elapsedTime": "0.062",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 29,
 			"rdt:startCol": 1,
@@ -164,7 +164,7 @@
 		"rdt:p14": {
 			"rdt:name": "f (.GlobalEnv)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.057",
+			"rdt:elapsedTime": "0.061",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 32,
 			"rdt:startCol": 1,
@@ -174,7 +174,7 @@
 		"rdt:p15": {
 			"rdt:name": "OddParameter.R",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": "0.004",
+			"rdt:elapsedTime": "0.005",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -192,7 +192,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2022-06-15T10.37.20EDT",
+			"rdt:timestamp": "2022-06-16T15.46.44EDT",
 			"rdt:location": ""
 		},
 		"rdt:d2": {
@@ -203,7 +203,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2022-06-15T10.37.20EDT",
+			"rdt:timestamp": "2022-06-16T15.46.44EDT",
 			"rdt:location": ""
 		},
 		"rdt:d3": {
@@ -253,20 +253,22 @@
 
 		"rdt:environment": {
 			"rdt:name": "environment",
-			"rdt:architecture": "x86_64-apple-darwin17.0 (64-bit)",
+			"rdt:architecture": "x86_64, darwin17.0",
 			"rdt:operatingSystem": "macOS Catalina 10.15.7",
 			"rdt:language": "R",
 			"rdt:langVersion": "R version 4.2.0 (2022-04-22)",
+			"rdt:ui": "X11",
+			"rdt:pandoc": "2.2.1 @ /usr/local/bin/pandoc",
 			"rdt:script": "[DIR]/OddParameter.R",
 			"rdt:scriptTimeStamp": "2019-01-10T13.56.36EST",
 			"rdt:scriptHash": "7bdc80d33709a88e5121a816c0d91e8a",
-			"rdt:totalElapsedTime": "1.153",
+			"rdt:totalElapsedTime": "1.222",
 			"rdt:sourcedScripts": "",
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:sourcedScriptHashes": "",
 			"rdt:workingDirectory": "[DIR]/rdtLite",
 			"rdt:provDirectory": "[DIR]/rdtLite/prov_OddParameter",
-			"rdt:provTimestamp": "2022-06-15T10.37.20EDT",
+			"rdt:provTimestamp": "2022-06-16T15.46.44EDT",
 			"rdt:hashAlgorithm": "md5"
 		},
 
@@ -496,7 +498,7 @@
 		},
 		"rdt:l29": {
 			"name": "rdtLite",
-			"version": "1.3.1",
+			"version": "1.4",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"

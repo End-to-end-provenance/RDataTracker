@@ -7,7 +7,7 @@
 	"agent" : {
 		"rdt:a1": {
 			"rdt:tool.name": "rdtLite",
-			"rdt:tool.version": "1.3.1",
+			"rdt:tool.version": "1.4",
 			"rdt:json.version": "2.3",
 			"rdt:args.names": [
 				"overwrite",
@@ -34,7 +34,7 @@
 		"rdt:p1": {
 			"rdt:name": "DailySolarRadiation.R",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": "0.316",
+			"rdt:elapsedTime": "0.31",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -44,7 +44,7 @@
 		"rdt:p2": {
 			"rdt:name": "read.data <- function() {\n  # get initial values\n  data.file",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.179",
+			"rdt:elapsedTime": "0.16",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 14,
 			"rdt:startCol": 1,
@@ -54,7 +54,7 @@
 		"rdt:p3": {
 			"rdt:name": "calibrate <- function(xx) {\n  # correct for sensor drift usi",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.092",
+			"rdt:elapsedTime": "0.08",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 48,
 			"rdt:startCol": 1,
@@ -64,7 +64,7 @@
 		"rdt:p4": {
 			"rdt:name": "quality.control <- function(xx) {\n  # check for repeated val",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.097",
+			"rdt:elapsedTime": "0.093",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 65,
 			"rdt:startCol": 1,
@@ -74,7 +74,7 @@
 		"rdt:p5": {
 			"rdt:name": "gap.fill <- function(xx) {\n  # estimate missing values from ",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.065",
+			"rdt:elapsedTime": "0.062",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 89,
 			"rdt:startCol": 1,
@@ -84,7 +84,7 @@
 		"rdt:p6": {
 			"rdt:name": "write.result <- function(fn,xx) {\n  file.out <- paste(getwd(",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.064",
+			"rdt:elapsedTime": "0.063",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 103,
 			"rdt:startCol": 1,
@@ -94,7 +94,7 @@
 		"rdt:p7": {
 			"rdt:name": "plot.data <- function(xx,v) {\n  # create plot as jpeg file\n ",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.076",
+			"rdt:elapsedTime": "0.072",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 108,
 			"rdt:startCol": 1,
@@ -104,7 +104,7 @@
 		"rdt:p8": {
 			"rdt:name": "raw.data <- read.data()",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.673",
+			"rdt:elapsedTime": "0.622",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 177,
 			"rdt:startCol": 1,
@@ -114,7 +114,7 @@
 		"rdt:p9": {
 			"rdt:name": "plot.data(raw.data,\"R\")",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.424",
+			"rdt:elapsedTime": "0.397",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 178,
 			"rdt:startCol": 1,
@@ -124,7 +124,7 @@
 		"rdt:p10": {
 			"rdt:name": "calibrated.data <- calibrate(raw.data)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.1",
+			"rdt:elapsedTime": "0.095",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 180,
 			"rdt:startCol": 1,
@@ -134,7 +134,7 @@
 		"rdt:p11": {
 			"rdt:name": "plot.data(calibrated.data,\"C\")",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.335",
+			"rdt:elapsedTime": "0.315",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 181,
 			"rdt:startCol": 1,
@@ -144,7 +144,7 @@
 		"rdt:p12": {
 			"rdt:name": "quality.controlled.data <- quality.control(calibrated.data)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.109",
+			"rdt:elapsedTime": "0.095",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 183,
 			"rdt:startCol": 1,
@@ -154,7 +154,7 @@
 		"rdt:p13": {
 			"rdt:name": "plot.data(quality.controlled.data,\"Q\")",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.132",
+			"rdt:elapsedTime": "0.124",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 184,
 			"rdt:startCol": 1,
@@ -164,7 +164,7 @@
 		"rdt:p14": {
 			"rdt:name": "gap.filled.data <- gap.fill(quality.controlled.data)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.103",
+			"rdt:elapsedTime": "0.09",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 186,
 			"rdt:startCol": 1,
@@ -174,7 +174,7 @@
 		"rdt:p15": {
 			"rdt:name": "plot.data(gap.filled.data,\"G\")",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.13",
+			"rdt:elapsedTime": "0.121",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 187,
 			"rdt:startCol": 1,
@@ -184,7 +184,7 @@
 		"rdt:p16": {
 			"rdt:name": "write.result(\"processed-data.csv\",gap.filled.data)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.094",
+			"rdt:elapsedTime": "0.086",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 189,
 			"rdt:startCol": 1,
@@ -194,7 +194,7 @@
 		"rdt:p17": {
 			"rdt:name": "DailySolarRadiation.R",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": "0.009",
+			"rdt:elapsedTime": "0.008",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -212,7 +212,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2022-06-15T10.57.14EDT",
+			"rdt:timestamp": "2022-06-16T15.59.13EDT",
 			"rdt:location": ""
 		},
 		"rdt:d2": {
@@ -223,7 +223,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2022-06-15T10.57.14EDT",
+			"rdt:timestamp": "2022-06-16T15.59.13EDT",
 			"rdt:location": ""
 		},
 		"rdt:d3": {
@@ -234,7 +234,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2022-06-15T10.57.14EDT",
+			"rdt:timestamp": "2022-06-16T15.59.13EDT",
 			"rdt:location": ""
 		},
 		"rdt:d4": {
@@ -245,7 +245,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2022-06-15T10.57.14EDT",
+			"rdt:timestamp": "2022-06-16T15.59.13EDT",
 			"rdt:location": ""
 		},
 		"rdt:d5": {
@@ -256,7 +256,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2022-06-15T10.57.14EDT",
+			"rdt:timestamp": "2022-06-16T15.59.13EDT",
 			"rdt:location": ""
 		},
 		"rdt:d6": {
@@ -267,7 +267,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2022-06-15T10.57.14EDT",
+			"rdt:timestamp": "2022-06-16T15.59.13EDT",
 			"rdt:location": ""
 		},
 		"rdt:d7": {
@@ -355,7 +355,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2022-06-15T10.57.15EDT",
+			"rdt:timestamp": "2022-06-16T15.59.14EDT",
 			"rdt:location": ""
 		},
 		"rdt:d15": {
@@ -366,7 +366,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2022-06-15T10.57.15EDT",
+			"rdt:timestamp": "2022-06-16T15.59.14EDT",
 			"rdt:location": ""
 		},
 		"rdt:d16": {
@@ -465,7 +465,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2022-06-15T10.57.15EDT",
+			"rdt:timestamp": "2022-06-16T15.59.14EDT",
 			"rdt:location": ""
 		},
 		"rdt:d25": {
@@ -487,7 +487,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2022-06-15T10.57.15EDT",
+			"rdt:timestamp": "2022-06-16T15.59.18EDT",
 			"rdt:location": ""
 		},
 		"rdt:d27": {
@@ -509,7 +509,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2022-06-15T10.57.16EDT",
+			"rdt:timestamp": "2022-06-16T15.59.19EDT",
 			"rdt:location": ""
 		},
 		"rdt:d29": {
@@ -531,7 +531,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2022-06-15T10.57.16EDT",
+			"rdt:timestamp": "2022-06-16T15.59.19EDT",
 			"rdt:location": ""
 		},
 		"rdt:d31": {
@@ -553,26 +553,28 @@
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
 			"rdt:hash": "736fb5d678899d79feb5f05b03d2234d",
-			"rdt:timestamp": "2022-06-15T10.57.16EDT",
+			"rdt:timestamp": "2022-06-16T15.59.19EDT",
 			"rdt:location": "[DIR]/rdtLite/processed-data.csv"
 		},
 
 		"rdt:environment": {
 			"rdt:name": "environment",
-			"rdt:architecture": "x86_64-apple-darwin17.0 (64-bit)",
+			"rdt:architecture": "x86_64, darwin17.0",
 			"rdt:operatingSystem": "macOS Catalina 10.15.7",
 			"rdt:language": "R",
 			"rdt:langVersion": "R version 4.2.0 (2022-04-22)",
+			"rdt:ui": "X11",
+			"rdt:pandoc": "2.2.1 @ /usr/local/bin/pandoc",
 			"rdt:script": "[DIR]/DailySolarRadiation.R",
 			"rdt:scriptTimeStamp": "2022-05-31T16.06.31EDT",
 			"rdt:scriptHash": "77643e89ad819024f27cb6daad28adde",
-			"rdt:totalElapsedTime": "2.998",
+			"rdt:totalElapsedTime": "2.793",
 			"rdt:sourcedScripts": "",
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:sourcedScriptHashes": "",
 			"rdt:workingDirectory": "[DIR]/rdtLite",
 			"rdt:provDirectory": "[DIR]/rdtLite/prov_DailySolarRadiation",
-			"rdt:provTimestamp": "2022-06-15T10.57.13EDT",
+			"rdt:provTimestamp": "2022-06-16T15.59.12EDT",
 			"rdt:hashAlgorithm": "md5"
 		},
 
@@ -802,7 +804,7 @@
 		},
 		"rdt:l29": {
 			"name": "rdtLite",
-			"version": "1.3.1",
+			"version": "1.4",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
