@@ -320,6 +320,8 @@
 					"operatingSystem" = NA ,
 					"language" = NA ,
 					"langVersion" = NA ,
+					"ui" = NA,
+					"pandoc" = NA,
 					"script" = NA ,
 					"scriptTimeStamp" = NA ,
 					"scriptHash" = NA ,
@@ -331,18 +333,20 @@
 					"provDirectory" = NA ,
 					"provTimestamp" = NA )
 	
+	platform.info <- sessioninfo::platform_info()
+	
 	# architecture, language, langVersion
-	lang.version <- R.Version()
+	fields$architecture <- platform.info$system
+	fields$operatingSystem <- platform.info$os
+	fields$language <- "R"
+	fields$langVersion <- platform.info$version
 	
-	fields$architecture <- utils::sessionInfo()$platform
-	fields$language <- lang.version$language
-	fields$langVersion <- lang.version$version
-	
-	# operating system
-	fields$operatingSystem <- 
-		if (.Platform$OS.type == "unix") utils::sessionInfo()$running
-		else if (.Platform$OS.type == "windows") utils::win.version()
-		else version$os
+	# Programming environment
+	fields$ui <- platform.info$ui
+	if (fields$ui == "RStudio") {
+	    fields$ui = platform.info$rstudio
+	}
+	fields$pandoc = platform.info$pandoc
 	
 	# script variables
 	scripts <- .ddg.sourced.scripts()

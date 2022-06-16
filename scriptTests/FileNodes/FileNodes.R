@@ -43,3 +43,4 @@ library(vroom)
 vroom_write(mtcars, "./mtcars.dat")
 mtcars <- vroom("./mtcars.dat")
 
+#raster::raster ("../land_water.tif")

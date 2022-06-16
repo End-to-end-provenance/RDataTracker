@@ -95,9 +95,6 @@
   # capture.output is called twice to capture the output that is going to 
   # standard output and to standard error.  These are messages that say 
   # "Tracing..." and list each function being traced.
-  # Note that we need to use the rdt::: notation for the functions for 
-  # trace to call so that it can find those functions without making them 
-  # publicly available in the namespace.
   
   #print ("Tracing write functions")
   write.functions.df <- .ddg.get("ddg.file.write.functions.df")
@@ -204,8 +201,7 @@ trace.oneOutput <- function (f, pkg) {
       # this gives: <simpleError in getFunction(what, where = whereF): no function 'vroom_write' found>
       utils::capture.output(
         utils::capture.output(trace (as.expression(f), 
-                                     #function () .ddg.trace.output(),
-                                     quote(rdtLite:::.ddg.trace.output()), 
+                                     function () .ddg.trace.output(),
                                      print=FALSE), 
                               type="message"))
     }
@@ -217,8 +213,7 @@ trace.oneOutput <- function (f, pkg) {
       # it will never get attached.  Is there a different parameter to pass to where?
       utils::capture.output(
         utils::capture.output(trace (as.expression(f), 
-                                     #function () .ddg.trace.output(),
-                                     quote(rdtLite:::.ddg.trace.output()), 
+                                     function () .ddg.trace.output(),
                                      where = pkg,
                                      print=FALSE), 
                               type="message"))
@@ -1690,10 +1685,12 @@ trace.oneInput <- function (f, pkg) {
   	#print ("Adding tracing for vroom write function")
   	
     # Works when vroom is not initially loaded!!!
-    tryCatch (utils::capture.output(
+    lapply (function.names, 
+        function (function.name) {
+            tryCatch (utils::capture.output(
                   utils::capture.output(
-                      trace(function.names, 
-                            tracer = quote(rdtLite:::.ddg.trace.output ()), 
+                      trace(function.name, 
+                            tracer = function () .ddg.trace.output (), 
                             where = asNamespace("vroom"), 
                             print=FALSE),
                       type="message")),
@@ -1701,6 +1698,7 @@ trace.oneInput <- function (f, pkg) {
                            print (e)
                            print(sys.calls())
                       })
+        })
   	#print ("Back from adding vroom output tracing")
 
 	function.names <- c("vroom", "vroom_lines")
@@ -1712,11 +1710,16 @@ trace.oneInput <- function (f, pkg) {
   	read.functions.df <- rbind (read.functions.df, vroom.read.funcs)
   	#print (read.functions.df)
   	.ddg.set("ddg.file.read.functions.df", read.functions.df)
-    tryCatch (utils::capture.output(utils::capture.output(trace(function.names, tracer = quote(rdtLite:::.ddg.trace.input ()), where = asNamespace("vroom"), print=FALSE),type="message")),
+  	lapply (function.names,
+  		function (function.name) { 
+            tryCatch (utils::capture.output(utils::capture.output(trace(function.name, 
+                tracer = function () .ddg.trace.input(),  
+    	        where = asNamespace("vroom"), print=FALSE),type="message")),
                      error = function (e) {
                        print (e)
                        print(sys.calls())
                      })
+        })
 }
 
 .ddg.untrace.vroom.functions <- function () {
