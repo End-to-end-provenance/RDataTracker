@@ -13,7 +13,8 @@ prov.init(
   overwrite = TRUE,
   snapshot.size = 0,
   hash.algorithm = "md5",
-  save.debug = FALSE
+  save.debug = FALSE,
+  filecopy.size = Inf
 )
 
 prov.save(save.debug = FALSE)
@@ -29,6 +30,7 @@ prov.run(
   hash.algorithm = "md5",
   save.debug = FALSE,
   exprs,
+  filecopy.size = Inf,
   ...
 )
 
@@ -55,6 +57,10 @@ the digest package.}
 
 \item{save.debug}{If TRUE, debug files are saved to the debug directory.
 This is intended for developers of the rdt / rdtLite package.}
+
+\item{filecopy.size}{the maximum size for copying input and output files. If 0,
+no files are copied. If Inf, all files are copied. For other values, a file is
+copied only if it is smaller than the specified size.  The size is in kilobytes.}
 
 \item{r.script.path}{the full path to the R script file that is being 
 executed. A copy of the script will be saved with the provenance graph.}
