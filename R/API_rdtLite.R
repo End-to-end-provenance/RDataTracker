@@ -69,6 +69,9 @@
 #' the digest package.
 #' @param save.debug If TRUE, debug files are saved to the debug directory.
 #' This is intended for developers of the rdt / rdtLite package.
+#' @param filecopy.size the maximum size for copying input and output files. If 0,
+#' no files are copied. If Inf, all files are copied. For other values, a file is
+#' copied only if it is smaller than the specified size.  The size is in kilobytes. 
 #' @return prov.init initializes the provenance collector.  The prov.init
 #' function does not return a value.
 #' @export
@@ -76,7 +79,7 @@
 #' @seealso \code{\link{prov.json}} for access to the JSON text of the provenance, 
 
 prov.init <- function(prov.dir = NULL, overwrite = TRUE, snapshot.size = 0, 
-  hash.algorithm = "md5", save.debug = FALSE) {
+  hash.algorithm = "md5", save.debug = FALSE, filecopy.size = Inf) {
   
   #print ("In prov.init")
   
@@ -107,6 +110,9 @@ prov.init <- function(prov.dir = NULL, overwrite = TRUE, snapshot.size = 0,
     ddg.run.args <- data.frame(args.names, args.values, args.types, stringsAsFactors = FALSE)
     .ddg.set("ddg.run.args", ddg.run.args)
   }
+  
+  # Save maximum file size
+  .ddg.set("ddg.filecopy.size", filecopy.size)
   
   # Initialize list of input & output file nodes
   #print ("Initializing file nodes")
@@ -196,7 +202,7 @@ prov.quit <- function(save.debug = FALSE) {
 #' prov.quit()
 
 prov.run <- function(r.script.path, prov.dir = NULL, overwrite = TRUE, details = TRUE, 
-  snapshot.size = 0, hash.algorithm = "md5", save.debug = FALSE, exprs, ...) {
+  snapshot.size = 0, hash.algorithm = "md5", save.debug = FALSE, exprs, filecopy.size = Inf, ...) {
   
   # Stop & display message if R script path is missing
   if (missing(r.script.path) && missing(exprs)) {
@@ -245,7 +251,7 @@ prov.run <- function(r.script.path, prov.dir = NULL, overwrite = TRUE, details =
   .ddg.set("ddg.script.mode", TRUE)
 
   # Intialize the provenance graph
-  prov.init(prov.dir, overwrite, snapshot.size, hash.algorithm, save.debug)
+  prov.init(prov.dir, overwrite, snapshot.size, hash.algorithm, save.debug, filecopy.size)
   
   # Execute the script
   .ddg.run(r.script.path, exprs, ...)

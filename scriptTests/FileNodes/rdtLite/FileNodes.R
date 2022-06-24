@@ -43,8 +43,4 @@ library(vroom)
 vroom_write(mtcars, "./mtcars.dat")
 mtcars <- vroom("./mtcars.dat")
 
-f <- system.file("external/test.grd", package="raster")
-r <- raster::raster(f)
-
-b <- raster::brick(system.file("external/rlogo.grd", package="raster"))
-
+raster::raster ("../land_water.tif")

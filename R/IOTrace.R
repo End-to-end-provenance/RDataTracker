@@ -99,13 +99,13 @@
   #print ("Tracing write functions")
   write.functions.df <- .ddg.get("ddg.file.write.functions.df")
   tryCatch (
-  	  mapply(trace.oneOutput, write.functions.df$function.names, write.functions.df$package.names),
+  	  lapply(write.functions.df$function.names, trace.oneOutput),
   	  error = function (e) print (e)
   )
 
   #print ("Tracing read functions")
   read.functions.df <- .ddg.get("ddg.file.read.functions.df")
-  mapply(trace.oneInput, read.functions.df$function.names, read.functions.df$package.names)
+  lapply(read.functions.df$function.names, trace.oneInput)
 
   trace.oneClose <- 
     function (f) {
@@ -146,6 +146,9 @@
                                  print=FALSE), 
                           type="message"))
                           
+  if (isNamespaceLoaded("vroom")) {
+  	.ddg.trace.vroom.functions()
+  }
 
   # Loading happens when vroom::vroom_write is called if the 
   # vroom library has not been previously loaded
@@ -167,6 +170,32 @@
         },
         "replace"
   )
+
+  if (isNamespaceLoaded("raster")) {
+  	.ddg.trace.raster.functions()
+  }
+
+  setHook(packageEvent("raster", "onLoad"),
+        function (...) {
+          #print ("onLoad hook called for raster")
+          .ddg.trace.raster.functions()
+        },
+        "replace"
+  )
+
+  # Attaching happens when library is called, like library(raster)
+  #  print ("Setting attach hook for raster")
+  setHook(packageEvent("raster", "attach"),
+        function (...) {
+          #print ("attach hook called for raster")
+          .ddg.trace.raster.functions()
+        },
+        "replace"
+  )
+
+  if (isNamespaceLoaded("ggplot2")) {
+  	.ddg.trace.ggplot2.functions()
+  }
 
   setHook(packageEvent("ggplot2", "onLoad"),
         function (...) {
@@ -194,70 +223,23 @@
 
 
 
-trace.oneOutput <- function (f, pkg) {
+trace.oneOutput <- function (f) {
     #print (paste ("Adding tracing for ", f))
-	if (pkg == "") {
-      # If vroom is loaded, and "" is passed in for the package,
-      # this gives: <simpleError in getFunction(what, where = whereF): no function 'vroom_write' found>
-      utils::capture.output(
+    utils::capture.output(
         utils::capture.output(trace (as.expression(f), 
                                      function () .ddg.trace.output(),
                                      print=FALSE), 
                               type="message"))
-    }
-    else {
-      # If vroom is loaded, and "vroom" is passed in for the package, this gives:
-      # <simpleError in as.environment(where): no item called "vroom" on the search list>
-      # It needs to be attached to be on the search list.  But if it is already loaded,
-      # the load hook won't get called.  And if it is called as vroom::vroom_write, 
-      # it will never get attached.  Is there a different parameter to pass to where?
-      utils::capture.output(
-        utils::capture.output(trace (as.expression(f), 
-                                     function () .ddg.trace.output(),
-                                     where = pkg,
-                                     print=FALSE), 
-                              type="message"))
-    }
-                                 
 } 
 
-untrace.oneOutput <- function (f, pkg) {
-	#cat ("Untracing", f, "in package", pkg)
-	if (pkg == "") {
-      utils::capture.output(
-        utils::capture.output(
-		untrace (as.expression(f)) ,
-                              type="message"))
-    }
-    else {
-      utils::capture.output(
-        utils::capture.output(
-	   untrace (as.expression(f), where = asNamespace(pkg)), 
-                              type="message"))
-    }
-                                 
-} 
-
-
-
-trace.oneInput <- function (f, pkg) {
-	if (pkg == "") {
-      utils::capture.output(
+trace.oneInput <- function (f) {
+    utils::capture.output(
         utils::capture.output(trace (as.expression(f), 
                                      function () .ddg.trace.input(), 
                                      print=FALSE), 
                               type="message"))
-    }
-    else {
-      utils::capture.output(
-        utils::capture.output(trace (as.expression(f), 
-                                     function () .ddg.trace.input(), 
-                                     where = pkg,
-                                     print=FALSE), 
-                              type="message"))
-    }
+}
 
-} 
 
 #' .ddg.stop.iotracing stops tracing I/O calls.  This should be called when RDT finishes.
 #' @return nothing
@@ -269,18 +251,31 @@ trace.oneInput <- function (f, pkg) {
   # utils::capture.output is used to prevent "Untracing" messages from appearing 
   # in the output
   #print ("Untracing file write functions")
-  file.write.functions.df <- .ddg.get("ddg.file.write.functions.df")
-  mapply(untrace.oneOutput, file.write.functions.df$function.names, file.write.functions.df$package.names)
+  write.function.names <- .ddg.get("ddg.file.write.functions.df")$function.names
+  lapply (write.function.names,
+  		  function (function.name) {
+  		      # Some functions need a package, too.
+  		      # Methods also need a signature.  They get untraced below (for example, untrace raster)
+  		  	  tryCatch (utils::capture.output(untrace (function.name), type="message"),
+  		  	  		    error = function (e) { })
+  		  })
   
-  #print ("Removing vroom and ggplot2 hooks")
+  #print ("Removing vroom, raster and ggplot2 hooks")
   setHook (packageEvent("vroom", "onLoad"), NULL, "replace")
   setHook (packageEvent("vroom", "attach"), NULL, "replace")
+  setHook (packageEvent("raster", "onLoad"), NULL, "replace")
+  setHook (packageEvent("raster", "attach"), NULL, "replace")
   setHook (packageEvent("ggplot2", "onLoad"), NULL, "replace")
   setHook (packageEvent("ggplot2", "attach"), NULL, "replace")
   
   #print ("Untracing file read functions")
-  utils::capture.output (untrace(.ddg.get("ddg.file.read.functions.df")$function.names), 
-                         type="message")
+  read.function.names <- .ddg.get("ddg.file.read.functions.df")$function.names
+  lapply (read.function.names,
+  		  function (function.name) {
+  		      # Methods also need a signature.  They get untraced below (for example, untrace raster)
+  		  	  tryCatch (utils::capture.output(untrace (function.name), type="message"),
+  		  	  		    error = function (e) { })
+  		  })
   utils::capture.output (
     untrace(.ddg.get("ddg.file.close.functions.df")$function.names), 
     type="message")
@@ -290,15 +285,10 @@ trace.oneInput <- function (f, pkg) {
                          type="message")
   utils::capture.output (untrace(grDevices::dev.off), type="message")
   
-  #print ("Untracing loadNamespace")
-  utils::capture.output (untrace(loadNamespace), type="message")
-  
-  #print ("Untracing library")
-  utils::capture.output (untrace(library), type="message")
-  
-  
   #print ("Untracing vroom functions")
   .ddg.untrace.vroom.functions()
+  #print ("Untracing raster functions")
+  .ddg.untrace.raster.functions()
   #print ("Untracing ggplot2 functions")
   .ddg.untrace.ggplot2.functions()
   #print ("Done untracing")
@@ -315,7 +305,15 @@ trace.oneInput <- function (f, pkg) {
 #' @noRd
 
 .ddg.get.traced.function.frame.number <- function() {
-  .ddg.get.frame.number.for.func (".doTrace") - 1
+  frame.number <- .ddg.get.frame.number.for.func (".doTrace") - 1
+  func.name <- sys.call (frame.number)[[1]]
+  if (func.name == ".local") {
+    # This is an S4 method.  We want the caller of .local
+    return (frame.number - 1)
+  }
+  else {
+    return (frame.number)
+  }
 }
 
 #' .ddg.get.frame.number.for.func gets the frame number for a function 
@@ -423,13 +421,6 @@ trace.oneInput <- function (f, pkg) {
           "con", "con", "con", "file", "file", "path",
           "file")
           
-  package.names <- 
-  	  c ("", 
-  	     "", 
-  	     "", 
-         "", "", "", "", "", "",
-         "")
-  
    # The following does not work.  The package must also be on the search path (attached
    # using the library function) to be able to add the tracing.
 #  if (isNamespaceLoaded("vroom")) {
@@ -438,7 +429,7 @@ trace.oneInput <- function (f, pkg) {
 #      package.names <- append (package.names, c("vroom", "vroom"))
 #  }
   
-  return (data.frame (function.names, param.names, package.names, stringsAsFactors=FALSE))
+  return (data.frame (function.names, param.names, stringsAsFactors=FALSE))
 }
 
 #' .ddg.clear.input.file clears out the list of input files.  This should be 
@@ -518,19 +509,19 @@ trace.oneInput <- function (f, pkg) {
   }
   
   # Get the name of the input function
+  #print (sys.calls())
   call <- sys.call (frame.number)
   if (typeof(call[[1]]) == "closure") {
     # print (sys.calls())
     return()
   }
   fname <- as.character(call[[1]])
+
   
   # Remove the package name if present
   if (!is.symbol (fname) && length(fname > 1)) {
     fname <- fname[length(fname)]
   }
-  
-  #print (paste ("Input function traced: ", fname))
   
   #print ("Checking for source")
   # If we are sourcing a script, record the file as a sourced script instead of
@@ -593,6 +584,7 @@ trace.oneInput <- function (f, pkg) {
     	if (!is.raw(input.file.name)) {
       		.ddg.add.input.file (input.file.name)
     	}
+    	
     },
     error = function (e) {  }  # If the file parameter is missing, there is nothing to save.
   )
@@ -614,7 +606,7 @@ trace.oneInput <- function (f, pkg) {
   .ddg.add.infiles (files.read)
   
   for (file in files.read) {
-    # print (paste ("file read: ", file))
+    #print (paste ("file read: ", file))
     # Use URL node for URLs and for socket connections
     if (grepl ("://", file) || startsWith (file, "->"))
     {
@@ -709,11 +701,6 @@ trace.oneInput <- function (f, pkg) {
           "file", "file", "file", "file",
           "...")
           
-  package.names <- 
-  	c ("", "", "", 
-          "", "", 
-          "", "", "", "",
-          "")
           
    # The following does not work.  The package must also be on the search path (attached
    # using the library function) to be able to add the tracing.
@@ -724,7 +711,7 @@ trace.oneInput <- function (f, pkg) {
 #      package.names <- append (package.names, c("vroom", "vroom"))
 #  }
    
-  return (data.frame (function.names, param.names, package.names, stringsAsFactors=FALSE))
+  return (data.frame (function.names, param.names, stringsAsFactors=FALSE))
 }
 
 
@@ -1676,8 +1663,7 @@ trace.oneInput <- function (f, pkg) {
     #print ("In .ddg.trace.vroom.functions")
 	function.names <- c("vroom_write", "vroom_write_lines")
   	param.names <- c("file", "file")
-  	package.names <- c("vroom", "vroom")
-  	vroom.write.funcs <- data.frame(function.names, param.names, package.names)
+  	vroom.write.funcs <- data.frame(function.names, param.names)
   	write.functions.df <- .ddg.get("ddg.file.write.functions.df")
   	write.functions.df <- rbind (write.functions.df, vroom.write.funcs)
   	#print (write.functions.df)
@@ -1703,8 +1689,7 @@ trace.oneInput <- function (f, pkg) {
 
 	function.names <- c("vroom", "vroom_lines")
 	param.names <- c("file", "file")
-  	package.names <- c("vroom", "vroom")
-  	vroom.read.funcs <- data.frame(function.names, param.names, package.names)
+  	vroom.read.funcs <- data.frame(function.names, param.names)
   	#print ("Back from trace.oneInput")
   	read.functions.df <- .ddg.get("ddg.file.read.functions.df")
   	read.functions.df <- rbind (read.functions.df, vroom.read.funcs)
@@ -1722,17 +1707,73 @@ trace.oneInput <- function (f, pkg) {
         })
 }
 
+.ddg.trace.raster.functions <- function () {
+    #print ("In .ddg.trace.raster.functions")
+	function.names <- c("raster", "brick")
+  	param.names <- c("x", "x")
+  	signatures <- c("character", "character")
+  	raster.read.funcs <- data.frame(function.names, param.names)
+  	read.functions.df <- .ddg.get("ddg.file.read.functions.df")
+  	read.functions.df <- rbind (read.functions.df, raster.read.funcs)
+  	.ddg.set("ddg.file.read.functions.df", read.functions.df)
+  	
+  	mapply (
+  		function (function.name, signature) { 
+            tryCatch (utils::capture.output(utils::capture.output(trace(function.name, 
+                tracer = function () rdtLite:::.ddg.trace.input(),  
+    	        where = asNamespace("raster"), 
+    	        signature = signature, print=FALSE),type="message")),
+                     error = function (e) {
+                       print (e)
+                       print(sys.calls())
+                     })
+        },
+        function.names,
+        signatures)
+        
+    #print ("Returning from .ddg.trace.raster.functions")
+}
+
 .ddg.untrace.vroom.functions <- function () {
+    if (!isNamespaceLoaded ("vroom")) {
+        return()
+    }
     tryCatch({
-				utils::capture.output(untrace ("vroom_write", where = asNamespace("vroom")), type="message") 
-				utils::capture.output(untrace ("vroom_write_lines", where = asNamespace("vroom")), type="message") 
-				utils::capture.output(untrace ("vroom", where = asNamespace("vroom")), type="message")
-				utils::capture.output(untrace ("vroom_lines", where = asNamespace("vroom")), type="message")
+			  utils::capture.output(
+				untrace ("vroom", where = asNamespace("vroom")), type="message") 
+			  utils::capture.output(
+				untrace ("vroom_lines", where = asNamespace("vroom")), type="message") 
+			  utils::capture.output(
+				untrace ("vroom_write", where = asNamespace("vroom")), type="message") 
+			  utils::capture.output(
+				untrace ("vroom_write_lines", where = asNamespace("vroom")), type="message") 
 			  },
-			  error = function (e) { })
+			  # Ignore errors and warnings.  These happen if the vroom function is not being traced 
+			  # because the script is not using the vroom package.
+			  error = function (e) { },
+			  warning = function (e) { })
+}
+
+.ddg.untrace.raster.functions <- function () {
+    if (!isNamespaceLoaded ("vroom")) {
+        return()
+    }
+    tryCatch({
+			  utils::capture.output(
+				untrace ("raster", where = asNamespace("raster"), signature="character"), type="message") 
+			  utils::capture.output(
+				untrace ("brick", where = asNamespace("raster"), signature="character"), type="message") 
+			  },
+			  # Ignore errors and warnings.  These happen if the raster function is not being traced 
+			  # because the script is not using the raster package.
+			  error = function (e) { },
+			  warning = function (e) { })
 }
 
 .ddg.untrace.ggplot2.functions <- function () {
+    if (!isNamespaceLoaded ("ggplot2")) {
+        return()
+    }
     tryCatch ({
 				utils::capture.output(untrace ("ggplot", where = asNamespace("ggplot2")), type="message") 
 				utils::capture.output(untrace ("ggsave", where = asNamespace("ggplot2")), type="message")

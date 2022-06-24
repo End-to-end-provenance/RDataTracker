@@ -53,7 +53,7 @@ if( identical(tool, "rdt") ) {
 		max.loops=1, snapshot.size=10)
 } else if( identical(tool, "rdtLite") ) {
 	prov.run("[SCRIPT]", "[DIR_DDG]", 
-		details=detailLevel, snapshot.size=10)
+		details=detailLevel, snapshot.size=10, filecopy.size=2)
 } else {
 	stop("Provenance collection library is not found.", call. = FALSE)
 }

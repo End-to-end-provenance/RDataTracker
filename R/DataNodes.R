@@ -1,5 +1,6 @@
 # Copyright (C) President and Fellows of Harvard College and 
-# Trustees of Mount Holyoke College, 2014, 2015, 2016, 2017, 2018.
+# Trustees of Mount Holyoke College, 2014, 2015, 2016, 2017, 2018,
+# 2019, 2020, 2021, 2022.
 
 # This program is free software: you can redistribute it and/or
 # modify it under the terms of the GNU General Public License as
@@ -63,6 +64,15 @@
 
 .ddg.snapshot.size <- function() {
   return(.ddg.get("ddg.snapshot.size"))
+}
+
+#' .ddg.filecopy.size returns the current maximum size for copying input and output files 
+#' in kilobytes.
+#' @return maximum filecopy size in KB
+#' @noRd
+
+.ddg.filecopy.size <- function() {
+  return(.ddg.get("ddg.filecopy.size"))
 }
 
 #' .ddg.is.data.type returns TRUE for any type of data node.
@@ -848,10 +858,18 @@
   file.loc <- normalizePath(fname, winslash="/", mustWork = FALSE)
   
   # Copy file.
+  #print (paste ("In .ddg.file.copy, file.loc =", file.loc))
   if (file.exists(file.loc)) {
     # Create file node in DDG.
     dpfile.out <- .ddg.file.node("File", fname, dname, dscope)
-    file.copy(file.loc, dpfile.out, overwrite=TRUE, copy.date=TRUE)
+    
+    filesize <- file.size(file.loc) / 1024
+    max.copysize <- .ddg.filecopy.size()
+    #print (paste (file.loc, filesize, max.copysize))
+    if (max.copysize > filesize) {
+        #print ("Copying file")
+    	file.copy(file.loc, dpfile.out, overwrite=TRUE, copy.date=TRUE)
+    }
   }
   else {
     # For zipfiles, 
@@ -863,7 +881,7 @@
     }
     else {
       error.msg <- paste("File to copy does not exist:", fname)
-      print (error.msg)
+      #print (error.msg)
       #print (sys.calls())
       .ddg.insert.error.message(error.msg)
       return()

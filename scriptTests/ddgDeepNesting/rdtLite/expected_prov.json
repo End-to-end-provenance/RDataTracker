@@ -34,7 +34,7 @@
 		"rdt:p1": {
 			"rdt:name": "ddgDeepNesting.R",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": "0.306",
+			"rdt:elapsedTime": "0.292",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -44,7 +44,7 @@
 		"rdt:p2": {
 			"rdt:name": "increment.value <- function(a) {\n\ta <- a + 1\n}",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.1",
+			"rdt:elapsedTime": "0.107",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 7,
 			"rdt:startCol": 1,
@@ -54,7 +54,7 @@
 		"rdt:p3": {
 			"rdt:name": "a <- 0",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.081",
+			"rdt:elapsedTime": "0.084",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 11,
 			"rdt:startCol": 1,
@@ -64,7 +64,7 @@
 		"rdt:p4": {
 			"rdt:name": "n <- 5",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.055",
+			"rdt:elapsedTime": "0.056",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 13,
 			"rdt:startCol": 1,
@@ -84,7 +84,7 @@
 		"rdt:p6": {
 			"rdt:name": "ddgDeepNesting.R",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": "0.012",
+			"rdt:elapsedTime": "0.013",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -102,7 +102,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2022-06-16T15.58.27EDT",
+			"rdt:timestamp": "2022-06-24T17.31.03EDT",
 			"rdt:location": ""
 		},
 		"rdt:d2": {
@@ -150,13 +150,13 @@
 			"rdt:script": "[DIR]/ddgDeepNesting.R",
 			"rdt:scriptTimeStamp": "2018-10-26T14.26.54EDT",
 			"rdt:scriptHash": "9685f13d4c1e1be8b627588cdb822e48",
-			"rdt:totalElapsedTime": "0.614",
+			"rdt:totalElapsedTime": "0.612",
 			"rdt:sourcedScripts": "",
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:sourcedScriptHashes": "",
 			"rdt:workingDirectory": "[DIR]/rdtLite",
 			"rdt:provDirectory": "[DIR]/rdtLite/prov_ddgDeepNesting",
-			"rdt:provTimestamp": "2022-06-16T15.58.26EDT",
+			"rdt:provTimestamp": "2022-06-24T17.31.03EDT",
 			"rdt:hashAlgorithm": "md5"
 		},
 
@@ -169,22 +169,6 @@
 			}
 		},
 		"rdt:l2": {
-			"name": "bit",
-			"version": "4.0.4",
-			"prov:type": {
-				"$": "prov:Collection",
-				"type": "xsd:QName"
-			}
-		},
-		"rdt:l3": {
-			"name": "bit64",
-			"version": "4.0.5",
-			"prov:type": {
-				"$": "prov:Collection",
-				"type": "xsd:QName"
-			}
-		},
-		"rdt:l4": {
 			"name": "cli",
 			"version": "3.3.0",
 			"prov:type": {
@@ -192,15 +176,7 @@
 				"type": "xsd:QName"
 			}
 		},
-		"rdt:l5": {
-			"name": "colorspace",
-			"version": "2.0-3",
-			"prov:type": {
-				"$": "prov:Collection",
-				"type": "xsd:QName"
-			}
-		},
-		"rdt:l6": {
+		"rdt:l3": {
 			"name": "compiler",
 			"version": "4.2.0",
 			"prov:type": {
@@ -208,15 +184,7 @@
 				"type": "xsd:QName"
 			}
 		},
-		"rdt:l7": {
-			"name": "crayon",
-			"version": "1.5.1",
-			"prov:type": {
-				"$": "prov:Collection",
-				"type": "xsd:QName"
-			}
-		},
-		"rdt:l8": {
+		"rdt:l4": {
 			"name": "datasets",
 			"version": "4.2.0",
 			"prov:type": {
@@ -224,7 +192,7 @@
 				"type": "xsd:QName"
 			}
 		},
-		"rdt:l9": {
+		"rdt:l5": {
 			"name": "digest",
 			"version": "0.6.29",
 			"prov:type": {
@@ -232,55 +200,7 @@
 				"type": "xsd:QName"
 			}
 		},
-		"rdt:l10": {
-			"name": "dplyr",
-			"version": "1.0.9",
-			"prov:type": {
-				"$": "prov:Collection",
-				"type": "xsd:QName"
-			}
-		},
-		"rdt:l11": {
-			"name": "ellipsis",
-			"version": "0.3.2",
-			"prov:type": {
-				"$": "prov:Collection",
-				"type": "xsd:QName"
-			}
-		},
-		"rdt:l12": {
-			"name": "fansi",
-			"version": "1.0.3",
-			"prov:type": {
-				"$": "prov:Collection",
-				"type": "xsd:QName"
-			}
-		},
-		"rdt:l13": {
-			"name": "generics",
-			"version": "0.1.2",
-			"prov:type": {
-				"$": "prov:Collection",
-				"type": "xsd:QName"
-			}
-		},
-		"rdt:l14": {
-			"name": "ggplot2",
-			"version": "3.3.6",
-			"prov:type": {
-				"$": "prov:Collection",
-				"type": "xsd:QName"
-			}
-		},
-		"rdt:l15": {
-			"name": "glue",
-			"version": "1.6.2",
-			"prov:type": {
-				"$": "prov:Collection",
-				"type": "xsd:QName"
-			}
-		},
-		"rdt:l16": {
+		"rdt:l6": {
 			"name": "graphics",
 			"version": "4.2.0",
 			"prov:type": {
@@ -288,7 +208,7 @@
 				"type": "xsd:QName"
 			}
 		},
-		"rdt:l17": {
+		"rdt:l7": {
 			"name": "grDevices",
 			"version": "4.2.0",
 			"prov:type": {
@@ -296,23 +216,7 @@
 				"type": "xsd:QName"
 			}
 		},
-		"rdt:l18": {
-			"name": "grid",
-			"version": "4.2.0",
-			"prov:type": {
-				"$": "prov:Collection",
-				"type": "xsd:QName"
-			}
-		},
-		"rdt:l19": {
-			"name": "gtable",
-			"version": "0.3.0",
-			"prov:type": {
-				"$": "prov:Collection",
-				"type": "xsd:QName"
-			}
-		},
-		"rdt:l20": {
+		"rdt:l8": {
 			"name": "jsonlite",
 			"version": "1.8.0",
 			"prov:type": {
@@ -320,23 +224,7 @@
 				"type": "xsd:QName"
 			}
 		},
-		"rdt:l21": {
-			"name": "lifecycle",
-			"version": "1.0.1",
-			"prov:type": {
-				"$": "prov:Collection",
-				"type": "xsd:QName"
-			}
-		},
-		"rdt:l22": {
-			"name": "magrittr",
-			"version": "2.0.3",
-			"prov:type": {
-				"$": "prov:Collection",
-				"type": "xsd:QName"
-			}
-		},
-		"rdt:l23": {
+		"rdt:l9": {
 			"name": "methods",
 			"version": "4.2.0",
 			"prov:type": {
@@ -344,47 +232,7 @@
 				"type": "xsd:QName"
 			}
 		},
-		"rdt:l24": {
-			"name": "munsell",
-			"version": "0.5.0",
-			"prov:type": {
-				"$": "prov:Collection",
-				"type": "xsd:QName"
-			}
-		},
-		"rdt:l25": {
-			"name": "pillar",
-			"version": "1.7.0",
-			"prov:type": {
-				"$": "prov:Collection",
-				"type": "xsd:QName"
-			}
-		},
-		"rdt:l26": {
-			"name": "pkgconfig",
-			"version": "2.0.3",
-			"prov:type": {
-				"$": "prov:Collection",
-				"type": "xsd:QName"
-			}
-		},
-		"rdt:l27": {
-			"name": "purrr",
-			"version": "0.3.4",
-			"prov:type": {
-				"$": "prov:Collection",
-				"type": "xsd:QName"
-			}
-		},
-		"rdt:l28": {
-			"name": "R6",
-			"version": "2.5.1",
-			"prov:type": {
-				"$": "prov:Collection",
-				"type": "xsd:QName"
-			}
-		},
-		"rdt:l29": {
+		"rdt:l10": {
 			"name": "rdtLite",
 			"version": "1.4",
 			"prov:type": {
@@ -392,23 +240,7 @@
 				"type": "xsd:QName"
 			}
 		},
-		"rdt:l30": {
-			"name": "rlang",
-			"version": "1.0.2",
-			"prov:type": {
-				"$": "prov:Collection",
-				"type": "xsd:QName"
-			}
-		},
-		"rdt:l31": {
-			"name": "scales",
-			"version": "1.2.0",
-			"prov:type": {
-				"$": "prov:Collection",
-				"type": "xsd:QName"
-			}
-		},
-		"rdt:l32": {
+		"rdt:l11": {
 			"name": "sessioninfo",
 			"version": "1.2.2",
 			"prov:type": {
@@ -416,7 +248,7 @@
 				"type": "xsd:QName"
 			}
 		},
-		"rdt:l33": {
+		"rdt:l12": {
 			"name": "stats",
 			"version": "4.2.0",
 			"prov:type": {
@@ -424,7 +256,7 @@
 				"type": "xsd:QName"
 			}
 		},
-		"rdt:l34": {
+		"rdt:l13": {
 			"name": "stringi",
 			"version": "1.7.6",
 			"prov:type": {
@@ -432,23 +264,7 @@
 				"type": "xsd:QName"
 			}
 		},
-		"rdt:l35": {
-			"name": "tibble",
-			"version": "3.1.7",
-			"prov:type": {
-				"$": "prov:Collection",
-				"type": "xsd:QName"
-			}
-		},
-		"rdt:l36": {
-			"name": "tidyselect",
-			"version": "1.1.2",
-			"prov:type": {
-				"$": "prov:Collection",
-				"type": "xsd:QName"
-			}
-		},
-		"rdt:l37": {
+		"rdt:l14": {
 			"name": "tools",
 			"version": "4.2.0",
 			"prov:type": {
@@ -456,41 +272,9 @@
 				"type": "xsd:QName"
 			}
 		},
-		"rdt:l38": {
-			"name": "tzdb",
-			"version": "0.3.0",
-			"prov:type": {
-				"$": "prov:Collection",
-				"type": "xsd:QName"
-			}
-		},
-		"rdt:l39": {
-			"name": "utf8",
-			"version": "1.2.2",
-			"prov:type": {
-				"$": "prov:Collection",
-				"type": "xsd:QName"
-			}
-		},
-		"rdt:l40": {
+		"rdt:l15": {
 			"name": "utils",
 			"version": "4.2.0",
-			"prov:type": {
-				"$": "prov:Collection",
-				"type": "xsd:QName"
-			}
-		},
-		"rdt:l41": {
-			"name": "vctrs",
-			"version": "0.4.1",
-			"prov:type": {
-				"$": "prov:Collection",
-				"type": "xsd:QName"
-			}
-		},
-		"rdt:l42": {
-			"name": "vroom",
-			"version": "1.5.7",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
