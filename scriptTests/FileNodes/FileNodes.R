@@ -48,3 +48,8 @@ r <- raster::raster(f)
 
 b <- raster::brick(system.file("external/rlogo.grd", package="raster"))
 
+filename <- system.file("external/lux.shp", package="raster")
+p <- raster::shapefile(filename)
+
+raster::shapefile(p, 'copy.shp')
+file.remove ('copy.shp')

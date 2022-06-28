@@ -293,7 +293,9 @@
   # Output data node.
   #print(".ddg.record.data outputting data node")
   if (dtype == "File") {
-    .ddg.set.hash (ddg.dnum, dloc, dvalue, dtime)
+    if (!file.info(dloc)$isdir) {
+    	.ddg.set.hash (ddg.dnum, dloc, dvalue, dtime)
+    }
   }
   else if (dtype == "URL") {
     .ddg.set.hash (ddg.dnum, paste0(.ddg.get("ddg.path"), "/", dvalue), dvalue, dtime)
@@ -866,7 +868,10 @@
     filesize <- file.size(file.loc) / 1024
     max.copysize <- .ddg.filecopy.size()
     #print (paste (file.loc, filesize, max.copysize))
-    if (max.copysize > filesize) {
+    
+    # shapefiles used by rasters is actually a folder of files.
+    # Should we recursively copy these?
+    if (max.copysize > filesize && !file.info(file.loc)$isdir) {
         #print ("Copying file")
     	file.copy(file.loc, dpfile.out, overwrite=TRUE, copy.date=TRUE)
     }

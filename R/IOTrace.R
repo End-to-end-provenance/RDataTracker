@@ -171,9 +171,27 @@
         "replace"
   )
 
-  if (isNamespaceLoaded("raster")) {
-  	.ddg.trace.raster.functions()
+  if (isNamespaceLoaded("rgdal")) {
+  	.ddg.trace.rgdal.functions()
   }
+
+  setHook(packageEvent("rgdal", "onLoad"),
+        function (...) {
+          #print ("onLoad hook called for raster")
+          .ddg.trace.rgdal.functions()
+        },
+        "replace"
+  )
+
+  # Attaching happens when library is called, like library(raster)
+  #  print ("Setting attach hook for raster")
+  setHook(packageEvent("rgdal", "attach"),
+        function (...) {
+          #print ("attach hook called for raster")
+          .ddg.trace.rgdal.functions()
+        },
+        "replace"
+  )
 
   setHook(packageEvent("raster", "onLoad"),
         function (...) {
@@ -265,6 +283,8 @@ trace.oneInput <- function (f) {
   setHook (packageEvent("vroom", "attach"), NULL, "replace")
   setHook (packageEvent("raster", "onLoad"), NULL, "replace")
   setHook (packageEvent("raster", "attach"), NULL, "replace")
+  setHook (packageEvent("rgdal", "onLoad"), NULL, "replace")
+  setHook (packageEvent("rgdal", "attach"), NULL, "replace")
   setHook (packageEvent("ggplot2", "onLoad"), NULL, "replace")
   setHook (packageEvent("ggplot2", "attach"), NULL, "replace")
   
@@ -1734,6 +1754,49 @@ trace.oneInput <- function (f) {
     #print ("Returning from .ddg.trace.raster.functions")
 }
 
+.ddg.trace.rgdal.functions <- function () {
+    #print ("In .ddg.trace.rgdal.functions")
+	function.names <- c("writeOGR")
+  	param.names <- c("dsn")
+  	rgdal.write.funcs <- data.frame(function.names, param.names)
+  	write.functions.df <- .ddg.get("ddg.file.write.functions.df")
+  	write.functions.df <- rbind (write.functions.df, rgdal.write.funcs)
+  	#print (write.functions.df)
+  	.ddg.set("ddg.file.write.functions.df", write.functions.df)
+  	#print ("Adding tracing for rgdal write function")
+  	
+    tryCatch (utils::capture.output(
+                  utils::capture.output(
+                      trace("writeOGR", 
+                            tracer = function () .ddg.trace.output (), 
+                            where = asNamespace("rgdal"), 
+                            print=FALSE),
+                      type="message")),
+              error = function (e) {
+                           print (e)
+                           print(sys.calls())
+                      })
+
+  	#print ("Back from adding rgdal output tracing")
+
+	function.names <- c("readOGR")
+	param.names <- c("dsn")
+  	rgdal.read.funcs <- data.frame(function.names, param.names)
+  	read.functions.df <- .ddg.get("ddg.file.read.functions.df")
+  	read.functions.df <- rbind (read.functions.df, rgdal.read.funcs)
+  	#print (read.functions.df)
+  	.ddg.set("ddg.file.read.functions.df", read.functions.df)
+    tryCatch (utils::capture.output(utils::capture.output(trace("readOGR", 
+                tracer = function () .ddg.trace.input(),  
+    	        where = asNamespace("rgdal"), print=FALSE),type="message")),
+                     error = function (e) {
+                       print (e)
+                       print(sys.calls())
+                     })
+
+}
+
+
 .ddg.untrace.vroom.functions <- function () {
     if (!isNamespaceLoaded ("vroom")) {
         return()
@@ -1754,8 +1817,24 @@ trace.oneInput <- function (f) {
 			  warning = function (e) { })
 }
 
+.ddg.untrace.rgdal.functions <- function () {
+    if (!isNamespaceLoaded ("rgdal")) {
+        return()
+    }
+    tryCatch({
+			  utils::capture.output(
+				untrace ("readOGR", where = asNamespace("rgdal")), type="message") 
+			  utils::capture.output(
+				untrace ("writeOGR", where = asNamespace("rgdal")), type="message") 
+			  },
+			  # Ignore errors and warnings.  These happen if the rgdal function is not being traced 
+			  # because the script is not using the rgdal package.
+			  error = function (e) { },
+			  warning = function (e) { })
+}
+
 .ddg.untrace.raster.functions <- function () {
-    if (!isNamespaceLoaded ("vroom")) {
+    if (!isNamespaceLoaded ("raster")) {
         return()
     }
     tryCatch({
