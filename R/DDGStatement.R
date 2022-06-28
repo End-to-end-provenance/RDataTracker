@@ -282,7 +282,7 @@ methods::setMethod ("initialize",
     # function begins, ends before the enclosing function ends, and matches the 
     # text of the first expression.
     next.parseData <- 
-      which(non.comment.parse.data$line1 >= enclosing.pos@startLine & 
+		which(non.comment.parse.data$line1 >= enclosing.pos@startLine & 
             non.comment.parse.data$line2 <= enclosing.pos@endLine & 
             gsub("[[:space:]]", "", non.comment.parse.data$text) == 
             gsub("[[:space:]]", "", paste(deparse(exprs[[1]]), collapse = "\n")) )[1]
@@ -304,6 +304,7 @@ methods::setMethod ("initialize",
                                                     parseData, cmdText)
     next.cmd <- next.cmd + 1
     
+
     # If there are more expressions, determine where to look next in the parseData
     if (i < length(exprs)) {
       last.ending.line <- non.comment.parse.data[next.parseData, ]$line2
@@ -314,7 +315,8 @@ methods::setMethod ("initialize",
       # previous expression and starts after the previous expression.
       next.parseData <- which(non.comment.parse.data$parent == last.parent & 
                               non.comment.parse.data$line1 >= last.ending.line & 
-                              non.comment.parse.data$id > last.id) [1]
+                              non.comment.parse.data$id > last.id  ) [1]
+
     }
   }
   

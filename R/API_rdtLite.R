@@ -374,13 +374,19 @@ prov.visualize <- function () {
 #' provenance directory
 #' @param create.zip if true all of the provenance data will be packaged up
 #'   into a zip file stored in the current working directory.
+#' @param details if true, a more detailed summary is provided
+#' @param check	if true, the user's file system is checked to see if input 
+#'   files, output files, and scripts (in their original locations) are unchanged, 
+#'   changed, or missing.
+#' @param console if true, the summary is displayed in the console
+#' @param notes if true, notes are included to explain how to interpret the summary
 #' 
 #' @export
 #' @rdname prov.json
 
-prov.summarize <- function (save=FALSE, create.zip=FALSE) {
+prov.summarize <- function (save=FALSE, create.zip=FALSE, details=FALSE, check=TRUE, console=TRUE, notes=TRUE) {
   if (requireNamespace ("provSummarizeR", quietly=TRUE)) {
-    provSummarizeR::prov.summarize(save, create.zip)
+  	provSummarizeR::prov.summarize(save=save, create.zip=create.zip, details=details, check=check, console=console, notes=notes)
   }
   else {
   	cat ("You need to install the provSummarizeR package to use this function.")
