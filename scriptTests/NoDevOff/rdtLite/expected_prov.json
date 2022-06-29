@@ -34,7 +34,7 @@
 		"rdt:p1": {
 			"rdt:name": "NoDevOff.R",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": "0.32",
+			"rdt:elapsedTime": "0.286",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -44,7 +44,7 @@
 		"rdt:p2": {
 			"rdt:name": "data (mtcars)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.12",
+			"rdt:elapsedTime": "0.118",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 4,
 			"rdt:startCol": 1,
@@ -54,7 +54,7 @@
 		"rdt:p3": {
 			"rdt:name": "allCars.df <- mtcars",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.095",
+			"rdt:elapsedTime": "0.094",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 7,
 			"rdt:startCol": 1,
@@ -84,7 +84,7 @@
 		"rdt:p6": {
 			"rdt:name": "cars8Cyl.df <- allCars.df[allCars.df$cyl == 8, ]",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.069",
+			"rdt:elapsedTime": "0.073",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 12,
 			"rdt:startCol": 1,
@@ -104,7 +104,7 @@
 		"rdt:p8": {
 			"rdt:name": "mpg = c(mean(cars4Cyl.df$mpg), mean(cars6Cyl.df$mpg), mean(c",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.057",
+			"rdt:elapsedTime": "0.06",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 16,
 			"rdt:startCol": 1,
@@ -114,7 +114,7 @@
 		"rdt:p9": {
 			"rdt:name": "plot(cylinders, mpg)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.104",
+			"rdt:elapsedTime": "0.103",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 19,
 			"rdt:startCol": 1,
@@ -124,7 +124,7 @@
 		"rdt:p10": {
 			"rdt:name": "X11()",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.189",
+			"rdt:elapsedTime": "0.197",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 22,
 			"rdt:startCol": 1,
@@ -134,7 +134,7 @@
 		"rdt:p11": {
 			"rdt:name": "plot(cylinders, mpg)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.108",
+			"rdt:elapsedTime": "0.107",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 23,
 			"rdt:startCol": 1,
@@ -144,7 +144,7 @@
 		"rdt:p12": {
 			"rdt:name": "plot(cylinders, mpg)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.074",
+			"rdt:elapsedTime": "0.082",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 26,
 			"rdt:startCol": 1,
@@ -154,7 +154,7 @@
 		"rdt:p13": {
 			"rdt:name": "x <- 1",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.065",
+			"rdt:elapsedTime": "0.075",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 28,
 			"rdt:startCol": 1,
@@ -193,7 +193,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2022-06-16T15.51.42EDT",
+			"rdt:timestamp": "2022-06-28T20.03.10EDT",
 			"rdt:location": ""
 		},
 		"rdt:d3": {
@@ -204,7 +204,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2022-06-16T15.51.42EDT",
+			"rdt:timestamp": "2022-06-28T20.03.10EDT",
 			"rdt:location": ""
 		},
 		"rdt:d4": {
@@ -215,7 +215,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2022-06-16T15.51.42EDT",
+			"rdt:timestamp": "2022-06-28T20.03.10EDT",
 			"rdt:location": ""
 		},
 		"rdt:d5": {
@@ -226,7 +226,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2022-06-16T15.51.42EDT",
+			"rdt:timestamp": "2022-06-28T20.03.10EDT",
 			"rdt:location": ""
 		},
 		"rdt:d6": {
@@ -237,7 +237,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2022-06-16T15.51.42EDT",
+			"rdt:timestamp": "2022-06-28T20.03.10EDT",
 			"rdt:location": ""
 		},
 		"rdt:d7": {
@@ -324,8 +324,8 @@
 			"rdt:type": "File",
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
-			"rdt:hash": "6028b196f15b21012c3760dcf177c5c9",
-			"rdt:timestamp": "2022-06-16T15.51.46EDT",
+			"rdt:hash": "2373fc3b2c4e514a4e6aa4a4b6894cfb",
+			"rdt:timestamp": "2022-06-28T20.03.11EDT",
 			"rdt:location": "[DIR]/rdtLite/dev.off.14.pdf"
 		},
 		"rdt:d15": {
@@ -335,8 +335,8 @@
 			"rdt:type": "File",
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
-			"rdt:hash": "d70c3ec398ad13d9c3504a483c1618f6",
-			"rdt:timestamp": "2022-06-16T15.51.46EDT",
+			"rdt:hash": "e9e49a1512aa121bc25af7c25fcc6d3d",
+			"rdt:timestamp": "2022-06-28T20.03.11EDT",
 			"rdt:location": "[DIR]/rdtLite/Rplots.pdf"
 		},
 
@@ -351,14 +351,21 @@
 			"rdt:script": "[DIR]/NoDevOff.R",
 			"rdt:scriptTimeStamp": "2019-01-10T13.56.36EST",
 			"rdt:scriptHash": "1231b256da768e42d77facb9d29ab618",
-			"rdt:totalElapsedTime": "1.492",
+			"rdt:totalElapsedTime": "1.486",
 			"rdt:sourcedScripts": "",
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:sourcedScriptHashes": "",
 			"rdt:workingDirectory": "[DIR]/rdtLite",
 			"rdt:provDirectory": "[DIR]/rdtLite/prov_NoDevOff",
-			"rdt:provTimestamp": "2022-06-16T15.51.42EDT",
+			"rdt:provTimestamp": "2022-06-28T20.03.09EDT",
 			"rdt:hashAlgorithm": "md5"
+		},
+
+		"rdt:f1": {
+			"name": "data"
+		},
+		"rdt:f2": {
+			"name": "X11"
 		},
 
 		"rdt:l1": {
@@ -696,13 +703,6 @@
 				"$": "prov:Collection",
 				"type": "xsd:QName"
 			}
-		},
-
-		"rdt:f1": {
-			"name": "data"
-		},
-		"rdt:f2": {
-			"name": "X11"
 		}
 	},
 

@@ -358,7 +358,7 @@
 		
 		<!-- Delete all local environment information (except sourced scripts & installed packages) -->
 		<replaceregexp flags="g">
-			<regexp pattern='(\t+("rdt:architecture"|"rdt:operatingSystem"|"rdt:language"|"rdt:langVersion"|"rdt:script"|"rdt:scriptTimeStamp"|"rdt:workingDirectory"|"rdt:provDirectory"|"rdt:provTimestamp"): (.*)\r?\n(,\r?\n)?)'/>
+			<regexp pattern='(\t+("rdt:architecture"|"rdt:operatingSystem"|"rdt:language"|"rdt:langVersion"|"rdt:pandoc"|"rdt:script"|"rdt:scriptTimeStamp"|"rdt:workingDirectory"|"rdt:provDirectory"|"rdt:provTimestamp"): (.*)\r?\n(,\r?\n)?)'/>
 			<substitution expression=""/>
 			<fileset dir="${local-dir}">
 				<patternset id="local_files">
@@ -453,6 +453,9 @@
 		<!-- all: Further edit the .local files if running all the tests -->
 		<antcall if:true="${all}" target="all-edits"/>
 		
+		<!-- github: Further edit the .local files if running tests on github -->
+		<antcall if:true="${github}" target="github-edits"/>
+		
 		<!-- Replace file paths to test directory with [DIR] -->
 		<replaceregexp flags="gi">
 			<regexp pattern="${FILE.basedir}/${test-dir}"/>
@@ -530,6 +533,30 @@
 		</replaceregexp>
 	</target>    <!-- End: all-edits -->
 	
+	<target name="github-edits">
+	    <!-- remove the library section -->
+		<replaceregexp flags="m">
+			<regexp pattern='\"rdt:l1(.*${line.separator})*.*wasInformedBy' />
+			<substitution expression='},"wasInformedBy' />
+			<fileset dir="${local-dir}">
+				<patternset id="local_files">
+					<include name="*.json.local" />
+				</patternset>
+			</fileset>
+		</replaceregexp>
+	
+	    <!-- remove the hadMember section -->
+		<replaceregexp flags="m">
+			<regexp pattern='hadMember(.*${line.separator})*' />
+			<substitution expression='' />
+			<fileset dir="${local-dir}">
+				<patternset id="local_files">
+					<include name="*.json.local" />
+				</patternset>
+			</fileset>
+		</replaceregexp>
+	    
+	</target>
 	
 	<!-- Compare .out files -->
 	<target name="compare-out">
@@ -2741,6 +2768,7 @@
 		<antcall target="run-tests">
 			<param name="all" value="true"/>
 			<param name="tool" value="rdtLite"/>
+			<param name="github" value="false"/>
 		</antcall>
 		<echo></echo>
 		<echo>All tests makes calls to the RDataTracker Library. You might need to restart RStudio to correctly run the scripts with the updated library installed.</echo>
@@ -2752,6 +2780,21 @@
 
 	</target>
 	
+	<target name="test-github-rdtLite" description="">
+		<antcall target="run-tests">
+			<param name="all" value="true"/>
+			<param name="tool" value="rdtLite"/>
+			<param name="github" value="true"/>
+		</antcall>
+		<echo></echo>
+		<echo>All tests makes calls to the RDataTracker Library. You might need to restart RStudio to correctly run the scripts with the updated library installed.</echo>
+		<echo></echo>
+	    <echo> "WARNING: The HFDatasetPreview test is not"</echo>
+	    <echo> "being run currently."</echo>
+	    <echo> "Also, the first few lines of the Connection test are"</echo>
+	    <echo> "commented out for the same reason."</echo>
+
+	</target>
 	
 	<!-- helper target -->
 	<target name="run-tests">
