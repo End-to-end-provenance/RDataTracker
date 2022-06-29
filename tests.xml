@@ -1546,7 +1546,11 @@
 				<isset property="tool"/>
 			</not>
 		</condition>
-		<antcall target="run-test">
+		<condition property="is_linux">
+            <os name="Linux"/>
+    	</condition>
+		
+		<antcall unless:true="${is_linux}" target="run-test">
 			<param name="test-name" value="FileNodes"/>
 			<param name="details" value="true"/>
 		</antcall>
@@ -2815,6 +2819,7 @@
 	</target>
 	
 	<target name="test-github-rdtLite" description="">
+	    <echo message="OS Name is: ${os.name}" />
 		<antcall target="run-tests">
 			<param name="all" value="true"/>
 			<param name="tool" value="rdtLite"/>
