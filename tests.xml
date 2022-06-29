@@ -2377,7 +2377,7 @@
 			</not>
 		</condition>
 				
-		<antcall target="run-test">
+		<antcall unless:true="${github}" target="run-test">
 			<param name="test-name" value="RMarkdown"/>
 			<param name="rmd" value="true"/>
 			<param name="details" value="true"/>
