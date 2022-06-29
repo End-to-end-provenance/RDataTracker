@@ -358,7 +358,7 @@
 		
 		<!-- Delete all local environment information (except sourced scripts & installed packages) -->
 		<replaceregexp flags="g">
-			<regexp pattern='(\t+("rdt:architecture"|"rdt:operatingSystem"|"rdt:language"|"rdt:langVersion"|"rdt:pandoc"|"rdt:script"|"rdt:scriptTimeStamp"|"rdt:workingDirectory"|"rdt:provDirectory"|"rdt:provTimestamp"): (.*)\r?\n(,\r?\n)?)'/>
+			<regexp pattern='(\t+("rdt:architecture"|"rdt:operatingSystem"|"rdt:language"|"rdt:langVersion"|"rdt:ui"|"rdt:pandoc"|"rdt:script"|"rdt:scriptTimeStamp"|"rdt:workingDirectory"|"rdt:provDirectory"|"rdt:provTimestamp"): (.*)\r?\n(,\r?\n)?)'/>
 			<substitution expression=""/>
 			<fileset dir="${local-dir}">
 				<patternset id="local_files">
@@ -1998,7 +1998,7 @@
 				<isset property="tool"/>
 			</not>
 		</condition>
-		<antcall target="run-test">
+		<antcall unless:true="${github}" target="run-test">
 			<param name="test-name" value="NoDevOff"/>
 			<param name="details" value="true"/>
 		</antcall>
