@@ -567,6 +567,17 @@
 			</fileset>
 		</replaceregexp>
 	    
+	    <!-- In case there is no wasInformedBy, no wasGeneratedBy, and no used section -->
+		<replaceregexp flags="m">
+			<regexp pattern='\"rdt:l1(.*${line.separator})*' />
+			<substitution expression='' />
+			<fileset dir="${local-dir}">
+				<patternset id="local_files">
+					<include name="*.json.local" />
+				</patternset>
+			</fileset>
+		</replaceregexp>
+	    
 	    <!-- remove the hadMember section -->
 		<replaceregexp flags="m">
 			<regexp pattern='hadMember(.*${line.separator})*' />
