@@ -98,6 +98,7 @@
   # edge case: no functions/potential function calls
   if( all(sapply(function.names, is.null)) )
     return(NA)
+    
   
   # functions with unknown libraries
   ddg.fun <- function.names[[1]]
@@ -132,7 +133,7 @@
         
     ddg.fun <- names(ddg.lib)
     ddg.lib <- unname(ddg.lib)
-      
+
     fn.frame <- rbind( fn.frame, data.frame(ddg.fun, ddg.lib, stringsAsFactors=FALSE) )
   }
   

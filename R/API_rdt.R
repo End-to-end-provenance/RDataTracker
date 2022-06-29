@@ -1,5 +1,6 @@
 # Copyright (C) President and Fellows of Harvard College and 
-# Trustees of Mount Holyoke College, 2014, 2015, 2016, 2017, 2018.
+# Trustees of Mount Holyoke College, 2014, 2015, 2016, 2017, 2018,
+# 2019, 2020, 2021, 2022.
 
 # This program is free software: you can redistribute it and/or
 # modify it under the terms of the GNU General Public License as
@@ -438,9 +439,9 @@ prov.visualize <- function () {
 #' @export
 #' @rdname prov.json
 
-prov.summarize <- function (save=FALSE, create.zip=FALSE) {
-  if (require (provSummarizeR, quietly=TRUE)) {
-  	provSummarizeR::prov.summarize(save, create.zip)
+prov.summarize <- function (save=FALSE, create.zip=FALSE, details=FALSE, check=TRUE, console=TRUE, notes=TRUE) {
+  if (requireNamespace ("provSummarizeR", quietly=TRUE)) {
+  	provSummarizeR::prov.summarize(save=save, create.zip=create.zip, details=details, check=check, console=console, notes=notes)
   }
   else {
   	cat ("You need to install the provSummarizeR package to use this function.")

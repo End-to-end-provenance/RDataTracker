@@ -426,6 +426,7 @@
     else {
       scope <- .ddg.get.scope(var, for.caller)
       if (.ddg.data.node.exists(var, scope)) {
+        #print ("Found data node in caller's scope")
         .ddg.data2proc(var, scope, cmd@abbrev)
       }
     }
@@ -441,6 +442,7 @@
       else {
         scope <- .ddg.get.scope(var.env, for.caller)
         if (.ddg.data.node.exists(var.env, scope)) {
+          #print ("Found data node inside environment")
           .ddg.data2proc(var.env, scope, cmd@abbrev)
         }
       }
@@ -1008,7 +1010,7 @@
   }
   num.cmds <- length(cmds)
 
-  # print (paste("ddg.parse.commands: ddg.func.depth =", .ddg.get("ddg.func.depth")))
+  #print (paste("ddg.parse.commands: ddg.func.depth =", .ddg.get("ddg.func.depth")))
   inside.func <- (.ddg.get("ddg.func.depth") > 0)
 
   if (!inside.func) {
@@ -1823,7 +1825,7 @@
   
   # save library information to file
   fileout <- paste(.ddg.path.debug(), "/libraries.csv", sep="")
-  utils::write.csv(.ddg.installedpackages(), fileout, row.names=FALSE)
+  utils::write.csv(.ddg.loadedpackages(), fileout, row.names=FALSE)
   
   # save execution environment information to file
   fileout <- paste(.ddg.path.debug(), "/environment.csv", sep="")

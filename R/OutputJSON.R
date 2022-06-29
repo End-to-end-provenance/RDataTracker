@@ -77,8 +77,8 @@
 				  "activity.proc" = NA ,
 				  "entity.data" = NA , 
 				  "entity.env" = NA , 
-				  "entity.lib" = NA , 
 				  "entity.func" = NA ,
+				  "entity.lib" = NA , 
 				  "wasInformedBy.p2p" = NA ,
 				  "wasGeneratedBy.p2d" = NA ,
 				  "used.d2p" = NA , 
@@ -126,7 +126,7 @@
 	json$used.d2p <- .ddg.json.data2proc( edges , LABEL.NAMES$used.d2p , LABEL.PREFIX )
 	
 	# LIBRARY NODES - change row numbers
-	libraries <- .ddg.installedpackages()
+	libraries <- .ddg.loadedpackages()
 	rownames(libraries) <- c(1 : nrow(libraries))
 	
 	# PRINT TO JSON - LIBRARY NODES
@@ -144,8 +144,6 @@
 		
 		# PRINT TO JSON - FUNCTION NODES
 		json$entity.func <- .ddg.json.func( functions , LABEL.NAMES$entity.func , LABEL.PREFIX )
-		
-		
 		# MERGE TABLES: function calls, functions, libraries
 		# library nodes - change col names, add lnum column for merging
 		colnames(libraries) <- c( "ddg.lib" , "ddg.lib.version" )
@@ -320,6 +318,8 @@
 					"operatingSystem" = NA ,
 					"language" = NA ,
 					"langVersion" = NA ,
+					"ui" = NA,
+					"pandoc" = NA,
 					"script" = NA ,
 					"scriptTimeStamp" = NA ,
 					"scriptHash" = NA ,
@@ -331,18 +331,20 @@
 					"provDirectory" = NA ,
 					"provTimestamp" = NA )
 	
+	platform.info <- sessioninfo::platform_info()
+	
 	# architecture, language, langVersion
-	lang.version <- R.Version()
+	fields$architecture <- platform.info$system
+	fields$operatingSystem <- platform.info$os
+	fields$language <- "R"
+	fields$langVersion <- platform.info$version
 	
-	fields$architecture <- utils::sessionInfo()$platform
-	fields$language <- lang.version$language
-	fields$langVersion <- lang.version$version
-	
-	# operating system
-	fields$operatingSystem <- 
-		if (.Platform$OS.type == "unix") utils::sessionInfo()$running
-		else if (.Platform$OS.type == "windows") utils::win.version()
-		else version$os
+	# Programming environment
+	fields$ui <- platform.info$ui
+	if (fields$ui == "RStudio") {
+	    fields$ui = platform.info$rstudio
+	}
+	fields$pandoc = platform.info$pandoc
 	
 	# script variables
 	scripts <- .ddg.sourced.scripts()

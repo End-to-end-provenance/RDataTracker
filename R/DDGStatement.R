@@ -177,6 +177,7 @@ methods::setMethod ("initialize",
       }
 
       .Object@vars.used <- vars.used
+      #print (paste("vars.used =", vars.used))
 
       .Object@vars.set <- .ddg.find.simple.assign(.Object@parsed[[1]])
       #print ("Initializing DDGStatement, .Object@vars.set")
@@ -503,7 +504,7 @@ methods::setMethod ("initialize",
       # Operators also pass the is.name test.  Make sure that if it is a
       # single character, then it is alpha-numeric.
       if (nchar(obj) == 1 && !grepl("[[:alpha:]]", obj)) return (character())
-      # print(paste(".ddg.find.var.uses found name", deparse(obj)))
+      #print(paste(".ddg.find.var.uses found name", deparse(obj)))
       return (deparse(obj))
     }
 
@@ -734,7 +735,7 @@ methods::setMethod ("initialize",
 #' @noRd
 
 .ddg.get.statement.type <- function(parsed.command) {
-  if (length(parsed.command) > 1) return(as.character(parsed.command[[1]]))
+  if (length(parsed.command) > 1) return(as.character(unlist(parsed.command)[1]))
   return("")
 }
 
