@@ -39,11 +39,5 @@ ant -file tests.xml test-all-<rdt|rdtLite>
 
 ```
 
-To run all of the tests, not display expected diffs, and stop if any test fails, enter the following
-
-```
-ant -file tests.xml test-travis-<rdt|rdtLite>
-
-```
 
 For more details on regression testing, please see the comments in tests.xml.

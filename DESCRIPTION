@@ -1,7 +1,7 @@
 Package: rdtLite
 Title: Provenance Collector
-Version: 1.3.1
-Date: 2022-05-31
+Version: 1.4
+Date: 2022-06-28
 Authors@R: c( person("Barbara", "Lerner", role = c("aut", "cre"),
                       email = "blerner@mtholyoke.edu"),
               person("Emery", "Boose", role = "aut",
@@ -60,7 +60,8 @@ Suggests:
   ggplot2,
   provSummarizeR,
   roxygen2, 
-  testthat
+  testthat,
+  vroom
 VignetteBuilder: knitr
 RoxygenNote: 7.2.0
 Encoding: UTF-8

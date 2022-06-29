@@ -7,7 +7,7 @@
 	"agent" : {
 		"rdt:a1": {
 			"rdt:tool.name": "rdtLite",
-			"rdt:tool.version": "1.3",
+			"rdt:tool.version": "1.4",
 			"rdt:json.version": "2.3",
 			"rdt:args.names": [
 				"overwrite",
@@ -34,7 +34,7 @@
 		"rdt:p1": {
 			"rdt:name": "DataFunction.R",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": "0.731",
+			"rdt:elapsedTime": "0.288",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -44,7 +44,7 @@
 		"rdt:p2": {
 			"rdt:name": "data (mtcars)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.106",
+			"rdt:elapsedTime": "0.11",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 2,
 			"rdt:startCol": 1,
@@ -54,7 +54,7 @@
 		"rdt:p3": {
 			"rdt:name": "cars.df <- mtcars",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.106",
+			"rdt:elapsedTime": "0.095",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 3,
 			"rdt:startCol": 1,
@@ -62,9 +62,9 @@
 			"rdt:endCol": 17
 		},
 		"rdt:p4": {
-			"rdt:name": "data(diamonds, AirPassengers)",
+			"rdt:name": "data(airmiles, AirPassengers)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.218",
+			"rdt:elapsedTime": "0.216",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 6,
 			"rdt:startCol": 1,
@@ -72,9 +72,9 @@
 			"rdt:endCol": 29
 		},
 		"rdt:p5": {
-			"rdt:name": "diamonds.df <- diamonds",
+			"rdt:name": "airmiles.df <- airmiles",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "5.391",
+			"rdt:elapsedTime": "0.078",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 7,
 			"rdt:startCol": 1,
@@ -84,7 +84,7 @@
 		"rdt:p6": {
 			"rdt:name": "airPassengers.df <- AirPassengers",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "4.967",
+			"rdt:elapsedTime": "0.065",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 8,
 			"rdt:startCol": 1,
@@ -94,7 +94,7 @@
 		"rdt:p7": {
 			"rdt:name": "data()",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.093",
+			"rdt:elapsedTime": "0.073",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 11,
 			"rdt:startCol": 1,
@@ -102,9 +102,9 @@
 			"rdt:endCol": 6
 		},
 		"rdt:p8": {
-			"rdt:name": "f2 <- function() {\n  data(\"pets\")\n  pets.df <- pets\n}",
+			"rdt:name": "f2 <- function() {\n  data(trees)\n  trees.df <- trees\n}",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.089",
+			"rdt:elapsedTime": "0.058",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 14,
 			"rdt:startCol": 1,
@@ -114,7 +114,7 @@
 		"rdt:p9": {
 			"rdt:name": "f2()",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.206",
+			"rdt:elapsedTime": "0.07",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 18,
 			"rdt:startCol": 1,
@@ -124,7 +124,7 @@
 		"rdt:p10": {
 			"rdt:name": "DataFunction.R",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": "0.007",
+			"rdt:elapsedTime": "0.015",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -135,19 +135,8 @@
 
 	"entity" : {
 		"rdt:d1": {
-			"rdt:name": "Rdata.rds",
+			"rdt:name": "datasets Rdata.rds",
 			"rdt:value": "data/1-Rdata.rds",
-			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}",
-			"rdt:type": "File",
-			"rdt:scope": "undefined",
-			"rdt:fromEnv": false,
-			"rdt:hash": "fc995ecbb7cc390aa203a916124f39bf",
-			"rdt:timestamp": "2022-05-10T21.39.19EDT",
-			"rdt:location": "/Library/Frameworks/R.framework/Versions/4.2/Resources/library/ggplot2/data/Rdata.rds"
-		},
-		"rdt:d2": {
-			"rdt:name": "Rdata.rds",
-			"rdt:value": "data/2-Rdata.rds",
 			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}",
 			"rdt:type": "File",
 			"rdt:scope": "undefined",
@@ -156,37 +145,48 @@
 			"rdt:timestamp": "2022-04-22T20.08.27EDT",
 			"rdt:location": "/Library/Frameworks/R.framework/Versions/4.2/Resources/library/datasets/data/Rdata.rds"
 		},
-		"rdt:d3": {
+		"rdt:d2": {
 			"rdt:name": "mtcars",
-			"rdt:value": "data/3-mtcars.csv",
+			"rdt:value": "data/2-mtcars.csv",
 			"rdt:valType": "{\"container\":\"data_frame\", \"dimension\":[32,11], \"type\":[\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\"]}",
 			"rdt:type": "Snapshot",
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2022-05-31T13.59.11EDT",
+			"rdt:timestamp": "2022-06-28T20.01.04EDT",
+			"rdt:location": ""
+		},
+		"rdt:d3": {
+			"rdt:name": "cars.df",
+			"rdt:value": "data/3-cars.df.csv",
+			"rdt:valType": "{\"container\":\"data_frame\", \"dimension\":[32,11], \"type\":[\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\"]}",
+			"rdt:type": "Snapshot",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:hash": "",
+			"rdt:timestamp": "2022-06-28T20.01.04EDT",
 			"rdt:location": ""
 		},
 		"rdt:d4": {
-			"rdt:name": "cars.df",
-			"rdt:value": "data/4-cars.df.csv",
-			"rdt:valType": "{\"container\":\"data_frame\", \"dimension\":[32,11], \"type\":[\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"numeric\"]}",
-			"rdt:type": "Snapshot",
-			"rdt:scope": "R_GlobalEnv",
+			"rdt:name": "datasets Rdata.rds",
+			"rdt:value": "data/4-Rdata.rds",
+			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}",
+			"rdt:type": "File",
+			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
-			"rdt:hash": "",
-			"rdt:timestamp": "2022-05-31T13.59.11EDT",
-			"rdt:location": ""
+			"rdt:hash": "b0ede64fb4773ce91927683e19dd8b30",
+			"rdt:timestamp": "2022-04-22T20.08.27EDT",
+			"rdt:location": "/Library/Frameworks/R.framework/Versions/4.2/Resources/library/datasets/data/Rdata.rds"
 		},
 		"rdt:d5": {
-			"rdt:name": "diamonds",
-			"rdt:value": "data/5-diamonds-PARTIAL.csv",
-			"rdt:valType": "{\"container\":\"data_frame\", \"dimension\":[53940,10], \"type\":[\"numeric\",\"ordered\",\"ordered\",\"ordered\",\"numeric\",\"numeric\",\"integer\",\"numeric\",\"numeric\",\"numeric\"]}",
+			"rdt:name": "airmiles",
+			"rdt:value": "data/5-airmiles.txt",
+			"rdt:valType": "ts",
 			"rdt:type": "Snapshot",
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2022-05-31T13.59.16EDT",
+			"rdt:timestamp": "2022-06-28T20.01.04EDT",
 			"rdt:location": ""
 		},
 		"rdt:d6": {
@@ -197,18 +197,18 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2022-05-31T13.59.16EDT",
+			"rdt:timestamp": "2022-06-28T20.01.04EDT",
 			"rdt:location": ""
 		},
 		"rdt:d7": {
-			"rdt:name": "diamonds.df",
-			"rdt:value": "data/7-diamonds.df-PARTIAL.csv",
-			"rdt:valType": "{\"container\":\"data_frame\", \"dimension\":[53940,10], \"type\":[\"numeric\",\"ordered\",\"ordered\",\"ordered\",\"numeric\",\"numeric\",\"integer\",\"numeric\",\"numeric\",\"numeric\"]}",
+			"rdt:name": "airmiles.df",
+			"rdt:value": "data/7-airmiles.df.txt",
+			"rdt:valType": "ts",
 			"rdt:type": "Snapshot",
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2022-05-31T13.59.21EDT",
+			"rdt:timestamp": "2022-06-28T20.01.04EDT",
 			"rdt:location": ""
 		},
 		"rdt:d8": {
@@ -219,7 +219,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2022-05-31T13.59.21EDT",
+			"rdt:timestamp": "2022-06-28T20.01.04EDT",
 			"rdt:location": ""
 		},
 		"rdt:d9": {
@@ -229,72 +229,67 @@
 			"rdt:type": "File",
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
-			"rdt:hash": "162f0b9baafde2d6d8a82899c0a38550",
-			"rdt:timestamp": "2022-05-10T21.39.30EDT",
-			"rdt:location": "/Library/Frameworks/R.framework/Versions/4.2/Resources/library/ggplot2/Meta/data.rds"
-		},
-		"rdt:d10": {
-			"rdt:name": "data.rds",
-			"rdt:value": "data/10-data.rds",
-			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}",
-			"rdt:type": "File",
-			"rdt:scope": "undefined",
-			"rdt:fromEnv": false,
 			"rdt:hash": "1001224f7868712956a636df56651910",
 			"rdt:timestamp": "2022-04-22T20.08.27EDT",
 			"rdt:location": "/Library/Frameworks/R.framework/Versions/4.2/Resources/library/datasets/Meta/data.rds"
 		},
-		"rdt:d11": {
+		"rdt:d10": {
 			"rdt:name": "f2",
-			"rdt:value": "data/11-f2.R",
+			"rdt:value": "data/10-f2.R",
 			"rdt:valType": "function",
 			"rdt:type": "Snapshot",
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2022-05-31T13.59.22EDT",
+			"rdt:timestamp": "2022-06-28T20.01.04EDT",
 			"rdt:location": ""
 		},
-		"rdt:d12": {
-			"rdt:name": "pets.csv",
-			"rdt:value": "data/12-pets.csv",
+		"rdt:d11": {
+			"rdt:name": "datasets Rdata.rds",
+			"rdt:value": "data/11-Rdata.rds",
 			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}",
 			"rdt:type": "File",
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
-			"rdt:hash": "f620b96b88b44a6371be50457a313b3f",
-			"rdt:timestamp": "2019-12-02T17.47.18EST",
-			"rdt:location": "[DIR]/rdtLite/data/pets.csv"
+			"rdt:hash": "b0ede64fb4773ce91927683e19dd8b30",
+			"rdt:timestamp": "2022-04-22T20.08.27EDT",
+			"rdt:location": "/Library/Frameworks/R.framework/Versions/4.2/Resources/library/datasets/data/Rdata.rds"
 		},
-		"rdt:d13": {
-			"rdt:name": "pets",
-			"rdt:value": "Snickers.dog   Katama,cat Levels: Katama,cat",
-			"rdt:valType": "{\"container\":\"data_frame\", \"dimension\":[1,1], \"type\":[\"factor\"]}",
-			"rdt:type": "Data",
+		"rdt:d12": {
+			"rdt:name": "trees",
+			"rdt:value": "data/12-trees.csv",
+			"rdt:valType": "{\"container\":\"data_frame\", \"dimension\":[31,3], \"type\":[\"numeric\",\"numeric\",\"numeric\"]}",
+			"rdt:type": "Snapshot",
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "",
+			"rdt:timestamp": "2022-06-28T20.01.04EDT",
 			"rdt:location": ""
 		},
 
 		"rdt:environment": {
 			"rdt:name": "environment",
-			"rdt:architecture": "x86_64-apple-darwin17.0 (64-bit)",
+			"rdt:architecture": "x86_64, darwin17.0",
 			"rdt:operatingSystem": "macOS Catalina 10.15.7",
 			"rdt:language": "R",
 			"rdt:langVersion": "R version 4.2.0 (2022-04-22)",
+			"rdt:ui": "X11",
+			"rdt:pandoc": "2.2.1 @ /usr/local/bin/pandoc",
 			"rdt:script": "[DIR]/DataFunction.R",
-			"rdt:scriptTimeStamp": "2022-05-31T13.57.01EDT",
-			"rdt:scriptHash": "45df661d4826d7beaaad3ae40e2937c1",
-			"rdt:totalElapsedTime": "11.914",
+			"rdt:scriptTimeStamp": "2022-06-28T18.34.01EDT",
+			"rdt:scriptHash": "9563542c2fe4606392d2ac00605a4ff2",
+			"rdt:totalElapsedTime": "1.068",
 			"rdt:sourcedScripts": "",
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:sourcedScriptHashes": "",
 			"rdt:workingDirectory": "[DIR]/rdtLite",
 			"rdt:provDirectory": "[DIR]/rdtLite/prov_DataFunction",
-			"rdt:provTimestamp": "2022-05-31T13.59.10EDT",
+			"rdt:provTimestamp": "2022-06-28T20.01.03EDT",
 			"rdt:hashAlgorithm": "md5"
+		},
+
+		"rdt:f1": {
+			"name": "data"
 		},
 
 		"rdt:l1": {
@@ -306,39 +301,39 @@
 			}
 		},
 		"rdt:l2": {
-			"name": "datasets",
-			"version": "4.2.0",
+			"name": "bit",
+			"version": "4.0.4",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
 			}
 		},
 		"rdt:l3": {
-			"name": "ggplot2",
-			"version": "3.3.6",
+			"name": "bit64",
+			"version": "4.0.5",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
 			}
 		},
 		"rdt:l4": {
-			"name": "graphics",
-			"version": "4.2.0",
+			"name": "cli",
+			"version": "3.3.0",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
 			}
 		},
 		"rdt:l5": {
-			"name": "grDevices",
-			"version": "4.2.0",
+			"name": "colorspace",
+			"version": "2.0-3",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
 			}
 		},
 		"rdt:l6": {
-			"name": "methods",
+			"name": "compiler",
 			"version": "4.2.0",
 			"prov:type": {
 				"$": "prov:Collection",
@@ -346,15 +341,15 @@
 			}
 		},
 		"rdt:l7": {
-			"name": "rdtLite",
-			"version": "1.3",
+			"name": "crayon",
+			"version": "1.5.1",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
 			}
 		},
 		"rdt:l8": {
-			"name": "stats",
+			"name": "datasets",
 			"version": "4.2.0",
 			"prov:type": {
 				"$": "prov:Collection",
@@ -362,6 +357,254 @@
 			}
 		},
 		"rdt:l9": {
+			"name": "digest",
+			"version": "0.6.29",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l10": {
+			"name": "dplyr",
+			"version": "1.0.9",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l11": {
+			"name": "ellipsis",
+			"version": "0.3.2",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l12": {
+			"name": "fansi",
+			"version": "1.0.3",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l13": {
+			"name": "generics",
+			"version": "0.1.2",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l14": {
+			"name": "ggplot2",
+			"version": "3.3.6",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l15": {
+			"name": "glue",
+			"version": "1.6.2",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l16": {
+			"name": "graphics",
+			"version": "4.2.0",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l17": {
+			"name": "grDevices",
+			"version": "4.2.0",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l18": {
+			"name": "grid",
+			"version": "4.2.0",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l19": {
+			"name": "gtable",
+			"version": "0.3.0",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l20": {
+			"name": "jsonlite",
+			"version": "1.8.0",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l21": {
+			"name": "lifecycle",
+			"version": "1.0.1",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l22": {
+			"name": "magrittr",
+			"version": "2.0.3",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l23": {
+			"name": "methods",
+			"version": "4.2.0",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l24": {
+			"name": "munsell",
+			"version": "0.5.0",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l25": {
+			"name": "pillar",
+			"version": "1.7.0",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l26": {
+			"name": "pkgconfig",
+			"version": "2.0.3",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l27": {
+			"name": "purrr",
+			"version": "0.3.4",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l28": {
+			"name": "R6",
+			"version": "2.5.1",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l29": {
+			"name": "rdtLite",
+			"version": "1.4",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l30": {
+			"name": "rlang",
+			"version": "1.0.2",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l31": {
+			"name": "scales",
+			"version": "1.2.0",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l32": {
+			"name": "sessioninfo",
+			"version": "1.2.2",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l33": {
+			"name": "stats",
+			"version": "4.2.0",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l34": {
+			"name": "stringi",
+			"version": "1.7.6",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l35": {
+			"name": "tibble",
+			"version": "3.1.7",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l36": {
+			"name": "tidyselect",
+			"version": "1.1.2",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l37": {
+			"name": "tools",
+			"version": "4.2.0",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l38": {
+			"name": "tzdb",
+			"version": "0.3.0",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l39": {
+			"name": "utf8",
+			"version": "1.2.2",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l40": {
 			"name": "utils",
 			"version": "4.2.0",
 			"prov:type": {
@@ -369,9 +612,21 @@
 				"type": "xsd:QName"
 			}
 		},
-
-		"rdt:f1": {
-			"name": "data"
+		"rdt:l41": {
+			"name": "vctrs",
+			"version": "0.4.1",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l42": {
+			"name": "vroom",
+			"version": "1.5.7",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
 		}
 	},
 
@@ -417,11 +672,11 @@
 	"wasGeneratedBy" : {
 		"rdt:pd1": {
 			"prov:activity": "rdt:p2",
-			"prov:entity": "rdt:d3"
+			"prov:entity": "rdt:d2"
 		},
 		"rdt:pd2": {
 			"prov:activity": "rdt:p3",
-			"prov:entity": "rdt:d4"
+			"prov:entity": "rdt:d3"
 		},
 		"rdt:pd3": {
 			"prov:activity": "rdt:p4",
@@ -441,11 +696,11 @@
 		},
 		"rdt:pd7": {
 			"prov:activity": "rdt:p8",
-			"prov:entity": "rdt:d11"
+			"prov:entity": "rdt:d10"
 		},
 		"rdt:pd8": {
 			"prov:activity": "rdt:p9",
-			"prov:entity": "rdt:d13"
+			"prov:entity": "rdt:d12"
 		}
 	},
 
@@ -456,42 +711,30 @@
 		},
 		"rdt:dp2": {
 			"prov:entity": "rdt:d2",
-			"prov:activity": "rdt:p2"
-		},
-		"rdt:dp3": {
-			"prov:entity": "rdt:d3",
 			"prov:activity": "rdt:p3"
 		},
-		"rdt:dp4": {
-			"prov:entity": "rdt:d2",
+		"rdt:dp3": {
+			"prov:entity": "rdt:d4",
 			"prov:activity": "rdt:p4"
 		},
-		"rdt:dp5": {
+		"rdt:dp4": {
 			"prov:entity": "rdt:d5",
 			"prov:activity": "rdt:p5"
 		},
-		"rdt:dp6": {
+		"rdt:dp5": {
 			"prov:entity": "rdt:d6",
 			"prov:activity": "rdt:p6"
 		},
-		"rdt:dp7": {
+		"rdt:dp6": {
 			"prov:entity": "rdt:d9",
 			"prov:activity": "rdt:p7"
 		},
-		"rdt:dp8": {
+		"rdt:dp7": {
 			"prov:entity": "rdt:d10",
-			"prov:activity": "rdt:p7"
+			"prov:activity": "rdt:p9"
 		},
-		"rdt:dp9": {
+		"rdt:dp8": {
 			"prov:entity": "rdt:d11",
-			"prov:activity": "rdt:p9"
-		},
-		"rdt:dp10": {
-			"prov:entity": "rdt:d2",
-			"prov:activity": "rdt:p9"
-		},
-		"rdt:dp11": {
-			"prov:entity": "rdt:d12",
 			"prov:activity": "rdt:p9"
 		},
 
@@ -511,7 +754,7 @@
 
 	"hadMember" : {
 		"rdt:m1": {
-			"prov:collection": "rdt:l9",
+			"prov:collection": "rdt:l40",
 			"prov:entity": "rdt:f1"
 		}
 	}

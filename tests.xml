@@ -3,7 +3,7 @@
 	Each test case runs either rdt or rdtLite and compares both its
 	standard output and the created prov.json file to an expected result.
 	This comparison ignores differences related to file paths, platform
-	executed on and timestamps. If run on travis, the comparison also
+	executed on and timestamps. When all tests are run, the comparison also
 	ignores elapsed times. Each test case also has separate update targets
 	that can be used to update the expected results.
 	
@@ -29,8 +29,8 @@
 	After a test is run, the .out files and the prov.json files are compared
 	to expected_ files with the same names.  The differences are displayed
 	on standard output. If the tests work as before, the only differences
-	you should see are in the execution time. If either test-travis-rdt or
-	test-travis-rdtLite target is run, there will be no differences displayed.
+	you should see are in the execution time. If either test-all-rdt or
+	test-all-rdtLite target is run, there will be no differences displayed.
 	
 	If the test results differ from the expected results as reported by the
 	diff output at the end of the test case run, examine the results. If the
@@ -146,11 +146,7 @@
 		HFDatasetPreview
 
 	The targets "test-all-rdt" and "test-all-rdtLite" will run all of the tests above.
-	
-	The targets "test-travis-rdt" and "test-travis-rdtLite" will run all of the above
-	tests with additional edits that will not cause a diff in the files when a test
-	runs as expected. These targets will also cause the build to fail when there are
-	differences.
+    These targets will cause the build to fail when there are differences.
 
 	================================================================================
 	
@@ -180,7 +176,7 @@
 	name="TESTS"
 	xmlns:if="ant:if"
 	xmlns:unless="ant:unless"
-	default="test-travis-rdtLite"
+	default="test-all-rdtLite"
 	>
 	
 	<!-- ========== Setup ========== -->
@@ -211,7 +207,7 @@
 		Run a specified test. 
 		
 		Parameters passed in are:
-			@param travis :	true if running travis tests, false otherwise
+			@param all :	true if running all tests, false otherwise
 			@param tool : the name of the provenance collection tool
 			@param test-name : the name of the test run
 			@param console-mode : true if on console mode (console test), unset otherwise
@@ -336,7 +332,7 @@
 		<fail message="prov.json is not prov-json compliant.">
 			<condition>
 				<and>
-					<equals arg1="${travis}" arg2="true" />
+					<equals arg1="${all}" arg2="true" />
 					<equals arg1="${compliant}" arg2="1"/>
 				</and>
 			</condition>
@@ -362,7 +358,7 @@
 		
 		<!-- Delete all local environment information (except sourced scripts & installed packages) -->
 		<replaceregexp flags="g">
-			<regexp pattern='(\t+("rdt:architecture"|"rdt:operatingSystem"|"rdt:language"|"rdt:langVersion"|"rdt:script"|"rdt:scriptTimeStamp"|"rdt:workingDirectory"|"rdt:provDirectory"|"rdt:provTimestamp"): (.*)\r?\n(,\r?\n)?)'/>
+			<regexp pattern='(\t+("rdt:architecture"|"rdt:operatingSystem"|"rdt:language"|"rdt:langVersion"|"rdt:ui"|"rdt:pandoc"|"rdt:script"|"rdt:scriptTimeStamp"|"rdt:workingDirectory"|"rdt:provDirectory"|"rdt:provTimestamp"): (.*)\r?\n(,\r?\n)?)'/>
 			<substitution expression=""/>
 			<fileset dir="${local-dir}">
 				<patternset id="local_files">
@@ -454,8 +450,11 @@
 			</fileset>
 		</replaceregexp>
 		
-		<!-- TRAVIS: Further edit the .local files if running tests on Travis -->
-		<antcall if:true="${travis}" target="travis-edits"/>
+		<!-- all: Further edit the .local files if running all the tests -->
+		<antcall if:true="${all}" target="all-edits"/>
+		
+		<!-- github: Further edit the .local files if running tests on github -->
+		<antcall if:true="${github}" target="github-edits"/>
 		
 		<!-- Replace file paths to test directory with [DIR] -->
 		<replaceregexp flags="gi">
@@ -491,8 +490,8 @@
 	</target>    <!-- End: prepare-to-compare -->
 	
 	
-	<!-- TRAVIS: Further edits the .local files for tests when run on Travis -->
-	<target name="travis-edits">
+	<!-- all: Further edits the .local files for tests when run on all tests -->
+	<target name="all-edits">
 		<!-- remove library versions
 			some examples of library version strings:
 			"version": "1.5",
@@ -532,8 +531,65 @@
 				</patternset>
 			</fileset>
 		</replaceregexp>
-	</target>    <!-- End: travis-edits -->
+	</target>    <!-- End: all-edits -->
 	
+	<target name="github-edits">
+	    <!-- remove the library section -->
+		<replaceregexp flags="m">
+			<regexp pattern='\"rdt:l1(.*${line.separator})*.*wasInformedBy' />
+			<substitution expression='},"wasInformedBy' />
+			<fileset dir="${local-dir}">
+				<patternset id="local_files">
+					<include name="*.json.local" />
+				</patternset>
+			</fileset>
+		</replaceregexp>
+		
+		<!-- In case there is no wasInformedBy section -->
+		<replaceregexp flags="m">
+			<regexp pattern='\"rdt:l1(.*${line.separator})*.*wasGeneratedBy' />
+			<substitution expression='},"wasGeneratedBy' />
+			<fileset dir="${local-dir}">
+				<patternset id="local_files">
+					<include name="*.json.local" />
+				</patternset>
+			</fileset>
+		</replaceregexp>
+		
+	    <!-- In case there is no wasInformedBy and no wasGeneratedBy section -->
+		<replaceregexp flags="m">
+			<regexp pattern='\"rdt:l1(.*${line.separator})*.*used' />
+			<substitution expression='},"used' />
+			<fileset dir="${local-dir}">
+				<patternset id="local_files">
+					<include name="*.json.local" />
+				</patternset>
+			</fileset>
+		</replaceregexp>
+	    
+	    <!-- In case there is no wasInformedBy, no wasGeneratedBy, and no used section -->
+		<replaceregexp flags="m">
+			<regexp pattern='\"rdt:l1(.*${line.separator})*' />
+			<substitution expression='' />
+			<fileset dir="${local-dir}">
+				<patternset id="local_files">
+					<include name="*.json.local" />
+				</patternset>
+			</fileset>
+		</replaceregexp>
+	    
+	    <!-- remove the hadMember section -->
+		<replaceregexp flags="m">
+			<regexp pattern='hadMember(.*${line.separator})*' />
+			<substitution expression='' />
+			<fileset dir="${local-dir}">
+				<patternset id="local_files">
+					<include name="*.json.local" />
+				</patternset>
+			</fileset>
+		</replaceregexp>
+	    
+	</target>
 	
 	<!-- Compare .out files -->
 	<target name="compare-out">
@@ -554,11 +610,11 @@
 			<arg file="${local-dir}/expected_test.out.local"/>
 		</exec>
 		
-		<!-- TRAVIS: Fails if a test does not pass -->
+		<!-- all: Fails if a test does not pass -->
 		<fail message="Does not match expected output.">
 			<condition>
 				<and>
-					<equals arg1="${travis}" arg2="true" />
+					<equals arg1="${all}" arg2="true" />
 					<equals arg1="${return.code.out}" arg2="1"/>
 				</and>
 			</condition>
@@ -585,11 +641,11 @@
 			<arg file="${local-dir}/expected_prov.json.local"/>
 		</exec>
 		
-		<!-- TRAVIS: Fails if a test does not pass -->
+		<!-- all: Fails if a test does not pass -->
 		<fail message="Does not match expected output.">
 			<condition>
 				<and>
-					<equals arg1="${travis}" arg2="true" />
+					<equals arg1="${all}" arg2="true" />
 					<equals arg1="${return.code.json}" arg2="1"/>
 				</and>
 			</condition>
@@ -677,9 +733,9 @@
 	
 	<!-- AnnotateOnOffTest -->
 	<target name="AnnotateOnOff">    <!-- helper -->
-		<condition property="travis" value="false">    <!-- default value -->
+		<condition property="all" value="false">    <!-- default value -->
 			<not>
-				<isset property="travis"/>
+				<isset property="all"/>
 			</not>
 		</condition>
 		<condition property="tool" value="rdtLite">    <!-- default value -->
@@ -708,14 +764,14 @@
 	
 	<target name="AnnotateOnOff-rdt">
 		<antcall target="AnnotateOnOff">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdt"/>
 		</antcall>
 	</target>
 	
 	<target name="AnnotateOnOff-rdtLite">
 		<antcall target="AnnotateOnOff">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdtLite"/>
 		</antcall>
 	</target>
@@ -735,9 +791,9 @@
 	
 	<!-- AssignmentOperatorsTest -->
 	<target name="AssignOperators">    <!-- helper -->
-		<condition property="travis" value="false">    <!-- default value -->
+		<condition property="all" value="false">    <!-- default value -->
 			<not>
-				<isset property="travis"/>
+				<isset property="all"/>
 			</not>
 		</condition>
 		<condition property="tool" value="rdtLite">    <!-- default value -->
@@ -764,14 +820,14 @@
 	
 	<target name="AssignOperators-rdt">
 		<antcall target="AssignOperators">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdt"/>
 		</antcall>
 	</target>
 	
 	<target name="AssignOperators-rdtLite">
 		<antcall target="AssignOperators">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdtLite"/>
 		</antcall>
 	</target>
@@ -791,9 +847,9 @@
 	
 	<!-- basicTest -->
 	<target name="basic">    <!-- helper -->
-		<condition property="travis" value="false">    <!-- default value -->
+		<condition property="all" value="false">    <!-- default value -->
 			<not>
-				<isset property="travis"/>
+				<isset property="all"/>
 			</not>
 		</condition>
 		<condition property="tool" value="rdtLite">    <!-- default value -->
@@ -801,12 +857,10 @@
 				<isset property="tool"/>
 			</not>
 		</condition>
-	    <echo> "WARNING: The basic test is not being run currently."</echo>
-	    <echo> "The URL it connects to has an expired certificate."</echo>
-		<!--<antcall target="run-test">
+		<antcall target="run-test">
 			<param name="test-name" value="basic"/>
 			<param name="details" value="true"/>
-		</antcall>-->
+		</antcall>
 	</target>
 	
 	<target name="update-basic">    <!-- helper -->
@@ -822,14 +876,14 @@
 	
 	<target name="basic-rdt">
 		<antcall target="basic">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdt"/>
 		</antcall>
 	</target>
 	
 	<target name="basic-rdtLite">
 		<antcall target="basic">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdtLite"/>
 		</antcall>
 	</target>
@@ -849,9 +903,9 @@
 	
 	<!-- CalculateSquareRoot -->
 	<target name="CalculateSqrt">    <!-- helper -->
-		<condition property="travis" value="false">    <!-- default value -->
+		<condition property="all" value="false">    <!-- default value -->
 			<not>
-				<isset property="travis"/>
+				<isset property="all"/>
 			</not>
 		</condition>
 		<condition property="tool" value="rdtLite">    <!-- default value -->
@@ -878,14 +932,14 @@
 	
 	<target name="CalculateSqrt-rdt">
 		<antcall target="CalculateSqrt">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdt"/>
 		</antcall>
 	</target>
 	
 	<target name="CalculateSqrt-rdtLite">
 		<antcall target="CalculateSqrt">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdtLite"/>
 		</antcall>
 	</target>
@@ -905,9 +959,9 @@
 	
 	<!-- ConnectionTest -->
 	<target name="Connection">    <!-- helper -->
-		<condition property="travis" value="false">    <!-- default value -->
+		<condition property="all" value="false">    <!-- default value -->
 			<not>
-				<isset property="travis"/>
+				<isset property="all"/>
 			</not>
 		</condition>
 		<condition property="tool" value="rdtLite">    <!-- default value -->
@@ -934,14 +988,14 @@
 	
 	<target name="Connection-rdt">
 		<antcall target="Connection">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdt"/>
 		</antcall>
 	</target>
 	
 	<target name="Connection-rdtLite">
 		<antcall target="Connection">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdtLite"/>
 		</antcall>
 	</target>
@@ -961,9 +1015,9 @@
 	
 	<!-- consoleTest -->
 	<target name="console">    <!-- helper -->
-		<condition property="travis" value="false">    <!-- default value -->
+		<condition property="all" value="false">    <!-- default value -->
 			<not>
-				<isset property="travis"/>
+				<isset property="all"/>
 			</not>
 		</condition>
 		<condition property="tool" value="rdtLite">    <!-- default value -->
@@ -1000,14 +1054,14 @@
 	    <echo> "It does not pass."</echo>
 	    
 		<!--<antcall target="console">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdt"/>
 		</antcall>-->
 	</target>
 	
 	<target name="console-rdtLite">
 		<antcall target="console">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdtLite"/>
 		</antcall>
 	</target>
@@ -1027,9 +1081,9 @@
 	
 	<!-- ControlConstructTest -->
 	<target name="ControlConstruct">    <!-- helper -->
-		<condition property="travis" value="false">    <!-- default value -->
+		<condition property="all" value="false">    <!-- default value -->
 			<not>
-				<isset property="travis"/>
+				<isset property="all"/>
 			</not>
 		</condition>
 		<condition property="tool" value="rdtLite">    <!-- default value -->
@@ -1056,14 +1110,14 @@
 	
 	<target name="ControlConstruct-rdt">
 		<antcall target="ControlConstruct">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdt"/>
 		</antcall>
 	</target>
 	
 	<target name="ControlConstruct-rdtLite">
 		<antcall target="ControlConstruct">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdtLite"/>
 		</antcall>
 	</target>
@@ -1083,9 +1137,9 @@
 	
 	<!-- DailySolarRadiation -->
 	<target name="DailySolarRadiation">    <!-- helper -->
-		<condition property="travis" value="false">    <!-- default value -->
+		<condition property="all" value="false">    <!-- default value -->
 			<not>
-				<isset property="travis"/>
+				<isset property="all"/>
 			</not>
 		</condition>
 		<condition property="tool" value="rdtLite">    <!-- default value -->
@@ -1119,14 +1173,14 @@
 	    <echo unless:true="${isrdtLite}"> "WARNING: The DailySolarRadiation test is not being run currently."</echo>
 	    <echo unless:true="${isrdtLite}"> "It does not pass."</echo>
 		<!--<antcall target="DailySolarRadiation">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdt"/>
 		</antcall>-->
 	</target>
 	
 	<target name="DailySolarRadiation-rdtLite">
 		<antcall target="DailySolarRadiation">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdtLite"/>
 		</antcall>
 	</target>
@@ -1146,9 +1200,9 @@
 	
 	<!-- DataFunctionTest -->
 	<target name="DataFunction">    <!-- helper -->
-		<condition property="travis" value="false">    <!-- default value -->
+		<condition property="all" value="false">    <!-- default value -->
 			<not>
-				<isset property="travis"/>
+				<isset property="all"/>
 			</not>
 		</condition>
 		<condition property="tool" value="rdtLite">    <!-- default value -->
@@ -1175,14 +1229,14 @@
 	
 	<target name="DataFunction-rdt">
 		<antcall target="DataFunction">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdt"/>
 		</antcall>
 	</target>
 	
 	<target name="DataFunction-rdtLite">
 		<antcall target="DataFunction">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdtLite"/>
 		</antcall>
 	</target>
@@ -1202,9 +1256,9 @@
 	
 	<!-- DataTypeTest -->
 	<target name="DataType">    <!-- helper -->
-		<condition property="travis" value="false">    <!-- default value -->
+		<condition property="all" value="false">    <!-- default value -->
 			<not>
-				<isset property="travis"/>
+				<isset property="all"/>
 			</not>
 		</condition>
 		<condition property="tool" value="rdtLite">    <!-- default value -->
@@ -1231,14 +1285,14 @@
 	
 	<target name="DataType-rdt">
 		<antcall target="DataType">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdt"/>
 		</antcall>
 	</target>
 	
 	<target name="DataType-rdtLite">
 		<antcall target="DataType">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdtLite"/>
 		</antcall>
 	</target>
@@ -1258,9 +1312,9 @@
 	
 	<!-- ddgDeepNesting -->
 	<target name="ddgDeepNesting">    <!-- helper -->
-		<condition property="travis" value="false">    <!-- default value -->
+		<condition property="all" value="false">    <!-- default value -->
 			<not>
-				<isset property="travis"/>
+				<isset property="all"/>
 			</not>
 		</condition>
 		<condition property="tool" value="rdtLite">    <!-- default value -->
@@ -1287,14 +1341,14 @@
 	
 	<target name="ddgDeepNesting-rdt">
 		<antcall target="ddgDeepNesting">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdt"/>
 		</antcall>
 	</target>
 	
 	<target name="ddgDeepNesting-rdtLite">
 		<antcall target="ddgDeepNesting">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdtLite"/>
 		</antcall>
 	</target>
@@ -1314,9 +1368,9 @@
 	
 	<!-- DDGStatementTest -->
 	<target name="DDGStatement">    <!-- helper -->
-		<condition property="travis" value="false">    <!-- default value -->
+		<condition property="all" value="false">    <!-- default value -->
 			<not>
-				<isset property="travis"/>
+				<isset property="all"/>
 			</not>
 		</condition>
 		<condition property="tool" value="rdtLite">    <!-- default value -->
@@ -1343,14 +1397,14 @@
 	
 	<target name="DDGStatement-rdt">
 		<antcall target="DDGStatement">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdt"/>
 		</antcall>
 	</target>
 	
 	<target name="DDGStatement-rdtLite">
 		<antcall target="DDGStatement">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdtLite"/>
 		</antcall>
 	</target>
@@ -1370,9 +1424,9 @@
 	
 	<!-- DollarOperator Test -->
 	<target name="DollarOperator">    <!-- helper -->
-		<condition property="travis" value="false">    <!-- default value -->
+		<condition property="all" value="false">    <!-- default value -->
 			<not>
-				<isset property="travis"/>
+				<isset property="all"/>
 			</not>
 		</condition>
 		<condition property="tool" value="rdtLite">    <!-- default value -->
@@ -1399,14 +1453,14 @@
 	
 	<target name="DollarOperator-rdt">
 		<antcall target="DollarOperator">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdt"/>
 		</antcall>
 	</target>
 	
 	<target name="DollarOperator-rdtLite">
 		<antcall target="DollarOperator">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdtLite"/>
 		</antcall>
 	</target>
@@ -1426,9 +1480,9 @@
 	
 	<!-- Empty Test -->
 	<target name="Empty">    <!-- helper -->
-		<condition property="travis" value="false">    <!-- default value -->
+		<condition property="all" value="false">    <!-- default value -->
 			<not>
-				<isset property="travis"/>
+				<isset property="all"/>
 			</not>
 		</condition>
 		<condition property="tool" value="rdtLite">    <!-- default value -->
@@ -1455,14 +1509,14 @@
 	
 	<target name="Empty-rdt">
 		<antcall target="Empty">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdt"/>
 		</antcall>
 	</target>
 	
 	<target name="Empty-rdtLite">
 		<antcall target="Empty">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdtLite"/>
 		</antcall>
 	</target>
@@ -1482,9 +1536,9 @@
 	
 	<!-- FileNodesTest -->
 	<target name="FileNodes">    <!-- helper -->
-		<condition property="travis" value="false">    <!-- default value -->
+		<condition property="all" value="false">    <!-- default value -->
 			<not>
-				<isset property="travis"/>
+				<isset property="all"/>
 			</not>
 		</condition>
 		<condition property="tool" value="rdtLite">    <!-- default value -->
@@ -1492,7 +1546,11 @@
 				<isset property="tool"/>
 			</not>
 		</condition>
-		<antcall target="run-test">
+		<condition property="is_linux">
+            <os name="Linux"/>
+    	</condition>
+		
+		<antcall unless:true="${is_linux}" target="run-test">
 			<param name="test-name" value="FileNodes"/>
 			<param name="details" value="true"/>
 		</antcall>
@@ -1511,14 +1569,14 @@
 	
 	<target name="FileNodes-rdt">
 		<antcall target="FileNodes">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdt"/>
 		</antcall>
 	</target>
 	
 	<target name="FileNodes-rdtLite">
 		<antcall target="FileNodes">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdtLite"/>
 		</antcall>
 	</target>
@@ -1538,9 +1596,9 @@
 	
 	<!-- fromEnv -->
 	<target name="fromEnv">    <!-- helper -->
-		<condition property="travis" value="false">    <!-- default value -->
+		<condition property="all" value="false">    <!-- default value -->
 			<not>
-				<isset property="travis"/>
+				<isset property="all"/>
 			</not>
 		</condition>
 		<condition property="tool" value="rdtLite">    <!-- default value -->
@@ -1569,14 +1627,14 @@
 	
 	<target name="fromEnv-rdt">
 		<antcall target="fromEnv">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdt"/>
 		</antcall>
 	</target>
 	
 	<target name="fromEnv-rdtLite">
 		<antcall target="fromEnv">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdtLite"/>
 		</antcall>
 	</target>
@@ -1596,9 +1654,9 @@
 	
 	<!-- FunctionAnnotationTest -->
 	<target name="FunctionAnnotation">    <!-- helper -->
-		<condition property="travis" value="false">    <!-- default value -->
+		<condition property="all" value="false">    <!-- default value -->
 			<not>
-				<isset property="travis"/>
+				<isset property="all"/>
 			</not>
 		</condition>
 		<condition property="tool" value="rdtLite">    <!-- default value -->
@@ -1625,14 +1683,14 @@
 	
 	<target name="FunctionAnnotation-rdt">
 		<antcall target="FunctionAnnotation">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdt"/>
 		</antcall>
 	</target>
 	
 	<target name="FunctionAnnotation-rdtLite">
 		<antcall target="FunctionAnnotation">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdtLite"/>
 		</antcall>
 	</target>
@@ -1652,9 +1710,9 @@
 	
 	<!-- FunctionNonlocalsTest -->
 	<target name="FunctionNonlocals">    <!-- helper -->
-		<condition property="travis" value="false">    <!-- default value -->
+		<condition property="all" value="false">    <!-- default value -->
 			<not>
-				<isset property="travis"/>
+				<isset property="all"/>
 			</not>
 		</condition>
 		<condition property="tool" value="rdtLite">    <!-- default value -->
@@ -1681,14 +1739,14 @@
 	
 	<target name="FunctionNonlocals-rdt">
 		<antcall target="FunctionNonlocals">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdt"/>
 		</antcall>
 	</target>
 	
 	<target name="FunctionNonlocals-rdtLite">
 		<antcall target="FunctionNonlocals">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdtLite"/>
 		</antcall>
 	</target>
@@ -1708,9 +1766,9 @@
 	
 	<!-- FunctionOriginTest -->
 	<target name="FunctionOrigin">    <!-- helper -->
-		<condition property="travis" value="false">    <!-- default value -->
+		<condition property="all" value="false">    <!-- default value -->
 			<not>
-				<isset property="travis"/>
+				<isset property="all"/>
 			</not>
 		</condition>
 		<condition property="tool" value="rdtLite">    <!-- default value -->
@@ -1737,14 +1795,14 @@
 	
 	<target name="FunctionOrigin-rdt">
 		<antcall target="FunctionOrigin">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdt"/>
 		</antcall>
 	</target>
 	
 	<target name="FunctionOrigin-rdtLite">
 		<antcall target="FunctionOrigin">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdtLite"/>
 		</antcall>
 	</target>
@@ -1764,9 +1822,9 @@
 	
 	<!-- HFDatasetPreview -->
 	<target name="HFDatasetPreview">    <!-- helper -->
-		<condition property="travis" value="false">    <!-- default value -->
+		<condition property="all" value="false">    <!-- default value -->
 			<not>
-				<isset property="travis"/>
+				<isset property="all"/>
 			</not>
 		</condition>
 		<condition property="tool" value="rdtLite">    <!-- default value -->
@@ -1775,12 +1833,11 @@
 			</not>
 		</condition>
 	    <echo> "WARNING: The HFDatasetPreview test is not being run currently."</echo>
-	    <echo> "The URL it connects to has an expired certificate."</echo>
+		<echo> "The test requires RCurl and gplots (+ dependencies) to be installed."</echo>
 		<!--<antcall target="run-test">
 			<param name="test-name" value="HFDatasetPreview"/>
 			<param name="details" value="true"/>
-		</antcall>
-		<echo>The test requires RCurl and gplots (+ dependencies) to be installed.</echo>-->
+		</antcall>-->
 	</target>
 	
 	<target name="update-HFDatasetPreview">    <!-- helper -->
@@ -1796,14 +1853,14 @@
 	
 	<target name="HFDatasetPreview-rdt">
 		<antcall target="HFDatasetPreview">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdt"/>
 		</antcall>
 	</target>
 	
 	<target name="HFDatasetPreview-rdtLite">
 		<antcall target="HFDatasetPreview">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdtLite"/>
 		</antcall>
 	</target>
@@ -1823,9 +1880,9 @@
 	
 	<!-- HigherOrderFuncTest -->
 	<target name="HigherOrderFunc">    <!-- helper -->
-		<condition property="travis" value="false">    <!-- default value -->
+		<condition property="all" value="false">    <!-- default value -->
 			<not>
-				<isset property="travis"/>
+				<isset property="all"/>
 			</not>
 		</condition>
 		<condition property="tool" value="rdtLite">    <!-- default value -->
@@ -1852,14 +1909,14 @@
 	
 	<target name="HigherOrderFunc-rdt">
 		<antcall target="HigherOrderFunc">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdt"/>
 		</antcall>
 	</target>
 	
 	<target name="HigherOrderFunc-rdtLite">
 		<antcall target="HigherOrderFunc">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdtLite"/>
 		</antcall>
 	</target>
@@ -1879,9 +1936,9 @@
 	
 	<!-- NoDetailsTest (details = FALSE) -->
 	<target name="NoDetails">    <!-- helper -->
-		<condition property="travis" value="false">    <!-- default value -->
+		<condition property="all" value="false">    <!-- default value -->
 			<not>
-				<isset property="travis"/>
+				<isset property="all"/>
 			</not>
 		</condition>
 		<condition property="tool" value="rdtLite">    <!-- default value -->
@@ -1908,14 +1965,14 @@
 	
 	<target name="NoDetails-rdt">
 		<antcall target="NoDetails">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdt"/>
 		</antcall>
 	</target>
 	
 	<target name="NoDetails-rdtLite">
 		<antcall target="NoDetails">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdtLite"/>
 		</antcall>
 	</target>
@@ -1935,9 +1992,9 @@
 	
 	<!-- NoDevOffTest -->
 	<target name="NoDevOff">    <!-- helper -->
-		<condition property="travis" value="false">    <!-- default value -->
+		<condition property="all" value="false">    <!-- default value -->
 			<not>
-				<isset property="travis"/>
+				<isset property="all"/>
 			</not>
 		</condition>
 		<condition property="tool" value="rdtLite">    <!-- default value -->
@@ -1945,7 +2002,7 @@
 				<isset property="tool"/>
 			</not>
 		</condition>
-		<antcall target="run-test">
+		<antcall unless:true="${github}" target="run-test">
 			<param name="test-name" value="NoDevOff"/>
 			<param name="details" value="true"/>
 		</antcall>
@@ -1964,14 +2021,14 @@
 	
 	<target name="NoDevOff-rdt">
 		<antcall target="NoDevOff">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdt"/>
 		</antcall>
 	</target>
 	
 	<target name="NoDevOff-rdtLite">
 		<antcall target="NoDevOff">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdtLite"/>
 		</antcall>
 	</target>
@@ -1991,9 +2048,9 @@
 	
 	<!-- OddParameterTest -->
 	<target name="OddParameter">    <!-- helper -->
-		<condition property="travis" value="false">    <!-- default value -->
+		<condition property="all" value="false">    <!-- default value -->
 			<not>
-				<isset property="travis"/>
+				<isset property="all"/>
 			</not>
 		</condition>
 		<condition property="tool" value="rdtLite">    <!-- default value -->
@@ -2020,14 +2077,14 @@
 	
 	<target name="OddParameter-rdt">
 		<antcall target="OddParameter">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdt"/>
 		</antcall>
 	</target>
 	
 	<target name="OddParameter-rdtLite">
 		<antcall target="OddParameter">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdtLite"/>
 		</antcall>
 	</target>
@@ -2047,9 +2104,9 @@
 	
 	<!-- Plot1Test -->
 	<target name="Plot1">    <!-- helper -->
-		<condition property="travis" value="false">    <!-- default value -->
+		<condition property="all" value="false">    <!-- default value -->
 			<not>
-				<isset property="travis"/>
+				<isset property="all"/>
 			</not>
 		</condition>
 		<condition property="tool" value="rdtLite">    <!-- default value -->
@@ -2057,7 +2114,7 @@
 				<isset property="tool"/>
 			</not>
 		</condition>
-		<antcall target="run-test">
+		<antcall unless:true="${github}" target="run-test">
 			<param name="test-name" value="Plot1"/>
 			<param name="details" value="true"/>
 		</antcall>
@@ -2076,14 +2133,14 @@
 	
 	<target name="Plot1-rdt">
 		<antcall target="Plot1">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdt"/>
 		</antcall>
 	</target>
 	
 	<target name="Plot1-rdtLite">
 		<antcall target="Plot1">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdtLite"/>
 		</antcall>
 	</target>
@@ -2103,9 +2160,9 @@
 	
 	<!-- Plot2Test -->
 	<target name="Plot2">    <!-- helper -->
-		<condition property="travis" value="false">    <!-- default value -->
+		<condition property="all" value="false">    <!-- default value -->
 			<not>
-				<isset property="travis"/>
+				<isset property="all"/>
 			</not>
 		</condition>
 		<condition property="tool" value="rdtLite">    <!-- default value -->
@@ -2132,14 +2189,14 @@
 	
 	<target name="Plot2-rdt">
 		<antcall target="Plot2">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdt"/>
 		</antcall>
 	</target>
 	
 	<target name="Plot2-rdtLite">
 		<antcall target="Plot2">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdtLite"/>
 		</antcall>
 	</target>
@@ -2159,9 +2216,9 @@
 	
 	<!-- Plot3Test -->
 	<target name="Plot3">    <!-- helper -->
-		<condition property="travis" value="false">    <!-- default value -->
+		<condition property="all" value="false">    <!-- default value -->
 			<not>
-				<isset property="travis"/>
+				<isset property="all"/>
 			</not>
 		</condition>
 		<condition property="tool" value="rdtLite">    <!-- default value -->
@@ -2188,14 +2245,14 @@
 	
 	<target name="Plot3-rdt">
 		<antcall target="Plot3">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdt"/>
 		</antcall>
 	</target>
 	
 	<target name="Plot3-rdtLite">
 		<antcall target="Plot3">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdtLite"/>
 		</antcall>
 	</target>
@@ -2216,7 +2273,7 @@
 	<!-- 
 		ProvJsonTest 
 		Ensures jsonvalidate's json_validate function performs as expected.
-		This runs before basicTest when test-travis and test-all are called. 
+		This runs before basicTest when test-all and test-all are called. 
 	-->
 	<target name="ProvJson">
 		<exec executable="Rscript" dir="scriptTests/ProvJson" resultproperty="provjsontest-passed">
@@ -2225,7 +2282,7 @@
 		<fail message="ProvJsonTest failed.">
 			<condition>
 				<and>
-					<equals arg1="${travis}" arg2="true" />
+					<equals arg1="${all}" arg2="true" />
 					<equals arg1="${provjsontest-passed}" arg2="1" />
 				</and>
 			</condition>
@@ -2235,9 +2292,9 @@
 	
 	<!-- ReturnTest -->
 	<target name="Return">    <!-- helper -->
-		<condition property="travis" value="false">    <!-- default value -->
+		<condition property="all" value="false">    <!-- default value -->
 			<not>
-				<isset property="travis"/>
+				<isset property="all"/>
 			</not>
 		</condition>
 		<condition property="tool" value="rdtLite">    <!-- default value -->
@@ -2264,14 +2321,14 @@
 	
 	<target name="Return-rdt">
 		<antcall target="Return">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdt"/>
 		</antcall>
 	</target>
 	
 	<target name="Return-rdtLite">
 		<antcall target="Return">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdtLite"/>
 		</antcall>
 	</target>
@@ -2291,9 +2348,9 @@
 	
 	<!-- rdt only tests -->
 	<target name="rdtOnly">
-		<condition property="travis" value="false">    <!-- default value -->
+		<condition property="all" value="false">    <!-- default value -->
 			<not>
-				<isset property="travis"/>
+				<isset property="all"/>
 			</not>
 		</condition>
 		<antcall target="run-test">
@@ -2313,9 +2370,9 @@
 	
 	<!-- RMarkdownTest -->
 	<target name="RMarkdown">    <!-- helper -->
-		<condition property="travis" value="false">    <!-- default value -->
+		<condition property="all" value="false">    <!-- default value -->
 			<not>
-				<isset property="travis"/>
+				<isset property="all"/>
 			</not>
 		</condition>
 		<condition property="tool" value="rdtLite">    <!-- default value -->
@@ -2323,7 +2380,8 @@
 				<isset property="tool"/>
 			</not>
 		</condition>
-		<antcall target="run-test">
+				
+		<antcall unless:true="${github}" target="run-test">
 			<param name="test-name" value="RMarkdown"/>
 			<param name="rmd" value="true"/>
 			<param name="details" value="true"/>
@@ -2343,14 +2401,14 @@
 	
 	<target name="RMarkdown-rdt">
 		<antcall target="RMarkdown">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdt"/>
 		</antcall>
 	</target>
 	
 	<target name="RMarkdown-rdtLite">
 		<antcall target="RMarkdown">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdtLite"/>
 		</antcall>
 	</target>
@@ -2370,9 +2428,9 @@
 	
 	<!-- S4ObjectTest -->
 	<target name="S4Object">    <!-- helper -->
-		<condition property="travis" value="false">    <!-- default value -->
+		<condition property="all" value="false">    <!-- default value -->
 			<not>
-				<isset property="travis"/>
+				<isset property="all"/>
 			</not>
 		</condition>
 		<condition property="tool" value="rdtLite">    <!-- default value -->
@@ -2399,14 +2457,14 @@
 	
 	<target name="S4Object-rdt">
 		<antcall target="S4Object">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdt"/>
 		</antcall>
 	</target>
 	
 	<target name="S4Object-rdtLite">
 		<antcall target="S4Object">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdtLite"/>
 		</antcall>
 	</target>
@@ -2426,9 +2484,9 @@
 	
 	<!-- ScopeTest -->
 	<target name="Scope">    <!-- helper -->
-		<condition property="travis" value="false">    <!-- default value -->
+		<condition property="all" value="false">    <!-- default value -->
 			<not>
-				<isset property="travis"/>
+				<isset property="all"/>
 			</not>
 		</condition>
 		<condition property="tool" value="rdtLite">    <!-- default value -->
@@ -2455,14 +2513,14 @@
 	
 	<target name="Scope-rdt">
 		<antcall target="Scope">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdt"/>
 		</antcall>
 	</target>
 	
 	<target name="Scope-rdtLite">
 		<antcall target="Scope">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdtLite"/>
 		</antcall>
 	</target>
@@ -2482,9 +2540,9 @@
 	
 	<!-- SourceFuncTest -->
 	<target name="SourceFunc">    <!-- helper -->
-		<condition property="travis" value="false">    <!-- default value -->
+		<condition property="all" value="false">    <!-- default value -->
 			<not>
-				<isset property="travis"/>
+				<isset property="all"/>
 			</not>
 		</condition>
 		<condition property="tool" value="rdtLite">    <!-- default value -->
@@ -2511,14 +2569,14 @@
 	
 	<target name="SourceFunc-rdt">
 		<antcall target="SourceFunc">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdt"/>
 		</antcall>
 	</target>
 	
 	<target name="SourceFunc-rdtLite">
 		<antcall target="SourceFunc">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdtLite"/>
 		</antcall>
 	</target>
@@ -2538,9 +2596,9 @@
 	
 	<!-- WarningTest -->
 	<target name="Warning">    <!-- helper -->
-		<condition property="travis" value="false">    <!-- default value -->
+		<condition property="all" value="false">    <!-- default value -->
 			<not>
-				<isset property="travis"/>
+				<isset property="all"/>
 			</not>
 		</condition>
 		<condition property="tool" value="rdtLite">    <!-- default value -->
@@ -2567,14 +2625,14 @@
 	
 	<target name="Warning-rdt">
 		<antcall target="Warning">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdt"/>
 		</antcall>
 	</target>
 	
 	<target name="Warning-rdtLite">
 		<antcall target="Warning">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdtLite"/>
 		</antcall>
 	</target>
@@ -2600,9 +2658,9 @@
 	<target name="normal-tests"
 			depends="basic, Empty, NoDetails, S4Object, Scope, Return, OddParameter, 
 					 DollarOperator, fromEnv, FunctionAnnotation, FunctionNonlocals, 
-					 ControlConstruct, DataFunction, Warning, FileNodes, 
-					 DataType, HigherOrderFunc, AssignOperators, 
-					 FunctionOrigin, DDGStatement, Connection">
+					 ControlConstruct, DataFunction, Warning, Plot1, Plot2, Plot3, FileNodes, 
+					 NoDevOff, DataType, HigherOrderFunc, AssignOperators, 
+					 FunctionOrigin, RMarkdown, DDGStatement, Connection">
 		
 		<!-- rdt only tests -->
 		<condition property="isRDT" value="true">
@@ -2615,31 +2673,16 @@
 		<echo></echo>
 	</target>
 	
-	<target name="display-tests"
-			depends="Plot1, Plot2, Plot3, NoDevOff, RMarkdown">
-		<!-- RMarkdown is not a display test, but it requires installing pdflatex, so harder to 
-		     run on GitHub -->
-		<!-- rdt only tests -->
-		<condition property="isRDT" value="true">
-			<equals arg1="${tool}" arg2="rdt"/>
-		</condition>
-		<antcall if:true="${isRDT}" target="rdtOnly"/>
-		
-		<echo></echo>
-		<echo>	### Finished Execution of Display Tests. ###</echo>
-		<echo></echo>
-	</target>
-	
 	<target name="normal-tests-rdt">
 		<antcall target="normal-tests">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdt"/>
 		</antcall>
 	</target>
 	
 	<target name="normal-tests-rdtLite">
 		<antcall target="normal-tests">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdtLite"/>
 		</antcall>
 	</target>
@@ -2654,14 +2697,14 @@
 	
 	<target name="source-tests-rdt">
 		<antcall target="source-tests">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdt"/>
 		</antcall>
 	</target>
 	
 	<target name="source-tests-rdtLite">
 		<antcall target="source-tests">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdtLite"/>
 		</antcall>
 	</target>
@@ -2677,14 +2720,14 @@
 	
 	<target name="bug-tests-rdt">
 		<antcall target="bug-tests">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdt"/>
 		</antcall>
 	</target>
 	
 	<target name="bug-tests-rdtLite">
 		<antcall target="bug-tests">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdtLite"/>
 		</antcall>
 	</target>
@@ -2702,14 +2745,14 @@
 	
 	<target name="quick-test-rdt">
 		<antcall target="quick-test">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdt"/>
 		</antcall>
 	</target>
 	
 	<target name="quick-test-rdtLite">
 		<antcall target="quick-test">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdtLite"/>
 		</antcall>
 	</target>
@@ -2731,14 +2774,14 @@
 	
 	<target name="script-tests-rdt">
 		<antcall target="script-tests">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdt"/>
 		</antcall>
 	</target>
 	
 	<target name="script-tests-rdtLite">
 		<antcall target="script-tests">
-			<param name="travis" value="false"/>
+			<param name="all" value="false"/>
 			<param name="tool" value="rdtLite"/>
 		</antcall>
 	</target>
@@ -2748,10 +2791,10 @@
 	
 	<!-- ========== Targets for Running All Tests ========== -->
 	
-	<!-- test all -->
+	<!-- all tests -->
 	<target name="test-all-rdt" description="">
 		<antcall target="run-tests">
-			<param name="travis" value="false"/>
+			<param name="all" value="true"/>
 			<param name="tool" value="rdt"/>
 		</antcall>
 		<echo></echo>
@@ -2761,42 +2804,36 @@
 	
 	<target name="test-all-rdtLite" description="">
 		<antcall target="run-tests">
-			<param name="travis" value="false"/>
+			<param name="all" value="true"/>
 			<param name="tool" value="rdtLite"/>
+			<param name="github" value="false"/>
 		</antcall>
 		<echo></echo>
 		<echo>All tests makes calls to the RDataTracker Library. You might need to restart RStudio to correctly run the scripts with the updated library installed.</echo>
 		<echo></echo>
-	</target>
-	
-	
-	<!-- travis tests -->
-	<target name="test-travis-rdt" description="">
-		<antcall target="run-tests">
-			<param name="travis" value="true"/>
-			<param name="tool" value="rdt"/>
-		</antcall>
-		<echo></echo>
-		<echo>All tests makes calls to the RDataTracker Library. You might need to restart RStudio to correctly run the scripts with the updated library installed.</echo>
-		<echo></echo>
-	</target>
-	
-	<target name="test-travis-rdtLite" description="">
-		<antcall target="run-tests">
-			<param name="travis" value="true"/>
-			<param name="tool" value="rdtLite"/>
-		</antcall>
-		<echo></echo>
-		<echo>All tests makes calls to the RDataTracker Library. You might need to restart RStudio to correctly run the scripts with the updated library installed.</echo>
-		<echo></echo>
-	    <echo> "WARNING: The basic test and HFDatasetPreview tests are not"</echo>
+	    <echo> "WARNING: The HFDatasetPreview test is not"</echo>
 	    <echo> "being run currently."</echo>
-	    <echo> "The URL they connect to have an expired certificate."</echo>
 	    <echo> "Also, the first few lines of the Connection test are"</echo>
 	    <echo> "commented out for the same reason."</echo>
 
 	</target>
 	
+	<target name="test-github-rdtLite" description="">
+	    <echo message="OS Name is: ${os.name}" />
+		<antcall target="run-tests">
+			<param name="all" value="true"/>
+			<param name="tool" value="rdtLite"/>
+			<param name="github" value="true"/>
+		</antcall>
+		<echo></echo>
+		<echo>All tests makes calls to the RDataTracker Library. You might need to restart RStudio to correctly run the scripts with the updated library installed.</echo>
+		<echo></echo>
+	    <echo> "WARNING: The HFDatasetPreview test is not"</echo>
+	    <echo> "being run currently."</echo>
+	    <echo> "Also, the first few lines of the Connection test are"</echo>
+	    <echo> "commented out for the same reason."</echo>
+
+	</target>
 	
 	<!-- helper target -->
 	<target name="run-tests">
@@ -2806,7 +2843,6 @@
 	
 		<antcall target="ProvJson"/>
 		<antcall target="quick-test"/>
-		<antcall target="display-tests"/>
 		<antcall target="script-tests"/>
 		
 		<!-- Repeat version info at the end so it is easy to find. -->
@@ -2814,50 +2850,6 @@
 		<echo message = "java version is ${ant.java.version}" />
 		
 	</target>
-	
-	<target name="run-github-tests">
-	    <!-- Like run-tests but does not do tests requiring a display -->
-	    <!-- Display version info -->
-		<echo message = "ant version is ${ant.version}" />
-		<echo message = "java version is ${ant.java.version}" />
-	
-		<antcall target="ProvJson"/>
-		<antcall target="quick-test"/>
-		<antcall target="script-tests"/>
-		
-		<!-- Repeat version info at the end so it is easy to find. -->
-		<echo message = "ant version is ${ant.version}" />
-		<echo message = "java version is ${ant.java.version}" />
-		
-	</target>
-
-	<!-- GitHub tests - these do not run the plot tests since there is no display -->
-	<target name="test-github-rdt" description="">
-		<antcall target="run-github-tests">
-			<param name="travis" value="true"/>
-			<param name="tool" value="rdt"/>
-		</antcall>
-		<echo></echo>
-		<echo>All tests makes calls to the RDataTracker Library. You might need to restart RStudio to correctly run the scripts with the updated library installed.</echo>
-		<echo></echo>
-	</target>
-	
-	<target name="test-github-rdtLite" description="">
-		<antcall target="run-github-tests">
-			<param name="travis" value="true"/>
-			<param name="tool" value="rdtLite"/>
-		</antcall>
-		<echo></echo>
-		<echo>All tests makes calls to the RDataTracker Library. You might need to restart RStudio to correctly run the scripts with the updated library installed.</echo>
-		<echo></echo>
-	    <echo> "WARNING: The basic test and HFDatasetPreview tests are not"</echo>
-	    <echo> "being run currently."</echo>
-	    <echo> "The URL they connect to have an expired certificate."</echo>
-	    <echo> "Also, the first few lines of the Connection test are"</echo>
-	    <echo> "commented out for the same reason."</echo>
-
-	</target>
-	
 	
 	<!-- ========== End: Targets for Running All Tests ========== -->	
 	
