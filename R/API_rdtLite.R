@@ -94,7 +94,6 @@ prov.init <- function(prov.dir = NULL, overwrite = TRUE, snapshot.size = 0,
   
   # Save hash algorithm
   .ddg.set("ddg.hash.algorithm", hash.algorithm)
-  
   # If this function was not called from prov.run, save arguments
   if(!.ddg.is.set("ddg.run.args")) {
     #print ("Saving arguments")
@@ -196,7 +195,7 @@ prov.quit <- function(save.debug = FALSE) {
 #' prov.quit()
 
 prov.run <- function(r.script.path, prov.dir = NULL, overwrite = TRUE, details = TRUE, 
-  snapshot.size = 0, hash.algorithm = "md5", save.debug = FALSE, exprs, ...) {
+                     snapshot.size = 0, hash.algorithm = "md5", save.debug = FALSE, exprs, ...) {
   
   # Stop & display message if R script path is missing
   if (missing(r.script.path) && missing(exprs)) {
@@ -219,12 +218,12 @@ prov.run <- function(r.script.path, prov.dir = NULL, overwrite = TRUE, details =
   else {
     use_file <- TRUE
   }
-
+  
   # Stop & display message if R script file is not found
   if (!file.exists(r.script.path)) {
     stop("R script file not found.")
   }
-
+  
   # Store arguments
   args.names <- c("overwrite", "details", "snapshot.size", "save.debug")
   args.types <- c("logical", "logical", "numeric", "logical")
@@ -237,13 +236,13 @@ prov.run <- function(r.script.path, prov.dir = NULL, overwrite = TRUE, details =
   
   # Store R script path
   .ddg.set("ddg.r.script.path", r.script.path)
-
+  
   # Store details value
   .ddg.set("ddg.details", details)
-
+  
   # Set script mode to True
   .ddg.set("ddg.script.mode", TRUE)
-
+  
   # Intialize the provenance graph
   prov.init(prov.dir, overwrite, snapshot.size, hash.algorithm, save.debug)
   

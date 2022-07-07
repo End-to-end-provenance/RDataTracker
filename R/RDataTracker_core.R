@@ -1154,7 +1154,14 @@
           if (.ddg.debug.lib()) {
             print (paste (".ddg.parse.commands: Evaluating ", cmd@annotated))
           }
-          
+          #____________ Sean ADD____________  
+          #checks if provenance chunking is true and if yes, checks if it is turned on
+          #if(.ddg.is.set("chunk.prov.is.active")){
+          #  if(!.ddg.get("chunk.prov.is.active")){
+          #    next
+          #  }
+          #}1
+          #____________ Sean____________  
           result <- withCallingHandlers(
           
               {
