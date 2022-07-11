@@ -602,21 +602,21 @@
 #_______ SEAN ADD _________
 
 .ddg.chunk.source <- function(file, local = FALSE,...){
-  print("check chunk source 06/21")
+  snum <- .ddg.store.script.info(file)
+  sname <- basename(file)
+  file.copy(file, paste(.ddg.path.scripts(), sname, sep = "/"))
+  
   in_chunk <- FALSE
   prov_active <- FALSE
   backticks <- "```"
   lines <- readLines(file, warn = FALSE)
   cur_chunk <- c()
-  print("local is =")
-  print(local)
   envir <- if (isTRUE(local)) 
     parent.frame()
   else if (isFALSE(local)) 
     .GlobalEnv
   else if (is.environment(local)) 
     local
-  print(envir)
   for(line in lines){
     if(grepl(backticks,line, fixed = TRUE)){
       if(in_chunk){

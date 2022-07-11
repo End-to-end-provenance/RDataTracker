@@ -1879,7 +1879,18 @@
   env$os[1] <- .Platform$OS.type
   
   # script variables
-  script.path <- .ddg.r.script.path()
+  
+  # added option for Rmd
+  if (.ddg.get("ddg.is.rmarkdown")){ #why is this not working???
+    print("is rmarkdown 2")
+    script.path <- .ddg.get("ddg.rmd.script.path") #why is this not working??
+    print("script.path is")
+    print(script.path)
+    
+  } else {
+    script.path <- .ddg.r.script.path()
+    print(script.path)
+  }
   
   if(!is.null(script.path) )
   {
