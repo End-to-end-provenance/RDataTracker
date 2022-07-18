@@ -605,7 +605,7 @@
   snum <- .ddg.store.script.info(file)
   sname <- basename(file)
   file.copy(file, paste(.ddg.path.scripts(), sname, sep = "/"))
-  
+  chunk_num <- 0
   in_chunk <- FALSE
   prov_active <- FALSE
   backticks <- "```"
@@ -621,18 +621,22 @@
     if(grepl(backticks,line, fixed = TRUE)){
       if(in_chunk){
         exprs <- parse(text = cur_chunk)
+        .ddg.add.start.node(node.name = as.character(chunk_num))
         if(prov_active){
           .ddg.parse.commands(exprs, environ = envir)
         }else{
           .ddg.evaluate.commands(exprs,environ = envir)
         }
+        .ddg.add.finish.node()
         in_chunk = FALSE
         prov_active = FALSE
         cur_chunk <- c()
+        chunk_num <- chunk_num + 1
+      
       }else{
         in_chunk = TRUE
         header = substr(line,5,nchar(line)-1) 
-        if(grepl("provenance = TRUE", header, fixed = TRUE)){#TODO: make better
+        if(grepl("details = TRUE", header, fixed = TRUE)){#TODO: make better
           prov_active <- TRUE
         }
       }
