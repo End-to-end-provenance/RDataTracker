@@ -9,7 +9,7 @@ output: html_document
 
 Here is the first chunk.
 
-```{r }
+```{r}
 x <- 2+2
 y <- x+2
 x
@@ -27,7 +27,7 @@ p
 Here's another chunk!
 
 
-```{r }
+```{r, details = TRUE}
 data(iris)
 x <- iris[,1]
 y <- iris[,2]

@@ -69,7 +69,6 @@
     
     # RMarkdown script
     if (tools::file_ext(r.script.path) == "Rmd") {
-      print("is rmarkdown true")
       .ddg.set("ddg.is.rmarkdown", TRUE)
       .ddg.set("ddg.rmd.script.path", r.script.path)
       output.path <- paste(.ddg.path.scripts(), "/", 
@@ -601,11 +600,13 @@
 }
 #_______ SEAN ADD _________
 
-.ddg.chunk.source <- function(file, local = FALSE,...){
+.ddg.chunk.source <- function(file, local = FALSE, encoding = getOption("encoding"), print.eval = getOption("verbose"), ignore.ddg.calls = TRUE, ...){
   snum <- .ddg.store.script.info(file)
   sname <- basename(file)
+  ignores <-  c("^library[(]RDataTracker[)]$", "^library[(]provR[)]$", 
+                if (ignore.ddg.calls) "^ddg." else c("^prov.init", "^prov.run"))
   file.copy(file, paste(.ddg.path.scripts(), sname, sep = "/"))
-  chunk_num <- 0
+  chunk_num <- 1
   in_chunk <- FALSE
   prov_active <- FALSE
   backticks <- "```"
@@ -620,11 +621,18 @@
   for(line in lines){
     if(grepl(backticks,line, fixed = TRUE)){
       if(in_chunk){
-        exprs <- parse(text = cur_chunk)
-        .ddg.add.start.node(node.name = as.character(chunk_num))
+        exprs <- parse(file=stdin(), n = -1, text = cur_chunk, keep.source=TRUE, srcfile = srcfile, encoding = encoding,prompt="?")
+        # parse(file=stdin(), n = -1, text=lines, prompt="?", 
+        #       keep.source=TRUE, srcfile = srcfile, encoding = encoding)
         if(prov_active){
-          .ddg.parse.commands(exprs, environ = envir)
+          .ddg.add.start.node(node.name = paste("chunk", as.character(chunk_num), "(detailed)"))
+          .ddg.parse.commands(exprs, sname, snum, environ = envir,
+                              ignore.patterns = ignores, echo = getOption("verbose"), run.commands = TRUE, print.eval = print.eval,
+                              max.deparse.length = 150, 
+                              continue.echo = getOption("continue"), skip.echo = 0, prompt.echo = getOption("prompt"), verbose = getOption("verbose"), 
+                              deparseCtrl = "showAttributes")
         }else{
+          .ddg.add.start.node(node.name = paste("chunk", as.character(chunk_num)))
           .ddg.evaluate.commands(exprs,environ = envir)
         }
         .ddg.add.finish.node()
