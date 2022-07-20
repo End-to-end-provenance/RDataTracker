@@ -146,7 +146,11 @@
                                  print=FALSE), 
                           type="message"))
                           
-
+  
+  if (isNamespaceLoaded ("ggplot2")) {
+    .ddg.trace.ggplot2.functions()
+  }
+  
   # Loading happens when vroom::vroom_write is called if the 
   # vroom library has not been previously loaded
   #print ("Setting onLoad hook for vroom")
@@ -435,8 +439,10 @@ trace.oneInput <- function (f, pkg) {
          "", "", "", "", "", "",
          "")
   
-   # The following does not work.  The package must also be on the search path (attached
-   # using the library function) to be able to add the tracing.
+   # The following only works if the vroom package is also attached, but I
+   # do not see a way to check that.  The package must also be on the search path (attached
+   # using the library function) to be able to add the tracing.  We use an exception
+   # handler when we actually set up the tracing to catch the error.
   if (isNamespaceLoaded("vroom")) {
       #print ("vroom is loaded")
       function.names <- append (function.names, c("vroom", "vroom_lines"))
@@ -444,7 +450,7 @@ trace.oneInput <- function (f, pkg) {
       #package.names <- append (package.names, c("vroom", "vroom"))
       package.names <- append (package.names, c("", ""))
   }
-  
+
   return (data.frame (function.names, param.names, package.names, stringsAsFactors=FALSE))
 }
 
@@ -735,7 +741,7 @@ trace.oneInput <- function (f, pkg) {
       #package.names <- append (package.names, c("vroom", "vroom"))
       package.names <- append (package.names, c("", ""))
   }
-   
+  
   return (data.frame (function.names, param.names, package.names, stringsAsFactors=FALSE))
 }
 
@@ -1774,23 +1780,48 @@ trace.oneInput <- function (f, pkg) {
 				utils::capture.output(untrace ("ggsave", where = asNamespace("ggplot2")), type="message")
 			   },
 			   error = function (e) { }) 
+    tryCatch ({
+				utils::capture.output(untrace ("ggplot"), type="message") 
+				utils::capture.output(untrace ("ggsave"), type="message")
+			   },
+			   error = function (e) { }) 
 }
 
 
 .ddg.trace.ggplot2.functions <- function () {
-    #print ("Tracing ggplot2")
-  	utils::capture.output(
+  #print ("Tracing ggplot2")
+  tryCatch (
+    {
+  	  utils::capture.output(
     	utils::capture.output(trace ("ggplot", 
             function () .ddg.trace.output (), 
                                  print=FALSE,
                                  where = asNamespace("ggplot2")), 
                           type="message"))
-    utils::capture.output(
-      utils::capture.output(trace ("ggsave", 
+      utils::capture.output(
+        utils::capture.output(trace ("ggsave", 
             function () .ddg.trace.close (), 
                                  print=FALSE,
                                  where = asNamespace("ggplot2")), 
                           type="message"))
+    },
+    error = function (e) { 
+
+      tryCatch (
+        {
+  	      utils::capture.output(
+    	    utils::capture.output(trace ("ggplot", 
+                function () .ddg.trace.output (), 
+                                 print=FALSE), 
+                          type="message"))
+          utils::capture.output(
+            utils::capture.output(trace ("ggsave", 
+                function () .ddg.trace.close (), 
+                                 print=FALSE), 
+                          type="message"))
+        },
+        error = function (e) { warning ("ggplot and ggsave functions might not be traced", Call. = FALSE)})
+    })
 }
 
 
