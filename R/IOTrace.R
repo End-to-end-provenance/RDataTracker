@@ -49,9 +49,6 @@
 .ddg.init.iotrace <- function () {
   #print ("Initializing io tracing")
   
-  # Find out what packages are installed
-  .ddg.set("ddg.installed.package.names", utils::installed.packages()[,1])
-  
   # Store the starting graphics device.
   .ddg.set("ddg.open.devices", vector())
   

@@ -1,9 +1,10 @@
 context("API")
 
 test_that("console prov dir", {
-      actual.path <- .ddg.set.path (".", NULL, FALSE)
+      console_dir <- tempdir()
+      actual.path <- .ddg.set.path (console_dir, NULL, FALSE)
       expect_true(startsWith (actual.path, 
-          paste (getwd(), "prov_console", sep="/")))
+          paste (normalizePath(console_dir, winslash = "/"), "prov_console", sep="/")))
       unlink (actual.path, recursive=TRUE)
     })
 

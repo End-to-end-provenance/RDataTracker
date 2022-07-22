@@ -163,6 +163,7 @@ prov.quit <- function(save.debug = FALSE) {
   }
 
   .ddg.quit (save.debug)
+
 }
  
 #' prov.run

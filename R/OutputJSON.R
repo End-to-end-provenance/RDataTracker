@@ -129,6 +129,10 @@
 	libraries <- .ddg.loadedpackages()
 	rownames(libraries) <- c(1 : nrow(libraries))
 	
+	# Indicate which are loaded by script
+	script.libraries <- .ddg.get ("ddg.script.libraries")
+	libraries$fromScript <- libraries$package %in% script.libraries
+		
 	# PRINT TO JSON - LIBRARY NODES
 	json$entity.lib <- .ddg.json.lib( libraries , LABEL.NAMES$entity.lib , LABEL.PREFIX )
 	
@@ -413,7 +417,7 @@
 .ddg.json.lib <- function( nodes, label, prefix )
 {
 	# change col names
-	col.names <- c( "name" , "version" )
+	col.names <- c( "name" , "version", "fromScript" )
 	
 	# convert '    ' or \t to escaped tab characters, if any
 	nodes <- .ddg.json.df.escape.tabs( nodes )

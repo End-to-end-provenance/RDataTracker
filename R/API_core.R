@@ -115,13 +115,6 @@
     .ddg.set ("ddg.taskCallBack.id", addTaskCallback(.ddg.trace.task))
   }
 
-  # Store time when script begins execution.
-  .ddg.set("ddg.start.time", .ddg.timestamp())
-  
-  # Initialize the I/O tracing code
-  #print ("Init io tracing")
-  .ddg.init.iotrace ()
-  
   # Mark graph as initilized.
   .ddg.set("ddg.initialized", TRUE)
   
@@ -142,6 +135,18 @@
   # Associated with each environment name is a vector of the variables
   # in that environment. 
   .ddg.set ("ddg.envList", list())
+  
+  # Records the libraries loaded by the script itself
+  .ddg.set ("ddg.script.libraries", vector())
+  
+  # Store time when script begins execution.
+  .ddg.set("ddg.start.time", .ddg.timestamp())
+  
+  # Initialize the I/O tracing code
+  #print ("Init io tracing")
+  .ddg.init.iotrace ()
+  
+  
   
   #print ("returning from .ddg.init")
   
@@ -343,7 +348,7 @@
    
   # Set script mode to FALSE
   .ddg.set("ddg.script.mode", FALSE)
-
+  
   invisible()
 }
 
@@ -455,7 +460,8 @@
       else enc <- encoding
       if (length(enc) > 1L) {
         encoding <- NA
-        owarn <- options(warn = 2)
+        # In source function, but CRAN says not to change user's options
+        #owarn <- options(warn = 2)
         for (e in enc) {
           if (is.na(e)) 
             next
@@ -468,7 +474,8 @@
             break
           }
         }
-        options(owarn)
+        # Reverts to user's options.  Removed for CRAN
+        #options(owarn)
       }
       if (is.na(encoding)) 
         stop("unable to find a plausible encoding")
