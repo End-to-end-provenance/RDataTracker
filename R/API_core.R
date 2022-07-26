@@ -39,6 +39,8 @@
 #' @noRd
 
 .ddg.init <- function(prov.dir = NULL, overwrite = TRUE, save.debug = FALSE) {
+  preloaded = loadedNamespaces()
+  .ddg.set("ddg.preloaded.libraries", preloaded)
   
   # Initialize tables
   #print ("Initiailzing tables")

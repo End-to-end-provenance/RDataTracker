@@ -1804,7 +1804,7 @@
   if (is.null(env)) {
     env <- .ddg.get.env(name, for.caller, calls)
   }
-
+  
   # If no environment found, name does not exist, so scope is
   # undefined.
   if (is.null(env)) return ("undefined")
