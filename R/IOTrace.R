@@ -144,50 +144,39 @@
                           type="message"))
                           
   
-  if (isNamespaceLoaded ("ggplot2")) {
-    .ddg.trace.ggplot2.functions()
+
+  if (isNamespaceLoaded("vroom")) {
+     .ddg.trace.vroom.functions()
   }
   
-  # Loading happens when vroom::vroom_write is called if the 
-  # vroom library has not been previously loaded
-  #print ("Setting onLoad hook for vroom")
-  setHook(packageEvent("vroom", "onLoad"),
-        function (...) {
-          #print ("onLoad hook called for vroom")
-          .ddg.trace.vroom.functions()
-        },
-        "replace"
-  )
+  else {
 
-  # Attaching happens when library is called, like library(vroom)
-  #  print ("Setting attach hook for vroom")
-  setHook(packageEvent("vroom", "attach"),
-        function (...) {
-          #print ("attach hook called for vroom")
-          .ddg.trace.vroom.functions()
-        },
-        "replace"
-  )
+      # Loading happens when vroom::vroom_write is called if the 
+      # vroom library has not been previously loaded, or
+      # when the library is attached with library(vroom)
+      #print ("Setting onLoad hook for vroom")
+      setHook(packageEvent("vroom", "onLoad"),
+          function (...) {
+              #print ("onLoad hook called for vroom")
+              .ddg.trace.vroom.functions()
+          },
+          "replace"
+      )
+  }
 
-  setHook(packageEvent("ggplot2", "onLoad"),
-        function (...) {
-          #print ("onLoad hook called for vroom")
-          .ddg.trace.ggplot2.functions()
-        },
-        "replace"
-  )
 
-  #  print ("Setting attach hook for vroom")
-  setHook(packageEvent("ggplot2", "attach"),
-        function (...) {
-          #print ("attach hook called for vroom")
-          .ddg.trace.ggplot2.functions()
-        },
-        "replace"
-  )
-  
   if (isNamespaceLoaded("ggplot2")) {
   	.ddg.trace.ggplot2.functions()
+  }
+  
+  else {
+    setHook(packageEvent("ggplot2", "onLoad"),
+        function (...) {
+          #print ("onLoad hook called for ggplot2")
+          .ddg.trace.ggplot2.functions()
+        },
+        "replace"
+    )
   }
 
   #print ("Done initializing IO tracing")
@@ -436,18 +425,6 @@ trace.oneInput <- function (f, pkg) {
          "", "", "", "", "", "",
          "")
   
-   # The following only works if the vroom package is also attached, but I
-   # do not see a way to check that.  The package must also be on the search path (attached
-   # using the library function) to be able to add the tracing.  We use an exception
-   # handler when we actually set up the tracing to catch the error.
-  if (isNamespaceLoaded("vroom")) {
-      #print ("vroom is loaded")
-      function.names <- append (function.names, c("vroom", "vroom_lines"))
-      param.names <- append (param.names, c("file", "file"))
-      #package.names <- append (package.names, c("vroom", "vroom"))
-      package.names <- append (package.names, c("", ""))
-  }
-
   return (data.frame (function.names, param.names, package.names, stringsAsFactors=FALSE))
 }
 
@@ -725,20 +702,6 @@ trace.oneInput <- function (f, pkg) {
           "", "", "", "",
           "")
           
-   # The following does not work.  The package must also be on the search path (attached
-   # using the library function) to be able to add the tracing.  Error is:
-   # <simpleError in as.environment(where): no item called "vroom" on the search list>
-   # If no package name is used, we get this error
-   # <simpleError in getFunction(what, where = whereF): no function ‘vroom_write’ found>
-   # The error occurs later when we attempt to actually do the tracing
-  if (isNamespaceLoaded("vroom")) {
-      #print ("vroom is loaded")
-      function.names <- append (function.names, c("vroom_write", "vroom_write_lines"))
-      param.names <- append (param.names, c("file", "file"))
-      #package.names <- append (package.names, c("vroom", "vroom"))
-      package.names <- append (package.names, c("", ""))
-  }
-  
   return (data.frame (function.names, param.names, package.names, stringsAsFactors=FALSE))
 }
 
