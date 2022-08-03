@@ -36,7 +36,7 @@
 .ddg.markdown <- function(r.script.path, output.path){
   
   #generates R script file from markdown file.
-  r.file <- knitr::purl(r.script.path, documentation = 2L, quiet = TRUE)
+  #r.file <- knitr::purl(r.script.path, documentation = 2L, quiet = TRUE)
   # print(paste("purl output in ", r.file))
   
   # Generate the formatted output.  Remember where it is so that it
@@ -52,6 +52,6 @@
   })
   
   #moves file to ddg directory
-  file.rename(from = r.file, to = output.path)
+  #file.rename(from = r.file, to = output.path)
   return (r.script.path)
 }

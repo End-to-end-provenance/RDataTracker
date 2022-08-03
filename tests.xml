@@ -2360,6 +2360,62 @@
 		</antcall>
 	</target>
 	
+		<!-- RMarkdownChunkTest -->
+	<target name="RMarkdownChunk">    <!-- helper -->
+		<condition property="all" value="false">    <!-- default value -->
+			<not>
+				<isset property="all"/>
+			</not>
+		</condition>
+		<condition property="tool" value="rdtLite">    <!-- default value -->
+			<not>
+				<isset property="tool"/>
+			</not>
+		</condition>
+		<antcall target="run-test">
+			<param name="test-name" value="RMarkdownChunk"/>
+			<param name="rmd" value="true"/>
+			<param name="details" value="true"/>
+		</antcall>
+	</target>
+	
+	<target name="update-RMarkdownChunk">    <!-- helper -->
+		<condition property="tool" value="rdtLite">    <!-- default value -->
+			<not>
+				<isset property="tool"/>
+			</not>
+		</condition>
+		<antcall target="update-expected">
+			<param name="test-name" value="RMarkdownChunk"/>
+		</antcall>
+	</target>
+	
+	<target name="RMarkdownChunk-rdt">
+		<antcall target="RMarkdownChunk">
+			<param name="all" value="false"/>
+			<param name="tool" value="rdt"/>
+		</antcall>
+	</target>
+	
+	<target name="RMarkdownChunk-rdtLite">
+		<antcall target="RMarkdownChunk">
+			<param name="all" value="false"/>
+			<param name="tool" value="rdtLite"/>
+		</antcall>
+	</target>
+	
+	<target name="update-RMarkdownChunk-">
+		<antcall target="update-RMarkdownChunk">
+			<param name="tool" value="rdt"/>
+		</antcall>
+	</target>
+	
+	<target name="update-RMarkdownChunk-rdtLite">
+		<antcall target="update-RMarkdownChunk">
+			<param name="tool" value="rdtLite"/>
+		</antcall>
+	</target>
+	
 	
 	<!-- S4ObjectTest -->
 	<target name="S4Object">    <!-- helper -->
@@ -2595,7 +2651,7 @@
 					 DollarOperator, fromEnv, FunctionAnnotation, FunctionNonlocals, 
 					 ControlConstruct, DataFunction, Warning, Plot1, Plot2, Plot3, FileNodes, 
 					 NoDevOff, DataType, HigherOrderFunc, AssignOperators, 
-					 FunctionOrigin, RMarkdown, DDGStatement, Connection">
+					 FunctionOrigin, RMarkdown, RMarkdownChunk, DDGStatement, Connection">
 		
 		<!-- rdt only tests -->
 		<condition property="isRDT" value="true">

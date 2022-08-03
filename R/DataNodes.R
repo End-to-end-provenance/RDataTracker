@@ -183,6 +183,9 @@
         .ddg.save.data(dname, dvalue, scope=dscope, from.env=TRUE)
         return (TRUE)
       }
+    } else if(.ddg.get("ddg.is.rmarkdown")) {
+      #defined in other non-detailed chunk?
+      .ddg.save.var(dname, scope = dscope)
     }
   }
   

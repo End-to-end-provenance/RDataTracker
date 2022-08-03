@@ -91,6 +91,8 @@
     # completes execution and build the corresponding portions of the 
     # provenance graph.
   } else {
+    .ddg.set("ddg.is.rmarkdown", FALSE)
+    .ddg.set("ddg.markdown.output", NULL)
     .ddg.store.console.info ()
     .ddg.set("
              .output", NULL)
@@ -448,7 +450,8 @@
       else enc <- encoding
       if (length(enc) > 1L) {
         encoding <- NA
-        owarn <- options(warn = 2)
+        # In source function, but CRAN says not to change user's options
+        #owarn <- options(warn = 2)
         for (e in enc) {
           if (is.na(e)) 
             next
@@ -461,7 +464,8 @@
             break
           }
         }
-        options(owarn)
+        # Reverts to user's options.  Removed for CRAN
+        #options(owarn)
       }
       if (is.na(encoding)) 
         stop("unable to find a plausible encoding")
@@ -498,12 +502,7 @@
     
     # parse calls are changed.  .Internal is not allowed to be called from
     # packages.  This appears to behave the same.
-    if (.ddg.get("ddg.is.rmarkdown")){
-      #chunk prov
-    } else {}
-    #re-write
-    # - exprs is empty list in rmarkdown case
-    exprs <- if (!from_file) { #sets to whatever is parsed if true, otherwise empty
+    exprs <- if (!from_file) {
       if (length(lines)) 
         parse(file=stdin(), n = -1, text=lines, prompt="?", 
               keep.source=TRUE, srcfile = srcfile, encoding = encoding)
@@ -513,7 +512,6 @@
     else parse(file=file, n = -1, text=NULL, prompt="?", 
                keep.source=TRUE, srcfile = srcfile, 
                encoding = encoding)
-    #end re-write
     on.exit()
     if (from_file) 
       close(file)
@@ -558,7 +556,7 @@
   
   ignores <- c("^library[(]RDataTracker[)]$", "^library[(]provR[)]$", 
                if (ignore.ddg.calls) "^ddg." else c("^prov.init", "^prov.run"))
-  if (length(exprs) > 0) { #in the case of rmarkdown, this will be false
+  if (length(exprs) > 0) {
     .ddg.set("from.source", TRUE)
     if (.ddg.details()) {
       if(calling.script == 1) {
@@ -593,12 +591,23 @@
         .ddg.proc.node("Operation", sname)
       yy <- .ddg.evaluate.commands(exprs, environ = envir)
     }
-  } else {
-    #chunk prov
   }
   invisible(yy)
 }
 #_______ SEAN ADD _________
+
+#' .ddg.chunk.source is an alternative to .ddg.source which parses an RMarkdown file, collecting provenance on the code. 
+#' if details are set to TRUE in the chunk header, then detailed provenance is collected on that chunk. Otherwise, just input/output
+#' information is collected.
+#' @param file is the path of the RMarkdown file to be parsed
+#' @param local the environment in which to evaluate parsed
+#' expressions. If TRUE, the environment from which .ddg.source is
+#' called. If FALSE, the user's workspace (global environment).
+#' @param print.eval print the result of each evaluation
+#' @param encoding encoding to be assumed when file is a
+#' character string
+#' @param ignore.ddg.calls if TRUE, ignore DDG function calls
+#' @noRd
 
 .ddg.chunk.source <- function(file, local = FALSE, encoding = getOption("encoding"), print.eval = getOption("verbose"), ignore.ddg.calls = TRUE, ...){
   snum <- .ddg.store.script.info(file)
@@ -644,8 +653,13 @@
       }else{
         in_chunk = TRUE
         header = substr(line,5,nchar(line)-1) 
-        if(grepl("details = TRUE", header, fixed = TRUE)){#TODO: make better
+        if(grepl("details = TRUE", header, fixed = TRUE) |
+           grepl("details= TRUE", header, fixed = TRUE) |
+           grepl("details =TRUE", header, fixed = TRUE) |
+           grepl("details=TRUE", header, fixed = TRUE)) {#TODO: make better
           prov_active <- TRUE
+        } else if (!grepl("details", header, fixed = TRUE)){
+          prov_active <- .ddg.details()
         }
       }
     }else if(in_chunk){

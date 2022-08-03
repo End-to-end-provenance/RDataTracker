@@ -1,0 +1,191 @@
+$data.temperature1
+[1] 0
+
+$data.temperature2
+[1] 20
+
+$data.temperature3
+[1] 40
+
+$data.temperature4
+[1] 60
+
+$data.temperature5
+[1] 80
+
+$data.temperature6
+[1] 100
+
+$data.temperature7
+[1] 120
+
+$data.temperature8
+[1] 140
+
+$data.temperature9
+[1] 160
+
+$data.temperature10
+[1] 180
+
+$data.temperature11
+[1] 200
+
+$data.temperature12
+[1] 220
+
+$data.temperature13
+[1] 240
+
+$data.temperature14
+[1] 260
+
+$data.temperature15
+[1] 280
+
+$data.temperature16
+[1] 300
+
+$data.temperature17
+[1] 320
+
+$data.temperature18
+[1] 340
+
+$data.temperature19
+[1] 360
+
+$data.pressure1
+[1] 2e-04
+
+$data.pressure2
+[1] 0.0012
+
+$data.pressure3
+[1] 0.006
+
+$data.pressure4
+[1] 0.03
+
+$data.pressure5
+[1] 0.09
+
+$data.pressure6
+[1] 0.27
+
+$data.pressure7
+[1] 0.75
+
+$data.pressure8
+[1] 1.85
+
+$data.pressure9
+[1] 4.2
+
+$data.pressure10
+[1] 8.8
+
+$data.pressure11
+[1] 17.3
+
+$data.pressure12
+[1] 32.1
+
+$data.pressure13
+[1] 57
+
+$data.pressure14
+[1] 96
+
+$data.pressure15
+[1] 157
+
+$data.pressure16
+[1] 247
+
+$data.pressure17
+[1] 376
+
+$data.pressure18
+[1] 558
+
+$data.pressure19
+[1] 806
+
+$scales
+<ggproto object: Class ScalesList, gg>
+    add: function
+    clone: function
+    find: function
+    get_scales: function
+    has_scale: function
+    input: function
+    n: function
+    non_position_scales: function
+    scales: NULL
+    super:  <ggproto object: Class ScalesList, gg>
+
+$mapping.x
+<quosure>
+expr: ^temperature
+env:  global
+
+$mapping.y
+<quosure>
+expr: ^pressure
+env:  global
+
+$coordinates
+<ggproto object: Class CoordCartesian, Coord, gg>
+    aspect: function
+    backtransform_range: function
+    clip: on
+    default: TRUE
+    distance: function
+    expand: TRUE
+    is_free: function
+    is_linear: function
+    labels: function
+    limits: list
+    modify_scales: function
+    range: function
+    render_axis_h: function
+    render_axis_v: function
+    render_bg: function
+    render_fg: function
+    setup_data: function
+    setup_layout: function
+    setup_panel_guides: function
+    setup_panel_params: function
+    setup_params: function
+    train_panel_guides: function
+    transform: function
+    super:  <ggproto object: Class CoordCartesian, Coord, gg>
+
+$facet
+<ggproto object: Class FacetNull, Facet, gg>
+    compute_layout: function
+    draw_back: function
+    draw_front: function
+    draw_labels: function
+    draw_panels: function
+    finish_data: function
+    init_scales: function
+    map_data: function
+    params: list
+    setup_data: function
+    setup_params: function
+    shrink: TRUE
+    train_scales: function
+    vars: function
+    super:  <ggproto object: Class FacetNull, Facet, gg>
+
+$plot_env
+<environment: R_GlobalEnv>
+
+$labels.x
+[1] "temperature"
+
+$labels.y
+[1] "pressure"
+

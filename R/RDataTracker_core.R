@@ -1777,6 +1777,8 @@
   if (is.null(calls)) calls <- sys.calls()
 
   fnum <- .ddg.get.frame.number(calls, for.caller)
+  #print(paste(".ddg.get.env: calls = ", calls))
+  #print(paste(".ddg.get.env: fnum = ", fnum))
   stopifnot(!is.null(fnum))
 
   tryCatch (
@@ -1881,11 +1883,8 @@
   # script variables
   
   # added option for Rmd
-  if (.ddg.get("ddg.is.rmarkdown")){ #why is this not working???
-    print("is rmarkdown 2")
-    script.path <- .ddg.get("ddg.rmd.script.path") #why is this not working??
-    print("script.path is")
-    print(script.path)
+  if (.ddg.get("ddg.is.rmarkdown")){ 
+    script.path <- .ddg.get("ddg.rmd.script.path") 
     
   } else {
     script.path <- .ddg.r.script.path()

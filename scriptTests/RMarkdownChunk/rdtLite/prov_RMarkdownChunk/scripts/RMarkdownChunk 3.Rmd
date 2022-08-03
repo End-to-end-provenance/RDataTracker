@@ -1,0 +1,40 @@
+---
+output: pdf_document
+---
+---
+title: "Data Provenance will save the world!"
+author: "A.M. Turing"
+output: html_document
+---
+
+Here is the first chunk.
+
+```{r}
+x <- 2+2
+y <- x+2
+x
+y
+
+z <- 1
+
+```
+
+Testing ggplot with RDataTracker
+```{r pressure, echo=FALSE}
+library(ggplot2)
+p<- ggplot(pressure, aes(x=temperature, y=pressure))
+p
+z <- z + 1
+
+```
+Here's another chunk!
+
+
+```{r, details = TRUE}
+data(iris)
+x <- iris[,1]
+y <- iris[,2]
+summary(lm(y~x))
+n <- z + z
+
+```

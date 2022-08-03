@@ -367,10 +367,12 @@
   
   # Record in procedure node table
   .ddg.record.proc(ptype, pname, pvalue, ptime, snum, pos)
+  #print(paste(".ddg.proc.node: pname = ", pname))
   
   # If any functions are called in this procedure node, process them.
   if( !.ddg.is.null.or.na (functions.called)) {
     pfunctions <- .ddg.get.function.info(functions.called)
+    #print(paste(".ddg.proc.node: pfunctions = ", pfunctions))
 
     # append the function call information to function nodes
     .ddg.add.to.function.table (pfunctions)
@@ -378,6 +380,8 @@
     # Create input data edges for non-locals used.
     nonlocals.used <- .ddg.get.nonlocals.used (pfunctions)
     if (!is.null (nonlocals.used) && length (nonlocals.used) > 0) {
+      #print(paste(".ddg.proc.node: nonlocals.used = ", nonlocals.used))
+      
       nonlocals.used[sapply(nonlocals.used, is.null)] <- NULL
 
       create.use.edge <- function (var) {
@@ -390,7 +394,10 @@
         # Only create an edge if a matching data node exists.
         # If there is no matching data node, then we will 
         # assume this was actually a local.
+        #print(paste(".ddg.proc.node: looking for node for ", var))
+        #print(paste(".ddg.proc.node: scope = ", scope))
         if (.ddg.data.node.exists(var, scope)) {
+          #print(paste(".ddg.proc.node: edge created for ", var))
           .ddg.data2proc(var, scope)
         }
       }

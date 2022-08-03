@@ -347,8 +347,6 @@
 	# script variables
 	scripts <- .ddg.sourced.scripts()
 	script.path <- scripts$sname[1]
-	print("script name = ")
-	print(script.path)
 	fields$script <- script.path
 	fields$scriptHash <- scripts$shash[1]
 	fields$scriptTimeStamp <- scripts$stime[1]
