@@ -37,7 +37,6 @@
     		<fileset dir="tests/testthat" />
   		</copy>
         <copy overwrite="true" file="DESCRIPTION_rdtLite" tofile="${builddir}/DESCRIPTION"/>
-        <copy overwrite="true" file="LICENSE" todir="${builddir}"/>
         <copy overwrite="true" file="README_rdtLite.md" tofile="${builddir}/README.md"/>
         <copy overwrite="true" file="NEWS_rdtLite.md" tofile="${builddir}/NEWS.md"/>
     </target>
