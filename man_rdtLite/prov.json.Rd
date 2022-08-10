@@ -78,14 +78,13 @@ a different name, set the value of the R_ZIPCMD environment variable.  This
 code has been tested with Unix zip and with 7-zip on Windows.
 }
 \examples{
-prov.init()
-a <- 1
-b <- 2
-ab <- a + b
-prov.quit()
-str <- prov.json()
-pdir <- prov.dir()
-\dontrun{prov.visualize()} 
+\donttest{prov.init()}
+\donttest{a <- 1}
+\donttest{b <- 2}
+\donttest{ab <- a + b}
+\donttest{prov.quit()}
+\donttest{str <- prov.json()}
+\donttest{pdir <- prov.dir()}
 }
 \references{
 PROV-JSON standard: \url{https://www.w3.org/Submission/2013/SUBM-prov-json-20130424/}
