@@ -289,13 +289,15 @@
   if (!.ddg.script.mode()) {
     .ddg.add.finish.node ()
     console.commands <- .ddg.get("ddg.console.commands")
+ 
+    if (length(console.commands) > 0) {
+	    # Save the console commands inside the provenance directory.
+    	writeLines(console.commands, paste (.ddg.path.scripts(), "console.R", sep="/"))
     
-    # Save the console commands inside the provenance directory.
-    writeLines(console.commands, paste (.ddg.path.scripts(), "console.R", sep="/"))
-    
-    # Also save the console commands in the console directory, not within the provenance directory
-    # for this session.  This is saved in a timestamped file.
-    writeLines(console.commands, paste (.ddg.get("ddg.console.dir"), paste0("console_", .ddg.timestamp(), ".R"), sep="/"))
+    	# Also save the console commands in the console directory, not within the provenance directory
+    	# for this session.  This is saved in a timestamped file.
+    	writeLines(console.commands, paste (.ddg.get("ddg.console.dir"), paste0("console_", .ddg.timestamp(), ".R"), sep="/"))
+    }
   }
   
   # If there are any connections still open when the script ends,
