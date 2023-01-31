@@ -77,8 +77,8 @@
 				  "activity.proc" = NA ,
 				  "entity.data" = NA , 
 				  "entity.env" = NA , 
-				  "entity.lib" = NA , 
 				  "entity.func" = NA ,
+				  "entity.lib" = NA , 
 				  "wasInformedBy.p2p" = NA ,
 				  "wasGeneratedBy.p2d" = NA ,
 				  "used.d2p" = NA , 
@@ -129,6 +129,14 @@
 	libraries <- .ddg.loadedpackages()
 	rownames(libraries) <- c(1 : nrow(libraries))
 	
+	# Indicate which are loaded by script, which are preloaded, and which were loaded
+	# by rdtLite code
+	script.libraries <- .ddg.get ("ddg.script.libraries")
+	preloaded.libraries <- .ddg.get ("ddg.preloaded.libraries")
+	libraries$whereLoaded <- "rdtLite"
+	libraries$whereLoaded[libraries$package %in% script.libraries] <- "script" 
+    libraries$whereLoaded[libraries$package %in% preloaded.libraries] <- "preloaded" 
+		
 	# PRINT TO JSON - LIBRARY NODES
 	json$entity.lib <- .ddg.json.lib( libraries , LABEL.NAMES$entity.lib , LABEL.PREFIX )
 	
@@ -320,6 +328,8 @@
 					"operatingSystem" = NA ,
 					"language" = NA ,
 					"langVersion" = NA ,
+					"ui" = NA,
+					"pandoc" = NA,
 					"script" = NA ,
 					"scriptTimeStamp" = NA ,
 					"scriptHash" = NA ,
@@ -331,18 +341,20 @@
 					"provDirectory" = NA ,
 					"provTimestamp" = NA )
 	
+	platform.info <- sessioninfo::platform_info()
+	
 	# architecture, language, langVersion
-	lang.version <- R.Version()
+	fields$architecture <- platform.info$system
+	fields$operatingSystem <- platform.info$os
+	fields$language <- "R"
+	fields$langVersion <- platform.info$version
 	
-	fields$architecture <- utils::sessionInfo()$platform
-	fields$language <- lang.version$language
-	fields$langVersion <- lang.version$version
-	
-	# operating system
-	fields$operatingSystem <- 
-		if (.Platform$OS.type == "unix") utils::sessionInfo()$running
-		else if (.Platform$OS.type == "windows") utils::win.version()
-		else version$os
+	# Programming environment
+	fields$ui <- platform.info$ui
+	if (fields$ui == "RStudio") {
+	    fields$ui = platform.info$rstudio
+	}
+	fields$pandoc = platform.info$pandoc
 	
 	# script variables
 	scripts <- .ddg.sourced.scripts()
@@ -411,7 +423,7 @@
 .ddg.json.lib <- function( nodes, label, prefix )
 {
 	# change col names
-	col.names <- c( "name" , "version" )
+	col.names <- c( "name" , "version", "whereLoaded" )
 	
 	# convert '    ' or \t to escaped tab characters, if any
 	nodes <- .ddg.json.df.escape.tabs( nodes )

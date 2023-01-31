@@ -39,8 +39,11 @@
 #' @noRd
 
 .ddg.init <- function(prov.dir = NULL, overwrite = TRUE, save.debug = FALSE) {
+  preloaded = loadedNamespaces()
+  .ddg.set("ddg.preloaded.libraries", preloaded)
   
   # Initialize tables
+  #print ("Initiailzing tables")
   .ddg.init.tables()
   
   # Set up for console mode
@@ -50,22 +53,27 @@
   }
   
   # Get R script path
+  #print ("Getting R script path")
   r.script.path <- .ddg.r.script.path()
   
   # Set path for provenance graph
+  #print ("Setting provenance path")
   .ddg.set.path (prov.dir, r.script.path, overwrite)
   
   # Save value of save.debug
   .ddg.set("ddg.save.debug", save.debug)
   
   # Remove files from DDG directory
+  #print ("Removing ddg files")
   .ddg.flush.ddg()
   
   # Create DDG directories
+  #print ("Creating directories")
   .ddg.init.environ()
   
   # Script mode: adjust & store R script path
   if (.ddg.script.mode()) {
+    #print ("Setting up script mode")
     
     # RMarkdown script
     if (tools::file_ext(r.script.path) == "Rmd") {
@@ -91,11 +99,10 @@
     # completes execution and build the corresponding portions of the 
     # provenance graph.
   } else {
+    #print ("Setting up console mode")
     .ddg.set("ddg.is.rmarkdown", FALSE)
     .ddg.set("ddg.markdown.output", NULL)
     .ddg.store.console.info ()
-    .ddg.set("
-             .output", NULL)
     .ddg.set("ddg.console.commands", vector())
     
     .ddg.trace.task <- function (task, result, success, printed) {  
@@ -114,12 +121,6 @@
     .ddg.set ("ddg.taskCallBack.id", addTaskCallback(.ddg.trace.task))
   }
   
-  # Store time when script begins execution.
-  .ddg.set("ddg.start.time", .ddg.timestamp())
-  
-  # Initialize the I/O tracing code
-  .ddg.init.iotrace ()
-  
   # Mark graph as initilized.
   .ddg.set("ddg.initialized", TRUE)
   
@@ -133,12 +134,27 @@
   
   # Initialize the table used to track use of non-locals
   # within functions
+  #print ("init func def table")
   .ddg.init.function.def.table ()
   
   # A named list, where the name is a variable of type environment
   # Associated with each environment name is a vector of the variables
   # in that environment. 
   .ddg.set ("ddg.envList", list())
+  
+  # Records the libraries loaded by the script itself
+  .ddg.set ("ddg.script.libraries", vector())
+  
+  # Store time when script begins execution.
+  .ddg.set("ddg.start.time", .ddg.timestamp())
+  
+  # Initialize the I/O tracing code
+  #print ("Init io tracing")
+  .ddg.init.iotrace ()
+  
+  
+  
+  #print ("returning from .ddg.init")
   
   invisible()
 }
@@ -268,6 +284,7 @@
 #' @noRd
 
 .ddg.quit <- function(save.debug = FALSE) {
+  #print ("In .ddg.quit")
   if (!.ddg.is.init()) return(invisible())
   
   # If running from the console create a Console finish node.
@@ -277,16 +294,19 @@
     .ddg.add.finish.node ()
     console.commands <- .ddg.get("ddg.console.commands")
     
-    # Save the console commands inside the provenance directory.
-    writeLines(console.commands, paste (.ddg.path.scripts(), "console.R", sep="/"))
+    if (length(console.commands) > 0) {
+        # Save the console commands inside the provenance directory.
+        writeLines(console.commands, paste (.ddg.path.scripts(), "console.R", sep="/"))
     
-    # Also save the console commands in the console directory, not within the provenance directory
-    # for this session.  This is saved in a timestamped file.
-    writeLines(console.commands, paste (.ddg.get("ddg.console.dir"), paste0("console_", .ddg.timestamp(), ".R"), sep="/"))
+        # Also save the console commands in the console directory, not within the provenance directory
+        # for this session.  This is saved in a timestamped file.
+        writeLines(console.commands, paste (.ddg.get("ddg.console.dir"), paste0("console_", .ddg.timestamp(), ".R"), sep="/"))
+    }
   }
   
   # If there are any connections still open when the script ends,
   # create nodes and edges for them.
+  #print ("Closing connections")
   tryCatch(.ddg.create.file.nodes.for.open.connections (),
            error = function(e) {
              if (.ddg.debug.lib()) {
@@ -295,12 +315,14 @@
            })
   
   # If there is a display device open, grab what is on the display
+  #print ("Closing display device")
   if (length(grDevices::dev.list()) >= 1) {
     tryCatch (.ddg.capture.graphics(called.from.save = TRUE),
               error = function (e) print(e))
   }
   
   # If we ran an RMarkdown script, save a copy of the formatted output
+  #print ("Rmarkdown stuff")
   rmarkdown.output <- .ddg.get("ddg.markdown.output")
   if (! is.null (rmarkdown.output)) {
     if (file.exists (rmarkdown.output)) {
@@ -309,18 +331,21 @@
   }
   
   # Turn off the I/O tracing and console tracing.
+  #print ("Stopping I/O tracing.")
   .ddg.stop.iotracing()
   if (.ddg.is.set ("ddg.taskCallBack.id")) {
     removeTaskCallback (.ddg.get ("ddg.taskCallBack.id"))
   }
   
   # Delete temporary files.
+  #print ("Deleting temporary files")
   .ddg.delete.temp()
   
   # Mark graph as not initialized.
   .ddg.set("ddg.initialized", FALSE)
   
   # Save prov.json to file.
+  #print ("Writing json")
   .ddg.json.write()
   if (interactive()) print(paste("Saving prov.json in ", .ddg.path(), sep=""))
   
@@ -610,6 +635,7 @@
 #' @noRd
 
 .ddg.chunk.source <- function(file, local = FALSE, encoding = getOption("encoding"), print.eval = getOption("verbose"), ignore.ddg.calls = TRUE, ...){
+  print("In .ddg.chunk.source")
   snum <- .ddg.store.script.info(file)
   sname <- basename(file)
   ignores <-  c("^library[(]RDataTracker[)]$", "^library[(]provR[)]$", 
