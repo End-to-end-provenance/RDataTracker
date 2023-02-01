@@ -150,12 +150,12 @@ will just source the file.  No provenance will be collected.
 \examples{
 \dontrun{prov.run ("script.R")}
 \dontrun{prov.source ("script.R")}
-prov.init()
-a <- 1
-b <- 2
-prov.save()
-ab <- a + b
-prov.quit()
+\donttest{prov.init()}
+\donttest{a <- 1}
+\donttest{b <- 2}
+\donttest{prov.save()}
+\donttest{ab <- a + b}
+\donttest{prov.quit()}
 }
 \seealso{
 \code{\link{prov.json}} for access to the JSON text of the provenance,

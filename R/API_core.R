@@ -635,7 +635,6 @@
 #' @noRd
 
 .ddg.chunk.source <- function(file, local = FALSE, encoding = getOption("encoding"), print.eval = getOption("verbose"), ignore.ddg.calls = TRUE, ...){
-  print("In .ddg.chunk.source")
   snum <- .ddg.store.script.info(file)
   sname <- basename(file)
   ignores <-  c("^library[(]RDataTracker[)]$", "^library[(]provR[)]$", 

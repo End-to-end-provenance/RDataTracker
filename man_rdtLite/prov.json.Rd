@@ -13,7 +13,14 @@ prov.dir()
 
 prov.visualize()
 
-prov.summarize(save = FALSE, create.zip = FALSE)
+prov.summarize(
+  save = FALSE,
+  create.zip = FALSE,
+  details = FALSE,
+  check = TRUE,
+  console = TRUE,
+  notes = TRUE
+)
 }
 \arguments{
 \item{save}{if true saves the summary to the file prov-summary.txt in the 
@@ -21,6 +28,16 @@ provenance directory}
 
 \item{create.zip}{if true all of the provenance data will be packaged up
 into a zip file stored in the current working directory.}
+
+\item{details}{if true, a more detailed summary is provided}
+
+\item{check}{if true, the user's file system is checked to see if input 
+files, output files, and scripts (in their original locations) are unchanged, 
+changed, or missing.}
+
+\item{console}{if true, the summary is displayed in the console}
+
+\item{notes}{if true, notes are included to explain how to interpret the summary}
 }
 \value{
 prov.json returns the current provenance graph as a prov-json
@@ -61,14 +78,13 @@ a different name, set the value of the R_ZIPCMD environment variable.  This
 code has been tested with Unix zip and with 7-zip on Windows.
 }
 \examples{
-prov.init()
-a <- 1
-b <- 2
-ab <- a + b
-prov.quit()
-str <- prov.json()
-pdir <- prov.dir()
-\dontrun{prov.visualize()} 
+\donttest{prov.init()}
+\donttest{a <- 1}
+\donttest{b <- 2}
+\donttest{ab <- a + b}
+\donttest{prov.quit()}
+\donttest{str <- prov.json()}
+\donttest{pdir <- prov.dir()}
 }
 \references{
 PROV-JSON standard: \url{https://www.w3.org/Submission/2013/SUBM-prov-json-20130424/}
