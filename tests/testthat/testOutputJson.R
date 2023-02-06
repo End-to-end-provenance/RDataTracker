@@ -126,7 +126,7 @@ test_that("data nodes",
 # libraries
 test_that("libraries",
 	{
-	    skip("in process of adding field to library nodes")
+	    #skip("in process of adding field to library nodes")
 	    
 		# null case: not possible
 		
