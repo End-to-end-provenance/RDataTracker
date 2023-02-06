@@ -93,6 +93,9 @@
 		Return
 		rdtOnly (runs only on rdt)
 		RMarkdown
+		RMarkdownChunk
+		RMarkdownChunkMixedDetails
+		RMarkdownChunkNoDetails
 		S4Object
 		Scope
 		SourceFunc
@@ -125,6 +128,9 @@
 		AssignOperators
 		FunctionOrigin
 		RMarkdown
+		RMarkdownChunk
+		RMarkdownChunkMixedDetails
+		RMarkdownChunkNoDetails
 		DDGStatement
 		Connection
 		rdtOnly (runs only when rdt is used)
@@ -2415,8 +2421,119 @@
 			<param name="tool" value="rdtLite"/>
 		</antcall>
 	</target>
+
+	<!-- RMarkdownChunkMixedDetailsTest -->
+	<target name="RMarkdownChunkMixedDetails">    <!-- helper -->
+		<condition property="all" value="false">    <!-- default value -->
+			<not>
+				<isset property="all"/>
+			</not>
+		</condition>
+		<condition property="tool" value="rdtLite">    <!-- default value -->
+			<not>
+				<isset property="tool"/>
+			</not>
+		</condition>
+		<antcall target="run-test">
+			<param name="test-name" value="RMarkdownChunkMixedDetails"/>
+			<param name="rmd" value="true"/>
+			<param name="details" value="true"/>
+		</antcall>
+	</target>
 	
+	<target name="update-RMarkdownChunkMixedDetails">    <!-- helper -->
+		<condition property="tool" value="rdtLite">    <!-- default value -->
+			<not>
+				<isset property="tool"/>
+			</not>
+		</condition>
+		<antcall target="update-expected">
+			<param name="test-name" value="RMarkdownChunkMixedDetails"/>
+		</antcall>
+	</target>
 	
+	<target name="RMarkdownChunkMixedDetails-rdt">
+		<antcall target="RMarkdownChunkMixedDetails">
+			<param name="all" value="false"/>
+			<param name="tool" value="rdt"/>
+		</antcall>
+	</target>
+	
+	<target name="RMarkdownChunkMixedDetails-rdtLite">
+		<antcall target="RMarkdownChunkMixedDetails">
+			<param name="all" value="false"/>
+			<param name="tool" value="rdtLite"/>
+		</antcall>
+	</target>
+	
+	<target name="update-RMarkdownChunkMixedDetails-rdt">
+		<antcall target="update-RMarkdownChunkMixedDetails">
+			<param name="tool" value="rdt"/>
+		</antcall>
+	</target>
+	
+	<target name="update-RMarkdownChunkMixedDetails-rdtLite">
+		<antcall target="update-RMarkdownChunkMixedDetails">
+			<param name="tool" value="rdtLite"/>
+		</antcall>
+	</target>
+	
+	<!-- RMarkdownChunkNoDetailsTest -->
+	<target name="RMarkdownChunkNoDetails">    <!-- helper -->
+		<condition property="all" value="false">    <!-- default value -->
+			<not>
+				<isset property="all"/>
+			</not>
+		</condition>
+		<condition property="tool" value="rdtLite">    <!-- default value -->
+			<not>
+				<isset property="tool"/>
+			</not>
+		</condition>
+		<antcall target="run-test">
+			<param name="test-name" value="RMarkdownChunkNoDetails"/>
+			<param name="rmd" value="true"/>
+			<param name="details" value="true"/>
+		</antcall>
+	</target>
+	
+	<target name="update-RMarkdownChunkNoDetails">    <!-- helper -->
+		<condition property="tool" value="rdtLite">    <!-- default value -->
+			<not>
+				<isset property="tool"/>
+			</not>
+		</condition>
+		<antcall target="update-expected">
+			<param name="test-name" value="RMarkdownChunkNoDetails"/>
+		</antcall>
+	</target>
+	
+	<target name="RMarkdownChunkNoDetails-rdt">
+		<antcall target="RMarkdownChunkNoDetails">
+			<param name="all" value="false"/>
+			<param name="tool" value="rdt"/>
+		</antcall>
+	</target>
+	
+	<target name="RMarkdownChunkNoDetails-rdtLite">
+		<antcall target="RMarkdownChunkNoDetails">
+			<param name="all" value="false"/>
+			<param name="tool" value="rdtLite"/>
+		</antcall>
+	</target>
+	
+	<target name="update-RMarkdownChunkNoDetails-rdt">
+		<antcall target="update-RMarkdownChunkNoDetails">
+			<param name="tool" value="rdt"/>
+		</antcall>
+	</target>
+	
+	<target name="update-RMarkdownChunkNoDetails-rdtLite">
+		<antcall target="update-RMarkdownChunkNoDetails">
+			<param name="tool" value="rdtLite"/>
+		</antcall>
+	</target>
+
 	<!-- S4ObjectTest -->
 	<target name="S4Object">    <!-- helper -->
 		<condition property="all" value="false">    <!-- default value -->
@@ -2651,7 +2768,8 @@
 					 DollarOperator, fromEnv, FunctionAnnotation, FunctionNonlocals, 
 					 ControlConstruct, DataFunction, Warning, Plot1, Plot2, Plot3, FileNodes, 
 					 NoDevOff, DataType, HigherOrderFunc, AssignOperators, 
-					 FunctionOrigin, RMarkdown, RMarkdownChunk, DDGStatement, Connection">
+					 FunctionOrigin, RMarkdown, RMarkdownChunk, RMarkdownChunkMixedDetails,
+					 RMarkdownChunkNoDetails, DDGStatement, Connection">
 		
 		<!-- rdt only tests -->
 		<condition property="isRDT" value="true">

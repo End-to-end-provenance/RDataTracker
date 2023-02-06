@@ -1,6 +1,0 @@
-[1] "function (x, y, ...) "                                          
-[2] "{"                                                              
-[3] "    exprs <- enquos(x = x, y = y, ..., .ignore_empty = \"all\")"
-[4] "    aes <- new_aes(exprs, env = parent.frame())"                
-[5] "    rename_aes(aes)"                                            
-[6] "}"                                                              
