@@ -665,11 +665,16 @@
                               max.deparse.length = 150, 
                               continue.echo = getOption("continue"), skip.echo = 0, prompt.echo = getOption("prompt"), verbose = getOption("verbose"), 
                               deparseCtrl = "showAttributes")
+          .ddg.add.finish.node()
         }else{
-          .ddg.add.start.node(node.name = paste("chunk", as.character(chunk_num)))
+          #.ddg.add.start.node(node.name = paste("chunk", as.character(chunk_num)))
+          node.name = paste("chunk", as.character(chunk_num))
+          # TODO: Need to parse the chunk and create a statement so we know what functions are called
+          .ddg.proc.node("Operation", node.name, node.name, 
+                         functions.called = list(NULL, NULL, NULL, NULL), scriptNum=snum)
+          .ddg.proc2proc()
           .ddg.evaluate.commands(exprs,environ = envir)
         }
-        .ddg.add.finish.node()
         in_chunk = FALSE
         prov_active = FALSE
         cur_chunk <- c()

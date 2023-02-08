@@ -7,7 +7,7 @@
 	"agent" : {
 		"rdt:a1": {
 			"rdt:tool.name": "rdtLite",
-			"rdt:tool.version": "1.3.1",
+			"rdt:tool.version": "1.4",
 			"rdt:json.version": "2.3",
 			"rdt:args.names": [
 				"overwrite",
@@ -34,7 +34,7 @@
 		"rdt:p1": {
 			"rdt:name": "chunk 1 (detailed)",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": "1.214",
+			"rdt:elapsedTime": "1.158",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -44,7 +44,7 @@
 		"rdt:p2": {
 			"rdt:name": "x <- 2 + 2",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.139",
+			"rdt:elapsedTime": "0.145",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": -1,
 			"rdt:startCol": -1,
@@ -54,7 +54,7 @@
 		"rdt:p3": {
 			"rdt:name": "y <- x + 2",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.137",
+			"rdt:elapsedTime": "0.143",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": -1,
 			"rdt:startCol": -1,
@@ -64,7 +64,7 @@
 		"rdt:p4": {
 			"rdt:name": "x",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.124",
+			"rdt:elapsedTime": "0.122",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": -1,
 			"rdt:startCol": -1,
@@ -74,7 +74,7 @@
 		"rdt:p5": {
 			"rdt:name": "y",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.118",
+			"rdt:elapsedTime": "0.119",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": -1,
 			"rdt:startCol": -1,
@@ -84,7 +84,7 @@
 		"rdt:p6": {
 			"rdt:name": "z <- 1",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.119",
+			"rdt:elapsedTime": "0.122",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": -1,
 			"rdt:startCol": -1,
@@ -103,27 +103,7 @@
 		},
 		"rdt:p8": {
 			"rdt:name": "chunk 2",
-			"rdt:type": "Start",
-			"rdt:elapsedTime": "0.001",
-			"rdt:scriptNum": 1,
-			"rdt:startLine": "NA",
-			"rdt:startCol": "NA",
-			"rdt:endLine": "NA",
-			"rdt:endCol": "NA"
-		},
-		"rdt:p9": {
-			"rdt:name": "chunk 2",
-			"rdt:type": "Finish",
-			"rdt:elapsedTime": "0.001",
-			"rdt:scriptNum": 1,
-			"rdt:startLine": "NA",
-			"rdt:startCol": "NA",
-			"rdt:endLine": "NA",
-			"rdt:endCol": "NA"
-		},
-		"rdt:p10": {
-			"rdt:name": "chunk 3 (detailed)",
-			"rdt:type": "Start",
+			"rdt:type": "Operation",
 			"rdt:elapsedTime": "0.0",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
@@ -131,10 +111,30 @@
 			"rdt:endLine": "NA",
 			"rdt:endCol": "NA"
 		},
-		"rdt:p11": {
+		"rdt:p9": {
+			"rdt:name": "chunk 3 (detailed)",
+			"rdt:type": "Start",
+			"rdt:elapsedTime": "0.002",
+			"rdt:scriptNum": 1,
+			"rdt:startLine": "NA",
+			"rdt:startCol": "NA",
+			"rdt:endLine": "NA",
+			"rdt:endCol": "NA"
+		},
+		"rdt:p10": {
 			"rdt:name": "data(iris)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.129",
+			"rdt:elapsedTime": "0.128",
+			"rdt:scriptNum": 1,
+			"rdt:startLine": -1,
+			"rdt:startCol": -1,
+			"rdt:endLine": -1,
+			"rdt:endCol": -1
+		},
+		"rdt:p11": {
+			"rdt:name": "x <- iris[, 1]",
+			"rdt:type": "Operation",
+			"rdt:elapsedTime": "0.252",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": -1,
 			"rdt:startCol": -1,
@@ -142,9 +142,9 @@
 			"rdt:endCol": -1
 		},
 		"rdt:p12": {
-			"rdt:name": "x <- iris[, 1]",
+			"rdt:name": "y <- iris[, 2]",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.261",
+			"rdt:elapsedTime": "0.134",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": -1,
 			"rdt:startCol": -1,
@@ -152,9 +152,9 @@
 			"rdt:endCol": -1
 		},
 		"rdt:p13": {
-			"rdt:name": "y <- iris[, 2]",
+			"rdt:name": "summary(lm(y ~ x))",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.137",
+			"rdt:elapsedTime": "0.131",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": -1,
 			"rdt:startCol": -1,
@@ -162,9 +162,9 @@
 			"rdt:endCol": -1
 		},
 		"rdt:p14": {
-			"rdt:name": "summary(lm(y ~ x))",
+			"rdt:name": "n <- z + z",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.129",
+			"rdt:elapsedTime": "0.141",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": -1,
 			"rdt:startCol": -1,
@@ -172,19 +172,9 @@
 			"rdt:endCol": -1
 		},
 		"rdt:p15": {
-			"rdt:name": "n <- z + z",
-			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.151",
-			"rdt:scriptNum": 1,
-			"rdt:startLine": -1,
-			"rdt:startCol": -1,
-			"rdt:endLine": -1,
-			"rdt:endCol": -1
-		},
-		"rdt:p16": {
 			"rdt:name": "chunk 3 (detailed)",
 			"rdt:type": "Finish",
-			"rdt:elapsedTime": "0.007",
+			"rdt:elapsedTime": "0.006",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -235,7 +225,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2023-02-06T15.50.43EST",
+			"rdt:timestamp": "2023-02-08T15.11.25EST",
 			"rdt:location": ""
 		},
 		"rdt:d5": {
@@ -246,7 +236,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2023-02-06T15.50.43EST",
+			"rdt:timestamp": "2023-02-08T15.11.25EST",
 			"rdt:location": ""
 		},
 		"rdt:d6": {
@@ -257,7 +247,7 @@
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
 			"rdt:hash": "fc995ecbb7cc390aa203a916124f39bf",
-			"rdt:timestamp": "2022-05-10T21.39.19EDT",
+			"rdt:timestamp": "2022-11-05T08.39.27EDT",
 			"rdt:location": "/Library/Frameworks/R.framework/Versions/4.2/Resources/library/ggplot2/data/Rdata.rds"
 		},
 		"rdt:d7": {
@@ -279,7 +269,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2023-02-06T15.50.43EST",
+			"rdt:timestamp": "2023-02-08T15.11.25EST",
 			"rdt:location": ""
 		},
 		"rdt:d9": {
@@ -290,7 +280,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2023-02-06T15.50.43EST",
+			"rdt:timestamp": "2023-02-08T15.11.26EST",
 			"rdt:location": ""
 		},
 		"rdt:d10": {
@@ -301,7 +291,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2023-02-06T15.50.43EST",
+			"rdt:timestamp": "2023-02-08T15.11.26EST",
 			"rdt:location": ""
 		},
 		"rdt:d11": {
@@ -312,7 +302,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2023-02-06T15.50.44EST",
+			"rdt:timestamp": "2023-02-08T15.11.26EST",
 			"rdt:location": ""
 		},
 		"rdt:d12": {
@@ -323,7 +313,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2023-02-06T15.50.44EST",
+			"rdt:timestamp": "2023-02-08T15.11.26EST",
 			"rdt:location": ""
 		},
 		"rdt:d13": {
@@ -344,8 +334,8 @@
 			"rdt:type": "File",
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
-			"rdt:hash": "4b1f0e275f97f92cc3e8380f8144d076",
-			"rdt:timestamp": "2023-02-06T15.50.42EST",
+			"rdt:hash": "df2e7aacd0dbdecd82c4dd4d14fa2de4",
+			"rdt:timestamp": "2023-02-08T15.11.24EST",
 			"rdt:location": "[DIR]/RMarkdownChunkMixedDetails.pdf"
 		},
 
@@ -360,13 +350,13 @@
 			"rdt:script": "[DIR]/RMarkdownChunkMixedDetails.Rmd",
 			"rdt:scriptTimeStamp": "2023-01-31T16.36.14EST",
 			"rdt:scriptHash": "a8c6647fd44060f495aa12872f288b09",
-			"rdt:totalElapsedTime": "2.672",
+			"rdt:totalElapsedTime": "2.608",
 			"rdt:sourcedScripts": "",
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:sourcedScriptHashes": "",
 			"rdt:workingDirectory": "[DIR]/rdtLite",
 			"rdt:provDirectory": "[DIR]/rdtLite/prov_RMarkdownChunkMixedDetails",
-			"rdt:provTimestamp": "2023-02-06T15.50.42EST",
+			"rdt:provTimestamp": "2023-02-08T15.11.24EST",
 			"rdt:hashAlgorithm": "md5"
 		},
 
@@ -388,7 +378,7 @@
 		},
 		"rdt:l2": {
 			"name": "bit",
-			"version": "4.0.4",
+			"version": "4.0.5",
 			"whereLoaded": "rdtLite",
 			"prov:type": {
 				"$": "prov:Collection",
@@ -406,7 +396,7 @@
 		},
 		"rdt:l4": {
 			"name": "cli",
-			"version": "3.4.0",
+			"version": "3.6.0",
 			"whereLoaded": "rdtLite",
 			"prov:type": {
 				"$": "prov:Collection",
@@ -415,7 +405,7 @@
 		},
 		"rdt:l5": {
 			"name": "colorspace",
-			"version": "2.0-3",
+			"version": "2.1-0",
 			"whereLoaded": "rdtLite",
 			"prov:type": {
 				"$": "prov:Collection",
@@ -433,7 +423,7 @@
 		},
 		"rdt:l7": {
 			"name": "crayon",
-			"version": "1.5.1",
+			"version": "1.5.2",
 			"whereLoaded": "rdtLite",
 			"prov:type": {
 				"$": "prov:Collection",
@@ -451,7 +441,7 @@
 		},
 		"rdt:l9": {
 			"name": "digest",
-			"version": "0.6.29",
+			"version": "0.6.31",
 			"whereLoaded": "rdtLite",
 			"prov:type": {
 				"$": "prov:Collection",
@@ -460,7 +450,7 @@
 		},
 		"rdt:l10": {
 			"name": "dplyr",
-			"version": "1.0.9",
+			"version": "1.1.0",
 			"whereLoaded": "rdtLite",
 			"prov:type": {
 				"$": "prov:Collection",
@@ -468,8 +458,8 @@
 			}
 		},
 		"rdt:l11": {
-			"name": "ellipsis",
-			"version": "0.3.2",
+			"name": "evaluate",
+			"version": "0.20",
 			"whereLoaded": "rdtLite",
 			"prov:type": {
 				"$": "prov:Collection",
@@ -477,8 +467,8 @@
 			}
 		},
 		"rdt:l12": {
-			"name": "evaluate",
-			"version": "0.16",
+			"name": "fansi",
+			"version": "1.0.4",
 			"whereLoaded": "rdtLite",
 			"prov:type": {
 				"$": "prov:Collection",
@@ -486,15 +476,6 @@
 			}
 		},
 		"rdt:l13": {
-			"name": "fansi",
-			"version": "1.0.3",
-			"whereLoaded": "rdtLite",
-			"prov:type": {
-				"$": "prov:Collection",
-				"type": "xsd:QName"
-			}
-		},
-		"rdt:l14": {
 			"name": "fastmap",
 			"version": "1.1.0",
 			"whereLoaded": "rdtLite",
@@ -503,7 +484,7 @@
 				"type": "xsd:QName"
 			}
 		},
-		"rdt:l15": {
+		"rdt:l14": {
 			"name": "generics",
 			"version": "0.1.3",
 			"whereLoaded": "rdtLite",
@@ -512,16 +493,16 @@
 				"type": "xsd:QName"
 			}
 		},
-		"rdt:l16": {
+		"rdt:l15": {
 			"name": "ggplot2",
-			"version": "3.3.6",
+			"version": "3.4.0",
 			"whereLoaded": "rdtLite",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
 			}
 		},
-		"rdt:l17": {
+		"rdt:l16": {
 			"name": "glue",
 			"version": "1.6.2",
 			"whereLoaded": "rdtLite",
@@ -530,7 +511,7 @@
 				"type": "xsd:QName"
 			}
 		},
-		"rdt:l18": {
+		"rdt:l17": {
 			"name": "graphics",
 			"version": "4.2.1",
 			"whereLoaded": "preloaded",
@@ -539,7 +520,7 @@
 				"type": "xsd:QName"
 			}
 		},
-		"rdt:l19": {
+		"rdt:l18": {
 			"name": "grDevices",
 			"version": "4.2.1",
 			"whereLoaded": "preloaded",
@@ -548,7 +529,7 @@
 				"type": "xsd:QName"
 			}
 		},
-		"rdt:l20": {
+		"rdt:l19": {
 			"name": "grid",
 			"version": "4.2.1",
 			"whereLoaded": "rdtLite",
@@ -557,9 +538,18 @@
 				"type": "xsd:QName"
 			}
 		},
-		"rdt:l21": {
+		"rdt:l20": {
 			"name": "gtable",
-			"version": "0.3.0",
+			"version": "0.3.1",
+			"whereLoaded": "rdtLite",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l21": {
+			"name": "highr",
+			"version": "0.10",
 			"whereLoaded": "rdtLite",
 			"prov:type": {
 				"$": "prov:Collection",
@@ -567,8 +557,8 @@
 			}
 		},
 		"rdt:l22": {
-			"name": "highr",
-			"version": "0.9",
+			"name": "htmltools",
+			"version": "0.5.4",
 			"whereLoaded": "rdtLite",
 			"prov:type": {
 				"$": "prov:Collection",
@@ -576,8 +566,8 @@
 			}
 		},
 		"rdt:l23": {
-			"name": "htmltools",
-			"version": "0.5.3",
+			"name": "jsonlite",
+			"version": "1.8.4",
 			"whereLoaded": "rdtLite",
 			"prov:type": {
 				"$": "prov:Collection",
@@ -585,8 +575,8 @@
 			}
 		},
 		"rdt:l24": {
-			"name": "jsonlite",
-			"version": "1.8.0",
+			"name": "knitr",
+			"version": "1.42",
 			"whereLoaded": "rdtLite",
 			"prov:type": {
 				"$": "prov:Collection",
@@ -594,15 +584,6 @@
 			}
 		},
 		"rdt:l25": {
-			"name": "knitr",
-			"version": "1.40",
-			"whereLoaded": "rdtLite",
-			"prov:type": {
-				"$": "prov:Collection",
-				"type": "xsd:QName"
-			}
-		},
-		"rdt:l26": {
 			"name": "labeling",
 			"version": "0.4.2",
 			"whereLoaded": "rdtLite",
@@ -611,16 +592,16 @@
 				"type": "xsd:QName"
 			}
 		},
-		"rdt:l27": {
+		"rdt:l26": {
 			"name": "lifecycle",
-			"version": "1.0.1",
+			"version": "1.0.3",
 			"whereLoaded": "rdtLite",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
 			}
 		},
-		"rdt:l28": {
+		"rdt:l27": {
 			"name": "magrittr",
 			"version": "2.0.3",
 			"whereLoaded": "rdtLite",
@@ -629,7 +610,7 @@
 				"type": "xsd:QName"
 			}
 		},
-		"rdt:l29": {
+		"rdt:l28": {
 			"name": "methods",
 			"version": "4.2.1",
 			"whereLoaded": "preloaded",
@@ -638,7 +619,7 @@
 				"type": "xsd:QName"
 			}
 		},
-		"rdt:l30": {
+		"rdt:l29": {
 			"name": "munsell",
 			"version": "0.5.0",
 			"whereLoaded": "rdtLite",
@@ -647,16 +628,16 @@
 				"type": "xsd:QName"
 			}
 		},
-		"rdt:l31": {
+		"rdt:l30": {
 			"name": "pillar",
-			"version": "1.7.0",
+			"version": "1.8.1",
 			"whereLoaded": "rdtLite",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
 			}
 		},
-		"rdt:l32": {
+		"rdt:l31": {
 			"name": "pkgconfig",
 			"version": "2.0.3",
 			"whereLoaded": "rdtLite",
@@ -665,16 +646,7 @@
 				"type": "xsd:QName"
 			}
 		},
-		"rdt:l33": {
-			"name": "purrr",
-			"version": "0.3.4",
-			"whereLoaded": "rdtLite",
-			"prov:type": {
-				"$": "prov:Collection",
-				"type": "xsd:QName"
-			}
-		},
-		"rdt:l34": {
+		"rdt:l32": {
 			"name": "R6",
 			"version": "2.5.1",
 			"whereLoaded": "rdtLite",
@@ -683,18 +655,36 @@
 				"type": "xsd:QName"
 			}
 		},
-		"rdt:l35": {
+		"rdt:l33": {
 			"name": "rdtLite",
-			"version": "1.3.1",
+			"version": "1.4",
 			"whereLoaded": "preloaded",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
 			}
 		},
-		"rdt:l36": {
+		"rdt:l34": {
 			"name": "rlang",
-			"version": "1.0.5",
+			"version": "1.0.6",
+			"whereLoaded": "rdtLite",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l35": {
+			"name": "rmarkdown",
+			"version": "2.20",
+			"whereLoaded": "rdtLite",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l36": {
+			"name": "scales",
+			"version": "1.2.1",
 			"whereLoaded": "rdtLite",
 			"prov:type": {
 				"$": "prov:Collection",
@@ -702,24 +692,6 @@
 			}
 		},
 		"rdt:l37": {
-			"name": "rmarkdown",
-			"version": "2.16",
-			"whereLoaded": "rdtLite",
-			"prov:type": {
-				"$": "prov:Collection",
-				"type": "xsd:QName"
-			}
-		},
-		"rdt:l38": {
-			"name": "scales",
-			"version": "1.2.0",
-			"whereLoaded": "rdtLite",
-			"prov:type": {
-				"$": "prov:Collection",
-				"type": "xsd:QName"
-			}
-		},
-		"rdt:l39": {
 			"name": "sessioninfo",
 			"version": "1.2.2",
 			"whereLoaded": "rdtLite",
@@ -728,7 +700,7 @@
 				"type": "xsd:QName"
 			}
 		},
-		"rdt:l40": {
+		"rdt:l38": {
 			"name": "stats",
 			"version": "4.2.1",
 			"whereLoaded": "preloaded",
@@ -737,9 +709,27 @@
 				"type": "xsd:QName"
 			}
 		},
-		"rdt:l41": {
+		"rdt:l39": {
 			"name": "stringi",
-			"version": "1.7.8",
+			"version": "1.7.12",
+			"whereLoaded": "rdtLite",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l40": {
+			"name": "tibble",
+			"version": "3.1.8",
+			"whereLoaded": "rdtLite",
+			"prov:type": {
+				"$": "prov:Collection",
+				"type": "xsd:QName"
+			}
+		},
+		"rdt:l41": {
+			"name": "tidyselect",
+			"version": "1.2.0",
 			"whereLoaded": "rdtLite",
 			"prov:type": {
 				"$": "prov:Collection",
@@ -747,8 +737,8 @@
 			}
 		},
 		"rdt:l42": {
-			"name": "stringr",
-			"version": "1.4.1",
+			"name": "tinytex",
+			"version": "0.44",
 			"whereLoaded": "rdtLite",
 			"prov:type": {
 				"$": "prov:Collection",
@@ -756,33 +746,6 @@
 			}
 		},
 		"rdt:l43": {
-			"name": "tibble",
-			"version": "3.1.7",
-			"whereLoaded": "rdtLite",
-			"prov:type": {
-				"$": "prov:Collection",
-				"type": "xsd:QName"
-			}
-		},
-		"rdt:l44": {
-			"name": "tidyselect",
-			"version": "1.1.2",
-			"whereLoaded": "rdtLite",
-			"prov:type": {
-				"$": "prov:Collection",
-				"type": "xsd:QName"
-			}
-		},
-		"rdt:l45": {
-			"name": "tinytex",
-			"version": "0.41",
-			"whereLoaded": "rdtLite",
-			"prov:type": {
-				"$": "prov:Collection",
-				"type": "xsd:QName"
-			}
-		},
-		"rdt:l46": {
 			"name": "tools",
 			"version": "4.2.1",
 			"whereLoaded": "rdtLite",
@@ -791,7 +754,7 @@
 				"type": "xsd:QName"
 			}
 		},
-		"rdt:l47": {
+		"rdt:l44": {
 			"name": "tzdb",
 			"version": "0.3.0",
 			"whereLoaded": "rdtLite",
@@ -800,16 +763,16 @@
 				"type": "xsd:QName"
 			}
 		},
-		"rdt:l48": {
+		"rdt:l45": {
 			"name": "utf8",
-			"version": "1.2.2",
+			"version": "1.2.3",
 			"whereLoaded": "rdtLite",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
 			}
 		},
-		"rdt:l49": {
+		"rdt:l46": {
 			"name": "utils",
 			"version": "4.2.1",
 			"whereLoaded": "preloaded",
@@ -818,25 +781,25 @@
 				"type": "xsd:QName"
 			}
 		},
-		"rdt:l50": {
+		"rdt:l47": {
 			"name": "vctrs",
-			"version": "0.4.1",
+			"version": "0.5.2",
 			"whereLoaded": "rdtLite",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
 			}
 		},
-		"rdt:l51": {
+		"rdt:l48": {
 			"name": "vroom",
-			"version": "1.6.0",
+			"version": "1.6.1",
 			"whereLoaded": "rdtLite",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
 			}
 		},
-		"rdt:l52": {
+		"rdt:l49": {
 			"name": "withr",
 			"version": "2.5.0",
 			"whereLoaded": "rdtLite",
@@ -845,18 +808,18 @@
 				"type": "xsd:QName"
 			}
 		},
-		"rdt:l53": {
+		"rdt:l50": {
 			"name": "xfun",
-			"version": "0.33",
+			"version": "0.37",
 			"whereLoaded": "rdtLite",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
 			}
 		},
-		"rdt:l54": {
+		"rdt:l51": {
 			"name": "yaml",
-			"version": "2.3.5",
+			"version": "2.3.7",
 			"whereLoaded": "rdtLite",
 			"prov:type": {
 				"$": "prov:Collection",
@@ -921,10 +884,6 @@
 		"rdt:pp14": {
 			"prov:informant": "rdt:p14",
 			"prov:informed": "rdt:p15"
-		},
-		"rdt:pp15": {
-			"prov:informant": "rdt:p15",
-			"prov:informed": "rdt:p16"
 		}
 	},
 
@@ -942,23 +901,23 @@
 			"prov:entity": "rdt:d3"
 		},
 		"rdt:pd4": {
-			"prov:activity": "rdt:p11",
+			"prov:activity": "rdt:p10",
 			"prov:entity": "rdt:d8"
 		},
 		"rdt:pd5": {
-			"prov:activity": "rdt:p12",
+			"prov:activity": "rdt:p11",
 			"prov:entity": "rdt:d9"
 		},
 		"rdt:pd6": {
-			"prov:activity": "rdt:p13",
+			"prov:activity": "rdt:p12",
 			"prov:entity": "rdt:d10"
 		},
 		"rdt:pd7": {
-			"prov:activity": "rdt:p15",
+			"prov:activity": "rdt:p14",
 			"prov:entity": "rdt:d13"
 		},
 		"rdt:pd8": {
-			"prov:activity": "rdt:p16",
+			"prov:activity": "rdt:p15",
 			"prov:entity": "rdt:d14"
 		}
 	},
@@ -978,54 +937,54 @@
 		},
 		"rdt:dp4": {
 			"prov:entity": "rdt:d5",
-			"prov:activity": "rdt:p11"
+			"prov:activity": "rdt:p10"
 		},
 		"rdt:dp5": {
 			"prov:entity": "rdt:d6",
-			"prov:activity": "rdt:p11"
+			"prov:activity": "rdt:p10"
 		},
 		"rdt:dp6": {
 			"prov:entity": "rdt:d7",
-			"prov:activity": "rdt:p11"
+			"prov:activity": "rdt:p10"
 		},
 		"rdt:dp7": {
 			"prov:entity": "rdt:d8",
-			"prov:activity": "rdt:p12"
+			"prov:activity": "rdt:p11"
 		},
 		"rdt:dp8": {
 			"prov:entity": "rdt:d8",
-			"prov:activity": "rdt:p13"
+			"prov:activity": "rdt:p12"
 		},
 		"rdt:dp9": {
 			"prov:entity": "rdt:d10",
-			"prov:activity": "rdt:p14"
+			"prov:activity": "rdt:p13"
 		},
 		"rdt:dp10": {
 			"prov:entity": "rdt:d9",
-			"prov:activity": "rdt:p14"
+			"prov:activity": "rdt:p13"
 		},
 		"rdt:dp11": {
 			"prov:entity": "rdt:d3",
-			"prov:activity": "rdt:p15"
+			"prov:activity": "rdt:p14"
 		},
 
 		"rdt:fp1": {
 			"prov:entity": "rdt:f1",
-			"prov:activity": "rdt:p11"
+			"prov:activity": "rdt:p10"
 		},
 		"rdt:fp2": {
 			"prov:entity": "rdt:f2",
-			"prov:activity": "rdt:p14"
+			"prov:activity": "rdt:p13"
 		}
 	},
 
 	"hadMember" : {
 		"rdt:m1": {
-			"prov:collection": "rdt:l40",
+			"prov:collection": "rdt:l38",
 			"prov:entity": "rdt:f2"
 		},
 		"rdt:m2": {
-			"prov:collection": "rdt:l49",
+			"prov:collection": "rdt:l46",
 			"prov:entity": "rdt:f1"
 		}
 	}
