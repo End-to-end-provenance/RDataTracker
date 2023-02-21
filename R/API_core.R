@@ -692,7 +692,7 @@
           vars.set <- sapply(cmds, function(cmd) cmd@vars.set)
           print(".ddg.chunk.source: vars.set =")
           print (vars.set) 
-          .ddg.create.data.set.edges (vars.set, NULL, envir, captured.output = NULL, node.name)
+          .ddg.create.data.set.edges (vars.set, NULL, envir, captured.output = NULL, node.name, save.value=FALSE)
           
           # Pairs with the start node to create an open-close chunk
           #.ddg.add.finish.node()
