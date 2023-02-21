@@ -607,13 +607,11 @@ methods::setMethod ("initialize",
 .ddg.find.simple.assign <- function(obj)
 {
   if (.ddg.is.assign(obj)) {
-    print("In .ddg.find.simple.assign, found assignment, obj[[2]] =")
-    print (obj[[2]])
+    #print("In .ddg.find.simple.assign, obj[[2]] =")
+    #print (obj[[2]])
     .ddg.get.var(obj[[2]])
   }
   else {
-    print ("In .ddg.find.simple.assign, no assignment, obj = ")
-    print(obj)
     ""
   }
 }
@@ -664,27 +662,19 @@ methods::setMethod ("initialize",
 
 .ddg.get.var <- function(lvalue)
 {
-  if (is.symbol(lvalue)) {
-    print (paste(".ddg.get.var: Found symbol", deparse(lvalue))) 
+  if (is.symbol(lvalue))
     deparse(lvalue)
-  }
 
   # for string literals
   # e.g. when the assign function is used
-  else if ( is.character(lvalue) ) {
-    print (paste(".ddg.get.var: Found string literal", parse(text = lvalue)[[1]])) 
+  else if ( is.character(lvalue) )
     .ddg.get.var( parse(text = lvalue)[[1]] )
-  }
   
-  else if (lvalue[[1]] == "$") { 
-    print (paste(".ddg.get.var: Found $", deparse(lvalue))) 
+  else if (lvalue[[1]] == "$") 
     deparse (lvalue)
-  }
 
-  else {
-    print (paste(".ddg.get.var: Found something else", lvalue[[2]])) 
+  else
     .ddg.get.var(lvalue[[2]])
-  }
 }
 
 

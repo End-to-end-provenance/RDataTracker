@@ -659,7 +659,7 @@
         # parse(file=stdin(), n = -1, text=lines, prompt="?", 
         #       keep.source=TRUE, srcfile = srcfile, encoding = encoding)
         if(prov_active){
-          print(paste("Chunk", chunk_num))
+          #print(paste("Chunk", chunk_num))
           .ddg.add.start.node(node.name = paste("chunk", as.character(chunk_num), "(detailed)"))
           .ddg.parse.commands(exprs, sname, snum, environ = envir,
                               ignore.patterns = ignores, echo = getOption("verbose"), run.commands = TRUE, print.eval = print.eval,
@@ -668,7 +668,7 @@
                               deparseCtrl = "showAttributes")
           .ddg.add.finish.node()
         }else{
-          print(paste("Chunk", chunk_num))
+          #print(paste("Chunk", chunk_num))
           #.ddg.add.start.node(node.name = paste("chunk", as.character(chunk_num)))
           # TODO: Need to parse the chunk and create a statement so we know what functions are called
           
@@ -690,8 +690,8 @@
           #vars.set <- .ddg.find.var.assignments(cmds)
           #vars.set <- sapply(cmds, function(cmd) .ddg.find.simple.assign(cmd@parsed))
           vars.set <- sapply(cmds, function(cmd) cmd@vars.set)
-          print(".ddg.chunk.source: vars.set =")
-          print (vars.set) 
+          #print(".ddg.chunk.source: vars.set =")
+          #print (vars.set) 
           .ddg.create.data.set.edges (vars.set, NULL, envir, captured.output = NULL, node.name, save.value=FALSE)
           
           # Pairs with the start node to create an open-close chunk

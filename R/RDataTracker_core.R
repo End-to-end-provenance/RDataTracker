@@ -579,7 +579,7 @@
   
   for (var in vars.assigned) {
 
-    print(paste(".ddg.create.data.set.edges.for.cmd: var = ", var))
+    #print(paste(".ddg.create.data.set.edges.for.cmd: var = ", var))
     
     # Check for a new ggplot that was not assigned to a variable
     if (isNamespaceLoaded("ggplot2") && .ddg.get ("ddg.ggplot.created")) {
@@ -1909,7 +1909,6 @@
     
   } else {
     script.path <- .ddg.r.script.path()
-    print(script.path)
   }
   
   if(!is.null(script.path) )
