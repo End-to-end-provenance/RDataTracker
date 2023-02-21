@@ -566,13 +566,19 @@
 #' @return nothing
 #' @noRd
 
-.ddg.create.data.set.edges <- function(vars.set, cmd, env, captured.output = NULL) {
+.ddg.create.data.set.edges <- function(vars.set, cmd, env, captured.output = NULL, node.name) {
   #print(paste("In .ddg.create.data.set.edges.for.cmd: cmd = ", cmd@abbrev))
-  vars.assigned <- cmd@vars.set
+  vars.assigned <- 
+    if (is.null(cmd)) vars.set
+  	else cmd@vars.set
+  	
+  node.name <- 
+    if (is.null(cmd)) node.name 
+    else cmd@abbrev
   
   for (var in vars.assigned) {
 
-    #print(paste(".ddg.create.data.set.edges.for.cmd: var = ", var))
+    print(paste(".ddg.create.data.set.edges.for.cmd: var = ", var))
     
     # Check for a new ggplot that was not assigned to a variable
     if (isNamespaceLoaded("ggplot2") && .ddg.get ("ddg.ggplot.created")) {
@@ -591,7 +597,7 @@
       var <- .ddg.extract.var (var, env)
       scope <- .ddg.get.scope(var, env=env)
       .ddg.save.var(var, env, scope)
-      .ddg.proc2data(cmd@abbrev, var, scope)
+      .ddg.proc2data(node.name, var, scope)
       
       # If the variable is inside an environment, like env$var
       # and var was not previously in the environment, we also
@@ -604,14 +610,14 @@
         # Checks if this is the first variable set
         if (is.null(oldEnvContents)) {
           .ddg.save.var(var.env, env, scope)
-          .ddg.proc2data(cmd@abbrev, var.env, scope)
+          .ddg.proc2data(node.name, var.env, scope)
         }
         else {
           # Checks if the variable being set was already in the environment
           internal.var <- substring (var, stringi::stri_locate_first_fixed(var, "$")[1,"start"]+1)
           if (!(internal.var %in% oldEnvContents)) {
             .ddg.save.var(var.env, env, scope)
-            .ddg.proc2data(cmd@abbrev, var.env, scope)
+            .ddg.proc2data(node.name, var.env, scope)
           }
         }
       }
@@ -622,7 +628,7 @@
     #cat(captured.output)
     #print(paste("length(captured.output)",length(captured.output)))
     .ddg.data.node("StandardOutput", "output", captured.output, "Standard output");
-    .ddg.proc2data(cmd@abbrev, "output", "Standard output")
+    .ddg.proc2data(node.name, "output", "Standard output")
   }
 }
 

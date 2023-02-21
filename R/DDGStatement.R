@@ -599,7 +599,7 @@ methods::setMethod ("initialize",
 
 #' .ddg.find.simple.assign returns the name of the variable assigned
 #' to if the object passed in is an expression representing an
-#' assignment statement.  Otherwise, it returns NULL.
+#' assignment statement.  Otherwise, it returns an empty string.
 #' @param obj - input expression.
 #' @return name of variable assigned to
 #' @noRd
@@ -607,11 +607,13 @@ methods::setMethod ("initialize",
 .ddg.find.simple.assign <- function(obj)
 {
   if (.ddg.is.assign(obj)) {
-    #print("In .ddg.find.simple.assign, obj[[2]] =")
-    #print (obj[[2]])
+    print("In .ddg.find.simple.assign, found assignment, obj[[2]] =")
+    print (obj[[2]])
     .ddg.get.var(obj[[2]])
   }
   else {
+    print ("In .ddg.find.simple.assign, no assignment, obj = ")
+    print(obj)
     ""
   }
 }
@@ -662,19 +664,27 @@ methods::setMethod ("initialize",
 
 .ddg.get.var <- function(lvalue)
 {
-  if (is.symbol(lvalue))
+  if (is.symbol(lvalue)) {
+    print (paste(".ddg.get.var: Found symbol", deparse(lvalue))) 
     deparse(lvalue)
+  }
 
   # for string literals
   # e.g. when the assign function is used
-  else if ( is.character(lvalue) )
+  else if ( is.character(lvalue) ) {
+    print (paste(".ddg.get.var: Found string literal", parse(text = lvalue)[[1]])) 
     .ddg.get.var( parse(text = lvalue)[[1]] )
+  }
   
-  else if (lvalue[[1]] == "$") 
+  else if (lvalue[[1]] == "$") { 
+    print (paste(".ddg.get.var: Found $", deparse(lvalue))) 
     deparse (lvalue)
+  }
 
-  else
+  else {
+    print (paste(".ddg.get.var: Found something else", lvalue[[2]])) 
     .ddg.get.var(lvalue[[2]])
+  }
 }
 
 

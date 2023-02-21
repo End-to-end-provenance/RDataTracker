@@ -659,6 +659,7 @@
         # parse(file=stdin(), n = -1, text=lines, prompt="?", 
         #       keep.source=TRUE, srcfile = srcfile, encoding = encoding)
         if(prov_active){
+          print(paste("Chunk", chunk_num))
           .ddg.add.start.node(node.name = paste("chunk", as.character(chunk_num), "(detailed)"))
           .ddg.parse.commands(exprs, sname, snum, environ = envir,
                               ignore.patterns = ignores, echo = getOption("verbose"), run.commands = TRUE, print.eval = print.eval,
@@ -667,13 +668,35 @@
                               deparseCtrl = "showAttributes")
           .ddg.add.finish.node()
         }else{
+          print(paste("Chunk", chunk_num))
           #.ddg.add.start.node(node.name = paste("chunk", as.character(chunk_num)))
-          node.name = paste("chunk", as.character(chunk_num))
           # TODO: Need to parse the chunk and create a statement so we know what functions are called
+          
+          # The commented out code correctly creates a yellow node and links it in to control flow but there are no data nodes
+          node.name = paste("chunk", as.character(chunk_num))
           .ddg.proc.node("Operation", node.name, node.name, 
                          functions.called = list(NULL, NULL, NULL, NULL), scriptNum=snum)
           .ddg.proc2proc()
+          
+          # This code creates a yellow node for each line and the data nodes, even though run.commands is false
+          #.ddg.parse.commands(exprs, sname, snum, environ=envir, run.commands=FALSE)
+          
+          cmds <- .ddg.create.DDGStatements (exprs, sname, snum)
+
+          # This executes the code but does not modify the ddg
           .ddg.evaluate.commands(exprs,environ = envir)
+          
+          # Create the nodes and edges for the variables set
+          #vars.set <- .ddg.find.var.assignments(cmds)
+          #vars.set <- sapply(cmds, function(cmd) .ddg.find.simple.assign(cmd@parsed))
+          vars.set <- sapply(cmds, function(cmd) cmd@vars.set)
+          print(".ddg.chunk.source: vars.set =")
+          print (vars.set) 
+          .ddg.create.data.set.edges (vars.set, NULL, envir, captured.output = NULL, node.name)
+          
+          # Pairs with the start node to create an open-close chunk
+          #.ddg.add.finish.node()
+          
         }
         in_chunk = FALSE
         prov_active = FALSE
