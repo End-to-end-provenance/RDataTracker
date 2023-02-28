@@ -669,34 +669,35 @@
           .ddg.add.finish.node()
         }else{
           #print(paste("Chunk", chunk_num))
-          #.ddg.add.start.node(node.name = paste("chunk", as.character(chunk_num)))
-          # TODO: Need to parse the chunk and create a statement so we know what functions are called
           
-          # The commented out code correctly creates a yellow node and links it in to control flow but there are no data nodes
+          # Create a procedure node for the chunk and connect it to the ddg
           node.name = paste("chunk", as.character(chunk_num))
           .ddg.proc.node("Operation", node.name, node.name, 
                          functions.called = list(NULL, NULL, NULL, NULL), scriptNum=snum)
           .ddg.proc2proc()
           
-          # This code creates a yellow node for each line and the data nodes, even though run.commands is false
-          #.ddg.parse.commands(exprs, sname, snum, environ=envir, run.commands=FALSE)
-          
+          # Parse the statements to find out what variables are used and set
           cmds <- .ddg.create.DDGStatements (exprs, sname, snum)
+
+		  # The variables set in the chunk are the union of the variables set in the statements inside the chunk
+		  # The variables used in the chunk are the variables that are used in the chunk but not set by a previous
+		  # statement in the chunk
+          vars.set.in.chunk <- vector()
+          vars.used.in.chunk <- vector()
+          for (cmd in cmds) {
+          	  vars.used.in.cmd <- setdiff(cmd@vars.used, vars.set.in.chunk)
+          	  vars.used.in.chunk <- union(vars.used.in.chunk, vars.used.in.cmd)
+          	  vars.set.in.chunk <- union(vars.set.in.chunk, cmd@vars.set)
+          }
+          	  
+          # Create the data use edges
+          .ddg.create.data.use.edges(NULL, for.caller=FALSE, env=NULL, vars.used = vars.used.in.chunk, node.name = node.name)
 
           # This executes the code but does not modify the ddg
           .ddg.evaluate.commands(exprs,environ = envir)
           
-          # Create the nodes and edges for the variables set
-          #vars.set <- .ddg.find.var.assignments(cmds)
-          #vars.set <- sapply(cmds, function(cmd) .ddg.find.simple.assign(cmd@parsed))
-          vars.set <- sapply(cmds, function(cmd) cmd@vars.set)
-          #print(".ddg.chunk.source: vars.set =")
-          #print (vars.set) 
-          .ddg.create.data.set.edges (vars.set, NULL, envir, captured.output = NULL, node.name, save.value=FALSE)
-          
-          # Pairs with the start node to create an open-close chunk
-          #.ddg.add.finish.node()
-          
+          # Create the nodes and edges for the variables set.  No value is recorded with these nodes.
+          .ddg.create.data.set.edges (vars.set.in.chunk, NULL, envir, captured.output = NULL, node.name, save.value=FALSE)
         }
         in_chunk = FALSE
         prov_active = FALSE

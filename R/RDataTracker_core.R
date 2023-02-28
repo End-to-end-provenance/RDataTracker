@@ -405,10 +405,15 @@
 #' @return nothing
 #' @noRd
 
-.ddg.create.data.use.edges <- function (cmd, for.caller, env=NULL) {
+.ddg.create.data.use.edges <- function (cmd, for.caller, env=NULL, vars.used = NULL, node.name = NULL) {
   # Find all the variables used in this command.
-  #print (paste(".ddg.create.data.use.edges: cmd = ", cmd@text))
-  vars.used <- cmd@vars.used
+  if (is.null(node.name)) {
+    node.name <- cmd@abbrev
+  }
+  #print (paste(".ddg.create.data.use.edges: cmd = ", node.name))
+  if (is.null(vars.used)) {
+  	vars.used <- cmd@vars.used
+  }
 
   for (var in vars.used) {
     var <- .ddg.extract.var (var, env)
@@ -421,13 +426,13 @@
 
     if (.ddg.data.node.exists(var, scope)) {
       #print(".ddg.create.data.use.edges found data node")
-      .ddg.data2proc(var, scope, cmd@abbrev)
+      .ddg.data2proc(var, scope, node.name)
     }
     else {
       scope <- .ddg.get.scope(var, for.caller)
       if (.ddg.data.node.exists(var, scope)) {
         #print ("Found data node in caller's scope")
-        .ddg.data2proc(var, scope, cmd@abbrev)
+        .ddg.data2proc(var, scope, node.name)
       }
     }
     
@@ -437,13 +442,13 @@
     if (!is.null(var.env)){
       if (.ddg.data.node.exists(var.env, scope)) {
         #print(".ddg.create.data.use.edges found data node for the environment")
-        .ddg.data2proc(var.env, scope, cmd@abbrev)
+        .ddg.data2proc(var.env, scope, node.name)
       }
       else {
         scope <- .ddg.get.scope(var.env, for.caller)
         if (.ddg.data.node.exists(var.env, scope)) {
           #print ("Found data node inside environment")
-          .ddg.data2proc(var.env, scope, cmd@abbrev)
+          .ddg.data2proc(var.env, scope, node.name)
         }
       }
     }
