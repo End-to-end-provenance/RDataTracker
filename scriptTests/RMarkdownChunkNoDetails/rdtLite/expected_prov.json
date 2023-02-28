@@ -34,7 +34,7 @@
 		"rdt:p1": {
 			"rdt:name": "chunk 1",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "1.296",
+			"rdt:elapsedTime": "1.315",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -54,7 +54,7 @@
 		"rdt:p3": {
 			"rdt:name": "chunk 3",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.006",
+			"rdt:elapsedTime": "0.013",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -120,8 +120,19 @@
 			"rdt:location": ""
 		},
 		"rdt:d6": {
+			"rdt:name": "iris",
+			"rdt:value": "data/6-iris.csv",
+			"rdt:valType": "{\"container\":\"data_frame\", \"dimension\":[150,5], \"type\":[\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"factor\"]}",
+			"rdt:type": "Snapshot",
+			"rdt:scope": "R_GlobalEnv",
+			"rdt:fromEnv": false,
+			"rdt:hash": "",
+			"rdt:timestamp": "2023-02-28T14.22.39EST",
+			"rdt:location": ""
+		},
+		"rdt:d7": {
 			"rdt:name": "ggplot2 Rdata.rds",
-			"rdt:value": "data/6-Rdata.rds",
+			"rdt:value": "data/7-Rdata.rds",
 			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}",
 			"rdt:type": "File",
 			"rdt:scope": "undefined",
@@ -130,9 +141,9 @@
 			"rdt:timestamp": "2022-11-05T08.39.27EDT",
 			"rdt:location": "/Library/Frameworks/R.framework/Versions/4.2/Resources/library/ggplot2/data/Rdata.rds"
 		},
-		"rdt:d7": {
+		"rdt:d8": {
 			"rdt:name": "datasets Rdata.rds",
-			"rdt:value": "data/7-Rdata.rds",
+			"rdt:value": "data/8-Rdata.rds",
 			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}",
 			"rdt:type": "File",
 			"rdt:scope": "undefined",
@@ -141,18 +152,18 @@
 			"rdt:timestamp": "2022-06-24T07.02.06EDT",
 			"rdt:location": "/Library/Frameworks/R.framework/Versions/4.2/Resources/library/datasets/data/Rdata.rds"
 		},
-		"rdt:d8": {
+		"rdt:d9": {
 			"rdt:name": "iris",
-			"rdt:value": "data/8-iris.csv",
+			"rdt:value": "data/9-iris.csv",
 			"rdt:valType": "{\"container\":\"data_frame\", \"dimension\":[150,5], \"type\":[\"numeric\",\"numeric\",\"numeric\",\"numeric\",\"factor\"]}",
 			"rdt:type": "Snapshot",
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2023-02-21T16.52.11EST",
+			"rdt:timestamp": "2023-02-28T14.22.40EST",
 			"rdt:location": ""
 		},
-		"rdt:d9": {
+		"rdt:d10": {
 			"rdt:name": "x",
 			"rdt:value": "\"No value saved\"",
 			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}",
@@ -163,7 +174,7 @@
 			"rdt:timestamp": "",
 			"rdt:location": ""
 		},
-		"rdt:d10": {
+		"rdt:d11": {
 			"rdt:name": "y",
 			"rdt:value": "\"No value saved\"",
 			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}",
@@ -174,7 +185,7 @@
 			"rdt:timestamp": "",
 			"rdt:location": ""
 		},
-		"rdt:d11": {
+		"rdt:d12": {
 			"rdt:name": "n",
 			"rdt:value": "\"No value saved\"",
 			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}",
@@ -185,15 +196,15 @@
 			"rdt:timestamp": "",
 			"rdt:location": ""
 		},
-		"rdt:d12": {
+		"rdt:d13": {
 			"rdt:name": "RMarkdownChunkNoDetails.pdf",
-			"rdt:value": "data/12-RMarkdownChunkNoDetails.pdf",
+			"rdt:value": "data/13-RMarkdownChunkNoDetails.pdf",
 			"rdt:valType": "{\"container\":\"vector\", \"dimension\":[1], \"type\":[\"character\"]}",
 			"rdt:type": "File",
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
-			"rdt:hash": "16f25e5b6b2e7db998e7282748d785c9",
-			"rdt:timestamp": "2023-02-21T16.52.10EST",
+			"rdt:hash": "e60aef0df8a53f15d6f03447649972c9",
+			"rdt:timestamp": "2023-02-28T14.22.39EST",
 			"rdt:location": "[DIR]/RMarkdownChunkNoDetails.pdf"
 		},
 
@@ -208,13 +219,13 @@
 			"rdt:script": "[DIR]/RMarkdownChunkNoDetails.Rmd",
 			"rdt:scriptTimeStamp": "2023-01-31T15.45.41EST",
 			"rdt:scriptHash": "e6a7958743a6c5d7afb8174044aa3054",
-			"rdt:totalElapsedTime": "1.353",
+			"rdt:totalElapsedTime": "1.379",
 			"rdt:sourcedScripts": "",
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:sourcedScriptHashes": "",
 			"rdt:workingDirectory": "[DIR]/rdtLite",
 			"rdt:provDirectory": "[DIR]/rdtLite/prov_RMarkdownChunkNoDetails",
-			"rdt:provTimestamp": "2023-02-21T16.52.10EST",
+			"rdt:provTimestamp": "2023-02-28T14.22.39EST",
 			"rdt:hashAlgorithm": "md5"
 		},
 
@@ -713,33 +724,45 @@
 		},
 		"rdt:pd6": {
 			"prov:activity": "rdt:p3",
-			"prov:entity": "rdt:d8"
+			"prov:entity": "rdt:d9"
 		},
 		"rdt:pd7": {
 			"prov:activity": "rdt:p3",
-			"prov:entity": "rdt:d9"
+			"prov:entity": "rdt:d10"
 		},
 		"rdt:pd8": {
 			"prov:activity": "rdt:p3",
-			"prov:entity": "rdt:d10"
+			"prov:entity": "rdt:d11"
 		},
 		"rdt:pd9": {
 			"prov:activity": "rdt:p3",
-			"prov:entity": "rdt:d11"
+			"prov:entity": "rdt:d12"
 		},
 		"rdt:pd10": {
 			"prov:activity": "rdt:p3",
-			"prov:entity": "rdt:d12"
+			"prov:entity": "rdt:d13"
 		}
 	},
 
 	"used" : {
 		"rdt:dp1": {
+			"prov:entity": "rdt:d3",
+			"prov:activity": "rdt:p2"
+		},
+		"rdt:dp2": {
 			"prov:entity": "rdt:d6",
 			"prov:activity": "rdt:p3"
 		},
-		"rdt:dp2": {
+		"rdt:dp3": {
+			"prov:entity": "rdt:d5",
+			"prov:activity": "rdt:p3"
+		},
+		"rdt:dp4": {
 			"prov:entity": "rdt:d7",
+			"prov:activity": "rdt:p3"
+		},
+		"rdt:dp5": {
+			"prov:entity": "rdt:d8",
 			"prov:activity": "rdt:p3"
 		}
 	}
