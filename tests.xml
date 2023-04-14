@@ -2842,6 +2842,31 @@
 	</target>
 	
 	
+	<!-- RMarkdown tests -->
+	<target name="rmarkdown-tests"
+			depends="RMarkdown, RMarkdownChunk, RMarkdownChunkMixedDetails,
+					 RMarkdownChunkNoDetails"
+			description="Run RMarkdown regressions tests.">
+		<echo></echo>
+		<echo>	### Finished Execution of RMarkdown Tests. ###</echo>
+		<echo></echo>
+	</target>
+	
+	<target name="rmarkdown-tests-rdt">
+		<antcall target="rmarkdown-tests">
+			<param name="all" value="false"/>
+			<param name="tool" value="rdt"/>
+		</antcall>
+	</target>
+	
+	<target name="rmarkdown-tests-rdtLite">
+		<antcall target="rmarkdown-tests">
+			<param name="all" value="false"/>
+			<param name="tool" value="rdtLite"/>
+		</antcall>
+	</target>
+	
+	
 	<!-- quick test -->
 	<target name="quick-test"
 			depends="normal-tests, source-tests, bug-tests"

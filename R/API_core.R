@@ -619,7 +619,6 @@
   }
   invisible(yy)
 }
-#_______ SEAN ADD _________
 
 #' .ddg.chunk.source is an alternative to .ddg.source which parses an RMarkdown file, collecting provenance on the code. 
 #' if details are set to TRUE in the chunk header, then detailed provenance is collected on that chunk. Otherwise, just input/output
@@ -634,24 +633,110 @@
 #' @param ignore.ddg.calls if TRUE, ignore DDG function calls
 #' @noRd
 
-.ddg.chunk.source <- function(file, local = FALSE, encoding = getOption("encoding"), print.eval = getOption("verbose"), ignore.ddg.calls = TRUE, ...){
+.ddg.chunk.source <- function(file, local = FALSE, echo = verbose, print.eval = echo, encoding = getOption("encoding"), 
+                              verbose = getOption("verbose"), chdir = FALSE, ignore.ddg.calls = TRUE, ...){
+
   snum <- .ddg.store.script.info(file)
   sname <- basename(file)
-  ignores <-  c("^library[(]RDataTracker[)]$", "^library[(]provR[)]$", 
-                if (ignore.ddg.calls) "^ddg." else c("^prov.init", "^prov.run"))
   file.copy(file, paste(.ddg.path.scripts(), sname, sep = "/"))
-  chunk_num <- 1
-  in_chunk <- FALSE
-  prov_active <- FALSE
-  backticks <- "```"
-  lines <- readLines(file, warn = FALSE)
-  cur_chunk <- c()
+  
+  # We always want to keep the source when we collect provenance,
+  # so this is not a parameter of .ddg.source.
+  keep.source <- TRUE
+  
+  #### Start section taken from R's source function ####
   envir <- if (isTRUE(local)) 
     parent.frame()
   else if (isFALSE(local)) 
     .GlobalEnv
   else if (is.environment(local)) 
     local
+  else stop("'local' must be TRUE, FALSE or an environment")
+  if (!missing(echo)) {
+    if (!is.logical(echo)) 
+      stop("'echo' must be logical")
+    if (!echo && verbose) {
+      warning("'verbose' is TRUE, 'echo' not; ... coercing 'echo <- TRUE'")
+      echo <- TRUE
+    }
+  }
+  if (verbose) {
+    cat("'envir' chosen:")
+    print(envir)
+  }
+
+  ofile <- file
+  srcfile <- NULL
+  have_encoding <- !missing(encoding) && encoding != "unknown"
+  if (identical(encoding, "unknown")) {
+    enc <- utils::localeToCharset()
+    encoding <- enc[length(enc)]
+  }
+  else enc <- encoding
+  if (length(enc) > 1L) {
+    encoding <- NA
+    # In source function, but CRAN says not to change user's options
+    #owarn <- options(warn = 2)
+    for (e in enc) {
+      if (is.na(e)) 
+        next
+      zz <- file(file, encoding = e)
+      res <- tryCatch(readLines(zz, warn = FALSE), 
+                          error = identity)
+      close(zz)
+      if (!inherits(res, "error")) {
+        encoding <- e
+        break
+      }
+    }
+    # Reverts to user's options.  Removed for CRAN
+    #options(owarn)
+  }
+  if (is.na(encoding)) 
+    stop("unable to find a plausible encoding")
+  if (verbose) 
+    cat(gettextf("encoding = \"%s\" chosen", encoding), 
+        "\n", sep = "")
+  filename <- file
+  file <- file(filename, "r", encoding = encoding)
+  on.exit(close(file))
+  lines <- readLines(file, warn = FALSE)
+  on.exit()
+  close(file)
+        
+  loc <- utils::localeToCharset()[1L]
+  encoding <- if (have_encoding) 
+      switch(loc, `UTF-8` = "UTF-8", `ISO8859-1` = "latin1", 
+                 "unknown")
+    else "unknown"
+    
+  on.exit()
+  if (chdir) {
+    if (is.character(ofile)) {
+      if (grepl("^(ftp|http|file)://", ofile)) 
+        warning("'chdir = TRUE' makes no sense for a URL")
+      else if ((path <- dirname(ofile)) != ".") {
+        owd <- getwd()
+        if (is.null(owd)) 
+          stop("cannot 'chdir' as current directory is unknown")
+        on.exit(setwd(owd), add = TRUE)
+        setwd(path)
+      }
+    }
+    else {
+      warning("'chdir = TRUE' makes no sense for a connection")
+    }
+  }
+  yy <- NULL
+
+  #### End section copied from R's source function ####
+  ignores <-  c("^library[(]RDataTracker[)]$", "^library[(]provR[)]$", 
+                if (ignore.ddg.calls) "^ddg." else c("^prov.init", "^prov.run"))
+  chunk_num <- 1
+  in_chunk <- FALSE
+  prov_active <- FALSE
+  backticks <- "```"
+  cur_chunk <- c()
   for(line in lines){
     if(grepl(backticks,line, fixed = TRUE)){
       if(in_chunk){
@@ -660,8 +745,9 @@
         #       keep.source=TRUE, srcfile = srcfile, encoding = encoding)
         if(prov_active){
           #print(paste("Chunk", chunk_num))
+
           .ddg.add.start.node(node.name = paste("chunk", as.character(chunk_num), "(detailed)"))
-          .ddg.parse.commands(exprs, sname, snum, environ = envir,
+          yy <- .ddg.parse.commands(exprs, sname, snum, environ = envir,
                               ignore.patterns = ignores, echo = getOption("verbose"), run.commands = TRUE, print.eval = print.eval,
                               max.deparse.length = 150, 
                               continue.echo = getOption("continue"), skip.echo = 0, prompt.echo = getOption("prompt"), verbose = getOption("verbose"), 
@@ -694,7 +780,7 @@
           .ddg.create.data.use.edges(NULL, for.caller=FALSE, env=NULL, vars.used = vars.used.in.chunk, node.name = node.name)
 
           # This executes the code but does not modify the ddg
-          .ddg.evaluate.commands(exprs,environ = envir)
+          yy <- .ddg.evaluate.commands(exprs,environ = envir)
           
           # Create the nodes and edges for the variables set.  No value is recorded with these nodes.
           .ddg.create.data.set.edges (vars.set.in.chunk, NULL, envir, captured.output = NULL, node.name, save.value=FALSE)
@@ -720,6 +806,7 @@
       cur_chunk <- c(cur_chunk, line)
     }
   }
+  invisible(yy)
 }
 #_______ SEAN ADD END _________
 
