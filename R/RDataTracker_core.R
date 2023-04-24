@@ -1197,6 +1197,12 @@
                     .ddg.set ("ddg.last.R.value", returnWithVisible$value)
                     .ddg.set ("ddg.error.node.created", FALSE)
                   }
+                  loaded_after = loadedNamespaces()
+                  if (length(loaded_before) != length(loaded_after)) {
+                  	script.libraries <- .ddg.get ("ddg.script.libraries")
+                  	script.libraries <- append (script.libraries, setdiff(loaded_after, loaded_before))
+                  	.ddg.set("ddg.script.libraries", script.libraries)
+                  }
                   
                   loaded_after = loadedNamespaces()
                   if (length(loaded_before) != length(loaded_after)) {
@@ -1825,7 +1831,7 @@
   if (is.null(env)) {
     env <- .ddg.get.env(name, for.caller, calls)
   }
-
+  
   # If no environment found, name does not exist, so scope is
   # undefined.
   if (is.null(env)) return ("undefined")

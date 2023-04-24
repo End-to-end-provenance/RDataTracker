@@ -152,8 +152,6 @@
 		
 		# PRINT TO JSON - FUNCTION NODES
 		json$entity.func <- .ddg.json.func( functions , LABEL.NAMES$entity.func , LABEL.PREFIX )
-		
-		
 		# MERGE TABLES: function calls, functions, libraries
 		# library nodes - change col names, add lnum column for merging
 		colnames(libraries) <- c( "ddg.lib" , "ddg.lib.version" )
