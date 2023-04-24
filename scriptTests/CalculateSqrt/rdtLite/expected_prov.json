@@ -7,7 +7,7 @@
 	"agent" : {
 		"rdt:a1": {
 			"rdt:tool.name": "rdtLite",
-			"rdt:tool.version": "1.4",
+			"rdt:tool.version": "1.5",
 			"rdt:json.version": "2.3",
 			"rdt:args.names": [
 				"overwrite",
@@ -34,7 +34,7 @@
 		"rdt:p1": {
 			"rdt:name": "CalculateSqrt.R",
 			"rdt:type": "Start",
-			"rdt:elapsedTime": "0.257",
+			"rdt:elapsedTime": "0.272",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": "NA",
 			"rdt:startCol": "NA",
@@ -44,7 +44,7 @@
 		"rdt:p2": {
 			"rdt:name": "get.initial.values <- function() {\n  number <<- 10\n  toleran",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.123",
+			"rdt:elapsedTime": "0.126",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 11,
 			"rdt:startCol": 1,
@@ -54,7 +54,7 @@
 		"rdt:p3": {
 			"rdt:name": "get.random <- function(x) {\n  # get random seed value\n  # z ",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.086",
+			"rdt:elapsedTime": "0.089",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 16,
 			"rdt:startCol": 1,
@@ -64,7 +64,7 @@
 		"rdt:p4": {
 			"rdt:name": "calc.square.root <- function(n,x) {\n  # calculate square roo",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.098",
+			"rdt:elapsedTime": "0.095",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 26,
 			"rdt:startCol": 1,
@@ -74,7 +74,7 @@
 		"rdt:p5": {
 			"rdt:name": "get.difference <- function(n,x) {\n  # test result\n  z <- abs",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.066",
+			"rdt:elapsedTime": "0.065",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 34,
 			"rdt:startCol": 1,
@@ -84,7 +84,7 @@
 		"rdt:p6": {
 			"rdt:name": "get.check.value <- function(d,t) {\n  #compare difference to ",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.065",
+			"rdt:elapsedTime": "0.066",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 41,
 			"rdt:startCol": 1,
@@ -94,7 +94,7 @@
 		"rdt:p7": {
 			"rdt:name": "store.result <- function(n,x) {\n  num <- n\n  sqrt <- x  \n  z",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.067",
+			"rdt:elapsedTime": "0.075",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 48,
 			"rdt:startCol": 1,
@@ -104,7 +104,7 @@
 		"rdt:p8": {
 			"rdt:name": "write.result <- function(fn,zz) {\n  file.out <- paste(getwd(",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.071",
+			"rdt:elapsedTime": "0.068",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 56,
 			"rdt:startCol": 1,
@@ -114,7 +114,7 @@
 		"rdt:p9": {
 			"rdt:name": "get.initial.values()",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.066",
+			"rdt:elapsedTime": "0.065",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 63,
 			"rdt:startCol": 1,
@@ -124,7 +124,7 @@
 		"rdt:p10": {
 			"rdt:name": "estimate <- get.random(number)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.06",
+			"rdt:elapsedTime": "0.063",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 64,
 			"rdt:startCol": 1,
@@ -134,7 +134,7 @@
 		"rdt:p11": {
 			"rdt:name": "check <- number",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.058",
+			"rdt:elapsedTime": "0.062",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 66,
 			"rdt:startCol": 1,
@@ -142,9 +142,9 @@
 			"rdt:endCol": 15
 		},
 		"rdt:p12": {
-			"rdt:name": "while (check > 0) {\n\t  # repeat calculation until tests OK\n\t",
+			"rdt:name": "while (check > 0) {\n\t  # repeat calculation until tests OK\n ",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.074",
+			"rdt:elapsedTime": "0.07",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 68,
 			"rdt:startCol": 1,
@@ -154,7 +154,7 @@
 		"rdt:p13": {
 			"rdt:name": "sqr.root <- store.result(number,estimate)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.075",
+			"rdt:elapsedTime": "0.071",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 75,
 			"rdt:startCol": 1,
@@ -164,7 +164,7 @@
 		"rdt:p14": {
 			"rdt:name": "write.result(\"sqr-root.csv\",sqr.root)",
 			"rdt:type": "Operation",
-			"rdt:elapsedTime": "0.072",
+			"rdt:elapsedTime": "0.069",
 			"rdt:scriptNum": 1,
 			"rdt:startLine": 76,
 			"rdt:startCol": 1,
@@ -192,7 +192,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2023-02-08T17.27.02EST",
+			"rdt:timestamp": "2023-04-24T16.36.56EDT",
 			"rdt:location": ""
 		},
 		"rdt:d2": {
@@ -203,7 +203,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2023-02-08T17.27.02EST",
+			"rdt:timestamp": "2023-04-24T16.36.56EDT",
 			"rdt:location": ""
 		},
 		"rdt:d3": {
@@ -214,7 +214,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2023-02-08T17.27.03EST",
+			"rdt:timestamp": "2023-04-24T16.36.56EDT",
 			"rdt:location": ""
 		},
 		"rdt:d4": {
@@ -225,7 +225,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2023-02-08T17.27.03EST",
+			"rdt:timestamp": "2023-04-24T16.36.56EDT",
 			"rdt:location": ""
 		},
 		"rdt:d5": {
@@ -236,7 +236,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2023-02-08T17.27.03EST",
+			"rdt:timestamp": "2023-04-24T16.36.56EDT",
 			"rdt:location": ""
 		},
 		"rdt:d6": {
@@ -247,7 +247,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2023-02-08T17.27.03EST",
+			"rdt:timestamp": "2023-04-24T16.36.57EDT",
 			"rdt:location": ""
 		},
 		"rdt:d7": {
@@ -258,7 +258,7 @@
 			"rdt:scope": "R_GlobalEnv",
 			"rdt:fromEnv": false,
 			"rdt:hash": "",
-			"rdt:timestamp": "2023-02-08T17.27.03EST",
+			"rdt:timestamp": "2023-04-24T16.36.57EDT",
 			"rdt:location": ""
 		},
 		"rdt:d8": {
@@ -357,7 +357,7 @@
 			"rdt:scope": "undefined",
 			"rdt:fromEnv": false,
 			"rdt:hash": "f77ba910c796a4851a1a8ac8bb6ab81c",
-			"rdt:timestamp": "2023-02-08T17.27.03EST",
+			"rdt:timestamp": "2023-04-24T16.36.57EDT",
 			"rdt:location": "[DIR]/rdtLite/sqr-root.csv"
 		},
 
@@ -370,15 +370,15 @@
 			"rdt:ui": "X11",
 			"rdt:pandoc": "2.2.1 @ /usr/local/bin/pandoc",
 			"rdt:script": "[DIR]/CalculateSqrt.R",
-			"rdt:scriptTimeStamp": "2023-01-25T15.51.21EST",
-			"rdt:scriptHash": "4c4e561dedd5b3375c63ac2f70e599d2",
-			"rdt:totalElapsedTime": "1.246",
+			"rdt:scriptTimeStamp": "2023-04-24T16.12.15EDT",
+			"rdt:scriptHash": "270978e7a69556adfad0884e90e2ff32",
+			"rdt:totalElapsedTime": "1.264",
 			"rdt:sourcedScripts": "",
 			"rdt:sourcedScriptTimeStamps": "",
 			"rdt:sourcedScriptHashes": "",
 			"rdt:workingDirectory": "[DIR]/rdtLite",
 			"rdt:provDirectory": "[DIR]/rdtLite/prov_CalculateSqrt",
-			"rdt:provTimestamp": "2023-02-08T17.27.02EST",
+			"rdt:provTimestamp": "2023-04-24T16.36.56EDT",
 			"rdt:hashAlgorithm": "md5"
 		},
 
@@ -618,7 +618,7 @@
 		},
 		"rdt:l27": {
 			"name": "rdtLite",
-			"version": "1.4",
+			"version": "1.5",
 			"whereLoaded": "preloaded",
 			"prov:type": {
 				"$": "prov:Collection",
