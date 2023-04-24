@@ -114,7 +114,7 @@ that are loaded with R's source function, you should replace calls
 to source with calls to prov.source.
 }
 \details{
-rdtLite is an R package that collects provenance as an R script 
+rdtLite is an R package that collects provenance as an R or RMarkdown script 
 executes. The resulting provenance provides a detailed record of the 
 execution of the script and includes information on the steps that were 
 performed and the intermediate data values that were created. The 
@@ -125,6 +125,15 @@ There are two ways in which a user can collect provenance.  To collect
 provenance from commands stored in a script file, use prov.run.  This
 will execute the commands that are in the script, collecting provenance
 as it does so.
+
+When collecting provenance from an RMarkdown script, the user can selectively
+turn provenance collection on or off for each chunk using the "details" chunk
+option.  If its value is TRUE, provenance is collected.  If its FALSE, provenance
+is not collected.  The default value is FALSE.  When provenance is collected
+from RMarkdown, the script is executed twice: once to generate RMarkdown's output
+and once to collect the provenance.  If the script produces different behavior
+when executed a second time, for example, if it uses random numbers without 
+setting the seed first, the provenance might be inaccurate.
 
 The user can also collect provenance while executing commands in the 
 console.  To do this, first execute prov.init.  Then enter console
