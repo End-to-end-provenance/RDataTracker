@@ -52,6 +52,7 @@ jobs:
         run: |
           install.packages("jsonvalidate")
           install.packages("devtools")
+          install.packages("utils")
         shell: Rscript {0}
 
       - name: Run script tests
