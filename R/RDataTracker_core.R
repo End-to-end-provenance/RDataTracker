@@ -1178,7 +1178,7 @@
               {
                 for (annot in cmd@annotated) {
                   #print (paste (".ddg.parse.commands: Evaluating ", 
-                  #             paste(annot, collapse = " ")))
+                               #paste(annot, collapse = " ")))
                   # Don't set return.value if we are calling a ddg function or we 
                   # are executing an if-statement
                   loaded_before = loadedNamespaces()

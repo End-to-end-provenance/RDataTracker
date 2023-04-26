@@ -1811,6 +1811,8 @@
 			<param name="all" value="false"/>
 			<param name="tool" value="rdtLite"/>
 		</antcall>
+		<echo> "WARNING: The last test in this file is currently commented out"</echo>
+		<echo> "due to a bug in R 4.3.0.  See the end of the script for details."</echo>
 	</target>
 	
 	<target name="update-FunctionOrigin-rdt">
