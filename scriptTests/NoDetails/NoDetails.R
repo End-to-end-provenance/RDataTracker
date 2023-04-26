@@ -27,4 +27,7 @@ title("RStudio display")
 dev.off()
 
 # an error
+# Note that as of R 4.3.0, the error message is different when run in 
+# prov.run and when run normally.  I believe this is a bug in 4.3.0
+# that I have reported.  See comment at the end of FunctionOrigin.R for details.
 as.roman(z)
