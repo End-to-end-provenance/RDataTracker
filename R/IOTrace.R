@@ -143,7 +143,7 @@
                                  print=FALSE), 
                           type="message"))
                           
-  
+
 
   if (isNamespaceLoaded("vroom")) {
      .ddg.trace.vroom.functions()
@@ -154,21 +154,21 @@
       # Loading happens when vroom::vroom_write is called if the 
       # vroom library has not been previously loaded, or
       # when the library is attached with library(vroom)
-      #print ("Setting onLoad hook for vroom")
-      setHook(packageEvent("vroom", "onLoad"),
-          function (...) {
-              #print ("onLoad hook called for vroom")
-              .ddg.trace.vroom.functions()
-          },
-          "replace"
-      )
+  #print ("Setting onLoad hook for vroom")
+  setHook(packageEvent("vroom", "onLoad"),
+        function (...) {
+          #print ("onLoad hook called for vroom")
+          .ddg.trace.vroom.functions()
+        },
+        "replace"
+  )
   }
 
 
   if (isNamespaceLoaded("ggplot2")) {
-  	.ddg.trace.ggplot2.functions()
+          .ddg.trace.ggplot2.functions()
   }
-  
+
   else {
     setHook(packageEvent("ggplot2", "onLoad"),
         function (...) {
@@ -176,7 +176,7 @@
           .ddg.trace.ggplot2.functions()
         },
         "replace"
-    )
+  )
   }
 
   #print ("Done initializing IO tracing")
@@ -185,7 +185,7 @@
 
 
 trace.oneOutput <- function (f, pkg) {
-  #print (paste ("Adding tracing for ", f))
+    #print (paste ("Adding tracing for ", f))
   tryCatch (
 	if (pkg == "") {
       # If vroom is loaded, and "" is passed in for the package,
@@ -215,7 +215,7 @@ trace.oneOutput <- function (f, pkg) {
 } 
 
 untrace.oneFunction <- function (f, pkg) {
-  #cat ("Untracing", f, "in package", pkg)
+	#cat ("Untracing", f, "in package", pkg)
   tryCatch (
 	if (pkg == "") {
       utils::capture.output(
@@ -255,9 +255,7 @@ trace.oneInput <- function (f, pkg) {
     error = function (e) {warning ("I/O function ", f, " might not get traced.", call. = FALSE) }
   )
 
-} 
-
-
+    }
 
 
 #' .ddg.stop.iotracing stops tracing I/O calls.  This should be called when RDT finishes.
@@ -290,7 +288,7 @@ trace.oneInput <- function (f, pkg) {
                          type="message")
   utils::capture.output (untrace(.ddg.get("ddg.graphics.update.functions.df")), 
                          type="message")
-  utils::capture.output (untrace(grDevices::dev.off), type="message") 
+  utils::capture.output (untrace(grDevices::dev.off), type="message")
   
   #print ("Untracing vroom functions")
   .ddg.untrace.vroom.functions()
@@ -1665,7 +1663,7 @@ trace.oneInput <- function (f, pkg) {
     # Works when vroom is not initially loaded!!!
     lapply (function.names, 
         function (function.name) {
-            tryCatch (utils::capture.output(
+    tryCatch (utils::capture.output(
                   utils::capture.output(
                       trace(function.name, 
                             tracer = function () .ddg.trace.output (),
@@ -1684,7 +1682,7 @@ trace.oneInput <- function (f, pkg) {
                             print=FALSE),
                           type="message"))
                       })
-        })
+                      })
   	#print ("Back from adding vroom output tracing")
 
 	function.names <- c("vroom", "vroom_lines")
@@ -1703,7 +1701,7 @@ trace.oneInput <- function (f, pkg) {
                     #tracer = quote(print ("Tracing a vroom read function")), 
     	            #where = asNamespace("vroom"), 
     	            print=FALSE),type="message")),
-              error = function (e) {
+                     error = function (e) {
                        utils::capture.output(
                          utils::capture.output(trace(function.name, 
                     		tracer = function () .ddg.trace.input(),  
@@ -1712,7 +1710,7 @@ trace.oneInput <- function (f, pkg) {
     	            		print=FALSE),
                         type="message"))
                      })
-        })
+                     })
 }
 
 .ddg.untrace.vroom.functions <- function () {
@@ -1749,17 +1747,17 @@ trace.oneInput <- function (f, pkg) {
 
 
 .ddg.trace.ggplot2.functions <- function () {
-  #print ("Tracing ggplot2")
+    #print ("Tracing ggplot2")
   tryCatch (
     {
-  	  utils::capture.output(
+  	utils::capture.output(
     	utils::capture.output(trace ("ggplot", 
             function () .ddg.trace.output (), 
                                  print=FALSE,
                                  where = asNamespace("ggplot2")), 
                           type="message"))
-      utils::capture.output(
-        utils::capture.output(trace ("ggsave", 
+    utils::capture.output(
+      utils::capture.output(trace ("ggsave", 
             function () .ddg.trace.close (), 
                                  print=FALSE,
                                  where = asNamespace("ggplot2")), 

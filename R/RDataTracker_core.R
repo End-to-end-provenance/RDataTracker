@@ -405,10 +405,15 @@
 #' @return nothing
 #' @noRd
 
-.ddg.create.data.use.edges <- function (cmd, for.caller, env=NULL) {
+.ddg.create.data.use.edges <- function (cmd, for.caller, env=NULL, vars.used = NULL, node.name = NULL) {
   # Find all the variables used in this command.
-  #print (paste(".ddg.create.data.use.edges: cmd = ", cmd@text))
-  vars.used <- cmd@vars.used
+  if (is.null(node.name)) {
+    node.name <- cmd@abbrev
+  }
+  #print (paste(".ddg.create.data.use.edges: cmd = ", node.name))
+  if (is.null(vars.used)) {
+  	vars.used <- cmd@vars.used
+  }
 
   for (var in vars.used) {
     var <- .ddg.extract.var (var, env)
@@ -421,13 +426,13 @@
 
     if (.ddg.data.node.exists(var, scope)) {
       #print(".ddg.create.data.use.edges found data node")
-      .ddg.data2proc(var, scope, cmd@abbrev)
+      .ddg.data2proc(var, scope, node.name)
     }
     else {
       scope <- .ddg.get.scope(var, for.caller)
       if (.ddg.data.node.exists(var, scope)) {
         #print ("Found data node in caller's scope")
-        .ddg.data2proc(var, scope, cmd@abbrev)
+        .ddg.data2proc(var, scope, node.name)
       }
     }
     
@@ -437,13 +442,13 @@
     if (!is.null(var.env)){
       if (.ddg.data.node.exists(var.env, scope)) {
         #print(".ddg.create.data.use.edges found data node for the environment")
-        .ddg.data2proc(var.env, scope, cmd@abbrev)
+        .ddg.data2proc(var.env, scope, node.name)
       }
       else {
         scope <- .ddg.get.scope(var.env, for.caller)
         if (.ddg.data.node.exists(var.env, scope)) {
           #print ("Found data node inside environment")
-          .ddg.data2proc(var.env, scope, cmd@abbrev)
+          .ddg.data2proc(var.env, scope, node.name)
         }
       }
     }
@@ -563,12 +568,19 @@
 #' @param vars.set variable assignment data frame.
 #' @param cmd the command to create edges for
 #' @param env environment to use for evaluating variables set.
+#' @param save.value if FALSE, no attempt is made to store the value
 #' @return nothing
 #' @noRd
 
-.ddg.create.data.set.edges <- function(vars.set, cmd, env, captured.output = NULL) {
+.ddg.create.data.set.edges <- function(vars.set, cmd, env, captured.output = NULL, node.name, save.value = TRUE) {
   #print(paste("In .ddg.create.data.set.edges.for.cmd: cmd = ", cmd@abbrev))
-  vars.assigned <- cmd@vars.set
+  vars.assigned <- 
+    if (is.null(cmd)) vars.set
+  	else cmd@vars.set
+  	
+  node.name <- 
+    if (is.null(cmd)) node.name 
+    else cmd@abbrev
   
   for (var in vars.assigned) {
 
@@ -590,8 +602,8 @@
       # Create the nodes and edges for setting the variable
       var <- .ddg.extract.var (var, env)
       scope <- .ddg.get.scope(var, env=env)
-      .ddg.save.var(var, env, scope)
-      .ddg.proc2data(cmd@abbrev, var, scope)
+      .ddg.save.var(var, env, scope, save.value=save.value)
+      .ddg.proc2data(node.name, var, scope)
       
       # If the variable is inside an environment, like env$var
       # and var was not previously in the environment, we also
@@ -603,15 +615,15 @@
         
         # Checks if this is the first variable set
         if (is.null(oldEnvContents)) {
-          .ddg.save.var(var.env, env, scope)
-          .ddg.proc2data(cmd@abbrev, var.env, scope)
+          .ddg.save.var(var.env, env, scope, save.value=save.value)
+          .ddg.proc2data(node.name, var.env, scope)
         }
         else {
           # Checks if the variable being set was already in the environment
           internal.var <- substring (var, stringi::stri_locate_first_fixed(var, "$")[1,"start"]+1)
           if (!(internal.var %in% oldEnvContents)) {
-            .ddg.save.var(var.env, env, scope)
-            .ddg.proc2data(cmd@abbrev, var.env, scope)
+            .ddg.save.var(var.env, env, scope, save.value=save.value)
+            .ddg.proc2data(node.name, var.env, scope)
           }
         }
       }
@@ -622,7 +634,7 @@
     #cat(captured.output)
     #print(paste("length(captured.output)",length(captured.output)))
     .ddg.data.node("StandardOutput", "output", captured.output, "Standard output");
-    .ddg.proc2data(cmd@abbrev, "output", "Standard output")
+    .ddg.proc2data(node.name, "output", "Standard output")
   }
 }
 
@@ -634,31 +646,36 @@
 #' @param env the environment in which the variable lives.  If NULL, it
 #'   finds the closest environment with that variable
 #' @param scope the scope for the environment.  If NULL, it looks it up.
+#' @param save.value if FALSE, no attempt is made to store the value
 #' @return nothing
 #' @noRd
-.ddg.save.var <- function(var, env=NULL, scope=NULL) {
-  if (is.null(env)) {
-    env <- .ddg.get.env(var)
-    
-    # If no environment is found defining this variable, do not 
-    # save it.  It means that the variable is from a scope that
-    # is not available at the current line of code, such as a 
-    # non-local, yet not global scope.
+.ddg.save.var <- function(var, env=NULL, scope=NULL, save.value = TRUE) {
+  if (!save.value) {
+    val = "No value saved"
+  }
+  else {
     if (is.null(env)) {
-      return()
+      env <- .ddg.get.env(var)
+    
+      # If no environment is found defining this variable, do not 
+      # save it.  It means that the variable is from a scope that
+      # is not available at the current line of code, such as a 
+      # non-local, yet not global scope.
+      if (is.null(env)) {
+        return()
+      }
     }
-  }
-  if (is.null(scope)) {
-    scope <- .ddg.get.scope(var, env=env)
-  }
+    if (is.null(scope)) {
+      scope <- .ddg.get.scope(var, env=env)
+    }
 
   
-  # Special operators are defined by enclosing the name in `.  However,
-  # the R parser drops those characters when we deparse, so when we parse
-  # here they are missing and we get an error about unexpected SPECIAL
-  # characters.  The first tryCatch, puts the ` back in and parses again.
-  # The second tryCatch handles errors associated with evaluating the variable.
-  parsed <- tryCatch(parse(text=var),
+    # Special operators are defined by enclosing the name in `.  However,
+    # the R parser drops those characters when we deparse, so when we parse
+    # here they are missing and we get an error about unexpected SPECIAL
+    # characters.  The first tryCatch, puts the ` back in and parses again.
+    # The second tryCatch handles errors associated with evaluating the variable.
+    parsed <- tryCatch(parse(text=var),
       error = function(e) {
         if (.ddg.debug.lib()) {
           print (".ddg.save.var: parsing failed")
@@ -666,14 +683,15 @@
         parse(text=paste("`", var, "`", sep=""))
         })
   
-  val <- tryCatch(eval(parsed, env),
+    val <- tryCatch(eval(parsed, env),
       error = function(e) {
         if (.ddg.debug.lib()) {
           print (".ddg.save.var: evaluation failed")
         }
         eval (parse(text=var), parent.env(env))
       }
-  )
+    )
+  }
   
   tryCatch(.ddg.save.data(var, val, error=TRUE, scope=scope, env=env),
       error = 
@@ -1160,7 +1178,7 @@
               {
                 for (annot in cmd@annotated) {
                   #print (paste (".ddg.parse.commands: Evaluating ", 
-                  #             paste(annot, collapse = " ")))
+                               #paste(annot, collapse = " ")))
                   # Don't set return.value if we are calling a ddg function or we 
                   # are executing an if-statement
                   loaded_before = loadedNamespaces()
@@ -1179,6 +1197,13 @@
                     .ddg.set ("ddg.last.R.value", returnWithVisible$value)
                     .ddg.set ("ddg.error.node.created", FALSE)
                   }
+                  loaded_after = loadedNamespaces()
+                  if (length(loaded_before) != length(loaded_after)) {
+                  	script.libraries <- .ddg.get ("ddg.script.libraries")
+                  	script.libraries <- append (script.libraries, setdiff(loaded_after, loaded_before))
+                  	.ddg.set("ddg.script.libraries", script.libraries)
+                  }
+                  
                   loaded_after = loadedNamespaces()
                   if (length(loaded_before) != length(loaded_after)) {
                   	script.libraries <- .ddg.get ("ddg.script.libraries")
@@ -1777,6 +1802,8 @@
   if (is.null(calls)) calls <- sys.calls()
 
   fnum <- .ddg.get.frame.number(calls, for.caller)
+  #print(paste(".ddg.get.env: calls = ", calls))
+  #print(paste(".ddg.get.env: fnum = ", fnum))
   stopifnot(!is.null(fnum))
 
   tryCatch (
@@ -1879,7 +1906,14 @@
   env$os[1] <- .Platform$OS.type
   
   # script variables
-  script.path <- .ddg.r.script.path()
+  
+  # added option for Rmd
+  if (.ddg.get("ddg.is.rmarkdown")){ 
+    script.path <- .ddg.get("ddg.rmd.script.path") 
+    
+  } else {
+    script.path <- .ddg.r.script.path()
+  }
   
   if(!is.null(script.path) )
   {

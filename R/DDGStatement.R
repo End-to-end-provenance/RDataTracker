@@ -601,7 +601,7 @@ methods::setMethod ("initialize",
 
 #' .ddg.find.simple.assign returns the name of the variable assigned
 #' to if the object passed in is an expression representing an
-#' assignment statement.  Otherwise, it returns NULL.
+#' assignment statement.  Otherwise, it returns an empty string.
 #' @param obj - input expression.
 #' @return name of variable assigned to
 #' @noRd

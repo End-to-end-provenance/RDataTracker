@@ -2,6 +2,7 @@
 		"rdt:l1": {
 			"name": "base",
 			"version": "3.5.1",
+			"whereLoaded": "preloaded",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -10,6 +11,7 @@
 		"rdt:l2": {
 			"name": "datasets",
 			"version": "3.5.1",
+			"whereLoaded": "preloaded",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -18,6 +20,7 @@
 		"rdt:l3": {
 			"name": "ggplot2",
 			"version": "2.2.1",
+			"whereLoaded": "script",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -26,6 +29,7 @@
 		"rdt:l4": {
 			"name": "graphics",
 			"version": "3.5.1",
+			"whereLoaded": "script",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -34,6 +38,7 @@
 		"rdt:l5": {
 			"name": "grDevices",
 			"version": "3.5.1",
+			"whereLoaded": "script",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -42,6 +47,7 @@
 		"rdt:l6": {
 			"name": "methods",
 			"version": "3.5.1",
+			"whereLoaded": "rdtLite",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -50,6 +56,7 @@
 		"rdt:l7": {
 			"name": "RDataTracker",
 			"version": "2.27.0",
+			"whereLoaded": "rdtLite",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -58,6 +65,7 @@
 		"rdt:l8": {
 			"name": "stats",
 			"version": "3.5.1",
+			"whereLoaded": "rdtLite",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -66,6 +74,7 @@
 		"rdt:l9": {
 			"name": "utils",
 			"version": "3.5.1",
+			"whereLoaded": "rdtLite",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"

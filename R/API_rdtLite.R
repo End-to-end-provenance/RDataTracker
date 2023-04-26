@@ -1,6 +1,6 @@
 # Copyright (C) President and Fellows of Harvard College and 
 # Trustees of Mount Holyoke College, 2014, 2015, 2016, 2017, 2018,
-# 2019, 2020, 2021, 2022.
+# 2019, 2020, 2021, 2022, 2023.
 
 # This program is free software: you can redistribute it and/or
 # modify it under the terms of the GNU General Public License as
@@ -23,7 +23,7 @@
 #' prov.init intializes a new provenance graph. This function can be
 #' executed in the console or placed inside an R script.
 #' 
-#' rdtLite is an R package that collects provenance as an R script 
+#' rdtLite is an R package that collects provenance as an R or RMarkdown script 
 #' executes. The resulting provenance provides a detailed record of the 
 #' execution of the script and includes information on the steps that were 
 #' performed and the intermediate data values that were created. The 
@@ -34,6 +34,15 @@
 #' provenance from commands stored in a script file, use prov.run.  This
 #' will execute the commands that are in the script, collecting provenance
 #' as it does so.
+#'
+#' When collecting provenance from an RMarkdown script, the user can selectively
+#' turn provenance collection on or off for each chunk using the "details" chunk
+#' option.  If its value is TRUE, provenance is collected.  If its FALSE, provenance
+#' is not collected.  The default value is FALSE.  When provenance is collected
+#' from RMarkdown, the script is executed twice: once to generate RMarkdown's output
+#' and once to collect the provenance.  If the script produces different behavior
+#' when executed a second time, for example, if it uses random numbers without 
+#' setting the seed first, the provenance might be inaccurate.
 #' 
 #' The user can also collect provenance while executing commands in the 
 #' console.  To do this, first execute prov.init.  Then enter console
@@ -94,7 +103,6 @@ prov.init <- function(prov.dir = NULL, overwrite = TRUE, snapshot.size = 0,
   
   # Save hash algorithm
   .ddg.set("ddg.hash.algorithm", hash.algorithm)
-  
   # If this function was not called from prov.run, save arguments
   if(!.ddg.is.set("ddg.run.args")) {
     #print ("Saving arguments")
@@ -197,7 +205,7 @@ prov.quit <- function(save.debug = FALSE) {
 #' \donttest{prov.quit()}
 
 prov.run <- function(r.script.path, prov.dir = NULL, overwrite = TRUE, details = TRUE, 
-  snapshot.size = 0, hash.algorithm = "md5", save.debug = FALSE, exprs, ...) {
+                     snapshot.size = 0, hash.algorithm = "md5", save.debug = FALSE, exprs, ...) {
   
   # Stop & display message if R script path is missing
   if (missing(r.script.path) && missing(exprs)) {
@@ -220,12 +228,12 @@ prov.run <- function(r.script.path, prov.dir = NULL, overwrite = TRUE, details =
   else {
     use_file <- TRUE
   }
-
+  
   # Stop & display message if R script file is not found
   if (!file.exists(r.script.path)) {
     stop("R script file not found.")
   }
-
+  
   # Store arguments
   args.names <- c("overwrite", "details", "snapshot.size", "save.debug")
   args.types <- c("logical", "logical", "numeric", "logical")
@@ -238,13 +246,13 @@ prov.run <- function(r.script.path, prov.dir = NULL, overwrite = TRUE, details =
   
   # Store R script path
   .ddg.set("ddg.r.script.path", r.script.path)
-
+  
   # Store details value
   .ddg.set("ddg.details", details)
-
+  
   # Set script mode to True
   .ddg.set("ddg.script.mode", TRUE)
-
+  
   # Intialize the provenance graph
   prov.init(prov.dir, overwrite, snapshot.size, hash.algorithm, save.debug)
   

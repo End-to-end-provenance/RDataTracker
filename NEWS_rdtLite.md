@@ -1,3 +1,6 @@
+# rdtLite 1.5
+* Improved support for RMarkdown.  The RMarkdown details option can be used to turn provenance collection on or off for each chunk.  The default is FALSE, meaning provenance is not collected.
+
 # rdtLite 1.4
 * Added support for file I/O tracing of functions in the vroom package
 * Save version information of all packages that are loaded when the script finishes

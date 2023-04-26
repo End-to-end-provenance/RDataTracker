@@ -45,60 +45,64 @@
   # Initialize tables
   #print ("Initiailzing tables")
   .ddg.init.tables()
-
+  
   # Set up for console mode
   if (!.ddg.script.mode()) {
     .ddg.set("ddg.r.script.path", "console.R")
     .ddg.set("ddg.details", TRUE)
   }
-
+  
   # Get R script path
   #print ("Getting R script path")
   r.script.path <- .ddg.r.script.path()
-
+  
   # Set path for provenance graph
   #print ("Setting provenance path")
   .ddg.set.path (prov.dir, r.script.path, overwrite)
   
   # Save value of save.debug
   .ddg.set("ddg.save.debug", save.debug)
-
+  
   # Remove files from DDG directory
   #print ("Removing ddg files")
   .ddg.flush.ddg()
-
+  
   # Create DDG directories
   #print ("Creating directories")
   .ddg.init.environ()
-
+  
   # Script mode: adjust & store R script path
   if (.ddg.script.mode()) {
     #print ("Setting up script mode")
-
+    
     # RMarkdown script
     if (tools::file_ext(r.script.path) == "Rmd") {
+      .ddg.set("ddg.is.rmarkdown", TRUE)
+      .ddg.set("ddg.rmd.script.path", r.script.path)
       output.path <- paste(.ddg.path.scripts(), "/", 
-          basename(tools::file_path_sans_ext(r.script.path)), ".R", sep = "")
+                            basename(tools::file_path_sans_ext(r.script.path)), ".R", sep = "")
       print(paste("Please note: if your RMarkdown script is not deterministic (that is,",
 					"if it does not always produce the same result as is the case when it relies on random number generation),", 
 					"then the provenance collected may not exactly match the PDF document produced by RMarkdown."))
       .ddg.markdown(r.script.path, output.path)
       .ddg.set("ddg.r.script.path", output.path)
-  
-    # R script
+      
+      # R script
     } else {
+      .ddg.set("ddg.is.rmarkdown", FALSE)
       .ddg.set("ddg.markdown.output", NULL)
       .ddg.set("ddg.r.script.path",
-          normalizePath(r.script.path, winslash = "/", mustWork = FALSE))
+               normalizePath(r.script.path, winslash = "/", mustWork = FALSE))
     }
-
-  # Console mode: Set up a callback to be notified after each statement
-  # completes execution and build the corresponding portions of the 
-  # provenance graph.
+    
+    # Console mode: Set up a callback to be notified after each statement
+    # completes execution and build the corresponding portions of the 
+    # provenance graph.
   } else {
     #print ("Setting up console mode")
-    .ddg.store.console.info ()
+    .ddg.set("ddg.is.rmarkdown", FALSE)
     .ddg.set("ddg.markdown.output", NULL)
+    .ddg.store.console.info ()
     .ddg.set("ddg.console.commands", vector())
     
     .ddg.trace.task <- function (task, result, success, printed) {  
@@ -106,17 +110,17 @@
       command <- deparse(task)
       trimmed <- trimws(command[1])
       if (!startsWith(trimmed, "prov.init") && !startsWith(trimmed, "prov.save")) {
-      	.ddg.add.to.console(deparse(task))
-      	#print(deparse(task))
+        .ddg.add.to.console(deparse(task))
+        #print(deparse(task))
       }
       .ddg.parse.commands(as.expression(task), script.name="Console", script.num=1, environ = .GlobalEnv, 
-          run.commands = FALSE)
+                          run.commands = FALSE)
       return(TRUE)    
     }
     
     .ddg.set ("ddg.taskCallBack.id", addTaskCallback(.ddg.trace.task))
   }
-
+  
   # Mark graph as initilized.
   .ddg.set("ddg.initialized", TRUE)
   
@@ -214,7 +218,7 @@
     # Script mode
   } else {
     ddg.path <- paste(base.dir, "/prov_", 
-       basename(tools::file_path_sans_ext(r.script.path)), sep="")
+                      basename(tools::file_path_sans_ext(r.script.path)), sep="")
   }
   
   # Add timestamp if overwrite = FALSE
@@ -236,7 +240,7 @@
   unlink(paste(.ddg.path.data(), "*.*", sep="/"))
   unlink(paste(.ddg.path.debug(), "*.*", sep="/"))
   unlink(paste(.ddg.path.scripts(), "*.*", sep="/"))
-   
+  
   invisible()
 }
 
@@ -257,9 +261,9 @@
   if (!.ddg.script.mode()) {
     .ddg.add.finish.node ()
     .ddg.add.start.node (node.name = "Console")
-     writeLines(.ddg.get("ddg.console.commands"), paste (.ddg.path.scripts(), "console.R", sep="/"))
+    writeLines(.ddg.get("ddg.console.commands"), paste (.ddg.path.scripts(), "console.R", sep="/"))
   }
-
+  
   # Save prov.json to file.
   .ddg.json.write()
   if (interactive()) print(paste("Saving prov.json in ", .ddg.path(), sep=""))
@@ -268,7 +272,7 @@
   if (save.debug || .ddg.save.debug()) {
     .ddg.save.debug.files()
   }
-
+  
   invisible()
 }
 
@@ -289,14 +293,14 @@
   if (!.ddg.script.mode()) {
     .ddg.add.finish.node ()
     console.commands <- .ddg.get("ddg.console.commands")
- 
-    if (length(console.commands) > 0) {
-	    # Save the console commands inside the provenance directory.
-    	writeLines(console.commands, paste (.ddg.path.scripts(), "console.R", sep="/"))
     
-    	# Also save the console commands in the console directory, not within the provenance directory
-    	# for this session.  This is saved in a timestamped file.
-    	writeLines(console.commands, paste (.ddg.get("ddg.console.dir"), paste0("console_", .ddg.timestamp(), ".R"), sep="/"))
+    if (length(console.commands) > 0) {
+        # Save the console commands inside the provenance directory.
+        writeLines(console.commands, paste (.ddg.path.scripts(), "console.R", sep="/"))
+    
+        # Also save the console commands in the console directory, not within the provenance directory
+        # for this session.  This is saved in a timestamped file.
+        writeLines(console.commands, paste (.ddg.get("ddg.console.dir"), paste0("console_", .ddg.timestamp(), ".R"), sep="/"))
     }
   }
   
@@ -304,17 +308,17 @@
   # create nodes and edges for them.
   #print ("Closing connections")
   tryCatch(.ddg.create.file.nodes.for.open.connections (),
-      error = function(e) {
-        if (.ddg.debug.lib()) {
-          print ("Error creating file nodes for open connections when quitting")
-        }
-      })
+           error = function(e) {
+             if (.ddg.debug.lib()) {
+               print ("Error creating file nodes for open connections when quitting")
+             }
+           })
   
   # If there is a display device open, grab what is on the display
   #print ("Closing display device")
   if (length(grDevices::dev.list()) >= 1) {
     tryCatch (.ddg.capture.graphics(called.from.save = TRUE),
-        error = function (e) print(e))
+              error = function (e) print(e))
   }
   
   # If we ran an RMarkdown script, save a copy of the formatted output
@@ -339,7 +343,7 @@
   
   # Mark graph as not initialized.
   .ddg.set("ddg.initialized", FALSE)
-
+  
   # Save prov.json to file.
   #print ("Writing json")
   .ddg.json.write()
@@ -349,7 +353,7 @@
   if (save.debug || .ddg.save.debug()) {
     .ddg.save.debug.files()
   }
-   
+  
   # Set script mode to FALSE
   .ddg.set("ddg.script.mode", FALSE)
   
@@ -366,16 +370,23 @@
 
 .ddg.run <- function(r.script.path, exprs, ...) {
   
+
+  
   # Execute script and catch any error messages
   tryCatch({
+    if(.ddg.get("ddg.is.rmarkdown")){
+      #rmarkdown::render(r.script.path)
+      .ddg.chunk.source(.ddg.get("ddg.rmd.script.path"),...)
+    } else {
       .ddg.source(.ddg.r.script.path(), exprs = exprs, ignore.ddg.calls = FALSE, ...)
     }
-
-    # Add finish nodes for anything left open due to errors
-    , finally = {
-      .ddg.close.blocks()
-      .ddg.quit(.ddg.save.debug())
-    }
+  }
+  
+  # Add finish nodes for anything left open due to errors
+  , finally = {
+    .ddg.close.blocks()
+    .ddg.quit(.ddg.save.debug())
+  }
   )
   
   
@@ -408,13 +419,13 @@
 #' @return nothing
 #' @noRd
 .ddg.source <- function (file, local = FALSE, echo = verbose, print.eval = echo, 
-    exprs, spaced = use_file, verbose = getOption("verbose"), 
-    prompt.echo = getOption("prompt"), max.deparse.length = 150, 
-    width.cutoff = 60L, deparseCtrl = "showAttributes", chdir = FALSE, 
-    encoding = getOption("encoding"), continue.echo = getOption("continue"), 
-    skip.echo = 0, 
-    ignore.ddg.calls = TRUE, calling.script = 1, startLine = NA, startCol = NA,
-    endLine = NA, endCol = NA) 
+                         exprs, spaced = use_file, verbose = getOption("verbose"), 
+                         prompt.echo = getOption("prompt"), max.deparse.length = 150, 
+                         width.cutoff = 60L, deparseCtrl = "showAttributes", chdir = FALSE, 
+                         encoding = getOption("encoding"), continue.echo = getOption("continue"), 
+                         skip.echo = 0, 
+                         ignore.ddg.calls = TRUE, calling.script = 1, startLine = NA, startCol = NA,
+                         endLine = NA, endCol = NA) 
 {
   # This function is largely derived from R's source function.  Part of R's
   # source function also appears in .ddg.parse.commands and .ddg.echo.  To
@@ -432,12 +443,12 @@
   
   #### Start section taken from R's source function ####
   envir <- if (isTRUE(local)) 
-        parent.frame()
-      else if (isFALSE(local)) 
-        .GlobalEnv
-      else if (is.environment(local)) 
-        local
-      else stop("'local' must be TRUE, FALSE or an environment")
+    parent.frame()
+  else if (isFALSE(local)) 
+    .GlobalEnv
+  else if (is.environment(local)) 
+    local
+  else stop("'local' must be TRUE, FALSE or an environment")
   if (!missing(echo)) {
     if (!is.logical(echo)) 
       stop("'echo' must be logical")
@@ -456,7 +467,7 @@
     srcfile <- NULL
     if (is.character(file)) {
       have_encoding <- !missing(encoding) && encoding != 
-          "unknown"
+        "unknown"
       if (identical(encoding, "unknown")) {
         enc <- utils::localeToCharset()
         encoding <- enc[length(enc)]
@@ -471,7 +482,7 @@
             next
           zz <- file(file, encoding = e)
           res <- tryCatch(readLines(zz, warn = FALSE), 
-              error = identity)
+                          error = identity)
           close(zz)
           if (!inherits(res, "error")) {
             encoding <- e
@@ -499,13 +510,13 @@
         on.exit()
         close(file)
         srcfile <- srcfilecopy(filename, lines, file.mtime(filename)[1], 
-              isFile = TRUE)
-
+                               isFile = TRUE)
+        
         loc <- utils::localeToCharset()[1L]
         encoding <- if (have_encoding) 
-              switch(loc, `UTF-8` = "UTF-8", `ISO8859-1` = "latin1", 
-                  "unknown")
-            else "unknown"
+          switch(loc, `UTF-8` = "UTF-8", `ISO8859-1` = "latin1", 
+                 "unknown")
+        else "unknown"
       }
     }
     else {
@@ -513,19 +524,19 @@
       lines <- readLines(file, warn = FALSE)
       srcfile <- srcfilecopy(deparse(substitute(file)), lines)
     }
-
+    
     # parse calls are changed.  .Internal is not allowed to be called from
     # packages.  This appears to behave the same.
     exprs <- if (!from_file) {
-          if (length(lines)) 
-             parse(file=stdin(), n = -1, text=lines, prompt="?", 
-                  keep.source=TRUE, srcfile = srcfile, encoding = encoding)
-          
-          else expression()
-        }
-        else parse(file=file, n = -1, text=NULL, prompt="?", 
-                  keep.source=TRUE, srcfile = srcfile, 
-                  encoding = encoding)
+      if (length(lines)) 
+        parse(file=stdin(), n = -1, text=lines, prompt="?", 
+              keep.source=TRUE, srcfile = srcfile, encoding = encoding)
+      
+      else expression()
+    }
+    else parse(file=file, n = -1, text=NULL, prompt="?", 
+               keep.source=TRUE, srcfile = srcfile, 
+               encoding = encoding)
     on.exit()
     if (from_file) 
       close(file)
@@ -549,12 +560,12 @@
     }
   }
   else {
-#    Commented out for provenance because if a user passes in expressions
-#    rather than a file to prov.run, we save the expressions in a file and
-#    pass both to .ddg.source.  We report this error in prov.run if the
-#    user calls that function incorrectly.
-#    if (!missing(file)) 
-#      stop("specify either 'file' or 'exprs' but not both")
+    #    Commented out for provenance because if a user passes in expressions
+    #    rather than a file to prov.run, we save the expressions in a file and
+    #    pass both to .ddg.source.  We report this error in prov.run if the
+    #    user calls that function incorrectly.
+    #    if (!missing(file)) 
+    #      stop("specify either 'file' or 'exprs' but not both")
     if (!is.expression(exprs)) 
       exprs <- as.expression(exprs)
   }
@@ -569,7 +580,7 @@
   #### End section copied from R's source function ####
   
   ignores <- c("^library[(]RDataTracker[)]$", "^library[(]provR[)]$", 
-      if (ignore.ddg.calls) "^ddg." else c("^prov.init", "^prov.run"))
+               if (ignore.ddg.calls) "^ddg." else c("^prov.init", "^prov.run"))
   if (length(exprs) > 0) {
     .ddg.set("from.source", TRUE)
     if (.ddg.details()) {
@@ -578,26 +589,26 @@
       }
       else {
         .ddg.add.start.node(node.name = paste0("source (\"", 
-                sname, "\")"), script.num = calling.script, 
-            startLine = startLine, startCol = startCol, 
-            endLine = endLine, endCol = endCol)
+                                               sname, "\")"), script.num = calling.script, 
+                            startLine = startLine, startCol = startCol, 
+                            endLine = endLine, endCol = endCol)
       }
       
       # We have pulled the evaluation and echo code that is in R's
       # source function into .ddg.parse.commands.
       yy <- .ddg.parse.commands(exprs, sname, snum, environ = envir, 
-          ignore.patterns = ignores, echo = echo, print.eval = print.eval, 
-          max.deparse.length = max.deparse.length, run.commands = TRUE, 
-          continue.echo = continue.echo, skip.echo = skip.echo, prompt.echo = prompt.echo, 
-          spaced = spaced, verbose = verbose, deparseCtrl = deparseCtrl)
+                                ignore.patterns = ignores, echo = echo, print.eval = print.eval, 
+                                max.deparse.length = max.deparse.length, run.commands = TRUE, 
+                                continue.echo = continue.echo, skip.echo = skip.echo, prompt.echo = prompt.echo, 
+                                spaced = spaced, verbose = verbose, deparseCtrl = deparseCtrl)
       
       if(calling.script == 1) {
         .ddg.add.finish.node()
       }
       else {
         .ddg.add.finish.node(script.num = calling.script, 
-            startLine = startLine, startCol = startCol, 
-            endLine = endLine, endCol = endCol)
+                             startLine = startLine, startCol = startCol, 
+                             endLine = endLine, endCol = endCol)
       }
     }
     else {
@@ -608,6 +619,196 @@
   }
   invisible(yy)
 }
+
+#' .ddg.chunk.source is an alternative to .ddg.source which parses an RMarkdown file, collecting provenance on the code. 
+#' if details are set to TRUE in the chunk header, then detailed provenance is collected on that chunk. Otherwise, just input/output
+#' information is collected.
+#' @param file is the path of the RMarkdown file to be parsed
+#' @param local the environment in which to evaluate parsed
+#' expressions. If TRUE, the environment from which .ddg.source is
+#' called. If FALSE, the user's workspace (global environment).
+#' @param print.eval print the result of each evaluation
+#' @param encoding encoding to be assumed when file is a
+#' character string
+#' @param ignore.ddg.calls if TRUE, ignore DDG function calls
+#' @noRd
+
+.ddg.chunk.source <- function(file, local = FALSE, echo = verbose, print.eval = echo, encoding = getOption("encoding"), 
+                              verbose = getOption("verbose"), chdir = FALSE, ignore.ddg.calls = TRUE, ...){
+
+  snum <- .ddg.store.script.info(file)
+  sname <- basename(file)
+  file.copy(file, paste(.ddg.path.scripts(), sname, sep = "/"))
+  
+  # We always want to keep the source when we collect provenance,
+  # so this is not a parameter of .ddg.source.
+  keep.source <- TRUE
+  
+  #### Start section taken from R's source function ####
+  envir <- if (isTRUE(local)) 
+    parent.frame()
+  else if (isFALSE(local)) 
+    .GlobalEnv
+  else if (is.environment(local)) 
+    local
+  else stop("'local' must be TRUE, FALSE or an environment")
+  if (!missing(echo)) {
+    if (!is.logical(echo)) 
+      stop("'echo' must be logical")
+    if (!echo && verbose) {
+      warning("'verbose' is TRUE, 'echo' not; ... coercing 'echo <- TRUE'")
+      echo <- TRUE
+    }
+  }
+  if (verbose) {
+    cat("'envir' chosen:")
+    print(envir)
+  }
+
+  ofile <- file
+  srcfile <- NULL
+  have_encoding <- !missing(encoding) && encoding != "unknown"
+  if (identical(encoding, "unknown")) {
+    enc <- utils::localeToCharset()
+    encoding <- enc[length(enc)]
+  }
+  else enc <- encoding
+  if (length(enc) > 1L) {
+    encoding <- NA
+    # In source function, but CRAN says not to change user's options
+    #owarn <- options(warn = 2)
+    for (e in enc) {
+      if (is.na(e)) 
+        next
+      zz <- file(file, encoding = e)
+      res <- tryCatch(readLines(zz, warn = FALSE), 
+                          error = identity)
+      close(zz)
+      if (!inherits(res, "error")) {
+        encoding <- e
+        break
+      }
+    }
+    # Reverts to user's options.  Removed for CRAN
+    #options(owarn)
+  }
+  if (is.na(encoding)) 
+    stop("unable to find a plausible encoding")
+  if (verbose) 
+    cat(gettextf("encoding = \"%s\" chosen", encoding), 
+        "\n", sep = "")
+  filename <- file
+  file <- file(filename, "r", encoding = encoding)
+  on.exit(close(file))
+  lines <- readLines(file, warn = FALSE)
+  on.exit()
+  close(file)
+        
+  loc <- utils::localeToCharset()[1L]
+  encoding <- if (have_encoding) 
+      switch(loc, `UTF-8` = "UTF-8", `ISO8859-1` = "latin1", 
+                 "unknown")
+    else "unknown"
+    
+  on.exit()
+  if (chdir) {
+    if (is.character(ofile)) {
+      if (grepl("^(ftp|http|file)://", ofile)) 
+        warning("'chdir = TRUE' makes no sense for a URL")
+      else if ((path <- dirname(ofile)) != ".") {
+        owd <- getwd()
+        if (is.null(owd)) 
+          stop("cannot 'chdir' as current directory is unknown")
+        on.exit(setwd(owd), add = TRUE)
+        setwd(path)
+      }
+    }
+    else {
+      warning("'chdir = TRUE' makes no sense for a connection")
+    }
+  }
+  yy <- NULL
+
+  #### End section copied from R's source function ####
+  ignores <-  c("^library[(]RDataTracker[)]$", "^library[(]provR[)]$", 
+                if (ignore.ddg.calls) "^ddg." else c("^prov.init", "^prov.run"))
+  chunk_num <- 1
+  in_chunk <- FALSE
+  prov_active <- FALSE
+  backticks <- "```"
+  cur_chunk <- c()
+  for(line in lines){
+    if(grepl(backticks,line, fixed = TRUE)){
+      if(in_chunk){
+        exprs <- parse(file=stdin(), n = -1, text = cur_chunk, keep.source=TRUE, srcfile = srcfile, encoding = encoding,prompt="?")
+        # parse(file=stdin(), n = -1, text=lines, prompt="?", 
+        #       keep.source=TRUE, srcfile = srcfile, encoding = encoding)
+        if(prov_active){
+          #print(paste("Chunk", chunk_num))
+
+          .ddg.add.start.node(node.name = paste("chunk", as.character(chunk_num), "(detailed)"))
+          yy <- .ddg.parse.commands(exprs, sname, snum, environ = envir,
+                              ignore.patterns = ignores, echo = getOption("verbose"), run.commands = TRUE, print.eval = print.eval,
+                              max.deparse.length = 150, 
+                              continue.echo = getOption("continue"), skip.echo = 0, prompt.echo = getOption("prompt"), verbose = getOption("verbose"), 
+                              deparseCtrl = "showAttributes")
+          .ddg.add.finish.node()
+        }else{
+          #print(paste("Chunk", chunk_num))
+          
+          # Create a procedure node for the chunk and connect it to the ddg
+          node.name = paste("chunk", as.character(chunk_num))
+          .ddg.proc.node("Operation", node.name, node.name, 
+                         functions.called = list(NULL, NULL, NULL, NULL), scriptNum=snum)
+          .ddg.proc2proc()
+          
+          # Parse the statements to find out what variables are used and set
+          cmds <- .ddg.create.DDGStatements (exprs, sname, snum)
+
+		  # The variables set in the chunk are the union of the variables set in the statements inside the chunk
+		  # The variables used in the chunk are the variables that are used in the chunk but not set by a previous
+		  # statement in the chunk
+          vars.set.in.chunk <- vector()
+          vars.used.in.chunk <- vector()
+          for (cmd in cmds) {
+          	  vars.used.in.cmd <- setdiff(cmd@vars.used, vars.set.in.chunk)
+          	  vars.used.in.chunk <- union(vars.used.in.chunk, vars.used.in.cmd)
+          	  vars.set.in.chunk <- union(vars.set.in.chunk, cmd@vars.set)
+          }
+          	  
+          # Create the data use edges
+          .ddg.create.data.use.edges(NULL, for.caller=FALSE, env=NULL, vars.used = vars.used.in.chunk, node.name = node.name)
+
+          # This executes the code but does not modify the ddg
+          yy <- .ddg.evaluate.commands(exprs,environ = envir)
+          
+          # Create the nodes and edges for the variables set.  No value is recorded with these nodes.
+          .ddg.create.data.set.edges (vars.set.in.chunk, NULL, envir, captured.output = NULL, node.name, save.value=FALSE)
+        }
+        in_chunk = FALSE
+        prov_active = FALSE
+        cur_chunk <- c()
+        chunk_num <- chunk_num + 1
+      
+      }else{
+        in_chunk = TRUE
+        header = substr(line,5,nchar(line)-1) 
+        if(grepl("details = TRUE", header, fixed = TRUE) |
+           grepl("details= TRUE", header, fixed = TRUE) |
+           grepl("details =TRUE", header, fixed = TRUE) |
+           grepl("details=TRUE", header, fixed = TRUE)) {#TODO: make better
+          prov_active <- TRUE
+        } else if (!grepl("details", header, fixed = TRUE)){
+          prov_active <- .ddg.details()
+        }
+      }
+    }else if(in_chunk){
+      cur_chunk <- c(cur_chunk, line)
+    }
+  }
+  invisible(yy)
+}
+#_______ SEAN ADD END _________
 
 # To simplify future maintenance, here is the definition of R's source function
 # in R 3.6.0.  We should compare this code with the source function in new

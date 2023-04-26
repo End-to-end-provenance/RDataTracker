@@ -2,6 +2,7 @@
 		"rdt:l1": {
 			"name": "base",
 			"version": "3.5.1",
+			"whereLoaded": "preloaded",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"
@@ -10,6 +11,7 @@
 		"rdt:l2": {
 			"name": "RDataTracker",
 			"version": "2.27.0",
+			"whereLoaded": "rdtLite",
 			"prov:type": {
 				"$": "prov:Collection",
 				"type": "xsd:QName"

@@ -141,4 +141,22 @@ stopifnot( is.null(fn4(20)) )
 
 
 # ERROR
-as.roman(z)
+# As of R 4.3.0, R incorrectly identifies what is not found when run through prov.run.
+# It says the utils library is not found, giving the entire path to the library:
+# Error in eval(annot, environ, NULL) : 
+#  object '"/Library/Frameworks/R.framework/Versions/4.3-x86_64/Resources/library/utils"' not found
+# This path is OS-dependent so regression tests will break across platforms
+#
+# Reported bug to R on April 26, 2023.  In 4.3.0, we see:
+# > eval(parse (text="as.roman(z)"))
+# Error in eval(parse(text = "as.roman(z)")) :
+# object '"as.roman(z)"' not found
+#
+# In 4.2.0, we see:
+# > eval(parse(text="as.roman(z)"))
+# Error in .as.roman(x, check.range = TRUE) : object 'z' not found
+# 
+# Hoping that if R fixes this, our problem goes away!
+# In the meantime, this test is commented out.
+# 
+# as.roman(z)
