@@ -156,6 +156,13 @@ stopifnot( is.null(fn4(20)) )
 # > eval(parse(text="as.roman(z)"))
 # Error in .as.roman(x, check.range = TRUE) : object 'z' not found
 # 
+# R has released a patched version of 4.3 that fixes the object
+# problem but has problems with identifying the location.  Now, if
+# we put the line as.roman(z) in a file and source that file, 
+# we get:
+# > source("Bug.R")
+# Error in eval(ei, envir) : object 'z' not found
+#
 # Hoping that if R fixes this, our problem goes away!
 # In the meantime, this test is commented out.
 # 
