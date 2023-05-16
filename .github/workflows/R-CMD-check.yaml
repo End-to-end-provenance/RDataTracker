@@ -64,3 +64,4 @@ jobs:
         run: |
           ant -file build-rdtLite.xml install-no-check
           ant -file tests.xml test-github-rdtLite
+        shell: bash
