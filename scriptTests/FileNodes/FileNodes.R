@@ -9,10 +9,12 @@ writeLines(df, file.out)
 close (file.out)
 
 # Pipe input - this may fail on Windows machines without UNIX shell
-file.in <- pipe ("echo foo")
-df <- readLines(file.in)
-close (file.in)
-print(df)
+# Commented out since it does not reliably work on Windows
+# with GitHub Actions
+# file.in <- pipe ("echo foo")
+# df <- readLines(file.in)
+# close (file.in)
+# print(df)
 
 # File within a zip file
 file.in <- unz ("../ab.zip", "a.txt")
